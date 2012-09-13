@@ -8,7 +8,7 @@
 # This is your job to link this file to /etc/hosts.
 
 # Paths
-local hostnae=$(hostname)
+local hostname=$(hostname)
 local defaultFile=~/.oroshi/config/hosts/default
 local privateFiles=~/.oroshi/private/config/hosts/local/${hostname}/*
 local destFile=/usr/local/etc/hosts
