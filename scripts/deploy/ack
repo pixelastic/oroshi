@@ -1,0 +1,8 @@
+#!/usr/bin/zsh
+# Paths
+local configDir=~/.oroshi/config/ack
+local configFile=${configDir}/ackrc
+local destFile=~/.ackrc
+
+# Link the config file
+ln -fs $configFile $destFile
