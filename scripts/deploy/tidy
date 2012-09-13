@@ -1,0 +1,10 @@
+#!/usr/bin/zsh
+# Copy html5-tidy config to ~/.tidyrc
+
+# Paths
+local configDir=~/.oroshi/config/tidy
+local configFile=${configDir}/tidyrc
+local destFile=~/.tidyrc
+
+# Link the config file
+ln -fs $configFile $destFile

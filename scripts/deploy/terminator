@@ -1,5 +1,5 @@
 #!/usr/bin/zsh
-# Copy Terminator config to ~/.config/terminator/config
+# Link Terminator config to ~/.config/terminator/config
 
 # Paths
 local configDir=~/.oroshi/config/terminator
@@ -7,6 +7,6 @@ local configFile=${configDir}/default.terminator
 local destDir=~/.config/terminator
 local destFile=${destDir}/config
 
-# Copy config file
+# Link the config file
 mkdir -p $destDir
 ln -fs $configFile $destFile

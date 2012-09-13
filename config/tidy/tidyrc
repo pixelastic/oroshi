@@ -1,0 +1,55 @@
+# This is how I like my HTML cleaned
+# Some of the options are part of the default, but I'd rather be thorough in
+# the declaration, it helps in debugging and is more portable.
+# Note: This use the html5-tidy fork of the original tidy.
+
+# Keep silent
+quiet: yes
+show-errors: 0
+show-warnings: no
+
+# Do not add a <meta> in the head indicating that it was processed by tidy
+tidy-mark: no
+
+# Convert to well-formed xhtml
+output-xhtml: yes
+# Use the html5 doctype
+doctype: html5
+# Use utf8
+char-encoding: utf8
+# No stupid BOM, utf8 is enough
+output-bom: no
+# Use a Unix newline
+newline: LF
+
+# Remove word-specific code
+bare: yes
+# Drop MS proprietary attributes
+drop-proprietary-attributes: yes
+# Remove empty elements
+drop-empty-elements: yes
+# Drop <font> and <center> tags
+drop-font-tags: yes
+# Drop HTML comments
+hide-comments: yes
+
+
+# Indent tag content intelligently
+indent: auto
+# Add a line break in code before a <br />
+break-before-br: yes
+# Do not force a maximum width
+wrap: 0
+# Keep all tags and attributes lowercase
+uppercase-tags: no
+uppercase-attributes: no
+# Order attributes alphabetically
+sort-attributes: alpha
+# Always close optional closing tags like <li>, <dt>, etc
+omit-optional-tags: no
+# Replace <i> with <em> and <b> with <strong>
+logical-emphasis: yes
+# Fix uri with illegal characters
+fix-uri: yes
+
+

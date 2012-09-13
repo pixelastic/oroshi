@@ -1,13 +1,12 @@
 #!/usr/bin/zsh
-# Copy Metacity global and window-specific keybindings config to gconf config
+# Link Metacity global and window-specific keybindings config to gconf config
 # dir
 
 # Paths
 local configDir=~/.oroshi/config/keybindings
 local destDir=~/.gconf/apps/metacity
 
-# Create destination dirs
+# Link the config files
 mkdir -p $destDir/global_keybindings $destDir/window_keybindings
-# Link to config file
 ln -fs $configDir/global.xml $destDir/global_keybindings/%gconf.xml
 ln -fs $configDir/window.xml $destDir/window_keybindings/%gconf.xml
