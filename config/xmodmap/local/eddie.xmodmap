@@ -1,0 +1,13 @@
+! The way the End/Home and Page Up/Page Down physical buttons are set did not
+! please me. There are two buttons for four important keys.  Here is how
+! I remapped them, L and R being respectively the button on the Left and button
+! on the Right
+! L 			: Home    / R 			: End
+! Fn+L 		: Page Up / Fn+R		: Page Down
+! Ctrl+L	: Top			/ Ctrl+R	: Bottom
+keycode 112 = Home
+keycode 117 = End
+keycode 110 = Prior
+keycode 115 = Next
+
+

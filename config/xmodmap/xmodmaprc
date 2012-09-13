@@ -1,0 +1,99 @@
+! Notes:
+!   Each physical (plastic) key on a keyboard has its own keycode, a number
+!   between 1 and 255. Some keycode will be shared accross various types of
+!   keyboards while other might change (think azerty/qwerty differences,
+!   Windows or Mac special keys and multimedia keyboards)
+!
+!   Most of the keycodes are directly linked to a characters (a-z). Some other
+!   do not print anything at all (F1-F12) while others acts as modifiers.
+!   A modifier does not print anything either but change the meaning of
+!   another key pressed at the same time (think of Shift for capital letters)
+!
+!   Xmodmap uses an inner representation of these keys, using keysyms. We can
+!   bind a specific keycode (for example 36) to a specific keysym (for example
+!   the <Return> action). 
+!
+!   There is a maximum of 8 different modifiers that can be applied to a key.
+!   Those modifiers are passed, along with the key, to the underlying software
+!   that can react accordingly.
+!
+!   Several modifiers can be send at the same time, but there is usually no
+!   more than 2 at the same time.
+!   The 3 more common modifiers are : Shift, Control and Lock.
+!     Shift is used to make the next char uppercase
+!     Control is used to bind some keyboard shortcuts
+!     Lock is pressed once and all subsequent chars are uppercased
+!   There are 5 more modifiers available, named mod1-5. They are not as widely
+!   supported as the first 3 so there is no real standard on what they should
+!   do, but the common practice is as follow :
+!     Mod1 is usually used as the "Alt" modifier key
+!     Mod2 is usually used as a Lock on the Numeric keyboard
+!     Mod3 is almost never used
+!     Mod4 is usually the "Meta" (Windows) key
+!     Mod5 is usually the AltGr (Alternate Graphics) key
+!
+!   Lastly, xmodmap allows you to remap any keycode to up to 6 keysyms,
+!   depending on the modifier keys pressed (normal, Shift, Mode_Switch,
+!   Shift+Mode_Switch, ISO_Level3_Shift, Shift+ISO_Level3_Shift).
+!
+!   The ISO_Level3_Shift is usually found on European keyboards and allow
+!   access to Alternate Graphics through the AltGr key. The Mode_Switch can be
+!   thought0 as a 'ISO_Level2_Shift'.
+
+
+!!!!! Clearing all modifiers
+clear shift
+clear control
+clear lock
+clear mod1
+clear mod2
+clear mod3
+clear mod4
+clear mod5
+
+!!!!! Defining which keysym toggle which modifier
+! Note that we did not defined 'lock' here as we want to get rid of the Caps
+! Lock once and for all
+add shift   = Shift_L  Shift_R
+add control = Control_L Control_R
+add mod1    = Alt_L
+add mod2    = Num_Lock
+! add mod3    = Mode_switch
+add mod4    = Super_L Hyper_L
+add mod5    = ISO_Level3_Shift
+
+!!!!!! Adding some phantom F-keys to use as mapping in vim
+! Caps Lock
+keycode 66 = F13
+! ²
+keycode 49 = F14 twosuperior
+! Menu
+keycode 135 = F15
+
+!!!!! Making signs easier to type as Alternate Graphics on some keys
+keycode 24 = a A a A at ae
+keycode 27 = r R r R grave
+keycode 31 = i I i I minus endash
+keycode 32 = o O o O underscore emdash
+
+! keycode  38 = q Q q Q braceleft
+keycode 39 = s S s S braceleft less
+keycode 40 = d D d D braceright greater
+keycode 41 = f F f F backslash
+keycode 42 = g G g G asciitilde 
+keycode 43 = h H h H numbersign
+keycode 44 = j J j J bar
+keycode 45 = k K k K parenleft bracketleft
+keycode 46 = l L l L parenright bracketright
+! keycode  47 = m M m M braceright
+
+keycode 54 = c C c C copyright cent
+keycode 58 = comma question comma question U203D U2E2E 
+keycode 59 = semicolon period semicolon period ellipsis
+
+
+!!!!! Enter key
+! The key is named "Entrée" on french keyboard but is in fact a Return key.
+! It produces a Carriage Return on press (default)
+! It also produces a "Numeric Keypad" Enter on Shift-Press (custom)
+keycode  36 = Return KP_Enter Return KP_Enter

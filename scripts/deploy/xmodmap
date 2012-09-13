@@ -1,0 +1,27 @@
+#!/usr/bin/zsh
+# Clear the current ~/.Xmodmap file, and create a new one by concatenating
+# (optional) local file and default xmodmap config.
+
+# Paths
+local destFile=~/.Xmodmap
+local configDir=~/.oroshi/config/xmodmap
+local defaultFile=${configDir}/xmodmaprc
+local hostname=$(hostname)
+local localFile=${configDir}/local/${hostname}.xmodmap
+
+# Starting with an empty file
+rm -f $destFile
+touch $destFile
+
+# Adding first the local config
+if [[ -r $localFile ]]; then
+	cat $localFile >> $destFile
+fi
+
+# Adding the default configuration last
+cat $defaultFile >> $destFile
+
+# Reload xmodmap
+setxkbmap
+xmodmap $destFile
+

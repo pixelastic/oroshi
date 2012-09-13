@@ -11,3 +11,4 @@ cd ~/.oroshi/scripts/deploy/
 ./pry
 ./terminator
 ./tidy
+./xmodmap
