@@ -1,0 +1,22 @@
+#!/usr/bin/zsh
+# Generates a ~/.ssh/config file by concatenating :
+# - files in ./private/config/ssh/local/{hostname}
+# - default values
+
+# Paths
+local hostname=$(hostname)
+local defaultFile=~/.oroshi/config/ssh/default
+local privateFiles=~/.oroshi/private/config/ssh/local/${hostname}/*
+local destDir=~/.ssh
+local destFile=$destDir/config
+
+mkdir -p $destDir
+rm -f $destFile
+touch $destFile
+
+# Custom config
+for file in ${~privateFiles}; do
+	cat $file >> $destFile
+done
+# Default config
+cat $defaultFile >> $destFile
