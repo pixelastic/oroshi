@@ -1,0 +1,10 @@
+#!/usr/bin/zsh
+# Copy fonts to ~/.fonts
+
+# Paths
+local configDir=~/.oroshi/config/fonts
+local destDir=~/.fonts
+
+# Copying fonts
+mkdir -p $destDir
+cp ${configDir}/* $destDir
