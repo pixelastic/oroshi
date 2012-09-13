@@ -1,0 +1,19 @@
+#compdef gui
+# `gui` launch graphical interfaces from the command line without blocking it.
+# Very useful to launch a web browser or an image viewer and being able to
+# still use the prompt.
+
+_gui () {
+	# local var definition to not pollute global scope
+	local curcontext=$curcontext state line context
+	typeset -A opt_args
+
+	# suggesting arguments
+	_arguments \
+		'*::arguments: _normal' \
+		&& return 0
+
+	return 1
+}
+
+_gui "$@"

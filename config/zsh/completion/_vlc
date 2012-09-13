@@ -1,0 +1,29 @@
+#compdef vlc
+typeset -A opt_args
+local state context line
+
+# - Will only suggest movie files
+# - Will also suggest subtitles files with the --sub-file option
+
+# List of args, description and hints
+_arguments -s -S \
+	"*:media file:->media_file" \
+	"--sub-file[subtitle file to use]:subtitle file:->subtitle_file" \
+	&& return 0
+
+# State machine
+case $state in
+	# Suggesting the media file to open. This will suggest only video and audio
+	# files
+	(media_file)
+		local glob=$(echo $O_FILETYPES_EXTENSIONS[video],$O_FILETYPES_EXTENSIONS[audio] | sed 's/,/|/g')
+		_files -g '*.('$glob')' && return 0
+		;;
+	# Suggesting a subtitle file.
+	(subtitle_file)
+		local glob=$(echo $O_FILETYPES_EXTENSIONS[subtitle] | sed 's/,/|/g')
+		_files -g '*.('$glob')' && return 0
+		;;
+esac
+
+return 1

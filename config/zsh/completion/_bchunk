@@ -1,0 +1,33 @@
+#compdef bchunk
+typeset -A opt_args
+local state context line
+
+# - Will first suggest the bin file
+# - Then the cue one
+# - And finally a basename based on the bin name
+
+# List of args, description and hints
+_arguments -s -S \
+	"1:bin file:->bin_file" \
+	"2:cue file:->cue_file" \
+	"3:output file basename:->basename_file" \
+	&& return 0
+
+# State machine
+case $state in
+	# First, only suggest .bin files
+	(bin_file)
+		_files -g '*.(bin|raw|img)' && return 0
+	;;
+	# Then, only suggest the .cue file
+	(cue_file)
+		_files -g '*.cue' && return 0
+	;;
+	# Finally, suggest a basename based on the original name
+	(basename_file)
+		compadd "$@" ${words[2]:r}
+		return 0
+	;;
+esac
+
+return 1

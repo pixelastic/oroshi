@@ -1,0 +1,12 @@
+#compdef better-rmdir
+# This is simply a copy of the _directories file found in zsh default
+# completion function.
+# I want rmdir to use the trash instead of simply deleting files. But I also
+# want `rmdir` to autocomplete only directories.
+# If I simply alias rmdir to trash, I lose the directory autocomplete
+# So I aliases rmdir to better-rmdir, and create this autocomplete for
+# better-rmdir
+
+local expl
+
+_wanted directories expl directory _files -/ "$@" -

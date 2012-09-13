@@ -1,0 +1,22 @@
+#compdef extract
+typeset -A opt_args
+local state context line
+
+# - Will suggest only archive files
+
+# List of args, description and hints
+_arguments -s -S \
+	"*:archive file:->archive_file" \
+	"-r[delete archive after extracting]:" \
+	&& return 0
+
+# State machine
+case $state in
+	# Suggesting an archive file.
+	(archive_file)
+		local glob=$(echo $O_FILETYPES_EXTENSIONS[archive] | sed 's/,/|/g')
+		_files -g '*.('$glob')' && return 0
+		;;
+esac
+
+return 1
