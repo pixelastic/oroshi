@@ -1,0 +1,27 @@
+#!/usr/bin/zsh
+# Will return in human-readable way the total size of the specified directory.
+# If no directory is specified, the current one is used as a default.
+#
+# $ dirsize
+# $ dirsize /some/dir
+# $ dirsize /some/dir /some/other/dir
+
+# Get the size of a given dir
+function getDirSize() {
+	echo $(du -ch $1 | tail -1 | sed 's/total//')
+}
+
+# Set current directory as default
+if [[ $1 = '' ]]; then
+	echo 'This directory is '`getDirSize .`
+	return 0
+fi
+
+# Display size of each argument dir
+for dir in $@; do
+	if [[ ! -r $dir ]];then
+		echo "Dir $dir not found!"
+		continue
+	fi
+	echo "$dir is "`getDirSize $dir`
+done

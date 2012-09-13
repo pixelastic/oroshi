@@ -1,0 +1,36 @@
+#!/usr/bin/zsh
+# When issued to a JPG file, will resize and optimize it. When issued without
+# args, will resize and optimize all the JPG files in the current directory.
+# Original files never gets deleted, compressed files are stored in
+# a ./compress dir instead.
+
+# Create a subdir to put the compressed files
+if [[ ! -r ./compress ]]; then
+	echo "Creating ./compress subdir"
+	mkdir -p ./compress
+fi
+
+# Arg given, will compress only that file
+if [[ $1 != '' ]]; then
+	# First, convert to a more reasonable size
+	convert $1 -resize 800 ./compress/$1
+	# And now, optimize it
+	jpegoptim -m80 ./compress/$1
+	# Stop
+	exit
+fi
+
+# Compressing all files in current directory
+echo "Move original files to compress dir"
+cp -v ./*.(JPG|jpg) ./compress/
+
+# Convert 
+echo "Resize images to 800px"
+mogrify -verbose -resize 800 ./compress/* 
+
+# And now, optimize them
+echo "Start optimizing"
+jpegoptim -m80 ./compress/
+echo "Optimizing finished"
+
+exit

@@ -1,0 +1,24 @@
+#!/usr/bin/zsh
+# Download on the hard drive the full content of a specified url, including
+# css, js, images, for offline viewing.
+# If called with the -r argument, will download the whole website (without
+# getting higher in the path hierarchy)
+# TODO : If a resource fail to return a Content-Length header, wget hangs
+# waiting for more content to download. I should add a timeout for those cases.
+#
+
+local downloadUrls
+downloadUrls=($@)
+
+# Wget options to use
+local wgetOptions="--no-clobber --page-requisites --html-extension --convert-links --no-parent --reject '*.mp3'"
+# Whole website ?
+if [[ $1 = '-r' ]]; then
+	wgetOptions+=' --recursive'
+	downloadUrls=$downloadUrls[2,-1]
+fi
+
+for url in $downloadUrls; do
+	eval wget $wgetOptions $url;
+done
+

@@ -1,0 +1,42 @@
+#!/usr/bin/zsh
+# Will convert a bin file to an iso file
+
+# Dependencies
+if [[ `which bchunk` = '' ]]; then
+	echo "You need bchunk to convert bin files to iso";
+	sudo apt-get install bchunk
+	return;
+fi
+
+# Selecting the input bin file
+local binFile=${1:a}
+if [[ ! ${binFile:e} =~ '(bin|raw|img)' ]]; then
+	echo "You must select a .bin file as input"
+	return
+fi
+
+# Finding a matching .cue file
+local cueFile=${binFile:r}.cue
+if [[ ! -r $cueFile ]]; then
+	echo "WARNING : Unable to find matching .cue file, creating one"
+	touch $cueFile
+	echo 'FILE "'${binFile:t}'" BINARY' >> $cueFile
+	echo 'TRACK 01 MODE1/2352' >> $cueFile
+	echo 'INDEX 01 00:00:00' >> $cueFile
+	local isCueTemporary=1
+fi
+
+# Converting bin to iso
+local outputPrefix=${binFile:t:r}
+cd ${binFile:h}
+bchunk $binFile $cueFile $outputPrefix
+
+# bchunk creates files suffixed with 01, we remove it
+mv ${binFile:r}01.iso ${binFile:r}.iso
+
+# Cleaning potential mess
+if [[ $isCueTemporary = 1 ]]; then
+	rm $cueFile
+fi
+
+

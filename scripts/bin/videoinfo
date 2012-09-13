@@ -1,0 +1,13 @@
+#!/usr/bin/zsh
+# Return video info from a video file
+
+for file in $@; do
+	local tmpFile=./$$.tmp
+	local info=`mplayer -vo null -ao null -frames 0 -quiet -identify $file 1>$tmpFile 2>/dev/null`
+
+	echo "${file:t}"
+	cat $tmpFile | grep "^VIDEO"
+	cat $tmpFile | grep "^AUDIO"
+	echo ""
+	rm $tmpFile
+done

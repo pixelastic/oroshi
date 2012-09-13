@@ -1,0 +1,19 @@
+#!/usr/bin/zsh
+# Reload tests by moving all the content of a __backup__ directory into a test
+# directory
+
+
+# This should be run from inside the "test" directory
+local currentDir=`pwd`
+if [[ ! ${currentDir:t} = 'tests' ]]; then
+	echo "Error : must be issued in a directory named 'tests'"
+	return
+fi
+# And there should be a __backup__ directory one level higher
+if [[ ! -r ../__backup__/ ]]; then
+	echo "Error : No __backup__ directory found one level higher"
+	return
+fi
+
+rsync -ar --delete ../__backup__/ .
+

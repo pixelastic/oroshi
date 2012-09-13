@@ -1,0 +1,43 @@
+#!/usr/bin/zsh
+# Given .bin files as source, will create output mpg files.
+
+
+# Dependencies {{{
+if [[ `which vcdxrip` = '' ]]; then
+	echo "vcdxrip not found, installing it"
+	sudo apt-get install vcdimager
+fi
+# }}}
+
+
+
+
+for file in $@; do
+	file=${file:a}
+	local fileDir=${file:h}
+	local tmpDir=${file:h}/__tmp${$}__
+	local cueFile=${file:r}.cue
+	local basename=${file:t:r}
+
+
+	# Creating a subdir to do the conversion
+	mkdir $tmpDir
+	cd $tmpDir
+
+	# Converting the vcd to mpg/xml
+	echo "Converting $basename in $tmpDir"
+	vcdxrip -v -p -b "$file" -c "$cueFile"
+
+	# renaming each created mpg
+	local i=0
+	for mpg in $tmpDir/*.mpg; do
+		i=$(($i+1))
+		local loopName="${fileDir}/${basename} - ${(l:2:0)i}.mpg"
+		echo "Renaming extracted file #$i"
+		mv $mpg $loopName
+	done
+
+	# Cleaning mess
+	rm -drf $tmpDir
+
+done

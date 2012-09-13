@@ -1,0 +1,29 @@
+#!/usr/bin/zsh
+# Will read all .txt files in ~/Documents/Blog and copy the referenced pictures
+# in "pictures/"
+
+# This should always be run in the Picture dir
+local blogDir=~/Documents/Blog
+cd $blogDir
+
+# Parsing source files from destination dir
+local sourceFiles="./*.txt"
+local exportDir="./pictures"
+
+# Get all the pictures referenced in texts
+local tmpList="./$$.tmp"
+cat ${~sourceFiles} | grep '^[0-9]\{4\}' >> $tmpList
+
+# Loop through all compress files and copy the one referenced in the file
+mkdir -p $exportDir
+echo "Building file list"
+for file in ~/Documents/Photos/**/compress/DSC*.JPG; do
+	local name=${file:t:r}
+	if [[ ! `cat $tmpList | grep $name[5,8]` = '' ]]; then
+		echo "Copying $name"
+		cp $file $exportDir
+	fi
+done
+
+# Clean temp file
+rm $tmpList

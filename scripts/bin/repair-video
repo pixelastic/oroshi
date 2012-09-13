@@ -1,0 +1,22 @@
+#!/usr/bin/zsh
+# Repair a video file, by fixing its index.
+
+# Dependencies
+if [[ `which mencoder` = '' ]]; then
+	echo "mencoder not found, installing it."
+	sudo apt-get install mencoder
+	return
+fi
+
+for file in $@; do
+	echo "Repairing $file"
+	mv $file ${file}.bak
+	mencoder \
+		-really-quiet \
+		-forceidx \
+		-oac copy \
+		-ovc copy \
+		${file}.bak \
+		-o $file \
+		2>/dev/null
+done

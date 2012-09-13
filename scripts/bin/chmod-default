@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+# Will set chmod rights to defaults for every file and dir specified
+
+# Default chmod in octal format
+fileDefault=0664
+dirDefault=0775
+
+ARGV.each do |file|
+	next if !File.exists? file
+
+	filepath = File.expand_path file
+
+	# Setting different permissions for dirs and files
+	if File.directory? filepath
+		File.chmod(dirDefault, filepath)
+	else
+		File.chmod(fileDefault, filepath)
+	end
+end
+

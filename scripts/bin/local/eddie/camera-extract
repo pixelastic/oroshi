@@ -1,0 +1,33 @@
+#!/usr/bin/zsh
+# Will copy all photos from my camera and sort them by date (each in
+# a directory named YYYY-MM-DD) and will also create compress and optimize
+# version of each files in a ./compress dir
+
+# Dir to extract photos
+local tmpdir=~/Documents/Photos/tmp/
+if [[ ! -r $tmpdir ]]; then
+	mkdir -p $tmpdir;
+fi
+
+# Take all pictures of camera dir
+for file in /media/CYBERSHOT32/DCIM/100MSDCF/*.JPG; do
+	# Getting its date
+	day=$(stat -c %y $file | awk '{printf $1 "\n"}')
+	dirday=$tmpdir$day/
+	# Creating a directory if non existent
+	if [[ ! -r $dirday ]]; then
+		echo "Creating $day"
+		mkdir $dirday
+	fi
+	# Copying files
+	mv $file $dirday
+done
+
+# And now compressing
+for dir in $tmpdir/*; do
+	echo "Compressing $dir"
+	cd $dir
+	compress
+done
+
+

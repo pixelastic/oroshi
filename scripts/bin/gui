@@ -1,0 +1,4 @@
+#!/usr/bin/zsh
+# Launch a GUI app without blocking the terminal
+
+nohup $@ 1>/dev/null 2>/dev/null &

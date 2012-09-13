@@ -1,0 +1,72 @@
+#!/usr/bin/zsh
+# For a given movie or serie episode, will download a zip of subtitles
+
+local serieRegexp='S([0-9]*)E([0-9]*)'
+
+for keyword in $@; do
+	local seasonNumber=0
+	local episodeNumber=0
+
+	# Keyword contain a season/episode number
+	if [[ ! `echo $keyword | grep -E $serieRegexp` = '' ]]; then
+		# Getting season and episode number
+		seasonNumber=`echo $keyword | sed -r 's/.*'$serieRegexp'.*/\1/g'`
+		if [[ $seasonNumber[1] = 0 ]]; then
+			seasonNumber=$seasonNumber[2]
+		fi
+		episodeNumber=`echo $keyword | sed -r 's/.*'$serieRegexp'.*/\2/g'`
+		# Removing it from original search
+		keyword=`echo $keyword | sed -r 's/ ?'$serieRegexp' ?//g'`
+	fi
+	
+	# Page to check for subtitles
+	local url='http://www.sous-titres.eu/'
+	# Build a different url if serie or movie
+	if [[ $seasonNumber = 0 ]]; then
+		url=$url'films/'
+	else
+		url=$url'series/'
+	fi
+	# add the keywords, url friendly
+	url=${url}${(L)keyword// /_}'.html'
+
+	# We check if a page for this movie/serie exists
+	echo "Checking page availability"
+	local isPageAvailable=`wget --spider -O /dev/null -q $url && echo 1 || echo 0`
+	if [[ $isPageAvailable = 0 ]]; then
+		echo "$url NOT FOUND"
+		continue
+	fi
+
+	# The page exists, we download it
+	echo "Downloading page"
+	local tmpFile=$$.tmp
+	# local tmpFile="6322.tmp"
+	lynx --dump $url > $tmpFile
+
+
+	# We only keep download links from the file
+	local links="`grep -E 'http://(.*)/download/(.*)' $tmpFile | sed -r 's/ *([0-9]*)\. (.*)/\2/g'`"
+	rm $tmpFile
+
+	# Finding the correct one for a movie
+	if [[ $seasonNumber = 0 ]]; then
+		# We exclude 2CD versions
+		links=`echo $links | grep -v '2CD'`
+	fi
+
+	# Finding the correct one for a serie
+	if [[ ! $seasonNumber = 0 ]]; then
+		# We only keep the one matching the episode number
+		links=`echo $links | grep -E 'download/(.*)/(.*)'$seasonNumber'(x|E)'$episodeNumber'(.*)'`
+	fi
+
+	# Keeping only the first result
+	local link="`echo $links | head -n 1`"	
+	if [[ $link = '' ]]; then
+		echo "No subtitles found"
+		continue
+	fi
+	echo "Downloading $link"
+	wget -q -c $link 
+done

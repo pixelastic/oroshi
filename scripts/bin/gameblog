@@ -1,0 +1,13 @@
+#!/usr/bin/zsh
+# Download in current directory all the gameblog podcasts released so far. If
+# a podcast is already present in the dir, it will be skipped.
+# The script will create a list.xml and list.txt files
+
+# Get the initial xml list
+curl http://www.gameblog.fr/podcasts.xml > list.xml
+
+# Make it a txt list
+grep -P guid list.xml | sed 's/<guid>//' | sed 's/<\/guid>//' | sed 's/http:\//http:\/\//' | sed -e 's/^[[:space:]]*//' | sort | uniq >> list.txt
+
+# Download them all, skipping files already present
+wget --no-clobber -i list.txt

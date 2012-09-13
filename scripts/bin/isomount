@@ -1,0 +1,11 @@
+#!/usr/bin/zsh
+# Mount an iso file in ~/local/mnt
+
+local isoFile=${1:a}
+local isoBasename=${isoFile:t:r}
+local mountPoint=~/local/mnt/$isoBasename
+mkdir $mountPoint
+
+sudo mount -t iso9660 $isoFile $mountPoint -o loop
+echo "Mounted on $mountPoint"
+

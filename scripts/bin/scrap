@@ -1,0 +1,43 @@
+#!/usr/bin/zsh
+# Will download in the current dir all the images linked in the page given as
+# argument
+#
+
+# The webpage url we want to scrap
+local webpageUrl=$1
+# A temporary file used to hold the webpage html code
+local tmpFile="$$.tmp"
+
+# No url given
+if [[ $webpageUrl = '' ]]; then
+	echo "You must pass an url to scrap"
+	return
+fi
+
+# 1. We ask lynx to get a dump of the page, including links to images
+# 2. We only keep links to jpg files
+# 3. We only keep the http part of them
+# 4. We save them in a tmp file
+lynx -dump -image_links $webpageUrl | \
+sed -n -e '/\.\(jpg\|JPG\)$/p' | \
+sed -n -e 's/.*http\(.*\)/http\1/p' \
+> $tmpFile
+
+local fileSize
+local fileName
+# For each of this links, we get its size, and if big enough, we download it
+for url in `cat $tmpFile`; do
+	fileName=$(basename $url)
+	fileSize=$(wget $url --spider --server-response -O - 2>&1 | sed -ne '/Content-Length/{s/.*: //;p}')
+	# Skipping files too small
+	if [[ $fileSize -le 100000 ]]; then
+		echo "$fileName is too small ($fileSize)..."
+	else
+		# Downloading the big enough one
+		echo "Downloading $fileName ($fileSize)"
+		wget -cq $url
+	fi
+done
+
+# Remove the tmp file
+rm $tmpFile

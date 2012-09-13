@@ -1,0 +1,155 @@
+#!/usr/bin/env ruby
+# encoding : UTF-8
+#
+# During our stay in NZ, we used watched a movie almost every dinner. I made
+# this script to make it easier to choose one movie at random in the list of
+# all the movies we had on the hard drive.
+# The rule is to pick 5 movies at random, Maud and I then alternatively veto
+# one movie in turn until only one movie is left.
+#
+# This script will help in creating and maintaining this file as well as
+# picking and vetoing the files.
+#
+# The list is held in ~/.cesoir by default. Each line contains a full filepath
+# to the movie.
+
+# No argument, display 5 random movies with a prompt to veto them, launch the
+# movie and delete it from the list
+# --add, -a : Add each specified file to the list
+# --source, -s : File to use as the list, default is ~/.cesoir
+
+class CeSoir
+
+	def initialize()
+		@source = File.expand_path('~/.cesoir')
+		@mode_to_args = {
+			:add => ['--add', '-a'],
+			:source => ['--source', '-s']
+		}
+	end
+
+	def parse_args(args)
+		suggest_movies = true
+		current_mode = ''
+		args.each do |arg|
+			# Switching modes
+			new_mode = self.get_mode_from_arg arg
+			unless new_mode.nil?
+				current_mode = new_mode
+				next
+			end
+
+			# Different actions based on modes
+			case current_mode
+				when :add then 
+					self.add_filepath_to_source File.expand_path(arg)
+					suggest_movies = false
+				when :source then 
+					@source = File.expand_path(arg)
+				else 
+					puts "Unknown argument : #{arg}"
+					suggest_movies = false
+			end
+		end
+
+		# Suggest a movie to watch
+		self.suggest_movie if suggest_movies
+	end
+
+	def get_mode_from_arg(arg)
+		@mode_to_args.each do |key, value|
+			return key if value.include? arg
+		end
+		return nil
+	end
+
+	# Add a movie filepath to the source file
+	def add_filepath_to_source(filepath)
+		File.open(@source, 'r+') do |file|
+			lines = self.get_source_content
+			lines.push(filepath)
+			lines.uniq!
+			lines.sort!
+			file.puts lines.join("\n")
+		end
+	end
+
+	# Return the source content as an array
+	def get_source_content
+		return [] unless File.exists? @source
+		return File.read(@source).split("\n")
+	end
+
+	# Remove a movie from the list
+	def remove_movie_from_list(filepath)
+		File.open(@source, 'w+') do |file|
+			lines = self.get_source_content
+			lines.delete(filepath)
+			file.puts lines.join("\n")
+		end
+	end
+
+	# Display a prompt to suggest movies to watch
+	def suggest_movie
+		# Take 5 random movies
+		movies = self.get_source_content.shuffle[0..4]
+
+		# Create a readable list of movie names
+		display_list = movies.collect { |filepath|
+			File.basename(filepath).gsub(File.extname(filepath), '')
+		}
+
+		# Ask the user to veto a movie
+		allowed_answers = (1..display_list.size).to_a
+		users = ['Tim', 'Maud'].shuffle
+		user = rand(1)
+		movie_id = nil
+		while movie_id.nil? do
+			system 'clear'
+			puts 
+
+			# Display list
+			display_list.each_with_index do |movie, i|
+				puts "#{i+1}: #{movie}"
+			end
+			puts
+
+			# If only one movie left, we select it
+			if allowed_answers.size == 1
+				movie_id = allowed_answers[0] 
+				display_name = display_list[movie_id-1]
+				filepath = movies[movie_id-1]
+				puts "On regarde donc #{display_name}, qui se trouve dans"
+				puts filepath
+
+				# We remove it from the list
+				self.remove_movie_from_list filepath
+				next
+			end
+
+			# Ask user for a veto
+			puts "#{users[user]}, à toi de mettre un véto"
+			answer = gets.chomp.to_i
+
+			# Incorrect answer
+			if !allowed_answers.include? answer
+				puts "#{answer} n'est pas une réponse valide."
+				puts "Les seuls réponses valides sont : #{allowed_answers.join(', ')}"
+				puts "Appuyez sur Entrée pour recommencer"
+				gets
+			else
+				# We remove this answer from the list
+				allowed_answers.delete(answer)
+				display_list[answer-1].gsub!(/./, '#')
+				# Switch to next user
+				user = (user+1)%2
+			end
+		end
+
+	end
+
+end
+
+cesoir = CeSoir.new()
+cesoir.parse_args(ARGV)
+

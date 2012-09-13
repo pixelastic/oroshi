@@ -1,0 +1,6 @@
+#!/usr/bin/zsh
+# Returns the unique inode value of the specified file. The script follows
+# symlinks, so it is a great way of knowing if two symlinks points to the same
+# file.
+
+echo $(ls -Hi $1 2>/dev/null | cut -d ' ' -f 1)

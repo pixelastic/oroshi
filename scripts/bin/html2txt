@@ -1,0 +1,36 @@
+#!/usr/bin/zsh
+# Create a txt file containing the text content of a given html file.
+#
+# $ html2txt source.html [source2.html ... sourceX.html]
+#
+#
+
+# lynx is needed
+if [[ `which lynx` = '' ]]; then
+	echo "You need lynx to convert html to txt";
+	return 0;
+fi
+
+# At least one source must be given
+if [[ $# = 0 ]]; then
+	echo "No source given"
+	return 0;
+fi
+
+for source in $@; do
+	# Source need to be an html file
+	if [[ ! $source =~ '\.htm(l?)$' ]]; then
+		echo "$source is not an html file"
+		continue
+	fi
+
+	# Source must exist
+	if [[ ! -r $source ]]; then
+		echo "Unable to find file $source"
+		continue
+	fi
+
+	# Output to a file named as the source, but in txt format
+	lynx -dump $source > ./${source:t:r}.txt
+	echo "File ${source:t:r}.txt created"
+done

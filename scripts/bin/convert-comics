@@ -1,0 +1,87 @@
+#!/usr/bin/zsh
+# This script is born out of frustration from a slow and expensive internet
+# connexion. I didn't want to use all my money downloading comics from
+# the internet so I asked my server (with unlimited bandwith) to do it for me.
+# Once downloaded on the server, I'll extract the files, optimize the images
+# and then re-archive in cbz format, making the final files (hopefully) smaller
+# to download.
+#
+# Original files will be moved to a compress-backup folder once processed
+#
+# TODO : How can I define a var in zsh to hold a globbing pattern and use it in
+# tests afterwards ?
+
+local archiveRegexp='./*.(cbr|cbz|rar|zip)'
+local tmpDir='./compress-tmp'
+
+# No archives found
+if [[ `ls ./*.(cbr|cbz|pdf|rar|zip)` = '' ]]; then
+	echo "No archive files found, exiting."
+	return
+fi;
+
+# Checking bin installed {{{
+if [[ `which unzip` = '' ]]; then
+	echo "unzip not found, try sudo apt-get install zip"
+	return
+fi;
+if [[ `which zip` = '' ]]; then
+	echo "zip not found, try sudo apt-get install zip"
+	return
+fi;
+if [[ `which unrar` = '' ]]; then
+	echo "unrar not found, try sudo apt-get install unrar"
+	return
+fi;
+if [[ `which jpegoptim` = '' ]]; then
+	echo "jpegoptim not found, try sudo apt-get install jpegoptim"
+	return
+fi;
+if [[ `which pdfimages` = '' ]]; then
+	echo "pdfimages not found, try sudo apt-get install xpdf"
+	return
+fi;
+# }}}
+
+# Creating the dir where we'll put the original files and use to convert files
+mkdir -p ./compress-backup $tmpDir 
+
+# We take all the archives files in the current dir
+local fileExt
+for file in ./*.(cbr|cbz|pdf|rar|zip); do
+	local prefix=${file:r:t}
+	local underscoredPrefix=`echo $prefix | sed 's/ /_/g'`
+	local filename=${underscoredPrefix}.cbz
+
+	echo "Extracting $file"
+	case $file in
+		*.(cbr|rar)) unrar x -o- $file $tmpDir;;
+		*.(cbz|zip)) unzip $file -d $tmpDir;;
+		*.pdf) pdfimages -j $file $tmpDir/$underscoredPrefix;; 
+	esac
+
+	# We backup the original file
+	echo "Backing up $file"
+	mv $file ./compress-backup
+
+	# Creating a dir named like the original file
+	cd $tmpDir
+	local dirname="`echo ${file:r:t} | sed 's/_/ /g'`"
+	mkdir "$dirname"
+	echo "Creating ./$dirname"
+
+	echo "Moving all images files to this directory"
+	mv ./**/*.(jpg|JPG) "./$dirname"
+
+	echo "Compressing image files"
+	jpegoptim -pv -m80 --strip-all ./$dirname/*
+
+	echo "Archiving images $filename"
+	zip ../$filename ./$dirname/*
+
+	echo "Clearing extracted files"
+	cd ..
+	rm -rf $tmpDir/*
+done
+
+rm -drf $tmpDir

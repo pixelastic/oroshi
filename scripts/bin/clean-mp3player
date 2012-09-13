@@ -1,0 +1,78 @@
+#!/usr/bin/zsh
+# To be run in a directory containing audio files on a "mp3 player".
+# This will remove all unwanted files to only keep the audio files.
+
+# Target dir
+local dir=$1
+if [[ $dir = '' ]]; then
+	$dir=.
+fi
+dir=${dir:a}
+cd $dir
+
+# Dry run
+local rm=/bin/rm
+if [[ $@ =~ '-n' ]]; then
+	rm=/bin/ls;
+fi
+
+# Wrapper for deleting files
+function delete() {
+	for pattern in $@; do
+		glob="./**/${pattern}(.N)"
+		$rm -rfv ${~glob} 2>/dev/null
+	done
+}
+
+echo 
+echo "    Removing Windows and OSX junk"
+delete 'Thumbs.db' '._.DS_Store'
+
+echo 
+echo "    Removing txt files"
+delete '*.txt' '*.nfo' 'desktop.ini' '._desktop.ini' '*.log'
+
+echo
+echo "    Removing hidden mp3"
+delete '.*.mp3'
+
+echo 
+echo "    Removing playlists"
+delete '*.m3u'
+
+echo 
+echo "    Removing videos"
+delete '*.mpg' '*.avi'
+
+echo
+echo "    Removing bad audio"
+delete '*.WMA'
+
+echo 
+echo "    Removing archives"
+delete '*.zip' '*.rar'
+
+if [[ $@ =~ '--covers' ]]; then
+	echo 
+	echo "    Removing album covers"
+	delete '*.jpg' '*.jpeg' '*.JPG' '*.png' '*.gif' '.mediaartlocal'
+fi
+
+if [[ $@ =~ "--flac" ]]; then
+	echo
+	echo "    Removing FLAC source files"
+	delete '*.flac'
+fi
+
+echo
+echo "    Removing empty dirs"
+find -depth -type d -empty -exec rmdir {} \;
+
+if [[ $@ =~ '--rename-Mp3' ]]; then
+	echo
+	echo "Renaming Mp3 files to mp3"
+	rename 's/Mp3$/tmpmp3/' ./**/*.Mp3
+	rename 's/tmpmp3$/mp3/' ./**/*.tmpmp3
+fi
+
+

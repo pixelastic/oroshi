@@ -1,0 +1,23 @@
+#!/usr/bin/zsh
+# Find all txt/pdf files, and rename them in a more human readable format
+# old-text-file.txt -> Old text file.txt
+
+
+for file in ./**/*.(txt|pdf); do
+	# ./filepath/filename.ext
+	local filepath=$file
+	# ./filepath/filename
+	local basepath=${filepath:r}
+	# filename.ext
+	local filename=${filepath:t}
+	# filename
+	local basename=${filename:t:r}
+	# ext
+	local extension=${filepath:e}
+
+	local newName="`echo $basename | sed 's/-/ /g'`"
+	newName=${file:h}/${newName[1]:u}${newName[2,-1]}.${extension}
+
+	mv $file $newName
+done
+

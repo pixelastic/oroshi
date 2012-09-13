@@ -1,0 +1,30 @@
+#!/usr/bin/zsh
+# Will "extract" files from most of the archive file types.
+
+if [[ $# = 0 ]]; then
+	echo "Select at least one file to extract"
+	return
+fi
+
+for file in $@; do 
+	case $file in
+		*.tar.bz2) tar xvjf $file;;
+		*.tar.gz) tar xvzf $file;;
+		*.tar.xz) tar xvJf $file;;
+		*.tar.lzma) tar --lzma -xvf $file;;
+		*.bz2) bzip2 -d $file;;
+		*.rar) unrar x $file;;
+		*.r([0-9]{2})) unrar x $file;;
+		*.cbr) unrar x $file;;
+		*.gz) gunzip $file;;
+		*.tar) tar xvf $file;;
+		*.tbz2) tar xvjf $file;;
+		*.tgz) tar xvzf $file;;
+		*.(zip|ZIP)) unzip $file;;
+		*.cbz) unzip $file;;
+		*.htmlz) unzip $file;;
+		*.Z) uncompress $file;;
+		*.7z) 7z x $file;;
+		*) echo "'$file' cannot be extracted via >extract<";;
+	esac
+done

@@ -1,0 +1,23 @@
+#!/usr/bin/zsh
+# Converts an html file to a simplified markdown version
+
+if [[ `which readability` = '' ]]; then
+	echo "readability not found, error"
+	return
+fi
+if [[ `which html2mkd` = '' ]]; then
+	echo "html2mkd not found, error"
+	return
+fi
+
+
+for file in $@; do
+	file=${file:a}
+	tmpFile=./$$.tmp
+
+	echo "Simplifying ${file:t}"
+	readability $file > $tmpFile
+	html2mkd $tmpFile > ./${file:t:r}.mkd
+	rm $tmpFile
+done
+

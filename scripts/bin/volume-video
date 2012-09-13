@@ -1,0 +1,18 @@
+#!/usr/bin/zsh
+# Will re-encode volume in a movie to get it louder
+
+# Dependencies
+if [[ `which ffmepg` = '' ]]; then
+	echo "ffmepg not found, installing it."
+	sudo apt-get install ffmepg
+	return
+fi
+
+for file in $@; do
+	echo "Increasing volume of $file"
+	local tmpFile=./tmp${RANDOM}.${file:e}
+	ffmpeg -i $file -vcodec copy -acodec libmp3lame -ab 128k -vol 5000 $tmpFile
+	mv $file ${file}.bak
+	mv $tmpFile $file
+done
+

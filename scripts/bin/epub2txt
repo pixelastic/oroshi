@@ -1,0 +1,17 @@
+#!/usr/bin/zsh
+# Will convert an .epub file to a .txt file
+
+
+# Check for dependencies
+if [[ `which ebook-convert` = '' ]]; then
+	echo "ebook-convert not found, please sudo apt-get install calibre"
+	return
+fi
+
+for file in $@; do
+	if [[ ! ${file:e} = 'epub' ]]; then
+		echo "$file is not an epub, skipping"
+		continue
+	fi
+	ebook-convert $file .txt
+done
