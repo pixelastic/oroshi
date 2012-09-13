@@ -1,4 +1,6 @@
 #!/usr/bin/zsh
+# Link ack config to ~/.ackrc
+
 # Paths
 local configDir=~/.oroshi/config/ack
 local configFile=${configDir}/ackrc
