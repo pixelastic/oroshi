@@ -19,8 +19,10 @@
 # Custom paths {{{
 path=(
 	$path
-	~/.oroshi/scripts/bin   # Custom scripts
-	~/.oroshi/scripts/bin/local/$(hostname) # Custom scripts for this machine
+	~/.oroshi/scripts/bin
+	~/.oroshi/private/scripts/bin
+	~/.oroshi/scripts/bin/local/$(hostname)
+	~/.oroshi/private/sripts/bin/local/$(hostname)
 )
 # }}}
 
