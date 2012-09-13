@@ -9,3 +9,4 @@ cd ~/.oroshi/scripts/deploy/
 ./fonts
 ./keybindings
 ./pry
+./terminator

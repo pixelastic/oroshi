@@ -1,0 +1,77 @@
+[global_config]
+  window_state = maximise
+  handle_size = 1
+  enabled_plugins = APTURLHandler, LaunchpadBugURLHandler
+  title_transmit_fg_color = "#a27200"
+  title_inactive_fg_color = "#121212"
+  geometry_hinting = False
+  title_transmit_bg_color = "#121212"
+  title_inactive_bg_color = "#121212"
+[keybindings]
+  cycle_prev = None
+  close_window = None
+  group_tab = None
+  resize_left = None
+  broadcast_all = <Shift><Control>Page_Up
+  reset_clear = None
+  go_right = <Control>Right
+  new_tab = None
+  resize_right = None
+  resize_down = None
+  toggle_zoom = <Control>Return
+  scaled_zoom = None
+  zoom_in = <Control>equal
+  group_all = None
+  move_tab_right = None
+  prev_tab = None
+  cycle_next = None
+  ungroup_all = None
+  broadcast_off = <Shift><Control>Page_Down
+  ungroup_tab = None
+  go_prev = <Shift><Control>Left
+  close_term = None
+  new_terminator = None
+  go_next = <Shift><Control>Right
+  go_left = <Control>Left
+  hide_window = None
+  reset = None
+  search = None
+  go_up = <Control>Up
+  resize_up = None
+  next_tab = None
+  go_down = <Control>Down
+  new_window = None
+  move_tab_left = None
+[profiles]
+  [[default]]
+    palette = "#3a3a3a:#d70000:#00af5f:#d7d700:#5f87ff:#af87ff:#ff875f:#d0d0d0:#3a3a3a:#870000:#008700:#af8700:#5fafd7:#af5fd7:#d75f00:#a8a8a8"
+    scrollbar_position = hidden
+    split_to_group = True
+    foreground_color = "#dadada"
+    scroll_on_output = False
+    icon_bell = False
+    cursor_color = "#fa1217"
+    font = Anonymous Pro 13
+    background_color = "#121212"
+    scrollback_infinite = True
+  [[Oroshi]]
+    palette = "#3a3a3a:#d70000:#00af5f:#d7d700:#5f87ff:#af87ff:#ff875f:#d0d0d0:#1c1c1c:#870000:#008700:#af8700:#5fafd7:#5f00af:#d75f00:#a8a8a8"
+    scrollbar_position = hidden
+    split_to_group = True
+    foreground_color = "#dadada"
+    scroll_on_output = False
+    icon_bell = False
+    cursor_color = "#fa1217"
+    font = Anonymous Pro 13
+    background_color = "#121212"
+    scrollback_infinite = True
+[layouts]
+  [[default]]
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+      profile = default
+    [[[window0]]]
+      type = Window
+      parent = ""
+[plugins]
