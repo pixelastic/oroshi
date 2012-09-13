@@ -1,0 +1,30 @@
+#!/usr/bin/zsh
+# Generates a host files by concatenating the following pieces :
+# - Binding 127.0.0.1 to the current hostname
+# - Adding default list of hosts
+# - Adding any files present in ./private/config/hosts/local/{hostname}
+#
+# The resulting file will be created in /usr/local/etc/hosts. 
+# This is your job to link this file to /etc/hosts.
+
+# Paths
+local hostnae=$(hostname)
+local defaultFile=~/.oroshi/config/hosts/default
+local privateFiles=~/.oroshi/private/config/hosts/local/${hostname}/*
+local destFile=/usr/local/etc/hosts
+
+# Can't write file
+if [[ -w $destFile ]]; then
+	echo "Unable to create $destFile."
+	echo "Make sure the file is writable."
+	return
+fi
+
+# Add localhost binding
+echo "127.0.0.1\t$hostname" > $destFile
+# Add default config
+cat $defaultFile >> $destFile
+# Add all private local files
+for file in ${~privateFiles}; do
+	cat $file >> $destFile
+done
