@@ -1,0 +1,31 @@
+# OPTIONS {{{
+# Search is case-insensitive, except if a capital letter is used
+--smart-case
+# Display results through pager
+# TODO : Display message instead of empty pager if no results
+--pager=less -R
+# Sort results
+--sort-files
+# Keep some context around results
+--context=2
+# }}}
+# CUSTOM TYPES {{{
+
+--type-set
+config=.conf,.config,.ini
+
+--type-set
+backup=.orig
+
+--type-set
+log=.log
+
+--type-set
+markdown=.markdown,.mdown,.mkd,.md
+
+--type-set
+txt=.txt,.srt
+# }}}
+# EXCLUSIONS {{{
+--nobackup
+# }}}
