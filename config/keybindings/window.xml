@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="activate_window_menu" mtime="1321539306" type="string">
+		<stringvalue>&lt;Alt&gt;space</stringvalue>
+	</entry>
+	<entry name="move_to_corner_ne" mtime="1321123185" type="string">
+		<stringvalue>&lt;Super&gt;KP_Prior</stringvalue>
+	</entry>
+	<entry name="move_to_corner_nw" mtime="1321123185" type="string">
+		<stringvalue>&lt;Super&gt;KP_Home</stringvalue>
+	</entry>
+	<entry name="move_to_side_n" mtime="1321123185" type="string">
+		<stringvalue>&lt;Super&gt;KP_Up</stringvalue>
+	</entry>
+	<entry name="move_to_side_e" mtime="1321123185" type="string">
+		<stringvalue>&lt;Super&gt;KP_Right</stringvalue>
+	</entry>
+	<entry name="move_to_side_w" mtime="1321123185" type="string">
+		<stringvalue>&lt;Super&gt;KP_Left</stringvalue>
+	</entry>
+	<entry name="move_to_corner_se" mtime="1321123185" type="string">
+		<stringvalue>&lt;Super&gt;KP_Next</stringvalue>
+	</entry>
+	<entry name="move_to_corner_sw" mtime="1321123185" type="string">
+		<stringvalue>&lt;Super&gt;KP_End</stringvalue>
+	</entry>
+	<entry name="move_to_side_s" mtime="1321123185" type="string">
+		<stringvalue>&lt;Super&gt;KP_Down</stringvalue>
+	</entry>
+	<entry name="begin_resize" mtime="1321543631" type="string">
+		<stringvalue>&lt;Mod4&gt;Home</stringvalue>
+	</entry>
+	<entry name="begin_move" mtime="1321543635" type="string">
+		<stringvalue></stringvalue>
+	</entry>
+	<entry name="unmaximize" mtime="1321543618" type="string">
+		<stringvalue>&lt;Mod4&gt;Down</stringvalue>
+	</entry>
+	<entry name="move_to_workspace_up" mtime="1324594844" type="string">
+		<stringvalue></stringvalue>
+	</entry>
+	<entry name="move_to_workspace_right" mtime="1321544003" type="string">
+		<stringvalue>&lt;Control&gt;&lt;Mod4&gt;Right</stringvalue>
+	</entry>
+	<entry name="move_to_workspace_left" mtime="1321544001" type="string">
+		<stringvalue>&lt;Control&gt;&lt;Mod4&gt;Left</stringvalue>
+	</entry>
+	<entry name="move_to_workspace_down" mtime="1324594845" type="string">
+		<stringvalue></stringvalue>
+	</entry>
+	<entry name="toggle_shaded" mtime="1321543620" type="string">
+		<stringvalue></stringvalue>
+	</entry>
+	<entry name="toggle_maximized" mtime="1321539306" type="string">
+		<stringvalue>disabled</stringvalue>
+	</entry>
+	<entry name="minimize" mtime="1321543624" type="string">
+		<stringvalue>&lt;Mod4&gt;End</stringvalue>
+	</entry>
+	<entry name="maximize" mtime="1321543616" type="string">
+		<stringvalue>&lt;Mod4&gt;Up</stringvalue>
+	</entry>
+</gconf>

@@ -7,3 +7,4 @@ cd ~/.oroshi/scripts/deploy/
 # Config files
 ./ack
 ./fonts
+./keybindings

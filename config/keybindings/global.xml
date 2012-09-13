@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="switch_to_workspace_down" mtime="1324594829" type="string">
+		<stringvalue></stringvalue>
+	</entry>
+	<entry name="switch_to_workspace_up" mtime="1324594827" type="string">
+		<stringvalue></stringvalue>
+	</entry>
+	<entry name="switch_to_workspace_right" mtime="1324596833" type="string">
+		<stringvalue>&lt;Shift&gt;&lt;Control&gt;Right</stringvalue>
+	</entry>
+	<entry name="switch_to_workspace_left" mtime="1324596832" type="string">
+		<stringvalue>&lt;Shift&gt;&lt;Control&gt;Left</stringvalue>
+	</entry>
+	<entry name="cycle_panels" mtime="1321052985" type="string">
+		<stringvalue></stringvalue>
+	</entry>
+	<entry name="cycle_group" mtime="1321052977" type="string">
+		<stringvalue></stringvalue>
+	</entry>
+	<entry name="cycle_windows" mtime="1321052972" type="string">
+		<stringvalue></stringvalue>
+	</entry>
+	<entry name="switch_panels" mtime="1321052953" type="string">
+		<stringvalue></stringvalue>
+	</entry>
+	<entry name="panel_run_dialog" mtime="1321023607" type="string">
+		<stringvalue>disabled</stringvalue>
+	</entry>
+	<entry name="run_command_terminal" mtime="1339922139" type="string">
+		<stringvalue>&lt;Control&gt;&lt;Alt&gt;t</stringvalue>
+	</entry>
+	<entry name="panel_main_menu" mtime="1321023607" type="string">
+		<stringvalue>disabled</stringvalue>
+	</entry>
+	<entry name="show_desktop" mtime="1321543591" type="string">
+		<stringvalue>&lt;Mod4&gt;d</stringvalue>
+	</entry>
+</gconf>
