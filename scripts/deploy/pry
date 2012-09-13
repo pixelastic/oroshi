@@ -1,0 +1,14 @@
+#!/usr/bin/zsh
+# Copy Pry config to ~/.pryrc and Awesome Print config to ~/.aprc
+
+# Paths
+local configDir=~/.oroshi/config/pry
+local configFile=${configDir}/pryrc
+local destFile=~/.pryrc
+
+local apConfigFile=${configDir}/aprc
+local apDestFile=~/.aprc
+
+# Link the config file
+ln -fs $configFile $destFile
+ln -fs $apConfigFile $apDestFile

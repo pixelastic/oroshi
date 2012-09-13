@@ -8,3 +8,4 @@ cd ~/.oroshi/scripts/deploy/
 ./ack
 ./fonts
 ./keybindings
+./pry
