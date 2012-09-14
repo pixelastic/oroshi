@@ -1,0 +1,36 @@
+I try to use the same set of colors in every app. Each colors comes in
+a normal, dark and calm version. Here is the list of these colors, matching
+color code in the 256 spectrum and some notes about what I'm using them for.
+
+
+black          233
+black pure     16
+white          252   Plain text
+white pure     255
+grey           241   Comments
+grey dark      235
+grey light     250
+
+blue           69    Constants
+blue calm      67    Strings, bold for numbers
+blue dark      24    Regexp
+
+green          35    Variables
+green calm     108   Functions
+green dark     28    if, then, else
+
+orange         202   Class def, execute, eval
+orange calm    209   Constant, Keywords
+orange dark    166   Symbols
+
+purple         171
+purple calm    141
+purple dark    55
+
+yellow         184   Include, require
+yellow calm    185
+yellow dark    136
+
+red            160
+red calm       203
+red dark       88
