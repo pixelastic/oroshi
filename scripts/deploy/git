@@ -1,0 +1,11 @@
+#!/usr/bin/zsh
+# Link ~/.gitconfig and ~/.gitignore
+
+# Paths
+local configDir=~/.oroshi/config/git
+
+# Generic git config
+ln -fs $configDir/gitconfig ~/.gitconfig
+# Generic git ignore list
+ln -fs $configDir/gitignore ~/.gitignore
+

@@ -1,0 +1,39 @@
+[user]
+	name = Pixelastic
+	email = tim@pixelastic.com
+[core]
+	editor = vim
+	excludesfile = ~/.gitignore
+[merge]
+	tool = vimdiff
+[color]
+	ui = true
+[color "diff"]
+	meta = 136
+	frag = 141
+	func = 250 bold
+	plain = 252
+	new = 35 
+	old = 160
+	whitespaces = 88 88
+	commit = red red
+[alias]
+	amend = commit --amend
+	branch-list = branch --verbose
+	commit-all = !git add . && git commit -v --all
+	create-file = !touch $@ && git add $@ && $EDITOR $1
+	current-branch = !git rev-parse --abbrev-ref HEAD 2>/dev/null
+	current-tag = describe --abbrev=0
+	diff-last = diff HEAD^
+	diff-staged = diff --cached
+	download = clone --depth=1
+	peek = log --graph --pretty=format:'%C(67)%h%Creset %C(24)(%ar)%Creset %C(241)%an%Creset %C(bold 202)%d%Creset%n   %C(250)%s%Creset%n'
+	revert = checkout
+	rollback = reset --soft HEAD^
+	root = !pwd
+	status-short = status --short
+	tabula-rasa = !git reset --hard && git clean -fd
+	tag-list = tag -n1 -l
+	unstage = reset HEAD
+[advice]
+  ; statusHints = false
