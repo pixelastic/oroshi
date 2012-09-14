@@ -36,15 +36,20 @@ function arrayRemoveIndex() {
 # arg: String, Name of the final array
 function arrayConcatenate() {
 	local finalArrayName=$1
-	eval "arrayA=(\$$2)"
-	eval "arrayB=(\$$3)"
+	local arrayName1=$2
+	local arrayName2=$3
+	local array1
+	local array2
 
-	# Concatenate the two array
+	eval "array1=(\$$arrayName1)"
+	eval "array2=(\$$arrayName2)"
+
+	# Concatenate the two arrays
 	local localFinalArray
-	localFinalArray=("${(@)arrayA}" "${(@)arrayB}")
+	localFinalArray=("${(@)array1}" "${(@)array2}")
 
 	# Update the global array
-	eval "${finalArrayName}=($localFinalArray)"
+	eval "${finalArrayName}=(\$localFinalArray)"
 }
 # }}}
 # arrayFromString() {{{
