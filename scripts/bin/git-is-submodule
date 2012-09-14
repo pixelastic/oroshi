@@ -1,0 +1,21 @@
+#!/usr/bin/zsh
+# Echo 1 if current dir is a submodule, 0 otherwise
+
+local repoRoot="$(git rev-parse --show-toplevel 2>/dev/null)"
+
+# Not a git repo
+if [[ $repoRoot = '' ]]; then
+	echo 0
+	exit
+fi
+
+# If the parent dir of the root is a git repo, it means we were in a submodule
+cd "$repoRoot/.."
+local parentRoot="$(git rev-parse --show-toplevel 2>/dev/null)"
+if [[ $parentRoot = '' ]]; then
+	echo 0
+	exit
+fi
+
+echo 1
+exit

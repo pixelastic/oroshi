@@ -102,7 +102,7 @@ function getRepoRoot() {
 
 	# Git
 	if [[ $versionSystem = 'git' ]]; then
-		repo=$(git --work-tree="$PWD" rev-parse --show-toplevel 2>/dev/null)
+		repo=$(git rev-parse --show-toplevel 2>/dev/null)
 	fi
 	# Hg
 	if [[ $versionSystem = 'hg' ]]; then
@@ -299,50 +299,50 @@ function updateHash() {
 # }}}
 # updateHashGit() {{{
 function updateHashGit() {
-# Stop if not a git repo
-if [[ $versionSystem != 'git' ]]; then
-	return
-fi
+	# Stop if not a git repo
+	if [[ $versionSystem != 'git' ]]; then
+		return
+	fi
 
-# Default values
-hashSymbol='±'
-colorHash=$promptColor[gitClean]
+	# Default values
+	hashSymbol='±'
+	colorHash=$promptColor[gitClean]
 
-local gitStatus="$(git status --short)"
+	local gitStatus="$(git status --short)"
 
-# Does it have modified or new files ?
-if [[ $gitStatus =~ ' . ' || $gitStatus =~ '\?\?' ]]; then
-	local gitHasModifiedFiles=1
-else
-	local gitHasModifiedFiles=0
-fi
+	# Does it have modified or new files ?
+	if [[ $gitStatus =~ ' . ' || $gitStatus =~ '\?\?' ]]; then
+		local gitHasModifiedFiles=1
+	else
+		local gitHasModifiedFiles=0
+	fi
 
-# Does it have staged files ?
-if [[ $gitStatus =~ '.  ' ]]; then
-	gitHasStagedFiles=1
-else
-	gitHasStagedFiles=0
-fi
+	# Does it have staged files ?
+	if [[ $gitStatus =~ '.  ' ]]; then
+		gitHasStagedFiles=1
+	else
+		gitHasStagedFiles=0
+	fi
 
-# Repo is clean, but there are files in the index waiting for a commit
-if [[ $gitHasModifiedFiles = 0 && $gitHasStagedFiles = 1 ]]; then
-	colorHash=$promptColor[gitStaged]
-	hashSymbol="${hashSymbol}*"
-	return
-fi
+	# Repo is clean, but there are files in the index waiting for a commit
+	if [[ $gitHasModifiedFiles = 0 && $gitHasStagedFiles = 1 ]]; then
+		colorHash=$promptColor[gitStaged]
+		hashSymbol="${hashSymbol}*"
+		return
+	fi
 
-# Files have been changed or added, but nothing is ready to be commited
-if [[ $gitHasModifiedFiles = 1 && $gitHasStagedFiles = 0 ]]; then
-	colorHash=$promptColor[gitDirty]
-	return
-fi
+	# Files have been changed or added, but nothing is ready to be commited
+	if [[ $gitHasModifiedFiles = 1 && $gitHasStagedFiles = 0 ]]; then
+		colorHash=$promptColor[gitDirty]
+		return
+	fi
 
-# Files have been added/modified and others are ready to be comitted
-if [[ $gitHasModifiedFiles = 1 && $gitHasStagedFiles = 1 ]]; then
-	colorHash=$promptColor[gitDirtyAndStaged]
-	hashSymbol="${hashSymbol}*"
-	return
-fi
+	# Files have been added/modified and others are ready to be comitted
+	if [[ $gitHasModifiedFiles = 1 && $gitHasStagedFiles = 1 ]]; then
+		colorHash=$promptColor[gitDirtyAndStaged]
+		hashSymbol="${hashSymbol}*"
+		return
+	fi
 }
 # }}}
 # updateHashHg() {{{
@@ -391,6 +391,38 @@ function updateTagGit() {
 	# Setting the tag
 	promptTag=$(git describe --abbrev=0 2>/dev/null)
 	colorTag=$promptColor[tag]
+}
+# }}}
+# updateSubmodule() {{{
+function updateSubmodule() {
+	if [[ $versionSystem = 'git' ]]; then
+		updateSubmoduleGit
+		return
+	fi
+	# No special submodule
+	promptSubmodule=''
+	colorSubmodule=''
+}
+# }}}
+# updateSubmoduleGit() {{{
+function updateSubmoduleGit() {
+	# Stop if not a git repo
+	if [[ $versionSystem != 'git' ]]; then
+		return
+	fi
+
+	local isSubmodule="$(git is-submodule)"
+
+	# No parent root
+	if [[ $isSubmodule = 0 ]]; then
+		promptSubmodule=''
+		colorSubmodule=''
+		return
+	fi
+
+	# Add symbol and coloring
+	promptSubmodule='↯'
+	colorSubmodule=$promptColor[submodule]
 }
 # }}}
 # updateBranch() {{{
@@ -460,6 +492,7 @@ function chpwd() {
 	# Update prompt
 	chpwd_updateHash
 	chpwd_updateTag
+	chpwd_updateSubmodule
 	chpwd_updateBranch
 
 	# Window title
@@ -490,6 +523,17 @@ function chpwd_updateTag() {
 	# Update tag when moving in or out of a repo
 	if [[ $repoRoot != $previousRepoRoot ]]; then
 		updateTag
+	fi
+}
+# }}}
+# chpwd_updateSubmodule() {{{
+function chpwd_updateSubmodule() {
+	# Update submodule when staying in a version system but changing the repo
+	# root
+	if [[ $versionSystem != '' 
+				&& $versionSystem = $previousVersionSystem 
+				&& $repoRoot != $previousRepoRoot ]]; then
+		updateSubmodule
 	fi
 }
 # }}}
@@ -592,14 +636,15 @@ export colorHostname=$promptColor[hostname]
 export colorPath="$(getPromptPathColor $PWD)"
 export colorHash=''
 export colorTag=$promptColor[tag]
+export colorSubmodule=$promptColor[submodule]
 export colorBranch=$promptColor[branchDefault]
-export colorTime=$promptColor[time]
 export colorDebug=$promptColor[debug]
  
+export promptPath="$(getPromptPath $PWD)"
 export hashSymbol='%#'
 export promptTag=''
+export promptSubmodule=''
 export promptBranch=''
-export promptPath="$(getPromptPath $PWD)"
 export promptDebug=''
 # }}}
 # Initial prompt {{{
@@ -613,8 +658,7 @@ $FG[$colorPath]$promptPath$FX[reset] \
 $FG[$colorHash]$hashSymbol$FX[reset] \
 $FG[$colorDebug]$promptDebug$FX[reset]'
 RPROMPT='$FG[$colorTag]$promptTag$FX[reset]\
+$FG[$colorSubmodule]$promptSubmodule$FX[reset]\
 $FG[$colorBranch]$promptBranch$FX[reset]'
-# $FG[$colorTime][%t]$FX[reset]
 # }}}
-
 

@@ -31,6 +31,7 @@ promptColorDefault=(
 	# time              "024" # Prompt color of the current time
 	
 	tag               "241" # Current repo tag
+	submodule         "185" # Submodule symbol
 	branchDefault     "202" # Default color for branch
 	branchMaster      "035" # Color for master branch
 	branchDetached    "160" # Color for detached HEAD branch
