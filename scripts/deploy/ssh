@@ -6,7 +6,7 @@
 # Paths
 local hostname=$(hostname)
 local defaultFile=~/.oroshi/config/ssh/default
-local privateFiles=~/.oroshi/private/config/ssh/local/${hostname}/*
+local privateFiles="~/.oroshi/private/config/ssh/local/${hostname}/*"
 local destDir=~/.ssh
 local destFile=$destDir/config
 
