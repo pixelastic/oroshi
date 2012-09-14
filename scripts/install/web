@@ -1,0 +1,5 @@
+#!/usr/bin/zsh
+# Generic tools for web development
+
+# lighttpd		: Fast webserver
+sudo apt-get install lighttpd

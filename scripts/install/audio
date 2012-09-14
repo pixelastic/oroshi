@@ -1,0 +1,19 @@
+#!/usr/bin/zsh
+# Tools to encode and decode several audio formats
+
+# faad            : To decode AAC audio streams
+sudo apt-get install faad
+# faac            : To encode AAC audio streams
+sudo apt-get install faac
+# lame            : To convert mp3 files
+sudo apt-get install lame
+# flac            : To encode/decode flac files
+sudo apt-get install flac
+# vorbis-tools    : To encode/decode ogg files and edit comments
+sudo apt-get install vorbis-tools
+# id3v2           : To manipulate id3v2 tags
+sudo apt-get install id3v2
+# dir2ogg         : To convert mp3, wma, etc to ogg
+sudo apt-get install dir2ogg
+# picard            : For mp3 tagging
+sudo apt-get install picard

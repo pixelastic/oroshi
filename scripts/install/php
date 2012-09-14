@@ -1,0 +1,7 @@
+#!/usr/bin/zsh
+# Tools for dealing with PHP programming
+
+# php5-cgi		: PHP for webserver
+sudo apt-get install php5-cgi
+# php5-cli		: PHP in command line
+sudo apt-get install php5-cli

@@ -1,0 +1,41 @@
+#!/usr/bin/zsh
+# This is a list of multipurpose tools I use everyday
+
+# zsh					: Improved bash
+sudo apt-get install zsh
+
+# apt-fast			: Faster apt-get
+sudo add-apt-repository ppa:tldm217/tahutek.net
+sudo apt-get update
+sudo apt-get install apt-fast
+# synaptic          : Good ol' Package Manager without all the bling bling
+sudo apt-get install synaptic
+
+# htop				: Improved top with coloring and tree
+sudo apt-get install htop
+# multitail 		: Improved tail in real time
+sudo apt-get install multitail
+# tree				: Display a dir as a tree
+sudo apt-get install tree
+# ack					: Ack, better than grep
+sudo apt-get install ack-grep
+# crc32           : To get the crc32 value of a file
+sudo apt-get install libarchive-zip-perl
+# trash       : To move items to trash instead of removing it
+sudo apt-get install trash-cli
+
+# vim-gui-common    : To add clipboard support to vim
+sudo apt-get install vim-gui-common
+
+# terminator        : Terminal with splitted windows
+sudo apt-get install terminator
+# keepass           : Password storage
+sudo apt-get install keepass
+# msttcorefonts     : Verdana and Arial back
+sudo apt-get install msttcorefonts
+# xdotool         : For keyboard interaction
+sudo apt-get install xdotool
+# mono-2.0-devel  : For running .NET apps
+sudo apt-get install mono-2.0-devel
+# win             : For running windows apps
+sudo apt-get install wine

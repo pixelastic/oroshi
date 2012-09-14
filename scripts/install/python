@@ -1,0 +1,11 @@
+#!/usr/bin/zsh
+# Tools for dealing with Python programming
+
+# pip         : For installing Python packages
+sudo apt-get install python-pip
+sudo pip install --upgrade pip
+# flake8      : To test python files against PEP8 and common mistakes;
+sudo pip install flake8
+
+# python-pygments : For parsing, lexing and coloring
+sudo apt-get install python-pygments

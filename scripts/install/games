@@ -1,0 +1,7 @@
+#!/usr/bin/zsh
+# For some leisure fun
+
+# dosbox      : for those old dos and windows games
+sudo apt-get install dosbox
+# scummvm     : for those old glorious point and click
+sudo apt-get install scummvm

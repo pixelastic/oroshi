@@ -1,0 +1,7 @@
+#!/usr/bin/zsh
+# Dealing with several kind of archives
+
+# p7zip-full        : To extract .7z files
+sudo apt-get install p7zip-full
+# unrar           : For archiving/extracting files
+sudo apt-get install unrar

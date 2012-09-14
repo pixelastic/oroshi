@@ -1,0 +1,11 @@
+#!/usr/bin/zsh
+# Tools used to convert and compress images
+
+# jpegoptim     : to optimize jpeg file
+sudo apt-get install jpegoptim
+# exiftool        : To read exif, iptc, etc from multimedia files
+sudo apt-get install libimage-exiftool-perl
+# xpdf            : To extract and convert pdf
+sudo apt-get install xpdf
+# imagemacgick    : To convert image files and pdf
+sudo apt-get install imagemagick

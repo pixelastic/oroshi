@@ -1,0 +1,26 @@
+#!/usr/bin/zsh
+# Installing Ruby is always hard. Here are the steps that work.
+
+# Install rvm
+bash < <(curl -s https://rvm.beginrescueend.com/install/rvm)
+# Don't forget to add the following line in ~/.zshrc
+# [[ -r $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
+rvm get head
+rvm reload
+
+# Installing Ruby
+/usr/bin/apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion
+rvm install 1.9.3
+rvm install 1.9.3-dev
+
+# Using Pry instead of irb
+gem install pry
+gem install awesome_print
+
+
+
+
+
+
+
+
