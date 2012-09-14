@@ -10,11 +10,12 @@
 # Paths
 local hostname=$(hostname)
 local defaultFile=~/.oroshi/config/hosts/default
-local privateFiles=~/.oroshi/private/config/hosts/local/${hostname}/*
+local privateFiles="~/.oroshi/private/config/hosts/local/${hostname}/*"
 local destFile=/usr/local/etc/hosts
 
 # Can't write file
-if [[ -w $destFile ]]; then
+touch $destFile 2>/dev/null
+if [[ ! -w $destFile ]]; then
 	echo "Unable to create $destFile."
 	echo "Make sure the file is writable."
 	return
