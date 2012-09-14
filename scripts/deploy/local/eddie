@@ -9,6 +9,7 @@ cd ~/.oroshi/scripts/deploy/
 ./fonts
 ./dircolors
 ./git
+./hg
 ./hosts
 ./keybindings
 ./pry

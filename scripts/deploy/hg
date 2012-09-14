@@ -1,0 +1,10 @@
+#!/usr/bin/zsh
+# Link config file to ~/.hgrc
+
+# Paths
+local configDir=~/.oroshi/config/hg
+local configFile=${configDir}/hgrc
+local destFile=~/.hgrc
+
+# Link file
+ln -fs $configFile $destFile
