@@ -1,0 +1,20 @@
+#!/usr/bin/zsh
+# This script is called by CtrlP when in a hg repo.
+# This will return all tracked files, but excluding the one that can't be
+# edited by vim (compiled, images, etc)
+
+local repo=${1:a}
+
+# Getting the patterns as an array from the pattern file
+local patternFile=${0:a:h}/noedit
+local patterns="`cat $patternFile | grep -v -e '^#' -e '^$'`"
+patterns=(${(@f)patterns})
+
+# Building the exclude string
+local args="-I ."
+for pattern in $patterns; do
+	args=${args}" -X '${pattern}'"
+done
+
+# Running the command
+eval hg --cwd $repo locate $args

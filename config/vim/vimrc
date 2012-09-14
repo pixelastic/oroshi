@@ -1,0 +1,328 @@
+" TODO {{{
+" - Finding previous paste with ²
+" - Graphical undo
+" - Autoclosing paren, quotes and stuff
+" - Wildmenu globbing zsh-style
+" - Splitted windows instead of splitted terminal
+" - Coloring fold markers
+" }}}
+
+" RESET  {{{
+" We do not need the backward compatibility with vi, so it is better to turn
+" this off for better portability of plugins.
+set nocompatible
+" Turn it off for security reasons, we don't want arbitrary code executed from
+" plugins
+set nomodeline
+" Disabling filetype before invoking Pathogen
+filetype off
+" Initializing pathogen, loading all plugins located in ~/.vim/bundle
+call pathogen#infect()
+"  Loading the plugin documentation
+call pathogen#helptags()
+" Re-enabling filetype indentation
+filetype plugin indent on
+"}}}
+" FILES {{{
+" Use backup, and save it in a custom dir
+set backup
+set backupdir=~/.vim/backup/
+" Use a file to save the latest 1000 undo informations, thus allowing for
+" permanent undo accross multiple sessions.
+set undofile
+set undolevels=1000
+set undodir=~/.vim/undo/
+" Save all the views (cursor position, fold status) in the same dir, close to
+" the others
+set viewdir=~/.vim/view/
+" We do not want vim to keep swap files. It tends to pollute dirs, and I've
+" never come accross a case that it actually was useful to me.
+set noswapfile
+" }}}
+" BASIC  {{{
+" Switch working directory to the directory of the currently edited file
+set autochdir
+" Saving files whenever I move from one to another
+set autowrite
+" Read files as UTF-8
+setglobal fileencoding=utf-8
+" Save as UTF-8
+set encoding=utf-8
+" Force Unix line ending on new file
+set fileformats=unix,dos,mac
+" keep - and _ as part of words
+set iskeyword+=-,_
+" Allow multiple buffers opened at once
+set hidden
+" Reload files if changed outside of vim
+set autoread
+" Set +x to script files on save
+augroup ft_add_chmodx
+	au!
+	function! AddExecutablePermissionIfScript()
+		if getline(1) =~ "^#!" && getline(1) =~ "/bin/"
+			silent !chmod u+x <afile>
+		endif
+	endfunction
+	au BufWritePost * call AddExecutablePermissionIfScript()
+augroup END
+" Reload the vimrc file whenever it is edited
+augroup ft_vimrc
+	au!
+	au BufWritePost *vimrc mkview | source ~/.vimrc | loadview
+augroup END
+"}}}
+" VIEWS {{{
+" We only want the cursor and folds (not the custom options)
+set viewoptions=cursor,folds
+" Save sessions on close, load it on open
+augroup views
+	au!
+	" Restore a session, but keep fold-related options as it is
+	function! LoadView()
+		let s:save_foldmethod = &foldmethod
+		let s:save_foldexpr = &foldexpr
+		let s:save_foldmarker = &foldmarker
+		silent! loadview
+		let &foldmethod = s:save_foldmethod
+		let &foldexpr = s:save_foldexpr
+		let &foldmarker = s:save_foldmarker
+	endfunction
+	au BufWinLeave * silent! mkview
+	au BufWinEnter * call LoadView()
+augroup END
+" }}}
+" DISPLAY {{{
+" Improve display time on slow terminals
+set ttyfast
+set lazyredraw
+" Display line numbers in left column
+set number
+" Adds an -- INSERT -- or -- VISUAL -- text whenever we enter on of these
+" modes.
+set showmode
+" Show more info about current command
+set showcmd
+" When displaying the help, make it as large as possible so we can more easily
+" read it
+set helpheight=250
+" Always keep 3 lines visible to keep context
+set scrolloff=3
+" Hide invisible chars by default, but if they should be displayed, define the
+" characters to define them.
+set nolist
+set listchars=tab:▸\ ,eol:¬,trail:·
+" Chars used for GUI
+set fillchars=stl:\ ,stlnc:\ ,vert:\|,fold:\ ,diff:-
+" }}}
+" FUNCTIONS {{{
+source ~/.vim/includes/functions.vim
+" }}}
+
+" KEYBINDINGS {{{
+source ~/.vim/includes/keybindings.vim
+" }}}
+
+" AUTOCOMPLETION {{{
+" Display autocomplete suggestion in a menu if more than one
+set completeopt=menu
+" Update the menu with matches as I type
+set completeopt+=longest
+" Let SuperTab guess the correct completion based on context
+let g:SuperTabDefaultCompletionType = "context"
+" Auto select the first match in the list
+let g:SuperTabLongestHighlight = 1
+" }}}
+" COLORS   {{{
+" Enabling syntax highlighting
+syntax on
+colorscheme oroshi
+" Switching between light and dark themes with F2 and Ctrl+F2
+" Note : O1;5Q stands for Ctrl+F2 as <C-F2> does not seem to work
+nnoremap <silent> <F2> :syn off \| syn on \| colorscheme oroshi<CR>
+inoremap <silent> <F2> <Esc>:colorscheme oroshi<CR>li
+nnoremap <silent> O1;5Q :colorscheme summerfruit<CR>
+inoremap <silent> O1;5Q <Esc>:colorscheme summerfruit<CR>li
+" Display the current highlight group of the word under cursor
+function! Debugcolor()
+	for id in synstack(line("."), col("."))
+		execute 'verbose hi '.synIDattr(id, "name")
+	endfor
+	execute 'verbose hi '.synIDattr(synIDtrans(id), "name")
+endfunction
+nnoremap <F3> :call Debugcolor()<CR>
+"}}}
+" COMMANDS {{{
+" Keep more commands in history
+set history=1000
+" Save file using sudo
+cnoremap w!! w !sudo tee '%' >/dev/null<CR><CR>
+" }}}
+" FOLDING  {{{
+source ~/.vim/includes/folding.vim
+"}}}
+" INDENTATION  {{{
+" We use the advanced indentation method provided by the filetype plugin
+set nosmartindent
+filetype plugin indent on
+" autoindent is still needed to correctly indent list items
+set autoindent
+" One tab is visually two spaces long, but is coded as a tab in the file
+set tabstop=2
+set shiftwidth=2
+set noexpandtab
+" Lines too long to fit on one screen will be truncated.
+set nowrap
+let &showbreak='↪ '
+" Force a 79 column policy with an auto-break on words in comments to assure
+" maximum readability. Visually add a column to see where the cut will be.
+set linebreak
+set colorcolumn=80
+set textwidth=79
+" c : Comments are automatically wrapped based on textwidth
+" r : New line in comment is a comment
+" q : Comments can be re-wrapped using gq
+" n : Handles list while formatting
+" 1 : Do not end lines with one-char words
+" l : Do not wrap lines that are already too long when insert mode starts
+set formatoptions=crqn1l
+" We make sure that backspace in insert mode can delete new lines and tabs
+set backspace=indent,eol,start
+" Aligning with > and < in visual mode keep the selection
+vnoremap > >gv
+vnoremap < <gv
+" Format whole paragraph
+nnoremap gqp vipgq
+" Smart-Tabs plugin autoconvert tabs to spaces for alignment, but we disable
+" the auto recheck, as it messes with consecutive Enter keypresses
+let g:ctab_disable_checkalign=1
+"}}}
+" SEARCH / REPLACE  {{{
+"  Searchs are case-insensitive, unless an uppercase is present
+set ignorecase
+set smartcase
+" Results are highlighted as we type as well as when found. ,<Space> clears the
+" highlight
+set incsearch
+set hlsearch
+nnoremap <silent> <Leader><Space> :nohlsearch<CR>
+" Regexps will use the extended format (no need to escape special chars to give
+" them meaning - (.*) will work when \(.*\) was needed before. Also, all
+" matches are global on the line, not limited to the first one.
+set gdefault
+nnoremap / /\v
+nnoremap ? ?\v
+nnoremap :s/ :s/\v
+nnoremap :%s :%s/
+nnoremap :%S :%s/
+nnoremap :ùs :%s/
+"}}}
+" SNIPPETS   {{{
+" Lorem ipsum
+iabbrev lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit
+iabbrev llorem Lorem ipsum dolor sit amet, consectetur adipiscing elit.  Etiam lacus ligula, accumsan id imperdiet rhoncus, dapibus vitae arcu.  Nulla non quam erat, luctus consequat nisi
+iabbrev lllorem Lorem ipsum dolor sit amet, consectetur adipiscing elit.  Etiam lacus ligula, accumsan id imperdiet rhoncus, dapibus vitae arcu.  Nulla non quam erat, luctus consequat nisi.  Integer hendrerit lacus sagittis erat fermentum tincidunt.  Cras vel dui neque.  In sagittis commodo luctus.  Mauris non metus dolor, ut suscipit dui.  Aliquam mauris lacus, laoreet et consequat quis, bibendum id ipsum.  Donec gravida, diam id imperdiet cursus, nunc nisl bibendum sapien, eget tempor neque elit in tortor
+" }}}
+" SPLIT  {{{
+" Splitting right feels more natural
+set splitright
+" Use Arrow in normal mode to move accros splits
+nnoremap <Up> <C-W>k
+nnoremap <Right> <C-W>l
+nnoremap <Down> <C-W>j
+nnoremap <Left> <C-W>h
+"}}}
+" STATUS LINE  {{{
+source ~/.vim/includes/statusline.vim
+"}}}
+" TABS   {{{
+" Do not limit the number of tabs to open when launching vim
+set tabpagemax=1000
+" Open file in new tab with ,t
+nnoremap <Leader>t :tabe<Space>
+" Switch tab with movement keys
+nnoremap <C-H> gT
+nnoremap <C-L> gt
+inoremap <C-H> <Esc>gT
+inoremap <C-L> <Esc>gt
+cnoremap <C-H> <C-C>gT
+cnoremap <C-L> <C-C>gt
+"}}}
+" VIMDIFF  {{{
+if &diff
+	" Vimdiff will mostly be used to handle merges. It is configured to be
+	" displayed in three panels (origin, result and other). We will use the FPS
+	" keys (zqsd) to move between changes and accept either origin or other.
+	" Once satisfied with our merge, we'll save and exit with Ctrl+S or Ctrl+D
+	" Jump to next/previous change
+	nnoremap <Leader>z [c
+	nnoremap <Leader>s ]c
+	" Accept origin (left) or other (right) change
+	nnoremap <silent> <Leader>q :diffget \.orig<CR>:diffupdate<CR>]c
+	nnoremap <silent> <Leader>d :diffget ~other\.<CR>:diffupdate<CR>]c
+	" Ctrl+S and Ctrl+D will save and close the diff
+	nnoremap <silent> <C-S> :only<CR>:x<CR>
+	inoremap <silent> <C-S> <Esc>:only<CR>:x<CR>
+	nnoremap <silent> <C-D> :only<CR>:x<CR>
+	inoremap <silent> <C-D> <Esc>:only<CR>:x<CR>
+endif
+"}}}
+" WILDMENU {{{
+" We enable a simple wildmenu with basic Tab-completion.
+set wildmenu
+" We ignore some files and dir that we're sure we'll never edit in vim
+set wildignore=''
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*             " Version control dirs
+set wildignore+=*.orig,*.swp,*.crcdownload            " Tmp files
+set wildignore+=*.jpg,*.jpeg,*.png,*.ico,*.gif,*.pdf  " Image files
+set wildignore+=*.exe,*.dll,*.pyc,*.so                " Binaries
+set wildignore+=*.zip,*.rar,*.tgz,*.tar,*.cbz         " Archive files
+" }}}
+" YANK / PASTE   {{{
+" Note: Systems have two different clipboards. One is accessed through Ctrl+C
+" and Ctrl+V and the other through selection and middle click button.
+" In vim, they are named unnamedplus and unnamed and can be accessed through "+
+" and "*
+
+" We'll share text deleted/yanked with the middle click button and the
+" Text deleted/yanked in vim can be pasted using the middle click button
+set clipboard=unnamed
+if has("unnamedplus")
+	set clipboard+=unnamedplus
+	" TODO: Chromium has a bug where text copied with Ctrl+C will always be
+	" converted to utf-8 before added to vim buffers, thus messing all encodings
+	" as utf-8 source will then be encoded twice.
+endif
+" As gv selects last selected text, we add gp to select last pasted text
+nnoremap gp `[v`]
+" We'll use x as a way to delete text without keeping it in a paste buffer
+nnoremap x "_x
+vnoremap x "_x
+"}}}
+
+" CTRL-F {{{
+source ~/.vim/includes/ctrlf.vim
+" }}}
+" CTRL-P {{{
+source ~/.vim/includes/plugins/ctrlp.vim
+" }}}
+
+" FILETYPES {{{
+" Load skeletons
+au BufNewFile * :silent! exec ":0r ~/.vim/includes/skeletons/skeleton.".&ft
+
+" Easy switch to different filetypes filetype
+nnoremap <silent> <leader>html :setlocal filetype=html<CR>
+nnoremap <silent> <leader>md :setlocal filetype=markdown<CR>
+nnoremap <silent> <leader>py :setlocal filetype=python<CR>
+nnoremap <silent> <leader>zsh :setlocal filetype=zsh<CR>
+
+" ,ve to edit vimrc
+nnoremap <leader>ve :tabe ~/.oroshi/config/vim/vimrc<CR>
+" ,vr to reload vimrc
+nnoremap <leader>vr :mkview<CR>:source ~/.vimrc<CR>:call LoadView()<CR>:let &filetype=&filetype<CR>
+
+" man to open the manpage of a command in a new tab
+nnoremap <silent> man :tabe<CR>:setlocal filetype=man<CR>:.!man<Space>
+" }}}
+

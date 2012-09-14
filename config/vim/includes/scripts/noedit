@@ -1,0 +1,40 @@
+# This file contains the list of pattern of files to exclude from CtrlP custom
+# find commands. This will in turn be used by every custom find script (hg, git
+# and fallback).
+#
+# Typical files we want to exclude are images, binaries, temp and compiled
+# files.
+
+# Images
+*.bmp
+*.gif
+*.ico
+*.jpeg
+*.jpg
+*.pdf
+*.png
+
+# Fonts
+*.otf
+*.ttf
+*.woff
+
+# Temporary files
+*.crcdownload
+*.orig
+*~
+.*.sw[a-z]
+.DS_Store
+Thumbs.db
+nohup.out
+
+# Compiled files
+*.dll
+*.exe
+*.fla
+*.min.css
+*.min.js
+*.mo
+*.pyc
+*.so
+*.swf
