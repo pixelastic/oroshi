@@ -1,0 +1,9 @@
+#!/usr/bin/zsh
+# Updates local config from distant repo
+
+cd ~/.oroshi
+git pull
+git update
+./deploy
+exit
+
