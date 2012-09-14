@@ -1,3 +1,27 @@
 [submodule "private"]
 	path = private
 	url = ssh://git@bitbucket.org/pixelastic/oroshi-private.git
+[submodule "config/vim/bundle/available/ctrlp.vim"]
+	path = config/vim/bundle/available/ctrlp.vim
+	url = git://github.com/kien/ctrlp.vim.git
+[submodule "config/vim/bundle/available/nginx-vim-syntax"]
+	path = config/vim/bundle/available/nginx-vim-syntax
+	url = git://github.com/evanmiller/nginx-vim-syntax.git
+[submodule "config/vim/bundle/available/tcomment_vim"]
+	path = config/vim/bundle/available/tcomment_vim
+	url = git://github.com/tomtom/tcomment_vim.git
+[submodule "config/vim/bundle/available/vim-endwise"]
+	path = config/vim/bundle/available/vim-endwise
+	url = git://github.com/tpope/vim-endwise.git
+[submodule "config/vim/bundle/available/vim-flake8"]
+	path = config/vim/bundle/available/vim-flake8
+	url = git://github.com/nvie/vim-flake8.git
+[submodule "config/vim/bundle/available/vim-markdown"]
+	path = config/vim/bundle/available/vim-markdown
+	url = git://github.com/tpope/vim-markdown.git
+[submodule "config/vim/bundle/available/vim-repeat"]
+	path = config/vim/bundle/available/vim-repeat
+	url = git://github.com/tpope/vim-repeat.git
+[submodule "config/vim/bundle/available/vim-surround"]
+	path = config/vim/bundle/available/vim-surround
+	url = git://github.com/tpope/vim-surround.git
