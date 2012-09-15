@@ -29,6 +29,14 @@ sudo apt-get install vim-gui-common
 
 # terminator        : Terminal with splitted windows
 sudo apt-get install terminator
+# fasd              : To move around directories in shell ultrafast
+cd /usr/local/source
+git clone git://github.com/clvv/fasd.git
+cd ./fasd
+mkdir /usr/local/etc/fasd
+PREFIX=/usr/local/etc/fasd make install
+cd /usr/local/bin
+ln -s ../etc/fasd/bin/fasd
 # keepass           : Password storage
 sudo apt-get install keepass
 # msttcorefonts     : Verdana and Arial back

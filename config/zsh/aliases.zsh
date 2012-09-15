@@ -141,6 +141,7 @@ alias pry='cd ~/local/tmp/scripts/pry && pry && cd -'
 # }}}
 # Vim {{{
 alias v='vim -p'
+alias vv='fasd -e vim'
 alias va="vim ~/.oroshi/config/zsh/aliases.zsh"
 alias vf="vim ~/.oroshi/config/zsh/filetypes.db.zsh"
 alias ve='vim ~/.oroshi/config/vim/vimrc'
