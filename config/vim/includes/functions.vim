@@ -96,7 +96,7 @@ endfunction
 command! ConvertSpacesToTabs call ConvertSpacesToTabs()
 " }}}
 function! ConvertLineEndingsToUnix() " {{{
-	if &modifiable==0 || expand('%') == ''
+	if &modifiable==0 || expand('%') == '' || !filereadable(expand('%'))
 		return
 	endif
 	update
