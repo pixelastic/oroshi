@@ -4,8 +4,9 @@ setlocal formatoptions+=t
 " Allow folding with marker
 setlocal foldmethod=marker
 setlocal commentstring=\ %s
-" Force line ending to Unix
-silent call ConvertLineEndingsToUnix()
-" Clean Windows special chars
-silent call ConvertWindowsCharacters()
+" Make txt files more portable
+if expand('%:e') == 'txt'
+	silent call ConvertLineEndingsToUnix()
+	silent call ConvertWindowsCharacters()
+endif
 
