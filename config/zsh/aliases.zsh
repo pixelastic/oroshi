@@ -96,6 +96,7 @@ alias chrome="gui chromium-browser"
 alias evince="gui evince"
 alias vlc='gui vlc'
 alias disk-utility='gui palimpsest'
+alias writer='gui libreoffice --writer'
 # }}}
 
 # Apt-get {{{
