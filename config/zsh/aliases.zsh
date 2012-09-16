@@ -94,6 +94,7 @@ cd ~/local/mnt/sd$1
 # GUI apps {{{
 alias chrome="gui chromium-browser"
 alias disk-utility='gui palimpsest'
+alias ebook-viewer='gui ebook-viewer'
 alias eog='gui eog'
 alias evince="gui evince"
 alias vlc='gui vlc'
