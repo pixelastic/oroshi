@@ -25,6 +25,9 @@ path=(
 	~/.oroshi/private/sripts/bin/local/$(hostname)
 )
 # }}}
+# Fasd {{{
+eval "$(fasd --init auto)"
+# }}}
 
 # Basic commands {{{
 # ls : colors and human readable size
@@ -78,6 +81,7 @@ alias treed='tree -dN'
 alias n="nautilus"
 # Find a file
 function f() { find . -iname "*$1*" }
+alias f='f'
 # Reload test files
 alias rr='reload-tests'
 # Mount /dev/sd* to ~/local/mnt/sd*

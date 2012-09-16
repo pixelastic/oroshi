@@ -83,12 +83,6 @@ zstyle ':completion:::::' completer _complete _correct
 # Matching is case insensitive, and match even in middle of word
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'm:{a-zA-Z}={A-Za-z} l:|=* r:|=*'
 
-# Enable fasd
-eval "$(fasd --init auto)"
-
-
-
-
 # TODO : Check the usefulness of the following options
 # Background processes aren't killed on exit of shell
 # setopt AUTO_CONTINUE
