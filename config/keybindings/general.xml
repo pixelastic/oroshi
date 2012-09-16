@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="compositing_manager" mtime="1321192297" type="bool" value="true"/>
+	<entry name="theme" mtime="1321055737" type="string">
+		<stringvalue>Ambiance</stringvalue>
+	</entry>
+	<entry name="visual_bell_type" mtime="1321023607" type="string">
+		<stringvalue>frame_flash</stringvalue>
+	</entry>
+	<entry name="auto_raise_delay" mtime="1321023605" type="int" value="1000"/>
+	<entry name="auto_raise" mtime="1321023605" type="bool" value="true"/>
+</gconf>

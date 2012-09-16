@@ -6,7 +6,21 @@
 local configDir=~/.oroshi/config/keybindings
 local destDir=~/.gconf/apps/metacity
 
+local generalDir=${destDir}/general
+local generalFile=${configDir}/general.xml
+
+local globalDir=${destDir}/global_keybindings
+local globalFile=${configDir}/global.xml
+
+local windowDir=${destDir}/window_keybindings
+local windowFile=${configDir}/window.xml
+
 # Link the config files
-mkdir -p $destDir/global_keybindings $destDir/window_keybindings
-ln -fs $configDir/global.xml $destDir/global_keybindings/%gconf.xml
-ln -fs $configDir/window.xml $destDir/window_keybindings/%gconf.xml
+mkdir -p $generalDir
+ln -fs $generalFile ${generalDir}/%gconf.xml
+
+mkdir -p $globalDir
+ln -fs $globalFile ${globalDir}/%gconf.xml
+
+mkdir -p $windowDir
+ln -fs $windowFile ${windowDir}/%gconf.xml

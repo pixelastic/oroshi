@@ -27,8 +27,8 @@
 	<entry name="panel_run_dialog" mtime="1321023607" type="string">
 		<stringvalue>disabled</stringvalue>
 	</entry>
-	<entry name="run_command_terminal" mtime="1339922139" type="string">
-		<stringvalue>&lt;Control&gt;&lt;Alt&gt;t</stringvalue>
+	<entry name="run_command_terminal" mtime="1347755520" type="string">
+		<stringvalue></stringvalue>
 	</entry>
 	<entry name="panel_main_menu" mtime="1321023607" type="string">
 		<stringvalue>disabled</stringvalue>
