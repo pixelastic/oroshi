@@ -138,7 +138,7 @@ endfunction
 command! -nargs=1 OpenUrlInBrowser call OpenUrlInBrowser(<q-args>)
 " }}}
 function! GetUrlUnderCursor() " {{{
-  return escape(matchstr(getline("."),"http[^ [\\]()]*"), "#?&;|%")
+	return escape(matchstr(getline("."),"http[^ [\\]()]*"), "#?&;|%")
 endfunction
 command! GetUrlUnderCursor call GetUrlUnderCursor()
 " }}}

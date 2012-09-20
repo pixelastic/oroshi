@@ -170,3 +170,8 @@ inoremap <C-F5> :call OpenUrlInBrowser(GetUrlUnderCursor())<CR>
 " md will convert the selection to markdown
 vnoremap <silent> md :!markdown<CR>
 " }}}
+" PLUGINS {{{
+" Strangely, ï seems to be equal to <M-o> and endwise remaps it. I need to
+" force its mapping so it is not overwritten.
+inoremap <M-o> ï
+" }}}
