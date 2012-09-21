@@ -79,21 +79,26 @@ function! RemoveTrailingSpaces() " {{{
 endfunction
 command! RemoveTrailingSpaces call RemoveTrailingSpaces()
 " }}}
-function! ConvertTabsToSpaces() " {{{
+function! IndentWithSpaces() " {{{
 	normal mz
-	silent! execute '%s/^\t\+/\=repeat(" ", len(submatch(0))*'.&ts.')/'
+	" Replace all tabs used for indentation with the same number of spaces
+	silent! execute '%s/\v^\s+/\=substitute(submatch(0),"\t",repeat(" ", &tabstop),"g")'
+	" Remove any leftover
+	silent! execute '%s/\v^ +/\=repeat(" ",len(submatch(0))-(len(submatch(0))%&tabstop))'
 	nohl
 	normal `z
 endfunction
-command! ConvertTabsToSpaces call ConvertTabsToSpaces()
+command! IndentWithSpaces call IndentWithSpaces()
 " }}}
-function! ConvertSpacesToTabs() " {{{
+function! IndentWithTabs() " {{{
 	normal mz
-	silent! execute '%s#\v^( {'.&ts.'})+#\=repeat("\t", len(submatch(0))/'.&ts.')'
+	" Indent first with spaces, then convert to tabs
+	silent! call IndentWithSpaces()
+	silent! execute '%s_\v^ +_\=repeat("\t",len(submatch(0))/&tabstop)'
 	nohl
 	normal `z
 endfunction
-command! ConvertSpacesToTabs call ConvertSpacesToTabs()
+command! IndentWithTabs call IndentWithTabs()
 " }}}
 function! ConvertLineEndingsToUnix() " {{{
 	if &modifiable==0 || expand('%') == '' || !filereadable(expand('%'))
