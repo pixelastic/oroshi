@@ -2,6 +2,12 @@
 # Will read all .txt files in ~/Documents/Blog and copy the referenced pictures
 # in "pictures/"
 
+local cityDir=$1
+if [[ $cityDir = '' ]]; then
+	echo "You must specify a city dir to search"
+	exit
+fi
+
 # This should always be run in the Picture dir
 local blogDir=~/Documents/Blog
 cd $blogDir
@@ -17,7 +23,8 @@ cat ${~sourceFiles} | grep '^[0-9]\{4\}' >> $tmpList
 # Loop through all compress files and copy the one referenced in the file
 mkdir -p $exportDir
 echo "Building file list"
-for file in ~/Documents/Photos/**/compress/DSC*.JPG; do
+local searchPattern="~/Documents/Photos/${cityDir}/**/compress/*.JPG"
+for file in ${~searchPattern}; do
 	local name=${file:t:r}
 	if [[ ! `cat $tmpList | grep $name[5,8]` = '' ]]; then
 		echo "Copying $name"
