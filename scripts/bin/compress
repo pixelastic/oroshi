@@ -22,7 +22,7 @@ fi
 
 # Compressing all files in current directory
 echo "Move original files to compress dir"
-cp -v ./*.(JPG|jpg) ./compress/
+cp -nv ./*.(JPG|jpg) ./compress/
 
 # Convert 
 echo "Resize images to 800px"

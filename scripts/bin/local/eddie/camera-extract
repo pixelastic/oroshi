@@ -8,9 +8,10 @@ local tmpdir=~/Documents/Photos/tmp/
 if [[ ! -r $tmpdir ]]; then
 	mkdir -p $tmpdir;
 fi
+cd $tmpdir
 
 # Take all pictures of camera dir
-for file in /media/CYBERSHOT32/DCIM/100MSDCF/*.JPG; do
+for file in /media/CYBERSHOT32/DCIM/**/*.JPG; do
 	# Getting its date
 	day=$(stat -c %y $file | awk '{printf $1 "\n"}')
 	dirday=$tmpdir$day/
@@ -20,7 +21,7 @@ for file in /media/CYBERSHOT32/DCIM/100MSDCF/*.JPG; do
 		mkdir $dirday
 	fi
 	# Copying files
-	mv $file $dirday
+	mv -n $file $dirday
 done
 
 # And now compressing
