@@ -122,7 +122,7 @@ alias cdp='cd ~/Documents/Photos'
 alias cdl='cd ~/local/'
 alias cdm='cd ~/local/mnt/'
 alias cdt='cd ~/local/tmp/'
-alias cdv='cd ~/local/tmp/verdisquo/'
+alias cdsov='cd ~/local/sov/'
 alias cds='cd ~/local/tmp/scripts/'
 alias cdw='cd ~/local/var/www/'
 # }}}
