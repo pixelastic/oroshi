@@ -21,6 +21,7 @@ alias vcca='git commit-all'
 alias vcd='git diff'
 alias vce='git amend'
 alias vcl='git peek'
+alias vcla='git peek -p'
 alias vcr='git rollback'
 # }}}
 # [f]iles {{{
