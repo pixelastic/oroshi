@@ -56,12 +56,11 @@ alias vsl='git stash list'
 alias vsr='git stash drop'
 # }}}
 # working [d]irectory {{{
-alias vdR='git clean -fd'
+alias vdR='git tabula-rasa'
 alias vdd='git diff'
 alias vddl='git diff-last'
 alias vdl='git status-short'
 alias vdr='cd $(git root)'
 alias vdrr='cd $(git root) && cd .. && cd $(git root)'
-alias vdra='git tabula-rasa'
 alias vdu='git checkout'
 # }}}
