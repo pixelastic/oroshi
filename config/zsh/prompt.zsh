@@ -394,8 +394,18 @@ function updateTagGit() {
 	fi
 
 	# Setting the tag
-	promptTag=$(git current-tag)
-	colorTag=$promptColor[tag]
+	local shortTag
+	shortTag=$(git current-tag)
+	promptTag=$shortTag
+
+	# Tag will be differently colored if we are exactly at that tag, or later on
+	local fullTag
+	fullTag=$(git describe --tags)
+	if [[ $shortTag = $fullTag ]]; then
+		colorTag=$promptColor[tagExact]
+	else
+		colorTag=$promptColor[tag]
+	fi
 }
 # }}}
 # updateSubmodule() {{{
