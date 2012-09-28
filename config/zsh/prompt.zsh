@@ -400,7 +400,7 @@ function updateTagGit() {
 
 	# Tag will be differently colored if we are exactly at that tag, or later on
 	local fullTag
-	fullTag=$(git describe --tags)
+	fullTag=$(git describe --tags 2>/dev/null)
 	if [[ $shortTag = $fullTag ]]; then
 		colorTag=$promptColor[tagExact]
 	else
