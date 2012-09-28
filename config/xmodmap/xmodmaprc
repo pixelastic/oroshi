@@ -67,8 +67,10 @@ add mod5    = ISO_Level3_Shift
 keycode 66 = F13
 ! ²
 keycode 49 = F14 twosuperior
-! Menu
-keycode 135 = F15
+
+! I keep hitting the Menu key when aiming to the AltGr. I might as well make it
+! an AltGr key, as I do not use the Menu one anyway.
+keycode 135 = ISO_Level3_Shift NoSymbol ISO_Level3_Shift
 
 !!!!! Making signs easier to type as Alternate Graphics on some keys
 keycode 24 = a A a A at ae
