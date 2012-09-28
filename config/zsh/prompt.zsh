@@ -313,7 +313,7 @@ function updateHashGit() {
 	hashSymbol='±'
 	colorHash=$promptColor[gitClean]
 
-	local gitStatus="$(git status --short)"
+	local gitStatus="$(git status-short)"
 
 	# Does it have modified or new files ?
 	if [[ $gitStatus =~ ' . ' || $gitStatus =~ '\?\?' ]]; then
@@ -394,7 +394,7 @@ function updateTagGit() {
 	fi
 
 	# Setting the tag
-	promptTag=$(git describe --abbrev=0 2>/dev/null)
+	promptTag=$(git current-tag)
 	colorTag=$promptColor[tag]
 }
 # }}}
@@ -448,7 +448,7 @@ function updateBranchGit() {
 		return
 	fi
 
-	promptBranch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+	promptBranch=$(git current-branch)
 	# No branch found
 	if [[ promptBranch = '' ]]; then
 		colorBranch=''
