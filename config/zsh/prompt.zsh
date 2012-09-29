@@ -597,7 +597,7 @@ function precmd_updateHash() {
 	
 	# Previous command created or removed a file in repo
 	if [[ $versionSystem != '' 
-		&& $previousCommand[1] =~ '^(better-rmdir|cp|fasd|mkdir|mv|rm|rmdir|touch|trash|vim)$' ]]; then
+		&& $previousCommand[1] =~ '^(better-rmdir|cp|fasd|ln|mkdir|mv|rm|rmdir|touch|trash|vim)$' ]]; then
 		updateHash=1
 	fi
 	# Git commands
