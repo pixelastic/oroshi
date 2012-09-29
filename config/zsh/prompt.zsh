@@ -479,7 +479,7 @@ function updateBranchGit() {
 	fi
 
 	# Default branch
-	promptBranch=":"$promptBranch
+	promptBranch=" "$promptBranch
 	colorBranch=$promptColor[branchDefault]
 }
 # }}}
