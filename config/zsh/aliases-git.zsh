@@ -8,7 +8,7 @@
 alias vbb='git current-branch'
 alias vbc='git checkout -b'
 alias vbl='git branch-list'
-alias vbm='git branch -m'
+alias vbm='git merge'
 alias vbr='git branch -d'
 alias vbR='git branch -D'
 alias vbrr='git push origin --delete' # Remove remote branch
