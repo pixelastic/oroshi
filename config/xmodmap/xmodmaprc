@@ -72,25 +72,34 @@ keycode 49 = F14 twosuperior
 ! an AltGr key, as I do not use the Menu one anyway.
 keycode 135 = ISO_Level3_Shift NoSymbol ISO_Level3_Shift
 
-!!!!! Making signs easier to type as Alternate Graphics on some keys
+! É, È and À easier with AltGr+Shift
+keycode 11 = eacute 2 eacute 2 asciitilde UC9
+keycode 16 = egrave 7 egrave 7 grave UC8
+keycode 19 = agrave 0 agrave 0 at UC0
+
+! Adding some common symbols on easy AltGr on common keys
 keycode 24 = a A a A at ae
+keycode 25 = z Z z Z braceleft
+keycode 26 = e E e E braceright
 keycode 27 = r R r R grave
 keycode 31 = i I i I minus endash
-keycode 32 = o O o O underscore emdash
+keycode 32 = o O o O underscore oe
 
-! keycode  38 = q Q q Q braceleft
-keycode 39 = s S s S braceleft less
-keycode 40 = d D d D braceright greater
-keycode 41 = f F f F backslash
-keycode 42 = g G g G asciitilde 
+keycode 38 = q Q q Q asciitilde
+keycode 39 = s S s S less
+keycode 40 = d D d D greater
+keycode 41 = f F f F 
+keycode 42 = g G g G  
 keycode 43 = h H h H numbersign
 keycode 44 = j J j J bar
-keycode 45 = k K k K parenleft bracketleft
-keycode 46 = l L l L parenright bracketright
-! keycode  47 = m M m M braceright
+keycode 45 = k K k K bracketleft parenleft
+keycode 46 = l L l L bracketright parenright
+keycode 47 = m M m M backslash
 
 keycode 54 = c C c C copyright cent
+! Question mark can also produce ‽ and ⸮
 keycode 58 = comma question comma question U203D U2E2E 
+! Period can also produce …
 keycode 59 = semicolon period semicolon period ellipsis
 
 
