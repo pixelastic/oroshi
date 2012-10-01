@@ -131,6 +131,11 @@ function! ConvertWindowsCharacters() " {{{
 endfunction
 command! ConvertWindowsCharacters call ConvertWindowsCharacters()
 " }}}
+function! ConvertToUTF8() " {{{
+	set fileencoding=utf-8
+endfunction
+command! ConvertToUTF8 call ConvertToUTF8()
+" }}}
 function! OpenUrlInBrowser(url) " {{{
 	" No url given
 	if a:url==""
