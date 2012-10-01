@@ -74,13 +74,31 @@ function! MultiPurposeTab(...)
 		return "\<C-X>\<C-F>\<C-N>"
 	endif
 
-	" Launch Omnicomplete if defined
+	" Building the list of completion that should be used in turn on each tab
+	" press if the first one did not yield any results
+	let completionTypes = []
 	if &omnifunc != ''
-		return "\<C-X>\<C-O>\<C-N>"
+		call add(completionTypes, "\<C-X>\<C-O>\<C-N>")
 	endif
+	call add(completionTypes, "\<C-X>\<C-N>\<C-N>")
 
-	" Launch buffer completion otherwise
-	return "\<C-X>\<C-N>\<C-N>"
+	" We return the first completion if the line changed from previous tab press
+	if !exists('b:previousCompletedLine')
+		let b:previousCompletedLine='##default##'
+	endif
+	let b:currentCompletedLine = getline(".")
+	if b:previousCompletedLine != b:currentCompletedLine
+		let b:completionTypeIndex = 0
+		let b:previousCompletedLine = b:currentCompletedLine
+		return completionTypes[0]
+	endif
+	
+	" Line is still the same, we need to try the next completion
+	let b:completionTypeIndex = b:completionTypeIndex + 1
+	if b:completionTypeIndex >= len(completionTypes)
+		let	b:completionTypeIndex = 0
+	endif
+	return completionTypes[b:completionTypeIndex]
 endfunction
 inoremap <Tab> <C-R>=MultiPurposeTab()<CR>
 inoremap <S-Tab> <C-R>=MultiPurposeTab('Maj')<CR>
