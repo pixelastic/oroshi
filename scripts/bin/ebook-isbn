@@ -1,0 +1,53 @@
+#!/usr/bin/env ruby
+# encoding : utf-8
+# Given an ebook file, will fetch its isbn online
+# Files are supposed to be named :
+# LINDSAY Jeff - Dexter 01 - Darkly Dreaming Dexter.epub
+# or
+# DUMAS Alexandre - Les trois mousquetaires.epub
+
+require 'open-uri'
+require 'nokogiri'
+
+if ARGV.size != 1
+	puts "You should specify one file"
+	exit
+end
+
+# Getting API key
+isbnKeyFile = File.expand_path('~/.oroshi/private/config/isbndb/developerkey')
+unless File.exists?(isbnKeyFile)
+	puts "Unable to find ISBNdb developer key in #{isbnKeyFile}"
+	exit
+end
+isbnDeveloperKey = File.read(isbnKeyFile).chomp
+
+file = ARGV[0]
+ext = File.extname(file)
+basename = File.basename(file, ext)
+fullpath = File.expand_path(file)
+
+# Getting author and book name
+split = basename.split(' - ')
+author = split[0]
+bookName = split[-1]
+
+# Search value should be in the form {book name} by {book author} with spaces
+# encodes as +
+searchKeyword = "#{bookName} by #{author}".downcase.gsub(' ', '+')
+url = "http://isbndb.com/api/books.xml?access_key=#{isbnDeveloperKey}&index1=combined&value1=#{searchKeyword}"
+
+# Downloading the xml representing info of the book if not already present
+xmlFile = fullpath.gsub(/\.epub$/, '.xml')
+unless File.exists?(xmlFile)
+	File.open(xmlFile, 'w') do |file|
+		file << open(url).read
+	end
+end
+
+# Getting the isbn number
+xml = Nokogiri::XML(File.open(xmlFile))
+xml.css('BookData').each do |node|
+	puts node['isbn']
+end
+
