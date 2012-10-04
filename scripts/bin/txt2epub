@@ -1,17 +1,28 @@
-#!/usr/bin/zsh
-# Will convert a .txt file to an .epub file
+#!/usr/bin/env ruby
+# encoding : utf-8
+
+# Given a txt file, will create the matching epub file, with matching cover
+
+if `which ebook-convert` == ''
+	puts "Unable to find ebook-convert, please install calibre"
+	exit
+end
+
+ARGV.each do |file|
+	fullpath = File.expand_path(file)
+	ext = File.extname(file)
+	basename = File.basename(file)
 
 
-# Check for dependencies
-if [[ `which ebook-convert` = '' ]]; then
-	echo "ebook-convert not found, please sudo apt-get install calibre"
-	return
-fi
+	next unless ext == '.txt'
 
-for file in $@; do
-	if [[ ! ${file:e} = 'txt' ]]; then
-		echo "$file is not a txt, skipping"
-		continue
-	fi
-	ebook-convert $file .epub
-done
+	# Create cover
+	epubFile = fullpath.gsub(/\.txt$/, '.epub')
+	puts "Creating cover"
+	%x[ebook-cover '#{epubFile}']
+	coverFile = fullpath.gsub(/\.txt$/, '.jpg')
+
+	# Convert to epub
+	puts "Converting to epub"
+	%x[ebook-convert '#{fullpath}' '.epub' --cover '#{coverFile}' --preserve-cover-aspect-ratio]
+end
