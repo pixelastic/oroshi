@@ -1,24 +1,25 @@
 #compdef localc
+# Will only suggest sheet files
 
-_localc () {
+_fts-sheet () {
 	# local var definition to not pollute global scope
 	local curcontext=$curcontext state line context
 	typeset -A opt_args
 
 	# suggesting arguments
 	_arguments \
-		"*:calc sheet file:->sheet_file" \
+		"*:sheet file:->sheet_file" \
 		&& return 0
 	
 	# State machine
 	case $state in
 		(sheet_file)
 			local glob=$(echo $O_FILETYPES_EXTENSIONS[sheet] | sed 's/,/|/g')
-			_files -g '*.('$glob')' && return 0
-			;;
+			_files -g '*.('$glob')' \
+			&& return 0
 	esac
 
 	return 1
 }
 
-_localc "$@"
+_fts-sheet "$@"

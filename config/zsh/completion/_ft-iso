@@ -1,23 +1,24 @@
-#compdef txt2epub
+#compdef isomount
+# - Will only suggest .iso files
 
-_txt () {
+_ft-iso () {
 	# local var definition to not pollute global scope
 	local curcontext=$curcontext state line context
 	typeset -A opt_args
 
 	# suggesting arguments
 	_arguments \
-		"*:txt file:->txt_file" \
+		"*:iso file:->iso_file" \
 		&& return 0
-	
-	# State machine
+
+	# state machine match
 	case $state in
-		(txt_file)
-			_files -g '*.txt' && return 0
-			;;
+		(iso_file)
+			_files -g '*.iso' \
+			&& return 0
 	esac
 
 	return 1
 }
 
-_txt "$@"
+_ft-iso "$@"

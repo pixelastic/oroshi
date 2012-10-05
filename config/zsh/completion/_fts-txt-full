@@ -1,24 +1,25 @@
 #compdef lowriter
+# Will only suggest txt-full files
 
-_lowriter () {
+_fts-txt-full () {
 	# local var definition to not pollute global scope
 	local curcontext=$curcontext state line context
 	typeset -A opt_args
 
 	# suggesting arguments
 	_arguments \
-		"*:full txt file:->fulltxt_file" \
+		"*:txtx full file:->txt-full_file" \
 		&& return 0
 	
 	# State machine
 	case $state in
-		(fulltxt_file)
+		(txt-full_file)
 			local glob=$(echo $O_FILETYPES_EXTENSIONS[txt-full] | sed 's/,/|/g')
-			_files -g '*.('$glob')' && return 0
-			;;
+			_files -g '*.('$glob')' \
+			&& return 0
 	esac
 
 	return 1
 }
 
-_lowriter "$@"
+_fts-txt-full "$@"

@@ -1,0 +1,24 @@
+#compdef evince
+# - Will only suggest .pdf files
+
+_ft-pdf () {
+	# local var definition to not pollute global scope
+	local curcontext=$curcontext state line context
+	typeset -A opt_args
+
+	# suggesting arguments
+	_arguments \
+		"*:pdf file:->pdf_file" \
+		&& return 0
+
+	# state machine match
+	case $state in
+		(pdf_file)
+			_files -g '*.pdf' \
+			&& return 0
+	esac
+
+	return 1
+}
+
+_ft-pdf "$@"

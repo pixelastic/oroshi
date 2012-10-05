@@ -1,0 +1,24 @@
+#compdef bin2iso
+# - Will only suggest binary-img files
+
+_fts-binary-img () {
+	# local var definition to not pollute global scope
+	local curcontext=$curcontext state line context
+	typeset -A opt_args
+
+	# suggesting arguments
+	_arguments \
+		"*:binary img file:->binary-img_file" \
+		&& return 0
+
+	# state machine match
+	case $state in
+		(binary-img_file)
+			_files -g '*.(bin|raw|img)' \
+			&& return 0
+	esac
+
+	return 1
+}
+
+_fts-binary-img "$@"
