@@ -1,0 +1,23 @@
+#compdef ebook-cover ebook-isbn
+
+_ebook () {
+	# local var definition to not pollute global scope
+	local curcontext=$curcontext state line context
+	typeset -A opt_args
+
+	# suggesting arguments
+	_arguments \
+		"*:ebook file:->ebook_file" \
+		&& return 0
+	
+	# State machine
+	case $state in
+		(ebook_file)
+			_files -g '*.epub' && return 0
+			;;
+	esac
+
+	return 1
+}
+
+_ebook "$@"

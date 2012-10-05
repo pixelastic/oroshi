@@ -1,0 +1,23 @@
+#compdef txt2epub
+
+_txt () {
+	# local var definition to not pollute global scope
+	local curcontext=$curcontext state line context
+	typeset -A opt_args
+
+	# suggesting arguments
+	_arguments \
+		"*:txt file:->txt_file" \
+		&& return 0
+	
+	# State machine
+	case $state in
+		(txt_file)
+			_files -g '*.txt' && return 0
+			;;
+	esac
+
+	return 1
+}
+
+_txt "$@"
