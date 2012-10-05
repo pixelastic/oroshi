@@ -1,17 +1,41 @@
-#!/usr/bin/zsh
-# Will convert an .epub file to a .txt file
+#!/usr/bin/env ruby
+# encoding : utf-8
+# Given an epub file, will create a txt file version and extract the cover
+# image
 
+require 'fileutils'
 
-# Check for dependencies
-if [[ `which ebook-convert` = '' ]]; then
-	echo "ebook-convert not found, please sudo apt-get install calibre"
-	return
-fi
+if `which ebook-convert` == ''
+	puts "Unable to find ebook-convert, please install calibre"
+	exit
+end
 
-for file in $@; do
-	if [[ ! ${file:e} = 'epub' ]]; then
-		echo "$file is not an epub, skipping"
-		continue
-	fi
-	ebook-convert $file .txt
-done
+ARGV.each do |file|
+	fullpath = File.expand_path(file)
+	ext = File.extname(file)
+	dirname = File.dirname(file)
+	coverFile = fullpath.gsub(/\.epub$/, '.jpg')
+	txtFile = fullpath.gsub(/\.epub$/, '.txt')
+
+	next unless ext == '.epub'
+
+	# Extract cover
+	unless File.exists?(coverFile)
+		puts "Searching for cover (this could take a while)..."
+		%x[ebook-convert '#{fullpath}' html]
+		htmlDir = File.join(dirname, 'html')
+		extractedCoverFile = File.join(htmlDir, 'calibre_raster_cover.jpg')
+		if File.exists?(extractedCoverFile)
+			puts "Cover found!"
+			File.rename(extractedCoverFile, coverFile)
+			FileUtils.rm_r(htmlDir)
+		end
+	end
+	
+	# Convert to txt
+	unless File.exists?(txtFile)
+		puts "Converting to txt"
+		%x[ebook-convert '#{fullpath}' '.txt']
+	end
+
+end

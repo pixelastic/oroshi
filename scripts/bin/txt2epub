@@ -13,7 +13,6 @@ ARGV.each do |file|
 	ext = File.extname(file)
 	basename = File.basename(file)
 
-
 	next unless ext == '.txt'
 
 	# Create cover
