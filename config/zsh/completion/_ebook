@@ -1,4 +1,4 @@
-#compdef ebook-cover ebook-isbn
+#compdef ebook-cover ebook-isbn ebook-viewer
 
 _ebook () {
 	# local var definition to not pollute global scope
