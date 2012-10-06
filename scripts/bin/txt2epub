@@ -23,5 +23,8 @@ ARGV.each do |file|
 
 	# Convert to epub
 	puts "Converting to epub"
+	if File.exists?(epubFile)
+		File.rename(epubFile, epubFile+'.bak')
+	end
 	%x[ebook-convert '#{fullpath}' '.epub' --cover '#{coverFile}' --preserve-cover-aspect-ratio]
 end
