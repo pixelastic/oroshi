@@ -16,10 +16,14 @@ ARGV.each do |file|
 	next unless ext == '.txt'
 
 	# Create cover
-	epubFile = fullpath.gsub(/\.txt$/, '.epub')
-	puts "Creating cover"
-	%x[ebook-cover-download '#{epubFile}']
 	coverFile = fullpath.gsub(/\.txt$/, '.jpg')
+	epubFile = fullpath.gsub(/\.txt$/, '.epub')
+	unless File.exists?(coverFile)
+		puts "Creating cover"
+		%x[ebook-cover-download '#{epubFile}']
+	else
+		puts "cover already present"
+	end
 
 	# Convert to epub
 	puts "Converting to epub"
