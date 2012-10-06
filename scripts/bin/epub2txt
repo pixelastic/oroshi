@@ -13,11 +13,16 @@ end
 ARGV.each do |file|
 	fullpath = File.expand_path(file)
 	ext = File.extname(file)
-	dirname = File.dirname(file)
+	dirname = File.dirname(fullpath)
+	basename = File.basename(file)
 	coverFile = fullpath.gsub(/\.epub$/, '.jpg')
 	txtFile = fullpath.gsub(/\.epub$/, '.txt')
 
 	next unless ext == '.epub'
+
+	Dir.chdir(dirname)
+
+	puts "Converting #{basename}"
 
 	# Extract cover
 	unless File.exists?(coverFile)
@@ -30,12 +35,16 @@ ARGV.each do |file|
 			File.rename(extractedCoverFile, coverFile)
 			FileUtils.rm_r(htmlDir)
 		end
+	else
+		puts "Cover file already present"
 	end
 	
 	# Convert to txt
 	unless File.exists?(txtFile)
 		puts "Converting to txt"
 		%x[ebook-convert '#{fullpath}' '.txt']
+	else
+		puts "txt file already present"
 	end
 
 end
