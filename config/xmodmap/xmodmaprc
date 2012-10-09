@@ -11,7 +11,7 @@
 !
 !   Xmodmap uses an inner representation of these keys, using keysyms. We can
 !   bind a specific keycode (for example 36) to a specific keysym (for example
-!   the <Return> action). 
+!   the <Return> action).
 !
 !   There is a maximum of 8 different modifiers that can be applied to a key.
 !   Those modifiers are passed, along with the key, to the underlying software
@@ -79,26 +79,35 @@ keycode 19 = agrave 0 agrave 0 at UC0
 
 ! Adding some common symbols on easy AltGr on common keys
 keycode 24 = a A a A at ae
-keycode 25 = z Z z Z braceleft
-keycode 26 = e E e E braceright
+keycode 25 = z Z z Z
+keycode 26 = e E e E EuroSign
 keycode 27 = r R r R grave
+keycode 28 = t T t T trademark
+keycode 29 = y Y y Y yen
+keycode 30 = u U u U
 keycode 31 = i I i I minus endash
 keycode 32 = o O o O underscore oe
+keycode 33 = p P p P
 
 keycode 38 = q Q q Q asciitilde
 keycode 39 = s S s S less
 keycode 40 = d D d D greater
-keycode 41 = f F f F 
-keycode 42 = g G g G  
+keycode 41 = f F f F
+keycode 42 = g G g G
 keycode 43 = h H h H numbersign
 keycode 44 = j J j J bar
 keycode 45 = k K k K bracketleft parenleft
 keycode 46 = l L l L bracketright parenright
 keycode 47 = m M m M backslash
 
-keycode 54 = c C c C copyright cent
+keycode 52 = w W w W
+keycode 53 = x X x X
+keycode 54 = c C c C copyright
+keycode 55 = v V v V
+keycode 56 = b B b B
+keycode 57 = n N n N
 ! Question mark can also produce ‽ and ⸮
-keycode 58 = comma question comma question U203D U2E2E 
+keycode 58 = comma question comma question U203D U2E2E
 ! Period can also produce …
 keycode 59 = semicolon period semicolon period ellipsis
 
