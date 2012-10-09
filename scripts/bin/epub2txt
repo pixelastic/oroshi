@@ -10,13 +10,18 @@ if `which ebook-convert` == ''
 	exit
 end
 
-ARGV.each do |file|
-	fullpath = File.expand_path(file)
+# Expand all paths
+files = ARGV.collect do |a|
+	File.expand_path(a)
+end
+
+# Loop on each file
+files.each do |file|
 	ext = File.extname(file)
-	dirname = File.dirname(fullpath)
+	dirname = File.dirname(file)
 	basename = File.basename(file)
-	coverFile = fullpath.gsub(/\.epub$/, '.jpg')
-	txtFile = fullpath.gsub(/\.epub$/, '.txt')
+	coverFile = file.gsub(/\.epub$/, '.jpg')
+	txtFile = file.gsub(/\.epub$/, '.txt')
 
 	next unless ext == '.epub'
 
@@ -27,7 +32,9 @@ ARGV.each do |file|
 	# Extract cover
 	unless File.exists?(coverFile)
 		puts "Searching for cover (this could take a while)..."
-		%x[ebook-convert '#{fullpath}' html]
+
+		%x[ebook-convert "#{file}" html]
+		
 		htmlDir = File.join(dirname, 'html')
 		extractedCoverFile = File.join(htmlDir, 'calibre_raster_cover.jpg')
 		if File.exists?(extractedCoverFile)
@@ -42,7 +49,7 @@ ARGV.each do |file|
 	# Convert to txt
 	unless File.exists?(txtFile)
 		puts "Converting to txt"
-		%x[ebook-convert '#{fullpath}' '.txt']
+		%x[ebook-convert "#{file}" "#{txtFile}"]
 	else
 		puts "txt file already present"
 	end
