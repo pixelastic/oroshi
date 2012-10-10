@@ -1,6 +1,7 @@
 #compdef eog
+# Will only suggest image files
 
-_eog () {
+_fts-image () {
 	# local var definition to not pollute global scope
 	local curcontext=$curcontext state line context
 	typeset -A opt_args
@@ -14,11 +15,11 @@ _eog () {
 	case $state in
 		(image_file)
 			local glob=$(echo $O_FILETYPES_EXTENSIONS[image] | sed 's/,/|/g')
-			_files -g '*.('$glob')' && return 0
-			;;
+			_files -g '*.('$glob')' \
+			&& return 0
 	esac
 
 	return 1
 }
 
-_eog "$@"
+_fts-image "$@"

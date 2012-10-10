@@ -111,6 +111,14 @@ alias agu='sudo apt-fast -u install'
 alias agc='sudo apt-fast clean'
 alias agd='sudo apt-cache show'
 # }}}
+# Ebook {{{
+alias ec='ebook-convert'
+alias ecd='ebook-cover-download'
+alias ee2t='epub2txt'
+alias ei='ebook-isbn'
+alias et2e='txt2epub'
+alias ev='ebook-viewer'
+# }}}
 # Directories {{{
 alias cd-='cd -'
 alias cdo='cd ~/.oroshi/'

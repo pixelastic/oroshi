@@ -1,0 +1,24 @@
+#compdef isomount
+# - Will only suggest .iso files
+
+_ft-iso () {
+	# local var definition to not pollute global scope
+	local curcontext=$curcontext state line context
+	typeset -A opt_args
+
+	# suggesting arguments
+	_arguments \
+		"*:iso file:->iso_file" \
+		&& return 0
+
+	# state machine match
+	case $state in
+		(iso_file)
+			_files -g '*.iso' \
+			&& return 0
+	esac
+
+	return 1
+}
+
+_ft-iso "$@"

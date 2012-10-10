@@ -21,7 +21,21 @@ function! FixEpub()
 	" [...] WOULD NOThave been [...]
 	silent! %s/\v(\u{2})(\l)/\1 \2/
 	" I T IS ALWAYS A BAD IDEA [...]
-	silent! %s/\v^(\u) (\u)/\1\2/
+	" silent! %s/\v^(\u) (\u)/\1\2/
+	
+	" — Ce Rochefort, [...]
+	" 
+	" Chalais, passerait avec moi un vilain moment.
+	silent! %s/\v^— ((.*)[^\.!\?])\n\n([^—](.*))$/— \1 \3/
+	" — Ce Rochefort, [...]
+	" 
+	" 
+	" 
+	" — Et vous, [...]
+	silent!	%s/\v^(— (.*))\n{3,}(— (.*))/\1\r\r\3/
+	silent!	%s/\v^(— (.*))\n{3,}(— (.*))/\1\r\r\3/
+
+	
 	
 	" sentence cut in half with new lines
 	silent! %s/\v(\l)(\n)+(\l)/\1 \3/

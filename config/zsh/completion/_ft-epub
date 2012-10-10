@@ -1,0 +1,24 @@
+#compdef ebook-cover ebook-isbn ebook-viewer epub2txt
+# - Will only suggest .epub files
+
+_ft-epub () {
+	# local var definition to not pollute global scope
+	local curcontext=$curcontext state line context
+	typeset -A opt_args
+
+	# suggesting arguments
+	_arguments \
+		"*:epub file:->epub_file" \
+		&& return 0
+
+	# state machine match
+	case $state in
+		(epub_file)
+			_files -g '*.epub' \
+			&& return 0
+	esac
+
+	return 1
+}
+
+_ft-epub "$@"

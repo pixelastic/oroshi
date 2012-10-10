@@ -1,17 +1,57 @@
-#!/usr/bin/zsh
-# Will convert an .epub file to a .txt file
+#!/usr/bin/env ruby
+# encoding : utf-8
+# Given an epub file, will create a txt file version and extract the cover
+# image
 
+require 'fileutils'
 
-# Check for dependencies
-if [[ `which ebook-convert` = '' ]]; then
-	echo "ebook-convert not found, please sudo apt-get install calibre"
-	return
-fi
+if `which ebook-convert` == ''
+	puts "Unable to find ebook-convert, please install calibre"
+	exit
+end
 
-for file in $@; do
-	if [[ ! ${file:e} = 'epub' ]]; then
-		echo "$file is not an epub, skipping"
-		continue
-	fi
-	ebook-convert $file .txt
-done
+# Expand all paths
+files = ARGV.collect do |a|
+	File.expand_path(a)
+end
+
+# Loop on each file
+files.each do |file|
+	ext = File.extname(file)
+	dirname = File.dirname(file)
+	basename = File.basename(file)
+	coverFile = file.gsub(/\.epub$/, '.jpg')
+	txtFile = file.gsub(/\.epub$/, '.txt')
+
+	next unless ext == '.epub'
+
+	Dir.chdir(dirname)
+
+	puts "Converting #{basename}"
+
+	# Extract cover
+	unless File.exists?(coverFile)
+		puts "Searching for cover (this could take a while)..."
+
+		%x[ebook-convert "#{file}" html]
+		
+		htmlDir = File.join(dirname, 'html')
+		extractedCoverFile = File.join(htmlDir, 'calibre_raster_cover.jpg')
+		if File.exists?(extractedCoverFile)
+			puts "Cover found!"
+			File.rename(extractedCoverFile, coverFile)
+			FileUtils.rm_r(htmlDir)
+		end
+	else
+		puts "Cover file already present"
+	end
+	
+	# Convert to txt
+	unless File.exists?(txtFile)
+		puts "Converting to txt"
+		%x[ebook-convert "#{file}" "#{txtFile}"]
+	else
+		puts "txt file already present"
+	end
+
+end
