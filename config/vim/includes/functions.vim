@@ -5,7 +5,7 @@ function! GetRepoRoot() " {{{
 		return b:repoRoot
 	endif
 
-	let workingDir = getcwd()
+	let workingDir = expand('%:h')
 
 	" Check if git
 	let gitRoot = system('cd '.workingDir.' && git rev-parse --show-toplevel')

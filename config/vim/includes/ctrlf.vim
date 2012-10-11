@@ -24,8 +24,11 @@ function! FindInProject(txt)
 
 	" Note: We go back to the current buffer as soon as the search ends
 	" Note: We start the search in the current repository root
+	" Note: We save the current root in the quickfix window so we can start a new
+	" search directly from there
 	let currentBuffer = bufnr('%')
 	silent execute 'grep ' . a:txt .' ' . g:CtrlFRepoRoot
+	let b:repoRoot = g:CtrlFRepoRoot
 	execute 'buffer '.currentBuffer
 	redraw!
 
