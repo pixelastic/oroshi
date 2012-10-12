@@ -27,6 +27,7 @@
 	diff-last = diff HEAD^
 	diff-staged = diff --cached
 	download = clone --depth=1
+	create-repo = !git-create-repo
 	peek = log --graph --pretty=format:'%C(67)%h%Creset %C(24)(%ar)%Creset %C(241)%an%Creset %C(bold 202)%d%Creset%n   %C(250)%s%Creset%n'
 	revert = checkout
 	rollback = reset --soft HEAD^

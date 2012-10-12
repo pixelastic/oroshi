@@ -1,0 +1,30 @@
+#!/usr/bin/zsh
+# Init a new git directory and set the default remote to a github repo
+
+# Default name is name of current dir
+local repoName=${PWD:t}
+
+# Init repo
+git init -q
+echo "* Init new repo"
+
+# Set default remote as the github repo
+git remote add origin git@github.com:pixelastic/${repoName}
+echo "* Create origin remote"
+
+# Set master branch to push to default remote
+echo '[branch "master"]
+	remote = origin
+	merge = refs/heads/master' >> ./.git/config
+echo "* Set master branch to origin remote"
+
+# Add an empty .gitignore
+touch .gitignore
+echo "* Add empty .hgignore"
+
+# Commit this as an initial commit
+git add .
+git commit -m "Initial commit." -q
+echo "* Initial commit"
+
+echo "New git repo created!"

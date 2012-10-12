@@ -20,3 +20,6 @@ fi
 for alias in $versionAliases; do
 	eval "alias $alias='echo ""$alias error: You are not in a repo""'"
 done
+
+# Just add a simple alias to create a new git repo
+alias vdc='git create-repo'
