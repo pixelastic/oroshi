@@ -25,3 +25,12 @@
 [submodule "config/vim/bundle/available/vim-surround"]
 	path = config/vim/bundle/available/vim-surround
 	url = git://github.com/tpope/vim-surround.git
+[submodule "config/vim/bundle/available/vim-splitest"]
+	path = config/vim/bundle/available/vim-splitest
+	url = git://github.com/pixelastic/vim-splitest.git
+[submodule "config/vim/bundle/available/syntastic"]
+	path = config/vim/bundle/available/syntastic
+	url = git://github.com/scrooloose/syntastic.git
+[submodule "config/vim/bundle/available/vim-surround"]
+	path = config/vim/bundle/available/vim-unimpaired
+	url = git://github.com/tpope/vim-unimpaired.git
