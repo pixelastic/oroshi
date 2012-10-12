@@ -36,7 +36,7 @@ alias vfu='git unstage'
 # }}}
 # [r]emote {{{
 alias vrR='git remote rm'
-alias vra='git remote add'
+alias vrc='git remote add'
 alias vrdw='git download'
 alias vrl='git remote show'
 alias vrpl='git pull'
