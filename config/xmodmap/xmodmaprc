@@ -75,6 +75,7 @@ keycode 135 = ISO_Level3_Shift NoSymbol ISO_Level3_Shift
 ! É, È and À easier with AltGr+Shift
 keycode 11 = eacute 2 eacute 2 asciitilde UC9
 keycode 16 = egrave 7 egrave 7 grave UC8
+keycode 18 = ccedilla 9 ccedilla 9 asciicircum UC7
 keycode 19 = agrave 0 agrave 0 at UC0
 
 ! Adding some common symbols on easy AltGr on common keys
