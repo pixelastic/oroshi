@@ -30,6 +30,7 @@ ARGV.each do |file|
 	if File.exists?(epubFile)
 		File.rename(epubFile, epubFile+'.bak')
 	end
+
 	convertOptions = [
 		"'#{fullpath}'",
 		"'.epub'",
