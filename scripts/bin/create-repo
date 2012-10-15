@@ -1,16 +1,25 @@
 #!/usr/bin/zsh
 # Init a new git directory and set the default remote to a github repo
 
+# Stop if already a git repo
+
 # Default name is name of current dir
-local repoName=${PWD:t}
+local repoName=${PWD:t:l}
 
 # Init repo
 git init -q
 echo "* Init new repo"
 
-# Set default remote as the github repo
-git remote add origin git@github.com:pixelastic/${repoName}
-echo "* Create origin remote"
+# Set default remote
+local host=$1
+if [[ $host == 'bitbucket' || $host == 'bb' ]]; then
+	git remote add origin git@bitbucket.org:pixelastic/${repoName}
+	echo "* Create origin remote on bitbucket"
+fi
+if [[ $host == 'github' || $host == 'gh' || $host == '' ]]; then
+	git remote add origin git@github.com:pixelastic/${repoName}
+	echo "* Create origin remote on git"
+fi
 
 # Set master branch to push to default remote
 echo '[branch "master"]
