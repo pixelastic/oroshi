@@ -8,11 +8,11 @@ if [[ ${#versionAliases[*]} = 0 ]]; then
 	versionAliases=(
 		vbR vbb vbc vbl vbm vbmm vbr vbrr vbs vbsm
 		vcc vcca vcd vce vcl vcla vcr
+		vdR vdd vddl vdl vdr vdra vdu
 		vfR vfa vfaa vfc vfm vfr vfu
 		vrR vrc vrdw vrl vrps vrpl vrr vrout vrin
-		vtc vtl vtr vts vtt
 		vsR vsc vse vsl vsr
-		vdR vdc vdd vddl vdl vdr vdra vdu
+		vtc vtl vtr vts vtt
 	)
 fi
 
