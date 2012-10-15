@@ -11,7 +11,7 @@ echo "* Init new repo"
 # Set default remote
 local host=$1
 if [[ $host == 'bitbucket' || $host == 'bb' ]]; then
-	git remote add origin git@bitbucket.org:pixelastic/${repoName}
+	git remote add origin ssh://git@bitbucket.org/pixelastic/${repoName}.git
 	echo "* Create origin remote on bitbucket"
 fi
 if [[ $host == 'github' || $host == 'gh' || $host == '' ]]; then
