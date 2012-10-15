@@ -155,6 +155,10 @@ alias py3='python3'
 # Note: pry has a bug where it loads .pryrc twice if launched in home
 alias pry='cd ~/local/tmp/scripts/pry && pry && cd -'
 # }}}
+# Versioning {{{
+# Note: Context-sensitive aliases are defined in ./aliases-{git|hg|none}.zsh
+alias vdc='create-repo'
+alias vdt='get-version-system'
 # Vim {{{
 alias v='vim -p'
 alias vv='fasd -e vim'

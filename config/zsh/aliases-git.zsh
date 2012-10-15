@@ -59,7 +59,6 @@ alias vsr='git stash drop'
 # }}}
 # working [d]irectory {{{
 alias vdR='git tabula-rasa'
-alias vdc='git create-repo'
 alias vdd='git diff'
 alias vddl='git diff-last'
 alias vdl='git status-short'
