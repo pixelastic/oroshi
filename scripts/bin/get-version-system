@@ -1,0 +1,19 @@
+#!/usr/bin/zsh
+
+# Check if git
+if [[ $(git --work-tree="$PWD" status 2>/dev/null) != '' ]]; then
+	echo 'git'
+	return
+fi
+# Check if hg
+if [[ $(hg --cwd "$PWD" root 2>/dev/null) != '' ]]; then
+	echo 'hg'
+	return
+fi
+# Check is SVN
+if [[ -r ./.svn ]]; then
+	echo 'svn'
+	return
+fi
+# No repo found
+echo 'none'
