@@ -90,6 +90,8 @@ echo "Mounting /dev/sd$1 to ~/local/mnt/sd$1"
 sudo mount -t vfat /dev/sd$1 ~/local/mnt/sd$1
 cd ~/local/mnt/sd$1
 }
+# plowdown
+alias pd='plowdown'
 # }}}
 # GUI apps {{{
 alias chrome="gui chromium-browser"
