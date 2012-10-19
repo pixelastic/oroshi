@@ -3,3 +3,13 @@
 
 # lighttpd		: Fast webserver
 sudo apt-get install lighttpd
+
+# plowshare   : download of files from rapidshare and co
+cd /usr/local/src
+git clone https://code.google.com/p/plowshare/
+
+cd ./plowshare
+mkdir /usr/local/etc/plowshare
+make install PREFIX=/usr/local/etc/plowshare
+
+ln -s /usr/local/etc/plowshare/bin/plowdown /usr/local/bin/plowdown
