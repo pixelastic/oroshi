@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+# Accept any filepath as argument and return it in absolute notation
+
+exit unless ARGV.length == 1
+puts File.expand_path ARGV[0]
