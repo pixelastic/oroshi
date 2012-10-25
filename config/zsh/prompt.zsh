@@ -602,7 +602,7 @@ function precmd_updateHash() {
 	fi
 	# Git commands
 	if [[ $previousCommand[1] = 'git' 
-		&& $previousCommand[2] =~ '(add|checkout|clean|clone|commit|create-file|init|merge|mv|reset|rm|stash|status|tabula-rasa)' ]]; then
+		&& $previousCommand[2] =~ '(add|checkout|clean|clone|commit|create-file|init|merge|mv|reset|rm|submodule|stash|status|tabula-rasa)' ]]; then
 		updateHash=1
 	fi
 	# Hg command
