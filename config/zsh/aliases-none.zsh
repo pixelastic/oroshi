@@ -12,6 +12,7 @@ if [[ ${#versionAliases[*]} = 0 ]]; then
 		vfR vfa vfaa vfc vfm vfr vfu
 		vrR vrc vrdw vrl vrps vrpl vrr vrout vrin
 		vsR vsc vse vsl vsr
+		vsbi vbsa vbsu
 		vtc vtl vtr vts vtt
 	)
 fi
