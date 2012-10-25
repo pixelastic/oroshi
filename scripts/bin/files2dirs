@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+# For each file passed as argument, will create a directory of the same name
+# and put the file in the directory
+
+ARGV.each do |file|
+	next unless File.exists? file
+
+	fullpath = File.expand_path(file)
+	extname = File.extname(file)
+	basename = File.basename(file, extname)
+	dirname = File.dirname(fullpath)
+
+	puts "Moving #{basename}"
+
+	# Create a new dir
+	newdir = File.join(dirname, basename)
+	Dir.mkdir(newdir) unless File.exists?(newdir)
+
+	# Move file in this new dir
+	newfile = File.join(newdir, "#{basename}#{extname}")
+	File.rename(fullpath, newfile)
+
+end
