@@ -131,7 +131,7 @@ alias cdm='cd ~/Documents/Movies/'
 alias cdp='cd ~/Documents/Photos'
 alias cdl='cd ~/local/'
 alias cdt='cd ~/local/tmp/'
-alias cdsov='cd ~/local/sov/'
+alias cdsov='cd ~/local/tmp/sov/'
 alias cds='cd ~/local/tmp/scripts/'
 alias cdw='cd ~/local/var/www/'
 # }}}
