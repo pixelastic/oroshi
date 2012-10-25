@@ -57,7 +57,7 @@ alias vse='git stash apply'
 alias vsl='git stash list'
 alias vsr='git stash drop'
 # }}}
-# [s]ub-[m]odules {{{
+# [s]u[b]-modules {{{
 alias vbsi='git submodule init'
 alias vsba='git submodule add'
 alias vsbu='git submodule update'
