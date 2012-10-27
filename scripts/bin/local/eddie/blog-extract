@@ -13,7 +13,7 @@ local blogDir=~/Documents/Blog
 cd $blogDir
 
 # Parsing source files from destination dir
-local sourceFiles="./*.txt"
+local sourceFiles="./*.(txt|mkd)"
 local exportDir="./pictures"
 
 # Get all the pictures referenced in texts
