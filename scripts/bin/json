@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+# Pretty print json
+local input=$1
+echo $@ > test.txt
+
+# File input
+if [[ -r $input ]]; then
+	cat $1 | jq '.'
+	exit
+fi
+
+# String input
+echo "$1" | jq '.'
