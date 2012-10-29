@@ -1,5 +1,0 @@
-#!/usr/bin/zsh
-# Tools I use to ease my javascript development
-
-# yajl-tools		: include json_reformat function
-sudo apt-get install yajl-tools

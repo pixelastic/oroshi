@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Faster apt-get
+sudo add-apt-repository ppa:tldm217/tahutek.net
+sudo apt-get update
+sudo apt-get install apt-fast
+
+# Old packet manager GUI 
+sudo apt-get install synaptic
