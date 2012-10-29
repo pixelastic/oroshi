@@ -23,7 +23,7 @@ alias vcd='git diff'
 alias vce='git amend'
 alias vcl='git peek'
 alias vcla='git peek -p'
-alias vcr='git rollback'
+alias vcR='git rollback'
 # }}}
 # [f]iles {{{
 alias vfa='git add'
@@ -46,7 +46,7 @@ alias vrr='git remote show origin -n'
 # [t]ags {{{
 alias vtc='git tag'
 alias vtl='git tag-list'
-alias vtr='git tag -d'
+alias vtR='git tag -d'
 alias vts='git checkout'
 alias vtt='git current-tag'
 # }}}
