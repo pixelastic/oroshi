@@ -92,6 +92,8 @@ cd ~/local/mnt/sd$1
 }
 # plowdown
 alias pd='plowdown'
+# watch tree
+alias wt='watch -c ''tree -aNC -I ".hg\|.git"'''
 # }}}
 # GUI apps {{{
 alias chrome="gui chromium-browser"
