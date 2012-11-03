@@ -5,13 +5,13 @@
 # http://floatboth.com/where-i-set-up-my-git-and-hg-aliases-like-a-boss
 
 # [b]ranches {{{
+alias vbR='git branch -D'
 alias vbb='git current-branch'
 alias vbc='git checkout -b'
 alias vbl='git branch-list'
 alias vbm='git merge --no-ff'
-alias vbmm='git merge --no-ff master'
-alias vbr='git branch -d'
-alias vbR='git branch -D'
+alias vbmm='git merge --squash master && git commit -m "Merged master"'
+alias vbms='git merge --squash'
 alias vbrr='git push origin --delete' # Remove remote branch
 alias vbs='git checkout'
 alias vbsm='git checkout master'
