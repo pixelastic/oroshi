@@ -117,6 +117,7 @@ alias agd='sudo apt-cache show'
 # }}}
 # Ebook {{{
 alias ec='ebook-convert'
+alias ecc='ebook-cover-change'
 alias ecd='ebook-cover-download'
 alias ee2t='epub2txt'
 alias ei='ebook-isbn'
