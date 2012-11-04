@@ -1,0 +1,71 @@
+#!/usr/bin/env ruby
+# encoding : utf-8
+require "shellwords"
+
+# Update the epub inner metadata to fit the one guessed from the current
+# location
+
+ARGV.each do |epub|
+	# Get paths
+	fullpath = File.expand_path(epub)
+	extname = File.extname(fullpath)
+	basename = File.basename(fullpath, extname)
+	dirname = File.dirname(fullpath)
+
+	# Options for changing metadata
+	options = [
+		fullpath.shellescape,
+		"--book-producer='...'"
+	]
+
+	# Split name to find author, serie, index, title
+	split = basename.split(' - ')
+	author = split[0]
+	title = split[-1]
+	options << "--title='#{title}'"
+	
+	# Deals with author
+	splitauthor = author.split(' ')
+	author_lastname = splitauthor[0..-2].join(' ').capitalize
+	author_firstname = splitauthor[-1]
+	options << "--authors='#{author_firstname} #{author_lastname}'"
+
+	# Deal with series
+	if split.size == 3
+		serie = split[1]
+		serie_split = serie.split(' ')
+		serie_name = serie_split[0..-2].join(' ')
+		serie_index = serie_split[-1]
+		options << "--series='#{serie_name}'"
+		options << "--index=#{serie_index}"
+		options << "--title-sort='#{serie_name} #{serie_index} - #{title}'"
+	end
+	
+
+	# Deal with the cover
+	covername = File.join(dirname, "#{basename}.jpg")
+	if File.exists?(covername)
+		# Optimize cover
+		mogrify_options = [
+			"-resize 610",
+			covername.shellescape
+		]
+		%x[mogrify #{mogrify_options.join(' ')}]
+
+		jpegoptim_options = [
+			"-m80",
+			"--strip-all",
+			covername.shellescape
+		]
+		%x[jpegoptim #{jpegoptim_options.join(' ')}]
+
+		options << "--cover='#{covername}'"
+	end
+
+puts options	
+	
+
+	%x[ebook-meta #{options.join(' ')}]
+	
+
+end

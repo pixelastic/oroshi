@@ -123,6 +123,7 @@ alias ee2t='epub2txt'
 alias ei='ebook-isbn'
 alias et2e='txt2epub'
 alias ev='ebook-viewer'
+alias emu='ebook-metadata-update'
 # }}}
 # Directories {{{
 alias cd-='cd -'

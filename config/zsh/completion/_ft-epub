@@ -1,4 +1,4 @@
-#compdef ebook-cover ebook-isbn ebook-viewer epub2txt
+#compdef ebook-cover ebook-isbn ebook-viewer epub2txt ebook-metadata-update
 # - Will only suggest .epub files
 
 _ft-epub () {
