@@ -26,8 +26,8 @@ ARGV.each do |epub|
 	
 	# Deals with author
 	splitauthor = author.split(' ')
-	author_lastname = splitauthor[0..-2].join(' ').capitalize
-	author_firstname = splitauthor[-1]
+	author_lastname = splitauthor[0]
+	author_firstname = splitauthor[1..-1].join(' ')
 	options << "--authors=\"#{author_firstname} #{author_lastname}\""
 
 	# Deal with series
