@@ -1,6 +1,6 @@
 #!/usr/bin/zsh
 # Change the cover image of the specified epub
-# $ ebook-change-cover ebook.epub cover.jpg
+# $ ebook-cover-change ebook.epub cover.jpg
 
 local epub=$1
 local cover=$2
