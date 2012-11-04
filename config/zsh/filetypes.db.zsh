@@ -53,7 +53,7 @@ O_FILETYPES=(
 	script      "vim:00;35:ahk,appcache,bat,c,ctp,css,dat,erb,htm,html,js,json,kml,less,lua,manifest,php,rb,sql,vim,xml,yml,zsh,zsh-theme"
 	sheet       "gui localc:01;33:ods,xls"
 	subtitle    "vim:00;36:ass,srt,sub"
-	tmp         "vim:00;30:kpf,orig,out,swp,tmp"
+	tmp         "vim:00;30:bak,kpf,orig,out,swp,tmp"
 	txt         "vim:00;36:log,markdown,md,mdown,mkd,mkdown,mo,po,template,text,txt"
 	txt-full    "gui lowriter:01;33:doc,docx,odt"
 	video       "gui vlc:01;34:avi,flv,mpg,mpeg,mkv,mp4"
