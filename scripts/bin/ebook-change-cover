@@ -15,6 +15,10 @@ if [[ ! $cover =~ 'jpg$' ]]; then
 	exit
 fi
 
+# Resize cover to 600px
+mogrify -resize 610 $cover
+jpegoptim -m80 --strip-all $cover
+
 # Make a tmpfile to convert to epub
 local tmpfile=${epub:r}-tmp.epub
 local backupfile=${epub:r}.epub.bak
