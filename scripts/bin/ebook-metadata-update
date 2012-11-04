@@ -22,13 +22,13 @@ ARGV.each do |epub|
 	split = basename.split(' - ')
 	author = split[0]
 	title = split[-1]
-	options << "--title='#{title}'"
+	options << "--title=\"#{title}\""
 	
 	# Deals with author
 	splitauthor = author.split(' ')
 	author_lastname = splitauthor[0..-2].join(' ').capitalize
 	author_firstname = splitauthor[-1]
-	options << "--authors='#{author_firstname} #{author_lastname}'"
+	options << "--authors=\"#{author_firstname} #{author_lastname}\""
 
 	# Deal with series
 	if split.size == 3
@@ -36,9 +36,9 @@ ARGV.each do |epub|
 		serie_split = serie.split(' ')
 		serie_name = serie_split[0..-2].join(' ')
 		serie_index = serie_split[-1]
-		options << "--series='#{serie_name}'"
+		options << "--series=\"#{serie_name}\""
 		options << "--index=#{serie_index}"
-		options << "--title-sort='#{serie_name} #{serie_index} - #{title}'"
+		options << "--title-sort=\"#{serie_name} #{serie_index} - #{title}\""
 	end
 	
 
@@ -59,7 +59,7 @@ ARGV.each do |epub|
 		]
 		%x[jpegoptim #{jpegoptim_options.join(' ')}]
 
-		options << "--cover='#{covername}'"
+		options << "--cover=\"#{covername}\""
 	end
 
 puts options	
