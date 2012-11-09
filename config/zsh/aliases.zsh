@@ -121,9 +121,10 @@ alias ecc='ebook-cover-change'
 alias ecd='ebook-cover-download'
 alias ee2t='epub2txt'
 alias ei='ebook-isbn'
+alias em='ebook-meta'
+alias emu='ebook-metadata-update'
 alias et2e='txt2epub'
 alias ev='ebook-viewer'
-alias emu='ebook-metadata-update'
 # }}}
 # Directories {{{
 alias cd-='cd -'
