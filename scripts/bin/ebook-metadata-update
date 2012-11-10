@@ -15,7 +15,7 @@ ARGV.each do |epub|
 	# Options for changing metadata
 	options = [
 		fullpath.shellescape,
-		"--book-producer='...'"
+		"--book-producer=''"
 	]
 
 	# Split name to find author, serie, index, title
