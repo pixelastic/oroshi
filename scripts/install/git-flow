@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+echo "Downloading source from github"
+cd /usr/local/etc
+git clone --recursive git://github.com/nvie/gitflow.git
+
+echo "Creating symlinks"
+cd /usr/local/bin/
+ln -s ../etc/giflow/git-flow .
+
