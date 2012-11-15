@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 echo "Downloading source from github"
 cd /usr/local/etc
@@ -6,5 +6,7 @@ git clone --recursive git://github.com/nvie/gitflow.git
 
 echo "Creating symlinks"
 cd /usr/local/bin/
-ln -s ../etc/giflow/git-flow .
+for i in /usr/local/etc/gitflow/git*; do
+	ln -s ../etc/gitflow/${i:t} .
+done
 
