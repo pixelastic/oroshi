@@ -488,8 +488,8 @@ function updateBranchGit() {
 		return
 	fi
 	# Bugfix branch
-	if [[ $promptBranch =~ '^bugfix/' ]]; then
-		promptBranch=${promptBranch/bugfix\//}
+	if [[ $promptBranch =~ '^feature/bugfix/' ]]; then
+		promptBranch=${promptBranch/feature\/bugfix\//}
 		colorBranch=$promptColor[gitFlowBugfix]
 		return
 	fi
