@@ -44,6 +44,7 @@ promptColorDefault=(
 	gitStaged         "171" # Files are staged, ready to be commited
 	gitDirty          "160" # Repo is dirty
 	gitDirtyAndStaged "203" # Repo is dirty AND files are staged
+
 	gitFlowDevelop    "185" # develop branch
 	gitFlowMaster     "69"  # master branch
 	gitFlowHotfix     "160" # hotfix branch
