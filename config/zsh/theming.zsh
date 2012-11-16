@@ -45,10 +45,10 @@ promptColorDefault=(
 	gitDirty          "160" # Repo is dirty
 	gitDirtyAndStaged "203" # Repo is dirty AND files are staged
 
-	gitFlowDevelop    "185" # develop branch
-	gitFlowMaster     "69"  # master branch
+	gitFlowDevelop    "184" # develop branch
+	gitFlowMaster     "069"  # master branch
 	gitFlowHotfix     "160" # hotfix branch
-	gitFlowRelease    "108" # release branch
+	gitFlowRelease    "028" # release branch
 	gitFlowFeature    "202" # feature branch
 	gitFlowBugfix     "203" # bugfix branch
 )
