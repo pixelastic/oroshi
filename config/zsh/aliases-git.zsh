@@ -12,6 +12,7 @@ alias vbl='git branch-list'
 alias vbm='git merge --no-ff'
 alias vbmm='git merge --squash master && git commit -m "Merged master"'
 alias vbms='git merge --squash'
+alias vbmv='git branch -m'
 alias vbrr='git push origin --delete' # Remove remote branch
 alias vbs='git checkout'
 alias vbsm='git checkout master'
