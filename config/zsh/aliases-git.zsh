@@ -52,11 +52,11 @@ alias vts='git checkout'
 alias vtt='git current-tag'
 # }}}
 # [s]tashes {{{
-alias vsR='git stash clear'
+alias vsR='git stash drop' # delete one stash
+alias vsRa='git stash clear' # delete all stashes
+alias vsa='git stash apply'
 alias vsc='git stash'
-alias vse='git stash apply'
 alias vsl='git stash list'
-alias vsr='git stash drop'
 # }}}
 # [s]u[b]-modules {{{
 alias vbsi='git submodule init'
