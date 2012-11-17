@@ -17,6 +17,10 @@ class GitBranchListTest < Test::Unit::TestCase
 		output = GitBranchList::color_text('develop', 184)
 		expected = "[38;5;184mdevelop[00m"
 		assert_equal(expected, output)
+
+		output = GitBranchList::color_text('master', 69)
+		expected = "[38;5;069mmaster[00m"
+		assert_equal(expected, output)
 	end
 
 end
