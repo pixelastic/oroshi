@@ -657,7 +657,7 @@ function precmd_updateTag() {
 function precmd_updateBranch() {
 	# Git commands
 	if [[ $previousCommand[1] = 'git' 
-		&& $previousCommand[2] =~ '(branch|checkout|commit|current-branch|flow|tag)' ]]; then
+		&& $previousCommand[2] =~ '(branch|checkout|commit|current-branch|flow|status|tag)' ]]; then
 		updateBranch
 	fi
 }
