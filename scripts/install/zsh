@@ -1,3 +1,31 @@
 #!/usr/bin/env bash
-sudo apt-get install zsh
+
+echo "Downloading source from sourceforge"
+cd /usr/local/src
+wget -c http://downloads.sourceforge.net/project/zsh/zsh/5.0.0/zsh-5.0.0.tar.gz 
+
+echo "Extracting"
+tar xvzf zsh-5.0.0.tar.gz
+cd zsh-5.0.0
+
+echo "Configuring"
+mkdir -p /usr/local/etc/zsh
+./configure --prefix=/usr/local/etc/zsh
+
+echo "Compiling"
+make
+# make check
+make install
+
+echo "Adding symlinks"
+cd /usr/local/bin/
+ln -s ../etc/zsh/bin/zsh
+
+echo "Changing current shell"
+sudo chsh -s /usr/local/bin/zsh $USER
+
+echo "--------------"
+echo "You should now reboot for the shell change to take effect correctly."
+echo "--------------"
+
 

@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Creates a ~/.dircolors files containing default colors as well as custom
 # colors for extensions defined in ~/.oroshi/config/zsh/filetypes.db.zsh
 

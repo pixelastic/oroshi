@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Will read all .txt files in ~/Documents/Blog and copy the referenced pictures
 # in "pictures/"
 

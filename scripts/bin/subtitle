@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # For a given movie or serie episode, will download a zip of subtitles
 
 local serieRegexp='S([0-9]*)E([0-9]*)'

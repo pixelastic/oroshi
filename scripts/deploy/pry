@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Link Pry config to ~/.pryrc and Awesome Print config to ~/.aprc
 
 # Paths
