@@ -37,10 +37,11 @@ class GitBranchList
 			self.color_text(name, color)
 		end
 
-		line.gsub!(/(feature[\w\/\-\.]*)/) do |foo|
-			name=$1
-			color=@branch_colors[:feature]
-			self.color_text(name, color)
+		line.gsub!(/((feature)[\w\/\-\.]*)/) do |foo|
+			fullname=$1
+			prefix=$2
+			color=@branch_colors[prefix.to_sym]
+			self.color_text(fullname, color)
 		end
 		return line
 
