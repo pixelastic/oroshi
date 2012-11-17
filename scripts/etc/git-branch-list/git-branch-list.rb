@@ -27,7 +27,12 @@ class GitBranchList
 		return [ match[1] == "*", match[2], match[3], match[4] ]
 	end
 
-	def self.color_line(line)
+	def self.color_branchname(line)
+		# Color main branches
+		line.gsub!("master", self.color_text("master", 69))
+		line.gsub!("develop", self.color_text("develop", 184))
+		return line
+
 
 	end
 

@@ -23,4 +23,11 @@ class GitBranchListTest < Test::Unit::TestCase
 		assert_equal(expected, output)
 	end
 
+	def test_color_branchname
+		output = GitBranchList::color_branchname("  develop  46b1c50 Merge branch 'feature/zsh5.0' into develop")
+		expected = "  [38;5;184mdevelop[00m  46b1c50 Merge branch 'feature/zsh5.0' into [38;5;184mdevelop[00m"
+		assert_equal(expected, output)
+
+	end
+
 end
