@@ -45,9 +45,9 @@ alias vffpl='git flow feature pull'
 alias vffs='git flow feature start'
 
 alias vfbf='cd $(git root) && git flow-bugfix finish'
-alias vffpb='git flow-bugfix publish'
-alias vffpl='git flow-bugfix pull'
-alias vffs='git flow-bugfix start'
+alias vfbpb='git flow-bugfix publish'
+alias vfbpl='git flow-bugfix pull'
+alias vfbs='git flow-bugfix start'
 
 alias vfhf='cd $(git root) && git flow hotfix finish'
 alias vfhpb='git flow hotfix publish'
