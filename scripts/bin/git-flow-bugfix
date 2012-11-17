@@ -16,7 +16,7 @@ if [[ $command = 'start' ]]; then;
 	exit
 fi
 
-# Works as the initial feature finish command
-if [[ $command = 'finish' ]]; then;
-	git flow feature finish
+# Following commands works as the initial one
+if [[ $command =~ '^(finish|publish|pull)$' ]]; then;
+	git flow feature $command
 fi
