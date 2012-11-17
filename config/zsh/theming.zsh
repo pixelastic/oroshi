@@ -28,7 +28,6 @@ promptColorDefault=(
 	pathGroup         "203" # Prompt color of path if user is in group
 	pathRestricted    "160" # Prompt color if not owner nor in group
 	debug             "209" # Debug used in prompt
-	# time              "024" # Prompt color of the current time
 	
 	tag               "241" # Current repo tag
 	tagExact          "202" # Color for tag if we are at the exact commit
@@ -46,7 +45,7 @@ promptColorDefault=(
 	gitDirtyAndStaged "203" # Repo is dirty AND files are staged
 
 	gitFlowDevelop    "184" # develop branch
-	gitFlowMaster     "069"  # master branch
+	gitFlowMaster     "069" # master branch
 	gitFlowHotfix     "160" # hotfix branch
 	gitFlowRelease    "028" # release branch
 	gitFlowFeature    "202" # feature branch
