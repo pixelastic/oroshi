@@ -24,4 +24,8 @@ ln -s ../etc/zsh/bin/zsh
 echo "Changing current shell"
 sudo chsh -s /usr/local/bin/zsh $USER
 
+echo "--------------"
+echo "You should now reboot for the shell change to take effect correctly."
+echo "--------------"
+
 
