@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Will find all ebooks in the current dir and subdirs and convert them to the
 # epub format.
 # The original files will be moved in a compress-backup folder

@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Note: This is a work in progress, I only throw ideas on what to do here.
 
 # Accepts mp3 files as input.

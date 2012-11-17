@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Will download in the current dir all the images linked in the page given as
 # argument
 #

@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Will create an empty zsh script, make it executable, and edit it in vim.
 
 # Create the file, as zsh script

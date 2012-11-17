@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # This script is born out of frustration from a slow and expensive internet
 # connexion. I didn't want to use all my money downloading comics from
 # the internet so I asked my server (with unlimited bandwith) to do it for me.
