@@ -29,12 +29,19 @@ class GitBranchList
 
 	def self.color_branchname(line)
 		# Color main branches
+		# line.gsub!(/develop/, self.color_text('develop', 184))
+		# line.gsub!(/master/, self.color_text('master', 69))
 		line.gsub!(/(develop|master)/) do |foo|
 			name=$1
 			color=@branch_colors[name.to_sym]
 			self.color_text(name, color)
 		end
-		# line.gsub!("develop", self.color_text("develop", 184))
+
+		line.gsub!(/(feature[\w\/\-\.]*)/) do |foo|
+			name=$1
+			color=@branch_colors[:feature]
+			self.color_text(name, color)
+		end
 		return line
 
 
