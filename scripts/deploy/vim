@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Creates directories needed by vim and link vim config to ~/.vim and ~/.vimrc.
 
 # Paths
