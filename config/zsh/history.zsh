@@ -4,9 +4,9 @@
 # In which file to save history
 HISTFILE=~/.history
 # How many lines to save in history
-SAVEHIST=10000		# Big history
+SAVEHIST=10000
 # Maximum size of the file
-HISTSIZE=10000		# Big history
+HISTSIZE=10000
 # We want to share history accross all opened terminal windows
 setopt SHARE_HISTORY
 # We do not want dupes to show in the history
@@ -20,4 +20,4 @@ setopt HIST_VERIFY
 # Log timestamps in history
 setopt EXTENDED_HISTORY 
 # Commands starting with a space are not loggued in history
-setopt HIST_IGNORE_SPACE	# do not log commands starting with a space
+setopt HIST_IGNORE_SPACE

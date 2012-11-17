@@ -2,18 +2,15 @@
 # as mapping (like in vim)
 stty ixoff -ixon
 
-# Extended F keys (F13-F20) seems mapped to ~ by default. We clear that so it
-# won't interfere with our mappings 
-bindkey -s "[25~" ""
-bindkey -s "[26~" ""
-bindkey -s "[27~" ""
-bindkey -s "[28~" ""
-bindkey -s "[29~" ""
-bindkey -s "[30~" ""
-bindkey -s "[31~" ""
-bindkey -s "[32~" ""
-bindkey -s "[33~" ""
+# Start and end of line
+bindkey "OH"  beginning-of-line  # Home
+bindkey "[5~" beginning-of-line  # Page Up
+bindkey "OF"  end-of-line        # End
+bindkey "[6~" end-of-line        # Page Down
 
-# Prevent Page Up/Down to display a tilde
-bindkey -s "[5~" ""
-bindkey -s "[6~" ""
+# Making sure the delete key works
+bindkey "[3~" delete-char
+
+# Disabling some special keys
+bindkey -s "[25~" "" # Caps lock (F13)
+bindkey -s "[26~" "" # Square (F14)

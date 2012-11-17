@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Link Metacity global and window-specific keybindings config to gconf config
 # dir
 

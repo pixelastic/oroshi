@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Mount an iso file in ~/local/mnt
 
 local isoFile=${1:a}

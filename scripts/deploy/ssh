@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Generates a ~/.ssh/config file by concatenating :
 # - files in ./private/config/ssh/local/{hostname}
 # - default values

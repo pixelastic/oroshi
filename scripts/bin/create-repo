@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Init a new git directory and set the default remote to a github repo
 
 # Default name is name of current dir
