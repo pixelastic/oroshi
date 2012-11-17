@@ -3,9 +3,6 @@
 
 
 class GitBranchList
-
-	def initialize(*args)
-		@input = args[0] || `git branch --verbose`
 		@branch_colors = {
 			:develop => 184,
 			:master => 69,
@@ -14,6 +11,9 @@ class GitBranchList
 			:feature => 202,
 			:bugfix => 203
 		}
+
+	def initialize(*args)
+		@input = args[0] || `git branch --verbose`
 	end
 
 	def to_s
@@ -29,8 +29,12 @@ class GitBranchList
 
 	def self.color_branchname(line)
 		# Color main branches
-		line.gsub!("master", self.color_text("master", 69))
-		line.gsub!("develop", self.color_text("develop", 184))
+		line.gsub!(/(develop|master)/) do |foo|
+			name=$1
+			color=@branch_colors[name.to_sym]
+			self.color_text(name, color)
+		end
+		# line.gsub!("develop", self.color_text("develop", 184))
 		return line
 
 

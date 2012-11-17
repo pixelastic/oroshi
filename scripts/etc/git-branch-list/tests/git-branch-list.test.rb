@@ -28,6 +28,14 @@ class GitBranchListTest < Test::Unit::TestCase
 		expected = "  [38;5;184mdevelop[00m  46b1c50 Merge branch 'feature/zsh5.0' into [38;5;184mdevelop[00m"
 		assert_equal(expected, output)
 
+		output = GitBranchList::color_branchname("  master  46b1c50 Another message")
+		expected = "  [38;5;069mmaster[00m  46b1c50 Another message"
+		assert_equal(expected, output)
+
+		# output = GitBranchList::color_branchname("  feature/save-the-cheerleader  46b1c50 Save the world")
+		# expected = "  [38;5;202mfeature/save-the-cheerleader[00m  46b1c50 Save the world"
+		# assert_equal(expected, output)
+
 	end
 
 end
