@@ -16,10 +16,6 @@ class GitBranchList
 		@input = args[0] || `git branch --verbose`
 	end
 
-	def to_s
-		return @input
-	end
-
 	# Parse a branch line into 4 useful parts
 	def self.parse_line(line)
 		regexp = /^(\*|\s?) (\S+)\s*(\w+) (.*)/
@@ -28,19 +24,12 @@ class GitBranchList
 	end
 
 	def self.color_branchname(line)
-		# Color main branches
-		# line.gsub!(/develop/, self.color_text('develop', 184))
-		# line.gsub!(/master/, self.color_text('master', 69))
-		# line.gsub!(/(develop|master)/) do |foo|
-		# 	name=$1
-		# 	color=@branch_colors[name.to_sym]
-		# 	self.color_text(name, color)
-		# end
+		branches=/master|hotfix|release|develop|bugfix|feature/
+		suffix=/\/?[\w\/\-\.]*/
 
-		line.gsub!(/((feature|develop|master)[\w\/\-\.]*)/) do |foo|
-			fullname=$1
-			prefix=$2
-			color=@branch_colors[prefix.to_sym]
+		line.gsub!(/((#{branches})#{suffix})/) do |foo|
+			fullname, type = $1, $2
+			color=@branch_colors[type.to_sym]
 			self.color_text(fullname, color)
 		end
 		return line
@@ -57,11 +46,4 @@ class GitBranchList
 
 end
 
-# puts GitBranchList.new
-# output=`git branch --verbose`
-# regexp-replace output '^..develop' '[38;5;184m  develop[00m'
-# regexp-replace output '^..master' '[38;5;069m  master[00m'
-#     # reset     "%{[00m%}"
-#     # FG[$color]="%{[38;5;${color}m%}"
-# 
-# echo $output
+puts GitBranchList.color_branchname(`git branch --verbose`)
