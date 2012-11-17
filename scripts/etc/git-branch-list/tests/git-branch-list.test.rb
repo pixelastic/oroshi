@@ -36,6 +36,14 @@ class GitBranchListTest < Test::Unit::TestCase
 		expected = "  [38;5;202mfeature/save-the-cheerleader[00m  46b1c50 Save the world"
 		assert_equal(expected, output)
 
+		output = GitBranchList::color_branchname("  feature/test  46b1c50 Merge branch 'master'")
+		expected = "  [38;5;202mfeature/test[00m  46b1c50 Merge branch '[38;5;069mmaster[00m'"
+		assert_equal(expected, output)
+
+		output = GitBranchList::color_branchname("  feature/bugfix/42/cannot-post  46b1c50 Fixed!")
+		expected = "  [38;5;203mfeature/bugfix/42/cannot-post[00m  46b1c50 Fixed!"
+		assert_equal(expected, output)
+
 	end
 
 end

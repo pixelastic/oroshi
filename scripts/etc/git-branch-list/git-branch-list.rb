@@ -24,11 +24,12 @@ class GitBranchList
 	end
 
 	def self.color_branchname(line)
-		branches=/master|hotfix|release|develop|bugfix|feature/
+		branches=/master|hotfix|release|develop|feature/
 		suffix=/\/?[\w\/\-\.]*/
 
 		line.gsub!(/((#{branches})#{suffix})/) do |foo|
 			fullname, type = $1, $2
+			type="bugfix" if fullname =~ /^feature\/bugfix/
 			color=@branch_colors[type.to_sym]
 			self.color_text(fullname, color)
 		end
@@ -46,4 +47,3 @@ class GitBranchList
 
 end
 
-puts GitBranchList.color_branchname(`git branch --verbose`)
