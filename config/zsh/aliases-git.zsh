@@ -38,21 +38,26 @@ alias vfu='git unstage'
 # }}}
 # [f]low {{{
 alias vfi='git flow init -d'
+
 alias vfff='cd $(git root) && git flow feature finish'
 alias vffpb='git flow feature publish'
 alias vffpl='git flow feature pull'
 alias vffs='git flow feature start'
-alias vffl='git flow feature list'
+
+alias vfbf='cd $(git root) && git flow-bugfix finish'
+alias vffpb='git flow-bugfix publish'
+alias vffpl='git flow-bugfix pull'
+alias vffs='git flow-bugfix start'
+
 alias vfhf='cd $(git root) && git flow hotfix finish'
 alias vfhpb='git flow hotfix publish'
 alias vfhpl='git flow hotfix pull'
 alias vfhs='git flow hotfix start'
-alias vfhl='git flow hotfix list'
+
 alias vfrf='cd $(git root) && git flow release finish'
 alias vfrpb='git flow release publish'
 alias vfrpl='git flow release pull'
 alias vfrs='git flow release start'
-alias vfrl='git flow release list'
 # }}}
 # [r]emote {{{
 alias vrR='git remote rm'
