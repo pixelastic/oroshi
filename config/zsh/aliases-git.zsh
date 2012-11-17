@@ -10,12 +10,13 @@ alias vbb='git current-branch'
 alias vbc='git checkout -b'
 alias vbl='git branch-list'
 alias vbm='git merge --no-ff'
-alias vbmm='git merge --squash master && git commit -m "Merged master"'
+alias vbmd='git merge --squash develop && git commit -m "BRANCH: Merged `develop`"'
 alias vbms='git merge --squash'
 alias vbmv='git branch -m'
 alias vbrr='git push origin --delete' # Remove remote branch
 alias vbs='git checkout'
 alias vbsm='git checkout master'
+alias vbsd='git checkout develop'
 # }}}
 # [c]ommits {{{
 alias vcc='git commit -v'
@@ -35,6 +36,24 @@ alias vfr='git checkout --'
 alias vfR='git rm -r'
 alias vfu='git unstage'
 # }}}
+# [f]low {{{
+alias vfi='git flow init -d'
+alias vfff='git flow feature finish'
+alias vffpb='git flow feature publish'
+alias vffpl='git flow feature pull'
+alias vffs='git flow feature start'
+alias vffl='git flow feature list'
+alias vfhf='git flow hotfix finish'
+alias vfhpb='git flow hotfix publish'
+alias vfhpl='git flow hotfix pull'
+alias vfhs='git flow hotfix start'
+alias vfhl='git flow hotfix list'
+alias vfrf='git flow release finish'
+alias vfrpb='git flow release publish'
+alias vfrpl='git flow release pull'
+alias vfrs='git flow release start'
+alias vfrl='git flow release list'
+# }}}
 # [r]emote {{{
 alias vrR='git remote rm'
 alias vrc='git remote add'
@@ -52,11 +71,11 @@ alias vts='git checkout'
 alias vtt='git current-tag'
 # }}}
 # [s]tashes {{{
-alias vsR='git stash clear'
+alias vsR='git stash drop' # delete one stash
+alias vsRa='git stash clear' # delete all stashes
+alias vsa='git stash apply'
 alias vsc='git stash'
-alias vse='git stash apply'
 alias vsl='git stash list'
-alias vsr='git stash drop'
 # }}}
 # [s]u[b]-modules {{{
 alias vbsi='git submodule init'
@@ -72,3 +91,18 @@ alias vdr='cd $(git root)'
 alias vdrr='cd $(git root) && cd .. && cd $(git root)'
 alias vdu='git checkout'
 # }}}
+# git flow feature start
+#                  publish
+#                  finish
+#
+# vffs
+# vfff
+# vffp
+# vfrs
+# vfrf
+# vfrp
+# vfbs
+# vfbf
+# vfbp
+# vfhs
+# vfh
