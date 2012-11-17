@@ -38,17 +38,17 @@ alias vfu='git unstage'
 # }}}
 # [f]low {{{
 alias vfi='git flow init -d'
-alias vfff='git flow feature finish'
+alias vfff='cd $(git root) && git flow feature finish'
 alias vffpb='git flow feature publish'
 alias vffpl='git flow feature pull'
 alias vffs='git flow feature start'
 alias vffl='git flow feature list'
-alias vfhf='git flow hotfix finish'
+alias vfhf='cd $(git root) && git flow hotfix finish'
 alias vfhpb='git flow hotfix publish'
 alias vfhpl='git flow hotfix pull'
 alias vfhs='git flow hotfix start'
 alias vfhl='git flow hotfix list'
-alias vfrf='git flow release finish'
+alias vfrf='cd $(git root) && git flow release finish'
 alias vfrpb='git flow release publish'
 alias vfrpl='git flow release pull'
 alias vfrs='git flow release start'
@@ -91,18 +91,3 @@ alias vdr='cd $(git root)'
 alias vdrr='cd $(git root) && cd .. && cd $(git root)'
 alias vdu='git checkout'
 # }}}
-# git flow feature start
-#                  publish
-#                  finish
-#
-# vffs
-# vfff
-# vffp
-# vfrs
-# vfrf
-# vfrp
-# vfbs
-# vfbf
-# vfbp
-# vfhs
-# vfh
