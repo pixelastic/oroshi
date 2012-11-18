@@ -263,7 +263,7 @@ function setPreviousCommand() {
 # updateAliases() {{{
 function updateAliases() {
 	# Load an alias file for this vcs if exists, otherwise unset them.
-	local aliasFilePrefix=~/.oroshi/config/zsh/aliases-
+	local aliasFilePrefix=~/.oroshi/config/zsh/aliases
 	local aliasFile=${aliasFilePrefix}-${versionSystem}.zsh
 	local aliasFileDefault=${aliasFilePrefix}-none.zsh
 
