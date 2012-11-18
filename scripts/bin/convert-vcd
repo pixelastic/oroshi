@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Given .bin files as source, will create output mpg files.
 
 

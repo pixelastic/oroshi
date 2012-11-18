@@ -5,7 +5,7 @@ function! GetRepoRoot() " {{{
 		return b:repoRoot
 	endif
 
-	let workingDir = getcwd()
+	let workingDir = expand('%:h')
 
 	" Check if git
 	let gitRoot = system('cd '.workingDir.' && git rev-parse --show-toplevel')
@@ -60,7 +60,9 @@ function! StrUncomment(txt) " {{{
 		let foldmarkerDelimiters = split(&foldmarker, ',')
 		let line = substitute(line, foldmarkerDelimiters[0] . '.*$', '', '')
 		" Remove trailing comment used to add the previously deleted foldmarker
-		let line = substitute(line, commentDelimiters[0] . '.*$', '', '')
+		if strlen(StrTrim(commentDelimiters[0])) > 1
+			let line = substitute(line, commentDelimiters[0] . '.*$', '', '')
+		endif
 	endif
 
 	" Trim title
@@ -136,6 +138,58 @@ function! ConvertToUTF8() " {{{
 endfunction
 command! ConvertToUTF8 call ConvertToUTF8()
 " }}}
+function! FixEpub() " {{{
+	" I often need to tweak epub files, so I convert them to txt and manually edit
+	" them. This will help in doing most of the work
+	
+	normal mz
+	" [...] MOON.GLORIOUS moon,the night [...]
+	silent! %s/\v(\.|,)(\S)/\1 \2/
+	" [...] Orphanage inHomestead, [...]
+	silent! %s/\v(\l)(\u)/\1 \2/
+	" [...] WOULD NOThave been [...]
+	silent! %s/\v(\u{2})(\l)/\1 \2/
+	" I T IS ALWAYS A BAD IDEA [...]
+	" silent! %s/\v^(\u) (\u)/\1\2/
+	
+	" Dialogs should use the em dash (–) and not the simple dash (-)
+	silent! %s/\v^-/–/
+	
+	" — Ce Rochefort, [...]
+	" 
+	" Chalais, passerait avec moi un vilain moment.
+	silent! %s/\v^— ((.*)[^\.!\?])\n\n([^—](.*))$/— \1 \3/
+	" — Ce Rochefort, [...]
+	" 
+	" 
+	" 
+	" — Et vous, [...]
+	silent!	%s/\v^(— (.*))\n{3,}(— (.*))/\1\r\r\3/
+	silent!	%s/\v^(— (.*))\n{3,}(— (.*))/\1\r\r\3/
+
+	
+	
+	" sentence cut in half with new lines
+	silent! %s/\v(\l)(\n)+(\l)/\1 \3/
+	
+	" Punctuation signs lost on new lines
+	silent! %s/\v\n\n(\?|!|;|»)/ \1/
+	" French guillemets breaking sentences in new lines
+	silent! %s/\v»\n\n(\U)/» \1/
+
+	" Setting the first line as the main title
+	if getline(1) !~ '^\#'
+		execute 'normal ggI# '
+	endif
+	" Marking each heading as a chapter
+	silent! %s/\v^([^#]{2}\L+)$/## \1/
+	
+
+
+	nohl
+	normal `z
+endfunction " }}}
+
 function! OpenUrlInBrowser(url) " {{{
 	" No url given
 	if a:url==""

@@ -18,12 +18,12 @@ alias vcla='hg history'
 alias vcr='hg rollback'
 # }}}
 # [f]iles {{{
+alias vfR='hg rm'
 alias vfa='hg add'
 alias vfaa='hg add'
 alias vfc='hg create-file'
 alias vfm='hg mv'
 alias vfr='hg revert'
-alias vfR='hg rm'
 alias vfu='hg forget'
 # }}}
 # [r]emote {{{

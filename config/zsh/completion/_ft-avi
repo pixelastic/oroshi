@@ -1,0 +1,24 @@
+#compdef repair-video volume-video
+# - Will only suggest .avi files
+
+_ft-avi () {
+	# local var definition to not pollute global scope
+	local curcontext=$curcontext state line context
+	typeset -A opt_args
+
+	# suggesting arguments
+	_arguments \
+		"*:avi file:->avi_file" \
+		&& return 0
+
+	# state machine match
+	case $state in
+		(avi_file)
+			_files -g '*.avi' \
+			&& return 0
+	esac
+
+	return 1
+}
+
+_ft-avi "$@"

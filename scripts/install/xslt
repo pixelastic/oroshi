@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Needed by make to compile
+sudo apt-get install xsltproc
+

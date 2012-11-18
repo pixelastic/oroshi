@@ -25,8 +25,15 @@ function arrayRemoveIndex() {
 		"${(@)localArray[$index+1,$length]}"
 	)
 
-	# Update the global array
-	eval "${arrayName}=($localArray)"
+	# First, emptying the array
+	eval "${arrayName}=()"
+	# Then, adding all values, one by one, as strings
+	# Note: Not typing them as string will result in parsing errors if array
+	# contains "&&" or "||"
+	for i in $localArray; do
+		eval "${arrayName}+=\"$i\""
+	done
+	
 }
 # }}}
 # arrayConcatenate() {{{
@@ -232,7 +239,7 @@ function setPreviousCommand() {
 	local	splitCommand
 	arrayFromString 'splitCommand' 'argCommand' ' '
 
-	# We expand aliases
+	# We expand terminal aliases
 	local commandAlias="$(expandCommandAlias $splitCommand[1])"
 	if [[ $commandAlias != $splitCommand[1] ]]; then
 		local splitCommandAlias
@@ -249,8 +256,8 @@ function setPreviousCommand() {
 	if [[ $splitCommand[1] = 'hg' ]]; then
 		versionSystemAlias="$(expandHgAlias $splitCommand[2])"
 	fi
-	if [[ $versionSystemAlias != '' ]]; then
-		# We prefix the alias with the initial command
+	if [[ $versionSystemAlias != '' && $versionSystemAlias != $splitCommand[2] ]]; then
+		# We prefix the alias with the git/hg command
 		versionSystemAlias=$splitCommand[1]" "$versionSystemAlias
 
 		# Split the alias in an array
@@ -464,11 +471,39 @@ function updateBranchGit() {
 		colorBranch=''
 		return
 	fi
-	
+
 	# Master branch
 	if [[ $promptBranch = 'master' ]]; then
-		promptBranch=" ⭠"
-		colorBranch=$promptColor[branchMaster]
+		colorBranch=$promptColor[gitFlowMaster]
+		return
+	fi
+	# Hotfix branch
+	if [[ $promptBranch =~ '^hotfix/' ]]; then
+		promptBranch=${promptBranch/hotfix\//}
+		colorBranch=$promptColor[gitFlowHotfix]
+		return
+	fi
+	# Release branch
+	if [[ $promptBranch =~ '^release/' ]]; then
+		promptBranch=${promptBranch/release\//}
+		colorBranch=$promptColor[gitFlowRelease]
+		return
+	fi
+	# Develop branch
+	if [[ $promptBranch = 'develop' ]]; then
+		colorBranch=$promptColor[gitFlowDevelop]
+		return
+	fi
+	# Bugfix branch
+	if [[ $promptBranch =~ '^feature/bugfix/' ]]; then
+		promptBranch=${promptBranch/feature\/bugfix\//}
+		colorBranch=$promptColor[gitFlowBugfix]
+		return
+	fi
+	# Feature branch
+	if [[ $promptBranch =~ '^feature/' ]]; then
+		promptBranch=${promptBranch/feature\//}
+		colorBranch=$promptColor[gitFlowFeature]
 		return
 	fi
 	# Detached HEAD
@@ -602,7 +637,7 @@ function precmd_updateHash() {
 	fi
 	# Git commands
 	if [[ $previousCommand[1] = 'git' 
-		&& $previousCommand[2] =~ '(add|checkout|clean|clone|commit|create-file|init|merge|mv|reset|rm|stash|status|tabula-rasa)' ]]; then
+		&& $previousCommand[2] =~ '(add|checkout|clean|clone|commit|create-file|init|merge|mv|reset|rm|submodule|stash|status|tabula-rasa)' ]]; then
 		updateHash=1
 	fi
 	# Hg command
@@ -629,7 +664,7 @@ function precmd_updateTag() {
 function precmd_updateBranch() {
 	# Git commands
 	if [[ $previousCommand[1] = 'git' 
-		&& $previousCommand[2] =~ '(branch|checkout|commit|current-branch|tag)' ]]; then
+		&& $previousCommand[2] =~ '(branch|checkout|commit|current-branch|flow|status|tag)' ]]; then
 		updateBranch
 	fi
 }

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# To extract pdf to images
+sudo apt-get install xpdf
+

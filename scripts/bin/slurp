@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Download on the hard drive the full content of a specified url, including
 # css, js, images, for offline viewing.
 # If called with the -r argument, will download the whole website (without

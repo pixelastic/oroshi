@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Echo 1 if current dir is a submodule, 0 otherwise
 
 local repoRoot="$(git rev-parse --show-toplevel 2>/dev/null)"

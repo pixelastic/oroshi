@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# To read image metadata
+sudo apt-get install libimage-exiftool-perl
+# To convert images
+sudo apt-get install imagemagick
+

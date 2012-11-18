@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Version system/backup system for binary files
+
+cd /usr/local/etc/
+hg clone https://code.google.com/p/boar/
+
+cd /usr/local/bin
+ln -s ../etc/boar/boar .
+

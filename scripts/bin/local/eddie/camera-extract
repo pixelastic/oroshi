@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Will copy all photos from my camera and sort them by date (each in
 # a directory named YYYY-MM-DD) and will also create compress and optimize
 # version of each files in a ./compress dir

@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Link zsh main config file to ~/.zshrc
 
 # Paths

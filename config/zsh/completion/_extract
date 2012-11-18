@@ -1,22 +1,28 @@
 #compdef extract
-typeset -A opt_args
-local state context line
-
 # - Will suggest only archive files
 
-# List of args, description and hints
-_arguments -s -S \
-	"*:archive file:->archive_file" \
-	"-r[delete archive after extracting]:" \
-	&& return 0
+_extract () {
+	# local var definition to not pollute global scope
+	local curcontext=$curcontext state line context
+	typeset -A opt_args
 
-# State machine
-case $state in
-	# Suggesting an archive file.
-	(archive_file)
-		local glob=$(echo $O_FILETYPES_EXTENSIONS[archive] | sed 's/,/|/g')
-		_files -g '*.('$glob')' && return 0
+	# suggesting arguments
+	_arguments \
+		"*:archive file:->archive_file" \
+		"-r[delete archive after extracting]:" \
+		&& return 0
+
+	# state machine match
+	case $state in
+		# Suggesting an archive file.
+		(archive_file)
+			local glob=$(echo $O_FILETYPES_EXTENSIONS[archive] | sed 's/,/|/g')
+			_files -g '*.('$glob')' && return 0
 		;;
-esac
+	esac
 
-return 1
+	return 1
+}
+
+_extract "$@"
+

@@ -1,0 +1,37 @@
+#!/usr/bin/env zsh
+# Change the cover image of the specified epub
+# $ ebook-cover-change ebook.epub cover.jpg
+
+local epub=$1
+local cover=$2
+
+if [[ ! $epub =~ 'epub$' ]]; then
+	echo "Ebook must be in .epub format"
+	exit
+fi
+
+if [[ ! $cover =~ 'jpg$' ]]; then
+	echo "Cover must be in .jpg format"
+	exit
+fi
+
+# Resize cover to 600px
+mogrify -resize 610 $cover
+jpegoptim -m80 --strip-all $cover
+
+# Make a tmpfile to convert to epub
+local tmpfile=${epub:r}-tmp.epub
+local backupfile=${epub:r}.epub.bak
+mv -f $epub $tmpfile
+
+# Change the cover
+ebook-convert \
+	$tmpfile \
+	$epub \
+	--cover $cover \
+	--remove-first-image \
+	--preserve-cover-aspect-ratio
+
+# Move the tmp file to a backup
+mv -f $tmpfile $backupfile
+

@@ -90,6 +90,10 @@ echo "Mounting /dev/sd$1 to ~/local/mnt/sd$1"
 sudo mount -t vfat /dev/sd$1 ~/local/mnt/sd$1
 cd ~/local/mnt/sd$1
 }
+# plowdown
+alias pd='plowdown'
+# watch tree
+alias wt='watch -c ''tree -aNC -I ".hg\|.git"'''
 # }}}
 # GUI apps {{{
 alias chrome="gui chromium-browser"
@@ -111,17 +115,28 @@ alias agu='sudo apt-fast -u install'
 alias agc='sudo apt-fast clean'
 alias agd='sudo apt-cache show'
 # }}}
+# Ebook {{{
+alias ec='ebook-convert'
+alias ecc='ebook-cover-change'
+alias ecd='ebook-cover-download'
+alias ee2t='epub2txt'
+alias ei='ebook-isbn'
+alias em='ebook-meta'
+alias emu='ebook-metadata-update'
+alias et2e='txt2epub'
+alias ev='ebook-viewer'
+# }}}
 # Directories {{{
 alias cd-='cd -'
 alias cdo='cd ~/.oroshi/'
 alias cdb='cd ~/Documents/Blog/'
-alias cdd='cd ~/Documents/Documentation/'
-alias cdr='cd ~/Documents/Documentation/ruby/Ruby\ 1.9.3\ Doc/'
+alias cdd='cd ~/Documents/documentation/'
+alias cdr='cd ~/Documents/documentation/ruby/Ruby\ 1.9.3\ Doc/'
 alias cdm='cd ~/Documents/Movies/'
 alias cdp='cd ~/Documents/Photos'
 alias cdl='cd ~/local/'
 alias cdt='cd ~/local/tmp/'
-alias cdsov='cd ~/local/sov/'
+alias cdsov='cd ~/local/tmp/sov/'
 alias cds='cd ~/local/tmp/scripts/'
 alias cdw='cd ~/local/var/www/'
 # }}}
@@ -146,6 +161,11 @@ alias py3='python3'
 # Loading pry in custom dir
 # Note: pry has a bug where it loads .pryrc twice if launched in home
 alias pry='cd ~/local/tmp/scripts/pry && pry && cd -'
+# }}}
+# Versioning {{{
+# Note: Context-sensitive aliases are defined in ./aliases-{git|hg|none}.zsh
+alias vdc='create-repo'
+alias vdt='get-version-system'
 # }}}
 # Vim {{{
 alias v='vim -p'

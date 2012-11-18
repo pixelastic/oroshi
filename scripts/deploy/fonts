@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Copy fonts to ~/.fonts
 
 # Paths

@@ -1,10 +1,10 @@
-#!/usr/bin/zsh
-# Fixes for Samsung laptops
+#!/usr/bin/env bash
 
 # Adding the custom repo of all Samsung fixes
 sudo add-apt-repository ppa:voria/ppa
 # Update list
-sudo apt-get update && sudo apt-get upgrade
+sudo apt-get update
+sudo apt-get upgrade
 
 # Fixing the backlight support
 sudo apt-get install samsung-backlight

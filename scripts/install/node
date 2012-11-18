@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Nodejs
+
+echo "Downloading"
+cd /usr/local/etc
+git clone git://github.com/joyent/node.git
+
+echo "Compiling"
+cd node
+./configure
+make
+make install
+
+echo "Creating symlinks"
+cd /usr/local/bin
+ln -s ../etc/node/bin/nodejs .
+ln -s ../etc/node/bin/npm .
+

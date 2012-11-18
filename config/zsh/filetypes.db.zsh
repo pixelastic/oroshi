@@ -39,9 +39,8 @@
 typeset -Ag O_FILETYPES
 O_FILETYPES=(
 	android     "ls:00;31:apk"
-	archive     "extract:01;32:bz2,cbr,cbz,r00,r01,r02,r03,r04,r05,r06,r07,r08,r09,rar,tar,tar.gz,tgz,zip"
+	archive     "extract:01;32:7z,bz2,cbr,cbz,r00,r01,r02,r03,r04,r05,r06,r07,r08,r09,rar,tar,tar.gz,tgz,zip"
 	audio       "gui vlc:00;34:mp3,wav,ogg,m4a"
-	sheet       "gui localc:01;33:ods,xls"
 	config      "vim:00;33:conf,config,db,ini"
 	ebook       "ebook-viewer:01;33:epub"
 	executable  "wine:00;31:exe,pyc,so"
@@ -52,8 +51,9 @@ O_FILETYPES=(
 	psd         "ls:01;33:psd"
 	python      "python3:00;35:py"
 	script      "vim:00;35:ahk,appcache,bat,c,ctp,css,dat,erb,htm,html,js,json,kml,less,lua,manifest,php,rb,sql,vim,xml,yml,zsh,zsh-theme"
+	sheet       "gui localc:01;33:ods,xls"
 	subtitle    "vim:00;36:ass,srt,sub"
-	tmp         "vim:00;30:kpf,orig,out,swp,tmp"
+	tmp         "vim:00;30:bak,kpf,orig,out,swp,tmp"
 	txt         "vim:00;36:log,markdown,md,mdown,mkd,mkdown,mo,po,template,text,txt"
 	txt-full    "gui lowriter:01;33:doc,docx,odt"
 	video       "gui vlc:01;34:avi,flv,mpg,mpeg,mkv,mp4"
