@@ -69,8 +69,8 @@ alias vrl='git remote show'
 alias vrpl='git pull'
 alias vrps='git push'
 alias vrr='git remote show origin -n'
-alias vrpsm='git push master'
-alias vrpsd='git push develop'
+alias vrpsm='git push origin master'
+alias vrpsd='git push origin develop'
 # }}}
 # [t]ags {{{
 alias vtc='git tag'
