@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Will read all .txt files in ~/Documents/Blog and copy the referenced pictures
 # in "pictures/"
 
@@ -13,7 +13,7 @@ local blogDir=~/Documents/Blog
 cd $blogDir
 
 # Parsing source files from destination dir
-local sourceFiles="./*.txt"
+local sourceFiles="./*.(txt|mkd)"
 local exportDir="./pictures"
 
 # Get all the pictures referenced in texts

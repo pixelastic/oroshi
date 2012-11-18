@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Generates a host files by concatenating the following pieces :
 # - Binding 127.0.0.1 to the current hostname
 # - Adding default list of hosts

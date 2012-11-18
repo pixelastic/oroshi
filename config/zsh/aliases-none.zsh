@@ -6,12 +6,13 @@
 if [[ ${#versionAliases[*]} = 0 ]]; then
 	# local versionAliases
 	versionAliases=(
-		vbR vbb vbc vbl vbm vbmm vbr vbrr vbs vbsm
+		vbR vbb vbc vbl vbm vbmm vbms vbr vbrr vbs vbsm
 		vcc vcca vcd vce vcl vcla vcr
 		vdR vdd vddl vdl vdr vdra vdu
 		vfR vfa vfaa vfc vfm vfr vfu
 		vrR vrc vrdw vrl vrps vrpl vrr vrout vrin
 		vsR vsc vse vsl vsr
+		vsbi vbsa vbsu
 		vtc vtl vtr vts vtt
 	)
 fi

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+./zsh
+./xslt
+./vim
+./tree
+

@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# Note: This is a work in progress, I only throw ideas on what to do here.
+
+# Accepts mp3 files as input.
+# Will check their ID3 tags
+# Will clear the useless ones (Comments, Encoder Settings, Zune, etc)
+# Check the validity of the Track, Title, Album, Author. Issue a warning if
+# different from id3 to name of file, but auto-fill id3 if empty.
+# Maybe check the SampleRate, AudioBitrate, Duration and Filesize and see if
+# something is weird and issue a warning ?

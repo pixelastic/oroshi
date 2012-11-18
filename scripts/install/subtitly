@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Subtitle-delay, to add or remove some delay to a srt file
+
+echo "Downloading"
+cd /usr/local/etc
+git clone git://github.com/kristijanbambir/subtitly.git
+
+echo "Creating wrapper script"
+cd /usr/local/bin
+echo "#!/usr/bin/zsh" > subtitle-delay
+echo "ruby /usr/local/etc/subtitly/subtitly.rb $@" >> subtitle-delay
+
+

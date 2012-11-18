@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Will synchronize comics between a source and a destination according to the
 # following rules :
 # - File on source but not on dest will be copied

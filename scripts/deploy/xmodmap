@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Clear the current ~/.Xmodmap file, and create a new one by concatenating
 # (optional) local file and default xmodmap config.
 

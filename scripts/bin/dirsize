@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Will return in human-readable way the total size of the specified directory.
 # If no directory is specified, the current one is used as a default.
 #

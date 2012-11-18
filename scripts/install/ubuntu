@@ -1,11 +1,11 @@
-#!/usr/bin/zsh
+#!/usr/bin/env bash
 # For Ubuntu tweaks and config
 
-# Ubuntu 11.10      : "Advanced" options
+# "Advanced" options
 sudo apt-get install gnome-tweak-tools
-# gconf-editor      : GUI to edit gconf options
+# GUI to edit gconf options
 sudo apt-get install gconf-editor
-# dconf-tools       : Configuration editor for desktop related tweaks
+# Configuration editor for desktop related tweaks
 sudo apt-get install dconf-editor
-# lo-menubar        : Integrate LibreOffice with the top Unity menubar
+# Integrate LibreOffice with the top Unity menubar
 sudo apt-get install lo-menubar

@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Find all txt/pdf files, and rename them in a more human readable format
 # old-text-file.txt -> Old text file.txt
 

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# jq, a json parser
+
+echo "Downloading source"
+cd /usr/local/src
+wget http://stedolan.github.com/jq/download/source/jq.tgz
+
+echo "Extracting"
+extract jq.tgz
+
+echo "Compiling"
+cd ./jq
+make
+
+echo "Moving binary"
+mv ./jq /usr/local/bin/jq
+

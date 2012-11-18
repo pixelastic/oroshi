@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # This script will try to compress a pdf file to a smaller version. This is
 # useful for pdf files created from scanner softwares that tend to be way too
 # large.

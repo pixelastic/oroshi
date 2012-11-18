@@ -19,15 +19,14 @@
 	commit = red red
 [alias]
 	amend = commit --amend
-	branch-list = branch --verbose
+	branch-list = !git-branch-list
 	commit-all = !git add . && git commit -v --all
-	create-file = !touch $@ && git add $@ && $EDITOR $1
 	current-branch = !git rev-parse --abbrev-ref HEAD 2>/dev/null
 	current-tag = !git describe --tags --abbrev=0 2>/dev/null
 	diff-last = diff HEAD^
-	diff-staged = diff --cached
+	diff-staged = diff --staged
 	download = clone --depth=1
-	create-repo = !git-create-repo
+	is-submodule = !git-is-submodule
 	peek = log --graph --pretty=format:'%C(67)%h%Creset %C(24)(%ar)%Creset %C(241)%an%Creset %C(bold 202)%d%Creset%n   %C(250)%s%Creset%n'
 	revert = checkout
 	rollback = reset --soft HEAD^

@@ -30,21 +30,21 @@ files.each do |file|
 	puts "Converting #{basename}"
 
 	# Extract cover
-	unless File.exists?(coverFile)
-		puts "Searching for cover (this could take a while)..."
+	# unless File.exists?(coverFile)
+	# 	puts "Searching for cover (this could take a while)..."
 
-		%x[ebook-convert "#{file}" html]
-		
-		htmlDir = File.join(dirname, 'html')
-		extractedCoverFile = File.join(htmlDir, 'calibre_raster_cover.jpg')
-		if File.exists?(extractedCoverFile)
-			puts "Cover found!"
-			File.rename(extractedCoverFile, coverFile)
-			FileUtils.rm_r(htmlDir)
-		end
-	else
-		puts "Cover file already present"
-	end
+	# 	%x[ebook-convert "#{file}" html]
+	# 	
+	# 	htmlDir = File.join(dirname, 'html')
+	# 	extractedCoverFile = File.join(htmlDir, 'calibre_raster_cover.jpg')
+	# 	if File.exists?(extractedCoverFile)
+	# 		puts "Cover found!"
+	# 		File.rename(extractedCoverFile, coverFile)
+	# 		FileUtils.rm_r(htmlDir)
+	# 	end
+	# else
+	# 	puts "Cover file already present"
+	# end
 	
 	# Convert to txt
 	unless File.exists?(txtFile)

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# To convert bin/cue to iso
+sudo apt-get install bchunk
+# To convert nrg to iso
+sudo apt-get install nrg2iso
+

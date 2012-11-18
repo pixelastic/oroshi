@@ -60,7 +60,9 @@ function! StrUncomment(txt) " {{{
 		let foldmarkerDelimiters = split(&foldmarker, ',')
 		let line = substitute(line, foldmarkerDelimiters[0] . '.*$', '', '')
 		" Remove trailing comment used to add the previously deleted foldmarker
-		let line = substitute(line, commentDelimiters[0] . '.*$', '', '')
+		if strlen(StrTrim(commentDelimiters[0])) > 1
+			let line = substitute(line, commentDelimiters[0] . '.*$', '', '')
+		endif
 	endif
 
 	" Trim title

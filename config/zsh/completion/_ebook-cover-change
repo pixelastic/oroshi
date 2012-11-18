@@ -1,0 +1,30 @@
+#compdef ebook-cover-change
+# - Will first suggest an epub, then a jpg
+
+_ebook-cover-change () {
+	# local var definition to not pollute global scope
+	local curcontext=$curcontext state line context
+	typeset -A opt_args
+
+	# suggesting arguments
+	_arguments \
+		"1:epub file:->epub_file" \
+		"2:jpg file:->jpg_file" \
+		&& return 0
+
+	# state machine match
+	case $state in
+		# First, only suggest .epub files
+		(epub_file)
+			_files -g '*.epub' && return 0
+		;;
+		# Then, only suggest the .jpg file
+		(jpg_file)
+			_files -g '*.jpg' && return 0
+		;;
+	esac
+
+	return 1
+}
+
+_ebook-cover-change "$@"

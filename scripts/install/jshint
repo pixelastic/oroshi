@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# jshint, for clean javascript
+
+echo "Downloading and installing through npm"
+npm install jshint -g
+

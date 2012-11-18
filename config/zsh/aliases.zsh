@@ -92,6 +92,8 @@ cd ~/local/mnt/sd$1
 }
 # plowdown
 alias pd='plowdown'
+# watch tree
+alias wt='watch -c ''tree -aNC -I ".hg\|.git"'''
 # }}}
 # GUI apps {{{
 alias chrome="gui chromium-browser"
@@ -115,9 +117,12 @@ alias agd='sudo apt-cache show'
 # }}}
 # Ebook {{{
 alias ec='ebook-convert'
+alias ecc='ebook-cover-change'
 alias ecd='ebook-cover-download'
 alias ee2t='epub2txt'
 alias ei='ebook-isbn'
+alias em='ebook-meta'
+alias emu='ebook-metadata-update'
 alias et2e='txt2epub'
 alias ev='ebook-viewer'
 # }}}
@@ -125,13 +130,13 @@ alias ev='ebook-viewer'
 alias cd-='cd -'
 alias cdo='cd ~/.oroshi/'
 alias cdb='cd ~/Documents/Blog/'
-alias cdd='cd ~/Documents/Documentation/'
-alias cdr='cd ~/Documents/Documentation/ruby/Ruby\ 1.9.3\ Doc/'
+alias cdd='cd ~/Documents/documentation/'
+alias cdr='cd ~/Documents/documentation/ruby/Ruby\ 1.9.3\ Doc/'
 alias cdm='cd ~/Documents/Movies/'
 alias cdp='cd ~/Documents/Photos'
 alias cdl='cd ~/local/'
 alias cdt='cd ~/local/tmp/'
-alias cdsov='cd ~/local/sov/'
+alias cdsov='cd ~/local/tmp/sov/'
 alias cds='cd ~/local/tmp/scripts/'
 alias cdw='cd ~/local/var/www/'
 # }}}
