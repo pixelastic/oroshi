@@ -12,5 +12,9 @@ bindkey "[6~" end-of-line        # Page Down
 bindkey "[3~" delete-char
 
 # Disabling some special keys
-bindkey -s "[25~" "" # Caps lock (F13)
 bindkey -s "[26~" "" # Square (F14)
+
+# Enabling vim mode
+bindkey -v
+# Switching mode with CAPS LOCK
+bindkey -M viins "[25~" vi-cmd-mode
