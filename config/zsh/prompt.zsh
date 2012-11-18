@@ -25,8 +25,15 @@ function arrayRemoveIndex() {
 		"${(@)localArray[$index+1,$length]}"
 	)
 
-	# Update the global array
-	eval "${arrayName}=($localArray)"
+	# First, emptying the array
+	eval "${arrayName}=()"
+	# Then, adding all values, one by one, as strings
+	# Note: Not typing them as string will result in parsing errors if array
+	# contains "&&" or "||"
+	for i in $localArray; do
+		eval "${arrayName}+=\"$i\""
+	done
+	
 }
 # }}}
 # arrayConcatenate() {{{
@@ -261,8 +268,8 @@ function setPreviousCommand() {
 		arrayRemoveIndex 'splitCommand' 1
 		arrayRemoveIndex 'splitCommand' 1
 
-		# # Prepend the full alias to the command array
-		# arrayConcatenate 'splitCommand' 'splitVersionSystemAlias' 'splitCommand'
+		# Prepend the full alias to the command array
+		arrayConcatenate 'splitCommand' 'splitVersionSystemAlias' 'splitCommand'
 	fi
 
 	# We update the global previousCommand
@@ -598,10 +605,10 @@ function preexec() {
 # precmd() {{{
 # Note: Is called right before displaying a new prompt line
 function precmd() {
-	# precmd_updateVersionSystem
-	# precmd_updateHash
-	# precmd_updateTag
-	# precmd_updateBranch
+	precmd_updateVersionSystem
+	precmd_updateHash
+	precmd_updateTag
+	precmd_updateBranch
 }
 # }}}
 # precmd_updateVersionSystem() {{{
