@@ -1,5 +1,12 @@
 #!/usr/bin/env zsh
 
+# Quick stop if the current repo is a .git or .hg one, it is definitly not
+# tracked.
+if [[ ${PWD:t} =~ '(\.hg|\.git)' ]]; then
+	echo 'none'
+	return
+fi
+
 # Check if git
 if [[ $(git --work-tree="$PWD" status 2>/dev/null) != '' ]]; then
 	echo 'git'
@@ -15,5 +22,6 @@ if [[ -r ./.svn ]]; then
 	echo 'svn'
 	return
 fi
+
 # No repo found
 echo 'none'

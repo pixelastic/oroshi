@@ -93,7 +93,7 @@ alias vsbu='git submodule update'
 # }}}
 # working [d]irectory {{{
 alias vdR='git tabula-rasa'
-alias vdd='git diff-last'
+alias vdd='git diff'
 alias vdds='git diff-staged'
 alias vdl='git status-short'
 alias vdr='cd $(git root)'
