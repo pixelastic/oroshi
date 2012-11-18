@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # This is simply a wrapper for the `trash` command but using its own command
 # allow me to define its own completion functions that only suggest directories
 

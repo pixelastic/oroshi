@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Download in current directory all the gameblog podcasts released so far. If
 # a podcast is already present in the dir, it will be skipped.
 # The script will create a list.xml and list.txt files

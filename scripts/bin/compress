@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # When issued to a JPG file, will resize and optimize it. When issued without
 # args, will resize and optimize all the JPG files in the current directory.
 # Original files never gets deleted, compressed files are stored in

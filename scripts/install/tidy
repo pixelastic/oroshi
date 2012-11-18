@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# HTML5 version of HtmlTidy
+cd /usr/local/etc/
+git clone https://github.com/w3c/tidy-html5.git
+
+cd ./tidy-html5
+make -C build/gmake
+sudo make install -C build/gmake
+
+cd /usr/local/bin/
+ln -s ../etc/tidy-html5/bin/tidy

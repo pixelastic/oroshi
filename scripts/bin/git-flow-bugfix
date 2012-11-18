@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+# Works like `git flow feature` bug use a branch prefix of `feature/bugfix` to
+# differenciante between features and bugfixes.
+
+local command=$1
+local name=$2
+
+# Simply prepend the feature with bugfix/
+if [[ $command = 'start' ]]; then;
+	if [[ $name = '' ]]; then
+		echo "You must specify a bugfix name"
+		exit
+	fi
+
+	git flow feature start "bugfix/$name"
+	exit
+fi
+
+# Following commands works as the initial one
+if [[ $command =~ '^(finish|publish|pull)$' ]]; then;
+	git flow feature $command
+fi

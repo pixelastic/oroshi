@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# faad to decode, faac to encode AAC
+sudo apt-get install faad
+sudo apt-get install faac

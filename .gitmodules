@@ -34,3 +34,6 @@
 [submodule "config/vim/bundle/available/vim-surround"]
 	path = config/vim/bundle/available/vim-unimpaired
 	url = git://github.com/tpope/vim-unimpaired.git
+[submodule "config/vim/bundle/available/vim-ruby"]
+	path = config/vim/bundle/available/vim-ruby
+	url = git://github.com/vim-ruby/vim-ruby.git

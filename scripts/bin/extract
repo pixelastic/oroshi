@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Will "extract" files from most of the archive file types.
 
 if [[ $# = 0 ]]; then

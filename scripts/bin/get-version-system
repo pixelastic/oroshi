@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 
 # Check if git
 if [[ $(git --work-tree="$PWD" status 2>/dev/null) != '' ]]; then

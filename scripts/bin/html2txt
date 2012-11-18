@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Create a txt file containing the text content of a given html file.
 #
 # $ html2txt source.html [source2.html ... sourceX.html]

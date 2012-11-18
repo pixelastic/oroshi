@@ -464,11 +464,39 @@ function updateBranchGit() {
 		colorBranch=''
 		return
 	fi
-	
+
 	# Master branch
 	if [[ $promptBranch = 'master' ]]; then
-		promptBranch=" ⭠"
-		colorBranch=$promptColor[branchMaster]
+		colorBranch=$promptColor[gitFlowMaster]
+		return
+	fi
+	# Hotfix branch
+	if [[ $promptBranch =~ '^hotfix/' ]]; then
+		promptBranch=${promptBranch/hotfix\//}
+		colorBranch=$promptColor[gitFlowHotfix]
+		return
+	fi
+	# Release branch
+	if [[ $promptBranch =~ '^release/' ]]; then
+		promptBranch=${promptBranch/release\//}
+		colorBranch=$promptColor[gitFlowRelease]
+		return
+	fi
+	# Develop branch
+	if [[ $promptBranch = 'develop' ]]; then
+		colorBranch=$promptColor[gitFlowDevelop]
+		return
+	fi
+	# Bugfix branch
+	if [[ $promptBranch =~ '^feature/bugfix/' ]]; then
+		promptBranch=${promptBranch/feature\/bugfix\//}
+		colorBranch=$promptColor[gitFlowBugfix]
+		return
+	fi
+	# Feature branch
+	if [[ $promptBranch =~ '^feature/' ]]; then
+		promptBranch=${promptBranch/feature\//}
+		colorBranch=$promptColor[gitFlowFeature]
 		return
 	fi
 	# Detached HEAD
@@ -602,7 +630,7 @@ function precmd_updateHash() {
 	fi
 	# Git commands
 	if [[ $previousCommand[1] = 'git' 
-		&& $previousCommand[2] =~ '(add|checkout|clean|clone|commit|create-file|init|merge|mv|reset|rm|stash|status|tabula-rasa)' ]]; then
+		&& $previousCommand[2] =~ '(add|checkout|clean|clone|commit|create-file|init|merge|mv|reset|rm|submodule|stash|status|tabula-rasa)' ]]; then
 		updateHash=1
 	fi
 	# Hg command
@@ -629,7 +657,7 @@ function precmd_updateTag() {
 function precmd_updateBranch() {
 	# Git commands
 	if [[ $previousCommand[1] = 'git' 
-		&& $previousCommand[2] =~ '(branch|checkout|commit|current-branch|tag)' ]]; then
+		&& $previousCommand[2] =~ '(branch|checkout|commit|current-branch|flow|status|tag)' ]]; then
 		updateBranch
 	fi
 }
