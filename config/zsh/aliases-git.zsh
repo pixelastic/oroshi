@@ -11,12 +11,12 @@ alias vbc='git checkout -b'
 alias vbl='git branch-list'
 alias vbm='git merge --no-ff'
 alias vbmd='git merge --squash develop && git commit -m "BRANCH: Merged `develop`"'
-alias vbms='git merge --squash'
 alias vbmv='git branch -m'
-alias vbrr='git push origin --delete' # Remove remote branch
+alias vbRr='git push origin --delete' # Remove remote branch
 alias vbs='git checkout'
 alias vbsm='git checkout master'
 alias vbsd='git checkout develop'
+alias vbum='vbsm && vbm develop && vbsd' # Merge develop to master (Update master)
 # }}}
 # [c]ommits {{{
 alias vcc='git commit -v'
@@ -69,6 +69,8 @@ alias vrl='git remote show'
 alias vrpl='git pull'
 alias vrps='git push'
 alias vrr='git remote show origin -n'
+alias vrpsm='git push origin master'
+alias vrpsd='git push origin develop'
 # }}}
 # [t]ags {{{
 alias vtc='git tag'
