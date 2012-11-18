@@ -91,36 +91,18 @@ $1
 # }}}
 
 # Helper functions
-# getVersionSystem() {{{
-function getVersionSystem() {
-	# Check if git
-	if [[ $(git --work-tree="$PWD" status 2>/dev/null) != '' ]]; then
-		echo 'git'
-		return
-	fi
-	# Check if hg
-	if [[ $(hg --cwd "$PWD" root 2>/dev/null) != '' ]]; then
-		echo 'hg'
-		return
-	fi
-	# No repo found
-	echo ''
-	return
-}
-# }}}
 # getRepoRoot() {{{
 function getRepoRoot() {
-	local repo=''
-
 	# Git
 	if [[ $versionSystem = 'git' ]]; then
-		repo=$(git rev-parse --show-toplevel 2>/dev/null)
+		echo $(git root)
+		return
 	fi
 	# Hg
 	if [[ $versionSystem = 'hg' ]]; then
-		repo=$(hg --cwd "$PWD" root 2>/dev/null)
+		echo $(hg --cwd "$PWD" root 2>/dev/null)
+		return
 	fi
-	echo $repo
 }
 # }}}
 # getPromptPath() {{{
@@ -280,18 +262,16 @@ function setPreviousCommand() {
 # Update display
 # updateAliases() {{{
 function updateAliases() {
-if [[ $versionSystem = '' ]]; then
-	source ~/.oroshi/config/zsh/aliases-none.zsh
-	return
-fi
-if [[ $versionSystem = 'git' ]]; then
-	source ~/.oroshi/config/zsh/aliases-git.zsh
-	return
-fi
-if [[ $versionSystem = 'hg' ]]; then
-	source ~/.oroshi/config/zsh/aliases-hg.zsh
-	return
-fi
+	# Load an alias file for this vcs if exists, otherwise unset them.
+	local aliasFilePrefix=~/.oroshi/config/zsh/aliases-
+	local aliasFile=${aliasFilePrefix}-${versionSystem}.zsh
+	local aliasFileDefault=${aliasFilePrefix}-none.zsh
+
+	if [[ -r $aliasFile ]]; then
+		source $aliasFile
+	else
+		source $aliasFileDefault
+	fi
 }
 # }}}
 # updateHash() {{{
@@ -526,7 +506,7 @@ function updateBranchGit() {
 function chpwd() {
 	# We update the current version system used
 	previousVersionSystem=$versionSystem
-	versionSystem=$(getVersionSystem)
+	versionSystem=$(get-version-system)
 
 	# We update the current repo root
 	previousRepoRoot=$repoRoot
