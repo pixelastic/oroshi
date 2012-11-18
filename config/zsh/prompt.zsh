@@ -25,8 +25,15 @@ function arrayRemoveIndex() {
 		"${(@)localArray[$index+1,$length]}"
 	)
 
-	# Update the global array
-	eval "${arrayName}=($localArray)"
+	# First, emptying the array
+	eval "${arrayName}=()"
+	# Then, adding all values, one by one, as strings
+	# Note: Not typing them as string will result in parsing errors if array
+	# contains "&&" or "||"
+	for i in $localArray; do
+		eval "${arrayName}+=\"$i\""
+	done
+	
 }
 # }}}
 # arrayConcatenate() {{{
@@ -232,7 +239,7 @@ function setPreviousCommand() {
 	local	splitCommand
 	arrayFromString 'splitCommand' 'argCommand' ' '
 
-	# We expand aliases
+	# We expand terminal aliases
 	local commandAlias="$(expandCommandAlias $splitCommand[1])"
 	if [[ $commandAlias != $splitCommand[1] ]]; then
 		local splitCommandAlias
@@ -249,8 +256,8 @@ function setPreviousCommand() {
 	if [[ $splitCommand[1] = 'hg' ]]; then
 		versionSystemAlias="$(expandHgAlias $splitCommand[2])"
 	fi
-	if [[ $versionSystemAlias != '' ]]; then
-		# We prefix the alias with the initial command
+	if [[ $versionSystemAlias != '' && $versionSystemAlias != $splitCommand[2] ]]; then
+		# We prefix the alias with the git/hg command
 		versionSystemAlias=$splitCommand[1]" "$versionSystemAlias
 
 		# Split the alias in an array
