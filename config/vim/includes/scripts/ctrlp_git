@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # This script is called by CtrlP when in a git repo.
 # This will return all tracked files, but excluding the one that can't be
 # edited by vim (compiled, images, etc)

@@ -25,8 +25,15 @@ function arrayRemoveIndex() {
 		"${(@)localArray[$index+1,$length]}"
 	)
 
-	# Update the global array
-	eval "${arrayName}=($localArray)"
+	# First, emptying the array
+	eval "${arrayName}=()"
+	# Then, adding all values, one by one, as strings
+	# Note: Not typing them as string will result in parsing errors if array
+	# contains "&&" or "||"
+	for i in $localArray; do
+		eval "${arrayName}+=\"$i\""
+	done
+	
 }
 # }}}
 # arrayConcatenate() {{{
@@ -84,36 +91,18 @@ $1
 # }}}
 
 # Helper functions
-# getVersionSystem() {{{
-function getVersionSystem() {
-	# Check if git
-	if [[ $(git --work-tree="$PWD" status 2>/dev/null) != '' ]]; then
-		echo 'git'
-		return
-	fi
-	# Check if hg
-	if [[ $(hg --cwd "$PWD" root 2>/dev/null) != '' ]]; then
-		echo 'hg'
-		return
-	fi
-	# No repo found
-	echo ''
-	return
-}
-# }}}
 # getRepoRoot() {{{
 function getRepoRoot() {
-	local repo=''
-
 	# Git
 	if [[ $versionSystem = 'git' ]]; then
-		repo=$(git rev-parse --show-toplevel 2>/dev/null)
+		echo $(git root)
+		return
 	fi
 	# Hg
 	if [[ $versionSystem = 'hg' ]]; then
-		repo=$(hg --cwd "$PWD" root 2>/dev/null)
+		echo $(hg --cwd "$PWD" root 2>/dev/null)
+		return
 	fi
-	echo $repo
 }
 # }}}
 # getPromptPath() {{{
@@ -232,7 +221,7 @@ function setPreviousCommand() {
 	local	splitCommand
 	arrayFromString 'splitCommand' 'argCommand' ' '
 
-	# We expand aliases
+	# We expand terminal aliases
 	local commandAlias="$(expandCommandAlias $splitCommand[1])"
 	if [[ $commandAlias != $splitCommand[1] ]]; then
 		local splitCommandAlias
@@ -249,8 +238,8 @@ function setPreviousCommand() {
 	if [[ $splitCommand[1] = 'hg' ]]; then
 		versionSystemAlias="$(expandHgAlias $splitCommand[2])"
 	fi
-	if [[ $versionSystemAlias != '' ]]; then
-		# We prefix the alias with the initial command
+	if [[ $versionSystemAlias != '' && $versionSystemAlias != $splitCommand[2] ]]; then
+		# We prefix the alias with the git/hg command
 		versionSystemAlias=$splitCommand[1]" "$versionSystemAlias
 
 		# Split the alias in an array
@@ -273,18 +262,16 @@ function setPreviousCommand() {
 # Update display
 # updateAliases() {{{
 function updateAliases() {
-if [[ $versionSystem = '' ]]; then
-	source ~/.oroshi/config/zsh/aliases-none.zsh
-	return
-fi
-if [[ $versionSystem = 'git' ]]; then
-	source ~/.oroshi/config/zsh/aliases-git.zsh
-	return
-fi
-if [[ $versionSystem = 'hg' ]]; then
-	source ~/.oroshi/config/zsh/aliases-hg.zsh
-	return
-fi
+	# Load an alias file for this vcs if exists, otherwise unset them.
+	local aliasFilePrefix=~/.oroshi/config/zsh/aliases
+	local aliasFile=${aliasFilePrefix}-${versionSystem}.zsh
+	local aliasFileDefault=${aliasFilePrefix}-none.zsh
+
+	if [[ -r $aliasFile ]]; then
+		source $aliasFile
+	else
+		source $aliasFileDefault
+	fi
 }
 # }}}
 # updateHash() {{{
@@ -436,7 +423,7 @@ function updateSubmoduleGit() {
 	fi
 
 	# Add symbol and coloring
-	promptSubmodule='↯'
+	promptSubmodule='↯ '
 	colorSubmodule=$promptColor[submodule]
 }
 # }}}
@@ -519,7 +506,7 @@ function updateBranchGit() {
 function chpwd() {
 	# We update the current version system used
 	previousVersionSystem=$versionSystem
-	versionSystem=$(getVersionSystem)
+	versionSystem=$(get-version-system)
 
 	# We update the current repo root
 	previousRepoRoot=$repoRoot
@@ -571,11 +558,10 @@ function chpwd_updateTag() {
 # }}}
 # chpwd_updateSubmodule() {{{
 function chpwd_updateSubmodule() {
-	# Update submodule when staying in a version system but changing the repo
-	# root
-	if [[ $versionSystem != '' 
-				&& $versionSystem = $previousVersionSystem 
-				&& $repoRoot != $previousRepoRoot ]]; then
+	# Update submodule when changing version system root.
+	# Note : This includes moving from a submodule to another vcs, or no vcs at
+	# all.
+	if [[ $repoRoot != $previousRepoRoot ]]; then
 		updateSubmodule
 	fi
 }

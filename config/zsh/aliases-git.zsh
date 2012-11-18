@@ -10,13 +10,13 @@ alias vbb='git current-branch'
 alias vbc='git checkout -b'
 alias vbl='git branch-list'
 alias vbm='git merge --no-ff'
-alias vbmd='git merge --squash develop && git commit -m "BRANCH: Merged `develop`"'
 alias vbmv='git branch -m'
 alias vbRr='git push origin --delete' # Remove remote branch
 alias vbs='git checkout'
 alias vbsm='git checkout master'
 alias vbsd='git checkout develop'
 alias vbum='vbsm && vbm develop && vbsd' # Merge develop to master (Update master)
+alias vbuf='git update-feature'
 # }}}
 # [c]ommits {{{
 alias vcc='git commit -v'
@@ -93,7 +93,7 @@ alias vsbu='git submodule update'
 # }}}
 # working [d]irectory {{{
 alias vdR='git tabula-rasa'
-alias vdd='git diff-last'
+alias vdd='git diff'
 alias vdds='git diff-staged'
 alias vdl='git status-short'
 alias vdr='cd $(git root)'
