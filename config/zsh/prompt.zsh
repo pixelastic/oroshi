@@ -443,7 +443,7 @@ function updateSubmoduleGit() {
 	fi
 
 	# Add symbol and coloring
-	promptSubmodule='↯'
+	promptSubmodule='↯ '
 	colorSubmodule=$promptColor[submodule]
 }
 # }}}
