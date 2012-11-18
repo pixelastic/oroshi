@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+# When issued in a feature branch, will merge (squash) the develop branch to
+# keep the feature up to date with the develop branch.
+
+local currentBranch=$(git current-branch)
+
+if [[ ! $currentBranch =~ '^feature/' ]]; then
+	echo "You are not in a feature/ branch"
+	exit
+fi
+
+git merge --squash develop
+git commit -m "Merge (squash) branch 'develop' into '$currentBranch'"
