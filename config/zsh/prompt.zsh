@@ -443,7 +443,7 @@ function updateSubmoduleGit() {
 	fi
 
 	# Add symbol and coloring
-	promptSubmodule='↯'
+	promptSubmodule='↯ '
 	colorSubmodule=$promptColor[submodule]
 }
 # }}}
@@ -578,11 +578,10 @@ function chpwd_updateTag() {
 # }}}
 # chpwd_updateSubmodule() {{{
 function chpwd_updateSubmodule() {
-	# Update submodule when staying in a version system but changing the repo
-	# root
-	if [[ $versionSystem != '' 
-				&& $versionSystem = $previousVersionSystem 
-				&& $repoRoot != $previousRepoRoot ]]; then
+	# Update submodule when changing version system root.
+	# Note : This includes moving from a submodule to another vcs, or no vcs at
+	# all.
+	if [[ $repoRoot != $previousRepoRoot ]]; then
 		updateSubmodule
 	fi
 }
