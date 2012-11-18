@@ -232,7 +232,7 @@ function setPreviousCommand() {
 	local	splitCommand
 	arrayFromString 'splitCommand' 'argCommand' ' '
 
-	# We expand aliases
+	# We expand terminal aliases
 	local commandAlias="$(expandCommandAlias $splitCommand[1])"
 	if [[ $commandAlias != $splitCommand[1] ]]; then
 		local splitCommandAlias
@@ -249,8 +249,8 @@ function setPreviousCommand() {
 	if [[ $splitCommand[1] = 'hg' ]]; then
 		versionSystemAlias="$(expandHgAlias $splitCommand[2])"
 	fi
-	if [[ $versionSystemAlias != '' ]]; then
-		# We prefix the alias with the initial command
+	if [[ $versionSystemAlias != '' && $versionSystemAlias != $splitCommand[2] ]]; then
+		# We prefix the alias with the git/hg command
 		versionSystemAlias=$splitCommand[1]" "$versionSystemAlias
 
 		# Split the alias in an array
@@ -261,8 +261,8 @@ function setPreviousCommand() {
 		arrayRemoveIndex 'splitCommand' 1
 		arrayRemoveIndex 'splitCommand' 1
 
-		# Prepend the full alias to the command array
-		arrayConcatenate 'splitCommand' 'splitVersionSystemAlias' 'splitCommand'
+		# # Prepend the full alias to the command array
+		# arrayConcatenate 'splitCommand' 'splitVersionSystemAlias' 'splitCommand'
 	fi
 
 	# We update the global previousCommand
@@ -598,10 +598,10 @@ function preexec() {
 # precmd() {{{
 # Note: Is called right before displaying a new prompt line
 function precmd() {
-	precmd_updateVersionSystem
-	precmd_updateHash
-	precmd_updateTag
-	precmd_updateBranch
+	# precmd_updateVersionSystem
+	# precmd_updateHash
+	# precmd_updateTag
+	# precmd_updateBranch
 }
 # }}}
 # precmd_updateVersionSystem() {{{
