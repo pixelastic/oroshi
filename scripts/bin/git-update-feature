@@ -10,4 +10,4 @@ if [[ ! $currentBranch =~ '^feature/' ]]; then
 fi
 
 git merge --squash develop
-git commit -m "Merge (squash) branch 'develop' into '$currentBranch'"
+git commit -m "Merge (squash) branch 'develop'"
