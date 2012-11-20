@@ -27,11 +27,16 @@ function arrayRemoveIndex() {
 
 	# First, emptying the array
 	eval "${arrayName}=()"
-	# Then, adding all values, one by one, as strings
-	# Note: Not typing them as string will result in parsing errors if array
-	# contains "&&" or "||"
+	# Then, adding all values, one by one
+	# Note: The backslash madness is to pass each value as a string (thus
+	# enclosed in double quotes) while at the same time escaping double quotes in
+	# the value itself.
 	for i in $localArray; do
-		eval "${arrayName}+=\"$i\""
+		# Escape backslashes in the value
+		i=${i/\\/\\\\}
+		# Escape double quotes in the value
+		i=${i/\"/\\\"}
+		eval "${arrayName}+=\"${i}\""
 	done
 	
 }

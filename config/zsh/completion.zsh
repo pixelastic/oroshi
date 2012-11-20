@@ -11,6 +11,9 @@ fpath=(~/.oroshi/config/zsh/completion $fpath)
 autoload -U compinit
 compinit
 
+# Git flow completion
+source ~/.oroshi/config/zsh/completion/git-flow-completion/git-flow-completion.zsh
+
 # Debug method to reload the completion functions
 r() {
 	local f
