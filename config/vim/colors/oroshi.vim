@@ -122,6 +122,14 @@ call s:HL('oroshi_StatusLineSaved', 'darkgreen', 'darkgrey')
 call s:HL('oroshi_StatusLineBadLineEnding', 'red', 'darkgrey', 'bold')
 call s:HL('oroshi_StatusLineBadEncoding', 'red', 'darkgrey', 'bold')
 " }}}
+" Cursor {{{
+if &term =~ "xterm"
+	" Cursor in insert mode
+	let &t_SI = "\<Esc>]12;#AF8700\x7"
+	" Cursor in normal mode
+	let &t_EI = "\<Esc>]12;#D70000\x7"
+endif
+" }}}
 " Quick fix window {{{
 " Note: The Search highlight is used in the quickfix window for the current
 " element. This method is called whenever the quickfix window got focus and
