@@ -1,13 +1,6 @@
 # Enabling vim mode
 bindkey -v
 
-# Switching mode with CAPS LOCK
-bindkey -M viins "[25~" vi-cmd-mode
-bindkey -M vicmd "[25~" vi-insert
-# As well as the classic Esc and i
-bindkey -M viins "" vi-cmd-mode
-bindkey -M vicmd "i"  vi-insert
-
 # (re)enabling keybindings in insert mode
 bindkey -M viins "[3~" delete-char        # Delete
 bindkey -M viins "" backward-delete-char  # Backspace
@@ -20,7 +13,16 @@ bindkey -M viins "[6~" end-of-line        # Page Down
 # Backward search
 bindkey -M viins "" history-incremental-search-backward
 bindkey -M vicmd "" history-incremental-search-backward
+# Switching mode with CAPS LOCK
+bindkey -M viins "[25~" vi-cmd-mode
+bindkey -M vicmd "[25~" vi-insert
+# As well as the classic Esc and i
+bindkey -M viins "" vi-cmd-mode
+bindkey -M vicmd "i"  vi-insert
 
+# Move on line
+bindkey -M vicmd "" beginning-of-line
+bindkey -M vicmd "" end-of-line
 
 # Set the cursor for vi cmd mode
 function cursor-cmd() {
