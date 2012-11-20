@@ -24,7 +24,7 @@ bindkey -M vicmd "" history-incremental-search-backward
 
 # Set the cursor for vi cmd mode
 function cursor-cmd() {
-	print -n '\e]12;red\a'
+	print -n '\e]12;#D70000\a'
 }
 # Set the cursor for vi insert mode (default)
 function cursor-ins() {
