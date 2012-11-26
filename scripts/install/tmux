@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+echo "Download source"
+cd /usr/local/src/
+wget -c http://downloads.sourceforge.net/project/tmux/tmux/tmux-1.7/tmux-1.7.tar.gz
