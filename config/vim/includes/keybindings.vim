@@ -124,27 +124,17 @@ vnoremap <CR> <Esc>g`>o<Esc>gv
 vnoremap <kEnter> <Esc>g`<O<Esc>g
 " }}}
 " CLEAN, RUN, TEST {{{
+function! ExecuteIfExists(f)
+	if exists("*" . a:f)
+		silent execute ":call " . a:f . "()"
+	endif
+endfunction
 " F4 cleans the file
-function! CleanFileWrapper()
-	if exists('b:CleanFileFunction')
-		execute ":call ".b:CleanFileFunction."()"
-	endif
-endfunction
-nnoremap <silent> <F4> :call CleanFileWrapper()<CR>
-" F5 runs the file
-function! RunFileWrapper()
-	if exists('b:RunFileFunction')
-		execute ":call ".b:RunFileFunction."()"
-	endif
-endfunction
-nnoremap <silent> <F5> :call RunFileWrapper()<CR>
-" F4 cleans the file
-function! TestFileWrapper()
-	if exists('b:TestFileFunction')
-		execute ":call ".b:TestFileFunction."()"
-	endif
-endfunction
-nnoremap <silent> <F4> :call TestFileWrapper()<CR>
+nnoremap <silent> <F4> :call ExecuteIfExists('b:CleanFile')<CR>
+" F5 runs it
+nnoremap <silent> <F5> :call ExecuteIfExists('b:RunFile')<CR>
+" F6 tests it
+nnoremap <silent> <F6> :call ExecuteIfExists('b:TestFile')<CR>
 " }}}
 " MOTIONS {{{
 " Move down/up including wrapped lines

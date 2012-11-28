@@ -11,8 +11,7 @@ setlocal foldmethod=manual
 nnoremap <buffer> za :call HTMLFoldTag()<CR>
 
 " Clean the file
-let b:CleanFileFunction = 'HTMLCleanFile'
-function! HTMLCleanFile()
+function! b:CleanFile()
 	let tidyrc="~/.tidyrc"
 	let tidyCommand="silent %!tidy"
 
@@ -27,8 +26,7 @@ function! HTMLCleanFile()
 endfunction
 
 " Run the file
-let b:RunFileFunction = 'HTMLRunFile'
-function! HTMLRunFile()
+function! b:RunFile()
 	silent !gui chromium-browser %
 	redraw!
 endfunction
