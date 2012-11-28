@@ -1,3 +1,6 @@
 " JSON
-" Reformat JSON with =
-setlocal equalprg=jq\ '.'
+
+" Clean the file
+function! b:CleanFile()
+	silent execute '%!jq "."'
+endfunction

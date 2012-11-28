@@ -1,9 +1,11 @@
 " CSS
 " Remove unwanted trailing whitespaces
 au BufWritePre,BufRead <buffer> call RemoveTrailingSpaces()
+
 " Use language { and } as fold markers
 setlocal foldmethod=marker
 setlocal foldmarker={,}
+
 " is stands for [i]n [s]elector, #header li
 noremap <buffer> is :<c-u>execute "normal! ?{\r:nohlsearch\r^vt{h"<CR>
 nunmap  <buffer> is
@@ -19,3 +21,5 @@ nunmap  <buffer> ip
 " iv stands for [i]n [v]alue, 3px solid red
 noremap <buffer> iv :<C-U>normal! ^f:lvt;<CR>
 nunmap  <buffer> iv
+
+" TODO: Add b:CleanFile
