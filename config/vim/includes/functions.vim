@@ -196,7 +196,7 @@ function! OpenUrlInBrowser(url) " {{{
 		return 0
 	endif
 	" Opening in chromium and redrawing vim screen
-	exec ':silent !gui chromium-browser '.a:url
+	silent execute ':!gui chromium-browser ' . a:url
 	redraw!
 endfunction
 command! -nargs=1 OpenUrlInBrowser call OpenUrlInBrowser(<q-args>)

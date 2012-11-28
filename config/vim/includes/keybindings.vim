@@ -126,7 +126,7 @@ vnoremap <kEnter> <Esc>g`<O<Esc>g
 " CLEAN, RUN, TEST {{{
 function! ExecuteIfExists(f)
 	if exists("*" . a:f)
-		silent execute ":call " . a:f . "()"
+		execute ":call " . a:f . "()"
 	endif
 endfunction
 " F4 cleans the file

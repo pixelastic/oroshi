@@ -27,14 +27,15 @@ endfunction
 
 " Run the file
 function! b:RunFile()
-	silent !gui chromium-browser %
-	redraw!
+	call OpenUrlInBrowser(expand('%:p'))
 endfunction
 
-" Remove scripts from file
+" Remove scripts from file with Ctrl-F4
 function! b:RemoveScripts()
 	let @z = 'gg/<scriptdat@z'
 	silent normal @z
+	" TODO: Find a cleaner way to not show the error message at the end of the
+	" recursive macro.
 	redraw!
 endfunction
 nnoremap <buffer> O1;5S :call b:RemoveScripts()<CR>
