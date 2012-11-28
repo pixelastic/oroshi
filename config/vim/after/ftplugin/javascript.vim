@@ -3,7 +3,16 @@
 inoremap <buffer> $ù console.log()<left>
 " Enable omnicomletion
 setlocal omnifunc=javascriptcomplete#CompleteJS
-" Clean the file to make it prettier
-nnoremap <buffer> <F4> :silent %!jsbeautify -j -t -<CR>
-" Run the current file in phantomjs
-nnoremap <buffer> <F5> :!phantomjs %<CR>
+
+" Clean the file
+function! b:CleanFile()
+	silent execute '%!js-beautify --jslint-happy --indent-with-tabs -'
+endfunction
+
+" Run the file
+function! b:RunFile()
+	silent execute '!phantomjs %'
+	" TODO: Run in tmux
+	redraw!
+endfunction
+
