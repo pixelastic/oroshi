@@ -37,3 +37,6 @@
 [submodule "config/vim/bundle/available/vim-ruby"]
 	path = config/vim/bundle/available/vim-ruby
 	url = git://github.com/vim-ruby/vim-ruby.git
+[submodule "config/zsh/completion/git-flow-completion"]
+	path = config/zsh/completion/git-flow-completion
+	url = git://github.com/bobthecow/git-flow-completion.git
