@@ -6,7 +6,7 @@ setlocal omnifunc=javascriptcomplete#CompleteJS
 
 " Clean the file
 function! b:CleanFile()
-	silent execute '%!js-beautify -j -t -'
+	silent execute '%!js-beautify --jslint-happy --indent-with-tabs -'
 endfunction
 
 " Run the file
