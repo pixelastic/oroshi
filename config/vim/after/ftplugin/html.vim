@@ -30,3 +30,11 @@ function! b:RunFile()
 	silent !gui chromium-browser %
 	redraw!
 endfunction
+
+" Remove scripts from file
+function! b:RemoveScripts()
+	let @z = 'gg/<scriptdat@z'
+	silent normal @z
+	redraw!
+endfunction
+nnoremap <buffer> O1;5S :call b:RemoveScripts()<CR>
