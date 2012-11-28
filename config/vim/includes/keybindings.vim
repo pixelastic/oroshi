@@ -123,6 +123,29 @@ nnoremap <kEnter> mzO<Esc>`z
 vnoremap <CR> <Esc>g`>o<Esc>gv
 vnoremap <kEnter> <Esc>g`<O<Esc>g
 " }}}
+" CLEAN, RUN, TEST {{{
+" F4 cleans the file
+function! CleanFileWrapper()
+	if exists('b:CleanFileFunction')
+		execute ":call ".b:CleanFileFunction."()"
+	endif
+endfunction
+nnoremap <silent> <F4> :call CleanFileWrapper()<CR>
+" F5 runs the file
+function! RunFileWrapper()
+	if exists('b:RunFileFunction')
+		execute ":call ".b:RunFileFunction."()"
+	endif
+endfunction
+nnoremap <silent> <F5> :call RunFileWrapper()<CR>
+" F4 cleans the file
+function! TestFileWrapper()
+	if exists('b:TestFileFunction')
+		execute ":call ".b:TestFileFunction."()"
+	endif
+endfunction
+nnoremap <silent> <F4> :call TestFileWrapper()<CR>
+" }}}
 " MOTIONS {{{
 " Move down/up including wrapped lines
 nnoremap j gj

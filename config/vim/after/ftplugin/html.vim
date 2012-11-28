@@ -10,7 +10,25 @@ endfunction
 setlocal foldmethod=manual
 nnoremap <buffer> za :call HTMLFoldTag()<CR>
 
-" Clean the whole file with F4
-nnoremap <buffer> <F4> :silent %!tidy -config ~/.tidyrc<CR>:silent call IndentWithTabs()<CR>
-" Run the file in browser with F5
-nnoremap <buffer> <F5> :!gui chromium-browser %<CR><CR>
+" Clean the file
+let b:CleanFileFunction = 'HTMLCleanFile'
+function! HTMLCleanFile()
+	let tidyrc="~/.tidyrc"
+	let tidyCommand="silent %!tidy"
+
+	" Use custom config if found
+	if !filereadable(tidyrc)
+		let tidyCommand = tidyCommand." -config ".tidyrc
+	endif
+	execute tidyCommand
+
+	" Tidy indents everything with spaces, we convert to tabs
+	silent call IndentWithTabs()
+endfunction
+
+" Run the file
+let b:RunFileFunction = 'HTMLRunFile'
+function! HTMLRunFile()
+	silent !gui chromium-browser %
+	redraw!
+endfunction
