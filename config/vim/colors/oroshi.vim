@@ -256,7 +256,6 @@ call s:Link('SpecialChar', 'Character')
 " }}}
 " Numbers {{{
 call s:HL('Number', 'calmblue', '', 'bold')
-		" call s:HL('Float', 'calmblue', '', 'bold')
 " }}}
 " Symbols {{{
 " :symbol (Python/Ruby like)
@@ -264,7 +263,6 @@ call s:HL('oroshi_Symbol', 'orange')
 " }}}
 " Boolean {{{
 call s:HL('Boolean', 'calmorange')
-" call s:Link('Boolean', 'Type', 'StorageClass', 'Structure', 'Typedef')
 " }}}
 " Regexps {{{
 call s:HL('oroshi_Regexp', 'darkblue')
