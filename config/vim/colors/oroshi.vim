@@ -118,6 +118,9 @@ call s:HL('oroshi_StatusLineModeCtrlFArrow', 'darkgreen', 'darkgrey')
 call s:HL('oroshi_StatusLineReadOnly', 'red', 'darkgrey', 'bold')
 call s:HL('oroshi_StatusLineModified', 'calmpurple', 'darkgrey', 'bold')
 call s:HL('oroshi_StatusLineSaved', 'darkgreen', 'darkgrey')
+" Arval testing
+call s:HL('oroshi_TestPassSuccess', 'darkgreen', 'darkgrey', 'bold')
+call s:HL('oroshi_TestPassFailure', 'red', 'darkgrey', 'bold')
 " Wrong options
 call s:HL('oroshi_StatusLineBadLineEnding', 'red', 'darkgrey', 'bold')
 call s:HL('oroshi_StatusLineBadEncoding', 'red', 'darkgrey', 'bold')

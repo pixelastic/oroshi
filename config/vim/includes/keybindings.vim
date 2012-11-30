@@ -134,7 +134,7 @@ nnoremap <silent> <F4> :call ExecuteIfExists('b:CleanFile')<CR>
 " F5 runs it
 nnoremap <silent> <F5> :call ExecuteIfExists('b:RunFile')<CR>
 " F6 tests it
-nnoremap <silent> <F6> :call ExecuteIfExists('b:TestFile')<CR>
+nnoremap <silent> <F6> :ArvalTest<CR>
 " }}}
 " MOTIONS {{{
 " Move down/up including wrapped lines

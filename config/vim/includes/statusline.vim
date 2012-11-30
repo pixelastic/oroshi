@@ -47,6 +47,14 @@ function! OroshiStatusLine()
 	let sl .= '%{&readonly == 0 && &modified == 0 ? expand(''%:t'')." " : ""}'
 	let sl .= '%*'
 
+	" Tests passing or not
+	let sl .= '%#oroshi_TestPassSuccess#'
+	let sl .= '%{exists("b:arval_test_pass") && b:arval_test_pass == 1 ? "✔" : ""}'
+	let sl .= '%*'
+	let sl .= '%#oroshi_TestPassFailure#'
+	let sl .= '%{exists("b:arval_test_pass") && b:arval_test_pass == 0 ? "✘" : ""}'
+	let sl .= '%*'
+
 	" Right / Left separator
 	let sl .= '%='
 
