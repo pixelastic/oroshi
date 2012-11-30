@@ -25,6 +25,7 @@ function! b:CleanFile()
 	silent call IndentWithTabs()
 endfunction
 
+
 " Run the file
 function! b:RunFile()
 	call OpenUrlInBrowser(expand('%:p'))
