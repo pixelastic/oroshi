@@ -202,8 +202,9 @@ function! OpenUrlInBrowser(url) " {{{
 	if a:url==""
 		return 0
 	endif
+	let url = shellescape(a:url)
 	" Opening in chromium and redrawing vim screen
-	silent execute ':!gui chromium-browser ' . a:url
+	silent execute ':!gui chromium-browser ' . url
 	redraw!
 endfunction
 command! -nargs=1 OpenUrlInBrowser call OpenUrlInBrowser(<q-args>)
