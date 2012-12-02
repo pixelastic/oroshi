@@ -3,10 +3,10 @@
 "   F1 : Help page
 "   F2 : Change colorscheme
 "   F3 : Debug colorscheme
-"   F4 : Clean and reformat automatically
-"   F5 : Run the current file
-"   F6 : Debug the file
-"   F7 : Launch test files
+"   F4 : Clean file
+"   F5 : Run file
+"   F6 : Test file
+"   F7 : 
 "   F8 : Display hidden chars
 "   F9 : Toggle wrap
 "
