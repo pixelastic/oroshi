@@ -32,7 +32,7 @@ ARGV.each do |file|
 	# Building option list
 	convertOptions = [
 		txtFile.shellescape,
-		"'.epub'",
+		epubFile.shellescape,
 		"--formatting-type markdown",
 		"--paragraph-type off",
 		"--chapter '//h:h2'"
