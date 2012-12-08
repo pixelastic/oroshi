@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+# Create various versions of the original subtitle, with various fps
+
+if ARGV.length == 0
+	puts "You need to specify at least one subtitle file"
+	exit
+end
+
+ARGV.each do |file|
+	fullpath = File.expand_path(file)
+	dirname = File.dirname(fullpath)
+	ext = File.extname(fullpath)
+	basename = File.basename(fullpath, ext)
+
+	file25 = File.join(dirname, basename+'.25'+ext)
+	file23976 = File.join(dirname, basename+'.23,976'+ext)
+
+	%x[horst #{fullpath} 25 23.976 > #{file23976}]
+	%x[horst #{fullpath} 23.976 25 > #{file25}]
+end
