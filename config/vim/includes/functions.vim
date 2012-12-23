@@ -150,8 +150,17 @@ function! FixEpub() " {{{
 	" them. This will help in doing most of the work
 	
 	normal mz
+	" Dialogs should use the em dash (–) and not the simple dash (-)
+	silent! %s/\v^-/–/
+	" Use common guillemets
+	silent! %s/“/"/
+	silent! %s/”/"/
+	" Same goes for apostrophes
+	silent! %s/’/'/
+	silent! %s/‘/'/
+	
 	" [...] MOON.GLORIOUS moon,the night [...]
-	silent! %s/\v(\.|,)(\S)/\1 \2/
+	silent! %s/\v(\.|,)([^ "])/\1 \2/
 	" [...] Orphanage inHomestead, [...]
 	silent! %s/\v(\l)(\u)/\1 \2/
 	" [...] WOULD NOThave been [...]
@@ -159,9 +168,7 @@ function! FixEpub() " {{{
 	" I T IS ALWAYS A BAD IDEA [...]
 	" silent! %s/\v^(\u) (\u)/\1\2/
 	
-	" Dialogs should use the em dash (–) and not the simple dash (-)
-	silent! %s/\v^-/–/
-	
+		
 	" — Ce Rochefort, [...]
 	" 
 	" Chalais, passerait avec moi un vilain moment.
@@ -182,7 +189,8 @@ function! FixEpub() " {{{
 	" Punctuation signs lost on new lines
 	silent! %s/\v\n\n(\?|!|;|»)/ \1/
 	" French guillemets breaking sentences in new lines
-	silent! %s/\v»\n\n(\U)/» \1/
+	silent! %s/\v»\n\n(\U)/" \1/
+	
 
 	" Setting the first line as the main title
 	if getline(1) !~ '^\#'
