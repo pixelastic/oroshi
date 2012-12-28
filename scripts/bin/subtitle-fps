@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require "shellwords"
 # Create various versions of the original subtitle, with various fps
 
 if ARGV.length == 0
@@ -15,6 +16,6 @@ ARGV.each do |file|
 	file25 = File.join(dirname, basename+'.25'+ext)
 	file23976 = File.join(dirname, basename+'.23,976'+ext)
 
-	%x[horst #{fullpath} 25 23.976 > #{file23976}]
-	%x[horst #{fullpath} 23.976 25 > #{file25}]
+	%x[horst #{fullpath.shellescape} 25 23.976 > #{file23976.shellescape}]
+	%x[horst #{fullpath.shellescape} 23.976 25 > #{file25.shellescape}]
 end
