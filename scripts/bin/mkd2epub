@@ -43,7 +43,7 @@ ARGV.each do |file|
 		convertOptions << "--cover #{coverFile.shellescape}"
 		convertOptions << "--preserve-cover-aspect-ratio"
 	else
-		pust "WARNING: No cover file found, epub will have no cover"
+		puts "WARNING: No cover file found, epub will have no cover"
 	end
 	
 	# Converting file
