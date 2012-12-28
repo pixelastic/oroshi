@@ -1,0 +1,55 @@
+#!/usr/bin/env ruby
+# encoding : utf-8
+require "shellwords"
+require 'fileutils'
+
+# Given an mkd file, will create the matching epub file
+
+if `which ebook-convert` == ''
+	puts "Unable to find ebook-convert, please install calibre"
+	exit
+end
+
+ARGV.each do |file|
+	mkdFile = File.expand_path(file)
+	ext = File.extname(file)
+	basename = File.basename(file)
+	coverFile = mkdFile.gsub(/\.mkd$/, '.jpg')
+	epubFile = mkdFile.gsub(/\.mkd$/, '.epub')
+	txtFile = mkdFile.gsub(/\.mkd$/, '.txt')
+
+	# Only operate on mkd files
+	next unless ext == '.mkd'
+
+	# Make a backup of the existing epub file if one is found
+	if File.exists?(epubFile)
+		File.rename(epubFile, epubFile+'.bak')
+	end
+
+	# ebook-convert only works on .txt file so we'll create a copy of the mkd
+	FileUtils.copy(mkdFile, txtFile)
+
+	# Building option list
+	convertOptions = [
+		txtFile.shellescape,
+		epubFile.shellescape,
+		"--formatting-type markdown",
+		"--paragraph-type off",
+		"--chapter '//h:h2'"
+	]
+
+	# Adding cover if found
+	if File.exists?(coverFile)
+		convertOptions << "--cover #{coverFile.shellescape}"
+		convertOptions << "--preserve-cover-aspect-ratio"
+	else
+		puts "WARNING: No cover file found, epub will have no cover"
+	end
+	
+	# Converting file
+	puts "Converting to epub"
+	%x[ebook-convert #{convertOptions.join(' ')}]
+
+	# Removing the now useless txt file
+	File.delete(txtFile)
+end

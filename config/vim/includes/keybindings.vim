@@ -3,10 +3,10 @@
 "   F1 : Help page
 "   F2 : Change colorscheme
 "   F3 : Debug colorscheme
-"   F4 : Clean and reformat automatically
-"   F5 : Run the current file
-"   F6 : Debug the file
-"   F7 : Launch test files
+"   F4 : Clean file
+"   F5 : Run file
+"   F6 : Test file
+"   F7 : 
 "   F8 : Display hidden chars
 "   F9 : Toggle wrap
 "
@@ -126,7 +126,7 @@ vnoremap <kEnter> <Esc>g`<O<Esc>g
 " CLEAN, RUN, TEST {{{
 function! ExecuteIfExists(f)
 	if exists("*" . a:f)
-		execute ":call " . a:f . "()"
+		silent execute ":call " . a:f . "()"
 	endif
 endfunction
 " F4 cleans the file
@@ -134,7 +134,7 @@ nnoremap <silent> <F4> :call ExecuteIfExists('b:CleanFile')<CR>
 " F5 runs it
 nnoremap <silent> <F5> :call ExecuteIfExists('b:RunFile')<CR>
 " F6 tests it
-nnoremap <silent> <F6> :call ExecuteIfExists('b:TestFile')<CR>
+nnoremap <silent> <F6> :ArvalTest<CR>
 " }}}
 " MOTIONS {{{
 " Move down/up including wrapped lines

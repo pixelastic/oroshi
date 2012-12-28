@@ -54,6 +54,7 @@ ARGV.each do |epub|
 	# Deal with the cover
 	covername = File.join(dirname, "#{basename}.jpg")
 	if File.exists?(covername)
+		puts "Optimizing cover for inclusion"
 		# Optimize cover
 		mogrify_options = [
 			"-resize 610",

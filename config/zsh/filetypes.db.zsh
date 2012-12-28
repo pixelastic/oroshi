@@ -56,5 +56,5 @@ O_FILETYPES=(
 	tmp         "vim:00;30:bak,kpf,orig,out,swp,tmp"
 	txt         "vim:00;36:log,markdown,md,mdown,mkd,mkdown,mo,po,template,text,txt"
 	txt-full    "gui lowriter:01;33:doc,docx,odt"
-	video       "gui vlc:01;34:avi,flv,mpg,mpeg,mkv,mp4"
+	video       "gui vlc:01;34:3gp,avi,flv,mpg,mpeg,mkv,mp4"
 )
