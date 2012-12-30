@@ -15,7 +15,7 @@
 " Defining leader key
 let mapleader=','
 " Using the Space as a repeat key
-nnoremap <Space> .
+nmap <Space> .
 " }}}
 " CAPS LOCK KEY {{{
 " Note: Xmodmap maps Caps Lock to F13 ([25~)
