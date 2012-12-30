@@ -8,6 +8,7 @@ alias dingoo='~/Dingux/tools/dingoo-mount && cd ~/local/mnt/dingoo'
 alias udingoo='sudo umount ~/local/mnt/dingoo'
 alias dinguxdeploy='~/Dingux/tools/dingux-deploy'
 alias dingoodeploy='~/Dingux/tools/dingoo-deploy'
+alias ds='~/Documents/emulation/devices/dingoo/tools/scripts/dingoo-sync'
 
 # Games
 alias gba='gvba'
