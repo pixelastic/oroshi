@@ -7,13 +7,14 @@
 #
 # Those last two directories will be added to the path in interactive mode.
 #
-# Note: If we want to override default commands, we should write an alias that point
-# to a custom script for overwriting the command. As alias are not passed on to
-# scripts, we avoid overwriting basic commands that some externals tools will
-# rely on.
+# Note: If we want to override default commands, we should write an alias that
+# point to a custom script for overwriting the command. As alias are not passed
+# on to scripts, we avoid overwriting basic commands that some externals tools
+# will rely on.
 #
 # Note: Calling sudo will NOT use any aliases defined, but will use files in
 # custom paths.
+alias sudo='sudo '
 # }}}
 
 # Custom paths {{{
