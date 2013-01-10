@@ -1,0 +1,157 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+require "shellwords"
+# Will synchronize an ebook library repo to a device.
+# Usage :
+#  $ ebook-sync /path/to/source /path/to/destination
+
+class EbookSync
+
+	def initialize(*args)
+		unless args.length == 2
+			puts "You need to specify a source and destination"
+			exit
+		end
+
+		# Setting local paths
+		@path_source = File.expand_path(args[0])
+		@path_destination = File.expand_path(args[1])
+
+		unless File.exists?(@path_source)
+			puts "Source path does not exists"
+			exit
+		end
+		unless File.exists?(@path_destination)
+			puts "Destination path does not exists"
+			exit
+		end
+
+	end
+
+	# Run the sync
+	def run
+		# Note: The synchronization will follow simple rules :
+		#  - Only .epub files will be copied to a device
+		#  - Files added/modified/deleted in the source will be updated in the
+		#  destination
+		#  - Files added/modified/deleted in the destination will NOT be updated in
+		#  the source.
+		
+		copy_epub
+
+	end
+
+	# Return a file list from an rsync output
+	def get_files_from_rsync_output(rsync)
+		# Remove last lines, being an overview
+		rsync = rsync.split("\n")[0..-4]
+		output = []
+
+		rsync.each do |line|
+			# Remove known useless lines
+			next if line == 'sending incremental file list'
+			next if line == 'building file list ... done'
+			# Remove directories from listing, keeping only files
+			next if line =~ /\/$/
+			output << line
+		end
+		return output
+	end
+
+	# Create rsync filters from patterns
+	def get_rsync_filters(*extensions)
+		filters = ["--include '+ */'"]
+		extensions.each do |ext|
+			filters << "--include '+ *.#{ext}'"
+		end
+		filters << '--exclude "- *"'
+		return filters.join(' ')
+	end
+
+	# Copy files, updating it only if changed
+	def copy(source, destination)
+		options = [
+			'--verbose', 
+			'--archive'
+		].join(' ')
+
+		output = %x[rsync #{options} #{source.shellescape} #{destination.shellescape}]
+		puts get_files_from_rsync_output(output)
+	end
+
+	# Copy a bunch of files while keeping the same file tree
+	def copy_tree(source, *extensions, destination)
+		# Create destination directory if non-existent
+		Dir.mkdir(destination) unless Dir.exists?(destination)
+
+		options = [
+			'--verbose',
+			'--archive',
+			'--recursive',
+			'--prune-empty-dirs',
+		].join(' ')
+		filters = get_rsync_filters(*extensions)
+		source = File.expand_path(source)+'/'
+
+		output = %x[rsync #{options} #{filters} #{source.shellescape} #{destination.shellescape}]
+		puts get_files_from_rsync_output(output)
+	end
+
+	# Remove directories in target that do not exists in origin
+	def remove_non_existing_directories(target, source, *args)
+		whitelist = args[0].length ? args[0] : []
+
+		Dir[File.join(target, '*')].each do |dir|
+			# Skip files, we need directories
+			next unless File.directory? dir
+			# Skip directories in whitelist
+			next if whitelist.include?(File.basename(dir))
+
+			# Should it be deleted ?
+			# Note: FAT filesystems do not accept period at the end of directories
+			# and automatically strip it. It result in a directory mismatch naming
+			# between source and dest. We'll take this into account by manually
+			# testing if a directory with an ending period exists in the source when
+			# comparing directories.
+			suffix = dir.gsub(/^#{target}/, '')
+			dir_in_source = File.join(source, suffix)
+			dir_in_source = dir_in_source + '.' unless File.exists?(dir_in_source)
+			if File.exists?(dir_in_source) 
+				# Directory exists, we test its subdirs
+				remove_non_existing_directories(dir, dir_in_source, whitelist)
+				next
+			else
+				# Delete directory
+				puts "Deleting #{dir}"
+				%x[rm -drf #{dir.shellescape}]
+			end
+
+		end
+	end
+
+	# We copy all epubs to the device
+	def copy_epub
+		puts "# Copy epub to device"
+		extensions = ['epub']
+		Dir[File.join(@path_source, '*')].each do |path|
+			path = File.expand_path(path)
+			basename = File.basename(path, '')
+			# Keeping only letter directories
+			next unless File.directory?(path)
+			next if basename == "tmp"
+
+			# Copy tree to destination
+			destination = File.join(@path_destination, basename)
+			copy_tree(path, *extensions, destination)
+		end
+
+		puts "# Clear directories on device"
+		directory_whitelist = ['.FBReader']
+		remove_non_existing_directories(@path_destination, @path_source, directory_whitelist)
+
+	end
+end
+
+
+sync = EbookSync.new(*ARGV)
+sync.run()

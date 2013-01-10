@@ -6,6 +6,7 @@ promptColor=(
 # Dingoo
 alias dinguxdeploy='~/Dingux/tools/dingux-deploy'
 alias ds='~/Documents/emulation/devices/dingoo/tools/dingoo-sync /media/dingoo'
+alias es='ebook-sync ~/Documents/books /media/HTC\ LEGEND/Data/Books'
 
 # Games
 alias gba='gvba'
