@@ -144,6 +144,10 @@ alias cdsov='cd ~/local/tmp/sov/'
 alias cdt='cd ~/local/tmp/'
 alias cdw='cd ~/local/var/www/'
 # }}}
+# Dingoo {{{
+alias udingoo='umount /media/dingoo'
+alias cdingoo='cd /media/dingoo'
+# }}}
 # Nginx {{{
 alias ngsta='sudo /etc/init.d/nginx start'
 alias ngsto='sudo /etc/init.d/nginx stop'
