@@ -3,22 +3,16 @@ promptColor=(
 	hostname	"133"
 )
 
-# Dingoo
-alias dinguxdeploy='~/Dingux/tools/dingux-deploy'
+# Synchronize dingoo
 alias ds='~/Documents/emulation/devices/dingoo/tools/dingoo-sync /media/dingoo'
+# Synchronize ebooks
 alias es='ebook-sync ~/Documents/books /media/HTC\ LEGEND/Data/Books'
-
-# Games
-alias gba='gvba'
+# Downloading a website in ~/local/tmp/websites
+alias mslurp="cd ~/local/tmp/websites && slurp"
 
 # Rikiki
 export SERIES=/media/Rikiki/Films/Series/
 
-# Alias for downloading a website directly in the correct folder
-alias mslurp="cd ~/local/tmp/websites && slurp"
-
-# Extract photos
-alias recettes='blog-extract infos/recettes.txt recipe'
 
 # RVM config
 path=($path	$HOME/.rvm/bin)
