@@ -1,0 +1,74 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+require "fileutils"
+require "shellwords"
+# Will copy all compressed photos to an external destination.
+# Source must follow the convention :
+# YYYY-MM-DD - Name of place/
+#   YYYY–MM–DD/
+#    compress/
+#      compressed_file.jpg
+#      compressed_file2.jpg
+#      [...]
+#    uncompressed_file.jpg
+#    uncompressed_file2.jpg
+#    [...]
+#
+# The destination will then be created in the following manner
+# YYYY-MM-DD - Name of place
+#  compressed_file.jpg
+#  compressed_file2.jpg
+#  [...]
+#
+#  Usage
+#  $ photos-sync ~/Documents/Photos /media/BELETTE/Photos/Voyage
+
+
+class PhotosSync
+
+	def initialize(source, destination)
+		@source = source
+		@destination = destination
+
+		unless File.exists?(source)
+			puts "Unable to find #{@source}"
+			exit
+		end
+		unless File.exists?(destination)
+			puts "Unable to find #{@destination}"
+			exit
+		end
+			
+	end
+
+	def run
+		# Loping through each place
+		Dir[File.join(@source, '*')].each do |main_dir|
+			main_dir = File.expand_path(main_dir)
+			basename = File.basename(main_dir)
+
+			next if basename == "tmp"
+			next if basename == "Divers"
+			next if basename == "Movies"
+			next unless File.directory?(main_dir)
+
+			# Creating such a dir on the receiving side if none exists
+			dest_main_dir = File.join(@destination, basename)
+			Dir.mkdir(dest_main_dir) unless File.exists?(dest_main_dir)
+
+			# Now we copy each compressed file to this dir
+			puts "# Copying files in #{basename}"
+			Dir[File.join(main_dir, '*', 'compress', '*.JPG')].each do |file|
+				dest_file = File.join(dest_main_dir, File.basename(file))
+				FileUtils.copy(file, dest_main_dir) unless File.exists?(dest_file)
+			end
+		end
+	end
+
+
+
+
+
+end
+
+PhotosSync.new(*ARGV).run()
