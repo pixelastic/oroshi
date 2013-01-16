@@ -41,8 +41,9 @@ class PhotosSync
 			
 	end
 
-	def run
-		# Loping through each place
+	# Copy compressed files form source to dest
+	def copy_compressed_files
+		# Looping through each place
 		Dir[File.join(@source, '*')].each do |main_dir|
 			main_dir = File.expand_path(main_dir)
 			basename = File.basename(main_dir)
@@ -60,14 +61,51 @@ class PhotosSync
 			puts "# Copying files in #{basename}"
 			Dir[File.join(main_dir, '*', 'compress', '*.JPG')].each do |file|
 				dest_file = File.join(dest_main_dir, File.basename(file))
-				FileUtils.copy(file, dest_main_dir) unless File.exists?(dest_file)
+				FileUtils.copy(file, dest_file) unless File.exists?(dest_file)
 			end
 		end
 	end
 
+	# Copy files in tmp dir from source to dest
+	def copy_tmp_files
+		# We now copy all the tmp/ content
+		dest_tmp = File.join(@destination, 'tmp')
+		source_tmp = File.join(@source, 'tmp')
 
+		# We remove all directories in dest ./tmp/ that do not exists in source
+		puts "# Removing all useless directories in ./tmp"
+		Dir[File.join(dest_tmp, '*')].each do |dest_tmp_subdir|
+			dest_tmp_subdir = File.expand_path(dest_tmp_subdir)
+			basename = File.basename(dest_tmp_subdir)
 
+			source_tmp_subdir = File.join(source_tmp, basename)
+			FileUtils.rm_rf(dest_tmp_subdir) unless File.exists?(source_tmp_subdir)
+		end
 
+		# We now copy all files from source ./tmp/*/compress/*.JPG into dest ./tmp/
+		puts "# Copying all tmp/ subdirectories"
+		Dir[File.join(source_tmp, '*')].each do |source_tmp_subdir|
+			source_tmp_subdir = File.expand_path(source_tmp_subdir)
+			basename = File.basename(source_tmp_subdir)
+
+			# Creating tmp subdir
+			dest_tmp_subdir = File.join(dest_tmp, basename)
+			Dir.mkdir(dest_tmp_subdir) unless File.exists?(dest_tmp_subdir)
+
+			# Copy all files in it
+			Dir[File.join(source_tmp_subdir, 'compress', '*.JPG')].each do |file|
+				dest_file = File.join(dest_tmp_subdir, File.basename(file))
+				FileUtils.copy(file, dest_file) unless File.exists?(dest_file)
+			end
+
+		end
+
+	end
+
+	def run
+		copy_compressed_files
+		copy_tmp_files
+	end
 
 end
 
