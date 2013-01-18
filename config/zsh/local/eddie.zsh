@@ -11,6 +11,8 @@ alias es='ebook-sync ~/Documents/books /media/HTC\ LEGEND/Data/Books'
 alias photos-sync='photos-sync ~/Documents/Photos/ /media/BELETTE/Photos/Voyage/'
 # Downloading a website in ~/local/tmp/websites
 alias mslurp="cd ~/local/tmp/websites && slurp"
+# Prefix a date to a file
+alias prd='prefix-date'
 
 # Rikiki
 export SERIES=/media/Rikiki/Films/Series/
