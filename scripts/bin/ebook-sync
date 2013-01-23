@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
+require "fileutils"
 require "shellwords"
 # Will synchronize an ebook library repo to a device.
 # Usage :
@@ -38,8 +39,10 @@ class EbookSync
 		#  the source.
 		
 		copy_epub
+		clean_deleted_dirs
 
 	end
+
 
 	# Return a file list from an rsync output
 	def get_files_from_rsync_output(rsync)
@@ -58,42 +61,24 @@ class EbookSync
 		return output
 	end
 
-	# Create rsync filters from patterns
-	def get_rsync_filters(*extensions)
-		filters = ["--include '+ */'"]
-		extensions.each do |ext|
-			filters << "--include '+ *.#{ext}'"
-		end
-		filters << '--exclude "- *"'
-		return filters.join(' ')
-	end
-
 	# Copy files, updating it only if changed
 	def copy(source, destination)
+		# Creating destination directory if non-existent
+		dirname = File.dirname(destination)
+		FileUtils.mkdir_p(dirname)
+
+		# Note: FAT system have a limitation on modified date which is less precise
+		# than ext systems. This leads to identical files that are considered
+		# newer/older on a FAT system than they really are. The --modify-window
+		# parameters allows for taking this into account.
+
 		options = [
 			'--verbose', 
-			'--archive'
+			'--archive',
+			'--modify-window=1'
 		].join(' ')
 
 		output = %x[rsync #{options} #{source.shellescape} #{destination.shellescape}]
-		puts get_files_from_rsync_output(output)
-	end
-
-	# Copy a bunch of files while keeping the same file tree
-	def copy_tree(source, *extensions, destination)
-		# Create destination directory if non-existent
-		Dir.mkdir(destination) unless Dir.exists?(destination)
-
-		options = [
-			'--verbose',
-			'--archive',
-			'--recursive',
-			'--prune-empty-dirs',
-		].join(' ')
-		filters = get_rsync_filters(*extensions)
-		source = File.expand_path(source)+'/'
-
-		output = %x[rsync #{options} #{filters} #{source.shellescape} #{destination.shellescape}]
 		puts get_files_from_rsync_output(output)
 	end
 
@@ -132,23 +117,22 @@ class EbookSync
 	# We copy all epubs to the device
 	def copy_epub
 		puts "# Copy epub to device"
-		extensions = ['epub']
-		Dir[File.join(@path_source, '*')].each do |path|
+		puts "# Building file list..."
+		Dir[File.join(@path_source, '**', '*.epub')].sort.each do |path|
 			path = File.expand_path(path)
-			basename = File.basename(path, '')
-			# Keeping only letter directories
-			next unless File.directory?(path)
-			next if basename == "tmp"
 
-			# Copy tree to destination
-			destination = File.join(@path_destination, basename)
-			copy_tree(path, *extensions, destination)
+			# I do not want any tmp dir on the dest
+			next if path.match(/\/tmp\//)
+
+			destination = path.gsub(/^#{@path_source}/, @path_destination)
+			copy(path, destination)
 		end
+	end
 
+	def clean_deleted_dirs
 		puts "# Clear directories on device"
 		directory_whitelist = ['.FBReader']
 		remove_non_existing_directories(@path_destination, @path_source, directory_whitelist)
-
 	end
 end
 
