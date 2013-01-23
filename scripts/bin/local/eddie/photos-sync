@@ -44,7 +44,7 @@ class PhotosSync
 	# Copy compressed files form source to dest
 	def copy_compressed_files
 		# Looping through each place
-		Dir[File.join(@source, '*')].each do |main_dir|
+		Dir[File.join(@source, '*')].sort.each do |main_dir|
 			main_dir = File.expand_path(main_dir)
 			basename = File.basename(main_dir)
 
