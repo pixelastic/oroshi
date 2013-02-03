@@ -8,6 +8,6 @@ git clone git://github.com/kristijanbambir/subtitly.git
 echo "Creating wrapper script"
 cd /usr/local/bin
 echo "#!/usr/bin/env zsh" > subtitle-delay
-echo "ruby /usr/local/etc/subtitly/subtitly.rb $@" >> subtitle-delay
+echo "ruby /usr/local/etc/subtitly/subtitly.rb \$@" >> subtitle-delay
 
 
