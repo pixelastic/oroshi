@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Split huge vcf file in multiple small ones
+
+# There is no git repo to download, only one perl file
+echo "Creating directory"
+mkdir -p /usr/local/etc/vcf-split/
+cd /usr/local/etc/vcf-split/
+
+echo "Downloading perl script"
+wget http://split-vcf-file.googlecode.com/files/split_vcf.pl
+
+echo "Creating wrapper script"
+cd /usr/local/bin/
+
+echo "#!/usr/bin/env zsh" > vcf-split
+echo "perl /usr/local/etc/vcf-split/split_vcf.pl \$@" >> vcf-split
+chmod +x ./vcf-split
+
