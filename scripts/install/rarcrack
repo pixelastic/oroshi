@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo "Downloading from SourceForge"
-cd /usr/local/src/
+cd ~/local/src/
 wget http://downloads.sourceforge.net/project/rarcrack/rarcrack-0.2/%5BUnnamed%20release%5D/rarcrack-0.2.tar.bz2
 
 echo "Extracting"
@@ -9,12 +9,12 @@ tar xvjf ./rarcrack-0.2.tar.bz2
 cd ./rarcrack-0.2.tar.bz2
 
 echo "Compiling"
-mkdir -p /usr/local/etc/rarcrack/
-mkdir -p /usr/local/etc/rarcrack/bin
+mkdir -p ~/local/etc/rarcrack/
+mkdir -p ~/local/etc/rarcrack/bin
 make
 make PREFIX=/usr/local/etc/rarcrack/ install
 
 echo "Creating symlinks"
-cd /usr/local/bin/
+cd ~/local/bin/
 ln -s ../etc/rarcrack/bin/rarcrack .
 

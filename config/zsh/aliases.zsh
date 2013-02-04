@@ -24,6 +24,7 @@ path=(
 	~/.oroshi/private/scripts/bin
 	~/.oroshi/scripts/bin/local/$(hostname)
 	~/.oroshi/private/sripts/bin/local/$(hostname)
+	~/local/bin
 )
 # }}}
 # Fasd {{{

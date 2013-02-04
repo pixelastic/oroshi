@@ -2,7 +2,7 @@
 # jq, a json parser
 
 echo "Downloading source"
-cd /usr/local/src
+cd ~/local/src
 wget http://stedolan.github.com/jq/download/source/jq.tgz
 
 echo "Extracting"
@@ -13,5 +13,5 @@ cd ./jq
 make
 
 echo "Moving binary"
-mv ./jq /usr/local/bin/jq
+mv ./jq ~/local/bin/jq
 
