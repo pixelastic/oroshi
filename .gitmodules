@@ -31,7 +31,7 @@
 [submodule "config/vim/bundle/available/syntastic"]
 	path = config/vim/bundle/available/syntastic
 	url = git://github.com/scrooloose/syntastic.git
-[submodule "config/vim/bundle/available/vim-surround"]
+[submodule "config/vim/bundle/available/vim-unimpaired"]
 	path = config/vim/bundle/available/vim-unimpaired
 	url = git://github.com/tpope/vim-unimpaired.git
 [submodule "config/vim/bundle/available/vim-ruby"]
