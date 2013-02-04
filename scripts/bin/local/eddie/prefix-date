@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+# Will prefix the specified file with the specified date
+# Usage :
+# $ prefix-date ./path/to/file YYYY
+
+class PrefixDate
+
+	def initialize(file, date)
+		@file = File.expand_path(file)
+		unless File.exists?(@file)
+			puts "#{@file} does not exists"
+			return
+		end
+
+		@date = date
+	end
+
+	def run
+		basename = File.basename(@file)
+		dirname = File.dirname(@file)
+		new_basename = "#{@date} - #{basename}"
+		new_file = File.join(dirname, new_basename)
+
+		File.rename(@file, new_file)
+		puts "Renamed to #{new_basename}"
+
+	end
+
+
+
+end
+
+
+PrefixDate.new(*ARGV).run()

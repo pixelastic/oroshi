@@ -16,7 +16,7 @@
 	new = 35 
 	old = 160
 	whitespaces = 88 88
-	commit = red red
+	commit = 67
 [alias]
 	amend = commit --amend
 	branch-list = !git-branch-list

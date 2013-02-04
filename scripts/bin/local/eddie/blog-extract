@@ -34,3 +34,6 @@ done
 
 # Clean temp file
 rm $tmpList
+
+# Rename .JPG files to .jpg as Tumblr select jpg by default
+rename 's/JPG/jpg/' $exportDir/*.JPG

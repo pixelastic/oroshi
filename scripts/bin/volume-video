@@ -11,7 +11,7 @@ fi
 for file in $@; do
 	echo "Increasing volume of $file"
 	local tmpFile=./tmp${RANDOM}.${file:e}
-	ffmpeg -i $file -vcodec copy -acodec libmp3lame -ab 128k -vol 5000 $tmpFile
+	ffmpeg -i $file -vcodec copy -acodec libmp3lame -ab 128k -vol 200 $tmpFile
 	mv $file ${file}.bak
 	mv $tmpFile $file
 done
