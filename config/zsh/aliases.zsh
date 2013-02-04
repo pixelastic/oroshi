@@ -28,7 +28,9 @@ path=(
 )
 # }}}
 # Fasd {{{
-eval "$(fasd --init auto)"
+if [[ !`which fasd` = '' ]]; then
+	eval "$(fasd --init auto)"
+fi
 # }}}
 
 # Basic commands {{{
