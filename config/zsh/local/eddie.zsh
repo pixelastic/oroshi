@@ -2,6 +2,8 @@
 promptColor=(
 	hostname	"133"
 )
+# Private aliases
+source ~/.oroshi/private/config/zsh/local/eddie.zsh
 
 # Synchronize dingoo
 alias ds='~/Documents/emulation/devices/dingoo/tools/dingoo-sync /media/dingoo'
