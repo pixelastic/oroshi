@@ -1,4 +1,4 @@
-#compdef subtitle-delay
+#compdef subtitle-delay subtitle-fps
 # - Will only suggest .srt files
 
 _ft-srt () {

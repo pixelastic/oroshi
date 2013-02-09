@@ -118,9 +118,20 @@ call s:HL('oroshi_StatusLineModeCtrlFArrow', 'darkgreen', 'darkgrey')
 call s:HL('oroshi_StatusLineReadOnly', 'red', 'darkgrey', 'bold')
 call s:HL('oroshi_StatusLineModified', 'calmpurple', 'darkgrey', 'bold')
 call s:HL('oroshi_StatusLineSaved', 'darkgreen', 'darkgrey')
+" Arval testing
+call s:HL('oroshi_TestPassSuccess', 'darkgreen', 'darkgrey', 'bold')
+call s:HL('oroshi_TestPassFailure', 'red', 'darkgrey', 'bold')
 " Wrong options
 call s:HL('oroshi_StatusLineBadLineEnding', 'red', 'darkgrey', 'bold')
 call s:HL('oroshi_StatusLineBadEncoding', 'red', 'darkgrey', 'bold')
+" }}}
+" Cursor {{{
+if &term =~ "xterm"
+	" Cursor in insert mode
+	let &t_SI = "\<Esc>]12;#AF8700\x7"
+	" Cursor in normal mode
+	let &t_EI = "\<Esc>]12;#D70000\x7"
+endif
 " }}}
 " Quick fix window {{{
 " Note: The Search highlight is used in the quickfix window for the current
@@ -248,7 +259,6 @@ call s:Link('SpecialChar', 'Character')
 " }}}
 " Numbers {{{
 call s:HL('Number', 'calmblue', '', 'bold')
-		" call s:HL('Float', 'calmblue', '', 'bold')
 " }}}
 " Symbols {{{
 " :symbol (Python/Ruby like)
@@ -256,7 +266,6 @@ call s:HL('oroshi_Symbol', 'orange')
 " }}}
 " Boolean {{{
 call s:HL('Boolean', 'calmorange')
-" call s:Link('Boolean', 'Type', 'StorageClass', 'Structure', 'Typedef')
 " }}}
 " Regexps {{{
 call s:HL('oroshi_Regexp', 'darkblue')

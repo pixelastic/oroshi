@@ -7,13 +7,14 @@
 #
 # Those last two directories will be added to the path in interactive mode.
 #
-# Note: If we want to override default commands, we should write an alias that point
-# to a custom script for overwriting the command. As alias are not passed on to
-# scripts, we avoid overwriting basic commands that some externals tools will
-# rely on.
+# Note: If we want to override default commands, we should write an alias that
+# point to a custom script for overwriting the command. As alias are not passed
+# on to scripts, we avoid overwriting basic commands that some externals tools
+# will rely on.
 #
 # Note: Calling sudo will NOT use any aliases defined, but will use files in
 # custom paths.
+alias sudo='sudo '
 # }}}
 
 # Custom paths {{{
@@ -23,10 +24,13 @@ path=(
 	~/.oroshi/private/scripts/bin
 	~/.oroshi/scripts/bin/local/$(hostname)
 	~/.oroshi/private/sripts/bin/local/$(hostname)
+	~/local/bin
 )
 # }}}
 # Fasd {{{
-eval "$(fasd --init auto)"
+if [[ !`which fasd` = '' ]]; then
+	eval "$(fasd --init auto)"
+fi
 # }}}
 
 # Basic commands {{{
@@ -128,17 +132,25 @@ alias ev='ebook-viewer'
 # }}}
 # Directories {{{
 alias cd-='cd -'
-alias cdo='cd ~/.oroshi/'
 alias cdb='cd ~/Documents/Blog/'
+alias cdbooks='cd ~/Documents/books'
 alias cdd='cd ~/Documents/documentation/'
-alias cdr='cd ~/Documents/documentation/ruby/Ruby\ 1.9.3\ Doc/'
-alias cdm='cd ~/Documents/Movies/'
-alias cdp='cd ~/Documents/Photos'
+alias cde='cd ~/local/etc/'
+alias cdemu='cd ~/Documents/emulation'
+alias cdjdr='cd ~/Documents/scenarios'
 alias cdl='cd ~/local/'
-alias cdt='cd ~/local/tmp/'
-alias cdsov='cd ~/local/tmp/sov/'
+alias cdm='cd ~/Documents/Movies/'
+alias cdo='cd ~/.oroshi/'
+alias cdp='cd ~/Documents/Photos'
+alias cdr='cd ~/Documents/documentation/ruby/Ruby\ 1.9.3\ Doc/'
 alias cds='cd ~/local/tmp/scripts/'
+alias cdsov='cd ~/local/tmp/sov/'
+alias cdt='cd ~/local/tmp/'
 alias cdw='cd ~/local/var/www/'
+# }}}
+# Dingoo {{{
+alias udingoo='umount /media/dingoo'
+alias cdingoo='cd /media/dingoo'
 # }}}
 # Nginx {{{
 alias ngsta='sudo /etc/init.d/nginx start'

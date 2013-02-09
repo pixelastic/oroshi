@@ -15,7 +15,10 @@ ARGV.each do |epub|
 	# Options for changing metadata
 	options = [
 		fullpath.shellescape,
-		"--book-producer=''"
+		"--book-producer=''",
+		"--comments=''",
+		"--publisher=''",
+		"--tags=''"
 	]
 
 	# Split name to find author, serie, index, title
@@ -28,7 +31,13 @@ ARGV.each do |epub|
 	splitauthor = author.split(' ')
 	author_lastname = splitauthor[0]
 	author_firstname = splitauthor[1..-1].join(' ')
+	# Handle "VAN SOMETHING" cases
+	if splitauthor[0] == "VAN"
+		author_lastname = splitauthor[0..1].join(' ')
+		author_firstname = splitauthor[2..-1].join(' ')
+	end
 	options << "--authors=\"#{author_firstname} #{author_lastname}\""
+	options << "--author-sort=\"#{author_lastname}, #{author_firstname}\""
 
 	# Deal with series
 	if split.size == 3
@@ -45,6 +54,7 @@ ARGV.each do |epub|
 	# Deal with the cover
 	covername = File.join(dirname, "#{basename}.jpg")
 	if File.exists?(covername)
+		puts "Optimizing cover for inclusion"
 		# Optimize cover
 		mogrify_options = [
 			"-resize 610",

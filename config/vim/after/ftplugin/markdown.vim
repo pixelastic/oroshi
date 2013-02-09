@@ -15,5 +15,11 @@ vnoremap <buffer> <leader>i <Esc>mzg`>a_<Esc>g`<i_<Esc>`zl
 nnoremap <buffer> <leader>b viw<Esc>g`>a**<Esc>g`<i**<Esc>
 vnoremap <buffer> <leader>b <Esc>mzg`>a**<Esc>g`<i**<Esc>`zl
 
-" Create an html file for this file with F5
-nnoremap <buffer> <F5> :!markdown % > %.html<CR><CR>
+" Run file
+function! b:RunFile()
+	let htmlFile = expand('%:p:r') . '.html'
+	" Create the html file
+	silent execute '!markdown % > ' . htmlFile
+	" Run it
+	call OpenUrlInBrowser(htmlFile)
+endfunction

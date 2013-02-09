@@ -1,24 +1,24 @@
-#compdef txt2epub
-# - Will only suggest .txt files
+#compdef mkd2epub
+# - Will only suggest .mkd files
 
-_ft-txt () {
+_ft-mkd () {
 	# local var definition to not pollute global scope
 	local curcontext=$curcontext state line context
 	typeset -A opt_args
 
 	# suggesting arguments
 	_arguments \
-		"*:txt file:->txt_file" \
+		"*:mkd file:->mkd_file" \
 		&& return 0
 
 	# state machine match
 	case $state in
-		(txt_file)
-			_files -g '*.txt' \
+		(mkd_file)
+			_files -g '*.mkd' \
 			&& return 0
 	esac
 
 	return 1
 }
 
-_ft-txt "$@"
+_ft-mkd "$@"

@@ -19,15 +19,21 @@ if [[ $host == 'github' || $host == 'gh' || $host == '' ]]; then
 	echo "* Create origin remote on git"
 fi
 
+# Use git flow
+git flow init -d
+
 # Set master branch to push to default remote
 echo '[branch "master"]
 	remote = origin
 	merge = refs/heads/master' >> ./.git/config
-echo "* Set master branch to origin remote"
+echo '[branch "develop"]
+	remote = origin
+	merge = refs/heads/develop' >> ./.git/config
+echo "* Set master and develop branches to origin remote"
 
 # Add an empty .gitignore
 touch .gitignore
-echo "* Add empty .hgignore"
+echo "* Add empty .gitignore"
 
 # Commit this as an initial commit
 git add .

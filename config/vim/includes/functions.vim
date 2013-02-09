@@ -49,19 +49,26 @@ function! StrUncomment(txt) " {{{
 	let line = a:txt
 
 	" Remove comments
-	let commentDelimiters = split(&commentstring, '%s')
-	let line = substitute(line, '^\s*' . StrTrim(commentDelimiters[0]), '', '')
-	if len(commentDelimiters) > 1
-		let line = substitute(line, commentDelimiters[1] . '$', '', '')
+	let comments = split(&commentstring, '%s')
+	let comments[0] = escape(comments[0], '*')
+
+	let line = substitute(line, '^\s*' . StrTrim(comments[0]), '', '')
+	if len(comments) > 1
+		let comments[1] = escape(comments[1], '*')
+		let line = substitute(line, comments[1] . '$', '', '')
 	endif
 
 	" Remove folding marker
 	if (&foldmethod == 'marker')
-		let foldmarkerDelimiters = split(&foldmarker, ',')
-		let line = substitute(line, foldmarkerDelimiters[0] . '.*$', '', '')
+		let foldmarkers = split(&foldmarker, ',')
+		let foldmarkers[0] = escape(foldmarkers[0], '*')
+
+		let line = substitute(line, foldmarkers[0] . '.*$', '', '')
+
 		" Remove trailing comment used to add the previously deleted foldmarker
-		if strlen(StrTrim(commentDelimiters[0])) > 1
-			let line = substitute(line, commentDelimiters[0] . '.*$', '', '')
+		if strlen(StrTrim(comments[0])) > 1
+			let line = substitute(line, comments[0] . '.*$', '', '')
+			echo line
 		endif
 	endif
 
@@ -143,8 +150,17 @@ function! FixEpub() " {{{
 	" them. This will help in doing most of the work
 	
 	normal mz
+	" Dialogs should use the em dash (–) and not the simple dash (-)
+	silent! %s/\v^-/–/
+	" Use common guillemets
+	silent! %s/“/"/
+	silent! %s/”/"/
+	" Same goes for apostrophes
+	silent! %s/’/'/
+	silent! %s/‘/'/
+	
 	" [...] MOON.GLORIOUS moon,the night [...]
-	silent! %s/\v(\.|,)(\S)/\1 \2/
+	silent! %s/\v(\.|,)([^ "])/\1 \2/
 	" [...] Orphanage inHomestead, [...]
 	silent! %s/\v(\l)(\u)/\1 \2/
 	" [...] WOULD NOThave been [...]
@@ -152,9 +168,7 @@ function! FixEpub() " {{{
 	" I T IS ALWAYS A BAD IDEA [...]
 	" silent! %s/\v^(\u) (\u)/\1\2/
 	
-	" Dialogs should use the em dash (–) and not the simple dash (-)
-	silent! %s/\v^-/–/
-	
+		
 	" — Ce Rochefort, [...]
 	" 
 	" Chalais, passerait avec moi un vilain moment.
@@ -175,7 +189,8 @@ function! FixEpub() " {{{
 	" Punctuation signs lost on new lines
 	silent! %s/\v\n\n(\?|!|;|»)/ \1/
 	" French guillemets breaking sentences in new lines
-	silent! %s/\v»\n\n(\U)/» \1/
+	silent! %s/\v»\n\n(\U)/" \1/
+	
 
 	" Setting the first line as the main title
 	if getline(1) !~ '^\#'
@@ -195,8 +210,9 @@ function! OpenUrlInBrowser(url) " {{{
 	if a:url==""
 		return 0
 	endif
+	let url = shellescape(a:url)
 	" Opening in chromium and redrawing vim screen
-	exec ':silent !gui chromium-browser '.a:url
+	silent execute ':!gui chromium-browser ' . url
 	redraw!
 endfunction
 command! -nargs=1 OpenUrlInBrowser call OpenUrlInBrowser(<q-args>)

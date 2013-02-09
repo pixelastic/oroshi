@@ -248,6 +248,24 @@ inoremap <C-H> <Esc>gT
 inoremap <C-L> <Esc>gt
 cnoremap <C-H> <C-C>gT
 cnoremap <C-L> <C-C>gt
+" Opened test file in new tab
+function! OpenTestFileInNewTab()
+	" Check for Arval method
+	if !exists('*ArvalGetTestFile')
+		return
+	endif
+
+	" Find test file
+	let testfile = ArvalGetTestFile()
+	if testfile == ''
+		echo "No test file found"
+		return
+	endif
+
+	" Load in new tab
+	execute 'tabe ' . testfile
+endfunction
+nnoremap <C-T> :call OpenTestFileInNewTab()<CR>
 "}}}
 " VIMDIFF  {{{
 if &diff

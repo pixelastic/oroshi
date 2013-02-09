@@ -2,7 +2,7 @@
 # Nodejs
 
 echo "Downloading"
-cd /usr/local/etc
+cd ~/local/etc
 git clone git://github.com/joyent/node.git
 
 echo "Compiling"
@@ -12,7 +12,7 @@ make
 make install
 
 echo "Creating symlinks"
-cd /usr/local/bin
+cd ~/local/bin
 ln -s ../etc/node/bin/nodejs .
 ln -s ../etc/node/bin/npm .
 

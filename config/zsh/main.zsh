@@ -10,6 +10,7 @@ cd $configDir
 source ./filetypes.zsh
 source ./history.zsh
 source ./keybindings.zsh
+source ./vimode.zsh
 source ./completion.zsh
 source ./aliases.zsh
 
@@ -30,3 +31,5 @@ typeset -U path
 
 # Move back to original dir
 cd $currentDir
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+echo "Creating ~/local"
+mkdir -p ~/local
+mkdir -p ~/local/etc
+mkdir -p ~/local/bin
+mkdir -p ~/local/src
+mkdir -p ~/local/tmp
+
+echo "Creating ~/docs"
+mkdir -p ~/docs
