@@ -306,8 +306,13 @@ set clipboard=
 if has("unnamedplus")
 	set clipboard+=unnamedplus
 	" Note: Pasting UTF-8 from Chromium results in garbaged text.
-	nnoremap p p:FixWrongLatin1<CR>
-	nnoremap P P:FixWrongLatin1<CR>
+	function! PasteFromUnnamedPlus()
+		if SeemsLatin1InUTF8(@+)
+			let @+=iconv(@+, "utf-8", "latin1")
+		endif
+	endfunction
+	nnoremap p :silent call PasteFromUnnamedPlus()<CR>p
+	nnoremap P :silent call PasteFromUnnamedPlus()<CR>P
 endif
 " As gv selects last selected text, we add gp to select last pasted text
 nnoremap gp `[v`]

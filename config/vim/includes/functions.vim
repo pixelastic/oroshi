@@ -37,6 +37,26 @@ function! GDebug(txt) " {{{
 endfunction
 command! -nargs=1 GDebug call GDebug(<q-args>)
 " }}}
+function! StrDebug(str) " {{{
+	let str=a:str
+	let bytes=strlen(str)
+	let length=strlen(substitute(str, ".", "x", "g"))
+	let pouet=FourHighBytesInARow(str)
+	echom " "
+	echom "String: [".str."]"
+	echom "Length: ".length
+	echom "Bytes:  ".bytes
+	echom "Pouet?: ".pouet
+
+	let i=0
+	let r=''
+	while i!=bytes
+		let r.=char2nr(str[i]).' '
+		let i+=1
+	endwhile
+	echom r
+endfunction " }}}
+
 
 " String methods
 function! StrTrim(txt) " {{{
@@ -78,8 +98,39 @@ function! StrUncomment(txt) " {{{
 	return line
 endfunction
 "}}}
+function! StrLength(txt) " {{{
+	" Return the number of chars in a string.
+	" Note: This is different from strlen() as strlen() returns the number of
+	" bytes, which is very different for utf-8 encoding.
+	return strlen(substitute(a:txt, ".", "x", "g"))
+endfunction " }}}
+function! SeemsLatin1InUTF8(str) " {{{
+	" Note: When a Windows-1252 (known as ISO-8859-1) is encoded in UTF-8, it
+	" results in garbage (Ã© in place of é).
+	" This method attempt to guess if the string given is such a wrongly decoded
+	" string by checking for any four bytes in a row whose value is more than
+	" 127.
 
-	
+	let i=0
+	let c=0
+	while i!=strlen(a:str)
+		" Count high bytes
+		if char2nr(a:str[i])>127
+			let c+=1
+		else
+			let c=0
+		endif
+		" Enough high bytes to return true
+		if c==4
+			return 1
+		endif
+
+		let i+=1
+	endwhile
+	" Not enough high bytes
+	return 0
+endfunction " }}}
+
 	
 
 " Commands
@@ -147,12 +198,6 @@ function! ConvertToUTF8() " {{{
 	set fileencoding=utf-8
 endfunction
 command! ConvertToUTF8 call ConvertToUTF8()
-" }}}
-function! FixWrongLatin1() " {{{
-	" Fix ISO-8859-1 displayed as UTF-8
-	.!iconv -f utf-8 -t ISO-8859-1
-endfunction
-command! FixWrongLatin1 call FixWrongLatin1()
 " }}}
 function! FixEpub() " {{{
 	" I often need to tweak epub files, so I convert them to txt and manually edit
