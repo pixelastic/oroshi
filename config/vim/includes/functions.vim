@@ -79,6 +79,9 @@ function! StrUncomment(txt) " {{{
 endfunction
 "}}}
 
+	
+	
+
 " Commands
 function! RemoveTrailingSpaces() " {{{
 	normal mz
@@ -144,6 +147,12 @@ function! ConvertToUTF8() " {{{
 	set fileencoding=utf-8
 endfunction
 command! ConvertToUTF8 call ConvertToUTF8()
+" }}}
+function! FixWrongLatin1() " {{{
+	" Fix ISO-8859-1 displayed as UTF-8
+	.!iconv -f utf-8 -t ISO-8859-1
+endfunction
+command! FixWrongLatin1 call FixWrongLatin1()
 " }}}
 function! FixEpub() " {{{
 	" I often need to tweak epub files, so I convert them to txt and manually edit
