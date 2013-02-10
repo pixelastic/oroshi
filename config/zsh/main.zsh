@@ -31,3 +31,5 @@ typeset -U path
 
 # Move back to original dir
 cd $currentDir
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting

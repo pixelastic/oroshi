@@ -15,7 +15,7 @@ sudo apt-get -y install \
 	libxvidcore-dev
 
 echo "Download svn source"
-cd /usr/local/etc
+cd ~/local/etc
 svn checkout svn://svn.ffmpeg.org/ffmpeg/trunk ffmpeg
 
 echo "Configure"
@@ -39,5 +39,5 @@ echo "Make"
 make
 
 echo "Create symlinks"
-cd /usr/local/bin/
+cd ~/local/bin/
 ln -s ../etc/ffmpeg/ffmpeg .

@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
 # Install rvm
-bash < <(curl -s https://rvm.beginrescueend.com/install/rvm)
+\curl -L https://get.rvm.io | bash -s stable --ruby
 # Don't forget to add the following line in ~/.zshrc
 # [[ -r $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
+source ~/.rvm/scripts/rvm
 rvm get head
 rvm reload
 

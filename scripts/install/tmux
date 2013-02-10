@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo "Download source"
-cd /usr/local/src/
+cd ~/local/src/
 wget -c http://downloads.sourceforge.net/project/tmux/tmux/tmux-1.7/tmux-1.7.tar.gz
 
 echo "Extracting"
@@ -12,7 +12,7 @@ echo "Installing dependencies"
 sudo apt-get install libevent-dev
 
 echo "Configuring"
-mkdir -p /usr/local/etc/tmux
+mkdir -p ~/local/etc/tmux
 ./configure --prefix=/usr/local/etc/tmux
 
 echo "Compiling"
@@ -20,8 +20,8 @@ make
 make install
 
 echo "Symlinking"
-cd /usr/local/bin
+cd ~/local/bin
 ln -s ../etc/tmux/bin/tmux .
-sudo ln -s /usr/local/etc/tmux/share/man/man1/tmux.1 /usr/local/share/man/man1/tmux.1
+sudo ln -s ~/local/etc/tmux/share/man/man1/tmux.1 ~/local/share/man/man1/tmux.1
 
 

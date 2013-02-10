@@ -6,7 +6,7 @@ sudo apt-get install libpcre3 libpcre3-dev
 
 
 echo "Download nginx"
-cd /usr/local/src
+cd ~/local/src
 wget http://nginx.org/download/nginx-1.2.4.tar.gz
 
 echo "Extracting"
@@ -14,7 +14,7 @@ extract nginx-1.2.4.tar.gz
 
 echo "Configuring"
 cd ./nginx-1.2.4
-mkdir /usr/local/etc/nginx
+mkdir ~/local/etc/nginx
 ./configure \
 	--prefix=/usr/local/etc/nginx \
 	--sbin-path=/usr/local/bin/nginx \

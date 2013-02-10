@@ -24,10 +24,11 @@ path=(
 	~/.oroshi/private/scripts/bin
 	~/.oroshi/scripts/bin/local/$(hostname)
 	~/.oroshi/private/sripts/bin/local/$(hostname)
+	~/local/bin
 )
 # }}}
 # Fasd {{{
-if [[ `which fasd` == '' ]]; then
+if [[ !`which fasd` = '' ]]; then
 	eval "$(fasd --init auto)"
 fi
 # }}}
