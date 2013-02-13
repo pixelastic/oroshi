@@ -169,11 +169,6 @@ alias oa="source ~/.oroshi/config/zsh/aliases.zsh"
 # Python {{{
 alias py3='python3'
 # }}}
-# Ruby {{{
-# Loading pry in custom dir
-# Note: pry has a bug where it loads .pryrc twice if launched in home
-alias pry='cd ~/local/tmp/scripts/pry && pry && cd -'
-# }}}
 # Versioning {{{
 # Note: Context-sensitive aliases are defined in ./aliases-{git|hg|none}.zsh
 alias vdc='create-repo'
