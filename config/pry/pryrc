@@ -8,12 +8,13 @@ $: << '.'
 Pry.prompt = [
 	proc {
 		|obj, nest_level, _|
-			prompt = "#{RUBY_VERSION} (#{obj}):#{nest_level} >"
-			# "\001\e[01m\002#{RUBY_VERSION}\001\e[0m\002"
-			# prompt = ""
-			# prompt += "\001\e[01;38;5;202m\002"
-			# prompt += "\001#{RUBY_VERSION} \002"
-			# prompt += "\001\e[0m\002"
+			# prompt = "#{RUBY_VERSION} (#{obj}):#{nest_level} >"
+			# prompt = "\001\e[01m\002#{RUBY_VERSION}\001\e[0m\002"
+			prompt = ""
+			prompt += "\001\e[01;38;5;202m\002"
+			prompt += "#{RUBY_VERSION} "
+			prompt += "\001\e[0m\002"
+
 
 			# prompt += "\001\e[38;5;35m\002"
 			# prompt += "(#{obj})"
