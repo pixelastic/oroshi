@@ -132,25 +132,20 @@ alias ev='ebook-viewer'
 # }}}
 # Directories {{{
 alias cd-='cd -'
-alias cdb='cd ~/Documents/Blog/'
-alias cdbooks='cd ~/Documents/books'
-alias cdd='cd ~/Documents/documentation/'
 alias cde='cd ~/local/etc/'
-alias cdemu='cd ~/Documents/emulation'
-alias cdjdr='cd ~/Documents/scenarios'
 alias cdl='cd ~/local/'
-alias cdm='cd ~/Documents/Movies/'
 alias cdo='cd ~/.oroshi/'
-alias cdp='cd ~/Documents/Photos'
-alias cdr='cd ~/Documents/documentation/ruby/Ruby\ 1.9.3\ Doc/'
 alias cds='cd ~/local/tmp/scripts/'
-alias cdsov='cd ~/local/tmp/sov/'
 alias cdt='cd ~/local/tmp/'
 alias cdw='cd ~/local/var/www/'
 # }}}
 # Dingoo {{{
 alias udingoo='umount /media/dingoo'
 alias cdingoo='cd /media/dingoo'
+# }}}
+# Libre Office {{{
+alias writer='gui libreoffice -writer'
+alias calc='gui libreoffice -calc'
 # }}}
 # Nginx {{{
 alias ngsta='sudo /etc/init.d/nginx start'
