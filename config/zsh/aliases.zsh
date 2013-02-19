@@ -152,6 +152,10 @@ alias cdw='cd ~/local/var/www/'
 alias udingoo='umount /media/dingoo'
 alias cdingoo='cd /media/dingoo'
 # }}}
+# Libre Office {{{
+alias writer='gui libreoffice -writer'
+alias calc='gui libreoffice -calc'
+# }}}
 # Nginx {{{
 alias ngsta='sudo /etc/init.d/nginx start'
 alias ngsto='sudo /etc/init.d/nginx stop'
