@@ -2,9 +2,9 @@
 # Default plowshare config
 
 # Paths
-local destDir=~/.config/plowshare
-local destFile=$destDir/plowshare.conf
-local configFile=~/.oroshi/config/plowshare/plowshare.conf
+destDir=~/.config/plowshare
+destFile=$destDir/plowshare.conf
+configFile=~/.oroshi/config/plowshare/plowshare.conf
 
 # Link the config file
 mkdir -p $destDir
