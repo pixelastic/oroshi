@@ -4,13 +4,27 @@ promptColor=(
 )
 # Private aliases
 source ~/.oroshi/private/config/zsh/local/eddie.zsh
+# Directories {{{
+alias cdb='cd ~/Documents/Blog/'
+alias cdbooks='cd ~/Documents/books'
+alias cdd='cd ~/Documents/documentation/'
+alias cdemu='cd ~/Documents/emulation'
+alias cdm='cd ~/Documents/Movies/'
+alias cdp='cd ~/Documents/Photos'
+alias cdrp='cd ~/Documents/roleplay/'
+alias cdscenar='cd ~/Documents/roleplay/scenarios/'
+alias cdsov='cd ~/local/tmp/sov/'
+# }}}
 
+# Synchronize stuff {{{
 # Synchronize dingoo
 alias ds='~/Documents/emulation/devices/dingoo/tools/dingoo-sync /media/dingoo'
 # Synchronize ebooks
 alias es='ebook-sync ~/Documents/books /media/HTC\ LEGEND/Data/Books'
 # Synchronize pictures on belette
 alias photos-sync='photos-sync ~/Documents/Photos/ /media/BELETTE/Photos/Voyage/'
+# }}}
+
 # Downloading a website in ~/local/tmp/websites
 alias mslurp="cd ~/local/tmp/websites && slurp"
 # Prefix a date to a file
