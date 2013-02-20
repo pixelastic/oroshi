@@ -2,7 +2,7 @@
 # encoding : utf-8
 require "shellwords"
 require "fileutils"
-# Rotate a given pdf clockwise
+# Rotate a list of pdf
 # Usage :
 #  $ pdf-rotate input.pdf {input2.pdf} {90|180|270}
 
