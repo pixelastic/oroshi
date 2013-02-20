@@ -1,0 +1,45 @@
+#!/usr/bin/env ruby
+# encoding : utf-8
+require "shellwords"
+require "fileutils"
+# Rotate a given pdf clockwise
+# Usage :
+#  $ pdf-rotate input.pdf {90|180|270}
+
+
+class PdfRotate
+
+	def initialize(*args)
+		@input = File.expand_path(args[0])
+		unless File.exists?(@input)
+			puts "Input file does not exists."
+			exit
+		end
+
+		@angle = args[1] || 90
+	end
+
+	def run
+		# We first make a copy of the original file
+		backup_file = @input+'.bak'
+		FileUtils.rm_f(backup_file) if File.exists?(backup_file)
+		FileUtils.cp(@input, backup_file)
+
+		# We then create a new file, rotated
+		tmp_file = @input+'.tmp'
+		options = [
+			"-rotate #{@angle}",
+			"-density 300x300",
+			"-compress lzw",
+			@input.shellescape,
+			tmp_file.shellescape
+		]
+		%x[convert #{options.join(' ')}]
+
+		# We finally put the new file in place of the old one
+		FileUtils.mv(tmp_file, @input)
+	end
+
+end
+
+PdfRotate.new(*ARGV).run()
