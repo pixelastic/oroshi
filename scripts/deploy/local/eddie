@@ -12,6 +12,7 @@ cd ~/.oroshi/scripts/deploy/
 ./hg
 ./hosts
 ./keybindings
+./plowshare
 ./pry
 ./ssh
 ./terminator
