@@ -151,11 +151,11 @@ inoremap <Home> <Esc>^i
 " }}}
 " MUSCLE MEMORY {{{
 " Ctrl+S saves the file, as in most apps
-nnoremap <silent> <C-S> :w<CR>
-inoremap <silent> <C-S> <Esc>:w<CR>
+nnoremap <silent> <C-S> :w!<CR>
+inoremap <silent> <C-S> <Esc>:w!<CR>
 " Ctrl+D is save and exit, as in the term.
-nnoremap <silent> <C-D> :x<CR>
-inoremap <silent> <C-D> <Esc>:x<CR>
+nnoremap <silent> <C-D> :x!<CR>
+inoremap <silent> <C-D> <Esc>:x!<CR>
 " Select all
 nnoremap <C-A> GVgg
 vnoremap <C-A> <Esc>GVgg
