@@ -8,6 +8,9 @@ echo "Extracting"
 tar xvzf zsh-5.0.0.tar.gz
 cd zsh-5.0.0
 
+echo "Installing dependencies"
+sudo apt-get install libncurses5-dev
+
 echo "Configuring"
 mkdir -p ~/local/etc/zsh
 ./configure --prefix=/home/$USER/local/etc/zsh
