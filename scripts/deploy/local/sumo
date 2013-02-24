@@ -12,3 +12,5 @@ cd ~/.oroshi/scripts/deploy/
 # Config files
 ./git
 ~/local/etc/zsh/bin/zsh ./zsh
+./terminator
+~/local/etc/zsh/bin/zsh ./dircolors
