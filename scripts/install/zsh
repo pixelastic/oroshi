@@ -10,7 +10,7 @@ cd zsh-5.0.0
 
 echo "Configuring"
 mkdir -p ~/local/etc/zsh
-./configure --prefix=/usr/local/etc/zsh
+./configure --prefix=/home/$USER/local/etc/zsh
 
 echo "Compiling"
 make
