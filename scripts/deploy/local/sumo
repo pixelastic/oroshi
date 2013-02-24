@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+# Hostname: sumo
+# Description: Maud's fat HP Pavilion
+
+# make sure all submodules are ready
+cd ~/.oroshi
+git submodule init
+git submodule update
+
+cd ~/.oroshi/scripts/deploy/
+
+# Config files
+./git
+~/local/etc/zsh/bin/zsh ./zsh
