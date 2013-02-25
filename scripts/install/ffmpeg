@@ -12,7 +12,9 @@ sudo apt-get -y install \
 	libvorbis-dev \
 	libvpx-dev \
 	libx264-dev \
-	libxvidcore-dev
+	libxvidcore-dev \
+	subversion
+
 
 echo "Download svn source"
 cd ~/local/etc
