@@ -9,4 +9,5 @@ cd ~/local/bin
 
 echo "#!/usr/bin/env bash" > ./vimeo-download
 echo "/home/$USER/local/etc/vimeo_downloader/vimeo_downloader.rb video \$1" >> ./vimeo-download
+echo "rm ./response.html" >> ./vimeo-download
 
