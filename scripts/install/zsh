@@ -8,9 +8,12 @@ echo "Extracting"
 tar xvzf zsh-5.0.0.tar.gz
 cd zsh-5.0.0
 
+echo "Installing dependencies"
+sudo apt-get install libncurses5-dev
+
 echo "Configuring"
 mkdir -p ~/local/etc/zsh
-./configure --prefix=/usr/local/etc/zsh
+./configure --prefix=/home/$USER/local/etc/zsh
 
 echo "Compiling"
 make
@@ -22,7 +25,7 @@ cd ~/local/bin/
 ln -s ../etc/zsh/bin/zsh
 
 echo "Changing current shell"
-sudo chsh -s ~/local/bin/zsh $USER
+sudo chsh -s /home/$USER/local/etc/zsh/bin/zsh $USER
 
 echo "--------------"
 echo "You should now reboot for the shell change to take effect correctly."
