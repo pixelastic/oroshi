@@ -3,11 +3,12 @@
 # dirs to hold custom installs
 ./dirs
 # make to be able to compile
-./xslt
+./make
 # vim to edit files
 ./vim
 # zsh for a better prompt
 ./zsh
 # tree because I'm green
 ./tree
+
 

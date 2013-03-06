@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-sudo apt-get install keepass
-sudo apt-get install xdotool
-

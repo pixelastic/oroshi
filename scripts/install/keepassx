@@ -1,28 +1,4 @@
 #!/usr/bin/env bash
 
-echo "Downloading from SourceForge"
-cd ~/local/src/
-wget \
-	-c \
-	http://superb-dca2.dl.sourceforge.net/project/keepassx/KeePassX/0.4.3/keepassx-0.4.3.tar.gz
-
-echo "Extracting"
-tar xvzf keepassx-0.4.3.tar.gz
-cd ./keepassx-0.4.3
-
-echo "Installing dependencies"
-sudo apt-get install libqt4-dev
-sudo apt-get install libxtst-dev
-# sudo apt-get install qt4-qmake
-
-echo "Installing"
-mkdir -p ~/local/etc/keepassx
-qmake PREFIX=~/local/etc/keepassx
-make
-make install
-
-echo "Creating wrapper script"
-cd ~/local/bin
-echo "#!/usr/bin/env zsh" > keepassx
-echo "gui /usr/local/etc/keepassx/bin/keepassx $@"
-
+echo "Downloading from apt"
+sudo apt-get install keepassx
