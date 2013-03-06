@@ -4,7 +4,7 @@
 # version of each files in a ./compress dir
 
 # Dir to extract photos
-local tmpdir=~/Documents/Photos/tmp/
+local tmpdir=~/Photos/tmp/
 if [[ ! -r $tmpdir ]]; then
 	mkdir -p $tmpdir;
 fi
