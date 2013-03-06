@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+echo "Clone git repo"
+cd ~/local/etc
+git clone git://github.com/bf4/vimeo_downloader.git
+
+echo "Create wrapper script"
+cd ~/local/bin
+
+echo "#!/usr/bin/env bash" > ./vimeo-download
+echo "/home/$USER/local/etc/vimeo_downloader/vimeo_downloader.sh \$1" >> ./vimeo-download
+echo "rm -f ./response.html" >> ./vimeo-download
+
+chmod +x ./vimeo-download
+
