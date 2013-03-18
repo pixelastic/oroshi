@@ -1,11 +1,11 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 # Link Terminator config to ~/.config/terminator/config
 
 # Paths
-local configDir=~/.oroshi/config/terminator
-local configFile=${configDir}/default.terminator
-local destDir=~/.config/terminator
-local destFile=${destDir}/config
+configDir=~/.oroshi/config/terminator
+configFile=${configDir}/default.terminator
+destDir=~/.config/terminator
+destFile=${destDir}/config
 
 # Link the config file
 mkdir -p $destDir

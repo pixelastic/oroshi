@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+echo "Installing compilers"
+
+sudo apt-get install build-essential
+sudo apt-get install xsltproc
+sudo apt-get install g++

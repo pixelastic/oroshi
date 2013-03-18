@@ -1,8 +1,8 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 # Link ~/.gitconfig and ~/.gitignore
 
 # Paths
-local configDir=~/.oroshi/config/git
+configDir=~/.oroshi/config/git
 
 # Generic git config
 ln -fs $configDir/gitconfig ~/.gitconfig

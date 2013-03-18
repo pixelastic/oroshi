@@ -16,22 +16,22 @@ Pry.prompt = [
 			prompt += "\001\e[0m\002"
 
 
-			# prompt += "\001\e[38;5;35m\002"
-			# prompt += "(#{obj})"
-			# prompt += "\001\e[0m\002"
+			prompt += "\001\e[38;5;35m\002"
+			prompt += "(#{obj})"
+			prompt += "\001\e[0m\002"
 
-			# prompt += "\001\e[38;5;24m\002"
-			# prompt += ":#{nest_level} "
-			# prompt += "\001\e[0m\002"
+			prompt += "\001\e[38;5;24m\002"
+			prompt += ":#{nest_level} "
+			prompt += "\001\e[0m\002"
 
-			# prompt += "\001\e[01;38;5;252m\002"
-			# prompt += "> "
-			# prompt += "\001\e[0m\002"
+			prompt += "\001\e[01;38;5;252m\002"
+			prompt += "> "
+			prompt += "\001\e[0m\002"
 	},
 	proc {
 		|obj, nest_level, _|
-			prompt = "#{RUBY_VERSION} (#{obj}):#{nest_level} *"
-			# prompt = "\e[01;38;5;202m#{RUBY_VERSION}\e[0m \e[38;5;35m(#{obj})\e[0m\e[38;5;24m:#{nest_level}\e[0m \e[01;38;5;241m* \e[0m"
+			# prompt = "#{RUBY_VERSION} (#{obj}):#{nest_level} *"
+			prompt = "\e[01;38;5;202m#{RUBY_VERSION}\e[0m \e[38;5;35m(#{obj})\e[0m\e[38;5;24m:#{nest_level}\e[0m \e[01;38;5;241m* \e[0m"
 	}
 ]
 

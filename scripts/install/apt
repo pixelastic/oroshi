@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Faster apt-get
-sudo add-apt-repository ppa:tldm217/tahutek.net
+sudo add-apt-repository ppa:apt-fast/stable
 sudo apt-get update
 sudo apt-get install apt-fast
 
