@@ -15,3 +15,4 @@ cd ~/.oroshi/scripts/deploy/
 ./terminator
 ~/local/etc/zsh/bin/zsh ./dircolors
 ~/local/etc/zsh/bin/zsh ./xmodmap
+~/local/etc/zsh/bin/zsh ./wget
