@@ -2,4 +2,4 @@
 # Will convert images to a format suitable for uploading on leboncoin.fr
 
 
-mogrify -resize 640 $@
+mogrify -verbose -resize 640 $@
