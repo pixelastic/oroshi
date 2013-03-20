@@ -18,5 +18,6 @@ cd ~/.oroshi/scripts/deploy/
 ./terminator
 ./tidy
 ./vim
+./wget
 ./xmodmap
 ./zsh
