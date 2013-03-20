@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require_relative '../etc/camera-extract/camera-extract'
+CameraExtract.new(*ARGV).run()
+

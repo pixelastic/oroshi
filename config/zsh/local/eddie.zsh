@@ -17,6 +17,10 @@ alias cdsov='cd ~/local/tmp/sov/'
 # }}}
 
 # Synchronize stuff {{{
+# Import pictures from camera
+alias michel-extract='camera-extract /media/MICHEL/DCIM'
+# Import pictures from Galaxy
+alias galaxy-extract='camera-extract /media/F101-14E2/DCIM/'
 # Synchronize dingoo
 alias ds='~/Documents/emulation/devices/dingoo/tools/dingoo-sync /media/dingoo'
 # Synchronize ebooks
