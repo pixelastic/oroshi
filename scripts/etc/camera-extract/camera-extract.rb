@@ -61,7 +61,8 @@ class CameraExtract
 			FileUtils.mkdir_p(output_dir)
 
 			# Copy the file there
-			basename = File.basename(file)
+			extname = File.extname(file)
+			basename = File.basename(file, extname) + extname.downcase
 			target_file = File.join(output_dir, basename)
 			puts "Importing #{basename}"
 			FileUtils.mv file, target_file, :force => true
