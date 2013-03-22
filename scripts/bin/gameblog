@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
-require_relative '../etc/gameblog/gameblog'
+require_relative '../etc/podcasts/gameblog/gameblog'
 Gameblog.new(*ARGV).run()
 
