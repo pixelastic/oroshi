@@ -45,27 +45,28 @@ class Gameblog
 	# Parse the podcasts.xml file and return an array of all episodes
 	def parse_podcasts_xml
 		doc = Nokogiri::XML(File.new(@xml_file))
-		list = {}
+		list = Hash.new
 
 		for node in doc.root.xpath("//item")
 			# Getting basic information from the xml
 			title = node.xpath('./title').text
-			link = node.xpath('./link').text
-			author = node.xpath('./author').text
-			length = node.xpath('./enclosure').attr('length')
+			url = node.xpath('./enclosure').attr('url').text
 			date = DateTime.parse(node.xpath('./pubDate').text)
 			description = node.xpath('./description').text
 
 			# Parsing it a bit more
-			matches = title.match(/Podcast (N°)?([0-9]*)(.*)? : (.*)/i)
+			matches = title.match(/Podcast (N°)?([0-9]*)(.[^\:]*)? : (.*)$/i)
 			index = matches[2]
 			title = matches[4]
+
+			# Fixing some issues with special chars in titles
+			title.gsub!('/', '-')
 
 			# Making it a big element
 			list[index] = {
 				'index' => index,
 				'title' => title,
-				'url' => link,
+				'url' => url,
 				'date' => date,
 				'description' => description
 			}
@@ -81,8 +82,40 @@ class Gameblog
 
 		podcasts = parse_podcasts_xml
 
-	
-		puts podcasts
+		# Check that we have every available podcast, and download them if not
+		podcasts.each do |index, podcast|
+			# Create a dir for each year
+			year = podcast['date'].year.to_s
+			FileUtils.mkdir_p(File.join(@podcasts_dir, year))
+
+			prefix = "%03d" % podcast['index']
+			basename = "#{prefix} - #{podcast['title']}.mp3"
+			filepath = File.join(@podcasts_dir, year, basename)
+
+			next if File.exists?(filepath)
+
+			# Downloading the missing podcasts
+			puts "Downloading \"#{basename}\""
+			wget_options = [
+				'wget',
+				'--continue',
+				'--timestamping=off',
+				'--server-response=off',
+				'--verbose',
+				podcast['url'].shellescape,
+				"-O #{filepath.shellescape}"
+			]
+			%x[#{wget_options.join(' ')}]
+
+
+
+
+
+
+
+		end
+
+		
 	end
 end
 
