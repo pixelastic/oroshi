@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require_relative '../etc/podcasts/tedtalks/tedtalks_podcast_downloader'
+TedTalksPodcastDownloader.new(*ARGV).run()
+
