@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
-require_relative '../etc/podcasts/mo5/mo5'
-MO5.new(*ARGV).run()
+require_relative '../etc/podcasts/mo5/mo5_podcast_downloader'
+MO5PodcastDownloader.new(*ARGV).run()
 

@@ -3,32 +3,44 @@ require 'open-uri'
 require "fileutils"
 require "shellwords"
 require 'nokogiri'
-# Will parse the mo5 podcast list and download the latest episodes
+# Base class for downloading a list of podcasts based on a RSS XML
 
-class MO5
+class PodcastDownloader
 	# Custom exceptions
 	class Error < StandardError; end
 	class ArgumentError < Error; end
 	class DirNotFoundError < Error; end
+	class NoListUrlError < Error; end
 
 	def initialize(*args)
 		parse_args(*args)
-
-		@xml_file = File.join(@podcasts_dir, 'itunes.xml')
-		@list_url = 'http://mo5.com/mag/podcasts/itunes.xml'
 		@download_delay = 24*60*60
+		@xml_file = File.join(@podcasts_dir, 'list.xml')
 
+		# Allow child classes to define the xml location
+		@list_url = ''
+		pre_run
+
+		if @list_url == ''
+			raise PodcastDownloader::NoListUrlError, "No url specified for the podcast list", ""
+		end
 	end
 
+	# Must pass the directory where the podcasts are saved
 	def parse_args(*args)
 		unless args.size > 0
-			raise MO5::ArgumentError, "You need to pass at least the dir holding the podcasts", ""
+			raise PodcastDownloader::ArgumentError, "You need to pass at least the dir holding the podcasts", ""
 		end
 
 		@podcasts_dir = File.expand_path(args[0])
 		unless File.directory?(@podcasts_dir)
-			raise MO5::DirNotFoundError,  "Unable to find #{@podcasts_dir}", ""
+			raise PodcastDownloader::DirNotFoundError,  "Unable to find #{@podcasts_dir}", ""
 		end
+	end
+
+	# Must be redefined in child class with specific values
+	def pre_run
+		puts "You must define a `pre_run` method in your child class where you define `@list_url` to the RSS XML url"
 	end
 
 	# Return the path of the podcasts.xml file
@@ -48,7 +60,7 @@ class MO5
 		download_xml_list()
 	end
 
-	# Download xml from the gameblog server
+	# Download xml file
 	def download_xml_list
 		puts "Downloading #{File.basename(@xml_file)}"
 		File.open(@xml_file, "w") do |xml_file|
@@ -64,31 +76,23 @@ class MO5
 		list = Hash.new
 
 		for node in doc.root.xpath("//item")
-			# Getting basic information from the xml
-			title = node.xpath('./title').text
-			description = node.xpath('./itunes:subtitle').text
-			url = node.xpath('./enclosure').attr('url').text
-			date = DateTime.parse(node.xpath('./pubDate').text)
+			hash = node_to_hash(node)
 
-			# Parsing it a bit more
-			matches = title.match(/podcast #([0-9]*) - (.*)$/i)
-			index = matches[1]
-			title = matches[2]
+			# Fixing some common issues with hashes
+			hash['index'] = hash['index'].to_s
+			hash['title'].gsub!('/', '-')
+			hash['year'] = hash['date'].year.to_s
 
-			# Fixing some issues with special chars in titles
-			title.gsub!('/', '-')
-
-			# Making it a big element
-			list[index] = {
-				'index' => index,
-				'title' => title,
-				'url' => url,
-				'date' => date,
-				'description' => description
-			}
+			# Saving it to the list
+			list[hash['index']] = hash
 		end
 
 		return list
+	end
+
+	# Must be overriden in child classes to transforme a node to a hash
+	def node_to_hash(node)
+		puts "You must define a `node_to_hash` method in your child class to parse the Nokogiri nodes"
 	end
 
 
@@ -96,17 +100,15 @@ class MO5
 		# Update the list
 		update_xml_list
 
-		podcasts = parse_podcasts_xml
-
 		# Check that we have every available podcast, and download them if not
-		podcasts.each do |index, podcast|
+		parse_podcasts_xml.each do |index, podcast|
 			# Create a dir for each year
-			year = podcast['date'].year.to_s
-			FileUtils.mkdir_p(File.join(@podcasts_dir, year))
+			year_dir = File.join(@podcasts_dir, podcast['year'])
+			FileUtils.mkdir_p(year_dir)
 
 			prefix = "%03d" % podcast['index']
 			basename = "#{prefix} - #{podcast['title']}.mp3"
-			filepath = File.join(@podcasts_dir, year, basename)
+			filepath = File.join(year_dir, basename)
 
 			next if File.exists?(filepath)
 
