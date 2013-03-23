@@ -107,6 +107,7 @@ alias eog='gui eog'
 alias evince="gui evince"
 alias lowriter='gui lowriter'
 alias vlc='gui vlc'
+alias gftp='gui gftp'
 # }}}
 
 # Apt-get {{{
