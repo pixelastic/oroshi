@@ -80,7 +80,7 @@ class PodcastDownloader
 
 			# Fixing some common issues with hashes
 			hash['index'] = hash['index'].to_s
-			hash['title'].gsub!('/', '-').gsub!(':',' -')
+			hash['title'] = hash['title'].gsub('/', '-').gsub(':',' -')
 			hash['year'] = hash['date'].year.to_s
 
 			# Saving it to the list
