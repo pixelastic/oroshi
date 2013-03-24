@@ -36,6 +36,8 @@ alias photos-sync='photos-sync ~/Documents/Photos/ /media/BELETTE/Photos/Voyage/
 alias mslurp="cd ~/local/tmp/websites && slurp"
 # Prefix a date to a file
 alias prd='prefix-date'
+# Download files from transmission
+alias td='transmission-download'
 
 # Rikiki
 export SERIES=/media/Rikiki/Films/Series/
