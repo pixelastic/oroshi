@@ -20,6 +20,7 @@ class Slurp
 			'--page-requisites',  # Download css, images and js
 			'--continue',         # Resume partial downloads
 			'--no-parent',        # Never go higher in hierarchy         
+			'--no-server-reponse',# Keep output readable
 		]
 	end
 
