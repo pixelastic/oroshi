@@ -11,7 +11,7 @@ local downloadUrls
 downloadUrls=($@)
 
 # Wget options to use
-local wgetOptions="--no-clobber --page-requisites --html-extension --convert-links --no-parent --reject '*.mp3'"
+local wgetOptions="--page-requisites --html-extension --convert-links --no-parent --reject '*.mp3'"
 # Whole website ?
 if [[ $1 = '-r' ]]; then
 	wgetOptions+=' --recursive'
