@@ -27,7 +27,7 @@ alias doxie-extract='camera-extract /media/DOXIE/DCIM/'
 # Synchronize dingoo
 alias ds='~/Documents/emulation/devices/dingoo/tools/dingoo-sync /media/dingoo'
 # Synchronize ebooks
-alias es='ebook-sync ~/Documents/books /media/HTC\ LEGEND/Data/Books'
+alias es='ebook-sync ~/Documents/books /media/galaxy/books'
 # Synchronize pictures on belette
 alias photos-sync='photos-sync ~/Documents/Photos/ /media/BELETTE/Photos/Voyage/'
 # }}}
