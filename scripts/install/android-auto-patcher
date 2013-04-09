@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Auto patcher to patch an android rom to add mods (like openPDroid)
+
+echo "Downloading"
+cd ~/local/etc
+git clone git://github.com/mateor/auto-patcher.git
+
+echo "Creating link"
+cd ~/local/bin
+ln -s ../etc/auto-patcher/auto_patcher ./android-auto-patcher
+
+
