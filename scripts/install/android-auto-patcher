@@ -5,6 +5,9 @@ echo "Downloading"
 cd ~/local/etc
 git clone git://github.com/mateor/auto-patcher.git
 
+echo "Installing dependencies"
+sudo apt-get install openjdk-7-jre openjdk-7-jdk
+
 echo "Creating link"
 cd ~/local/bin
 ln -s ../etc/auto-patcher/auto_patcher ./android-auto-patcher
