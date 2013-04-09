@@ -24,7 +24,10 @@ cd ../etc/auto-patcher
 # zip file argument must use an absolute path
 zip=`readlink -f $initial_dir/$1`
 echo $zip
-./auto_patcher $zip $2 $3 $4' > ./android-auto-patcher
+./auto_patcher $zip $2 $3 $4
+
+mv restore-* update-* $initial_dir
+' > ./android-auto-patcher
 chmod +x ./android-auto-patcher
 
 
