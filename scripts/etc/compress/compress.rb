@@ -31,7 +31,7 @@ class Compress
 				file.shellescape,
 				'-resize',
 				@resize,
-				compress_file
+				compress_file.shellescape
 			]
 			puts "Converting #{basename} to #{@resize}px"
 			%x[#{convert_options.join(' ')}]
@@ -39,7 +39,7 @@ class Compress
 			optim_options = [
 				'jpegoptim',
 				"-m#{@quality}",
-				compress_file
+				compress_file.shellescape
 			]
 			puts "Optimising #{basename} to #{@quality}%"
 			%x[#{optim_options.join(' ')}]
