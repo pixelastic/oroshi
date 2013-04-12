@@ -1,4 +1,4 @@
-#compdef localc
+#compdef calc
 # Will only suggest sheet files
 
 _fts-sheet () {

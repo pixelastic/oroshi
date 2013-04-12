@@ -1,4 +1,4 @@
-#compdef lowriter
+#compdef writer
 # Will only suggest txt-full files
 
 _fts-txt-full () {
@@ -8,7 +8,7 @@ _fts-txt-full () {
 
 	# suggesting arguments
 	_arguments \
-		"*:txtx full file:->txt-full_file" \
+		"*:txt full file:->txt-full_file" \
 		&& return 0
 	
 	# State machine

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Wrapper script to enable auto-completion
+gui libreoffice -calc "$@"
+
