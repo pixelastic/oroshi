@@ -212,6 +212,8 @@ function! FixEpub() " {{{
 	" Same goes for apostrophes
 	silent! %s/’/'/
 	silent! %s/‘/'/
+	" Remove space before three dots
+	silent! %s/ …/…/
 	
 	" [...] MOON.GLORIOUS moon,the night [...]
 	silent! %s/\v(\.|,)([^ "])/\1 \2/
