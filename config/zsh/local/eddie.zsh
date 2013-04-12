@@ -15,6 +15,8 @@ alias cdrp='cd ~/Documents/roleplay/'
 alias cdscenar='cd ~/Documents/roleplay/scenarios/'
 alias cdsov='cd ~/local/tmp/sov/'
 alias cdlbc="~/Dropbox/tim/paperwork/2013-03-06\ -\ Vente\ leboncoin.fr/"
+alias cdrop="cd ~/Dropbox/"
+alias cdpaper="cd ~/Dropbox/tim/paperwork/"
 # }}}
 
 # Synchronize stuff {{{
