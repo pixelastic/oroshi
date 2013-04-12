@@ -22,8 +22,6 @@ alias cdlbc="~/Dropbox/tim/paperwork/2013-03-06\ -\ Vente\ leboncoin.fr/"
 alias michel-extract='camera-extract /media/MICHEL/DCIM'
 # Import pictures from Galaxy
 alias galaxy-extract='camera-extract /media/F101-14E2/DCIM/'
-# Import scans from Doxie
-alias doxie-extract='camera-extract /media/DOXIE/DCIM/'
 # Synchronize dingoo
 alias ds='~/Documents/emulation/devices/dingoo/tools/dingoo-sync /media/dingoo'
 # Synchronize ebooks
