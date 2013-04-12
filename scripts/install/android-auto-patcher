@@ -5,11 +5,29 @@ echo "Downloading"
 cd ~/local/etc
 git clone git://github.com/mateor/auto-patcher.git
 
+echo "Initializing script"
+cd ./auto-patcher
+bash ./batch.sh
+
 echo "Installing dependencies"
 sudo apt-get install openjdk-7-jre openjdk-7-jdk
 
-echo "Creating link"
+echo "Creating wrapper script"
 cd ~/local/bin
-ln -s ../etc/auto-patcher/auto_patcher ./android-auto-patcher
+echo '#!/usr/bin/env bash
+initial_dir=`pwd`
+
+# auto-patcher can only be executed from its own dir
+cd `dirname "$0"`
+cd ../etc/auto-patcher
+
+# zip file argument must use an absolute path
+zip=`readlink -f $initial_dir/$1`
+echo $zip
+./auto_patcher $zip $2 $3 $4
+
+mv restore-* update-* $initial_dir
+' > ./android-auto-patcher
+chmod +x ./android-auto-patcher
 
 
