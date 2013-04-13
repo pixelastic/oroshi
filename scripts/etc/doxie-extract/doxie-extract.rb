@@ -62,7 +62,7 @@ class DoxieExtract
 			# Copy the file there
 			extname = File.extname(file).downcase
 			filedate = DateTime.now.strftime("%Y-%m-%d_%H-%M-%S")
-			targetfile = File.join(output_dir, filedate + extname)
+			targetfile = File.join(output_dir, "__" + filedate + extname)
 			
 			basename = File.basename(targetfile)
 			basedir = File.dirname(targetfile)

@@ -15,6 +15,8 @@ alias cdrp='cd ~/Documents/roleplay/'
 alias cdscenar='cd ~/Documents/roleplay/scenarios/'
 alias cdsov='cd ~/local/tmp/sov/'
 alias cdlbc="~/Dropbox/tim/paperwork/2013-03-06\ -\ Vente\ leboncoin.fr/"
+alias cdrop="cd ~/Dropbox/"
+alias cdpaper="cd ~/Dropbox/tim/paperwork/"
 # }}}
 
 # Synchronize stuff {{{
@@ -30,6 +32,9 @@ alias es='ebook-sync ~/Documents/books /media/galaxy/books'
 alias photos-sync='photos-sync ~/Documents/Photos/ /media/BELETTE/Photos/Voyage/'
 # }}}
 
+# Games {{{
+alias gta='cd ~/local/etc/gta/WINO/ && wine ./Grand\ Theft\ Auto.exe'
+# }}}
 # Downloading a website in ~/local/tmp/websites
 alias mslurp="cd ~/local/tmp/websites && slurp"
 # Prefix a date to a file

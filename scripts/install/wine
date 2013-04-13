@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
-sudo apt-get install wine
+sudo add-apt-repository ppa:ubuntu-wine/ppa
+sudo apt-get update && sudo apt-get upgrade
+sudo apt-get install wine1.4
 
