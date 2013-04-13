@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+echo "Instructions on how to play GTA on Ubuntu"
+echo "First, get the GTAINSTALLER.EXE."
+echo "You can easily get it for free from the Rockstar website"
+echo "Install wine1.4"
+echo "You might need to sudo add-apt-repository ppa:ubuntu-wine/ppa"
+echo "Unzip the file, and install the .exe using wine anywhere you want"
+echo "Copy MFC42.DLL from ~/.oroshi/config/wine/dll to the same dir"
+echo "On the first play, run GTA_Settings.exe using wine"
+echo "You might need to configure wine (winecfg) to use a virtual desktop whose size is almost as big as your screen"
+echo "Then, run wine ./WINO/Grand Theft Auto.exe"

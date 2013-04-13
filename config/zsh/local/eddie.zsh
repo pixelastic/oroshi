@@ -32,6 +32,9 @@ alias es='ebook-sync ~/Documents/books /media/galaxy/books'
 alias photos-sync='photos-sync ~/Documents/Photos/ /media/BELETTE/Photos/Voyage/'
 # }}}
 
+# Games {{{
+alias gta='cd ~/local/etc/gta/WINO/ && wine ./Grand\ Theft\ Auto.exe'
+# }}}
 # Downloading a website in ~/local/tmp/websites
 alias mslurp="cd ~/local/tmp/websites && slurp"
 # Prefix a date to a file
