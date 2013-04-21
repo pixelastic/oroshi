@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Easy download/upload of files from Rapidshare and co
 
-cd /usr/local/src
+cd ~/local/src
 git clone https://code.google.com/p/plowshare/
 
 cd ./plowshare
-mkdir /usr/local/etc/plowshare
-make install PREFIX=/usr/local/etc/plowshare
+mkdir ~/local/etc/plowshare
+make install PREFIX=~/local/etc/plowshare
 
-cd /usr/local/bin
+cd ~/local/bin
 ln -s ../etc/plowshare/bin/plowdown 
 
