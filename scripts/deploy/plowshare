@@ -4,7 +4,7 @@
 # Paths
 destDir=~/.config/plowshare
 destFile=$destDir/plowshare.conf
-configFile=~/.oroshi/config/plowshare/plowshare.conf
+configFile=~/.oroshi/private/config/plowshare/plowshare.conf
 
 # Link the config file
 mkdir -p $destDir
