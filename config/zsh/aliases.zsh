@@ -165,6 +165,7 @@ alias py3='python3'
 # Note: Context-sensitive aliases are defined in ./aliases-{git|hg|none}.zsh
 alias vdc='create-repo'
 alias vdt='get-version-system'
+alias vdcl='git clone --recursive'
 # }}}
 # Vim {{{
 alias v='vim -p'

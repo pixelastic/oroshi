@@ -90,6 +90,7 @@ alias vsl='git stash list'
 alias vbsi='git submodule init'
 alias vsba='git submodule add'
 alias vsbu='git submodule update'
+alias vsbd='git submodule-download'
 # }}}
 # working [d]irectory {{{
 alias vdR='git tabula-rasa'
