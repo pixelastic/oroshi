@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+# encoding : utf-8
+require "fileutils"
+# Will capitalize each title of the given files. Files are expected to be named
+# "XX - Title.ext"
+# Usage :
+# $ mp3-capitalize-title "01 - beginning.mp3" "02 - the last of us.mp3"
+
+list = ARGV.map{|a| File.expand_path(a)}.reject{|a| !File.exists?(a)}
+
+list.each do |file|
+	dirname = File.dirname(file)
+	basename = File.basename(file)
+
+	index = basename[0..1]
+	title = basename[5..-1].capitalize
+
+	newbasename = "#{index} - #{title}"
+
+	newfile = File.join(dirname, newbasename)
+	FileUtils.mv(file, newfile) if file != newfile
+end
+
