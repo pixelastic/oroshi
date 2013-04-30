@@ -18,6 +18,11 @@ list.each do |file|
 	newbasename = "#{index} - #{title}"
 
 	newfile = File.join(dirname, newbasename)
-	FileUtils.mv(file, newfile) if file != newfile
+	if file != newfile
+		puts "Renaming to #{newbasename}"
+		FileUtils.mv(file, newfile) 
+	end
+
+	
 end
 
