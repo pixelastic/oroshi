@@ -82,7 +82,7 @@ alias la="ls -a"
 # Tree that only display directories
 alias treed='tree -dN'
 # Opening nautilus
-alias n="nautilus"
+alias n="gui nautilus"
 # Find a file
 function f() { find . -iname "*$1*" }
 alias f='f'
