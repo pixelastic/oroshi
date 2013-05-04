@@ -3,16 +3,23 @@
 belette_sd = File.join('/', 'media', 'BELETTE')
 belette_books = File.join(belette_sd, 'Books')
 belette_rp_books = File.join(belette_sd, 'Roleplay', 'books')
-belette_rp_characters = File.join(belette_sd, 'Roleplay', 'characters')
-belette_rp_scenarios = File.join(belette_sd, 'Roleplay', 'scenarios')
 
 eddie_books = File.join('~', 'Documents', 'books')
+eddie_rp_books = File.join('~', 'Documents', 'roleplay', 'books')
+
+def execute(cmd)
+	IO.popen(cmd) do |io| 
+		while (line = io.gets) do 
+			puts line 
+		end
+	end
+end
 
 # Will update the book collection
 puts "# Updating book list"
-%x[ebook-sync #{eddie_books} #{belette_books}]
+execute "ebook-sync #{eddie_books} #{belette_books}"
 
 # Update roleplay repositories
-puts "# Updating roleplay books repo"
-%x[git pull #{belette_rp_books}]
+puts "# Updating roleplay books"
+execute "update-dir #{eddie_rp_books} #{belette_rp_books}"
 

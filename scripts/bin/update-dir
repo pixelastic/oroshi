@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require_relative '../etc/update-dir/update-dir'
+UpdateDir.new(*ARGV).run()
+
