@@ -7,12 +7,14 @@ galaxy_books = File.join(galaxy_sd, 'books')
 galaxy_rp_books = File.join(galaxy_sd, 'roleplay', 'books')
 galaxy_rp_characters = File.join(galaxy_sd, 'roleplay', 'characters')
 galaxy_rp_scenarios = File.join(galaxy_sd, 'roleplay', 'scenarios')
+galaxy_audio = File.join('/', 'F101-14E2/', 'media', 'audio')
 
 eddie_books = File.join('~', 'Documents', 'books')
 eddie_rp = File.join('~', 'Documents', 'roleplay')
 eddie_rp_books = File.join(eddie_rp, 'books')
 eddie_rp_characters = File.join(eddie_rp, 'characters')
 eddie_rp_scenarios = File.join(eddie_rp, 'scenarios')
+eddie_audio = File.join('~', 'Dropbox', 'config', 'audio')
 
 def execute(cmd)
 	IO.popen(cmd) do |io| 
@@ -37,4 +39,8 @@ puts "# Updating roleplay characters"
 execute "update-dir #{eddie_rp_characters} #{galaxy_rp_characters}"
 puts "# Updating roleplay scenarios"
 execute "update-dir #{eddie_rp_scenarios} #{galaxy_rp_scenarios}"
+
+# Update ringtones and alarm
+puts "# Updating ringtones and alarms"
+execute "update-dir #{galaxy_audio} #{eddie_audio}"
 
