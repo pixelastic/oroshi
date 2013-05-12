@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+# encoding : utf-8
+# Will extract images taken with the phone camera to the latpop
+galaxy_internal = File.join('/', 'media', 'F101-14E2')
+galaxy_dcim = File.join(galaxy_internal, 'DCIM')
+
+def execute(cmd)
+	IO.popen(cmd) do |io| 
+		while (line = io.gets) do 
+			puts line 
+		end
+	end
+end
+
+puts "# Extracting pictures"
+execute "camera-extract #{galaxy_dcim}"
