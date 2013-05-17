@@ -79,7 +79,7 @@ class UpdateDir
 
 	def run
 		options = get_rsync_options(@from, @to)
-		puts "# Updating #{@from}"
+		puts "# Updating #{@to} with files from #{@from}"
 		# puts "rsync #{options.join(' ')}"
 		execute("rsync #{options.join(' ')}")
 	end
