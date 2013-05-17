@@ -319,6 +319,9 @@ nnoremap gp `[v`]
 " We'll use x as a way to delete text without keeping it in a paste buffer
 nnoremap x "_x
 vnoremap x "_x
+" Copy and paste words
+nnoremap wy viwy
+nnoremap wp viwp
 "}}}
 
 " CTRL-F {{{
