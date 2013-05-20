@@ -28,6 +28,13 @@ class PdfSplit
 
 	def parse_args(*args)
 		unless args.size > 0
+			puts "Usage :"
+			puts "$ pdf-split input.pdf"
+			puts "  Will create one pdf file for every page of input.pdf"
+			puts "$ pdf-split input.pdf 7"
+			puts "  Will extract page 7 of input.pdf"
+			puts "$ pdf-split input.pdf 3 5"
+			puts "  Will create a new pdf containing pages 3 to 5 of input.pdf"
 			raise PdfSplit::ArgumentError, "You need to pass at least the input file", ""
 		end
 		file = File.expand_path(args[0])
