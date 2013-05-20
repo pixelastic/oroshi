@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+# encoding : utf-8
+require "fileutils"
+# Prepend a numeric index to every file passed as argument
+# Usage
+# $ order "file.jpg" "image.png" "novel.txt"
+
+list = ARGV.map{|a| File.expand_path(a)}.reject{|a| !File.exists?(a)}
+max = list.size
+zeros = [2, "#{max}".size].max
+i=0
+
+list.each do |file|
+	i=i+1
+	index = "%0#{zeros}d" % i
+
+	dirname = File.dirname(file)
+	basename = File.basename(file)
+
+	title = basename[0].upcase + basename[1..-1]
+
+	newbasename = "#{index} - #{title}"
+
+	newfile = File.join(dirname, newbasename)
+	puts "Renaming to #{newbasename}"
+	FileUtils.mv(file, newfile)
+end
+

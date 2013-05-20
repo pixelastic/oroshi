@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+# encoding : utf-8
+# Update roleplay repositories
+galaxy_sd = File.join('/', 'media', 'galaxy')
+galaxy_rp_books = File.join(galaxy_sd, 'roleplay', 'books')
+galaxy_rp_characters = File.join(galaxy_sd, 'roleplay', 'characters')
+galaxy_rp_scenarios = File.join(galaxy_sd, 'roleplay', 'scenarios')
+
+eddie_rp = File.join('~', 'Documents', 'roleplay')
+eddie_rp_books = File.join(eddie_rp, 'books')
+eddie_rp_characters = File.join(eddie_rp, 'characters')
+eddie_rp_scenarios = File.join(eddie_rp, 'scenarios')
+
+puts "# Updating roleplay books"
+puts %x[update-dir #{eddie_rp_books} #{galaxy_rp_books}]
+puts "# Updating roleplay characters"
+puts %x[update-dir #{eddie_rp_characters} #{galaxy_rp_characters}]
+puts "# Updating roleplay scenarios"
+puts %x[update-dir #{eddie_rp_scenarios} #{galaxy_rp_scenarios}]

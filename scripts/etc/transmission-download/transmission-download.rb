@@ -18,7 +18,12 @@ class TransmissionDownload
 		end
 		
 		@url = authenticate_url(args[0])
-		@base_url = get_base_url(@url)
+		if @url['?dir=']
+			@is_dir = true
+			@base_url = get_base_url(@url)
+		else
+			@is_dir = false
+		end
 
 		@tmp_html = File.expand_path('./tmp.html')
 		@tmp_txt = File.expand_path('./tmp.txt')
@@ -46,12 +51,12 @@ class TransmissionDownload
 	end
 
 	# Download the target file as html
-	def download_html_file
+	def download_html_file(url)
 		puts "Downloading html page"
 		wget_options = [
 			'wget',
 			'--continue',
-			"'#{@url}'",
+			"'#{url}'",
 			"-O #{@tmp_html.shellescape}",
 			'--quiet'
 		]
@@ -59,8 +64,8 @@ class TransmissionDownload
 	end
 
 	# Get a txt list file of all relevant links from an html file
-	def get_list_file
-		download_html_file
+	def get_list_file(url)
+		download_html_file(url)
 		doc = Nokogiri::HTML(File.new(@tmp_html))
 
 		list = []
@@ -74,18 +79,30 @@ class TransmissionDownload
 		return list
 	end
 
-
-	def run
-		get_list_file.each do |file|
-			wget_options = [
-				'wget',
-				'--continue',
-				"'#{@base_url}#{file['url']}'"
-			]
-			%x[#{wget_options.join(' ')}]
+	def download_whole_directory(url)
+		get_list_file(url).each do |file|
+			download_one_file(@base_url+file['url'])
 		end
 
 		clean_up
+	end
+
+	def download_one_file(url)
+		wget_options = [
+			'wget',
+			'--continue',
+			"'#{url}'"
+		]
+		%x[#{wget_options.join(' ')}]
+
+	end
+
+	def run
+		if @is_dir
+			download_whole_directory(@url)
+		else
+			download_one_file(@url)
+		end
 	end
 
 	def clean_up

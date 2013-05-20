@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# encoding : utf-8
+# Will update the book collection
+eddie_books = File.join('~', 'Documents', 'books')
+galaxy_sd = File.join('/', 'media', 'galaxy')
+galaxy_books = File.join(galaxy_sd, 'books')
+
+def execute(cmd)
+	IO.popen(cmd) do |io| 
+		while (line = io.gets) do 
+			puts line 
+		end
+	end
+end
+
+puts "# Updating book list"
+execute "ebook-sync #{eddie_books} #{galaxy_books}"

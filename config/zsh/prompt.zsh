@@ -1,4 +1,5 @@
 # prompt.zsh
+#
 # This file is responsible for handling what to display in the prompt and will
 # keep an inner state of the last command and current version control system
 
@@ -221,6 +222,7 @@ function expandHgAlias() {
 }
 # }}}
 # setPreviousCommand() {{{
+# Set $previousCommand as a global array
 function setPreviousCommand() {
 	local argCommand=$1
 	local	splitCommand
@@ -504,6 +506,37 @@ function updateBranchGit() {
 }
 # }}}
 
+# updatePushIndicator() {{{
+function updatePushIndicator() {
+	if [[ $versionSystem = 'git' ]]; then
+		updatePushIndicatorGit
+		return
+	fi
+	# No indicator
+	promptPushIndicator=''
+	colorPushIndicator=''
+}
+# }}}
+# updatePushIndicatorGit() {{{
+function updatePushIndicatorGit() {
+	# Stop if not a git repo
+	if [[ $versionSystem != 'git' ]]; then
+		return
+	fi
+
+	# We check for the sentence telling us that we are ahead of the origin
+	local rawGitStatus
+	rawGitStatus=$(git status)
+
+	if [[ $rawGitStatus =~ 'Your branch is ahead of' ]]; then
+		promptPushIndicator='^'
+		return
+	fi
+
+	promptPushIndicator=''
+}
+# }}}
+
 # Hooks
 # chpwd() {{{
 # Note: This is automatically called by the prompt whenever we change
@@ -529,6 +562,7 @@ function chpwd() {
 	chpwd_updateTag
 	chpwd_updateSubmodule
 	chpwd_updateBranch
+	chpwd_updatePushIndicator
 
 	# Window title
 	print -Pn "\e]2;%n@%m:%~/\a"
@@ -579,6 +613,14 @@ function chpwd_updateBranch() {
 	fi
 }
 # }}}
+# chpwd_updatePushIndicator() {{{
+function chpwd_updatePushIndicator() {
+# Update push indicator when moving in or out of a repo
+if [[ $repoRoot != $previousRepoRoot ]]; then
+	updatePushIndicator
+fi
+}
+# }}}
 # preexec() {{{
 # Note: Is called just before executing a command
 function preexec() {
@@ -593,6 +635,7 @@ function precmd() {
 	precmd_updateHash
 	precmd_updateTag
 	precmd_updateBranch
+	precmd_updatePushIndicator
 }
 # }}}
 # precmd_updateVersionSystem() {{{
@@ -616,7 +659,7 @@ function precmd_updateHash() {
 	
 	# Previous command created or removed a file in repo
 	if [[ $versionSystem != '' 
-		&& $previousCommand[1] =~ '^(better-rmdir|cp|fasd|ln|mkdir|mv|rm|rmdir|touch|trash|vim)$' ]]; then
+		&& $previousCommand[1] =~ '^(better-rmdir|cp|fasd|ln|mkdir|mv|rename|rm|rmdir|touch|trash|vim)$' ]]; then
 		updateHash=1
 	fi
 	# Git commands
@@ -653,6 +696,15 @@ function precmd_updateBranch() {
 	fi
 }
 # }}}
+# precmd_updatePushIndicator() {{{
+function precmd_updatePushIndicator() {
+# Git commands
+if [[ $previousCommand[1] = 'git' 
+	&& $previousCommand[2] =~ '(commit|commit-all)' ]]; then
+	updatePushIndicator
+fi
+}
+# }}}
 
 # Init
 # Global variables {{{
@@ -679,6 +731,7 @@ export hashSymbol='%#'
 export promptTag=''
 export promptSubmodule=''
 export promptBranch=''
+export promptPushIndicator=''
 export promptDebug=''
 # }}}
 # Initial prompt {{{
@@ -693,6 +746,6 @@ $FG[$colorHash]$hashSymbol$FX[reset] \
 $FG[$colorDebug]$promptDebug$FX[reset]'
 RPROMPT='$FG[$colorTag]$promptTag$FX[reset]\
 $FG[$colorSubmodule]$promptSubmodule$FX[reset]\
-$FG[$colorBranch]$promptBranch$FX[reset]'
+$FG[$colorBranch]$promptPushIndicator$promptBranch$FX[reset]'
 # }}}
 

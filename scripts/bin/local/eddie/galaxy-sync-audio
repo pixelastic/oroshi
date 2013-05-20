@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# encoding : utf-8
+# Update ringtones and alarm
+galaxy_internal = File.join('/', 'media', 'F101-14E2')
+galaxy_audio = File.join(galaxy_internal, 'media', 'audio')
+eddie_audio = File.join('~', 'Dropbox', 'config', 'audio')
+
+def execute(cmd)
+	IO.popen(cmd) do |io| 
+		while (line = io.gets) do 
+			puts line 
+		end
+	end
+end
+
+puts "# Updating ringtones and alarms"
+execute "update-dir #{eddie_audio} #{galaxy_audio}"

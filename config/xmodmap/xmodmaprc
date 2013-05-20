@@ -85,7 +85,7 @@ keycode 26 = e E e E EuroSign
 keycode 27 = r R r R grave
 keycode 28 = t T t T trademark
 keycode 29 = y Y y Y yen
-keycode 30 = u U u U
+keycode 30 = u U u U backslash
 keycode 31 = i I i I minus endash
 keycode 32 = o O o O underscore oe
 keycode 33 = p P p P
@@ -99,7 +99,7 @@ keycode 43 = h H h H numbersign
 keycode 44 = j J j J bar
 keycode 45 = k K k K bracketleft parenleft
 keycode 46 = l L l L bracketright parenright
-keycode 47 = m M m M backslash
+keycode 47 = m M m M
 
 keycode 52 = w W w W
 keycode 53 = x X x X

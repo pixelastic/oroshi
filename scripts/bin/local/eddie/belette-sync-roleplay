@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# encoding : utf-8
+# Update roleplay repositories
+belette_sd = File.join('/', 'media', 'BELETTE')
+belette_rp_books = File.join(belette_sd, 'Roleplay', 'books')
+eddie_rp_books = File.join('~', 'Documents', 'roleplay', 'books')
+
+def execute(cmd)
+	IO.popen(cmd) do |io| 
+		while (line = io.gets) do 
+			puts line 
+		end
+	end
+end
+
+puts "# Updating roleplay books"
+execute "update-dir #{eddie_rp_books} #{belette_rp_books}"

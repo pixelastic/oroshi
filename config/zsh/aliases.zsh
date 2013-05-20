@@ -82,7 +82,7 @@ alias la="ls -a"
 # Tree that only display directories
 alias treed='tree -dN'
 # Opening nautilus
-alias n="nautilus"
+alias n="gui nautilus"
 # Find a file
 function f() { find . -iname "*$1*" }
 alias f='f'
@@ -165,6 +165,7 @@ alias py3='python3'
 # Note: Context-sensitive aliases are defined in ./aliases-{git|hg|none}.zsh
 alias vdc='create-repo'
 alias vdt='get-version-system'
+alias vdcl='git clone --recursive'
 # }}}
 # Vim {{{
 alias v='vim -p'
