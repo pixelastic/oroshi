@@ -529,7 +529,7 @@ function updatePushIndicatorGit() {
 	rawGitStatus=$(git status)
 
 	if [[ $rawGitStatus =~ 'Your branch is ahead of' ]]; then
-		promptPushIndicator='^'
+		promptPushIndicator='⇪ '
 		return
 	fi
 
@@ -700,7 +700,7 @@ function precmd_updateBranch() {
 function precmd_updatePushIndicator() {
 # Git commands
 if [[ $previousCommand[1] = 'git' 
-	&& $previousCommand[2] =~ '(branch|checkout|commit|commit-all|flow|push|init|status)' ]]; then
+	&& $previousCommand[2] =~ '(branch|checkout|commit|commit-all|flow|push|init|rollback|status)' ]]; then
 	updatePushIndicator
 fi
 }
