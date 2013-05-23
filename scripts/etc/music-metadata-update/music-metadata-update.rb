@@ -1,6 +1,7 @@
 # encoding : UTF-8
 require "fileutils"
 require "shellwords"
+require_relative "mp3"
 # Will read metadata from a mp3 file based on its current metadata, filepath
 # and .tracklist file, and rewrite them and possibly rename the file.
 #
@@ -15,15 +16,6 @@ require "shellwords"
 # The script can be run several times on the same file without any loss of
 # information (apart from useless tags).
 #
-# A filepath is supposed to be of the following pattern
-# /[...]/{letter}/{artist}/{year} - {album name}/{CDX}?/{track number} - {track
-# name}.mp3
-# For podcasts :
-# /[...]/podcasts/{letter}/{name}/{year}/{number} - {name}.mp3
-# For soundtracks :
-# /[...]/soundtracks/{letter}/{movie}/{track number} - {track name}.mp3
-# /[...]/soundtracks/{letter}/{saga}/{year} - {name}/{track number} - {track
-# name}.mp3
 # 
 
 
@@ -39,7 +31,7 @@ class MusicMetadataUpdate
 
 	def parse_args(*args)
 		# Keep only valid mp3 files
-		args.reject!{|f| File.extname(f).downcase!='.mp3'}.reject!{|f| !File.exists(f)}
+		args = args.reject{|f| File.extname(f).downcase!='.mp3'}.reject{|f| !File.exists?(f)}
 		# Work with complete filepath
 		args.map!{|f| File.expand_path(f)}
 
@@ -50,8 +42,10 @@ class MusicMetadataUpdate
 		@files = args
 	end
 
-
 	def run
+		@files.each do |file|
+			puts Mp3.new(file).name
+		end
 
 	end
 end
