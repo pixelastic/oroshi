@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require_relative '../etc/music-metadata-update/music-metadata-update'
+MusicMetadataUpdate.new(*ARGV).run()
+
