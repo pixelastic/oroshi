@@ -10,4 +10,5 @@ let b:surround_35 = "#{\r}"
 inoremap Fep File.expand_path(
 inoremap Fbn File.basename(
 inoremap Fdn File.dirname(
+inoremap Fen File.extname(
 
