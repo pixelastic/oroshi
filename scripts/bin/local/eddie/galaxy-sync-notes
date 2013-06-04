@@ -4,7 +4,7 @@
 galaxy_sd = File.join('/', 'media', 'galaxy')
 galaxy_notes = File.join(galaxy_sd, 'notes')
 galaxy_notes_jokes = File.join(galaxy_notes, 'jokes')
-galaxy_notes_games = File.join(galaxy_sd, 'games')
+galaxy_notes_games = File.join(galaxy_notes, 'games')
 
 eddie_notes = File.join('~', 'Documents', 'notes')
 eddie_notes_jokes = File.join(eddie_notes, 'jokes')
