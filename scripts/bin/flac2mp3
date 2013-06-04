@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+# encoding : utf-8
+require "shellwords"
+
+class Flac2Mp3
+
+	def initialize(*args)
+		# Usage explanation if no args
+		if args.size == 0
+			puts "Usage :"
+			puts "$ flac2mp3 input.flac"
+			return
+		end
+
+		# Keeping only flac files
+		@input = args.reject{|f| File.extname(f) != '.flac'}.reject{|f| !File.exists?(f)}
+	end
+
+	def run
+		@input.each do |file|
+			file = File.expand_path(file)
+			dirname = File.dirname(file)
+			extname = File.extname(file)
+			basename = File.basename(file, extname)
+			newname = File.join(dirname, basename + '.mp3')
+			puts "Converting #{basename} to mp3"
+			%x[sox #{file.shellescape} #{newname.shellescape}]
+		end
+
+	end
+
+end
+
+Flac2Mp3.new(*ARGV).run()
