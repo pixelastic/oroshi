@@ -98,7 +98,7 @@ class EbookSync
 			# between source and dest. We'll take this into account by manually
 			# testing if a directory with an ending period exists in the source when
 			# comparing directories.
-			suffix = dir.gsub(/^#{target}/, '')
+			suffix = dir.gsub(/^#{Regexp.escape(target)}/, '')
 			dir_in_source = File.join(source, suffix)
 			dir_in_source = dir_in_source + '.' unless File.exists?(dir_in_source)
 			if File.exists?(dir_in_source) 
