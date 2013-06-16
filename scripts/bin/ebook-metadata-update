@@ -40,14 +40,12 @@ ARGV.each do |epub|
 	options << "--author-sort=\"#{author_lastname}, #{author_firstname}\""
 
 	# Deal with series
-	if split.size == 3
-		serie = split[1]
-		serie_split = serie.split(' ')
-		serie_name = serie_split[0..-2].join(' ')
-		serie_index = serie_split[-1]
+	if split.size == 4
+		serie_name = split[1]
+		serie_index = split[2]
 		options << "--series=\"#{serie_name}\""
 		options << "--index=#{serie_index}"
-		options << "--title-sort=\"#{serie_name} #{serie_index} - #{title}\""
+		options << "--title-sort=\"#{serie_name} - #{serie_index} - #{title}\""
 	end
 	
 
