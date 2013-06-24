@@ -13,9 +13,9 @@ nnoremap <silent> vfu :Git unstage %<CR><CR>:call GitUpdateStatusLine()<CR>
 " }}}
 " [c]ommits {{{
 " Commit
-nnoremap <silent> vcc :Gcommit<CR>:call GitUpdateStatusLine()<CR>
+nnoremap <silent> vcc :Gcommit<CR>
 " Commit all
-nnoremap <silent> vcca :Git add .<CR>:Gcommit<CR>:call GitUpdateStatusLine()<CR>
+nnoremap <silent> vcca :Git add .<CR>:Gcommit<CR>
 " }}}
 
 " STATUSLINE
