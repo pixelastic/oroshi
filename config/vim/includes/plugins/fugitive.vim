@@ -13,3 +13,5 @@ nnoremap <silent> vcc :Gcommit<CR>
 " Commit all
 nnoremap <silent> vcca :Git add .<CR>:Gcommit<CR>
 " }}}
+
+
