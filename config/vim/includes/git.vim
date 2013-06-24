@@ -26,7 +26,7 @@ let b:git_status = ""
 
 " GitGetRoot {{{
 " Returns path of the git root of specified filepath. Returns empty string if
-" not a git repo.
+" not a git repo. Reset on every loading of this page, otherwise kept in cache.
 if exists('b:git_root')
 	unlet b:git_root
 endif
