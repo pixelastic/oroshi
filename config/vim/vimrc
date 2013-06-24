@@ -330,6 +330,9 @@ source ~/.vim/includes/ctrlf.vim
 " CTRL-P {{{
 source ~/.vim/includes/plugins/ctrlp.vim
 " }}}
+" FUGITIVE {{{
+source ~/.vim/includes/plugins/fugitive.vim
+" }}}
 
 " FILETYPES {{{
 " Load skeletons
