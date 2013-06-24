@@ -161,6 +161,9 @@ cnoremap w!! w !sudo tee '%' >/dev/null<CR><CR>
 " FOLDING  {{{
 source ~/.vim/includes/folding.vim
 "}}}
+" GIT {{{
+source ~/.vim/includes/git.vim
+" }}}
 " INDENTATION  {{{
 " We use the advanced indentation method provided by the filetype plugin
 set nosmartindent

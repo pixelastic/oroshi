@@ -17,6 +17,7 @@ alias cdsov='cd ~/local/tmp/sov/'
 alias cdlbc="~/Dropbox/tim/paperwork/2013-03-06\ -\ Vente\ leboncoin.fr/"
 alias cdrop="cd ~/Dropbox/"
 alias cdpaper="cd ~/Dropbox/tim/paperwork/"
+alias cdperso="cd ~/local/mnt/perso/"
 # }}}
 
 # Synchronize stuff {{{
