@@ -9,6 +9,14 @@ class Compress
 		@files = args
 		@resize = 800
 		@quality = 80
+
+		# Optional arguments
+		if args.include?('--resize')
+			@resize = args[args.index('--resize')+1].to_i
+		end
+		if args.include?('--quality')
+			@quality = args[args.index('--quality')+1].to_i
+		end
 	end
 
 	def check_files

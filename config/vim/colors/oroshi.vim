@@ -118,6 +118,10 @@ call s:HL('oroshi_StatusLineModeCtrlFArrow', 'darkgreen', 'darkgrey')
 call s:HL('oroshi_StatusLineReadOnly', 'red', 'darkgrey', 'bold')
 call s:HL('oroshi_StatusLineModified', 'calmpurple', 'darkgrey', 'bold')
 call s:HL('oroshi_StatusLineSaved', 'darkgreen', 'darkgrey')
+" Git status coloring
+call s:HL('oroshi_StatusLineGitDirty', 'red', 'darkgrey', 'bold')
+call s:HL('oroshi_StatusLineGitStaged', 'calmpurple', 'darkgrey', 'bold')
+call s:HL('oroshi_StatusLineGitClean', 'darkgreen', 'darkgrey')
 " Arval testing
 call s:HL('oroshi_TestPassSuccess', 'darkgreen', 'darkgrey', 'bold')
 call s:HL('oroshi_TestPassFailure', 'red', 'darkgrey', 'bold')

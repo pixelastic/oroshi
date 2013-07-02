@@ -15,6 +15,9 @@ vnoremap <buffer> <leader>i <Esc>mzg`>a_<Esc>g`<i_<Esc>`zl
 nnoremap <buffer> <leader>b viw<Esc>g`>a**<Esc>g`<i**<Esc>
 vnoremap <buffer> <leader>b <Esc>mzg`>a**<Esc>g`<i**<Esc>`zl
 
+" Auto-wrap text
+setlocal formatoptions+=t
+
 " Run file
 function! b:RunFile()
 	let htmlFile = expand('%:p:r') . '.html'

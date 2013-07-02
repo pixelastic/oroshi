@@ -71,7 +71,7 @@ class DoxieExtract
 
 			# Compressing the file
 			puts "Compressing #{basename}"
-			%x[compress #{targetfile.shellescape}]
+			%x[compress --resize 1280 #{targetfile.shellescape}]
 
 			# Trashing full files and putting compressed one in its place
 			compressdir = File.join(basedir, 'compress')

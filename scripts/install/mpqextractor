@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Extract and peek inside a .mpq file (used by Blizzard games)
+
+echo "Cloning repo"
+cd ~/local/etc
+git clone git://github.com/Kanma/MPQExtractor.git
+
+echo "Updating submodules"
+cd ./MPQExtractor
+git submodule init
+git submodule update
+
+echo "Installing cmake for compiling"
+sudo apt-get install cmake
+echo "Installing libbz2"
+sudo apt-get install libbz2-dev
+
+echo "Compiling"
+mkdir ./build
+cd ./build
+cmake ~/local/etc/MPQExtractor/
+make
+
+cd ~/local/bin
+ln -s ../etc/MPQExtractor/build/bin/MPQExtractor 
+
