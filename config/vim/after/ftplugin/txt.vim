@@ -1,5 +1,5 @@
-" TXT
-" Force txt to fit in 79 columns
+" TXT 
+" Auto-wrap text
 setlocal formatoptions+=t
 " Allow folding with marker
 setlocal foldmethod=marker
