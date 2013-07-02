@@ -267,6 +267,15 @@ function setPreviousCommand() {
 # }}}
 
 # Update display
+# updatePromptGit() {{{
+function updatePromptGit() {
+	updateHashGit()
+	updateTagGit()
+	updateSumoduleGit()
+	updateBranchGit()
+	updatePushIndicatorGit()
+}
+# }}}
 # updateAliases() {{{
 function updateAliases() {
 	# Load an alias file for this vcs if exists, otherwise unset them.
@@ -505,7 +514,6 @@ function updateBranchGit() {
 	colorBranch=$promptColor[branchDefault]
 }
 # }}}
-
 # updatePushIndicator() {{{
 function updatePushIndicator() {
 	if [[ $versionSystem = 'git' ]]; then
