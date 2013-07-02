@@ -1,4 +1,5 @@
 # encoding : UTF-8
+require 'mp3info'
 
 class Mp3
 	# Custom exceptions
@@ -17,6 +18,7 @@ class Mp3
 		end
 
 		@metadatas_filepath = get_metadatas_from_filepath	
+		@metadatas_tags = get_metadatas_from_tags
 	end
 
 	# Guess metadata from a filepath
@@ -51,11 +53,8 @@ class Mp3
 		return data
 	end
 
-	def filepath_title
-		@metadatas_filepath['title']
-	end
-	def filepath_index
-		@metadatas_filepath['index']
+	def filepath_artist
+		@metadatas_filepath['artist']
 	end
 	def filepath_year
 		@metadatas_filepath['year']
@@ -63,8 +62,40 @@ class Mp3
 	def filepath_album
 		@metadatas_filepath['album']
 	end
-	def filepath_artist
-		@metadatas_filepath['artist']
+	def filepath_index
+		@metadatas_filepath['index']
+	end
+	def filepath_title
+		@metadatas_filepath['title']
+	end
+
+	# Get metadata from id3 tags
+	def get_metadatas_from_tags
+		h = {}
+		Mp3Info.open(@filepath) do |mp3info|
+			h['artist'] = mp3info.tag.artist
+			h['year'] = mp3info.tag.year
+			h['album'] = mp3info.tag.album
+			h['index'] = mp3info.tag.tracknum
+			h['title'] = mp3info.tag.title
+		end
+		return h
+	end
+
+	def tags_artist
+		@metadatas_tags['artist']
+	end
+	def tags_year
+		@metadatas_tags['year']
+	end
+	def tags_album
+		@metadatas_tags['album']
+	end
+	def tags_index
+		@metadatas_tags['index']
+	end
+	def tags_title
+		@metadatas_tags['title']
 	end
 
 

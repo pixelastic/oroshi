@@ -19,6 +19,16 @@ class Mp3Test < Test::Unit::TestCase
 		assert_equal("Renaud", mp3.filepath_artist)
 	end
 
+	def test_get_metadatas_from_tags_normal
+		mp3 = Mp3.new(@hexagone)
+		
+		assert_equal("Hexagone", mp3.tags_title)
+		assert_equal(7, mp3.tags_index)
+		assert_equal("Amoureux de Paname", mp3.tags_album)
+		assert_equal(1975, mp3.tags_year)
+		assert_equal("Renaud", mp3.tags_artist)
+	end
+
 
 end
 

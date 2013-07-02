@@ -44,7 +44,7 @@ class MusicMetadataUpdate
 
 	def run
 		@files.each do |file|
-			puts Mp3.new(file).name
+			puts Mp3.new(file).tags_title
 		end
 
 	end
