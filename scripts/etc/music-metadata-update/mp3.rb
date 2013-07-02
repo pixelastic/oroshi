@@ -8,6 +8,8 @@ class Mp3
 	class NotMp3Error < Error; end
 	class FileNotFoundError < Error; end
 
+	attr_reader :filepath
+
 	def initialize(filepath)
 		@filepath = File.expand_path(filepath)
 		if File.extname(@filepath).downcase != '.mp3'
@@ -93,12 +95,18 @@ class Mp3
 	# Get metadata from id3 tags
 	def get_metadatas_from_tags
 		h = {}
-		Mp3Info.open(@filepath) do |mp3info|
-			h['artist'] = mp3info.tag.artist
-			h['year'] = mp3info.tag.year
-			h['album'] = mp3info.tag.album
-			h['index'] = mp3info.tag.tracknum
-			h['title'] = mp3info.tag.title
+		begin
+			Mp3Info.open(@filepath) do |mp3info|
+				h['artist'] = mp3info.tag.artist
+				h['year'] = mp3info.tag.year
+				h['album'] = mp3info.tag.album
+				h['index'] = mp3info.tag.tracknum
+				h['title'] = mp3info.tag.title
+			end
+		rescue
+			# Unable to read the file as an mp3 file, we'll feed it empty 
+			# metadata
+			h = {'artist' => '', 'year' => '', 'album' => '', 'index' => '', 'title' => '' }
 		end
 		return h
 	end
@@ -120,10 +128,10 @@ class Mp3
 	end
 
 	# Guess the best value for each metadata.
-	# When all metadata is in the filepath, it is easier to just change the 
-	# filepath and update the files. But sometimes, filepath data is not 
-	# reliable, like on FAT32 system where some characters can't be used. In that 
-	# case, we instead choose the id3 tags.
+	# In a perfect world, I could put all the relevant metadata in the filepath.  
+	# Unfortunatly, most mp3 player only works on FAT32 systems which do not 
+	# allow every characters in filename. I then need to rely on the id3 tags 
+	# instead.
 	def artist
 		# Trust filepath if not fat32, otherwise trust id3
 		return filepath_artist unless @is_fat32

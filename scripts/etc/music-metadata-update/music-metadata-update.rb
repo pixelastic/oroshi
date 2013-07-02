@@ -49,14 +49,28 @@ class MusicMetadataUpdate
 	end
 
 	# Generates a .tracklist file containing all the album metadata
-	def generate_tracklist(file)
+	def generate_tracklist(mp3)
+		return if has_tracklist?(mp3.filepath)
 
+		# Content header
+		content = [mp3.artist, mp3.year, mp3.album, '']
+		# Tracklists
+		dirname = File.dirname(mp3.filepath)
+		Dir[File.join(dirname, '*.mp3')].sort.each do |file|
+			filemp3 = Mp3.new(file)
+			content << "#{filemp3.index} - #{filemp3.title}"
+		end
 
+		# Generate the file
+		File.open(File.join(dirname, '.tracklist'), 'wb') do |file|
+			file.write(content.join("\n"))
+		end
 	end
 
 	def run
 		@files.each do |file|
-			Mp3.new(file)
+			mp3 = Mp3.new(file)
+			generate_tracklist(mp3)
 		end
 
 	end
