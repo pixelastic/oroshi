@@ -21,6 +21,25 @@ class Mp3
 		@metadatas_tags = get_metadatas_from_tags
 	end
 
+	# Guess if current filesystem is fat32 by testing if I can create a file with 
+	# special chars
+	def is_fat32?
+		if @is_fat32
+			return @is_fat32
+		end
+
+		filename = File.join(File.dirname(@filepath), 'fat32?.tmp')
+		File.new(filename, 'w')
+		if File.exists?(filename)
+			File.delete(filename)
+			return @is_fat32 = false
+		else
+			return @is_fat32 = true
+		end
+	end
+
+
+
 	# Guess metadata from a filepath
 	def get_metadatas_from_filepath
 		data = {}
@@ -69,6 +88,8 @@ class Mp3
 		@metadatas_filepath['title']
 	end
 
+	
+
 	# Get metadata from id3 tags
 	def get_metadatas_from_tags
 		h = {}
@@ -96,6 +117,37 @@ class Mp3
 	end
 	def tags_title
 		@metadatas_tags['title']
+	end
+
+	# Guess the best value for each metadata.
+	# When all metadata is in the filepath, it is easier to just change the 
+	# filepath and update the files. But sometimes, filepath data is not 
+	# reliable, like on FAT32 system where some characters can't be used. In that 
+	# case, we instead choose the id3 tags.
+	def artist
+		# Trust filepath if not fat32, otherwise trust id3
+		return filepath_artist unless @is_fat32
+		return tags_artist
+	end
+	def year
+		# Trust filepath, unless it's empty
+		return filepath_year if filepath_year
+		return tags_year
+	end
+	def album
+		# Trust filepath if not fat32, otherwise trust id3
+		return filepath_album unless @is_fat32
+		return tags_album
+	end
+	def index
+		# Trust filepath unless it's empty
+		return filepath_index if filepath_index
+		return tags_index
+	end
+	def title
+		# Trust filepath if not fat32, otherwise trust id3
+		return filepath_title unless @is_fat32
+		return tags_title
 	end
 
 

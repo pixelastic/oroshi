@@ -42,9 +42,21 @@ class MusicMetadataUpdate
 		@files = args
 	end
 
+	# Check if a tracklist file is present
+	def has_tracklist?(file)
+		dirname = File.dirname(File.expand_path(file))
+		return File.exists?(File.join(dirname, '.tracklist'))
+	end
+
+	# Generates a .tracklist file containing all the album metadata
+	def generate_tracklist(file)
+
+
+	end
+
 	def run
 		@files.each do |file|
-			puts Mp3.new(file).tags_title
+			Mp3.new(file)
 		end
 
 	end
