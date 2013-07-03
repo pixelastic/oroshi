@@ -8,7 +8,7 @@ class TracklistEngine
 
 	def initialize(file)
 		@file = file
-		@hash = to_h
+		@hash = get_hash
 	end
 
 	# Meta-programming to read tags
@@ -62,14 +62,15 @@ class TracklistEngine
 	# Returns the content of the .tracklist file
 	def get_content
 		return '' unless has_tracklist?
-		return File.read(tracklist_filepath)
+		return @content if @content
+		return @content = File.read(tracklist_filepath)
 	end
 
 	# Returns array of tracks from file content
-	def get_tracks(tracklist)
+	def get_tracks
 		tracks = {}
 		pattern = /^([0-9]*) - (.*)$/
-		tracklist.split("\n")[4..-1].each do |track|
+		get_content.split("\n")[4..-1].each do |track|
 			match = track.match(pattern)
 			tracks[match[1].to_i] = match[2]
 		end
@@ -77,16 +78,32 @@ class TracklistEngine
 	end
 
 	# Returns a hash of all the values
-	def to_h
+	def get_hash
 		return {} unless has_tracklist?
-		return @hash if @hash
-		content = get_content
-		split = content.split("\n")
-		return @hash = {
+		split = get_content.split("\n")
+		# Header
+		hash = {
 			'artist' => split[0],
 			'year' => split[1],
 			'album' => split[2],
-			'tracks' => get_tracks(content)
+			'tracks' => get_tracks
+		}
+		hash.merge!(get_track_info)
+		return hash
+	end
+
+	# Returns index and title info for the specific file, based on data saved in 
+	# tracklist
+	def get_track_info
+		return {} if File.directory?(@file)
+
+		# We find the position of the file in the dir, and then find matching date 
+		# for the file in the hash.
+		index = get_album_files.index(@file)+1
+		title = get_tracks[index]
+		return {
+			'index' => index,
+			'title' => title
 		}
 	end
 
