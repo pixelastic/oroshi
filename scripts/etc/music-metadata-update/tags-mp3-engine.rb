@@ -12,6 +12,15 @@ class TagsMp3Engine
 		read_common_tags
 	end
 
+	# Meta-programming to read tags
+	def method_missing method
+		if @hash.has_key?(method.to_s)
+			return @hash[method.to_s]
+		else
+			super
+		end
+	end
+
 	# Set in an easy to access hash the main tags
 	def read_common_tags
 		begin
@@ -37,14 +46,6 @@ class TagsMp3Engine
 		end
 	end
 
-	# Meta-programming to read tags
-	def method_missing method
-		if @hash.has_key?(method.to_s)
-			return @hash[method.to_s]
-		else
-			super
-		end
-	end
 	
 
 

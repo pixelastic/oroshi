@@ -8,6 +8,16 @@ class TracklistEngine
 
 	def initialize(file)
 		@file = file
+		@hash = to_h
+	end
+
+	# Meta-programming to read tags
+	def method_missing method
+		if @hash.has_key?(method.to_s)
+			return @hash[method.to_s]
+		else
+			super
+		end
 	end
 	
 	# Returns tracklist dirname
@@ -79,23 +89,6 @@ class TracklistEngine
 			'tracks' => get_tracks(content)
 		}
 	end
-	
-	def artist
-		to_h['artist']
-	end
-	def year
-		to_h['year']
-	end
-	def album
-		to_h['album']
-	end
-	def tracks
-		to_h['tracks']
-	end
-
-
-
-
 
 end
 

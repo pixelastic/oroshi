@@ -5,10 +5,19 @@ class FilepathEngine
 	# Custom exceptions
 	class Error < StandardError; end
 	class ArgumentError < Error; end
-
+	
 	def initialize(file)
 		@file = file
 		@hash = from_basedir.merge(from_basefile)
+	end
+	
+	# Meta-programming to read tags
+	def method_missing method
+		if @hash.has_key?(method.to_s)
+			return @hash[method.to_s]
+		else
+			super
+		end
 	end
 
 	# Get data from the file basename.
@@ -69,14 +78,6 @@ class FilepathEngine
 
 	def to_h
 		@hash
-	end
-	# Meta-programming to read tags
-	def method_missing method
-		if @hash.has_key?(method.to_s)
-			return @hash[method.to_s]
-		else
-			super
-		end
 	end
 
 end
