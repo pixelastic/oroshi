@@ -269,11 +269,11 @@ function setPreviousCommand() {
 # Update display
 # updatePromptGit() {{{
 function updatePromptGit() {
-	updateHashGit()
-	updateTagGit()
-	updateSumoduleGit()
-	updateBranchGit()
-	updatePushIndicatorGit()
+	updateHashGit
+	updateTagGit
+	updateSubmoduleGit
+	updateBranchGit
+	updatePushIndicatorGit
 }
 # }}}
 # updateAliases() {{{
