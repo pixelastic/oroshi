@@ -36,46 +36,16 @@ class GenerateTracklist
 		end
 	end
 
-	# Returns tracklist dirname
-	def tracklist_dirname(filepath)
-		return File.directory?(filepath) ? filepath : File.dirname(filepath)
-	end
-
-	# Returns filepath to the .tracklist file for any given file or dir
-	def tracklist_filepath(filepath)
-		File.join(tracklist_dirname(filepath), '.tracklist')
-	end
-
-	# Returns if specified file or dir has its own tracklist
-	def has_tracklist?(filepath)
-		File.exists?(tracklist_filepath(filepath))
-	end
-
 	# Generate tracklist file
 	def generate_tracklist(filepath)
-		return if has_tracklist?(filepath) && !@force
-		File.open(tracklist_filepath(filepath), 'w') do |tracklist|
-			tracklist.write(get_tracklist_content(filepath))
-		end
-	end
-
-	# Get tracklist content
-	def get_tracklist_content(filepath)
 		metadata = MetadataEngine.new(filepath)
-		# Tracklist header
-		content = [
-			metadata.filepath.artist, 
-			metadata.filepath.year, 
-			metadata.filepath.album,
-			''
-		]
-		# Tracklist content
-		Dir[File.join(tracklist_dirname(filepath), '*.*')].sort.each do |subfile|
-			submetadata = MetadataEngine.new(subfile)
-			content << "#{submetadata.filepath.index} - #{submetadata.filepath.title}"
-		end
+		
+		# Skip if already has a tracklist
+		return if metadata.has_tracklist? && !@force
 
-		return content.join("\n")
+		File.open(metadata.tracklist.tracklist_filepath, 'w') do |tracklist|
+			tracklist.write(metadata.tracklist.generate_content)
+		end
 	end
 
 	# Create tracklist files for every arguments
