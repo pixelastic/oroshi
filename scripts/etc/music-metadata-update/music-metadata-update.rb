@@ -23,8 +23,8 @@ class MusicMetadataUpdate
 
 	# Update id3 and filepath metadata based on tracklist info
 	def update_metadata(file)
-		metadata = MetadataEngine(file)
-		puts metadata.tracklist
+		metadata = MetadataEngine.new(file)
+		puts metadata.tracklist.to_h
 
 	end
 	

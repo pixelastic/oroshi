@@ -30,7 +30,7 @@ class TracklistEngine
 		return Dir.glob(File.join(dirname, '*.{mp3}')).sort
 	end
 
-	# Returns the text content of the tracklist file
+	# Generate the text content of the .tracklist
 	def generate_content
 		filepath = FilepathEngine.new(@file)
 		#  Tracklist header
@@ -47,7 +47,37 @@ class TracklistEngine
 		end
 
 		return content.join("\n")
+	end
 
+	# Returns the content of the .tracklist file
+	def get_content
+		return '' unless has_tracklist?
+		return File.read(tracklist_filepath)
+	end
+
+	# Returns array of tracks from file content
+	def get_tracks(tracklist)
+		tracks = {}
+		pattern = /^([0-9]*) - (.*)$/
+		tracklist.split("\n")[4..-1].each do |track|
+			match = track.match(pattern)
+			tracks[match[1].to_i] = match[2]
+		end
+		return tracks
+	end
+
+	# Returns a hash of all the values
+	def to_h
+		return {} unless has_tracklist?
+		return @hash if @hash
+		content = get_content
+		split = content.split("\n")
+		return @hash = {
+			'artist' => split[0],
+			'year' => split[1],
+			'album' => split[2],
+			'tracks' => get_tracks(content)
+		}
 	end
 
 
