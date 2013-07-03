@@ -13,7 +13,7 @@ class MetadataEngine
 		@file = File.expand_path(file)
 	end
 
-	# Returns a hash of filepath metadatas
+	# Returns the filepath engine
 	def filepath
 		return @filepath if @filepath
 		return @filepath = FilepathEngine.new(@file)

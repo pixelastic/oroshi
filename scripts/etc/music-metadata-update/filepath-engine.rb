@@ -71,10 +71,11 @@ class FilepathEngine
 		return @hash if @hash
 		return @hash = from_basedir.merge(from_basefile)
 	end
+
+	# Easy access to every key
 	def to_s
 		to_h
 	end
-
 	def artist
 		to_h['artist']
 	end

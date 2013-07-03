@@ -40,6 +40,7 @@ class GenerateTracklist
 	def tracklist_dirname(filepath)
 		return File.directory?(filepath) ? filepath : File.dirname(filepath)
 	end
+
 	# Returns filepath to the .tracklist file for any given file or dir
 	def tracklist_filepath(filepath)
 		File.join(tracklist_dirname(filepath), '.tracklist')
@@ -77,11 +78,11 @@ class GenerateTracklist
 		return content.join("\n")
 	end
 
+	# Create tracklist files for every arguments
 	def run
 		@files.each do |file|
-			puts get_tracklist_content(file)
+			generate_tracklist(file)
 		end
-
 	end
 
 end
