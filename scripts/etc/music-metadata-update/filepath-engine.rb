@@ -8,6 +8,7 @@ class FilepathEngine
 
 	def initialize(file)
 		@file = file
+		@hash = from_basedir.merge(from_basefile)
 	end
 
 	# Get data from the file basename.
@@ -66,30 +67,16 @@ class FilepathEngine
 		end
 	end
 
-	# Return a hash of all the values extracted from filepath
 	def to_h
-		return @hash if @hash
-		return @hash = from_basedir.merge(from_basefile)
+		@hash
 	end
-
-	# Easy access to every key
-	def to_s
-		to_h
-	end
-	def artist
-		to_h['artist']
-	end
-	def year
-		to_h['year']
-	end
-	def album
-		to_h['album']
-	end
-	def index
-		to_h['index']
-	end
-	def title
-		to_h['title']
+	# Meta-programming to read tags
+	def method_missing method
+		if @hash.has_key?(method.to_s)
+			return @hash[method.to_s]
+		else
+			super
+		end
 	end
 
 end

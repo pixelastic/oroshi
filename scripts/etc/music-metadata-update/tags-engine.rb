@@ -17,21 +17,11 @@ class TagsEngine
 			raise TagsEngine::NoEngineError, "No tag engine for #{@file}", ""
 		end
 	end
-
-	def artist
-		@engine.artist
-	end
-	def year
-		@engine.year
-	end
-	def album
-		@engine.album
-	end
-	def index
-		@engine.index
-	end
-	def title
-		@engine.title
+	
+	# If not method found in TagsEngine, send it to specific 
+	# Engine
+	def method_missing method
+		return @engine.send(method)
 	end
 
 
