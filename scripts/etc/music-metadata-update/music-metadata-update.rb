@@ -24,8 +24,15 @@ class MusicMetadataUpdate
 	# Update id3 and filepath metadata based on tracklist info
 	def update_metadata(file)
 		metadata = MetadataEngine.new(file)
-		puts metadata.tracklist.artist
-		puts metadata.tracklist.title
+		# Update tags to reflect what's in the tracklist
+		metadata.tags.artist = metadata.tracklist.artist
+		metadata.tags.year   = metadata.tracklist.year
+		metadata.tags.album  = metadata.tracklist.album
+		metadata.tags.index  = metadata.tracklist.index
+		metadata.tags.title  = metadata.tracklist.title
+		metadata.tags.save
+		# We'll then do the same thing with the filepath
+		# Bonus : fat32, ogg, podcasts
 	end
 	
 	def run
