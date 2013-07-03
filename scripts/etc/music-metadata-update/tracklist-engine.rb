@@ -79,6 +79,20 @@ class TracklistEngine
 			'tracks' => get_tracks(content)
 		}
 	end
+	
+	def artist
+		to_h['artist']
+	end
+	def year
+		to_h['year']
+	end
+	def album
+		to_h['album']
+	end
+	def tracks
+		to_h['tracks']
+	end
+
 
 
 
