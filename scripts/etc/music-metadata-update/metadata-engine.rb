@@ -1,6 +1,7 @@
 # encoding : UTF-8
 require_relative "filepath-engine"
 require_relative "tracklist-engine"
+require_relative "tags-engine"
 # Wrapper for reading and writing music metadata. Includes metadatas from 
 # filepath, id3 and tracklist sources. Changing one of the values updates the 
 # source accordingly.
@@ -24,6 +25,12 @@ class MetadataEngine
 	def tracklist
 		return @tracklist if @tracklist
 		return @tracklist = TracklistEngine.new(@file)
+	end
+
+	# Return the tags engine
+	def tags
+		return @tags if @tags
+		return @tags = TagsEngine.new(@file)
 	end
 
 	# Check for the .tracklist file
