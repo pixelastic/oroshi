@@ -65,6 +65,7 @@ class TagsMp3Engine
 			# Useless tags
 			delete_comment(mp3info)
 			delete_genre(mp3info)
+			# TODO : Some more cleaning of useless fields. cf. The Virgin Suicides.
 		end
 	end
 
