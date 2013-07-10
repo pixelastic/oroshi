@@ -53,17 +53,35 @@ class TagsMp3Engine
 
 	# Save tags back into file
 	def save
-			Mp3Info.open(@file) do |mp3info|
-				# Main tags
-				mp3info.tag.artist = @data.artist
-				mp3info.tag.year   = @data.year
-				mp3info.tag.album  = @data.album
-				mp3info.tag.index  = @data.index
-				mp3info.tag.title  = @data.title
-				# Useless tags
-				mp3info.tag.comment = ''
-				mp3info.tag.genre = ''
-			end
+		puts "Rewriting id3 tags of #{File.basename(@file)}"
+		Mp3Info.open(@file) do |mp3info|
+			# Main tags
+			update_tag(mp3info, 'artist', @data['artist'])
+			update_tag(mp3info, 'year'  , @data['year'])
+			update_tag(mp3info, 'album' , @data['album'])
+			update_tag(mp3info, 'tracknum', @data['index'])
+			update_tag(mp3info, 'title', @data['title'])
+			# Useless tags
+			update_tag(mp3info, 'comment', nil)
+			update_tag(mp3info, 'genre', 255)
+		end
+	end
+
+	# Update a tag in a mp3 file. Will not change anything if the value stays the 
+	# same, will delete fields when value empty and will handle corner-cases
+	def update_tag(mp3info, tag, value)
+		# Do nothing if value already in the mp3 is same as new value
+		return if mp3info.tag[tag] == value
+		
+		# Tracknumber must be int in v1, can be string in v2
+		if tag == "tracknum"
+			mp3info.tag1[tag] = value.to_i
+			mp3info.tag2[tag] = value
+			return
+		end
+
+		# Change inner tag representation
+		mp3info.tag[tag] =  value
 	end
 
 	
