@@ -54,34 +54,57 @@ class TagsMp3Engine
 	# Save tags back into file
 	def save
 		puts "Rewriting id3 tags of #{File.basename(@file)}"
+
 		Mp3Info.open(@file) do |mp3info|
 			# Main tags
-			update_tag(mp3info, 'artist', @data['artist'])
-			update_tag(mp3info, 'year'  , @data['year'])
-			update_tag(mp3info, 'album' , @data['album'])
-			update_tag(mp3info, 'tracknum', @data['index'])
-			update_tag(mp3info, 'title', @data['title'])
+			update_artist(mp3info, @data['artist'])
+			update_year(mp3info, @data['year'])
+			update_album(mp3info, @data['album'])
+			update_index(mp3info, @data['index'])
+			update_title(mp3info, @data['title'])
 			# Useless tags
-			update_tag(mp3info, 'comment', nil)
-			update_tag(mp3info, 'genre', 255)
+			delete_comment(mp3info)
+			delete_genre(mp3info)
 		end
 	end
 
-	# Update a tag in a mp3 file. Will not change anything if the value stays the 
-	# same, will delete fields when value empty and will handle corner-cases
-	def update_tag(mp3info, tag, value)
-		# Do nothing if value already in the mp3 is same as new value
-		return if mp3info.tag[tag] == value
-		
-		# Tracknumber must be int in v1, can be string in v2
-		if tag == "tracknum"
-			mp3info.tag1[tag] = value.to_i
-			mp3info.tag2[tag] = value
-			return
-		end
+	# Note : The Ruby Mp3Info gem seems to have som bugs when trying to manually 
+	# change both values based on .tag1/.tag2 and .tag. It is safer to manually 
+	# use the .tag1/tag2 version.
 
-		# Change inner tag representation
-		mp3info.tag[tag] =  value
+	def update_artist(mp3info, value)
+		mp3info.tag1.artist = value
+		mp3info.tag2.TPE1 = value
+	end
+
+	def update_year(mp3info, value)
+		mp3info.tag1.year = value
+		mp3info.tag2.TYER = value
+	end
+
+	def update_album(mp3info, value)
+		mp3info.tag1.album = value
+		mp3info.tag2.TALB = value
+	end
+
+	def update_index(mp3info, value)
+		mp3info.tag1.tracknum = value.to_i
+		mp3info.tag2.TRCK = value
+	end
+
+	def update_title(mp3info, value)
+		mp3info.tag1.title = value
+		mp3info.tag2.TIT2 = value
+	end
+
+	def delete_genre(mp3info)
+		mp3info.tag1.genre = 255
+		mp3info.tag2.TCON = ""
+	end
+
+	def delete_comment(mp3info)
+		mp3info.tag1.comment = ""
+		mp3info.tag2.COMM = ""
 	end
 
 	
