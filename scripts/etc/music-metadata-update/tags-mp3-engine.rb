@@ -46,6 +46,18 @@ class TagsMp3Engine
 		end
 	end
 
+	# Save tags back into file
+	def save
+			Mp3Info.open(@file) do |mp3info|
+				# Main tags
+				mp3info.tag.artist = @hash.artist
+				mp3info.tag.year   = @hash.year
+				mp3info.tag.album  = @hash.album
+				mp3info.tag.index  = @hash.index
+				mp3info.tag.title  = @hash.title
+			end
+	end
+
 	
 
 

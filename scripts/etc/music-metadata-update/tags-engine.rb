@@ -18,8 +18,7 @@ class TagsEngine
 		end
 	end
 	
-	# If not method found in TagsEngine, send it to specific 
-	# Engine
+	# If no method found in TagsEngine, send it to specific Engine
 	def method_missing method
 		return @engine.send(method)
 	end
