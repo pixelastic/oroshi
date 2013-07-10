@@ -51,9 +51,11 @@ class TracklistEngine
 			''
 		]
 		# Track list
-		get_album_files.each do |subfile|
+		album_files = get_album_files
+		album_files.each do |subfile|
 			submetadata = FilepathEngine.new(subfile)
-			content << "#{submetadata.index} - #{submetadata.title}"
+			index = "%0#{(album_files.size/10).floor + 1}d" % submetadata.index
+			content << "#{index} - #{submetadata.title}"
 		end
 
 		return content.join("\n")
@@ -72,7 +74,7 @@ class TracklistEngine
 		pattern = /^([0-9]*) - (.*)$/
 		get_content.split("\n")[4..-1].each do |track|
 			match = track.match(pattern)
-			tracks[match[1].to_i] = match[2]
+			tracks[match[1]] = match[2]
 		end
 		return tracks
 	end
@@ -81,14 +83,24 @@ class TracklistEngine
 	def get_hash
 		return {} unless has_tracklist?
 		split = get_content.split("\n")
-		# Header
-		hash = {
-			'artist' => split[0],
-			'year' => split[1],
-			'album' => split[2],
-			'tracks' => get_tracks
-		}
-		hash.merge!(get_track_info)
+		begin
+			# Header
+			hash = {
+				'artist' => split[0],
+				'year' => split[1],
+				'album' => split[2],
+				'tracks' => get_tracks
+			}
+			hash.merge!(get_track_info)
+		rescue
+			puts "Corrupted .tracklist file!"
+			hash = {
+				'artist' => '',
+				'year'   => '',
+				'album'  => '',
+				'tracks' => []
+			}
+		end
 		return hash
 	end
 
