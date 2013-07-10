@@ -5,16 +5,18 @@ class FilepathEngine
 	# Custom exceptions
 	class Error < StandardError; end
 	class ArgumentError < Error; end
-	
+
+	attr_reader :data	
+
 	def initialize(file)
 		@file = file
-		@hash = from_basedir.merge(from_basefile)
+		@data = from_basedir.merge(from_basefile)
 	end
 	
 	# Meta-programming to read tags
 	def method_missing method
-		if @hash.has_key?(method.to_s)
-			return @hash[method.to_s]
+		if @data.has_key?(method.to_s)
+			return @data[method.to_s]
 		else
 			super
 		end
@@ -35,7 +37,7 @@ class FilepathEngine
 		pattern = /^([0-9]*) - (.*)$/
 		if match = basename.match(pattern)
 			return {
-				'index' => match[1].to_i,
+				'index' => match[1],
 				'title' => match[2]
 			}
 		else
@@ -64,7 +66,7 @@ class FilepathEngine
 		pattern = /^([0-9]*) - (.*)$/
 		if match = split[-1].match(pattern)
 			return {
-				'year' => match[1].to_i,
+				'year' => match[1],
 				'album' => match[2],
 				'artist' => artist
 			}
@@ -74,10 +76,6 @@ class FilepathEngine
 				'artist' => artist
 			}
 		end
-	end
-
-	def to_h
-		@hash
 	end
 
 end

@@ -6,15 +6,17 @@ class TracklistEngine
 	class Error < StandardError; end
 	class ArgumentError < Error; end
 
+	attr_reader :data
+
 	def initialize(file)
 		@file = file
-		@hash = get_hash
+		@data = get_data
 	end
 
 	# Meta-programming to read tags
 	def method_missing method
-		if @hash.has_key?(method.to_s)
-			return @hash[method.to_s]
+		if @data.has_key?(method.to_s)
+			return @data[method.to_s]
 		else
 			super
 		end
@@ -37,7 +39,13 @@ class TracklistEngine
 
 	# Returns the list of music file in the same directory
 	def get_album_files
-		return Dir.glob(File.join(dirname, '*.{mp3}')).sort
+		return @album_files if @album_files
+		return @album_files = Dir.glob(File.join(dirname, '*.{mp3}')).sort
+	end
+	
+	# Pad the index with leading zeroes
+	def pad_index(index)
+		"%0#{(get_album_files.size/10).floor + 1}d" % index
 	end
 
 	# Generate the text content of the .tracklist
@@ -51,15 +59,14 @@ class TracklistEngine
 			''
 		]
 		# Track list
-		album_files = get_album_files
-		album_files.each do |subfile|
+		get_album_files.each do |subfile|
 			submetadata = FilepathEngine.new(subfile)
-			index = "%0#{(album_files.size/10).floor + 1}d" % submetadata.index
-			content << "#{index} - #{submetadata.title}"
+			content << "#{pad_index(index)} - #{submetadata.title}"
 		end
 
 		return content.join("\n")
 	end
+
 
 	# Returns the content of the .tracklist file
 	def get_content
@@ -79,29 +86,29 @@ class TracklistEngine
 		return tracks
 	end
 
-	# Returns a hash of all the values
-	def get_hash
+	# Returns a data hash of all the values
+	def get_data
 		return {} unless has_tracklist?
 		split = get_content.split("\n")
 		begin
 			# Header
-			hash = {
+			data = {
 				'artist' => split[0],
 				'year' => split[1],
 				'album' => split[2],
 				'tracks' => get_tracks
 			}
-			hash.merge!(get_track_info)
+			data.merge!(get_track_info)
 		rescue
 			puts "Corrupted .tracklist file!"
-			hash = {
+			data = {
 				'artist' => '',
 				'year'   => '',
 				'album'  => '',
 				'tracks' => []
 			}
 		end
-		return hash
+		return data
 	end
 
 	# Returns index and title info for the specific file, based on data saved in 
@@ -111,7 +118,7 @@ class TracklistEngine
 
 		# We find the position of the file in the dir, and then find matching date 
 		# for the file in the hash.
-		index = get_album_files.index(@file)+1
+		index = pad_index(get_album_files.index(@file)+1)
 		title = get_tracks[index]
 		return {
 			'index' => index,

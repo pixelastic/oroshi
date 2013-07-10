@@ -7,36 +7,41 @@ class TagsMp3Engine
 	class Error < StandardError; end
 	class ArgumentError < Error; end
 
+	attr_reader :data
+
 	def initialize(file)
 		@file = file
 		read_common_tags
 	end
 
-	# Meta-programming to read tags
-	def method_missing method
-		if @hash.has_key?(method.to_s)
-			return @hash[method.to_s]
-		else
-			super
-		end
+	# Meta-programming to read and write
+	def method_missing(method, *args)
+		is_set_method = (method.to_s =~ /(.*)=$/)
+		key = is_set_method ? $1 : method.to_s
+		# No such key
+		super unless @data[key]
+		# Set
+		return @data[key] = args[0] if is_set_method
+		# Get
+		return @data[key]
 	end
 
-	# Set in an easy to access hash the main tags
+	# Read common tags into @data
 	def read_common_tags
 		begin
 			Mp3Info.open(@file) do |mp3info|
-				@hash = {
+				@data = {
 					'artist' => mp3info.tag.artist,
-					'year'   => mp3info.tag.year,
+					'year'   => mp3info.tag.year.to_s,
 					'album'  => mp3info.tag.album,
-					'index'  => mp3info.tag.tracknum,
+					'index'  => mp3info.tag.tracknum.to_s,
 					'title'  => mp3info.tag.title
 				}
 			end
 		rescue
 			# Unable to read the file as an mp3 file, we'll feed it empty 
 			# metadata
-			@hash = {
+			@data = {
 				'artist' => '', 
 				'year' => '', 
 				'album' => '', 
@@ -50,11 +55,14 @@ class TagsMp3Engine
 	def save
 			Mp3Info.open(@file) do |mp3info|
 				# Main tags
-				mp3info.tag.artist = @hash.artist
-				mp3info.tag.year   = @hash.year
-				mp3info.tag.album  = @hash.album
-				mp3info.tag.index  = @hash.index
-				mp3info.tag.title  = @hash.title
+				mp3info.tag.artist = @data.artist
+				mp3info.tag.year   = @data.year
+				mp3info.tag.album  = @data.album
+				mp3info.tag.index  = @data.index
+				mp3info.tag.title  = @data.title
+				# Useless tags
+				mp3info.tag.comment = ''
+				mp3info.tag.genre = ''
 			end
 	end
 
