@@ -45,7 +45,7 @@ class TracklistEngine
 	
 	# Pad the index with leading zeroes
 	def pad_index(index)
-		"%0#{(get_album_files.size/10).floor + 1}d" % index
+		"%0#{(get_album_files.size/10).floor + 1}d" % index.to_i
 	end
 
 	# Generate the text content of the .tracklist
@@ -61,7 +61,7 @@ class TracklistEngine
 		# Track list
 		get_album_files.each do |subfile|
 			submetadata = FilepathEngine.new(subfile)
-			content << "#{pad_index(index)} - #{submetadata.title}"
+			content << "#{pad_index(submetadata.index)} - #{submetadata.title}"
 		end
 
 		return content.join("\n")

@@ -1,5 +1,6 @@
 # encoding : UTF-8
 require_relative "metadata-engine"
+require "fileutils"
 
 # Will create a .tracklist file containing metadata information about the 
 # current album.
@@ -43,9 +44,14 @@ class GenerateTracklist
 		# Skip if already has a tracklist
 		return if metadata.has_tracklist? && !@force
 
-		File.open(metadata.tracklist.tracklist_filepath, 'w') do |tracklist|
-			tracklist.write(metadata.tracklist.generate_content)
-		end
+		# begin
+			File.open(metadata.tracklist.tracklist_filepath, 'w') do |tracklist|
+				tracklist.write(metadata.tracklist.generate_content)
+			end
+		# rescue
+			# puts "Unable to create .tracklist file!"
+			# FileUtils.rm(metadata.tracklist.tracklist_filepath)
+		# end
 	end
 
 	# Create tracklist files for every arguments
