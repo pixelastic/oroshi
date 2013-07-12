@@ -24,6 +24,12 @@ class MusicMetadataUpdate
 	# Update id3 and filepath metadata based on tracklist info
 	def update_metadata(file)
 		metadata = MetadataEngine.new(file)
+
+		unless metadata.tracklist.has_tracklist?
+			puts "No .tracklist found, generate it first"
+			return
+		end
+
 		# Update tags to reflect what's in the tracklist
 		metadata.tags.artist = metadata.tracklist.artist
 		metadata.tags.year   = metadata.tracklist.year
