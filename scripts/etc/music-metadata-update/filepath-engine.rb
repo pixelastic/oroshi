@@ -101,7 +101,7 @@ class FilepathEngine
 	# Check if specified dir is a CD dir
 	def cd_dir?(path)
 		path = path.split('/').pop if path['/']
-		return path =~ /^CD([0-9])$/
+		return path =~ /^CD([0-9])/
 	end
 
 	# Check if filepath has a CD directory
@@ -132,7 +132,7 @@ class FilepathEngine
 
 		path = []
 		path << root_dir
-		path << fat32data['artist'][0]
+		path << artist_first_letter(fat32data['artist'])
 		path << fat32data['artist']
 		path << "#{fat32data['year']} - #{fat32data['album']}"
 		path << fat32data['cd'] if fat32data['cd']
@@ -146,6 +146,11 @@ class FilepathEngine
 		string.gsub(/([\?\/\*\|:;"<>])/, "").strip.gsub(/ {2,}/," ")
 	end
 
+	# Get first letter of an artist name
+	def artist_first_letter(string)
+		string[0].upcase.tr("ÀÂÄÉÊËÈÏÎÔÖÜÛ", "AAAEEEEIIOOUU")
+	end
+
 
 	# Rename file based on metadata
 	def save
@@ -153,7 +158,11 @@ class FilepathEngine
 		old_file = @file
 		@file = generate_filepath
 		# Move file on disk
-		unless old_file == @file
+		if old_file != @file
+			if File.exists?(@file)
+				puts "WARNING: Can't rename file, destination already exists!"
+				return
+			end
 			puts "Renamed to #{metadata_hierarchy}"
 			FileUtils.mkdir_p(File.dirname(@file))
 			FileUtils.mv(old_file, @file) 
