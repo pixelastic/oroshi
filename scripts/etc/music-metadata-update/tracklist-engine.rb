@@ -84,7 +84,15 @@ class TracklistEngine
 	def get_tracks
 		tracks = {}
 		pattern = /^([0-9]*) - (.*)$/
-		get_content.split("\n")[4..-1].each do |track|
+
+		blank_line_found = false
+		get_content.split("\n").each do |track|
+			# Keep skipping header lines until you get to an empty one
+			if blank_line_found == false
+				blank_line_found = true if track == ''
+				next
+			end
+
 			match = track.match(pattern)
 			tracks[match[1]] = match[2]
 		end
@@ -103,6 +111,9 @@ class TracklistEngine
 				'album' => split[2],
 				'tracks' => get_tracks
 			}
+			#  Adding cd if present
+			data['cd'] = (split[3] =~ /^CD([0-9])$/) ? split[3] : ''
+			# Adding data about the current file (title and index)
 			data.merge!(get_track_info)
 		rescue
 			puts "Corrupted .tracklist file!"
@@ -110,6 +121,7 @@ class TracklistEngine
 				'artist' => '',
 				'year'   => '',
 				'album'  => '',
+				'cd'     => '',
 				'tracks' => []
 			}
 		end

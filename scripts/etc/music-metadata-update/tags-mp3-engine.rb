@@ -34,8 +34,9 @@ class TagsMp3Engine
 					'artist' => mp3info.tag.artist,
 					'year'   => mp3info.tag.year.to_s,
 					'album'  => mp3info.tag.album,
+					'cd'     => '',
 					'index'  => mp3info.tag.tracknum.to_s,
-					'title'  => mp3info.tag.title
+					'title'  => mp3info.tag.title,
 				}
 			end
 		rescue
@@ -45,7 +46,8 @@ class TagsMp3Engine
 				'artist' => '', 
 				'year' => '', 
 				'album' => '', 
-				'index' => '', 
+				'cd' => '',
+				'index' => '',
 				'title' => '' 
 			}
 		end
@@ -79,6 +81,7 @@ class TagsMp3Engine
 				'TPE1' => @data['artist'],
 				'TYER' => @data['year'],
 				'TALB' => @data['album'],
+				'TPOS' => @data['cd'],
 				'TRCK' => @data['index'],
 				'TIT2' => @data['title']
 			}

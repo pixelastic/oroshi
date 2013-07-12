@@ -74,7 +74,7 @@ class FilepathEngine
 		split = filepath.split("/")
 
 		# Last part can be a cd. Once found, we keep going as usual.
-		if split[-1] =~ /^CD([0-9])$/
+		if cd_dir?(split[-1])
 			data['cd'] = split[-1]
 			split.pop
 		end
@@ -95,14 +95,28 @@ class FilepathEngine
 		return data
 	end
 
+	# Check if specified dir is a CD dir
+	def cd_dir?(path)
+		path = path.split('/').pop if path['/']
+		return path =~ /^CD([0-9])$/
+	end
+
+	# Check if filepath has a CD directory
+	def has_cd_dir?
+		split = @file.split('/')
+		return cd_dir?(split[-2])
+	end
+
 	# Returns the root dir, the place where the file is saved, without all the 
 	# metadata hierarchy
 	def root_dir
-		@file.split("/")[0..-5].join("/")
+		return @file.split("/")[0..-6].join('/') if has_cd_dir?
+		return @file.split("/")[0..-5].join('/')
 	end
 
 	# Returns the metadata hierarchy of a filepath
 	def metadata_hierarchy
+		@file.split("/")[-5..-1].join("/") if has_cd_dir?
 		@file.split("/")[-4..-1].join("/")
 	end
 
@@ -113,13 +127,15 @@ class FilepathEngine
 			fat32data[key] = make_fat32_compliant(value)
 		end
 
-		return File.join(
-			root_dir, 
-			fat32data['artist'][0], 
-			fat32data['artist'], 
-			"#{fat32data['year']} - #{fat32data['album']}", 
-			"#{fat32data['index']} - #{fat32data['title']}#{fat32data['ext']}"
-		);
+		path = []
+		path << root_dir
+		path << fat32data['artist'][0]
+		path << fat32data['artist']
+		path << "#{fat32data['year']} - #{fat32data['album']}"
+		path << fat32data['cd'] if fat32data['cd']
+		path <<	"#{fat32data['index']} - #{fat32data['title']}#{fat32data['ext']}"
+
+		return File.join(*path)
 	end
 
 	# FAT32 has a list of illegal characters, we strip those

@@ -45,6 +45,7 @@ class MusicMetadataUpdate
 		metadata.tags.artist = metadata.tracklist.artist
 		metadata.tags.year   = metadata.tracklist.year
 		metadata.tags.album  = metadata.tracklist.album
+		metadata.tags.cd     = metadata.tracklist.cd if metadata.tracklist.cd
 		metadata.tags.index  = metadata.tracklist.index
 		metadata.tags.title  = metadata.tracklist.title
 		metadata.tags.save
@@ -53,6 +54,7 @@ class MusicMetadataUpdate
 		metadata.filepath.artist = metadata.tracklist.artist
 		metadata.filepath.year   = metadata.tracklist.year
 		metadata.filepath.album  = metadata.tracklist.album
+		metadata.filepath.cd     = metadata.tracklist.cd if metadata.tracklist.cd
 		metadata.filepath.index  = metadata.tracklist.index
 		metadata.filepath.title  = metadata.tracklist.title
 		metadata.filepath.save
