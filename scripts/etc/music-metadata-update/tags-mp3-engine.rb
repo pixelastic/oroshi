@@ -51,19 +51,40 @@ class TagsMp3Engine
 		end
 	end
 
+	# Update an mp3info.tag list to values passed in a hash
+	def set_tags_to_file(mp3tags, hash)
+		# Delete all tags that are not in the hash
+		mp3tags.each do |tag, value|
+			mp3tags[tag] = nil unless hash.has_key?(tag)
+		end
+		# Add every other key of hash that is not in the tag list
+		hash.each do |key, value|
+			mp3tags[key] = value
+		end
+	end
+
 	# Save tags back into file
 	def save
 		puts "Rewriting id3 tags of #{File.basename(@file)}"
 
 		Mp3Info.open(@file) do |mp3info|
-			# Main tags
-			update_artist(mp3info, @data['artist'])
-			update_year(mp3info, @data['year'])
-			update_album(mp3info, @data['album'])
-			update_index(mp3info, @data['index'])
-			update_title(mp3info, @data['title'])
-			# Useless tags
-			delete_useless_tags(mp3info)
+			tag1 = {
+				'artist' => @data['artist'],
+				'year' => @data['year'],
+				'album' => @data['album'],
+				'tracknum' => @data['index'].to_i,
+				'title' => @data['title']
+			}
+			tag2 = {
+				'TPE1' => @data['artist'],
+				'TYER' => @data['year'],
+				'TALB' => @data['album'],
+				'TRCK' => @data['index'],
+				'TIT2' => @data['title']
+			}
+
+			set_tags_to_file(mp3info.tag1, tag1)
+			set_tags_to_file(mp3info.tag2, tag2)
 		end
 
 		Mp3Info.open(@file) do |mp3info|
@@ -75,85 +96,6 @@ class TagsMp3Engine
 			puts "tag :"
 			p mp3info.tag
 		end
-	end
-
-	# Note : The Ruby Mp3Info gem seems to have som bugs when trying to manually 
-	# change both values based on .tag1/.tag2 and .tag. It is safer to manually 
-	# use the .tag1/tag2 version.
-
-	def update_artist(mp3info, value)
-		mp3info.tag1.artist = value
-		mp3info.tag2.TPE1 = value
-	end
-
-	def update_year(mp3info, value)
-		mp3info.tag1.year = value
-		mp3info.tag2.TYER = value
-	end
-
-	def update_album(mp3info, value)
-		mp3info.tag1.album = value
-		mp3info.tag2.TALB = value
-	end
-
-	def update_index(mp3info, value)
-		mp3info.tag1.tracknum = value.to_i
-		mp3info.tag2.TRCK = value
-		mp3info.tag2.TPOS = ""
-	end
-
-	def update_title(mp3info, value)
-		mp3info.tag1.title = value
-		mp3info.tag2.TIT2 = value
-	end
-
-	def delete_useless_tags(mp3info)
-		# Genre
-		mp3info.tag1.genre = 255
-		mp3info.tag2.TCON = ""
-		# Comments
-		mp3info.tag1.comments = ""
-		mp3info.tag2.COMM = ""
-		mp3info.tag2.TXXX = ""
-		mp3info.tag2.PRIV = ""
-		
-		# Recording date
-		mp3info.tag2.TDRC = ""
-		mp3info.tag2.TDAT = ""
-		mp3info.tag2.TIME = ""
-		mp3info.tag2.TRDA = ""
-		# Secondary artists
-		mp3info.tag2.TCOM = ""
-		mp3info.tag2.TEXT = ""
-		mp3info.tag2.TIPL = ""
-		mp3info.tag2.TPE2 = ""
-		mp3info.tag2.TPE3 = ""
-		mp3info.tag2.TPE4 = ""
-		mp3info.tag2.TPUB = ""
-		mp3info.tag2.TSOP = ""
-		# UUID
-		mp3info.tag2.UFID = ""
-		mp3info.tag2.TSRC = ""
-		mp3info.tag2.MCDI = ""
-		# Popularimeter
-		mp3info.tag2.POPM = ""
-		# Length
-		mp3info.tag2.TLEN = ""
-		# Beat per minute
-		mp3info.tag2.TBPM = ""
-		# Embedded lyrics
-		mp3info.tag2.USLT = ""
-		# Media type
-		mp3info.tag2.TMED = ""
-		# Language
-		mp3info.tag2.TLAN = ""
-		# Software used for encoding
-		mp3info.tag2.TSSE = ""
-
-		# Unknown tags
-		mp3info.tag2.disc_number = ""
-		mp3info.tag2.disc_total = ""
-		mp3info.tag2.XSOP = ""
 	end
 
 	
