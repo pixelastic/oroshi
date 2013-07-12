@@ -19,7 +19,7 @@ class TagsMp3Engine
 		is_set_method = (method.to_s =~ /(.*)=$/)
 		key = is_set_method ? $1 : method.to_s
 		# No such key
-		super unless @data[key]
+		super unless @data.has_key?(key)
 		# Set
 		return @data[key] = args[0] if is_set_method
 		# Get

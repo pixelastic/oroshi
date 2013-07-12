@@ -37,8 +37,14 @@ class MusicMetadataUpdate
 		metadata.tags.index  = metadata.tracklist.index
 		metadata.tags.title  = metadata.tracklist.title
 		metadata.tags.save
-		# We'll then do the same thing with the filepath
-		# Bonus : fat32, ogg, podcasts
+
+		# Update filepath to rename files based on new metadata
+		metadata.filepath.artist = metadata.tracklist.artist
+		metadata.filepath.year   = metadata.tracklist.year
+		metadata.filepath.album  = metadata.tracklist.album
+		metadata.filepath.index  = metadata.tracklist.index
+		metadata.filepath.title  = metadata.tracklist.title
+		metadata.filepath.save
 	end
 	
 	def run

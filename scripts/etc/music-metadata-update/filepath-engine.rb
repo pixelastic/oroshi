@@ -1,4 +1,5 @@
 # encoding : UTF-8
+require "fileutils"
 # Engine to read and write metadata from a filepath.
 
 class FilepathEngine
@@ -13,13 +14,16 @@ class FilepathEngine
 		@data = from_basedir.merge(from_basefile)
 	end
 	
-	# Meta-programming to read tags
-	def method_missing method
-		if @data.has_key?(method.to_s)
-			return @data[method.to_s]
-		else
-			super
-		end
+	# Meta-programming to read and write
+	def method_missing(method, *args)
+		is_set_method = (method.to_s =~ /(.*)=$/)
+		key = is_set_method ? $1 : method.to_s
+		# No such key
+		super unless @data.has_key?(key)
+		# Set
+		return @data[key] = args[0] if is_set_method
+		# Get
+		return @data[key]
 	end
 
 	# Get data from the file basename.
@@ -38,11 +42,13 @@ class FilepathEngine
 		if match = basename.match(pattern)
 			return {
 				'index' => match[1],
-				'title' => match[2]
+				'title' => match[2],
+				'ext'   => extname
 			}
 		else
 			return {
-				'title' => basename
+				'title' => basename,
+				'ext'   => extname
 			}
 		end
 	end
@@ -75,6 +81,51 @@ class FilepathEngine
 				'album' => split[-1],
 				'artist' => artist
 			}
+		end
+	end
+
+	# Returns the root dir, the place where the file is saved, without all the 
+	# metadata hierarchy
+	def root_dir
+		@file.split("/")[0..-5].join("/")
+	end
+
+	# Returns the metadata hierarchy of a filepath
+	def metadata_hierarchy
+		@file.split("/")[-4..-1].join("/")
+	end
+
+	def generate_filepath
+		# Make every part of the filepath fat32 compatible
+		fat32data = {}
+		@data.each do |key, value|
+			fat32data[key] = make_fat32_compliant(value)
+		end
+
+		return File.join(
+			root_dir, 
+			fat32data['artist'][0], 
+			fat32data['artist'], 
+			"#{fat32data['year']} - #{fat32data['album']}", 
+			"#{fat32data['index']} - #{fat32data['title']}#{fat32data['ext']}"
+		);
+	end
+
+	# FAT32 has a list of illegal characters, we strip those
+	def make_fat32_compliant(string)
+		string.gsub(/([\?])/, "").strip
+	end
+
+
+	# Rename file based on metadata
+	def save
+		# Change the inner filepath representation
+		old_file = @file
+		@file = generate_filepath
+		# Move file on disk
+		unless old_file == @file
+			puts "Renamed to #{metadata_hierarchy}"
+			FileUtils.mv(old_file, @file) 
 		end
 	end
 
