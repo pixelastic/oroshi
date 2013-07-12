@@ -143,7 +143,7 @@ class FilepathEngine
 
 	# FAT32 has a list of illegal characters, we strip those
 	def make_fat32_compliant(string)
-		string.gsub(/([\?\/\*\|!:;"<>])/, "").strip.gsub(/ {2,}/," ")
+		string.gsub(/([\?\/\*\|:;"<>])/, "").strip.gsub(/ {2,}/," ")
 	end
 
 
@@ -155,6 +155,7 @@ class FilepathEngine
 		# Move file on disk
 		unless old_file == @file
 			puts "Renamed to #{metadata_hierarchy}"
+			FileUtils.mkdir_p(File.dirname(@file))
 			FileUtils.mv(old_file, @file) 
 		end
 	end
