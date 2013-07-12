@@ -47,15 +47,15 @@ class GenerateTracklist
 		# Skip if already has a tracklist
 		return if metadata.has_tracklist? && !@force
 
-		begin
+		# begin
 			File.open(metadata.tracklist.tracklist_filepath, 'w') do |tracklist|
 				tracklist.write(metadata.tracklist.generate_content)
 			end
 			puts ".tracklist file created."
-		rescue
-			puts "Unable to create .tracklist file!"
-			FileUtils.rm(metadata.tracklist.tracklist_filepath)
-		end
+		# rescue
+		# 	puts "Unable to create .tracklist file!"
+		# 	FileUtils.rm(metadata.tracklist.tracklist_filepath)
+		# end
 	end
 
 	# Create tracklist files for every arguments

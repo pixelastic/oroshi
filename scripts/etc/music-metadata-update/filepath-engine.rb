@@ -61,27 +61,38 @@ class FilepathEngine
 	# > /../A/Amy McDonald/This is the Life/
 	#   artist : Amy McDonald
 	#   album : This is the Life
+	# > /../B/Boby Lapointe/1997 - Best Of/CD1/
+	#   artist : Boby Lapointe
+	#   year : 1997
+	#   album : Best Of
+	#   cd : CD1
 	def from_basedir
 		# Deal only with the dirpath, not the file
 		filepath = File.directory?(@file) ? @file : File.dirname(@file)
 
+		data = {}
 		split = filepath.split("/")
-		# Artist is easy to spot
+
+		# Last part can be a cd. Once found, we keep going as usual.
+		if split[-1] =~ /^CD([0-9])$/
+			data['cd'] = split[-1]
+			split.pop
+		end
+
+		# Artist is easy to spot, penultimate part.
 		artist = split[-2]
 		# Album and year
 		pattern = /^([0-9]*) - (.*)$/
 		if match = split[-1].match(pattern)
-			return {
-				'year' => match[1],
-				'album' => match[2],
-				'artist' => artist
-			}
+			data['year'] = match[1]
+			data['album'] = match[2]
+			data['artist'] = artist
 		else
-			return {
-				'album' => split[-1],
-				'artist' => artist
-			}
+			data['album'] = split[-1]
+			data['artist'] = artist
 		end
+
+		return data
 	end
 
 	# Returns the root dir, the place where the file is saved, without all the 

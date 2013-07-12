@@ -55,9 +55,14 @@ class TracklistEngine
 		content = [
 			filepath.artist,
 			filepath.year,
-			filepath.album,
-			''
+			filepath.album
 		]
+		# Add CD if present
+		content << filepath.cd if filepath.cd
+
+		# Blank line to separate header from tracklisting
+		content << ''
+
 		# Track list
 		get_album_files.each do |subfile|
 			submetadata = FilepathEngine.new(subfile)
