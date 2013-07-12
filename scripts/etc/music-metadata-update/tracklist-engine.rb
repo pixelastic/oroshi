@@ -45,7 +45,7 @@ class TracklistEngine
 	
 	# Pad the index with leading zeroes
 	def pad_index(index)
-		"%0#{(get_album_files.size/10).floor + 1}d" % index.to_i
+		"%0#{get_album_files.size.to_s.size}d" % index.to_i
 	end
 
 	# Generate the text content of the .tracklist
