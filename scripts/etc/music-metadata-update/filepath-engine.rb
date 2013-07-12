@@ -47,6 +47,7 @@ class FilepathEngine
 			}
 		else
 			return {
+				'index' => "00",
 				'title' => basename,
 				'ext'   => extname
 			}
@@ -77,6 +78,8 @@ class FilepathEngine
 		if cd_dir?(split[-1])
 			data['cd'] = split[-1]
 			split.pop
+		else
+			data['cd'] =  ''
 		end
 
 		# Artist is easy to spot, penultimate part.

@@ -45,7 +45,7 @@ class TracklistEngine
 	
 	# Pad the index with leading zeroes
 	def pad_index(index)
-		"%0#{get_album_files.size.to_s.size}d" % index.to_i
+		"%0#{[get_album_files.size.to_s.size, 2].max}d" % index.to_i
 	end
 
 	# Generate the text content of the .tracklist
@@ -58,7 +58,7 @@ class TracklistEngine
 			filepath.album
 		]
 		# Add CD if present
-		content << filepath.cd if filepath.cd
+		content << filepath.cd if filepath.cd != ''
 
 		# Blank line to separate header from tracklisting
 		content << ''
@@ -112,7 +112,7 @@ class TracklistEngine
 				'tracks' => get_tracks
 			}
 			#  Adding cd if present
-			data['cd'] = (split[3] =~ /^CD([0-9])$/) ? split[3] : ''
+			data['cd'] = (split[3] != '') ? split[3] : ''
 			# Adding data about the current file (title and index)
 			data.merge!(get_track_info)
 		rescue
