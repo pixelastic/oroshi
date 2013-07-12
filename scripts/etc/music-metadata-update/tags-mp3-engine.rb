@@ -56,16 +56,22 @@ class TagsMp3Engine
 		puts "Rewriting id3 tags of #{File.basename(@file)}"
 
 		Mp3Info.open(@file) do |mp3info|
+			# p mp3info.tag1
+			# p mp3info.tag2
+			# p mp3info.tag
+
 			# Main tags
 			update_artist(mp3info, @data['artist'])
 			update_year(mp3info, @data['year'])
 			update_album(mp3info, @data['album'])
 			update_index(mp3info, @data['index'])
 			update_title(mp3info, @data['title'])
-			# Useless tags
-			delete_comment(mp3info)
+			# # Useless tags
 			delete_genre(mp3info)
-			# TODO : Some more cleaning of useless fields. cf. The Virgin Suicides.
+			delete_comment(mp3info)
+			delete_recording_date(mp3info)
+			delete_secondary_artists(mp3info)
+			delete_uuid(mp3info)
 		end
 	end
 
@@ -106,7 +112,29 @@ class TagsMp3Engine
 	def delete_comment(mp3info)
 		mp3info.tag1.comment = ""
 		mp3info.tag2.COMM = ""
+		mp3info.tag2.TXXX = ""
 	end
+
+	def delete_recording_date(mp3info)
+		mp3info.tag2.TDRC = ""
+	end
+
+	def delete_secondary_artists(mp3info)
+		mp3info.tag2.TCOM = ""
+		mp3info.tag2.TEXT = ""
+		mp3info.tag2.TIPL = ""
+		mp3info.tag2.TPE2 = ""
+		mp3info.tag2.TPE3 = ""
+		mp3info.tag2.TPE4 = ""
+		mp3info.tag2.TPUB = ""
+		mp3info.tag2.TSOP = ""
+	end
+
+	def delete_uuid(mp3info)
+		mp3info.tag2.UFID = ""
+		mp3info.tag2.TSRC = ""
+	end
+
 
 	
 
