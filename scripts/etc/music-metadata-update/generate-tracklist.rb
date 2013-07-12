@@ -35,6 +35,9 @@ class GenerateTracklist
 			next unless File.exists?(arg)
 			@files << File.expand_path(arg)
 		end
+
+		@files = [File.expand_path('.')] if @files.size == 0
+
 	end
 
 	# Generate tracklist file
@@ -48,6 +51,7 @@ class GenerateTracklist
 			File.open(metadata.tracklist.tracklist_filepath, 'w') do |tracklist|
 				tracklist.write(metadata.tracklist.generate_content)
 			end
+			puts ".tracklist file created."
 		rescue
 			puts "Unable to create .tracklist file!"
 			FileUtils.rm(metadata.tracklist.tracklist_filepath)

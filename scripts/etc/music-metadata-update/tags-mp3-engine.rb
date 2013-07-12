@@ -87,15 +87,15 @@ class TagsMp3Engine
 			set_tags_to_file(mp3info.tag2, tag2)
 		end
 
-		Mp3Info.open(@file) do |mp3info|
-			puts "-----"
-			puts "tag1 :"
-			p mp3info.tag1
-			puts "tag2 :"
-			p mp3info.tag2
-			puts "tag :"
-			p mp3info.tag
-		end
+		# Mp3Info.open(@file) do |mp3info|
+		# 	puts "-----"
+		# 	puts "tag1 :"
+		# 	p mp3info.tag1
+		# 	puts "tag2 :"
+		# 	p mp3info.tag2
+		# 	puts "tag :"
+		# 	p mp3info.tag
+		# end
 	end
 
 	

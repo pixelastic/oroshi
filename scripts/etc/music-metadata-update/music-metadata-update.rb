@@ -14,10 +14,21 @@ class MusicMetadataUpdate
 
 	# Tidy the list of input files
 	def parse_args(*args)
+		if args.size == 0
+			args = Dir.glob('./*.{mp3}').sort
+		end
+
 		@files = []
 		args.each do |file|
 			next unless File.exists?(file)
-			@files << File.expand_path(file)
+			# If target is a dir, we add all music files in this dir
+			if File.directory?(file)
+				Dir.glob(File.join(file, '*.{mp3}')).each do |subfile|
+					@files << File.expand_path(subfile)
+				end
+			else
+				@files << File.expand_path(file)
+			end
 		end
 	end
 

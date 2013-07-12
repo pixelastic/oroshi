@@ -113,7 +113,7 @@ class FilepathEngine
 
 	# FAT32 has a list of illegal characters, we strip those
 	def make_fat32_compliant(string)
-		string.gsub(/([\?])/, "").strip
+		string.gsub(/([\?\/\*\|!:;"<>])/, "").strip.gsub(/ {2,}/," ")
 	end
 
 
