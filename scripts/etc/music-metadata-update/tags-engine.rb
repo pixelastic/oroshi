@@ -1,5 +1,6 @@
 # encoding : utf-8
 require_relative "tags-mp3-engine"
+require_relative "tags-ogg-engine"
 # Engine to read and write metadata from a the file tags
 
 class TagsEngine
@@ -13,6 +14,8 @@ class TagsEngine
 		case File.extname(@file)
 		when ".mp3"
 			@engine = TagsMp3Engine.new(@file)
+		when ".ogg"
+			@engine = TagsOggEngine.new(@file)
 		else
 			raise TagsEngine::NoEngineError, "No tag engine for #{@file}", ""
 		end
