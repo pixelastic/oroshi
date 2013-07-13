@@ -144,6 +144,10 @@ alias cdw='cd ~/local/var/www/'
 alias udingoo='umount /media/dingoo'
 alias cdingoo='cd /media/dingoo'
 # }}}
+# Music {{{
+alias mmu='music-metadata-update'
+alias mktl='generate-tracklist'
+# }}}
 # Nginx {{{
 alias ngsta='sudo /etc/init.d/nginx start'
 alias ngsto='sudo /etc/init.d/nginx stop'

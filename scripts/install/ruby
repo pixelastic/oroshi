@@ -38,6 +38,9 @@ rvm install 1.9.3-dev
 gem install pry
 gem install awesome_print
 
+# Installing mp3 tagging utility
+gem install ruby-mp3info
+
 
 
 
