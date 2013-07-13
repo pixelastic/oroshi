@@ -40,7 +40,7 @@ class TracklistEngine
 	# Returns the list of music file in the same directory
 	def get_album_files
 		return @album_files if @album_files
-		return @album_files = Dir.glob(File.join(dirname, '*.{mp3}')).sort
+		return @album_files = Dir.glob(File.join(dirname, '*.{mp3,ogg}')).sort
 	end
 	
 	# Pad the index with leading zeroes
