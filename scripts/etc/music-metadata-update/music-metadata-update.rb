@@ -21,13 +21,13 @@ class MusicMetadataUpdate
 		@files = []
 		args.each do |file|
 			next unless File.exists?(file)
+			file = File.expand_path(file)
+
 			# If target is a dir, we add all music files in this dir
 			if File.directory?(file)
-				Dir.glob(File.join(file, '*.{mp3,ogg}')).each do |subfile|
-					@files << File.expand_path(subfile)
-				end
+				@files += Dir.glob(File.join(file, '**', '*.{mp3,ogg}')).map{|i| File.expand_path(i)}.sort
 			else
-				@files << File.expand_path(file)
+				@files << file
 			end
 		end
 	end

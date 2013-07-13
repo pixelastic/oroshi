@@ -23,6 +23,7 @@ class GenerateTracklist
 	end
 
 	def parse_args(*args)
+		args = [File.expand_path('.')] if args.size == 0
 		@force = false
 		@files = []
 
@@ -31,13 +32,21 @@ class GenerateTracklist
 			if arg=='-f' || arg=='--force'
 				@force = true
 			end
+
 			# Skipping non-existing files
 			next unless File.exists?(arg)
-			@files << File.expand_path(arg)
+
+			# Keeping directory, not files
+			dir = File.directory?(arg) ? arg : File.dirname(arg)
+			dir = File.expand_path(dir)
+			# Use CD subfolders if found
+			cd_subfolders = Dir.glob(File.join(dir, 'CD*'))
+			if cd_subfolders.size > 0
+				@files += cd_subfolders
+			else
+				@files << dir
+			end
 		end
-
-		@files = [File.expand_path('.')] if @files.size == 0
-
 	end
 
 	# Generate tracklist file
