@@ -48,6 +48,50 @@ class TracklistEngine
 		"%0#{[get_album_files.size.to_s.size, 2].max}d" % index.to_i
 	end
 
+	# Returns a data hash of all the values
+	def get_data
+		return {} unless has_tracklist?
+		split = get_content.split("\n")
+		begin
+			# Header
+			data = {
+				'artist' => split[0],
+				'year' => split[1],
+				'album' => split[2],
+				'tracks' => get_tracks
+			}
+			#  Adding cd if present
+			data['cd'] = (split[3] != '') ? split[3] : ''
+			# Adding data about the current file (title and index)
+			data.merge!(get_track_info)
+		rescue
+			puts "Corrupted .tracklist file!"
+			data = {
+				'artist' => '',
+				'year'   => '',
+				'album'  => '',
+				'cd'     => '',
+				'tracks' => []
+			}
+		end
+		return data
+	end
+
+	# Returns index and title info for the specific file, based on data saved in 
+	# tracklist
+	def get_track_info
+		return {} if File.directory?(@file)
+
+		# We find the position of the file in the dir, and then find matching date 
+		# for the file in the hash.
+		index = pad_index(get_album_files.index(@file)+1)
+		title = get_tracks[index]
+		return {
+			'index' => index,
+			'title' => title
+		}
+	end
+
 	# Generate the text content of the .tracklist
 	def generate_content
 		filepath = FilepathEngine.new(@file)
@@ -99,49 +143,6 @@ class TracklistEngine
 		return tracks
 	end
 
-	# Returns a data hash of all the values
-	def get_data
-		return {} unless has_tracklist?
-		split = get_content.split("\n")
-		begin
-			# Header
-			data = {
-				'artist' => split[0],
-				'year' => split[1],
-				'album' => split[2],
-				'tracks' => get_tracks
-			}
-			#  Adding cd if present
-			data['cd'] = (split[3] != '') ? split[3] : ''
-			# Adding data about the current file (title and index)
-			data.merge!(get_track_info)
-		rescue
-			puts "Corrupted .tracklist file!"
-			data = {
-				'artist' => '',
-				'year'   => '',
-				'album'  => '',
-				'cd'     => '',
-				'tracks' => []
-			}
-		end
-		return data
-	end
-
-	# Returns index and title info for the specific file, based on data saved in 
-	# tracklist
-	def get_track_info
-		return {} if File.directory?(@file)
-
-		# We find the position of the file in the dir, and then find matching date 
-		# for the file in the hash.
-		index = pad_index(get_album_files.index(@file)+1)
-		title = get_tracks[index]
-		return {
-			'index' => index,
-			'title' => title
-		}
-	end
 
 end
 
