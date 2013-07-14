@@ -53,12 +53,12 @@ class TracklistEngine
 		filepath = FilepathEngine.new(@file)
 		#  Tracklist header
 		content = [
-			filepath.artist,
-			filepath.year,
-			filepath.album
+			"type=#{filepath.type}",
+			"artist=#{filepath.artist}",
+			"year=#{filepath.year}",
+			"album=#{filepath.album}",
+			"cd=#{filepath.cd}"
 		]
-		# Add CD if present
-		content << filepath.cd if filepath.cd != ''
 
 		# Blank line to separate header from tracklisting
 		content << ''
@@ -68,7 +68,7 @@ class TracklistEngine
 			submetadata = FilepathEngine.new(subfile)
 			content << "#{pad_index(submetadata.index)} - #{submetadata.title}"
 		end
-
+		
 		return content.join("\n")
 	end
 
