@@ -1,4 +1,5 @@
 # encoding : UTF-8
+require_relative "filepath-engine"
 # Engine to read metadata from a tracklist file
 
 class TracklistEngine
@@ -10,6 +11,7 @@ class TracklistEngine
 
 	def initialize(file)
 		@file = file
+		@filepath_engine = FilepathEngine.new(@file)
 		@data = get_data
 	end
 
@@ -42,6 +44,13 @@ class TracklistEngine
 		return @album_files if @album_files
 		return @album_files = Dir.glob(File.join(dirname, '*.{mp3,ogg}')).sort
 	end
+
+	# Returns the content of the .tracklist file
+	def get_content
+		return '' unless has_tracklist?
+		return @content if @content
+		return @content = File.read(tracklist_filepath)
+	end
 	
 	# Pad the index with leading zeroes
 	def pad_index(index)
@@ -52,56 +61,59 @@ class TracklistEngine
 	def get_data
 		return {} unless has_tracklist?
 		split = get_content.split("\n")
-		begin
-			# Header
-			data = {
-				'artist' => split[0],
-				'year' => split[1],
-				'album' => split[2],
-				'tracks' => get_tracks
-			}
-			#  Adding cd if present
-			data['cd'] = (split[3] != '') ? split[3] : ''
-			# Adding data about the current file (title and index)
-			data.merge!(get_track_info)
-		rescue
-			puts "Corrupted .tracklist file!"
-			data = {
-				'artist' => '',
-				'year'   => '',
-				'album'  => '',
-				'cd'     => '',
-				'tracks' => []
-			}
-		end
-		return data
-	end
-
-	# Returns index and title info for the specific file, based on data saved in 
-	# tracklist
-	def get_track_info
-		return {} if File.directory?(@file)
-
-		# We find the position of the file in the dir, and then find matching date 
-		# for the file in the hash.
-		index = pad_index(get_album_files.index(@file)+1)
-		title = get_tracks[index]
-		return {
-			'index' => index,
-			'title' => title
+		data = {
+			'type'   => '',
+			'artist' => '',
+			'year'   => '',
+			'album'  => '',
+			'cd'     => '',
+			'tracks' => {}
 		}
+		track_pattern = /^([0-9]*) - (.*)$/
+		blank_line_found = false
+
+
+		split.each do |line|
+			# header
+			if blank_line_found == false
+				if line == ''
+					blank_line_found = true
+					next
+				end
+				# Splitting name/value by the first equal sign
+				line_split = line.split("=")
+				data[line_split[0]] = line_split[1..-1].join("=")
+				next
+			end
+
+			# tracks
+			match = line.match(track_pattern)
+			data['tracks'][match[1]] = match[2]
+		end
+
+		# We also add information about the current track info if a file is
+		# specified
+		unless File.directory?(@file)
+			# We find the index from the filepath and get the matching title in the
+			# tracklist
+			index = @filepath_engine.index
+			title = data['tracks'][index]
+			data['index'] = index
+			data['title'] = title
+		end
+
+		return data
 	end
 
 	# Generate the text content of the .tracklist
 	def generate_content
-		filepath = FilepathEngine.new(@file)
 		#  Tracklist header
 		content = [
-			"type=#{filepath.type}",
-			"artist=#{filepath.artist}",
-			"year=#{filepath.year}",
-			"album=#{filepath.album}",
-			"cd=#{filepath.cd}"
+			"type=#{@filepath_engine.type}",
+			"artist=#{@filepath_engine.artist}",
+			"year=#{@filepath_engine.year}",
+			"album=#{@filepath_engine.album}",
+			"cd=#{@filepath_engine.cd}"
 		]
 
 		# Blank line to separate header from tracklisting
@@ -115,34 +127,5 @@ class TracklistEngine
 		
 		return content.join("\n")
 	end
-
-
-	# Returns the content of the .tracklist file
-	def get_content
-		return '' unless has_tracklist?
-		return @content if @content
-		return @content = File.read(tracklist_filepath)
-	end
-
-	# Returns array of tracks from file content
-	def get_tracks
-		tracks = {}
-		pattern = /^([0-9]*) - (.*)$/
-
-		blank_line_found = false
-		get_content.split("\n").each do |track|
-			# Keep skipping header lines until you get to an empty one
-			if blank_line_found == false
-				blank_line_found = true if track == ''
-				next
-			end
-
-			match = track.match(pattern)
-			tracks[match[1]] = match[2]
-		end
-		return tracks
-	end
-
-
 end
 

@@ -70,6 +70,15 @@ class FilepathEngine
 		string.gsub(/([\?\/\*\|:;"<>])/, "").strip.gsub(/ {2,}/," ").gsub('’', "'")
 	end
 
+	# Returns the data hash in a fat32 compliant way
+	def get_fat32_compliant_data
+		fat32data = {}
+		@data.each do |key, value|
+			fat32data[key] = make_fat32_compliant(value)
+		end
+		return fat32data
+	end
+
 	# Get first letter of an artist name
 	def artist_first_letter(string)
 		string[0].upcase.tr("ÀÂÄÉÈËÊÎÏÖÔÛÜ", "AAAEEEEIIOOUU")
@@ -140,6 +149,7 @@ class FilepathEngine
 		return default.merge(data)
 	end
 
+	# Extract data from filepath for music files
 	def from_basedir_music
 		split = basedir.split("/")
 		data = {}
@@ -165,27 +175,32 @@ class FilepathEngine
 		return data
 	end
 
-
+	# Generate filepath for the current file
 	def generate_filepath
-		# Make every part of the filepath fat32 compatible
-		fat32data = {}
-		@data.each do |key, value|
-			fat32data[key] = make_fat32_compliant(value)
+		case @data['type']
+		when "music"
+			return generate_filepath_music
+		when "podcast"
+			return generate_filepath_podcast
+		else
+			raise FilepathEngine::NoTypeError, "Unable to generate filepath for type #{data['type']}", ""
 		end
+	end
+
+	# Generate a filepath for a music file
+	def generate_filepath_music
+		data = get_fat32_compliant_data
 
 		path = []
 		path << root_dir
-		path << artist_first_letter(fat32data['artist'])
-		path << fat32data['artist']
-		path << "#{fat32data['year']} - #{fat32data['album']}"
-		path << fat32data['cd'] if fat32data['cd']
-		path <<	"#{fat32data['index']} - #{fat32data['title']}#{fat32data['ext']}"
+		path << artist_first_letter(data['artist'])
+		path << data['artist']
+		path << "#{data['year']} - #{data['album']}"
+		path << data['cd'] if data['cd'] != ""
+		path <<	"#{data['index']} - #{data['title']}#{data['ext']}"
 
-		return File.join(*path)
+		return path.join("/")
 	end
-
-
-
 
 	# Rename file based on metadata
 	def save
