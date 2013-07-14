@@ -90,6 +90,23 @@ class PodcastDownloader
 		return list
 	end
 
+	# FAT32 has a list of illegal characters, we strip those from the
+	# filepath because music-metadata-update will strip them anyway.
+	def make_fat32_compliant(filepath)
+		extname = File.extname(filepath)
+		basename = File.basename(filepath, extname)
+		dirname = File.dirname(filepath)
+		path_without_ext = File.join(dirname, basename)
+
+		split = path_without_ext.split("/")
+		new_split = []
+		split.map do |part|
+			new_split << part.gsub(/([\?\*\|:;"<>])/, "").strip.gsub(/ {2,}/," ").gsub('’', "'")
+		end
+		return new_split.join("/")+extname
+	end
+
+
 	# Must be overriden in child classes to transforme a node to a hash
 	def node_to_hash(node)
 		puts "You must define a `node_to_hash` method in your child class to parse the Nokogiri nodes"
@@ -106,9 +123,9 @@ class PodcastDownloader
 			year_dir = File.join(@podcasts_dir, podcast['year'])
 			FileUtils.mkdir_p(year_dir)
 
-			prefix = "%03d" % podcast['index']
+			prefix = "%02d" % podcast['index']
 			basename = "#{prefix} - #{podcast['title']}.mp3"
-			filepath = File.join(year_dir, basename)
+			filepath = make_fat32_compliant(File.join(year_dir, basename))
 
 			next if File.exists?(filepath)
 
