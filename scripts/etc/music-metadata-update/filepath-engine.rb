@@ -35,8 +35,8 @@ class FilepathEngine
 	
 	# Get the type (music, podcast, soundtrack) based on the filepath
 	def get_type
-		return "podcast" if basedir =~ /\/podcasts\//
-		return "soundtrack" if basedir =~ /\/soundtrack\//
+		return "podcasts" if basedir =~ /\/podcasts\//
+		return "soundtracks" if basedir =~ /\/soundtrack\//
 		return "music"
 	end
 
@@ -55,19 +55,19 @@ class FilepathEngine
 	# Returns the root dir, the place where the file is saved, without all the 
 	# metadata hierarchy
 	def root_dir
-		return @file.split("/")[0..-6].join('/') if has_cd_dir?
-		return @file.split("/")[0..-5].join('/')
+		split = @file.split("/")
+		return split[0..(split.index(get_type)-1)].join("/")
 	end
 
 	# Returns the metadata hierarchy of a filepath
 	def metadata_hierarchy
-		@file.split("/")[-5..-1].join("/") if has_cd_dir?
-		@file.split("/")[-4..-1].join("/")
+		split = @file.split("/")
+		return split[split.index(get_type)..-1].join("/")
 	end
 
 	# FAT32 has a list of illegal characters, we strip those
-	def make_fat32_compliant(string)
-		string.gsub(/([\?\/\*\|:;"<>])/, "").strip.gsub(/ {2,}/," ").gsub('’', "'")
+	def make_fat32_compliant(value)
+		value.to_s.gsub(/([\?\/\*\|:;"<>])/, "").strip.gsub(/ {2,}/," ").gsub('’', "'")
 	end
 
 	# Returns the data hash in a fat32 compliant way
@@ -97,7 +97,7 @@ class FilepathEngine
 		
 		extname = File.extname(@file)
 		basename = File.basename(@file, extname)
-		pattern = /^([0-9]*) - (.*)$/
+		pattern = /^([0-9\.]*) - (.*)$/
 		if match = basename.match(pattern)
 			return {
 				'index' => match[1],
@@ -138,8 +138,8 @@ class FilepathEngine
 
 		# Get metadata based on type of music
 		case default['type']
-		when "podcast"
-			data = from_basedir_podcast
+		when "podcasts"
+			data = from_basedir_podcasts
 		when "music"
 			data = from_basedir_music
 		else
@@ -175,13 +175,33 @@ class FilepathEngine
 		return data
 	end
 
+	def from_basedir_podcasts
+		# We start at the podcasts level
+		split = metadata_hierarchy.split("/")
+		data = {}
+
+		# Artist
+		data['artist'] = split[2]
+		# As a default, we'll set the album the same as the artist
+		data['album'] = data['artist']
+
+		# If no more directory, we stop here
+		return data if split.size == 3
+
+		# Otherwise, the next dir is an album
+		data['album'] = split[3]
+		# It can even be a year
+		data['year'] =  split[3] if split[3] =~ /^([0-9]{4})$/
+		return data
+	end
+
 	# Generate filepath for the current file
 	def generate_filepath
 		case @data['type']
 		when "music"
 			return generate_filepath_music
-		when "podcast"
-			return generate_filepath_podcast
+		when "podcasts"
+			return generate_filepath_podcasts
 		else
 			raise FilepathEngine::NoTypeError, "Unable to generate filepath for type #{data['type']}", ""
 		end
@@ -193,10 +213,27 @@ class FilepathEngine
 
 		path = []
 		path << root_dir
+		path << "music"
 		path << artist_first_letter(data['artist'])
 		path << data['artist']
 		path << "#{data['year']} - #{data['album']}"
+		# Adding cd subdir if cd specified
 		path << data['cd'] if data['cd'] != ""
+		path <<	"#{data['index']} - #{data['title']}#{data['ext']}"
+
+		return path.join("/")
+	end
+
+	def generate_filepath_podcasts
+		data = get_fat32_compliant_data
+
+		path = []
+		path << root_dir
+		path << "podcasts"
+		path << artist_first_letter(data['artist'])
+		path << data['artist']
+		# Album if album specified
+		path << data['album'] if data['album'] != ''
 		path <<	"#{data['index']} - #{data['title']}#{data['ext']}"
 
 		return path.join("/")
