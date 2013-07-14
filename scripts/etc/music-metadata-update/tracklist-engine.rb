@@ -51,7 +51,7 @@ class TracklistEngine
 		return @content if @content
 		return @content = File.read(tracklist_filepath)
 	end
-	
+
 	# Pad the index with leading zeroes
 	def pad_index(index)
 		"%0#{[get_album_files.size.to_s.size, 2].max}d" % index.to_i
