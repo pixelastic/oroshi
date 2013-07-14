@@ -143,7 +143,7 @@ class FilepathEngine
 
 	# FAT32 has a list of illegal characters, we strip those
 	def make_fat32_compliant(string)
-		string.gsub(/([\?\/\*\|:;"<>])/, "").strip.gsub(/ {2,}/," ")
+		string.gsub(/([\?\/\*\|:;"<>])/, "").strip.gsub(/ {2,}/," ").gsub('’', "'")
 	end
 
 	# Get first letter of an artist name
