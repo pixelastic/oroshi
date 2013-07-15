@@ -49,7 +49,7 @@ class MusicMetadataUpdate
 		end
 
 		unless metadata.tracklist.has_tracklist?
-			puts "No .tracklist found, generate it first"
+			puts "No .tracklist found for #{file}, generate it first"
 			return
 		end
 
@@ -60,6 +60,7 @@ class MusicMetadataUpdate
 		metadata.tags.cd     = metadata.tracklist.cd
 		metadata.tags.index  = metadata.tracklist.index
 		metadata.tags.title  = metadata.tracklist.title
+		metadata.tags.type   = metadata.tracklist.type
 		metadata.tags.save
 
 		# Update filepath to rename files based on new metadata

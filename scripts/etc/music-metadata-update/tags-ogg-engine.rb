@@ -73,6 +73,9 @@ class TagsOggEngine
 			"-t title=#{@data['title'].shellescape}",
 		]
 		options << "-t discnumber=#{@data['cd']}" if @data['cd'] != ''
+		# Adding genre if predefined one
+		options << "-t genre=Podcast" if @data['type'] == "podcasts"
+		options << "-t genre=Soundtrack" if @data['type'] == "soundtracks"
 
 		%x[vorbiscomment #{options.join(' ')} #{@file.shellescape}]
 

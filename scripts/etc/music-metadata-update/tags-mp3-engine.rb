@@ -31,6 +31,7 @@ class TagsMp3Engine
 		begin
 			Mp3Info.open(@file) do |mp3info|
 				@data = {
+					'type'   => '',
 					'artist' => mp3info.tag.artist,
 					'year'   => mp3info.tag.year.to_s,
 					'album'  => mp3info.tag.album,
@@ -43,6 +44,7 @@ class TagsMp3Engine
 			# Unable to read the file as an mp3 file, we'll feed it empty 
 			# metadata
 			@data = {
+				'type'   => '',
 				'artist' => '', 
 				'year' => '', 
 				'album' => '', 
@@ -85,6 +87,16 @@ class TagsMp3Engine
 				'TRCK' => @data['index'],
 				'TIT2' => @data['title']
 			}
+
+			# Predefined genres
+			if @data['type'] == "podcasts"
+				tag1['genre'] = 101 # There is no value for podcast in id3 v1, so we use "speech" instead
+				tag2['TCON'] = "Podcast"
+			end
+			if @data['type'] == "soundtracks"
+				tag1['genre'] = 24
+				tag2['TCON'] = "Soundtrack"
+			end
 
 			set_tags_to_file(mp3info.tag1, tag1)
 			set_tags_to_file(mp3info.tag2, tag2)
