@@ -36,6 +36,7 @@ class FilepathEngine
 	# Get the type (music, podcast, soundtrack) based on the filepath
 	def get_type
 		return "misc" if basedir =~ /\/misc\// || basedir =~ /\/misc$/
+		return "nature" if basedir =~ /\/nature\//
 		return "podcasts" if basedir =~ /\/podcasts\//
 		return "soundtracks" if basedir =~ /\/soundtrack\//
 		return "music"
@@ -114,6 +115,8 @@ class FilepathEngine
 			return from_basefile_misc
 		when "music"
 			return from_basefile_music
+		when "nature"
+			return from_basefile_nature
 		when "podcasts"
 			return from_basefile_podcasts
 		else
@@ -136,7 +139,7 @@ class FilepathEngine
 
 	# Extracting information from the basefile for music files
 	def from_basefile_music
-		extname = file.extname(@file)
+		extname = File.extname(@file)
 		basename = File.basename(@file, extname)
 		pattern = /^([0-9\.]*) - (.*)$/
 		if match = basename.match(pattern)
@@ -153,8 +156,11 @@ class FilepathEngine
 			}
 		end
 	end
+	
+	def from_basefile_nature
+		from_basefile_music
+	end
 
-	# Podcasts files uses the same format as music files
 	def from_basefile_podcasts
 		from_basefile_music
 	end
@@ -180,6 +186,8 @@ class FilepathEngine
 			return from_basedir_misc
 		when "music"
 			return from_basedir_music
+		when "nature"
+			return from_basedir_nature
 		when "podcasts"
 			return from_basedir_podcasts
 		else
@@ -218,6 +226,15 @@ class FilepathEngine
 		return data
 	end
 
+	# Metadata guessed from the basedir for nature files
+	def from_basedir_nature
+		split = basedir.split("/")
+		return {
+			'artist' => 'Nature',
+			'album' => split[-1]
+		}
+	end
+
 	def from_basedir_podcasts
 		# We start at the podcasts level
 		split = metadata_hierarchy.split("/")
@@ -245,6 +262,8 @@ class FilepathEngine
 			return generate_filepath_misc
 		when "music"
 			return generate_filepath_music
+		when "nature"
+			return generate_filepath_nature
 		when "podcasts"
 			return generate_filepath_podcasts
 		else
@@ -277,6 +296,19 @@ class FilepathEngine
 		# Adding cd subdir if cd specified
 		path << data['cd'] if data['cd'] != ""
 		path <<	"#{data['index']} - #{data['title']}#{data['ext']}"
+
+		return path.join("/")
+	end
+
+	# Generate the filepath for a nature song
+	def generate_filepath_nature
+		data = get_fat32_compliant_data
+
+		path = []
+		path << root_dir
+		path << "nature"
+		path << data['album']
+		path << "#{data['index']} - #{data['title']}#{data['ext']}"
 
 		return path.join("/")
 	end
