@@ -36,6 +36,18 @@ class MusicMetadataUpdate
 	def update_metadata(file)
 		metadata = MetadataEngine.new(file)
 
+		# Special renaming case for misc files that do not need the tracklist
+		if metadata.filepath.get_type == "misc"
+			metadata.tags.artist = metadata.filepath.artist
+			metadata.tags.year   = metadata.filepath.year
+			metadata.tags.album  = metadata.filepath.album
+			metadata.tags.cd     = metadata.filepath.cd
+			metadata.tags.index  = metadata.filepath.index
+			metadata.tags.title  = metadata.filepath.title
+			metadata.tags.save
+			return
+		end
+
 		unless metadata.tracklist.has_tracklist?
 			puts "No .tracklist found, generate it first"
 			return

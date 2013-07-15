@@ -12,7 +12,7 @@ class FilepathEngine
 
 	def initialize(file)
 		@file = file
-		@data = from_basedir.merge(from_basefile)
+		@data = get_data
 	end
 	
 	# Meta-programming to read and write
@@ -35,6 +35,7 @@ class FilepathEngine
 	
 	# Get the type (music, podcast, soundtrack) based on the filepath
 	def get_type
+		return "misc" if basedir =~ /\/misc\// || basedir =~ /\/misc$/
 		return "podcasts" if basedir =~ /\/podcasts\//
 		return "soundtracks" if basedir =~ /\/soundtrack\//
 		return "music"
@@ -84,6 +85,19 @@ class FilepathEngine
 		string[0].upcase.tr("ÀÂÄÉÈËÊÎÏÖÔÛÜ", "AAAEEEEIIOOUU")
 	end
 
+	def get_data
+		default = {
+			'type' => get_type,
+			'artist' => '',
+			'year' => '',
+			'album' => '',
+			'cd' => '',
+			'index' =>'',
+			'title' => ''
+		}
+		return default.merge(from_basedir).merge(from_basefile)
+	end
+
 
 	# Get data from the file basename.
 	# > 07 - Hexagone.mp3
@@ -94,8 +108,35 @@ class FilepathEngine
 	def from_basefile
 		# Nothing if it's a directory
 		return {} if File.directory?(@file)
-		
+
+		case get_type
+		when "misc"
+			return from_basefile_misc
+		when "music"
+			return from_basefile_music
+		when "podcasts"
+			return from_basefile_podcasts
+		else
+			raise FilepathEngine::NoTypeError, "Unknown type : #{get_type}", ""
+		end
+	end
+
+	# Misc files does not have an index but contain both artist and title
+	def from_basefile_misc
 		extname = File.extname(@file)
+		basename = File.basename(@file, extname)
+		pattern = /([^-]*) - (.*)/
+		match = basename.match(pattern)
+		return {
+			'artist' => match[1],
+			'title' => match[2],
+			'ext' => extname
+		}
+	end
+
+	# Extracting information from the basefile for music files
+	def from_basefile_music
+		extname = file.extname(@file)
 		basename = File.basename(@file, extname)
 		pattern = /^([0-9\.]*) - (.*)$/
 		if match = basename.match(pattern)
@@ -113,6 +154,11 @@ class FilepathEngine
 		end
 	end
 
+	# Podcasts files uses the same format as music files
+	def from_basefile_podcasts
+		from_basefile_music
+	end
+
 
 	# Get the artist, year and album from the dir basename
 	# > /../R/Renaud/1975 - Amoureux de Paname/
@@ -128,25 +174,22 @@ class FilepathEngine
 	#   album : Best Of
 	#   cd : CD1
 	def from_basedir
-		default = {
-			'type' => get_type,
-			'artist' => '',
-			'year' => '',
-			'album' => '',
-			'cd' => ''
-		}
-
 		# Get metadata based on type of music
-		case default['type']
-		when "podcasts"
-			data = from_basedir_podcasts
+		case get_type
+		when "misc"
+			return from_basedir_misc
 		when "music"
-			data = from_basedir_music
+			return from_basedir_music
+		when "podcasts"
+			return from_basedir_podcasts
 		else
 			raise FilepathEngine::NoTypeError, "Unknown type : #{get_type}", ""
 		end
+	end
 
-		return default.merge(data)
+	# Metadata info guessed by the basedir for a misc file
+	def from_basedir_misc
+		return {}
 	end
 
 	# Extract data from filepath for music files
@@ -198,6 +241,8 @@ class FilepathEngine
 	# Generate filepath for the current file
 	def generate_filepath
 		case @data['type']
+		when "misc"
+			return generate_filepath_misc
 		when "music"
 			return generate_filepath_music
 		when "podcasts"
@@ -205,6 +250,18 @@ class FilepathEngine
 		else
 			raise FilepathEngine::NoTypeError, "Unable to generate filepath for type #{data['type']}", ""
 		end
+	end
+
+	# Generate a filepath for a misc file
+	def generate_filepath_misc
+		data = get_fat32_compliant_data
+
+		path = []
+		path << root_dir
+		path << "misc"
+		path << "#{data['artist']} - #{data['title']}#{data['ext']}"
+
+		return path.join("/")
 	end
 
 	# Generate a filepath for a music file

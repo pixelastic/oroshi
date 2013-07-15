@@ -56,6 +56,13 @@ class GenerateTracklist
 		# Skip if already has a tracklist
 		return if metadata.has_tracklist? && !@force
 
+		# Do not create a tracklist for misc/ folder, it won't work
+		if metadata.filepath.get_type == "misc"
+			puts "Do not generate a .tracklist file for misc files. It won't work."
+			puts "Just `mmu` the desired files and metadata will be extracted from the filepath"
+			return
+		end
+
 		# begin
 			File.open(metadata.tracklist.tracklist_filepath, 'w') do |tracklist|
 				tracklist.write(metadata.tracklist.generate_content)
