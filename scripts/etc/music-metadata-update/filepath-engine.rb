@@ -38,7 +38,7 @@ class FilepathEngine
 		return "misc" if basedir =~ /\/misc\// || basedir =~ /\/misc$/
 		return "nature" if basedir =~ /\/nature\//
 		return "podcasts" if basedir =~ /\/podcasts\//
-		return "soundtracks" if basedir =~ /\/soundtrack\//
+		return "soundtracks" if basedir =~ /\/soundtracks\//
 		return "music"
 	end
 
@@ -119,6 +119,8 @@ class FilepathEngine
 			return from_basefile_nature
 		when "podcasts"
 			return from_basefile_podcasts
+		when "soundtracks"
+			return from_basefile_soundtracks
 		else
 			raise FilepathEngine::NoTypeError, "Unknown type : #{get_type}", ""
 		end
@@ -165,6 +167,10 @@ class FilepathEngine
 		from_basefile_music
 	end
 
+	def from_basefile_soundtracks
+		from_basefile_music
+	end
+
 
 	# Get the artist, year and album from the dir basename
 	# > /../R/Renaud/1975 - Amoureux de Paname/
@@ -190,6 +196,8 @@ class FilepathEngine
 			return from_basedir_nature
 		when "podcasts"
 			return from_basedir_podcasts
+		when "soundtracks"
+			return from_basedir_soundtracks
 		else
 			raise FilepathEngine::NoTypeError, "Unknown type : #{get_type}", ""
 		end
@@ -255,6 +263,35 @@ class FilepathEngine
 		return data
 	end
 
+	def from_basedir_soundtracks
+		split = metadata_hierarchy.split("/")
+		data = {}
+
+		# We first check the last dir, to see if it's a CD one or not
+		if split.last =~ /^CD*/
+			data['cd'] = split.last
+			split.pop
+		end
+
+		# We then check if the last one contains a date
+		date_pattern = /^([0-9]{4}) - (.*)/
+		if split.last =~ date_pattern
+			match = split.last.match(date_pattern)
+			data['year'] = match[1]
+			data['album'] = match[2]
+			
+			# This can also be a Season soundtrack, so we need to include the name of
+			# the show in the album
+			if data['album'] =~ /^(Season|Saison)/
+				data['album'] = "#{split[-2]} - #{data['album']}"
+			end
+		else
+			data['album'] = split.last
+		end
+
+		return data
+	end
+
 	# Generate filepath for the current file
 	def generate_filepath
 		case @data['type']
@@ -266,6 +303,8 @@ class FilepathEngine
 			return generate_filepath_nature
 		when "podcasts"
 			return generate_filepath_podcasts
+		when "soundtracks"
+			return generate_filepath_soundtracks
 		else
 			raise FilepathEngine::NoTypeError, "Unable to generate filepath for type #{data['type']}", ""
 		end
@@ -326,6 +365,49 @@ class FilepathEngine
 		path <<	"#{data['index']} - #{data['title']}#{data['ext']}"
 
 		return path.join("/")
+	end
+
+	def generate_filepath_soundtracks
+		data = get_fat32_compliant_data
+		# Note: Soundtracks are harder than other music file as their filepath can
+		# contain a "saga" subfolder (like Batman or Harry Potter), or even several
+		# (like Final Fantasy, and one subfolder for each episode).
+		# To handle those files, we'll cheat and we'll only rename the basefile and
+		# one or two upper dirs, depending on the info we have, but never above.
+
+		path = []
+
+		# Easy to get the basefile
+		path << "#{data['index']} - #{data['title']}#{data['ext']}"
+		# Adding the cd if one is set
+		path.unshift(data['cd']) if data['cd'] != ''
+		# We then grab the album
+		album = data['album']
+		# The album is a season
+		if album =~ /(Season|Saison)/
+			split_album = album.split(" - ")
+			serie = split_album[0]
+			season = split_album[1..-1].join(" - ")
+			# We add the season subdir
+			path.unshift("#{data['year']} - #{season}")
+			# And the serie subdir
+			path.unshift(serie)
+		else
+			# Otherwise, we just add the album, or album with a year if one is
+			# specified
+			if data['year'] == ''
+				path.unshift(data['album'])
+			else
+				path.unshift("#{data['year']} - #{data['album']}")
+			end
+		end
+
+		# We keep the dir_root and add our prefix
+		split = @file.split("/")
+		dir_root = split[0..(-path.size-1)]
+		filepath = (dir_root + path).join("/")
+
+		return filepath
 	end
 
 	# Rename file based on metadata
