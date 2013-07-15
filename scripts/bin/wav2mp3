@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+require "shellwords"
+ARGV.each do |file|
+	file = File.expand_path(file)
+	next unless File.exists?(file)
+	extname = File.extname(file)
+	next unless extname.downcase == ".wav"
+	basename = File.basename(file, extname)
+	dirname = File.dirname(file)
+	new_file = File.join(dirname, basename + ".mp3")
+
+	%x[lame -h -b 192 #{file.shellescape} #{new_file.shellescape}]
+end
