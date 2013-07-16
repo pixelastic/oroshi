@@ -49,7 +49,8 @@ class MusicMetadataUpdate
 		end
 
 		unless metadata.tracklist.has_tracklist?
-			puts "No .tracklist found for #{file}, generate it first"
+			puts "No .tracklist found for #{file}, generating it now."
+			%x[generate-tracklist #{file.shellescape}]
 			return
 		end
 

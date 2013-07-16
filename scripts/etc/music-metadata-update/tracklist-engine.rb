@@ -57,7 +57,7 @@ class TracklistEngine
 		"%0#{[get_album_files.size.to_s.size, 2].max}d" % index.to_i
 	end
 
-	# Returns a data hash of all the values
+	# Returns a data hash of all the values read from the file
 	def get_data
 		return {} unless has_tracklist?
 		split = get_content.split("\n")
