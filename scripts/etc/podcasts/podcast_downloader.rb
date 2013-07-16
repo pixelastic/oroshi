@@ -112,6 +112,62 @@ class PodcastDownloader
 		puts "You must define a `node_to_hash` method in your child class to parse the Nokogiri nodes"
 	end
 
+	# Update the tracklist by adding a new element to it
+	def update_tracklist(filepath, index, title)
+		# Stop if no tracklist
+		dirname = File.dirname(filepath)
+		tracklist_file = File.join(dirname, ".tracklist")
+		return unless File.exists?(tracklist_file)
+
+		# Split tracklist into header and content
+		content = File.read(tracklist_file).split("\n")
+		header = []
+		tracks = []
+		blank_line_found = false
+		track_found = false
+		content.each do |line|
+			# Tracks
+			if blank_line_found == true
+				# Update the line with the new one if same index
+				track_index, = line.split(" - ")
+				if track_index == index
+					line =  "#{index} - #{title}" 
+					track_found = true
+				end
+
+				# Adding the line to the list
+				tracks << line
+				next
+			else
+				# Delimiter between header and tracks
+				if line == ''
+					blank_line_found = true
+					next
+				end
+				# Header
+				header << line
+			end
+		end
+
+		# Adding the new track to the list if not already in the list
+		tracks << "#{index} - #{title}" unless track_found == true 
+
+		# Reordering the tracks
+		tracks.sort!
+
+		# Getting the new content in the file
+		content = []
+		content += header
+		content << ""
+		content += tracks
+		File.open(tracklist_file, "w") do |file|
+			file.write(content.join("\n"))
+		end
+
+		puts ".tracklist file updated"
+
+	end
+
 
 	def run
 		# Update the list
@@ -141,6 +197,12 @@ class PodcastDownloader
 				"-O #{filepath.shellescape}"
 			]
 			%x[#{wget_options.join(' ')}]
+
+			# Update tracklist
+			update_tracklist(filepath, prefix, podcast['title'])
+
+			# Update the file
+			%x[music-metadata-update #{filepath.shellescape}]
 
 		end
 
