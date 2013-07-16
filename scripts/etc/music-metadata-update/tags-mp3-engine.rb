@@ -35,7 +35,7 @@ class TagsMp3Engine
 					'artist' => mp3info.tag.artist,
 					'year'   => mp3info.tag.year.to_s,
 					'album'  => mp3info.tag.album,
-					'cd'     => '',
+					'cd'     => mp3info.cd,
 					'index'  => mp3info.tag.tracknum.to_s,
 					'title'  => mp3info.tag.title,
 				}
@@ -69,35 +69,34 @@ class TagsMp3Engine
 
 	# Save tags back into file
 	def save
+		tag1 = {
+			'artist' => @data['artist'],
+			'year' => @data['year'],
+			'album' => @data['album'],
+			'tracknum' => @data['index'].to_i,
+			'title' => @data['title']
+		}
+		tag2 = {
+			'TPE1' => @data['artist'],
+			'TYER' => @data['year'],
+			'TALB' => @data['album'],
+			'TPOS' => @data['cd'],
+			'TRCK' => @data['index'],
+			'TIT2' => @data['title']
+		}
+
+		# Predefined genres
+		if @data['type'] == "podcasts"
+			tag1['genre'] = 101 # There is no value for podcast in id3 v1, so we use "speech" instead
+			tag2['TCON'] = "Podcast"
+		end
+		if @data['type'] == "soundtracks"
+			tag1['genre'] = 24
+			tag2['TCON'] = "Soundtrack"
+		end
+
 		puts "Rewriting id3 tags of #{File.basename(@file)}"
-
 		Mp3Info.open(@file) do |mp3info|
-			tag1 = {
-				'artist' => @data['artist'],
-				'year' => @data['year'],
-				'album' => @data['album'],
-				'tracknum' => @data['index'].to_i,
-				'title' => @data['title']
-			}
-			tag2 = {
-				'TPE1' => @data['artist'],
-				'TYER' => @data['year'],
-				'TALB' => @data['album'],
-				'TPOS' => @data['cd'],
-				'TRCK' => @data['index'],
-				'TIT2' => @data['title']
-			}
-
-			# Predefined genres
-			if @data['type'] == "podcasts"
-				tag1['genre'] = 101 # There is no value for podcast in id3 v1, so we use "speech" instead
-				tag2['TCON'] = "Podcast"
-			end
-			if @data['type'] == "soundtracks"
-				tag1['genre'] = 24
-				tag2['TCON'] = "Soundtrack"
-			end
-
 			set_tags_to_file(mp3info.tag1, tag1)
 			set_tags_to_file(mp3info.tag2, tag2)
 		end
