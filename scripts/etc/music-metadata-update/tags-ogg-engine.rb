@@ -56,7 +56,8 @@ class TagsOggEngine
 			'album' => tags['artist'] || '',
 			'cd' => tags['discnumber'] || '',
 			'index' => tags['tracknumber'] || '',
-			'title' => tags['title'] || ''
+			'title' => tags['title'] || '',
+			'genre' => tags['genre']
 		}
 	end
 

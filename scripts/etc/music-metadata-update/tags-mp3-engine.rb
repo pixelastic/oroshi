@@ -32,6 +32,7 @@ class TagsMp3Engine
 			Mp3Info.open(@file) do |mp3info|
 				@data = {
 					'type'   => '',
+					'genre'  => mp3info.tag.genre,
 					'artist' => mp3info.tag.artist,
 					'year'   => mp3info.tag.year.to_s,
 					'album'  => mp3info.tag.album,
