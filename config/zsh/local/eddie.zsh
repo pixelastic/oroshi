@@ -22,9 +22,9 @@ alias cdperso="cd ~/local/mnt/perso/"
 
 # Synchronize stuff {{{
 # Import pictures from camera
-alias michel-extract='camera-extract /media/MICHEL/DCIM'
+alias michel-extract='camera-extract /media/MICHEL/'
 # Import pictures from Galaxy
-alias galaxy-extract='camera-extract /media/F101-14E2/DCIM/'
+alias galaxy-extract='camera-extract /media/F101-14E2/'
 # Synchronize dingoo
 alias ds='~/Documents/emulation/devices/dingoo/tools/dingoo-sync /media/dingoo'
 # Synchronize ebooks
