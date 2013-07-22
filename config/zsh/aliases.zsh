@@ -105,9 +105,10 @@ alias disk-utility='gui palimpsest'
 alias ebook-viewer='gui ebook-viewer'
 alias eog='gui eog'
 alias evince="gui evince"
-alias lowriter='gui lowriter'
-alias vlc='gui vlc'
 alias gftp='gui gftp'
+alias lowriter='gui lowriter'
+alias poedit='gui poedit'
+alias vlc='gui vlc'
 # }}}
 
 # Apt-get {{{
