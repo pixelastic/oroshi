@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require_relative '../etc/music-sync/mark-for-sync'
+MarkForSync.new(*ARGV).run()
+
