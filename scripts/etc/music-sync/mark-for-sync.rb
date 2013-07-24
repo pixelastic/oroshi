@@ -1,5 +1,8 @@
 # encoding : utf-8
 # Will mark every specified directory for synchronization with specified target
+# This will add the codename of the target in a .syncinfo file in the directory
+# Usage :
+#  $ mark-for-sync ./dir1 [./dir2] sansa
 require_relative "syncinfo"
 
 class MarkForSync
@@ -13,12 +16,16 @@ class MarkForSync
 	# Make sure every arg is correct
 	def parse_args(*args)
 		# At least directory and target
-		if args.size < 2
-			raise SynclistAdd::ArgumentError, "You need at least of target directory and a target", ""
+		if args.size == 0
+			raise MarkForSync::ArgumentError, "You need at least a target", ""
+		end
+		# Current dir is default dir
+		if args.size == 1
+			args.unshift('.')
 		end
 		# Last argument must be a target (ie. a custom name, not a filepath)
 		if File.exists?(args[-1])
-			raise SynclistAdd::ArgumentError, "Last argument must be a target (ie. jukebox, sansa, etc)", ""
+			raise MarkForSync::ArgumentError, "Last argument must be a target (ie. jukebox, sansa, etc)", ""
 		end
 		@target = args[-1]
 
@@ -32,6 +39,7 @@ class MarkForSync
 		end
 	end
 
+	# Will mark all specified directories for synchronization
 	def run
 		@directories.each do |dir|
 			Syncinfo.new(dir).add_target(@target)

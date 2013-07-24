@@ -31,6 +31,14 @@ alias ds='~/Documents/emulation/devices/dingoo/tools/dingoo-sync /media/dingoo'
 alias es='ebook-sync ~/Documents/books /media/galaxy/books'
 # Synchronize pictures on belette
 alias photos-sync='photos-sync ~/Documents/Photos/ /media/BELETTE/Photos/Voyage/'
+# Mark a music dir for synchronization
+alias mfs="mark-for-sync"
+# Synchronize jukebox to sansa-sd
+alias sansa-sync-music="music-sync /media/jukebox/music sansa-sd"
+alias sansa-sync-misc="music-sync /media/jukebox/misc sansa"
+alias sansa-sync-nature="music-sync /media/jukebox/nature sansa"
+alias sansa-sync-podcasts="music-sync /media/jukebox/podcasts sansa"
+alias sansa-sync-soundtracks="music-sync /media/jukebox/music sansa-sd"
 # }}}
 
 # Games {{{
