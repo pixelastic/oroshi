@@ -1,7 +1,7 @@
 " MARKDOWN
 " Add headers with ,(1|2|3|4|5)
-nnoremap <buffer> <leader>& yypVr=j
-nnoremap <buffer> <leader>é yypVr-j
+nnoremap <buffer> <leader>& "xyy"xpVr=j
+nnoremap <buffer> <leader>é "xyy"xpVr-j
 nnoremap <buffer> <leader>" I### <Esc>j
 nnoremap <buffer> <leader>' I#### <Esc>j
 nnoremap <buffer> <leader>( I##### <Esc>j
