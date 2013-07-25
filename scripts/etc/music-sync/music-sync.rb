@@ -67,9 +67,14 @@ class MusicSync
 		raise MusicSync::NoMusicRoot, "Unable to find music root for #{@library_path}", ""
 	end
 
-	# Synchronize files with the internal sansa SD card
+	# Synchronize files with the sansa SD card
 	def synchronize_sansa_sd(dir)
 		synchronize_dir(dir, File.join("/media/SANSA-SD", dir.gsub(/^#{get_library_root}/, '')))
+	end
+
+	# Synchronize files with the sansa internal memory
+	def synchronize_sansa(dir)
+		synchronize_dir(dir, File.join("/media/0123-4567/MUSIC", dir.gsub(/^#{get_library_root}/, '')))
 	end
 
 	# Synchronize two dirs, copying files from source to destination

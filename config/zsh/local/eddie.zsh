@@ -33,12 +33,14 @@ alias es='ebook-sync ~/Documents/books /media/galaxy/books'
 alias photos-sync='photos-sync ~/Documents/Photos/ /media/BELETTE/Photos/Voyage/'
 # Mark a music dir for synchronization
 alias mfs="mark-for-sync"
+function mfs-sansa() { mark-for-sync $* sansa }
+function mfs-sansa-sd() { mark-for-sync $* sansa-sd }
 # Synchronize jukebox to sansa-sd
 alias sansa-sync-music="music-sync /media/jukebox/music sansa-sd"
 alias sansa-sync-misc="music-sync /media/jukebox/misc sansa"
 alias sansa-sync-nature="music-sync /media/jukebox/nature sansa"
 alias sansa-sync-podcasts="music-sync /media/jukebox/podcasts sansa"
-alias sansa-sync-soundtracks="music-sync /media/jukebox/music sansa-sd"
+alias sansa-sync-soundtracks="music-sync /media/jukebox/soundtracks sansa-sd"
 # }}}
 
 # Games {{{
