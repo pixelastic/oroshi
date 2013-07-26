@@ -56,6 +56,8 @@ class MusicMetadataUpdate
 
 		# Update tags to reflect what's in the tracklist
 		metadata.tags.artist = metadata.tracklist.artist
+		# We mark the artists as the album for soundtracks
+		metadata.tags.artist = metadata.tracklist.album if metadata.tracklist.type == "soundtracks"
 		metadata.tags.year   = metadata.tracklist.year
 		metadata.tags.album  = metadata.tracklist.album
 		metadata.tags.cd     = metadata.tracklist.cd
