@@ -51,6 +51,7 @@ class TagsOggEngine
 	def read_common_tags
 		tags = get_all_tags
 		@data = {
+			'type' => '',
 			'artist' => tags['artist'] || '',
 			'year' => tags['date'] || '',
 			'album' => tags['artist'] || '',
