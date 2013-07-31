@@ -56,14 +56,16 @@ class FilepathEngine
 
 	# Returns the root dir, the place where the file is saved, without all the 
 	# metadata hierarchy
+	# eg. "/media/0123-4567/MUSIC/"
 	def root_dir
-		split = @file.split("/")
+		split = basedir.split("/")
 		return split[0..(split.index(get_type)-1)].join("/")
 	end
 
 	# Returns the metadata hierarchy of a filepath
+	# eg. "/soundtracks/C/Conan/"
 	def metadata_hierarchy
-		split = @file.split("/")
+		split = basedir.split("/")
 		return split[split.index(get_type)..-1].join("/")
 	end
 
@@ -268,7 +270,7 @@ class FilepathEngine
 		data = {}
 
 		# We first check the last dir, to see if it's a CD one or not
-		if split.last =~ /^CD*/
+		if split.last =~ /^CD.*/
 			data['cd'] = split.last
 			split.pop
 		end
@@ -288,6 +290,9 @@ class FilepathEngine
 		else
 			data['album'] = split.last
 		end
+
+		# Artist is the same as the album for soundtracks
+		data['artist'] = data['album']
 
 		return data
 	end
@@ -360,8 +365,12 @@ class FilepathEngine
 		path << "podcasts"
 		path << artist_first_letter(data['artist'])
 		path << data['artist']
-		# Album if album specified
-		path << data['album'] if data['album'] != ''
+		# For podcasts, we sometimes use the year as the album, or a named
+		# directory, or if none is found, we use the artist. So, if the album is
+		# the same as the artist, we need not write it in the filepath.
+		if data['album'] != "" && data['album'] != data['artist']
+			path << data['album']
+		end
 		path <<	"#{data['index']} - #{data['title']}#{data['ext']}"
 
 		return path.join("/")
