@@ -51,7 +51,7 @@ class MusicMetadataUpdate
 		unless metadata.tracklist.has_tracklist?
 			puts "No .tracklist found for #{file}, generating it now."
 			%x[generate-tracklist #{file.shellescape}]
-			return
+			metadata = MetadataEngine.new(file)
 		end
 
 		# Update tags to reflect what's in the tracklist
