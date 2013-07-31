@@ -72,9 +72,9 @@ alias sl="ls"
 alias mc="mv"
 # }}}
 # Misc {{{
-# cp and mv using rsync and preserving attributes
-alias rcp='rsync -rahP'
-alias rmv='rsync -rahP --remove-sent-files'
+# cp and mv using rsync and preserving attributes, and accross fat32 drives
+alias rcp='rsync -rahP --modify-window=1'
+alias rmv='rsync -rahP --modify-window=1 --remove-sent-files'
 # Scrollable colors
 alias spectrum='spectrum L'
 # ls with hidden files
