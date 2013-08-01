@@ -32,6 +32,10 @@ class MusicMetadataUpdate
 		end
 	end
 
+	def apply_replaygain(file)
+		puts %x[replaygain #{file.shellescape}]
+	end
+
 	# Update id3 and filepath metadata based on tracklist info
 	def update_metadata(file)
 		metadata = MetadataEngine.new(file)
@@ -77,6 +81,7 @@ class MusicMetadataUpdate
 	def run
 		@files.each do |file|
 			update_metadata(file)
+			apply_replaygain(file)
 		end
 
 	end
