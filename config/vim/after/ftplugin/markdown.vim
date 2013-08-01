@@ -1,7 +1,7 @@
 " MARKDOWN
 " Add headers with ,(1|2|3|4|5)
-nnoremap <buffer> <leader>& yypVr=j
-nnoremap <buffer> <leader>é yypVr-j
+nnoremap <buffer> <leader>& "xyy"xpVr=j
+nnoremap <buffer> <leader>é "xyy"xpVr-j
 nnoremap <buffer> <leader>" I### <Esc>j
 nnoremap <buffer> <leader>' I#### <Esc>j
 nnoremap <buffer> <leader>( I##### <Esc>j
@@ -14,6 +14,9 @@ vnoremap <buffer> <leader>i <Esc>mzg`>a_<Esc>g`<i_<Esc>`zl
 " **Bold**
 nnoremap <buffer> <leader>b viw<Esc>g`>a**<Esc>g`<i**<Esc>
 vnoremap <buffer> <leader>b <Esc>mzg`>a**<Esc>g`<i**<Esc>`zl
+
+" Auto-wrap text
+setlocal formatoptions+=t
 
 " Run file
 function! b:RunFile()

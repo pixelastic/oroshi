@@ -13,15 +13,15 @@ alias vbm='git merge --no-ff'
 alias vbmv='git branch -m'
 alias vbRr='git push origin --delete' # Remove remote branch
 alias vbs='git checkout'
-alias vbsm='git checkout master'
-alias vbsd='git checkout develop'
-alias vbum='vbsm && vbm develop && vbsd' # Merge develop to master (Update master)
+alias vbsm='cd $(git root) && git checkout master && updatePromptGit'
+alias vbsd='cd $(git root) && git checkout develop && updatePromptGit'
+alias vbum='vbsm && vbm develop && vbsd && updatePromptGit' # Merge develop to master (Update master)
 alias vbuf='git update-feature'
 # }}}
 # [c]ommits {{{
 alias vcc='git commit -v'
 alias vcca='git commit-all'
-alias vcd='git diff'
+alias vcd='git diff-last --'
 alias vce='git amend'
 alias vcl='git peek'
 alias vcla='git peek -p'
@@ -32,11 +32,12 @@ alias vfR='git rm -r'
 alias vfa='git add'
 alias vfaa='git add --all'
 alias vfc='git create-file'
-alias vfd='git diff-last -- '
+alias vfd='git diff'
 alias vfds='git diff-staged --'
 alias vfm='git mv'
 alias vfr='git checkout --'
 alias vfu='git unstage'
+alias vfua='git reset'
 # }}}
 # [f]low {{{
 alias vfi='git flow init -d'

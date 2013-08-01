@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require_relative '../etc/music-sync/music-sync/'
+MusicSync.new(*ARGV).run()
+

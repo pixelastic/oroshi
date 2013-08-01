@@ -10,6 +10,14 @@
 nnoremap <silent> vfa :Gwrite<CR>:call GitUpdateStatusLine()<CR>
 " Remove current file from index
 nnoremap <silent> vfu :Git unstage %<CR><CR>:call GitUpdateStatusLine()<CR>
+" Revert file to previous commited version
+nnoremap <silent> vfr :Gread<CR>:call GitUpdateStatusLine()<CR>
+" Delete current file
+nnoremap <silent> vfR :Gremove<CR>
+" Move current file to a new location
+nnoremap <silent> vfm :Gmove 
+" Split window for blame
+nnoremap <silent> vfb :Gblame<CR>
 " }}}
 " [c]ommits {{{
 " Commit

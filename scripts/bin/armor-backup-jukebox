@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+
+rsync \
+	--verbose \
+	--archive \
+	--recursive \
+	--modify-window=1 \
+	--filter='-s ajbrec.ajz' \
+	--filter='-s .rockbox/' \
+	--filter='-s .Trash-1000' \
+	/media/jukebox/ \
+	/media/armor/music/

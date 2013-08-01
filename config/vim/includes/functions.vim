@@ -205,22 +205,22 @@ function! FixEpub() " {{{
 	
 	normal mz
 	" Dialogs should use the em dash (–) and not the simple dash (-)
-	silent! %s/\v^-/–/
+	silent! %s/\v^-/–/e
 	" Use common guillemets
-	silent! %s/“/"/
-	silent! %s/”/"/
+	silent! %s/“/"/e
+	silent! %s/”/"/e
 	" Same goes for apostrophes
-	silent! %s/’/'/
-	silent! %s/‘/'/
+	silent! %s/’/'/e
+	silent! %s/‘/'/e
 	" Remove space before three dots
-	silent! %s/ …/…/
+	silent! %s/ …/…/e
 	
 	" [...] MOON.GLORIOUS moon,the night [...]
-	silent! %s/\v(\.|,)([^ "])/\1 \2/
+	silent! %s/\v(\.|,)([^ "])/\1 \2/e
 	" [...] Orphanage inHomestead, [...]
-	silent! %s/\v(\l)(\u)/\1 \2/
+	silent! %s/\v(\l)(\u)/\1 \2/e
 	" [...] WOULD NOThave been [...]
-	silent! %s/\v(\u{2})(\l)/\1 \2/
+	silent! %s/\v(\u{2})(\l)/\1 \2/e
 	" I T IS ALWAYS A BAD IDEA [...]
 	" silent! %s/\v^(\u) (\u)/\1\2/
 	
@@ -228,24 +228,24 @@ function! FixEpub() " {{{
 	" — Ce Rochefort, [...]
 	" 
 	" Chalais, passerait avec moi un vilain moment.
-	silent! %s/\v^— ((.*)[^\.!\?])\n\n([^—](.*))$/— \1 \3/
+	silent! %s/\v^— ((.*)[^\.!\?])\n\n([^—](.*))$/— \1 \3/e
 	" — Ce Rochefort, [...]
 	" 
 	" 
 	" 
 	" — Et vous, [...]
-	silent!	%s/\v^(— (.*))\n{3,}(— (.*))/\1\r\r\3/
-	silent!	%s/\v^(— (.*))\n{3,}(— (.*))/\1\r\r\3/
+	silent!	%s/\v^(— (.*))\n{3,}(— (.*))/\1\r\r\3/e
+	silent!	%s/\v^(— (.*))\n{3,}(— (.*))/\1\r\r\3/e
 
 	
 	
 	" sentence cut in half with new lines
-	silent! %s/\v(\l)(\n)+(\l)/\1 \3/
+	silent! %s/\v(\l)(\n)+(\l)/\1 \3/e
 	
 	" Punctuation signs lost on new lines
-	silent! %s/\v\n\n(\?|!|;|»)/ \1/
+	silent! %s/\v\n\n(\?|!|;|»)/ \1/e
 	" French guillemets breaking sentences in new lines
-	silent! %s/\v»\n\n(\U)/" \1/
+	silent! %s/\v»\n\n(\U)/" \1/e
 	
 
 	" Setting the first line as the main title
@@ -253,7 +253,7 @@ function! FixEpub() " {{{
 		execute 'normal ggI# '
 	endif
 	" Marking each heading as a chapter
-	silent! %s/\v^([^#]{2}\L+)$/## \1/
+	silent! %s/\v^([^#]{2}\L+)$/## \1/e
 	
 
 

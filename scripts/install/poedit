@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+
+echo "Downloading poedit"
+sudo apt-get install poedit

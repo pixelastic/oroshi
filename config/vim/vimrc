@@ -182,13 +182,14 @@ let &showbreak='↪ '
 set linebreak
 set colorcolumn=80
 set textwidth=79
-" c : Comments are automatically wrapped based on textwidth
-" r : New line in comment is a comment
-" q : Comments can be re-wrapped using gq
+" Create two format modes, for code and for text
+" c : Comments are wrapped based on textwidth
+" r : New line in comment is a comment when pressing <Enter>
+" o : New line in comment is a comment when pressing o or O
 " n : Handles list while formatting
+" q : Comments can be re-wrapped using gq
 " 1 : Do not end lines with one-char words
-" l : Do not wrap lines that are already too long when insert mode starts
-set formatoptions=crqn1l
+set formatoptions=cronq1
 " We make sure that backspace in insert mode can delete new lines and tabs
 set backspace=indent,eol,start
 " Aligning with > and < in visual mode keep the selection

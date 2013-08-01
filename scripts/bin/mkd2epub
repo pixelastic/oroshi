@@ -52,4 +52,7 @@ ARGV.each do |file|
 
 	# Removing the now useless txt file
 	File.delete(txtFile)
+
+	# Updating metadata
+	%x[ebook-metadata-update #{epubFile.shellescape}]
 end

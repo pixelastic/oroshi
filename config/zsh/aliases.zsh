@@ -72,9 +72,9 @@ alias sl="ls"
 alias mc="mv"
 # }}}
 # Misc {{{
-# cp and mv using rsync and preserving attributes
-alias rcp='rsync -ahP'
-alias rmv='rsync -ahP --remove-sent-files'
+# cp and mv using rsync and preserving attributes, and accross fat32 drives
+alias rcp='rsync -rahP --modify-window=1'
+alias rmv='rsync -rahP --modify-window=1 --remove-sent-files'
 # Scrollable colors
 alias spectrum='spectrum L'
 # ls with hidden files
@@ -96,6 +96,8 @@ cd ~/local/mnt/sd$1
 }
 # plowdown
 alias pd='plowdown'
+# Youtube downloader
+alias yt='youtube-download -t --prefer-free-format'
 # watch tree
 alias wt='watch -c ''tree -aNC -I ".hg\|.git"'''
 # }}}
@@ -105,9 +107,10 @@ alias disk-utility='gui palimpsest'
 alias ebook-viewer='gui ebook-viewer'
 alias eog='gui eog'
 alias evince="gui evince"
-alias lowriter='gui lowriter'
-alias vlc='gui vlc'
 alias gftp='gui gftp'
+alias lowriter='gui lowriter'
+alias poedit='gui poedit'
+alias vlc='gui vlc'
 # }}}
 
 # Apt-get {{{
@@ -143,6 +146,11 @@ alias cdw='cd ~/local/var/www/'
 # Dingoo {{{
 alias udingoo='umount /media/dingoo'
 alias cdingoo='cd /media/dingoo'
+# }}}
+# Music {{{
+alias mmu='music-metadata-update'
+alias mktl='generate-tracklist'
+alias rg='replaygain'
 # }}}
 # Nginx {{{
 alias ngsta='sudo /etc/init.d/nginx start'

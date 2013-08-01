@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+# encoding : UTF-8
+require "mp3info"
+# Will output id3 tags
+
+class Id3
+	
+	def initialize(*args)
+		@files = []
+		args.each do |arg|
+			file = File.expand_path(arg)
+			next unless File.exists?(file)
+			extname = File.extname(file).downcase
+			next unless extname==".mp3"
+
+			@files << file
+		end
+	end
+
+	def run
+		@files.each do |file|
+			puts "==== #{file} ===="
+			Mp3Info.open(file) do |mp3info|
+				# id3v1
+				puts "# v1"
+				mp3info.tag1.each do |tag, value|
+					puts "#{tag} : #{value}"
+				end
+				
+				# id3v2
+				puts "# v2"
+				mp3info.tag2.each do |tag, value|
+					puts "#{tag} : #{value}" if value.is_a?(String)
+					if value.is_a?(Array)
+						puts "#{tag} :"
+						value.each do |line|
+							puts "    #{line}"
+						end
+					end
+				end
+
+			end
+		end
+	end
+
+end
+
+
+Id3.new(*ARGV).run()

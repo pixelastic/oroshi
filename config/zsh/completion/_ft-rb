@@ -1,0 +1,24 @@
+#compdef ruby
+# - Will only suggest .ruby files
+
+_ft-rb () {
+	# local var definition to not pollute global scope
+	local curcontext=$curcontext state line context
+	typeset -A opt_args
+
+	# suggesting arguments
+	_arguments \
+		"*:ruby file:->rb_file" \
+		&& return 0
+
+	# state machine match
+	case $state in
+		(rb_file)
+			_files -g '*.rb' \
+			&& return 0
+	esac
+
+	return 1
+}
+
+_ft-rb "$@"

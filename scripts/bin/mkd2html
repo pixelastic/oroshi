@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+require "shellwords"
+
+class Mkd2Html
+	
+	# Keeping only mkd files
+	def initialize(*args)
+		@files = []
+		args.each do |file|
+			next unless File.exists?(file)
+			extname = File.extname(file).downcase
+			next unless extname==".mkd"
+			@files << File.expand_path(file)
+		end
+	end
+
+	# Converting files to html
+	def run
+		@files.each do |file|
+			extname = File.extname(file)
+			basename = File.basename(file, extname)
+			dirname = File.dirname(file)
+			new_path = File.join(dirname, basename + ".html")
+			
+			puts "Converting to #{File.basename(new_path)}"
+			%x[markdown #{file.shellescape} > #{new_path.shellescape}]
+
+		end
+
+	end
+end
+
+Mkd2Html.new(*ARGV).run()

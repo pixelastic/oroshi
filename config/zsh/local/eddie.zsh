@@ -22,19 +22,30 @@ alias cdperso="cd ~/local/mnt/perso/"
 
 # Synchronize stuff {{{
 # Import pictures from camera
-alias michel-extract='camera-extract /media/MICHEL/DCIM'
+alias michel-extract='camera-extract /media/MICHEL/'
 # Import pictures from Galaxy
-alias galaxy-extract='camera-extract /media/F101-14E2/DCIM/'
+alias galaxy-extract='camera-extract /media/F101-14E2/'
 # Synchronize dingoo
 alias ds='~/Documents/emulation/devices/dingoo/tools/dingoo-sync /media/dingoo'
 # Synchronize ebooks
 alias es='ebook-sync ~/Documents/books /media/galaxy/books'
 # Synchronize pictures on belette
 alias photos-sync='photos-sync ~/Documents/Photos/ /media/BELETTE/Photos/Voyage/'
+# Mark a music dir for synchronization
+alias mfs="mark-for-sync"
+function mfs-sansa() { mark-for-sync $* sansa }
+function mfs-sansa-sd() { mark-for-sync $* sansa-sd }
+# Synchronize jukebox to sansa-sd
+alias sansa-sync-music="music-sync /media/jukebox/music sansa-sd"
+alias sansa-sync-misc="music-sync /media/jukebox/misc sansa"
+alias sansa-sync-nature="music-sync /media/jukebox/nature sansa"
+alias sansa-sync-podcasts="music-sync /media/jukebox/podcasts sansa"
+alias sansa-sync-soundtracks="music-sync /media/jukebox/soundtracks sansa-sd"
 # }}}
 
 # Games {{{
 alias gta='cd ~/local/etc/gta/WINO/ && wine ./Grand\ Theft\ Auto.exe'
+alias diablo='cd ~/local/etc/diablorl/ && ./rl'
 # }}}
 # Downloading a website in ~/local/tmp/websites
 alias mslurp="cd ~/local/tmp/websites && slurp"

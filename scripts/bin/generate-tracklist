@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require_relative '../etc/music-metadata-update/generate-tracklist'
+GenerateTracklist.new(*ARGV).run()
+

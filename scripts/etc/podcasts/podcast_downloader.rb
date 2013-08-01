@@ -90,9 +90,82 @@ class PodcastDownloader
 		return list
 	end
 
+	# FAT32 has a list of illegal characters, we strip those from the
+	# filepath because music-metadata-update will strip them anyway.
+	def make_fat32_compliant(filepath)
+		extname = File.extname(filepath)
+		basename = File.basename(filepath, extname)
+		dirname = File.dirname(filepath)
+		path_without_ext = File.join(dirname, basename)
+
+		split = path_without_ext.split("/")
+		new_split = []
+		split.map do |part|
+			new_split << part.gsub(/([\?\*\|:;"<>])/, "").strip.gsub(/ {2,}/," ").gsub('’', "'")
+		end
+		return new_split.join("/")+extname
+	end
+
+
 	# Must be overriden in child classes to transforme a node to a hash
 	def node_to_hash(node)
 		puts "You must define a `node_to_hash` method in your child class to parse the Nokogiri nodes"
+	end
+
+	# Update the tracklist by adding a new element to it
+	def update_tracklist(filepath, index, title)
+		# Stop if no tracklist
+		dirname = File.dirname(filepath)
+		tracklist_file = File.join(dirname, ".tracklist")
+		return unless File.exists?(tracklist_file)
+
+		# Split tracklist into header and content
+		content = File.read(tracklist_file).split("\n")
+		header = []
+		tracks = []
+		blank_line_found = false
+		track_found = false
+		content.each do |line|
+			# Tracks
+			if blank_line_found == true
+				# Update the line with the new one if same index
+				track_index, = line.split(" - ")
+				if track_index == index
+					line =  "#{index} - #{title}" 
+					track_found = true
+				end
+
+				# Adding the line to the list
+				tracks << line
+				next
+			else
+				# Delimiter between header and tracks
+				if line == ''
+					blank_line_found = true
+					next
+				end
+				# Header
+				header << line
+			end
+		end
+
+		# Adding the new track to the list if not already in the list
+		tracks << "#{index} - #{title}" unless track_found == true 
+
+		# Reordering the tracks
+		tracks.sort!
+
+		# Getting the new content in the file
+		content = []
+		content += header
+		content << ""
+		content += tracks
+		File.open(tracklist_file, "w") do |file|
+			file.write(content.join("\n"))
+		end
+
+		puts ".tracklist file updated"
+
 	end
 
 
@@ -106,9 +179,9 @@ class PodcastDownloader
 			year_dir = File.join(@podcasts_dir, podcast['year'])
 			FileUtils.mkdir_p(year_dir)
 
-			prefix = "%03d" % podcast['index']
+			prefix = "%02d" % podcast['index']
 			basename = "#{prefix} - #{podcast['title']}.mp3"
-			filepath = File.join(year_dir, basename)
+			filepath = make_fat32_compliant(File.join(year_dir, basename))
 
 			next if File.exists?(filepath)
 
@@ -124,6 +197,12 @@ class PodcastDownloader
 				"-O #{filepath.shellescape}"
 			]
 			%x[#{wget_options.join(' ')}]
+
+			# Update tracklist
+			update_tracklist(filepath, prefix, podcast['title'])
+
+			# Update the file
+			puts %x[music-metadata-update #{filepath.shellescape}]
 
 		end
 
