@@ -71,7 +71,13 @@ class FilepathEngine
 
 	# FAT32 has a list of illegal characters, we strip those
 	def make_fat32_compliant(value)
-		value.to_s.gsub(/([\?\/\*\|:;"<>])/, "").strip.gsub(/ {2,}/," ").gsub('’', "'")
+		# Remove characters not allowed in fat32
+		value = value.to_s.gsub(/([\?\/\*\|:;"”“<>])/, "").strip
+		# Double spaces
+		value = value.gsub(/ {2,}/," ")
+		# Bad quotes
+		value = value.gsub('’', "'")
+		return value
 	end
 
 	# Returns the data hash in a fat32 compliant way
@@ -430,7 +436,7 @@ class FilepathEngine
 				puts "WARNING: Can't rename #{file}, destination already exists!"
 				return
 			end
-			puts "Renamed to #{metadata_hierarchy}"
+			puts "Renamed to #{metadata_hierarchy}/#{File.basename(@file)}"
 			FileUtils.mkdir_p(File.dirname(@file))
 			FileUtils.mv(old_file, @file) 
 		end

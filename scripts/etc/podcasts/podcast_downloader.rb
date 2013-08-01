@@ -202,7 +202,7 @@ class PodcastDownloader
 			update_tracklist(filepath, prefix, podcast['title'])
 
 			# Update the file
-			%x[music-metadata-update #{filepath.shellescape}]
+			puts %x[music-metadata-update #{filepath.shellescape}]
 
 		end
 
