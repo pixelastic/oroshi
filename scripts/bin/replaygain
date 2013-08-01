@@ -1,0 +1,170 @@
+#!/usr/bin/env ruby
+# encoding : utf-8
+require "shellwords"
+require "mp3info"
+# Will apply, delete or read replaygain value from mp3 or ogg files.
+# Usage :
+#  $ replaygain file.mp3
+#    > Write replaygain data to file
+#  $ replaygain -f file.mp3
+#    > Write replaygain data to file, even if one was present
+#  $ replaygain -d file.mp3
+#    > Removes replaygain information from file
+#
+# Note : mp3gain is buggy and will make id3v2 tags unreadable by ruby-mp3info.
+# We will only use it to calculate the correct values and defer to eyed3 for
+# writing them (ruby-mp3info does not allow writing to the TXXX fields)
+
+class ReplayGain
+
+	def initialize(*args)
+		parse_args(*args)
+	end
+
+	def parse_args(*args)
+		@files = []
+		@mode = 'default'
+		@force = false
+		# Keep only allowed files and check for flags
+		args.each do |arg|
+			# Mode
+			case arg
+			when "-d"
+				@mode = "delete"
+				next
+			when "-f"
+				@force = true
+				next
+			end
+
+			arg = File.expand_path(arg)
+			next unless File.exists?(arg)
+			next unless mp3?(arg) || ogg?(arg)
+
+			@files << arg
+		end
+	end
+
+	# Is file an mp3 ?
+	def mp3?(file)
+		return File.extname(file).downcase=='.mp3'
+	end
+
+	# Is file an ogg ?
+	def ogg?(file)
+		return File.extname(file).downcase=='.ogg'
+	end
+
+	# Estimate the various replaygain values
+	def calculate_data(file)
+		output = %x[mp3gain -s s #{file.shellescape}].split("\n")
+
+		# Parse output in a key/value hash
+		raw = {}
+		output.each do |line|
+			next if line =~ /^WARNING/
+			next if line ==""
+			next unless line[':']
+			key, value = line.split(": ")
+			raw[key] = value
+		end
+
+		track_gain = raw['Recommended "Track" dB change'].to_f.round(2)
+		track_peak = (raw['Max PCM sample at current gain'].to_f / 32768).round(6)
+
+		return {
+			'track_gain' => "#{track_gain} dB",
+			'track_peak' => "#{track_peak}",
+			'album_gain' => "0.00 dB",
+			'album_peak' => "0"
+		}
+	end
+
+	# Check if file as replaygain tags
+	def has_replaygain_mp3?(file)
+		mp3info = Mp3Info.open(file)
+		return false unless mp3info.tag2.TXXX
+		mp3info.tag2.TXXX.each do |x|
+			return true if x =~ /^replaygain_/
+		end
+		return false
+	end
+
+	# Return true if the specified txxx tag is a replaygain one
+	def replaygain_txxx?(tag)
+		tag.downcase =~ /^replaygain_/
+	end
+
+
+	# Delegate run to the correct mode
+	def run
+		case @mode
+		when "delete"
+			run_delete
+		else
+			run_write
+		end
+	end
+
+	# Apply replaygain
+	def run_write
+		@files.each do |file|
+			puts "Write ReplayGain for #{File.basename(file)} :"
+			run_write_mp3(file) if mp3?(file)
+			run_write_ogg(file) if ogg?(file)
+		end
+	end
+
+	# Write replaygain to mp3 if none found
+	def run_write_mp3(file)
+		# Replaygain data already exists, we keep it
+		if has_replaygain_mp3?(file) && !@force
+			puts "already set"
+			return
+		end
+
+		# Getting data from statistical analysis
+		data = calculate_data(file)
+
+		options = [
+			"--no-color",
+			"--v2",
+			"--set-user-text-frame='replaygain_track_gain:#{data['track_gain']}'",
+			"--set-user-text-frame='replaygain_track_peak:#{data['track_peak']}'",
+			"--set-user-text-frame='replaygain_album_gain:#{data['album_gain']}'",
+			"--set-user-text-frame='replaygain_album_peak:#{data['album_peak']}'",
+			file.shellescape
+		]
+		%x[eyeD3 #{options.join(' ')} > /dev/null]
+
+		Mp3Info.open(file) do |mp3info|
+			# Cleaning the TDTG tag that eyeD3 adds
+			mp3info.tag2.TDTG = ""
+		end
+		# Mp3Info.open(file) do |mp3info|
+		# 	p mp3info.tag2
+		# end
+	end
+	
+	# Delete replaygain values
+	def run_delete
+		@files.each do |file|
+			puts "Delete ReplayGain for #{File.basename(file)} :"
+			run_delete_mp3(file) if mp3?(file)
+			run_delete_ogg(file) if ogg?(file)
+		end
+	end
+
+	# Delete replaygain from mp3
+	def run_delete_mp3(file)
+		# We'll simply erase the whole TXXX part
+		 Mp3Info.open(file) do |mp3info|
+			 mp3info.tag2.TXXX = nil
+		 end
+	end
+
+
+
+end
+
+ReplayGain.new(*ARGV).run()
