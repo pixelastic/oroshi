@@ -56,16 +56,30 @@ class TagsMp3Engine
 		end
 	end
 
+	# Returns a TXXX array with only keys we want to keep
+	def get_curated_txxx(mp3tags)
+		return false unless mp3tags.TXXX
+		# Keeping only replaygain_ values
+		mp3tags.TXXX.select() { |tag| tag =~ /^replaygain_/ }
+	end
+
 	# Update an mp3info.tag list to values passed in a hash
 	def set_tags_to_file(mp3tags, hash)
+		# We get the TXXX key that we need to keep (it contains replaygain values)
+		txxx = get_curated_txxx(mp3tags)
+		
 		# Delete all tags that are not in the hash
 		mp3tags.each do |tag, value|
 			mp3tags[tag] = nil unless hash.has_key?(tag)
 		end
+
 		# Add every other key of hash that is not in the tag list
 		hash.each do |key, value|
 			mp3tags[key] = value
 		end
+
+		# We re-add the curated TXXX key if one is set
+		mp3tags["TXXX"] = txxx if txxx
 	end
 
 	# Save tags back into file
