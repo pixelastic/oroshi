@@ -1,8 +1,19 @@
 #!/usr/bin/env bash
-sudo apt-get install lame
-
+# Music Swiss Army Knife for encoding various formats
 sudo apt-get install sox
 sudo apt-get install libsox-fmt-mp3
 
+# Encode to mp3
+sudo apt-get install lame
+# Write replaygain tags to mp3
+sudo apt-get install mp3gain
+
+# Read/Write flac
 sudo apt-get install flac
+
+# Read/write ogg
+sudo apt-get install vorbis-tools
+# Write replaygain tags to ogg
+sudo apt-get install vorbisgain
+
 
