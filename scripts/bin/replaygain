@@ -109,7 +109,6 @@ class ReplayGain
 	# Apply replaygain
 	def run_write
 		@files.each do |file|
-			puts "Write ReplayGain for #{File.basename(file)} :"
 			run_write_mp3(file) if mp3?(file)
 			run_write_ogg(file) if ogg?(file)
 		end
@@ -119,7 +118,7 @@ class ReplayGain
 	def run_write_mp3(file)
 		# Replaygain data already exists, we keep it
 		if has_replaygain_mp3?(file) && !@force
-			puts "already set"
+			puts "ReplayGain already set"
 			return
 		end
 
