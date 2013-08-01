@@ -150,6 +150,7 @@ alias cdingoo='cd /media/dingoo'
 # Music {{{
 alias mmu='music-metadata-update'
 alias mktl='generate-tracklist'
+alias rg='replaygain'
 # }}}
 # Nginx {{{
 alias ngsta='sudo /etc/init.d/nginx start'
