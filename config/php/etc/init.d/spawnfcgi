@@ -1,0 +1,50 @@
+#!/bin/sh
+USER=www-data
+GROUP=www-data
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+SSD="/sbin/start-stop-daemon" 
+PHP_FCGI_CHILDREN=10
+PHP_FCGI_MAX_REQUESTS=1000
+RETVAL=0
+
+FCGI_DAEMON="/usr/bin/spawn-fcgi" 
+FCGI_PROGRAM="/usr/bin/php5-cgi" 
+FCGI_PORT="9000" 
+FCGI_SOCKET="/tmp/php-fastcgi.sock" 
+FCGI_PIDFILE="/var/run/spawn-fcgi.pid" 
+
+#test -x $LIGHTY_DAEMON || exit 0
+
+set -e
+
+export PHP_FCGI_CHILDREN PHP_FCGI_MAX_REQUESTS FCGI_WEB_SERVER_ADDRS
+
+. /lib/lsb/init-functions
+
+case "$1" in
+  start)
+        log_daemon_msg "Starting spawn-fcgi" 
+        if ! $FCGI_DAEMON -p $FCGI_PORT -f $FCGI_PROGRAM -u $USER -g $GROUP -C $PHP_FCGI_CHILDREN -P $FCGI_PIDFILE; then
+            log_end_msg 1
+        else
+            log_end_msg 0
+        fi
+        RETVAL=$?
+  ;;
+  stop)
+        log_daemon_msg "Killing all spawn-fcgi processes" 
+        if killall --signal 9 php5-cgi > /dev/null 2> /dev/null; then
+            log_end_msg 0
+        else
+            log_end_msg 1
+        fi
+        RETVAL=$?
+  ;;
+  *)
+        echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload}" >&2
+        exit 1
+  ;;
+esac
+
+exit $RETVAL
+
