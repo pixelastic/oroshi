@@ -1,0 +1,23 @@
+server {
+    listen      80;
+    server_name phpminiadmin;
+    access_log  /var/log/nginx/phpminiadmin.access.log;
+    error_log   /var/log/nginx/phpminiadmin.error.log;
+    rewrite_log on;
+    root        /var/www/phpminiadmin;
+    index       phpminiadmin.php;
+
+    # Pass the PHP scripts to FastCGI server
+    location ~ \.php$ {
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index  index.php;
+        fastcgi_intercept_errors on; # to support 404s for PHP files not found
+        fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include        fastcgi_params;
+    }
+
+    # Deny access to versioning
+    location ~ /(\.ht|\.git|\.svn|\.hg) {
+        deny  all;
+    }
+}
