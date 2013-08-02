@@ -131,7 +131,6 @@ function! SeemsLatin1InUTF8(str) " {{{
 	return 0
 endfunction " }}}
 
-	
 
 " Commands
 function! RemoveTrailingSpaces() " {{{
