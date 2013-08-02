@@ -153,10 +153,14 @@ alias mktl='generate-tracklist'
 alias rg='replaygain'
 # }}}
 # Nginx {{{
-alias ngsta='sudo /etc/init.d/nginx start'
-alias ngsto='sudo /etc/init.d/nginx stop'
+alias ng='sudo /etc/init.d/nginx'
+alias ngcfg='sudo /etc/init.d/nginx configtest'
+alias ngfrl='sudo /etc/init.d/nginx force-reload'
 alias ngrl='sudo /etc/init.d/nginx reload'
 alias ngrs='sudo /etc/init.d/nginx restart'
+alias ngst='sudo /etc/init.d/nginx status'
+alias ngsta='sudo /etc/init.d/nginx start'
+alias ngsto='sudo /etc/init.d/nginx stop'
 # }}}
 #	Oroshi {{{
 alias oc="~/.oroshi/scripts/deploy/dircolors && source ~/.zshrc"
