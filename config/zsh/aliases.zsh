@@ -165,6 +165,7 @@ alias ou="cd ~/.oroshi && ~/.oroshi/update"
 alias ox="~/.oroshi/scripts/deploy/xmodmap"
 alias oz="source ~/.zshrc"
 alias oa="source ~/.oroshi/config/zsh/aliases.zsh"
+alias oh="~/.oroshi/scripts/deploy/hosts"
 # }}}
 # Python {{{
 alias py3='python3'
