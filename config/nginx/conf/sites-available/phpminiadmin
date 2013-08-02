@@ -1,11 +1,11 @@
 server {
     listen      80;
     server_name phpminiadmin;
-    access_log  /var/log/nginx/phpminiadmin.access.log;
-    error_log   /var/log/nginx/phpminiadmin.error.log;
+		root        /usr/local/var/www/phpminiadmin;
+		index       phpminiadmin.php;
+    access_log  /usr/local/var/log/nginx/phpminiadmin.access.log;
+    error_log   /usr/local/var/log/nginx/phpminiadmin.error.log;
     rewrite_log on;
-    root        /var/www/phpminiadmin;
-    index       phpminiadmin.php;
 
     # Pass the PHP scripts to FastCGI server
     location ~ \.php$ {
