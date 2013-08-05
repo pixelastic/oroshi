@@ -338,8 +338,6 @@ call s:Link('oroshi_TextDelimiter', 'MarkdownHeadingDelimiter', 'MarkdownHeading
 call s:Link('Type', 'phpSpecial')
 " Include $ in variable highlighting
 call s:Link('Identifier', 'phpVarSelector')
-
-
 " }}}
 " Ruby {{{
 
