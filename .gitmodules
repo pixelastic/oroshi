@@ -49,3 +49,6 @@
 [submodule "config/vim/bundle/available/vim-ragtag"]
 	path = config/vim/bundle/available/vim-ragtag
 	url = https://github.com/pixelastic/vim-ragtag.git
+[submodule "config/vim/bundle/available/zencoding-vim"]
+	path = config/vim/bundle/available/zencoding-vim
+	url = http://github.com/mattn/zencoding-vim.git
