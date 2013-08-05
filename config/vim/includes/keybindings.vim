@@ -206,3 +206,4 @@ vnoremap <silent> md :!markdown<CR>
 " force its mapping so it is not overwritten.
 inoremap <M-o> ï
 " }}}
+"  

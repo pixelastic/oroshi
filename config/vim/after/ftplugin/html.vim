@@ -10,10 +10,8 @@ endfunction
 setlocal foldmethod=manual
 nnoremap <buffer> za :call HTMLFoldTag()<CR>
 
-" Close opened tags with Ctrl+c
-" Note: <C-X><C-O> will trigger autocompletion, but wait for an input. We'll
-" delete the last char and re-add it to make it faster.
-inoremap <C-c> </<C-X><C-O><BS>>
+" Close opened tags with Ctrl+c (using ragtags)
+imap <C-c> <C-X>/
 
 " Clean the file
 function! b:CleanFile()
