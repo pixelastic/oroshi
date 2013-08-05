@@ -169,6 +169,11 @@ nnoremap ù %
 vnoremap ù %
 nnoremap à 0
 vnoremap à 0
+" Faster typing of ->
+inoremap -_ ->
+" Faster typing of =>
+inoremap ]} =>
+
 " }}}
 " OPTIONS {{{
 " Toggle non-printable chars
