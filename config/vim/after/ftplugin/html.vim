@@ -12,6 +12,8 @@ nnoremap <buffer> za :call HTMLFoldTag()<CR>
 
 " Close opened tags with Ctrl+c (using ragtags)
 imap <C-c> <C-X>/
+" Expand tags, zen-coding style
+imap <C-e> <C-Y>,
 
 " Clean the file
 function! b:CleanFile()
