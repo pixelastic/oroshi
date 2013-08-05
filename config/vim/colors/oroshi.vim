@@ -333,6 +333,14 @@ call s:Link('oroshi_TextHeadingFour', 'MarkdownH4')
 call s:Link('oroshi_TextHeadingFive', 'MarkdownH5')
 call s:Link('oroshi_TextDelimiter', 'MarkdownHeadingDelimiter', 'MarkdownHeadingRule')
 " }}}
+" PHP {{{
+" Class
+call s:Link('Type', 'phpSpecial')
+" Include $ in variable highlighting
+call s:Link('Identifier', 'phpVarSelector')
+
+
+" }}}
 " Ruby {{{
 
 " |chute|
