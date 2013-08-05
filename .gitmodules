@@ -46,3 +46,6 @@
 [submodule "config/vim/bundle/available/php.vim"]
 	path = config/vim/bundle/available/php.vim
 	url = git@github.com:pixelastic/php.vim.git
+[submodule "config/vim/bundle/available/vim-ragtag"]
+	path = config/vim/bundle/available/vim-ragtag
+	url = https://github.com/tpope/vim-ragtag.git
