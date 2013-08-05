@@ -173,7 +173,8 @@ vnoremap à 0
 inoremap -_ ->
 " Faster typing of =>
 inoremap ]} =>
-
+inoremap °+ =>
+inoremap )= =>
 " }}}
 " OPTIONS {{{
 " Toggle non-printable chars
