@@ -58,3 +58,6 @@
 [submodule "config/vim/bundle/available/vim-nerdtree-tabs"]
 	path = config/vim/bundle/available/vim-nerdtree-tabs
 	url = https://github.com/jistr/vim-nerdtree-tabs.git
+[submodule "config/vim/bundle/available/vim-javascript"]
+	path = config/vim/bundle/available/vim-javascript
+	url = https://github.com/pangloss/vim-javascript.git
