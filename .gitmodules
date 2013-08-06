@@ -52,3 +52,6 @@
 [submodule "config/vim/bundle/available/zencoding-vim"]
 	path = config/vim/bundle/available/zencoding-vim
 	url = http://github.com/mattn/zencoding-vim.git
+[submodule "config/vim/bundle/available/nerdtree"]
+	path = config/vim/bundle/available/nerdtree
+	url = https://github.com/scrooloose/nerdtree.git
