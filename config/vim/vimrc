@@ -334,9 +334,6 @@ source ~/.vim/includes/ctrlf.vim
 " CTRL-P {{{
 source ~/.vim/includes/ctrlp.vim
 " }}}
-" NERDTree {{{
-source ~/.vim/includes/nerdtree.vim
-" }}}
 
 " FILETYPES {{{
 " Load skeletons

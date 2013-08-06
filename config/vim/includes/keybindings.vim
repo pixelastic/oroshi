@@ -137,7 +137,7 @@ nnoremap <silent> <F5> :call ExecuteIfExists('b:RunFile')<CR>
 nnoremap <silent> <F6> :ArvalTest<CR>
 " }}}
 " NERDTREE {{{
-map <F7> :NERDTreeToggle<CR>
+map <F7> :NERDTreeTabsToggle<CR>
 " }}}
 " MOTIONS {{{
 " Move down/up including wrapped lines
