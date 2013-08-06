@@ -332,7 +332,10 @@ nnoremap wp viwp
 source ~/.vim/includes/ctrlf.vim
 " }}}
 " CTRL-P {{{
-source ~/.vim/includes/plugins/ctrlp.vim
+source ~/.vim/includes/ctrlp.vim
+" }}}
+" NERDTree {{{
+source ~/.vim/includes/nerdtree.vim
 " }}}
 
 " FILETYPES {{{

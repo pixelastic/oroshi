@@ -6,7 +6,7 @@
 "   F4 : Clean file
 "   F5 : Run file
 "   F6 : Test file
-"   F7 : 
+"   F7 : NERDTree
 "   F8 : Display hidden chars
 "   F9 : Toggle wrap
 "
@@ -136,6 +136,9 @@ nnoremap <silent> <F5> :call ExecuteIfExists('b:RunFile')<CR>
 " F6 tests it
 nnoremap <silent> <F6> :ArvalTest<CR>
 " }}}
+" NERDTREE {{{
+map <F7> :NERDTreeToggle<CR>
+" }}}
 " MOTIONS {{{
 " Move down/up including wrapped lines
 nnoremap j gj
@@ -212,4 +215,3 @@ vnoremap <silent> md :!markdown<CR>
 " force its mapping so it is not overwritten.
 inoremap <M-o> ï
 " }}}
-"  
