@@ -6,7 +6,7 @@
 "   F4 : Clean file
 "   F5 : Run file
 "   F6 : Test file
-"   F7 : 
+"   F7 : NERDTree
 "   F8 : Display hidden chars
 "   F9 : Toggle wrap
 "
@@ -136,6 +136,9 @@ nnoremap <silent> <F5> :call ExecuteIfExists('b:RunFile')<CR>
 " F6 tests it
 nnoremap <silent> <F6> :ArvalTest<CR>
 " }}}
+" NERDTREE {{{
+map <F7> :NERDTreeTabsToggle<CR>
+" }}}
 " MOTIONS {{{
 " Move down/up including wrapped lines
 nnoremap j gj
@@ -169,6 +172,12 @@ nnoremap ù %
 vnoremap ù %
 nnoremap à 0
 vnoremap à 0
+" Faster typing of ->
+inoremap -_ ->
+" Faster typing of =>
+inoremap ]} =>
+inoremap °+ =>
+inoremap )= =>
 " }}}
 " OPTIONS {{{
 " Toggle non-printable chars

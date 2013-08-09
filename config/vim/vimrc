@@ -332,12 +332,12 @@ nnoremap wp viwp
 source ~/.vim/includes/ctrlf.vim
 " }}}
 " CTRL-P {{{
-source ~/.vim/includes/plugins/ctrlp.vim
+source ~/.vim/includes/ctrlp.vim
 " }}}
 
 " FILETYPES {{{
 " Load skeletons
-au BufNewFile * :silent! exec ":0r ~/.vim/includes/skeletons/skeleton.".&ft
+au BufNewFile * :silent! exec ":0r ~/.vim/includes/skeletons/skeleton.".expand('%:e')
 
 " Easy switch to different filetypes filetype
 nnoremap <silent> <leader>html :setlocal filetype=html<CR>

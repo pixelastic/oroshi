@@ -122,6 +122,8 @@ class ReplayGain
 			return
 		end
 
+		puts "Applying replaygain to #{File.basename(file)}"
+
 		# Getting data from statistical analysis
 		data = calculate_data(file)
 

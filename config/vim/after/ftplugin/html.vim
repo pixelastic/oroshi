@@ -1,5 +1,6 @@
 " HTML
-" Add manual folding around tags
+
+" Folding {{{
 function! HTMLFoldTag()
 	if foldclosed('.')==-1
 		normal zfat
@@ -9,8 +10,8 @@ function! HTMLFoldTag()
 endfunction
 setlocal foldmethod=manual
 nnoremap <buffer> za :call HTMLFoldTag()<CR>
-
-" Clean the file
+" }}}
+" Clean file {{{
 function! b:CleanFile()
 	let tidyrc="~/.tidyrc"
 	let tidyCommand="silent %!tidy"
@@ -24,14 +25,8 @@ function! b:CleanFile()
 	" Tidy indents everything with spaces, we convert to tabs
 	silent call IndentWithTabs()
 endfunction
-
-
-" Run the file
-function! b:RunFile()
-	call OpenUrlInBrowser(expand('%:p'))
-endfunction
-
-" Remove scripts from file with Ctrl-F4
+" }}}
+" Remove scripts from file {{{
 function! b:RemoveScripts()
 	let @z = 'gg/<scriptdat@z'
 	silent normal @z
@@ -40,3 +35,15 @@ function! b:RemoveScripts()
 	redraw!
 endfunction
 nnoremap <buffer> O1;5S :call b:RemoveScripts()<CR>
+" }}}
+" Run file {{{
+function! b:RunFile()
+	call OpenUrlInBrowser(expand('%:p'))
+endfunction
+" }}}
+
+" Ctrl+C closes opened tags (using ragtags)
+imap <C-c> <C-X>/<Esc>mzvat=`zi<Right>
+" Ctrl+E expands zen-coding string (using sparkup)
+imap <C-e> <C-Y>,
+

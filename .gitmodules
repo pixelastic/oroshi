@@ -43,3 +43,21 @@
 [submodule "config/vim/bundle/available/vim-fugitive"]
 	path = config/vim/bundle/available/vim-fugitive
 	url = git://github.com/tpope/vim-fugitive.git
+[submodule "config/vim/bundle/available/php.vim"]
+	path = config/vim/bundle/available/php.vim
+	url = git@github.com:pixelastic/php.vim.git
+[submodule "config/vim/bundle/available/vim-ragtag"]
+	path = config/vim/bundle/available/vim-ragtag
+	url = https://github.com/pixelastic/vim-ragtag.git
+[submodule "config/vim/bundle/available/zencoding-vim"]
+	path = config/vim/bundle/available/zencoding-vim
+	url = http://github.com/mattn/zencoding-vim.git
+[submodule "config/vim/bundle/available/nerdtree"]
+	path = config/vim/bundle/available/nerdtree
+	url = https://github.com/scrooloose/nerdtree.git
+[submodule "config/vim/bundle/available/vim-nerdtree-tabs"]
+	path = config/vim/bundle/available/vim-nerdtree-tabs
+	url = https://github.com/jistr/vim-nerdtree-tabs.git
+[submodule "config/vim/bundle/available/vim-javascript"]
+	path = config/vim/bundle/available/vim-javascript
+	url = https://github.com/pangloss/vim-javascript.git
