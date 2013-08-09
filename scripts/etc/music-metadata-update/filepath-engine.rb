@@ -297,8 +297,8 @@ class FilepathEngine
 			data['album'] = split.last
 		end
 
-		# Artist is the same as the album for soundtracks
-		data['artist'] = data['album']
+		# We use the saga, or album name for the artist
+		data['artist'] = split[2] # This is the first part after the ./{letter} directory
 
 		return data
 	end
