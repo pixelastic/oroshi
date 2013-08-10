@@ -174,6 +174,7 @@ class PodcastDownloader
 		update_xml_list
 
 		# Check that we have every available podcast, and download them if not
+		new_files = []
 		parse_podcasts_xml.each do |index, podcast|
 			# Create a dir for each year
 			year_dir = File.join(@podcasts_dir, podcast['year'])
@@ -205,10 +206,16 @@ class PodcastDownloader
 			# Update tracklist
 			update_tracklist(filepath, prefix, podcast['title'])
 
-			# Update the file
-			puts %x[music-metadata-update #{filepath.shellescape}]
+			# Keep track of the newly added file
+			new_files << filepath
 
 		end
+
+		# Updating the files metadata
+		new_files.map do |file|
+			file.shellescape
+		end
+		puts %x[music-metadata-update #{new_files.join(' ')}]
 
 		
 	end
