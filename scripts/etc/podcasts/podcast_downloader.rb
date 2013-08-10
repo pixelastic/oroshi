@@ -101,9 +101,9 @@ class PodcastDownloader
 		split = path_without_ext.split("/")
 		new_split = []
 		split.map do |part|
-			new_split << part.gsub(/([\?\*\|:;"<>])/, "").strip.gsub(/ {2,}/," ").gsub('’', "'")
+			new_split << part.gsub(/([\?\*\|:;"“”<>])/, "").strip.gsub(/ {2,}/," ").gsub('’', "'")
 		end
-		return new_split.join("/")+extname
+			return new_split.join("/")+extname
 	end
 
 
@@ -209,4 +209,3 @@ class PodcastDownloader
 		
 	end
 end
-

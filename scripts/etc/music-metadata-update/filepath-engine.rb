@@ -433,7 +433,7 @@ class FilepathEngine
 		# Move file on disk
 		if old_file != @file
 			if File.exists?(@file)
-				puts "WARNING: Can't rename #{file}, destination already exists!"
+				puts "WARNING: Can't rename #{@file}, destination already exists!"
 				return
 			end
 			puts "Renamed to #{metadata_hierarchy}/#{File.basename(@file)}"
