@@ -179,7 +179,11 @@ class PodcastDownloader
 			year_dir = File.join(@podcasts_dir, podcast['year'])
 			FileUtils.mkdir_p(year_dir)
 
-			prefix = "%02d" % podcast['index']
+			# If the dir contains mixed id lengths, we get the biggest one
+			latest_id_length = File.basename(Dir[File.join(year_dir, '*.mp3')].sort.last).split(" - ")[0].size
+			id_length = [latest_id_length, 2].max
+			prefix = "%0#{id_length}d" % podcast['index']
+
 			basename = "#{prefix} - #{podcast['title']}.mp3"
 			filepath = make_fat32_compliant(File.join(year_dir, basename))
 
