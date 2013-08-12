@@ -91,10 +91,10 @@ class MusicSync
 	# Synchronize files with the sansa internal memory
 	def synchronize_sansa
 		get_music_marked_directories.each do |dir|
-			synchronize_dir(dir, File.join("/media/0123-4567/MUSIC", dir.gsub(/^#{get_library_root}/, '')))
+			synchronize_dir(dir, File.join("/media/0123-4567/", dir.gsub(/^#{get_library_root}/, '')))
 		end
 		get_podcast_marked_directories.each do |dir|
-			synchronize_podcast_dir(dir, File.join("/media/0123-4567/PODCASTS", dir.gsub(/^#{get_library_root}/, '')))
+			synchronize_podcast_dir(dir, File.join("/media/0123-4567/podcasts", dir.gsub(/^#{get_library_root}/, '')))
 		end
 	end
 
