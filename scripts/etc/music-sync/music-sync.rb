@@ -94,7 +94,7 @@ class MusicSync
 			synchronize_dir(dir, File.join("/media/0123-4567/MUSIC", dir.gsub(/^#{get_library_root}/, '')))
 		end
 		get_podcast_marked_directories.each do |dir|
-			synchronize_podcast_dir(dir, File.join("/media/0123-4567/MUSIC", dir.gsub(/^#{get_library_root}/, '')))
+			synchronize_podcast_dir(dir, File.join("/media/0123-4567/PODCASTS", dir.gsub(/^#{get_library_root}/, '')))
 		end
 	end
 
