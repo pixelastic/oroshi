@@ -37,7 +37,7 @@ fi
 # ls : colors and human readable size
 alias ls="ls -vhlp --color=always --group-directories-first"
 # grep : colored
-alias grep='grep --color=auto'
+alias grep='grep -i --color=auto'
 # tree : colored, show hidden files but hides git/hg. Display non-ASCII chars
 alias tree='tree -aNC -I ".hg|.git"'
 # watch : colored
