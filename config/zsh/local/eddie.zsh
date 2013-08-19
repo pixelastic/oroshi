@@ -47,6 +47,13 @@ alias sansa-sync-soundtracks="music-sync /media/jukebox/soundtracks sansa-sd"
 alias gta='cd ~/local/etc/gta/WINO/ && wine ./Grand\ Theft\ Auto.exe'
 alias diablo='cd ~/local/etc/diablorl/ && ./rl'
 # }}}
+
+# Mount {{{
+alias fbx='sudo mount -t cifs //mafreebox.freebox.fr/Disque\ dur/ /home/tim/local/mnt/freebox -o _netdev,guest,directio,uid=1000,iocharset=utf8,file_mode=0777,dir_mode=0777'
+alias ufbx='sudo umount /home/tim/local/mnt/freebox'
+alias cdfbx='cd /home/tim/local/mnt/freebox'
+# }}}
+
 # Downloading a website in ~/local/tmp/websites
 alias mslurp="cd ~/local/tmp/websites && slurp"
 # Prefix a date to a file
