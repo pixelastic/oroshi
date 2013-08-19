@@ -1,5 +1,18 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env ruby
+# Encoding : UTF-8
+require "shellwords"
+
 # This is simply a wrapper for the `trash` command but using its own command
 # allow me to define its own completion functions that only suggest directories
 
-trash $@
+# To avoid an infinite loop, we revert to the default `rm` when deleting
+# a Trash directory.
+
+ARGV.each do |arg|
+	basename = File.basename(arg)
+	if basename =~ /\.Trash-([0-9]*)/
+		%x[rm -drf #{arg.shellescape}]
+	else
+		%x[trash #{arg.shellescape}]
+	end
+end
