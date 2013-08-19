@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+echo "Installing exfat"
+sudo apt-add-repository ppa:relan/exfat
+sudo apt-get install fuse-exfat
+
+echo "Installing xfs"
+# To format a volume in XFS
+sudo apt-get install xfsprogs
+
+echo "Installing samba"
+sudo apt-get install cifs-utils
+

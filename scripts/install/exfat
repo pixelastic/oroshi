@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-sudo apt-add-repository ppa:relan/exfat
-sudo apt-get install fuse-exfat
-
