@@ -98,6 +98,8 @@ cd ~/local/mnt/sd$1
 alias pd='plowdown'
 # Youtube downloader
 alias yt='youtube-download -t --prefer-free-format'
+# Flash video download
+alias gfv="get-flash-videos"
 # watch tree
 alias wt='watch -c ''tree -aNC -I ".hg\|.git"'''
 # }}}
