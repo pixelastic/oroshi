@@ -26,9 +26,9 @@ alias michel-extract='camera-extract /media/MICHEL/'
 # Import pictures from Galaxy
 alias galaxy-extract='camera-extract /media/F101-14E2/DCIM'
 # Synchronize dingoo
-alias ds='~/Documents/emulation/devices/dingoo/tools/dingoo-sync /media/dingoo'
+alias dingoo-sync='~/Documents/emulation/devices/dingoo/tools/dingoo-sync /media/dingoo'
 # Synchronize ebooks
-alias es='ebook-sync ~/Documents/books /media/galaxy/books'
+alias ebook-sync='ebook-sync ~/Documents/books /media/galaxy/books'
 # Synchronize pictures on belette
 alias photos-sync='photos-sync ~/Documents/Photos/ /media/BELETTE/Photos/Voyage/'
 # Mark a music dir for synchronization
