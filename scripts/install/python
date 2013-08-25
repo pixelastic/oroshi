@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
+
+echo "Installing pip"
 sudo apt-get install python-pip
+echo "Updating it to latest version"
 sudo pip install --upgrade pip
 
+echo "Installing flake8 to check and lint code"
 sudo pip install flake8
 
+echo "Installing pygments"
 sudo apt-get install python-pygments
