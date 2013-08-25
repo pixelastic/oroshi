@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
+echo "Installing python dev"
+sudo apt-get install python-dev
+sudo apt-get install python-setuptools
+
 echo "Installing pip"
 sudo apt-get install python-pip
-echo "Updating it to latest version"
 sudo pip install --upgrade pip
 
 echo "Installing flake8 to check and lint code"
