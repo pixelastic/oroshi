@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-# To format a volume in XFS
-sudo apt-get install xfsprogs
-

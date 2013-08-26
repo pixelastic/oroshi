@@ -23,16 +23,15 @@ class GenerateTracklist
 	end
 
 	def parse_args(*args)
-		args = [File.expand_path('.')] if args.size == 0
 		@force = false
+		if args.include?("-f")
+			@force = true
+			args.delete('-f')
+		end
+		args = [File.expand_path('.')] if args.size == 0
+
 		@files = []
-
 		args.each do |arg|
-			# Check for force flag
-			if arg=='-f' || arg=='--force'
-				@force = true
-			end
-
 			# Skipping non-existing files
 			next unless File.exists?(arg)
 

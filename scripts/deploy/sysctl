@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Link sysctl.conf to ~/local/etc/sysctl.conf
+# This is your job to manually link /etc/sysctl.conf to that file
+
+# Paths
+configDir=~/.oroshi/config/sysctl
+configFile=$configDir/sysctl.conf
+
+
+# Generic git config
+ln -fs $configFile ~/local/etc/sysctl.conf
+
+

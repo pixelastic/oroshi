@@ -101,9 +101,9 @@ class PodcastDownloader
 		split = path_without_ext.split("/")
 		new_split = []
 		split.map do |part|
-			new_split << part.gsub(/([\?\*\|:;"<>])/, "").strip.gsub(/ {2,}/," ").gsub('’', "'")
+			new_split << part.gsub(/([\?\*\|:;"“”<>])/, "").strip.gsub(/ {2,}/," ").gsub('’', "'")
 		end
-		return new_split.join("/")+extname
+			return new_split.join("/")+extname
 	end
 
 
@@ -174,12 +174,17 @@ class PodcastDownloader
 		update_xml_list
 
 		# Check that we have every available podcast, and download them if not
+		new_files = []
 		parse_podcasts_xml.each do |index, podcast|
 			# Create a dir for each year
 			year_dir = File.join(@podcasts_dir, podcast['year'])
 			FileUtils.mkdir_p(year_dir)
 
-			prefix = "%02d" % podcast['index']
+			# If the dir contains mixed id lengths, we get the biggest one
+			latest_id_length = File.basename(Dir[File.join(year_dir, '*.mp3')].sort.last).split(" - ")[0].size
+			id_length = [latest_id_length, 2].max
+			prefix = "%0#{id_length}d" % podcast['index']
+
 			basename = "#{prefix} - #{podcast['title']}.mp3"
 			filepath = make_fat32_compliant(File.join(year_dir, basename))
 
@@ -201,12 +206,17 @@ class PodcastDownloader
 			# Update tracklist
 			update_tracklist(filepath, prefix, podcast['title'])
 
-			# Update the file
-			puts %x[music-metadata-update #{filepath.shellescape}]
+			# Keep track of the newly added file
+			new_files << filepath
 
 		end
+
+		# Updating the files metadata
+		new_files.map do |file|
+			file.shellescape
+		end
+		puts %x[music-metadata-update #{new_files.join(' ')}]
 
 		
 	end
 end
-

@@ -24,11 +24,11 @@ alias cdperso="cd ~/local/mnt/perso/"
 # Import pictures from camera
 alias michel-extract='camera-extract /media/MICHEL/'
 # Import pictures from Galaxy
-alias galaxy-extract='camera-extract /media/F101-14E2/'
+alias galaxy-extract='camera-extract /media/F101-14E2/DCIM'
 # Synchronize dingoo
-alias ds='~/Documents/emulation/devices/dingoo/tools/dingoo-sync /media/dingoo'
+alias dingoo-sync='~/Documents/emulation/devices/dingoo/tools/dingoo-sync /media/dingoo'
 # Synchronize ebooks
-alias es='ebook-sync ~/Documents/books /media/galaxy/books'
+alias ebook-sync='ebook-sync ~/Documents/books /media/galaxy/books'
 # Synchronize pictures on belette
 alias photos-sync='photos-sync ~/Documents/Photos/ /media/BELETTE/Photos/Voyage/'
 # Mark a music dir for synchronization
@@ -47,6 +47,13 @@ alias sansa-sync-soundtracks="music-sync /media/jukebox/soundtracks sansa-sd"
 alias gta='cd ~/local/etc/gta/WINO/ && wine ./Grand\ Theft\ Auto.exe'
 alias diablo='cd ~/local/etc/diablorl/ && ./rl'
 # }}}
+
+# Mount {{{
+alias fbx='sudo mount -t cifs //mafreebox.freebox.fr/Disque\ dur/ /home/tim/local/mnt/freebox -o _netdev,guest,directio,uid=1000,iocharset=utf8,file_mode=0777,dir_mode=0777'
+alias ufbx='sudo umount /home/tim/local/mnt/freebox'
+alias cdfbx='cd /home/tim/local/mnt/freebox'
+# }}}
+
 # Downloading a website in ~/local/tmp/websites
 alias mslurp="cd ~/local/tmp/websites && slurp"
 # Prefix a date to a file

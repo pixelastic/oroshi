@@ -37,7 +37,7 @@ fi
 # ls : colors and human readable size
 alias ls="ls -vhlp --color=always --group-directories-first"
 # grep : colored
-alias grep='grep --color=auto'
+alias grep='grep -i --color=auto'
 # tree : colored, show hidden files but hides git/hg. Display non-ASCII chars
 alias tree='tree -aNC -I ".hg|.git"'
 # watch : colored
@@ -98,6 +98,8 @@ cd ~/local/mnt/sd$1
 alias pd='plowdown'
 # Youtube downloader
 alias yt='youtube-download -t --prefer-free-format'
+# Flash video download
+alias gfv="get_flash_videos"
 # watch tree
 alias wt='watch -c ''tree -aNC -I ".hg\|.git"'''
 # }}}
@@ -186,6 +188,11 @@ alias vv='fasd -e vim'
 alias va="vim ~/.oroshi/config/zsh/aliases.zsh"
 alias vf="vim ~/.oroshi/config/zsh/filetypes.db.zsh"
 alias ve='vim ~/.oroshi/config/vim/vimrc'
+# }}}
+# Tweet {{{
+alias tweet="t update"
+alias timeline="t stream timeline"
+alias tsearch="t search all"
 # }}}
 # Web {{{
 # Flushing dns for web testing

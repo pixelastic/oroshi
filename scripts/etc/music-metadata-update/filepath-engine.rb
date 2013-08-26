@@ -297,8 +297,8 @@ class FilepathEngine
 			data['album'] = split.last
 		end
 
-		# Artist is the same as the album for soundtracks
-		data['artist'] = data['album']
+		# We use the saga, or album name for the artist
+		data['artist'] = split[2] # This is the first part after the ./{letter} directory
 
 		return data
 	end
@@ -433,7 +433,7 @@ class FilepathEngine
 		# Move file on disk
 		if old_file != @file
 			if File.exists?(@file)
-				puts "WARNING: Can't rename #{file}, destination already exists!"
+				puts "WARNING: Can't rename #{@file}, destination already exists!"
 				return
 			end
 			puts "Renamed to #{metadata_hierarchy}/#{File.basename(@file)}"

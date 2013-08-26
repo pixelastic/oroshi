@@ -418,6 +418,8 @@ call s:Link('WarningMsg', 'helpNotVi')
 " Zsh {{{
 " Variables
 call s:Link('Identifier', 'zshDeref', 'zshShortDeref', 'zshSubst')
+" Quotes surrounding strings
+call s:Link('String', 'shQuote', 'shDoubleQuote')
 " }}}
 
 " Ctrl-F {{{
