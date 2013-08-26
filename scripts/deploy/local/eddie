@@ -15,6 +15,7 @@ cd ~/.oroshi/scripts/deploy/
 ./plowshare
 ./pry
 ./ssh
+./sysctl
 ./terminator
 ./tidy
 ./vim
