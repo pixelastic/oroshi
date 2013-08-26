@@ -10,6 +10,7 @@
 # Paths
 local hostname=$(hostname)
 local defaultFile=~/.oroshi/config/hosts/default
+local zeroFile=~/.oroshi/config/hosts/zero
 local privateFiles="~/.oroshi/private/config/hosts/local/${hostname}/*"
 local destFile=/usr/local/etc/hosts
 
@@ -25,6 +26,8 @@ fi
 echo "127.0.0.1\t$hostname" > $destFile
 # Add default config
 cat $defaultFile >> $destFile
+# Add zero config
+cat $zeroFile >> $destFile
 # Add all private local files
 for file in ${~privateFiles}; do
 	cat $file >> $destFile
