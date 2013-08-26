@@ -189,6 +189,11 @@ alias va="vim ~/.oroshi/config/zsh/aliases.zsh"
 alias vf="vim ~/.oroshi/config/zsh/filetypes.db.zsh"
 alias ve='vim ~/.oroshi/config/vim/vimrc'
 # }}}
+# Tweet {{{
+alias tweet="t update"
+alias timeline="t stream timeline"
+alias tsearch="t search all"
+# }}}
 # Web {{{
 # Flushing dns for web testing
 alias flushdns="/etc/init.d/dns-clean start"
