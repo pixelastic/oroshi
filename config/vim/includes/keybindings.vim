@@ -197,10 +197,11 @@ inoremap <silent> <F9> <Esc>:set wrap!<CR>li
 " }}}
 " NICETIES {{{
 " Move a line below with _ and up with -, keeping indentation
-nnoremap - "zddk"zP==
-nnoremap _ "zdd"zp==
-vnoremap - "zdkmz"zPV`zk=gv
-vnoremap _ "zdjmzk"zpV`zk=gv
+" Note : uses vim-unimpaired
+nmap - [e
+vmap - [egv
+nmap _ ]e
+vmap _ ]egv
 " appending a missing ; at the end of line
 function! AppendMissingSemicolon()
 	if getline(".") !~ ';$'
