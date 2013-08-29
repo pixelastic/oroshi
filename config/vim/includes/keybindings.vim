@@ -151,6 +151,9 @@ vnoremap L g_
 " Go back to first non blank character with home
 nnoremap <Home> ^
 inoremap <Home> <Esc>^i
+" Scroll one page at a time
+nnoremap U <C-U>
+nnoremap D <C-D>
 " }}}
 " MUSCLE MEMORY {{{
 " Ctrl+S saves the file, as in most apps
