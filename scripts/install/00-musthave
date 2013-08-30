@@ -10,5 +10,7 @@
 ./zsh
 # tree because I'm green
 ./tree
+# recode because UTF-8 rules
+./recode
 
 

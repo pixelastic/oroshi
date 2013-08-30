@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+recode latin2..utf8 $@
+
