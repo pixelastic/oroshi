@@ -2,8 +2,7 @@
 # Encoding : UTF-8
 require "shellwords"
 
-class Latin2UTF8
-	
+class GetEncoding
 	def initialize(*args)
 		@files = args.map do |file|
 			File.expand_path(file)
@@ -13,24 +12,15 @@ class Latin2UTF8
 	def get_encoding(file)
 		output = %x[file -bi #{file.shellescape}]
 		matches = output.match(/(.*)charset=(.*)/)
-		return nil unless matches
+		return "##UNKNOWN##" unless matches
 		return matches[2].downcase
 	end
 	
 	def run
 		@files.each do |file|
-			encoding = get_encoding(file)
-			case encoding
-			when "iso-8859-1"
-				puts "#{File.basename(file)} converted"
-				%x[recode latin2..utf8 #{file.shellescape}]
-			when "utf-8"
-				next
-			else
-				puts "Unknown encoding for #{File.basename(file)}"
-			end
+			puts "#{File.basename(file)} is #{get_encoding(file)}"
 		end
 	end
 end
-Latin2UTF8.new(*ARGV).run()
+GetEncoding.new(*ARGV).run()
 
