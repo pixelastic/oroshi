@@ -22,7 +22,8 @@ class Latin2UTF8
 			encoding = get_encoding(file)
 			case encoding
 			when "iso-8859-1"
-				puts "#{File.basename(file)} converted"
+				%x[recode latin1..utf8 #{file.shellescape}]
+			when "iso-8859-2"
 				%x[recode latin2..utf8 #{file.shellescape}]
 			when "utf-8"
 				next
