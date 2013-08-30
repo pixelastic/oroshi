@@ -2,7 +2,7 @@
 # Encoding : UTF-8
 require "shellwords"
 
-class Latin2UTF8
+class UTF8
 	
 	def initialize(*args)
 		@files = args.map do |file|
@@ -33,5 +33,5 @@ class Latin2UTF8
 		end
 	end
 end
-Latin2UTF8.new(*ARGV).run()
+UTF8.new(*ARGV).run()
 
