@@ -61,7 +61,7 @@ augroup ft_add_chmodx
 	au!
 	function! AddExecutablePermissionIfScript()
 		if getline(1) =~ "^#!" && getline(1) =~ "/bin/"
-			silent !chmod u+x <afile>
+			silent !chmod +x <afile>
 		endif
 	endfunction
 	au BufWritePost * call AddExecutablePermissionIfScript()

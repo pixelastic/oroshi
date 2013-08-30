@@ -151,6 +151,9 @@ vnoremap L g_
 " Go back to first non blank character with home
 nnoremap <Home> ^
 inoremap <Home> <Esc>^i
+" Scroll one page at a time
+nnoremap U <C-U>
+nnoremap D <C-D>
 " }}}
 " MUSCLE MEMORY {{{
 " Ctrl+S saves the file, as in most apps
@@ -194,10 +197,11 @@ inoremap <silent> <F9> <Esc>:set wrap!<CR>li
 " }}}
 " NICETIES {{{
 " Move a line below with _ and up with -, keeping indentation
-nnoremap - "zddk"zP==
-nnoremap _ "zdd"zp==
-vnoremap - "zdkmz"zPV`zk=gv
-vnoremap _ "zdjmzk"zpV`zk=gv
+" Note : uses vim-unimpaired
+nmap - [e
+vmap - [egv
+nmap _ ]e
+vmap _ ]egv
 " appending a missing ; at the end of line
 function! AppendMissingSemicolon()
 	if getline(".") !~ ';$'

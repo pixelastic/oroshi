@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+# Encoding : UTF-8
+require "shellwords"
+
+class GetEncoding
+	def initialize(*args)
+		@files = args.map do |file|
+			File.expand_path(file)
+		end
+	end
+
+	def get_encoding(file)
+		output = %x[file -bi #{file.shellescape}]
+		matches = output.match(/(.*)charset=(.*)/)
+		return "##UNKNOWN##" unless matches
+		return matches[2].downcase
+	end
+	
+	def run
+		@files.each do |file|
+			puts "#{File.basename(file)} is #{get_encoding(file)}"
+		end
+	end
+end
+GetEncoding.new(*ARGV).run()
+
