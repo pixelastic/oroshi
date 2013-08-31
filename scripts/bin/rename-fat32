@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+# Encoding : UTF-8
+
+class RenameFAT32
+	def initialize(*args)
+		@files = args.map do |file|
+			File.expand_path(file)
+		end
+	end
+
+	def make_fat32_compliant(value)
+		# Remove characters not allowed in fat32
+		value = value.to_s.gsub(/([\?\/\*\|:;"”“<>])/, "").strip
+		# Double spaces
+		value = value.gsub(/ {2,}/," ")
+		# Bad quotes
+		value = value.gsub('?', "'")
+		return value
+	end
+
+	def run
+		@files.each do |file|
+			dirname = File.dirname(file)
+			extname = File.extname(file)
+			basename = File.basename(file, extname)
+			new_basename = make_fat32_compliant(basename)
+			new_file = File.join(dirname, new_basename+extname)
+
+			File.rename(file, new_file) if file != new_file
+		end
+
+	end
+end
+RenameFAT32.new(*ARGV).run()
