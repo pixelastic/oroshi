@@ -46,4 +46,8 @@ endfunction
 imap <C-c> <C-X>/<Esc>mzvat=`zi<Right>
 " Ctrl+E expands zen-coding string (using sparkup)
 imap <C-e> <C-Y>,
+" Ctrl+B adds a <br />
+inoremap <C-b> <br /><CR>
+nnoremap <C-b> i<br /><CR><Esc>
+
 
