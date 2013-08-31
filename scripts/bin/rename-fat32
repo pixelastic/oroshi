@@ -14,7 +14,7 @@ class RenameFAT32
 		# Double spaces
 		value = value.gsub(/ {2,}/," ")
 		# Bad quotes
-		value = value.gsub('?', "'")
+		value = value.gsub('’', "'")
 		return value
 	end
 
