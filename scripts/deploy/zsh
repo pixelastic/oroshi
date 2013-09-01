@@ -1,12 +1,12 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 # Link zsh main config file to ~/.zshrc
 
 # Paths
-local configFile=~/.oroshi/config/zsh/main.zsh
-local destFile=~/.zshrc
+configFile=~/.oroshi/config/zsh/main.zsh
+destFile=~/.zshrc
 
 # Create link
 ln -fs $configFile $destFile
 
 # Source file
-source $destFile
+echo "You should now reload ~/.zshrc"
