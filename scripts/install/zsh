@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+echo "Installing dependencies"
+./dirs
+./make
 
 echo "Downloading source from sourceforge"
 cd ~/local/src
