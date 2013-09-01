@@ -44,7 +44,7 @@ endfunction
 
 " Ctrl+C closes opened tags (using ragtags)
 imap <C-c> <C-X>/<Esc>mzvat=`zi<Right>
-" Ctrl+E expands zen-coding string (using sparkup)
+" Ctrl+E expands zen-coding string (using emmet)
 imap <C-e> <C-Y>,
 " Ctrl+B adds a <br />
 inoremap <C-b> <br /><CR>

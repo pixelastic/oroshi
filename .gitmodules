@@ -49,9 +49,9 @@
 [submodule "config/vim/bundle/available/vim-ragtag"]
 	path = config/vim/bundle/available/vim-ragtag
 	url = git@github.com:tpope/vim-ragtag.git
-[submodule "config/vim/bundle/available/zencoding-vim"]
-	path = config/vim/bundle/available/zencoding-vim
-	url = git@github.com:mattn/zencoding-vim.git
+[submodule "config/vim/bundle/available/emmet-vim"]
+	path = config/vim/bundle/available/emmet-vim
+	url = git@github.com:mattn/emmet-vim.git
 [submodule "config/vim/bundle/available/nerdtree"]
 	path = config/vim/bundle/available/nerdtree
 	url = git@github.com:scrooloose/nerdtree.git
