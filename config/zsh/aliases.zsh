@@ -48,7 +48,7 @@ alias diff='colordiff'
 # Create subdirectories recursively
 alias mkdir="mkdir -p"
 # rm : use system trash
-alias rm='trash'
+alias rm='trash-put'
 # rmdir : use system trash
 alias rmdir='better-rmdir'
 # cp : recursive and verbose
