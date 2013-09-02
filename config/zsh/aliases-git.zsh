@@ -36,6 +36,7 @@ alias vfd='git diff'
 alias vfds='git diff-staged --'
 alias vfm='git mv'
 alias vfr='git checkout --'
+alias vfrez='git resurrect'
 alias vfu='git unstage'
 alias vfua='git reset'
 # }}}
