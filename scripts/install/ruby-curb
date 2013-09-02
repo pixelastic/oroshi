@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-# Curb extension for ruby
-
-echo "Installing dependencies"
-sudo apt-get install libcurl3 libcurl3-gnutls libcurl4-openssl-dev
-
-echo "Installing gem"
-gem install curb
-

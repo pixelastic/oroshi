@@ -35,6 +35,9 @@ rvm reload
 rvm install 1.9.3
 rvm install 1.9.3-dev
 
+# Installing rails
+gem install rails
+
 # Using Pry instead of irb
 gem install pry
 gem install awesome_print
