@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+echo "You need ruby and rvm first"
+gem install t
+
+t authorize
