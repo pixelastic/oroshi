@@ -1,0 +1,2 @@
+# Generate a default file on a new machine with the command
+xmodmap -pke
