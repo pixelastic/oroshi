@@ -36,16 +36,20 @@ rvm install 1.9.3
 rvm install 1.9.3-dev
 
 # Installing rails
-gem install rails
+gem install rails 
 
-# Using Pry instead of irb
+# Generic gems
 gem install pry
 gem install awesome_print
 
-# Installing mp3 tagging utility
+# Mp3
 gem install ruby-mp3info
 
-# XML parsing made easy
+# Cugem install rails
+sudo apt-get install libcurl3 libcurl3-gnutls libcurl4-openssl-dev
+gem install curb
+
+# Xml
 gem install nokogiri
 
 
