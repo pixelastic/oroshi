@@ -13,6 +13,6 @@ ARGV.each do |arg|
 	if basename =~ /\.Trash-([0-9]*)/
 		%x[rm -drf #{arg.shellescape}]
 	else
-		%x[trash #{arg.shellescape}]
+		%x[trash-put #{arg.shellescape}]
 	end
 end
