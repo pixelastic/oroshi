@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
 # XML parsing extensions for ruby
 
-echo "Installing gem"
-gem install nokogiri
 
