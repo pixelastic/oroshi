@@ -1,4 +1,3 @@
-# ALIAS AND CUSTOM PATH {{{
 # Note: We follow the convention of putting manually installed binaries in
 # /usr/local/bin. OS installed binaries goes to /usr/bin.
 #
@@ -15,7 +14,6 @@
 # Note: Calling sudo will NOT use any aliases defined, but will use files in
 # custom paths.
 alias sudo='sudo '
-# }}}
 
 # Custom paths {{{
 path=(
@@ -26,11 +24,6 @@ path=(
 	~/.oroshi/private/sripts/bin/local/$(hostname)
 	~/local/bin
 )
-# }}}
-# Fasd {{{
-if [[ !`which fasd` = '' ]]; then
-	eval "$(fasd --init auto)"
-fi
 # }}}
 
 # Basic commands {{{
@@ -96,12 +89,16 @@ cd ~/local/mnt/sd$1
 }
 # plowdown
 alias pd='plowdown'
+# Download files from transmission
+alias td='transmission-download'
 # Youtube downloader
 alias yt='youtube-download -t --prefer-free-format'
 # Flash video download
 alias gfv="get_flash_videos"
 # watch tree
 alias wt='watch -c ''tree -aNC -I ".hg\|.git"'''
+# Prefix a date to a file
+alias prd='prefix-date'
 # }}}
 # GUI apps {{{
 alias chrome="gui chromium-browser"
@@ -129,21 +126,27 @@ alias agd='sudo apt-cache show'
 alias ec='ebook-convert'
 alias ecc='ebook-cover-change'
 alias ecd='ebook-cover-download'
-alias ee2t='epub2txt'
-alias ei='ebook-isbn'
 alias em='ebook-meta'
 alias emu='ebook-metadata-update'
-alias et2e='txt2epub'
 alias ev='ebook-viewer'
 # }}}
 # Directories {{{
 alias cd-='cd -'
-alias cde='cd ~/local/etc/'
-alias cdl='cd ~/local/'
 alias cdo='cd ~/.oroshi/'
-alias cds='cd ~/local/tmp/scripts/'
-alias cdt='cd ~/local/tmp/'
+alias cdl='cd ~/local/'
+alias cde='cd ~/local/etc/'
 alias cdw='cd ~/local/var/www/'
+alias cdt='cd ~/local/tmp/'
+alias cds='cd ~/local/tmp/scripts/'
+alias cdsov='cd ~/local/tmp/sov/'
+alias cdrop="cd ~/Dropbox/"
+alias cdpaper="cd ~/Dropbox/tim/paperwork/"
+alias cdbooks='cd ~/Documents/books'
+alias cdemu='cd ~/Documents/emulation'
+alias cdm='cd ~/Documents/movies/'
+alias cdp='cd ~/Documents/pictures'
+alias cdrp='cd ~/Documents/roleplay/'
+alias cdscenar='cd ~/Documents/roleplay/scenarios/'
 # }}}
 # Dingoo {{{
 alias udingoo='umount /media/dingoo'
@@ -153,6 +156,14 @@ alias cdingoo='cd /media/dingoo'
 alias mmu='music-metadata-update'
 alias mktl='generate-tracklist'
 alias rg='replaygain'
+alias mfs="mark-for-sync"
+function mfs-sansa() { mark-for-sync $* sansa }
+function mfs-sansa-sd() { mark-for-sync $* sansa-sd }
+# }}}
+# Freebox {{{
+alias fbx='sudo mount -t cifs //mafreebox.freebox.fr/Disque\ dur/ /home/tim/local/mnt/freebox -o _netdev,guest,directio,uid=1000,iocharset=utf8,file_mode=0777,dir_mode=0777'
+alias ufbx='sudo umount /home/tim/local/mnt/freebox'
+alias cdfbx='cd /home/tim/local/mnt/freebox'
 # }}}
 # Nginx {{{
 alias ng='sudo /etc/init.d/nginx'
@@ -165,16 +176,11 @@ alias ngsta='sudo /etc/init.d/nginx start'
 alias ngsto='sudo /etc/init.d/nginx stop'
 # }}}
 #	Oroshi {{{
-alias oc="~/.oroshi/scripts/deploy/dircolors && source ~/.zshrc"
-alias od="~/.oroshi/deploy && source ~/.zshrc" 
-alias ou="cd ~/.oroshi && ~/.oroshi/update"
-alias ox="~/.oroshi/scripts/deploy/xmodmap"
 alias oz="source ~/.zshrc"
 alias oa="source ~/.oroshi/config/zsh/aliases.zsh"
+alias oc="~/.oroshi/scripts/deploy/dircolors && source ~/.zshrc"
+alias ox="~/.oroshi/scripts/deploy/xmodmap"
 alias oh="~/.oroshi/scripts/deploy/hosts"
-# }}}
-# Python {{{
-alias py3='python3'
 # }}}
 # Versioning {{{
 # Note: Context-sensitive aliases are defined in ./aliases-{git|hg|none}.zsh
@@ -184,10 +190,21 @@ alias vdcl='git clone --recursive'
 # }}}
 # Vim {{{
 alias v='vim -p'
-alias vv='fasd -e vim'
 alias va="vim ~/.oroshi/config/zsh/aliases.zsh"
 alias vf="vim ~/.oroshi/config/zsh/filetypes.db.zsh"
 alias ve='vim ~/.oroshi/config/vim/vimrc'
+# }}}
+# Synchronize stuff {{{
+alias michel-extract='camera-extract /media/MICHEL/'
+alias galaxy-extract='camera-extract /media/F101-14E2/DCIM'
+alias dingoo-sync='~/Documents/emulation/devices/dingoo/tools/dingoo-sync /media/dingoo'
+alias ebook-sync='ebook-sync ~/Documents/books /media/galaxy/books'
+alias photos-sync='photos-sync ~/Documents/Photos/ /media/BELETTE/Photos/Voyage/'
+alias sansa-sync-music="music-sync /media/jukebox/music sansa-sd"
+alias sansa-sync-misc="music-sync /media/jukebox/misc sansa"
+alias sansa-sync-nature="music-sync /media/jukebox/nature sansa"
+alias sansa-sync-podcasts="music-sync /media/jukebox/podcasts sansa"
+alias sansa-sync-soundtracks="music-sync /media/jukebox/soundtracks sansa-sd"
 # }}}
 # Tweet {{{
 alias tweet="t update"
@@ -195,8 +212,21 @@ alias timeline="t stream timeline"
 alias tsearch="t search all"
 # }}}
 # Web {{{
-# Flushing dns for web testing
 alias flushdns="/etc/init.d/dns-clean start"
-# Test current internet speed
 alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test500.zip'
 # }}}
+
+# Private aliases  {{{
+local privateAlias=~/.oroshi/private/config/zsh/local/$(hostname).zsh
+if [[ -r $privateAlias ]]; then
+	source $privateAlias
+fi
+# }}}
+# RVM {{{
+local rvmScript=~/.rvm/scripts/rvm
+if [[ -r $rvmScript ]]; then
+	path=($path	$HOME/.rvm/bin)
+  source $rvmScript
+fi
+# }}}
+
