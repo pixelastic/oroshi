@@ -1,0 +1,87 @@
+#!/usr/bin/env ruby
+# Encoding : UTF-8
+require "fileutils"
+require "shellwords"
+require "digest/md5"
+
+class Html2Pdf
+	def initialize(*args)
+		@files = args.map do |arg|
+			File.expand_path(arg)
+		end
+		@files.reject! do |file|
+			!File.exists?(file) || File.extname(file)!='.html'
+		end
+	end
+
+	# Returns a path in the file:// protocol notation
+	def file_protocol_path(filepath)
+		"file://" + File.expand_path(filepath)
+	end
+
+	# Gets the tmp filepath of any given file
+	def tmp_filepath(filepath)
+		# Note : This a md5 hash of the file in the same directory
+		filepath = File.expand_path(filepath)
+		extname = File.extname(filepath)
+		dirname = File.dirname(filepath)
+		md5 = Digest::MD5.hexdigest(filepath)
+		return File.join(dirname, "__html2pdf_tmp__" + md5 + extname)
+	end
+
+	# Changes the extension of a filepath
+	def change_extension(filepath, new_ext)
+		dirname = File.dirname(filepath)
+		extname = File.extname(filepath)
+		basename = File.basename(filepath, extname)
+		File.expand_path(File.join(dirname, basename + "." + new_ext))
+	end
+
+	# Copying the input file as a tmp file to operate on
+	def pre_conversion(file)
+		# puts "===== PRE ===="
+		tmp_file = tmp_filepath(file)
+		FileUtils.cp(file, tmp_file)
+		# puts "Copied #{file} to #{tmp_file}"
+	end
+
+	# Copying the output back to the initial dir
+	def post_conversion(original, tmp_output)
+		# puts "==== POST ===="
+		dirname = File.dirname(original)
+		basename = File.basename(original, File.extname(original))
+		real_output = File.join(dirname, basename + ".pdf")
+		FileUtils.mv(tmp_output, real_output)
+		# puts "Copied #{tmp_output} to #{real_output}"
+
+		FileUtils.rm(tmp_filepath(original))
+		# puts "Deleted #{tmp_filepath(original)}"
+	end
+
+	def run
+		options = [ "-T 0", "-R 0", "-B 0", "-L 0" ]
+		@files.each do |file|
+			# Note : wkhtmltopdf seems to have issues with input and output files
+			# containing utf8 characters. We'll work around that by copying the input
+			# file to a tmp file, converting it, and then copying the result as the
+			# output file.
+			pre_conversion(file)
+
+			# Input file is a copy of the original input file, in /tmp directory
+			input = tmp_filepath(file)
+			# puts "Input file is #{input}"
+			# Output file is the same, with a pdf extension
+			output = change_extension(input, "pdf")
+			# puts "Output file is #{output}"
+
+			# Conversion
+			puts "Converting #{File.basename(file)}"
+			%x[wkhtmltopdf #{options.join(' ')} #{file_protocol_path(input.shellescape)} #{output.shellescape} 2> /dev/null]
+
+			post_conversion(file, output)
+		end
+
+	end
+
+end
+Html2Pdf.new(*ARGV).run()
