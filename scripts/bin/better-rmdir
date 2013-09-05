@@ -11,7 +11,7 @@ require "shellwords"
 ARGV.each do |arg|
 	basename = File.basename(arg)
 	if basename =~ /\.Trash-([0-9]*)/
-		%x[rm -drf #{arg.shellescape}]
+		%x[rm -rf #{arg.shellescape}]
 	else
 		%x[trash-put #{arg.shellescape}]
 	end
