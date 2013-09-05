@@ -1,4 +1,4 @@
-#compdef chromium-browser html2txt
+#compdef chromium-browser html2txt html2pdf html2mkd
 # - Will only suggest webpage files
 
 _fts-webpage () {
