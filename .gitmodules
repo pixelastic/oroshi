@@ -64,3 +64,6 @@
 [submodule "config/vim/bundle/available/vim-css-color"]
 	path = config/vim/bundle/available/vim-css-color
 	url = git@github.com:ap/vim-css-color.git
+[submodule "config/vim/bundle/available/vim-css3-syntax"]
+	path = config/vim/bundle/available/vim-css3-syntax
+	url = git@github.com:hail2u/vim-css3-syntax.git
