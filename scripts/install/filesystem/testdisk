@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# The testdisk version in the Ubuntu repositories is too old
+
+
+echo "Downloading TestDisk"
+cd ~/local/etc
+wget "http://www.cgsecurity.org/testdisk-6.14.linux26.tar.bz2" -o testdisk.tar.bz2
+
+echo "Extracting it"
+tar xvjf testdisk.tar.bz2
+mv ./testdisk-6.14 ./testdisk
+rm ./testdisk.tar.bz2
+
+cd ~/local/bin/
+ln -s ../etc/testdisk/testdisk_static ./testdisk
