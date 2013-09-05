@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Copy cmus to ~/.cmus
+
+# Paths
+configDir=~/.oroshi/config/cmus
+configFile=${configDir}/autosave
+destFile=~/.cmus/autosave
+
+# Link the config file
+ln -fs $configFile $destFile

@@ -1,13 +1,5 @@
 #!/usr/bin/env bash
 
-# Install rvm
-\curl -L https://get.rvm.io | bash -s stable --ruby
-# Don't forget to add the following line in ~/.zshrc
-# [[ -r $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
-source ~/.rvm/scripts/rvm
-rvm get head
-rvm reload
-
 #Installing dependencies
 sudo apt-get install build-essential
 sudo apt-get install openssl
@@ -30,17 +22,35 @@ sudo apt-get install automake
 sudo apt-get install libtool
 sudo apt-get install bison
 sudo apt-get install subversion
+
+# Install rvm
+curl -L https://get.rvm.io | bash -s stable --ruby
+# Don't forget to add the following line in ~/.zshrc
+# [[ -r $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
+source ~/.rvm/scripts/rvm
+rvm get head
+rvm reload
+
 # Installing Ruby
 rvm install 1.9.3
 rvm install 1.9.3-dev
 
-# Using Pry instead of irb
+# Installing rails
+gem install rails 
+
+# Generic gems
 gem install pry
 gem install awesome_print
 
-# Installing mp3 tagging utility
+# Mp3
 gem install ruby-mp3info
 
+# Cugem install rails
+sudo apt-get install libcurl3 libcurl3-gnutls libcurl4-openssl-dev
+gem install curb
+
+# Xml
+gem install nokogiri
 
 
 

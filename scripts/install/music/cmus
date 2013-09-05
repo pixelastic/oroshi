@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
-# NOTE : Not currently working. Throws error on launch.
-
 echo "Note that cmus will ask for configuring a DECNet node. Choose configure later"
 
 echo "Downloading and installing"
 sudo apt-get install cmus
+
+echo "You might need to restart your computer for the installation to work."

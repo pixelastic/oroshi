@@ -113,8 +113,3 @@ keycode 58 = comma question comma question U203D U2E2E
 keycode 59 = semicolon period semicolon period ellipsis
 
 
-!!!!! Enter key
-! The key is named "Entrée" on french keyboard but is in fact a Return key.
-! It produces a Carriage Return on press (default)
-! It also produces a "Numeric Keypad" Enter on Shift-Press (custom)
-keycode  36 = Return KP_Enter Return KP_Enter

@@ -3,6 +3,10 @@
 echo "Creating ~/local"
 mkdir -p ~/local
 mkdir -p ~/local/etc
+mkdir -p ~/local/games
+mkdir -p ~/local/var
 mkdir -p ~/local/bin
+mkdir -p ~/local/mnt
 mkdir -p ~/local/src
 mkdir -p ~/local/tmp
+

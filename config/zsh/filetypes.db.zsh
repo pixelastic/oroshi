@@ -55,6 +55,6 @@ O_FILETYPES=(
 	subtitle    "vim:00;36:ass,srt,sub"
 	tmp         "vim:00;30:bak,kpf,orig,out,swp,tmp"
 	txt         "vim:00;36:log,markdown,md,mdown,mkd,mkdown,mo,po,template,text,txt"
-	txt-full    "gui lowriter:01;33:doc,docx,odt"
+	txt-full    "writer:01;33:doc,docx,odt"
 	video       "gui vlc:01;34:3gp,avi,flv,m4v,mpg,mpeg,mkv,mp4,webm"
 )
