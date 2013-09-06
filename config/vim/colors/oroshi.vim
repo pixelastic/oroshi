@@ -294,7 +294,12 @@ call s:HL('cssMediaType', 'orange')
 call s:Link('Todo', 'cssImportant')
 " [attributes]
 call s:HL('cssAttributeSelector', 'red')
-"
+" properties:
+call s:HL('cssProp', 'calmred')
+call s:Link('cssProp', 'cssVendorPrefixProp', 'cssBoxProp', 'cssFontProp', 'cssTextProp', 'cssFontAttr', 'cssColorProp', 'cssRenderProp', 'cssGeneratedContentProp')
+" values;
+call s:HL('cssValue', 'calmblue')
+call s:Link('cssValue', 'cssCommonAttr', 'cssRenderAttr', 'cssBoxAttr', 'cssTextAttr', 'cssFontAttr')
 " }}}
 " Diff {{{
 call s:Link('oroshi_DiffDelete', 'DiffRemoved')
