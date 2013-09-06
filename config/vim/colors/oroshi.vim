@@ -281,6 +281,21 @@ call s:HL('oroshi_RegexpReplacement', 'white')
 call s:HL('oroshi_RegexpSpecial', 'darkyellow')
 " }}}
 
+" Css {{{
+" Operators
+call s:Link('Operator', 'cssSelectorOp', 'cssMediaComma', 'cssBraces')
+" :pseudo-class
+call s:HL('cssPseudoClass', 'darkorange')
+call s:Link('cssPseudoClass', 'cssPseudoClassId')
+" @media
+call s:HL('cssMedia', 'yellow', '', 'bold')
+call s:HL('cssMediaType', 'orange')
+" !important
+call s:Link('Todo', 'cssImportant')
+" [attributes]
+call s:HL('cssAttributeSelector', 'red')
+"
+" }}}
 " Diff {{{
 call s:Link('oroshi_DiffDelete', 'DiffRemoved')
 call s:Link('oroshi_DiffAdd', 'DiffAdded')
