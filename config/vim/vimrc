@@ -139,7 +139,7 @@ syntax on
 colorscheme oroshi
 " Switching between light and dark themes with F2 and Ctrl+F2
 " Note : O1;5Q stands for Ctrl+F2 as <C-F2> does not seem to work
-nnoremap <silent> <F2> :syn off \| syn on \| colorscheme oroshi<CR>
+nnoremap <silent> <F2> :syn off \| colorscheme oroshi \| :syn on<CR>
 inoremap <silent> <F2> <Esc>:colorscheme oroshi<CR>li
 nnoremap <silent> O1;5Q :colorscheme summerfruit<CR>
 inoremap <silent> O1;5Q <Esc>:colorscheme summerfruit<CR>li

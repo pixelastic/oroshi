@@ -61,3 +61,9 @@
 [submodule "config/vim/bundle/available/vim-javascript"]
 	path = config/vim/bundle/available/vim-javascript
 	url = git@github.com:pangloss/vim-javascript.git
+[submodule "config/vim/bundle/available/vim-css-color"]
+	path = config/vim/bundle/available/vim-css-color
+	url = git@github.com:ap/vim-css-color.git
+[submodule "config/vim/bundle/available/vim-css3-syntax"]
+	path = config/vim/bundle/available/vim-css3-syntax
+	url = git@github.com:pixelastic/vim-css3-syntax.git

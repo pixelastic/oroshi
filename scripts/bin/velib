@@ -15,7 +15,7 @@ class Velib
 			18015 => "Station Custine",
 			18021 => "Station Marcadet/Hermel",
 			18022 => "Station Marcadet/Clignancourt",
-			18024 => "Station Marcadet- Poissoniers"
+			18024 => "Station Marcadet-Poissoniers"
 		}
 
 		@api_key = File.read(File.expand_path('~/.oroshi/private/config/jcdecaux/developerkey')).chomp
