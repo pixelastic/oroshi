@@ -15,7 +15,7 @@ class CameraExtract
 
 	# Set input and output dirs
 	def initialize(*args)
-		@default_output = '~/Photos/tmp'
+		@default_output = '~/Documents/pictures/tmp'
 		@resize = 800
 
 		parse_args(*args)
