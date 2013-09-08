@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 sudo apt-get install id3v2
+sudo apt-get install eyeD3
 
