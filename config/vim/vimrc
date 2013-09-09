@@ -161,9 +161,6 @@ cnoremap w!! w !sudo tee '%' >/dev/null<CR><CR>
 " FOLDING  {{{
 source ~/.vim/includes/folding.vim
 "}}}
-" GIT {{{
-source ~/.vim/includes/git.vim
-" }}}
 " INDENTATION  {{{
 " We use the advanced indentation method provided by the filetype plugin
 set nosmartindent
@@ -334,6 +331,14 @@ source ~/.vim/includes/ctrlf.vim
 " CTRL-P {{{
 source ~/.vim/includes/ctrlp.vim
 " }}}
+" GIT {{{
+source ~/.vim/includes/git.vim
+" }}}
+" SYNTASTIC {{{
+let g:syntastic_auto_jump=1
+let g:syntastic_error_symbol='✗'
+let g:syntastic_warning_symbol='⚠'
+" }}}
 
 " FILETYPES {{{
 " Load skeletons
@@ -353,4 +358,6 @@ nnoremap <leader>vr :mkview<CR>:source ~/.vimrc<CR>:call LoadView()<CR>:let &fil
 " man to open the manpage of a command in a new tab
 nnoremap <silent> man :tabe<CR>:setlocal filetype=man<CR>:.!man<Space>
 " }}}
+
+
 
