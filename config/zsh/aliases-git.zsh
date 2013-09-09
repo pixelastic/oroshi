@@ -65,7 +65,7 @@ alias vfrs='git flow release start'
 # }}}
 # [r]emote {{{
 alias vrR='git remote rm'
-alias vrc='git remote add'
+alias vra='git remote add'
 alias vrdw='git download'
 alias vrl='git remote show'
 alias vrpl='vdr && git pull && vsbu && cd -'

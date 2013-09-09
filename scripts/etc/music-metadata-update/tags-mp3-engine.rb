@@ -59,6 +59,8 @@ class TagsMp3Engine
 	# Returns a TXXX array with only keys we want to keep
 	def get_curated_txxx(mp3tags)
 		return false unless mp3tags.TXXX
+		# TXXX can sometime be a simple string, so we convert it to an array
+		mp3tags.TXXX = [mp3tags.TXXX] if mp3tags.TXXX.is_a? String
 		# Keeping only replaygain_ values
 		mp3tags.TXXX.select() { |tag| tag =~ /^replaygain_/ }
 	end
