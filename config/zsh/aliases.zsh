@@ -66,8 +66,9 @@ alias mc="mv"
 # }}}
 # Misc {{{
 # cp and mv using rsync and preserving attributes, and accross fat32 drives
-alias rcp='rsync -rahP --modify-window=1'
-alias rmv='rsync -rahP --modify-window=1 --remove-sent-files'
+function rcp() { rsync -rahP --modify-window=1 "$@" }
+function rmv() { rsync -rahP --modify-window=1 --prune-empty-dirs --remove-sent-files "$@" }
+compdef _cp rcp rmv
 # Scrollable colors
 alias spectrum='spectrum L'
 # ls with hidden files
