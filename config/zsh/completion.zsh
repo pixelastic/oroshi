@@ -10,6 +10,9 @@ fpath=(~/.oroshi/config/zsh/completion $fpath)
 # Lazy init completion
 autoload -U compinit
 compinit
+# Auto escape &, ? and * when needed
+autoload -U url-quote-magic
+zle -N self-insert url-quote-magic
 
 # Git flow completion
 source ~/.oroshi/config/zsh/completion/git-flow-completion/git-flow-completion.zsh
