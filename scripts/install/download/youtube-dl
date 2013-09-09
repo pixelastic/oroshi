@@ -3,11 +3,11 @@
 
 echo "Downloading binary"
 wget http://youtube-dl.org/downloads/2013.02.25/youtube-dl \
-	-O ~/local/bin/youtube-download
+	-O ~/local/bin/youtube-dl
 
 echo "Make it executable"
-chmod +x ~/local/bin/youtube-download
+chmod +x ~/local/bin/youtube-dl
 
 echo "Update the script"
-~/local/bin/youtube-download -U
+~/local/bin/youtube-dl -U
 

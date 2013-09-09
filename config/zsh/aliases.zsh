@@ -92,7 +92,7 @@ alias pd='plowdown'
 # Download files from transmission
 alias td='transmission-download'
 # Youtube downloader
-alias yt='youtube-download -t --prefer-free-format'
+alias yt='youtube-dl -t --prefer-free-format'
 # Flash video download
 alias gfv="get_flash_videos"
 # watch tree
