@@ -67,3 +67,6 @@
 [submodule "config/vim/bundle/available/vim-css3-syntax"]
 	path = config/vim/bundle/available/vim-css3-syntax
 	url = git@github.com:pixelastic/vim-css3-syntax.git
+[submodule "config/vim/bundle/available/html5.vim"]
+	path = config/vim/bundle/available/html5.vim
+	url = git@github.com:othree/html5.vim.git
