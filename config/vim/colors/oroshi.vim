@@ -329,6 +329,10 @@ call s:Link('oroshi_DiffAdd',     'hgcommitDiffAdded')
 call s:Link('oroshi_DiffDelete',  'hgcommitDiffRemoved')
 call s:Link('oroshi_DiffChange',  'hgcommitDiffChanged')
 " }}}
+" Html {{{
+" Disable styling of special tags
+call s:Link('Normal', 'htmlItalic', 'htmlLink', 'htmlTitle')
+" }}}
 " Lighttpd {{{
 call s:Link('Boolean', 'lighttpdSpecial')
 " }}}
