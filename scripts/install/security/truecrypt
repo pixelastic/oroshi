@@ -8,4 +8,5 @@ echo "Extracting"
 extract ./truecrypt.tar.gz
 
 echo "Installing"
-./truecrypt-7.1a-setupt-x86
+./truecrypt-7.1a-setup-x86
+rm ./truecrypt-7.1a-setup-x86
