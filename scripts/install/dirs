@@ -1,12 +1,21 @@
 #!/usr/bin/env bash
 
+echo "Chown /usr/local"
+# sudo chown $USER:$USER /usr/local
+
 echo "Creating ~/local"
 mkdir -p ~/local
-mkdir -p ~/local/etc
-mkdir -p ~/local/games
-mkdir -p ~/local/var
-mkdir -p ~/local/bin
+
+echo "Link /usr/local to ~/local"
+declare -a dirs=(bin etc games lib src var)
+for dir in ${dirs[@]}; do
+	# Backup existing dir
+	mv -u /usr/local/$bin ~/local/$bin
+	# Link them
+	ln -s /usr/local/$bin ~/local/$bin
+done
+
+echo "Add others useful local directories"
 mkdir -p ~/local/mnt
-mkdir -p ~/local/src
 mkdir -p ~/local/tmp
 

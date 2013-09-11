@@ -10,9 +10,3 @@ cd node
 ./configure
 make
 make install
-
-echo "Creating symlinks"
-cd ~/local/bin
-ln -s ../etc/node/bin/nodejs .
-ln -s ../etc/node/bin/npm .
-
