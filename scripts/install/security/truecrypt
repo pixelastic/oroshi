@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+echo "Downloading stable version"
+cd ~/local/etc/
+wget "http://www.truecrypt.org/download/truecrypt-7.1a-linux-x86.tar.gz" -o truecrypt.tar.gz
+
+echo "Extracting"
+extract ./truecrypt.tar.gz
+
+echo "Installing"
+./truecrypt-7.1a-setup-x86
+rm ./truecrypt-7.1a-setup-x86

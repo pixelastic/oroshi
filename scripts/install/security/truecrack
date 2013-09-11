@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+cd ~/local/etc/
+echo "Downloading source"
+wget "https://truecrack.googlecode.com/files/truecrack_v35.tar.gz" -o truecrack.tar.gz
+
+echo "Extracting"
+extract truecrack.tar.gz
+
+echo "Compiling"
+cd ./truecrack
+./configure --enable-cpu
+make
+sudo make install
