@@ -116,12 +116,9 @@ alias vlc='gui vlc'
 # Apt-get {{{
 alias apt-get='apt-fast'
 alias agi='sudo apt-fast install'
-alias agp='sudo apt-fast purge'
+alias agu='sudo apt-fast -u install'
 alias agr='sudo apt-fast remove'
 alias ags='sudo apt-cache search'
-alias agu='sudo apt-fast -u install'
-alias agc='sudo apt-fast clean'
-alias agd='sudo apt-cache show'
 # }}}
 # Ebook {{{
 alias ec='ebook-convert'
