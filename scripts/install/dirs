@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo "Chown /usr/local"
-# sudo chown $USER:$USER /usr/local
+sudo chown $USER:$USER /usr/local
 
 echo "Creating ~/local"
 mkdir -p ~/local
