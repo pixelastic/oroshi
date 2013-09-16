@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+# Encoding : UTF-8
+require "shellwords"
+# Converts a pdf file to a jpg one
+
+class Pdf2Jpg
+	def initialize(*args)
+		@files = args.map() { |file| File.expand_path(file) }
+		@files.select!() { |file| File.exists?(file) && File.extname(file) == '.pdf' }
+	end
+
+	def run
+		@files.each do |file|
+			dirname = File.dirname(file)
+			basename = File.basename(file, '.pdf')
+			output = File.join(dirname, basename + '.jpg')
+			puts "Converting #{basename}"
+			%x[convert #{file.shellescape} #{output.shellescape}]
+		end
+
+	end
+
+end
+Pdf2Jpg.new(*ARGV).run()
