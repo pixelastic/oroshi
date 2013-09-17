@@ -79,7 +79,6 @@ alias treed='tree -dN'
 alias n="gui nautilus"
 # Find a file
 function f() { find . -iname "*$1*" }
-alias f='f'
 # Reload test files
 alias rr='reload-tests'
 # Mount /dev/sd* to ~/local/mnt/sd*
