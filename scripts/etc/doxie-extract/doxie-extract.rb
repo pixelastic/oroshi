@@ -17,7 +17,7 @@ class DoxieExtract
 	# Set input and output dirs
 	def initialize(*args)
 		@default_input = '/media/DOXIE/DCIM/'
-		@default_output = '~/Photos/tmp'
+		@default_output = '~/Documents/pictures/tmp'
 		@resize = 800
 
 		parse_args(*args)
@@ -34,7 +34,7 @@ class DoxieExtract
 
 		output = File.expand_path(args[1])
 		unless File.exists?(output)
-			raise DoxieExtract::DirNotFoundError, "The input dir does not exists (#{output})", ""
+			raise DoxieExtract::DirNotFoundError, "The output dir does not exists (#{output})", ""
 		end
 
 		@input = input
