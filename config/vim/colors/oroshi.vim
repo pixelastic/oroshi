@@ -93,7 +93,8 @@ call s:HL('TabLineFill', 'white', 'darkgrey', 'none')
 call s:HL('TabLineSel', 'white', 'black', 'bold')
 " Signs
 call s:Link('LineNr', 'SignColumn')
-call s:Link('Todo', 'SyntasticErrorSign', 'SyntasticWarningSign')
+call s:Link('ErrorMsg', 'SyntasticErrorSign')
+call s:Link('WarningMsg', 'SyntasticWarningSign')
 " }}}
 " Completion menu {{{
 call s:HL('Pmenu', 'lightgrey', 'darkgrey')
@@ -184,7 +185,8 @@ call s:HL('NonText', 'darkgrey')
 " Unprintable chars
 call s:HL('SpecialKey', 'darkyellow')
 " Messages
-call s:HL('WarningMsg', 'red')
+call s:HL('WarningMsg', 'yellow', 'black', 'bold')
+call s:HL('ErrorMsg', 'red', 'black')
 " }}}
 " Extended text {{{
 " Code
