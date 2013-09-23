@@ -163,14 +163,12 @@ alias ufbx='sudo umount /home/tim/local/mnt/freebox'
 alias cdfbx='cd /home/tim/local/mnt/freebox'
 # }}}
 # Nginx {{{
-alias ng='sudo /etc/init.d/nginx'
-alias ngcfg='sudo /etc/init.d/nginx configtest'
-alias ngfrl='sudo /etc/init.d/nginx force-reload'
-alias ngrl='sudo /etc/init.d/nginx reload'
-alias ngrs='sudo /etc/init.d/nginx restart'
-alias ngst='sudo /etc/init.d/nginx status'
-alias ngsta='sudo /etc/init.d/nginx start'
-alias ngsto='sudo /etc/init.d/nginx stop'
+alias ngsta="ng start"
+alias ngsto="ng stop"
+alias ngrst="ng restart"
+alias ngpsta="ng --php start"
+alias ngpsto="ng --php stop"
+alias ngprst="ng --php restart"
 # }}}
 #	Oroshi {{{
 alias oz="source ~/.zshrc"
