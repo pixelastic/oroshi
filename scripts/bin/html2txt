@@ -1,36 +1,31 @@
-#!/usr/bin/env zsh
-# Create a txt file containing the text content of a given html file.
-#
-# $ html2txt source.html [source2.html ... sourceX.html]
-#
-#
+#!/usr/bin/env ruby
+# Encoding : UTF-8
+# Create a text representation of an html file.
+require "shellwords"
 
-# lynx is needed
-if [[ `which lynx` = '' ]]; then
-	echo "You need lynx to convert html to txt";
-	return 0;
-fi
+class Html2Txt
+  def initialize(*args)
+    @files = args.map(){|a| File.expand_path(a)}
+    @files.select!(){|f| File.exists?(f) && File.extname(f)==".html"}
 
-# At least one source must be given
-if [[ $# = 0 ]]; then
-	echo "No source given"
-	return 0;
-fi
+    unless @files.size
+      puts "You need to pass at least one html file as argument"
+      exit
+    end
+  end
 
-for source in $@; do
-	# Source need to be an html file
-	if [[ ! $source =~ '\.htm(l?)$' ]]; then
-		echo "$source is not an html file"
-		continue
-	fi
+  def run
+    @files.each do |file|
+      dirname = File.dirname(file)
+      extname = File.extname(file)
+      basename = File.basename(file, extname)
+      output = File.join(dirname, basename + ".txt")
 
-	# Source must exist
-	if [[ ! -r $source ]]; then
-		echo "Unable to find file $source"
-		continue
-	fi
+      puts "Creating #{File.basename(output)}"
+      %x[lynx -dump #{file.shellescape} > #{output.shellescape}]
+    end
 
-	# Output to a file named as the source, but in txt format
-	lynx -dump $source > ./${source:t:r}.txt
-	echo "File ${source:t:r}.txt created"
-done
+  end
+
+end
+Html2Txt.new(*ARGV).run()
