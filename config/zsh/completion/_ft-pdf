@@ -1,4 +1,4 @@
-#compdef evince pdf-split pdf-extract-pjg pdf2epub pdf2txt pdf-merge pdf-rotate
+#compdef evince pdf-split pdf-extract-pjg pdf2epub pdf2txt pdf-merge pdf-rotate pdf2jpg
 # - Will only suggest .pdf files
 
 _ft-pdf () {

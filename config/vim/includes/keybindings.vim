@@ -185,7 +185,6 @@ vnoremap à 0
 inoremap -_ ->
 inoremap _- ->
 " Faster typing of =>
-inoremap ]} =>
 inoremap °+ =>
 inoremap )= =>
 inoremap +° =>

@@ -94,7 +94,7 @@ class MusicSync
 			synchronize_dir(dir, File.join("/media/0123-4567/", dir.gsub(/^#{get_library_root}/, '')))
 		end
 		get_podcast_marked_directories.each do |dir|
-			synchronize_podcast_dir(dir, File.join("/media/0123-4567/podcasts", dir.gsub(/^#{get_library_root}/, '')))
+			synchronize_podcast_dir(dir, File.join("/media/0123-4567/", dir.gsub(/^#{get_library_root}/, '')))
 		end
 	end
 
@@ -123,9 +123,17 @@ class MusicSync
 	end
 
 	def synchronize_podcast_dir(source, destination)
+		# Create target directory if non-existent
+		FileUtils.mkdir_p(destination)
+
 		# Lowest podcast in destination
-		lowest_destination = File.basename(Dir[File.join(destination, '*.mp3')].sort.first)
-		lowest_destination_id = lowest_destination.split(" - ")[0].to_i
+		destination_files = Dir[File.join(destination, '*.mp3')]
+		if destination_files.size > 0
+			lowest_destination = File.basename(destination_files.sort.first)
+			lowest_destination_id = lowest_destination.split(" - ")[0].to_i
+		else
+			lowest_destination_id = 0
+		end
 
 		# We only copy to destination podcasts in source that have an id equal or
 		# higher

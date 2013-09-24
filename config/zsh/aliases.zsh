@@ -66,8 +66,9 @@ alias mc="mv"
 # }}}
 # Misc {{{
 # cp and mv using rsync and preserving attributes, and accross fat32 drives
-alias rcp='rsync -rahP --modify-window=1'
-alias rmv='rsync -rahP --modify-window=1 --remove-sent-files'
+function rcp() { rsync -rahP --modify-window=1 "$@" }
+function rmv() { rsync -rahP --modify-window=1 --prune-empty-dirs --remove-sent-files "$@" }
+compdef _cp rcp rmv
 # Scrollable colors
 alias spectrum='spectrum L'
 # ls with hidden files
@@ -78,7 +79,6 @@ alias treed='tree -dN'
 alias n="gui nautilus"
 # Find a file
 function f() { find . -iname "*$1*" }
-alias f='f'
 # Reload test files
 alias rr='reload-tests'
 # Mount /dev/sd* to ~/local/mnt/sd*
@@ -92,7 +92,7 @@ alias pd='plowdown'
 # Download files from transmission
 alias td='transmission-download'
 # Youtube downloader
-alias yt='youtube-download -t --prefer-free-format'
+alias yt='youtube-dl -t --prefer-free-format'
 # Flash video download
 alias gfv="get_flash_videos"
 # watch tree
@@ -115,12 +115,9 @@ alias vlc='gui vlc'
 # Apt-get {{{
 alias apt-get='apt-fast'
 alias agi='sudo apt-fast install'
-alias agp='sudo apt-fast purge'
+alias agu='sudo apt-fast -u install'
 alias agr='sudo apt-fast remove'
 alias ags='sudo apt-cache search'
-alias agu='sudo apt-fast -u install'
-alias agc='sudo apt-fast clean'
-alias agd='sudo apt-cache show'
 # }}}
 # Ebook {{{
 alias ec='ebook-convert'
@@ -166,14 +163,12 @@ alias ufbx='sudo umount /home/tim/local/mnt/freebox'
 alias cdfbx='cd /home/tim/local/mnt/freebox'
 # }}}
 # Nginx {{{
-alias ng='sudo /etc/init.d/nginx'
-alias ngcfg='sudo /etc/init.d/nginx configtest'
-alias ngfrl='sudo /etc/init.d/nginx force-reload'
-alias ngrl='sudo /etc/init.d/nginx reload'
-alias ngrs='sudo /etc/init.d/nginx restart'
-alias ngst='sudo /etc/init.d/nginx status'
-alias ngsta='sudo /etc/init.d/nginx start'
-alias ngsto='sudo /etc/init.d/nginx stop'
+alias ngsta="ng start"
+alias ngsto="ng stop"
+alias ngrst="ng restart"
+alias ngpsta="ng --php start"
+alias ngpsto="ng --php stop"
+alias ngprst="ng --php restart"
 # }}}
 #	Oroshi {{{
 alias oz="source ~/.zshrc"

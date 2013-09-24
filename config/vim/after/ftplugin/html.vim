@@ -43,11 +43,11 @@ endfunction
 " }}}
 
 " Ctrl+C closes opened tags (using ragtags)
-imap <C-c> <C-X>/<Esc>mzvat=`zi<Right>
+imap <buffer> <C-c> <C-X>/<Esc>mzvat=`zi<Right>
 " Ctrl+E expands zen-coding string (using emmet)
-imap <C-e> <C-Y>,
+imap <buffer> <C-e> <C-Y>,
 " Ctrl+B adds a <br />
-inoremap <C-b> <br /><CR>
-nnoremap <C-b> i<br /><CR><Esc>
+inoremap <buffer> <C-b> <br /><CR>
+nnoremap <buffer> <C-b> i<br /><CR><Esc>
 
 

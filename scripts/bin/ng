@@ -1,0 +1,42 @@
+#!/usr/bin/env ruby
+# Nginx startup script. Convenient wrapper for starting/stopping the php cgi
+# Usage :
+# $ ng (start|stop|restart|reload|force-reload|test) --php
+
+class Ng
+  def initialize(*args)
+    if args.include?('--php')
+      @php = true
+      args.delete('--php')
+    end
+    @action = args[0]
+    @script = "sudo /etc/init.d/nginx"
+    @script_php = "sudo /etc/init.d/spawn-fcgi"
+  end
+
+  def run
+    case @action
+    when "start"
+      puts %x[#{@script_php} start] if @php
+      puts %x[#{@script} start]
+    when "stop"
+      puts %x[#{@script_php} stop] if @php
+      puts %x[#{@script} stop]
+    when "restart"
+      if @php
+        puts %x[#{@script_php} stop]
+        puts %x[#{@script_php} start]
+      end
+      puts %x[#{@script} restart]
+    when "reload"
+      puts %x[#{@script} reload]
+    when "force-reload"
+      puts %x[#{@script} force-reload]
+    when "test"
+      puts %x[#{@script} configtest]
+    else
+      puts %x[#{@script} status]
+    end
+  end
+end
+Ng.new(*ARGV).run()

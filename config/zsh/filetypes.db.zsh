@@ -39,7 +39,7 @@
 typeset -Ag O_FILETYPES
 O_FILETYPES=(
 	android     "ls:00;31:apk"
-	archive     "extract:01;32:7z,bz2,cbr,cbz,r00,r01,r02,r03,r04,r05,r06,r07,r08,r09,rar,tar,tar.gz,tgz,zip"
+	archive     "extract:01;32:7z,bz2,cbr,cbz,gz,r00,r01,r02,r03,r04,r05,r06,r07,r08,r09,rar,tar,gz,tgz,zip"
 	audio       "gui vlc:00;34:mp3,wav,ogg,m4a"
 	config      "vim:00;33:conf,config,db,ini"
 	ebook       "ebook-viewer:01;33:epub"

@@ -70,3 +70,6 @@
 [submodule "config/vim/bundle/available/html5.vim"]
 	path = config/vim/bundle/available/html5.vim
 	url = git@github.com:othree/html5.vim.git
+[submodule "config/vim/bundle/available/scss-syntax.vim"]
+	path = config/vim/bundle/available/scss-syntax.vim
+	url = git@github.com:cakebaker/scss-syntax.vim.git
