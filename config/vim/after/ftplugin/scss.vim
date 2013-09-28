@@ -2,7 +2,7 @@
 " Generate generates a css file from a scss file
 function! b:RunFile()
 	let output = expand('%:p:r') . '.css'
-	execute '!sass --unix-newlines --style compact --scss -E utf-8 % ' . output
+	execute '!sass --cache-location /tmp/.sass-cache --unix-newlines --style compact --scss -E utf-8 % ' . output
 endfunction
 
 " Generate css file from scss on save
