@@ -220,6 +220,7 @@ fi
 local nvmScript=~/local/etc/nvm/nvm.sh
 if [[ -r $nvmScript ]]; then
   source $nvmScript
+	nvm use 0.10 &>/dev/null
 fi
 # }}}
 # RVM {{{
