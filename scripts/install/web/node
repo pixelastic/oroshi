@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
 # Nodejs
 
-echo "Downloading"
-cd ~/local/etc
-git clone git://github.com/joyent/node.git
+#Installing dependencies
+sudo apt-get install build-essential
+sudo apt-get install libssl-dev
 
-echo "Compiling"
-cd node
-./configure
-make
-make install
+echo "Installing nvm"
+cd ~/local/etc
+git clone https://github.com/creationix/nvm.git ./nvm
+
+cd ./nvm
+source ./nvm.sh
+nvm install 0.10
+nvm use 0.10
+nvm alias default 0.10

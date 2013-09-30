@@ -216,6 +216,12 @@ if [[ -r $privateAlias ]]; then
 	source $privateAlias
 fi
 # }}}
+# NVM {{{
+local nvmScript=~/local/etc/nvm/nvm.sh
+if [[ -r $nvmScript ]]; then
+  source $nvmScript
+fi
+# }}}
 # RVM {{{
 local rvmScript=~/.rvm/scripts/rvm
 if [[ -r $rvmScript ]]; then
