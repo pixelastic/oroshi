@@ -311,14 +311,23 @@ set wildignore+=*.zip,*.rar,*.tgz,*.tar,*.cbz         " Archive files
 set clipboard=
 if has("unnamedplus")
 	set clipboard+=unnamedplus
-	" Note: Pasting UTF-8 from Chromium results in garbaged text.
-	function! PasteFromUnnamedPlus()
-		if SeemsLatin1InUTF8(@+)
-			let @+=iconv(@+, "utf-8", "latin1")
+	function! PrePaste()
+		" We guess that if both + and * registers have the same number of words,
+		" and + is longer than *, it means they are actually the same source, but
+		" + gets garbled, so we'll use * in place of +
+		let lenstar = len(@*)
+		let wordstar = len(split(@*))
+		let lenplus = len(@+)
+		let wordplus = len(split(@+))
+
+		echom wordplus . "==" . wordstar
+		echom lenplus . "<" . lenstar
+		if wordstar == wordplus && lenstar < lenplus
+			let @+=@*
 		endif
 	endfunction
-	nnoremap p :silent call PasteFromUnnamedPlus()<CR>p
-	nnoremap P :silent call PasteFromUnnamedPlus()<CR>P
+	noremap <silent> p :call PrePaste()<CR>p
+	noremap <silent> P :call PrePaste()<CR>P
 endif
 " As gv selects last selected text, we add gp to select last pasted text
 nnoremap gp `[v`]
@@ -328,6 +337,8 @@ vnoremap x "_x
 " Copy and paste words
 nnoremap wy viwy
 nnoremap wp viwp
+" Pasting on a selection removes it
+vmap p xp
 "}}}
 
 " CTRL-F {{{
