@@ -213,6 +213,10 @@ function! FixEpub() " {{{
 	silent! %s/‘/'/e
 	" Remove space before three dots
 	silent! %s/ …/…/e
+	" Fix lines that only contain whitespace
+	silent! %s/\s+$//e
+	" Condensate multiple new lines into only one
+	silent! %s/\v\n{3,}/\r\r/e
 	
 	" [...] MOON.GLORIOUS moon,the night [...]
 	silent! %s/\v(\.|,)([^ "])/\1 \2/e
