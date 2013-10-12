@@ -211,50 +211,42 @@ function! FixEpub() " {{{
 	" Same goes for apostrophes
 	silent! %s/’/'/e
 	silent! %s/‘/'/e
+	silent! %s/`/'/e
 	" Remove space before three dots
 	silent! %s/ …/…/e
 	" Fix lines that only contain whitespace
 	silent! %s/\s+$//e
 	" Condensate multiple new lines into only one
 	silent! %s/\v\n{3,}/\r\r/e
+	"
 	
-	" [...] MOON.GLORIOUS moon,the night [...]
+	" Force space after dot and comma
 	silent! %s/\v(\.|,)([^ "])/\1 \2/e
-	" [...] Orphanage inHomestead, [...]
+	" Force space after caps
 	silent! %s/\v(\l)(\u)/\1 \2/e
-	" [...] WOULD NOThave been [...]
+	" Force space when case change inside a word
 	silent! %s/\v(\u{2})(\l)/\1 \2/e
-	" I T IS ALWAYS A BAD IDEA [...]
-	" silent! %s/\v^(\u) (\u)/\1\2/
-	
 		
-	" — Ce Rochefort, [...]
-	" 
-	" Chalais, passerait avec moi un vilain moment.
+	" Fix new lines after a comma in dialogues.
 	silent! %s/\v^— ((.*)[^\.!\?])\n\n([^—](.*))$/— \1 \3/e
-	" — Ce Rochefort, [...]
-	" 
-	" 
-	" 
-	" — Et vous, [...]
-	silent!	%s/\v^(— (.*))\n{3,}(— (.*))/\1\r\r\3/e
-	silent!	%s/\v^(— (.*))\n{3,}(— (.*))/\1\r\r\3/e
-
-	
-	
-	" sentence cut in half with new lines
+	" Fix sentence cut in half with new lines
 	silent! %s/\v(\l)(\n)+(\l)/\1 \3/e
 	
 	" Punctuation signs lost on new lines
 	silent! %s/\v\n\n(\?|!|;|»)/ \1/e
 	" French guillemets breaking sentences in new lines
 	silent! %s/\v»\n\n(\U)/" \1/e
+	" Fixing ". .." and ". . ."
+	silent! %s/\v\. \.( ?)\./.../e
+	
 	
 
 	" Setting the first line as the main title
 	if getline(1) !~ '^\#'
 		execute 'normal ggI# '
 	endif
+	" Putting each Chapter in caps
+	silent! %s/\v^Chapter (.*)$/CHAPTER \U\1/e
 	" Marking each heading as a chapter
 	silent! %s/\v^([^#]{2}\L+)$/## \1/e
 	
