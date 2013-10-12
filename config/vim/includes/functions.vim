@@ -212,8 +212,6 @@ function! FixEpub() " {{{
 	silent! %s/’/'/e
 	silent! %s/‘/'/e
 	silent! %s/`/'/e
-	" Remove space before three dots
-	silent! %s/ …/…/e
 	" Fix lines that only contain whitespace
 	silent! %s/\s+$//e
 	" Condensate multiple new lines into only one
@@ -237,7 +235,9 @@ function! FixEpub() " {{{
 	" French guillemets breaking sentences in new lines
 	silent! %s/\v»\n\n(\U)/" \1/e
 	" Fixing ". .." and ". . ."
-	silent! %s/\v\. \.( ?)\./.../e
+	silent! %s/\v( ?)\. \.( ?)\./.../e
+	silent! %s/…/.../e
+
 	
 	
 
