@@ -191,18 +191,17 @@ alias ve='vim ~/.oroshi/config/vim/vimrc'
 function vw() { vim `which $1` }
 # }}}
 # Synchronize stuff {{{
-alias michel-extract='camera-extract /media/MICHEL/'
-alias dingoo-sync='~/Documents/emulation/devices/dingoo/tools/dingoo-sync /media/dingoo'
 alias belette-sync-ebooks="ebook-sync ~/Documents/books /media/BELETTE/Books"
 alias belette-sync-roleplay="update-dir ~/Documents/roleplay /media/BELETTE/roleplay"
+alias dingoo-sync='~/Documents/emulation/devices/dingoo/tools/dingoo-sync /media/dingoo'
+alias galaxy-extract="camera-extract /media/F101-14E2/DCIM"
 alias galaxy-sync-audio="update-dir ~/Dropbox/config/audio /media/F101-14E2/media/audio"
 alias galaxy-sync-ebooks="ebook-sync ~/Documents/books /media/galaxy/books"
 alias galaxy-sync-notes="update-dir ~/Documents/notes/ /media/galaxy/notes"
 alias galaxy-sync-roleplay="update-dir ~/Documents/roleplay /media/galaxy/roleplay"
-alias galaxy-extract="camera-extract /media/F101-14E2/DCIM"
-
-alias sansa-sync-music="music-sync /media/jukebox/music sansa-sd"
+alias michel-extract='camera-extract /media/MICHEL/'
 alias sansa-sync-misc="music-sync /media/jukebox/misc sansa"
+alias sansa-sync-music="music-sync /media/jukebox/music sansa-sd"
 alias sansa-sync-nature="music-sync /media/jukebox/nature sansa"
 alias sansa-sync-podcasts="music-sync /media/jukebox/podcasts sansa"
 alias sansa-sync-soundtracks="music-sync /media/jukebox/soundtracks sansa-sd"
