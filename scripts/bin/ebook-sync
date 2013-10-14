@@ -179,7 +179,8 @@ class EbookSync
 				end
 			end
 
-			puts "Should delete #{dest_file}"
+			puts "Deleting #{dest_file}"
+      File.delete(dest_file)
 		end
 	end
 end
