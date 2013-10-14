@@ -287,6 +287,8 @@ call s:HL('oroshi_RegexpSpecial', 'darkyellow')
 " }}}
 
 " Css {{{
+" Tag name
+call s:Link('Function', 'cssTagName', 'sassClass')
 " Operators
 call s:Link('Operator', 'cssSelectorOp', 'cssMediaComma', 'cssBraces')
 " :pseudo-class

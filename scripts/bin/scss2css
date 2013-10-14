@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+# Encoding : UTF-8
+require "shellwords"
+# Convert scss files to css
+
+class Scss2Css
+  def initialize(*args)
+    @files = args.map(){|a| File.expand_path(a)}
+    @files.select!(){|f| File.exists?(f) && File.extname(f)==".scss"}
+  end
+  def run
+    @files.each do |file|
+      dirname = File.dirname(file)
+      extname = File.extname(file)
+      basename = File.basename(file, extname)
+      output = File.join(dirname, basename + ".css")
+      puts "Converting #{basename}"
+      %x[sass --cache-location /tmp/sass-cache --unix-newlines --style compact --scss -E utf-8 #{file.shellescape} #{output.shellescape}]
+    end
+  end
+end
+Scss2Css.new(*ARGV).run()

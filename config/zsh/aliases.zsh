@@ -188,6 +188,7 @@ alias v='vim -p'
 alias va="vim ~/.oroshi/config/zsh/aliases.zsh"
 alias vf="vim ~/.oroshi/config/zsh/filetypes.db.zsh"
 alias ve='vim ~/.oroshi/config/vim/vimrc'
+function vw() { vim `which $1` }
 # }}}
 # Synchronize stuff {{{
 alias michel-extract='camera-extract /media/MICHEL/'
@@ -214,6 +215,13 @@ alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/download
 local privateAlias=~/.oroshi/private/config/zsh/local/$(hostname).zsh
 if [[ -r $privateAlias ]]; then
 	source $privateAlias
+fi
+# }}}
+# NVM {{{
+local nvmScript=~/local/etc/nvm/nvm.sh
+if [[ -r $nvmScript ]]; then
+  source $nvmScript
+	nvm use 0.10 &>/dev/null
 fi
 # }}}
 # RVM {{{
