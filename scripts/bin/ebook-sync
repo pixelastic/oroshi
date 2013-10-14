@@ -180,7 +180,11 @@ class EbookSync
 			end
 
 			puts "Deleting #{dest_file}"
-      File.delete(dest_file)
+      if File.directory?(dest_file)
+        FileUtils.rm_rf(dest_file)
+      else
+        FileUtils.rm(dest_file)
+      end
 		end
 	end
 end
