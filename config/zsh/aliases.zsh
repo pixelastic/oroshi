@@ -194,6 +194,7 @@ function vw() { vim `which $1` }
 alias belette-sync-ebooks="ebook-sync ~/Documents/books /media/BELETTE/Books"
 alias belette-sync-notes="update-dir ~/Documents/notes /media/BELETTE/notes"
 alias belette-sync-roleplay="update-dir ~/Documents/roleplay /media/BELETTE/roleplay"
+alias belette-sync-comics="update-dir /media/armor/comics /media/BELETTE/Comics"
 alias dingoo-sync="~/Documents/emulation/devices/dingoo/tools/dingoo-sync /media/dingoo"
 alias galaxy-extract="camera-extract /media/F101-14E2/DCIM"
 alias galaxy-sync-audio="update-dir ~/Dropbox/config/audio /media/F101-14E2/media/audio"
