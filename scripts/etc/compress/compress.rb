@@ -10,6 +10,11 @@ class Compress
 		@resize = 800
 		@quality = 80
 
+    if args.size == 0
+      puts "Usage :"
+      pust "compress [--resize] [--quality] /path/to/file /path/to/file"
+    end
+
 		# Optional arguments
 		if args.include?('--resize')
 			@resize = args[args.index('--resize')+1].to_i
