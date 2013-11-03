@@ -6,5 +6,4 @@ destFile=/etc/cifs_serenity_tim
 configFile=~/.oroshi/private/config/cifs/cifs_serenity_tim
 
 # Link the config file
-sudo ln -fs $configFile $destFile
-sudo chmod 0600 $destFile
+sudo cp $configFile $destFile

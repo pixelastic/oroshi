@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# fstab config
+
+# Paths
+hostname=$(hostname)
+destFile=/etc/fstab
+configFile=~/.oroshi/private/config/fstab/$hostname.fstab
+
+# Link the config file
+if [[ -r $configFile ]]; then
+	sudo cp $configFile $destFile
+fi
