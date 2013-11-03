@@ -209,9 +209,9 @@ alias sansa-sync-podcasts="music-sync /media/jukebox/podcasts sansa"
 alias sansa-sync-soundtracks="music-sync /media/jukebox/soundtracks sansa-sd"
 # }}}
 # Serenity {{{
-alias smov='sudo mount -t cifs 192.168.0.16:/movies /mnt/serenity/movies -o username=tim,uid=1000,iocharset=utf8,file_mode=0777,dir_mode=0777,credentials=/etc/cifs_serenity_tim'
-alias usmov='sudo umount /mnt/serenity/movies'
-alias cdsmov'cd /mnt/serenity/movies'
+alias svid='sudo mount -t cifs 192.168.0.16:/video /mnt/serenity/video -o username=tim,uid=1000,iocharset=utf8,file_mode=0777,dir_mode=0777,credentials=/etc/cifs_serenity_tim'
+alias usvide='sudo umount /mnt/serenity/video'
+alias cdsvid='cd /mnt/serenity/video'
 
 alias smus='sudo mount -t cifs 192.168.0.16:/music /mnt/serenity/music -o username=tim,uid=1000,iocharset=utf8,file_mode=0777,dir_mode=0777,credentials=/etc/cifs_serenity_tim'
 alias usmus='sudo umount /mnt/serenity/music'
