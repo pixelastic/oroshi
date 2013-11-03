@@ -191,15 +191,27 @@ alias ve='vim ~/.oroshi/config/vim/vimrc'
 function vw() { vim `which $1` }
 # }}}
 # Synchronize stuff {{{
-alias michel-extract='camera-extract /media/MICHEL/'
-alias galaxy-extract='camera-extract /media/F101-14E2/DCIM'
-alias dingoo-sync='~/Documents/emulation/devices/dingoo/tools/dingoo-sync /media/dingoo'
-alias ebook-sync='ebook-sync ~/Documents/books /media/galaxy/books'
-alias sansa-sync-music="music-sync /media/jukebox/music sansa-sd"
+alias belette-sync-ebooks="ebook-sync ~/Documents/books /media/BELETTE/Books"
+alias belette-sync-notes="update-dir ~/Documents/notes /media/BELETTE/notes"
+alias belette-sync-roleplay="update-dir ~/Documents/roleplay /media/BELETTE/roleplay"
+alias belette-sync-comics="update-dir /media/armor/comics /media/BELETTE/Comics"
+alias dingoo-sync="~/Documents/emulation/devices/dingoo/tools/dingoo-sync /media/dingoo"
+alias galaxy-extract="camera-extract /media/F101-14E2/DCIM"
+alias galaxy-sync-audio="update-dir ~/Dropbox/config/audio /media/F101-14E2/media/audio"
+alias galaxy-sync-ebooks="ebook-sync ~/Documents/books /media/galaxy/books"
+alias galaxy-sync-notes="update-dir ~/Documents/notes/ /media/galaxy/notes"
+alias galaxy-sync-roleplay="update-dir ~/Documents/roleplay /media/galaxy/roleplay"
+alias michel-extract="camera-extract /media/MICHEL/"
 alias sansa-sync-misc="music-sync /media/jukebox/misc sansa"
+alias sansa-sync-music="music-sync /media/jukebox/music sansa-sd"
 alias sansa-sync-nature="music-sync /media/jukebox/nature sansa"
 alias sansa-sync-podcasts="music-sync /media/jukebox/podcasts sansa"
 alias sansa-sync-soundtracks="music-sync /media/jukebox/soundtracks sansa-sd"
+# }}}
+# Serenity {{{
+alias smov='sudo mount -t cifs 192.168.0.16:/movies /home/tim/local/mnt/serenity/movies -o username=tim,uid=1000,iocharset=utf8,file_mode=0777,dir_mode=0777,credentials=/etc/cifs_serenity_tim'
+alias usmov='sudo umount /home/tim/local/mnt/serenity/movies'
+alias cdsmov'cd /home/tim/local/mnt/serenity/movies'
 # }}}
 # Tweet {{{
 alias tweet="t update"

@@ -5,6 +5,7 @@
 *.crcdownload
 *~
 nohup.out
+tmp
 
 # Compiled stuff
 *.exe
@@ -15,6 +16,7 @@ nohup.out
 *.min.css
 *.min.js
 __pycache__
+.sass-cache
 
 # Junk
 .DS_Store

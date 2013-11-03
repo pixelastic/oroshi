@@ -11,3 +11,6 @@ sudo apt-get install xfsprogs
 echo "Installing samba"
 sudo apt-get install cifs-utils
 
+echo "Installing nfs"
+sudo apt-get install nfs-common
+
