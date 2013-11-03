@@ -320,8 +320,13 @@ if has("unnamedplus")
 		let lenplus = len(@+)
 		let wordplus = len(split(@+))
 
-		echom wordplus . "==" . wordstar
-		echom lenplus . "<" . lenstar
+		" If @+ is empty, we use @*
+		if lenplus == 0 && lenstar > 0
+			let @+=@*
+		endif
+
+		" If about same size, but @+ is bigger than @* we guess that it gets
+		" garbled and we replace it by @*
 		if wordstar == wordplus && lenstar < lenplus
 			let @+=@*
 		endif
