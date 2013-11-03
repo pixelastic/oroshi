@@ -208,6 +208,11 @@ alias sansa-sync-nature="music-sync /media/jukebox/nature sansa"
 alias sansa-sync-podcasts="music-sync /media/jukebox/podcasts sansa"
 alias sansa-sync-soundtracks="music-sync /media/jukebox/soundtracks sansa-sd"
 # }}}
+# Serenity {{{
+alias smov='sudo mount -t cifs 192.168.0.16:/movies /home/tim/local/mnt/serenity/movies -o username=tim,uid=1000,iocharset=utf8,file_mode=0777,dir_mode=0777,credentials=/etc/cifs_serenity_tim'
+alias usmov='sudo umount /home/tim/local/mnt/serenity/movies'
+alias cdsmov'cd /home/tim/local/mnt/serenity/movies'
+# }}}
 # Tweet {{{
 alias tweet="t update"
 alias timeline="t stream timeline"
