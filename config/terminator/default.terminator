@@ -9,10 +9,12 @@
   title_inactive_bg_color = "#121212"
 [keybindings]
   cycle_prev = None
+  next_tab = None
   close_window = None
   group_tab = None
   resize_left = None
   broadcast_all = <Shift><Control>Page_Up
+  rotate_ccw = None
   reset_clear = None
   go_right = <Control>Right
   new_tab = None
@@ -38,14 +40,15 @@
   search = None
   go_up = <Control>Up
   resize_up = None
-  next_tab = None
+  rotate_cw = <Primary><Shift>r
   go_down = <Control>Down
   new_window = None
   move_tab_left = None
 [profiles]
   [[default]]
-    palette = "#3a3a3a:#d70000:#00af5f:#d7d700:#5f87ff:#af87ff:#ff875f:#d0d0d0:#3a3a3a:#870000:#008700:#af8700:#5fafd7:#af5fd7:#d75f00:#a8a8a8"
     scrollbar_position = hidden
+    palette = "#3a3a3a:#d70000:#00af5f:#d7d700:#5f87ff:#af87ff:#ff875f:#d0d0d0:#3a3a3a:#870000:#008700:#af8700:#5fafd7:#af5fd7:#d75f00:#a8a8a8"
+    background_image = None
     split_to_group = True
     foreground_color = "#dadada"
     scroll_on_output = False
@@ -55,8 +58,9 @@
     background_color = "#121212"
     scrollback_infinite = True
   [[Oroshi]]
-    palette = "#3a3a3a:#d70000:#00af5f:#d7d700:#5f87ff:#af87ff:#ff875f:#d0d0d0:#1c1c1c:#870000:#008700:#af8700:#5fafd7:#5f00af:#d75f00:#a8a8a8"
     scrollbar_position = hidden
+    palette = "#3a3a3a:#d70000:#00af5f:#d7d700:#5f87ff:#af87ff:#ff875f:#d0d0d0:#1c1c1c:#870000:#008700:#af8700:#5fafd7:#5f00af:#d75f00:#a8a8a8"
+    background_image = None
     split_to_group = True
     foreground_color = "#dadada"
     scroll_on_output = False
