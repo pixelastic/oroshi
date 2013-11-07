@@ -39,3 +39,5 @@
 	unstage = reset HEAD
 [advice]
   ; statusHints = false
+[push]
+	default = simple
