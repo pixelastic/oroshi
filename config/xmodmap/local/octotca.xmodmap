@@ -1,0 +1,13 @@
+! I'm used to having Home/End keys near my arrow keys for speed movement, so
+! I remapped the PageUp/PageDown. I also mapped the original Home/End keys
+! (situated in the top right of the keyboard) to PageUp/PageDown
+keycode 112 = Home Prior
+keycode 117 = End Next
+keycode 110 = Prior
+keycode 115 = Next
+
+!!!!! Enter key
+! The key is named "Entrée" on french keyboard but is in fact a Return key.
+! It produces a Carriage Return on press (default)
+! It also produces a "Numeric Keypad" Enter on Shift-Press (custom)
+keycode  36 = Return KP_Enter Return KP_Enter
