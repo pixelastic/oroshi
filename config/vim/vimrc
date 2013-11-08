@@ -108,9 +108,6 @@ set number
 set showmode
 " Show more info about current command
 set showcmd
-" When displaying the help, make it as large as possible so we can more easily
-" read it
-set helpheight=250
 " Always keep 3 lines visible to keep context
 set scrolloff=3
 " Hide invisible chars by default, but if they should be displayed, define the
