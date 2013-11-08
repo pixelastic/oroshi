@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+# Extras that couldn't be in the initial install due to legal issues
+sudo apt-get install ubuntu-restricted-extras
+
+# Tools (gsettings, dconf-editor) to edit dconf
+sudo apt-get install dconf-tools
+
+# Update topbar to display icons (like dropbox)
+sudo apt-get install libappindicator1
+
+
