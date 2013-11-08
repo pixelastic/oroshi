@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+# encoding : UTF-8
+require "fileutils"
+require "shellwords"
+# Given a dconf schema, will create an editable shell script to edit the values
+
+class DconfExport
+  def initialize(*args)
+    if args[0].nil?
+      puts "Usage : dconf-export <schema>"
+      exit
+    end
+    @schema = args[0]
+  end
+
+  def keys(schema)
+    return %x[gsettings list-keys #{schema.shellescape}]
+  end
+
+  def value(schema, key)
+    return %x[gsettings get #{schema.shellescape} #{@key.shellescape}]
+  end
+
+
+  
+  def run
+    export = []
+    keys(@schema).each do |key|
+      export << "gsettings set #{@schema} #{key} #{value(@schema, key}"
+    end
+    p export
+  end
+    
+end
+DconfExport.new(*ARGV).run();
