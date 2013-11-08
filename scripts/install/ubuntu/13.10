@@ -6,6 +6,9 @@ sudo apt-get install ubuntu-restricted-extras
 # Tools (gsettings, dconf-editor) to edit dconf
 sudo apt-get install dconf-tools
 
+# CompizConfig Settings Manager
+sudo apt-get install compizconfig-settings-manager
+
 # Update topbar to display icons (like dropbox)
 sudo apt-get install libappindicator1
 
