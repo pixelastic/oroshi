@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+mkdir -p ~/.davfs2/
+# Link secrets files from private repo
+ln -fs ~/.oroshi/private/config/davfs2/secrets ~/.davfs2/secrets
+
+echo "Remember that to access a davfs drive mounted in userspace you need to"
+echo "- be part of the davfs2 group (sudo adduser $USER davfs2)"
+echo "- reconfigure davfs2 to accept non-root to acces drive (sudo dpkg-reconfigure davfs2)"

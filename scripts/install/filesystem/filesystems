@@ -8,8 +8,12 @@ echo "Installing xfs"
 # To format a volume in XFS
 sudo apt-get install xfsprogs
 
-echo "Installing samba"
+echo "Installing cifs (ex-smb)"
 sudo apt-get install cifs-utils
+
+echo "Installing webdav"
+sudo apt-get install davfs2
+echo "Run sudo dpkg-reconfigure davfs2 and select yes to mount in userspace"
 
 echo "Installing nfs"
 sudo apt-get install nfs-common

@@ -177,6 +177,7 @@ alias oc="~/.oroshi/scripts/deploy/dircolors && source ~/.zshrc"
 alias ox="~/.oroshi/scripts/deploy/xmodmap"
 alias oh="~/.oroshi/scripts/deploy/hosts"
 alias os="~/.oroshi/scripts/deploy/ssh"
+alias of="~/.oroshi/scripts/deploy/fstab"
 # }}}
 # Versioning {{{
 # Note: Context-sensitive aliases are defined in ./aliases-{git|hg|none}.zsh
