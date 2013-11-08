@@ -1,18 +1,12 @@
 #!/usr/bin/env bash
 
-echo "Chown /usr/local"
-sudo chown $USER:$USER /usr/local
-
 echo "Creating ~/local"
 mkdir -p ~/local
 
-echo "Link /usr/local to ~/local"
-declare -a dirs=(bin etc games lib src var)
-for dir in ${dirs[@]}; do
-	# Backup existing dir
-	mv -u /usr/local/$bin ~/local/$bin
-	# Link them
-	ln -s /usr/local/$bin ~/local/$bin
+echo "Symlinkin dirs from /usr/local to ~/local"
+for i in  ~/local//usr/local/*; do
+	mv -u /usr/local/$i ~/local/$i
+	ln -s ~/local/$i /usr/local/$i
 done
 
 echo "Add others useful local directories"
