@@ -9,4 +9,5 @@ sudo apt-get install dconf-tools
 # Update topbar to display icons (like dropbox)
 sudo apt-get install libappindicator1
 
-
+# Disable guest login
+sudo /usr/lib/lightdm/lightdm-set-defaults -l false
