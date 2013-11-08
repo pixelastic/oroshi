@@ -14,21 +14,28 @@ class DconfExport
   end
 
   def keys(schema)
-    return %x[gsettings list-keys #{schema.shellescape}]
+    return %x[gsettings list-keys #{schema.shellescape}].split("\n")
   end
 
   def value(schema, key)
-    return %x[gsettings get #{schema.shellescape} #{@key.shellescape}]
+    value = %x[gsettings get #{schema.shellescape} #{key.shellescape}].chomp
+    value = "['']" if value == "@as []"
+    return value
   end
 
 
   
   def run
-    export = []
+    export = ["#!/usr/bin/env sh"]
     keys(@schema).each do |key|
-      export << "gsettings set #{@schema} #{key} #{value(@schema, key}"
+      export << "gsettings set #{@schema} #{key} \"#{value(@schema, key)}\""
     end
-    p export
+
+    filename = "#{@schema}.sh";
+    File.open(filename, "w") do |file|
+      file.write(export.join("\n"))
+    end
+    %x[chmod +x #{filename.shellescape}]
   end
     
 end
