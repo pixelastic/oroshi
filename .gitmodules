@@ -73,3 +73,6 @@
 [submodule "config/vim/bundle/available/scss-syntax.vim"]
 	path = config/vim/bundle/available/scss-syntax.vim
 	url = git@github.com:cakebaker/scss-syntax.vim.git
+[submodule "scripts/etc/dconf-export"]
+	path = scripts/etc/dconf-export
+	url = git@github.com:pixelastic/dconf-export.git
