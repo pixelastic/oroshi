@@ -8,6 +8,7 @@ sudo apt-get install dconf-tools
 
 # CompizConfig Settings Manager
 sudo apt-get install compizconfig-settings-manager
+sudo apt-get install compiz-plugins-extra
 
 # Update topbar to display icons (like dropbox)
 sudo apt-get install libappindicator1
