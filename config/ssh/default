@@ -5,5 +5,3 @@ Compression     yes
 # Re-use opened connection to a given server
 ControlMaster   auto
 ControlPath     ~/.ssh/master-%r@%h:%p
-# Use common pixelastic key
-IdentityFile    ~/.ssh/pixelastic-20100303
