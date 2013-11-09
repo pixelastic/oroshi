@@ -10,7 +10,6 @@ alias cdemu='cd ~/perso/emulation'
 alias cdrp='cd ~/perso/roleplay/'
 alias cdscenar='cd ~/perso/roleplay/scenarios/'
 # }}}
-Le train de tes injures roule sur les rails de mon indifference
 
 # Synchronize stuff {{{
 alias belette-sync-ebooks="ebook-sync ~/perso/books /media/tca/BELETTE/Books"
