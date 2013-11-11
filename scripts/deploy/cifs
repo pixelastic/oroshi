@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-# Cifs credentials
-
-# Paths
-destFile=/etc/cifs_serenity_tim
-configFile=~/.oroshi/private/config/cifs/cifs_serenity_tim
-
-# Link the config file
-sudo cp $configFile $destFile
