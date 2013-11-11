@@ -25,3 +25,5 @@ ln -fs ~/.oroshi/private/config/davfs2/secrets ~/.davfs2/secrets
 # We also need to create an empty config file otherwise it will copy the
 # default one that does not work in userspace
 echo "" > ~/.davfs2/davfs2.conf
+
+sudo mount -a
