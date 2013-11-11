@@ -3,6 +3,9 @@ require "fileutils"
 require "shellwords"
 # Will import files from a digital camera and resize them to a format better
 # suited for easy viewing.
+# Usage :
+#  $ camera-extract /path/to/sd/card /local/path [--resize max_size] [--optim
+#  optimisation_percentage]
 
 
 class CameraExtract
@@ -15,30 +18,35 @@ class CameraExtract
 
 	# Set input and output dirs
 	def initialize(*args)
-		@default_output = '~/Documents/pictures/tmp'
-		@resize = 800
+		@default_resize = 800
+    @default_optim = 80
 
 		parse_args(*args)
 	end
 
 	def parse_args(*args)
-		unless args.size > 0
-			raise CameraExtract::ArgumentError, "You need to pass at least the input dir", ""
+		if args.size < 2
+      puts "Usage :"
+      puts "$ camera-extract /path/to/sd/card /local/path/to/extract [--resize max_size] [--optim optimisation_percentage]"
+      exit
 		end
-		input = File.expand_path(args[0])
-		unless File.exists?(input)
-			raise CameraExtract::DirNotFoundError, "The input dir does not exists (#{input})", ""
-		end
+    
+    @input = File.expand_path(args[0])
+    @output = File.expand_path(args[1])
+    
+    if !File.exists?(@input)
+      puts "#{@input} unreachable."
+      exit
+    end
 
-		if args.size > 1
-			output = args[1]
-		else
-			output = @default_output
-		end
-		output = File.expand_path(output)
-		
-		@input = input
-		@output = output
+    if !File.exists?(@output)
+      FileUtils.mkdir_p(@output)
+      puts "Creating #{@output}"
+    end
+
+    @resize = args.include?('--resize') ? args[args.index('--resize')+1] : @default_resize
+    @optim = args.include?('--optim') ? args[args.index('--optim')+1] : @default_optim
+
 	end
 
 	# Return a list of all files to extract
@@ -85,9 +93,9 @@ class CameraExtract
 			%x[#{convert_options.join(' ')}]
 
 			# Optimising them
-			puts "Optimising 80%"
+			puts "Optimising #{@optim}%"
 			jpegoptim_options = [
-				"jpegoptim -m80",
+				"jpegoptim -m#{@optim}",
 				"#{compressed_file.shellescape}"
 			]
 			%x[#{jpegoptim_options.join(' ')}]
