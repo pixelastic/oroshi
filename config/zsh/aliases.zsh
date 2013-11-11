@@ -186,13 +186,9 @@ alias ve='vim ~/.oroshi/config/vim/vimrc'
 function vw() { vim `which $1` }
 # }}}
 # Serenity {{{
-alias svid='sudo mount -t cifs 192.168.0.16:/video /mnt/serenity/video -o username=tim,uid=1000,iocharset=utf8,file_mode=0777,dir_mode=0777,credentials=/etc/cifs_serenity_tim'
-alias usvide='sudo umount /mnt/serenity/video'
-alias cdsvid='cd /mnt/serenity/video'
-
-alias smus='sudo mount -t cifs 192.168.0.16:/music /mnt/serenity/music -o username=tim,uid=1000,iocharset=utf8,file_mode=0777,dir_mode=0777,credentials=/etc/cifs_serenity_tim'
-alias usmus='sudo umount /mnt/serenity/music'
-alias cdsmus'cd /mnt/serenity/music'
+alias cdse="cd ~/local/mnt/serenity/"
+alias cdsevid="cd ~/local/mnt/serenity/video/"
+alias cdsemus="cd ~/local/mnt/serenity/music/"
 # }}}
 # Tweet {{{
 alias tweet="t update"
