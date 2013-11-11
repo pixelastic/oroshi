@@ -154,6 +154,8 @@ inoremap <Home> <Esc>^i
 " Scroll one page at a time
 nnoremap U <C-U>
 nnoremap D <C-D>
+vnoremap U <C-U>
+vnoremap D <C-D>
 " Jump to 
 nnoremap <silent> <Leader>z :lprev<CR>
 nnoremap <silent> <Leader>s :lnext<CR>
