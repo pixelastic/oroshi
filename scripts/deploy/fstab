@@ -21,6 +21,7 @@ done;
 mkdir -p ~/.davfs2/
 # Link secrets files from private repo
 chmod 0600 ~/.oroshi/private/config/davfs2/secrets
+rm ~/.davfs2/secrets
 ln -fs ~/.oroshi/private/config/davfs2/secrets ~/.davfs2/secrets
 # We also need to create an empty config file otherwise it will copy the
 # default one that does not work in userspace
