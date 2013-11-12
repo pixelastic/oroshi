@@ -1,0 +1,1 @@
+glidepoint is used to enable the lateral scrolling on the touchpad.
