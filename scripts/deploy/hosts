@@ -12,23 +12,15 @@ local hostname=$(hostname)
 local defaultFile=~/.oroshi/config/hosts/default
 local zeroFile=~/.oroshi/config/hosts/zero
 local privateFiles="~/.oroshi/private/config/hosts/local/${hostname}/*"
-local destFile=/usr/local/etc/hosts
-
-# Can't write file
-touch $destFile 2>/dev/null
-if [[ ! -w $destFile ]]; then
-	echo "Unable to create $destFile."
-	echo "Make sure the file is writable."
-	return
-fi
+local destFile=/etc/hosts
 
 # Add localhost binding
-echo "127.0.0.1\t$hostname" > $destFile
+echo "127.0.0.1\t$hostname" | sudo tee $destFile > /dev/null
 # Add default config
-cat $defaultFile >> $destFile
+cat $defaultFile | sudo tee -a $destFile > /dev/null
 # Add zero config
-cat $zeroFile >> $destFile
+cat $zeroFile | sudo tee -a $destFile > /dev/null
 # Add all private local files
 for file in ${~privateFiles}; do
-	cat $file >> $destFile
+	cat $file | sudo tee -a $destFile > /dev/null
 done

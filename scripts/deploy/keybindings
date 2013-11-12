@@ -1,26 +1,6 @@
-#!/usr/bin/env zsh
-# Link Metacity global and window-specific keybindings config to gconf config
-# dir
+#!/usr/bin/env bash
 
-# Paths
-local configDir=~/.oroshi/config/keybindings
-local destDir=~/.gconf/apps/metacity
+~/.oroshi/config/ubuntu/13.10/keybindings/org.compiz.integrated.sh
+~/.oroshi/config/ubuntu/13.10/keybindings/org.gnome.desktop.wm.keybindings.sh
+~/.oroshi/config/ubuntu/13.10/keybindings/org.gnome.settings-daemon.plugins.media-keys.sh
 
-local generalDir=${destDir}/general
-local generalFile=${configDir}/general.xml
-
-local globalDir=${destDir}/global_keybindings
-local globalFile=${configDir}/global.xml
-
-local windowDir=${destDir}/window_keybindings
-local windowFile=${configDir}/window.xml
-
-# Link the config files
-mkdir -p $generalDir
-ln -fs $generalFile ${generalDir}/%gconf.xml
-
-mkdir -p $globalDir
-ln -fs $globalFile ${globalDir}/%gconf.xml
-
-mkdir -p $windowDir
-ln -fs $windowFile ${windowDir}/%gconf.xml
