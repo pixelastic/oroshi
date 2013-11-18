@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+require "shellwords"
+
+class ImageOrientation
+  def initialize(*args)
+    @files = args.map(){|file| File.expand_path(file)}
+  end
+
+  def ratio(file)
+    output = %x[identify -format "%[fx:w/h]" #{file.shellescape}]
+    return output.chomp().to_f
+  end
+
+  def run
+    @files.each do |file|
+      puts (ratio(file) < 1) ? "portrait" : "landscape"
+    end
+  end
+end
+ImageOrientation.new(*ARGV).run();
