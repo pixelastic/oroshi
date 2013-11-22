@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+local from=$1
+local to=$2
+
+# Simple check to mount dest dir if not mounted
+if [[ ! -r $to/.pictureroot ]]; then
+	sudo mount $to
+fi
+
+# Force adding a trailing slash to copy dir content
+# from=${from:h}/${from:t}
+from=$from/
+
+# Copy source to destination, removing it once copied.
+rsync -rahP -v --modify-window=1 --prune-empty-dirs --remove-sent-files $from $to

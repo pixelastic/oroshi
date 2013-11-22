@@ -223,7 +223,7 @@ fi
 # }}}
 # {{{ Autojump
 if [[ `which autojump` != "" ]]; then
-	source ~/.oroshi/config/zsh/autojump.zsh
+	source ~/.oroshi/config/zsh/autojump.zsh;
 fi
 # }}}
 

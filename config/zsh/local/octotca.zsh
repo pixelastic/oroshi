@@ -30,4 +30,5 @@ alias sansa-sync-music="music-sync /media/tca/jukebox/music sansa-sd"
 alias sansa-sync-nature="music-sync /media/tca/jukebox/nature sansa"
 alias sansa-sync-podcasts="music-sync /media/tca/jukebox/podcasts sansa"
 alias sansa-sync-soundtracks="music-sync /media/tca/jukebox/soundtracks sansa-sd"
+alias serenity-sync-pictures="pictures-sync ~/perso/pictures/ ~/local/mnt/serenity/perso/"
 # }}}
