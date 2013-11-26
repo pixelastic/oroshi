@@ -10,7 +10,7 @@ setlocal softtabstop=2
 setlocal expandtab
 " Enabling folding
 setlocal foldmethod=syntax
-setlocal foldlevel=99
+setlocal foldlevel=2
 setlocal foldtext=JavascriptFoldText()
 function! JavascriptFoldText()
 	return substitute(getline(v:foldstart), '{.*', '{...}', '')
@@ -22,7 +22,7 @@ endfunction
 au BufEnter <buffer> call JavascriptEnableFolding()
 function! JavascriptEnableFolding()
 	syntax clear jsFuncBlock
-	syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
+	syntax region foldBraces start=/{/ end=/}/ transparent fold keepend extend
 endfunction
 
 
