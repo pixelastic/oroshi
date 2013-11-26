@@ -122,7 +122,7 @@ syntax on
 colorscheme oroshi
 " Reloading the colorscheme
 function! ReloadColorscheme(scheme)
-	silent! mkview
+	silent! mkview!
 	" Reloading colorscheme
 	syn off
 	execute 'colorscheme '.a:scheme
@@ -356,10 +356,12 @@ let g:syntastic_auto_jump=1
 let g:syntastic_error_symbol='✗'
 let g:syntastic_warning_symbol='⚠'
 " }}}
-
 " FILETYPES {{{
 " Load skeletons
-au BufNewFile * :silent! exec ":0r ~/.vim/includes/skeletons/skeleton.".expand('%:e')
+augroup skeletons
+	au!
+	au BufNewFile * :silent! exec ":0r ~/.vim/includes/skeletons/skeleton.".expand('%:e')
+augroup END
 
 " Easy switch to different filetypes filetype
 nnoremap <silent> <leader>html :setlocal filetype=html<CR>
@@ -375,3 +377,4 @@ nnoremap <leader>vr :mkview<CR>:source ~/.vimrc<CR>:call LoadView()<CR>:let &fil
 " man to open the manpage of a command in a new tab
 nnoremap <silent> man :tabe<CR>:setlocal filetype=man<CR>:.!man<Space>
 " }}}
+
