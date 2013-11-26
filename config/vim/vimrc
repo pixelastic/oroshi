@@ -122,6 +122,7 @@ syntax on
 colorscheme oroshi
 " Reloading the colorscheme
 function! ReloadColorscheme(scheme)
+	silent! mkview
 	" Reloading colorscheme
 	syn off
 	execute 'colorscheme '.a:scheme
@@ -135,6 +136,7 @@ function! ReloadColorscheme(scheme)
 	if &ft == "javascript" && exists('*JavascriptEnableFolding')
 		call JavascriptEnableFolding()
 	endif
+	silent! loadview
 endfunction
 " Switching between light and dark themes with F2 and Ctrl+F2
 " Note : O1;5Q stands for Ctrl+F2 as <C-F2> does not seem to work
