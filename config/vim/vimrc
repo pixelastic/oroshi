@@ -122,13 +122,19 @@ syntax on
 colorscheme oroshi
 " Reloading the colorscheme
 function! ReloadColorscheme(scheme)
+	" Reloading colorscheme
 	syn off
 	execute 'colorscheme '.a:scheme
 	syn on
+	" Reloading rainbow parentheses
 	call rainbow_parentheses#load(0)
 	call rainbow_parentheses#load(1)
 	call rainbow_parentheses#load(2)
 	call rainbow_parentheses#activate()
+	" Reloading custom javascript folding
+	if &ft == "javascript" && exists('*JavascriptEnableFolding')
+		call JavascriptEnableFolding()
+	endif
 endfunction
 " Switching between light and dark themes with F2 and Ctrl+F2
 " Note : O1;5Q stands for Ctrl+F2 as <C-F2> does not seem to work
