@@ -74,18 +74,8 @@ set viewoptions=cursor,folds
 " Save sessions on close, load it on open
 augroup views
 	au!
-	" Restore a session, but keep fold-related options as it is
-	function! LoadView()
-		" let s:save_foldmethod = &foldmethod
-		let s:save_foldexpr = &foldexpr
-		let s:save_foldmarker = &foldmarker
-		silent! loadview
-		" let &foldmethod = s:save_foldmethod
-		let &foldexpr = s:save_foldexpr
-		let &foldmarker = s:save_foldmarker
-	endfunction
 	au BufWinLeave * silent! mkview
-	au BufWinEnter * call LoadView()
+	au BufWinEnter * silent! loadview
 augroup END
 " }}}
 " DISPLAY {{{
