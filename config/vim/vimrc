@@ -1,12 +1,3 @@
-" TODO {{{
-" - Finding previous paste with ²
-" - Graphical undo
-" - Autoclosing paren, quotes and stuff
-" - Wildmenu globbing zsh-style
-" - Splitted windows instead of splitted terminal
-" - Coloring fold markers
-" }}}
-
 " RESET  {{{
 " We do not need the backward compatibility with vi, so it is better to turn
 " this off for better portability of plugins.
@@ -85,11 +76,11 @@ augroup views
 	au!
 	" Restore a session, but keep fold-related options as it is
 	function! LoadView()
-		let s:save_foldmethod = &foldmethod
+		" let s:save_foldmethod = &foldmethod
 		let s:save_foldexpr = &foldexpr
 		let s:save_foldmarker = &foldmarker
 		silent! loadview
-		let &foldmethod = s:save_foldmethod
+		" let &foldmethod = s:save_foldmethod
 		let &foldexpr = s:save_foldexpr
 		let &foldmarker = s:save_foldmarker
 	endfunction
