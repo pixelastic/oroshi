@@ -28,4 +28,5 @@ txt=.txt,.srt
 # }}}
 # EXCLUSIONS {{{
 --nobackup
+--ignore-dir=node_modules/
 # }}}
