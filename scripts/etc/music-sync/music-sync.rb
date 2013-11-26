@@ -20,8 +20,10 @@ class MusicSync
 			@dry_run = true
 		end
 
-		if args.size != 2
-			raise MusicSync::ArgumentError, "You need to pass both the library path and target name", ""
+		if args.size != 3
+      puts "Usage :"
+      puts "$ sansa-sync /library/path /device/path device_name"
+      exit
 		end
 
 		# Check that library directory exists
@@ -29,7 +31,11 @@ class MusicSync
 		unless File.exists?(@library_path) && File.directory?(@library_path)
 			raise MusicSync::ArgumentError, "Library path #{@library_path} is invalid", ""
 		end
-		@target = args[1]
+    @target_path = File.expand_path(args[1])
+		unless File.exists?(@target_path) && File.directory?(@target_path)
+			raise MusicSync::ArgumentError, "Target path #{@target_path} is invalid", ""
+		end
+		@target_name = args[2]
 	end
 
 	# Get all syncinfo files in the library
@@ -43,7 +49,7 @@ class MusicSync
 		# Keeping only directories that have a syncinfo matching the target
 		get_syncinfo_list.each do |path|
 			syncinfo = Syncinfo.new(path)
-			next unless syncinfo.has_target?(@target)
+			next unless syncinfo.has_target?(@target_name)
 			filtered_list << path
 		end
 		return filtered_list
@@ -84,17 +90,18 @@ class MusicSync
 	# Synchronize files with the sansa SD card
 	def synchronize_sansa_sd
 		get_music_marked_directories.each do |dir|
-			synchronize_dir(dir, File.join("/media/SANSA-SD", dir.gsub(/^#{get_library_root}/, '')))
+			synchronize_dir(dir, File.join(@target_path, dir.gsub(/^#{get_library_root}/, '')))
 		end
 	end
 
 	# Synchronize files with the sansa internal memory
 	def synchronize_sansa
 		get_music_marked_directories.each do |dir|
-			synchronize_dir(dir, File.join("/media/0123-4567/", dir.gsub(/^#{get_library_root}/, '')))
+      puts dir
+			synchronize_dir(dir, File.join(@target_path, dir.gsub(/^#{get_library_root}/, '')))
 		end
 		get_podcast_marked_directories.each do |dir|
-			synchronize_podcast_dir(dir, File.join("/media/0123-4567/", dir.gsub(/^#{get_library_root}/, '')))
+			synchronize_podcast_dir(dir, File.join(@target_path, dir.gsub(/^#{get_library_root}/, '')))
 		end
 	end
 
@@ -156,7 +163,7 @@ class MusicSync
 	def run
 		return dry_run if @dry_run
 		puts "Synchronizing directories :"
-		method_name = "synchronize_#{@target.gsub('-','_')}"
+		method_name = "synchronize_#{@target_name.gsub('-','_')}"
 		self.send(method_name)
 	end
 end

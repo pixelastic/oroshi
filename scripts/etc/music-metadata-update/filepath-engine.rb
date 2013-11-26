@@ -400,6 +400,10 @@ class FilepathEngine
 		album = data['album']
 		# The album is a season
 		if album =~ /(Season|Saison)/
+      unless (album[" - "])
+        puts "Error, Season dir does not contain the year"
+        exit
+      end
 			split_album = album.split(" - ")
 			serie = split_album[0]
 			season = split_album[1..-1].join(" - ")

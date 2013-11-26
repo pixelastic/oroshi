@@ -139,12 +139,22 @@ let g:SuperTabLongestHighlight = 1
 " Enabling syntax highlighting
 syntax on
 colorscheme oroshi
+" Reloading the colorscheme
+function! ReloadColorscheme(scheme)
+	syn off
+	execute 'colorscheme '.a:scheme
+	syn on
+	call rainbow_parentheses#load(0)
+	call rainbow_parentheses#load(1)
+	call rainbow_parentheses#load(2)
+	call rainbow_parentheses#activate()
+endfunction
 " Switching between light and dark themes with F2 and Ctrl+F2
 " Note : O1;5Q stands for Ctrl+F2 as <C-F2> does not seem to work
-nnoremap <silent> <F2> :syn off \| colorscheme oroshi \| :syn on<CR>
-inoremap <silent> <F2> <Esc>:colorscheme oroshi<CR>li
-nnoremap <silent> O1;5Q :colorscheme summerfruit<CR>
-inoremap <silent> O1;5Q <Esc>:colorscheme summerfruit<CR>li
+nnoremap <silent> <F2> :call ReloadColorscheme('oroshi')<CR>
+inoremap <silent> <F2> <Esc>:call ReloadColorscheme('oroshi')<CR>li
+nnoremap <silent> O1;5Q :call ReloadColorscheme('summerfruit')<CR>
+inoremap <silent> O1;5Q <Esc>:call ReloadColorscheme('summerfruit')<CR>li
 " Display the current highlight group of the word under cursor
 function! Debugcolor()
 	for id in synstack(line("."), col("."))
@@ -376,4 +386,3 @@ nnoremap <leader>vr :mkview<CR>:source ~/.vimrc<CR>:call LoadView()<CR>:let &fil
 " man to open the manpage of a command in a new tab
 nnoremap <silent> man :tabe<CR>:setlocal filetype=man<CR>:.!man<Space>
 " }}}
-

@@ -16,3 +16,8 @@ function! b:RunFile()
 	redraw!
 endfunction
 
+" Use two spaces for indenting
+setlocal tabstop=2
+setlocal shiftwidth=2
+setlocal softtabstop=2
+setlocal expandtab

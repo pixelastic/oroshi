@@ -12,6 +12,7 @@ let &grepprg .= ' --sort-files'
 let &grepprg .= ' --type-set txt=.txt'
 let &grepprg .= ' --type-set config=.conf,.config,.ini'
 let &grepprg .= ' --type-set markdown=.markdown,.mdown,.mkd,.mkdown,.md'
+let &grepprg .= ' --ignore-dir=node_modules/'
 " }}}
 " Ctrl-F to find in project {{{
 nnoremap <C-F> :FindInProject 

@@ -76,3 +76,9 @@
 [submodule "scripts/etc/dconf-export"]
 	path = scripts/etc/dconf-export
 	url = git@github.com:pixelastic/dconf-export.git
+[submodule "config/vim/bundle/available/vim-vroom"]
+	path = config/vim/bundle/available/vim-vroom
+	url = git@github.com:skalnik/vim-vroom.git
+[submodule "config/vim/bundle/available/rainbow_parentheses.vim"]
+	path = config/vim/bundle/available/rainbow_parentheses.vim
+	url = git@github.com:kien/rainbow_parentheses.vim.git

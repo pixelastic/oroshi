@@ -1,4 +1,0 @@
-#!/usr/bin/env zsh
-# Will extract a pdf file in multiple jpg files
-
-pdfimages -j $1 "${1:a:r}"
