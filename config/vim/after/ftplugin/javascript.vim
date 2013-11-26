@@ -11,6 +11,10 @@ setlocal expandtab
 " Enabling folding
 setlocal foldmethod=syntax
 setlocal foldlevel=99
+setlocal foldtext=JavascriptFoldText()
+function! JavascriptFoldText()
+	return substitute(getline(v:foldstart), '{.*', '{...}', '')
+endfunction
 " Note: Because of the order in which vim files are loaded, we need to resort
 " to the `au BufEnter <buffer>` trick to apply the method after the plugins. It
 " will clean the fold regexp defined by vim-javascript and apply our own
