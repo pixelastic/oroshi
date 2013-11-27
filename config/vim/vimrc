@@ -327,8 +327,8 @@ if has("unnamedplus")
 			let @+=@*
 		endif
 	endfunction
-	noremap <silent> p :call PrePaste()<CR>p
-	noremap <silent> P :call PrePaste()<CR>P
+	" noremap <silent> p :call PrePaste()<CR>p
+	" noremap <silent> P :call PrePaste()<CR>P
 endif
 " As gv selects last selected text, we add gp to select last pasted text
 nnoremap gp `[v`]
