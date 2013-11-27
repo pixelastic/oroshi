@@ -323,7 +323,7 @@ if has("unnamedplus")
 
 		" If about same size, but @+ is bigger than @* we guess that it gets
 		" garbled and we replace it by @*
-		if wordstar == wordplus && lenstar < lenplus
+		if wordstar !=1 && wordstar == wordplus && lenstar < lenplus
 			let @+=@*
 		endif
 	endfunction
@@ -372,7 +372,7 @@ nnoremap <silent> <leader>zsh :setlocal filetype=zsh<CR>
 " ,ve to edit vimrc
 nnoremap <leader>ve :tabe ~/.oroshi/config/vim/vimrc<CR>
 " ,vr to reload vimrc
-nnoremap <leader>vr :mkview<CR>:source ~/.vimrc<CR>:call LoadView()<CR>:let &filetype=&filetype<CR>
+nnoremap <leader>vr :source ~/.vimrc<CR>:let &filetype=&filetype<CR>:loadview<CR>:nohlsearch<CR>
 
 " man to open the manpage of a command in a new tab
 nnoremap <silent> man :tabe<CR>:setlocal filetype=man<CR>:.!man<Space>
