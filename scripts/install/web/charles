@@ -4,3 +4,6 @@ wget -q -O - http://www.charlesproxy.com/packages/apt/PublicKey | sudo apt-key a
 echo "deb http://www.charlesproxy.com/packages/apt/ charles-proxy main" | sudo tee -a /etc/apt/sources.list
 sudo apt-get update
 sudo apt-get install charles-proxy
+
+echo "You should also install the Proxy SwitchySharp plugin for Chromium"
+echo "https://chrome.google.com/webstore/detail/proxy-switchysharp/dpplabbmogkhghncfbfdeeokoefdjegm/related?hl=en"
