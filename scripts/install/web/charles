@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+
+wget -q -O - http://www.charlesproxy.com/packages/apt/PublicKey | sudo apt-key add -
+echo "deb http://www.charlesproxy.com/packages/apt/ charles-proxy main" | sudo tee -a /etc/apt/sources.list
+sudo apt-get update
+sudo apt-get install charles-proxy
