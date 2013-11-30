@@ -112,6 +112,7 @@ alias poedit='gui poedit'
 alias vlc='gui vlc'
 alias virtualbox='gui virtualbox'
 alias charles='gui charles'
+alias pinta='gui pinta'
 # }}}
 
 # Apt-get {{{
