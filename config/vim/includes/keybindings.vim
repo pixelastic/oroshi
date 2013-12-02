@@ -161,7 +161,6 @@ nnoremap <silent> <Leader>z :lprev<CR>
 nnoremap <silent> <Leader>s :lnext<CR>
 nnoremap <silent> <Leader>q :cprev<CR>
 nnoremap <silent> <Leader>d :cnext<CR>
-let g:syntastic_always_populate_loc_list=1
 " }}}
 " MUSCLE MEMORY {{{
 " Ctrl+S saves the file, as in most apps
