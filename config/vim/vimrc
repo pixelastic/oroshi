@@ -47,7 +47,7 @@ set encoding=utf-8
 " Force Unix line ending on new file
 set fileformats=unix,dos,mac
 " keep - and _ as part of words
-set iskeyword+=-,_
+" set iskeyword+=-,_,/
 " Allow multiple buffers opened at once
 set hidden
 " Reload files if changed outside of vim
@@ -74,18 +74,8 @@ set viewoptions=cursor,folds
 " Save sessions on close, load it on open
 augroup views
 	au!
-	" Restore a session, but keep fold-related options as it is
-	function! LoadView()
-		" let s:save_foldmethod = &foldmethod
-		let s:save_foldexpr = &foldexpr
-		let s:save_foldmarker = &foldmarker
-		silent! loadview
-		" let &foldmethod = s:save_foldmethod
-		let &foldexpr = s:save_foldexpr
-		let &foldmarker = s:save_foldmarker
-	endfunction
 	au BufWinLeave * silent! mkview
-	au BufWinEnter * call LoadView()
+	au BufWinEnter * silent! loadview
 augroup END
 " }}}
 " DISPLAY {{{
@@ -132,13 +122,21 @@ syntax on
 colorscheme oroshi
 " Reloading the colorscheme
 function! ReloadColorscheme(scheme)
+	silent! mkview!
+	" Reloading colorscheme
 	syn off
 	execute 'colorscheme '.a:scheme
 	syn on
+	" Reloading rainbow parentheses
 	call rainbow_parentheses#load(0)
 	call rainbow_parentheses#load(1)
 	call rainbow_parentheses#load(2)
 	call rainbow_parentheses#activate()
+	" Reloading custom javascript folding
+	if &ft == "javascript" && exists('*JavascriptEnableFolding')
+		call JavascriptEnableFolding()
+	endif
+	silent! loadview
 endfunction
 " Switching between light and dark themes with F2 and Ctrl+F2
 " Note : O1;5Q stands for Ctrl+F2 as <C-F2> does not seem to work
@@ -325,12 +323,12 @@ if has("unnamedplus")
 
 		" If about same size, but @+ is bigger than @* we guess that it gets
 		" garbled and we replace it by @*
-		if wordstar == wordplus && lenstar < lenplus
+		if wordstar !=1 && wordstar == wordplus && lenstar < lenplus
 			let @+=@*
 		endif
 	endfunction
-	noremap <silent> p :call PrePaste()<CR>p
-	noremap <silent> P :call PrePaste()<CR>P
+	" noremap <silent> p :call PrePaste()<CR>p
+	" noremap <silent> P :call PrePaste()<CR>P
 endif
 " As gv selects last selected text, we add gp to select last pasted text
 nnoremap gp `[v`]
@@ -354,14 +352,17 @@ source ~/.vim/includes/ctrlp.vim
 source ~/.vim/includes/git.vim
 " }}}
 " SYNTASTIC {{{
-let g:syntastic_auto_jump=1
+let g:syntastic_auto_loc_list=1
+let g:syntastic_always_populate_loc_list=1
 let g:syntastic_error_symbol='✗'
 let g:syntastic_warning_symbol='⚠'
 " }}}
-
 " FILETYPES {{{
 " Load skeletons
-au BufNewFile * :silent! exec ":0r ~/.vim/includes/skeletons/skeleton.".expand('%:e')
+augroup skeletons
+	au!
+	au BufNewFile * :silent! exec ":0r ~/.vim/includes/skeletons/skeleton.".expand('%:e')
+augroup END
 
 " Easy switch to different filetypes filetype
 nnoremap <silent> <leader>html :setlocal filetype=html<CR>
@@ -372,8 +373,9 @@ nnoremap <silent> <leader>zsh :setlocal filetype=zsh<CR>
 " ,ve to edit vimrc
 nnoremap <leader>ve :tabe ~/.oroshi/config/vim/vimrc<CR>
 " ,vr to reload vimrc
-nnoremap <leader>vr :mkview<CR>:source ~/.vimrc<CR>:call LoadView()<CR>:let &filetype=&filetype<CR>
+nnoremap <leader>vr :source ~/.vimrc<CR>:let &filetype=&filetype<CR>:loadview<CR>:nohlsearch<CR>
 
 " man to open the manpage of a command in a new tab
 nnoremap <silent> man :tabe<CR>:setlocal filetype=man<CR>:.!man<Space>
 " }}}
+

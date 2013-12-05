@@ -1,5 +1,5 @@
-#!/usr/bin/bash
-echo "You need ruby and rvm first"
+#!/usr/bin/env bash
+echo "Installing t through gem install t"
 gem install t
 
 t authorize

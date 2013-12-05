@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+cd /tmp
+wget -c https://github.com/downloads/maoserr/redshiftgui/RedshiftGUI-0.2.1-Linux-x86_64.deb -O ./redshift.db
+sudo dpkg -i ./redshift.db
+
+# It is looking for a dependency in the wrong directory
+if [[ ! -r /lib/ld-linux-x86-64.so.2 ]]; then
+	sudo ln -s /lib/x86_64-linux-gnu/ld-linux-x86-64 /lib/ld-linux-x86-64.so.2
+fi
+sudo apt-get -f install

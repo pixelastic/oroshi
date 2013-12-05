@@ -30,7 +30,7 @@ ARGV.each do |epub|
 	author_lastname = splitauthor[0]
 	author_firstname = splitauthor[1..-1].join(' ')
 	# Handle "VAN SOMETHING" cases
-	if splitauthor[0] == "VAN"
+	if ["VAN", "LE", "LA"].include? splitauthor[0]
 		author_lastname = splitauthor[0..1].join(' ')
 		author_firstname = splitauthor[2..-1].join(' ')
 	end
