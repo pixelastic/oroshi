@@ -1,21 +1,61 @@
 #!/usr/bin/env ruby
 require "fileutils"
-# Will set chmod rights to defaults for every file and dir specified
 
-# Default chmod in octal format
-fileDefault=0664
-dirDefault=0775
+class ChmodDefault
+  def initialize(*args)
+    # default filt and dir chmods
+    @chmod_file=0664
+    @chmod_dir=0775
 
-ARGV.each do |file|
-	next if !File.exists? file
+    # Passing -r makes it recursive
+    @is_recursive = false
+    if args.include?('-r')
+      @is_recursive = true
+      args.delete('-r')
+    end
 
-	filepath = File.expand_path file
+    # Keeping only existing files
+    @targets = clean_filepath_list(args)
+  end
 
-	# Setting different permissions for dirs and files
-	if File.directory? filepath
-		FileUtils.chmod_R(dirDefault, filepath)
-	else
-		FileUtils.chmod(fileDefault, filepath)
-	end
+  # Keep only existing, complete filepaths
+  def clean_filepath_list(list)
+    list.map!(){|file| File.expand_path(file)}
+    list.select!(){|file| File.exists?(file)}
+    return list
+  end
+
+  # Chmod a dir, and potential sub elements
+  def chmod_dir(filepath)
+    File.chmod(@chmod_dir, filepath)
+    return unless @is_recursive
+    # Recursive on all subfiles and folders
+    entries = Dir.entries(filepath)
+    entries.reject!(){|file| file=="." || file==".."}
+    entries.map!(){|entry| File.join(filepath, entry)}
+    entries = clean_filepath_list(entries)
+    chmod_all(entries)
+  end
+
+  # Chmod a file
+  def chmod_file(filepath)
+    File.chmod(@chmod_file, filepath)
+  end
+
+  # Chmod a list of filepath
+  def chmod_all(entries)
+    entries.each do |entry|
+      if File.directory?(entry)
+        chmod_dir(entry)
+      else
+        chmod_file(entry)
+      end
+    end
+  end
+
+  # Chmod targets
+  def run
+    chmod_all(@targets)
+  end
 end
-
+ChmodDefault.new(*ARGV).run()
