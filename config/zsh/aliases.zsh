@@ -21,7 +21,7 @@ path=(
 	~/.oroshi/scripts/bin
 	~/.oroshi/private/scripts/bin
 	~/.oroshi/scripts/bin/local/$(hostname)
-	~/.oroshi/private/sripts/bin/local/$(hostname)
+	~/.oroshi/private/scripts/bin/local/$(hostname)
 	~/local/bin
 )
 # }}}
@@ -204,12 +204,6 @@ alias flushdns="/etc/init.d/dns-clean start"
 alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test500.zip'
 # }}}
 
-# Private aliases  {{{
-local privateAlias=~/.oroshi/private/config/zsh/local/$(hostname).zsh
-if [[ -r $privateAlias ]]; then
-	source $privateAlias
-fi
-# }}}
 # NVM {{{
 local nvmScript=~/local/etc/nvm/nvm.sh
 if [[ -r $nvmScript ]]; then
@@ -224,7 +218,7 @@ if [[ -r $rvmScript ]]; then
   source $rvmScript
 fi
 # }}}
-# {{{ Autojump
+# Autojump {{{
 if [[ `which autojump` != "" ]]; then
 	source ~/.oroshi/config/zsh/autojump.zsh;
 fi

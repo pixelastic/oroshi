@@ -14,7 +14,7 @@ source ./vimode.zsh
 source ./completion.zsh
 source ./aliases.zsh
 
-# Local file
+# Local config {{{
 # Note: Needs to be loaded here so it can overwrite default alias but still
 # contains config options needed for prompt theming
 local localConfig=${configDir}/local/$(hostname).zsh
@@ -22,6 +22,14 @@ if [[ -r $localConfig ]]; then
 	typeset -A promptColor
 	source $localConfig
 fi
+# }}}
+# Private local config {{{
+local privateLocalConfig=~/.oroshi/private/config/zsh/local/$(hostname).zsh
+if [[ -r $privateLocalConfig ]]; then
+	source $privateLocalConfig
+fi
+# }}}
+
 
 source ./theming.zsh
 source ./prompt.zsh
