@@ -22,6 +22,6 @@ fi
 cat $defaultFile >> $destFile
 
 # Reload xmodmap
-setxkbmap
+setxkbmap fr
 xmodmap $destFile
 
