@@ -9,6 +9,7 @@ alias cdbooks='cd ~/perso/books'
 alias cdemu='cd ~/perso/emulation'
 alias cdrp='cd ~/perso/roleplay/'
 alias cdscenar='cd ~/perso/roleplay/scenarios/'
+alias cdkiss="/var/www/angular/kissihm/kissihm/src/main/webapp/resources/"
 # }}}
 
 # Synchronize stuff {{{
