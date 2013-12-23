@@ -13,7 +13,7 @@
 #
 # Note: Calling sudo will NOT use any aliases defined, but will use files in
 # custom paths.
-alias sudo='sudo '
+alias sudo='sudo -E'
 
 # Custom paths {{{
 path=(
@@ -63,6 +63,7 @@ alias -g .....='../../../..'
 # Typos {{{
 alias sl="ls"
 alias mc="mv"
+alias vom="vim"
 # }}}
 # Misc {{{
 # cp and mv using rsync and preserving attributes, and accross fat32 drives
