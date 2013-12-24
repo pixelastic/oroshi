@@ -15,19 +15,31 @@ class TidyCheck
     @exitcode = $?.exitstatus
   end
 
+  # Check if command returned errors or warnings
   def has_errors?
     return @exitcode == 2 || @exitcode == 1
   end
 
+  # Get the full list of errors
   def get_errors
     return nil unless has_errors?
-    return @stderr
+    return filter_low_priority_errors(@stderr)
+  end
+
+  # Remove useless errors from the list
+  def filter_low_priority_errors(errors)
+    list = errors.split("\n")
+    list.reject! do |line|
+      line.include?("is not approved by W3C")
+    end
+    return nil if list.size==0
+    return list.join("\n")
   end
 
   def run
-    if has_errors?
-      puts get_errors
-    end
+    exit if !has_errors?
+    errors = get_errors
+    puts errors if errors!=nil
   end
 end
 TidyCheck.new(*ARGV).run()
