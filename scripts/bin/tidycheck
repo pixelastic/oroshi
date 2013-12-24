@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+require "shellwords"
+
+class TidyCheck
+  def initialize(*args)
+    @input = args[0]
+    @tidycheckrc = File.expand_path("~/.tidycheckrc")
+
+    unless File.exists?(@tidycheckrc)
+      puts "Unable to find #{@tidycheckrc}"
+      exit
+    end
+
+    @stderr = `tidy -config #{@tidycheckrc} -o /dev/null #{@input.shellescape} 2>&1`
+    @exitcode = $?.exitstatus
+  end
+
+  def has_errors?
+    return @exitcode == 2 || @exitcode == 1
+  end
+
+  def get_errors
+    return nil unless has_errors?
+    return @stderr
+  end
+
+  def run
+    if has_errors?
+      puts get_errors
+    end
+  end
+end
+TidyCheck.new(*ARGV).run()

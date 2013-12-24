@@ -1,0 +1,4 @@
+# File used by `tidycheck` to output errors and warnings
+quiet: yes
+show-errors: 100
+show-warnings: yes

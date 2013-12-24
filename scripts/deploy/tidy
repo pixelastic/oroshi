@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
-# Copy html5-tidy config to ~/.tidyrc
+# Prepare config file for `tidycheck`
 
 # Paths
 configDir=~/.oroshi/config/tidy
-configFile=${configDir}/tidyrc
-destFile=~/.tidyrc
 
-# Link the config file
-ln -fs $configFile $destFile
+ln -fs $configDir/tidycheckrc ~/.tidycheckrc
+
