@@ -195,6 +195,9 @@ alias cdse="cd ~/local/mnt/serenity/"
 alias cdsevid="cd ~/local/mnt/serenity/video/"
 alias cdsemus="cd ~/local/mnt/serenity/music/"
 # }}}
+# Tidy {{{
+alias tidy="tidy -config ~/.tidyrc"
+# }}}
 # Tweet {{{
 alias tweet="t update"
 alias timeline="t stream timeline"
