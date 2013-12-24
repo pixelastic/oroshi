@@ -23,8 +23,8 @@
 	commit-all = !git add --all . && git commit -v --all
 	current-branch = !git rev-parse --abbrev-ref HEAD 2>/dev/null
 	current-tag = !git describe --tags --abbrev=0 2>/dev/null
-	diff-last = diff HEAD^
-	diff-staged = diff --staged
+	diff-last = diff -w HEAD^
+	diff-staged = diff -w --staged
 	download = clone --depth=1
 	is-submodule = !git-is-submodule
 	peek = log --graph --pretty=format:'%C(67)%h%Creset %C(24)(%ar)%Creset %C(241)%an%Creset %C(bold 202)%d%Creset%n   %C(250)%s%Creset%n'
