@@ -32,8 +32,7 @@ class TidyCheck
     list.reject! do |line|
       line.include?("is not approved by W3C") ||
       line.include?('proprietary attribute "ng-') || # AngularJS custom attributes
-      line.include?('trimming empty <i>') || # Used for icons
-      line.include?('trimming empty <span>') # Used for presentation
+      line =~ /trimming empty <(i|em|span)>/ # Used for icons and presentation
     end
     return nil if list.size==0
     return list.join("\n")

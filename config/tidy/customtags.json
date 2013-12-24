@@ -4,6 +4,7 @@
     "ng-include",
     "alert",
     // Spring
-    "sec:authentication"
+    "sec:authentication",
+    "c:if"
   ]
 }
