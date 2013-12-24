@@ -9,7 +9,7 @@ alias cdbooks='cd ~/perso/books'
 alias cdemu='cd ~/perso/emulation'
 alias cdrp='cd ~/perso/roleplay/'
 alias cdscenar='cd ~/perso/roleplay/scenarios/'
-alias cdkiss="/var/www/angular/kissihm/kissihm/src/main/webapp/resources/"
+alias cdkiss="/var/www/java/kissihm/kissihm/src/main/webapp/resources/"
 # }}}
 
 # Synchronize stuff {{{
@@ -35,3 +35,14 @@ alias sansa-sync-podcasts="music-sync ~/local/mnt/serenity/music/podcasts /media
 alias sansa-sync-soundtracks="music-sync ~/local/mnt/serenity/music/soundtracks /media/tca/SANSA-SD sansa-sd"
 alias serenity-sync-pictures="picture-sync ~/perso/pictures/ ~/local/mnt/serenity/perso/"
 # }}}
+
+function buildkiss() {
+	local dir=`pwd`
+	sudo /etc/init.d/tomcat6 stop
+	cd /var/www/java/kissihm/kissihm/
+	mvn clean package
+	sudo rm -drf /var/lib/tomcat6/webapps/kiss/
+	sudo mv -f ./target/kiss*war /var/lib/tomcat6/webapps/kiss.war
+	sudo /etc/init.d/tomcat6 start
+	cd $dir
+}
