@@ -1,6 +1,9 @@
 {
   "new-blocklevel-tags": [
+    // AngularJS
     "ng-include",
-    "alert"
+    "alert",
+    // Spring
+    "sec:authentication"
   ]
 }

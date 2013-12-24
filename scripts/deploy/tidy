@@ -27,12 +27,11 @@ class DeployTidy
     end
 
     # We write it in home
-    p File.expand_path(@tidycheckrc_final)
     File.write(File.expand_path(@tidycheckrc_final), base)
   end
 
   def run
-    p generate_tidycheckrc
+    generate_tidycheckrc
 
   end
 end
