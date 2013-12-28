@@ -124,18 +124,11 @@ colorscheme oroshi
 function! ReloadColorscheme(scheme)
 	silent! mkview!
 	" Reloading colorscheme
-	syn off
+	" syn off
+	call rainbow_parentheses#toggle()
 	execute 'colorscheme '.a:scheme
-	syn on
-	" Reloading rainbow parentheses
-	call rainbow_parentheses#load(0)
-	call rainbow_parentheses#load(1)
-	call rainbow_parentheses#load(2)
-	call rainbow_parentheses#activate()
-	" Reloading custom javascript folding
-	if &ft == "javascript" && exists('*JavascriptEnableFolding')
-		call JavascriptEnableFolding()
-	endif
+	call rainbow_parentheses#toggle()
+	" syn on
 	silent! loadview
 endfunction
 " Switching between light and dark themes with F2 and Ctrl+F2
@@ -347,6 +340,9 @@ source ~/.vim/includes/ctrlf.vim
 " }}}
 " CTRL-P {{{
 source ~/.vim/includes/ctrlp.vim
+" }}}
+" RAINBOW PARENTHESES {{{
+au VimEnter * RainbowParenthesesToggle
 " }}}
 " GIT {{{
 source ~/.vim/includes/git.vim

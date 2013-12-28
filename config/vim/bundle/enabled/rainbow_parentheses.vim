@@ -1,1 +1,1 @@
-../available/rainbow_parentheses.vim
+../available/rainbow_parentheses.vim/
