@@ -36,17 +36,3 @@ function! OroshiFoldText(...)
 
 	return textleft.padding.textright
 endfunction
-
-" VIM-JAVASCRIPT {{{
-augroup javascript_folding
-	" Note: Because of the order in which files are loaded, we need to define the
-	" `au Filetype` in vimrc.
-	au!
-	function! JavascriptEnableFolding()
-		syntax clear jsFuncBlock
-		syntax region foldBraces start=/{/ end=/}/ transparent fold keepend extend
-	endfunction
-	au Filetype javascript call JavascriptEnableFolding()
-augroup END
-" }}}
-
