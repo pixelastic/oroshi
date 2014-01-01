@@ -31,6 +31,8 @@ path=(
 alias ls="ls -vhlp --color=always --group-directories-first"
 # grep : colored
 alias grep='grep -i --color=auto'
+# ag
+alias ag='ag --context=2 --smart-case --pager="less -R"'
 # tree : colored, show hidden files but hides git/hg. Display non-ASCII chars
 alias tree='tree -aNC -I ".hg|.git"'
 # watch : colored
