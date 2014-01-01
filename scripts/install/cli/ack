@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-sudo apt-get install ack-grep
-sudo ln -s /usr/bin/ack-grep /usr/bin/ack
-
