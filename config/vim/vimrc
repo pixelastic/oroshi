@@ -262,31 +262,11 @@ function! OpenTestFileInNewTab()
 endfunction
 nnoremap <C-T> :call OpenTestFileInNewTab()<CR>
 "}}}
-" VIMDIFF  {{{
-if &diff
-	" Vimdiff will mostly be used to handle merges. It is configured to be
-	" displayed in three panels (origin, result and other). We will use the FPS
-	" keys (zqsd) to move between changes and accept either origin or other.
-	" Once satisfied with our merge, we'll save and exit with Ctrl+S or Ctrl+D
-	" Jump to next/previous change
-	nnoremap <Leader>z [c
-	nnoremap <Leader>s ]c
-	" Accept origin (left) or other (right) change
-	nnoremap <silent> <Leader>q :diffget \.orig<CR>:diffupdate<CR>]c
-	nnoremap <silent> <Leader>d :diffget ~other\.<CR>:diffupdate<CR>]c
-	" Ctrl+S and Ctrl+D will save and close the diff
-	nnoremap <silent> <C-S> :only<CR>:x<CR>
-	inoremap <silent> <C-S> <Esc>:only<CR>:x<CR>
-	nnoremap <silent> <C-D> :only<CR>:x<CR>
-	inoremap <silent> <C-D> <Esc>:only<CR>:x<CR>
-endif
-"}}}
 " WILDMENU {{{
 " We enable a simple wildmenu with basic Tab-completion.
 set wildmenu
 " We ignore some files and dir that we're sure we'll never edit in vim
 set wildignore=''
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*             " Version control dirs
 set wildignore+=*.orig,*.swp,*.crcdownload            " Tmp files
 set wildignore+=*.jpg,*.jpeg,*.png,*.ico,*.gif,*.pdf  " Image files
 set wildignore+=*.exe,*.dll,*.pyc,*.so                " Binaries
