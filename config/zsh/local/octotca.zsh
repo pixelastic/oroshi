@@ -36,7 +36,7 @@ alias sansa-sync-soundtracks="music-sync ~/local/mnt/serenity/music/soundtracks 
 alias serenity-sync-pictures="picture-sync ~/perso/pictures/ ~/local/mnt/serenity/perso/"
 # }}}
 
-function buildkiss() {
+function kb() {
 	local dir=`pwd`
 	sudo /etc/init.d/tomcat6 stop
 	cd /var/www/java/kissihm/kissihm/
@@ -44,5 +44,9 @@ function buildkiss() {
 	sudo rm -drf /var/lib/tomcat6/webapps/kiss/
 	sudo mv -f ./target/kiss*war /var/lib/tomcat6/webapps/kiss.war
 	sudo /etc/init.d/tomcat6 start
+	sudo chown -R tca:tca /var/lib/tomcat6/webapps/kiss/resources/app/
 	cd $dir
+}
+function ku() {
+	rsync -ra /var/www/java/kissihm/kissihm/src/main/webapp/resources/app/* /var/lib/tomcat6/webapps/kiss/resources/app/
 }
