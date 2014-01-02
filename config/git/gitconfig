@@ -28,15 +28,16 @@
 	download = clone --depth=1
 	is-submodule = !git-is-submodule
 	peek = log --graph --pretty=format:'%C(67)%h%Creset %C(24)(%ar)%Creset %C(241)%an%Creset %C(bold 202)%d%Creset%n   %C(250)%s%Creset%n'
+	prev = reset --hard HEAD~1
+	resurrect = !git-resurrect
 	revert = checkout
 	rollback = reset --soft HEAD^
 	root = !pwd
-	resurrect = !git-resurrect
 	status-short = status --short
 	submodule-download =!git submodule init && git submodule update
- 	tabula-rasa = !git reset --hard && git clean -fd
 	tag-list = tag -n1 -l
 	unstage = reset HEAD
+ 	tabula-rasa = !git reset --hard && git clean -fd
 [advice]
   ; statusHints = false
 [push]

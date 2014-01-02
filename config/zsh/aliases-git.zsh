@@ -20,13 +20,14 @@ alias vbuf='git update-feature develop'
 alias vbufm='git update-feature master'
 # }}}
 # [c]ommits {{{
+alias vcR='git rollback'
 alias vcc='git commit -v'
 alias vcca='git commit-all'
 alias vcd='git diff-last --'
 alias vce='git amend'
 alias vcl='git peek'
 alias vcla='git peek -p'
-alias vcR='git rollback'
+alias vcp='git prev'
 # }}}
 # [f]iles {{{
 alias vfR='git rm -r'
