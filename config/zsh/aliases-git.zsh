@@ -96,6 +96,9 @@ alias vsba='git submodule add'
 alias vsbu='git submodule update'
 alias vsbd='git submodule-download'
 # }}}
+# [m]erge {{{
+alias vmt="git mergetool"
+# }}}
 # working [d]irectory {{{
 alias vdR='git tabula-rasa'
 alias vdd='git diff -w'
