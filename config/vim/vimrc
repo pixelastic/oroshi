@@ -323,7 +323,7 @@ source ~/.vim/includes/ctrlp.vim
 " }}}
 " RAINBOW PARENTHESES {{{
 " Enable it by default
-au VimEnter * RainbowParenthesesToggle
+" au VimEnter * RainbowParenthesesToggle
 " }}}
 " GIT {{{
 source ~/.vim/includes/git.vim
