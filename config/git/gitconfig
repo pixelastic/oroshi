@@ -5,7 +5,9 @@
 	editor = vim
 	excludesfile = ~/.gitignore
 [merge]
-	tool = vimdiff
+	tool = fugitive
+[mergetool "fugitive"]
+	cmd = vim -f -c \"Gdiff\" \"$MERGED\"
 [color]
 	ui = true
 [color "diff"]
