@@ -19,12 +19,17 @@ nnoremap <silent> vfm :Gmove
 " Split window for blame
 nnoremap <silent> vfb :Gblame<CR>
 " }}}
+" [d]iffs {{{
+" Fix conflicts
+nnoremap <silent> vdd :Gdiff<CR>
+" }}}
 " [c]ommits {{{
 " Commit
 nnoremap <silent> vcc :Gcommit<CR>
 " Commit all
 nnoremap <silent> vcca :Git add .<CR>:Gcommit<CR>
 " }}}
+" 
 
 " STATUSLINE
 " The status line contain a git indicator whose color change based on the
