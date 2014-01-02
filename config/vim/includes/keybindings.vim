@@ -175,10 +175,12 @@ nnoremap <silent> <Leader>d :cnext<CR>
 " }}}
 " MUSCLE MEMORY {{{
 " Ctrl+S saves the file, as in most apps
-function! SaveFile()
-	if &diff | only | endif
-	write!
-endfunction
+if !exists('*SaveFile')
+	function SaveFile()
+		if &diff | only | endif
+		write!
+	endfunction
+endif
 nnoremap <silent> <C-S> :call SaveFile()<CR>
 inoremap <silent> <C-S> <Esc>:call SaveFile()<CR>
 " Ctrl+D is save and exit, as in the term.
