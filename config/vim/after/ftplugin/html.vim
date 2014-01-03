@@ -9,7 +9,7 @@ function! HTMLFoldTag()
 	endif
 endfunction
 setlocal foldmethod=manual
-nnoremap <buffer> za :call HTMLFoldTag()<CR>
+nnoremap <silent> <buffer> za :call HTMLFoldTag()<CR>
 " }}}
 " Clean file {{{
 function! b:CleanFile()
