@@ -8,13 +8,15 @@ setlocal expandtab
 setlocal omnifunc=javascriptcomplete#CompleteJS
 
 " Enable rainbow parentheses
-augroup rainbow_parentheses_javascript
-	au!
-	" au Syntax <buffer> syntax clear jsFuncBlock
-	" au Syntax <buffer> RainbowParenthesesLoadRound
-	" au Syntax <buffer> RainbowParenthesesLoadSquare
-	" au Syntax <buffer> RainbowParenthesesLoadBraces
-augroup END
+if exists(':RainbowParenthesesToggle')
+	augroup rainbow_parentheses_javascript
+		au!
+		au Syntax <buffer> syntax clear jsFuncBlock
+		au Syntax <buffer> RainbowParenthesesLoadRound
+		au Syntax <buffer> RainbowParenthesesLoadSquare
+		au Syntax <buffer> RainbowParenthesesLoadBraces
+	augroup END
+endif
 
 " Enabling folding
 setlocal foldmethod=syntax

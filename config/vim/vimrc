@@ -322,8 +322,8 @@ source ~/.vim/includes/ctrlf.vim
 source ~/.vim/includes/ctrlp.vim
 " }}}
 " RAINBOW PARENTHESES {{{
-" Enable it by default
-" au VimEnter * RainbowParenthesesToggle
+" Load plugin
+au VimEnter * if exists(":RainbowParenthesesToggle") | execute 'RainbowParenthesesToggle' | endif
 " }}}
 " GIT {{{
 source ~/.vim/includes/git.vim
