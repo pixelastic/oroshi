@@ -45,6 +45,7 @@ function kb() {
 	sudo mv -f ./target/kiss*war /var/lib/tomcat6/webapps/kiss.war
 	sudo /etc/init.d/tomcat6 start
 	sudo chown -R tca:tca /var/lib/tomcat6/webapps/kiss/resources/app/
+	echo $dir
 	cd $dir
 }
 function ku() {
