@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
 sudo apt-get install php5-cgi
 sudo apt-get install php5-cli
+sudo apt-get install php5-curl
+sudo apt-get install php5-mcrypt
+sudo apt-get install php5-mysqlnd
+sudo apt-get install php5-sqlite
+sudo apt-get install php5-json

@@ -1,10 +1,38 @@
-#!/usr/bin/env bash
-# Copy html5-tidy config to ~/.tidyrc
+#!/usr/bin/env ruby
+require "json"
 
-# Paths
-configDir=~/.oroshi/config/tidy
-configFile=${configDir}/tidyrc
-destFile=~/.tidyrc
+class DeployTidy
+  def initialize
+    @config_dir = File.expand_path('~/.oroshi/config/tidy/')
+    @tidycheckrc_base = File.join(@config_dir, "tidycheckrc")
+    @custom_tags_file = File.join(@config_dir, "customtags.json")
+    @tidycheckrc_final = File.expand_path("~/.tidycheckrc")
+  end
 
-# Link the config file
-ln -fs $configFile $destFile
+  # Read a JSON file an return a ruby object
+  def read_json(file)
+    return JSON.parse(File.read(file))
+  end
+
+  # generate the final ~/.tidycheckrc file by concatenating the base with the
+  # custom tags
+  def generate_tidycheckrc
+    # We first take the base config file
+    base = File.read(@tidycheckrc_base)
+
+    # We then add custom tags
+    custom_tags = read_json(@custom_tags_file)
+    custom_tags.each do |key, value|
+      base+="#{key}:#{value.join(',')}"
+    end
+
+    # We write it in home
+    File.write(File.expand_path(@tidycheckrc_final), base)
+  end
+
+  def run
+    generate_tidycheckrc
+
+  end
+end
+DeployTidy.new().run()

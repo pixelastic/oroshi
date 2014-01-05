@@ -20,20 +20,21 @@ alias vbuf='git update-feature develop'
 alias vbufm='git update-feature master'
 # }}}
 # [c]ommits {{{
+alias vcR='git rollback'
 alias vcc='git commit -v'
 alias vcca='git commit-all'
 alias vcd='git diff-last --'
 alias vce='git amend'
 alias vcl='git peek'
 alias vcla='git peek -p'
-alias vcR='git rollback'
+alias vcp='git prev'
 # }}}
 # [f]iles {{{
 alias vfR='git rm -r'
 alias vfa='git add'
 alias vfaa='git add --all'
 alias vfc='git create-file'
-alias vfd='git diff'
+alias vfd='git diff -w'
 alias vfds='git diff-staged --'
 alias vfm='git mv'
 alias vfr='git checkout --'
@@ -69,7 +70,7 @@ alias vrR='git remote rm'
 alias vra='git remote add'
 alias vrdw='git download'
 alias vrl='git remote show'
-alias vrpl='vdr && git pull && vsbu && cd -'
+alias vrpl='vdr && git pull --no-edit && vsbu && cd -'
 alias vrps='git push'
 alias vrr='git remote show origin -n'
 alias vrpsm='git push origin master'
@@ -95,9 +96,12 @@ alias vsba='git submodule add'
 alias vsbu='git submodule update'
 alias vsbd='git submodule-download'
 # }}}
+# [m]erge {{{
+alias vmt="git mergetool"
+# }}}
 # working [d]irectory {{{
 alias vdR='git tabula-rasa'
-alias vdd='git diff'
+alias vdd='git diff -w'
 alias vdds='git diff-staged'
 alias vdl='git status-short'
 alias vdr='cd $(git root)'

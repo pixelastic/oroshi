@@ -12,11 +12,9 @@ nnoremap <silent> vfa :Gwrite<CR>:call GitUpdateStatusLine()<CR>
 nnoremap <silent> vfu :Git unstage %<CR><CR>:call GitUpdateStatusLine()<CR>
 " Revert file to previous commited version
 nnoremap <silent> vfr :Gread<CR>:call GitUpdateStatusLine()<CR>
-" Delete current file
-nnoremap <silent> vfR :Gremove<CR>
-" Move current file to a new location
-nnoremap <silent> vfm :Gmove 
-" Split window for blame
+" Display diff of file with previous version
+nnoremap <silent> vfd :Gdiff<CR>
+" Display commits and commiters on the left side
 nnoremap <silent> vfb :Gblame<CR>
 " }}}
 " [c]ommits {{{
@@ -24,6 +22,9 @@ nnoremap <silent> vfb :Gblame<CR>
 nnoremap <silent> vcc :Gcommit<CR>
 " Commit all
 nnoremap <silent> vcca :Git add .<CR>:Gcommit<CR>
+" }}}
+" working [d]irectory {{{
+nnoremap <silent> vdl :Gstatus<CR>
 " }}}
 
 " STATUSLINE

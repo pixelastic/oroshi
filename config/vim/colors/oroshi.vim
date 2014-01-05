@@ -507,11 +507,4 @@ let g:rbpt_colorpairs = [
     \ [get(s:palette, "calmgreen"),250],
     \ [get(s:palette, "lightgrey"),250],
     \ ]
-augroup rainbow_parentheses
-	au!
-	au VimEnter * RainbowParenthesesToggle
-	au Syntax * RainbowParenthesesLoadRound
-	au Syntax * RainbowParenthesesLoadSquare
-	au Syntax * RainbowParenthesesLoadBraces
-augroup END
 " }}}

@@ -13,7 +13,7 @@
 #
 # Note: Calling sudo will NOT use any aliases defined, but will use files in
 # custom paths.
-alias sudo='sudo '
+alias sudo='sudo -E'
 
 # Custom paths {{{
 path=(
@@ -21,7 +21,7 @@ path=(
 	~/.oroshi/scripts/bin
 	~/.oroshi/private/scripts/bin
 	~/.oroshi/scripts/bin/local/$(hostname)
-	~/.oroshi/private/sripts/bin/local/$(hostname)
+	~/.oroshi/private/scripts/bin/local/$(hostname)
 	~/local/bin
 )
 # }}}
@@ -31,6 +31,8 @@ path=(
 alias ls="ls -vhlp --color=always --group-directories-first"
 # grep : colored
 alias grep='grep -i --color=auto'
+# ag
+alias ag='ag --context=2 --smart-case --pager="less -R"'
 # tree : colored, show hidden files but hides git/hg. Display non-ASCII chars
 alias tree='tree -aNC -I ".hg|.git"'
 # watch : colored
@@ -63,6 +65,7 @@ alias -g .....='../../../..'
 # Typos {{{
 alias sl="ls"
 alias mc="mv"
+alias vom="vim"
 # }}}
 # Misc {{{
 # cp and mv using rsync and preserving attributes, and accross fat32 drives
@@ -135,7 +138,7 @@ alias cd-='cd -'
 alias cdo='cd ~/.oroshi/'
 alias cdl='cd ~/local/'
 alias cde='cd ~/local/etc/'
-alias cdw='cd ~/local/var/www/'
+alias cdw='cd /var/www/'
 alias cdt='cd ~/local/tmp/'
 alias cds='cd ~/local/tmp/scripts/'
 alias cdsov='cd ~/local/tmp/sov/'
@@ -204,12 +207,6 @@ alias flushdns="/etc/init.d/dns-clean start"
 alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test500.zip'
 # }}}
 
-# Private aliases  {{{
-local privateAlias=~/.oroshi/private/config/zsh/local/$(hostname).zsh
-if [[ -r $privateAlias ]]; then
-	source $privateAlias
-fi
-# }}}
 # NVM {{{
 local nvmScript=~/local/etc/nvm/nvm.sh
 if [[ -r $nvmScript ]]; then
@@ -224,7 +221,7 @@ if [[ -r $rvmScript ]]; then
   source $rvmScript
 fi
 # }}}
-# {{{ Autojump
+# Autojump {{{
 if [[ `which autojump` != "" ]]; then
 	source ~/.oroshi/config/zsh/autojump.zsh;
 fi

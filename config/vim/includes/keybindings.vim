@@ -139,6 +139,17 @@ nnoremap <silent> <F6> :ArvalTest<CR>
 " NERDTREE {{{
 map <F7> :NERDTreeTabsToggle<CR>
 " }}}
+" VIMDIFF  {{{
+" Vimdiff will mostly be used to handle merges. It is configured to be
+" displayed in three panels (origin, result and other). We will use the FPS
+" keys (zqsd) to move between changes and accept either origin or other.
+" Jump to next/previous change
+nnoremap vdk [c
+nnoremap vdj ]c
+" Accept origin (left) or other (right) change
+nnoremap <silent> vdh :diffget //2<CR>:diffupdate<CR>]c
+nnoremap <silent> vdl :diffget //3<CR>:diffupdate<CR>]c
+"}}}
 " MOTIONS {{{
 " Move down/up including wrapped lines
 nnoremap j gj
@@ -164,11 +175,21 @@ nnoremap <silent> <Leader>d :cnext<CR>
 " }}}
 " MUSCLE MEMORY {{{
 " Ctrl+S saves the file, as in most apps
-nnoremap <silent> <C-S> :w!<CR>
-inoremap <silent> <C-S> <Esc>:w!<CR>
+if !exists('*SaveFile')
+	function SaveFile()
+		if &diff | only | endif
+		write!
+	endfunction
+endif
+nnoremap <silent> <C-S> :call SaveFile()<CR>
+inoremap <silent> <C-S> <Esc>:call SaveFile()<CR>
 " Ctrl+D is save and exit, as in the term.
-nnoremap <silent> <C-D> :x!<CR>
-inoremap <silent> <C-D> <Esc>:x!<CR>
+function! SaveAndCloseFile()
+	if &diff | only | endif
+	exit!
+endfunction
+nnoremap <silent> <C-D> :call SaveAndCloseFile()<CR>
+inoremap <silent> <C-D> <Esc>:call SaveAndCloseFile()<CR>
 " Select all
 nnoremap <C-A> GVgg
 vnoremap <C-A> <Esc>GVgg

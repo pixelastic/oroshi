@@ -1,47 +1,31 @@
 " Ctrl-F
-" TODO: Do not display full path but only path relative to the repo root
-" Use ack instead of grep {{{
-let &grepprg = 'ack-grep'
-let &grepprg .= ' --noenv'
-let &grepprg .= ' --with-filename'
-let &grepprg .= ' --nocolor'
-let &grepprg .= ' --nogroup'
-let &grepprg .= ' --column'
-let &grepprg .= ' --smart-case'
-let &grepprg .= ' --sort-files'
-let &grepprg .= ' --type-set txt=.txt'
-let &grepprg .= ' --type-set config=.conf,.config,.ini'
-let &grepprg .= ' --type-set markdown=.markdown,.mdown,.mkd,.mkdown,.md'
-let &grepprg .= ' --ignore-dir=node_modules/'
-" }}}
-" Ctrl-F to find in project {{{
+" Used to find a string in the current project
 nnoremap <C-F> :FindInProject 
 command! -nargs=1 FindInProject call FindInProject(<q-args>)
+" Defining ag for grep
+let &grepprg = 'ag'
+" FindInProject() {{{
 function! FindInProject(txt)
-	" Note: We expose those two values in the buffer because they will be needed
-	" in the statusline
+	" We expose those two values globally to be able to display them in the
+	" statusline
 	let g:CtrlFRepoRoot = GetRepoRoot()
 	let g:CtrlFSearchPattern = a:txt
 
-	" Note: We go back to the current buffer as soon as the search ends
-	" Note: We start the search in the current repository root
-	" Note: We save the current root in the quickfix window so we can start a new
-	" search directly from there
+	" We execute the search, but immediatly switch back to the initial buffer as
+	" the default grep command switches the current buffer to the first match
 	let currentBuffer = bufnr('%')
 	silent execute 'grep ' . a:txt .' ' . g:CtrlFRepoRoot
-	let b:repoRoot = g:CtrlFRepoRoot
 	execute 'buffer '.currentBuffer
-	redraw!
-
-	" We display the results in the quickfix window
-	" Note: Custom keybindings are defined in ftplugin/qf.vim
+	" Then, we open the quicksearch window
 	copen
+
+	redraw!
 
 	" Set a custom statusline
 	setlocal statusline=%!FindInProjectStatusLine()
 endfunction
 " }}}
-" Custom statusline {{{
+" FindInProjectStatusLine() {{{
 function! FindInProjectStatusLine() 
 	let sl = ''
 	" Mode

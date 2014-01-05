@@ -13,8 +13,8 @@ tmp
 *.so
 *.pyc
 *.mo
-*.min.css
-*.min.js
+# *.min.css
+# *.min.js
 __pycache__
 .sass-cache
 

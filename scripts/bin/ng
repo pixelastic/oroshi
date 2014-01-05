@@ -11,7 +11,7 @@ class Ng
     end
     @action = args[0]
     @script = "sudo /etc/init.d/nginx"
-    @script_php = "sudo /etc/init.d/spawn-fcgi"
+    @script_php = "sudo /etc/init.d/php5-fpm"
   end
 
   def run
