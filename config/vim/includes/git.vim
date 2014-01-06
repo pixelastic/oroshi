@@ -11,7 +11,7 @@ nnoremap <silent> vfa :Gwrite<CR>:call GitUpdateStatusLine()<CR>
 " Remove current file from index
 nnoremap <silent> vfu :Git unstage %<CR><CR>:call GitUpdateStatusLine()<CR>
 " Revert file to previous commited version
-nnoremap <silent> vfr :Gread<CR>:call GitUpdateStatusLine()<CR>
+nnoremap <silent> vfr :mkview!<CR>:Gread<CR>:loadview<CR>:call GitUpdateStatusLine()<CR>
 " Display diff of file with previous version
 nnoremap <silent> vfd :Gdiff<CR>
 " Display commits and commiters on the left side
