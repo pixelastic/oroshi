@@ -202,6 +202,9 @@ alias tweet="t update"
 alias timeline="t stream timeline"
 alias tsearch="t search all"
 # }}}
+# Yeoman {{{
+alias yac='yo angular:controller'
+# }}}
 # Web {{{
 alias flushdns="/etc/init.d/dns-clean start"
 alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test500.zip'

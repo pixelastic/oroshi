@@ -1,6 +1,6 @@
 " FOLDING
 " Start with a few folds open to have the structure overview
-set foldlevel=2
+set foldlevel=3
 " Short aliases to fold to predefined depth
 nnoremap <silent> z& :setlocal foldlevel=1<CR>
 nnoremap <silent> zé :setlocal foldlevel=2<CR>
