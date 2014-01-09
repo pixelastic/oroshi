@@ -202,7 +202,10 @@ alias tweet="t update"
 alias timeline="t stream timeline"
 alias tsearch="t search all"
 # }}}
-# Yeoman {{{
+# Yeoman, Bower, Grunt {{{
+alias bi='bower install --save'
+alias bs='bower search'
+alias gbi='grunt bower-install'
 alias yac='yo angular:controller'
 # }}}
 # Web {{{
