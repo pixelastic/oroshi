@@ -21,7 +21,7 @@ nnoremap <silent> vfb :Gblame<CR>
 " Commit
 nnoremap <silent> vcc :Gcommit<CR>
 " Commit all
-nnoremap <silent> vcca :Git add .<CR>:Gcommit<CR>
+nnoremap <silent> vca :Git add --all .<CR>:Gcommit -v<CR>:resize<CR>
 " }}}
 " working [d]irectory {{{
 nnoremap <silent> vdl :Gstatus<CR>
