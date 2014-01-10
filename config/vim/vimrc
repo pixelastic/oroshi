@@ -50,8 +50,14 @@ set fileformats=unix,dos,mac
 set iskeyword+=-,_
 " Allow multiple buffers opened at once
 set hidden
-" Reload files if changed outside of vim
+" Reload files if changed outside of vim (every 2s, or on tab change)
 set autoread
+set updatetime=2000
+augroup autoread
+	au!
+	autocmd CursorHold * checktime
+	autocmd TabEnter * checktime
+augroup END
 " Set +x to script files on save
 augroup ft_add_chmodx
 	au!
@@ -334,7 +340,7 @@ let g:syntastic_always_populate_loc_list=1
 let g:syntastic_error_symbol='✗'
 let g:syntastic_warning_symbol='⚠'
 let g:syntastic_mode_map={ 'mode': 'passive',
-                     \ 'active_filetypes': ['ruby'],
+                     \ 'active_filetypes': ['javascript', 'ruby'],
                      \ 'passive_filetypes': [] }
 " }}}
 " FILETYPES {{{

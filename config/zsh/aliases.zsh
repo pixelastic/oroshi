@@ -203,10 +203,10 @@ alias timeline="t stream timeline"
 alias tsearch="t search all"
 # }}}
 # Yeoman, Bower, Grunt {{{
-alias bi='bower install --save'
+alias bi='vdr && bower install --save'
 alias bs='bower search'
 alias gbi='grunt bower-install'
-alias yac='yo angular:controller'
+alias yac='vdr && yo angular:controller'
 # }}}
 # Web {{{
 alias flushdns="/etc/init.d/dns-clean start"
