@@ -24,6 +24,7 @@ path=(
 	~/.oroshi/private/scripts/bin/local/$(hostname)
 	~/local/bin
 )
+export CHROME_BIN=`which chromium-browser`
 # }}}
 
 # Basic commands {{{
