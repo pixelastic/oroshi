@@ -93,8 +93,8 @@ call s:HL('TabLineFill', 'white', 'darkgrey', 'none')
 call s:HL('TabLineSel', 'white', 'black', 'bold')
 " Signs
 call s:Link('LineNr', 'SignColumn')
-call s:Link('ErrorMsg', 'SyntasticErrorSign')
-call s:Link('WarningMsg', 'SyntasticWarningSign')
+call s:HL('SyntasticWarningSign', 'yellow', 'yellow')
+call s:HL('SyntasticErrorSign', 'red', 'red')
 " }}}
 " Completion menu {{{
 call s:HL('Pmenu', 'lightgrey', 'darkgrey')
@@ -126,6 +126,8 @@ call s:HL('oroshi_StatusLineSaved', 'darkgreen', 'darkgrey')
 call s:HL('oroshi_StatusLineGitDirty', 'red', 'darkgrey', 'bold')
 call s:HL('oroshi_StatusLineGitStaged', 'calmpurple', 'darkgrey', 'bold')
 call s:HL('oroshi_StatusLineGitClean', 'darkgreen', 'darkgrey')
+" Warning/Errors coloring
+call s:HL('oroshi_StatusLineSyntastic', 'calmred', 'darkgrey', 'bold')
 " Arval testing
 call s:HL('oroshi_TestPassSuccess', 'darkgreen', 'darkgrey', 'bold')
 call s:HL('oroshi_TestPassFailure', 'red', 'darkgrey', 'bold')

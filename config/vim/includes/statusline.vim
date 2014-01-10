@@ -58,6 +58,14 @@ function! OroshiStatusLine()
 	let sl .= '%{exists("b:git_status") && b:git_status == "clean" ? "± " : ""}'
 	let sl .= '%*'
 	" }}}
+	" Syntastic status {{{
+	let sl .= '%#oroshi_StatusLineSyntastic#'
+	let sl .= '%e%{SyntasticStatuslineFlag()}'
+	let sl .= '%*'
+	" }}}
+
+
+
 	" Tests passing or not {{{
 	let sl .= '%#oroshi_TestPassSuccess#'
 	let sl .= '%{exists("b:arval_test_pass") && b:arval_test_pass == 1 ? "✔" : ""}'
