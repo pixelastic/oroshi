@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# A Better CD Encoder
+sudo apt-get install abcde
+# To get the CDDB unique disc id
+sudo apt-get install cd-discid
+# To convert to mp3
+sudo apt-get install lame
+# To produce wav files out of CD
+sudo apt-get install cdparanoia
+# For tagging files
+sudo apt-get install id3 id3v2
