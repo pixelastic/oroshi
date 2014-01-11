@@ -26,6 +26,12 @@ nnoremap <silent> vca :Git add --all .<CR>:Gcommit -v<CR>:resize<CR>
 " working [d]irectory {{{
 nnoremap <silent> vdl :Gstatus<CR>
 " }}}
+" [r]emote {{{
+" Push to remote
+nnoremap <silent> vrps :Git push
+" Pull from remote
+nnoremap <silent> vrpl :Git pull
+" }}}
 
 " STATUSLINE
 " The status line contain a git indicator whose color change based on the
