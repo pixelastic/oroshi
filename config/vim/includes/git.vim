@@ -28,9 +28,9 @@ nnoremap <silent> vdl :Gstatus<CR>
 " }}}
 " [r]emote {{{
 " Push to remote
-nnoremap <silent> vrps :Git push
+nnoremap <silent> vrps :Git push<CR>
 " Pull from remote
-nnoremap <silent> vrpl :Git pull
+nnoremap <silent> vrpl :Git pull<CR>
 " }}}
 
 " STATUSLINE
