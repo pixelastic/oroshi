@@ -24,6 +24,7 @@ path=(
 	~/.oroshi/private/scripts/bin/local/$(hostname)
 	~/local/bin
 )
+export CHROME_BIN=`which chromium-browser`
 # }}}
 
 # Basic commands {{{
@@ -201,6 +202,12 @@ alias cdsemus="cd ~/local/mnt/serenity/music/"
 alias tweet="t update"
 alias timeline="t stream timeline"
 alias tsearch="t search all"
+# }}}
+# Yeoman, Bower, Grunt {{{
+alias bi='vdr && bower install --save'
+alias bs='bower search'
+alias gbi='grunt bower-install'
+alias yac='vdr && yo angular:controller'
 # }}}
 # Web {{{
 alias flushdns="/etc/init.d/dns-clean start"

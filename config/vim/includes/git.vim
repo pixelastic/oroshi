@@ -11,7 +11,7 @@ nnoremap <silent> vfa :Gwrite<CR>:call GitUpdateStatusLine()<CR>
 " Remove current file from index
 nnoremap <silent> vfu :Git unstage %<CR><CR>:call GitUpdateStatusLine()<CR>
 " Revert file to previous commited version
-nnoremap <silent> vfr :Gread<CR>:call GitUpdateStatusLine()<CR>
+nnoremap <silent> vfr :mkview!<CR>:Gread<CR>:loadview<CR>:call GitUpdateStatusLine()<CR>
 " Display diff of file with previous version
 nnoremap <silent> vfd :Gdiff<CR>
 " Display commits and commiters on the left side
@@ -21,10 +21,16 @@ nnoremap <silent> vfb :Gblame<CR>
 " Commit
 nnoremap <silent> vcc :Gcommit<CR>
 " Commit all
-nnoremap <silent> vcca :Git add .<CR>:Gcommit<CR>
+nnoremap <silent> vca :Git add --all .<CR>:Gcommit -v<CR>:resize<CR>
 " }}}
 " working [d]irectory {{{
 nnoremap <silent> vdl :Gstatus<CR>
+" }}}
+" [r]emote {{{
+" Push to remote
+nnoremap <silent> vrps :Git push<CR>
+" Pull from remote
+nnoremap <silent> vrpl :Git pull<CR>
 " }}}
 
 " STATUSLINE

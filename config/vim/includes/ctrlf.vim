@@ -14,8 +14,10 @@ function! FindInProject(txt)
 	" We execute the search, but immediatly switch back to the initial buffer as
 	" the default grep command switches the current buffer to the first match
 	let currentBuffer = bufnr('%')
+	mkview!
 	silent execute 'grep ' . a:txt .' ' . g:CtrlFRepoRoot
 	execute 'buffer '.currentBuffer
+	loadview
 	" Then, we open the quicksearch window
 	copen
 

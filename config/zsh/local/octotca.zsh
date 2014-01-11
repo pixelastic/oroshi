@@ -22,7 +22,7 @@ alias dingoo-sync="~/perso/emulation/devices/dingoo/tools/dingoo-sync /media/tca
 alias gcw-sync="~/perso/emulation/devices/gcwzero/tools/gcw-sync gcwzero"
 alias wii-sync="~/perso/emulation/devices/wii/tools/wii-sync /media/tca/WII"
 alias galaxy-extract="camera-extract /media/tca/F101-14E2/DCIM ~/perso/pictures"
-alias galaxy-sync-audio="update-dir ~/Dropbox/perso/config/audio /media/tca/F101-14E2/media/tca/audio"
+alias galaxy-sync-audio="update-dir ~/Dropbox/perso/config/audio /media/tca/F101-14E2/media/audio"
 alias galaxy-sync-ebooks="ebook-sync ~/perso/books /media/tca/galaxy/books"
 alias galaxy-sync-notes="update-dir ~/perso/notes/ /media/tca/galaxy/notes"
 alias galaxy-sync-roleplay="update-dir ~/perso/roleplay /media/tca/galaxy/roleplay"
@@ -38,16 +38,16 @@ alias serenity-sync-pictures="picture-sync ~/perso/pictures/ ~/local/mnt/serenit
 
 function kb() {
 	local dir=`pwd`
-	sudo /etc/init.d/tomcat6 stop
+	sudo /etc/init.d/tomcat7 stop
 	cd /var/www/java/kissihm/kissihm/
 	mvn clean package
-	sudo rm -drf /var/lib/tomcat6/webapps/kiss/
-	sudo mv -f ./target/kiss*war /var/lib/tomcat6/webapps/kiss.war
-	sudo /etc/init.d/tomcat6 start
-	sudo chown -R tca:tca /var/lib/tomcat6/webapps/kiss/resources/app/
+	sudo rm -drf /var/lib/tomcat7/webapps/kiss/
+	sudo mv -f ./target/kiss*war /var/lib/tomcat7/webapps/kiss.war
+	sudo /etc/init.d/tomcat7 start
+	sudo chown -R tca:tca /var/lib/tomcat7/webapps/kiss/resources/app/
 	echo $dir
 	cd $dir
 }
 function ku() {
-	rsync -ra /var/www/java/kissihm/kissihm/src/main/webapp/resources/app/* /var/lib/tomcat6/webapps/kiss/resources/app/
+	rsync -ra /var/www/java/kissihm/kissihm/src/main/webapp/resources/app/* /var/lib/tomcat7/webapps/kiss/resources/app/
 }

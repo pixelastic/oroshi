@@ -50,8 +50,14 @@ set fileformats=unix,dos,mac
 set iskeyword+=-,_
 " Allow multiple buffers opened at once
 set hidden
-" Reload files if changed outside of vim
+" Reload files if changed outside of vim (every 2s, or on tab change)
 set autoread
+set updatetime=2000
+augroup autoread
+	au!
+	autocmd CursorHold * checktime
+	autocmd TabEnter * checktime
+augroup END
 " Set +x to script files on save
 augroup ft_add_chmodx
 	au!
@@ -74,7 +80,7 @@ set viewoptions=cursor,folds
 " Save sessions on close, load it on open
 augroup views
 	au!
-	au BufWinLeave * silent! mkview
+	au BufWinLeave * silent! mkview!
 	au BufWinEnter * silent! loadview
 augroup END
 " }}}
@@ -329,12 +335,13 @@ au VimEnter * if exists(":RainbowParenthesesToggle") | execute 'RainbowParenthes
 source ~/.vim/includes/git.vim
 " }}}
 " SYNTASTIC {{{
-let g:syntastic_auto_loc_list=1
+" let g:syntastic_auto_loc_list=1
 let g:syntastic_always_populate_loc_list=1
-let g:syntastic_error_symbol='✗'
-let g:syntastic_warning_symbol='⚠'
+let g:syntastic_error_symbol='✗✗'
+let g:syntastic_warning_symbol='⚠⚠'
+let g:syntastic_stl_format='%E{E:%e}%B{ }%W{W:%w}'
 let g:syntastic_mode_map={ 'mode': 'passive',
-                     \ 'active_filetypes': ['ruby'],
+                     \ 'active_filetypes': ['javascript', 'ruby'],
                      \ 'passive_filetypes': [] }
 " }}}
 " FILETYPES {{{

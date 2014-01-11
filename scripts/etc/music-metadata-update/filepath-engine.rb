@@ -59,14 +59,16 @@ class FilepathEngine
 	# eg. "/media/0123-4567/MUSIC/"
 	def root_dir
 		split = basedir.split("/")
-		return split[0..(split.index(get_type)-1)].join("/")
+    last_index = split.map {|i| i == get_type }.rindex(true)
+		return split[0..(last_index-1)].join("/")
 	end
 
 	# Returns the metadata hierarchy of a filepath
 	# eg. "/soundtracks/C/Conan/"
 	def metadata_hierarchy
 		split = basedir.split("/")
-		return split[split.index(get_type)..-1].join("/")
+    last_index = split.map {|i| i == get_type }.rindex(true)
+		return split[last_index..-1].join("/")
 	end
 
 	# FAT32 has a list of illegal characters, we strip those

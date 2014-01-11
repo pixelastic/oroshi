@@ -22,7 +22,7 @@ alias vbufm='git update-feature master'
 # [c]ommits {{{
 alias vcR='git rollback'
 alias vcc='git commit -v'
-alias vcca='git commit-all'
+alias vca='git commit-all'
 alias vcd='git diff-last --'
 alias vce='git amend'
 alias vcl='git peek'
