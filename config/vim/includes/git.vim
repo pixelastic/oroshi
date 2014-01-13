@@ -19,7 +19,7 @@ nnoremap <silent> vfb :Gblame<CR>
 " }}}
 " [c]ommits {{{
 " Commit
-nnoremap <silent> vcc :Gcommit<CR>
+nnoremap <silent> vcc :Gcommit -v<CR>
 " Commit all
 nnoremap <silent> vca :Git add --all .<CR>:Gcommit -v<CR>:resize<CR>
 " }}}
