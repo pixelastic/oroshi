@@ -209,6 +209,11 @@ alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/download
 # }}}
 
 
+# Npm {{{
+alias ni='npm install --save'
+alias nid='npm install --save-dev'
+alias nig='npm install --global'
+# }}}
 # Yeoman {{{
 function yac() { (cd `git root`; yo angular:controller $@) }
 # }}}
