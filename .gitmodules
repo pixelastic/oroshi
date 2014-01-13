@@ -82,3 +82,6 @@
 [submodule "config/vim/bundle/available/rainbow_parentheses.vim"]
 	path = config/vim/bundle/available/rainbow_parentheses.vim
 	url = git@github.com:pixelastic/rainbow_parentheses.vim.git
+[submodule "config/vim/bundle/available/vim-gitgutter"]
+	path = config/vim/bundle/available/vim-gitgutter
+	url = git@github.com:airblade/vim-gitgutter.git
