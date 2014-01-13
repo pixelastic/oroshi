@@ -203,15 +203,22 @@ alias tweet="t update"
 alias timeline="t stream timeline"
 alias tsearch="t search all"
 # }}}
-# Yeoman, Bower, Grunt {{{
-alias bi='vdr && bower install --save'
-alias bs='bower search'
-alias gbi='grunt bower-install'
-alias yac='vdr && yo angular:controller'
-# }}}
 # Web {{{
 alias flushdns="/etc/init.d/dns-clean start"
 alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test500.zip'
+# }}}
+
+
+# Yeoman {{{
+function yac() { (cd `git root`; yo angular:controller $@) }
+# }}}
+# Grunt {{{
+alias gbi='grunt bower-install'
+# }}}
+# Bower {{{
+alias bs='bower search'
+function bid() { (cd `git root`; bower install $@ --save-dev) }
+function bi() { (cd `git root`; bower install $@ --save ) }
 # }}}
 
 # NVM {{{
