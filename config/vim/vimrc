@@ -317,6 +317,8 @@ vnoremap x "_x
 " Copy and paste words
 nnoremap wy viwy
 nnoremap wp viwp
+" ciw that does not yank the changed text
+nnoremap ciw "_ciw
 " Pasting on a selection removes it
 vmap p xp
 "}}}
