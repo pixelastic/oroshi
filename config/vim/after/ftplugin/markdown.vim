@@ -20,9 +20,10 @@ setlocal formatoptions+=t
 
 " Run file
 function! b:RunFile()
-	let htmlFile = expand('%:p:r') . '.html'
+	let thisFile = shellescape(expand('%:p'))
+	let htmlFile =expand('%:p:r') . '.html'
 	" Create the html file
-	silent execute '!markdown % > ' . htmlFile
+	silent execute '!markdown ' . thisFile . ' > ' . shellescape(htmlFile)
 	" Run it
 	call OpenUrlInBrowser(htmlFile)
 endfunction
