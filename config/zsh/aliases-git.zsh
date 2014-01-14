@@ -16,7 +16,7 @@ alias vbs='git checkout'
 alias vbsm='cd $(git root) && git checkout master && updatePromptGit'
 alias vbsd='cd $(git root) && git checkout develop && updatePromptGit'
 alias vbum='vbsm && vbm develop && vbsd && updatePromptGit' # Merge develop to master (Update master)
-alias vbud='vbm master'
+alias vbmm='vbm master'
 alias vbuf='git update-feature develop'
 alias vbufm='git update-feature master'
 # }}}
