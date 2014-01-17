@@ -36,7 +36,7 @@ endfunction
 " augroup END
 " 
 " $ù is easy to type on my keyboard. Use it for debug calls
-inoremap <buffer> $ù console.log()<left>
+inoremap <buffer> $ù console.log(
 " Tired of typing this
 inoremap <buffer> eer expect(err).to.not.exist;
 inoremap <buffer> trc trycatch(function() {<CR><CR>}, done);<Up>
