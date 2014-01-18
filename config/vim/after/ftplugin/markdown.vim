@@ -1,7 +1,7 @@
 " MARKDOWN
 " Add headers with ,(1|2|3|4|5)
-nnoremap <buffer> <leader>& "xyy"xpVr=j
-nnoremap <buffer> <leader>é "xyy"xpVr-j
+nnoremap <buffer> <leader>& I# <Esc>j
+nnoremap <buffer> <leader>é I## <Esc>j
 nnoremap <buffer> <leader>" I### <Esc>j
 nnoremap <buffer> <leader>' I#### <Esc>j
 nnoremap <buffer> <leader>( I##### <Esc>j
@@ -20,9 +20,10 @@ setlocal formatoptions+=t
 
 " Run file
 function! b:RunFile()
-	let htmlFile = expand('%:p:r') . '.html'
+	let thisFile = shellescape(expand('%:p'))
+	let htmlFile =expand('%:p:r') . '.html'
 	" Create the html file
-	silent execute '!markdown % > ' . htmlFile
+	silent execute '!markdown ' . thisFile . ' > ' . shellescape(htmlFile)
 	" Run it
 	call OpenUrlInBrowser(htmlFile)
 endfunction

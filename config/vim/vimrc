@@ -317,6 +317,8 @@ vnoremap x "_x
 " Copy and paste words
 nnoremap wy viwy
 nnoremap wp viwp
+" ciw that does not yank the changed text
+nnoremap ciw "_ciw
 " Pasting on a selection removes it
 vmap p xp
 "}}}
@@ -366,3 +368,10 @@ nnoremap <leader>vr :source ~/.vimrc<CR>:let &filetype=&filetype<CR>:loadview<CR
 nnoremap <silent> man :tabe<CR>:setlocal filetype=man<CR>:.!man<Space>
 " }}}
 
+
+" Rsync kiss front-end stuff to tomcat server
+augroup ft_kiss
+	let kissihmapp="/var/www/java/kissihm/kissihm/src/main/webapp/resources/app/*" 
+	let kissihmwebapp="/var/lib/tomcat7/webapps/kiss/resources/app/"
+	au BufWritePost /var/www/java/kissihm/kissihm/src/main/webapp/resources/app/* execute ':silent !rsync -ra '.kissihmapp.' '.kissihmwebapp
+augroup END

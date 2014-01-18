@@ -1,8 +1,6 @@
 ; nautilus GtkAccelMap rc-file         -*- scheme -*-
 ; this file is an automated accelerator map dump
-
-(gtk_accel_path "<Actions>/ShellActions/Up" "BackSpace")
-
+;
 ; (gtk_accel_path "<Actions>/DirViewActions/Start Volume" "")
 ; (gtk_accel_path "<Actions>/DirViewActions/Trash" "Delete")
 ; (gtk_accel_path "<Actions>/DirViewActions/Save Search" "")
@@ -74,6 +72,7 @@
 ; (gtk_accel_path "<Actions>/CanvasViewActions/Sort by Trash Time" "")
 ; (gtk_accel_path "<Actions>/CanvasViewActions/Sort by Search Relevance" "")
 ; (gtk_accel_path "<Actions>/DirViewActions/Open With" "")
+(gtk_accel_path "<Actions>/ShellActions/Up" "BackSpace")
 ; (gtk_accel_path "<Actions>/DirViewActions/Open Scripts Folder" "")
 ; (gtk_accel_path "<Actions>/ClipboardActions/Cut" "<Primary>x")
 ; (gtk_accel_path "<Actions>/CanvasViewActions/Sort by Modification Date" "")

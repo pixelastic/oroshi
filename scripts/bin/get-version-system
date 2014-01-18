@@ -2,7 +2,7 @@
 
 # Quick stop if the current repo is a .git or .hg one, it is definitly not
 # tracked.
-if [[ ${PWD:t} =~ '(\.hg|\.git)' ]]; then
+if [[ $PWD =~ '(\.hg|\.git)' ]]; then
 	echo 'none'
 	return
 fi

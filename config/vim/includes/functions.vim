@@ -88,7 +88,6 @@ function! StrUncomment(txt) " {{{
 		" Remove trailing comment used to add the previously deleted foldmarker
 		if strlen(StrTrim(comments[0])) > 1
 			let line = substitute(line, comments[0] . '.*$', '', '')
-			echo line
 		endif
 	endif
 

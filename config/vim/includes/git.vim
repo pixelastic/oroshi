@@ -19,12 +19,12 @@ nnoremap <silent> vfb :Gblame<CR>
 " }}}
 " [c]ommits {{{
 " Commit
-nnoremap <silent> vcc :Gcommit<CR>
+nnoremap <silent> vcc :Gcommit -v<CR>:resize<CR>
 " Commit all
 nnoremap <silent> vca :Git add --all .<CR>:Gcommit -v<CR>:resize<CR>
 " }}}
 " working [d]irectory {{{
-nnoremap <silent> vdl :Gstatus<CR>
+nnoremap <silent> vdl :Gstatus<CR>:resize<CR>
 " }}}
 " [r]emote {{{
 " Push to remote

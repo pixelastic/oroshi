@@ -5,6 +5,11 @@ au BufWritePre,BufRead <buffer> call RemoveTrailingSpaces()
 " Use language { and } as fold markers
 setlocal foldmethod=marker
 setlocal foldmarker={,}
+" Use two spaces for indenting
+setlocal tabstop=2
+setlocal shiftwidth=2
+setlocal softtabstop=2
+setlocal expandtab
 
 " is stands for [i]n [s]elector, #header li
 noremap <buffer> is :<c-u>execute "normal! ?{\r:nohlsearch\r^vt{h"<CR>
