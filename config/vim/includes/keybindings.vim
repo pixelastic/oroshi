@@ -229,6 +229,9 @@ nmap - [e
 vmap - [egv
 nmap _ ]e
 vmap _ ]egv
+" Move to next/previous method definition
+nnoremap mm ]m
+nnoremap MM [m
 " appending a missing ; at the end of line
 function! AppendMissingSemicolon()
 	if getline(".") !~ ';$'
