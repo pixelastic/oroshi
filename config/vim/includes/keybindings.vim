@@ -159,6 +159,9 @@ nnoremap H ^
 vnoremap H ^
 nnoremap L g_
 vnoremap L g_
+" Jump to next/previous words with J and K
+nnoremap J b
+nnoremap K w
 " Go back to first non blank character with home
 nnoremap <Home> ^
 inoremap <Home> <Esc>^i
@@ -172,6 +175,21 @@ nnoremap <silent> <Leader>z :lprev<CR>
 nnoremap <silent> <Leader>s :lnext<CR>
 nnoremap <silent> <Leader>q :cprev<CR>
 nnoremap <silent> <Leader>d :cnext<CR>
+" Move to next/previous method definition
+nnoremap mm ]m
+nnoremap MM [m
+" Move to current method definition
+nnoremap gm [{
+" Select/Delete/Change method
+nnoremap vim viB
+nnoremap dim diB
+nnoremap xim viB"_d
+nnoremap cim ciB
+" Select/Delete/Change method, including header
+nnoremap vam [{V%
+nnoremap dam [{V%d
+nnoremap xam [{V%"_d
+nnoremap cam [{V%c
 " }}}
 " MUSCLE MEMORY {{{
 " Ctrl+S saves the file, as in most apps
@@ -229,9 +247,6 @@ nmap - [e
 vmap - [egv
 nmap _ ]e
 vmap _ ]egv
-" Move to next/previous method definition
-nnoremap mm ]m
-nnoremap MM [m
 " appending a missing ; at the end of line
 function! AppendMissingSemicolon()
 	if getline(".") !~ ';$'
