@@ -17,11 +17,11 @@ alias sudo='sudo -E'
 
 # Custom paths {{{
 path=(
-	$path
 	~/.oroshi/scripts/bin
 	~/.oroshi/private/scripts/bin
 	~/.oroshi/scripts/bin/local/$(hostname)
 	~/.oroshi/private/scripts/bin/local/$(hostname)
+	$path
 	~/local/bin
 )
 export CHROME_BIN=`which chromium-browser`

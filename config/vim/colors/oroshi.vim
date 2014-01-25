@@ -13,9 +13,11 @@ let g:colors_name = "oroshi"
 " }}}
 " Color Palette {{{
 let s:palette = {}
+let s:palette.none          = 'none'
 " Black, White and grey
 let s:palette.pureblack     = 16
 let s:palette.black         = 233
+let s:palette.almostblack   = 234
 let s:palette.darkgrey      = 235
 let s:palette.grey          = 241
 let s:palette.lightgrey     = 250
@@ -136,6 +138,8 @@ call s:HL('oroshi_StatusLineBadLineEnding', 'red', 'darkgrey', 'bold')
 call s:HL('oroshi_StatusLineBadEncoding', 'red', 'darkgrey', 'bold')
 " }}}
 " Cursor {{{
+call s:HL('CursorLine', 'none', 'almostblack', 'none')
+call s:HL('CursorLineNr', 'darkyellow', 'almostblack', 'none')
 if &term =~ "xterm"
 	" Cursor in insert mode
 	let &t_SI = "\<Esc>]12;#AF8700\x7"
@@ -177,7 +181,7 @@ call s:Link('oroshi_Search', 'Search')
 " Folded text
 call s:HL('Folded', 'lightgrey', 'darkgrey')
 " Matching parenthesis
-call s:HL('MatchParen', 'black', 'orange', 'bold')
+call s:HL('MatchParen', 'black', 'calmyellow', 'bold')
 " }}}
 
 " Basic text {{{

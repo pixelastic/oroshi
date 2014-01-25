@@ -39,7 +39,6 @@ endfunction
 inoremap <buffer> $ù console.log(
 " Tired of typing this
 inoremap <buffer> eer expect(err).to.not.exist;
-inoremap <buffer> trc trycatch(function() {<CR><CR>}, done);<Up>
 
 " Clean the file
 function! b:CleanFile()

@@ -56,6 +56,7 @@
     cursor_color = "#fa1217"
     font = Anonymous Pro 13
     background_color = "#121212"
+    cursor_blink = False
     scrollback_infinite = True
   [[Oroshi]]
     scrollbar_position = hidden
@@ -68,6 +69,7 @@
     cursor_color = "#fa1217"
     font = Anonymous Pro 13
     background_color = "#121212"
+    cursor_blink = False
     scrollback_infinite = True
 [layouts]
   [[default]]

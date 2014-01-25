@@ -126,6 +126,8 @@ let g:SuperTabLongestHighlight = 1
 " Enabling syntax highlighting
 syntax on
 colorscheme oroshi
+" Coloring current line
+set cursorline
 " Reloading the colorscheme
 function! ReloadColorscheme(scheme)
 	silent! mkview!
