@@ -181,7 +181,7 @@ call s:Link('oroshi_Search', 'Search')
 " Folded text
 call s:HL('Folded', 'lightgrey', 'darkgrey')
 " Matching parenthesis
-call s:HL('MatchParen', 'black', 'orange', 'bold')
+call s:HL('MatchParen', 'black', 'calmyellow', 'bold')
 " }}}
 
 " Basic text {{{
