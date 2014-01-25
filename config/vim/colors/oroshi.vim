@@ -139,7 +139,7 @@ call s:HL('oroshi_StatusLineBadEncoding', 'red', 'darkgrey', 'bold')
 " }}}
 " Cursor {{{
 call s:HL('CursorLine', 'none', 'almostblack', 'none')
-call s:HL('CursorLineNr', 'white', 'almostblack', 'none')
+call s:HL('CursorLineNr', 'darkyellow', 'almostblack', 'none')
 if &term =~ "xterm"
 	" Cursor in insert mode
 	let &t_SI = "\<Esc>]12;#AF8700\x7"
