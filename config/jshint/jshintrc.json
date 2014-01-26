@@ -44,7 +44,5 @@
   // Prohibits using an undefined variable
   "undef": true,
   // Prohibits not using a defined variable
-  "unused": true,
-  // Force ECMAScript 5 strict mode
-  "strict": true
+  "unused": true
 }
