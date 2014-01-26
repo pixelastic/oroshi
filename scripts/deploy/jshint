@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Paths
-configFile=~/.oroshi/config/jshint/jshintrc.js
+configFile=~/.oroshi/config/jshint/jshintrc.json
 destFile=~/.jshintrc
 
 # Link the config file
