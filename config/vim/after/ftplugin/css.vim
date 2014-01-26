@@ -1,16 +1,16 @@
 " CSS
-" Remove unwanted trailing whitespaces
-au BufWritePre,BufRead <buffer> call RemoveTrailingSpaces()
-
-" Use language { and } as fold markers
-setlocal foldmethod=marker
-setlocal foldmarker={,}
-" Use two spaces for indenting
+" Indentation rules {{{
 setlocal tabstop=2
 setlocal shiftwidth=2
 setlocal softtabstop=2
 setlocal expandtab
-
+setlocal equalprg=css-beautify\ -s\ 2\ -f\ -
+" }}}
+" Folding {{{
+setlocal foldmethod=marker
+setlocal foldmarker={,}
+" }}}
+" Custom bindings {{{
 " is stands for [i]n [s]elector, #header li
 noremap <buffer> is :<c-u>execute "normal! ?{\r:nohlsearch\r^vt{h"<CR>
 nunmap  <buffer> is
@@ -26,3 +26,16 @@ nunmap  <buffer> ir
 " ar stands for [a]round [r]ules, selector { ... }
 noremap <buffer> ar :<C-U>execute "normal! ?{\rV/}\r"<CR>
 nunmap  <buffer> ar
+" }}}
+" Csslint checker {{{
+if !exists('g:syntastic_csslint_options') || g:syntastic_csslint_options==''
+	let g:syntastic_csslint_options = system('cat '.expand('~/.csslintrc'))
+endif
+" }}}
+" Cleaning the file {{{
+nnoremap <silent> <buffer> <F4> :call CssBeautify()<CR>
+function! CssBeautify() 
+	execute '%!css-beautify -s 2 -f -'
+	call RemoveTrailingSpaces()
+endfunction
+" }}}

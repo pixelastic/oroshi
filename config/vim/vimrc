@@ -345,7 +345,7 @@ let g:syntastic_error_symbol='✗✗'
 let g:syntastic_warning_symbol='⚠⚠'
 let g:syntastic_stl_format='%E{E:%e}%B{ }%W{W:%w}'
 let g:syntastic_mode_map={ 'mode': 'passive',
-                     \ 'active_filetypes': ['javascript', 'ruby'],
+                     \ 'active_filetypes': ['javascript', 'css', 'ruby'],
                      \ 'passive_filetypes': [] }
 " }}}
 " FILETYPES {{{

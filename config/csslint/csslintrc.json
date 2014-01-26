@@ -1,0 +1,45 @@
+{
+  "warnings": [
+    "adjoining-classes",
+    "box-model",
+    "box-sizing",
+    "bulletproof-font-face",
+    "compatible-vendor-prefixes",
+    "gradients",
+    "ids",
+    "shorthand",
+    "star-property-hack",
+    "text-indent",
+    "underscore-property-hack",
+    "universal-selector",
+    "vendor-prefix"
+  ],
+  "errors": [
+    "display-property-grouping",
+    "duplicate-background-images",
+    "duplicate-properties",
+    "errors",
+    "fallback-colors",
+    "floats",
+    "font-faces",
+    "font-sizes",
+    "import",
+    "important",
+    "known-properties",
+    "outline-none",
+    "overqualified-elements",
+    "qualified-headings",
+    "regex-selectors",
+    "rules-count",
+    "selector-max",
+    "selector-max-approaching",
+    "unique-headings",
+    "unqualified-attributes"
+  ],
+  "ignore": [
+    // 0px or 0em should be written as 0
+    "zero-units",
+    // Selector with no rules
+    "empty-rules"
+  ]
+}
