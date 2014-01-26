@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Paths
+configFile=~/.oroshi/config/jsbeautify/jsbeautify.json
+destFile=~/.jsbeautifyrc
+
+# Link the config file
+ln -fs $configFile $destFile
