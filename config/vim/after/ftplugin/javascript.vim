@@ -7,7 +7,10 @@ setlocal expandtab
 setlocal equalprg=js-beautify\ -f\ -
 " }}}
 " TernJS {{{
-nnoremap <buffer> rr :TernRename<CR>
+nnoremap <buffer> tr :ternRename<CR>
+nnoremap <buffer> td :TernDef<CR>
+nnoremap <buffer> tt :TernType<CR>
+nnoremap <buffer> tg :TernRefs<CR>
 " }}}
 " Folding {{{
 setlocal foldmethod=syntax
