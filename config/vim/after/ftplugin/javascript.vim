@@ -6,8 +6,9 @@ setlocal softtabstop=2
 setlocal expandtab
 setlocal equalprg=js-beautify\ -f\ -
 " }}}
-" Omnicompletion {{{
-setlocal omnifunc=javascriptcomplete#CompleteJS
+" TernJS {{{
+nnoremap <buffer> <C-R> :TernRename<CR>
+inoremap <buffer> <C-R> <Esc>:TernRename<CR>
 " }}}
 " Folding {{{
 setlocal foldmethod=syntax

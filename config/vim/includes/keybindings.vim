@@ -183,12 +183,10 @@ nnoremap gm [{
 " Select/Delete/Change method
 nnoremap vim viB
 nnoremap dim diB
-nnoremap xim viB"_d
 nnoremap cim ciB
 " Select/Delete/Change method, including header
 nnoremap vam [{V%
 nnoremap dam [{V%d
-nnoremap xam [{V%"_d
 nnoremap cam [{V%c
 " }}}
 " MUSCLE MEMORY {{{
