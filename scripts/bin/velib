@@ -9,13 +9,14 @@ class Velib
 
 	def initialize
 		@stations = {
-			18017 => "Station Caulaincourt",
-			18016 => "Station Francœur",
-			18020 => "Station Francœur (bas)",
-			18015 => "Station Custine",
-			18021 => "Station Marcadet/Hermel",
-			18022 => "Station Marcadet/Clignancourt",
-			18024 => "Station Marcadet-Poissoniers"
+			21306 => "Issy",
+			# 18017 => "Station Caulaincourt",
+			# 18016 => "Station Francœur",
+			# 18020 => "Station Francœur (bas)",
+			# 18015 => "Station Custine",
+			# 18021 => "Station Marcadet/Hermel",
+			# 18022 => "Station Marcadet/Clignancourt",
+			# 18024 => "Station Marcadet-Poissoniers"
 		}
 
 		@api_key = File.read(File.expand_path('~/.oroshi/private/config/jcdecaux/developerkey')).chomp
@@ -39,7 +40,7 @@ class Velib
 		end
 
 		stations.sort_by{|k,v| v}.reverse.each do |name, number|
-			puts "#{name} : #{number}"
+			puts "#{name} : #{number}/62"
 		end
 	end
 

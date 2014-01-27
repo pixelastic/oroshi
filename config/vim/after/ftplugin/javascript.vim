@@ -36,8 +36,10 @@ endif
 " Cleaning the file {{{
 nnoremap <silent> <buffer> <F4> :call JavascriptBeautify()<CR>
 function! JavascriptBeautify() 
+	let linenr=line('.')
 	execute '%!js-beautify -f -'
 	call RemoveTrailingSpaces()
+	execute 'normal '.linenr.'gg'
 endfunction
 " }}}
 
