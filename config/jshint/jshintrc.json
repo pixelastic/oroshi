@@ -24,7 +24,8 @@
   // List of custom globals jshint should know about
   "globals": {
     "angular": false,
-    "_": false
+    "_": false,
+		"$": false
   },
 
   // Prohibit & and |, prevent mistyped && or ||
