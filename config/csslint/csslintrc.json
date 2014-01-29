@@ -1,7 +1,5 @@
 {
   "warnings": [
-    "adjoining-classes",
-    "box-model",
     "box-sizing",
     "bulletproof-font-face",
     "compatible-vendor-prefixes",
@@ -40,6 +38,10 @@
     // 0px or 0em should be written as 0
     "zero-units",
     // Selector with no rules
-    "empty-rules"
+    "empty-rules",
+    // .class1.class2 does not work in IE6
+    "adjoining-classes",
+    // Do not use borders or padding when defining width and height
+    "box-model"
   ]
 }
