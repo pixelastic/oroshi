@@ -25,7 +25,8 @@
   "globals": {
     "angular": false,
     "_": false,
-    "$": false
+    "$": false,
+    "moment": false
   },
 
   // Prohibit & and |, prevent mistyped && or ||
