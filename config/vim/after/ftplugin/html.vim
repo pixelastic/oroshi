@@ -26,10 +26,10 @@ let g:syntastic_html_tidy_ignore_errors = [
                 \ ]
 " }}}
 " Cleaning the file {{{
-nnoremap <silent> <buffer> <F4> :call JavascriptBeautify()<CR>
-function! JavascriptBeautify() 
+nnoremap <silent> <buffer> <F4> :call HtmlBeautify()<CR>
+function! HtmlBeautify() 
 	let linenr=line('.')
-	execute '%!js-beautify -f -'
+	execute '%!html-beautify -f -'
 	call RemoveTrailingSpaces()
 	execute 'normal '.linenr.'gg'
 endfunction
