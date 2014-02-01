@@ -191,9 +191,6 @@ set textwidth=79
 set formatoptions=cronq1
 " We make sure that backspace in insert mode can delete new lines and tabs
 set backspace=indent,eol,start
-" Aligning with > and < in visual mode keep the selection
-vnoremap > >gv
-vnoremap < <gv
 " Format whole paragraph
 nnoremap gqp vipgq
 " Smart-Tabs plugin autoconvert tabs to spaces for alignment, but we disable
@@ -251,24 +248,6 @@ inoremap <C-H> <Esc>gT
 inoremap <C-L> <Esc>gt
 cnoremap <C-H> <C-C>gT
 cnoremap <C-L> <C-C>gt
-" Opened test file in new tab
-function! OpenTestFileInNewTab()
-	" Check for Arval method
-	if !exists('*ArvalGetTestFile')
-		return
-	endif
-
-	" Find test file
-	let testfile = ArvalGetTestFile()
-	if testfile == ''
-		echo "No test file found"
-		return
-	endif
-
-	" Load in new tab
-	execute 'tabe ' . testfile
-endfunction
-nnoremap <C-T> :call OpenTestFileInNewTab()<CR>
 "}}}
 " WILDMENU {{{
 " We enable a simple wildmenu with basic Tab-completion.
@@ -318,11 +297,9 @@ nnoremap x "_x
 vnoremap x "_x
 " Copy and paste words
 nnoremap wy viwy
-nnoremap wp viwp
+nnoremap wp viwP
 " ciw that does not yank the changed text
 nnoremap ciw "_ciw
-" Pasting on a selection removes it
-vmap p xp
 "}}}
 
 " CTRL-F {{{
@@ -354,12 +331,6 @@ augroup skeletons
 	au!
 	au BufNewFile * :silent! exec ":0r ~/.vim/includes/skeletons/skeleton.".expand('%:e')
 augroup END
-
-" Easy switch to different filetypes filetype
-nnoremap <silent> <leader>html :setlocal filetype=html<CR>
-nnoremap <silent> <leader>md :setlocal filetype=markdown<CR>
-nnoremap <silent> <leader>py :setlocal filetype=python<CR>
-nnoremap <silent> <leader>zsh :setlocal filetype=zsh<CR>
 
 " ,ve to edit vimrc
 nnoremap <leader>ve :tabe ~/.oroshi/config/vim/vimrc<CR>
