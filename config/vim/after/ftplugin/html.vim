@@ -16,19 +16,22 @@ endfunction
 setlocal foldmethod=manual
 nnoremap <silent> <buffer> za :call HTMLFoldTag()<CR>
 " }}}
-" Clean file {{{
-function! b:CleanFile()
-	let tidyrc="~/.tidyrc"
-	let tidyCommand="silent %!tidy"
-
-	" Use custom config if found
-	if !filereadable(tidyrc)
-		let tidyCommand = tidyCommand." -config ".tidyrc
-	endif
-	execute tidyCommand
-
-	" Tidy indents everything with spaces, we convert to tabs
-	silent call IndentWithTabs()
+" Syntax checking {{{
+let g:syntastic_html_tidy_ignore_errors = [
+                \ "trimming empty <i>",
+                \ "trimming empty <span>",
+                \ "trimming empty <em>",
+                \ "proprietary attribute \"ng-",
+                \ "proprietary attribute \"ui-",
+                \ ]
+" }}}
+" Cleaning the file {{{
+nnoremap <silent> <buffer> <F4> :call HtmlBeautify()<CR>
+function! HtmlBeautify() 
+	let linenr=line('.')
+	execute '%!html-beautify -f -'
+	call RemoveTrailingSpaces()
+	execute 'normal '.linenr.'gg'
 endfunction
 " }}}
 " Remove scripts from file {{{
@@ -42,9 +45,7 @@ endfunction
 nnoremap <buffer> O1;5S :call b:RemoveScripts()<CR>
 " }}}
 " Run file {{{
-function! b:RunFile()
-	call OpenUrlInBrowser(expand('%:p'))
-endfunction
+nnoremap <silent> <buffer> <F5> :call OpenUrlInBrowser(expand('%:p'))<CR>
 " }}}
 
 " Ctrl+C closes opened tags (using ragtags)

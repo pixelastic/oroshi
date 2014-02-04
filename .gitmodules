@@ -85,3 +85,6 @@
 [submodule "config/vim/bundle/available/vim-gitgutter"]
 	path = config/vim/bundle/available/vim-gitgutter
 	url = git@github.com:airblade/vim-gitgutter.git
+[submodule "config/vim/bundle/available/tern_for_vim"]
+	path = config/vim/bundle/available/tern_for_vim
+	url = git@github.com:marijnh/tern_for_vim.git

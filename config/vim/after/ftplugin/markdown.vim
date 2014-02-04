@@ -19,9 +19,10 @@ vnoremap <buffer> <leader>b <Esc>mzg`>a**<Esc>g`<i**<Esc>`zl
 setlocal formatoptions+=t
 
 " Run file
-function! b:RunFile()
+nnoremap <silent> <buffer> <F5> :call MarkdownConvertAndRun()<CR>
+function! MarkdownConvertAndRun()
 	let thisFile = shellescape(expand('%:p'))
-	let htmlFile =expand('%:p:r') . '.html'
+	let htmlFile = '/tmp/vim-generated-markdown.html'
 	" Create the html file
 	silent execute '!markdown ' . thisFile . ' > ' . shellescape(htmlFile)
 	" Run it
