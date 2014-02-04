@@ -45,9 +45,7 @@ endfunction
 nnoremap <buffer> O1;5S :call b:RemoveScripts()<CR>
 " }}}
 " Run file {{{
-function! b:RunFile()
-	call OpenUrlInBrowser(expand('%:p'))
-endfunction
+nnoremap <silent> <buffer> <F5> :call OpenUrlInBrowser(expand('%:p'))<CR>
 " }}}
 
 " Ctrl+C closes opened tags (using ragtags)
