@@ -95,8 +95,8 @@ call s:HL('TabLineFill', 'white', 'darkgrey', 'none')
 call s:HL('TabLineSel', 'white', 'black', 'bold')
 " Signs
 call s:Link('LineNr', 'SignColumn')
-call s:HL('SyntasticWarningSign', 'yellow', 'yellow')
-call s:HL('SyntasticErrorSign', 'red', 'red')
+call s:HL('SyntasticWarningSign', 'darkyellow', 'darkyellow')
+call s:HL('SyntasticErrorSign', 'darkred', 'darkred')
 " }}}
 " Completion menu {{{
 call s:HL('Pmenu', 'lightgrey', 'darkgrey')
