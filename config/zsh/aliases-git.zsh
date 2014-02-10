@@ -28,6 +28,7 @@ alias vca='git commit-all'
 alias vcd='git diff-last --'
 alias vce='git amend'
 alias vcl='git peek'
+alias vcl+='git peek --stat'
 alias vcla='git peek -p'
 alias vcp='git prev'
 # }}}
