@@ -24,7 +24,7 @@
   // List of custom globals jshint should know about
   "globals": {
     "angular": false,
-    "_": false,
+    "_": true,
     "$": false,
     "moment": false
   },

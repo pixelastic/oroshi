@@ -128,7 +128,6 @@
 ; (gtk_accel_path "<Actions>/DesktopViewActions/Empty Trash Conditional" "")
 ; (gtk_accel_path "<Actions>/ShellActions/TabsPrevious" "<Primary>Page_Up")
 ; (gtk_accel_path "<Actions>/DirViewActions/Self Stop Volume" "")
-; (gtk_accel_path "<Actions>/ListViewActions/Visible Columns" "")
 ; (gtk_accel_path "<Actions>/ShellActions/About Nautilus" "")
 ; (gtk_accel_path "<Actions>/CanvasViewActions/Sort by Name" "")
 ; (gtk_accel_path "<Actions>/DirViewActions/Self Unmount Volume" "")
