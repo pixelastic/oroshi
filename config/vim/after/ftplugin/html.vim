@@ -4,6 +4,12 @@ setlocal tabstop=2
 setlocal shiftwidth=2
 setlocal softtabstop=2
 setlocal expandtab
+" Extend line-width to 140
+if &ft == "html"
+	setlocal colorcolumn=140
+	setlocal textwidth=139
+endif
+
 
 " Folding {{{
 function! HTMLFoldTag()
