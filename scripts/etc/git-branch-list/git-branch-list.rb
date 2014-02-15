@@ -12,30 +12,20 @@ class GitBranchList
 			:bugfix => 203
 		}
 
-	def initialize(*args)
-		@input = args[0] || `git branch --verbose`
-	end
-
-	# Parse a branch line into 4 useful parts
-	def self.parse_line(line)
-		regexp = /^(\*|\s?) (\S+)\s*(\w+) (.*)/
-		match = regexp.match(line)
-		return [ match[1] == "*", match[2], match[3], match[4] ]
-	end
-
 	def self.color_branchname(line)
 		branches=/master|hotfix|release|develop|feature/
 		suffix=/\/?[\w\/\-\.]*/
 
 		line.gsub!(/((#{branches})#{suffix})/) do |foo|
+      puts foo
 			fullname, type = $1, $2
+      puts fullname
+      puts type
 			type="bugfix" if fullname =~ /^feature\/bugfix/
 			color=@branch_colors[type.to_sym]
 			self.color_text(fullname, color)
 		end
 		return line
-
-
 	end
 
 	# Wrap a text in color codes
