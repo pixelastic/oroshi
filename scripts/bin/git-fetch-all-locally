@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+# Will fetch all branches from origin, and track them locally
+
+local currentBranch=$(git current-branch)
+# git fetch --all
+for remote in `git branch -r`; do 
+	local newName=${remote/origin\/}
+	if [[ $newName == "HEAD" || $remote == "->" ]]; then
+		continue;
+	fi;
+	git checkout -b $newName $remote &>/dev/null
+	echo "Tracking $newName"
+done
+git checkout $currentBranch &>/dev/null
+
