@@ -17,6 +17,9 @@ vnoremap <buffer> <leader>b <Esc>mzg`>a**<Esc>g`<i**<Esc>`zl
 
 " Auto-wrap text
 setlocal formatoptions+=t
+" Use windows line endings so readme files can be easily edited on Notepad
+setlocal fileformat=dos
+au BufNewFile,BufRead,BufWritePre <buffer> silent call ConvertLineEndingsToDos()
 
 " Run file
 nnoremap <silent> <buffer> <F5> :call MarkdownConvertAndRun()<CR>

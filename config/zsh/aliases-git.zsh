@@ -17,6 +17,7 @@ alias vbsm='cd $(git root) && git checkout master && updatePromptGit'
 alias vbsd='cd $(git root) && git checkout develop && updatePromptGit'
 alias vbum='vbsm && vbm develop && vbsd && updatePromptGit' # Merge develop to master (Update master)
 alias vbmm='vbm master'
+alias vbmd='vbm develop'
 alias vbuf='git update-feature develop'
 alias vbufm='git update-feature master'
 # }}}
@@ -27,6 +28,7 @@ alias vca='git commit-all'
 alias vcd='git diff-last --'
 alias vce='git amend'
 alias vcl='git peek'
+alias vcl+='git peek --stat'
 alias vcla='git peek -p'
 alias vcp='git prev'
 # }}}
@@ -76,6 +78,7 @@ alias vrps='git push'
 alias vrr='git remote show origin -n'
 alias vrpsm='git push origin master'
 alias vrpsd='git push origin develop'
+alias vrta='git fetch-all-locally'
 # }}}
 # [t]ags {{{
 alias vtc='git tag'
@@ -87,9 +90,9 @@ alias vtt='git current-tag'
 # [s]tashes {{{
 alias vsR='git stash drop' # delete one stash
 alias vsRa='git stash clear' # delete all stashes
-alias vsa='git stash apply'
-alias vsc='git stash'
-alias vsl='git stash list'
+alias vsta='git stash apply'
+alias vst='git stash -u'
+alias vstl='git stash list'
 # }}}
 # [s]u[b]-modules {{{
 alias vbsi='git submodule init'

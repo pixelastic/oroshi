@@ -95,8 +95,8 @@ call s:HL('TabLineFill', 'white', 'darkgrey', 'none')
 call s:HL('TabLineSel', 'white', 'black', 'bold')
 " Signs
 call s:Link('LineNr', 'SignColumn')
-call s:HL('SyntasticWarningSign', 'yellow', 'yellow')
-call s:HL('SyntasticErrorSign', 'red', 'red')
+call s:HL('SyntasticWarningSign', 'darkyellow', 'darkyellow')
+call s:HL('SyntasticErrorSign', 'darkred', 'darkred')
 " }}}
 " Completion menu {{{
 call s:HL('Pmenu', 'lightgrey', 'darkgrey')
@@ -294,7 +294,10 @@ call s:HL('oroshi_RegexpSpecial', 'darkyellow')
 
 " Css {{{
 " Tag name
-call s:Link('Function', 'cssTagName', 'sassClass')
+call s:HL('cssTagName', 'darkgreen')
+call s:Link('cssTagName', 'sassClass')
+" Class name
+call s:HL('cssClassName', 'green')
 " Operators
 call s:Link('Operator', 'cssSelectorOp', 'cssMediaComma', 'cssBraces')
 " :pseudo-class
