@@ -17,10 +17,7 @@ class GitBranchList
 		suffix=/\/?[\w\/\-\.]*/
 
 		line.gsub!(/((#{branches})#{suffix})/) do |foo|
-      puts foo
 			fullname, type = $1, $2
-      puts fullname
-      puts type
 			type="bugfix" if fullname =~ /^feature\/bugfix/
 			color=@branch_colors[type.to_sym]
 			self.color_text(fullname, color)
