@@ -20,6 +20,7 @@ alias vbmm='vbm master'
 alias vbmd='vbm develop'
 alias vbuf='git update-feature develop'
 alias vbufm='git update-feature master'
+alias vbrfa='git fetch-all-locally'
 # }}}
 # [c]ommits {{{
 alias vcR='git rollback'
@@ -78,7 +79,6 @@ alias vrps='git push'
 alias vrr='git remote show origin -n'
 alias vrpsm='git push origin master'
 alias vrpsd='git push origin develop'
-alias vrta='git fetch-all-locally'
 # }}}
 # [t]ags {{{
 alias vtc='git tag'
