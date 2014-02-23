@@ -13,9 +13,6 @@
 [submodule "config/vim/bundle/available/vim-endwise"]
 	path = config/vim/bundle/available/vim-endwise
 	url = git://github.com/tpope/vim-endwise.git
-[submodule "config/vim/bundle/available/vim-flake8"]
-	path = config/vim/bundle/available/vim-flake8
-	url = git://github.com/nvie/vim-flake8.git
 [submodule "config/vim/bundle/available/vim-markdown"]
 	path = config/vim/bundle/available/vim-markdown
 	url = git://github.com/tpope/vim-markdown.git
@@ -76,9 +73,6 @@
 [submodule "scripts/etc/dconf-export"]
 	path = scripts/etc/dconf-export
 	url = git@github.com:pixelastic/dconf-export.git
-[submodule "config/vim/bundle/available/vim-vroom"]
-	path = config/vim/bundle/available/vim-vroom
-	url = git@github.com:skalnik/vim-vroom.git
 [submodule "config/vim/bundle/available/rainbow_parentheses.vim"]
 	path = config/vim/bundle/available/rainbow_parentheses.vim
 	url = git@github.com:pixelastic/rainbow_parentheses.vim.git
@@ -88,3 +82,9 @@
 [submodule "config/vim/bundle/available/tern_for_vim"]
 	path = config/vim/bundle/available/tern_for_vim
 	url = git@github.com:marijnh/tern_for_vim.git
+[submodule "config/vim/bundle/available/ultisnips"]
+	path = config/vim/bundle/available/ultisnips
+	url = git@github.com:SirVer/ultisnips.git
+[submodule "config/vim/bundle/available/YouCompleteMe"]
+	path = config/vim/bundle/available/YouCompleteMe
+	url = git@github.com:Valloric/YouCompleteMe.git
