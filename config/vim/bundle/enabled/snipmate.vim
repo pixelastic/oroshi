@@ -1,0 +1,1 @@
+../available/snipmate.vim
