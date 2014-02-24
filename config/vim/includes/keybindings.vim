@@ -30,15 +30,84 @@ cnoremap [25~ <C-C>
 nnoremap [25~ i
 " }}}
 " SNIPPETS {{{
-let g:UltiSnipsExpandTrigger = "<C-K>"
-let g:UltiSnipsJumpForwardTrigger = "<Tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
+" let g:UltiSnipsExpandTrigger = "<C-K>"
+" let g:UltiSnipsJumpForwardTrigger = "<Tab>"
+" let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
 " }}}
 " AUTOCOMPLETE {{{
-let g:ycm_min_num_of_chars_for_completion = 3
-let g:ycm_key_invoke_completion = '<C-J>'
-let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
+let g:ycm_min_num_of_chars_for_completion = 99
+" let g:ycm_key_invoke_completion = '<C-J>'
+" let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
 " }}}
+" let g:UltiSnipsJumpForwardTrigger="<tab>"
+" let g:UltiSnipsListSnippets="<c-e>"
+let g:UltiSnipsExpandTrigger = '<C-K>'
+let g:ycm_key_invoke_completion = '<C-K>'
+
+let g:UltiSnipsJumpForwardTrigger="<Tab>"
+" let g:ycm_key_list_select_completion = ['<C-K>']
+function! MultiPurposeTab()
+	" If the autocomplete menu is already visible, we loop through item
+	if pumvisible()
+		return "\<C-N>"
+	endif
+
+	" We try to expand a snippet
+	call UltiSnips#ExpandSnippet()
+	" When looping through snippets placeholders, we quit the function
+	if g:ulti_expand_res !=# 0
+		return ""
+	endif
+
+	" We try to loop inside placeholders
+	call UltiSnips#JumpForwards()
+	" No more placeholder to loop through, we quit the function
+	if g:ulti_jump_forwards_res !=# 0
+		return ""
+	endif
+
+	return "\<C-X>\<C-O>"
+
+	" No placeholder found, this is a real tab
+	" return "pouet"
+	" 	if g:ulti_jump_forwards_res == 0
+	" 		return "\<TAB>"
+	" 	endif
+	" endif
+	" return "\<C-X>\<C-O>"
+
+	" We try to expand ultisnips
+	" call UltiSnips#ExpandSnippet()
+	" return g:ulti_expand_res
+	" return ""
+
+	" if g:ulti_expand_res > 0
+	" 	call UltiSnips#JumpForwards()
+	" 	if g:ulti_jump_forwards_res == 0
+	" 		return "\<TAB>"
+	" 	endif
+	" 	return ""
+	" endif
+
+
+	" return "\<C-X>\<C-O>"
+
+
+	" if g:ulti_expand_res == 0
+	" 	if pumvisible()
+	" 		return "\<C-n>"
+	" 	else
+	" 		call UltiSnips#JumpForwards()
+	" 		if g:ulti_jump_forwards_res == 0
+	" 			return "\<TAB>"
+	" 		endif
+	" 	endif
+	" endif
+	" return ""
+endfunction
+inoremap <Tab> <C-R>=MultiPurposeTab()<CR>
+" au BufEnter * exec "inoremap <Tab> <C-R>=MultiPurposeTab()<CR>"
+
 " TAB {{{
 nnoremap <Tab> >>
 nnoremap <S-Tab> <<
