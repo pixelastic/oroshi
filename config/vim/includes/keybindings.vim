@@ -29,23 +29,10 @@ vnoremap [25~ <Esc>
 cnoremap [25~ <C-C>
 nnoremap [25~ i
 " }}}
-" SNIPPETS {{{
-" let g:UltiSnipsExpandTrigger = "<C-K>"
-" let g:UltiSnipsJumpForwardTrigger = "<Tab>"
-" let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
-" }}}
-" AUTOCOMPLETE {{{
-let g:ycm_min_num_of_chars_for_completion = 99
-" let g:ycm_key_invoke_completion = '<C-J>'
-" let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
-" }}}
-" let g:UltiSnipsJumpForwardTrigger="<tab>"
-" let g:UltiSnipsListSnippets="<c-e>"
-let g:UltiSnipsExpandTrigger = '<C-K>'
-let g:ycm_key_invoke_completion = '<C-K>'
-
-let g:UltiSnipsJumpForwardTrigger="<Tab>"
-" let g:ycm_key_list_select_completion = ['<C-K>']
+" TAB {{{
+" Note: On Tab press, we try to expand UltiSnips snippets, or loop through
+" placeholders. Otherwise we fire the autocomplete.
+" TODO: The autocomplete should use YouCompleteMe
 function! MultiPurposeTab()
 	" If the autocomplete menu is already visible, we loop through item
 	if pumvisible()
@@ -67,48 +54,16 @@ function! MultiPurposeTab()
 	endif
 
 	return "\<C-X>\<C-O>"
-
-	" No placeholder found, this is a real tab
-	" return "pouet"
-	" 	if g:ulti_jump_forwards_res == 0
-	" 		return "\<TAB>"
-	" 	endif
-	" endif
-	" return "\<C-X>\<C-O>"
-
-	" We try to expand ultisnips
-	" call UltiSnips#ExpandSnippet()
-	" return g:ulti_expand_res
-	" return ""
-
-	" if g:ulti_expand_res > 0
-	" 	call UltiSnips#JumpForwards()
-	" 	if g:ulti_jump_forwards_res == 0
-	" 		return "\<TAB>"
-	" 	endif
-	" 	return ""
-	" endif
-
-
-	" return "\<C-X>\<C-O>"
-
-
-	" if g:ulti_expand_res == 0
-	" 	if pumvisible()
-	" 		return "\<C-n>"
-	" 	else
-	" 		call UltiSnips#JumpForwards()
-	" 		if g:ulti_jump_forwards_res == 0
-	" 			return "\<TAB>"
-	" 		endif
-	" 	endif
-	" endif
-	" return ""
 endfunction
+" Disable complete-as-you-type
+let g:ycm_min_num_of_chars_for_completion = 99
+let g:ycm_key_invoke_completion = '<C-J>'
+let g:ycm_key_list_select_completion = ['<C-J>']
+" Expand UltiSnips on <C-K> (must be different from Tab)
+let g:UltiSnipsExpandTrigger = '<C-K>'
+" Jump to next placeholder
+let g:UltiSnipsJumpForwardTrigger="<Tab>"
 inoremap <Tab> <C-R>=MultiPurposeTab()<CR>
-" au BufEnter * exec "inoremap <Tab> <C-R>=MultiPurposeTab()<CR>"
-
-" TAB {{{
 nnoremap <Tab> >>
 nnoremap <S-Tab> <<
 vnoremap <Tab> >gv
