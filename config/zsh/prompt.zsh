@@ -399,7 +399,7 @@ function updateTagGit() {
 	# Setting the tag
 	local shortTag
 	shortTag=$(git current-tag)
-	promptTag=$shortTag
+	promptTag="$shortTag "
 
 	# Tag will be differently colored if we are exactly at that tag, or later on
 	local fullTag
