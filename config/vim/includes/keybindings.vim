@@ -56,7 +56,7 @@ function! MultiPurposeTab()
 	return "\<C-X>\<C-O>"
 endfunction
 " Disable complete-as-you-type
-let g:ycm_min_num_of_chars_for_completion = 99
+let g:ycm_min_num_of_chars_for_completion = 3
 let g:ycm_key_invoke_completion = '<C-J>'
 let g:ycm_key_list_select_completion = ['<C-J>']
 " Expand UltiSnips on <C-K> (must be different from Tab)
