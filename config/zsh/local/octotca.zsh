@@ -37,16 +37,34 @@ alias serenity-sync-pictures="picture-sync ~/perso/pictures/ ~/local/mnt/serenit
 # }}}
 
 function kb() {
-	local dir=`pwd`
-	sudo /etc/init.d/tomcat7 stop
-	cd /var/www/java/kissihm/kissihm/
+	local initial_dir=`pwd`
+	local tomcat_script=/etc/init.d/tomcat7
+	local repo_dir=/var/www/java/kissihm
+	local tomcat_directory=/var/lib/tomcat7
+
+	# Stop server
+	sudo $tomcat_script stop
+
+	# Copy config file
+	sudo mkdir -p ${tomcat_directory}/lib
+	sudo mv ${repo_dir}/config/dev/environmentConfig.properties ${tomcat_directory}/lib
+	sudo chown tomcat7:tomcat7 ${tomcat_directory}/lib/environmentConfig.properties
+
+	# Build
+	cd ${repo_dir}/kissihm
 	mvn clean package
-	sudo rm -drf /var/lib/tomcat7/webapps/kiss/
-	sudo mv -f ./target/kiss*war /var/lib/tomcat7/webapps/kiss.war
-	sudo /etc/init.d/tomcat7 start
-	sudo chown -R tca:tca /var/lib/tomcat7/webapps/kiss/resources/app/
-	echo $dir
-	cd $dir
+
+	# Clean tomcat and copy build
+	sudo rm -drf ${tomcat_directory}/webapps/kiss
+	sudo mv -f ./target/kiss*war ${tomcat_directory}/webapps/kiss.war	
+
+	# Restart server
+	sudo $tomcat_script start
+
+	# Change owner of static files for easy re-deploy through rsync
+	sudo chown -R tca:tca ${tomcat_directory}/webapps/kiss/resources/app/
+
+	cd $initial_dir
 }
 function ku() {
 	rsync -ra /var/www/java/kissihm/kissihm/src/main/webapp/resources/app/* /var/lib/tomcat7/webapps/kiss/resources/app/
