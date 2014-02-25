@@ -47,7 +47,7 @@ function kb() {
 
 	# Copy config file
 	sudo mkdir -p ${tomcat_directory}/lib
-	sudo mv ${repo_dir}/config/dev/environmentConfig.properties ${tomcat_directory}/lib
+	sudo cp ${repo_dir}/config/dev/environmentConfig.properties ${tomcat_directory}/lib
 	sudo chown tomcat7:tomcat7 ${tomcat_directory}/lib/environmentConfig.properties
 
 	# Build
