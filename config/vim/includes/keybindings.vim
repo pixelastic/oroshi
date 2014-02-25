@@ -52,13 +52,18 @@ function! MultiPurposeTab()
 	if g:ulti_jump_forwards_res !=# 0
 		return ""
 	endif
+	
+	" if in indentation, Tab is a real tab
+	if (strpart(getline("."), 0, col(".")) =~ '\s$')
+		return "\<Tab>"
+	endif
 
-	return "\<C-X>\<C-O>"
+	return "\<C-X>\<C-O>\<C-N>"
 endfunction
 " Disable complete-as-you-type
-let g:ycm_min_num_of_chars_for_completion = 3
-let g:ycm_key_invoke_completion = '<C-J>'
-let g:ycm_key_list_select_completion = ['<C-J>']
+" let g:ycm_min_num_of_chars_for_completion = 3
+" let g:ycm_key_invoke_completion = '<C-J>'
+" let g:ycm_key_list_select_completion = ['<C-J>']
 " Expand UltiSnips on <C-K> (must be different from Tab)
 let g:UltiSnipsExpandTrigger = '<C-K>'
 " Jump to next placeholder
