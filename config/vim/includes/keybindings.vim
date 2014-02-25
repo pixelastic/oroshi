@@ -34,6 +34,9 @@ nnoremap [25~ i
 " placeholders. Otherwise we fire the autocomplete.
 " TODO: The autocomplete should use YouCompleteMe
 function! MultiPurposeTab()
+	let line = getline(".")
+	let columnIndex = col(".")
+
 	" If the autocomplete menu is already visible, we loop through item
 	if pumvisible()
 		return "\<C-N>"
@@ -52,10 +55,20 @@ function! MultiPurposeTab()
 	if g:ulti_jump_forwards_res !=# 0
 		return ""
 	endif
-	
-	" if in indentation, Tab is a real tab
-	if (strpart(getline("."), 0, col(".")) =~ '\s$')
+
+	" If in indentation, we return a simple tab
+	if (virtcol(".") - 1) <= indent(".")
 		return "\<Tab>"
+	endif
+	
+	" If after a space, we return a simple tab
+	if (strpart(line, 0, columnIndex) =~ '\s$')
+		return "\<Tab>"
+	endif
+	
+	" If looks like a filepath, launch file name autocomplete
+	if line =~ '.*/\w*\%' . columnIndex . 'c'
+		return "\<C-X>\<C-F>\<C-N>"
 	endif
 
 	return "\<C-X>\<C-O>\<C-N>"
