@@ -339,5 +339,5 @@ nnoremap <silent> man :tabe<CR>:setlocal filetype=man<CR>:.!man<Space>
 augroup ft_kiss
 	let kissihmapp="/var/www/java/kissihm/kissihm/src/main/webapp/resources/app/*" 
 	let kissihmwebapp="/var/lib/tomcat7/webapps/kiss/resources/app/"
-	au BufWritePost /var/www/java/kissihm/kissihm/src/main/webapp/resources/app/* execute ':silent !rsync -ra '.kissihmapp.' '.kissihmwebapp
+	au BufWritePost /var/www/java/kissihm/kissihm/src/main/webapp/resources/app/* execute ':silent !rsync -ra --delete '.kissihmapp.' '.kissihmwebapp
 augroup END

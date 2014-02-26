@@ -67,5 +67,5 @@ function kb() {
 	cd $initial_dir
 }
 function ku() {
-	rsync -ra /var/www/java/kissihm/kissihm/src/main/webapp/resources/app/* /var/lib/tomcat7/webapps/kiss/resources/app/
+	rsync -ra --delete /var/www/java/kissihm/kissihm/src/main/webapp/resources/app/* /var/lib/tomcat7/webapps/kiss/resources/app/
 }
