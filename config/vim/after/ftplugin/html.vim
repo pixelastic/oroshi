@@ -16,10 +16,12 @@ function! HTMLFoldTag()
 	if foldclosed('.')==-1
 		normal zfat
 	else
-		normal zo
+		normal zO
 	endif
 endfunction
 setlocal foldmethod=manual
+
+
 nnoremap <silent> <buffer> za :call HTMLFoldTag()<CR>
 " }}}
 " Syntax checking {{{
