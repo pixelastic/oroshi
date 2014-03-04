@@ -49,6 +49,8 @@ function kb() {
 	sudo mkdir -p ${tomcat_directory}/lib
 	sudo cp ${repo_dir}/config/dev/environmentConfig.properties ${tomcat_directory}/lib
 	sudo chown tomcat7:tomcat7 ${tomcat_directory}/lib/environmentConfig.properties
+	sudo cp ${repo_dir}/config/dev/log4j.xml ${tomcat_directory}/lib
+	sudo chown tomcat7:tomcat7 ${tomcat_directory}/lib/log4j.xml
 
 	# Build
 	cd ${repo_dir}/kissihm
