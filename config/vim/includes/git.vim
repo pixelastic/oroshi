@@ -53,7 +53,8 @@ function! GitGetRoot(filepath)
 
 	let b:git_root = ""
 
-	let output = system('cd '.fnamemodify(a:filepath, ':h').' && git rev-parse --show-toplevel')
+	let filepath = ShellEscapeForDoubleQuotes(fnamemodify(a:filepath, ':h'))
+	let output = system('cd "'.filepath.'" && git rev-parse --show-toplevel')
 	if output !~ '^fatal'
 		let b:git_root = StrTrim(output)
 	endif
@@ -77,9 +78,10 @@ function! GitGetStatus(filepath)
 	endif
 
 	" Finding the status output for this file
-	let root = GitGetRoot(a:filepath)
-	let gitcommand = 'cd '.root.' && git status --porcelain --short '.a:filepath
-	execute 'let output = system('.shellescape(gitcommand).')'
+	let root = ShellEscapeForDoubleQuotes(GitGetRoot(a:filepath))
+	let file = ShellEscapeForDoubleQuotes(a:filepath)
+	let gitcommand = 'cd "'.root.'" && git status --porcelain --short "'.file.'"'
+	let output = system(gitcommand)
 
 	" File is either new or modified, it is dirty
 	if output =~# '^??' || output =~# '^ . '
