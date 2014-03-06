@@ -6,28 +6,6 @@
 autoload -U promptinit
 promptinit
 
-# Array functions
-# arrayFromString() {{{
-# Convert a specified string to an array, with a specified separator
-# arg: String, Name of the final array
-# arg: String, Name of the input string
-# arg: String, Separator character. Default to space
-function arrayFromString() {
-	local arrayName=$1
-	local stringName=$2
-	eval "local localString=\$$stringName"
-
-	# Separator
-	local separator=$3
-	if [[ $separator = '' ]]; then
-		separator=' ';
-	fi
-	
-	# Split string as array and save it in global array
-	eval "${arrayName}=(\${(s:${separator}:)localString})"
-}
-# }}}
-
 # Debug functions
 # promptDebug() {{{
 # Note: Update the global promptDebug var which is printed on every prompt
@@ -59,7 +37,7 @@ function getRepoRoot() {
 function getPromptPath() {
 	local promptPath=$PWD
 	local splitPath
-	arrayFromString 'splitPath' 'PWD' '/'
+	splitPath=(${(s:/:)PWD})
 
 	# Keep only first and last dirs if too long
 	if [[ ${#splitPath[*]} -ge 4 ]]; then
