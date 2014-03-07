@@ -179,7 +179,7 @@ function setPreviousCommand() {
 	fi
 
 	# We update the global previousCommand
-	previousCommand=$arrCommand
+	previousCommand=($arrCommand)
 }
 # }}}
 
@@ -584,7 +584,7 @@ function precmd_updateHash() {
 	
 	# Previous command created or removed a file in repo
 	if [[ $versionSystem != '' 
-		&& $previousCommand[1] =~ '^(better-rmdir|cp|fasd|ln|mkdir|mv|rename|rm|rmdir|touch|trash|vim)$' ]]; then
+		&& $previousCommand[1] =~ '^(better-rmdir|cp|ln|mkdir|mv|rename|rm|rmdir|touch|trash-put|vim)$' ]]; then
 		updateHash=1
 	fi
 	# Git commands
