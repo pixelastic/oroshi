@@ -19,6 +19,7 @@ alias vbum='vbsm && vbm develop && vbsd && updatePromptGit' # Merge develop to m
 alias vbud='vbsd && vbm master && vbsm && updatePromptGit' # Merge master to develop (Update develop)
 alias vbmm='vbm master'
 alias vbmd='vbm develop'
+alias vbru='git remote update && git remote prune origin'
 alias vbuf='git update-feature develop'
 alias vbufm='git update-feature master'
 alias vbrfa='git fetch-all-locally'
