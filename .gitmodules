@@ -85,6 +85,3 @@
 [submodule "config/vim/bundle/available/ultisnips"]
 	path = config/vim/bundle/available/ultisnips
 	url = git@github.com:SirVer/ultisnips.git
-[submodule "config/vim/bundle/available/YouCompleteMe"]
-	path = config/vim/bundle/available/YouCompleteMe
-	url = git@github.com:Valloric/YouCompleteMe.git
