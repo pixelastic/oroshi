@@ -180,9 +180,14 @@ class PodcastDownloader
 			year_dir = File.join(@podcasts_dir, podcast['year'])
 			FileUtils.mkdir_p(year_dir)
 
-			# If the dir contains mixed id lengths, we get the biggest one
-			latest_id_length = File.basename(Dir[File.join(year_dir, '*.mp3')].sort.last).split(" - ")[0].size
-			id_length = [latest_id_length, 2].max
+      # We get the length of the prefix id based on other files in the dir
+      mp3_in_year_dir = Dir[File.join(year_dir, '*.mp3')].sort
+      if (mp3_in_year_dir.size > 0) 
+        id_length = [File.basename(mp3_in_year_dir.last).split(" - ")[0].size, 2].max
+      else
+        id_length = 2
+      end
+
 			prefix = "%0#{id_length}d" % podcast['index']
 
 			basename = "#{prefix} - #{podcast['title']}.mp3"
