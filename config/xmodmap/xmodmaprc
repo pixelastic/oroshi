@@ -103,7 +103,7 @@ keycode 47 = m M m M
 
 keycode 52 = w W w W
 keycode 53 = x X x X
-keycode 54 = c C c C copyright
+keycode 54 = c C c C
 keycode 55 = v V v V
 keycode 56 = b B b B
 keycode 57 = n N n N
