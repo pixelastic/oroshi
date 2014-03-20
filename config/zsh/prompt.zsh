@@ -6,86 +6,6 @@
 autoload -U promptinit
 promptinit
 
-# Array functions
-# arrayRemoveIndex() {{{
-# Remove the content of an array at the specified index
-# arg: String, name of the array
-# arg: Int, index to remove
-function arrayRemoveIndex() {
-	# Note: We create a local copy of the array, work on it, and then update
-	# the global array
-	local arrayName=$1
-	local localArray
-	eval "localArray=(\$$arrayName)"
-	local index=$2
-	local length=${#localArray}
-
-	# Create a new array excluding the specified index
-	localArray=(
-		"${(@)localArray[1,$index-1]}" 
-		"${(@)localArray[$index+1,$length]}"
-	)
-
-	# First, emptying the array
-	eval "${arrayName}=()"
-	# Then, adding all values, one by one
-	# Note: The backslash madness is to pass each value as a string (thus
-	# enclosed in double quotes) while at the same time escaping double quotes in
-	# the value itself.
-	for i in $localArray; do
-		# Escape backslashes in the value
-		i=${i/\\/\\\\}
-		# Escape double quotes in the value
-		i=${i/\"/\\\"}
-		eval "${arrayName}+=\"${i}\""
-	done
-	
-}
-# }}}
-# arrayConcatenate() {{{
-# Concatenate two arrays to create a new one
-# arg: String, Name of the final array
-# arg: String, Name of the first array
-# arg: String, Name of the final array
-function arrayConcatenate() {
-	local finalArrayName=$1
-	local arrayName1=$2
-	local arrayName2=$3
-	local array1
-	local array2
-
-	eval "array1=(\$$arrayName1)"
-	eval "array2=(\$$arrayName2)"
-
-	# Concatenate the two arrays
-	local localFinalArray
-	localFinalArray=("${(@)array1}" "${(@)array2}")
-
-	# Update the global array
-	eval "${finalArrayName}=(\$localFinalArray)"
-}
-# }}}
-# arrayFromString() {{{
-# Convert a specified string to an array, with a specified separator
-# arg: String, Name of the final array
-# arg: String, Name of the input string
-# arg: String, Separator character. Default to space
-function arrayFromString() {
-	local arrayName=$1
-	local stringName=$2
-	eval "local localString=\$$stringName"
-
-	# Separator
-	local separator=$3
-	if [[ $separator = '' ]]; then
-		separator=' ';
-	fi
-	
-	# Split string as array and save it in global array
-	eval "${arrayName}=(\${(s:${separator}:)localString})"
-}
-# }}}
-
 # Debug functions
 # promptDebug() {{{
 # Note: Update the global promptDebug var which is printed on every prompt
@@ -117,7 +37,7 @@ function getRepoRoot() {
 function getPromptPath() {
 	local promptPath=$PWD
 	local splitPath
-	arrayFromString 'splitPath' 'PWD' '/'
+	splitPath=(${(s:/:)PWD})
 
 	# Keep only first and last dirs if too long
 	if [[ ${#splitPath[*]} -ge 4 ]]; then
@@ -224,45 +144,42 @@ function expandHgAlias() {
 # setPreviousCommand() {{{
 # Set $previousCommand as a global array
 function setPreviousCommand() {
-	local argCommand=$1
-	local	splitCommand
-	arrayFromString 'splitCommand' 'argCommand' ' '
+	# Split list command as an array, separated by spaces
+	local arrCommand
+	arrCommand=(${(s: :)1})
 
 	# We expand terminal aliases
-	local commandAlias="$(expandCommandAlias $splitCommand[1])"
-	if [[ $commandAlias != $splitCommand[1] ]]; then
-		local splitCommandAlias
-		arrayFromString 'splitCommandAlias' 'commandAlias' ' '
-		arrayRemoveIndex 'splitCommand' 1
-		arrayConcatenate 'splitCommand' 'splitCommandAlias' 'splitCommand'
+	local commandAlias="$(expandCommandAlias $arrCommand[1])"
+	if [[ $commandAlias != $arrCommand[1] ]]; then
+		shift arrCommand
+		arrCommand=($commandAlias $arrCommand)
+		arrCommand=(${(s: :)arrCommand})
 	fi
-
+	
 	# We expand hg/git aliases
-	local versionSystemAlias=''
-	if [[ $splitCommand[1] = 'git' ]]; then
-		versionSystemAlias="$(expandGitAlias $splitCommand[2])"
-	fi
-	if [[ $splitCommand[1] = 'hg' ]]; then
-		versionSystemAlias="$(expandHgAlias $splitCommand[2])"
-	fi
-	if [[ $versionSystemAlias != '' && $versionSystemAlias != $splitCommand[2] ]]; then
-		# We prefix the alias with the git/hg command
-		versionSystemAlias=$splitCommand[1]" "$versionSystemAlias
+	if [[ $arrCommand[1] = 'git' || $arrCommand[1] = 'hg' ]]; then
+		local versionType=$arrCommand[1]
+		local versionMethod=$arrCommand[2]
+		local versionMethodAlias=''
+		
+		if [[ $versionType = 'git' ]]; then
+			versionMethodAlias="$(expandGitAlias $versionMethod)"
+		fi
+		if [[ $versionType = 'hg' ]]; then
+			versionMethodAlias="$(expandHgAlias $versionMethod)"
+		fi
 
-		# Split the alias in an array
-		local splitVersionSystemAlias
-		arrayFromString 'splitVersionSystemAlias' 'versionSystemAlias' ' '
-
-		# Remove the initial version command from the start of the command array
-		arrayRemoveIndex 'splitCommand' 1
-		arrayRemoveIndex 'splitCommand' 1
-
-		# Prepend the full alias to the command array
-		arrayConcatenate 'splitCommand' 'splitVersionSystemAlias' 'splitCommand'
+		# Recompose the full command by replacing the alias
+		if [[ $versionMethodAlias != '' && $versionMethodAlias != $versionMethod ]]; then
+			shift arrCommand
+			shift arrCommand
+			arrCommand=($versionType $versionMethodAlias $arrCommand)
+			arrCommand=(${(s: :)arrCommand})
+		fi
 	fi
 
 	# We update the global previousCommand
-	previousCommand=($splitCommand)
+	previousCommand=($arrCommand)
 }
 # }}}
 
@@ -399,7 +316,7 @@ function updateTagGit() {
 	# Setting the tag
 	local shortTag
 	shortTag=$(git current-tag)
-	promptTag=$shortTag
+	promptTag="$shortTag "
 
 	# Tag will be differently colored if we are exactly at that tag, or later on
 	local fullTag
@@ -667,7 +584,7 @@ function precmd_updateHash() {
 	
 	# Previous command created or removed a file in repo
 	if [[ $versionSystem != '' 
-		&& $previousCommand[1] =~ '^(better-rmdir|cp|fasd|ln|mkdir|mv|rename|rm|rmdir|touch|trash|vim)$' ]]; then
+		&& $previousCommand[1] =~ '^(better-rmdir|cp|ln|mkdir|mv|rename|rm|rmdir|touch|trash-put|vim)$' ]]; then
 		updateHash=1
 	fi
 	# Git commands

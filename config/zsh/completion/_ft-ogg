@@ -1,0 +1,23 @@
+#compdef ogg2mp3
+
+_ft-ogg () {
+	# local var definition to not pollute global scope
+	local curcontext=$curcontext state line context
+	typeset -A opt_args
+
+	# suggesting arguments
+	_arguments \
+		"*:ogg file:->ogg_file" \
+		&& return 0
+
+	# state machine match
+	case $state in
+		(ogg_file)
+			_files -g '*.ogg' \
+			&& return 0
+	esac
+
+	return 1
+}
+
+_ft-ogg "$@"

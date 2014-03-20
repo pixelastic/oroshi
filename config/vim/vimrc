@@ -117,10 +117,6 @@ source ~/.vim/includes/keybindings.vim
 set completeopt=menu
 " Update the menu with matches as I type
 set completeopt+=longest
-" Let SuperTab guess the correct completion based on context
-let g:SuperTabDefaultCompletionType = "context"
-" Auto select the first match in the list
-let g:SuperTabLongestHighlight = 1
 " }}}
 " COLORS   {{{
 " Enabling syntax highlighting
@@ -193,9 +189,6 @@ set formatoptions=cronq1
 set backspace=indent,eol,start
 " Format whole paragraph
 nnoremap gqp vipgq
-" Smart-Tabs plugin autoconvert tabs to spaces for alignment, but we disable
-" the auto recheck, as it messes with consecutive Enter keypresses
-let g:ctab_disable_checkalign=1
 "}}}
 " SEARCH / REPLACE  {{{
 "  Searchs are case-insensitive, unless an uppercase is present
@@ -346,5 +339,5 @@ nnoremap <silent> man :tabe<CR>:setlocal filetype=man<CR>:.!man<Space>
 augroup ft_kiss
 	let kissihmapp="/var/www/java/kissihm/kissihm/src/main/webapp/resources/app/*" 
 	let kissihmwebapp="/var/lib/tomcat7/webapps/kiss/resources/app/"
-	au BufWritePost /var/www/java/kissihm/kissihm/src/main/webapp/resources/app/* execute ':silent !rsync -ra '.kissihmapp.' '.kissihmwebapp
+	au BufWritePost /var/www/java/kissihm/kissihm/src/main/webapp/resources/app/* execute ':silent !rsync -ra --delete '.kissihmapp.' '.kissihmwebapp
 augroup END

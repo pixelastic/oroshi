@@ -36,6 +36,7 @@ if exists(':RainbowParenthesesToggle')
 endif
 " }}}
 " Cleaning the file {{{
+inoremap <silent> <buffer> <F4> <Esc>:call JavascriptBeautify()<CR>
 nnoremap <silent> <buffer> <F4> :call JavascriptBeautify()<CR>
 function! JavascriptBeautify() 
 	let linenr=line('.')

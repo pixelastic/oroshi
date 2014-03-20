@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+# encoding : utf-8
+require "shellwords"
+
+class Ogg2Mp3
+
+	def initialize(*args)
+		# Usage explanation if no args
+		if args.size == 0
+			puts "Usage :"
+			puts "$ ogg2mp3 input.ogg"
+			return
+		end
+
+		# Keeping only ogg files
+		@input = args.reject{|f| File.extname(f) != '.ogg'}.reject{|f| !File.exists?(f)}
+	end
+
+	def run
+		@input.each do |file|
+			file = File.expand_path(file)
+			dirname = File.dirname(file)
+			extname = File.extname(file)
+			basename = File.basename(file, extname)
+			newname = File.join(dirname, basename + '.mp3')
+			puts "Converting #{basename} to mp3"
+			%x[ffmpeg -i #{file.shellescape} -ab 128k -map_metadata 0:0,s0 #{newname.shellescape}]
+		end
+
+	end
+
+end
+
+Ogg2Mp3.new(*ARGV).run()

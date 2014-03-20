@@ -5,6 +5,10 @@ inoremap <buffer> ## #{}<Left>
 setlocal omnifunc=rubycomplete#Complete
 " Add string interpolation surround with #
 let b:surround_35 = "#{\r}"
+" _ delimits words in ruby
+setlocal iskeyword-=_
+" Folds
+setlocal foldmethod=syntax
 
 " Easy typing
 inoremap <buffer> Fep File.expand_path(

@@ -13,7 +13,7 @@ class DeployCssLint
     return JSON.parse(File.read(file))
   end
 
-  # generate the final ~/.tidycheckrc file by concatenating the base with the
+  # generate the final ~/.csslintrc file by concatenating the base with the
   # custom tags
   def generate
     base = []

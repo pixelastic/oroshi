@@ -1,0 +1,4 @@
+#!/bin/sh
+gksudo mount ~/local/mnt/serenity/video/ &> /dev/null
+nautilus ~/local/mnt/serenity/video/
+

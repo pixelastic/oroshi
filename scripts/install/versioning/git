@@ -1,3 +1,11 @@
 #!/usr/bin/env bash
 sudo apt-get install git-core
 
+# On Ubuntu 11.10, one need to first uninstall git 1.7, add custom ppa and
+# install git 1.8
+# sudo apt-get remove -f git git-core git-man gitk
+# sudo add-apt-repository ppa:pdoes/ppa
+# sudo apt-get update
+# sudo apt-get autoremove
+# sudo apt-get install git
+

@@ -129,6 +129,12 @@ function! SeemsLatin1InUTF8(str) " {{{
 	" Not enough high bytes
 	return 0
 endfunction " }}}
+function! ShellEscapeForDoubleQuotes(filepath) " {{{
+	" Returns an escaped filepath to be used in a system() call, wrapped in
+	" double quotes
+	return substitute(escape(a:filepath, '"'), "'", "''", 'g')
+endfunction
+
 
 
 " Commands

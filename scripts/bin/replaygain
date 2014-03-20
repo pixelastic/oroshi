@@ -89,6 +89,15 @@ class ReplayGain
 		end
 		return false
 	end
+  
+  # Check if ogg file has replaygain tags
+	def has_replaygain_ogg?(file)
+    oggtags = %x[vorbiscomment -l #{file.shellescape}].split("\n")
+    oggtags.each do |tag|
+      return true if tag =~ /^REPLAYGAIN/
+    end
+    return false
+	end
 
 	# Return true if the specified txxx tag is a replaygain one
 	def replaygain_txxx?(tag)
@@ -145,6 +154,19 @@ class ReplayGain
 		# Mp3Info.open(file) do |mp3info|
 		# 	p mp3info.tag2
 		# end
+	end
+
+  # Write replaygain to ogg file if none found
+	def run_write_ogg(file)
+		# Replaygain data already exists, we keep it
+		if has_replaygain_ogg?(file) && !@force
+			puts "ReplayGain already set"
+			return
+		end
+
+		puts "Applying replaygain to #{File.basename(file)}"
+
+    %x[vorbisgain #{file.shellescape} > /dev/null]
 	end
 	
 	# Delete replaygain values
