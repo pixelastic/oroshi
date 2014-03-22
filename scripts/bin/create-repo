@@ -14,6 +14,10 @@ if [[ $host == 'bitbucket' || $host == 'bb' ]]; then
 	git remote add origin ssh://git@bitbucket.org/pixelastic/${repoName}.git
 	echo "* Create origin remote on bitbucket"
 fi
+if [[ $host == 'heroku' || $host == 'h' ]]; then
+	git remote add origin git@heroku.com:${repoName}.git
+	echo "* Create origin remote on heroku"
+fi
 if [[ $host == 'github' || $host == 'gh' || $host == '' ]]; then
 	git remote add origin git@github.com:pixelastic/${repoName}
 	echo "* Create origin remote on git"
