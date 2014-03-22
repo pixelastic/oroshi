@@ -81,6 +81,7 @@ alias vrps='git push'
 alias vrr='git remote show origin -n'
 alias vrpsm='git push origin master'
 alias vrpsd='git push origin develop'
+alias vrpsh='git push heroku $(git current-branch)'
 # }}}
 # [t]ags {{{
 alias vtc='git tag'
