@@ -211,20 +211,24 @@ alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/download
 
 
 # Npm {{{
-alias ni='npm install --save'
-alias nid='npm install --save-dev'
+alias ni='npm install'
+alias nis='npm install --save'
+alias nisd='npm install --save-dev'
 alias nig='npm install --global'
 # }}}
 # Yeoman {{{
 function yac() { (cd `git root`; yo angular:controller $@) }
 # }}}
 # Grunt {{{
+alias gt='grunt test'
+alias gj='grunt jshint'
 alias gbi='grunt bower-install'
 # }}}
 # Bower {{{
 alias bs='bower search'
-function bid() { (cd `git root`; bower install $@ --save-dev) }
-function bi() { (cd `git root`; bower install $@ --save ) }
+function bi() { (cd `git root`; bower install $@ ) }
+function bis() { (cd `git root`; bower install $@ --save ) }
+function bisd() { (cd `git root`; bower install $@ --save-dev) }
 # }}}
 
 # NVM {{{
