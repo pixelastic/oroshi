@@ -250,10 +250,5 @@ if [[ `which autojump` != "" ]]; then
 	source ~/.oroshi/config/zsh/autojump.zsh;
 fi
 # }}}
-# fasd {{{
-if [[ `which fasf` != "" ]]; then
-	eval "$(fasd --init auto)";
-fi
-# }}}
 
 
