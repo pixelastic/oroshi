@@ -14,6 +14,9 @@ compinit
 autoload -U url-quote-magic
 zle -N self-insert url-quote-magic
 
+# Loading default git completion methods, to make them accessible in custom
+# completion scripts.
+_git
 # Git flow completion
 source ~/.oroshi/config/zsh/completion/git-flow-completion/git-flow-completion.zsh
 

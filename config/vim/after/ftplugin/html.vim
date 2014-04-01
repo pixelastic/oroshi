@@ -29,6 +29,7 @@ let g:syntastic_html_tidy_ignore_errors = [
                 \ "trimming empty <em>",
                 \ "proprietary attribute \"ng-",
                 \ "proprietary attribute \"ui-",
+								\ "<img> lacks \"src\" attribute"
                 \ ]
 " }}}
 " Cleaning the file {{{

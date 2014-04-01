@@ -1,0 +1,6 @@
+#compdef git-merge-squash
+
+# Note: Default git autocompletion must have been loaded beforehand using _git
+_git-merge "$@"
+
+
