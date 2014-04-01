@@ -22,6 +22,7 @@
 [alias]
 	amend = commit --amend
 	branch-list = !git-branch-list
+	conflicts = diff --name-only --diff-filter=U
 	commit-all = !git add --all . && git commit -v --all
 	current-branch = !git rev-parse --abbrev-ref HEAD 2>/dev/null
 	current-tag = !git describe --tags --abbrev=0 2>/dev/null
