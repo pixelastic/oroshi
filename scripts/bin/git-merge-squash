@@ -1,7 +1,0 @@
-#!/usr/bin/env zsh
-# Will merge another branch by squashing all commits into one
-
-local branch=$1
-
-git merge --squash $branch &>/dev/null
-git commit -v -m 'Merging of branch '$branch --edit
