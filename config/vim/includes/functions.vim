@@ -173,6 +173,7 @@ function! ConvertLineEndingsToUnix() " {{{
 	endif
 	update
 	edit ++fileformat=dos
+	execute '%s///ge'
 	setlocal fileformat=unix
 	write
 endfunction
