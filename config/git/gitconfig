@@ -29,6 +29,7 @@
 	diff-staged = diff -w --staged
 	download = clone --depth=1
 	fetch-all-locally = !git-fetch-all-locally
+	import-feature = !git-import-feature
 	is-submodule = !git-is-submodule
 	peek = log --graph --pretty=format:'%C(67)%h%Creset %C(24)(%cd, %ar)%Creset %C(241)%an%Creset %C(bold 202)%d%Creset%n   %C(250)%s%Creset%n'
 	prev = reset --hard HEAD~1

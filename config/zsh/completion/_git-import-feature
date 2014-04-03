@@ -1,4 +1,4 @@
-#compdef git-feature-finish
+#compdef git-import-feature
 
 # Note: Default git autocompletion must have been loaded beforehand using _git
 _git-merge "$@"
