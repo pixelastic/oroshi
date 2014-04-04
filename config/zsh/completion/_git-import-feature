@@ -1,6 +1,7 @@
 #compdef git-import-feature
 
-# Note: Default git autocompletion must have been loaded beforehand using _git
-_git-merge "$@"
+# Note: Use the git-flow-feature autocompletion to only suggest feature
+# branches.
+__git_flow_feature_list "$@"
 
 
