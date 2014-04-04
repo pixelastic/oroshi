@@ -4,3 +4,6 @@
 echo "Downloading and installing through npm"
 npm install jshint -g
 
+echo "Installing same for json"
+npm install jsonlint -g
+
