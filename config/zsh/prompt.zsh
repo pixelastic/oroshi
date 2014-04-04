@@ -607,7 +607,7 @@ function precmd_updateHash() {
 function precmd_updateTag() {
 	# Git commands
 	if [[ $previousCommand[1] = 'git' 
-		&& $previousCommand[2] =~ '(checkout|branch|tag)' ]]; then
+		&& $previousCommand[2] =~ '(checkout|branch|status|tag)' ]]; then
 		updateTag
 	fi
 }
