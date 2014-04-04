@@ -165,10 +165,11 @@ set nosmartindent
 filetype plugin indent on
 " autoindent is still needed to correctly indent list items
 set autoindent
-" One tab is visually two spaces long, but is coded as a tab in the file
+" Using two spaces for indentation as a default. Using tabs can be overwritten
+" in language specific-files if needed.
 set tabstop=2
 set shiftwidth=2
-set noexpandtab
+set expandtab
 " Lines too long to fit on one screen will be truncated.
 set nowrap
 let &showbreak='↪ '

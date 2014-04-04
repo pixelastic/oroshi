@@ -1,14 +1,14 @@
 " KEYBINDINGS
 " I tend to stick to the following F keys for all languages :
-"   F1 : Help page
-"   F2 : Change colorscheme
-"   F3 : Debug colorscheme
-"   F4 : Clean file
-"   F5 : Run file
-"   F6 : Test file
-"   F7 : NERDTree
-"   F8 : Display hidden chars
-"   F9 : Toggle wrap
+"		F1 : Help page
+"		F2 : Change colorscheme
+"		F3 : Debug colorscheme
+"		F4 : Clean file
+"		F5 : Run file
+"		F6 : Test file
+"		F7 : NERDTree
+"		F8 : Display hidden chars
+"		F9 : Toggle wrap
 "
 " -----------------------------------------------------------------------------
 " DEFAULT {{{
@@ -22,7 +22,7 @@ nmap <Space> .
 " - Cancels autocomplete, search, command, visual
 " - Toggle normal / insert mode
 function! MultiPurposeCapsLock()
-	return pumvisible() ? "\<C-E>" : "\<Esc>l"
+  return pumvisible() ? "\<C-E>" : "\<Esc>l"
 endfunction
 inoremap [25~ <C-R>=MultiPurposeCapsLock()<CR>
 vnoremap [25~ <Esc>
@@ -34,44 +34,44 @@ nnoremap [25~ i
 " placeholders. Otherwise we fire the autocomplete.
 " TODO: The autocomplete should use YouCompleteMe
 function! MultiPurposeTab()
-	let line = getline(".")
-	let columnIndex = col(".")
+  let line = getline(".")
+  let columnIndex = col(".")
 
-	" If the autocomplete menu is already visible, we loop through item
-	if pumvisible()
-		return "\<C-N>"
-	endif
+  " If the autocomplete menu is already visible, we loop through item
+  if pumvisible()
+    return "\<C-N>"
+  endif
 
-	" We try to expand a snippet
-	call UltiSnips#ExpandSnippet()
-	" When looping through snippets placeholders, we quit the function
-	if g:ulti_expand_res !=# 0
-		return ""
-	endif
+  " We try to expand a snippet
+  call UltiSnips#ExpandSnippet()
+  " When looping through snippets placeholders, we quit the function
+  if g:ulti_expand_res !=# 0
+    return ""
+  endif
 
-	" We try to loop inside placeholders
-	call UltiSnips#JumpForwards()
-	" No more placeholder to loop through, we quit the function
-	if g:ulti_jump_forwards_res !=# 0
-		return ""
-	endif
+  " We try to loop inside placeholders
+  call UltiSnips#JumpForwards()
+  " No more placeholder to loop through, we quit the function
+  if g:ulti_jump_forwards_res !=# 0
+    return ""
+  endif
 
-	" If in indentation, we return a simple tab
-	if (virtcol(".") - 1) <= indent(".")
-		return "\<Tab>"
-	endif
-	
-	" If after a space, we return a simple tab
-	if (strpart(line, 0, columnIndex) =~ '\s$')
-		return "\<Tab>"
-	endif
-	
-	" If looks like a filepath, launch file name autocomplete
-	if line =~ '.*/\w*\%' . columnIndex . 'c'
-		return "\<C-X>\<C-F>\<C-N>"
-	endif
+  " If in indentation, we return a simple tab
+  if (virtcol(".") - 1) <= indent(".")
+    return "\<Tab>"
+  endif
+  
+  " If after a space, we return a simple tab
+  if (strpart(line, 0, columnIndex) =~ '\s$')
+    return "\<Tab>"
+  endif
+  
+  " If looks like a filepath, launch file name autocomplete
+  if line =~ '.*/\w*\%' . columnIndex . 'c'
+    return "\<C-X>\<C-F>\<C-N>"
+  endif
 
-	return "\<C-X>\<C-O>\<C-N>"
+  return "\<C-X>\<C-O>\<C-N>"
 endfunction
 " Disable complete-as-you-type
 " let g:ycm_min_num_of_chars_for_completion = 3
@@ -94,7 +94,7 @@ vnoremap <S-Tab> <gv
 " - Accept autocompletion suggestion
 " - Trigger endwise completion
 function! MultiPurposeReturn()
-	return pumvisible() ? "\<C-Y>" : "\<CR>"
+  return pumvisible() ? "\<C-Y>" : "\<CR>"
 endfunction
 inoremap <CR> <C-R>=MultiPurposeReturn()<CR>
 inoremap <kEnter> <Esc>mzO<Esc>`za
@@ -161,17 +161,24 @@ nnoremap cam [{V%c
 " MUSCLE MEMORY {{{
 " Ctrl+S saves the file, as in most apps
 if !exists('*SaveFile')
-	function SaveFile()
-		if &diff | only | endif
-		write!
-	endfunction
+  function SaveFile()
+    if &diff | only | endif
+    write!
+  endfunction
 endif
 nnoremap <silent> <C-S> :call SaveFile()<CR>
 inoremap <silent> <C-S> <Esc>:call SaveFile()<CR>
 " Ctrl+D is save and exit, as in the term.
 function! SaveAndCloseFile()
-	if &diff | only | endif
-	exit!
+  " Keeping only one windown in diff before closing
+  if &diff | only | endif
+  " Force quit without saving if file is not saved
+  if empty(@%)
+    quit!
+    return
+  endif
+  " Save and exit
+  exit!
 endfunction
 nnoremap <silent> <C-D> :call SaveAndCloseFile()<CR>
 inoremap <silent> <C-D> <Esc>:call SaveAndCloseFile()<CR>
@@ -216,9 +223,9 @@ nmap _ ]e
 vmap _ ]egv
 " appending a missing ; at the end of line
 function! AppendMissingSemicolon()
-	if getline(".") !~ ';$'
-		execute "normal mzA;\<Esc>`z"
-	endif
+  if getline(".") !~ ';$'
+    execute "normal mzA;\<Esc>`z"
+  endif
 endfunction
 nnoremap <silent> ; :call AppendMissingSemicolon()<CR>
 " Comment whole paragraph
