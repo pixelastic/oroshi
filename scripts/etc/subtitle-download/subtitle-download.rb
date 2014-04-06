@@ -20,7 +20,7 @@ class SubtitleDownload
     else
       url = url + 'series/'
     end
-    url = url + @name.downcase
+    url = url + @name.gsub(' ', '_').downcase
     url = url + '.html'
   end
 
