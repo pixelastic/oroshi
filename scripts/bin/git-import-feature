@@ -2,7 +2,7 @@
 # When work is done on a feature branch, we squash all commits in one and merge
 # it in master. Then, we delete the feature branch.
 
-local branch=$1
+local branch=feature/$1
 
 # Squash all commits into one, but do not commit yet
 git merge --squash $branch &>/dev/null
