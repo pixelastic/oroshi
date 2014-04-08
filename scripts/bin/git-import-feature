@@ -1,19 +1,20 @@
 #!/usr/bin/env zsh
-# When work is done on a feature branch, we squash all commits in one and merge
-# it in master. Then, we delete the feature branch.
-
-local branch=feature/$1
-
-# Squash all commits into one, but do not commit yet
-git merge --squash $branch &>/dev/null
-# Commit with a default message
-git commit -v -m 'Merging of branch '$branch --edit
-# Delete initial branch
-# if [[ $? == 0 ]]; then
-# 	git branch -D $branch
-# else
-# 	echo "Error while commiting, branch $branch is not deleted"
-# 	echo "Cleaning directory"
-# 	git reset --hard
-# 	git clean -fd
-# fi
+# Open all files with jshint errors in vim
+# # When work is done on a feature branch, we squash all commits in one and merge
+# # it in master. Then, we delete the feature branch.
+# 
+# local branch=feature/$1
+# 
+# # Squash all commits into one, but do not commit yet
+# git merge --squash $branch &>/dev/null
+# # Commit with a default message
+# git commit -v -m 'Merging of branch '$branch --edit
+# # Delete initial branch
+# # if [[ $? == 0 ]]; then
+# # 	git branch -D $branch
+# # else
+# # 	echo "Error while commiting, branch $branch is not deleted"
+# # 	echo "Cleaning directory"
+# # 	git reset --hard
+# # 	git clean -fd
+# # fi
