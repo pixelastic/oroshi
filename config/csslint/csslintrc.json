@@ -10,7 +10,8 @@
     "text-indent",
     "underscore-property-hack",
     "universal-selector",
-    "vendor-prefix"
+    "vendor-prefix",
+    "unqualified-attributes"
   ],
   "errors": [
     "display-property-grouping",
@@ -31,17 +32,12 @@
     "rules-count",
     "selector-max",
     "selector-max-approaching",
-    "unique-headings",
-    "unqualified-attributes"
+    "unique-headings"
   ],
   "ignore": [
-    // 0px or 0em should be written as 0
     "zero-units",
-    // Selector with no rules
     "empty-rules",
-    // .class1.class2 does not work in IE6
     "adjoining-classes",
-    // Do not use borders or padding when defining width and height
     "box-model"
   ]
 }
