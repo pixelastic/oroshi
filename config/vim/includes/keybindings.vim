@@ -191,6 +191,8 @@ vnoremap <C-A> <Esc>GVgg
 nnoremap <F1> <C-]>
 " Those keys are useless in vim but are easily accessible on a french
 " keyboard. We'll remap them to switch the maj version to the non-maj version.
+" Note: This mapping does not work in a macro. There seem to have issues with
+" accented characters mapped and used in macros.
 nnoremap ù %
 vnoremap ù %
 nnoremap à 0
@@ -239,5 +241,5 @@ vnoremap <silent> md :!markdown<CR>
 " PLUGINS {{{
 " Strangely, ï seems to be equal to <M-o> and endwise remaps it. I need to
 " force its mapping so it is not overwritten.
-inoremap <M-o> ï
+" inoremap <M-o> ï
 " }}}
