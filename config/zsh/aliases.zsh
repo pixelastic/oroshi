@@ -123,6 +123,7 @@ alias pinta='gui pinta'
 alias apt-get='apt-fast'
 alias agi='sudo apt-fast install'
 alias agu='sudo apt-fast -u install'
+alias agua='sudo apt-get update && sudo apt-get upgrade'
 alias agr='sudo apt-fast remove'
 alias ags='sudo apt-cache search'
 # }}}
