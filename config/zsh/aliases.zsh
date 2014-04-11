@@ -223,7 +223,7 @@ function yac() { (cd `git root`; yo angular:controller $@) }
 # Grunt {{{
 alias gt='grunt test'
 alias gj='grunt jshint'
-alias gbi='grunt bower-install'
+alias gbi='grunt bowerInstall'
 # }}}
 # Bower {{{
 alias bs='bower search'
