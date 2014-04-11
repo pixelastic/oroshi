@@ -227,9 +227,9 @@ alias gbi='grunt bowerInstall'
 # }}}
 # Bower {{{
 alias bs='bower search'
-function bi() { (cd `git root`; bower install $@ ) }
-function bis() { (cd `git root`; bower install $@ --save ) }
-function bisd() { (cd `git root`; bower install $@ --save-dev) }
+alias bi='bower install'
+alias bis='bower install --save'
+alias bisd='bower install --save-dev'
 # }}}
 
 # NVM {{{
