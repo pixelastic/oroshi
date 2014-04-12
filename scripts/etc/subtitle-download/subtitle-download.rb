@@ -47,16 +47,18 @@ class SubtitleDownload
 
   def get_matching_link_from_list(list)
     list.each do |link|
+      basename = File.basename(link)
       if @is_movie
-        if link.match(/(#{@name})/)
+        if basename.match(/(#{@name})/)
           return @website_url+ 'movies/' + link
         end
       else
-        if link.match(/(S?)(#{@season})(E|x)(#{@episode})/)
+        if basename.match(/(S?)(0?)(#{@season})(E|x)(0?)(#{@episode})/)
           return @website_url+ 'series/' + link
         end
       end
     end
+    return nil
   end
 
   def run
@@ -68,6 +70,11 @@ class SubtitleDownload
 
     links = get_links_from_url(page_url)
     matching_link = get_matching_link_from_list(links)
+
+    if !matching_link
+      puts "Unable to find subtitle"
+      return
+    end
     %x[wget -c '#{matching_link}']
   end
 
