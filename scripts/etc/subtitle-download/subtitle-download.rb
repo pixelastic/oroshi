@@ -53,7 +53,7 @@ class SubtitleDownload
           return @website_url+ 'movies/' + link
         end
       else
-        if basename.match(/(S?)(0?)(#{@season})(E|x)(0?)(#{@episode})/)
+        if basename.match(/(S?)(0?)(#{@season})(E|x)(0?)(#{@episode})([^0-9])/)
           return @website_url+ 'series/' + link
         end
       end
