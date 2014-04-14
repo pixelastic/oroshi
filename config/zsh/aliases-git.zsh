@@ -74,6 +74,11 @@ alias vfrpb='git flow release publish'
 alias vfrpl='git flow release pull'
 alias vfrs='git flow release start'
 # }}}
+# [re]base {{{
+alias vrea='git rebase --abort'
+alias vres='git rebase --skip'
+alias vrec='git rebase --continue'
+# }}}
 # [r]emote {{{
 alias vrR='git remote rm'
 alias vra='git remote add'
