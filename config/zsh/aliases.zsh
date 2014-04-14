@@ -182,10 +182,7 @@ alias of="~/.oroshi/scripts/deploy/fstab"
 alias ok="~/.oroshi/scripts/deploy/keybindings"
 # }}}
 # Versioning {{{
-# Note: Context-sensitive aliases are defined in ./aliases-{git|hg|none}.zsh
-alias vdc='create-repo'
-alias vdt='get-version-system'
-alias vdcl='git clone --recursive'
+source './aliases-git.zsh'
 # }}}
 # Vim {{{
 alias v='vim -p'

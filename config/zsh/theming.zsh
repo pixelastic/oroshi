@@ -21,43 +21,33 @@ done
 # Note: The colors are based on the colors used in the vim oroshi colorscheme
 typeset -A promptColorDefault
 promptColorDefault=(
-	username          "069" # Username color
-	root              "160" # Root color
-	hostname          "171" # Hostname color
-	pathOwner         "035" # Prompt color of path if user is owner
-	pathGroup         "203" # Prompt color of path if user is in group
-	pathRestricted    "160" # Prompt color if not owner nor in group
-	debug             "209" # Debug used in prompt
-	
-	tag               "241" # Current repo tag
-	tagExact          "202" # Color for tag if we are at the exact commit
-	submodule         "185" # Submodule symbol
-  rebase            "160" # Rebase in progress
-	branchDefault     "202" # Default color for branch
-	branchMaster      "035" # Color for master branch
-	branchDetached    "160" # Color for detached HEAD branch
+  username          "069" # Username color
+  root              "160" # Root color
+  hostname          "171" # Hostname color
+  pathOwner         "035" # Prompt color of path if user is owner
+  pathGroup         "203" # Prompt color of path if user is in group
+  pathRestricted    "160" # Prompt color if not owner nor in group
 
-	hgClean           "035" # Color of the VCS symbol if repo up to date
-	hgDirty           "160" # Color of the VCS symbol if repo modified
-
-	gitClean          "035" # Repo is clean
-	gitStaged         "171" # Files are staged, ready to be commited
-	gitDirty          "160" # Repo is dirty
-	gitDirtyAndStaged "203" # Repo is dirty AND files are staged
-
-	gitFlowDevelop    "184" # develop branch
-	gitFlowMaster     "069" # master branch
-	gitFlowHotfix     "160" # hotfix branch
-	gitFlowRelease    "028" # release branch
-	gitFlowFeature    "202" # feature branch
-	gitFlowBugfix     "203" # bugfix branch
+  tag                "241" # Color of the current tag
+  tagExact           "202" # Color of the exact current tag
+  submodule          "185" # Color of the submodule symbol
+  rebase             "160" # Color of the rebase symbol
+  branchDefault      "202" # Default color for branches
+  branchMaster       "069" # Color for master branch
+  branchDetached     "160" # Color for detached HEAD branch
+  branchDevelop      "184" # Color of develop branch
+  branchFeature      "202" # Color of feature branch
+  repoClean          "035" # Color of clean repo
+  repoStaged         "171" # Color if files are staged, ready to be commited
+  repoDirty          "160" # Color if repo is dirty
+  repoDirtyAndStaged "203" # Color if repo is dirty AND files are staged
 )
 
 # Merging default colors in promptColor
 for key in ${(k)promptColorDefault}; do
-	if [[ $promptColor[$key] = "" ]]; then;
-		promptColor[$key]=$promptColorDefault[$key]
-	fi
+  if [[ $promptColor[$key] = "" ]]; then;
+    promptColor[$key]=$promptColorDefault[$key]
+  fi
 done
 
 # Coloring manpages
