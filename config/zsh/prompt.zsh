@@ -209,9 +209,8 @@ function getGitRoot() {
 # }}}
 
 # chpwd() {{{
-# Note: This is automatically called by the prompt whenever we change
-# directories
 function chpwd() {
+  # Caching git information
   promptIsGit=$(isGit)
   promptGitRoot=$(getGitRoot)
 	# Window title
