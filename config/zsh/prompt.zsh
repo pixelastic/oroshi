@@ -461,6 +461,34 @@ function updatePushIndicatorGit() {
 	promptPushIndicator=''
 }
 # }}}
+# updateRebaseIndicator() {{{
+function updateRebaseIndicator() {
+	if [[ $versionSystem = 'git' ]]; then
+		updateRebaseIndicatorGit
+		return
+	fi
+	# No indicator
+	promptRebaseIndicator=''
+	colorRebaseIndicator=''
+}
+# }}}
+# updateRebaseIndicatorGit() {{{
+function updateRebaseIndicatorGit() {
+	# Stop if not a git repo
+	if [[ $versionSystem != 'git' ]]; then
+		return
+	fi
+
+	# We check for the file telling us we are in the middle of a rebase
+  local repoRoot=$(getRepoRoot)
+  local rebaseFile="${repoRoot}/.git/rebase-apply/rebasing"
+  if [[ -r $rebaseFile ]]; then
+		promptRebaseIndicator='⚶ '
+		return
+  fi
+	promptRebaseIndicator=''
+}
+# }}}
 
 # Hooks
 # chpwd() {{{
@@ -488,6 +516,7 @@ function chpwd() {
 	chpwd_updateSubmodule
 	chpwd_updateBranch
 	chpwd_updatePushIndicator
+	chpwd_updateRebaseIndicator
 
 	# Window title
 	print -Pn "\e]2;%n@%m:%~/\a"
@@ -546,6 +575,14 @@ if [[ $repoRoot != $previousRepoRoot ]]; then
 fi
 }
 # }}}
+# chpwd_updateRebaseIndicator() {{{
+function chpwd_updateRebaseIndicator() {
+# Update rebase indicator when moving in or out of a repo
+if [[ $repoRoot != $previousRepoRoot ]]; then
+	updateRebaseIndicator
+fi
+}
+# }}}
 # preexec() {{{
 # Note: Is called just before executing a command
 function preexec() {
@@ -561,6 +598,7 @@ function precmd() {
 	precmd_updateTag
 	precmd_updateBranch
 	precmd_updatePushIndicator
+	precmd_updateRebaseIndicator
 }
 # }}}
 # precmd_updateVersionSystem() {{{
@@ -589,7 +627,7 @@ function precmd_updateHash() {
 	fi
 	# Git commands
 	if [[ $previousCommand[1] = 'git' 
-		&& $previousCommand[2] =~ '(add|checkout|clean|clone|commit|create-file|init|merge|mv|reset|rm|submodule|stash|status|tabula-rasa)' ]]; then
+		&& $previousCommand[2] =~ '(add|checkout|clean|clone|commit|create-file|init|merge|mv|rebase|reset|rm|submodule|stash|status|tabula-rasa)' ]]; then
 		updateHash=1
 	fi
 	# Hg command
@@ -616,7 +654,7 @@ function precmd_updateTag() {
 function precmd_updateBranch() {
 	# Git commands
 	if [[ $previousCommand[1] = 'git' 
-		&& $previousCommand[2] =~ '(branch|checkout|commit|current-branch|flow|status|tag)' ]]; then
+		&& $previousCommand[2] =~ '(branch|checkout|commit|current-branch|flow|rebase|status|tag)' ]]; then
 		updateBranch
 	fi
 }
@@ -627,6 +665,15 @@ function precmd_updatePushIndicator() {
 if [[ $previousCommand[1] = 'git' 
 	&& $previousCommand[2] =~ '(branch|checkout|commit|commit-all|flow|merge|push|import-feature|init|rollback|status)' ]]; then
 	updatePushIndicator
+fi
+}
+# }}}
+# precmd_updateRebaseIndicator() {{{
+function precmd_updateRebaseIndicator() {
+# Git commands
+if [[ $previousCommand[1] = 'git' 
+	&& $previousCommand[2] =~ '(checkout|rebase|status)' ]]; then
+	updateRebaseIndicator
 fi
 }
 # }}}
@@ -648,6 +695,7 @@ export colorPath="$(getPromptPathColor $PWD)"
 export colorHash=''
 export colorTag=$promptColor[tag]
 export colorSubmodule=$promptColor[submodule]
+export colorRebase=$promptColor[rebase]
 export colorBranch=$promptColor[branchDefault]
 export colorDebug=$promptColor[debug]
  
@@ -671,6 +719,7 @@ $FG[$colorHash]$hashSymbol$FX[reset] \
 $FG[$colorDebug]$promptDebug$FX[reset]'
 RPROMPT='$FG[$colorTag]$promptTag$FX[reset]\
 $FG[$colorSubmodule]$promptSubmodule$FX[reset]\
+$FG[$colorRebase]$promptRebaseIndicator$FX[reset]\
 $FG[$colorBranch]$promptPushIndicator$promptBranch$FX[reset]'
 # }}}
 

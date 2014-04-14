@@ -32,6 +32,7 @@ promptColorDefault=(
 	tag               "241" # Current repo tag
 	tagExact          "202" # Color for tag if we are at the exact commit
 	submodule         "185" # Submodule symbol
+  rebase            "160" # Rebase in progress
 	branchDefault     "202" # Default color for branch
 	branchMaster      "035" # Color for master branch
 	branchDetached    "160" # Color for detached HEAD branch
