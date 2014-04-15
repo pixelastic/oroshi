@@ -50,6 +50,7 @@ alias vfrez='git resurrect'
 alias vfu='git unstage'
 alias vfua='git reset'
 alias vffj='git fix-jshint'
+alias vffc='git fix-conflicts'
 # }}}
 # [f]low {{{
 alias vfi='git flow init -d'

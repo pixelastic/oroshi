@@ -19,7 +19,7 @@ class FixJshint
   def run
     puts "Running Jshint"
     files = get_error_files
-    files.map do |file|
+    files.map! do |file|
       file.shellescape
     end
     if files.length == 0
@@ -27,7 +27,7 @@ class FixJshint
       return
     end
     puts "Loading vim with #{files.length} files"
-    exec("vim -p #{get_error_files.join(' ')}")
+    exec("vim -p #{files.join(' ')}")
   end
 end
 FixJshint.new(*ARGV).run();
