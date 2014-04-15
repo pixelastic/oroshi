@@ -37,6 +37,7 @@ promptColorDefault=(
   branchDetached     "160" # Color for detached HEAD branch
   branchDevelop      "184" # Color of develop branch
   branchFeature      "202" # Color of feature branch
+  branchReview       "028" # Color of review branch
   repoClean          "035" # Color of clean repo
   repoStaged         "171" # Color if files are staged, ready to be commited
   repoDirty          "160" # Color if repo is dirty

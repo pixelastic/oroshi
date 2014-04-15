@@ -168,6 +168,9 @@ function getPromptRepoBranch() {
 	if [[ $promptBranch =~ '^feature/' ]]; then
 		promptBranchColor=$promptColor[branchFeature]
 	fi
+	if [[ $promptBranch =~ '^review/' ]]; then
+		promptBranchColor=$promptColor[branchReview]
+	fi
 	if [[ $promptBranch = 'HEAD' ]]; then
 		promptBranchColor=$promptColor[branchDetached]
 		promptBranch=" ⭠"
