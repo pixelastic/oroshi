@@ -20,7 +20,7 @@
   whitespace = 88 88
   commit = 67
 [alias]
-  amend = commit --amend
+  amend = commit --amend -v
   branch-list = !git-branch-list
   commit-all = !git add --all . && git commit -v --all
   conflicts = diff --name-only --diff-filter=U
