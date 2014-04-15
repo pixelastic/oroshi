@@ -31,7 +31,7 @@
   fetch-all-locally = !git-fetch-all-locally
   fix-conflicts = !git-fix-conflicts
   fix-jshint = !git-fix-jshint
-  import-feature = !git-import-feature
+  import-branch = !git-import-branch
   is-submodule = !git-is-submodule
   peek = log --graph --pretty=format:'%C(67)%h%Creset %C(24)(%cd, %ar)%Creset %C(241)%an%Creset %C(bold 202)%d%Creset%n   %C(250)%s%Creset%n'
   prev = reset --hard HEAD~1

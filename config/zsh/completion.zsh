@@ -22,10 +22,11 @@ source ~/.oroshi/config/zsh/completion/git-flow-completion/git-flow-completion.z
 
 # Debug method to reload the completion functions
 r() {
-	local f
-	f=(~/.oroshi/config/zsh/completion/*(.))
-	unfunction $f:t 2> /dev/null
-	autoload -U $f:t
+  rm ~/.zcompdump
+  local f
+  f=(~/.oroshi/config/zsh/completion/*(.))
+  unfunction $f:t 2> /dev/null
+  autoload -U $f:t
 }
 
 # OPTIONS
@@ -59,7 +60,7 @@ setopt ALWAYS_TO_END
 # Allow moving to a directory without typing cd
 setopt AUTO_CD
 # Block expanding of vars in prompt, it would add the irc/ proxy/ etc completion options
-setopt NO_CDABLE_VARS	
+setopt NO_CDABLE_VARS 
 # Do not add /, @, %, #, etc chars to complete list, because we already have colors
 setopt NO_LIST_TYPES
 # Wait 10s for every command ending with *

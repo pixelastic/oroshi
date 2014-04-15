@@ -1,10 +1,9 @@
-#compdef git-import-feature
+#compdef git-import-branch
 
 # Note: This method is inspired by the __git_flow_feature_list method found in
 # the git flow completion script.
 # It will only return branches starting with feature/ or review/
-__git_import_branch_list ()
-{
+_git-import-branch () {
 	declare -a branches
 
 	branches=(${${(f)"$(_call_program import-branch-list git branch --list --no-color 'feature\*' 'review\*' 2> /dev/null | tr -d ' |*')"}})
@@ -13,6 +12,6 @@ __git_import_branch_list ()
   compadd "$@" $branches
 }
 
-__git_import_branch_list "$@"
+_git-import-branch "$@"
 
 
