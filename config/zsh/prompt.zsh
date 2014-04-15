@@ -18,19 +18,19 @@ promptHostname="$FG[$promptColor[hostname]]%m$FX[reset]"
 # - If more than 4 directories, will only keep the first and the last two
 # - Will prepend a ! and display it in red if not writable
 function getPromptPath() {
-	local promptPath=$PWD
-	local splitPath
-	splitPath=(${(s:/:)PWD})
+  local promptPath=$PWD
+  local splitPath
+  splitPath=(${(s:/:)PWD})
 
-	# Keep only first and last dirs if too long
-	if [[ ${#splitPath[*]} -ge 4 ]]; then
-		promptPath=/${splitPath[1]}/../${splitPath[-2]}/${splitPath[-1]}/
-	fi
+  # Keep only first and last dirs if too long
+  if [[ ${#splitPath[*]} -ge 4 ]]; then
+    promptPath=/${splitPath[1]}/../${splitPath[-2]}/${splitPath[-1]}/
+  fi
 
-	# Prefix a ! if not writable
-	if [[ ! -w $PWD ]]; then
-		promptPath=!$promptPath
-	fi
+  # Prefix a ! if not writable
+  if [[ ! -w $PWD ]]; then
+    promptPath=!$promptPath
+  fi
 
   # Checking if I'm the owner or am in the group of this dir
   local promptPathColor=$promptColor[pathRestricted]
@@ -44,7 +44,7 @@ function getPromptPath() {
         # I'm in the group
         promptPathColor=$promptColor[pathGroup]
       fi
-	fi
+  fi
 
   echo "$FG[$promptPathColor]$promptPath$FX[reset]"
 }
@@ -65,38 +65,38 @@ function getPromptHash() {
 # }}}
 # getPromptHashGit() {{{
 function getPromptHashGit() {
-	local gitStatus="$(git status-short)"
+  local gitStatus="$(git status-short)"
   local promptHashColor=$promptColor[repoClean]
-	local promptHash='±'
+  local promptHash='±'
 
-	# Does it have modified or new files ?
+  # Does it have modified or new files ?
   local gitHasModifiedFiles=0
-	if [[ $gitStatus =~ ' . ' || $gitStatus =~ '\?\?' ]]; then
-		gitHasModifiedFiles=1
-	fi
+  if [[ $gitStatus =~ ' . ' || $gitStatus =~ '\?\?' ]]; then
+    gitHasModifiedFiles=1
+  fi
 
-	# Does it have staged files ?
+  # Does it have staged files ?
   local gitHasStagedFiles=0
-	if [[ $gitStatus =~ '.  ' ]]; then
-		gitHasStagedFiles=1
-	fi
+  if [[ $gitStatus =~ '.  ' ]]; then
+    gitHasStagedFiles=1
+  fi
 
-	# Repo is clean, but there are files in the index waiting for a commit
-	if [[ $gitHasModifiedFiles = 0 && $gitHasStagedFiles = 1 ]]; then
-		promptHashColor=$promptColor[repoStaged]
-		promptHash="${promptHash}*"
-	fi
+  # Repo is clean, but there are files in the index waiting for a commit
+  if [[ $gitHasModifiedFiles = 0 && $gitHasStagedFiles = 1 ]]; then
+    promptHashColor=$promptColor[repoStaged]
+    promptHash="${promptHash}*"
+  fi
 
-	# Files have been changed or added, but nothing is ready to be commited
-	if [[ $gitHasModifiedFiles = 1 && $gitHasStagedFiles = 0 ]]; then
-		promptHashColor=$promptColor[repoDirty]
-	fi
+  # Files have been changed or added, but nothing is ready to be commited
+  if [[ $gitHasModifiedFiles = 1 && $gitHasStagedFiles = 0 ]]; then
+    promptHashColor=$promptColor[repoDirty]
+  fi
 
-	# Files have been added/modified and others are ready to be comitted
-	if [[ $gitHasModifiedFiles = 1 && $gitHasStagedFiles = 1 ]]; then
-		promptHashColor=$promptColor[repoDirtyAndStaged]
-		promptHash="${promptHash}*"
-	fi
+  # Files have been added/modified and others are ready to be comitted
+  if [[ $gitHasModifiedFiles = 1 && $gitHasStagedFiles = 1 ]]; then
+    promptHashColor=$promptColor[repoDirtyAndStaged]
+    promptHash="${promptHash}*"
+  fi
 
   echo "$FG[$promptHashColor]$promptHash$FX[reset]"
 }
@@ -150,37 +150,39 @@ function getPromptRepoBranch() {
     return
   fi
 
-	local promptBranch="$(git current-branch)"
+  local promptBranch="$(git current-branch)"
   local promptBranchColor=$promptBranch[branchDefault]
 
-	# No branch found
-	if [[ promptBranch = '' ]]; then
-		return
-	fi
+  # No branch found
+  if [[ promptBranch = '' ]]; then
+    return
+  fi
 
   # Branch color
-	if [[ $promptBranch = 'master' ]]; then
-		promptBranchColor=$promptColor[branchMaster]
-	fi
-	if [[ $promptBranch = 'develop' ]]; then
-		promptBranchColor=$promptColor[branchDevelop]
-	fi
-	if [[ $promptBranch =~ '^feature/' ]]; then
-		promptBranchColor=$promptColor[branchFeature]
-	fi
-	if [[ $promptBranch =~ '^review/' ]]; then
-		promptBranchColor=$promptColor[branchReview]
-	fi
-	if [[ $promptBranch = 'HEAD' ]]; then
-		promptBranchColor=$promptColor[branchDetached]
-		promptBranch=" ⭠"
-	fi
+  if [[ $promptBranch = 'master' ]]; then
+    promptBranchColor=$promptColor[branchMaster]
+  fi
+  if [[ $promptBranch = 'develop' ]]; then
+    promptBranchColor=$promptColor[branchDevelop]
+  fi
+  if [[ $promptBranch =~ '^feature/' ]]; then
+    promptBranch=${promptBranch//feature\//}
+    promptBranchColor=$promptColor[branchFeature]
+  fi
+  if [[ $promptBranch =~ '^review/' ]]; then
+    promptBranch=${promptBranch//review\//}
+    promptBranchColor=$promptColor[branchReview]
+  fi
+  if [[ $promptBranch = 'HEAD' ]]; then
+    promptBranchColor=$promptColor[branchDetached]
+    promptBranch=" ⭠"
+  fi
 
   # Adding push indicator
   local gitStatus="$(git status)"
-	if [[ $gitStatus =~ 'Your branch is ahead of' ]]; then
-		promptBranch="⇪ $promptBranch"
-	fi
+  if [[ $gitStatus =~ 'Your branch is ahead of' ]]; then
+    promptBranch="⇪ $promptBranch"
+  fi
   
   echo "$FG[$promptBranchColor]$promptBranch$FX[reset]"
 }
@@ -217,8 +219,8 @@ function chpwd() {
   # Caching git information
   promptIsGit=$(isGit)
   promptGitRoot=$(getGitRoot)
-	# Window title
-	print -Pn "\e]2;%n@%m:%~/\a"
+  # Window title
+  print -Pn "\e]2;%n@%m:%~/\a"
 }
 # }}}
 

@@ -1,7 +1,18 @@
 #compdef git-import-feature
 
-# Note: Use the git-flow-feature autocompletion to only suggest feature
-# branches.
-__git_flow_feature_list "$@"
+# Note: This method is inspired by the __git_flow_feature_list method found in
+# the git flow completion script.
+# It will only return branches starting with feature/ or review/
+__git_import_branch_list ()
+{
+	declare -a branches
+
+	branches=(${${(f)"$(_call_program import-branch-list git branch --list --no-color 'feature\*' 'review\*' 2> /dev/null | tr -d ' |*')"}})
+	__git_command_successful || return
+
+  compadd "$@" $branches
+}
+
+__git_import_branch_list "$@"
 
 
