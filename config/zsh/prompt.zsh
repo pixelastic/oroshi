@@ -187,7 +187,7 @@ function getPromptRepoBranch() {
 # isGit() {{{
 function isGit() {
   # Avoid git internal directory
-  if [[ $PWD =~ '.git' ]]; then
+  if [[ $PWD =~ '\.git' ]]; then
     echo 0
     return
   fi
