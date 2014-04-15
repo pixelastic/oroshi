@@ -126,12 +126,12 @@ function getPromptRepoSubmodule() {
 
   local isSubmodule="$(git is-submodule)"
   if [[ $isSubmodule = 1 ]]; then
-    echo "$FG[$promptColor[submodule]]↯$FX[reset]"
+    echo "$FG[$promptColor[submodule]]↯$FX[reset] "
   fi
 }
 # }}}
 # Rebase
-# getPromptRepoRebase()
+# getPromptRepoRebase() {{{
 function getPromptRepoRebase() {
   if [[ $promptIsGit = 0 ]]; then
     return
@@ -142,6 +142,7 @@ function getPromptRepoRebase() {
     echo "$FG[$promptColor[rebase]]⚶$FX[reset]"
   fi
 }
+# }}}
 # Branch
 # getPromptRepoBranch() {{{
 function getPromptRepoBranch() {
