@@ -19,12 +19,15 @@ vnoremap <buffer> <leader>b <Esc>mzg`>a**<Esc>g`<i**<Esc>`zl
 " }}}
 " Folding {{{
 function! MarkdownLevel()
-  let h = matchstr(getline(v:lnum), '^#\+')
-  if empty(h)
-    return "="
-  else
-    return ">" . len(h)
+  let currentLine = getline(v:lnum)
+  let headerMarker = matchstr(currentLine, '^#\+')
+  let headerLevel = len(headerMarker)
+
+  if headerLevel > 0
+    return ">".headerLevel
   endif
+
+  return "="
 endfunction
 setlocal foldexpr=MarkdownLevel()  
 setlocal foldmethod=expr  
@@ -32,12 +35,12 @@ setlocal foldmethod=expr
 " Running the file in the browser {{{
 nnoremap <silent> <buffer> <F5> :call MarkdownConvertAndRun()<CR>
 function! MarkdownConvertAndRun()
-	let thisFile = shellescape(expand('%:p'))
-	let htmlFile = '/tmp/vim-generated-markdown.html'
-	" Create the html file
-	silent execute '!markdown ' . thisFile . ' > ' . shellescape(htmlFile)
-	" Run it
-	call OpenUrlInBrowser(htmlFile)
+  let thisFile = shellescape(expand('%:p'))
+  let htmlFile = '/tmp/vim-generated-markdown.html'
+  " Create the html file
+  silent execute '!markdown ' . thisFile . ' > ' . shellescape(htmlFile)
+  " Run it
+  call OpenUrlInBrowser(htmlFile)
 endfunction
 " }}}
 " Wrapping {{{
