@@ -1,4 +1,6 @@
 " MARKDOWN
+
+" Styling {{{
 " Add headers with ,(1|2|3|4|5)
 nnoremap <buffer> <leader>& I# <Esc>j
 nnoremap <buffer> <leader>é I## <Esc>j
@@ -14,14 +16,20 @@ vnoremap <buffer> <leader>i <Esc>mzg`>a_<Esc>g`<i_<Esc>`zl
 " **Bold**
 nnoremap <buffer> <leader>b viw<Esc>g`>a**<Esc>g`<i**<Esc>
 vnoremap <buffer> <leader>b <Esc>mzg`>a**<Esc>g`<i**<Esc>`zl
-
-" Auto-wrap text
-setlocal formatoptions+=t
-" Use windows line endings so readme files can be easily edited on Notepad
-setlocal fileformat=dos
-au BufNewFile,BufRead,BufWritePre <buffer> silent call ConvertLineEndingsToDos()
-
-" Run file
+" }}}
+" Folding {{{
+function! MarkdownLevel()
+  let h = matchstr(getline(v:lnum), '^#\+')
+  if empty(h)
+    return "="
+  else
+    return ">" . len(h)
+  endif
+endfunction
+setlocal foldexpr=MarkdownLevel()  
+setlocal foldmethod=expr  
+" }}}
+" Running the file in the browser {{{
 nnoremap <silent> <buffer> <F5> :call MarkdownConvertAndRun()<CR>
 function! MarkdownConvertAndRun()
 	let thisFile = shellescape(expand('%:p'))
@@ -31,3 +39,13 @@ function! MarkdownConvertAndRun()
 	" Run it
 	call OpenUrlInBrowser(htmlFile)
 endfunction
+" }}}
+" Wrapping {{{
+" Auto-wrap text
+setlocal formatoptions+=t
+" }}}
+" Line endings {{{
+" Use windows line endings so readme files can be easily edited on Notepad
+setlocal fileformat=dos
+au BufNewFile,BufRead,BufWritePre <buffer> silent call ConvertLineEndingsToDos()
+" }}}

@@ -1,17 +1,20 @@
 " HTML
+" Indenting {{{
 " Use two spaces for indenting
 setlocal tabstop=2
 setlocal shiftwidth=2
 setlocal softtabstop=2
 setlocal expandtab
+" }}}
+" Wrapping {{{
 " Extend line-width to 140
 if &ft == "html"
 	setlocal colorcolumn=140
 	setlocal textwidth=139
 endif
-
-
+" }}}
 " Folding {{{
+setlocal foldmethod=manual
 function! HTMLFoldTag()
 	if foldclosed('.')==-1
 		normal zfat
@@ -19,8 +22,11 @@ function! HTMLFoldTag()
 		normal zO
 	endif
 endfunction
-setlocal foldmethod=manual
-nnoremap <silent> <buffer> za :call HTMLFoldTag()<CR>
+" Note: We only want this mapping for html files, not markdown or other types
+" using using this ftplugin file.
+if &ft == "html"
+  nnoremap <silent> <buffer> za :call HTMLFoldTag()<CR>
+endif
 " }}}
 " Syntax checking {{{
 let g:syntastic_html_tidy_ignore_errors = [
