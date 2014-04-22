@@ -23,6 +23,7 @@ source ~/.oroshi/config/zsh/completion/git-flow-completion/git-flow-completion.z
 # Debug method to reload the completion functions
 r() {
   rm -f ~/.zcompdump
+  rm -f ~/.zcompcache/grunt
   local f
   f=(~/.oroshi/config/zsh/completion/*(.))
   unfunction $f:t 2> /dev/null
