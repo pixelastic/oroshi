@@ -85,3 +85,6 @@
 [submodule "config/vim/bundle/available/ultisnips"]
 	path = config/vim/bundle/available/ultisnips
 	url = git@github.com:SirVer/ultisnips.git
+[submodule "config/zsh/completion/grunt-zsh-completion"]
+	path = config/zsh/completion/grunt-zsh-completion
+	url = git@github.com:yonchu/grunt-zsh-completion.git
