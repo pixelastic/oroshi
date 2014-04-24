@@ -18,4 +18,4 @@ done
 
 # Running the command
 eval cd $repo
-eval git ls-files $args -i
+eval git ls-files $args -i -o
