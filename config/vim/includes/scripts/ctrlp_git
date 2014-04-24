@@ -1,21 +1,34 @@
 #!/usr/bin/env zsh
 # This script is called by CtrlP when in a git repo.
-# This will return all tracked files, but excluding the one that can't be
-# edited by vim (compiled, images, etc)
+# This will return the list of tracked files, excluding the one deleted in the
+# working directory, but including the newly created files. This will also
+# ignore files ignored by git as well as binary files defined in the ./noedit
+# file.
 
-local repo=${1:a}
+local repoRoot=${1:a}
+local deletedFiles addedFiles lsFiles
 
-# Getting the patterns as an array from the pattern file
-local patternFile=${0:a:h}/noedit
-local patterns="`cat $patternFile | grep -v -e '^#' -e '^$'`"
+# We first get the list of common excluded patterns from the ./nodedit file
+local patterns="`cat ${0:a:h}/noedit | grep -v -e '^#' -e '^$'`"
 patterns=(${(@f)patterns})
 
-# Building the exclude string
-local args="-i -x '*'"
+# Building the grep pipe arguments
+local grepArgs=" -e 'js'"
 for pattern in $patterns; do
-	args=${args}" -x '!${pattern}'"
+	# grepArgs=${grepArgs}" -e '${pattern}'"
 done
 
-# Running the command
-eval cd $repo
-eval git ls-files $args -i -o
+# We get the full list of tracked files
+cd $repoRoot
+lsFiles=(`git ls-files`)
+
+# We then remove the list of deleted files from it
+deletedFiles=(`git diff --name-only --diff-filter=D`)
+lsFiles=( "${lsFiles[@]/$deletedFiles}" )
+
+# We then add the list of new files to it
+addedFiles=(`git ls-files --others --exclude-standard`)
+lsFiles+=($addedFiles)
+
+# We pipe the output to grep, to remove the binary files matching our pattern
+print -l $lsFiles

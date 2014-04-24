@@ -1,7 +1,7 @@
 " CTRLP
 " Default options {{{
 " Will search both current files and MRU
-let g:ctrlp_cmd = 'CtrlPMixed'
+let g:ctrlp_cmd = 'CtrlP'
 " Show only 5 results
 let g:ctrlp_max_height = 5
 " Search by filepath and not just filename
