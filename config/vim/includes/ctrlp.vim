@@ -1,6 +1,6 @@
 " CTRLP
 " Default options {{{
-" Will search both current files and MRU
+" Will search in repository, not MRU
 let g:ctrlp_cmd = 'CtrlP'
 " Show only 5 results
 let g:ctrlp_max_height = 5
@@ -30,10 +30,8 @@ let g:ctrlp_prompt_mappings = {
 " Search commands {{{
 let g:ctrlp_user_command = {
 	\ 'types': {
-		\ 1: ['.git', '~/.vim/includes/scripts/ctrlp_git %s'],
-		\ 2: ['.hg', '~/.vim/includes/scripts/ctrlp_hg %s']
+		\ 1: ['.git', '~/.vim/includes/scripts/ctrlp_git %s']
 		\ },
-	\ 'fallback': '~/.vim/includes/scripts/ctrlp_fallback %s',
 	\ 'ignore': 0
 	\ }
 " }}}

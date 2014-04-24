@@ -6,17 +6,9 @@
 # file.
 
 local repoRoot=${1:a}
+local noeditFile=${0:a:h}/noedit
 local deletedFiles addedFiles lsFiles
 
-# We first get the list of common excluded patterns from the ./nodedit file
-local patterns="`cat ${0:a:h}/noedit | grep -v -e '^#' -e '^$'`"
-patterns=(${(@f)patterns})
-
-# Building the grep pipe arguments
-local grepArgs=" -e 'js'"
-for pattern in $patterns; do
-	# grepArgs=${grepArgs}" -e '${pattern}'"
-done
 
 # We get the full list of tracked files
 cd $repoRoot
@@ -31,4 +23,11 @@ addedFiles=(`git ls-files --others --exclude-standard`)
 lsFiles+=($addedFiles)
 
 # We pipe the output to grep, to remove the binary files matching our pattern
-print -l $lsFiles
+local patterns="`cat $noeditFile | grep -v -e '^#' -e '^$'`"
+patterns=(${(@f)patterns})
+local grepCommand="grep --ignore-case --invert-match --extended-regexp "
+for pattern in $patterns; do
+	grepCommand=${grepCommand}" -e '${pattern}'"
+done
+
+eval "print -l $lsFiles | $grepCommand"

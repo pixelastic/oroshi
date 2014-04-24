@@ -1,20 +1,20 @@
 #!/usr/bin/env zsh
-# This script is called by CtrlP when not in an hg or git repo
-# This will return all tracked files, but excluding the one that can't be
-# edited by vim (compiled, images, etc)
 
-local repo=${1:a}
+local repoRoot=${1:a}
+local noeditFile=${0:a:h}/noedit
+local allFiles
 
-# Getting the patterns as an array from the pattern file
-local patternFile=${0:a:h}/noedit
-local patterns="`cat $patternFile | grep -v -e '^#' -e '^$'`"
+# We get the full list of tracked files
+allFiles=(`find $repoRoot -type f`)
+
+# We pipe the output to grep, to remove the binary files matching our pattern
+local patterns="`cat $noeditFile | grep -v -e '^#' -e '^$'`"
 patterns=(${(@f)patterns})
-
-# Building the exclude string
-local args="-type f"
+local grepCommand="grep --ignore-case --invert-match --extended-regexp "
 for pattern in $patterns; do
-	args=${args}" -not -name '${pattern}'"
+	grepCommand=${grepCommand}" -e '${pattern}'"
 done
 
-# Running the command
-eval find $repo $args
+echo $allFiles
+
+eval "print -l $allFiles | $grepCommand"
