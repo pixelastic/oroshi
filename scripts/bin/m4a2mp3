@@ -24,7 +24,7 @@ class M4a2Mp3
 			basename = File.basename(file, extname)
 			newname = File.join(dirname, basename + '.mp3')
 			puts "Converting #{basename} to mp3"
-      %x[avconv -i #{file.shellescape} #{newname.shellescape}]
+			%x[ffmpeg -i #{file.shellescape} -ab 128k -map_metadata 0:0,s0 #{newname.shellescape}]
 		end
 
 	end
