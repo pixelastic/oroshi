@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+# encoding : utf-8
+require "shellwords"
+
+class M4a2Mp3
+
+	def initialize(*args)
+		# Usage explanation if no args
+		if args.size == 0
+			puts "Usage :"
+			puts "$ m4a2mp3 input.m4a [input2.m4a]"
+			return
+		end
+
+		# Keeping only m4a files
+		@input = args.reject{|f| File.extname(f) != '.m4a'}.reject{|f| !File.exists?(f)}
+	end
+
+	def run
+		@input.each do |file|
+			file = File.expand_path(file)
+			dirname = File.dirname(file)
+			extname = File.extname(file)
+			basename = File.basename(file, extname)
+			newname = File.join(dirname, basename + '.mp3')
+			puts "Converting #{basename} to mp3"
+      %x[avconv -i #{file.shellescape} #{newname.shellescape}]
+		end
+
+	end
+
+end
+
+M4a2Mp3.new(*ARGV).run()
