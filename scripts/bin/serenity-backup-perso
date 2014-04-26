@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+# Encoding: UTF-8
+require "shellwords"
+
+serenity_path=File.expand_path('~/local/mnt/serenity/perso')
+harddrive_path=File.expand_path('/media/truecrypt1')
+
+if !File.exists?(serenity_path)
+  puts "Unable to find serenity path."
+  return
+end
+
+if Dir.entries(serenity_path).size <= 2
+  puts "serenity path seems to not be mounted."
+  return
+end
+
+if !File.exists?(harddrive_path)
+  puts "Unable to find hard drive path."
+  return
+end
+
+rsync_options = [
+  '--recursive',
+  '--archive',
+  '--human-readable',
+  '--partial',
+  '--progress',
+  '--modify-window=1',
+  "--exclude '#recycle'",
+  "--exclude '\.Trash-*/'",
+  # '-n'
+]
+
+rsync_command = "rsync #{rsync_options.join(' ')} #{serenity_path.shellescape}/* #{harddrive_path.shellescape}"
+
+pipe = IO.popen(rsync_command)
+while (line = pipe.gets)
+  print line
+end
