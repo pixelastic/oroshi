@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+input=ARGV[0]
+
+
+# We extract information from the filename
+regexp=/^(.*)(S)([0-9]*)(E)([0-9]*)(.*)-(.*)\.(.{3,4})$/
+split = input.match(regexp)
+
+if !split
+  puts "Unable to parse filename"
+  return
+end
+
+# serie_name = split[1]
+season = split[3].to_i
+episode = split[5].to_i
+team = split[7]
+# ext = split[8]
+
+# We now try to find a subtitle filename in the same directory that could match
+path = File.expand_path(input)
+dirname = File.dirname(path)
+
+pattern = /#{dirname}\/(.*)#{season}(.*)#{episode}(.*)#{team}(.*)srt$/i
+files = Dir.glob("#{dirname}/*").grep(pattern)
+puts files[0]
+
+
+
+
