@@ -10,19 +10,18 @@ class GitBranchList
       :release => 28,
       :feature => 202,
       :review => 28,
-      :bugfix => 203,
+      :bugfix => 171,
       :remotes => 160
     }
     @hash_color = 67
 
   def self.color_branchname(txt)
-    branches=/master|hotfix|release|develop|feature|review|remotes/
+    branches=/master|bugfix|hotfix|release|develop|feature|review|remotes/
     suffix=/\/?[\w\/\-\.]*/
 
     # branch names
     txt.gsub!(/((#{branches})#{suffix})/) do |_|
       fullname, type = $1, $2
-      type="bugfix" if fullname =~ /^feature\/bugfix/
       color=@branch_colors[type.to_sym]
       self.color_text(fullname, color)
     end
