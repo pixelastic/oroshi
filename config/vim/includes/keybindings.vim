@@ -128,9 +128,12 @@ nnoremap H ^
 vnoremap H ^
 nnoremap L g_
 vnoremap L g_
-" Jump to next/previous words with J and K
-nnoremap J b
-nnoremap K w
+" Move to next word with Shift + Space
+nnoremap [28;2~ W
+inoremap [28;2~ <Esc>lWi
+" Previous word with Ctrl + Shift + Space
+nnoremap [28;6~ B
+inoremap [28;6~ <Esc>lBi
 " Go back to first non blank character with home
 nnoremap <Home> ^
 inoremap <Home> <Esc>^i
@@ -242,4 +245,8 @@ vnoremap <silent> md :!markdown<CR>
 " Strangely, ï seems to be equal to <M-o> and endwise remaps it. I need to
 " force its mapping so it is not overwritten.
 " inoremap <M-o> ï
+" }}}
+" UNBINDING {{{
+" K lookup for the word under cursor, I don't need it
+nnoremap K <nop>
 " }}}
