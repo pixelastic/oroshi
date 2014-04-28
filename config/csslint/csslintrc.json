@@ -2,15 +2,13 @@
   "warnings": [
     "box-sizing",
     "bulletproof-font-face",
-    "compatible-vendor-prefixes",
-    "gradients",
-    "ids",
-    "shorthand",
     "star-property-hack",
     "text-indent",
+    "qualified-headings",
     "underscore-property-hack",
     "universal-selector",
-    "vendor-prefix",
+    "outline-none",
+    "fallback-colors",
     "unqualified-attributes"
   ],
   "errors": [
@@ -18,26 +16,30 @@
     "duplicate-background-images",
     "duplicate-properties",
     "errors",
-    "fallback-colors",
     "floats",
     "font-faces",
     "font-sizes",
     "import",
     "important",
     "known-properties",
-    "outline-none",
-    "overqualified-elements",
-    "qualified-headings",
     "regex-selectors",
     "rules-count",
     "selector-max",
-    "selector-max-approaching",
-    "unique-headings"
+    "selector-max-approaching"
   ],
   "ignore": [
     "zero-units",
     "empty-rules",
     "adjoining-classes",
-    "box-model"
+    "box-model",
+    
+    "shorthand",
+    "gradients",
+    "ids",
+    "vendor-prefix",
+    "overqualified-elements",
+    "unique-headings",
+    "compatible-vendor-prefixes"
+
   ]
 }
