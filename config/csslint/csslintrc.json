@@ -4,12 +4,10 @@
     "bulletproof-font-face",
     "star-property-hack",
     "text-indent",
-    "qualified-headings",
     "underscore-property-hack",
     "universal-selector",
     "outline-none",
-    "fallback-colors",
-    "unqualified-attributes"
+    "fallback-colors"
   ],
   "errors": [
     "display-property-grouping",
@@ -37,7 +35,9 @@
     "gradients",
     "ids",
     "vendor-prefix",
+    "unqualified-attributes",
     "overqualified-elements",
+    "qualified-headings",
     "unique-headings",
     "compatible-vendor-prefixes"
 
