@@ -68,7 +68,7 @@ setopt NO_LIST_TYPES
 setopt RM_STAR_WAIT
 
 # GENERAL
-# Selected completion is hilighted
+# Selected completion is highlighted
 zstyle ':completion:*' menu select
 # Use LS_COLORS to suggest completions
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
@@ -103,9 +103,6 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'm:{a-zA-Z}={A-Za-z} l
 # zstyle ':completion:*' format 'Completing %d'
 # zstyle ':completion:*' glob 0
 # zstyle ':completion:*' group-name ''
-# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-# zstyle ':completion:*' matcher-list '+m:{a-z}={A-Z} r:|[._-]=** r:|=**' '' '' '+
-# m:{a-z}={A-Z} r:|[._-]=** r:|=**'
 # zstyle ':completion:*' max-errors 1 numeric
 # zstyle ':completion:*' substitute 0
 # zstyle :compinstall filename "$HOME/.zshrc"
