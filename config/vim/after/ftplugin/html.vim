@@ -70,28 +70,3 @@ imap <buffer> <C-e> <C-Y>,
 inoremap <buffer> <C-b> <br /><CR>
 nnoremap <buffer> <C-b> i<br /><CR><Esc>
 
-
-" TODO: Add those angular tags to html5.vim config
-" g:html_exclude_tags
-" | +" AngularJS default directives
-" | +call add(s:tags, 'ng-include')
-" | +
-" | +" AngularJS bootstrap custom directives
-" | +call add(s:tags, 'accordion')
-" | +call add(s:tags, 'accordion-group')
-" | +call add(s:tags, 'accordion-heading')
-" | +call add(s:tags, 'alert')
-" | +call add(s:tags, 'carousel')
-" | +call add(s:tags, 'datepicker')
-" | +call add(s:tags, 'pager')
-" | +call add(s:tags, 'pagination')
-" | +call add(s:tags, 'progress')
-" | +call add(s:tags, 'progressbar')
-" | +call add(s:tags, 'rating')
-" | +call add(s:tags, 'slide')
-" | +call add(s:tags, 'tab')
-" | +call add(s:tags, 'tabset')
-" | +call add(s:tags, 'timepicker')
-"
-
-
