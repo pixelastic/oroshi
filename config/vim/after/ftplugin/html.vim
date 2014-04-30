@@ -9,18 +9,18 @@ setlocal expandtab
 " Wrapping {{{
 " Extend line-width to 140
 if &ft == "html"
-	setlocal colorcolumn=140
-	setlocal textwidth=139
+  setlocal colorcolumn=140
+  setlocal textwidth=139
 endif
 " }}}
 " Folding {{{
 setlocal foldmethod=manual
 function! HTMLFoldTag()
-	if foldclosed('.')==-1
-		normal zfat
-	else
-		normal zO
-	endif
+  if foldclosed('.')==-1
+    normal zfat
+  else
+    normal zO
+  endif
 endfunction
 " Note: We only want this mapping for html files, not markdown or other types
 " using using this ftplugin file.
@@ -35,26 +35,28 @@ let g:syntastic_html_tidy_ignore_errors = [
                 \ "trimming empty <em>",
                 \ "proprietary attribute \"ng-",
                 \ "proprietary attribute \"ui-",
-								\ "<img> lacks \"src\" attribute"
+                \ "<img> lacks \"src\" attribute",
+                \ "<data-",
+                \ "discarding unexpected </data-"
                 \ ]
 " }}}
 " Cleaning the file {{{
 inoremap <silent> <buffer> <F4> <Esc>:call HtmlBeautify()<CR>
 nnoremap <silent> <buffer> <F4> :call HtmlBeautify()<CR>
 function! HtmlBeautify() 
-	let linenr=line('.')
-	execute '%!html-beautify -f -'
-	call RemoveTrailingSpaces()
-	execute 'normal '.linenr.'gg'
+  let linenr=line('.')
+  execute '%!html-beautify -f -'
+  call RemoveTrailingSpaces()
+  execute 'normal '.linenr.'gg'
 endfunction
 " }}}
 " Remove scripts from file {{{
 function! b:RemoveScripts()
-	let @z = 'gg/<scriptdat@z'
-	silent normal @z
-	" TODO: Find a cleaner way to not show the error message at the end of the
-	" recursive macro.
-	redraw!
+  let @z = 'gg/<scriptdat@z'
+  silent normal @z
+  " TODO: Find a cleaner way to not show the error message at the end of the
+  " recursive macro.
+  redraw!
 endfunction
 nnoremap <buffer> O1;5S :call b:RemoveScripts()<CR>
 " }}}
