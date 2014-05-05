@@ -22,6 +22,8 @@ function! HTMLFoldTag()
     normal zO
   endif
 endfunction
+" Resetting folds with zr
+nnoremap <silent> <buffer>  zr :set foldmethod=syntax<CR>:set foldmethod=manual<CR>
 " Note: We only want this mapping for html files, not markdown or other types
 " using using this ftplugin file.
 if &ft == "html"
