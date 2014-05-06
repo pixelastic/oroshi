@@ -33,9 +33,10 @@ promptColorDefault=(
   submodule          "185" # Color of the submodule symbol
   rebase             "160" # Color of the rebase symbol
   branchDefault      "202" # Default color for branches
-  branchMaster       "069" # Color for master branch
   branchDetached     "160" # Color for detached HEAD branch
+  branchMaster       "069" # Color for master branch
   branchDevelop      "184" # Color of develop branch
+  branchBugfix       "203" # Color of bugfix branch
   branchFeature      "202" # Color of feature branch
   branchReview       "028" # Color of review branch
   repoClean          "035" # Color of clean repo

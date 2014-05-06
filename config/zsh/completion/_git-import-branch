@@ -6,7 +6,7 @@
 _git-import-branch () {
 	declare -a branches
 
-	branches=(${${(f)"$(_call_program import-branch-list git branch --list --no-color 'feature\*' 'review\*' 'bugfix\*' 2> /dev/null | tr -d ' |*')"}})
+	branches=(${${(f)"$(_call_program import-branch-list git branch --list --no-color 'bugfix\*' 'feature\*' 'review\*' 2> /dev/null | tr -d ' |*')"}})
 	__git_command_successful || return
 
   compadd "$@" $branches

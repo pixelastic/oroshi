@@ -159,11 +159,19 @@ function getPromptRepoBranch() {
   fi
 
   # Branch color
+  if [[ $promptBranch = 'HEAD' ]]; then
+    promptBranchColor=$promptColor[branchDetached]
+    promptBranch=" ⭠"
+  fi
   if [[ $promptBranch = 'master' ]]; then
     promptBranchColor=$promptColor[branchMaster]
   fi
   if [[ $promptBranch = 'develop' ]]; then
     promptBranchColor=$promptColor[branchDevelop]
+  fi
+  if [[ $promptBranch =~ '^bugfix/' ]]; then
+    promptBranch=${promptBranch//bugfix\//}
+    promptBranchColor=$promptColor[branchBugfix]
   fi
   if [[ $promptBranch =~ '^feature/' ]]; then
     promptBranch=${promptBranch//feature\//}
@@ -172,10 +180,6 @@ function getPromptRepoBranch() {
   if [[ $promptBranch =~ '^review/' ]]; then
     promptBranch=${promptBranch//review\//}
     promptBranchColor=$promptColor[branchReview]
-  fi
-  if [[ $promptBranch = 'HEAD' ]]; then
-    promptBranchColor=$promptColor[branchDetached]
-    promptBranch=" ⭠"
   fi
 
   # Adding push indicator
