@@ -67,8 +67,6 @@ add mod5    = ISO_Level3_Shift
 keycode 66 = F13
 ! ²
 keycode 49 = F14 twosuperior
-! Space, with special mapping for Maj space
-keycode 65 = space F15
 
 ! I keep hitting the Menu key when aiming to the AltGr. I might as well make it
 ! an AltGr key, as I do not use the Menu one anyway.

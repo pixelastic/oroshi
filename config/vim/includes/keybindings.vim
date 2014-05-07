@@ -128,12 +128,6 @@ nnoremap H ^
 vnoremap H ^
 nnoremap L g_
 vnoremap L g_
-" Move to next word with Shift + Space
-nnoremap [28;2~ W
-inoremap [28;2~ <Esc>lWi
-" Previous word with Ctrl + Shift + Space
-nnoremap [28;6~ B
-inoremap [28;6~ <Esc>lBi
 " Go back to first non blank character with home
 nnoremap <Home> ^
 inoremap <Home> <Esc>^i
