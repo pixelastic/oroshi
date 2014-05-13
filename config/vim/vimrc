@@ -18,8 +18,7 @@ filetype plugin indent on
 " Use backup, and save it in a custom dir
 set backup
 set backupdir=~/.vim/backup/
-" Use a file to save the latest 1000 undo informations, thus allowing for
-" permanent undo accross multiple sessions.
+" Saving the latest undo in a file on disk
 set undofile
 set undolevels=1000
 set undodir=~/.vim/undo/
