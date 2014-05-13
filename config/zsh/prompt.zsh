@@ -161,7 +161,7 @@ function getPromptRepoBranch() {
   # Branch color
   if [[ $promptBranch = 'HEAD' ]]; then
     promptBranchColor=$promptColor[branchDetached]
-    promptBranch=" ⭠"
+    promptBranch="$(getGitShortHash) ⭠"
   fi
   if [[ $promptBranch = 'master' ]]; then
     promptBranchColor=$promptColor[branchMaster]
@@ -215,6 +215,15 @@ function getGitRoot() {
     return
   fi
   echo $(git root)
+}
+# }}}
+# getGitShortHash() {{{
+function getGitShortHash() {
+  if [[ $(isGit) = 0 ]]; then
+    return
+  fi
+  echo $(git log --pretty=format:'%h' -n 1)
+echo 
 }
 # }}}
 
