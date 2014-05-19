@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Paths
+configFile=~/.oroshi/config/recess/recessrc.json
+destFile=~/.recessrc
+
+# Link the config file
+ln -fs $configFile $destFile

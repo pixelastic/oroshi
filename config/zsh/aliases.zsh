@@ -203,6 +203,7 @@ alias tsearch="t search all"
 # }}}
 # Web {{{
 alias csslint="csslint `cat ~/.csslintrc` "
+alias recess="recess --config ~/.recessrc"
 alias flushdns="/etc/init.d/dns-clean start"
 alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test500.zip'
 # }}}
