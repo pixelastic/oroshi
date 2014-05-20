@@ -33,8 +33,8 @@ let g:syntastic_aggregate_errors = 1
 if !exists('g:syntastic_csslint_options') || g:syntastic_csslint_options==''
 	let g:syntastic_csslint_options = system('cat '.expand('~/.csslintrc'))
 endif
-if !exists('g:syntastic_recess_options') || g:syntastic_recess_options==''
-	let g:syntastic_recess_options = '--strictPropertyOrder false --noOverqualifying false'
+if !exists('g:syntastic_css_recess_args') || g:syntastic_css_recess_args==''
+	let g:syntastic_css_recess_args = '--strictPropertyOrder false --noOverqualifying false'
 endif
 "}}}
 " Cleaning the file {{{
