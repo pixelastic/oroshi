@@ -155,9 +155,9 @@ nnoremap vam [{V%
 nnoremap dam [{V%d
 nnoremap cam [{V%c
 " Select the current block of text
-nnoremap vib {jv}k$
+nnoremap vip {jv}k$
 " Sort the current block of text
-nnoremap sib {jv}k$:sort<CR>
+nnoremap sip {jv}k$:sort<CR>
 " }}}
 " MUSCLE MEMORY {{{
 " Ctrl+S saves the file, as in most apps
