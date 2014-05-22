@@ -139,7 +139,7 @@ function getPromptRepoRebase() {
 
   local rebaseFile="$promptGitRoot/.git/rebase-apply/rebasing"
   if [[ -r $rebaseFile ]]; then
-    echo "$FG[$promptColor[rebase]]⚶$FX[reset]"
+    echo "$FG[$promptColor[rebase]]⚶ $FX[reset]"
   fi
 }
 # }}}
