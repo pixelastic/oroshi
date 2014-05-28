@@ -181,6 +181,9 @@ function getPromptRepoBranch() {
     promptBranch=${promptBranch//review\//}
     promptBranchColor=$promptColor[branchReview]
   fi
+  if [[ $promptBranch = 'gh-pages' ]]; then
+    promptBranchColor=$promptColor[branchGhPages]
+  fi
 
   # Adding push indicator
   local gitStatus="$(git status)"
