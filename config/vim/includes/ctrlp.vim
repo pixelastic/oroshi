@@ -12,6 +12,8 @@ let g:ctrlp_tabpage_position = 'al'
 let g:ctrlp_cache_dir = '~/.vim/cache/ctrlp'
 " Keep cache when exiting vim, allowing for cache sharing between vim instances
 let g:ctrlp_clear_cache_on_exit = 0
+" Make it work in insert mode as well
+inoremap <silent> <C-P> <Esc>:CtrlP<CR>
 " }}}
 " Mappings {{{
 " Open in new tab as default <Enter> press, and edit in buffer with Ctrl-B
