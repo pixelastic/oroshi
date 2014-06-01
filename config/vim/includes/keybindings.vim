@@ -121,6 +121,8 @@ nnoremap <silent> vdl :diffget //3<CR>:diffupdate<CR>]c
 " Move down/up including wrapped lines
 nnoremap j gj
 nnoremap k gk
+vnoremap j gj
+vnoremap k gk
 inoremap <Down> <C-O>gj
 inoremap <Up> <C-O>gk
 " Go to start and end of line with H and L
