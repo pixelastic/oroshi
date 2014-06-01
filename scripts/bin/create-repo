@@ -26,14 +26,14 @@ fi
 # Use git flow
 git flow init -d
 
+# Move to master branch
+git checkout master
+
 # Set master branch to push to default remote
 echo '[branch "master"]
 	remote = origin
 	merge = refs/heads/master' >> ./.git/config
-echo '[branch "develop"]
-	remote = origin
-	merge = refs/heads/develop' >> ./.git/config
-echo "* Set master and develop branches to origin remote"
+echo "* Set master branch to origin remote"
 
 # Add an empty .gitignore
 touch .gitignore
