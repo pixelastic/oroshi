@@ -51,7 +51,7 @@ gem install awesome_print
 # Mp3
 gem install ruby-mp3info
 
-# Cugem install rails
+# Curl
 sudo apt-get install libcurl3 libcurl3-gnutls libcurl4-openssl-dev
 gem install curb
 
