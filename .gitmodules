@@ -88,3 +88,6 @@
 [submodule "config/zsh/completion/grunt-zsh-completion"]
 	path = config/zsh/completion/grunt-zsh-completion
 	url = git@github.com:yonchu/grunt-zsh-completion.git
+[submodule "config/vim/bundle/available/vim-undodir-tree"]
+	path = config/vim/bundle/available/vim-undodir-tree
+	url = git@github.com:pixelastic/vim-undodir-tree.git
