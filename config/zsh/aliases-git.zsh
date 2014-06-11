@@ -6,25 +6,25 @@
 
 # [b]ranches {{{
 alias vbR='git branch -D'
+alias vbRr='git push origin --delete' # Remove remote branch
 alias vbb='git current-branch'
 alias vbc='git checkout -b'
+alias vbib='git import-branch'
 alias vbl='git branch-list'
 alias vbla='git branch-list --all'
-alias vbmv='git branch -m'
-alias vbRr='git push origin --delete' # Remove remote branch
-alias vbs='git checkout'
-alias vbsm='cd $(git root) && git checkout master'
-alias vbsd='cd $(git root) && git checkout develop'
-alias vbum='vbsm && vbm develop && vbsd' # Merge develop to master (Update master)
-alias vbud='vbsd && vbm master && vbsm' # Merge master to develop (Update develop)
 alias vbm='git merge --no-ff --no-edit'
-alias vbmm='git rebase master'
 alias vbmd='vbm develop'
-alias vbib='git import-branch'
+alias vbmm='git rebase master'
+alias vbmv='git branch -m'
+alias vbrfa='git fetch-all-locally'
 alias vbru='git remote update && git remote prune origin'
+alias vbs='git checkout'
+alias vbsd='cd $(git root) && git checkout develop'
+alias vbsm='cd $(git root) && git checkout master'
+alias vbud='vbsd && vbm master && vbsm' # Merge master to develop (Update develop)
 alias vbuf='git update-feature develop'
 alias vbufm='git update-feature master'
-alias vbrfa='git fetch-all-locally'
+alias vbum='vbsm && vbm develop && vbsd' # Merge develop to master (Update master)
 # }}}
 # [c]ommits {{{
 alias vcR='git rollback'
