@@ -7,8 +7,9 @@
   "immed": true,
   // Force two spaces indentation
   "indent": 2,
-  // Force var definition to be present on top of block
-  "latedef": true,
+  // Warn for var hoisting problems, but allow function definitions after they
+  // are used
+  "latedef": "nofunc",
   // Force constructor methods to start with a capitalized letter
   "newcap": true,
   // Allow use of ++ and -- operator
