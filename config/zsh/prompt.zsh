@@ -205,6 +205,12 @@ function isGit() {
   fi
 
   if [[ $(git --work-tree="$PWD" status 2>/dev/null) != '' ]]; then
+    # Avoid doing it in a bare repo
+    if [[ $(git rev-parse --is-bare-repository) == 'true' ]]; then
+      echo 0;
+      return
+    fi
+
     echo 1
     return
   fi
