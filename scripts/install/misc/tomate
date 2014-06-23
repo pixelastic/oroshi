@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+echo "Installing tomate"
+sudo add-apt-repository ppa:stvs/tomate
+sudo apt-get update
+sudo apt-get install tomate
