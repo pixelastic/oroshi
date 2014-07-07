@@ -10,6 +10,7 @@ alias cdemu='cd ~/perso/emulation'
 alias cdrp='cd ~/perso/roleplay/'
 alias cdscenar='cd ~/perso/roleplay/scenarios/'
 alias cdkiss="/var/www/java/kissihm/kissihm/src/main/webapp/resources/"
+alias cdmeetups="cd /home/tca/perso/notes/meetups/"
 # }}}
 
 # Synchronize stuff {{{
