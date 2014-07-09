@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+require 'shellwords'
+require 'date'
+
+class MkPost
+  def initialize(title)
+    @title = title
+
+  end
+
+  def get_filename
+    date_prefix = DateTime.now.strftime("%Y-%m-%d")
+    title_suffix = @title.downcase.gsub(' ', '-')
+    "#{date_prefix}-#{title_suffix}.md"
+  end
+
+  def get_header
+    ["---",
+     "layout: post",
+     "title: \"#{@title}\"",
+     "tags:",
+     "---"
+    ].join("\n")
+  end
+
+  def run
+    unless File.basename(File.expand_path('.')) == '_posts'
+      puts "You're not in a _posts subfolder"
+      exit
+    end
+
+    filename = File.expand_path(get_filename)
+    File.open(filename, 'w') do |file|
+      file.write(get_header)
+    end
+
+    exec "vim #{filename.shellescape}"
+  end
+
+end
+  MkPost.new(*ARGV).run()
