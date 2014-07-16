@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+npm install -g html-minifier
+npm install -g clean-css
+npm install -g uglify-js
+
