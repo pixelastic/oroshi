@@ -24,8 +24,9 @@ class MkPost
   end
 
   def run
-    unless File.basename(File.expand_path('.')) == '_posts'
-      puts "You're not in a _posts subfolder"
+    basename = File.basename(File.expand_path('.'))
+    unless ['_posts', '_drafts'].include?(basename)
+      puts "You're not in a _posts or _drafts subfolder"
       exit
     end
 
