@@ -3,4 +3,6 @@
 sudo apt-get install libimage-exiftool-perl
 # To convert images
 sudo apt-get install imagemagick
+# To convert webp images
+sudo apt-get install webp
 

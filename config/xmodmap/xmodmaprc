@@ -100,6 +100,7 @@ keycode 44 = j J j J bar
 keycode 45 = k K k K bracketleft parenleft
 keycode 46 = l L l L bracketright parenright
 keycode 47 = m M m M 
+keycode 48 = ugrave percent ugrave percent U00FA U00DA
 
 keycode 52 = w W w W
 keycode 53 = x X x X

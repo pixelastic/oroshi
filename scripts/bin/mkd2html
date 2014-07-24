@@ -9,7 +9,7 @@ class Mkd2Html
 		args.each do |file|
 			next unless File.exists?(file)
 			extname = File.extname(file).downcase
-			next unless extname==".mkd"
+			next unless ['.md', '.mkd'].include?(extname)
 			@files << File.expand_path(file)
 		end
 	end

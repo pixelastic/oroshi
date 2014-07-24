@@ -10,6 +10,7 @@ alias cdemu='cd ~/perso/emulation'
 alias cdrp='cd ~/perso/roleplay/'
 alias cdscenar='cd ~/perso/roleplay/scenarios/'
 alias cdkiss="/var/www/java/kissihm/kissihm/src/main/webapp/resources/"
+alias cdmeetups="cd /home/tca/perso/notes/meetups/"
 # }}}
 
 # Synchronize stuff {{{
@@ -35,39 +36,3 @@ alias sansa-sync-podcasts="music-sync ~/local/mnt/serenity/music/podcasts /media
 alias sansa-sync-soundtracks="music-sync ~/local/mnt/serenity/music/soundtracks /media/tca/SANSA-SD sansa-sd"
 alias serenity-sync-pictures="picture-sync ~/perso/pictures/ ~/local/mnt/serenity/perso/"
 # }}}
-
-function kb() {
-	local initial_dir=`pwd`
-	local tomcat_script=/etc/init.d/tomcat7
-	local repo_dir=/var/www/java/kissihm
-	local tomcat_directory=/var/lib/tomcat7
-
-	# Stop server
-	sudo $tomcat_script stop
-
-	# Copy config file
-	sudo mkdir -p ${tomcat_directory}/lib
-	sudo cp ${repo_dir}/config/dev/environmentConfig.properties ${tomcat_directory}/lib
-	sudo chown tomcat7:tomcat7 ${tomcat_directory}/lib/environmentConfig.properties
-	sudo cp ${repo_dir}/config/dev/log4j.xml ${tomcat_directory}/lib
-	sudo chown tomcat7:tomcat7 ${tomcat_directory}/lib/log4j.xml
-
-	# Build
-	cd ${repo_dir}/kissihm
-	mvn clean package
-
-	# Clean tomcat and copy build
-	sudo rm -drf ${tomcat_directory}/webapps/kiss
-	sudo mv -f ./target/kiss*war ${tomcat_directory}/webapps/kiss.war	
-
-	# Restart server
-	sudo $tomcat_script start
-
-	# Change owner of static files for easy re-deploy through rsync
-	sudo chown -R tca:tca ${tomcat_directory}/webapps/kiss/resources/app/
-
-	cd $initial_dir
-}
-function ku() {
-	rsync -ra --delete /var/www/java/kissihm/kissihm/src/main/webapp/resources/app/* /var/lib/tomcat7/webapps/kiss/resources/app/
-}
