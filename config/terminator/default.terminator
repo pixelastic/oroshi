@@ -47,7 +47,7 @@
 [profiles]
   [[default]]
     scrollbar_position = hidden
-    palette = "#3a3a3a:#da4939:#00af5f:#d7d700:#5f87ff:#af87ff:#ff875f:#d0d0d0:#3a3a3a:#870000:#008700:#af8700:#5fafd7:#af5fd7:#d75f00:#a8a8a8"
+    palette = "#3a3a3a:#d70000:#00af5f:#d7d700:#5f87ff:#af87ff:#ff875f:#d0d0d0:#3a3a3a:#870000:#008700:#af8700:#5fafd7:#af5fd7:#d75f00:#a8a8a8"
     background_image = None
     split_to_group = True
     foreground_color = "#e6e1dc"
