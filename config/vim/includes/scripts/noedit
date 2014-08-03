@@ -18,5 +18,8 @@ min\.(css|js|map)$
 # Dependencies
 (node_modules|bower_components)
 
+# Ebooks
+(epub|mobi)$
+
 # Versioning systems
 \.(git|hg|svn)/
