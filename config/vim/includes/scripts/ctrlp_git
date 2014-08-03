@@ -12,14 +12,14 @@ local deletedFiles addedFiles lsFiles
 
 # We get the full list of tracked files
 cd $repoRoot
-lsFiles=(`git ls-files`)
+lsFiles=("${(@f)$(git ls-files)}")
 
 # We then remove the list of deleted files from it
-deletedFiles=(`git diff --name-only --diff-filter=D`)
+deletedFiles=("${(@f)$(git diff --name-only --diff-filter=D)}")
 lsFiles=( "${lsFiles[@]/$deletedFiles}" )
 
 # We then add the list of new files to it
-addedFiles=(`git ls-files --others --exclude-standard`)
+addedFiles=("${(@f)$(git ls-files --others --exclude-standard)}")
 lsFiles+=($addedFiles)
 
 # We pipe the output to grep, to remove the binary files matching our pattern
@@ -30,4 +30,4 @@ for pattern in $patterns; do
 	grepCommand=${grepCommand}" -e '${pattern}'"
 done
 
-eval "print -l $lsFiles | $grepCommand"
+print -l $lsFiles | eval $grepCommand
