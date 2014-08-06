@@ -13,7 +13,7 @@
   close_window = None
   group_tab = None
   resize_left = None
-  broadcast_all = <Shift><Control>Page_Up
+  broadcast_all = <Primary><Shift>Home
   rotate_ccw = None
   reset_clear = None
   go_right = <Control>Right
@@ -28,7 +28,7 @@
   prev_tab = None
   cycle_next = None
   ungroup_all = None
-  broadcast_off = <Shift><Control>Page_Down
+  broadcast_off = <Primary><Shift>End
   ungroup_tab = None
   go_prev = <Shift><Control>Left
   close_term = None
