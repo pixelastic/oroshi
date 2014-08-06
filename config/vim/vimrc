@@ -288,11 +288,8 @@ nnoremap gp `[v`]
 " We'll use x as a way to delete text without keeping it in a paste buffer
 nnoremap x "_x
 vnoremap x "_x
-" Copy and paste words
-nnoremap wy viwy
-nnoremap wp viwP
-" ciw that does not yank the changed text
-nnoremap ciw "_ciw
+" [c]hanging a word does not put it in yank buffer
+nnoremap c "_c
 "}}}
 
 " CTRL-F {{{
