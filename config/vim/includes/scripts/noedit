@@ -4,22 +4,22 @@
 # All comments (starting with a #) are ignored.
 
 # Images
-(bmp|gif|ico|jpg|jpeg|pdf|png|svg)$
+\.(bmp|gif|ico|jpg|jpeg|pdf|png|svg)$
 
 # Fonts
-(otf|ttf|woff|eot)$
+\.(otf|ttf|woff|eot)$
 
 # Minified files
-min\.(css|js|map)$
+\.min\.(css|js|map)$
 
 # Binaries
-(fla|dll|exe|mo|pot|pyc|so|swf)$
+\.(fla|dll|exe|mo|pot|pyc|so|swf)$
 
 # Dependencies
 (node_modules|bower_components)
 
 # Ebooks
-(epub|mobi)$
+\.(epub|mobi)$
 
 # Versioning systems
 \.(git|hg|svn)/
