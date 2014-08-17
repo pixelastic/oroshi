@@ -34,7 +34,7 @@ class EbookSync
 	# Run the sync
 	def run
 		# Note: The synchronization will follow simple rules :
-		#  - Only .epub files will be copied to a device
+		#  - Only .epub/.pdf files will be copied to a device
 		#  - Files added/modified/deleted in the source will be updated in the
 		#  destination
 		#  - Files added/modified/deleted in the destination will NOT be updated in
@@ -88,6 +88,7 @@ class EbookSync
 			"--filter='-s .git/'",
 			"--filter='+s */'",
 			"--filter='+s *.epub'",
+			"--filter='+s *.pdf'",
 			"--filter='-s *'",
 		]
 		options << "--delete" if delete
