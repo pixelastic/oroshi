@@ -232,6 +232,23 @@ alias bi='bower install'
 alias bis='bower install --save'
 alias bisd='bower install --save-dev'
 # }}}
+# mark / jump {{{
+# Thanks to
+# : http://jeroenjanssens.com/2013/08/16/quickly-navigate-your-filesystem-from-the-command-line.html
+export MARKPATH=$HOME/.marks
+function j { 
+    cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
+}
+function m { 
+    mkdir -p "$MARKPATH"; ln -s "$(pwd)" "$MARKPATH/$1"
+}
+function um { 
+    rm -i "$MARKPATH/$1"
+}
+function mm {
+    ls -l "$MARKPATH" | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' && echo
+}
+# }}}
 
 # NVM {{{
 local nvmScript=~/local/etc/nvm/nvm.sh
@@ -245,11 +262,6 @@ local rvmScript=~/.rvm/scripts/rvm
 if [[ -r $rvmScript ]]; then
 	path=($path	$HOME/.rvm/bin)
   source $rvmScript
-fi
-# }}}
-# Autojump {{{
-if [[ `which autojump` != "" ]]; then
-	source ~/.oroshi/config/zsh/autojump.zsh;
 fi
 # }}}
 
