@@ -94,6 +94,13 @@ zstyle ':completion:::::' completer _complete _correct
 # Matching is case insensitive, and match even in middle of word
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'm:{a-zA-Z}={A-Za-z} l:|=* r:|=*'
 
+# Completing j and um
+function _completemarks {
+  reply=($(ls $MARKPATH))
+}
+compctl -K _completemarks j
+compctl -K _completemarks um
+
 # TODO : Check the usefulness of the following options
 # Background processes aren't killed on exit of shell
 # setopt AUTO_CONTINUE
