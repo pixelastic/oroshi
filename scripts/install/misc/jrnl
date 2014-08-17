@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+echo "Installing jrnl"
+sudo apt-get install python-pip
+sudo pip install jrnl

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Paths
+configDir=~/.oroshi/config/jrnl
+configFile=${configDir}/jrnl_config.json
+destFile=~/.jrnl_config
+
+# Link the config file
+ln -fs $configFile $destFile
