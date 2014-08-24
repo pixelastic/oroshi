@@ -4,7 +4,7 @@ setlocal commentstring=#\ %s
 " Folding with language { and }
 setlocal foldmethod=marker
 setlocal foldmarker={,}
-" Custom folding text method
+" Custom folding text method {{{
 setlocal foldtext=NginxFoldText()
 function! NginxFoldText()
 	" We get the default title
@@ -34,3 +34,11 @@ function! NginxFoldText()
 
 	return OroshiFoldText(title)
 endfunction
+" }}}
+" Cleaning the file {{{
+inoremap <silent> <buffer> <F4> <Esc>:call NginxClean()<CR>
+nnoremap <silent> <buffer> <F4> :call NginxClean()<CR>
+function! NginxClean() 
+  call RemoveTrailingSpaces()
+endfunction
+" }}}
