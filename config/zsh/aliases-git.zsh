@@ -39,10 +39,10 @@ alias vcp='git prev'
 # }}}
 # [f]iles {{{
 alias vfR='git rm -r'
-alias vfa='git add'
+alias vfa='git add --all'
 alias vfaa='git add --all :/'
 alias vfc='git conflicts'
-alias vfd='git diff -w'
+alias vfd='git diff -w --color-words'
 alias vfds='git diff-staged --'
 alias vfm='git mv'
 alias vfr='git checkout --'
