@@ -120,11 +120,10 @@ alias pinta='gui pinta'
 # }}}
 
 # Apt-get {{{
-alias apt-get='apt-fast'
-alias agi='sudo apt-fast install'
-alias agu='sudo apt-fast -u install'
+alias agi='sudo apt-get install'
+alias agu='sudo apt-get -u install'
 alias agua='sudo apt-get update && sudo apt-get upgrade'
-alias agr='sudo apt-fast remove'
+alias agr='sudo apt-get remove'
 alias ags='sudo apt-cache search'
 # }}}
 # Ebook {{{
