@@ -1,4 +1,8 @@
 " CSS
+" Misc {{{
+" - delimits words in css
+setlocal iskeyword-=-
+" }}}
 " Indentation rules {{{
 setlocal tabstop=2
 setlocal shiftwidth=2
