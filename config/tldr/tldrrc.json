@@ -1,0 +1,8 @@
+{
+  "colors": {
+    "text": "white",
+    "command-background": "black",
+    "command-foreground": "blue",
+    "command-token": "cyan"
+  }
+}
