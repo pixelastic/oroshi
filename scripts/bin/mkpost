@@ -11,6 +11,7 @@ class MkPost
   def get_filename
     date_prefix = DateTime.now.strftime("%Y-%m-%d")
     title_suffix = @title.downcase.gsub(' ', '-')
+    title_suffix = title_suffix.gsub(',','')
     "#{date_prefix}-#{title_suffix}.md"
   end
 
