@@ -1,8 +1,10 @@
 " Vim syntax file
 " Language:	git commit file
-" Maintainer:	Tim Pope <vimNOSPAM@tpope.org>
+" Maintainer:	Tim Carry
 " Filenames:	*.git/COMMIT_EDITMSG
-" Last Change:	2012 April 7
+" Last Change:	2014 November 18
+" Origin : https://github.com/tpope/vim-git/blob/master/syntax/gitcommit.vim
+" Modifications to original : Incrementing comment line limit to 70
 
 if exists("b:current_syntax")
   finish
@@ -19,7 +21,7 @@ syn include @gitcommitDiff syntax/diff.vim
 syn region gitcommitDiff start=/\%(^diff --\%(git\|cc\|combined\) \)\@=/ end=/^\%(diff --\|$\|#\)\@=/ fold contains=@gitcommitDiff
 
 syn match   gitcommitFirstLine	"\%^[^#].*"  nextgroup=gitcommitBlank skipnl
-syn match   gitcommitSummary	"^.\{0,50\}" contained containedin=gitcommitFirstLine nextgroup=gitcommitOverflow contains=@Spell
+syn match   gitcommitSummary	"^.\{0,70\}" contained containedin=gitcommitFirstLine nextgroup=gitcommitOverflow contains=@Spell
 syn match   gitcommitOverflow	".*" contained contains=@Spell
 syn match   gitcommitBlank	"^[^#].*" contained contains=@Spell
 syn match   gitcommitComment	"^#.*"
