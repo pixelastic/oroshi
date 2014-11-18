@@ -35,3 +35,13 @@ alias sansa-sync-podcasts="music-sync ~/local/mnt/serenity/music/podcasts /media
 alias sansa-sync-soundtracks="music-sync ~/local/mnt/serenity/music/soundtracks /media/tca/SANSA-SD sansa-sd"
 alias serenity-sync-pictures="picture-sync ~/perso/pictures/ ~/local/mnt/serenity/perso/"
 # }}}
+#
+#
+# Proxy {{{
+function proxyup() {
+  npm config set registry "http://npm.dev:4873/"
+}
+function proxydown() {
+  npm config delete registry
+}
+# }}}
