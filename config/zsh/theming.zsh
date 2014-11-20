@@ -37,6 +37,7 @@ promptColorDefault=(
   branchMaster       "069" # Color for master branch
   branchDevelop      "184" # Color of develop branch
   branchBugfix       "203" # Color of bugfix branch
+  branchTest         "136" # Color of test branch
   branchFeature      "202" # Color of feature branch
   branchReview       "028" # Color of review branch
   branchGhPages      "024" # Color of gh-pages branch
