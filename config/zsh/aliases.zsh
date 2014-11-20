@@ -110,6 +110,7 @@ alias disk-utility='gui palimpsest'
 alias ebook-viewer='gui ebook-viewer'
 alias eog='gui eog'
 alias evince="gui evince"
+alias hipchat="gui hipchat"
 alias gftp='gui gftp'
 alias lowriter='gui lowriter'
 alias poedit='gui poedit'
