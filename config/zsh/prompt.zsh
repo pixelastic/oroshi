@@ -137,9 +137,13 @@ function getPromptRepoRebase() {
     return
   fi
 
-  local rebaseFile="$promptGitRoot/.git/rebase-apply/rebasing"
-  if [[ -r $rebaseFile ]]; then
-    echo "$FG[$promptColor[rebase]]⚶ $FX[reset]"
+  local rebaseInternalDir="$promptGitRoot/.git/rebase-apply"
+  local isRebasingFile="$rebaseInternalDir/rebasing"
+
+  if [[ -r $isRebasingFile ]]; then
+    local maxRebase=$(cat $rebaseInternalDir/last)
+    local nextRebase=$(cat $rebaseInternalDir/next)
+    echo "$FG[$promptColor[rebase]]${nextRebase}/${maxRebase} ⚶ $FX[reset]"
   fi
 }
 # }}}
