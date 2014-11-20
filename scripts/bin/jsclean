@@ -1,0 +1,33 @@
+#!/usr/bin/env zsh
+
+local file=${1:a}
+local isOutput=$2
+local outputFile=${3:a}
+
+local basename=$(basename $file)
+local tmpDir=/tmp/jsclean
+local tmpFile=${tmpDir}/${basename}
+
+mkdir -p $tmpDir
+
+# Copy file in tmp because fixmyjs replaces the input file
+cp $file $tmpFile
+fixmyjs $tmpFile > /dev/null
+
+# Beautify the file after, because fixmyjs adds some space in `function ()`
+js-beautify $tmpFile -o $tmpFile > /dev/null
+
+# Add a line-feed at the end of the file
+# http://unix.stackexchange.com/questions/31947/how-to-add-a-newline-to-the-end-of-a-file
+sed -i -e '$a\' $tmpFile
+
+if [[ $isOutput = '-o' ]]; then
+  # Output to file
+  cp -f $tmpFile $outputFile
+else
+  # Output the new cleaned file
+  cat $tmpFile
+fi
+
+
+
