@@ -1,12 +1,14 @@
 #!/usr/bin/env zsh
 
+local args=$@
+
 # Will do a git push if a remote is set, otherwise will do a push -u
 local branch=$(git current-branch)
 local remoteMerge=$(git config "branch.${branch}.merge")
 
 if [[ $remoteMerge = '' ]]; then
   echo "First push, setting upstream"
-  git push --set-upstream origin ${branch}
+  git push --set-upstream origin ${branch} ${args}
 else
-  git push
+  git push ${args}
 fi
