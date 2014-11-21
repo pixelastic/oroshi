@@ -189,6 +189,10 @@ function getPromptRepoBranch() {
     promptBranch=${promptBranch//test\//}
     promptBranchColor=$promptColor[branchTest]
   fi
+  if [[ $promptBranch =~ '^perf/' ]]; then
+    promptBranch=${promptBranch/perf\//}
+    promptBranchColor=$promptColor[branchPerf]
+  fi
   if [[ $promptBranch = 'gh-pages' ]]; then
     promptBranchColor=$promptColor[branchGhPages]
   fi

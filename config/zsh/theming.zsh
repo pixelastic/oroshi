@@ -40,6 +40,7 @@ promptColorDefault=(
   branchTest         "136" # Color of test branch
   branchFeature      "202" # Color of feature branch
   branchReview       "028" # Color of review branch
+  branchPerf         "141" # Color of perf branch
   branchGhPages      "024" # Color of gh-pages branch
   repoClean          "035" # Color of clean repo
   repoStaged         "171" # Color if files are staged, ready to be commited
