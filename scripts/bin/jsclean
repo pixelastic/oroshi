@@ -12,10 +12,10 @@ mkdir -p $tmpDir
 
 # Copy file in tmp because fixmyjs replaces the input file
 cp $file $tmpFile
-fixmyjs $tmpFile > /dev/null
+fixmyjs --legacy $tmpFile > /dev/null
 
 # Beautify the file after, because fixmyjs adds some space in `function ()`
-js-beautify $tmpFile -o $tmpFile > /dev/null
+# js-beautify $tmpFile -o $tmpFile > /dev/null
 
 # Add a line-feed at the end of the file
 # http://unix.stackexchange.com/questions/31947/how-to-add-a-newline-to-the-end-of-a-file
