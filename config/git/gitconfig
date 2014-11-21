@@ -53,5 +53,5 @@
 [status]
   showUntrackedFiles = all
 [diff]
-  wordRegex = "[a-zA-Z]"
+  ; wordRegex = "[a-zA-Z]{5,}"
 
