@@ -17,32 +17,33 @@ setlocal foldmethod=syntax
 setlocal foldlevelstart=99
 setlocal foldtext=JavascriptFoldText()
 function! JavascriptFoldText()
-	let output = getline(v:foldstart)
-	let lines = v:foldend - v:foldstart
-	let output = substitute(output, '{$', '{...' . lines . '}', '')
-	let output = substitute(output, '[$', '[...' . lines . ']', '')
-	return output
+  let output = getline(v:foldstart)
+  let lines = v:foldend - v:foldstart
+  let output = substitute(output, '{$', '{...' . lines . '}', '')
+  let output = substitute(output, '[$', '[...' . lines . ']', '')
+  return output
 endfunction
 " }}}
 " Rainbow parentheses {{{
 if exists(':RainbowParenthesesToggle')
-	augroup rainbow_parentheses_javascript
-		au!
-		au Syntax <buffer> syntax clear jsFuncBlock
-		au Syntax <buffer> RainbowParenthesesLoadRound
-		au Syntax <buffer> RainbowParenthesesLoadSquare
-		au Syntax <buffer> RainbowParenthesesLoadBraces
-	augroup END
+  augroup rainbow_parentheses_javascript
+    au!
+    au Syntax <buffer> syntax clear jsFuncBlock
+    au Syntax <buffer> RainbowParenthesesLoadRound
+    au Syntax <buffer> RainbowParenthesesLoadSquare
+    au Syntax <buffer> RainbowParenthesesLoadBraces
+  augroup END
 endif
 " }}}
 " Cleaning the file {{{
 inoremap <silent> <buffer> <F4> <Esc>:call JavascriptBeautify()<CR>
 nnoremap <silent> <buffer> <F4> :call JavascriptBeautify()<CR>
 function! JavascriptBeautify() 
-	let linenr=line('.')
+  let linenr=line('.')
   silent! update
-	execute '%!jsclean %'
-	execute 'normal '.linenr.'gg'
+  execute '%!jsclean %'
+  execute 'normal '.linenr.'gg'
+  silent! update
 endfunction
 " }}}
 
