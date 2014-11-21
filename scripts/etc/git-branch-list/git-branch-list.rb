@@ -10,12 +10,13 @@ class GitBranchList
       :feature => 202,
       :review => 28,
       :remotes => 160,
+      :test => 136,
       :gh_pages => 24
     }
     @hash_color = 67
 
   def self.color_branchname(txt)
-    branches=/master|develop|bugfix|feature|review|remotes|gh-pages/
+    branches=/master|develop|bugfix|feature|review|remotes|test|gh-pages/
     suffix=/\/?[\w\/\-\.]*/
 
     # branch names

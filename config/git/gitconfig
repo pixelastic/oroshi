@@ -35,6 +35,7 @@
   is-submodule = !git-is-submodule
   peek = log --graph --pretty=format:'%C(67)%h%Creset %C(24)(%cd, %ar)%Creset %C(241)%an%Creset %C(bold 202)%d%Creset%n   %C(250)%s%Creset%n'
   prev = reset --hard HEAD~1
+  push-origin = !git-push-origin
   resurrect = !git-resurrect
   revert = checkout
   rollback = reset --soft HEAD^
