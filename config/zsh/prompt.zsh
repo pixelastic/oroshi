@@ -103,7 +103,7 @@ function getPromptHashGit() {
 # }}}
 
 # Right part
-RPROMPT='$(getPromptRepoTag)$(getPromptRepoSubmodule)$(getPromptRepoRebase)$(getPromptRepoBranch)'
+RPROMPT='$(getPromptRepoTag)$(getPromptRepoSubmodule)$(getPromptRepoStash)$(getPromptRepoRebase)$(getPromptRepoBranch)'
 # Tag
 # getPromptRepoTag() {{{
 function getPromptRepoTag() {
@@ -127,6 +127,20 @@ function getPromptRepoSubmodule() {
   local isSubmodule="$(git is-submodule)"
   if [[ $isSubmodule = 1 ]]; then
     echo "$FG[$promptColor[submodule]]↯$FX[reset] "
+  fi
+}
+# }}}
+# Stash
+# getPromptRepoStash() {{{
+function getPromptRepoStash() {
+  if [[ $promptIsGit = 0 ]]; then
+    return
+  fi
+
+  local stashCount=$(git stash list | wc -l)
+
+  if [[ $stashCount -gt 0 ]]; then
+    echo "$FG[$promptColor[stash]]⚫ $FX[reset]"
   fi
 }
 # }}}

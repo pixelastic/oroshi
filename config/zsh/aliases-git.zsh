@@ -105,7 +105,7 @@ alias vsR='git stash drop' # delete one stash
 alias vsRa='git stash clear' # delete all stashes
 alias vsta='git stash apply'
 alias vst='git stash -u'
-alias vstl='git stash list'
+alias vsl='git stash list'
 # }}}
 # [s]u[b]-modules {{{
 alias vbsi='git submodule init'
