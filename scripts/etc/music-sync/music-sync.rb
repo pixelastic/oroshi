@@ -22,7 +22,7 @@ class MusicSync
 
 		if args.size != 3
       puts "Usage :"
-      puts "$ sansa-sync /library/path /device/path device_name"
+      puts "$ music-sync /library/path /device/path device_name"
       exit
 		end
 
