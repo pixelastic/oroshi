@@ -35,6 +35,7 @@ alias sansa-sync-podcasts="music-sync ~/local/mnt/serenity/music/podcasts /media
 alias sansa-sync-soundtracks="music-sync ~/local/mnt/serenity/music/soundtracks /media/tca/SANSA-SD sansa-sd"
 alias serenity-sync-pictures="picture-sync ~/perso/pictures/ ~/local/mnt/serenity/perso/"
 alias galactica-sync-pictures="picture-sync ~/perso/pictures/ galactica:/home/tim/backup/pictures/"
+alias dropbox-sync-pictures="mv ~/Dropbox/perso/misc/pictures/fairphone/* ~/perso/pictures/tmp/"
 # }}}
 #
 #
