@@ -35,15 +35,16 @@ if exists(':RainbowParenthesesToggle')
   augroup END
 endif
 " }}}
+" Javascript lint checker {{{
+let g:syntastic_javascript_checkers = ['jshint', 'jscs']
+"}}}
 " Cleaning the file {{{
 inoremap <silent> <buffer> <F4> <Esc>:call JavascriptBeautify()<CR>
 nnoremap <silent> <buffer> <F4> :call JavascriptBeautify()<CR>
 function! JavascriptBeautify() 
   let linenr=line('.')
-  silent! update
   execute '%!jsclean %'
   execute 'normal '.linenr.'gg'
-  silent! update
 endfunction
 " }}}
 
