@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+local size=$1
+if [[ $size = '' ]]; then
+  size=32;
+fi
+
+cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w $size | head -n 1
