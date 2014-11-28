@@ -37,6 +37,19 @@ alias serenity-sync-pictures="picture-sync ~/perso/pictures/ ~/local/mnt/serenit
 alias galactica-sync-pictures="picture-sync ~/perso/pictures/ galactica:/home/tim/backup/pictures/"
 alias dropbox-sync-pictures="mv ~/Dropbox/perso/misc/pictures/fairphone/* ~/perso/pictures/tmp/"
 # }}}
+
+# Dump file to online domain
+function dumptmp() {
+  rsync \
+    --compress \
+    --archive \
+    --progress \
+    --partial \
+    --human-readable \
+    $1 \
+    galactica:./local/www/pixelastic.com/tmp.pixelastic.com
+    echo "Available on http://tmp.pixelastic.com/${1:t}"
+}
 #
 #
 # Proxy {{{
