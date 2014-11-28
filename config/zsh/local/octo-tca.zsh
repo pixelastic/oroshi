@@ -40,12 +40,7 @@ alias dropbox-sync-pictures="mv ~/Dropbox/perso/misc/pictures/fairphone/* ~/pers
 
 # Dump file to online domain
 function dumptmp() {
-  rsync \
-    --compress \
-    --archive \
-    --progress \
-    --partial \
-    --human-readable \
+  rsync -Pharz \
     $1 \
     galactica:./local/www/pixelastic.com/tmp.pixelastic.com
     echo "Available on http://tmp.pixelastic.com/${1:t}"
