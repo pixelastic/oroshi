@@ -42,9 +42,12 @@ let g:syntastic_javascript_checkers = ['jshint', 'jscs']
 inoremap <silent> <buffer> <F4> <Esc>:call JavascriptBeautify()<CR>
 nnoremap <silent> <buffer> <F4> :call JavascriptBeautify()<CR>
 function! JavascriptBeautify() 
-  silent! w! /tmp/vim_jsclean
   let linenr=line('.')
-  execute '%!jsclean /tmp/vim_jsclean'
+  " Remove empty lines after function definitions
+  silent! execute '%s/{\n\n/{\r/'
+  " clean the file
+  silent! w! /tmp/vim_jsclean
+  silent! execute '%!jsclean /tmp/vim_jsclean'
   execute 'normal '.linenr.'gg'
 endfunction
 " }}}
