@@ -6,76 +6,78 @@ require "shellwords"
 # location
 
 ARGV.each do |epub|
-	# Get paths
-	fullpath = File.expand_path(epub)
-	extname = File.extname(fullpath)
-	basename = File.basename(fullpath, extname)
-	dirname = File.dirname(fullpath)
+  # Get paths
+  fullpath = File.expand_path(epub)
+  extname = File.extname(fullpath)
+  basename = File.basename(fullpath, extname)
+  dirname = File.dirname(fullpath)
 
-	# Options for changing metadata
-	options = [
-		fullpath.shellescape,
-		"--book-producer=''",
-		"--comments=''",
-		"--publisher=''",
-		"--tags=''"
-	]
+  # Options for changing metadata
+  options = [
+    fullpath.shellescape,
+    "--book-producer=''",
+    "--comments=''",
+    "--publisher=''",
+    "--tags=''",
+    "--identifier isbn:''",
+    "--identifier amazon:''"
+  ]
 
-	# Split name to find author, serie, index, title
-	split = basename.split(' - ')
-	author = split[0]
-	
-	# Deals with author
-	splitauthor = author.split(' ')
-	author_lastname = splitauthor[0]
-	author_firstname = splitauthor[1..-1].join(' ')
-	# Handle "VAN SOMETHING" cases
-	if ["VAN", "LE", "LA"].include? splitauthor[0]
-		author_lastname = splitauthor[0..1].join(' ')
-		author_firstname = splitauthor[2..-1].join(' ')
-	end
-	options << "--authors=\"#{author_firstname} #{author_lastname}\""
-	options << "--author-sort=\"#{author_lastname}, #{author_firstname}\""
+  # Split name to find author, serie, index, title
+  split = basename.split(' - ')
+  author = split[0]
+  
+  # Deals with author
+  splitauthor = author.split(' ')
+  author_lastname = splitauthor[0]
+  author_firstname = splitauthor[1..-1].join(' ')
+  # Handle "VAN SOMETHING" cases
+  if ["VAN", "LE", "LA"].include? splitauthor[0]
+    author_lastname = splitauthor[0..1].join(' ')
+    author_firstname = splitauthor[2..-1].join(' ')
+  end
+  options << "--authors=\"#{author_firstname} #{author_lastname}\""
+  options << "--author-sort=\"#{author_lastname}, #{author_firstname}\""
 
-	# Deal with series and book name
-	if split.size >= 4
-		serie_name = split[1]
-		serie_index = split[2]
-		title = split[3..-1].join(' - ')
-		options << "--series=\"#{serie_name}\""
-		options << "--index=#{serie_index}"
-		options << "--title=\"#{title}\""
-		options << "--title-sort=\"#{serie_name} - #{serie_index} - #{title}\""
-	else
-		title = split[1..-1].join(' - ')
-		options << "--title=\"#{title}\""
-	end
+  # Deal with series and book name
+  if split.size >= 4
+    serie_name = split[1]
+    serie_index = split[2]
+    title = split[3..-1].join(' - ')
+    options << "--series=\"#{serie_name}\""
+    options << "--index=#{serie_index}"
+    options << "--title=\"#{title}\""
+    options << "--title-sort=\"#{serie_name} - #{serie_index} - #{title}\""
+  else
+    title = split[1..-1].join(' - ')
+    options << "--title=\"#{title}\""
+  end
 
-	# Deal with the cover
-	covername = File.join(dirname, "#{basename}.jpg")
-	if File.exists?(covername)
-		puts "Optimizing cover for inclusion"
-		# Optimize cover
-		mogrify_options = [
-			"-resize 610",
-			covername.shellescape
-		]
-		%x[mogrify #{mogrify_options.join(' ')}]
+  # Deal with the cover
+  covername = File.join(dirname, "#{basename}.jpg")
+  if File.exists?(covername)
+    puts "Optimizing cover for inclusion"
+    # Optimize cover
+    mogrify_options = [
+      "-resize 610",
+      covername.shellescape
+    ]
+    %x[mogrify #{mogrify_options.join(' ')}]
 
-		jpegoptim_options = [
-			"-m80",
-			"--strip-all",
-			covername.shellescape
-		]
-		%x[jpegoptim #{jpegoptim_options.join(' ')}]
+    jpegoptim_options = [
+      "-m80",
+      "--strip-all",
+      covername.shellescape
+    ]
+    %x[jpegoptim #{jpegoptim_options.join(' ')}]
 
-		options << "--cover=\"#{covername}\""
-	end
+    options << "--cover=\"#{covername}\""
+  end
 
-puts options	
-	
+puts options  
+  
 
-	%x[ebook-meta #{options.join(' ')}]
-	
+  %x[ebook-meta #{options.join(' ')}]
+  
 
 end
