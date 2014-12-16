@@ -1,45 +1,7 @@
 #!/usr/bin/env bash
-# Download and manually compile ffmpeg to use proprietary codecs
+# ffmpeg is not really ffmpeg
+# http://stackoverflow.com/questions/9477115/what-are-the-differences-and-similarities-between-ffmpeg-libav-and-avconv/9477756#9477756
 
-echo "Download all dependencies"
-sudo apt-get -y install \
-	yasm \
-	libfaac-dev \
-	libmp3lame-dev \
-	libopencore-amrnb-dev \
-	libopencore-amrwb-dev \
-	libtheora-dev \
-	libvorbis-dev \
-	libvpx-dev \
-	libx264-dev \
-	libxvidcore-dev \
-	subversion
-
-
-echo "Download svn source"
-cd ~/local/etc
-svn checkout svn://svn.ffmpeg.org/ffmpeg/trunk ffmpeg
-
-echo "Configure"
-cd ./ffmpeg
-./configure	--enable-gpl \
-	--enable-version3 \
-	--enable-nonfree \
-	--enable-postproc \
-	--enable-libfaac \
-	--enable-libmp3lame \
-	--enable-libopencore-amrnb \
-	--enable-libopencore-amrwb \
-	--enable-libtheora \
-	--enable-libvorbis \
-	--enable-libvpx \
-	--enable-libx264 \
-	--enable-libxvid \
-	--enable-x11grab
-
-echo "Make"
-make
-
-echo "Create symlinks"
-cd ~/local/bin/
-ln -s ../etc/ffmpeg/ffmpeg .
+sudo add-apt-repository ppa:jon-severinsson/ffmpeg
+sudo apt-get update
+sudo apt-get install ffmpeg
