@@ -27,7 +27,13 @@
     "angular": false,
     "_": true,
     "$": false,
-    "moment": false
+    "moment": false,
+    "describe": false,
+    "xdescribe": false,
+    "ddescribe": false,
+    "it": false,
+    "xit": false,
+    "iit": false
   },
 
   // Prohibit & and |, prevent mistyped && or ||
