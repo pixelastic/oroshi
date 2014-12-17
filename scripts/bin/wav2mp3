@@ -1,13 +1,27 @@
-#!/usr/bin/env ruby
-require "shellwords"
-ARGV.each do |file|
-	file = File.expand_path(file)
-	next unless File.exists?(file)
-	extname = File.extname(file)
-	next unless extname.downcase == ".wav"
-	basename = File.basename(file, extname)
-	dirname = File.dirname(file)
-	new_file = File.join(dirname, basename + ".mp3")
+#!/usr/bin/env zsh
 
-	%x[lame -h -b 192 #{file.shellescape} #{new_file.shellescape}]
-end
+local input=$1
+local dirname=$(dirname $input)
+local basename=${input:t:r}
+local extension=${input:e}
+local output=$dirname/${basename}.mp3
+
+if [[ $input = '' ]]; then
+  echo "You must pass a file as input"
+  exit
+fi
+
+if [[ $extension != 'wav' ]]; then
+  echo "Input file must be a .wav";
+  exit;
+fi
+
+function convertUsingLame() {
+  lame -h -b 192 $input $output
+}
+function convertUsingFfmpeg() {
+  echo "Lame convert failed, testing ffmpeg"
+  ffmpeg -i $input $output
+}
+
+convertUsingLame || convertUsingFfmpeg
