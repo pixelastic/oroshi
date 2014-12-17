@@ -1,9 +1,0 @@
-#!/usr/bin/env zsh
-# Will create an empty zsh script, make it executable, and edit it in vim.
-
-# Create the file, as zsh script
-echo "#!/usr/bin/env zsh" > $1
-# Make it executable
-chmod +x $1
-# Edit it with vim
-vim $1
