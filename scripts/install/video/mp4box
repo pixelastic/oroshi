@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+echo "Download mp4box install package"
+wget \
+  http://download.tsi.telecom-paristech.fr/gpac/latest_builds/linux64/gpac/gpac_0.5.1.DEV-r5563_amd64.deb \
+  -O /tmp/gpac.deb
+
+echo "Install it"
+sudo dpkg -i /tmp/gpac.deb
+sudo apt-get -f install
+
