@@ -124,7 +124,7 @@ alias pinta='gui pinta'
 alias agi='sudo apt-get install'
 alias agu='sudo apt-get -u install'
 alias agua='sudo apt-get update && sudo apt-get upgrade'
-alias agr='sudo apt-get remove'
+alias agR='sudo apt-get remove'
 alias ags='sudo apt-cache search'
 # }}}
 # Ebook {{{

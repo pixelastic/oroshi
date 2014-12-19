@@ -2,6 +2,11 @@
 # ffmpeg is not really ffmpeg
 # http://stackoverflow.com/questions/9477115/what-are-the-differences-and-similarities-between-ffmpeg-libav-and-avconv/9477756#9477756
 
-sudo add-apt-repository ppa:jon-severinsson/ffmpeg
-sudo apt-get update
-sudo apt-get install ffmpeg
+echo "Installing ffmpeg from source"
+cd ~/local/etc
+git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg
+
+cd ./ffmpeg
+./configure --prefix=~/local/
+make
+make install
