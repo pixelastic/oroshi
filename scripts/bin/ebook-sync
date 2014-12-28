@@ -4,13 +4,13 @@ require "fileutils"
 require "shellwords"
 # Will synchronize an ebook library repo to a device.
 # Usage :
-#  $ ebook-sync /path/to/source /path/to/destination
+#  $ ebook-sync /path/to/source /path/to/destination (mobi|epub)
 
 class EbookSync
 
 	def initialize(*args)
-		unless args.length == 2
-			puts "You need to specify a source and destination"
+		unless args.length == 3
+			puts "You need to specify a source, destination and type"
 			exit
 		end
 
@@ -19,6 +19,7 @@ class EbookSync
 		@path_source+="/" unless @path_source[-1]=="/"
 		@path_destination = File.expand_path(args[1])
 		@path_destination+="/" unless @path_destination[-1]=="/"
+    @filetype = args[2]
 
 		unless File.exists?(@path_source)
 			puts "Source path does not exists"
@@ -34,7 +35,7 @@ class EbookSync
 	# Run the sync
 	def run
 		# Note: The synchronization will follow simple rules :
-		#  - Only .epub/.pdf files will be copied to a device
+		#  - Only .@filetype/.pdf files will be copied to a device
 		#  - Files added/modified/deleted in the source will be updated in the
 		#  destination
 		#  - Files added/modified/deleted in the destination will NOT be updated in
@@ -87,7 +88,7 @@ class EbookSync
 			"--filter='-s *./'", # Excluding directories with trailing dot
 			"--filter='-s .git/'",
 			"--filter='+s */'",
-			"--filter='+s *.epub'",
+			"--filter='+s *.#{@filetype}'",
 			"--filter='+s *.pdf'",
 			"--filter='-s *'",
 		]
