@@ -7,36 +7,36 @@ require_relative "tags-engine"
 # source accordingly.
 
 class MetadataEngine
-	# Custom exceptions
-	class Error < StandardError; end
-	class ArgumentError < Error; end
+  # Custom exceptions
+  class Error < StandardError; end
+  class ArgumentError < Error; end
 
-	def initialize(file)
-		@file = File.expand_path(file)
-	end
+  def initialize(file)
+    @file = File.expand_path(file)
+  end
 
-	# Returns the filepath engine
-	def filepath
-		return @filepath if @filepath
-		return @filepath = FilepathEngine.new(@file)
-	end
+  # Returns the filepath engine
+  def filepath
+    return @filepath if @filepath
+    return @filepath = FilepathEngine.new(@file)
+  end
 
-	# Returns the tracklist engine
-	def tracklist
-		return @tracklist if @tracklist
-		return @tracklist = TracklistEngine.new(@file)
-	end
+  # Returns the tracklist engine
+  def tracklist
+    return @tracklist if @tracklist
+    return @tracklist = TracklistEngine.new(@file)
+  end
 
-	# Return the tags engine
-	def tags
-		return @tags if @tags
-		return @tags = TagsEngine.new(@file)
-	end
+  # Return the tags engine
+  def tags
+    return @tags if @tags
+    return @tags = TagsEngine.new(@file)
+  end
 
-	# Check for the .tracklist file
-	def has_tracklist?
-		tracklist.has_tracklist?
-	end
+  # Check for the .tracklist file
+  def has_tracklist?
+    tracklist.has_tracklist?
+  end
 
 end
 
