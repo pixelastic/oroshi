@@ -36,8 +36,16 @@ ARGV.each do |epub|
     author_lastname = splitauthor[0..1].join(' ')
     author_firstname = splitauthor[2..-1].join(' ')
   end
-  options << "--authors=\"#{author_firstname} #{author_lastname}\""
-  options << "--author-sort=\"#{author_lastname}, #{author_firstname}\""
+
+  # The Kindle Paperwhite orders authors by firstname, so we need to swap
+  # firstname/lastname when converting to .mobi
+  if extname == '.mobi'
+    options << "--authors=\"#{author_lastname} #{author_firstname}\""
+    options << "--author-sort=\"#{author_firstname}, #{author_lastname}\""
+  else
+    options << "--authors=\"#{author_firstname} #{author_lastname}\""
+    options << "--author-sort=\"#{author_lastname}, #{author_firstname}\""
+  end
 
   # Deal with series and book name
   if split.size >= 4
@@ -74,9 +82,9 @@ ARGV.each do |epub|
     options << "--cover=\"#{covername}\""
   end
 
-puts options  
   
 
+  # puts "ebook-meta #{options.join(' ')}"
   %x[ebook-meta #{options.join(' ')}]
   
 
