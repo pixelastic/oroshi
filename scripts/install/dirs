@@ -3,10 +3,11 @@
 echo "Creating ~/local"
 mkdir -p ~/local
 
-echo "Symlinkin dirs from /usr/local to ~/local"
-for i in  ~/local//usr/local/*; do
-	mv -u /usr/local/$i ~/local/$i
-	ln -s ~/local/$i /usr/local/$i
+echo "Symlinking dirs from /usr/local to ~/local"
+for i in /usr/local/*/; do
+  echo `basename $i`
+	sudo mv -u $i ~/local/`basename $i`
+  ln -s ~/local/`basename $i` $i
 done
 
 echo "Add others useful local directories"
