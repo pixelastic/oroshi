@@ -5,8 +5,7 @@ mkdir -p ~/local
 
 echo "Symlinking dirs from /usr/local to ~/local"
 for i in /usr/local/*/; do
-  echo `basename $i`
-	sudo mv -u $i ~/local/`basename $i`
+  sudo mv -u $i ~/local/`basename $i`
   ln -s ~/local/`basename $i` $i
 done
 
