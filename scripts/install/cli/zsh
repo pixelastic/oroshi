@@ -1,7 +1,22 @@
 #!/usr/bin/env bash
-echo "Installing dependencies"
-./dirs
-./make
+
+# Preliminary tests
+if [[ `which make` = '' ]]; then
+  echo "make is not installed"
+  exit
+fi
+if [ ! -d ~/local/src ]; then
+  echo "~/local/src does not exist"
+  exit
+fi
+if [ ! -d ~/local/etc ]; then
+  echo "~/local/etc does not exist"
+  exit
+fi
+if [ ! -d ~/local/bin ]; then
+  echo "~/local/bin does not exist"
+  exit
+fi
 
 echo "Downloading source from sourceforge"
 cd ~/local/src
