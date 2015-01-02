@@ -36,19 +36,6 @@ rvm reload
 rvm install 2.1.2
 rvm install 2.1.2-dev
 
-# Mysql
-sudo apt-get install mysql-server \
-                     libmysqlclient15-dev \
-                     postgresql \
-                     postgresql-client \
-                     postgresql-contrib \
-                     libpq-dev
-
-gem install mysql mysql2
-
-# Installing rails
-gem install rails 
-
 # Generic gems
 gem install pry
 gem install awesome_print
@@ -64,10 +51,3 @@ gem install curb
 
 # Xml
 gem install nokogiri
-
-
-
-
-
-
-

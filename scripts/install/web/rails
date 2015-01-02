@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Mysql
+sudo apt-get install mysql-server \
+                     libmysqlclient15-dev \
+                     postgresql \
+                     postgresql-client \
+                     postgresql-contrib \
+                     libpq-dev
+
+gem install mysql mysql2
+
+# Installing rails
+gem install rails 
+
+
+

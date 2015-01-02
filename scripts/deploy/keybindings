@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-~/.oroshi/config/ubuntu/13.10/keybindings/org.compiz.integrated.sh
-~/.oroshi/config/ubuntu/13.10/keybindings/org.gnome.desktop.wm.keybindings.sh
-~/.oroshi/config/ubuntu/13.10/keybindings/org.gnome.settings-daemon.plugins.media-keys.sh
-

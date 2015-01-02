@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Copy gem config to ~/.gemrc
+
+# Paths
+configDir=~/.oroshi/config/gem
+configFile=${configDir}/gemrc
+destFile=~/.gemrc
+
+# Link the config file
+ln -fs $configFile $destFile
