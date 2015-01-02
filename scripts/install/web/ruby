@@ -1,28 +1,28 @@
 #!/usr/bin/env bash
 
 #Installing dependencies
-sudo apt-get install build-essential
-sudo apt-get install openssl
-sudo apt-get install libreadline6
-sudo apt-get install libreadline6-dev
-sudo apt-get install curl
-sudo apt-get install git-core
-sudo apt-get install zlib1g
-sudo apt-get install zlib1g-dev
-sudo apt-get install libssl-dev
-sudo apt-get install libyaml-dev
-sudo apt-get install libsqlite3-dev
-sudo apt-get install sqlite3
-sudo apt-get install libxml2-dev
-sudo apt-get install libxslt-dev
-sudo apt-get install autoconf
-sudo apt-get install libc6-dev
-sudo apt-get install ncurses-dev
-sudo apt-get install automake
-sudo apt-get install libtool
-sudo apt-get install bison
-sudo apt-get install subversion
-sudo apt-get install libqtwebkit-dev
+sudo apt-get install build-essential \
+                     openssl \
+                     libreadline6 \
+                     libreadline6-dev \
+                     curl \
+                     git-core \
+                     zlib1g \
+                     zlib1g-dev \
+                     libssl-dev \
+                     libyaml-dev \
+                     libsqlite3-dev \
+                     sqlite3 \
+                     libxml2-dev \
+                     libxslt-dev \
+                     autoconf \
+                     libc6-dev \
+                     ncurses-dev \
+                     automake \
+                     libtool \
+                     bison \
+                     subversion \
+                     libqtwebkit-dev
 
 # Install rvm
 curl -L https://get.rvm.io | bash -s stable --ruby
@@ -37,8 +37,13 @@ rvm install 2.1.2
 rvm install 2.1.2-dev
 
 # Mysql
-sudo apt-get install mysql-server libmysqlclient15-dev
-sudo apt-get install postgresql postgresql-client postgresql-contrib libpq-dev
+sudo apt-get install mysql-server \
+                     libmysqlclient15-dev \
+                     postgresql \
+                     postgresql-client \
+                     postgresql-contrib \
+                     libpq-dev
+
 gem install mysql mysql2
 
 # Installing rails
@@ -52,7 +57,9 @@ gem install awesome_print
 gem install ruby-mp3info
 
 # Curl
-sudo apt-get install libcurl3 libcurl3-gnutls libcurl4-openssl-dev
+sudo apt-get install libcurl3 \
+                     libcurl3-gnutls \
+                     libcurl4-openssl-dev
 gem install curb
 
 # Xml
