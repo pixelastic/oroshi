@@ -6,4 +6,4 @@ sudo apt-get install build-essential \
                      xsltproc \
                      g++ \
                      libxml2-dev \
-                     llibxslt1-dev
+                     libxslt1-dev
