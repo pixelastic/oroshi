@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Copy wget config to ~/.wgetrc
+
+# Paths
+configDir=~/.oroshi/config/redshift
+configFile=${configDir}/redshiftgrc
+destFile=~/.redshiftgrc
+
+# Link the config file
+ln -fs $configFile $destFile
