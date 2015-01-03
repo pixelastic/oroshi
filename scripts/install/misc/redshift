@@ -1,17 +1,19 @@
 #!/usr/bin/env bash
 
-# This is install for 64bits
-if [ ! `getconf LONG_BIT` = "64" ]; then
-  echo "This is 64bits territory."
-  exit
+if [ `getconf LONG_BIT` = "64" ]; then
+  url="https://github.com/downloads/maoserr/redshiftgui/RedshiftGUI-0.2.1-Linux-x86_64.deb"
+else
+  url="https://github.com/downloads/maoserr/redshiftgui/RedshiftGUI-0.2.1-Linux-i686.deb"
 fi
 
 cd /tmp
-wget -c https://github.com/downloads/maoserr/redshiftgui/RedshiftGUI-0.2.1-Linux-x86_64.deb -O ./redshift.db
+wget -c $url -O ./redshift.db
 sudo dpkg -i ./redshift.db
 
-# It is looking for a dependency in the wrong directory
-if [[ ! -r /lib/ld-linux-x86-64.so.2 ]]; then
-	sudo ln -s /lib/x86_64-linux-gnu/ld-linux-x86-64 /lib/ld-linux-x86-64.so.2
+if [ `getconf LONG_BIT` = "64" ]; then
+  # It is looking for a dependency in the wrong directory
+  if [[ ! -r /lib/ld-linux-x86-64.so.2 ]]; then
+  	sudo ln -s /lib/x86_64-linux-gnu/ld-linux-x86-64 /lib/ld-linux-x86-64.so.2
+  fi
 fi
-sudo apt-get -f install
+
