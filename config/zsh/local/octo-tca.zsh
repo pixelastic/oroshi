@@ -13,6 +13,11 @@ alias cdkiss="/var/www/java/kissihm/kissihm/src/main/webapp/resources/"
 alias cdmeetups="cd /home/tca/perso/notes/meetups/"
 # }}}
 
+# Oroshi {{{
+# Reload keybings for this OS
+alias ok="~/.oroshi/config/ubuntu/13.10/keybindings/*.sh"
+# }}}
+
 # Dump file to online domain
 function dumptmp() {
   rsync -Pharz \
