@@ -134,6 +134,9 @@ alias ecd='ebook-cover-download'
 alias em='ebook-meta'
 alias emu='ebook-metadata-update'
 alias ev='ebook-viewer'
+function epub2mobi() {
+  ebook-convert $1 .mobi
+}
 # }}}
 # Directories {{{
 alias cd-='cd -'

@@ -42,7 +42,7 @@ O_FILETYPES=(
 	archive     "extract:01;32:7z,bz2,cbr,cbz,gz,r00,r01,r02,r03,r04,r05,r06,r07,r08,r09,rar,tar,gz,tgz,zip"
 	audio       "gui vlc:00;34:mp3,wav,ogg,m4a"
 	config      "vim:00;33:conf,config,db,ini"
-	ebook       "ebook-viewer:01;33:epub"
+	ebook       "ebook-viewer:01;33:epub,mobi"
 	executable  "wine:00;31:exe,pyc,so"
 	flash       "gui chromium-browser:01;34:swf"
 	font        "ls:01;33:eot,otf,svg,ttf,woff"
