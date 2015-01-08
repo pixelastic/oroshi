@@ -36,6 +36,9 @@ alias vcl='git peek'
 alias vcl+='git peek --stat'
 alias vcla='git peek -p'
 alias vcp='git prev'
+function vcf() {
+  git log --oneline -i --grep="$1"
+}
 # }}}
 # [f]iles {{{
 alias vfR='git rm -r'
