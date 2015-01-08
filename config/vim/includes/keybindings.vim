@@ -108,8 +108,7 @@ map <F7> :NERDTreeToggle<CR>
 " }}}
 " VIMDIFF  {{{
 " Vimdiff will mostly be used to handle merges. It is configured to be
-" displayed in three panels (origin, result and other). We will use the FPS
-" keys (zqsd) to move between changes and accept either origin or other.
+" displayed in three panels (origin, result and other).
 " Jump to next/previous change
 nnoremap vdk [c
 nnoremap vdj ]c
