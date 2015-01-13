@@ -39,6 +39,9 @@
 !   The ISO_Level3_Shift is usually found on European keyboards and allow
 !   access to Alternate Graphics through the AltGr key. The Mode_Switch can be
 !   thought0 as a 'ISO_Level2_Shift'.
+!
+!   List of Keysyms
+!   http://wiki.linuxquestions.org/wiki/List_of_Keysyms_Recognised_by_Xmodmap
 
 
 !!!!! Clearing all modifiers
@@ -71,6 +74,12 @@ keycode 49 = F14 twosuperior
 ! an AltGr key, as I do not use the Menu one anyway.
 keycode 135 = ISO_Level3_Shift NoSymbol ISO_Level3_Shift
 
+! unbreakable space with Maj+Space
+keycode 65 = space nobreakspace space nobreakspace
+
+! rtl and ltr overrides on < and >
+keycode 94 = less greater less greater U202E U202D
+
 ! É, È and À easier with AltGr+Shift
 keycode 11 = eacute 2 eacute 2 asciitilde UC9
 keycode 16 = egrave 7 egrave 7 grave UC8
@@ -78,15 +87,17 @@ keycode 18 = ccedilla 9 ccedilla 9 asciicircum UC7
 keycode 19 = agrave 0 agrave 0 at UC0
 
 ! Adding some common symbols on easy AltGr on common keys
-keycode 24 = a A a A at ae keycode 25 = z Z z Z
+keycode 24 = a A a A ae AE
+keycode 25 = z Z z Z 
 keycode 26 = e E e E EuroSign
-keycode 27 = r R r R grave
-keycode 28 = t T t T trademark
+keycode 27 = r R r R grave registered
+keycode 28 = t T t T t trademark
 keycode 29 = y Y y Y 
 keycode 30 = u U u U backslash
 keycode 31 = i I i I minus
 keycode 32 = o O o O underscore oe
 keycode 33 = p P p P
+keycode 35 = dollar sterling dollar sterling currency yen
 
 keycode 38 = q Q q Q asciitilde
 keycode 39 = s S s S
@@ -98,15 +109,21 @@ keycode 44 = j J j J bar
 keycode 45 = k K k K bracketleft parenleft
 keycode 46 = l L l L bracketright parenright
 keycode 47 = m M m M 
-keycode 48 = ugrave percent ugrave percent U00FA U00uuu
+! U00FA = ú
+keycode 48 = ugrave percent ugrave percent U00FA
 
 keycode 52 = w W w W
-keycode 53 = x X x X
-keycode 54 = c C c C
-keycode 55 = v V v V
+! U2717 = ✗
+! U2718 = ✘
+keycode 53 = x X x X U2717 U2718
+keycode 54 = c C c C c copyright
+! U2713 = ✓
+! U2714 = ✔
+keycode 55 = v V v V U2713 U2714
 keycode 56 = b B b B
 keycode 57 = n N n N
-! Question mark can also produce ‽ and ⸮
+! U230D = ‽
+! U2E2E = ⸮
 keycode 58 = comma question comma question U203D U2E2E
 ! Period can also produce …
 keycode 59 = semicolon period semicolon period ellipsis
