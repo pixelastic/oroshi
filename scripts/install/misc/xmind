@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [ ! `getconf LONG_BIT` = "64" ]; then
+  echo "This install script is only for 64 bits";
+  exit;
+fi
+
+echo "Installing Xmind"
+cd /tmp
+wget http://www.xmind.net/xmind/downloads/xmind-linux-3.5.1.201411201906_amd64.deb -O xmind.deb
+install-deb ./xmind.deb
