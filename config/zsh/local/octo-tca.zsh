@@ -15,7 +15,13 @@ alias cdmeetups="cd /home/tca/perso/notes/meetups/"
 
 # Oroshi {{{
 # Reload keybings for this OS
-alias ok="~/.oroshi/config/ubuntu/13.10/keybindings/*.sh"
+function ok() {
+  cd ~/.oroshi/config/ubuntu/13.10/keybindings/;
+  for i in ./*; do 
+    sh $i; 
+  done;
+  cd - > /dev/null
+}
 # }}}
 
 # Dump file to online domain
