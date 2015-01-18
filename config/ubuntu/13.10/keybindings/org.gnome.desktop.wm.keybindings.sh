@@ -2,7 +2,7 @@
 gsettings set org.gnome.desktop.wm.keybindings activate-window-menu "['disabled']"
 gsettings set org.gnome.desktop.wm.keybindings begin-move "['disabled']"
 gsettings set org.gnome.desktop.wm.keybindings begin-resize "['disabled']"
-gsettings set org.gnome.desktop.wm.keybindings close "['disabled']"
+gsettings set org.gnome.desktop.wm.keybindings close "['<Alt>F4']"
 gsettings set org.gnome.desktop.wm.keybindings cycle-group "['']"
 gsettings set org.gnome.desktop.wm.keybindings cycle-group-backward "['']"
 gsettings set org.gnome.desktop.wm.keybindings cycle-panels "['']"
