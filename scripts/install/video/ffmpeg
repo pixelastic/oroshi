@@ -6,7 +6,50 @@ echo "Installing ffmpeg from source"
 cd ~/local/etc
 git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg
 
+
+echo "Downloading some libs"
+sudo apt-get install libgsm1-dev \
+                    libdc1394-22 \
+                    libdc1394-22-dev \
+                    libgsm1 \
+                    libgsm1-dev \
+                    libopenjpeg-dev \
+                    libschroedinger-1.0-0 \
+                    libschroedinger-dev \
+                    libschroedinger-doc \
+                    libspeex-dev \
+                    libfaac-dev \
+                    libmp3lame-dev \
+                    libopencore-amrnb-dev \
+                    libopencore-amrwb-dev \
+                    libsdl1.2-dev \
+                    libtheora-dev \
+                    libvorbis-dev \
+                    libx11-dev \
+                    libxfixes-dev \
+                    libxvidcore-dev
+
 cd ./ffmpeg
-./configure --prefix=~/local/
+./configure \
+  --prefix=~/local/ \
+  --enable-gpl \
+  --enable-version3 \
+  --enable-nonfree \
+  --enable-postproc \
+  --enable-x11grab \
+  --enable-libopencore-amrnb \
+  --enable-libopencore-amrwb \
+  --enable-libdc1394 \
+  --enable-libfaac \
+  --enable-libgsm \
+  --enable-libmp3lame \
+  --enable-libopenjpeg \
+  --enable-libschroedinger \
+  --enable-libspeex \
+  --enable-libtheora \
+  --enable-libvorbis \
+  --enable-libvpx \
+  --enable-libx264 \
+  --enable-libxvid
 make
 make install
