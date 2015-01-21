@@ -49,12 +49,13 @@
     scrollbar_position = hidden
     palette = "#3a3a3a:#d70000:#00af5f:#d7d700:#5f87ff:#af87ff:#ff875f:#d0d0d0:#3a3a3a:#870000:#008700:#af8700:#5fafd7:#af5fd7:#d75f00:#a8a8a8"
     background_image = None
+    use_system_font = False
     split_to_group = True
     foreground_color = "#e6e1dc"
     scroll_on_output = False
     icon_bell = False
     cursor_color = "#fa1217"
-    font = Anonymous Pro 13
+    font = DejaVuSansMonoWithOcticons 10
     background_color = "#121212"
     cursor_blink = False
     scrollback_infinite = True

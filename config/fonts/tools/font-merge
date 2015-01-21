@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+local original_file=${1:a}
+local added_file=${2:a}
+local original_name=${original_file:r:t}
+local added_name=${added_file:r:t}
+local new_name="${original_name}With${added_name}"
+local namespace=${added_name:u}
+
+./font-merge-python \
+  $original_file \
+  --symbols=$added_file \
+  --to-namespace=$namespace \
+  --rename-as=$new_name
+
+# tweaking for DejaVuSansMono + Octicons
+# --ratio=0.9 \
+# --shift-y=-600 \
+# --shift-x=1500

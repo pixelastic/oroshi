@@ -7,4 +7,4 @@ local destDir=~/.fonts
 
 # Copying fonts
 mkdir -p $destDir
-cp ${configDir}/* $destDir
+cp ${configDir}/*.ttf $destDir

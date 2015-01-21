@@ -126,7 +126,7 @@ function getPromptRepoSubmodule() {
 
   local isSubmodule="$(git is-submodule)"
   if [[ $isSubmodule = 1 ]]; then
-    echo "$FG[$promptColor[submodule]]↯$FX[reset] "
+    echo "$FG[$promptColor[submodule]] $FX[reset] "
   fi
 }
 # }}}
@@ -140,7 +140,7 @@ function getPromptRepoStash() {
   local stashCount=$(git stash list | wc -l)
 
   if [[ $stashCount -gt 0 ]]; then
-    echo "$FG[$promptColor[stash]]⚫ $FX[reset]"
+    echo "$FG[$promptColor[stash]]  $FX[reset]"
   fi
 }
 # }}}
@@ -157,7 +157,7 @@ function getPromptRepoRebase() {
   if [[ -r $isRebasingFile ]]; then
     local maxRebase=$(cat $rebaseInternalDir/last)
     local nextRebase=$(cat $rebaseInternalDir/next)
-    echo "$FG[$promptColor[rebase]]${nextRebase}/${maxRebase} ⚶ $FX[reset]"
+    echo "$FG[$promptColor[rebase]]${nextRebase}/${maxRebase}  $FX[reset]"
   fi
 }
 # }}}
@@ -179,7 +179,7 @@ function getPromptRepoBranch() {
   # Branch color
   if [[ $promptBranch = 'HEAD' ]]; then
     promptBranchColor=$promptColor[branchDetached]
-    promptBranch="$(getGitShortHash) ⭠"
+    promptBranch="$(getGitShortHash)  "
   fi
   if [[ $promptBranch = 'master' ]]; then
     promptBranchColor=$promptColor[branchMaster]
@@ -188,7 +188,7 @@ function getPromptRepoBranch() {
     promptBranchColor=$promptColor[branchDevelop]
   fi
   if [[ $promptBranch =~ '^bugfix/' ]]; then
-    promptBranch=${promptBranch//bugfix\//}
+    promptBranch=" ${promptBranch//bugfix\//}"
     promptBranchColor=$promptColor[branchBugfix]
   fi
   if [[ $promptBranch =~ '^feature/' ]]; then
@@ -196,25 +196,26 @@ function getPromptRepoBranch() {
     promptBranchColor=$promptColor[branchFeature]
   fi
   if [[ $promptBranch =~ '^review/' ]]; then
-    promptBranch=${promptBranch//review\//}
+    promptBranch=" ${promptBranch//review\//}"
     promptBranchColor=$promptColor[branchReview]
   fi
   if [[ $promptBranch =~ '^test/' ]]; then
-    promptBranch=${promptBranch//test\//}
+    promptBranch=" ${promptBranch//test\//}"
     promptBranchColor=$promptColor[branchTest]
   fi
   if [[ $promptBranch =~ '^perf/' ]]; then
-    promptBranch=${promptBranch/perf\//}
+    promptBranch=" ${promptBranch/perf\//}"
     promptBranchColor=$promptColor[branchPerf]
   fi
   if [[ $promptBranch = 'gh-pages' ]]; then
     promptBranchColor=$promptColor[branchGhPages]
+    promptBranch="  $promptBranch"
   fi
 
   # Adding push indicator
   local gitStatus="$(git status)"
   if [[ $gitStatus =~ 'Your branch is ahead of' ]]; then
-    promptBranch="⇪ $promptBranch"
+    promptBranch="  $promptBranch"
   fi
   
   echo "$FG[$promptBranchColor]$promptBranch$FX[reset]"
