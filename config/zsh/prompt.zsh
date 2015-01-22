@@ -169,7 +169,7 @@ function getPromptRepoBranch() {
   fi
 
   local promptBranch="$(git current-branch)"
-  local promptBranchColor=$promptBranch[branchDefault]
+  local promptBranchColor=$promptColor[branchDefault]
 
   # No branch found
   if [[ $promptBranch = '' ]]; then

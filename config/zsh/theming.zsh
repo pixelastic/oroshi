@@ -32,7 +32,7 @@ promptColorDefault=(
   tagExact           "202" # Color of the exact current tag
   submodule          "136" # Color of the submodule symbol
   rebase             "160" # Color of the rebase symbol
-  stash              "136" # Color of the stash
+  stash              "160" # Color of the stash
   branchDefault      "202" # Default color for branches
   branchDetached     "160" # Color for detached HEAD branch
   branchMaster       "069" # Color for master branch
