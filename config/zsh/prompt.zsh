@@ -172,8 +172,32 @@ function getPromptRepoBranch() {
   local promptBranchColor=$promptBranch[branchDefault]
 
   # No branch found
-  if [[ promptBranch = '' ]]; then
+  if [[ $promptBranch = '' ]]; then
     return
+  fi
+
+  # Adding push/pull indicator (only if not HEAD)
+  local promptPushPullIndicator
+  if [[ $promptBranch != 'HEAD' ]]; then
+    local branchLocal=$(git rev-parse @{0})
+    local branchRemote=$(git rev-parse @{u} 2>/dev/null)
+    local branchBase=$(git merge-base @{0} @{u} 2>/dev/null)
+
+    if [ $branchRemote = '@{u}' ]; then
+      # No distant repo created
+      promptPushPullIndicator="  "
+    elif [ $branchLocal = $branchRemote ]; then
+      # Branches are equal
+    elif [ $branchLocal = $branchBase ]; then
+      # Need to pull
+      promptPushPullIndicator="  "
+    elif [ $branchRemote = $branchBase  ]; then
+      # Need to push
+      promptPushPullIndicator="  "
+    else
+      # Diverges
+      promptPushPullIndicator="  "
+    fi
   fi
 
   # Branch color
@@ -187,38 +211,33 @@ function getPromptRepoBranch() {
   if [[ $promptBranch = 'develop' ]]; then
     promptBranchColor=$promptColor[branchDevelop]
   fi
-  if [[ $promptBranch =~ '^bugfix/' ]]; then
-    promptBranch=" ${promptBranch//bugfix\//}"
-    promptBranchColor=$promptColor[branchBugfix]
-  fi
   if [[ $promptBranch =~ '^feature/' ]]; then
     promptBranch=${promptBranch//feature\//}
     promptBranchColor=$promptColor[branchFeature]
   fi
+  if [[ $promptBranch =~ '^bugfix/' ]]; then
+    promptBranch="${promptBranch//bugfix\//} "
+    promptBranchColor=$promptColor[branchBugfix]
+  fi
   if [[ $promptBranch =~ '^review/' ]]; then
-    promptBranch=" ${promptBranch//review\//}"
+    promptBranch="${promptBranch//review\//}  "
     promptBranchColor=$promptColor[branchReview]
   fi
   if [[ $promptBranch =~ '^test/' ]]; then
-    promptBranch=" ${promptBranch//test\//}"
+    promptBranch="${promptBranch//test\//} "
     promptBranchColor=$promptColor[branchTest]
   fi
   if [[ $promptBranch =~ '^perf/' ]]; then
-    promptBranch=" ${promptBranch/perf\//}"
+    promptBranch="${promptBranch/perf\//} "
     promptBranchColor=$promptColor[branchPerf]
   fi
   if [[ $promptBranch = 'gh-pages' ]]; then
     promptBranchColor=$promptColor[branchGhPages]
-    promptBranch="  $promptBranch"
+    promptBranch="$promptBranch "
   fi
 
-  # Adding push indicator
-  local gitStatus="$(git status)"
-  if [[ $gitStatus =~ 'Your branch is ahead of' ]]; then
-    promptBranch="  $promptBranch"
-  fi
   
-  echo "$FG[$promptBranchColor]$promptBranch$FX[reset]"
+  echo "$FG[$promptBranchColor]${promptPushPullIndicator}${promptBranch}$FX[reset]"
 }
 # }}}
 
