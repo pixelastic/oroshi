@@ -68,9 +68,11 @@ alias vrl='git remote show'
 alias vrpl='vdr && git pull --rebase && vsbu && cd -'
 alias vrplu='git pull --rebase --no-ff upstream develop' # Used at meetic
 alias vrps='git push-origin'
+alias vrps+b='git push-origin --all'
+alias vrps+t='git push-origin --tags'
 alias vrr='git remote show origin -n'
-alias vrpsm='git push origin master'
-alias vrpsd='git push origin develop'
+alias vrpsm='git push-origin master'
+alias vrpsd='git push-origin develop'
 alias vrpsh='git push heroku $(git current-branch)'
 # }}}
 # [t]ags {{{
