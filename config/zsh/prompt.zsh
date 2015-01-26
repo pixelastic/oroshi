@@ -161,6 +161,44 @@ function getPromptRepoRebase() {
   fi
 }
 # }}}
+# Push/Pull {{{
+# getPromptRepoPushPull() {{{
+function getPromptRepoPushPull() {
+  if [[ $promptIsGit = 0 ]]; then
+    return
+  fi
+
+  # No indicator if in detached HEAD
+  local promptBranch="$(git current-branch)"
+  if [[ $promptBranch = 'HEAD' ]]; then
+    return
+  fi
+
+  # Comparing branches
+  local promptPushPullIndicator
+  local branchLocal=$(git rev-parse @{0})
+  local branchRemote=$(git rev-parse @{u} 2>/dev/null)
+  local branchBase=$(git merge-base @{0} @{u} 2>/dev/null)
+
+  if [ $branchRemote = '@{u}' ]; then
+    # No distant repo created
+    promptPushPullIndicator="  "
+  elif [ $branchLocal = $branchRemote ]; then
+    # Branches are equal
+  elif [ $branchLocal = $branchBase ]; then
+    # Need to pull
+    promptPushPullIndicator="  "
+  elif [ $branchRemote = $branchBase  ]; then
+    # Need to push
+    promptPushPullIndicator="  "
+  else
+    # Diverges
+    promptPushPullIndicator="  "
+  fi
+
+  echo $promptPushPullIndicator;
+}
+# }}}
 # Branch
 # getPromptRepoBranch() {{{
 function getPromptRepoBranch() {
@@ -174,30 +212,6 @@ function getPromptRepoBranch() {
   # No branch found
   if [[ $promptBranch = '' ]]; then
     return
-  fi
-
-  # Adding push/pull indicator (only if not HEAD)
-  local promptPushPullIndicator
-  if [[ $promptBranch != 'HEAD' ]]; then
-    local branchLocal=$(git rev-parse @{0})
-    local branchRemote=$(git rev-parse @{u} 2>/dev/null)
-    local branchBase=$(git merge-base @{0} @{u} 2>/dev/null)
-
-    if [ $branchRemote = '@{u}' ]; then
-      # No distant repo created
-      promptPushPullIndicator="  "
-    elif [ $branchLocal = $branchRemote ]; then
-      # Branches are equal
-    elif [ $branchLocal = $branchBase ]; then
-      # Need to pull
-      promptPushPullIndicator="  "
-    elif [ $branchRemote = $branchBase  ]; then
-      # Need to push
-      promptPushPullIndicator="  "
-    else
-      # Diverges
-      promptPushPullIndicator="  "
-    fi
   fi
 
   # Branch color
@@ -236,6 +250,7 @@ function getPromptRepoBranch() {
     promptBranch="$promptBranch "
   fi
 
+  local promptPushPullIndicator="$(getPromptRepoPushPull)"
   
   echo "$FG[$promptBranchColor]${promptPushPullIndicator}${promptBranch}$FX[reset]"
 }

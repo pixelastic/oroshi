@@ -8,7 +8,7 @@ local remoteMerge=$(git config "branch.${branch}.merge")
 
 if [[ $remoteMerge = '' ]]; then
   echo "First push, setting upstream"
-  git push --set-upstream origin ${branch} ${args}
+  git push --follow-tags --set-upstream origin ${branch} ${args}
 else
-  git push ${args}
+  git push --follow-tags ${args}
 fi
