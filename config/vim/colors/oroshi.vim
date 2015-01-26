@@ -455,6 +455,10 @@ call s:Link('vimString', 'helpExample')
 call s:Link('vimComment', 'helpHeader')
 call s:Link('WarningMsg', 'helpNotVi')
 " }}}
+" Xml {{{
+" Tags
+call s:Link('Statement', 'xmlTagName', 'xmlEndTag')
+" }}}
 " Zsh {{{
 " Variables
 call s:Link('Identifier', 'zshDeref', 'zshShortDeref', 'zshSubst')
