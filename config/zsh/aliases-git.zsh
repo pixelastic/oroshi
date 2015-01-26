@@ -55,29 +55,6 @@ alias vfua='git reset'
 alias vffj='git fix-jshint'
 alias vffc='git fix-conflicts'
 # }}}
-# [f]low {{{
-alias vfi='git flow init -d'
-
-alias vfff='git flow feature finish'
-alias vffpb='git flow feature publish'
-alias vffpl='git flow feature pull'
-alias vffs='git flow feature start'
-
-alias vfbf='git flow-bugfix finish'
-alias vfbpb='git flow-bugfix publish'
-alias vfbpl='git flow-bugfix pull'
-alias vfbs='git flow-bugfix start'
-
-alias vfhf='git flow hotfix finish'
-alias vfhpb='git flow hotfix publish'
-alias vfhpl='git flow hotfix pull'
-alias vfhs='git flow hotfix start'
-
-alias vfrf='git flow release finish'
-alias vfrpb='git flow release publish'
-alias vfrpl='git flow release pull'
-alias vfrs='git flow release start'
-# }}}
 # [re]base {{{
 alias vrea='git rebase --abort'
 alias vres='git rebase --skip'
