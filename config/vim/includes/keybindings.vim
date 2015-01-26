@@ -239,6 +239,9 @@ nnoremap <C-F5> :call OpenUrlInBrowser(GetUrlUnderCursor())<CR>
 inoremap <C-F5> :call OpenUrlInBrowser(GetUrlUnderCursor())<CR>
 " md will convert the selection to markdown
 vnoremap <silent> md :!markdown<CR>
+" Increment/Decrement number under cursor
+nnoremap <C-J> <C-X>
+nnoremap <C-K> <C-A>
 " }}}
 " PLUGINS {{{
 " Strangely, ï seems to be equal to <M-o> and endwise remaps it. I need to
