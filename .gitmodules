@@ -97,3 +97,6 @@
 [submodule "config/vim/bundle/available/vim-jade"]
 	path = config/vim/bundle/available/vim-jade
 	url = git@github.com:digitaltoad/vim-jade.git
+[submodule "config/vim/bundle/available/argtextobj"]
+	path = config/vim/bundle/available/argtextobj
+	url = git@github.com:vim-scripts/argtextobj.vim.git

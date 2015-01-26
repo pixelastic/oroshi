@@ -87,11 +87,11 @@ alias vsta='git stash apply'
 alias vst='git stash -u'
 alias vstl='git stash list'
 # }}}
-# [s]u[b]-modules {{{
-alias vbsi='git submodule init'
-alias vsba='git submodule add'
-alias vsbu='git submodule update'
-alias vsbd='git submodule-download'
+# [s]ub-[m]odules {{{
+alias vsmi='git submodule init'
+alias vsma='git submodule add'
+alias vsmu='git submodule update'
+alias vsmdl='git submodule-download'
 # }}}
 # [m]erge {{{
 alias vmt="git mergetool"
