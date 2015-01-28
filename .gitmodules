@@ -100,3 +100,6 @@
 [submodule "config/vim/bundle/available/argtextobj"]
 	path = config/vim/bundle/available/argtextobj
 	url = git@github.com:vim-scripts/argtextobj.vim.git
+[submodule "config/vim/bundle/available/vim-snippets"]
+	path = config/vim/bundle/available/vim-snippets
+	url = git@github.com:honza/vim-snippets.git
