@@ -32,7 +32,6 @@ nnoremap [25~ i
 " TAB {{{
 " Note: On Tab press, we try to expand UltiSnips snippets, or loop through
 " placeholders. Otherwise we fire the autocomplete.
-" TODO: The autocomplete should use YouCompleteMe
 function! MultiPurposeTab()
   let line = getline(".")
   let columnIndex = col(".")
@@ -40,20 +39,6 @@ function! MultiPurposeTab()
   " If the autocomplete menu is already visible, we loop through item
   if pumvisible()
     return "\<C-N>"
-  endif
-
-  " We try to expand a snippet
-  call UltiSnips#ExpandSnippet()
-  " When looping through snippets placeholders, we quit the function
-  if g:ulti_expand_res !=# 0
-    return ""
-  endif
-
-  " We try to loop inside placeholders
-  call UltiSnips#JumpForwards()
-  " No more placeholder to loop through, we quit the function
-  if g:ulti_jump_forwards_res !=# 0
-    return ""
   endif
 
   " If in indentation, we return a simple tab
@@ -73,14 +58,6 @@ function! MultiPurposeTab()
 
   return "\<C-X>\<C-O>\<C-N>"
 endfunction
-" Disable complete-as-you-type
-" let g:ycm_min_num_of_chars_for_completion = 3
-" let g:ycm_key_invoke_completion = '<C-J>'
-" let g:ycm_key_list_select_completion = ['<C-J>']
-" Expand UltiSnips on <C-K> (must be different from Tab)
-let g:UltiSnipsExpandTrigger = '<C-K>'
-" Jump to next placeholder
-let g:UltiSnipsJumpForwardTrigger="<Tab>"
 inoremap <Tab> <C-R>=MultiPurposeTab()<CR>
 nnoremap <Tab> >>
 nnoremap <S-Tab> <<
