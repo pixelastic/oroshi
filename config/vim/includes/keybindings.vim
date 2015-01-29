@@ -36,50 +36,47 @@ function! MultiPurposeTab()
   let line = getline(".")
   let columnIndex = col(".")
 
-
   call UltiSnips#ExpandSnippetOrJump()
   " Currently expanding a snippet
   if g:ulti_expand_or_jump_res !=# 0
     return ""
   endif
+
   " If the autocomplete menu is already visible, we loop through item
   if pumvisible()
     return "\<C-N>"
-  else
-    return "\<TAB>"
+  endif
+  
+  " If in indentation, we return a simple tab
+  if (virtcol(".") - 1) <= indent(".")
+    return "\<Tab>"
+  endif
+  
+  " If after a space, we return a simple tab
+  if (strpart(line, 0, columnIndex) =~ '\s$')
+    return "\<Tab>"
   endif
 
   " If looks like a filepath, launch file name autocomplete
-  " if line =~ '.*/\w*\%' . columnIndex . 'c'
-  "   return "\<C-X>\<C-F>\<C-N>"
-  " endif
+  if line =~ '.*/\w*\%' . columnIndex . 'c'
+    return "\<C-X>\<C-F>\<C-N>"
+  endif
 
-  " return ""
-
-  " " If in indentation, we return a simple tab
-  " if (virtcol(".") - 1) <= indent(".")
-  "   return "\<Tab>"
-  " endif
-  " 
-  " " If after a space, we return a simple tab
-  " if (strpart(line, 0, columnIndex) =~ '\s$')
-  "   return "\<Tab>"
-  " endif
-  " 
-
-  " return "\<C-X>\<C-O>\<C-N>"
+  " Launch auto-complete
+  return "\<C-X>\<C-O>\<C-N>"
 endfunction
-
+" Disable Tab for UltiSnips so it won't interfere
+let g:UltiSnipsExpandTrigger="<C-K>"
+let g:UltiSnipsJumpForwardTrigger="<C-K>"
+let g:UltiSnipsJumpBackwardTrigger="<C-J>"
+let g:UltiSnipsEditSplit="vertical"
+" Remap Tab
 inoremap <Tab> <C-R>=MultiPurposeTab()<CR>
 snoremap <Tab> <Esc>:call UltiSnips#ExpandSnippetOrJump()<CR>
-" vnoremap <Tab> <Esc>:call UltiSnips#ExpandSnippetOrJump()<CR>
-" xnoremap <Tab> :call UltiSnips#SaveLastVisualSelection()<CR>gvs
-
-" inoremap <Tab> <C-R>=MultiPurposeTab()<CR>
 nnoremap <Tab> >>
 nnoremap <S-Tab> <<
-" vnoremap <Tab> >gv
-" vnoremap <S-Tab> <gv
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
 " }}}
 " RETURN KEY {{{
 " Note: Xmodmap maps Shift-Enter to Keypad Enter

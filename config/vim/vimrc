@@ -316,12 +316,6 @@ let g:syntastic_mode_map={ 'mode': 'passive',
                      \ 'active_filetypes': ['javascript', 'json', 'css', 'html', 'ruby'],
                      \ 'passive_filetypes': [] }
 " }}}
-" ULTISNIPS {{{
-let g:UltiSnipsExpandTrigger="<C-K>"
-let g:UltiSnipsJumpForwardTrigger="<C-K>"
-let g:UltiSnipsJumpBackwardTrigger="<C-J>"
-let g:UltiSnipsEditSplit="vertical"
-" }}}
 " FILETYPES {{{
 " Load skeletons
 augroup skeletons
