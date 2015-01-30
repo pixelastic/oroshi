@@ -47,6 +47,11 @@ endfunction
 " Auto-wrap text
 setlocal formatoptions+=t
 " }}}
+" Keybindings {{{
+" Add current copy-paste buffer to link on word
+nnoremap <buffer> ]] bi[<Esc>eli](<Esc>"*pli)<Esc>mzvipgq`z
+vnoremap <buffer> ]] "zc[<Esc>"zpli](<Esc>l"*pli)<Esc>mzvipgq`z
+" }}}
 " Line endings {{{
 " Use windows line endings so readme files can be easily edited on Notepad
 setlocal fileformat=dos

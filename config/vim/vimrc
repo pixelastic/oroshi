@@ -95,7 +95,7 @@ set showmode
 " Show more info about current command
 set showcmd
 " Always keep 3 lines visible to keep context
-set scrolloff=3
+set scrolloff=8
 " Hide invisible chars by default, but if they should be displayed, define the
 " characters to define them.
 set nolist

@@ -11,8 +11,8 @@ function ${1:function_name}(${2:argument}) {
 endsnippet
 
 snippet desc "describe()"
-describe('${1}', function() {
-  it('should ${2}', function() {
+describe('${1:method_name}', function() {
+  it('should ${2:do something}', function() {
     // Given
     ${3}
 
@@ -22,7 +22,6 @@ describe('${1}', function() {
     // Then
     ${5}
   });
-  ${6};
 });
 
 endsnippet
