@@ -52,6 +52,16 @@ setlocal formatoptions+=t
 nnoremap <buffer> ]] bi[<Esc>eli](<Esc>"*pli)<Esc>mzvipgq`z
 vnoremap <buffer> ]] "zc[<Esc>"zpli](<Esc>l"*pli)<Esc>mzvipgq`z
 " }}}
+" Cleaning the file {{{
+inoremap <silent> <buffer> <F4> <Esc>:call MarkdownBeautify()<CR>
+nnoremap <silent> <buffer> <F4> :call MarkdownBeautify()<CR>
+function! MarkdownBeautify() 
+  let linenr=line('.')
+  silent! execute '%! formd -r'
+  silent! execute '%s///g'
+  execute 'normal '.linenr.'gg'
+endfunction
+" }}}
 " Line endings {{{
 " Use windows line endings so readme files can be easily edited on Notepad
 setlocal fileformat=dos
