@@ -229,7 +229,7 @@ function getPromptRepoBranch() {
     promptBranch=${promptBranch//feature\//}
     promptBranchColor=$promptColor[branchFeature]
   fi
-  if [[ $promptBranch =~ '^fix/' ]]; then
+  if [[ $promptBranch =~ '^fix/' || $promptBranch =~ '^bugfix/' ]]; then
     promptBranch="${promptBranch//fix\//} "
     promptBranchColor=$promptColor[branchFix]
   fi
