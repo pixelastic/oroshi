@@ -33,11 +33,3 @@ function dumptmp() {
 }
 #
 #
-# Proxy {{{
-function proxyup() {
-  npm config set registry "http://npm.dev:4873/"
-}
-function proxydown() {
-  npm config delete registry
-}
-# }}}
