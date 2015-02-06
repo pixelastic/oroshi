@@ -78,6 +78,7 @@ alias vrpsh='git push heroku $(git current-branch)'
 alias vtc='git tag'
 alias vtl='git tag-list'
 alias vtR='git tag -d'
+alias vtRr='git-tag-remove-remote'
 alias vts='git checkout'
 alias vtt='git current-tag'
 # }}}

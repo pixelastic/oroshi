@@ -1,0 +1,25 @@
+#compdef git-tag-remove-remote
+
+_git-tag-remove-remote () {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    typeset -a remote_tags
+    remote_tags=($(git ls-remote --tags 2>/dev/null \
+      | awk '{print $2}' \
+      | sed 's#refs/tags/###'))
+
+    _arguments \
+        '*: :->remote_tags'
+
+    case $state in
+    remote_tags)
+        _arguments '1:Remote Tags:($remote_tags)'
+    ;;
+    *)
+    esac
+}
+
+_git-tag-remove-remote "$@"
+
+

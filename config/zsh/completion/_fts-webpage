@@ -8,7 +8,7 @@ _fts-webpage () {
 
 	# suggesting arguments
 	_arguments \
-		"*:binary img file:->webpage_file" \
+		"*:web page:->webpage_file" \
 		&& return 0
 
 	# state machine match

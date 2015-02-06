@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# Delete a remote tag
+local tag=$1
+
+git push origin :refs/tags/$1
