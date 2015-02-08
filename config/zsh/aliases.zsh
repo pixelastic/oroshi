@@ -118,7 +118,7 @@ alias pinta='gui pinta'
 alias poedit='gui poedit'
 alias virtualbox='gui virtualbox'
 alias vlc='gui vlc'
-alias xmind='guid XMind'
+alias xmind='gui XMind'
 # }}}
 
 # Apt-get {{{
