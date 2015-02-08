@@ -105,19 +105,20 @@ alias wt='watch -c ''tree -aNC -I ".hg\|.git"'''
 alias prd='prefix-date'
 # }}}
 # GUI apps {{{
+alias charles='gui charles'
 alias chrome="gui chromium-browser"
 alias disk-utility='gui palimpsest'
 alias ebook-viewer='gui ebook-viewer'
 alias eog='gui eog'
 alias evince="gui evince"
-alias hipchat="gui hipchat"
 alias gftp='gui gftp'
+alias hipchat="gui hipchat"
 alias lowriter='gui lowriter'
-alias poedit='gui poedit'
-alias vlc='gui vlc'
-alias virtualbox='gui virtualbox'
-alias charles='gui charles'
 alias pinta='gui pinta'
+alias poedit='gui poedit'
+alias virtualbox='gui virtualbox'
+alias vlc='gui vlc'
+alias xmind='guid XMind'
 # }}}
 
 # Apt-get {{{
