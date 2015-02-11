@@ -1,57 +1,44 @@
 {
-  // Force vars to be camelCased or UPPER_CASE
-  "camelcase": true,
-  // Force {} around single line if and while blocks
-  "curly": true,
-  // Force wrapping self-invocating function in parentheseses
-  "immed": true,
-  // Force two spaces indentation
-  "indent": 2,
-  // Warn for var hoisting problems, but allow function definitions after they
-  // are used
-  "latedef": "nofunc",
-  // Force constructor methods to start with a capitalized letter
-  "newcap": true,
-  // Allow use of ++ and -- operator
-  "plusplus": false,
-  // Force strings to use single quotes
-  "quotmark": "single",
-  // Prohibits trailing whitespace
-  "trailing": true,
-  // Allow browser-specific objects
-  "browser": true,
-  // Allow node-specific objects
-  "node": true,
-  // List of custom globals jshint should know about
-  "globals": {
-    "angular": false,
-    "_": true,
-    "$": false,
-    "moment": false,
-    "describe": false,
-    "xdescribe": false,
-    "ddescribe": false,
-    "it": false,
-    "xit": false,
-    "iit": false
-  },
-
-  // Prohibit & and |, prevent mistyped && or ||
   "bitwise": true,
-  // Prohibits != and == in favor of !== and ===
+  "browser": true,
+  "camelcase": true,
+  "curly": true,
   "eqeqeq": true,
-  // Force ECMAScript 3 specification
-  "es3": true,
-  // Force filtering for in loops on hasOwnProperty
+  "expr": true,
   "forin": true,
-  // Prohibit extending native object prototypes
   "freeze": true,
-  // Prohibits use of .caller and .callee
+  "funcscope": false,
+  "globals": {
+    "$": false,
+    "_": true,
+    "afterEach": false,
+    "beforeEach": false,
+    "ddescribe": false,
+    "describe": false,
+    "expect": false,
+    "fixture": false,
+    "iit": false,
+    "it": false,
+    "sinon": false,
+    "xdescribe": false,
+    "xit": false
+  },
+  "immed": true,
+  "indent": 2,
+  "latedef": "nofunc",
+  "maxdepth": 3,
+  "maxlen": 120,
+  "maxparams": 3,
+  "newcap": true,
   "noarg": true,
-  // Prohibits calling new Something() with assigning it to a var.
+  "node": true,
+  "noempty": true,
+  "nonbsp": true,
   "nonew": true,
-  // Prohibits using an undefined variable
+  "notypeof": false,
+  "plusplus": false,
+  "quotmark": "single",
+  "strict": true,
   "undef": true,
-  // Prohibits not using a defined variable
   "unused": true
 }
