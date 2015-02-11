@@ -212,6 +212,9 @@ alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/download
 alias cssmin="cleancss"
 alias jsmin="uglifyjs"
 alias htmlmin="html-minifier --remove-comments --collapse-whitespace --remove-attribute-quotes --remove-redundant-attributes --use-short-doctype"
+function header() {
+  curl -s -D - $1 -o /dev/null
+}
 # }}}
 
 
