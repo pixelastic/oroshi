@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Link npm main config file to ~/.npmrc
+
+# Paths
+configFile=~/.oroshi/private/config/npm/default.conf
+destFile=~/.npmrc
+
+# Create link
+ln -fs $configFile $destFile
