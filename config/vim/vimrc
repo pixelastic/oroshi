@@ -99,7 +99,7 @@ set scrolloff=8
 " Hide invisible chars by default, but if they should be displayed, define the
 " characters to define them.
 set nolist
-set listchars=tab:▸\ ,eol:¬,trail:·
+set listchars=nbsp:∅,tab:▸\ ,eol:¬,trail:·
 " Chars used for GUI
 set fillchars=stl:\ ,stlnc:\ ,vert:\|,fold:\ ,diff:-
 " }}}

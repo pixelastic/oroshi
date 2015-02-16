@@ -1,5 +1,4 @@
 #!/usr/bin/env zsh
-#
 
 for file in $@; do
   local fullname=${file:a}
@@ -10,7 +9,7 @@ for file in $@; do
 
   ffmpeg \
       -i \
-      $fullname \
+      "$fullname" \
       -codec:v libx264 \
       -profile:v high \
       -preset slower \
@@ -19,8 +18,8 @@ for file in $@; do
       -threads 0 \
       -codec:a libfaac \
       -b:a 196k \
-      $finalname \
-      && mv -f $finalname $fullname
+      "$finalname" \
+      && mv -f "$finalname" "$fullname"
 done
 
 
