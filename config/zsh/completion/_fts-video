@@ -1,0 +1,25 @@
+#compdef michel-compress-video
+# Will only suggest video files
+
+_fts-video () {
+	# local var definition to not pollute global scope
+	local curcontext=$curcontext state line context
+	typeset -A opt_args
+
+	# suggesting arguments
+	_arguments \
+		"*:video file:->video_file" \
+		&& return 0
+	
+	# State machine
+	case $state in
+		(video_file)
+			local glob=$(echo $O_FILETYPES_EXTENSIONS[video] | sed 's/,/|/g')
+			_files -g '*.('$glob')' \
+			&& return 0
+	esac
+
+	return 1
+}
+
+_fts-video "$@"

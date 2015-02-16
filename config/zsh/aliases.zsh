@@ -64,9 +64,9 @@ alias -g ....='../../..'
 alias -g .....='../../../..'
 # }}}
 # Typos {{{
-alias sl="ls"
 alias mc="mv"
-alias vom="vim"
+alias ms="ls"
+alias sl="ls"
 # }}}
 # Misc {{{
 # cp and mv using rsync and preserving attributes, and accross fat32 drives

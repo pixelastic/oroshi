@@ -1,0 +1,28 @@
+#!/usr/bin/env zsh
+#
+
+for file in $@; do
+  local fullname=${file:a}
+  local dirname=${fullname:h}
+  local extension=${fullname:e}
+  local basename=${fullname:r}
+  local finalname=${basename}_tmp.${extension}
+
+  ffmpeg \
+      -i \
+      $fullname \
+      -codec:v libx264 \
+      -profile:v high \
+      -preset slower \
+      -b:v 1000k \
+      -vf scale=-1:576 \
+      -threads 0 \
+      -codec:a libfaac \
+      -b:a 196k \
+      $finalname \
+      && mv -f $finalname $fullname
+done
+
+
+
+
