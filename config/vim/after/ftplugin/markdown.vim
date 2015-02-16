@@ -64,6 +64,22 @@ endfunction
 " }}}
 " Line endings {{{
 " Use windows line endings so readme files can be easily edited on Notepad
-setlocal fileformat=dos
-au BufNewFile,BufRead,BufWritePre <buffer> silent call ConvertLineEndingsToDos()
+" Except when writing slides, because vimdeck currently have a bug where only
+" markdown files with unix line ending are correctly generated
+" https://github.com/tybenz/vimdeck/issues/29
+if expand('%') !~ 'slides.md'
+  setlocal fileformat=dos
+  au BufNewFile,BufRead,BufWritePre <buffer> silent call ConvertLineEndingsToDos()
+endif
+" vimdeck {{{
+if expand('%') =~# 'slide\(\d\{3\}\).md'
+  " Remove GUI
+  setlocal nonumber
+  setlocal hidden
+  setlocal laststatus=0
+  setlocal nocursorline
+  setlocal nocursorcolumn
+  setlocal colorcolumn=1000
+endif
+" }}}
 " }}}
