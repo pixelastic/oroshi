@@ -222,6 +222,9 @@ function getPromptRepoBranch() {
   if [[ $promptBranch = 'master' ]]; then
     promptBranchColor=$promptColor[branchMaster]
   fi
+  if [[ $promptBranch = 'release' ]]; then
+    promptBranchColor=$promptColor[branchRelease]
+  fi
   if [[ $promptBranch = 'develop' ]]; then
     promptBranchColor=$promptColor[branchDevelop]
   fi

@@ -4,21 +4,22 @@
 
 class GitBranchList
     @branch_colors = {
-      :master => 69,
-      :develop => 184,
-      :fix => 203,
       :bugfix => 203,
+      :develop => 184,
       :feature => 202,
-      :review => 28,
-      :remotes => 160,
-      :test => 136,
+      :fix => 203,
+      :gh_pages => 24,
+      :master => 69,
       :perf => 141,
-      :gh_pages => 24
+      :release => 171,
+      :remotes => 160,
+      :review => 28,
+      :test => 136
     }
     @hash_color = 67
 
   def self.color_branchname(txt)
-    branches=/master|bugfix|develop|fix|feature|perf|review|remotes|test|gh-pages/
+    branches=/bugfix|develop|feature|fix|gh-pages|master|perf|release|remotes|review|test/
     suffix=/\/?[\w\/\-\.]*/
 
     # branch names
