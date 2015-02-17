@@ -100,6 +100,3 @@
 [submodule "config/vim/bundle/available/argtextobj"]
 	path = config/vim/bundle/available/argtextobj
 	url = git@github.com:vim-scripts/argtextobj.vim.git
-[submodule "config/vim/bundle/available/SyntaxRange"]
-	path = config/vim/bundle/available/SyntaxRange
-	url = git@github.com:vim-scripts/SyntaxRange.git
