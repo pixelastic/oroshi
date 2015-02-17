@@ -3,7 +3,10 @@
 
 
 class GitBranchList
-    @branch_colors = {
+
+	def initialize(*args)
+    @args = args;
+    @colors = {
       :bugfix => 203,
       :develop => 184,
       :feature => 202,
@@ -17,34 +20,50 @@ class GitBranchList
       :test => 136
     }
     @hash_color = 67
-
-  def self.color_branchname(txt)
-    branches=/bugfix|develop|feature|fix|gh-pages|master|perf|release|remotes|review|test/
-    suffix=/\/?[\w\/\-\.]*/
-
-    # branch names
-    txt.gsub!(/((#{branches})#{suffix})/) do |_|
-      fullname, type = $1, $2
-      type.gsub!('-', '_')
-      color=@branch_colors[type.to_sym]
-      self.color_text(fullname, color)
-    end
-
-    # commit hash
-    txt.gsub!(/([a-f0-9]{7})/) do |hash|
-      self.color_text(hash, @hash_color)
-    end
-
-
-    return txt
-  end
+	end
 
   # Wrap a text in color codes
-  def self.color_text(text, color)
+  def colorize(text, color)
     color = "%03d" % color
     return "[38;5;#{color}m#{text}[00m"
   end
 
+  def colorize_pattern(line, pattern, color)
+    line.gsub(pattern) do |match|
+      colorize(match, color)
+    end
+  end
 
+  def colorize_hash(line)
+    colorize_pattern(line, /([a-f0-9]{7})/, @hash_color)
+  end
+
+  def colorize_specific_branches(line) 
+    @colors.each do |color|
+      branch_name = color[0]
+      branch_color = color[1]
+
+      line = colorize_pattern(line, /( #{branch_name} )/, branch_color)
+      line = colorize_pattern(line, /( #{branch_name}$)/, branch_color)
+      line = colorize_pattern(line, /('#{branch_name}')/, branch_color)
+      line = colorize_pattern(line, /( #{branch_name}\/(.*) )/, branch_color)
+    end
+    return line
+  end
+
+  def colorize_default_branches(line)
+    colorize_pattern(line, /^( |\*) (.*) /, @colors[:feature])
+  end
+
+  def run
+    output = %x[git branch --verbose #{@args.join(' ')}].split("\n")
+
+    output.each do |line|
+      line = colorize_hash(line)
+      line = colorize_specific_branches(line)
+      line = colorize_default_branches(line)
+      puts line
+    end
+  end
 end
 

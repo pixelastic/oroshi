@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 require_relative '../etc/git-branch-list/git-branch-list'
-puts GitBranchList.color_branchname(`git branch --verbose #{ARGV.join(' ')}`)
+GitBranchList.new(*ARGV).run()
 

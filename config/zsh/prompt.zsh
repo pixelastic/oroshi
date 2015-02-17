@@ -157,7 +157,7 @@ function getPromptRepoRebase() {
   if [[ -r $isRebasingFile ]]; then
     local maxRebase=$(cat $rebaseInternalDir/last)
     local nextRebase=$(cat $rebaseInternalDir/next)
-    echo "$FG[$promptColor[rebase]]${nextRebase}/${maxRebase}  $FX[reset]"
+    echo "$FG[$promptColor[rebase]]${nextRebase}/${maxRebase}  $FX[reset]"
   fi
 }
 # }}}
@@ -182,7 +182,7 @@ function getPromptRepoPushPull() {
 
   if [ $branchRemote = '@{u}' ]; then
     # No distant repo created
-    promptPushPullIndicator="  "
+    promptPushPullIndicator="  "
   elif [ $branchLocal = $branchRemote ]; then
     # Branches are equal
   elif [ $branchLocal = $branchBase ]; then
@@ -193,7 +193,7 @@ function getPromptRepoPushPull() {
     promptPushPullIndicator="  "
   else
     # Diverges
-    promptPushPullIndicator="  "
+    promptPushPullIndicator="  "
   fi
 
   echo $promptPushPullIndicator;
@@ -217,7 +217,7 @@ function getPromptRepoBranch() {
   # Branch color
   if [[ $promptBranch = 'HEAD' ]]; then
     promptBranchColor=$promptColor[branchDetached]
-    promptBranch="$(getGitShortHash)  "
+    promptBranch="$(getGitShortHash) ⭠ "
   fi
   if [[ $promptBranch = 'master' ]]; then
     promptBranchColor=$promptColor[branchMaster]
