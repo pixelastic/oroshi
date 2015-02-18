@@ -42,6 +42,7 @@
   rollback = reset --soft HEAD^
   root = !pwd
   status-short = status --short
+  submodule-update = !git submodule update
   submodule-download =!git submodule init && git submodule update
   tabula-rasa = !git reset --hard && git clean -fd
   tag-list = !git tag -n1 -l | sort -V
