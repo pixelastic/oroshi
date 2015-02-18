@@ -44,7 +44,7 @@
   status-short = status --short
   submodule-download =!git submodule init && git submodule update
   tabula-rasa = !git reset --hard && git clean -fd
-  tag-list = tag -n1 -l
+  tag-list = !git tag -n1 -l | sort -V
   unstage = reset HEAD
 [advice]
   ; statusHints = false
