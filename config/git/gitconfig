@@ -1,35 +1,13 @@
-[user]
-  name = Pixelastic
-  email = tim@pixelastic.com
-[core]
-  editor = vim
-  excludesfile = ~/.gitignore
-  safecrlf = false
-[merge]
-  tool = fugitive
-[mergetool "fugitive"]
-  cmd = vim -f -c \"Gdiff\" \"$MERGED\"
-[color]
-  ui = true
-[color "diff"]
-  meta = 136
-  frag = 141
-  func = 250 bold
-  plain = 252
-  new = 35 
-  old = 160
-  whitespace = 88 88
-  commit = 67
 [alias]
   amend = commit --amend -v
   branch-list = !git-branch-list
+  branch-update = !git-branch-update
   commit-all = !git add --all . && git commit -v --all
   conflicts = diff --name-only --diff-filter=U
   current-branch = !git rev-parse --abbrev-ref HEAD 2>/dev/null
   current-tag = !git describe --tags --abbrev=0 2>/dev/null
   diff-staged = diff -w --color-words --staged
   download = clone --depth=1
-  fetch-all-locally = !git-fetch-all-locally
   fix-conflicts = !git-fix-conflicts
   fix-jshint = !git-fix-jshint
   import-branch = !git-import-branch
@@ -49,12 +27,35 @@
   unstage = reset HEAD
 [advice]
   ; statusHints = false
+[color]
+  ui = true
+[color "diff"]
+  commit = 67
+  frag = 141
+  func = 250 bold
+  meta = 136
+  new = 35 
+  old = 160
+  plain = 252
+  whitespace = 88 88
+[core]
+  editor = vim
+  excludesfile = ~/.gitignore
+  safecrlf = false
+[diff]
+  ; wordRegex = "[a-zA-Z]{5,}"
+[merge]
+  tool = fugitive
+[mergetool "fugitive"]
+  cmd = vim -f -c \"Gdiff\" \"$MERGED\"
 [push]
   default = simple
+[remote "origin"]
+	prune = true ; Stop tracking local branch deleted on remote
 [rerere]
   enabled = true
 [status]
   showUntrackedFiles = all
-[diff]
-  ; wordRegex = "[a-zA-Z]{5,}"
-
+[user]
+  name = Pixelastic
+  email = tim@pixelastic.com

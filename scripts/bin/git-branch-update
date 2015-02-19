@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+# Will fetch all branches from origin, and track them locally
+# Will also stop tracking any branch that is deleted on the remote
+
+if git fetch --all --prune &>/dev/null; then
+  echo "✔ Fetched all remote branches"
+fi
+
+git branch --no-color -r | while read remoteBranch
+do
+	if [[ $remoteBranch =~ "->" ]]; then
+		continue;
+	fi;
+
+  localBranch=${remoteBranch/origin\/}
+  if git branch $localBranch $remoteBranch &>/dev/null; then
+    echo "✔ Tracking $localBranch"
+  fi
+done 
