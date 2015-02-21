@@ -1,0 +1,24 @@
+#!/usr/bin/env zsh
+# Convert a jpg to the optimal version
+
+local fullPath
+local dssimPath
+
+for file in $@; do
+	if [[ ! -r $file ]];then
+		echo "✘ $file not found!"
+		continue
+	fi
+
+
+  fullPath=${file:a}
+  dssimPath=${fullPath:r}_dssim.jpg
+
+  if ! cjpeg-dssim jpegoptim $fullPath; then
+    echo "✘ Unable to convert ${fullPath:t}"
+    continue
+  fi
+
+  mv -f $dssimPath $fullPath
+  echo "✔ Converted ${fullPath:t}"
+done
