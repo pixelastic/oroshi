@@ -64,7 +64,7 @@ alias vrec='git rebase --continue'
 # }}}
 # [r]emote {{{
 alias vrR='git remote rm'
-alias vra='git remote add'
+alias vra='git remote-add'
 alias vrdw='git download'
 alias vrl='git remote -v'
 alias vrpl='git pull --rebase && git submodule-update'
