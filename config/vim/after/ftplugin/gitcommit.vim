@@ -1,17 +1,26 @@
 " GITCOMMIT
 
 " When writing a commit message {{{
-if expand('%')=='COMMIT_EDITMSG'
+if expand('%') =~ 'COMMIT_EDITMSG'
+  let b:onBufEnterFired = 0
   " Add possible types {{{
   augroup gitcommit_BufEnter
     autocmd!
     au BufEnter <buffer> call GitCommitOnBufEnter()
   augroup END
+  " We need to delay the call a bit, so we use BufEnter. We also take care to
+  " only fire it once because each time we move into split windows, it will
+  " fire it again (and we use split windows with committia).
   function! GitCommitOnBufEnter() 
+    if b:onBufEnterFired ==# 1
+      return
+    endif
+
     let @x='# Possible types : chore, docs, feat, fix, perf, refactor, style, test'
     normal 1gg
     put x
     normal gg
+    let b:onBufEnterFired = 1
   endfunction
   " }}}
   " Save commit {{{
