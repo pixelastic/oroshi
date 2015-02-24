@@ -31,12 +31,12 @@ set noswapfile
 " }}}
 " BASIC  {{{
 " Switch working directory to the directory of the currently edited file
-set autochdir
-" Workaround autocmd to manually switch directory
-augroup autochdir
-	au!
-	autocmd BufEnter * silent! lcd %:p:h
-augroup END
+" set autochdir
+" " Workaround autocmd to manually switch directory
+" augroup autochdir
+" 	au!
+" 	autocmd BufEnter * silent! lcd %:p:h
+" augroup END
 " Saving files whenever I move from one to another
 set autowrite
 " Read files as UTF-8
