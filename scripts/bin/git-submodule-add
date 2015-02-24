@@ -1,0 +1,40 @@
+#!/usr/bin/env zsh
+# Will add a new submodule to a repo.
+# Default `git submodule add` requires to be run from the git root. This
+# wrapper will not need it.
+# This wrapper will also allow either `path directory` or `directory path`
+
+local repositoryUrl=$1
+local filepath=$2
+local gitRoot
+
+# Need at least one argument
+if ! [ -n "$1" ]; then
+  echo "✘ You must pass at least the repository url"
+  exit 1
+fi
+
+# Only a repo url, then the filepath is the current path
+if ! [ -n "$2" ]; then
+  filepath=$(readlink -f $(pwd))
+fi
+
+# Did we messed up repo and filepath ?
+if ! [ -d $filepath ]; then
+  local tmp=$filepath
+  filepath=$repositoryUrl
+  repositoryUrl=$tmp
+fi
+
+# Final filepath should include name of the repo
+local dirname
+dirname=$(echo ${repositoryUrl:t} | sed 's/\.git$//')
+filepath=$filepath/$dirname
+
+# Moving to repository root
+cd $filepath
+gitRoot=$(git rev-parse --show-toplevel)
+cd $gitRoot
+
+# Adding subrepo
+git submodule add $repositoryUrl "$filepath"

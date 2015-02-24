@@ -95,7 +95,7 @@ alias vstl='git stash list'
 # }}}
 # [s]ub-[m]odules {{{
 alias vsmi='git submodule init'
-alias vsma='git submodule add'
+alias vsma='git submodule-add'
 alias vsmu='git submodule update'
 alias vsmdl='git submodule-download'
 # }}}
