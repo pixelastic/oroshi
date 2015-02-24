@@ -62,6 +62,15 @@ function! MarkdownBeautify()
   execute 'normal '.linenr.'gg'
 endfunction
 " }}}
+" Auto generate index.html when in a remark directory
+let b:generateScript = expand('%:h').'/generate'
+if filereadable(b:generateScript)
+  augroup markdown_generate_remark
+    au!
+    au BufWritePost <buffer> silent! execute '!'.b:generateScript
+  augroup END
+endif
+"
 " Line endings {{{
 setlocal fileformat=dos
 au BufNewFile,BufRead,BufWritePre <buffer> silent call ConvertLineEndingsToDos()
