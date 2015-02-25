@@ -16,7 +16,7 @@ if expand('%') =~ 'COMMIT_EDITMSG'
       return
     endif
 
-    let @x='# Possible types : chore, docs, feat, fix, perf, refactor, style, test'
+    let @x='# Possible types : feat, fix, refactor, chore, style, perf, test, docs'
     normal 1gg
     put x
     normal gg
