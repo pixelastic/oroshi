@@ -13,6 +13,18 @@ alias cdkiss="/var/www/java/kissihm/kissihm/src/main/webapp/resources/"
 alias cdmeetups="cd /home/tca/perso/notes/meetups/"
 # }}}
 
+# Music {{{
+alias play-coffee='mplayer ~/perso/music/nature/Coffitivity/*.mp3'
+alias play-rain='mplayer ~/perso/music/nature/Rain/*.mp3'
+function play-buddha() {
+  cd ~/perso/music/music/B/Buddha\ Bar
+
+  local randomPath
+  randomPath=$(\ls . | shuf -n 1)
+  mplayer "./${randomPath}/"**/*.mp3
+}
+# }}}
+
 # Oroshi {{{
 # Reload keybings for this OS
 function ok() {
