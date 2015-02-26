@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Copy qt config
+
+# Paths
+configDir=~/.oroshi/config/qt
+configFile=$configDir/default.conf
+destDir=~/.config/qtchooser
+destFile=$destDir/default.conf
+
+mkdir -p $destDir
+ln -fs $configFile $destFile

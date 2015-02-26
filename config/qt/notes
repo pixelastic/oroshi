@@ -1,0 +1,2 @@
+This is a config file needed by qmake to know where to find the custom version
+we installed manually (see ~/.oroshi/scripts/install/qmake)
