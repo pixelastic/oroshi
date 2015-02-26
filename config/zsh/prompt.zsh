@@ -7,11 +7,23 @@ promptinit
 
 # Left part
 # user@host:/path/ %
-PROMPT='$promptUsername@$promptHostname:$(getPromptPath) $(getPromptHash) '
+PROMPT='${promptUsername}$(getPromptLastCommandFailureIndicator)${promptHostname}:$(getPromptPath) $(getPromptHash) '
 # User
 promptUsername="$FG[$promptColor[username]]%n$FX[reset]"
 # Hostname
 promptHostname="$FG[$promptColor[hostname]]%m$FX[reset]"
+# Last command failure indicator
+# getPromptLastCommandFailureIndicator() {{{
+# Will simply return @, but will color it if last command was a failure
+function getPromptLastCommandFailureIndicator() {
+  if [[ $? > 0 ]]; then
+    echo "$FG[$promptColor[lastCommandFailed]]@$FX[reset]"
+    return
+  fi
+  echo "@"
+}
+# }}}
+
 # Path
 # getPromptPath() {{{
 # This will return a formatted path.

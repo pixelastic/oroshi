@@ -27,6 +27,7 @@ promptColorDefault=(
   pathOwner         "035" # Prompt color of path if user is owner
   pathGroup         "203" # Prompt color of path if user is in group
   pathRestricted    "160" # Prompt color if not owner nor in group
+  lastCommandFailed "203" # Prompt color if last command failed
 
   tag                "241" # Color of the current tag
   tagExact           "202" # Color of the exact current tag
