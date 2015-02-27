@@ -1,3 +1,15 @@
 #!/usr/bin/env bash
 sudo apt-get install git-core
-sudo apt-get install git-extras
+
+
+# Installing git-extras
+# Version in apt-get is outdated
+# Install can warn about being unable to delete a bash-completion, but
+# everything is still installed
+cd ~/local/etc
+git clone git@github.com:tj/git-extras.git
+cd ./git-extras
+
+gem install ronn
+PREFIX=~/local make
+PREFIX=~/local make install
