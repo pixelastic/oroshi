@@ -28,29 +28,18 @@ export CHROME_BIN=`which chromium-browser`
 # }}}
 
 # Basic commands {{{
-# ls : colors and human readable size
-alias ls="ls -vhlp --color=always --group-directories-first"
-# grep : colored
-alias grep='grep -i --color=auto'
-# ag
 alias ag='ag --context=2 --smart-case --pager="less -R"'
-# tree : colored, show hidden files but hides git/hg. Display non-ASCII chars
-alias tree='tree -aNC -I ".hg|.git"'
-# watch : colored
-alias watch='watch -c '
-# diff : colored
-alias diff='colordiff'
-
-# Create subdirectories recursively
-alias mkdir="mkdir -p"
-# rm : use system trash
-alias rm='trash-put'
-# rmdir : use system trash
-alias rmdir='better-rmdir'
-# cp : recursive and verbose
 alias cp='cp -rv'
-# mv : verbose and interactive if destination exists
+alias diff='colordiff'
+alias grep='grep -i --color=auto'
+alias ls="ls -vhlp --color=always --group-directories-first"
+alias mkdir="mkdir -p"
 alias mv='mv -vi'
+alias rm='trash-put'
+alias rmdir='better-rmdir'
+alias scp='scp -r '
+alias tree='tree -aNC -I ".hg|.git"'
+alias watch='watch -c '
 # }}}
 # Global aliases {{{
 alias -g NE='2>/dev/null'
