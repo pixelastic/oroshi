@@ -9,13 +9,12 @@ alias vbR='git branch -D'
 alias vbRr='git branch-remove-remote'
 alias vbb='git current-branch'
 alias vbc='git checkout -b'
-alias vbib='git import-branch'
 alias vbl='git branch-list'
 alias vbla='git branch-list --all'
 alias vbm='git rebase'
 alias vbmi='git rebase -i'
 alias vbmd='vbm develop'
-alias vbmm='git rebase master'
+alias vbmm='vbm master'
 alias vbmv='git branch -m'
 alias vbu='git branch-update'
 alias vbru='git remote update && git remote prune origin'
@@ -23,8 +22,6 @@ alias vbs='git checkout'
 alias vbsd='cd $(git root) && git checkout develop'
 alias vbsm='cd $(git root) && git checkout master'
 alias vbud='vbsd && vbm master && vbsm' # Merge master to develop (Update develop)
-alias vbuf='git update-feature develop'
-alias vbufm='git update-feature master'
 alias vbum='vbsm && vbm develop && vbsd' # Merge develop to master (Update master)
 # }}}
 # [c]ommits {{{

@@ -57,8 +57,21 @@ inoremap <silent> <buffer> <F4> <Esc>:call MarkdownBeautify()<CR>
 nnoremap <silent> <buffer> <F4> :call MarkdownBeautify()<CR>
 function! MarkdownBeautify() 
   let linenr=line('.')
-  silent! execute '%! formd -r'
-  silent! execute '%s///g'
+  " Convert links into references
+  silent! %! formd -r
+  silent! %s///e
+  " Remove bad chars after copy-paste
+  silent! %s/’/'/e
+  silent! %s/‘/'/e
+  " Fix common typos/errors
+  silent! %s/requete/requête/e
+  silent! %s/plutot/plutôt/e
+  silent! %s/fenetre/fenêtre/e
+  silent! %s/interessant/intéressant/e
+  silent! %s/accelerer/accélérer/e
+  silent! %s/interet/intérêt/e
+  silent! %s/entete/entête/e
+
   execute 'normal '.linenr.'gg'
 endfunction
 " }}}
