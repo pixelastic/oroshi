@@ -1,0 +1,64 @@
+#!/usr/bin/env ruby
+require "shellwords"
+# Wrapper for pushing to remote
+# - Will init the upstream branch on first push
+# - Will allow user to specify a remote and a branch (default to origin and
+#   current branch)
+#
+# Usage :
+# $ git-remote-push
+# $ git-remote-push remote
+# $ git-remote-push remote branch
+
+class GitRemotePush
+
+  def initialize(*args)
+    @flags = []
+    @args = []
+
+    # Split --flags and real options
+    ARGV.each do |arg|
+      if arg =~ /^-/
+        @flags << arg
+      else
+        @args << arg
+      end
+    end
+
+    @remoteName = @args[0] || "origin"
+    @branchName = @args[1] || current_branch
+  end
+
+  def current_branch
+    %x[git current-branch].strip
+  end
+
+  def first_push?
+    %x[git config "branch.#{@branchName}.merge"].strip == ''
+  end
+
+  def push_tags
+    system("git push #{@remoteName} #{@branchName} --tags")
+  end
+
+  def push_branch
+    command_args=@flags
+    # Setting remote
+    if first_push?
+      command_args << "--set-upstream #{@remoteName}"
+    else
+      command_args << @remoteName
+    end
+    # Setting branch
+    command_args << @branchName
+
+    system("git push #{command_args.join(' ')}")
+  end
+
+  def run
+    push_branch
+    push_tags
+  end
+
+end
+GitRemotePush.new(*ARGV).run()

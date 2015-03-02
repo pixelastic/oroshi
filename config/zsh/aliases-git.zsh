@@ -69,12 +69,11 @@ alias vrdw='git download'
 alias vrl='git remote -v'
 alias vrpl='git pull --rebase && git submodule-update'
 alias vrplu='git pull --rebase upstream develop && git fetch --tags upstream' # Used at meetic
-alias vrps='git push-origin'
-alias vrpsF='git push-origin -f'
-alias vrpsa='git push-origin --all'
-alias vrpsd='git push-origin develop'
+alias vrps='git remote-push'
+alias vrpsF='git remote-push -f'
+alias vrpsa='git remote-push --all'
 alias vrpsh='git push heroku $(git current-branch)'
-alias vrpsm='git push-origin master'
+alias vrpsm='git remote-push master'
 alias vrr='git remote show origin -n'
 # }}}
 # [t]ags {{{
