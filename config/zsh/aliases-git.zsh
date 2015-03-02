@@ -6,7 +6,7 @@
 
 # [b]ranches {{{
 alias vbR='git branch -D'
-alias vbRr='git push origin --delete' # Remove remote branch
+alias vbRr='git branch-remove-remote'
 alias vbb='git current-branch'
 alias vbc='git checkout -b'
 alias vbib='git import-branch'
@@ -70,10 +70,8 @@ alias vrl='git remote -v'
 alias vrpl='git pull --rebase && git submodule-update'
 alias vrplu='git pull --rebase upstream develop && git fetch --tags upstream' # Used at meetic
 alias vrps='git remote-push'
-alias vrpsF='git remote-push -f'
 alias vrpsa='git remote-push --all'
 alias vrpsh='git push heroku $(git current-branch)'
-alias vrpsm='git remote-push master'
 alias vrr='git remote show origin -n'
 # }}}
 # [t]ags {{{

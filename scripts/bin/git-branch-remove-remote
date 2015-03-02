@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# Delete a remote branch
+local branch=$1
+local remote=$2
+if [[ $remote = '' ]]; then
+  remote='origin'
+fi
+
+git push $remote --delete $branch
+
