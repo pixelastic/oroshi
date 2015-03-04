@@ -6,7 +6,6 @@
 
 local repositoryUrl=$1
 local filepath=$2
-local gitRoot
 
 # Need at least one argument
 if ! [ -n "$1" ]; then
@@ -20,21 +19,31 @@ if ! [ -n "$2" ]; then
 fi
 
 # Did we messed up repo and filepath ?
+# We'll just swap them if not set in the right order
 if ! [ -d $filepath ]; then
   local tmp=$filepath
   filepath=$repositoryUrl
   repositoryUrl=$tmp
 fi
 
-# Final filepath should include name of the repo
+# Getting the directory name of the submodule from the url
 local dirname
 dirname=$(echo ${repositoryUrl:t} | sed 's/\.git$//')
-filepath=$filepath/$dirname
 
-# Moving to repository root
+# Getting the full path of the submodule
+local fullPath
+fullPath=$(readlink -f $filepath)
+
+# Getting the git root path
 cd $filepath
+local gitRoot
 gitRoot=$(git rev-parse --show-toplevel)
-cd $gitRoot
+
+# Getting the submodule path, relative to the git root
+local relativePath
+relativePath=$(python -c "import os.path; print os.path.relpath('$fullPath', '$gitRoot')")
 
 # Adding subrepo
-git submodule add $repositoryUrl "$filepath"
+cd $gitRoot
+git submodule add $repositoryUrl "$relativePath/$dirname"
+echo "✔ $dirname submodule added"
