@@ -61,7 +61,7 @@ alias vrec='git rebase --continue'
 # }}}
 # [r]emote {{{
 alias vrR='git remote rm'
-alias vra='git remote-add'
+alias vrc='git remote-create'
 alias vrdw='git download'
 alias vrl='git remote -v'
 alias vrpl='git pull --rebase && git submodule-update'
@@ -89,7 +89,7 @@ alias vstl='git stash list'
 # }}}
 # [s]ub-[m]odules {{{
 alias vsmi='git submodule init'
-alias vsma='git submodule-add'
+alias vsmc='git submodule-create'
 alias vsmu='git submodule update'
 alias vsmdl='git submodule-download'
 # }}}

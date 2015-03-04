@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+# Creates a new remote, and auto-track its branches
+# $ git-remote-create remoteName remoteUrl
+
+local remoteName=$1
+local remoteUrl=$2
+
+if git remote add $remoteName $remoteUrl &>/dev/null; then
+  echo "✔ Add remote $remoteName";
+else
+  echo "✘ Unable to add remote"
+  exit 1
+fi
+
+if git fetch -q $remoteName; then
+  echo "✔ Fetch branches"
+else
+  echo "✘ Unable to fetch branches"
+  exit 1
+fi
