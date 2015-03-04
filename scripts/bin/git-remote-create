@@ -5,7 +5,7 @@
 local remoteName=$1
 local remoteUrl=$2
 
-if git remote add $remoteName $remoteUrl &>/dev/null; then
+if git remote add $remoteName $remoteUrl 1>/dev/null; then
   echo "✔ Add remote $remoteName";
 else
   echo "✘ Unable to add remote"
