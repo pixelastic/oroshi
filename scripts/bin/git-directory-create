@@ -3,45 +3,51 @@
 
 # Default name is name of current dir
 local repoName=${PWD:t:l}
+local host=$1
 
 # Init repo
-git init -q
-echo "* Init new repo"
+if git init --quiet; then
+  echo "✔ Init new repo"
+else
+  echo "✘ Unable to create repo"
+  exit 1
+fi
 
 # Set default remote
-local host=$1
 if [[ $host == 'bitbucket' || $host == 'bb' ]]; then
 	git remote add origin ssh://git@bitbucket.org/pixelastic/${repoName}.git
-	echo "* Create origin remote on bitbucket"
+	echo "✔ Create origin remote on bitbucket"
 fi
 if [[ $host == 'heroku' || $host == 'h' ]]; then
 	git remote add origin git@heroku.com:${repoName}.git
-	echo "* Create origin remote on heroku"
+	echo "✔ Create origin remote on heroku"
 fi
 if [[ $host == 'github' || $host == 'gh' || $host == '' ]]; then
 	git remote add origin git@github.com:pixelastic/${repoName}
-	echo "* Create origin remote on git"
+	echo "✔ Create origin remote on git"
 fi
 
-# Use git flow
-git flow init -d
-
-# Move to master branch
-git checkout master
-
-# Set master branch to push to default remote
-echo '[branch "master"]
-	remote = origin
-	merge = refs/heads/master' >> ./.git/config
-echo "* Set master branch to origin remote"
+if git checkout --quiet -b master; then
+  echo "✔ Create master branch"
+else
+  echo "✘ Unable to create master branch"
+  exit 1
+fi
 
 # Add an empty .gitignore
-cp ~/.oroshi/config/git/gitignore .gitignore
-echo "* Add empty .gitignore"
+if cp ~/.oroshi/config/git/gitignore .gitignore; then
+  echo "✔ Add default .gitignore"
+else
+  echo "✘ Unable to copy .gitignore"
+  exit 1
+fi
 
 # Commit this as an initial commit
-git add .
-git commit -m "Initial commit." -q
-echo "* Initial commit"
+if git add . && git commit --quiet -m "Initial commit."; then
+  echo "✔ Initial commit"
+else
+  echo "✘ Unable to do the initial commit"
+  exit 1
+fi
 
-echo "New git repo created!"
+echo "✔ New git repo created!"
