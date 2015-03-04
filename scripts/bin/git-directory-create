@@ -5,7 +5,6 @@
 local repoName=${PWD:t:l}
 local host=$1
 
-# Init repo
 if git init --quiet; then
   echo "✔ Init new repo"
 else
@@ -13,7 +12,6 @@ else
   exit 1
 fi
 
-# Set default remote
 if [[ $host == 'bitbucket' || $host == 'bb' ]]; then
 	git remote add origin ssh://git@bitbucket.org/pixelastic/${repoName}.git
 	echo "✔ Create origin remote on bitbucket"
@@ -34,7 +32,6 @@ else
   exit 1
 fi
 
-# Add an empty .gitignore
 if cp ~/.oroshi/config/git/gitignore .gitignore; then
   echo "✔ Add default .gitignore"
 else
@@ -42,11 +39,17 @@ else
   exit 1
 fi
 
-# Commit this as an initial commit
 if git add . && git commit --quiet -m "Initial commit."; then
   echo "✔ Initial commit"
 else
   echo "✘ Unable to do the initial commit"
+  exit 1
+fi
+
+if git branch develop; then
+  echo "✔ Create develop branch"
+else
+  echo "✘ Unable to create develop branch"
   exit 1
 fi
 
