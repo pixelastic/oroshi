@@ -98,7 +98,7 @@ alias vmt="git mergetool"
 # }}}
 # working [d]irectory {{{
 alias vdR='git tabula-rasa'
-alias vdc='create-repo'
+alias vdc='git-directory-create'
 alias vdcl='git clone --recursive'
 alias vdcl='git tabula-rasa'
 alias vdd='git diff -w'
