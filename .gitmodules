@@ -101,5 +101,5 @@
 	path = config/vim/bundle/available/argtextobj
 	url = git@github.com:vim-scripts/argtextobj.vim.git
 [submodule "/config/vim/bundle/available/committia.vim"]
-	path = /config/vim/bundle/available/committia.vim
+	path = config/vim/bundle/available/committia.vim
 	url = git@github.com:rhysd/committia.vim.git
