@@ -1,5 +1,23 @@
 #!/usr/bin/env zsh
-# Delete a remote tag
-local tag=$1
+local tagName
+local remoteName
 
-git push origin :refs/tags/$1
+# The tag name is required
+if [[ $# = 0 ]]; then
+  echo "✘ You must pass at least the tag to delete"
+  exit 1
+fi
+
+# Only a tag name ? It's on origin
+if [[ $# = 1 ]]; then
+  tagName=$1
+  remoteName="origin"
+fi
+
+# Remote name and tag name
+if [[ $# = 2 ]]; then
+  remoteName=$1
+  tagName=$2
+fi
+
+git push $remoteName :refs/tags/$tagName

@@ -1,10 +1,24 @@
 #!/usr/bin/env zsh
-# Delete a remote branch
-local branch=$1
-local remote=$2
-if [[ $remote = '' ]]; then
-  remote='origin'
+local branchName
+local remoteName
+
+# The branch name is required
+if [[ $# = 0 ]]; then
+  echo "✘ You must pass at least the branch to delete"
+  exit 1
 fi
 
-git push $remote --delete $branch
+# Only a branch name ? It's on origin
+if [[ $# = 1 ]]; then
+  branchName=$1
+  remoteName="origin"
+fi
+
+# Remote name and branch name
+if [[ $# = 2 ]]; then
+  remoteName=$1
+  branchName=$2
+fi
+
+git push $remoteName --delete $branchName
 
