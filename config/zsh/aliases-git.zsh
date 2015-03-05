@@ -25,7 +25,7 @@ alias vbud='vbsd && vbm master && vbsm' # Merge master to develop (Update develo
 alias vbum='vbsm && vbm develop && vbsd' # Merge develop to master (Update master)
 # }}}
 # [c]ommits {{{
-alias vcR='git rollback'
+alias vcR='git commit-remove'
 alias vca='git commit-all'
 alias vcc='git commit -v'
 alias vcd='git diff-last --'
@@ -35,6 +35,7 @@ alias vcl='git peek'
 alias vcla='git peek -p'
 alias vcp='git prev'
 alias vcri='git rebase -i'
+alias vcz='git commit-cancel'
 function vcf() {
   git log --oneline -i --grep="$1"
 }
