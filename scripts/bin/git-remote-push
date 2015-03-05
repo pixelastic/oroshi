@@ -38,7 +38,7 @@ class GitRemotePush
   end
 
   def push_tags
-    system("git push #{@remoteName} #{@branchName} --tags")
+    system("git push --quiet #{@remoteName} #{@branchName} --tags")
   end
 
   def push_branch
