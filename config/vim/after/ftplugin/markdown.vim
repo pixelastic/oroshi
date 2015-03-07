@@ -49,8 +49,8 @@ setlocal formatoptions+=t
 " }}}
 " Keybindings {{{
 " Add current copy-paste buffer to link on word
-nnoremap <buffer> ]] bi[<Esc>eli](<Esc>"*pli)<Esc>mzvipgq`z
-vnoremap <buffer> ]] "zc[<Esc>"zpli](<Esc>l"*pli)<Esc>mzvipgq`z
+nnoremap <buffer> ]] "zciw[<Esc>"zpi<Right>](<Esc>"*pi<Right>)<Esc>mzvipgq`z
+vnoremap <buffer> ]] "zc[<Esc>"zpli](<Esc>"*pli)<Esc>mzvipgq`z
 " }}}
 " Cleaning the file {{{
 inoremap <silent> <buffer> <F4> <Esc>:call MarkdownBeautify()<CR>
@@ -64,13 +64,15 @@ function! MarkdownBeautify()
   silent! %s/’/'/e
   silent! %s/‘/'/e
   " Fix common typos/errors
-  silent! %s/requete/requête/e
-  silent! %s/plutot/plutôt/e
-  silent! %s/fenetre/fenêtre/e
-  silent! %s/interessant/intéressant/e
-  silent! %s/accelerer/accélérer/e
-  silent! %s/interet/intérêt/e
-  silent! %s/entete/entête/e
+  silent! %s/\<requete/requête/e
+  silent! %s/\<plutot\>/plutôt/e
+  silent! %s/\<fenetre/fenêtre/e
+  silent! %s/\<interessant/intéressant/e
+  silent! %s/\<accelerer\>/accélérer/e
+  silent! %s/\<interet/intérêt/e
+  silent! %s/\<entete/entête/e
+  silent! %s/\<tres\>/très/e
+  silent! %s/\<etre\>/être/e
 
   execute 'normal '.linenr.'gg'
 endfunction

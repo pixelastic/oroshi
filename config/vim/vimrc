@@ -188,7 +188,7 @@ set formatoptions=cronq1
 " We make sure that backspace in insert mode can delete new lines and tabs
 set backspace=indent,eol,start
 " Format whole paragraph
-nnoremap gqp vipgq
+nnoremap gqp mzvipgq`z
 "}}}
 " SEARCH / REPLACE  {{{
 "  Searchs are case-insensitive, unless an uppercase is present
