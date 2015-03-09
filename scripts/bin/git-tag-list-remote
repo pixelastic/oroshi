@@ -1,0 +1,64 @@
+#!/usr/bin/env ruby
+# Display the list of current remote tags
+# Usage :
+# $ git-tag-list-remote {remote}
+# v1.1.2  9242a33
+# v1.1.3  7548e9a
+# v1.1.4  87967bb
+
+class TagListRemote
+  def initialize(*args)
+    @remoteName = args[0] || "origin"
+  end
+
+  def git_tag_hashes
+    raw = %x[git ls-remote --tags | tail -n +2 | awk '{print $2,$1}' | sort -V]
+    output = {}
+    raw.split("\n").each do |line|
+      # Skipping annotated tags
+      next if line['^{}']
+
+      match = line.match(/(^[^ ]*)\s*(.*)$/)
+      tag = match[1].gsub!('refs/tags/', '')
+      hash = match[2][0..7]
+      output[tag] = hash
+    end
+    return output
+  end
+
+  def run
+    hashes = git_tag_hashes
+    tags = hashes.keys
+
+    tags.each do |tag|
+      puts RemoteTag.new(
+        :name => tag,
+        :hash => hashes[tag]
+      )
+    end
+  end
+
+end
+
+class RemoteTag
+  def initialize(args)
+    @hash = args[:hash]
+    @name = args[:name]
+  end
+
+  def colorize(text, color)
+    color = "%03d" % color
+    return "[38;5;#{color}m#{text}[00m"
+  end
+
+  def to_s
+    name = colorize(@name.ljust(8), 241)
+    hash = colorize(@hash, 67)
+    "#{name}  #{hash}"
+  end
+
+end
+
+TagListRemote.new(*ARGV).run()
+
+

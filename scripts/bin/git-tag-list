@@ -7,10 +7,6 @@
 # v1.1.4  87967bb  Version 1.1.4
 
 class TagList
-  def initialize(*args)
-
-  end
-
   # Return the commit hash for each tag
   def git_tag_hashes
     raw = %x[git show-ref --tags]
@@ -73,5 +69,5 @@ class Tag
 
 end
 
-TagList.new(*ARGV).run()
+TagList.new().run()
 
