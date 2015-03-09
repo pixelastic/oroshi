@@ -56,6 +56,7 @@ alias -g .....='../../../..'
 alias mc="mv"
 alias ms="ls"
 alias sl="ls"
+alias trash-restore="restore-trash"
 # }}}
 # Misc {{{
 # cp and mv using rsync and preserving attributes, and accross fat32 drives
