@@ -106,6 +106,7 @@ alias hipchat="gui hipchat"
 alias lowriter='gui lowriter'
 alias pinta='gui pinta'
 alias poedit='gui poedit'
+alias redshift='gui redshiftgui'
 alias virtualbox='gui virtualbox'
 alias vlc='gui vlc'
 alias xmind='gui XMind'
