@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+local remoteName=$1
+
+git config --get remote.${remoteName}.url &>/dev/null

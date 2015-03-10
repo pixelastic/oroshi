@@ -1,20 +1,15 @@
 #!/usr/bin/env ruby
-# Wrapper for pushing to remote
-# - Will init the upstream branch on first push
-# - Will allow user to specify a remote and a branch (default to origin and
-#   current branch)
-# - Is clever about what is specified : branch or remote
-#
+# Wrapper for pulling from remote
 # Usage :
-# $ git-remote-push
-# $ git-remote-push remote (current_branch)
-# $ git-remote-push (origin) branch
-# $ git-remote-push remote branch
+# $ git-remote-pull
+# $ git-remote-pull upstream {current_branch}
+# $ git-remote-pull {origin} develop
+# $ git-remote-pull upstream develop
 
-class GitRemotePush
+class GitRemotePull
 
   def initialize(*args)
-    @flags = []
+    @flags = ['--rebase']
     @args = []
 
     # Split --flags and real options
@@ -54,27 +49,18 @@ class GitRemotePush
     %x[git current-branch].strip
   end
 
-  def first_push?
-    %x[git config "branch.#{@branchName}.merge"].strip == ''
-  end
-
   def is_remote(name)
     system("git remote-exists #{name}")
   end
 
   def run
     command_args=@flags
-    # Setting remote
-    if first_push?
-      command_args << "--set-upstream #{@remoteName}"
-    else
-      command_args << @remoteName
-    end
-    # Setting branch
+    command_args << @remoteName
     command_args << @branchName
 
-    system("git push #{command_args.join(' ')}")
+    system("git pull #{command_args.join(' ')}")
+    system("git submodule-update")
   end
 
 end
-GitRemotePush.new(*ARGV).run()
+GitRemotePull.new(*ARGV).run()

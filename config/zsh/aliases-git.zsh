@@ -1,10 +1,10 @@
 # aliases-git.zsh
-# This file is only loaded when we are in a git repo.
 # Aliases follow a simple pattern of {Object}{Verb}{Argument}.
 # Original idea taken from
 # http://floatboth.com/where-i-set-up-my-git-and-hg-aliases-like-a-boss
 
 # [b]ranches {{{
+alias vb?='git branch-exists'
 alias vbR='git branch -D'
 alias vbRr='git branch-remove-remote'
 alias vbb='git current-branch'
@@ -19,10 +19,8 @@ alias vbmv='git branch -m'
 alias vbu='git branch-update'
 alias vbru='git remote update && git remote prune origin'
 alias vbs='git checkout'
-alias vbsd='cd $(git root) && git checkout develop'
-alias vbsm='cd $(git root) && git checkout master'
-alias vbud='vbsd && vbm master && vbsm' # Merge master to develop (Update develop)
-alias vbum='vbsm && vbm develop && vbsd' # Merge develop to master (Update master)
+alias vbsd='git checkout develop'
+alias vbsm=' git checkout master'
 # }}}
 # [c]ommits {{{
 alias vcR='git commit-remove'
@@ -61,12 +59,13 @@ alias vres='git rebase --skip'
 alias vrec='git rebase --continue'
 # }}}
 # [r]emote {{{
+alias vr?='git remote-exists'
 alias vrR='git remote rm'
 alias vrc='git remote-create'
 alias vrdw='git download'
 alias vrl='git remote -v'
-alias vrpl='git pull --rebase && git submodule-update'
-alias vrplu='git pull --rebase upstream develop && git fetch --tags upstream' # Used at meetic
+alias vrpl='git remote-pull'
+alias vrplu='git remote-pull upstream develop'
 alias vrps='git remote-push'
 alias vrpsa='git remote-push --all'
 alias vrpsh='git push heroku $(git current-branch)'
@@ -99,6 +98,7 @@ alias vsmdl='git submodule-download'
 alias vmt="git mergetool"
 # }}}
 # working [d]irectory {{{
+alias vde='vim $(git root)/.git/config'
 alias vdR='git tabula-rasa'
 alias vdc='git-directory-create'
 alias vdcl='git clone --recursive'
