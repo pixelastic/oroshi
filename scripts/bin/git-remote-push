@@ -74,6 +74,8 @@ class GitRemotePush
     command_args << @branchName
 
     system("git push #{command_args.join(' ')}")
+    # Fetching remote to be up to date
+    %x[git fetch]
   end
 
 end

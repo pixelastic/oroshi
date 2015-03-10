@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# Will launch an interactive rebase up to (and including) specified commit.
+
+local commitHash=$1
+if [[ $commitHash != '' ]]; then
+  commitHash="$commitHash^1"
+fi
+echo $commitHash
+
+git rebase -i $commitHash
