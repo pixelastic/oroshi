@@ -103,6 +103,3 @@
 [submodule "config/vim/bundle/available/committia.vim"]
 	path = config/vim/bundle/available/committia.vim
 	url = git@github.com:rhysd/committia.vim.git
-[submodule "config/vim/bundle/available/vim-jsx"]
-	path = config/vim/bundle/available/vim-jsx
-	url = git@github.com:mxw/vim-jsx.git
