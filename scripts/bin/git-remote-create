@@ -1,9 +1,18 @@
 #!/usr/bin/env zsh
 # Creates a new remote, and auto-track its branches
-# $ git-remote-create remoteName remoteUrl
+# Usage:
+# $ git-remote-create {remoteName} {remoteUrl}
+# $ git-remote-create {remoteUrl} {remoteName}
 
 local remoteName=$1
 local remoteUrl=$2
+
+# Maybe we swapped name and url ? We'll try to swap them back
+if [[ $remoteName =~ \.git$ ]]; then
+  local tmp=$remoteName
+  remoteName=$remoteUrl
+  remoteUrl=$tmp
+fi
 
 if git remote add $remoteName $remoteUrl 1>/dev/null; then
   echo "✔ Add remote $remoteName";
@@ -12,7 +21,7 @@ else
   exit 1
 fi
 
-if git fetch -q $remoteName; then
+if git fetch --quiet $remoteName; then
   echo "✔ Fetch branches"
 else
   echo "✘ Unable to fetch branches"

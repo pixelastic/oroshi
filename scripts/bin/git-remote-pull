@@ -59,6 +59,7 @@ class GitRemotePull
     command_args << @branchName
 
     system("git pull #{command_args.join(' ')}")
+    system("git fetch --tags #{@remoteName}")
     system("git submodule-update")
   end
 
