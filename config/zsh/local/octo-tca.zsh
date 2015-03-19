@@ -16,6 +16,7 @@ alias cdmeetups="cd /home/tca/perso/notes/meetups/"
 # Music {{{
 alias play-coffee='mplayer ~/perso/music/nature/Coffitivity/*.mp3'
 alias play-rain='mplayer ~/perso/music/nature/Rain/*.mp3'
+alias play-nogg='mplayer ~/perso/music/soundtracks/D/Dopefish/*.mp3'
 function play-buddha() {
   cd ~/perso/music/music/B/Buddha\ Bar
 

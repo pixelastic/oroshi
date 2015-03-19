@@ -73,6 +73,7 @@ function! MarkdownBeautify()
   silent! %s/\<entete/entête/e
   silent! %s/\<tres\>/très/e
   silent! %s/\<etre\>/être/e
+  silent! %s/\<coute\>/coûte/e
 
   execute 'normal '.linenr.'gg'
 endfunction
