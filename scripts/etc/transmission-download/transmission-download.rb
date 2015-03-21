@@ -18,16 +18,14 @@ class TransmissionDownload
 		end
 		
 		@url = authenticate_url(args[0])
-		if @url['?dir=']
-			@is_dir = true
-			@base_url = get_base_url(@url)
-		else
-			@is_dir = false
-		end
 
 		@tmp_html = File.expand_path('./tmp.html')
 		@tmp_txt = File.expand_path('./tmp.txt')
 	end
+
+  def is_dir?
+    @url =~ /\/$/
+  end
 
 	# Update url with matching username/password if found
 	def authenticate_url(url)
@@ -42,12 +40,6 @@ class TransmissionDownload
 
 		uri.user, uri.password = File.read(credential_files).chomp.split(':')
 		return uri.to_s
-	end
-
-	# Get the base url http://domain.com/dirs
-	def get_base_url(url)
-		uri = URI(url)
-		return uri.to_s.gsub('?'+uri.query, '')
 	end
 
 	# Download the target file as html
@@ -70,7 +62,7 @@ class TransmissionDownload
 
 		list = []
 		# Parsing each link to find the relevant one
-		doc.css('table.table td.name a.file').each do |link|
+		doc.css('a[@href!="../"]').each do |link|
 			list << {
 				'name' => link.text,
 				'url' => link['href']
@@ -81,7 +73,7 @@ class TransmissionDownload
 
 	def download_whole_directory(url)
 		get_list_file(url).each do |file|
-			download_one_file(@base_url+file['url'])
+			download_one_file(@url+file['url'])
 		end
 
 		clean_up
@@ -98,7 +90,7 @@ class TransmissionDownload
 	end
 
 	def run
-		if @is_dir
+		if is_dir?
 			download_whole_directory(@url)
 		else
 			download_one_file(@url)
