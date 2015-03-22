@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+require 'shellwords'
+
+class Resize
+  def initialize(*args)
+    @resize = args.pop
+    @files = args
+
+    if !@resize
+      puts "You must pass a resize dimension"
+      exit 1
+    end
+  end
+
+  def run
+    @files.each do |file|
+      file = File.expand_path(file).shellescape
+      basefile = File.basename(file)
+      %x[convert #{file} -resize #{@resize} #{file}]
+      puts "✔ Resized #{basefile} to #{@resize}px"
+    end
+  end
+end
+Resize.new(*ARGV).run()
+

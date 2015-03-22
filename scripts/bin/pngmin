@@ -1,0 +1,28 @@
+#!/usr/bin/env zsh
+# Convert a png to the optimal version
+
+local fullPath
+local pngquantPath
+
+for file in $@; do
+	if [[ ! -r $file ]];then
+		echo "✘ $file not found!"
+		continue
+	fi
+
+  if [[ ${file:e} != 'png' ]]; then
+    echo "✘ ${file:t} is not a png file"
+    continue
+  fi
+
+  fullPath=${file:a}
+  pngquantPath=${fullPath:r}-pngquanttmp.png
+
+  if ! pngquant $fullPath --ext '-pngquanttmp.png'; then
+    echo "✘ Unable to convert ${fullPath:t}"
+    continue
+  fi
+
+  mv -f $pngquantPath $fullPath
+  echo "✔ Converted ${fullPath:t}"
+done
