@@ -1,9 +1,27 @@
 #!/usr/bin/env bash
-sudo apt-get install git-core
+
+# Installing git from source
+cd ~/local/etc
+git clone https://github.com/git/git.git
+cd ./git
+
+# Installing dependencies
+sudo apt-get install \
+  libcurl4-gnutls-dev \
+  libexpat1-dev \
+  gettext \
+  libz-dev \
+  libssl-dev \
+  asciidoc \
+  xmlto \
+  docbook2x
+
+# Compiling
+make prefix=/home/$USER/local all doc info
+sudo make prefix=/home/$USER/local install install-doc install-html install-info
 
 
 # Installing git-extras
-# Version in apt-get is outdated
 # Install can warn about being unable to delete a bash-completion, but
 # everything is still installed
 cd ~/local/etc
