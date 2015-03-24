@@ -12,7 +12,7 @@ class TagListRemote
   end
 
   def git_tag_hashes
-    raw = %x[git ls-remote --tags | tail -n +2 | awk '{print $2,$1}' | sort -V]
+    raw = %x[git ls-remote --tags #{@remoteName} | tail -n +2 | awk '{print $2,$1}' | sort -V]
     output = {}
     raw.split("\n").each do |line|
       # Skipping annotated tags
