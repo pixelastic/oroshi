@@ -1,0 +1,75 @@
+#!/usr/bin/env ruby
+# Wrapper for pushing tags to remote
+#
+# Usage :
+# $ git-tag-push (origin) (all tags)
+# $ git-tag-push remote (all tags)
+# $ git-tag-push (origin) tag
+# $ git-tag-push remote tag
+
+class GitTagPush
+
+  def initialize(*args)
+    @flags = []
+    @args = []
+
+    # Split --flags and real options
+    ARGV.each do |arg|
+      if arg =~ /^-/
+        @flags << arg
+      else
+        @args << arg
+      end
+    end
+
+    # No args, push all tags to origin
+    if @args.size == 0
+      @remoteName = "origin"
+      @tagName = nil
+    end
+
+    # Two args, push specific tag to specific remote
+    if @args.size == 2
+      @remoteName = @args[0]
+      @tagName = @args[1]
+    end
+
+    # Only one arg, it can either be a tag or a remote
+    if @args.size == 1
+      if is_remote @args[0]
+        @remoteName = @args[0]
+        @tagName = nil
+      else
+        @remoteName = "origin"
+        @tagName = @args[0]
+      end
+    end
+  end
+
+  def is_remote(name)
+    system("git remote-exists #{name}")
+  end
+
+  def push_all_tags
+    args=[@flags, @remoteName].join(' ')
+    system("git push --tags #{args}")
+  end
+
+  def push_specific_tag
+    args=[@flags, @remoteName, @tagName].join(' ')
+    system("git push #{args}")
+  end
+
+  def run
+    if !@tagName
+      push_all_tags
+    else
+      push_specific_tag
+    end
+
+    # Fetching remote to be up to date
+    %x[git fetch --tags]
+  end
+
+end
+GitTagPush.new(*ARGV).run()

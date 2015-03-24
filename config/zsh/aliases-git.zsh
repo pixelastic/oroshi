@@ -77,9 +77,10 @@ alias vtRr='git-tag-remove-remote'
 alias vtc='git tag'
 alias vtl='git tag-list'
 alias vtlr='git tag-list-remote'
-alias vtu='git fetch --tags'
+alias vtps='git tag-push'
 alias vts='git checkout'
 alias vtt='git current-tag'
+alias vtu='git fetch --tags'
 # }}}
 # [s]tashes {{{
 alias vstR='git stash drop'
