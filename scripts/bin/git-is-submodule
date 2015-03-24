@@ -1,21 +1,13 @@
 #!/usr/bin/env zsh
-# Echo 1 if current dir is a submodule, 0 otherwise
+# Check if current directory is a submodule
 
-local repoRoot="$(git rev-parse --show-toplevel 2>/dev/null)"
-
-# Not a git repo
-if [[ $repoRoot = '' ]]; then
-	echo 0
-	exit
+# This is not a directory, so this can't be a submodule
+if ! git-is-repository; then
+  exit 1
 fi
 
-# If the parent dir of the root is a git repo, it means we were in a submodule
-cd "$repoRoot/.."
-local parentRoot="$(git rev-parse --show-toplevel 2>/dev/null)"
-if [[ $parentRoot = '' ]]; then
-	echo 0
-	exit
-fi
+# Moving up one directory above the root
+cd "$(git root)/.."
 
-echo 1
-exit
+# If this is also a repo, we were in a submodule
+git-is-repository

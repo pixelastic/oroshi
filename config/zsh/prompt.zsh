@@ -5,32 +5,41 @@ setopt PROMPT_SUBST
 autoload -U promptinit
 promptinit
 
-# Left part
-# user@host:/path/ %
-PROMPT='${promptUsername}$(getPromptLastCommandFailureIndicator)${promptHostname}:$(getPromptPath) $(getPromptHash) '
-# User
-promptUsername="$FG[$promptColor[username]]%n$FX[reset]"
-# Hostname
-promptHostname="$FG[$promptColor[hostname]]%m$FX[reset]"
-# Last command failure indicator
-# getPromptLastCommandFailureIndicator() {{{
-# Will simply return @, but will color it if last command was a failure
-function getPromptLastCommandFailureIndicator() {
-  if [[ $? > 0 ]]; then
-    echo "$FG[$promptColor[lastCommandFailed]]@$FX[reset]"
-    return
-  fi
-  echo "@"
+PROMPT='${promptUsername}$(getPromptExitCode)${promptHostname}:$(getPromptPath) $(getPromptHash) '
+RPROMPT='$(getPromptRepoIndicator)'
+
+# Colorize {{{
+function colorize() {
+  echo "$FG[$promptColor[$2]]$1$FX[reset]"
 }
 # }}}
 
-# Path
-# getPromptPath() {{{
+# User {{{
+promptHostname=$(colorize '%n' 'username')
+# }}}
+
+# Exit code {{{
+function getPromptExitCode() {
+  # Color the @ if last command was an error
+  if [[ $? > 0 ]]; then
+    echo $(colorize '@'  'lastCommandFailed')
+  else
+    echo "@"
+  fi
+}
+# }}}
+
+# Hostname {{{
+promptHostname=$(colorize '%m' 'hostname')
+# }}}
+
+# Path {{{
 # This will return a formatted path.
 # - If more than 4 directories, will only keep the first and the last two
 # - Will prepend a ! and display it in red if not writable
 function getPromptPath() {
   local promptPath=$PWD
+  local pathColor='pathRestricted'
   local splitPath
   splitPath=(${(s:/:)PWD})
 
@@ -45,280 +54,206 @@ function getPromptPath() {
   fi
 
   # Checking if I'm the owner or am in the group of this dir
-  local promptPathColor=$promptColor[pathRestricted]
   if [[ $UID = $(stat --print "%u" $PWD) ]]; then
     # I'm the owner
-    promptPathColor=$promptColor[pathOwner]
+    pathColor='pathOwner'
     else
       local pathGroup=$(stat --print "%G" $PWD)
       local userGroups="($(groups $USER))"
       if [[ $userGroups =~ $pathGroup ]]; then
         # I'm in the group
-        promptPathColor=$promptColor[pathGroup]
+        pathColor='pathGroup'
       fi
   fi
 
-  echo "$FG[$promptPathColor]$promptPath$FX[reset]"
+  echo $(colorize $promptPath $pathColor)
 }
 # }}}
-# Directory indicator
-# getPromptHash() {{{
+
+# Hash {{{
 function getPromptHash() {
-  local promptHashColor=''
-  local promptHash='%#'
-
-  if [[ $promptIsGit = 1 ]]; then
-    echo $(getPromptHashGit)
-    return
-  fi
-
-  echo "$FG[$promptHashColor]$promptHash$FX[reset]"
-}
-# }}}
-# getPromptHashGit() {{{
-function getPromptHashGit() {
-  local gitStatus="$(git status-short)"
-  local promptHashColor=$promptColor[repoClean]
-  local promptHash='±'
-
-  # Does it have modified or new files ?
-  local gitHasModifiedFiles=0
-  if [[ $gitStatus =~ ' . ' || $gitStatus =~ '\?\?' ]]; then
-    gitHasModifiedFiles=1
-  fi
-
-  # Does it have staged files ?
-  local gitHasStagedFiles=0
-  if [[ $gitStatus =~ '.  ' ]]; then
-    gitHasStagedFiles=1
-  fi
-
-  # Repo is clean, but there are files in the index waiting for a commit
-  if [[ $gitHasModifiedFiles = 0 && $gitHasStagedFiles = 1 ]]; then
-    promptHashColor=$promptColor[repoStaged]
-    promptHash="${promptHash}*"
-  fi
-
-  # Files have been changed or added, but nothing is ready to be commited
-  if [[ $gitHasModifiedFiles = 1 && $gitHasStagedFiles = 0 ]]; then
-    promptHashColor=$promptColor[repoDirty]
-  fi
-
-  # Files have been added/modified and others are ready to be comitted
-  if [[ $gitHasModifiedFiles = 1 && $gitHasStagedFiles = 1 ]]; then
-    promptHashColor=$promptColor[repoDirtyAndStaged]
-    promptHash="${promptHash}*"
-  fi
-
-  echo "$FG[$promptHashColor]$promptHash$FX[reset]"
-}
-# }}}
-
-# Right part
-RPROMPT='$(getPromptRepoTag)$(getPromptRepoSubmodule)$(getPromptRepoStash)$(getPromptRepoRebase)$(getPromptRepoBranch)'
-# Tag
-# getPromptRepoTag() {{{
-function getPromptRepoTag() {
-  if [[ $promptIsGit = 0 ]]; then
-    return
-  fi
-
-  local promptRepoTag="$(git current-tag)"
-  if [[ $promptRepoTag != '' ]]; then
-    echo "$FG[$promptColor[tag]]$promptRepoTag$FX[reset] "
-  fi
-}
-# }}}
-# Submodule
-# getPromptRepoSubmodule() {{{
-function getPromptRepoSubmodule() {
-  if [[ $promptIsGit = 0 ]]; then
-    return
-  fi
-
-  local isSubmodule="$(git is-submodule)"
-  if [[ $isSubmodule = 1 ]]; then
-    echo "$FG[$promptColor[submodule]] $FX[reset] "
-  fi
-}
-# }}}
-# Stash
-# getPromptRepoStash() {{{
-function getPromptRepoStash() {
-  if [[ $promptIsGit = 0 ]]; then
-    return
-  fi
-
-  local stashCount=$(git stash list | wc -l)
-
-  if [[ $stashCount -gt 0 ]]; then
-    echo "$FG[$promptColor[stash]]  $FX[reset]"
-  fi
-}
-# }}}
-# Rebase
-# getPromptRepoRebase() {{{
-function getPromptRepoRebase() {
-  if [[ $promptIsGit = 0 ]]; then
-    return
-  fi
-
-  local rebaseInternalDir="$promptGitRoot/.git/rebase-apply"
-  local isRebasingFile="$rebaseInternalDir/rebasing"
-
-  if [[ -r $isRebasingFile ]]; then
-    local maxRebase=$(cat $rebaseInternalDir/last)
-    local nextRebase=$(cat $rebaseInternalDir/next)
-    echo "$FG[$promptColor[rebase]]${nextRebase}/${maxRebase}  $FX[reset]"
-  fi
-}
-# }}}
-# Push/Pull {{{
-# getPromptRepoPushPull() {{{
-function getPromptRepoPushPull() {
-  if [[ $promptIsGit = 0 ]]; then
-    return
-  fi
-
-  # No indicator if in detached HEAD
-  local promptBranch="$(git current-branch)"
-  if [[ $promptBranch = 'HEAD' ]]; then
-    return
-  fi
-
-  # Comparing branches
-  local promptPushPullIndicator
-  local branchLocal=$(git rev-parse @{0})
-  local branchRemote=$(git rev-parse @{u} 2>/dev/null)
-  local branchBase=$(git merge-base @{0} @{u} 2>/dev/null)
-
-  if [ $branchRemote = '@{u}' ]; then
-    # No distant repo created
-    promptPushPullIndicator="  "
-  elif [ $branchLocal = $branchRemote ]; then
-    # Branches are equal
-  elif [ $branchLocal = $branchBase ]; then
-    # Need to pull
-    promptPushPullIndicator="  "
-  elif [ $branchRemote = $branchBase  ]; then
-    # Need to push
-    promptPushPullIndicator="  "
+  if ! git-is-repository; then
+    echo "%#"
   else
-    # Diverges
-    promptPushPullIndicator="  "
+    echo $(getPromptHashGit)
   fi
-
-  echo $promptPushPullIndicator;
-}
-# }}}
-# Branch
-# getPromptRepoBranch() {{{
-function getPromptRepoBranch() {
-  if [[ $promptIsGit = 0 ]]; then
-    return
-  fi
-
-  local promptBranch="$(git current-branch)"
-  local promptBranchColor=$promptColor[branchDefault]
-
-  # No branch found
-  if [[ $promptBranch = '' ]]; then
-    return
-  fi
-
-  # Branch color
-  if [[ $promptBranch = 'HEAD' ]]; then
-    promptBranchColor=$promptColor[branchDetached]
-    promptBranch="$(getGitShortHash) ⭠ "
-  fi
-  if [[ $promptBranch = 'master' ]]; then
-    promptBranchColor=$promptColor[branchMaster]
-  fi
-  if [[ $promptBranch = 'release' ]]; then
-    promptBranchColor=$promptColor[branchRelease]
-  fi
-  if [[ $promptBranch = 'develop' ]]; then
-    promptBranchColor=$promptColor[branchDevelop]
-  fi
-  if [[ $promptBranch =~ '^feature/' ]]; then
-    promptBranch=${promptBranch//feature\//}
-    promptBranchColor=$promptColor[branchFeature]
-  fi
-  if [[ $promptBranch =~ '^fix/' || $promptBranch =~ '^bugfix/' ]]; then
-    promptBranch="${promptBranch//fix\//} "
-    promptBranchColor=$promptColor[branchFix]
-  fi
-  if [[ $promptBranch =~ '^review/' ]]; then
-    promptBranch="${promptBranch//review\//}  "
-    promptBranchColor=$promptColor[branchReview]
-  fi
-  if [[ $promptBranch =~ '^test/' ]]; then
-    promptBranch="${promptBranch//test\//} "
-    promptBranchColor=$promptColor[branchTest]
-  fi
-  if [[ $promptBranch =~ '^perf/' ]]; then
-    promptBranch="${promptBranch/perf\//} "
-    promptBranchColor=$promptColor[branchPerf]
-  fi
-  if [[ $promptBranch = 'gh-pages' ]]; then
-    promptBranchColor=$promptColor[branchGhPages]
-    promptBranch="$promptBranch "
-  fi
-
-  local promptPushPullIndicator="$(getPromptRepoPushPull)"
-  
-  echo "$FG[$promptBranchColor]${promptPushPullIndicator}${promptBranch}$FX[reset]"
 }
 # }}}
 
-
-# isGit() {{{
-function isGit() {
-  # Avoid git internal directory
-  if [[ $PWD =~ '\.git' ]]; then
-    echo 0
+# Git Hash {{{
+function getPromptHashGit() {
+  # Staged files
+  if git-directory-has-staged-files; then
+    echo $(colorize '±' 'repoStaged')
     return
   fi
 
-  if [[ $(git --work-tree="$PWD" status 2>/dev/null) != '' ]]; then
-    # Avoid doing it in a bare repo
-    if [[ $(git rev-parse --is-bare-repository) == 'true' ]]; then
-      echo 0;
-      return
-    fi
-
-    echo 1
+  # Modified, deleted or newly added files
+  if git-directory-is-dirty; then
+    echo $(colorize '±' 'repoDirty')
     return
   fi
 
-  echo 0
+  echo $(colorize '±' 'repoClean')
 }
 # }}}
-# getGitRoot() {{{
-function getGitRoot() {
-  if [[ $(isGit) = 0 ]]; then
-    return
+
+# Repo indicator {{{
+function getPromptRepoIndicator() {
+  if ! git-is-repository; then
+    echo ""
+  else
+    # RPROMPT='$(getPromptRepoTag)$(getPromptRepoSubmodule)$(getPromptRepoStash)$(getPromptRepoRebase)$(getPromptRepoBranch)'
+    echo "$(getPromptTag)$(getPromptSubmodule)$(getPromptStash)$(getPromptRebase)$(getPromptBranch)"
   fi
-  echo $(git root)
 }
 # }}}
-# getGitShortHash() {{{
-function getGitShortHash() {
-  if [[ $(isGit) = 0 ]]; then
+
+# Branch {{{
+function getPromptBranch() {
+  local branchName="$(git current-branch)"
+  local branchColor='branchDefault'
+
+  # Not in a branch
+  if [[ $branchName = '' ]]; then
+    return;
+  fi
+
+  if [[ $branchName = 'master' ]]; then
+    branchColor='branchMaster'
+  fi
+  if [[ $branchName = 'release' ]]; then
+    branchColor='branchRelease'
+  fi
+  if [[ $branchName = 'develop' ]]; then
+    branchColor='branchDevelop'
+  fi
+  if [[ $branchName =~ '^feature/' ]]; then
+    branchColor='branchFeature'
+    branchName=${branchName//feature\//}
+  fi
+  if [[ $branchName =~ '^(bugfix|hotfix|fix)/' ]]; then
+    branchColor='branchFix'
+    branchName="${branchName//bugfix\//}"
+    branchName="${branchName//hotfix\//}"
+    branchName="${branchName//fix\//}"
+    branchName="${branchName} "
+  fi
+  if [[ $branchName =~ '^review/' ]]; then
+    branchColor='branchReview'
+    branchName="${branchName//review\//}  "
+  fi
+  if [[ $branchName =~ '^test/' ]]; then
+    branchColor='branchTest'
+    branchName="${branchName//test\//} "
+  fi
+  if [[ $branchName =~ '^perf/' ]]; then
+    branchColor='branchPerf'
+    branchName="${branchName/perf\//} "
+  fi
+  if [[ $branchName = 'gh-pages' ]]; then
+    branchColor='branchGhPages'
+    branchName="$branchName "
+  fi
+  if [[ $branchName = 'HEAD' ]]; then
+    branchColor='branchDetached'
+    branchName="$(git log --pretty=format:'%h' -n 1) ⭠ "
+  fi
+
+  # Add an indicator telling us if we need to push/pull
+  local pushPull="$(getPromptPushPull)"
+  if [[ $pushPull != '' ]]; then
+    branchName="$pushPull $branchName"
+  fi
+
+  echo $(colorize $branchName $branchColor)
+}
+# }}}
+
+# Push/Pull {{{
+function getPromptPushPull() {
+  # No indicator if in detached HEAD
+  if [[ "$(git current-branch)" = 'HEAD' ]]; then
     return
   fi
-  echo $(git log --pretty=format:'%h' -n 1)
-echo 
+
+  # Branch is equal to remote
+  if git-branch-is-equal-to-remote; then
+    return
+  fi
+
+  # Branch was never pushed before
+  if ! git-branch-has-remote; then
+    echo ""
+    return
+  fi
+
+  # Branch has new commits ready to be pushed
+  if git-branch-is-ahead-of-remote; then
+    echo " "
+    return
+  fi
+
+  # Branch has diverged from remote
+  if git-branch-has-diverged-from-remote; then
+    echo " "
+    return
+  fi
+
+  # Local branch is behind remote
+  if git-branch-is-behind-remote; then
+    echo " "
+    return
+  fi
+}
+# }}}
+
+# Tag {{{
+function getPromptTag() {
+  local tagName="$(git current-tag)"
+  if [[ $tagName = '' ]]; then
+    return
+  fi
+  echo $(colorize "$tagName " 'tag')
+}
+# }}}
+
+# Submodule {{{
+function getPromptSubmodule() {
+  if git is-submodule; then
+    echo $(colorize '  ' 'submodule')
+  fi
+}
+# }}}
+
+# Stash {{{
+function getPromptStash() {
+  local nbStashedItems="$(git stash list | wc -l)"
+  if [[ "$nbStashedItems" -ge 1 ]]; then
+    echo $(colorize '  ' 'stash')
+  fi
+}
+# }}}
+
+# Rebase() {{{
+function getPromptRebase() {
+  local gitRoot="$(git root)"
+  local rebaseDir="${gitRoot}/.git/rebase-apply"
+
+  # No rebase in progress
+  if [[ ! -r $rebaseDir/rebasing ]]; then
+    return
+  fi
+
+  local maxRebase="$(cat $rebaseDir/last)"
+  local nextRebase="$(cat $rebaseDir/next)"
+  echo $(colorize "${nextRebase}/${maxRebase}   " 'rebase')
 }
 # }}}
 
 # chpwd() {{{
 function chpwd() {
-  # Caching git information
-  promptIsGit=$(isGit)
-  promptGitRoot=$(getGitRoot)
   # Window title
   print -Pn "\e]2;%n@%m:%~/\a"
 }
 # }}}
-

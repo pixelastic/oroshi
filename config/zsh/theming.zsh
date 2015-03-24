@@ -48,7 +48,6 @@ promptColorDefault=(
   repoClean          "035" # Color of clean repo
   repoStaged         "171" # Color if files are staged, ready to be commited
   repoDirty          "160" # Color if repo is dirty
-  repoDirtyAndStaged "203" # Color if repo is dirty AND files are staged
 )
 
 # Merging default colors in promptColor

@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+# Check if the current branch has already been pushed to remote
+
+local upstreamBranch=$(git rev-parse @{upstream} 2>/dev/null)
+
+# There is a remote, but not for this branch
+if [[ $upstreamBranch = '' ]]; then
+  exit 1
+fi
+
+# No remote configured
+if [[ $upstreamBranch = '@{upstream}' ]]; then
+  exit 1
+fi
+
+exit 0

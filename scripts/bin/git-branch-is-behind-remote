@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+# Check if the current branch is behind remote
+
+local remoteMergeBase=$(git merge-base @{0} @{upstream} 2>/dev/null)
+local remoteHead=$(git rev-parse @{upstream} 2>/dev/null)
+local localHead=$(git rev-parse @{0} 2>/dev/null)
+
+# local is equal to remote, nothing changed, can't be behind
+if [[ "$remoteHead" = "$localHead" ]]; then
+  exit 1
+fi
+
+# Merge base is the same as local, it means we are behind
+if [[ "$remoteMergeBase" = "$localHead" ]]; then
+  exit 0
+fi
+
+exit 1
+

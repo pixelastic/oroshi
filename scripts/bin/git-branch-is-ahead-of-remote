@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+# Check if the current branch has commits ready to be pushed to remote
+
+local remoteMergeBase=$(git merge-base @{0} @{upstream} 2>/dev/null)
+local remoteHead=$(git rev-parse @{upstream} 2>/dev/null)
+local localHead=$(git rev-parse @{0} 2>/dev/null)
+
+# local is equal to remote, nothing changed, can't be ahead
+if [[ "$remoteHead" = "$localHead" ]]; then
+  exit 1
+fi
+
+# Merge base is the same as remote, it means we are ahead
+if [[ "$remoteMergeBase" = "$remoteHead" ]]; then
+  exit 0
+fi
+
+exit 1
