@@ -10,9 +10,7 @@ local namespace=${added_name:u}
   $original_file \
   --symbols=$added_file \
   --to-namespace=$namespace \
-  --rename-as=$new_name
-
-# tweaking for DejaVuSansMono + Octicons
-# --ratio=0.9 \
-# --shift-y=-600 \
-# --shift-x=1500
+  --rename-as=$new_name \
+  --ratio=0.9 \
+  --shift-y=0 \
+  --shift-x=2500
