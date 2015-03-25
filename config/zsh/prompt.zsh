@@ -15,7 +15,7 @@ function colorize() {
 # }}}
 
 # User {{{
-promptHostname=$(colorize '%n' 'username')
+promptUsername=$(colorize '%n' 'username')
 # }}}
 
 # Exit code {{{
@@ -39,7 +39,6 @@ promptHostname=$(colorize '%m' 'hostname')
 # - Will prepend a ! and display it in red if not writable
 function getPromptPath() {
   local promptPath=$PWD
-  local pathColor='pathRestricted'
   local splitPath
   splitPath=(${(s:/:)PWD})
 
@@ -48,22 +47,9 @@ function getPromptPath() {
     promptPath=/${splitPath[1]}/../${splitPath[-2]}/${splitPath[-1]}/
   fi
 
-  # Prefix a ! if not writable
+  local pathColor='pathWritable'
   if [[ ! -w $PWD ]]; then
-    promptPath=!$promptPath
-  fi
-
-  # Checking if I'm the owner or am in the group of this dir
-  if [[ $UID = $(stat --print "%u" $PWD) ]]; then
-    # I'm the owner
-    pathColor='pathOwner'
-    else
-      local pathGroup=$(stat --print "%G" $PWD)
-      local userGroups="($(groups $USER))"
-      if [[ $userGroups =~ $pathGroup ]]; then
-        # I'm in the group
-        pathColor='pathGroup'
-      fi
+    pathColor='pathNotWritable'
   fi
 
   echo $(colorize $promptPath $pathColor)
@@ -103,7 +89,6 @@ function getPromptRepoIndicator() {
   if ! git-is-repository; then
     echo ""
   else
-    # RPROMPT='$(getPromptRepoTag)$(getPromptRepoSubmodule)$(getPromptRepoStash)$(getPromptRepoRebase)$(getPromptRepoBranch)'
     echo "$(getPromptTag)$(getPromptSubmodule)$(getPromptStash)$(getPromptRebase)$(getPromptBranch)"
   fi
 }
@@ -228,14 +213,13 @@ function getPromptSubmodule() {
 
 # Stash {{{
 function getPromptStash() {
-  local nbStashedItems="$(git stash list | wc -l)"
-  if [[ "$nbStashedItems" -ge 1 ]]; then
+  if git stash show &>/dev/null; then
     echo $(colorize '  ' 'stash')
   fi
 }
 # }}}
 
-# Rebase() {{{
+# Rebase {{{
 function getPromptRebase() {
   local gitRoot="$(git root)"
   local rebaseDir="${gitRoot}/.git/rebase-apply"
@@ -253,7 +237,7 @@ function getPromptRebase() {
 
 # chpwd() {{{
 function chpwd() {
-  # Window title
-  print -Pn "\e]2;%n@%m:%~/\a"
+  # Set current path as the window title
+  print -Pn "\e]2;%~/\a"
 }
 # }}}

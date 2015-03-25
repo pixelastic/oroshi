@@ -22,18 +22,15 @@ done
 typeset -A promptColorDefault
 promptColorDefault=(
   username          "069" # Username color
-  root              "160" # Root color
   hostname          "171" # Hostname color
-  pathOwner         "035" # Prompt color of path if user is owner
-  pathGroup         "203" # Prompt color of path if user is in group
-  pathRestricted    "160" # Prompt color if not owner nor in group
+  pathWritable      "035" # Prompt color of path if I can write to it
+  pathNotWritable   "160" # Prompt color of path if I can't write to it
   lastCommandFailed "203" # Prompt color if last command failed
 
   tag                "241" # Color of the current tag
-  tagExact           "202" # Color of the exact current tag
   submodule          "136" # Color of the submodule symbol
   rebase             "160" # Color of the rebase symbol
-  stash              "160" # Color of the stash
+  stash              "171" # Color of the stash
   branchDefault      "202" # Default color for branches
   branchDetached     "160" # Color for detached HEAD branch
   branchMaster       "069" # Color for master branch
