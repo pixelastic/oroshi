@@ -69,18 +69,8 @@ alias spectrum='spectrum L'
 alias la="ls -a"
 # Tree that only display directories
 alias treed='tree -dN'
-# Opening nautilus
-alias n="gui nautilus"
 # Find a file
 function f() { find . -iname "*$1*" }
-# Reload test files
-alias rr='reload-tests'
-# Mount /dev/sd* to ~/local/mnt/sd*
-function mountsd() {
-echo "Mounting /dev/sd$1 to ~/local/mnt/sd$1"
-sudo mount -t vfat /dev/sd$1 ~/local/mnt/sd$1
-cd ~/local/mnt/sd$1
-}
 # plowdown
 alias pd='plowdown'
 # Download files from transmission
@@ -106,6 +96,7 @@ alias hipchat="gui hipchat"
 alias lowriter='gui lowriter'
 alias pinta='gui pinta'
 alias poedit='gui poedit'
+alias n="gui nautilus"
 alias redshift='gui redshiftgui'
 alias virtualbox='gui virtualbox'
 alias vlc='gui vlc'
@@ -137,7 +128,6 @@ alias cdl='cd ~/local/'
 alias cde='cd ~/local/etc/'
 alias cdw='cd /var/www/'
 alias cdt='cd ~/local/tmp/'
-alias cds='cd ~/local/tmp/scripts/'
 alias cdsov='cd ~/local/tmp/sov/'
 alias cdrop="cd ~/Dropbox/"
 # }}}
@@ -208,15 +198,11 @@ function header() {
 }
 # }}}
 
-
 # Npm {{{
 alias ni='npm install'
 alias nis='npm install --save'
 alias nisd='npm install --save-dev'
 alias nig='npm install --global'
-# }}}
-# Yeoman {{{
-function yac() { (cd `git root`; yo angular:controller $@) }
 # }}}
 # Grunt {{{
 alias gt='grunt test'
@@ -261,5 +247,3 @@ if [[ -r $rvmScript ]]; then
   source $rvmScript
 fi
 # }}}
-
-

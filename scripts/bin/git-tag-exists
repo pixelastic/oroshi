@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# Check if specified tag exists
+
+git rev-parse $1 &>/dev/null

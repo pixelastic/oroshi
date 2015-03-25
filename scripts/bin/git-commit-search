@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# Search in the commit list for argument passed
+
+git log --oneline -i --grep="$1"
