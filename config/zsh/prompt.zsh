@@ -47,6 +47,10 @@ function getPromptPath() {
     promptPath=/${splitPath[1]}/../${splitPath[-2]}/${splitPath[-1]}/
   fi
 
+  if [[ $promptPath = $HOME ]]; then
+    promptPath=' '
+  fi
+
   local pathColor='pathWritable'
   if [[ ! -w $PWD ]]; then
     pathColor='pathNotWritable'

@@ -17,7 +17,7 @@ file does work.
 The font I'm usually using for coding is `Deja Vu Sans Mono`. Included is
 a version merged with the `Octicons` font, including glyphs from GitHub.
 
-Accoding to `awesome-terminal-fonts` I should be able to define a fallback
+According to `awesome-terminal-fonts` I should be able to define a fallback
 chain of fonts to use in case of missing glyphs, but can't manage to make it
 work. Instead I patched the original `Deja Vu Sans Mono` font with the
 `Octicons` font.
