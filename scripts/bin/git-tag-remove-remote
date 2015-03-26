@@ -1,23 +1,61 @@
-#!/usr/bin/env zsh
-local tagName
-local remoteName
+#!/usr/bin/env ruby
+# Wrapper for removing a tag from a remote
+#
+# Usage :
+# $ git-tag-remove-remote tag (origin)
+# $ git-tag-remove-remote tag upstream
+# $ git-tag-remove-remote upstream tag
 
-# The tag name is required
-if [[ $# = 0 ]]; then
-  echo "✘ You must pass at least the tag to delete"
-  exit 1
-fi
+class GitTagRemoveRemote
 
-# Only a tag name ? It's on origin
-if [[ $# = 1 ]]; then
-  tagName=$1
-  remoteName="origin"
-fi
+  def initialize(*args)
+    @flags = []
+    @args = []
 
-# Remote name and tag name
-if [[ $# = 2 ]]; then
-  remoteName=$1
-  tagName=$2
-fi
+    # Split --flags and real options
+    ARGV.each do |arg|
+      if arg =~ /^-/
+        @flags << arg
+      else
+        @args << arg
+      end
+    end
 
-git push $remoteName :refs/tags/$tagName
+    # Need at least on arg
+    if @args.size == 0
+      puts "✘ You must pass at least the tag to delete"
+      exit 1
+    end
+
+    # One arg, pushing specific tag to origin
+    if @args.size == 1
+      @remoteName = "origin"
+      @tagName = @args[0]
+    end
+
+    # Two args, can be in either order
+    if @args.size == 2
+      if is_remote @args[0]
+        @remoteName = @args[0]
+        @tagName = @args[1]
+      else
+        @tagName = @args[0]
+        @remoteName = @args[1]
+      end
+    end
+
+  end
+
+  def is_remote(name)
+    system("git remote-exists #{name}")
+  end
+
+  def run
+    # Deleting specified tag
+    # TODO: Allow deleting multiple tags
+    %x[git push --no-verify #{@remoteName} :refs/tags/#{@tagName}]
+  end
+
+end
+GitTagRemoveRemote.new(*ARGV).run()
+
