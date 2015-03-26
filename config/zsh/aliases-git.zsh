@@ -59,7 +59,7 @@ alias vrpl='git remote-pull'
 alias vrplu='git remote-pull upstream'
 alias vrps='git remote-push'
 alias vrpsa='git remote-push --all'
-alias vrr='git remote show origin -n'
+alias vrr='git remote-current'
 # }}}
 # [t]ags {{{
 alias vt?='git tag-exists'

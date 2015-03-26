@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# Return the current remote tracking this branch
+
+local currentBranch="$(git current-branch)"
+git config --get "branch.${currentBranch}.remote"

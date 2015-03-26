@@ -65,7 +65,23 @@ function getPromptHash() {
   if ! git-is-repository; then
     echo "%#"
   else
-    echo $(getPromptHashGit)
+    echo "$(getPromptSubmodule)$(getPromptStash)$(getPromptHashGit)"
+  fi
+}
+# }}}
+
+# Stash {{{
+function getPromptStash() {
+  if git stash show &>/dev/null; then
+    echo $(colorize '  ' 'stash')
+  fi
+}
+# }}}
+
+# Submodule {{{
+function getPromptSubmodule() {
+  if git is-submodule; then
+    echo $(colorize '  ' 'submodule')
   fi
 }
 # }}}
@@ -93,7 +109,7 @@ function getPromptRepoIndicator() {
   if ! git-is-repository; then
     echo ""
   else
-    echo "$(getPromptTag)$(getPromptSubmodule)$(getPromptStash)$(getPromptRebase)$(getPromptBranch)"
+    echo "$(getPromptTag)$(getPromptRebase)$(getPromptBranch)"
   fi
 }
 # }}}
@@ -142,17 +158,23 @@ function getPromptBranch() {
   fi
   if [[ $branchName = 'gh-pages' ]]; then
     branchColor='branchGhPages'
-    branchName="$branchName "
+    branchName="$branchName  "
   fi
   if [[ $branchName = 'HEAD' ]]; then
     branchColor='branchDetached'
-    branchName="$(git log --pretty=format:'%h' -n 1) ⭠ "
+    branchName="$(git log --pretty=format:'%h' -n 1) "
   fi
 
-  # Add an indicator telling us if we need to push/pull
-  local pushPull="$(getPromptPushPull)"
-  if [[ $pushPull != '' ]]; then
-    branchName="$pushPull $branchName"
+  # Adding the remote if different from origin
+  local remoteName="$(git remote-current)"
+  if [[ $remoteName != 'origin' ]]; then
+    branchName="$remoteName $branchName"
+  fi
+
+  # Adding push/pull indicator
+  local pushPullSymbol="$(getPromptPushPull)"
+  if [[ $pushPullSymbol != '' ]]; then
+    branchName="${pushPullSymbol} ${branchName}"
   fi
 
   echo $(colorize $branchName $branchColor)
@@ -161,12 +183,7 @@ function getPromptBranch() {
 
 # Push/Pull {{{
 function getPromptPushPull() {
-  # No indicator if in detached HEAD
-  if [[ "$(git current-branch)" = 'HEAD' ]]; then
-    return
-  fi
-
-  # Branch is equal to remote
+  # Branch is equal to remote, no indicator
   if git-branch-is-equal-to-remote; then
     return
   fi
@@ -185,7 +202,7 @@ function getPromptPushPull() {
 
   # Branch has diverged from remote
   if git-branch-has-diverged-from-remote; then
-    echo " "
+    echo " "
     return
   fi
 
@@ -204,22 +221,6 @@ function getPromptTag() {
     return
   fi
   echo $(colorize "$tagName " 'tag')
-}
-# }}}
-
-# Submodule {{{
-function getPromptSubmodule() {
-  if git is-submodule; then
-    echo $(colorize '  ' 'submodule')
-  fi
-}
-# }}}
-
-# Stash {{{
-function getPromptStash() {
-  if git stash show &>/dev/null; then
-    echo $(colorize '  ' 'stash')
-  fi
 }
 # }}}
 
