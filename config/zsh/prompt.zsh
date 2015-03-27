@@ -174,7 +174,7 @@ function getPromptBranch() {
   # Adding push/pull indicator
   local pushPullSymbol="$(getPromptPushPull)"
   if [[ $pushPullSymbol != '' ]]; then
-    branchName="${pushPullSymbol} ${branchName}"
+    branchName="${pushPullSymbol} ${branchName}"
   fi
 
   echo $(colorize $branchName $branchColor)
