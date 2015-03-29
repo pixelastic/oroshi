@@ -7,7 +7,7 @@
 alias vb?='git branch-exists'
 alias vbR='git branch -D'
 alias vbRr='git branch-remove-remote'
-alias vbb='git current-branch'
+alias vbb='git branch-current'
 alias vbc='git checkout -b'
 alias vbl='git branch-list'
 alias vbla='git branch-list --all'

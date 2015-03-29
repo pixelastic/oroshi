@@ -116,12 +116,20 @@ function getPromptRepoIndicator() {
 
 # Branch {{{
 function getPromptBranch() {
-  local branchName="$(git current-branch)"
+  local branchName="$(git branch-current)"
   local branchColor='branchDefault'
 
   # Not in a branch
   if [[ $branchName = '' ]]; then
     return;
+  fi
+
+  # In detached head, we stop now
+  if [[ $branchName = 'HEAD' ]]; then
+    branchColor='branchDetached'
+    branchName="$(git commit-current) "
+    echo $(colorize $branchName $branchColor)
+    return
   fi
 
   if [[ $branchName = 'master' ]]; then
@@ -160,21 +168,17 @@ function getPromptBranch() {
     branchColor='branchGhPages'
     branchName="$branchName  "
   fi
-  if [[ $branchName = 'HEAD' ]]; then
-    branchColor='branchDetached'
-    branchName="$(git log --pretty=format:'%h' -n 1) "
-  fi
 
   # Adding the remote if different from origin
   local remoteName="$(git remote-current)"
-  if [[ $remoteName != 'origin' ]]; then
-    branchName="$remoteName $branchName"
+  if [[ $remoteName != 'origin' && $remoteName != '' ]]; then
+    branchName="$remoteName $branchName"
   fi
 
   # Adding push/pull indicator
   local pushPullSymbol="$(getPromptPushPull)"
   if [[ $pushPullSymbol != '' ]]; then
-    branchName="${pushPullSymbol} ${branchName}"
+    branchName="${pushPullSymbol} ${branchName}"
   fi
 
   echo $(colorize $branchName $branchColor)
@@ -216,7 +220,7 @@ function getPromptPushPull() {
 
 # Tag {{{
 function getPromptTag() {
-  local tagName="$(git current-tag)"
+  local tagName="$(git tag-current)"
   if [[ $tagName = '' ]]; then
     return
   fi

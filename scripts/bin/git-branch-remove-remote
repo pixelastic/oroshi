@@ -1,6 +1,12 @@
 #!/usr/bin/env zsh
+# Usage:
+# $ git branch-remove-remote (origin) foo
+# $ git branch-remove-remote upstream foo
+# $ git branch-remove-remote foo upstream
+
 local branchName
 local remoteName
+local tmp
 
 # The branch name is required
 if [[ $# = 0 ]]; then
@@ -14,10 +20,16 @@ if [[ $# = 1 ]]; then
   remoteName="origin"
 fi
 
-# Remote name and branch name
+# Remote name, then branch name
 if [[ $# = 2 ]]; then
   remoteName=$1
   branchName=$2
+  # Swapping them if remote is not a remote
+  if ! git-remote-exists $remoteName; then
+    tmp=$remoteName
+    remoteName=$branchName
+    branchName=$tmp
+  fi
 fi
 
 git push $remoteName --delete $branchName

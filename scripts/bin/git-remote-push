@@ -51,7 +51,7 @@ class GitRemotePush
   end
 
   def current_branch
-    %x[git current-branch].strip
+    %x[git branch-current].strip
   end
 
   def first_push?

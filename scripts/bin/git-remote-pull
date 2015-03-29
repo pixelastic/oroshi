@@ -46,7 +46,7 @@ class GitRemotePull
   end
 
   def current_branch
-    %x[git current-branch].strip
+    %x[git branch-current].strip
   end
 
   def is_remote(name)
