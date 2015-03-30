@@ -17,7 +17,7 @@ fi
 # Only a branch name ? It's on origin
 if [[ $# = 1 ]]; then
   branchName=$1
-  remoteName="origin"
+  remoteName=$(git remote-current)
 fi
 
 # Remote name, then branch name

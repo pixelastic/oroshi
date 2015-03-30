@@ -27,9 +27,9 @@ class GitTagRemoveRemote
       exit 1
     end
 
-    # One arg, pushing specific tag to origin
+    # One arg, pushing specific tag to current remote
     if @args.size == 1
-      @remoteName = "origin"
+      @remoteName = current_remote
       @tagName = @args[0]
     end
 
@@ -48,6 +48,10 @@ class GitTagRemoveRemote
 
   def is_remote(name)
     system("git remote-exists #{name}")
+  end
+
+  def current_remote
+    %x[git remote-current].strip
   end
 
   def run

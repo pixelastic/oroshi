@@ -28,7 +28,7 @@ class GitRemotePush
 
     # No args, default origin and default branch
     if @args.size == 0
-      @remoteName = "origin"
+      @remoteName = current_remote
       @branchName = current_branch
     end
 
@@ -44,7 +44,7 @@ class GitRemotePush
         @remoteName = @args[0]
         @branchName = current_branch
       else
-        @remoteName = "origin"
+        @remoteName = current_remote
         @branchName = @args[0]
       end
     end
@@ -52,6 +52,10 @@ class GitRemotePush
 
   def current_branch
     %x[git branch-current].strip
+  end
+
+  def current_remote
+    %x[git remote-current].strip
   end
 
   def first_push?

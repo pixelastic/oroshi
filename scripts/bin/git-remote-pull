@@ -21,9 +21,9 @@ class GitRemotePull
       end
     end
 
-    # No args, default origin and default branch
+    # No args, default default remote and default branch
     if @args.size == 0
-      @remoteName = "origin"
+      @remoteName = current_remote
       @branchName = current_branch
     end
 
@@ -39,7 +39,7 @@ class GitRemotePull
         @remoteName = @args[0]
         @branchName = current_branch
       else
-        @remoteName = "origin"
+        @remoteName = current_remote
         @branchName = @args[0]
       end
     end
@@ -47,6 +47,10 @@ class GitRemotePull
 
   def current_branch
     %x[git branch-current].strip
+  end
+
+  def current_remote
+    %x[git remote-current].strip
   end
 
   def is_remote(name)

@@ -22,9 +22,9 @@ class GitTagPush
       end
     end
 
-    # No args, push all tags to origin
+    # No args, push all tags to current remote
     if @args.size == 0
-      @remoteName = "origin"
+      @remoteName = current_remote
       @tagName = nil
     end
 
@@ -40,7 +40,7 @@ class GitTagPush
         @remoteName = @args[0]
         @tagName = nil
       else
-        @remoteName = "origin"
+        @remoteName = current_remote
         @tagName = @args[0]
       end
     end
@@ -48,6 +48,10 @@ class GitTagPush
 
   def is_remote(name)
     system("git remote-exists #{name}")
+  end
+
+  def current_remote
+    %x[git remote-current].strip
   end
 
   def push_all_tags
