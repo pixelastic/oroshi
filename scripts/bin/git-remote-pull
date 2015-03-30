@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+require_relative '../etc/git-helper/git-helper'
+
 # Wrapper for pulling from remote
 # Usage :
 # $ git-remote-pull
@@ -7,62 +9,23 @@
 # $ git-remote-pull upstream develop
 
 class GitRemotePull
+  include GitHelper
 
   def initialize(*args)
-    @flags = ['--rebase']
-    @args = []
+    @flags = get_flag_args(args)
+    @args = get_real_args(args)
 
-    # Split --flags and real options
-    ARGV.each do |arg|
-      if arg =~ /^-/
-        @flags << arg
-      else
-        @args << arg
-      end
-    end
+    # Make sure we'll always rebase when pulling
+    @flags << '--rebase'
 
-    # No args, default default remote and default branch
-    if @args.size == 0
-      @remoteName = current_remote
-      @branchName = current_branch
-    end
-
-    # Two args, both remote and branch
-    if @args.size == 2
-      @remoteName = @args[0]
-      @branchName = @args[1]
-    end
-
-    # Only one args, it can either be a branch, or a remote
-    if @args.size == 1
-      if is_remote @args[0]
-        @remoteName = @args[0]
-        @branchName = current_branch
-      else
-        @remoteName = current_remote
-        @branchName = @args[0]
-      end
-    end
+    elements = guess_elements(*@args)
+    @remoteName = elements[:remote]
+    @branchName = elements[:branch]
   end
 
-  def current_branch
-    %x[git branch-current].strip
-  end
-
-  def current_remote
-    %x[git remote-current].strip
-  end
-
-  def is_remote(name)
-    system("git remote-exists #{name}")
-  end
 
   def run
-    command_args=@flags
-    command_args << @remoteName
-    command_args << @branchName
-
-    system("git pull #{command_args.join(' ')}")
+    system("git pull #{@flags.join(' ')} #{@remoteName} #{@branchName}")
     system("git fetch --tags #{@remoteName}")
     system("git submodule-update")
   end

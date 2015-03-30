@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require_relative '../etc/git-helper/git-helper'
 # Wrapper for pushing to remote
 # - Will init the upstream branch on first push
 # - Will allow user to specify a remote and a branch (default to origin and
@@ -12,74 +13,26 @@
 # $ git-remote-push remote branch
 
 class GitRemotePush
+  include GitHelper
 
   def initialize(*args)
-    @flags = []
-    @args = []
+    @flags = get_flag_args(args)
+    @args = get_real_args(args)
 
-    # Split --flags and real options
-    ARGV.each do |arg|
-      if arg =~ /^-/
-        @flags << arg
-      else
-        @args << arg
-      end
-    end
-
-    # No args, default origin and default branch
-    if @args.size == 0
-      @remoteName = current_remote
-      @branchName = current_branch
-    end
-
-    # Two args, both remote and branch
-    if @args.size == 2
-      @remoteName = @args[0]
-      @branchName = @args[1]
-    end
-
-    # Only one args, it can either be a branch, or a remote
-    if @args.size == 1
-      if is_remote @args[0]
-        @remoteName = @args[0]
-        @branchName = current_branch
-      else
-        @remoteName = current_remote
-        @branchName = @args[0]
-      end
-    end
-  end
-
-  def current_branch
-    %x[git branch-current].strip
-  end
-
-  def current_remote
-    %x[git remote-current].strip
-  end
-
-  def first_push?
-    %x[git config "branch.#{@branchName}.merge"].strip == ''
-  end
-
-  def is_remote(name)
-    system("git remote-exists #{name}")
+    elements = guess_elements(*@args)
+    @remoteName = elements[:remote]
+    @branchName = elements[:branch]
   end
 
   def run
-    command_args=@flags
-    # Setting remote
-    if first_push?
-      command_args << "--set-upstream #{@remoteName}"
+    if never_pushed?
+      system("git push #{@flags.join(' ')} --set-upstream #{@remoteName} #{@branchName}")
     else
-      command_args << @remoteName
+      system("git push #{@flags.join(' ')} #{@remoteName} #{@branchName}")
     end
-    # Setting branch
-    command_args << @branchName
 
-    system("git push #{command_args.join(' ')}")
     # Fetching remote to be up to date
-    %x[git fetch]
+    %x[git fetch #{@remoteName}]
   end
 
 end
