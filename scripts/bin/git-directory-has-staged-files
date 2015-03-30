@@ -6,5 +6,5 @@ if ! git-is-repository; then
   exit 1
 fi
 
-git status --short --porcelain | grep '^\(M\|D\) ' &>/dev/null
+git status --short --porcelain | grep '^. ' &>/dev/null
 
