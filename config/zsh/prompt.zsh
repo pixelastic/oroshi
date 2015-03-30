@@ -187,34 +187,28 @@ function getPromptBranch() {
 
 # Push/Pull {{{
 function getPromptPushPull() {
-  # Branch is equal to remote, no indicator
-  if git-branch-is-equal-to-remote; then
-    return
-  fi
+  local EXIT_CODE_IDENTICAL=0
+  local EXIT_CODE_AHEAD=1
+  local EXIT_CODE_BEHIND=2
+  local EXIT_CODE_DIVERGED=3
+  local EXIT_CODE_NEVER_PUSHED=4
+  local remoteStatus
+  remoteStatus="$(git-branch-remote-status)$?"
 
-  # Branch was never pushed before
-  if ! git-branch-has-remote; then
-    echo ""
-    return
-  fi
-
-  # Branch has new commits ready to be pushed
-  if git-branch-is-ahead-of-remote; then
-    echo " "
-    return
-  fi
-
-  # Branch has diverged from remote
-  if git-branch-has-diverged-from-remote; then
-    echo " "
-    return
-  fi
-
-  # Local branch is behind remote
-  if git-branch-is-behind-remote; then
-    echo " "
-    return
-  fi
+  case "$remoteStatus" in
+    $EXIT_CODE_AHEAD)
+      echo " "
+      ;;
+    $EXIT_CODE_BEHIND)
+      echo " "
+      ;;
+    $EXIT_CODE_DIVERGED)
+      echo " "
+      ;;
+    $EXIT_CODE_NEVER_PUSHED)
+      echo ""
+      ;;
+  esac
 }
 # }}}
 

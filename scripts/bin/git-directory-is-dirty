@@ -1,10 +1,5 @@
 #!/usr/bin/env zsh
-# Check if current directory is dirty, ie. contains modified files, deleted or
-# newly added files
+# Check if current directory is dirty, ie. contains at least one modified,
+# deleted or new file.
 
-# Not a git repo, can't be dirty
-if ! git-is-repository; then
-  exit 1
-fi
-
-git status --short --porcelain | grep '^\(M \|D \|\?\?\)' &>/dev/null
+git status --short --porcelain | grep '^.[^ ]' &>/dev/null

@@ -1,9 +1,10 @@
-#!/usr/bin/env bash
-# Restore a delete file from a git repo
-filename=$1
+#!/usr/bin/env zsh
+# Restore a deleted file from a git repo
+local filename=$1
 
 # We first find the commit where the file was deleted
-hash=$(git log --diff-filter=D --format=format:%H -- $filename)
+local commitHash
+commitHash="$(git log --diff-filter=D --format=format:%H -- $filename)"
 
 # We then bring it back from the dead
-git checkout $hash~1 $filename
+git checkout $commitHash~1 $filename

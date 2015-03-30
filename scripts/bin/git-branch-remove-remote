@@ -4,9 +4,8 @@
 # $ git branch-remove-remote upstream foo
 # $ git branch-remove-remote foo upstream
 
-local branchName
-local remoteName
-local tmp
+local branchName=$1
+local remoteName=$2
 
 # The branch name is required
 if [[ $# = 0 ]]; then
@@ -14,18 +13,16 @@ if [[ $# = 0 ]]; then
   exit 1
 fi
 
-# Only a branch name ? It's on origin
+# Only a branch name ? We remove on the current remote
 if [[ $# = 1 ]]; then
-  branchName=$1
-  remoteName=$(git remote-current)
+  remoteName="$(git remote-current)"
 fi
 
-# Remote name, then branch name
+# Specifying the remote
 if [[ $# = 2 ]]; then
-  remoteName=$1
-  branchName=$2
   # Swapping them if remote is not a remote
   if ! git-remote-exists $remoteName; then
+    local tmp
     tmp=$remoteName
     remoteName=$branchName
     branchName=$tmp
@@ -33,4 +30,3 @@ if [[ $# = 2 ]]; then
 fi
 
 git push $remoteName --delete $branchName
-

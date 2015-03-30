@@ -1,10 +1,4 @@
 #!/usr/bin/env zsh
-# Check if current directory has elements staged
+# Check if current directory has at least one file staged.
 
-# Not a git repo, can't have anything staged
-if ! git-is-repository; then
-  exit 1
-fi
-
-git status --short --porcelain | grep '^. ' &>/dev/null
-
+git status --short --porcelain 2>/dev/null | grep '^[^ \?]' &>/dev/null

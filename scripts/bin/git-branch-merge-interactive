@@ -5,6 +5,5 @@ local commitHash=$1
 if [[ $commitHash != '' ]]; then
   commitHash="$commitHash^1"
 fi
-echo $commitHash
 
 git rebase -i $commitHash

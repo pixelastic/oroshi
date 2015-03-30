@@ -1,6 +1,2 @@
 #!/usr/bin/env zsh
-
-local branchName=$1
-
-git show-branch $branchName &>/dev/null
-
+git show-branch $1 &>/dev/null
