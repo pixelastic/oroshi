@@ -1,4 +1,13 @@
 module GitHelper
+  @@colors = {
+    :tag => 241,
+    :hash => 67,
+    :message => 250
+  }
+
+  def color(type)
+    return @@colors[type]
+  end
 
   # Return only --flags
   def get_flag_args(args)
@@ -16,6 +25,11 @@ module GitHelper
       real_args << arg if arg !~ /^-/
     end
     real_args
+  end
+
+  def colorize(text, color)
+    color = "%03d" % color
+    return "[38;5;#{color}m#{text}[00m"
   end
 
   def current_branch
@@ -62,6 +76,9 @@ module GitHelper
     output[:branch] = current_branch if !output[:branch]
     output[:remote] = current_remote if !output[:remote]
     output[:tag] = current_tag if !output[:tag]
+
+    # If still no remote, we default to origin
+    output[:remote] = "origin" if output[:remote] == ""
 
     return output
   end

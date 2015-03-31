@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require_relative '../etc/git-helper/git-helper'
 # Display the list of current local tags
 # Usage :
 # $ git-tag-list
@@ -6,68 +7,52 @@
 # v1.1.3  7548e9a  Version 1.1.3
 # v1.1.4  87967bb  Version 1.1.4
 
+Tag = Struct.new(:tag, :hash, :message)
 class TagList
-  # Return the commit hash for each tag
-  def git_tag_hashes
-    raw = %x[git show-ref --tags]
-    output = {}
-    raw.split("\n").each do |line|
-      hash, tag = line.split(' ')
-      hash = hash[0..7]
-      tag.gsub!('refs/tags/', '')
-      output[tag] = hash
+  include GitHelper
+  # Note:
+  # Git provides two commands to get the list of tags.
+  # One will give us the list of tags, with commit hashes
+  # The other one will give us the list of tags, with commit message
+  # We'll have to reconciliate both before displaying them
+
+  def tag_list
+    hashes = tags_with_hashes
+    messages = tags_with_messages
+    list = []
+    hashes.each do |tag, hash|
+      list << Tag.new(tag, hash, messages[tag])
     end
-    return output
+    return list
   end
 
-  # Return the tag comment for each tag
-  def git_tag_comments
-    raw = %x[git tag -n | sort -V]
-    output = {}
-    raw.split("\n").each do |line|
-      match = line.match(/(^[^ ]*)\s*(.*)$/)
-      tag = match[1]
-      comment = match[2]
-      output[tag] =  comment
+  def tags_with_messages
+    output = %x[git tag -n | sort -V]
+    tags = {}
+    output.each_line do |line|
+      tag, message = line.match(/(^[^ ]*)\s*(.*)$/).captures
+      tags[tag] = message
     end
-    return output
+    return tags
   end
 
+  def tags_with_hashes
+    output = %x[git show-ref --tags]
+    tags = {}
+    output.each_line do |line|
+      hash, tag = line.match(/^(.{7})[^ ]* refs\/tags\/(.*)$/).captures
+      tags[tag] = hash
+    end
+    return tags
+  end
+  
   def run
-    hashes = git_tag_hashes
-    comments = git_tag_comments
-    tags = comments.keys
-
-    tags.each do |tag|
-      puts Tag.new(
-        :name => tag,
-        :hash => hashes[tag],
-        :comment => comments[tag]
-      )
+    tag_list.each do |tag|
+      tag_name = colorize(tag[:tag].ljust(8), color(:tag))
+      hash = colorize(tag[:hash], color(:hash))
+      message = colorize(tag[:message], color(:message))
+      puts "#{tag_name}  #{hash}  #{message}"
     end
   end
 end
-
-class Tag
-  def initialize(args) 
-    @hash = args[:hash]
-    @comment = args[:comment]
-    @name = args[:name]
-  end
-
-  def colorize(text, color)
-    color = "%03d" % color
-    return "[38;5;#{color}m#{text}[00m"
-  end
-
-  def to_s
-    name = colorize(@name.ljust(8), 241)
-    hash = colorize(@hash, 67)
-    comment = colorize(@comment, 250)
-    "#{name}  #{hash}  #{comment}"
-  end
-
-end
-
 TagList.new().run()
-
