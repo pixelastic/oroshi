@@ -1,30 +1,35 @@
 #!/usr/bin/env zsh
 # Init a new git directory and set the default remote to a github repo
+# Usage :
+# $ git-directory-create
+# $ git-directory-create ./path/to/repo
 
-# Default name is name of current dir
-local repoName=${PWD:t:l}
-local host=$1
+local repoPath=$1
 
-if git init --quiet; then
-  echo "✔ Init new repo"
+# If no path passed, we revert to the current directory
+if [[ $repoPath = '' ]]; then
+  repoPath=.
+fi
+repoPath=${repoPath:a}
+
+# Repo short name is the path last directory
+local repoName=${repoPath:t}
+
+# Create the repo on the specified path
+if git init "$repoPath" --quiet; then
+  cd "$repoPath"
+  echo "✔ Init $repoName repo"
 else
-  echo "✘ Unable to create repo"
+  echo "✘ Unable to create $repoNam repo"
   exit 1
 fi
 
-if [[ $host == 'bitbucket' || $host == 'bb' ]]; then
-	git remote add origin ssh://git@bitbucket.org/pixelastic/${repoName}.git
-	echo "✔ Create origin remote on bitbucket"
-fi
-if [[ $host == 'heroku' || $host == 'h' ]]; then
-	git remote add origin git@heroku.com:${repoName}.git
-	echo "✔ Create origin remote on heroku"
-fi
-if [[ $host == 'github' || $host == 'gh' || $host == '' ]]; then
-	git remote add origin git@github.com:pixelastic/${repoName}
-	echo "✔ Create origin remote on git"
+# Default to a remote on github
+if git remote add origin git@github.com:pixelastic/${repoName}; then
+	echo "✔ Create origin remote on github"
 fi
 
+# Create master branch
 if git checkout --quiet -b master; then
   echo "✔ Create master branch"
 else
@@ -39,17 +44,10 @@ else
   exit 1
 fi
 
-if git add . && git commit --quiet -m "Initial commit."; then
+if git add . && git commit --quiet -m "Add ignore file."; then
   echo "✔ Initial commit"
 else
   echo "✘ Unable to do the initial commit"
-  exit 1
-fi
-
-if git branch develop; then
-  echo "✔ Create develop branch"
-else
-  echo "✘ Unable to create develop branch"
   exit 1
 fi
 
