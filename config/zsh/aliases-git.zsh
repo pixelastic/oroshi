@@ -31,6 +31,7 @@ alias vcl+='git peek --stat'
 alias vcl='git peek'
 alias vcla='git peek -p'
 alias vcri='git rebase -i'
+alias vcv='git show'
 # }}}
 # [f]iles {{{
 alias vfR='git rm -r'
