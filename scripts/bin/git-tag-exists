@@ -1,6 +1,5 @@
 #!/usr/bin/env zsh
-# Check if specified tag exists. This will make sure we don't test for branches
-# with the same name as a tag.
+# Check if specified tag exists.
 
 if [[ "$(git tag -l "$1")" != '' ]]; then
   exit 0
