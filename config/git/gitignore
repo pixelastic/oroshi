@@ -1,32 +1,15 @@
-
-# Temporary files
-.*.sw[a-z]
-*.orig
 *.crcdownload
+*.orig
 *~
-nohup.out
-tmp
-
-# Compiled stuff
-*.exe
-*.dll
-*.so
-*.pyc
-*.mo
-# *.min.css
-# *.min.js
-__pycache__
-.sass-cache
-
-# Junk
+.*.sw[a-z]
 .DS_Store
-Thumbs.db
-
-# Other versioning systems
 .hg
 .hgignore
+.sass-cache
 .svn
-
-# Dependencies
+Thumbs.db
+__pycache__
 bower_components
 node_modules
+nohup.out
+tmp

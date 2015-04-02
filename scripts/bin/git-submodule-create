@@ -1,49 +1,33 @@
 #!/usr/bin/env zsh
 # Will add a new submodule to a repo.
-# Default `git submodule add` requires to be run from the git root. This
-# wrapper will not need it.
-# This wrapper will also allow either `path directory` or `directory path`
+# Usage :
+# $ git-submodule-path url@to:repo.git
+# $ git-submodule-path url@to:repo.git ./path/to/submodule 
+# $ git-submodule-path ./path/to/submodule url@to:repo.git
 
-local repositoryUrl=$1
-local filepath=$2
+local repoUrl="$1"
+local submodulePath="$2"
 
-# Need at least one argument
-if ! [ -n "$1" ]; then
+# Error if no url specified
+if [[ $# = 0 ]]; then
   echo "✘ You must pass at least the repository url"
   exit 1
 fi
 
-# Only a repo url, then the filepath is the current path
-if ! [ -n "$2" ]; then
-  filepath=$(readlink -f $(pwd))
+# Default path is current directory
+if [[ $# = 1 ]]; then
+  # We get the submodule name from the repo url
+  submodulePath="./${repoUrl:t:s/git//}"
 fi
+submodulePath="${submodulePath:a}"
 
-# Did we messed up repo and filepath ?
-# We'll just swap them if not set in the right order
-if ! [ -d $filepath ]; then
-  local tmp=$filepath
-  filepath=$repositoryUrl
-  repositoryUrl=$tmp
+# Path look like a repo, we swap them
+if [[ "$submodulePath" =~ /\.git$/ ]]; then
+  local tmp=$submodulePath
+  submodulePath="$repoUrl"
+  repoUrl="$tmp"
 fi
-
-# Getting the directory name of the submodule from the url
-local dirname
-dirname=$(echo ${repositoryUrl:t} | sed 's/\.git$//')
-
-# Getting the full path of the submodule
-local fullPath
-fullPath=$(readlink -f $filepath)
-
-# Getting the git root path
-cd $filepath
-local gitRoot
-gitRoot=$(git rev-parse --show-toplevel)
-
-# Getting the submodule path, relative to the git root
-local relativePath
-relativePath=$(python -c "import os.path; print os.path.relpath('$fullPath', '$gitRoot')")
 
 # Adding subrepo
-cd $gitRoot
-git submodule add $repositoryUrl "$relativePath/$dirname"
-echo "✔ $dirname submodule added"
+git submodule add "$repoUrl" "$submodulePath"
+echo "✔ submodule added"

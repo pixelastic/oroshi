@@ -6,8 +6,6 @@
   download = clone --depth=1
   peek = log --graph --pretty=format:'%C(67)%h%Creset %C(24)(%cd, %ar)%Creset %C(241)%an%Creset %C(bold 202)%d%Creset%n   %C(250)%s%Creset%n'
   root = !pwd
-  submodule-update = !git submodule update
-  submodule-download =!git submodule init && git submodule update
   tabula-rasa = !git reset --hard && git clean -fd
   unstage = reset HEAD
 [advice]
