@@ -146,6 +146,10 @@ nnoremap cim ciB
 nnoremap vam [{V%
 nnoremap dam [{V%d
 nnoremap cam [{V%c
+" Select the current block of text
+nnoremap vip {jv}k$
+" Sort the current block of text
+nnoremap sip {jv}k$:sort<CR>
 " }}}
 " MUSCLE MEMORY {{{
 " Ctrl+S saves the file, as in most apps
@@ -159,7 +163,7 @@ nnoremap <silent> <C-S> :call SaveFile()<CR>
 inoremap <silent> <C-S> <Esc>:call SaveFile()<CR>
 " Ctrl+D is save and exit, as in the term.
 function! SaveAndCloseFile()
-  " Keeping only one windown in diff before closing
+  " Keeping only one window in diff before closing
   if &diff | only | endif
   " Force quit without saving if file is not saved
   if empty(@%)
@@ -212,6 +216,9 @@ nmap - [e
 vmap - [egv
 nmap _ ]e
 vmap _ ]egv
+" Swap two words
+nnoremap <C-j><C-i> daWf<Space>pB
+nnoremap <C-i><C-j> daW2F<Space>pB
 " appending a missing ; at the end of line
 function! AppendMissingSemicolon()
   if getline(".") !~ ';$'

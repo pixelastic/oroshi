@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require_relative '../etc/git-helper/git-helper'
 # Wrapper for removing a tag from a remote
 #
 # Usage :
@@ -7,57 +8,25 @@
 # $ git-tag-remove-remote upstream tag
 
 class GitTagRemoveRemote
+  include GitHelper
 
   def initialize(*args)
-    @flags = []
-    @args = []
-
-    # Split --flags and real options
-    ARGV.each do |arg|
-      if arg =~ /^-/
-        @flags << arg
-      else
-        @args << arg
-      end
-    end
-
-    # Need at least on arg
-    if @args.size == 0
+    if args.size == 0
       puts "✘ You must pass at least the tag to delete"
       exit 1
     end
 
-    # One arg, pushing specific tag to current remote
-    if @args.size == 1
-      @remoteName = current_remote
-      @tagName = @args[0]
-    end
+    # We can pass several tags to delete, so we'll first exclude the remote
+    # from the list
+    elements = guess_elements(*args)
+    @remoteName = elements[:remote]
 
-    # Two args, can be in either order
-    if @args.size == 2
-      if is_remote @args[0]
-        @remoteName = @args[0]
-        @tagName = @args[1]
-      else
-        @tagName = @args[0]
-        @remoteName = @args[1]
-      end
-    end
-
-  end
-
-  def is_remote(name)
-    system("git remote-exists #{name}")
-  end
-
-  def current_remote
-    %x[git remote-current].strip
+    @tags = args - [@remoteName]
   end
 
   def run
-    # Deleting specified tag
-    # TODO: Allow deleting multiple tags
-    %x[git push --no-verify #{@remoteName} :refs/tags/#{@tagName}]
+    ref_tags = @tags.map{|tag| ":refs/tags/#{tag}"}.join(' ')
+    system("git push --no-verify #{@remoteName} #{ref_tags}")
   end
 
 end

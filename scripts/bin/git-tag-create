@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+require_relative '../etc/git-helper/git-helper'
+# Wrapper for creating git tags
+#
+# Usage :
+# $ git-tag-create foo
+# $ git-tag-create foo bar baz
+
+class GitTagCreate
+  include GitHelper
+
+  def initialize(*args)
+    if args.size == 0
+      puts "✘ You must pass at least the name of the tag to create"
+      exit 1
+    end
+
+    @tags = args
+  end
+
+  def run
+    @tags.each do |tag|
+      puts "✔ Tag #{tag} created" if system("git tag #{tag} 2>/dev/null")
+    end
+  end
+end
+GitTagCreate.new(*ARGV).run()
+
+

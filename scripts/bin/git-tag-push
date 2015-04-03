@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require_relative '../etc/git-helper/git-helper'
 # Wrapper for pushing tags to remote
 #
 # Usage :
@@ -8,72 +9,47 @@
 # $ git-tag-push remote tag
 
 class GitTagPush
+  include GitHelper
 
   def initialize(*args)
-    @flags = []
-    @args = []
+    @flags = get_flag_args(args)
+    @args = get_real_args(args)
+    @push_all_tags = false
 
-    # Split --flags and real options
-    ARGV.each do |arg|
-      if arg =~ /^-/
-        @flags << arg
-      else
-        @args << arg
-      end
-    end
-
-    # No args, push all tags to current remote
+    # If no options specified, we upload all tags
     if @args.size == 0
-      @remoteName = current_remote
-      @tagName = nil
+      @push_all_tags = true
     end
 
-    # Two args, push specific tag to specific remote
-    if @args.size == 2
-      @remoteName = @args[0]
-      @tagName = @args[1]
-    end
+    elements = guess_elements(*@args)
+    @remoteName = elements[:remote]
+    @tagName = elements[:tag]
 
-    # Only one arg, it can either be a tag or a remote
+    # Only one argument, this is either the remote or tag
     if @args.size == 1
       if is_remote @args[0]
-        @remoteName = @args[0]
-        @tagName = nil
+        @push_all_tags = true
       else
-        @remoteName = current_remote
         @tagName = @args[0]
       end
     end
-  end
 
-  def is_remote(name)
-    system("git remote-exists #{name}")
-  end
-
-  def current_remote
-    %x[git remote-current].strip
   end
 
   def push_all_tags
-    args=[@flags, @remoteName].join(' ')
-    system("git push --tags #{args}")
+    system("git push --no-verify --tags #{@remoteName}")
   end
 
   def push_specific_tag
-    args=[@flags, @remoteName, @tagName].join(' ')
-    system("git push #{args}")
+    system("git push --no-verify #{@remoteName} #{@tagName}")
   end
 
   def run
-    if !@tagName
+    if @push_all_tags
       push_all_tags
     else
       push_specific_tag
     end
-
-    # Fetching remote to be up to date
-    %x[git fetch --tags]
   end
-
 end
 GitTagPush.new(*ARGV).run()

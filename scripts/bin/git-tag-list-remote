@@ -11,23 +11,31 @@ Tag = Struct.new(:tag, :hash)
 class TagListRemote
   include GitHelper
 
+  def initialize(*args)
+    elements = guess_elements(*args)
+    @remoteName = elements[:remote]
+  end
+
   def tag_list
-    output = %x[git ls-remote --tags 2>/dev/null | awk '{print $2, $1}' | sort -V]
+    output = %x[git ls-remote --tags #{@remoteName} 2>/dev/null | awk '{print $2, $1}' | sort -V]
     tags = []
     output.each_line do |line|
       tag, hash = line.match(/^refs\/tags\/(.*) (.{7}).*\n$/).captures
+      next if tag =~ /\^{}$/
       tags << Tag.new(tag, hash)
     end
     return tags
   end
 
   def run
+    longest_tag = tag_list.map {|obj| obj[:tag] }.group_by(&:size).max.last[0]
+
     tag_list.each do |tag|
-      tag_name = colorize(tag[:tag].ljust(8), color(:tag))
+      tag_name = colorize(tag[:tag].ljust(longest_tag.size), color(:tag))
       hash = colorize(tag[:hash], color(:hash))
       puts "#{tag_name}  #{hash}"
     end
   end
 
 end
-TagListRemote.new().run()
+TagListRemote.new(*ARGV).run()

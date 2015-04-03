@@ -26,10 +26,9 @@ class GitRemotePush
 
   def run
     if never_pushed?
-      system("git push #{@flags.join(' ')} --set-upstream #{@remoteName} #{@branchName}")
-    else
-      system("git push #{@flags.join(' ')} #{@remoteName} #{@branchName}")
+      @flags << '--set-upstream'
     end
+    system("git push #{@flags.join(' ')} #{@remoteName} #{@branchName}")
 
     # Fetching remote to be up to date
     %x[git fetch #{@remoteName}]
