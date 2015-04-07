@@ -28,7 +28,7 @@ class GitRemotePull
   def run
     system("git pull #{@flags.join(' ')} #{@remoteName} #{@branchName}")
     system("git fetch --tags #{@remoteName}")
-    system("git submodule-update")
+    system("git submodule update")
   end
 
 end
