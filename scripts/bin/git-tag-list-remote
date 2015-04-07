@@ -17,11 +17,10 @@ class TagListRemote
   end
 
   def tag_list
-    output = %x[git ls-remote --tags #{@remoteName} 2>/dev/null | awk '{print $2, $1}' | sort -V]
+    output = %x[git ls-remote --tags #{@remoteName} 2>/dev/null | grep -v '\\^{}$' | awk '{print $2, $1}' | sort -V]
     tags = []
     output.each_line do |line|
       tag, hash = line.match(/^refs\/tags\/(.*) (.{7}).*\n$/).captures
-      next if tag =~ /\^{}$/
       tags << Tag.new(tag, hash)
     end
     return tags

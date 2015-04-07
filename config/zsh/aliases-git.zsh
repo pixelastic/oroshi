@@ -65,15 +65,16 @@ alias vrr='git remote-current'
 # }}}
 # [t]ags {{{
 alias vt?='git tag-exists'
+alias vt?r='git tag-exists-remote'
 alias vtR='git tag -d'
-alias vtRr='git-tag-remove-remote'
+alias vtRr='git tag-remove-remote'
 alias vtc='git tag-create'
 alias vtl='git tag-list'
 alias vtlr='git tag-list-remote'
 alias vtpl='git fetch --tags'
 alias vtps='git tag-push'
 alias vts='git checkout'
-alias vtt='git current-tag'
+alias vtt='git tag-current'
 # }}}
 # [s]tashes {{{
 alias vst='git stash -u'
