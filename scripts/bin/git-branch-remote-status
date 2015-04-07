@@ -15,7 +15,7 @@ local EXIT_CODE_NEVER_PUSHED=4
 
 local remoteHead=$(git rev-parse @{upstream} 2>/dev/null)
 # Remote has no hash, means it never get pushed
-if [[ "$remoteHead" = '@{upstream}' ]]; then
+if [[ "$remoteHead" = '' ]]; then
   exit $EXIT_CODE_NEVER_PUSHED
 fi
 

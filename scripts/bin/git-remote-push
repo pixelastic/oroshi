@@ -29,9 +29,6 @@ class GitRemotePush
       @flags << '--set-upstream'
     end
     system("git push #{@flags.join(' ')} #{@remoteName} #{@branchName}")
-
-    # Fetching remote to be up to date
-    %x[git fetch #{@remoteName}]
   end
 
 end

@@ -24,7 +24,17 @@ module GitHelper
     args.each do |arg|
       real_args << arg if arg !~ /^-/
     end
-    real_args
+    replace_short_aliases real_args
+  end
+
+  def replace_short_aliases(elements)
+    elements.map do |element|
+      next "origin" if element == "o"
+      next "upstream" if element == "u"
+      next "master" if element == "m"
+      next "develop" if element == "d"
+      element
+    end
   end
 
   def colorize(text, color)

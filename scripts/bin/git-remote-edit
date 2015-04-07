@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+#!/usr/bin/env ruby
+require_relative '../etc/git-helper/git-helper'
+# Change a branch remote
+# Usage:
+# $ git remote-edit upstream
+# $ git remote-edit branch upstream
+# $ git remote-edit upstream branch
+#
+# If no branch is specified, will update the remote of the current branch.
+
+class GitRemoteEdit
+  include GitHelper
+
+  def initialize(*args)
+    @args = get_real_args(args)
+
+    elements = guess_elements(*@args)
+
+    @remoteName = elements[:remote]
+    @branchName = elements[:branch]
+  end
+
+  def run
+    system("git branch #{@branchName} --set-upstream-to #{@remoteName}/#{@branchName}")
+  end
+
+end
+GitRemoteEdit.new(*ARGV).run()
