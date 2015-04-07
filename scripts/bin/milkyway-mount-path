@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+require "cgi"
+# My Samsung Galaxy Note does not work in USB mode but only in MTP. Every time
+# I plug it, it gets mounted in a different directory. This script will echo
+# the current directory where it is mount.
+
+class MilkyWayPath
+  def run
+    lsusb = %x[lsusb -d '04e8:6860']
+    bus, device =  lsusb.match(/Bus (.*) Device (.*): ID.*$/).captures
+    path = "/run/user/1000/gvfs/mtp:host="
+    path << CGI.escape("[usb:#{bus},#{device}]")
+    path << "/Tablet"
+    puts path
+  end
+end
+MilkyWayPath.new().run()
+
