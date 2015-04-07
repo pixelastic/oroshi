@@ -1,25 +1,29 @@
 #!/usr/bin/env ruby
 require_relative '../etc/git-helper/git-helper'
-# Display the list of the current local branches, with colors.
+# Display the list of current remote branches
+# Usage :
+# $ git-branch-list-remote {remote}
+# develop  9242a33
+# master   7548e9a
 
-Branch = Struct.new(:branch, :hash, :message)
-class GitBranchList
+Branch = Struct.new(:branch, :hash)
+class BranchListRemote
   include GitHelper
 
   def initialize(*args)
-    @flags = get_flag_args(args)
+    elements = guess_elements(*args)
+    @remoteName = elements[:remote]
   end
 
   def branch_list
-    output = %x[git branch --verbose #{@flags.join(' ')}]
+    output = %x[git ls-remote --heads #{@remoteName} 2>/dev/null | awk '{print $2, $1}' | sort -V]
     branches = []
     output.each_line do |line|
-      branch, hash, message = line.match(/^.{2}([^ ]*) *([^ ]*) (.*)$/).captures
-      branches << Branch.new(branch, hash, message)
+      branch, hash = line.match(/^refs\/heads\/(.*) (.{7}).*\n$/).captures
+      branches << Branch.new(branch, hash)
     end
     return branches
   end
-
 
   def run
     @branch_list = branch_list
@@ -29,11 +33,10 @@ class GitBranchList
     @branch_list.each do |branch|
       branch_name = colorize(branch[:branch].ljust(longest_branch.size), branch_color(branch[:branch]))
       hash = colorize(branch[:hash], color(:hash))
-      message = colorize(branch[:message], color(:message))
-      puts "#{branch_name}  #{hash}  #{message}"
+      puts "#{branch_name}  #{hash}"
     end
-
   end
-end
 
-GitBranchList.new(*ARGV).run()
+end
+BranchListRemote.new(*ARGV).run()
+

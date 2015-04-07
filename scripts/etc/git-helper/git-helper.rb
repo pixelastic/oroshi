@@ -1,12 +1,29 @@
 module GitHelper
   @@colors = {
-    :tag => 241,
+    :branch => 202,
+    :branch_bugfix => 203,
+    :branch_develop => 184,
+    :branch_feature => 202,
+    :branch_fix => 203,
+    :branch_gh_pages => 24,
+    :branch_master => 69,
+    :branch_perf => 141,
+    :branch_release => 171,
+    :branch_review => 28,
+    :branch_test => 136,
     :hash => 67,
-    :message => 250
+    :message => 250,
+    :tag => 241
   }
 
   def color(type)
     return @@colors[type]
+  end
+
+  def branch_color(branch)
+    color_symbol = ('branch_' + branch).to_sym
+    return @@colors[color_symbol] if @@colors[color_symbol]
+    return @@colors[:branch]
   end
 
   # Return only --flags

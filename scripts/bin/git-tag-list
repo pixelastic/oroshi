@@ -47,9 +47,11 @@ class TagList
   end
 
   def run
-    longest_tag = tag_list.map {|obj| obj[:tag] }.group_by(&:size).max.last[0]
+    @tag_list = tag_list
 
-    tag_list.each do |tag|
+    longest_tag = @tag_list.map {|obj| obj[:tag] }.group_by(&:size).max.last[0]
+
+    @tag_list.each do |tag|
       tag_name = colorize(tag[:tag].ljust(longest_tag.size), color(:tag))
       hash = colorize(tag[:hash], color(:hash))
       message = colorize(tag[:message], color(:message))

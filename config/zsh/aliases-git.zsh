@@ -5,14 +5,14 @@
 
 # [b]ranches {{{
 alias vb?='git branch-exists'
+alias vbM='git merge --no-edit'
 alias vbR='git branch -D'
 alias vbRr='git branch-remove-remote'
 alias vbb='git branch-current'
 alias vbc='git branch-create'
 alias vbl='git branch-list'
-alias vbla='git branch-list --all'
+alias vblr='git branch-list-remote'
 alias vbm='git rebase'
-alias vbM='git merge --no-edit'
 alias vbmd='vbm develop'
 alias vbmi='git branch-merge-interactive'
 alias vbmm='vbm master'
