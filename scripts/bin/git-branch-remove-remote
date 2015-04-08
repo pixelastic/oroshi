@@ -1,32 +1,35 @@
-#!/usr/bin/env zsh
-# Usage:
-# $ git branch-remove-remote (origin) foo
-# $ git branch-remove-remote upstream foo
-# $ git branch-remove-remote foo upstream
+#!/usr/bin/env ruby
+require_relative '../etc/git-helper/git-helper'
+# Wrapper for removing one or several branches from a remote
+#
+# Usage :
+# $ git-branch-remove-remote branch (origin)
+# $ git-branch-remove-remote branch1 branch2 (origin)
+# $ git-branch-remove-remote branch upstream
+# $ git-branch-remove-remote upstream branch
 
-local branchName=$1
-local remoteName=$2
+class GitBranchRemoveRemote
+  include GitHelper
 
-# The branch name is required
-if [[ $# = 0 ]]; then
-  echo "✘ You must pass at least the branch to delete"
-  exit 1
-fi
+  def initialize(*args)
+    @args = get_real_args(args)
 
-# Only a branch name ? We remove on the current remote
-if [[ $# = 1 ]]; then
-  remoteName="$(git remote-current)"
-fi
+    # We can pass several branches to delete, so we'll first exclude the remote
+    # from the list
+    elements = guess_elements(@args)
+    @remoteName = elements[:remote]
 
-# Specifying the remote
-if [[ $# = 2 ]]; then
-  # Swapping them if remote is not a remote
-  if ! git-remote-exists $remoteName; then
-    local tmp
-    tmp=$remoteName
-    remoteName=$branchName
-    branchName=$tmp
-  fi
-fi
+    @branches = args - [@remoteName]
 
-git push $remoteName --delete $branchName
+    if @branches.size == 0
+      puts "✘ You must pass at least the branch to delete"
+      exit 1
+    end
+  end
+
+  def run
+    system("git push #{@remoteName} --no-verify --delete #{@branches.join(' ')}")
+  end
+
+end
+GitBranchRemoveRemote.new(*ARGV).run()

@@ -14,7 +14,7 @@ class TagExistsRemote
     @args = get_real_args(args)
 
     # Guessing the remote name
-    elements = guess_elements(*@args)
+    elements = guess_elements(@args)
     @remoteName = elements[:remote]
     @args = @args - [@remoteName]
     

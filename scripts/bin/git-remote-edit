@@ -15,7 +15,7 @@ class GitRemoteEdit
   def initialize(*args)
     @args = get_real_args(args)
 
-    elements = guess_elements(*@args)
+    elements = guess_elements(@args)
 
     @remoteName = elements[:remote]
     @branchName = elements[:branch]

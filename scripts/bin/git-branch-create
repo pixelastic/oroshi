@@ -22,7 +22,7 @@ class GitBranchCreate
 
     # Creating a branch from a remote one
     if @args.size == 2
-      elements = guess_elements(*@args)
+      elements = guess_elements(@args)
       @remoteName = elements[:remote]
       @args = @args - [@branchName]
       @branchName = @args[0]

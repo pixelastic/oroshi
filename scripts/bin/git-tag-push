@@ -21,7 +21,7 @@ class GitTagPush
       @push_all_tags = true
     end
 
-    elements = guess_elements(*@args)
+    elements = guess_elements(@args)
     @remoteName = elements[:remote]
     @tagName = elements[:tag]
 

@@ -19,7 +19,7 @@ class GitRemotePull
     # Make sure we'll always rebase when pulling
     @flags << '--rebase'
 
-    elements = guess_elements(*@args)
+    elements = guess_elements(@args)
     @remoteName = elements[:remote]
     @branchName = elements[:branch]
   end

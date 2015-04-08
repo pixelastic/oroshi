@@ -19,7 +19,7 @@ class GitRemotePush
     @flags = get_flag_args(args)
     @args = get_real_args(args)
 
-    elements = guess_elements(*@args)
+    elements = guess_elements(@args)
     @remoteName = elements[:remote]
     @branchName = elements[:branch]
   end

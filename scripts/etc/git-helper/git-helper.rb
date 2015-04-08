@@ -99,7 +99,7 @@ module GitHelper
     return false
   end
 
-  def guess_elements(*elements)
+  def guess_elements(elements)
     output = {}
 
     # Guess element types

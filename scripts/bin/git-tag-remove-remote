@@ -1,9 +1,10 @@
 #!/usr/bin/env ruby
 require_relative '../etc/git-helper/git-helper'
-# Wrapper for removing a tag from a remote
+# Wrapper for removing one or several tags from a remote
 #
 # Usage :
 # $ git-tag-remove-remote tag (origin)
+# $ git-tag-remove-remote tag1 tag2 (origin)
 # $ git-tag-remove-remote tag upstream
 # $ git-tag-remove-remote upstream tag
 
@@ -11,14 +12,15 @@ class GitTagRemoveRemote
   include GitHelper
 
   def initialize(*args)
-    if args.size == 0
+    @args = get_real_args(args)
+    if @args.size == 0
       puts "✘ You must pass at least the tag to delete"
       exit 1
     end
 
     # We can pass several tags to delete, so we'll first exclude the remote
     # from the list
-    elements = guess_elements(*args)
+    elements = guess_elements(@args)
     @remoteName = elements[:remote]
 
     @tags = args - [@remoteName]

@@ -11,7 +11,8 @@ class BranchListRemote
   include GitHelper
 
   def initialize(*args)
-    elements = guess_elements(*args)
+    @args = get_real_args(args)
+    elements = guess_elements(@args)
     @remoteName = elements[:remote]
   end
 
