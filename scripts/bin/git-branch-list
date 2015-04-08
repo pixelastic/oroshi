@@ -40,7 +40,7 @@ class GitBranchList
   def output_push_pull(branch)
     color = branch_color(branch)
     output = push_pull_indicator(branch)
-    output = " " if !output
+    output = "  " if !output
     return colorize(output, color)
   end
 
