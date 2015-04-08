@@ -61,7 +61,7 @@ module GitHelper
     return " " if code == 1
     return " " if code == 2
     return " " if code == 3
-    return "" if code == 4
+    return " " if code == 4
   end
 
   def colorize(text, color)
