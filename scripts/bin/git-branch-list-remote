@@ -33,7 +33,7 @@ class BranchListRemote
     @branch_list.each do |branch|
       branch_name = colorize(branch[:branch].ljust(longest_branch.size), branch_color(branch[:branch]))
       hash = colorize(branch[:hash], color(:hash))
-      puts "#{branch_name}  #{hash}"
+      puts "  #{branch_name}  #{hash}"
     end
   end
 

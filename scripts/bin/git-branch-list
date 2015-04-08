@@ -8,6 +8,8 @@ class GitBranchList
 
   def initialize(*args)
     @flags = get_flag_args(args)
+    @currentBranch = current_branch
+    @branchList = branch_list
   end
 
   def branch_list
@@ -20,17 +22,44 @@ class GitBranchList
     return branches
   end
 
+  def longest_branch_length
+    @branchList.map {|obj| obj[:branch] }.group_by(&:size).max.last[0].length
+  end
+
+  def output_current_branch(branch)
+    return colorize("", color(:valid)) if @currentBranch == branch
+    return " "
+  end
+
+  def output_branch_name(branch)
+    color = branch_color(branch)
+    output = branch.ljust(longest_branch_length)
+    return colorize(output, color)
+  end
+
+  def output_push_pull(branch)
+    color = branch_color(branch)
+    output = push_pull_indicator(branch)
+    output = " " if !output
+    return colorize(output, color)
+  end
+
+  def output_hash(hash)
+    return colorize(hash, color(:hash))
+  end
+
+  def output_message(message)
+    return colorize(message, color(:message))
+  end
 
   def run
-    @branch_list = branch_list
-
-    longest_branch = @branch_list.map {|obj| obj[:branch] }.group_by(&:size).max.last[0]
-
-    @branch_list.each do |branch|
-      branch_name = colorize(branch[:branch].ljust(longest_branch.size), branch_color(branch[:branch]))
-      hash = colorize(branch[:hash], color(:hash))
-      message = colorize(branch[:message], color(:message))
-      puts "#{branch_name}  #{hash}  #{message}"
+    @branchList.each do |branch|
+      current_branch = output_current_branch(branch[:branch])
+      branch_name = output_branch_name(branch[:branch])
+      push_pull = output_push_pull(branch[:branch])
+      hash = output_hash(branch[:hash])
+      message = output_message(branch[:message])
+      puts "#{current_branch} #{push_pull} #{branch_name}  #{hash}  #{message}"
     end
 
   end

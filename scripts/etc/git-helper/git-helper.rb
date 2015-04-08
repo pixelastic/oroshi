@@ -13,7 +13,8 @@ module GitHelper
     :branch_test => 136,
     :hash => 67,
     :message => 250,
-    :tag => 241
+    :tag => 241,
+    :valid => 35
   }
 
   def color(type)
@@ -52,6 +53,15 @@ module GitHelper
       next "develop" if element == "d"
       element
     end
+  end
+
+  def push_pull_indicator(branchName)
+    system("git branch-remote-status #{branchName}")
+    code = $?.exitstatus
+    return " " if code == 1
+    return " " if code == 2
+    return " " if code == 3
+    return "" if code == 4
   end
 
   def colorize(text, color)
