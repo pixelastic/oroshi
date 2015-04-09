@@ -30,7 +30,7 @@ class TagListRemote
   def run
     @tag_list = tag_list
 
-    longest_tag = @tag_list.map {|obj| obj[:tag] }.group_by(&:size).max.last[0]
+    longest_tag = longest_by_type(@tag_list, :tag)
 
     @tag_list.each do |tag|
       tag_name = colorize(tag[:tag].ljust(longest_tag.size), color(:tag))

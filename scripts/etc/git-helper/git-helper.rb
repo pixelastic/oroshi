@@ -69,6 +69,12 @@ module GitHelper
     return "[38;5;#{color}m#{text}[00m"
   end
 
+  def longest_by_type(list, type)
+    ordered = list.map {|obj| obj[:tag] }.group_by(&:size)
+    return nil if ordered.size == 0
+    return ordered.max.last[0]
+  end
+
   def current_branch
     %x[git branch-current].strip
   end
