@@ -13,7 +13,12 @@ module GitHelper
     :branch_test => 136,
     :hash => 67,
     :message => 250,
+    :remote => 202,
+    :remote_github => 24,
+    :remote_origin => 184,
+    :remote_upstream => 69,
     :tag => 241,
+    :url => 250,
     :valid => 35
   }
 
@@ -25,6 +30,14 @@ module GitHelper
     color_symbol = ('branch_' + branch).to_sym
     return @@colors[color_symbol] if @@colors[color_symbol]
     return @@colors[:branch]
+  end
+
+  def remote_color(remote)
+    remote = 'github' if remote == 'gh'
+
+    color_symbol = ('remote_' + remote).to_sym
+    return @@colors[color_symbol] if @@colors[color_symbol]
+    return @@colors[:remote]
   end
 
   # Return only --flags
@@ -70,7 +83,7 @@ module GitHelper
   end
 
   def longest_by_type(list, type)
-    ordered = list.map {|obj| obj[:tag] }.group_by(&:size)
+    ordered = list.map {|obj| obj[type] }.group_by(&:size)
     return nil if ordered.size == 0
     return ordered.max.last[0]
   end

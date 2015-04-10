@@ -1,0 +1,46 @@
+#!/usr/bin/env ruby
+require_relative '../etc/git-helper/git-helper'
+# List all remotes
+#
+# Usage :
+# $ git-remote-list
+
+Remote = Struct.new(:name, :url)
+class GitRemoteList
+  include GitHelper
+
+  def initialize(*args)
+    @currentRemote = current_remote
+    @remoteList = remote_list
+  end
+
+  def remote_list
+    output = %x[git remote -v]
+    remotes = []
+    output.each_line do |line|
+      name, url, type = line.match(/(\S*)\s*(\S*)\s*\((\S*)\)/).captures
+      next if type == 'fetch'
+      remotes << Remote.new(name, url)
+    end
+    return remotes
+  end
+
+  def output_current_remote(remote)
+    return colorize("", color(:valid)) if @currentRemote == remote
+    return " "
+  end
+
+  def run
+    longest_name = longest_by_type(@remoteList, :name)
+
+    @remoteList.each do |remote|
+      current_remote = output_current_remote(remote[:name])
+      name = colorize(remote[:name].ljust(longest_name.size), remote_color(remote[:name]))
+      url = colorize(remote[:url], color(:url))
+      puts "#{current_remote}  #{name}  #{url}"
+    end
+  end
+
+end
+GitRemoteList.new(*ARGV).run()
+
