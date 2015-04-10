@@ -81,6 +81,7 @@ alias vtpl='git fetch --tags'
 alias vtps='git tag-push'
 alias vts='git checkout'
 alias vtt='git tag-current'
+alias vtta='git tag-current-all'
 # }}}
 # [s]tashes {{{
 alias vst='git stash -u'

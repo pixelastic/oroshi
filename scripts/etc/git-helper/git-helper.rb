@@ -100,6 +100,12 @@ module GitHelper
     %x[git tag-current].strip
   end
 
+  def current_tags
+    tags = %x[git tag-current-all].strip.split("\n")
+    tags << current_tag
+    tags.uniq
+  end
+
   def is_branch(name)
     system("git branch-exists #{name}")
   end

@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# Display all tags pointing to a specific commit
+
+local commit=$1
+if [[ "$commit" == '' ]]; then
+  commit='HEAD'
+fi
+git tag --points-at $commit
