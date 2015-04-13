@@ -1,5 +1,4 @@
 [alias]
-  amend = commit --amend -v
   commit-all = !git add --all . && git commit -v --all
   conflicts = diff --name-only --diff-filter=U
   diff-staged = diff -w --color-words --staged

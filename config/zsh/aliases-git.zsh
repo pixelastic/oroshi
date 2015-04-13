@@ -27,13 +27,16 @@ alias vbu='git branch-update'
 alias vcR='git commit-remove'
 alias vca='git commit-all'
 alias vcc='git commit -v'
-alias vce='git amend'
+alias vce='git commit-edit'
 alias vcf='git commit-search'
 alias vcl+='git peek --stat'
 alias vcl='git peek'
 alias vcla='git peek -p'
 alias vcri='git rebase -i'
 alias vcv='git show'
+# }}}
+# [c]herry [p]ick {{{
+alias vcp='git cherry-pick'
 # }}}
 # [f]iles {{{
 alias vfR='git rm -r'
