@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+require "shellwords"
+
+class Aac2Mp3
+
+	def initialize(*args)
+		# Usage explanation if no args
+		if args.size == 0
+			puts "Usage :"
+			puts "$ aac2mp3 input.aac [input2.aac]"
+			return
+		end
+
+		# Keeping only m4a files
+		@input = args.reject{|f| File.extname(f) != '.aac'}.reject{|f| !File.exists?(f)}
+	end
+
+	def run
+		@input.each do |file|
+			file = File.expand_path(file)
+			dirname = File.dirname(file)
+			extname = File.extname(file)
+			basename = File.basename(file, extname)
+			newname = File.join(dirname, basename + '.mp3')
+			puts "Converting #{basename} to mp3"
+			%x[ffmpeg -i #{file.shellescape} -ab 128k #{newname.shellescape}]
+		end
+
+	end
+
+end
+
+Aac2Mp3.new(*ARGV).run()
+
