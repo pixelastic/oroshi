@@ -86,6 +86,7 @@ keycode 11 = eacute 2 eacute 2 asciitilde UC9
 keycode 16 = egrave 7 egrave 7 grave UC8
 keycode 18 = ccedilla 9 ccedilla 9 asciicircum UC7
 keycode 19 = agrave 0 agrave 0 at UC0
+keycode 21 = equal plus equal plus braceright U2260
 
 ! Adding some common symbols on easy AltGr on common keys
 keycode 24 = a A a A ae AE
