@@ -1,0 +1,89 @@
+#!/usr/bin/env ruby
+# Record the current window in a gif file
+
+class Record
+
+  def running_pid
+    %x[ps -o pid --no-headers -C "byzanz-record"]
+  end
+
+  def is_running?
+    running_pid != ''
+  end
+
+  def stop_record
+    system("kill -9 #{running_pid}")
+  end
+
+  def xprop_list
+    %x[xprop -root].lines
+  end
+
+  def current_window_id
+    # Keep only the interesting line
+    list = xprop_list.select do |line|
+      line[/^_NET_ACTIVE_WINDOW\(WINDOW\)/]
+    end
+
+    # Extract the id
+    matches = list[0].match(/.* # (.*)$/).captures
+
+    return matches[0]
+  end
+
+  def current_window_name
+    id = current_window_id.gsub('0x', '0x0')
+    wmctrl = %x[wmctrl -l 2>1 | grep #{id}].chomp
+    return wmctrl
+  end
+
+  def escape_name(name)
+    name.gsub(/[~\/\(\)]/, ' ').split(' ').compact[3..-1].join('_')
+  end
+
+  def current_window_dimensions
+    id = current_window_id
+    xwininfo = %x[xwininfo -id #{id}]
+
+    dimensions = {
+      :x => xwininfo.match(/Absolute upper-left X: (.*)/).captures[0].to_i,
+      :y => xwininfo.match(/Absolute upper-left Y: (.*)/).captures[0].to_i,
+      :width => xwininfo.match(/Width: (.*)/).captures[0].to_i,
+      :height => xwininfo.match(/Height: (.*)/).captures[0].to_i
+    }
+
+    return dimensions
+  end
+
+
+  def record
+    dimensions = current_window_dimensions
+    output_name = '~/.records/'
+    output_name << Time.now.strftime("%Y-%m-%d_%H-%M-%S") + "_"
+    output_name << escape_name(current_window_name)
+    output_name << '.gif'
+
+    args = [
+      "-x #{dimensions[:x]}",
+      "-y #{dimensions[:y]}",
+      "-w #{dimensions[:width]}",
+      "-h #{dimensions[:height]}",
+      "-d 60",
+      "#{output_name}"
+    ]
+
+    system("byzanz-record #{args.join(' ')}");
+  end
+
+  def run
+    if is_running?
+      puts "Stop recording"
+      stop_record
+      return
+    else
+      record
+    end
+  end
+
+end
+Record.new(*ARGV).run()

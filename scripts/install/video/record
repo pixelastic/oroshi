@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+
+# Installing byzanz to record gifs
+sudo add-apt-repository ppa:fossfreedom/byzanz
+sudo apt-get update
+sudo apt-get install byzanz
