@@ -49,12 +49,6 @@
 [submodule "config/vim/bundle/available/emmet-vim"]
 	path = config/vim/bundle/available/emmet-vim
 	url = git@github.com:mattn/emmet-vim.git
-[submodule "config/vim/bundle/available/nerdtree"]
-	path = config/vim/bundle/available/nerdtree
-	url = git@github.com:scrooloose/nerdtree.git
-[submodule "config/vim/bundle/available/vim-nerdtree-tabs"]
-	path = config/vim/bundle/available/vim-nerdtree-tabs
-	url = git@github.com:jistr/vim-nerdtree-tabs.git
 [submodule "config/vim/bundle/available/vim-javascript"]
 	path = config/vim/bundle/available/vim-javascript
 	url = git@github.com:pangloss/vim-javascript.git
@@ -79,9 +73,6 @@
 [submodule "config/vim/bundle/available/vim-gitgutter"]
 	path = config/vim/bundle/available/vim-gitgutter
 	url = git@github.com:airblade/vim-gitgutter.git
-[submodule "config/vim/bundle/available/vim-easymotion"]
-	path = config/vim/bundle/available/vim-easymotion
-	url = git@github.com:Lokaltog/vim-easymotion.git
 [submodule "config/vim/bundle/available/tern_for_vim"]
 	path = config/vim/bundle/available/tern_for_vim
 	url = git@github.com:marijnh/tern_for_vim.git
