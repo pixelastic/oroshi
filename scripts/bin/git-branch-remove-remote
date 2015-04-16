@@ -28,7 +28,7 @@ class GitBranchRemoveRemote
   end
 
   def run
-    system("git push #{@remoteName} --no-verify --delete #{@branches.join(' ')}")
+    system("git push #{@remoteName} --delete #{@branches.join(' ')}")
   end
 
 end

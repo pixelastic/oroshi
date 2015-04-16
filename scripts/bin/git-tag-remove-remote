@@ -28,7 +28,7 @@ class GitTagRemoveRemote
 
   def run
     ref_tags = @tags.map{|tag| ":refs/tags/#{tag}"}.join(' ')
-    system("git push --no-verify #{@remoteName} #{ref_tags}")
+    system("git push #{@remoteName} #{ref_tags}")
   end
 
 end

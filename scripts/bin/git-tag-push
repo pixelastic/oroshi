@@ -37,11 +37,11 @@ class GitTagPush
   end
 
   def push_all_tags
-    system("git push --no-verify --tags #{@remoteName}")
+    system("git push --tags #{@remoteName}")
   end
 
   def push_specific_tag
-    system("git push --no-verify #{@remoteName} #{@tagName}")
+    system("git push #{@remoteName} #{@tagName}")
   end
 
   def run
