@@ -100,3 +100,4 @@
 [submodule "config/vim/bundle/available/Align"]
 	path = config/vim/bundle/available/Align
 	url = git@github.com:vim-scripts/Align.git
+  ignore = dirty
