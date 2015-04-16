@@ -97,7 +97,6 @@
 [submodule "config/vim/bundle/available/vim-jsx"]
 	path = config/vim/bundle/available/vim-jsx
 	url = git@github.com:mxw/vim-jsx.git
-[submodule "/home/tca/.oroshi/config/vim/bundle/available/Align"]
-	path = /home/tca/.oroshi/config/vim/bundle/available/Align
+[submodule "config/vim/bundle/available/Align"]
+	path = config/vim/bundle/available/Align
 	url = git@github.com:vim-scripts/Align.git
-  ignore = dirty

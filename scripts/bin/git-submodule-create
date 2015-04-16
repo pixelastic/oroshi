@@ -1,33 +1,21 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env ruby
 # Will add a new submodule to a repo.
 # Usage :
 # $ git-submodule-path url@to:repo.git
-# $ git-submodule-path url@to:repo.git ./path/to/submodule 
-# $ git-submodule-path ./path/to/submodule url@to:repo.git
 
-local repoUrl="$1"
-local submodulePath="$2"
+class SubmoduleCreate
+  def initialize(*args)
+    if args.size == 0
+      puts "✘ You must pass at least the repository url"
+      exit 1
+    end
+    @repoUrl = args[0]
+  end
 
-# Error if no url specified
-if [[ $# = 0 ]]; then
-  echo "✘ You must pass at least the repository url"
-  exit 1
-fi
+  def run
+    system("git submodule add #{@repoUrl}")
+  end
 
-# Default path is current directory
-if [[ $# = 1 ]]; then
-  # We get the submodule name from the repo url
-  submodulePath="./${repoUrl:t:s/\.git//}"
-fi
-submodulePath="${submodulePath:a}"
+end
+SubmoduleCreate.new(*ARGV).run()
 
-# Path look like a repo, we swap them
-if [[ "$submodulePath" =~ /\.git$/ ]]; then
-  local tmp=$submodulePath
-  submodulePath="$repoUrl"
-  repoUrl="$tmp"
-fi
-
-# Adding subrepo
-git submodule add "$repoUrl" "$submodulePath"
-echo "✔ submodule added"

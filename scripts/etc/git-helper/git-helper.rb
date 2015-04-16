@@ -64,6 +64,7 @@ module GitHelper
       next "upstream" if element == "u"
       next "master" if element == "m"
       next "develop" if element == "d"
+      next "release" if element == "r"
       element
     end
   end
@@ -86,6 +87,10 @@ module GitHelper
     ordered = list.map {|obj| obj[type] }.group_by(&:size)
     return nil if ordered.size == 0
     return ordered.max.last[0]
+  end
+
+  def repo_root
+    %x[git root].strip
   end
 
   def current_branch
@@ -148,3 +153,4 @@ module GitHelper
 
 
 end
+
