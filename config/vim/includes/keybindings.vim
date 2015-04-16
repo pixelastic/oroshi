@@ -236,6 +236,8 @@ vnoremap <silent> md :!markdown<CR>
 " Increment/Decrement number under cursor
 nnoremap <C-J> <C-X>
 nnoremap <C-K> <C-A>
+" Align selection on pipes
+vnoremap <Bar> :Align <Bar><CR>
 " }}}
 " PLUGINS {{{
 " Strangely, ï seems to be equal to <M-o> and endwise remaps it. I need to
