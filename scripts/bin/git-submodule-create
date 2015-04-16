@@ -17,7 +17,7 @@ fi
 # Default path is current directory
 if [[ $# = 1 ]]; then
   # We get the submodule name from the repo url
-  submodulePath="./${repoUrl:t:s/git//}"
+  submodulePath="./${repoUrl:t:s/\.git//}"
 fi
 submodulePath="${submodulePath:a}"
 
