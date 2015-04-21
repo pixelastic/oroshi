@@ -1,7 +1,6 @@
 #!/usr/bin/env zsh
 
 for dds in $@; do
-  convert $dds ${dds:r:t}.png;
-  mogrify -rotate 180 ${dds:r:t}.png
+  convert -rotate 180 -flop "$dds" "${dds:a:r}.png";
   echo "✔ ${dds:r} converted to png"
 done;
