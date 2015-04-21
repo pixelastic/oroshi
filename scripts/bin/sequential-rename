@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+index=0
+for file in $@; do
+  extension=${file:e}
+  newFile="$(printf "%04d.$extension" "$index")"
+  mv -- "$file" "$newFile"
+  let index=index+1
+done

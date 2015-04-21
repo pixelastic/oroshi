@@ -44,5 +44,6 @@ function dumptmp() {
     galactica:./local/www/pixelastic.com/tmp.pixelastic.com
     echo "Available on http://tmp.pixelastic.com/${1:t}"
 }
-#
-#
+
+# Blizzard
+alias disunity="java -jar "~/local/src/disunity/disunity.jar" "$@""
