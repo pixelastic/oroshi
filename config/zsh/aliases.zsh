@@ -83,6 +83,8 @@ alias gfv="get_flash_videos"
 alias wt='watch -c ''tree -aNC -I ".hg\|.git"'''
 # Prefix a date to a file
 alias prd='prefix-date'
+# Fix previous command
+alias fuck='$(thefuck $(fc -ln -1))'
 # }}}
 # GUI apps {{{
 alias charles='gui charles'
