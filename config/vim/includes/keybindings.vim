@@ -217,8 +217,8 @@ vmap - [egv
 nmap _ ]e
 vmap _ ]egv
 " Swap two words
-nnoremap <C-j><C-i> daWf<Space>pB
-nnoremap <C-i><C-j> daW2F<Space>pB
+nnoremap <C-w> daWf<Space>pB
+nnoremap <C-b> daW2F<Space>pB
 " appending a missing ; at the end of line
 function! AppendMissingSemicolon()
   if getline(".") !~ ';$'

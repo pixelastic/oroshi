@@ -18,8 +18,9 @@ function! FindInProject(txt)
 	silent execute 'grep ' . a:txt .' ' . g:CtrlFRepoRoot
 	execute 'buffer '.currentBuffer
 	loadview
-	" Then, we open the quicksearch window
-	copen
+        
+  " Then, we open the quicksearch window
+  copen
 
 	redraw!
 
