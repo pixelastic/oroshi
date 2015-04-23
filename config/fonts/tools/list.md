@@ -39,7 +39,7 @@ DASH                        e0c0   
 DASHBOARD                   e07d   
 DATABASE                    e095   
 DEVICE CAMERA               e056   
-DEVICE CAMERA VIDEO         e057   
+DEVICE CAMERA VIDEO         e057   
 DEVICE DESKTOP              e0cb   
 DEVICE MOBILE               e038   
 DIFF                        e04d   

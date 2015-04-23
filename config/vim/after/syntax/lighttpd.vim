@@ -15,11 +15,7 @@ endif
 
 syn case match
 
-if version < 600
-	set iskeyword+=.,-
-else
-	setlocal iskeyword+=.,-
-endif
+setlocal iskeyword+=.,-
 
 " define the lighttpd syntax
 " see also http://redmine.lighttpd.net/wiki/lighttpd/Docs:Configuration

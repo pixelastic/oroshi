@@ -97,6 +97,10 @@ function! OroshiStatusLine()
   let sl .= '%{&fileencoding != "utf-8" ? &fileencoding." " : ""}'
   let sl .= '%*'
   " }}}
+  " Spellchecking {{{
+  let sl .= '%{&spell == 1 ? "  ".&spelllang." " : ""}'
+  "
+  " }}}
   " Filetype {{{
   let sl .= '⭢⭣ %{&filetype != "" ? &filetype : "???"} '
   " }}}

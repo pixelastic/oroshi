@@ -15,12 +15,13 @@ mkdir -p $destDir/view
 mkdir -p $destDir/cache/ctrlp
 
 # Link other config directories
+ln -fns $configDir/after $destDir/after
 ln -fns $configDir/autoload $destDir/autoload
 ln -fns $configDir/bundle/enabled $destDir/bundle
 ln -fns $configDir/colors $destDir/colors
-ln -fns $configDir/after $destDir/after
 ln -fns $configDir/includes $destDir/includes
 ln -fns $configDir/snippets $destDir/UltiSnips
+ln -fns $configDir/spell $destDir/spell
 ln -fns $configDir/syntax $destDir/syntax
 
 # Vimrc

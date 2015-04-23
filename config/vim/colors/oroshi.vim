@@ -193,6 +193,9 @@ call s:HL('SpecialKey', 'darkyellow')
 " Messages
 call s:HL('WarningMsg', 'yellow', 'black', 'bold')
 call s:HL('ErrorMsg', 'red', 'black')
+" Spellchecking
+call s:HL('SpellBad', 'red', 'black', 'bold,underline')
+call s:HL('SpellCap', 'yellow', 'black', 'bold,underline')
 " }}}
 " Extended text {{{
 " Code

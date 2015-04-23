@@ -62,6 +62,11 @@ function! MultiPurposeTab()
     return "\<C-X>\<C-F>\<C-N>"
   endif
 
+  " If currently in spellchecking mode
+  if &spell
+    return "\<C-X>\<C-S>\<C-N>"
+  endif
+
   " Launch auto-complete
   return "\<C-X>\<C-O>\<C-N>"
 endfunction
@@ -85,7 +90,14 @@ vnoremap <S-Tab> <gv
 " - Accept autocompletion suggestion
 " - Trigger endwise completion
 function! MultiPurposeReturn()
-  return pumvisible() ? "\<C-Y>" : "\<CR>"
+  let autocomplete_select = "\<C-Y>"
+  let new_line = "\<CR>"
+
+  " Getting back to normal mode in spellchecking
+  if &spell
+    let autocomplete_select .= "\<Esc>"
+  endif
+  return pumvisible() ? autocomplete_select : new_line
 endfunction
 inoremap <CR> <C-R>=MultiPurposeReturn()<CR>
 inoremap <kEnter> <Esc>mzO<Esc>`za
@@ -96,6 +108,18 @@ vnoremap <kEnter> <Esc>g`<O<Esc>g
 " }}}
 " NERDTREE {{{
 map <F7> :NERDTreeToggle<CR>
+" }}}
+" SPELLCHECKING {{{
+setlocal spelllang=en
+nnoremap se :setlocal spelllang=en<CR>
+nnoremap sf :setlocal spelllang=fr<CR>
+nnoremap <buffer> <F6> :setlocal spell!<CR>
+inoremap <buffer> <F6> <Esc>:setlocal spell!<CR>i
+nnoremap sk [s
+nnoremap sj ]s
+nnoremap sa zg
+nnoremap sr zug
+nnoremap ss ei<Right><C-X>s<C-N>
 " }}}
 " VIMDIFF  {{{
 " Vimdiff will mostly be used to handle merges. It is configured to be
