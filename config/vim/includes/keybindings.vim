@@ -1,14 +1,14 @@
 " KEYBINDINGS
 " I tend to stick to the following F keys for all languages :
-"		F1 : Help page
-"		F2 : Change colorscheme
-"		F3 : Debug colorscheme
-"		F4 : Clean file
-"		F5 : Run file
-"		F6 : Test file
-"		F7 : NERDTree
-"		F8 : Display hidden chars
-"		F9 : Toggle wrap
+"  F1 : Help page
+"  F2 : Change colorscheme
+"  F3 : Debug colorscheme
+"  F4 : Clean file
+"  F5 : Run file
+"  F6 : Test file
+"  F7 : NERDTree
+"  F8 : Display hidden chars
+"  F9 : Toggle wrap
 "
 " -----------------------------------------------------------------------------
 " DEFAULT {{{
@@ -20,9 +20,17 @@ nmap <Space> .
 " CAPS LOCK KEY {{{
 " Note: Xmodmap maps Caps Lock to F13 ([25~)
 " - Cancels autocomplete, search, command, visual
+"   - Restore the wrong word in spelling mode
 " - Toggle normal / insert mode
 function! MultiPurposeCapsLock()
-  return pumvisible() ? "\<C-E>" : "\<Esc>l"
+  let autocomplete_cancel = "\<C-E>"
+  let mode_normal = "\<Esc>l"
+
+  " Restoring the word in spelling mode
+  if &spell
+    let autocomplete_cancel .= "\<Esc>uh"
+  endif
+  return pumvisible() ? autocomplete_cancel : mode_normal
 endfunction
 inoremap [25~ <C-R>=MultiPurposeCapsLock()<CR>
 vnoremap [25~ <Esc>
@@ -93,9 +101,9 @@ function! MultiPurposeReturn()
   let autocomplete_select = "\<C-Y>"
   let new_line = "\<CR>"
 
-  " Getting back to normal mode in spellchecking
+  " Going to next error in spellchecking mode
   if &spell
-    let autocomplete_select .= "\<Esc>"
+    let autocomplete_select .= "\<Esc>]s"
   endif
   return pumvisible() ? autocomplete_select : new_line
 endfunction
@@ -106,19 +114,39 @@ nnoremap <kEnter> mzO<Esc>`z
 vnoremap <CR> <Esc>g`>o<Esc>gv
 vnoremap <kEnter> <Esc>g`<O<Esc>g
 " }}}
-" NERDTREE {{{
-map <F7> :NERDTreeToggle<CR>
+" H/J/K/L {{{
+function! MultiPurposeJ()
+  let down_one_line = "gj"
+  let autocomplete_down_one_line = "\<C-N>"
+  return pumvisible() ? autocomplete_down_one_line : down_one_line
+endfunction
+function! MultiPurposeK()
+  let up_one_line = "gk"
+  let autocomplete_up_one_line = "\<C-P>"
+  return pumvisible() ? autocomplete_up_one_line : up_one_line
+endfunction
+" Move down/up including wrapped lines
+inoremap <expr> j (MultiPurposeJ())
+inoremap <expr> j (MultiPurposeK())
+vnoremap j gj
+vnoremap k gk
+inoremap <Down> <C-O>gj
+inoremap <Up> <C-O>gk
 " }}}
 " SPELLCHECKING {{{
 setlocal spelllang=en
+" Change language and/or toggle
 nnoremap se :setlocal spelllang=en<CR>
 nnoremap sf :setlocal spelllang=fr<CR>
 nnoremap <buffer> <F6> :setlocal spell!<CR>
 inoremap <buffer> <F6> <Esc>:setlocal spell!<CR>i
-nnoremap sk [s
+" Next/Previous error
 nnoremap sj ]s
-nnoremap sa zg
+nnoremap sk [s
+" Add/Remove from dictionary
+nnoremap sa zg]s
 nnoremap sr zug
+" Suggest correction
 nnoremap ss ei<Right><C-X>s<C-N>
 " }}}
 " VIMDIFF  {{{
@@ -132,13 +160,6 @@ nnoremap <silent> vdh :diffget //2<CR>:diffupdate<CR>]c
 nnoremap <silent> vdl :diffget //3<CR>:diffupdate<CR>]c
 "}}}
 " MOTIONS {{{
-" Move down/up including wrapped lines
-nnoremap j gj
-nnoremap k gk
-vnoremap j gj
-vnoremap k gk
-inoremap <Down> <C-O>gj
-inoremap <Up> <C-O>gk
 " Go to start and end of line with H and L
 nnoremap H ^
 vnoremap H ^
@@ -152,7 +173,7 @@ nnoremap U <C-U>
 nnoremap D <C-D>
 vnoremap U <C-U>
 vnoremap D <C-D>
-" Jump to 
+" Jump to
 nnoremap <silent> <Leader>z :lprev<CR>
 nnoremap <silent> <Leader>s :lnext<CR>
 nnoremap <silent> <Leader>q :cprev<CR>
