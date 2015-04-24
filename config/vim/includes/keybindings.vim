@@ -116,18 +116,20 @@ vnoremap <kEnter> <Esc>g`<O<Esc>g
 " }}}
 " H/J/K/L {{{
 function! MultiPurposeJ()
-  let down_one_line = "gj"
+  let simple_j = "j"
   let autocomplete_down_one_line = "\<C-N>"
-  return pumvisible() ? autocomplete_down_one_line : down_one_line
+  return pumvisible() ? autocomplete_down_one_line : simple_j
 endfunction
 function! MultiPurposeK()
-  let up_one_line = "gk"
+  let simple_k = "k"
   let autocomplete_up_one_line = "\<C-P>"
-  return pumvisible() ? autocomplete_up_one_line : up_one_line
+  return pumvisible() ? autocomplete_up_one_line : simple_k
 endfunction
 " Move down/up including wrapped lines
 inoremap <expr> j (MultiPurposeJ())
-inoremap <expr> j (MultiPurposeK())
+inoremap <expr> k (MultiPurposeK())
+nnoremap j gj
+nnoremap k gk
 vnoremap j gj
 vnoremap k gk
 inoremap <Down> <C-O>gj
