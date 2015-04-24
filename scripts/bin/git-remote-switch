@@ -9,7 +9,7 @@ require_relative '../etc/git-helper/git-helper'
 #
 # If no branch is specified, will update the remote of the current branch.
 
-class GitRemoteEdit
+class GitRemoteSwitch
   include GitHelper
 
   def initialize(*args)
@@ -26,4 +26,4 @@ class GitRemoteEdit
   end
 
 end
-GitRemoteEdit.new(*ARGV).run()
+GitRemoteSwitch.new(*ARGV).run()

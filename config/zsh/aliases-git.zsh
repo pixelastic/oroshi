@@ -65,11 +65,11 @@ alias vres='git rebase --skip'
 alias vr?='git remote-exists'
 alias vrR='git remote rm'
 alias vrc='git remote-create'
-alias vre='git remote-edit'
 alias vrl='git remote-list'
 alias vrpl='echo "✘ Use vbpl instead"'
 alias vrps='echo "✘ Use vbps instead"'
 alias vrr='git remote-current'
+alias vrs='git remote-switch'
 # }}}
 # [t]ags {{{
 alias vt?='git tag-exists'

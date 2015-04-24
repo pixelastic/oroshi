@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+
+cd ~/local/etc
+git clone git@github.com:ata4/disunity.git
