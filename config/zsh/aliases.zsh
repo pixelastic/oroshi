@@ -85,6 +85,8 @@ alias wt='watch -c ''tree -aNC -I ".hg\|.git"'''
 alias prd='prefix-date'
 # Fix previous command
 alias fuck='$(thefuck $(fc -ln -1))'
+# Find all extensions
+alias extension-list="find . -type f | awk -F'.' '{print \$NF}' | sort| uniq -c | sort -g"
 # }}}
 # GUI apps {{{
 alias charles='gui charles'
