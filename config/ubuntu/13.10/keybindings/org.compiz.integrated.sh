@@ -2,7 +2,7 @@
 gsettings set org.compiz.integrated command-1 "'terminator'"
 gsettings set org.compiz.integrated command-2 "'chromium-browser --profile-directory=\"Profile 1\"'"
 gsettings set org.compiz.integrated command-3 "'chromium-browser --profile-directory=\"Profile 2\"'"
-gsettings set org.compiz.integrated command-4 "'keepassx ~/Dropbox/perso/config/keys.kdb'"
+gsettings set org.compiz.integrated command-4 "'keepassx ~/Dropbox/tim/config/keys.kdb'"
 gsettings set org.compiz.integrated command-5 "'chromium-browser --profile-directory=\"Profile 3\"'"
 gsettings set org.compiz.integrated command-6 "'tomate'"
 gsettings set org.compiz.integrated command-7 "'zeal'"
