@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+
+local fullPath
+local output
+
+for file in $@; do
+	if [[ ! -r $file ]];then
+		echo "✘ $file not found!"
+		continue
+	fi
+
+  fullPath=${file:a}
+  output=${fullPath:r}_compress.mp4
+  ffmpeg -i "$fullPath" -acodec libmp3lame -vcodec libx264 "$output"
+  echo "✔ Converted ${fullPath:t}"
+done
+
