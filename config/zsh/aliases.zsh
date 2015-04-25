@@ -42,15 +42,16 @@ alias tree='tree -aNC -I ".hg|.git"'
 alias watch='watch -c '
 # }}}
 # Global aliases {{{
+alias -g .....='../../../..'
+alias -g ....='../../..'
+alias -g ...='../..'
+alias -g G="| grep"
+alias -g H="| head"
+alias -g L="| less -R"
 alias -g NE='2>/dev/null'
 alias -g NO='1>/dev/null'
+alias -g S="| sort -V"
 alias -g T="| tail"
-alias -g H="| head"
-alias -g G="| grep"
-alias -g L="| less -R"
-alias -g ...='../..'
-alias -g ....='../../..'
-alias -g .....='../../../..'
 # }}}
 # Typos {{{
 alias mc="mv"
