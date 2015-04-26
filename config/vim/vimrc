@@ -30,9 +30,8 @@ set viewdir=~/.vim/view/
 set noswapfile
 " }}}
 " BASIC  {{{
-" Switch working directory to the directory of the currently edited file
-set autochdir
-" Workaround autocmd to manually switch directory
+" Set current directory to the directory of the currently edited file.
+" We're not using autochdir as it messes with plugins (committia, vimdeck)
 augroup autochdir
 	au!
 	autocmd BufEnter * silent! lcd %:p:h
