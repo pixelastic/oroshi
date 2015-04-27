@@ -55,7 +55,7 @@
     scroll_on_output = False
     icon_bell = False
     cursor_color = "#fa1217"
-    font = DejaVuSansMonoWithOcticons 10
+    font = DejaVuSansMonoWithOcticons 13
     background_color = "#121212"
     cursor_blink = False
     scrollback_infinite = True

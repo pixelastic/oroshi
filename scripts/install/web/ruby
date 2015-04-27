@@ -34,8 +34,8 @@ rvm get head
 rvm reload
 
 # Installing Ruby
-rvm install 2.1.2
-rvm install 2.1.2-dev
+rvm install 2.2.2
+rvm install 2.2.2-dev
 
 # Generic gems
 gem install pry
