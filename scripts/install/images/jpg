@@ -6,8 +6,17 @@
 
 cd ~/local/etc
 git clone git@github.com:tjko/jpegoptim.git
+
+sudo apt-get install libjpeg-dev
+
 cd jpegoptim
 ./configure
 make
 make strip
 make install
+
+# Installing cjpeg-dssim
+cd ~/local/etc
+git clone git@github.com:technopagan/cjpeg-dssim.git
+cd ~/local/bin
+ln -s ../etc/cjpeg-dssim/cjpeg-dssim .

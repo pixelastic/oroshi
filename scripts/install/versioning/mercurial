@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-sudo add-apt-repository ppa:mercurial-ppa/releases
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key 323293EE
-sudo apt-get update
-sudo apt-get install mercurial
-
