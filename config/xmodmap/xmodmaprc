@@ -71,10 +71,6 @@ keycode 66 = F13
 ! ²
 keycode 49 = F14 twosuperior
 
-! I keep hitting the Menu key when aiming to the AltGr. I might as well make it
-! an AltGr key, as I do not use the Menu one anyway.
-keycode 135 = ISO_Level3_Shift NoSymbol ISO_Level3_Shift
-
 ! unbreakable space with Maj+Space
 keycode 65 = space nobreakspace space nobreakspace
 

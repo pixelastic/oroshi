@@ -1,3 +1,5 @@
+! The Fn key is on the far left, with the Ctrl one just next to it. I'm used
+! (from previous keyboards) to have these two swapped. So I swapped them.
 ! I'm used to having Home/End keys near my arrow keys for speed movement, so
 ! I remapped the PageUp/PageDown. I also mapped the original Home/End keys
 ! (situated in the top right of the keyboard) to PageUp/PageDown
@@ -12,6 +14,6 @@ keycode 115 = Next
 ! It also produces a "Numeric Keypad" Enter on Shift-Press (custom)
 keycode  36 = Return KP_Enter Return KP_Enter
 
-! I keep hitting the Menu key when aiming to the AltGr. I might as well make it
-! an AltGr key, as I do not use the Menu one anyway.
-keycode 135 = ISO_Level3_Shift NoSymbol ISO_Level3_Shift
+! The lenovo has a stupid Print Screen key next to AltGr. I will make it
+! another AltGr one.
+keycode 107 = ISO_Level3_Shift NoSymbol ISO_Level3_Shift

@@ -43,7 +43,8 @@ cd ~/local/bin/
 ln -s ../etc/zsh/bin/zsh
 
 echo "Changing current shell"
-sudo chsh -s /home/$USER/local/etc/zsh/bin/zsh $USER
+which zsh | sudo tee -a /etc/shells
+sudo chsh -s /home/$USER/local/bin/zsh $USER
 
 echo "--------------"
 echo "You should now reboot for the shell change to take effect correctly."
