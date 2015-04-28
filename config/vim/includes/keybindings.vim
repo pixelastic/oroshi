@@ -285,8 +285,8 @@ nnoremap <C-J> <C-X>
 nnoremap <C-K> <C-A>
 " Align selection on pipes
 vnoremap <Bar> :Align <Bar><CR>
-" Sort selection
-vnoremap s :sort<CR>
+" Sort selection (using version sort)
+vnoremap s :!sort -V<CR>
 " }}}
 " PLUGINS {{{
 " Strangely, ï seems to be equal to <M-o> and endwise remaps it. I need to

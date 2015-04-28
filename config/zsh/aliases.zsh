@@ -102,7 +102,6 @@ alias lowriter='gui lowriter'
 alias pinta='gui pinta'
 alias poedit='gui poedit'
 alias n="gui nautilus"
-alias redshift='gui redshiftgui'
 alias virtualbox='gui virtualbox'
 alias vlc='gui vlc'
 alias xmind='gui XMind'
@@ -162,13 +161,13 @@ alias ngpsto="ng --php stop"
 alias ngprst="ng --php restart"
 # }}}
 #	Oroshi {{{
-alias oz="source ~/.zshrc"
-alias oa="source ~/.oroshi/config/zsh/aliases.zsh"
 alias oc="~/.oroshi/scripts/deploy/dircolors && source ~/.zshrc"
-alias ox="~/.oroshi/scripts/deploy/xmodmap"
-alias oh="~/.oroshi/scripts/deploy/hosts"
-alias os="~/.oroshi/scripts/deploy/ssh"
 alias of="~/.oroshi/scripts/deploy/fstab"
+alias oh="~/.oroshi/scripts/deploy/hosts"
+alias or="redshift -x && redshift -o"
+alias os="~/.oroshi/scripts/deploy/ssh"
+alias ox="~/.oroshi/scripts/deploy/xmodmap"
+alias oz="source ~/.zshrc"
 # }}}
 # Versioning {{{
 source './aliases-git.zsh'

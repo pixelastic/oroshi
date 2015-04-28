@@ -1,16 +1,10 @@
 #!/usr/bin/env bash
 # Nodejs
 
-#Installing dependencies
-sudo apt-get install build-essential
-sudo apt-get install libssl-dev
-
-echo "Installing nvm"
 cd ~/local/etc
-git clone https://github.com/creationix/nvm.git ./nvm
-
-cd ./nvm
-source ./nvm.sh
-nvm install 0.10
-nvm use 0.10
-nvm alias default 0.10
+wget http://nodejs.org/dist/v0.12.2/node-v0.12.2.tar.gz -O nodejs.tar.gz
+tar xvzf node.tar.gz
+cd nodejs
+./configure
+make
+make install

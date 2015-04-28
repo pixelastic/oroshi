@@ -1,19 +1,12 @@
 #!/usr/bin/env bash
 
-if [ `getconf LONG_BIT` = "64" ]; then
-  url="https://github.com/downloads/maoserr/redshiftgui/RedshiftGUI-0.2.1-Linux-x86_64.deb"
-else
-  url="https://github.com/downloads/maoserr/redshiftgui/RedshiftGUI-0.2.1-Linux-i686.deb"
-fi
+cd ~/local/etc
+wget https://github.com/jonls/redshift/releases/download/v1.10/redshift-1.10.tar.xz -O redshift.tar.xz
+tar tar xvJf redshift.tar.xz
+rm redshift.tar.xz
 
-cd /tmp
-wget -c $url -O ./redshift.db
-sudo dpkg -i ./redshift.db
-
-if [ `getconf LONG_BIT` = "64" ]; then
-  # It is looking for a dependency in the wrong directory
-  if [[ ! -r /lib/ld-linux-x86-64.so.2 ]]; then
-  	sudo ln -s /lib/x86_64-linux-gnu/ld-linux-x86-64 /lib/ld-linux-x86-64.so.2
-  fi
-fi
-
+cd ./redshift
+sudo apt-get install intltool
+./configure
+make
+make install
