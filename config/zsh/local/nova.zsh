@@ -27,11 +27,9 @@ function play-buddha() {
 # Oroshi {{{
 # Reload keybings for this OS
 function ok() {
-  # cd ~/.oroshi/config/ubuntu/13.10/keybindings/;
-  # for i in ./*; do 
-  #   sh $i; 
-  # done;
-  # cd - > /dev/null
+  for file in ~/.oroshi/config/ubuntu/14.04/keybindings/*.sh; do
+    source $file
+  done
 }
 # }}}
 

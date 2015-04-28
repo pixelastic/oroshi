@@ -162,6 +162,7 @@ alias ngpsto="ng --php stop"
 alias ngprst="ng --php restart"
 # }}}
 #	Oroshi {{{
+alias oa="~/.oroshi/scripts/deploy/autostart"
 alias oc="~/.oroshi/scripts/deploy/dircolors && source ~/.zshrc"
 alias of="~/.oroshi/scripts/deploy/fstab"
 alias oh="~/.oroshi/scripts/deploy/hosts"

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Exec=sleep 5 && /home/tim/.oroshi/scripts/deploy/xmodmap
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=Xmodmap
+Name=Xmodmap
+Comment[en_US]=
+Comment=
+
