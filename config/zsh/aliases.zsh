@@ -90,6 +90,7 @@ alias fuck='$(thefuck $(fc -ln -1))'
 alias extension-list="find . -type f | awk -F'.' '{print \$NF}' | sort| uniq -c | sort -g"
 # }}}
 # GUI apps {{{
+alias ccsm='gui ccsm'
 alias charles='gui charles'
 alias chrome="gui chromium-browser"
 alias disk-utility='gui palimpsest'
@@ -99,9 +100,9 @@ alias evince="gui evince"
 alias gftp='gui gftp'
 alias hipchat="gui hipchat"
 alias lowriter='gui lowriter'
+alias n="gui nautilus"
 alias pinta='gui pinta'
 alias poedit='gui poedit'
-alias n="gui nautilus"
 alias virtualbox='gui virtualbox'
 alias vlc='gui vlc'
 alias xmind='gui XMind'
