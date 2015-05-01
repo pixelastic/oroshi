@@ -90,6 +90,7 @@ call s:Highlight('oroshi_TextTertiary', 'darkgrey', 'black')
 call s:Highlight('oroshi_TextSpellingError', 'red', 'none', 'bold,underline')
 
 call s:Highlight('oroshi_UI', 'lightgrey', 'darkgrey')
+call s:Highlight('oroshi_UIFilled', 'darkgrey', 'darkgrey')
 call s:Highlight('oroshi_UIActive', 'white', 'black', 'bold')
 call s:Highlight('oroshi_UISuccess', 'darkgreen', 'darkgrey')
 call s:Highlight('oroshi_UISuccessFilled', 'darkgreen', 'darkgreen')
@@ -140,7 +141,7 @@ call s:Link('GitGutterChange', 'oroshi_Notice')
 " }}}
 " Status line {{{
 call s:Link('StatusLine', 'oroshi_UI')
-call s:Link('StatusLineNC', 'oroshi_UI')
+call s:Link('StatusLineNC', 'oroshi_UIFilled')
 " }}}
 " Quick fix window {{{
 " Note: The Search highlight is used in the quickfix window for the current
