@@ -54,12 +54,12 @@ function! MultiPurposeTab()
   if pumvisible()
     return "\<C-N>"
   endif
-  
+
   " If in indentation, we return a simple tab
   if (virtcol(".") - 1) <= indent(".")
     return "\<Tab>"
   endif
-  
+
   " If after a space, we return a simple tab
   if (strpart(line, 0, columnIndex) =~ '\s$')
     return "\<Tab>"
@@ -134,22 +134,6 @@ vnoremap j gj
 vnoremap k gk
 inoremap <Down> <C-O>gj
 inoremap <Up> <C-O>gk
-" }}}
-" SPELLCHECKING {{{
-setlocal spelllang=en
-" Change language and/or toggle
-nnoremap se :setlocal spelllang=en<CR>
-nnoremap sf :setlocal spelllang=fr<CR>
-nnoremap <buffer> <F6> :setlocal spell!<CR>
-inoremap <buffer> <F6> <Esc>:setlocal spell!<CR>i
-" Next/Previous error
-nnoremap sj ]s
-nnoremap sk [s
-" Add/Remove from dictionary
-nnoremap sa zg]s
-nnoremap sr zug
-" Suggest correction
-nnoremap ss ei<Right><C-X>s<C-N>
 " }}}
 " VIMDIFF  {{{
 " Vimdiff will mostly be used to handle merges. It is configured to be

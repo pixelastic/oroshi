@@ -89,6 +89,20 @@ setlocal fileformat=dos
 au BufNewFile,BufRead,BufWritePre <buffer> silent call ConvertLineEndingsToDos()
 " }}}
 " Spellchecking {{{
+setlocal spelllang=en
+" Change language and/or toggle
+nnoremap <buffer> se :setlocal spelllang=en<CR>
+nnoremap <buffer> sf :setlocal spelllang=fr<CR>
+nnoremap <buffer> <F6> :setlocal spell!<CR>
+inoremap <buffer> <F6> <Esc>:setlocal spell!<CR>i
+" Next/Previous error
+nnoremap <buffer> sj ]s
+nnoremap <buffer> sk [s
+" Add/Remove from dictionary
+nnoremap <buffer> sa zg]s
+nnoremap <buffer> sr zug
+" Suggest correction
+nnoremap <buffer> ss ei<Right><C-X>s<C-N>
 " Set in french for some known locations
 if expand('%:p') =~ 'meetups.pixelastic.com/app/'
   setlocal spelllang=fr

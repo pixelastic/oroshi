@@ -8,70 +8,59 @@ function! OroshiStatusLine()
   let sl = ''
 
   " Current mode {{{
-  let sl .= '%#oroshi_StatusLineModeNormal#'
+  let sl .= '%#oroshi_ModeNormal#'
   let sl .= '%{toupper(mode()) == "N" ? "  NORMAL " : ""}'
   let sl .= '%*'
-  let sl .= '%#oroshi_StatusLineModeNormalArrow#'
+  let sl .= '%#oroshi_UIModeNormal#'
   let sl .= '%{toupper(mode()) == "N" ? "⮀ " : ""}'
   let sl .= '%*'
 
-  let sl .= '%#oroshi_StatusLineModeInsert#'
+  let sl .= '%#oroshi_ModeInsert#'
   let sl .= '%{toupper(mode()) == "I" ? "  INSERT " : ""}'
   let sl .= '%*'
-  let sl .= '%#oroshi_StatusLineModeInsertArrow#'
+  let sl .= '%#oroshi_UIModeInsert#'
   let sl .= '%{toupper(mode()) == "I" ? "⮀ " : ""}'
   let sl .= '%*'
 
-  let sl .= '%#oroshi_StatusLineModeVisual#'
+  let sl .= '%#oroshi_ModeVisual#'
   let sl .= '%{mode() =~# "\\v(V|v|)" ? "  VISUAL " : ""}'
   let sl .= '%*'
-  let sl .= '%#oroshi_StatusLineModeVisualArrow#'
+  let sl .= '%#oroshi_UIModeVisual#'
   let sl .= '%{mode() =~# "\\v(V|v|)" ? "⮀ " : ""}'
   let sl .= '%*'
 
-  let sl .= '%#oroshi_StatusLineModeSearch#'
+  let sl .= '%#oroshi_ModeSearch#'
   let sl .= '%{mode() == "C" ? "  SEARCH " : ""}'
   let sl .= '%*'
-  let sl .= '%#oroshi_StatusLineModeSearchArrow#'
+  let sl .= '%#oroshi_UIModeSearch#'
   let sl .= '%{mode() == "C" ? "⮀ " : ""}'
   let sl .= '%*'
   " }}}
   " Filename coloring based on readonly, modified and saved {{{
-  let sl .= '%#oroshi_StatusLineReadOnly#'
+  let sl .= '%#oroshi_UIError#'
   let sl .= '%{&readonly == 1 ? expand(''%:t'')." ⭤ " : ""}'
   let sl .= '%*'
-  let sl .= '%#oroshi_StatusLineModified#'
+  let sl .= '%#oroshi_UINotice#'
   let sl .= '%{&readonly == 0 && &modified == 1 ? expand(''%:t'')." " : ""}'
   let sl .= '%*'
-  let sl .= '%#oroshi_StatusLineSaved#'
+  let sl .= '%#oroshi_UISuccess#'
   let sl .= '%{&readonly == 0 && &modified == 0 ? expand(''%:t'')." " : ""}'
   let sl .= '%*'
   " }}}
   " Git status {{{
-  let sl .= '%#oroshi_StatusLineGitDirty#'
+  let sl .= '%#oroshi_UIError#'
   let sl .= '%{exists("b:git_status") && b:git_status == "dirty" ? "± " : ""}'
   let sl .= '%*'
-  let sl .= '%#oroshi_StatusLineGitStaged#'
+  let sl .= '%#oroshi_UINotice#'
   let sl .= '%{exists("b:git_status") && b:git_status == "staged" ? "± " : ""}'
   let sl .= '%*'
-  let sl .= '%#oroshi_StatusLineGitClean#'
+  let sl .= '%#oroshi_UISuccess#'
   let sl .= '%{exists("b:git_status") && b:git_status == "clean" ? "± " : ""}'
   let sl .= '%*'
   " }}}
   " Syntastic status {{{
-  let sl .= '%#oroshi_StatusLineSyntastic#'
+  let sl .= '%#oroshi_UIError#'
   let sl .= '%e%{SyntasticStatuslineFlag()}'
-  let sl .= '%*'
-  " }}}
-
-
-
-  " Tests passing or not {{{
-  let sl .= '%#oroshi_TestPassSuccess#'
-  let sl .= '%{exists("b:arval_test_pass") && b:arval_test_pass == 1 ? "✔" : ""}'
-  let sl .= '%*'
-  let sl .= '%#oroshi_TestPassFailure#'
-  let sl .= '%{exists("b:arval_test_pass") && b:arval_test_pass == 0 ? "✘" : ""}'
   let sl .= '%*'
   " }}}
   " Right / Left separator {{{
@@ -88,12 +77,12 @@ function! OroshiStatusLine()
   let sl .= '%{&foldmethod == "indent" ? "▸ " : ""}'
   " }}}
   " Line endings {{{
-  let sl .= '%#oroshi_StatusLineBadLineEnding#'
+  let sl .= '%#oroshi_UIError#'
   let sl .= '%{&fileformat != "unix" ? &fileformat." " : ""}'
   let sl .= '%*'
   " }}}
   " File encoding {{{
-  let sl .= '%#oroshi_StatusLineBadEncoding#'
+  let sl .= '%#oroshi_UIError#'
   let sl .= '%{&fileencoding != "utf-8" ? &fileencoding." " : ""}'
   let sl .= '%*'
   " }}}
