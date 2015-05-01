@@ -77,7 +77,7 @@ alias pd='plowdown'
 # Download files from transmission
 alias td='transmission-download'
 # Youtube downloader
-alias yt='youtube-dl -t --prefer-free-format'
+alias yt='youtube-dl -t --prefer-free-format --max-filesize 700m'
 # Flash video download
 alias gfv="get_flash_videos"
 # watch tree
@@ -134,7 +134,7 @@ alias cde='cd ~/local/etc/'
 alias cdw='cd /var/www/'
 alias cdt='cd ~/local/tmp/'
 alias cdsov='cd ~/local/tmp/sov/'
-alias cdrop="cd ~/Dropbox/"
+alias cdrop="cd ~/Dropbox/tim/"
 # }}}
 # Dingoo {{{
 alias udingoo='umount /media/dingoo'

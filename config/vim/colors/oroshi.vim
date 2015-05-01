@@ -97,6 +97,10 @@ call s:HL('TabLineSel', 'white', 'black', 'bold')
 call s:Link('LineNr', 'SignColumn')
 call s:HL('SyntasticWarningSign', 'darkyellow', 'darkyellow')
 call s:HL('SyntasticErrorSign', 'darkred', 'darkred')
+" GitGutter
+let g:gitgutter_override_sign_column_highlight = 0
+call s:Link('oroshi_DiffAdd', 'GitGutterAdd')
+call s:Link('oroshi_DiffChange', 'GitGutterChange')
 " }}}
 " Completion menu {{{
 call s:HL('Pmenu', 'lightgrey', 'darkgrey')
