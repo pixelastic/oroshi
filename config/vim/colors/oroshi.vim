@@ -54,7 +54,7 @@ let s:palette.calmyellow    = 185
 " }}}
 " Highlighting function {{{
 " args : group, foreground, background, cterm
-function! s:HL(group,fg,...)
+function! s:Highlight(group,fg,...)
 	" Default highlight string we're building
 	let h = 'hi! '.a:group
 
@@ -75,81 +75,63 @@ function! s:HL(group,fg,...)
 endfunction
 " }}}
 " Highlight linking function {{{
-" args : group, link1, link2, link3, ...
-function! s:Link(group,...)
-	" Adding the link between first arg and any subsequent arg in turn
-	for link in a:000
-		execute 'hi! def link '.link.' '.a:group
-	endfor
+" args : group, linkedGroup
+function! s:Link(group, linkedGroup)
+  execute 'hi! def link '.a:group.' '.a:linkedGroup
 endfunction
 " }}}
 
-" UI Elements {{{
-" Borders
-call s:HL('LineNr', 'grey', 'black')
-call s:HL('ColorColumn', 'white', 'darkgrey')
-call s:HL('VertSplit', 'darkgrey', 'darkgrey')
-" Tabs
-call s:HL('TabLine', 'lightgrey', 'darkgrey', 'none')
-call s:HL('TabLineFill', 'white', 'darkgrey', 'none')
-call s:HL('TabLineSel', 'white', 'black', 'bold')
-" Signs
-call s:Link('LineNr', 'SignColumn')
-call s:HL('SyntasticWarningSign', 'darkyellow', 'darkyellow')
-call s:HL('SyntasticErrorSign', 'darkred', 'darkred')
-" GitGutter
-let g:gitgutter_override_sign_column_highlight = 0
-call s:Link('oroshi_DiffAdd', 'GitGutterAdd')
-call s:Link('oroshi_DiffChange', 'GitGutterChange')
+" Borders {{{
+call s:Highlight('LineNr', 'grey', 'black')
+call s:Highlight('ColorColumn', 'white', 'darkgrey')
+call s:Highlight('VertSplit', 'darkgrey', 'darkgrey')
 " }}}
-" Completion menu {{{
-call s:HL('Pmenu', 'lightgrey', 'darkgrey')
-call s:HL('PmenuSel', 'black', 'calmorange', 'bold')
-call s:HL('PmenuSbar', 'darkgrey', 'darkgrey')
+" Tabs {{{
+call s:Highlight('TabLine', 'lightgrey', 'darkgrey', 'none')
+call s:Highlight('TabLineFill', 'white', 'darkgrey', 'none')
+call s:Highlight('TabLineSel', 'white', 'black', 'bold')
+" }}}
+" Gutter {{{
+call s:Link('SignColumn', 'LineNr')
+call s:Highlight('SyntasticWarningSign', 'darkyellow', 'darkyellow')
+call s:Highlight('SyntasticErrorSign', 'darkred', 'darkred')
+let g:gitgutter_override_sign_column_highlight = 0
+call s:Link('GitGutterAdd', 'oroshi_DiffAdd')
+call s:Link('GitGutterChange', 'oroshi_DiffChange')
 " }}}
 " Status line {{{
-call s:HL('StatusLine', 'lightgrey', 'darkgrey', 'bold')
-call s:HL('StatusLineNC', 'grey', 'darkgrey', 'none')
+call s:Highlight('StatusLine', 'lightgrey', 'darkgrey', 'bold')
+call s:Highlight('StatusLineNC', 'grey', 'darkgrey', 'none')
 " Mode arrow highlight
-call s:HL('oroshi_StatusLineModeNormal', 'white', 'black', 'bold')
-call s:HL('oroshi_StatusLineModeInsert', 'black', 'darkyellow', 'bold')
-call s:HL('oroshi_StatusLineModeVisual', 'lightgrey', 'darkblue', 'bold')
-call s:HL('oroshi_StatusLineModeSearch', 'black', 'orange', 'bold')
-call s:HL('oroshi_StatusLineModeCtrlP', 'black', 'calmred', 'bold')
-call s:HL('oroshi_StatusLineModeCtrlF', 'black', 'darkgreen', 'bold')
+call s:Highlight('oroshi_StatusLineModeNormal', 'white', 'black', 'bold')
+call s:Highlight('oroshi_StatusLineModeInsert', 'black', 'darkyellow', 'bold')
+call s:Highlight('oroshi_StatusLineModeVisual', 'lightgrey', 'darkblue', 'bold')
+call s:Highlight('oroshi_StatusLineModeSearch', 'black', 'orange', 'bold')
+call s:Highlight('oroshi_StatusLineModeCtrlP', 'black', 'calmred', 'bold')
+call s:Highlight('oroshi_StatusLineModeCtrlF', 'black', 'darkgreen', 'bold')
 
-call s:HL('oroshi_StatusLineModeNormalArrow', 'black', 'darkgrey')
-call s:HL('oroshi_StatusLineModeInsertArrow', 'darkyellow', 'darkgrey')
-call s:HL('oroshi_StatusLineModeVisualArrow', 'darkblue', 'darkgrey')
-call s:HL('oroshi_StatusLineModeSearchArrow', 'orange', 'darkgrey')
-call s:HL('oroshi_StatusLineModeCtrlPArrow', 'calmred', 'darkgrey')
-call s:HL('oroshi_StatusLineModeCtrlFArrow', 'darkgreen', 'darkgrey')
+call s:Highlight('oroshi_StatusLineModeNormalArrow', 'black', 'darkgrey')
+call s:Highlight('oroshi_StatusLineModeInsertArrow', 'darkyellow', 'darkgrey')
+call s:Highlight('oroshi_StatusLineModeVisualArrow', 'darkblue', 'darkgrey')
+call s:Highlight('oroshi_StatusLineModeSearchArrow', 'orange', 'darkgrey')
+call s:Highlight('oroshi_StatusLineModeCtrlPArrow', 'calmred', 'darkgrey')
+call s:Highlight('oroshi_StatusLineModeCtrlFArrow', 'darkgreen', 'darkgrey')
 " File name coloring
-call s:HL('oroshi_StatusLineReadOnly', 'red', 'darkgrey', 'bold')
-call s:HL('oroshi_StatusLineModified', 'calmpurple', 'darkgrey', 'bold')
-call s:HL('oroshi_StatusLineSaved', 'darkgreen', 'darkgrey')
+call s:Highlight('oroshi_StatusLineReadOnly', 'red', 'darkgrey', 'bold')
+call s:Highlight('oroshi_StatusLineModified', 'calmpurple', 'darkgrey', 'bold')
+call s:Highlight('oroshi_StatusLineSaved', 'darkgreen', 'darkgrey')
 " Git status coloring
-call s:HL('oroshi_StatusLineGitDirty', 'red', 'darkgrey', 'bold')
-call s:HL('oroshi_StatusLineGitStaged', 'calmpurple', 'darkgrey', 'bold')
-call s:HL('oroshi_StatusLineGitClean', 'darkgreen', 'darkgrey')
+call s:Highlight('oroshi_StatusLineGitDirty', 'red', 'darkgrey', 'bold')
+call s:Highlight('oroshi_StatusLineGitStaged', 'calmpurple', 'darkgrey', 'bold')
+call s:Highlight('oroshi_StatusLineGitClean', 'darkgreen', 'darkgrey')
 " Warning/Errors coloring
-call s:HL('oroshi_StatusLineSyntastic', 'calmred', 'darkgrey', 'bold')
+call s:Highlight('oroshi_StatusLineSyntastic', 'calmred', 'darkgrey', 'bold')
 " Arval testing
-call s:HL('oroshi_TestPassSuccess', 'darkgreen', 'darkgrey', 'bold')
-call s:HL('oroshi_TestPassFailure', 'red', 'darkgrey', 'bold')
+call s:Highlight('oroshi_TestPassSuccess', 'darkgreen', 'darkgrey', 'bold')
+call s:Highlight('oroshi_TestPassFailure', 'red', 'darkgrey', 'bold')
 " Wrong options
-call s:HL('oroshi_StatusLineBadLineEnding', 'red', 'darkgrey', 'bold')
-call s:HL('oroshi_StatusLineBadEncoding', 'red', 'darkgrey', 'bold')
-" }}}
-" Cursor {{{
-call s:HL('CursorLine', 'none', 'almostblack', 'none')
-call s:HL('CursorLineNr', 'darkyellow', 'almostblack', 'none')
-if &term =~ "xterm"
-	" Cursor in insert mode
-	let &t_SI = "\<Esc>]12;#AF8700\x7"
-	" Cursor in normal mode
-	let &t_EI = "\<Esc>]12;#D70000\x7"
-endif
+call s:Highlight('oroshi_StatusLineBadLineEnding', 'red', 'darkgrey', 'bold')
+call s:Highlight('oroshi_StatusLineBadEncoding', 'red', 'darkgrey', 'bold')
 " }}}
 " Quick fix window {{{
 " Note: The Search highlight is used in the quickfix window for the current
@@ -175,335 +157,358 @@ augroup quickfix_coloring
 	au WinEnter * call UpdateSearchColoring()
 augroup END
 " }}}
-" Vim utils {{{
-" Visual selection
-call s:HL('Visual', 'lightgrey', 'darkblue', 'bold')
-" Search
-call s:HL('IncSearch', 'black', 'orange', 'bold')
-call s:HL('oroshi_Search', 'black', 'calmorange', 'bold')
-call s:Link('oroshi_Search', 'Search')
-" Folded text
-call s:HL('Folded', 'lightgrey', 'darkgrey')
-" Matching parenthesis
-call s:HL('MatchParen', 'black', 'calmyellow', 'bold')
+
+" Cursor {{{
+call s:Highlight('CursorLine', 'none', 'almostblack', 'none')
+call s:Highlight('CursorLineNr', 'darkyellow', 'almostblack', 'none')
+if &term =~ "xterm"
+	" Cursor in insert mode
+	let &t_SI = "\<Esc>]12;#AF8700\x7"
+	" Cursor in normal mode
+	let &t_EI = "\<Esc>]12;#D70000\x7"
+endif
+" }}}
+" Visual selection {{{
+call s:Highlight('Visual', 'lightgrey', 'darkblue', 'bold')
+" }}}
+" Search {{{
+call s:Highlight('IncSearch', 'black', 'orange', 'bold')
+call s:Highlight('oroshi_Search', 'black', 'calmorange', 'bold')
+call s:Link('Search', 'oroshi_Search')
+" }}}
+" Matching parenthesis {{{
+call s:Highlight('MatchParen', 'black', 'calmyellow', 'bold')
+" }}}
+" Folds {{{
+call s:Highlight('Folded', 'lightgrey', 'darkgrey')
+" }}}
+" Completion menu {{{
+call s:Highlight('Pmenu', 'lightgrey', 'darkgrey')
+call s:Highlight('PmenuSel', 'black', 'calmorange', 'bold')
+call s:Highlight('PmenuSbar', 'darkgrey', 'darkgrey')
 " }}}
 
+ 
 " Basic text {{{
-call s:HL('Normal', 'white', 'black')
+call s:Highlight('Normal', 'white', 'black')
 " Text markers
-call s:HL('NonText', 'darkgrey')
+call s:Highlight('NonText', 'darkgrey')
 " Unprintable chars
-call s:HL('SpecialKey', 'darkyellow')
+call s:Highlight('SpecialKey', 'darkyellow')
 " Messages
-call s:HL('WarningMsg', 'yellow', 'black', 'bold')
-call s:HL('ErrorMsg', 'red', 'black')
+call s:Highlight('WarningMsg', 'yellow', 'black', 'bold')
+call s:Highlight('ErrorMsg', 'red', 'black')
 " Spellchecking
-call s:HL('SpellBad', 'darkyellow', 'black', 'bold,underline')
-call s:HL('SpellCap', 'darkyellow', 'black', 'bold,underline')
+call s:Highlight('SpellBad', 'darkyellow', 'black', 'bold,underline')
+call s:Highlight('SpellCap', 'darkyellow', 'black', 'bold,underline')
 " }}}
 " Extended text {{{
 " Code
-call s:HL('oroshi_TextCode', 'calmblue')
+call s:Highlight('oroshi_TextCode', 'calmblue')
 " Emphasis
-call s:HL('oroshi_TextEmphasisBold', 'grey', '', 'bold')
-call s:HL('oroshi_TextEmphasisItalic', 'grey')
+call s:Highlight('oroshi_TextEmphasisBold', 'grey', '', 'bold')
+call s:Highlight('oroshi_TextEmphasisItalic', 'grey')
 " List marker
-call s:HL('oroshi_TextListMarker', 'white', '', 'bold')
+call s:Highlight('oroshi_TextListMarker', 'white', '', 'bold')
 " Headings
-call s:HL('oroshi_TextHeadingOne', 'darkgreen', '', 'bold')
-call s:HL('oroshi_TextHeadingTwo', 'darkgreen')
-call s:HL('oroshi_TextHeadingThree', 'green', '', 'bold')
-call s:HL('oroshi_TextHeadingFour', 'green')
-call s:HL('oroshi_TextHeadingFive', 'calmgreen', '', 'bold')
-call s:HL('oroshi_TextHeadingSix', 'calmgreen')
+call s:Highlight('oroshi_TextHeadingOne', 'darkgreen', '', 'bold')
+call s:Highlight('oroshi_TextHeadingTwo', 'darkgreen')
+call s:Highlight('oroshi_TextHeadingThree', 'green', '', 'bold')
+call s:Highlight('oroshi_TextHeadingFour', 'green')
+call s:Highlight('oroshi_TextHeadingFive', 'calmgreen', '', 'bold')
+call s:Highlight('oroshi_TextHeadingSix', 'calmgreen')
 " Delimiter
-call s:HL('oroshi_TextDelimiter', 'darkyellow')
+call s:Highlight('oroshi_TextDelimiter', 'darkyellow')
 " Link
-call s:HL('oroshi_TextLink', 'calmred')
-call s:HL('oroshi_TextUrl', 'calmorange')
+call s:Highlight('oroshi_TextLink', 'calmred')
+call s:Highlight('oroshi_TextUrl', 'calmorange')
 " }}}
 " Operators {{{
-call s:HL('Operator', 'white')
-" |x,y| Ruby style
-call s:HL('oroshi_Chute', 'darkblue')
+call s:Highlight('Operator', 'white')
+call s:Highlight('oroshi_Chute', 'darkblue')
 " }}}
 " Comments {{{
-call s:HL('Comment', 'grey')
-call s:HL('Todo', 'red', 'black', 'bold')
-call s:HL('SpecialComment', 'grey', '', 'bold')
+call s:Highlight('Comment', 'grey')
+call s:Highlight('Todo', 'red', 'black', 'bold')
+call s:Highlight('SpecialComment', 'grey', '', 'bold')
 " }}}
 " Diff {{{
-call s:HL('oroshi_DiffAdd', 'green')
-call s:HL('oroshi_DiffAddBg', 'white', 'darkgreen', 'bold')
-call s:HL('oroshi_DiffDelete', 'red')
-call s:HL('oroshi_DiffDeleteBg', 'darkred', 'darkred')
-call s:HL('oroshi_DiffChange', 'calmpurple')
-call s:HL('oroshi_DiffChangeBg', 'white', 'darkgrey', 'none')
-call s:HL('oroshi_DiffHeader', 'darkyellow', '', 'bold')
-call s:HL('oroshi_DiffOldFile', 'darkred', '', 'bold')
-call s:HL('oroshi_DiffNewFile', 'darkgreen', '', 'bold')
-call s:HL('oroshi_DiffLine', 'calmpurple')
-call s:HL('oroshi_DiffUntrackedFile', 'calmred')
-call s:HL('oroshi_DiffModifiedFile', 'calmpurple')
-call s:HL('oroshi_DiffDeletedFile', 'red')
-call s:HL('oroshi_DiffBranch', 'orange')
+call s:Highlight('oroshi_DiffAdd', 'green')
+call s:Highlight('oroshi_DiffAddBg', 'white', 'darkgreen', 'bold')
+call s:Highlight('oroshi_DiffDelete', 'red')
+call s:Highlight('oroshi_DiffDeleteBg', 'darkred', 'darkred')
+call s:Highlight('oroshi_DiffChange', 'calmpurple')
+call s:Highlight('oroshi_DiffChangeBg', 'white', 'darkgrey', 'none')
+call s:Highlight('oroshi_DiffHeader', 'darkyellow', '', 'bold')
+call s:Highlight('oroshi_DiffOldFile', 'darkred', '', 'bold')
+call s:Highlight('oroshi_DiffNewFile', 'darkgreen', '', 'bold')
+call s:Highlight('oroshi_DiffLine', 'calmpurple')
+call s:Highlight('oroshi_DiffUntrackedFile', 'calmred')
+call s:Highlight('oroshi_DiffModifiedFile', 'calmpurple')
+call s:Highlight('oroshi_DiffDeletedFile', 'red')
+call s:Highlight('oroshi_DiffBranch', 'orange')
 " }}}
-
+ 
 " Class {{{
-call s:HL('Type', 'calmred')
+call s:Highlight('Type', 'calmred')
 " Classname when defining the class
-call s:HL('oroshi_ClassName', 'darkorange')
+call s:Highlight('oroshi_ClassName', 'darkorange')
 " }}}
 " Functions {{{
-call s:HL('Function', 'green')
+call s:Highlight('Function', 'green')
 " }}}
 " PreProc {{{
-call s:HL('PreProc', 'yellow')
+call s:Highlight('PreProc', 'yellow')
 " Eval is evil
-call s:HL('oroshi_Eval', 'yellow')
+call s:Highlight('oroshi_Eval', 'yellow')
 " }}}
 " Logic blocks {{{
-call s:HL('Statement', 'darkgreen')
+call s:Highlight('Statement', 'darkgreen')
 " }}}
-
+ 
 " Variables {{{
-call s:HL('Identifier', 'calmgreen', '', 'none')
+call s:Highlight('Identifier', 'calmgreen', '', 'none')
 " Constant
-call s:HL('Constant', 'darkorange')
+call s:Highlight('Constant', 'darkorange')
 " Self refering in a class (self, this)
-call s:HL('oroshi_ClassSelf', 'darkorange', '', 'bold')
+call s:Highlight('oroshi_ClassSelf', 'darkorange', '', 'bold')
 " }}}
 " Strings {{{
-call s:HL('String', 'calmblue')
+call s:Highlight('String', 'calmblue')
 " Characters with special meaning
-call s:HL('SpecialChar', 'darkyellow')
-call s:Link('SpecialChar', 'Character')
+call s:Highlight('SpecialChar', 'darkyellow')
+call s:Link('Character', 'SpecialChar')
 " }}}
 " Numbers {{{
-call s:HL('Number', 'calmblue', '', 'bold')
+call s:Highlight('Number', 'calmblue', '', 'bold')
 " }}}
 " Symbols {{{
 " :symbol (Python/Ruby like)
-call s:HL('oroshi_Symbol', 'orange')
+call s:Highlight('oroshi_Symbol', 'orange')
 " }}}
 " Boolean {{{
-call s:HL('Boolean', 'calmorange')
+call s:Highlight('Boolean', 'calmorange')
 " }}}
 " Regexps {{{
-call s:HL('oroshi_Regexp', 'darkblue')
-call s:HL('oroshi_RegexpFlags', 'orange')
-call s:HL('oroshi_RegexpDelimiter', 'calmyellow')
-call s:HL('oroshi_RegexpPattern', 'darkblue')
-call s:HL('oroshi_RegexpBrackets', 'darkorange')
-call s:HL('oroshi_RegexpReplacement', 'white')
-call s:HL('oroshi_RegexpSpecial', 'darkyellow')
+call s:Highlight('oroshi_Regexp', 'darkblue')
+call s:Highlight('oroshi_RegexpFlags', 'orange')
+call s:Highlight('oroshi_RegexpDelimiter', 'calmyellow')
+call s:Highlight('oroshi_RegexpPattern', 'darkblue')
+call s:Highlight('oroshi_RegexpBrackets', 'darkorange')
+call s:Highlight('oroshi_RegexpReplacement', 'white')
+call s:Highlight('oroshi_RegexpSpecial', 'darkyellow')
 " }}}
 
 " Css {{{
 " Tag name
-call s:HL('cssTagName', 'darkgreen')
-call s:Link('cssTagName', 'sassClass')
+call s:Highlight('cssTagName', 'darkgreen')
+call s:Link('sassClass', 'cssTagName')
 " Class name
-call s:HL('cssClassName', 'green')
+call s:Highlight('cssClassName', 'green')
 " Operators
-call s:Link('Operator', 'cssSelectorOp', 'cssMediaComma', 'cssBraces')
+call s:Link('cssSelectorOp', 'Operator')
+call s:Link('cssMediaComma', 'Operator')
+call s:Link('cssBraces', 'Operator')
 " :pseudo-class
-call s:HL('cssPseudoClass', 'darkorange')
-call s:Link('cssPseudoClass', 'cssPseudoClassId')
+call s:Highlight('cssPseudoClass', 'darkorange')
+call s:Link('cssPseudoClassId', 'cssPseudoClass')
 " @media
-call s:HL('cssMedia', 'yellow', '', 'bold')
-call s:HL('cssMediaType', 'orange')
+call s:Highlight('cssMedia', 'yellow', '', 'bold')
+call s:Highlight('cssMediaType', 'orange')
 " !important
-call s:Link('Todo', 'cssImportant')
+call s:Link('cssImportant', 'Todo')
 " [attributes]
-call s:HL('cssAttributeSelector', 'red')
+call s:Highlight('cssAttributeSelector', 'red')
 " properties:
-call s:HL('cssProp', 'calmred')
-call s:Link('cssProp', 'cssVendorPrefixProp', 'cssBoxProp', 'cssFontProp', 'cssTextProp', 'cssFontAttr', 'cssColorProp', 'cssRenderProp', 'cssGeneratedContentProp')
+call s:Highlight('cssProp', 'calmred')
+call s:Link('cssVendorPrefixProp', 'cssProp')
+call s:Link('cssBoxProp', 'cssProp')
+call s:Link('cssFontProp', 'cssProp')
+call s:Link('cssTextProp', 'cssProp')
+call s:Link('cssFontAttr', 'cssProp')
+call s:Link('cssColorProp', 'cssProp')
+call s:Link('cssRenderProp', 'cssProp')
+call s:Link('cssGeneratedContentProp', 'cssProp')
 " values;
-call s:HL('cssValue', 'calmblue')
-call s:Link('cssValue', 'cssCommonAttr', 'cssRenderAttr', 'cssBoxAttr', 'cssTextAttr', 'cssFontAttr')
+call s:Highlight('cssValue', 'calmblue')
+call s:Link('cssCommonAttr', 'cssValue')
+call s:Link('cssRenderAttr', 'cssValue')
+call s:Link('cssBoxAttr', 'cssValue')
+call s:Link('cssTextAttr', 'cssValue')
+call s:Link('cssFontAttr', 'cssValue')
 " }}}
 " Diff {{{
-call s:Link('oroshi_DiffDelete', 'DiffRemoved')
-call s:Link('oroshi_DiffAdd', 'DiffAdded')
-call s:Link('oroshi_DiffLine', 'DiffLine')
-call s:Link('oroshi_DiffHeader', 'DiffFile')
+call s:Link('DiffRemoved', 'oroshi_DiffDelete')
+call s:Link('DiffAdded', 'oroshi_DiffAdd')
+call s:Link('DiffLine', 'oroshi_DiffLine')
+call s:Link('DiffFile', 'oroshi_DiffHeader')
 " }}}
 " Gitcommit {{{
-call s:Link('oroshi_TextEmphasisBold', 'gitCommitHeader')
-call s:Link('oroshi_DiffBranch', 'gitcommitBranch')
-call s:Link('oroshi_DiffModifiedFile', 'gitcommitSelectedFile')
-call s:Link('oroshi_DiffUntrackedFile', 'gitcommitUntrackedFile')
-call s:HL('gitcommitSelectedType', 'darkblue')
-call s:HL('gitcommitSummary', 'white')
-call s:HL('gitcommitOverflow', 'calmred', 'darkgrey')
+call s:Link('gitCommitHeader', 'oroshi_TextEmphasisBold')
+call s:Link('gitcommitBranch', 'oroshi_DiffBranch')
+call s:Link('gitcommitSelectedFile', 'oroshi_DiffModifiedFile')
+call s:Link('gitcommitUntrackedFile', 'oroshi_DiffUntrackedFile')
+call s:Highlight('gitcommitSelectedType', 'darkblue')
+call s:Highlight('gitcommitSummary', 'white')
+call s:Highlight('gitcommitOverflow', 'calmred', 'darkgrey')
 " }}}
 " Hgcommit {{{
-call s:Link('oroshi_DiffBranch',  'hgcommitBranch')
-call s:Link('oroshi_DiffAdd',     'hgcommitAdded')
-call s:Link('oroshi_DiffDelete',  'hgcommitRemoved')
-call s:Link('oroshi_DiffChange',  'hgcommitChanged')
-call s:Link('oroshi_DiffHeader',  'hgcommitDiffFile')
-call s:Link('oroshi_DiffOldFile', 'hgcommitDiffOldFile')
-call s:Link('oroshi_DiffNewFile', 'hgcommitDiffNewFile')
-call s:Link('oroshi_DiffLine',    'hgcommitDiffLine')
-call s:Link('oroshi_DiffAdd',     'hgcommitDiffAdded')
-call s:Link('oroshi_DiffDelete',  'hgcommitDiffRemoved')
-call s:Link('oroshi_DiffChange',  'hgcommitDiffChanged')
+call s:Link('hgcommitBranch', 'oroshi_DiffBranch')
+call s:Link('hgcommitAdded', 'oroshi_DiffAdd')
+call s:Link('hgcommitRemoved', 'oroshi_DiffDelete')
+call s:Link('hgcommitChanged', 'oroshi_DiffChange')
+call s:Link('hgcommitDiffFile', 'oroshi_DiffHeader')
+call s:Link('hgcommitDiffOldFile', 'oroshi_DiffOldFile')
+call s:Link('hgcommitDiffNewFile', 'oroshi_DiffNewFile')
+call s:Link('hgcommitDiffLine', 'oroshi_DiffLine')
+call s:Link('hgcommitDiffAdded', 'oroshi_DiffAdd')
+call s:Link('hgcommitDiffRemoved', 'oroshi_DiffDelete')
+call s:Link('hgcommitDiffChanged', 'oroshi_DiffChange')
 " }}}
 " Html {{{
 " Disable styling of special tags
-call s:Link('Normal', 'htmlItalic', 'htmlLink', 'htmlTitle')
+call s:Link('htmlItalic', 'Normal')
+call s:Link('htmlLink', 'Normal')
+call s:Link('htmlTitle', 'Normal')
 " }}}
 " Lighttpd {{{
-call s:Link('Boolean', 'lighttpdSpecial')
+call s:Link('lighttpdSpecial', 'Boolean')
 " }}}
 " Markdown {{{
 " Code
-call s:Link('oroshi_TextCode', 'MarkdownCode', 'MarkdownCodeblock', 'MarkdownCodeDelimiter')
+call s:Link('MarkdownCode', 'oroshi_TextCode')
+call s:Link('MarkdownCodeblock', 'oroshi_TextCode')
+call s:Link('MarkdownCodeDelimiter', 'oroshi_TextCode')
 " Emphasis
-call s:Link('oroshi_TextEmphasisBold', 'MarkdownBold')
-call s:Link('oroshi_TextEmphasisItalic', 'MarkdownItalic')
+call s:Link('MarkdownBold', 'oroshi_TextEmphasisBold')
+call s:Link('MarkdownItalic', 'oroshi_TextEmphasisItalic')
 " List
-call s:Link('oroshi_TextListMarker', 'MarkdownListMarker')
+call s:Link('MarkdownListMarker', 'oroshi_TextListMarker')
 " Link
-call s:Link('oroshi_TextLink', 'MarkdownLinkDelimiter', 'MarkdownIdDeclaration')
-call s:Link('oroshi_TextLink', 'MarkdownLinkText', 'MarkdownLinkTextDelimiter')
-call s:Link('oroshi_TextLink', 'MarkdownUrlTitle', 'MarkdownUrlTitleDelimiter')
-call s:Link('oroshi_TextUrl', 'MarkdownUrl')
+call s:Link('MarkdownLinkDelimiter', 'oroshi_TextLink')
+call s:Link('MarkdownIdDeclaration', 'oroshi_TextLink')
+call s:Link('MarkdownLinkText', 'oroshi_TextLink')
+call s:Link('MarkdownLinkTextDelimiter', 'oroshi_TextLink')
+call s:Link('MarkdownUrlTitle', 'oroshi_TextLink')
+call s:Link('MarkdownUrlTitleDelimiter', 'oroshi_TextLink')
+call s:Link('MarkdownUrl', 'oroshi_TextUrl')
 " Headings
-call s:Link('oroshi_TextHeadingOne', 'MarkdownH1')
-call s:Link('oroshi_TextHeadingTwo', 'MarkdownH2')
-call s:Link('oroshi_TextHeadingThree', 'MarkdownH3')
-call s:Link('oroshi_TextHeadingFour', 'MarkdownH4')
-call s:Link('oroshi_TextHeadingFive', 'MarkdownH5')
-call s:Link('oroshi_TextDelimiter', 'MarkdownHeadingDelimiter', 'MarkdownHeadingRule')
+call s:Link('MarkdownH1', 'oroshi_TextHeadingOne')
+call s:Link('MarkdownH2', 'oroshi_TextHeadingTwo')
+call s:Link('MarkdownH3', 'oroshi_TextHeadingThree')
+call s:Link('MarkdownH4', 'oroshi_TextHeadingFour')
+call s:Link('MarkdownH5', 'oroshi_TextHeadingFive')
+call s:Link('MarkdownHeadingDelimiter', 'oroshi_TextDelimiter')
+call s:Link('MarkdownHeadingRule', 'oroshi_TextDelimiter')
 " }}}
 " PHP {{{
 " Class
-call s:Link('Type', 'phpSpecial')
+call s:Link('phpSpecial', 'Type')
 " Include $ in variable highlighting
-call s:Link('Identifier', 'phpVarSelector')
+call s:Link('phpVarSelector', 'Identifier')
 " }}}
 " Ruby {{{
-
 " |chute|
-call s:Link('oroshi_Chute', 'rubyBlockParameterList')
-
+call s:Link('rubyBlockParameterList', 'oroshi_Chute')
 " Class
-call s:Link('Type', 'rubyClass', 'rubyDefine')
+call s:Link('rubyClass', 'Type')
+call s:Link('rubyDefine', 'Type')
 " Class name
-call s:Link('Constant', 'rubyConstant')
+call s:Link('rubyConstant', 'Constant')
 " Function
-call s:Link('Function', 'rubyFunction', 'rubyAttribute')
+call s:Link('rubyFunction', 'Function')
+call s:Link('rubyAttribute', 'Function')
 " eval
-call s:Link('oroshi_Eval', 'rubyEval')
+call s:Link('rubyEval', 'oroshi_Eval')
 " Logic blocks
-call s:Link('Statement', 'rubyControl')
-
+call s:Link('rubyControl', 'Statement')
 " self
-call s:Link('oroshi_ClassSelf', 'rubyPseudoVariable')
+call s:Link('rubyPseudoVariable', 'oroshi_ClassSelf')
 " String
-call s:Link('String', 'rubyString', 'rubyStringDelimiter')
-call s:Link('SpecialChar', 'rubyInterpolation', 'rubyInterpolationDelimiter', 'rubyStringEscape')
+call s:Link('rubyString', 'String')
+call s:Link('rubyStringDelimiter', 'String')
+call s:Link('rubyInterpolation', 'SpecialChar')
+call s:Link('rubyInterpolationDelimiter', 'SpecialChar')
+call s:Link('rubyStringEscape', 'SpecialChar')
 " :symbol
-call s:Link('oroshi_Symbol', 'rubySymbol')
+call s:Link('rubySymbol', 'oroshi_Symbol')
 " Regexp
-call s:Link('oroshi_Regexp', 'rubyRegexp')
-call s:Link('oroshi_RegexpDelimiter', 'rubyRegexpDelimiter')
-call s:Link('oroshi_RegexpSpecial', 'rubyRegexpSpecial')
+call s:Link('rubyRegexp', 'oroshi_Regexp')
+call s:Link('rubyRegexpDelimiter', 'oroshi_RegexpDelimiter')
+call s:Link('rubyRegexpSpecial', 'oroshi_RegexpSpecial')
 " Predefined constants
-call s:Link('Constant', 'rubyPredefinedConstant')
-
-
+call s:Link('rubyPredefinedConstant', 'Constant')
 " }}}
 " Vim {{{
 " Option name
-call s:HL('vimOption', 'orange')
-call s:Link('vimOption', 'vimFTOption', 'vimHiClear', 'vimSynType', 'vimAutoEvent')
-call s:Link('vimOption', 'vimNormCmds', 'vimMapLhs')
+call s:Highlight('vimOption', 'orange')
+call s:Link('vimFTOption', 'vimOption')
+call s:Link('vimHiClear', 'vimOption')
+call s:Link('vimSynType', 'vimOption')
+call s:Link('vimAutoEvent', 'vimOption')
+call s:Link('vimNormCmds', 'vimOption')
+call s:Link('vimMapLhs', 'vimOption')
 " Option value
-call s:HL('vimSet', 'blue')
-call s:Link('vimSet', 'vimSetEqual', 'vimMapRhs')
+call s:Highlight('vimSet', 'blue')
+call s:Link('vimSetEqual', 'vimSet')
+call s:Link('vimMapRhs', 'vimSet')
 " Option separator
-call s:Link('Normal', 'vimSetSep')
-
+call s:Link('vimSetSep', 'Normal')
 " Variables
-call s:Link('Identifier', 'vimVar', 'vimIsCommand')
+call s:Link('vimVar', 'Identifier')
+call s:Link('vimIsCommand', 'Identifier')
 " Functions
-call s:Link('Function', 'vimFunc', 'vimUserFunc', 'vimFunction', 'vimFuncSID')
-
+call s:Link('vimFunc', 'Function')
+call s:Link('vimUserFunc', 'Function')
+call s:Link('vimFunction', 'Function')
+call s:Link('vimFuncSID', 'Function')
 " <SpecialKeys> like <F12>
-call s:Link('SpecialKey', 'vimNotation', 'vimMapMod', 'vimBracket', 'vimMapModkey')
-
+call s:Link('vimNotation', 'SpecialKey')
+call s:Link('vimMapMod', 'SpecialKey')
+call s:Link('vimBracket', 'SpecialKey')
+call s:Link('vimMapModkey', 'SpecialKey')
 " Regexp
-call s:Link('vimOption', 'vimAddress', 'vimSubst1')
-call s:Link('oroshi_RegexpFlags', 'vimSubstFlags')
-call s:Link('oroshi_RegexpPattern', 'vimSubstPat')
-call s:Link('oroshi_RegexpDelimiter', 'vimSubstDelim')
-
+call s:Link('vimAddress', 'vimOption')
+call s:Link('vimSubst1', 'vimOption')
+call s:Link('vimSubstFlags', 'oroshi_RegexpFlags')
+call s:Link('vimSubstPat', 'oroshi_RegexpPattern')
+call s:Link('vimSubstDelim', 'oroshi_RegexpDelimiter')
 " Comment title, eg. Author : Foobar
-call s:HL('vimCommentTitle', 'grey', '', 'bold')
-
+call s:Highlight('vimCommentTitle', 'grey', '', 'bold')
 " }}}
 " Vim Diff {{{
-call s:Link('oroshi_DiffAddBg', 'DiffAdd')
-call s:Link('oroshi_DiffDeleteBg', 'DiffDelete')
-call s:Link('oroshi_DiffChangeBg', 'DiffChange')
-call s:Link('oroshi_DiffChange', 'DiffText')
+call s:Link('DiffAdd', 'oroshi_DiffAddBg')
+call s:Link('DiffDelete', 'oroshi_DiffDeleteBg')
+call s:Link('DiffChange', 'oroshi_DiffChangeBg')
+call s:Link('DiffText', 'oroshi_DiffChange')
 " }}}
 " Vim Help {{{
-call s:Link('vimCommentTitle', 'helpSectionDelim')
-call s:Link('vimNotation', 'helpSpecial')
-call s:Link('vimOption', 'helpOption')
-call s:Link('oroshi_TextLink', 'helpHypertextJump')
-call s:Link('vimString', 'helpExample')
-call s:Link('vimComment', 'helpHeader')
-call s:Link('WarningMsg', 'helpNotVi')
+call s:Link('helpSectionDelim', 'vimCommentTitle')
+call s:Link('helpSpecial', 'vimNotation')
+call s:Link('helpOption', 'vimOption')
+call s:Link('helpHypertextJump', 'oroshi_TextLink')
+call s:Link('helpExample', 'vimString')
+call s:Link('helpHeader', 'vimComment')
+call s:Link('helpNotVi', 'WarningMsg')
 " }}}
 " Xml {{{
 " Tags
-call s:Link('Statement', 'xmlTagName', 'xmlEndTag')
+call s:Link('xmlTagName', 'Statement')
+call s:Link('xmlEndTag', 'Statement')
 " }}}
 " Zsh {{{
 " Variables
-call s:Link('Identifier', 'zshDeref', 'zshShortDeref', 'zshSubst')
+call s:Link('zshDeref', 'Identifier')
+call s:Link('zshShortDeref', 'Identifier')
+call s:Link('zshSubst', 'Identifier')
 " Quotes surrounding strings
-call s:Link('String', 'shQuote', 'shDoubleQuote')
+call s:Link('shQuote', 'String')
+call s:Link('shDoubleQuote', 'String')
 " }}}
-
+" 
 " Ctrl-F {{{
 " Found file
-call s:HL('qfFilename', 'green')
-" }}}
-" Ctrl-P {{{
-" Highlighting:~
-"   * For the CtrlP buffer:
-"     CtrlPNoEntries : the message when no match is found (Error)
-"     CtrlPMatch     : the matched pattern (Identifier)
-"     CtrlPLinePre   : the line prefix '>' in the match window
-"     CtrlPPrtBase   : the prompt's base (Comment)
-"     CtrlPPrtText   : the prompt's text (|hl-Normal|)
-"     CtrlPPrtCursor : the prompt's cursor when moving over the text (Constant)
-" 
-"   * In extensions:
-"     CtrlPTabExtra  : the part of each line that's not matched against (Comment)
-"     CtrlPBufName   : the buffer name an entry belongs to (|hl-Directory|)
-"     CtrlPTagKind   : the kind of the tag in buffer-tag mode (|hl-Title|)
-"     CtrlPqfLineCol : the line and column numbers in quickfix mode (Comment)
-"     CtrlPUndoT     : the elapsed time in undo mode (|hl-Directory|)
-"     CtrlPUndoBr    : the square brackets [] in undo mode (Comment)
-"     CtrlPUndoNr    : the undo number inside [] in undo mode (String)
-"     CtrlPUndoSv    : the point where the file was saved (Comment)
-"     CtrlPUndoPo    : the current position in the undo tree (|hl-Title|)
-"     CtrlPBookmark  : the name of the bookmark (Identifier)
-" 
-" Statuslines:~
-"   * Highlight groups:
-"     CtrlPMode1 : 'prt' or 'win', also for 'regex' (Character)
-"     CtrlPMode2 : 'file' or 'path', also for the local working dir (|hl-LineNr|)
-"     CtrlPStats : the scanning status (Function)
+call s:Highlight('qfFilename', 'green')
 " }}}
 " RainbowParentheses {{{
 let g:rbpt_colorpairs = [
