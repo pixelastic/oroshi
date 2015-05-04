@@ -3,7 +3,7 @@
 " When writing a commit message {{{
 if expand('%') =~ 'COMMIT_EDITMSG'
   let b:onBufEnterFired = 0
-  " Add possible types {{{
+  " Add possible convention types {{{
   augroup gitcommit_BufEnter
     autocmd!
     au BufEnter <buffer> call GitCommitOnBufEnter()
@@ -15,12 +15,17 @@ if expand('%') =~ 'COMMIT_EDITMSG'
     if b:onBufEnterFired ==# 1
       return
     endif
+    let b:onBufEnterFired = 1
 
+    " Add reminder of convention types
     let @x='# Possible types : feat, fix, refactor, chore, style, perf, test, docs'
     normal 1gg
     put x
     normal gg
-    let b:onBufEnterFired = 1
+
+    " Set smaller column
+    setlocal colorcolumn=71
+    setlocal textwidth=70
   endfunction
   " }}}
   " Save commit {{{
@@ -28,8 +33,8 @@ if expand('%') =~ 'COMMIT_EDITMSG'
   inoremap <buffer> <C-S> <Esc>:x<CR>
   " }}}
   " Discard commit {{{
-    nnoremap <buffer> <C-D> :cq!<CR>
-    inoremap <buffer> <C-D> <Esc>:cq!<CR>
+  nnoremap <buffer> <C-D> :cq!<CR>
+  inoremap <buffer> <C-D> <Esc>:cq!<CR>
   " }}}
 endif
 " }}}

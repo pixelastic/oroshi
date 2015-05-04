@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # Launch a GUI app without blocking the terminal
 
-if ! which $1; 
+if ! which $1; then
   exit 1
 fi
 
