@@ -42,11 +42,8 @@ echo "Adding symlinks"
 cd ~/local/bin/
 ln -s ../etc/zsh/bin/zsh
 
-echo "Changing current shell"
-which zsh | sudo tee -a /etc/shells
-sudo chsh -s /home/$USER/local/bin/zsh $USER
-
 echo "--------------"
+echo "You should manually edit /etc/passwd to add /home/$USER/local/bin/zsh as your shell"
 echo "You should now reboot for the shell change to take effect correctly."
 echo "--------------"
 

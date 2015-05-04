@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-# Old packet manager GUI 
-sudo apt-get install synaptic
