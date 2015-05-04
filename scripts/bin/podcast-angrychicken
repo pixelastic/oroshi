@@ -1,0 +1,3 @@
+#!/usr/bin/env ruby
+require_relative '../etc/podcasts/angrychicken/angrychicken_podcast_downloader'
+AngryChickenPodcastDownloader.new(*ARGV).run()
