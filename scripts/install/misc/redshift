@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 
-cd ~/local/etc
+cd ~/local/src
 wget https://github.com/jonls/redshift/releases/download/v1.10/redshift-1.10.tar.xz -O redshift.tar.xz
-tar tar xvJf redshift.tar.xz
-rm redshift.tar.xz
+tar xvJf redshift.tar.xz
 
-cd ./redshift
+cd ./redshift-1.10
 sudo apt-get install intltool
-./configure
+./configure --prefix=/home/$USER/local/
 make
 make install
+
+rm ~/local/src/redshift.tar.xz

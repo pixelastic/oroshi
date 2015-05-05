@@ -17,10 +17,3 @@ keycode  36 = Return KP_Enter Return KP_Enter
 ! The lenovo has a stupid Print Screen key next to AltGr. I will make it
 ! another AltGr one.
 keycode 107 = ISO_Level3_Shift NoSymbol ISO_Level3_Shift
-
-! Other Fn keys. I don't know what they are doing, so the safest bet is to
-! make them act as real F keys
-keycode 179 = F9 F9 F9 F9
-keycode 225 = F10 F10 F10 F10
-keycode 128 = F11 F11 F11 F11
-keycode 165 = F12 F12 F12 F12

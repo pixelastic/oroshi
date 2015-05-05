@@ -42,6 +42,8 @@ echo "Adding symlinks"
 cd ~/local/bin/
 ln -s ../etc/zsh/bin/zsh
 
+rm ~/local/src/zsh-5.0.0.tar.gz
+
 echo "--------------"
 echo "You should manually edit /etc/passwd to add /home/$USER/local/bin/zsh as your shell"
 echo "You should now reboot for the shell change to take effect correctly."

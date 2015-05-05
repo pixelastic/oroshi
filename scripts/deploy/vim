@@ -1,11 +1,11 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 # Creates directories needed by vim and link vim config to ~/.vim and ~/.vimrc.
 
 # Paths
-local configDir=~/.oroshi/config/vim
-local configFile=${configDir}/vimrc
-local destDir=~/.vim
-local destFile=~/.vimrc
+configDir=~/.oroshi/config/vim
+configFile=${configDir}/vimrc
+destDir=~/.vim
+destFile=~/.vimrc
 
 # Create directories needed by vim
 mkdir -p $destDir/swap

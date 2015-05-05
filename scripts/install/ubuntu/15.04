@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+sudo apt-get install compizconfig-settings-manager
+sudo apt-get install compiz-plugins

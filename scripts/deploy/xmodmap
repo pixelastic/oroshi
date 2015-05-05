@@ -13,13 +13,13 @@ local localFile=${configDir}/local/${hostname}.xmodmap
 rm -f $destFile
 touch $destFile
 
-# Adding first the local config
+# Adding the default configuration last
+cat $defaultFile >> $destFile
+
+# Adding the local config
 if [[ -r $localFile ]]; then
 	cat $localFile >> $destFile
 fi
-
-# Adding the default configuration last
-cat $defaultFile >> $destFile
 
 # Reload xmodmap
 setxkbmap fr
