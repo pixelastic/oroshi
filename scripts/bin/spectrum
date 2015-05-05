@@ -21,30 +21,30 @@ typeset -A grid
 # each line one my one then display all of them, and after that jump to the
 # next set of blocks
 for color in {016..255}; do
-	# Current line in a block
-	m=$((($color-16)%$lines))
+  # Current line in a block
+  m=$((($color-16)%$lines))
 
-	# Appending the displayed color to the line
-	grid[$m]=$grid[$m]"[01m[38;5;${color}m#${color} [48;5;${color}m${space}[00m  "
+  # Appending the displayed color to the line
+  grid[$m]=$grid[$m]"[01m[38;5;${color}m#${color} [48;5;${color}m${space}[00m  "
 
-	# Counting how many blocks are filled
-	[[ $m = 5 ]] && b=$(($b+1))
+  # Counting how many blocks are filled
+  [[ $m = 5 ]] && b=$(($b+1))
 
-	# Enough blocks for this line, display them
-	if [[ $b = $blocks ]]; then
-		# Reset block counter
-		b=0;
-		# Display each line
-		for j in {0..5}; do
-			echo $grid[$j]
-			grid[$j]=""
-		done
-		echo ""
-	fi
+  # Enough blocks for this line, display them
+  if [[ $b = $blocks ]]; then
+    # Reset block counter
+    b=0;
+    # Display each line
+    for j in {0..5}; do
+      echo $grid[$j]
+      grid[$j]=""
+    done
+    echo ""
+  fi
 done
 
 # Display each remaining blocks
 for j in {0..5}; do
-	echo $grid[$j]
-	grid[$j]=""
+  echo $grid[$j]
+  grid[$j]=""
 done

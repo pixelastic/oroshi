@@ -32,14 +32,14 @@ endfunction
 function! FindInProjectStatusLine() 
 	let sl = ''
 	" Mode
-	let sl .= '%#oroshi_StatusLineModeCtrlF# CTRL-F %*'
-	let sl .= '%#oroshi_StatusLineModeCtrlFArrow#⮀%*'
+	let sl .= '%#oroshi_ModeCtrlF# CTRL-F %*'
+	let sl .= '%#oroshi_UIModeCtrlF#⮀%*'
 	" Pattern
 	let sl .= ' '.g:CtrlFSearchPattern
 	" Separator
 	let sl .= '%='
 	" Repo dir
-	let sl .= g:CtrlFRepoRoot
+	let sl .= fnamemodify(g:CtrlFRepoRoot, ':t')
 	return sl
 endfunction
 " }}}

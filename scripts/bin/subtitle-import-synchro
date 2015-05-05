@@ -1,4 +1,3 @@
 #!/usr/bin/env ruby
 require_relative '../etc/subtitle-import-synchro/subtitle-import-synchro'
 SubtitleImportSynchro.new(*ARGV).run()
-

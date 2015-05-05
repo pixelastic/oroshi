@@ -16,12 +16,12 @@ let g:ctrlp_clear_cache_on_exit = 0
 inoremap <silent> <C-P> <Esc>:CtrlP<CR>
 " }}}
 " Mappings {{{
-" Open in new tab as default <Enter> press, and edit in buffer with Ctrl-B
+" Open in new tab as default <Enter> press
 " Quit with Maj and Ctrl-D as well as default <Esc> and Ctrl-C
 " Disable filepath/directory mode
 let g:ctrlp_prompt_mappings = {
-	\ 'AcceptSelection("t")': ['<cr>', '<c-t>'],
-	\ 'AcceptSelection("e")': ['<c-b>'],
+	\ 'AcceptSelection("t")': ['<cr>'],
+	\ 'AcceptSelection("e")': [],
 	\
 	\ 'PrtExit()':            ['<esc>', '<c-c>', '<c-d>', '[25~'],
   \ 'ToggleByFname()':      [],
@@ -46,12 +46,12 @@ let g:ctrlp_status_func = {
 function! CtrlPStatusLineMain(...)
 	let sl = ''
 	" Mode
-	let sl .= '%#oroshi_StatusLineModeCtrlP# CTRL-P %*'
-	let sl .= '%#oroshi_StatusLineModeCtrlPArrow#⮀%*'
+	let sl .= '%#oroshi_ModeCtrlP# CTRL-P %*'
+	let sl .= '%#oroshi_UIModeCtrlP#⮀%*'
 	" Separator
 	let sl .= '%='
 	" Current dir
-	let sl .= getcwd()
+	let sl .= fnamemodify(GetRepoRoot(), ':t')
 	return sl
 endfunction
 
@@ -59,14 +59,14 @@ endfunction
 function! CtrlPStatusLineProg(...)
 	let sl = ''
 	" Mode
-	let sl .= '%#oroshi_StatusLineModeCtrlP# CTRL-P %*'
-	let sl .= '%#oroshi_StatusLineModeCtrlPArrow#⮀%*'
+	let sl .= '%#oroshi_ModeCtrlP# CTRL-P %*'
+	let sl .= '%#oroshi_UIModeCtrlP#⮀%*'
 	" Status or length
 	let sl .= ' '.a:1
 	" Separator
 	let sl .= '%='
 	" Current dir
-	let sl .= getcwd()
+	let sl .= fnamemodify(GetRepoRoot(), ':t')
 	return sl
 endfunction
 " }}}

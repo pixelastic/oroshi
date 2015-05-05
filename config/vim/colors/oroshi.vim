@@ -48,7 +48,7 @@ let s:palette.black         = 233
 let s:palette.almostblack   = 234
 let s:palette.darkgrey      = 235
 let s:palette.grey          = 241
-let s:palette.lightgrey     = 250
+let s:palette.lightgrey     = 249
 let s:palette.white         = 252
 let s:palette.purewhite     = 255
 " Blue
@@ -84,7 +84,7 @@ let s:palette.calmyellow    = 185
 call s:Highlight('oroshi_Debug', 'white', 'darkpurple')
 call s:Highlight('oroshi_None', 'none', 'none', 'none')
 
-call s:Highlight('oroshi_Text', 'white')
+call s:Highlight('oroshi_Text', 'lightgrey')
 call s:Highlight('oroshi_TextBold', 'grey', 'none', 'bold')
 call s:Highlight('oroshi_TextItalic', 'grey')
 call s:Highlight('oroshi_TextAlmostInvisible', 'darkgrey')
@@ -122,6 +122,7 @@ call s:Highlight('oroshi_CodeVariable', 'calmgreen')
 call s:Highlight('oroshi_UI', 'lightgrey', 'darkgrey')
 call s:Highlight('oroshi_UISecondary', 'grey')
 call s:Highlight('oroshi_UIFilled', 'darkgrey', 'darkgrey')
+call s:Highlight('oroshi_UIEmpty', 'black', 'black')
 call s:Highlight('oroshi_UIActive', 'white', 'black', 'bold')
 call s:Highlight('oroshi_UISuccess', 'darkgreen', 'darkgrey')
 call s:Highlight('oroshi_UISuccessFilled', 'darkgreen', 'darkgreen')
@@ -149,7 +150,9 @@ call s:Highlight('oroshi_ModeInsert', 'black', 'darkyellow', 'bold')
 call s:Highlight('oroshi_ModeVisual', 'lightgrey', 'darkblue', 'bold')
 call s:Highlight('oroshi_ModeSearch', 'black', 'orange', 'bold')
 call s:Highlight('oroshi_ModeCtrlP', 'black', 'calmred', 'bold')
+call s:Highlight('oroshi_ModeCtrlPMatch', 'calmred')
 call s:Highlight('oroshi_ModeCtrlF', 'black', 'darkgreen', 'bold')
+call s:Highlight('oroshi_ModeCtrlFMatch', 'darkgreen')
 call s:Highlight('oroshi_UIModeNormal', 'black', 'darkgrey', 'bold')
 call s:Highlight('oroshi_UIModeInsert', 'darkyellow', 'darkgrey', 'bold')
 call s:Highlight('oroshi_UIModeVisual', 'darkblue', 'darkgrey', 'bold')
@@ -236,12 +239,13 @@ call s:Link('PmenuSel', 'oroshi_ModeSearch')
 " }}}
 
 " Text {{{
-call s:Link('Normal', 'oroshi_Text')
 call s:Link('Noise', 'oroshi_Text')
-call s:Link('Special', 'oroshi_TextSpecial')
-" call s:Link('SpecialChar', 'oroshi_TextSpecial')
 call s:Link('NonText', 'oroshi_TextAlmostInvisible')
-" call s:Link('SpecialKey', 'oroshi_TextSpecial')
+call s:Link('SpecialKey', 'oroshi_TextSpecial')
+call s:Link('Error', 'oroshi_Error')
+" Note: These styles can't be linked, they must be defined directly
+call s:Highlight('Normal', 'lightgrey')
+call s:Highlight('Special', 'darkyellow')
 " Messages
 call s:Link('WarningMsg', 'oroshi_Warning')
 call s:Link('ErrorMsg', 'oroshi_Error')
@@ -251,7 +255,7 @@ call s:Link('SpellCap', 'oroshi_TextSpellingError')
 " }}}
 " Code {{{
 call s:Link('Identifier', 'oroshi_CodeVariable')
-call s:Link('Boolean', 'oroshi_Boolean')
+call s:Link('Boolean', 'oroshi_CodeBoolean')
 call s:Link('Operator', 'oroshi_Text')
 call s:Link('Function', 'oroshi_CodeFunction')
 call s:Link('Statement', 'oroshi_CodeStatement')
@@ -259,6 +263,7 @@ call s:Link('String', 'oroshi_CodeString')
 call s:Link('Type', 'oroshi_CodeType')
 call s:Link('Constant', 'oroshi_CodeConstant')
 call s:Link('PreProc', 'oroshi_CodeInclude')
+call s:Link('Number', 'oroshi_CodeNumber')
 " Comments
 call s:Link('Comment', 'oroshi_CodeComment')
 call s:Link('Todo', 'oroshi_Warning')
@@ -274,17 +279,22 @@ call s:Link('DiffLine', 'oroshi_DiffLine')
 
 " CSS {{{
 call s:Link('sassClass', 'oroshi_CodeFunction')
+call s:Link('sassClassChar', 'oroshi_CodeFunction')
 call s:Link('sassAmpersand', 'oroshi_CodeSelf')
-call s:Link('cssBraces', 'oroshi_CodeOperator')
-call s:Link('cssValueNumber', 'oroshi_CodeNumber')
+call s:Link('cssBraces', 'oroshi_Text')
+call s:Link('cssAttrComma', 'oroshi_Text')
 call s:Link('cssValueLength', 'oroshi_CodeNumber')
 call s:Link('cssUnitDecorators', 'oroshi_CodeNumber')
-call s:Link('cssPseudoClassId', 'oroshi_CodeIdentifier')
+call s:Link('cssPseudoClassId', 'oroshi_CodeVariable')
 call s:Link('cssAttr', 'oroshi_CodeSymbol')
-call s:Link('cssMedia', 'oroshi_CodePreProc')
+call s:Link('cssMedia', 'oroshi_CodeInclude')
+call s:Link('cssIncludeKeyword', 'oroshi_CodeInclude')
 call s:Link('cssImportant', 'oroshi_Error')
+call s:Link('cssProp', 'oroshi_CodeType')
+call s:Link('cssColor', 'oroshi_CodeNumber')
+call s:Link('cssVendorPrefixProp', 'oroshi_CodeType')
 " }}}
-" GIT {{{
+" Git {{{
 call s:Link('gitcommitDiff', 'oroshi_DiffChanged')
 call s:Link('gitcommitSummary', 'oroshi_Text')
 call s:Link('gitcommitBranch', 'oroshi_GitBranch')
@@ -293,9 +303,12 @@ call s:Link('gitcommitSelectedFile', 'oroshi_DiffChanged')
 call s:Link('gitcommitUntrackedFile', 'oroshi_Text')
 call s:Link('gitcommitOverflow', 'oroshi_Error')
 call s:Link('gitcommitBlank', 'oroshi_Error')
+call s:Link('gitconfigVariable', 'oroshi_CodeType')
+call s:Link('gitconfigAssignment', 'oroshi_CodeString')
 " }}}
 " HTML {{{
 call s:Link('htmlTag', 'oroshi_CodeStatement')
+call s:Link('htmlTagName', 'oroshi_CodeStatement')
 call s:Link('htmlEndTag', 'oroshi_CodeStatement')
 call s:Link('htmlH1', 'oroshi_Text')
 call s:Link('htmlItalic', 'oroshi_Text')
@@ -303,7 +316,6 @@ call s:Link('htmlLink', 'oroshi_Text')
 call s:Link('htmlTitle', 'oroshi_Text')
 " }}}
 " JavaScript {{{
-call s:Link('jsNumber', 'oroshi_CodeNumber')
 call s:Link('jsExceptions', 'oroshi_Warning')
 call s:Link('jsGlobalObjects', 'oroshi_CodeClass')
 " }}}
@@ -333,10 +345,10 @@ call s:Link('MarkdownCodeblock', 'oroshi_CodeString')
 call s:Link('MarkdownCodeDelimiter', 'oroshi_CodeString')
 " }}}
 " Ruby {{{
+call s:Link('rubyPseudoVariable', 'oroshi_CodeSelf')
 call s:Link('rubySymbol', 'oroshi_CodeSymbol')
 call s:Link('rubyStringDelimiter', 'oroshi_CodeString')
 call s:Link('rubyStringEscape', 'oroshi_TextSpecial')
-call s:Link('rubyInteger', 'oroshi_CodeNumber')
 call s:Link('rubyInterpolation', 'oroshi_TextSpecial')
 call s:Link('rubyInterpolationDelimiter', 'oroshi_TextSpecial')
 call s:Link('rubyModule', 'oroshi_CodeType')
@@ -347,6 +359,25 @@ call s:Link('rubyRegexp', 'oroshi_CodeRegexp')
 call s:Link('rubyRegexpDelimiter', 'oroshi_CodeRegexpDelimiter')
 call s:Link('rubyRegexpSpecial', 'oroshi_CodeRegexp')
 call s:Link('rubyRegexpEscape', 'oroshi_TextSpecial')
+" }}}
+" Robots {{{
+call s:Link('robotsDelimiter', 'oroshi_Text')
+call s:Link('robotsAgent', 'oroshi_CodeStatement')
+call s:Link('robotsDisallow', 'oroshi_CodeType')
+call s:Link('robotsLine', 'oroshi_CodeString')
+call s:Link('robotsStar', 'oroshi_CodeSymbol')
+" }}}
+" Shell {{{
+call s:Link('shOption', 'oroshi_CodeType')
+call s:Link('shDerefSimple', 'oroshi_CodeVariable')
+call s:Link('zshDeref', 'oroshi_CodeVariable')
+call s:Link('zshShortDeref', 'oroshi_CodeVariable')
+call s:Link('zshRedir', 'oroshi_TextSpecial')
+call s:Link('zshSubst', 'oroshi_CodeVariable')
+call s:Link('zshOldSubst', 'oroshi_CodeVariable')
+call s:Link('zshSubstDelim', 'oroshi_CodeVariable')
+call s:Link('shCommandSub', 'oroshi_CodeVariable')
+call s:Link('shCmdSubRegion', 'oroshi_CodeVariable')
 " }}}
 " Vim {{{
 call s:Link('vimCommentTitle', 'oroshi_Warning')
@@ -361,7 +392,6 @@ call s:Link('vimAutoEvent', 'oroshi_CodeSymbol')
 call s:Link('vimNormCmds', 'oroshi_CodeSymbol')
 call s:Link('vimMapLhs', 'oroshi_CodeSymbol')
 " Option values
-call s:Link('vimNumber', 'oroshi_CodeNumber')
 call s:Link('vimSet', 'oroshi_CodeString')
 call s:Link('vimSetEqual', 'oroshi_CodeString')
 call s:Link('vimMapRhs', 'oroshi_CodeString')
@@ -376,6 +406,7 @@ call s:Link('vimUserAttrb', 'oroshi_Text')
 call s:Link('vimMapMod', 'oroshi_TextSpecial')
 call s:Link('vimMapModKey', 'oroshi_TextSpecial')
 call s:Link('vimAutoCmdSfxList', 'oroshi_TextSpecial')
+call s:Link('vimCtrlCharMod', 'oroshi_TextSpecial')
 " Regexps
 call s:Link('vimSubstFlags', 'oroshi_CodeRegexpFlags')
 call s:Link('vimAddress', 'oroshi_CodeRegexpFlags')
@@ -392,6 +423,11 @@ call s:Link('helpHyperTextEntry', 'oroshi_TextLink')
 call s:Link('helpExample', 'oroshi_CodeString')
 call s:Link('helpOption', 'oroshi_CodeSymbol')
 " }}}
+" YAML {{{
+call s:Link('yamlBlockMappingKey', 'oroshi_CodeType')
+call s:Link('yamlKeyValueDelimiter', 'oroshi_Text')
+call s:Link('yamlPlainScalar', 'oroshi_CodeString')
+" }}}
 " XML {{{
 call s:Link('xmlAttribPunct', 'oroshi_CodeStatement')
 call s:Link('xmlNamespace', 'oroshi_CodeStatement')
@@ -400,21 +436,15 @@ call s:Link('xmlTagName', 'oroshi_CodeStatement')
 call s:Link('xmlEndTag', 'oroshi_CodeStatement')
 " }}}
 
-
-" " Zsh {{{
-" " Variables
-" call s:Link('zshDeref', 'Identifier')
-" call s:Link('zshShortDeref', 'Identifier')
-" call s:Link('zshSubst', 'Identifier')
-" " Quotes surrounding strings
-" call s:Link('shQuote', 'String')
-" call s:Link('shDoubleQuote', 'String')
-" " }}}
-" "
-" " Ctrl-F {{{
-" " Found file
-" call s:Highlight('qfFilename', 'green')
-" " }}}
+" CtrlP {{{
+call s:Link('CtrlPMatch', 'oroshi_ModeCtrlPMatch')
+call s:Link('CtrlPLinePre', 'oroshi_UISecondary')
+call s:Link('CtrlPPrtCursor', 'oroshi_UIModeCtrlP')
+" }}}
+" Ctrl-F {{{
+call s:Link('qfFilename', 'oroshi_ModeCtrlFMatch')
+call s:Link('qfSeparator', 'oroshi_UIEmpty')
+" }}}
 " RainbowParentheses {{{
 let g:rbpt_colorpairs = [
     \ [get(s:palette, "darkred"),250],

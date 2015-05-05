@@ -2,22 +2,17 @@
 " QuickfixClose() {{{
 if !exists('*QuickfixClose')
 	function! QuickfixClose()
+    " Not really a quickfix window, we do nothin
 		if &ft != "qf"
 			return ""
 		endif
+    " Last opened window, we'll need to force quit
+    if winbufnr(2) == -1
+       quit!
+    endif
+    " Simply close it
 		cclose
 		lclose
-	endfunction
-endif
-" }}}
-" QuickfixType() {{{
-if !exists('*QuickfixType')
-	function! QuickfixType()
-
-		" Note: Only way to tell between a quickfix and loclist is to try opening
-		" a loclist and see if window number changes
-		copen
-		let winnr_after=winnr()
 	endfunction
 endif
 " }}}

@@ -127,14 +127,15 @@ function epub2mobi() {
 }
 # }}}
 # Directories {{{
-alias cd-='cd -'
-alias cdo='cd ~/.oroshi/'
-alias cdl='cd ~/local/'
 alias cde='cd ~/local/etc/'
-alias cdw='cd /var/www/'
-alias cdt='cd ~/local/tmp/'
-alias cdsov='cd ~/local/tmp/sov/'
+alias cdl='cd ~/local/'
+alias cdo='cd ~/.oroshi/'
 alias cdrop="cd ~/Dropbox/tim/"
+alias cdsov='cd ~/local/tmp/sov/'
+alias cds='cd ~/local/src/'
+alias cdt='cd ~/local/tmp/'
+alias cdw='cd ~/local/www/'
+alias cd-='cd -'
 # }}}
 # Dingoo {{{
 alias udingoo='umount /media/dingoo'

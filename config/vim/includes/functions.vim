@@ -14,13 +14,6 @@ function! GetRepoRoot() " {{{
     return b:repoRoot
   endif
 
-  " Check if Mercurial
-  let hgRoot = system('cd '.workingDir.' && hg root')
-  if hgRoot !~ '^abort'
-    let b:repoRoot = StrTrim(hgRoot)
-    return b:repoRoot
-  endif
-
   let b:repoRoot = workingDir
   return b:repoRoot
 endfunction

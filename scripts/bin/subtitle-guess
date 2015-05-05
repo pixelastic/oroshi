@@ -25,7 +25,3 @@ dirname = File.dirname(path)
 pattern = /#{dirname}\/(.*)#{season}(.*)#{episode}(.*)#{team}(.*)srt$/i
 files = Dir.glob("#{dirname}/*").grep(pattern)
 puts files[0]
-
-
-
-

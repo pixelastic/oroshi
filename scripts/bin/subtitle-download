@@ -1,4 +1,3 @@
 #!/usr/bin/env ruby
 require_relative '../etc/subtitle-download/subtitle-download'
 SubtitleDownload.new(*ARGV).run()
-

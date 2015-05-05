@@ -52,16 +52,6 @@ function! HtmlBeautify()
   execute 'normal '.linenr.'gg'
 endfunction
 " }}}
-" Remove scripts from file {{{
-function! b:RemoveScripts()
-  let @z = 'gg/<scriptdat@z'
-  silent normal @z
-  " TODO: Find a cleaner way to not show the error message at the end of the
-  " recursive macro.
-  redraw!
-endfunction
-nnoremap <buffer> O1;5S :call b:RemoveScripts()<CR>
-" }}}
 " Run file {{{
 nnoremap <silent> <buffer> <F5> :call OpenUrlInBrowser(expand('%:p'))<CR>
 " }}}

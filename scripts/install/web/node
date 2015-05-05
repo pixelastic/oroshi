@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 # Nodejs
 
-cd ~/local/etc
+cd ~/local/src
 wget http://nodejs.org/dist/v0.12.2/node-v0.12.2.tar.gz -O nodejs.tar.gz
-tar xvzf node.tar.gz
-cd nodejs
-./configure
+tar xvzf nodejs.tar.gz
+cd node-v0.12.2
+./configure --prefix=/home/$USER/local/
 make
 make install
+
+rm ~/local/src/nodejs.tar.gz
