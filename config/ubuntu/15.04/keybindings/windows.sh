@@ -30,6 +30,7 @@ dconf write /org/gnome/desktop/wm/keybindings/close "'<Alt>F4'"
 # Circle through windows
 dconf write /org/compiz/profiles/unity/plugins/staticswitcher/next-all-key "'<Alt>Tab'"
 dconf write /org/compiz/profiles/unity/plugins/staticswitcher/prev-all-key "'<Shift><Alt>Tab'"
+dconf write /org/compiz/profiles/unity/plugins/staticswitcher/opacity "10"
 
 # Going back to desktop
 dconf write /org/compiz/profiles/unity/plugins/unityshell/show-desktop-key "'<Super>D'"

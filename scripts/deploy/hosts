@@ -4,15 +4,14 @@
 # - Adding default list of hosts
 # - Adding any files present in ./private/config/hosts/local/{hostname}
 #
-# The resulting file will be created in /usr/local/etc/hosts. 
-# This is your job to link this file to /etc/hosts.
+# The resulting file will be set to /etc/hosts
 
 # Paths
 local hostname=$(hostname)
 local defaultFile=~/.oroshi/config/hosts/default
 local zeroFile=~/.oroshi/config/hosts/zero
 local privateFiles="~/.oroshi/private/config/hosts/local/${hostname}/*"
-local destFile=/etc/hosts
+local destFile=~/local/etc/hosts
 
 # Add localhost binding
 echo "127.0.0.1\t$hostname" | sudo tee $destFile > /dev/null
