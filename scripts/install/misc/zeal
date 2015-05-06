@@ -1,23 +1,4 @@
 #!/usr/bin/env bash
-echo "Installing zeal"
-
-# If Ubuntu > 13.10, should install from PPA
-# http://zealdocs.org/download.html
-
-cd ~/local/etc
-git clone git@github.com:zealdocs/zeal.git
-cd ./zeal
-
-echo "Need to install qmake (qt5) if not present".
-
-# Needed dependencies for building
-sudo apt-get install libarchive-dev
-
-# Actually building
-qmake
-make
-
-# Let's add it to the path
-ln -s ~/local/etc/zeal/bin/zeal ~/local/bin/zeal
-
-
+sudo add-apt-repository ppa:zeal-developers/ppa
+sudo apt-get update
+sudo apt-get install zeal

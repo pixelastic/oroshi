@@ -1,11 +1,3 @@
-# Note: We follow the convention of putting manually installed binaries in
-# /usr/local/bin. OS installed binaries goes to /usr/bin.
-#
-# Small scripts that are more of a wrapper for convenient calls will go to
-# ~/.oroshi/scripts/bin and ~/.oroshi/scripts/bin/local/{hostname}.
-#
-# Those last two directories will be added to the path in interactive mode.
-#
 # Note: If we want to override default commands, we should write an alias that
 # point to a custom script for overwriting the command. As alias are not passed
 # on to scripts, we avoid overwriting basic commands that some externals tools
@@ -23,6 +15,7 @@ path=(
 	~/.oroshi/private/scripts/bin/local/$(hostname)
 	$path
 	~/local/bin
+  ~/.local/bin
 )
 export CHROME_BIN=`which chromium-browser`
 # }}}
@@ -79,7 +72,7 @@ alias td='transmission-download'
 # Youtube downloader
 alias yt='youtube-dl -t --prefer-free-format --max-filesize 700m'
 # Flash video download
-alias gfv="get_flash_videos"
+alias gfv="get_flash_videos -y"
 # watch tree
 alias wt='watch -c ''tree -aNC -I ".hg\|.git"'''
 # Prefix a date to a file
@@ -109,7 +102,7 @@ alias xmind='gui XMind'
 # }}}
 
 # Apt-get {{{
-alias agi='sudo apt-get install'
+alias agi='apt-get-install'
 alias agu='sudo apt-get -u install'
 alias agua='sudo apt-get update && sudo apt-get upgrade'
 alias agR='sudo apt-get remove'

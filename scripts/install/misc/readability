@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Python script to extract valuable text from a webpage
-cd ~/local/etc/
+cd ~/local/src
 git clone https://github.com/gfxmonk/python-readability.git
 cd ~/local/bin/
-ln -s ../etc/python-readability/readability/readability.py readability
+ln -s ../src/python-readability/readability/readability.py readability
 

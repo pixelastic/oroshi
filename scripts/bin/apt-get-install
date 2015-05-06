@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+require_relative '../etc/apt-get-helper/apt-get-helper'
+# Install specific package
+
+class AptGetInstall
+  include AptGetHelper
+
+  def initialize(*args)
+    @packages = args
+  end
+
+  def run
+    checklist = {}
+    @packages.each do |package|
+      if installed? package
+        checklist[package] = false
+        next
+      end
+
+      install package
+      checklist[package] = true
+    end
+
+    checklist.each do |package, is_installed|
+      version = colorize(get_version(package), :version)
+      package = colorize(package, :package)
+      if is_installed
+        marker = colorize("✔", :success)
+        puts "#{marker} #{package} #{version} installed."
+      else
+        marker = colorize("✘", :error)
+        puts "#{marker} #{package} #{version} was already installed."
+      end
+    end
+  end
+
+end
+
+AptGetInstall.new(*ARGV).run()
+
+

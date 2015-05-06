@@ -3,6 +3,7 @@
 # http://stackoverflow.com/questions/9477115/what-are-the-differences-and-similarities-between-ffmpeg-libav-and-avconv/9477756#9477756
 
 echo "Installing ffmpeg from source"
+# Needs to be done from etc, not src
 cd ~/local/etc
 git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg
 
@@ -27,11 +28,14 @@ sudo apt-get install libgsm1-dev \
                     libvorbis-dev \
                     libx11-dev \
                     libxfixes-dev \
-                    libxvidcore-dev
+                    libxvidcore-dev \
+                    libvpx-dev \
+                    libx264-dev \
+                    yasm
 
 cd ./ffmpeg
 ./configure \
-  --prefix=~/local/ \
+  --prefix=/home/$USER/local/ \
   --enable-gpl \
   --enable-version3 \
   --enable-nonfree \

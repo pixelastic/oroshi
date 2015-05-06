@@ -1,7 +1,3 @@
 #!/usr/bin/env bash
 
-# Do not install through apt-get as the version available in the ubuntu
-# repositories has a bug with the markdown formattre not being correctly
-# loaded.
-
-sudo -v && wget -nv -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | sudo python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()"
+sudo apt-get install calibre-bin

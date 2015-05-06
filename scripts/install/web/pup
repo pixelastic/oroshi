@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+cd ~/local/src
+wget \
+  https://github.com/ericchiang/pup/releases/download/v0.3.9/pup_linux_amd64.zip \
+  -O pup.zip
+unzip pup.zip
+mv ./pup ~/local/bin
+rm pup.zip

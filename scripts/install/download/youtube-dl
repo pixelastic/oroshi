@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-
 echo "Downloading binary"
-wget http://youtube-dl.org/downloads/2013.02.25/youtube-dl \
+wget https://yt-dl.org/downloads/2015.05.04/youtube-dl \
 	-O ~/local/bin/youtube-dl
 
 echo "Make it executable"

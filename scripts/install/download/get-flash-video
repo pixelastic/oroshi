@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sudo apt-get install libwww-mechanize-perl libxml-simple-perl
-wget http://get-flash-videos.googlecode.com/files/get-flash-videos_1.24-1_all.deb
-sudo dpkg -i get-flash-videos_1.24-1_all.deb
-rm get-flash-videos_1.24-1_all.deb
+cd ~/local/src
+wget https://get-flash-videos.googlecode.com/files/get-flash-videos_1.24-1_all.deb -O gfv.deb
+sudo dpkg -i gfv.deb
+rm gfv.deb

@@ -2,12 +2,7 @@
 # Easy download/upload of files from Rapidshare and co
 
 cd ~/local/src
-git clone https://code.google.com/p/plowshare/
+git clone git@github.com:mcrapet/plowshare.git
 
 cd ./plowshare
-mkdir ~/local/etc/plowshare
-make install PREFIX=~/local/etc/plowshare
-
-cd ~/local/bin
-ln -s ../etc/plowshare/bin/plowdown 
-
+make install PREFIX=/home/$USER/local/

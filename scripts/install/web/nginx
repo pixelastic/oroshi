@@ -2,4 +2,4 @@
 # Installing nginx, fast webserver
 
 sudo apt-get install nginx
-sudo apt-get install php5-fpm
+# sudo apt-get install php5-fpm

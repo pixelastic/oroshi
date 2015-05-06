@@ -39,5 +39,3 @@ typeset -U path
 
 # Move back to original dir
 cd $currentDir
-
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
