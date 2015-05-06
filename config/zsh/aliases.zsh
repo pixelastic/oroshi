@@ -103,10 +103,11 @@ alias xmind='gui XMind'
 
 # Apt-get {{{
 alias agi='apt-get-install'
-alias agu='sudo apt-get -u install'
-alias agua='sudo apt-get update && sudo apt-get upgrade'
+alias ag?='apt-get-exists'
+alias ags='apt-get-search'
+alias agv='apt-get-version'
 alias agR='sudo apt-get remove'
-alias ags='sudo apt-cache search'
+alias agu='sudo apt-get -u install'
 # }}}
 # Ebook {{{
 alias ec='ebook-convert'

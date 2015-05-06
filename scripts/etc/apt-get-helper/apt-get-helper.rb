@@ -7,8 +7,11 @@ module AptGetHelper
     :success => 35
   }
 
-  def color(type)
-    return @@colors[type]
+  # Loading all information on startup
+  @@installed_packages = {}
+  %x[dpkg -l | awk '{print $2,$3}'].split("\n").each do |package|
+    name, version = package.split(" ")
+    @@installed_packages[name] = version
   end
 
   def colorize(text, color)
@@ -16,8 +19,14 @@ module AptGetHelper
     return "[38;5;#{color}m#{text}[00m"
   end
 
-  def installed?(package)
-    system("dpkg -s #{package} 2>/dev/null 1>/dev/null")
+  def longest_by_type(list, type)
+    ordered = list.map {|obj| obj[type] }.group_by(&:size)
+    return nil if ordered.size == 0
+    return ordered.max.last[0]
+  end
+
+  def is_installed?(package)
+    @@installed_packages.has_key?(package)
   end
 
   def install(package)
@@ -25,8 +34,8 @@ module AptGetHelper
   end
 
   def get_version(package)
-    return nil if !installed? package
-    %x[dpkg -s #{package} | grep 'Version:'].chomp.gsub('Version: ', '')
+    return nil if !is_installed? package
+    @@installed_packages[package]
   end
 
   # def install

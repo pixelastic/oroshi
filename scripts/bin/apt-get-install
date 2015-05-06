@@ -12,7 +12,7 @@ class AptGetInstall
   def run
     checklist = {}
     @packages.each do |package|
-      if installed? package
+      if is_installed? package
         checklist[package] = false
         next
       end
@@ -21,15 +21,12 @@ class AptGetInstall
       checklist[package] = true
     end
 
-    checklist.each do |package, is_installed|
-      version = colorize(get_version(package), :version)
-      package = colorize(package, :package)
-      if is_installed
-        marker = colorize("✔", :success)
-        puts "#{marker} #{package} #{version} installed."
+    checklist.each do |package, is_just_installed|
+      if is_just_installed
+        puts "✔ #{package} installed"
       else
-        marker = colorize("✘", :error)
-        puts "#{marker} #{package} #{version} was already installed."
+        version = get_version(package)
+        puts "✘ #{package} is already installed (v#{version})"
       end
     end
   end
@@ -37,5 +34,3 @@ class AptGetInstall
 end
 
 AptGetInstall.new(*ARGV).run()
-
-
