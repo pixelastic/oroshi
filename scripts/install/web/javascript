@@ -3,8 +3,11 @@
 echo "Installing jshint"
 npm install -g jshint
 
-echo "Installing jsmin"
+echo "Installing jsmin/uglifyjs"
 npm install -g uglify-js
+
+echo "Installing jsbeautify"
+npm install -g js-beautify
 
 
 

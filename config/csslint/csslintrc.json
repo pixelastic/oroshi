@@ -2,7 +2,6 @@
   "warnings": [
     "bulletproof-font-face",
     "star-property-hack",
-    "text-indent",
     "underscore-property-hack",
     "universal-selector",
     "outline-none",
@@ -10,6 +9,8 @@
   ],
   "errors": [
     "display-property-grouping",
+    "overqualified-elements",
+    "text-indent",
     "duplicate-background-images",
     "duplicate-properties",
     "errors",
@@ -30,12 +31,12 @@
     "adjoining-classes",
     "box-model",
     "box-sizing",
+    
     "shorthand",
     "gradients",
     "ids",
     "vendor-prefix",
     "unqualified-attributes",
-    "overqualified-elements",
     "qualified-headings",
     "unique-headings",
     "compatible-vendor-prefixes"

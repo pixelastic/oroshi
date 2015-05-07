@@ -173,8 +173,10 @@ call s:Link('TabLineFill', 'oroshi_UI')
 call s:Link('TabLineSel', 'oroshi_UIActive')
 " }}}
 " Syntastic gutter {{{
-call s:Link('SyntasticWarningSign', 'oroshi_Warning')
 call s:Link('SyntasticErrorSign', 'oroshi_Error')
+call s:Link('SyntasticStyleErrorSign', 'oroshi_Error')
+call s:Link('SyntasticWarningSign', 'oroshi_Warning')
+call s:Link('SyntasticStyleWarningSign', 'oroshi_Warning')
 " }}}
 " GitGutter {{{
 call s:Link('GitGutterAdd', 'oroshi_Success')

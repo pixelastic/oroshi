@@ -15,6 +15,9 @@ function! JavascriptBeautify()
 	execute 'normal '.linenr.'gg'
 endfunction
 " }}}
+" Folding {{{
+setlocal foldmethod=syntax
+" }}}
 " csslintrc.json {{{
 " Note: csslint does not allow us to pass a config file when running it form the
 " command line, it only accept arguments.

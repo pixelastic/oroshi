@@ -6,9 +6,6 @@ gem install sass
 echo "Installing CSSLint"
 npm install -g csslint
 
-echo "Installing Recess"
-npm install -g recess
-
 echo "Installing ScssLint"
 gem install scss_lint
 

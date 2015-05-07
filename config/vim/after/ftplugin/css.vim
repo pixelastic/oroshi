@@ -31,15 +31,10 @@ nunmap  <buffer> ir
 noremap <buffer> ar :<C-U>execute "normal! ?{\rV/}\r"<CR>
 nunmap  <buffer> ar
 " }}}
-" Csslint checker {{{
-let g:syntastic_scss_checkers = ['sassc', 'scss_lint']
-let g:syntastic_css_checkers = ['csslint', 'recess']
-let g:syntastic_aggregate_errors = 1
-if !exists('g:syntastic_css_csslint_options') || g:syntastic_css_csslint_options==''
-	let g:syntastic_css_csslint_options = system('cat '.expand('~/.csslintrc'))
-endif
-if !exists('g:syntastic_css_recess_args') || g:syntastic_css_recess_args==''
-	let g:syntastic_css_recess_args = '--strictPropertyOrder false --noOverqualifying false'
+" Syntastic {{{
+let g:syntastic_css_checkers = ['csslint']
+if !exists('g:syntastic_css_csslint_args') || g:syntastic_css_csslint_args==''
+	let g:syntastic_css_csslint_args = system('cat '.expand('~/.csslintrc'))
 endif
 "}}}
 " Cleaning the file {{{

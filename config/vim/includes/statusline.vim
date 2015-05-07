@@ -58,23 +58,12 @@ function! OroshiStatusLine()
   let sl .= '%{exists("b:git_status") && b:git_status == "clean" ? "± " : ""}'
   let sl .= '%*'
   " }}}
-  " Syntastic status {{{
-  let sl .= '%#oroshi_UIError#'
-  let sl .= '%e%{SyntasticStatuslineFlag()}'
-  let sl .= '%*'
-  " }}}
   " Right / Left separator {{{
   let sl .= '%='
   " }}}
   " Debug var {{{
   let sl .= '%{exists("b:o_debug") ? "B[".b:o_debug."] " : ""}'
   let sl .= '%{exists("g:o_debug") ? "G[".g:o_debug."] " : ""}'
-  " }}}
-  " Foldmarker {{{
-  let sl .= '%{&foldmethod == "manual" ? "M " : ""}'
-  let sl .= '%{&foldmethod == "marker" ? "{ " : ""}'
-  let sl .= '%{&foldmethod == "syntax" ? "S " : ""}'
-  let sl .= '%{&foldmethod == "indent" ? "▸ " : ""}'
   " }}}
   " Line endings {{{
   let sl .= '%#oroshi_UIError#'
@@ -86,9 +75,18 @@ function! OroshiStatusLine()
   let sl .= '%{&fileencoding != "utf-8" ? &fileencoding." " : ""}'
   let sl .= '%*'
   " }}}
+  " Syntastic status {{{
+  let g:syntastic_stl_format='%E{ :%e }%W{ :%w }'
+  let sl .= '%e%{SyntasticStatuslineFlag()}'
+  " }}}
   " Spellchecking {{{
   let sl .= '%{&spell == 1 ? "  ".&spelllang." " : ""}'
-  "
+  " }}}
+  " Foldmarker {{{
+  let sl .= '%{&foldmethod == "manual" ? "M " : ""}'
+  let sl .= '%{&foldmethod == "marker" ? "{ " : ""}'
+  let sl .= '%{&foldmethod == "syntax" ? "S " : ""}'
+  let sl .= '%{&foldmethod == "indent" ? "▸ " : ""}'
   " }}}
   " Filetype {{{
   let sl .= '⭢⭣ %{&filetype != "" ? &filetype : "???"} '
