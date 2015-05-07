@@ -124,7 +124,9 @@ function epub2mobi() {
 alias cde='cd ~/local/etc/'
 alias cdl='cd ~/local/'
 alias cdo='cd ~/.oroshi/'
-alias cdrop="cd ~/Dropbox/tim/"
+alias cdd="cd ~/Dropbox/tim/"
+alias cdp="cd ~/Dropbox/tim/paperwork/"
+alias cdi="cd ~/Dropbox/tim/ids/"
 alias cdsov='cd ~/local/tmp/sov/'
 alias cds='cd ~/local/src/'
 alias cdt='cd ~/local/tmp/'

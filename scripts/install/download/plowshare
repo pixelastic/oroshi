@@ -5,4 +5,9 @@ cd ~/local/src
 git clone git@github.com:mcrapet/plowshare.git
 
 cd ./plowshare
-make install PREFIX=/home/$USER/local/
+make install PREFIX=/home/$USER/local
+
+rehash
+plowmod --install
+
+

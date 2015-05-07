@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
 # Default plowshare config
 
-# Paths
-destDir=~/.config/plowshare
-destFile=$destDir/plowshare.conf
-configFile=~/.oroshi/private/config/plowshare/plowshare.conf
+src=~/.oroshi/private/config/plowshare/plowshare.conf
+dest=~/.config/plowshare/plowshare.conf
 
-# Link the config file
-mkdir -p $destDir
-ln -fs $configFile $destFile
+mkdir -p "$(dirname $dest)"
+cp -f $src $dest
+chmod 600 $dest
