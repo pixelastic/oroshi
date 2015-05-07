@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+echo "Installing HTMLMin"
+npm install -g html-minifier
+
+echo "Installing pup"
+cd ~/local/src
+wget \
+  https://github.com/ericchiang/pup/releases/download/v0.3.9/pup_linux_amd64.zip \
+  -O pup.zip
+unzip pup.zip
+mv ./pup ~/local/bin
+rm pup.zip
+
+echo "Installing HTML Tidy"
+cd ~/local/src/
+git clone git@github.com:htacg/tidy-html5.git
+cd ./tidy-html5/build/cmake
+cmake ../.. -DCMAKE_INSTALL_PREFIX=/home/tim/local/
+make
+make install
+

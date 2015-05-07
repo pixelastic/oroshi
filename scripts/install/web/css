@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+echo "Installing Sass"
+gem install sass
+
+echo "Installing CSSLint"
+npm install -g csslint
+
+echo "Installing Recess"
+npm install -g recess
+
+echo "Installing ScssLint"
+gem install scss_lint
+
+echo "Installing CSSMin"
+npm install -g clean-css

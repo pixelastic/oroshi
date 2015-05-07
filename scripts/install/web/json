@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
-# jq, a json parser
 
-echo "Downloading binary"
+# jq, a json parser
+echo "Installing jq"
 cd ~/local/bin
 wget http://stedolan.github.io/jq/download/linux64/jq
 chmod +x ./jq
+
+echo "Installing jsonlint"
+npm install jsonlint -g
+

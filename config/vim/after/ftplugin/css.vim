@@ -32,6 +32,7 @@ noremap <buffer> ar :<C-U>execute "normal! ?{\rV/}\r"<CR>
 nunmap  <buffer> ar
 " }}}
 " Csslint checker {{{
+let g:syntastic_scss_checkers = ['sassc', 'scss_lint']
 let g:syntastic_css_checkers = ['csslint', 'recess']
 let g:syntastic_aggregate_errors = 1
 if !exists('g:syntastic_css_csslint_options') || g:syntastic_css_csslint_options==''
