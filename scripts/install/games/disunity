@@ -1,4 +1,11 @@
 #!/usr/bin/env zsh
 
-cd ~/local/etc
-git clone git@github.com:ata4/disunity.git
+sudo apt-get install default-jre
+
+cd ~/local/src
+wget https://github.com/ata4/disunity/releases/download/v0.3.4/disunity_v0.3.4.zip -O disunity.zip
+unzip disunity.zip -d disunity
+rm disunity.zip
+
+cd ~/local/bin
+ln -s ../src/disunity/disunity.sh ./disunity

@@ -4,7 +4,6 @@ promptColor=(
 )
 
 # Directories {{{
-alias cdpaper="cd ~/Dropbox/tim/perso/paperwork/"
 alias cdbooks='cd ~/perso/books'
 alias cdemu='cd ~/perso/emulation'
 alias cdrp='cd ~/perso/roleplay/'
@@ -27,7 +26,7 @@ function play-buddha() {
 # Oroshi {{{
 # Reload keybings for this OS
 function ok() {
-  for file in ~/.oroshi/config/ubuntu/14.04/keybindings/*.sh; do
+  for file in ~/.oroshi/config/ubuntu/15.04/keybindings/*.sh; do
     source $file
   done
 }
@@ -40,6 +39,3 @@ function dumptmp() {
     galactica:./local/www/pixelastic.com/tmp.pixelastic.com
     echo "Available on http://tmp.pixelastic.com/${1:t}"
 }
-
-# Blizzard
-alias disunity="java -jar "~/local/src/disunity/disunity.jar" "$@""
