@@ -106,8 +106,8 @@ alias agi='apt-get-install'
 alias ag?='apt-get-exists'
 alias ags='apt-get-search'
 alias agv='apt-get-version'
-alias agR='sudo apt-get remove'
-alias agu='sudo apt-get -u install'
+alias agR='sudo apt-get remove -y'
+alias agu='sudo apt-get install -y --only-upgrade'
 # }}}
 # Ebook {{{
 alias ec='ebook-convert'

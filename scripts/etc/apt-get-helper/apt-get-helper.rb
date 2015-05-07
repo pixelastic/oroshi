@@ -9,8 +9,10 @@ module AptGetHelper
 
   # Loading all information on startup
   @@installed_packages = {}
-  %x[dpkg -l | awk '{print $2,$3}'].split("\n").each do |package|
-    name, version = package.split(" ")
+  %x[dpkg -l | awk '{print $1,$2,$3}'].split("\n").each do |package|
+    type, name, version = package.split(" ")
+    # Keep only packages marked as installed
+    next unless type == "ii"
     @@installed_packages[name] = version
   end
 
@@ -30,17 +32,13 @@ module AptGetHelper
   end
 
   def install(package)
-    exec "sudo apt-get install #{package}"
+    exec "sudo apt-get install -y #{package}"
   end
 
   def get_version(package)
     return nil if !is_installed? package
     @@installed_packages[package]
   end
-
-  # def install
-  #   %x[sudo aptgit root].strip
-  # end
 
 end
 
