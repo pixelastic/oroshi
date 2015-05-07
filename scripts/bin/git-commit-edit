@@ -2,4 +2,4 @@
 # Edit last commit
 
 git add .
-git commit --amend -V
+git commit --amend
