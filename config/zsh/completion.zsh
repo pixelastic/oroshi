@@ -17,8 +17,9 @@ zle -N self-insert url-quote-magic
 # Loading default git completion methods, to make them accessible in custom
 # completion scripts.
 _git
-# Git flow completion
-source ~/.oroshi/config/zsh/completion/git-flow-completion/git-flow-completion.zsh
+
+# Load npm completion
+source ./completion/npm
 
 # Debug method to reload the completion functions
 r() {

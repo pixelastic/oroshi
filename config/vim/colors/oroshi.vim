@@ -274,9 +274,10 @@ call s:Link('SpecialComment', 'oroshi_Warning')
 " Diff {{{
 call s:Link('diffAdded', 'oroshi_DiffAdded')
 call s:Link('diffRemoved', 'oroshi_DiffRemoved')
-call s:Link('DiffFile', 'oroshi_DiffChanged')
-call s:Link('DiffNewFile', 'oroshi_DiffChanged')
+call s:Link('DiffFile', 'oroshi_CodeComment')
+call s:Link('DiffNewFile', 'oroshi_CodeComment')
 call s:Link('DiffLine', 'oroshi_DiffLine')
+call s:Link('diffSubname', 'oroshi_Normal')
 " }}}
 
 " CSS {{{
