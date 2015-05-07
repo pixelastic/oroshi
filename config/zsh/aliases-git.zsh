@@ -96,6 +96,8 @@ alias vstl='git stash list'
 alias vsmc='git submodule-create'
 alias vsmi='git submodule init'
 alias vsmu='git submodule update'
+alias vsmR='git-submodule-remove'
+alias vsm?='git-is-submodule'
 # }}}
 # working [d]irectory {{{
 alias vdc='git-directory-create'

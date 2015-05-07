@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+require 'fileutils'
+require_relative '../etc/git-helper/git-helper'
+# Will remove a submodule from a repo
+
+class SubmoduleRemove
+  include GitHelper
+  def initialize(*args)
+    @original_path = args[0]
+    @submodule_name = File.basename(@original_path)
+    @full_path = File.expand_path(@original_path)
+    @relative_path = @full_path.gsub(repo_root + '/', '')
+
+    if !File.exists?(@full_path)
+      puts "✘ #{@relative_path} path does not exist"
+      exit 1
+    end
+
+    if !is_submodule?(@full_path)
+      puts "✘ #{@relative_path} is not a submodule"
+      exit 1
+    end
+  end
+
+
+  def run
+    Dir.chdir(File.expand_path(repo_root)) do
+      %x[git rm #{@full_path}]
+      %x[git config -f .git/config --remove-section submodule.#{@relative_path}]
+      %x[rm -rf .git/modules/#{@relative_path}]
+    end
+    puts "✔ Submodule #{@submodule_name} removed"
+  end
+
+end
+SubmoduleRemove.new(*ARGV).run()

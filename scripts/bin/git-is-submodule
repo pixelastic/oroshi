@@ -1,6 +1,10 @@
 #!/usr/bin/env zsh
 # Check if current directory is a submodule
 
+if [[ $1 != '' ]]; then
+  cd $1
+fi
+
 # This is not a directory, so this can't be a submodule
 if ! git-is-repository; then
   exit 1

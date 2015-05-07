@@ -1,3 +1,4 @@
+require 'shellwords'
 module GitHelper
   @@colors = {
     :branch => 202,
@@ -87,6 +88,10 @@ module GitHelper
     ordered = list.map {|obj| obj[type] }.group_by(&:size)
     return nil if ordered.size == 0
     return ordered.max.last[0]
+  end
+
+  def is_submodule?(path)
+    system("git-is-submodule #{path.shellescape}")
   end
 
   def repo_root
