@@ -278,6 +278,7 @@ call s:Link('DiffFile', 'oroshi_CodeComment')
 call s:Link('DiffNewFile', 'oroshi_CodeComment')
 call s:Link('DiffLine', 'oroshi_DiffLine')
 call s:Link('diffSubname', 'oroshi_Normal')
+call s:Link('diffBDiffer', 'oroshi_CodeInclude')
 " }}}
 
 " CSS {{{
