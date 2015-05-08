@@ -8,22 +8,22 @@ fi
 
 for file in $@; do 
 	case $file in
-		*.tar.bz2) tar xvjf $file;;
-		*.tar.gz) tar xvzf $file;;
-		*.tar.xz) tar xvJf $file;;
-		*.tar.lzma) tar --lzma -xvf $file;;
+		*.Z) uncompress $file;;
 		*.bz2) bzip2 -d $file;;
+		*.cbr) unrar x $file;;
+		*.cbz) unzip $file;;
+		*.gz) gunzip $file;;
+		*.htmlz) unzip $file;;
 		*.rar) unrar x $file;;
 		*.r([0-9][0-9])) unrar x $file;;
-		*.cbr) unrar x $file;;
-		*.gz) gunzip $file;;
 		*.tar) tar xvf $file;;
+		*.tar.bz2) tar xvjf $file;;
+		*.tar.gz) tar xvzf $file;;
+		*.tar.lzma) tar --lzma -xvf $file;;
+		*.tar.xz) tar xvJf $file;;
 		*.tbz2) tar xvjf $file;;
 		*.tgz) tar xvzf $file;;
-		*.(zip|ZIP)) unzip $file;;
-		*.cbz) unzip $file;;
-		*.htmlz) unzip $file;;
-		*.Z) uncompress $file;;
+		*.(zip|ZIP)) unzip -o $file;;
     *.7z) 7z x $file;;
     *.7z.[0-9][0-9][0-9]) 7z x $file;;
 		*) echo "'$file' cannot be extracted via >extract<";;

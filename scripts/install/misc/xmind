@@ -1,3 +1,6 @@
 #!/usr/bin/env bash
 
-echo "Manually download it from http://www.xmind.net/download/linux/"
+cd /tmp
+wget http://www.xmind.net/xmind/downloads/xmind-linux-3.5.2.201504270119_amd64.deb -O xmind.deb
+sudo dpkg -i xmind.deb
+sudo apt-get -f install
