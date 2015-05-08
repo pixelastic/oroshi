@@ -174,7 +174,7 @@ let &showbreak='↪ '
 " Force a 79 column policy with an auto-break on words in comments to assure
 " maximum readability. Visually add a column to see where the cut will be.
 set linebreak
-set colorcolumn=80
+set colorcolumn=81
 set textwidth=80
 " Create two format modes, for code and for text
 " c : Comments are wrapped based on textwidth
