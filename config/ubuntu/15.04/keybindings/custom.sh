@@ -21,3 +21,5 @@ dconf write /org/compiz/integrated/run-command-4 "['<Control><Super>K']"
 # Super-Z is Zeal
 dconf write /org/compiz/integrated/command-5 "'zeal'"
 dconf write /org/compiz/integrated/run-command-5 "['<Super>Z']"
+
+
