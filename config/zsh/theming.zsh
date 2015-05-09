@@ -26,6 +26,7 @@ promptColorDefault=(
   pathWritable      "035" # Prompt color of path if I can write to it
   pathNotWritable   "160" # Prompt color of path if I can't write to it
   lastCommandFailed "203" # Prompt color if last command failed
+  hasTrash          "241" # Prompt color if trashed file in current dir
 
   tag                "241" # Color of the current tag
   submodule          "136" # Color of the submodule symbol

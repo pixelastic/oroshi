@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Check if files were deleted in specified directory
+if trash-list &>/dev/null; then
+  return 0
+fi
+return 1

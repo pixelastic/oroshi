@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+require_relative '../etc/trash-helper/trash-helper'
+
+class TrashList
+  include TrashHelper
+
+  def colorize(text)
+    color = "%03d" % 241
+    return "[38;5;#{color}m#{text}[00m"
+  end
+
+  def initialize(*args)
+    @pwd = File.expand_path(args[0] || Dir.pwd)
+    @list_bin = "/usr/bin/trash-list"
+  end
+
+  def raw_list
+    %x[#{@list_bin} 2>/dev/null].split("\n")
+  end
+
+  def cleaned_list
+    list = []
+    raw_list.each do |line|
+      _, _, path = line.split(" ", 3)
+
+      # We only keep files from the pwd
+      next unless path.match(/^#{@pwd}\/[^\/]*$/)
+
+      list << path.gsub(/^#{@pwd}\//, '')
+    end
+    list
+  end
+
+  def run
+    list = cleaned_list
+    exit 1 if list.size == 0
+    list.each do |line|
+      puts colorize("./#{line}")
+    end
+    exit 0
+  end
+end
+TrashList.new(*ARGV).run()

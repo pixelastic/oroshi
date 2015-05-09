@@ -5,7 +5,7 @@ setopt PROMPT_SUBST
 autoload -U promptinit
 promptinit
 
-PROMPT='${promptUsername}$(getPromptExitCode)${promptHostname}:$(getPromptPath) $(getPromptHash) '
+PROMPT='${promptUsername}$(getPromptExitCode)${promptHostname}:$(getPromptPath)$(getPromptTrash)$(getPromptHash) '
 RPROMPT='$(getPromptRepoIndicator)'
 
 # Colorize {{{
@@ -57,6 +57,16 @@ function getPromptPath() {
   fi
 
   echo $(colorize $promptPath $pathColor)
+}
+# }}}
+
+# Trash {{{
+function getPromptTrash() {
+  if ! trash-exists; then
+    echo " "
+  else
+    echo $(colorize '_' 'hasTrash')
+  fi
 }
 # }}}
 

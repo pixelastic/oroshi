@@ -168,6 +168,12 @@ alias os="~/.oroshi/scripts/deploy/ssh"
 alias ox="~/.oroshi/scripts/deploy/xmodmap"
 alias oz="source ~/.zshrc"
 # }}}
+# Trash {{{
+alias tr?='trash-exists'
+alias trl='trash-list'
+alias trr='trash-restore'
+# }}}
+# 
 # Versioning {{{
 source './aliases-git.zsh'
 # }}}
