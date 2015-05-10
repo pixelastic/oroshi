@@ -64,15 +64,7 @@ alias la="ls -a"
 # Tree that only display directories
 alias treed='tree -dN'
 # Find a file
-function f() { find . -iname "*$1*" }
-# plowdown
-alias pd='plowdown'
-# Download files from transmission
-alias td='transmission-download'
-# Youtube downloader
-alias yt='youtube-dl -t --prefer-free-format --max-filesize 700m'
-# Flash video download
-alias gfv="get_flash_videos -y"
+function f() { /usr/bin/ag -g "$1" | perl -pe 's/\e\[?.*?[\@-~]//g' }
 # watch tree
 alias wt='watch -c ''tree -aNC -I ".hg\|.git"'''
 # Prefix a date to a file
@@ -81,6 +73,12 @@ alias prd='prefix-date'
 alias fuck='$(thefuck $(fc -ln -1))'
 # Find all extensions
 alias extension-list="find . -type f | awk -F'.' '{print \$NF}' | sort| uniq -c | sort -g"
+# }}}
+# Download {{{
+alias pd='plowdown'
+alias td='transmission-download'
+alias yt='youtube-dl -t --prefer-free-format --max-filesize 700m'
+alias gfv="get_flash_videos -y"
 # }}}
 # GUI apps {{{
 alias ccsm='gui ccsm'
