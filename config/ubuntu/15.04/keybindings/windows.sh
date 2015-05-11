@@ -32,6 +32,20 @@ dconf write /org/compiz/profiles/unity/plugins/staticswitcher/next-all-key "'<Al
 dconf write /org/compiz/profiles/unity/plugins/staticswitcher/prev-all-key "'<Shift><Alt>Tab'"
 dconf write /org/compiz/profiles/unity/plugins/staticswitcher/opacity "10"
 
+# Move windows accross screens
+dconf write /org/compiz/profiles/unity/plugins/put/speed "50.0"
+dconf write /org/compiz/profiles/unity/plugins/put/timestep  "0.1"
+
+# Disabling workspace-related bindings
+dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-left "['<Alt><Super>Left']"
+dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-right "['<Alt><Super>Right']"
+dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-left "['']"
+dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-right "['']"
+dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-up "['']"
+dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-down "['']"
+dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-1 "['']"
+
+
 # Going back to desktop
 dconf write /org/compiz/profiles/unity/plugins/unityshell/show-desktop-key "'<Super>D'"
 dconf write /org/gnome/desktop/wm/keybindings/show-desktop "['disabled']"
