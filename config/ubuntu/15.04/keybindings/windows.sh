@@ -18,36 +18,40 @@ dconf write /org/compiz/profiles/unity/plugins/unityshell/alt-tab-forward "'Disa
 dconf write /org/compiz/profiles/unity/plugins/unityshell/alt-tab-prev "'Disabled'"
 dconf write /org/compiz/profiles/unity/plugins/unityshell/alt-tab-forward-all "'Disabled'"
 dconf write /org/compiz/profiles/unity/plugins/unityshell/alt-tab-prev-all "'Disabled'"
-
-# Move window on the right/left sides
-dconf write /org/compiz/profiles/unity/plugins/grid/left-maximize "'<Super>Left'"
-dconf write /org/compiz/profiles/unity/plugins/grid/right-maximize "'<Super>Right'"
-# Maximize / minimize windows
-dconf write /org/gnome/desktop/wm/keybindings/unmaximize "['<Super>Down']"
-dconf write /org/gnome/desktop/wm/keybindings/maximize "['<Super>Up']"
-# Close window
-dconf write /org/gnome/desktop/wm/keybindings/close "'<Alt>F4'"
 # Circle through windows
 dconf write /org/compiz/profiles/unity/plugins/staticswitcher/next-all-key "'<Alt>Tab'"
 dconf write /org/compiz/profiles/unity/plugins/staticswitcher/prev-all-key "'<Shift><Alt>Tab'"
 dconf write /org/compiz/profiles/unity/plugins/staticswitcher/opacity "10"
 
+# Move window on the right/left sides
+dconf write /org/compiz/profiles/unity/plugins/grid/left-maximize "'<Super>Left'"
+dconf write /org/compiz/profiles/unity/plugins/grid/right-maximize "'<Super>Right'"
+
+# Maximize / minimize windows
+dconf write /org/gnome/desktop/wm/keybindings/unmaximize "['<Super>Down']"
+dconf write /org/gnome/desktop/wm/keybindings/maximize "['<Super>Up']"
+
+# Close window
+dconf write /org/gnome/desktop/wm/keybindings/close "'<Alt>F4'"
+
+# Going back to desktop
+dconf write /org/compiz/profiles/unity/plugins/unityshell/show-desktop-key "'<Super>D'"
+dconf write /org/gnome/desktop/wm/keybindings/show-desktop "['disabled']"
+
+# Locking screen
+dconf write /org/compiz/profiles/unity/plugins/unityshell/lock-screen "'<Control><Super>L'"
+
 # Move windows accross screens
+dconf write /org/compiz/profiles/unity/plugins/put/put-next-output-key "'<Alt><Super>Right'"
+dconf write /org/compiz/profiles/unity/plugins/put/put-previous-output-key "'<Alt><Super>Left'"
 dconf write /org/compiz/profiles/unity/plugins/put/speed "50.0"
 dconf write /org/compiz/profiles/unity/plugins/put/timestep  "0.1"
 
 # Disabling workspace-related bindings
-dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-left "['<Alt><Super>Left']"
-dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-right "['<Alt><Super>Right']"
+dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-left "['']"
+dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-right "['']"
 dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-left "['']"
 dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-right "['']"
 dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-up "['']"
 dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-down "['']"
 dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-1 "['']"
-
-
-# Going back to desktop
-dconf write /org/compiz/profiles/unity/plugins/unityshell/show-desktop-key "'<Super>D'"
-dconf write /org/gnome/desktop/wm/keybindings/show-desktop "['disabled']"
-# Locking screen
-dconf write /org/compiz/profiles/unity/plugins/unityshell/lock-screen "'<Control><Super>L'"
