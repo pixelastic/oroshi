@@ -35,8 +35,19 @@ if exists(':RainbowParenthesesToggle')
   augroup END
 endif
 " }}}
-" Javascript lint checker {{{
-let g:syntastic_javascript_checkers = ['jshint', 'jscs']
+" Linters {{{
+let b:repo_root = GetRepoRoot()
+let b:syntastic_checkers = []
+" Use only linters defined in the repo
+if filereadable(b:repo_root . '/.eslintrc')
+  let b:syntastic_checkers = b:syntastic_checkers + ['eslint']
+endif
+if filereadable(b:repo_root . '/.jshintrc')
+  let b:syntastic_checkers = b:syntastic_checkers + ['jshint']
+endif
+if filereadable(b:repo_root . '/.jscsrc')
+  let b:syntastic_checkers = b:syntastic_checkers + ['jscs']
+endif
 "}}}
 " Cleaning the file {{{
 inoremap <silent> <buffer> <F4> <Esc>:call JavascriptBeautify()<CR>

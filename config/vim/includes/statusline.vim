@@ -58,6 +58,12 @@ function! OroshiStatusLine()
   let sl .= '%{exists("b:git_status") && b:git_status == "clean" ? "± " : ""}'
   let sl .= '%*'
   " }}}
+  " Syntastic status {{{
+  let g:syntastic_stl_format='%E{ :%e }%W{ :%w }'
+  let sl .= '%#oroshi_UIError#'
+  let sl .= '%e%{SyntasticStatuslineFlag()}'
+  let sl .= '%*'
+  " }}}
   " Right / Left separator {{{
   let sl .= '%='
   " }}}
@@ -74,10 +80,6 @@ function! OroshiStatusLine()
   let sl .= '%#oroshi_UIError#'
   let sl .= '%{&fileencoding != "utf-8" ? &fileencoding." " : ""}'
   let sl .= '%*'
-  " }}}
-  " Syntastic status {{{
-  let g:syntastic_stl_format='%E{ :%e }%W{ :%w }'
-  let sl .= '%e%{SyntasticStatuslineFlag()}'
   " }}}
   " Spellchecking {{{
   let sl .= '%{&spell == 1 ? "  ".&spelllang." " : ""}'

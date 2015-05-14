@@ -18,5 +18,8 @@ dconf write /org/compiz/integrated/command-8 "'amixer -D pulse sset Master 3%+'"
 dconf write /org/compiz/integrated/run-command-8 "['<Alt>Home']"
 dconf write /org/compiz/integrated/command-9 "'amixer -D pulse sset Master 3%-'"
 dconf write /org/compiz/integrated/run-command-9 "['<Alt>End']"
+# Note: I'm also binding it the more gnome-friendly media keys as a fallback
+dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-up "'<Alt>Home'"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-down "'<Alt>End'"
 # Alt-Maj-Home to toggle mute
 dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-mute "'<Alt><Shift>Home'"

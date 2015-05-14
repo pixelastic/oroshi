@@ -210,6 +210,10 @@ inoremap <silent> <C-D> <Esc>:call SaveAndCloseFile()<CR>
 nnoremap <C-A> GVgg
 vnoremap <C-A> <Esc>GVgg
 " }}}
+" YANKS {{{
+vnoremap p "_dP
+vnoremap P "_dP
+" }}}
 " KEYBOARD {{{
 " F1 is easier to type than Ctrl+] to navigate between help tags.
 nnoremap <F1> <C-]>
@@ -276,6 +280,10 @@ vnoremap s :!sort -V<CR>
 " Strangely, ï seems to be equal to <M-o> and endwise remaps it. I need to
 " force its mapping so it is not overwritten.
 " inoremap <M-o> ï
+" Align is remapping ,swp which cause a delay when using ,w to go to next error
+augroup keybindings_align
+  autocmd VimEnter * silent! unmap! ,swp
+augroup END
 " }}}
 " UNBINDING {{{
 " K lookup for the word under cursor, I don't need it

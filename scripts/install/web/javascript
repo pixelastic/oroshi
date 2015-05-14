@@ -3,6 +3,13 @@
 echo "Installing jshint"
 npm install -g jshint
 
+echo "Installing eslint"
+npm install -g eslint
+npm install -g eslint-module-react
+
+echo "Installing jscs"
+npm install -g jscs
+
 echo "Installing jsmin/uglifyjs"
 npm install -g uglify-js
 
