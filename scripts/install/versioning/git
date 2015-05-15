@@ -31,3 +31,10 @@ cd ./git-extras
 gem install ronn
 PREFIX=~/local make
 PREFIX=~/local make install
+
+# Installing tig
+cd ~/local/src
+git clone git@github.com:jonas/tig.git
+cd ./tig
+make prefix=/home/$USER/local
+make install prefix=/home/$USER/local
