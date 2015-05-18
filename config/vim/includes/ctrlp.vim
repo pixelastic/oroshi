@@ -8,10 +8,8 @@ let g:ctrlp_max_height = 5
 let g:ctrlp_by_filename = 0
 " Open found file after all tabs
 let g:ctrlp_tabpage_position = 'al'
-" Cache directory
-let g:ctrlp_cache_dir = '~/.vim/cache/ctrlp'
-" Keep cache when exiting vim, allowing for cache sharing between vim instances
-let g:ctrlp_clear_cache_on_exit = 0
+" Do not use cache at all
+let g:ctrlp_use_caching = 0
 " Make it work in insert mode as well
 inoremap <silent> <C-P> <Esc>:CtrlP<CR>
 " }}}
