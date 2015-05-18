@@ -273,6 +273,9 @@ nnoremap <C-J> <C-X>
 nnoremap <C-K> <C-A>
 " Align selection on pipes
 vnoremap <Bar> :Align <Bar><CR>
+" Align selection on spaces
+vmap <Space> <Leader>tsp:nohlsearch<CR>
+"
 " Sort selection (using version sort)
 vnoremap s :!sort -V<CR>
 " }}}

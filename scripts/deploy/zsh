@@ -2,7 +2,7 @@
 # Link zsh main config file to ~/.zshrc
 
 # Paths
-configFile=~/.oroshi/config/zsh/main.zsh
+configFile=~/.oroshi/config/zsh/zshrc.zsh
 destFile=~/.zshrc
 
 # Create link

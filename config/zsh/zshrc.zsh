@@ -1,7 +1,4 @@
-# main.zsh
-# ~/.zshrc points to this file which will in turn load every zsh config fits
-# for and interactive shell as well as host-specific configs
-
+TERM=xterm-256color
 local currentDir="`pwd`"
 local configDir=~/.oroshi/config/zsh
 
