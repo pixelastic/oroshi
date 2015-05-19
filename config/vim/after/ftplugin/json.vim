@@ -7,12 +7,9 @@ setlocal expandtab
 setlocal equalprg=js-beautify\ -f\ -
 " }}}
 " Cleaning the file {{{
-nnoremap <silent> <buffer> <F4> :call JavascriptBeautify()<CR>
-function! JavascriptBeautify() 
-	let linenr=line('.')
-	execute '%!js-beautify -f -'
-	call RemoveTrailingSpaces()
-	execute 'normal '.linenr.'gg'
+nnoremap <silent> <buffer> <F4> :call JSONBeautify()<CR>
+function! JSONBeautify() 
+  execute '%!jq -M "."'
 endfunction
 " }}}
 " Folding {{{
