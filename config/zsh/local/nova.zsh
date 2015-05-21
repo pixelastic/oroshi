@@ -39,3 +39,5 @@ function dumptmp() {
     galactica:./local/www/pixelastic.com/tmp.pixelastic.com
     echo "Available on http://tmp.pixelastic.com/${1:t}"
 }
+
+alias hipchat-dnd='watch -n 300 ~/local/tmp/hipchat/dnd'
