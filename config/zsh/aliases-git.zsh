@@ -27,6 +27,8 @@ alias vbu='git branch-update'
 # }}}
 # [c]ommits {{{
 alias vcR='git commit-remove'
+alias vcRa='git commit-remove-all'
+alias vcz='git commit-cancel'
 alias vca='git commit-all'
 alias vcc='git commit -v'
 alias vce='git commit-edit'

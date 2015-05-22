@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+# Remove local commits until the one specified (included).
+# If no argument given, will simply delete the previous commit
+
+local commitHash=$1
+if [[ $commitHash = '' ]]; then
+  echo "You must pass the hash to the commit you want to delete (included)"
+  exit 1
+else
+  commitHash="$commitHash~1"
+fi
+
+git reset --hard $commitHash
