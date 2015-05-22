@@ -84,10 +84,6 @@ if filereadable(b:generateScript)
   augroup END
 endif
 " }}}
-" Line endings {{{
-setlocal fileformat=dos
-au BufNewFile,BufRead,BufWritePre <buffer> silent call ConvertLineEndingsToDos()
-" }}}
 " Spellchecking {{{
 setlocal spelllang=en
 " Change language and/or toggle
