@@ -234,7 +234,6 @@ function getPromptTag() {
 
 # Rebase {{{
 function getPromptRebase() {
-  return
   local gitRoot="$(git root)"
   local rebaseDir="${gitRoot}/.git/rebase-apply"
 

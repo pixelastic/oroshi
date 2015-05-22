@@ -1,27 +1,51 @@
-# TODO : Take great info from http://grml.org/zsh/zsh-lovers.html
-# TODO : cd should not list hidden dirs
-# TODO : cding should word with parts of the dir name
-# TODO : mkdiring inside an existing directory should accept tab completion
-#        eg. mkdir ~/Document/Photos/christ<TAB> -> 2012-02-05 - Christchurch
+# Nice to have:
+# [ ] Autocompletion while I type, with the first tab-suggested suggestion
+# already filled in a darker color (fish-like behavior)
+# [ ] Ctrl-Space to do a `ls`
+# [ ] Move through suggestions using vim keys
+# 
+#
+# Interesting readings :
+# - http://grml.org/zsh/zsh-lovers.html
+# - https://github.com/tomsquest/dotfiles/blob/master/zsh/bindkey.zsh
+# - http://chneukirchen.org/blog/archive/2013/03/10-fresh-zsh-tricks-you-may-not-know.html
+# - http://dustri.org/b/my-zsh-configuration.html
 
-# Use custom completion functions
-fpath=(~/.oroshi/config/zsh/completion $fpath)
-
-# Lazy init completion
+# Initialization
 autoload -U compinit
+zmodload zsh/complist
 compinit
+
+# Custom methods
+fpath=(~/.oroshi/config/zsh/completion $fpath)
+_git
+source ./completion/npm
+source ./completion/mark
+
 # Auto escape &, ? and * when needed
 autoload -U url-quote-magic
 zle -N self-insert url-quote-magic
 
-# Loading default git completion methods, to make them accessible in custom
-# completion scripts.
-_git
+# Search for completion in the whole filename, not just on the start
+zstyle ':completion:*' completer _complete
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
+# Suggestion appears in a menu if more than one, with the first one selected
+setopt MENU_COMPLETE
+# When using custom chars (like ^ or ?) in a completion, zsh will interpret
+# those as a regexp and fail if nothing matches.
+# By unsetting the option, we let it parse them as a regexp, but continue as
+# a normal string if nothing matches
+# http://superuser.com/questions/584249/using-wildcards-in-commands-with-zsh
+unsetopt NOMATCH
 
-# Load npm completion
-source ./completion/npm
+# File completion is colored
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# Selected file is highlighted
+zstyle ':completion:*' menu select
+# Do not add trailing / to dirs or @ to symlinks
+unsetopt LIST_TYPES
 
-# Debug method to reload the completion functions
+# Debug method to reload the completion functions {{{
 r() {
   \rm -f ~/.zcompdump
   \rm -f ~/.zcompcache/grunt
@@ -30,77 +54,62 @@ r() {
   unfunction $f:t 2> /dev/null
   autoload -U $f:t
 }
+# }}}
 
 # OPTIONS
-# Remove the annoying system beep
-setopt NO_BEEP
-# Enable spelling correction
-setopt CORRECT
-# We want the default zsh globbing features
-setopt GLOB
-# Enable zsh extended globbing features
-setopt EXTENDED_GLOB
-# If the globbing does not match anything, the glob pattern is passed as-is.
-# This is needed for git and the HEAD^ syntax where ^ means a symbolic link in
-# zsh globbing.
-setopt NO_NOMATCH
-# Ignore case when globbing
-setopt NO_CASE_GLOB
-# Include dotfiles in globbing
-setopt GLOB_DOTS
-# Aliases get completed too (yes, the name implies the contrary, but this is
-# correct)
-setopt NO_COMPLETE_ALIASES
-# Do not autofill the completion with the first match
-setopt NO_MENU_COMPLETE
-# Remove trailing slash on completed paths
-setopt AUTO_REMOVE_SLASH
-# Complete start from where the cursor is in the word, not always from the end
-setopt COMPLETE_IN_WORD
-# Always move the cursor to end of line after a completion
-setopt ALWAYS_TO_END
-# Allow moving to a directory without typing cd
-setopt AUTO_CD
-# Block expanding of vars in prompt, it would add the irc/ proxy/ etc completion options
-setopt NO_CDABLE_VARS 
-# Do not add /, @, %, #, etc chars to complete list, because we already have colors
-setopt NO_LIST_TYPES
-# Wait 10s for every command ending with *
-setopt RM_STAR_WAIT
+# # Remove the annoying system beep
+# setopt NO_BEEP
+# # Enable spelling correction
+# setopt CORRECT
+# # We want the default zsh globbing features
+# setopt GLOB
+# # Enable zsh extended globbing features
+# setopt EXTENDED_GLOB
+# # If the globbing does not match anything, the glob pattern is passed as-is.
+# # This is needed for git and the HEAD^ syntax where ^ means a symbolic link in
+# # zsh globbing.
+# # Ignore case when globbing
+# setopt NO_CASE_GLOB
+# # Include dotfiles in globbing
+# setopt GLOB_DOTS
+# # Aliases get completed too (yes, the name implies the contrary, but this is
+# # correct)
+# setopt NO_COMPLETE_ALIASES
+# # Remove trailing slash on completed paths
+# setopt AUTO_REMOVE_SLASH
+# # Complete start from where the cursor is in the word, not always from the end
+# setopt COMPLETE_IN_WORD
+# # Always move the cursor to end of line after a completion
+# setopt ALWAYS_TO_END
+# # # Block expanding of vars in prompt, it would add the irc/ proxy/ etc completion options
+# setopt NO_CDABLE_VARS 
+# # # Wait 10s for every command ending with *
+# # setopt RM_STAR_WAIT
+# # 
+# # GENERAL
+# # Enable completion caching
+# zstyle ':completion:*' use-cache on
+# zstyle ':completion:*' cache-path ~/.zsh/cache
+# # Display completion suggestion in various groups (files, command, etc)
+# zstyle ':completion:*' group-name ''
+# # # Format of the group title
+# zstyle ':completion:*:descriptions' format '----- %B%d%b -----'
+# # Display verbose information about the completion being done
+# zstyle ':completion:*' verbose yes
+# # Warning message when no match found
+# zstyle ':completion:*:warnings' format 'No matches for: %d'
+# # Message when displaying a hint on an command argument
+# zstyle ':completion:*:messages' format '%d'
+# 
+# # Completion will first try to complete and if nothing is found will try to
+# # spell-check instead
+# zstyle ':completion:::::' completer _complete _correct
 
-# GENERAL
-# Selected completion is highlighted
-zstyle ':completion:*' menu select
-# Use LS_COLORS to suggest completions
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-# Enable completion caching
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.zsh/cache
-# Display completion suggestion in various groups (files, command, etc)
-zstyle ':completion:*' group-name ''
-# Format of the group title
-zstyle ':completion:*:descriptions' format '----- %B%d%b -----'
-# Display verbose information about the completion being done
-zstyle ':completion:*' verbose yes
-# Warning message when no match found
-zstyle ':completion:*:warnings' format 'No matches for: %d'
-# Message when displaying a hint on an command argument
-zstyle ':completion:*:messages' format '%d'
 
-# Completion will first try to complete and if nothing is found will try to
-# spell-check instead
-zstyle ':completion:::::' completer _complete _correct
-# Only suggest the more common users
-# zstyle ":completion:*" users $USER admin root www-data
-# Matching is case insensitive, and match even in middle of word
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'm:{a-zA-Z}={A-Za-z} l:|=* r:|=*'
 
-# Completing j and um
-function _completemarks {
-  reply=($(ls $MARKPATH))
-}
-compctl -K _completemarks j
-compctl -K _completemarks um
+
+
+
 
 # TODO : Check the usefulness of the following options
 # Background processes aren't killed on exit of shell

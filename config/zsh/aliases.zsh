@@ -20,6 +20,11 @@ path=(
 export CHROME_BIN=`which chromium-browser`
 # }}}
 
+# Options {{{
+# Allow moving to a directory without typing cd
+setopt AUTO_CD
+# }}}
+
 # Basic commands {{{
 alias ag='ag --context=2 --smart-case --pager="less -R"'
 alias cp='cp -rv'
