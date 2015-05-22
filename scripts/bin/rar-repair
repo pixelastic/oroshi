@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+for file in $@; do
+  extension=${file:e}
+  if [[ $extension != 'rar' && $extension != 'cbr' ]]; then
+    echo "${file:t} is not a cbr or rar"
+    break;
+  fi
+  rar r $file /tmp/
+  mv -f /tmp/(fixed|rebuilt).${file:t} ${file}
+done
