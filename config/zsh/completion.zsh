@@ -37,6 +37,8 @@ setopt MENU_COMPLETE
 # a normal string if nothing matches
 # http://superuser.com/questions/584249/using-wildcards-in-commands-with-zsh
 unsetopt NOMATCH
+# Completion should also complete .dotfiles
+setopt GLOB_DOTS
 
 # File completion is colored
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
@@ -65,13 +67,8 @@ r() {
 # setopt GLOB
 # # Enable zsh extended globbing features
 # setopt EXTENDED_GLOB
-# # If the globbing does not match anything, the glob pattern is passed as-is.
-# # This is needed for git and the HEAD^ syntax where ^ means a symbolic link in
-# # zsh globbing.
 # # Ignore case when globbing
 # setopt NO_CASE_GLOB
-# # Include dotfiles in globbing
-# setopt GLOB_DOTS
 # # Aliases get completed too (yes, the name implies the contrary, but this is
 # # correct)
 # setopt NO_COMPLETE_ALIASES
