@@ -23,6 +23,9 @@ export CHROME_BIN=`which chromium-browser`
 # Options {{{
 # Allow moving to a directory without typing cd
 setopt AUTO_CD
+# Allow special chars (^ or ?) in aliases, otherwise they are treated as regexp
+# markers
+unsetopt NOMATCH
 # }}}
 
 # Basic commands {{{

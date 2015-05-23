@@ -42,11 +42,8 @@ unsetopt MENU_COMPLETE
 setopt LIST_AMBIGUOUS
 # ... and then, pressing TAB will display the menu
 setopt AUTO_MENU
-# When using custom chars (like ^ or ?) in a completion, zsh will interpret
-# those as a regexp and fail if nothing matches.
-# By unsetting the option, we let it parse them as a regexp, but continue as
-# a normal string if nothing matches
-# http://superuser.com/questions/584249/using-wildcards-in-commands-with-zsh
+# Try first to match regexp markers and continue as a normal char if nothing
+# matches.
 unsetopt NOMATCH
 # Completion should also complete .dotfiles
 setopt GLOB_DOTS
@@ -106,3 +103,4 @@ r() {
 # Display completion suggestion in various groups (files, command, etc)
 # zstyle ':completion:*' group-name ''
 # # Format of the group title
+#
