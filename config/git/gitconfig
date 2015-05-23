@@ -24,6 +24,7 @@
   editor = vim
   excludesfile = ~/.gitignore
   safecrlf = false
+  autocrlf = input
 [diff]
   ; wordRegex = "[a-zA-Z]{5,}"
 [merge]
