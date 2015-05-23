@@ -3,10 +3,12 @@
 # already filled in a darker color (fish-like behavior)
 # [ ] Ctrl-Space to do a `ls`
 # [ ] Move through suggestions using vim keys
+# [ ] Complete host names in rsync and ssh
 # 
 #
 # Interesting readings :
 # - http://grml.org/zsh/zsh-lovers.html
+# - http://bewatermyfriend.org/p/2012/003/
 # - https://github.com/tomsquest/dotfiles/blob/master/zsh/bindkey.zsh
 # - http://chneukirchen.org/blog/archive/2013/03/10-fresh-zsh-tricks-you-may-not-know.html
 # - http://dustri.org/b/my-zsh-configuration.html
@@ -26,11 +28,20 @@ source ./completion/mark
 autoload -U url-quote-magic
 zle -N self-insert url-quote-magic
 
+# Enable completion caching
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+
+# Try to complete first, and then correct
+zstyle ':completion:*' completer _complete _correct
 # Search for completion in the whole filename, not just on the start
-zstyle ':completion:*' completer _complete
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
-# Suggestion appears in a menu if more than one, with the first one selected
-setopt MENU_COMPLETE
+# Disable showing the menu on first tab press
+unsetopt MENU_COMPLETE
+# In case of ambiguous match, complete up to the last ambiguous letter...
+setopt LIST_AMBIGUOUS
+# ... and then, pressing TAB will display the menu
+setopt AUTO_MENU
 # When using custom chars (like ^ or ?) in a completion, zsh will interpret
 # those as a regexp and fail if nothing matches.
 # By unsetting the option, we let it parse them as a regexp, but continue as
@@ -39,13 +50,28 @@ setopt MENU_COMPLETE
 unsetopt NOMATCH
 # Completion should also complete .dotfiles
 setopt GLOB_DOTS
+# Completion should not handle aliases as new commands, but internally expand
+# them, and suggestion completion for the underlying command
+unsetopt COMPLETE_ALIASES
+# Wait 10s before rm ./*
+setopt RM_STAR_WAIT
 
 # File completion is colored
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # Selected file is highlighted
 zstyle ':completion:*' menu select
+# Completion type separator
+zstyle ':completion:*:descriptions' format '%F{069} %d%f'
+# No completion found
+zstyle ':completion:*:warnings' format '%F{136}  No completion found%f'
+# ???
+zstyle ':completion:*:messages' format '%F{171}  EDIT completion.zsh : %d%f'
 # Do not add trailing / to dirs or @ to symlinks
 unsetopt LIST_TYPES
+# Display suggestions horizontally
+setopt LIST_ROWS_FIRST
+
+
 
 # Debug method to reload the completion functions {{{
 r() {
@@ -59,8 +85,6 @@ r() {
 # }}}
 
 # OPTIONS
-# # Remove the annoying system beep
-# setopt NO_BEEP
 # # Enable spelling correction
 # setopt CORRECT
 # # We want the default zsh globbing features
@@ -69,9 +93,6 @@ r() {
 # setopt EXTENDED_GLOB
 # # Ignore case when globbing
 # setopt NO_CASE_GLOB
-# # Aliases get completed too (yes, the name implies the contrary, but this is
-# # correct)
-# setopt NO_COMPLETE_ALIASES
 # # Remove trailing slash on completed paths
 # setopt AUTO_REMOVE_SLASH
 # # Complete start from where the cursor is in the word, not always from the end
@@ -80,43 +101,8 @@ r() {
 # setopt ALWAYS_TO_END
 # # # Block expanding of vars in prompt, it would add the irc/ proxy/ etc completion options
 # setopt NO_CDABLE_VARS 
-# # # Wait 10s for every command ending with *
-# # setopt RM_STAR_WAIT
 # # 
 # # GENERAL
-# # Enable completion caching
-# zstyle ':completion:*' use-cache on
-# zstyle ':completion:*' cache-path ~/.zsh/cache
-# # Display completion suggestion in various groups (files, command, etc)
+# Display completion suggestion in various groups (files, command, etc)
 # zstyle ':completion:*' group-name ''
-# # # Format of the group title
-# zstyle ':completion:*:descriptions' format '----- %B%d%b -----'
-# # Display verbose information about the completion being done
-# zstyle ':completion:*' verbose yes
-# # Warning message when no match found
-# zstyle ':completion:*:warnings' format 'No matches for: %d'
-# # Message when displaying a hint on an command argument
-# zstyle ':completion:*:messages' format '%d'
-# 
-# # Completion will first try to complete and if nothing is found will try to
-# # spell-check instead
-# zstyle ':completion:::::' completer _complete _correct
-
-
-
-
-
-
-
-# TODO : Check the usefulness of the following options
-# Background processes aren't killed on exit of shell
-# setopt AUTO_CONTINUE
-# The following lines were added by compinstall
-# zstyle ':completion:*' completer _expand _complete _match
-# zstyle ':completion:*' completions 0
-# zstyle ':completion:*' format 'Completing %d'
-# zstyle ':completion:*' glob 0
-# zstyle ':completion:*' group-name ''
-# zstyle ':completion:*' max-errors 1 numeric
-# zstyle ':completion:*' substitute 0
-# zstyle :compinstall filename "$HOME/.zshrc"
+# # Format of the group title
