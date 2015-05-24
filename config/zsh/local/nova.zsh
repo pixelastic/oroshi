@@ -14,6 +14,7 @@ alias cdscenar='cd ~/perso/roleplay/scenarios/'
 alias play-coffee='mplayer ~/perso/music/nature/Coffitivity/*.mp3'
 alias play-rain='mplayer ~/perso/music/nature/Rain/*.mp3'
 alias play-nogg='mplayer ~/perso/music/soundtracks/D/Dopefish/*.mp3'
+alias play-soundtrack='mplayer ~/perso/music/misc/*.mp3'
 function play-buddha() {
   cd ~/perso/music/music/B/Buddha\ Bar
 
