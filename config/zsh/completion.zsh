@@ -62,7 +62,7 @@ zstyle ':completion:*:descriptions' format '%F{069} %d%f'
 # No completion found
 zstyle ':completion:*:warnings' format '%F{136}  No completion found%f'
 # ???
-zstyle ':completion:*:messages' format '%F{171}  EDIT completion.zsh : %d%f'
+zstyle ':completion:*:messages' format '%F{136}  %d%f'
 # Do not add trailing / to dirs or @ to symlinks
 unsetopt LIST_TYPES
 # Display suggestions horizontally
