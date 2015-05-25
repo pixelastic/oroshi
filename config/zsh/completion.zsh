@@ -68,8 +68,6 @@ unsetopt LIST_TYPES
 # Display suggestions horizontally
 setopt LIST_ROWS_FIRST
 
-
-
 # Debug method to reload the completion functions {{{
 r() {
   \rm -f ~/.zcompdump

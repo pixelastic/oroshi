@@ -5,6 +5,35 @@ setopt PROMPT_SUBST
 autoload -U promptinit
 promptinit
 
+
+# Highlighting as I type {{{
+source ./plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
+ZSH_HIGHLIGHT_STYLES[default]="fg=$promptColor[commandText]"
+ZSH_HIGHLIGHT_STYLES[builtin]="fg=$promptColor[commandCommand]"
+ZSH_HIGHLIGHT_STYLES[command]="fg=$promptColor[commandCommand]"
+ZSH_HIGHLIGHT_STYLES[alias]="fg=$promptColor[commandAlias]"
+ZSH_HIGHLIGHT_STYLES[function]="fg=$promptColor[commandAlias]"
+ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=$promptColor[commandError]"
+ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=$promptColor[commandKeyword]"
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="fg=$promptColor[commandArgument]"
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="fg=$promptColor[commandArgument]"
+ZSH_HIGHLIGHT_STYLES[back-quoted-argument]="fg=$promptColor[commandString]"
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=$promptColor[commandString]"
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=$promptColor[commandString]"
+ZSH_HIGHLIGHT_STYLES[commandseparator]="fg=$promptColor[commandSeparator]"
+ZSH_HIGHLIGHT_STYLES[path]="fg=$promptColor[commandPath]"
+ZSH_HIGHLIGHT_STYLES[path_prefix]="fg=$promptColor[commandPathIncomplete]"
+ZSH_HIGHLIGHT_STYLES[precommand]=none
+ZSH_HIGHLIGHT_STYLES[hashed-command]=none
+ZSH_HIGHLIGHT_STYLES[path_approx]=none
+ZSH_HIGHLIGHT_STYLES[globbing]=none
+ZSH_HIGHLIGHT_STYLES[history-expansion]=none
+ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=none
+ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=none
+ZSH_HIGHLIGHT_STYLES[assign]=none
+# }}}
+
 PROMPT='${promptUsername}$(getPromptExitCode)${promptHostname}:$(getPromptPath)$(getPromptTrash)$(getPromptHash) '
 RPROMPT='$(getPromptRepoIndicator)'
 

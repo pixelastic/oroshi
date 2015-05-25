@@ -21,31 +21,43 @@ done
 # Note: The colors are based on the colors used in the vim oroshi colorscheme
 typeset -A promptColorDefault
 promptColorDefault=(
-  username          "069" # Username color
-  hostname          "171" # Hostname color
-  pathWritable      "035" # Prompt color of path if I can write to it
-  pathNotWritable   "160" # Prompt color of path if I can't write to it
-  lastCommandFailed "203" # Prompt color if last command failed
-  hasTrash          "241" # Prompt color if trashed file in current dir
+  username              "069"
+  hostname              "171"
+  pathWritable          "035"
+  pathNotWritable       "160"
+  lastCommandFailed     "203"
+  hasTrash              "241"
 
-  tag                "241" # Color of the current tag
-  submodule          "136" # Color of the submodule symbol
-  rebase             "160" # Color of the rebase symbol
-  stash              "171" # Color of the stash
-  branchDefault      "202" # Default color for branches
-  branchDetached     "160" # Color for detached HEAD branch
-  branchMaster       "069" # Color for master branch
-  branchDevelop      "184" # Color of develop branch
-  branchFix          "203" # Color of fix branch
-  branchTest         "136" # Color of test branch
-  branchFeature      "202" # Color of feature branch
-  branchReview       "028" # Color of review branch
-  branchPerf         "141" # Color of perf branch
-  branchRelease      "171" # Color of release branch
-  branchGhPages      "024" # Color of gh-pages branch
-  repoClean          "035" # Color of clean repo
-  repoStaged         "171" # Color if files are staged, ready to be commited
-  repoDirty          "160" # Color if repo is dirty
+  tag                   "241"
+  submodule             "136"
+  rebase                "160"
+  stash                 "171"
+  branchDefault         "202"
+  branchDetached        "160"
+  branchMaster          "069"
+  branchDevelop         "184"
+  branchFix             "203"
+  branchTest            "136"
+  branchFeature         "202"
+  branchReview          "028"
+  branchPerf            "141"
+  branchRelease         "171"
+  branchGhPages         "024"
+  repoClean             "035"
+  repoStaged            "171"
+  repoDirty             "160"
+
+  commandText           "252"
+  commandCommand        "028"
+  commandAlias          "108"
+  commandKeyword        "203"
+  commandError          "160"
+  commandString         "067"
+  commandArgument       "209"
+  commandPath           "035"
+  commandPathIncomplete "108"
+  commandSeparator      "136"
+
 )
 
 # Merging default colors in promptColor

@@ -5,6 +5,21 @@ stty ixoff -ixon
 # Enabling vim mode
 bindkey -v
 
+# Ctrl-O to go to ~/.oroshi/
+bindkey -s '^O' '^U cdo^M'
+# Ctrl-K to ls
+bindkey -s '^K' '^U ls^M'
+# Ctrl-S to git status
+bindkey -s '^S' '^U vdl^M'
+# Ctrl-B to git branch
+bindkey -s '^B' '^U vbl^M'
+# Ctrl-J copy previous word
+bindkey "^J" copy-prev-shell-word
+# Ctrl-V to edit the line in Vim
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '^V' edit-command-line
+
 # (re)enabling keybindings in insert mode
 bindkey -M viins "[3~" delete-char        # Delete
 bindkey -M viins "" backward-delete-char  # Backspace
@@ -28,47 +43,29 @@ bindkey -M vicmd "i"  vi-insert
 bindkey -M vicmd "" beginning-of-line
 bindkey -M vicmd "" end-of-line
 
-# Set the cursor for vi cmd mode
-function cursor-cmd() {
+
+# Vim cursor {{{
+function _cursor-cmd() {
 	print -n '\e]12;#D70000\a'
 }
-# Set the cursor for vi insert mode (default)
-function cursor-ins() {
+function _cursor-ins() {
 	print -n '\e]12;#AF8700\a'
 }
-# Set insert mode by default for new lines
-function zle-line-init {
-	zle vi-insert
-	cursor-ins
-}
-# Force the cursor to its default (ins) color when finishing a line
 function zle-line-finish {
-	cursor-ins
+	_cursor-ins
 }
-# Change cursor color based on current mode
+zle -N zle-line-finish
 function zle-keymap-select () {
 	if [[ $KEYMAP = 'vicmd' ]]; then
-		cursor-cmd
+		_cursor-cmd
 	else
-		cursor-ins
+		_cursor-ins
 	fi
 }
-zle -N zle-line-init
-zle -N zle-line-finish
 zle -N zle-keymap-select
-
-
-# Ctrl-O to go to ~/.oroshi/
-bindkey -s '^O' '^U cdo^M'
-# Ctrl-K to ls
-bindkey -s '^K' '^U ls^M'
-# Ctrl-S to git status
-bindkey -s '^S' '^U vdl^M'
-# Ctrl-B to git branch
-bindkey -s '^B' '^U vbl^M'
-# Ctrl-J copy previous word
-bindkey "^J" copy-prev-shell-word
-# Ctrl-V to edit the line in Vim
-autoload -U edit-command-line
-zle -N edit-command-line
-bindkey '^V' edit-command-line
+zle-line-init() {
+	zle vi-insert
+	_cursor-ins
+}
+zle -N zle-line-init
+# }}}

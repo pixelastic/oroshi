@@ -98,3 +98,9 @@
 	path = config/vim/bundle/available/Align
 	url = git@github.com:vim-scripts/Align.git
   ignore = dirty
+[submodule "config/zsh/plugins/zsh-autosuggestions"]
+	path = config/zsh/plugins/zsh-autosuggestions
+	url = git@github.com:tarruda/zsh-autosuggestions.git
+[submodule "config/zsh/plugins/zsh-syntax-highlighting"]
+	path = config/zsh/plugins/zsh-syntax-highlighting
+	url = git@github.com:zsh-users/zsh-syntax-highlighting.git
