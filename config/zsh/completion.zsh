@@ -92,8 +92,6 @@ r() {
 # setopt AUTO_REMOVE_SLASH
 # # Complete start from where the cursor is in the word, not always from the end
 # setopt COMPLETE_IN_WORD
-# # Always move the cursor to end of line after a completion
-# setopt ALWAYS_TO_END
 # # # Block expanding of vars in prompt, it would add the irc/ proxy/ etc completion options
 # setopt NO_CDABLE_VARS 
 # # 

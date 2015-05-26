@@ -230,6 +230,12 @@ alias bi='bower install'
 alias bis='bower install --save'
 alias bisd='bower install --save-dev'
 # }}}
+# Gem {{{
+alias gi="gem install"
+alias gs="gem search"
+alias gu="gem update"
+alias gR="gem uninstall"
+# }}}
 # mark / jump {{{
 # Thanks to
 # : http://jeroenjanssens.com/2013/08/16/quickly-navigate-your-filesystem-from-the-command-line.html
