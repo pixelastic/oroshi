@@ -3,13 +3,13 @@ require_relative '../etc/git-helper/git-helper'
 
 # Wrapper for pulling from remote
 # Usage :
-# $ git-remote-pull
-# $ git-remote-pull upstream {current_branch}
-# $ git-remote-pull {origin} develop
-# $ git-remote-pull upstream develop
-# $ git-remote-pull develop upstream
+# $ git-branch-pull
+# $ git-branch-pull upstream {current_branch}
+# $ git-branch-pull {origin} develop
+# $ git-branch-pull upstream develop
+# $ git-branch-pull develop upstream
 
-class GitRemotePull
+class GitBranchPull
   include GitHelper
 
   def initialize(*args)
@@ -32,4 +32,4 @@ class GitRemotePull
   end
 
 end
-GitRemotePull.new(*ARGV).run()
+GitBranchPull.new(*ARGV).run()
