@@ -54,8 +54,8 @@ promptColorDefault=(
   commandError          "160"
   commandString         "067"
   commandArgument       "209"
-  commandPath           "035"
-  commandPathIncomplete "108"
+  commandPath           "252"
+  commandPathIncomplete "249"
   commandSeparator      "136"
 
 )
