@@ -48,17 +48,22 @@ endif
 if filereadable(b:repo_root . '/.jscsrc')
   let b:syntastic_checkers = b:syntastic_checkers + ['jscs']
 endif
+" Default to system-wide eslint if nothing configured
+if len(b:syntastic_checkers) == 0
+  let b:syntastic_checkers = b:syntastic_checkers + ['eslint']
+endif
 "}}}
 " Cleaning the file {{{
 inoremap <silent> <buffer> <F4> <Esc>:call JavascriptBeautify()<CR>
 nnoremap <silent> <buffer> <F4> :call JavascriptBeautify()<CR>
 function! JavascriptBeautify() 
   let linenr=line('.')
-  " Remove empty lines after function definitions
-  silent! execute '%s/{\n\n/{\r/'
-  " clean the file
-  silent! w! /tmp/vim_jsclean
-  silent! execute '%!jsclean /tmp/vim_jsclean'
+  silent! execute ':%s/^\s*$//'
+  " " Remove empty lines after function definitions
+  " silent! execute '%s/{\n\n/{\r/'
+  " " clean the file
+  " silent! w! /tmp/vim_jsclean
+  " silent! execute '%!jsclean /tmp/vim_jsclean'
   execute 'normal '.linenr.'gg'
 endfunction
 " }}}

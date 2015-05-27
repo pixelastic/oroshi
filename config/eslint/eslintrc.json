@@ -1,0 +1,14 @@
+{
+  "globals": {
+    "algoliasearch": true,
+    "$": true,
+    "console": true,
+    "Hogan": true
+  },
+  "rules": {
+    "no-console": 1,
+    "no-underscore-dangle": 0,
+    "no-use-before-define": [1, "nofunc"],
+    "quotes": [2, "single"]
+  }
+}

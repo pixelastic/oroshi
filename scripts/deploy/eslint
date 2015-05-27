@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+ln -fs ~/.oroshi/config/eslint/eslintrc.json ~/.eslintrc
