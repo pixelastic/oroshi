@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require_relative '../etc/git-helper/git-helper'
+require_relative '../etc/git-helper/git_helper'
 # Wrapper for pushing to remote
 # - Will init the upstream branch on first push
 # - Will allow user to specify a remote and a branch (default to origin and

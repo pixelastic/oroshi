@@ -4,7 +4,7 @@ setlocal tabstop=2
 setlocal shiftwidth=2
 setlocal softtabstop=2
 setlocal expandtab
-" }}
+" }}}
 " #{} interpolation {{{
 inoremap <buffer> ## #{}<Left>
 let b:surround_35 = "#{\r}"
@@ -20,6 +20,15 @@ setlocal foldmethod=syntax
 " }}}
 " Linters {{{
 let b:syntastic_checkers = ['rubocop', 'mri']
+" }}}
+" Cleaning the file {{{
+inoremap <silent> <buffer> <F4> <Esc>:call RubyBeautify()<CR>
+nnoremap <silent> <buffer> <F4> :call RubyBeautify()<CR>
+function! RubyBeautify() 
+  let linenr=line('.')
+  silent! execute ':%s/^\s*$//'
+  execute 'normal '.linenr.'gg'
+endfunction
 " }}}
 " Misc {{{
 setlocal omnifunc=rubycomplete#Complete

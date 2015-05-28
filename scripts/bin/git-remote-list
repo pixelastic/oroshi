@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require_relative '../etc/git-helper/git-helper'
+require_relative '../etc/git-helper/git_helper'
 # List all remotes
 #
 # Usage :

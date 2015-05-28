@@ -4,5 +4,17 @@ Metrics/AbcSize:
 Metrics/ClassLength:
   Max: 200
 
+Metrics/ModuleLength:
+  Max: 200
+
 Metrics/MethodLength:
   Max: 50
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/PerceivedComplexity:
+  Max: 10
+
+Style/FileName:
+  Enabled: false
