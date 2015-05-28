@@ -1,4 +1,7 @@
 " HTML
+" Word selection {{{
+setlocal iskeyword=@,48-57,192-255
+" }}}
 " Indenting {{{
 " Use two spaces for indenting
 setlocal tabstop=2

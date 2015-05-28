@@ -1,7 +1,7 @@
 " CSS
 " Misc {{{
-" - delimits words in css
-setlocal iskeyword-=-
+" Remove - and _ from delimiters
+setlocal iskeyword=@,48-57,192-255
 " }}}
 " Indentation rules {{{
 setlocal tabstop=2
