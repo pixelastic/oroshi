@@ -1,11 +1,13 @@
 {
   "globals": {
+    "Hogan": true,
     "algoliasearch": true,
-    "$": true,
     "console": true,
-    "Hogan": true
+    "moment": true,
+    "$": true
   },
   "rules": {
+    "camelcase": 0,
     "no-console": 1,
     "no-underscore-dangle": 0,
     "no-use-before-define": [1, "nofunc"],
