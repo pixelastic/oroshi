@@ -31,3 +31,13 @@ dconf write /org/compiz/integrated/command-7 "'hipchat'"
 dconf write /org/compiz/integrated/run-command-7 "['<Super>H']"
 
 
+dconf write /org/compiz/integrated/command-8 "''"
+dconf write /org/compiz/integrated/run-command-8 "['']"
+dconf write /org/compiz/integrated/command-9 "''"
+dconf write /org/compiz/integrated/run-command-9 "['']"
+dconf write /org/compiz/integrated/command-10 "''"
+dconf write /org/compiz/integrated/run-command-10 "['']"
+dconf write /org/compiz/integrated/command-11 "''"
+dconf write /org/compiz/integrated/run-command-11 "['']"
+dconf write /org/compiz/integrated/command-12 "''"
+dconf write /org/compiz/integrated/run-command-12 "['']"

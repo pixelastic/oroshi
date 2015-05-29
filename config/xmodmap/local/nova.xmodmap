@@ -13,7 +13,3 @@ keycode 115 = Next
 ! It produces a Carriage Return on press (default)
 ! It also produces a "Numeric Keypad" Enter on Shift-Press (custom)
 keycode  36 = Return KP_Enter Return KP_Enter
-
-! The lenovo has a stupid Print Screen key next to AltGr. I will make it
-! another AltGr one.
-keycode 107 = ISO_Level3_Shift NoSymbol ISO_Level3_Shift
