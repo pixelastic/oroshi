@@ -41,6 +41,7 @@ alias rmdir='better-rmdir'
 alias scp='scp -r '
 alias tree='tree -aNC -I ".hg|.git"'
 alias watch='watch -c '
+alias serve='http-server .'
 # }}}
 # Global aliases {{{
 alias -g .....='../../../..'

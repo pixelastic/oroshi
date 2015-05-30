@@ -18,11 +18,12 @@ autoload -U compinit
 zmodload zsh/complist
 compinit
 
-# Custom methods
+# Custom methods {{{
 fpath=(~/.oroshi/config/zsh/completion $fpath)
 _git
 source ./completion/npm
 source ./completion/mark
+# }}}
 
 # Auto escape &, ? and * when needed
 autoload -U url-quote-magic
@@ -32,6 +33,7 @@ zle -N self-insert url-quote-magic
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
 
+# What to complete... {{{
 # Try to complete first, and then correct
 zstyle ':completion:*' completer _complete _correct
 # Search for completion in the whole filename, not just on the start
@@ -52,7 +54,9 @@ setopt GLOB_DOTS
 unsetopt COMPLETE_ALIASES
 # Wait 10s before rm ./*
 setopt RM_STAR_WAIT
+# }}}
 
+# How to display completion... {{{
 # File completion is colored
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # Selected file is highlighted
@@ -61,12 +65,19 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*:descriptions' format '%F{069} %d%f'
 # No completion found
 zstyle ':completion:*:warnings' format '%F{136}  No completion found%f'
-# ???
 zstyle ':completion:*:messages' format '%F{136}  %d%f'
 # Do not add trailing / to dirs or @ to symlinks
 unsetopt LIST_TYPES
 # Display suggestions horizontally
 setopt LIST_ROWS_FIRST
+# }}}
+
+# Fuzzy finding completion on ** {{{
+if [[ -r ~/.fzf.zsh ]]; then
+	source ~/.fzf.zsh
+  export FZF_DEFAULT_COMMAND='ag -l -g ""'
+fi
+# }}}
 
 # Debug method to reload the completion functions {{{
 r() {

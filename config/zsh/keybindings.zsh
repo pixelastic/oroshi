@@ -19,6 +19,10 @@ bindkey "^J" copy-prev-shell-word
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '^V' edit-command-line
+# Ctrl-P for fuzzy finding
+export FZF_COMPLETION_TRIGGER=''
+bindkey '^P' fzf-completion
+bindkey '^I' $fzf_default_completion
 
 # (re)enabling keybindings in insert mode
 bindkey -M viins "[3~" delete-char        # Delete
