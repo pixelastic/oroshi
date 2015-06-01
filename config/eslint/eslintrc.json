@@ -4,6 +4,7 @@
     "algoliasearch": true,
     "console": true,
     "moment": true,
+    "window": true,
     "$": true
   },
   "rules": {
