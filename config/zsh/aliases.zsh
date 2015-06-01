@@ -63,8 +63,8 @@ alias trash-restore="restore-trash"
 # }}}
 # Misc {{{
 # cp and mv using rsync and preserving attributes, and accross fat32 drives
-alias rcp="rsync -rahP --modify-window=1"
-alias rmv="rsync -rahP --modify-window=1 --prune-empty-dirs --remove-sent-files"
+alias rcp="rsync -vrahP --modify-window=1"
+alias rmv="rsync -vrahP --modify-window=1 --prune-empty-dirs --remove-sent-files"
 # compdef _cp rcp rmv
 # Scrollable colors
 alias spectrum='spectrum L'
@@ -180,7 +180,13 @@ alias tr?='trash-exists'
 alias trl='trash-list'
 alias trr='trash-restore'
 # }}}
-# 
+# Tmux {{{
+alias tsc='tmux new -s'
+alias tsa='tmux attach -t'
+alias tsl='tmux list-sessions'
+alias tsR='tmux kill-session -t'
+# }}}
+ 
 # Versioning {{{
 source './aliases-git.zsh'
 # }}}
@@ -267,5 +273,11 @@ local rvmScript=~/.rvm/scripts/rvm
 if [[ -r $rvmScript ]]; then
 	path=($path	$HOME/.rvm/bin)
   source $rvmScript
+fi
+# }}}
+# GVM {{{
+local gvmScript=~/.gvm/scripts/gvm
+if [[ -r $gvmScript ]]; then
+  source $gvmScript
 fi
 # }}}

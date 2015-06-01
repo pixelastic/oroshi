@@ -42,3 +42,4 @@ function dumptmp() {
 }
 
 alias hipchat-dnd='watch -n 300 ~/local/tmp/hipchat/dnd'
+alias bloomberg-sync='rcp --exclude=.gitignore --exclude=json --exclude=sitemaps --exclude=_cache ./* scrapper:bloomberg'
