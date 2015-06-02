@@ -2,35 +2,6 @@
 # Watch changes with `dconf watch /`, then edit keybindings in `ccsm` to see
 # what needs to be updated.
 
-# Open dash search (need to be set to something else than <Super> so other
-# bindings with <Super> can work.
-dconf write /org/compiz/profiles/unity/plugins/unityshell/show-launcher "'<Super>space'"
-# Disable other Unity dash-related keybindings
-dconf write /org/compiz/profiles/unity/plugins/unityshell/keyboard-focus "'Disabled'"
-dconf write /org/compiz/profiles/unity/plugins/unityshell/show-menu-bar "'Disabled'"
-dconf write /org/compiz/integrated/show-hud "['disabled']"
-dconf write /org/compiz/profiles/unity/plugins/unityshell/panel-first-menu "'Disabled'"
-
-# Disable Unity Alt-Tab switcher
-dconf write /org/compiz/profiles/unity/plugins/unityshell/launcher-switcher-forward "'Disabled'"
-dconf write /org/compiz/profiles/unity/plugins/unityshell/launcher-switcher-prev "'Disabled'"
-dconf write /org/compiz/profiles/unity/plugins/unityshell/alt-tab-forward "'Disabled'"
-dconf write /org/compiz/profiles/unity/plugins/unityshell/alt-tab-prev "'Disabled'"
-dconf write /org/compiz/profiles/unity/plugins/unityshell/alt-tab-forward-all "'Disabled'"
-dconf write /org/compiz/profiles/unity/plugins/unityshell/alt-tab-prev-all "'Disabled'"
-# Circle through windows
-dconf write /org/compiz/profiles/unity/plugins/staticswitcher/next-all-key "'<Alt>Tab'"
-dconf write /org/compiz/profiles/unity/plugins/staticswitcher/prev-all-key "'<Shift><Alt>Tab'"
-dconf write /org/compiz/profiles/unity/plugins/staticswitcher/opacity "10"
-
-# Move window on the right/left sides
-dconf write /org/compiz/profiles/unity/plugins/grid/left-maximize "'<Super>Left'"
-dconf write /org/compiz/profiles/unity/plugins/grid/right-maximize "'<Super>Right'"
-
-# Maximize / minimize windows
-dconf write /org/gnome/desktop/wm/keybindings/unmaximize "['<Super>Down']"
-dconf write /org/gnome/desktop/wm/keybindings/maximize "['<Super>Up']"
-
 # Close window
 dconf write /org/gnome/desktop/wm/keybindings/close "'<Alt>F4'"
 
@@ -41,9 +12,49 @@ dconf write /org/gnome/desktop/wm/keybindings/show-desktop "['disabled']"
 # Locking screen
 dconf write /org/compiz/profiles/unity/plugins/unityshell/lock-screen "'<Control><Super>L'"
 
-# Move windows accross screens
-dconf write /org/compiz/profiles/unity/plugins/put/put-next-output-key "'<Alt><Super>Right'"
-dconf write /org/compiz/profiles/unity/plugins/put/put-previous-output-key "'<Alt><Super>Left'"
+# Open dash search (need to be set to something else than <Super> so other
+# bindings with <Super> can work.
+dconf write /org/compiz/profiles/unity/plugins/unityshell/show-launcher "'<Super>space'"
+# Disable other Unity dash-related keybindings
+dconf write /org/compiz/profiles/unity/plugins/unityshell/keyboard-focus "'Disabled'"
+dconf write /org/compiz/profiles/unity/plugins/unityshell/show-menu-bar "'Disabled'"
+dconf write /org/compiz/integrated/show-hud "['disabled']"
+dconf write /org/compiz/profiles/unity/plugins/unityshell/panel-first-menu "'Disabled'"
+
+# Circle through windows
+dconf write /org/compiz/profiles/unity/plugins/staticswitcher/next-all-key "'<Alt>Tab'"
+dconf write /org/compiz/profiles/unity/plugins/staticswitcher/prev-all-key "'<Shift><Alt>Tab'"
+dconf write /org/compiz/profiles/unity/plugins/staticswitcher/opacity "10"
+dconf write /org/compiz/profiles/unity/plugins/staticswitcher/highlight-mode "1"
+dconf write /org/compiz/profiles/unity/plugins/staticswitcher/focus-on-switch "true"
+dconf write /org/compiz/profiles/unity/plugins/staticswitcher/bring-to-front "true"
+# Disable Unity Alt-Tab switcher
+dconf write /org/compiz/profiles/unity/plugins/unityshell/launcher-switcher-forward "'Disabled'"
+dconf write /org/compiz/profiles/unity/plugins/unityshell/launcher-switcher-prev "'Disabled'"
+dconf write /org/compiz/profiles/unity/plugins/unityshell/alt-tab-forward "'Disabled'"
+dconf write /org/compiz/profiles/unity/plugins/unityshell/alt-tab-prev "'Disabled'"
+dconf write /org/compiz/profiles/unity/plugins/unityshell/alt-tab-forward-all "'Disabled'"
+dconf write /org/compiz/profiles/unity/plugins/unityshell/alt-tab-prev-all "'Disabled'"
+
+# Move window to right/left/top/bottom grid
+dconf write /org/compiz/profiles/unity/plugins/grid/put-left-key "'<Alt><Super>Left'"
+dconf write /org/compiz/profiles/unity/plugins/grid/put-right-key "'<Alt><Super>Right'"
+dconf write /org/compiz/profiles/unity/plugins/grid/put-top-key "'<Alt><Super>Up'"
+dconf write /org/compiz/profiles/unity/plugins/grid/put-bottom-key "'<Alt><Super>Down'"
+dconf write /org/compiz/profiles/unity/plugins/grid/put-topleft-key "'<Alt><Super>Home'"
+dconf write /org/compiz/profiles/unity/plugins/grid/put-topright-key "'<Alt><Super>End'"
+dconf write /org/compiz/profiles/unity/plugins/grid/put-bottomleft-key "'<Control><Alt><Super>Home'"
+dconf write /org/compiz/profiles/unity/plugins/grid/put-bottomright-key "'<Control><Alt><Super>End'"
+dconf write /org/compiz/profiles/unity/plugins/grid/put-maximize-key "'<Super>Up'"
+dconf write /org/compiz/profiles/unity/plugins/grid/put-restore-key "'<Super>Down'"
+dconf write /org/compiz/profiles/unity/plugins/grid/left-maximize "'Disabled'"
+dconf write /org/compiz/profiles/unity/plugins/grid/right-maximize "'Disabled'"
+dconf write /org/gnome/desktop/wm/keybindings/maximize "['disabled']"
+dconf write /org/gnome/desktop/wm/keybindings/unmaximize "['disabled']"
+
+# Move window accross screens
+dconf write /org/compiz/profiles/unity/plugins/put/put-next-output-key "'<Super>Return'"
+dconf write /org/compiz/profiles/unity/plugins/put/put-previous-output-key "'Disabled'"
 dconf write /org/compiz/profiles/unity/plugins/put/speed "50.0"
 dconf write /org/compiz/profiles/unity/plugins/put/timestep  "0.1"
 
