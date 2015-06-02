@@ -274,19 +274,21 @@ nnoremap <C-K> <C-A>
 " Align selection on pipes
 vnoremap <Bar> :Align <Bar><CR>
 " Align selection on spaces
-vmap <Space> <Leader>tsp:nohlsearch<CR>
+vnoremap <Space> :call AlignVisualSelectionOnSpaces()<CR>
+function! AlignVisualSelectionOnSpaces()
+  " Align can't natively align on spaces, so we'll replace spaces with § and
+  " align on those instead, then remove them.
+  silent! execute "'<,'>s/ \\+/§/"
+  silent! execute "'<,'>Align §"
+  silent! execute "'<,'>s/§//"
+endfunction
 "
 " Sort selection (using version sort)
 vnoremap s :!sort -V<CR>
 " }}}
 " PLUGINS {{{
-" Strangely, ï seems to be equal to <M-o> and endwise remaps it. I need to
-" force its mapping so it is not overwritten.
-" inoremap <M-o> ï
-" Align is remapping ,swp which cause a delay when using ,w to go to next error
-augroup keybindings_align
-  autocmd VimEnter * silent! unmap! ,swp
-augroup END
+" Preventing Align from loading the whole list of its mappings
+let g:loaded_AlignMapsPlugin = '1'
 " }}}
 " UNBINDING {{{
 " K lookup for the word under cursor, I don't need it
