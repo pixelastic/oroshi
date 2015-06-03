@@ -4,6 +4,7 @@
     "algoliasearchHelper": true,
     "algoliasearch": true,
     "console": true,
+    "document": true,
     "moment": true,
     "window": true,
     "$": true,
