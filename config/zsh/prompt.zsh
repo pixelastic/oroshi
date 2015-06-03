@@ -5,7 +5,7 @@ setopt PROMPT_SUBST
 autoload -U promptinit
 promptinit
 
-PROMPT='${promptUsername}$(getPromptExitCode)${promptHostname}$(getPromptPath)$(getPromptHash) '
+PROMPT='${promptUsername}$(getPromptExitCode)${promptHostname}:$(getPromptPath) $(getPromptHash) '
 RPROMPT='$(getPromptRepoIndicator)$(getConnectionIndicator)'
 
 # Colorize {{{
