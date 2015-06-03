@@ -1,11 +1,13 @@
 {
   "globals": {
     "Hogan": true,
+    "algoliasearchHelper": true,
     "algoliasearch": true,
     "console": true,
     "moment": true,
     "window": true,
-    "$": true
+    "$": true,
+    "_": true
   },
   "rules": {
     "camelcase": 0,
