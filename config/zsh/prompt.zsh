@@ -5,8 +5,8 @@ setopt PROMPT_SUBST
 autoload -U promptinit
 promptinit
 
-PROMPT='${promptUsername}$(getPromptExitCode)${promptHostname}:$(getPromptPath)$(getPromptTrash)$(getPromptHash) '
-RPROMPT='$(getPromptRepoIndicator)'
+PROMPT='${promptUsername}$(getPromptExitCode)${promptHostname}$(getPromptPath)$(getPromptHash) '
+RPROMPT='$(getPromptRepoIndicator)$(getConnectionIndicator)'
 
 # Colorize {{{
 function colorize() {
@@ -57,16 +57,6 @@ function getPromptPath() {
   fi
 
   echo $(colorize $promptPath $pathColor)
-}
-# }}}
-
-# Trash {{{
-function getPromptTrash() {
-  if ! trash-exists; then
-    echo " "
-  else
-    echo $(colorize '_' 'hasTrash')
-  fi
 }
 # }}}
 
@@ -263,6 +253,16 @@ function getPromptRebase() {
   local maxRebase="$(cat $rebaseDir/last)"
   local nextRebase="$(cat $rebaseDir/next)"
   echo $(colorize "${nextRebase}/${maxRebase}   " 'rebase')
+}
+# }}}
+
+# Connection indicator {{{
+# Note: Use async data from
+# http://www.anishathalye.com/2015/02/07/an-asynchronous-shell-prompt/
+function getConnectionIndicator() {
+  if [[ -r /tmp/connectionlost ]]; then
+    echo $(colorize " " 'noConnection')
+  fi
 }
 # }}}
 

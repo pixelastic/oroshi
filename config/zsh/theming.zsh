@@ -26,7 +26,7 @@ promptColorDefault=(
   pathWritable          "035"
   pathNotWritable       "160"
   lastCommandFailed     "203"
-  hasTrash              "241"
+  noConnection          "160"
 
   tag                   "241"
   submodule             "136"
