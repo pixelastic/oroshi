@@ -79,6 +79,7 @@ if [[ -r ~/.fzf.zsh ]]; then
 fi
 # }}}
 
+
 # Debug method to reload the completion functions {{{
 r() {
   \rm -f ~/.zcompdump
@@ -89,25 +90,3 @@ r() {
   autoload -U $f:t
 }
 # }}}
-
-# OPTIONS
-# # Enable spelling correction
-# setopt CORRECT
-# # We want the default zsh globbing features
-# setopt GLOB
-# # Enable zsh extended globbing features
-# setopt EXTENDED_GLOB
-# # Ignore case when globbing
-# setopt NO_CASE_GLOB
-# # Remove trailing slash on completed paths
-# setopt AUTO_REMOVE_SLASH
-# # Complete start from where the cursor is in the word, not always from the end
-# setopt COMPLETE_IN_WORD
-# # # Block expanding of vars in prompt, it would add the irc/ proxy/ etc completion options
-# setopt NO_CDABLE_VARS 
-# # 
-# # GENERAL
-# Display completion suggestion in various groups (files, command, etc)
-# zstyle ':completion:*' group-name ''
-# # Format of the group title
-#

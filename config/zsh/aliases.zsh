@@ -65,7 +65,6 @@ alias trash-restore="restore-trash"
 # cp and mv using rsync and preserving attributes, and accross fat32 drives
 alias rcp="rsync -vrahP --modify-window=1"
 alias rmv="rsync -vrahP --modify-window=1 --prune-empty-dirs --remove-sent-files"
-# compdef _cp rcp rmv
 # Scrollable colors
 alias spectrum='spectrum L'
 # ls with hidden files
