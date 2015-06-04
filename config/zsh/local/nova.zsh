@@ -15,8 +15,10 @@ alias play-coffee='mplayer ~/perso/music/nature/Coffitivity/*.mp3'
 alias play-rain='mplayer ~/perso/music/nature/Rain/*.mp3'
 alias play-nogg='mplayer ~/perso/music/soundtracks/D/Dopefish/*.mp3'
 alias play-soundtrack='mplayer ~/perso/music/misc/*.mp3'
-function play-buddha() {
-  cd ~/perso/music/music/B/Buddha\ Bar
+alias play-buddha='play-random-dir ~/perso/music/music/B/Buddha\ Bar'
+alias play-peuple='play-random-dir ~/perso/music/music/P/Peuple*'
+function play-random-dir() {
+  cd "$1"
 
   local randomPath
   randomPath=$(\ls . | shuf -n 1)
