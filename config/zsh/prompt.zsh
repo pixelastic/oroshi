@@ -49,8 +49,6 @@ function TRAPUSR1() {
 }
 # }}}
 
-
-
 # Colorize {{{
 function colorize() {
   echo "$FG[$promptColor[$2]]$1$FX[reset]"
@@ -300,12 +298,23 @@ function getPromptRebase() {
 # }}}
 
 # Connection indicator {{{
-# Note: Use async data from
-# http://www.anishathalye.com/2015/02/07/an-asynchronous-shell-prompt/
 function getConnectionIndicator() {
-  if [[ -r /tmp/connectionlost ]]; then
-    echo $(colorize " " 'noConnection')
+  # Getting the last time we checked connectivity
+  lastConnectionFile=/tmp/zsh_last_connection_check
+  lastConnection="$(cat $lastConnectionFile 2>/dev/null)"
+  if [[ $lastConnection == '' ]]; then
+    lastConnection=0
   fi
+
+  # No need to check if it's less than 5 min
+  now="$(date +%s)"
+  if [[ $(($now-$lastConnection)) -lt $((5*60*60)) ]]; then
+    return
+  fi
+  # Save new check date
+  date +%s > $lastConnectionFile
+
+  ping -c 1 8.8.8.8 &>/dev/null || echo $(colorize " " 'noConnection')
 }
 # }}}
 
