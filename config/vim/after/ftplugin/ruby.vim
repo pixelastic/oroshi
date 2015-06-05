@@ -28,6 +28,7 @@ function! RubyBeautify()
   let linenr=line('.')
   silent! execute ':%s/^\s*$//'
   call RemoveTrailingSpaces()
+  retab
   execute 'normal '.linenr.'gg'
 endfunction
 " }}}

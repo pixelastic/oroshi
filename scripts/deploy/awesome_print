@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+
+ln -fs ~/.oroshi/config/awesome_print/awesome_print_config.rb ~/.aprc

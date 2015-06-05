@@ -44,6 +44,5 @@ sudo apt-get install libcurl3 \
                      libcurl3-gnutls \
                      libcurl4-openssl-dev
 gem install curb
-
-# Xml
 gem install nokogiri
+gem install awesome_print
