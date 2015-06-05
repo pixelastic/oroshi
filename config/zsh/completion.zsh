@@ -1,29 +1,25 @@
 # Nice to have:
 # [ ] Autocompletion while I type, with the first tab-suggested suggestion
 # already filled in a darker color (fish-like behavior)
-# [ ] Ctrl-Space to do a `ls`
 # [ ] Move through suggestions using vim keys
 # [ ] Complete host names in rsync and ssh
-# 
-#
-# Interesting readings :
-# - http://grml.org/zsh/zsh-lovers.html
-# - http://bewatermyfriend.org/p/2012/003/
-# - https://github.com/tomsquest/dotfiles/blob/master/zsh/bindkey.zsh
-# - http://chneukirchen.org/blog/archive/2013/03/10-fresh-zsh-tricks-you-may-not-know.html
-# - http://dustri.org/b/my-zsh-configuration.html
+
+# Add path to custom completion methods
+# Note: Must be define before `compinit`
+if [ -z "$OROSHI_COMPLETION_ADDED_TO_FPATH" ]; then
+  fpath=(~/.oroshi/config/zsh/completion $fpath)
+  OROSHI_COMPLETION_ADDED_TO_FPATH=true
+fi
+source ./completion/npm
+source ./completion/mark
 
 # Initialization
-autoload -U compinit
+autoload -Uz compinit
 zmodload zsh/complist
 compinit
 
-# Custom methods {{{
-fpath=(~/.oroshi/config/zsh/completion $fpath)
+# Preload git completion
 _git
-source ./completion/npm
-source ./completion/mark
-# }}}
 
 # Auto escape &, ? and * when needed
 autoload -U url-quote-magic

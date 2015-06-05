@@ -13,8 +13,6 @@ bindkey -s '^K' '^U ls^M'
 bindkey -s '^S' '^U vdl^M'
 # Ctrl-B to git branch
 bindkey -s '^B' '^U vbl^M'
-# Ctrl-J copy previous word
-bindkey "^J" copy-prev-shell-word
 # Ctrl-V to edit the line in Vim
 autoload -U edit-command-line
 zle -N edit-command-line
@@ -23,6 +21,11 @@ bindkey '^V' edit-command-line
 export FZF_COMPLETION_TRIGGER=''
 bindkey '^P' fzf-completion
 bindkey '^I' $fzf_default_completion
+# Ctrl-J cycle through words on the line
+autoload -Uz copy-earlier-word
+zle -N copy-earlier-word
+bindkey "^J" copy-earlier-word
+
 
 # (re)enabling keybindings in insert mode
 bindkey -M viins "[3~" delete-char        # Delete

@@ -6,7 +6,50 @@ autoload -U promptinit
 promptinit
 
 PROMPT='${promptUsername}$(getPromptExitCode)${promptHostname}:$(getPromptPath) $(getPromptHash) '
-RPROMPT='$(getPromptRepoIndicator)$(getConnectionIndicator)'
+RPROMPT=''
+function get_RPROMPT() {
+  echo "$(getPromptRepoIndicator)$(getConnectionIndicator)"
+}
+
+# Asynchronous right prompt {{{
+# Clever idea taken from:
+# http://www.anishathalye.com/2015/02/07/an-asynchronous-shell-prompt/
+
+# PID of the forked process
+PROMPT_ASYNC_PID=0
+
+# Builtin command executed before the prompt is displayed
+# This will end quickly, but fork a sub process
+function precmd() {
+    # Always kill previous async subprocess if still running
+    if [[ "${PROMPT_SYNC_PID}" != 0 ]]; then
+        kill -s HUP $PROMPT_SYNC_PID >/dev/null 2>&1 || :
+    fi
+
+    # Write RPROMPT to a tmp file
+    # Signal parent process that we're done (will trigger TRAPUSR1)
+    function async() {
+      echo "$(get_RPROMPT)" > "/tmp/zsh_rprompt"
+      kill -s USR1 $$
+    }
+
+    # Fork subprocess, but keep a reference to its PID
+    async &!
+    PROMPT_ASYNC_PID=$!
+}
+
+# Builtin command called when receiving a USR1 signal
+function TRAPUSR1() {
+    # Setting the prompt
+    RPROMPT="$(cat /tmp/zsh_rprompt)"
+    # Redraw
+    zle && zle reset-prompt
+    # Reset PID
+    PROMPT_ASYNC_PID=0
+}
+# }}}
+
+
 
 # Colorize {{{
 function colorize() {

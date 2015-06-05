@@ -205,9 +205,8 @@ set gdefault
 nnoremap / /\v
 nnoremap ? ?\v
 nnoremap :s/ :s/\v
-nnoremap :%s :%s/
-nnoremap :%S :%s/
-nnoremap :ùs :%s/
+nnoremap :ù :%s/
+vnoremap :ù :s/
 "}}}
 " SNIPPETS   {{{
 " Lorem ipsum
