@@ -27,6 +27,7 @@ nnoremap <silent> <buffer> <F4> :call RubyBeautify()<CR>
 function! RubyBeautify() 
   let linenr=line('.')
   silent! execute ':%s/^\s*$//'
+  call RemoveTrailingSpaces()
   execute 'normal '.linenr.'gg'
 endfunction
 " }}}
