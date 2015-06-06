@@ -308,7 +308,8 @@ function getConnectionIndicator() {
 
   # No need to check if it's less than 5 min
   now="$(date +%s)"
-  if [[ $(($now-$lastConnection)) -lt $((5*60*60)) ]]; then
+  if [[ $(($now-$lastConnection)) -lt $((5*60)) ]]; then
+    echo "--"
     return
   fi
   # Save new check date
