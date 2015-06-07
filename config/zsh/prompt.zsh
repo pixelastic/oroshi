@@ -301,10 +301,6 @@ function getPromptRebase() {
 function getConnectionIndicator() {
   connectionLostFile="/tmp/zsh_connection_lost"
   checkDelay=$((5*60))
-  if [[ -r "$connectionLostFile" ]]; then
-    echo $(colorize " " 'noConnection')
-    checkDelay=30
-  fi
 
   # Getting the last time we checked connectivity
   lastConnectionFile="/tmp/zsh_last_connection_check"
@@ -321,10 +317,15 @@ function getConnectionIndicator() {
   # Save new check date
   date +%s > "$lastConnectionFile"
 
-  if ping -c1 8.8.8.8 &>/dev/null; then
+  if ping -c 1 8.8.8.8 &>/dev/null; then
     rm "$connectionLostFile" &>/dev/null
   else
     touch "$connectionLostFile"
+  fi
+
+  if [[ -r "$connectionLostFile" ]]; then
+    echo $(colorize " " 'noConnection')
+    checkDelay=30
   fi
 }
 # }}}
