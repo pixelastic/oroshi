@@ -30,7 +30,6 @@ dconf write /org/compiz/integrated/run-command-6 "['<Control><Super>T']"
 dconf write /org/compiz/integrated/command-7 "'hipchat'"
 dconf write /org/compiz/integrated/run-command-7 "['<Super>H']"
 
-
 dconf write /org/compiz/integrated/command-8 "''"
 dconf write /org/compiz/integrated/run-command-8 "['']"
 dconf write /org/compiz/integrated/command-9 "''"

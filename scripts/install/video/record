@@ -1,6 +1,12 @@
 #!/usr/bin/env zsh
 
-# Installing byzanz to record gifs
-sudo add-apt-repository ppa:fossfreedom/byzanz
-sudo apt-get update
-sudo apt-get install byzanz
+# FFcast to select a part of the screen
+cd ~/local/src/
+git clone git@github.com:lolilolicon/FFcast.git
+cd ./FFcast
+git submodule init
+git submodule update
+./bootstrap
+./configure --prefix ~/local --enable-xrectsel
+make
+make install

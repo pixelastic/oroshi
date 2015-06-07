@@ -17,11 +17,15 @@ dconf write /org/compiz/profiles/unity/plugins/commands/run-command13-key "'<Con
 dconf write /org/compiz/profiles/unity/plugins/commands/command14 "'gnome-screenshot -c'"
 dconf write /org/compiz/profiles/unity/plugins/commands/run-command14-key "'<Control><Alt><Super>Print'"
 
+# Super-Q for starting/stopping gif screencast
+dconf write /org/compiz/profiles/unity/plugins/commands/command15 "'/home/tim/.oroshi/scripts/bin/gif-record'"
+dconf write /org/compiz/profiles/unity/plugins/commands/run-command15-key "'<Super>q'"
+
 # Alt-Up and Alt-Down change brightness
-dconf write /org/compiz/profiles/unity/plugins/commands/command15 "'xbacklight -inc 20'"
-dconf write /org/compiz/profiles/unity/plugins/commands/run-command15-key "'<Alt>Up'"
-dconf write /org/compiz/profiles/unity/plugins/commands/command16 "'xbacklight -dec 20'"
-dconf write /org/compiz/profiles/unity/plugins/commands/run-command16-key "'<Alt>Down'"
+dconf write /org/compiz/profiles/unity/plugins/commands/command16 "'xbacklight -inc 20'"
+dconf write /org/compiz/profiles/unity/plugins/commands/run-command16-key "'<Alt>Up'"
+dconf write /org/compiz/profiles/unity/plugins/commands/command17 "'xbacklight -dec 20'"
+dconf write /org/compiz/profiles/unity/plugins/commands/run-command17-key "'<Alt>Down'"
 
 # Alt-Home and Alt-End to change volume
 dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-up "'<Alt>Home'"
