@@ -299,33 +299,39 @@ function getPromptRebase() {
 
 # Connection indicator {{{
 function getConnectionIndicator() {
+  # Are we offline ?
   connectionLostFile="/tmp/zsh_connection_lost"
-  checkDelay=$((5*60))
-
-  # Getting the last time we checked connectivity
-  lastConnectionFile="/tmp/zsh_last_connection_check"
-  lastConnection="$(cat "$lastConnectionFile" 2>/dev/null)"
-  if [[ "$lastConnection" == '' ]]; then
-    lastConnection=0
-  fi
-
-  # We only check once in a while (30s when offline, 5mn when online)
-  now="$(date +%s)"
-  if [[ $(($now-$lastConnection)) -lt $checkDelay ]]; then
-    return
-  fi
-  # Save new check date
-  date +%s > "$lastConnectionFile"
-
-  if ping -c 1 8.8.8.8 &>/dev/null; then
-    rm "$connectionLostFile" &>/dev/null
-  else
-    touch "$connectionLostFile"
-  fi
-
+  isOffline=0
   if [[ -r "$connectionLostFile" ]]; then
-    echo $(colorize " " 'noConnection')
+   isOffline=1
+  fi
+  # When did we last check ?
+  lastConnectionFile="/tmp/zsh_last_connection_check"
+  lastConnectionDate=$(cat $lastConnectionFile 2>/dev/null)
+  if [[ "$lastConnectionDate" == '' ]]; then
+    lastConnectionDate=0
+  fi
+  # How often do we need to check (in seconds)
+  checkDelay=$((5*60))
+  if [[ "$isOffline" == 1 ]]; then
     checkDelay=30
+  fi
+
+  # Is the delay long enough since the last check ?
+  now="$(date +%s)"
+  if [[ $(($now-$lastConnectionDate)) -gt $checkDelay ]]; then
+    # Save new check date
+    date +%s > "$lastConnectionFile"
+    # Actually check connection
+    if ping -c 1 8.8.8.8 &>/dev/null; then
+      rm "$connectionLostFile" &>/dev/null
+    else
+      touch "$connectionLostFile"
+    fi
+  fi
+
+  if [[ $isOffline == 1 ]]; then
+    echo $(colorize " " 'noConnection')
   fi
 }
 # }}}
