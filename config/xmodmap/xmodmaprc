@@ -99,7 +99,9 @@ keycode 35 = dollar sterling dollar sterling currency yen
 
 keycode 38 = q Q q Q asciitilde
 keycode 39 = s S s S
-keycode 40 = d D d D
+! U2610 = ☐
+! U2611 = ☑
+keycode 40 = d D d D U2610 U2611
 keycode 41 = f F f F
 keycode 42 = g G g G
 keycode 43 = h H h H numbersign
