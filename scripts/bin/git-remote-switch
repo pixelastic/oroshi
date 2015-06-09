@@ -2,12 +2,11 @@
 require_relative '../etc/git-helper/git_helper'
 # Change a branch remote
 # Usage:
-# $ git remote-edit upstream
-# $ git remote-edit branch upstream
-# $ git remote-edit upstream branch
+# $ git remote-switch upstream
+# $ git remote-switch branch upstream
+# $ git remote-switch upstream branch
 #
 # If no branch is specified, will update the remote of the current branch.
-
 class GitRemoteSwitch
   include GitHelper
 
@@ -16,13 +15,13 @@ class GitRemoteSwitch
 
     elements = guess_elements(@args)
 
-    @remoteName = elements[:remote]
-    @branchName = elements[:branch]
+    @remote_name = elements[:remote]
+    @branch_name = elements[:branch]
   end
 
   def run
-    system("git branch #{@branchName} --set-upstream-to #{@remoteName}/#{@branchName}")
+    system("git branch #{@branch_name} \
+           --set-upstream-to #{@remote_name}/#{@branch_name}")
   end
-
 end
-GitRemoteSwitch.new(*ARGV).run()
+GitRemoteSwitch.new(*ARGV).run

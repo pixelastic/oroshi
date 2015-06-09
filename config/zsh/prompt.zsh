@@ -174,6 +174,9 @@ function getPromptRemote() {
   if [[ $remoteName == 'upstream' ]]; then
     remoteColor='remoteUpstream'
   fi
+  if [[ $remoteName == 'algolia' ]]; then
+    remoteColor='remoteAlgolia'
+  fi
 
   echo $(colorize "$remoteName " $remoteColor)
 }

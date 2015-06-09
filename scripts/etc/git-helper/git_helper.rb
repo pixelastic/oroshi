@@ -22,6 +22,7 @@ module GitHelper
     remote_heroku: 141,
     remote_origin: 184,
     remote_upstream: 69,
+    remote_algolia: 67,
     tag: 241,
     url: 250,
     valid: 35

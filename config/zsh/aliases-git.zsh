@@ -64,14 +64,15 @@ alias vrec='git rebase --continue'
 alias vres='git rebase --skip'
 # }}}
 # [r]emote {{{
-alias vr?='git remote-exists'
 alias vrR='git remote rm'
 alias vrc='git remote-create'
 alias vrl='git remote-list'
+alias vrmv='git remote rename'
 alias vrpl='echo "✘ Use vbpl instead"'
 alias vrps='echo "✘ Use vbps instead"'
 alias vrr='git remote-current'
 alias vrs='git remote-switch'
+alias vr?='git remote-exists'
 # }}}
 # [t]ags {{{
 alias vt?='git tag-exists'
