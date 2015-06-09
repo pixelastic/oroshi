@@ -32,3 +32,9 @@ dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-up "'<Alt>Home'
 dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-down "'<Alt>End'"
 # Alt-Maj-Home to toggle mute
 dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-mute "'<Alt><Shift>Home'"
+
+# Disable
+dconf write /org/compiz/profiles/unity/plugins/commands/command18 "''"
+dconf write /org/compiz/profiles/unity/plugins/commands/run-command18-key "'unset'"
+dconf write /org/compiz/profiles/unity/plugins/commands/command19 "''"
+dconf write /org/compiz/profiles/unity/plugins/commands/run-command19-key "'unset'"

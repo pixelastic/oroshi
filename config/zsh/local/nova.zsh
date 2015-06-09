@@ -29,9 +29,10 @@ function play-random-dir() {
 # Oroshi {{{
 # Reload keybings for this OS
 function ok() {
-  for file in ~/.oroshi/config/ubuntu/15.04/keybindings/*.sh; do
-    source $file
-  done
+  ~/.oroshi/scripts/deploy/xmodmap
+  ~/.oroshi/config/ubuntu/15.04/keybindings/windows.sh
+  ~/.oroshi/config/ubuntu/15.04/keybindings/custom.sh
+  ~/.oroshi/config/ubuntu/15.04/keybindings/media.sh
 }
 # }}}
 
