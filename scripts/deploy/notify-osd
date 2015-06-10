@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+pkill notify-osd
+ln -sf ~/.oroshi/config/ubuntu/15.04/notify-osd/notify-osd.conf ~/.notify-osd
+notify-send "Notify config updated"

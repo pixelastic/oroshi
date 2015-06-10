@@ -1,4 +1,16 @@
 #!/usr/bin/env bash
 
+# Unity tweaks
 sudo apt-get install compizconfig-settings-manager
 sudo apt-get install compiz-plugins
+
+# Update the OSD (On-Screen Display).
+sudo add-apt-repository ppa:leolik/leolik 
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install libnotify-bin
+pkill notify-osd
+
+sudo add-apt-repository ppa:nilarimogard/webupd8
+sudo apt-get update
+sudo apt-get install notifyosdconfig
