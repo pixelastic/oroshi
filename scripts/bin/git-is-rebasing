@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# Check if current repo is currently rebasing
+
+local gitRoot="$(git root)"
+local rebaseDir="${gitRoot}/.git/rebase-apply"
+
+# No rebase in progress
+if [[ ! -r $rebaseDir/rebasing ]]; then
+  exit 1
+fi
+exit 0
+

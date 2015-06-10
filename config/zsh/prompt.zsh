@@ -8,7 +8,7 @@ promptinit
 PROMPT='${promptUsername}$(getPromptExitCode)${promptHostname}:$(getPromptPath) $(getPromptHash) '
 RPROMPT=''
 function get_RPROMPT() {
-  echo "$(getPromptRepoIndicator)$(getConnectionIndicator)"
+  echo "$(getPromptRepoIndicator)"
 }
 
 # Asynchronous right prompt {{{
@@ -150,7 +150,7 @@ function getPromptRepoIndicator() {
   if ! git-is-repository; then
     echo ""
   else
-    echo "$(getPromptTag)$(getPromptRebase)$(getPromptRemote)$(getPromptBranch)"
+    echo "$(getPromptTag)$(getPromptRemote)$(getPromptBranch)"
   fi
 }
 # }}}
@@ -184,6 +184,12 @@ function getPromptRemote() {
 
 # Branch {{{
 function getPromptBranch() {
+  # Is actually in the middle of a rebase
+  if git-is-rebasing; then
+    echo "$(getPromptRebase)"
+    return
+  fi
+
   local branchName="$(git branch-current)"
   local branchColor='branchDefault'
 
@@ -286,56 +292,16 @@ function getPromptTag() {
 
 # Rebase {{{
 function getPromptRebase() {
-  local gitRoot="$(git root)"
-  local rebaseDir="${gitRoot}/.git/rebase-apply"
-
   # No rebase in progress
-  if [[ ! -r $rebaseDir/rebasing ]]; then
+  if ! git-is-rebasing; then
     return
   fi
 
+  local rebaseDir="$(git root)/.git/rebase-apply"
   local maxRebase="$(cat $rebaseDir/last)"
   local nextRebase="$(cat $rebaseDir/next)"
-  echo $(colorize "${nextRebase}/${maxRebase}   " 'rebase')
-}
-# }}}
-
-# Connection indicator {{{
-function getConnectionIndicator() {
-  # Are we offline ?
-  connectionLostFile="/tmp/zsh_connection_lost"
-  isOffline=0
-  if [[ -r "$connectionLostFile" ]]; then
-   isOffline=1
-  fi
-  # When did we last check ?
-  lastConnectionFile="/tmp/zsh_last_connection_check"
-  lastConnectionDate=$(cat $lastConnectionFile 2>/dev/null)
-  if [[ "$lastConnectionDate" == '' ]]; then
-    lastConnectionDate=0
-  fi
-  # How often do we need to check (in seconds)
-  checkDelay=$((5*60))
-  if [[ "$isOffline" == 1 ]]; then
-    checkDelay=30
-  fi
-
-  # Is the delay long enough since the last check ?
-  now="$(date +%s)"
-  if [[ $(($now-$lastConnectionDate)) -gt $checkDelay ]]; then
-    # Save new check date
-    date +%s > "$lastConnectionFile"
-    # Actually check connection
-    if ping -c 1 8.8.8.8 &>/dev/null; then
-      rm "$connectionLostFile" &>/dev/null
-    else
-      touch "$connectionLostFile"
-    fi
-  fi
-
-  if [[ $isOffline == 1 ]]; then
-    echo $(colorize " " 'noConnection')
-  fi
+  local commitHash="$(git commit-current)"
+  echo $(colorize "${nextRebase}/${maxRebase} ${commitHash} " 'rebase')
 }
 # }}}
 
