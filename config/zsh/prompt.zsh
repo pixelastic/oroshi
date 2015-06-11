@@ -8,7 +8,7 @@ promptinit
 PROMPT='${promptUsername}$(getPromptExitCode)${promptHostname}:$(getPromptPath) $(getPromptHash) '
 RPROMPT=''
 function get_RPROMPT() {
-  echo "$(getPromptRepoIndicator)"
+echo "$(getRubyIndicator)$(getPromptRepoIndicator)"
 }
 
 # Asynchronous right prompt {{{
@@ -302,6 +302,22 @@ function getPromptRebase() {
   local nextRebase="$(cat $rebaseDir/next)"
   local commitHash="$(git commit-current)"
   echo $(colorize "${nextRebase}/${maxRebase} ${commitHash} " 'rebase')
+}
+# }}}
+
+# Ruby {{{
+function getRubyIndicator() {
+  # No rvm
+  if ! which rvm &>/dev/null; then
+    return
+  fi
+  defaultVersion="$(ruby-version-default)"
+  currentVersion="$(rvm-prompt v)"
+  # Default version
+  if [[ $defaultVersion == $currentVersion ]]; then
+    return
+  fi
+  echo $(colorize "r$currentVersion " 'rubyVersion')
 }
 # }}}
 

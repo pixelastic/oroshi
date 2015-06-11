@@ -25,8 +25,9 @@ promptColorDefault=(
   hostname              "171"
   pathWritable          "035"
   pathNotWritable       "160"
-  lastCommandFailed     "203"
-  noConnection          "160"
+  lastCommandFailed     "035"
+  rubyVersion           "203"
+
 
   tag                   "241"
   submodule             "136"

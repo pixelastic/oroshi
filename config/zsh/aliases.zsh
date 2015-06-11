@@ -267,16 +267,16 @@ if [[ -r $nvmScript ]]; then
 	nvm use 0.10 &>/dev/null
 fi
 # }}}
-# RVM {{{
-local rvmScript=~/.rvm/scripts/rvm
-if [[ -r $rvmScript ]]; then
-	path=($path	$HOME/.rvm/bin)
-  source $rvmScript
-fi
-# }}}
 # GVM {{{
 local gvmScript=~/.gvm/scripts/gvm
 if [[ -r $gvmScript ]]; then
   source $gvmScript
+fi
+# }}}
+# RVM {{{
+local rvmScript=~/.rvm/scripts/rvm
+if [[ -r $rvmScript ]]; then
+	path=($HOME/.rvm/bin $path)
+  source $rvmScript
 fi
 # }}}
