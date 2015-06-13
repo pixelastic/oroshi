@@ -35,7 +35,7 @@ alias vce='git commit-edit'
 alias vcf='git commit-search'
 alias vcl+='git peek --stat'
 alias vcl='git peek'
-alias vcla='git peek -p'
+alias vcla='git peek -p -D'
 alias vcri='git rebase -i'
 alias vcv='git show'
 # }}}
