@@ -61,12 +61,7 @@ inoremap <silent> <buffer> <F4> <Esc>:call JavascriptBeautify()<CR>
 nnoremap <silent> <buffer> <F4> :call JavascriptBeautify()<CR>
 function! JavascriptBeautify() 
   let linenr=line('.')
-  silent! execute ':%s/^\s*$//'
-  " " Remove empty lines after function definitions
-  " silent! execute '%s/{\n\n/{\r/'
-  " " clean the file
-  " silent! w! /tmp/vim_jsclean
-  " silent! execute '%!jsclean /tmp/vim_jsclean'
+  silent! execute '%!eslintfix %'
   execute 'normal '.linenr.'gg'
 endfunction
 " }}}
