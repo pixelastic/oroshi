@@ -69,6 +69,7 @@ function! MarkdownBeautify()
   silent! %s/\<interet/intérêt/e
   silent! %s/\<entete/entête/e
   silent! %s/\<tres\>/très/e
+  silent! %s/\<trés\>/très/e
   silent! %s/\<etre\>/être/e
   silent! %s/\<coute\>/coûte/e
 
