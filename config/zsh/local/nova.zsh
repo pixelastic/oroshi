@@ -46,3 +46,4 @@ function dumptmp() {
 
 alias hipchat-dnd='watch -n 300 ~/local/tmp/hipchat/dnd'
 alias bloomberg-sync='rcp --exclude=.gitignore --exclude=json --exclude=sitemaps --exclude=_cache ./* scrapper:bloomberg'
+alias slack='/usr/bin/chromium-browser --app=https://algolia.slack.com/messages/general/'

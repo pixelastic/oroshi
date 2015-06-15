@@ -30,8 +30,11 @@ dconf write /org/compiz/integrated/run-command-6 "['<Control><Super>T']"
 dconf write /org/compiz/integrated/command-7 "'hipchat'"
 dconf write /org/compiz/integrated/run-command-7 "['<Super>H']"
 
-dconf write /org/compiz/integrated/command-8 "''"
-dconf write /org/compiz/integrated/run-command-8 "['']"
+# Slack
+dconf write /org/compiz/integrated/command-8 "'chromium-browser --app=https://algolia.slack.com/messages/general/'"
+dconf write /org/compiz/integrated/run-command-8 "['<Super>S']"
+dconf write /org/compiz/profiles/unity/plugins/expo/expo-key "'Disabled'"
+
 dconf write /org/compiz/integrated/command-9 "''"
 dconf write /org/compiz/integrated/run-command-9 "['']"
 dconf write /org/compiz/integrated/command-10 "''"

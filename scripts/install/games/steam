@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+
+echo "Downloading .deb"
+wget http://media.steampowered.com/client/installer/steam.deb -O /tmp/steam.deb
+
+echo "Installing dependencies"
+sudo apt-get install gdebi-core
+
+echo "Installing .deb"
+sudo gdebi /tmp/steam.deb
+
+
+
