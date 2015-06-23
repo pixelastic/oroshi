@@ -14,6 +14,7 @@ sudo apt-get install libgsm1-dev \
                     libdc1394-22-dev \
                     libgsm1 \
                     libgsm1-dev \
+                    libass-dev \
                     libopenjpeg-dev \
                     libschroedinger-1.0-0 \
                     libschroedinger-dev \
@@ -36,17 +37,15 @@ sudo apt-get install libgsm1-dev \
 cd ./ffmpeg
 ./configure \
   --prefix=/home/$USER/local/ \
+  --enable-fontconfig \
   --enable-gpl \
-  --enable-version3 \
-  --enable-nonfree \
-  --enable-postproc \
-  --enable-x11grab \
-  --enable-libopencore-amrnb \
-  --enable-libopencore-amrwb \
+  --enable-libass \
   --enable-libdc1394 \
   --enable-libfaac \
   --enable-libgsm \
   --enable-libmp3lame \
+  --enable-libopencore-amrnb \
+  --enable-libopencore-amrwb \
   --enable-libopenjpeg \
   --enable-libschroedinger \
   --enable-libspeex \
@@ -54,6 +53,10 @@ cd ./ffmpeg
   --enable-libvorbis \
   --enable-libvpx \
   --enable-libx264 \
-  --enable-libxvid
+  --enable-libxvid \
+  --enable-nonfree \
+  --enable-postproc \
+  --enable-version3 \
+  --enable-x11grab 
 make
 make install

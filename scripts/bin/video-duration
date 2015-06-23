@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+mplayer \
+  -identify \
+  -frames 0 \
+  -vo null \
+  -nosound \
+  "$1" \
+  2>&1 \
+  | \
+  awk -F= '/LENGTH/{print $2}'

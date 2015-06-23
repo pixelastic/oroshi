@@ -221,10 +221,11 @@ function header() {
 # }}}
 
 # Npm {{{
-alias ni='npm install'
-alias nis='npm install --save'
-alias nisd='npm install --save-dev'
+alias nRg='npm uninstall -g'
 alias nig='npm install --global'
+alias nisd='npm install --save-dev'
+alias nis='npm install --save'
+alias ni='npm install'
 # }}}
 # Grunt {{{
 alias gt='grunt test'
