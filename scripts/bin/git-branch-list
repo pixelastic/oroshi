@@ -1,68 +1,66 @@
 #!/usr/bin/env ruby
 require_relative '../etc/git-helper/git_helper'
-# Display the list of the current local branches, with colors.
 
 Branch = Struct.new(:branch, :hash, :message)
+# Display the list of the current local branches, with colors.
 class GitBranchList
   include GitHelper
 
   def initialize(*args)
     @flags = get_flag_args(args)
-    @currentBranch = current_branch
-    @branchList = branch_list
+    @current_branch = current_branch
+    @branch_list = branch_list
   end
 
   def branch_list
-    output = %x[git branch --verbose #{@flags.join(' ')}]
+    output = `git branch --verbose #{@flags.join(' ')}`
     branches = []
     output.each_line do |line|
       branch, hash, message = line.match(/^.{2}([^ ]*) *([^ ]*) (.*)$/).captures
       branches << Branch.new(branch, hash, message)
     end
-    return branches
+    branches
   end
 
   def longest_branch_length
-    @branchList.map {|obj| obj[:branch] }.group_by(&:size).max.last[0].length
+    @branch_list.map { |obj| obj[:branch] }.group_by(&:size).max.last[0].length
   end
 
   def output_current_branch(branch)
-    return colorize("", color(:valid)) if @currentBranch == branch
-    return " "
+    return colorize('', color(:valid)) if @current_branch == branch
+    ' '
   end
 
   def output_branch_name(branch)
     color = branch_color(branch)
     output = branch.ljust(longest_branch_length)
-    return colorize(output, color)
+    colorize(output, color)
   end
 
   def output_push_pull(branch)
     color = branch_color(branch)
     output = push_pull_indicator(branch)
-    output = "  " if !output
-    return colorize(output, color)
+    output = '  ' unless output
+    colorize(output, color)
   end
 
   def output_hash(hash)
-    return colorize(hash, color(:hash))
+    colorize(hash, color(:hash))
   end
 
   def output_message(message)
-    return colorize(message, color(:message))
+    colorize(message, color(:message))
   end
 
   def run
-    @branchList.each do |branch|
+    @branch_list.each do |branch|
       current_branch = output_current_branch(branch[:branch])
-      branch_name = output_branch_name(branch[:branch])
       push_pull = output_push_pull(branch[:branch])
+      branch_name = output_branch_name(branch[:branch])
       hash = output_hash(branch[:hash])
       message = output_message(branch[:message])
       puts "#{current_branch} #{push_pull} #{branch_name}  #{hash}  #{message}"
     end
-
   end
 end
-
-GitBranchList.new(*ARGV).run()
+GitBranchList.new(*ARGV).run

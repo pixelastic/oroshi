@@ -8,7 +8,6 @@ require_relative '../etc/git-helper/git_helper'
 # $ git-branch-pull {origin} develop
 # $ git-branch-pull upstream develop
 # $ git-branch-pull develop upstream
-
 class GitBranchPull
   include GitHelper
 
@@ -20,16 +19,27 @@ class GitBranchPull
     @flags << '--rebase'
 
     elements = guess_elements(@args)
-    @remoteName = elements[:remote]
-    @branchName = elements[:branch]
+    @remote_name = elements[:remote]
+    @branch_name = elements[:branch] || elements[:unknown][0]
   end
 
+  def pull_unknown_branch
+    system("git fetch #{@remote_name} #{@branch_name}:#{@branch_name}")
+    system("git checkout #{@branch_name}")
+  end
+
+  def pull_known_branch
+    system("git pull #{@flags.join(' ')} #{@remote_name} #{@branch_name}")
+    system("git fetch --tags #{@remote_name}")
+    system('git submodule update')
+  end
 
   def run
-    system("git pull #{@flags.join(' ')} #{@remoteName} #{@branchName}")
-    system("git fetch --tags #{@remoteName}")
-    system("git submodule update")
+    if branch?(@branch_name)
+      pull_known_branch
+    else
+      pull_unknown_branch
+    end
   end
-
 end
-GitBranchPull.new(*ARGV).run()
+GitBranchPull.new(*ARGV).run

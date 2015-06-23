@@ -33,7 +33,7 @@ module GitHelper
   end
 
   def branch_color(branch)
-    color_symbol = ('branch_' + branch).to_sym
+    color_symbol = ('branch_' + branch.gsub('-', '_')).to_sym
     return @@colors[color_symbol] if @@colors[color_symbol]
     @@colors[:branch]
   end
@@ -141,21 +141,41 @@ module GitHelper
 
   def guess_elements(elements)
     output = {}
+    initial_elements = elements
 
-    # Guess element types
+    # Guess element types from the list of passed elements, by importance.
+    # First the remotes, then the tags, and finally the branches.
     elements.each do |element|
-      output[:branch] = element if branch? element
-      output[:remote] = element if remote? element
-      output[:tag] = element if tag? element
+      if remote?(element) && !output.key?(:remote)
+        output[:remote] = element
+        initial_elements.delete(element)
+        next
+      end
+
+      if tag?(element) && !output.key?(:tag)
+        output[:tag] = element
+        initial_elements.delete(element)
+        next
+      end
+
+      if branch?(element) && !output.key?(:branch)
+        output[:branch] = element
+        initial_elements.delete(element)
+        next
+      end
     end
 
-    # Set current one as default
-    output[:branch] = current_branch unless output[:branch]
-    output[:remote] = current_remote unless output[:remote]
-    output[:tag] = current_tag unless output[:tag]
+    # If no more args passed, we use current settings
+    if initial_elements.size == 0
+      output[:branch] = current_branch unless output[:branch]
+      output[:remote] = current_remote unless output[:remote]
+      output[:tag] = current_tag unless output[:tag]
+    else
+      output[:unknown] = initial_elements
+    end
 
     # If still no remote, we default to origin
-    output[:remote] = 'origin' if output[:remote] == ''
+    output[:remote] = 'origin' if output[:remote].nil?
 
     output
   end
