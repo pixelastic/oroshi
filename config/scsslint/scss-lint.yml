@@ -1,11 +1,29 @@
+# Defaults : https://github.com/brigade/scss-lint/blob/master/config/default.yml
 linters:
 
+  # Do not allow #selector in CSS
   IdSelector:
     enabled: false
 
+  # Do not allow overqualifying an element
   QualifyingElement:
     enabled: true
     severity: error
     allow_element_with_attribute: false
     allow_element_with_class: false
     allow_element_with_id: false
+
+  # Prefer block__element--modifier syntax
+  SelectorFormat:
+    enabled: true
+    convention: 'hyphenated_BEM'
+
+  # Hexadecimal in colors should be uppercase
+  HexNotation:
+    enabled: true
+    style: uppercase
+
+  # Remove leading zero in units
+  LeadingZero:
+    enabled: true
+    style: exclude_zero
