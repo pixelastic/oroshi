@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require_relative '../etc/apt-get-helper/apt-get-helper'
-# Install specific package
 
+# Install specific package
 class AptGetInstall
   include AptGetHelper
 
@@ -12,7 +12,7 @@ class AptGetInstall
   def run
     checklist = {}
     @packages.each do |package|
-      if is_installed? package
+      if installed? package
         checklist[package] = false
         next
       end
@@ -30,7 +30,5 @@ class AptGetInstall
       end
     end
   end
-
 end
-
-AptGetInstall.new(*ARGV).run()
+AptGetInstall.new(*ARGV).run
