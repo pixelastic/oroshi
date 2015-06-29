@@ -1,37 +1,37 @@
 #!/usr/bin/env ruby
 require_relative '../etc/apt-get-helper/apt-get-helper'
-# Find all packages matching the keyword given
 
+# Find all packages matching the keyword given
 class AptGetSearch
   include AptGetHelper
 
   def initialize(keyword)
-    @searchList = search(keyword)
+    @search_list = search(keyword)
   end
 
   def search(keyword)
-    raw = %x[apt-cache search #{keyword}]
+    raw = `apt-cache search #{keyword}`
     results = []
     raw.each_line do |line|
       name, description = line.chomp.match(/^([^ ]*) - (.*)$/).captures
       # Keep only packages which name matches what we asked for
-      next if !name.include?(keyword)
+      next unless name.include?(keyword)
 
       results << {
-        :name => name,
-        :description => description,
+        name: name,
+        description: description
       }
     end
 
-    return results.sort_by {|result| result[:name]}
+    results.sort_by { |result| result[:name] }
   end
 
   def run
-    longest_name = longest_by_type(@searchList, :name)
+    longest_name = longest_by_type(@search_list, :name)
 
-    @searchList.each do |result|
-      if is_installed?(result[:name]) 
-        name = colorize("✔ "+result[:name].ljust(longest_name.size), :success)
+    @search_list.each do |result|
+      if installed?(result[:name])
+        name = colorize('✔ ' + result[:name].ljust(longest_name.size), :success)
       else
         name = "  #{result[:name]}"
       end
@@ -42,6 +42,4 @@ class AptGetSearch
     end
   end
 end
-
-AptGetSearch.new(*ARGV).run()
-
+AptGetSearch.new(*ARGV).run
