@@ -25,7 +25,7 @@ promptColorDefault=(
   hostname              "171"
   pathWritable          "035"
   pathNotWritable       "160"
-  lastCommandFailed     "035"
+  lastCommandFailed     "160"
   rubyVersion           "203"
 
 
