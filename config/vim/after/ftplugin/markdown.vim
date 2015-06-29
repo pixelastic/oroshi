@@ -77,8 +77,9 @@ function! MarkdownBeautify()
 endfunction
 " }}}
 " Auto generate index.html when in a remark directory {{{
-let b:generateScript = expand('%:h').'/generate'
-if filereadable(b:generateScript)
+let b:currentFile = expand('%:h')
+let b:generateScript = expand('%:p:h').'/generate'
+if b:currentFile == 'slides.md' && filereadable(b:generateScript)
   augroup markdown_generate_remark
     au!
     au BufWritePost <buffer> silent! execute '!'.b:generateScript
