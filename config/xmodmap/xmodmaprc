@@ -71,8 +71,8 @@ keycode 66 = F13
 ! ²
 keycode 49 = F14 twosuperior
 
-! unbreakable space with Maj+Space
-keycode 65 = space nobreakspace space nobreakspace
+! Space bar
+keycode 65 = space space space space
 
 ! rtl and ltr overrides on < and >
 keycode 94 = less greater less greater U202E U202D
@@ -121,7 +121,7 @@ keycode 54 = c C c C c copyright
 ! U2714 = ✔
 keycode 55 = v V v V U2713 U2714
 keycode 56 = b B b B
-keycode 57 = n N n N
+keycode 57 = n N n N nobreakspace U202F
 ! U230D = ‽
 ! U2E2E = ⸮
 keycode 58 = comma question comma question U203D U2E2E
