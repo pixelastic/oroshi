@@ -32,7 +32,7 @@ function! MultiPurposeCapsLock()
   endif
   return pumvisible() ? autocomplete_cancel : mode_normal
 endfunction
-inoremap [25~ <C-R>=MultiPurposeCapsLock()<CR>
+inoremap <silent> [25~ <C-R>=MultiPurposeCapsLock()<CR>
 vnoremap [25~ <Esc>
 cnoremap [25~ <C-C>
 nnoremap [25~ i
@@ -84,7 +84,7 @@ let g:UltiSnipsJumpForwardTrigger="<C-K>"
 let g:UltiSnipsJumpBackwardTrigger="<C-J>"
 let g:UltiSnipsEditSplit="vertical"
 " Remap Tab
-inoremap <Tab> <C-R>=MultiPurposeTab()<CR>
+inoremap <silent> <Tab> <C-R>=MultiPurposeTab()<CR>
 snoremap <Tab> <Esc>:call UltiSnips#ExpandSnippetOrJump()<CR>
 nnoremap <Tab> >>
 nnoremap <S-Tab> <<

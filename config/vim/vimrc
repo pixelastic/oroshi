@@ -88,9 +88,8 @@ set ttyfast
 set lazyredraw
 " Display line numbers in left column
 set number
-" Adds an -- INSERT -- or -- VISUAL -- text whenever we enter on of these
-" modes.
-set showmode
+" Hide  -- INSERT -- or -- VISUAL -- text, we already have it in the statusbar
+set noshowmode
 " Show more info about current command
 set showcmd
 " Keep search results centered
@@ -339,7 +338,7 @@ augroup END
 " ,ve to edit vimrc
 nnoremap <leader>ve :tabe ~/.oroshi/config/vim/vimrc<CR>
 " ,vr to reload vimrc
-nnoremap <leader>vr :source ~/.vimrc<CR>:let &filetype=&filetype<CR>:loadview<CR>:nohlsearch<CR>
+nnoremap <leader>vr mz:source ~/.vimrc<CR>:let &filetype=&filetype<CR>:loadview<CR>:nohlsearch<CR>`z
 
 " man to open the manpage of a command in a new tab
 nnoremap <silent> man :tabe<CR>:setlocal filetype=man<CR>:.!man<Space>
