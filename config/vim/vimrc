@@ -141,10 +141,16 @@ nnoremap <silent> O1;5Q :call ReloadColorscheme('summerfruit')<CR>
 inoremap <silent> O1;5Q <Esc>:call ReloadColorscheme('summerfruit')<CR>li
 " Display the current highlight group of the word under cursor
 function! Debugcolor()
+  let synstack = synstack(line("."), col("."))
+  if len(synstack) == 0
+    echo "No special color"
+    execute 'verbose hi Normal'
+    return
+  endif
 	for id in synstack(line("."), col("."))
-		execute 'verbose hi '.synIDattr(id, "name")
+		execute 'hi '.synIDattr(id, "name")
 	endfor
-	execute 'verbose hi '.synIDattr(synIDtrans(id), "name")
+	execute 'hi '.synIDattr(synIDtrans(id), "name")
 endfunction
 nnoremap <F3> :call Debugcolor()<CR>
 "}}}
