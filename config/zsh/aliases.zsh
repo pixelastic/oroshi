@@ -72,7 +72,7 @@ alias la="ls -a"
 # Tree that only display directories
 alias treed='tree -dN'
 # Find a file
-function f() { find . -type f -name "*$1*" }
+function f() { find . -type f -iname "*$1*" }
 # watch tree
 alias wt='watch -c ''tree -aNC -I ".hg\|.git"'''
 # Prefix a date to a file
