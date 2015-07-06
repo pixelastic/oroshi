@@ -246,6 +246,9 @@ inoremap <C-L> <Esc>gt
 cnoremap <C-H> <C-C>gT
 cnoremap <C-L> <C-C>gt
 "}}}
+" TYPOS {{{
+iabbrev Gvien Given
+" }}}
 " WILDMENU {{{
 " We enable a simple wildmenu with basic Tab-completion.
 set wildmenu
