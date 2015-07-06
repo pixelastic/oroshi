@@ -81,6 +81,8 @@ alias prd='prefix-date'
 alias fuck='$(thefuck $(fc -ln -1))'
 # Find all extensions
 alias extension-list="find . -type f | awk -F'.' '{print \$NF}' | sort| uniq -c | sort -g"
+# Always run guard in clear mode
+alias guard='guard --clear'
 # }}}
 # Download {{{
 alias pd='plowdown'
