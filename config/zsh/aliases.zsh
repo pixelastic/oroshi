@@ -246,6 +246,11 @@ alias gs="gem search"
 alias gu="gem update"
 alias gR="gem uninstall"
 # }}}
+# Jekyll {{{
+alias jap='jekyll algolia push'
+alias jb='jekyll build'
+alias jsw='jekyll serve --watch'
+# }}}
 # mark / jump {{{
 # Thanks to
 # : http://jeroenjanssens.com/2013/08/16/quickly-navigate-your-filesystem-from-the-command-line.html
