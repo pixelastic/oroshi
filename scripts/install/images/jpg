@@ -10,10 +10,18 @@ git clone git@github.com:tjko/jpegoptim.git
 sudo apt-get install libjpeg-dev
 
 cd jpegoptim
-./configure --prefix=/home/$USER/local/
+./configure --prefix="/home/$USER/local/"
 make
 make strip
 make install
+
+# Installing dssim
+cd ~/local/src
+git clone git@github.com:pornel/dssim.git
+cd ./dssim
+make
+cd ~/local/bin
+ln -fs ../src/dssim/bin/dssim .
 
 # Installing cjpeg-dssim
 cd ~/local/src
