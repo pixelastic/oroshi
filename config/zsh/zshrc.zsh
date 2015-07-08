@@ -34,5 +34,4 @@ source ./prompt.zsh
 typeset -U path
 
 # Move back to original dir
-cd $currentDir
-
+cd  $currentDir

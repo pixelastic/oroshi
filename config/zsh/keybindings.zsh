@@ -18,14 +18,13 @@ autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '^V' edit-command-line
 # Ctrl-P for fuzzy finding
-export FZF_COMPLETION_TRIGGER=''
-bindkey '^P' fzf-completion
-bindkey '^I' $fzf_default_completion
+# Use ag for Ctrl-P fuzzy find
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+bindkey '^P' fzf-file-widget
 # Ctrl-J cycle through words on the line
 autoload -Uz copy-earlier-word
 zle -N copy-earlier-word
 bindkey "^J" copy-earlier-word
-
 
 # (re)enabling keybindings in insert mode
 bindkey -M viins "[3~" delete-char        # Delete

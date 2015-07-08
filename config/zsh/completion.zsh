@@ -75,7 +75,6 @@ if [[ -r ~/.fzf.zsh ]]; then
 fi
 # }}}
 
-
 # Debug method to reload the completion functions {{{
 r() {
   \rm -f ~/.zcompdump
