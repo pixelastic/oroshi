@@ -26,5 +26,6 @@ rsync \
   --modify-window=1 \
   --prune-empty-dirs \
   --exclude '- tmp/*' \
+  --exclude '- .Trash-1000/*' \
   $from \
   $to
