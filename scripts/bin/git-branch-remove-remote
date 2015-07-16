@@ -7,7 +7,6 @@ require_relative '../etc/git-helper/git_helper'
 # $ git-branch-remove-remote branch1 branch2 (origin)
 # $ git-branch-remove-remote branch upstream
 # $ git-branch-remove-remote upstream branch
-
 class GitBranchRemoveRemote
   include GitHelper
 
@@ -28,7 +27,7 @@ class GitBranchRemoveRemote
   end
 
   def run
-    system("git push #{@remoteName} --delete #{@branches.join(' ')}")
+    system("git push #{@remoteName} --no-verify --delete #{@branches.join(' ')}")
   end
 
 end
