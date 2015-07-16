@@ -327,7 +327,8 @@ let g:syntastic_mode_map={ 'mode': 'passive',
                        \ 'javascript',
                        \ 'json',
                        \ 'ruby',
-                       \ 'bash', 'sh', 'zsh'
+                       \ 'bash', 'sh', 'zsh',
+                       \ 'yaml'
                      \ ],
                      \ 'passive_filetypes': [] }
 " }}}
