@@ -1,5 +1,11 @@
 " VIM
-" Use marker folding
+" Fold {{{
 setlocal foldmethod=marker
-" Enable autocompletion
+"}}}
+" Misc {{{
 setlocal omnifunc=syntaxcomplete#Complete
+setlocal iskeyword-=_
+" }}}
+" Syntastic {{{
+let g:syntastic_vim_checkers = ['vint']
+"}}}

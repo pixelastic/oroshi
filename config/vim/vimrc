@@ -1,7 +1,7 @@
 " RESET  {{{
-" We do not need the backward compatibility with vi, so it is better to turn
-" this off for better portability of plugins.
-set nocompatible
+" We are using multibyte chars, so we must tell that to vim early
+set encoding=utf-8
+scriptencoding utf-8
 " Turn it off for security reasons, we don't want arbitrary code executed from
 " plugins
 set nomodeline
@@ -40,8 +40,6 @@ augroup END
 set autowrite
 " Read files as UTF-8
 setglobal fileencoding=utf-8
-" Save as UTF-8
-set encoding=utf-8
 " Force Unix line ending on new file
 set fileformats=unix,dos,mac
 " keep - and _ as part of words
@@ -60,7 +58,7 @@ augroup END
 augroup ft_add_chmodx
 	au!
 	function! AddExecutablePermissionIfScript()
-		if getline(1) =~ "^#!" && getline(1) =~ "/bin/"
+		if getline(1) =~? '^#!' && getline(1) =~? '/bin/'
 			silent !chmod +x <afile>
 		endif
 	endfunction
@@ -140,16 +138,16 @@ nnoremap <silent> O1;5Q :call ReloadColorscheme('summerfruit')<CR>
 inoremap <silent> O1;5Q <Esc>:call ReloadColorscheme('summerfruit')<CR>li
 " Display the current highlight group of the word under cursor
 function! Debugcolor()
-  let synstack = synstack(line("."), col("."))
+  let synstack = synstack(line('.'), col('.'))
   if len(synstack) == 0
-    echo "No special color"
+    echo 'No special color'
     execute 'verbose hi Normal'
     return
   endif
-	for id in synstack(line("."), col("."))
-		execute 'hi '.synIDattr(id, "name")
+	for id in synstack(line('.'), col('.'))
+		execute 'hi '.synIDattr(id, 'name')
 	endfor
-	execute 'hi '.synIDattr(synIDtrans(id), "name")
+	execute 'hi '.synIDattr(synIDtrans(id), 'name')
 endfunction
 nnoremap <F3> :call Debugcolor()<CR>
 "}}}
@@ -265,7 +263,7 @@ set wildignore+=*.zip,*.rar,*.tgz,*.tar,*.cbz         " Archive files
 " unnamedplus is (Ctrl+C / Ctrl+V) and accessed with "+
 " We only use unnamed plus, if available
 set clipboard=
-if has("unnamedplus")
+if has('unnamedplus')
 	set clipboard+=unnamedplus
 	function! PrePaste()
 		" We guess that if both + and * registers have the same number of words,
@@ -307,7 +305,10 @@ source ~/.vim/includes/ctrlp.vim
 " }}}
 " RAINBOW PARENTHESES {{{
 " Load plugin
-au VimEnter * if exists(":RainbowParenthesesToggle") | execute 'RainbowParenthesesToggle' | endif
+augroup rainbow_parentheses_toggle
+  au!
+  au VimEnter * if exists(":RainbowParenthesesToggle") | execute 'RainbowParenthesesToggle' | endif
+augroup END
 " }}}
 " GIT {{{
 source ~/.vim/includes/git.vim
@@ -328,6 +329,7 @@ let g:syntastic_mode_map={ 'mode': 'passive',
                        \ 'json',
                        \ 'ruby',
                        \ 'bash', 'sh', 'zsh',
+                       \ 'vim',
                        \ 'yaml'
                      \ ],
                      \ 'passive_filetypes': [] }

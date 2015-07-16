@@ -1,2 +1,5 @@
 #!/usr/bin/env bash
 sudo apt-get install vim-gui-common
+
+# Vint, vim linter
+pip install vim-vint
