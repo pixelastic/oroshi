@@ -16,19 +16,22 @@ class GitBranchRemoveRemote
     # We can pass several branches to delete, so we'll first exclude the remote
     # from the list
     elements = guess_elements(@args)
-    @remoteName = elements[:remote]
+    @remote_name = elements[:remote]
 
-    @branches = args - [@remoteName]
+    @branches = args - [@remote_name]
 
-    if @branches.size == 0
-      puts "✘ You must pass at least the branch to delete"
-      exit 1
-    end
+    return if @branches.size > 0
+
+    puts '✘ You must pass at least the branch to delete'
+    exit 1
   end
 
   def run
-    system("git push #{@remoteName} --no-verify --delete #{@branches.join(' ')}")
+    options = [
+      '--no-verify',
+      "--delete #{@branches.join(' ')}"
+    ]
+    system("git push #{@remoteName} #{options.join(' ')}")
   end
-
 end
-GitBranchRemoveRemote.new(*ARGV).run()
+GitBranchRemoveRemote.new(*ARGV).run
