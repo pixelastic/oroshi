@@ -31,7 +31,7 @@ class GitBranchRemoveRemote
       '--no-verify',
       "--delete #{@branches.join(' ')}"
     ]
-    system("git push #{@remoteName} #{options.join(' ')}")
+    system("git push #{@remote_name} #{options.join(' ')}")
   end
 end
 GitBranchRemoveRemote.new(*ARGV).run
