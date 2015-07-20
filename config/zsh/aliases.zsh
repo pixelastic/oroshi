@@ -104,6 +104,7 @@ alias lowriter='gui lowriter'
 alias n="gui nautilus"
 alias pinta='gui pinta'
 alias poedit='gui poedit'
+alias skype='gui skype'
 alias steam='gui steam'
 alias virtualbox='gui virtualbox'
 alias vlc='gui vlc'
