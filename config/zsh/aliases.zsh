@@ -257,7 +257,7 @@ alias rvbp='rake version:bump:patch'
 # Jekyll {{{
 alias jap='jekyll algolia push'
 alias jb='jekyll build'
-alias jsw='jekyll serve --watch'
+alias jsw='jekyll serve --watch --baseurl ""'
 # }}}
 # mark / jump {{{
 # Thanks to

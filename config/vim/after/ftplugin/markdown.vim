@@ -60,6 +60,8 @@ function! MarkdownBeautify()
   " Remove bad chars after copy-paste
   silent! %s/’/'/e
   silent! %s/‘/'/e
+  silent! %s/“/"/e
+  silent! %s/”/"/e
   " Fix common typos/errors
   silent! %s/\<requete/requête/e
   silent! %s/\<plutot\>/plutôt/e
