@@ -1,0 +1,46 @@
+#!/usr/bin/env ruby
+require_relative '../etc/gem-helper/gem-helper'
+
+# Find all gems matching the given pattern
+class GemSearch
+  include GemHelper
+
+  def initialize(keyword)
+    @search_list = search(keyword)
+  end
+
+  def search(keyword)
+    puts 'Requesting rubygems.org...'
+    raw = `gem search #{keyword}`
+    results = []
+    pattern = /(.*) \((.*)\)$/
+    raw.each_line do |line|
+      next unless line =~ pattern
+      name, version = line.chomp.match(pattern).captures
+
+      results << {
+        name: name,
+        version: version
+      }
+    end
+
+    results.sort_by { |result| result[:name] }
+  end
+
+  def run
+    longest_name = longest_by_type(@search_list, :name)
+
+    @search_list.each do |result|
+      if installed?(result[:name])
+        name = colorize('✔ ' + result[:name].ljust(longest_name.size), :success)
+      else
+        name = "  #{result[:name]}"
+      end
+
+      version = colorize(get_version(result[:name]), :version)
+
+      puts "#{name}  #{version}"
+    end
+  end
+end
+GemSearch.new(*ARGV).run

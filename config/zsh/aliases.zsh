@@ -243,7 +243,7 @@ alias bisd='bower install --save-dev'
 # }}}
 # Gem {{{
 alias gi="gem install"
-alias gs="gem search"
+alias gs="gem-search"
 alias gu="gem update"
 alias gR="gem uninstall"
 # }}}
