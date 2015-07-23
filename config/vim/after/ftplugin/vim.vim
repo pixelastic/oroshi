@@ -4,7 +4,9 @@ setlocal foldmethod=marker
 "}}}
 " Misc {{{
 setlocal omnifunc=syntaxcomplete#Complete
-setlocal iskeyword-=_
+" Note: It seems that simply doing `setlocal iskeyword-=_` does not actually
+" remove the _
+setlocal iskeyword=@,48-57,192-255,-,#
 " }}}
 " Syntastic {{{
 let g:syntastic_vim_checkers = ['vint']
