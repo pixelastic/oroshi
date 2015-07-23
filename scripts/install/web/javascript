@@ -6,6 +6,8 @@ npm install -g jshint
 echo "Installing eslint"
 npm install -g eslint
 npm install -g eslint-module-react
+npm install -g eslint-config-airbnb
+npm install -g eslint-config-algolia
 
 echo "Installing jscs"
 npm install -g jscs
