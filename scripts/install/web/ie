@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+sudo apt-get install virtualbox
+
+cd ~/local/src
+git clone git@github.com:xdissent/ievms.git
+sudo apt-get install unar
+cd ./ievms
+bash ./ievms.sh
+# Note: If complaining about shell. Make sure your shell ($SHELL) is written in
+# the /etc/shells file
