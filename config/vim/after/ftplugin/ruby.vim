@@ -34,6 +34,8 @@ endfunction
 " }}}
 " Misc {{{
 setlocal omnifunc=rubycomplete#Complete
-setlocal iskeyword-=_
+" Note: It seems that simply doing `setlocal iskeyword-=_` does not actually
+" remove the _
+setlocal iskeyword=@,48-57,192-255,-,#
 " }}}
 
