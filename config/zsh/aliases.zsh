@@ -83,6 +83,8 @@ alias fuck='$(thefuck $(fc -ln -1))'
 alias extension-list="find . -type f | awk -F'.' '{print \$NF}' | sort| uniq -c | sort -g"
 # Always run guard in clear mode
 alias guard='guard --clear'
+# Check connectivity
+alias p8='ping 8.8.8.8'
 # }}}
 # Download {{{
 alias pd='plowdown'
