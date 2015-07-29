@@ -254,9 +254,9 @@ alias ri='rake install'
 alias rr='rake release'
 # }}}
 # Jekyll {{{
-alias jap='jekyll algolia push'
-alias jb='jekyll build'
-alias jsw='jekyll serve --watch --baseurl ""'
+alias jap='jekyll algolia push -t'
+alias jb='jekyll build -t'
+alias jsw='jekyll serve --watch --baseurl "" -t'
 # }}}
 # mark / jump {{{
 # Thanks to
