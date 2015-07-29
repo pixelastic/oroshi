@@ -252,9 +252,6 @@ alias gR="gem uninstall"
 # Rake {{{
 alias ri='rake install'
 alias rr='rake release'
-alias rvbma='rake version:bump:major'
-alias rvbmi='rake version:bump:minor'
-alias rvbp='rake version:bump:patch'
 # }}}
 # Jekyll {{{
 alias jap='jekyll algolia push'
