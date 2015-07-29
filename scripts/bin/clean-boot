@@ -1,10 +1,31 @@
 #!/usr/bin/env bash
+force=$1
 
-dpkg --get-selections \
- | grep 'linux-image*' \
- | awk '{print $1}' \
- | egrep -v "linux-image-$(uname -r) | linux-image-generic" \
- | while read n; do sudo apt-get -y remove $n; done
+if [ "$force" != '-f' ]; then
+  echo '=== DRY RUN ==='
+  echo 'Use -f to really remove the packages'
+  echo ''
+fi
 
-sudo apt-get upgrade
-sudo apt-get update
+# Get list of all linux images
+images=$(dpkg --list 'linux-image-*' | grep '^ii' | awk '{print $2}')
+
+# Exclude the current one, and the generic one
+currentVersion="$(uname -r)"
+echo "You're using v$currentVersion"
+images=$(echo "$images" | \
+  egrep -v 'linux-image-generic' | \
+  egrep -v "linux-image-$currentVersion" | \
+  egrep -v "linux-image-extra-$currentVersion")
+
+for package in $images; do 
+  echo "Removing $package"
+  if [ "$force" == '-f' ]; then
+    sudo apt-get -y remove "$package";
+  fi
+done
+
+if [ "$force" == '-f' ]; then
+  sudo apt-get autoremove
+  sudo update-grub
+fi
