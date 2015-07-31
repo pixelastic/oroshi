@@ -307,10 +307,10 @@ if [[ -r $gvmScript ]]; then
 fi
 # }}}
 # RVM {{{
-# local rvmScript=~/.rvm/scripts/rvm
-# if [[ -r $rvmScript ]]; then
-# 	path=($HOME/.rvm/bin $path)
-#   source $rvmScript
-#   rvm use ruby-2.2.2 &>/dev/null
-# fi
+local rvmScript=~/.rvm/scripts/rvm
+if [[ -r $rvmScript ]]; then
+	path=($HOME/.rvm/bin $path)
+  source $rvmScript
+  rvm use ruby-2.2.2 &>/dev/null
+fi
 # }}}
