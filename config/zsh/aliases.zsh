@@ -201,10 +201,11 @@ alias trl='trash-list'
 alias trr='trash-restore'
 # }}}
 # Tmux {{{
-alias tsc='tmux new -s'
-alias tsa='tmux attach -t'
-alias tsl='tmux list-sessions'
 alias tsR='tmux kill-session -t'
+alias tsa='tmux attach -t'
+alias tsc='tmux new -s'
+alias tsl='tmux list-sessions'
+alias tss='tmux switch -t'
 # }}}
  
 # Versioning {{{

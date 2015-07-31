@@ -1,9 +1,10 @@
 [global_config]
   window_state = maximise
   handle_size = 1
-  enabled_plugins = APTURLHandler, LaunchpadBugURLHandler
+  title_hide_sizetext = True
   title_transmit_fg_color = "#a27200"
   title_inactive_fg_color = "#121212"
+  enabled_plugins = APTURLHandler, LaunchpadBugURLHandler
   geometry_hinting = False
   title_transmit_bg_color = "#121212"
   title_inactive_bg_color = "#121212"
