@@ -107,3 +107,6 @@
 [submodule "config/vim/bundle/available/vim-abolish"]
 	path = config/vim/bundle/available/vim-abolish
 	url = git@github.com:tpope/vim-abolish.git
+[submodule "config/zsh/completion/docker-zsh-completion"]
+	path = config/zsh/completion/docker-zsh-completion
+	url = git@github.com:felixr/docker-zsh-completion.git
