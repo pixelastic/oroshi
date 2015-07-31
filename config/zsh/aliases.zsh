@@ -133,11 +133,29 @@ function epub2mobi() {
 }
 # }}}
 # Docker {{{
-alias dops='docker ps'
-alias dol='docker logs'
+function dori() {
+  docker run -t -i $@ /bin/bash
+}
+function dord() {
+  docker run -d $@
+}
+function dob() {
+  docker build -t $1 .
+}
+# See line 579 of the docker completion
+# compdef _docker dob=_docker_containers
+
+alias doRa='docker rm "$(docker ps -a -q)"'
+alias doR='docker rm'
 alias dolf='docker logs -f'
-alias dosto='docker stop'
+alias dol='docker logs'
+alias dopl='docker pull'
+alias dops='docker ps'
 alias dop='docker port'
+alias dosta='docker start'
+alias dostoa='docker stop "$(docker ps -a -q)"'
+alias dosto='docker stop'
+alias dos='docker search'
 # }}}
 # Directories {{{
 alias cde='cd ~/local/etc/'
