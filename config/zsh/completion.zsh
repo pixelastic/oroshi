@@ -5,7 +5,7 @@
 # [ ] Complete host names in rsync and ssh
 
 # Add path to custom completion methods
-# Note: Must be define before `compinit`
+# Note: Must be defined before `compinit`
 if [ -z "$OROSHI_COMPLETION_ADDED_TO_FPATH" ]; then
   fpath=(~/.oroshi/config/zsh/completion $fpath)
   OROSHI_COMPLETION_ADDED_TO_FPATH=true

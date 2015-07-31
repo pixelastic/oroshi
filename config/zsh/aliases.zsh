@@ -1,8 +1,3 @@
-# Note: If we want to override default commands, we should write an alias that
-# point to a custom script for overwriting the command. As alias are not passed
-# on to scripts, we avoid overwriting basic commands that some externals tools
-# will rely on.
-#
 # Note: Calling sudo will NOT use any aliases defined, but will use files in
 # custom paths.
 alias sudo='sudo -E'
@@ -33,15 +28,18 @@ alias ag='ag --context=2 --smart-case --pager="less -R"'
 alias cp='cp -rv'
 alias diff='colordiff'
 alias grep='grep -i --color=auto'
+alias la="ls -a"
 alias ls="ls -vhlp --color=always --group-directories-first"
 alias mkdir="mkdir -p"
 alias mv='mv -vi'
-alias rm='trash-put'
 alias rmdir='better-rmdir'
+alias rm='trash-put'
 alias scp='scp -r '
+alias serve='http-server .'
+alias treed='tree -dN'
 alias tree='tree -aNC -I ".hg|.git"'
 alias watch='watch -c '
-alias serve='http-server .'
+function f() { find . -type f -iname "*$1*" }
 # }}}
 # Global aliases {{{
 alias -g .....='../../../..'
@@ -63,16 +61,18 @@ alias trash-restore="restore-trash"
 # }}}
 # Misc {{{
 # cp and mv using rsync and preserving attributes, and accross fat32 drives
-alias rcp="rsync -vrahP --modify-window=1"
-alias rmv="rsync -vrahP --modify-window=1 --prune-empty-dirs --remove-sent-files"
+# Note: We use functions and not alias so we can specify a custom completion
+# function (the same as scp, in _scp) without having to overwrite the whole
+# `rsync` completion command
+function rcp { rsync -vrahP --modify-window=1 "$@" }
+function rmv { 
+  rsync -vrahP --modify-window=1 --prune-empty-dirs --remove-sent-files "$@"
+}
+_scp () { local service=scp; _ssh "$@" }
+compdef _scp rcp rmv
+
 # Scrollable colors
 alias spectrum='spectrum L'
-# ls with hidden files
-alias la="ls -a"
-# Tree that only display directories
-alias treed='tree -dN'
-# Find a file
-function f() { find . -type f -iname "*$1*" }
 # watch tree
 alias wt='watch -c ''tree -aNC -I ".hg\|.git"'''
 # Prefix a date to a file
@@ -114,37 +114,26 @@ alias xmind='gui XMind'
 # }}}
 
 # Apt-get {{{
-alias agi='apt-get-install'
-alias ag?='apt-get-exists'
-alias ags='apt-get-search'
-alias agv='apt-get-version'
 alias agR='sudo apt-get remove -y'
+alias agi='apt-get-install'
+alias ags='apt-get-search'
 alias agu='sudo apt-get install -y --only-upgrade'
+alias agv='apt-get-version'
+alias ag?='apt-get-exists'
 # }}}
 # Ebook {{{
-alias ec='ebook-convert'
 alias ecc='ebook-cover-change'
 alias ecd='ebook-cover-download'
-alias em='ebook-meta'
+alias ec='ebook-convert'
 alias emu='ebook-metadata-update'
+alias em='ebook-meta'
 alias ev='ebook-viewer'
 function epub2mobi() {
   ebook-convert $1 .mobi
 }
 # }}}
 # Docker {{{
-function dori() {
-  docker run -t -i $@ /bin/bash
-}
-function dord() {
-  docker run -d $@
-}
-function dob() {
-  docker build -t $1 .
-}
-# See line 579 of the docker completion
-# compdef _docker dob=_docker_containers
-
+function dob() { docker build -t "$1" . }
 alias doRa='docker rm "$(docker ps -a -q)"'
 alias doR='docker rm'
 alias dolf='docker logs -f'
@@ -152,6 +141,9 @@ alias dol='docker logs'
 alias dopl='docker pull'
 alias dops='docker ps'
 alias dop='docker port'
+alias dord='docker run -d'
+alias dori='docker run -t -i'
+alias dorst='docker restart'
 alias dosta='docker start'
 alias dostoa='docker stop "$(docker ps -a -q)"'
 alias dosto='docker stop'
@@ -315,10 +307,10 @@ if [[ -r $gvmScript ]]; then
 fi
 # }}}
 # RVM {{{
-local rvmScript=~/.rvm/scripts/rvm
-if [[ -r $rvmScript ]]; then
-	path=($HOME/.rvm/bin $path)
-  source $rvmScript
-  rvm use ruby-2.2.2 &>/dev/null
-fi
+# local rvmScript=~/.rvm/scripts/rvm
+# if [[ -r $rvmScript ]]; then
+# 	path=($HOME/.rvm/bin $path)
+#   source $rvmScript
+#   rvm use ruby-2.2.2 &>/dev/null
+# fi
 # }}}

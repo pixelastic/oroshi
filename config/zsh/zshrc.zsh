@@ -6,8 +6,8 @@ local configDir=~/.oroshi/config/zsh
 cd $configDir
 source ./filetypes.zsh
 source ./history.zsh
-source ./aliases.zsh
 source ./completion.zsh
+source ./aliases.zsh
 source ./keybindings.zsh
 
 # Local config {{{
