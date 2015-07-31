@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Download and install docker
+wget -qO- https://get.docker.com/ | sh
+
+# Add current user to the docker group
+sudo usermod -aG docker "$USER"
+
+# Init the docker daemon
+sudo systemctl enable docker
