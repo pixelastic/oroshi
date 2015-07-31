@@ -132,6 +132,13 @@ function epub2mobi() {
   ebook-convert $1 .mobi
 }
 # }}}
+# Docker {{{
+alias dops='docker ps'
+alias dol='docker logs'
+alias dolf='docker logs -f'
+alias dosto='docker stop'
+alias dop='docker port'
+# }}}
 # Directories {{{
 alias cde='cd ~/local/etc/'
 alias cdl='cd ~/local/'
