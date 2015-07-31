@@ -26,18 +26,19 @@ alias vbsm=' git checkout master'
 alias vbu='git branch-update'
 # }}}
 # [c]ommits {{{
-alias vcR='git commit-remove'
 alias vcRa='git commit-remove-all'
-alias vcz='git commit-cancel'
+alias vcR='git commit-remove'
 alias vca='git commit-all'
 alias vcc='git commit -v'
 alias vce='git commit-edit'
 alias vcf='git commit-search'
+alias vcla='git peek -p -D'
 alias vcl+='git peek --stat'
 alias vcl='git peek'
-alias vcla='git peek -p -D'
 alias vcri='git rebase -i'
+alias vcupsm='git commit-private-submodule'
 alias vcv='git show'
+alias vcz='git commit-cancel'
 # }}}
 # [c]herry [p]ick {{{
 alias vcp='git cherry-pick'
