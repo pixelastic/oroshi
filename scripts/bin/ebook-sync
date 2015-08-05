@@ -165,6 +165,9 @@ class EbookSync
 			next unless File.exists?(dest_file)
 			# Same files exists on source
 			next if File.exists?(get_source_filepath(dest_file))
+
+      # Skip Kindle .sdr files
+      next if File.extname(dest_file) == '.sdr'
 			
 			# We do not delete any files that is in a whitelisted directory
 			next if in_dir_whitelist?(dest_file, dir_whitelist)

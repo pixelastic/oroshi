@@ -1,91 +1,186 @@
 #!/usr/bin/env ruby
-# encoding : utf-8
-require "shellwords"
+require 'shellwords'
 
-# Update the epub inner metadata to fit the one guessed from the current
-# location
-
-ARGV.each do |epub|
-  # Get paths
-  fullpath = File.expand_path(epub)
-  extname = File.extname(fullpath)
-  basename = File.basename(fullpath, extname)
-  dirname = File.dirname(fullpath)
-
-  # Options for changing metadata
-  options = [
-    fullpath.shellescape,
-    "--book-producer=''",
-    "--comments=''",
-    "--publisher=''",
-    "--tags=''",
-    "--identifier isbn:''",
-    "--identifier amazon:''"
-  ]
-
-  # Split name to find author, serie, index, title
-  split = basename.split(' - ')
-  author = split[0]
-  
-  # Deals with author
-  splitauthor = author.split(' ')
-  author_lastname = splitauthor[0]
-  author_firstname = splitauthor[1..-1].join(' ')
-  # Handle "VAN SOMETHING" cases
-  if ["VAN", "LE", "LA"].include? splitauthor[0]
-    author_lastname = splitauthor[0..1].join(' ')
-    author_firstname = splitauthor[2..-1].join(' ')
+# Guess ebook metadata from the filepath and write it to the file
+class EbookMetadataWriter
+  def initialize(*args)
+    @inputs = sanitize_inputs(args)
   end
 
-  # The Kindle Paperwhite orders authors by firstname, so we need to swap
-  # firstname/lastname when converting to .mobi
-  if extname == '.mobi'
-    options << "--authors=\"#{author_lastname} #{author_firstname}\""
-    options << "--author-sort=\"#{author_firstname}, #{author_lastname}\""
-  else
-    options << "--authors=\"#{author_firstname} #{author_lastname}\""
-    options << "--author-sort=\"#{author_lastname}, #{author_firstname}\""
+  # Keep only ebooks
+  def sanitize_inputs(filenames)
+    list = []
+    filenames.each do |filename|
+      filename = File.expand_path(filename)
+      next unless File.exist?(filename)
+      next unless ebook?(filename)
+      list << filename
+    end
+    list
   end
 
-  # Deal with series and book name
-  if split.size >= 4
-    serie_name = split[1]
-    serie_index = split[2]
-    title = split[3..-1].join(' - ')
-    options << "--series=\"#{serie_name}\""
-    options << "--index=#{serie_index}"
-    options << "--title=\"#{title}\""
-    options << "--title-sort=\"#{serie_name} - #{serie_index} - #{title}\""
-  else
-    title = split[1..-1].join(' - ')
-    options << "--title=\"#{title}\""
+  # We only work on mobi and epub files
+  def ebook?(filepath)
+    ['.epub', '.mobi'].include? File.extname(filepath).downcase
   end
 
-  # Deal with the cover
-  covername = File.join(dirname, "#{basename}.jpg")
-  if File.exists?(covername)
-    puts "Optimizing cover for inclusion"
-    # Optimize cover
-    mogrify_options = [
-      "-resize 610",
-      covername.shellescape
+  # Split a filepath into components of its basename
+  def split_basename(filepath)
+    File.basename(filepath, File.extname(filepath)).split(' - ')
+  end
+
+  # Extract various metadata and coalesce them in a hash
+  def metadata(filepath)
+    metadata = {}
+    metadata.merge!(author(filepath))
+    metadata.merge!(title(filepath))
+    metadata.merge!(serie(filepath))
+    metadata
+  end
+
+  # Extract serie name and index, if any
+  def serie(filepath)
+    splitted = split_basename(filepath)
+    return {} unless splitted.size == 4
+    {
+      serie_name: splitted[1],
+      serie_index: splitted[2]
+    }
+  end
+
+  # Extract book title
+  def title(filepath)
+    {
+      title: split_basename(filepath)[-1]
+    }
+  end
+
+  # Extract book author
+  def author(filepath)
+    author_full = split_basename(filepath)[0]
+    firstname = author_full.split.last
+    lastname = author_full.split[0...-1].join(' ')
+    {
+      author_lastname: lastname,
+      author_firstname: firstname,
+      author: author_full
+    }
+  end
+
+  # Write metadata to file
+  def write(filepath)
+    extname = File.extname(filepath)
+    options = write_options_mobi(filepath) if extname == '.mobi'
+    options = write_options_epub(filepath) if extname == '.epub'
+
+    # Default options
+    options = [
+      filepath.shellescape,
+      "--book-producer=''",
+      "--comments=''",
+      "--publisher=''",
+      "--tags=''",
+      "--identifier isbn:''",
+      "--identifier amazon:''"
+    ] + options
+
+    # Update cover if needed
+    if cover?(filepath)
+      cover = coverpath(filepath)
+      optimize_cover(cover) if cover_need_optimize?(cover)
+      options << "--cover=\"#{cover}\""
+    end
+
+    `ebook-meta #{options.join(' ')}`
+  end
+
+  # Commandline options for epub
+  def write_options_epub(filepath)
+    metadata = metadata(filepath)
+    title = metadata[:title]
+    firstname = metadata[:author_firstname]
+    lastname = metadata[:author_lastname]
+
+    options = [
+      "--title=\"#{title}\""
     ]
-    %x[mogrify #{mogrify_options.join(' ')}]
+    # Epub can have authors for display, and author-sort for ordering
+    options << "--authors=\"#{firstname} #{lastname}\""
+    options << "--author-sort=\"#{lastname}, #{firstname}\""
 
-    jpegoptim_options = [
-      "-m80",
-      "--strip-all",
-      covername.shellescape
-    ]
-    %x[jpegoptim #{jpegoptim_options.join(' ')}]
+    # Add serie informations
+    if metadata[:serie_name]
+      serie_name = metadata[:serie_name]
+      serie_index = metadata[:serie_index]
+      options << "--series=\"#{serie_name}\""
+      options << "--index=\"#{serie_index}\""
+      options << "--title-sort=\"#{serie_name} - #{serie_index}\""
+    end
 
-    options << "--cover=\"#{covername}\""
+    options
   end
 
-  
+  # Commandline options for mobi
+  # Mobi on Paperwhite only use author and title to display books. So, in order
+  # to have books grouped by serie, we need to put a lot of informations in
+  # thoses fields.
+  def write_options_mobi(filepath)
+    metadata = metadata(filepath)
+    title = metadata[:title]
+    firstname = metadata[:author_firstname]
+    lastname = metadata[:author_lastname]
 
-  # puts "ebook-meta #{options.join(' ')}"
-  %x[ebook-meta #{options.join(' ')}]
-  
+    # The Kindle does not use the `author-sort`, so we need to set the author in
+    # alphabetical order.
+    author = "#{lastname} #{firstname}"
 
+    # The Kindle also has no notion of series, so we'll hack it system and put
+    # it in the author and title fields
+    if metadata[:serie_name]
+      author += " - #{metadata[:serie_name]}"
+      title = "#{metadata[:serie_index]} - #{title}"
+    end
+
+    [
+      "--authors=\"#{author}\"",
+      "--title=\"#{title}\""
+    ]
+  end
+
+  # Returns true if a file in same directory is a cover
+  def cover?(filepath)
+    File.exist?(coverpath(filepath))
+  end
+
+  # Gets the filepath of the coverfile
+  def coverpath(filepath)
+    extname = File.extname(filepath)
+    filepath.gsub(/#{extname}$/, '.jpg')
+  end
+
+  # We guess that an image need optimization if it does not have the correct
+  # dimension or is too heavy
+  def cover_need_optimize?(coverpath)
+    escaped_coverpath = coverpath.shellescape
+    width = `identify -format "%w" #{escaped_coverpath}`.chomp.to_i
+    filesize = `stat -c '%s' #{escaped_coverpath}`.chomp.to_i
+    return true if width != 610
+    return true if filesize > 200_000
+    false
+  end
+
+  # Set the cover to the correct dimensions
+  def optimize_cover(coverpath)
+    puts 'Optimizing cover'
+    `mogrify -resize 610 #{coverpath.shellescape}`
+    `jpegoptim -m80 --strip-all #{coverpath.shellescape}`
+  end
+
+  def run
+    @inputs.each do |input|
+      puts "Updating #{File.basename(input)}"
+      write(input)
+    end
+  end
 end
+EbookMetadataWriter.new(*ARGV).run
