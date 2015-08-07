@@ -50,8 +50,14 @@ class EbookMetadataWriter
 
   # Extract book title
   def title(filepath)
+    splitted = split_basename(filepath)
+    if splitted.size == 2
+      title = splitted[1]
+    else
+      title = splitted[3..-1].join(' - ')
+    end
     {
-      title: split_basename(filepath)[-1]
+      title: title
     }
   end
 
