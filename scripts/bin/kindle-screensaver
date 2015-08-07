@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# Convert an image to be compatible as a Kindle screensaver
+
+
+convert $1 -resize 758x1024! -colorspace Gray ${1:r}.png
