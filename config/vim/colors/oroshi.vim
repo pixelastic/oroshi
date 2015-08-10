@@ -51,14 +51,26 @@ let s:palette.grey          = 241
 let s:palette.lightgrey     = 249
 let s:palette.white         = 252
 let s:palette.purewhite     = 255
-" Blue
-let s:palette.blue          = 69
-let s:palette.darkblue      = 24
-let s:palette.calmblue      = 67
+" Red 
+let s:palette.red           = 160
+let s:palette.darkred       = 88
+let s:palette.calmred       = 203
 " Green
 let s:palette.green         = 35 
 let s:palette.darkgreen     = 28
 let s:palette.calmgreen     = 108
+" Yellow
+let s:palette.yellow        = 184
+let s:palette.darkyellow    = 136
+let s:palette.calmyellow    = 185
+" Blue
+let s:palette.blue          = 69
+let s:palette.darkblue      = 24
+let s:palette.calmblue      = 67
+" Purple
+let s:palette.purple        = 171
+let s:palette.darkpurple    = 133
+let s:palette.calmpurple    = 141
 " Orange
 let s:palette.orange        = 202
 let s:palette.darkorange    = 214
@@ -67,18 +79,6 @@ let s:palette.calmorange    = 209
 let s:palette.pink          = 205
 let s:palette.darkpink      = 125
 let s:palette.calmpink      = 211
-" Purple
-let s:palette.purple        = 171
-let s:palette.darkpurple    = 133
-let s:palette.calmpurple    = 141
-" Red 
-let s:palette.red           = 160
-let s:palette.darkred       = 88
-let s:palette.calmred       = 203
-" Yellow
-let s:palette.yellow        = 184
-let s:palette.darkyellow    = 136
-let s:palette.calmyellow    = 185
 " }}}
 " Oroshi custom styles {{{
 call s:Highlight('oroshi_Debug', 'white', 'darkpurple')
