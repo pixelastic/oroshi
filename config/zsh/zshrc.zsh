@@ -1,6 +1,6 @@
-# TERM=xterm-256color
 export LANG=en_US.UTF-8
 export TERM=rxvt-unicode
+# export TERM=xterm-256color
 
 local currentDir="`pwd`"
 local configDir=~/.oroshi/config/zsh
