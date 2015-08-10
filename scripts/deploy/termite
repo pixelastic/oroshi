@@ -2,3 +2,6 @@
 
 mkdir -p ~/.config/termite
 ln -fs ~/.oroshi/config/termite/termite.conf ~/.config/termite/config
+
+# Also force it to always open as maximized
+dconf write /org/compiz/profiles/unity/plugins/winrules/maximize-match "'class=Termite'"

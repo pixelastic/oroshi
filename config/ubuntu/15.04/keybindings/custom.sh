@@ -2,10 +2,9 @@
 # Watch changes with `dconf watch /`, then edit keybindings in `ccsm` to see
 # what needs to be updated.
 
-# Super-T is terminator
-# Opening terminator, which in turn open tmux (with `-2` to force 256 colors),
-# which will in turn open zsh
-dconf write /org/compiz/integrated/command-1 "'terminator -x /home/tim/local/bin/tmux -2'"
+# Super-T is terminal, opening tmux
+dconf write /org/compiz/integrated/command-1 "'termite'"
+# -e /home/tim/local/bin/tmux -2'"
 dconf write /org/compiz/integrated/run-command-1 "['<Super>t']"
 
 # Ctrl-Super-C is Chromium pro
