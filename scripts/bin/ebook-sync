@@ -1,199 +1,170 @@
 #!/usr/bin/env ruby
-# encoding: utf-8
-require "fileutils"
-require "shellwords"
+require 'fileutils'
+require 'shellwords'
+
 # Will synchronize an ebook library repo to a device.
 # Usage :
 #  $ ebook-sync /path/to/source /path/to/destination (mobi|epub)
-
 class EbookSync
+  def initialize(*args)
+    unless args.length == 3
+      puts 'Usage:'
+      puts '$ ebook-sync /src /dest ext'
+      exit
+    end
 
-	def initialize(*args)
-		unless args.length == 3
-			puts "You need to specify a source, destination and type"
-			exit
-		end
+    @path_source = File.expand_path(args[0])
+    @path_source += '/' unless @path_source[-1] == '/'
 
-		# Setting local paths
-		@path_source = File.expand_path(args[0])
-		@path_source+="/" unless @path_source[-1]=="/"
-		@path_destination = File.expand_path(args[1])
-		@path_destination+="/" unless @path_destination[-1]=="/"
+    @path_destination = File.expand_path(args[1])
+    @path_destination += '/' unless @path_destination[-1] == '/'
+
     @filetype = args[2]
 
-		unless File.exists?(@path_source)
-			puts "Source path does not exists"
-			exit
-		end
-		unless File.exists?(@path_destination)
-			puts "Destination path does not exists"
-			exit
-		end
+    unless File.exist?(@path_source)
+      puts 'Source path does not exists'
+      exit
+    end
 
-	end
+    FileUtils.mkdir_p(@path_destination) unless File.exist?(@path_destination)
 
-	# Run the sync
-	def run
-		# Note: The synchronization will follow simple rules :
-		#  - Only .@filetype/.pdf files will be copied to a device
-		#  - Files added/modified/deleted in the source will be updated in the
-		#  destination
-		#  - Files added/modified/deleted in the destination will NOT be updated in
-		#  the source.
-		
-		sync_main_files
-		sync_special_fat32_files
-		clean_deleted_files
-	end
+    true
+  end
 
+  # Run the sync
+  def run
+    # Note: The synchronization will follow simple rules :
+    #  - Only .@filetype files will be copied to a device
+    #  - Files added/modified/deleted in the source will be updated in the
+    #  destination
+    #  - Files added/modified/deleted in the destination will NOT be updated in
+    #  the source.
 
-	# Return a file list from an rsync output
-	def get_files_from_rsync_output(rsync)
-		# Remove last lines, being an overview
-		rsync = rsync.split("\n")[0..-4]
-		output = []
+    puts '1/ Updating regular books between source and destination'
+    rsync_dirs(@path_source, @path_destination, false)
+    puts '2/ Manual syncing of directories with a trailing dot'
+    sync_special_fat32_files
+    puts '3/ Cleaning files on destination that are no longer on source'
+    clean_deleted_files
+  end
 
-		rsync.each do |line|
-			# Remove known useless lines
-			next if line == 'sending incremental file list'
-			next if line == 'building file list ... done'
-			# Remove directories from listing, keeping only files
-			next if line =~ /\/$/
-			output << line
-		end
-		return output
-	end
+  def rsync_dirs(source, dest, delete = false)
+    # Creating destination directory if non-existent
+    FileUtils.mkdir_p(dest)
 
-	def rsync_dirs(source, dest, delete = false)
-		# Creating destination directory if non-existent
-		FileUtils.mkdir_p(dest)
+    # Notes :
+    # Due to the nature of the fat32 system, we need to add the
+    # --modify-window=1 to deal with the way timestamps are stored.
+    # We also do not need to use the --archive flag as fat32 can't store
+    # permissions, so we'll only use the implied --recursive and --times flags.
+    # We'll exlude our tmp/ folders from the sync
+    # We'll also do not copy directories ending with a dot (.) as they will be
+    # copied to the system without the dot, multiple rsync in a row will always
+    # copy the files. Instead, we'll manually take care of them later.
 
-		# Notes :
-		# Due to the nature of the fat32 system, we need to add the
-		# --modify-window=1 to deal with the way timestamps are stored.
-		# We also do not need to use the --archive flag as fat32 can't store
-		# permissions, so we'll only use the implied --recursive and --times flags.
-		# We'll exlude our tmp/ folders from the sync, and keep the .FBReader/ dir
-		# on destination untouched.
-		# We'll also do not copy directories ending with a dot (.) as they will be
-		# copied to the system without the dot, multiple rsync in a row will always
-		# copy the files. Instead, we'll manually take care of them later.
+    options = [
+      '--verbose',
+      '--recursive',
+      '--times',
+      '--modify-window=1',
+      "--filter='-s tmp/'",
+      "--filter='-s *./'", # Excluding directories with trailing dot
+      "--filter='-s .git/'",
+      "--filter='+s */'",
+      "--filter='+s *.#{@filetype}'",
+      "--filter='-s *'"
+    ]
+    options << '--delete' if delete
 
-		options = [
-			'--verbose', 
-			'--recursive',
-			'--times',
-			'--modify-window=1',
-			"--filter='-s tmp/'",
-			"--filter='-s *./'", # Excluding directories with trailing dot
-			"--filter='-s .git/'",
-			"--filter='+s */'",
-			"--filter='+s *.#{@filetype}'",
-			"--filter='+s *.pdf'",
-			"--filter='-s *'",
-		]
-		options << "--delete" if delete
-		
-		options = options.join(' ')
-		
+    options = options.join(' ')
 
-		# puts "%x[rsync #{options} #{source.shellescape} #{dest.shellescape}]"
-		return %x[rsync #{options} #{source.shellescape} #{dest.shellescape}]
+    command = "rsync #{options} #{source.shellescape} #{dest.shellescape}"
+    # Displaying files copied
+    IO.popen(command).each do |line|
+      line.chomp!
+      next if line.size == 0
+      next if line =~ %r{/$}
+      next unless File.exist?(File.join(source, line))
+      puts line.chomp
+    end
+  end
 
+  # Given a file on source, returns the filepath on dest
+  def get_dest_filepath(source)
+    # If is a directory ending with a dot, we remove the dot
+    source = source[0..-3] + '/' if source[-2..-1] == './'
+    # We change the prefix from source to dest
+    source.gsub!(@path_source, @path_destination)
+    source
+  end
 
-	end
+  # Given a dest filepath, will return the source filepath
+  def get_source_filepath(dest)
+    dest.gsub(@path_destination, @path_source)
+  end
 
-	# Given a file on source, returns the filepath on dest
-	def get_dest_filepath(source)
-		# If is a directory ending with a dot, we remove the dot
-		if source[-2..-1] == "./"
-			source = source[0..-3] + "/"
-		end
-		# We change the prefix from source to dest
-		source.gsub!(@path_source, @path_destination)
-		return source
-	end
+  # Will manually find fat32 special dirs and sync them. This will delete out
+  # of sync files in it.
+  def sync_special_fat32_files
+    Dir[File.join(@path_source, '**/*\./')].sort.each do |source_dir|
+      # Syncing files from source and dest
+      dest_dir = get_dest_filepath(source_dir)
 
-	# Given a dest filepath, will return the source filepath
-	def get_source_filepath(dest)
-		return dest.gsub(@path_destination, @path_source)
-	end
+      puts "Manually syncing files to #{File.basename(dest_dir)}"
+      rsync_dirs(source_dir, dest_dir, true)
+    end
+  end
 
-	# We use rsync to sync files between source and dest. This will not touch
-	# directories ending with a dot, and will not delete out-of-sync files.
-	def sync_main_files
-		puts "Updating regular books between source and destination."
-		puts "This can take a while..."
-		output = rsync_dirs(@path_source, @path_destination, false)
-		puts get_files_from_rsync_output(output)
-	end
+  # Check if a filepath is on one of the whitelisted directories
+  def in_dir_whitelist?(file, whitelist)
+    whitelist.each do |dir|
+      return true if file[dir]
+    end
+    false
+  end
 
+  def clean_deleted_files
+    # We'll look at every file on dest to delete those that are no longer on
+    # source.
+    dir_whitelist = [
+      "#{@path_destination}.FBReader"
+    ]
+    kindle_extensions = %w(.sdr .mbs .mbp1)
+    Dir[File.join(@path_destination, '**/{*,.*}')].sort.each do |dest_file|
+      # Skip . and .. dirs
+      basename = File.basename(dest_file)
+      next if basename == '.' || basename == '..'
 
-	# Will manually find fat32 special dirs and sync them. This will delete out
-	# of sync files in it.
-	def sync_special_fat32_files
-		puts "Syncing of directories with a trailing dot."
-		Dir[File.join(@path_source, '**/*\./')].sort.each do |source_dir|
-			# Syncing files from source and dest
-			dest_dir = get_dest_filepath(source_dir)
+      # File on dest might have already been deleted
+      next unless File.exist?(dest_file)
+      # Same files exists on source
+      next if File.exist?(get_source_filepath(dest_file))
 
-			puts "Manually syncing files to #{File.basename(dest_dir)}"
-			rsync_dirs(source_dir, dest_dir, true)
-		end
-	end
+      # Keep Kindle specific files on kindle
+      next if kindle_extensions.include?(File.extname(dest_file))
 
-	# Check if a filepath is on one of the whitelisted directories
-	def in_dir_whitelist?(file, whitelist)
-		whitelist.each do |dir|
-			return true if file[dir]
-		end
-		return false
-	end
-	
+      # We do not delete any files that is in a whitelisted directory
+      next if in_dir_whitelist?(dest_file, dir_whitelist)
 
-	def clean_deleted_files
-		puts "Cleaning files on destination that are no longer on source."
-		# We'll look at every file on dest to delete those that are no longer on
-		# source.
-		dir_whitelist = ["#{@path_destination}.FBReader"]
-		Dir[File.join(@path_destination, '**/{*,.*}')].sort.each do |dest_file|
-			# Skip . and .. dirs
-			basename = File.basename(dest_file)
-			next if basename == "." || basename == ".."
+      # Some special handling if we're dealing with a directory
+      if File.directory?(dest_file)
+        # This directory does not exists on source, so we'll check with an
+        # added trailing dot. If present, we keep it and its children (they
+        # have been synced already before)
+        source_file_with_dot = get_source_filepath(dest_file[0..-1] + './')
+        if File.exist?(source_file_with_dot)
+          dir_whitelist << dest_file
+          next
+        end
+      end
 
-			# File on dest might have already been deleted
-			next unless File.exists?(dest_file)
-			# Same files exists on source
-			next if File.exists?(get_source_filepath(dest_file))
-
-      # Skip Kindle .sdr files
-      next if File.extname(dest_file) == '.sdr'
-			
-			# We do not delete any files that is in a whitelisted directory
-			next if in_dir_whitelist?(dest_file, dir_whitelist)
-			
-			# Some special handling if we're dealing with a directory
-			if File.directory?(dest_file)
-				# This directory does not exists on source, so we'll check with an
-				# added trailing dot. If present, we keep it and its children (they
-				# have been synced already before)
-				source_file_with_dot = get_source_filepath(dest_file[0..-1]+"./")
-				if File.exists?(source_file_with_dot)
-					dir_whitelist << dest_file
-					next
-				end
-			end
-
-			puts "Deleting #{dest_file}"
+      puts "Deleting #{dest_file}"
       if File.directory?(dest_file)
         FileUtils.rm_rf(dest_file)
       else
         FileUtils.rm(dest_file)
       end
-		end
-	end
+    end
+  end
 end
-
-
-sync = EbookSync.new(*ARGV)
-sync.run()
+EbookSync.new(*ARGV).run
