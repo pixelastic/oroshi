@@ -20,7 +20,7 @@ bindkey '^E' edit-command-line
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 bindkey '^P' fzf-file-widget
  
-# (re)enabling keybindings in insert mode
+# (re)enabling keybindings
 # Note: press Ctrl-V followed by a key to see its keycode
 bindkey -M viins "[3~" delete-char        # Delete
 bindkey -M viins ""    backward-delete-char  # Backspace
