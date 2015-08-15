@@ -122,8 +122,6 @@ alias agv='apt-get-version'
 alias ag?='apt-get-exists'
 # }}}
 # Ebook {{{
-alias ecd='ebook-cover-download'
-alias ecu='ebook-cover-update'
 alias ec='ebook-convert'
 alias emu='ebook-metadata-update'
 alias em='ebook-meta'
