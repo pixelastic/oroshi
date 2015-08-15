@@ -1,0 +1,87 @@
+#!/usr/bin/env ruby
+require 'shellwords'
+
+# Rewrite ebook cover with one found in same dir
+class EbookCoverUpdate
+  def initialize(*args)
+    @inputs = sanitize_inputs(args)
+  end
+
+  # Keep only ebooks, with a cover of the same name in the same directory
+  def sanitize_inputs(filenames)
+    list = []
+    filenames.each do |filename|
+      filename = File.expand_path(filename)
+      next unless File.exist?(filename)
+      next unless ebook?(filename)
+      next unless File.exist?(coverpath(filename))
+      list << filename
+    end
+    list
+  end
+
+  def coverpath(filepath)
+    filepath = File.expand_path(filepath)
+    extname = File.extname(filepath)
+    filepath.gsub(/#{extname}$/, '.jpg')
+  end
+
+  # We only work on mobi and epub files
+  def ebook?(filepath)
+    ['.epub', '.mobi'].include? File.extname(filepath).downcase
+  end
+
+  # We guess that an image need optimization if it does not have the correct
+  # dimension or is too heavy
+  def cover_need_optimize?(coverpath)
+    escaped_coverpath = coverpath.shellescape
+    width = `identify -format "%w" #{escaped_coverpath}`.chomp.to_i
+    filesize = `stat -c '%s' #{escaped_coverpath}`.chomp.to_i
+    return true if width != 610
+    return true if filesize > 200_000
+    false
+  end
+
+  # Set the cover to the correct dimensions
+  def optimize_cover(coverpath)
+    puts 'Optimizing cover'
+    `mogrify -resize 610 #{coverpath.shellescape}`
+    `jpegoptim -m80 --strip-all #{coverpath.shellescape}`
+  end
+
+  def write(filepath)
+    filepath = File.expand_path(filepath)
+    extname = File.extname(filepath)
+    cover = coverpath(filepath)
+    tmppath = filepath.gsub(/#{extname}$/, "-tmp#{extname}")
+
+    optimize_cover(cover) if cover_need_optimize?(cover)
+
+    options = [
+      filepath.shellescape,
+      tmppath.shellescape,
+      "--cover #{coverpath(filepath).shellescape}",
+      '--remove-first-image'
+    ]
+
+    # Mobi can force aspect ration, while mobi will always stretch it
+    options << '--preserve-cover-aspect-ratio' if extname == '.epub'
+
+    # Note: Adding --share-not-sync on mobi files make them completly disappear
+    # from the list of files on my Paperwhite.
+
+    puts 'Re-converting ebook to insert cover'
+    `ebook-convert #{options.join(' ')}`
+
+    # Rename the backup back to original file
+    File.rename(tmppath, filepath)
+  end
+
+  def run
+    @inputs.each do |input|
+      puts "Setting cover for #{File.basename(input)}"
+      write(input)
+    end
+  end
+end
+EbookCoverUpdate.new(*ARGV).run

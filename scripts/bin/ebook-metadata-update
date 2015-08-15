@@ -84,10 +84,13 @@ class EbookMetadataWriter
       filepath.shellescape,
       "--book-producer=''",
       "--comments=''",
-      "--publisher=''",
-      "--tags=''",
+      "--identifier amazon:''",
       "--identifier isbn:''",
-      "--identifier amazon:''"
+      "--isbn=''",
+      "--language=''",
+      "--publisher=''",
+      '--share-not-sync', # Enable correct display of covers in Cover view
+      "--tags=''"
     ] + options
 
     # Update cover if needed
