@@ -202,16 +202,19 @@ function! FixEpub() " {{{
   " I often need to tweak epub files, so I convert them to txt and manually edit
   " them. This will help in doing most of the work
   
-  normal mz
+  normal! mz
   " Dialogs should use the em dash (–) and not the simple dash (-)
   silent! %s/\v^-/–/e
   " Use common guillemets
   silent! %s/“/"/e
   silent! %s/”/"/e
+  silent! %s//"/e
+  silent! %s//"/e
   " Same goes for apostrophes
   silent! %s/’/'/e
   silent! %s/‘/'/e
   silent! %s/`/'/e
+  silent! %s//'/e
   " Fixing ". .." and ". . ."
   silent! %s/\v( ?)\. \.( ?)\./.../e
   silent! %s/…/.../e

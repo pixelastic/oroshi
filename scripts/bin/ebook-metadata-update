@@ -89,7 +89,6 @@ class EbookMetadataWriter
       "--isbn=''",
       "--language=''",
       "--publisher=''",
-      '--share-not-sync', # Enable correct display of covers in Cover view
       "--tags=''"
     ] + options
 

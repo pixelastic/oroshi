@@ -128,6 +128,7 @@ alias em='ebook-meta'
 alias ev='ebook-viewer'
 function epub2mobi() {
   ebook-convert $1 .mobi
+  ebook-metadata-update ${1:r}.mobi
 }
 # }}}
 # Docker {{{
