@@ -2,11 +2,11 @@
 
 local output=''
 
-# Clock
+# Clock {{{
 local clock="$(date +'%a %d/%m %H:%M')"
 output="  $clock $output"
-
-# Current ip
+# }}}
+# Current ip {{{
 local ip=''
 if is-online; then
   ip="  $(my-ip)"
@@ -14,8 +14,8 @@ else
   ip='#[fg=colour160,bold]  offline!#[default]'
 fi
 output="$ip $output"
-
-# Battery life
+# }}}
+# Battery life {{{
 # Do not display if full
 # Display in green if charging
 # Display in grey, yellow and red when level drops
@@ -37,13 +37,20 @@ if [[ $battery_percent -ne 100 ]]; then
     fi
   fi
 fi
+# }}}
 
-
-#  3 Pending mentions on Twitter ?
-#  2 Pending emails ? 
-# curl -u timcc.perso --silent "https://mail.google.com/mail/feed/atom"
-# need to parse the resulting xml, and putting a password specific for
-# a specific app
-#  3pm-7pm Support slot
-
+# Algolia livechat duty {{{
+local day="$(date +%w)"
+local hour="$(date +%H)"
+if [[ $day == 1 && $hour -ge 15 && $hour -lt 19 ]]; then
+  output="#[fg=colour249,bg=colour24]  3pm-7pm andoche #[default] $output"
+fi
+if [[ $day == 2 && $hour -ge 15 && $hour -lt 19 ]]; then
+  output="#[fg=colour249,bg=colour24]  3pm-7pm sylvain #[default] $output"
+fi
+if [[ $day == 3 && $hour -ge 15 && $hour -lt 19 ]]; then
+  output="#[fg=colour249,bg=colour24]  3pm-7pm andoche #[default] $output"
+fi
+# }}}
+#
 echo $output
