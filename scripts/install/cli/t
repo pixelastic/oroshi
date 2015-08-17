@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+# Install gem
+gem install t
+
+# Authorize
+t authorize

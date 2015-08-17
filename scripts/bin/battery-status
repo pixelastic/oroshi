@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Display the current battery status (charging/discharging)
+upower -i "$(upower -e | grep BAT)" \
+  | grep state \
+  | awk '{print $2}'

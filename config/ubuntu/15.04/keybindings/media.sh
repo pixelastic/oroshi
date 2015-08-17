@@ -4,8 +4,6 @@
 #
 # Note: I have been unable to launch redshift from these bindings, it does not
 # seem to have any effect.
-#
-# Note: I have been unable to bind the <Alt>Right and <Alt>Left keys.
 
 # Super-PrintScreen for taking a screenshot and an area
 dconf write /org/compiz/profiles/unity/plugins/commands/command12 "'gnome-screenshot -c -a'"
@@ -17,21 +15,17 @@ dconf write /org/compiz/profiles/unity/plugins/commands/run-command13-key "'<Con
 dconf write /org/compiz/profiles/unity/plugins/commands/command14 "'gnome-screenshot -c'"
 dconf write /org/compiz/profiles/unity/plugins/commands/run-command14-key "'<Control><Alt><Super>Print'"
 
-# Super-Q for starting/stopping gif screencast
-dconf write /org/compiz/profiles/unity/plugins/commands/command15 "'/home/tim/.oroshi/scripts/bin/gif-record'"
-dconf write /org/compiz/profiles/unity/plugins/commands/run-command15-key "'<Super>q'"
-
-# Alt-Up and Alt-Down change brightness
+# Super-Up and Super-Down change brightness
 dconf write /org/compiz/profiles/unity/plugins/commands/command16 "'xbacklight -inc 20'"
-dconf write /org/compiz/profiles/unity/plugins/commands/run-command16-key "'<Alt>Up'"
+dconf write /org/compiz/profiles/unity/plugins/commands/run-command16-key "'<Super>Up'"
 dconf write /org/compiz/profiles/unity/plugins/commands/command17 "'xbacklight -dec 20'"
-dconf write /org/compiz/profiles/unity/plugins/commands/run-command17-key "'<Alt>Down'"
+dconf write /org/compiz/profiles/unity/plugins/commands/run-command17-key "'<Super>Down'"
 
 # Alt-Home and Alt-End to change volume
-dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-up "'<Alt>Home'"
-dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-down "'<Alt>End'"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-up "'<Super>Right'"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-down "'<Super>Left'"
 # Alt-Maj-Home to toggle mute
-dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-mute "'<Alt><Shift>Home'"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-mute "'<Super><Shift>Left'"
 
 # Disable
 dconf write /org/compiz/profiles/unity/plugins/commands/command18 "''"

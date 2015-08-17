@@ -36,19 +36,20 @@ dconf write /org/compiz/profiles/unity/plugins/unityshell/alt-tab-prev "'Disable
 dconf write /org/compiz/profiles/unity/plugins/unityshell/alt-tab-forward-all "'Disabled'"
 dconf write /org/compiz/profiles/unity/plugins/unityshell/alt-tab-prev-all "'Disabled'"
 
-# Move window to right/left/top/bottom grid
-dconf write /org/compiz/profiles/unity/plugins/grid/put-left-key "'<Alt><Super>Left'"
-dconf write /org/compiz/profiles/unity/plugins/grid/put-right-key "'<Alt><Super>Right'"
-dconf write /org/compiz/profiles/unity/plugins/grid/put-top-key "'<Alt><Super>Up'"
-dconf write /org/compiz/profiles/unity/plugins/grid/put-bottom-key "'<Alt><Super>Down'"
-dconf write /org/compiz/profiles/unity/plugins/grid/put-topleft-key "'<Alt><Super>Home'"
-dconf write /org/compiz/profiles/unity/plugins/grid/put-topright-key "'<Alt><Super>End'"
-dconf write /org/compiz/profiles/unity/plugins/grid/put-bottomleft-key "'<Control><Alt><Super>Home'"
-dconf write /org/compiz/profiles/unity/plugins/grid/put-bottomright-key "'<Control><Alt><Super>End'"
-dconf write /org/compiz/profiles/unity/plugins/grid/put-maximize-key "'<Super>Up'"
-dconf write /org/compiz/profiles/unity/plugins/grid/put-restore-key "'<Super>Down'"
+# Move window to right/left/top/bottom grid with Super-Alt-Arrows
+dconf write /org/compiz/profiles/unity/plugins/grid/put-left-key "'<Super><Alt>Left'"
+dconf write /org/compiz/profiles/unity/plugins/grid/put-right-key "'<Super><Alt>Right'"
+dconf write /org/compiz/profiles/unity/plugins/grid/put-top-key "'<Super><Alt>Up'"
+dconf write /org/compiz/profiles/unity/plugins/grid/put-bottom-key "'<Super><Alt>Down'"
+dconf write /org/compiz/profiles/unity/plugins/grid/put-topleft-key "'Disabled'"
+dconf write /org/compiz/profiles/unity/plugins/grid/put-topright-key "'Disabled'"
+dconf write /org/compiz/profiles/unity/plugins/grid/put-bottomleft-key "'Disabled'"
+dconf write /org/compiz/profiles/unity/plugins/grid/put-bottomright-key "'Disabled'"
 dconf write /org/compiz/profiles/unity/plugins/grid/left-maximize "'Disabled'"
 dconf write /org/compiz/profiles/unity/plugins/grid/right-maximize "'Disabled'"
+# Maximize/Restore with Super-Alt-(Home/End)
+dconf write /org/compiz/profiles/unity/plugins/grid/put-maximize-key "'<Super><Alt>Home'"
+dconf write /org/compiz/profiles/unity/plugins/grid/put-restore-key "'<Super><Alt>End'"
 dconf write /org/gnome/desktop/wm/keybindings/maximize "['disabled']"
 dconf write /org/gnome/desktop/wm/keybindings/unmaximize "['disabled']"
 

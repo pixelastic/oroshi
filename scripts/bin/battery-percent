@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Display the current charge percentage
+upower -i "$(upower -e | grep BAT)" \
+  | grep percentage \
+  | awk '{print $2}' \
+  | sed 's/.$//'
