@@ -2,18 +2,7 @@
 # custom paths.
 alias sudo='sudo -E'
 
-# Custom paths {{{
-path=(
-	~/.oroshi/scripts/bin
-	~/.oroshi/private/scripts/bin
-	~/.oroshi/scripts/bin/local/$(hostname)
-	~/.oroshi/private/scripts/bin/local/$(hostname)
-	$path
-	~/local/bin
-  ~/.local/bin
-)
 export CHROME_BIN=`which chromium-browser`
-# }}}
 
 # Options {{{
 # Allow moving to a directory without typing cd

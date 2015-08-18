@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+local output=''
+local name=$1
+
+# Add icon with session name
+output="#[fg=colour235,bg=colour136]  $name "
+# Add closing arrow
+output="$output #[fg=colour136,bg=colour235]⮀ "
+
+echo $output

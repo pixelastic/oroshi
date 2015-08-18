@@ -1,0 +1,32 @@
+#!/usr/bin/env zsh
+
+local output=''
+local active=$1
+local index=$2
+local name=$3
+local flags=$4
+
+# Add ⮀ if active
+if [[ $active == 1 ]]; then
+  output="#[fg=colour235,bg=colour136]⮀"
+fi
+
+# Add index and name
+output="${output}$index:$name "
+
+# Add zoomed icon flag if one of the panels is zoomed
+if [[ $flags == *Z* ]]; then
+  output="${output} "
+fi
+
+# Add final coloring
+output="$output#[fg=colour136,bg=colour235]"
+
+# Add ⮁ or ⮀ depending if active
+if [[ $active == 1 ]]; then
+  output="$output⮀"
+else
+  output="$output ⮁"
+fi
+
+echo $output

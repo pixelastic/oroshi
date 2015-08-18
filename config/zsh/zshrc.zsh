@@ -1,6 +1,29 @@
+# Only source this file for interactive shells
+if [[ $- != *i* ]]; then
+  return
+fi
+
+# Environment variables {{{
 export LANG=en_US.UTF-8
 export TERM=xterm-256color
+path=(
+	~/.oroshi/scripts/bin
+	~/.oroshi/private/scripts/bin
+	~/.oroshi/scripts/bin/local/$(hostname)
+	~/.oroshi/private/scripts/bin/local/$(hostname)
+	$path
+	~/local/bin
+  ~/.local/bin
+)
+# }}}
 
+# Launch tmux if not already launched
+if [[ -z "$TMUX" ]]; then
+  tmux attach || tmux new-session
+  exit
+fi
+
+# Note: Lines below will only be executed when zsh is launched inside tmux
 local currentDir="`pwd`"
 local configDir=~/.oroshi/config/zsh
 

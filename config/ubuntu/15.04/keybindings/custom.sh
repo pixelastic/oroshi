@@ -2,9 +2,8 @@
 # Watch changes with `dconf watch /`, then edit keybindings in `ccsm` to see
 # what needs to be updated.
 
-# Super-T is terminal, opening tmux
+# Super-T is termite
 dconf write /org/compiz/integrated/command-1 "'termite'"
-# -e /home/tim/local/bin/tmux -2'"
 dconf write /org/compiz/integrated/run-command-1 "['<Super>t']"
 
 # Ctrl-Super-C is Chromium pro
