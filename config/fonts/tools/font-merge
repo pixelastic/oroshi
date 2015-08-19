@@ -12,5 +12,5 @@ local namespace=${added_name:u}
   --to-namespace=$namespace \
   --rename-as=$new_name \
   --ratio=0.9 \
-  --shift-y=0 \
+  --shift-y=-200 \
   --shift-x=2500
