@@ -56,7 +56,11 @@ class EbookSync
     # Due to the nature of the fat32 system, we need to add the
     # --modify-window=1 to deal with the way timestamps are stored.
     # We also do not need to use the --archive flag as fat32 can't store
-    # permissions, so we'll only use the implied --recursive and --times flags.
+    # permissions, so we'll only use the implied --recursive flag.
+    # We won't use the --time, but the --size-only instead. The Kindle seems to
+    # update modification times whenever a books is viewed on the device.
+    # Updating a book as a great probability of changing its size, so I think
+    # --size-only is good enough.
     # We'll exlude our tmp/ folders from the sync
     # We'll also do not copy directories ending with a dot (.) as they will be
     # copied to the system without the dot, multiple rsync in a row will always
@@ -65,7 +69,7 @@ class EbookSync
     options = [
       '--verbose',
       '--recursive',
-      '--times',
+      '--size-only',
       '--modify-window=1',
       "--filter='-s tmp/'",
       "--filter='-s *./'", # Excluding directories with trailing dot
