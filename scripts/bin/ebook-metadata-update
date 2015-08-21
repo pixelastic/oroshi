@@ -64,8 +64,8 @@ class EbookMetadataWriter
   # Extract book author
   def author(filepath)
     author_full = split_basename(filepath)[0]
-    firstname = author_full.split.last
-    lastname = author_full.split[0...-1].join(' ')
+    lastname = author_full.split.first
+    firstname = author_full.split.drop(1).join(' ')
     {
       author_lastname: lastname,
       author_firstname: firstname,
