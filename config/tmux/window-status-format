@@ -5,14 +5,33 @@ local active=$1
 local index=$2
 local name=$3
 local flags=$4
+local session=$5
+
+
+# Specific color for specific sessions
+local session_color='colour136'
+[[ $session == 'algolia' ]] && session_color='colour67'
+[[ $session == 'perso' ]] && session_color='colour141'
+[[ $session == 'projects' ]] && session_color='colour35'
+
 
 # Add ⮀ if active
 if [[ $active == 1 ]]; then
-  output="#[fg=colour235,bg=colour136]⮀"
+  output="#[fg=colour235,bg=$session_color]⮀"
 fi
 
 # Add index and name
 output="${output}$index:$name "
+
+# Add few icons for some specific folders
+[[ $name == 'blog' ]] && output="$output  "
+[[ $name == 'books' ]] && output="$output  "
+[[ $name == 'movies' ]] && output="$output  "
+[[ $name == 'music' ]] && output="$output  "
+[[ $name == 'oroshi' ]] && output="$output  "
+[[ $name == 'roleplay' ]] && output="$output  "
+[[ $name == 'twitter' ]] && output="$output  "
+[[ $name == 'videos' ]] && output="$output  "
 
 # Add zoomed icon flag if one of the panels is zoomed
 if [[ $flags == *Z* ]]; then
@@ -20,7 +39,7 @@ if [[ $flags == *Z* ]]; then
 fi
 
 # Add final coloring
-output="$output#[fg=colour136,bg=colour235]"
+output="$output#[fg=$session_color,bg=colour235]"
 
 # Add ⮁ or ⮀ depending if active
 if [[ $active == 1 ]]; then
@@ -30,3 +49,4 @@ else
 fi
 
 echo $output
+

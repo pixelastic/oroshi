@@ -3,9 +3,14 @@
 local output=''
 local name=$1
 
-# Add icon with session name
-output="#[fg=colour235,bg=colour136]  $name "
-# Add closing arrow
-output="$output #[fg=colour136,bg=colour235]⮀ "
+# Specific color for specific sessions
+local session_color='colour136'
+[[ $name == 'algolia' ]] && session_color='colour67'
+[[ $name == 'perso' ]] && session_color='colour141'
+[[ $name == 'projects' ]] && session_color='colour35'
+
+output="$output#[fg=colour235,bg=$session_color]"
+output="$output  $name"
+output="$output #[fg=$session_color,bg=colour235]⮀ "
 
 echo $output
