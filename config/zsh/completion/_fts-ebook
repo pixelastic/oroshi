@@ -1,0 +1,25 @@
+#compdef ebook-metadata-update ebook-meta ebook-viewer
+# Will only suggest ebook files
+
+_fts-ebook () {
+	# local var definition to not pollute global scope
+	local curcontext=$curcontext state line context
+	typeset -A opt_args
+
+	# suggesting arguments
+	_arguments \
+		"*:ebook file:->ebook_file" \
+		&& return 0
+	
+	# State machine
+	case $state in
+		(ebook_file)
+			local glob=$(echo $O_FILETYPES_EXTENSIONS[ebook] | sed 's/,/|/g')
+			_files -g '*.('$glob')' \
+			&& return 0
+	esac
+
+	return 1
+}
+
+_fts-ebook "$@"
