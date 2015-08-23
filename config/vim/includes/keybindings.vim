@@ -92,7 +92,7 @@ vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
 " }}}
 " RETURN KEY {{{
-" Note: Xmodmap maps Shift-Enter to Keypad Enter
+" Note: Shift-Enter is O2M
 " - Creates new lines below in all modes
 " - Creates new lines above in all modes with Shift
 " - Accept autocompletion suggestion
@@ -108,11 +108,11 @@ function! MultiPurposeReturn()
   return pumvisible() ? autocomplete_select : new_line
 endfunction
 inoremap <CR> <C-R>=MultiPurposeReturn()<CR>
-inoremap <kEnter> <Esc>mzO<Esc>`za
+inoremap O2M <Esc>mzO<Esc>`za
 nnoremap <CR> mzo<Esc>`z
-nnoremap <kEnter> mzO<Esc>`z
+nnoremap O2M mzO<Esc>`z
 vnoremap <CR> <Esc>g`>o<Esc>gv
-vnoremap <kEnter> <Esc>g`<O<Esc>g
+vnoremap O2M <Esc>g`<O<Esc>g
 " }}}
 " H/J/K/L {{{
 function! MultiPurposeJ()

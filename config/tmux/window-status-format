@@ -26,6 +26,7 @@ output="${output}$index:$name "
 # Add few icons for some specific folders
 [[ $name == 'blog' ]] && output="$output  "
 [[ $name == 'books' ]] && output="$output  "
+[[ $name == 'comics' ]] && output="$output  "
 [[ $name == 'movies' ]] && output="$output  "
 [[ $name == 'music' ]] && output="$output  "
 [[ $name == 'oroshi' ]] && output="$output  "
