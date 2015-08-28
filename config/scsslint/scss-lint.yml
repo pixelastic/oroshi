@@ -27,3 +27,9 @@ linters:
   LeadingZero:
     enabled: true
     style: exclude_zero
+
+  # Allow $my-variable as well as $MY_CONSTANT
+  NameFormat:
+    enabled: rue
+    allow_leading_underscore: true
+    convention: '(^[A-Z0-9_]+$)|(^[a-z0-9-]+$)'
