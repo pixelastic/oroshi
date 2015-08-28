@@ -313,6 +313,9 @@ augroup END
 " GIT {{{
 source ~/.vim/includes/git.vim
 " }}}
+" GIT GUTTER {{{
+let g:gitgutter_max_signs=2000
+" }}}
 " SYNTASTIC {{{
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_auto_loc_list=0
