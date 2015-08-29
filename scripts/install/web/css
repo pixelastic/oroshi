@@ -9,5 +9,8 @@ npm install -g csslint
 echo "Installing ScssLint"
 gem install scss_lint
 
+echo "Installing Sassc"
+gem install sassc
+
 echo "Installing CSSMin"
 npm install -g clean-css
