@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# Display the current charge percentage
+local duration
+local battery="$(upower -e | grep BAT)"
+duration=$(upower -i $battery | grep 'time to empty' | awk '{print $4}')
+
+echo "${duration}h"
