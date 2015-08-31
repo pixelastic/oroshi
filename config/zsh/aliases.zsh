@@ -242,6 +242,9 @@ alias gt='grunt test'
 alias gj='grunt jshint'
 alias gbi='grunt bowerInstall'
 # }}}
+# Bundler {{{
+alias be='bundle exec'
+# }}}
 # Bower {{{
 alias bs='bower search'
 alias bi='bower install'

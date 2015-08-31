@@ -36,6 +36,9 @@ source ~/.rvm/scripts/rvm
 rvm install 2.2.2
 rvm install 2.2.2-dev
 
+# Automatic prepending of bundle exec
+gem install rubygems-bundler
+
 # Mp3
 gem install ruby-mp3info
 
