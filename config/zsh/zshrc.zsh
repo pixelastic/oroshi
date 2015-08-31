@@ -51,12 +51,21 @@ if [[ -r $privateLocalConfig ]]; then
 fi
 # }}}
 
-
 source ./theming.zsh
 source ./prompt.zsh
 
 # Clean the path to remove duplicates
 typeset -U path
+
+# RVM {{{
+# Note: This needs to be loaded at the end of the zshrc
+local rvmScript=~/.rvm/scripts/rvm
+if [[ -r $rvmScript ]]; then
+	path=($HOME/.rvm/bin $path)
+  source $rvmScript
+  rvm use ruby-2.2.2 &>/dev/null
+fi
+# }}}
 
 # Move back to original dir
 cd  $currentDir

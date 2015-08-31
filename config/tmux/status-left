@@ -5,9 +5,21 @@ local name=$1
 
 # Specific color for specific sessions
 local session_color='colour136'
-[[ $name == 'algolia' ]] && session_color='colour67'
+# Perso
 [[ $name == 'perso' ]] && session_color='colour141'
+[[ $name == 'books' ]] && session_color='colour141'
+[[ $name == 'comics' ]] && session_color='colour141'
+[[ $name == 'movies' ]] && session_color='colour141'
+[[ $name == 'music' ]] && session_color='colour141'
+[[ $name == 'roleplay' ]] && session_color='colour141'
+# Algolia
+[[ $name == 'algolia' ]] && session_color='colour67'
+[[ $name == 'bootstrap' ]] && session_color='colour67'
+# Projects
 [[ $name == 'projects' ]] && session_color='colour35'
+[[ $name == 'oroshi' ]] && session_color='colour35'
+[[ $name == 'cssflags' ]] && session_color='colour35'
+[[ $name == 'blog' ]] && session_color='colour35'
 
 output="$output#[fg=colour235,bg=$session_color]"
 output="$output  $name"
