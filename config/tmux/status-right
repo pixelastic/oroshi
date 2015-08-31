@@ -22,12 +22,13 @@ output="$ip $output"
 local battery_status="$(battery-status)"
 local battery_percent="$(battery-percent)"
 local battery_duration="$(battery-duration)"
-if [[ $battery_percent -ne 100 ]]; then
-  local battery_display="${battery_percent}% (${battery_duration})"
+if [[ $battery_percent -ne 99 ]]; then
+  local battery_display="${battery_percent}%"
   # Charging, green
   if [[ $battery_status == 'charging' ]]; then
      output="#[fg=colour35] $battery_display#[default] $output"
   else
+    battery_display="${battery_display} (${battery_duration})"
     if [[ $battery_percent -lt 100 && $battery_percent -ge 50 ]]; then
       output=" $battery_display $output"
     fi
