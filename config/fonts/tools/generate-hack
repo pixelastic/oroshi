@@ -1,6 +1,8 @@
 #!/usr/bin/env zsh
-local original_file=${1:a}
-local added_file=${2:a}
+local original_file=./Hack.ttf
+local added_file=./Octicons.ttf
+
+
 local original_name=${original_file:r:t}
 local added_name=${added_file:r:t}
 local new_name="${original_name}With${added_name}"
@@ -11,6 +13,17 @@ local namespace=${added_name:u}
   --symbols=$added_file \
   --to-namespace=$namespace \
   --rename-as=$new_name \
-  --ratio=0.9 \
-  --shift-y=-200 \
+  --shift-y=-100 \
   --shift-x=2500
+
+rm $new_name.sh
+
+# Add it to the repo
+cp $new_name.ttf ../
+
+# Add it to the list of fonts
+echo "Clear cache"
+mv $new_name.ttf ~/.fonts/
+fc-cache -f
+fc-list | grep $new_name
+echo "This       use some icons    "

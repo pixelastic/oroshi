@@ -5,3 +5,4 @@ mkdir -p ~/.fonts
 cp ~/.oroshi/config/fonts/DejaVuSansMonoWithOcticons.ttf ~/.fonts
 cp ~/.oroshi/config/fonts/PowerlineSymbols.ttf ~/.fonts
 
+cp ~/.oroshi/config/fonts/*.ttf ~/.fonts/
