@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# Given a session type, return its color
+
+local session_type=$1
+local session_color='colour136'
+
+[[ $session_type == 'algolia' ]] && session_color='colour24'
+[[ $session_type == 'perso' ]] && session_color='colour141'
+[[ $session_type == 'project' ]] && session_color='colour35'
+
+echo $session_color

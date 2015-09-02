@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+# Given a session name, this will guess the type of session it is.
+# Possible types are:
+# - algolia
+# - perso
+# - projects
+
+local full_name=$1
+local session_type="$(echo $full_name | awk -F'-' '{print $1}')"
+
+# Session type aliases
+[[ $session_type == 'a' ]] && session_type='algolia'
+[[ $session_type == 'p' ]] && session_type='perso'
+
+echo $session_type

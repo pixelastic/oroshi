@@ -1,42 +1,40 @@
 #!/usr/bin/env zsh
 
 local output=''
-local active=$1
-local index=$2
-local name=$3
-local flags=$4
-local session=$5
+local tmux_path=~/.oroshi/config/tmux
+local is_active=$1
+local tab_index=$2
+local tab_name=$3
+local tab_flags=$4
+local session_name=$5
+local tab_icon=''
 
 
-# Specific color for specific sessions
-local session_color='colour136'
-[[ $session == 'algolia' ]] && session_color='colour67'
-[[ $session == 'perso' ]] && session_color='colour141'
-[[ $session == 'projects' ]] && session_color='colour35'
-
+local session_type="$($tmux_path/helper-get-session-type $session_name)"
+local session_color="$($tmux_path/helper-get-session-color $session_type)"
 
 # Add ⮀ if active
-if [[ $active == 1 ]]; then
+if [[ $is_active == 1 ]]; then
   output="#[fg=colour235,bg=$session_color]⮀"
 fi
 
-# Add index and name
-output="${output}$index:$name "
-
 # Add few icons for some specific folders
-[[ $name == 'blog' ]] && output="$output  "
-[[ $name == 'books' ]] && output="$output  "
-[[ $name == 'comics' ]] && output="$output  "
-[[ $name == 'dropbox' ]] && output="$output  "
-[[ $name == 'movies' ]] && output="$output  "
-[[ $name == 'music' ]] && output="$output  "
-[[ $name == 'oroshi' ]] && output="$output  "
-[[ $name == 'roleplay' ]] && output="$output  "
-[[ $name == 'twitter' ]] && output="$output  "
-[[ $name == 'videos' ]] && output="$output  "
+[[ $tab_name == 'blog' ]]     && tab_icon="  "
+[[ $tab_name == 'books' ]]    && tab_icon="  "
+[[ $tab_name == 'comics' ]]   && tab_icon="  "
+[[ $tab_name == 'dropbox' ]]  && tab_icon="  "
+[[ $tab_name == 'movies' ]]   && tab_icon="  "
+[[ $tab_name == 'music' ]]    && tab_icon="  "
+[[ $tab_name == 'oroshi' ]]   && tab_icon="  "
+[[ $tab_name == 'roleplay' ]] && tab_icon="  "
+[[ $tab_name == 'twitter' ]]  && tab_icon="  "
+[[ $tab_name == 'videos' ]]   && tab_icon="  "
+
+# Add index and name
+output="${output}$tab_index:$tab_name $tab_icon"
 
 # Add zoomed icon flag if one of the panels is zoomed
-if [[ $flags == *Z* ]]; then
+if [[ $tab_flags == *Z* ]]; then
   output="${output} "
 fi
 
@@ -44,11 +42,10 @@ fi
 output="$output#[fg=$session_color,bg=colour235]"
 
 # Add ⮁ or ⮀ depending if active
-if [[ $active == 1 ]]; then
+if [[ $is_active == 1 ]]; then
   output="$output⮀"
 else
   output="$output ⮁"
 fi
 
 echo $output
-

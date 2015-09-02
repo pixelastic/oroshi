@@ -1,28 +1,21 @@
 #!/usr/bin/env zsh
+# Display the session name with specific color and icon
 
 local output=''
-local name=$1
+local tmux_path=~/.oroshi/config/tmux
+local full_name=$1
 
-# Specific color for specific sessions
-local session_color='colour136'
-# Perso
-[[ $name == 'perso' ]] && session_color='colour141'
-[[ $name == 'books' ]] && session_color='colour141'
-[[ $name == 'comics' ]] && session_color='colour141'
-[[ $name == 'movies' ]] && session_color='colour141'
-[[ $name == 'music' ]] && session_color='colour141'
-[[ $name == 'roleplay' ]] && session_color='colour141'
-# Algolia
-[[ $name == 'algolia' ]] && session_color='colour67'
-[[ $name == 'bootstrap' ]] && session_color='colour67'
-# Projects
-[[ $name == 'projects' ]] && session_color='colour35'
-[[ $name == 'oroshi' ]] && session_color='colour35'
-[[ $name == 'cssflags' ]] && session_color='colour35'
-[[ $name == 'blog' ]] && session_color='colour35'
+local session_type="$($tmux_path/helper-get-session-type $full_name)"
+local session_color="$($tmux_path/helper-get-session-color $session_type)"
+local session_name="$(echo $full_name | awk -F'-' '{print $2}')"
+[[ $session_name == '' ]] && session_name=$full_name
 
-output="$output#[fg=colour235,bg=$session_color]"
-output="$output  $name"
-output="$output #[fg=$session_color,bg=colour235]⮀ "
+# Icon
+local session_icon=' '
+[[ $session_type == 'algolia' ]] && session_icon=''
+[[ $session_type == 'perso' ]] && session_icon=' '
+[[ $session_type == 'project' ]] && session_icon=' '
+
+output="#[fg=colour235,bg=$session_color] $session_icon $session_name #[fg=$session_color,bg=colour235]⮀ "
 
 echo $output
