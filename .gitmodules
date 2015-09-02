@@ -110,3 +110,6 @@
 [submodule "config/zsh/completion/docker-zsh-completion"]
 	path = config/zsh/completion/docker-zsh-completion
 	url = git@github.com:felixr/docker-zsh-completion.git
+[submodule "config/vim/bundle/available/rename.vim"]
+	path = config/vim/bundle/available/rename.vim
+	url = git@github.com:danro/rename.vim.git
