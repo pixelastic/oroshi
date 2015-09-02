@@ -91,7 +91,7 @@ alias vt?r='git tag-exists-remote'
 alias vt?='git tag-exists'
 # }}}
 # [s]tashes {{{
-alias vst='git stash -u'
+alias vstc='git stash-create'
 alias vstR='git stash drop'
 alias vstRa='git stash clear'
 alias vsta='git stash-apply'
