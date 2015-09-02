@@ -28,6 +28,7 @@ alias serve='http-server .'
 alias treed='tree -dN'
 alias tree='tree -aNC -I ".hg|.git"'
 alias watch='watch -c '
+alias w='which'
 function f() { find . -type f -iname "*$1*" }
 # }}}
 # Global aliases {{{
