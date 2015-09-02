@@ -16,6 +16,10 @@ local session_icon=' '
 [[ $session_type == 'perso' ]] && session_icon=' '
 [[ $session_type == 'project' ]] && session_icon=' '
 
-output="#[fg=colour235,bg=$session_color] $session_icon $session_name #[fg=$session_color,bg=colour235]⮀ "
+# Text color
+local fg_color='colour235'
+[[ $session_type == 'algolia' ]] && fg_color='colour249'
+
+output="#[fg=$fg_color,bg=$session_color] $session_icon $session_name #[fg=$session_color,bg=colour235]⮀ "
 
 echo $output

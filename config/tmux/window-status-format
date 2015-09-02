@@ -30,8 +30,12 @@ fi
 [[ $tab_name == 'twitter' ]]  && tab_icon="  "
 [[ $tab_name == 'videos' ]]   && tab_icon="  "
 
+# Text color
+local fg_color='colour235'
+[[ $session_type == 'algolia' ]] && fg_color='colour249'
+
 # Add index and name
-output="${output}$tab_index:$tab_name $tab_icon"
+output="${output}#[fg=$fg_color,bg=$session_color]$tab_index:$tab_name $tab_icon"
 
 # Add zoomed icon flag if one of the panels is zoomed
 if [[ $tab_flags == *Z* ]]; then
