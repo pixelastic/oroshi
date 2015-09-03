@@ -13,6 +13,7 @@ local namespace=${added_name:u}
   --symbols=$added_file \
   --to-namespace=$namespace \
   --rename-as=$new_name \
+  --ratio=0.9 \
   --shift-y=-100 \
   --shift-x=2500
 
