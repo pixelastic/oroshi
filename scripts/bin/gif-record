@@ -51,4 +51,4 @@ to=$(($duration - 2))
 # Converting it to gif
 echo "Converting to .gif (this could take some time)"
 gifify $aviFile -o $gifFile --to=$to
-geeqie $gifFile
+eog $gifFile && geeqie $gifFile
