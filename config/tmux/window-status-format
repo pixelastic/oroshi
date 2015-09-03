@@ -24,10 +24,10 @@ local tab_icon=''
 [[ $tab_name == 'movies' ]]   && tab_icon="  "
 [[ $tab_name == 'music' ]]    && tab_icon="  "
 [[ $tab_name == 'oroshi' ]]   && tab_icon="  "
+[[ $tab_name == 'repo' ]]     && tab_icon="  "
 [[ $tab_name == 'roleplay' ]] && tab_icon="  "
 [[ $tab_name == 'twitter' ]]  && tab_icon="  "
 [[ $tab_name == 'videos' ]]   && tab_icon="  "
-
 # Text color
 local fg_color='colour235'
 [[ $session_type == 'algolia' ]] && fg_color='colour249'
