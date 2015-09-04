@@ -37,14 +37,15 @@ function! OroshiStatusLine()
   let sl .= '%*'
   " }}}
   " Filename coloring based on readonly, modified and saved {{{
+  let filepath= expand('%:p:h:t').'/'.expand('%:t')
   let sl .= '%#oroshi_UIError#'
-  let sl .= '%{&readonly == 1 ? expand(''%:t'')." ⭤ " : ""}'
+  let sl .= '%{&readonly == 1 ? "'.filepath.' ⭤ " : ""}'
   let sl .= '%*'
   let sl .= '%#oroshi_UINotice#'
-  let sl .= '%{&readonly == 0 && &modified == 1 ? expand(''%:t'')." " : ""}'
+  let sl .= '%{&readonly == 0 && &modified == 1 ? "'.filepath.' " : ""}'
   let sl .= '%*'
   let sl .= '%#oroshi_UISuccess#'
-  let sl .= '%{&readonly == 0 && &modified == 0 ? expand(''%:t'')." " : ""}'
+  let sl .= '%{&readonly == 0 && &modified == 0 ? "'.filepath.' " : ""}'
   let sl .= '%*'
   " }}}
   " Git status {{{

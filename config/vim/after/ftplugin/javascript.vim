@@ -60,13 +60,14 @@ endif
 inoremap <silent> <buffer> <F4> <Esc>:call JavascriptBeautify()<CR>
 nnoremap <silent> <buffer> <F4> :call JavascriptBeautify()<CR>
 function! JavascriptBeautify() 
-  let linenr=line('.')
-  silent! execute '%!eslintfix %'
-  execute 'normal '.linenr.'gg'
+	call RemoveTrailingSpaces()
 endfunction
 " }}}
 " Keybindings {{{
 " $ù is easy to type on my keyboard. Use it for debug calls
 inoremap <buffer> $ù console.log(
 " }}}
-
+" ES6 {{{
+" Enable JSX syntax highlight in javascript files
+let g:jsx_ext_required = 0
+" }}}
