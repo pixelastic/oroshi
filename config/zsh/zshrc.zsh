@@ -17,11 +17,14 @@ path=(
 )
 # }}}
 
-# Launch tmux if not already launched
-if [[ -z "$TMUX" ]]; then
-  tmux attach || tmux new-session
-  exit
-fi
+# Launch a new tmux session or attach to latest if one already
+# Quit the terminal when detaching, go to next session when closing one
+function launchTmux() {
+  local tmuxExitMessage="$(tmux attach || tmux new-session)"
+  [[ $tmuxExitMessage == *detached* ]] && exit
+  launchTmux
+}
+[[ -z "$TMUX" ]] && launchTmux
 
 # Note: Lines below will only be executed when zsh is launched inside tmux
 local currentDir="`pwd`"
