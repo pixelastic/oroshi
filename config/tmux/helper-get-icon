@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+# Given a tab/session name, will return an icon from the font
+
+local name=$1
+local icon=''
+[[ $name == 'algolia' ]]  && icon=' '
+[[ $name == 'blog' ]]     && icon=' '
+[[ $name == 'books' ]]    && icon=' '
+[[ $name == 'comics' ]]   && icon=' '
+[[ $name == 'dropbox' ]]  && icon=' '
+[[ $name == 'movies' ]]   && icon=' '
+[[ $name == 'music' ]]    && icon=' '
+[[ $name == 'oroshi' ]]   && icon=' '
+[[ $name == 'perso' ]]    && icon=' '
+[[ $name == 'project' ]]  && icon=' '
+[[ $name == 'repo' ]]     && icon=' '
+[[ $name == 'roleplay' ]] && icon=' '
+[[ $name == 'server' ]]   && icon=' '
+[[ $name == 'support' ]]  && icon=' '
+[[ $name == 'terminal' ]] && icon=' '
+[[ $name == 'twitter' ]]  && icon=' '
+[[ $name == 'videos' ]]   && icon=' '
+[[ $name == 'vim' ]]      && icon=' '
+[[ $name == 'zsh' ]]      && icon=' '
+
+echo $icon

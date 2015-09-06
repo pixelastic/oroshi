@@ -11,15 +11,15 @@ local session_name="$(echo $full_name | awk -F'-' '{print $2}')"
 [[ $session_name == '' ]] && session_name=$full_name
 
 # Icon
-local session_icon=' '
-[[ $session_type == 'algolia' ]] && session_icon=''
-[[ $session_type == 'perso' ]] && session_icon=' '
-[[ $session_type == 'project' ]] && session_icon=' '
+#
+local session_icon="$($tmux_path/helper-get-icon $session_name)"
+[[ $session_icon == '' ]] && session_icon="$($tmux_path/helper-get-icon $session_type)"
+[[ $session_icon == '' ]] && session_icon="$($tmux_path/helper-get-icon 'terminal')"
 
 # Text color
 local fg_color='colour235'
 [[ $session_type == 'algolia' ]] && fg_color='colour249'
 
-output="#[fg=$fg_color,bg=$session_color] $session_icon $session_name #[fg=$session_color,bg=colour235]⮀ "
+output="#[fg=$fg_color,bg=$session_color] ${session_icon}$session_name #[fg=$session_color,bg=colour235]⮀ "
 
 echo $output

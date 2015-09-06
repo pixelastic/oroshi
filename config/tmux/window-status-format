@@ -16,19 +16,7 @@ local opening_arrow=''
 [[ $is_active == 1 ]] && opening_arrow="#[fg=colour235,bg=$session_color]⮀#[default]"
 
 # Add few icons for some specific folders
-local tab_icon=''
-[[ $tab_name == 'blog' ]]     && tab_icon="  "
-[[ $tab_name == 'books' ]]    && tab_icon="  "
-[[ $tab_name == 'comics' ]]   && tab_icon="  "
-[[ $tab_name == 'dropbox' ]]  && tab_icon="  "
-[[ $tab_name == 'movies' ]]   && tab_icon="  "
-[[ $tab_name == 'music' ]]    && tab_icon="  "
-[[ $tab_name == 'oroshi' ]]   && tab_icon="  "
-[[ $tab_name == 'repo' ]]     && tab_icon="  "
-[[ $tab_name == 'roleplay' ]] && tab_icon="  "
-[[ $tab_name == 'server' ]]   && tab_icon="  "
-[[ $tab_name == 'twitter' ]]  && tab_icon="  "
-[[ $tab_name == 'videos' ]]   && tab_icon="  "
+local tab_icon=" $($tmux_path/helper-get-icon $tab_name)"
 
 # Text color
 local fg_color='colour235'
@@ -45,7 +33,7 @@ local closing_arrow=' ⮁'
 [[ $is_active == 1 ]] && closing_arrow="#[fg=$session_color,bg=colour235]⮀#[default]"
 
 # Display name
-local display_name="${tab_index}:${tab_name}${tab_icon}${zoom_icon} "
+local display_name="${tab_icon}${tab_name}${zoom_icon} "
 if [[ $is_active == 1 ]]; then
   display_name="#[fg=$fg_color,bg=$session_color]${display_name}#[default]"
 fi
