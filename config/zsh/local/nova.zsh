@@ -17,6 +17,7 @@ alias play-nogg='mplayer ~/perso/music/soundtracks/D/Dopefish/*.mp3'
 alias play-soundtrack='mplayer --shuffle ~/perso/music/soundtracks/misc/*.mp3'
 alias play-buddha='play-random-dir ~/perso/music/music/B/Buddha\ Bar'
 alias play-peuple='play-random-dir ~/perso/music/music/P/Peuple*'
+alias play-fun='mplayer --shuffle ~/perso/music/misc/{fun,nz}/*'
 function play-random-dir() {
   cd "$1"
 
