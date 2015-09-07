@@ -1,21 +1,21 @@
 #!/usr/bin/env ruby
+
 # Will add a new submodule to a repo.
 # Usage :
 # $ git-submodule-path url@to:repo.git
-
 class SubmoduleCreate
   def initialize(*args)
     if args.size == 0
-      puts "✘ You must pass at least the repository url"
+      puts '✘ You must pass at least the repository url'
       exit 1
     end
-    @repoUrl = args[0]
+    @repo_url = args[0]
+    @submodule_path = args[1]
+    @submodule_path = '.' if @submodule_path.nil?
   end
 
   def run
-    system("git submodule add #{@repoUrl}")
+    system("git submodule add #{@repo_url} #{@submodule_path}")
   end
-
 end
-SubmoduleCreate.new(*ARGV).run()
-
+SubmoduleCreate.new(*ARGV).run
