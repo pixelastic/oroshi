@@ -264,8 +264,8 @@ nnoremap <silent> ; :call AppendMissingSemicolon()<CR>
 " Comment whole paragraph
 nnoremap gcp vip:TComment<CR>
 " Open Url under cursor in browser
-nnoremap <C-F5> :call OpenUrlInBrowser(GetUrlUnderCursor())<CR>
-inoremap <C-F5> :call OpenUrlInBrowser(GetUrlUnderCursor())<CR>
+nnoremap <F5> :call OpenUrlInBrowser(GetUrlUnderCursor())<CR>
+inoremap <F5> :call OpenUrlInBrowser(GetUrlUnderCursor())<CR>
 " md will convert the selection to markdown
 vnoremap <silent> md :!markdown<CR>
 " Increment/Decrement number under cursor

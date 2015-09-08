@@ -55,8 +55,8 @@ function! HtmlBeautify()
   execute 'normal '.linenr.'gg'
 endfunction
 " }}}
-" Run file {{{
-nnoremap <silent> <buffer> <F5> :call OpenUrlInBrowser(expand('%:p'))<CR>
+" Run file with Shift-F5 {{{
+nnoremap <silent> <buffer> [31~ :call OpenUrlInBrowser(expand('%:p'))<CR>
 " }}}
 
 " Ctrl+C closes opened tags (using ragtags)
