@@ -17,12 +17,13 @@
       "afterColon": true
     }],
     "indent": [2, 2],
-    "no-multi-spaces": 1,
     "no-console": 1,
+    "no-multi-spaces": 1,
     "no-trailing-spaces" : 2,
     "no-underscore-dangle": 0,
     "no-unused-vars": 2,
     "no-use-before-define": [1, "nofunc"],
-    "quotes": [2, "single"]
+    "quotes": [2, "single"],
+    "semi": [2, "always"]
   }
 }
