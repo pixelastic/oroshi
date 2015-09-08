@@ -5,6 +5,9 @@ linters:
   IdSelector:
     enabled: false
 
+  EmptyLineBetweenBlocks:
+    enabled: false
+
   # Do not allow overqualifying an element
   QualifyingElement:
     enabled: true
