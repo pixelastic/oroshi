@@ -15,17 +15,16 @@ dconf write /org/compiz/profiles/unity/plugins/commands/run-command14-key "'<Alt
 dconf write /org/compiz/profiles/unity/plugins/commands/command13 "'gnome-screenshot -c'"
 dconf write /org/compiz/profiles/unity/plugins/commands/run-command13-key "'<Control><Super>Print'"
 
-# Super-Up and Super-Down change brightness
-dconf write /org/compiz/profiles/unity/plugins/commands/command16 "'xbacklight -inc 20'"
-dconf write /org/compiz/profiles/unity/plugins/commands/run-command16-key "'<Super>Up'"
-dconf write /org/compiz/profiles/unity/plugins/commands/command17 "'xbacklight -dec 20'"
-dconf write /org/compiz/profiles/unity/plugins/commands/run-command17-key "'<Super>Down'"
+# Super-F5 and Super-F6 change brightness
+dconf write /org/compiz/profiles/unity/plugins/commands/command16 "'xbacklight -dec 20'"
+dconf write /org/compiz/profiles/unity/plugins/commands/run-command16-key "'<Super>F5'"
+dconf write /org/compiz/profiles/unity/plugins/commands/command17 "'xbacklight -inc 20'"
+dconf write /org/compiz/profiles/unity/plugins/commands/run-command17-key "'<Super>F6'"
 
-# Alt-Home and Alt-End to change volume
-dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-up "'<Super>Right'"
-dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-down "'<Super>Left'"
-# Alt-Maj-Home to toggle mute
-dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-mute "'<Super><Shift>Left'"
+# Super-F1, F2 and F3 for the volume
+dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-mute "'<Super>F1'"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-down "'<Super>F2'"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-up "'<Super>F3'"
 
 # Disable
 dconf write /org/compiz/profiles/unity/plugins/commands/command18 "''"
