@@ -19,6 +19,7 @@ alias diff='colordiff'
 alias grep='grep -i --color=auto'
 alias la="ls -a"
 alias ls="ls -vhlp --color=always --group-directories-first"
+alias l="ls"
 alias mkdir="mkdir -p"
 alias mv='mv -vi'
 alias rmdir='better-rmdir'
@@ -286,7 +287,7 @@ function mm {
 local nvmScript=~/.nvm/nvm.sh
 if [[ -r $nvmScript ]]; then
   source $nvmScript
-	nvm use 0.12 &>/dev/null
+	nvm use 4 &>/dev/null
 fi
 # }}}
 # GVM {{{

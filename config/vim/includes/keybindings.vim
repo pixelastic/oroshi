@@ -153,7 +153,9 @@ nnoremap L g_
 vnoremap L g_
 " Go back to first non blank character with home
 nnoremap <Home> ^
+nnoremap [1~ ^
 inoremap <Home> <Esc>^i
+inoremap [1~ <Esc>^i
 " Scroll one page at a time
 nnoremap U <C-U>
 nnoremap D <C-D>
