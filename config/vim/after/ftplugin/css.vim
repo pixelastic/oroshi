@@ -12,7 +12,6 @@ setlocal equalprg=css-beautify\ -s\ 2\ -f\ -
 " }}}
 " Folding {{{
 setlocal foldmethod=syntax
-" setlocal foldmarker={,}
 " }}}
 " Custom bindings {{{
 " is stands for [i]n [s]elector, #header li

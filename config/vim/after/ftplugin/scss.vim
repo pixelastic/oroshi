@@ -4,8 +4,24 @@ if !exists('g:syntastic_scss_scss_lint_args') || g:syntastic_scss_scss_lint_args
 	let g:syntastic_scss_scss_lint_args = '--config ~/.scss-lint.yml'
 endif
 "}}}
+" Misc {{{
+" Remove - and _ from delimiters
+setlocal iskeyword=@,48-57,192-255
+" }}}
+" Indentation rules {{{
+setlocal tabstop=2
+setlocal shiftwidth=2
+setlocal softtabstop=2
+setlocal expandtab
+" }}}
+" Folding {{{
+setlocal foldmethod=syntax
+" }}}
 " Keybindings {{{
 nnoremap ss viB:sort<CR>
+" Common CSS rules
+inoremap <buffer> flr float: right;
+inoremap <buffer> fll float: left;
 " }}}
 " Cleaning the file {{{
 nnoremap <silent> <buffer> <F4> :call ScssClean()<CR>
