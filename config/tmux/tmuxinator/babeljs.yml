@@ -4,8 +4,8 @@ startup_window: 1
 
 windows:
   - vim: 
-    layout: even-vertical
-    panes: 
-      - clear
-      - vdl
+      layout: even-horizontal
+      panes: 
+        - chrome http://localhost:4001/
+        - vdl
   - server: jekyll serve --watch --port 4001
