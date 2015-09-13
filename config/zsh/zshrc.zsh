@@ -3,72 +3,56 @@ if [[ $- != *i* ]]; then
   return
 fi
 
+local hostname="$(hostname)"
+local zshConfigDir=~/.oroshi/config/zsh
+
 # Environment variables {{{
+export EDITOR=vim
+export CHROME_BIN=/usr/bin/chromium-browser
 export LANG=en_US.UTF-8
 export TERM=xterm-256color
 path=(
-	~/.oroshi/scripts/bin
-	~/.oroshi/private/scripts/bin
-	~/.oroshi/scripts/bin/local/$(hostname)
-	~/.oroshi/private/scripts/bin/local/$(hostname)
-	$path
-	~/local/bin
+  ~/.oroshi/scripts/bin
+  ~/.oroshi/private/scripts/bin
+  ~/.oroshi/scripts/bin/local/$hostname
+  ~/.oroshi/private/scripts/bin/local/$hostname
+  $HOME/.rvm/bin
+  $path
+  ~/local/bin
   ~/.local/bin
 )
+typeset -U path
 # }}}
 
-# Launch a new tmux session or attach to latest if one already
-# Quit the terminal when detaching, go to next session when closing one
-function launchTmux() {
-  local tmuxExitMessage="$(tmux attach || tmux new-session)"
-  [[ $tmuxExitMessage == *detached* ]] && exit
-  launchTmux
-}
-[[ -z "$TMUX" ]] && launchTmux
+# We start a new tmux session if none already started
+source $zshConfigDir/tmux.zsh
 
-# Note: Lines below will only be executed when zsh is launched inside tmux
-local currentDir="`pwd`"
-local configDir=~/.oroshi/config/zsh
+# Some stuff must be set before everything else
+source $zshConfigDir/first.zsh
 
-# Move to the zsh config dir
-cd $configDir
-source ./filetypes.zsh
-source ./history.zsh
-source ./completion.zsh
-source ./aliases.zsh
-source ./keybindings.zsh
+# Configuration
+source $zshConfigDir/filetypes.zsh
+source $zshConfigDir/history.zsh
+source $zshConfigDir/aliases.zsh
+source $zshConfigDir/completion.zsh
+source $zshConfigDir/keybindings.zsh
 
 # Local config {{{
 # Note: Needs to be loaded here so it can overwrite default alias but still
 # contains config options needed for prompt theming
-local localConfig=${configDir}/local/$(hostname).zsh
+local localConfig=~/.oroshi/config/zsh/local/${hostname}.zsh
 if [[ -r $localConfig ]]; then
-	typeset -A promptColor
-	source $localConfig
+  typeset -A promptColor
+  source $localConfig
 fi
-# }}}
-# Private local config {{{
-local privateLocalConfig=~/.oroshi/private/config/zsh/local/$(hostname).zsh
+local privateLocalConfig=~/.oroshi/private/config/zsh/local/${hostname}.zsh
 if [[ -r $privateLocalConfig ]]; then
-	source $privateLocalConfig
+  source $privateLocalConfig
 fi
 # }}}
 
-source ./theming.zsh
-source ./prompt.zsh
+source $zshConfigDir/theming.zsh
+source $zshConfigDir/prompt.zsh
 
-# Clean the path to remove duplicates
-typeset -U path
-
-# RVM {{{
-# Note: This needs to be loaded at the end of the zshrc
-local rvmScript=~/.rvm/scripts/rvm
-if [[ -r $rvmScript ]]; then
-	path=($HOME/.rvm/bin $path)
-  source $rvmScript
-  rvm use ruby-2.2.2 &>/dev/null
-fi
-# }}}
-
-# Move back to original dir
-cd  $currentDir
+# Some stuff must be loaded after everything else
+source $zshConfigDir/last.zsh

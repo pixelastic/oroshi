@@ -329,7 +329,7 @@ function chpwd() {
 # }}}
 
 # Highlighting as I type {{{
-source ./plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.oroshi/config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
 ZSH_HIGHLIGHT_STYLES[default]="fg=$promptColor[commandText]"
 ZSH_HIGHLIGHT_STYLES[builtin]="fg=$promptColor[commandCommand]"

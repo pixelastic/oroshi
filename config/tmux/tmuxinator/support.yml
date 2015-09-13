@@ -1,0 +1,6 @@
+name: a-support
+root: ~/local/tmp/support/
+startup_window: 1
+
+windows:
+  - vim: 

@@ -2,8 +2,6 @@
 # custom paths.
 alias sudo='sudo -E'
 
-export CHROME_BIN=`which chromium-browser`
-
 # Options {{{
 # Allow moving to a directory without typing cd
 setopt AUTO_CD
@@ -191,16 +189,17 @@ alias trl='trash-list'
 alias trr='trash-restore'
 # }}}
 # Tmux {{{
-alias tsR='tmux kill-session -t'
 alias tsRa='tmux kill-session -a'
+alias tsR='tmux kill-session -t'
 alias tsa='tmux attach -t'
 alias tsc='tmux new -s'
+alias tse='tmuxinator edit '
 alias tsl='tmux list-sessions'
-alias tss='tmux switch -t'
+alias tss='tmuxinator start '
 # }}}
  
 # Versioning {{{
-source './aliases-git.zsh'
+source ~/.oroshi/config/zsh/aliases-git.zsh
 # }}}
 # Vim {{{
 alias v='vim -p'
@@ -283,16 +282,3 @@ function mm {
 }
 # }}}
 
-# NVM {{{
-local nvmScript=~/.nvm/nvm.sh
-if [[ -r $nvmScript ]]; then
-  source $nvmScript
-	nvm use 4 &>/dev/null
-fi
-# }}}
-# GVM {{{
-local gvmScript=~/.gvm/scripts/gvm
-if [[ -r $gvmScript ]]; then
-  source $gvmScript
-fi
-# }}}

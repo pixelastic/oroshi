@@ -4,19 +4,10 @@
 # [ ] Move through suggestions using vim keys
 # [ ] Complete host names in rsync and ssh
 
-# Add path to custom completion methods
-# Note: Must be defined before `compinit`
-if [ -z "$OROSHI_COMPLETION_ADDED_TO_FPATH" ]; then
-  fpath=(~/.oroshi/config/zsh/completion $fpath)
-  OROSHI_COMPLETION_ADDED_TO_FPATH=true
-fi
-source ./completion/npm
-source ./completion/mark
-
-# Initialization
-autoload -Uz compinit
-zmodload zsh/complist
-compinit
+local zshConfigDir=~/.oroshi/config/zsh
+source $zshConfigDir/completion/npm
+source $zshConfigDir/completion/tmuxinator
+source $zshConfigDir/completion/mark
 
 # Preload git completion
 _git
@@ -80,7 +71,7 @@ r() {
   \rm -f ~/.zcompdump
   \rm -f ~/.zcompcache/grunt
   local f
-  f=(~/.oroshi/config/zsh/completion/*(.))
+  f=($zshConfigDir/completion/*(.))
   unfunction $f:t 2> /dev/null
   autoload -U $f:t
 }

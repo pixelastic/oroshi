@@ -1,0 +1,11 @@
+name: a-babeljs
+root: ~/local/www/algolia/projects/babel.github.io/
+startup_window: 1
+
+windows:
+  - vim: 
+    layout: even-vertical
+    panes: 
+      - clear
+      - vdl
+  - server: jekyll serve --watch --port 4001

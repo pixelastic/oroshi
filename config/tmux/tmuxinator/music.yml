@@ -1,0 +1,7 @@
+name: p-music
+root: ~/perso/music/
+startup_window: 1
+
+windows:
+  - music:
+

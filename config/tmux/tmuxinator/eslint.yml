@@ -1,0 +1,15 @@
+name: a-eslint
+root: ~/local/www/algolia/projects/eslint.github.io/
+startup_window: 1
+
+windows:
+  - vim: 
+      layout: even-horizontal
+      panes: 
+        - clear
+        - vdl
+  - server: 
+      layout: even-horizontal
+      panes:
+       - jekyll serve --watch --port 4002
+       - http-server -e -c-1

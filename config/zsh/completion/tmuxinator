@@ -1,0 +1,5 @@
+function _complete_tmuxinator_sessions {
+  reply=($(mux completions start))
+}
+compctl -K _complete_tmuxinator_sessions mux
+compctl -K _complete_tmuxinator_sessions tmuxinator

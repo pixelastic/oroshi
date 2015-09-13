@@ -116,3 +116,6 @@
 [submodule "config/vim/bundle/available/vim-less"]
 	path = config/vim/bundle/available/vim-less
 	url = git@github.com:groenewege/vim-less.git
+[submodule "config/vim/bundle/available/vim-yaml"]
+	path = config/vim/bundle/available/vim-yaml
+	url = git@github.com:avakhov/vim-yaml.git

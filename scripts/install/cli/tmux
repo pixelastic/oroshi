@@ -17,4 +17,7 @@ make
 echo "Symlink"
 cd ~/local/bin
 ln -s ../src/tmux/tmux .
+
+gem install tmuxinator
+
 exit 1

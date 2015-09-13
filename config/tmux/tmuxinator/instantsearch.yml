@@ -1,0 +1,10 @@
+name: a-instantsearch
+root: ~/local/www/algolia/javascript/instantsearch.js/
+startup_window: 1
+
+windows:
+  - vim: 
+      layout: even-horizontal
+      panes: 
+        - clear
+        - vdl

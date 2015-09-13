@@ -1,0 +1,6 @@
+name: perso-dropbox
+root: ~/
+# startup_window: 1
+
+windows:
+  - dropbox:

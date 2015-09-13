@@ -1,0 +1,7 @@
+name: p-roleplay
+root: ~/perso/roleplay/
+startup_window: 1
+
+windows:
+  - roleplay: cd ./scenarios/campaigns/04\ -\ Finding\ the\ Egg
+  - books: cd ./books/Warhammer/
