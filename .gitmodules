@@ -113,3 +113,6 @@
 [submodule "config/vim/bundle/available/rename.vim"]
 	path = config/vim/bundle/available/rename.vim
 	url = git@github.com:danro/rename.vim.git
+[submodule "config/vim/bundle/available/vim-less"]
+	path = config/vim/bundle/available/vim-less
+	url = git@github.com:groenewege/vim-less.git
