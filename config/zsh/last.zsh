@@ -4,7 +4,7 @@
 local nvmScript=~/.nvm/nvm.sh
 if [[ -r $nvmScript ]]; then
   source $nvmScript
-	nvm use 4 &>/dev/null
+	nvm use 0.12 &>/dev/null
 fi
 # }}}
 
