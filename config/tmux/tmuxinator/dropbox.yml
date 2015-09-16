@@ -1,6 +1,7 @@
 name: perso-dropbox
-root: ~/
+root: ~/Dropbox/tim
 # startup_window: 1
 
 windows:
-  - dropbox:
+  - paperwork: cd ./paperwork
+  - id: cd ./ids

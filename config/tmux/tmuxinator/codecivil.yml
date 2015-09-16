@@ -1,0 +1,6 @@
+name: a-codecivil
+root: ~/local/www/algolia/projects/codecivil/
+startup_window: 1
+
+windows:
+  - vim: 

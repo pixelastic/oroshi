@@ -1,0 +1,6 @@
+name: p-comics
+root: ~/perso/comics/
+startup_window: 1
+
+windows:
+  - comics:

@@ -6,5 +6,6 @@ windows:
   - vim: 
       layout: even-horizontal
       panes: 
-        - clear
+        - chrome http://localhost:8080/
         - vdl
+  - server: npm run dev

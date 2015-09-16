@@ -1,0 +1,11 @@
+name: a-react-parts
+root: ~/local/www/algolia/projects/react-parts
+startup_window: 1
+
+windows:
+  - vim: 
+      layout: even-horizontal
+      panes:
+        - 
+        - 
+  - server:
