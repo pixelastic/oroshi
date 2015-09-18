@@ -1,0 +1,12 @@
+name: a-ALGOLIA
+# name: p-PERSO
+root: ~/local/
+startup_window: 1
+
+windows:
+  - vim: 
+      layout: even-horizontal
+      panes: 
+        - # Left pane
+        - # Right pane
+  - server: # Other tab

@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+
+# Switch the current tmux session to the specified one, or create a new one from
+# the one predefined with tmuxinator
+class TmuxSessionSwitch
+  def initialize(*args)
+    @session_name = args[0]
+  end
+
+  # Return the long session name from a shorthand one
+  def real_session_name(session_name)
+    `tmux ls | sed 's/: .*//'`.split("\n").each do |line|
+      return line if /^[^-]-#{session_name}$/.match(line)
+    end
+    nil
+  end
+
+  # Check if short session name is already an opened session
+  def opened?(session_name)
+    opened_list = `tmux ls | sed 's/: .*//' | sed 's/^[^-]*-//'`.split("\n")
+    opened_list.include?(session_name)
+  end
+
+  def template?(session_name)
+    opened_list = `mux completions start`.split("\n")
+    opened_list.include?(session_name)
+  end
+
+  def run
+    # Already open, we switch to it
+    if opened?(@session_name)
+      system("tmux switch -t #{real_session_name(@session_name)}")
+      return
+    end
+    # Not opened, but we have a template
+    if template?(@session_name)
+      system("mux start #{@session_name}")
+      return
+    end
+    # Nothing, yet
+    system("mux copy default #{@session_name} && mux start #{@session_name}")
+  end
+end
+TmuxSessionSwitch.new(*ARGV).run

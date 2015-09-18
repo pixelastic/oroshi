@@ -195,7 +195,7 @@ alias tsa='tmux attach -t'
 alias tsc='tmux new -s'
 alias tse='tmuxinator edit '
 alias tsl='tmux list-sessions'
-alias tss='tmuxinator start '
+alias tss='tmux-session-switch'
 # }}}
  
 # Versioning {{{
