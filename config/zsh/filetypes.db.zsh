@@ -51,7 +51,6 @@ O_FILETYPES=(
 	psd         "ls:01;33:psd"
 	python      "python3:00;35:py"
 	script      "vim:00;35:ahk,appcache,bat,c,ctp,css,dat,erb,htm,html,js,json,kml,less,lua,manifest,php,rb,scss,sql,vim,xml,yml,zsh,zsh-theme"
-	script-sh   "source:00;35:sh"
 	sheet       "gui localc:01;33:ods,xls"
 	subtitle    "vim:00;36:ass,srt,sub"
 	tmp         "vim:00;30:bak,kpf,lock,map,orig,out,swp,tmp"
