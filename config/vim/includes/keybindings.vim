@@ -101,13 +101,14 @@ function! MultiPurposeReturn()
   let autocomplete_select = "\<C-Y>"
   let new_line = "\<CR>"
 
-  " Going to next error in spellchecking mode
+  " Going to next error in autocomplete mode
   if &spell
     let autocomplete_select .= "\<Esc>]s"
   endif
   return pumvisible() ? autocomplete_select : new_line
 endfunction
-inoremap <CR> <C-R>=MultiPurposeReturn()<CR>
+" `<C-]>` is here to force abbrev expanding
+inoremap <CR> <C-]><C-R>=MultiPurposeReturn()<CR>
 inoremap O2M <Esc>mzO<Esc>`za
 nnoremap <CR> mzo<Esc>`z
 nnoremap O2M mzO<Esc>`z

@@ -44,3 +44,7 @@
   email = tim@pixelastic.com
 [github]
   user = pixelastic
+[filter "lfs"]
+	clean = git lfs clean %f
+	smudge = git lfs smudge %f
+	required = true

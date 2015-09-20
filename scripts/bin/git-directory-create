@@ -1,54 +1,90 @@
-#!/usr/bin/env zsh
-# Init a new git directory and set the default remote to a github repo
+#!/usr/bin/env ruby
+require 'fileutils'
+
+# Creates a new repository, and plug it to github by default
 # Usage :
 # $ git-directory-create
 # $ git-directory-create ./path/to/repo
+class GitDirectoryCreate
+  def initialize(*args)
+    @path = File.expand_path(args[0] || '.')
+    @name = File.basename(@path)
+    @remote = args[1] || :github
+  end
 
-local repoPath=$1
+  def cd_to_repo
+    # If the repo does not exists, we create the directory
+    FileUtils.mkdir_p(File.join('.', @name))
+    Dir.chdir(@path)
+  end
 
-# If no path passed, we revert to the current directory
-if [[ $repoPath = '' ]]; then
-  repoPath=.
-fi
-repoPath=${repoPath:a}
+  def init_repo
+    # Stop if already a git repo
+    if File.exist?(File.join(@path, '.git'))
+      puts '✘ Directory is already a git repo'
+      exit 1
+    end
 
-# Repo short name is the path last directory
-local repoName=${repoPath:t}
+    # Init the repo
+    `git init #{@path}`
+    puts '✔ Local repository created'
+    # Set a master branch
+    if system('git checkout --quiet -b master')
+      puts '✔ Branch master set as default'
+    else
+      puts '✘ Unable to create branch master'
+      exit 1
+    end
+  end
 
-# Create the repo on the specified path
-if git init "$repoPath" --quiet; then
-  cd "$repoPath"
-  echo "✔ Init $repoName repo"
-else
-  echo "✘ Unable to create $repoNam repo"
-  exit 1
-fi
+  # Add default files
+  def add_default_files
+    # Add gitignore
+    default_gitignore = File.expand_path('~/.oroshi/config/git/gitignore')
+    if File.exist?(default_gitignore)
+      FileUtils.cp(default_gitignore, './.gitignore')
+    end
 
-# Default to a remote on github
-if git remote add origin git@github.com:pixelastic/${repoName}; then
-	echo "✔ Create origin remote on github"
-fi
+    # Add readme
+    system("echo '# #{@name}\n' > README.md")
 
-# Create master branch
-if git checkout --quiet -b master; then
-  echo "✔ Create master branch"
-else
-  echo "✘ Unable to create master branch"
-  exit 1
-fi
+    system('git add .')
+    system('git commit --quiet -m "Add .gitignore and README"')
+    puts '✔ Default files added'
+  end
 
-if cp ~/.oroshi/config/git/gitignore .gitignore; then
-  echo "✔ Add default .gitignore"
-else
-  echo "✘ Unable to copy .gitignore"
-  exit 1
-fi
+  def create_remote
+    return unless @remote == :github
+    # Create github repo
+    `gh repo -N #{@name} &>/dev/null`
 
-if git add . && git commit --quiet -m "Add ignore file."; then
-  echo "✔ Initial commit"
-else
-  echo "✘ Unable to do the initial commit"
-  exit 1
-fi
+    # Add remote
+    if system("git remote add origin git@github.com:pixelastic/#{@name}")
+      puts '✔ Remote origin set to GitHub'
+    else
+      puts '✘ Unable to set remote to GitHub'
+      exit 1
+    end
+  end
 
-echo "✔ New git repo created!"
+  def push
+    if system('git push --set-upstream origin master &>/dev/null')
+      puts '✔ Pushed'
+    else
+      puts '✘ Unable to push'
+      exit 1
+    end
+  end
+
+  def run
+    cd_to_repo
+    init_repo
+    add_default_files
+    create_remote
+    push
+
+    system('gh repo --browser')
+    puts '✔ Repository created and pushed to GitHub'
+  end
+end
+GitDirectoryCreate.new(*ARGV).run

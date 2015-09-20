@@ -246,6 +246,13 @@ cnoremap <C-L> <C-C>gt
 "}}}
 " TYPOS {{{
 iabbrev Gvien Given
+iabbrev initialiaeze initialize
+iabbrev initialiaze initialize
+iabbrev initiliaze initialize
+iabbrev intiialiaee initialize
+iabbrev intiialiaze initialize
+iabbrev intiialize initialize
+
 " }}}
 " WILDMENU {{{
 " We enable a simple wildmenu with basic Tab-completion.

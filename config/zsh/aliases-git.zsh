@@ -44,6 +44,14 @@ alias vc.='git commit-current'
 # [c]herry [p]ick {{{
 alias vcp='git cherry-pick'
 # }}}
+# working [d]irectory {{{
+alias vdc='git-directory-create'
+alias vdcl='git tabula-rasa'
+alias vde='vim $(git root)/.git/config'
+alias vdl='git status --short'
+alias vdr='cd $(git root)'
+alias vdrr='vdr && cd .. && vdr'
+# }}}
 # [f]iles {{{
 alias vfR='git rm -r'
 alias vfa='git add --all'
@@ -103,12 +111,4 @@ alias vsmi='git submodule init'
 alias vsmu='git submodule update'
 alias vsmR='git-submodule-remove'
 alias vsm?='git-is-submodule'
-# }}}
-# working [d]irectory {{{
-alias vdc='git-directory-create'
-alias vdcl='git tabula-rasa'
-alias vde='vim $(git root)/.git/config'
-alias vdl='git status --short'
-alias vdr='cd $(git root)'
-alias vdrr='vdr && cd .. && vdr'
 # }}}
