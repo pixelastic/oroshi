@@ -1,4 +1,4 @@
-name: a-react-parts
+name: a-reactparts
 root: ~/local/www/algolia/projects/react-parts
 startup_window: 1
 
@@ -9,3 +9,7 @@ windows:
         - 
         - 
   - server:
+      layout: even-horizontal
+      panes:
+        - PORT=8081 npm run live
+        - npm run js:watch

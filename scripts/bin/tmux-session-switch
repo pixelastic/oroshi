@@ -10,7 +10,7 @@ class TmuxSessionSwitch
   # Return the long session name from a shorthand one
   def real_session_name(session_name)
     `tmux ls | sed 's/: .*//'`.split("\n").each do |line|
-      return line if /^[^-]-#{session_name}$/.match(line)
+      return line if /^([^-]*)-#{session_name}$/.match(line)
     end
     nil
   end
