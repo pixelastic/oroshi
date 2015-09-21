@@ -119,3 +119,6 @@
 [submodule "config/vim/bundle/available/vim-yaml"]
 	path = config/vim/bundle/available/vim-yaml
 	url = git@github.com:avakhov/vim-yaml.git
+[submodule "config/vim/bundle/available/vim-coffee-script"]
+	path = config/vim/bundle/available/vim-coffee-script
+	url = git@github.com:kchmck/vim-coffee-script.git
