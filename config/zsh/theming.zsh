@@ -38,6 +38,7 @@ promptColorDefault=(
   branchMaster          "069"
   branchDevelop         "184"
   branchFix             "203"
+  branchHeroku          "141"
   branchTest            "136"
   branchFeature         "202"
   branchReview          "028"

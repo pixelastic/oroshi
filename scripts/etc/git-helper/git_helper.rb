@@ -10,6 +10,7 @@ module GitHelper
     branch_feature: 202,
     branch_fix: 203,
     branch_gh_pages: 24,
+    branch_heroku: 141,
     branch_master: 69,
     branch_perf: 141,
     branch_release: 171,

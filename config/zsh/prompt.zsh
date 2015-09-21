@@ -215,6 +215,9 @@ function getPromptBranch() {
   if [[ $branchName = 'develop' ]]; then
     branchColor='branchDevelop'
   fi
+  if [[ $branchName = 'heroku' ]]; then
+    branchColor='branchHeroku'
+  fi
   if [[ $branchName =~ '^feature/' ]]; then
     branchColor='branchFeature'
     branchName=${branchName//feature\//}

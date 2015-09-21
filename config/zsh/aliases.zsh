@@ -121,19 +121,28 @@ function epub2mobi() {
 }
 # }}}
 # Docker {{{
-function dib() { docker build -t "$1" . }
-alias dcR='docker rm'
-alias dcl='docker ps'
-alias dcla='docker ps -a'
-alias dcrd='docker run -d'
-alias dcrst='docker restart'
-alias dcr='docker run -t -i'
-alias dcsta='docker start'
-alias dcsto='docker stop'
-alias diR='docker rmi -f'
-alias dil='docker images'
-alias dipl='docker pull'
-alias dis='docker search'
+function dob() { docker build -t "$1" . }
+alias dor='docker run'
+alias dori='docker run -t -i' # Run interactive
+alias dord='docker run -d -P' # Run daemon, expose ports
+alias docl='docker ps'
+alias dops='docker ps'
+alias doil='docker images'
+alias doim='docker images'
+alias doiR='docker rmi -f'
+alias docR='docker stop' # docker rm --force is faster
+# alias dcR='docker rm'
+# alias dcl='docker ps'
+# alias dcla='docker ps -a'
+# alias dcrd='docker run -d'
+# alias dcrst='docker restart'
+# alias dcr='docker run -t -i'
+# alias dcsta='docker start'
+# alias dcsto='docker stop'
+# alias diR='docker rmi -f'
+# alias dil='docker images'
+# alias dipl='docker pull'
+# alias dis='docker search'
 # }}}
 # Directories {{{
 alias cde='cd ~/local/etc/'
