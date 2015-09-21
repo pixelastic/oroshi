@@ -22,5 +22,3 @@ if [[ -r $rvmScript ]]; then
     source $rvmScript
   fi
 fi
-
-

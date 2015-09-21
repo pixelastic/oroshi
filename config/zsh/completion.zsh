@@ -8,10 +8,8 @@ local zshConfigDir=~/.oroshi/config/zsh
 source $zshConfigDir/completion/npm
 source $zshConfigDir/completion/tmuxinator
 source $zshConfigDir/completion/_tmux-session-switch
+source $zshConfigDir/completion/_git-branch-switch
 source $zshConfigDir/completion/mark
-
-# Preload git completion
-_git
 
 # Auto escape &, ? and * when needed
 autoload -U url-quote-magic
