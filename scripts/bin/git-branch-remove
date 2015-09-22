@@ -1,0 +1,2 @@
+#!/usr/bin/env zsh
+git branch -D $@

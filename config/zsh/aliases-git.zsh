@@ -6,7 +6,7 @@
 # [b]ranches {{{
 alias vbM='git merge --no-edit'
 alias vbRr='git branch-remove-remote'
-alias vbR='git branch -D'
+alias vbR='git-branch-remove'
 alias vbc='git branch-create'
 alias vblr='git branch-list-remote'
 alias vbl='git branch-list'
