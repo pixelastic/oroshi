@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+# Create a pull request from the current branch
+# Usage:
+# $ git-pullrequest-create
+# $ git-pullrequest-create {remote}
+#
+# If an argument is supplied, it will be used as the submit owner
+# If none, it will look at the current remote and use it
+# If the remote is `origin`, we take the username
+
+# TODO: Should accept another argument of the target branch (like develop),
+# while keeping the owner optional
+
+local owner=$1
+[[ $owner == '' ]] && owner=$(git-remote-current)
+if [[ $owner == 'origin' ]]; then
+  owner=$(git-remote-owner origin)
+fi
+
+gh pr --submit $owner

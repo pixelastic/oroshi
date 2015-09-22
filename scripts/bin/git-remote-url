@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+# Gets the url of a given remote
+# Usage:
+# $ git-remote-url
+# $ git-remote-url {remoteName}
+#
+# If no remote specified, will use the current one
+
+local remote=$1
+[[ $remote == '' ]] && remote=$(git remote-current)
+
+git remote-exists $remote || exit 1
+
+git config --get remote.${remote}.url

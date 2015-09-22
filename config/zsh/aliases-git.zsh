@@ -69,6 +69,9 @@ alias vfua='git reset'
 # [g]it {{{
 alias vgv='git git-version'
 # }}}
+# [p]ull [r]equests {{{
+alias vprc='git-pullrequest-create'
+# }}}
 # [re]base {{{
 alias vrea='git rebase --abort'
 alias vrec='git rebase --continue'
@@ -80,6 +83,8 @@ alias vrc='git remote-create'
 alias vrl='git remote-list'
 alias vrmv='git remote rename'
 alias vrs='git-remote-switch'
+alias vru='git-remote-url'
+alias vro='git-remote-owner'
 alias vr.='git remote-current'
 alias vr?='git remote-exists'
 # }}}
