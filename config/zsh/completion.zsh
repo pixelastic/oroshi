@@ -9,7 +9,10 @@ source $zshConfigDir/completion/npm
 source $zshConfigDir/completion/tmuxinator
 source $zshConfigDir/completion/_tmux-session-switch
 source $zshConfigDir/completion/_git-branch
+source $zshConfigDir/completion/_git-branch-remote
 source $zshConfigDir/completion/_git-remote
+source $zshConfigDir/completion/_git-tag
+source $zshConfigDir/completion/_git-tag-remote
 source $zshConfigDir/completion/mark
 
 # Auto escape &, ? and * when needed

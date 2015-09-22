@@ -1,0 +1,7 @@
+function _complete_git_tag {
+  reply=($(git tag))
+}
+compctl -K _complete_git_tag git-tag-switch
+compctl -K _complete_git_tag git-tag-remove
+
+

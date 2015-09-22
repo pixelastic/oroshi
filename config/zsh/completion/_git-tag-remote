@@ -1,0 +1,4 @@
+function _complete_git_tag_remote {
+  reply=($(git ls-remote --tags 2>/dev/null | sed 's/^\([^ ]*\) *refs\/tags\///'))
+}
+compctl -K _complete_git_tag_remote git-tag-remove-remote

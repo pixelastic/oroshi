@@ -1,7 +1,9 @@
 function _complete_git_branch {
   reply=($(git branch | sed 's/^..//'))
 }
-compctl -K _complete_git_branch git-branch-switch
-compctl -K _complete_git_branch git-branch-remove
 compctl -K _complete_git_branch git-branch-merge
+compctl -K _complete_git_branch git-branch-rebase
+compctl -K _complete_git_branch git-branch-remove
+compctl -K _complete_git_branch git-branch-rename
+compctl -K _complete_git_branch git-branch-switch
 
