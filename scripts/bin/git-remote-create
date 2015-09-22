@@ -14,6 +14,11 @@ if [[ $remoteName =~ \.git$ ]]; then
   remoteUrl=$tmp
 fi
 
+# If not name given, we'll use the owner of the repo
+if [[ $remoteName == '' ]]; then
+  remoteName=$(echo $remoteUrl | sed 's/^\(.*\)@\(.*\):\(.*\)\/\(.*\)/\3/')
+fi
+
 if git remote add $remoteName $remoteUrl 1>/dev/null; then
   echo "✔ Add remote $remoteName";
 else

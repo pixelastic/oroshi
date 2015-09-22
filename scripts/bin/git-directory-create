@@ -5,8 +5,14 @@ require 'fileutils'
 # Usage :
 # $ git-directory-create
 # $ git-directory-create ./path/to/repo
+# Options:
+#  -n : Do not create a repo on github
 class GitDirectoryCreate
   def initialize(*args)
+    if args.include?('-n')
+      @is_dry_run = args.include?('-n')
+      args.delete('-n')
+    end
     @path = File.expand_path(args[0] || '.')
     @name = File.basename(@path)
     @remote = args[1] || :github
@@ -14,7 +20,9 @@ class GitDirectoryCreate
 
   def cd_to_repo
     # If the repo does not exists, we create the directory
-    FileUtils.mkdir_p(File.join('.', @name))
+    if @name != File.basename(File.expand_path('.'))
+      FileUtils.mkdir_p(File.join('.', @name))
+    end
     Dir.chdir(@path)
   end
 
@@ -54,21 +62,25 @@ class GitDirectoryCreate
   end
 
   def create_remote
+    return if @is_dry_run
     return unless @remote == :github
     # Create github repo
     `gh repo -N #{@name} &>/dev/null`
+    puts '✔ Repository created'
 
     # Add remote
     if system("git remote add origin git@github.com:pixelastic/#{@name}")
       puts '✔ Remote origin set to GitHub'
     else
       puts '✘ Unable to set remote to GitHub'
-      exit 1
+      exit
     end
   end
 
   def push
+    return if @is_dry_run
     if system('git push --set-upstream origin master &>/dev/null')
+      system('gh repo --browser')
       puts '✔ Pushed'
     else
       puts '✘ Unable to push'
@@ -83,8 +95,6 @@ class GitDirectoryCreate
     create_remote
     push
 
-    system('gh repo --browser')
-    puts '✔ Repository created and pushed to GitHub'
   end
 end
 GitDirectoryCreate.new(*ARGV).run

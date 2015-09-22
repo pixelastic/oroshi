@@ -1,0 +1,11 @@
+name: a-middleman
+root: ~/local/www/algolia/projects/middleman/
+startup_window: 1
+
+windows:
+  - vim: 
+      layout: even-horizontal
+      panes: 
+        - # Left pane
+        - # Right pane
+  - server: # Other tab

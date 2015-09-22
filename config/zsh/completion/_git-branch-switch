@@ -1,6 +1,0 @@
-function _complete_git_branch_switch {
-  reply=($(git branch | sed 's/^..//'))
-}
-compctl -K _complete_git_branch_switch git-branch-switch
-compctl -K _complete_git_branch_switch toto
-

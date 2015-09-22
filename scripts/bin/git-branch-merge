@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# This is simple script is to be used as an alias to `vbm`, to be able to use
+# custom completion for it
+git rebase $@

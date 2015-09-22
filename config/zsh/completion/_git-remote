@@ -1,0 +1,5 @@
+function _complete_git_remote {
+  reply=($(git remote))
+}
+compctl -K _complete_git_remote git-remote-switch
+
