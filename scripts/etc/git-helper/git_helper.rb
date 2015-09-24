@@ -122,6 +122,14 @@ module GitHelper
     tags.uniq
   end
 
+  def remote_owner(remote)
+    `git-remote-owner #{remote}`.strip
+  end
+
+  def remote_url(remote)
+    `git-remote-url #{remote}`.strip
+  end
+
   def branch?(name)
     system("git branch-exists #{name}")
   end
