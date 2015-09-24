@@ -6,6 +6,6 @@ windows:
   - vim: 
       layout: even-horizontal
       panes: 
-        - chrome http://localhost:4001/
+        - chrome http://localhost:4003/
         - vdl
-  - server: jekyll serve --watch --port 4001
+  - server: jekyll serve --watch --port 4003

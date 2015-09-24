@@ -1,0 +1,11 @@
+name: perso-meetups
+root: ~/local/www/pixelastic.com/meetups.pixelastic.com/
+startup_window: 1
+
+windows:
+  - vim: 
+      layout: even-horizontal
+      panes: 
+        - chrome http://localhost:9410/
+        - # Right pane
+  - server: grunt build serve

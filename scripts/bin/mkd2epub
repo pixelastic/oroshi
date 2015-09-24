@@ -14,12 +14,12 @@ ARGV.each do |file|
 	mkdFile = File.expand_path(file)
 	ext = File.extname(file)
 	basename = File.basename(file)
-	coverFile = mkdFile.gsub(/\.mkd$/, '.jpg')
-	epubFile = mkdFile.gsub(/\.mkd$/, '.epub')
-	txtFile = mkdFile.gsub(/\.mkd$/, '.txt')
+	coverFile = mkdFile.gsub(/#{ext}$/, '.jpg')
+	epubFile = mkdFile.gsub(/#{ext}$/, '.epub')
+	txtFile = mkdFile.gsub(/#{ext}$/, '.txt')
 
 	# Only operate on mkd files
-	next unless ext == '.mkd'
+	next unless ext == '.mkd' || ext == '.md'
 
 	# Make a backup of the existing epub file if one is found
 	if File.exists?(epubFile)
