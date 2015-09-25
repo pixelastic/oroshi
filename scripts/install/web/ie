@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-sudo apt-get install virtualbox
+# Install Virtualbox v5.0
+cd /tmp
+wget http://download.virtualbox.org/virtualbox/5.0.4/virtualbox-5.0_5.0.4-102546~Ubuntu~trusty_amd64.deb -O virtualbox.deb
+install-deb ./virtualbox.deb
+
 
 cd ~/local/src
 git clone git@github.com:xdissent/ievms.git
