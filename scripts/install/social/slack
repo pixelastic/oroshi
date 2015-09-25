@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+cd /tmp
+wget https://slack-ssb-updates.global.ssl.fastly.net/linux_releases/slack-desktop-1.2.2-amd64.deb -O slack.deb
+install-deb ./slack.deb
