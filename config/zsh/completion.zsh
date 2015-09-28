@@ -10,6 +10,8 @@ source $zshConfigDir/completion/tmuxinator
 source $zshConfigDir/completion/_tmux-session-switch
 source $zshConfigDir/completion/_git-branch
 source $zshConfigDir/completion/_git-branch-remote
+source $zshConfigDir/completion/_git-file-staged
+source $zshConfigDir/completion/_git-file-unstaged
 source $zshConfigDir/completion/_git-remote
 source $zshConfigDir/completion/_git-tag
 source $zshConfigDir/completion/_git-tag-remote

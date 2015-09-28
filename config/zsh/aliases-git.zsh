@@ -55,15 +55,16 @@ alias vdrr='vdr && cd .. && vdr'
 # }}}
 # [f]iles {{{
 alias vfR='git rm -r'
-alias vfa='git add --all'
+alias vfa='git-file-add'
 alias vfd='git diff -w --color-words'
+alias vfdc='git diff -w --color-words --cached'
 alias vfds='git diff-staged --'
 alias vffc='git fix-conflicts'
 alias vffj='git fix-jshint'
 alias vfmv='git mv'
 alias vfr='git checkout --'
 alias vfrez='git resurrect'
-alias vfu='git unstage'
+alias vfu='git-file-unstage'
 alias vfua='git reset'
 # }}}
 # [g]it {{{

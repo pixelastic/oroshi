@@ -1,0 +1,11 @@
+name: p-rochephenix
+root: ~/local/www/pixelastic.com/rochephenix.pixelastic.com/
+startup_window: 1
+
+windows:
+  - vim: 
+      layout: even-horizontal
+      panes: 
+        - # Left pane
+        - # Right pane
+  - server: # Other tab

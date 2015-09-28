@@ -1,0 +1,5 @@
+function _complete_git_unstaged {
+  reply=($(git status --short | grep -v '^A ' | sed 's/^...//'))
+}
+compctl -K _complete_git_unstaged git-file-add
+

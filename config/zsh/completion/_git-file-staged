@@ -1,0 +1,6 @@
+function _complete_git_staged {
+  reply=($(git status --short | grep '^A ' | sed 's/^...//'))
+}
+compctl -K _complete_git_staged git-file-unstage
+
+
