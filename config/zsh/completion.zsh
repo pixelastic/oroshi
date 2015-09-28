@@ -7,7 +7,10 @@
 local zshConfigDir=~/.oroshi/config/zsh
 source $zshConfigDir/completion/npm
 source $zshConfigDir/completion/tmuxinator
-source $zshConfigDir/completion/_tmux-session-switch
+source $zshConfigDir/completion/_docker-container-all
+source $zshConfigDir/completion/_docker-container-running
+source $zshConfigDir/completion/_docker-container-stopped
+source $zshConfigDir/completion/_docker-image
 source $zshConfigDir/completion/_git-branch
 source $zshConfigDir/completion/_git-branch-remote
 source $zshConfigDir/completion/_git-file-staged
@@ -15,6 +18,7 @@ source $zshConfigDir/completion/_git-file-unstaged
 source $zshConfigDir/completion/_git-remote
 source $zshConfigDir/completion/_git-tag
 source $zshConfigDir/completion/_git-tag-remote
+source $zshConfigDir/completion/_tmux-session-switch
 source $zshConfigDir/completion/mark
 
 # Auto escape &, ? and * when needed

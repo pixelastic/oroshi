@@ -1,0 +1,4 @@
+function _complete_docker_container_all {
+  reply=($(docker ps -a --format "{{.Names}}"))
+}
+compctl -K _complete_docker_container_all docker-container-remove

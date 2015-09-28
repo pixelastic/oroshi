@@ -1,0 +1,5 @@
+function _complete_docker_container_stopped {
+  reply=($(docker ps --filter "status=exited" --format "{{.Names}}"))
+}
+compctl -K _complete_docker_container_stopped docker-container-start
+

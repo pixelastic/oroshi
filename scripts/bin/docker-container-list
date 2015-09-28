@@ -1,0 +1,80 @@
+#!/usr/bin/env ruby
+require_relative '../etc/docker-helper/docker_helper'
+
+Container = Struct.new(:name, :hash, :image, :ports, :is_running)
+# Display the list of current docker containers
+class DockerContainerList
+  include DockerHelper
+
+  def initialize(*args)
+    @args = args
+    @container_list = container_list
+  end
+
+  def container_list
+    options = [
+      'docker',
+      'ps',
+      '--format "{{.Names}};{{.ID}};{{.Image}};{{.Ports}};{{.Status}}"',
+      @args.join(' ')
+    ]
+    output = `#{options.join(' ')}`
+    containers = []
+    output.each_line do |line|
+      name, hash, image, ports, status = line.strip.split(';')
+      containers << Container.new(name, hash, image, ports, running?(status))
+    end
+    containers.sort_by do |c|
+      [c[:is_running] ? 0 : 1, c[:name]]
+    end
+  end
+
+  def running?(status)
+    !status.match(/^Up/).nil?
+  end
+
+  def output_name(container)
+    if container[:is_running]
+      icon = ''
+      color = color(:container_running)
+    else
+      icon = ''
+      color = color(:container_stopped)
+    end
+    name = container[:name].ljust(longest_name_length)
+    colorize("#{icon} #{name}", color)
+  end
+
+  def longest_name_length
+    @container_list.map { |obj| obj[:name] }.group_by(&:size).max.last[0].length
+  end
+
+  def longest_image_length
+    @container_list.map { |obj| obj[:image] }.group_by(&:size).max.last[0].length
+  end
+
+  def output_hash(container)
+    colorize(container[:hash], color(:hash))
+  end
+
+  def output_image(container)
+    image = container[:image].ljust(longest_image_length)
+    colorize(image, color(:image))
+  end
+
+  def output_ports(container)
+    colorize(container[:ports], color(:ports))
+  end
+
+  def run
+    @container_list.each do |container|
+      name = output_name(container)
+      hash = output_hash(container)
+      image = output_image(container)
+      ports = output_ports(container)
+      puts "#{name} #{image} #{hash} #{ports}"
+    end
+  end
+end
+DockerContainerList.new(*ARGV).run
+
