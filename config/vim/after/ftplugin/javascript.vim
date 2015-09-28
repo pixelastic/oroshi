@@ -65,7 +65,7 @@ endfunction
 " }}}
 " Keybindings {{{
 " $ù is easy to type on my keyboard. Use it for debug calls
-inoremap <buffer> $ù console.log(
+inoremap <buffer> $ù console.info(
 " }}}
 " ES6 {{{
 " Enable JSX syntax highlight in javascript files
