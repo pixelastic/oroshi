@@ -1,0 +1,11 @@
+name: perso-blog
+root: ~/local/www/pixelastic.com/blog.pixelastic.com/
+startup_window: 1
+
+windows:
+  - vim: 
+      layout: even-horizontal
+      panes: 
+        - chrome http://localhost:9400/
+        - # Right pane
+  - server: grunt serve:dev
