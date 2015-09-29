@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+# Squash all commits of the current branch into one
+local startingPoint=$1
+if [[ $startingPoint == '' ]]; then
+  echo "You must specify the branch starting point"
+  echo "Usage:"
+  echo "$ git-branch-squash develop"
+  exit 1
+fi
+
+local commitMessages="$(git log --format=%B --reverse $startingPoint...)"
+git reset --soft $startingPoint && \
+  git commit --edit -m"$commitMessages"
