@@ -26,9 +26,10 @@ inoremap <silent> <buffer> <F4> <Esc>:call RubyBeautify()<CR>
 nnoremap <silent> <buffer> <F4> :call RubyBeautify()<CR>
 function! RubyBeautify() 
   let linenr=line('.')
-  silent! execute ':%s/^\s*$//'
-  call RemoveTrailingSpaces()
-  retab
+  echo '  Rubocop auto-correct...'
+  let current_file = expand('%:p')
+	silent! execute '%!ruby-lint ' . current_file
+  echo ''
   execute 'normal '.linenr.'gg'
 endfunction
 " }}}

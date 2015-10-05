@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+local target=${1:a}
+local tmpFile=/tmp/ruby-lint.tmp
+
+cp $target $tmpFile
+rubocop -a $tmpFile &>/dev/null
+cat $tmpFile
