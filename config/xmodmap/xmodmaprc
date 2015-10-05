@@ -128,5 +128,7 @@ keycode 57 = n N n N nobreakspace U202F
 keycode 58 = comma question comma question U203D U2E2E
 ! Period can also produce …
 keycode 59 = semicolon period semicolon period ellipsis
+! U26A0 = ⚠
+keycode 61 = exclam section exclam section U26A0
 
 
