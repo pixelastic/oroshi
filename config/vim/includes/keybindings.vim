@@ -41,13 +41,13 @@ nnoremap [25~ i
 " Note: On Tab press, we try to expand UltiSnips snippets, or loop through
 " placeholders. Otherwise we fire the autocomplete.
 function! MultiPurposeTab()
-  let line = getline(".")
-  let columnIndex = col(".")
+  let line = getline('.')
+  let columnIndex = col('.')
 
   call UltiSnips#ExpandSnippetOrJump()
   " Currently expanding a snippet
   if g:ulti_expand_or_jump_res !=# 0
-    return ""
+    return ''
   endif
 
   " If the autocomplete menu is already visible, we loop through item
@@ -56,12 +56,12 @@ function! MultiPurposeTab()
   endif
 
   " If in indentation, we return a simple tab
-  if (virtcol(".") - 1) <= indent(".")
+  if (virtcol('.') - 1) <= indent('.')
     return "\<Tab>"
   endif
 
   " If after a space, we return a simple tab
-  if (strpart(line, 0, columnIndex) =~ '\s$')
+  if (strpart(line, 0, columnIndex) =~# '\s$')
     return "\<Tab>"
   endif
 
@@ -79,10 +79,10 @@ function! MultiPurposeTab()
   return "\<C-X>\<C-O>\<C-N>"
 endfunction
 " Disable Tab for UltiSnips so it won't interfere
-let g:UltiSnipsExpandTrigger="<C-K>"
-let g:UltiSnipsJumpForwardTrigger="<C-K>"
-let g:UltiSnipsJumpBackwardTrigger="<C-J>"
-let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsExpandTrigger='<C-K>'
+let g:UltiSnipsJumpForwardTrigger='<C-K>'
+let g:UltiSnipsJumpBackwardTrigger='<C-J>'
+let g:UltiSnipsEditSplit='vertical'
 " Remap Tab
 inoremap <silent> <Tab> <C-R>=MultiPurposeTab()<CR>
 snoremap <Tab> <Esc>:call UltiSnips#ExpandSnippetOrJump()<CR>
@@ -93,22 +93,20 @@ vnoremap <S-Tab> <gv
 " }}}
 " RETURN KEY {{{
 " Note: Shift-Enter is O2M
-" - Creates new lines below in all modes
-" - Creates new lines above in all modes with Shift
-" - Accept autocompletion suggestion
-" - Trigger endwise completion
 function! MultiPurposeReturn()
-  let autocomplete_select = "\<C-Y>"
-  let new_line = "\<CR>"
-
-  " Going to next error in autocomplete mode
-  if &spell
-    let autocomplete_select .= "\<Esc>]s"
+  if pumvisible()
+    if &spell
+      " Select current spelling and move to next
+      return "\<Esc>]s"
+    endif
+    " Select current suggestion
+    return "\<Esc>"
   endif
-  return pumvisible() ? autocomplete_select : new_line
+  " Normal CR
+  return "\<CR>"
 endfunction
-" `<C-]>` is here to force abbrev expanding
-inoremap <CR> <C-]><C-R>=MultiPurposeReturn()<CR>
+inoremap  <C-R>=MultiPurposeReturn()<CR>
+inoremap <CR> <C-R>=MultiPurposeReturn()<CR>
 inoremap O2M <Esc>mzO<Esc>`za
 nnoremap <CR> mzo<Esc>`z
 nnoremap O2M mzO<Esc>`z
@@ -117,12 +115,12 @@ vnoremap O2M <Esc>g`<O<Esc>g
 " }}}
 " H/J/K/L {{{
 function! MultiPurposeJ()
-  let simple_j = "j"
+  let simple_j = 'j'
   let autocomplete_down_one_line = "\<C-N>"
   return pumvisible() ? autocomplete_down_one_line : simple_j
 endfunction
 function! MultiPurposeK()
-  let simple_k = "k"
+  let simple_k = 'k'
   let autocomplete_up_one_line = "\<C-P>"
   return pumvisible() ? autocomplete_up_one_line : simple_k
 endfunction
@@ -133,8 +131,6 @@ nnoremap j gj
 nnoremap k gk
 vnoremap j gj
 vnoremap k gk
-inoremap <Down> <C-O>gj
-inoremap <Up> <C-O>gk
 " }}}
 " VIMDIFF  {{{
 " Vimdiff will mostly be used to handle merges. It is configured to be
@@ -259,7 +255,7 @@ nnoremap <C-w> daWf<Space>pB
 nnoremap <C-b> daW2F<Space>pB
 " appending a missing ; at the end of line
 function! AppendMissingSemicolon()
-  if getline(".") !~ ';$'
+  if getline('.') !~# ';$'
     execute "normal mzA;\<Esc>`z"
   endif
 endfunction

@@ -102,7 +102,7 @@ nnoremap <buffer> sk [s
 nnoremap <buffer> sa zg]s
 nnoremap <buffer> sr zug
 " Suggest correction
-nnoremap <buffer> ss ei<Right><C-X>s<C-N>
+nnoremap <buffer> ss viw<Esc>i<C-X>s<C-N><C-P>
 " Set in french for some known locations
 if expand('%:p') =~ 'meetups.pixelastic.com/app/'
   setlocal spelllang=fr
