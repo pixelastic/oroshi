@@ -1,0 +1,11 @@
+name: a-web
+root: ~/local/www/algolia/web/
+startup_window: 1
+
+windows:
+  - vim: 
+      layout: even-horizontal
+      panes: 
+        - # Left pane
+        - # Right pane
+  - server: # Other tab

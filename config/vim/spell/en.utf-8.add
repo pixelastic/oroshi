@@ -36,3 +36,9 @@ proactifs
 http
 http
 http
+eslint
+syntastic
+npm
+vim
+plugins
+rubocop
