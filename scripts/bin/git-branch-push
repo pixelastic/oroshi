@@ -25,7 +25,15 @@ class GitRemotePush
 
   def run
     @flags << '--set-upstream' if never_pushed?
-    system("git push #{@flags.join(' ')} #{@remoteName} #{@branchName}")
+
+    # We use the local-name:remote-name syntax for branches so we can push to
+    # branches with a different name
+    branch = "#{current_branch}:#{@branch_name}"
+
+
+
+    # puts ("git push #{@flags.join(' ')} #{@remote_name} #{branch}")
+    system("git push #{@flags.join(' ')} #{@remote_name} #{branch}")
   end
 end
 GitRemotePush.new(*ARGV).run

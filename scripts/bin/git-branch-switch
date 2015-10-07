@@ -1,2 +1,20 @@
-#!/usr/bin/env zsh
-git checkout $1
+#!/usr/bin/env ruby
+require_relative '../etc/git-helper/git_helper'
+# Wrapper for switching to another branch
+#
+# Usage :
+# $ git-branch-switch master
+# $ git-branch-switch m
+class GitBranchSwitch
+  include GitHelper
+
+  def initialize(*args)
+    args = replace_short_aliases(args)
+    @branch_name = args[0]
+  end
+
+  def run
+    system("git checkout #{@branch_name}")
+  end
+end
+GitBranchSwitch.new(*ARGV).run

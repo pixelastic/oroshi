@@ -66,7 +66,7 @@ module GitHelper
   def replace_short_aliases(elements)
     elements.map do |element|
       next 'develop' if element == 'd'
-      next 'github' if element == 'gh'
+      next 'gh-pages' if element == 'g'
       next 'heroku' if element == 'h'
       next 'master' if element == 'm'
       next 'origin' if element == 'o'
