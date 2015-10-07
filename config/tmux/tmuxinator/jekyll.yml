@@ -1,5 +1,5 @@
 name: a-jekyll
-root: ~/local/www/algolia/jekyll/
+root: ~/local/www/algolia/jekyll/algoliasearch-jekyll/
 startup_window: 1
 
 windows:
