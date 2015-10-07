@@ -150,7 +150,7 @@ module GitHelper
 
   def guess_elements(elements)
     output = {}
-    initial_elements = elements
+    initial_elements = elements.clone
 
     # Guess element types from the list of passed elements, by importance.
     # First the remotes, then the tags, and finally the branches.

@@ -11,7 +11,6 @@ require_relative '../etc/git-helper/git_helper'
 # $ git-remote-push remote (current_branch)
 # $ git-remote-push (origin) branch
 # $ git-remote-push remote branch
-
 class GitRemotePush
   include GitHelper
 
@@ -20,16 +19,13 @@ class GitRemotePush
     @args = get_real_args(args)
 
     elements = guess_elements(@args)
-    @remoteName = elements[:remote]
-    @branchName = elements[:branch]
+    @remote_name = elements[:remote]
+    @branch_name = elements[:branch]
   end
 
   def run
-    if never_pushed?
-      @flags << '--set-upstream'
-    end
+    @flags << '--set-upstream' if never_pushed?
     system("git push #{@flags.join(' ')} #{@remoteName} #{@branchName}")
   end
-
 end
-GitRemotePush.new(*ARGV).run()
+GitRemotePush.new(*ARGV).run
