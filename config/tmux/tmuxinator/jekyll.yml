@@ -1,0 +1,11 @@
+name: a-jekyll
+root: ~/local/www/algolia/jekyll/
+startup_window: 1
+
+windows:
+  - vim: 
+      layout: even-horizontal
+      panes: 
+        - # Left pane
+        - # Right pane
+  - server: # Other tab
