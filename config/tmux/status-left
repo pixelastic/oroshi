@@ -7,11 +7,15 @@ local full_name=$1
 
 local session_type="$($tmux_path/helper-get-session-type $full_name)"
 local session_color="$($tmux_path/helper-get-session-color $session_type)"
-local session_name="$(echo $full_name | awk -F'-' '{print $2}')"
+
+# Remove the first part of the name (a-, p-)
+local split_name
+split_name=("${(@s/-/)full_name}") # split every -
+split_name[1]=() # remove first element
+local session_name=${(j/-/)split_name} # join them back
 [[ $session_name == '' ]] && session_name=$full_name
 
 # Icon
-#
 local session_icon="$($tmux_path/helper-get-icon $session_name)"
 [[ $session_icon == '' ]] && session_icon="$($tmux_path/helper-get-icon $session_type)"
 [[ $session_icon == '' ]] && session_icon="$($tmux_path/helper-get-icon 'terminal')"
