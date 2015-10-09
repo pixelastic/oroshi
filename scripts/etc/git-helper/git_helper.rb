@@ -34,6 +34,7 @@ module GitHelper
   end
 
   def branch_color(branch)
+    return nil if branch.nil?
     color_symbol = ('branch_' + branch.gsub('-', '_')).to_sym
     return @@colors[color_symbol] if @@colors[color_symbol]
     @@colors[:branch]
@@ -86,6 +87,7 @@ module GitHelper
   end
 
   def colorize(text, color)
+    return nil if color.nil?
     color = format('%03d', color)
     "[38;5;#{color}m#{text}[00m"
   end
@@ -146,6 +148,28 @@ module GitHelper
     system('git branch-remote-status')
     return true if $CHILD_STATUS.exitstatus == 4
     false
+  end
+
+  # Pad every cell of a two-dimensionnal array so they are all the same length
+  def pad_two_dimensionnal_array(array)
+    column_count = array[0].length
+    longests = Array.new(column_count, 0)
+    array.each do |line|
+      line.each_with_index do |cell, column|
+        cell = '' if cell.nil?
+        length = cell.size
+        longest = longests[column]
+        longests[column] = length if length > longest
+      end
+    end
+
+    padded_array = array.map do |line|
+      line.map.with_index do |cell, index|
+        cell = '' if cell.nil?
+        cell.ljust(longests[index])
+      end
+    end
+    padded_array
   end
 
   def guess_elements(elements)

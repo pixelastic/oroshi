@@ -2,7 +2,6 @@
 require_relative '../etc/git-helper/git_helper'
 require 'awesome_print'
 
-# Branch representation
 class Branch
   include GitHelper
   def initialize(data)
@@ -106,4 +105,3 @@ class GitBranchListAll
   end
 end
 GitBranchListAll.new(*ARGV).run
-
