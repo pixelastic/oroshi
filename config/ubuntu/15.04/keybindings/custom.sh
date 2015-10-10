@@ -26,10 +26,6 @@ dconf write /org/compiz/integrated/run-command-5 "['<Super>Z']"
 dconf write /org/compiz/integrated/command-6 "'tomate-gtk'"
 dconf write /org/compiz/integrated/run-command-6 "['<Control><Super>T']"
 
-# Super-H is Hipchat
-dconf write /org/compiz/integrated/command-7 "'hipchat'"
-dconf write /org/compiz/integrated/run-command-7 "['<Super>H']"
-
 # Slack
 dconf write /org/compiz/integrated/command-8 "'slack'"
 dconf write /org/compiz/integrated/run-command-8 "['<Super>S']"

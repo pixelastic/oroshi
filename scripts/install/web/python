@@ -10,6 +10,3 @@ pip install --upgrade pip
 
 echo "Installing flake8 to check and lint code"
 pip install flake8
-
-echo "Installing pygments"
-sudo apt-get install python-pygments

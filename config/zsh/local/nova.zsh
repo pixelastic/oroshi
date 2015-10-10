@@ -31,9 +31,9 @@ function play-random-dir() {
 # Reload keybings for this OS
 function ok() {
   ~/.oroshi/scripts/deploy/xmodmap
-  source ~/.oroshi/config/ubuntu/15.04/keybindings/windows.sh
-  source ~/.oroshi/config/ubuntu/15.04/keybindings/custom.sh
-  source ~/.oroshi/config/ubuntu/15.04/keybindings/media.sh
+  source ~/.oroshi/private/config/ubuntu/nova/keybindings/windows.sh
+  source ~/.oroshi/private/config/ubuntu/nova/keybindings/custom.sh
+  source ~/.oroshi/private/config/ubuntu/nova/keybindings/media.sh
 }
 # }}}
 

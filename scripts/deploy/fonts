@@ -8,3 +8,5 @@ local destDir=~/.fonts
 # Copying fonts
 mkdir -p $destDir
 cp ${configDir}/*.ttf $destDir
+
+fc-cache -f
