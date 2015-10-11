@@ -1,4 +1,4 @@
-#!/usr/bin/env
+#!/usr/bin/env zsh
 
 cd ~/local/src
 git clone git@github.com:junegunn/fzf.git
