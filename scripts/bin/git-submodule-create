@@ -11,11 +11,17 @@ class SubmoduleCreate
     end
     @repo_url = args[0]
     @submodule_path = args[1]
-    @submodule_path = '.' if @submodule_path.nil?
+    @submodule_path = path_from_url(@repo_url) if @submodule_path.nil?
+  end
+
+  def path_from_url(url)
+    dirname = File.basename(url).gsub(/\.git$/, '')
+    File.join(File.expand_path('.'), dirname)
   end
 
   def run
     system("git submodule add #{@repo_url} #{@submodule_path}")
   end
 end
+
 SubmoduleCreate.new(*ARGV).run
