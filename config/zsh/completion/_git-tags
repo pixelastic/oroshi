@@ -1,0 +1,13 @@
+# List of all local tags
+function _complete_git_tags_local {
+  reply=($(git tag))
+}
+# List of all remote tags
+function _complete_git_tags_remote {
+  reply=($(git ls-remote --tags 2>/dev/null | sed 's/^\([^ ]*\) *refs\/tags\///'))
+}
+
+compctl -K _complete_git_tags_local git-tag-switch
+compctl -K _complete_git_tags_local git-tag-remove
+
+compctl -K _complete_git_tags_remote git-tag-remove-remote

@@ -1,0 +1,17 @@
+# Files that can be added to the stage index (red color in git status)
+function _complete_git_files_not_staged {
+  reply=($(git status --short | grep '^.[^ ]' | sed 's/^...//'))
+}
+# Files that can be removed from the stage index (green color in git status)
+function _complete_git_files_staged {
+  reply=($(git status --short | grep '^[^ \?]' | sed 's/^...//'))
+}
+# Files modified or deleted in the index, that
+function _complete_git_files_modified_or_deleted_not_staged {
+  reply=($(git status --short | grep '^.\(M\|D\)' | sed 's/^...//'))
+}
+
+compctl -K _complete_git_files_not_staged git-file-add
+compctl -K _complete_git_files_staged git-file-unstage
+compctl -K _complete_git_files_modified_or_deleted_not_staged git-file-revert
+

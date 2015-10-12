@@ -1,5 +1,0 @@
-function _complete_git_branch_remote {
-  reply=($(git ls-remote --heads 2>/dev/null | sed 's/^\([^ ]*\) *refs\/heads\///'))
-}
-compctl -K _complete_git_branch_remote git-branch-remove-remote
-
