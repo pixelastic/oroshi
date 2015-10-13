@@ -38,7 +38,6 @@ alias vcla='git peek -p -D'
 alias vcl+='git peek --stat'
 alias vcl='git peek'
 alias vcri='git rebase -i'
-alias vcupsm='git commit-private-submodule'
 alias vcv='git show'
 alias vcz='git commit-cancel'
 alias vc.='git commit-current'
@@ -117,4 +116,7 @@ alias vsmi='git submodule init'
 alias vsmu='git submodule update'
 alias vsmR='git-submodule-remove'
 alias vsm?='git-is-submodule'
+# }}}
+# [p]rivate [s]ub-[m]odule {{{
+alias vpsmu='git commit-private-submodule'
 # }}}
