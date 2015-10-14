@@ -3,6 +3,6 @@
 function launchTmux() {
   local tmuxExitMessage="$(tmux attach || tmux new-session)"
   [[ $tmuxExitMessage == *detached* ]] && exit
-  launchTmux
+  # launchTmux
 }
 [[ -z "$TMUX" ]] && launchTmux
