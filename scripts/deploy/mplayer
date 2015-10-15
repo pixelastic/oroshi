@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+mkdir -p ~/.mplayer/
+ln -fs ~/.oroshi/config/mplayer/mplayer.conf ~/.mplayer/config
