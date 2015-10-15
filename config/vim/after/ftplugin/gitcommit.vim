@@ -1,5 +1,4 @@
 " GITCOMMIT
-
 " When writing a commit message {{{
 if expand('%') =~ 'COMMIT_EDITMSG'
   let b:onBufEnterFired = 0
@@ -18,9 +17,9 @@ if expand('%') =~ 'COMMIT_EDITMSG'
     let b:onBufEnterFired = 1
 
     " Add reminder of convention types
-    let @x='# Possible types : feat, fix, refactor, chore, style, perf, test, docs'
-    normal 1gg
-    put x
+    normal 1ggi# 
+    normal APossible types : feat, fix, refactor, chore, style, perf, test, docs
+    normal A Any BREAKING CHANGE?
     normal gg
 
     " Set smaller column
