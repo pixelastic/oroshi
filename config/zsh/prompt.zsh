@@ -29,7 +29,7 @@ function precmd() {
     # Write RPROMPT to a tmp file
     # Signal parent process that we're done (will trigger TRAPUSR1)
     function async() {
-      echo "$(get_RPROMPT)" > "/tmp/zsh_rprompt"
+      echo "$(get_RPROMPT)" > "/tmp/zsh_rprompt" &>/dev/null
       kill -s USR1 $$
     }
 
