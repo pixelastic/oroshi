@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Checks if the given branch exists on the remote
+git ls-remote --heads 2>/dev/null | \
+  awk '{print $2}' | \
+  sed 's_refs/heads/__' | \
+  grep -q "^$1$"

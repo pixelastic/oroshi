@@ -5,6 +5,7 @@ require 'English'
 module GitHelper
   @@colors = {
     branch: 202,
+    branch_broken: 160,
     branch_bugfix: 203,
     branch_develop: 184,
     branch_feature: 202,
