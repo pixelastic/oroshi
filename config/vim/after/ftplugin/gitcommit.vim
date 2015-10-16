@@ -17,10 +17,10 @@ if expand('%') =~ 'COMMIT_EDITMSG'
     let b:onBufEnterFired = 1
 
     " Add reminder of convention types
-    normal 1ggi# 
-    normal APossible types : feat, fix, refactor, chore, style, perf, test, docs
-    normal A Any BREAKING CHANGE?
-    normal gg
+    normal! ggo# 
+    normal! APossible types : feat, fix, refactor, chore, style, perf, test, docs
+    normal! A Any BREAKING CHANGE?
+    normal! gg
 
     " Set smaller column
     setlocal colorcolumn=71
