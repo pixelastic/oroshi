@@ -243,12 +243,7 @@ alias gbi='grunt bowerInstall'
 # }}}
 # Bundler {{{
 alias be='bundle exec'
-# }}}
-# Bower {{{
-alias bs='bower search'
-alias bi='bower install'
-alias bis='bower install --save'
-alias bisd='bower install --save-dev'
+alias bi='bundle install'
 # }}}
 # Gem {{{
 alias gi="gem install"
