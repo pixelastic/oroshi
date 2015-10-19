@@ -57,8 +57,7 @@ class GitPullRequestCreate
       "--branch #{@branch}",
       "--description #{description.shellescape}"
     ]
-    p options
-    # `gh pr #{options.join(' ')}`
+    `gh pr #{options.join(' ')}`
   end
 end
 GitPullRequestCreate.new(*ARGV).run
