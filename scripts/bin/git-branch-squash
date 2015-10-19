@@ -1,13 +1,26 @@
-#!/usr/bin/env zsh
-# Squash all commits of the current branch into one
-local startingPoint=$1
-if [[ $startingPoint == '' ]]; then
-  echo "You must specify the branch starting point"
-  echo "Usage:"
-  echo "$ git-branch-squash develop"
-  exit 1
-fi
+#!/usr/bin/env ruby
+require_relative '../etc/git-helper/git_helper'
+# Squash all commit of current branch into one
+# Usage :
+# $ git-branch-squash develop
+# $ git-branch-switch d
+class GitBranchSquash
+  include GitHelper
 
-local commitMessages="$(git log --format=%B --reverse $startingPoint...)"
-git reset --soft $startingPoint && \
-  git commit --edit -m"$commitMessages"
+  def initialize(*args)
+    args = replace_short_aliases(args)
+    @starting_point = args[0]
+    if @starting_point.nil?
+      puts 'You must specify the branch starting point'
+      puts 'Usage:'
+      puts '$ git-branch-squash develop'
+      exit 1
+    end
+  end
+
+  def run
+    commitMessages = `git log --format=%B --reverse #{@starting_point}...`
+    system("git reset --soft #{@starting_point} && git commit --edit -m'#{commitMessages}'")
+  end
+end
+GitBranchSquash.new(*ARGV).run

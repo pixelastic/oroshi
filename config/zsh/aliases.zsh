@@ -235,6 +235,8 @@ alias nig='npm install --global'
 alias nisd='npm install --save-dev'
 alias nis='npm install --save'
 alias ni='npm install'
+alias nrl='npm run lint'
+alias nrt='npm run test'
 # }}}
 # Grunt {{{
 alias gt='grunt test'
