@@ -19,8 +19,9 @@ class GitBranchSquash
   end
 
   def run
-    commitMessages = `git log --format=%B --reverse #{@starting_point}...`
-    system("git reset --soft #{@starting_point} && git commit --edit -m'#{commitMessages}'")
+    commit_messages = `git log --format=%B --reverse #{@starting_point}...`
+    commit_messages = commit_messages.gsub("'", "'\"'\"'")
+    system("git reset --soft #{@starting_point} && git commit --edit -m'#{commit_messages}'")
   end
 end
 GitBranchSquash.new(*ARGV).run
