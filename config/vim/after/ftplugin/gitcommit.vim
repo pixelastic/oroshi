@@ -19,7 +19,7 @@ if expand('%') =~ 'COMMIT_EDITMSG'
     " Add reminder of convention types
     normal! ggo# 
     normal! APossible types : feat, fix, refactor, chore, style, perf, test, docs
-    normal! A Any BREAKING CHANGE?
+    normal! A BREAKING CHANGE:
     normal! gg
 
     " Set smaller column
