@@ -129,4 +129,5 @@ alias vcsmp='git commit-private-submodule'
 alias vpsmu='git commit-private-submodule'
 alias vsmcp='git commit-private-submodule'
 alias vsmpu='git commit-private-submodule'
+alias vsmup='git commit-private-submodule'
 # }}}
