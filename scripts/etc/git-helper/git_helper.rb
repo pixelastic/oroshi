@@ -119,6 +119,10 @@ module GitHelper
     `git tag-current`.strip
   end
 
+  def current_commit
+    `git commit-current`.strip
+  end
+
   def current_tags
     tags = `git tag-current-all`.strip.split("\n")
     tags << current_tag
@@ -143,6 +147,17 @@ module GitHelper
 
   def tag?(name)
     system("git tag-exists #{name}")
+  end
+
+  # Run npm install if package.json changed since old_commit
+  def npm_install(old_commit)
+    root = repo_root
+    # No need to update if not an npm project
+    return unless File.exist?(File.join(root, 'node_modules'))
+    # No need to update if the file did not change
+    changed_file = `git diff --name-only #{old_commit}..#{current_commit} -- package.json`.strip
+    return unless changed_file.length > 0
+    system('npm install')
   end
 
   def never_pushed?

@@ -35,11 +35,13 @@ class GitBranchPull
   end
 
   def run
+    old_commit = current_commit
     if branch?(@branch_name)
       pull_known_branch
     else
       pull_unknown_branch
     end
+    npm_install(old_commit)
   end
 end
 GitBranchPull.new(*ARGV).run
