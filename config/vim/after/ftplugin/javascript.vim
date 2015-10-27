@@ -47,11 +47,11 @@ if filereadable(b:repo_root . '/.eslintrc')
   let b:syntastic_checkers = b:syntastic_checkers + ['eslint']
 endif
 if filereadable(b:repo_root . '/.jshintrc')
-  let b:syntastic_javascript_eslint_exec = StrTrim(system('npm-which jshint'))
+  let b:syntastic_javascript_jshint_exec = StrTrim(system('npm-which jshint'))
   let b:syntastic_checkers = b:syntastic_checkers + ['jshint']
 endif
 if filereadable(b:repo_root . '/.jscsrc')
-  let b:syntastic_javascript_eslint_exec = StrTrim(system('npm-which jscs'))
+  let b:syntastic_javascript_jscs_exec = StrTrim(system('npm-which jscs'))
   let b:syntastic_checkers = b:syntastic_checkers + ['jscs']
 endif
 " Default to system-wide eslint if nothing configured
