@@ -12,7 +12,7 @@ fi
 targetPath=${targetPath:a}
 
 # The .git directory is clearly not a repository
-if [[ $targetPath =~ '\.git/?' ]]; then
+if [[ $targetPath =~ '/\.git' ]]; then
   exit 1
 fi
 
