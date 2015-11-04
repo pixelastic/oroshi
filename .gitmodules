@@ -122,3 +122,6 @@
 [submodule "config/vim/bundle/available/vim-coffee-script"]
 	path = config/vim/bundle/available/vim-coffee-script
 	url = git@github.com:kchmck/vim-coffee-script.git
+[submodule "scripts/bin/vit"]
+	path = scripts/bin/vit
+	url = git@github.com:pixelastic/vit.git
