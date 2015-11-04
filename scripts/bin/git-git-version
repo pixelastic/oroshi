@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-# Display the current git version
-git --version | awk '{print $3}'

@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-# Check if the specified branch exists.
-# Note that we do not use plumbing methods like `rev-parse` or `show-ref` as
-# they will also list branches that have been merged.
-
-git branch -l | grep "$1" &>/dev/null

@@ -1,4 +1,0 @@
-#!/usr/bin/env zsh
-# Display the current (latest) tag.
-
-git describe --tags --abbrev=0 2>/dev/null

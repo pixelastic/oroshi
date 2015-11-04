@@ -1,8 +1,0 @@
-#!/usr/bin/env zsh
-# Return the current remote tracking this branch
-local currentBranch="`git branch-current`"
-local currentRemote="`git config --get "branch.${currentBranch}.remote"`"
-if [[ $currentRemote == '' ]]; then
-  currentRemote='origin'
-fi
-echo $currentRemote

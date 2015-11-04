@@ -13,6 +13,7 @@ export LANG=en_US.UTF-8
 export TERM=xterm-256color
 path=(
   ~/.oroshi/scripts/bin
+  ~/.oroshi/scripts/bin/vit/bin
   ~/.oroshi/private/scripts/bin
   ~/.oroshi/scripts/bin/local/$hostname
   ~/.oroshi/private/scripts/bin/local/$hostname

@@ -1,4 +1,0 @@
-#!/usr/bin/env zsh
-# Check if current directory has at least one file staged.
-
-git status --short --porcelain 2>/dev/null | grep '^[^ \?]' &>/dev/null

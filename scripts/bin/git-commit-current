@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-# Display the current commit short hash
-git log --pretty=format:'%h' -n 1

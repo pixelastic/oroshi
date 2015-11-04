@@ -1,5 +1,0 @@
-#!/usr/bin/env zsh
-# Pushes current branch to master on heroku remote
-local currentBranch=$(git branch-current)
-
-git push heroku $currentBranch:master $@

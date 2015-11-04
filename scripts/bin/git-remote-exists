@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-
-git config --get remote.${1}.url &>/dev/null

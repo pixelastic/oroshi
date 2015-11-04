@@ -1,5 +1,0 @@
-#!/usr/bin/env zsh
-# Check if current directory is dirty, ie. contains at least one modified,
-# deleted or new file.
-
-git status --short --porcelain &>/dev/null | grep '^.[^ ]' &>/dev/null
