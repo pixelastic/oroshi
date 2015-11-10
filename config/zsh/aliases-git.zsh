@@ -32,6 +32,7 @@ alias vbs='git-branch-switch'
 alias vbu='git branch-update'
 alias vb.='git branch-current'
 alias vb?='git branch-exists'
+alias vbpr='git-branch-prune'
 # }}}
 # [c]ommits {{{
 alias vcRa='git commit-remove-all'
