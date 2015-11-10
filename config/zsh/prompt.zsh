@@ -199,6 +199,14 @@ function getPromptBranch() {
   fi
 
   # In detached head, we stop now
+  if git-branch-gone; then
+    branchColor='branchGone'
+    branchName="  $branchName"
+    echo $(colorize $branchName $branchColor)
+    return
+  fi
+  
+  # Upstream is gone
   if [[ $branchName = 'HEAD' ]]; then
     branchColor='branchDetached'
     branchName="$(git commit-current) "
@@ -217,29 +225,6 @@ function getPromptBranch() {
   fi
   if [[ $branchName = 'heroku' ]]; then
     branchColor='branchHeroku'
-  fi
-  if [[ $branchName =~ '^feature/' ]]; then
-    branchColor='branchFeature'
-    branchName=${branchName//feature\//}
-  fi
-  if [[ $branchName =~ '^(bugfix|hotfix|fix)/' ]]; then
-    branchColor='branchFix'
-    branchName="${branchName//bugfix\//}"
-    branchName="${branchName//hotfix\//}"
-    branchName="${branchName//fix\//}"
-    branchName="${branchName} "
-  fi
-  if [[ $branchName =~ '^review/' ]]; then
-    branchColor='branchReview'
-    branchName="${branchName//review\//}  "
-  fi
-  if [[ $branchName =~ '^test/' ]]; then
-    branchColor='branchTest'
-    branchName="${branchName//test\//} "
-  fi
-  if [[ $branchName =~ '^perf/' ]]; then
-    branchColor='branchPerf'
-    branchName="${branchName/perf\//} "
   fi
   if [[ $branchName = 'gh-pages' ]]; then
     branchColor='branchGhPages'
