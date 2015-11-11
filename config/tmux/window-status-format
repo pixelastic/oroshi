@@ -8,8 +8,7 @@ local tab_name=$3
 local tab_flags=$4
 local session_name=$5
 
-local session_type="$($tmux_path/helper-get-session-type $session_name)"
-local session_color="$($tmux_path/helper-get-session-color $session_type)"
+local session_color="$($tmux_path/helper-get-session-color $session_name)"
 
 # Add ⮀ if active
 local opening_arrow=''
@@ -20,7 +19,8 @@ local tab_icon=" $($tmux_path/helper-get-icon $tab_name)"
 
 # Text color
 local fg_color='colour235'
-[[ $session_type == 'algolia' ]] && fg_color='colour249'
+[[ $session_name == 'algolia' ]] && fg_color='colour249'
+[[ $session_name == 'tmp' ]] && fg_color='colour249'
 
 # Zoom icon
 local zoom_icon=''

@@ -17,9 +17,6 @@ echo "Symlink"
 cd ~/local/bin
 ln -s ../src/tmux/tmux .
 
-# Tmuxinator
-gem install tmuxinator
-
 # Tmux plugin manager
 cd ~/local/src
 git clone https://github.com/tmux-plugins/tpm ./tpm

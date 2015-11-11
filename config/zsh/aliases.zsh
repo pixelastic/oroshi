@@ -195,9 +195,7 @@ alias tsRa='tmux kill-session -a'
 alias tsR='tmux kill-session -t'
 alias tsa='tmux attach -t'
 alias tsc='tmux new -s'
-alias tse='tmuxinator edit '
 alias tsl='tmux list-sessions'
-alias tss='tmux-session-switch'
 # }}}
  
 # Versioning {{{

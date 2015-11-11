@@ -1,6 +1,0 @@
-name: p-oroshi
-root: ~/.oroshi/
-
-windows:
-  - repo: 
-  - tmux: cd ./config/tmux

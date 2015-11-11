@@ -1,8 +1,0 @@
-name: a-support
-root: ~/local/www/algolia/support/
-startup_window: 1
-
-windows:
-  - support:
-  - guide:
-  - readmes: cd ~/local/www/algolia/clients/algoliasearch-client-readme-generator/

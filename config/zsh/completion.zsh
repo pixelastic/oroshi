@@ -15,7 +15,6 @@ source $zshConfigDir/completion/_git-branches
 source $zshConfigDir/completion/_git-files
 source $zshConfigDir/completion/_git-remotes
 source $zshConfigDir/completion/_git-tags
-source $zshConfigDir/completion/_tmux-session-switch
 source $zshConfigDir/completion/mark
 
 # Auto escape &, ? and * when needed

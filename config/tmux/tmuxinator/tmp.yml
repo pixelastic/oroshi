@@ -1,6 +1,0 @@
-name: perso-tmp
-root: ~/local/tmp/
-startup_window: 1
-
-windows:
-  - vim: 
