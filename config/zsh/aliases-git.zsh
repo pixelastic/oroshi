@@ -133,3 +133,9 @@ alias vsmcp='git commit-private-submodule'
 alias vsmpu='git commit-private-submodule'
 alias vsmup='git commit-private-submodule'
 # }}}
+# [v]it [s]ub-[m]odule {{{
+alias vsmuv='git commit-vit-submodule'
+alias vsmvu='git commit-vit-submodule'
+alias vsmcv='git commit-vit-submodule'
+alias vsmvc='git commit-vit-submodule'
+# }}}
