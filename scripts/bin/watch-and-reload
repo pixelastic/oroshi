@@ -2,4 +2,4 @@
 local script=$1
 local exec=$2
 
-when-changed $1 "clear && $exec $script"
+when-changed $script "clear && $exec"

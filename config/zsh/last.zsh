@@ -22,3 +22,9 @@ if [[ -r $rvmScript ]]; then
     source $rvmScript
   fi
 fi
+
+# Adding Chromium compilation tools to the path if present
+local chromiumDepotTools=~/local/src/chromium/depot_tools
+if [[ -r $chromiumDepotTools ]]; then
+  export PATH=$PATH:$chromiumDepotTools
+fi
