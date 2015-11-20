@@ -80,6 +80,7 @@ alias p8='ping 8.8.8.8'
 alias pd='plowdown'
 alias td='transmission-download'
 alias yt='youtube-dl -t --prefer-free-format --max-filesize 700m'
+alias ytx='youtube-dl -t -x --audio-format mp3'
 alias gfv="get_flash_videos -y"
 # }}}
 # GUI apps {{{
