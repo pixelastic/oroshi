@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Convert the png to one that only contain the mask
+for file in $@; do
+  convert ${file:a} -channel a -negate +channel -fill white -colorize 100% ${file:a:r}_mask.png
+done
+

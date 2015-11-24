@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Convert the png to black when filled
+for file in $@; do
+  convert ${file:a} -alpha off -fill black -colorize 100 -alpha on ${file:a:r}_black.png
+done
+

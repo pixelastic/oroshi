@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# Trim any whitespace around the content
+for file in $@; do
+  convert $file -trim $file
+done
+
+
