@@ -14,3 +14,13 @@ gem install sassc
 
 echo "Installing CSSMin"
 npm install -g clean-css
+
+echo "Installing sass2scss"
+cd ~/local/src
+mkdir -p ./sass2scss
+cd ./sass2scss
+wget https://github.com/mgreter/sass2scss/archive/v1.0.5.tar.gz -O sass2scss.tar.gz
+tar xvf sass2scss.tar.gz
+cd ./sass2scss-1.0.5
+make
+mv ./sass2scss ~/local/bin/sass2scss

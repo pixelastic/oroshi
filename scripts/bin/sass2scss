@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# Will convert a .sass file to a .scss one
+
+local converter=~/local/bin/sass2scss
+
+for file in $@; do
+  $converter -p -k < ${file:a} > ${file:a:r}.scss
+done
