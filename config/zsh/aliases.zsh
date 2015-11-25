@@ -127,8 +127,7 @@ function dob() { docker build -t "$1" . }
 alias dor='docker run'
 alias dori='docker run -t -i' # Run interactive
 alias dord='docker run -d -P' # Run daemon, expose ports
-alias docl='docker-container-list'
-alias docla='docker-container-list -a'
+alias docl='docker-container-list -a'
 alias dops='docker-container-list'
 alias doil='docker-image-list'
 alias doim='docker-image-list'
@@ -136,6 +135,7 @@ alias doiR='docker-image-remove'
 alias docR='docker-container-remove'
 alias dosto='docker-container-stop'
 alias dosta='docker-container-start'
+alias dostai='docker-container-start -i'
 function dobash() { docker exec -it "$1" /bin/bash }
 # }}}
 # Directories {{{
