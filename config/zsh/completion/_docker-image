@@ -1,4 +1,4 @@
 function _complete_docker_image {
-  reply=($(docker images | sed -n '1!p' | awk '{print $3}' | uniq))
+  reply=($(docker images | sed -n '1!p' | awk '{print $1}' | uniq))
 }
 compctl -K _complete_docker_image docker-image-remove
