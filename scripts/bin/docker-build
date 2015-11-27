@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+class DockerBuild
+  def initialize(*args)
+    @name = args[0]
+    @dockerfile = args[1]
+
+    if @name.nil?
+      puts 'Usage:'
+      puts '$ docker-build name [dockerfile]'
+      exit 1
+    end
+  end
+
+  def run
+    options = [
+      'docker',
+      'build',
+      "-t #{@name}",
+      @dockerfile ? "-f #{@dockerfile}" : nil,
+      '.'
+    ].compact
+
+    IO.popen(options.join(' ')).each do |line|
+      puts line.chomp
+    end
+  end
+end
+DockerBuild.new(*ARGV).run
