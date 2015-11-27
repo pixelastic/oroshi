@@ -1,5 +1,19 @@
-#!/usr/bin/env zsh
-local script=$1
-local exec=$2
+#!/usr/bin/env ruby
 
-when-changed $script "clear && $exec"
+# Listen for changes in file and run a command
+class WatchAndReload
+  def initialize(*args)
+    @command = args.pop
+    @files = args
+  end
+
+  def run
+    command = [
+      'when-changed',
+      @files.join(' '),
+      "-c \"clear && #{@command}\""
+    ]
+    exec command.join(' ')
+  end
+end
+WatchAndReload.new(*ARGV).run
