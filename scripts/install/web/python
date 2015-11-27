@@ -8,5 +8,6 @@ echo "Installing pip"
 sudo apt-get install python-pip
 pip install --upgrade pip
 
-echo "Installing flake8 to check and lint code"
-pip install flake8
+echo "Linters"
+pip install pep8
+pip install pylint
