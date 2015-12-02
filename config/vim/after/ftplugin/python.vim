@@ -1,4 +1,6 @@
 " PYTHON
+" Consider camel_case parts as different words
+setlocal iskeyword=@,48-57,192-255,-,#
 " Enable python syntax highlighting
 let python_highlight_all=1
 " PEP8
