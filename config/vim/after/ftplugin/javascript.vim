@@ -73,6 +73,7 @@ inoremap <buffer> $ù console.info(
 inoremap <buffer> bfe beforeEach(() => {});ko
 inoremap <buffer> itt it('', () => {});klli
 inoremap <buffer> cnt context('', () => {});kllllllli
+inoremap <buffer> dsc describe('', () => {});klllllllli
 " }}}
 " ES6 {{{
 " Enable JSX syntax highlight in javascript files
