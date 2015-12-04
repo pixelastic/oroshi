@@ -1,0 +1,52 @@
+#!/usr/bin/env zsh
+website=$1
+
+wget \
+  --recursive \
+  --level=1 \
+  --adjust-extension \
+  --convert-links \
+  "$website"
+
+
+#
+# wget -nd
+#   Downloads everything on the same level (root), without any hierarchy of
+#   directories
+# wget --adjust-extension
+#   Save all ./docs/tutorials/checkout to ./docs/tutorial/checkout.html
+#   Works fine for local browsing, but is not
+#   ./docs/tutorials/checkout/index.hml like expected
+#
+# wget --convert-links
+#   Will kick off after downloading everything and will rename files and update
+#   links so it can be browsed locally, using relative links
+# wget --page-requisite
+#   Will download all css, html and images as well
+# wget --recursive
+#   Needed so wget will follow links
+
+# TODO: Even a simple wget -r -l 1 https://stripe.com/docs`  does not even
+# download the /docs/tutorial/checkout
+
+# host=$(url2host "$website")
+# 
+# # Rename any file without an extension to a ./path/index.html instead
+# for file in ./$host/**/*; do
+# 
+#   # We only need files without extensions
+#   extension=${file:e}
+#   [[ $extension != '' ]] && continue
+#   [[ -d $file ]] && continue
+# 
+#   # ./path/to/file => /path/to/file/index.html
+#   file=${file:a}
+#   new_file="$file/index.html"
+#   [[ -f $new_file ]] && continue
+# 
+#   # We move the file to a temp name to be able to create the directory
+#   tmp_file="$file.tmp"
+#   mv "$file" "$tmp_file"
+#   mkdir -p "$file"
+#   mv "$tmp_file" "$new_file"
+# done
