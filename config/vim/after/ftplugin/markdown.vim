@@ -47,7 +47,7 @@ setlocal formatoptions+=t
 " Keybindings {{{
 " Add current copy-paste buffer to link on word
 nnoremap <buffer> ]] "zciw[<Esc>"zpi<Right>](<Esc>"*pi<Right>)<Esc>mzvipgq`z
-vnoremap <buffer> ]] "zc[<Esc>"zpli](<Esc>"*pli)<Esc>mzvipgq`z
+vnoremap <buffer> ]] "zc[]()<Esc>hhh"zpll"*p
 " }}}
 " Cleaning the file {{{
 inoremap <silent> <buffer> <F4> <Esc>:call MarkdownBeautify()<CR>
