@@ -24,7 +24,7 @@ function play-random-dir() {
 
   local randomPath
   randomPath=$(\ls . | shuf -n 1)
-  mplayer "./${randomPath}/"**/*.mp3
+  mplayer -ao alsa "./${randomPath}/"**/*.mp3
 }
 # }}}
 
