@@ -11,10 +11,10 @@ alias cdscenar='cd ~/perso/roleplay/scenarios/'
 # }}}
 
 # Music {{{
-alias play-coffee='mplayer ~/perso/music/nature/Coffitivity/*.mp3'
-alias play-rain='mplayer ~/perso/music/nature/Rain/*.mp3'
-alias play-nogg='mplayer ~/perso/music/soundtracks/D/Dopefish/*.mp3'
-alias play-soundtrack='mplayer --shuffle ~/perso/music/soundtracks/misc/*.mp3'
+alias play-coffee='mplayer -ao sdl ~/perso/music/nature/Coffitivity/*.mp3'
+alias play-rain='mplayer -ao sdl ~/perso/music/nature/Rain/*.mp3'
+alias play-nogg='mplayer -ao sdl ~/perso/music/soundtracks/D/Dopefish/*.mp3'
+alias play-soundtrack='mplayer -ao sdl --shuffle ~/perso/music/soundtracks/misc/*.mp3'
 alias play-buddha='play-random-dir ~/perso/music/music/B/Buddha\ Bar'
 alias play-chill='play-random-dir ~/perso/music/music/A/'
 alias play-peuple='play-random-dir ~/perso/music/music/P/Peuple*'
@@ -24,7 +24,7 @@ function play-random-dir() {
 
   local randomPath
   randomPath=$(\ls . | shuf -n 1)
-  mplayer -ao alsa "./${randomPath}/"**/*.mp3
+  mplayer -ao sdl "./${randomPath}/"**/*.mp3
 }
 # }}}
 
