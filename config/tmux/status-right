@@ -51,7 +51,7 @@ if [[ $day == 1 && $hour -ge 15 && $hour -lt 19 ]]; then
   output="#[fg=colour249,bg=colour24]  3pm-7pm andoche #[default] $output"
 fi
 if [[ $day == 2 && $hour -ge 15 && $hour -lt 19 ]]; then
-  output="#[fg=colour249,bg=colour24]  3pm-7pm sylvain #[default] $output"
+  output="#[fg=colour249,bg=colour24]  3pm-7pm alexm + jerska #[default] $output"
 fi
 if [[ $day == 3 && $hour -ge 15 && $hour -lt 19 ]]; then
   output="#[fg=colour249,bg=colour24]  3pm-7pm andoche #[default] $output"
