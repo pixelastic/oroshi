@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Will fail if any of the tests contains focused or excluded tests
+
+grep_output=$(grep -r \
+  "ddescribe\|describe.only\|xdexcribe\|describe.skip\|iit\|it.only\|xit\|it.skip" \
+  "$@")
+
+if [[ "$grep_output" != '' ]]; then
+  echo "✗ Warning, you've excluded or focused some tests."
+  echo ""
+  echo "$grep_output"
+  exit 1
+fi
+
+
+
