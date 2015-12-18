@@ -38,8 +38,7 @@ let g:syntastic_html_tidy_ignore_errors = [
                 \ "trimming empty <i>",
                 \ "trimming empty <span>",
                 \ "trimming empty <em>",
-                \ "proprietary attribute \"ng-",
-                \ "proprietary attribute \"ui-",
+                \ "proprietary attribute",
                 \ "<img> lacks \"src\" attribute",
                 \ "<data-",
                 \ "discarding unexpected </data-"
