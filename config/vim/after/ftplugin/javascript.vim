@@ -71,7 +71,7 @@ endfunction
 inoremap <buffer> $ù console.info(
 " context, beforeEach and it
 inoremap <buffer> bfe beforeEach(() => {});ko
-inoremap <buffer> itt it('', () => {});klli
+inoremap <buffer> iit it('', () => {});klli
 inoremap <buffer> cnt context('', () => {});kllllllli
 inoremap <buffer> dsc describe('', () => {});klllllllli
 " }}}
