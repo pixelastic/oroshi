@@ -1,8 +1,4 @@
 #!/usr/bin/env zsh
 
-local text=$1
+trans $1 -sp -b -d fr: &>/dev/null
 
-mplayer \
-  -really-quiet \
-  "http://translate.google.com/translate_tts?ie=UTF-8&tl=fr&q=$text" \
-  &> /dev/null

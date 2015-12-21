@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+cd ~/local/src
+git clone https://github.com/soimort/translate-shell
+cd ./translate-shell
+make TARGET=zsh
+make PREFIX=~/local install
