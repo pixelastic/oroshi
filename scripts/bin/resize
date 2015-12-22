@@ -1,15 +1,17 @@
 #!/usr/bin/env ruby
 require 'shellwords'
 
+# Resize files to the specified dimensions
 class Resize
   def initialize(*args)
-    @resize = args.pop
-    @files = args
-
-    if !@resize
-      puts "You must pass a resize dimension"
+    if args.length < 2
+      puts 'Usage:'
+      puts '$ rewrite /path/to/file.png 120x60'
       exit 1
     end
+
+    @resize = args.pop
+    @files = args
   end
 
   def run
@@ -21,5 +23,4 @@ class Resize
     end
   end
 end
-Resize.new(*ARGV).run()
-
+Resize.new(*ARGV).run
