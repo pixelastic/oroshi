@@ -1,4 +1,79 @@
 #!/usr/bin/env ruby
-require_relative '../etc/music-sync/music-sync/'
-MusicSync.new(*ARGV).run()
+require 'fileutils'
+require 'shellwords'
 
+# Grabs all directories marked with a .musicmark file in the specified folder
+# and copy them to destination
+class MusicSync
+  def initialize(*args)
+    if args.include?('-n')
+      args.delete('-n')
+      @is_dry_run = true
+    end
+
+    @root = File.expand_path(args[0])
+    @dest = File.expand_path(args[1])
+
+    unless check_valid_dir(@root)
+      puts "#{@root} is not a valid directory"
+      exit 1
+    end
+    unless check_valid_dir(@dest)
+      puts "#{@dest} is not a valid directory"
+      exit 1
+    end
+  end
+
+  def check_valid_dir(path)
+    File.exist?(path) && File.directory?(path)
+  end
+
+  def get_directories
+    Dir["#{@root}/**/.musicmark"].map { |path| File.dirname(path) }
+  end
+
+  def copy_dir(src)
+    # Add trailing slash
+    src += '/' if src[-1] != '/'
+
+    puts src
+    relative_path = src.gsub(/^#{@root}/, '')
+    puts relative_path
+    dest_full_path = "#{@dest}#{relative_path}"
+    puts dest_full_path
+
+    # Create the destination folder
+    FileUtils.mkdir_p(dest_full_path)
+
+    rsync_options = [
+      '--verbose',
+      '--archive',
+      '--recursive',
+      '--times',
+      '--modify-window=1',
+      '--prune-empty-dirs',
+      "--filter='+s */'",
+      "--filter='+s *.mp3'",
+      "--filter='-s *'"
+    ]
+    rsync_options << '--dry-run' if @is_dry_run
+
+    command = [
+      'rsync',
+      rsync_options.join(' '),
+      src.shellescape,
+      dest_full_path.shellescape
+    ].join(' ')
+
+    IO.popen(command).each do |line|
+      puts line.chomp
+    end
+  end
+
+  def run
+    get_directories.each do |path|
+      copy_dir(path)
+    end
+  end
+end
+MusicSync.new(*ARGV).run

@@ -159,9 +159,7 @@ alias cdingoo='cd /media/dingoo'
 alias mmu='music-metadata-update'
 alias mktl='generate-tracklist'
 alias rg='replaygain'
-alias mfs="mark-for-sync"
-function mfs-sansa() { mark-for-sync $* sansa }
-function mfs-sansa-sd() { mark-for-sync $* sansa-sd }
+alias mm="music-mark"
 # }}}
 # Freebox {{{
 alias fbx='sudo mount -t cifs //mafreebox.freebox.fr/Disque\ dur/ /home/tim/local/mnt/freebox -o _netdev,guest,uid=1000,iocharset=utf8,file_mode=0777,dir_mode=0777'

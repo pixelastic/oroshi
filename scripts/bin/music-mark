@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+require 'fileutils'
+
+# Mark the specified directories so they can be copied by music-sync
+class MusicMark
+  def initialize(*args)
+    @directories = keep_directories(args)
+    @directories = [File.expand_path('.')] if @directories.length == 0
+  end
+
+  # Keep only existing directories, with full name
+  def keep_directories(list)
+    list.map! { |path| File.expand_path(path) }
+    list.select! { |path| File.exist?(path) && File.directory?(path) }
+    list
+  end
+
+  def run
+    @directories.each do |path|
+      FileUtils.touch("#{path}/.musicmark")
+    end
+  end
+end
+MusicMark.new(*ARGV).run
