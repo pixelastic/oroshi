@@ -205,7 +205,7 @@ alias v='vim -p'
 alias va="vim ~/.oroshi/config/zsh/aliases.zsh"
 alias vf="vim ~/.oroshi/config/zsh/filetypes.db.zsh"
 alias ve='vim ~/.oroshi/config/vim/vimrc'
-function vw() { vim `which $1` }
+alias vw='vim-which'
 # }}}
 # Serenity {{{
 alias cdse="cd ~/local/mnt/serenity/"

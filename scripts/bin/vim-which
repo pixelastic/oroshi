@@ -1,0 +1,66 @@
+#!/usr/bin/env ruby
+# Edit in vim the result of a `which`
+# Usage:
+#   $ vim-which pdf2epub mm vtc
+
+# Edit in VIM the executables specified
+class VimWhich
+  def initialize(*args)
+    @args = args
+  end
+
+  # Calls `which` on the argument, using any alias defined in zsh
+  def which_with_aliases(name)
+    zsh_commands = [
+      'source ~/.oroshi/config/zsh/aliases.zsh &>/dev/null',
+      "which #{name}"
+    ]
+    `zsh -c '#{zsh_commands.join(' && ')}'`.strip
+  end
+  
+  def which(name)
+    `which #{name}`.strip
+  end
+
+  def valid?(path)
+    File.exist?(path)
+  end
+
+  def unalias(input)
+    # Check if this is an alias
+    matches = input.match(/(.*): aliased to (.*)/)
+    return nil unless matches
+
+    path = matches[2]
+
+    # If it's a git aliases, we make it "real"
+    path = path.gsub(/^git /, 'git-') if path =~ /^git /
+
+    # We only keep the first part of the alias
+    path = path.split(' ')[0]
+
+    which(path)
+  end
+
+  def get_path(name)
+    path = which_with_aliases(name)
+    return path if valid?(path)
+
+    unaliased = unalias(path)
+    return nil if unaliased.nil?
+
+    unaliased
+  end
+
+  def run
+    path_list = []
+    @args.each do |name|
+      path = get_path(name)
+      next if path.nil?
+      path_list << path
+    end
+
+    exec "vim -p #{path_list.join(' ')}"
+  end
+end
+VimWhich.new(*ARGV).run
