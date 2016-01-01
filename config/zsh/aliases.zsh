@@ -22,6 +22,7 @@ alias mkdir="mkdir -p"
 alias mv='mv -vi'
 alias rmdir='better-rmdir'
 alias rm='trash-put'
+alias RM='\rm -rf'
 alias scp='scp -r '
 alias serve='http-server -e html .'
 alias treed='tree -dN'
