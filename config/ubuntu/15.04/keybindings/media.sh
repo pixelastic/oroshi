@@ -22,9 +22,9 @@ dconf write /org/compiz/profiles/unity/plugins/commands/command17 "'xbacklight -
 dconf write /org/compiz/profiles/unity/plugins/commands/run-command17-key "'<Super>F6'"
 
 # Super-F1, F2 and F3 for the volume
-dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-mute "'<Super>F1'"
-dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-down "'<Super>F2'"
-dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-up "'<Super>F3'"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-mute "'AudioMute'"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-down "'AudioLowerVolume'"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/volume-up "'AudioRaiseVolume'"
 
 # Disable
 dconf write /org/compiz/profiles/unity/plugins/commands/command18 "''"
