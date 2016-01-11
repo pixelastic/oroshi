@@ -1,4 +1,10 @@
 " RUBY
+" Keybindings {{{
+" context, beforeEach and it
+inoremap <buffer> dsc describe '' doendkHf'li
+inoremap <buffer> bfe before(:each) doendO
+inoremap <buffer> iit it '' doendkHf'li
+" }}}
 " Indentation {{{
 setlocal tabstop=2
 setlocal shiftwidth=2
