@@ -1,9 +1,10 @@
 " RUBY
 " Keybindings {{{
-" context, beforeEach and it
-inoremap <buffer> dsc describe '' doendkHf'li
+" describe, before(:each) and it
+" Note: I had to hack with mz/'z otherwise by cursor was jumping around
+inoremap <buffer> dsc describe '' doendmz'zkf'li
 inoremap <buffer> bfe before(:each) doendO
-inoremap <buffer> iit it '' doendkHf'li
+inoremap <buffer> iit it '' doendklli
 " }}}
 " Indentation {{{
 setlocal tabstop=2
