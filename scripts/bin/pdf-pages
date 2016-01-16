@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Displays the number of pages of a given pdf file
+
+pdfinfo "$1" 2>/dev/null | \
+  grep Pages | \
+  cut -d ":" -f 2 | \
+  tr -d ' '

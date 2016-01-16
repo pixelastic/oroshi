@@ -122,6 +122,8 @@ function epub2mobi() {
   ebook-convert $1 .mobi
   ebook-metadata-update ${1:r}.mobi
 }
+alias pdf2jpg='pdf2img'
+alias pdf2png='pdf2img -png'
 # }}}
 # Docker {{{
 alias dob='docker-build'
