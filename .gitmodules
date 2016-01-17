@@ -126,5 +126,5 @@
 	path = scripts/bin/vit
 	url = git@github.com:pixelastic/vit.git
 [submodule "/home/tim/.oroshi/config/vim/bundle/available/SimpylFold"]
-	path = /home/tim/.oroshi/config/vim/bundle/available/SimpylFold
+	path = config/vim/bundle/available/SimpylFold
 	url = git@github.com:tmhedberg/SimpylFold.git
