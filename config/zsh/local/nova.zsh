@@ -18,6 +18,7 @@ alias play-soundtrack='mplayer -ao sdl --shuffle ~/perso/music/soundtracks/misc/
 alias play-buddha='play-random-dir ~/perso/music/music/B/Buddha\ Bar'
 alias play-chill='play-random-dir ~/perso/music/music/A/'
 alias play-peuple='play-random-dir ~/perso/music/music/P/Peuple*'
+alias play-oakenfold='play-random-dir ~/perso/music/music/P/Paul*'
 alias play-fun='mplayer --shuffle ~/perso/music/misc/{fun,nz}/*'
 function play-random-dir() {
   cd "$1"
