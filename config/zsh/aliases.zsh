@@ -46,7 +46,6 @@ alias -g T="| tail"
 # }}}
 # Typos {{{
 alias mc="mv"
-alias ms="ls"
 alias sl="ls"
 alias trash-restore="restore-trash"
 # }}}
@@ -252,6 +251,10 @@ alias gbi='grunt bowerInstall'
 # Bundler {{{
 alias be='bundle exec'
 alias bi='bundle install'
+# }}}
+# Middleman {{{
+alias ms='middleman server'
+alias mb='middleman build'
 # }}}
 # Gem {{{
 alias gi="gem install"

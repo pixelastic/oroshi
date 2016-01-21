@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+mogrify \
+  -brightness-contrast -10x0 \
+  "$1"
+

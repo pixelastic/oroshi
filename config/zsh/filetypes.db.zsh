@@ -50,7 +50,7 @@ O_FILETYPES=(
 	pdf         "gui evince:01;33:pdf"
 	psd         "ls:01;33:psd"
 	python      "python3:00;35:py"
-	script      "vim:00;35:ahk,appcache,bat,c,coffee,ctp,css,dat,erb,htm,html,js,json,kml,less,lua,manifest,php,rb,scss,sql,vim,xml,yml,zsh,zsh-theme"
+	script      "vim:00;35:ahk,appcache,bat,c,coffee,ctp,css,dat,erb,haml,htm,html,js,json,kml,less,lua,manifest,php,rb,ru,scss,sql,vim,xml,yml,zsh,zsh-theme"
 	sheet       "gui localc:01;33:ods,xls"
 	subtitle    "vim:00;36:ass,srt,sub"
 	tmp         "vim:00;30:bak,kpf,lock,map,orig,out,pyc,swp,tmp"
