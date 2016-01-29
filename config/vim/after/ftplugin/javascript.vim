@@ -69,6 +69,8 @@ endfunction
 " Keybindings {{{
 " $ù is easy to type on my keyboard. Use it for debug calls
 inoremap <buffer> $ù console.info(
+" Using ## (as in ruby) for string interpolation
+inoremap <buffer> ## ${}<Left>
 " context, beforeEach and it
 inoremap <buffer> bfe beforeEach(() => {});ko
 inoremap <buffer> iit it('', () => {});klli
