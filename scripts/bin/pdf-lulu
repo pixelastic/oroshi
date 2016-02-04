@@ -1,0 +1,86 @@
+#!/usr/bin/env ruby
+require 'fileutils'
+require 'shellwords'
+
+# lulu.com asks for PDF to be of a specific format. This script will attempt to
+# prepare everything so the manual upload works seamlessly
+class PdfLulu
+  def initialize(input)
+    @input = input
+
+    basename = File.basename(@input, File.extname(@input))
+    dirname = File.dirname(@input)
+    @directory = File.join(dirname, "#{basename}-lulu")
+    FileUtils.mkdir_p(@directory)
+  end
+
+  def page_count
+    `pdf-pages #{@input.shellescape}`.strip.to_i
+  end
+
+  def extract_png(page_number, name)
+    filepath = File.join(@directory, "#{name}.pdf")
+    pngfile = File.join(@directory, "#{name}.png")
+    
+    gs_options = [
+      '-dBATCH',
+      '-dNOPAUSE',
+      '-dQUIET',
+      '-sDEVICE=pdfwrite',
+      "-dFirstPage=#{page_number}",
+      "-dLastPage=#{page_number}",
+      "-sOutputFile=#{filepath.shellescape}",
+      @input.shellescape
+    ]
+    puts "Convert #{name} to pdf"
+    `gs #{gs_options.join(' ')} 2>/dev/null`
+
+    convert_options = [
+      '-flatten',
+      '-density 300',
+      '-quality 100',
+      filepath.shellescape,
+      pngfile.shellescape
+    ]
+    puts "Convert #{name} to png"
+    `convert #{convert_options.join(' ')}`
+
+    `rm #{filepath.shellescape}`
+  end
+
+  # Extract first and last pages as cover
+  def extract_cover
+    extract_png(1, 'cover')
+    extract_png(page_count, 'back')
+  end
+
+  # Convert the main part to be ready for printing
+  def convert_main
+    filepath = File.join(@directory, 'main.pdf')
+
+    gs_options = [
+      '-sDEVICE=pdfwrite',
+      '-dPDFFitPage',
+      '-r300x300',
+      '-g2550x3300',
+      '-dNOPAUSE',
+      '-dBATCH',
+      '-dPDFSETTINGS=/prepress',
+      '-sColorConversionStrategy=Gray',
+      '-dProcessColorModel=/DeviceGray',
+      '-dFirstPage=2',
+      "-dLastPage=#{page_count - 1}",
+      "-sOutputFile=#{filepath.shellescape}",
+      @input.shellescape
+    ]
+    puts 'Extract main part of pdf'
+    `gs #{gs_options.join(' ')}`
+  end
+
+  def run
+    extract_cover
+    convert_main
+  end
+end
+PdfLulu.new(*ARGV).run
+
