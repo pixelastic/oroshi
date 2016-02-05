@@ -194,6 +194,7 @@ alias trr='trash-restore'
 # Tmux {{{
 alias tsRa='tmux kill-session -a'
 alias tsR='tmux kill-session -t'
+alias tsaF='tmux a -dt'
 alias tsa='tmux attach -t'
 alias tsc='tmux new -s'
 alias tsl='tmux list-sessions'
