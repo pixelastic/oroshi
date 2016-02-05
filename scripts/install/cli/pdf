@@ -2,3 +2,8 @@
 # To extract pdf to images
 sudo apt-get install xpdf
 
+# Various pdf conversion
+sudo apt-get install pdftk
+# Includes pdfcrop (also adds margins)
+sudo apt-get install texlive-extra-utils
+

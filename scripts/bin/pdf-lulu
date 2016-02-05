@@ -4,6 +4,12 @@ require 'shellwords'
 
 # lulu.com asks for PDF to be of a specific format. This script will attempt to
 # prepare everything so the manual upload works seamlessly
+# US Letter size is
+# - 8.5 x 11 inch
+# - 612 x 792 pts
+# We need to add a margin around, for the printing
+# - 0.25 inch
+# - 18 pt
 class PdfLulu
   def initialize(input)
     @input = input
@@ -18,22 +24,30 @@ class PdfLulu
     `pdf-pages #{@input.shellescape}`.strip.to_i
   end
 
+  # Split a pdf from `from` to `to`
+  def pdf_split(input, from, to, output)
+    if from == to
+      range = from
+    else
+      range = "#{from}-#{to}"
+    end
+
+    options = [
+      input.shellescape,
+      'cat',
+      range,
+      'output',
+      output.shellescape
+    ]
+    `pdftk #{options.join(' ')}`
+  end
+
   def extract_png(page_number, name)
     filepath = File.join(@directory, "#{name}.pdf")
     pngfile = File.join(@directory, "#{name}.png")
-    
-    gs_options = [
-      '-dBATCH',
-      '-dNOPAUSE',
-      '-dQUIET',
-      '-sDEVICE=pdfwrite',
-      "-dFirstPage=#{page_number}",
-      "-dLastPage=#{page_number}",
-      "-sOutputFile=#{filepath.shellescape}",
-      @input.shellescape
-    ]
+
     puts "Convert #{name} to pdf"
-    `gs #{gs_options.join(' ')} 2>/dev/null`
+    pdf_split(@input, page_number, page_number, filepath)
 
     convert_options = [
       '-flatten',
@@ -55,26 +69,50 @@ class PdfLulu
   end
 
   # Convert the main part to be ready for printing
-  def convert_main
-    filepath = File.join(@directory, 'main.pdf')
+  def extract_main(output)
+    from = 2
+    to = 10
+    # page_count - 1
 
+  end
+
+  def convert_main
+    # Extract only middle pages
+    puts 'Extract main part of pdf'
+    main_raw = File.join(@directory, 'main_raw.pdf')
+    pdf_split(@input, 2, page_count - 1, main_raw)
+
+    # Convert to right size, black and white
+    puts 'Convert to right size, black and white'
+    main_bw = File.join(@directory, 'main_bw.pdf')
     gs_options = [
       '-sDEVICE=pdfwrite',
-      '-dPDFFitPage',
-      '-r300x300',
-      '-g2550x3300',
       '-dNOPAUSE',
       '-dBATCH',
+      '-dPDFFitPage',
+      # Dimensions
+      '-r300x300',
+      '-g2550x3300',
       '-dPDFSETTINGS=/prepress',
+      # Black and white
       '-sColorConversionStrategy=Gray',
       '-dProcessColorModel=/DeviceGray',
-      '-dFirstPage=2',
-      "-dLastPage=#{page_count - 1}",
-      "-sOutputFile=#{filepath.shellescape}",
-      @input.shellescape
+      # Do not take front and back cover
+      "-sOutputFile=#{main_bw.shellescape}",
+      main_raw.shellescape
     ]
-    puts 'Extract main part of pdf'
     `gs #{gs_options.join(' ')}`
+
+    # Add margins
+    puts 'Add margins and remove links'
+    main_margins = File.join(@directory, 'main_margins.pdf')
+    `pdfcrop --margins 18 #{main_bw.shellescape} #{main_margins.shellescape}`
+
+    # Cleanup
+    main_final = File.join(@directory, 'main.pdf')
+    `rm #{main_raw.shellescape}`
+    `rm #{main_bw.shellescape}`
+    `mv #{main_margins.shellescape} #{main_final.shellescape}`
   end
 
   def run
@@ -83,4 +121,3 @@ class PdfLulu
   end
 end
 PdfLulu.new(*ARGV).run
-

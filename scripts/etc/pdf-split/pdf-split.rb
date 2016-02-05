@@ -71,24 +71,22 @@ class PdfSplit
     to = args[1] || args[0]
     if from != to
       puts "Extracting page #{from} to #{to}"
+      cat = "#{from}-#{to}"
     else
       puts "Extracting page #{from}"
+      cat = from
     end
 
     file = File.expand_path(file)
     output_file = extracted_filepath(file, from, to)
-    gs_options = [
-      '-dBATCH',
-      '-dNOPAUSE',
-      '-dQUIET',
-      '-sDEVICE=pdfwrite',
-      "-dFirstPage=#{from}",
-      "-dLastPage=#{to}",
-      "-sOutputFile=#{output_file.shellescape}",
-      file.shellescape
+    options = [
+      file.shellescape,
+      'cat',
+      cat,
+      'output',
+      output_file.shellescape
     ]
-
-    `gs #{gs_options.join(' ')} 2>/dev/null`
+    `pdftk #{options.join(' ')}`
   end
 
   def get_page_number(file)
