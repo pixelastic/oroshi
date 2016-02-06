@@ -4,12 +4,24 @@ require 'shellwords'
 
 # lulu.com asks for PDF to be of a specific format. This script will attempt to
 # prepare everything so the manual upload works seamlessly
+#
 # US Letter size is
-# - 8.5 x 11 inch
-# - 612 x 792 pts
-# We need to add a margin around, for the printing
-# - 0.25 inch
-# - 18 pt
+# - 8.5" x 11"
+# - 21.59cm x 27.94cm
+# - 612pt x 792pt
+#
+# Lulu.com told me that the size of a US Letter, with Bleed box should be of
+# - 8.75" x 11.25"
+# - 22.22cm x 28.57cm
+# They also told me it means adding a margin of
+# - 0.25"
+# - 0.635cm
+# - 18pt
+# So I guessed it means adding a margin of 9pt all around
+#
+# I also want the resulting PDF to bo of 300 dpi (dots per inch), which means
+# 8.5" x 300dpi = 2550px
+# 11" x 300dpi = 3300px
 class PdfLulu
   def initialize(input)
     @input = input
@@ -68,14 +80,6 @@ class PdfLulu
     extract_png(page_count, 'back')
   end
 
-  # Convert the main part to be ready for printing
-  def extract_main(output)
-    from = 2
-    to = 10
-    # page_count - 1
-
-  end
-
   def convert_main
     # Extract only middle pages
     puts 'Extract main part of pdf'
@@ -91,12 +95,14 @@ class PdfLulu
       '-dBATCH',
       '-dPDFFitPage',
       # Dimensions
-      '-r300x300',
+      '-r300',
       '-g2550x3300',
       '-dPDFSETTINGS=/prepress',
       # Black and white
       '-sColorConversionStrategy=Gray',
       '-dProcessColorModel=/DeviceGray',
+      # Remove transparency
+      '-dCompatibilityLevel=1.3',
       # Do not take front and back cover
       "-sOutputFile=#{main_bw.shellescape}",
       main_raw.shellescape
@@ -106,13 +112,19 @@ class PdfLulu
     # Add margins
     puts 'Add margins and remove links'
     main_margins = File.join(@directory, 'main_margins.pdf')
-    `pdfcrop --margins 18 #{main_bw.shellescape} #{main_margins.shellescape}`
+    `pdfcrop --margins 9 #{main_bw.shellescape} #{main_margins.shellescape}`
+
+    # Flatten transparency
+    puts 'Remove transparency'
+    main_flattened = File.join(@directory, 'main_flattened.pdf')
+    `pdftk #{main_margins.shellescape} output #{main_flattened.shellescape} flatten`
 
     # Cleanup
     main_final = File.join(@directory, 'main.pdf')
     `rm #{main_raw.shellescape}`
     `rm #{main_bw.shellescape}`
-    `mv #{main_margins.shellescape} #{main_final.shellescape}`
+    `rm #{main_margins.shellescape}`
+    `mv #{main_flattened.shellescape} #{main_final.shellescape}`
   end
 
   def run
