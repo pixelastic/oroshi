@@ -28,7 +28,7 @@ class PdfLulu
 
     basename = File.basename(@input, File.extname(@input))
     dirname = File.dirname(@input)
-    @directory = File.join(dirname, "#{basename}-lulu")
+    @directory = File.join(dirname, "lulu/#{basename}")
     FileUtils.mkdir_p(@directory)
   end
 
