@@ -5,6 +5,9 @@ wget http://media.steampowered.com/client/installer/steam.deb -O /tmp/steam.deb
 
 echo "Installing dependencies"
 sudo apt-get install gdebi-core
+# For 14.04
+sudo apt-get install libc6:i386
+sudo apt-get install libgl1-mesa-glx-lts-trusty:i386
 
 echo "Installing .deb"
 sudo gdebi /tmp/steam.deb
