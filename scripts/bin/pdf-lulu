@@ -20,8 +20,8 @@ require 'shellwords'
 # So I guessed it means adding a margin of 9pt all around
 #
 # I also want the resulting PDF to bo of 300 dpi (dots per inch), which means
-# 8.5" x 300dpi = 2550px
-# 11" x 300dpi = 3300px
+# 8.75" x 300dpi = 2625px
+# 11.25" x 300dpi = 3375px
 class PdfLulu
   def initialize(input)
     @input = input
@@ -86,6 +86,13 @@ class PdfLulu
     main_raw = File.join(@directory, 'main_raw.pdf')
     pdf_split(@input, 2, page_count - 1, main_raw)
 
+    # Add margins
+    # Note: pdfcrop seems to mess up the page size, so I'd rather run it before
+    # ghostscript
+    puts 'Add margins and remove links'
+    main_margins = File.join(@directory, 'main_margins.pdf')
+    `pdfcrop --margins 9 #{main_raw.shellescape} #{main_margins.shellescape}`
+
     # Convert to right size, black and white
     puts 'Convert to right size, black and white'
     main_bw = File.join(@directory, 'main_bw.pdf')
@@ -96,7 +103,7 @@ class PdfLulu
       '-dPDFFitPage',
       # Dimensions
       '-r300',
-      '-g2550x3300',
+      '-g2625x3375',
       '-dPDFSETTINGS=/prepress',
       # Black and white
       '-sColorConversionStrategy=Gray',
@@ -105,19 +112,14 @@ class PdfLulu
       '-dCompatibilityLevel=1.3',
       # Do not take front and back cover
       "-sOutputFile=#{main_bw.shellescape}",
-      main_raw.shellescape
+      main_margins.shellescape
     ]
     `gs #{gs_options.join(' ')}`
-
-    # Add margins
-    puts 'Add margins and remove links'
-    main_margins = File.join(@directory, 'main_margins.pdf')
-    `pdfcrop --margins 9 #{main_bw.shellescape} #{main_margins.shellescape}`
 
     # Flatten transparency
     puts 'Remove transparency'
     main_flattened = File.join(@directory, 'main_flattened.pdf')
-    `pdftk #{main_margins.shellescape} output #{main_flattened.shellescape} flatten`
+    `pdftk #{main_bw.shellescape} output #{main_flattened.shellescape} flatten`
 
     # Cleanup
     main_final = File.join(@directory, 'main.pdf')
