@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Display the current weather in the specified city
+local city=$1
+[[ $city == '' ]] && city='Paris';
+
+curl http://wttr.in/$city
