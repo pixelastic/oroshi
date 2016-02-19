@@ -71,9 +71,11 @@ inoremap <buffer> $ù console.info(
 inoremap <buffer> ## ${}<Left>
 " context, beforeEach and it
 inoremap <buffer> bfe beforeEach(() => {});ko
-inoremap <buffer> iit it('', () => {});klli
+inoremap <buffer> iit it('', () => {<CR>// Given<CR><Esc>Vc<CR>// When<CR><Esc>Vc<CR>// Then<CR><Esc>Vc<CR>});7k2li
 inoremap <buffer> cnt context('', () => {});kllllllli
 inoremap <buffer> dsc describe('', () => {});klllllllli
+" Given When Then
+
 " }}}
 " ES6 {{{
 " Enable JSX syntax highlight in javascript files

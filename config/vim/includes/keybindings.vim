@@ -107,9 +107,9 @@ function! MultiPurposeReturn()
 endfunction
 inoremap  <C-R>=MultiPurposeReturn()<CR>
 inoremap <CR> <C-R>=MultiPurposeReturn()<CR>
-inoremap O2M <Esc>mzO<Esc>`za
-nnoremap <CR> mzo<Esc>`z
-nnoremap O2M mzO<Esc>`z
+inoremap O2M <CR><Esc>ddI
+nnoremap <CR> mzA<CR><Esc>Vc<Esc>`z
+nnoremap O2M mzI<CR><Esc>`zj
 vnoremap <CR> <Esc>g`>o<Esc>gv
 vnoremap O2M <Esc>g`<O<Esc>g
 " }}}
@@ -285,7 +285,6 @@ vnoremap <silent> md :!markdown<CR>
 nnoremap <C-J> <C-X>
 nnoremap <C-K> <C-A>
 " Align selection on pipes
-vnoremap <Bar> :Align <Bar><CR>
 " Align selection on spaces
 vnoremap <Space> :call AlignVisualSelectionOnSpaces()<CR>
 function! AlignVisualSelectionOnSpaces()
