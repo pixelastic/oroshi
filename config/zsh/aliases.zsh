@@ -210,11 +210,6 @@ alias vf="vim ~/.oroshi/config/zsh/filetypes.db.zsh"
 alias ve='vim ~/.oroshi/config/vim/vimrc'
 alias vw='vim-which'
 # }}}
-# Serenity {{{
-alias cdse="cd ~/local/mnt/serenity/"
-alias cdsevid="cd ~/local/mnt/serenity/video/"
-alias cdsemus="cd ~/local/mnt/serenity/music/"
-# }}}
 # Tweet {{{
 alias tweet="t update"
 alias timeline="t stream timeline"
@@ -245,11 +240,6 @@ alias nrp='npm run push'
 alias nrs='npm run serve 2>/dev/null || npm run dev'
 alias nrtw='npm run test:watch'
 alias nrt='npm run test'
-# }}}
-# Grunt {{{
-alias gt='grunt test'
-alias gj='grunt jshint'
-alias gbi='grunt bowerInstall'
 # }}}
 # Bundler {{{
 alias be='bundle exec'
