@@ -79,7 +79,7 @@ function! MarkdownBeautify()
 endfunction
 " }}}
 " Auto generate index.html when in a remark directory {{{
-let b:currentFile = expand('%:h')
+let b:currentFile = expand('%:t')
 let b:generateScript = expand('%:p:h').'/generate'
 if b:currentFile == 'slides.md' && filereadable(b:generateScript)
   augroup markdown_generate_remark
