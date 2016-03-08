@@ -78,16 +78,6 @@ function! MarkdownBeautify()
   execute 'normal '.linenr.'gg'
 endfunction
 " }}}
-" Auto generate index.html when in a remark directory {{{
-let b:currentFile = expand('%:t')
-let b:generateScript = expand('%:p:h').'/generate'
-if b:currentFile == 'slides.md' && filereadable(b:generateScript)
-  augroup markdown_generate_remark
-    au!
-    au BufWritePost <buffer> silent! execute '!'.b:generateScript
-  augroup END
-endif
-" }}}
 " Spellchecking {{{
 setlocal spelllang=en
 " Change language and/or toggle
