@@ -1,6 +1,7 @@
 [submodule "private"]
 	path = private
 	url = ssh://git@bitbucket.org/pixelastic/oroshi-private.git
+  branch = master
 [submodule "config/vim/bundle/available/ctrlp.vim"]
 	path = config/vim/bundle/available/ctrlp.vim
 	url = git://github.com/kien/ctrlp.vim.git
@@ -125,6 +126,7 @@
 [submodule "scripts/bin/vit"]
 	path = scripts/bin/vit
 	url = git@github.com:pixelastic/vit.git
+  branch = master
 [submodule "/home/tim/.oroshi/config/vim/bundle/available/SimpylFold"]
 	path = config/vim/bundle/available/SimpylFold
 	url = git@github.com:tmhedberg/SimpylFold.git
