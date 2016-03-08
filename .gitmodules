@@ -1,132 +1,132 @@
 [submodule "private"]
-	path = private
-	url = ssh://git@bitbucket.org/pixelastic/oroshi-private.git
+  path = private
+  url = ssh://git@bitbucket.org/pixelastic/oroshi-private.git
   branch = master
 [submodule "config/vim/bundle/available/ctrlp.vim"]
-	path = config/vim/bundle/available/ctrlp.vim
-	url = git://github.com/kien/ctrlp.vim.git
+  path = config/vim/bundle/available/ctrlp.vim
+  url = git://github.com/kien/ctrlp.vim.git
 [submodule "config/vim/bundle/available/nginx-vim-syntax"]
-	path = config/vim/bundle/available/nginx-vim-syntax
-	url = git://github.com/evanmiller/nginx-vim-syntax.git
+  path = config/vim/bundle/available/nginx-vim-syntax
+  url = git://github.com/evanmiller/nginx-vim-syntax.git
 [submodule "config/vim/bundle/available/tcomment_vim"]
-	path = config/vim/bundle/available/tcomment_vim
-	url = git://github.com/tomtom/tcomment_vim.git
+  path = config/vim/bundle/available/tcomment_vim
+  url = git://github.com/tomtom/tcomment_vim.git
 [submodule "config/vim/bundle/available/vim-endwise"]
-	path = config/vim/bundle/available/vim-endwise
-	url = git://github.com/tpope/vim-endwise.git
+  path = config/vim/bundle/available/vim-endwise
+  url = git://github.com/tpope/vim-endwise.git
 [submodule "config/vim/bundle/available/vim-markdown"]
-	path = config/vim/bundle/available/vim-markdown
-	url = git://github.com/tpope/vim-markdown.git
+  path = config/vim/bundle/available/vim-markdown
+  url = git://github.com/tpope/vim-markdown.git
 [submodule "config/vim/bundle/available/vim-repeat"]
-	path = config/vim/bundle/available/vim-repeat
-	url = git://github.com/tpope/vim-repeat.git
+  path = config/vim/bundle/available/vim-repeat
+  url = git://github.com/tpope/vim-repeat.git
 [submodule "config/vim/bundle/available/vim-surround"]
-	path = config/vim/bundle/available/vim-surround
-	url = git://github.com/tpope/vim-surround.git
+  path = config/vim/bundle/available/vim-surround
+  url = git://github.com/tpope/vim-surround.git
 [submodule "config/vim/bundle/available/vim-arval"]
-	path = config/vim/bundle/available/vim-arval
-	url = git://github.com/pixelastic/vim-arval.git
+  path = config/vim/bundle/available/vim-arval
+  url = git://github.com/pixelastic/vim-arval.git
 [submodule "config/vim/bundle/available/syntastic"]
-	path = config/vim/bundle/available/syntastic
-	url = git://github.com/scrooloose/syntastic.git
+  path = config/vim/bundle/available/syntastic
+  url = git://github.com/scrooloose/syntastic.git
 [submodule "config/vim/bundle/available/vim-unimpaired"]
-	path = config/vim/bundle/available/vim-unimpaired
-	url = git://github.com/tpope/vim-unimpaired.git
+  path = config/vim/bundle/available/vim-unimpaired
+  url = git://github.com/tpope/vim-unimpaired.git
 [submodule "config/vim/bundle/available/vim-ruby"]
-	path = config/vim/bundle/available/vim-ruby
-	url = git://github.com/vim-ruby/vim-ruby.git
+  path = config/vim/bundle/available/vim-ruby
+  url = git://github.com/vim-ruby/vim-ruby.git
 [submodule "config/vim/bundle/available/vim-fugitive"]
-	path = config/vim/bundle/available/vim-fugitive
-	url = git://github.com/tpope/vim-fugitive.git
+  path = config/vim/bundle/available/vim-fugitive
+  url = git://github.com/tpope/vim-fugitive.git
 [submodule "config/vim/bundle/available/php.vim"]
-	path = config/vim/bundle/available/php.vim
-	url = git@github.com:StanAngeloff/php.vim.git
+  path = config/vim/bundle/available/php.vim
+  url = git@github.com:StanAngeloff/php.vim.git
 [submodule "config/vim/bundle/available/vim-ragtag"]
-	path = config/vim/bundle/available/vim-ragtag
-	url = git@github.com:tpope/vim-ragtag.git
+  path = config/vim/bundle/available/vim-ragtag
+  url = git@github.com:tpope/vim-ragtag.git
 [submodule "config/vim/bundle/available/emmet-vim"]
-	path = config/vim/bundle/available/emmet-vim
-	url = git@github.com:mattn/emmet-vim.git
+  path = config/vim/bundle/available/emmet-vim
+  url = git@github.com:mattn/emmet-vim.git
 [submodule "config/vim/bundle/available/vim-javascript"]
-	path = config/vim/bundle/available/vim-javascript
-	url = git@github.com:pangloss/vim-javascript.git
+  path = config/vim/bundle/available/vim-javascript
+  url = git@github.com:pangloss/vim-javascript.git
 [submodule "config/vim/bundle/available/vim-css-color"]
-	path = config/vim/bundle/available/vim-css-color
-	url = git@github.com:ap/vim-css-color.git
+  path = config/vim/bundle/available/vim-css-color
+  url = git@github.com:ap/vim-css-color.git
 [submodule "config/vim/bundle/available/vim-css3-syntax"]
-	path = config/vim/bundle/available/vim-css3-syntax
-	url = git@github.com:hail2u/vim-css3-syntax.git
+  path = config/vim/bundle/available/vim-css3-syntax
+  url = git@github.com:hail2u/vim-css3-syntax.git
 [submodule "config/vim/bundle/available/html5.vim"]
-	path = config/vim/bundle/available/html5.vim
+  path = config/vim/bundle/available/html5.vim
   url = git@github.com:othree/html5.vim.git
 [submodule "config/vim/bundle/available/scss-syntax.vim"]
-	path = config/vim/bundle/available/scss-syntax.vim
-	url = git@github.com:cakebaker/scss-syntax.vim.git
+  path = config/vim/bundle/available/scss-syntax.vim
+  url = git@github.com:cakebaker/scss-syntax.vim.git
 [submodule "scripts/etc/dconf-export"]
-	path = scripts/etc/dconf-export
-	url = git@github.com:pixelastic/dconf-export.git
+  path = scripts/etc/dconf-export
+  url = git@github.com:pixelastic/dconf-export.git
 [submodule "config/vim/bundle/available/rainbow_parentheses.vim"]
-	path = config/vim/bundle/available/rainbow_parentheses.vim
-	url = git@github.com:pixelastic/rainbow_parentheses.vim.git
+  path = config/vim/bundle/available/rainbow_parentheses.vim
+  url = git@github.com:pixelastic/rainbow_parentheses.vim.git
 [submodule "config/vim/bundle/available/vim-gitgutter"]
-	path = config/vim/bundle/available/vim-gitgutter
-	url = git@github.com:airblade/vim-gitgutter.git
+  path = config/vim/bundle/available/vim-gitgutter
+  url = git@github.com:airblade/vim-gitgutter.git
 [submodule "config/vim/bundle/available/tern_for_vim"]
-	path = config/vim/bundle/available/tern_for_vim
-	url = git@github.com:marijnh/tern_for_vim.git
+  path = config/vim/bundle/available/tern_for_vim
+  url = git@github.com:marijnh/tern_for_vim.git
 [submodule "config/vim/bundle/available/ultisnips"]
-	path = config/vim/bundle/available/ultisnips
-	url = git@github.com:SirVer/ultisnips.git
+  path = config/vim/bundle/available/ultisnips
+  url = git@github.com:SirVer/ultisnips.git
 [submodule "config/zsh/completion/grunt-zsh-completion"]
-	path = config/zsh/completion/grunt-zsh-completion
-	url = git@github.com:yonchu/grunt-zsh-completion.git
+  path = config/zsh/completion/grunt-zsh-completion
+  url = git@github.com:yonchu/grunt-zsh-completion.git
 [submodule "config/vim/bundle/available/vim-undodir-tree"]
-	path = config/vim/bundle/available/vim-undodir-tree
-	url = git@github.com:pixelastic/vim-undodir-tree.git
+  path = config/vim/bundle/available/vim-undodir-tree
+  url = git@github.com:pixelastic/vim-undodir-tree.git
 [submodule "config/vim/bundle/available/vim-jade"]
-	path = config/vim/bundle/available/vim-jade
-	url = git@github.com:digitaltoad/vim-jade.git
+  path = config/vim/bundle/available/vim-jade
+  url = git@github.com:digitaltoad/vim-jade.git
 [submodule "config/vim/bundle/available/argtextobj"]
-	path = config/vim/bundle/available/argtextobj
-	url = git@github.com:vim-scripts/argtextobj.vim.git
+  path = config/vim/bundle/available/argtextobj
+  url = git@github.com:vim-scripts/argtextobj.vim.git
 [submodule "config/vim/bundle/available/committia.vim"]
-	path = config/vim/bundle/available/committia.vim
-	url = git@github.com:rhysd/committia.vim.git
+  path = config/vim/bundle/available/committia.vim
+  url = git@github.com:rhysd/committia.vim.git
 [submodule "config/vim/bundle/available/vim-jsx"]
-	path = config/vim/bundle/available/vim-jsx
-	url = git@github.com:mxw/vim-jsx.git
+  path = config/vim/bundle/available/vim-jsx
+  url = git@github.com:mxw/vim-jsx.git
 [submodule "config/vim/bundle/available/Align"]
-	path = config/vim/bundle/available/Align
-	url = git@github.com:vim-scripts/Align.git
+  path = config/vim/bundle/available/Align
+  url = git@github.com:vim-scripts/Align.git
   ignore = dirty
 [submodule "config/zsh/plugins/zsh-autosuggestions"]
-	path = config/zsh/plugins/zsh-autosuggestions
-	url = git@github.com:tarruda/zsh-autosuggestions.git
+  path = config/zsh/plugins/zsh-autosuggestions
+  url = git@github.com:tarruda/zsh-autosuggestions.git
 [submodule "config/zsh/plugins/zsh-syntax-highlighting"]
-	path = config/zsh/plugins/zsh-syntax-highlighting
-	url = git@github.com:zsh-users/zsh-syntax-highlighting.git
+  path = config/zsh/plugins/zsh-syntax-highlighting
+  url = git@github.com:zsh-users/zsh-syntax-highlighting.git
 [submodule "config/vim/bundle/available/vim-abolish"]
-	path = config/vim/bundle/available/vim-abolish
-	url = git@github.com:tpope/vim-abolish.git
+  path = config/vim/bundle/available/vim-abolish
+  url = git@github.com:tpope/vim-abolish.git
 [submodule "config/zsh/completion/docker-zsh-completion"]
-	path = config/zsh/completion/docker-zsh-completion
-	url = git@github.com:felixr/docker-zsh-completion.git
+  path = config/zsh/completion/docker-zsh-completion
+  url = git@github.com:felixr/docker-zsh-completion.git
 [submodule "config/vim/bundle/available/rename.vim"]
-	path = config/vim/bundle/available/rename.vim
-	url = git@github.com:danro/rename.vim.git
+  path = config/vim/bundle/available/rename.vim
+  url = git@github.com:danro/rename.vim.git
 [submodule "config/vim/bundle/available/vim-less"]
-	path = config/vim/bundle/available/vim-less
-	url = git@github.com:groenewege/vim-less.git
+  path = config/vim/bundle/available/vim-less
+  url = git@github.com:groenewege/vim-less.git
 [submodule "config/vim/bundle/available/vim-yaml"]
-	path = config/vim/bundle/available/vim-yaml
-	url = git@github.com:avakhov/vim-yaml.git
+  path = config/vim/bundle/available/vim-yaml
+  url = git@github.com:avakhov/vim-yaml.git
 [submodule "config/vim/bundle/available/vim-coffee-script"]
-	path = config/vim/bundle/available/vim-coffee-script
-	url = git@github.com:kchmck/vim-coffee-script.git
+  path = config/vim/bundle/available/vim-coffee-script
+  url = git@github.com:kchmck/vim-coffee-script.git
 [submodule "scripts/bin/vit"]
-	path = scripts/bin/vit
-	url = git@github.com:pixelastic/vit.git
+  path = scripts/bin/vit
+  url = git@github.com:pixelastic/vit.git
   branch = master
 [submodule "/home/tim/.oroshi/config/vim/bundle/available/SimpylFold"]
-	path = config/vim/bundle/available/SimpylFold
-	url = git@github.com:tmhedberg/SimpylFold.git
+  path = config/vim/bundle/available/SimpylFold
+  url = git@github.com:tmhedberg/SimpylFold.git
