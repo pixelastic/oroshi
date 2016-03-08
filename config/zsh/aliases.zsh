@@ -245,6 +245,9 @@ alias nrt='npm run test'
 alias be='bundle exec'
 alias bi='bundle install'
 # }}}
+# Appraisal {{{
+alias ai='appraisal install'
+# }}}
 # Middleman {{{
 alias ms='middleman server'
 alias mb='middleman build'
