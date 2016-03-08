@@ -3,7 +3,6 @@
   conflicts = diff --name-only --diff-filter=U
   diff-staged = diff -w --color-words --staged
   download = clone --depth=1
-  peek = log --graph --pretty=format:'%C(67)%h%Creset %C(24)(%cd, %ar)%Creset %C(241)%an%Creset %C(bold 202)%d%Creset%n   %C(250)%s%Creset%n'
   root = !pwd
   tabula-rasa = !git reset --hard && git clean -fd
 [advice]

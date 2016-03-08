@@ -17,20 +17,8 @@ sudo apt-get install \
   docbook2x
 
 # Compiling
-make prefix=/home/$USER/local all doc info
-sudo make prefix=/home/$USER/local install install-doc install-html install-info
-
-
-# Installing git-extras
-# Install can warn about being unable to delete a bash-completion, but
-# everything is still installed
-cd ~/local/etc
-git clone git@github.com:tj/git-extras.git
-cd ./git-extras
-
-gem install ronn
-PREFIX=~/local make
-PREFIX=~/local make install
+make prefix="/home/$USER/local" all doc info
+sudo make prefix="/home/$USER/local" install install-doc install-html install-info
 
 # installing Github commandline tool
 npm install -g gh
