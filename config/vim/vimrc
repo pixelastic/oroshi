@@ -42,8 +42,6 @@ set autowrite
 setglobal fileencoding=utf-8
 " Force Unix line ending on new file
 set fileformats=unix,dos,mac
-" keep - and _ as part of words
-set iskeyword+=-,_
 " Allow multiple buffers opened at once
 set hidden
 " Reload files if changed outside of vim (every 2s, or on tab change)
