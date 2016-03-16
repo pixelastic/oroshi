@@ -5,6 +5,8 @@ alias sudo='sudo -E'
 # Options {{{
 # Allow moving to a directory without typing cd
 setopt AUTO_CD
+# Let zsh autofix common wrong commands
+setopt CORRECT_ALL
 # Allow special chars (^ or ?) in aliases, otherwise they are treated as regexp
 # markers
 unsetopt NOMATCH
