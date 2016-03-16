@@ -1,20 +1,24 @@
 #!/usr/bin/env ruby
-require "shellwords"
+require 'shellwords'
 
+# Displays orientations for each passed argument
+# Usage:
+#   $ image-orientation ./path/to/image.jpg
 class ImageOrientation
   def initialize(*args)
-    @files = args.map(){|file| File.expand_path(file)}
+    @files = args.map { |file| File.expand_path(file) }
+                 .select { |file| File.exist?(file) }
   end
 
   def ratio(file)
-    output = %x[identify -format "%[fx:w/h]" #{file.shellescape}]
-    return output.chomp().to_f
+    output = `identify -format "%[fx:w/h]" #{file.shellescape}`
+    output.chomp.to_f
   end
 
   def run
     @files.each do |file|
-      puts (ratio(file) < 1) ? "portrait" : "landscape"
+      puts ratio(file) < 1 ? 'portrait' : 'landscape'
     end
   end
 end
-ImageOrientation.new(*ARGV).run();
+ImageOrientation.new(*ARGV).run
