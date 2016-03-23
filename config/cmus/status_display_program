@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# This is how you are supposed to refresh tmux from the outside. I'm not even
+# sure that works, and that definitely does not work when called from inside
+# cmus
+
+tmux refresh-client -S
+
+# Tell tmux to update its status bar when the cmus statusline is updated
+# set status_display_program=~/.oroshi/config/cmus/status_display_program

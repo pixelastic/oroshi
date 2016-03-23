@@ -44,6 +44,33 @@ if [[ $battery_percent -ne 99 ]]; then
 fi
 # }}}
 
+# Currently playing {{{
+local currently_playing=''
+if cmus-is-running; then
+  currently_playing="$(cmus-data title)"
+  local music_status="$(cmus-data status)"
+  # Adding play/pause icon
+  if [[ $music_status == 'playing' ]]; then
+    currently_playing=" $currently_playing"
+  else
+    currently_playing=" $currently_playing"
+  fi
+  # Adding shuffle icon
+  if [[ "$(cmus-data shuffle)" == "true" ]]; then
+    currently_playing=" $currently_playing"
+  fi
+  # Adding color
+  if [[ $music_status == 'playing' ]]; then
+    currently_playing="#[fg=colour69]$currently_playing#[default]"
+  else
+    currently_playing="#[fg=colour241]$currently_playing#[default]"
+  fi
+fi
+output="$currently_playing $output"
+# if [[ $music_is_running
+# local music_is_playing="$(cmus-data status)"
+# }}}
+
 # Algolia livechat duty {{{
 local day="$(date +%w)"
 local hour="$(date +%H)"

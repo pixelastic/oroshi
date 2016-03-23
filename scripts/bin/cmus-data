@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+local key=$1
+
+local raw="$(cmus-remote -Q)"
+
+# Testing if we find it in basic, tag or set prefix
+local base="$(echo $raw | grep "^$key" | cut -d' ' -f2-)"
+[[ $base != '' ]] && echo $base && exit 0
+
+local tag="$(echo $raw | grep "^tag $key" | cut -d' ' -f3-)"
+[[ $tag != '' ]] && echo $tag && exit 0
+
+local option="$(echo $raw | grep "^set $key" | cut -d' ' -f3-)"
+[[ $option != '' ]] && echo $option && exit 0

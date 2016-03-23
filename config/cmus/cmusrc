@@ -51,13 +51,8 @@ bind -f common ^C quit
 bind -f common ^D quit
 
 
-
-
-
-
-
-# Global keybindings for play/pause, next, previous, random shuffle
-
-
-
-
+# TODO:
+# - Add global keybindings for
+#   - Toggle random
+#   - Play/Pause
+#   - Next
