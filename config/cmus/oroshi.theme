@@ -1,0 +1,44 @@
+# Colors {{{
+# Default colors
+set color_win_bg=default
+set color_win_fg=252
+set color_separator=239
+# Page title
+set color_win_title_bg=235
+set color_win_title_attr=bold
+set color_win_title_fg=136
+
+# Selected item
+set color_win_sel_bg=24
+set color_win_sel_fg=249
+set color_win_sel_attr=bold
+# Selected item, in inactive window
+set color_win_inactive_sel_bg=241
+set color_win_inactive_sel_fg=249
+set color_win_inactive_sel_attr=default
+# Current playing
+set color_win_cur=69
+# Current playing and selected
+set color_win_cur_sel_bg=24
+set color_win_cur_sel_fg=136
+set color_win_cur_sel_attr=bold
+# Current playing and selected, in inactive window
+set color_win_inactive_cur_sel_bg=241
+set color_win_inactive_cur_sel_fg=default
+set color_win_inactive_cur_sel_attr=default
+# Browser
+set color_win_dir=35
+
+# Title line
+set color_titleline_bg=default
+set color_titleline_fg=69
+set color_titleline_attr=default
+# Statusline
+set color_statusline_bg=default
+set color_statusline_fg=35
+
+# Commandline
+set color_cmdline_bg=default
+set color_cmdline_fg=default
+set color_error=160
+set color_info=136

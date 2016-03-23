@@ -1,127 +1,63 @@
-# Config {{{
-set aaa_mode=all
-set altformat_current= %F 
-set altformat_playlist= %f%= %d 
-set altformat_title=%f
-set altformat_trackwin= %f%= %d 
-set auto_reshuffle=true
-set buffer_seconds=10
-set confirm_run=true
-set continue=true
-set display_artist_sort_name=false
-set dsp.alsa.device=default
-set dsp.ao.buffer_size=16384
-set dsp.ao.driver=
-set dsp.ao.wav_counter=1
-set dsp.ao.wav_dir=/home/tim
-set dsp.oss.device=
-set dsp.roar.role=
-set dsp.roar.server=
-set format_current= %t%= %a / %l
-set format_playlist= %-25%a %3n. %t%= %y %d 
-set format_playlist_va= %-25%A %3n. %t (%a)%= %y %d 
-set format_title=%a - %l - %t (%y)
-set format_trackwin=%3n. %t%= %y %d 
-set format_trackwin_va=%3n. %t (%a)%= %y %d 
-set id3_default_charset=ISO-8859-1
-set lib_sort=albumartist date album discnumber tracknumber title filename
-set mixer.alsa.channel=PCM
-set mixer.alsa.device=alsa
-set mixer.oss.channel=PCM
-set mixer.oss.device=
-set mixer.pulse.restore_volume=1
-set output_plugin=alsa
-set passwd=
-set pl_sort=
-set play_library=true
-set play_sorted=true
-set repeat=false
-set repeat_current=false
-set replaygain=1
-set replaygain_limit=true
-set replaygain_preamp=6.000000
+# Resume, continue but no repeat nor shuffle by default
 set resume=true
-set set_term_title=true
-set show_hidden=false
-set show_remaining_time=false
+set continue=true
 set shuffle=false
-set smart_artist_sort=true
-set softvol=false
-set softvol_state=0 0
-set status_display_program=
-# }}}
-# Colors {{{
-# Default colors
-set color_win_bg=default
-set color_win_fg=default
-set color_separator=default
-set color_error=red
-set color_info=lightyellow
-# Current song and selection
-set color_win_cur=green
-set color_win_sel_bg=black
-set color_win_sel_fg=default
-set color_win_cur_sel_bg=black
-set color_win_cur_sel_fg=green
-# Page title
-set color_win_title_bg=black
-set color_win_title_fg=default
-# Title line
-set color_titleline_bg=black
-set color_titleline_fg=green
-# Statusline
-set color_statusline_bg=black
-set color_statusline_fg=default
-# Commandline
-set color_cmdline_bg=default
-set color_cmdline_fg=default
-# Browser
-set color_win_dir=green
-# Tree
-set color_win_inactive_sel_bg=black
-set color_win_inactive_sel_fg=default
-set color_win_inactive_cur_sel_bg=black
-set color_win_inactive_cur_sel_fg=default
-# }}}
-# Bindings {{{
-# Unbindings {{{
-unbind -f common q
-unbind -f common h
-unbind -f common l
-# }}}
-# Note: To know the default bindings, just delete the ~/.cmus/rc file, launch
-# cmus and look at the ~/.cmus/autosave file generated.
-# One-letter bindings for every view
-bind -f common T view tree
-bind -f common L view sorted
-bind -f common P view playlist
-bind -f common Q view queue
-bind -f common B view browser
-bind -f common F view filters
-bind -f common S view settings
-# Ctrl-D quits
+set repeat=false
+# Show elapsed time, not remaining
+set show_remaining_time=false
+# String format
+set format_current=  %-30a  %n. %t%=  %l
+set format_playlist=%3n. %t %=  %-15a  %-15l   %d 
+set format_title=TITLE
+set format_trackwin=%3n. %t%=  %d
+
+# Browser: Navigate with hjkl
+bind -f browser h browser-up
+bind -f browser l win-activate
+# Also open directories in View 1
+bind -f common l win-toggle
+# Play music with Enter
+bind -f common enter win-activate
+# Use D and U to go down and up one screen
+bind -f common D win-page-down
+bind -f common U win-page-up
+
+# Next / Previous song
+bind -f common L player-next
+bind -f common H player-prev
+# Next / Previous 15s
+bind -f common K seek +15
+bind -f common J seek -15
+# Pause
+bind -f common space player-pause
+# Toggle Shuffle
+bind -f common s toggle shuffle
+bind -f common S toggle shuffle
+
+# Add to next
+bind -f common e win-add-q
+bind -f common E win-add-q
+# Add to library
+bind -f common a win-add-l
+bind -f common A win-add-l
+# Add to playlist
+bind -f common y win-add-p
+bind -f common Y win-add-p
+
+# Quit classical q, Ctrl-C, Ctrl-D
+bind -f common q quit
+bind -f common Q quit
+bind -f common ^C quit
 bind -f common ^D quit
-# Seek +/- 10s with left and right
-bind -f common left seek -10s
-bind -f common right seek +10s
-# Volume with up and down
-bind -f common up vol +10%
-bind -f common down vol -10%
-# Next and previous songs with N and P
-bind -f common p player-prev
-bind -f common n player-next
-bind -f common x player-pause
-# Delete with d, vim-style
-bind -f common d win-remove
-# Open help
-bind -f common h help
-# Reorder songs in queue with - and _
-bind -f common - win-mv-before
-bind -f common _ win-mv-after
-# }}}
-# Fset {{{
-fset mp3=filename="*.mp3"
-fset ogg=filename="*.ogg"
-fset ogg-or-mp3=ogg|mp3
-factivate
-# }}}
+
+
+
+
+
+
+
+# Global keybindings for play/pause, next, previous, random shuffle
+
+
+
+

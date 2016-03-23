@@ -10,7 +10,7 @@ local zshConfigDir=~/.oroshi/config/zsh
 export EDITOR=vim
 export CHROME_BIN=/usr/bin/chromium-browser
 export LANG=en_US.UTF-8
-export TERM=xterm-256color
+export TERM=screen-256color
 path=(
   ~/.oroshi/scripts/bin
   ~/.oroshi/scripts/bin/vit/bin
