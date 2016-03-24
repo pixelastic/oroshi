@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+cmus-remote -u
+tmux-refresh
