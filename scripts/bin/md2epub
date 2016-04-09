@@ -1,0 +1,63 @@
+#!/usr/bin/env ruby
+require 'shellwords'
+require 'fileutils'
+# Converts a markdown file to epub
+class Md2Epub
+  def initialize(*args)
+    @md = File.expand_path(args[0])
+    @ext = File.extname(@md)
+    @basename = File.basename(@md, @ext)
+    @epub = File.expand_path("#{@basename}.epub")
+    @cover = File.expand_path("#{@basename}.jpg")
+    @txt = File.expand_path("#{@basename}.txt")
+  end
+
+  def valid?
+    ['.md', '.mkd'].include?(@ext)
+  end
+
+  def cover?
+    File.exist?(@cover)
+  end
+
+  def run
+    unless valid?
+      puts 'Input is not a markdown file'
+      exit
+    end
+
+    # Make a backup of the existing epub file if one is found
+    File.rename(@epub, "#{@epub}.bak") if File.exist?(@epub)
+
+    # ebook-convert only works on .txt file so we'll create a copy of the mkd
+    FileUtils.copy(@md, @txt)
+
+    # Building option list
+    options = [
+      @txt.shellescape,
+      @epub.shellescape,
+      '--formatting-type markdown',
+      '--paragraph-type off',
+      "--chapter '//h:h2'"
+    ]
+
+    # Adding cover if found
+    if File.exist?(@cover)
+      options << "--cover #{@cover.shellescape}"
+      options << '--preserve-cover-aspect-ratio'
+    else
+      puts 'WARNING: No cover file found, epub will have no cover'
+    end
+
+    # Converting file
+    puts 'Converting to epub'
+    `ebook-convert #{options.join(' ')}`
+
+    # Removing the now useless txt file
+    File.delete(@txt)
+
+    # Updating metadata
+    `ebook-metadata-update #{@epub.shellescape}`
+  end
+end
+Md2Epub.new(*ARGV).run

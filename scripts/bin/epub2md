@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+# encoding : utf-8
+# Given an epub file, will create an md file version
+require 'fileutils'
+
+if `which ebook-convert` == ''
+  puts 'Unable to find ebook-convert, please install calibre'
+  exit
+end
+
+# Loop on each file
+ARGV.each do |file|
+  epubFile = File.expand_path(file)
+  ext = File.extname(epubFile)
+  dirname = File.dirname(epubFile)
+  basename = File.basename(epubFile)
+  coverFile = epubFile.gsub(/\.epub$/, '.jpg')
+  txtFile = epubFile.gsub(/\.epub$/, '.txt')
+  mdFile = epubFile.gsub(/\.epub$/, '.md')
+
+  # Act only on epub
+  next unless ext == '.epub'
+
+  # Warn if no cover
+  puts 'WARNING : No cover found in dir' unless File.exist?(coverFile)
+
+  # Create a backup if md file already present
+  File.rename(mdFile, mdFile + '.bak') if File.exist?(mdFile)
+
+  # Convert to txt first
+  puts 'Converting to md'
+  `ebook-convert "#{epubFile}" "#{txtFile}"`
+
+  # Then converting (renaming) to md
+  File.rename(txtFile, mdFile)
+end

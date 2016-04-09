@@ -1,24 +1,24 @@
-#compdef epub2md epub2mobi
-# - Will only suggest .epub files
+#compdef mobi2epub
+# - Will only suggest .mobi files
 
-_ft-epub () {
+_ft-mobi () {
 	# local var definition to not pollute global scope
 	local curcontext=$curcontext state line context
 	typeset -A opt_args
 
 	# suggesting arguments
 	_arguments \
-		"*:epub file:->epub_file" \
+		"*:mobi file:->mobi_file" \
 		&& return 0
 
 	# state machine match
 	case $state in
-		(epub_file)
-			_files -g '*.epub' \
+		(mobi_file)
+			_files -g '*.mobi' \
 			&& return 0
 	esac
 
 	return 1
 }
 
-_ft-epub "$@"
+_ft-mobi "$@"
