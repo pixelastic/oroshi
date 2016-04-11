@@ -10,7 +10,8 @@ dconf write /org/compiz/profiles/unity/plugins/unityshell/show-desktop-key "'<Su
 dconf write /org/gnome/desktop/wm/keybindings/show-desktop "['disabled']"
 
 # Locking screen
-dconf write /org/compiz/profiles/unity/plugins/unityshell/lock-screen "'<Control><Super>L'"
+dconf write /org/compiz/profiles/unity/plugins/unityshell/lock-screen "'Disabled'"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/screensaver "'<Primary><Super>L'"
 
 # Open dash search (need to be set to something else than <Super> so other
 # bindings with <Super> can work.
