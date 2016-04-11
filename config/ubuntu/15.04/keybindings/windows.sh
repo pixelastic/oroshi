@@ -48,10 +48,10 @@ dconf write /org/compiz/profiles/unity/plugins/grid/put-bottomright-key "'Disabl
 dconf write /org/compiz/profiles/unity/plugins/grid/left-maximize "'Disabled'"
 dconf write /org/compiz/profiles/unity/plugins/grid/right-maximize "'Disabled'"
 # Maximize/Restore with Super-Alt-(Home/End)
-dconf write /org/compiz/profiles/unity/plugins/grid/put-maximize-key "'<Super><Alt>Home'"
-dconf write /org/compiz/profiles/unity/plugins/grid/put-restore-key "'<Super><Alt>End'"
-dconf write /org/gnome/desktop/wm/keybindings/maximize "['disabled']"
-dconf write /org/gnome/desktop/wm/keybindings/unmaximize "['disabled']"
+dconf write /org/compiz/profiles/unity/plugins/grid/put-maximize-key "'Disabled'"
+dconf write /org/compiz/profiles/unity/plugins/grid/put-restore-key "'Disabled'"
+dconf write /org/gnome/desktop/wm/keybindings/maximize "['<Alt><Super>Home']"
+dconf write /org/gnome/desktop/wm/keybindings/unmaximize "['<Alt><Super>End']"
 
 # Move window accross screens
 dconf write /org/compiz/profiles/unity/plugins/put/put-next-output-key "'<Super>Return'"
