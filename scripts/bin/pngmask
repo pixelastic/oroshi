@@ -1,6 +1,21 @@
 #!/usr/bin/env zsh
+if [[ $1 == '-h' ]]; then
+  echo "Usage:"
+  echo "pngmask ./transparent.png [./othertransparent.png]"
+  echo ""
+  echo "Takes a transparent png as input."
+  echo "Will convert the png into a png to be used as a mask."
+  echo "It will fill every transparent area and make transparent every filled one."
+  echo "New files will be suffixed with _mask"
+  exit 1
+fi
+
 # Convert the png to one that only contain the mask
 for file in $@; do
-  convert ${file:a} -channel a -negate +channel -fill white -colorize 100% ${file:a:r}_mask.png
+  convert ${file:a} \
+    -channel a \
+    -negate +channel \
+    -fill white \
+    -colorize 100% ${file:a:r}_mask.png
 done
 

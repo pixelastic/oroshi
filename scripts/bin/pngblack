@@ -1,6 +1,20 @@
 #!/usr/bin/env zsh
+if [[ $1 == '-h' ]]; then
+  echo "Usage:"
+  echo "pngblack ./transparent.png [./othertransparent.png]"
+  echo ""
+  echo "Takes a transparent png as input."
+  echo "Will set to black every part that is not transparent."
+  echo "New files will be suffixed with _black"
+  exit 1
+fi
+
 # Convert the png to black when filled
 for file in $@; do
-  convert ${file:a} -alpha off -fill black -colorize 100 -alpha on ${file:a:r}_black.png
+  convert ${file:a} \
+    -alpha off \
+    -fill black \
+    -colorize 100 \
+    -alpha on ${file:a:r}_black.png
 done
 

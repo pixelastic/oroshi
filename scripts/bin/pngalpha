@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+if [[ $1 == '-h' ]]; then
+  echo "Usage:"
+  echo "pngalpha ./input.png {color}"
+  echo ""
+  echo "Takes a png as input"
+  echo "Will make all areas of the specified color transparent"
+  echo "New files will be suffixed with _alpha"
+  exit 1
+fi
+
+local input=$1
+local color=$2
+
+convert $input -transparent $color ${input:a:r}_alpha.png
