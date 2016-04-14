@@ -1,48 +1,62 @@
 #!/usr/bin/env ruby
-require "shellwords"
-
-class TidyCheck
+require 'fileutils'
+require 'English'
+require 'shellwords'
+# This is a wrapper around tidy, to make it:
+# - Only display the actual errors (not fixing anything)
+# - Use a default set of options
+# - Further hide errors that cannot be disabled through the options
+class Tidy
   def initialize(*args)
-    @input = args[0]
-    @tidycheckrc = File.expand_path("~/.tidycheckrc")
+    @input = File.expand_path(args.last)
+    @tidycheckrc = File.expand_path('~/.tidycheckrc')
 
-    unless File.exists?(@tidycheckrc)
+    unless File.exist?(@tidycheckrc)
       puts "Unable to find #{@tidycheckrc}"
       exit
     end
 
-    @stderr = `tidy -config #{@tidycheckrc} -o /dev/null #{@input.shellescape} 2>&1`
-    @exitcode = $?.exitstatus
-  end
+    options = [
+      "-config #{@tidycheckrc}",
+      '-e',
+      '-utf8',
+      '-o /dev/null',
+      @input.shellescape
+    ]
 
-  # Check if command returned errors or warnings
-  def has_errors?
-    return @exitcode == 2 || @exitcode == 1
-  end
-
-  # Get the full list of errors
-  def get_errors
-    return nil unless has_errors?
-    return filter_low_priority_errors(@stderr)
+    @stderr = `tidy #{options.join(' ')} 2>&1`
+    @exitcode = $CHILD_STATUS.exitstatus
   end
 
   # Remove useless errors from the list
-  def filter_low_priority_errors(errors)
+  def get_errors(errors)
     list = errors.split("\n")
     list.reject! do |line|
-      line.include?("is not approved by W3C") ||
-      line.include?('proprietary attribute "ng-') || # AngularJS custom attributes
-      line.include?("inserting implicit <body>") ||
-      line =~ /trimming empty <(i|em|span)>/ # Used for icons and presentation
+      # See syntastic/syntax_checkers/html/tidy.vim for a more complete list
+      # of errors that are safe to ignore
+      next true if line.include?('is not approved by W3C')
+      next true if line.include?('inserting implicit <body>')
+
+      next true if line.include?('proprietary attribute "ng-')
+      next true if line.include?('proprietary attribute "data-')
+
+      # Presentation classes
+      next true if line =~ /trimming empty/
     end
-    return nil if list.size==0
-    return list.join("\n")
+
+    return nil if list.empty?
+
+    list.join("\n")
   end
 
   def run
-    exit if !has_errors?
-    errors = get_errors
-    puts errors if errors!=nil
+    # Everything went well
+    exit 0 if @exitcode == 0
+
+    errors = get_errors(@stderr)
+    exit 0 if errors.nil?
+
+    puts errors
   end
 end
-TidyCheck.new(*ARGV).run()
+Tidy.new(*ARGV).run

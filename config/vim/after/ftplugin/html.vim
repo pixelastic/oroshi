@@ -34,15 +34,7 @@ if &ft == "html"
 endif
 " }}}
 " Syntax checking {{{
-let g:syntastic_html_tidy_ignore_errors = [
-                \ "trimming empty <i>",
-                \ "trimming empty <span>",
-                \ "trimming empty <em>",
-                \ "proprietary attribute",
-                \ "<img> lacks \"src\" attribute",
-                \ "<data-",
-                \ "discarding unexpected </data-"
-                \ ]
+let b:syntastic_html_tidy_exec = '~/.oroshi/scripts/bin/tidycheck'
 " }}}
 " Cleaning the file {{{
 inoremap <silent> <buffer> <F4> <Esc>:call HtmlBeautify()<CR>
