@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
+# Lint markdown
+gem install mdl
+
+# Cleanup markdown
 cd ~/local/etc/
 git clone https://github.com/drbunsen/formd.git
-
 cd ~/local/bin
 ln -s ../etc/formd/formd .

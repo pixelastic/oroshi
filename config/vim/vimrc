@@ -335,6 +335,7 @@ let g:syntastic_mode_map={ 'mode': 'passive',
                        \ 'html',
                        \ 'javascript',
                        \ 'json',
+                       \ 'markdown',
                        \ 'python',
                        \ 'ruby',
                        \ 'bash', 'sh', 'zsh',
@@ -358,5 +359,3 @@ nnoremap <leader>vr mz:source ~/.vimrc<CR>:let &filetype=&filetype<CR>:loadview<
 " man to open the manpage of a command in a new tab
 nnoremap <silent> man :tabe<CR>:setlocal filetype=man<CR>:.!man<Space>
 " }}}
-"
-"
