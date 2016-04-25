@@ -71,18 +71,4 @@ output="$currently_playing $output"
 # local music_is_playing="$(cmus-data status)"
 # }}}
 
-# Algolia livechat duty {{{
-local day="$(date +%w)"
-local hour="$(date +%H)"
-if [[ $day == 1 && $hour -ge 15 && $hour -lt 19 ]]; then
-  output="#[fg=colour249,bg=colour24]  3pm-7pm andoche #[default] $output"
-fi
-if [[ $day == 2 && $hour -ge 15 && $hour -lt 19 ]]; then
-  output="#[fg=colour249,bg=colour24]  3pm-7pm alexm + jerska #[default] $output"
-fi
-if [[ $day == 3 && $hour -ge 15 && $hour -lt 19 ]]; then
-  output="#[fg=colour249,bg=colour24]  3pm-7pm andoche #[default] $output"
-fi
-# }}}
-#
 echo $output

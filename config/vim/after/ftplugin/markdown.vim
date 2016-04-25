@@ -74,6 +74,8 @@ function! MarkdownBeautify()
   silent! %s/\<trés\>/très/e
   silent! %s/\<etre\>/être/e
   silent! %s/\<coute\>/coûte/e
+  " Remove trailing spaces
+	call RemoveTrailingSpaces()
 
   execute 'normal '.linenr.'gg'
 endfunction
