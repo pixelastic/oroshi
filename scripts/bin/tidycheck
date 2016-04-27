@@ -19,12 +19,12 @@ class Tidy
     options = [
       "-config #{@tidycheckrc}",
       '-e',
+      '-q',
       '-utf8',
-      '-o /dev/null',
       @input.shellescape
     ]
 
-    @stderr = `tidy #{options.join(' ')} 2>&1`
+    @stderr = `tidy #{options.join(' ')}`
     @exitcode = $CHILD_STATUS.exitstatus
   end
 
