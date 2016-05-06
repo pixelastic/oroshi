@@ -20,7 +20,7 @@ nmap <Space> .
 " CAPS LOCK KEY {{{
 " Note: Xmodmap maps Caps Lock to F13 ([25~)
 " - Cancels autocomplete, search, command, visual
-"   - Restore the wrong word in spelling mode
+" - Restore the wrong word in spelling mode
 " - Toggle normal / insert mode
 function! MultiPurposeCapsLock()
   let autocomplete_cancel = "\<C-E>"

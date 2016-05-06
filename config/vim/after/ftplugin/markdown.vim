@@ -74,6 +74,8 @@ function! MarkdownBeautify()
   silent! %s/\<trés\>/très/e
   silent! %s/\<etre\>/être/e
   silent! %s/\<coute\>/coûte/e
+  " English common errors
+  silent! %s/\<accross\>/across/e
   " Remove trailing spaces
 	call RemoveTrailingSpaces()
 

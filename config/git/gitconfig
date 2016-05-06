@@ -5,8 +5,6 @@
   download = clone --depth=1
   root = !pwd
   tabula-rasa = !git reset --hard && git clean -fd
-[advice]
-  ; statusHints = false
 [color]
   ui = true
 [color "diff"]
@@ -23,8 +21,6 @@
   excludesfile = ~/.gitignore
   safecrlf = false
   autocrlf = input
-[diff]
-  ; wordRegex = "[a-zA-Z]{5,}"
 [merge]
   tool = fugitive
 [mergetool "fugitive"]
@@ -32,7 +28,7 @@
 [push]
   default = simple
 [remote "origin"]
-	prune = true ; Stop tracking local branch deleted on remote
+  prune = true
 [rerere]
   enabled = true
 [status]
@@ -43,6 +39,6 @@
 [github]
   user = pixelastic
 [filter "lfs"]
-	clean = git lfs clean %f
-	smudge = git lfs smudge %f
-	required = true
+  clean = git lfs clean %f
+  smudge = git lfs smudge %f
+  required = true
