@@ -1,4 +1,9 @@
 " RUBY
+" Syntax highlighting can be really slow on big ruby files. This seems to be
+" cause by the new RegExp engine used by vim. So, for those files, we will
+" revert to the previous engine
+" http://stackoverflow.com/questions/16902317/vim-slow-with-ruby-syntax-highlighting
+setlocal regexpengine=1
 " Keybindings {{{
 " describe, before(:each) and it
 " Note: I had to hack with mz/'z otherwise by cursor was jumping around
