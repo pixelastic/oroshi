@@ -5,12 +5,12 @@
 # Note: I have been unable to launch redshift from these bindings, it does not
 # seem to have any effect.
 
-# Super-PrintScreen for taking a screenshot of an area
+# PrintScreen for taking a screenshot of an area
 dconf write /org/compiz/profiles/unity/plugins/commands/command12 "'gnome-screenshot -c -a'"
-dconf write /org/compiz/profiles/unity/plugins/commands/run-command12-key "'<Super>Print'"
-# Super-Alt-PrintScreen for taking a screenshot of and area and save the file
+dconf write /org/compiz/profiles/unity/plugins/commands/run-command12-key "'Print'"
+# Super-PrintScreen for taking a screenshot of and area and save the file
 dconf write /org/compiz/profiles/unity/plugins/commands/command14 "'gnome-screenshot -a'"
-dconf write /org/compiz/profiles/unity/plugins/commands/run-command14-key "'<Alt><Super>Print'"
+dconf write /org/compiz/profiles/unity/plugins/commands/run-command14-key "'<Super>Print'"
 # Super-Ctrl-PrintScreen for taking a screenshot of the entire window
 dconf write /org/compiz/profiles/unity/plugins/commands/command13 "'gnome-screenshot -c'"
 dconf write /org/compiz/profiles/unity/plugins/commands/run-command13-key "'<Control><Super>Print'"
