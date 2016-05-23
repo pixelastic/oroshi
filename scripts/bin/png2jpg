@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+if [[ $1 == '-h' ]]; then
+  echo "Usage:"
+  echo "png2jpg ./input.png"
+  echo ""
+  echo "Takes a png as input and outputs the same file as jpg"
+  exit 1
+fi
+
+# Convert a png file to a jpg file
+for file in $@; do
+  convert ${file:a} ${file:a:r}.jpg
+done
+
+
