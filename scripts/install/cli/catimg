@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+echo "Download source"
+cd ~/local/src/
+git clone git@github.com:posva/catimg.git
+cd ./catimg
+
+echo "Compile"
+cmake .
+make install
+
+echo "Symlink"
+cd ~/local/bin
+ln -s ../src/catimg/bin/catimg .
+exit 1

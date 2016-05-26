@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+require 'shellwords'
+
+# This is a wrapper around the `cat` command that will use `catimg` when trying
+# to `cat` image files.
+# I'm not actually sure how safe doing a wrapper around such a basic utility is,
+# so let's find out
+
+images = ['.jpg', '.gif', '.png']
+
+ARGV.each do |arg|
+  extname = File.extname(arg)
+  if images.include?(extname)
+    system("catimg -w 130 -r 2 #{arg.shellescape}")
+    puts ''
+  else
+    system("cat #{arg.shellescape}")
+  end
+end

@@ -21,6 +21,7 @@ alias l="ls"
 alias mkdir="mkdir -p"
 alias mv='mv -vi'
 alias rmdir='better-rmdir'
+alias cat='better-cat'
 alias rm='trash-put'
 alias RM='\rm -rf'
 alias scp='scp -r '
