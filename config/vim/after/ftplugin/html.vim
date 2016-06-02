@@ -46,6 +46,10 @@ function! HtmlBeautify()
   execute 'normal '.linenr.'gg'
 endfunction
 " }}}
+" Keybindings {{{
+" $ù is easy to type on my keyboard. Use it for debug calls
+inoremap <buffer> $ù console.info(
+" }}}
 " Run file with Shift-F5 {{{
 nnoremap <silent> <buffer> [31~ :call OpenUrlInBrowser(expand('%:p'))<CR>
 " }}}
