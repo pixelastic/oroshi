@@ -46,8 +46,3 @@ function dumptmp() {
     galactica:./local/www/pixelastic.com/tmp.pixelastic.com
     echo "Available on http://tmp.pixelastic.com/${1:t}"
 }
-
-alias bloomberg-sync='rcp --exclude=.gitignore --exclude=json --exclude=sitemaps --exclude=_cache ./* scrapper:bloomberg'
-
-# Removing this Java options as it break grunt-html parsing
-unset JAVA_TOOL_OPTIONS
