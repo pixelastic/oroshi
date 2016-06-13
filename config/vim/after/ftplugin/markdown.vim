@@ -98,3 +98,18 @@ nnoremap <buffer> sr zug
 " Suggest correction
 nnoremap <buffer> ss viw<Esc>i<C-X>s<C-N><C-P>
 " }}}
+" Map drawing {{{
+nnoremap <buffer> <Leader>wh r━
+vnoremap <buffer> <Leader>wh r━
+nnoremap <buffer> <Leader>wv r┃
+vnoremap <buffer> <Leader>wv r┃
+nnoremap <buffer> <Leader>wtl r┏
+nnoremap <buffer> <Leader>wtr r┓
+nnoremap <buffer> <Leader>wbr r┛
+nnoremap <buffer> <Leader>wbl r┗
+nnoremap <buffer> <Leader>wxx r╋
+nnoremap <buffer> <Leader>wxt r┻
+nnoremap <buffer> <Leader>wxr r┣
+nnoremap <buffer> <Leader>wxb r┳
+nnoremap <buffer> <Leader>wxl r┫
+" }}}
