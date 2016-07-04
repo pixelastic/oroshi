@@ -30,14 +30,26 @@ class AptGetSearch
     longest_name = longest_by_type(@search_list, :name)
 
     @search_list.each do |result|
-      if installed?(result[:name])
-        name = colorize('✔ ' + result[:name].ljust(longest_name.size), :success)
-      else
-        name = "  #{result[:name]}"
+      package = result[:name]
+
+      unless installed?(package)
+        puts "  #{package}"
+        next
       end
 
-      version = colorize(get_version(result[:name]), :version)
+      current_version = get_current_version(package)
+      version = current_version
+      color = :success
 
+      # Mark element if not latest version
+      max_version = get_max_available_version(package)
+      if current_version != max_version
+        version << " / #{max_version}"
+        color = :outdated
+      end
+
+      version = colorize(current_version, :version)
+      name = colorize('✔ ' + package.ljust(longest_name.size), color)
       puts "#{name}  #{version}"
     end
   end

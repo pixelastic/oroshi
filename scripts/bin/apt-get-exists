@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require_relative '../etc/apt-get-helper/apt-get-helper'
-# Check if a package is installed
 
+# Check if a package is installed
 class AptGetExists
   include AptGetHelper
 
@@ -10,9 +10,8 @@ class AptGetExists
   end
 
   def run
-    exit 0 if is_installed? @package
+    exit 0 if installed? @package
     exit 1
   end
 end
-
-AptGetExists.new(*ARGV).run()
+AptGetExists.new(*ARGV).run

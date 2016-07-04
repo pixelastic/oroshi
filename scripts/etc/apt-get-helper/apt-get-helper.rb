@@ -1,20 +1,12 @@
+# Shared module to access information about installed packages
 module AptGetHelper
-  # TODO: installed? retourne true même si le package a été désinstallé
   @@colors = {
     error: 160,
     package: 141,
     version: 241,
+    outdated: 185,
     success: 35
   }
-
-  # Loading all information on startup
-  @@installed_packages = {}
-  `dpkg -l | awk '{print $1,$2,$3}'`.split("\n").each do |package|
-    type, name, version = package.split(' ')
-    # Keep only packages marked as installed
-    next unless type == 'ii'
-    @@installed_packages[name] = version
-  end
 
   def colorize(text, color)
     color = '%03d' % @@colors[color]
@@ -23,20 +15,29 @@ module AptGetHelper
 
   def longest_by_type(list, type)
     ordered = list.map { |obj| obj[type] }.group_by(&:size)
-    return nil if ordered.size == 0
+    return nil if ordered.empty?
     ordered.max.last[0]
   end
 
   def installed?(package)
-    @@installed_packages.key?(package)
+    !get_current_version(package).nil?
   end
 
   def install(package)
     exec "sudo apt-get install -y #{package}"
   end
 
-  def get_version(package)
-    return nil unless installed? package
-    @@installed_packages[package]
+  # Returns the current (installed) version of the package
+  def get_current_version(package)
+    raw = `apt-cache policy #{package} | grep 'Installed'`.strip
+    version = raw.gsub('Installed: ', '')
+    return nil if version == '(none)'
+    version
+  end
+
+  # Returns the max available version
+  def get_max_available_version(package)
+    raw = `apt-cache policy #{package} | grep 'Candidate'`.strip
+    raw.gsub('Candidate: ', '')
   end
 end
