@@ -18,8 +18,8 @@ path=(
   ~/.oroshi/scripts/bin/local/$hostname
   ~/.oroshi/private/scripts/bin/local/$hostname
   $HOME/.rvm/bin
-  $path
   ~/local/bin
+  $path
   ~/.local/bin
 )
 typeset -U path
