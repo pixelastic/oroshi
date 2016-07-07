@@ -1,6 +1,3 @@
-require 'shellwords'
-require 'English'
-
 # Helper methods used in the `docker-` scripts
 module DockerHelper
   @@colors = {
@@ -19,7 +16,7 @@ module DockerHelper
   end
 
   def image_color(image)
-    color_symbol = ('image_' + image.gsub('-', '_')).to_sym
+    color_symbol = ('image_' + image.tr('-', '_')).to_sym
     return @@colors[color_symbol] if @@colors[color_symbol]
     @@colors[:image]
   end
@@ -31,7 +28,7 @@ module DockerHelper
 
   def longest_by_type(list, type)
     ordered = list.map { |obj| obj[type] }.group_by(&:size)
-    return nil if ordered.size == 0
+    return nil if ordered.empty?
     ordered.max.last[0]
   end
 end

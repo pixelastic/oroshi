@@ -77,4 +77,3 @@ class DockerContainerList
   end
 end
 DockerContainerList.new(*ARGV).run
-
