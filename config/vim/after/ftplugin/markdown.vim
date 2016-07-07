@@ -14,6 +14,9 @@ vnoremap <buffer> _ <Esc>mzg`>a_<Esc>g`<i_<Esc>`zl
 " **Bold**
 vnoremap <buffer> * <Esc>mzg`>a**<Esc>g`<i**<Esc>`zl
 " }}}
+" Linters {{{
+let b:syntastic_checkers = ['alex', 'mdl']
+" }}}
 " Folding {{{
 function! MarkdownLevel()
   let currentLine = getline(v:lnum)
