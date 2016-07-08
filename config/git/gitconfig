@@ -5,6 +5,7 @@
   download = clone --depth=1
   root = !pwd
   tabula-rasa = !git reset --hard && git clean -fd
+  resurect = resurrect
 [color]
   ui = true
 [color "diff"]
