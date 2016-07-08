@@ -1,0 +1,23 @@
+{
+  "rules": {
+    "common-misspellings": true,
+    "editorconfig": true,
+    "write-good": {
+      "passive": false
+    },
+    "alex": {
+      "allow": [
+        "actors-actresses",
+        "actor-actress",
+        "bigger",
+        "oral",
+        "crash",
+        "desire",
+        "harder",
+        "hook",
+        "host-hostess",
+        "nuts"
+      ]
+    }
+  }
+}

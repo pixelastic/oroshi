@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+ln -fs ~/.oroshi/config/textlint/textlintrc.json ~/.textlintrc

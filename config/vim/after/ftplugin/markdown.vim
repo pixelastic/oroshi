@@ -15,7 +15,7 @@ vnoremap <buffer> _ <Esc>mzg`>a_<Esc>g`<i_<Esc>`zl
 vnoremap <buffer> * <Esc>mzg`>a**<Esc>g`<i**<Esc>`zl
 " }}}
 " Linters {{{
-let b:syntastic_checkers = ['alex', 'mdl']
+let b:syntastic_checkers = ['textlint']
 " }}}
 " Folding {{{
 function! MarkdownLevel()
@@ -24,10 +24,10 @@ function! MarkdownLevel()
   let headerLevel = len(headerMarker)
 
   if headerLevel > 0
-    return ">".headerLevel
+    return '>'.headerLevel
   endif
 
-  return "="
+  return '='
 endfunction
 setlocal foldexpr=MarkdownLevel()  
 setlocal foldmethod=expr  
@@ -56,33 +56,43 @@ vnoremap <buffer> ]] "zc[]()<Esc>hhh"zpll"*p
 inoremap <silent> <buffer> <F4> <Esc>:call MarkdownBeautify()<CR>
 nnoremap <silent> <buffer> <F4> :call MarkdownBeautify()<CR>
 function! MarkdownBeautify() 
-  let linenr=line('.')
-  " Convert links into references
-  silent! %! formd -r
-  silent! %s///e
   " Remove bad chars after copy-paste
   silent! %s/’/'/e
   silent! %s/‘/'/e
   silent! %s/“/"/e
   silent! %s/”/"/e
-  " Fix common typos/errors
-  silent! %s/\<requete/requête/e
-  silent! %s/\<plutot\>/plutôt/e
-  silent! %s/\<fenetre/fenêtre/e
-  silent! %s/\<interessant/intéressant/e
-  silent! %s/\<accelerer\>/accélérer/e
-  silent! %s/\<interet/intérêt/e
-  silent! %s/\<entete/entête/e
-  silent! %s/\<tres\>/très/e
-  silent! %s/\<trés\>/très/e
-  silent! %s/\<etre\>/être/e
-  silent! %s/\<coute\>/coûte/e
-  " English common errors
-  silent! %s/\<accross\>/across/e
+
+  " Textlint
+  let thisFile = shellescape(expand('%:p'))
+  let tmpFile = '/tmp/vim-textlint-markdown.md'
+  " textlint --fix changes the file in place. So we copy the content into a tmp
+  " file, fix it, and then output the fixed file
+  let command = '%!> ' . tmpFile .
+        \' && textlint --fix ' . tmpFile . ' &>/dev/null' .
+        \' && cat ' . tmpFile
+  execute command
+
   " Remove trailing spaces
 	call RemoveTrailingSpaces()
 
-  execute 'normal '.linenr.'gg'
+  " Convert links into references
+  silent! %! formd -r
+
+
+
+  " " Fix common typos/errors
+  " silent! %s/\<requete/requête/e
+  " silent! %s/\<plutot\>/plutôt/e
+  " silent! %s/\<fenetre/fenêtre/e
+  " silent! %s/\<interessant/intéressant/e
+  " silent! %s/\<accelerer\>/accélérer/e
+  " silent! %s/\<interet/intérêt/e
+  " silent! %s/\<entete/entête/e
+  " silent! %s/\<tres\>/très/e
+  " silent! %s/\<trés\>/très/e
+  " silent! %s/\<etre\>/être/e
+  " silent! %s/\<coute\>/coûte/e
+
 endfunction
 " }}}
 " Spellchecking {{{
