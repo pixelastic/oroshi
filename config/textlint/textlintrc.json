@@ -7,6 +7,7 @@
     },
     "alex": {
       "allow": [
+        "color",
         "actors-actresses",
         "actor-actress",
         "bigger",
