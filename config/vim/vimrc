@@ -118,22 +118,24 @@ colorscheme oroshi
 " Coloring current line
 set cursorline
 " Reloading the colorscheme
-function! ReloadColorscheme(scheme)
+function! ReloadColorScheme(scheme)
 	silent! mkview!
 	" Reloading colorscheme
-	" syn off
 	call rainbow_parentheses#toggle()
 	execute 'colorscheme '.a:scheme
 	call rainbow_parentheses#toggle()
-	" syn on
 	silent! loadview
 endfunction
-" Switching between light and dark themes with F2 and Ctrl+F2
-" Note : O1;5Q stands for Ctrl+F2 as <C-F2> does not seem to work
-nnoremap <silent> <F2> :call ReloadColorscheme('oroshi')<CR>
-inoremap <silent> <F2> <Esc>:call ReloadColorscheme('oroshi')<CR>li
-nnoremap <silent> O1;5Q :call ReloadColorscheme('summerfruit')<CR>
-inoremap <silent> O1;5Q <Esc>:call ReloadColorscheme('summerfruit')<CR>li
+" Switching between light and dark themes with F2
+function! ToggleColorScheme()
+  if g:colors_name ==# 'oroshi'
+    call ReloadColorScheme('summerfruit')
+    return
+  endif
+  call ReloadColorScheme('oroshi')
+endfunction
+nnoremap <silent> <F2> :call ToggleColorScheme()<CR>
+inoremap <silent> <F2> <Esc>:call ToggleColorScheme()<CR>li
 " Display the current highlight group of the word under cursor
 function! Debugcolor()
   let synstack = synstack(line('.'), col('.'))
