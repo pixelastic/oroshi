@@ -1,27 +1,34 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env ruby
+require 'shellwords'
 
-local input=$1
-local dirname=$(dirname $input)
-local basename=${input:t:r}
-local extension=${input:e}
-local output=$dirname/${basename}.mp3
+# Convert wav file to mp3
+class Wav2Mp3
+  def initialize(*args)
+    # Usage explanation if no args
+    if args.empty?
+      puts 'Usage :'
+      puts '$ wav2mp3 input.wav [input2.wav]'
+      return
+    end
 
-if [[ $input = '' ]]; then
-  echo "You must pass a file as input"
-  exit
-fi
+    @input = args.reject do |file|
+      next true if File.extname(file) != '.wav'
+      next true unless File.exist?(file)
+      false
+    end
+  end
 
-if [[ $extension != 'wav' ]]; then
-  echo "Input file must be a .wav";
-  exit;
-fi
+  def run
+    @input.each do |file|
+      file = File.expand_path(file)
+      dirname = File.dirname(file)
+      extname = File.extname(file)
+      basename = File.basename(file, extname)
+      newname = File.join(dirname, basename + '.mp3')
+      puts "Converting #{basename} to mp3"
+      `lame -h -b 192 #{file.shellescape} #{newname.shellescape}`
+    end
+  end
+end
 
-function convertUsingLame() {
-  lame -h -b 192 $input $output
-}
-function convertUsingFfmpeg() {
-  echo "Lame convert failed, testing ffmpeg"
-  ffmpeg -i $input $output
-}
-
-convertUsingLame || convertUsingFfmpeg
+Wav2Mp3.new(*ARGV).run
