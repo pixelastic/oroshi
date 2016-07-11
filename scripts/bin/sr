@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
-# Search and replace content in files
 
+# Search and replace content in files
 class SearchReplace
   def initialize(*args)
     if args.length < 3
-      puts "Usage:"
+      puts 'Usage:'
       puts "$ sr 'search' 'replace' ./files/to/match"
       exit 1
     end
@@ -16,14 +16,14 @@ class SearchReplace
 
   def escape_sed(string)
     string
-          .gsub('/', '\/')
-          .gsub("'", "\'")
+      .gsub('/', '\/')
+      .tr("'", "\'")
   end
 
   def run
     search = escape_sed(@search)
     replace = escape_sed(@replace)
-    pattern = "'s/#{search}/#{replace}/'"
+    pattern = "'s/#{search}/#{replace}/g'"
 
     options = ['-i', pattern]
     options << '-n' if @is_dry_run

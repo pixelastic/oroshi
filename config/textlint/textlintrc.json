@@ -7,17 +7,21 @@
     },
     "alex": {
       "allow": [
-        "color",
         "actors-actresses",
+        "fear",
         "actor-actress",
+        "attack",
         "bigger",
-        "oral",
+        "color",
         "crash",
         "desire",
         "harder",
         "hook",
         "host-hostess",
+        "kill",
+        "killed",
         "nuts",
+        "oral",
         "wtf"
       ]
     }
