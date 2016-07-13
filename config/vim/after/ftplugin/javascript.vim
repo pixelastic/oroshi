@@ -61,7 +61,25 @@ endif
 inoremap <silent> <buffer> <F4> <Esc>:call JavascriptBeautify()<CR>
 nnoremap <silent> <buffer> <F4> :call JavascriptBeautify()<CR>
 function! JavascriptBeautify() 
-	call RemoveTrailingSpaces()
+  " We save the current line, to be able to jump to it later
+  let linenr=line('.')
+  " The processing can take some time, so we display what is going on
+  echo '  Eslint auto-fix...'
+  " eslint --fix changes the file in place. So we copy the content into a tmp
+  " file, fix it, and then output the fixed file
+  let thisFile = shellescape(expand('%:p'))
+  let tmpFile = thisFile . '.tmp'
+  let eslint = StrTrim(system('npm-which eslint'))
+  let command = '%!> ' . tmpFile .
+        \' && ' . eslint . ' --fix ' . tmpFile . ' &>/dev/null' .
+        \' && cat ' . tmpFile
+  silent execute command
+  " We remove the temp file
+  silent execute '!rm ' . tmpFile
+  " We cleanup he screen
+  redraw
+  echo ''
+  execute 'normal '.linenr.'gg'
 endfunction
 " }}}
 " Keybindings {{{
