@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+if [[ $1 == '-h' ]]; then
+  echo "Usage:"
+  echo "pngunalpha ./input.png {color}"
+  echo ""
+  echo "Takes a transparent png as input"
+  echo "Will remove transparency by replacing it with specified color"
+  echo "New files will be suffixed with _flatten"
+  exit 1
+fi
+
+local input=$1
+local color=$2
+if [[ $color == '' ]]; then
+  color='white'
+fi
+
+convert $input -background $color -alpha remove ${input:a:r}_flatten.png
+

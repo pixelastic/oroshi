@@ -11,5 +11,3 @@ fi
 for file in $@; do
   convert ${file:a} ${file:a:r}.jpg
 done
-
-
