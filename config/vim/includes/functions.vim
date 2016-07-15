@@ -50,7 +50,6 @@ function! StrDebug(str) " {{{
   echom r
 endfunction " }}}
 
-
 " String methods
 function! StrTrim(txt) " {{{
   " Trim a string by removing starting and trailing whitespaces
@@ -128,8 +127,6 @@ function! ShellEscapeForDoubleQuotes(filepath) " {{{
   return substitute(escape(a:filepath, '"'), "'", "''", 'g')
 endfunction
 " }}}
-
-
 
 " Commands
 function! RemoveTrailingSpaces() " {{{
@@ -257,21 +254,3 @@ function! FixEpub() " {{{
   nohl
   normal `z
 endfunction " }}}
-
-function! OpenUrlInBrowser(url) " {{{
-  " No url given
-  if a:url==""
-    return 0
-  endif
-  let url = shellescape(a:url)
-  " Opening in chromium and redrawing vim screen
-  silent execute ':!gui chromium-browser ' . url
-  redraw!
-endfunction
-command! -nargs=1 OpenUrlInBrowser call OpenUrlInBrowser(<q-args>)
-" }}}
-function! GetUrlUnderCursor() " {{{
-  return escape(matchstr(getline("."),"http[^ [\\]()]*"), "#?&;|%")
-endfunction
-command! GetUrlUnderCursor call GetUrlUnderCursor()
-" }}}

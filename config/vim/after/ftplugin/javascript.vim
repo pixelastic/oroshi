@@ -92,8 +92,6 @@ inoremap <buffer> bfe beforeEach(() => {});ko
 inoremap <buffer> iit it('', () => {<CR>// Given<CR>When<CR>Then<CR><Esc>Vc<BS>});4k2li
 inoremap <buffer> cnt context('', () => {});kllllllli
 inoremap <buffer> dsc describe('', () => {});klllllllli
-" Given When Then
-
 " }}}
 " ES6 {{{
 " Enable JSX syntax highlight in javascript files
