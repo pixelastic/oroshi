@@ -227,7 +227,7 @@ alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/download
 # }}}
 
 # Npm {{{
-alias nRg='npm uninstall -g'
+alias ngR='npm uninstall -g'
 alias nig='npm install --global'
 alias nisd='npm install --save-dev'
 alias nis='npm install --save'
