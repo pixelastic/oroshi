@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+require 'shellwords'
+
+# Extract the part of a video between {start} and {end}
+class VideoSplit
+  def initialize(*args)
+    @input, @from, @to = args
+    if args.size != 3
+      puts 'Usage:'
+      puts "$ video-split ./video.mp4 '00:10:00' '00:20:00'"
+      exit 0
+    end
+
+    @input = @input.shellescape
+    extname = File.extname(@input)
+    basename = File.basename(@input, extname)
+    dirname = File.dirname(@input)
+    @output = File.join(
+      dirname,
+      "#{basename}_#{@from.tr(':', '_')}_#{@to.tr(':', '_')}#{extname}"
+    )
+  end
+
+  def run
+    options = [
+      "-i #{@input.shellescape}",
+      "-ss #{@from}",
+      "-to #{@to}",
+      '-async 1',
+      @output
+    ]
+    system("ffmpeg #{options.join(' ')}")
+  end
+end
+VideoSplit.new(*ARGV).run
