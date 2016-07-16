@@ -65,21 +65,20 @@ function! JavascriptBeautify()
   let linenr=line('.')
   " The processing can take some time, so we display what is going on
   echo '  Eslint auto-fix...'
-  " eslint --fix changes the file in place. So we copy the content into a tmp
-  " file, fix it, and then output the fixed file
-  let thisFile = shellescape(expand('%:p'))
+
+  let thisFile = expand('%:p')
   let tmpFile = thisFile . '.tmp'
   let eslint = StrTrim(system('npm-which eslint'))
-  let command = '%!> ' . tmpFile .
-        \' && ' . eslint . ' --fix ' . tmpFile . ' &>/dev/null' .
-        \' && cat ' . tmpFile
-  silent execute command
-  " We remove the temp file
-  silent execute '!rm ' . tmpFile
-  " We cleanup he screen
-  redraw
-  echo ''
+  " Save current file in tmp file
+  silent! execute 'write' fnameescape(tmpFile)
+  " Fix tmp file
+  silent! call system(eslint . ' --fix ' . shellescape(tmpFile))
+  " Replace buffer with its content
+  silent! execute '%! cat ' . shellescape(tmpFile)
+  " Remove tmp file
+  silent! call system('rm ' . shellescape(tmpFile))
   execute 'normal '.linenr.'gg'
+  echo ''
 endfunction
 " }}}
 " Keybindings {{{
