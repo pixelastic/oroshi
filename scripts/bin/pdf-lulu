@@ -20,7 +20,8 @@ require 'shellwords'
 # - 0.25"
 # - 0.635cm
 # - 18pt
-# So I guessed it means adding a margin of 9pt all around
+# So I guessed it means adding a margin of 9pt all around. I will add 18pt just
+# to be sure
 #
 # I also want the resulting PDF to be of 300 dpi (dots per inch), which means
 # 8.75" x 300dpi = 2625px
@@ -110,7 +111,7 @@ class PdfLulu
   # Note: pdfcrop seems unreliable and can mess up the file often. It is better
   # to it after cleaning the file but before resize it
   def add_margins(input, output)
-    `pdfcrop --margins 9 #{input.shellescape} #{output.shellescape}`
+    `pdfcrop --margins 18 #{input.shellescape} #{output.shellescape}`
   end
 
   def resize_and_set_black_and_white(input, output)
@@ -137,7 +138,7 @@ class PdfLulu
 
   # Convert the input pdf to one that can be used by lulu.com. Namely it:
   # - do not contain the front and back cover
-  # - has a 9pt margin all around
+  # - has a 18pt margin all around
   # - the inner content (inside the margins) is the size of a US Letter
   # - is 300dpi
   # - has no transparent layers

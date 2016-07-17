@@ -54,12 +54,13 @@ alias vc.='git commit-current'
 alias vcp='git cherry-pick'
 # }}}
 # working [d]irectory {{{
-alias vdc='git-directory-create'
 alias vdcl='git tabula-rasa'
+alias vdc='git-directory-create'
 alias vde='vim $(git root)/.git/config'
 alias vdl='git status --short'
-alias vdr='cd $(git root)'
-alias vdrr='vdr && cd .. && vdr'
+alias vdrr='vsm? && vdr && cd .. && vdr'
+alias vdr='vd? && cd "$(git root)"'
+alias vd?='git-is-repository'
 # }}}
 # [f]iles {{{
 alias vfR='git rm -r'
