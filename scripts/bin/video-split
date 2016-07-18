@@ -2,33 +2,40 @@
 require 'shellwords'
 
 # Extract the part of a video between {start} and {end}
+# $ video-split input.mp4 '00:00:10-00:00:15'
+# $ video-split input.mp4 '00:00:10-'
+# $ video-split input.mp4 '-00:00:15'
+# $ video-split input.mp4 '00:00:10-00:00:15' output.mp4
+# $ video-split input.mp4 '00:00:10-' output.mp4
 class VideoSplit
   def initialize(*args)
-    @input, @from, @to = args
-    if args.size != 3
+    @input = args[0]
+
+    if args.size < 2
       puts 'Usage:'
-      puts "$ video-split ./video.mp4 '00:10:00' '00:20:00'"
+      puts "$ video-split ./video.mp4 '00:10:00-00:20:00' {output.mp4}"
       exit 0
     end
 
-    @input = @input.shellescape
-    extname = File.extname(@input)
-    basename = File.basename(@input, extname)
-    dirname = File.dirname(@input)
-    @output = File.join(
-      dirname,
-      "#{basename}_#{@from.tr(':', '_')}_#{@to.tr(':', '_')}#{extname}"
-    )
+    @from, @to = args[1].split('-')
+
+    @output = args[2]
+    if @output.nil?
+      @input = @input.shellescape
+      extname = File.extname(@input)
+      basename = File.basename(@input, extname)
+      @output = "#{basename}_#{@from}_#{@to}#{extname}".tr(':', '_')
+    end
+    dirname = File.expand_path(File.dirname(@input))
+    @output = File.join(dirname, @output)
   end
 
   def run
-    options = [
-      "-i #{@input.shellescape}",
-      "-ss #{@from}",
-      "-to #{@to}",
-      '-async 1',
-      @output
-    ]
+    options = ["-i #{@input.shellescape}"]
+    options << "-ss #{@from}" unless @from.nil?
+    options << "-to #{@to}" unless @to.nil?
+    options << '-async 1'
+    options << @output
     system("ffmpeg #{options.join(' ')}")
   end
 end
