@@ -150,7 +150,10 @@ function getPromptRepoIndicator() {
   if ! git-is-repository; then
     echo ""
   else
-    echo "$(getPromptTag)$(getPromptRemote)$(getPromptBranch)"
+    tag=`getPromptTag`
+    remote=`getPromptRemote`
+    branch=`getPromptBranch`
+    echo "${tag}${remote}${branch}"
   fi
 }
 # }}}
