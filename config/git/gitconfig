@@ -3,7 +3,7 @@
   conflicts = diff --name-only --diff-filter=U
   diff-staged = diff -w --color-words --staged
   download = clone --depth=1
-  root = !pwd
+  root = !git-is-repository && pwd
   tabula-rasa = !git reset --hard && git clean -fd
   resurect = resurrect
 [color]
