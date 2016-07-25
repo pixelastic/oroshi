@@ -25,7 +25,7 @@ class AptGetInstall
       if is_just_installed
         puts "✔ #{package} installed"
       else
-        version = get_version(package)
+        version = get_current_version(package)
         puts "✘ #{package} is already installed (v#{version})"
       end
     end
