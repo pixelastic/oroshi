@@ -3,7 +3,7 @@
 " disable English-only settings when I know I'm in a french directory
 let thisFile = expand('%:p')
 let isEnglish=1
-if thisFile =~# '/roleplay/scenarios/'
+if thisFile =~# 'roleplay'
   let isEnglish=0
 endif
 
