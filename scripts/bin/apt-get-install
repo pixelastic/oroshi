@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require_relative '../etc/apt-get-helper/apt-get-helper'
 
-# Install specific package
+# Install specific packages
 class AptGetInstall
   include AptGetHelper
 
@@ -10,24 +10,15 @@ class AptGetInstall
   end
 
   def run
-    checklist = {}
     @packages.each do |package|
-      if installed? package
-        checklist[package] = false
+      if installed?(package)
+        version = get_current_version(package)
+        puts "✘ #{package} is already installed (v#{version})"
         next
       end
 
       install package
-      checklist[package] = true
-    end
-
-    checklist.each do |package, is_just_installed|
-      if is_just_installed
-        puts "✔ #{package} installed"
-      else
-        version = get_current_version(package)
-        puts "✘ #{package} is already installed (v#{version})"
-      end
+      puts "✔ #{package} installed"
     end
   end
 end

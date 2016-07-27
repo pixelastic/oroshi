@@ -9,7 +9,7 @@ module AptGetHelper
   }
 
   def colorize(text, color)
-    color = '%03d' % @@colors[color]
+    color = format('%03d', @@colors[color])
     "[38;5;#{color}m#{text}[00m"
   end
 
@@ -30,6 +30,7 @@ module AptGetHelper
   # Returns the current (installed) version of the package
   def get_current_version(package)
     raw = `apt-cache policy #{package} | grep 'Installed'`.strip
+    return nil if raw == ''
     version = raw.gsub('Installed: ', '')
     return nil if version == '(none)'
     version
