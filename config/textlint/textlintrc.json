@@ -8,7 +8,6 @@
     "alex": {
       "allow": [
         "actors-actresses",
-        "fear",
         "actor-actress",
         "attack",
         "bigger",
@@ -16,11 +15,13 @@
         "crash",
         "desire",
         "execution",
+        "fear",
         "harder",
         "hook",
         "host-hostess",
         "killed",
         "kill",
+        "middleman-middlewoman",
         "nuts",
         "oral",
         "shooting",
