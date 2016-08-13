@@ -2,10 +2,8 @@
 " I write most of my markdown in english, and sometimes in french. I will
 " disable English-only settings when I know I'm in a french directory
 let thisFile = expand('%:p')
-let isEnglish=1
-if thisFile =~# 'roleplay'
-  let isEnglish=0
-endif
+let isRoleplay = thisFile =~# 'roleplay'
+let isBooks = thisFile =~# 'books'
 
 " Styling {{{
 " Add headers with ,(1|2|3|4|5)
@@ -22,7 +20,7 @@ vnoremap <buffer> _ <Esc>mzg`>a_<Esc>g`<i_<Esc>`zl
 vnoremap <buffer> * <Esc>mzg`>a**<Esc>g`<i**<Esc>`zl
 " }}}
 " Linters {{{
-if isEnglish ==# 1
+if or(isRoleplay, isBooks) ==# 0
   let b:syntastic_checkers = ['textlint']
 endif
 " }}}
@@ -106,7 +104,7 @@ endfunction
 " }}}
 " Spellchecking {{{
 setlocal spelllang=en
-if isEnglish ==# 0
+if isRoleplay ==# 1
   setlocal spelllang=fr
 endif
 " Change language and/or toggle
