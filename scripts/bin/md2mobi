@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 require_relative '../etc/ebook-helper/ebook_helper.rb'
 
-# Converts Markdown files to epub
-class Md2Epub
+# Converts Markdown files to mobi
+class Md2Mobi
   include EbookHelper
   def initialize(*inputs)
     @inputs = clean_inputs(inputs, 'markdown')
@@ -10,8 +10,8 @@ class Md2Epub
 
   def run
     @inputs.each do |input|
-      convert_from_markdown(input, 'epub')
+      convert_from_markdown(input, 'mobi')
     end
   end
 end
-Md2Epub.new(*ARGV).run
+Md2Mobi.new(*ARGV).run
