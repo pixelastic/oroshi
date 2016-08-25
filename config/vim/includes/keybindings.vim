@@ -223,6 +223,15 @@ inoremap <silent> <C-D> <Esc>:call SaveAndCloseFile()<CR>
 nnoremap <C-A> GVgg
 vnoremap <C-A> <Esc>GVgg
 " }}}
+" FILE TYPES {{{
+nnoremap <silent> <leader>fJ :set ft=javascript<CR>
+nnoremap <silent> <leader>fb :set ft=bash<CR>
+nnoremap <silent> <leader>fj :set ft=json<CR>
+nnoremap <silent> <leader>fm :set ft=markdown<CR>
+nnoremap <silent> <leader>fr :set ft=ruby<CR>
+nnoremap <silent> <leader>ft :set ft=text<CR>
+nnoremap <silent> <leader>fz :set ft=zsh<CR>
+" }}}
 " YANKS {{{
 vnoremap p "_dP
 vnoremap P "_dP
