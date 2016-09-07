@@ -225,7 +225,7 @@ vnoremap <C-A> <Esc>GVgg
 " }}}
 " FILE TYPES {{{
 nnoremap <silent> <leader>fJ :set ft=javascript<CR>
-nnoremap <silent> <leader>fb :set ft=bash<CR>
+nnoremap <silent> <leader>fs :set ft=sh<CR>
 nnoremap <silent> <leader>fj :set ft=json<CR>
 nnoremap <silent> <leader>fm :set ft=markdown<CR>
 nnoremap <silent> <leader>fr :set ft=ruby<CR>
