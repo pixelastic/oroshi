@@ -66,7 +66,7 @@ setopt LIST_ROWS_FIRST
 
 # Fuzzy finding completion on ** {{{
 if [[ -r ~/.fzf.zsh ]]; then
-	source ~/.fzf.zsh
+  source ~/.fzf.zsh
   export FZF_DEFAULT_COMMAND='ag -l -g ""'
 fi
 # }}}
