@@ -1,51 +1,9 @@
 #!/usr/bin/env bash
 
-# Preliminary tests
-if [[ `which make` = '' ]]; then
-  echo "make is not installed"
-  exit
-fi
-if [ ! -d ~/local/src ]; then
-  echo "~/local/src does not exist"
-  exit
-fi
-if [ ! -d ~/local/etc ]; then
-  echo "~/local/etc does not exist"
-  exit
-fi
-if [ ! -d ~/local/bin ]; then
-  echo "~/local/bin does not exist"
-  exit
-fi
-
-echo "Downloading source from sourceforge"
-cd ~/local/src
-wget -c http://downloads.sourceforge.net/project/zsh/zsh/5.0.0/zsh-5.0.0.tar.gz 
-
-echo "Extracting"
-tar xvzf zsh-5.0.0.tar.gz
-cd zsh-5.0.0
-
-echo "Installing dependencies"
-sudo apt-get install libncurses5-dev
-
-echo "Configuring"
-mkdir -p ~/local/etc/zsh
-./configure --prefix=/home/$USER/local/etc/zsh
-
-echo "Compiling"
-make
-# make check
-make install
-
-echo "Adding symlinks"
-cd ~/local/bin/
-ln -s ../etc/zsh/bin/zsh
-
-rm ~/local/src/zsh-5.0.0.tar.gz
+sudo apt-get install zsh;
 
 echo "--------------"
-echo "You should manually edit /etc/passwd to add /home/$USER/local/bin/zsh as your shell"
+echo "You should manually edit /etc/passwd to add /usr/bin/zsh as your shell"
 echo "You should now reboot for the shell change to take effect correctly."
 echo "--------------"
 

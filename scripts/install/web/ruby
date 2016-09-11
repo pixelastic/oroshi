@@ -1,40 +1,15 @@
 #!/usr/bin/env bash
 
-#Installing dependencies
-sudo apt-get install build-essential \
-                     openssl \
-                     libreadline6 \
-                     libreadline6-dev \
-                     curl \
-                     git-core \
-                     zlib1g \
-                     zlib1g-dev \
-                     libssl-dev \
-                     libyaml-dev \
-                     libsqlite3-dev \
-                     sqlite3 \
-                     libxml2-dev \
-                     libxslt-dev \
-                     autoconf \
-                     libc6-dev \
-                     ncurses-dev \
-                     automake \
-                     libtool \
-                     bison \
-                     subversion \
-                     libqtwebkit-dev
-
 # Install rvm
-gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+# This should automatically install all needed Ubuntu dependencies
+gpg --import /home/$USER/.oroshi/private/config/pgp/mpapis.asc
 curl -L https://get.rvm.io | bash -s stable --ruby
 # Don't forget to add the following line in ~/.zshrc
 # [[ -r $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
 source ~/.rvm/scripts/rvm
 
 # Installing Ruby
-rvm install 2.2.2
-rvm install 2.2.2-dev
+rvm install 2.3.1
 
 # Automatic prepending of bundle exec
 gem install rubygems-bundler

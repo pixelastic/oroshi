@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 echo "Installing exfat"
-sudo apt-add-repository ppa:relan/exfat
-sudo apt-get install fuse-exfat
+sudo apt-get install exfat-utils exfat-fuse 
 
 echo "Installing xfs"
 # To format a volume in XFS

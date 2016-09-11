@@ -1,17 +1,4 @@
 #!/usr/bin/env bash
 sudo apt-get install chromium-browser
 
-# Create local dir
-mkdir -p ~/local/src
-cd ~/local/src
-
-# Install depot_tools
-git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
-
-# Install Chromium
-mkdir -p chromium
-cd chromium
-fetch chromium
-cd src && ./build/install-build-deps.sh
-gclient sync
 

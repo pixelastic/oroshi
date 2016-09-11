@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 # Termite needs a custom version of vte available, that exposes some of the
 # internals
 
@@ -23,7 +23,7 @@ make && sudo make install
 echo "Copy libs"
 sudo cp /usr/local/lib/libvte-2.91.a /usr/local/lib/libvte-2.91.la \
 /usr/local/lib/libvte-2.91.so /usr/local/lib/libvte-2.91.so.0 \
-/usr/local/lib/libvte-2.91.so.0.4000.2 /usr/lib
+/usr/local/lib/libvte-2.91.so.0.4400.1 /usr/lib
 
 
 
