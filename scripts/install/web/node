@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
 
-# NVM
-git clone git@github.com:creationix/nvm.git ~/.nvm
-cd ~/.nvm
+# NVM should be already installed through zsh-nvm plugin
+nvm install node

@@ -1,10 +1,10 @@
 # Commands in this file will be executed very last in the zsh init process.
 
 # NVM {{{
-local nvmScript=~/.nvm/nvm.sh
+local nvmScript=~/.oroshi/config/zsh/plugins/zsh-nvm/zsh-nvm.plugin.zsh
 if [[ -r $nvmScript ]]; then
+  export NVM_LAZY_LOAD=true
   source $nvmScript
-	nvm use 4 &>/dev/null
 fi
 # }}}
 
