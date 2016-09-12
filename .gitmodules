@@ -130,7 +130,3 @@
 [submodule "/home/tim/.oroshi/config/vim/bundle/available/SimpylFold"]
   path = config/vim/bundle/available/SimpylFold
   url = git@github.com:tmhedberg/SimpylFold.git
-[submodule "config/zsh/plugins/zsh-nvm"]
-	path = config/zsh/plugins/zsh-nvm
-	url = git@github.com:lukechilds/zsh-nvm.git
-	branch = master
