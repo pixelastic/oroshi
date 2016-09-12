@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
+mkdir -p ~/.cmus/
 ln -fs ~/.oroshi/config/cmus/cmusrc ~/.cmus/rc
 ln -fs ~/.oroshi/config/cmus/oroshi.theme ~/.cmus/oroshi.theme
