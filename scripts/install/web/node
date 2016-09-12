@@ -2,3 +2,6 @@
 
 # NVM should be already installed through zsh-nvm plugin
 nvm install node
+
+npm install -g http-server
+npm install -g gh

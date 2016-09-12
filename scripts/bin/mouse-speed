@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+local device_number=9
+local setting_id=274
+local new_value=$1
+
+if [[ $new_value != '' ]]; then
+  xinput --set-prop $device_number $setting_id $new_value
+  exit 0
+fi
+
+# Display the current mouse speed acceleration
+xinput --list-props $device_number |\
+  grep $setting_id |\
+  awk '{print $6}' |\
+  xargs printf "%.*f\n" 0

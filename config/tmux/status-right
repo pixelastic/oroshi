@@ -43,6 +43,13 @@ if [[ $battery_percent -ne 99 ]]; then
   fi
 fi
 # }}}
+# Mouse speed {{{
+local mouse_speed=''
+mouse_speed=`mouse-speed`
+if [[ $mouse_speed != '3' ]]; then
+  output=" $mouse_speed/10 $output"
+fi
+# }}}
 
 # Currently playing {{{
 local currently_playing=''
