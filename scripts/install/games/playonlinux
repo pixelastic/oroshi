@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+
+# Downloading the source
+cd /tmp
+wget https://www.playonlinux.com/script_files/PlayOnLinux/4.2.10/PlayOnLinux_4.2.10.deb -O playonlinux.deb
+
+# Installing dependencies
+sudo apt-get install wine:i386
+
+# Installing .deb
+sudo dpkg -i ./playonlinux.deb
+sudo apt-get -f install
