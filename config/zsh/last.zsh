@@ -16,7 +16,7 @@ if [[ -r $rvmScript ]]; then
     # a tmux session, so we'll re-source the `rvm` function and manually set the
     # default. We suppress errors for not polluting the display.
     source $rvmScript &>/dev/null
-    rvm use 2.2.5 &>/dev/null
+    rvm use 2.3.1 &>/dev/null
   else
     # We simply source the rvmScript otherwise
     source $rvmScript
