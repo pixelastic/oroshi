@@ -48,6 +48,7 @@ alias -g T="| tail"
 # Typos {{{
 alias mc="mv"
 alias sl="ls"
+alias cta="cat"
 alias trash-restore="restore-trash"
 # }}}
 # Misc {{{
