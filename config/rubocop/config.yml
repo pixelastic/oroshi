@@ -25,7 +25,7 @@ Style/MultilineOperationIndentation:
   Enabled: false
 
 Style/GuardClause:
-  MinBodyLength: 0
+  MinBodyLength: 1
 
 Style/AsciiComments:
   Enabled: false
