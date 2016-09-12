@@ -7,6 +7,8 @@ cd ./tmux
 
 echo "Install dependencies"
 sudo apt-get install libevent-dev
+# For copy/paste
+sudo apt-get install xclip
 
 echo "Configure"
 sh autogen.sh
