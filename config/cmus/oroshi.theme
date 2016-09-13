@@ -13,18 +13,18 @@ set color_win_sel_bg=24
 set color_win_sel_fg=249
 set color_win_sel_attr=bold
 # Selected item, in inactive window
-set color_win_inactive_sel_bg=241
+set color_win_inactive_sel_bg=234
 set color_win_inactive_sel_fg=249
 set color_win_inactive_sel_attr=default
 # Current playing
-set color_win_cur=69
+set color_win_cur=35
 # Current playing and selected
 set color_win_cur_sel_bg=24
 set color_win_cur_sel_fg=136
 set color_win_cur_sel_attr=bold
 # Current playing and selected, in inactive window
-set color_win_inactive_cur_sel_bg=241
-set color_win_inactive_cur_sel_fg=default
+set color_win_inactive_cur_sel_bg=234
+set color_win_inactive_cur_sel_fg=35
 set color_win_inactive_cur_sel_attr=default
 # Browser
 set color_win_dir=35
