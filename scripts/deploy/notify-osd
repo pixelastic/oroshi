@@ -1,5 +1,15 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
+local name=`hostname`
+local config_file=~/.oroshi/private/config/ubuntu/$name/notify-osd/notify-osd.conf
 
-pkill notify-osd
-ln -sf ~/.oroshi/config/ubuntu/15.04/notify-osd/notify-osd.conf ~/.notify-osd
+# No such file
+if [[ ! -r $config_file ]]; then
+  echo "No osd config found for $host"
+  exit 0
+fi
+
+ln -sf $config_file ~/.notify-osd
 notify-send "Notify config updated"
+
+
+# ln -sf ~/.oroshi/config/ubuntu/15.04/notify-osd/notify-osd.conf ~/.notify-osd

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Notification configuration
+sudo add-apt-repository ppa:leolik/leolik
+sudo apt update
+sudo apt upgrade
+sudo apt install libnotify-bin
