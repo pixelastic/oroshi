@@ -269,10 +269,19 @@ inoremap <silent> <F9> <Esc>:set wrap!<CR>li
 " NICETIES {{{
 " Move a line below with _ and up with -, keeping indentation
 " Note : uses vim-unimpaired
-nmap - [e
-vmap - [egv
-nmap _ ]e
-vmap _ ]egv
+" Latest vim has an issue with this and the folding when folding is different
+" from "manual". cf. https://github.com/tpope/vim-unimpaired/issues/96
+" Workaround is to set fold to manual before moving and then reverting it
+function! WorkaroundForMovingLines(command)
+  let foldmethod_backup=&l:foldmethod
+  setlocal foldmethod=manual
+  execute 'normal ' . a:command
+  let &l:foldmethod=foldmethod_backup
+endfunction
+nmap <silent> - :call WorkaroundForMovingLines('[e')<CR>
+vmap <silent> - :call WorkaroundForMovingLines('[egv')<CR>
+nmap <silent> _ :call WorkaroundForMovingLines(']e')<CR>
+vmap <silent> _ :call WorkaroundForMovingLines(']egv')<CR>
 " Swap two words
 nnoremap <C-w> daWf<Space>pB
 nnoremap <C-b> daW2F<Space>pB
