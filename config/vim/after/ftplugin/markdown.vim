@@ -63,6 +63,9 @@ vnoremap <buffer> ]] "zc[]()<Esc>hhh"zpll"*p
 inoremap <silent> <buffer> <F4> <Esc>:call MarkdownBeautify()<CR>
 nnoremap <silent> <buffer> <F4> :call MarkdownBeautify()<CR>
 function! MarkdownBeautify() 
+  " We save the current line, to be able to jump to it later
+  let linenr=line('.')
+
   " Remove bad chars after copy-paste
   silent! %s/’/'/e
   silent! %s/‘/'/e
@@ -85,21 +88,10 @@ function! MarkdownBeautify()
   " Convert links into references
   silent! %! formd -r
 
+  " Get back to initial line
+  execute 'normal '.linenr.'gg'
 
-
-  " " Fix common typos/errors
-  " silent! %s/\<requete/requête/e
-  " silent! %s/\<plutot\>/plutôt/e
-  " silent! %s/\<fenetre/fenêtre/e
-  " silent! %s/\<interessant/intéressant/e
-  " silent! %s/\<accelerer\>/accélérer/e
-  " silent! %s/\<interet/intérêt/e
-  " silent! %s/\<entete/entête/e
-  " silent! %s/\<tres\>/très/e
-  " silent! %s/\<trés\>/très/e
-  " silent! %s/\<etre\>/être/e
-  " silent! %s/\<coute\>/coûte/e
-
+  normal gqp
 endfunction
 " }}}
 " Spellchecking {{{
