@@ -130,3 +130,7 @@
 [submodule "/home/tim/.oroshi/config/vim/bundle/available/SimpylFold"]
   path = config/vim/bundle/available/SimpylFold
   url = git@github.com:tmhedberg/SimpylFold.git
+[submodule "scripts/bin/img"]
+	path = scripts/bin/img
+	url = git@github.com:pixelastic/img.git
+	branch = master
