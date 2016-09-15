@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+if [[ $1 == '-h' ]]; then
+  echo "Usage:"
+  echo "gif2png ./input.gif [./input2.gif]"
+  echo ""
+  echo "Takes GIF files as input and output png of the first frame"
+  exit 1
+fi
+
+for file in $@; do
+  convert "${file:a}[0]" ${file:a:r}.png
+done
