@@ -7,12 +7,6 @@ setlocal softtabstop=2
 setlocal expandtab
 setlocal equalprg=js-beautify\ -f\ -
 " }}}
-" TernJS {{{
-nnoremap <buffer> tr :TernRename<CR>
-nnoremap <buffer> td :TernDef<CR>
-nnoremap <buffer> tt :TernType<CR>
-nnoremap <buffer> tg :TernRefs<CR>
-" }}}
 " Folding {{{
 setlocal foldmethod=syntax
 setlocal foldlevelstart=99
