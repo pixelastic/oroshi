@@ -249,6 +249,9 @@ alias nrt='npm run test'
 alias be='bundle exec'
 alias bi='bundle install'
 # }}}
+# Pip {{{
+alias pi='pip install --user'
+# }}}
 # Appraisal {{{
 alias ai='appraisal install'
 # }}}
