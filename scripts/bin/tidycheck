@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
-require 'fileutils'
 require 'English'
+require 'fileutils'
+require 'open3'
 require 'shellwords'
 # This is a wrapper around tidy, to make it:
 # - Only display the actual errors (not fixing anything)
@@ -15,7 +16,10 @@ class Tidy
       puts "Unable to find #{@tidycheckrc}"
       exit
     end
+  end
 
+  def run_command
+    @errors = []
     options = [
       "-config #{@tidycheckrc}",
       '-e',
@@ -24,13 +28,20 @@ class Tidy
       @input.shellescape
     ]
 
-    @stderr = `tidy #{options.join(' ')}`
-    @exitcode = $CHILD_STATUS.exitstatus
+    command = "tidy #{options.join(' ')}"
+
+    _, output, status = Open3.capture3(command)
+
+    return if status.success?
+
+    @errors = filtered_errors(output)
   end
 
+
   # Remove useless errors from the list
-  def get_errors(errors)
-    list = errors.split("\n")
+  def filtered_errors(errors)
+    list = errors.split("\n").uniq
+
     list.reject! do |line|
       # See syntastic/syntax_checkers/html/tidy.vim for a more complete list
       # of errors that are safe to ignore
@@ -40,23 +51,30 @@ class Tidy
       next true if line.include?('proprietary attribute "ng-')
       next true if line.include?('proprietary attribute "data-')
 
+      # Allowing images without `alt`
+      next true if line.include?('<img> lacks "alt" attribute')
+      # Allowing non-escaped "&" in urls
+      next true if line.include?('unescaped & or unknown entity')
+      next true if line.include?('<a> escaping malformed URI reference')
+      # Allowing any attribute on iframes
+      next true if line.include?('<iframe> attribute')
+      # Allowing SVG attributes
+      next true if line.include?('<svg> proprietary attribute')
+
       # Presentation classes
       next true if line =~ /trimming empty/
     end
 
-    return nil if list.empty?
-
-    list.join("\n")
+    return list
   end
 
   def run
+    run_command
+
     # Everything went well
-    exit 0 if @exitcode == 0
+    exit 0 if @errors.empty?
 
-    errors = get_errors(@stderr)
-    exit 0 if errors.nil?
-
-    puts errors
+    puts @errors
   end
 end
 Tidy.new(*ARGV).run
