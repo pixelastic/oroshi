@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 
-echo "Downloading binary"
-wget https://yt-dl.org/downloads/2015.05.04/youtube-dl \
+# Youtube-dl
+wget https://yt-dl.org/downloads/latest/youtube-dl \
 	-O ~/local/bin/youtube-dl
-
-echo "Make it executable"
 chmod +x ~/local/bin/youtube-dl
-
-echo "Update the script"
 ~/local/bin/youtube-dl -U
+
+# Youtube upload
+pip install --upgrade google-api-python-client progressbar2
+cd ~/local/src
+wget https://github.com/tokland/youtube-upload/archive/master.zip
+unzip master.zip
+rm master.zip
+cd youtube-upload-master
+sudo python setup.py install
 
