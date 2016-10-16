@@ -229,21 +229,22 @@ alias recess="recess --config ~/.recessrc"
 alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test500.zip'
 # }}}
 
-# Npm {{{
-alias ngR='npm uninstall -g'
-alias nig='npm install --global'
-alias nisd='npm install --save-dev'
-alias nis='npm install --save'
-alias ni='npm install'
-alias nrb='npm run build'
-alias nrc='npm run consolidate'
-alias nrd='npm run deploy 2>/dev/null || npm run gh-pages'
-alias nrgh='npm run gh-pages'
-alias nrl='npm run lint'
-alias nrp='npm run push'
-alias nrs='npm run serve 2>/dev/null || npm run dev'
-alias nrtw='npm run test:watch'
-alias nrt='npm run test'
+# Npm / Yarn {{{
+alias ngR='yarn global remove'
+alias nig='yarn global install'
+alias nisd='yarn add --dev'
+alias nis='yarn install'
+alias niR='yarn remove'
+alias ni='yarn'
+alias nrb='yarn run build'
+alias nrc='yarn run consolidate'
+alias nrd='yarn run deploy 2>/dev/null || yarn run gh-pages'
+alias nrgh='yarn run gh-pages'
+alias nrl='yarn run lint'
+alias nrp='yarn run push'
+alias nrs='yarn run serve 2>/dev/null || yarn run dev'
+alias nrtw='yarn run test:watch'
+alias nrt='yarn run test'
 # }}}
 # Bundler {{{
 alias be='bundle exec'

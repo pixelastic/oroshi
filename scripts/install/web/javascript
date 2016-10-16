@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+echo "Installing yarn to replace npm"
+npm install -g yarn
+
 echo "Installing jshint"
 npm install -g jshint
 
