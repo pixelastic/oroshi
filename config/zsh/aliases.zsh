@@ -10,6 +10,16 @@ setopt AUTO_CD
 unsetopt NOMATCH
 # }}}
 
+# Run scripts from the git root
+function git-root-run() {
+  local here=`pwd`
+  local git_root=`git root`
+  local run_command=$@
+
+  cd $git_root && eval $run_command
+  cd $here
+}
+
 # Basic commands {{{
 alias ag='ag --context=2 --smart-case --pager="less -R"'
 alias cp='cp -rv'
@@ -236,15 +246,14 @@ alias nisd='yarn add --dev'
 alias nis='yarn install'
 alias niR='yarn remove'
 alias ni='yarn'
-alias nrb='yarn run build'
-alias nrc='yarn run consolidate'
-alias nrd='yarn run deploy 2>/dev/null || yarn run gh-pages'
-alias nrgh='yarn run gh-pages'
-alias nrl='yarn run lint'
-alias nrp='yarn run push'
-alias nrs='yarn run serve 2>/dev/null || yarn run dev'
-alias nrtw='yarn run test:watch'
-alias nrt='yarn run test'
+alias nrb='git-root-run yarn run build'
+alias nrc='git-root-run yarn run consolidate'
+alias nrd='git-root-run yarn run deploy'
+alias nrl='git-root-run yarn run lint'
+alias nrp='git-root-run yarn run push'
+alias nrs='git-root-run yarn run serve'
+alias nrtw='git-root-run yarn run test:watch'
+alias nrt='git-root-run yarn run test'
 # }}}
 # Bundler {{{
 alias be='bundle exec'
