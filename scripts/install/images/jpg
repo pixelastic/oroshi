@@ -4,6 +4,7 @@
 sudo apt-get install jpegoptim
 
 # Installing dssim
+sudo apt-get install libpng16-dev
 cd ~/local/src
 git clone git@github.com:pornel/dssim.git
 cd ./dssim
