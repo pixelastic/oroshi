@@ -134,3 +134,7 @@
 	path = scripts/bin/img
 	url = git@github.com:pixelastic/img.git
 	branch = master
+[submodule "config/vim/bundle/available/vim-pug"]
+	path = config/vim/bundle/available/vim-pug
+	url = git://github.com/digitaltoad/vim-pug.git
+	branch = master
