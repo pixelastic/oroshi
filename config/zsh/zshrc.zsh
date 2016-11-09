@@ -16,6 +16,7 @@ path=(
   ~/.oroshi/scripts/bin
   ~/.oroshi/scripts/bin/vit/bin
   ~/.oroshi/scripts/bin/img/bin
+  ~/.oroshi/scripts/bin/pdf/bin
   ~/.oroshi/private/scripts/bin
   ~/.oroshi/scripts/bin/local/$hostname
   ~/.oroshi/private/scripts/bin/local/$hostname
