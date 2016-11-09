@@ -138,3 +138,7 @@
 	path = config/vim/bundle/available/vim-pug
 	url = git://github.com/digitaltoad/vim-pug.git
 	branch = master
+[submodule "scripts/bin/pdf"]
+	path = scripts/bin/pdf
+	url = git@github.com:pixelastic/pdf.git
+	branch = master
