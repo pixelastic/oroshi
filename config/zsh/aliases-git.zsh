@@ -147,3 +147,9 @@ alias vsmiu='git commit-img-submodule'
 alias vsmci='git commit-img-submodule'
 alias vsmic='git commit-img-submodule'
 # }}}
+# [pd]it [s]ub-[m]odule {{{
+alias vsmupd='git commit-vit-submodule'
+alias vsmpdu='git commit-vit-submodule'
+alias vsmcpd='git commit-vit-submodule'
+alias vsmpdc='git commit-vit-submodule'
+# }}}
