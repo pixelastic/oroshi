@@ -99,7 +99,6 @@ alias gfv="get_flash_videos -y"
 # GUI apps {{{
 alias ccsm='gui ccsm'
 alias charles='gui charles'
-alias chrome="gui chromium-browser"
 alias disk-utility='gui palimpsest'
 alias ebook-viewer='gui ebook-viewer'
 alias eog='gui eog'
