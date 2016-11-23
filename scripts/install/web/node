@@ -3,5 +3,10 @@
 git clone git@github.com:creationix/nvm.git ~/.nvm
 source ~/.nvm/nvm.sh
 
-npm install -g http-server
 npm install -g gh
+
+# Installing easy server with live-reload
+cd ~/local/src
+git clone https://github.com/tapio/live-server
+cd ./live-server
+npm install -g
