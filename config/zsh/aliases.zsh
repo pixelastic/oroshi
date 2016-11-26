@@ -270,6 +270,13 @@ alias yrs='git-root-run yarn run serve'
 alias yrtw='git-root-run yarn run test:watch'
 alias yrt='git-root-run yarn run test'
 # }}}
+# Nvm {{{
+alias nvu='nvm use'
+alias nvud='nvm use default'
+alias nvl='nvm list'
+alias nvd='nvm version default'
+alias nvc='nvm current'
+# }}}
 # Bundler {{{
 alias be='bundle exec'
 alias bi='bundle install'

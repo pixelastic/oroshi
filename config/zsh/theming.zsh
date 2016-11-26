@@ -27,6 +27,9 @@ promptColorDefault=(
   pathNotWritable       "160"
   lastCommandFailed     "160"
   rubyVersion           "203"
+  nodeVersion                   "028"
+  nodeVersionSpecificDisabled   "203"
+  nodeVersionSpecificEnabled    "241"
 
 
   tag                   "241"

@@ -1,10 +1,7 @@
 # Commands in this file will be executed very last in the zsh init process.
 
 # NVM {{{
-export NVM_DIR="$HOME/.nvm"
-if [[ -s "$NVM_DIR/nvm.sh" ]]; then
-  source "$NVM_DIR/nvm.sh"
-fi
+source $zshConfigDir/nvm.zsh
 # }}}
 
 # RVM need to be loaded at the very last

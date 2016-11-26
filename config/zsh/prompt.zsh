@@ -8,7 +8,7 @@ promptinit
 PROMPT='${promptUsername}$(getPromptExitCode)${promptHostname}:$(getPromptPath) $(getPromptHash) '
 RPROMPT=''
 function get_RPROMPT() {
-echo "$(getRubyIndicator)$(getPromptRepoIndicator)"
+  echo "$(getRubyIndicator)$(getNodeIndicator)$(getPromptRepoIndicator)"
 }
 
 # Asynchronous right prompt {{{
@@ -310,6 +310,38 @@ function getRubyIndicator() {
     return
   fi
   echo $(colorize "r$currentVersion " 'rubyVersion')
+}
+# }}}
+
+# Node {{{
+function getNodeIndicator() {
+  # No nvm
+  if ! which nvm &>/dev/null; then
+    return
+  fi
+
+  defaultVersion="$(nvm version default)"
+  currentVersion="$(nvm current)"
+  expectedVersion="$(cat `nvm_find_nvmrc`)"
+  displayedVersion=''
+
+  # Specific version is defined in this dir
+  if [[ $expectedVersion != '' && $expectedVersion != $defaultVersion ]]; then
+    displayedVersion=$expectedVersion
+    if [[ $expectedVersion == $currentVersion ]]; then
+      displayedColor='nodeVersionSpecificEnabled'
+    else
+      displayedColor='nodeVersionSpecificDisabled'
+    fi
+    echo $(colorize "$displayedVersion " $displayedColor)
+    return
+  fi
+
+  # Current version not the default one
+  if [[ $currentVersion != $defaultVersion ]]; then
+    echo $(colorize "$currentVersion " 'nodeVersion')
+    return
+  fi
 }
 # }}}
 
