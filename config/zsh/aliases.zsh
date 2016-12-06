@@ -239,7 +239,7 @@ alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/download
 # }}}
 
 # Npm (Deprecated) {{{
-alias nig='yarn global add'
+alias nig='npm install --global'
 alias nisd='yarn add --dev'
 alias nis='yarn add'
 alias ni='yarn'
