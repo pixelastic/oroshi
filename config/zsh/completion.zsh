@@ -64,13 +64,6 @@ unsetopt LIST_TYPES
 setopt LIST_ROWS_FIRST
 # }}}
 
-# Fuzzy finding completion on ** {{{
-if [[ -r ~/.fzf.zsh ]]; then
-  source ~/.fzf.zsh
-  export FZF_DEFAULT_COMMAND='ag -l -g ""'
-fi
-# }}}
-
 # Debug method to reload the completion functions {{{
 r() {
   \rm -f ~/.zcompdump

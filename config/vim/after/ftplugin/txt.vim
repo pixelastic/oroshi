@@ -11,7 +11,7 @@ if expand('%:e') ==? 'txt'
 endif
 " Update filetype when adding a shebang
 augroup ft_txt_update_filetype
-  au!
-  au BufWritePost <buffer> filetype detect
+  autocmd!
+  autocmd BufWritePost <buffer> filetype detect
 augroup END
 

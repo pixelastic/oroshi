@@ -44,11 +44,11 @@ function! MultiPurposeTab()
   let line = getline('.')
   let columnIndex = col('.')
 
-  call UltiSnips#ExpandSnippetOrJump()
+  " call UltiSnips#ExpandSnippetOrJump()
   " Currently expanding a snippet
-  if g:ulti_expand_or_jump_res !=# 0
-    return ''
-  endif
+  " if g:ulti_expand_or_jump_res !=# 0
+  "   return ''
+  " endif
 
   " If the autocomplete menu is already visible, we loop through item
   if pumvisible()

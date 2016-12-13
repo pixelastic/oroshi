@@ -5,15 +5,10 @@ scriptencoding utf-8
 " Turn it off for security reasons, we don't want arbitrary code executed from
 " plugins
 set nomodeline
-" Disabling filetype before invoking Pathogen
-filetype off
-" Initializing pathogen, loading all plugins located in ~/.vim/bundle
-call pathogen#infect()
-"  Loading the plugin documentation
-call pathogen#helptags()
-" Re-enabling filetype indentation
-filetype plugin indent on
 "}}}
+" PLUGINS {{{
+source ~/.vim/includes/plugins.vim
+" }}}
 " FILES {{{
 " Use backup, and save it in a custom dir
 set backup
@@ -100,11 +95,9 @@ set fillchars=stl:\ ,stlnc:\ ,vert:\|,fold:\ ,diff:-
 " FUNCTIONS {{{
 source ~/.vim/includes/functions.vim
 " }}}
-
 " KEYBINDINGS {{{
 source ~/.vim/includes/keybindings.vim
 " }}}
-
 " AUTOCOMPLETION {{{
 " Display autocomplete suggestion in a menu if more than one
 set completeopt=menu
@@ -210,12 +203,23 @@ nnoremap :s/ :s/\v
 nnoremap :ù :%s/
 vnoremap :ù :s/
 "}}}
+" FIND IN FILES AND FILENAMES {{{
+let &grepprg='rg --vimgrep'
+" Open in new tab by default
+let g:fzf_action = {
+  \ 'ctrl-m': 'tabedit' }
+" Filenames (Ctrl-P)
+map <C-P> <ESC>:GFiles<CR>
+" File content (Ctrl-F)
+command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
+map <C-F> <ESC>:Find<CR>
+" }}}
+" }}}
 " SNIPPETS   {{{
 " Lorem ipsum
 iabbrev lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit
 iabbrev llorem Lorem ipsum dolor sit amet, consectetur adipiscing elit.  Etiam lacus ligula, accumsan id imperdiet rhoncus, dapibus vitae arcu.  Nulla non quam erat, luctus consequat nisi
 iabbrev lllorem Lorem ipsum dolor sit amet, consectetur adipiscing elit.  Etiam lacus ligula, accumsan id imperdiet rhoncus, dapibus vitae arcu.  Nulla non quam erat, luctus consequat nisi.  Integer hendrerit lacus sagittis erat fermentum tincidunt.  Cras vel dui neque.  In sagittis commodo luctus.  Mauris non metus dolor, ut suscipit dui.  Aliquam mauris lacus, laoreet et consequat quis, bibendum id ipsum.  Donec gravida, diam id imperdiet cursus, nunc nisl bibendum sapien, eget tempor neque elit in tortor
-" Ultisnips
 " }}}
 " SPLIT  {{{
 " Splitting right and bottom feels more natural
@@ -303,12 +307,10 @@ vnoremap x "_x
 nnoremap c "_c
 "}}}
 
-" CTRL-F {{{
-source ~/.vim/includes/ctrlf.vim
-" }}}
-" CTRL-P {{{
-source ~/.vim/includes/ctrlp.vim
-" }}}
+
+
+
+
 " RAINBOW PARENTHESES {{{
 " Load plugin
 augroup rainbow_parentheses_toggle
@@ -318,9 +320,9 @@ augroup END
 " }}}
 " GIT {{{
 source ~/.vim/includes/git.vim
+let g:gitgutter_max_signs=10000
 " }}}
 " GIT GUTTER {{{
-let g:gitgutter_max_signs=10000
 " }}}
 " SYNTASTIC {{{
 let g:syntastic_aggregate_errors = 1

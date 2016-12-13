@@ -22,11 +22,11 @@ endfunction
 " Rainbow parentheses {{{
 if exists(':RainbowParenthesesToggle')
   augroup rainbow_parentheses_javascript
-    au!
-    au Syntax <buffer> syntax clear jsFuncBlock
-    au Syntax <buffer> RainbowParenthesesLoadRound
-    au Syntax <buffer> RainbowParenthesesLoadSquare
-    au Syntax <buffer> RainbowParenthesesLoadBraces
+    autocmd!
+    autocmd Syntax <buffer> syntax clear jsFuncBlock
+    autocmd Syntax <buffer> RainbowParenthesesLoadRound
+    autocmd Syntax <buffer> RainbowParenthesesLoadSquare
+    autocmd Syntax <buffer> RainbowParenthesesLoadBraces
   augroup END
 endif
 " }}}

@@ -145,20 +145,20 @@ call s:Highlight('oroshi_DiffLine', 'darkyellow')
 
 call s:Highlight('oroshi_GitBranch', 'orange', 'none', 'bold')
 
+call s:Highlight('oroshi_FuzzyHighlight', 'calmred', 'none')
+call s:Highlight('oroshi_FuzzySelected', 'almostblack', 'calmred', 'none')
+call s:Highlight('oroshi_FuzzySelectedHighlight', 'purewhite')
+call s:Highlight('oroshi_FuzzyPrompt', 'calmred')
+call s:Highlight('oroshi_FuzzyPointer', 'black')
+
 call s:Highlight('oroshi_ModeNormal', 'white', 'black')
 call s:Highlight('oroshi_ModeInsert', 'black', 'darkyellow', 'bold')
 call s:Highlight('oroshi_ModeVisual', 'lightgrey', 'darkblue', 'bold')
 call s:Highlight('oroshi_ModeSearch', 'black', 'orange', 'bold')
-call s:Highlight('oroshi_ModeCtrlP', 'black', 'calmred', 'bold')
-call s:Highlight('oroshi_ModeCtrlPMatch', 'calmred')
-call s:Highlight('oroshi_ModeCtrlF', 'black', 'darkgreen', 'bold')
-call s:Highlight('oroshi_ModeCtrlFMatch', 'darkgreen')
 call s:Highlight('oroshi_UIModeNormal', 'black', 'darkgrey', 'bold')
 call s:Highlight('oroshi_UIModeInsert', 'darkyellow', 'darkgrey', 'bold')
 call s:Highlight('oroshi_UIModeVisual', 'darkblue', 'darkgrey', 'bold')
 call s:Highlight('oroshi_UIModeSearch', 'orange', 'darkgrey', 'bold')
-call s:Highlight('oroshi_UIModeCtrlP', 'calmred', 'darkgrey', 'bold')
-call s:Highlight('oroshi_UIModeCtrlF', 'darkgreen', 'darkgrey', 'bold')
 " }}}
 
 " Borders {{{
@@ -442,14 +442,17 @@ call s:Link('xmlTagName', 'oroshi_CodeStatement')
 call s:Link('xmlEndTag', 'oroshi_CodeStatement')
 " }}}
 
-" CtrlP {{{
-call s:Link('CtrlPMatch', 'oroshi_ModeCtrlPMatch')
-call s:Link('CtrlPLinePre', 'oroshi_UISecondary')
-call s:Link('CtrlPPrtCursor', 'oroshi_UIModeCtrlP')
-" }}}
-" Ctrl-F {{{
-call s:Link('qfFilename', 'oroshi_ModeCtrlFMatch')
-call s:Link('qfSeparator', 'oroshi_UIEmpty')
+" FZF {{{
+let g:fzf_colors = {
+      \ 'fg':      ['fg', 'oroshi_UI'],
+      \ 'bg':      ['bg', 'oroshi_UIEmpty'],
+      \ 'hl':      ['fg', 'oroshi_FuzzyHighlight'],
+      \ 'fg+':     ['fg', 'oroshi_FuzzySelected'],
+      \ 'bg+':     ['bg', 'oroshi_FuzzySelected'],
+      \ 'hl+':     ['fg', 'oroshi_FuzzySelectedHighlight'],
+      \ 'info':    ['fg', 'oroshi_UIActive'],
+      \ 'prompt':  ['fg', 'oroshi_FuzzyPrompt'],
+      \ 'pointer': ['fg', 'oroshi_FuzzyPointer'] }
 " }}}
 " RainbowParentheses {{{
 let g:rbpt_colorpairs = [

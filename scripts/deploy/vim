@@ -12,7 +12,7 @@ mkdir -p $destDir/swap
 mkdir -p $destDir/backup
 mkdir -p $destDir/undo
 mkdir -p $destDir/view
-mkdir -p $destDir/cache/ctrlp
+mkdir -p $destDir/plugins
 
 # Link other config directories
 ln -fns $configDir/after $destDir/after

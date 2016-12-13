@@ -21,7 +21,8 @@ function git-root-run() {
 }
 
 # Basic commands {{{
-alias ag='ag --context=2 --smart-case --pager="less -R"'
+alias ag='better-rg'
+alias rg='better-rg'
 alias cp='cp -rv'
 alias diff='colordiff'
 alias grep='grep -i --color=auto'
@@ -172,7 +173,6 @@ alias cdingoo='cd /media/dingoo'
 # Music {{{
 alias mmu='music-metadata-update'
 alias mktl='generate-tracklist'
-alias rg='replaygain'
 alias mm="music-mark"
 # }}}
 # Freebox {{{
@@ -286,10 +286,6 @@ alias pi='pip install --user'
 # }}}
 # Appraisal {{{
 alias ai='appraisal install'
-# }}}
-# Middleman {{{
-alias ms='middleman server'
-alias mb='middleman build'
 # }}}
 # Gem {{{
 alias gi="gem install"

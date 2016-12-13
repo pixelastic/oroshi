@@ -1,3 +1,6 @@
 " *.srt files
-au BufRead,BufNewFile *.srt set filetype=txt.srt
+augroup ftdetect_srt
+  autocmd!
+  autocmd BufRead,BufNewFile *.srt set filetype=txt.srt
+augroup END
 

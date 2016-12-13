@@ -1,3 +1,6 @@
-" ~/.aprc files
-au BufRead,BufNewFile *.aprc set filetype=ruby
+" AWESOME PRINT
+augroup ftdetect_ruby
+  autocmd!
+  autocmd BufRead,BufNewFile *.aprc set filetype=ruby
+augroup END
 

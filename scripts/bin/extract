@@ -12,7 +12,6 @@ for file in $@; do
 		*.bz2) bzip2 -d $file;;
 		*.cbr) unrar x $file;;
 		*.cbz) unzip $file;;
-		*.gz) gunzip $file;;
 		*.htmlz) unzip $file;;
 		*.rar) unrar x $file;;
 		*.r([0-9][0-9])) unrar x $file;;
@@ -26,6 +25,7 @@ for file in $@; do
 		*.(zip|ZIP)) unzip -o $file;;
     *.7z) 7z x $file;;
     *.7z.[0-9][0-9][0-9]) 7z x $file;;
+		*.gz) gunzip $file;;
 		*) echo "'$file' cannot be extracted via >extract<";;
 	esac
 done

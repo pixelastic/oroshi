@@ -23,11 +23,14 @@ setlocal foldmethod=syntax
 " written in ~/.csslintrc
 if expand('%') =~ 'csslintrc.json'
   augroup csslintrc_json_to_rc
-    au!
-    au BufWritePost <buffer> silent! execute '!~/.oroshi/scripts/deploy/csslint'
+    autocmd!
+    autocmd BufWritePost <buffer> silent! execute '!~/.oroshi/scripts/deploy/csslint'
   augroup END
 endif
 " }}}
 " Use javascript syntax highlighting
-au BufEnter <buffer> setlocal syntax=javascript
+augroup ftplugin_json
+  autocmd!
+  autocmd BufEnter <buffer> setlocal syntax=javascript
+augroup END
 

@@ -1,4 +1,2 @@
 " TIDYRC
 setlocal commentstring=#\ %s
-
-
