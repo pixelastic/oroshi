@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-npm install -g textlint
-npm install -g textlint-rule-common-misspellings
-npm install -g textlint-rule-editorconfig
-npm install -g textlint-rule-write-good
-npm install -g textlint-rule-alex
+yarn global add textlint
+yarn global add textlint-rule-common-misspellings
+yarn global add textlint-rule-editorconfig
+yarn global add textlint-rule-write-good
+yarn global add textlint-rule-alex

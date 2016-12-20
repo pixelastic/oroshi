@@ -20,9 +20,9 @@ vnoremap <buffer> _ <Esc>mzg`>a_<Esc>g`<i_<Esc>`zl
 vnoremap <buffer> * <Esc>mzg`>a**<Esc>g`<i**<Esc>`zl
 " }}}
 " Linters {{{
-if or(isRoleplay, isBooks) ==# 0
-  let b:syntastic_checkers = ['textlint']
-endif
+" if or(isRoleplay, isBooks) ==# 0
+let b:syntastic_checkers = ['textlint']
+" endif
 " }}}
 " Folding {{{
 function! MarkdownLevel()
