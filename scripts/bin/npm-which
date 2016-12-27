@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env sh
 
 local npm_bin=$(npm bin)
 local bin_name=$1
