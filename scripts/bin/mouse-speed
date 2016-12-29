@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
-# local device_number=9
-local device_number=13
-# local setting_id=274
-local setting_id=269
+local device_number=9
+# local device_number=13
+local setting_id=274
+# local setting_id=269
 local new_value=$1
 
 if [[ $new_value != '' ]]; then

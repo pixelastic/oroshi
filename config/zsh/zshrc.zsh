@@ -8,8 +8,8 @@ local zshConfigDir=~/.oroshi/config/zsh
 
 # Environment variables {{{
 export EDITOR=vim
-export CHROME_BIN=/usr/bin/chromium-browser
-export BROWSER=$CHROME_BIN
+export CHROME_BIN=/usr/bin/google-chrome
+export BROWSER=/usr/bin/google-chrome
 export LANG=en_US.UTF-8
 export TERM=screen-256color
 path=(
