@@ -34,7 +34,7 @@ endif
 let b:repo_root = GetRepoRoot()
 let b:syntastic_checkers = []
 " Use only linters defined in the repo
-if filereadable(b:repo_root . '/.eslintrc')
+if filereadable(b:repo_root . '/.eslintrc') || filereadable(b:repo_root . '/.eslintrc.js')
   let b:syntastic_javascript_eslint_exec = StrTrim(system('npm-which eslint'))
   let b:syntastic_checkers = b:syntastic_checkers + ['eslint']
 endif
