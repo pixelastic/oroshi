@@ -32,18 +32,31 @@ endif
 " }}}
 " Linters {{{
 let b:repo_root = GetRepoRoot()
-let b:syntastic_checkers = []
-" Use only linters defined in the repo
-if filereadable(b:repo_root . '/.eslintrc') || filereadable(b:repo_root . '/.eslintrc.js')
-  let b:syntastic_javascript_eslint_exec = StrTrim(system('npm-which eslint'))
-  let b:syntastic_checkers = b:syntastic_checkers + ['eslint']
+let b:eslint_enabled = 0
+let b:jscs_enabled = 0
+" Check which linters are currently enabled
+if filereadable(b:repo_root . '/.eslintrc')
+  let b:eslint_config = b:repo_root . '/.eslintrc'
 endif
-if filereadable(b:repo_root . '/.jshintrc')
-  let b:syntastic_javascript_jshint_exec = StrTrim(system('npm-which jshint'))
-  let b:syntastic_checkers = b:syntastic_checkers + ['jshint']
+if filereadable(b:repo_root . '/.eslintrc.js')
+  let b:eslint_config = b:repo_root . '/.eslintrc.js'
+endif
+if exists('b:eslint_config')
+  let b:eslint_enabled = 1
+  let b:eslint_bin = StrTrim(system('npm-which eslint'))
 endif
 if filereadable(b:repo_root . '/.jscsrc')
-  let b:syntastic_javascript_jscs_exec = StrTrim(system('npm-which jscs'))
+  let b:jscs_enabled = 1
+  let b:jscs_bin = StrTrim(system('npm-which jscs'))
+endif
+" Adding matching linters to syntastic
+let b:syntastic_checkers = []
+if b:eslint_enabled
+  let b:syntastic_javascript_eslint_exec = b:eslint_bin
+  let b:syntastic_checkers = b:syntastic_checkers + ['eslint']
+endif
+if b:jscs_enabled
+  let b:syntastic_javascript_jscs_exec = b:jscs_bin
   let b:syntastic_checkers = b:syntastic_checkers + ['jscs']
 endif
 " Default to system-wide eslint if nothing configured
@@ -51,28 +64,32 @@ if len(b:syntastic_checkers) == 0
   let b:syntastic_checkers = b:syntastic_checkers + ['eslint']
 endif
 "}}}
-" Cleaning the file {{{
-inoremap <silent> <buffer> <F4> <Esc>:call JavascriptBeautify()<CR>
-nnoremap <silent> <buffer> <F4> :call JavascriptBeautify()<CR>
+" Cleaning the file on save {{{
+if b:eslint_enabled
+  augroup ftplugin_javascript_fixonsave
+    autocmd!
+    autocmd BufWritePre <buffer> call JavascriptBeautify()
+  augroup END
+endif
 function! JavascriptBeautify() 
   " We save the current line, to be able to jump to it later
   let linenr=line('.')
-  " The processing can take some time, so we display what is going on
-  echo '  Eslint auto-fix...'
 
-  let thisFile = expand('%:p')
-  let tmpFile = thisFile . '.tmp'
-  let eslint = StrTrim(system('npm-which eslint'))
-  " Save current file in tmp file
-  silent! execute 'write' fnameescape(tmpFile)
-  " Fix tmp file
-  silent! call system(eslint . ' --fix ' . shellescape(tmpFile))
-  " Replace buffer with its content
-  silent! execute '%! cat ' . shellescape(tmpFile)
-  " Remove tmp file
-  silent! call system('rm ' . shellescape(tmpFile))
+  let tmp_file = fnameescape(tempname().'.js')
+  let content = getline('1', '$')
+
+  " Save current content in a temporary file
+  call writefile(content, tmp_file)
+  " Apply eslint --fix on it
+  call system(b:eslint_bin.' -c '.b:eslint_config.' --fix '.tmp_file)
+
+  " Read result and apply it to the current file
+  let result = readfile(tmp_file)
+  silent exec "1,$j"
+  call setline("1", result[0])
+  call append("1", result[1:])
+
   execute 'normal '.linenr.'gg'
-  echo ''
 endfunction
 " }}}
 " Keybindings {{{
