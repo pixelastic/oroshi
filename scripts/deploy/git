@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
-# Link ~/.gitconfig and ~/.gitignore
 
-# Paths
-configDir=~/.oroshi/config/git
 
-# Generic git config
-ln -fs $configDir/gitconfig ~/.gitconfig
-# Generic git ignore list
-ln -fs $configDir/gitignore ~/.gitignore
+mkdir -p ~/.git
+ln -fs ~/.oroshi/config/git/hooks ~/.git/hooks
+ln -fs ~/.oroshi/config/git/gitconfig ~/.gitconfig
+ln -fs ~/.oroshi/config/git/gitignore ~/.gitignore
 
