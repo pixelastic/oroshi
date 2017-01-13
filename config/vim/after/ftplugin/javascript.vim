@@ -81,7 +81,8 @@ function! JavascriptBeautify()
   " Save current content in a temporary file
   call writefile(content, tmp_file)
   " Apply eslint --fix on it
-  call system(b:eslint_bin.' -c '.b:eslint_config.' --fix '.tmp_file)
+  let command = b:eslint_bin.' -c '.b:eslint_config.' --fix '.tmp_file
+  call system(command)
 
   " Read result and apply it to the current file
   let result = readfile(tmp_file)
