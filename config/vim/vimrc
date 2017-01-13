@@ -209,7 +209,8 @@ let &grepprg='rg --vimgrep'
 let g:fzf_action = {
   \ 'ctrl-m': 'tab drop' }
 " Filenames (Ctrl-P)
-map <C-P> <ESC>:GFiles -co --exclude-standard<CR>
+nnoremap <C-P> <ESC>:GFiles -co --exclude-standard<CR>
+inoremap <C-P> <ESC>:GFiles -co --exclude-standard<CR>
 " File content (Ctrl-F)
 command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
 map <C-F> <ESC>:Find<CR>
