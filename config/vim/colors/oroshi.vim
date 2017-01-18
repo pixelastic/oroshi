@@ -145,20 +145,14 @@ call s:Highlight('oroshi_DiffLine', 'darkyellow')
 
 call s:Highlight('oroshi_GitBranch', 'orange', 'none', 'bold')
 
-call s:Highlight('oroshi_FuzzyHighlight', 'calmred', 'none')
-call s:Highlight('oroshi_FuzzySelected', 'almostblack', 'calmred', 'none')
-call s:Highlight('oroshi_FuzzySelectedHighlight', 'purewhite')
-call s:Highlight('oroshi_FuzzyPrompt', 'calmred')
-call s:Highlight('oroshi_FuzzyPointer', 'black')
-
-call s:Highlight('oroshi_ModeNormal', 'white', 'black')
-call s:Highlight('oroshi_ModeInsert', 'black', 'darkyellow', 'bold')
-call s:Highlight('oroshi_ModeVisual', 'lightgrey', 'darkblue', 'bold')
-call s:Highlight('oroshi_ModeSearch', 'black', 'orange', 'bold')
 call s:Highlight('oroshi_UIModeNormal', 'black', 'darkgrey', 'bold')
+call s:Highlight('oroshi_ModeNormal', 'white', 'black')
 call s:Highlight('oroshi_UIModeInsert', 'darkyellow', 'darkgrey', 'bold')
+call s:Highlight('oroshi_ModeInsert', 'black', 'darkyellow', 'bold')
 call s:Highlight('oroshi_UIModeVisual', 'darkblue', 'darkgrey', 'bold')
+call s:Highlight('oroshi_ModeVisual', 'lightgrey', 'darkblue', 'bold')
 call s:Highlight('oroshi_UIModeSearch', 'orange', 'darkgrey', 'bold')
+call s:Highlight('oroshi_ModeSearch', 'black', 'orange', 'bold')
 " }}}
 
 " Borders {{{
@@ -185,30 +179,6 @@ call s:Link('GitGutterChange', 'oroshi_Notice')
 " Status line {{{
 call s:Link('StatusLine', 'oroshi_UI')
 call s:Link('StatusLineNC', 'oroshi_UIFilled')
-" }}}
-" Quick fix window {{{
-" Note: The Search highlight is used in the quickfix window for the current
-" element. This method is called whenever the quickfix window got focus and
-" change the Search coloring, and revert it when losing focus.
-function! UpdateSearchColoring(...)
-  " buftype is either empty or 'quickfix', and can be specifed as an argument
-  let buftype = (a:0 == 1) ? a:1 : &buftype
-
-  if buftype == 'quickfix'
-    " Removing coloring in quickfix
-    hi clear Search
-    hi link Search NONE
-  else
-    " Reverting initial coloring
-    call s:Link('Search', 'oroshi_ModeSearch')
-  endif
-endfunction
-
-augroup quickfix_coloring
-  au!
-  au BufWinEnter quickfix call UpdateSearchColoring('quickfix')
-  au WinEnter * call UpdateSearchColoring()
-augroup END
 " }}}
 
 " Cursor {{{
@@ -442,17 +412,48 @@ call s:Link('xmlTagName', 'oroshi_CodeStatement')
 call s:Link('xmlEndTag', 'oroshi_CodeStatement')
 " }}}
 
-" FZF {{{
-let g:fzf_colors = {
-      \ 'fg':      ['fg', 'oroshi_UI'],
-      \ 'bg':      ['bg', 'oroshi_UIEmpty'],
-      \ 'hl':      ['fg', 'oroshi_FuzzyHighlight'],
-      \ 'fg+':     ['fg', 'oroshi_FuzzySelected'],
-      \ 'bg+':     ['bg', 'oroshi_FuzzySelected'],
-      \ 'hl+':     ['fg', 'oroshi_FuzzySelectedHighlight'],
-      \ 'info':    ['fg', 'oroshi_UIActive'],
-      \ 'prompt':  ['fg', 'oroshi_FuzzyPrompt'],
-      \ 'pointer': ['fg', 'oroshi_FuzzyPointer'] }
+
+" CtrlP {{{
+call s:Highlight('oroshi_UIModeCtrlPPrompt', 'black', 'calmred', 'bold')
+call s:Highlight('oroshi_UIModeCtrlPArrow', 'calmred', 'darkgrey')
+call s:Highlight('oroshi_UIModeCtrlPGutter', 'calmred', 'calmred')
+call s:Highlight('oroshi_UIModeCtrlPPrePrompt', 'calmred', 'black')
+call s:Highlight('oroshi_ModeCtrlPPromptText', 'white', 'black', 'bold')
+call s:Highlight('oroshi_ModeCtrlPPromptTextCursor', 'white', 'red', 'bold')
+call s:Highlight('oroshi_ModeCtrlPHighlight', 'calmred', 'none')
+
+call s:Link('CtrlPLinePre', 'oroshi_UIModeCtrlPGutter')
+call s:Link('CtrlPPrtBase', 'oroshi_UIModeCtrlPPrePrompt')
+call s:Link('CtrlPPrtText', 'oroshi_ModeCtrlPPromptText')
+call s:Link('CtrlPPrtCursor', 'oroshi_ModeCtrlPPromptTextCursor')
+call s:Link('CtrlPMatch', 'oroshi_ModeCtrlPHighlight')
+" }}}
+" CtrlF {{{
+call s:Highlight('oroshi_UIModeCtrlF', 'purewhite')
+call s:Highlight('oroshi_ModeCtrlF', 'purewhite')
+call s:Highlight('oroshi_ModeCtrlFMatch', 'calmred')
+" Note: The Search highlight is used in the quickfix window for the current
+" element. This method is called whenever the quickfix window got focus and
+" change the Search coloring, and revert it when losing focus.
+function! UpdateSearchColoring(...)
+  " buftype is either empty or 'quickfix', and can be specifed as an argument
+  let buftype = (a:0 == 1) ? a:1 : &buftype
+
+  if buftype == 'quickfix'
+    " Removing coloring in quickfix
+    hi clear Search
+    hi link Search NONE
+  else
+    " Reverting initial coloring
+    call s:Link('Search', 'oroshi_ModeSearch')
+  endif
+endfunction
+
+augroup quickfix_coloring
+  au!
+  au BufWinEnter quickfix call UpdateSearchColoring('quickfix')
+  au WinEnter * call UpdateSearchColoring()
+augroup END
 " }}}
 " RainbowParentheses {{{
 let g:rbpt_colorpairs = [

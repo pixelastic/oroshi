@@ -36,19 +36,15 @@ bindkey -M viins ""    backward-delete-char  # Backspace
 
 # Beginning of line
 bindkey -M viins "[1~" beginning-of-line  # Home (in termite)
-bindkey -M viins "OH"  beginning-of-line  # Home (in terminator)
 bindkey -M viins "[5~" beginning-of-line  # Page Up
 bindkey -M vicmd "H"     beginning-of-line
 bindkey -M vicmd "[1~" beginning-of-line  # Home (in termite)
-bindkey -M vicmd "OH"  beginning-of-line  # Home (in terminator)
 bindkey -M vicmd "[5~" beginning-of-line  # Page Up
 # End of line
 bindkey -M viins "[4~" end-of-line        # End (in termite)
-bindkey -M viins "OF"  end-of-line        # End (in terminator)
 bindkey -M viins "[6~" end-of-line        # Page Down
 bindkey -M vicmd "L"     end-of-line
 bindkey -M vicmd "[4~" end-of-line        # End (in termite)
-bindkey -M vicmd "OF"  end-of-line        # End (in terminator)
 bindkey -M vicmd "[6~" end-of-line        # Page Down
  
 # Backward search

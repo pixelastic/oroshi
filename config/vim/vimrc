@@ -203,26 +203,13 @@ nnoremap :s/ :s/\v
 nnoremap :ù :%s/
 vnoremap :ù :s/
 "}}}
-" FIND IN FILES AND FILENAMES {{{
-let &grepprg='rg --vimgrep'
-" Open in new tab by default
-let g:fzf_action = {
-  \ 'ctrl-m': 'tab drop' }
-" Filenames (Ctrl-P)
-nnoremap <C-P> <ESC>:GFiles -co --exclude-standard<CR>
-inoremap <C-P> <ESC>:GFiles -co --exclude-standard<CR>
-" File content (Ctrl-F)
-command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
-map <C-F> <ESC>:Find<CR>
-" }}}
-" }}}
-" SNIPPETS   {{{
+" SNIPPETS  {{{
 " Lorem ipsum
 iabbrev lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit
 iabbrev llorem Lorem ipsum dolor sit amet, consectetur adipiscing elit.  Etiam lacus ligula, accumsan id imperdiet rhoncus, dapibus vitae arcu.  Nulla non quam erat, luctus consequat nisi
 iabbrev lllorem Lorem ipsum dolor sit amet, consectetur adipiscing elit.  Etiam lacus ligula, accumsan id imperdiet rhoncus, dapibus vitae arcu.  Nulla non quam erat, luctus consequat nisi.  Integer hendrerit lacus sagittis erat fermentum tincidunt.  Cras vel dui neque.  In sagittis commodo luctus.  Mauris non metus dolor, ut suscipit dui.  Aliquam mauris lacus, laoreet et consequat quis, bibendum id ipsum.  Donec gravida, diam id imperdiet cursus, nunc nisl bibendum sapien, eget tempor neque elit in tortor
 " }}}
-" SPLIT  {{{
+" SPLIT {{{
 " Splitting right and bottom feels more natural
 set splitright
 set splitbelow
@@ -232,10 +219,10 @@ nnoremap <Right> <C-W>l
 nnoremap <Down> <C-W>j
 nnoremap <Left> <C-W>h
 "}}}
-" STATUS LINE  {{{
+" STATUS LINE {{{
 source ~/.vim/includes/statusline.vim
 "}}}
-" TABS   {{{
+" TABS {{{
 " Do not limit the number of tabs to open when launching vim
 set tabpagemax=1000
 " Open file in new tab with ,t
@@ -311,7 +298,12 @@ nnoremap c "_c
 
 
 
-
+" CTRL-F {{{
+" source ~/.vim/includes/ctrlf.vim
+" }}}
+" CTRL-P {{{
+source ~/.vim/includes/ctrlp.vim
+" }}}
 " RAINBOW PARENTHESES {{{
 " Load plugin
 augroup rainbow_parentheses_toggle

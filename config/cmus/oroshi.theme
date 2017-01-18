@@ -1,4 +1,10 @@
 # Colors {{{
+# Note: For the colors to be displayed correctly, the TERM value must be set to
+# screen-256color. Using a value of xterm-256color will result in some artifacts
+# (background colors for selected line and UI elements will only be applied
+# where text is displayed and not expand to the whole line). I've added an alias
+# to call cmus with "TERM=screen-256color" to make sure it is displayed
+# correctly.
 # Default colors
 set color_win_bg=default
 set color_win_fg=252

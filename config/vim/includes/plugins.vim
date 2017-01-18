@@ -1,8 +1,12 @@
-" Specify a directory for plugins (for Neovim: ~/.local/share/nvim/plugged)
+" Specify a directory for plugins
 call plug#begin('~/.vim/plugins')
+
+" Run :PlugUpdate to update everything
+" Full documentation on https://github.com/junegunn/vim-plug
 
 " Basic vim functions {{{
 Plug 'danro/rename.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'pixelastic/rainbow_parentheses.vim'
 Plug 'pixelastic/vim-undodir-tree'
 Plug 'tomtom/tcomment_vim'

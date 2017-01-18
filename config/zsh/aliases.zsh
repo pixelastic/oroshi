@@ -24,6 +24,7 @@ function git-root-run() {
 alias ag='better-rg'
 alias rg='better-rg'
 alias cp='cp -rv'
+alias cmus='TERM=screen-256color cmus'
 alias diff='colordiff'
 alias grep='grep -i --color=auto'
 alias la="ls -a"

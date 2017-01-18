@@ -11,7 +11,8 @@ export EDITOR=vim
 export CHROME_BIN=/usr/bin/google-chrome
 export BROWSER=/usr/bin/google-chrome
 export LANG=en_US.UTF-8
-export TERM=screen-256color
+# This needs to be set to the same value as the default-terminal in tmux.conf
+export TERM=xterm-256color
 path=(
   ~/.oroshi/scripts/bin
   ~/.oroshi/scripts/bin/vit/bin
