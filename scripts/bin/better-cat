@@ -1,18 +1,38 @@
 #!/usr/bin/env ruby
 require 'shellwords'
 
-# This is a wrapper around the `cat` command that will use `term2img` when
-# trying to `cat` image files. I'm not actually sure how safe doing a wrapper
-# around such a basic utility is, so let's find out
+# This is a wrapper around the `cat` command that will use various commands to
+# choose the best way to display a file on screen
+class BetterCat
+  def initialize(*args)
+    @files = args
+  end
 
-images = ['.jpg', '.gif', '.png', '.ico']
+  def json?(file)
+    File.extname(file).casecmp('.json').zero?
+  end
 
-ARGV.each do |arg|
-  extname = File.extname(arg)
-  if images.include?(extname)
-    system("img2term #{arg.shellescape}")
-    puts ''
-  else
-    system("cat #{arg.shellescape}")
+  def image?(file)
+    images = ['.jpg', '.gif', '.png', '.ico']
+    images.include?(File.extname(file).downcase)
+  end
+
+  def run
+    # If only one file, and is json, we use jid
+    if @files.length == 1 && json?(@files[0])
+      exec("jid < #{@files[0].shellescape}")
+    end
+
+    @files.each do |file|
+      # Using img2term to display image
+      if image?(file)
+        system("img2term #{arg.shellescape}")
+        puts ''
+        next
+      end
+      # Normal cat
+      system("cat #{file.shellescape}")
+    end
   end
 end
+BetterCat.new(*ARGV).run

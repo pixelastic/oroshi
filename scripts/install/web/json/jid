@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+
+cd ~/local/bin
+wget \
+  https://github.com/simeji/jid/releases/download/0.7.1/jid_linux_amd64.zip \
+ -O jid.zip
+unzip -o jid.zip
+rm jid.zip
+mv jid_linux_amd64 jid
+chmod +x jid

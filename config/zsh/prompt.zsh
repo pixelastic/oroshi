@@ -21,7 +21,7 @@ PROMPT_ASYNC_PID=0
 # Builtin command called when receiving a USR1 signal
 function TRAPUSR1() {
   # Setting the prompt
-  RPROMPT="$(cat /tmp/zsh_rprompt)"
+  RPROMPT="$(\cat /tmp/zsh_rprompt)"
   # Redraw
   zle && zle reset-prompt
   # Reset PID
