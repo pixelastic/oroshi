@@ -1,0 +1,46 @@
+#!/usr/bin/env ruby
+require 'shellwords'
+require 'awesome_print'
+
+# Check if a video has a sound stream
+class VideoHasSound
+  def initialize(*inputs)
+    @inputs = inputs.map do |input|
+      File.expand_path(input)
+    end
+    @inputs = @inputs.select do |input|
+      File.exist?(input)
+    end
+  end
+
+  # Does the file have a sound stream?
+  def sound?(file)
+    options = [
+      "-i #{file.shellescape}",
+      '-show_streams',
+      '-select_streams a',
+      '-loglevel error'
+    ]
+
+    raw = `ffprobe #{options.join(' ')}`
+    !raw.empty?
+  end
+
+  def run
+    if @inputs.length == 1
+      file = @inputs[0]
+      if sound?(file)
+        exit 0
+      else
+        exit 1
+      end
+    end
+
+    @inputs.each do |input|
+      name = File.basename(input)
+      prefix = sound?(input) ? '✔' : '✘'
+      puts "#{prefix} #{name}"
+    end
+  end
+end
+VideoHasSound.new(*ARGV).run
