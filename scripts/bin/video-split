@@ -35,6 +35,7 @@ class VideoSplit
     options << "-ss #{@from}" unless @from.nil?
     options << "-to #{@to}" unless @to.nil?
     options << '-async 1'
+    options << '-c copy'
     options << @output.shellescape
     system("ffmpeg #{options.join(' ')}")
   end
