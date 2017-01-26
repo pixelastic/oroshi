@@ -4,7 +4,7 @@
 class MouseSpeed
   def initialize(value)
     @value = value
-    @device_name = 'MOSART Semi. 2.4G Keyboard Mouse'
+    @device_name = 'Dell Travel Mouse WM524'
     @property_name = 'Device Accel Velocity Scaling'
     @data = nil
   end
