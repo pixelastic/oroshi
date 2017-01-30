@@ -455,26 +455,3 @@ augroup quickfix_coloring
   au WinEnter * call UpdateSearchColoring()
 augroup END
 " }}}
-" RainbowParentheses {{{
-let g:rbpt_colorpairs = [
-    \ [get(s:palette, "darkred"),250],
-    \ [get(s:palette, "red"),250],
-    \ [get(s:palette, "calmred"),250],
-    \ [get(s:palette, "darkpink"),250],
-    \ [get(s:palette, "pink"),250],
-    \ [get(s:palette, "calmpink"),250],
-    \ [get(s:palette, "darkpurple"),250],
-    \ [get(s:palette, "purple"),250],
-    \ [get(s:palette, "calmpurple"),250], 
-    \ [get(s:palette, "darkblue"),250],
-    \ [get(s:palette, "blue"),250],
-    \ [get(s:palette, "calmblue"),250],
-    \ [get(s:palette, "darkorange"),250],
-    \ [get(s:palette, "orange"),250],
-    \ [get(s:palette, "calmorange"),250],
-    \ [get(s:palette, "darkgreen"),250],
-    \ [get(s:palette, "green"),250],
-    \ [get(s:palette, "calmgreen"),250],
-    \ [get(s:palette, "lightgrey"),250],
-    \ ]
-" }}}

@@ -19,17 +19,6 @@ function! JavascriptFoldText()
   return output
 endfunction
 " }}}
-" Rainbow parentheses {{{
-if exists(':RainbowParenthesesToggle')
-  augroup rainbow_parentheses_javascript
-    autocmd!
-    autocmd Syntax <buffer> syntax clear jsFuncBlock
-    autocmd Syntax <buffer> RainbowParenthesesLoadRound
-    autocmd Syntax <buffer> RainbowParenthesesLoadSquare
-    autocmd Syntax <buffer> RainbowParenthesesLoadBraces
-  augroup END
-endif
-" }}}
 " Linters {{{
 let b:repo_root = GetRepoRoot()
 let b:eslint_enabled = 0
