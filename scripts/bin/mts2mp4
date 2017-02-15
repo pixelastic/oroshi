@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+require 'shellwords'
+
+# Convert MTS (Raw Stream) to mp4
+class Mts2Mp4
+  def initialize(*args)
+    # Usage explanation if no args
+    if args.empty?
+      puts 'Usage :'
+      puts '$ mts2mp4 input.mts'
+      return
+    end
+
+    @input = args.reject do |file|
+      File.extname(file).casecmp('.mts') || !File.exist?(file)
+    end
+  end
+
+  def run
+    @input.each do |file|
+      file = File.expand_path(file)
+      dirname = File.dirname(file)
+      extname = File.extname(file)
+      basename = File.basename(file, extname)
+      newname = File.join(dirname, basename + '.mp4')
+      puts "Converting #{basename} to mp4"
+      `ffmpeg -i #{file.shellescape} -c copy #{newname.shellescape}`
+    end
+  end
+end
+Mts2Mp4.new(*ARGV).run
