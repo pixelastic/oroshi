@@ -1,3 +1,7 @@
 #!/usr/bin/env zsh
-curl -O https://dist.keybase.io/linux/deb/keybase-latest-amd64.deb \
-&& sudo dpkg -i keybase-latest-amd64.deb
+
+# https://keybase.io/docs/the_app/install_linux
+wget https://prerelease.keybase.io/keybase_amd64.deb -O /tmp/keybase.deb
+sudo dpkg -i /tmp/keybase.deb
+sudo apt-get install -f
+run_keybase
