@@ -291,6 +291,9 @@ call s:Link('htmlTitle', 'oroshi_Text')
 " }}}
 " JavaScript {{{
 call s:Link('jsExceptions', 'oroshi_Warning')
+call s:Link('jsTemplateExpression', 'oroshi_TextSpecial')
+call s:Link('jsTemplateBraces', 'oroshi_TextSpecial')
+call s:Link('jsFuncCall', 'oroshi_CodeFunction')
 call s:Link('jsGlobalObjects', 'oroshi_CodeClass')
 " }}}
 " Markdown {{{

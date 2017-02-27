@@ -53,14 +53,11 @@ if len(b:syntastic_checkers) == 0
   let b:syntastic_checkers = b:syntastic_checkers + ['eslint']
 endif
 "}}}
-" Cleaning the file on save {{{
-if b:eslint_enabled
-  augroup ftplugin_javascript_fixonsave
-    autocmd!
-    autocmd BufWritePre <buffer> call JavascriptBeautify()
-  augroup END
-endif
-function! JavascriptBeautify() 
+" Cleaning the file on F4 {{{
+nnoremap <silent> <F4> :call JavaScriptClean()<CR>
+inoremap <silent> <F4> <Esc>:call JavaScriptClean()<CR>li
+" }}}
+function! JavaScriptClean() 
   " We save the current line, to be able to jump to it later
   let linenr=line('.')
 

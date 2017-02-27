@@ -113,10 +113,7 @@ set cursorline
 " Reloading the colorscheme
 function! ReloadColorScheme(scheme)
 	silent! mkview!
-	" Reloading colorscheme
-	call rainbow_parentheses#toggle()
 	execute 'colorscheme '.a:scheme
-	call rainbow_parentheses#toggle()
 	silent! loadview
 endfunction
 " Switching between light and dark themes with F2
