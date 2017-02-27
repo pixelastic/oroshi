@@ -1,2 +1,0 @@
-#!/usr/bin/env zsh
-ffmpeg -i $1 2>&1 | sed -n "s/.*, \(.*\) fp.*/\1/p"

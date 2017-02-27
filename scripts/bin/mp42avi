@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+local input=$1
+local output="${input:a:r}.avi"
+
+ffmpeg -i "$input" -c copy "$output"
