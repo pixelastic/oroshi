@@ -23,3 +23,7 @@
 	path = scripts/bin/pdf
 	url = git@github.com:pixelastic/pdf.git
 	branch = master
+[submodule "scripts/bin/video"]
+	path = scripts/bin/video
+	url = git@github.com:pixelastic/video.git
+	branch = master
