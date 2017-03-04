@@ -1,0 +1,6 @@
+# yr or yarn run lets you run
+function _complete_yarn_run {
+  reply=($(zsh-complete-yr))
+}
+compctl -K _complete_yarn_run yr
+

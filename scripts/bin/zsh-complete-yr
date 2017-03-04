@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+require 'json'
+require 'open3'
+
+root = Open3.capture3('git root')[0].strip
+package = "#{root}/package.json"
+exit 0 unless File.exist?(package)
+
+content = JSON.parse(File.read(package))
+exit 0 unless content.key? 'scripts'
+puts content['scripts'].keys.join("\n")

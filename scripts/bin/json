@@ -1,4 +1,9 @@
 #!/usr/bin/env zsh
 # Pretty print json
+local input=$1
+local selector=$2
+if [[ $selector == '' ]]; then
+  selector='.'
+fi
 
-cat $@ | jq '.'
+cat "$input" | jq "$selector"

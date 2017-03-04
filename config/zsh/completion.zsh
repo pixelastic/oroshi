@@ -5,7 +5,7 @@
 # [ ] Complete host names in rsync and ssh
 
 local zshConfigDir=~/.oroshi/config/zsh
-source $zshConfigDir/completion/npm
+source $zshConfigDir/completion/yr
 source $zshConfigDir/completion/tmuxinator
 source $zshConfigDir/completion/_docker-container-all
 source $zshConfigDir/completion/_docker-container-running
@@ -69,7 +69,7 @@ r() {
   \rm -f ~/.zcompdump
   \rm -f ~/.zcompcache/grunt
   local f
-  f=($zshConfigDir/completion/*(.))
+  f=($zshConfigDir/completion/_*(.))
   unfunction $f:t 2> /dev/null
   autoload -U $f:t
 }
