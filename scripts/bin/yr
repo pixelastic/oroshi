@@ -1,2 +1,6 @@
 #!/usr/bin/env zsh
-git-root-run yarn run $@
+local pwd=`pwd`
+cd "$(git root)" && \
+  yarn run $@ && \
+  cd "$pwd"
+  
