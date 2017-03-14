@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+# Given any file as input, will return the closest path in hierarchy that
+# contain a package.json
+file = File.expand_path(ARGV[0] || '.')
+
+dir = file
+dir = File.dirname(file) if File.file?(file)
+
+def check_package(path)
+  # Stop on root
+  return nil if path == '/'
+  # Found it here
+  return path if File.exist?(File.join(path, 'package.json'))
+  # Try one level higher
+  check_package(File.dirname(path))
+end
+
+puts check_package(dir)

@@ -10,16 +10,6 @@ setopt AUTO_CD
 unsetopt NOMATCH
 # }}}
 
-# Run scripts from the git root
-function git-root-run() {
-  local here=`pwd`
-  local git_root=`git root`
-  local run_command=$@
-
-  cd $git_root && eval $run_command
-  cd $here
-}
-
 # Basic commands {{{
 alias ag='better-rg'
 alias rg='better-rg'
@@ -244,31 +234,31 @@ alias nig='npm install --global'
 alias nisd='yarn add --dev'
 alias nis='yarn add'
 alias ni='yarn'
-alias nrb='git-root-run yarn run build'
-alias nrc='git-root-run yarn run consolidate'
-alias nrd='git-root-run yarn run deploy'
-alias nrl='git-root-run yarn run lint'
-alias nrp='git-root-run yarn run push'
-alias nrs='git-root-run yarn run serve'
-alias nrtw='git-root-run yarn run test:watch'
-alias nrt='git-root-run yarn run test'
+alias nrb='node-root-run yarn run build'
+alias nrc='node-root-run yarn run consolidate'
+alias nrd='node-root-run yarn run deploy'
+alias nrl='node-root-run yarn run lint'
+alias nrp='node-root-run yarn run push'
+alias nrs='node-root-run yarn run serve'
+alias nrtw='node-root-run yarn run test:watch'
+alias nrt='node-root-run yarn run test'
 # }}}
 # Yarn {{{
 alias ygR='yarn global remove'
 alias yga='yarn global add -- '
 alias yag='yarn global add -- '
-alias ya='git-root-run yarn add -- '
-alias yad='git-root-run yarn add --dev -- '
-alias yR='git-root-run yarn remove'
-alias yi='git-root-run yarn'
-alias yrb='git-root-run yarn run build'
-alias yrc='git-root-run yarn run consolidate'
-alias yrd='git-root-run yarn run deploy'
-alias yrl='git-root-run yarn run lint'
-alias yrp='git-root-run yarn run push'
-alias yrs='git-root-run yarn run serve'
-alias yrtw='git-root-run yarn run test:watch'
-alias yrt='git-root-run yarn run test'
+alias ya='node-root-run yarn add -- '
+alias yad='node-root-run yarn add --dev -- '
+alias yR='node-root-run yarn remove'
+alias yi='node-root-run yarn'
+alias yrb='node-root-run yarn run build'
+alias yrc='node-root-run yarn run consolidate'
+alias yrd='node-root-run yarn run deploy'
+alias yrl='node-root-run yarn run lint'
+alias yrp='node-root-run yarn run push'
+alias yrs='node-root-run yarn run serve'
+alias yrtw='node-root-run yarn run test:watch'
+alias yrt='node-root-run yarn run test'
 # }}}
 # Nvm {{{
 alias nvu='nvm use'
