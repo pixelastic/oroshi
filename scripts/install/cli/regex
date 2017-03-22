@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Rexpy will display potential regex that would match the passed inputs
+cd ~/local/src
+git clone git@github.com:tdda/tdda.git
+cd ./tdda/bin
+chmod +x ./rexpy
+
+cd ~/local/bin
+ln -s ~/local/src/tdda/bin/rexpy regex
