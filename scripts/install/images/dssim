@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# Installing dssim
+sudo apt-get install libpng16-dev
+cd ~/local/src
+git clone git@github.com:pornel/dssim.git
+cd ./dssim
+make
+cd ~/local/bin
+ln -fs ../src/dssim/bin/dssim .
+
+# Installing cjpeg-dssim
+cd ~/local/src
+git clone git@github.com:technopagan/cjpeg-dssim.git
+cd ~/local/bin
+ln -s ../src/cjpeg-dssim/cjpeg-dssim .
