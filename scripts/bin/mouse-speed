@@ -4,8 +4,10 @@
 class MouseSpeed
   def initialize(value)
     @value = value
-    @device_name = 'Dell Travel Mouse WM524'
+    @device_name = 'Logitech M315/M235'
     @property_name = 'Device Accel Velocity Scaling'
+    # @device_name = 'Dell Travel Mouse WM524'
+    # @property_name = 'Device Accel Velocity Scaling'
     @data = nil
   end
 
