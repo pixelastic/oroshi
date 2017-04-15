@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-mogrify \
-  -colorspace Gray \
-  -fill $2 \
-  -tint 100 \
-  "$1"
