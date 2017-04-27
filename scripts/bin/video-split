@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 require 'shellwords'
+require 'tempfile'
+require 'fileutils'
 
 # Extract the part of a video between {start} and {end}
 # $ video-split input.mp4 '00:00:10-00:00:15'
@@ -30,14 +32,63 @@ class VideoSplit
     @output = File.join(dirname, @output)
   end
 
-  def run
-    options = ["-i #{@input.shellescape}"]
-    options << "-ss #{@from}" unless @from.nil?
-    options << "-to #{@to}" unless @to.nil?
-    options << '-async 1'
+  # Extract a chunk of file
+  def extract_chunk(input, from, to, output)
+    options = []
+    options << '-loglevel panic'
+    # We add the -ss before the -i, so it performs a fast-seek up to this frame
+    options << "-ss #{from}"
+    options << "-i #{input.shellescape}"
+    # We then extract up to -to. We need to pass -copyts, otherwise the
+    # timestamps are reset to zero because of the fast seek
+    options << "-to #{to}"
     options << '-c copy'
-    options << @output.shellescape
+    options << '-copyts'
+
+    options << '-async 1'
+    options << output.shellescape
     system("ffmpeg #{options.join(' ')}")
+  end
+
+  def fix_frames(input, output)
+    input_ext = File.extname(input)
+    input_dir = File.dirname(input)
+    input_base = File.basename(input, input_ext)
+    tmp_avi = "#{input_dir}/#{input_base}.avi"
+    output_ext = File.extname(output)
+    output_dir = File.dirname(output)
+    output_base = File.basename(output, output_ext)
+    output_path = "#{output_dir}/#{output_base}.mp4"
+
+    # We convert to avi first, to fix the keyframes
+    options = [
+      '-loglevel panic',
+      "-i #{input.shellescape}",
+      '-c copy',
+      tmp_avi.shellescape
+    ]
+    system("ffmpeg #{options.join(' ')}")
+    FileUtils.rm(input)
+
+    # We convert then to mp4
+    options = [
+      '-loglevel panic',
+      "-i #{tmp_avi.shellescape}",
+      '-c copy',
+      '-crf 23',
+      output_path.shellescape
+    ]
+    system("ffmpeg #{options.join(' ')}")
+    FileUtils.rm(tmp_avi)
+  end
+
+  def run
+    ext = File.extname(@input)
+    tmp_file = Tempfile.new('video-split-chunk')
+    tmp_chunk_path = "#{tmp_file.path}#{ext}"
+
+    extract_chunk(@input, @from, @to, tmp_chunk_path)
+    fix_frames(tmp_chunk_path, @output)
   end
 end
 VideoSplit.new(*ARGV).run
