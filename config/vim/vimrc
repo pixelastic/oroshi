@@ -10,26 +10,29 @@ set nomodeline
 source ~/.vim/includes/plugins.vim
 " }}}
 " FILES {{{
+" The double slash at the end tells vim to store files keeping their directory
+" structure
 " Use backup, and save it in a custom dir
 set backup
-set backupdir=~/.vim/backup/
+set backupdir=~/.vim/backup//
+" Swap files are useful for when your machine crashes or you reboot without
+" saving your work in progress. By default they are stored in the same dir,
+" which is inconvenient, though.
+set directory=~/.vim/swap//
 " Saving the latest undo in a file on disk
 set undofile
 set undolevels=1000
-set undodir=~/.vim/undo/
+set undodir=~/.vim/undo//
 " Save all the views (cursor position, fold status) in the same dir, close to
 " the others
-set viewdir=~/.vim/view/
-" We do not want vim to keep swap files. It tends to pollute dirs, and I've
-" never come accross a case that it actually was useful to me.
-set noswapfile
+set viewdir=~/.vim/view//
 " }}}
 " BASIC  {{{
 " Set current directory to the directory of the currently edited file.
 " We're not using autochdir as it messes with plugins (committia, vimdeck)
 augroup autochdir
-	au!
-	autocmd BufEnter * silent! lcd %:p:h
+  au!
+  autocmd BufEnter * silent! lcd %:p:h
 augroup END
 " Saving files whenever I move from one to another
 set autowrite
@@ -43,24 +46,24 @@ set hidden
 set autoread
 set updatetime=2000
 augroup autoread
-	au!
-	autocmd CursorHold * checktime
-	autocmd TabEnter * checktime
+  au!
+  autocmd CursorHold * checktime
+  autocmd TabEnter * checktime
 augroup END
 " Set +x to script files on save
 augroup ft_add_chmodx
-	au!
-	function! AddExecutablePermissionIfScript()
-		if getline(1) =~? '^#!' && getline(1) =~? '/bin/'
-			silent !chmod +x <afile>
-		endif
-	endfunction
-	au BufWritePost * call AddExecutablePermissionIfScript()
+  au!
+  function! AddExecutablePermissionIfScript()
+    if getline(1) =~? '^#!' && getline(1) =~? '/bin/'
+      silent !chmod +x <afile>
+    endif
+  endfunction
+  au BufWritePost * call AddExecutablePermissionIfScript()
 augroup END
 " Reload the vimrc file whenever it is edited
 augroup ft_vimrc
-	au!
-	au BufWritePost *vimrc mkview | source ~/.vimrc | loadview
+  au!
+  au BufWritePost *vimrc mkview | source ~/.vimrc | loadview
 augroup END
 "}}}
 " VIEWS {{{
@@ -68,9 +71,9 @@ augroup END
 set viewoptions=cursor,folds
 " Save sessions on close, load it on open
 augroup views
-	au!
-	au BufWinLeave * silent! mkview!
-	au BufWinEnter * silent! loadview
+  au!
+  au BufWinLeave * silent! mkview!
+  au BufWinEnter * silent! loadview
 augroup END
 " }}}
 " DISPLAY {{{
@@ -112,9 +115,9 @@ colorscheme oroshi
 set cursorline
 " Reloading the colorscheme
 function! ReloadColorScheme(scheme)
-	silent! mkview!
-	execute 'colorscheme '.a:scheme
-	silent! loadview
+  silent! mkview!
+  execute 'colorscheme '.a:scheme
+  silent! loadview
 endfunction
 " Switching between light and dark themes with F2
 function! ToggleColorScheme()
@@ -134,10 +137,10 @@ function! Debugcolor()
     execute 'verbose hi Normal'
     return
   endif
-	for id in synstack(line('.'), col('.'))
-		execute 'hi '.synIDattr(id, 'name')
-	endfor
-	execute 'hi '.synIDattr(synIDtrans(id), 'name')
+  for id in synstack(line('.'), col('.'))
+    execute 'hi '.synIDattr(id, 'name')
+  endfor
+  execute 'hi '.synIDattr(synIDtrans(id), 'name')
 endfunction
 nnoremap <F3> :call Debugcolor()<CR>
 "}}}
@@ -259,29 +262,29 @@ set wildignore+=*.zip,*.rar,*.tgz,*.tar,*.cbz         " Archive files
 " We only use unnamed plus, if available
 set clipboard=
 if has('unnamedplus')
-	set clipboard+=unnamedplus
-	function! PrePaste()
-		" We guess that if both + and * registers have the same number of words,
-		" and + is longer than *, it means they are actually the same source, but
-		" + gets garbled, so we'll use * in place of +
-		let lenstar = len(@*)
-		let wordstar = len(split(@*))
-		let lenplus = len(@+)
-		let wordplus = len(split(@+))
+  set clipboard+=unnamedplus
+  function! PrePaste()
+    " We guess that if both + and * registers have the same number of words,
+    " and + is longer than *, it means they are actually the same source, but
+    " + gets garbled, so we'll use * in place of +
+    let lenstar = len(@*)
+    let wordstar = len(split(@*))
+    let lenplus = len(@+)
+    let wordplus = len(split(@+))
 
-		" If @+ is empty, we use @*
-		if lenplus == 0 && lenstar > 0
-			let @+=@*
-		endif
+    " If @+ is empty, we use @*
+    if lenplus == 0 && lenstar > 0
+      let @+=@*
+    endif
 
-		" If about same size, but @+ is bigger than @* we guess that it gets
-		" garbled and we replace it by @*
-		if wordstar !=1 && wordstar == wordplus && lenstar < lenplus
-			let @+=@*
-		endif
-	endfunction
-	" noremap <silent> p :call PrePaste()<CR>p
-	" noremap <silent> P :call PrePaste()<CR>P
+    " If about same size, but @+ is bigger than @* we guess that it gets
+    " garbled and we replace it by @*
+    if wordstar !=1 && wordstar == wordplus && lenstar < lenplus
+      let @+=@*
+    endif
+  endfunction
+  " noremap <silent> p :call PrePaste()<CR>p
+  " noremap <silent> P :call PrePaste()<CR>P
 endif
 " As gv selects last selected text, we add gp to select last pasted text
 nnoremap gp `[v`]
@@ -341,8 +344,8 @@ let g:syntastic_mode_map={ 'mode': 'passive',
 " FILETYPES {{{
 " Load skeletons
 augroup skeletons
-	au!
-	au BufNewFile * :silent! exec ":0r ~/.vim/includes/skeletons/skeleton.".expand('%:e')
+  au!
+  au BufNewFile * :silent! exec ":0r ~/.vim/includes/skeletons/skeleton.".expand('%:e')
 augroup END
 
 " ,ve to edit vimrc

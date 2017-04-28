@@ -5,6 +5,14 @@ let thisFile = expand('%:p')
 let isRoleplay = thisFile =~# 'roleplay'
 let isBooks = thisFile =~# 'books'
 
+" Saving {{{
+augroup markdown_autosave
+  au!
+  autocmd CursorHold * update
+  autocmd CursorHoldI * update
+  autocmd TabEnter * update
+augroup END
+" }}}
 " Styling {{{
 " Add headers with ,(1|2|3|4|5)
 nnoremap <buffer> <leader>& I# <Esc>j
@@ -83,7 +91,7 @@ function! MarkdownBeautify()
   execute command
 
   " Remove trailing spaces
-	call RemoveTrailingSpaces()
+  call RemoveTrailingSpaces()
 
   " Convert links into references
   silent! %! formd -r
