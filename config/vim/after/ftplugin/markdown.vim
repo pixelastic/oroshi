@@ -8,9 +8,9 @@ let isBooks = thisFile =~# 'books'
 " Saving {{{
 augroup markdown_autosave
   au!
-  autocmd CursorHold * update
-  autocmd CursorHoldI * update
-  autocmd TabEnter * update
+  autocmd CursorHold <Buffer> update
+  autocmd CursorHoldI <Buffer> update
+  autocmd TabEnter <Buffer> update
 augroup END
 " }}}
 " Styling {{{
