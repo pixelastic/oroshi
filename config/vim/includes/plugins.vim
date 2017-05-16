@@ -8,6 +8,7 @@ call plug#begin('~/.vim/plugins')
 Plug 'danro/rename.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'pixelastic/vim-undodir-tree'
+Plug 'gioele/vim-autoswap'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-endwise'
