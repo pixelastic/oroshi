@@ -329,7 +329,7 @@ let g:syntastic_mode_map={ 'mode': 'passive',
                      \ 'active_filetypes': [
                        \ 'css', 'scss',
                        \ 'dockerfile',
-                       \ 'html',
+                       \ 'html', 'pug',
                        \ 'javascript',
                        \ 'json',
                        \ 'markdown',

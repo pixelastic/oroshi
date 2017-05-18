@@ -2,7 +2,7 @@
 " Using ## (as in ruby) for string interpolation
 inoremap <buffer> ## ${}<Left>
 
-" Folding
+" Folding {{{
 function! PugFoldExpr(lnum)
   if getline(a:lnum) =~? '\v^\s*$'
     return '-1'
@@ -23,3 +23,7 @@ function! PugFoldExpr(lnum)
 endfunction
 setlocal foldexpr=PugFoldExpr(v:lnum)  
 setlocal foldmethod=expr  
+" }}}
+" Linter {{{
+let b:syntastic_checkers = ['pug_lint']
+" }}}
