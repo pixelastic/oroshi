@@ -4,10 +4,10 @@ promptColor=(
 )
 
 # Directories {{{
-alias cdbooks='cd ~/perso/books'
+alias cdbooks='cd ~/Dropbox/backup/books'
 alias cdemu='cd ~/perso/emulation'
-alias cdrp='cd ~/perso/roleplay/'
-alias cdscenar='cd ~/perso/roleplay/scenarios/'
+alias cdrp='cd ~/Dropbox/backup/roleplay/'
+alias cdscenar='cd ~/Dropbox/backup/roleplay/scenarios/'
 # }}}
 
 # Music {{{
