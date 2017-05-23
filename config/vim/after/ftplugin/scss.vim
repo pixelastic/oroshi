@@ -19,9 +19,6 @@ setlocal foldmethod=syntax
 " }}}
 " Keybindings {{{
 nnoremap ss viB:sort<CR>
-" Common CSS rules
-inoremap <buffer> flr float: right;
-inoremap <buffer> fll float: left;
 " }}}
 " Cleaning the file {{{
 nnoremap <silent> <buffer> <F4> :call ScssClean()<CR>
