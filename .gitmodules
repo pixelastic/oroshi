@@ -27,3 +27,7 @@
 	path = scripts/bin/video
 	url = git@github.com:pixelastic/video.git
 	branch = master
+[submodule "config/ansible/galactica"]
+	path = config/ansible/galactica
+	url = git@bitbucket.org:pixelastic/ansible-galactica.git
+	branch = master
