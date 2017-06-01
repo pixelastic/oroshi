@@ -251,6 +251,14 @@ call s:Link('diffSubname', 'oroshi_Normal')
 call s:Link('diffBDiffer', 'oroshi_CodeInclude')
 " }}}
 
+" Ansible {{{
+call s:Link('jinjaVariable', 'oroshi_TextSpecial')
+call s:Link('jinjaOperator', 'oroshi_TextSpecial')
+call s:Link('jinjaAttribute', 'oroshi_TextSpecial')
+call s:Link('jinjaVarDelim', 'oroshi_TextSpecial')
+call s:Link('ansibleRepeat', 'oroshi_CodeChute')
+call s:Link('ansibleConditional', 'oroshi_CodeStatement')
+" }}}
 " CSS {{{
 call s:Link('sassClass', 'oroshi_CodeFunction')
 call s:Link('sassClassChar', 'oroshi_CodeFunction')
@@ -404,7 +412,10 @@ call s:Link('helpOption', 'oroshi_CodeSymbol')
 " }}}
 " YAML {{{
 call s:Link('yamlBlockMappingKey', 'oroshi_CodeType')
+call s:Link('yamlDelimiter', 'oroshi_Text')
 call s:Link('yamlKeyValueDelimiter', 'oroshi_Text')
+call s:Link('yamlKey', 'oroshi_CodeType')
+call s:Link('yamlNull', 'yamlScalar')
 call s:Link('yamlPlainScalar', 'oroshi_CodeString')
 " }}}
 " XML {{{

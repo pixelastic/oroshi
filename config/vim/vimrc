@@ -327,6 +327,7 @@ let g:syntastic_warning_symbol=' '
 let g:syntastic_style_warning_symbol=' '
 let g:syntastic_mode_map={ 'mode': 'passive',
                      \ 'active_filetypes': [
+                       \ 'ansible',
                        \ 'css', 'scss',
                        \ 'dockerfile',
                        \ 'html', 'pug',
