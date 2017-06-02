@@ -21,64 +21,41 @@ endfunction
 " }}}
 " Linters {{{
 let b:repo_root = GetRepoRoot()
-let b:eslint_enabled = 0
-let b:jscs_enabled = 0
-" Check which linters are currently enabled
-if filereadable(b:repo_root . '/.eslintrc')
-  let b:eslint_config = b:repo_root . '/.eslintrc'
+" ESLint {{{
+" We always use ESLint...
+let b:syntastic_checkers = ['eslint']
+" ...but we use the local version if one is defined
+if filereadable(b:repo_root . '/.eslintrc') || filereadable(b:repo_root . '/.eslintrc.js')
+  let b:syntastic_javascript_eslint_exec = StrTrim(system('npm-which eslint'))
 endif
-if filereadable(b:repo_root . '/.eslintrc.js')
-  let b:eslint_config = b:repo_root . '/.eslintrc.js'
-endif
-if exists('b:eslint_config')
-  let b:eslint_enabled = 1
-  let b:eslint_bin = StrTrim(system('npm-which eslint'))
-endif
-if filereadable(b:repo_root . '/.jscsrc')
-  let b:jscs_enabled = 1
-  let b:jscs_bin = StrTrim(system('npm-which jscs'))
-endif
-" Adding matching linters to syntastic
-let b:syntastic_checkers = []
-if b:eslint_enabled
-  let b:syntastic_javascript_eslint_exec = b:eslint_bin
-  let b:syntastic_checkers = b:syntastic_checkers + ['eslint']
-endif
-if b:jscs_enabled
-  let b:syntastic_javascript_jscs_exec = b:jscs_bin
-  let b:syntastic_checkers = b:syntastic_checkers + ['jscs']
-endif
-" Default to system-wide eslint if nothing configured
-if len(b:syntastic_checkers) == 0
-  let b:syntastic_checkers = b:syntastic_checkers + ['eslint']
-endif
-"}}}
-" Cleaning the file on F4 {{{
-nnoremap <silent> <F4> :call JavaScriptClean()<CR>
-inoremap <silent> <F4> <Esc>:call JavaScriptClean()<CR>li
 " }}}
-function! JavaScriptClean() 
-  " We save the current line, to be able to jump to it later
-  let linenr=line('.')
+" Prettier {{{
+" Reformat the file on F4...
+nnoremap <silent> <F4> :Neoformat<CR>
+inoremap <silent> <F4> <Esc>:Neoformat<CR>li
+" ...but also to it on each save if Prettier is defined in this repo
+let b:prettier_bin = 'eslint'
+let b:prettier_bin_local = StrTrim(system('npm-which prettier'))
+if b:prettier_bin_local != ''
+  let b:prettier_bin = b:prettier_bin_local
+  augroup javascript_prettier_format
+    autocmd!
+    autocmd BufWritePre <buffer> Neoformat
+  augroup END
+endif
 
-  let tmp_file = fnameescape(tempname().'.js')
-  let content = getline('1', '$')
+let g:neoformat_only_msg_on_error = 1
+let b:neoformat_enabled_javascript = ['prettier']
+let b:neoformat_javascript_prettier = {
+  \ 'exe': b:prettier_bin,
+  \ 'args': ['--single-quote', '--trailing-comma es5'],
+  \ 'stdin': 1,
+  \ }
 
-  " Save current content in a temporary file
-  call writefile(content, tmp_file)
-  " Apply eslint --fix on it
-  let command = b:eslint_bin.' -c '.b:eslint_config.' --fix '.tmp_file
-  call system(command)
 
-  " Read result and apply it to the current file
-  let result = readfile(tmp_file)
-  silent exec "1,$j"
-  call setline("1", result[0])
-  call append("1", result[1:])
 
-  execute 'normal '.linenr.'gg'
-endfunction
 " }}}
+
 " Keybindings {{{
 " $ù is easy to type on my keyboard. Use it for debug calls
 inoremap <buffer> $ù console.info(

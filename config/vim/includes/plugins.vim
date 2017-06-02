@@ -39,6 +39,7 @@ Plug 'vim-ruby/vim-ruby'
 " }}}
 " Enhancing vim workflow {{{
 Plug 'mattn/emmet-vim'
+Plug 'sbdchd/neoformat'
 Plug 'scrooloose/syntastic'
 " }}}
 " Git-related plugins {{{
