@@ -45,7 +45,7 @@ if b:prettier_bin_local != ''
 endif
 
 let g:neoformat_only_msg_on_error = 1
-let b:neoformat_enabled_javascript = ['prettier']
+let b:neoformat_enabled_javascript = ['prettiereslint']
 let b:neoformat_javascript_prettier = {
   \ 'exe': b:prettier_bin,
   \ 'args': ['--single-quote', '--trailing-comma es5'],
