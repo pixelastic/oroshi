@@ -16,18 +16,18 @@
   url = git@github.com:pixelastic/vit.git
   branch = master
 [submodule "scripts/bin/img"]
-	path = scripts/bin/img
-	url = git@github.com:pixelastic/img.git
-	branch = master
+  path = scripts/bin/img
+  url = git@github.com:pixelastic/img.git
+  branch = master
 [submodule "scripts/bin/pdf"]
-	path = scripts/bin/pdf
-	url = git@github.com:pixelastic/pdf.git
-	branch = master
+  path = scripts/bin/pdf
+  url = git@github.com:pixelastic/pdf.git
+  branch = master
 [submodule "scripts/bin/video"]
-	path = scripts/bin/video
-	url = git@github.com:pixelastic/video.git
-	branch = master
+  path = scripts/bin/video
+  url = git@github.com:pixelastic/video.git
+  branch = master
 [submodule "config/ansible/galactica"]
-	path = config/ansible/galactica
-	url = git@bitbucket.org:pixelastic/ansible-galactica.git
-	branch = master
+  path = config/ansible/galactica
+  url = git@bitbucket.org:pixelastic/ansible-galactica.git
+  branch = master
