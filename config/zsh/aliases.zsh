@@ -172,12 +172,11 @@ alias ufbx='sudo umount /home/tim/local/mnt/freebox'
 alias cdfbx='cd /home/tim/local/mnt/freebox'
 # }}}
 # Nginx {{{
-alias ngsta="ng start"
-alias ngsto="ng stop"
-alias ngrst="ng restart"
-alias ngpsta="ng --php start"
-alias ngpsto="ng --php stop"
-alias ngprst="ng --php restart"
+alias ngst="sudo systemctl status nginx"
+alias ngsta="sudo systemctl start nginx"
+alias ngsto="sudo systemctl stop nginx"
+alias ngrst="sudo systemctl restart nginx"
+alias ngrld="sudo systemctl reload nginx"
 # }}}
 #	Oroshi {{{
 alias oa="~/.oroshi/scripts/deploy/autostart"
