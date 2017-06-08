@@ -34,10 +34,12 @@ endif
 nnoremap <silent> <F4> :Neoformat<CR>
 inoremap <silent> <F4> <Esc>:Neoformat<CR>li
 " ...but also to it on each save if Prettier is defined in this repo
-let b:prettier_bin = 'eslint'
-let b:prettier_bin_local = StrTrim(system('npm-which prettier'))
-if b:prettier_bin_local != ''
-  let b:prettier_bin = b:prettier_bin_local
+let b:prettier_bin = 'prettier'
+let b:prettier_raw_local_check = system('npm-is-local prettier')
+let b:prettier_is_local = (v:shell_error == '0')
+
+if b:prettier_is_local
+  let b:prettier_bin = StrTrim(system('npm-which prettier'))
   augroup javascript_prettier_format
     autocmd!
     autocmd BufWritePre <buffer> Neoformat
