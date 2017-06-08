@@ -33,6 +33,7 @@ Plug 'kchmck/vim-coffee-script'
 Plug 'mxw/vim-jsx'
 Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
+Plug 'posva/vim-vue'
 Plug 'tmhedberg/SimpylFold' " Python folding
 Plug 'tpope/vim-markdown'
 Plug 'vim-ruby/vim-ruby'
