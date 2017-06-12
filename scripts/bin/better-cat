@@ -26,7 +26,7 @@ class BetterCat
     @files.each do |file|
       # Using img2term to display image
       if image?(file)
-        system("img2term #{arg.shellescape}")
+        system("img2term #{file.shellescape}")
         puts ''
         next
       end
