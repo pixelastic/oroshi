@@ -46,7 +46,7 @@ O_FILETYPES=(
 	executable  "wine:01;31:exe,so"
 	flash       "gui chromium-browser:01;34:swf"
 	font        "ls:01;33:eot,otf,svg,ttf,woff,woff2"
-	image       "gui eog:00;33:bmp,gif,ico,jpeg,jpg,png,tga,tiff,swf"
+	image       "ls:00;33:bmp,gif,ico,jpeg,jpg,png,tga,tiff,swf"
 	pdf         "gui evince:01;33:pdf"
 	psd         "ls:01;33:psd"
 	python      "python3:00;35:py"
