@@ -33,18 +33,18 @@ endif
 " Reformat the file on F4...
 nnoremap <silent> <F4> :Neoformat<CR>
 inoremap <silent> <F4> <Esc>:Neoformat<CR>li
-" ...but also to it on each save if Prettier is defined in this repo
+" " ...but also on each save if Prettier is defined in this repo
 let b:prettier_bin = 'prettier'
-let b:prettier_raw_local_check = system('npm-is-local prettier')
-let b:prettier_is_local = (v:shell_error == '0')
-
-if b:prettier_is_local
-  let b:prettier_bin = StrTrim(system('npm-which prettier'))
-  augroup javascript_prettier_format
-    autocmd!
-    autocmd BufWritePre <buffer> Neoformat
-  augroup END
-endif
+" let b:prettier_raw_local_check = system('npm-is-local prettier')
+" let b:prettier_is_local = (v:shell_error == '0')
+"
+" if b:prettier_is_local
+"   let b:prettier_bin = StrTrim(system('npm-which prettier'))
+"   augroup javascript_prettier_format
+"     autocmd!
+"     autocmd BufWritePre <buffer> Neoformat
+"   augroup END
+" endif
 
 let g:neoformat_only_msg_on_error = 1
 let b:neoformat_enabled_javascript = ['prettier']
