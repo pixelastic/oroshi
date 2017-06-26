@@ -4,6 +4,7 @@
 # Paths
 configDir=~/.oroshi/config/vim
 configFile=${configDir}/vimrc
+scriptsFile=${configDir}/scripts.vim
 destDir=~/.vim
 destFile=~/.vimrc
 
@@ -26,3 +27,6 @@ ln -fns $configDir/syntax $destDir/syntax
 
 # Vimrc
 ln -fs $configFile $destFile
+
+# Scripts (for file detection)
+ln -fs $scriptsFile $destDir/scripts.vim

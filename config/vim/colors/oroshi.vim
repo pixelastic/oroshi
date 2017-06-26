@@ -329,6 +329,10 @@ call s:Link('MarkdownCode', 'oroshi_CodeString')
 call s:Link('MarkdownCodeblock', 'oroshi_CodeString')
 call s:Link('MarkdownCodeDelimiter', 'oroshi_CodeString')
 " }}}
+" Pug {{{
+call s:Link('pugAttributes', 'oroshi_CodeType')
+call s:Link('pugTag', 'oroshi_CodeSymbol')
+" }}}
 " Ruby {{{
 call s:Link('rubyPseudoVariable', 'oroshi_CodeSelf')
 call s:Link('rubySymbol', 'oroshi_CodeSymbol')
