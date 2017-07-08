@@ -3,6 +3,8 @@
 require 'shellwords'
 require 'mp3info'
 
+# TODO: Check that mp3gain and eyeD3 are installed before running
+
 # Will apply, delete or read replaygain value from mp3 or ogg files.
 # Usage :
 #  $ replaygain file.mp3
