@@ -11,39 +11,54 @@ class MusicSync
       @is_dry_run = true
     end
 
-    @root = File.expand_path(args[0])
-    @dest = File.expand_path(args[1])
-
-    unless check_valid_dir(@root)
-      puts "#{@root} is not a valid directory"
-      exit 1
-    end
-    unless check_valid_dir(@dest)
+    @dest = File.expand_path(args[-1])
+    unless valid_dir?(@dest)
       puts "#{@dest} is not a valid directory"
       exit 1
     end
+
+    @src = marked_dirs(args[0..-2])
+    if @src.empty?
+      puts 'No directories found with a .musicmark file in it'
+      exit 1
+    end
   end
 
-  def check_valid_dir(path)
+  # Gets a list of all directories that have a .musicmark file in it
+  def marked_dirs(inputs)
+    output = []
+    # We take al the .musicmark path in those folders
+    inputs.each do |input|
+      input = File.expand_path(input)
+      next unless valid_dir?(input)
+      marked_files = Dir["#{input}/**/.musicmark"]
+      next if marked_files.empty?
+      output += marked_files.map { |file| File.dirname(file) }
+    end
+
+    output
+  end
+
+  # Check that the directory exists and is a directory
+  def valid_dir?(path)
     File.exist?(path) && File.directory?(path)
   end
 
-  def get_directories
-    Dir["#{@root}/**/.musicmark"].map { |path| File.dirname(path) }
+  # Return the path to the local musicroot, relative to any passed dir
+  def musicroot(dir)
+    return dir if File.exist?(File.join(dir, '.musicroot'))
+    musicroot(File.dirname(dir))
   end
 
   def copy_dir(src)
     # Add trailing slash
     src += '/' if src[-1] != '/'
 
-    puts src
-    relative_path = src.gsub(/^#{@root}/, '')
-    puts relative_path
-    dest_full_path = "#{@dest}#{relative_path}"
-    puts dest_full_path
-
     # Create the destination folder
-    FileUtils.mkdir_p(dest_full_path)
+    relative_path = src.gsub(/^#{musicroot(src)}/, '.')
+    puts "Copying #{relative_path}"
+    dest_path = File.expand_path(File.join(@dest, relative_path))
+    FileUtils.mkdir_p(dest_path)
 
     rsync_options = [
       '--verbose',
@@ -62,7 +77,7 @@ class MusicSync
       'rsync',
       rsync_options.join(' '),
       src.shellescape,
-      dest_full_path.shellescape
+      dest_path.shellescape
     ].join(' ')
 
     IO.popen(command).each do |line|
@@ -71,7 +86,7 @@ class MusicSync
   end
 
   def run
-    get_directories.each do |path|
+    @src.each do |path|
       copy_dir(path)
     end
   end
