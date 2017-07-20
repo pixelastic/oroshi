@@ -8,21 +8,12 @@ class BetterCat
     @files = args
   end
 
-  def json?(file)
-    File.extname(file).casecmp('.json').zero?
-  end
-
   def image?(file)
     images = ['.jpg', '.gif', '.png', '.ico']
     images.include?(File.extname(file).downcase)
   end
 
   def run
-    # If only one file, and is json, we use jid
-    if @files.length == 1 && json?(@files[0])
-      exec("jid < #{@files[0].shellescape}")
-    end
-
     @files.each do |file|
       # Using img2term to display image
       if image?(file)
