@@ -121,10 +121,6 @@ alias ec='ebook-convert'
 alias emu='ebook-metadata-update'
 alias em='ebook-meta'
 alias ev='ebook-viewer'
-function epub2mobi() {
-  ebook-convert $1 .mobi
-  ebook-metadata-update ${1:r}.mobi
-}
 alias pdf2jpg='pdf2img'
 alias pdf2png='pdf2img -png'
 # }}}
@@ -170,6 +166,11 @@ alias mm="music-mark"
 alias fbx='sudo mount -t cifs //mafreebox.freebox.fr/Disque\ dur/ /home/tim/local/mnt/freebox -o _netdev,guest,uid=1000,iocharset=utf8,file_mode=0777,dir_mode=0777'
 alias ufbx='sudo umount /home/tim/local/mnt/freebox'
 alias cdfbx='cd /home/tim/local/mnt/freebox'
+# }}}
+# Dropbox {{{
+alias dbsta='dropbox start'
+alias dbsto='dropbox stop'
+alias dbst='dropbox status'
 # }}}
 # Nginx {{{
 alias ngst="sudo systemctl status nginx"
