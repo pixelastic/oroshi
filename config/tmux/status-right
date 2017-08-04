@@ -2,6 +2,15 @@
 
 local output=''
 
+# Drobox status {{{
+local dropbox_status=''
+dropbox_status=`dropbox status`
+if [[ $dropbox_status == "Dropbox isn't running!" ]]; then
+  output="#[fg=colour160] #[default] $output"
+else
+  output="#[fg=colour35]#[default] $output"
+fi
+# }}}
 # Clock {{{
 local clock="$(date +'%a %d/%m %H:%M')"
 output="  $clock $output"
@@ -74,8 +83,5 @@ if cmus-is-running; then
   fi
 fi
 output="$currently_playing $output"
-# if [[ $music_is_running
-# local music_is_playing="$(cmus-data status)"
-# }}}
 
 echo $output
