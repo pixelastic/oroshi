@@ -92,6 +92,8 @@ set scrolloff=999
 " characters to define them.
 set nolist
 set listchars=nbsp:∅,tab:▸\ ,eol:↲,trail:·
+" Trying to visually highlight some pesky hidden characters
+match ExtraWhitespace /­./
 " Chars used for GUI
 set fillchars=stl:\ ,stlnc:\ ,vert:\|,fold:\ ,diff:-
 " }}}
