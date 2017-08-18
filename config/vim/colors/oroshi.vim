@@ -209,9 +209,9 @@ call s:Link('Pmenu', 'oroshi_UI')
 call s:Link('PmenuSbar', 'oroshi_UI')
 call s:Link('PmenuSel', 'oroshi_ModeSearch')
 " }}}
-" Pesky characters {{{
-call s:Highlight('ExtraWhitespace', 'darkred', 'darkred', 'bold')
-" }}}
+" " Pesky characters {{{
+" call s:Highlight('ExtraWhitespace', 'darkred', 'darkred', 'bold')
+" " }}}
 
 " Text {{{
 call s:Link('Noise', 'oroshi_Text')
