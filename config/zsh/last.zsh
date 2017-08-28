@@ -16,6 +16,7 @@ if [[ -r $rvmScript ]]; then
   else
     # We simply source the rvmScript otherwise
     source $rvmScript
+    rvm use 2.3.1 &>/dev/null
   fi
 fi
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -ex
 
 mkdir -p ~/.git
 ln -fs ~/.oroshi/config/git/hooks ~/.git/hooks

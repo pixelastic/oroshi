@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Unity tweaks
+sudo apt-get install compizconfig-settings-manager
+
 # Notification configuration
 sudo add-apt-repository ppa:leolik/leolik
 sudo apt update

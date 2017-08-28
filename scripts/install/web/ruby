@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
+set -ex
+
+sudo apt-get install curl
 
 # Install rvm
 # This should automatically install all needed Ubuntu dependencies
-gpg --import /home/$USER/.oroshi/private/config/pgp/mpapis.asc
+gpg --import "/home/$USER/.oroshi/private/config/pgp/mpapis.asc"
 curl -L https://get.rvm.io | bash -s stable --ruby
 # Don't forget to add the following line in ~/.zshrc
 # [[ -r $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
@@ -10,6 +13,7 @@ source ~/.rvm/scripts/rvm
 
 # Installing Ruby
 rvm install 2.3.1
+rvm use 2.3.1
 gem install bundler
 
 # Automatic prepending of bundle exec
