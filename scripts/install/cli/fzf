@@ -1,7 +1,8 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
+set -ex
 
 cd ~/local/src
 git clone git@github.com:junegunn/fzf.git
 cd ./fzf
-echo "If asked, confirm that you want to enable autocompletion (but not update your zshrc files"
+echo "If asked, confirm that you want to enable autocompletion (but not update your zshrc files)"
 ./install

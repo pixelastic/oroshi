@@ -9,6 +9,6 @@ cd ./redshift-1.10
 sudo apt-get install intltool
 ./configure --prefix="/home/$USER/local/"
 make
-make install
+sudo make install
 
 rm ~/local/src/redshift.tar.xz

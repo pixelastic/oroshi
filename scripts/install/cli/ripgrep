@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
+set -ex
 
 cd ~/local/tmp
-wget sudo apt-get install silversearcher-ag
 wget \
   "https://github.com/BurntSushi/ripgrep/releases/download/0.3.2/ripgrep-0.3.2-x86_64-unknown-linux-musl.tar.gz" \
   -O ripgrep.tar.gz
