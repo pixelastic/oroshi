@@ -1,6 +1,6 @@
 # Custom colors for this hostname
 promptColor=(
-	hostname	"033"
+	hostname	"248"
 )
 
 # Directories {{{
