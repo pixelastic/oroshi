@@ -2,4 +2,4 @@
 sudo apt-get install vim-gui-common
 
 # Vint, vim linter
-pip install vim-vint
+pip install --user vim-vint

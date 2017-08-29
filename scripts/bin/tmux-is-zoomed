@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Check if the current panel is maximized/zoomed/full screen
+
+tmux list-panes -F '#F' | grep -q Z

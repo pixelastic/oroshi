@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+sudo ln -fs \
+  ~/.oroshi/config/apt-get/aptget.conf \
+  /etc/apt/apt.conf.d/90oroshi
