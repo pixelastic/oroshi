@@ -5,6 +5,8 @@ set shuffle=false
 set repeat=false
 # Show elapsed time, not remaining
 set show_remaining_time=false
+# Oroshi colorscheme
+colorscheme oroshi
 # String format
 # Note: Seems like cmus 2.7 has issues with UTF8 chars. It fails to correctly
 # calculate the screen width when we add an UTF8 char, so we compensate with
