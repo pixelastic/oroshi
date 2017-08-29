@@ -3,27 +3,29 @@
 
 local name=$1
 local icon=''
-
-[[ $name == 'algolia' ]]  && icon=' '
+[[ $name == 'algolia' ]]  && icon=' '
 [[ $name == 'bg' ]]       && icon=' '
 [[ $name == 'blog' ]]     && icon=' '
 [[ $name == 'books' ]]    && icon=' '
+[[ $name == 'cmus' ]]     && icon=' '
 [[ $name == 'comics' ]]   && icon=' '
 [[ $name == 'dropbox' ]]  && icon=' '
 [[ $name == 'movies' ]]   && icon=' '
 [[ $name == 'music' ]]    && icon=' '
 [[ $name == 'oroshi' ]]   && icon=' '
 [[ $name == 'perso' ]]    && icon=' '
-[[ $name == 'projects' ]]  && icon=' '
+[[ $name == 'projects' ]] && icon=' '
 [[ $name == 'repo' ]]     && icon=' '
 [[ $name == 'roleplay' ]] && icon=' '
 [[ $name == 'server' ]]   && icon=' '
+[[ $name == 'speaker' ]]  && icon=' '
 [[ $name == 'support' ]]  && icon=' '
 [[ $name == 'terminal' ]] && icon=' '
 [[ $name == 'tmp' ]]      && icon=' '
 [[ $name == 'twitter' ]]  && icon=' '
 [[ $name == 'videos' ]]   && icon=' '
 [[ $name == 'vim' ]]      && icon=' '
+[[ $name == 'www' ]]      && icon=' '
 [[ $name == 'zsh' ]]      && icon=' '
 
 echo $icon

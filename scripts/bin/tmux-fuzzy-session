@@ -1,0 +1,96 @@
+#!/usr/bin/env ruby
+# Allow finding of a specific session through fuzzy matching
+
+class TmuxFuzzySession
+  # Getting a structure representing all the info we need about the current
+  # sessions and windows
+  def session_structure
+    raw = `tmux list-windows -a -F "#S:#I:#W"`
+    structure = {}
+    raw.each_line do |line|
+      session, index, window = line.strip.split(':')
+      structure[session] = {} unless structure.has_key?(session)
+      structure[session][window] = index
+    end
+    structure
+  end
+
+  # Getting the longest session name, to correctly align elements
+  def longest_key(structure)
+    longest = 0
+    structure.keys.each do |key|
+      longest = key.length if key.length > longest
+    end
+    longest
+  end
+
+  # Getting the icon for a specific session/window
+  def icon(name)
+    `~/.oroshi/config/tmux/helper-get-icon #{name}`.strip
+  end
+
+  # Getting a list of sessions, to be sent to fzf
+  def fzf_list(structure)
+    width = longest_key(structure)
+    output = []
+    structure.each do |session, windows|
+      icon_session = icon(session)
+      icon_session = " " if icon_session.empty?
+      session = session.rjust(width, ' ')
+      session = "#{icon_session} #{session}"
+
+      windows.each do |window, _|
+        icon_window = icon(window)
+        icon_window = " " if icon_window.empty?
+        output << "#{session}: #{icon_window} #{window}"
+      end
+    end
+    output.join("\n")
+  end
+
+  # Find matching session and window from selection
+  def parse_selection(selection)
+    regexp = /^.  *(.*): . (.*)$/i
+    matches = regexp.match(selection.strip)
+
+    # Return nothing if no matches (usually if cancelled with Ctrl-C)
+    return [false, false] unless matches
+
+    matches.captures
+  end
+
+  # Getting the correct fzf binary to call
+  # Seems like global environment variables are not passed the script so things
+  # like the $PATH or default FZF config has to be copy-pasted here.
+  def fzf_bin
+    fzf_options = [
+      '--color fg:249,bg:233,hl:203,fg+:234,bg+:203,hl+:255',
+      '--color info:136,prompt:203,pointer:233'
+    ]
+    "~/local/src/fzf/bin/fzf-tmux -u 100% --reverse -- #{fzf_options.join(' ')}"
+  end
+
+  def run
+    # Make it full screen if not yet full screen
+    need_zoom = !system("tmux-is-zoomed")
+    `tmux resize-pane -Z` if need_zoom
+
+    structure = session_structure
+    selected = `echo "#{fzf_list(structure)}" | #{fzf_bin}`
+
+    session, window = parse_selection(selected)
+
+    # Stop and do nothing if search was canceled
+    return unless session
+
+    index = structure[session][window]
+
+    # Change the main window of the session
+    `tmux select-window -t #{session}:#{index}`
+    # Revert the full screen if we changed it before
+    `tmux resize-pane -Z` if need_zoom
+    # Attach to that session
+    `tmux switch-client -t #{session}`
+  end
+end
+TmuxFuzzySession.new.run
