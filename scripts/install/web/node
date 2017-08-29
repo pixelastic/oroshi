@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
+set -e
 
 git clone git@github.com:creationix/nvm.git ~/.nvm
 source ~/.nvm/nvm.sh
 
-npm install -g gh
+nvm install stable
+npm install -g yarn
 
-# Installing easy server with live-reload
-cd ~/local/src
-git clone https://github.com/tapio/live-server
-cd ./live-server
-npm install -g
