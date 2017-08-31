@@ -4,6 +4,9 @@
 let g:ctrlp_cmd = 'CtrlP'
 " Show only 5 results
 let g:ctrlp_max_height = 5
+" Results are display at the bottom of the screen
+let g:ctrlp_match_window_bottom = 1
+let g:ctrlp_match_window_reversed = 0
 " Search by filepath and not just filename
 let g:ctrlp_by_filename = 0
 " Open found file after all tabs
