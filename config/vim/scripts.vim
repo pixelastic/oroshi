@@ -7,12 +7,8 @@ endif
 
 let firstline = getline(1)
 
-" Is a VueJS template
-if firstline =~ '^<template'
-  if firstline =~ 'pug'
-    setfiletype pug
-    finish
-  endif
-  setfiletype html
-else
-endif
+" Examples
+" if firstline =~ '^<template'
+"   setfiletype html
+"   finish
+" endif

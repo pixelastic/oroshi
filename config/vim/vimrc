@@ -333,7 +333,7 @@ let g:syntastic_mode_map={ 'mode': 'passive',
                        \ 'css', 'scss',
                        \ 'dockerfile',
                        \ 'html', 'pug',
-                       \ 'javascript',
+                       \ 'javascript', 'vue',
                        \ 'json',
                        \ 'markdown',
                        \ 'python',
@@ -343,6 +343,7 @@ let g:syntastic_mode_map={ 'mode': 'passive',
                        \ 'yaml'
                      \ ],
                      \ 'passive_filetypes': [] }
+
 " }}}
 " FILETYPES {{{
 " Load skeletons

@@ -295,6 +295,8 @@ call s:Link('gitconfigAssignment', 'oroshi_CodeString')
 call s:Link('htmlTag', 'oroshi_CodeStatement')
 call s:Link('htmlTagName', 'oroshi_CodeStatement')
 call s:Link('htmlEndTag', 'oroshi_CodeStatement')
+call s:Link('htmlSpecialTagName', 'oroshi_CodeStatement')
+call s:Link('htmlTagN', 'oroshi_CodeStatement')
 call s:Link('htmlH1', 'oroshi_Text')
 call s:Link('htmlItalic', 'oroshi_Text')
 call s:Link('htmlLink', 'oroshi_Text')
@@ -371,6 +373,9 @@ call s:Link('zshSubstDelim', 'oroshi_CodeVariable')
 call s:Link('shCommandSub', 'oroshi_CodeVariable')
 call s:Link('shCmdSubRegion', 'oroshi_CodeVariable')
 call s:Link('shQuote', 'oroshi_CodeString')
+" }}}
+" VueJS {{{
+call s:Link('vueSurroundingTag', 'oroshi_CodeStatement')
 " }}}
 " Vim {{{
 call s:Link('vimCommentTitle', 'oroshi_Warning')

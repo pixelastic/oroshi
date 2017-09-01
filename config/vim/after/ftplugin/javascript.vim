@@ -22,12 +22,8 @@ endfunction
 " Linters {{{
 let b:repo_root = GetRepoRoot()
 " ESLint {{{
-" We always use ESLint...
 let b:syntastic_checkers = ['eslint']
-" ...but we use the local version if one is defined
-if filereadable(b:repo_root . '/.eslintrc') || filereadable(b:repo_root . '/.eslintrc.js')
-  let b:syntastic_javascript_eslint_exec = StrTrim(system('npm-which eslint'))
-endif
+let b:syntastic_javascript_eslint_exec = StrTrim(system('npm-which eslint'))
 " }}}
 " Prettier {{{
 " Reformat the file on F4...

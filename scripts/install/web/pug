@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+set -e
+
+npm install -g pug-cli
+npm install -g pug-lint

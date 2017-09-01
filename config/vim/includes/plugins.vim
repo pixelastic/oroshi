@@ -26,7 +26,7 @@ Plug 'avakhov/vim-yaml'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'cespare/vim-toml'
 Plug 'chase/vim-ansible-yaml'
-Plug 'digitaltoad/vim-jade'
+Plug 'digitaltoad/vim-pug'
 Plug 'evanmiller/nginx-vim-syntax'
 Plug 'groenewege/vim-less'
 Plug 'hail2u/vim-css3-syntax'
@@ -42,7 +42,8 @@ Plug 'vim-ruby/vim-ruby'
 " Enhancing vim workflow {{{
 Plug 'mattn/emmet-vim'
 Plug 'sbdchd/neoformat'
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
+Plug '//home/tim/local/www/forks/syntastic'
 " }}}
 " Git-related plugins {{{
 Plug 'airblade/vim-gitgutter'
