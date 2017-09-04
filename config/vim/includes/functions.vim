@@ -49,6 +49,17 @@ function! StrDebug(str) " {{{
   endwhile
   echom r
 endfunction " }}}
+function! CloseBufferByFilepath(filepath) " {{{
+  let allBuffers = filter(range(0, bufnr('$')), 'buflisted(v:val)')
+  for bufferIndex in allBuffers
+    let bufferFilepath = fnamemodify(bufname(bufferIndex), ':p')
+    if bufferFilepath ==# a:filepath
+      execute 'bdelete '.bufferIndex
+    endif
+  endfor
+  " echom join(allBuffers, '/')
+endfunction
+" }}}
 
 " String methods
 function! StrTrim(txt) " {{{
@@ -275,3 +286,30 @@ function! FixEpub() " {{{
   nohl
   normal `z
 endfunction " }}}
+function! DeleteFile(...) " {{{
+  let specifiedFile = a:1
+
+  " Default to current file if none selected
+  if specifiedFile ==# ''
+    let specifiedFile = expand('%:p')
+  endif
+  let specifiedFile = fnamemodify(specifiedFile, ':p')
+
+  " No such file
+  if !filereadable(specifiedFile)
+    echoerr '✘ '.specifiedFile.' does not exists'
+    return
+  endif
+
+  let isDeleted = delete(specifiedFile)
+  if isDeleted == 0
+    echo '✓ '.specifiedFile.' deleted'
+  else
+    echoerr '✘ Error while deleting '.specifiedFile
+  endif
+
+  " Closing all opened buffers of this file
+  call CloseBufferByFilepath(specifiedFile)
+endfunction
+command! -complete=file -nargs=1 Delete call DeleteFile(<f-args>)
+" }}}
