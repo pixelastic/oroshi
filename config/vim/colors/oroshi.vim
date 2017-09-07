@@ -6,10 +6,10 @@
 set t_Co=256
 set background=dark
 hi clear
-if exists("syntax_on")
+if exists('syntax_on')
    syntax reset
 endif
-let g:colors_name = "oroshi"
+let g:colors_name = 'oroshi'
 " }}}
 " Highlighting function {{{
 " args : group, foreground, background, cterm
@@ -464,7 +464,7 @@ function! UpdateSearchColoring(...)
   " buftype is either empty or 'quickfix', and can be specifed as an argument
   let buftype = (a:0 == 1) ? a:1 : &buftype
 
-  if buftype == 'quickfix'
+  if buftype ==# 'quickfix'
     " Removing coloring in quickfix
     hi clear Search
     hi link Search NONE

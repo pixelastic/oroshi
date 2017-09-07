@@ -299,7 +299,6 @@ vnoremap <silent> md :!markdown<CR>
 " Increment/Decrement number under cursor
 nnoremap <C-J> <C-X>
 nnoremap <C-K> <C-A>
-" Align selection on pipes
 " Align selection on spaces
 vnoremap <Space> :call AlignVisualSelectionOnSpaces()<CR>
 function! AlignVisualSelectionOnSpaces()
