@@ -49,7 +49,7 @@ function! StrDebug(str) " {{{
   echom r
 endfunction " }}}
 function! CloseBufferByFilepath(filepath) " {{{
-  let allBuffers = filter(range(0, bufnr('$')), 'buflisted(v:val)')
+  let allBuffers = filter(range(1, bufnr('$')), 'buflisted(v:val)')
   for bufferIndex in allBuffers
     let bufferFilepath = fnamemodify(bufname(bufferIndex), ':p')
     if bufferFilepath ==# a:filepath
