@@ -1,3 +1,4 @@
+scriptencoding utf-8
 " Helpers
 function! GetRepoRoot() " {{{
   " Use caching
@@ -9,7 +10,7 @@ function! GetRepoRoot() " {{{
 
   " Check if git
   let gitRoot = system('cd '.workingDir.' && git rev-parse --show-toplevel')
-  if gitRoot !~ '^fatal'
+  if gitRoot !~# '^fatal'
     let b:repoRoot = StrTrim(gitRoot)
     return b:repoRoot
   endif
@@ -33,13 +34,11 @@ command! -nargs=1 GDebug call GDebug(<q-args>)
 function! StrDebug(str) " {{{
   let str=a:str
   let bytes=strlen(str)
-  let length=strlen(substitute(str, ".", "x", "g"))
-  let pouet=FourHighBytesInARow(str)
-  echom " "
-  echom "String: [".str."]"
-  echom "Length: ".length
-  echom "Bytes:  ".bytes
-  echom "Pouet?: ".pouet
+  let length=strlen(substitute(str, '.', 'x', 'g'))
+  echom ' '
+  echom 'String: ['.str.']'
+  echom 'Length: '.length
+  echom 'Bytes:  '.bytes
 
   let i=0
   let r=''
@@ -54,10 +53,9 @@ function! CloseBufferByFilepath(filepath) " {{{
   for bufferIndex in allBuffers
     let bufferFilepath = fnamemodify(bufname(bufferIndex), ':p')
     if bufferFilepath ==# a:filepath
-      execute 'bdelete '.bufferIndex
+      execute 'bdelete! '.bufferIndex
     endif
   endfor
-  " echom join(allBuffers, '/')
 endfunction
 " }}}
 
@@ -82,7 +80,7 @@ function! StrUncomment(txt) " {{{
   endif
 
   " Remove folding marker
-  if (&foldmethod == 'marker')
+  if (&foldmethod ==# 'marker')
     let foldmarkers = split(&foldmarker, ',')
     let foldmarkers[0] = escape(foldmarkers[0], '*')
 
@@ -104,7 +102,7 @@ function! StrLength(txt) " {{{
   " Return the number of chars in a string.
   " Note: This is different from strlen() as strlen() returns the number of
   " bytes, which is very different for utf-8 encoding.
-  return strlen(substitute(a:txt, ".", "x", "g"))
+  return strlen(substitute(a:txt, '.', 'x', 'g'))
 endfunction " }}}
 function! SeemsLatin1InUTF8(str) " {{{
   " Note: When a Windows-1252 (known as ISO-8859-1) is encoded in UTF-8, it
@@ -162,36 +160,36 @@ endfunction
 
 " Commands
 function! RemoveTrailingSpaces() " {{{
-  normal mz
+  normal! mz
   silent! %s/\s\+$//g
   nohl
-  normal `z
+  normal! `z
 endfunction
 command! RemoveTrailingSpaces call RemoveTrailingSpaces()
 " }}}
 function! IndentWithSpaces() " {{{
-  normal mz
+  normal! mz
   " Replace all tabs used for indentation with the same number of spaces
   silent! execute '%s/\v^\s+/\=substitute(submatch(0),"\t",repeat(" ", &tabstop),"g")'
   " Remove any leftover
   silent! execute '%s/\v^+/\=repeat(" ",len(submatch(0))-(len(submatch(0))%&tabstop))'
   nohl
-  normal `z
+  normal! `z
 endfunction
 command! IndentWithSpaces call IndentWithSpaces()
 " }}}
 function! IndentWithTabs() " {{{
-  normal mz
+  normal! mz
   " Indent first with spaces, then convert to tabs
   silent! call IndentWithSpaces()
   silent! execute '%s_\v^ +_\=repeat("\t",len(submatch(0))/&tabstop)'
   nohl
-  normal `z
+  normal! `z
 endfunction
 command! IndentWithTabs call IndentWithTabs()
 " }}}
 function! ConvertLineEndingsToUnix() " {{{
-  if &modifiable==0 || expand('%') == '' || !filereadable(expand('%'))
+  if &modifiable==0 || expand('%') ==# '' || !filereadable(expand('%'))
     return
   endif
   update
@@ -212,13 +210,13 @@ command! ConvertLineEndingsToDos call ConvertLineEndingsToDos()
 " }}}
 function! ConvertWindowsCharacters() " {{{
   " Note: To type a special char like <92> in vim, press <C-V>x92
-  normal mz
+  normal! mz
   silent! %s//'/
   silent! %s//"/
   silent! %s//"/
   silent! %s//.../
   nohl
-  normal `z
+  normal!`z
 endfunction
 command! ConvertWindowsCharacters call ConvertWindowsCharacters()
 " }}}
@@ -284,7 +282,7 @@ function! FixEpub() " {{{
   " Marking each heading as a chapter
   " silent! %s/\v^([^#]{2}\L+)$/## \1/e
   nohl
-  normal `z
+  normal! `z
 endfunction " }}}
 function! DeleteFile(...) " {{{
   let specifiedFile = a:1
