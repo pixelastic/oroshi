@@ -311,3 +311,8 @@ function! DeleteFile(...) " {{{
 endfunction
 command! -complete=file -nargs=1 Delete call DeleteFile(<f-args>)
 " }}}
+function! RunCurrentFile() " {{{
+  execute ':!%:p'
+endfunction
+command! Run call RunCurrentFile()
+" }}}
