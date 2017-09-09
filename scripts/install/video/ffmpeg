@@ -7,56 +7,22 @@ echo "Installing ffmpeg from source"
 cd ~/local/etc
 git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg
 
-
-echo "Downloading some libs"
-sudo apt-get install libgsm1-dev \
-                    libdc1394-22 \
-                    libdc1394-22-dev \
-                    libgsm1 \
-                    libgsm1-dev \
-                    libass-dev \
-                    libopenjpeg-dev \
-                    libschroedinger-1.0-0 \
-                    libschroedinger-dev \
-                    libschroedinger-doc \
-                    libspeex-dev \
-                    libfaac-dev \
-                    libmp3lame-dev \
-                    libopencore-amrnb-dev \
-                    libopencore-amrwb-dev \
-                    libsdl1.2-dev \
-                    libtheora-dev \
-                    libvorbis-dev \
-                    libx11-dev \
-                    libxfixes-dev \
-                    libxvidcore-dev \
-                    libvpx-dev \
-                    libx264-dev \
-                    yasm
+echo "Downloading needed libs"
+sudo apt-get install yasm
+sudo apt-get install libxvidcore-dev # For --enable-gpl
+sudo apt-get install libmp3lame-dev
+sudo apt-get install libtheora-dev
+sudo apt-get install libvorbis-dev
 
 cd ./ffmpeg
+# --enable-gpl needed for --enable-libxvid
 ./configure \
   --prefix=/home/$USER/local/ \
-  --enable-fontconfig \
-  --enable-gpl \
-  --enable-libass \
-  --enable-libdc1394 \
-  --enable-libfaac \
-  --enable-libgsm \
   --enable-libmp3lame \
-  --enable-libopencore-amrnb \
-  --enable-libopencore-amrwb \
-  --enable-libopenjpeg \
-  --enable-libschroedinger \
-  --enable-libspeex \
   --enable-libtheora \
   --enable-libvorbis \
-  --enable-libvpx \
-  --enable-libx264 \
+  --enable-gpl \
   --enable-libxvid \
-  --enable-nonfree \
-  --enable-postproc \
-  --enable-version3 \
-  --enable-x11grab 
+  --enable-nonfree
 make
 make install
