@@ -31,3 +31,7 @@
   path = config/ansible/galactica
   url = git@bitbucket.org:pixelastic/ansible-galactica.git
   branch = master
+[submodule "scripts/bin/convert"]
+	path = scripts/bin/convert
+	url = git@github.com:pixelastic/convert.git
+	branch = master
