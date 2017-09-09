@@ -1,4 +1,4 @@
-#compdef md2epub md2mobi md2html
+#compdef md2epub md2mobi mkd2pub mkd2mobi md2html mkd2html
 # - Will only suggest .md files
 
 _ft-md () {

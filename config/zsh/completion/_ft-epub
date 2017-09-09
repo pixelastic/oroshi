@@ -1,4 +1,4 @@
-#compdef epub2md epub2mobi
+#compdef epub2md epub2mobi epub2mkd
 # - Will only suggest .epub files
 
 _ft-epub () {
