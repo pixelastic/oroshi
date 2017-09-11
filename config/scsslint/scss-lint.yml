@@ -1,12 +1,28 @@
 # Defaults : https://github.com/brigade/scss-lint/blob/master/config/default.yml
 linters:
 
+  EmptyLineBetweenBlocks:
+    enabled: false
+
+  # Hexadecimal in colors should be uppercase
+  HexNotation:
+    enabled: true
+    style: uppercase
+
   # Do not allow #selector in CSS
   IdSelector:
     enabled: false
 
-  EmptyLineBetweenBlocks:
-    enabled: false
+  # Remove leading zero in units
+  LeadingZero:
+    enabled: true
+
+  # Allow $my-variable as well as $MY_CONSTANT
+  NameFormat:
+    enabled: rue
+    allow_leading_underscore: true
+    style: exclude_zero
+    convention: '(^[A-Z0-9_]+$)|(^[a-z0-9-]+$)'
 
   # Do not allow overqualifying an element
   QualifyingElement:
@@ -21,18 +37,9 @@ linters:
     enabled: true
     convention: 'hyphenated_BEM'
 
-  # Hexadecimal in colors should be uppercase
-  HexNotation:
+  # Using double-quotes
+  StringQuotes:
     enabled: true
-    style: uppercase
+    style: double_quotes
+ 
 
-  # Remove leading zero in units
-  LeadingZero:
-    enabled: true
-    style: exclude_zero
-
-  # Allow $my-variable as well as $MY_CONSTANT
-  NameFormat:
-    enabled: rue
-    allow_leading_underscore: true
-    convention: '(^[A-Z0-9_]+$)|(^[a-z0-9-]+$)'
