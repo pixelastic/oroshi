@@ -1,0 +1,31 @@
+{
+    "usageCount": 0, 
+    "omitTrigger": false, 
+    "prompt": false, 
+    "description": "Algolia", 
+    "abbreviation": {
+        "wordChars": "[\\w]", 
+        "abbreviations": [
+            "aloglia"
+        ], 
+        "immediate": true, 
+        "ignoreCase": true, 
+        "backspace": true, 
+        "triggerInside": false
+    }, 
+    "hotkey": {
+        "hotKey": null, 
+        "modifiers": []
+    }, 
+    "modes": [
+        1
+    ], 
+    "showInTrayMenu": false, 
+    "matchCase": true, 
+    "filter": {
+        "regex": null, 
+        "isRecursive": false
+    }, 
+    "type": "phrase", 
+    "sendMode": "kb"
+}
