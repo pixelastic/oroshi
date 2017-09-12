@@ -2,47 +2,48 @@
 require 'shellwords'
 require 'date'
 
+# Create a new Jekyll post with given name
 class MkPost
   def initialize(title)
     @title = title
-
   end
 
-  def get_filename
-    date_prefix = DateTime.now.strftime("%Y-%m-%d")
+  def filename
+    date_prefix = DateTime.now.strftime('%Y-%m-%d')
     title_suffix = @title.downcase
-    title_suffix = title_suffix.gsub(' ?','')
-    title_suffix = title_suffix.gsub(' ', '-')
-    title_suffix = title_suffix.gsub(',','')
-    title_suffix = title_suffix.gsub('#','')
-    title_suffix = title_suffix.gsub('é','e')
-    title_suffix = title_suffix.gsub('à','a')
+    title_suffix = title_suffix.gsub(' ?', '')
+    title_suffix = title_suffix.tr('.', '-')
+    title_suffix = title_suffix.tr(' ', '-')
+    title_suffix = title_suffix.tr(',', '')
+    title_suffix = title_suffix.tr('#', '')
+    title_suffix = title_suffix.tr('é', 'e')
+    title_suffix = title_suffix.tr('à', 'a')
     "#{date_prefix}-#{title_suffix}.md"
   end
 
-  def get_header
-    ["---",
-     "layout: post",
-     "title: \"#{@title}\"",
-     "tags:",
-     "---"
+  def header
+    [
+      '---',
+      'layout: post',
+      'title: \"#{@title}\"',
+      'tags:',
+      '---'
     ].join("\n")
   end
 
   def run
     basename = File.basename(File.expand_path('.'))
-    unless ['_posts', '_drafts'].include?(basename)
+    unless %w[_posts _drafts].include?(basename)
       puts "You're not in a _posts or _drafts subfolder"
       exit
     end
 
-    filename = File.expand_path(get_filename)
+    filename = File.expand_path(filename)
     File.open(filename, 'w') do |file|
-      file.write(get_header)
+      file.write(header)
     end
 
     exec "vim #{filename.shellescape}"
   end
-
 end
-  MkPost.new(*ARGV).run()
+MkPost.new(*ARGV).run
