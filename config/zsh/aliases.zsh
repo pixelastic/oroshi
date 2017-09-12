@@ -80,6 +80,8 @@ alias extension-list="find . -type f | awk -F'.' '{print \$NF}' | sort| uniq -c 
 alias guard='guard --clear'
 # Check connectivity
 alias p8='ping 8.8.8.8'
+# Edit the journal entries
+alias jrnle='jrnl --edit'
 # }}}
 # Download {{{
 alias pd='plowdown'
