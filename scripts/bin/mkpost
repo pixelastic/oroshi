@@ -8,7 +8,7 @@ class MkPost
     @title = title
   end
 
-  def filename
+  def filename_from_title(title)
     date_prefix = DateTime.now.strftime('%Y-%m-%d')
     title_suffix = @title.downcase
     title_suffix = title_suffix.gsub(' ?', '')
@@ -18,14 +18,14 @@ class MkPost
     title_suffix = title_suffix.tr('#', '')
     title_suffix = title_suffix.tr('é', 'e')
     title_suffix = title_suffix.tr('à', 'a')
-    "#{date_prefix}-#{title_suffix}.md"
+    File.expand_path("#{date_prefix}-#{title_suffix}.md")
   end
 
   def header
     [
       '---',
       'layout: post',
-      'title: \"#{@title}\"',
+      "title: \"#{@title}\"",
       'tags:',
       '---'
     ].join("\n")
@@ -38,7 +38,7 @@ class MkPost
       exit
     end
 
-    filename = File.expand_path(filename)
+    filename = filename_from_title(@title)
     File.open(filename, 'w') do |file|
       file.write(header)
     end
