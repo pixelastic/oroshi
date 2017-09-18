@@ -1,4 +1,0 @@
-#!/usr/bin/env ruby
-require_relative '../etc/doxie-extract/doxie-extract.rb'
-DoxieExtract.new(*ARGV).run()
-
