@@ -311,6 +311,8 @@ endfunction
 "
 " Sort selection (using version sort)
 vnoremap s :!sort -V<CR>
+" Remove duplicate lines
+vnoremap u :sort u<CR>
 " }}}
 " PLUGINS {{{
 " Preventing Align from loading the whole list of its mappings
