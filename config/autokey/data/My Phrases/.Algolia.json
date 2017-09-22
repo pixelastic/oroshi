@@ -1,5 +1,5 @@
 {
-    "usageCount": 0, 
+    "usageCount": 15, 
     "omitTrigger": false, 
     "prompt": false, 
     "description": "Algolia", 
@@ -11,7 +11,7 @@
         "immediate": true, 
         "ignoreCase": true, 
         "backspace": true, 
-        "triggerInside": false
+        "triggerInside": true
     }, 
     "hotkey": {
         "hotKey": null, 

@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 local here=`pwd`
-local node_root=`node-root-path`
+local node_root="$(npm root)/.."
+echo $node_root
 local run_command=$@
 
 cd $node_root \
