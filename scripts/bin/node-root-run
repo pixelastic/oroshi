@@ -1,9 +1,9 @@
-#!/usr/bin/env zsh
-local here=`pwd`
-local node_root="$(npm root)/.."
-echo $node_root
-local run_command=$@
+#!/usr/bin/env sh
+set -e
+here="$(pwd)"
+node_modules="$(npm root)"
+node_root="$(dirname "$node_modules")"
 
-cd $node_root \
-  && eval $run_command \
-  && cd $here
+cd "$node_root"
+eval "$@"
+cd "$here"

@@ -6,7 +6,7 @@
             "<shift>", 
             "<super>"
         ], 
-        "enabled": true
+        "enabled": false
     }, 
     "settings": {
         "showTrayIcon": true, 
@@ -40,6 +40,6 @@
         "modifiers": [
             "<super>"
         ], 
-        "enabled": true
+        "enabled": false
     }
 }
