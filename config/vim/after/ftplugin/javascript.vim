@@ -82,7 +82,3 @@ inoremap <buffer> iit it('', () => {<CR>// Given<CR>When<CR>Then<CR><Esc>Vc<BS>}
 inoremap <buffer> cnt context('', () => {});kllllllli
 inoremap <buffer> dsc describe('', () => {});klllllllli
 " }}}
-" ES6 {{{
-" Enable JSX syntax highlight in javascript files
-let g:jsx_ext_required = 0
-" }}}

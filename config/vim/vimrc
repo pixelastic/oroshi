@@ -177,10 +177,11 @@ set textwidth=80
 " Create two format modes, for code and for text
 " c : Comments are wrapped based on textwidth
 " r : New line in comment is a comment when pressing <Enter>
+" o : New line in comment is a comment when pressing 'o'
 " n : Handles list while formatting
 " q : Comments can be re-wrapped using gq
 " 1 : Do not end lines with one-char words
-set formatoptions=crnq1
+set formatoptions=cronq1
 " We make sure that backspace in insert mode can delete new lines and tabs
 set backspace=indent,eol,start
 " Format whole paragraph
