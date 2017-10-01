@@ -2,7 +2,7 @@
 require 'json'
 require 'open3'
 
-root = Open3.capture3('git root')[0].strip
+root = File.dirname(Open3.capture3('npm root')[0].strip)
 package = "#{root}/package.json"
 exit 0 unless File.exist?(package)
 
