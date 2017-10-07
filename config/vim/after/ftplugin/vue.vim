@@ -39,6 +39,7 @@ function! VueBeautify()
   call delete(l:tempFile)
   echom 'File fixed!'
   execute 'normal '.initialLine.'gg'
+  SyntasticCheck()
 endfunction
 " }}}
 " Keybindings {{{

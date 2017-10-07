@@ -27,7 +27,7 @@ module.exports = {
     'selector-pseudo-class-no-unknown': true,
     'selector-pseudo-element-no-unknown': true,
     'selector-type-no-unknown': true,
-    'string-quotes': 'single',
+    'string-quotes': 'double',
     'shorthand-property-no-redundant-values': true,
     'string-no-newline': true,
     'unit-no-unknown': true,

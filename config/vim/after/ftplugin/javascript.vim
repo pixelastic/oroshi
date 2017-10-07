@@ -30,6 +30,7 @@ function! JavascriptBeautify()
   let l:initialLine = line('.')
   execute '%!eslint_d --stdin --fix-to-stdout'
   execute 'normal '.initialLine.'gg'
+  SyntasticCheck()
 endfunction
 " }}}
 
