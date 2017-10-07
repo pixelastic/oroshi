@@ -6,6 +6,7 @@ npm install -g clean-css
 echo "Linter: Stylelint"
 npm install -g stylelint
 npm install -g stylelint-config-standard
+npm install -g stylelint-scss
 
 echo "Prettifier: Prettier"
 npm install -g prettier

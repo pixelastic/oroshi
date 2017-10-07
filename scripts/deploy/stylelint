@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
 ln -fs ~/.oroshi/config/stylelint/stylelintrc.js ~/.stylelintrc.js
+ln -fs ~/.oroshi/config/stylelint/stylelintrc.scss.js ~/.stylelintrc.scss.js

@@ -13,7 +13,15 @@ setlocal softtabstop=2
 setlocal expandtab
 " }}}
 " Linting {{{
-let b:syntastic_checkers = ['stylelint']
+let b:syntastic_checkers = ['sass', 'stylelint']
+
+" If stylelint is not present in this repo, we use the global config
+call  system('npm-is-local stylelint')
+if (v:shell_error)
+  let b:syntastic_scss_stylelint_args = '
+  \--config ~/.stylelintrc.scss.js 
+  \--config-basedir ~/.config/yarn/global'
+endif
 " }}}
 " Cleaning {{{
 inoremap <silent> <buffer> <F4> <Esc>:call SCSSBeautify()<CR><CR>
@@ -27,4 +35,6 @@ endfunction
 " }}}
 " Keybindings {{{
 nnoremap ss viB:sort<CR>
+" Using ## (as in ruby) for string interpolation
+inoremap <buffer> ## #{$}<Left>
 " }}}
