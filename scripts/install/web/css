@@ -1,10 +1,18 @@
 #!/usr/bin/env bash
 
-echo "Installing CSSLint"
-npm install -g csslint
-
-echo "Installing CSSMin"
+echo "Minifier: CleanCSS"
 npm install -g clean-css
+
+echo "Linter: Stylelint"
+npm install -g stylelint
+npm install -g stylelint-config-standard
+
+echo "Prettifier: Prettier"
+npm install -g prettier
+
+echo "Installing Sass"
+gem install sass
+gem install scss_lint
 
 echo "Installing sass2scss"
 cd ~/local/src

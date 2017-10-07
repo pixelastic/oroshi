@@ -28,6 +28,7 @@ function! VueBeautify()
 
   " Fixing the copied file
   let eslintCommand = b:eslint_bin.' '.l:tempFile.' --fix'
+  echom eslintCommand
   call system(eslintCommand)
   let eslintStatus = v:shell_error
 

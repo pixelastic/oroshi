@@ -1,6 +1,6 @@
-" Syntastic {{{
-let g:syntastic_scss_checkers = ['scss_lint']
-"}}}
+" Linting {{{
+let b:syntastic_checkers = ['stylelint']
+" }}}
 " Misc {{{
 " Remove - and _ from delimiters
 setlocal iskeyword=@,48-57,192-255

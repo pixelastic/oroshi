@@ -3,24 +3,19 @@
 echo "Installing yarn to replace npm"
 npm install -g yarn
 
-echo "Installing jshint"
-npm install -g jshint
-
-echo "Installing eslint"
+echo "Linter: Eslint"
 npm install -g eslint
-npm install -g eslint-plugin-react
-npm install -g eslint-config-airbnb
 npm install -g eslint-config-algolia
+npm install -g eslint-config-prettier
+npm install -g eslint-plugin-import
+npm install -g eslint-plugin-prettier
 npm install -g babel-eslint
 
-echo "Installing jscs"
-npm install -g jscs
+echo "Prettifier: Prettier"
+npm install -g prettier
 
-echo "Installing jsmin/uglifyjs"
+echo "Minifier: Uglifyjs"
 npm install -g uglify-js
-
-echo "Installing jsbeautify"
-npm install -g js-beautify
 
 
 
