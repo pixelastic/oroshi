@@ -39,9 +39,13 @@ endfunction
 inoremap <buffer> $ù console.info(
 " Using ## (as in ruby) for string interpolation
 inoremap <buffer> ## ${}<Left>
-" context, beforeEach and it
+" Test boilerplat
 inoremap <buffer> bfe beforeEach(() => {});ko
 inoremap <buffer> iit it('', () => {<CR>// Given<CR>When<CR>Then<CR><Esc>Vc<BS>});4k2li
 inoremap <buffer> cnt context('', () => {});kllllllli
 inoremap <buffer> dsc describe('', () => {});klllllllli
+inoremap <buffer> ccact const actual = 
+inoremap <buffer> ccinp const input = 
+inoremap <buffer> mrv mockReturnValue()i
+inoremap <buffer> jsp jest.spyOn()i
 " }}}
