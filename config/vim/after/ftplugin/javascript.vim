@@ -48,4 +48,5 @@ inoremap <buffer> ccact const actual =
 inoremap <buffer> ccinp const input = 
 inoremap <buffer> mrv mockReturnValue()i
 inoremap <buffer> jsp jest.spyOn()i
+inoremap <buffer> tthen then(() => {});ko
 " }}}
