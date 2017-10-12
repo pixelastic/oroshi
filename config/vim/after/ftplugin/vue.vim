@@ -38,6 +38,9 @@ function! VueBeautify()
   call delete(l:tempFile)
   echom 'File fixed!'
   execute 'normal '.initialLine.'gg'
+
+  " As this can mess the syntax highlight, we force it back
+  syntax sync fromstart
 endfunction
 " }}}
 " Keybindings {{{
@@ -46,3 +49,6 @@ inoremap <buffer> $ù console.info(
 " Using ## (as in ruby) for string interpolation
 inoremap <buffer> ## ${}<Left>
 " }}
+" Syntax Highlighting {{{
+syntax sync fromstart
+" }}}
