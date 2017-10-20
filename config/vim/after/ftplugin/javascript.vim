@@ -41,6 +41,7 @@ inoremap <buffer> $ù console.info(
 inoremap <buffer> ## ${}<Left>
 " Test boilerplat
 inoremap <buffer> bfe beforeEach(() => {});ko
+inoremap <buffer> aftee afterEach(() => {});ko
 inoremap <buffer> iit it('', () => {<CR>// Given<CR>When<CR>Then<CR><Esc>Vc<BS>});4k2li
 inoremap <buffer> cnt context('', () => {});kllllllli
 inoremap <buffer> dsc describe('', () => {});klllllllli
@@ -49,4 +50,9 @@ inoremap <buffer> ccinp const input =
 inoremap <buffer> mrv mockReturnValue()i
 inoremap <buffer> jsp jest.spyOn()i
 inoremap <buffer> tthen then(() => {});ko
+inoremap <buffer> @pars @param {String} 
+inoremap <buffer> @parb @param {Boolean} 
+inoremap <buffer> @rets @returns {String} 
+inoremap <buffer> @retp @returns {Promise} 
+inoremap <buffer> @retps @returns {Promise.<String>} 
 " }}}
