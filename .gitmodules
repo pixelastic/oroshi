@@ -35,3 +35,7 @@
 	path = scripts/bin/convert
 	url = git@github.com:pixelastic/convert.git
 	branch = master
+[submodule "config/zsh/plugins/zsh-nvm"]
+	path = config/zsh/plugins/zsh-nvm
+	url = git@github.com:lukechilds/zsh-nvm.git
+	branch = master

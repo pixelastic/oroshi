@@ -314,6 +314,10 @@ function getRubyIndicator() {
 # }}}
 
 # Node {{{
+# If we're not using the correct node version, then the correct version will be
+# displayed in red
+# If we're using a non-default version, then this version will be displayed in
+# grey
 function getNodeIndicator() {
   # No nvm
   if ! which nvm &>/dev/null; then

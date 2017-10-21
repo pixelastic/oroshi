@@ -1,12 +1,11 @@
-# Start nvm if nvm is installed
-export NVM_DIR="$HOME/.nvm"
-if [[ -s "$NVM_DIR/nvm.sh" ]]; then
-  source "$NVM_DIR/nvm.sh"
-  # Installing packages globally with `npm install -g` correctly put them in the
-  # nvm binary folder
-  # Installing the same with yarn will put them all in $(yarn global bin)
-  # https://github.com/yarnpkg/yarn/issues/1321
-  if command -v yarn > /dev/null; then
-    export PATH=$PATH:~/.config/yarn/global/node_modules/.bin
-  fi
+# Usin the zsh-nvm plugin to auto load nvm when changing directories. nvm will
+# also be loaded only when needed
+export NVM_LAZY_LOAD=true
+export NVM_AUTO_USE=true
+source ~/.oroshi/config/zsh/plugins/zsh-nvm/zsh-nvm.plugin.zsh
+
+
+# Adding yarn globally installed modules to path
+if command -v yarn > /dev/null; then
+  export PATH=$PATH:"$(yarn global bin)"
 fi
