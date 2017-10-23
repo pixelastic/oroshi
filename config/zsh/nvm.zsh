@@ -1,6 +1,4 @@
-# Usin the zsh-nvm plugin to auto load nvm when changing directories. nvm will
-# also be loaded only when needed
-export NVM_LAZY_LOAD=true
+# Usin the zsh-nvm plugin to auto load nvm when changing directories.
 export NVM_AUTO_USE=true
 source ~/.oroshi/config/zsh/plugins/zsh-nvm/zsh-nvm.plugin.zsh
 
