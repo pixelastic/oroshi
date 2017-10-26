@@ -9,4 +9,4 @@ unzip -j "./giflossy.zip" "linux/gifsicle-static" -d ~/local/bin
 mv ~/local/bin/gifsicle-static ~/local/bin/gifsicle
 
 # Converting images to gif
-npm install -g gifify
+yarn global add gifify

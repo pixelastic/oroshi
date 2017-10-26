@@ -5,13 +5,15 @@ cd ~/local/src
 git clone https://github.com/naelstrof/slop.git
 cd slop
 # Dependencies
-sudo apt-get install libxext-dev
-sudo apt-get install libpng-dev
-sudo apt-get install libimlib2-dev
 sudo apt-get install libglew-dev
-sudo apt-get install libxrender-dev
-sudo apt-get install libxrandr-dev
 sudo apt-get install libglm-dev
+sudo apt-get install libimlib2-dev
+sudo apt-get install libegl1-mesa-dev
+sudo apt-get install libpng-dev
+sudo apt-get install libxext-dev
+sudo apt-get install libxrandr-dev
+sudo apt-get install libxrender-dev
 # Compile
-cmake -DCMAKE_OPENGL_SUPPORT=true ./
+# cmake -DCMAKE_OPENGL_SUPPORT=true ./
+cmake -DCMAKE_OPENGL_SUPPORT=true -DCMAKE_INSTALL_PREFIX="/home/tim/local" ./
 make && sudo make install

@@ -4,7 +4,7 @@
 
 echo "Installing ffmpeg from source"
 # Needs to be done from etc, not src
-cd ~/local/etc
+cd ~/local/src
 git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg
 
 echo "Downloading needed libs"
@@ -13,15 +13,19 @@ sudo apt-get install libxvidcore-dev # For --enable-gpl
 sudo apt-get install libmp3lame-dev
 sudo apt-get install libtheora-dev
 sudo apt-get install libvorbis-dev
+sudo apt-get install libass-dev # For --enable-libass
 
 cd ./ffmpeg
 # --enable-gpl needed for --enable-libxvid
+# fontconfig and libass are needed by gifify
 ./configure \
-  --prefix=/home/$USER/local/ \
+  --prefix=/home/"$USER"/local/ \
   --enable-libmp3lame \
   --enable-libtheora \
   --enable-libvorbis \
   --enable-gpl \
+  --enable-fontconfig \
+  --enable-libass \
   --enable-libxvid \
   --enable-nonfree
 make
