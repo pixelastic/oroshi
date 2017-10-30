@@ -10,8 +10,7 @@ class GemSearch
   end
 
   def search(keyword)
-    puts 'Requesting rubygems.org...'
-    raw = `gem search #{keyword}`
+    raw = `gem search #{keyword} --verbose`
     results = []
     pattern = /(.*) \((.*)\)$/
     raw.each_line do |line|
@@ -20,7 +19,7 @@ class GemSearch
 
       results << {
         name: name,
-        version: version
+        remote_version: version
       }
     end
 
@@ -31,15 +30,17 @@ class GemSearch
     longest_name = longest_by_type(@search_list, :name)
 
     @search_list.each do |result|
+      padded_name = result[:name].ljust(longest_name.size)
+      line = []
+
       if installed?(result[:name])
-        name = colorize('✔ ' + result[:name].ljust(longest_name.size), :success)
+        line << colorize("✔ #{padded_name} ", :success)
+        line << colorize(get_version(result[:name]), :version)
       else
-        name = "  #{result[:name]}"
+        line << "  #{padded_name} "
+        line << colorize(result[:remote_version], :version)
       end
-
-      version = colorize(get_version(result[:name]), :version)
-
-      puts "#{name}  #{version}"
+      puts line.join('')
     end
   end
 end
