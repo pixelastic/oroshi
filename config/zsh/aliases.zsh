@@ -230,22 +230,6 @@ alias jsmin="uglifyjs"
 alias recess="recess --config ~/.recessrc"
 alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test500.zip'
 # }}}
-
-# Npm (Deprecated) {{{
-alias nig='npm install --global'
-alias nisd='yarn add --dev'
-alias nis='yarn add'
-alias ni='yarn'
-alias nrb='yr build'
-alias nrc='yr consolidate'
-alias nrd='yr deploy'
-alias nrl='yr lint'
-alias nrp='yr push'
-alias nrr='npm run release'
-alias nrs='yr serve'
-alias nrtw='yr test:watch'
-alias nrt='yr test'
-# }}}
 # Yarn {{{
 alias yR='node-root-run yarn remove'
 alias yad='node-root-run yarn add --dev -- '
@@ -265,6 +249,16 @@ alias yrs='yr serve'
 alias yrtw='yr test:watch'
 alias yrt='yr test'
 # }}}
+# Ruby {{{
+alias be='bundle exec'
+alias bi="bundle install"
+alias gi="bundle install"
+alias gig="gem install"
+alias gis="gemrat --pessimistic"
+alias gR="gem uninstall"
+alias gs="gem search"
+alias gu="gem update"
+# }}}
 # Nvm {{{
 alias nvu='nvm use'
 alias nvud='nvm use default'
@@ -272,21 +266,11 @@ alias nvl='nvm list'
 alias nvd='nvm version default'
 alias nvc='nvm current'
 # }}}
-# Bundler {{{
-alias be='bundle exec'
-alias bi='bundle install'
-# }}}
 # Pip {{{
 alias pi='pip install --user'
 # }}}
 # Appraisal {{{
 alias ai='appraisal install'
-# }}}
-# Gem {{{
-alias gi="gem install"
-alias gs="gem-search"
-alias gu="gem update"
-alias gR="gem uninstall"
 # }}}
 # Rake {{{
 alias ri='rake install'

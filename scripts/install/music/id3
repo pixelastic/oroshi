@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 sudo apt-get install id3v2
 sudo apt-get install eyed3
+gem install ruby-mp3info
 

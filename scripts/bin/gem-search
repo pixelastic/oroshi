@@ -10,7 +10,7 @@ class GemSearch
   end
 
   def search(keyword)
-    raw = `gem search #{keyword} --verbose`
+    raw = `gem search '^#{keyword}' --versions`
     results = []
     pattern = /(.*) \((.*)\)$/
     raw.each_line do |line|

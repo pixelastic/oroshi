@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -ex
 
-sudo apt-get install curl
+sudo apt-get install curl \
+                     libcurl3 \
+                     libcurl3-gnutls \
+                     libcurl4-openssl-dev
 
 # Install rvm
 # This should automatically install all needed Ubuntu dependencies
@@ -19,14 +22,9 @@ gem install bundler
 # Automatic prepending of bundle exec
 gem install rubygems-bundler
 
-# Mp3
-gem install ruby-mp3info
-
-# Curl
-sudo apt-get install libcurl3 \
-                     libcurl3-gnutls \
-                     libcurl4-openssl-dev
-gem install curb
-gem install nokogiri
-gem install awesome_print
+# Linter
 gem install rubocop
+
+# Gemrat, to automatically add dependencies to Gemfile
+bundle install gemrat
+
