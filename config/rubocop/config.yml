@@ -21,7 +21,7 @@ Metrics/CyclomaticComplexity:
 Metrics/PerceivedComplexity:
   Max: 10
 
-Style/FileName:
+Naming/FileName:
   Enabled: false
 
 Layout/MultilineOperationIndentation:
