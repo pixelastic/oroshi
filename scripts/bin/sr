@@ -29,7 +29,8 @@ class SearchReplace
     options << '-n' if @is_dry_run
     options += @files
 
-    `sed #{options.join(' ')}`
+    command = "sed #{options.join(' ')}"
+    `#{command}`
   end
 end
 SearchReplace.new(*ARGV).run
