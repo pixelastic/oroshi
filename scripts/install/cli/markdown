@@ -8,3 +8,6 @@ cd ~/local/etc/
 git clone https://github.com/drbunsen/formd.git
 cd ~/local/bin
 ln -s ../etc/formd/formd .
+
+# Preview markdown
+yarn global add @pixelastic/markdown-preview

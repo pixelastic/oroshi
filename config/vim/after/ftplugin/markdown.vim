@@ -48,14 +48,10 @@ setlocal foldexpr=MarkdownLevel()
 setlocal foldmethod=expr  
 " }}}
 " Running the file in the browser {{{
-nnoremap <silent> <buffer> <F5> :call MarkdownConvertAndRun()<CR>
-function! MarkdownConvertAndRun()
-  let thisFile = shellescape(expand('%:p'))
-  let htmlFile = '/tmp/vim-generated-markdown.html'
-  " Create the html file
-  silent execute '!markdown ' . thisFile . ' > ' . shellescape(htmlFile)
-  " Run it
-  call OpenUrlInBrowser(htmlFile)
+nnoremap <silent> <buffer> <F5> :call MarkdownPreview()<CR>
+function! MarkdownPreview()
+  silent execute ':!nohup markdown-preview % &>/dev/null &'
+  redraw!
 endfunction
 " }}}
 " Wrapping {{{
