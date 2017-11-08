@@ -274,11 +274,10 @@ alias pi='pip install --user'
 alias ai='appraisal install'
 # }}}
 # Rake {{{
-alias ri='rake install'
 alias rr='rake release'
-alias rvbma='rake version:bump:major'
-alias rvbmi='rake version:bump:minor'
-alias rvbp='rake version:bump:patch'
+alias rt='rake test'
+alias rta='rake test_all_ruby_versions'
+alias rw='rake watch'
 # }}}
 # Jekyll {{{
 alias jap='jekyll algolia push -t'
