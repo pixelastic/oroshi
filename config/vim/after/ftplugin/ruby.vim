@@ -8,7 +8,8 @@ setlocal regexpengine=1
 " describe, before(:each) and it
 " Note: I had to hack with mz/'z otherwise by cursor was jumping around
 inoremap <buffer> dsc describe '' doendmz'zkf'li
-inoremap <buffer> bfe before(:each) doendO
+inoremap <buffer> ctx context '' doendmz'zkf'li
+inoremap <buffer> bfe before doendO
 inoremap <buffer> iit it '' doendklli
 " }}}
 " Indentation {{{
