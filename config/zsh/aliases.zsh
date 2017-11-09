@@ -269,6 +269,7 @@ alias nvc='nvm current'
 # }}}
 # Pip {{{
 alias pi='pip install --user'
+alias pu='pip install --user --upgrade'
 # }}}
 # Appraisal {{{
 alias ai='appraisal install'

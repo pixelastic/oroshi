@@ -11,6 +11,9 @@ inoremap <buffer> dsc describe '' doendmz'zkf'li
 inoremap <buffer> ctx context '' doendmz'zkf'li
 inoremap <buffer> bfe before doendO
 inoremap <buffer> iit it '' doendklli
+inoremap <buffer> itsht it { should eq true }o
+inoremap <buffer> itshf it { should eq false }o
+inoremap <buffer> ssbj subject { current. }hi
 " }}}
 " Indentation {{{
 setlocal tabstop=2
@@ -38,12 +41,10 @@ let b:syntastic_checkers = ['rubocop', 'mri']
 inoremap <silent> <buffer> <F4> <Esc>:call RubyBeautify()<CR>
 nnoremap <silent> <buffer> <F4> :call RubyBeautify()<CR>
 function! RubyBeautify() 
-  let linenr=line('.')
-  echo '  Rubocop auto-correct...'
-  let current_file = expand('%:p')
-	silent! execute '%!ruby-lint ' . current_file
-  echo ''
-  execute 'normal '.linenr.'gg'
+  let l:initialLine = line('.')
+  execute 'silent w !rubocop -a % &>/dev/null'
+  execute 'normal '.initialLine.'gg'
+  SyntasticCheck()
 endfunction
 " }}}
 " Misc {{{
