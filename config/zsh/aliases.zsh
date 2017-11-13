@@ -277,6 +277,7 @@ alias ai='appraisal install'
 # Rake {{{
 alias rr='rake release'
 alias rt='rake test'
+alias rl='rake lint'
 alias rta='rake test_all_ruby_versions'
 alias rw='rake watch'
 # }}}
