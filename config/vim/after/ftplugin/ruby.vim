@@ -10,10 +10,12 @@ setlocal regexpengine=1
 inoremap <buffer> dsc describe '' doendmz'zkf'li
 inoremap <buffer> ctx context '' doendmz'zkf'li
 inoremap <buffer> bfe before doendO
+inoremap <buffer> BFE before {  }hi
 inoremap <buffer> iit it '' doendklli
+inoremap <buffer> IIT it {  }hi
 inoremap <buffer> itsht it { should eq true }o
 inoremap <buffer> itshf it { should eq false }o
-inoremap <buffer> ssbj subject { current. }hi
+inoremap <buffer> sbj subject { current. }hi
 " }}}
 " Indentation {{{
 setlocal tabstop=2
