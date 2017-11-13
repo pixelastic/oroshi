@@ -285,12 +285,13 @@ function! FixEpub() " {{{
   normal! `z
 endfunction " }}}
 function! DeleteFile(...) " {{{
-  let specifiedFile = a:1
-
   " Default to current file if none selected
-  if specifiedFile ==# ''
+  if a:0 ==# 0
     let specifiedFile = expand('%:p')
+  else
+    let specifiedFile = a:1
   endif
+
   let specifiedFile = fnamemodify(specifiedFile, ':p')
 
   " No such file
@@ -309,7 +310,7 @@ function! DeleteFile(...) " {{{
   " Closing all opened buffers of this file
   call CloseBufferByFilepath(specifiedFile)
 endfunction
-command! -complete=file -nargs=1 Delete call DeleteFile(<f-args>)
+command! -complete=file -nargs=* Delete call DeleteFile(<f-args>)
 " }}}
 function! RunCurrentFile() " {{{
   execute ':!%:p'
