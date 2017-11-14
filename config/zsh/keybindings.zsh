@@ -5,12 +5,6 @@ stty ixoff -ixon
 # Enabling vim mode
 bindkey -v
  
-# Ctrl-O to go to ~/.oroshi/
-bindkey -s '^O' '^U cdo^M'
-# Ctrl-K to ls
-bindkey -s '^K' '^U ls^M'
-# Ctrl-J to git status
-bindkey -s '^J' '^U vdl^M'
 # Ctrl-E to edit the line in Vim
 autoload -U edit-command-line
 zle -N edit-command-line
