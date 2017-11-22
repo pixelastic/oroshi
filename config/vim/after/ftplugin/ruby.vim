@@ -14,10 +14,13 @@ inoremap <buffer> bfe before doendO
 inoremap <buffer> BFE before {  }hi
 inoremap <buffer> iit it '' doendklli
 inoremap <buffer> IIT it {  }hi
-inoremap <buffer> iitt it { should eq true }o
-inoremap <buffer> iitf it { should eq false }o
-inoremap <buffer> iitn it { should eq nil }o
+inoremap <buffer> itst it { should eq true }o
+inoremap <buffer> itsf it { should eq false }o
+inoremap <buffer> itsn it { should eq nil }o
 inoremap <buffer> sbj subject { current. }hi
+inoremap <buffer> trc .to receive()i
+inoremap <buffer> thrc .to have_received()i
+inoremap <buffer> anrt .and_return()i
 " }}}
 " Indentation {{{
 setlocal tabstop=2
