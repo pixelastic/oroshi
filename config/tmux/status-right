@@ -6,9 +6,9 @@ local output=''
 local dropbox_status=''
 dropbox_status=`dropbox status`
 if [[ $dropbox_status == "Dropbox isn't running!" ]]; then
-  output="#[fg=colour160] #[default] $output"
+  output="#[fg=colour160] #[default] $output"
 else
-  output="#[fg=colour35]#[default] $output"
+  output=" $output"
 fi
 # }}}
 # Clock {{{
@@ -50,13 +50,6 @@ if [[ $battery_percent -ne 99 ]]; then
       output="#[fg=colour160,bold] $battery_display#[default] $output"
     fi
   fi
-fi
-# }}}
-# Mouse speed {{{
-local mouse_speed=''
-mouse_speed=`mouse-speed`
-if [[ $mouse_speed != '3' ]]; then
-  output=" $mouse_speed/10 $output"
 fi
 # }}}
 
