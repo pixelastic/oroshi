@@ -32,25 +32,11 @@ nunmap  <buffer> ar
 " }}}
 " Linters {{{
 let b:repo_root = GetRepoRoot()
-let b:syntastic_checkers = []
-" Use only linters defined in the repo
-if filereadable(b:repo_root . '/.stylelintrc')
+let b:syntastic_checkers = ['stylelint']
+" Use the local stylelint if one is defined in the repo
+if filereadable(b:repo_root . '/.stylelintrc') || filereadable(b:repo_root . '/.stylelintrc.js')
   let b:syntastic_css_stylelint_exec = StrTrim(system('npm-which stylelint'))
-  let b:syntastic_checkers = b:syntastic_checkers + ['stylelint']
-endif
-if filereadable(b:repo_root . '/.recessrc')
-  let b:syntastic_css_eslint_exec = StrTrim(system('npm-which recess'))
-  let b:syntastic_checkers = b:syntastic_checkers + ['recess']
-endif
-if filereadable(b:repo_root . '/.csslintrc')
-  let b:syntastic_css_eslint_exec = StrTrim(system('npm-which csslint'))
-  let b:syntastic_checkers = b:syntastic_checkers + ['csslint']
-endif
-" Default to system-wide stylelint if nothing configured
-if len(b:syntastic_checkers) == 0
-  let b:syntastic_css_stylelint_exec = 'stylelint'
-  let b:syntastic_checkers = b:syntastic_checkers + ['stylelint']
-endif
+end
 "}}}
 " Cleaning the file {{{
 nnoremap <silent> <buffer> <F4> :call CssBeautify()<CR>

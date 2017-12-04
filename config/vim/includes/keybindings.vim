@@ -293,7 +293,7 @@ function! AppendMissingSemicolon()
 endfunction
 nnoremap <silent> ; :call AppendMissingSemicolon()<CR>
 " Comment whole paragraph
-nnoremap gcp vip:TComment<CR>
+nnoremap gcp vipgc
 " md will convert the selection to markdown
 vnoremap <silent> md :!markdown<CR>
 " Increment/Decrement number under cursor
