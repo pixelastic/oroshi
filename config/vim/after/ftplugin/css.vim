@@ -37,6 +37,15 @@ let b:syntastic_checkers = ['stylelint']
 if filereadable(b:repo_root . '/.stylelintrc') || filereadable(b:repo_root . '/.stylelintrc.js')
   let b:syntastic_css_stylelint_exec = StrTrim(system('npm-which stylelint'))
 end
+" postCSS emulates many of the features of CSS, but we're not using it in every
+" project yet, so we only whitelist the directories where it should add specific
+" config
+if expand('%:p') =~# 'tachyons-algolia'
+  " Allow gcc to set // comments
+  setlocal commentstring=//\ %s
+  " Make sure stylelint understand SCSS config even in CSS files
+  let g:syntastic_css_stylelint_args = '--syntax scss'
+endif
 "}}}
 " Cleaning the file {{{
 nnoremap <silent> <buffer> <F4> :call CssBeautify()<CR>
