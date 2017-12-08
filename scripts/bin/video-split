@@ -35,7 +35,7 @@ class VideoSplit
   # Extract a chunk of file
   def extract_chunk(input, from, to, output)
     options = []
-    # options << '-loglevel panic'
+    options << '-loglevel panic'
     # We add the -ss before the -i, so it performs a fast-seek up to this frame
     options << "-ss #{from}"
     options << "-i #{input.shellescape}"
@@ -47,9 +47,7 @@ class VideoSplit
 
     options << '-async 1'
     options << output.shellescape
-    p options
-    process.exit 1
-    # system("ffmpeg #{options.join(' ')}")
+    system("ffmpeg #{options.join(' ')}")
   end
 
   def fix_frames(input, output)
@@ -64,7 +62,7 @@ class VideoSplit
 
     # We convert to avi first, to fix the keyframes
     options = [
-      # '-loglevel panic',
+      '-loglevel panic',
       "-i #{input.shellescape}",
       '-c copy',
       tmp_avi.shellescape
