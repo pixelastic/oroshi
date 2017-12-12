@@ -274,6 +274,7 @@ alias nvd='nvm version default'
 alias nvc='nvm current'
 # }}}
 # Pip {{{
+alias pR='pip uninstall'
 alias pi='pip install --user'
 alias pu='pip install --user --upgrade'
 # }}}
