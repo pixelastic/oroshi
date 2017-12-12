@@ -15,7 +15,7 @@
         "undoUsingBackspace": true, 
         "notificationIcon": "autokey-status", 
         "enableQT4Workaround": false, 
-        "promptToSave": false, 
+        "promptToSave": true, 
         "menuTakesFocus": false, 
         "interfaceType": "XRecord", 
         "windowDefaultSize": [
