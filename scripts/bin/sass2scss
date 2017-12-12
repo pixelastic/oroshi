@@ -1,8 +1,34 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env ruby
+require 'shellwords'
+
 # Will convert a .sass file to a .scss one
+class Sass2Scss
+  def initialize(*args)
+    # Usage explanation if no args
+    if args.empty?
+      puts 'Usage :'
+      puts '$ sass2scss input.sass [input2.sass]'
+      return
+    end
 
-local converter=~/local/bin/sass2scss
+    @input = args.reject do |file|
+      next true if File.extname(file) != '.sass'
+      next true unless File.exist?(file)
+      false
+    end
+  end
 
-for file in $@; do
-  $converter -p -k < ${file:a} > ${file:a:r}.scss
-done
+  def run
+    @input.each do |file|
+      file = File.expand_path(file)
+      dirname = File.dirname(file)
+      extname = File.extname(file)
+      basename = File.basename(file, extname)
+      newname = File.join(dirname, basename + '.scss')
+      puts "Converting #{basename}.sass to scss"
+      command = "~/local/bin/sass2scss -p -k < #{file.shellescape} > #{newname.shellescape}"
+      `#{command}`
+    end
+  end
+end
+Sass2Scss.new(*ARGV).run
