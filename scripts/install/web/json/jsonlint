@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 
-npm install -g jsonlint
+yarn global add jsonlint
+
+# Note that python can install another jsonlint that is not handled by
+# Syntastic, so we'll remove it
+rm -f ~/.local/bin/jsonlint
