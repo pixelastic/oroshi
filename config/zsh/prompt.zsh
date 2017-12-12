@@ -309,43 +309,37 @@ function getRubyIndicator() {
   if [[ $defaultVersion == $currentVersion ]]; then
     return
   fi
-  echo $(colorize "r$currentVersion " 'rubyVersion')
+  echo $(colorize " $currentVersion " 'rubyVersion')
 }
 # }}}
 
 # Node {{{
-# If we're not using the correct node version, then the correct version will be
-# displayed in red
-# If we're using a non-default version, then this version will be displayed in
-# grey
+# - Nothing displayed if using the default node version
+# - Version in green with ⬢ if using a custom version
+# - Version in red with ⬢ if should use a specific version but is not
 function getNodeIndicator() {
   # No nvm
   if ! which nvm &>/dev/null; then
     return
   fi
 
-  defaultVersion="$(nvm version default)"
-  currentVersion="$(nvm current)"
-  expectedVersion="$(cat `nvm_find_nvmrc`)"
-  displayedVersion=''
+  currentVersion="$(nvm current | sed 's/v//')"
+  defaultVersion="$(nvm version default | sed 's/v//')"
 
-  # Specific version is defined in this dir
-  if [[ $expectedVersion != '' && $expectedVersion != $defaultVersion ]]; then
-    displayedVersion=$expectedVersion
-    if [[ $expectedVersion == $currentVersion ]]; then
-      displayedColor='nodeVersionSpecificEnabled'
-    else
-      displayedColor='nodeVersionSpecificDisabled'
-    fi
-    echo $(colorize "$displayedVersion " $displayedColor)
+  # This dir has a specific version defined, but we're not using it
+  expectedVersion="$(cat `nvm_find_nvmrc`)"
+  if [[ $expectedVersion != '' && $expectedVersion != $currentVersion ]]; then
+    echo $(colorize "⬢ $currentVersion ($expectedVersion) " 'nodeVersionError')
+    return
+  fi
+
+  # We are using the default version, nothing to display
+  if [[ $currentVersion == $defaultVersion ]]; then
     return
   fi
 
   # Current version not the default one
-  if [[ $currentVersion != $defaultVersion ]]; then
-    echo $(colorize "$currentVersion " 'nodeVersion')
-    return
-  fi
+  echo $(colorize "⬢ $currentVersion " 'nodeVersion')
 }
 # }}}
 
