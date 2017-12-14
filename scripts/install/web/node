@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-set -e
-
-git clone git@github.com:creationix/nvm.git ~/.nvm
-source ~/.nvm/nvm.sh
-
-nvm install stable
-npm install -g yarn
-

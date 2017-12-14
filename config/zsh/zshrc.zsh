@@ -14,12 +14,13 @@ export LANG=en_US.UTF-8
 # This needs to be set to the same value as the default-terminal in tmux.conf
 export TERM=xterm-256color
 path=(
-  $HOME/.rvm/bin
+  # yarn global executable is here
+  ~/.yarn/bin 
+  ~/.rvm/bin
   ~/.oroshi/scripts/bin
   ~/.oroshi/scripts/bin/vit/bin
   ~/.oroshi/scripts/bin/img/bin
   ~/.oroshi/scripts/bin/video/bin
-  ~/.oroshi/scripts/bin/pdf/bin
   ~/.oroshi/scripts/bin/pdf/bin
   ~/.oroshi/private/scripts/bin
   ~/.oroshi/scripts/bin/local/$hostname
@@ -27,6 +28,8 @@ path=(
   ~/local/bin
   $path
   ~/.local/bin
+  # yarn globally installed modules are here
+  ~/.config/yarn/global/node_modules/.bin 
 )
 typeset -U path
 # }}}

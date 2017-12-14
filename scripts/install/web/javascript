@@ -1,21 +1,29 @@
 #!/usr/bin/env bash
+set -e
 
 echo "Installing yarn to replace npm"
-npm install -g yarn
+curl -o- -L https://yarnpkg.com/install.sh | bash
+
+if [[ ! -d ~/.nvm ]]; then
+  echo "Installing nvm"
+  git clone git@github.com:creationix/nvm.git ~/.nvm
+  source ~/.nvm/nvm.sh
+  nvm install stable
+fi
 
 echo "Linter: Eslint"
-npm install -g eslint
-npm install -g eslint-config-algolia
-npm install -g eslint-config-prettier
-npm install -g eslint-plugin-import
-npm install -g eslint-plugin-prettier
-npm install -g babel-eslint
+yarn add global eslint
+yarn add global eslint-config-algolia
+yarn add global eslint-config-prettier
+yarn add global eslint-plugin-import
+yarn add global eslint-plugin-prettier
+yarn add global babel-eslint
 
 echo "Prettifier: Prettier"
-npm install -g prettier
+yarn add global prettier
 
 echo "Minifier: Uglifyjs"
-npm install -g uglify-js
+yarn add global uglify-js
 
 
 

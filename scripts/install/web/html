@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo "Installing HTMLMin"
-npm install -g html-minifier
+yarn global add html-minifier
 
 echo "Installing pup"
 cd ~/local/src

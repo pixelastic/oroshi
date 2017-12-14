@@ -21,4 +21,4 @@ make prefix="/home/$USER/local" all doc info
 sudo make prefix="/home/$USER/local" install install-doc install-html install-info
 
 # installing Github commandline tool
-npm install -g gh
+yarn global add gh

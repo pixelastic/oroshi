@@ -94,8 +94,6 @@ function! MarkdownBeautify()
 
   " Get back to initial line
   execute 'normal '.linenr.'gg'
-
-  normal gqp
 endfunction
 " }}}
 " Spellchecking {{{

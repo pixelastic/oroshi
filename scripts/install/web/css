@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
 echo "Minifier: CleanCSS"
-npm install -g clean-css
+yarn global add clean-css-cli
 
 echo "Linter: Stylelint"
-npm install -g stylelint
-npm install -g stylelint-config-standard
-npm install -g stylelint-scss
+yarn global add stylelint
+yarn global add stylelint-config-standard
+yarn global add stylelint-scss
 
 echo "Prettifier: Prettier"
-npm install -g prettier
+yarn global add prettier
 
 echo "Installing Sass"
 gem install sass
