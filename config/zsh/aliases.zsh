@@ -259,10 +259,11 @@ alias yrw='yr watch'
 # Ruby {{{
 alias be='bundle exec'
 alias bi="bundle install"
-alias gi="bundle install"
+alias bu="bundle update"
+alias gR="gem uninstall"
 alias gig="gem install"
 alias gis="gemrat --pessimistic"
-alias gR="gem uninstall"
+alias gi="bundle install"
 alias gs="gem search"
 alias gu="gem update"
 # }}}
