@@ -106,9 +106,9 @@ function getPromptPath() {
 function getPromptHash() {
   if ! git-is-repository; then
     echo "%#"
-  else
-    echo "$(getPromptSubmodule)$(getPromptStash)$(getPromptHashGit)"
+    return
   fi
+  echo "$(getPromptSubmodule)$(getPromptStash)$(getPromptHashGit)"
 }
 # }}}
 
@@ -149,13 +149,12 @@ function getPromptHashGit() {
 # Repo indicator {{{
 function getPromptRepoIndicator() {
   if ! git-is-repository; then
-    echo ""
-  else
-    tag=`getPromptTag`
-    remote=`getPromptRemote`
-    branch=`getPromptBranch`
-    echo "${tag}${remote}${branch}"
+    return
   fi
+  tag=`getPromptTag`
+  remote=`getPromptRemote`
+  branch=`getPromptBranch`
+  echo "${tag}${remote}${branch}"
 }
 # }}}
 
@@ -247,6 +246,12 @@ function getPromptBranch() {
 
 # Push/Pull {{{
 function getPromptPushPull() {
+  # Asciinema recording will not know our custom glyphs, so we'd better remove
+  # them when recording
+  if [[ $ASCIINEMA_REC = 1 ]]; then
+    return
+  fi
+
   local EXIT_CODE_IDENTICAL=0
   local EXIT_CODE_AHEAD=1
   local EXIT_CODE_BEHIND=2

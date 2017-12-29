@@ -8,5 +8,9 @@ wget https://github.com/pornel/giflossy/releases/download/lossy%2F1.82.1/gifsicl
 unzip -j "./giflossy.zip" "linux/gifsicle-static" -d ~/local/bin
 mv ~/local/bin/gifsicle-static ~/local/bin/gifsicle
 
-# Converting images to gif
-yarn global add gifify
+# Converting terminal to gif
+sudo apt-add-repository ppa:zanchey/asciinema
+sudo apt-get update
+sudo apt-get install asciinema
+yarn add global asciicast2gif
+
