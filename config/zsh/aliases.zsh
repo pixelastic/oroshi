@@ -69,7 +69,7 @@ compdef _scp rcp rmv
 # Scrollable colors
 alias spectrum='spectrum L'
 # watch tree
-alias wt='watch -c ''tree -aNC -I ".hg\|.git"'''
+alias watcht='watch -c ''tree -aNC -I ".hg\|.git"'''
 # Prefix a date to a file
 alias prd='prefix-date'
 # Fix previous command
