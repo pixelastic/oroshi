@@ -108,7 +108,7 @@ function getPromptHash() {
     echo "%#"
     return
   fi
-  echo "$(getPromptSubmodule)$(getPromptStash)$(getPromptHashGit)"
+  echo "$(getPromptSubmodule)$(getPromptStash)$(getPromptRebaseIndicator)$(getPromptHashGit)"
 }
 # }}}
 
@@ -125,6 +125,18 @@ function getPromptSubmodule() {
   if git is-submodule; then
     echo $(colorize '  ' 'submodule')
   fi
+}
+# }}}
+
+# Rebase in progress {{{
+function getPromptRebaseIndicator() {
+  if ! git-rebase-inprogress; then
+    return
+  fi
+  local currentStep="$(git-rebase-step-current)"
+  local maxStep="$(git-rebase-step-max)"
+
+  echo $(colorize " ${currentStep}/${maxStep} " 'rebaseInProgress')
 }
 # }}}
 
@@ -154,7 +166,7 @@ function getPromptRepoIndicator() {
 
   # Is actually in the middle of a rebase
   if git-rebase-inprogress; then
-    echo "$(getPromptRebase)"
+    echo "$(getPromptRebaseDetails)"
     return
   fi
 
@@ -291,14 +303,12 @@ function getPromptTag() {
 # }}}
 
 # Rebase {{{
-function getPromptRebase() {
+function getPromptRebaseDetails() {
   # No rebase in progress
   if ! git-rebase-inprogress; then
     return
   fi
 
-  local currentStep="$(git-rebase-step-current)"
-  local maxStep="$(git-rebase-step-max)"
   local ontoBranch="$(git-rebase-onto)"
   local ontoColor="$(getBranchColor $ontoBranch)"
   local transplantBranch="$(git-rebase-transplant)"
@@ -308,7 +318,6 @@ function getPromptRebase() {
   echo -n $(colorize '[trunk]' 'rebaseTrunk')
   echo -n $(colorize "[${ontoBranch}]" $ontoColor)
   echo -n $(colorize "[${transplantBranch}]" $transplantColor)
-  echo -n $(colorize " ${currentStep}/${maxStep}" 'rebaseCount')
 }
 # }}}
 

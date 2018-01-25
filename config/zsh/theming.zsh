@@ -44,7 +44,7 @@ promptColorDefault=(
   branchMaster          "069"
   branchRelease         "171"
   rebaseTrunk           "241"
-  rebaseCount           "160"
+  rebaseInProgress      "160"
   remoteDefault         "241"
   remoteHeroku          "141"
   remoteGithub          "024"
