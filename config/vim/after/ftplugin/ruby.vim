@@ -10,8 +10,8 @@ setlocal regexpengine=1
 inoremap <buffer> dsc describe '' doendmz'zkf'li
 inoremap <buffer> ctx context '' doendmz'zkf'li
 inoremap <buffer> ctw context '' doendmz'zkf'li
-inoremap <buffer> bfe before doendO
-inoremap <buffer> BFE before {  }hi
+inoremap <buffer> bfd before doendO
+inoremap <buffer> bff before {  }hi
 inoremap <buffer> iit it '' doendklli
 inoremap <buffer> IIT it {  }hi
 inoremap <buffer> itst it { should eq true }o
