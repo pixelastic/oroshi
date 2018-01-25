@@ -151,6 +151,13 @@ function getPromptRepoIndicator() {
   if ! git-is-repository; then
     return
   fi
+
+  # Is actually in the middle of a rebase
+  if git-rebase-inprogress; then
+    echo "$(getPromptRebase)"
+    return
+  fi
+
   tag=`getPromptTag`
   remote=`getPromptRemote`
   branch=`getPromptBranch`
@@ -187,14 +194,7 @@ function getPromptRemote() {
 
 # Branch {{{
 function getPromptBranch() {
-  # Is actually in the middle of a rebase
-  if git-is-rebasing; then
-    echo "$(getPromptRebase)"
-    return
-  fi
-
   local branchName="$(git branch-current)"
-  local branchColor='branchDefault'
 
   # Not in a branch
   if [[ $branchName = '' ]]; then
@@ -203,36 +203,19 @@ function getPromptBranch() {
 
   # In detached head, we stop now
   if git-branch-gone; then
-    branchColor='branchGone'
     branchName="  $branchName"
-    echo $(colorize $branchName $branchColor)
+    echo $(colorize $branchName 'branchGone')
     return
   fi
   
   # Upstream is gone
   if [[ $branchName = 'HEAD' ]]; then
-    branchColor='branchDetached'
     branchName="$(git commit-current) "
-    echo $(colorize $branchName $branchColor)
+    echo $(colorize $branchName 'branchDetached')
     return
   fi
 
-  if [[ $branchName = 'master' ]]; then
-    branchColor='branchMaster'
-  fi
-  if [[ $branchName = 'release' ]]; then
-    branchColor='branchRelease'
-  fi
-  if [[ $branchName = 'develop' ]]; then
-    branchColor='branchDevelop'
-  fi
-  if [[ $branchName = 'heroku' ]]; then
-    branchColor='branchHeroku'
-  fi
-  if [[ $branchName = 'gh-pages' ]]; then
-    branchColor='branchGhPages'
-    branchName="$branchName  "
-  fi
+  local branchColor=$(getBranchColor $branchName)
 
   # Adding push/pull indicator
   local pushPullSymbol="$(getPromptPushPull)"
@@ -241,6 +224,26 @@ function getPromptBranch() {
   fi
 
   echo $(colorize $branchName $branchColor)
+}
+# Get the name of the color based on the name of the branch
+function getBranchColor() {
+  case "$1" in
+    master)
+      echo 'branchMaster'
+      ;;
+    develop)
+      echo 'branchDevelop'
+      ;;
+    gh-pages)
+      echo 'branchGhPages'
+      ;;
+    heroku)
+      echo 'branchHeroku'
+      ;;
+    *)
+      echo 'branchDefault'
+    ;;
+  esac
 }
 # }}}
 
@@ -290,15 +293,22 @@ function getPromptTag() {
 # Rebase {{{
 function getPromptRebase() {
   # No rebase in progress
-  if ! git-is-rebasing; then
+  if ! git-rebase-inprogress; then
     return
   fi
 
-  local rebaseDir="$(git root)/.git/rebase-apply"
-  local maxRebase="$(cat $rebaseDir/last)"
-  local nextRebase="$(cat $rebaseDir/next)"
-  local commitHash="$(git commit-current)"
-  echo $(colorize "${nextRebase}/${maxRebase} ${commitHash} " 'rebase')
+  local currentStep="$(git-rebase-step-current)"
+  local maxStep="$(git-rebase-step-max)"
+  local ontoBranch="$(git-rebase-onto)"
+  local ontoColor="$(getBranchColor $ontoBranch)"
+  local transplantBranch="$(git-rebase-transplant)"
+  local transplantColor="$(getBranchColor $transplantBranch)"
+
+
+  echo -n $(colorize " ${currentStep}/${maxStep} " 'rebaseCount')
+  echo -n $(colorize '[trunk]' 'rebaseTrunk')
+  echo -n $(colorize "[${ontoBranch}]" $ontoColor)
+  echo -n $(colorize "[${transplantBranch}]" $transplantColor)
 }
 # }}}
 

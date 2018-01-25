@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# Save the name of branch we rebase onto
+mkdir -p ./.git/rebase-apply/
+echo "$1" > ./.git/rebase-apply/x-onto-branch

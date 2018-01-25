@@ -22,7 +22,7 @@
   excludesfile = ~/.gitignore
   safecrlf = false
   autocrlf = input
-  # hooksPath = ~/.git/hooks
+  hooksPath = ~/.oroshi/config/git/hooks
 [merge]
   tool = fugitive
 [mergetool "fugitive"]

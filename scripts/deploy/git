@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 set -ex
 
-mkdir -p ~/.git
-mkdir -p ~/.git/hooks
-cp ~/.oroshi/config/git/hooks/* ~/.git/hooks
-
 ln -fs ~/.oroshi/config/git/gitconfig ~/.gitconfig
 ln -fs ~/.oroshi/config/git/gitignore ~/.gitignore
 

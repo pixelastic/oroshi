@@ -33,7 +33,6 @@ promptColorDefault=(
 
   tag                   "241"
   submodule             "136"
-  rebase                "160"
   stash                 "171"
   branchDefault         "202"
   branchDetached        "160"
@@ -44,6 +43,8 @@ promptColorDefault=(
   branchHeroku          "141"
   branchMaster          "069"
   branchRelease         "171"
+  rebaseTrunk           "241"
+  rebaseCount           "160"
   remoteDefault         "241"
   remoteHeroku          "141"
   remoteGithub          "024"
