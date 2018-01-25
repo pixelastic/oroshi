@@ -305,10 +305,10 @@ function getPromptRebase() {
   local transplantColor="$(getBranchColor $transplantBranch)"
 
 
-  echo -n $(colorize " ${currentStep}/${maxStep} " 'rebaseCount')
   echo -n $(colorize '[trunk]' 'rebaseTrunk')
   echo -n $(colorize "[${ontoBranch}]" $ontoColor)
-  echo -n $(colorize "[${transplantBranch}]" $transplantColor)
+  echo -n $(colorize "[${transplantBranch}]" $transplantColor)
+  echo -n $(colorize " ${currentStep}/${maxStep}" 'rebaseCount')
 }
 # }}}
 
