@@ -3,9 +3,13 @@
 split = ARGV[0].strip.split(' ')
 exit 1 if split.length != 3
 
-left = Gem::Version.new(split[0])
-sign = split[1].to_sym
-right = Gem::Version.new(split[2])
+begin
+  left = Gem::Version.new(split[0])
+  sign = split[1].to_sym
+  right = Gem::Version.new(split[2])
+rescue StandardError
+  exit 1
+end
 
 exit 0 if left.send(sign, right)
 exit 1
