@@ -350,9 +350,9 @@ function getNodeIndicator() {
   currentVersion="$(nvm current | sed 's/v//')"
   defaultVersion="$(nvm version default | sed 's/v//')"
 
-  # This dir has a specific version defined, but we're not using it
+  # This dir has a specific version defined, but we're not following it
   expectedVersion="$(cat `nvm_find_nvmrc`)"
-  if [[ $expectedVersion != '' && $expectedVersion != $currentVersion ]]; then
+  if version-compare "$currentVersion < $expectedVersion"; then
     echo $(colorize "⬢ $currentVersion ($expectedVersion) " 'nodeVersionError')
     return
   fi
