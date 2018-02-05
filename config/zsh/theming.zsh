@@ -48,6 +48,7 @@ promptColorDefault=(
   remoteDefault         "241"
   remoteHeroku          "141"
   remoteGithub          "024"
+  remotePixelastic      "069"
   remoteUpstream        "069"
   remoteAlgolia         "067"
   repoClean             "035"

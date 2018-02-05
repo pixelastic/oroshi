@@ -193,6 +193,9 @@ function getPromptRemote() {
   if [[ $remoteName == 'github' ]]; then
     remoteColor='remoteGithub'
   fi
+  if [[ $remoteName == 'pixelastic' ]]; then
+    remoteColor='remotePixelastic'
+  fi
   if [[ $remoteName == 'upstream' ]]; then
     remoteColor='remoteUpstream'
   fi
@@ -200,7 +203,7 @@ function getPromptRemote() {
     remoteColor='remoteAlgolia'
   fi
 
-  echo $(colorize "$remoteName " $remoteColor)
+  echo $(colorize " $remoteName " $remoteColor)
 }
 # }}}
 
