@@ -15,6 +15,9 @@ source ~/.vim/includes/plugins.vim
 " Use backup, and save it in a custom dir
 set backup
 set backupdir=~/.vim/backup//
+" Directly save to file, not to a temp file. This will make live-reload much
+" snappier
+set backupcopy=yes
 " Swap files are useful for when your machine crashes or you reboot without
 " saving your work in progress. By default they are stored in the same dir,
 " which is inconvenient, though.
