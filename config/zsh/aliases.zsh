@@ -268,6 +268,15 @@ alias gi="bundle install"
 alias gs="gem search"
 alias gu="gem update"
 # }}}
+# Jekyll {{{
+alias js='jekyll serve'
+alias jb="jekyll build"
+alias ja="jekyll algolia"
+alias jan="jekyll algolia --dry-run"
+alias jav="jekyll algolia --verbose"
+alias javn="jekyll algolia --verbose --dry-run"
+alias janv="jekyll algolia --verbose --dry-run"
+# }}}
 # Nvm {{{
 alias nvu='nvm use'
 alias nvud='nvm use default'
