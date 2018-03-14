@@ -269,13 +269,13 @@ alias gs="gem search"
 alias gu="gem update"
 # }}}
 # Jekyll {{{
-alias js='jekyll serve'
-alias jb="jekyll build"
-alias ja="jekyll algolia"
-alias jan="jekyll algolia --dry-run"
-alias jav="jekyll algolia --verbose"
-alias javn="jekyll algolia --verbose --dry-run"
-alias janv="jekyll algolia --verbose --dry-run"
+alias js='jekyll serve --trace'
+alias jb="jekyll build --trace"
+alias ja="jekyll algolia --trace"
+alias jan="jekyll algolia --dry-run --trace"
+alias jav="jekyll algolia --verbose --trace"
+alias javn="jekyll algolia --verbose --dry-run --trace"
+alias janv="jekyll algolia --verbose --dry-run --trace"
 # }}}
 # Nvm {{{
 alias nvu='nvm use'
