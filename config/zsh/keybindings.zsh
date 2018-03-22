@@ -27,6 +27,7 @@ fi
 # Note: press Ctrl-V followed by a key to see its keycode
 bindkey -M viins "[3~" delete-char        # Delete
 bindkey -M viins ""    backward-delete-char  # Backspace
+bindkey -M viins "O2M" accept-line # Shift-Enter works as Enter
 
 # Beginning of line
 bindkey -M viins "[1~" beginning-of-line  # Home (in termite)
