@@ -301,11 +301,6 @@ alias rl='rake lint'
 alias rta='rake test_all_ruby_versions'
 alias rw='rake watch'
 # }}}
-# Jekyll {{{
-alias jap='jekyll algolia push -t'
-alias jb='jekyll build -t'
-alias jsw='jekyll serve --watch --baseurl "" -t'
-# }}}
 # mark / jump {{{
 # Thanks to
 # : http://jeroenjanssens.com/2013/08/16/quickly-navigate-your-filesystem-from-the-command-line.html
