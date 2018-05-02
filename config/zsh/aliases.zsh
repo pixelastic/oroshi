@@ -30,6 +30,8 @@ alias scp='scp -r '
 alias serve='live-server'
 alias treed='tree -dN'
 alias tree='tree -aNC -I ".hg|.git"'
+disable -r time # ZSH overrides the time method
+alias time='time -p '
 alias watch='watch -c '
 alias wr='watch-and-reload'
 alias w='which'
