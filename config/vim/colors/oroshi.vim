@@ -52,7 +52,7 @@ let s:palette.lightgrey     = 249
 let s:palette.white         = 252
 let s:palette.purewhite     = 255
 " Red 
-let s:palette.red           = 160
+let s:palette.red           = 124
 let s:palette.darkred       = 88
 let s:palette.calmred       = 203
 " Green
@@ -90,7 +90,7 @@ call s:Highlight('oroshi_TextItalic', 'grey')
 call s:Highlight('oroshi_TextAlmostInvisible', 'darkgrey')
 call s:Highlight('oroshi_TextSpecial', 'darkyellow')
 call s:Highlight('oroshi_TextCurrentLine', 'none', 'almostblack', 'none')
-call s:Highlight('oroshi_TextSpellingError', 'darkred', 'none', 'bold,underline')
+call s:Highlight('oroshi_TextSpellingError', 'red', 'none', 'bold,underline')
 call s:Highlight('oroshi_TextHeadingOne', 'darkgreen', 'none', 'bold')
 call s:Highlight('oroshi_TextHeadingTwo', 'darkgreen')
 call s:Highlight('oroshi_TextHeadingThree', 'green')
