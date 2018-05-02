@@ -127,7 +127,8 @@ endfunction
 " Switching between light and dark themes with F2
 function! ToggleColorScheme()
   if g:colors_name ==# 'oroshi'
-    call ReloadColorScheme('summerfruit')
+    call ReloadColorScheme('lucius')
+    LuciusLightHighContrast
     return
   endif
   call ReloadColorScheme('oroshi')
