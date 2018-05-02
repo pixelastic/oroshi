@@ -52,7 +52,7 @@ let s:palette.lightgrey     = 249
 let s:palette.white         = 252
 let s:palette.purewhite     = 255
 " Red 
-let s:palette.red           = 124
+let s:palette.red           = 196
 let s:palette.darkred       = 88
 let s:palette.calmred       = 203
 " Green

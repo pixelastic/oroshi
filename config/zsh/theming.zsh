@@ -53,7 +53,7 @@ promptColorDefault=(
   remoteAlgolia         "067"
   repoClean             "035"
   repoStaged            "171"
-  repoDirty             "160"
+  repoDirty             "196"
 
   commandText           "252"
   commandCommand        "028"
