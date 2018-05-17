@@ -5,5 +5,5 @@ node_modules="$(npm root)"
 node_root="$(dirname "$node_modules")"
 
 cd "$node_root"
-yarn run "$@"
+yarn run --silent "$@"
 cd "$here"
