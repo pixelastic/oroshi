@@ -42,7 +42,8 @@ inoremap <buffer> ## ${}<Left>
 " Test boilerplat
 inoremap <buffer> bfe beforeEach(() => {});ko
 inoremap <buffer> aftee afterEach(() => {});ko
-inoremap <buffer> iit it('', () => {<CR>// Given<CR>When<CR>Then<CR><Esc>Vc<BS>});4k2li
+inoremap <buffer> iit it('', () => {<CR>});k2li
+inoremap <buffer> aiit it('', async () => {<CR>});k2li
 inoremap <buffer> cnt context('', () => {});kllllllli
 inoremap <buffer> dsc describe('', () => {});klllllllli
 inoremap <buffer> ccact const actual = 
