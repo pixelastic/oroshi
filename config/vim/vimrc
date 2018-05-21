@@ -345,7 +345,8 @@ let g:syntastic_mode_map={ 'mode': 'passive',
                        \ 'ruby',
                        \ 'bash', 'sh', 'zsh',
                        \ 'vim',
-                       \ 'yaml'
+                       \ 'yaml',
+                       \ 'xml'
                      \ ],
                      \ 'passive_filetypes': [] }
 
