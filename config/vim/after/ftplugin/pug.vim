@@ -1,6 +1,6 @@
 " PUG
 " Using ## (as in ruby) for string interpolation
-inoremap <buffer> ## ${}<Left>
+inoremap <buffer> ## #{}<Left>
 
 " Folding {{{
 function! PugFoldExpr(lnum)
