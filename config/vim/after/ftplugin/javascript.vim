@@ -56,4 +56,5 @@ inoremap <buffer> @parb @param {Boolean}
 inoremap <buffer> @rets @returns {String} 
 inoremap <buffer> @retp @returns {Promise} 
 inoremap <buffer> @retps @returns {Promise.<String>} 
+nnoremap <buffer> ii_ mzggoimport _ from 'lodash';`z
 " }}}
