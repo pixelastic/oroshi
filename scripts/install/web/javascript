@@ -28,6 +28,5 @@ yarn add global prettier
 echo "Minifier: Uglifyjs"
 yarn add global uglify-js
 
-
-
-
+echo "Vim helper: import-js"
+yarn add global import-js

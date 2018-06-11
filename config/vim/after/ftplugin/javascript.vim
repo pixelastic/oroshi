@@ -39,7 +39,7 @@ endfunction
 inoremap <buffer> $ù console.info(
 " Using ## (as in ruby) for string interpolation
 inoremap <buffer> ## ${}<Left>
-" Test boilerplat
+" Test boilerplate
 inoremap <buffer> bfe beforeEach(() => {});ko
 inoremap <buffer> aftee afterEach(() => {});ko
 inoremap <buffer> iit it('', () => {<CR>});k2li
@@ -57,4 +57,6 @@ inoremap <buffer> @rets @returns {String}
 inoremap <buffer> @retp @returns {Promise} 
 inoremap <buffer> @retps @returns {Promise.<String>} 
 nnoremap <buffer> ii_ mzggoimport _ from 'lodash';`z
+" Import module
+nnoremap <buffer> <Leader>i :ImportJSWord<CR>
 " }}}

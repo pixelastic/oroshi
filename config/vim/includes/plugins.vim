@@ -33,6 +33,7 @@ Plug 'hail2u/vim-css3-syntax'
 Plug 'mxw/vim-jsx'
 Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
+Plug 'Galooshi/vim-import-js'
 Plug 'posva/vim-vue'
 Plug 'tmhedberg/SimpylFold' " Python folding
 Plug 'tpope/vim-markdown'
