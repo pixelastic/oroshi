@@ -258,6 +258,7 @@ alias yrtw='yr test:watch'
 alias yrt='yr test'
 alias yrw='yr watch'
 alias ys='emma'
+alias ysd='emma -D'
 alias yu='yarn upgrade'
 alias yug='yarn global upgrade'
 # }}}
