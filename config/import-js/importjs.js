@@ -2,6 +2,6 @@ module.exports = {
   importDevDependencies: true,
   environments: ['node'],
   declarationKeyword: 'import',
-  groupImports: true,
-  sortImports: true
+  // groupImports: true,
+  // sortImports: true
 };
