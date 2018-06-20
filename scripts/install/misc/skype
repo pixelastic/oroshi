@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+cd ~/local/src
+wget https://go.skype.com/skypeforlinux-64.deb -O skype.deb
+install-deb ./skype.deb
