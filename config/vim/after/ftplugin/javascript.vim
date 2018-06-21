@@ -49,18 +49,21 @@ inoremap <buffer> dsc describe('', () => {});klllllllli
 inoremap <buffer> ccact const actual = 
 inoremap <buffer> ccinp const input = 
 inoremap <buffer> mrv mockReturnValue()i
+inoremap <buffer> thp toHaveProperty('')hi
 inoremap <buffer> jsp jest.spyOn()i
 inoremap <buffer> tthen then(() => {});ko
 inoremap <buffer> @para @param {Array} 
 inoremap <buffer> @parb @param {Boolean} 
 inoremap <buffer> @paro @param {Object} 
 inoremap <buffer> @pars @param {String} 
+inoremap <buffer> @parn @param {Number} 
 inoremap <buffer> @reta @returns {Array} 
 inoremap <buffer> @retb @returns {Boolean} 
 inoremap <buffer> @reto @returns {Object} 
 inoremap <buffer> @retps @returns {Promise.<String>} 
 inoremap <buffer> @retp @returns {Promise} 
 inoremap <buffer> @rets @returns {String} 
+inoremap <buffer> @retn @returns {Number} 
 nnoremap <buffer> ii_ mzggoimport _ from 'lodash';`z
 " Import module
 nnoremap <buffer> <Leader>i :ImportJSWord<CR>
