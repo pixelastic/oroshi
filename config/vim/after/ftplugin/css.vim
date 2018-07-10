@@ -51,6 +51,9 @@ endif
 inoremap <silent> <buffer> <F4> <Esc>:Neoformat<CR>:call CssBeautify()<CR><CR>
 nnoremap <silent> <buffer> <F4> :Neoformat<CR>:call CssBeautify()<CR><CR>
 function! CssBeautify() 
+  " We force syntax back to scss (for correct highlight of nested rules),
+  " because Neoformat puts it back to css
+  set syntax=scss
   SyntasticCheck()
 endfunction
 " }}}
