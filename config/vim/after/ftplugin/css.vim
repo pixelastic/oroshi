@@ -47,10 +47,10 @@ if expand('%:p') =~# 'tachyons-algolia'
   let g:syntastic_css_stylelint_args = '--syntax scss'
 endif
 "}}}
-" Cleaning the file {{{
-nnoremap <silent> <buffer> <F4> :call CssBeautify()<CR>
+" Cleaning {{{
+inoremap <silent> <buffer> <F4> <Esc>:Neoformat<CR>:call CssBeautify()<CR><CR>
+nnoremap <silent> <buffer> <F4> :Neoformat<CR>:call CssBeautify()<CR><CR>
 function! CssBeautify() 
-	execute '%!css-beautify -s 2 -f -'
-	call RemoveTrailingSpaces()
+  SyntasticCheck()
 endfunction
 " }}}
