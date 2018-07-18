@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+if spotify-is-running; then
+  spotify-next
+else
+  cmus-next
+fi
+

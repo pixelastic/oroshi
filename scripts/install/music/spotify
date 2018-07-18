@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+snap install spotify
+
+pip install --user spotify
+
+sudo apt-get-install kdocker

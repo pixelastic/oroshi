@@ -2,7 +2,7 @@
 
 local output=''
 
-# Drobox status {{{
+# Dropbox status {{{
 local dropbox_status=''
 dropbox_status=`dropbox status`
 if [[ $dropbox_status == "Dropbox isn't running!" ]]; then
@@ -55,7 +55,10 @@ fi
 
 # Currently playing {{{
 local currently_playing=''
-if cmus-is-running; then
+if spotify-is-running; then
+  currently_playing="$(spotify-data)"
+  currently_playing="#[fg=colour35] $currently_playing#[default]"
+else if cmus-is-running; then
   currently_playing="$(cmus-data title)"
   local music_status="$(cmus-data status)"
   # Adding play/pause icon
@@ -74,6 +77,7 @@ if cmus-is-running; then
   else
     currently_playing="#[fg=colour241]$currently_playing#[default]"
   fi
+fi
 fi
 output="$currently_playing $output"
 

@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+# Start spotify docked into the tray
+nohup kdocker \
+  -q -o -l \
+  -i /home/tim/.oroshi/config/spotify/icon.png \
+  /snap/bin/spotify \
+  2>/dev/null \
+  &

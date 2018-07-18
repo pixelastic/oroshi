@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+export PYTHONIOENCODING=utf-8
+
+status="$(spotifycli --status)"
+
+if [[ "$status" == "spotify is off" ]]; then
+  exit 1
+fi

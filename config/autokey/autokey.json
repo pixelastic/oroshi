@@ -30,7 +30,7 @@
             100
         ], 
         "workAroundApps": ".*VirtualBox.*|krdc.Krdc", 
-        "hPanePosition": 342, 
+        "hPanePosition": 530, 
         "isFirstRun": true
     }, 
     "userCodeDir": null, 
