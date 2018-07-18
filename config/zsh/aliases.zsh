@@ -191,7 +191,6 @@ alias oh="~/.oroshi/scripts/deploy/hosts"
 alias om="mouse-speed 2"
 alias or="redshift -x && redshift -o"
 alias os="~/.oroshi/scripts/deploy/ssh"
-alias ox="~/.oroshi/scripts/deploy/xmodmap"
 alias oz="source ~/.zshrc"
 # }}}
 # Trash {{{

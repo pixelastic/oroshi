@@ -13,9 +13,9 @@ alias cdscenar='cd ~/Dropbox/backup/roleplay/scenarios/'
 # Reload keybings for this OS
 function ok() {
   ~/.oroshi/scripts/deploy/xmodmap
+  ~/.oroshi/scripts/deploy/xbindkeys
   source ~/.oroshi/private/config/ubuntu/rorohiko/keybindings/windows.sh
   source ~/.oroshi/private/config/ubuntu/rorohiko/keybindings/custom.sh
-  source ~/.oroshi/private/config/ubuntu/rorohiko/keybindings/media.sh
 }
 # }}}
 
