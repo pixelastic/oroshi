@@ -2,3 +2,5 @@
 
 sudo apt-get install python-pip
 pip install --upgrade pip
+
+git clone https://github.com/pyenv/pyenv.git ~/.pyenv

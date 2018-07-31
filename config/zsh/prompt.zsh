@@ -8,7 +8,7 @@ promptinit
 PROMPT='${promptUsername}$(getPromptExitCode)${promptHostname}:$(getPromptPath) $(getPromptHash) '
 RPROMPT=''
 function get_RPROMPT() {
-  echo "$(getRubyIndicator)$(getNodeIndicator)$(getPromptRepoIndicator)"
+  echo "$(getRubyIndicator)$(getPythonIndicator)$(getNodeIndicator)$(getPromptRepoIndicator)"
 }
 
 # Asynchronous right prompt {{{
@@ -367,6 +367,18 @@ function getNodeIndicator() {
 
   # Current version not the default one
   echo $(colorize "⬢ $currentVersion " 'nodeVersion')
+}
+# }}}
+
+# Python {{{
+function getPythonIndicator() {
+  # Not in a virtualenv
+  if [[ $VIRTUAL_ENV == "" ]]; then
+    return
+  fi
+
+  currentVersion="$(python --version | awk '{print $2}')"
+  echo $(colorize "🐍 $currentVersion " 'pythonVersion')
 }
 # }}}
 

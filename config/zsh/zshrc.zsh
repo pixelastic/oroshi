@@ -69,3 +69,4 @@ source $zshConfigDir/prompt.zsh
 
 # Some stuff must be loaded after everything else
 source $zshConfigDir/last.zsh
+

@@ -25,8 +25,26 @@ local rvmScript=~/.rvm/scripts/rvm
 #     rvm use 2.3.1 &>/dev/null
 #   fi
 # fi
+
+
 # Adding Chromium compilation tools to the path if present
 local chromiumDepotTools=~/local/src/chromium/depot_tools
 if [[ -r $chromiumDepotTools ]]; then
   export PATH=$PATH:$chromiumDepotTools
+fi
+
+# Pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH=$PATH:$PYENV_ROOT/bin
+export VIRTUAL_ENV_DISABLE_PROMPT="yes"
+eval "$(pyenv init -)"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/tim/local/src/google-cloud-sdk/path.zsh.inc' ]; then 
+  source '/home/tim/local/src/google-cloud-sdk/path.zsh.inc'; 
+fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/tim/local/src/google-cloud-sdk/completion.zsh.inc' ]; then 
+  source '/home/tim/local/src/google-cloud-sdk/completion.zsh.inc'; 
 fi

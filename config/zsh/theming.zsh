@@ -27,6 +27,7 @@ promptColorDefault=(
   pathNotWritable       "160"
   lastCommandFailed     "160"
   rubyVersion           "203"
+  pythonVersion         "108"
   nodeVersion           "028"
   nodeVersionError      "160"
 
