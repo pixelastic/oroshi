@@ -6,3 +6,8 @@ sudo apt-get install php5-mcrypt
 sudo apt-get install php5-mysqlnd
 sudo apt-get install php5-sqlite
 sudo apt-get install php5-json
+
+sudo apt-get install composer
+
+# PhpLint
+composer require overtrue/phplint -vvv
