@@ -1,37 +1,35 @@
 #!/usr/bin/env ruby
-# Encoding : UTF-8
-require "shellwords"
+require 'shellwords'
 
+# Convert a file to UTF8
 class UTF8
-	
-	def initialize(*args)
-		@files = args.map do |file|
-			File.expand_path(file)
-		end
-	end
+  def initialize(*args)
+    @files = args.map do |file|
+      File.expand_path(file)
+    end
+  end
 
-	def get_encoding(file)
-		output = %x[file -bi #{file.shellescape}]
-		matches = output.match(/(.*)charset=(.*)/)
-		return nil unless matches
-		return matches[2].downcase
-	end
-	
-	def run
-		@files.each do |file|
-			encoding = get_encoding(file)
-			case encoding
-			when "iso-8859-1"
-				%x[recode latin1..utf8 #{file.shellescape}]
-			when "iso-8859-2"
-				%x[recode latin2..utf8 #{file.shellescape}]
-			when "utf-8"
-				next
-			else
-				puts "Unknown encoding for #{File.basename(file)}"
-			end
-		end
-	end
+  def get_encoding(file)
+    output = `file -bi #{file.shellescape}`
+    matches = output.match(/(.*)charset=(.*)/)
+    return nil unless matches
+    matches[2].downcase
+  end
+
+  def run
+    @files.each do |file|
+      encoding = get_encoding(file)
+      case encoding
+      when 'iso-8859-1'
+        `recode latin1..utf8 #{file.shellescape}`
+      when 'iso-8859-2'
+        `recode latin2..utf8 #{file.shellescape}`
+      when 'utf-8'
+        next
+      else
+        puts "Unknown encoding for #{File.basename(file)}"
+      end
+    end
+  end
 end
-UTF8.new(*ARGV).run()
-
+UTF8.new(*ARGV).run
