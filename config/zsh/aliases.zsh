@@ -129,20 +129,23 @@ alias pdf2jpg='pdf2img'
 alias pdf2png='pdf2img -png'
 # }}}
 # Docker {{{
-alias dob='docker-build'
-alias docR='docker-container-remove'
-alias docl='docker-container-list -a'
-alias doiR='docker-image-remove'
-alias doil='docker-image-list'
-alias doim='docker-image-list'
-alias dops='docker-container-list'
-alias dord='docker run -d -P' # Run daemon, expose ports
-alias dori='docker run -t -i' # Run interactive
-alias dor='docker run'
-alias dostai='docker-container-start -i'
-alias dosta='docker-container-start'
-alias dosto='docker-container-stop'
-function dobash() { docker exec -it "$1" /bin/bash }
+alias dic='docker-image-create'
+alias dicf='docker-image-create --force'
+alias dil='docker-image-list'
+alias diR='docker-image-remove'
+alias dcc='docker-container-create'
+alias dccf='docker-container-create --force'
+alias dcl='docker-container-list'
+alias dcR='docker-container-remove'
+alias dcRa='docker-container-remove --all'
+alias dcsta='docker-container-start'
+# alias dord='docker run -d -P' # Run daemon, expose ports
+# alias dori='docker run -t -i' # Run interactive
+# alias dor='docker-run'
+# alias dostai='docker-container-start -i'
+# alias dosta='docker-container-start'
+# alias dosto='docker-container-stop'
+# function dobash() { docker exec -it "$1" /bin/bash }
 # }}}
 # Directories {{{
 alias cde='cd ~/local/etc/'

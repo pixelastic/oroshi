@@ -11,6 +11,37 @@ module DockerHelper
     tag: 241
   }
 
+  # Return an array of all images
+  def images
+    `docker images --format '{{.Repository}}' | sort`.split("\n")
+  end
+
+  # Check if the specified image_name is already used
+  def image?(image_name)
+    image_name = image_name.split(':')[0] if image_name.include?(':')
+    images.include?(image_name)
+  end
+
+  # Remove an image
+  def image_remove(image_name)
+    `docker rmi -f #{image_name}`
+  end
+
+  # Return an array of all containers
+  def containers
+    `docker-container-list-completion`.split("\n")
+  end
+
+  # Check if the specified container_name is already used
+  def container?(container_name)
+    containers.include?(container_name)
+  end
+
+  # Remove a container
+  def container_remove(container_name)
+    `docker rm --force #{container_name}`
+  end
+
   def color(type)
     @@colors[type]
   end
@@ -21,9 +52,10 @@ module DockerHelper
     @@colors[:image]
   end
 
-  def colorize(text, color)
-    color = format('%03d', color)
-    "[38;5;#{color}m#{text}[00m"
+  def colorize(text, input_color)
+    input_color = color(input_color) if input_color.is_a? Symbol
+    input_color = format('%03d', input_color)
+    "[38;5;#{input_color}m#{text}[00m"
   end
 
   def longest_by_type(list, type)
@@ -31,4 +63,5 @@ module DockerHelper
     return nil if ordered.empty?
     ordered.max.last[0]
   end
+
 end

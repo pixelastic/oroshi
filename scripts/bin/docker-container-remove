@@ -1,2 +1,34 @@
-#!/usr/bin/env zsh
-docker rm --force $@
+#!/usr/bin/env ruby
+
+# Delete containers
+class DockerContainerRemove
+  def initialize(*args)
+    @args = args[0]
+    @remove_all = false
+    if @args['--all']
+      @remove_all = true
+      @args.delete('--all')
+    end
+
+    return unless @args.empty?
+
+    puts 'Usage:'
+    puts '$ docker-container-remove container_name [container_name] [--all]'
+    exit 1
+  end
+
+  def run
+    @args = `docker-container-list-bare`.tr("\n", ' ').strip if @remove_all
+    options = [
+      'docker',
+      'rm',
+      '--force',
+      @args
+    ].compact
+
+    IO.popen(options.join(' ')).each do |line|
+      puts line.chomp
+    end
+  end
+end
+DockerContainerRemove.new(*ARGV).run

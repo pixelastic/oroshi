@@ -1,4 +1,5 @@
-function _complete_docker_container_all {
-  reply=($(docker ps -a --format "{{.Names}}"))
+function _completion_docker_containers {
+  reply=($(docker-image-list-completion))
 }
-compctl -K _complete_docker_container_all docker-container-remove
+compctl -K _completion_docker_containers docker-container-remove
+compctl -K _completion_docker_containers docker-container-start

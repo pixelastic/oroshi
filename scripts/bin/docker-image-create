@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+require_relative '../etc/docker-helper/docker_helper'
+
+# Create a new Docker image from a Docker file
+class DockerImageCreate
+  include DockerHelper
+
+  def initialize(*args)
+    @force = false
+
+    # Used to force creating even if an image already exists with this name
+    if args.include?('--force')
+      args.delete('--force')
+      @force = true
+    end
+
+    @name = args[0]
+    @dockerfile = args[1]
+
+    if image?(@name) && !@force
+      puts "✘ An image named #{colorize(@name, :image)} already exists"
+      puts 'Add --force to overwrite'
+      exit 1
+    end
+
+    return unless @name.nil?
+
+    puts 'Usage:'
+    puts '$ docker-image-create name [dockerfile]'
+    exit 1
+  end
+
+  def run
+    # We remove the image before adding it if --force is passed
+    image_remove(@name) if @force && image?(@name)
+
+    options = [
+      'docker',
+      'build',
+      "-t #{@name}",
+      @dockerfile ? "-f #{@dockerfile}" : nil,
+      '.'
+    ].compact
+
+    IO.popen(options.join(' ')).each do |line|
+      puts line.chomp
+    end
+  end
+end
+DockerImageCreate.new(*ARGV).run

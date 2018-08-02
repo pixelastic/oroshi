@@ -1,0 +1,5 @@
+function _completion_docker_images {
+  reply=($(docker-image-list-completion))
+}
+compctl -K _completion_docker_images docker-image-remove
+compctl -K _completion_docker_images docker-container-create

@@ -14,7 +14,7 @@ class DockerContainerList
   def container_list
     options = [
       'docker',
-      'ps',
+      'ps -a',
       '--format "{{.Names}};{{.ID}};{{.Image}};{{.Ports}};{{.Status}}"',
       @args.join(' ')
     ]
