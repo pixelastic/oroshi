@@ -9,28 +9,20 @@ class SearchReplace
       exit 1
     end
     @is_dry_run = args.include?('-n')
-    args -= ['-n'] if @is_dry_run
 
     @search, @replace, *@files = args
   end
 
-  def escape_sed(string)
-    string
-      .gsub('/', '\/')
-      .tr("'", "\'")
-  end
-
   def run
-    search = escape_sed(@search)
-    replace = escape_sed(@replace)
-    pattern = "'s/#{search}/#{replace}/g'"
-
-    options = ['-i', pattern]
-    options << '-n' if @is_dry_run
-    options += @files
-
-    command = "sed #{options.join(' ')}"
-    `#{command}`
+    @files.each do |file|
+      content = File.read(file)
+      updated_content = content.gsub(@search, @replace)
+      if @is_dry_run
+        puts updated_content
+      else
+        File.write(file, updated_content)
+      end
+    end
   end
 end
 SearchReplace.new(*ARGV).run
