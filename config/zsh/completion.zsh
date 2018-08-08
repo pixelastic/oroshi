@@ -7,7 +7,7 @@
 local zshConfigDir=~/.oroshi/config/zsh
 source $zshConfigDir/completion/yr
 source $zshConfigDir/completion/tmuxinator
-# source $zshConfigDir/completion/_docker-container-all
+source $zshConfigDir/completion/_docker-container-all
 # source $zshConfigDir/completion/_docker-container-running
 # source $zshConfigDir/completion/_docker-container-stopped
 source $zshConfigDir/completion/_docker-images
