@@ -62,6 +62,7 @@ alias vde='vim $(git root)/.git/config'
 alias vdl='git status --short'
 alias vdrr='vsm? && vdr && cd .. && vdr'
 alias vdr='vd? && cd "$(git root)"'
+alias vdrd='vdr && cd ./docs'
 alias vd?='git-is-repository'
 # }}}
 # [f]iles {{{

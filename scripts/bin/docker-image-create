@@ -17,17 +17,18 @@ class DockerImageCreate
     @name = args[0]
     @dockerfile = args[1]
 
+    return unless @name.nil?
+    if @name.nil?
+      puts 'Usage:'
+      puts '$ docker-image-create name [dockerfile]'
+      exit 1
+    end
+
     if image?(@name) && !@force
       puts "✘ An image named #{colorize(@name, :image)} already exists"
       puts 'Add --force to overwrite'
       exit 1
     end
-
-    return unless @name.nil?
-
-    puts 'Usage:'
-    puts '$ docker-image-create name [dockerfile]'
-    exit 1
   end
 
   def run

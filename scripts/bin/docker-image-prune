@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+require_relative '../etc/docker-helper/docker_helper'
+
+# Remove all <none>:<none> dangling images
+class DockerImagePrune
+  include DockerHelper
+
+  def initialize(*args)
+  end
+
+  def run
+    prune_images
+  end
+end
+DockerImagePrune.new(*ARGV).run
+
+

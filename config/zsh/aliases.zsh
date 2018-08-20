@@ -130,6 +130,7 @@ alias pdf2png='pdf2img -png'
 # }}}
 # Docker {{{
 alias dic='docker-image-create'
+alias dip='docker-image-prune'
 alias dicf='docker-image-create --force'
 alias dil='docker-image-list'
 alias diR='docker-image-remove'

@@ -27,6 +27,12 @@ module DockerHelper
     `docker rmi -f #{image_name}`
   end
 
+  # Prune dangling images
+  def prune_images
+    dangling = `docker images -f "dangling=true" -q`
+    `docker rmi --force #{dangling}` if dangling
+  end
+
   # Return an array of all containers
   def containers
     `docker-container-list-completion`.split("\n")
