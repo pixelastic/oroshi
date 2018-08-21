@@ -222,8 +222,18 @@ alias ve='vim ~/.oroshi/config/vim/vimrc'
 alias vw='vim-which'
 # }}}
 # DocSearch {{{
-alias ds="~/local/www/algolia/docsearch/docsearch-scraper/docsearch "
+export DOCSEARCH_DIR=~/local/www/algolia/docsearch/docsearch-scraper
+alias ds="$DOCSEARCH_DIR/docsearch "
 alias dsb="ds bootstrap "
+function dsr() {
+  cd $DOCSEARCH_DIR; 
+  ./docsearch run ../docsearch-configs/configs/$1.json
+}
+function dsrp() {
+  cd $DOCSEARCH_DIR; 
+  APPLICATION_ID=$APPLICATION_ID_PROD API_KEY=$API_KEY_PROD ./docsearch run ../docsearch-configs/configs/$1.json
+}
+alias dss="cd $DOCSEARCH_DIR/playground && serve"
 # }}}
 # Tweet {{{
 alias tweet="t update"
