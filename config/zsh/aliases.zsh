@@ -221,6 +221,10 @@ alias vf="vim ~/.oroshi/config/zsh/filetypes.db.zsh"
 alias ve='vim ~/.oroshi/config/vim/vimrc'
 alias vw='vim-which'
 # }}}
+# DocSearch {{{
+alias ds="~/local/www/algolia/docsearch/docsearch-scraper/docsearch "
+alias dsb="ds bootstrap "
+# }}}
 # Tweet {{{
 alias tweet="t update"
 alias timeline="t stream timeline"
