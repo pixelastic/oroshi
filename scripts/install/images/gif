@@ -2,11 +2,18 @@
 
 # We don't use the official gifsicle version as it seems unmaintained and lacks
 # the lossy feature
-cd ~/local/tmp
-wget https://github.com/pornel/giflossy/releases/download/lossy%2F1.82.1/gifsicle-1.82.1-lossy.zip \
+GIFLOSSY_VERSION=1.91
+cd ~/local/src
+wget \
+  "https://github.com/kornelski/giflossy/archive/$GIFLOSSY_VERSION.zip" \
   -O ./giflossy.zip
-unzip -j "./giflossy.zip" "linux/gifsicle-static" -d ~/local/bin
-mv ~/local/bin/gifsicle-static ~/local/bin/gifsicle
+extract ./giflossy.zip
+mv "./giflossy-$GIFLOSSY_VERSION" "./giflossy"
+cd ./giflossy
+autoreconf -i
+./configure --prefix="/home/$USER/local"
+make install
+
 
 # Converting terminal to gif
 sudo apt-add-repository ppa:zanchey/asciinema
