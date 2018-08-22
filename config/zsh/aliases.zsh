@@ -229,11 +229,12 @@ function dsr() {
   cd $DOCSEARCH_DIR; 
   ./docsearch run ../docsearch-configs/configs/$1.json
 }
+alias dss="cd $DOCSEARCH_DIR/playground && serve"
 function dsrp() {
   cd $DOCSEARCH_DIR; 
   APPLICATION_ID=$APPLICATION_ID_PROD API_KEY=$API_KEY_PROD ./docsearch run ../docsearch-configs/configs/$1.json
 }
-alias dss="cd $DOCSEARCH_DIR/playground && serve"
+alias dsd="cd $DOCSEARCH_DIR; ./docsearch deploy "
 # }}}
 # Tweet {{{
 alias tweet="t update"
