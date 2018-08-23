@@ -32,7 +32,7 @@ let b:npmRoot = GetNpmRoot()
 
 " Textlint
 let b:textlintBin = StrTrim(system('which textlint'))
-let b:textlintLocalConfig = b:npmRoot . '.textlintrc'
+let b:textlintLocalConfig = b:npmRoot . '.textlintrc.js'
 if filereadable(b:textlintLocalConfig)
   let b:textlintBin = StrTrim(system('yarn bin textlint'))
 endif
