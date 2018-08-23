@@ -18,7 +18,6 @@ mkdir -p $destDir/plugins
 # Link other config directories
 ln -fns $configDir/after $destDir/after
 ln -fns $configDir/autoload $destDir/autoload
-ln -fns $configDir/bundle/enabled $destDir/bundle
 ln -fns $configDir/colors $destDir/colors
 ln -fns $configDir/includes $destDir/includes
 ln -fns $configDir/snippets $destDir/UltiSnips

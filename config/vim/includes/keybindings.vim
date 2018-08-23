@@ -193,6 +193,8 @@ nnoremap cam [{V%c
 nnoremap vip {jv}k$
 " Sort the current block of text
 nnoremap sip {jv}k$:sort<CR>
+" Go to next error
+nnoremap <silent> <C-E> :lnext<CR>
 " }}}
 " MUSCLE MEMORY {{{
 " Ctrl+S saves the file, as in most apps

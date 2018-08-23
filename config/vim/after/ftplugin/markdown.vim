@@ -28,9 +28,62 @@ vnoremap <buffer> _ <Esc>mzg`>a_<Esc>g`<i_<Esc>`zl
 vnoremap <buffer> * <Esc>mzg`>a**<Esc>g`<i**<Esc>`zl
 " }}}
 " Linters {{{
+let b:npmRoot = GetNpmRoot()
+
+" Textlint
+let b:textlintBin = StrTrim(system('which textlint'))
+let b:textlintLocalConfig = b:npmRoot . '.textlintrc'
+if filereadable(b:textlintLocalConfig)
+  let b:textlintBin = StrTrim(system('yarn bin textlint'))
+endif
+
+" Remark
+let b:remarkBin = StrTrim(system('which remark'))
+let b:remarkLocalConfig = b:npmRoot . '.remarkrc.js'
+let b:remarkIsLocal = 0
+if filereadable(b:remarkLocalConfig)
+  let b:remarkIsLocal = 1
+  let b:remarkBin = StrTrim(system('yarn bin remark'))
+endif
+
 if or(isRoleplay, isBooks) ==# 0
   let b:syntastic_checkers = ['textlint']
+  let b:syntastic_markdown_textlint_exec = b:textlintBin
+
+  if b:remarkIsLocal ==# 1
+    let b:syntastic_checkers = b:syntastic_checkers + ['remark_lint']
+    let b:syntastic_markdown_remark_lint_exec = b:remarkBin
+  end
 endif
+" }}}
+" Cleaning the file {{{
+inoremap <silent> <buffer> <F4> <Esc>:call MarkdownBeautify()<CR>
+nnoremap <silent> <buffer> <F4> :call MarkdownBeautify()<CR>
+function! MarkdownBeautify() 
+  let l:initialLine = line('.')
+
+  " First fix through text lint
+  " textlint --fix changes the file in place. So we copy the content into a tmp
+  " file, fix it, and then output the fixed file
+  let thisFile = shellescape(expand('%:p'))
+  let tmpFile = '/tmp/vim-textlint-markdown.md'
+  let command = '%!> ' . tmpFile .
+        \' && ' . b:textlintBin . ' --fix ' . tmpFile . ' --output-file /dev/null' .
+        \' && cat ' . tmpFile
+  execute command
+
+  " Then fix through remark if we have it
+  " This expect a local remark to have a config for fixing files
+  " TODO: Make a global install of this
+  if b:remarkIsLocal ==# 1
+    execute '%!REMARK_MODE=fix '.b:remarkBin.' --quiet'
+  endif
+
+  call RemoveTrailingSpaces()
+
+  execute 'normal '.initialLine.'gg'
+  SyntasticCheck()
+endfunction
 " }}}
 " Folding {{{
 function! MarkdownLevel()
@@ -62,39 +115,6 @@ setlocal formatoptions+=t
 " Add current copy-paste buffer to link on word
 nnoremap <buffer> ]] "zciw[<Esc>"zpi<Right>](<Esc>"*pi<Right>)<Esc>mzvipgq`z
 vnoremap <buffer> ]] "zc[]()<Esc>hhh"zpll"*p
-" }}}
-" Cleaning the file {{{
-inoremap <silent> <buffer> <F4> <Esc>:call MarkdownBeautify()<CR>
-nnoremap <silent> <buffer> <F4> :call MarkdownBeautify()<CR>
-function! MarkdownBeautify() 
-  " We save the current line, to be able to jump to it later
-  let linenr=line('.')
-
-  " Remove bad chars after copy-paste
-  silent! %s/’/'/e
-  silent! %s/‘/'/e
-  silent! %s/“/"/e
-  silent! %s/”/"/e
-
-  " Textlint
-  let thisFile = shellescape(expand('%:p'))
-  let tmpFile = '/tmp/vim-textlint-markdown.md'
-  " textlint --fix changes the file in place. So we copy the content into a tmp
-  " file, fix it, and then output the fixed file
-  let command = '%!> ' . tmpFile .
-        \' && textlint --fix ' . tmpFile . ' &>/dev/null' .
-        \' && cat ' . tmpFile
-  execute command
-
-  " Remove trailing spaces
-  call RemoveTrailingSpaces()
-
-  " Convert links into references
-  silent! %! formd -r
-
-  " Get back to initial line
-  execute 'normal '.linenr.'gg'
-endfunction
 " }}}
 " Spellchecking {{{
 setlocal spelllang=en
