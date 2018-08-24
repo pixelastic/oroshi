@@ -1,9 +1,9 @@
 " MARKDOWN
 " I write most of my markdown in english, and sometimes in french. I will
 " disable English-only settings when I know I'm in a french directory
-let thisFile = expand('%:p')
-let isRoleplay = thisFile =~# 'roleplay'
-let isBooks = thisFile =~# 'books'
+let b:thisFile = shellescape(expand('%:p'))
+let isRoleplay = b:thisFile =~# 'roleplay'
+let isBooks = b:thisFile =~# 'books'
 
 " Saving {{{
 augroup markdown_autosave
@@ -46,6 +46,15 @@ if filereadable(b:remarkLocalConfig)
   let b:remarkBin = StrTrim(system('yarn bin remark'))
 endif
 
+" Prettier
+let b:prettierBin = StrTrim(system('which prettier'))
+let b:prettierLocalConfig = b:npmRoot . '.prettierrc.js'
+let b:prettierIsLocal = 0
+if filereadable(b:prettierLocalConfig)
+  let b:prettierIsLocal = 1
+  let b:prettierBin = StrTrim(system('yarn bin prettier'))
+endif
+
 if or(isRoleplay, isBooks) ==# 0
   let b:syntastic_checkers = ['textlint']
   let b:syntastic_markdown_textlint_exec = b:textlintBin
@@ -65,7 +74,6 @@ function! MarkdownBeautify()
   " First fix through text lint
   " textlint --fix changes the file in place. So we copy the content into a tmp
   " file, fix it, and then output the fixed file
-  let thisFile = shellescape(expand('%:p'))
   let tmpFile = '/tmp/vim-textlint-markdown.md'
   let command = '%!> ' . tmpFile .
         \' && ' . b:textlintBin . ' --fix ' . tmpFile . ' --output-file /dev/null' .
@@ -77,6 +85,14 @@ function! MarkdownBeautify()
   " TODO: Make a global install of this
   if b:remarkIsLocal ==# 1
     execute '%!REMARK_MODE=fix '.b:remarkBin.' --quiet'
+  endif
+
+
+  " Then format through prettier if we have it
+  " TODO: Make a global install of this
+  if b:prettierIsLocal ==# 1
+    write
+    silent execute '%!' . b:prettierBin . ' --parser markdown ' . b:thisFile
   endif
 
   call RemoveTrailingSpaces()
