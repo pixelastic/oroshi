@@ -1,16 +1,17 @@
 #!/usr/bin/env ruby
+require_relative '../etc/docker-helper/docker_helper'
 
 # Delete containers
 class DockerContainerRemove
+  include DockerHelper
+
   def initialize(*args)
-    @args = args[0]
-    @remove_all = false
-    if @args['--all']
-      @remove_all = true
-      @args.delete('--all')
+    @containers = args.to_a
+    if @containers.include?('--all')
+      @containers = `docker-container-list-bare`.lines
     end
 
-    return unless @args.empty?
+    return unless @containers.empty?
 
     puts 'Usage:'
     puts '$ docker-container-remove container_name [container_name] [--all]'
@@ -18,16 +19,21 @@ class DockerContainerRemove
   end
 
   def run
-    @args = `docker-container-list-bare`.tr("\n", ' ').strip if @remove_all
-    options = [
-      'docker',
-      'rm',
-      '--force',
-      @args
-    ].compact
+    @containers.each do |container|
+      unless container?(container)
+        puts "✘ Container #{colorize(container, :container)} does not exist"
+        next
+      end
+      options = [
+        'docker',
+        'rm',
+        '--force',
+        container
+      ].compact
 
-    IO.popen(options.join(' ')).each do |line|
-      puts line.chomp
+      IO.popen(options.join(' ')).each do |line|
+        puts line.chomp
+      end
     end
   end
 end
