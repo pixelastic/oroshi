@@ -22,7 +22,7 @@ class BetterCat
         next
       end
       # Normal cat
-      system("cat #{file.shellescape}")
+      system("bat #{file.shellescape}")
     end
   end
 end
