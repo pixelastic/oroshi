@@ -1,0 +1,78 @@
+#!/usr/bin/env ruby
+
+# Check if a font is installed
+class FontExists
+  def initialize(font)
+    @font = font.downcase
+  end
+
+  def slugify(input)
+    input.downcase.delete(' ').delete('-')
+  end
+
+  # Get the list of all fonts on the system. Returned as an array of objects
+  # with path, names and styles keys
+  def fonts
+    raw = `fc-list`
+    fonts = []
+
+    raw.lines.each do |line|
+      line = line.strip
+      font = {}
+
+      path, details = line.split(': ')
+      font['path'] = path
+
+      names, styles = details.split(':')
+      font['names'] = names.split(',')
+      font['names'] = font['names'].map { |name| slugify(name) }
+
+      font['styles'] = styles.gsub('style=', '').split(',')
+      font['styles'] = font['styles'].map { |style| slugify(style) }
+
+      fonts << font
+    end
+
+    fonts.sort_by { |font| font['names'].first }
+  end
+
+  # Returns the font name (without the style)
+  def name(font)
+    font.gsub("-#{style(font)}", '').delete('-').gsub('regular', '')
+  end
+
+  # Font styles (italic, bold, etc) can be suffixed to the font name. This will
+  # return the style extracted from the font
+  def style(font)
+    _, style = font.split('-')
+    known_styles = %w[italic bold bolditalic]
+    return 'regular' unless known_styles.include?(style)
+    style
+  end
+
+  def installed?(needle)
+    match_name = name(needle)
+    match_style = style(needle)
+    # p needle
+    # p match_name
+    # p match_style
+
+    match = fonts.find do |font|
+      # Check that name matches
+      next unless font['names'].include?(match_name)
+
+      # Check that style matches
+      next unless font['styles'].include?(match_style)
+
+      font
+    end
+
+    !match.nil?
+  end
+
+  def run
+    exit 0 if installed? @font
+    exit 1
+  end
+end
+FontExists.new(*ARGV).run
