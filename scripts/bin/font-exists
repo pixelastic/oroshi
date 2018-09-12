@@ -53,9 +53,6 @@ class FontExists
   def installed?(needle)
     match_name = name(needle)
     match_style = style(needle)
-    # p needle
-    # p match_name
-    # p match_style
 
     match = fonts.find do |font|
       # Check that name matches
