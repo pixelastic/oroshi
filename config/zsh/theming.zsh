@@ -85,3 +85,6 @@ export LESS_TERMCAP_me=$'\E[0m'
 export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_ue=$'\E[0m'
 
+# Coloring bat
+export BAT_THEME="TwoDark"
+
