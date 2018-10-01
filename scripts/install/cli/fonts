@@ -2,8 +2,5 @@
 sudo apt-get install msttcorefonts
 
 mkdir -p ~/.fonts
-cp ~/.oroshi/config/fonts/DejaVuSansMonoWithOcticons.ttf ~/.fonts
-cp ~/.oroshi/config/fonts/HackWithOcticons.ttf ~/.fonts
-cp ~/.oroshi/config/fonts/PowerlineSymbols.ttf ~/.fonts
-
-cp ~/.oroshi/config/fonts/*.ttf ~/.fonts/
+cp ~/.oroshi/config/fonts/*.ttf ~/.fonts 
+cp ~/.oroshi/private/config/fonts/*.ttf ~/.fonts
