@@ -7,4 +7,6 @@ sudo apt-get install build-essential \
                      g++ \
                      libxml2-dev \
                      libxslt1-dev \
-                     cmake
+                     cmake \
+                     automake \
+                     autotools-dev
