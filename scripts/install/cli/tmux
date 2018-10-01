@@ -12,6 +12,10 @@ sudo apt-get install libevent-dev
 sudo apt-get install xclip
 
 echo "Configure"
+sudo apt-get install \
+  automake \
+  libncurses5-dev
+
 sh autogen.sh
 ./configure --prefix="/home/$USER/local/"
 make
