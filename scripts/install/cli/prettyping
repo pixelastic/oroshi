@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+cd ~/local/bin
+curl -O https://raw.githubusercontent.com/denilsonsa/prettyping/master/prettyping
+chmod +x prettyping
+

@@ -12,26 +12,25 @@ unsetopt NOMATCH
 
 # Basic commands {{{
 alias ag='better-rg'
-alias rg='better-rg'
-alias cp='cp -rv'
+alias cat='better-cat'
 alias cmus='TERM=screen-256color cmus'
+alias cp='cp -rv'
 alias diff='colordiff'
 alias grep='grep -i --color=auto'
 alias la="ls -a"
 alias ls="ls -vhlp --color=always --group-directories-first"
-alias l="ls"
 alias mkdir="mkdir -p"
 alias mv='mv -vi'
+alias ping="prettyping --nolegend"
+alias rg='better-rg'
 alias rmdir='better-rmdir'
-alias cat='better-cat'
 alias rm='trash-put'
-alias RM='\rm -rf'
 alias scp='scp -r '
 alias serve='live-server'
-alias treed='tree -dN'
-alias tree='tree -aNC -I ".hg|.git"'
 disable -r time # ZSH overrides the time method
 alias time='time -p '
+alias treed='tree -dN'
+alias tree='tree -aNC -I ".hg|.git"'
 alias watch='watch -c '
 alias wr='watch-and-reload'
 alias w='which'
