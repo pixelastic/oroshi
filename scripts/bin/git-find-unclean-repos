@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+# Check for git repositories that have uncomitted files or unpushed current
+# branch. This can be helpful when you're about to reinstall your machine and
+# want to make sure you've saved everything
+
+root=$(pwd);
+tmp_file="/tmp/git-find-unclean-repos";
+
+find ./ -name ".git" > $tmp_file
+
+while read line; do
+  repo="$(dirname "$line")"
+  cd "$repo"
+
+  # Do we have uncommitted files
+  if git-directory-is-dirty; then
+    echo "Dirty: $repo"
+  fi
+
+  # Do we have unpushed changes?
+  status="$(git-branch-remote-status)$?"
+  if [ "$status" -eq 2 ]; then
+    echo "Unpushed: $repo"
+  fi
+
+  cd "$root"
+done < $tmp_file
