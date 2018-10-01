@@ -14,14 +14,16 @@ git clone https://github.com/thestinger/vte-ng.git
 cd ./vte-ng
 ./autogen.sh && make && sudo make install
 
+echo "Copy libs"
+sudo cp /usr/local/lib/libvte-2.91.* /usr/lib
+sudo ldconfig
+
 echo "Clone termite"
 cd ~/local/src/
 git clone --recursive https://github.com/thestinger/termite.git
 cd ./termite
 make && sudo make install
 
-echo "Copy libs"
-sudo cp /usr/local/lib/libvte-2.91.* /usr/lib
 
 
 
