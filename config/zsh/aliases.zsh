@@ -18,7 +18,7 @@ alias cp='cp -rv'
 alias diff='colordiff'
 alias grep='grep -i --color=auto'
 alias la="ls -a"
-alias ls="ls -vhlp --color=always --group-directories-first"
+alias ls="ls -Nvhlp --color=always --group-directories-first"
 alias mkdir="mkdir -p"
 alias mv='mv -vi'
 alias ping="prettyping --nolegend"
