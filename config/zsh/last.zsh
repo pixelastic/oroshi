@@ -48,3 +48,8 @@ fi
 if [ -f '/home/tim/local/src/google-cloud-sdk/completion.zsh.inc' ]; then 
   source '/home/tim/local/src/google-cloud-sdk/completion.zsh.inc'; 
 fi
+
+# Load fzf for fuzzy finding in Ctrl-R in terminal
+if [ -f ~/.fzf.zsh ]; then
+  source ~/.fzf.zsh
+fi

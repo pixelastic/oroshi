@@ -2,4 +2,3 @@
 ln -fs ~/.oroshi/config/xbindkeys/xbindkeysrc.conf ~/.xbindkeysrc
 
 xbindkeys -p
-
