@@ -2,3 +2,5 @@
 set -ex
 
 sudo apt-get install redshift
+# The GTK app allow running it automatically at startup and resume
+sudo apt-get install redshift-gtk

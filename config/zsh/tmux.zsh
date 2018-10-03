@@ -6,7 +6,5 @@
 # Not inside tmux, we will try to attach to an existing session, or create
 # a new one
 if [[ -z "$TMUX" ]]; then
-  # Let's reload the keybindings and overlay
-  ok && or
   (tmux attach || tmux new-session) &>/dev/null
 fi
