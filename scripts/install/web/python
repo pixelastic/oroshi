@@ -1,6 +1,29 @@
 #!/usr/bin/env bash
 
-sudo apt-get install python-pip
-pip install --upgrade pip
+sudo apt-get install \
+    build-essential \
+    curl \
+    git \
+    libbz2-dev \
+    libncurses5-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    libssl-dev \
+    llvm \
+    wget \
+    zlib1g-dev
 
-git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+# We first install pyenv to load the various python env, to easily switch
+# between 2 and 3
+curl \
+  -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer \
+  | bash
+
+# Reload pyenv in the shell
+source ~/.zshrc
+
+
+# sudo apt-get install python-pip
+
+# pip install --upgrade pip
+# pip install --user pipenv

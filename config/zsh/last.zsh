@@ -33,11 +33,14 @@ if [[ -r $chromiumDepotTools ]]; then
   export PATH=$PATH:$chromiumDepotTools
 fi
 
-# Pyenv
-#export PYENV_ROOT="$HOME/.pyenv"
-#export PATH=$PATH:$PYENV_ROOT/bin
-#export VIRTUAL_ENV_DISABLE_PROMPT="yes"
-#eval "$(pyenv init -)"
+# Pyenv / pipenv
+# Make sure pyenv if found by putting it first
+export PATH="/home/tim/.pyenv/bin:$PATH"
+# Init it
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+# export PYENV_ROOT="$HOME/.pyenv"
+# export VIRTUAL_ENV_DISABLE_PROMPT="yes"
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/tim/local/src/google-cloud-sdk/path.zsh.inc' ]; then 

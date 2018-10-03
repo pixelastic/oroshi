@@ -8,3 +8,8 @@ destFile=~/.config/redshift.conf
 
 # Link the config file
 ln -fs $configFile $destFile
+
+# Add a script to resume redshift after waking up from suspend
+sudo cp \
+  ~/.oroshi/config/redshift/wakeup \
+  /usr/lib/pm-utils/sleep.d/z_redshift
