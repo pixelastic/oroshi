@@ -1,17 +1,25 @@
 #!/usr/bin/env bash
+# https://phoikoi.io/2018/04/03/bootstrap-pipenv-debian.html
 
+# Installing dependencies
 sudo apt-get install \
-    build-essential \
-    curl \
-    git \
-    libbz2-dev \
-    libncurses5-dev \
-    libreadline-dev \
-    libsqlite3-dev \
-    libssl-dev \
-    llvm \
-    wget \
-    zlib1g-dev
+  build-essential \
+  curl \
+  git \
+  libbz2-dev \
+  libffi-dev \
+  liblzma-dev \
+  libncurses5-dev \
+  libncursesw5-dev \
+  libreadline-dev \
+  libsqlite3-dev \
+  libssl-dev \
+  llvm \
+  make \
+  tk-dev \
+  wget \
+  xz-utils \
+  zlib1g-dev
 
 # We first install pyenv to load the various python env, to easily switch
 # between 2 and 3
@@ -22,8 +30,14 @@ curl \
 # Reload pyenv in the shell
 source ~/.zshrc
 
+# Install python3 (this is needed by pipenv)
+sudo apt-get install python3-pip python3-setuptools
 
-# sudo apt-get install python-pip
+# Install pipenv using python3 pip
+python3 -m pip install --user pipenv
 
-# pip install --upgrade pip
-# pip install --user pipenv
+# Install python versions using pyenv
+pyenv install 3.6.6
+pyenv install 2.7.15
+
+pyenv global 2.7.15

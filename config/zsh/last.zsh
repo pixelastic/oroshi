@@ -34,7 +34,7 @@ if [[ -r $chromiumDepotTools ]]; then
 fi
 
 # Pyenv / pipenv
-# Make sure pyenv if found by putting it first
+# Make sure pyenv is found by putting it first
 export PATH="/home/tim/.pyenv/bin:$PATH"
 # Init it
 eval "$(pyenv init -)"
