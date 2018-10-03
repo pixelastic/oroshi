@@ -4,4 +4,4 @@ snap install spotify
 
 pip install --user spotify
 
-sudo apt-get-install kdocker
+sudo apt-get install kdocker
