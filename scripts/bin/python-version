@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# For some reason python 2 sends python --version to stderr and python 3 to
+# stdout...
+python --version 2>&1 | awk '{print $2}'

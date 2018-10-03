@@ -377,7 +377,7 @@ function getPythonIndicator() {
     return
   fi
 
-  currentVersion="$(python --version | awk '{print $2}')"
+  currentVersion="$(python-version)"
   echo $(colorize "🐍 $currentVersion " 'pythonVersion')
 }
 # }}}

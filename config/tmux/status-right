@@ -12,8 +12,8 @@ else
 fi
 # }}}
 # Clock {{{
-local clock="$(date +'%a %d/%m %H:%M')"
-output="  $clock $output"
+local clock="$(date +'%d/%m %H:%M')"
+output=" $clock $output"
 # }}}
 # Current ip {{{
 local ip=''

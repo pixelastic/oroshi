@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# No virtual env
+if [[ $VIRTUAL_ENV == "" ]]; then
+  echo "✘ No Virtual Env"
+else
+  current_virtual_env="$(basename "$VIRTUAL_ENV")"
+  echo "Virtual Env: $current_virtual_env"
+fi
+
+  python_path="$(pyenv which python)"
+  python_version="$(python-version)"
+  echo "=== Python:"
+  echo "Version: $python_version"
+  echo "Path:    $python_path"
+
+  pip_path="$(pyenv which pip)"
+  pip_version="$(pip --version)"
+  echo "=== Pip:"
+  echo "Version: $pip_version"
+  echo "Path:    $pip_path"
+
+  echo "Installed packages:"
+  pip list
+
+  echo $PYTHONPATH
+
+
+
+

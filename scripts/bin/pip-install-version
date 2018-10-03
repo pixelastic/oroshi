@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -e
+eval "$(pyenv init -)"
+
+version=$1
+shift
+packages="$*"
+
+# Already in a virtual env, we remember the version so we can go back to this
+# afterwards
+in_virtual_env=0
+if [[ ! $VIRTUAL_ENV == "" ]]; then
+  in_virtual_env=1
+  initial_env="$(basename "$VIRTUAL_ENV")"
+  pyenv deactivate
+fi
+
+# Temporarily go to the specified version, install packages and get out of the
+# version
+pyenv activate "$version"
+pip install "$packages"
+pyenv deactivate
+
+# If we started with a specific env, we go back to it
+if [[ $in_virtual_env == "1" ]]; then
+  pyenv activate "$initial_env"
+fi

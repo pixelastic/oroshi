@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-spotifycli --status
+eval "$(sp eval)"
+echo "$SPOTIFY_ARTIST - $SPOTIFY_TITLE"

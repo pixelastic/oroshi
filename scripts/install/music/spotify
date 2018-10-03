@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
 
+# Main spotify app
 snap install spotify
-
-pip install --user spotify
-
+# Way to put it in the tray
 sudo apt-get install kdocker

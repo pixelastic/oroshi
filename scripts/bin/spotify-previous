@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-spotifycli --prev
+sp prev
+tmux-refresh

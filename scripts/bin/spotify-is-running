@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-export PYTHONIOENCODING=utf-8
+status="$(sp current)"
 
-status="$(spotifycli --status)"
-
-if [[ "$status" == "spotify is off" ]]; then
+if [[ "$status" == "Error: Spotify is not running." ]]; then
   exit 1
 fi
+exit 0
