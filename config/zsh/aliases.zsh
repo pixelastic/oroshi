@@ -289,12 +289,11 @@ alias yu='yarn upgrade'
 # }}}
 # Ruby {{{
 alias be='bundle exec'
+alias ba='bundle add'
 alias bi="bundle install"
 alias bu="bundle update"
 alias gR="gem uninstall"
-alias gig="gem install"
-alias gis="gemrat --pessimistic"
-alias gi="bundle install"
+alias gi="gem install"
 alias gs="gem search"
 alias gu="gem update"
 # }}}
