@@ -215,7 +215,10 @@ function! ConvertLineEndingsToUnix() " {{{
     return
   endif
   update
-  edit ++fileformat=dos
+  " Wrapping in a condition prevents an infinite loop of update/save/trigger
+  if &fileformat !~# 'dos'
+    edit ++fileformat=dos
+  endif
   execute '%s///ge'
   setlocal fileformat=unix
   write
