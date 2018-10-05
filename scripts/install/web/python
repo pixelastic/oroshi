@@ -1,41 +1,12 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC1091
-# https://phoikoi.io/2018/04/03/bootstrap-pipenv-debian.html
-# https://medium.com/@henriquebastos/the-definitive-guide-to-setup-my-python-workspace-628d68552e14
-#
-# System should be using Python 3 by default
-# Pyenv is used to install various Python version on the machine
-# Virtualenv is used to switch between those versions
-# Each version has its own pip, with its own set of installed tools
-# Each version has its own pipenv, to handle project specific dependencies
 
-# Installing dependencies
-sudo apt-get install \
-  build-essential \
-  curl \
-  git \
-  libbz2-dev \
-  libffi-dev \
-  liblzma-dev \
-  libncurses5-dev \
-  libncursesw5-dev \
-  libreadline-dev \
-  libsqlite3-dev \
-  libssl-dev \
-  llvm \
-  make \
-  tk-dev \
-  wget \
-  xz-utils \
-  zlib1g-dev
+# Both python 2 and python 3 system wide
+sudo apt-get install python-pip python3-pip
 
-# We first install pyenv to more Python versions
+# pyenv to handle global virtualenvs
 curl \
   -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer \
   | bash
-
-# Reload pyenv in the shell
-source /home/tim/.zshrc
 
 # Install python versions using pyenv
 pyenv install 3.7.0
@@ -47,3 +18,6 @@ pyenv virtualenv 2.7.15 2
 
 # Check for binaries in python 3, then 2, then system wide
 pyenv global 3 2 system
+
+# pipenv to handle local environment per project
+pip install pipenv

@@ -314,22 +314,23 @@ alias nvd='nvm version default'
 alias nvc='nvm current'
 # }}}
 # Python {{{
-# We have a virtualenv for python 2 and one for python 3. Pyenv is configured to
-# check for binaries in the env for python 3, then python 2 then system wide.
-# When installing stuff through pip, `pi` will install in the python 3 env by
-# default. If we need to install a python 2 binary, we should use pi2 instead.
+# Pyenv allow us to switch globally to python 2 or 3
+alias pyvl='pyenv versions'
+alias pyvi='pyenv install'
+alias pyvR='pyenv uninstall'
+alias pyv2='pyenv activate 2'
+alias pyv3='pyenv activate 3'
+alias pyvs='pyenv deactivate'
+# When installing things through pip, we install them in the python
+# 3 environment by default
 alias pR='pip uninstall'
 alias pi='pip-install-version 3'
 alias pi2='pip-install-version 2'
 alias pi3='pip-install-version 3'
 alias pil='pip list'
-alias pyvl='pyenv versions'
-alias pyvi='pyenv install'
-alias pyvR='pyenv uninstall'
-alias pyvs='pyenv activate'
-alias pyv2='pyenv activate 2'
-alias pyv3='pyenv activate 3'
-alias pyvs='pyenv deactivate'
+# When in a project, we can use pipenv to jump into this project env
+alias pis="pipenv shell"
+alias pir="pipenv run"
 # }}}
 # Appraisal {{{
 alias ai='appraisal install'

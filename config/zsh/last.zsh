@@ -37,8 +37,10 @@ fi
 # Make sure pyenv is found by putting it first
 export PATH="/home/tim/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
-# Do not prefix the current virtual env in the prompt
+# Do not prefix the current virtual env in the prompt, neither for pyenv nor
+# pipenv
 export PYENV_VIRTUALENV_DISABLE_PROMPT='1'
+export VIRTUAL_ENV_DISABLE_PROMPT='yes'
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/tim/local/src/google-cloud-sdk/path.zsh.inc' ]; then 

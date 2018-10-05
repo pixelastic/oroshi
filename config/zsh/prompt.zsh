@@ -372,13 +372,15 @@ function getNodeIndicator() {
 
 # Python {{{
 function getPythonIndicator() {
-  # Not in a virtualenv
-  if [[ $VIRTUAL_ENV == "" ]]; then
+  # In a global pyenv environment
+  [[ ! $PYENV_VERSION == "" ]] && display="🐍 $PYENV_VERSION "
+  # In a local pipenv shell (the [] help remember to press Ctrl-D to get out)
+  [[ $PIPENV_ACTIVE == "1" ]] && display="[🐍 $(python-version)] "
+
+  if [[ $display == '' ]]; then
     return
   fi
-
-  currentVersion="$(python-version)"
-  echo $(colorize "🐍 $currentVersion " 'pythonVersion')
+  echo $(colorize "$display" 'pythonVersion')
 }
 # }}}
 
