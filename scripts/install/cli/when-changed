@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-pip install --user when-changed
+pi when-changed
