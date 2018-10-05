@@ -88,3 +88,41 @@ export LESS_TERMCAP_ue=$'\E[0m'
 # Coloring bat
 export BAT_THEME="TwoDark"
 
+# Coloring exa
+export EXA_COLORS=""
+export EXA_COLORS="${EXA_COLORS}:xx=38;5;237" # Punctuation
+
+export EXA_COLORS="${EXA_COLORS}:ur=38;5;67" # User read
+export EXA_COLORS="${EXA_COLORS}:uw=38;5;67" # User write
+export EXA_COLORS="${EXA_COLORS}:ux=4;38;5;67" # User execute
+
+export EXA_COLORS="${EXA_COLORS}:gr=38;5;28" # Group read
+export EXA_COLORS="${EXA_COLORS}:gw=38;5;28" # Group write
+export EXA_COLORS="${EXA_COLORS}:gx=4;38;5;28" # Group execute
+
+export EXA_COLORS="${EXA_COLORS}:tr=38;5;241" # Other read
+export EXA_COLORS="${EXA_COLORS}:tw=38;5;241" # Other write
+export EXA_COLORS="${EXA_COLORS}:tx=4;38;5;241" # Other execute
+
+export EXA_COLORS="${EXA_COLORS}:sn=38;5;209" # Size
+export EXA_COLORS="${EXA_COLORS}:sb=38;5;209" # Size unit
+
+export EXA_COLORS="${EXA_COLORS}:uu=38;5;069" # Me
+export EXA_COLORS="${EXA_COLORS}:un=38;5;160" # Not me
+
+export EXA_COLORS="${EXA_COLORS}:da=38;5;241" # Date
+
+export EXA_COLORS="${EXA_COLORS}:di=38;5;35" # Directories
+export EXA_COLORS="${EXA_COLORS}:fi=38;5;252" # Files
+export EXA_COLORS="${EXA_COLORS}:ex=4;38;5;141" # Executable
+export EXA_COLORS="${EXA_COLORS}:ln=38;5;69" # Symlink source
+export EXA_COLORS="${EXA_COLORS}:lp=38;5;69" # Symlink destination
+export EXA_COLORS="${EXA_COLORS}:or=38;5;160" # Broken symlink
+
+export EXA_COLORS="${EXA_COLORS}:pi=48;5;13" # Named pipe (unstyled)
+export EXA_COLORS="${EXA_COLORS}:cd=48;5;13" # Character device (unstyled)
+export EXA_COLORS="${EXA_COLORS}:so=48;5;13" # Socket (unstyled)
+export EXA_COLORS="${EXA_COLORS}:bd=48;5;13" # Block device (unstyled)
+
+
+

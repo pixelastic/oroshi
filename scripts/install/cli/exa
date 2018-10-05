@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -ex
+
+cd ~/local/tmp
+wget \
+  https://github.com/ogham/exa/releases/download/v0.8.0/exa-linux-x86_64-0.8.0.zip \
+  -O exa.zip
+unzip -o exa.zip
+mv exa-linux-x86_64 ~/local/bin/exa

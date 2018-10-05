@@ -17,8 +17,8 @@ alias cmus='TERM=screen-256color cmus'
 alias cp='cp -rv'
 alias diff='colordiff'
 alias grep='grep -i --color=auto'
-alias la="ls -a"
-alias ls="ls -Nvhlp --color=always --group-directories-first"
+alias ls="COLUMNS=80 exa --long --grid --group-directories-first --git --time-style=long-iso"
+alias la="ls --all"
 alias mkdir="mkdir -p"
 alias mv='mv -vi'
 alias ping="prettyping --nolegend"
@@ -29,8 +29,8 @@ alias scp='scp -r '
 alias serve='live-server'
 disable -r time # ZSH overrides the time method
 alias time='time -p '
-alias treed='tree -dN'
-alias tree='tree -aNC -I ".hg|.git"'
+alias treed='\tree -dN'
+alias tree='ls -T'
 alias watch='watch -c '
 alias wr='watch-and-reload'
 alias w='which'
