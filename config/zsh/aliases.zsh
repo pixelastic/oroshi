@@ -34,7 +34,7 @@ alias tree='tree -aNC -I ".hg|.git"'
 alias watch='watch -c '
 alias wr='watch-and-reload'
 alias w='which'
-function f() { find . -type f -iname "*$1*" }
+alias f="fd"
 # }}}
 # Global aliases {{{
 alias -g .....='../../../..'

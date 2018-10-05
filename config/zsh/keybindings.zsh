@@ -17,7 +17,7 @@ if [[ -r ~/.fzf.zsh ]]; then
     --color fg:249,bg:233,hl:203,fg+:234,bg+:203,hl+:255
     --color info:136,prompt:203,pointer:233
    "
-  export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
+  export FZF_DEFAULT_COMMAND='fd --type file --hidden --follow --exclude .git'
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
   bindkey '^P' fzf-file-widget
 fi
