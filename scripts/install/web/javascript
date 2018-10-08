@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1090
 set -e
 
 if [[ ! -d ~/.nvm ]]; then
@@ -21,6 +22,7 @@ yarn add global eslint-config-prettier
 yarn add global eslint-plugin-import
 yarn add global eslint-plugin-prettier
 yarn add global babel-eslint
+yarn add global eslint_d
 
 echo "Prettifier: Prettier"
 yarn add global prettier
