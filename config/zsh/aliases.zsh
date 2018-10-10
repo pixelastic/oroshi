@@ -331,6 +331,9 @@ alias pil='pip list'
 # When in a project, we can use pipenv to jump into this project env
 alias pis="pipenv shell"
 alias pir="pipenv run"
+alias pii="pipenv install"
+alias piid="pipenv install --dev"
+alias piR="pipenv uninstall"
 # }}}
 # Appraisal {{{
 alias ai='appraisal install'
