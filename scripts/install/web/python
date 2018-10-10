@@ -21,3 +21,7 @@ pyenv global 3 2 system
 
 # pipenv to handle local environment per project
 pip install pipenv
+
+# Linter
+sudo apt-get install pylint
+pip install autopep8

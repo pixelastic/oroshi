@@ -328,6 +328,7 @@ alias pi='pip-install-version 3'
 alias pi2='pip-install-version 2'
 alias pi3='pip-install-version 3'
 alias pil='pip list'
+alias piu='pip install --upgrade pip'
 # When in a project, we can use pipenv to jump into this project env
 alias pis="pipenv shell"
 alias pir="pipenv run"

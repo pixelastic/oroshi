@@ -10,7 +10,10 @@ setlocal formatoptions+=t
 " Cleaning the file {{{
 nnoremap <silent> <buffer> <F4> :call PythonClean()<CR>
 function! PythonClean() 
-	call RemoveTrailingSpaces()
+  let l:initialLine = line('.')
+  execute '%!autopep8 - '
+  execute 'normal '.initialLine.'gg'
+  SyntasticCheck()
 endfunction
 " }}}
 " Folding {{{
