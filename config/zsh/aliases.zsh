@@ -17,7 +17,7 @@ alias cmus='TERM=screen-256color cmus'
 alias cp='cp -rv'
 alias diff='colordiff'
 alias grep='grep -i --color=auto'
-alias ls="COLUMNS=80 exa --long --grid --group-directories-first --git --time-style=long-iso"
+alias ls="exa --long --group-directories-first --git --time-style=long-iso --color=always"
 alias la="ls --all"
 alias mkdir="mkdir -p"
 alias mv='mv -vi'
