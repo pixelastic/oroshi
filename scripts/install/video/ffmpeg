@@ -8,12 +8,12 @@ cd ~/local/src
 git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg
 
 echo "Downloading needed libs"
-sudo apt-get install yasm
-sudo apt-get install libxvidcore-dev # For --enable-gpl
-sudo apt-get install libmp3lame-dev
-sudo apt-get install libtheora-dev
-sudo apt-get install libvorbis-dev
-sudo apt-get install libass-dev # For --enable-libass
+sudo apt-get install yasm \
+  libxvidcore-dev \
+  libmp3lame-dev \
+  libtheora-dev \
+  libvorbis-dev \
+  libass-dev
 
 cd ./ffmpeg
 # --enable-gpl needed for --enable-libxvid
