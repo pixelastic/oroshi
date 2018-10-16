@@ -124,5 +124,7 @@ export EXA_COLORS="${EXA_COLORS}:cd=48;5;13" # Character device (unstyled)
 export EXA_COLORS="${EXA_COLORS}:so=48;5;13" # Socket (unstyled)
 export EXA_COLORS="${EXA_COLORS}:bd=48;5;13" # Block device (unstyled)
 
+export LS_COLORS="${LS_COLORS}:*.pdf=1;38;5;136" # *.pdf
+
 
 
