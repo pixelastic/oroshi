@@ -1,8 +1,9 @@
 .DS_Store
+.envrc
 .sass-cache
 Thumbs.db
 node_modules
 npm-debug.log
 tmp
-*~
 yarn-error.log
+*~
