@@ -26,6 +26,11 @@ local rvmScript=~/.rvm/scripts/rvm
 #   fi
 # fi
 
+# Gvm
+local gvmScript=~/.gvm/scripts/gvm
+if [[ -r $gvmScript ]]; then
+  source $gvmScript
+fi
 
 # Adding Chromium compilation tools to the path if present
 local chromiumDepotTools=~/local/src/chromium/depot_tools
