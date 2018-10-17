@@ -19,3 +19,6 @@ cd ./tidy-html5/build/cmake
 cmake ../.. -DCMAKE_INSTALL_PREFIX=/home/tim/local/
 make
 make install
+
+echo "Installing html, to pretty-print"
+yarn global add html

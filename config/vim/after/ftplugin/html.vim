@@ -41,8 +41,7 @@ inoremap <silent> <buffer> <F4> <Esc>:call HtmlBeautify()<CR>
 nnoremap <silent> <buffer> <F4> :call HtmlBeautify()<CR>
 function! HtmlBeautify() 
   let linenr=line('.')
-  execute '%!html-beautify -f -'
-  call RemoveTrailingSpaces()
+  execute '%!html'
   execute 'normal '.linenr.'gg'
 endfunction
 " }}}
