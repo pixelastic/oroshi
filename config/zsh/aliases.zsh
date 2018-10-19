@@ -314,6 +314,46 @@ alias nvl='nvm list'
 alias nvd='nvm version default'
 alias nvc='nvm current'
 # }}}
+# Kubernetes {{{
+# Generic faster aliases
+alias k='kubectl'
+alias kg='kubectl get'
+alias kgw='kubectl get --watch'
+alias kR='kubectl delete'
+alias kga='kubectl get all'
+alias kls='kubectl get all'
+# Kind-agnostic
+alias kc='kubectl apply -f'
+alias kl='kubectl logs'
+# Pods
+alias kpl='kg pods'
+alias kplw='kg pods --watch'
+alias kpR='kR pod'
+alias kpRa='kR pod --all'
+alias kpv='kubectl describe pod'
+# Deployment
+alias kdl='kg deployments'
+alias kdlw='kg deployments --watch'
+alias kdR='kR deployment'
+alias kdRa='kR deployment --all'
+alias kdv='kubectl describe deployment'
+
+# TODO: Make a kpl alias
+# If no argument, list everything
+# If argument, is it as a selector
+# kubectl get pods -l env=production,tier=frontend
+# TODO: Make a kpe alias
+# Should allow for selecting a pod, and a command
+# Or execute bash by default maybe
+# kubectl exec -it {pod-name} -- /bin/bash
+# TODO: Make a kpip alias to get a pod ip
+# Should autocomplete on the pod names, then grep for IP
+
+# minikube ssh: connect to the cluster
+# minikube dashboard: ???
+# 
+#
+# }}}
 # Python {{{
 # Pyenv allow us to switch globally to python 2 or 3
 alias pyvl='pyenv versions'

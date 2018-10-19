@@ -16,6 +16,13 @@ source $zshConfigDir/completion/_git-files
 source $zshConfigDir/completion/_git-remotes
 source $zshConfigDir/completion/_git-tags
 source $zshConfigDir/completion/mark
+# Kubernetes completion
+# This seems to kill all completion if minikube is not running...
+# if [ $commands[kubectl] ]; then
+#   source <(kubectl completion zsh)
+# fi
+
+
 
 # Auto escape &, ? and * when needed
 autoload -U url-quote-magic
