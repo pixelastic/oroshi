@@ -288,6 +288,9 @@ alias ysd='emma -D'
 alias ys='emma'
 alias yug='yarn global upgrade'
 alias yu='yarn upgrade'
+alias ypc='depcheck . --ignore-dirs=dist,tmp,build --specials=eslint,webpack,babel --ignores=husky,jest'
+alias yl='yarn link'
+alias ylR='yarn unlink'
 # }}}
 # Ruby {{{
 alias be='bundle exec'
