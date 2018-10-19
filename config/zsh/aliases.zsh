@@ -35,6 +35,7 @@ alias watch='watch -c '
 alias wr='watch-and-reload'
 alias w='which'
 alias f="fd"
+alias fh="fd --hidden"
 # }}}
 # Global aliases {{{
 alias -g .....='../../../..'
