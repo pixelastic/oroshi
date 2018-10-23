@@ -23,11 +23,6 @@ class DockerContainerCreate
       exit 1
     end
 
-    unless image?(@image_name)
-      puts "✘ The image named #{colorize(@image_name, :image)} does not exists"
-      exit 1
-    end
-
     if container?(@container_name) && !@force
       puts "✘ The container named #{colorize(@container_name, :container)} already exists"
       puts 'Add --force to overwrite'
