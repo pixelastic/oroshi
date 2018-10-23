@@ -124,8 +124,16 @@ export EXA_COLORS="${EXA_COLORS}:cd=48;5;13" # Character device (unstyled)
 export EXA_COLORS="${EXA_COLORS}:so=48;5;13" # Socket (unstyled)
 export EXA_COLORS="${EXA_COLORS}:bd=48;5;13" # Block device (unstyled)
 
-export LS_COLORS="${LS_COLORS}:*.pdf=1;38;5;136" # *.pdf
+# Archives (bold green)
 export LS_COLORS="${LS_COLORS}:*.zip=1;38;5;28" # *.zip
+# Large images (bold yellow)
+export LS_COLORS="${LS_COLORS}:*.pdf=1;38;5;136" # *.pdf
+# Images (yellow)
+# Text files (orange)
+export LS_COLORS="${LS_COLORS}:*.md=38;5;209" # *.md
+# Scripts (purple)
+export LS_COLORS="${LS_COLORS}:*.yaml=38;5;141" # *.yaml
+export LS_COLORS="${LS_COLORS}:*.yml=1;38;5;141" # *.yml
 
 
 
