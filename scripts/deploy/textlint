@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-ln -fs ~/.oroshi/config/textlint/textlintrc.json ~/.textlintrc
+ln -fs ~/.oroshi/config/textlint/textlintrc.js ~/.textlintrc.js

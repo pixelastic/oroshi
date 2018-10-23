@@ -31,38 +31,25 @@ vnoremap <buffer> * <Esc>mzg`>a**<Esc>g`<i**<Esc>`zl
 let b:npmRoot = GetNpmRoot()
 
 " Textlint
-let b:textlintBin = StrTrim(system('which textlint'))
-let b:textlintLocalConfig = b:npmRoot . '.textlintrc.js'
-if filereadable(b:textlintLocalConfig)
-  let b:textlintBin = StrTrim(system('yarn bin textlint'))
+let b:textlintBin = StrTrim(system('yarn bin textlint 2>/dev/null'))
+if b:textlintBin ==# ''
+  let b:textlintBin = StrTrim(system('which textlint'))
 endif
 
-" Remark
-let b:remarkBin = StrTrim(system('which remark'))
-let b:remarkLocalConfig = b:npmRoot . '.remarkrc.js'
-let b:remarkIsLocal = 0
-if filereadable(b:remarkLocalConfig)
-  let b:remarkIsLocal = 1
-  let b:remarkBin = StrTrim(system('yarn bin remark'))
-endif
+" Remark (as a linter and a fixer)
+let b:remarkLintBin = StrTrim(system('which remark-lint'))
+let b:remarkFixBin = StrTrim(system('which remark-fix'))
 
 " Prettier
-let b:prettierBin = StrTrim(system('which prettier'))
-let b:prettierLocalConfig = b:npmRoot . '.prettierrc.js'
-let b:prettierIsLocal = 0
-if filereadable(b:prettierLocalConfig)
-  let b:prettierIsLocal = 1
-  let b:prettierBin = StrTrim(system('yarn bin prettier'))
+let b:prettierBin = StrTrim(system('yarn bin prettier 2>/dev/null'))
+if b:prettierBin ==# ''
+  let b:prettierBin = StrTrim(system('which prettier'))
 endif
 
 if or(isRoleplay, isBooks) ==# 0
-  let b:syntastic_checkers = ['textlint']
+  let b:syntastic_checkers = ['textlint', 'remark_lint']
   let b:syntastic_markdown_textlint_exec = b:textlintBin
-
-  if b:remarkIsLocal ==# 1
-    let b:syntastic_checkers = b:syntastic_checkers + ['remark_lint']
-    let b:syntastic_markdown_remark_lint_exec = b:remarkBin
-  end
+  let b:syntastic_markdown_remark_lint_exec = b:remarkLintBin
 endif
 " }}}
 " Cleaning the file {{{
@@ -71,31 +58,22 @@ nnoremap <silent> <buffer> <F4> :call MarkdownBeautify()<CR>
 function! MarkdownBeautify() 
   let l:initialLine = line('.')
 
-  " First fix through text lint
-  " textlint --fix changes the file in place. So we copy the content into a tmp
-  " file, fix it, and then output the fixed file
+  " Remark: fix markdown formatting. This will mostly convert links to references
+  execute '%!'.b:remarkFixBin.' %:p'
+
+  " Textlint: fix fixable textlint issues. As this will change the file in place, we use
+  " /tmp as a buffer
   let tmpFile = '/tmp/vim-textlint-markdown.md'
   let command = '%!> ' . tmpFile .
         \' && ' . b:textlintBin . ' --fix ' . tmpFile . ' --output-file /dev/null' .
         \' && cat ' . tmpFile
   execute command
 
-  " Then fix through remark if we have it
-  " This expect a local remark to have a config for fixing files
-  " TODO: Make a global install of this
-  if b:remarkIsLocal ==# 1
-    execute '%!REMARK_MODE=fix '.b:remarkBin.' --quiet'
-  endif
+  " Prettier: Make everything look the same
+  write
+  silent execute '%!' . b:prettierBin . ' --parser markdown %:p'
 
-
-  " Then format through prettier if we have it
-  " TODO: Make a global install of this
-  if b:prettierIsLocal ==# 1
-    write
-    silent execute '%!' . b:prettierBin . ' --parser markdown ' . b:thisFile
-  endif
-
-  call RemoveTrailingSpaces()
+  " call RemoveTrailingSpaces()
 
   execute 'normal '.initialLine.'gg'
   SyntasticCheck()

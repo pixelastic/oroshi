@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+remark \
+  --rc-path ~/.oroshi/config/remark/remarkrc.fix.js \
+  --quiet \
+  "$@"

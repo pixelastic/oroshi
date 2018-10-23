@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+ln \
+  -fs ~/.oroshi/config/flake8/flake8.ini \
+  ~/.flake8

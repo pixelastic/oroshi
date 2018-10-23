@@ -23,5 +23,7 @@ pyenv global 3 2 system
 pip install pipenv
 
 # Linter
-sudo apt-get install pylint
-pip install autopep8
+pip install flake8
+pip install flake8-bugbear
+pip install flake8-quotes
+pin install black

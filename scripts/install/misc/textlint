@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
-yarn global add textlint
-yarn global add textlint-rule-common-misspellings
-yarn global add textlint-rule-editorconfig
-yarn global add textlint-rule-write-good
-yarn global add textlint-rule-alex
+yarn global add textlint \
+                textlint-rule-alex \
+                textlint-rule-common-misspellings \
+                textlint-rule-editorconfig \
+                textlint-rule-en-capitalization \
+                textlint-rule-stop-words \
+                textlint-rule-terminology \
+                textlint-rule-write-good
+
+

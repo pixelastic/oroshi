@@ -11,3 +11,10 @@ ln -s ../etc/formd/formd .
 
 # Preview markdown
 yarn global add @pixelastic/markdown-preview
+
+# Clean markdown through yarn packages
+yarn add global textlint \
+                prettier \
+                remark-cli \
+                remark-lint 
+echo "Also run yarn install from the root of ~/.oroshi"

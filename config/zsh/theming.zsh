@@ -133,7 +133,7 @@ export LS_COLORS="${LS_COLORS}:*.pdf=1;38;5;136" # *.pdf
 export LS_COLORS="${LS_COLORS}:*.md=38;5;209" # *.md
 # Scripts (purple)
 export LS_COLORS="${LS_COLORS}:*.yaml=38;5;141" # *.yaml
-export LS_COLORS="${LS_COLORS}:*.yml=1;38;5;141" # *.yml
+export LS_COLORS="${LS_COLORS}:*.yml=38;5;141" # *.yml
 
 
 
