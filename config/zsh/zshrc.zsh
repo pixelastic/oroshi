@@ -25,6 +25,7 @@ path=(
   ~/.oroshi/scripts/bin/video/bin
   ~/.oroshi/scripts/bin/pdf/bin
   ~/.oroshi/scripts/bin/convert/bin
+  ~/.oroshi/scripts/bin/coriolis/bin
   ~/.oroshi/private/scripts/bin
   ~/.oroshi/scripts/bin/local/$hostname
   ~/.oroshi/private/scripts/bin/local/$hostname
