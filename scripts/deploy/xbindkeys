@@ -1,4 +1,4 @@
 #!/usr/bin/env zsh
-ln -fs ~/.oroshi/config/xbindkeys/xbindkeysrc.conf ~/.xbindkeysrc
 
-killall -HUP xbindkeys
+killall xbindkeys
+xbindkeys -f ~/.oroshi/config/xbindkeys/xbindkeysrc.conf
