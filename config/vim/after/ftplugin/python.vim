@@ -15,7 +15,7 @@ nnoremap <silent> <buffer> <F4> :call PythonClean()<CR>
 function! PythonClean() 
   let l:initialLine = line('.')
 
-  execute '%!cat %:p | black -'
+  execute '%!cat %:p | black --quiet -'
 
   execute 'normal '.initialLine.'gg'
   SyntasticCheck()
