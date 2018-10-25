@@ -49,7 +49,7 @@ class DockerContainerRun
   end
 
   def run
-    container_name = @image_name.split(':')[0]
+    container_name = @image_name.split('/')[1].split(':')[0]
 
     command = [
       'docker run',

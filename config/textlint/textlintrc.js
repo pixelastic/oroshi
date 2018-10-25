@@ -15,6 +15,7 @@ module.exports = {
         'desire',
         'executed',
         'execution',
+        'failed',
         'fear',
         'firing',
         'harder',
