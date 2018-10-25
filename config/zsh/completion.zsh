@@ -17,9 +17,12 @@ source $zshConfigDir/completion/_git-remotes
 source $zshConfigDir/completion/_git-tags
 source $zshConfigDir/completion/mark
 # Kubernetes completion
-# This seems to kill all completion if minikube is not running...
 if [ $commands[kubectl] ]; then
   source <(kubectl completion zsh)
+fi
+# GCP completion
+if [ -f '/home/tim/local/src/google-cloud-sdk/completion.zsh.inc' ]; then 
+  source '/home/tim/local/src/google-cloud-sdk/completion.zsh.inc'; 
 fi
 
 

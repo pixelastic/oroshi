@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+require_relative '../etc/docker-helper/docker_helper'
+
+# Rename a Docker image
+class DockerImageRename
+  include DockerHelper
+
+  def initialize(*args)
+    @old_name = args[0]
+    @new_name = args[1]
+
+    if @old_name.nil? || @new_name.nil?
+      puts 'Usage:'
+      puts '$ docker-image-rename oldName newName'
+      exit 1
+    end
+
+    if !image?(@old_name)
+      puts "✘ Image #{colorize(@old_name, :image)} does not exist"
+      exit 1
+    end
+  end
+
+  def run
+    # We create a new tag for the same image
+    `docker tag #{@old_name} #{@new_name}`
+
+    # We delete the previous tag
+    `docker rmi #{@old_name}`
+  end
+end
+DockerImageRename.new(*ARGV).run

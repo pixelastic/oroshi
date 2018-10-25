@@ -129,17 +129,22 @@ alias pdf2jpg='pdf2img'
 alias pdf2png='pdf2img -png'
 # }}}
 # Docker {{{
+# Images
 alias dic='docker-image-create'
+alias db='docker-image-create'
 alias dip='docker-image-prune'
-alias dicf='docker-image-create --force'
-alias dil='docker-image-list'
 alias diR='docker-image-remove'
-alias dcc='docker-container-create'
-alias dccf='docker-container-create --force'
-alias dcl='docker-container-list'
-alias dcR='docker-container-remove'
-alias dcRa='docker-container-remove --all'
-alias dcsta='docker-container-start'
+alias dil='docker-image-list'
+alias dimv='docker-image-rename'
+# Containers
+# alias dicf='docker-image-create --force'
+# alias dcc='docker-container-create'
+# alias dccf='docker-container-create --force'
+# alias dcl='docker-container-list'
+# alias dcR='docker-container-remove'
+# alias dcRa='docker-container-remove --all'
+# alias dcsta='docker-container-start'
+
 # alias dord='docker run -d -P' # Run daemon, expose ports
 # alias dori='docker run -t -i' # Run interactive
 # alias dor='docker-run'
