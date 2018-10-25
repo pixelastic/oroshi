@@ -1,2 +1,30 @@
-#!/usr/bin/env zsh
-docker rmi -f $@
+#!/usr/bin/env ruby
+require_relative '../etc/docker-helper/docker_helper'
+
+# Delete images
+class DockerImageRemove
+  include DockerHelper
+
+  def initialize(*args)
+    @images = args.to_a
+
+    return unless @images.empty?
+
+    puts 'Usage:'
+    puts '$ docker-image-remove imageName [imageName]'
+    exit 1
+  end
+
+  def run
+    @images.each do |image|
+      unless image?(image)
+        puts "✘ Image  #{colorize(image, :image)} does not exist"
+        next
+      end
+
+      `docker image rm #{image}`
+      puts "✔ Image #{colorize(image, :image)} deleted."
+    end
+  end
+end
+DockerImageRemove.new(*ARGV).run

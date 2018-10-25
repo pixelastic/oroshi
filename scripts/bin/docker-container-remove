@@ -24,16 +24,9 @@ class DockerContainerRemove
         puts "✘ Container #{colorize(container, :container)} does not exist"
         next
       end
-      options = [
-        'docker',
-        'rm',
-        '--force',
-        container
-      ].compact
 
-      IO.popen(options.join(' ')).each do |line|
-        puts line.chomp
-      end
+      `docker rm --force #{container}`
+      puts "✔ Container #{colorize(container, :container)} deleted."
     end
   end
 end
