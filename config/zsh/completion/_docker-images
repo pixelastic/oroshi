@@ -3,4 +3,4 @@ function _completion_docker_images {
 }
 compctl -K _completion_docker_images docker-image-remove
 compctl -K _completion_docker_images docker-image-rename
-compctl -K _completion_docker_images docker-container-create
+compctl -K _completion_docker_images docker-container-run

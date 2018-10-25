@@ -1,0 +1,66 @@
+#!/usr/bin/env ruby
+require_relative '../etc/docker-helper/docker_helper'
+
+# Run a container
+class DockerContainerRun
+  include DockerHelper
+
+  def initialize(*args)
+    @is_exec_mode = false
+    if args.include?('--exec-mode')
+      @is_exec_mode = true
+      args.delete('--exec-mode')
+    end
+
+    if @is_exec_mode
+      initialize_exec_mode(*args)
+    else
+      initialize_normal_mode(*args)
+    end
+  end
+
+  # In this mode we run the container with the passed arguments only
+  def initialize_normal_mode(*args)
+    @image_name = args[0]
+
+    if @image_name.nil?
+      puts 'Usage:'
+      puts '$ docker-container-create imageName [args]'
+      exit 1
+    end
+
+    @other_args = args[1..-1].join(' ')
+  end
+
+  # In this mode, we treat the last argument as the command to pass to the image
+  # in interactive mode
+  def initialize_exec_mode(*args)
+    @image_name = args[0]
+    @inside_command = args.last
+
+    if @image_name.nil? || @inside_command.nil?
+      puts 'Usage:'
+      puts '$ docker-container-create imageName [args] "command"'
+      exit 1
+    end
+
+    @other_args = args[1..-2].join(' ')
+    @other_args << '-it'
+  end
+
+  def run
+    container_name = @image_name.split(':')[0]
+
+    command = [
+      'docker run',
+      '--rm',
+      "--name #{container_name}",
+      @other_args,
+      @image_name
+    ]
+    command << @inside_command if @is_exec_mode
+
+    exec command.join(' ')
+  end
+end
+DockerContainerRun.new(*ARGV).run
