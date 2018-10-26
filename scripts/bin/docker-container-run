@@ -29,7 +29,7 @@ class DockerContainerRun
       exit 1
     end
 
-    @other_args = args[1..-1].join(' ')
+    @other_args = args[1..-1]
   end
 
   # In this mode, we treat the last argument as the command to pass to the image
@@ -44,7 +44,7 @@ class DockerContainerRun
       exit 1
     end
 
-    @other_args = args[1..-2].join(' ')
+    @other_args = args[1..-2]
     @other_args << '-it'
   end
 
@@ -55,7 +55,7 @@ class DockerContainerRun
       'docker run',
       '--rm',
       "--name #{container_name}",
-      @other_args,
+      @other_args.join(' '),
       @image_name
     ]
     command << @inside_command if @is_exec_mode
