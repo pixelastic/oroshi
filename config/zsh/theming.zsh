@@ -125,15 +125,38 @@ export EXA_COLORS="${EXA_COLORS}:so=48;5;13" # Socket (unstyled)
 export EXA_COLORS="${EXA_COLORS}:bd=48;5;13" # Block device (unstyled)
 
 # Archives (bold green)
-export LS_COLORS="${LS_COLORS}:*.zip=1;38;5;28" # *.zip
+export LS_COLORS="${LS_COLORS}:*.zip=1;38;5;28" 
 # Large images (bold yellow)
-export LS_COLORS="${LS_COLORS}:*.pdf=1;38;5;136" # *.pdf
+export LS_COLORS="${LS_COLORS}:*.pdf=1;38;5;136" 
+# Fonts (dark yellow)
+export LS_COLORS="${LS_COLORS}:*.eot=38;5;136" 
+export LS_COLORS="${LS_COLORS}:*.otf=38;5;136" 
+export LS_COLORS="${LS_COLORS}:*.ttf=38;5;136" 
+export LS_COLORS="${LS_COLORS}:*.woff2=38;5;136" 
+export LS_COLORS="${LS_COLORS}:*.woff=38;5;136" 
 # Images (yellow)
+export LS_COLORS="${LS_COLORS}:*.svg=38;5;184" 
 # Text files (orange)
-export LS_COLORS="${LS_COLORS}:*.md=38;5;209" # *.md
+export LS_COLORS="${LS_COLORS}:*.md=38;5;209"
+export LS_COLORS="${LS_COLORS}:LICENSE=38;5;209"
+export LS_COLORS="${LS_COLORS}:MAINTAINERS=38;5;209"
 # Scripts (purple)
-export LS_COLORS="${LS_COLORS}:*.yaml=38;5;141" # *.yaml
-export LS_COLORS="${LS_COLORS}:*.yml=38;5;141" # *.yml
+export LS_COLORS="${LS_COLORS}:Gemfile=38;5;141"
+export LS_COLORS="${LS_COLORS}:Guardfile*=38;5;141"
+export LS_COLORS="${LS_COLORS}:Rakefile=38;5;141"
+export LS_COLORS="${LS_COLORS}:*.gemspec=38;5;141"
+export LS_COLORS="${LS_COLORS}:*.sass=38;5;141"
+export LS_COLORS="${LS_COLORS}:*.scss=38;5;141"
+export LS_COLORS="${LS_COLORS}:*.toml=38;5;141"
+export LS_COLORS="${LS_COLORS}:*.yaml=38;5;141"
+export LS_COLORS="${LS_COLORS}:*.yml=38;5;141"
+# Less important files
+export LS_COLORS="${LS_COLORS}:*.js.map=38;5;241"
+export LS_COLORS="${LS_COLORS}:*.lock=38;5;241"
+export LS_COLORS="${LS_COLORS}:*.min.css=38;5;241"
+export LS_COLORS="${LS_COLORS}:*.min.js=38;5;241"
+export LS_COLORS="${LS_COLORS}:.envrc=38;5;241"
+export LS_COLORS="${LS_COLORS}:_algolia_api_key=38;5;241"
 
 
 
