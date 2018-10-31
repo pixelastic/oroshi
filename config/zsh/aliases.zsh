@@ -247,7 +247,7 @@ alias recess="recess --config ~/.recessrc"
 alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test500.zip'
 # }}}
 # NPM {{{
-alias nrr='npm run release --silent'
+alias nrr='npm run release --silent && vbps'
 # }}}
 # Yarn {{{
 alias yR='node-root-run yarn remove'
@@ -275,7 +275,7 @@ alias yrl='yr lint'
 alias yrpb='yr playground:build'
 alias yrps='yr playground:serve'
 alias yrp='yr push'
-alias yrr='yr release'
+alias yrr='nrr'
 alias yrs='yr serve'
 alias yrtw='yr test:watch'
 alias yrt='yr test'
