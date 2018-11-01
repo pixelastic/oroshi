@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -ex
+
+# Instructions from:
+# https://cloud.google.com/sdk/docs/quickstart-debian-ubuntu
+
+current_release_name="cloud-sdk-$(lsb_release -c -s)"
+export CLOUD_SDK_REPO=$current_release_name
+echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+sudo apt-get update && sudo apt-get install google-cloud-sdk
+
+echo "You need to use python 2 to run gcloud. Switching to python 2 env"
+pyenv activate 2
+gcloud init
