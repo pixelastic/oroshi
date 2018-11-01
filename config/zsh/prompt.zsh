@@ -5,10 +5,10 @@ setopt PROMPT_SUBST
 autoload -U promptinit
 promptinit
 
-PROMPT='${promptUsername}$(getPromptExitCode)${promptHostname}:$(getPromptPath) $(getPromptHash) '
+PROMPT='$(oroshi_prompt_path)$(oroshi_prompt_git_left)$(oroshi_prompt_character)'
 RPROMPT=''
 function get_RPROMPT() {
-  echo "$(getRubyIndicator)$(getPythonIndicator)$(getNodeIndicator)$(getPromptRepoIndicator)"
+  echo "$(oroshi_prompt_ruby)$(oroshi_prompt_python)$(oroshi_prompt_node)$(oroshi_prompt_git_right)"
 }
 
 # Asynchronous right prompt {{{
@@ -31,6 +31,8 @@ function TRAPUSR1() {
 # Builtin command executed before the prompt is displayed
 # This will end quickly, but fork a sub process
 function precmd() {
+  OROSHI_LAST_COMMAND_EXIT="$?"
+
   # Always kill previous async subprocess if still running
   if [[ "${PROMPT_ASYNC_PID}" != 0 ]]; then
     kill -s HUP $PROMPT_ASYNC_PID >/dev/null 2>&1 || :
@@ -49,37 +51,28 @@ function precmd() {
 }
 # }}}
 
-
 # Colorize {{{
 function colorize() {
   echo "$FG[$promptColor[$2]]$1$FX[reset]"
 }
 # }}}
 
+# UNUSED:
 # User {{{
+# Note: Not currently used
 promptUsername=$(colorize '%n' 'username')
 # }}}
-
-# Exit code {{{
-function getPromptExitCode() {
-  # Color the @ if last command was an error
-  if [[ $? > 0 ]]; then
-    echo $(colorize '@'  'lastCommandFailed')
-  else
-    echo "@"
-  fi
-}
-# }}}
-
 # Hostname {{{
+# Note: Not currently used
 promptHostname=$(colorize '%m' 'hostname')
 # }}}
 
+# LEFT
 # Path {{{
 # This will return a formatted path.
 # - If more than 4 directories, will only keep the first and the last two
 # - Will prepend a ! and display it in red if not writable
-function getPromptPath() {
+function oroshi_prompt_path() {
   local promptPath=$PWD
   local splitPath
   splitPath=(${(s:/:)PWD})
@@ -101,35 +94,35 @@ function getPromptPath() {
   echo $(colorize $promptPath $pathColor)
 }
 # }}}
-
-# Hash {{{
-function getPromptHash() {
+# Git (left) {{{
+# Will display informations about the current git repository (if any):
+# - If in a submodule
+# - If has changes stashes
+# - If in a rebase
+# - If the repo is dirty
+function oroshi_prompt_git_left() {
   if ! git-is-repository; then
-    echo "%#"
     return
   fi
-  echo "$(getPromptSubmodule)$(getPromptStash)$(getPromptRebaseIndicator)$(getPromptHashGit)"
+  echo " $(oroshi_prompt_git_submodule)$(oroshi_prompt_git_stash)$(oroshi_prompt_git_rebase_left)$(oroshi_prompt_git_dirty)"
 }
 # }}}
-
-# Stash {{{
-function getPromptStash() {
-  if git stash show &>/dev/null; then
-    echo $(colorize '  ' 'stash')
-  fi
-}
-# }}}
-
-# Submodule {{{
-function getPromptSubmodule() {
+# Git: Submodule {{{
+function oroshi_prompt_git_submodule() {
   if git is-submodule; then
     echo $(colorize '  ' 'submodule')
   fi
 }
 # }}}
-
-# Rebase in progress {{{
-function getPromptRebaseIndicator() {
+# Git: Stash {{{
+function oroshi_prompt_git_stash() {
+  if git stash show &>/dev/null; then
+    echo $(colorize '  ' 'stash')
+  fi
+}
+# }}}
+# Git: Rebase {{{
+function oroshi_prompt_git_rebase_left() {
   if ! git-rebase-inprogress; then
     return
   fi
@@ -139,9 +132,8 @@ function getPromptRebaseIndicator() {
   echo $(colorize " ${currentStep}/${maxStep} " 'rebaseInProgress')
 }
 # }}}
-
-# Git Hash {{{
-function getPromptHashGit() {
+# Git: Dirty {{{
+function oroshi_prompt_git_dirty() {
   # Staged files
   if git-directory-has-staged-files; then
     echo $(colorize '±' 'repoStaged')
@@ -157,28 +149,121 @@ function getPromptHashGit() {
   echo $(colorize '±' 'repoClean')
 }
 # }}}
+# Prompt char {{{
+function oroshi_prompt_character() {
+  if [[ $OROSHI_LAST_COMMAND_EXIT > 0 ]]; then
+    echo $(colorize ' ❯ '  'lastCommandFailed')
+  else
+    echo $(colorize ' ❯ ' 'lastCommandSuccess');
+  fi
+}
+# }}}
 
-# Repo indicator {{{
-function getPromptRepoIndicator() {
+# RIGHT:
+# Ruby {{{
+function oroshi_prompt_ruby() {
+  # No rvm
+  if ! which rvm &>/dev/null; then
+    return
+  fi
+  defaultVersion="$(ruby-version-default)"
+  currentVersion="$(rvm-prompt v)"
+  # Default version
+  if [[ $defaultVersion == $currentVersion ]]; then
+    return
+  fi
+  echo $(colorize " $currentVersion " 'rubyVersion')
+}
+# }}}
+# Python {{{
+function oroshi_prompt_python() {
+  # In a global pyenv environment
+  [[ ! $PYENV_VERSION == "" ]] && display="🐍 $PYENV_VERSION "
+  # In a local pipenv shell (the [] help remember to press Ctrl-D to get out)
+  [[ $PIPENV_ACTIVE == "1" ]] && display="[🐍 $(python-version)] "
+
+  if [[ $display == '' ]]; then
+    return
+  fi
+  echo $(colorize "$display" 'pythonVersion')
+}
+# }}}
+# Node {{{
+# - Nothing displayed if using the default node version
+# - Version in green with ⬢ if using a custom version
+# - Version in red with ⬢ if should use a specific version but is not
+function oroshi_prompt_node() {
+  # No nvm
+  if ! which nvm &>/dev/null; then
+    return
+  fi
+
+  currentVersion="$(nvm current | sed 's/v//')"
+  defaultVersion="$(nvm version default | sed 's/v//')"
+
+  # This dir has a specific version defined, but we're not following it
+  expectedVersion="$(cat `nvm_find_nvmrc`)"
+  if version-compare "$currentVersion < $expectedVersion"; then
+    echo $(colorize "⬢ $currentVersion ($expectedVersion) " 'nodeVersionError')
+    return
+  fi
+
+  # We are using the default version, nothing to display
+  if [[ $currentVersion == $defaultVersion ]]; then
+    return
+  fi
+
+  # Current version not the default one
+  echo $(colorize "⬢ $currentVersion " 'nodeVersion')
+}
+# }}}
+# Git (right) {{{
+function oroshi_prompt_git_right() {
   if ! git-is-repository; then
     return
   fi
 
   # Is actually in the middle of a rebase
   if git-rebase-inprogress; then
-    echo "$(getPromptRebaseDetails)"
+    echo "$(oroshi_prompt_git_rebase_right)"
     return
   fi
 
-  tag=`getPromptTag`
-  remote=`getPromptRemote`
-  branch=`getPromptBranch`
+  tag=`oroshi_prompt_git_tag`
+  remote=`oroshi_prompt_git_remote`
+  branch=`oroshi_prompt_git_branch`
   echo "${tag}${remote}${branch}"
 }
 # }}}
+# Git: Rebase {{{
+function oroshi_prompt_git_rebase_right() {
+  # No rebase in progress
+  if ! git-rebase-inprogress; then
+    return
+  fi
 
-# Remote {{{
-function getPromptRemote() {
+  local ontoBranch="$(git-rebase-onto)"
+  local ontoColor="$(getBranchColor $ontoBranch)"
+  local transplantBranch="$(git-rebase-transplant)"
+  local transplantColor="$(getBranchColor $transplantBranch)"
+
+
+  echo -n $(colorize '[trunk]' 'rebaseTrunk')
+  echo -n $(colorize "[${ontoBranch}]" $ontoColor)
+  echo -n $(colorize "[${transplantBranch}]" $transplantColor)
+}
+# }}}
+# Git: Tag {{{
+function oroshi_prompt_git_tag() {
+  local tagName="$(git tag-current)"
+  if [[ $tagName = '' ]]; then
+    return
+  fi
+  echo $(colorize "$tagName " 'tag')
+}
+# }}}
+# Git: Remote {{{
+function oroshi_prompt_git_remote() {
   local remoteName="$(git remote-current)"
   local remoteColor='remoteDefault'
 
@@ -206,9 +291,8 @@ function getPromptRemote() {
   echo $(colorize " $remoteName " $remoteColor)
 }
 # }}}
-
-# Branch {{{
-function getPromptBranch() {
+# Git: Branch {{{
+function oroshi_prompt_git_branch() {
   local branchName="$(git branch-current)"
 
   # Not in a branch
@@ -230,10 +314,10 @@ function getPromptBranch() {
     return
   fi
 
-  local branchColor=$(getBranchColor $branchName)
+  local branchColor=$(oroshi_prompt_git_branch_color $branchName)
 
   # Adding push/pull indicator
-  local pushPullSymbol="$(getPromptPushPull)"
+  local pushPullSymbol="$(oroshi_prompt_git_push_pull)"
   if [[ $pushPullSymbol != '' ]]; then
     branchName="${pushPullSymbol} ${branchName}"
   fi
@@ -241,7 +325,7 @@ function getPromptBranch() {
   echo $(colorize $branchName $branchColor)
 }
 # Get the name of the color based on the name of the branch
-function getBranchColor() {
+function oroshi_prompt_git_branch_color() {
   case "$1" in
     master)
       echo 'branchMaster'
@@ -261,9 +345,8 @@ function getBranchColor() {
   esac
 }
 # }}}
-
-# Push/Pull {{{
-function getPromptPushPull() {
+# Git: Push/Pull {{{
+function oroshi_prompt_git_push_pull() {
   # Asciinema recording will not know our custom glyphs, so we'd better remove
   # them when recording
   if [[ $ASCIINEMA_REC = 1 ]]; then
@@ -292,95 +375,6 @@ function getPromptPushPull() {
       echo ""
       ;;
   esac
-}
-# }}}
-
-# Tag {{{
-function getPromptTag() {
-  local tagName="$(git tag-current)"
-  if [[ $tagName = '' ]]; then
-    return
-  fi
-  echo $(colorize "$tagName " 'tag')
-}
-# }}}
-
-# Rebase {{{
-function getPromptRebaseDetails() {
-  # No rebase in progress
-  if ! git-rebase-inprogress; then
-    return
-  fi
-
-  local ontoBranch="$(git-rebase-onto)"
-  local ontoColor="$(getBranchColor $ontoBranch)"
-  local transplantBranch="$(git-rebase-transplant)"
-  local transplantColor="$(getBranchColor $transplantBranch)"
-
-
-  echo -n $(colorize '[trunk]' 'rebaseTrunk')
-  echo -n $(colorize "[${ontoBranch}]" $ontoColor)
-  echo -n $(colorize "[${transplantBranch}]" $transplantColor)
-}
-# }}}
-
-# Ruby {{{
-function getRubyIndicator() {
-  # No rvm
-  if ! which rvm &>/dev/null; then
-    return
-  fi
-  defaultVersion="$(ruby-version-default)"
-  currentVersion="$(rvm-prompt v)"
-  # Default version
-  if [[ $defaultVersion == $currentVersion ]]; then
-    return
-  fi
-  echo $(colorize " $currentVersion " 'rubyVersion')
-}
-# }}}
-
-# Node {{{
-# - Nothing displayed if using the default node version
-# - Version in green with ⬢ if using a custom version
-# - Version in red with ⬢ if should use a specific version but is not
-function getNodeIndicator() {
-  # No nvm
-  if ! which nvm &>/dev/null; then
-    return
-  fi
-
-  currentVersion="$(nvm current | sed 's/v//')"
-  defaultVersion="$(nvm version default | sed 's/v//')"
-
-  # This dir has a specific version defined, but we're not following it
-  expectedVersion="$(cat `nvm_find_nvmrc`)"
-  if version-compare "$currentVersion < $expectedVersion"; then
-    echo $(colorize "⬢ $currentVersion ($expectedVersion) " 'nodeVersionError')
-    return
-  fi
-
-  # We are using the default version, nothing to display
-  if [[ $currentVersion == $defaultVersion ]]; then
-    return
-  fi
-
-  # Current version not the default one
-  echo $(colorize "⬢ $currentVersion " 'nodeVersion')
-}
-# }}}
-
-# Python {{{
-function getPythonIndicator() {
-  # In a global pyenv environment
-  [[ ! $PYENV_VERSION == "" ]] && display="🐍 $PYENV_VERSION "
-  # In a local pipenv shell (the [] help remember to press Ctrl-D to get out)
-  [[ $PIPENV_ACTIVE == "1" ]] && display="[🐍 $(python-version)] "
-
-  if [[ $display == '' ]]; then
-    return
-  fi
-  echo $(colorize "$display" 'pythonVersion')
 }
 # }}}
 
