@@ -5,7 +5,7 @@ setopt PROMPT_SUBST
 autoload -U promptinit
 promptinit
 
-PROMPT='$(oroshi_prompt_path)$(oroshi_prompt_git_left)$(oroshi_prompt_character)'
+PROMPT='$(oroshi_prompt_path)$(oroshi_prompt_git_left)$(oroshi_prompt_kubernetes)$(oroshi_prompt_character)'
 RPROMPT=''
 function get_RPROMPT() {
   echo "$(oroshi_prompt_ruby)$(oroshi_prompt_python)$(oroshi_prompt_node)$(oroshi_prompt_git_right)"
@@ -147,6 +147,19 @@ function oroshi_prompt_git_dirty() {
   fi
 
   echo $(colorize '±' 'repoClean')
+}
+# }}}
+# Kubernetes {{{
+function oroshi_prompt_kubernetes() {
+  kube_context="$(kubectl config current-context)";
+  [[ $kube_context = "" ]] && return;
+
+  kube_symbol="⎈"
+  kube_color="base"
+  [[ $kube_context = "minikube" ]] && kube_color="kubernetesMinikube"
+  [[ $kube_context =~ "^gke" ]] && kube_color="kubernetesGCP"
+
+  echo -n $(colorize ' ☸' $kube_color);
 }
 # }}}
 # Prompt char {{{

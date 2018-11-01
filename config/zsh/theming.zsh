@@ -56,6 +56,8 @@ promptColorDefault=(
   repoClean             "035"
   repoStaged            "171"
   repoDirty             "196"
+  kubernetesGCP         "069"
+  kubernetesMinikube    "035"
 
   commandText           "252"
   commandCommand        "028"

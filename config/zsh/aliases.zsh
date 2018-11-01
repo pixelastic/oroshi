@@ -320,6 +320,13 @@ if [[ -r $coriolisAliases ]]; then
   source $coriolisAliases
 fi
 # }}}
+# Gcloud {{{
+function g() {
+  pyv2
+  gcloud "$@"
+  pyvs
+}
+# }}}
 # Python {{{
 # Pyenv allow us to switch globally to python 2 or 3
 alias pyvl='pyenv versions'
