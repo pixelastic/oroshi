@@ -5,7 +5,7 @@ setopt PROMPT_SUBST
 autoload -U promptinit
 promptinit
 
-PROMPT='$(oroshi_prompt_path)$(oroshi_prompt_git_left)$(oroshi_prompt_kubernetes)$(oroshi_prompt_character)'
+PROMPT='$(oroshi_prompt_kubernetes) $(oroshi_prompt_path)$(oroshi_prompt_git_left)$(oroshi_prompt_character)'
 RPROMPT=''
 function get_RPROMPT() {
   echo "$(oroshi_prompt_ruby)$(oroshi_prompt_python)$(oroshi_prompt_node)$(oroshi_prompt_git_right)"
@@ -159,16 +159,20 @@ function oroshi_prompt_kubernetes() {
   [[ $kube_context = "minikube" ]] && kube_color="kubernetesMinikube"
   [[ $kube_context =~ "^gke" ]] && kube_color="kubernetesGCP"
 
-  echo -n $(colorize ' ☸' $kube_color);
+  echo -n $(colorize '☸' $kube_color);
 }
 # }}}
 # Prompt char {{{
 function oroshi_prompt_character() {
-  if [[ $OROSHI_LAST_COMMAND_EXIT > 0 ]]; then
+  if [[ $OROSHI_LAST_COMMAND_EXIT = 1 ]]; then
     echo $(colorize ' ❯ '  'lastCommandFailed')
-  else
-    echo $(colorize ' ❯ ' 'lastCommandSuccess');
+    return;
   fi
+  if [[ $OROSHI_LAST_COMMAND_EXIT > 1 ]] ; then
+    echo $(colorize ' ❯ '  'lastCommandFailedWeird')
+    return
+  fi
+  echo $(colorize ' ❯ ' 'lastCommandSuccess');
 }
 # }}}
 

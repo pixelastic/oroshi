@@ -26,6 +26,7 @@ promptColorDefault=(
   pathWritable          "035"
   pathNotWritable       "160"
   lastCommandFailed     "160"
+  lastCommandFailedWeird "136"
   lastCommandSuccess    "241"
   rubyVersion           "203"
   pythonVersion         "108"
