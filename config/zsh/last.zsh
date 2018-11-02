@@ -30,6 +30,7 @@ local rvmScript=~/.rvm/scripts/rvm
 local gvmScript=~/.gvm/scripts/gvm
 if [[ -r $gvmScript ]]; then
   source $gvmScript
+  gvm use go1.11 &>/dev/null
 fi
 
 # Adding Chromium compilation tools to the path if present
