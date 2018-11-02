@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-echo 'Installing yamlxs, a yaml linter'
-sudo apt-get install libyaml-libyaml-perl
+# Linter
+sudo apt-get install yamllint
