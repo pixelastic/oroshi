@@ -260,9 +260,9 @@ function oroshi_prompt_git_rebase_right() {
   fi
 
   local ontoBranch="$(git-rebase-onto)"
-  local ontoColor="$(getBranchColor $ontoBranch)"
+  local ontoColor="$(oroshi_prompt_git_branch_color $ontoBranch)"
   local transplantBranch="$(git-rebase-transplant)"
-  local transplantColor="$(getBranchColor $transplantBranch)"
+  local transplantColor="$(oroshi_prompt_git_branch_color $transplantBranch)"
 
 
   echo -n $(colorize '[trunk]' 'rebaseTrunk')
