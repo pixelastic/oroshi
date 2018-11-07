@@ -1,14 +1,3 @@
-# Custom colors for this hostname
-promptColor=(
-	hostname	"248"
-)
-
-# Directories {{{
-alias cdbooks='cd ~/Dropbox/backup/books'
-alias cdrp='cd ~/Dropbox/backup/roleplay/'
-alias cdscenar='cd ~/Dropbox/backup/roleplay/scenarios/'
-# }}}
-
 # Oroshi {{{
 # Reload keybings for this OS
 function ok() {
