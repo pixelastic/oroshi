@@ -151,6 +151,7 @@ function oroshi_prompt_git_dirty() {
 # }}}
 # Kubernetes {{{
 function oroshi_prompt_kubernetes() {
+  [ ! $commands[kubectl] ] && return;
   kube_context="$(kubectl config current-context)";
   [[ $kube_context = "" ]] && return;
 
