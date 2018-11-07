@@ -225,7 +225,7 @@ alias ds="$DOCSEARCH_DIR/docsearch "
 alias dsb="ds bootstrap "
 function dsr() {
   cd $DOCSEARCH_DIR; 
-  ./docsearch run ../docsearch-configs/configs/$1.json
+  ./docsearch docker:run ../docsearch-configs/configs/$1.json
 }
 alias dss="cd $DOCSEARCH_DIR/playground && serve"
 function dsrp() {

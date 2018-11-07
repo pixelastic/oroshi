@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# By defining hooksPath in our global git config, we override ALL git hooks with
+# those file. This will become an issue when specific repositories have their
+# own hooks defined.
+#
+# In order to fix this, we'll override all hooks with a proxy that will call the
+# local hook if such a hook is defined.
+set -e
+
+# Run local hook with the same name
+this_script="${0##*/}"
+local_hook="$(git root)/.git/hooks/${this_script}"
+if [[ -x "$local_hook" ]]; then
+  $local_hook "$@"
+fi
