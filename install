@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 ./scripts/install/cli/directories
 
@@ -21,6 +22,13 @@ sudo apt-get install vim-gui-common
 # Getting Keepass, and thus the private key
 ./scripts/install/misc/dropbox
 ./scripts/install/misc/keepassx
+
+# Keyboard, need private
+
+
+# Languages
+./scripts/install/web/ruby
+#
 
 
 

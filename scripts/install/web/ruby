@@ -3,8 +3,8 @@
 set -ex
 
 sudo apt-get install curl \
-                     libcurl3 \
-                     libcurl3-gnutls \
+                     libcurl4 \
+                     libcurl4-gnutls \
                      libcurl4-openssl-dev
 
 # Install rvm
