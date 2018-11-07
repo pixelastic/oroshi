@@ -39,7 +39,7 @@
 	path = config/zsh/plugins/zsh-nvm
 	url = git@github.com:lukechilds/zsh-nvm.git
 	branch = master
-[submodule "/home/tim/.oroshi/scripts/bin/coriolis"]
-	path = /home/tim/.oroshi/scripts/bin/coriolis
+[submodule "scripts/bin/coriolis"]
+	path = scripts/bin/coriolis
 	url = git@github.com:pixelastic/coriolis.git
 	branch = master
