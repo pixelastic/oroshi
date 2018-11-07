@@ -5,9 +5,11 @@ source $zshConfigDir/nvm.zsh
 
 # Direnv {{{
 # Loads environment variables from .envrc files
-eval "$(direnv hook zsh)"
-# Prevent direnv from displaying anything when switching to a new dir
-export DIRENV_LOG_FORMAT=
+if [ $commands[direnv] ]; then
+  eval "$(direnv hook zsh)"
+  # Prevent direnv from displaying anything when switching to a new dir
+  export DIRENV_LOG_FORMAT=
+fi
 # }}}
 
 # RVM need to be loaded at the very last
