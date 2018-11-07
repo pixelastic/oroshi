@@ -135,23 +135,20 @@ alias vsmR='git-submodule-remove'
 alias vsm?='git-is-submodule'
 # }}}
 # [p]rivate [s]ub-[m]odule {{{
-alias vcsmp='git commit-private-submodule'
-alias vpsmu='git commit-private-submodule'
-alias vsmcp='git commit-private-submodule'
 alias vsmpu='git commit-private-submodule'
 alias vsmup='git commit-private-submodule'
+# }}}
+# [c]oriolis [s]ub-[m]odule {{{
+alias vsmuc='git commit-coriolis-submodule'
+alias vsmcu='git commit-coriolis-submodule'
 # }}}
 # [v]it [s]ub-[m]odule {{{
 alias vsmuv='git commit-vit-submodule'
 alias vsmvu='git commit-vit-submodule'
-alias vsmcv='git commit-vit-submodule'
-alias vsmvc='git commit-vit-submodule'
 # }}}
 # [i]img [s]ub-[m]odule {{{
 alias vsmui='git commit-img-submodule'
 alias vsmiu='git commit-img-submodule'
-alias vsmci='git commit-img-submodule'
-alias vsmic='git commit-img-submodule'
 # }}}
 # [pd]it [s]ub-[m]odule {{{
 alias vsmupd='git commit-pdf-submodule'
