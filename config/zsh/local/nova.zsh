@@ -1,4 +1,4 @@
- Oroshi {{{
+# Oroshi {{{
 # Reload keybings for this OS
 function ok() {
   ~/.oroshi/scripts/deploy/xmodmap

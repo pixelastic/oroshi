@@ -2,11 +2,13 @@
 
 echo "Installing compilers"
 
-sudo apt-get install build-essential \
-                     xsltproc \
-                     g++ \
-                     libxml2-dev \
-                     libxslt1-dev \
-                     cmake \
-                     automake \
-                     autotools-dev
+sudo apt-get install \
+  automake \
+  autotools-dev
+  build-essential \
+  cmake \
+  g++ \
+  intltool \
+  libxml2-dev \
+  libxslt1-dev \
+  xsltproc

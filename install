@@ -3,41 +3,53 @@ set -e
 
 ./scripts/install/cli/directories
 
-# Basic editing and navigating
+# Compile stuff
+./scripts/install/cli/make
+
+# Editing and navigating
 sudo apt-get install vim-gui-common
+./scripts/deploy/vim
+
+./scripts/install/cli/termite
+./scripts/install/cli/tmux
 ./scripts/install/cli/bat
 ./scripts/install/cli/exa
 ./scripts/install/cli/rg
 ./scripts/install/cli/fzf
+./scripts/install/cli/zsh
+./scripts/deploy/zsh
+
+# Shortcuts
+./scripts/install/misc/xbindkeys
+./scripts/install/misc/redshift
+
+# Basic tools
 ./scripts/install/cli/archive
+./scripts/install/cli/fonts
+./scripts/install/cli/prettyping
+./scripts/install/cli/direnv
+./scripts/install/cli/fd
+./scripts/install/cli/htop
 
 # Configuring tools
 ./scripts/deploy/apt-get
 ./scripts/deploy/dircolors
 ./scripts/deploy/git
-./scripts/deploy/vim
 ./scripts/deploy/wget
-./scripts/deploy/zsh
 
 # Getting Keepass, and thus the private key
 ./scripts/install/misc/dropbox
 ./scripts/install/misc/keepassx
 
-# Keyboard, need private
+echo "You need to get the private key into ~/.ssh/id_rsa"
+echo "Press any key to continue when ready"
+read -r
 
-
-# Languages
-./scripts/install/web/ruby
-#
-
-
-
-
-
-# Need private id_rsa key
 git submodule init
 git submodule update
 ./scripts/deploy/hosts
 ./scripts/deploy/ssh
+
+# Languages
 
 
