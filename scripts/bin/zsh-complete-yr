@@ -2,8 +2,8 @@
 require 'json'
 require 'open3'
 
-root = File.dirname(Open3.capture3('npm root')[0].strip)
-package = "#{root}/package.json"
+bin_folder = `yarn bin`.strip
+package = File.expand_path(File.join(bin_folder, '..', '..', 'package.json'))
 exit 0 unless File.exist?(package)
 
 content = JSON.parse(File.read(package))

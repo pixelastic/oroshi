@@ -10,7 +10,7 @@ module.exports = {
         'bigger',
         'black',
         'color',
-        'color',
+        'colors',
         'crash',
         'desire',
         'executed',

@@ -249,14 +249,14 @@ alias recess="recess --config ~/.recessrc"
 alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test500.zip'
 # }}}
 # Yarn {{{
-alias yR='node-root-run yarn remove'
-alias yad='node-root-run yarn add --dev -- '
+alias yR='yarn remove'
+alias yad='yarn add --dev -- '
 alias yagR='yarn global remove'
 alias yag='yarn global add -- '
-alias ya='node-root-run yarn add -- '
+alias ya='yarn add -- '
 alias ygR='yarn global remove'
 alias yga='yarn global add -- '
-alias yi='node-root-run yarn'
+alias yi='yarn'
 alias yrb='yr build'
 alias yrbw='yr build:watch'
 alias yrc='yr consolidate'
