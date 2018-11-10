@@ -18,11 +18,30 @@ output=" $clock $output"
 # Current ip {{{
 local ip=''
 if is-online; then
-  ip="  $(my-ip)"
+  ip="$(my-ip)"
 else
   ip='#[fg=colour160,bold]  offline!#[default]'
 fi
 output="$ip $output"
+# }}}
+# Kubernetes context {{{
+if [ $commands[kubectl] ]; then
+  local currentContext="$(kubectl config current-context)"
+  echo $currentContext
+  if [[ $currentContext == "minikube" ]]; then
+    local minikubeStatus="$(minikube status --format "{{.MinikubeStatus}}")"
+  fi
+
+  if [[ $currentContext == "minikube" && $minikubeStatus == "Running" ]]; then
+    output="#[fg=colour35]☸ #[default] $output"
+  fi
+  if [[ $currentContext == "minikube" && $minikubeStatus == "Stopped" ]]; then
+    output="#[fg=colour241]☸ #[default] $output"
+  fi
+  if [[ $currentContext =~ "^gke" ]]; then
+    output="#[fg=colour69]☸ #[default] $output"
+  fi
+fi
 # }}}
 # Battery life {{{
 # Do not display if full

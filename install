@@ -11,7 +11,9 @@ sudo apt-get install vim-gui-common
 ./scripts/deploy/vim
 
 ./scripts/install/cli/termite
+./scripts/deploy/tmux
 ./scripts/install/cli/tmux
+./scripts/deploy/tmux
 ./scripts/install/cli/bat
 ./scripts/install/cli/exa
 ./scripts/install/cli/rg

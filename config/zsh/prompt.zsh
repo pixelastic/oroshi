@@ -5,7 +5,7 @@ setopt PROMPT_SUBST
 autoload -U promptinit
 promptinit
 
-PROMPT='$(oroshi_prompt_kubernetes) $(oroshi_prompt_path)$(oroshi_prompt_git_left)$(oroshi_prompt_character)'
+PROMPT='$(oroshi_prompt_path)$(oroshi_prompt_git_left)$(oroshi_prompt_character)'
 RPROMPT=''
 function get_RPROMPT() {
   echo "$(oroshi_prompt_ruby)$(oroshi_prompt_python)$(oroshi_prompt_node)$(oroshi_prompt_git_right)"
@@ -73,17 +73,15 @@ promptHostname=$(colorize '%m' 'hostname')
 # - If more than 4 directories, will only keep the first and the last two
 # - Will prepend a ! and display it in red if not writable
 function oroshi_prompt_path() {
-  local promptPath=$PWD
+  local promptPath="$(print -D $PWD)"
+  promptPath=${promptPath:s/~/ }
   local splitPath
-  splitPath=(${(s:/:)PWD})
+  splitPath=(${(s:/:)promptPath})
 
   # Keep only first and last dirs if too long
   if [[ ${#splitPath[*]} -ge 4 ]]; then
-    promptPath=/${splitPath[1]}/../${splitPath[-2]}/${splitPath[-1]}/
-  fi
-
-  if [[ $promptPath = $HOME ]]; then
-    promptPath=' '
+    promptPath="/${splitPath[1]}/… …/${splitPath[-2]}/${splitPath[-1]}/"
+    promptPath=${promptPath:s/\// }
   fi
 
   local pathColor='pathWritable'
@@ -147,20 +145,6 @@ function oroshi_prompt_git_dirty() {
   fi
 
   echo $(colorize '±' 'repoClean')
-}
-# }}}
-# Kubernetes {{{
-function oroshi_prompt_kubernetes() {
-  [ ! $commands[kubectl] ] && return;
-  kube_context="$(kubectl config current-context)";
-  [[ $kube_context = "" ]] && return;
-
-  kube_symbol="⎈"
-  kube_color="base"
-  [[ $kube_context = "minikube" ]] && kube_color="kubernetesMinikube"
-  [[ $kube_context =~ "^gke" ]] && kube_color="kubernetesGCP"
-
-  echo -n $(colorize '☸' $kube_color);
 }
 # }}}
 # Prompt char {{{
