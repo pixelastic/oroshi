@@ -52,6 +52,9 @@ git submodule update
 ./scripts/deploy/hosts
 ./scripts/deploy/ssh
 
+# Other tools requiring a working private key
+./scripts/install/download/plowshare
+
 # Languages
 
 
