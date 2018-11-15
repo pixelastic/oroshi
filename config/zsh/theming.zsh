@@ -127,6 +127,8 @@ export EXA_COLORS="${EXA_COLORS}:so=48;5;13" # Socket (unstyled)
 export EXA_COLORS="${EXA_COLORS}:bd=48;5;13" # Block device (unstyled)
 
 # Archives (bold green)
+export LS_COLORS="${LS_COLORS}:*.rar=1;38;5;28" 
+export LS_COLORS="${LS_COLORS}:*.tgz=1;38;5;28" 
 export LS_COLORS="${LS_COLORS}:*.zip=1;38;5;28" 
 # Large images (bold yellow)
 export LS_COLORS="${LS_COLORS}:*.pdf=1;38;5;136" 

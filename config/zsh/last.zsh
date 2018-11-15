@@ -42,9 +42,9 @@ if [[ -r $chromiumDepotTools ]]; then
 fi
 
 # Pyenv / pipenv
+export PATH="/home/tim/.pyenv/bin:$PATH"
 if [ $commands[pyenv] ]; then
   # Make sure pyenv is found by putting it first
-  export PATH="/home/tim/.pyenv/bin:$PATH"
   eval "$(pyenv init -)"
   # Do not prefix the current virtual env in the prompt, neither for pyenv nor
   # pipenv
