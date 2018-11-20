@@ -12,21 +12,6 @@ if [ $commands[direnv] ]; then
 fi
 # }}}
 
-# RVM need to be loaded at the very last
-local rvmScript=~/.rvm/scripts/rvm
-# if [[ -r $rvmScript ]]; then
-#   if [[ ! -z "$TMUX" ]]; then
-#     # It seems that $GEM_HOME and $GEM_PATH are not correctly set when starting
-#     # a tmux session, so we'll re-source the `rvm` function and manually set the
-#     # default. We suppress errors for not polluting the display.
-#     source $rvmScript &>/dev/null
-#     rvm use 2.3.1 &>/dev/null
-#   else
-#     # We simply source the rvmScript otherwise
-#     source $rvmScript
-#     rvm use 2.3.1 &>/dev/null
-#   fi
-# fi
 
 # Gvm
 local gvmScript=~/.gvm/scripts/gvm
@@ -60,4 +45,20 @@ fi
 # Load fzf for fuzzy finding in Ctrl-R in terminal
 if [ -f ~/.fzf.zsh ]; then
   source ~/.fzf.zsh
+fi
+
+# RVM need to be loaded at the very last
+local rvmScript=~/.rvm/scripts/rvm
+if [[ -r $rvmScript ]]; then
+  if [[ ! -z "$TMUX" ]]; then
+    # It seems that $GEM_HOME and $GEM_PATH are not correctly set when starting
+    # a tmux session, so we'll re-source the `rvm` function and manually set the
+    # default. We suppress errors for not polluting the display.
+    source $rvmScript &>/dev/null
+    rvm use 2.3.1 &>/dev/null
+  else
+    # We simply source the rvmScript otherwise
+    source $rvmScript
+    rvm use 2.3.1 &>/dev/null
+  fi
 fi
