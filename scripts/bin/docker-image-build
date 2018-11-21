@@ -2,7 +2,7 @@
 require_relative '../etc/docker-helper/docker_helper'
 
 # Create a new Docker image from a Docker file
-class DockerImageCreate
+class DockerImageBuild
   include DockerHelper
 
   def initialize(*args)
@@ -20,7 +20,7 @@ class DockerImageCreate
     return unless @name.nil?
     if @name.nil?
       puts 'Usage:'
-      puts '$ docker-image-create name [dockerfile]'
+      puts '$ docker-image-build name [dockerfile]'
       exit 1
     end
 
@@ -48,4 +48,4 @@ class DockerImageCreate
     end
   end
 end
-DockerImageCreate.new(*ARGV).run
+DockerImageBuild.new(*ARGV).run
