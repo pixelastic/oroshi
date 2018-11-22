@@ -10,6 +10,20 @@ autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '^E' edit-command-line
 
+# Ctrl-J to run ls
+bindkey -s '^J' 'ls'
+
+# Ctrl-K to see git status
+bindkey -s '^K' 'vdl'
+
+# Ctrl-S to commit all
+bindkey -s '^S' 'vca'
+
+# Ctrl-H to go up one dir
+bindkey -s '^H' 'cd ..'
+
+
+
 # Ctrl-P fuzzy finding {{{
 if [[ -r ~/.fzf.zsh ]]; then
   source ~/.fzf.zsh
