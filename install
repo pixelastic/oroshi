@@ -32,12 +32,14 @@ sudo apt-get install vim-gui-common
 ./scripts/install/cli/direnv
 ./scripts/install/cli/fd
 ./scripts/install/cli/htop
+./scripts/install/filesystem/ncdu
 
 # Configuring tools
 ./scripts/deploy/apt-get
 ./scripts/deploy/dircolors
 ./scripts/deploy/git
 ./scripts/deploy/wget
+./scripts/deploy/watchers
 
 # Getting Keepass, and thus the private key
 ./scripts/install/misc/dropbox

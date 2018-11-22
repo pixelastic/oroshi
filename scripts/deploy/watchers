@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Increase the max number of watched files on the machine. Allows jest and other
+# tools watching file changes to no fail
+
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
