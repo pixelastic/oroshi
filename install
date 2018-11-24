@@ -18,6 +18,8 @@ sudo apt-get install vim-gui-common
 ./scripts/install/cli/exa
 ./scripts/install/cli/rg
 ./scripts/install/cli/fzf
+./scripts/install/cli/tree
+./scripts/install/cli/rename
 ./scripts/install/cli/zsh
 ./scripts/deploy/zsh
 
