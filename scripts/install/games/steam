@@ -1,16 +1,11 @@
 #!/usr/bin/env zsh
+# Installation from 
+# https://linuxconfig.org/how-to-install-steam-on-ubuntu-18-04-bionic-beaver-linux
+sudo dpkg --add-architecture i386
+sudo apt update
 
-echo "Downloading .deb"
-wget http://media.steampowered.com/client/installer/steam.deb -O /tmp/steam.deb
+sudo apt install wget gdebi-core libgl1-mesa-dri:i386 libgl1-mesa-glx:i386
 
-echo "Installing dependencies"
-sudo apt-get install gdebi-core
-# For 14.04
-sudo apt-get install libc6:i386
-sudo apt-get install libgl1-mesa-glx-lts-trusty:i386
-
-echo "Installing .deb"
-sudo gdebi /tmp/steam.deb
-
-
-
+cd /tmp
+wget http://media.steampowered.com/client/installer/steam.deb
+sudo gdebi ./steam.deb
