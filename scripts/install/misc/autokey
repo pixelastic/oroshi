@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 set -ex
 
-sudo apt-get autokey-gtk
+sudo apt-get install autokey-gtk
