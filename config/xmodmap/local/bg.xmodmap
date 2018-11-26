@@ -1,0 +1,34 @@
+! [/]
+! keycode 106
+! [*] Inventory
+keycode 63 = i
+! [-]
+! keycode 82
+! [+] Pickpocket
+keycode 86 = y
+
+! [9]
+! keycode 81
+! [8] Second weapon
+keycode 80 = g
+! [7] First weapon
+keycode 79 = f
+! [6] Select all
+keycode 85 = e
+! [5]
+keycode 84 = z
+! [4] Select first PC
+keycode 83 = a
+! [3] Select dialog option 3
+keycode 89 = 3
+! [2] Select dialog option 2
+keycode 88 = 2
+! [1] Select dialog option 1
+keycode 87 = 1
+
+! [0] Show tooltips
+keycode 90 = Tab
+! [.] Escape
+keycode 91 = Escape
+! [Enter]: Pause
+keycode 104 = space
