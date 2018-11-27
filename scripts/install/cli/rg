@@ -3,10 +3,8 @@ set -ex
 
 cd ~/local/tmp
 wget \
-  "https://github.com/BurntSushi/ripgrep/releases/download/0.3.2/ripgrep-0.3.2-x86_64-unknown-linux-musl.tar.gz" \
-  -O ripgrep.tar.gz
-tar xvzf ripgrep.tar.gz
-mv ./ripgrep-0.3.2-x86_64-unknown-linux-musl/rg ~/local/bin
+  "https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/ripgrep_0.10.0_amd64.deb" \
+  -O ripgrep.deb
 
-
-
+sudo dpkg -i ripgrep.deb
+sudo apt-get -f install

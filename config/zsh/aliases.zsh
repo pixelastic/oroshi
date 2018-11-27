@@ -11,7 +11,8 @@ unsetopt NOMATCH
 # }}}
 
 # Basic commands {{{
-alias ag='better-rg'
+alias rg='RIPGREP_CONFIG_PATH=~/.oroshi/config/rg/rgrc.conf rg '
+alias ag='rg'
 alias cat='better-cat'
 alias cmus='TERM=screen-256color cmus'
 alias cp='cp -rv'
@@ -24,7 +25,6 @@ alias la@="ls --all -l@"
 alias mkdir="mkdir -p"
 alias mv='mv -vi'
 alias ping="prettyping --nolegend"
-alias rg='better-rg'
 alias rmdir='better-rmdir'
 alias rm='trash-put'
 alias scp='scp -r '
