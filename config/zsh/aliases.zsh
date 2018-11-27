@@ -16,7 +16,7 @@ alias ag='rg'
 alias cat='better-cat'
 alias cmus='TERM=screen-256color cmus'
 alias cp='cp -rv'
-alias diff='colordiff'
+alias diff='git diff --no-index --word-diff=color --word-diff-regex=.'
 alias grep='grep -i --color=auto'
 alias ls="exa --long --group-directories-first --git --time-style=long-iso --color=always"
 alias la="ls --all"

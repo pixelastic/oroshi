@@ -33,7 +33,6 @@ sudo apt-get install vim-gui-common
 ./scripts/install/cli/prettyping
 ./scripts/install/cli/direnv
 ./scripts/install/cli/fd
-./scripts/install/cli/colordiff
 ./scripts/install/cli/htop
 ./scripts/install/filesystem/ncdu
 
