@@ -127,8 +127,10 @@ export EXA_COLORS="${EXA_COLORS}:so=48;5;13" # Socket (unstyled)
 export EXA_COLORS="${EXA_COLORS}:bd=48;5;13" # Block device (unstyled)
 
 # Archives (bold green)
+export LS_COLORS="${LS_COLORS}:*.deb=1;38;5;28" 
 export LS_COLORS="${LS_COLORS}:*.gz=1;38;5;28" 
 export LS_COLORS="${LS_COLORS}:*.rar=1;38;5;28" 
+export LS_COLORS="${LS_COLORS}:*.tar.gz=1;38;5;28" 
 export LS_COLORS="${LS_COLORS}:*.tgz=1;38;5;28" 
 export LS_COLORS="${LS_COLORS}:*.zip=1;38;5;28" 
 # Large images (bold yellow)
@@ -152,6 +154,7 @@ export LS_COLORS="${LS_COLORS}:Rakefile=38;5;141"
 export LS_COLORS="${LS_COLORS}:*.gemspec=38;5;141"
 export LS_COLORS="${LS_COLORS}:*.sass=38;5;141"
 export LS_COLORS="${LS_COLORS}:*.scss=38;5;141"
+export LS_COLORS="${LS_COLORS}:*.sh=38;5;141"
 export LS_COLORS="${LS_COLORS}:*.toml=38;5;141"
 export LS_COLORS="${LS_COLORS}:*.yaml=38;5;141"
 export LS_COLORS="${LS_COLORS}:*.yml=38;5;141"
@@ -160,8 +163,6 @@ export LS_COLORS="${LS_COLORS}:*.js.map=38;5;241"
 export LS_COLORS="${LS_COLORS}:*.lock=38;5;241"
 export LS_COLORS="${LS_COLORS}:*.min.css=38;5;241"
 export LS_COLORS="${LS_COLORS}:*.min.js=38;5;241"
+export LS_COLORS="${LS_COLORS}:*.part=38;5;241"
 export LS_COLORS="${LS_COLORS}:.envrc=38;5;241"
 export LS_COLORS="${LS_COLORS}:_algolia_api_key=38;5;241"
-
-
-

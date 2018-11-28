@@ -12,6 +12,7 @@ for file in $@; do
 		*.bz2) bzip2 -d $file;;
 		*.cbr) unrar x $file;;
 		*.cbz) unzip $file;;
+    *.deb) sudo dpkg -i $file && sudo apt-get -f install;;
 		*.htmlz) unzip $file;;
 		*.rar) unrar x $file;;
 		*.r([0-9][0-9])) unrar x $file;;
