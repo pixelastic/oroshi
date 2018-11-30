@@ -80,7 +80,7 @@ function oroshi_prompt_path() {
 
   # Keep only first and last dirs if too long
   if [[ ${#splitPath[*]} -ge 4 ]]; then
-    promptPath="/${splitPath[1]}/… …/${splitPath[-2]}/${splitPath[-1]}/"
+    promptPath="/${splitPath[1]}/…/${splitPath[-2]}/${splitPath[-1]}/"
     promptPath=${promptPath:s/\// }
   fi
 
