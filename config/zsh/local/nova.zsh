@@ -1,6 +1,7 @@
 # Oroshi {{{
 # Reload keybings for this OS
 function ok() {
+  xmodmap ~/.oroshi/config/xmodmap/local/defaults/nova.xmodmap
   ~/.oroshi/scripts/deploy/xmodmap
   ~/.oroshi/scripts/deploy/xbindkeys
   source ~/.oroshi/config/ubuntu/18.04/windows.sh

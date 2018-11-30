@@ -8,8 +8,45 @@ keycode 117 = End
 keycode 110 = Prior
 keycode 115 = Next
 
-!!!!! Enter key
-! The key is named "Entrée" on french keyboard but is in fact a Return key.
-! It produces a Carriage Return on press (default)
-! It also produces a "Numeric Keypad" Enter on Shift-Press (custom)
+! !!!!! Enter key
+! ! The key is named "Entrée" on french keyboard but is in fact a Return key.
+! ! It produces a Carriage Return on press (default)
+! ! It also produces a "Numeric Keypad" Enter on Shift-Press (custom)
 keycode  36 = Return KP_Enter Return KP_Enter
+
+
+! !!!!!! Keypad, to play BG:EE
+! [/] Map
+keycode 106 = m
+! [*] Inventory
+keycode 63 = i
+! [-] Stealth
+keycode 82 = b
+! [+] Select all
+keycode 86 = a
+
+! [9] Pickpocket
+keycode 81 = y
+! [8] Second weapon
+keycode 80 = x
+! [7] First weapon
+keycode 79 = w
+! [6] Select third PC
+keycode 85 = f
+! [5] Select second PC
+keycode 84 = e
+! [4] Select first PC
+keycode 83 = d
+! [3] Select dialog option 3
+keycode 89 = 3
+! [2] Select dialog option 2
+keycode 88 = 2
+! [1] Select dialog option 1
+keycode 87 = 1
+
+! ! [0] Show tooltips
+keycode 90 = Tab
+! ! [.] Escape
+keycode 91 = Escape
+! ! [Enter]: Do not remap, it prevents all other keybinding from working
+! keycode 104 = KP_Enter NoSymbol KP_Enter 

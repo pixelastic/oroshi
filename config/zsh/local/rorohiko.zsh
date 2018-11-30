@@ -9,6 +9,7 @@ function ok() {
 #
 alias mse='wine "/home/tim/.wine/drive_c/Program Files (x86)/MagicSetEditor/mse.exe"'
 
+
 # Dump file to online domain
 function dumptmp() {
   rsync -Pharz \
