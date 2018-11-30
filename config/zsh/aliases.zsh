@@ -257,9 +257,11 @@ alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/download
 # Yarn {{{
 alias yR='yarn remove'
 alias yad='yarn add --dev -- '
+alias yadf='yarn add --dev -W -- '
 alias yagR='yarn global remove'
 alias yag='yarn global add -- '
 alias ya='yarn add -- '
+alias ya='yarn add -W -- '
 alias ygR='yarn global remove'
 alias yga='yarn global add -- '
 alias yi='yarn'
