@@ -1,0 +1,3 @@
+! Somehow, the [2] key can't be mapped. So we'll pretend it's another key, and
+! bind that key in bg
+keycode 11 = p

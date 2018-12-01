@@ -1,0 +1,2 @@
+! Revert whatever has been set by bg.xmodmap
+keycode  11 = eacute 2 2 at asciitilde Eacute
