@@ -11,8 +11,7 @@ unsetopt NOMATCH
 # }}}
 
 # Basic commands {{{
-alias rg='RIPGREP_CONFIG_PATH=~/.oroshi/config/rg/rgrc.conf rg '
-alias ag='rg'
+alias ag='rg --pretty --context=2 --smart-case --colors=path:fg:yellow --colors=path:style:bold --colors=line:fg:black --colors=line:style:nobold --colors=match:fg:black --colors=match:bg:cyan'
 alias cat='better-cat'
 alias cmus='TERM=screen-256color cmus'
 alias cp='cp -rv'
