@@ -15,6 +15,6 @@ function dumptmp() {
     echo "Available on http://tmp.pixelastic.com/share/${1:t}"
 }
 
-alias baldur="okbg && wine \"/home/tim/.local/share/Steam/steamapps/common/Baldur's Gate II Enhanced Edition/baldur.exe\" && okbgu"
+alias baldur="okbg && cd \"/home/tim/.local/share/Steam/steamapps/common/Baldur's Gate II Enhanced Edition/\" && wine baldur.exe && okbgu"
 alias okbg="xmodmap ~/.oroshi/config/xmodmap/local/bg.xmodmap"
 alias okbgu="xmodmap ~/.oroshi/config/xmodmap/local/bg-cancel.xmodmap"
