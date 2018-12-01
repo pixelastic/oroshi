@@ -15,6 +15,20 @@ function dumptmp() {
     echo "Available on http://tmp.pixelastic.com/share/${1:t}"
 }
 
-alias baldur="okbg && cd \"/home/tim/.local/share/Steam/steamapps/common/Baldur's Gate II Enhanced Edition/\" && wine baldur.exe && okbgu"
-alias okbg="xmodmap ~/.oroshi/config/xmodmap/local/bg.xmodmap"
-alias okbgu="xmodmap ~/.oroshi/config/xmodmap/local/bg-cancel.xmodmap"
+function baldur() {
+  okbg
+  cd "/home/tim/.local/share/Steam/steamapps/common/Baldur's Gate II Enhanced Edition/"
+  wine ./baldur.exe
+  okbgu
+}
+# Enable Baldur Keybinding Fixes
+function okbg() {
+  xmodmap ~/.oroshi/config/xmodmap/local/bg.xmodmap
+  ~/.oroshi/scripts/deploy/xbindkeys
+}
+# Disable Baldur Keyinding Fixes
+function okbgu() {
+  xmodmap ~/.oroshi/config/xmodmap/local/bg-cancel.xmodmap
+  ~/.oroshi/scripts/deploy/xbindkeys
+}
+
