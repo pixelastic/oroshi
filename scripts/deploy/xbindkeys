@@ -1,4 +1,14 @@
 #!/usr/bin/env zsh
 
+# Kill previous bindings
 killall xbindkeys
-xbindkeys -f ~/.oroshi/config/xbindkeys/xbindkeysrc.conf
+
+# Start default bindings
+local configDir=~/.oroshi/config/xbindkeys
+xbindkeys -f ${configDir}/xbindkeysrc.conf
+
+# Start custom bindings, if any
+local localFile=${configDir}/local/${HOST}.conf
+if [[ -r $localFile ]]; then
+  xbindkeys -f ${localFile}
+fi

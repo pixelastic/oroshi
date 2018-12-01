@@ -6,8 +6,7 @@
 local destFile=~/.Xmodmap
 local configDir=~/.oroshi/config/xmodmap
 local defaultFile=${configDir}/xmodmaprc
-local hostname=$(hostname)
-local localFile=${configDir}/local/${hostname}.xmodmap
+local localFile=${configDir}/local/${HOST}.xmodmap
 
 # Starting with an empty file
 rm -f $destFile
