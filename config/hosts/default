@@ -2,6 +2,11 @@
 # DEFAULT HOSTS
 #
 127.0.0.1         localhost
+# Various aliases for testing purposes 
+127.0.0.1         localhost.dev
+127.0.0.1         localhost.com
+127.0.0.1         localhost.net
+127.0.0.1         localhost.org
 
 # The following lines are desirable for IPv6 capable hosts
 ::1               ip6-localhost ip6-loopback

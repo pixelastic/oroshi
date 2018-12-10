@@ -1,25 +1,17 @@
 #!/usr/bin/env zsh
-# Generates a host files by concatenating the following pieces :
-# - Binding 127.0.0.1 to the current hostname
-# - Adding default list of hosts
-# - Adding any files present in ./private/config/hosts/local/{hostname}
-#
-# The resulting file will be set to /etc/hosts
+# Generate a custom /etc/hosts file
 
-# Paths
-local hostname=$(hostname)
-local defaultFile=~/.oroshi/config/hosts/default
-local zeroFile=~/.oroshi/config/hosts/zero
-local privateFiles="~/.oroshi/private/config/hosts/local/${hostname}/*"
-local destFile=~/local/etc/hosts
-
-# Add localhost binding
-echo "127.0.0.1\t$hostname" | sudo tee $destFile > /dev/null
-# Add default config
-cat $defaultFile | sudo tee -a $destFile > /dev/null
-# Add zero config
-cat $zeroFile | sudo tee -a $destFile > /dev/null
-# Add all private local files
-for file in ${~privateFiles}; do
-	cat $file | sudo tee -a $destFile > /dev/null
+# Default 
+local defaultContent="$(cat ~/.oroshi/config/hosts/default)"
+# Loopback to myself
+local loopback="127.0.0.1\t$HOST"
+# Kill various domains
+local zeroContent="$(cat ~/.oroshi/config/hosts/zero)"
+# Custom private files
+local customContent=""
+for file in ~/.oroshi/private/config/hosts/local/${HOST}/*; do
+  customContent="${customContent}\n$(cat $file)"
 done
+
+echo "${defaultContent}\n\n${loopback}\n\n${zeroContent}\n\n${customContent}" \
+  | sudo tee /etc/hosts > /dev/null
