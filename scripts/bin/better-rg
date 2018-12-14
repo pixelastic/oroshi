@@ -10,4 +10,5 @@ rg \
   --colors 'line:style:nobold' \
   --colors 'match:fg:green' \
   --colors 'match:style:nobold' \
-  $*
+  "$*" \
+  | less -R
