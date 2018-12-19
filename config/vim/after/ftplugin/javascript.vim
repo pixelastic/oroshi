@@ -66,7 +66,7 @@ inoremap <buffer> @retps @returns {Promise.<String>}
 inoremap <buffer> @retp @returns {Promise} 
 inoremap <buffer> @rets @returns {String} 
 inoremap <buffer> @retn @returns {Number} 
-inoremap <buffer> @retv @returns {Void} 
+inoremap <buffer> @retv @returns {Void}
 nnoremap <buffer> ii_ mzggoimport _ from 'lodash';`z
 " Import module
 nnoremap <buffer> <Leader>i :ImportJSWord<CR>
