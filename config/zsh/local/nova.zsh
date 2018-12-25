@@ -17,6 +17,7 @@ function dumptmp() {
 
 function baldur() {
   okbg
+  ~/.oroshi/scripts/deploy/xbindkeys
   cd "/home/tim/.local/share/Steam/steamapps/common/Baldur's Gate II Enhanced Edition/"
   wine ./baldur.exe
   okbgu
@@ -30,5 +31,10 @@ function okbg() {
 function okbgu() {
   xmodmap ~/.oroshi/config/xmodmap/local/bg-cancel.xmodmap
   ~/.oroshi/scripts/deploy/xbindkeys
+}
+
+function nearinfinity() {
+  cd "~/.local/share/Steam/steamapps/common/Baldur's Gate Enhanced Edition"
+  java -jar NearInfinity.jar
 }
 

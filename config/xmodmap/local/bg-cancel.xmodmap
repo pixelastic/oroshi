@@ -1,2 +1,16 @@
 ! Revert whatever has been set by bg.xmodmap
 keycode  11 = eacute 2 2 at asciitilde Eacute
+
+! Keypad
+keycode  79 = KP_Home KP_7 KP_Home KP_7
+keycode  80 = KP_Up KP_8 KP_Up KP_8
+keycode  81 = KP_Prior KP_9 KP_Prior KP_9
+keycode  82 = KP_Subtract KP_Subtract KP_Subtract KP_Subtract KP_Subtract KP_Subtract XF86Prev_VMode KP_Subtract KP_Subtract XF86Prev_VMode
+keycode  83 = KP_Left KP_4 KP_Left KP_4
+keycode  84 = KP_Begin KP_5 KP_Begin KP_5
+keycode  85 = KP_Right KP_6 KP_Right KP_6
+keycode  86 = KP_Add KP_Add KP_Add KP_Add KP_Add KP_Add XF86Next_VMode KP_Add KP_Add XF86Next_VMode
+keycode  87 = KP_End KP_1 KP_End KP_1
+keycode  88 = KP_Down KP_2 KP_Down KP_2
+keycode  89 = KP_Next KP_3 KP_Next KP_3
+keycode 106 = KP_Divide KP_Divide KP_Divide KP_Divide KP_Divide KP_Divide XF86Ungrab KP_Divide KP_Divide XF86Ungrab

@@ -1,3 +1,33 @@
 ! Somehow, the [2] key can't be mapped. So we'll pretend it's another key, and
 ! bind that key in bg
 keycode 11 = p
+
+! Allow selecting dialog options through the keypad 1-6
+keycode 85 = KP_6 KP_6 KP_6 KP_6
+keycode 84 = KP_5 KP_5 KP_5 KP_5
+keycode 83 = KP_4 KP_4 KP_4 KP_4
+keycode 89 = KP_3 KP_3 KP_3 KP_3
+keycode 88 = KP_2 KP_2 KP_2 KP_2
+keycode 87 = KP_1 KP_1 KP_1 KP_1
+
+! Tab with 7
+keycode 79 = Tab
+
+! Use first weapon with 8
+keycode 80 = F2
+
+! Pickpocket with 9
+keycode 81 = v
+
+! Map with -
+keycode 82 = m
+
+! Escape with /
+keycode 106 = Escape
+
+! Pause with +
+keycode 86 = space
+
+! DO NOT REMAP [Enter] on the KeyPAD
+! It prevents all other keybinding from working
+! keycode 104 = KP_Enter NoSymbol KP_Enter 
