@@ -3,3 +3,7 @@
 # Disable gnome-camera shutter sound
 sudo rm -f /usr/share/sounds/freedesktop/stereo/camera-shutter.oga
 sudo rm -f /usr/share/sounds/freedesktop/stereo/screen-capture.oga
+
+# Make Nautilus jump to closest alphabetical file when pressing a letter
+sudo add-apt-repository ppa:lubomir-brindza/nautilus-typeahead
+sudo apt dist-upgrade
