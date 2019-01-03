@@ -59,7 +59,7 @@ function! MarkdownBeautify()
   let l:initialLine = line('.')
 
   " Remark: fix markdown formatting. This will mostly convert links to references
-  execute '%!'.b:remarkFixBin.' %:p'
+  execute '%!'.b:remarkFixBin.' "%:p"'
 
   " Textlint: fix fixable textlint issues. As this will change the file in place, we use
   " /tmp as a buffer
@@ -71,7 +71,7 @@ function! MarkdownBeautify()
 
   " Prettier: Make everything look the same
   write
-  silent execute '%!' . b:prettierBin . ' --parser markdown %:p'
+  silent execute '%!' . b:prettierBin . ' --parser markdown "%:p"'
 
   " call RemoveTrailingSpaces()
 
