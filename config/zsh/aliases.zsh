@@ -189,6 +189,13 @@ alias oa="~/.oroshi/scripts/deploy/autostart"
 alias oc="~/.oroshi/scripts/deploy/dircolors && source ~/.zshrc"
 alias of="~/.oroshi/scripts/deploy/fstab"
 alias oh="~/.oroshi/scripts/deploy/hosts"
+function om() {
+  # Decrease mouse speed if too fast
+  mouse-speed 2
+  # Re-activate touchpad if it failed
+  sudo modprobe psmouse -r; 
+  sudo modprobe psmouse
+}
 alias om="mouse-speed 2"
 alias or="redshift -x && redshift -o"
 alias os="~/.oroshi/scripts/deploy/ssh"
