@@ -1,6 +1,22 @@
 #!/usr/bin/env bash
 
-sudo apt-get install zsh;
+# Zsh < 5.5.1 has a bug where tab completion sometimes crashes with a malloc
+# error. It seems to come from RVM. The best way to workaround the issue is to
+# upgrade to 5.5.1.
+
+cd ~/local/tmp
+wget \
+  http://fr.archive.ubuntu.com/ubuntu/pool/main/z/zsh/zsh_5.5.1-1ubuntu2_amd64.deb \
+  -O zsh-5.5.1.deb
+wget \
+  http://fr.archive.ubuntu.com/ubuntu/pool/main/z/zsh/zsh-common_5.5.1-1ubuntu2_all.deb \
+  -O zsh-common-5.5.1.deb
+wget \
+  http://fr.archive.ubuntu.com/ubuntu/pool/main/n/ncurses/libtinfo6_6.1+20180210-4ubuntu1_amd64.deb \
+  -O libtinfo6.deb
+
+sudo dpkg -i zsh-5.5.1.deb zsh-common-5.5.1.deb libtinfo6.deb
+sudo apt-get install -f
 
 echo "--------------"
 echo "You should manually edit /etc/passwd to add /usr/bin/zsh as your shell"
