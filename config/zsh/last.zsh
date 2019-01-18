@@ -1,6 +1,6 @@
 # Commands in this file will be executed very last in the zsh init process.
 # NVM {{{
-source $zshConfigDir/nvm.zsh
+source ~/.nvm/nvm.sh
 # }}}
 
 # Direnv {{{
