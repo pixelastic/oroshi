@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+awk '{ print length(), $0 | "sort -n | cut -d\\  -f2-" }'

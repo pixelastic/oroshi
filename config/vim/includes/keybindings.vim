@@ -314,6 +314,12 @@ endfunction
 vnoremap s :!sort -V<CR>
 " Remove duplicate lines
 vnoremap u :sort u<CR>
+" Randomize lines
+vnoremap r :!shuf<CR>
+" Sort lines by line length
+vnoremap L :!sort-by-length<CR>
+
+
 " }}}
 " PLUGINS {{{
 " Preventing Align from loading the whole list of its mappings
