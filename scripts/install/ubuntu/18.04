@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 # Disable gnome-camera shutter sound
 sudo rm -f /usr/share/sounds/freedesktop/stereo/camera-shutter.oga
@@ -7,3 +7,7 @@ sudo rm -f /usr/share/sounds/freedesktop/stereo/screen-capture.oga
 # Make Nautilus jump to closest alphabetical file when pressing a letter
 sudo add-apt-repository ppa:lubomir-brindza/nautilus-typeahead
 sudo apt dist-upgrade
+
+# Make the Ubuntu Dock displayed on our 4th monitor (that we don't have), so it
+# is actually always hidden
+gsettings set org.gnome.shell.extensions.dash-to-dock preferred-monitor '4'
