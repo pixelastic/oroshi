@@ -318,6 +318,8 @@ vnoremap u :sort u<CR>
 vnoremap r :!shuf<CR>
 " Sort lines by line length
 vnoremap L :!sort-by-length<CR>
+" Number lines
+vnoremap n :!cat -n<CR>
 
 
 " }}}
