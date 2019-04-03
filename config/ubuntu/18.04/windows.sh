@@ -1,13 +1,47 @@
 #!/usr/bin/env zsh
 
-# Showing the preview with ^2 instead of just windows
-gsettings set org.gnome.mutter overlay-key 'F14'     
+# The headers mimic what can be found in the Keyboard binding UI screen
 
-# Custom keybindings
-gsettings set org.gnome.desktop.wm.keybindings close "['<Alt>F4']"
-gsettings set org.gnome.desktop.wm.keybindings toggle-maximized '["<Alt><Super>Home"]'
+# Run the following commands to access all keys:
+# - gsettings list-recursively org.gnome.desktop.wm.keybindings
+# - gsettings list-recursively org.gnome.settings-daemon.plugins.media-keys
+# - gsettings list-recursively org.gnome.mutter.keybindings
+
+
+# Search
+gsettings set org.gnome.settings-daemon.plugins.media-keys search 'twosuperior'
+# Hide all normal windows
 gsettings set org.gnome.desktop.wm.keybindings show-desktop "['<Super>d']"
+# Switch applications
 gsettings set org.gnome.desktop.wm.keybindings switch-applications "['<Alt>Tab']"
+
+# Copy a screenshot of an area to clipboard
+gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot-clip '<Super>Print'
+# Save a screenshot of an area to Pictures
+gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot '<Primary><Super>Print'
+# Save screenshot to Pictures
+gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot 'Print'
+
+# Lock screen
+gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver '<Primary><Super>l'
+
+# Close window
+gsettings set org.gnome.desktop.wm.keybindings close "['<Alt>F4']"
+# Toggle maximization state
+gsettings set org.gnome.desktop.wm.keybindings toggle-maximized '["<Alt><Super>Home"]'
+# View split on left
+gsettings set org.gnome.mutter.keybindings toggle-tiled-left '["<Alt><Super>Left"]'
+# View split on right
+gsettings set org.gnome.mutter.keybindings toggle-tiled-right '["<Alt><Super>Right"]'
+
+# Custom bindings
+gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name 'Termite'
+gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command 'termite'
+gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding '<Super>t'
+gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings '["/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"]'
+
+# # Showing the preview with ^2 instead of just windows
+# # gsettings set org.gnome.mutter overlay-key 'F14'     
 
 # Disable other keybindings
 gsettings set org.gnome.desktop.wm.keybindings activate-window-menu '@as []'
@@ -91,3 +125,43 @@ gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen '@as []'
 gsettings set org.gnome.desktop.wm.keybindings toggle-on-all-workspaces '@as []'
 gsettings set org.gnome.desktop.wm.keybindings toggle-shaded '@as []'
 gsettings set org.gnome.desktop.wm.keybindings unmaximize "[]"
+
+gsettings set org.gnome.settings-daemon.plugins.media-keys logout ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys screenreader ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys volume-mute 'XF86AudioMute'
+gsettings set org.gnome.settings-daemon.plugins.media-keys volume-up 'XF86AudioRaiseVolume'
+gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys previous ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys control-center ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys stop ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys home ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys terminal ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot-clip ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys magnifier ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys help ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys magnifier-zoom-in ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys calculator ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys video-out '<Super>p'
+gsettings set org.gnome.settings-daemon.plugins.media-keys eject ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot-clip ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys media ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys www ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys play ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys email ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys volume-down 'XF86AudioLowerVolume'
+gsettings set org.gnome.settings-daemon.plugins.media-keys decrease-text-size ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys on-screen-keyboard ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys next ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys increase-text-size ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys max-screencast-length 'uint32 30'
+gsettings set org.gnome.settings-daemon.plugins.media-keys magnifier-zoom-out ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys priority 0
+gsettings set org.gnome.settings-daemon.plugins.media-keys screencast ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys toggle-contrast ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys pause ''
+gsettings set org.gnome.settings-daemon.plugins.media-keys active true
+
+gsettings set org.gnome.mutter.keybindings switch-monitor '["<Super>p", "XF86Display"]'
+gsettings set org.gnome.mutter.keybindings tab-popup-cancel '@as []'
+gsettings set org.gnome.mutter.keybindings rotate-monitor '["XF86RotateWindows"]'
+gsettings set org.gnome.mutter.keybindings tab-popup-select '@as []'
