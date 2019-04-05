@@ -1,4 +1,61 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
+
+# Disable the display of the Search/Preview Ubuntu screen when pressing the
+# Windows key. We assign it to F14 that does not bind to anything.
+gsettings set org.gnome.mutter overlay-key 'F14'     
+
+# Custom keybindings {{{
+gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings '["/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/"]'
+
+declare -A custom
+# Termite
+custom[0,name]='Termite'
+custom[0,command]='termite'
+custom[0,binding]='<Super>t'
+# Chrome pro
+custom[1,name]='Chrome Pro'
+custom[1,command]='google-chrome --profile-directory="Profile 2"'
+custom[1,binding]='<Primary><Super>c'
+# Chrome perso
+custom[2,name]='Chrome Perso'
+custom[2,command]='google-chrome --profile-directory="Profile 3"'
+custom[2,binding]='<Alt><Primary><Super>c'
+# Keepass
+custom[3,name]='Keepass'
+custom[3,command]='keepassx ~/perso/Dropbox/tim/keys.kdbx'
+custom[3,binding]='<Primary><Super>k'
+# Tomate
+custom[4,name]='Tomate'
+custom[4,command]='tomate-gtk'
+custom[4,binding]='<Primary><Super>t'
+# Calculator
+custom[5,name]='Calculator'
+custom[5,command]='gnome-calculator'
+custom[5,binding]='Insert'
+# Slack
+custom[6,name]='Slack'
+custom[6,command]='slack'
+custom[6,binding]='<Super>s'
+# TODO
+custom[7,name]='TODO'
+custom[7,command]='TODO'
+custom[7,binding]=''
+# TODO
+custom[8,name]='TODO'
+custom[8,command]='TODO'
+custom[8,binding]=''
+# TODO
+custom[9,name]='TODO'
+custom[9,command]='TODO'
+custom[9,binding]=''
+
+for ((i=0;i<=10;i++)) do
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom${i}/ name "'${custom[$i,name]}'"
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom${i}/ command "'${custom[$i,command]}'"
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom${i}/ binding "'${custom[$i,binding]}'"
+done
+# }}}
+
 
 # The headers mimic what can be found in the Keyboard binding UI screen
 
@@ -34,14 +91,9 @@ gsettings set org.gnome.mutter.keybindings toggle-tiled-left '["<Alt><Super>Left
 # View split on right
 gsettings set org.gnome.mutter.keybindings toggle-tiled-right '["<Alt><Super>Right"]'
 
-# Custom bindings
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name 'Termite'
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command 'termite'
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding '<Super>t'
-gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings '["/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"]'
 
-# # Showing the preview with ^2 instead of just windows
-# # gsettings set org.gnome.mutter overlay-key 'F14'     
+
+
 
 # Disable other keybindings
 gsettings set org.gnome.desktop.wm.keybindings activate-window-menu '@as []'
@@ -165,3 +217,4 @@ gsettings set org.gnome.mutter.keybindings switch-monitor '["<Super>p", "XF86Dis
 gsettings set org.gnome.mutter.keybindings tab-popup-cancel '@as []'
 gsettings set org.gnome.mutter.keybindings rotate-monitor '["XF86RotateWindows"]'
 gsettings set org.gnome.mutter.keybindings tab-popup-select '@as []'
+

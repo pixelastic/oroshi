@@ -1,14 +1,21 @@
 #!/usr/bin/env zsh
 
-# Kill previous bindings
-killall xbindkeys
-
-# Start default bindings
+# Paths
+local destFile=~/.xbindkeysrc
 local configDir=~/.oroshi/config/xbindkeys
-xbindkeys -f ${configDir}/xbindkeysrc.conf
-
-# Start custom bindings, if any
+local defaultFile=${configDir}/xbindkeysrc.conf
 local localFile=${configDir}/local/${HOST}.conf
+
+# Kill previous bindings
+killall xbindkeys &>/dev/null
+
+# Create a ~/.xbindkeysrc
+cat $defaultFile > $destFile
+
+# Add custom bindings for this machine, if any
 if [[ -r $localFile ]]; then
-  xbindkeys -f ${localFile}
+  cat ${localFile} >> $destFile
 fi
+
+# Reload config
+xbindkeys --poll-rc
