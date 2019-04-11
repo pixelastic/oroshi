@@ -4,7 +4,7 @@ echo "Installing compilers"
 
 sudo apt-get install \
   automake \
-  autotools-dev
+  autotools-dev \
   build-essential \
   cmake \
   g++ \
