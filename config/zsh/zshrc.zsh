@@ -55,8 +55,8 @@ source $zshConfigDir/keybindings.zsh
 # Note: Needs to be loaded here so it can overwrite default alias but still
 # contains config options needed for prompt theming
 local localConfig=~/.oroshi/config/zsh/local/${hostname}.zsh
+typeset -A promptColor
 if [[ -r $localConfig ]]; then
-  typeset -A promptColor
   source $localConfig
 fi
 local privateLocalConfig=~/.oroshi/private/config/zsh/local/${hostname}.zsh
