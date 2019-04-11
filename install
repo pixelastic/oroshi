@@ -1,7 +1,23 @@
 #!/usr/bin/env bash
 set -e
 
+# Note: The .oroshi directory must obviously be cloned first, so I need to
+# have git installed. Various submodules will also be required for some prompt
+# method to work. The default .gitmodules reference them with a git endpoint,
+# but will refuse the connection unless the propre private key is installed. If
+# I don't have access to this private key (when I install on a computer that
+# is not mine, for example), I can edit the ~/.oroshi/.config file to change all
+# git@github.com:user/repo.git to https://github.com/user/repo and then install
+# manually the following submodules:
+# - git submodule update --init --remote -- config/zsh/plugins/zsh-syntax-highlighting
+# - git submodule update --init --remote -- config/zsh/completion/docker-zsh-completion
+# - git submodule update --init --remote -- scripts/bin/vit
+# - git submodule update --init --remote -- scripts/bin/img
+# - git submodule update --init --remote -- scripts/bin/pdf
+# - git submodule update --init --remote -- scripts/bin/video
+
 ./scripts/install/cli/directories
+./scripts/deploy/git
 
 # Compile stuff
 ./scripts/install/cli/make
@@ -42,7 +58,6 @@ sudo apt-get install vim-gui-common
 # Configuring tools
 ./scripts/deploy/apt-get
 ./scripts/deploy/dircolors
-./scripts/deploy/git
 ./scripts/deploy/wget
 ./scripts/deploy/watchers
 
