@@ -3,7 +3,7 @@ set -ex
 
 echo "Download source"
 cd ~/local/src/
-git clone git@github.com:tmux/tmux.git
+git clone https://github.com/tmux/tmux
 cd ./tmux
 
 echo "Install dependencies"
