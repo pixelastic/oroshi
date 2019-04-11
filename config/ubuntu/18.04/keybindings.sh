@@ -84,8 +84,10 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver '<Primary
 
 # Close window
 gsettings set org.gnome.desktop.wm.keybindings close "['<Alt>F4']"
-# Toggle maximization state
-gsettings set org.gnome.desktop.wm.keybindings toggle-maximized '["<Alt><Super>Home"]'
+# Restore Window
+gsettings set org.gnome.desktop.wm.keybindings unmaximize '["<Alt><Super>Down"]'
+# Toggle Maximization State
+gsettings set org.gnome.desktop.wm.keybindings maximize '["<Alt><Super>Up"]'
 # View split on left
 gsettings set org.gnome.mutter.keybindings toggle-tiled-left '["<Alt><Super>Left"]'
 # View split on right
@@ -107,7 +109,6 @@ gsettings set org.gnome.desktop.wm.keybindings cycle-panels-backward '@as []'
 gsettings set org.gnome.desktop.wm.keybindings cycle-windows '@as []'
 gsettings set org.gnome.desktop.wm.keybindings cycle-windows-backward '@as []'
 gsettings set org.gnome.desktop.wm.keybindings lower '@as []'
-gsettings set org.gnome.desktop.wm.keybindings maximize "[]"
 gsettings set org.gnome.desktop.wm.keybindings maximize-horizontally '@as []'
 gsettings set org.gnome.desktop.wm.keybindings maximize-vertically '@as []'
 gsettings set org.gnome.desktop.wm.keybindings minimize '@as []'
@@ -174,9 +175,9 @@ gsettings set org.gnome.desktop.wm.keybindings switch-windows '@as []'
 gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward '@as []'
 gsettings set org.gnome.desktop.wm.keybindings toggle-above '@as []'
 gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen '@as []'
+gsettings set org.gnome.desktop.wm.keybindings toggle-maximized '@as []'
 gsettings set org.gnome.desktop.wm.keybindings toggle-on-all-workspaces '@as []'
 gsettings set org.gnome.desktop.wm.keybindings toggle-shaded '@as []'
-gsettings set org.gnome.desktop.wm.keybindings unmaximize "[]"
 
 gsettings set org.gnome.settings-daemon.plugins.media-keys logout ''
 gsettings set org.gnome.settings-daemon.plugins.media-keys screenreader ''
