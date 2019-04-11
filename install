@@ -19,7 +19,10 @@ sudo apt-get install vim-gui-common
 ./scripts/install/cli/rg
 ./scripts/install/cli/fzf
 ./scripts/install/cli/tree
+./scripts/install/cli/trash
 ./scripts/install/cli/rename
+
+# Zsh
 ./scripts/deploy/zsh
 ./scripts/install/cli/zsh
 
