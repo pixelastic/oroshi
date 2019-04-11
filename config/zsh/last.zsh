@@ -1,6 +1,9 @@
 # Commands in this file will be executed very last in the zsh init process.
 # NVM {{{
-source ~/.nvm/nvm.sh
+local nvmScript=~/.nvm/nvm.sh
+if [[ -r $nvmScript ]]; then
+  source $nvmScript
+fi
 # }}}
 
 # Direnv {{{
