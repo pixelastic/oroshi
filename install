@@ -27,7 +27,7 @@ sudo apt-get install vim-gui-common
 ./scripts/deploy/vim
 
 ./scripts/install/cli/termite
-./scripts/deploy/tmux
+./scripts/deploy/termite
 ./scripts/install/cli/tmux
 ./scripts/deploy/tmux
 ./scripts/install/cli/bat
@@ -39,6 +39,7 @@ sudo apt-get install vim-gui-common
 ./scripts/install/cli/rename
 
 # Zsh
+./scripts/deploy/fonts
 ./scripts/deploy/zsh
 ./scripts/install/cli/zsh
 
