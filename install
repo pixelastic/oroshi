@@ -17,7 +17,13 @@ set -e
 # - git submodule update --init --remote -- scripts/bin/video
 
 ./scripts/install/cli/directories
+
+# Configuring tools
 ./scripts/deploy/git
+./scripts/deploy/apt-get
+./scripts/deploy/dircolors
+./scripts/deploy/wget
+./scripts/deploy/watchers
 
 # Compile stuff
 ./scripts/install/cli/make
@@ -31,6 +37,7 @@ sudo apt-get install vim-gui-common
 ./scripts/install/cli/tmux
 ./scripts/deploy/tmux
 ./scripts/install/cli/bat
+./scripts/install/cli/curl
 ./scripts/install/cli/exa
 ./scripts/install/cli/rg
 ./scripts/install/cli/fzf
