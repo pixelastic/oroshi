@@ -17,6 +17,7 @@ path=(
   # yarn global executable is here
   ~/.yarn/bin 
   ~/.rvm/bin
+  ~/.cargo/bin
   ~/.linuxbrew/bin
   ~/.linuxbrew/sbin
   ~/.oroshi/scripts/bin

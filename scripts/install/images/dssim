@@ -1,13 +1,19 @@
 #!/usr/bin/env bash
+set -e
+
+if ! which cargo &>/dev/null; then
+  echo "⚠ cargo not found"
+  echo "You need to install Rust first"
+  exit 1
+fi
 
 # Installing dssim
-sudo apt-get install libpng16-dev
 cd ~/local/src
 git clone git@github.com:pornel/dssim.git
 cd ./dssim
-make
+cargo build --release
 cd ~/local/bin
-ln -fs ../src/dssim/bin/dssim .
+ln -fs ../src/dssim/target/release/dssim .
 
 # Installing cjpeg-dssim
 cd ~/local/src
