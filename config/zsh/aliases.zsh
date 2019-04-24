@@ -33,6 +33,7 @@ disable -r time # ZSH overrides the time method
 alias time='time -p '
 alias treed='\tree -dN'
 alias tree='ls -T'
+alias treew='watch -c ''tree -aNC -I ".hg\|.git"'''
 alias watch='watch -c '
 alias wr='watch-and-reload'
 alias w='which'
@@ -72,8 +73,6 @@ compdef _scp rcp rmv
 
 # Scrollable colors
 alias spectrum='spectrum L'
-# watch tree
-alias watcht='watch -c ''tree -aNC -I ".hg\|.git"'''
 # Prefix a date to a file
 alias prd='prefix-date'
 # Fix previous command
