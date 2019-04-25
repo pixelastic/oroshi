@@ -10,7 +10,7 @@ class WatchAndReload
 
   def run
     command = [
-      'when-changed',
+      'when-changed -1',
       @files.join(' '),
       "-c 'clear && #{@command}'"
     ]
