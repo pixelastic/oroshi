@@ -34,6 +34,7 @@ alias time='time -p '
 alias treed='\tree -dN'
 alias tree='ls -T'
 alias treew='watch -c ''tree -aNC -I ".hg\|.git"'''
+alias wtree=treew
 alias watch='watch -c '
 alias wr='watch-and-reload'
 alias w='which'
