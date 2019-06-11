@@ -50,7 +50,7 @@ inoremap <buffer> ccact const actual =
 inoremap <buffer> ccinp const input = 
 inoremap <buffer> mrv mockReturnValue()i
 inoremap <buffer> thp toHaveProperty('')hi
-inoremap <buffer> thbc toHaveBeenCalled('')hi
+inoremap <buffer> thbc toHaveBeenCalled()i
 inoremap <buffer> thbw toHaveBeenCalledWith('')hi
 inoremap <buffer> jsp jest.spyOn()i
 inoremap <buffer> tthen then(() => {});ko
