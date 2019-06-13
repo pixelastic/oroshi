@@ -77,11 +77,16 @@ keycode 65 = space space space space
 ! rtl and ltr overrides on < and >
 keycode 94 = less greater less greater U202E U202D
 
+! U21C8 = ⇈
+! U21CA = ⇊
+keycode 10 = ampersand 1 ampersand 1 U21C8 U21CA
 ! É, È and À easier with AltGr+Shift
-! U2665 = ♥
 keycode 11 = eacute 2 eacute 2 asciitilde UC9
+! U2665 = ♥
 keycode 12 = quotedbl 3 3 numbersign numbersign U2665
 keycode 16 = egrave 7 egrave 7 grave UC8
+! U221E = ∞
+keycode 17 = underscore 8 underscore 8 backslash U221E
 keycode 18 = ccedilla 9 ccedilla 9 asciicircum UC7
 keycode 19 = agrave 0 agrave 0 at UC0
 keycode 21 = equal plus equal plus braceright U2260
@@ -95,7 +100,7 @@ keycode 28 = t T t T trademark
 keycode 29 = y Y y Y 
 ! U00B5 = µ
 keycode 30 = u U u U backslash U00B5
-! U2014 = —
+! U00B7 = ·
 keycode 31 = i I i I minus U00B7
 keycode 32 = o O o O underscore oe
 keycode 33 = p P p P
@@ -115,7 +120,11 @@ keycode 46 = l L l L bracketright parenright
 keycode 47 = m M m M 
 ! U00FA = ú
 keycode 48 = ugrave percent ugrave percent U00FA
+keycode 49 = ugrave percent ugrave percent U00FA
 
+! U26C0 = ⛀
+! U26C2 = ⛂
+keycode 51 = asterisk mu asterisk mu U26C0 U26C2
 keycode 52 = w W w W
 ! U2717 = ✗
 ! U2718 = ✘
