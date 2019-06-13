@@ -325,6 +325,12 @@ alias nvl='nvm list'
 alias nvd='nvm version default'
 alias nvc='nvm current'
 # }}}
+# Java {{{
+alias jl="update-java-alternatives --list"
+alias jv8="sudo update-java-alternatives -s java-1.8.0-openjdk-amd64"
+alias jv11="sudo update-java-alternatives -s java-11-oracle"
+alias jv12="sudo update-java-alternatives -s java-12-oracle"
+# }}}
 # Kubernetes {{{
 local coriolisAliases=~/.oroshi/scripts/bin/coriolis/aliases.zsh
 if [[ -r $coriolisAliases ]]; then

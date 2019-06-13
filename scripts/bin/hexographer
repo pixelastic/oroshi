@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+java -Xmx4G -jar ~/local/src/hexographer/hexographer.jar
+

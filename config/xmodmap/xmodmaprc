@@ -120,7 +120,6 @@ keycode 46 = l L l L bracketright parenright
 keycode 47 = m M m M 
 ! U00FA = ú
 keycode 48 = ugrave percent ugrave percent U00FA
-keycode 49 = ugrave percent ugrave percent U00FA
 
 ! U26C0 = ⛀
 ! U26C2 = ⛂

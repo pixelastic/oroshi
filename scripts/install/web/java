@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# OpenJDK version (recommended)
+sudo apt install openjdk-11-jdk

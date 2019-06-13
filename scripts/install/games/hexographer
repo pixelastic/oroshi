@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+cd ~/local/src
+mkdir -p ./hexographer
+cd ./hexographer
+
+wget http://www.hexographer.com/releases/hexographer.jar
