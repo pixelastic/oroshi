@@ -55,18 +55,18 @@ inoremap <buffer> thbw toHaveBeenCalledWith('')hi
 inoremap <buffer> jsp jest.spyOn()i
 inoremap <buffer> tthen then(() => {});ko
 inoremap <buffer> @para @param {Array} 
-inoremap <buffer> @parb @param {Boolean} 
-inoremap <buffer> @paro @param {Object} 
-inoremap <buffer> @pars @param {String} 
-inoremap <buffer> @parn @param {Number} 
+inoremap <buffer> @parb @param {boolean} 
+inoremap <buffer> @paro @param {object} 
+inoremap <buffer> @pars @param {string} 
+inoremap <buffer> @parn @param {number} 
 inoremap <buffer> @reta @returns {Array} 
-inoremap <buffer> @retb @returns {Boolean} 
-inoremap <buffer> @reto @returns {Object} 
-inoremap <buffer> @retps @returns {Promise.<String>} 
-inoremap <buffer> @retp @returns {Promise} 
-inoremap <buffer> @rets @returns {String} 
-inoremap <buffer> @retn @returns {Number} 
-inoremap <buffer> @retv @returns {Void}
+inoremap <buffer> @retb @returns {boolean} 
+inoremap <buffer> @reto @returns {object} 
+inoremap <buffer> @retps @returns {promise.<string>} 
+inoremap <buffer> @retp @returns {promise} 
+inoremap <buffer> @rets @returns {string} 
+inoremap <buffer> @retn @returns {number} 
+inoremap <buffer> @retv @returns {void}
 nnoremap <buffer> ii_ mzggoimport _ from 'lodash';`z
 " Import module
 nnoremap <buffer> <Leader>i :ImportJSWord<CR>
