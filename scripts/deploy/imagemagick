@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# ImageMagick config
+# Default ImageMagick config has low default values for memory management,
+# making it fail when converting large files
+# We are using a custom policy that should fix it
+
+sudo cp ~/.oroshi/config/imagemagick/policy.xml /etc/ImageMagick-6/
+
