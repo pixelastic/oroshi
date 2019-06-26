@@ -15,14 +15,17 @@ fi
 local clock="$(date +'%d/%m %H:%M')"
 output=" $clock $output"
 # }}}
-# Current ip {{{
-local ip=''
+# Connection status {{{
+local connection_status=''
 if is-online; then
-  ip="$(my-ip)"
+  local ping="$(ping-average)"
+  [[ $ping -lt 230 ]] && connection_status="#[fg=colour160] ${ping}ms#[default]"
+  [[ $ping -lt 160 ]] && connection_status="#[fg=colour185] ${ping}ms#[default]"
+  [[ $ping -lt 80 ]] && connection_status="#[fg=colour35] ${ping}ms#[default]"
 else
-  ip='#[fg=colour160,bold]  offline!#[default]'
+  connection_status='#[fg=colour160,bold]  offline!#[default]'
 fi
-output="$ip $output"
+output="$connection_status $output"
 # }}}
 # Kubernetes context {{{
 # Commenting out the part about Kubernetes as I won't be using it again soon

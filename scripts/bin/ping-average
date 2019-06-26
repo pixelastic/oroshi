@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# Returns the average current ping. This will always return result one
+# invocation too late. The first call will return N/A, then the next call will
+# return the average ping at the time of the first invocation, and so on.
+# If called twice in a row quickly, it will detect that a previous ping
+# calculation is running and will return a cached value instead.
+#
+# This is meant to be called in a place where it will be called semi-regularly,
+# like a tmux status bar
+
+read_file="/tmp/ping-average.read"
+write_file="/tmp/ping-average.write"
+pid_file="/tmp/ping-average.pid"
+ping_count=5
+
+# Init files
+[ ! -f "$read_file" ] && echo "N/A" > "$read_file"
+[ ! -f "$write_file" ] && echo "N/A" > "$write_file"
+
+# Ping is already running, so we return the old value
+if [ -f "$pid_file" ]; then
+  pid="$(cat $pid_file)"
+  if ps -p "$pid" > /dev/null; then
+    cat $read_file
+    exit 0
+  fi
+fi
+
+# Last ping is already finished, so we use this value
+cp "$write_file" "$read_file"
+cat $read_file
+
+# Start a new ping in the background and save its pid
+ping \
+  -c $ping_count \
+  8.8.8.8 \
+  | tail -1 \
+  | awk '{print $4}' \
+  | cut -d '/' -f 2 \
+  | awk '{printf("%d\n",$1 + 0.5)}' \
+  > "$write_file" &
+echo "$!" > "$pid_file"
