@@ -41,7 +41,9 @@ inoremap <buffer> $ù console.info(
 inoremap <buffer> ## ${}<Left>
 " Test boilerplate
 inoremap <buffer> bfe beforeEach(() => {});ko
-inoremap <buffer> aftee afterEach(() => {});ko
+inoremap <buffer> abfe beforeEach(async () => {});ko
+inoremap <buffer> bfa beforeAll(() => {});ko
+inoremap <buffer> abfa beforeAll(async () => {});ko
 inoremap <buffer> iit it('', () => {<CR>});k2li
 inoremap <buffer> aiit it('', async () => {<CR>});k2li
 inoremap <buffer> cnt context('', () => {});kllllllli

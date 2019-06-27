@@ -20,7 +20,7 @@ local connection_status=''
 if is-online; then
   local ping="$(ping-average)"
   [[ $ping -lt 230 ]] && connection_status="#[fg=colour160] ${ping}ms#[default]"
-  [[ $ping -lt 160 ]] && connection_status="#[fg=colour185] ${ping}ms#[default]"
+  [[ $ping -lt 160 ]] && connection_status="#[fg=colour136] ${ping}ms#[default]"
   [[ $ping -lt 80 ]] && connection_status="#[fg=colour35] ${ping}ms#[default]"
 else
   connection_status='#[fg=colour160,bold]  offline!#[default]'
