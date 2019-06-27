@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -e
+mkdir -p "$MARKPATH"
+
+# Mark name is either the first argument or the current dirname
+markname=$1
+if [ "$markname" == '' ]; then
+  echo "⚠ Please provide the name of a mark"
+  exit 0
+fi
+
+# Error if no such a mark already exists
+if [ ! -h "$MARKPATH/$markname" ]; then
+  echo "⚠ Mark $markname does not exist"
+  exit 0
+fi
+
+cd "$MARKPATH"
+rm "./$markname"

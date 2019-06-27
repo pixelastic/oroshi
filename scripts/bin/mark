@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -e
+mkdir -p "$MARKPATH"
+
+pwd=$(pwd)
+dirname=$(basename "$pwd")
+
+# Mark name is either the first argument or the current dirname
+markname=$1
+[ "$markname" == '' ] && markname=$dirname
+
+# Error if such a mark already exists
+if [ -h "$MARKPATH/$markname" ]; then
+  echo "⚠ Mark $markname already exists. Run 'unmark $markname' to delete it."
+  exit 0
+fi
+
+cd "$MARKPATH"
+ln -s "$pwd" "$markname"
+#
+
+# function j { 
+#   cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
+# }
+# function m { 
+#   mkdir -p "$MARKPATH"; ln -s "$(pwd)" $MARKPATH/$1
+# }
+# function um { 
+#   rm -i "$MARKPATH/$1"
+# }
