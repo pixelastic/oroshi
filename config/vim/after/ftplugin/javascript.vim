@@ -50,10 +50,10 @@ inoremap <buffer> cnt context('', () => {});kllllllli
 inoremap <buffer> dsc describe('', () => {});klllllllli
 inoremap <buffer> ccact const actual = 
 inoremap <buffer> ccinp const input = 
-inoremap <buffer> mrv mockReturnValue()i
-inoremap <buffer> thp toHaveProperty('')hi
-inoremap <buffer> thbc toHaveBeenCalled()i
-inoremap <buffer> thbw toHaveBeenCalledWith('')hi
+inoremap <buffer> mrv mockReturnValue();hi
+inoremap <buffer> thp toHaveProperty('');hhi
+inoremap <buffer> thbc toHaveBeenCalled();
+inoremap <buffer> thbw toHaveBeenCalledWith();hhi
 inoremap <buffer> jsp jest.spyOn()i
 inoremap <buffer> tthen then(() => {});ko
 inoremap <buffer> @para @param {Array} 
