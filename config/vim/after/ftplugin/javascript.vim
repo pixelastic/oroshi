@@ -64,8 +64,8 @@ inoremap <buffer> @parn @param {number}
 inoremap <buffer> @reta @returns {Array} 
 inoremap <buffer> @retb @returns {boolean} 
 inoremap <buffer> @reto @returns {object} 
-inoremap <buffer> @retps @returns {promise.<string>} 
-inoremap <buffer> @retp @returns {promise} 
+inoremap <buffer> @retps @returns {Promise.<string>} 
+inoremap <buffer> @retp @returns {Promise} 
 inoremap <buffer> @rets @returns {string} 
 inoremap <buffer> @retn @returns {number} 
 inoremap <buffer> @retv @returns {void}
