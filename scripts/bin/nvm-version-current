@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# This is a faster way to check the current version than running `nvm version`,
+# This script simply reads the current path to the node binary and guess the
+# version based on the path
+path_split=($(echo "$NVM_BIN" | tr '/' " "))
+echo "${path_split[-2]//v/}"

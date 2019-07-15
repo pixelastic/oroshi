@@ -200,7 +200,7 @@ function oroshi_prompt_node() {
     return
   fi
 
-  currentVersion="$(nvm current | sed 's/v//')"
+  currentVersion="$(nvm-version-current)"
   defaultVersion="$(nvm version default | sed 's/v//')"
 
   # This dir has a specific version defined, but we're not following it
