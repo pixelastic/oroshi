@@ -1,0 +1,25 @@
+#compdef yrt
+# - Will only suggest .md files
+
+_ft-md () {
+	# local var definition to not pollute global scope
+	local curcontext=$curcontext state line context
+	typeset -A opt_args
+
+	# suggesting arguments
+	_arguments \
+		"*:md file:->md_file" \
+		&& return 0
+
+	# state machine match
+	case $state in
+		(md_file)
+			_files -g '*.md' \
+			&& return 0
+	esac
+
+	return 1
+}
+
+_ft-md "$@"
+

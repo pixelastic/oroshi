@@ -1,6 +1,10 @@
-# yr or yarn run lets you run
+# yr runs npm scripts
 function _complete_yarn_run {
   reply=($(zsh-complete-yr))
 }
 compctl -K _complete_yarn_run yr
+
+# yrt runs only tests
+compdef '_files -g "*.js"' yrt
+
 
