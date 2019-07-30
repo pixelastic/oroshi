@@ -5,6 +5,6 @@ function _complete_yarn_run {
 compctl -K _complete_yarn_run yr
 
 # yrt runs only tests
-compdef '_files -g "*.js"' yrt
+compdef '_files -g "*.js"' yrt yrtw
 
 

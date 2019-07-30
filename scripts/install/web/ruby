@@ -25,6 +25,5 @@ gem install rubygems-bundler
 # Linter
 gem install rubocop
 
-# Gemrat, to automatically add dependencies to Gemfile
-bundle install gemrat
-
+# Awesome print, for better debug
+gem install awesome_print
