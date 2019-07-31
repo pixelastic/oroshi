@@ -58,16 +58,17 @@ inoremap <buffer> jsp jest.spyOn()i
 inoremap <buffer> tthen then(() => {});ko
 inoremap <buffer> @para @param {Array} 
 inoremap <buffer> @parb @param {boolean} 
+inoremap <buffer> @parn @param {number} 
 inoremap <buffer> @paro @param {object} 
 inoremap <buffer> @pars @param {string} 
-inoremap <buffer> @parn @param {number} 
 inoremap <buffer> @reta @returns {Array} 
 inoremap <buffer> @retb @returns {boolean} 
+inoremap <buffer> @retf @returns {Function} 
+inoremap <buffer> @retn @returns {number} 
 inoremap <buffer> @reto @returns {object} 
 inoremap <buffer> @retps @returns {Promise.<string>} 
 inoremap <buffer> @retp @returns {Promise} 
 inoremap <buffer> @rets @returns {string} 
-inoremap <buffer> @retn @returns {number} 
 inoremap <buffer> @retv @returns {void}
 nnoremap <buffer> ii_ mzggoimport _ from 'lodash';`z
 " Import module
