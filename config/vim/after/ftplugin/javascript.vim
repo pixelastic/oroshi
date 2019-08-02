@@ -39,6 +39,8 @@ endfunction
 inoremap <buffer> $ù console.info(
 " Using ## (as in ruby) for string interpolation
 inoremap <buffer> ## ${}<Left>
+" Typos I often make
+inoremap <buffer> awiat await
 " Test boilerplate
 inoremap <buffer> bfe beforeEach(() => {});ko
 inoremap <buffer> abfe beforeEach(async () => {});ko
@@ -53,7 +55,7 @@ inoremap <buffer> ccinp const input =
 inoremap <buffer> mrv mockReturnValue();hi
 inoremap <buffer> thp toHaveProperty('');hhi
 inoremap <buffer> thbc toHaveBeenCalled();
-inoremap <buffer> thbw toHaveBeenCalledWith();hhi
+inoremap <buffer> thbw toHaveBeenCalledWith();hi
 inoremap <buffer> jsp jest.spyOn()i
 inoremap <buffer> tthen then(() => {});ko
 inoremap <buffer> @para @param {Array} 
