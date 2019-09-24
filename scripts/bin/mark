@@ -17,14 +17,3 @@ fi
 
 cd "$MARKPATH"
 ln -s "$pwd" "$markname"
-#
-
-# function j { 
-#   cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
-# }
-# function m { 
-#   mkdir -p "$MARKPATH"; ln -s "$(pwd)" $MARKPATH/$1
-# }
-# function um { 
-#   rm -i "$MARKPATH/$1"
-# }
