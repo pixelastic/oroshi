@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+cd ~/local/src
+mkdir -p ./act
+cd ./act
+wget https://raw.githubusercontent.com/nektos/act/master/install.sh
+sudo bash ./install.sh
