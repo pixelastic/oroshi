@@ -1,5 +1,13 @@
 {
   "extends": [
     "config:base"
+  ],
+    "masterIssue": true,
+  "masterIssueAutoclose": true,
+  "masterIssueTitle": "chore(deps): All pending updates",
+  "prConcurrentLimit": 20,
+  "separateMinorPatch": true,
+  "timezone": "Europe/Paris",
+  "packageRules": [
   ]
 }
