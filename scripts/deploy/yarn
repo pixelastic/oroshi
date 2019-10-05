@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Do not add the ^ prefix on version
-yarn config set save-exact true
+# Force pinning version numbers (no ^ nor ~)
+yarn config set save-prefix ""
 
 # Following line might not work and require to manually edit .yarnrc
 # yarn config set "--run-silent" true
