@@ -60,6 +60,7 @@ inoremap <buffer> jsp jest.spyOn()i
 inoremap <buffer> tthen then(() => {});ko
 inoremap <buffer> @para @param {Array} 
 inoremap <buffer> @parb @param {boolean} 
+inoremap <buffer> @parf @param {Function} 
 inoremap <buffer> @parn @param {number} 
 inoremap <buffer> @paro @param {object} 
 inoremap <buffer> @pars @param {string} 
