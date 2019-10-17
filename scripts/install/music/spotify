@@ -4,3 +4,6 @@
 snap install spotify
 # Way to put it in the tray
 sudo apt-get install kdocker
+# oroshi contains a `sp` script that allow next/previous/pause
+# spotify-tui gives a textual interface to spotify
+cargo install spotify-tui
