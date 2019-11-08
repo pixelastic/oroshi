@@ -299,7 +299,7 @@ alias yu='yarn-upgrade'
 alias yud='yarn-upgrade-dev'
 alias ypc='depcheck . --ignore-dirs=dist,tmp,build --specials=eslint,webpack,babel --ignores=husky,jest'
 alias yl='yarn link'
-alias ylR='yarn unlink'
+alias ylR='yarn-link-remove'
 # }}}
 # Ruby {{{
 alias be='bundle exec'
