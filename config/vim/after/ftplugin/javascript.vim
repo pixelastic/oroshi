@@ -42,22 +42,15 @@ inoremap <buffer> ## ${}<Left>
 " Typos I often make
 inoremap <buffer> awiat await
 " Test boilerplate
-inoremap <buffer> bfe beforeEach(() => {});ko
-inoremap <buffer> abfe beforeEach(async () => {});ko
-inoremap <buffer> bfa beforeAll(() => {});ko
-inoremap <buffer> abfa beforeAll(async () => {});ko
-inoremap <buffer> iit it('', () => {<CR>});k2li
-inoremap <buffer> aiit it('', async () => {<CR>});k2li
-inoremap <buffer> cnt context('', () => {});kllllllli
+inoremap <buffer> bfe beforeEach(async () => {});ko
+inoremap <buffer> bfa beforeAll(async () => {});ko
+inoremap <buffer> iit it('', async () => {<CR>});k2li
 inoremap <buffer> dsc describe('', () => {});klllllllli
-inoremap <buffer> ccact const actual = 
-inoremap <buffer> ccinp const input = 
 inoremap <buffer> mrv mockReturnValue();hi
 inoremap <buffer> thp toHaveProperty('');hhi
 inoremap <buffer> thbc toHaveBeenCalled();
 inoremap <buffer> thbw toHaveBeenCalledWith();hi
-inoremap <buffer> jsp jest.spyOn()i
-inoremap <buffer> tthen then(() => {});ko
+" JSDoc helpers
 inoremap <buffer> @para @param {Array} 
 inoremap <buffer> @parb @param {boolean} 
 inoremap <buffer> @parf @param {Function} 
@@ -73,7 +66,3 @@ inoremap <buffer> @retps @returns {Promise.<string>}
 inoremap <buffer> @retp @returns {Promise} 
 inoremap <buffer> @rets @returns {string} 
 inoremap <buffer> @retv @returns {void}
-nnoremap <buffer> ii_ mzggoimport _ from 'lodash';`z
-" Import module
-nnoremap <buffer> <Leader>i :ImportJSWord<CR>
-" }}}

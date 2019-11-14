@@ -249,8 +249,8 @@ vnoremap ù %
 nnoremap à 0
 vnoremap à 0
 " Faster typing of ->
-inoremap -_ ->
-inoremap _- ->
+" inoremap -_ ->
+" inoremap _- ->
 " Faster typing of =>
 inoremap °+ =>
 inoremap )= =>
