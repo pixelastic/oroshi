@@ -158,3 +158,9 @@ alias vsmpdu='git commit-pdf-submodule'
 alias vsmcpd='git commit-pdf-submodule'
 alias vsmpdc='git commit-pdf-submodule'
 # }}}
+# [a]nsible [s]ub-[m]odule {{{
+alias vsmua='git commit-ansible-submodule'
+alias vsmau='git commit-ansible-submodule'
+alias vsmca='git commit-ansible-submodule'
+alias vsmac='git commit-ansible-submodule'
+# }}}
