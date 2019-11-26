@@ -29,6 +29,8 @@
   cmd = vim -f -c \"Gdiff\" \"$MERGED\"
 [push]
   default = simple
+[rebase]
+  autoStash = true
 [remote "origin"]
   prune = true
 [rerere]
