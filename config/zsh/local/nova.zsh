@@ -7,11 +7,12 @@ function dumptmp() {
 }
 
 function baldur() {
-  okbg
-  ~/.oroshi/scripts/deploy/xbindkeys
-  cd "/home/tim/.local/share/Steam/steamapps/common/Baldur's Gate II Enhanced Edition/"
-  wine ./baldur.exe
-  okbgu
+  # okbg
+  # ~/.oroshi/scripts/deploy/xbindkeys
+  # cd "/home/tim/.local/share/Steam/steamapps/common/Baldur's Gate II Enhanced Edition/"
+  cd "/home/tim/.local/share/Steam/steamapps/common/BGEET/"
+  wine ./Baldur.exe
+  # okbgu
 }
 # Enable Baldur Keybinding Fixes
 function okbg() {
