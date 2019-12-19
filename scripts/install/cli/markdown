@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 # Lint markdown
 gem install mdl
@@ -11,6 +12,12 @@ ln -s ../etc/formd/formd .
 
 # Preview markdown
 yarn global add @pixelastic/markdown-preview
+
+# Typora
+wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
+sudo add-apt-repository 'deb https://typora.io/linux ./'
+sudo apt-get update
+sudo apt-get install typora
 
 # Clean markdown through yarn packages
 yarn add global textlint \
