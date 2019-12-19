@@ -1,6 +1,8 @@
 " PUG
 " Using ## (as in ruby) for string interpolation
 inoremap <buffer> ## #{}<Left>
+" Default to //- for comment, so they don't show in the HTML
+setlocal commentstring=//-\ %s
 
 " Folding {{{
 function! PugFoldExpr(lnum)
