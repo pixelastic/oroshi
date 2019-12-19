@@ -430,11 +430,15 @@ call s:Link('helpOption', 'oroshi_CodeSymbol')
 " }}}
 " YAML {{{
 call s:Link('yamlBlockMappingKey', 'oroshi_CodeType')
+call s:Link('yamlBlockCollectionItemStart', 'oroshi_Text')
 call s:Link('yamlDelimiter', 'oroshi_Text')
 call s:Link('yamlKeyValueDelimiter', 'oroshi_Text')
 call s:Link('yamlKey', 'oroshi_CodeType')
 call s:Link('yamlNull', 'yamlScalar')
-call s:Link('yamlPlainScalar', 'oroshi_CodeString')
+call s:Link('yamlPlainScalar', 'oroshi_CodeStatement')
+call s:Link('yamlAlias', 'oroshi_CodeInclude')
+call s:Highlight('yamlAnchor', 'darkyellow', 'none', 'bold')
+call s:Highlight('yamlBlockMappingMerge', 'darkyellow', 'none', 'bold')
 " }}}
 " XML {{{
 call s:Link('xmlAttribPunct', 'oroshi_CodeStatement')
