@@ -1,0 +1,2 @@
+#!/usr/bin/env zsh
+curl -F "data=@$1" https://gh.mergify.io/validate
