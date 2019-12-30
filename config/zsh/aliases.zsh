@@ -59,6 +59,7 @@ alias sl="ls"
 alias s="ls"
 alias cta="cat"
 alias trash-restore="restore-trash"
+alias spoify='spotify'
 # }}}
 # Misc {{{
 # cp and mv using rsync and preserving attributes, and accross fat32 drives
