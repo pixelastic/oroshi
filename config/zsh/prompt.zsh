@@ -265,6 +265,7 @@ function oroshi_prompt_git_tag() {
   local tagColor='tagOutdated'
   if git commit-tagged; then
     tagColor='tagCurrent'
+  else
     tagName=" $tagName"
   fi
 
