@@ -34,7 +34,8 @@ promptColorDefault=(
   nodeVersionError      "160"
 
 
-  tag                   "241"
+  tagOutdated           "241"
+  tagCurrent            "202"
   submodule             "136"
   stash                 "171"
   branchDefault         "202"
