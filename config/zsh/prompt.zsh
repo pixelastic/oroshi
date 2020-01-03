@@ -257,7 +257,7 @@ function oroshi_prompt_git_rebase_right() {
 # }}}
 # Git: Tag {{{
 function oroshi_prompt_git_tag() {
-  local tagName="$(git tag-current) "
+  local tagName="$(git tag-current)"
   if [[ $tagName = '' ]]; then
     return
   fi
@@ -265,8 +265,9 @@ function oroshi_prompt_git_tag() {
   local tagColor='tagOutdated'
   if git commit-tagged; then
     tagColor='tagCurrent'
+    tagName="$tagName "
   else
-    tagName=" $tagName"
+    tagName=" $tagName "
   fi
 
   echo $(colorize $tagName $tagColor)
