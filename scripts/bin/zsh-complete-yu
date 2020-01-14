@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'json'
+require 'open3'
+
+bin_folder = `yarn bin`.strip
+package = File.expand_path(File.join(bin_folder, '..', '..', 'package.json'))
+exit 0 unless File.exist?(package)
+
+content = JSON.parse(File.read(package))
+exit 0 unless content.key? 'dependencies'
+puts content['dependencies'].keys.join("\n")

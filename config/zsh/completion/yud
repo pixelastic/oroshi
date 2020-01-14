@@ -1,0 +1,4 @@
+function _complete_yud {
+  reply=($(zsh-complete-yud))
+}
+compctl -K _complete_yud yud

@@ -28,6 +28,8 @@ setopt RM_STAR_WAIT
 
 local zshConfigDir=~/.oroshi/config/zsh
 source $zshConfigDir/completion/yr
+source $zshConfigDir/completion/yu
+source $zshConfigDir/completion/yud
 source $zshConfigDir/completion/tmuxinator
 source $zshConfigDir/completion/_docker-container-all
 # source $zshConfigDir/completion/_docker-container-running

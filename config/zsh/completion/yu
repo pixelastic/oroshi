@@ -1,0 +1,4 @@
+function _complete_yu {
+  reply=($(zsh-complete-yu))
+}
+compctl -K _complete_yu yu
