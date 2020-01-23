@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+free -m | grep Mem | awk '{print $3/$2 * 100}' | cut -f1 -d"."

@@ -27,6 +27,17 @@ else
 fi
 output="$connection_status $output"
 # }}}
+# RAM usage {{{
+# Display in green / yellow / red based on % usage
+local ram_percent="$(ram-percent)"
+local ram_status=""
+if [[ $ram_percent -gt 50 ]]; then
+  ram_status="#[fg=colour136] ${ram_percent}%#[default]"
+  [[ $ram_percent -gt 80 ]] && ram_status="#[fg=colour160] ${ram_percent}%#[default]"
+  output="$ram_status $output"
+fi
+# }}}
+# }}}
 # Kubernetes context {{{
 # Commenting out the part about Kubernetes as I won't be using it again soon
 # if [ $commands[kubectl] ]; then
