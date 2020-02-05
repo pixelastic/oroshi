@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+cp \
+  /media/tim/JVCCAM_SD/PRIVATE/AVCHD/BDMV/STREAM/*.MTS \
+  /home/tim/local/tmp/camera
