@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# List all folders in node_modules
+local node_modules="$(yarn bin)/.."
+\ls $node_modules

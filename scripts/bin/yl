@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# Alias around "yarn link", so we can add custom auto-completion
+set -e
+
+yarn link "$@"

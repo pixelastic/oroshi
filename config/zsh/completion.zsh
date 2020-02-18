@@ -27,6 +27,8 @@ unsetopt COMPLETE_ALIASES
 setopt RM_STAR_WAIT
 
 local zshConfigDir=~/.oroshi/config/zsh
+source $zshConfigDir/completion/yl
+source $zshConfigDir/completion/ylR
 source $zshConfigDir/completion/yr
 source $zshConfigDir/completion/yu
 source $zshConfigDir/completion/yud
