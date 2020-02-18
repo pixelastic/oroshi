@@ -1,4 +1,4 @@
 function _complete_ylR {
-  reply=($(zsh-complete-ylR))
+  reply=($(yll))
 }
 compctl -K _complete_ylR ylR
