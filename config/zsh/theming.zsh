@@ -32,6 +32,7 @@ promptColorDefault=(
   pythonVersion         "108"
   nodeVersion           "028"
   nodeVersionError      "160"
+  nodeLinks             "035"
 
 
   tagOutdated           "241"

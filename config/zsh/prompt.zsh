@@ -195,6 +195,13 @@ function oroshi_prompt_python() {
 # - Version in green with ⬢ if using a custom version
 # - Version in red with ⬢ if should use a specific version but is not
 function oroshi_prompt_node() {
+  version=`oroshi_prompt_node_version`
+  links=`oroshi_prompt_node_links`
+  echo "${version}${links}"
+
+}
+# Node (version) {{{
+function oroshi_prompt_node_version() {
   # No nvm
   if ! which nvm &>/dev/null; then
     return
@@ -218,6 +225,16 @@ function oroshi_prompt_node() {
   # Current version not the default one
   echo $(colorize "⬢ $currentVersion " 'nodeVersion')
 }
+# }}}
+# Node (linked modules) {{{
+function oroshi_prompt_node_links() {
+  # No nvm
+  if ! yarn-has-links; then
+    return
+  fi
+  echo $(colorize " " 'nodeLinks')
+}
+# }}}
 # }}}
 # Git (right) {{{
 function oroshi_prompt_git_right() {
@@ -262,6 +279,7 @@ function oroshi_prompt_git_tag() {
     return
   fi
 
+  # Check if commits have been added since last tag
   local tagColor='tagOutdated'
   if git commit-tagged; then
     tagColor='tagCurrent'
