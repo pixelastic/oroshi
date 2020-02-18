@@ -5,7 +5,7 @@ setopt PROMPT_SUBST
 autoload -U promptinit
 promptinit
 
-PROMPT='$(oroshi_prompt_path)$(oroshi_prompt_git_left)$(oroshi_prompt_character)'
+PROMPT='$(oroshi_prompt_path)$(oroshi_prompt_node_links)$(oroshi_prompt_git_left)$(oroshi_prompt_character)'
 RPROMPT=''
 function get_RPROMPT() {
   echo "$(oroshi_prompt_ruby)$(oroshi_prompt_python)$(oroshi_prompt_node)$(oroshi_prompt_git_right)"
@@ -195,13 +195,6 @@ function oroshi_prompt_python() {
 # - Version in green with ⬢ if using a custom version
 # - Version in red with ⬢ if should use a specific version but is not
 function oroshi_prompt_node() {
-  version=`oroshi_prompt_node_version`
-  links=`oroshi_prompt_node_links`
-  echo "${version}${links}"
-
-}
-# Node (version) {{{
-function oroshi_prompt_node_version() {
   # No nvm
   if ! which nvm &>/dev/null; then
     return
@@ -232,7 +225,7 @@ function oroshi_prompt_node_links() {
   if ! yarn-has-links; then
     return
   fi
-  echo $(colorize " " 'nodeLinks')
+  echo $(colorize "  " 'nodeLinks')
 }
 # }}}
 # }}}
