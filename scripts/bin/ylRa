@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Unlink all linked modules
+set -e
+
+local local_linked_modules=("${(@f)$(yll)}")
+ylR $local_linked_modules
