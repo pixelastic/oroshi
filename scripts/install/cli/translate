@@ -1,4 +1,7 @@
 #!/usr/bin/env zsh
+set -e
+
+sudo apt-get install mplayer
 
 cd ~/local/src
 git clone https://github.com/soimort/translate-shell
