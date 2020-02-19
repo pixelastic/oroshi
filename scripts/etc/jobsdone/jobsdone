@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+mplayer -volume 140 ~/.oroshi/scripts/etc/jobsdone/jobsdone.mp3 &>/dev/null
