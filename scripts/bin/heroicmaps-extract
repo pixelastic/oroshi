@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+for i in $@; do
+  unzip -j $i '*_GRID.jpg';
+done
