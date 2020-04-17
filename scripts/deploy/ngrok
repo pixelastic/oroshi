@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+mkdir -p ~/.ngrok2
+ln \
+  -s ~/.oroshi/private/config/ngrok/ngrok.yml \
+  ~/.ngrok2/ngrok.yml
+
