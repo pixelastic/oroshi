@@ -23,6 +23,13 @@ if [[ -r $gvmScript ]]; then
   gvm use go1.11 &>/dev/null
 fi
 
+# Twilio cli
+local twilioCliAutocomplete=/home/tim/.twilio-cli/autocomplete/zsh_setup
+if [[ -r $twilioCliAutocomplete ]]; then
+  source $twilioCliAutocomplete
+fi
+
+
 # Adding Chromium compilation tools to the path if present
 local chromiumDepotTools=~/local/src/chromium/depot_tools
 if [[ -r $chromiumDepotTools ]]; then

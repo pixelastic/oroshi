@@ -71,3 +71,6 @@ source $zshConfigDir/prompt.zsh
 
 # Some stuff must be loaded after everything else
 source $zshConfigDir/last.zsh
+
+# twilio autocomplete setup
+TWILIO_AC_ZSH_SETUP_PATH=/home/tim/.twilio-cli/autocomplete/zsh_setup && test -f $TWILIO_AC_ZSH_SETUP_PATH && source $TWILIO_AC_ZSH_SETUP_PATH;
