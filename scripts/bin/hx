@@ -1,0 +1,31 @@
+#!/usr/bin/env zsh
+# Extract content from an HTML file using CSS selectors
+if [[ $# == '0' ]]; then
+  echo 'Usage:'
+  echo '  hx source.html {css_selector} [{json_path}]'
+  echo '  cat source.html | hx {css_selector} [{json_path}]'
+  echo ''
+  echo 'Example:'
+  echo '  hx source.html ".litem_name a" => outputs JSON structure'
+  echo '  hx source.html ".litem_name a" href => outputs attributes as list'
+  exit 0
+fi
+
+local input="$1"
+local selector="$2"
+local jsonPath="$3"
+
+# If first argument is not a file, we assume we're piping content
+if [[ ! -f $input ]]; then
+  input="-"
+  selector="$1"
+  jsonPath="$2"
+fi
+
+local asJson=$(cat $input | pup "${selector} json{}")
+
+if [[ $jsonPath ]]; then
+  echo $asJson | jq -r ".[].${jsonPath}"
+else
+  echo $asJson
+fi
