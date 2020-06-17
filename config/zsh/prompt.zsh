@@ -352,6 +352,9 @@ function oroshi_prompt_git_branch_color() {
     master)
       echo 'branchMaster'
       ;;
+    main)
+      echo 'branchMain'
+      ;;
     develop)
       echo 'branchDevelop'
       ;;

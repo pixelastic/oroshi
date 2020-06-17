@@ -47,6 +47,7 @@ promptColorDefault=(
   branchGone            "160"
   branchHeroku          "141"
   branchMaster          "069"
+  branchMain            "069"
   branchRelease         "171"
   rebaseTrunk           "241"
   rebaseInProgress      "160"
