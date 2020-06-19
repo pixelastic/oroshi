@@ -18,7 +18,7 @@ if expand('%') =~ 'COMMIT_EDITMSG'
 
     " Add reminder of convention types
     normal! ggo# 
-    normal! APossible types : feat, fix, refactor, chore, style, perf, test, docs
+    normal! APossible types : feat, fix, dev, test, refactor, docs, chore
     normal! xo# BREAKING CHANGE:
     normal! x
     normal! gg
