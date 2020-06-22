@@ -29,4 +29,3 @@ function nearinfinity() {
   cd "~/.local/share/Steam/steamapps/common/Baldur's Gate Enhanced Edition"
   java -jar NearInfinity.jar
 }
-

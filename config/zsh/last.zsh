@@ -1,20 +1,39 @@
-# Commands in this file will be executed very last in the zsh init process.
-# NVM {{{
-local nvmScript=~/.nvm/nvm.sh
-if [[ -r $nvmScript ]]; then
-  source $nvmScript
-fi
-# }}}
+local DEBUG_STARTTIME=$(($(date +%s%N)/1000000))
 
-# Direnv {{{
+# Commands in this file will be executed very last in the zsh init process.
+
+# Direnv
 # Loads environment variables from .envrc files
 if [ $commands[direnv] ]; then
   eval "$(direnv hook zsh)"
   # Prevent direnv from displaying anything when switching to a new dir
   export DIRENV_LOG_FORMAT=
 fi
-# }}}
 
+# Load fzf for fuzzy finding in Ctrl-R in terminal
+if [ -f ~/.fzf.zsh ]; then
+  source ~/.fzf.zsh
+fi
+
+# Twilio cli
+# Currently disabled: adds ~300ms on startup time
+# local twilioCliAutocomplete=/home/tim/.twilio-cli/autocomplete/zsh_setup
+# if [[ -r $twilioCliAutocomplete ]]; then
+#   source $twilioCliAutocomplete
+# fi
+
+# Google Cloud SDK.
+# Currently disabled: adds ~300ms on startup time
+# if [ -f '/home/tim/local/src/google-cloud-sdk/path.zsh.inc' ]; then 
+#   source '/home/tim/local/src/google-cloud-sdk/path.zsh.inc'; 
+# fi
+
+# NVM {{{
+local nvmScript=~/.nvm/nvm.sh
+if [[ -r $nvmScript ]]; then
+  source $nvmScript
+fi
+# }}}
 
 # Gvm
 local gvmScript=~/.gvm/scripts/gvm
@@ -23,20 +42,8 @@ if [[ -r $gvmScript ]]; then
   gvm use go1.11 &>/dev/null
 fi
 
-# Twilio cli
-local twilioCliAutocomplete=/home/tim/.twilio-cli/autocomplete/zsh_setup
-if [[ -r $twilioCliAutocomplete ]]; then
-  source $twilioCliAutocomplete
-fi
-
-
-# Adding Chromium compilation tools to the path if present
-local chromiumDepotTools=~/local/src/chromium/depot_tools
-if [[ -r $chromiumDepotTools ]]; then
-  export PATH=$PATH:$chromiumDepotTools
-fi
-
 # Pyenv / pipenv
+# Currently disabled: adds ~150ms on startup time
 export PATH="/home/tim/.pyenv/bin:$PATH"
 if [ $commands[pyenv] ]; then
   # Make sure pyenv is found by putting it first
@@ -47,28 +54,12 @@ if [ $commands[pyenv] ]; then
   export VIRTUAL_ENV_DISABLE_PROMPT='yes'
 fi
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/tim/local/src/google-cloud-sdk/path.zsh.inc' ]; then 
-  source '/home/tim/local/src/google-cloud-sdk/path.zsh.inc'; 
-fi
-
-# Load fzf for fuzzy finding in Ctrl-R in terminal
-if [ -f ~/.fzf.zsh ]; then
-  source ~/.fzf.zsh
-fi
-
+# RVM
 # RVM need to be loaded at the very last
 local rvmScript=~/.rvm/scripts/rvm
 if [[ -r $rvmScript ]]; then
-  if [[ ! -z "$TMUX" ]]; then
-    # It seems that $GEM_HOME and $GEM_PATH are not correctly set when starting
-    # a tmux session, so we'll re-source the `rvm` function and manually set the
-    # default. We suppress errors for not polluting the display.
-    source $rvmScript &>/dev/null
-    rvm use 2.5.1 &>/dev/null
-  else
-    # We simply source the rvmScript otherwise
-    source $rvmScript
-    rvm use 2.5.1 &>/dev/null
-  fi
+ source $rvmScript
 fi
+
+local DEBUG_ENDTIME=$(($(date +%s%N)/1000000))
+[[ $ZSH_DEBUG == 1 ]] && echo "[debug]: ${0:t}: $(($DEBUG_ENDTIME - $DEBUG_STARTTIME))ms"

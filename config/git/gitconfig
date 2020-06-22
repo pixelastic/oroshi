@@ -38,8 +38,8 @@
 [status]
   showUntrackedFiles = all
 [user]
-  name = Pixelastic
-  email = tim@pixelastic.com
+	name = Pixelastic
+	email = tim@pixelastic.com
 [github]
   user = pixelastic
 [filter "lfs"]

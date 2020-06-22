@@ -3,6 +3,10 @@ if [[ $- != *i* ]]; then
   return
 fi
 
+# Set ZSH_DEBUG to 1 to enable timing information
+local ZSH_DEBUG=0
+local ZSHRC_DEBUG_STARTTIME=$(($(date +%s%N)/1000000))
+
 local hostname="$(hostname)"
 local zshConfigDir=~/.oroshi/config/zsh
 
@@ -52,14 +56,17 @@ source $zshConfigDir/aliases.zsh
 source $zshConfigDir/completion.zsh
 source $zshConfigDir/keybindings.zsh
 
+
 # Local config {{{
 # Note: Needs to be loaded here so it can overwrite default alias but still
 # contains config options needed for prompt theming
 local localConfig=~/.oroshi/config/zsh/local/${hostname}.zsh
 typeset -A promptColor
+
 if [[ -r $localConfig ]]; then
   source $localConfig
 fi
+
 local privateLocalConfig=~/.oroshi/private/config/zsh/local/${hostname}.zsh
 if [[ -r $privateLocalConfig ]]; then
   source $privateLocalConfig
@@ -72,5 +79,5 @@ source $zshConfigDir/prompt.zsh
 # Some stuff must be loaded after everything else
 source $zshConfigDir/last.zsh
 
-# twilio autocomplete setup
-TWILIO_AC_ZSH_SETUP_PATH=/home/tim/.twilio-cli/autocomplete/zsh_setup && test -f $TWILIO_AC_ZSH_SETUP_PATH && source $TWILIO_AC_ZSH_SETUP_PATH;
+local ZSHRC_DEBUG_ENDTIME=$(($(date +%s%N)/1000000))
+[[ $ZSH_DEBUG == 1 ]] && echo "[debug]: ~/.zshrc: $(($ZSHRC_DEBUG_ENDTIME - $ZSHRC_DEBUG_STARTTIME))ms"

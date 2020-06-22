@@ -1,3 +1,5 @@
+local DEBUG_STARTTIME=$(($(date +%s%N)/1000000))
+
 # Make using 256 colors in zsh less painful.
 # Copied from http://github.com/sykora/etc/blob/master/zsh/functions/spectrum/
 typeset -Ag FX FG BG
@@ -171,3 +173,6 @@ export LS_COLORS="${LS_COLORS}:*.min.js=38;5;241"
 export LS_COLORS="${LS_COLORS}:*.part=38;5;241"
 export LS_COLORS="${LS_COLORS}:.envrc=38;5;241"
 export LS_COLORS="${LS_COLORS}:_algolia_api_key=38;5;241"
+
+local DEBUG_ENDTIME=$(($(date +%s%N)/1000000))
+[[ $ZSH_DEBUG == 1 ]] && echo "[debug]: ${0:t}: $(($DEBUG_ENDTIME - $DEBUG_STARTTIME))ms"

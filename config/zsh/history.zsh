@@ -1,6 +1,5 @@
-# HISTORY
-# This file contains all options relative to the zsh command history
-# =============================================================================
+local DEBUG_STARTTIME=$(($(date +%s%N)/1000000))
+
 # In which file to save history
 HISTFILE=~/.history
 # How many lines to save in history
@@ -21,3 +20,6 @@ setopt HIST_VERIFY
 setopt EXTENDED_HISTORY 
 # Commands starting with a space are not loggued in history
 setopt HIST_IGNORE_SPACE
+
+local DEBUG_ENDTIME=$(($(date +%s%N)/1000000))
+[[ $ZSH_DEBUG == 1 ]] && echo "[debug]: ${0:t}: $(($DEBUG_ENDTIME - $DEBUG_STARTTIME))ms"

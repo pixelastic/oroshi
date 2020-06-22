@@ -1,3 +1,5 @@
+local DEBUG_STARTTIME=$(($(date +%s%N)/1000000))
+
 # Nice to have:
 # [ ] Autocompletion while I type, with the first tab-suggested suggestion
 # already filled in a darker color (fish-like behavior)
@@ -96,3 +98,6 @@ function reloadCompletion() {
 #   autoload -U $f:t
 # }
 # }}}
+
+local DEBUG_ENDTIME=$(($(date +%s%N)/1000000))
+[[ $ZSH_DEBUG == 1 ]] && echo "[debug]: ${0:t}: $(($DEBUG_ENDTIME - $DEBUG_STARTTIME))ms"

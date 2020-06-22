@@ -1,5 +1,4 @@
-# Fancy prompt.
-
+local DEBUG_STARTTIME=$(($(date +%s%N)/1000000))
 # init
 setopt PROMPT_SUBST
 autoload -U promptinit
@@ -437,3 +436,6 @@ ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=none
 ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=none
 ZSH_HIGHLIGHT_STYLES[assign]=none
 # }}}
+
+local DEBUG_ENDTIME=$(($(date +%s%N)/1000000))
+[[ $ZSH_DEBUG == 1 ]] && echo "[debug]: ${0:t}: $(($DEBUG_ENDTIME - $DEBUG_STARTTIME))ms"
