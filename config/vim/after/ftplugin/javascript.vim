@@ -42,6 +42,7 @@ inoremap <buffer> ## ${}<Left>
 " Typos I often make
 inoremap <buffer> awiat await
 " Test boilerplate
+inoremap <buffer> jspo jest.spyOn()i
 inoremap <buffer> bfe beforeEach(async () => {});ko
 inoremap <buffer> bfa beforeAll(async () => {});ko
 inoremap <buffer> iit it('', async () => {<CR>});k2li
