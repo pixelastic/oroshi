@@ -1,5 +1,3 @@
-local DEBUG_STARTTIME=$(($(date +%s%N)/1000000))
-
 # Note: Calling sudo will NOT use any aliases defined, but will use files in
 # custom paths.
 alias sudo='sudo -E'
@@ -400,6 +398,3 @@ function j {
 function ml { 
   ls $MARKPATH
 }
-
-local DEBUG_ENDTIME=$(($(date +%s%N)/1000000))
-[[ $ZSH_DEBUG == 1 ]] && echo "[debug]: ${0:t}: $(($DEBUG_ENDTIME - $DEBUG_STARTTIME))ms"
