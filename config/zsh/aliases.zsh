@@ -76,7 +76,6 @@ function rmv {
   rsync -vrahP --modify-window=1 --prune-empty-dirs --remove-sent-files "$@"
 }
 _scp () { local service=scp; _ssh "$@" }
-compdef _scp rcp rmv
 
 # Scrollable colors
 alias spectrum='spectrum L'

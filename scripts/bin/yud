@@ -3,5 +3,7 @@
 # version by removing it, and then re-adding it
 set -e
 
-yarn remove -W "$@"
-yarn add --dev "$@"
+yarn upgrade --latest --exact "$@"
+
+# yarn remove -W "$@"
+# yarn add --dev "$@"

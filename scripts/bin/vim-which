@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 # Edit in vim the result of a `which`
 # Usage:
 #   $ vim-which pdf2epub mm vtc
@@ -9,15 +11,38 @@ class VimWhich
     @args = args
   end
 
+  def run
+    path_list = []
+    @args.each do |name|
+      path = get_path(name)
+      next if path.nil?
+
+      path_list << path
+    end
+
+    exec "vim -p #{path_list.join(' ')}"
+  end
+
+  def get_path(name)
+    path = which_with_aliases(name)
+    return path if valid?(path)
+
+    unaliased = unalias(path)
+    return nil if unaliased.nil?
+
+    unaliased
+  end
+
   # Calls `which` on the argument, using any alias defined in zsh
   def which_with_aliases(name)
     zsh_commands = [
-      'source ~/.oroshi/config/zsh/aliases.zsh &>/dev/null',
+      'source ~/.oroshi/config/zsh/aliases.zsh',
       "which #{name}"
     ]
-    `zsh -c '#{zsh_commands.join(' && ')}'`.strip
+    command = "zsh -c '#{zsh_commands.join('; ')}'"
+    `#{command}`.strip
   end
-  
+
   def which(name)
     `which #{name}`.strip
   end
@@ -40,27 +65,6 @@ class VimWhich
     path = path.split(' ')[0]
 
     which(path)
-  end
-
-  def get_path(name)
-    path = which_with_aliases(name)
-    return path if valid?(path)
-
-    unaliased = unalias(path)
-    return nil if unaliased.nil?
-
-    unaliased
-  end
-
-  def run
-    path_list = []
-    @args.each do |name|
-      path = get_path(name)
-      next if path.nil?
-      path_list << path
-    end
-
-    exec "vim -p #{path_list.join(' ')}"
   end
 end
 VimWhich.new(*ARGV).run
