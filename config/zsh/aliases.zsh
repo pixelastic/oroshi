@@ -94,7 +94,7 @@ alias jrnle='jrnl --edit'
 # Download {{{
 alias pd='plowdown'
 alias td='transmission-download'
-alias yt='youtube-dl -o "%(title)s.%(ext)s" --prefer-free-format --max-filesize 700m'
+alias yt='youtube-dl -o "%(title)s.%(ext)s" --prefer-free-format'
 alias ytx='youtube-dl -o "%(title)s.%(ext)s" -x --audio-format mp3'
 alias gfv="get_flash_videos -y"
 # }}}
