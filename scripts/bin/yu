@@ -1,5 +1,11 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 # This makes an update of a given package, taking the latest available
 set -e
 
-yarn upgrade --latest --exact "$@"
+rawDeps=("$@")
+deps=()
+for depName in "${rawDeps[@]}"; do
+  deps+=("${depName}@latest")
+done
+
+yarn upgrade "${deps[@]}"

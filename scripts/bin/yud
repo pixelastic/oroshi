@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-# version by removing it, and then re-adding it
-set -e
-
-yarn upgrade --latest --exact "$@"
