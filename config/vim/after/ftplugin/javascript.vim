@@ -51,6 +51,27 @@ inoremap <buffer> mrv mockReturnValue();hi
 inoremap <buffer> thp toHaveProperty('');hhi
 inoremap <buffer> thbc toHaveBeenCalled();
 inoremap <buffer> thbw toHaveBeenCalledWith();hi
+" Require firost boilerplate
+inoremap <buffer> reqcone const consoleError = require('firost/lib/consoleError');<CR>
+inoremap <buffer> reqconi const consoleInfo = require('firost/lib/consoleInfo');<CR>
+inoremap <buffer> reqconw const consoleWarn = require('firost/lib/consoleWarn');<CR>
+inoremap <buffer> reqemp const emptyDir = require('firost/lib/emptyDir');<CR>
+inoremap <buffer> reqerr const firostError = require('firost/lib/error');<CR>
+inoremap <buffer> reqexi const exist = require('firost/lib/exist');<CR>
+inoremap <buffer> reqglo const glob = require('firost/lib/glob');<CR>
+inoremap <buffer> reqmkd const mkdirp = require('firost/lib/mkdirp');<CR>
+inoremap <buffer> reqreadj const readJson = require('firost/lib/readJson');<CR>
+inoremap <buffer> reqread const read = require('firost/lib/read');<CR>
+inoremap <buffer> reqrun const run = require('firost/lib/run');<CR>
+inoremap <buffer> reqspi const spinner = require('firost/lib/spinner');<CR>
+inoremap <buffer> reqtmp const tmpDirectory = require('firost/lib/tmpDirectory');<CR>
+inoremap <buffer> reqwrij const writeJson = require('firost/lib/writeJson');<CR>
+inoremap <buffer> reqwri const write = require('firost/lib/write');<CR>
+" Require golgoth boilerplate
+inoremap <buffer> reqpmap const pMap = require('golgoth/lib/pMap');<CR>
+inoremap <buffer> req_ const _ = require('golgoth/lib/lodash');<CR>
+inoremap <buffer> reqday const dayjs = require('golgoth/lib/dayjs');<CR>
+inoremap <buffer> reqgot const got = require('golgoth/lib/got');<CR>
 " JSDoc helpers
 inoremap <buffer> @para @param {Array} 
 inoremap <buffer> @parb @param {boolean} 
