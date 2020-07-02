@@ -1,9 +1,5 @@
 #!/usr/bin/env sh
-# This makes a force update of a given package, taking the latest available
 # version by removing it, and then re-adding it
 set -e
 
 yarn upgrade --latest --exact "$@"
-
-# yarn remove -W "$@"
-# yarn add --dev "$@"
