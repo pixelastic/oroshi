@@ -46,6 +46,7 @@ inoremap <buffer> jspo jest.spyOn()i
 inoremap <buffer> bfe beforeEach(async () => {});ko
 inoremap <buffer> bfa beforeAll(async () => {});ko
 inoremap <buffer> iit it('', async () => {<CR>});k2li
+inoremap <buffer> iite it.each([[ input, expected ]])('%s', async () => {<CR>});2k2l
 inoremap <buffer> dsc describe('', () => {});klllllllli
 inoremap <buffer> mrv mockReturnValue();hi
 inoremap <buffer> thp toHaveProperty('');hhi
