@@ -25,7 +25,7 @@ fi
 local asJson=$(cat $input | pup "${selector} json{}")
 
 if [[ $jsonPath ]]; then
-  echo $asJson | jq -r ".[].${jsonPath}"
+  echo $asJson | jq -r ".[].\"${jsonPath}\""
 else
   echo $asJson
 fi
