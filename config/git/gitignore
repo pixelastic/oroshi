@@ -1,5 +1,7 @@
 .DS_Store
+.cache
 .envrc
+.netlify
 .sass-cache
 .yalc/
 Thumbs.db
@@ -12,4 +14,3 @@ yalc.lock
 yarn-error.log
 *~
 *.rej
-.netlify
