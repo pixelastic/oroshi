@@ -9,5 +9,7 @@ package = File.expand_path(File.join(bin_folder, '..', '..', 'package.json'))
 exit 0 unless File.exist?(package)
 
 content = JSON.parse(File.read(package))
-exit 0 unless content.key? 'dependencies'
-puts content['dependencies'].keys.join("\n")
+puts content['dependencies'].keys.join("\n") if content.key? 'dependencies'
+if content.key? 'devDependencies'
+  puts content['devDependencies'].keys.join("\n")
+end
