@@ -7,6 +7,7 @@
 
 local repoRoot=${1:a}
 local noeditFile=${0:a:h}/noedit
+local ctrlpIgnore=${repoRoot}/.ctrlpignore
 local deletedFiles addedFiles lsFiles
 
 
@@ -23,7 +24,7 @@ addedFiles=("${(@f)$(git ls-files --others --exclude-standard)}")
 lsFiles+=($addedFiles)
 
 # We pipe the output to grep, to remove the binary files matching our pattern
-local patterns="`cat $noeditFile | grep -v -e '^#' -e '^$'`"
+local patterns="`(cat $ctrlpIgnore 2>/dev/null; cat $noeditFile) | grep -v -e '^#' -e '^$'`"
 patterns=(${(@f)patterns})
 local grepCommand="grep --ignore-case --invert-match --extended-regexp "
 for pattern in $patterns; do
