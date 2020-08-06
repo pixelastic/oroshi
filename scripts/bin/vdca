@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 set -e
 
-git-directory-create "$1"
+# git-directory-create "$1"
 
 
-cd "./$1"
+# cd "./$1"
 # Setup Aberlaas
-yad aberlaas
-yr aberlaas init
+yarn add --dev aberlaas
+yarn run aberlaas init
 # Commit and push
-vca -m "chore(init): Scaffolding"
-vbps
+git commit-all -m "chore(init): Scaffolding"
+git branch-push
 # Configure GitHub and CircleCi
-yr aberlaas setup
+yarn run aberlaas setup
 
 # Mark it for future jump and yarn link
 yl
-m
+mark
