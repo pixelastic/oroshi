@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -e
 
-# git-directory-create "$1"
+git-directory-create "$1"
 
 
-# cd "./$1"
+cd "./$1"
 # Setup Aberlaas
 yarn add --dev aberlaas
 yarn run aberlaas init
