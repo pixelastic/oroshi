@@ -53,28 +53,28 @@ inoremap <buffer> thp toHaveProperty('');hhi
 inoremap <buffer> thbc toHaveBeenCalled();
 inoremap <buffer> thbw toHaveBeenCalledWith();hi
 " Require firost boilerplate
-inoremap <buffer> rqcone const consoleError = require('firost/lib/consoleError');<CR>
-inoremap <buffer> rqconi const consoleInfo = require('firost/lib/consoleInfo');<CR>
-inoremap <buffer> rqconw const consoleWarn = require('firost/lib/consoleWarn');<CR>
-inoremap <buffer> rqemp const emptyDir = require('firost/lib/emptyDir');<CR>
-inoremap <buffer> rqerr const firostError = require('firost/lib/error');<CR>
-inoremap <buffer> rqexis const exists = require('firost/lib/exists');<CR>
-inoremap <buffer> rqexi const exit = require('firost/lib/exit');<CR>
-inoremap <buffer> rqglo const glob = require('firost/lib/glob');<CR>
-inoremap <buffer> rqmkd const mkdirp = require('firost/lib/mkdirp');<CR>
-inoremap <buffer> rqnor const normalizeUrl = require('firost/lib/normalizeUrl');<CR>
-inoremap <buffer> rqreadj const readJson = require('firost/lib/readJson');<CR>
-inoremap <buffer> rqread const read = require('firost/lib/read');<CR>
-inoremap <buffer> rqrun const run = require('firost/lib/run');<CR>
-inoremap <buffer> rqspi const spinner = require('firost/lib/spinner');<CR>
-inoremap <buffer> rqspin const spinner = require('firost/lib/spinner');<CR>
-inoremap <buffer> rqspinn const spinner = require('firost/lib/spinner');<CR>
-inoremap <buffer> rqtmp const tmpDirectory = require('firost/lib/tmpDirectory');<CR>
-inoremap <buffer> rqurl const urlToFilepath = require('firost/lib/urlToFilepath');<CR>
-inoremap <buffer> rqwritej const writeJson = require('firost/lib/writeJson');<CR>
-inoremap <buffer> rqwritj const writeJson = require('firost/lib/writeJson');<CR>
-inoremap <buffer> rqwrij const writeJson = require('firost/lib/writeJson');<CR>
-inoremap <buffer> rqwri const write = require('firost/lib/write');<CR>
+inoremap <buffer> rqcone const consoleError = require('firost/consoleError');<CR>
+inoremap <buffer> rqconi const consoleInfo = require('firost/consoleInfo');<CR>
+inoremap <buffer> rqconw const consoleWarn = require('firost/consoleWarn');<CR>
+inoremap <buffer> rqemp const emptyDir = require('firost/emptyDir');<CR>
+inoremap <buffer> rqerr const firostError = require('firost/error');<CR>
+inoremap <buffer> rqexis const exists = require('firost/exists');<CR>
+inoremap <buffer> rqexi const exit = require('firost/exit');<CR>
+inoremap <buffer> rqglo const glob = require('firost/glob');<CR>
+inoremap <buffer> rqmkd const mkdirp = require('firost/mkdirp');<CR>
+inoremap <buffer> rqnor const normalizeUrl = require('firost/normalizeUrl');<CR>
+inoremap <buffer> rqreadj const readJson = require('firost/readJson');<CR>
+inoremap <buffer> rqread const read = require('firost/read');<CR>
+inoremap <buffer> rqrun const run = require('firost/run');<CR>
+inoremap <buffer> rqspi const spinner = require('firost/spinner');<CR>
+inoremap <buffer> rqspin const spinner = require('firost/spinner');<CR>
+inoremap <buffer> rqspinn const spinner = require('firost/spinner');<CR>
+inoremap <buffer> rqtmp const tmpDirectory = require('firost/tmpDirectory');<CR>
+inoremap <buffer> rqurl const urlToFilepath = require('firost/urlToFilepath');<CR>
+inoremap <buffer> rqwritej const writeJson = require('firost/writeJson');<CR>
+inoremap <buffer> rqwritj const writeJson = require('firost/writeJson');<CR>
+inoremap <buffer> rqwrij const writeJson = require('firost/writeJson');<CR>
+inoremap <buffer> rqwri const write = require('firost/write');<CR>
 " Require golgoth boilerplate
 inoremap <buffer> rqpmap const pMap = require('golgoth/lib/pMap');<CR>
 inoremap <buffer> rq_ const _ = require('golgoth/lib/lodash');<CR>
