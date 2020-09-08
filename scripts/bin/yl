@@ -2,4 +2,7 @@
 # Alias around "yarn link", so we can add custom auto-completion
 set -e
 
+# Add links to the top-level of a monorepo setup
+cd "$(git root)"
+
 yarn link "$@"
