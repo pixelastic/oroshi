@@ -60,6 +60,10 @@ local rvmScript=~/.rvm/scripts/rvm
 if [[ -r $rvmScript ]]; then
  source $rvmScript
 fi
+# Rbenv
+if [ $commands[rbenv] ]; then
+  eval "$(rbenv init -)";
+fi
 # }}}
 
 local DEBUG_ENDTIME=$(($(date +%s%N)/1000000))
