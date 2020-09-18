@@ -1,6 +1,6 @@
 [submodule "private"]
   path = private
-  url = ssh://git@bitbucket.org/pixelastic/oroshi-private.git
+  url = git@github.com:pixelastic/oroshi-private.git
   branch = master
 [submodule "scripts/etc/dconf-export"]
   path = scripts/etc/dconf-export
@@ -29,7 +29,7 @@
   branch = master
 [submodule "config/ansible/galactica"]
   path = config/ansible/galactica
-  url = git@bitbucket.org:pixelastic/ansible-galactica.git
+  url = git@github.com:pixelastic/ansible-galactica.git
   branch = master
 [submodule "scripts/bin/convert"]
 	path = scripts/bin/convert
