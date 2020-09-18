@@ -54,12 +54,13 @@ if [ $commands[pyenv] ]; then
   export VIRTUAL_ENV_DISABLE_PROMPT='yes'
 fi
 
+# Ruby {{{
 # RVM
-# RVM need to be loaded at the very last
 local rvmScript=~/.rvm/scripts/rvm
 if [[ -r $rvmScript ]]; then
  source $rvmScript
 fi
+# }}}
 
 local DEBUG_ENDTIME=$(($(date +%s%N)/1000000))
 [[ $ZSH_DEBUG == 1 ]] && echo "[debug]: ${0:t}: $(($DEBUG_ENDTIME - $DEBUG_STARTTIME))ms"

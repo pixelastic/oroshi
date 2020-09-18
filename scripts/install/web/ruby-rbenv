@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1091
+set -ex
+
+cd ~/local/etc
+git clone git@github.com:rbenv/rbenv-installer.git
+
+# sudo apt-get install curl \
+#                      libcurl4 \
+#                      libcurl4-openssl-dev
+
+# # Install rvm
+# # This should automatically install all needed Ubuntu dependencies
+# gpg --import "/home/$USER/.oroshi/private/config/pgp/mpapis.asc"
+# curl -L https://get.rvm.io | bash -s stable --ruby
+# # Don't forget to add the following line in ~/.zshrc
+# # [[ -r $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
+# source /home/tim/.rvm/scripts/rvm
+
+# # Installing Ruby
+# rvm install 2.5.1
+# rvm use 2.5.1
+# gem install bundler
+
+# # Automatic prepending of bundle exec
+# gem install rubygems-bundler
+
+# # Linter
+# gem install rubocop
+
+# # Awesome print, for better debug
+# gem install awesome_print
