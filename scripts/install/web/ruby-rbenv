@@ -2,31 +2,29 @@
 # shellcheck disable=SC1091
 set -ex
 
+# Adding rbenv
 cd ~/local/etc
 git clone git@github.com:rbenv/rbenv-installer.git
+./rbenv-installer/bin/rbenv-installer
 
-# sudo apt-get install curl \
-#                      libcurl4 \
-#                      libcurl4-openssl-dev
+# Adding ruby-build as a plugin
+mkdir -p ~/.rbenv/plugins
+cd ~/.rbenv/plugins
+git clone https://github.com/rbenv/ruby-build.git ./ruby-build
 
-# # Install rvm
-# # This should automatically install all needed Ubuntu dependencies
-# gpg --import "/home/$USER/.oroshi/private/config/pgp/mpapis.asc"
-# curl -L https://get.rvm.io | bash -s stable --ruby
-# # Don't forget to add the following line in ~/.zshrc
-# # [[ -r $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
-# source /home/tim/.rvm/scripts/rvm
+# Ruby needs a few dependencies to install correctly
+sudo apt-get install \
+  libssl-dev \
+  zlib1g-dev
 
-# # Installing Ruby
-# rvm install 2.5.1
-# rvm use 2.5.1
-# gem install bundler
+
+# Installing Ruby and gems
+~/.rbenv/bin/rbenv install 2.7.1
+~/.rbenv/bin/rbenv global 2.7.1
+~/.rbenv/shims/gem install bundler
+~/.rbenv/shims/gem install rubocop
+~/.rbenv/shims/gem install awesome_print
+
 
 # # Automatic prepending of bundle exec
 # gem install rubygems-bundler
-
-# # Linter
-# gem install rubocop
-
-# # Awesome print, for better debug
-# gem install awesome_print

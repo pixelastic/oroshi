@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 # ypu: Yarn Policies Update
 set -ex
+cd "$(git root)"
 
 # Download latest version
 yarn policies set-version

@@ -1,8 +1,6 @@
 #!/usr/bin/env sh
 set -e
 
-cd ~/local/tmp
-wget \
-  https://github.com/sharkdp/fd/releases/download/v7.1.0/fd_7.1.0_amd64.deb \
-  -O fd.deb
-sudo dpkg -i fd.deb
+sudo apt-get install fd-find
+cd ~/local/bin
+ln -s /usr/bin/fdfind ./fd
