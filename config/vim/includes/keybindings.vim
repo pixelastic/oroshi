@@ -32,10 +32,10 @@ function! MultiPurposeCapsLock()
   endif
   return pumvisible() ? autocomplete_cancel : mode_normal
 endfunction
-inoremap <silent> [25~ <C-R>=MultiPurposeCapsLock()<CR>
-vnoremap [25~ <Esc>
-cnoremap [25~ <C-C>
-nnoremap [25~ i
+inoremap <silent> [28~ <C-R>=MultiPurposeCapsLock()<CR>
+vnoremap [28~ <Esc>
+cnoremap [28~ <C-C>
+nnoremap [28~ i
 " }}}
 " TAB {{{
 " Note: On Tab press, we try to expand UltiSnips snippets, or loop through

@@ -1,3 +1,22 @@
 #!/usr/bin/env bash
+set -e
 
-sudo apt-get install kitty
+ubuntuVersion="$(lsb_release -r -s)"
+
+# Directly available in 20.04
+if [ "$ubuntuVersion" == "20.04" ]; then
+  sudo apt-get install kitty;
+fi
+
+# need to download release from GitHub otherwise
+if [ "$ubuntuVersion" == "18.04" ]; then
+  cd ~/local/src
+  mkdir -p ./kitty
+  cd ./kitty
+  wget https://github.com/kovidgoyal/kitty/releases/download/v0.18.3/kitty-0.18.3-x86_64.txz -O kitty.txz
+  tar Jxvf kitty.txz
+  rm kitty.txz
+
+  cd ~/local/bin
+  ln -s ../src/kitty/bin/kitty ./kitty
+fi

@@ -1,13 +1,6 @@
 #!/usr/bin/env bash
 set -ex
 
-# sudo snap install termite --candidate
-# TODO: Does not yet work on 20.04
-# Check:
-# https://www.reddit.com/r/Ubuntu/comments/33l48w/has_anyone_managed_to_install_termite_on_ubuntu/
-# https://github.com/Corwind/termite-install/blob/master/termite-install.sh
-# https://github.com/ls4154/termite-ubuntu/blob/master/build.sh
-
 # Termite needs a custom version of vte available, that exposes some of the
 # internals
 echo "Install compilation dependencies"
@@ -33,15 +26,7 @@ cd ./vte-ng
 ./autogen.sh && make && sudo make install
 
 echo "Copy libs"
-sudo cp \
-  /usr/local/lib/libvte-2.91.a
-  /usr/local/lib/libvte-2.91.la
-  /usr/local/lib/libvte-2.91.so.0.5000.2
-  /usr/lib
-cd /usr/lib
-sudo ln -s ./libvte-2.91.so.0.5000.2 ./libvte-2.91.so
-sudo ln -s ./libvte-2.91.so.0.5000.2 ./libvte-2.91.so.0
- 
+sudo cp /usr/local/lib/libvte-2.91.* /usr/lib
 sudo ldconfig
 
 echo "Clone termite"

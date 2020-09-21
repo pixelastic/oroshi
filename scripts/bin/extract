@@ -23,6 +23,7 @@ for file in $@; do
 		*.tar.xz) tar xvJf $file;;
 		*.tbz2) tar xvjf $file;;
 		*.tgz) tar xvzf $file;;
+		*.txz) tar Jxvf $file;;
 		*.(zip|ZIP)) unzip -o $file;;
     *.7z) 7z x $file;;
     *.7z.[0-9][0-9][0-9]) 7z x $file;;
