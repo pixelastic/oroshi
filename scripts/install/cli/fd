@@ -2,5 +2,7 @@
 set -e
 
 sudo apt-get install fd-find
+
+# fd is installed as fdfind, so we make an alias
 cd ~/local/bin
 ln -s /usr/bin/fdfind ./fd

@@ -18,7 +18,7 @@ let mapleader=','
 nmap <Space> .
 " }}}
 " CAPS LOCK KEY {{{
-" Note: Xmodmap maps Caps Lock to F13 ([25~)
+" Note: Xmodmap maps Caps Lock to F15 ([28~)
 " - Cancels autocomplete, search, command, visual
 " - Restore the wrong word in spelling mode
 " - Toggle normal / insert mode

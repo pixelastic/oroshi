@@ -29,3 +29,5 @@ ln -fs $configFile $destFile
 
 # Scripts (for file detection)
 ln -fs $scriptsFile $destDir/scripts.vim
+
+echo "Now, open vim and type :PlugUpdate<CR> to install all plugins"

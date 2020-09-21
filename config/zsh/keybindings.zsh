@@ -62,8 +62,8 @@ bindkey -M vicmd "[6~" end-of-line        # Page Down
 bindkey -M viins "" history-incremental-search-backward
 bindkey -M vicmd "" history-incremental-search-backward
 # Switching mode with CAPS LOCK
-bindkey -M viins "[25~" vi-cmd-mode
-bindkey -M vicmd "[25~" vi-insert
+bindkey -M viins "[28~" vi-cmd-mode
+bindkey -M vicmd "[28~" vi-insert
 # As well as the classic Esc and i
 bindkey -M viins "" vi-cmd-mode
 bindkey -M vicmd "i"  vi-insert

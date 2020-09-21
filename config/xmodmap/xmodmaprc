@@ -65,11 +65,12 @@ add mod2    = Num_Lock
 add mod4    = Super_L Hyper_L
 add mod5    = ISO_Level3_Shift
 
-!!!!!! Adding some phantom F-keys to use as mapping in vim
+!!!!!! Mapping Caps Lock to a phantom F15 key. This custom key will be used in
+! zsh and vim to switch from insert to normal mode
+! Note that using F13 or F14 might create conflicts with other apps. F15 seems
+! safe
 ! Caps Lock
-keycode 66 = F13
-! ²
-keycode 49 = F14 twosuperior
+keycode 66 = F15
 
 ! Space bar
 keycode 65 = space space space space
@@ -80,15 +81,20 @@ keycode 94 = less greater less greater U202E U202D
 ! U21C8 = ⇈
 ! U21CA = ⇊
 keycode 10 = ampersand 1 ampersand 1 U21C8 U21CA
-! É, È and À easier with AltGr+Shift
+! UC9 = É
 keycode 11 = eacute 2 eacute 2 asciitilde UC9
 ! U2665 = ♥
 keycode 12 = quotedbl 3 3 numbersign numbersign U2665
+! UC8 = È
 keycode 16 = egrave 7 egrave 7 grave UC8
 ! U221E = ∞
 keycode 17 = underscore 8 underscore 8 backslash U221E
+! asciicircum = ^
+! UC7 = Ç
 keycode 18 = ccedilla 9 ccedilla 9 asciicircum UC7
+! UC0 = À
 keycode 19 = agrave 0 agrave 0 at UC0
+! U2260 = ≠
 keycode 21 = equal plus equal plus braceright U2260
 
 ! Adding some common symbols on easy AltGr on common keys
