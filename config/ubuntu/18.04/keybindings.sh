@@ -9,8 +9,8 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings '[
 
 declare -A custom
 # Termite
-custom[0,name]='Termite'
-custom[0,command]='termite'
+custom[0,name]='Kitty'
+custom[0,command]='/home/tim/local/bin/kitty'
 custom[0,binding]='<Super>t'
 # Chrome pro
 custom[1,name]='Chrome Pro'
