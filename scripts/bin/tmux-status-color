@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+# Return the color for a specific name
+# Usage:
+#   tmux-status-color projects
+local name="$1"
+local color=""
+
+[[ $name == "bg" ]] && color='colour24'
+[[ $name == "perso" ]] && color='colour141'
+[[ $name == "projects" ]] && color='colour35'
+[[ $name == "norska" ]] && color='colour69'
+[[ $name == "tmp" ]] && color='colour233'
+echo -n $color

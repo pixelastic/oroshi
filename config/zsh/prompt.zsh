@@ -73,7 +73,7 @@ promptHostname=$(colorize '%m' 'hostname')
 # - Will prepend a ! and display it in red if not writable
 function oroshi_prompt_path() {
   local promptPath="$(print -D $PWD)"
-  promptPath=${promptPath:s/~/ }
+  promptPath=${promptPath:s/~/ }
   local splitPath
   splitPath=(${(s:/:)promptPath})
 
@@ -387,16 +387,16 @@ function oroshi_prompt_git_push_pull() {
 
   case "$remoteStatus" in
     $EXIT_CODE_AHEAD)
-      echo " "
+      echo " "
       ;;
     $EXIT_CODE_BEHIND)
-      echo " "
+      echo " "
       ;;
     $EXIT_CODE_DIVERGED)
-      echo " "
+      echo " "
       ;;
     $EXIT_CODE_NEVER_PUSHED)
-      echo ""
+      echo ""
       ;;
   esac
 }

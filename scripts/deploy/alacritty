@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+mkdir -p ~/.config/alacritty
+ln \
+  -fs ~/.oroshi/config/alacritty/alacritty.yml \
+  ~/.config/alacritty/alacritty.yml

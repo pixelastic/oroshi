@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# Name of the current session, on the leftmost part
+
+local sessionName="$1"
+local sessionColor="$(tmux-status-color $sessionName)"
+local sessionSymbol="$(tmux-status-symbol $sessionName)"
+local textColor="colour235"
+local rightSeparator="#[fg=${sessionColor},bg=${textColor}]"
+
+echo "#[fg=${textColor},bg=${sessionColor}] ${sessionSymbol}${sessionName}${rightSeparator}"

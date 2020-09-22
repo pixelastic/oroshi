@@ -1,0 +1,11 @@
+i='' i_pom_clean_code=$i
+i='' i_pom_pomodoro_done=$i
+i='' i_pom_pomodoro_estimated=$i
+i='' i_pom_pomodoro_ticking=$i
+i='' i_pom_pomodoro_squashed=$i
+i='' i_pom_short_pause=$i
+i='' i_pom_long_pause=$i
+i='' i_pom_away=$i
+i='' i_pom_pair_programming=$i
+i='' i_pom_internal_interruption=$i
+i='' i_pom_external_interruption=$i

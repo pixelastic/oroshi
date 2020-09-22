@@ -62,8 +62,11 @@ bindkey -M vicmd "[6~" end-of-line        # Page Down
 bindkey -M viins "" history-incremental-search-backward
 bindkey -M vicmd "" history-incremental-search-backward
 # Switching mode with CAPS LOCK
+# F15 is mapped to ([28~) in termite/alacritty, but [1;2R in kitty
 bindkey -M viins "[28~" vi-cmd-mode
+bindkey -M viins "[1;2R" vi-cmd-mode
 bindkey -M vicmd "[28~" vi-insert
+bindkey -M vicmd "[1;2R" vi-insert
 # As well as the classic Esc and i
 bindkey -M viins "" vi-cmd-mode
 bindkey -M vicmd "i"  vi-insert

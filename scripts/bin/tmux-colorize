@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+local text="$1"
+local bgColor="$2"
+local textColor="$3"
+
+echo "#[fg=colour${textColor},bg=colour${bgColor}]${text}#[default]"

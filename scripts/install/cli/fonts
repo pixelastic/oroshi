@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 sudo apt-get install msttcorefonts
 
+
 mkdir -p ~/.fonts
 cp ~/.oroshi/config/fonts/*.ttf ~/.fonts 
 cp ~/.oroshi/private/config/fonts/*.ttf ~/.fonts

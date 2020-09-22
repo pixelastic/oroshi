@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+local sessionName="$1"
+local windowName="$2"
+
+local textColor="colour235"
+local windowColor="$(tmux-status-color $windowName)"
+local windowSymbol="$(tmux-status-symbol $windowName)"
+local sessionColor="$(tmux-status-color $sessionName)"
+[[ $windowColor == "" ]] && windowColor=$sessionColor
+
+local rightSeparator="#[fg=${windowColor},bg=${textColor}]"
+
+echo "#[fg=${textColor},bg=${windowColor}] ${windowSymbol}${windowName} ${rightSeparator}"
+

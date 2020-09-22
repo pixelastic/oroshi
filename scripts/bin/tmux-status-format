@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+
+local sessionName="$1"
+local windowName="$2"
+
+local sessionColor="$(tmux-status-color $sessionName)"
+local windowSymbol="$(tmux-status-symbol $windowName)"
+echo -n " ${windowSymbol}${windowName} #[fg=colour238]#[default]";

@@ -18,7 +18,7 @@ let mapleader=','
 nmap <Space> .
 " }}}
 " CAPS LOCK KEY {{{
-" Note: Xmodmap maps Caps Lock to F15 ([28~)
+" Note: Xmodmap maps Caps Lock to F15
 " - Cancels autocomplete, search, command, visual
 " - Restore the wrong word in spelling mode
 " - Toggle normal / insert mode
@@ -32,10 +32,15 @@ function! MultiPurposeCapsLock()
   endif
   return pumvisible() ? autocomplete_cancel : mode_normal
 endfunction
+" F15 is mapped to ([28~) in termite/alacritty, but [1;2R in kitty
 inoremap <silent> [28~ <C-R>=MultiPurposeCapsLock()<CR>
+inoremap <silent> [1;2R <C-R>=MultiPurposeCapsLock()<CR>
 vnoremap [28~ <Esc>
+vnoremap [1;2R <Esc>
 cnoremap [28~ <C-C>
+cnoremap [1;2R <C-C>
 nnoremap [28~ i
+nnoremap [1;2R i
 " }}}
 " TAB {{{
 " Note: On Tab press, we try to expand UltiSnips snippets, or loop through

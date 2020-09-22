@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+# Given a session and window name, returns the index
+

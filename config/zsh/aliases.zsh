@@ -192,7 +192,7 @@ alias ngrld="sudo systemctl reload nginx"
 #	Oroshi {{{
 alias oa="~/.oroshi/scripts/deploy/autostart"
 alias oc="~/.oroshi/scripts/deploy/dircolors && source ~/.zshrc"
-alias of="~/.oroshi/scripts/deploy/fstab"
+alias of="fc-cache -f -v"
 alias oh="~/.oroshi/scripts/deploy/hosts"
 alias or="redshift -x && redshift -o"
 alias os="~/.oroshi/scripts/deploy/ssh"

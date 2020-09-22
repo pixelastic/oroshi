@@ -1,20 +1,35 @@
 #!/usr/bin/env zsh
-# Display the session name with specific color and icon
+# Name of the current session, on the leftmost part
 
-local output=''
-local tmux_path=~/.oroshi/config/tmux
-local session_name=$1
+local sessionName="$1"
+local sessionColor="$(tmux-status-color $sessionName)"
+local textColor="colour235"
+local rightSeparator"#[fg=${sessionColor},bg=${textColor}]"
 
-# Color
-local session_color="$($tmux_path/helper-get-session-color $session_name)"
-local fg_color='colour235'
-[[ $session_name == 'algolia' ]] && fg_color='colour249'
-[[ $session_name == 'tmp' ]] && fg_color='colour249'
+# local sessionSymbol="$(tmux-status-symbol $sessionName)"
 
-# Icon
-local session_icon="$($tmux_path/helper-get-icon $session_name)"
-[[ $session_icon == '' ]] && session_icon="$($tmux_path/helper-get-icon 'terminal')"
+echo "#[fg=${textColor},bg=${sessionColor}]${sessionName}${rightSeparator}"
 
-output="#[fg=$fg_color,bg=$session_color] ${session_icon}$session_name #[fg=$session_color,bg=colour235]⮀ "
 
-echo $output
+
+##
+##
+## Display the session name with specific color and icon
+
+#local output=''
+#local tmux_path=~/.oroshi/config/tmux
+#local session_name=$1
+
+## Color
+#local session_color="$($tmux_path/helper-get-session-color $session_name)"
+#local fg_color='colour235'
+#[[ $session_name == 'algolia' ]] && fg_color='colour249'
+#[[ $session_name == 'tmp' ]] && fg_color='colour249'
+
+## Icon
+#local session_icon="$($tmux_path/helper-get-icon $session_name)"
+#[[ $session_icon == '' ]] && session_icon="$($tmux_path/helper-get-icon 'terminal')"
+
+#output="#[fg=$fg_color,bg=$session_color] ${session_icon}$session_name #[fg=$session_color,bg=colour235]"
+
+#echo $output
