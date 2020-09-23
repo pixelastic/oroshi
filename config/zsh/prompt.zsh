@@ -274,26 +274,32 @@ function chpwd() {
 # }}}
 
 # Highlighting as I type {{{
-# source ~/.oroshi/config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-# ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
-# ZSH_HIGHLIGHT_STYLES[default]="fg=$COLOR[white]"
-# ZSH_HIGHLIGHT_STYLES[commandseparator]="fg=$COLOR[gray]"
-# ZSH_HIGHLIGHT_STYLES[builtin]="fg=$COLOR[yellow]"
-# ZSH_HIGHLIGHT_STYLES[alias]="fg=$COLOR[yellow]"
-# ZSH_HIGHLIGHT_STYLES[command]="fg=$COLOR[yellow]"
-# ZSH_HIGHLIGHT_STYLES[function]="fg=$COLOR[yellow]"
+source ~/.oroshi/config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
+# Base
+ZSH_HIGHLIGHT_STYLES[default]="fg=$COLOR[white]"
+ZSH_HIGHLIGHT_STYLES[commandseparator]="fg=$COLOR[gray]"
+ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=$COLOR[red8]"
+# Commands
+ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=$COLOR[teal]"
+ZSH_HIGHLIGHT_STYLES[builtin]="fg=$COLOR[teal]"
+ZSH_HIGHLIGHT_STYLES[alias]="fg=$COLOR[teal]"
+ZSH_HIGHLIGHT_STYLES[command]="fg=$COLOR[teal]"
+ZSH_HIGHLIGHT_STYLES[function]="fg=$COLOR[teal]"
+# Paths
+ZSH_HIGHLIGHT_STYLES[path]="fg=$COLOR[green]"
+ZSH_HIGHLIGHT_STYLES[path_prefix]="fg=$COLOR[green5]"
+ZSH_HIGHLIGHT_STYLES[path_approx]="fg=$COLOR[green9]"
 
-# ZSH_HIGHLIGHT_STYLES[path]="fg=$COLOR[green]"
-# ZSH_HIGHLIGHT_STYLES[path_prefix]="fg=$COLOR[green5]"
-# ZSH_HIGHLIGHT_STYLES[path_approx]="fg=$COLOR[green9]"
 
-# ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=$COLOR[gray]"
-# ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=$COLOR[green]"
-# ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="fg=$COLOR[orange4]"
-# ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="fg=$COLOR[orange4]"
-# ZSH_HIGHLIGHT_STYLES[back-quoted-argument]="fg=$COLOR[red9]"
-# ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=$COLOR[blue9]"
-# ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=$COLOR[yellow9]"
+# Arguments
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="fg=$COLOR[indigo4]"
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="fg=$COLOR[indigo4]"
+# Strings
+ZSH_HIGHLIGHT_STYLES[back-quoted-argument]="fg=$COLOR[blue7]"
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=$COLOR[blue7]"
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=$COLOR[blue7]"
+
 # ZSH_HIGHLIGHT_STYLES[precommand]=none
 # ZSH_HIGHLIGHT_STYLES[hashed-command]=none
 # ZSH_HIGHLIGHT_STYLES[globbing]=none
