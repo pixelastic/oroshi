@@ -5,7 +5,7 @@ promptinit
 
 which nvm &>/dev/null && hasNvm=1
 
-PROMPT='$(oroshi_prompt_path) $(oroshi_prompt_node_flags)$(oroshi_prompt_git_flags)$(oroshi_prompt_character)'
+PROMPT='$(oroshi_prompt_path)$(oroshi_prompt_node_flags)$(oroshi_prompt_git_flags)$(oroshi_prompt_character)'
 RPROMPT=''
 function get_RPROMPT() {
   echo -n "$(oroshi_prompt_ruby)"
@@ -72,7 +72,7 @@ function oroshi_prompt_path() {
 
   # Write in red for unwritable paths
   local color=$COLOR[green]
-  [[ ! -w $PWD ]] && $color=$COLOR[red]
+  [[ ! -w $PWD ]] && color=$COLOR[red]
 
   echo "%F{$color}${promptPath}%f"
 }
@@ -89,7 +89,7 @@ function oroshi_prompt_git_flags() {
   git stash show &>/dev/null && echo -n "%F{$COLOR[pink8]} %f"
   git-rebase-inprogress && echo -n "%F{$COLOR[red6]} %f"
 
-  echo "$(oroshi_prompt_git_dirty)"
+  echo " $(oroshi_prompt_git_dirty)"
 }
 # }}}
 # Git: Dirty {{{
@@ -273,33 +273,35 @@ function chpwd() {
 }
 # }}}
 
-# # Highlighting as I type {{{
+# Highlighting as I type {{{
 # source ~/.oroshi/config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
-# ZSH_HIGHLIGHT_STYLES[default]="fg=$promptColor[commandText]"
-# ZSH_HIGHLIGHT_STYLES[builtin]="fg=$promptColor[commandCommand]"
-# ZSH_HIGHLIGHT_STYLES[command]="fg=$promptColor[commandCommand]"
-# ZSH_HIGHLIGHT_STYLES[alias]="fg=$promptColor[commandAlias]"
-# ZSH_HIGHLIGHT_STYLES[function]="fg=$promptColor[commandAlias]"
-# ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=$promptColor[commandError]"
-# ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=$promptColor[commandKeyword]"
-# ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="fg=$promptColor[commandArgument]"
-# ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="fg=$promptColor[commandArgument]"
-# ZSH_HIGHLIGHT_STYLES[back-quoted-argument]="fg=$promptColor[commandString]"
-# ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=$promptColor[commandString]"
-# ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=$promptColor[commandString]"
-# ZSH_HIGHLIGHT_STYLES[commandseparator]="fg=$promptColor[commandSeparator]"
-# ZSH_HIGHLIGHT_STYLES[path]="fg=$promptColor[commandPath]"
-# ZSH_HIGHLIGHT_STYLES[path_prefix]="fg=$promptColor[commandPathIncomplete]"
+# ZSH_HIGHLIGHT_STYLES[default]="fg=$COLOR[white]"
+# ZSH_HIGHLIGHT_STYLES[commandseparator]="fg=$COLOR[gray]"
+# ZSH_HIGHLIGHT_STYLES[builtin]="fg=$COLOR[yellow]"
+# ZSH_HIGHLIGHT_STYLES[alias]="fg=$COLOR[yellow]"
+# ZSH_HIGHLIGHT_STYLES[command]="fg=$COLOR[yellow]"
+# ZSH_HIGHLIGHT_STYLES[function]="fg=$COLOR[yellow]"
+
+# ZSH_HIGHLIGHT_STYLES[path]="fg=$COLOR[green]"
+# ZSH_HIGHLIGHT_STYLES[path_prefix]="fg=$COLOR[green5]"
+# ZSH_HIGHLIGHT_STYLES[path_approx]="fg=$COLOR[green9]"
+
+# ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=$COLOR[gray]"
+# ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=$COLOR[green]"
+# ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="fg=$COLOR[orange4]"
+# ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="fg=$COLOR[orange4]"
+# ZSH_HIGHLIGHT_STYLES[back-quoted-argument]="fg=$COLOR[red9]"
+# ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=$COLOR[blue9]"
+# ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=$COLOR[yellow9]"
 # ZSH_HIGHLIGHT_STYLES[precommand]=none
 # ZSH_HIGHLIGHT_STYLES[hashed-command]=none
-# ZSH_HIGHLIGHT_STYLES[path_approx]=none
 # ZSH_HIGHLIGHT_STYLES[globbing]=none
 # ZSH_HIGHLIGHT_STYLES[history-expansion]=none
 # ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=none
 # ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=none
 # ZSH_HIGHLIGHT_STYLES[assign]=none
-# # }}}
+# }}}
 
 local DEBUG_ENDTIME=$(($(date +%s%N)/1000000))
 [[ $ZSH_DEBUG == 1 ]] && echo "[debug]: ${0:t}: $(($DEBUG_ENDTIME - $DEBUG_STARTTIME))ms"
