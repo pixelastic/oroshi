@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
-# Allow finding of a specific session through fuzzy matching
+# frozen_string_literal: true
 
+# Allow finding of a specific session through fuzzy matching
 class TmuxFuzzySession
   # Getting a structure representing all the info we need about the current
   # sessions and windows
@@ -9,7 +10,7 @@ class TmuxFuzzySession
     structure = {}
     raw.each_line do |line|
       session, index, window = line.strip.split(':')
-      structure[session] = {} unless structure.has_key?(session)
+      structure[session] = {} unless structure.key?(session)
       structure[session][window] = index
     end
     structure
@@ -26,7 +27,7 @@ class TmuxFuzzySession
 
   # Getting the icon for a specific session/window
   def icon(name)
-    `~/.oroshi/config/tmux/helper-get-icon #{name}`.strip
+    `~/.oroshi/scripts/bin/tmux-status-symbol #{name}`.strip
   end
 
   # Getting a list of sessions, to be sent to fzf
@@ -35,13 +36,13 @@ class TmuxFuzzySession
     output = []
     structure.each do |session, windows|
       icon_session = icon(session)
-      icon_session = " " if icon_session.empty?
+      icon_session = ' ' if icon_session.empty?
       session = session.rjust(width, ' ')
       session = "#{icon_session} #{session}"
 
       windows.each do |window, _|
         icon_window = icon(window)
-        icon_window = " " if icon_window.empty?
+        icon_window = ' ' if icon_window.empty?
         output << "#{session}: #{icon_window} #{window}"
       end
     end
@@ -72,7 +73,7 @@ class TmuxFuzzySession
 
   def run
     # Make it full screen if not yet full screen
-    need_zoom = !system("tmux-is-zoomed")
+    need_zoom = !system('tmux-is-zoomed')
     `tmux resize-pane -Z` if need_zoom
 
     structure = session_structure

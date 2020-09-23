@@ -145,13 +145,13 @@ call s:Highlight('oroshi_DiffLine', 'darkyellow')
 
 call s:Highlight('oroshi_GitBranch', 'orange', 'none', 'bold')
 
-call s:Highlight('oroshi_UIModeNormal', 'black', 'darkgrey', 'bold')
+call s:Highlight('oroshi_UIModeNormal', 'black', 'darkgrey')
 call s:Highlight('oroshi_ModeNormal', 'white', 'black')
-call s:Highlight('oroshi_UIModeInsert', 'darkyellow', 'darkgrey', 'bold')
+call s:Highlight('oroshi_UIModeInsert', 'darkyellow', 'darkgrey')
 call s:Highlight('oroshi_ModeInsert', 'black', 'darkyellow', 'bold')
-call s:Highlight('oroshi_UIModeVisual', 'darkblue', 'darkgrey', 'bold')
+call s:Highlight('oroshi_UIModeVisual', 'darkblue', 'darkgrey')
 call s:Highlight('oroshi_ModeVisual', 'lightgrey', 'darkblue', 'bold')
-call s:Highlight('oroshi_UIModeSearch', 'orange', 'darkgrey', 'bold')
+call s:Highlight('oroshi_UIModeSearch', 'orange', 'darkgrey')
 call s:Highlight('oroshi_ModeSearch', 'black', 'orange', 'bold')
 " }}}
 

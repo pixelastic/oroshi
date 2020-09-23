@@ -39,7 +39,7 @@ function! OroshiStatusLine()
   " Filename coloring based on readonly, modified and saved {{{
   let filepath= expand('%:p:h:t').'/'.expand('%:t')
   let sl .= '%#oroshi_UIError#'
-  let sl .= '%{&readonly == 1 ? "'.filepath.' ⭤ " : ""}'
+  let sl .= '%{&readonly == 1 ? "'.filepath.'  " : ""}'
   let sl .= '%*'
   let sl .= '%#oroshi_UINotice#'
   let sl .= '%{&readonly == 0 && &modified == 1 ? "'.filepath.' " : ""}'
@@ -60,7 +60,7 @@ function! OroshiStatusLine()
   let sl .= '%*'
   " }}}
   " Syntastic status {{{
-  let g:syntastic_stl_format='%E{ :%e }%W{ :%w }'
+  let g:syntastic_stl_format='%E{ :%e }%W{ :%w }'
   let sl .= '%#oroshi_UIError#'
   let sl .= '%e%{SyntasticStatuslineFlag()}'
   let sl .= '%*'
@@ -83,7 +83,7 @@ function! OroshiStatusLine()
   let sl .= '%*'
   " }}}
   " Spellchecking {{{
-  let sl .= '%{&spell == 1 ? "  ".&spelllang." " : ""}'
+  let sl .= '%{&spell == 1 ? "⸮  ".&spelllang." " : ""}'
   " }}}
   " Foldmarker {{{
   let sl .= '%{&foldmethod == "manual" ? "M " : ""}'
@@ -92,11 +92,11 @@ function! OroshiStatusLine()
   let sl .= '%{&foldmethod == "indent" ? "▸ " : ""}'
   " }}}
   " Filetype {{{
-  let sl .= '⭢⭣ %{&filetype != "" ? &filetype : "???"} '
+  let sl .= ' %{&filetype != "" ? &filetype : "???"} '
   " }}}
   " Ruler {{{
-  let sl .= " ⭡"
-  let sl.= " 0x%2.B" " current char
+  let sl .= "  "
+  let sl.= "0x%2.B" " current char
   let sl.=" %2.c/%2.{&textwidth}" " current colum / max columns
   let sl.=" %3l/%3L" " current line / max line
   let sl.=" %3p%%" " percentage in file

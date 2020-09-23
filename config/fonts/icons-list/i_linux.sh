@@ -1,4 +1,4 @@
-i='' i_linux_alpine=$i
+i=' ' i_linux_alpine=$i
 i='' i_linux_aosc=$i
 i='' i_linux_apple=$i
 i='' i_linux_archlinux=$i
@@ -14,8 +14,8 @@ i='' i_linux_freebsd=$i
 i='' i_linux_gentoo=$i
 i='' i_linux_linuxmint=$i
 i='' i_linux_linuxmint_inverse=$i
-i='' i_linux_mageia=$i
-i='' i_linux_mandriva=$i
+i=' ' i_linux_mageia=$i
+i=' ' i_linux_mandriva=$i
 i='' i_linux_manjaro=$i
 i='' i_linux_nixos=$i
 i='' i_linux_opensuse=$i

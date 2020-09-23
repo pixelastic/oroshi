@@ -2116,4 +2116,4 @@ i='﵂' i_mdi_vuejs=$i
 i='﵃' i_mdi_xamarin=$i
 i='﵄' i_mdi_xamarin_outline=$i
 i='﵅' i_mdi_youtube_creator_studio=$i
-i='﵆' i_mdi_youtube_gaming=$i
+i='﵆ ' i_mdi_youtube_gaming=$i

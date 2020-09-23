@@ -73,14 +73,14 @@ promptHostname=$(colorize '%m' 'hostname')
 # - Will prepend a ! and display it in red if not writable
 function oroshi_prompt_path() {
   local promptPath="$(print -D $PWD)"
-  promptPath=${promptPath:s/~/ }
+  promptPath=${promptPath:s/~/ }
   local splitPath
   splitPath=(${(s:/:)promptPath})
 
   # Keep only first and last dirs if too long
   if [[ ${#splitPath[*]} -ge 4 ]]; then
-    promptPath="/${splitPath[1]}/…/${splitPath[-2]}/${splitPath[-1]}/"
-    promptPath=${promptPath:s/\// }
+    promptPath="/${splitPath[1]}/…${splitPath[-2]}/${splitPath[-1]}/"
+    promptPath=${promptPath:s/\//}
   fi
 
   local pathColor='pathWritable'
@@ -107,14 +107,14 @@ function oroshi_prompt_git_left() {
 # Git: Submodule {{{
 function oroshi_prompt_git_submodule() {
   if git is-submodule; then
-    echo $(colorize '  ' 'submodule')
+    echo $(colorize '  ' 'submodule')
   fi
 }
 # }}}
 # Git: Stash {{{
 function oroshi_prompt_git_stash() {
   if git stash show &>/dev/null; then
-    echo $(colorize '  ' 'stash')
+    echo $(colorize '  ' 'stash')
   fi
 }
 # }}}
@@ -126,7 +126,7 @@ function oroshi_prompt_git_rebase_left() {
   local currentStep="$(git-rebase-step-current)"
   local maxStep="$(git-rebase-step-max)"
 
-  echo $(colorize " ${currentStep}/${maxStep} " 'rebaseInProgress')
+  echo $(colorize "  ${currentStep}/${maxStep} " 'rebaseInProgress')
 }
 # }}}
 # Git: Dirty {{{
@@ -173,7 +173,7 @@ function oroshi_prompt_ruby() {
   if [[ $defaultVersion == $currentVersion ]]; then
     return
   fi
-  echo $(colorize " $currentVersion " 'rubyVersion')
+  echo $(colorize "  $currentVersion " 'rubyVersion')
 }
 # }}}
 # Python {{{
@@ -205,7 +205,7 @@ function oroshi_prompt_node() {
   # This dir has a specific version defined, but we're not following it
   expectedVersion="$(cat `nvm_find_nvmrc`)"
   if version-compare "$currentVersion < $expectedVersion"; then
-    echo $(colorize "⬢ $currentVersion ($expectedVersion) " 'nodeVersionError')
+    echo $(colorize " $currentVersion ($expectedVersion) " 'nodeVersionError')
     return
   fi
 
@@ -215,7 +215,7 @@ function oroshi_prompt_node() {
   fi
 
   # Current version not the default one
-  echo $(colorize "⬢ $currentVersion " 'nodeVersion')
+  echo $(colorize " $currentVersion " 'nodeVersion')
 }
 # }}}
 # Node (linked modules) {{{
@@ -224,7 +224,7 @@ function oroshi_prompt_node_links() {
   if ! yarn-has-links; then
     return
   fi
-  echo $(colorize "  " 'nodeLinks')
+  echo $(colorize "  " 'nodeLinks')
 }
 # }}}
 # }}}
@@ -259,9 +259,9 @@ function oroshi_prompt_git_rebase_right() {
   local transplantColor="$(oroshi_prompt_git_branch_color $transplantBranch)"
 
 
-  echo -n $(colorize '[trunk]' 'rebaseTrunk')
-  echo -n $(colorize "[${ontoBranch}]" $ontoColor)
-  echo -n $(colorize "[${transplantBranch}]" $transplantColor)
+  echo -n $(colorize ' [trunk]' 'rebaseTrunk')
+  echo -n $(colorize " [${ontoBranch}]" $ontoColor)
+  echo -n $(colorize "[${transplantBranch}]" $transplantColor)
 }
 # }}}
 # Git: Tag {{{
@@ -277,7 +277,7 @@ function oroshi_prompt_git_tag() {
     tagColor='tagCurrent'
     tagName="$tagName "
   else
-    tagName=" $tagName "
+    tagName=" $tagName "
   fi
 
   echo $(colorize $tagName $tagColor)
@@ -309,7 +309,7 @@ function oroshi_prompt_git_remote() {
     remoteColor='remoteAlgolia'
   fi
 
-  echo $(colorize " $remoteName " $remoteColor)
+  echo $(colorize " $remoteName " $remoteColor)
 }
 # }}}
 # Git: Branch {{{
@@ -323,14 +323,14 @@ function oroshi_prompt_git_branch() {
 
   # In detached head, we stop now
   if git-branch-gone; then
-    branchName="  $branchName"
+    branchName=" $branchName"
     echo $(colorize $branchName 'branchGone')
     return
   fi
   
   # Upstream is gone
   if [[ $branchName = 'HEAD' ]]; then
-    branchName="$(git commit-current) "
+    branchName="$(git commit-current)  "
     echo $(colorize $branchName 'branchDetached')
     return
   fi
@@ -387,16 +387,16 @@ function oroshi_prompt_git_push_pull() {
 
   case "$remoteStatus" in
     $EXIT_CODE_AHEAD)
-      echo " "
+      echo " "
       ;;
     $EXIT_CODE_BEHIND)
-      echo " "
+      echo " "
       ;;
     $EXIT_CODE_DIVERGED)
       echo " "
       ;;
     $EXIT_CODE_NEVER_PUSHED)
-      echo ""
+      echo " "
       ;;
   esac
 }
