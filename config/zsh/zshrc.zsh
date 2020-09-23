@@ -16,7 +16,7 @@ export CHROME_BIN=/usr/bin/google-chrome
 export BROWSER=/usr/bin/google-chrome
 export LANG=en_US.UTF-8
 # This needs to be set to the same value as the default-terminal in tmux.conf
-export TERM=xterm-kitty
+export TERM=xterm-256color
 path=(
   # yarn global executable is here
   ~/.yarn/bin 

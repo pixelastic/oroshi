@@ -7,7 +7,8 @@ promptinit
 PROMPT='$(oroshi_prompt_path)$(oroshi_prompt_node_links)$(oroshi_prompt_git_left)$(oroshi_prompt_character)'
 RPROMPT=''
 function get_RPROMPT() {
-  echo "$(oroshi_prompt_ruby)$(oroshi_prompt_python)$(oroshi_prompt_node)$(oroshi_prompt_git_right)"
+  echo "$(oroshi_prompt_git_right)"
+  # echo "$(oroshi_prompt_ruby)$(oroshi_prompt_python)$(oroshi_prompt_node)$(oroshi_prompt_git_right)"
 }
 
 # Asynchronous right prompt {{{
@@ -50,22 +51,6 @@ function precmd() {
 }
 # }}}
 
-# Colorize {{{
-function colorize() {
-  echo "$FG[$promptColor[$2]]$1$FX[reset]"
-}
-# }}}
-
-# UNUSED:
-# User {{{
-# Note: Not currently used
-promptUsername=$(colorize '%n' 'username')
-# }}}
-# Hostname {{{
-# Note: Not currently used
-promptHostname=$(colorize '%m' 'hostname')
-# }}}
-
 # LEFT
 # Path {{{
 # This will return a formatted path.
@@ -83,12 +68,11 @@ function oroshi_prompt_path() {
     promptPath=${promptPath:s/\//}
   fi
 
-  local pathColor='pathWritable'
-  if [[ ! -w $PWD ]]; then
-    pathColor='pathNotWritable'
-  fi
+  # Write in red for unwritable paths
+  local color=$FG[green]
+  [[ ! -w $PWD ]] && $color="$BOLD$FG[red]"
 
-  echo $(colorize $promptPath $pathColor)
+  echo "$FG[green]${promptPath}$RESET"
 }
 # }}}
 # Git (left) {{{
@@ -107,14 +91,14 @@ function oroshi_prompt_git_left() {
 # Git: Submodule {{{
 function oroshi_prompt_git_submodule() {
   if git is-submodule; then
-    echo $(colorize '  ' 'submodule')
+    echo "$FG[yellow]  $RESET"
   fi
 }
 # }}}
 # Git: Stash {{{
 function oroshi_prompt_git_stash() {
   if git stash show &>/dev/null; then
-    echo $(colorize '  ' 'stash')
+    echo "$FG[teal]  $RESET"
   fi
 }
 # }}}
@@ -126,37 +110,37 @@ function oroshi_prompt_git_rebase_left() {
   local currentStep="$(git-rebase-step-current)"
   local maxStep="$(git-rebase-step-max)"
 
-  echo $(colorize "  ${currentStep}/${maxStep} " 'rebaseInProgress')
+  echo "$FG[teal]  ${currentStep}/${maxStep} $RESET"
 }
 # }}}
 # Git: Dirty {{{
 function oroshi_prompt_git_dirty() {
   # Staged files
   if git-directory-has-staged-files; then
-    echo $(colorize '±' 'repoStaged')
+    echo "$FG[purple]±$RESET"
     return
   fi
 
   # Modified, deleted or newly added files
   if git-directory-is-dirty; then
-    echo $(colorize '±' 'repoDirty')
+    echo "$FG[red]±$RESET"
     return
   fi
 
-  echo $(colorize '±' 'repoClean')
+  echo "$FG[green]±$RESET"
 }
 # }}}
 # Prompt char {{{
 function oroshi_prompt_character() {
   if [[ $OROSHI_LAST_COMMAND_EXIT = 1 ]]; then
-    echo $(colorize ' ❯ '  'lastCommandFailed')
+    echo "$BOLD$FG[red] ❯ $RESET"
     return;
   fi
   if [[ $OROSHI_LAST_COMMAND_EXIT > 1 ]] ; then
-    echo $(colorize ' ❯ '  'lastCommandFailedWeird')
+    echo "$FG[yellow] ❯ $RESET"
     return
   fi
-  echo $(colorize ' ❯ ' 'lastCommandSuccess');
+  echo "$FG[green] ❯ $RESET"
 }
 # }}}
 
@@ -173,20 +157,20 @@ function oroshi_prompt_ruby() {
   if [[ $defaultVersion == $currentVersion ]]; then
     return
   fi
-  echo $(colorize "  $currentVersion " 'rubyVersion')
+  echo "$FG[pink]  $currentVersion $RESET"
 }
 # }}}
 # Python {{{
 function oroshi_prompt_python() {
   # In a global pyenv environment
-  [[ ! $PYENV_VERSION == "" ]] && display="🐍 $PYENV_VERSION "
+  [[ ! $PYENV_VERSION == "" ]] && display=" $PYENV_VERSION "
   # In a local pipenv shell (the [] help remember to press Ctrl-D to get out)
-  [[ $PIPENV_ACTIVE == "1" ]] && display="[🐍 $(python-version)] "
+  [[ $PIPENV_ACTIVE == "1" ]] && display="[ $(python-version)] "
 
   if [[ $display == '' ]]; then
     return
   fi
-  echo $(colorize "$display" 'pythonVersion')
+  echo "$FG[green9]${display}$RESET"
 }
 # }}}
 # Node {{{
@@ -205,7 +189,7 @@ function oroshi_prompt_node() {
   # This dir has a specific version defined, but we're not following it
   expectedVersion="$(cat `nvm_find_nvmrc`)"
   if version-compare "$currentVersion < $expectedVersion"; then
-    echo $(colorize " $currentVersion ($expectedVersion) " 'nodeVersionError')
+    echo "$FG[red] $currentVersion ($expectedVersion) $RESET"
     return
   fi
 
@@ -215,7 +199,7 @@ function oroshi_prompt_node() {
   fi
 
   # Current version not the default one
-  echo $(colorize " $currentVersion " 'nodeVersion')
+  echo "$FG[yellow] $currentVersion $RESET"
 }
 # }}}
 # Node (linked modules) {{{
@@ -224,7 +208,7 @@ function oroshi_prompt_node_links() {
   if ! yarn-has-links; then
     return
   fi
-  echo $(colorize "  " 'nodeLinks')
+  echo "$FG[blue]  $RESET"
 }
 # }}}
 # }}}
@@ -234,16 +218,17 @@ function oroshi_prompt_git_right() {
     return
   fi
 
-  # Is actually in the middle of a rebase
-  if git-rebase-inprogress; then
-    echo "$(oroshi_prompt_git_rebase_right)"
-    return
-  fi
+  # # Is actually in the middle of a rebase
+  # if git-rebase-inprogress; then
+  #   echo "$(oroshi_prompt_git_rebase_right)"
+  #   return
+  # fi
 
   tag=`oroshi_prompt_git_tag`
-  remote=`oroshi_prompt_git_remote`
-  branch=`oroshi_prompt_git_branch`
-  echo "${tag}${remote}${branch}"
+  echo $tag
+  # remote=`oroshi_prompt_git_remote`
+  # branch=`oroshi_prompt_git_branch`
+  # echo "${tag}${remote}${branch}"
 }
 # }}}
 # Git: Rebase {{{
@@ -259,9 +244,9 @@ function oroshi_prompt_git_rebase_right() {
   local transplantColor="$(oroshi_prompt_git_branch_color $transplantBranch)"
 
 
-  echo -n $(colorize ' [trunk]' 'rebaseTrunk')
-  echo -n $(colorize " [${ontoBranch}]" $ontoColor)
-  echo -n $(colorize "[${transplantBranch}]" $transplantColor)
+  echo -n "$FG[grey] [trunk]$RESET"
+  echo -n "$FG[orange] [${ontoBranch}]$RESET"
+  echo -n "$FG[green][${transplantBranch}]$RESET"
 }
 # }}}
 # Git: Tag {{{
@@ -280,7 +265,7 @@ function oroshi_prompt_git_tag() {
     tagName=" $tagName "
   fi
 
-  echo $(colorize $tagName $tagColor)
+  echo -n "$FG[gray]$tagName$RESET"
 }
 # }}}
 # Git: Remote {{{
@@ -293,23 +278,13 @@ function oroshi_prompt_git_remote() {
     return;
   fi
 
-  if [[ $remoteName == 'heroku' ]]; then
-    remoteColor='remoteHeroku'
-  fi
-  if [[ $remoteName == 'github' ]]; then
-    remoteColor='remoteGithub'
-  fi
-  if [[ $remoteName == 'pixelastic' ]]; then
-    remoteColor='remotePixelastic'
-  fi
-  if [[ $remoteName == 'upstream' ]]; then
-    remoteColor='remoteUpstream'
-  fi
-  if [[ $remoteName == 'algolia' ]]; then
-    remoteColor='remoteAlgolia'
-  fi
+  local color="blue";
+  [[ $remoteName == 'github' ]] && color=$FG[blue2]
+  [[ $remoteName == 'heroku' ]] && color=$FG[heroku]
+  [[ $remoteName == 'pixelastic' ]] && color=$FG[green3]
+  [[ $remoteName == 'upstream' ]] && color=$FG[orange]
 
-  echo $(colorize " $remoteName " $remoteColor)
+  echo "${color} $remoteName$RESET"
 }
 # }}}
 # Git: Branch {{{
@@ -323,19 +298,18 @@ function oroshi_prompt_git_branch() {
 
   # In detached head, we stop now
   if git-branch-gone; then
-    branchName=" $branchName"
-    echo $(colorize $branchName 'branchGone')
+    echo "$FG[red] ${branchName}$RESET"
     return
   fi
   
   # Upstream is gone
   if [[ $branchName = 'HEAD' ]]; then
     branchName="$(git commit-current)  "
-    echo $(colorize $branchName 'branchDetached')
+    echo "$FG[red9]${branchName}$RESET"
     return
   fi
 
-  local branchColor=$(oroshi_prompt_git_branch_color $branchName)
+  local branchColor=oroshi_prompt_git_branch_color($branchName)
 
   # Adding push/pull indicator
   local pushPullSymbol="$(oroshi_prompt_git_push_pull)"
@@ -343,40 +317,19 @@ function oroshi_prompt_git_branch() {
     branchName="${pushPullSymbol} ${branchName}"
   fi
 
-  echo $(colorize $branchName $branchColor)
+  echo "$FG[$branchColor]$branchName$RESET"
 }
 # Get the name of the color based on the name of the branch
 function oroshi_prompt_git_branch_color() {
-  case "$1" in
-    master)
-      echo 'branchMaster'
-      ;;
-    main)
-      echo 'branchMain'
-      ;;
-    develop)
-      echo 'branchDevelop'
-      ;;
-    gh-pages)
-      echo 'branchGhPages'
-      ;;
-    heroku)
-      echo 'branchHeroku'
-      ;;
-    *)
-      echo 'branchDefault'
-    ;;
-  esac
+  [[ $1 == "master" ]] && return "blue";
+  [[ $1 == "main" ]] && return "blue";
+  [[ $1 == "develop" ]] && return "yellow";
+  [[ $1 == "heroku" ]] && return "purple";
+  return "orange"
 }
 # }}}
 # Git: Push/Pull {{{
 function oroshi_prompt_git_push_pull() {
-  # Asciinema recording will not know our custom glyphs, so we'd better remove
-  # them when recording
-  if [[ $ASCIINEMA_REC = 1 ]]; then
-    return
-  fi
-
   local EXIT_CODE_IDENTICAL=0
   local EXIT_CODE_AHEAD=1
   local EXIT_CODE_BEHIND=2
@@ -409,33 +362,33 @@ function chpwd() {
 }
 # }}}
 
-# Highlighting as I type {{{
-source ~/.oroshi/config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
-ZSH_HIGHLIGHT_STYLES[default]="fg=$promptColor[commandText]"
-ZSH_HIGHLIGHT_STYLES[builtin]="fg=$promptColor[commandCommand]"
-ZSH_HIGHLIGHT_STYLES[command]="fg=$promptColor[commandCommand]"
-ZSH_HIGHLIGHT_STYLES[alias]="fg=$promptColor[commandAlias]"
-ZSH_HIGHLIGHT_STYLES[function]="fg=$promptColor[commandAlias]"
-ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=$promptColor[commandError]"
-ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=$promptColor[commandKeyword]"
-ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="fg=$promptColor[commandArgument]"
-ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="fg=$promptColor[commandArgument]"
-ZSH_HIGHLIGHT_STYLES[back-quoted-argument]="fg=$promptColor[commandString]"
-ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=$promptColor[commandString]"
-ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=$promptColor[commandString]"
-ZSH_HIGHLIGHT_STYLES[commandseparator]="fg=$promptColor[commandSeparator]"
-ZSH_HIGHLIGHT_STYLES[path]="fg=$promptColor[commandPath]"
-ZSH_HIGHLIGHT_STYLES[path_prefix]="fg=$promptColor[commandPathIncomplete]"
-ZSH_HIGHLIGHT_STYLES[precommand]=none
-ZSH_HIGHLIGHT_STYLES[hashed-command]=none
-ZSH_HIGHLIGHT_STYLES[path_approx]=none
-ZSH_HIGHLIGHT_STYLES[globbing]=none
-ZSH_HIGHLIGHT_STYLES[history-expansion]=none
-ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=none
-ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=none
-ZSH_HIGHLIGHT_STYLES[assign]=none
-# }}}
+# # Highlighting as I type {{{
+# source ~/.oroshi/config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
+# ZSH_HIGHLIGHT_STYLES[default]="fg=$promptColor[commandText]"
+# ZSH_HIGHLIGHT_STYLES[builtin]="fg=$promptColor[commandCommand]"
+# ZSH_HIGHLIGHT_STYLES[command]="fg=$promptColor[commandCommand]"
+# ZSH_HIGHLIGHT_STYLES[alias]="fg=$promptColor[commandAlias]"
+# ZSH_HIGHLIGHT_STYLES[function]="fg=$promptColor[commandAlias]"
+# ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=$promptColor[commandError]"
+# ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=$promptColor[commandKeyword]"
+# ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="fg=$promptColor[commandArgument]"
+# ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="fg=$promptColor[commandArgument]"
+# ZSH_HIGHLIGHT_STYLES[back-quoted-argument]="fg=$promptColor[commandString]"
+# ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=$promptColor[commandString]"
+# ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=$promptColor[commandString]"
+# ZSH_HIGHLIGHT_STYLES[commandseparator]="fg=$promptColor[commandSeparator]"
+# ZSH_HIGHLIGHT_STYLES[path]="fg=$promptColor[commandPath]"
+# ZSH_HIGHLIGHT_STYLES[path_prefix]="fg=$promptColor[commandPathIncomplete]"
+# ZSH_HIGHLIGHT_STYLES[precommand]=none
+# ZSH_HIGHLIGHT_STYLES[hashed-command]=none
+# ZSH_HIGHLIGHT_STYLES[path_approx]=none
+# ZSH_HIGHLIGHT_STYLES[globbing]=none
+# ZSH_HIGHLIGHT_STYLES[history-expansion]=none
+# ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=none
+# ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=none
+# ZSH_HIGHLIGHT_STYLES[assign]=none
+# # }}}
 
 local DEBUG_ENDTIME=$(($(date +%s%N)/1000000))
 [[ $ZSH_DEBUG == 1 ]] && echo "[debug]: ${0:t}: $(($DEBUG_ENDTIME - $DEBUG_STARTTIME))ms"

@@ -76,8 +76,6 @@ function rmv {
 }
 _scp () { local service=scp; _ssh "$@" }
 
-# Scrollable colors
-alias spectrum='spectrum L'
 # Prefix a date to a file
 alias prd='prefix-date'
 # Fix previous command

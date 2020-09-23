@@ -21,7 +21,7 @@ Plug 'vim-scripts/argtextobj.vim'
 " }}}
 " Language specific syntax {{{
 Plug 'StanAngeloff/php.vim'
-Plug 'ap/vim-css-color'
+" Plug 'ap/vim-css-color'
 Plug 'avakhov/vim-yaml'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'cespare/vim-toml'

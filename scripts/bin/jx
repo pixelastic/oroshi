@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+# Extract specific keys of a JSON file
+if [[ $# == '0' ]]; then
+  echo 'Usage:'
+  echo '  jx data.json {selector}'
+  exit 0
+fi
+
+local filepath="$1"
+local selector="$2"
+
+# If first argument is not a file, we assume we're piping content
+if [[ ! -f $filepath ]]; then
+  input="-"
+  selector="$1"
+fi
+
+cat $filepath | jq -r ".$selector"
