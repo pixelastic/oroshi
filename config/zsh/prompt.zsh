@@ -1,14 +1,16 @@
 local DEBUG_STARTTIME=$(($(date +%s%N)/1000000))
-# init
 setopt PROMPT_SUBST
 autoload -U promptinit
 promptinit
 
-PROMPT='$(oroshi_prompt_path)$(oroshi_prompt_node_links)$(oroshi_prompt_git_left)$(oroshi_prompt_character)'
+which nvm &>/dev/null && hasNvm=1
+
+PROMPT='$(oroshi_prompt_path) $(oroshi_prompt_node_flags)$(oroshi_prompt_git_flags)$(oroshi_prompt_character)'
 RPROMPT=''
 function get_RPROMPT() {
-  echo "$(oroshi_prompt_git_right)"
-  # echo "$(oroshi_prompt_ruby)$(oroshi_prompt_python)$(oroshi_prompt_node)$(oroshi_prompt_git_right)"
+  echo -n "$(oroshi_prompt_ruby)"
+  echo -n "$(oroshi_prompt_node)"
+  echo -n "$(oroshi_prompt_git_right)"
 }
 
 # Asynchronous right prompt {{{
@@ -69,174 +71,135 @@ function oroshi_prompt_path() {
   fi
 
   # Write in red for unwritable paths
-  local color=$FG[green]
-  [[ ! -w $PWD ]] && $color="$BOLD$FG[red]"
+  local color=$COLOR[green]
+  [[ ! -w $PWD ]] && $color=$COLOR[red]
 
-  echo "$FG[green]${promptPath}$RESET"
+  echo "%F{$color}${promptPath}%f"
 }
 # }}}
-# Git (left) {{{
+# Git  {{{
 # Will display informations about the current git repository (if any):
 # - If in a submodule
 # - If has changes stashes
-# - If in a rebase
 # - If the repo is dirty
-function oroshi_prompt_git_left() {
-  if ! git-is-repository; then
-    return
-  fi
-  echo " $(oroshi_prompt_git_submodule)$(oroshi_prompt_git_stash)$(oroshi_prompt_git_rebase_left)$(oroshi_prompt_git_dirty)"
-}
-# }}}
-# Git: Submodule {{{
-function oroshi_prompt_git_submodule() {
-  if git is-submodule; then
-    echo "$FG[yellow]  $RESET"
-  fi
-}
-# }}}
-# Git: Stash {{{
-function oroshi_prompt_git_stash() {
-  if git stash show &>/dev/null; then
-    echo "$FG[teal]  $RESET"
-  fi
-}
-# }}}
-# Git: Rebase {{{
-function oroshi_prompt_git_rebase_left() {
-  if ! git-rebase-inprogress; then
-    return
-  fi
-  local currentStep="$(git-rebase-step-current)"
-  local maxStep="$(git-rebase-step-max)"
+function oroshi_prompt_git_flags() {
+  git-is-repository || return
 
-  echo "$FG[teal]  ${currentStep}/${maxStep} $RESET"
+  git-is-submodule && echo -n "%F{$COLOR[yellow]} %f"
+  git stash show &>/dev/null && echo -n "%F{$COLOR[pink8]} %f"
+  git-rebase-inprogress && echo -n "%F{$COLOR[red6]} %f"
+
+  echo "$(oroshi_prompt_git_dirty)"
 }
 # }}}
 # Git: Dirty {{{
 function oroshi_prompt_git_dirty() {
   # Staged files
   if git-directory-has-staged-files; then
-    echo "$FG[purple]±$RESET"
+    echo "%F{$COLOR[purple]}ﰖ%f"
     return
   fi
 
   # Modified, deleted or newly added files
   if git-directory-is-dirty; then
-    echo "$FG[red]±$RESET"
+    echo "%F{$COLOR[red]}ﰖ%f"
     return
   fi
 
-  echo "$FG[green]±$RESET"
+  echo "%F{$COLOR[green]}ﰖ%f"
+}
+# }}}
+# Node {{{
+# - If has linked modules
+function oroshi_prompt_node_flags() {
+  yarn-has-links && echo -n "%F{$COLOR[blue7]} %f"
 }
 # }}}
 # Prompt char {{{
 function oroshi_prompt_character() {
   if [[ $OROSHI_LAST_COMMAND_EXIT = 1 ]]; then
-    echo "$BOLD$FG[red] ❯ $RESET"
+    echo "%B%F{$COLOR[red]} ❯ %f%b"
     return;
   fi
   if [[ $OROSHI_LAST_COMMAND_EXIT > 1 ]] ; then
-    echo "$FG[yellow] ❯ $RESET"
+    echo "%F{$COLOR[yellow]} ❯ %f"
     return
   fi
-  echo "$FG[green] ❯ $RESET"
+  echo "%F{$COLOR[green]} ❯ %f"
 }
 # }}}
 
 # RIGHT:
 # Ruby {{{
 function oroshi_prompt_ruby() {
-  # No rvm
-  if ! which rvm &>/dev/null; then
-    return
-  fi
-  defaultVersion="$(ruby-version-default)"
-  currentVersion="$(rvm-prompt v)"
-  # Default version
-  if [[ $defaultVersion == $currentVersion ]]; then
-    return
-  fi
-  echo "$FG[pink]  $currentVersion $RESET"
+  # TODO: Rewrite with rbenv instead of RVM
+  # # No rvm
+  # if ! which rvm &>/dev/null; then
+  #   return
+  # fi
+  # defaultVersion="$(ruby-version-default)"
+  # currentVersion="$(rvm-prompt v)"
+  # # Default version
+  # if [[ $defaultVersion == $currentVersion ]]; then
+  #   return
+  # fi
+  # echo "$FG[pink]  $currentVersion %f"
 }
 # }}}
 # Python {{{
+# Note: Currently unused
 function oroshi_prompt_python() {
-  # In a global pyenv environment
-  [[ ! $PYENV_VERSION == "" ]] && display=" $PYENV_VERSION "
-  # In a local pipenv shell (the [] help remember to press Ctrl-D to get out)
-  [[ $PIPENV_ACTIVE == "1" ]] && display="[ $(python-version)] "
+  # # In a global pyenv environment
+  # [[ ! $PYENV_VERSION == "" ]] && display=" $PYENV_VERSION "
+  # # In a local pipenv shell (the [] help remember to press Ctrl-D to get out)
+  # [[ $PIPENV_ACTIVE == "1" ]] && display="[ $(python-version)] "
 
-  if [[ $display == '' ]]; then
-    return
-  fi
-  echo "$FG[green9]${display}$RESET"
+  # if [[ $display == '' ]]; then
+  #   return
+  # fi
+  # echo "$FG[green9]${display}%f"
 }
 # }}}
 # Node {{{
-# - Nothing displayed if using the default node version
-# - Version in green with ⬢ if using a custom version
-# - Version in red with ⬢ if should use a specific version but is not
 function oroshi_prompt_node() {
   # No nvm
-  if ! which nvm &>/dev/null; then
-    return
-  fi
+  [ ! -v hasNvm ] && return
 
   currentVersion="$(nvm-version-current)"
-  defaultVersion="$(nvm version default | sed 's/v//')"
-
-  # This dir has a specific version defined, but we're not following it
   expectedVersion="$(cat `nvm_find_nvmrc`)"
-  if version-compare "$currentVersion < $expectedVersion"; then
-    echo "$FG[red] $currentVersion ($expectedVersion) $RESET"
-    return
-  fi
 
-  # We are using the default version, nothing to display
-  if [[ $currentVersion == $defaultVersion ]]; then
-    return
-  fi
+  # Stop if project has no version specified
+  [[ $expectedVersion = '' ]] && return
 
-  # Current version not the default one
-  echo "$FG[yellow] $currentVersion $RESET"
-}
-# }}}
-# Node (linked modules) {{{
-function oroshi_prompt_node_links() {
-  # No nvm
-  if ! yarn-has-links; then
+  # Not using the project specific version
+  if [[ $currentVersion != $expectedVersion ]]; then
+    echo "%F{$COLOR[red]} $currentVersion%f"
     return
   fi
-  echo "$FG[blue]  $RESET"
 }
 # }}}
 # }}}
 # Git (right) {{{
 function oroshi_prompt_git_right() {
-  if ! git-is-repository; then
+  git-is-repository || return
+
+  # Replace all with rebase information
+  if git-rebase-inprogress; then
+    echo "$(oroshi_prompt_git_rebase)"
     return
   fi
 
-  # # Is actually in the middle of a rebase
-  # if git-rebase-inprogress; then
-  #   echo "$(oroshi_prompt_git_rebase_right)"
-  #   return
-  # fi
-
-  tag=`oroshi_prompt_git_tag`
-  echo $tag
-  # remote=`oroshi_prompt_git_remote`
-  # branch=`oroshi_prompt_git_branch`
-  # echo "${tag}${remote}${branch}"
+  echo -n "$(oroshi_prompt_git_tag)"
+  echo -n "$(oroshi_prompt_git_remote)"
+  echo -n "$(oroshi_prompt_git_branch)"
 }
 # }}}
 # Git: Rebase {{{
-function oroshi_prompt_git_rebase_right() {
-  # No rebase in progress
-  if ! git-rebase-inprogress; then
-    return
-  fi
+function oroshi_prompt_git_rebase() {
+  local currentStep="$(git-rebase-step-current)"
+  local maxStep="$(git-rebase-step-max)"
+
+  echo -n "%B%F{$COLOR[red6]} ${currentStep}/${maxStep} %f%b"
 
   local ontoBranch="$(git-rebase-onto)"
   local ontoColor="$(oroshi_prompt_git_branch_color $ontoBranch)"
@@ -244,114 +207,62 @@ function oroshi_prompt_git_rebase_right() {
   local transplantColor="$(oroshi_prompt_git_branch_color $transplantBranch)"
 
 
-  echo -n "$FG[grey] [trunk]$RESET"
-  echo -n "$FG[orange] [${ontoBranch}]$RESET"
-  echo -n "$FG[green][${transplantBranch}]$RESET"
+  echo -n "%F{$COLOR[gray]}[trunk]%f"
+  echo -n "%F{$COLOR[$ontoColor]}[${ontoBranch}]%f"
+  echo -n "%F{$COLOR[$transplantColor]}[${transplantBranch}]%f"
 }
 # }}}
 # Git: Tag {{{
 function oroshi_prompt_git_tag() {
   local tagName="$(git tag-current)"
-  if [[ $tagName = '' ]]; then
-    return
-  fi
+  [[ $tagName = '' ]] && return
 
   # Check if commits have been added since last tag
-  local tagColor='tagOutdated'
-  if git commit-tagged; then
-    tagColor='tagCurrent'
-    tagName="$tagName "
-  else
-    tagName=" $tagName "
-  fi
-
-  echo -n "$FG[gray]$tagName$RESET"
+  git-commit-tagged && echo -n " %F{$COLOR[orange]} $tagName" && return
+  echo -n " %F{$COLOR[gray7]}炙$tagName"
 }
 # }}}
 # Git: Remote {{{
 function oroshi_prompt_git_remote() {
   local remoteName="$(git remote-current)"
-  local remoteColor='remoteDefault'
+  [[ $remoteName = 'origin' || $remoteName == '' ]] && return;
 
-  # Default remote
-  if [[ $remoteName = 'origin' || $remoteName == '' ]]; then
-    return;
-  fi
-
-  local color="blue";
-  [[ $remoteName == 'github' ]] && color=$FG[blue2]
-  [[ $remoteName == 'heroku' ]] && color=$FG[heroku]
-  [[ $remoteName == 'pixelastic' ]] && color=$FG[green3]
-  [[ $remoteName == 'upstream' ]] && color=$FG[orange]
-
-  echo "${color} $remoteName$RESET"
+  echo " %F{$COLOR[yellow]} $remoteName%f"
 }
 # }}}
 # Git: Branch {{{
 function oroshi_prompt_git_branch() {
   local branchName="$(git branch-current)"
+  [[ $branchName = '' ]] && return;
 
-  # Not in a branch
-  if [[ $branchName = '' ]]; then
-    return;
-  fi
-
-  # In detached head, we stop now
-  if git-branch-gone; then
-    echo "$FG[red] ${branchName}$RESET"
-    return
-  fi
-  
-  # Upstream is gone
+  # Detached
   if [[ $branchName = 'HEAD' ]]; then
-    branchName="$(git commit-current)  "
-    echo "$FG[red9]${branchName}$RESET"
+    branchName=" $(git commit-current)"
+    echo " %F{$COLOR[red]}${branchName}%f"
     return
   fi
 
-  local branchColor=oroshi_prompt_git_branch_color($branchName)
+  # Upstream is gone
+  git-branch-gone && echo " %F{$COLOR[red]} ${branchName}%f" && return
 
-  # Adding push/pull indicator
-  local pushPullSymbol="$(oroshi_prompt_git_push_pull)"
-  if [[ $pushPullSymbol != '' ]]; then
-    branchName="${pushPullSymbol} ${branchName}"
-  fi
 
-  echo "$FG[$branchColor]$branchName$RESET"
+  local branchColor="$(oroshi_prompt_git_branch_color $branchName)"
+
+  local remoteStatus
+  remoteStatus="$(git-branch-remote-status)"
+  [[ $remoteStatus = 'local_ahead' ]] && echo -n " %F{$COLOR[$branchColor]} $branchName%f"
+  [[ $remoteStatus = 'local_behind' ]] && echo -n " %F{$COLOR[$branchColor]} $branchName%f"
+  [[ $remoteStatus = 'local_diverged' ]] && echo -n " %F{$COLOR[red]} $branchName%f"
+  [[ $remoteStatus = 'local_never_pushed' ]] && echo -n " %F{$COLOR[$branchColor]} $branchName%f"
+  [[ $remoteStatus = 'local_identical' ]] && echo -n " %F{$COLOR[$branchColor]}$branchName%f"
 }
 # Get the name of the color based on the name of the branch
 function oroshi_prompt_git_branch_color() {
-  [[ $1 == "master" ]] && return "blue";
-  [[ $1 == "main" ]] && return "blue";
-  [[ $1 == "develop" ]] && return "yellow";
-  [[ $1 == "heroku" ]] && return "purple";
-  return "orange"
-}
-# }}}
-# Git: Push/Pull {{{
-function oroshi_prompt_git_push_pull() {
-  local EXIT_CODE_IDENTICAL=0
-  local EXIT_CODE_AHEAD=1
-  local EXIT_CODE_BEHIND=2
-  local EXIT_CODE_DIVERGED=3
-  local EXIT_CODE_NEVER_PUSHED=4
-  local remoteStatus
-  remoteStatus="$(git-branch-remote-status)$?"
-
-  case "$remoteStatus" in
-    $EXIT_CODE_AHEAD)
-      echo " "
-      ;;
-    $EXIT_CODE_BEHIND)
-      echo " "
-      ;;
-    $EXIT_CODE_DIVERGED)
-      echo " "
-      ;;
-    $EXIT_CODE_NEVER_PUSHED)
-      echo " "
-      ;;
-  esac
+  [[ $1 == "master" ]] && echo "blue5" && return;
+  [[ $1 == "main" ]] && echo "blue" && return;
+  [[ $1 == "develop" ]] && echo "yellow" && return;
+  [[ $1 == "heroku" ]] && echo "purple" && return;
+  echo "orange"
 }
 # }}}
 

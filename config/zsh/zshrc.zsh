@@ -74,6 +74,7 @@ if [[ -r $privateLocalConfig ]]; then
 fi
 # }}}
 
+source $zshConfigDir/colors.zsh
 source $zshConfigDir/theming.zsh
 source $zshConfigDir/prompt.zsh
 

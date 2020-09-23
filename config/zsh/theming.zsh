@@ -1,41 +1,44 @@
 local DEBUG_STARTTIME=$(($(date +%s%N)/1000000))
 
-# Make using 256 colors in zsh less painful.
-# Copied from http://github.com/sykora/etc/blob/master/zsh/functions/spectrum/
-typeset -Ag FX FG BG COLOR
+# # Make using 256 colors in zsh less painful.
+# # Copied from http://github.com/sykora/etc/blob/master/zsh/functions/spectrum/
+# typeset -Ag FX FG BG COLOR
 
-# FX=(
-#     reset     "%{[00m%}"
-#     bold      "%{[01m%}" no-bold      "%{[22m%}"
-#     italic    "%{[03m%}" no-italic    "%{[23m%}"
-#     underline "%{[04m%}" no-underline "%{[24m%}"
-#     blink     "%{[05m%}" no-blink     "%{[25m%}"
-#     reverse   "%{[07m%}" no-reverse   "%{[27m%}"
-# )
-export RESET="%f%k%b" # Cancels all styling (foreground, background and bold)
-export BOLD="%B"
+# # FX=(
+# #     reset     "%{[00m%}"
+# #     bold      "%{[01m%}" no-bold      "%{[22m%}"
+# #     italic    "%{[03m%}" no-italic    "%{[23m%}"
+# #     underline "%{[04m%}" no-underline "%{[24m%}"
+# #     blink     "%{[05m%}" no-blink     "%{[25m%}"
+# #     reverse   "%{[07m%}" no-reverse   "%{[27m%}"
+# # )
+# export RESET="%f%k%b" # Cancels all styling (foreground, background and bold)
+# export BOLD="%B"
 
-# Creates $COLOR[red1], $FG[red1], $BG[red1] syntactic sugar variables
-# It works by iterating on the list of color groups (red, blue, etc) in the same
-# order as they are defined in kitty.conf, then iterate from 1 to 9 and create
-# the entries
-local -a orderedColors
-orderedColors=(gray red green yellow blue purple teal orange indigo pink)
-for colorGroupName in $orderedColors; do
-  local colorGroupIndex=${orderedColors[(i)$colorGroupName]} # array index
-  local colorBucketPrefix=$(($colorGroupIndex+1)) # kitty group (1X, 2X, etc)
-  for colorIndex in {1..9}; do
-    local colorName="${colorGroupName}${colorIndex}";
-    local colorValue="${colorBucketPrefix}${colorIndex}";
-    COLOR[$colorName]=$colorValue
-    FG[$colorName]="%F{${colorValue}}"
-    BG[$colorName]="%K{${colorValue}}"
-  done
-  # Shortcut to main color
-  COLOR[$colorGroupName]=$COLOR[${colorGroupName}6]
-  FG[$colorGroupName]="%F{${COLOR[$colorGroupName]}}"
-  BG[$colorGroupName]="%K{${COLOR[$colorGroupName]}}"
-done
+# # Creates $COLOR[red1], $FG[red1], $BG[red1] syntactic sugar variables
+# # It works by iterating on the list of color groups (red, blue, etc) in the same
+# # order as they are defined in kitty.conf, then iterate from 1 to 9 and create
+# # the entries
+# local -a orderedColors
+# orderedColors=(gray red green yellow blue purple teal orange indigo pink)
+# for colorGroupName in $orderedColors; do
+#   local colorGroupIndex=${orderedColors[(i)$colorGroupName]} # array index
+#   local colorBucketPrefix=$(($colorGroupIndex+1)) # kitty group (1X, 2X, etc)
+#   for colorIndex in {1..9}; do
+#     local colorName="${colorGroupName}${colorIndex}";
+#     local colorValue="${colorBucketPrefix}${colorIndex}";
+#     COLOR[$colorName]=$colorValue
+#     FG[$colorName]="%F{${colorValue}}"
+#     BG[$colorName]="%K{${colorValue}}"
+#   done
+#   # TODO: Seems like %F and %K can only be used in prompt
+#   # Maybe I should not need to use the $FG and $BG and use the %F and %K
+#   # directly in prompt
+#   # Shortcut to main color
+#   COLOR[$colorGroupName]=$COLOR[${colorGroupName}6]
+#   FG[$colorGroupName]="%F{${COLOR[$colorGroupName]}}"
+#   BG[$colorGroupName]="%K{${COLOR[$colorGroupName]}}"
+# done
 
 
 # # Coloring manpages
