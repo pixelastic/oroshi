@@ -292,9 +292,9 @@ ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="fg=$COLOR[orange]"
 ZSH_HIGHLIGHT_STYLES[globbing]="fg=$COLOR[orange]"
 ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="fg=$COLOR[orange]"
 # Strings (blue)
-ZSH_HIGHLIGHT_STYLES[back-quoted-argument]="fg=$COLOR[blue7]"
-ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=$COLOR[blue7]"
-ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=$COLOR[blue7]"
+ZSH_HIGHLIGHT_STYLES[back-quoted-argument]="fg=$COLOR[blue6]"
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=$COLOR[blue6]"
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=$COLOR[blue6]"
 # Numbers (bold blue)
 ZSH_HIGHLIGHT_STYLES[arithmetic-expansion]="fg=$COLOR[blue]"
 # Punctuation
