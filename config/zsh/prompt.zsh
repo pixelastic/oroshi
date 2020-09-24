@@ -74,7 +74,7 @@ function oroshi_prompt_path() {
   local color=$COLOR[green]
   [[ ! -w $PWD ]] && color=$COLOR[red]
 
-  echo "%F{$color}${promptPath}%f"
+  echo "%F{$color}${promptPath}%f "
 }
 # }}}
 # Git  {{{
@@ -89,7 +89,7 @@ function oroshi_prompt_git_flags() {
   git stash show &>/dev/null && echo -n "%F{$COLOR[pink8]} %f"
   git-rebase-inprogress && echo -n "%F{$COLOR[red6]} %f"
 
-  echo " $(oroshi_prompt_git_dirty)"
+  echo "$(oroshi_prompt_git_dirty)"
 }
 # }}}
 # Git: Dirty {{{
@@ -250,7 +250,7 @@ function oroshi_prompt_git_branch() {
 
   local remoteStatus
   remoteStatus="$(git-branch-remote-status)"
-  [[ $remoteStatus = 'local_ahead' ]] && echo -n " %F{$COLOR[$branchColor]} $branchName%f"
+  [[ $remoteStatus = 'local_ahead' ]] && echo -n " %F{$COLOR[$branchColor]}  $branchName%f"
   [[ $remoteStatus = 'local_behind' ]] && echo -n " %F{$COLOR[$branchColor]} $branchName%f"
   [[ $remoteStatus = 'local_diverged' ]] && echo -n " %F{$COLOR[red]} $branchName%f"
   [[ $remoteStatus = 'local_never_pushed' ]] && echo -n " %F{$COLOR[$branchColor]} $branchName%f"

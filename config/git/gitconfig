@@ -9,14 +9,13 @@
 [color]
   ui = true
 [color "diff"]
-  commit = 67
-  frag = 136
-  func = 235
-  meta = 141
-  new = 35 
-  old = 160
-  plain = 252
-  whitespace = 88 88
+  meta = 95 # Diff header
+  frag = 28 # @@ -9,14 +9,15 @@
+  func = 28 # First line of context
+  context = 25 # Lines around the diff
+  new = 45 # Lines added
+  old = 37 # Lines deleted
+  whitespace = 54 54 # Any diff whitespace
 [core]
   editor = vim
   excludesfile = ~/.gitignore
