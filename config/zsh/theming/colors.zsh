@@ -1,13 +1,20 @@
-local DEBUG_STARTTIME=$(($(date +%s%N)/1000000))
+# Colors
+#
+# This will define the $COLOR associative array. Each key is named after a color
+# and its value is the index of the color in the range 0-255
+#
+# Examples:
+#   $COLOR[red1], $COLOR[blue4], $COLOR[green]
+# 
+# Each color ranges from 1 to 9, and the version without a number re-uses the
+# value from the 6th step
 
-# Creates $COLOR[red1], $FG[red1], $BG[red1] syntactic sugar variables
-# It works by iterating on the list of color groups (red, blue, etc) in the same
-# order as they are defined in kitty.conf, then iterate from 1 to 9 and create
-# the entries
-
+# The order of the colors is important and must match what is defined in
+# kitty.cong
 local -a orderedColors
-local -A COLOR
 orderedColors=(gray red green yellow blue purple teal orange indigo pink)
+
+local -A COLOR
 for colorGroupName in $orderedColors; do
   local colorGroupIndex=${orderedColors[(i)$colorGroupName]} # array index
   local colorBucketPrefix=$(($colorGroupIndex+1)) # kitty group (1X, 2X, etc)
@@ -21,6 +28,3 @@ for colorGroupName in $orderedColors; do
 done
 
 export COLOR
-
-local DEBUG_ENDTIME=$(($(date +%s%N)/1000000))
-[[ $ZSH_DEBUG == 1 ]] && echo "[debug]: ${0:t}: $(($DEBUG_ENDTIME - $DEBUG_STARTTIME))ms"

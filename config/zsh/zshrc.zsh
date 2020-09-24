@@ -74,9 +74,8 @@ if [[ -r $privateLocalConfig ]]; then
 fi
 # }}}
 
-source $zshConfigDir/colors.zsh
-source $zshConfigDir/theming.zsh
-source $zshConfigDir/prompt.zsh
+source $zshConfigDir/theming/index.zsh
+source $zshConfigDir/prompt/index.zsh
 
 # Some stuff must be loaded after everything else
 source $zshConfigDir/last.zsh
