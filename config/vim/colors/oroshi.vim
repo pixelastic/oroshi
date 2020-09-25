@@ -218,6 +218,7 @@ call s:Highlight('StatusLineGitStaged', 'purple4', 'gray8')
 call s:Highlight('StatusLineSyntasticError', 'red', 'gray8')
 call s:Highlight('StatusLineFileFormatError', 'red', 'gray8')
 call s:Highlight('StatusLineFileEncodingError', 'red', 'gray8')
+call s:Highlight('StatusLineRight', 'gray4', 'gray8', 'none')
 " }}}
 " Matching parenthesis {{{
 call s:Highlight('MatchParen', 'orange', 'gray8', 'bold')

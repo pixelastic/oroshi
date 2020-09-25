@@ -52,7 +52,6 @@ function! OroshiStatusLine()
     let sl .= '%#StatusLineGit'.b:gitStatus.'#ﰖ%* '
   endif
   " }}}
-  return sl
 
   " Syntastic errors {{{
   let g:syntastic_stl_format='%E{ :%e }%W{ :%w }'
@@ -73,6 +72,7 @@ function! OroshiStatusLine()
   
   " Right / Left separator {{{
   let sl .= '%='
+  let sl .= '%#StatusLineRight#'
   " }}}
 
   " Debug var {{{
@@ -80,7 +80,11 @@ function! OroshiStatusLine()
   let sl .= '%{exists("g:o_debug") ? "G[".g:o_debug."] " : ""}'
   " }}}
 
+  " Filetype {{{
+  let sl .= ' '.&filetype.' '
+  " }}}
   " Foldmarker {{{
+
   let foldMarker = '?'
   if &foldmethod == "manual" | let foldMarker = 'M' | endif
   if &foldmethod == "marker" | let foldMarker = '{' | endif
@@ -89,17 +93,15 @@ function! OroshiStatusLine()
   let sl .= ' '.foldMarker.' '
   " }}}
 
-  " Filetype {{{
-  let sl .= ' '.&filetype.' '
-  " }}}
-
   " Ruler {{{
-  let sl .= "  "
-  let sl.= "0x%2.B" " current char
-  let sl.=" %2.c/%2.{&textwidth}" " current colum / max columns
-  let sl.=" %3l/%3L" " current line / max line
-  let sl.=" %3p%%" " percentage in file
+  let sl .= " "
+  let sl .= "0x%2.B" " current char
+  let sl .= " %2.c/%2.{&textwidth}" " current colum / max columns
+  let sl .= " %3l/%3L" " current line / max line
+  let sl .= " %3p%%" " percentage in file
   " }}}
+  let sl .= '%*'
+
 
   return sl
 endfunction
