@@ -11,6 +11,43 @@ if exists('syntax_on')
 endif
 let g:colors_name = 'oroshi'
 " }}}
+" Generating the palette {{{
+" The order of the colors is important and must match what is defined in
+" kitty.conf
+let s:color = {}
+let s:color.black=0
+let s:color.white=15
+let orderedColors = [
+      \'gray', 
+      \'red', 
+      \'green', 
+      \'yellow', 
+      \'blue', 
+      \'purple', 
+      \'teal', 
+      \'orange', 
+      \'indigo', 
+      \'pink'
+      \]
+
+let colorCount=len(orderedColors)
+let colorGroupIndex = 0
+while colorGroupIndex < colorCount
+  let colorGroupName = get(orderedColors, colorGroupIndex)
+
+  let colorIndex = 1
+  while colorIndex < 10
+    let colorName = colorGroupName . colorIndex
+    let colorValue = 20 + (colorGroupIndex * 10) + colorIndex
+    let s:color[colorName]=colorValue
+    let colorIndex += 1
+  endwhile
+  " Easy access to the color
+  let s:color[colorGroupName]=s:color[colorGroupName.'6']
+
+  let colorGroupIndex += 1
+endwhile
+" }}}
 " Highlighting function {{{
 " args : group, foreground, background, cterm
 function! s:Highlight(group,fg,...)
@@ -18,11 +55,13 @@ function! s:Highlight(group,fg,...)
   let h = 'hi! '.a:group
 
   " adding foreground
-  let h .= ' ctermfg='.get(s:palette, a:fg)
+  if strlen(a:fg)
+    let h .= ' ctermfg='.get(s:color, a:fg)
+  endif
 
   " adding background
   if a:0 >= 1 && strlen(a:1)
-    let h .= ' ctermbg='.get(s:palette, a:1)
+    let h .= ' ctermbg='.get(s:color, a:1)
   endif
 
   " adding cterm
@@ -39,151 +78,97 @@ function! s:Link(group, linkedGroup)
   execute 'hi! def link '.a:group.' '.a:linkedGroup
 endfunction
 " }}}
-" Color Palette {{{
-let s:palette = {}
-let s:palette.none          = 'none'
-" Black, White and grey
-let s:palette.pureblack     = 16
-let s:palette.black         = 233
-let s:palette.almostblack   = 234
-let s:palette.darkgrey      = 235
-let s:palette.grey          = 241
-let s:palette.lightgrey     = 249
-let s:palette.white         = 252
-let s:palette.purewhite     = 255
-" Red 
-let s:palette.red           = 196
-let s:palette.darkred       = 88
-let s:palette.calmred       = 203
-" Green
-let s:palette.green         = 35 
-let s:palette.darkgreen     = 28
-let s:palette.calmgreen     = 108
-" Yellow
-let s:palette.yellow        = 184
-let s:palette.darkyellow    = 136
-let s:palette.calmyellow    = 185
-" Blue
-let s:palette.blue          = 69
-let s:palette.darkblue      = 24
-let s:palette.calmblue      = 67
-" Purple
-let s:palette.purple        = 171
-let s:palette.darkpurple    = 133
-let s:palette.calmpurple    = 141
-" Orange
-let s:palette.orange        = 202
-let s:palette.darkorange    = 214
-let s:palette.calmorange    = 209
-" Pink 
-let s:palette.pink          = 205
-let s:palette.darkpink      = 125
-let s:palette.calmpink      = 211
-" }}}
 " Oroshi custom styles {{{
 call s:Highlight('oroshi_Debug', 'white', 'darkpurple')
 call s:Highlight('oroshi_None', 'none', 'none', 'none')
 
-call s:Highlight('oroshi_Text', 'lightgrey')
-call s:Highlight('oroshi_TextBold', 'grey', 'none', 'bold')
-call s:Highlight('oroshi_TextItalic', 'grey')
-call s:Highlight('oroshi_TextAlmostInvisible', 'darkgrey')
-call s:Highlight('oroshi_TextSpecial', 'darkyellow')
-call s:Highlight('oroshi_TextCurrentLine', 'none', 'almostblack', 'none')
+call s:Highlight('oroshi_Text', 'gray4')
+call s:Highlight('oroshi_TextBold', 'gray', 'none', 'bold')
+call s:Highlight('oroshi_TextItalic', 'gray')
+call s:Highlight('oroshi_TextAlmostInvisible', 'gray8')
+call s:Highlight('oroshi_TextSpecial', 'yellow8')
 call s:Highlight('oroshi_TextSpellingError', 'red', 'none', 'bold,underline')
-call s:Highlight('oroshi_TextHeadingOne', 'darkgreen', 'none', 'bold')
-call s:Highlight('oroshi_TextHeadingTwo', 'darkgreen')
+call s:Highlight('oroshi_TextHeadingOne', 'green8', 'none', 'bold')
+call s:Highlight('oroshi_TextHeadingTwo', 'green8')
 call s:Highlight('oroshi_TextHeadingThree', 'green')
-call s:Highlight('oroshi_TextHeadingFour', 'calmgreen')
+call s:Highlight('oroshi_TextHeadingFour', 'green5')
 call s:Highlight('oroshi_TextHeadingFive', 'white')
-call s:Highlight('oroshi_TextEmphasis', 'grey', 'none', 'bold')
-call s:Highlight('oroshi_TextLink', 'calmred')
-call s:Highlight('oroshi_TextUrl', 'calmorange')
-call s:Highlight('oroshi_TextDelimiter', 'darkyellow')
+call s:Highlight('oroshi_TextEmphasis', 'gray', 'none', 'bold')
+call s:Highlight('oroshi_TextLink', 'red5')
+call s:Highlight('oroshi_TextUrl', 'orange5')
+call s:Highlight('oroshi_TextDelimiter', 'yellow8')
 
-call s:Highlight('oroshi_CodeClass', 'darkorange')
-call s:Highlight('oroshi_CodeBoolean', 'calmorange')
-call s:Highlight('oroshi_CodeChute', 'darkblue')
-call s:Highlight('oroshi_CodeComment', 'grey')
+call s:Highlight('oroshi_CodeClass', 'orange8')
+call s:Highlight('oroshi_CodeBoolean', 'orange5')
+call s:Highlight('oroshi_CodeChute', 'blue8')
+call s:Highlight('oroshi_CodeComment', 'gray')
 call s:Highlight('oroshi_CodeConstant', 'yellow', 'none', 'bold')
 call s:Highlight('oroshi_CodeFunction', 'green')
 call s:Highlight('oroshi_CodeInclude', 'yellow')
-call s:Highlight('oroshi_CodeNumber', 'calmblue', '', 'bold')
+call s:Highlight('oroshi_CodeNumber', 'blue5', '', 'bold')
 call s:Highlight('oroshi_CodeRegexpFlags', 'orange')
-call s:Highlight('oroshi_CodeRegexpDelimiter', 'darkyellow')
-call s:Highlight('oroshi_CodeRegexp', 'darkblue')
-call s:Highlight('oroshi_CodeSelf', 'darkorange', '', 'bold')
-call s:Highlight('oroshi_CodeStatement', 'darkgreen')
-call s:Highlight('oroshi_CodeString', 'calmblue')
+call s:Highlight('oroshi_CodeRegexpDelimiter', 'yellow8')
+call s:Highlight('oroshi_CodeRegexp', 'blue8')
+call s:Highlight('oroshi_CodeSelf', 'orange8', '', 'bold')
+call s:Highlight('oroshi_CodeStatement', 'green8')
+call s:Highlight('oroshi_CodeString', 'blue5')
 call s:Highlight('oroshi_CodeSymbol', 'orange')
-call s:Highlight('oroshi_CodeType', 'calmred')
-call s:Highlight('oroshi_CodeVariable', 'calmgreen')
+call s:Highlight('oroshi_CodeType', 'red5')
+call s:Highlight('oroshi_CodeVariable', 'green5')
 
-call s:Highlight('oroshi_UI', 'lightgrey', 'darkgrey')
-call s:Highlight('oroshi_UISecondary', 'grey')
-call s:Highlight('oroshi_UIFilled', 'darkgrey', 'darkgrey')
+call s:Highlight('oroshi_UI', 'gray4', 'gray8')
+call s:Highlight('oroshi_UISecondary', 'gray')
+call s:Highlight('oroshi_UIFilled', 'gray8', 'gray8')
 call s:Highlight('oroshi_UIEmpty', 'black', 'black')
-call s:Highlight('oroshi_UIActive', 'darkyellow', 'black', 'bold')
-call s:Highlight('oroshi_UISuccess', 'darkgreen', 'darkgrey')
-call s:Highlight('oroshi_UISuccessFilled', 'white', 'darkgreen')
-call s:Highlight('oroshi_UINotice', 'calmpurple', 'darkgrey')
-call s:Highlight('oroshi_UINoticeFilled', 'white', 'calmpurple')
-call s:Highlight('oroshi_UIWarning', 'darkyellow', 'darkgrey')
-call s:Highlight('oroshi_UIWarningFilled', 'white', 'darkyellow')
-call s:Highlight('oroshi_UIError', 'calmred', 'darkgrey')
-call s:Highlight('oroshi_UIErrorFilled', 'lightgrey', 'calmred')
+call s:Highlight('oroshi_UIActive', 'yellow8', 'black', 'bold')
+call s:Highlight('oroshi_UISuccess', 'green8', 'gray8')
+call s:Highlight('oroshi_UISuccessFilled', 'white', 'green8')
+call s:Highlight('oroshi_UINotice', 'purple5', 'gray8')
+call s:Highlight('oroshi_UINoticeFilled', 'white', 'purple5')
+call s:Highlight('oroshi_UIWarning', 'yellow8', 'gray8')
+call s:Highlight('oroshi_UIWarningFilled', 'white', 'yellow8')
+call s:Highlight('oroshi_UIError', 'red5', 'gray8')
+call s:Highlight('oroshi_UIErrorFilled', 'gray4', 'red5')
 
 call s:Highlight('oroshi_Success', 'green')
-call s:Highlight('oroshi_Notice', 'calmpurple')
-call s:Highlight('oroshi_Warning', 'darkyellow')
+call s:Highlight('oroshi_Notice', 'purple5')
+call s:Highlight('oroshi_Warning', 'yellow8')
 call s:Highlight('oroshi_Error', 'red', 'none', 'bold')
 
 call s:Highlight('oroshi_DiffAdded', 'green')
 call s:Highlight('oroshi_DiffRemoved', 'red')
-call s:Highlight('oroshi_DiffChanged', 'calmpurple')
-call s:Highlight('oroshi_DiffLine', 'darkyellow')
+call s:Highlight('oroshi_DiffChanged', 'purple5')
+call s:Highlight('oroshi_DiffLine', 'yellow8')
 
 call s:Highlight('oroshi_GitBranch', 'orange', 'none', 'bold')
 
-call s:Highlight('oroshi_UIModeNormal', 'black', 'darkgrey')
+call s:Highlight('oroshi_UIModeNormal', 'black', 'gray8')
 call s:Highlight('oroshi_ModeNormal', 'white', 'black')
-call s:Highlight('oroshi_UIModeInsert', 'darkyellow', 'darkgrey')
-call s:Highlight('oroshi_ModeInsert', 'black', 'darkyellow', 'bold')
-call s:Highlight('oroshi_UIModeVisual', 'darkblue', 'darkgrey')
-call s:Highlight('oroshi_ModeVisual', 'lightgrey', 'darkblue', 'bold')
-call s:Highlight('oroshi_UIModeSearch', 'orange', 'darkgrey')
+call s:Highlight('oroshi_UIModeInsert', 'yellow8', 'gray8')
+call s:Highlight('oroshi_ModeInsert', 'black', 'yellow8', 'bold')
+call s:Highlight('oroshi_UIModeVisual', 'blue8', 'gray8')
+call s:Highlight('oroshi_ModeVisual', 'gray4', 'blue8', 'bold')
+call s:Highlight('oroshi_UIModeSearch', 'orange', 'gray8')
 call s:Highlight('oroshi_ModeSearch', 'black', 'orange', 'bold')
 " }}}
 
+" Note: Following styles should be using the Highlight form, which is much more
+" readable and easy to extend.
+call s:Highlight('Normal', 'gray5')
 " Borders {{{
-call s:Link('LineNr', 'oroshi_UISecondary')
-call s:Link('SignColumn', 'oroshi_UISecondary')
-call s:Link('ColorColumn', 'oroshi_UIWarning')
-call s:Link('VertSplit', 'oroshi_UI')
+call s:Highlight('LineNr', 'gray')
+call s:Highlight('ColorColumn', 'yellow', 'gray9')
+call s:Highlight('SignColumn', 'white', 'black', 'bold')
+call s:Highlight('VertSplit', 'red', 'red', 'bold')
 " }}}
 " Tabs {{{
-call s:Link('TabLine', 'oroshi_UI')
-call s:Link('TabLineFill', 'oroshi_UI')
-call s:Link('TabLineSel', 'oroshi_UIActive')
+call s:Highlight('TabLine', 'gray4', 'gray9', 'none')
+call s:Highlight('TabLineFill', 'gray8', 'gray9', 'none')
+call s:Highlight('TabLineSel', 'yellow', 'gray8', 'bold')
 " }}}
-" Syntastic gutter {{{
-call s:Link('SyntasticErrorSign', 'oroshi_Error')
-call s:Link('SyntasticStyleErrorSign', 'oroshi_Error')
-call s:Link('SyntasticWarningSign', 'oroshi_Warning')
-call s:Link('SyntasticStyleWarningSign', 'oroshi_Warning')
-" }}}
-" GitGutter {{{
-call s:Link('GitGutterAdd', 'oroshi_Success')
-call s:Link('GitGutterChange', 'oroshi_Notice')
-" }}}
-" Status line {{{
-call s:Link('StatusLine', 'oroshi_UI')
-call s:Link('StatusLineNC', 'oroshi_UIFilled')
-" }}}
-
 " Cursor {{{
-call s:Link('CursorLine', 'oroshi_TextCurrentLine')
-call s:Link('CursorLineNr', 'oroshi_Warning')
+call s:Highlight('CursorLine', '', 'gray9', 'none')
+call s:Highlight('CursorLineNr', 'yellow', '', 'bold')
 if &term =~ "xterm"
   " Cursor in insert mode
   let &t_SI = "\<Esc>]12;#AF8700\x7"
@@ -191,18 +176,51 @@ if &term =~ "xterm"
   let &t_EI = "\<Esc>]12;#D70000\x7"
 endif
 " }}}
+" Folds {{{
+call s:Highlight('Folded', 'gray5', 'gray9')
+" }}}
 " Visual selection {{{
-call s:Link('Visual', 'oroshi_ModeVisual')
+call s:Highlight('Visual', 'white', 'blue', 'bold')
 " }}}
 " Search {{{
-call s:Link('Search', 'oroshi_ModeSearch')
-call s:Link('IncSearch', 'oroshi_ModeSearch')
+call s:Highlight('Search', 'black', 'orange', 'bold')
+call s:Highlight('IncSearch', 'black', 'orange', 'bold')
+" }}}
+" Syntastic gutter {{{
+call s:Highlight('SyntasticErrorSign', 'red')
+call s:Highlight('SyntasticStyleErrorSign', 'red')
+call s:Highlight('SyntasticWarningSign', 'yellow')
+call s:Highlight('SyntasticStyleWarningSign', 'yellow')
+" }}}
+" GitGutter {{{
+call s:Highlight('GitGutterChange', 'purple')
+call s:Highlight('GitGutterAdd', 'green')
+" }}}
+" Status line {{{
+call s:Highlight('StatusLine', 'gray4', 'gray8', 'none')
+call s:Highlight('StatusLineNC', '', 'gray8', 'none')
+call s:Highlight('StatusLineModeUnknown', 'white', 'red')
+call s:Highlight('StatusLineModeUnknownSeparator', 'red', 'white')
+call s:Highlight('StatusLineModeNormal', 'gray4', 'black')
+call s:Highlight('StatusLineModeNormalSeparator', 'black', 'gray8')
+call s:Highlight('StatusLineModeInsert', 'black', 'yellow', 'bold')
+call s:Highlight('StatusLineModeInsertSeparator', 'yellow', 'gray8')
+call s:Highlight('StatusLineModeVisual', 'white', 'blue', 'bold')
+call s:Highlight('StatusLineModeVisualSeparator', 'blue', 'gray8')
+call s:Highlight('StatusLineModeSearch', 'black', 'orange', 'bold')
+call s:Highlight('StatusLineModeSearchSeparator', 'orange', 'gray8')
+call s:Highlight('StatusLinePath', 'green', 'gray8', 'bold')
+call s:Highlight('StatusLinePathModified', 'purple4', 'gray8')
+call s:Highlight('StatusLinePathReadonly', 'red', 'gray8')
+call s:Highlight('StatusLineGitClean', 'green', 'gray8')
+call s:Highlight('StatusLineGitDirty', 'red', 'gray8', 'bold')
+call s:Highlight('StatusLineGitStaged', 'purple4', 'gray8')
+call s:Highlight('StatusLineSyntasticError', 'red', 'gray8')
+call s:Highlight('StatusLineFileFormatError', 'red', 'gray8')
+call s:Highlight('StatusLineFileEncodingError', 'red', 'gray8')
 " }}}
 " Matching parenthesis {{{
-call s:Link('MatchParen', 'oroshi_UIModeSearch')
-" }}}
-" Folds {{{
-call s:Link('Folded', 'oroshi_UI')
+call s:Highlight('MatchParen', 'orange', 'gray8', 'bold')
 " }}}
 " Completion menu {{{
 call s:Link('Pmenu', 'oroshi_UI')
@@ -212,6 +230,48 @@ call s:Link('PmenuSel', 'oroshi_ModeSearch')
 " " Pesky characters {{{
 " call s:Highlight('ExtraWhitespace', 'darkred', 'darkred', 'bold')
 " " }}}
+" CtrlP {{{
+call s:Highlight('oroshi_UIModeCtrlPPrompt', 'black', 'red5', 'bold')
+call s:Highlight('oroshi_UIModeCtrlPArrow', 'red5', 'gray8')
+call s:Highlight('oroshi_UIModeCtrlPGutter', 'red5', 'red5')
+call s:Highlight('oroshi_UIModeCtrlPPrePrompt', 'red5', 'black')
+call s:Highlight('oroshi_ModeCtrlPPromptText', 'white', 'black', 'bold')
+call s:Highlight('oroshi_ModeCtrlPPromptTextCursor', 'white', 'red', 'bold')
+call s:Highlight('oroshi_ModeCtrlPHighlight', 'red5', 'none')
+
+call s:Link('CtrlPLinePre', 'oroshi_UIModeCtrlPGutter')
+call s:Link('CtrlPPrtBase', 'oroshi_UIModeCtrlPPrePrompt')
+call s:Link('CtrlPPrtText', 'oroshi_ModeCtrlPPromptText')
+call s:Link('CtrlPPrtCursor', 'oroshi_ModeCtrlPPromptTextCursor')
+call s:Link('CtrlPMatch', 'oroshi_ModeCtrlPHighlight')
+" }}}
+" CtrlF {{{
+call s:Highlight('oroshi_UIModeCtrlF', 'purewhite')
+call s:Highlight('oroshi_ModeCtrlF', 'purewhite')
+call s:Highlight('oroshi_ModeCtrlFMatch', 'red5')
+" Note: The Search highlight is used in the quickfix window for the current
+" element. This method is called whenever the quickfix window got focus and
+" change the Search coloring, and revert it when losing focus.
+function! UpdateSearchColoring(...)
+  " buftype is either empty or 'quickfix', and can be specifed as an argument
+  let buftype = (a:0 == 1) ? a:1 : &buftype
+
+  if buftype ==# 'quickfix'
+    " Removing coloring in quickfix
+    hi clear Search
+    hi link Search NONE
+  else
+    " Reverting initial coloring
+    call s:Link('Search', 'oroshi_ModeSearch')
+  endif
+endfunction
+
+augroup quickfix_coloring
+  au!
+  au BufWinEnter quickfix call UpdateSearchColoring('quickfix')
+  au WinEnter * call UpdateSearchColoring()
+augroup END
+" }}}
 
 " Text {{{
 call s:Link('Noise', 'oroshi_Text')
@@ -219,8 +279,7 @@ call s:Link('NonText', 'oroshi_TextAlmostInvisible')
 call s:Link('SpecialKey', 'oroshi_TextSpecial')
 call s:Link('Error', 'oroshi_Error')
 " Note: These styles can't be linked, they must be defined directly
-call s:Highlight('Normal', 'lightgrey')
-call s:Highlight('Special', 'darkyellow')
+call s:Highlight('Special', 'yellow8')
 " Messages
 call s:Link('WarningMsg', 'oroshi_Warning')
 call s:Link('ErrorMsg', 'oroshi_Error')
@@ -384,7 +443,9 @@ call s:Link('shQuote', 'oroshi_CodeString')
 call s:Link('vueSurroundingTag', 'oroshi_CodeStatement')
 " }}}
 " Vim {{{
-call s:Link('vimCommentTitle', 'oroshi_Warning')
+call s:Highlight('VimLineComment', 'gray')
+call s:Highlight('VimCommentTitle', 'yellow')
+call s:Highlight('VimTodo', 'yellow')
 call s:Link('vimParenSep', 'oroshi_Text')
 call s:Link('vimIsCommand', 'oroshi_CodeVariable')
 " Option keys
@@ -437,8 +498,8 @@ call s:Link('yamlKey', 'oroshi_CodeType')
 call s:Link('yamlNull', 'yamlScalar')
 call s:Link('yamlPlainScalar', 'oroshi_CodeStatement')
 call s:Link('yamlAlias', 'oroshi_CodeInclude')
-call s:Highlight('yamlAnchor', 'darkyellow', 'none', 'bold')
-call s:Highlight('yamlBlockMappingMerge', 'darkyellow', 'none', 'bold')
+call s:Highlight('yamlAnchor', 'yellow8', 'none', 'bold')
+call s:Highlight('yamlBlockMappingMerge', 'yellow8', 'none', 'bold')
 " }}}
 " XML {{{
 call s:Link('xmlAttribPunct', 'oroshi_CodeStatement')
@@ -448,45 +509,3 @@ call s:Link('xmlTagName', 'oroshi_CodeStatement')
 call s:Link('xmlEndTag', 'oroshi_CodeStatement')
 " }}}
 
-" CtrlP {{{
-call s:Highlight('oroshi_UIModeCtrlPPrompt', 'black', 'calmred', 'bold')
-call s:Highlight('oroshi_UIModeCtrlPArrow', 'calmred', 'darkgrey')
-call s:Highlight('oroshi_UIModeCtrlPGutter', 'calmred', 'calmred')
-call s:Highlight('oroshi_UIModeCtrlPPrePrompt', 'calmred', 'black')
-call s:Highlight('oroshi_ModeCtrlPPromptText', 'white', 'black', 'bold')
-call s:Highlight('oroshi_ModeCtrlPPromptTextCursor', 'white', 'red', 'bold')
-call s:Highlight('oroshi_ModeCtrlPHighlight', 'calmred', 'none')
-
-call s:Link('CtrlPLinePre', 'oroshi_UIModeCtrlPGutter')
-call s:Link('CtrlPPrtBase', 'oroshi_UIModeCtrlPPrePrompt')
-call s:Link('CtrlPPrtText', 'oroshi_ModeCtrlPPromptText')
-call s:Link('CtrlPPrtCursor', 'oroshi_ModeCtrlPPromptTextCursor')
-call s:Link('CtrlPMatch', 'oroshi_ModeCtrlPHighlight')
-" }}}
-" CtrlF {{{
-call s:Highlight('oroshi_UIModeCtrlF', 'purewhite')
-call s:Highlight('oroshi_ModeCtrlF', 'purewhite')
-call s:Highlight('oroshi_ModeCtrlFMatch', 'calmred')
-" Note: The Search highlight is used in the quickfix window for the current
-" element. This method is called whenever the quickfix window got focus and
-" change the Search coloring, and revert it when losing focus.
-function! UpdateSearchColoring(...)
-  " buftype is either empty or 'quickfix', and can be specifed as an argument
-  let buftype = (a:0 == 1) ? a:1 : &buftype
-
-  if buftype ==# 'quickfix'
-    " Removing coloring in quickfix
-    hi clear Search
-    hi link Search NONE
-  else
-    " Reverting initial coloring
-    call s:Link('Search', 'oroshi_ModeSearch')
-  endif
-endfunction
-
-augroup quickfix_coloring
-  au!
-  au BufWinEnter quickfix call UpdateSearchColoring('quickfix')
-  au WinEnter * call UpdateSearchColoring()
-augroup END
-" }}}

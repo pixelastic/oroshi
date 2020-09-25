@@ -20,7 +20,7 @@ function __prompt-git-flags() {
 # - Red if any file has been added/deleted/modified
 # - Purple if files are added to the index
 function __prompt-git-status() {
-  git-directory-has-staged-files && "%F{$COLOR[purple]}ﰖ %f" && return
+  git-directory-has-staged-files && echo "%F{$COLOR[purple]}ﰖ %f" && return
   git-directory-is-dirty && echo "%F{$COLOR[red]}ﰖ %f" && return
   echo "%F{$COLOR[green]}ﰖ %f"
 }

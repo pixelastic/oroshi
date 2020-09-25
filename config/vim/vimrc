@@ -227,7 +227,7 @@ nnoremap <Down> <C-W>j
 nnoremap <Left> <C-W>h
 "}}}
 " STATUS LINE {{{
-source ~/.vim/includes/statusline.vim
+source ~/.vim/includes/statusline/index.vim
 "}}}
 " TABS {{{
 " Do not limit the number of tabs to open when launching vim
@@ -250,7 +250,6 @@ iabbrev initiliaze initialize
 iabbrev intiialiaee initialize
 iabbrev intiialiaze initialize
 iabbrev intiialize initialize
-
 " }}}
 " WILDMENU {{{
 " We enable a simple wildmenu with basic Tab-completion.
@@ -311,17 +310,10 @@ nnoremap c "_c
 " CTRL-P {{{
 source ~/.vim/includes/ctrlp.vim
 " }}}
-" RAINBOW PARENTHESES {{{
-" Load plugin
-augroup rainbow_parentheses_toggle
-  au!
-  au VimEnter * if exists(":RainbowParenthesesToggle") | execute 'RainbowParenthesesToggle' | endif
-augroup END
-" }}}
-" GIT {{{
-source ~/.vim/includes/git.vim
+" " GIT {{{
+" source ~/.vim/includes/git.vim
 let g:gitgutter_max_signs=10000
-" }}}
+" " }}}
 " SYNTASTIC {{{
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_auto_loc_list=0
