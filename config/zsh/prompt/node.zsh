@@ -21,7 +21,9 @@ function __prompt-node-version() {
 
   # Not using the project specific version
   if [[ $currentVersion != $expectedVersion ]]; then
-    echo "%F{$COLOR[red]} $currentVersion%f"
+    echo -n "%F{$COLOR[red]} $currentVersion%f"
+    echo -n "%F{$COLOR[yellow]}%f"
+    echo -n "%F{$COLOR[green]}$expectedVersion %f"
     return
   fi
 }

@@ -2,27 +2,30 @@
 # Return the color for a specific name
 # Usage:
 #   tmux-status-color projects
+source ~/.oroshi/config/zsh/theming/colors.zsh
 local name="$1"
-local color=""
+local colorCode=""
 
-[[ $name == "bg" ]] && color='colour24'
-[[ $name == "perso" ]] && color='colour141'
-[[ $name == "projects" ]] && color='colour35'
-[[ $name == "norska" ]] && color='colour69'
-[[ $name == "golgoth" ]] && color='colour130'
-[[ $name == "aberlaas" ]] && color='colour136'
-[[ $name == "renovate" ]] && color='colour33'
-[[ $name == "tmp" ]] && color='colour233'
-[[ $name == "indexing" ]] && color='colour27'
-[[ $name == "monsters" ]] && color='colour124'
-[[ $name == "doctolib" ]] && color='colour33'
-[[ $name == "on-circle" ]] && color='colour168'
-[[ $name == "reddinx" ]] && color='colour111'
-[[ $name == "crafting" ]] && color='colour94'
-[[ $name == "painting" ]] && color='colour251'
-[[ $name == "maps" ]] && color='colour31'
-[[ $name == "barrowmaze" ]] && color='colour94'
-[[ $name == "netlify-minutes" ]] && color='colour29'
-[[ $name == "videogames" ]] && color='colour27'
-[[ $name == "videogames-helper" ]] && color='colour27'
-echo -n $color
+[[ $name == "aoinan" ]] && colorCode=$COLOR[gray]
+[[ $name == "aberlaas" ]] && colorCode=$COLOR[yellow7]
+[[ $name == "barrowmaze" ]] && colorCode=$COLOR[yellow8]
+[[ $name == "bg" ]] && colorCode=$COLOR[orange]
+[[ $name == "crafting" ]] && colorCode=$COLOR[yellow9]
+[[ $name == "doctolib" ]] && colorCode=$COLOR[blue]
+[[ $name == "golgoth" ]] && colorCode=$COLOR[orange]
+[[ $name == "indexing" ]] && colorCode=$COLOR[blue3]
+[[ $name == "maps" ]] && colorCode=$COLOR[blue3]
+[[ $name == "monsters" ]] && colorCode=$COLOR[red8]
+[[ $name == "netlify-minutes" ]] && colorCode=$COLOR[green8]
+[[ $name == "norska" ]] && colorCode=$COLOR[blue3]
+[[ $name == "on-circle" ]] && colorCode=$COLOR[red3]
+[[ $name == "painting" ]] && colorCode=$COLOR[gray4]
+[[ $name == "perso" ]] && colorCode=$COLOR[purple]
+[[ $name == "projects" ]] && colorCode=$COLOR[green]
+[[ $name == "reddinx" ]] && colorCode=$COLOR[orange3]
+[[ $name == "renovate" ]] && colorCode=$COLOR[blue4]
+[[ $name == "tmp" ]] && colorCode=$COLOR[gray]
+[[ $name == "videogames" ]] && colorCode=$COLOR[blue8]
+[[ $name == "videogames-helper" ]] && colorCode=$COLOR[blue8]
+
+[[ $colorCode != '' ]] && echo "colour${colorCode}" && return

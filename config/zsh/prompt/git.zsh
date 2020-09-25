@@ -66,6 +66,8 @@ function __prompt-git-rebase() {
 function __prompt-git-tag() {
   local tagName="$(git tag-current)"
   [[ $tagName = '' ]] && return
+  # The following tag is used at work, but should be ignored
+  [[ $tagName = 'empty-commit-branch-to-break-master' ]] && return 
 
   # Check if commits have been added since last tag
   git-commit-tagged && echo -n " %F{$COLOR[orange]} $tagName" && return
