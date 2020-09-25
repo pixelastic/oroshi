@@ -158,7 +158,7 @@ call s:Highlight('Normal', 'gray5')
 " Borders {{{
 call s:Highlight('LineNr', 'gray')
 call s:Highlight('ColorColumn', 'yellow', 'gray9')
-call s:Highlight('SignColumn', 'white', 'black', 'bold')
+call s:Highlight('SignColumn', 'white', 'black', 'none')
 call s:Highlight('VertSplit', 'red', 'red', 'bold')
 " }}}
 " Tabs {{{
@@ -201,7 +201,7 @@ call s:Highlight('StatusLine', 'gray4', 'gray8', 'none')
 call s:Highlight('StatusLineNC', '', 'gray8', 'none')
 call s:Highlight('StatusLineModeUnknown', 'white', 'red')
 call s:Highlight('StatusLineModeUnknownSeparator', 'red', 'white')
-call s:Highlight('StatusLineModeNormal', 'gray4', 'black')
+call s:Highlight('StatusLineModeNormal', 'white', 'black')
 call s:Highlight('StatusLineModeNormalSeparator', 'black', 'gray8')
 call s:Highlight('StatusLineModeInsert', 'black', 'yellow', 'bold')
 call s:Highlight('StatusLineModeInsertSeparator', 'yellow', 'gray8')

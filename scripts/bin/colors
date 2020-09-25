@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-source ~/.oroshi/config/zsh/colors.zsh
+source ~/.oroshi/config/zsh/theming/colors.zsh
 
 # Sorting the colors alphabetically
 local colorKeys=${(k)COLOR}
