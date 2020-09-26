@@ -82,3 +82,4 @@ source $zshConfigDir/last.zsh
 
 local ZSHRC_DEBUG_ENDTIME=$(($(date +%s%N)/1000000))
 [[ $ZSH_DEBUG == 1 ]] && echo "[debug]: ~/.zshrc: $(($ZSHRC_DEBUG_ENDTIME - $ZSHRC_DEBUG_STARTTIME))ms"
+return 0
