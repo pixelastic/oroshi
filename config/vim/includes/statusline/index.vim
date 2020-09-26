@@ -65,8 +65,12 @@ function! OroshiStatusLine()
   " }}}
 
   " File encoding {{{
-  if &fileencoding != "utf-8"
-    let sl .= '%#StatusLineFileEncodingError# '.&fileencoding.' %*'
+  " A file in vim is read in the encoding defined in &encoding, but saved in the
+  " one defined in &fileencoding. If &fileencoding is empty, it fallbacks to
+  " &encoding
+  let fileEncoding = &fileencoding || &encoding
+  if fileEncoding != "utf-8"
+    let sl .= '%#StatusLineFileEncodingError# '.fileEncoding.' %*'
   endif
   " }}}
   
