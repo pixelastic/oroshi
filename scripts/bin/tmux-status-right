@@ -27,7 +27,7 @@ if is-online; then
   [[ $ping -lt 160 ]] && connection_status="#[fg=colour${COLOR[yellow]}] ${ping}ms#[default]"
   [[ $ping -lt 80 ]] && connection_status="#[fg=colour${COLOR[green]}] ${ping}ms#[default]"
 else
-  connection_status="#[fg=colour${COLOR[red]},bold]  offline!#[default]"
+  connection_status="#[fg=colour${COLOR[red]},bold]offline!#[default]"
 fi
 output="$connection_status $output"
 # }}}

@@ -154,7 +154,7 @@ call s:Highlight('oroshi_ModeSearch', 'black', 'orange', 'bold')
 
 " Note: Following styles should be using the Highlight form, which is much more
 " readable and easy to extend.
-call s:Highlight('Normal', 'gray5')
+call s:Highlight('Normal', 'gray4')
 call s:Highlight('Special', 'yellow')
 " Borders {{{
 call s:Highlight('LineNr', 'gray')
@@ -222,7 +222,7 @@ call s:Highlight('StatusLineFileEncodingError', 'red', 'gray8')
 call s:Highlight('StatusLineRight', 'gray4', 'gray8', 'none')
 " }}}
 " Matching parenthesis {{{
-call s:Highlight('MatchParen', 'orange', 'gray8', 'bold')
+call s:Highlight('MatchParen', 'white', 'teal9')
 " }}}
 " Completion menu {{{
 call s:Link('Pmenu', 'oroshi_UI')
@@ -280,7 +280,6 @@ call s:Link('Noise', 'oroshi_Text')
 call s:Link('NonText', 'oroshi_TextAlmostInvisible')
 call s:Link('SpecialKey', 'oroshi_TextSpecial')
 call s:Link('Error', 'oroshi_Error')
-" Note: These styles can't be linked, they must be defined directly
 " Messages
 call s:Link('WarningMsg', 'oroshi_Warning')
 call s:Link('ErrorMsg', 'oroshi_Error')
@@ -369,11 +368,54 @@ call s:Link('htmlLink', 'oroshi_Text')
 call s:Link('htmlTitle', 'oroshi_Text')
 " }}}
 " JavaScript {{{
-call s:Link('jsExceptions', 'oroshi_Warning')
-call s:Link('jsTemplateExpression', 'oroshi_TextSpecial')
-call s:Link('jsTemplateBraces', 'oroshi_TextSpecial')
-call s:Link('jsFuncCall', 'oroshi_CodeFunction')
-call s:Link('jsGlobalObjects', 'oroshi_CodeClass')
+" Blue: Strings and numbers
+" Gray: Comments
+" Green: Modifiers (const, async, etc)
+" Indigo: if, return, while
+" Orange: Variables
+" Pink: ???
+" Purple: ???
+" Red: ???
+" Teal: Punctuation
+" Yellow: Functions
+" Punctuation
+call s:Highlight('jsArrowFunction', 'teal7')
+call s:Highlight('jsBrackets', 'teal7')
+call s:Highlight('jsFuncBraces', 'teal7')
+call s:Highlight('jsFuncParens', 'teal7')
+call s:Highlight('jsIfElseBraces', 'teal7')
+call s:Highlight('jsObjectBraces', 'teal7')
+call s:Highlight('jsNoise', 'teal7')
+call s:Highlight('jsOperator', 'teal7')
+call s:Highlight('jsParens', 'teal7')
+call s:Highlight('jsDot', 'teal7')
+" if, return, while
+call s:Highlight('jsConditional', 'indigo')
+call s:Highlight('jsReturn', 'indigo', '', 'bold')
+call s:Highlight('jsTernaryIfOperator', 'indigo', '', 'bold')
+" true, false, undefined, null
+call s:Highlight('jsBooleanFalse', 'red6', '', 'bold')
+call s:Highlight('jsBooleanTrue', 'green', '', 'bold')
+call s:Highlight('jsNull', 'yellow', '', 'bold')
+call s:Highlight('jsUndefined', 'purple', '', 'bold')
+" Strings
+call s:Highlight('jsTemplateBraces', 'orange')
+call s:Highlight('jsTemplateExpression', 'orange')
+call s:Highlight('jsTemplateString', 'blue4')
+call s:Highlight('jsString', 'blue5')
+" Functions
+call s:Highlight('jsAsyncKeyword', 'green8')
+call s:Highlight('jsForAwait', 'green8', '', 'bold')
+call s:Highlight('jsFuncCall', 'yellow')
+call s:Highlight('jsFuncName', 'yellow', '', 'bold')
+call s:Highlight('jsFunction', 'green8')
+call s:Highlight('jsGlobalNodeObjects', 'yellow', '', 'bold') " require, module
+call s:Highlight('jsGlobalObjects', 'yellow', '', 'bold') " console, window
+" Variables
+call s:Highlight('jsVariableDef', 'orange')
+call s:Highlight('jsStorageClass', 'green8') " const, var, let
+call s:Highlight('jsObjectKey', 'orange7') " const, var, let
+
 " }}}
 " Markdown {{{
 call s:Link('MarkdownRule', 'oroshi_TextDelimiter')
