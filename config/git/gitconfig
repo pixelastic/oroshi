@@ -1,5 +1,4 @@
 [alias]
-  commit-all = !git add --all . && git commit -v
   conflicts = diff --name-only --diff-filter=U
   diff-staged = diff -w --color-words --staged
   download = clone --depth=1
