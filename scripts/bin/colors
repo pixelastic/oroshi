@@ -12,5 +12,6 @@ for colorName in ${sortedKeys[@]}; do
   echo -n "\e[48;5;${colorIndex}m          $RESET\e[38;5;${colorIndex}m$RESET"
   echo -n "\e[38;5;${colorIndex}m  ${colorName}$RESET"
   echo -n "\e[38;5;${colorIndex}m  ${colorIndex} $RESET"
+  echo -n "\e[38;5;${colorIndex}m A longer text written like this $RESET"
   echo ""
 done
