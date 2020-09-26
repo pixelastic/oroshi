@@ -2,6 +2,7 @@
 
 local sessionName="$1"
 local windowName="$2"
+local isZoomed="$3"
 
 local textColor="colour235"
 local windowColor="$(tmux-status-color $windowName)"
@@ -11,5 +12,8 @@ local sessionColor="$(tmux-status-color $sessionName)"
 
 local rightSeparator="#[fg=${windowColor},bg=${textColor}]"
 
-echo "#[fg=${textColor},bg=${windowColor}] ${windowSymbol}${windowName} ${rightSeparator}"
+local zoomSymbol=""
+[[ $isZoomed == "1" ]] && zoomSymbol="  "
+
+echo "#[fg=${textColor},bg=${windowColor}] ${windowSymbol}${windowName}${zoomSymbol} ${rightSeparator}"
 
