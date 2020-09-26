@@ -50,16 +50,14 @@ export LS_COLORS="${LS_COLORS}:*.mkv=1;38;5;$COLOR[blue]"
 # Less important files {{{
 export LS_COLORS="${LS_COLORS}:*.js.map=38;5;$COLOR[gray7]"
 export LS_COLORS="${LS_COLORS}:*.lock=38;5;$COLOR[gray7]"
+export LS_COLORS="${LS_COLORS}:*.lock=38;5;$COLOR[gray7]"
 export LS_COLORS="${LS_COLORS}:*.log=38;5;$COLOR[gray7]"
 export LS_COLORS="${LS_COLORS}:*.min.css=38;5;$COLOR[gray7]"
 export LS_COLORS="${LS_COLORS}:*.min.js=38;5;$COLOR[gray7]"
 export LS_COLORS="${LS_COLORS}:*.part=38;5;$COLOR[gray7]"
+export LS_COLORS="${LS_COLORS}:*.pid=38;5;$COLOR[gray7]"
 export LS_COLORS="${LS_COLORS}:.envrc=38;5;$COLOR[gray7]"
 export LS_COLORS="${LS_COLORS}:_algolia_api_key=38;5;$COLOR[gray7]"
-# }}}
-# Lock files {{{
-export LS_COLORS="${LS_COLORS}:*.pid=38;5;$COLOR[yellow]"
-export LS_COLORS="${LS_COLORS}:*.lock=38;5;$COLOR[yellow3]"
 # }}}
 
 # # Archives (bold green)
