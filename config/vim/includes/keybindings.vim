@@ -18,7 +18,6 @@ let mapleader=','
 nmap <Space> .
 " }}}
 " CAPS LOCK KEY {{{
-" Note: Xmodmap maps Caps Lock to F15
 " - Cancels autocomplete, search, command, visual
 " - Restore the wrong word in spelling mode
 " - Toggle normal / insert mode
@@ -32,6 +31,7 @@ function! MultiPurposeCapsLock()
   endif
   return pumvisible() ? autocomplete_cancel : mode_normal
 endfunction
+" Xmodmap maps CAPS LOCK to F15
 " F15 is mapped to ([28~) in termite/alacritty, but [1;2R in kitty
 inoremap <silent> [28~ <C-R>=MultiPurposeCapsLock()<CR>
 inoremap <silent> [1;2R <C-R>=MultiPurposeCapsLock()<CR>
@@ -111,11 +111,13 @@ function! MultiPurposeReturn()
 endfunction
 inoremap  <C-R>=MultiPurposeReturn()<CR>
 inoremap <CR> <C-R>=MultiPurposeReturn()<CR>
-inoremap O2M <Esc>O<Esc>j
-nnoremap <CR> mzjI<CR><Esc>k$"_d0"_x`z
-nnoremap O2M mzI<CR><Esc>k"_d0"_x`zj
-vnoremap <CR> <Esc>g`>o<Esc>gv
-vnoremap O2M <Esc>g`<O<Esc>gv
+" Add line after this one
+nnoremap <CR> mzo<Esc>`z
+" Add line before this one
+nnoremap [13;2u mzO<Esc>`z
+inoremap [13;2u <Esc>lmzO<Esc>`zi
+" Add line right after this char
+nnoremap [13;5u mzli<CR><Esc>`z
 " }}}
 " H/J/K/L {{{
 function! MultiPurposeJ()
@@ -181,11 +183,6 @@ nnoremap <silent> <Leader>z :lprev<CR>
 nnoremap <silent> <Leader>s :lnext<CR>
 nnoremap <silent> <Leader>q :cprev<CR>
 nnoremap <silent> <Leader>d :cnext<CR>
-" Move to next/previous method definition
-nnoremap mm ]m
-nnoremap MM [m
-" Move to current method definition
-nnoremap gm [{
 " Select/Delete/Change method
 nnoremap vim viB
 nnoremap dim diB
@@ -196,19 +193,15 @@ nnoremap dam [{V%d
 nnoremap cam [{V%c
 " Select the current block of text
 nnoremap vip {jv}k$
-" Sort the current block of text
-nnoremap sip {jv}k$:sort<CR>
 " Go to next error
 nnoremap <silent> <C-E> :lnext<CR>
 " }}}
 " MUSCLE MEMORY {{{
 " Ctrl+S saves the file, as in most apps
-if !exists('*SaveFile')
-  function SaveFile()
-    if &diff | only | endif
-    write!
-  endfunction
-endif
+function! SaveFile()
+  if &diff | only | endif
+  write!
+endfunction
 nnoremap <silent> <C-S> :call SaveFile()<CR>
 inoremap <silent> <C-S> <Esc>:call SaveFile()<CR>
 " Ctrl+D is save and exit, as in the term.
@@ -291,17 +284,8 @@ vmap <silent> _ :call WorkaroundForMovingLines(']egv')<CR>
 " Swap two words
 nnoremap <C-w> daWf<Space>pB
 nnoremap <C-b> daW2F<Space>pB
-" appending a missing ; at the end of line
-function! AppendMissingSemicolon()
-  if getline('.') !~# ';$'
-    execute "normal mzA;\<Esc>`z"
-  endif
-endfunction
-nnoremap <silent> ; :call AppendMissingSemicolon()<CR>
 " Comment whole paragraph
 nnoremap gcp vipgc
-" md will convert the selection to markdown
-vnoremap <silent> md :!markdown<CR>
 " Increment/Decrement number under cursor
 nnoremap <C-J> <C-X>
 nnoremap <C-K> <C-A>

@@ -155,6 +155,7 @@ call s:Highlight('oroshi_ModeSearch', 'black', 'orange', 'bold')
 " Note: Following styles should be using the Highlight form, which is much more
 " readable and easy to extend.
 call s:Highlight('Normal', 'gray5')
+call s:Highlight('Special', 'yellow')
 " Borders {{{
 call s:Highlight('LineNr', 'gray')
 call s:Highlight('ColorColumn', 'yellow', 'gray9')
@@ -183,8 +184,8 @@ call s:Highlight('Folded', 'gray5', 'gray9')
 call s:Highlight('Visual', 'white', 'blue', 'bold')
 " }}}
 " Search {{{
-call s:Highlight('Search', 'black', 'orange', 'bold')
-call s:Highlight('IncSearch', 'black', 'orange', 'bold')
+call s:Highlight('Search', 'white', 'orange', 'none')
+call s:Highlight('IncSearch', 'white', 'orange', 'none')
 " }}}
 " Syntastic gutter {{{
 call s:Highlight('SyntasticErrorSign', 'red')
@@ -280,7 +281,6 @@ call s:Link('NonText', 'oroshi_TextAlmostInvisible')
 call s:Link('SpecialKey', 'oroshi_TextSpecial')
 call s:Link('Error', 'oroshi_Error')
 " Note: These styles can't be linked, they must be defined directly
-call s:Highlight('Special', 'yellow8')
 " Messages
 call s:Link('WarningMsg', 'oroshi_Warning')
 call s:Link('ErrorMsg', 'oroshi_Error')
@@ -457,6 +457,7 @@ call s:Link('vimSynType', 'oroshi_CodeSymbol')
 call s:Link('vimAutoEvent', 'oroshi_CodeSymbol')
 call s:Link('vimNormCmds', 'oroshi_CodeSymbol')
 call s:Link('vimMapLhs', 'oroshi_CodeSymbol')
+" , 'orange', 'none')
 " Option values
 call s:Link('vimSet', 'oroshi_CodeString')
 call s:Link('vimSetEqual', 'oroshi_CodeString')
@@ -469,8 +470,8 @@ call s:Link('vimFuncKey', 'oroshi_CodeType')
 call s:Link('vimNormCmds', 'oroshi_Text')
 call s:Link('vimUserAttrb', 'oroshi_Text')
 " Special keys
-call s:Link('vimMapMod', 'oroshi_TextSpecial')
-call s:Link('vimMapModKey', 'oroshi_TextSpecial')
+call s:Highlight('vimMapMod', 'yellow')
+call s:Highlight('vimMapModKey', 'yellow')
 call s:Link('vimAutoCmdSfxList', 'oroshi_TextSpecial')
 call s:Link('vimCtrlCharMod', 'oroshi_TextSpecial')
 " Regexps

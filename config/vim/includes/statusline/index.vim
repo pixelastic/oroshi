@@ -29,7 +29,7 @@ function! OroshiStatusLine()
     let modeName = 'Visual' 
   endif
   let sl .= '%#StatusLineMode'.modeName.'# '.toupper(modeName).' %*'
-  let sl .= '%#StatusLineMode'.modeName.'Separator#⮀%* '
+  let sl .= '%#StatusLineMode'.modeName.'Separator#%* '
   " }}}
   
   " Current file {{{
@@ -38,7 +38,7 @@ function! OroshiStatusLine()
   let hasUnsavedChanges = &modified
   if isWritable
     if hasUnsavedChanges
-      let sl .= '%#StatusLinePathModified#'.filepath.'~ %*'
+      let sl .= '%#StatusLinePathModified#'.filepath.' %*'
     else
       let sl .= '%#StatusLinePath#'.filepath.' %*'
     endif
