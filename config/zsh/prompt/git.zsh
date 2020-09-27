@@ -55,8 +55,7 @@ function __prompt-git-rebase() {
   local transplantColor="$(__prompt-git-branch-color $transplantBranch)"
 
 
-  echo -n "%F{$COLOR[gray]}[trunk]%f"
-  echo -n "%F{$COLOR[$ontoColor]}[${ontoBranch}]%f"
+  echo -n "%F{$COLOR[$ontoColor]}[${ontoBranch:0:8}]%f"
   echo -n "%F{$COLOR[$transplantColor]}[${transplantBranch}]%f"
 }
 

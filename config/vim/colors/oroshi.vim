@@ -413,8 +413,8 @@ call s:Highlight('jsGlobalNodeObjects', 'yellow', '', 'bold') " require, module
 call s:Highlight('jsGlobalObjects', 'yellow', '', 'bold') " console, window
 " Variables
 call s:Highlight('jsVariableDef', 'orange')
+call s:Highlight('jsObjectKey', 'orange7')
 call s:Highlight('jsStorageClass', 'green8') " const, var, let
-call s:Highlight('jsObjectKey', 'orange7') " const, var, let
 
 " }}}
 " Markdown {{{
