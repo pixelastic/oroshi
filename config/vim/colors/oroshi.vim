@@ -402,7 +402,7 @@ call s:Highlight('jsUndefined', 'purple', '', 'bold')
 call s:Highlight('jsTemplateBraces', 'orange')
 call s:Highlight('jsTemplateExpression', 'orange')
 call s:Highlight('jsTemplateString', 'blue4')
-call s:Highlight('jsString', 'blue5')
+call s:Highlight('jsString', 'blue6')
 " Functions
 call s:Highlight('jsAsyncKeyword', 'green8')
 call s:Highlight('jsForAwait', 'green8', '', 'bold')
@@ -413,7 +413,8 @@ call s:Highlight('jsGlobalNodeObjects', 'yellow', '', 'bold') " require, module
 call s:Highlight('jsGlobalObjects', 'yellow', '', 'bold') " console, window
 " Variables
 call s:Highlight('jsVariableDef', 'orange')
-call s:Highlight('jsObjectKey', 'orange7')
+call s:Highlight('jsFuncArgs', 'orange')
+call s:Highlight('jsObjectKey', 'orange8')
 call s:Highlight('jsStorageClass', 'green8') " const, var, let
 
 " }}}
