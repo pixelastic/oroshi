@@ -47,8 +47,8 @@ let g:ctrlp_status_func = {
 function! CtrlPStatusLineMain(...)
 	let sl = ''
 	" Mode
-	let sl .= '%#oroshi_UIModeCtrlPPrompt# CTRL-P %*'
-	let sl .= '%#oroshi_UIModeCtrlPArrow#⮀%*'
+	let sl .= '%#StatusLineModeCtrlP# CTRL-P %*'
+	let sl .= '%#StatusLineModeCtrlPSeparator#⮀%*'
 	" Separator
 	let sl .= '%='
 	" Current dir
@@ -60,8 +60,8 @@ endfunction
 function! CtrlPStatusLineProg(...)
 	let sl = ''
 	" Mode
-	let sl .= '%#oroshi_UIModeCtrlPPrompt# CTRL-P %*'
-	let sl .= '%#oroshi_UIModeCtrlPArrow#⮀%*'
+	let sl .= '%#StatusLineModeCtrlP# CTRL-P %*'
+	let sl .= '%#StatusLineModeCtrlPSeparator#⮀%*'
 	" Status or length
 	let sl .= ' '.a:1
 	" Separator

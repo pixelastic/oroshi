@@ -8,23 +8,23 @@ function __prompt-path() {
   # the known path and its data. It is important they are checked in order, so
   # the most specific are defined first
   local -a knownPaths knownData
-  knownPaths+=("~/local/www/doctolib/doctolib")
+  knownPaths+=("~/local/www/doctolib/doctolib/")
   knownData+=("blue5:blue1: doctolib")
-  knownPaths+=("~/local/www/projects/golgoth")
+  knownPaths+=("~/local/www/projects/golgoth/")
   knownData+=("orange:orange1: golgoth")
-  knownPaths+=("~/local/www/projects/firost")
+  knownPaths+=("~/local/www/projects/firost/")
   knownData+=("green:green1:❯ firost")
-  knownPaths+=("~/local/www/projects/norska")
+  knownPaths+=("~/local/www/projects/norska/")
   knownData+=("blue3:gray8:煮norska")
-  knownPaths+=("~/local/www/projects/aberlaas")
+  knownPaths+=("~/local/www/projects/aberlaas/")
   knownData+=("yellow7:gray8: aberlaas")
-  knownPaths+=("~/.oroshi")
+  knownPaths+=("~/.oroshi/")
   knownData+=("green:green1:x oroshi")
-  knownPaths+=("~")
+  knownPaths+=("~/")
   knownData+=("green:green1:")
 
   # Remove known paths from the current path
-  local pathString="$(print -D $PWD)"
+  local pathString="$(print -D $PWD)/"
   local pathSymbolString=""
   for knownPath in $knownPaths; do
     if [[ $pathString == ${knownPath}* ]]; then

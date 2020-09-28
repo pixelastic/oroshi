@@ -156,7 +156,7 @@ endfunction
 call s:Highlight('Boolean', 'orange5')
 call s:Highlight('Comment', 'gray')
 call s:Highlight('Constant', 'yellow', 'none', 'bold')
-call s:Highlight('Error', 'red', '', 'bold')
+call s:Highlight('Error', 'red', 'black', 'bold')
 call s:Highlight('Function', 'yellow')
 call s:Highlight('Identifier', 'indigo4', '', 'none')
 call s:Highlight('Noise', 'teal7')
@@ -204,8 +204,8 @@ call s:Highlight('Folded', 'gray5', 'gray9')
 call s:Highlight('Visual', 'white', 'blue', 'bold')
 " }}}
 " Search {{{
-call s:Highlight('Search', 'white', 'orange', 'none')
-call s:Highlight('IncSearch', 'white', 'orange', 'none')
+call s:Highlight('Search', 'black', 'orange', 'bold')
+call s:Highlight('IncSearch', 'black', 'orange', 'none')
 " }}}
 " Syntastic gutter {{{
 call s:Highlight('SyntasticErrorSign', 'red')
@@ -230,6 +230,8 @@ call s:Highlight('StatusLineModeVisual', 'white', 'blue', 'bold')
 call s:Highlight('StatusLineModeVisualSeparator', 'blue', 'gray8')
 call s:Highlight('StatusLineModeSearch', 'black', 'orange', 'bold')
 call s:Highlight('StatusLineModeSearchSeparator', 'orange', 'gray8')
+call s:Highlight('StatusLineModeCtrlP', 'black', 'red5', 'bold')
+call s:Highlight('StatusLineModeCtrlPSeparator', 'red5', 'gray8')
 call s:Highlight('StatusLinePath', 'green', 'gray8', 'bold')
 call s:Highlight('StatusLinePathModified', 'purple4', 'gray8')
 call s:Highlight('StatusLinePathReadonly', 'red', 'gray8')
@@ -241,6 +243,12 @@ call s:Highlight('StatusLineFileFormatError', 'red', 'gray8')
 call s:Highlight('StatusLineFileEncodingError', 'red', 'gray8')
 call s:Highlight('StatusLineRight', 'gray4', 'gray8', 'none')
 " }}}
+" Ctrl-P {{{
+call s:Highlight('CtrlPLinePre', 'black', 'black')
+call s:Highlight('CtrlPPrtBase', 'gray7', 'black')
+call s:Highlight('CtrlPPrtText', 'white', 'black')
+call s:Highlight('CtrlPMatch', 'black', 'red5', 'bold')
+" }}}
 " Matching parenthesis {{{
 call s:Highlight('MatchParen', 'white', 'teal9')
 " }}}
@@ -251,21 +259,6 @@ call s:Highlight('MatchParen', 'white', 'teal9')
 " " }}}
 " " Pesky characters {{{
 " call s:Highlight('ExtraWhitespace', 'darkred', 'darkred', 'bold')
-" " }}}
-" " CtrlP {{{
-" call s:Highlight('oroshi_UIModeCtrlPPrompt', 'black', 'red5', 'bold')
-" call s:Highlight('oroshi_UIModeCtrlPArrow', 'red5', 'gray8')
-" call s:Highlight('oroshi_UIModeCtrlPGutter', 'red5', 'red5')
-" call s:Highlight('oroshi_UIModeCtrlPPrePrompt', 'red5', 'black')
-" call s:Highlight('oroshi_ModeCtrlPPromptText', 'white', 'black', 'bold')
-" call s:Highlight('oroshi_ModeCtrlPPromptTextCursor', 'white', 'red', 'bold')
-" call s:Highlight('oroshi_ModeCtrlPHighlight', 'red5', 'none')
-
-" call s:Link('CtrlPLinePre', 'oroshi_UIModeCtrlPGutter')
-" call s:Link('CtrlPPrtBase', 'oroshi_UIModeCtrlPPrePrompt')
-" call s:Link('CtrlPPrtText', 'oroshi_ModeCtrlPPromptText')
-" call s:Link('CtrlPPrtCursor', 'oroshi_ModeCtrlPPromptTextCursor')
-" call s:Link('CtrlPMatch', 'oroshi_ModeCtrlPHighlight')
 " " }}}
 " " CtrlF {{{
 " call s:Highlight('oroshi_UIModeCtrlF', 'purewhite')
@@ -296,7 +289,7 @@ call s:Highlight('MatchParen', 'white', 'teal9')
 " " }}}
 " Messages {{{
 call s:Highlight('WarningMsg', 'yellow8')
-call s:Highlight('ErrorMsg', 'red', '', 'bold')
+call s:Highlight('ErrorMsg', 'red', 'black', 'bold')
 " }}}
 " Spellchecking {{{
 call s:Highlight('SpellBad', 'red', 'none', 'bold,underline')
@@ -389,6 +382,10 @@ call s:Highlight('yamlPlainScalar', 'blue5')
 call s:Highlight('yamlAlias', 'yellow6')
 call s:Highlight('yamlFlowString', 'blue5')
 " }}}
+" Zsh {{{
+call s:Highlight('zshTypes', 'green7')
+call s:Highlight('zshCommands', 'yellow6')
+" }}}
 
 
 " " Ansible {{{
@@ -444,57 +441,6 @@ call s:Highlight('yamlFlowString', 'blue5')
 " call s:Link('htmlItalic', 'oroshi_Text')
 " call s:Link('htmlLink', 'oroshi_Text')
 " call s:Link('htmlTitle', 'oroshi_Text')
-" " }}}
-" " JavaScript {{{
-" " Blue: Strings and numbers
-" " Gray: Comments
-" " Green: Modifiers (const, async, etc)
-" " Indigo: if, return, while
-" " Orange: Variables
-" " Pink: ???
-" " Purple: ???
-" " Red: ???
-" " Teal: Punctuation
-" " Yellow: Functions
-" " Punctuation
-" " call s:Highlight('jsArrowFunction', 'teal7')
-" " call s:Highlight('jsBrackets', 'teal7')
-" " call s:Highlight('jsFuncBraces', 'teal7')
-" " call s:Highlight('jsFuncParens', 'teal7')
-" " call s:Highlight('jsIfElseBraces', 'teal7')
-" " call s:Highlight('jsObjectBraces', 'teal7')
-" " call s:Highlight('jsNoise', 'teal7')
-" " call s:Highlight('jsOperator', 'teal7')
-" " call s:Highlight('jsParens', 'teal7')
-" " call s:Highlight('jsDot', 'teal7')
-" " " if, return, while
-" " call s:Highlight('jsConditional', 'indigo')
-" " call s:Highlight('jsReturn', 'indigo', '', 'bold')
-" " call s:Highlight('jsTernaryIfOperator', 'indigo', '', 'bold')
-" " " true, false, undefined, null
-" " call s:Highlight('jsBooleanFalse', 'red6', '', 'bold')
-" " call s:Highlight('jsBooleanTrue', 'green', '', 'bold')
-" " call s:Highlight('jsNull', 'yellow', '', 'bold')
-" " call s:Highlight('jsUndefined', 'purple', '', 'bold')
-" " " Strings
-" " call s:Highlight('jsTemplateBraces', 'orange')
-" " call s:Highlight('jsTemplateExpression', 'orange')
-" " call s:Highlight('jsTemplateString', 'blue4')
-" " call s:Highlight('jsString', 'blue6')
-" " " Functions
-" " call s:Highlight('jsAsyncKeyword', 'green8')
-" " call s:Highlight('jsForAwait', 'green8', '', 'bold')
-" " call s:Highlight('jsFuncCall', 'yellow')
-" " call s:Highlight('jsFuncName', 'yellow', '', 'bold')
-" " call s:Highlight('jsFunction', 'green8')
-" " call s:Highlight('jsGlobalNodeObjects', 'yellow', '', 'bold') " require, module
-" " call s:Highlight('jsGlobalObjects', 'yellow', '', 'bold') " console, window
-" " " Variables
-" " call s:Highlight('jsVariableDef', 'orange')
-" " call s:Highlight('jsFuncArgs', 'orange')
-" " call s:Highlight('jsObjectKey', 'orange8')
-" " call s:Highlight('jsStorageClass', 'green8') " const, var, let
-
 " " }}}
 " " Markdown {{{
 " call s:Link('MarkdownRule', 'oroshi_TextDelimiter')
