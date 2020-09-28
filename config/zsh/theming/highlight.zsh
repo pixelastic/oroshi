@@ -4,18 +4,18 @@ source ~/.oroshi/config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlight
 # https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters/main.md
 # https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/highlighters/main/main-highlighter.zsh
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
-# Methods (yellow)
+# Methods
 ZSH_HIGHLIGHT_STYLES[alias]="fg=$COLOR[yellow]"
 ZSH_HIGHLIGHT_STYLES[builtin]="fg=$COLOR[yellow]"
 ZSH_HIGHLIGHT_STYLES[command]="fg=$COLOR[yellow]"
 ZSH_HIGHLIGHT_STYLES[function]="fg=$COLOR[yellow]"
 ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=$COLOR[yellow]"
-# Path (green)
+# Path
 ZSH_HIGHLIGHT_STYLES[path]="fg=$COLOR[green]"
-# Arguments (orange)
-ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="fg=$COLOR[indigo]"
-ZSH_HIGHLIGHT_STYLES[globbing]="fg=$COLOR[indigo]"
-ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="fg=$COLOR[indigo]"
+# Arguments
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="fg=$COLOR[indigo4]"
+ZSH_HIGHLIGHT_STYLES[globbing]="fg=$COLOR[indigo4]"
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="fg=$COLOR[indigo4]"
 # Strings (blue)
 ZSH_HIGHLIGHT_STYLES[back-quoted-argument]="fg=$COLOR[blue7]"
 ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=$COLOR[blue5]"
