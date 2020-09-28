@@ -160,7 +160,7 @@ call s:Highlight('Special', 'yellow')
 call s:Highlight('LineNr', 'gray')
 call s:Highlight('ColorColumn', 'yellow', 'gray9')
 call s:Highlight('SignColumn', 'white', 'black', 'none')
-call s:Highlight('VertSplit', 'red', 'red', 'bold')
+call s:Highlight('VertSplit', 'gray9', 'gray9', 'bold')
 " }}}
 " Tabs {{{
 call s:Highlight('TabLine', 'gray4', 'gray9', 'none')
