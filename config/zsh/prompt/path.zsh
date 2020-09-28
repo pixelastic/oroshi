@@ -55,7 +55,9 @@ function __prompt-path() {
 
   # Color the string path
   if [[ $pathString != '' ]]; then
+    [[ ! -r $PWD ]] && echo "%F{$COLOR[gray]} ${pathString}%f " && return
     [[ ! -w $PWD ]] && echo "%F{$COLOR[red]}!${pathString}%f " && return
+
     echo "%F{$COLOR[green]}${pathString}%f " && return
   fi
 }

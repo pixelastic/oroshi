@@ -4,6 +4,7 @@ source $zshConfigDir/prompt/ruby.zsh
 source $zshConfigDir/prompt/node.zsh
 source $zshConfigDir/prompt/git.zsh
 function __prompt-right() {
+  [[ ! -r $PWD ]] && return
   echo -n "$(__prompt-ruby-version)"
   echo -n "$(__prompt-node-version)"
   echo -n "$(__prompt-git-right)"
