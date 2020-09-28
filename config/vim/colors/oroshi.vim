@@ -385,6 +385,12 @@ call s:Highlight('yamlFlowString', 'blue5')
 " Zsh {{{
 call s:Highlight('zshTypes', 'green7')
 call s:Highlight('zshCommands', 'yellow6')
+call s:Highlight('zshKeyword', 'green7')
+call s:Highlight('zshBrackets', 'teal7')
+call s:Highlight('zshParentheses', 'teal7')
+call s:Highlight('zshOperator', 'teal7')
+call s:Highlight('zshDeref', 'indigo4')
+call s:Highlight('zshVariableDef', 'indigo4')
 " }}}
 
 
