@@ -9,17 +9,17 @@ function __prompt-path() {
   # the most specific are defined first
   local -a knownPaths knownData
   knownPaths+=("~/local/www/doctolib/doctolib")
-  knownData+=("blue5:blue1:")
+  knownData+=("blue5:blue1: doctolib")
   knownPaths+=("~/local/www/projects/golgoth")
-  knownData+=("orange:orange1:")
+  knownData+=("orange:orange1: golgoth")
   knownPaths+=("~/local/www/projects/firost")
-  knownData+=("green:green1:❯")
+  knownData+=("green:green1:❯ firost")
   knownPaths+=("~/local/www/projects/norska")
-  knownData+=("blue3:gray8:煮")
+  knownData+=("blue3:gray8:煮norska")
   knownPaths+=("~/local/www/projects/aberlaas")
-  knownData+=("yellow7:gray8:")
+  knownData+=("yellow7:gray8: aberlaas")
   knownPaths+=("~/.oroshi")
-  knownData+=("green:green1:x")
+  knownData+=("green:green1:x oroshi")
   knownPaths+=("~")
   knownData+=("green:green1:")
 
