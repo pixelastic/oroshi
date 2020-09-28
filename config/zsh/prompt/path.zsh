@@ -1,22 +1,61 @@
 # Path
 # Displays the current path in a shortened form:
-# - If the path is too long, only the first and 2 last will be displayed
-# - Known directories are replaced with an icon
-# - Unwritable directories are written in red
+# - Use a colored prefix icon for known paths
+# - Shorten the actual path to no more than 3 items
+# - Color the path if not writable
 function __prompt-path() {
-  local promptPath="$(print -D $PWD)"
-  promptPath=${promptPath:s/~/ }
+  # zsh does not keep order with associative array, so we'll use two arrays for
+  # the known path and its data. It is important they are checked in order, so
+  # the most specific are defined first
+  local -a knownPaths knownData
+  knownPaths+=("~/local/www/doctolib/doctolib")
+  knownData+=("blue5:blue1:")
+  knownPaths+=("~/local/www/projects/golgoth")
+  knownData+=("orange:orange1:")
+  knownPaths+=("~/local/www/projects/firost")
+  knownData+=("green:green1:❯")
+  knownPaths+=("~/local/www/projects/norska")
+  knownData+=("blue3:gray8:煮")
+  knownPaths+=("~/local/www/projects/aberlaas")
+  knownData+=("yellow7:gray8:")
+  knownPaths+=("~/.oroshi")
+  knownData+=("green:green1:x")
+  knownPaths+=("~")
+  knownData+=("green:green1:")
 
-  local -a splitPath
-  splitPath=(${(s:/:)promptPath})
+  # Remove known paths from the current path
+  local pathString="$(print -D $PWD)"
+  local pathSymbolString=""
+  for knownPath in $knownPaths; do
+    if [[ $pathString == ${knownPath}* ]]; then
+      local knownPathIndex=${knownPaths[(ie)$knownPath]}
+      pathSymbolString=$knownData[$knownPathIndex]
+      eval "pathString=\${pathString:s_${knownPath}_}"
+      break
+    fi
+  done
 
-  # Keep only first and last dirs if too long
-  if [[ ${#splitPath[*]} -ge 4 ]]; then
-    promptPath="${splitPath[1]}/…${splitPath[-2]}/${splitPath[-1]}/"
-    # promptPath=${promptPath:s/\//}
+  # Simplify string path if too long
+  local -a pathArray
+  pathArray=(${(s:/:)pathString})
+  if [[ ${#pathArray[*]} -ge 4 ]]; then
+    pathString="${pathArray[1]}/…/${pathArray[-2]}/${pathArray[-1]}/"
   fi
 
-  # Write in red for unwritable paths
-  [[ ! -w $PWD ]] && echo "%F{$COLOR[red]}!${promptPath}%f " && return
-  echo "%F{$COLOR[green]}${promptPath}%f " && return
+  # Add optional known path prefix
+  if [[ $pathSymbolString != '' ]]; then
+    local -a pathSymbolArray
+    pathSymbolArray=(${(s/:/)pathSymbolString})
+    local symbolBackground=$pathSymbolArray[1]
+    local symbolColor=$pathSymbolArray[2]
+    local symbolIcon=$pathSymbolArray[3]
+    echo -n "%K{$COLOR[$symbolBackground]}%F{$COLOR[$symbolColor]} $symbolIcon %f%k"
+    echo -n "%F{$COLOR[$symbolBackground]}%f "
+  fi
+
+  # Color the string path
+  if [[ $pathString != '' ]]; then
+    [[ ! -w $PWD ]] && echo "%F{$COLOR[red]}!${pathString}%f " && return
+    echo "%F{$COLOR[green]}${pathString}%f " && return
+  fi
 }

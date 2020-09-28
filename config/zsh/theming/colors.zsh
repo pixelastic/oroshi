@@ -26,5 +26,7 @@ for colorGroupName in $orderedColors; do
   # Easy access to the color
   COLOR[$colorGroupName]=$COLOR[${colorGroupName}6]
 done
+COLOR[black]=0
+COLOR[white]=15
 
 export COLOR

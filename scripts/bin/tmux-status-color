@@ -6,12 +6,13 @@ source ~/.oroshi/config/zsh/theming/colors.zsh
 local name="$1"
 local colorCode=""
 
-[[ $name == "aoinan" ]] && colorCode=$COLOR[gray]
 [[ $name == "aberlaas" ]] && colorCode=$COLOR[yellow7]
+[[ $name == "aoinan" ]] && colorCode=$COLOR[gray]
 [[ $name == "barrowmaze" ]] && colorCode=$COLOR[yellow8]
 [[ $name == "bg" ]] && colorCode=$COLOR[orange]
 [[ $name == "crafting" ]] && colorCode=$COLOR[yellow9]
 [[ $name == "doctolib" ]] && colorCode=$COLOR[blue]
+[[ $name == "firost" ]] && colorCode=$COLOR[green]
 [[ $name == "golgoth" ]] && colorCode=$COLOR[orange]
 [[ $name == "indexing" ]] && colorCode=$COLOR[blue3]
 [[ $name == "maps" ]] && colorCode=$COLOR[blue3]
