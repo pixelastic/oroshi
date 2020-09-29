@@ -9,6 +9,7 @@ path=(
   ~/.yarn/bin 
   ~/.rbenv/bin
   ~/.rbenv/shims
+  ~/.pyenv/bin
   ~/.cargo/bin
   ~/.oroshi/scripts/bin
   ~/.oroshi/scripts/bin/vit/bin
