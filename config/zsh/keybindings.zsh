@@ -29,10 +29,6 @@ bindkey -s '^H' ' cd ..^M'
 # Ctrl-P fuzzy finding {{{
 if [[ -r ~/.fzf.zsh ]]; then
   source ~/.fzf.zsh
-  export FZF_DEFAULT_OPTS="
-    --color fg:$COLOR[gray3],bg:$COLOR[black],hl:$COLOR[red5],fg+:$COLOR[black],bg+:$COLOR[red5],hl+:$COLOR[white]
-    --color info:$COLOR[yellow],prompt:$COLOR[white],pointer:$COLOR[white]
-   "
   export FZF_DEFAULT_COMMAND='fd --type file --hidden --follow --exclude .git'
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
   bindkey '^P' fzf-file-widget
