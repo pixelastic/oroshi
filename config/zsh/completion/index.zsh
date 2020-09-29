@@ -1,20 +1,5 @@
 local DEBUG_STARTTIME=$(($(date +%s%N)/1000000))
 
-# Add path to custom completion methods
-fpath=(~/.oroshi/config/zsh/completion $fpath)
-typeset -U fpath # Deduplicate entries
-
-autoload -Uz compinit
-zmodload zsh/complist
-
-# Regenerate the .zcompdump file only once a day instead at on each new zsh
-# window. This takes ~300ms
-# See: https://gist.github.com/ctechols/ca1035271ad134841284#gistcomment-2308206
-for dump in ~/.zcompdump(N.mh+24); do
-  compinit
-done
-# }}}
-
 # Disable showing the menu on first tab press
 unsetopt MENU_COMPLETE
 # In case of ambiguous match, complete up to the last ambiguous letter...
@@ -52,8 +37,14 @@ source $zshConfigDir/completion/_git-files
 source $zshConfigDir/completion/_git-remotes
 source $zshConfigDir/completion/_git-tags
 source $zshConfigDir/completion/mark
-source $zshConfigDir/completion/kubectl.zsh
-source $zshConfigDir/completion/gcp.zsh
+# Kubernetes completion
+if [ $commands[kubectl] ]; then
+  source <(kubectl completion zsh)
+fi
+# GCP completion
+if [ -f '/home/tim/local/src/google-cloud-sdk/completion.zsh.inc' ]; then 
+  source '/home/tim/local/src/google-cloud-sdk/completion.zsh.inc'; 
+fi
 
 # Auto escape &, ? and * when needed
 autoload -U url-quote-magic
@@ -91,6 +82,16 @@ function reloadCompletion() {
   unfunction $1
   autoload -U $1
 }
+# r() {
+#   \rm -f ~/.zcompdump
+#   \rm -f ~/.zcompcache/grunt
+#   local f
+#   f=($zshConfigDir/completion/_*(.))
+#   unfunction $f:t 2> /dev/null
+#   autoload -U $f:t
+# }
+# }}}
 
 local DEBUG_ENDTIME=$(($(date +%s%N)/1000000))
 [[ $ZSH_DEBUG == 1 ]] && echo "[debug]: ${0:t}: $(($DEBUG_ENDTIME - $DEBUG_STARTTIME))ms"
+

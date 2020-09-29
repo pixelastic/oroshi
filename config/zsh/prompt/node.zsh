@@ -23,7 +23,7 @@ function __prompt-node-version() {
   if [[ $currentVersion != $expectedVersion ]]; then
     echo -n "%F{$COLOR[red]} $currentVersion%f"
     echo -n "%F{$COLOR[yellow]}%f"
-    echo -n "%F{$COLOR[green]}$expectedVersion %f"
+    echo "%F{$COLOR[green]}$expectedVersion %f"
     return
   fi
 }
