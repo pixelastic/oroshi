@@ -1,10 +1,19 @@
 #!/usr/bin/env zsh
+source ~/.oroshi/config/zsh/theming/colors.zsh
+
 # Display the list of all linked modules
 local node_modules="$(yarn bin 2>/dev/null)/.."
-echo "" && return
-local modules="$(find $node_modules -maxdepth 1 -type l -printf "%f\n" 2>/dev/null)"
+local linkedModules=($(find $node_modules -maxdepth 1 -type l -printf "%f:%l\n" 2>/dev/null | sort))
 
-for module in $modules; do
-  echo "=> $module"
+for module in $linkedModules; do
+  local split=(${(s/:/)module})
+  local moduleName=$split[1]
+  local moduleDestination=$split[2]
+  local isFromMonorepo=1
+  [[ $moduleDestination == */.config/yarn/link/* ]] && isFromMonorepo=0
+local RESET="\e[0m"
+
+  [[ $isFromMonorepo == 1 ]] && echo "\e[38;5;$COLOR[yellow]m  $moduleName\e[0m"
+  [[ $isFromMonorepo == 0 ]] && echo "\e[38;5;$COLOR[blue7]m  $moduleName\e[0m"
 done
 
