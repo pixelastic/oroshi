@@ -1,6 +1,18 @@
 #!/usr/bin/env zsh
-# Unlink all linked modules
+# Unlink all linked modules, except for the one part of the same monorepo
 set -e
 
-local local_linked_modules=("${(@f)$(yll)}")
-ylR $local_linked_modules
+# Get all linked modules
+local node_modules="$(yarn bin 2>/dev/null)/.."
+local linkedModules=($(find $node_modules -maxdepth 1 -type l -printf "%f:%l\n" 2>/dev/null | sort))
+
+typeset -a modulesToUnlink
+for module in $linkedModules; do
+  local split=(${(s/:/)module})
+  local moduleName=$split[1]
+  local moduleDestination=$split[2]
+  # Skip local modules, when in a monorepo
+  [[ $moduleDestination != */.config/yarn/link/* ]] && continue
+  modulesToUnlink+=$moduleName
+done
+ylR $modulesToUnlink
