@@ -8,6 +8,7 @@ export TERM=xterm-256color
 path=(
   ~/.yarn/bin 
   ~/.rbenv/bin
+  ~/.rbenv/shims
   ~/.cargo/bin
   ~/.oroshi/scripts/bin
   ~/.oroshi/scripts/bin/vit/bin

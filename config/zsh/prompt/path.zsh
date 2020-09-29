@@ -10,6 +10,8 @@ function __prompt-path() {
   local -a knownPaths knownData
   knownPaths+=("~/local/www/doctolib/doctolib/")
   knownData+=("blue5:blue1: doctolib")
+  knownPaths+=("~/local/www/doctolib/kube/")
+  knownData+=("blue5:blue1:⎈ kube")
   knownPaths+=("~/local/www/projects/golgoth/")
   knownData+=("orange:orange1: golgoth")
   knownPaths+=("~/local/www/projects/firost/")

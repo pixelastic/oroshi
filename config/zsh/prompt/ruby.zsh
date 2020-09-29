@@ -1,15 +1,15 @@
 # Ruby
 # Display ruby-related information
-which rvm &>/dev/null && hasRvm=1
+which rbenv &>/dev/null && hasRbenv=1
 
 function __prompt-ruby-version() {
-  [ ! -v hasRvm ] && return
+  [ ! -v hasRbenv ] && return
 
   # No specified version
   expectedVersionPath="$(git root)/.ruby-version"
   [[ ! -f $expectedVersionPath ]] && return
 
-  currentVersion="$(rvm-prompt v)"
+  currentVersion="$(rbenv version-name)"
   expectedVersion="$(cat $expectedVersionPath)"
 
   # Not using the project specific version
