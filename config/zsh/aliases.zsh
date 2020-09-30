@@ -195,6 +195,7 @@ alias oh="~/.oroshi/scripts/deploy/hosts"
 alias or="redshift -x && redshift -o"
 alias os="~/.oroshi/scripts/deploy/ssh"
 alias oz="source ~/.zshrc"
+alias vk="v ~/.oroshi/config/kitty/kitty.conf"
 function ok() {
   # Reload keybindings
   ~/.oroshi/scripts/deploy/xmodmap # Custom keys
