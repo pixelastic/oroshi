@@ -1,21 +1,24 @@
+# frozen_string_literal: true
+
 # Shared module to access information about installed packages
 module AptGetHelper
-  @@colors = {
-    error: 160,
-    package: 141,
-    version: 241,
-    outdated: 185,
-    success: 35
-  }
+  COLORS = {
+    error: 36,
+    package: 23,
+    version: 96,
+    outdated: 35,
+    success: 46
+  }.freeze
 
   def colorize(text, color)
-    color = format('%03d', @@colors[color])
+    color = format('%<color>03d', { color: COLORS[color] })
     "[38;5;#{color}m#{text}[00m"
   end
 
   def longest_by_type(list, type)
     ordered = list.map { |obj| obj[type] }.group_by(&:size)
     return nil if ordered.empty?
+
     ordered.max.last[0]
   end
 
@@ -31,8 +34,10 @@ module AptGetHelper
   def get_current_version(package)
     raw = `apt-cache policy #{package} | grep 'Installed'`.strip
     return nil if raw == ''
+
     version = raw.gsub('Installed: ', '')
     return nil if version == '(none)'
+
     version
   end
 
