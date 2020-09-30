@@ -27,7 +27,6 @@ source $zshConfigDir/completion/yl
 source $zshConfigDir/completion/ylR
 source $zshConfigDir/completion/yr
 source $zshConfigDir/completion/yu
-source $zshConfigDir/completion/tmuxinator
 source $zshConfigDir/completion/_docker-container-all
 # source $zshConfigDir/completion/_docker-container-running
 # source $zshConfigDir/completion/_docker-container-stopped
@@ -68,10 +67,10 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # Selected file is highlighted
 zstyle ':completion:*' menu select
 # Completion type separator
-zstyle ':completion:*:descriptions' format '%F{069} %d%f'
+zstyle ':completion:*:descriptions' format "%K{$COLOR[yellow]}%F{$COLOR[black]} %d %f%k%F{$COLOR[yellow]}%K{$COLOR[black]} %f%k"
 # No completion found
-zstyle ':completion:*:warnings' format '%F{136}  No completion found%f'
-zstyle ':completion:*:messages' format '%F{136}  %d%f'
+zstyle ':completion:*:warnings' format "%K{$COLOR[red7]}%F{$COLOR[red2]}  No completion found %f%k%F{$COLOR[red7]}%K{$COLOR[black]} %f%k"
+zstyle ':completion:*:messages' format "%F{$COLOR[red]}⚠ %d%f"
 # Do not add trailing / to dirs or @ to symlinks
 unsetopt LIST_TYPES
 # Display suggestions horizontally
