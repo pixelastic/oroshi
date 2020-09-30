@@ -54,9 +54,6 @@ bindkey -M vicmd "L"     end-of-line
 bindkey -M vicmd "[4~" end-of-line        # End (in termite)
 bindkey -M vicmd "[6~" end-of-line        # Page Down
  
-# Backward search
-bindkey -M viins "" history-incremental-search-backward
-bindkey -M vicmd "" history-incremental-search-backward
 # Switching mode with CAPS LOCK
 # F15 is mapped to ([28~) in termite/alacritty, but [1;2R in kitty
 bindkey -M viins "[28~" vi-cmd-mode
