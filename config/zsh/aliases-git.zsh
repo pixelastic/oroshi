@@ -130,6 +130,12 @@ alias vstRa='git stash clear'
 alias vsta='git stash-apply'
 alias vstl='git stash list'
 # }}}
+# [g]ithub pages {{{
+alias vgi='github-issues'
+alias vgp='github-pull-requests'
+alias vgr='github-repo'
+alias vgu='github-url'
+# }}}
 # [s]ub-[m]odules {{{
 alias vsmc='git submodule-create'
 alias vsmi='git submodule init'

@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 require_relative '../etc/apt-get-helper/apt-get-helper'
 
 # Install specific packages
@@ -13,12 +15,15 @@ class AptGetInstall
     @packages.each do |package|
       if installed?(package)
         version = get_current_version(package)
-        puts "✘ #{package} is already installed (v#{version})"
+        version = colorize(version, :version)
+        package = colorize(package, :success)
+        puts "#{package} was already installed (#{version})"
         next
       end
 
       install package
-      puts "✔ #{package} installed"
+      package = colorize(package, :success)
+      puts "#{colorize(package, :success)} installed"
     end
   end
 end

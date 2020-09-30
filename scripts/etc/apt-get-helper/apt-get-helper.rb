@@ -32,7 +32,8 @@ module AptGetHelper
 
   # Returns the current (installed) version of the package
   def get_current_version(package)
-    raw = `apt-cache policy #{package} | grep 'Installed'`.strip
+    command =  "apt-cache policy #{package} | grep --color=never 'Installed'"
+    raw = `#{command}`.strip
     return nil if raw == ''
 
     version = raw.gsub('Installed: ', '')
