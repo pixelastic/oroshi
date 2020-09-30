@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+bundle update $@
+rbenv rehash

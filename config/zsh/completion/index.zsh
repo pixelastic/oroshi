@@ -38,9 +38,10 @@ source $zshConfigDir/completion/_git-remotes
 source $zshConfigDir/completion/_git-tags
 source $zshConfigDir/completion/mark
 # Kubernetes completion
-if [ $commands[kubectl] ]; then
-  source <(kubectl completion zsh)
-fi
+# This takes ~200ms. This is disabled until I heavily start using kube
+# if [ $commands[kubectl] ]; then
+#   source <(kubectl completion zsh)
+# fi
 # GCP completion
 if [ -f '/home/tim/local/src/google-cloud-sdk/completion.zsh.inc' ]; then 
   source '/home/tim/local/src/google-cloud-sdk/completion.zsh.inc'; 
@@ -93,5 +94,5 @@ function reloadCompletion() {
 # }}}
 
 local DEBUG_ENDTIME=$(($(date +%s%N)/1000000))
-[[ $ZSH_DEBUG == 1 ]] && echo "[debug]: ${0:t}: $(($DEBUG_ENDTIME - $DEBUG_STARTTIME))ms"
+[[ $ZSH_DEBUG == 1 ]] && echo "[debug]: ${0}: $(($DEBUG_ENDTIME - $DEBUG_STARTTIME))ms"
 

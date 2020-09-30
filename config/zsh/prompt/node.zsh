@@ -13,8 +13,14 @@ function __prompt-node-flags() {
 function __prompt-node-version() {
   [ ! -v hasNvm ] && return
 
-  currentVersion="$(nvm-version-current)"
-  expectedVersion="$(cat `nvm_find_nvmrc`)"
+  nvmrcPath="$(find-up .nvmrc)"
+  
+  # Stop if project has no version specified
+  [[ $nvmrcPath = '' ]] && return
+
+  currentVersion="$(node --version)"
+  currentVersion=${currentVersion:s/v/}
+  expectedVersion="$(<$nvmrcPath)"
 
   # Stop if project has no version specified
   [[ $expectedVersion = '' ]] && return

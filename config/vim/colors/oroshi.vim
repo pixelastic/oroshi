@@ -306,6 +306,18 @@ call s:Highlight('SpellCap', 'red', 'none', 'bold,underline')
 " " }}}
 " }}}
 
+" Git {{{
+call s:Highlight('gitcommitDiff', 'gray')
+call s:Highlight('gitcommitSummary', 'white')
+call s:Highlight('gitcommitBranch', 'orange')
+call s:Highlight('gitcommitHeader', 'gray')
+call s:Highlight('gitcommitSelectedFile', 'green')
+call s:Highlight('gitcommitUntrackedFile', 'gray')
+call s:Highlight('gitcommitOverflow', 'red')
+call s:Highlight('gitcommitBlank', 'red')
+call s:Highlight('gitconfigVariable', 'indigo')
+call s:Highlight('gitconfigAssignment', 'blue')
+" }}}
 " HTML {{{
 call s:Highlight('htmlTag', 'teal7')
 call s:Highlight('htmlTagName', 'green7')
@@ -424,18 +436,6 @@ call s:Highlight('zshVariableDef', 'indigo4')
 " call s:Link('cssUnitDecorators', 'oroshi_CodeNumber')
 " call s:Link('cssValueLength', 'oroshi_CodeNumber')
 " call s:Link('cssVendorPrefixProp', 'oroshi_CodeType')
-" " }}}
-" " Git {{{
-" call s:Link('gitcommitDiff', 'oroshi_DiffChanged')
-" call s:Link('gitcommitSummary', 'oroshi_Text')
-" call s:Link('gitcommitBranch', 'oroshi_GitBranch')
-" call s:Link('gitcommitHeader', 'oroshi_CodeComment')
-" call s:Link('gitcommitSelectedFile', 'oroshi_DiffChanged')
-" call s:Link('gitcommitUntrackedFile', 'oroshi_Text')
-" call s:Link('gitcommitOverflow', 'oroshi_Error')
-" call s:Link('gitcommitBlank', 'oroshi_Error')
-" call s:Link('gitconfigVariable', 'oroshi_CodeType')
-" call s:Link('gitconfigAssignment', 'oroshi_CodeString')
 " " }}}
 " " HTML {{{
 " call s:Link('htmlTag', 'oroshi_CodeStatement')

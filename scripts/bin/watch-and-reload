@@ -1,20 +1,8 @@
-#!/usr/bin/env ruby
-require 'shellwords'
+#!/usr/bin/env zsh
+# Watch for changes in files and run specific command when they change
+# Usage:
+#   $ watch-and-reload ./file1.txt ./file2.txt 'something && ls'
+local filesToWatch=(${(@)@[1,-2]})
+local commandToRun=$@[-1]
 
-# Listen for changes in file and run a command
-class WatchAndReload
-  def initialize(*args)
-    @command = args.pop
-    @files = args
-  end
-
-  def run
-    command = [
-      'when-changed -1',
-      @files.join(' '),
-      "-c 'clear && #{@command}'"
-    ]
-    exec command.join(' ')
-  end
-end
-WatchAndReload.new(*ARGV).run
+when-changed -1 $filesToWatch -c "clear && $commandToRun"

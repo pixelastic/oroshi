@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+gem uninstall $@
+rbenv rehash

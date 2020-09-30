@@ -9,15 +9,16 @@ local zshConfigDir=~/.oroshi/config/zsh
 
 source $zshConfigDir/env.zsh
 source $zshConfigDir/tmux.zsh
+source $zshConfigDir/theming/index.zsh
 source $zshConfigDir/completion/index.zsh
-source $zshConfigDir/filetypes.zsh
 source $zshConfigDir/history.zsh
 source $zshConfigDir/aliases.zsh
 source $zshConfigDir/keybindings.zsh
-source $zshConfigDir/theming/index.zsh
 source $zshConfigDir/tools/index.zsh
 source $zshConfigDir/prompt/index.zsh
 source $zshConfigDir/local/index.zsh
+#
+# source $zshConfigDir/filetypes.zsh
 
 local ZSHRC_DEBUG_ENDTIME=$(($(date +%s%N)/1000000))
 [[ $ZSH_DEBUG == 1 ]] && echo "[debug]: ~/.zshrc: $(($ZSHRC_DEBUG_ENDTIME - $ZSHRC_DEBUG_STARTTIME))ms"

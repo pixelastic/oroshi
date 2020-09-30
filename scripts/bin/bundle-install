@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+bundle install $@
+rbenv rehash

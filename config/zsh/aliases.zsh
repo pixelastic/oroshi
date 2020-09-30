@@ -312,12 +312,12 @@ alias ypc='depcheck . --ignore-dirs=dist,tmp,build --specials=eslint,webpack,bab
 # Ruby {{{
 alias be='bundle exec'
 alias ba='bundle add'
-alias bi="bundle install"
-alias bu="bundle update"
-alias gR="gem uninstall"
-alias gi="gem install"
+alias bi="bundle-install"
+alias bu="bundle-update"
+alias gR="gem-uninstall"
+alias gi="gem-install"
 alias gs="gem search"
-alias gu="gem update"
+alias gu="gem-update"
 # }}}
 # Jekyll {{{
 alias js='jekyll serve --trace'
