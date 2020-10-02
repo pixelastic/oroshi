@@ -374,6 +374,10 @@ call s:Highlight('pugAngular2', 'blue4', '', 'italic,bold')
 call s:Highlight('pugScriptLoopKeywords', 'pink4')
 call s:Highlight('pugTag', 'yellow')
 " }}}
+" Ruby {{{
+call s:Highlight('rubyStringDelimiter', 'blue5')
+call s:Highlight('rubyDefine', 'green')
+" }}}
 " Shell {{{
 call s:Highlight('shQuote', 'blue5')
 call s:Highlight('shSet', 'green7')
@@ -383,6 +387,10 @@ call s:Highlight('shOption', 'indigo4')
 call s:Highlight('shVarAssign', 'teal7')
 call s:Highlight('shDerefSimple', 'indigo4')
 call s:Highlight('shDerefVar', 'indigo4')
+" }}}
+" Tmux {{{
+call s:Highlight('tmuxCommands', 'green')
+call s:Highlight('tmuxBoolean', 'orange', '', 'bold')
 " }}}
 " Vim {{{
 call s:Highlight('vimFunc', 'yellow6')

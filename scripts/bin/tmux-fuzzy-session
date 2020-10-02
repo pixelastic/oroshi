@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 # Allow finding of a specific session through fuzzy matching
+
 class TmuxFuzzySession
   # Getting a structure representing all the info we need about the current
   # sessions and windows
@@ -61,12 +62,17 @@ class TmuxFuzzySession
   end
 
   # Getting the correct fzf binary to call
-  # Seems like global environment variables are not passed the script so things
-  # like the $PATH or default FZF config has to be copy-pasted here.
   def fzf_bin
     fzf_options = [
-      '--color fg:249,bg:233,hl:203,fg+:234,bg+:203,hl+:255',
-      '--color info:136,prompt:203,pointer:233'
+      '--color fg:23',
+      '--color bg:-1',
+      '--color hl:57',
+      '--color fg+:0',
+      '--color bg+:57',
+      '--color hl+:15',
+      '--color info:56',
+      '--color prompt:15',
+      '--color pointer:0'
     ]
     "~/local/src/fzf/bin/fzf-tmux -u 100% --reverse -- #{fzf_options.join(' ')}"
   end

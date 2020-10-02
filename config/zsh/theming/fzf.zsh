@@ -1,7 +1,6 @@
-
 export FZF_DEFAULT_OPTS=""
-export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color fg:$COLOR[gray3]"
-export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color bg:$COLOR[black]"
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color fg:$COLOR[gray4]"
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color bg:-1" # Default terminal color
 export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color hl:$COLOR[red5]"
 export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color fg+:$COLOR[black]"
 export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color bg+:$COLOR[red5]"
