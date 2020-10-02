@@ -17,6 +17,7 @@ let g:colors_name = 'oroshi'
 let s:color = {}
 let s:color.black=0
 let s:color.white=15
+let s:color.terminal=16
 let orderedColors = [
       \'gray', 
       \'red', 
@@ -179,7 +180,7 @@ call s:Highlight('Title', 'yellow')
 " Borders {{{
 call s:Highlight('LineNr', 'gray')
 call s:Highlight('ColorColumn', 'yellow', 'gray9')
-call s:Highlight('SignColumn', 'white', 'black', 'none')
+call s:Highlight('SignColumn', 'white', 'none')
 call s:Highlight('VertSplit', 'gray9', 'gray9', 'bold')
 " }}}
 " Tabs {{{
@@ -214,6 +215,7 @@ call s:Highlight('SyntasticWarningSign', 'yellow')
 call s:Highlight('SyntasticStyleWarningSign', 'yellow')
 " }}}
 " GitGutter {{{
+call s:Highlight('SignColumn', 'none', 'terminal')
 call s:Highlight('GitGutterChange', 'purple')
 call s:Highlight('GitGutterAdd', 'green')
 " }}}
@@ -222,8 +224,8 @@ call s:Highlight('StatusLine', 'gray4', 'gray8', 'none')
 call s:Highlight('StatusLineNC', '', 'gray8', 'none')
 call s:Highlight('StatusLineModeUnknown', 'white', 'red')
 call s:Highlight('StatusLineModeUnknownSeparator', 'red', 'white')
-call s:Highlight('StatusLineModeNormal', 'white', 'black')
-call s:Highlight('StatusLineModeNormalSeparator', 'black', 'gray8')
+call s:Highlight('StatusLineModeNormal', 'white', 'none')
+call s:Highlight('StatusLineModeNormalSeparator', 'none', 'gray8')
 call s:Highlight('StatusLineModeInsert', 'black', 'yellow', 'bold')
 call s:Highlight('StatusLineModeInsertSeparator', 'yellow', 'gray8')
 call s:Highlight('StatusLineModeVisual', 'white', 'blue', 'bold')
@@ -244,9 +246,9 @@ call s:Highlight('StatusLineFileEncodingError', 'red', 'gray8')
 call s:Highlight('StatusLineRight', 'gray4', 'gray8', 'none')
 " }}}
 " Ctrl-P {{{
-call s:Highlight('CtrlPLinePre', 'black', 'black')
-call s:Highlight('CtrlPPrtBase', 'gray7', 'black')
-call s:Highlight('CtrlPPrtText', 'white', 'black')
+call s:Highlight('CtrlPLinePre', 'black', 'none')
+call s:Highlight('CtrlPPrtBase', 'gray7', 'none')
+call s:Highlight('CtrlPPrtText', 'white', 'none')
 call s:Highlight('CtrlPMatch', 'black', 'red5', 'bold')
 " }}}
 " Matching parenthesis {{{
@@ -289,7 +291,7 @@ call s:Highlight('MatchParen', 'white', 'teal9')
 " " }}}
 " Messages {{{
 call s:Highlight('WarningMsg', 'yellow8')
-call s:Highlight('ErrorMsg', 'red', 'black', 'bold')
+call s:Highlight('ErrorMsg', 'red', 'none', 'bold')
 " }}}
 " Spellchecking {{{
 call s:Highlight('SpellBad', 'red', 'none', 'bold,underline')
