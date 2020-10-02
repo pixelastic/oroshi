@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# Check if a yarn install is currently running
+# The lockfile is set by vit
+local lockfile="$(git root)/.git/yarn-install-in-progress"
+
+[[ -r $lockfile ]] && exit 0
+exit 1
