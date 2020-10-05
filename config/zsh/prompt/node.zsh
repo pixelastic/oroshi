@@ -22,9 +22,6 @@ function __prompt-node-version() {
   currentVersion=${currentVersion:s/v/}
   expectedVersion="$(<$nvmrcPath)"
 
-  # Stop if project has no version specified
-  [[ $expectedVersion = '' ]] && return
-
   # Not using the project specific version
   if [[ $currentVersion != $expectedVersion ]]; then
     echo -n "%F{$COLOR[red]} $currentVersion%f"

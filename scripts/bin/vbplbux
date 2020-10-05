@@ -1,0 +1,53 @@
+#!/usr/bin/env zsh
+# Update list of BUX-* branches locally
+typeset -a remoteBranches localBranches
+
+# Updating our list of remote branches
+git fetch --quiet
+
+# Get all remote BUX-* branches
+local rawRemoteBranches=($(git branch -r --format="%(refname:short)"))
+for line in $rawRemoteBranches; do
+  local branchName=${line:s_origin/_}
+  [[ ! $branchName = BUX-* ]] && continue;
+  remoteBranches+=($branchName)
+done
+
+# Get all local BUX-* branches
+local rawLocalBranches=($(git branch --format="%(refname:short)"))
+for line in $rawLocalBranches; do
+  [[ ! $line = BUX-* ]] && continue;
+  localBranches+=($line)
+done
+
+# Pulling all remote branches
+local fetchCommandArguments=""
+for branchName in ${remoteBranches[@]}; do
+  fetchCommandArguments="$fetchCommandArguments $branchName:$branchName "
+done
+if [[ ! "$fetchCommandArguments" = "" ]]; then
+  echo "Updating $remoteBranches"
+  eval "git fetch origin $fetchCommandArguments"
+fi
+
+# Setting them all their tracking branch, so we can differenciate branches
+# pulled from the remote from branches created locally
+for branchName in ${remoteBranches[@]}; do
+  git branch --quiet $branchName -u origin/$branchName
+done
+
+# Removing local branches no longer on remote
+local deleteCommandArguments=""
+for branchName in ${localBranches[@]}; do
+  [[ ${remoteBranches[(ie)$branchName]} -le ${#remoteBranches} ]] && continue
+  # Double check that it's not an unpushed local branch (those don't have
+  # a remote head)
+  local remoteHead="$(git rev-parse $branchName@{upstream} 2>/dev/null)"
+  [[ "$remoteHead" = '' ]] && continue
+
+  deleteCommandArguments="$deleteCommandArguments $branchName "
+done
+if [[ ! "$deleteCommandArguments" = "" ]]; then
+  echo "Deleting $deleteCommandArguments"
+  eval "git branch -D $deleteCommandArguments"
+fi
