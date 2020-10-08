@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 set -e
 
+mkdir -p ~/.config/kitty
 ln \
   -s ~/.oroshi/config/kitty.conf \
   ~/.config/kitty/kitty.conf
