@@ -100,6 +100,7 @@ function! OroshiStatusLine()
   " Ruler {{{
   let sl .= " "
   let sl .= "0x%2.B" " current char
+  let sl .= "char: {nr2char('%b')} :" " current char
   let sl .= " %2.c/%2.{&textwidth}" " current colum / max columns
   let sl .= " %3l/%3L" " current line / max line
   let sl .= " %3p%%" " percentage in file

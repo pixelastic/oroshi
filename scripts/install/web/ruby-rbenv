@@ -7,10 +7,16 @@ cd ~/local/src
 git clone git@github.com:rbenv/rbenv-installer.git
 ./rbenv-installer/bin/rbenv-installer
 
+# Adding ruby-build as a plugin
+mkdir -p ~/.rbenv/plugins
+cd ~/.rbenv/plugins
+git clone git@github:rbenv/ruby-build.git
+
 # Ruby needs a few dependencies to install correctly
 sudo apt-get install \
   libssl-dev \
   zlib1g-dev
+
 
 # Installing Ruby and gems
 ~/.rbenv/bin/rbenv install 2.7.1

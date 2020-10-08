@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+set -e
+
+ln \
+  -s ~/.oroshi/config/kitty.conf \
+  ~/.config/kitty/kitty.conf
