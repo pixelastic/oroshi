@@ -5,7 +5,7 @@ set -e
 # https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/#install-using-the-repository
 
 # Remove old installs
-sudo apt-get remove docker docker-engine docker.io
+sudo apt-get remove docker docker.io
 
 # Setting system up to date
 sudo apt-get update

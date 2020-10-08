@@ -196,12 +196,6 @@ alias or="redshift -x && redshift -o"
 alias os="~/.oroshi/scripts/deploy/ssh"
 alias oz="source ~/.zshrc"
 alias vk="v ~/.oroshi/config/kitty/kitty.conf"
-function ok() {
-  # Reload keybindings
-  ~/.oroshi/scripts/deploy/xmodmap # Custom keys
-  ~/.oroshi/config/ubuntu/18.04/keybindings.sh # App bindings
-  ~/.oroshi/scripts/deploy/xbindkeys # Screen and sound
-}
 # }}}
 # Trash {{{
 alias tr?='trash-exists'
