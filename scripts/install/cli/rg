@@ -3,7 +3,7 @@ set -ex
 
 cd ~/local/tmp
 wget \
-  "https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/ripgrep_0.10.0_amd64.deb" \
+  "https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb" \
   -O ripgrep.deb
 
 sudo dpkg -i ripgrep.deb

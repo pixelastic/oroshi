@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 require_relative '../etc/apt-get-helper/apt-get-helper'
 
 # Find all packages matching the keyword given
@@ -28,6 +30,8 @@ class AptGetSearch
   end
 
   def run
+    return if @search_list.empty?
+
     width = longest_by_type(@search_list, :name).size
 
     @search_list.each do |result|

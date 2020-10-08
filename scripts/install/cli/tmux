@@ -1,32 +1,42 @@
 #!/usr/bin/env bash
 set -ex
 
-echo "Download source"
-cd ~/local/src/
-git clone https://github.com/tmux/tmux
-cd ./tmux
+ubuntuVersion="$(lsb_release -r -s)"
 
-echo "Install dependencies"
-sudo apt-get install libevent-dev
-# For copy/paste
+# Directly available in 20.04
+if [ "$ubuntuVersion" == "20.04" ]; then
+  sudo apt-get install tmux;
+else
+  echo "Download source"
+  cd ~/local/src/
+  git clone https://github.com/tmux/tmux
+  cd ./tmux
+
+  sudo apt-get install libevent-dev
+
+  sudo apt-get install \
+    automake \
+    libncurses5-dev
+
+  sh autogen.sh
+  ./configure --prefix="/home/$USER/local/"
+  make
+
+  echo "Symlink"
+  cd ~/local/bin
+  ln -s ../src/tmux/tmux .
+fi
+
+# xclip needed to copy to clipboard
 sudo apt-get install xclip
 
-echo "Configure"
-sudo apt-get install \
-  automake \
-  libncurses5-dev
-
-sh autogen.sh
-./configure --prefix="/home/$USER/local/"
-make
-
-echo "Symlink"
-cd ~/local/bin
-ln -s ../src/tmux/tmux .
-
 # Tmux plugin manager
-cd ~/local/src
-git clone https://github.com/tmux-plugins/tpm ./tpm
-echo "Now run [Prefix] + I to install the tmux dependencies"
+mkdir -p ~/.tmux/plugins
+cd ~/.tmux/plugins
+git clone git@github:github.com/tmux-plugins/tpm
+echo "Now manually run ~/.tmux/plugins/tpm/tpm"
+echo "And type [Alt-A] + I to install the tmux dependencies"
+
+
 
 exit 1
