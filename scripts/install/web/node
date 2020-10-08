@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090
+set -e
+
+if [[ ! -d ~/.nvm ]]; then
+  echo "Installing nvm"
+  git clone git@github.com:creationix/nvm.git ~/.nvm
+  source ~/.nvm/nvm.sh
+  nvm install 14.13.0
+fi
+
+echo "Installing yarn to replace npm"
+curl -o- -L https://yarnpkg.com/install.sh | bash
+
+echo "Yarn search: emma"
+yarn add global emma-cli
+
+# echo "Linter: Eslint"
+# yarn add global eslint
+# yarn add global eslint-config-algolia
+# yarn add global eslint-config-prettier
+# yarn add global eslint-plugin-import
+# yarn add global eslint-plugin-prettier
+# yarn add global babel-eslint
+# yarn add global eslint_d
+
+# echo "Prettifier: Prettier"
+# yarn add global prettier
