@@ -1,4 +1,6 @@
 #!/usr/bin/env zsh
+[[ ! $commands[yarn] ]] && return
+
 source ~/.oroshi/config/zsh/theming/colors.zsh
 
 # Display the list of all linked modules
