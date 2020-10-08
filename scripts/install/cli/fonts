@@ -3,5 +3,8 @@ sudo apt-get install msttcorefonts
 
 
 mkdir -p ~/.fonts
-cp ~/.oroshi/config/fonts/*.ttf ~/.fonts 
-cp ~/.oroshi/private/config/fonts/*.ttf ~/.fonts
+cp ~/.oroshi/config/fonts/DejaVuSansMono/*.ttf ~/.fonts 
+cp ~/.oroshi/config/fonts/Nerd.ttf ~/.fonts 
+# cp ~/.oroshi/private/config/fonts/*.ttf ~/.fonts
+
+fc-cache -f
