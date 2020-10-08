@@ -1,8 +1,11 @@
 #!/usr/bin/env sh
 set -e
 
-sudo apt-get install fd-find
+cd ~/local/tmp
+wget \
+  "https://github.com/sharkdp/fd/releases/download/v8.1.1/fd_8.1.1_amd64.deb" \
+  -O fd.deb
 
-# fd is installed as fdfind, so we make an alias
-cd ~/local/bin
-ln -s /usr/bin/fdfind ./fd
+sudo dpkg -i fd.deb
+sudo apt-get -f install
+rm ~/local/tmp/fd.deb
