@@ -1,8 +1,11 @@
 #!/usr/bin/env sh
 set -e
 
-sudo apt-get install bat
+cd ~/local/tmp
+wget \
+  "https://github.com/sharkdp/bat/releases/download/v0.16.0/bat_0.16.0_amd64.deb" \
+  -O bat.deb
 
-# bat is installed as batcat, so we make an alias
-cd ~/local/bin
-ln -s /usr/bin/batcat ./bat
+sudo dpkg -i bat.deb
+sudo apt-get -f install
+rm ~/local/tmp/bat.deb

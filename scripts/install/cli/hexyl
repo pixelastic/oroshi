@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+set -e
+
+cd ~/local/tmp
+wget \
+  "https://github.com/sharkdp/hexyl/releases/download/v0.8.0/hexyl_0.8.0_amd64.deb" \
+  -O hexyl.deb
+
+sudo dpkg -i hexyl.deb
+sudo apt-get -f install
+rm ~/local/tmp/hexyl.deb

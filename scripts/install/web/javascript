@@ -3,7 +3,6 @@
 set -e
 
 if [[ ! -d ~/.nvm ]]; then
-  echo "Installing nvm"
   git clone git@github.com:creationix/nvm.git ~/.nvm
   source ~/.nvm/nvm.sh
   nvm install stable

@@ -2,8 +2,8 @@
 " Default options {{{
 " Will search in repository, not MRU
 let g:ctrlp_cmd = 'CtrlP'
-" Show only 5 results
-let g:ctrlp_max_height = 5
+" Show 5 results
+let g:ctrlp_max_height = 15
 " Results are display at the bottom of the screen
 let g:ctrlp_match_window_bottom = 1
 let g:ctrlp_match_window_reversed = 0
