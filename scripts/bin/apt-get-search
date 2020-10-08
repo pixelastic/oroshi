@@ -10,47 +10,50 @@ class AptGetSearch
   end
 
   def search(keyword)
-    raw = `apt-cache search #{keyword}`
-    results = []
-    raw.each_line do |line|
-      name, description = line.chomp.match(/^([^ ]*) - (.*)$/).captures
-      # Keep only packages which name matches what we asked for
-      next unless name.include?(keyword)
+    raw = `apt-cache search --names-only --full #{keyword}`
+    packages = raw.split("\n\n")
 
+    results = []
+    packages.each do |package|
+      name = package.match(/^Package: (?<name>.*)$/)[:name]
+      version = package.match(/^Version: (?<name>.*)$/)[:name]
+      current_version = get_current_version(name)
       results << {
         name: name,
-        description: description
+        version: version,
+        current_version: current_version
       }
     end
-
     results.sort_by { |result| result[:name] }
   end
 
   def run
-    longest_name = longest_by_type(@search_list, :name)
+    width = longest_by_type(@search_list, :name).size
 
     @search_list.each do |result|
-      package = result[:name]
+      version = result[:version]
+      current_version = result[:current_version]
+      name = result[:name]
 
-      unless installed?(package)
-        puts "  #{package}"
-        next
+      # Package name
+      name = name.ljust(width)
+      package_color = current_version ? :package_installed : :package_uninstalled
+      name = colorize(name, package_color)
+
+      # Version
+      if current_version
+        if current_version != version
+          display_current_version = colorize(current_version, :version_mismatch)
+          display_remote_version = colorize(version, :version_uninstalled)
+          display_version = "#{display_current_version} / #{display_remote_version}"
+        else
+          display_version = colorize(version, :version_installed)
+        end
+      else
+        display_version = colorize(version, :version_uninstalled)
       end
 
-      current_version = get_current_version(package)
-      version = current_version
-      color = :success
-
-      # Mark element if not latest version
-      max_version = get_max_available_version(package)
-      if current_version != max_version
-        version << " / #{max_version}"
-        color = :outdated
-      end
-
-      version = colorize(current_version, :version)
-      name = colorize('✔ ' + package.ljust(longest_name.size), color)
-      puts "#{name}  #{version}"
+      puts "#{name}     #{display_version}"
     end
   end
 end

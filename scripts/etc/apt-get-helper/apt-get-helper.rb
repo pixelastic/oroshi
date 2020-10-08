@@ -3,6 +3,12 @@
 # Shared module to access information about installed packages
 module AptGetHelper
   COLORS = {
+    package_uninstalled: 24,
+    package_installed: 46,
+    version_uninstalled: 27,
+    version_installed: 96,
+    version_mismatch: 36,
+
     error: 36,
     package: 23,
     version: 96,
