@@ -4,6 +4,7 @@ source ~/.oroshi/config/ubuntu/20.04/keybindings/reset.zsh
 source ~/.oroshi/config/ubuntu/20.04/keybindings/window-manager.zsh
 source ~/.oroshi/config/ubuntu/20.04/keybindings/mutter.zsh
 source ~/.oroshi/config/ubuntu/20.04/keybindings/media-keys.zsh
+source ~/.oroshi/config/ubuntu/20.04/keybindings/custom.zsh
 
 
 
