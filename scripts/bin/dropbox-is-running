@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
-[[ ! $command[dropbox] ]] && exit 1
-local status="$(dropbox status)"
-[[ $status = "Dropbox isn't running!" ]] && exit 1
-[[ $status = "Syncing paused" ]] && exit 1
+[[ ! $commands[dropbox] ]] && exit 1
+local dropboxStatus="$(dropbox status)"
+[[ $dropboxStatus = "Dropbox isn't running!" ]] && exit 1
+[[ $dropboxStatus = "Syncing paused" ]] && exit 1
 
 exit 0
