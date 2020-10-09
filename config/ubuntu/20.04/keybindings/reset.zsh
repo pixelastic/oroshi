@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+
 # mutter {{{
 typeset -a mutter
 local mutter=(
@@ -103,9 +104,9 @@ local wm=(
   toggle-shaded 
   unmaximize
 )
-# }}}
-
 for configName in $wm; do
   gsettings set org.gnome.desktop.wm.keybindings $configName '@as []'
 done
+# }}}
+
 
