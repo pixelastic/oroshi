@@ -2,7 +2,6 @@
 # DEFAULT HOSTS
 #
 127.0.0.1         localhost
-# Various aliases for testing purposes 
 127.0.0.1         localhost.dev
 127.0.0.1         localhost.com
 127.0.0.1         localhost.net

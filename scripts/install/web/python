@@ -1,29 +1,49 @@
 #!/usr/bin/env bash
+set -e
 
-# Both python 2 and python 3 system wide
-sudo apt-get install python-pip python3-pip
+# Pyenv allow switching system-wide python versions.
+#   Should be used to run external commands
+# Pipenv allow sandboxing specific dependencies to a project
+#   Should be used when developing a python package
 
-# pyenv to handle global virtualenvs
-curl \
-  -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer \
-  | bash
+# Adding pyenv
+cd ~/local/src
+git clone git@github.com:pyenv/pyenv-installer.git
+./pyenv-installer/bin/pyenv-installer
 
-# Install python versions using pyenv
-pyenv install 3.7.0
-pyenv install 2.7.15
+# Dependencies for compiling python
+sudo apt-get install \
+  build-essential \
+  curl \
+  git \
+  libbz2-dev \
+  libffi-dev \
+  liblzma-dev \
+  libncurses5-dev \
+  libncursesw5-dev \
+  libreadline-dev \
+  libsqlite3-dev \
+  llvm \
+  python-openssl \
+  tk-dev \
+  wget \
+  xz-utils \
+  zlib1g-dev
 
-# Create virtual envs
-pyenv virtualenv 3.7.0 3
-pyenv virtualenv 2.7.15 2
+# Install both latest 3.x and latest 2.7.0
+~/.pyenv/bin/pyenv install 3.9.0
 
-# Check for binaries in python 3, then 2, then system wide
-pyenv global 3 2 system
 
-# pipenv to handle local environment per project
-pip install pipenv
+# Libssl needs to be installed for installing python 2
+sudo apt install --reinstall libssl1.1
+sudo apt-get install libssl-dev
+~/.pyenv/bin/pyenv install 2.7.18
+# Make them both available, but looking for v3 first and v2 as fallback
+~/.pyenv/bin/pyenv global 3.9.0 2.7.18
 
-# Linter
-pip install flake8
-pip install flake8-bugbear
-pip install flake8-quotes
-pip install black
+
+# # Linter
+# pip install flake8
+# pip install flake8-bugbear
+# pip install flake8-quotes
+# pip install black

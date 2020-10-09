@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-pi when-changed
+pip install when-changed

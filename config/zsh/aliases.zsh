@@ -350,27 +350,9 @@ function g() {
 }
 # }}}
 # Python {{{
-# Pyenv allow us to switch globally to python 2 or 3
-alias pyvl='pyenv versions'
-alias pyvi='pyenv install'
-alias pyvR='pyenv uninstall'
-alias pyv2='pyenv activate 2'
-alias pyv3='pyenv activate 3'
-alias pyvs='pyenv deactivate'
-# When installing things through pip, we install them in the python
-# 3 environment by default
-alias pR='pip uninstall'
-alias pi='pip-install-version 3'
-alias pi2='pip-install-version 2'
-alias pi3='pip-install-version 3'
+alias pi="pip install"
+alias pR="pip uninstall"
 alias pil='pip list'
-alias piu='pip install --upgrade pip'
-# When in a project, we can use pipenv to jump into this project env
-alias pis="pipenv shell"
-alias pir="pipenv run"
-alias pii="pipenv install"
-alias piid="pipenv install --dev"
-alias piR="pipenv uninstall"
 # }}}
 # Appraisal {{{
 alias ai='appraisal install'
