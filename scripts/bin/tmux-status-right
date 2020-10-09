@@ -4,15 +4,10 @@ source ~/.oroshi/config/zsh/theming/colors.zsh
 local output=''
 
 # Dropbox status {{{
-local dropbox_status=''
-dropbox_status=`dropbox status`
-if [[ 
-  $dropbox_status == "Dropbox isn't running!" || \
-  $dropbox_status == "Syncing paused" 
-]]; then
-  output="#[fg=colour${COLOR[red]}] #[default] $output"
-else
+if dropbox-is-running; then
   output=" $output"
+else
+  output="#[fg=colour${COLOR[red]}] #[default] $output"
 fi
 # }}}
 # Clock {{{
