@@ -1,1 +1,8 @@
 ! kyra is my temporary Dell Latitude 7300 
+
+! PageDown/PageUp, next to arrow keys are actually LineStart/LineEnd
+keycode 112 = Home
+keycode 117 = End
+! Same in reverse
+keycode 95 = Prior
+keycode 96 = Next
