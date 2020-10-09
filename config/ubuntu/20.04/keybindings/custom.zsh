@@ -22,10 +22,10 @@ custom[4,binding]='<Primary><Super>t'
 custom[5,name]='Calculator'
 custom[5,command]='gnome-calculator'
 custom[5,binding]='Insert'
-# Slack
-custom[6,name]='Slack'
-custom[6,command]='slack'
-custom[6,binding]='<Super>s'
+# TODO
+custom[6,name]='TODO'
+custom[6,command]='TODO'
+custom[6,binding]=''
 # TODO
 custom[7,name]='TODO'
 custom[7,command]='TODO'

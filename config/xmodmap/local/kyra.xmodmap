@@ -6,3 +6,7 @@ keycode 117 = End
 ! Same in reverse
 keycode 95 = Prior
 keycode 96 = Next
+
+! The keyboard does not have a PrintScreen button next to the arrow keys
+! We'll use the Right Ctrl that we don't need instead
+keycode 105 = Print
