@@ -1,2 +1,5 @@
-#!/usr/bin/env sh
-free -m | grep Mem | awk '{print $3/$2 * 100}' | cut -f1 -d"."
+#!/usr/bin/env zsh
+local memoryUsed="$(free -m | grep Mem | awk '{print $3/$2 * 100}')"
+memoryUsed=${memoryUsed:s/,/./}
+memoryUsed="$(echo $memoryUsed | cut -f1 -d'.')"
+echo $memoryUsed
