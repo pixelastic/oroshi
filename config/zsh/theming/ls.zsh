@@ -7,12 +7,12 @@ LS_COLORS=""
 LS_COLORS="${LS_COLORS}:di=38;5;$COLOR[green]" # Directory
 LS_COLORS="${LS_COLORS}:ln=34;4;$COLOR[blue6]" # Symlink
 
-# Text files (dark orange) {{{
-LS_COLORS="${LS_COLORS}:*.md=38;5;$COLOR[yellow7]"
-LS_COLORS="${LS_COLORS}:*.txt=38;5;$COLOR[yellow7]"
-LS_COLORS="${LS_COLORS}:*LICENSE=38;5;$COLOR[yellow7]"
-LS_COLORS="${LS_COLORS}:*MAINTAINERS=38;5;$COLOR[yellow7]"
-LS_COLORS="${LS_COLORS}:*CODEOWNERS=38;5;$COLOR[yellow7]"
+# Text files {{{
+LS_COLORS="${LS_COLORS}:*.md=38;5;$COLOR[orange5]"
+LS_COLORS="${LS_COLORS}:*.txt=38;5;$COLOR[orange5]"
+LS_COLORS="${LS_COLORS}:*LICENSE=38;5;$COLOR[orange5]"
+LS_COLORS="${LS_COLORS}:*MAINTAINERS=38;5;$COLOR[orange5]"
+LS_COLORS="${LS_COLORS}:*CODEOWNERS=38;5;$COLOR[orange5]"
 # }}}
 # Scripts (purple) {{{
 LS_COLORS="${LS_COLORS}:*Gemfile=38;5;$COLOR[purple5]"
@@ -48,17 +48,35 @@ LS_COLORS="${LS_COLORS}:*.*-version=38;5;$COLOR[purple7]"
 LS_COLORS="${LS_COLORS}:*.*ignore=38;5;$COLOR[purple7]"
 LS_COLORS="${LS_COLORS}:*.=38;5;$COLOR[purple7]"
 # }}}
-# Images (blue) {{{
-LS_COLORS="${LS_COLORS}:*.jpg=38;5;$COLOR[blue]"
-LS_COLORS="${LS_COLORS}:*.gif=38;5;$COLOR[blue]"
-LS_COLORS="${LS_COLORS}:*.png=38;5;$COLOR[blue]"
-LS_COLORS="${LS_COLORS}:*.ico=38;5;$COLOR[blue]"
+# Images {{{
+LS_COLORS="${LS_COLORS}:*.jpg=38;5;$COLOR[yellow5]"
+LS_COLORS="${LS_COLORS}:*.gif=38;5;$COLOR[yellow5]"
+LS_COLORS="${LS_COLORS}:*.png=38;5;$COLOR[yellow5]"
+LS_COLORS="${LS_COLORS}:*.ico=38;5;$COLOR[yellow5]"
 # }}}
-# Videos (bold blue) {{{
+# Audio files {{{
+LS_COLORS="${LS_COLORS}:*.mp3=38;5;$COLOR[blue4]"
+LS_COLORS="${LS_COLORS}:*.wav=38;5;$COLOR[blue4]"
+# }}}
+# Videos {{{
 LS_COLORS="${LS_COLORS}:*.mpg=1;38;5;$COLOR[blue]"
 LS_COLORS="${LS_COLORS}:*.mp4=1;38;5;$COLOR[blue]"
 LS_COLORS="${LS_COLORS}:*.avi=1;38;5;$COLOR[blue]"
 LS_COLORS="${LS_COLORS}:*.mkv=1;38;5;$COLOR[blue]"
+# }}}
+# Archives {{{
+LS_COLORS="${LS_COLORS}:*.cbr=1;38;5;$COLOR[green]" 
+LS_COLORS="${LS_COLORS}:*.cbz=1;38;5;$COLOR[green]" 
+LS_COLORS="${LS_COLORS}:*.deb=1;38;5;$COLOR[green]" 
+LS_COLORS="${LS_COLORS}:*.gz=1;38;5;$COLOR[green]" 
+LS_COLORS="${LS_COLORS}:*.rar=1;38;5;$COLOR[green7]" 
+LS_COLORS="${LS_COLORS}:*.tar.gz=1;38;5;$COLOR[green]" 
+LS_COLORS="${LS_COLORS}:*.tgz=1;38;5;$COLOR[green]" 
+LS_COLORS="${LS_COLORS}:*.zip=1;38;5;$COLOR[green]" 
+# }}}
+# Documents {{{
+LS_COLORS="${LS_COLORS}:*.pdf=1;38;5;$COLOR[yellow7]"
+LS_COLORS="${LS_COLORS}:*.epub=38;5;$COLOR[yellow7]"
 # }}}
 # Less important files {{{
 LS_COLORS="${LS_COLORS}:*.js.map=38;5;$COLOR[gray7]"
@@ -73,15 +91,6 @@ LS_COLORS="${LS_COLORS}:*_algolia_api_key=38;5;$COLOR[gray7]"
 # }}}
 export LS_COLORS
 
-# # Archives (bold green)
-# LS_COLORS="${LS_COLORS}:*.cbr=1;38;5;28" 
-# LS_COLORS="${LS_COLORS}:*.cbz=1;38;5;28" 
-# LS_COLORS="${LS_COLORS}:*.deb=1;38;5;28" 
-# LS_COLORS="${LS_COLORS}:*.gz=1;38;5;28" 
-# LS_COLORS="${LS_COLORS}:*.rar=1;38;5;28" 
-# LS_COLORS="${LS_COLORS}:*.tar.gz=1;38;5;28" 
-# LS_COLORS="${LS_COLORS}:*.tgz=1;38;5;28" 
-# LS_COLORS="${LS_COLORS}:*.zip=1;38;5;28" 
 # # Large images (bold yellow)
 # LS_COLORS="${LS_COLORS}:*.pdf=1;38;5;136" 
 # # Fonts (dark yellow)
