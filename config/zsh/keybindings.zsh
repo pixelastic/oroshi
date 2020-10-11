@@ -24,8 +24,6 @@ bindkey -s '^S' ' vca^M'
 # Ctrl-H to go up one dir
 bindkey -s '^H' ' cd ..^M'
 
-
-
 # Ctrl-P fuzzy finding {{{
 if [[ -r ~/.fzf.zsh ]]; then
   source ~/.fzf.zsh

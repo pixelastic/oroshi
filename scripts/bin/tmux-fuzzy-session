@@ -2,102 +2,93 @@
 # frozen_string_literal: true
 
 # Allow finding of a specific session through fuzzy matching
-
 class TmuxFuzzySession
-  # Getting a structure representing all the info we need about the current
-  # sessions and windows
-  def session_structure
-    raw = `tmux list-windows -a -F "#S:#I:#W"`
-    structure = {}
-    raw.each_line do |line|
-      session, index, window = line.strip.split(':')
-      structure[session] = {} unless structure.key?(session)
-      structure[session][window] = index
+  # We read the list of all sessions/windows and build a displayable list out of
+  # it
+  # We also keep in memory the hash that matches a selected line with its
+  # session/window
+  def initialize
+    items = `tmux list-windows -a -F "#S:#W"`
+
+    # Quickly find the longest session name for aligning
+    session_width = 0
+    items.each_line do |item|
+      length = item.strip.split(':')[0].length
+      session_width = [session_width, length].max
     end
-    structure
-  end
 
-  # Getting the longest session name, to correctly align elements
-  def longest_key(structure)
-    longest = 0
-    structure.keys.each do |key|
-      longest = key.length if key.length > longest
+    # Build the displayed list and reverse list
+    list = []
+    @icons = {}
+    @reverse_list = {}
+    items.each_line do |item|
+      session_name, window_name = item.strip.split(':')
+
+      session_icon = icon(session_name)
+
+      window_icon = icon(window_name)
+
+      session_prefix = "#{session_icon} #{session_name}".ljust(session_width + 2, ' ')
+
+      item = "#{session_prefix}  #{window_icon} #{window_name}"
+      list << item
+      @reverse_list[item] = {
+        session: session_name,
+        window: window_name
+      }
     end
-    longest
+    @list = list.join("\n")
   end
 
-  # Getting the icon for a specific session/window
-  def icon(name)
-    `~/.oroshi/scripts/bin/tmux-status-symbol #{name}`.strip
-  end
-
-  # Getting a list of sessions, to be sent to fzf
-  def fzf_list(structure)
-    width = longest_key(structure)
-    output = []
-    structure.each do |session, windows|
-      icon_session = icon(session)
-      icon_session = ' ' if icon_session.empty?
-      session = session.rjust(width, ' ')
-      session = "#{icon_session} #{session}"
-
-      windows.each do |window, _|
-        icon_window = icon(window)
-        icon_window = ' ' if icon_window.empty?
-        output << "#{session}: #{icon_window} #{window}"
-      end
-    end
-    output.join("\n")
-  end
-
-  # Find matching session and window from selection
-  def parse_selection(selection)
-    regexp = /^.  *(.*): . (.*)$/i
-    matches = regexp.match(selection.strip)
-
-    # Return nothing if no matches (usually if cancelled with Ctrl-C)
-    return [false, false] unless matches
-
-    matches.captures
-  end
-
-  # Getting the correct fzf binary to call
-  def fzf_bin
-    fzf_options = [
-      '--color fg:23',
-      '--color bg:-1',
-      '--color hl:57',
-      '--color fg+:0',
-      '--color bg+:57',
-      '--color hl+:15',
-      '--color info:56',
-      '--color prompt:15',
-      '--color pointer:0'
-    ]
-    "~/local/src/fzf/bin/fzf-tmux -u 100% --reverse -- #{fzf_options.join(' ')}"
-  end
-
+  # Ask for a fzf selection, then move to the specified session/window
   def run
     # Make it full screen if not yet full screen
     need_zoom = !system('tmux-is-zoomed')
     `tmux resize-pane -Z` if need_zoom
 
-    structure = session_structure
-    selected = `echo "#{fzf_list(structure)}" | #{fzf_bin}`
+    selection = select_window
+    return unless selection
 
-    session, window = parse_selection(selected)
+    # Move to the specific session and window
+    `tmux select-window -t #{selection[:window]}`
+    `tmux switch -t #{selection[:session]}`
 
-    # Stop and do nothing if search was canceled
-    return unless session
-
-    index = structure[session][window]
-
-    # Change the main window of the session
-    `tmux select-window -t #{session}:#{index}`
     # Revert the full screen if we changed it before
     `tmux resize-pane -Z` if need_zoom
-    # Attach to that session
-    `tmux switch-client -t #{session}`
+  end
+
+  # Pass all options to fzf-tmux
+  def fzf_tmux_bin
+    bin = []
+    bin << '/home/tim/local/src/fzf/bin/fzf-tmux'
+    bin << '-u 100%'
+    bin << '--reverse'
+    bin << '--color fg:23'
+    bin << '--color bg:-1'
+    bin << '--color hl:35'
+    bin << '--color fg+:0'
+    bin << '--color bg+:35'
+    bin << '--color hl+:15'
+    bin << '--color info:56'
+    bin << '--color prompt:15'
+    bin << '--color pointer:0'
+    bin.join(' ')
+  end
+
+  # Is there an icon for this session/window?
+  def icon(target)
+    @icons[target] = `~/.oroshi/scripts/bin/tmux-status-symbol #{target}`.strip unless @icons.key?(target)
+    return ' ' if @icons[target].empty?
+
+    @icons[target]
+  end
+
+  # Display the fzf list and ask for selection
+  def select_window
+    selection = `echo "#{@list}" | #{fzf_tmux_bin}`.strip
+    return false if selection.empty?
+
+    @reverse_list[selection]
   end
 end
 TmuxFuzzySession.new.run

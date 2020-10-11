@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# Move current window on the right
+tmux swap-window -t +1
+tmux select-window -t +1
