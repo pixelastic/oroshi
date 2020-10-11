@@ -67,10 +67,10 @@ add mod5    = ISO_Level3_Shift
 
 !!!!!! Mapping Caps Lock to a phantom F15 key. This custom key will be used in
 ! zsh and vim to switch from insert to normal mode
-! Note that using F13 or F14 might create conflicts with other apps. F15 seems
-! safe
+! Note that even if FXX is not on the keyboard, it might still be used by
+! wrapping software. So far, F16 seems to do the trick
 ! Caps Lock
-keycode 66 = F15
+keycode 66 = F16
 
 ! Space bar
 keycode 65 = space space space space

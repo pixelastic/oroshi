@@ -18,11 +18,12 @@ let mapleader=','
 nmap <Space> .
 " }}}
 " CAPS LOCK KEY {{{
-" Xmodmap maps CAPS LOCK to F15 ([1;2R)
-inoremap <silent> [1;2R <Esc>l
-vnoremap [1;2R <Esc>
-cnoremap [1;2R <C-C>
-nnoremap [1;2R i
+" .oroshi/config/xmodmap/xmodmaprc maps CAPS LOCK to F16 ([1;2S)
+inoremap <silent> [1;2S <Esc>l
+nnoremap [1;2S i
+vnoremap [1;2S <Esc>
+cnoremap [1;2S <Esc>
+onoremap [1;2S <Esc>
 " }}}
 " TAB {{{
 " Note: On Tab press, we try to expand UltiSnips snippets, or loop through
