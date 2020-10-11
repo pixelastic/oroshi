@@ -18,28 +18,10 @@ let mapleader=','
 nmap <Space> .
 " }}}
 " CAPS LOCK KEY {{{
-" - Cancels autocomplete, search, command, visual
-" - Restore the wrong word in spelling mode
-" - Toggle normal / insert mode
-function! MultiPurposeCapsLock()
-  let autocomplete_cancel = "\<C-E>"
-  let mode_normal = "\<Esc>l"
-
-  " Restoring the word in spelling mode
-  if &spell
-    let autocomplete_cancel .= "\<Esc>uh"
-  endif
-  return pumvisible() ? autocomplete_cancel : mode_normal
-endfunction
-" Xmodmap maps CAPS LOCK to F15
-" F15 is mapped to ([28~) in termite/alacritty, but [1;2R in kitty
-inoremap <silent> [28~ <C-R>=MultiPurposeCapsLock()<CR>
-inoremap <silent> [1;2R <C-R>=MultiPurposeCapsLock()<CR>
-vnoremap [28~ <Esc>
+" Xmodmap maps CAPS LOCK to F15 ([1;2R)
+inoremap <silent> [1;2R <Esc>
 vnoremap [1;2R <Esc>
-cnoremap [28~ <C-C>
 cnoremap [1;2R <C-C>
-nnoremap [28~ i
 nnoremap [1;2R i
 " }}}
 " TAB {{{
@@ -198,10 +180,15 @@ nnoremap <silent> <C-E> :lnext<CR>
 " }}}
 " MUSCLE MEMORY {{{
 " Ctrl+S saves the file, as in most apps
-function! SaveFile()
-  if &diff | only | endif
-  write!
-endfunction
+" Note: We wrap the function definition in an exists() because defining the
+" function with function! like we usually do fails here because it is attempting
+" to redefine itself while being in use
+if !exists("*SaveFile")
+  function SaveFile()
+    if &diff | only | endif
+    write!
+  endfunction
+endif
 nnoremap <silent> <C-S> :call SaveFile()<CR>
 inoremap <silent> <C-S> <Esc>:call SaveFile()<CR>
 " Ctrl+D is save and exit, as in the term.

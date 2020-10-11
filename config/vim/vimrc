@@ -310,8 +310,7 @@ nnoremap c "_c
 " CTRL-P {{{
 source ~/.vim/includes/ctrlp.vim
 " }}}
-" " GIT {{{
-" source ~/.vim/includes/git.vim
+" GIT {{{
 let g:gitgutter_max_signs=10000
 " " }}}
 " SYNTASTIC {{{
@@ -357,3 +356,4 @@ nnoremap <leader>vr mz:source ~/.vimrc<CR>:let &filetype=&filetype<CR>:loadview<
 " man to open the manpage of a command in a new tab
 nnoremap <silent> man :tabe<CR>:setlocal filetype=man<CR>:.!man<Space>
 " }}}
+
