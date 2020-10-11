@@ -5,8 +5,8 @@
 "  F3 : Debug colorscheme
 "  F4 : Clean file
 "  F5 : Run file
-"  F6 : Test file
-"  F7 : NERDTree
+"  F6 : UNUSED
+"  F7 : UNUSED
 "  F8 : Display hidden chars
 "  F9 : Toggle wrap
 "
@@ -19,7 +19,7 @@ nmap <Space> .
 " }}}
 " CAPS LOCK KEY {{{
 " Xmodmap maps CAPS LOCK to F15 ([1;2R)
-inoremap <silent> [1;2R <Esc>
+inoremap <silent> [1;2R <Esc>l
 vnoremap [1;2R <Esc>
 cnoremap [1;2R <C-C>
 nnoremap [1;2R i
