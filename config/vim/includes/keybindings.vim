@@ -17,7 +17,7 @@ let mapleader=','
 " Using the Space as a repeat key
 nmap <Space> .
 " }}}
-" CAPS LOCK KEY {{{
+" CAPS LOCK {{{
 " .oroshi/config/xmodmap/xmodmaprc maps CAPS LOCK to F16 ([1;2S)
 inoremap <silent> [1;2S <Esc>l
 nnoremap [1;2S i
@@ -102,6 +102,22 @@ inoremap [13;2u <Esc>lmzO<Esc>`zi
 " Add line right after this char
 nnoremap [13;5u mzli<CR><Esc>`z
 " }}}
+" FZF {{{
+let g:fzf_action = { 'enter': 'tab split' }
+let g:fzf_layout = { 'down': '90%' }
+" CTRL-P: Find file by name
+nnoremap <silent> <C-P> :GFiles<CR>
+inoremap <silent> <C-P> <Esc>:GFiles<CR>
+" CTRL-F: Find line in this file
+" TODO: CTRL-Shift-F to search in whole project
+nnoremap <silent> <C-F> :BLines<CR>
+inoremap <silent> <C-F> <Esc>:BLines<CR>
+" CTRL-B: Search in git history
+nnoremap <silent> <C-B> :BCommits<CR>
+inoremap <silent> <C-B> <Esc>:BCommits<CR>
+" }}}
+
+" }}}
 " H/J/K/L {{{
 function! MultiPurposeJ()
   let simple_j = 'j'
@@ -166,14 +182,6 @@ nnoremap <silent> <Leader>z :lprev<CR>
 nnoremap <silent> <Leader>s :lnext<CR>
 nnoremap <silent> <Leader>q :cprev<CR>
 nnoremap <silent> <Leader>d :cnext<CR>
-" Select/Delete/Change method
-nnoremap vim viB
-nnoremap dim diB
-nnoremap cim ciB
-" Select/Delete/Change method, including header
-nnoremap vam [{V%
-nnoremap dam [{V%d
-nnoremap cam [{V%c
 " Select the current block of text
 nnoremap vip {jv}k$
 " Go to next error
@@ -209,15 +217,6 @@ inoremap <silent> <C-D> <Esc>:call SaveAndCloseFile()<CR>
 " Select all
 nnoremap <C-A> GVgg
 vnoremap <C-A> <Esc>GVgg
-" }}}
-" FILE TYPES {{{
-nnoremap <silent> <leader>fJ :set ft=javascript<CR>
-nnoremap <silent> <leader>fs :set ft=sh<CR>
-nnoremap <silent> <leader>fj :set ft=json<CR>
-nnoremap <silent> <leader>fm :set ft=markdown<CR>
-nnoremap <silent> <leader>fr :set ft=ruby<CR>
-nnoremap <silent> <leader>ft :set ft=text<CR>
-nnoremap <silent> <leader>fz :set ft=zsh<CR>
 " }}}
 " YANKS {{{
 vnoremap p "_dP
@@ -269,9 +268,6 @@ nmap <silent> - :call WorkaroundForMovingLines('[e')<CR>
 vmap <silent> - :call WorkaroundForMovingLines('[egv')<CR>
 nmap <silent> _ :call WorkaroundForMovingLines(']e')<CR>
 vmap <silent> _ :call WorkaroundForMovingLines(']egv')<CR>
-" Swap two words
-nnoremap <C-w> daWf<Space>pB
-nnoremap <C-b> daW2F<Space>pB
 " Comment whole paragraph
 nnoremap gcp vipgc
 " Increment/Decrement number under cursor

@@ -30,3 +30,14 @@ path=(
 # See: http://zsh.sourceforge.net/Doc/Release/Shell-Builtin-Commands.html
 typeset -U path PATH
 # }}}
+#
+# FZF default config {{{
+# Used by Ctrl-P both in zsh and in vim
+export FZF_DEFAULT_OPTS=""
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --reverse"
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --border"
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --height=80%"
+export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always --line-range :500 {}'"
+export FZF_DEFAULT_COMMAND='fd --type file --hidden --follow --exclude .git'
+# export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+# }}}

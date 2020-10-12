@@ -302,14 +302,6 @@ nnoremap c "_c
 "}}}
 
 
-
-
-" CTRL-F {{{
-" source ~/.vim/includes/ctrlf.vim
-" }}}
-" CTRL-P {{{
-source ~/.vim/includes/ctrlp.vim
-" }}}
 " GIT {{{
 let g:gitgutter_max_signs=10000
 " " }}}

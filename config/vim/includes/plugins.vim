@@ -6,7 +6,8 @@ call plug#begin('~/.vim/plugins')
 
 " Basic vim functions {{{
 Plug 'danro/rename.vim'
-Plug 'ctrlpvim/ctrlp.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'pixelastic/vim-undodir-tree'
 Plug 'gioele/vim-autoswap'
 Plug 'tpope/vim-commentary'
