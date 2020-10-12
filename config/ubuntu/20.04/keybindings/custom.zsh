@@ -25,7 +25,7 @@ custom[5,binding]='Insert'
 # TODO
 custom[6,name]='Slack'
 custom[6,command]='/usr/bin/slack'
-custom[6,binding]='<Primary><Super>S'
+custom[6,binding]='<Super>S'
 # TODO
 custom[7,name]='TODO'
 custom[7,command]='TODO'

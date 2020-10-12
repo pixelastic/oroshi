@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+# Start the app if no already running
+if ! pgrep gnome-pomodoro &>/dev/null; then
+  gnome-pomodoro
+fi
+
+gnome-pomodoro --start-stop
+
