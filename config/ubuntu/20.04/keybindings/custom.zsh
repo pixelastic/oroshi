@@ -15,17 +15,17 @@ custom[3,name]='Keepass'
 custom[3,command]='keepassx ~/perso/Dropbox/tim/keys.kdbx'
 custom[3,binding]='<Primary><Super>k'
 # Tomate
-custom[4,name]='Tomate'
-custom[4,command]='tomate-gtk'
+custom[4,name]='Pomodoro'
+custom[4,command]='gnome-pomodoro'
 custom[4,binding]='<Primary><Super>t'
 # Calculator
 custom[5,name]='Calculator'
 custom[5,command]='gnome-calculator'
 custom[5,binding]='Insert'
 # TODO
-custom[6,name]='TODO'
-custom[6,command]='TODO'
-custom[6,binding]=''
+custom[6,name]='Slack'
+custom[6,command]='/usr/bin/slack'
+custom[6,binding]='<Primary><Super>S'
 # TODO
 custom[7,name]='TODO'
 custom[7,command]='TODO'
