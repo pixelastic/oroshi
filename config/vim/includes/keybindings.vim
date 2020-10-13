@@ -5,7 +5,7 @@
 "  F3 : Debug colorscheme
 "  F4 : Clean file
 "  F5 : Run file
-"  F6 : UNUSED
+"  F6 : Copy current file:line to clipboard
 "  F7 : UNUSED
 "  F8 : Display hidden chars
 "  F9 : Toggle wrap
@@ -116,7 +116,12 @@ inoremap <silent> <C-F> <Esc>:BLines<CR>
 nnoremap <silent> <C-B> :BCommits<CR>
 inoremap <silent> <C-B> <Esc>:BCommits<CR>
 " }}}
-
+" Current file:line {{{
+function! CopyFileAndLine()
+  let @+ = expand('%:p').':'.line('.')
+endfunction
+inoremap <silent> <F6> <Esc>:call CopyFileAndLine()<CR>
+nnoremap <silent> <F6> :call CopyFileAndLine()<CR>
 " }}}
 " H/J/K/L {{{
 function! MultiPurposeJ()
