@@ -349,3 +349,12 @@ nnoremap <leader>vr mz:source ~/.vimrc<CR>:let &filetype=&filetype<CR>:loadview<
 nnoremap <silent> man :tabe<CR>:setlocal filetype=man<CR>:.!man<Space>
 " }}}
 
+
+" Custom Config {{{
+let hostname = system('echo -n $HOST')
+let customConfig=expand("~/.oroshi/private/config/vim/".hostname.".vim")
+if filereadable(customConfig)
+  exec "source ".customConfig
+endif
+" }}}
+
