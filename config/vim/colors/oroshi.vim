@@ -379,6 +379,7 @@ call s:Highlight('pugTag', 'yellow')
 " Ruby {{{
 call s:Highlight('rubyStringDelimiter', 'blue5')
 call s:Highlight('rubyDefine', 'green')
+call s:Highlight('rubySymbol', 'orange5')
 " }}}
 " Shell {{{
 call s:Highlight('shQuote', 'blue5')
