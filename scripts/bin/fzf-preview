@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+local fullPath="${PWD}/$1"
+
+if [ -d $fullPath ]; then
+  exa $fullPath
+  exit 0
+fi
+
+bat --style=numbers --color=always --line-range :500 $fullPath
