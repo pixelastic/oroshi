@@ -14,6 +14,7 @@ local symbol=""
 [[ $name == 'comics' ]]   && symbol='X'
 [[ $name == 'crafting' ]]      && symbol=' '
 [[ $name == 'dashboards' ]] && symbol=' '
+[[ $name == 'devrel' ]]      && symbol=' '
 [[ $name == 'doctolib' ]]      && symbol=' '
 [[ $name == 'doctolib-bg' ]]      && symbol=' '
 [[ $name == 'dropbox' ]]  && symbol=' '
@@ -46,4 +47,5 @@ local symbol=""
 [[ $name == 'vim' ]]      && symbol=' '
 [[ $name == 'www' ]]      && symbol=' '
 [[ $name == 'zsh' ]]      && symbol=' '
+
 echo -n $symbol
