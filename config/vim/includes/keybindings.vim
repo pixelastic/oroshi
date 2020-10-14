@@ -103,8 +103,12 @@ inoremap [13;2u <Esc>lmzO<Esc>`zi
 nnoremap [13;5u mzli<CR><Esc>`z
 " }}}
 " FZF {{{
-let g:fzf_action = { 'enter': 'tab split' }
-let g:fzf_layout = { 'down': '90%' }
+" Open result in new tab, or re-use existing one if already opened
+let g:fzf_action = { 'enter': 'tab drop' }
+let g:fzf_buffers_jump = 1
+" Full height, with preview below
+let g:fzf_layout = { 'down': '100%' }
+let g:fzf_preview_window = 'down'
 " CTRL-P: Find file by name
 nnoremap <silent> <C-P> :GFiles<CR>
 inoremap <silent> <C-P> <Esc>:GFiles<CR>
