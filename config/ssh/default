@@ -1,9 +1,7 @@
 # Default settings
 Host            *
-# Compress ssh traffic
-Compression     yes
-# Re-use opened connection to a given server
-ControlMaster   auto
-ControlPath     ~/.ssh/master-%r@%h:%p
-# http://undeadly.org/cgi?action=article&sid=20160114142733
-UseRoaming      no
+  # Compress ssh traffic
+  Compression     yes
+  # Re-use opened connection to a given server
+  ControlMaster   auto
+  ControlPath     ~/.ssh/master-%r@%h:%p
