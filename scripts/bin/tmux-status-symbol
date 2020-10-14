@@ -15,6 +15,7 @@ local symbol=""
 [[ $name == 'crafting' ]]      && symbol=' '
 [[ $name == 'dashboards' ]] && symbol=' '
 [[ $name == 'doctolib' ]]      && symbol=' '
+[[ $name == 'doctolib-bg' ]]      && symbol=' '
 [[ $name == 'dropbox' ]]  && symbol=' '
 [[ $name == 'firost' ]]   && symbol='❯ '
 [[ $name == 'gamemaster' ]]      && symbol='  '

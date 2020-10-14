@@ -13,6 +13,7 @@ local colorCode=""
 [[ $name == "crafting" ]] && colorCode=$COLOR[yellow9]
 [[ $name == "dashboards" ]] && colorCode=$COLOR[blue3]
 [[ $name == "doctolib" ]] && colorCode=$COLOR[blue5]
+[[ $name == "doctolib-bg" ]] && colorCode=$COLOR[orange]
 [[ $name == "firost" ]] && colorCode=$COLOR[green]
 [[ $name == "golgoth" ]] && colorCode=$COLOR[orange]
 [[ $name == "indexing" ]] && colorCode=$COLOR[blue3]

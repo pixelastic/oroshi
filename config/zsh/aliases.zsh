@@ -63,6 +63,7 @@ alias cta="cat"
 alias trash-restore="restore-trash"
 alias spoify='spotify'
 alias spotufy='spotify'
+alias spotofy='spotify'
 alias spot='spotify'
 # }}}
 # Misc {{{
