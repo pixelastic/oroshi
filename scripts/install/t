@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-echo "Installing t through gem install t"
+set -e
 gem install t
-
 t authorize
