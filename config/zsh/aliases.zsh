@@ -11,8 +11,7 @@ unsetopt NOMATCH
 # }}}
 
 # Basic commands {{{
-alias rg='better-rg'
-alias ag='rg'
+alias gf='rg -l --color=never'
 alias cat='better-cat'
 alias cmus='TERM=screen-256color cmus'
 alias cp='cp -rv'
@@ -342,13 +341,6 @@ local coriolisAliases=~/.oroshi/scripts/bin/coriolis/aliases.zsh
 if [[ -r $coriolisAliases ]]; then
   source $coriolisAliases
 fi
-# }}}
-# Gcloud {{{
-function g() {
-  pyv2
-  gcloud "$@"
-  pyvs
-}
 # }}}
 # Python {{{
 alias pi="pip install"
