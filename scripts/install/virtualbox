@@ -1,11 +1,3 @@
 #!/usr/bin/env bash
 
 sudo apt-get install virtualbox
-
-# This will present you with a screen about MOK (Machine-Own Key).  Press ok,
-# enter any password then reboot.  You will be presented with a "Enroll MOK" and
-# "Change Secure Boot state" page.  Fill in your password again.  CAREFUL: The
-# password on reboot expect to be typed in QWERTY!
-
-# If virtualbox fails, you might need to turn VT-x (also called Intel
-# Virtualization Technology) in your BIOS settings before trying again.
