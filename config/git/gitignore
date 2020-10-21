@@ -5,7 +5,7 @@
 .sass-cache
 .yalc/
 Thumbs.db
-build/
+/build/
 dist/
 node_modules/
 npm-debug.log

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# fd does not have a ~/.fdrc for storing default arguments, so we use this
+# wrapper script instead
+# f is used both on the command line and as the input of Ctrl-P on zsh
+#
+# By default fd ignore hidden files and anything ignored by git
+# We do need to search for hidden files as well as files ignored by
+
+fd \
+  --hidden \
+  --follow \
+  --no-ignore \
+  --exclude .git \
+  --exclude node_modules \
+  $@
