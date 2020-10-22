@@ -11,7 +11,28 @@ class AptGetInstall
     @packages = args
   end
 
+  def interactive_search
+    command = "apt-cache search . | awk '{print $1}'"
+    package_name = `#{command} | fzf`.strip
+    return if package_name.empty?
+
+    install_package package_name
+  end
+
+  def install_package(package_name)
+    install package_name
+    package_name = colorize(package_name, :success)
+    puts "#{package_name} installed"
+  end
+
   def run
+    # Run an interactive search if no package passed
+    if @packages.empty?
+      interactive_search
+      return
+    end
+
+    # Install passed packages
     @packages.each do |package|
       if installed?(package)
         version = get_current_version(package)
@@ -21,9 +42,7 @@ class AptGetInstall
         next
       end
 
-      install package
-      package = colorize(package, :success)
-      puts "#{colorize(package, :success)} installed"
+      install_package package
     end
   end
 end

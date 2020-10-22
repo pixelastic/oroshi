@@ -113,9 +113,11 @@ let g:fzf_preview_window = 'down'
 nnoremap <silent> <C-P> :GFiles<CR>
 inoremap <silent> <C-P> <Esc>:GFiles<CR>
 " CTRL-F: Find line in this file
-" TODO: CTRL-Shift-F to search in whole project
 nnoremap <silent> <C-F> :BLines<CR>
 inoremap <silent> <C-F> <Esc>:BLines<CR>
+" CTRL-G: Find line in whole project
+nnoremap <silent> <C-G> :Rg<CR>
+inoremap <silent> <C-G> <Esc>:Rg<CR>
 " CTRL-B: Search in git history
 nnoremap <silent> <C-B> :BCommits<CR>
 inoremap <silent> <C-B> <Esc>:BCommits<CR>
