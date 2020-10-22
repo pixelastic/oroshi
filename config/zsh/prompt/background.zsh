@@ -4,6 +4,6 @@
 
 # Display install flags
 function __prompt-background-flags() {
-  yarn-install-in-progress && echo -n "%F{$COLOR[yellow8]} %f"
+  yarn-install-in-progress && echo -n "%F{$COLOR[green8]} %f"
   bundle-install-in-progress && echo -n "%F{$COLOR[red8]} %f"
 }
