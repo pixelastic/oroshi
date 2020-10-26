@@ -109,18 +109,19 @@ let g:fzf_buffers_jump = 1
 " Full height, with preview below
 let g:fzf_layout = { 'down': '100%' }
 let g:fzf_preview_window = 'down'
-" CTRL-P: Find file by name
+" CTRL-P: Search for filenames
 nnoremap <silent> <C-P> :GFiles<CR>
 inoremap <silent> <C-P> <Esc>:GFiles<CR>
-" CTRL-F: Find line in this file
-nnoremap <silent> <C-F> :BLines<CR>
-inoremap <silent> <C-F> <Esc>:BLines<CR>
-" CTRL-G: Find line in whole project
-nnoremap <silent> <C-G> :Rg<CR>
-inoremap <silent> <C-G> <Esc>:Rg<CR>
-" CTRL-B: Search in git history
-nnoremap <silent> <C-B> :BCommits<CR>
-inoremap <silent> <C-B> <Esc>:BCommits<CR>
+" CTRL-G: Search inside of files
+command! -bang -nargs=* FZFCtrlG call fzf#vim#grep("ctrlg", 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
+nnoremap <silent> <C-G> :FZFCtrlG<CR>
+inoremap <silent> <C-G> <Esc>:FZFCtrlG<CR>
+" " CTRL-F: Find line in this file
+" nnoremap <silent> <C-F> :BLines<CR>
+" inoremap <silent> <C-F> <Esc>:BLines<CR>
+" " CTRL-B: Search in git history
+" nnoremap <silent> <C-B> :BCommits<CR>
+" inoremap <silent> <C-B> <Esc>:BCommits<CR>
 " }}}
 " Current file:line {{{
 function! CopyFileAndLine()

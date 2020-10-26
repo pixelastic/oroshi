@@ -245,11 +245,21 @@ call s:Highlight('StatusLineFileFormatError', 'red', 'gray8')
 call s:Highlight('StatusLineFileEncodingError', 'red', 'gray8')
 call s:Highlight('StatusLineRight', 'gray4', 'gray8', 'none')
 " }}}
-" Ctrl-P {{{
-call s:Highlight('CtrlPLinePre', 'black', 'none')
-call s:Highlight('CtrlPPrtBase', 'gray7', 'none')
-call s:Highlight('CtrlPPrtText', 'white', 'none')
-call s:Highlight('CtrlPMatch', 'black', 'red5', 'bold')
+" FZF {{{
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
 " }}}
 " Matching parenthesis {{{
 call s:Highlight('MatchParen', 'white', 'teal9')

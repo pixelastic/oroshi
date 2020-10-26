@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+set -e
+
+cd "$(git root)/config/locales"
+
+rg \
+  --column \
+  --line-number \
+  --no-heading \
+  --color=always \
+  --smart-case \
+  ""
