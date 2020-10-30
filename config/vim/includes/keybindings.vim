@@ -80,26 +80,12 @@ vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
 " }}}
 " RETURN KEY {{{
-function! MultiPurposeReturn()
-  if pumvisible()
-    if &spell
-      " Select current spelling and move to next
-      return "\<Esc>]s"
-    endif
-    " Select current suggestion
-    return "\<Esc>"
-  endif
-  " Normal CR
-  return "\<CR>"
-endfunction
-inoremap  <C-R>=MultiPurposeReturn()<CR>
-inoremap <CR> <C-R>=MultiPurposeReturn()<CR>
 " Add line after this one
 nnoremap <CR> mzo<Esc>`z
-" Add line before this one
+" Shift-Enter: Add new line before
 nnoremap [13;2u mzO<Esc>`z
 inoremap [13;2u <Esc>lmzO<Esc>`zi
-" Add line right after this char
+" Ctrl-Enter: Add new line after this char
 nnoremap [13;5u mzli<CR><Esc>`z
 " }}}
 " FZF {{{
@@ -116,6 +102,10 @@ inoremap <silent> <C-P> <Esc>:GFiles<CR>
 command! -bang -nargs=* FZFCtrlG call fzf#vim#grep("ctrlg", 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
 nnoremap <silent> <C-G> :FZFCtrlG<CR>
 inoremap <silent> <C-G> <Esc>:FZFCtrlG<CR>
+" CTRL-F: Search in this file
+nnoremap <silent> <C-F> :call fzf#run({'source': 'git ls-files', 'sink': 'e'})<CR>
+" N search for word under cursor
+nnoremap N *
 " " CTRL-F: Find line in this file
 " nnoremap <silent> <C-F> :BLines<CR>
 " inoremap <silent> <C-F> <Esc>:BLines<CR>
@@ -237,14 +227,6 @@ vnoremap P "_dP
 " KEYBOARD {{{
 " F1 is easier to type than Ctrl+] to navigate between help tags.
 nnoremap <F1> <C-]>
-" Those keys are useless in vim but are easily accessible on a french
-" keyboard. We'll remap them to switch the maj version to the non-maj version.
-" Note: This mapping does not work in a macro. There seem to have issues with
-" accented characters mapped and used in macros.
-nnoremap ù %
-vnoremap ù %
-nnoremap à 0
-vnoremap à 0
 " Faster typing of ->
 " inoremap -_ ->
 " inoremap _- ->
