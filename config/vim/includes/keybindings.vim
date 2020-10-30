@@ -227,14 +227,24 @@ vnoremap P "_dP
 " KEYBOARD {{{
 " F1 is easier to type than Ctrl+] to navigate between help tags.
 nnoremap <F1> <C-]>
-" Faster typing of ->
-" inoremap -_ ->
-" inoremap _- ->
 " Faster typing of =>
 inoremap °+ =>
 inoremap )= =>
 inoremap +° =>
 inoremap =) =>
+" Add ; at the end of the line
+function! AddMissingSemiColon()
+  " Mark current spot (mx) and go to end of line ($)
+  normal mx$
+  " If current char is not already ;
+  if getline('.')[col('.')-1] !=# ";"
+    " Add a ; to the end of the line
+    normal A;
+  endif
+  " Go back to previous mark
+  normal `x
+endfunction
+nnoremap <silent> ; :call AddMissingSemiColon()<CR>;
 " }}}
 " OPTIONS {{{
 " Toggle non-printable chars
