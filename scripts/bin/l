@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+exa \
+  --long \
+  --group-directories-first \
+  --git \
+  --time-style=long-iso \
+  --color=always \
+  $*

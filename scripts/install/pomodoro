@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+set -e
+
+sudo apt-get install gnome-pomodoro

@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+set -e
+
+cd ~/local/src
+mkdir -p teams
+cd ./teams
+
+wget \
+  "https://go.microsoft.com/fwlink/p/?LinkID=2112886&clcid=0x409&culture=en-us&country=US" \
+  -O teams.deb
+
+install-deb ./teams.deb

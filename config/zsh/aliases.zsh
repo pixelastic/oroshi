@@ -17,11 +17,10 @@ alias cmus='TERM=screen-256color cmus'
 alias cp='cp -rv'
 alias diff='git diff --no-index --word-diff=color --word-diff-regex=.'
 alias grep='grep -i --color=auto'
-alias ls="exa --long --group-directories-first --git --time-style=long-iso --color=always"
-alias l="ls"
-alias la="ls --all"
-alias l@="ls -l@"
-alias la@="ls --all -l@"
+alias la="l --all"
+alias l@="l --long --extended"
+alias la@="ls --all --extended --long"
+alias l@a="la@"
 alias mkdir="mkdir -p"
 alias mv='mv -vi'
 alias ping="prettyping --nolegend"
@@ -31,9 +30,9 @@ alias scp='scp -r '
 alias serve='live-server'
 disable -r time # ZSH overrides the time method
 alias time='time -p '
-alias treed='\tree -dN'
-alias tree='ls -T'
-alias treew='watch -c ''tree -aNC -I ".hg\|.git"'''
+alias tree='l --tree'
+alias treed='l --tree --only-dirs'
+alias treew='watch -c ''l --tree'''
 alias wtree=treew
 alias watch='watch -c '
 alias wr='watch-and-reload'
