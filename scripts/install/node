@@ -12,6 +12,6 @@ fi
 echo "Installing yarn to replace npm"
 curl -o- -L https://yarnpkg.com/install.sh | bash
 
-yarn add global emma-cli
-yarn add global eslint_d
-yarn add global prettier
+yarn global add emma-cli
+yarn global add eslint_d
+yarn global add prettier

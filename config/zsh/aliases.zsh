@@ -17,6 +17,7 @@ alias cmus='TERM=screen-256color cmus'
 alias cp='cp -rv'
 alias diff='git diff --no-index --word-diff=color --word-diff-regex=.'
 alias grep='grep -i --color=auto'
+alias ls="l"
 alias la="l --all"
 alias l@="l --long --extended"
 alias la@="ls --all --extended --long"
