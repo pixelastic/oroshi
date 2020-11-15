@@ -19,3 +19,4 @@ local RESET="\e[0m"
   [[ $isFromMonorepo == 0 ]] && echo "\e[38;5;$COLOR[blue7]m  $moduleName\e[0m"
 done
 
+exit 0
