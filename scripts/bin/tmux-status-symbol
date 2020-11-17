@@ -46,6 +46,7 @@ local symbol=""
 [[ $name == 'videos' ]]   && symbol=' '
 [[ $name == 'vim' ]]      && symbol=' '
 [[ $name == 'www' ]]      && symbol=' '
+[[ $name == 'youtinx' ]]      && symbol=' '
 [[ $name == 'zsh' ]]      && symbol=' '
 
 echo -n $symbol
