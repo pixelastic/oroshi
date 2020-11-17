@@ -89,6 +89,9 @@ inoremap [13;2u <Esc>lmzO<Esc>`zi
 nnoremap [13;5u mzli<CR><Esc>`z
 " }}}
 " FZF {{{
+" Ctrl-G search in files
+" Ctrl-P search in file names
+" Ctrl-F search in current file
 " Open result in new tab, or re-use existing one if already opened
 let g:fzf_action = { 'enter': 'tab drop' }
 let g:fzf_buffers_jump = 1
