@@ -1,2 +1,2 @@
 #!/usr/bin/env zsh
-echo ".${1:A:e}"
+echo ".${1:a:e}"

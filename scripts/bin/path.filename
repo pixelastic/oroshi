@@ -1,2 +1,2 @@
 #!/usr/bin/env zsh
-echo "${1:A:t:r}"
+echo "${1:a:t:r}"
