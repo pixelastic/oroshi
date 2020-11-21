@@ -5,7 +5,7 @@ which nvm &>/dev/null && hasNvm=1
 # Display node flags:
 # - If there are currently any "yarn linked" modules
 function __prompt-node-flags() {
-  yarn-has-local-links && echo -n "%F{$COLOR[yellow7]} %f"
+  yarn-is-monorepo && echo -n "%F{$COLOR[yellow7]} %f"
   yarn-has-global-links && echo -n "%F{$COLOR[blue7]} %f"
 }
 

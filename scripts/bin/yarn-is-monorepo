@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+[[ ! $commands[yarn] ]] && exit 0
+
+yarn workspaces info &>/dev/null
