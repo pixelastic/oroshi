@@ -43,6 +43,7 @@ alias w='which'
 alias -g .....='../../../..'
 alias -g ....='../../..'
 alias -g ...='../..'
+alias -g F="| fzf"
 alias -g G="| grep"
 alias -g H="| head"
 alias -g L="| less -R"

@@ -106,6 +106,9 @@ source ~/.vim/includes/functions.vim
 " KEYBINDINGS {{{
 source ~/.vim/includes/keybindings.vim
 " }}}
+" SEARCH {{{
+source ~/.vim/includes/search.vim
+" }}}
 " AUTOCOMPLETION {{{
 " Display autocomplete suggestion in a menu if more than one
 set completeopt=menu

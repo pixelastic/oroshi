@@ -88,34 +88,6 @@ inoremap [13;2u <Esc>lmzO<Esc>`zi
 " Ctrl-Enter: Add new line after this char
 nnoremap [13;5u mzli<CR><Esc>`z
 " }}}
-" FZF {{{
-" Ctrl-G search in files
-" Ctrl-P search in file names
-" Ctrl-F search in current file
-" Open result in new tab, or re-use existing one if already opened
-let g:fzf_action = { 'enter': 'tab drop' }
-let g:fzf_buffers_jump = 1
-" Full height, with preview below
-let g:fzf_layout = { 'down': '90%' }
-let g:fzf_preview_window = 'down'
-" CTRL-P: Search for filenames
-nnoremap <silent> <C-P> :GFiles<CR>
-inoremap <silent> <C-P> <Esc>:GFiles<CR>
-" CTRL-G: Search inside of files
-command! -bang -nargs=* FZFCtrlG call fzf#vim#grep("ctrlg", 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
-nnoremap <silent> <C-G> :FZFCtrlG<CR>
-inoremap <silent> <C-G> <Esc>:FZFCtrlG<CR>
-" CTRL-F: Search in this file
-nnoremap <silent> <C-F> :call fzf#run({'source': 'git ls-files', 'sink': 'e'})<CR>
-" N search for word under cursor
-nnoremap N *
-" " CTRL-F: Find line in this file
-" nnoremap <silent> <C-F> :BLines<CR>
-" inoremap <silent> <C-F> <Esc>:BLines<CR>
-" " CTRL-B: Search in git history
-" nnoremap <silent> <C-B> :BCommits<CR>
-" inoremap <silent> <C-B> <Esc>:BCommits<CR>
-" }}}
 " Current file:line {{{
 function! CopyFileAndLine()
   let @+ = expand('%:p').':'.line('.')
