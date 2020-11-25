@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
-# By default fd ignore hidden files and anything ignored by git
-# We do need to search for hidden files as well as files ignored by
-
 fd \
   --hidden \
   --follow \
-  --no-ignore \
-  --exclude .git \
-  --exclude node_modules \
-  $@
+  "$@"
