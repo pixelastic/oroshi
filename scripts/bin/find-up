@@ -8,8 +8,8 @@ local currentDir=$PWD
 local needle=$1
 while [ "$currentDir" != "/" ] ; do
   filepath="$currentDir/$needle"
-  [[ -r $filepath ]] &&  echo $filepath && exit 0
+  [[ -r $filepath ]] && echo $filepath && exit 0
   currentDir=$(dirname $currentDir)
 done
-return ""
+echo ""
 exit 1
