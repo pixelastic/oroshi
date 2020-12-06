@@ -31,6 +31,8 @@ local colorCode=""
 [[ $name == "reddinx" ]] && colorCode=$COLOR[orange3]
 [[ $name == "renovate" ]] && colorCode=$COLOR[blue4]
 [[ $name == "tmp" ]] && colorCode=$COLOR[gray]
+[[ $name == "theme-docs" ]] && colorCode=$COLOR[blue3]
+[[ $name == "theme-search-infinite" ]] && colorCode=$COLOR[blue3]
 [[ $name == "videogames" ]] && colorCode=$COLOR[blue8]
 [[ $name == "videogames-helper" ]] && colorCode=$COLOR[blue8]
 

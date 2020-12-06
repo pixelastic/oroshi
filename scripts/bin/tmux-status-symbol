@@ -40,6 +40,8 @@ local symbol=""
 [[ $name == 'renovate' ]]      && symbol=' '
 [[ $name == 'roleplay' ]] && symbol=' '
 [[ $name == 'sov' ]]      && symbol='蠟'
+[[ $name == 'theme-docs' ]]  && symbol=' '
+[[ $name == 'theme-search-infinite' ]]  && symbol=' '
 [[ $name == 'tmp' ]]      && symbol='זּ '
 [[ $name == 'twitter' ]]  && symbol=' '
 [[ $name == 'videogames' ]]      && symbol='  '

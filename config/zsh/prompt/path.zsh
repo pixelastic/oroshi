@@ -10,22 +10,37 @@ function __prompt-path() {
   local -a knownPaths knownData
   knownPaths+=("~/local/www/doctolib/doctolib/")
   knownData+=("blue5:black: doctolib")
+
   knownPaths+=("~/local/www/doctolib/kube/")
   knownData+=("blue7:blue1:⎈ kube")
+
   knownPaths+=("~/local/www/doctolib/dashboards/")
   knownData+=("blue3:black: dashboards")
+
   knownPaths+=("~/local/www/projects/golgoth/")
   knownData+=("orange:orange1: golgoth")
+
   knownPaths+=("~/local/www/projects/firost/")
   knownData+=("green:gray9:❯ firost")
+
   knownPaths+=("~/local/www/projects/norska/")
   knownData+=("blue3:gray8:煮norska")
+
+  knownPaths+=("~/local/www/projects/norska-theme-docs/")
+  knownData+=("blue3:gray8: theme-docs")
+
+  knownPaths+=("~/local/www/projects/norska-theme-search-infinite/")
+  knownData+=("blue3:gray8: theme-search-infinite")
+
   knownPaths+=("~/local/www/projects/aberlaas/")
   knownData+=("yellow7:gray9: aberlaas")
+
   knownPaths+=("~/local/www/pixelastic.com/gamemaster/gods/")
   knownData+=("purple6:gray4:  gods")
+
   knownPaths+=("~/local/www/pixelastic.com/gamemaster/maps/")
   knownData+=("blue6:gray4:  maps")
+
   knownPaths+=("~/.oroshi/")
   knownData+=("green:gray9:x oroshi")
   knownPaths+=("~/")
