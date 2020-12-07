@@ -6,6 +6,7 @@
 LS_COLORS=""
 LS_COLORS="${LS_COLORS}:di=38;5;$COLOR[green]" # Directory
 LS_COLORS="${LS_COLORS}:ln=34;4;$COLOR[blue6]" # Symlink
+LS_COLORS="${LS_COLORS}:ex=4;38;5;$COLOR[purple5]" # Executable
 
 # Text files {{{
 LS_COLORS="${LS_COLORS}:*.md=38;5;$COLOR[orange5]"
@@ -36,6 +37,7 @@ LS_COLORS="${LS_COLORS}:*.sh=38;5;$COLOR[purple5]"
 LS_COLORS="${LS_COLORS}:*.svg=38;5;$COLOR[purple5]"
 LS_COLORS="${LS_COLORS}:*.theme=38;5;$COLOR[purple5]"
 LS_COLORS="${LS_COLORS}:*.toml=38;5;$COLOR[purple5]"
+LS_COLORS="${LS_COLORS}:*.vim=38;5;$COLOR[purple5]"
 LS_COLORS="${LS_COLORS}:*.xml=38;5;$COLOR[purple5]"
 LS_COLORS="${LS_COLORS}:*.yaml=38;5;$COLOR[purple5]"
 LS_COLORS="${LS_COLORS}:*.yml=38;5;$COLOR[purple5]"

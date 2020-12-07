@@ -205,8 +205,8 @@ call s:Highlight('Folded', 'gray5', 'gray9')
 call s:Highlight('Visual', 'white', 'blue', 'bold')
 " }}}
 " Search {{{
-call s:Highlight('Search', 'black', 'orange', 'bold')
-call s:Highlight('IncSearch', 'black', 'orange', 'none')
+call s:Highlight('Search', 'black', 'yellow', 'bold')
+call s:Highlight('IncSearch', 'black', 'yellow', 'none')
 " }}}
 " Syntastic gutter {{{
 call s:Highlight('SyntasticErrorSign', 'red')
@@ -230,8 +230,8 @@ call s:Highlight('StatusLineModeInsert', 'black', 'yellow', 'bold')
 call s:Highlight('StatusLineModeInsertSeparator', 'yellow', 'gray8')
 call s:Highlight('StatusLineModeVisual', 'white', 'blue', 'bold')
 call s:Highlight('StatusLineModeVisualSeparator', 'blue', 'gray8')
-call s:Highlight('StatusLineModeSearch', 'black', 'orange', 'bold')
-call s:Highlight('StatusLineModeSearchSeparator', 'orange', 'gray8')
+call s:Highlight('StatusLineModeSearch', 'black', 'yellow', 'bold')
+call s:Highlight('StatusLineModeSearchSeparator', 'yellow', 'gray8')
 call s:Highlight('StatusLineModeCtrlP', 'black', 'red5', 'bold')
 call s:Highlight('StatusLineModeCtrlPSeparator', 'red5', 'gray8')
 call s:Highlight('StatusLinePath', 'green', 'gray8', 'bold')

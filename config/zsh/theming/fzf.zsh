@@ -7,8 +7,8 @@ export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color gutter:-1" # gutter on the 
 export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color pointer:$COLOR[gray8]" # > at the start of the current line
 export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color bg+:$COLOR[gray9]" # background of current line
 # Match
-export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color hl:reverse:$COLOR[orange]" # match
-export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color hl+:reverse:$COLOR[orange]" # match in current line
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color hl:reverse:$COLOR[yellow]" # match
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color hl+:reverse:$COLOR[yellow]" # match in current line
 # Unused
 export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color header:$COLOR[red]"
 export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color spinner:$COLOR[red]"
