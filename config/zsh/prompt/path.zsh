@@ -23,6 +23,9 @@ function __prompt-path() {
   knownPaths+=("~/local/www/projects/firost/")
   knownData+=("green:gray9:❯ firost")
 
+  knownPaths+=("~/local/www/projects/on-circle/")
+  knownData+=("red3:gray9:⬤ on-circle")
+
   knownPaths+=("~/local/www/projects/norska/")
   knownData+=("blue3:gray8:煮norska")
 
