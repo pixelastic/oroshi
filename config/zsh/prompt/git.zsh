@@ -37,6 +37,7 @@ function __prompt-git-right() {
 
   echo -n "$(__prompt-git-tag)"
   echo -n "$(__prompt-git-remote)"
+  echo -n "$(__prompt-github-issues)"
   echo -n "$(__prompt-git-branch)"
 }
 
@@ -70,7 +71,7 @@ function __prompt-git-tag() {
 
   # Check if commits have been added since last tag
   git-commit-tagged && echo -n " %F{$COLOR[orange]} $tagName" && return
-  echo -n " %F{$COLOR[gray7]}炙$tagName"
+  echo -n " %F{$COLOR[gray7]}炙$tagName%f"
 }
 
 # Display the current remote:
@@ -118,6 +119,22 @@ function __prompt-git-branch-color() {
   [[ $1 == "develop" ]] && echo "yellow" && return;
   [[ $1 == "heroku" ]] && echo "purple" && return;
   echo "orange"
+}
+
+# Returns the number of currently opened issues
+function __prompt-github-issues() {
+  local cacheFile="$(git root)/.git/oroshi_issue_count"
+  local cacheDuration=1440 # In minutes
+
+  # We update the count if file does not exist, or too old
+  if [[ ! -r $cacheFile ]] || is-older $cacheFile $cacheDuration; then
+    ghic > $cacheFile
+  fi
+
+  # We return the content of the file
+  local issueCount="$(cat $cacheFile)"
+
+  echo " %F{$COLOR[yellow]} ${issueCount}%f"
 }
 # }}}
 

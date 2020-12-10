@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+# List all issues of current repo
+gh is -l

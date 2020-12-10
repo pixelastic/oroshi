@@ -6,13 +6,14 @@ if [[ $# == '0' ]]; then
   exit 0
 fi
 
-local filepath="$1"
+local input="$1"
 local selector="$2"
 
 # If first argument is not a file, we assume we're piping content
-if [[ ! -f $filepath ]]; then
+if [[ ! -f $input ]]; then
   input="-"
   selector="$1"
 fi
 
-cat $filepath | jq -r ".$selector"
+
+cat $input | jq -r ".$selector"

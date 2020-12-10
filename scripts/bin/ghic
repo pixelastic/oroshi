@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+# Count how many open issues the current repo has
+ghapi repos issues | jx ' | length'

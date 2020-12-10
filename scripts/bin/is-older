@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# Succeed if specified file is older than the specified number of minutes
+local target=$1
+local duration=$2 # In minutes
+
+# Find the file only if it has a change time older than the duration
+local result="$(find $target -mmin +$duration)"
+
+# No match, so the file has been changed recently
+[[ "$result" = "" ]] && exit 1
+exit 0

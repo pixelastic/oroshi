@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# Opens the current repo page on GitHub
+local issuesUrl="$(github-url)/issues"
+$BROWSER $issuesUrl &>/dev/null
+

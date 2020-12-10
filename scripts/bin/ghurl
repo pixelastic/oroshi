@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# Returns the current repo url
+local repositoryUrl="$(git config --get remote.origin.url)"
+repositoryUrl=${repositoryUrl:s/git@github.com:/}
+repositoryUrl=${repositoryUrl:s/.git/}
+repositoryUrl="https://github.com/${repositoryUrl}"
+echo $repositoryUrl
