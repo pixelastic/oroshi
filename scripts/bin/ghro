@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
 # Opens the current repo page on GitHub
-local repositoryUrl="$(github-url)"
+local repositoryUrl="$(ghurl)"
 $BROWSER $repositoryUrl &>/dev/null
 

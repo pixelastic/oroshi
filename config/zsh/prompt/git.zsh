@@ -37,7 +37,7 @@ function __prompt-git-right() {
 
   echo -n "$(__prompt-git-tag)"
   echo -n "$(__prompt-git-remote)"
-  echo -n "$(__prompt-github-issues)"
+  echo -n "$(__prompt-github-issues-and-prs)"
   echo -n "$(__prompt-git-branch)"
 }
 
@@ -122,19 +122,31 @@ function __prompt-git-branch-color() {
 }
 
 # Returns the number of currently opened issues
-function __prompt-github-issues() {
-  local cacheFile="$(git root)/.git/oroshi_issue_count"
+function __prompt-github-issues-and-prs() {
+  local issueCacheFile="$(git root)/.git/oroshi_issue_count"
+  local prCacheFile="$(git root)/.git/oroshi_pr_count"
   local cacheDuration=1440 # In minutes
 
   # We update the count if file does not exist, or too old
-  if [[ ! -r $cacheFile ]] || is-older $cacheFile $cacheDuration; then
-    ghic > $cacheFile
+  if [[ ! -r $issueCacheFile ]] || is-older $issueCacheFile $cacheDuration; then
+    ghic > $issueCacheFile
+  fi
+  if [[ ! -r $prCacheFile ]] || is-older $prCacheFile $cacheDuration; then
+    ghprc > $prCacheFile
   fi
 
-  # We return the content of the file
-  local issueCount="$(cat $cacheFile)"
+  local display=""
+  local prCount="$(cat $prCacheFile)"
+  if [[ ! $prCount = 0 ]]; then
+    display="${display} %F{$COLOR[green]} ${prCount}%f"
+  fi
+  local issueCount="$(cat $issueCacheFile)"
+  if [[ ! $issueCount = 0 ]]; then
+    display="${display} %F{$COLOR[yellow]} ${issueCount}%f"
+  fi
 
-  echo " %F{$COLOR[yellow]} ${issueCount}%f"
+
+  echo $display
 }
 # }}}
 
