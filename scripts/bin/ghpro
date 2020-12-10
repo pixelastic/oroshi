@@ -1,4 +1,4 @@
 #!/usr/bin/env zsh
 # Opens the current repo page on GitHub
-local pullRequestsUrl="$(github-url)/pulls"
+local pullRequestsUrl="$(ghurl)/pulls"
 $BROWSER $pullRequestsUrl &>/dev/null
