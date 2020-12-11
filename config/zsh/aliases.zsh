@@ -12,7 +12,7 @@ unsetopt NOMATCH
 
 # Basic commands {{{
 alias gf='rg -l --color=never'
-alias cat='better-cat'
+alias cat='c'
 alias cmus='TERM=screen-256color cmus'
 alias cp='cp -rv'
 alias diff='git diff --no-index --word-diff=color --word-diff-regex=.'
@@ -55,8 +55,8 @@ alias -g V="&& jobsdone || say 'This failed'"
 # }}}
 # Typos {{{
 alias mc="mv"
-alias sl="ls"
-alias s="ls"
+alias sl="l"
+alias s="l"
 alias cta="cat"
 alias trash-restore="restore-trash"
 alias spoify='spotify'
