@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-[[ ! $commands[yarn] ]] && exit 0
+[[ ! $commands[yarn] ]] && exit 1
 
 # Display the list of all linked modules
 local node_modules="$(yarn bin 2>/dev/null)/.."
