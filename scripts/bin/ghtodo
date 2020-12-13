@@ -1,0 +1,38 @@
+#!/usr/bin/env zsh
+# List open issues and PRs of my repos
+source ~/.oroshi/config/zsh/theming/colors.zsh
+
+local -a repos
+repos+=("/home/tim/local/www/projects/firost/")
+repos+=("/home/tim/local/www/projects/golgoth/")
+repos+=("/home/tim/local/www/projects/norska/")
+repos+=("/home/tim/local/www/projects/aberlaas/")
+repos+=("/home/tim/local/www/projects/on-circle/")
+repos+=("/home/tim/local/www/projects/reddinx/")
+repos+=("/home/tim/local/www/projects/youtinx/")
+repos+=("/home/tim/local/www/pixelastic.com/www.pixelastic.com/")
+repos+=("/home/tim/local/www/pixelastic.com/painting.pixelastic.com/")
+repos+=("/home/tim/local/www/pixelastic.com/projects/magic")
+repos+=("/home/tim/local/www/pixelastic.com/projects/projects.pixelastic.com")
+repos+=("/home/tim/local/www/pixelastic.com/gamemaster/artefacts/")
+repos+=("/home/tim/local/www/pixelastic.com/gamemaster/barrowmaze/")
+repos+=("/home/tim/local/www/pixelastic.com/gamemaster/gamemaster.pixelastic.com/")
+repos+=("/home/tim/local/www/pixelastic.com/gamemaster/gods/")
+repos+=("/home/tim/local/www/pixelastic.com/gamemaster/maps/")
+repos+=("/home/tim/local/www/pixelastic.com/gamemaster/monsters/monsters/")
+repos+=("/home/tim/local/www/pixelastic.com/gamemaster/npcs/npcs/")
+repos+=("/home/tim/local/www/pixelastic.com/gamemaster/society/society-data/")
+repos+=("/home/tim/local/www/pixelastic.com/gamemaster/society/society-search/")
+
+local RESET="\e[0m"
+local GREEN="\e[38;5;$COLOR[green]m"
+local YELLOW="\e[38;5;$COLOR[yellow]m"
+for repo in $repos; do
+  cd $repo
+  local issueCount="$(ghic)"
+  local prCount="$(ghprc)"
+  local baseName="$(path.basename $repo)"
+  [[ $issueCount = 0 && $prCount = 0 ]] && continue
+
+  echo "[${baseName}]: ${GREEN} ${prCount}${RESET} ${YELLOW} ${issueCount}${RESET}"
+done
