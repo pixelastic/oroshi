@@ -3,8 +3,7 @@
 # a tmux session will also fire zsh, so in that case we should not try to attach
 # to anything and just continue.
 
-# Not inside tmux, we will try to attach to an existing session, or create
-# a new one
-if [[ -z "$TMUX" ]]; then
+# If not inside tmux already and not connected through ssh, then start tmux
+if [[ -z "$TMUX" && -z "$SSH_CLIENT" ]]; then
   (tmux attach || tmux new-session) &>/dev/null
 fi
