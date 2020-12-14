@@ -68,6 +68,11 @@ function __prompt-path() {
     pathString="${pathArray[1]}/…/${pathArray[-2]}/${pathArray[-1]}/"
   fi
 
+  # Add marker if connected through SSH
+  if [[ $SSH_CLIENT != '' ]]; then
+    echo -n "%F{$COLOR[orange]}  $hostname %f%k"
+  fi
+
   # Add optional known path prefix
   if [[ $pathSymbolString != '' ]]; then
     local -a pathSymbolArray
