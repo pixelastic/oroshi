@@ -7,7 +7,7 @@
   "default_minute": 0, 
   "highlight": true, 
   "journals": {
-    "default": "/home/tim/Dropbox/tim/misc/notes/journal.txt"
+    "default": "/home/tim/perso/Dropbox/tim/misc/doctolib/journal.txt"
   }, 
   "tagsymbols": "@"
 }
