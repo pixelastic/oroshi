@@ -27,9 +27,9 @@ custom[6,name]='Slack'
 custom[6,command]='/usr/bin/slack'
 custom[6,binding]='<Super>S'
 # TODO
-custom[7,name]='TODO'
-custom[7,command]='TODO'
-custom[7,binding]=''
+custom[7,name]='Flameshot'
+custom[7,command]='/usr/bin/flameshot gui'
+custom[7,binding]='<Super>p'
 # TODO
 custom[8,name]='TODO'
 custom[8,command]='TODO'

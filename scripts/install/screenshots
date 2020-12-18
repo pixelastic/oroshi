@@ -1,4 +1,2 @@
 #!/usr/bin/env bash
-
-# Installing slop, to take dimensions on screen
-sudo apt get install slop
+sudo apt-get install flameshot
