@@ -76,10 +76,10 @@ inoremap <buffer> rqwritj const writeJson = require('firost/writeJson');<CR>
 inoremap <buffer> rqwrij const writeJson = require('firost/writeJson');<CR>
 inoremap <buffer> rqwri const write = require('firost/write');<CR>
 " Require golgoth boilerplate
-inoremap <buffer> rqpmap const pMap = require('golgoth/lib/pMap');<CR>
-inoremap <buffer> rq_ const _ = require('golgoth/lib/lodash');<CR>
-inoremap <buffer> rqday const dayjs = require('golgoth/lib/dayjs');<CR>
-inoremap <buffer> rqgot const got = require('golgoth/lib/got');<CR>
+inoremap <buffer> rqpmap const pMap = require('golgoth/pMap');<CR>
+inoremap <buffer> rq_ const _ = require('golgoth/lodash');<CR>
+inoremap <buffer> rqday const dayjs = require('golgoth/dayjs');<CR>
+inoremap <buffer> rqgot const got = require('golgoth/got');<CR>
 " Require main modules
 inoremap <buffer> rqpath const path = require('path');<CR>
 inoremap <buffer> rqpat const path = require('path');<CR>
