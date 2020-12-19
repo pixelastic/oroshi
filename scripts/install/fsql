@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+set -ex
+
+cd ~/local/src
+mkdir fsql
+cd fsql
+wget https://github.com/kashav/fsql/releases/download/v0.3.1/fsql-0.3.1-linux-amd64.zip -O fsql.zip
+
+mv ./linux-amd64/fsql ~/local/bin
