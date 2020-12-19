@@ -47,6 +47,7 @@ alias -g F="| fzf"
 alias -g G="| grep"
 alias -g H="| head"
 alias -g L="| less -R"
+alias -g X="| xargs"
 alias -g NE='2>/dev/null'
 alias -g NO='1>/dev/null'
 alias -g S="| sort -V"

@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+# SELECT from ./XXX
+if [[ "$1" == "from" || "$1" == "FROM" ]]; then
+  fsql "SELECT FULLPATH(name) $*"
+  exit $?
+fi
+
+# SELECT size from ./XXX
+# SELECT name,size from ./XXX
+fsql "SELECT $*"
