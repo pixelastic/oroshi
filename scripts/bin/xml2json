@@ -1,2 +1,5 @@
 #!/usr/bin/env zsh
-xq '.' $1
+
+for input in $@; do
+  xq '.' "${input:a}" > "${input:a:r}.json"
+done
