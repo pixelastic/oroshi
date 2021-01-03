@@ -3,6 +3,7 @@
 if [[ $# == '0' ]]; then
   echo 'Usage:'
   echo '  jx data.json {selector}'
+  echo '  cat data.json | jx {selector}'
   exit 0
 fi
 
