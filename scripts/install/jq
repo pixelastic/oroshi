@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 cd ~/local/bin
 wget http://stedolan.github.io/jq/download/linux64/jq
