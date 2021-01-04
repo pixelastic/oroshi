@@ -16,7 +16,7 @@ LS_COLORS="${LS_COLORS}:*MAINTAINERS=38;5;$COLOR[orange5]"
 LS_COLORS="${LS_COLORS}:*CODEOWNERS=38;5;$COLOR[orange5]"
 # }}}
 # Scripts (purple) {{{
-LS_COLORS="${LS_COLORS}:*Dockerfile=38;5;$COLOR[purple5]"
+LS_COLORS="${LS_COLORS}:*Dockerfile*=38;5;$COLOR[purple5]"
 LS_COLORS="${LS_COLORS}:*Gemfile=38;5;$COLOR[purple5]"
 LS_COLORS="${LS_COLORS}:*Guardfile*=38;5;$COLOR[purple5]"
 LS_COLORS="${LS_COLORS}:*Rakefile=38;5;$COLOR[purple5]"
