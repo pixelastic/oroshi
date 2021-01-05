@@ -9,6 +9,7 @@ class SearchReplace
       exit 1
     end
     @is_dry_run = args.include?('-n')
+    args -= ['-n']
 
     @search, @replace, *@files = args
   end
