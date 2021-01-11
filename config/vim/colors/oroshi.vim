@@ -318,6 +318,12 @@ call s:Highlight('SpellCap', 'red', 'none', 'bold,underline')
 " " }}}
 " }}}
 
+" CSS {{{
+call s:Highlight('scssImport', 'yellow', '', 'bold')
+call s:Highlight('cssBraces', 'teal7')
+call s:Highlight('scssSelectorChar', 'teal7')
+call s:Highlight('scssSemicolon', 'teal7')
+" }}}
 " Git {{{
 call s:Highlight('gitcommitDiff', 'gray')
 call s:Highlight('gitcommitSummary', 'white')
