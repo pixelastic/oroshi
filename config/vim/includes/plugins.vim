@@ -21,19 +21,20 @@ Plug 'vim-scripts/Align'
 Plug 'vim-scripts/argtextobj.vim'
 " }}}
 " Language specific syntax {{{
-Plug 'StanAngeloff/php.vim'
-Plug 'avakhov/vim-yaml'
-Plug 'cakebaker/scss-syntax.vim'
-Plug 'cespare/vim-toml'
-Plug 'chase/vim-ansible-yaml'
-Plug 'digitaltoad/vim-pug'
-Plug 'groenewege/vim-less'
-Plug 'hail2u/vim-css3-syntax'
-Plug 'othree/html5.vim'
-Plug 'pangloss/vim-javascript'
-Plug 'tmhedberg/SimpylFold' " Python folding
-Plug 'tpope/vim-markdown'
-Plug 'vim-ruby/vim-ruby'
+Plug 'sheerun/vim-polyglot'
+" Plug 'StanAngeloff/php.vim'
+" Plug 'avakhov/vim-yaml'
+" Plug 'cakebaker/scss-syntax.vim'
+" Plug 'cespare/vim-toml'
+" Plug 'chase/vim-ansible-yaml'
+" Plug 'digitaltoad/vim-pug'
+" Plug 'groenewege/vim-less'
+" Plug 'hail2u/vim-css3-syntax'
+" Plug 'othree/html5.vim'
+" Plug 'pangloss/vim-javascript'
+" Plug 'tmhedberg/SimpylFold' " Python folding
+" Plug 'tpope/vim-markdown'
+" Plug 'vim-ruby/vim-ruby'
 " }}}
 " Enhancing vim workflow {{{
 Plug 'sbdchd/neoformat'
