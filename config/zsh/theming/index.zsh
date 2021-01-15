@@ -2,7 +2,7 @@ local DEBUG_STARTTIME=$(($(date +%s%N)/1000000))
 
 source $zshConfigDir/theming/ls.zsh
 source $zshConfigDir/theming/exa.zsh
-source $zshConfigDir/theming/highlight.zsh
+source $zshConfigDir/theming/zsh.zsh
 source $zshConfigDir/theming/bat.zsh
 source $zshConfigDir/theming/manpage.zsh
 source $zshConfigDir/theming/fzf.zsh

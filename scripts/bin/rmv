@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# Move files using rsync
+rsync \
+  -vrahP \
+  --modify-window=1 \
+  --prune-empty-dirs \
+  --remove-sent-files \
+  "$@"

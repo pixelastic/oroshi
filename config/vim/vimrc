@@ -140,16 +140,19 @@ nnoremap <silent> <F2> :call ToggleColorScheme()<CR>
 inoremap <silent> <F2> <Esc>:call ToggleColorScheme()<CR>li
 " Display the current highlight group of the word under cursor
 function! Debugcolor()
-  let synstack = synstack(line('.'), col('.'))
-  if len(synstack) == 0
-    echo 'No special color'
-    execute 'verbose hi Normal'
+  echo "From outer to inner:"
+  let stack = synstack(line('.'), col('.'))
+
+  " No highlight, simply the default one
+  if len(stack) == 0
+    execute 'hi Normal'
     return
   endif
+
   for id in synstack(line('.'), col('.'))
-    execute 'hi '.synIDattr(id, 'name')
+    let name = synIDattr(id, "name")
+    execute "hi ".name
   endfor
-  execute 'hi '.synIDattr(synIDtrans(id), 'name')
 endfunction
 nnoremap <F3> :call Debugcolor()<CR>
 "}}}

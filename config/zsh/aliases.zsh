@@ -12,6 +12,7 @@ unsetopt NOMATCH
 
 # Basic commands {{{
 alias gf='rg -l --color=never'
+
 alias cat='c'
 alias cmus='TERM=screen-256color cmus'
 alias cp='cp -rv'
@@ -66,16 +67,6 @@ alias spotofy='spotify'
 alias spot='spotify'
 # }}}
 # Misc {{{
-# cp and mv using rsync and preserving attributes, and accross fat32 drives
-# Note: We use functions and not alias so we can specify a custom completion
-# function (the same as scp, in _scp) without having to overwrite the whole
-# `rsync` completion command
-function rcp { rsync -vrahP --modify-window=1 "$@" }
-function rmv { 
-  rsync -vrahP --modify-window=1 --prune-empty-dirs --remove-sent-files "$@"
-}
-_scp () { local service=scp; _ssh "$@" }
-
 # Prefix a date to a file
 alias prd='prefix-date'
 # Fix previous command
@@ -97,6 +88,7 @@ alias ytx='youtube-dl -o "%(title)s.%(ext)s" -x --audio-format mp3'
 alias gfv="get_flash_videos -y"
 # }}}
 # GUI apps {{{
+alias datagrip='gui datagrip'
 alias ccsm='gui ccsm'
 alias charles='gui charles'
 alias disk-utility='gui palimpsest'
@@ -199,6 +191,7 @@ alias vk="v ~/.oroshi/config/kitty/kitty.conf"
 # }}}
 # Trash {{{
 alias tr?='trash-exists'
+
 alias trl='trash-list'
 alias trr='trash-restore'
 # }}}
@@ -367,9 +360,7 @@ alias tl="transmission-remote -l"
 export MARKPATH=$HOME/.marks
 alias m='mark'
 alias mR='unmark'
+alias ml="ls $MARKPATH"
 function j { 
   cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
-}
-function ml { 
-  ls $MARKPATH
 }

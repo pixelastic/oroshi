@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# Copy files using rsync
+rsync \
+  -vrahP \
+  --modify-window=1 \
+  "$@" 
+

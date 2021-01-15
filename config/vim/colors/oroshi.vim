@@ -428,14 +428,15 @@ call s:Highlight('rubyDefine', 'green')
 call s:Highlight('rubySymbol', 'orange5')
 " }}}
 " Shell {{{
-call s:Highlight('shQuote', 'blue5')
-call s:Highlight('shSet', 'green7')
-call s:Highlight('shStatement', 'yellow7')
-call s:Highlight('shSetOption', 'indigo4')
-call s:Highlight('shOption', 'indigo4')
-call s:Highlight('shVarAssign', 'teal7')
 call s:Highlight('shDerefSimple', 'indigo4')
 call s:Highlight('shDerefVar', 'indigo4')
+call s:Highlight('shOption', 'indigo4')
+call s:Highlight('shQuote', 'blue5')
+call s:Highlight('shSemicolon', 'teal7')
+call s:Highlight('shSetOption', 'indigo4')
+call s:Highlight('shSet', 'green7')
+call s:Highlight('shStatement', 'yellow7')
+call s:Highlight('shVarAssign', 'teal7')
 " }}}
 " Tmux {{{
 call s:Highlight('tmuxCommands', 'green')
@@ -458,14 +459,21 @@ call s:Highlight('yamlAlias', 'yellow6')
 call s:Highlight('yamlFlowString', 'blue5')
 " }}}
 " Zsh {{{
-call s:Highlight('zshTypes', 'green7')
-call s:Highlight('zshCommands', 'yellow6')
+call s:Highlight('zshOptStart', 'green7', '', 'bold')
+call s:Highlight('zshCommands', 'green7')
+call s:Highlight('zshOption', 'orange', '', 'bold')
 call s:Highlight('zshKeyword', 'green7')
 call s:Highlight('zshBrackets', 'teal7')
+call s:Highlight('zshDelim', 'teal7')
 call s:Highlight('zshParentheses', 'teal7')
-call s:Highlight('zshOperator', 'teal7')
-call s:Highlight('zshDeref', 'indigo4')
+call s:Highlight('zshStringDelimiter', 'blue5')
+call s:Highlight('zshSwitches', 'indigo4')
+call s:Highlight('ZinitIceModifiers', 'indigo4')
 call s:Highlight('zshVariableDef', 'indigo4')
+
+" call s:Highlight('zshOperator', 'teal7')
+" call s:Highlight('zshDeref', 'indigo4')
+" call s:Highlight('zshTypes', 'green7')
 " }}}
 
 
