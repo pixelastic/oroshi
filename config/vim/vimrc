@@ -73,10 +73,14 @@ augroup END
 " We only want the cursor and folds (not the custom options)
 set viewoptions=cursor,folds
 " Save sessions on close, load it on open
+" The ?* makes it skip non-existing files. Without it, editing large files tend
+" to be very slow as I *think* it attempts to calculate folding on each
+" character input
+" Partial source: https://github.com/spf13/spf13-vim/issues/766
 augroup views
   au!
-  au BufWinLeave * silent! mkview!
-  au BufWinEnter * silent! loadview
+  au BufWinLeave ?* mkview 1
+  au BufWinEnter ?* silent loadview 1
 augroup END
 " }}}
 " DISPLAY {{{
@@ -115,7 +119,7 @@ set completeopt=menu
 " Update the menu with matches as I type
 set completeopt+=longest
 " }}}
-" COLORS   {{{
+" COLORS {{{
 " Enabling syntax highlighting
 syntax on
 colorscheme oroshi
@@ -370,4 +374,3 @@ if filereadable(customConfig)
   exec "source ".customConfig
 endif
 " }}}
-
