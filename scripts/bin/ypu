@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 # ypu: Yarn Policies Update
-set -ex
+set -e
 cd "$(git root)"
 
 # Download latest version
