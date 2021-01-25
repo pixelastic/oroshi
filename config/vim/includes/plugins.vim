@@ -21,6 +21,9 @@ Plug 'vim-scripts/Align'
 Plug 'vim-scripts/argtextobj.vim'
 " }}}
 " Language specific syntax {{{
+let g:polyglot_disabled = []
+" javascript has better highlight than jsonc, and I don't comment my JSON anyway
+call add(g:polyglot_disabled, 'jsonc')
 Plug 'sheerun/vim-polyglot'
 " Plug 'StanAngeloff/php.vim'
 " Plug 'avakhov/vim-yaml'
