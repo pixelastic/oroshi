@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+
+yarn add global json2yaml
