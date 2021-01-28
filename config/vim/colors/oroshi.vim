@@ -185,11 +185,50 @@ let g:fzf_colors =
 " Matching parenthesis {{{
 call s:Highlight('MatchParen', 'white', 'teal9')
 " }}}
-" " Completion menu {{{
-" call s:Link('Pmenu', 'oroshi_UI')
-" call s:Link('PmenuSbar', 'oroshi_UI')
-" call s:Link('PmenuSel', 'oroshi_ModeSearch')
-" " }}}
+" Completion menu {{{
+" TODO: Hide submenu on HTML
+" TODO: Right, or left, shows more
+" TODO: Wait a bit before suggesting
+" TODO: Suggest on specific key
+call s:Highlight('Pmenu', 'white', 'gray9')
+call s:Highlight('PmenuSel', 'yellow', 'teal8', 'bold')
+call s:Highlight('PmenuSbar', 'gray9', 'gray9')
+call s:Highlight('PmenuThumb', 'yellow', 'yellow')
+
+" call s:Highlight('CocHintFloat', 'yellow', 'yellow')
+call s:Highlight('CocErrorFloat', 'red8', '', 'bold')
+call s:Highlight('CocWarningFloat', 'yellow', '', 'bold')
+
+" CocErrorSign   xxx ctermfg=9 guifg=#ff0000
+" CocWarningSign xxx ctermfg=130 guifg=#ff922b
+" CocInfoSign    xxx ctermfg=11 guifg=#fab005
+" CocHintSign    xxx ctermfg=12 guifg=#15aabf
+" CocSelectedText xxx ctermfg=9 guifg=#fb4934
+" CocCodeLens    xxx ctermfg=248 guifg=#999999
+" CocUnderline   xxx cterm=underline gui=underline
+" CocBold        xxx term=bold cterm=bold gui=bold
+" CocItalic      xxx term=italic cterm=italic gui=italic
+" CocMarkdownLink xxx ctermfg=12 guifg=#15aabf
+" CocMarkdownCode xxx links to markdownCode
+" CocMarkdownHeader xxx links to markdownH1
+" CocMenuSel     xxx links to PmenuSel
+" CocErrorFloat  xxx links to CocErrorSign
+" CocWarningFloat xxx links to CocWarningSign
+" CocInfoFloat   xxx links to CocInfoSign
+" CocHintFloat   xxx links to CocHintSign
+" CocErrorHighlight xxx links to CocUnderline
+" CocWarningHighlight xxx links to CocUnderline
+" CocInfoHighlight xxx links to CocUnderline
+" CocHintHighlight xxx links to CocUnderline
+" CocListMode    xxx links to ModeMsg
+" CocListPath    xxx links to Comment
+" CocHighlightText xxx links to CursorColumn
+" CocHoverRange  xxx links to Search
+" CocCursorRange xxx links to Search
+" CocHighlightRead xxx links to CocHighlightText
+" CocHighlightWrite xxx links to CocHighlightText
+" CocFloating    xxx links to Pmenu
+" }}}
 " Messages {{{
 call s:Highlight('ErrorMsg', 'red', 'none', 'bold')
 call s:Highlight('WarningMsg', 'yellow8')

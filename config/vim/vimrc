@@ -10,14 +10,6 @@ set nomodeline
 source ~/.vim/includes/plugins.vim
 " }}}
 " FILES {{{
-" The double slash at the end tells vim to store files keeping their directory
-" structure
-" Use backup, and save it in a custom dir
-set backup
-set backupdir=~/.vim/backup//
-" Directly save to file, not to a temp file. This will make live-reload much
-" snappier
-set backupcopy=yes
 " Swap files are useful for when your machine crashes or you reboot without
 " saving your work in progress. By default they are stored in the same dir,
 " which is inconvenient, though.
@@ -45,7 +37,7 @@ setglobal fileencoding=utf-8
 set fileformats=unix,dos,mac
 " Allow multiple buffers opened at once
 set hidden
-" Reload files if changed outside of vim (every 2s, or on tab change)
+" Reload files on tab change)
 set autoread
 set updatetime=2000
 augroup autoread
@@ -114,10 +106,7 @@ source ~/.vim/includes/keybindings.vim
 source ~/.vim/includes/search.vim
 " }}}
 " AUTOCOMPLETION {{{
-" Display autocomplete suggestion in a menu if more than one
-set completeopt=menu
-" Update the menu with matches as I type
-set completeopt+=longest
+source ~/.vim/includes/autocompletion.vim
 " }}}
 " COLORS {{{
 " Enabling syntax highlighting

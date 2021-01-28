@@ -4,7 +4,6 @@
 # Paths
 configDir=~/.oroshi/config/vim
 configFile=${configDir}/vimrc
-scriptsFile=${configDir}/scripts.vim
 destDir=~/.vim
 destFile=~/.vimrc
 
@@ -26,8 +25,7 @@ ln -fns $configDir/syntax $destDir/syntax
 
 # Vimrc
 ln -fs $configFile $destFile
-
-# Scripts (for file detection)
-ln -fs $scriptsFile $destDir/scripts.vim
+# Coc
+ln -fs ${configDir}/coc-settings.json $destDir
 
 echo "Now, open vim and type :PlugUpdate<CR> to install all plugins"

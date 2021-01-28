@@ -1,0 +1,5 @@
+{
+  "suggest.floatEnable": false,
+  "suggest.triggerCompletionWait": 500,
+  "suggest.snippetIndicator": "  "
+}

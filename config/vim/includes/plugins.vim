@@ -42,7 +42,7 @@ Plug 'sheerun/vim-polyglot'
 " Enhancing vim workflow {{{
 Plug 'sbdchd/neoformat'
 Plug 'scrooloose/syntastic'
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " }}}
 " Git-related plugins {{{
 Plug 'airblade/vim-gitgutter'
