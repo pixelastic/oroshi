@@ -61,13 +61,13 @@ function __prompt-git-rebase() {
 }
 
 # Display the closest git tag:
+# - Keep only tags representing a version
 # - Colored orange if the current commit is taggued
 # - Colored gray if it's a parent commit
 function __prompt-git-tag() {
+  local TAG_VERSION_REGEXP="v?[0-9].*"
   local tagName="$(git tag-current)"
-  [[ $tagName = '' ]] && return
-  # The following tag is used at work, but should be ignored
-  [[ $tagName = 'empty-commit-branch-to-break-master' ]] && return 
+  [[ ! $tagName =~ $TAG_VERSION_REGEXP ]] && return
 
   # Check if commits have been added since last tag
   git-commit-tagged && echo -n " %F{$COLORS[orange]} $tagName" && return
