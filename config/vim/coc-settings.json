@@ -1,14 +1,36 @@
 {
+  /* ERRORS */
   "diagnostic.errorSign": "",
   "diagnostic.warningSign": "",
   "diagnostic.infoSign": "",
-  "diagnostic.checkCurrentLine": true,
+  /* Display errors in the bottom line, not in a tooltip */
   "diagnostic.messageTarget": "echo",
-  "suggest.triggerCompletionWait": 3000,
+  /* Being on the line is enough, no need to be on the exact word */
+  "diagnostic.checkCurrentLine": true,
+
+  /* COMPLETION */
+  /* Do not trigger completion as I type, this is too noisy */
+  "suggest.autoTrigger": "none",
+  /* Reduce noise in completion popup */
   "suggest.snippetIndicator": "  ",
   "suggest.disableKind": true,
+
+  /* HTML */
   "html.suggest.angular1": false,
   "html.suggest.ionic": false,
-  "html.autoClosingTags": true,
-  "eslint.validate": ["typescript"]
+
+  /* AUTO-FIX ON SAVE */
+  "coc.preferences.formatOnSaveFiletypes": ["json"],
+  "eslint.autoFixOnSave": true,
+
+  /* ESLINT */
+  "eslint.validate": ["javascript", "typescript"],
+
+  /* TYPESCRIPT */
+  /* Do not load the whole TS parser for JS files */
+  "tsserver.enableJavascript": false,
+
+  /* PRETTIER */
+  /* Prettier is verbose, we remove the success message */
+  "prettier.disableSuccessMessage": true
 }

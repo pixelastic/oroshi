@@ -5,7 +5,6 @@ setlocal tabstop=2
 setlocal shiftwidth=2
 setlocal softtabstop=2
 setlocal expandtab
-setlocal equalprg=eslint_d\ --stdin\ --fix-to-stdout\ -
 " }}}
 " Folding {{{
 setlocal foldmethod=syntax
@@ -17,20 +16,6 @@ function! JavascriptFoldText()
   let output = substitute(output, '{$', '{...' . lines . '}', '')
   let output = substitute(output, '[$', '[...' . lines . ']', '')
   return output
-endfunction
-" }}}
-" Linting {{{
-let b:syntastic_checkers = ['eslint']
-let b:syntastic_javascript_eslint_exec = 'eslint_d'
-" }}}
-" Cleaning {{{
-inoremap <silent> <buffer> <F4> <Esc>:call JavascriptBeautify()<CR><CR>
-nnoremap <silent> <buffer> <F4> :call JavascriptBeautify()<CR><CR>
-function! JavascriptBeautify() 
-  let l:initialLine = line('.')
-  execute '%!eslint_d --stdin --fix-to-stdout'
-  execute 'normal '.initialLine.'gg'
-  SyntasticCheck()
 endfunction
 " }}}
 

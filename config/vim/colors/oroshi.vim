@@ -322,6 +322,14 @@ call s:Highlight('typescriptVariable', 'green7')
 call s:Highlight('typescriptIdentifierName', 'white', 'red', 'bold')
 call s:Highlight('typescriptProp', 'yellow', 'red', 'bold')
 " }}}
+" JSONC {{{
+call s:Highlight('jsoncKeywordMatch', 'blue5')
+augroup oroshi_jsonc
+  autocmd!
+  " The "Normal" highlight group is used for commas
+  autocmd FileType jsonc call s:Highlight('Normal', 'teal7')
+augroup END
+" }}}
 " Markdown {{{
 call s:Highlight('markdownCodeDelimiter', 'blue5')
 call s:Highlight('markdownCode', 'blue5')
