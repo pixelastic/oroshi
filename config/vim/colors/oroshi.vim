@@ -100,11 +100,13 @@ call s:Highlight('String', 'blue5')
 call s:Highlight('Title', 'yellow')
 call s:Highlight('Todo', 'yellow')
 call s:Highlight('Type', 'red5')
+call s:Highlight('ExtraWhitespace', '', 'gray9')
+" The matcher needs to be defined after the colorscheme
+match ExtraWhitespace /\s\+$/
 " }}}
 " UI {{{
 " Borders {{{
 call s:Highlight('ColorColumn', 'yellow', 'gray9')
-call s:Highlight('ExtraWhitespace', 'red9', 'red9', 'bold')
 call s:Highlight('LineNr', 'gray')
 call s:Highlight('SignColumn', 'none', 'terminal')
 call s:Highlight('VertSplit', 'gray9', 'gray9', 'bold')
@@ -203,7 +205,7 @@ call s:Highlight('PmenuThumb', 'teal8', 'teal8')
 call s:Highlight('CocErrorHighlight', 'red', '', 'bold,underline')
 call s:Highlight('CocWarningHighlight', 'yellow', '', 'bold,underline')
 call s:Highlight('CocInfoHighlight', '', '', 'none')
-call s:Highlight('CocFloating', 'blue', 'terminal')
+call s:Highlight('CocFloating', 'gray5', 'gray9')
 call s:Highlight('CocWarningFloat', 'yellow', 'gray9', 'bold')
 call s:Highlight('CocErrorFloat', 'red', 'gray9', 'bold')
 call s:Highlight('SpellBad', 'red', 'terminal', 'bold,underline')

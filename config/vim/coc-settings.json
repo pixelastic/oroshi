@@ -15,6 +15,10 @@
   "suggest.snippetIndicator": "  ",
   "suggest.disableKind": true,
 
+  /* SIGNATURE HELP */
+  /* "signature.enable": false, */
+  "signature.triggerSignatureWait": 2000,
+
   /* HTML */
   "html.suggest.angular1": false,
   "html.suggest.ionic": false,

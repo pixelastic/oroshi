@@ -54,12 +54,26 @@ function! MultiPurposeShiftTab()
   return "\<S-Tab>"
 endfunction
 " Remap Tab
-inoremap <silent> <Tab> <C-R>=MultiPurposeTab()<CR>
-inoremap <silent> <S-Tab> <C-R>=MultiPurposeShiftTab()<CR>
+inoremap <expr> <Tab> (MultiPurposeTab())
+inoremap <expr> <S-Tab> (MultiPurposeShiftTab())
 nnoremap <Tab> >>
 nnoremap <S-Tab> <<
 vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
+" }}}
+" ARROWS {{{
+function! MultiPurposeDown()
+  let simple_down = "\<Down>"
+  let autocomplete_down_one_line = "\<C-N>"
+  return pumvisible() ? autocomplete_down_one_line : simple_down
+endfunction
+function! MultiPurposeUp()
+  let simple_up = "\<Up>"
+  let autocomplete_up_one_line = "\<C-P>"
+  return pumvisible() ? autocomplete_up_one_line : simple_up
+endfunction
+inoremap <expr> <Down> (MultiPurposeDown())
+inoremap <expr> <Up> (MultiPurposeUp())
 " }}}
 " RETURN KEY {{{
 " - Select completion if completion menu open
@@ -68,10 +82,9 @@ function! MultiPurposeEnter()
 	if pumvisible()
 		return coc#_select_confirm()
 	endif
-
 	return "\<CR>"
 endfunction
-inoremap <silent> <CR> <C-R>=MultiPurposeEnter()<CR>
+inoremap <expr> <CR> (MultiPurposeEnter())
 " Add line after this one
 nnoremap <CR> mzo<Esc>`z
 " Shift-Enter: Add new line before
@@ -80,7 +93,7 @@ inoremap [13;2u <Esc>lmzO<Esc>`zi
 " Ctrl-Enter: Add new line after this char
 nnoremap [13;5u mzli<CR><Esc>`z
 " }}}
-" Current file:line {{{
+" F6: Current file:line {{{
 function! CopyFileAndLine()
   let @+ = expand('%:p').':'.line('.')
 endfunction
@@ -105,20 +118,6 @@ nnoremap j gj
 nnoremap k gk
 vnoremap j gj
 vnoremap k gk
-" }}}
-" ARROWS {{{
-function! MultiPurposeDown()
-  let simple_down = "\<Down>"
-  let autocomplete_down_one_line = "\<C-N>"
-  return pumvisible() ? autocomplete_down_one_line : simple_down
-endfunction
-function! MultiPurposeUp()
-  let simple_up = "\<Up>"
-  let autocomplete_up_one_line = "\<C-P>"
-  return pumvisible() ? autocomplete_up_one_line : simple_up
-endfunction
-inoremap <expr> <Down> (MultiPurposeDown())
-inoremap <expr> <Up> (MultiPurposeUp())
 " }}}
 " VIMDIFF  {{{
 " Vimdiff will mostly be used to handle merges. It is configured to be
@@ -190,14 +189,6 @@ vnoremap <C-A> <Esc>GVgg
 " YANKS {{{
 vnoremap p "_dP
 vnoremap P "_dP
-" }}}
-" HELP {{{
-function! ShowDocumentation()
-  if (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  endif
-endfunction
-nnoremap <silent> <F1> :call ShowDocumentation()<CR>
 " }}}
 " KEYBOARD {{{
 " Faster typing of =>
@@ -279,5 +270,5 @@ let g:loaded_AlignMapsPlugin = '1'
 " }}}
 " UNBINDING {{{
 " K lookup for the word under cursor, I don't need it
-nnoremap K <nop>
+" nnoremap K <nop>
 " }}}

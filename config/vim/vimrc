@@ -93,14 +93,13 @@ set number
 set noshowmode
 " Show more info about current command
 set showcmd
+set cmdheight=2
 " Keep search results centered
 set scrolloff=999
 " Hide invisible chars by default, but if they should be displayed, define the
 " characters to define them.
 set nolist
 set listchars=nbsp:∅,tab:▸\ ,eol:↲,trail:·
-" " Trying to visually highlight some pesky hidden characters
-" match ExtraWhitespace /­./
 " Chars used for GUI
 set fillchars=stl:\ ,stlnc:\ ,vert:\|,fold:\ ,diff:-
 " }}}
