@@ -1,7 +1,7 @@
 {
   "diagnostic.errorSign": "",
   "diagnostic.warningSign": "",
-  "suggest.triggerCompletionWait": 1500,
+  "suggest.triggerCompletionWait": 3000,
   "suggest.snippetIndicator": "  ",
   "suggest.disableKind": true,
   "html.suggest.angular1": false,
