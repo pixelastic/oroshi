@@ -45,7 +45,7 @@ setglobal fileencoding=utf-8
 set fileformats=unix,dos,mac
 " Allow multiple buffers opened at once
 set hidden
-" Reload files on tab change)
+" Reload files on tab change
 set autoread
 set updatetime=2000
 augroup autoread
@@ -309,7 +309,7 @@ nnoremap c "_c
 
 " GIT {{{
 let g:gitgutter_max_signs=10000
-" " }}}
+" }}}
 " SYNTASTIC {{{
 let g:syntastic_aggregate_errors=1
 let g:syntastic_auto_loc_list=0
@@ -337,6 +337,14 @@ let g:syntastic_mode_map={ 'mode': 'passive',
                      \ ],
                      \ 'passive_filetypes': [] }
 
+" }}}
+" COC {{{
+" Error floating window can stay and create ghost artefacts when switching tabs
+" We force removing them when entering a buffer
+augroup coc_ghost_floats
+  autocmd!
+  autocmd BufEnter * call coc#float#close_all()
+augroup END
 " }}}
 " FILETYPES {{{
 " Load skeletons
