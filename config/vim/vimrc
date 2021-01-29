@@ -10,6 +10,14 @@ set nomodeline
 source ~/.vim/includes/plugins.vim
 " }}}
 " FILES {{{
+" Use backup, and save it in a custom dir
+" The double slash at the end tells vim to store files keeping their directory
+" structure
+set backup
+set backupdir=~/.vim/backup//
+" Directly save to file, not to a temp file. This will make live-reload much
+" snappier
+set backupcopy=yes
 " Swap files are useful for when your machine crashes or you reboot without
 " saving your work in progress. By default they are stored in the same dir,
 " which is inconvenient, though.
@@ -105,8 +113,9 @@ source ~/.vim/includes/keybindings.vim
 " SEARCH {{{
 source ~/.vim/includes/search.vim
 " }}}
-" AUTOCOMPLETION {{{
-source ~/.vim/includes/autocompletion.vim
+" COMPLETION {{{
+" Height of the (scrollable) autocompletion window
+set pumheight=10
 " }}}
 " COLORS {{{
 " Enabling syntax highlighting
@@ -257,16 +266,6 @@ iabbrev intiialiaee initialize
 iabbrev intiialiaze initialize
 iabbrev intiialize initialize
 " }}}
-" WILDMENU {{{
-" We enable a simple wildmenu with basic Tab-completion.
-set wildmenu
-" We ignore some files and dir that we're sure we'll never edit in vim
-set wildignore=''
-set wildignore+=*.orig,*.swp,*.crcdownload            " Tmp files
-set wildignore+=*.jpg,*.jpeg,*.png,*.ico,*.gif,*.pdf  " Image files
-set wildignore+=*.exe,*.dll,*.pyc,*.so                " Binaries
-set wildignore+=*.zip,*.rar,*.tgz,*.tar,*.cbz         " Archive files
-" }}}
 " YANK / PASTE   {{{
 " Note: Systems have two different clipboards.
 " unnamed is (select text / middle click) and accessed with "*
@@ -312,7 +311,7 @@ nnoremap c "_c
 let g:gitgutter_max_signs=10000
 " " }}}
 " SYNTASTIC {{{
-let g:syntastic_aggregate_errors = 1
+let g:syntastic_aggregate_errors=1
 let g:syntastic_auto_loc_list=0
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_error_symbol=' '
@@ -327,7 +326,6 @@ let g:syntastic_mode_map={ 'mode': 'passive',
                        \ 'dockerfile',
                        \ 'html', 'pug',
                        \ 'javascript', 'vue', 'typescript',
-                       \ 'json',
                        \ 'markdown',
                        \ 'php',
                        \ 'python',

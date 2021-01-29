@@ -1,5 +1,6 @@
 " STATUS LINE
 source ~/.vim/includes/statusline/git.vim
+source ~/.vim/includes/statusline/lint.vim
 
 " Always display the status line
 set laststatus=2
@@ -53,11 +54,6 @@ function! OroshiStatusLine()
   endif
   " }}}
 
-  " Syntastic errors {{{
-  let g:syntastic_stl_format='%E{ :%e }%W{ :%w }'
-  let sl .= '%#StatusLineSyntasticError#%e%{SyntasticStatuslineFlag()}%*'
-  " }}}
-
   " Line endings {{{
   if &fileformat != "unix"
     let sl .= '%#StatusLineFileFormatError# '.&fileformat.' %*'
@@ -77,6 +73,13 @@ function! OroshiStatusLine()
   " Right / Left separator {{{
   let sl .= '%='
   let sl .= '%#StatusLineRight#'
+  " }}}
+  "
+  " Lint status {{{
+  let b:lintStatusLine = LintStatusLine()
+  if b:lintStatusLine != ''
+    let sl .= b:lintStatusLine." "
+  endif
   " }}}
 
   " Debug var {{{

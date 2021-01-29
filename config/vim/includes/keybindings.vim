@@ -45,8 +45,17 @@ function! MultiPurposeTab()
   " After a letter, opening auto-completion
   return coc#refresh()
 endfunction
+function! MultiPurposeShiftTab()
+  " Aucompletion already open, going back one selection
+  if pumvisible()
+    return "\<C-P>"
+  endif
+
+  return "\<S-Tab>"
+endfunction
 " Remap Tab
 inoremap <silent> <Tab> <C-R>=MultiPurposeTab()<CR>
+inoremap <silent> <S-Tab> <C-R>=MultiPurposeShiftTab()<CR>
 nnoremap <Tab> >>
 nnoremap <S-Tab> <<
 vnoremap <Tab> >gv

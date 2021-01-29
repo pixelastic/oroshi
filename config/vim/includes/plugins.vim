@@ -43,6 +43,10 @@ Plug 'sheerun/vim-polyglot'
 Plug 'sbdchd/neoformat'
 Plug 'scrooloose/syntastic'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+let g:coc_global_extensions = [
+  \ 'coc-json',
+  \ 'coc-html'
+  \ ]
 " }}}
 " Git-related plugins {{{
 Plug 'airblade/vim-gitgutter'

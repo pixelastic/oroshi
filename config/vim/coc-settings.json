@@ -1,5 +1,10 @@
 {
-  "suggest.floatEnable": false,
-  "suggest.triggerCompletionWait": 500,
-  "suggest.snippetIndicator": "  "
+  "diagnostic.errorSign": "",
+  "diagnostic.warningSign": "",
+  "suggest.triggerCompletionWait": 1500,
+  "suggest.snippetIndicator": "  ",
+  "suggest.disableKind": true,
+  "html.suggest.angular1": false,
+  "html.suggest.ionic": false,
+  "html.autoClosingTags": true
 }

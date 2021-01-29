@@ -99,9 +99,9 @@ call s:Highlight('Type', 'red5')
 " UI {{{
 " Borders {{{
 call s:Highlight('ColorColumn', 'yellow', 'gray9')
-call s:Highlight('ExtraWhitespace', 'darkred', 'darkred', 'bold')
+call s:Highlight('ExtraWhitespace', 'red9', 'red9', 'bold')
 call s:Highlight('LineNr', 'gray')
-call s:Highlight('SignColumn', 'white', 'none')
+call s:Highlight('SignColumn', 'none', 'terminal')
 call s:Highlight('VertSplit', 'gray9', 'gray9', 'bold')
 " }}}
 " Tabs {{{
@@ -135,10 +135,13 @@ call s:Highlight('SyntasticStyleErrorSign', 'red')
 call s:Highlight('SyntasticStyleWarningSign', 'yellow')
 call s:Highlight('SyntasticWarningSign', 'yellow')
 " }}}
+" Coc Gutter {{{
+call s:Highlight('CocErrorSign', 'red')
+call s:Highlight('CocWarningSign', 'yellow')
+" }}}
 " GitGutter {{{
 call s:Highlight('GitGutterAdd', 'green')
 call s:Highlight('GitGutterChange', 'purple')
-call s:Highlight('SignColumn', 'none', 'terminal')
 " }}}
 " Status line {{{
 call s:Highlight('StatusLineFileEncodingError', 'red', 'gray8')
@@ -151,7 +154,7 @@ call s:Highlight('StatusLineModeCtrlP', 'black', 'red5', 'bold')
 call s:Highlight('StatusLineModeInsertSeparator', 'yellow', 'gray8')
 call s:Highlight('StatusLineModeInsert', 'black', 'yellow', 'bold')
 call s:Highlight('StatusLineModeNormalSeparator', 'none', 'gray8')
-call s:Highlight('StatusLineModeNormal', 'white', 'none')
+call s:Highlight('StatusLineModeNormal', 'white', 'black')
 call s:Highlight('StatusLineModeSearchSeparator', 'yellow', 'gray8')
 call s:Highlight('StatusLineModeSearch', 'black', 'yellow', 'bold')
 call s:Highlight('StatusLineModeUnknownSeparator', 'red', 'white')
@@ -163,7 +166,8 @@ call s:Highlight('StatusLinePathModified', 'purple4', 'gray8')
 call s:Highlight('StatusLinePathReadonly', 'red', 'gray8')
 call s:Highlight('StatusLinePath', 'green', 'gray8', 'bold')
 call s:Highlight('StatusLineRight', 'gray4', 'gray8', 'none')
-call s:Highlight('StatusLineSyntasticError', 'red', 'gray8')
+call s:Highlight('StatusLineError', 'red', 'gray8')
+call s:Highlight('StatusLineWarning', 'yellow', 'gray8')
 call s:Highlight('StatusLine', 'gray4', 'gray8', 'none')
 " }}}
 " FZF {{{
@@ -182,60 +186,50 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 " }}}
-" Matching parenthesis {{{
-call s:Highlight('MatchParen', 'white', 'teal9')
-" }}}
-" Completion menu {{{
-" TODO: Hide submenu on HTML
+" COC {{{
 " TODO: Right, or left, shows more
-" TODO: Wait a bit before suggesting
-" TODO: Suggest on specific key
-call s:Highlight('Pmenu', 'white', 'gray9')
+" Autocompletion menu
+call s:Highlight('Pmenu', 'white', 'teal9')
 call s:Highlight('PmenuSel', 'yellow', 'teal8', 'bold')
 call s:Highlight('PmenuSbar', 'gray9', 'gray9')
-call s:Highlight('PmenuThumb', 'yellow', 'yellow')
-
-" call s:Highlight('CocHintFloat', 'yellow', 'yellow')
-call s:Highlight('CocErrorFloat', 'red8', '', 'bold')
-call s:Highlight('CocWarningFloat', 'yellow', '', 'bold')
-
-" CocErrorSign   xxx ctermfg=9 guifg=#ff0000
-" CocWarningSign xxx ctermfg=130 guifg=#ff922b
-" CocInfoSign    xxx ctermfg=11 guifg=#fab005
-" CocHintSign    xxx ctermfg=12 guifg=#15aabf
-" CocSelectedText xxx ctermfg=9 guifg=#fb4934
-" CocCodeLens    xxx ctermfg=248 guifg=#999999
-" CocUnderline   xxx cterm=underline gui=underline
-" CocBold        xxx term=bold cterm=bold gui=bold
-" CocItalic      xxx term=italic cterm=italic gui=italic
-" CocMarkdownLink xxx ctermfg=12 guifg=#15aabf
-" CocMarkdownCode xxx links to markdownCode
-" CocMarkdownHeader xxx links to markdownH1
-" CocMenuSel     xxx links to PmenuSel
-" CocErrorFloat  xxx links to CocErrorSign
-" CocWarningFloat xxx links to CocWarningSign
-" CocInfoFloat   xxx links to CocInfoSign
-" CocHintFloat   xxx links to CocHintSign
-" CocErrorHighlight xxx links to CocUnderline
-" CocWarningHighlight xxx links to CocUnderline
-" CocInfoHighlight xxx links to CocUnderline
-" CocHintHighlight xxx links to CocUnderline
-" CocListMode    xxx links to ModeMsg
-" CocListPath    xxx links to Comment
-" CocHighlightText xxx links to CursorColumn
-" CocHoverRange  xxx links to Search
-" CocCursorRange xxx links to Search
-" CocHighlightRead xxx links to CocHighlightText
-" CocHighlightWrite xxx links to CocHighlightText
-" CocFloating    xxx links to Pmenu
+call s:Highlight('PmenuThumb', 'teal8', 'teal8')
+" Error checking
+call s:Highlight('CocFloating', 'blue', 'terminal')
+call s:Highlight('CocWarningFloat', 'yellow', 'gray9', 'bold')
+call s:Highlight('CocErrorFloat', 'red', 'gray9', 'bold')
+call s:Highlight('SpellBad', 'red', 'terminal', 'bold,underline')
+" }}}
+" call s:Highlight('CocBold', 'pink', 'white')
+" call s:Highlight('CocCodeLens', 'pink', 'white')
+" call s:Highlight('CocCursorRange', 'pink', 'white')
+" call s:Highlight('CocErrorHighlight', 'pink', 'white')
+" call s:Highlight('CocHighlightRead', 'pink', 'white')
+" call s:Highlight('CocHighlightText', 'pink', 'white')
+" call s:Highlight('CocHighlightWrite', 'pink', 'white')
+" call s:Highlight('CocHintFloat', 'pink', 'white')
+" call s:Highlight('CocHintHighlight', 'pink', 'white')
+" call s:Highlight('CocHintSign', 'pink', 'white')
+" call s:Highlight('CocHoverRange', 'pink', 'white')
+" call s:Highlight('CocInfoFloat', 'pink', 'white')
+" call s:Highlight('CocInfoHighlight', 'pink', 'white')
+" call s:Highlight('CocInfoSign', 'pink', 'white')
+" call s:Highlight('CocItalic', 'pink', 'white')
+" call s:Highlight('CocListMode', 'pink', 'white')
+" call s:Highlight('CocListPath', 'pink', 'white')
+" call s:Highlight('CocMarkdownCode', 'pink', 'white')
+" call s:Highlight('CocMarkdownHeader', 'pink', 'white')
+" call s:Highlight('CocMarkdownLink', 'pink', 'white')
+" call s:Highlight('CocMenuSel', 'pink', 'white')
+" call s:Highlight('CocSelectedText', 'pink', 'white')
+" call s:Highlight('CocUnderline', 'pink', 'white')
+" call s:Highlight('CocWarningHighlight', 'pink', 'white')
+" }}}
+" Matching parenthesis {{{
+call s:Highlight('MatchParen', 'white', 'teal9')
 " }}}
 " Messages {{{
 call s:Highlight('ErrorMsg', 'red', 'none', 'bold')
 call s:Highlight('WarningMsg', 'yellow8')
-" }}}
-" Spellchecking {{{
-call s:Highlight('SpellBad', 'red', 'none', 'bold,underline')
-call s:Highlight('SpellCap', 'red', 'none', 'bold,underline')
 " }}}
 " }}}
 

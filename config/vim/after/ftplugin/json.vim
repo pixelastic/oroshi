@@ -4,13 +4,9 @@ setlocal tabstop=2
 setlocal shiftwidth=2
 setlocal softtabstop=2
 setlocal expandtab
-setlocal equalprg=js-beautify\ -f\ -
 " }}}
 " Folding {{{
 setlocal foldmethod=syntax
-" }}}
-" Linting {{{
-let b:syntastic_checkers = ['jsonlint']
 " }}}
 " Cleaning {{{
 inoremap <silent> <buffer> <F4> <Esc>:call JSONBeautify()<CR><CR>
