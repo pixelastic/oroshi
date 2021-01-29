@@ -1,10 +1,14 @@
 {
   "diagnostic.errorSign": "",
   "diagnostic.warningSign": "",
+  "diagnostic.infoSign": "",
+  "diagnostic.checkCurrentLine": true,
+  "diagnostic.messageTarget": "echo",
   "suggest.triggerCompletionWait": 3000,
   "suggest.snippetIndicator": "  ",
   "suggest.disableKind": true,
   "html.suggest.angular1": false,
   "html.suggest.ionic": false,
-  "html.autoClosingTags": true
+  "html.autoClosingTags": true,
+  "eslint.validate": ["typescript"]
 }

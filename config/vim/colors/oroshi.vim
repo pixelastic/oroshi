@@ -51,26 +51,31 @@ endwhile
 " }}}
 " Highlighting function {{{
 " args : group, foreground, background, cterm
-function! s:Highlight(group,fg,...)
-  " Default highlight string we're building
-  let h = 'hi! '.a:group
+function! s:Highlight(group,...)
+  let name = get(a:, 'group')
+  let foreground = get(a:, '1', '')
+  let background = get(a:, '2', '')
+  let decoration = get(a:, '3', '')
 
-  " adding foreground
-  if strlen(a:fg)
-    let h .= ' ctermfg='.get(s:color, a:fg)
+  " Everything is empty, we clear the highlight
+  if foreground == '' && background == '' && decoration == ''
+    execute 'hi clear '.name
+    return
   endif
 
-  " adding background
-  if a:0 >= 1 && strlen(a:1)
-    let h .= ' ctermbg='.get(s:color, a:1)
+  " We build the highlight string
+  let result = 'hi! '.name
+  if foreground != ''
+    let result .= ' ctermfg='.get(s:color, foreground)
+  endif
+  if background != ''
+    let result .= ' ctermbg='.get(s:color, background)
+  endif
+  if decoration != ''
+    let result .= ' cterm='.decoration
   endif
 
-  " adding cterm
-  if a:0 >= 2 && strlen(a:2)
-    let h .= ' cterm='.a:2
-  endif
-
-  execute h
+  execute result
 endfunction
 " }}}
 " Text {{{
@@ -138,6 +143,7 @@ call s:Highlight('SyntasticWarningSign', 'yellow')
 " Coc Gutter {{{
 call s:Highlight('CocErrorSign', 'red')
 call s:Highlight('CocWarningSign', 'yellow')
+call s:Highlight('CocInfoSign', 'blue')
 " }}}
 " GitGutter {{{
 call s:Highlight('GitGutterAdd', 'green')
@@ -194,6 +200,9 @@ call s:Highlight('PmenuSel', 'yellow', 'teal8', 'bold')
 call s:Highlight('PmenuSbar', 'gray9', 'gray9')
 call s:Highlight('PmenuThumb', 'teal8', 'teal8')
 " Error checking
+call s:Highlight('CocErrorHighlight', 'red', '', 'bold,underline')
+call s:Highlight('CocWarningHighlight', 'yellow', '', 'bold,underline')
+call s:Highlight('CocInfoHighlight', '', '', 'none')
 call s:Highlight('CocFloating', 'blue', 'terminal')
 call s:Highlight('CocWarningFloat', 'yellow', 'gray9', 'bold')
 call s:Highlight('CocErrorFloat', 'red', 'gray9', 'bold')
