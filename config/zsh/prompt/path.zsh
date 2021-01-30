@@ -32,8 +32,14 @@ function __prompt-path() {
   knownPaths+=("~/local/www/projects/norska-theme-docs/")
   knownData+=("blue3:gray8: theme-docs")
 
+  knownPaths+=("~/local/www/projects/norska-theme-search/")
+  knownData+=("blue5:white: theme-search")
+
   knownPaths+=("~/local/www/projects/norska-theme-search-infinite/")
   knownData+=("blue3:gray8: theme-search-infinite")
+
+  knownPaths+=("~/local/www/projects/norska-theme-slides/")
+  knownData+=("green8:white: theme-search-slides")
 
   knownPaths+=("~/local/www/projects/aberlaas/")
   knownData+=("yellow7:gray9: aberlaas")
