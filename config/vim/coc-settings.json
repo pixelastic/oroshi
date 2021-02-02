@@ -7,6 +7,8 @@
   "diagnostic.messageTarget": "echo",
   /* Being on the line is enough, no need to be on the exact word */
   "diagnostic.checkCurrentLine": true,
+  /* Also show in insert, not only normal */
+  "diagnostic.refreshOnInsertMode": true,
 
   /* COMPLETION */
   /* Do not trigger completion as I type, this is too noisy */
@@ -16,7 +18,7 @@
   "suggest.disableKind": true,
 
   /* SIGNATURE HELP */
-  /* "signature.enable": false, */
+  "signature.enable": false,
   "signature.triggerSignatureWait": 2000,
 
   /* HTML */

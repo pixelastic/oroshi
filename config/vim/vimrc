@@ -10,14 +10,9 @@ set nomodeline
 source ~/.vim/includes/plugins.vim
 " }}}
 " FILES {{{
-" Use backup, and save it in a custom dir
-" The double slash at the end tells vim to store files keeping their directory
-" structure
-set backup
-set backupdir=~/.vim/backup//
-" Directly save to file, not to a temp file. This will make live-reload much
-" snappier
-set backupcopy=yes
+set nobackup
+set nowritebackup
+set updatetime=300
 " Swap files are useful for when your machine crashes or you reboot without
 " saving your work in progress. By default they are stored in the same dir,
 " which is inconvenient, though.
@@ -89,11 +84,12 @@ set ttyfast
 set lazyredraw
 " Display line numbers in left column
 set number
+" Always display the gutter
+set signcolumn=yes
 " Hide  -- INSERT -- or -- VISUAL -- text, we already have it in the statusbar
 set noshowmode
 " Show more info about current command
 set showcmd
-set cmdheight=2
 " Keep search results centered
 set scrolloff=999
 " Hide invisible chars by default, but if they should be displayed, define the

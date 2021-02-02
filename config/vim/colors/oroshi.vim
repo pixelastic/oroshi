@@ -195,7 +195,6 @@ let g:fzf_colors =
   \ 'header':  ['fg', 'Comment'] }
 " }}}
 " COC {{{
-" TODO: Right, or left, shows more
 " Autocompletion menu
 call s:Highlight('Pmenu', 'white', 'teal9')
 call s:Highlight('PmenuSel', 'yellow', 'teal8', 'bold')
@@ -208,7 +207,6 @@ call s:Highlight('CocInfoHighlight', '', '', 'none')
 call s:Highlight('CocFloating', 'gray5', 'gray9')
 call s:Highlight('CocWarningFloat', 'yellow', 'gray9', 'bold')
 call s:Highlight('CocErrorFloat', 'red', 'gray9', 'bold')
-call s:Highlight('SpellBad', 'red', 'terminal', 'bold,underline')
 " }}}
 " call s:Highlight('CocBold', 'pink', 'white')
 " call s:Highlight('CocCodeLens', 'pink', 'white')
@@ -242,6 +240,9 @@ call s:Highlight('MatchParen', 'white', 'teal9')
 call s:Highlight('ErrorMsg', 'red', 'none', 'bold')
 call s:Highlight('WarningMsg', 'yellow8')
 " }}}
+" Spell Checking / Errors
+call s:Highlight('SpellBad', 'red', 'terminal', 'bold,underline')
+call s:Highlight('SpellCap', 'red', 'terminal', 'bold,underline')
 " }}}
 
 " CSS {{{
@@ -502,17 +503,6 @@ call s:Highlight('zshVariableDef', 'indigo4')
 " call s:Link('robotsStar', 'oroshi_CodeSymbol')
 " " }}}
 " " Shell {{{
-" call s:Link('shOption', 'oroshi_CodeType')
-" call s:Link('shDerefSimple', 'oroshi_CodeVariable')
-" call s:Link('zshDeref', 'oroshi_CodeVariable')
-" call s:Link('zshShortDeref', 'oroshi_CodeVariable')
-" call s:Link('zshRedir', 'oroshi_TextSpecial')
-" call s:Link('zshSubst', 'oroshi_CodeVariable')
-" call s:Link('zshOldSubst', 'oroshi_CodeVariable')
-" call s:Link('zshSubstDelim', 'oroshi_CodeVariable')
-" call s:Link('shCommandSub', 'oroshi_CodeVariable')
-" call s:Link('shCmdSubRegion', 'oroshi_CodeVariable')
-" call s:Link('shQuote', 'oroshi_CodeString')
 " " }}}
 " " VueJS {{{
 " call s:Link('vueSurroundingTag', 'oroshi_CodeStatement')
