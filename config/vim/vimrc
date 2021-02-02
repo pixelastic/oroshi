@@ -237,7 +237,7 @@ source ~/.vim/includes/statusline/index.vim
 set tabpagemax=1000
 " Open file in new tab with ,t
 nnoremap <Leader>t :tabe<Space>
-" Switch tab with movement keys
+" Switch tab with CTRL-H/CTRL-L
 nnoremap <C-H> gT
 nnoremap <C-L> gt
 inoremap <C-H> <Esc>gT
