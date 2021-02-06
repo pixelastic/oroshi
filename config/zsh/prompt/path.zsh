@@ -39,7 +39,7 @@ function __prompt-path() {
   knownData+=("blue3:gray8: theme-search-infinite")
 
   knownPaths+=("~/local/www/projects/norska-theme-slides/")
-  knownData+=("green8:white: theme-search-slides")
+  knownData+=("green8:white: theme-slides")
 
   knownPaths+=("~/local/www/projects/aberlaas/")
   knownData+=("yellow7:gray9: aberlaas")
