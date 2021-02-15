@@ -3,37 +3,11 @@
 # Usage:
 #   tmux-status-color projects
 source ~/.oroshi/config/zsh/theming/colors.zsh
-local name="$1"
-local colorCode=""
+source ~/.oroshi/config/zsh/theming/projects.zsh
 
-[[ $name == "aberlaas" ]] && colorCode=$COLOR[yellow7]
-[[ $name == "aoinan" ]] && colorCode=$COLOR[gray]
-[[ $name == "barrowmaze" ]] && colorCode=$COLOR[yellow8]
-[[ $name == "bg" ]] && colorCode=$COLOR[orange]
-[[ $name == "crafting" ]] && colorCode=$COLOR[yellow9]
-[[ $name == "dashboards" ]] && colorCode=$COLOR[blue3]
-[[ $name == "doctolib" ]] && colorCode=$COLOR[blue5]
-[[ $name == "doctolib-bg" ]] && colorCode=$COLOR[orange]
-[[ $name == "devrel" ]] && colorCode=$COLOR[teal6]
-[[ $name == "firost" ]] && colorCode=$COLOR[green]
-[[ $name == "golgoth" ]] && colorCode=$COLOR[orange]
-[[ $name == "indexing" ]] && colorCode=$COLOR[blue3]
-[[ $name == "kube" ]] && colorCode=$COLOR[blue7]
-[[ $name == "maps" ]] && colorCode=$COLOR[blue6]
-[[ $name == "gods" ]] && colorCode=$COLOR[purple6]
-[[ $name == "monsters" ]] && colorCode=$COLOR[red8]
-[[ $name == "netlify-minutes" ]] && colorCode=$COLOR[green8]
-[[ $name == "norska" ]] && colorCode=$COLOR[blue3]
-[[ $name == "on-circle" ]] && colorCode=$COLOR[red3]
-[[ $name == "painting" ]] && colorCode=$COLOR[gray4]
-[[ $name == "perso" ]] && colorCode=$COLOR[purple]
-[[ $name == "projects" ]] && colorCode=$COLOR[green]
-[[ $name == "reddinx" ]] && colorCode=$COLOR[orange3]
-[[ $name == "renovate" ]] && colorCode=$COLOR[blue4]
-[[ $name == "tmp" ]] && colorCode=$COLOR[gray]
-[[ $name == "theme-docs" ]] && colorCode=$COLOR[blue3]
-[[ $name == "theme-search-infinite" ]] && colorCode=$COLOR[blue3]
-[[ $name == "videogames" ]] && colorCode=$COLOR[blue8]
-[[ $name == "videogames-helper" ]] && colorCode=$COLOR[blue8]
+local name="$1"
+
+local colorName=$PROJECTS[${name},background]
+local colorCode=$COLOR[$colorName]
 
 [[ $colorCode != '' ]] && echo "colour${colorCode}" && return

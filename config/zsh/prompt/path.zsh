@@ -1,77 +1,56 @@
+source ~/.oroshi/config/zsh/theming/projects.zsh
+
+# We define an array of all known project path alongs with their short form
+knownPaths=()
+for key fullPath in "${(@kv)PROJECTS}"; do
+  # Skip non-path keys
+  [[ $key != *,path ]] &&  continue
+
+  # Build the short form
+  local projectName=${key%,*}
+  local backgroundColor=$COLOR[$PROJECTS[${projectName},background]]
+  local foregroundColor=$COLOR[$PROJECTS[${projectName},foreground]]
+  local icon=$PROJECTS[${projectName},icon]
+  local slug=$projectName
+  [[ $PROJECTS[${projectName},hideNameInPath] == "1" ]] && slug=""
+  local shortPath="%K{$backgroundColor}%F{$foregroundColor} ${icon}${slug} %f%k%F{$backgroundColor}%f "
+
+  # Save real path and short path
+  knownPaths+="${fullPath}:${shortPath}"
+done
+
+
 # Path
 # Displays the current path in a shortened form:
 # - Use a colored prefix icon for known paths
 # - Shorten the actual path to no more than 3 items
 # - Color the path if not writable
 function __prompt-path() {
-  # zsh does not keep order with associative array, so we'll use two arrays for
-  # the known path and its data. It is important they are checked in order, so
-  # the most specific are defined first
-  local -a knownPaths knownData
-  knownPaths+=("~/local/www/doctolib/doctolib/")
-  knownData+=("blue5:black: doctolib")
+  local currentPath="$(print -D $PWD)/"
 
-  knownPaths+=("~/local/www/doctolib/kube/")
-  knownData+=("blue7:blue1:⎈ kube")
+  # Remove known paths from the current path, to be replaced with short path
+  # later
+  local shortPath=""
+  for entry in ${(O)knownPaths}; do
+    local split=(${(s/:/)entry})
+    local knownPath=$split[1]
 
-  knownPaths+=("~/local/www/doctolib/dashboards/")
-  knownData+=("blue3:black: dashboards")
+    # Skip if do not start with this known path
+    [[ $currentPath != $knownPath* ]] && continue
 
-  knownPaths+=("~/local/www/projects/golgoth/")
-  knownData+=("orange:orange1: golgoth")
+    # Store short path
+    shortPath=$split[2]
+    eval "currentPath=\${currentPath:s_${knownPath}_}"
 
-  knownPaths+=("~/local/www/projects/firost/")
-  knownData+=("green:gray9:❯ firost")
-
-  knownPaths+=("~/local/www/projects/on-circle/")
-  knownData+=("red3:gray9:⬤ on-circle")
-
-  knownPaths+=("~/local/www/projects/norska/")
-  knownData+=("blue3:gray8:煮norska")
-
-  knownPaths+=("~/local/www/projects/norska-theme-docs/")
-  knownData+=("blue3:gray8: theme-docs")
-
-  knownPaths+=("~/local/www/projects/norska-theme-search/")
-  knownData+=("blue5:white: theme-search")
-
-  knownPaths+=("~/local/www/projects/norska-theme-search-infinite/")
-  knownData+=("blue3:gray8: theme-search-infinite")
-
-  knownPaths+=("~/local/www/projects/norska-theme-slides/")
-  knownData+=("green8:white: theme-slides")
-
-  knownPaths+=("~/local/www/projects/aberlaas/")
-  knownData+=("yellow7:gray9: aberlaas")
-
-  knownPaths+=("~/local/www/pixelastic.com/gamemaster/gods/")
-  knownData+=("purple6:gray4:  gods")
-
-  knownPaths+=("~/local/www/pixelastic.com/gamemaster/maps/")
-  knownData+=("blue6:gray4:  maps")
-
-  knownPaths+=("~/.oroshi/")
-  knownData+=("green:gray9:x oroshi")
-  knownPaths+=("~/")
-  knownData+=("green:green1:")
-
-  # Remove known paths from the current path
-  local pathString="$(print -D $PWD)/"
-  local pathSymbolString=""
-  for knownPath in $knownPaths; do
-    if [[ $pathString == ${knownPath}* ]]; then
-      local knownPathIndex=${knownPaths[(ie)$knownPath]}
-      pathSymbolString=$knownData[$knownPathIndex]
-      eval "pathString=\${pathString:s_${knownPath}_}"
-      break
-    fi
+    # We found it, no need to search for more
+    break
   done
 
   # Simplify string path if too long
   local -a pathArray
-  pathArray=(${(s:/:)pathString})
+  pathArray=(${(s:/:)currentPath})
   if [[ ${#pathArray[*]} -ge 4 ]]; then
-    pathString="${pathArray[1]}/…/${pathArray[-2]}/${pathArray[-1]}/"
+    currentPath="${pathArray[1]}/…/${pathArray[-2]}/${pathArray[-1]}/"
   fi
 
   # Add marker if connected through SSH
@@ -80,21 +59,15 @@ function __prompt-path() {
   fi
 
   # Add optional known path prefix
-  if [[ $pathSymbolString != '' ]]; then
-    local -a pathSymbolArray
-    pathSymbolArray=(${(s/:/)pathSymbolString})
-    local symbolBackground=$pathSymbolArray[1]
-    local symbolColor=$pathSymbolArray[2]
-    local symbolIcon=$pathSymbolArray[3]
-    echo -n "%K{$COLOR[$symbolBackground]}%F{$COLOR[$symbolColor]} $symbolIcon %f%k"
-    echo -n "%F{$COLOR[$symbolBackground]}%f "
+  if [[ $shortPath != '' ]]; then
+    echo -n $shortPath
   fi
 
   # Color the string path
-  if [[ $pathString != '' ]]; then
-    [[ ! -r $PWD ]] && echo "%F{$COLOR[gray]} ${pathString}%f " && return
-    [[ ! -w $PWD ]] && echo "%F{$COLOR[red]}!${pathString}%f " && return
+  if [[ $currentPath != '' ]]; then
+    [[ ! -r $PWD ]] && echo "%F{$COLOR[gray]} ${currentPath}%f " && return
+    [[ ! -w $PWD ]] && echo "%F{$COLOR[red]}!${currentPath}%f " && return
 
-    echo "%F{$COLOR[green]}${pathString}%f " && return
+    echo "%F{$COLOR[green]}${currentPath}%f " && return
   fi
 }

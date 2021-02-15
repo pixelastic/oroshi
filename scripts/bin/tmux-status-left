@@ -3,8 +3,8 @@
 
 local sessionName="$1"
 local sessionColor="$(tmux-status-color $sessionName)"
-local sessionSymbol="$(tmux-status-symbol $sessionName)"
+local sessionIcon="$(tmux-status-icon $sessionName)"
 local textColor="colour235"
 local rightSeparator="#[fg=${sessionColor},bg=${textColor}]"
 
-echo "#[fg=${textColor},bg=${sessionColor}] ${sessionSymbol}${sessionName}${rightSeparator}"
+echo "#[fg=${textColor},bg=${sessionColor}] ${sessionIcon} ${sessionName} ${rightSeparator}"

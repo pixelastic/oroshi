@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# Return the symbol for a specific name
+# Usage:
+#   tmux-status-symbol projects
+source ~/.oroshi/config/zsh/theming/projects.zsh
+
+local name="$1"
+
+echo -n $PROJECTS[${name},icon]
