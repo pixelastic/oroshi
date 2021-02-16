@@ -6,30 +6,30 @@
 # for the individual files, check the ls theme
 
 EXA_COLORS=""
-EXA_COLORS="${EXA_COLORS}:xx=38;5;$COLOR[gray7]" # Punctuation
+EXA_COLORS="${EXA_COLORS}:xx=38;5;$COLORS[gray7]" # Punctuation
 
-EXA_COLORS="${EXA_COLORS}:ur=38;5;$COLOR[gray7]" # User read
-EXA_COLORS="${EXA_COLORS}:uw=38;5;$COLOR[gray7]" # User write
-EXA_COLORS="${EXA_COLORS}:ux=4;38;5;$COLOR[purple]" # User execute
+EXA_COLORS="${EXA_COLORS}:ur=38;5;$COLORS[gray7]" # User read
+EXA_COLORS="${EXA_COLORS}:uw=38;5;$COLORS[gray7]" # User write
+EXA_COLORS="${EXA_COLORS}:ux=4;38;5;$COLORS[purple]" # User execute
 
-EXA_COLORS="${EXA_COLORS}:gr=38;5;$COLOR[gray7]" # Group read
-EXA_COLORS="${EXA_COLORS}:gw=38;5;$COLOR[gray7]" # Group write
-EXA_COLORS="${EXA_COLORS}:gx=4;38;5;$COLOR[purple]" # Group execute
+EXA_COLORS="${EXA_COLORS}:gr=38;5;$COLORS[gray7]" # Group read
+EXA_COLORS="${EXA_COLORS}:gw=38;5;$COLORS[gray7]" # Group write
+EXA_COLORS="${EXA_COLORS}:gx=4;38;5;$COLORS[purple]" # Group execute
 
-EXA_COLORS="${EXA_COLORS}:tr=38;5;$COLOR[gray7]" # Other read
-EXA_COLORS="${EXA_COLORS}:tw=38;5;$COLOR[gray7]" # Other write
-EXA_COLORS="${EXA_COLORS}:tx=4;38;5;$COLOR[purple]" # Other execute
+EXA_COLORS="${EXA_COLORS}:tr=38;5;$COLORS[gray7]" # Other read
+EXA_COLORS="${EXA_COLORS}:tw=38;5;$COLORS[gray7]" # Other write
+EXA_COLORS="${EXA_COLORS}:tx=4;38;5;$COLORS[purple]" # Other execute
 
-EXA_COLORS="${EXA_COLORS}:sn=38;5;$COLOR[gray6]" # Size
-EXA_COLORS="${EXA_COLORS}:sb=38;5;$COLOR[gray7]" # Size unit
+EXA_COLORS="${EXA_COLORS}:sn=38;5;$COLORS[gray6]" # Size
+EXA_COLORS="${EXA_COLORS}:sb=38;5;$COLORS[gray7]" # Size unit
 
-EXA_COLORS="${EXA_COLORS}:uu=38;5;$COLOR[blue8]" # Me
-EXA_COLORS="${EXA_COLORS}:un=38;5;$COLOR[red5]" # Not me
+EXA_COLORS="${EXA_COLORS}:uu=38;5;$COLORS[blue8]" # Me
+EXA_COLORS="${EXA_COLORS}:un=38;5;$COLORS[red5]" # Not me
 
-EXA_COLORS="${EXA_COLORS}:da=38;5;$COLOR[gray7]" # Date
+EXA_COLORS="${EXA_COLORS}:da=38;5;$COLORS[gray7]" # Date
 
-EXA_COLORS="${EXA_COLORS}:di=38;5;$COLOR[green]" # Directories
-EXA_COLORS="${EXA_COLORS}:ex=4;38;5;$COLOR[purple5]" # Executable
+EXA_COLORS="${EXA_COLORS}:di=38;5;$COLORS[green]" # Directories
+EXA_COLORS="${EXA_COLORS}:ex=4;38;5;$COLORS[purple5]" # Executable
 export EXA_COLORS
 
 # EXA_COLORS="${EXA_COLORS}:fi=38;5;252" # Files

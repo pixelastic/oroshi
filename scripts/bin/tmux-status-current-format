@@ -4,16 +4,24 @@ local sessionName="$1"
 local windowName="$2"
 local isZoomed="$3"
 
-local textColor="colour235"
-local windowColor="$(tmux-status-color $windowName)"
-local windowIcon="$(tmux-status-icon $windowName)"
-local sessionColor="$(tmux-status-color $sessionName)"
-[[ $windowColor == "" ]] && windowColor=$sessionColor
+# Use window colors, or fallback to session color
+local colors="$(tmux-status-colors $windowName)"
+[[ $colors == ":" ]] && colors="$(tmux-status-colors $sessionName)"
 
-local rightSeparator="#[fg=${windowColor},bg=${textColor}]"
+local splitColors=(${(s/:/)colors})
+local textColor=$splitColors[2]
+[[ $textColor == "" ]] && textColor="235"
+local backgroundColor=$splitColors[1]
+
+local windowIcon="$(tmux-status-icon $windowName)"
 
 local zoomSymbol=""
 [[ $isZoomed == "1" ]] && zoomSymbol="  "
 
-echo "#[fg=${textColor},bg=${windowColor}] ${windowIcon}${windowName}${zoomSymbol} ${rightSeparator}"
+local rightSeparator="#[fg=${windowColor},bg=${textColor}]"
+
+echo -n "#[bg=colour${backgroundColor},fg=colour235]"
+echo -n "#[bg=colour${backgroundColor},fg=colour${textColor}] ${windowIcon}${windowName}${zoomSymbol} "
+echo -n "#[bg=colour235,fg=colour${backgroundColor}]"
+
 

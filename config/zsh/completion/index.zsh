@@ -67,10 +67,10 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # Selected file is highlighted
 zstyle ':completion:*' menu select
 # Completion type separator
-zstyle ':completion:*:descriptions' format "%K{$COLOR[yellow]}%F{$COLOR[black]} %d %f%k%F{$COLOR[yellow]}%K{$COLOR[black]} %f%k"
+zstyle ':completion:*:descriptions' format "%K{$COLORS[yellow]}%F{$COLORS[black]} %d %f%k%F{$COLOR[yellow]}%K{$COLOR[black]} %f%k"
 # No completion found
-zstyle ':completion:*:warnings' format "%K{$COLOR[red7]}%F{$COLOR[red2]}  No completion found %f%k%F{$COLOR[red7]}%K{$COLOR[black]} %f%k"
-zstyle ':completion:*:messages' format "%F{$COLOR[red]}⚠ %d%f"
+zstyle ':completion:*:warnings' format "%K{$COLORS[red7]}%F{$COLORS[red2]}  No completion found %f%k%F{$COLOR[red7]}%K{$COLOR[black]} %f%k"
+zstyle ':completion:*:messages' format "%F{$COLORS[red]}⚠ %d%f"
 # Do not add trailing / to dirs or @ to symlinks
 unsetopt LIST_TYPES
 # Display suggestions horizontally

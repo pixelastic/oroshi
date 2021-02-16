@@ -2,13 +2,13 @@
 source ~/.oroshi/config/zsh/theming/colors.zsh
 
 # Sorting the colors alphabetically
-local colorKeys=${(k)COLOR}
+local colorKeys=${(k)COLORS}
 local sortedKeysAsString=("$(echo $colorKeys | tr ' ' '\n' | sort | tr '\n' ':')")
 local sortedKeys=("${(@s/:/)sortedKeysAsString}")
 
 local RESET="\e[0m"
 for colorName in ${sortedKeys[@]}; do
-  local colorIndex=$COLOR[$colorName]
+  local colorIndex=$COLORS[$colorName]
   echo -n "\e[48;5;${colorIndex}m          $RESET\e[38;5;${colorIndex}m$RESET"
   echo -n "\e[38;5;${colorIndex}m  ${colorName}$RESET"
   echo -n "\e[38;5;${colorIndex}m  ${colorIndex} $RESET"

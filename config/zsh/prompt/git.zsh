@@ -9,9 +9,9 @@
 function __prompt-git-flags() {
   git-is-repository || return
 
-  git-is-submodule && echo -n "%F{$COLOR[yellow]} %f"
-  git stash show &>/dev/null && echo -n "%F{$COLOR[pink8]} %f"
-  git-rebase-inprogress && echo -n "%F{$COLOR[red6]} %f"
+  git-is-submodule && echo -n "%F{$COLORS[yellow]} %f"
+  git stash show &>/dev/null && echo -n "%F{$COLORS[pink8]} %f"
+  git-rebase-inprogress && echo -n "%F{$COLORS[red6]} %f"
   echo -n "$(__prompt-git-status)"
 }
 
@@ -20,9 +20,9 @@ function __prompt-git-flags() {
 # - Red if any file has been added/deleted/modified
 # - Purple if files are added to the index
 function __prompt-git-status() {
-  git-directory-has-staged-files && echo "%F{$COLOR[purple]}ﰖ %f" && return
-  git-directory-is-dirty && echo "%F{$COLOR[red]}ﰖ %f" && return
-  echo "%F{$COLOR[green]}ﰖ %f"
+  git-directory-has-staged-files && echo "%F{$COLORS[purple]}ﰖ %f" && return
+  git-directory-is-dirty && echo "%F{$COLORS[red]}ﰖ %f" && return
+  echo "%F{$COLORS[green]}ﰖ %f"
 }
 
 # Display all the git-related informations on the right
@@ -48,7 +48,7 @@ function __prompt-git-rebase() {
   local currentStep="$(git-rebase-step-current)"
   local maxStep="$(git-rebase-step-max)"
 
-  echo -n "%B%F{$COLOR[red6]} ${currentStep}/${maxStep} %f%b"
+  echo -n "%B%F{$COLORS[red6]} ${currentStep}/${maxStep} %f%b"
 
   local ontoBranch="$(git-rebase-onto)"
   local ontoColor="$(__prompt-git-branch-color $ontoBranch)"
@@ -56,8 +56,8 @@ function __prompt-git-rebase() {
   local transplantColor="$(__prompt-git-branch-color $transplantBranch)"
 
 
-  echo -n "%F{$COLOR[$ontoColor]}[${ontoBranch:0:8}]%f"
-  echo -n "%F{$COLOR[$transplantColor]}[${transplantBranch}]%f"
+  echo -n "%F{$COLORS[$ontoColor]}[${ontoBranch:0:8}]%f"
+  echo -n "%F{$COLORS[$transplantColor]}[${transplantBranch}]%f"
 }
 
 # Display the closest git tag:
@@ -70,8 +70,8 @@ function __prompt-git-tag() {
   [[ $tagName = 'empty-commit-branch-to-break-master' ]] && return 
 
   # Check if commits have been added since last tag
-  git-commit-tagged && echo -n " %F{$COLOR[orange]} $tagName" && return
-  echo -n " %F{$COLOR[gray7]}炙$tagName%f"
+  git-commit-tagged && echo -n " %F{$COLORS[orange]} $tagName" && return
+  echo -n " %F{$COLORS[gray7]}炙$tagName%f"
 }
 
 # Display the current remote:
@@ -80,7 +80,7 @@ function __prompt-git-remote() {
   local remoteName="$(git remote-current)"
   [[ $remoteName = 'origin' || $remoteName == '' ]] && return;
 
-  echo " %F{$COLOR[yellow]} $remoteName%f"
+  echo " %F{$COLORS[yellow]} $remoteName%f"
 }
 
 # Display the current branch:
@@ -93,23 +93,23 @@ function __prompt-git-branch() {
   # Detached
   if [[ $branchName = 'HEAD' ]]; then
     branchName=" $(git commit-current)"
-    echo " %F{$COLOR[red]}${branchName}%f"
+    echo " %F{$COLORS[red]}${branchName}%f"
     return
   fi
 
   # Upstream is gone
-  git-branch-gone && echo " %F{$COLOR[red]} ${branchName}%f" && return
+  git-branch-gone && echo " %F{$COLORS[red]} ${branchName}%f" && return
 
 
   local branchColor="$(__prompt-git-branch-color $branchName)"
 
   local remoteStatus
   remoteStatus="$(git-branch-remote-status)"
-  [[ $remoteStatus = 'local_ahead' ]] && echo -n " %F{$COLOR[$branchColor]}  $branchName%f"
-  [[ $remoteStatus = 'local_behind' ]] && echo -n " %F{$COLOR[$branchColor]} $branchName%f"
-  [[ $remoteStatus = 'local_diverged' ]] && echo -n " %F{$COLOR[red]} $branchName%f"
-  [[ $remoteStatus = 'local_never_pushed' ]] && echo -n " %F{$COLOR[$branchColor]} $branchName%f"
-  [[ $remoteStatus = 'local_identical' ]] && echo -n " %F{$COLOR[$branchColor]}$branchName%f"
+  [[ $remoteStatus = 'local_ahead' ]] && echo -n " %F{$COLORS[$branchColor]}  $branchName%f"
+  [[ $remoteStatus = 'local_behind' ]] && echo -n " %F{$COLORS[$branchColor]} $branchName%f"
+  [[ $remoteStatus = 'local_diverged' ]] && echo -n " %F{$COLORS[red]} $branchName%f"
+  [[ $remoteStatus = 'local_never_pushed' ]] && echo -n " %F{$COLORS[$branchColor]} $branchName%f"
+  [[ $remoteStatus = 'local_identical' ]] && echo -n " %F{$COLORS[$branchColor]}$branchName%f"
 }
 
 # Get the color of a known branch
@@ -143,11 +143,11 @@ function __prompt-github-issues-and-prs() {
   local display=""
   local prCount="$(cat $prCacheFile)"
   if [[ ! $prCount = 0 ]]; then
-    display="${display} %F{$COLOR[green]} ${prCount}%f"
+    display="${display} %F{$COLORS[green]} ${prCount}%f"
   fi
   local issueCount="$(cat $issueCacheFile)"
   if [[ ! $issueCount = 0 ]]; then
-    display="${display} %F{$COLOR[yellow]} ${issueCount}%f"
+    display="${display} %F{$COLORS[yellow]} ${issueCount}%f"
   fi
 
 

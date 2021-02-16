@@ -8,12 +8,12 @@ for key fullPath in "${(@kv)PROJECTS}"; do
 
   # Build the short form
   local projectName=${key%,*}
-  local backgroundColor=$COLOR[$PROJECTS[${projectName},background]]
-  local foregroundColor=$COLOR[$PROJECTS[${projectName},foreground]]
+  local backgroundColor=$COLORS[$PROJECTS[${projectName},background]]
+  local textColor=$COLORS[$PROJECTS[${projectName},text]]
   local icon=$PROJECTS[${projectName},icon]
   local slug=$projectName
   [[ $PROJECTS[${projectName},hideNameInPath] == "1" ]] && slug=""
-  local shortPath="%K{$backgroundColor}%F{$foregroundColor} ${icon}${slug} %f%k%F{$backgroundColor}%f "
+  local shortPath="%K{$backgroundColor}%F{$textColor} ${icon}${slug} %f%k%F{$backgroundColor}%f "
 
   # Save real path and short path
   knownPaths+="${fullPath}:${shortPath}"
@@ -55,7 +55,7 @@ function __prompt-path() {
 
   # Add marker if connected through SSH
   if [[ $SSH_CLIENT != '' ]]; then
-    echo -n "%F{$COLOR[orange]}  $hostname %f%k"
+    echo -n "%F{$COLORS[orange]}  $hostname %f%k"
   fi
 
   # Add optional known path prefix
@@ -65,9 +65,9 @@ function __prompt-path() {
 
   # Color the string path
   if [[ $currentPath != '' ]]; then
-    [[ ! -r $PWD ]] && echo "%F{$COLOR[gray]} ${currentPath}%f " && return
-    [[ ! -w $PWD ]] && echo "%F{$COLOR[red]}!${currentPath}%f " && return
+    [[ ! -r $PWD ]] && echo "%F{$COLORS[gray]} ${currentPath}%f " && return
+    [[ ! -w $PWD ]] && echo "%F{$COLORS[red]}!${currentPath}%f " && return
 
-    echo "%F{$COLOR[green]}${currentPath}%f " && return
+    echo "%F{$COLORS[green]}${currentPath}%f " && return
   fi
 }

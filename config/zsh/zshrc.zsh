@@ -9,7 +9,7 @@ local zshConfigDir=~/.oroshi/config/zsh
 # Setting env variables
 source $zshConfigDir/env.zsh
 source $zshConfigDir/tmux.zsh
-# The COLOR constant is used in many other config files so it should be loaded
+# The COLORS constant is used in many other config files so it should be loaded
 # early
 source $zshConfigDir/theming/colors.zsh
 

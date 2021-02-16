@@ -14,9 +14,9 @@ function __prompt-ruby-version() {
 
   # Not using the project specific version
   if [[ $currentVersion != $expectedVersion ]]; then
-    echo -n "%F{$COLOR[red]} $currentVersion%f"
-    echo -n "%F{$COLOR[yellow]}%f"
-    echo -n "%F{$COLOR[green]}$expectedVersion %f"
+    echo -n "%F{$COLORS[red]} $currentVersion%f"
+    echo -n "%F{$COLORS[yellow]}%f"
+    echo -n "%F{$COLORS[green]}$expectedVersion %f"
     return
   fi
 }

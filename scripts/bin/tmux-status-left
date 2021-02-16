@@ -2,9 +2,14 @@
 # Name of the current session, on the leftmost part
 
 local sessionName="$1"
-local sessionColor="$(tmux-status-color $sessionName)"
-local sessionIcon="$(tmux-status-icon $sessionName)"
-local textColor="colour235"
-local rightSeparator="#[fg=${sessionColor},bg=${textColor}]"
 
-echo "#[fg=${textColor},bg=${sessionColor}] ${sessionIcon} ${sessionName} ${rightSeparator}"
+local sessionColors="$(tmux-status-colors $sessionName)"
+local splitColors=(${(s/:/)sessionColors})
+local textColor=$splitColors[2]
+[[ $textColor == "" ]] && textColor="235"
+local backgroundColor=$splitColors[1]
+
+local sessionIcon="$(tmux-status-icon $sessionName)"
+
+echo -n "#[bg=colour${backgroundColor},fg=colour${textColor}] ${sessionIcon}${sessionName} "
+echo -n "#[bg=colour235,fg=colour${backgroundColor}]"

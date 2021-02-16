@@ -25,8 +25,8 @@ repos+=("/home/tim/local/www/pixelastic.com/gamemaster/society/society-data/")
 repos+=("/home/tim/local/www/pixelastic.com/gamemaster/society/society-search/")
 
 local RESET="\e[0m"
-local GREEN="\e[38;5;$COLOR[green]m"
-local YELLOW="\e[38;5;$COLOR[yellow]m"
+local GREEN="\e[38;5;$COLORS[green]m"
+local YELLOW="\e[38;5;$COLORS[yellow]m"
 for repo in $repos; do
   cd $repo
   local issueCount="$(ghic)"

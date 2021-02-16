@@ -5,8 +5,8 @@ which nvm &>/dev/null && hasNvm=1
 # Display node flags:
 # - If there are currently any "yarn linked" modules
 function __prompt-node-flags() {
-  yarn-is-monorepo && echo -n "%F{$COLOR[yellow7]} %f"
-  yarn-has-global-links && echo -n "%F{$COLOR[blue7]} %f"
+  yarn-is-monorepo && echo -n "%F{$COLORS[yellow7]} %f"
+  yarn-has-global-links && echo -n "%F{$COLORS[blue7]} %f"
 }
 
 # Display node version
@@ -25,9 +25,9 @@ function __prompt-node-version() {
 
   # Not using the project specific version
   if [[ $currentVersion != $expectedVersion ]]; then
-    echo -n "%F{$COLOR[red]} $currentVersion%f"
-    echo -n "%F{$COLOR[yellow]}%f"
-    echo "%F{$COLOR[green]}$expectedVersion %f"
+    echo -n "%F{$COLORS[red]} $currentVersion%f"
+    echo -n "%F{$COLORS[yellow]}%f"
+    echo "%F{$COLORS[green]}$expectedVersion %f"
     return
   fi
 }
