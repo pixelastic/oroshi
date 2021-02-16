@@ -3,6 +3,10 @@ declare -A PROJECTS
 # Display config for the most common projects. 
 # Colors and icons will be used in tmux and for short path in zsh
 
+PROJECTS[ehrgeiz,background]="blue7"
+PROJECTS[ehrgeiz,icon]=" "
+PROJECTS[ehrgeiz,path]="~/local/www/doctolib/ehr-geiz"
+PROJECTS[ehrgeiz,text]="gray2"
 PROJECTS[aberlaas,background]="yellow7"
 PROJECTS[aberlaas,icon]=" "
 PROJECTS[aberlaas,path]="~/local/www/projects/aberlaas/"
@@ -47,7 +51,7 @@ PROJECTS[golgoth,path]="~/local/www/projects/golgoth/"
 PROJECTS[golgoth,text]="orange1"
 PROJECTS[home,background]="green"
 PROJECTS[home,hideNameInPath]=1
-PROJECTS[home,icon]=" "
+PROJECTS[home,icon]=""
 PROJECTS[home,path]="~/"
 PROJECTS[home,text]="green1"
 PROJECTS[indexing,background]="blue3"
