@@ -1,4 +1,4 @@
 function _complete_ylR {
-  reply=($(yll))
+  reply=($(yll-porcelain))
 }
 compctl -K _complete_ylR ylR
