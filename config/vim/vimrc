@@ -244,6 +244,13 @@ inoremap <C-H> <Esc>gT
 inoremap <C-L> <Esc>gt
 cnoremap <C-H> <C-C>gT
 cnoremap <C-L> <C-C>gt
+" Move tabs with CTRL-LEFT/CTRL-RIGHT
+" Note: CTRL-J/CTRL-K is already used for incrementing/decrementing and there is
+" no way to map CTRL-MAJ-* differently than CTRL-*
+nnoremap <silent> <C-Left> :-tabmove<CR>
+nnoremap <silent> <C-Right> :+tabmove<CR>
+inoremap <silent> <C-Left> <Esc>:-tabmove<CR>
+inoremap <silent> <C-Right> <Esc>:+tabmove<CR>
 "}}}
 " TYPOS {{{
 iabbrev Gvien Given
