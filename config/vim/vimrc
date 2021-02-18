@@ -251,6 +251,10 @@ iabbrev intiialize initialize
 " unnamedplus is (Ctrl+C / Ctrl+V) and accessed with "+
 " We only use unnamed plus, if available
 set clipboard=
+if has('unnamedplus')
+  set clipboard+=unnamedplus
+endif
+
 vnoremap p "_dP
 vnoremap P "_dP
 " As gv selects last selected text, we add gp to select last pasted text
