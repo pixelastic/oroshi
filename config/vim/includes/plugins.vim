@@ -21,6 +21,7 @@ Plug 'vim-scripts/Align'
 Plug 'vim-scripts/argtextobj.vim'
 " }}}
 " Language specific syntax {{{
+let g:polyglot_disabled = ['markdown']
 Plug 'sheerun/vim-polyglot'
 " Plug 'StanAngeloff/php.vim'
 " Plug 'avakhov/vim-yaml'
