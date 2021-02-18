@@ -267,7 +267,6 @@ nnoremap c "_c
 " }}}
 "}}}
 
-
 " GIT {{{
 let g:gitgutter_max_signs=10000
 " }}}
@@ -279,13 +278,13 @@ let g:syntastic_error_symbol=' '
 let g:syntastic_style_error_symbol=' '
 let g:syntastic_warning_symbol=' '
 let g:syntastic_style_warning_symbol=' '
-
 let g:syntastic_mode_map={ 'mode': 'passive',
                      \ 'active_filetypes': [
                        \ 'ansible',
                        \ 'css', 'scss',
                        \ 'dockerfile',
                        \ 'html', 'pug',
+                       \ 'javascript',
                        \ 'vue',
                        \ 'markdown',
                        \ 'php',
@@ -297,16 +296,24 @@ let g:syntastic_mode_map={ 'mode': 'passive',
                        \ 'xml'
                      \ ],
                      \ 'passive_filetypes': [] }
-
 " }}}
+"
 " COC {{{
-" Error floating window can stay and create ghost artefacts when switching tabs
-" We force removing them when entering a buffer
-augroup coc_ghost_floats
-  autocmd!
-  autocmd BufEnter * call coc#float#close_all()
-augroup END
-set updatetime=300
+" Coc is only enabled on versions of vim recent enough
+if exists('g:coc_enabled')
+  set updatetime=300
+
+  " Error floating window can stay and create ghost artefacts when switching tabs
+  " We force removing them when entering a buffer
+  augroup coc_ghost_floats
+    autocmd!
+    autocmd BufEnter * call coc#float#close_all()
+  augroup END
+
+  " Remove javascript from Syntastic configuration as it's handled by coc
+  let syntastic_filetypes = g:syntastic_mode_map.active_filetypes
+  call remove(syntastic_filetypes, index(syntastic_filetypes, 'javascript'))
+endif
 " }}}
 " FILETYPES {{{
 " Load skeletons
@@ -326,7 +333,7 @@ nnoremap <silent> man :tabe<CR>:setlocal filetype=man<CR>:.!man<Space>
 
 " Custom Config {{{
 let hostname = system('echo -n $HOST')
-let customConfig=expand("~/.oroshi/private/config/vim/".hostname.".vim")
+let customConfig=expand("~/.oroshi/config/vim/local/".hostname.".vim")
 if filereadable(customConfig)
   exec "source ".customConfig
 endif

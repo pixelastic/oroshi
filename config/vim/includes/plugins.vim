@@ -42,14 +42,17 @@ Plug 'sheerun/vim-polyglot'
 " Enhancing vim workflow {{{
 Plug 'sbdchd/neoformat'
 Plug 'scrooloose/syntastic'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-let g:coc_global_extensions = [
-  \ 'coc-eslint',
-  \ 'coc-prettier',
-  \ 'coc-html',
-  \ 'coc-json',
-  \ 'coc-tsserver'
-  \ ]
+" Only add coc on machines that have a recent enough version of vim
+if v:version > 811
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  let g:coc_global_extensions = [
+    \ 'coc-eslint',
+    \ 'coc-prettier',
+    \ 'coc-html',
+    \ 'coc-json',
+    \ 'coc-tsserver'
+    \ ]
+endif
 " }}}
 " Git-related plugins {{{
 Plug 'airblade/vim-gitgutter'
