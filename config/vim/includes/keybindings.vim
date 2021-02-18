@@ -17,6 +17,22 @@ let mapleader=','
 " Using the Space as a repeat key
 nmap <Space> .
 " }}}
+" TABS {{{
+" Switch tab with CTRL-H/CTRL-L
+nnoremap <C-H> gT
+nnoremap <C-L> gt
+inoremap <C-H> <Esc>gT
+inoremap <C-L> <Esc>gt
+cnoremap <C-H> <C-C>gT
+cnoremap <C-L> <C-C>gt
+" Move tabs with CTRL-LEFT/CTRL-RIGHT
+" Note: CTRL-J/CTRL-K is already used for incrementing/decrementing and there is
+" no way to map CTRL-MAJ-* differently than CTRL-*
+nnoremap <silent> <C-Left> :-tabmove<CR>
+nnoremap <silent> <C-Right> :+tabmove<CR>
+inoremap <silent> <C-Left> <Esc>:-tabmove<CR>
+inoremap <silent> <C-Right> <Esc>:+tabmove<CR>
+" }}}
 " CAPS LOCK {{{
 " .oroshi/config/xmodmap/xmodmaprc maps CAPS LOCK to F16 ([1;2S)
 inoremap <silent> [1;2S <Esc>l
@@ -25,7 +41,8 @@ vnoremap [1;2S <Esc>
 cnoremap [1;2S <Esc>
 onoremap [1;2S <Esc>
 " }}}
-" TAB {{{
+" TAB KEY {{{
+"
 " - In a word: starts autocompletion
 " - In autocompletion: move to next choice
 " - After a space: adds a tab
@@ -35,9 +52,13 @@ function! MultiPurposeTab()
     return "\<C-N>"
   endif
 
-  let previousLetter = strpart(getline('.'), col('.') - 2, 1)
+  " Start of a line, adding a real Tab
+  if (col('.') == 1)
+    return "\<Tab>"
+  endif
 
   " After a space, adding a real Tab
+  let previousLetter = strpart(getline('.'), col('.') - 2, 1)
   if (previousLetter =~# '\s')
     return "\<Tab>"
   endif
@@ -186,10 +207,6 @@ inoremap <silent> <C-D> <Esc>:call SaveAndCloseFile()<CR>
 nnoremap <C-A> GVgg
 vnoremap <C-A> <Esc>GVgg
 " }}}
-" YANKS {{{
-vnoremap p "_dP
-vnoremap P "_dP
-" }}}
 " KEYBOARD {{{
 " Faster typing of =>
 inoremap °+ =>
@@ -250,7 +267,8 @@ function! AlignVisualSelectionOnSpaces()
   silent! execute "'<,'>Align §"
   silent! execute "'<,'>s/§//"
 endfunction
-"
+" }}}
+" SORTING {{{
 " Sort selection (using version sort)
 vnoremap s :!sort -V<CR>
 " Remove duplicate lines
@@ -261,9 +279,8 @@ vnoremap r :!shuf<CR>
 vnoremap L :!sort-by-length<CR>
 " Number lines
 vnoremap n :!cat -n<CR>
-
-
 " }}}
+
 " PLUGINS {{{
 " Preventing Align from loading the whole list of its mappings
 let g:loaded_AlignMapsPlugin = '1'

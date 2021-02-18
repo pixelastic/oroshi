@@ -235,20 +235,6 @@ source ~/.vim/includes/statusline/index.vim
 set tabpagemax=1000
 " Open file in new tab with ,t
 nnoremap <Leader>t :tabe<Space>
-" Switch tab with CTRL-H/CTRL-L
-nnoremap <C-H> gT
-nnoremap <C-L> gt
-inoremap <C-H> <Esc>gT
-inoremap <C-L> <Esc>gt
-cnoremap <C-H> <C-C>gT
-cnoremap <C-L> <C-C>gt
-" Move tabs with CTRL-LEFT/CTRL-RIGHT
-" Note: CTRL-J/CTRL-K is already used for incrementing/decrementing and there is
-" no way to map CTRL-MAJ-* differently than CTRL-*
-nnoremap <silent> <C-Left> :-tabmove<CR>
-nnoremap <silent> <C-Right> :+tabmove<CR>
-inoremap <silent> <C-Left> <Esc>:-tabmove<CR>
-inoremap <silent> <C-Right> <Esc>:+tabmove<CR>
 "}}}
 " TYPOS {{{
 iabbrev Gvien Given
@@ -265,31 +251,8 @@ iabbrev intiialize initialize
 " unnamedplus is (Ctrl+C / Ctrl+V) and accessed with "+
 " We only use unnamed plus, if available
 set clipboard=
-if has('unnamedplus')
-  set clipboard+=unnamedplus
-  function! PrePaste()
-    " We guess that if both + and * registers have the same number of words,
-    " and + is longer than *, it means they are actually the same source, but
-    " + gets garbled, so we'll use * in place of +
-    let lenstar = len(@*)
-    let wordstar = len(split(@*))
-    let lenplus = len(@+)
-    let wordplus = len(split(@+))
-
-    " If @+ is empty, we use @*
-    if lenplus == 0 && lenstar > 0
-      let @+=@*
-    endif
-
-    " If about same size, but @+ is bigger than @* we guess that it gets
-    " garbled and we replace it by @*
-    if wordstar !=1 && wordstar == wordplus && lenstar < lenplus
-      let @+=@*
-    endif
-  endfunction
-  " noremap <silent> p :call PrePaste()<CR>p
-  " noremap <silent> P :call PrePaste()<CR>P
-endif
+vnoremap p "_dP
+vnoremap P "_dP
 " As gv selects last selected text, we add gp to select last pasted text
 nnoremap gp `[v`]
 " We'll use x as a way to delete text without keeping it in a paste buffer
@@ -297,6 +260,7 @@ nnoremap x "_x
 vnoremap x "_x
 " [c]hanging a word does not put it in yank buffer
 nnoremap c "_c
+" }}}
 "}}}
 
 
