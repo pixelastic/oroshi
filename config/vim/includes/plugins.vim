@@ -21,6 +21,8 @@ Plug 'vim-scripts/Align'
 Plug 'vim-scripts/argtextobj.vim'
 " }}}
 " Language specific syntax {{{
+" - markdown: Uses plasticboy/vim-markdown which seem to clear all syntax
+"   coloring
 let g:polyglot_disabled = ['markdown']
 Plug 'sheerun/vim-polyglot'
 " Plug 'StanAngeloff/php.vim'
