@@ -77,7 +77,7 @@ class TmuxFuzzySession
 
   # Is there an icon for this session/window?
   def icon(target)
-    @icons[target] = `~/.oroshi/scripts/bin/tmux-status-symbol #{target}`.strip unless @icons.key?(target)
+    @icons[target] = `~/.oroshi/scripts/bin/tmux-status-icon #{target}`.strip unless @icons.key?(target)
     return ' ' if @icons[target].empty?
 
     @icons[target]
