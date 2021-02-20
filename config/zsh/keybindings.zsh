@@ -1,5 +1,3 @@
-local DEBUG_STARTTIME=$(($(date +%s%N)/1000000))
-
 # Disable default terminal flow control through Ctrl+S/Ctrl+Q so it can be used
 # as mapping (like in vim)
 stty ixoff -ixon
@@ -73,6 +71,3 @@ zle-line-init() {
 }
 zle -N zle-line-init
 # }}}
-
-local DEBUG_ENDTIME=$(($(date +%s%N)/1000000))
-[[ $ZSH_DEBUG == 1 ]] && echo "[debug]: ${0}: $(($DEBUG_ENDTIME - $DEBUG_STARTTIME))ms"

@@ -29,4 +29,3 @@ done
 COLORS[black]=0
 COLORS[white]=15
 
-export COLORS

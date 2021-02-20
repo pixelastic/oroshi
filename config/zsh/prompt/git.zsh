@@ -154,4 +154,3 @@ function __prompt-github-issues-and-prs() {
   echo $display
 }
 # }}}
-

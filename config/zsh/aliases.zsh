@@ -205,7 +205,7 @@ alias tmsl='tmux list-sessions'
 # }}}
  
 # Versioning {{{
-source ~/.oroshi/config/zsh/aliases-git.zsh
+require 'aliases-git.zsh'
 # }}}
 # Vim {{{
 alias v='vim -p'

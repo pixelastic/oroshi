@@ -1,5 +1,3 @@
-local DEBUG_STARTTIME=$(($(date +%s%N)/1000000))
-
 # Disable showing the menu on first tab press
 unsetopt MENU_COMPLETE
 # In case of ambiguous match, complete up to the last ambiguous letter...
@@ -91,7 +89,3 @@ function reloadCompletion() {
 #   autoload -U $f:t
 # }
 # }}}
-
-local DEBUG_ENDTIME=$(($(date +%s%N)/1000000))
-[[ $ZSH_DEBUG == 1 ]] && echo "[debug]: ${0}: $(($DEBUG_ENDTIME - $DEBUG_STARTTIME))ms"
-

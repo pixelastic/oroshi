@@ -1,5 +1,3 @@
-source ~/.oroshi/config/zsh/theming/projects.zsh
-
 # We define an array of all known project path alongs with their short form
 knownPaths=()
 for key fullPath in "${(@kv)PROJECTS}"; do

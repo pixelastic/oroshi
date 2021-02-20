@@ -1,28 +1,40 @@
 # Only source this file for interactive shells
 [[ $- != *i* ]] && return
 
-# Set ZSH_DEBUG to 1 to enable timing information
-local ZSH_DEBUG=0
-local ZSHRC_DEBUG_STARTTIME=$(($(date +%s%N)/1000000))
+export ZSH_SOURCE_TIMER=0 # Set to 1 to show source timing
+export ZSH_PROMPT_TIMER=0 # Set to 1 to show prompt timing
 
-local zshConfigDir=~/.oroshi/config/zsh
+# Source a file, but also display loading time when debug is enabled
+function require {
+  if [[ $ZSH_SOURCE_TIMER == 1 ]]; then
+    local before=$(/bin/date +%s%N)
+  fi
+
+  source ~/.oroshi/config/zsh/$1
+
+  if [[ $ZSH_SOURCE_TIMER == 1 ]]; then
+    local after=$(/bin/date +%s%N)
+
+    local difference=$((($after - $before)/1000000))
+    echo "$1: ${difference}ms"
+  fi
+}
+
 # Setting env variables
-source $zshConfigDir/env.zsh
-source $zshConfigDir/tmux.zsh
-# The COLORS constant is used in many other config files so it should be loaded
-# early
-source $zshConfigDir/theming/colors.zsh
+require 'env.zsh'
+require 'tmux.zsh'
+# The COLORS and PROJECTS constants are used in many other config files so it
+# should be loaded early. As they are using an associative array, it has to be
+# `source`d directly
+source ~/.oroshi/config/zsh/theming/colors.zsh
+source ~/.oroshi/config/zsh/theming/projects.zsh
 
-source $zshConfigDir/completion/index.zsh
-source $zshConfigDir/history.zsh
-source $zshConfigDir/aliases.zsh
-source $zshConfigDir/keybindings.zsh
-source $zshConfigDir/tools/index.zsh
-source $zshConfigDir/prompt/index.zsh
+require 'completion/index.zsh'
+require 'history.zsh'
+require 'aliases.zsh'
+require 'keybindings.zsh'
+require 'tools/index.zsh'
+require 'prompt/index.zsh'
 
-source $zshConfigDir/local/index.zsh
-source $zshConfigDir/theming/index.zsh
-
-local ZSHRC_DEBUG_ENDTIME=$(($(date +%s%N)/1000000))
-[[ $ZSH_DEBUG == 1 ]] && echo "[debug]: ~/.zshrc: $(($ZSHRC_DEBUG_ENDTIME - $ZSHRC_DEBUG_STARTTIME))ms"
-return 0
+require 'local/index.zsh'
+require 'theming/index.zsh'

@@ -1,5 +1,5 @@
 # Highlighting as I type {{{
-source ~/.oroshi/config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+require 'plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
 # Documentation: 
 # https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters/main.md
 # https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/highlighters/main/main-highlighter.zsh

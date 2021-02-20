@@ -5,6 +5,9 @@ which nvm &>/dev/null && hasNvm=1
 # Display node flags:
 # - If there are currently any "yarn linked" modules
 function __prompt-node-flags() {
+  # All yarn methods depend on git root, so better stop early if no git
+  git-is-repository || return
+
   yarn-is-monorepo && echo -n "%F{$COLORS[yellow7]} %f"
   yarn-has-global-links && echo -n "%F{$COLORS[blue7]} %f"
 }

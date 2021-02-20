@@ -1,4 +1,12 @@
 #!/usr/bin/env zsh
 [[ ! $commands[yarn] ]] && exit 1
 
-yarn workspaces info &>/dev/null
+# Check if currently in a yarn monorepo
+# We simply check if the root package.json contains the string "workspaces":
+# This is fast, but not 100% reliable (false positive, package.json not at the
+# git root, etc)
+grep \
+  --quiet \
+  '"workspaces":' \
+  "$(git root)/package.json" &>/dev/null
+

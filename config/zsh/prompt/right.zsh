@@ -1,8 +1,9 @@
 # Right prompt
 
-source $zshConfigDir/prompt/ruby.zsh
-source $zshConfigDir/prompt/node.zsh
-source $zshConfigDir/prompt/git.zsh
+require 'prompt/ruby.zsh'
+require 'prompt/node.zsh'
+require 'prompt/git.zsh'
+
 function __prompt-right() {
   [[ ! -r $PWD ]] && return
 

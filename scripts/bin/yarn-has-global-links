@@ -1,13 +1,22 @@
 #!/usr/bin/env zsh
+# Check if the current repository has real yarn links (excluding those from the
+# same repo)
 [[ ! $commands[yarn] ]] && exit 1
 
-# Display the list of all linked modules
-local node_modules="$(yarn bin 2>/dev/null)/.."
-local linkedModules=($(find $node_modules -maxdepth 1 -type l -printf "%l\n" 2>/dev/null))
+local root="$(git root)"
+local node_modules="${root}/node_modules"
 
-for moduleDestination in $linkedModules; do
-  relativePath="$node_modules/$moduleDestination"
-  absolutePath="${relativePath:a}"
-  [[ $absolutePath == /home/$USER/.config/yarn/link/* ]] && exit 0
-done
-exit 1
+# Find all symlinks in node_module, resolve their target, match all those that
+# start with the git root, then invert the selection. If there is something, we
+# have a yarn link
+find \
+  "$node_modules" \
+  -maxdepth 1 \
+  -type l \
+  -exec readlink -f {} + \
+  2>/dev/null \
+  | grep \
+    --quiet \
+    --invert-match \
+    "^$root"
+
