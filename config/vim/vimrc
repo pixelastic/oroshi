@@ -285,6 +285,7 @@ let g:syntastic_mode_map={ 'mode': 'passive',
                        \ 'dockerfile',
                        \ 'html', 'pug',
                        \ 'javascript',
+                       \ 'json',
                        \ 'vue',
                        \ 'markdown',
                        \ 'php',
@@ -310,9 +311,10 @@ if exists('g:coc_enabled')
     autocmd BufEnter * call coc#float#close_all()
   augroup END
 
-  " Remove javascript from Syntastic configuration as it's handled by coc
+  " Remove some languages from Syntastic as they are handled by Coc
   let syntastic_filetypes = g:syntastic_mode_map.active_filetypes
   call remove(syntastic_filetypes, index(syntastic_filetypes, 'javascript'))
+  call remove(syntastic_filetypes, index(syntastic_filetypes, 'json'))
 endif
 " }}}
 " FILETYPES {{{
