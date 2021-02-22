@@ -38,6 +38,3 @@ require 'prompt/index.zsh'
 
 require 'local/index.zsh'
 require 'theming/index.zsh'
-
-source ~/.oroshi/config/zsh/local/nova.zsh 
-

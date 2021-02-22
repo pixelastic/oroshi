@@ -43,7 +43,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'sbdchd/neoformat'
 Plug 'scrooloose/syntastic'
 " Only add coc on machines that have a recent enough version of vim
-if v:version > 811
+if v:version >= 801
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   let g:coc_global_extensions = [
     \ 'coc-eslint',
