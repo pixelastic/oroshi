@@ -1,6 +1,11 @@
 #!/usr/bin/env zsh
 gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings '["/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/"]'
 
+# Sometimes it seems impossible to remap a shortcut to a specific key, maybe
+# because the OS is already remapping it a higher level
+# Run the custom script `kbl '<Super>t'` for example to see what is using
+# this mapping, or unmap all instances with `kbR '<Super>t'`
+
 declare -A custom
 # Terminal
 custom[0,name]='Kitty'
@@ -27,6 +32,7 @@ custom[6,name]='Slack'
 custom[6,command]='/usr/bin/slack'
 custom[6,binding]='<Super>S'
 # TODO
+kbR '<Super>p'
 custom[7,name]='Flameshot'
 custom[7,command]='/usr/bin/flameshot gui'
 custom[7,binding]='<Super>p'

@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# List all commands bound to this shortcut
+local shortcut="$1"
+(for schema in $(gsettings list-schemas); do 
+  gsettings list-recursively $schema
+done) \
+  | grep $shortcut \
+  | awk '{print "/" $1,$2}' \
+  | uniq \
+  | tr " |." "/"
+

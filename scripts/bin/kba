@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Add a shortcut to a command
+local path="$1"
+local shortcut="$2"
+
+dconf write "$path" "['${shortcut}']"
