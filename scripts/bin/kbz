@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# Remove shortcut for a given command
+local key="$1"
+dconf write "$key" '@as []'

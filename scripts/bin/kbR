@@ -2,6 +2,6 @@
 # Remove all commands bound to this shortcut
 local shortcut="$1"
 
-for path in $(kbl $shortcut); do
-  /usr/bin/dconf write "$path" '@as []'
+for key in $(kbl $shortcut); do
+  dconf write "$key" '@as []'
 done

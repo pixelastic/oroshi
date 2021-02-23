@@ -1,21 +1,22 @@
 #!/usr/bin/env zsh
 # Keyboards and shortcuts > Screenshots
+# We disable them all as we're using flameshot to do them
 
 # Area > Clipboard
-dconf write /org/gnome/settings-daemon/plugins/media-keys/area-screenshot-clip '@as []'
+kbz '/org/gnome/settings-daemon/plugins/media-keys/area-screenshot-clip'
 # Area > Save to disk
-dconf write /org/gnome/settings-daemon/plugins/media-keys/area-screenshot '@as []'
+kbz '/org/gnome/settings-daemon/plugins/media-keys/area-screenshot'
 
 # Window > Clipboard
-dconf write /org/gnome/settings-daemon/plugins/media-keys/window-screenshot-clip '@as []'
+kbz '/org/gnome/settings-daemon/plugins/media-keys/window-screenshot-clip'
 # Window > Save to disk
-dconf write /org/gnome/settings-daemon/plugins/media-keys/window-screenshot '@as []'
+kbz '/org/gnome/settings-daemon/plugins/media-keys/window-screenshot'
 
 # Screen > Clipboard
-dconf write /org/gnome/settings-daemon/plugins/media-keys/screenshot-clip '@as []'
+kbz '/org/gnome/settings-daemon/plugins/media-keys/screenshot-clip'
 # Screen > Save to disk
-dconf write /org/gnome/settings-daemon/plugins/media-keys/screenshot '@as []'
+kbz '/org/gnome/settings-daemon/plugins/media-keys/screenshot'
 
 # Screencast
-dconf write /org/gnome/settings-daemon/plugins/media-keys/screencast '@as []'
+kbz '/org/gnome/settings-daemon/plugins/media-keys/screencast'
 
