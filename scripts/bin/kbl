@@ -4,7 +4,7 @@ local shortcut="$1"
 (for schema in $(gsettings list-schemas); do 
   gsettings list-recursively $schema
 done) \
-  | grep $shortcut \
+  | grep "'$shortcut'" \
   | awk '{print "/" $1,$2}' \
   | uniq \
   | tr " |." "/"
