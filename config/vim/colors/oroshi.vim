@@ -201,6 +201,9 @@ call s:Highlight('PmenuSel', 'yellow', 'teal8', 'bold')
 call s:Highlight('PmenuSbar', 'gray9', 'gray9')
 call s:Highlight('PmenuThumb', 'teal8', 'teal8')
 " Error checking
+" Note: We don't highlight Coc errors as they tend to put everything under the
+" same color and make it hard to visually parse. We rely on the gutter symbol
+" instead.
 " call s:Highlight('CocErrorHighlight', 'blue', 'red9', 'bold,underline')
 " call s:Highlight('CocWarningHighlight', 'yellow', '', 'bold,underline')
 " call s:Highlight('CocInfoHighlight', '', '', 'none')
@@ -308,7 +311,7 @@ call s:Highlight('typescriptClassName', 'pink8', '', 'bold')
 call s:Highlight('typescriptDOMDocProp', 'yellow')
 call s:Highlight('typescriptDotNotation', 'teal7')
 call s:Highlight('typescriptEndColons', 'teal7')
-call s:Highlight('typescriptFuncCallArg', 'teal7')
+call s:Highlight('typescriptFuncCallArg', 'indigo5')
 call s:Highlight('typescriptFuncKeyword', 'red5')
 call s:Highlight('typescriptInterfaceKeyword', 'green7')
 call s:Highlight('typescriptInterfaceName', 'pink8', '', 'bold')
