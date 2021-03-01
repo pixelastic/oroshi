@@ -303,6 +303,10 @@ let g:syntastic_mode_map={ 'mode': 'passive',
 " Coc is only enabled on versions of vim recent enough
 if exists('g:coc_enabled')
   set updatetime=300
+  set shortmess+=c
+
+  " Go to definition
+  nmap <silent> gd <Plug>(coc-definition)
 
   " Error floating window can stay and create ghost artefacts when switching tabs
   " We force removing them when entering a buffer
