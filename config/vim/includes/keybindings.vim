@@ -98,14 +98,15 @@ inoremap <expr> <Up> (MultiPurposeUp())
 " }}}
 " RETURN KEY {{{
 " - Select completion if completion menu open
-" - Normal new line otherwise
+" - Normal new line otherwise (defers to endwise calling)
+let g:endwise_no_mappings = 1
 function! MultiPurposeEnter()
-	if pumvisible()
-		return coc#_select_confirm()
-	endif
-	return "\<CR>"
+  if pumvisible() 
+    return "\<C-y>" 
+  endif
+  return "\<CR>\<Plug>DiscretionaryEnd"
 endfunction
-inoremap <expr> <CR> (MultiPurposeEnter())
+imap <expr> <CR> (MultiPurposeEnter())
 " Add line after this one
 nnoremap <CR> mzo<Esc>`z
 " Shift-Enter: Add new line before
