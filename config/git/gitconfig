@@ -8,7 +8,7 @@
 [color]
   ui = true
 [color "diff"]
-  meta = 86 # Diff header
+  meta = 56 # Diff header
   frag = 86 # @@ -9,14 +9,15 @@
   func = 28 # First line of context
   context = 25 # Lines around the diff
