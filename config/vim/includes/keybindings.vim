@@ -1,12 +1,12 @@
 " KEYBINDINGS
 " I tend to stick to the following F keys for all languages :
-"  F1 : Help page
+"  F1 : Help page or float
 "  F2 : Change colorscheme
 "  F3 : Debug colorscheme
 "  F4 : Clean file
 "  F5 : Run file
 "  F6 : Copy current file:line to clipboard
-"  F7 : UNUSED
+"  F7 : Show error
 "  F8 : Display hidden chars
 "  F9 : Toggle wrap
 "
