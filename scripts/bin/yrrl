@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# Relink the link: from package.json
+set -e
+yarn install --ignore-scripts
