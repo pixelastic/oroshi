@@ -1,6 +1,4 @@
 [alias]
-  conflicts = diff --name-only --diff-filter=U
-  diff-staged = diff -w --color-words --staged
   download = clone --depth=1
   root = !pwd
   tabula-rasa = !git reset --hard && git clean -fd
@@ -21,6 +19,7 @@
   safecrlf = false
   autocrlf = input
   hooksPath = ~/.oroshi/config/git/hooks
+  pager = "diff-so-fancy | less --tabs=4 -RFX"
 [merge]
   tool = fugitive
 [mergetool "fugitive"]

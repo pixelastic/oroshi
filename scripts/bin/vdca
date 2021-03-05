@@ -14,6 +14,8 @@ git branch-push
 # Configure GitHub and CircleCi
 yarn run aberlaas setup
 
+monorepoify .
+
 # Mark it for future jump and yarn link
 yl
 mark
