@@ -10,9 +10,18 @@
   frag = 86 # @@ -9,14 +9,15 @@
   func = 28 # First line of context
   context = 25 # Lines around the diff
-  new = 45 # Lines added
   old = 37 # Lines deleted
+  new = 45 # Lines added
   whitespace = 54 54 # Any diff whitespace
+[color "diff-highlight"]
+	oldNormal = 37
+	oldHighlight = 55 bold 39
+	newNormal = 45
+	newHighlight = 45 bold 49
+	; oldNormal = red bold
+	; oldHighlight = red bold 52
+	; newNormal = green bold
+	; newHighlight = green bold 22
 [core]
   editor = vim
   excludesfile = ~/.gitignore
@@ -24,6 +33,8 @@
   tool = fugitive
 [mergetool "fugitive"]
   cmd = vim -f -c \"Gdiff\" \"$MERGED\"
+[interactive]
+	diffFilter = diff-so-fancy --patch
 [push]
   default = simple
 [rebase]
@@ -43,5 +54,3 @@
   clean = git lfs clean %f
   smudge = git lfs smudge %f
   required = true
-[interactive]
-	diffFilter = diff-so-fancy --patch
