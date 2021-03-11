@@ -1,6 +1,6 @@
 " COC {{{
 " Coc is only enabled on versions of vim recent enough
-if exists('g:coc_enabled')
+if exists('g:oroshi_coc_enabled')
   set updatetime=300
 
   " This should reduce the blocking of vim on first inspection
