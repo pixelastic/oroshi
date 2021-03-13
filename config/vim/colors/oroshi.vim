@@ -359,7 +359,7 @@ call s:Highlight('pugAttributes', 'red5')
 call s:Highlight('pugClassChar', 'teal7')
 call s:Highlight('pugJavascriptChar', 'teal7')
 call s:Highlight('pugJavascriptOutputChar', 'teal7')
-call s:Highlight('pugScriptLoopKeywords', 'pink4')
+call s:Highlight('pugScriptLoopKeywords', 'yellow')
 call s:Highlight('pugTag', 'yellow')
 " }}}
 " Ruby {{{
