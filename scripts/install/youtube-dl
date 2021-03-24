@@ -1,17 +1,8 @@
 #!/usr/bin/env bash
+set -e
 
 # Youtube-dl
 wget https://yt-dl.org/downloads/latest/youtube-dl \
 	-O ~/local/bin/youtube-dl
 chmod +x ~/local/bin/youtube-dl
 ~/local/bin/youtube-dl -U
-
-# Youtube upload
-pip install --user --upgrade google-api-python-client progressbar2
-cd ~/local/src
-wget https://github.com/tokland/youtube-upload/archive/master.zip
-unzip master.zip
-rm master.zip
-cd youtube-upload-master
-sudo python setup.py install
-

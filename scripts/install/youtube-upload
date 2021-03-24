@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+
+# Youtube upload
+pip install --user --upgrade google-api-python-client progressbar2
+cd ~/local/src
+wget https://github.com/tokland/youtube-upload/archive/master.zip
+unzip master.zip
+rm master.zip
+cd youtube-upload-master
+sudo python setup.py install
