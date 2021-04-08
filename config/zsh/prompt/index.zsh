@@ -8,4 +8,5 @@ function chpwd() {
 }
 
 require 'prompt/left.zsh'
+
 require 'prompt/right.zsh'
