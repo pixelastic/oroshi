@@ -21,3 +21,7 @@ sudo apt-get install \
 ~/.rbenv/shims/gem install awesome_print
 # Auto-prefix commands with bundle exec
 ~/.rbenv/shims/gem install rubygems-bundler 
+
+# Installing rbenv-update plugin to update local ruby versions
+mkdir -p ~/.rbenv/plugins
+git clone git@github.com:rkh/rbenv-update.git ~/.rbenv/plugins/rbenv-update
