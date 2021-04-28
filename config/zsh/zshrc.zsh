@@ -4,21 +4,7 @@
 export ZSH_SOURCE_TIMER=0 # Set to 1 to show source timing
 export ZSH_PROMPT_TIMER=0 # Set to 1 to show prompt timing
 
-# Source a file, but also display loading time when debug is enabled
-function require {
-  if [[ $ZSH_SOURCE_TIMER == 1 ]]; then
-    local before=$(/bin/date +%s%N)
-  fi
-
-  source ~/.oroshi/config/zsh/$1
-
-  if [[ $ZSH_SOURCE_TIMER == 1 ]]; then
-    local after=$(/bin/date +%s%N)
-
-    local difference=$((($after - $before)/1000000))
-    echo "$1: ${difference}ms"
-  fi
-}
+source ~/.oroshi/config/zsh/require.zsh
 
 # Setting env variables
 require 'env.zsh'

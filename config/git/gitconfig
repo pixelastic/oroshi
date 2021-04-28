@@ -28,7 +28,6 @@
   safecrlf = false
   autocrlf = input
   hooksPath = ~/.oroshi/config/git/hooks
-  pager = "diff-so-fancy | less --tabs=4 -RFX"
 [merge]
   tool = fugitive
 [mergetool "fugitive"]

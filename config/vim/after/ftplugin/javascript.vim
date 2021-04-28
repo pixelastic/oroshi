@@ -19,20 +19,23 @@ function! JavascriptFoldText()
 endfunction
 " }}}
 " Linting {{{
-" If coc is not enabled, we revert to syntastic, and manual cleaning with F4
-if !exists('g:coc_enabled')
+" If coc is not enabled, we revert to syntastic
+if !exists('g:oroshi_coc_enabled')
   let b:syntastic_checkers = ['eslint']
   let b:syntastic_javascript_eslint_exec = 'eslint_d'
-
-  function! JavascriptBeautify() 
-    let l:initialLine = line('.')
-    execute '%!eslint_d --stdin --fix-to-stdout'
-    execute 'normal '.initialLine.'gg'
-    SyntasticCheck()
-  endfunction
-  inoremap <silent> <buffer> <F4> <Esc>:call JavascriptBeautify()<CR><CR>
-  nnoremap <silent> <buffer> <F4> :call JavascriptBeautify()<CR><CR>
 endif
+" coc should auto format on save, but this can fail depending on the repo
+" configuration, so we keep <F4> as a way to reformat
+
+function! JavascriptBeautify() 
+  let l:initialLine = line('.')
+  execute '%!eslint_d --stdin --fix-to-stdout'
+  execute ':Neoformat'
+  execute 'normal '.initialLine.'gg'
+  SyntasticCheck()
+endfunction
+inoremap <silent> <buffer> <F4> <Esc>:call JavascriptBeautify()<CR><CR>
+nnoremap <silent> <buffer> <F4> :call JavascriptBeautify()<CR><CR>
 " }}}
 
 " Keybindings {{{
