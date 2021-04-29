@@ -1,0 +1,11 @@
+! pike is the ThinkPad T14s
+
+! PageDown/PageUp, next to arrow keys are actually LineStart/LineEnd
+! PageUp, next to arrow keys, should go start of the line
+keycode 112 = Home
+! PageDown, next to arrow keys, should go end of the line
+keycode 117 = End
+! Start arrow, top right of keyboard, should go page up
+keycode 110 = Prior
+! End arrow, top right of keyboard, should go page down
+keycode 155 = Next
