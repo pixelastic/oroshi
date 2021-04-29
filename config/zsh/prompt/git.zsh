@@ -7,6 +7,10 @@
 # - If a rebase is in progress
 # - A color-coded status icon
 function __prompt-git-flags() {
+  # Do nothing if in a .git folder
+  git-is-dot-git-folder && return
+
+  # Or in a non-git repo
   git-is-repository || return
 
   git-is-submodule && echo -n "%F{$COLORS[yellow]} %f"
@@ -135,7 +139,7 @@ function __prompt-github-issues-and-prs() {
     return
   fi
 
-  local gitFolder="$(git root)/.git/"
+  local gitFolder="$(git root)/.git"
 
   # Stop early if no .git at the root (like in submodules)
   [[ ! -r $gitFolder ]] && return
@@ -153,16 +157,16 @@ function __prompt-github-issues-and-prs() {
   fi
 
   local display=""
-  local prCount="$(cat $prCacheFile)"
+  local prCount="$(\cat $prCacheFile)"
   if [[ ! $prCount = 0 ]]; then
     display="${display} %F{$COLORS[green]} ${prCount}%f"
   fi
-  local issueCount="$(cat $issueCacheFile)"
+  local issueCount="$(\cat $issueCacheFile)"
   if [[ ! $issueCount = 0 ]]; then
     display="${display} %F{$COLORS[yellow]} ${issueCount}%f"
   fi
 
 
-  echo $display
+  # echo $display
 }
 # }}}

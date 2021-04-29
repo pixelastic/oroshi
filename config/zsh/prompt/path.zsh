@@ -61,8 +61,10 @@ function __prompt-path() {
     echo -n $shortPath
   fi
 
+
   # Color the string path
   if [[ $currentPath != '' ]]; then
+    git-is-dot-git-folder && echo "%F{$COLORS[orange]}${currentPath:s_.git/_ }%f" && return
     [[ ! -r $PWD ]] && echo "%F{$COLORS[gray]} ${currentPath}%f " && return
     [[ ! -w $PWD ]] && echo "%F{$COLORS[red]}!${currentPath}%f " && return
 
