@@ -129,9 +129,15 @@ function __prompt-git-branch-color() {
 
 # Returns the number of currently opened issues
 function __prompt-github-issues-and-prs() {
+  # No GITHUB_TOKEN
+  if [[ ! -v GITHUB_TOKEN ]]; then
+    echo -n "%F{$COLORS[red]} %f"
+    return
+  fi
+
   local gitFolder="$(git root)/.git/"
 
-  # Stop early if no .git at the root (like in submodules
+  # Stop early if no .git at the root (like in submodules)
   [[ ! -r $gitFolder ]] && return
 
   local issueCacheFile="${gitFolder}/oroshi_issue_count"
