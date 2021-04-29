@@ -1,0 +1,2 @@
+#!/usr/bin/env zsh
+[ -v commands[zsh] ] && true || false

@@ -1,6 +1,5 @@
 # Node
 # Display node-related information
-which nvm &>/dev/null && hasNvm=1
 
 # Display node flags:
 # - If there are currently any "yarn linked" modules
@@ -15,7 +14,17 @@ function __prompt-node-flags() {
 # Display node version
 # - Only if different from the one defined in the project
 function __prompt-node-version() {
-  [ ! -v hasNvm ] && return
+  # Not even a system-wide node installation
+  if [[ ! -v commands[node] ]]; then
+    echo -n "%F{$COLORS[red]} %f"
+    return
+  fi
+
+  # No nvm
+  if [[ ! -v commands[nvm] ]]; then
+    echo -n "%F{$COLORS[orange]} %f"
+    return
+  fi
 
   nvmrcPath="$(find-up .nvmrc)"
   
