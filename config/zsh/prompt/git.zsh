@@ -141,8 +141,9 @@ function __prompt-github-issues-and-prs() {
 
   local gitFolder="$(git root)/.git"
 
-  # Stop early if no .git at the root (like in submodules)
-  [[ ! -r $gitFolder ]] && return
+  # Stop early if no .git folder at the root (like in submodules, where it's
+  # a file)
+  [[ ! -d $gitFolder ]] && return
 
   local issueCacheFile="${gitFolder}/oroshi_issue_count"
   local prCacheFile="${gitFolder}/oroshi_pr_count"
