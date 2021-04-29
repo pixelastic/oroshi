@@ -12,6 +12,12 @@ endfunction
 
 " Returns an array of [errorCount, warningCount] from Syntastic
 function! LintStatusLineSyntastic()
+  " Return early if Syntastic is not installed (usually on first install on new
+  " laptop). Without that vim is unusable because too many errors are popping up
+  if !exists("*SyntasticStatuslineFlag")
+    return []
+  endif
+
   let g:syntastic_stl_format='%e:%w'
   let rawStatus = split(SyntasticStatuslineFlag(), ':')
   if empty(rawStatus)
