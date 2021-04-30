@@ -20,12 +20,6 @@ function __prompt-node-version() {
     return
   fi
 
-  # No nvm
-  if [[ ! -v commands[nvm] ]]; then
-    echo -n "%F{$COLORS[orange]} %f"
-    return
-  fi
-
   nvmrcPath="$(find-up .nvmrc)"
   
   # Stop if project has no version specified
