@@ -21,6 +21,7 @@ LS_COLORS="${LS_COLORS}:*Gemfile=38;5;$COLORS[purple5]"
 LS_COLORS="${LS_COLORS}:*Guardfile*=38;5;$COLORS[purple5]"
 LS_COLORS="${LS_COLORS}:*Rakefile=38;5;$COLORS[purple5]"
 LS_COLORS="${LS_COLORS}:*Vagrantfile=38;5;$COLORS[purple5]"
+LS_COLORS="${LS_COLORS}:*.au3=38;5;$COLORS[purple5]"
 LS_COLORS="${LS_COLORS}:*.cfg=38;5;$COLORS[purple5]"
 LS_COLORS="${LS_COLORS}:*.conf=38;5;$COLORS[purple5]"
 LS_COLORS="${LS_COLORS}:*.css=38;5;$COLORS[purple5]"
@@ -82,6 +83,9 @@ LS_COLORS="${LS_COLORS}:*.rar=1;38;5;$COLORS[green7]"
 LS_COLORS="${LS_COLORS}:*.tar.gz=1;38;5;$COLORS[green]" 
 LS_COLORS="${LS_COLORS}:*.tgz=1;38;5;$COLORS[green]" 
 LS_COLORS="${LS_COLORS}:*.zip=1;38;5;$COLORS[green]" 
+# }}}
+# Binaries {{{
+LS_COLORS="${LS_COLORS}:*.exe=1;38;5;$COLORS[blue]" 
 # }}}
 # Documents {{{
 LS_COLORS="${LS_COLORS}:*.pdf=1;38;5;$COLORS[yellow7]"

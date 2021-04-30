@@ -248,6 +248,17 @@ call s:Highlight('SpellBad', 'red', 'terminal', 'bold,underline')
 call s:Highlight('SpellCap', 'red', 'terminal', 'bold,underline')
 " }}}
 
+" AutoIt {{{
+call s:Highlight('autoitString', 'blue5')
+call s:Highlight('autoitQuote', 'blue5')
+call s:Highlight('autoitNumber', 'blue5', '', 'bold')
+call s:Highlight('autoitParen', 'teal7')
+call s:Highlight('autoitKeyword', 'green7')
+call s:Highlight('autoitVariable', 'indigo4')
+call s:Highlight('autoitVarSelector', 'indigo4', '', 'bold')
+call s:Highlight('autoitFunction', 'yellow')
+call s:Highlight('autoitBuiltin', 'yellow', '', 'bold')
+" }}}
 " CSS {{{
 call s:Highlight('scssImport', 'yellow', '', 'bold')
 call s:Highlight('cssBraces', 'teal7')
