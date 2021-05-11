@@ -94,13 +94,6 @@ endfunction
 setlocal foldexpr=MarkdownLevel()  
 setlocal foldmethod=expr  
 " }}}
-" Running the file in the browser {{{
-nnoremap <silent> <buffer> <F5> :call MarkdownPreview()<CR>
-function! MarkdownPreview()
-  silent execute ':!nohup markdown-preview % &>/dev/null &'
-  redraw!
-endfunction
-" }}}
 " Wrapping {{{
 " Auto-wrap text
 setlocal formatoptions+=t

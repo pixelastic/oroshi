@@ -2,18 +2,6 @@
 set -e
 
 # Lint markdown
-gem install mdl
-
-# Cleanup markdown
-cd ~/local/etc/
-git clone https://github.com/drbunsen/formd.git
-cd ~/local/bin
-ln -s ../etc/formd/formd .
-
-# Preview markdown
-yarn global add @pixelastic/markdown-preview
-
-# Clean markdown through yarn packages
 yarn add global textlint \
                 prettier \
                 remark-cli \
