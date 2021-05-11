@@ -2,16 +2,19 @@
 # shellcheck disable=SC1090
 set -e
 
+LATEST_NODE_VERSION="14.16.1"
+
 if [[ ! -d ~/.nvm ]]; then
   echo "Installing nvm"
   git clone git@github.com:creationix/nvm.git ~/.nvm
   source ~/.nvm/nvm.sh
-  nvm install 14.13.0
+  nvm install $LATEST_NODE_VERSION
 fi
 
 echo "Installing yarn to replace npm"
-curl -o- -L https://yarnpkg.com/install.sh | bash
+npm install -g yarn
 
-yarn global add emma-cli
-yarn global add eslint_d
-yarn global add prettier
+yarn global add \
+  emma-cli \
+  eslint_d \
+  prettier
