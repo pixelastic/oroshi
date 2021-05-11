@@ -7,3 +7,5 @@ mkdir -p ~/local/bin
 mkdir -p ~/local/tmp
 mkdir -p ~/local/www
 
+mkdir ~/.marks
+

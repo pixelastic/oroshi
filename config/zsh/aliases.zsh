@@ -346,7 +346,7 @@ alias ai='appraisal install'
 # Rake {{{
 alias rr='rake release'
 alias rt='rake test'
-alias rtw='rake test:watch'
+alias rw='rake watch'
 alias rl='rake lint'
 alias rta='$(git root)/scripts/test_all_ruby_versions'
 # }}}

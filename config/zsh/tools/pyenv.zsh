@@ -3,4 +3,4 @@
 [[ $commands[pyenv] ]] || return
 
 # Init pyenv
-eval "$(pyenv init - --no-rehash)"
+eval "$(pyenv init - --no-rehash --path)"

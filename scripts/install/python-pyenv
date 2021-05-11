@@ -45,4 +45,3 @@ sudo apt-get install libssl-dev
 # pip install flake8-bugbear
 # pip install flake8-quotes
 # pip install black
-
