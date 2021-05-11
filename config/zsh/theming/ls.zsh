@@ -52,11 +52,7 @@ LS_COLORS="${LS_COLORS}:*.yml=38;5;$COLORS[purple5]"
 LS_COLORS="${LS_COLORS}:*.zsh=38;5;$COLORS[purple5]"
 # }}}
 # Hidden config files {{{
-LS_COLORS="${LS_COLORS}:*.*rc=38;5;$COLORS[purple7]"
-LS_COLORS="${LS_COLORS}:*.*config=38;5;$COLORS[purple7]"
-LS_COLORS="${LS_COLORS}:*.*-version=38;5;$COLORS[purple7]"
-LS_COLORS="${LS_COLORS}:*.*ignore=38;5;$COLORS[purple7]"
-LS_COLORS="${LS_COLORS}:*.=38;5;$COLORS[purple7]"
+LS_COLORS="${LS_COLORS}:.*=38;5;$COLORS[red5]"
 # }}}
 # Images {{{
 LS_COLORS="${LS_COLORS}:*.jpg=38;5;$COLORS[yellow5]"
