@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 set -ex
 
+DOWNLOAD_URL="https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb"
+
 cd ~/local/tmp
-wget \
-  "https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb" \
-  -O dropbox.deb
+wget $DOWNLOAD_URL -O dropbox.deb
+
 sudo dpkg -i ./dropbox.deb
 sudo apt-get -f install
+
 rm ./dropbox.deb

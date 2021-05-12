@@ -1,10 +1,10 @@
 #!/usr/bin/env zsh
 set -e
 
+DOWNLOAD_URL="https://downloads.slack-edge.com/linux_releases/slack-desktop-4.15.0-amd64.deb"
+
 cd ~/local/tmp
-wget \
-  "https://downloads.slack-edge.com/linux_releases/slack-desktop-4.10.0-amd64.deb" \
-  -O slack.deb
+wget $DOWNLOAD_URL -O slack.deb
 sudo dpkg -i ./slack.deb
 sudo apt-get -f install
 rm ./slack.deb
