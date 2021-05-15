@@ -17,7 +17,6 @@ function lazyloadNvm {
   # a function because aliases are expanded in the function body
   [[ ! $aliases[nvm] ]] && return;
 
-  echo "Lazyloading nvm"
   unalias nvm;
   source ~/.nvm/nvm.sh
 }

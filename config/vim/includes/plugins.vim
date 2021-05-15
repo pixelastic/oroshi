@@ -25,6 +25,7 @@ Plug 'vim-scripts/argtextobj.vim'
 "   coloring
 let g:polyglot_disabled = ['markdown']
 Plug 'sheerun/vim-polyglot'
+Plug 'ekalinin/Dockerfile.vim'
 " Plug 'StanAngeloff/php.vim'
 " Plug 'avakhov/vim-yaml'
 " Plug 'cakebaker/scss-syntax.vim'

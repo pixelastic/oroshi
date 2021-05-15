@@ -1,14 +1,26 @@
 # Helper methods used in the `docker-` scripts
 module DockerHelper
+  # Create an array of named colors
+  orderedcolors = %w[gray red green yellow blue purple teal orange indigo pink]
+  colors = {}
+  orderedcolors.each_with_index do |color_prefix_name, color_prefix_index|
+    10.times do |color_index|
+      color_name = "#{color_prefix_name}#{color_index}"
+      color_value = ((color_prefix_index + 2) * 10) + color_index
+      colors[color_name] = color_value
+    end
+    colors[color_prefix_name] = colors["#{color_prefix_name}6"]
+  end
+
   @@colors = {
-    container: 69,
-    container_running: 35,
-    container_stopped: 241,
-    hash: 67,
-    image: 136,
+    container: colors['yellow'],
+    container_running: colors['green'],
+    container_stopped: colors['red8'],
+    hash: colors['indigo'],
+    image: colors['yellow'],
     image_ubuntu: 202,
-    ports: 241,
-    tag: 241
+    ports: colors['pink'],
+    tag: colors['orange']
   }
 
   # Return an array of all images

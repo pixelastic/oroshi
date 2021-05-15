@@ -18,7 +18,8 @@ class DockerContainerList
       '--format "{{.Names}};{{.ID}};{{.Image}};{{.Ports}};{{.Status}}"',
       @args.join(' ')
     ]
-    output = `#{options.join(' ')}`
+    command = options.join(' ')
+    output = `#{command}`
     containers = []
     output.each_line do |line|
       name, hash, image, ports, status = line.strip.split(';')
@@ -35,10 +36,10 @@ class DockerContainerList
 
   def output_name(container)
     if container[:is_running]
-      icon = ''
+      icon = ''
       color = color(:container_running)
     else
-      icon = ''
+      icon = ''
       color = color(:container_stopped)
     end
     name = container[:name].ljust(longest_name_length)

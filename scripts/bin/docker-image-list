@@ -20,8 +20,11 @@ class DockerImageList
     output = `#{options.join(' ')}`
     images = []
     output.each_line.with_index do |line, index|
-      next if index == 0
+      next if index.zero?
+
       name, tag, hash = line.split(' ').compact
+      next if name == '<none>'
+
       images << Image.new(name, tag, hash)
     end
     images.sort_by do |i|
@@ -59,5 +62,3 @@ class DockerImageList
   end
 end
 DockerImageList.new(*ARGV).run
-
-
