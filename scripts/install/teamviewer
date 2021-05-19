@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+DOWNLOAD_URL="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
+
+cd ~/local/tmp
+wget $DOWNLOAD_URL -O teamviewer.deb
+install-deb ./teamviewer.deb
