@@ -204,12 +204,12 @@ call s:Highlight('PmenuThumb', 'teal8', 'teal8')
 " Note: We don't highlight Coc errors as they tend to put everything under the
 " same color and make it hard to visually parse. We rely on the gutter symbol
 " instead.
-" call s:Highlight('CocErrorHighlight', 'blue', 'red9', 'bold,underline')
 " call s:Highlight('CocWarningHighlight', 'yellow', '', 'bold,underline')
 " call s:Highlight('CocInfoHighlight', '', '', 'none')
 call s:Highlight('CocFloating', 'gray5', 'gray9')
 call s:Highlight('CocWarningFloat', 'yellow', 'gray9', 'bold')
 call s:Highlight('CocErrorFloat', 'red', 'gray9', 'bold')
+call s:Highlight('CocErrorHighlight', '', '', 'bold')
 " }}}
 " call s:Highlight('CocBold', 'pink', 'white')
 " call s:Highlight('CocCodeLens', 'pink', 'white')
