@@ -294,6 +294,7 @@ alias yw='yarn why'
 alias ysd='emma -D'
 alias ys='emma'
 alias yug='yarn global upgrade'
+alias yuF='yu --force'
 alias ypc='depcheck . --ignore-dirs=dist,tmp,build --specials=eslint,webpack,babel --ignores=husky,jest'
 # }}}
 # Ruby {{{
