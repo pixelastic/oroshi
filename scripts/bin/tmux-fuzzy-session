@@ -50,8 +50,7 @@ class TmuxFuzzySession
     return unless selection
 
     # Move to the specific session and window
-    `tmux select-window -t #{selection[:window]}`
-    `tmux switch -t #{selection[:session]}`
+    `tmux switch -t #{selection[:session]}:#{selection[:window]}`
 
     # Revert the full screen if we changed it before
     `tmux resize-pane -Z` if need_zoom
