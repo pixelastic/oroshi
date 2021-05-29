@@ -1,16 +1,5 @@
 #!/usr/bin/env zsh
-[[ ! $commands[yarn] ]] && exit 1
-
-# Display the list of all linked modules
-local node_modules="$(yarn bin 2>/dev/null)/.."
-local packageRoot="${node_modules}/.."
-local absolutePackageRoot="${packageRoot:a}"
-local linkedModules=($(find $node_modules -maxdepth 1 -type l -printf "%l\n" 2>/dev/null))
-
-for moduleDestination in $linkedModules; do
-  relativePath="$node_modules/$moduleDestination"
-  absolutePath="${relativePath:a}"
-  [[ $absolutePath == $absolutePackageRoot* ]] && exit 0
-done
+# Check if current repository has local linked modules
+local linked_modules="$(yll-porcelain)"
+[[ "$linked_modules" =~ ":local" ]] && exit 0
 exit 1
-

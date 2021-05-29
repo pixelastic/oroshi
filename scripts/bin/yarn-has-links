@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
 # Check if current repository has linked modules
-local linked_modules=$(yll)
+local linked_modules="$(yll-porcelain)"
 [[ -z "$linked_modules" ]] && exit 1
 exit 0

@@ -3,32 +3,17 @@
 
 source ~/.oroshi/config/zsh/theming/colors.zsh
 
-# Display the list of all linked modules
-local node_modules="$(yarn bin 2>/dev/null)/.."
-local rootLinkedModules=($(find $node_modules -maxdepth 1 -type l -printf "%f:%l\n" 2>/dev/null | sort))
-local scopedLinkedModules=($(find $node_modules/@* -maxdepth 1 -type l -printf "%f:%l\n" 2>/dev/null | sort))
+local linkedModules=($(yll-porcelain))
 
-local allLinkedModules=($rootLinkedModules $scopedLinkedModules)
-
-for module in $allLinkedModules; do
+for module in $linkedModules; do
   local split=(${(s/:/)module})
   local moduleName=$split[1]
-  local moduleDestination=$split[2]
-  local isFromMonorepo=1
-  [[ $moduleDestination == */.config/yarn/link/* ]] && isFromMonorepo=0
+  local moduleLinkType=$split[2]
   local RESET="\e[0m"
 
-  if [[ $isFromMonorepo == 1 ]]; then
-    echo "\e[38;5;$COLORS[yellow]m  $moduleName\e[0m"
-  fi
 
-  if [[ $isFromMonorepo == 0 ]]; then
-    # We get the module name from the path relative from node_modules, to
-    # handle the scoped packages
-    local split=(${(s_config/yarn/link/_)moduleDestination})
-    local moduleName=$split[2]
-    echo "\e[38;5;$COLORS[blue7]m  $moduleName\e[0m"
-  fi
+  [[ $moduleLinkType = 'local' ]] && echo "\e[38;5;$COLORS[yellow]m  $moduleName\e[0m"
+  [[ $moduleLinkType = 'global' ]] && echo "\e[38;5;$COLORS[blue7]m  $moduleName\e[0m"
 done
 
 exit 0
