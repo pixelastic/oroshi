@@ -3,12 +3,31 @@
 
 # Display the list of all linked modules
 local node_modules="$(yarn bin 2>/dev/null)/.."
-local linkedModules=($(find $node_modules -maxdepth 1 -type l -printf "%f:%l\n" 2>/dev/null | sort))
+local rootLinkedModules=($(find $node_modules -maxdepth 1 -type l -printf "%f:%l\n" 2>/dev/null | sort))
+local scopedLinkedModules=($(find $node_modules/@* -maxdepth 1 -type l -printf "%f:%l\n" 2>/dev/null | sort))
 
-for module in $linkedModules; do
+local allLinkedModules=($rootLinkedModules $scopedLinkedModules)
+
+for module in $allLinkedModules; do
   local split=(${(s/:/)module})
   local moduleName=$split[1]
-  echo $moduleName
+  local moduleDestination=$split[2]
+  local isFromMonorepo=1
+  [[ $moduleDestination == */.config/yarn/link/* ]] && isFromMonorepo=0
+
+  if [[ $isFromMonorepo == 1 ]]; then
+    echo $moduleName
+  fi
+
+  if [[ $isFromMonorepo == 0 ]]; then
+    local split=(${(s_config/yarn/link/_)moduleDestination})
+    local moduleName=$split[2]
+    echo $moduleName
+  fi
 done
 
 exit 0
+
+
+
+
