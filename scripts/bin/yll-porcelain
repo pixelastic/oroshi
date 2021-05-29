@@ -5,6 +5,10 @@
 
 [[ ! $commands[yarn] ]] && return
 
+# This prevents zsh from displaying a warning if the node_modules/@* does not
+# match anything
+setopt +o nomatch
+
 local node_modules="$(yarn bin 2>/dev/null)/.."
 local linkedModules=($(find \
   $node_modules \
@@ -14,6 +18,8 @@ local linkedModules=($(find \
   -printf "%f:%l\n" \
   2>/dev/null \
   | sort))
+echo $linkedModules
+exit 0
 
 for module in $linkedModules; do
   local split=(${(s/:/)module})

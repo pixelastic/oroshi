@@ -8,7 +8,7 @@ function __prompt-node-flags() {
   git-is-repository || return
 
   yarn-is-monorepo && echo -n "%F{$COLORS[yellow7]} %f"
-  yarn-has-global-links && echo -n "%F{$COLORS[blue7]} %f"
+  # yarn-has-global-links && echo -n "%F{$COLORS[blue7]} %f"
 }
 
 # Display node version
