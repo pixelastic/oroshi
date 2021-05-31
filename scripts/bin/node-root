@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+set -e
+
+# Use pkg-dir if available
+if [[ $commands[pkg-dir] ]]; then
+  pkg-dir
+  return
+fi
+
+echo "$(yarn bin 2>/dev/null)/../.."

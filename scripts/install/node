@@ -17,4 +17,5 @@ npm install -g yarn
 yarn global add \
   emma-cli \
   eslint_d \
+  pkg-dir-cli \
   prettier

@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # Helper function to return the list of linked modules in the current directory
 # The list is returned in the format
-# module name:type
+# moduleName:type
 
 [[ ! $commands[yarn] ]] && return
 
@@ -9,7 +9,7 @@
 # match anything
 setopt +o nomatch
 
-local node_modules="$(yarn bin 2>/dev/null)/.."
+local node_modules="$(pkg-dir)/node_modules"
 local linkedModules=($(find \
   $node_modules \
   $node_modules/@* \
