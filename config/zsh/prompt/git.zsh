@@ -124,7 +124,7 @@ function __prompt-git-branch() {
 
 # Get the color of a known branch
 function __prompt-git-branch-color() {
-  [[ $1 == "master" ]] && echo "blue5" && return;
+  [[ $1 == "master" ]] && echo "blue" && return;
   [[ $1 == "main" ]] && echo "blue" && return;
   [[ $1 == "develop" ]] && echo "yellow" && return;
   [[ $1 == "heroku" ]] && echo "purple" && return;
