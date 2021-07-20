@@ -1,13 +1,18 @@
 #!/usr/bin/env zsh
 set -e
 
+# Install gvm, no manage go versions
 bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
 source ~/.gvm/scripts/gvm
+
+# Install dependencies
+sudo apt-get install \
+  bison
 
 # Go 1.5+ must be compiled with Go, so we need a working go version first
 gvm install go1.4 -B
 gvm use go1.4
 
 # Now installing latest
-gvm install go1.11
-gvm use go1.11
+gvm install go1.16
+gvm use go1.16
