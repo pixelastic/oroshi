@@ -15,4 +15,4 @@ gvm use go1.4
 
 # Now installing latest
 gvm install go1.16
-gvm use go1.16
+gvm use go1.16 --default
