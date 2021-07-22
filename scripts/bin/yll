@@ -3,7 +3,7 @@
 
 source ~/.oroshi/config/zsh/theming/colors.zsh
 
-local linkedModules=($(yll-porcelain))
+local linkedModules=($(yll-raw))
 
 for module in $linkedModules; do
   local split=(${(s/:/)module})

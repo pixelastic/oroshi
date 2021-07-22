@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# [d]ocker [c]ontainer [R]emove [a]ll
+# Remove all containers
+dcR --all

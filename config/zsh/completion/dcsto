@@ -1,0 +1,4 @@
+function _complete_dcsto {
+  reply=($(dcl-raw --running))
+}
+compctl -K _complete_dcsto dcsto

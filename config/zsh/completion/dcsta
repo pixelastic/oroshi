@@ -1,0 +1,4 @@
+function _complete_dcsta {
+  reply=($(dcl-raw --stopped))
+}
+compctl -K _complete_dcsta dcsta

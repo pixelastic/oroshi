@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# [d]ocker [c]ontainer [sto]p
+# Stop running containers
+docker stop "$@"

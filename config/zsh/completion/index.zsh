@@ -21,18 +21,22 @@ unsetopt COMPLETE_ALIASES
 setopt RM_STAR_WAIT
 
 local zshConfigDir=~/.oroshi/config/zsh
+# Yarn
 source $zshConfigDir/completion/yl
 source $zshConfigDir/completion/ylR
 source $zshConfigDir/completion/yr
 source $zshConfigDir/completion/yu
-source $zshConfigDir/completion/_docker-container-all
-source $zshConfigDir/completion/_docker-container-running
-source $zshConfigDir/completion/_docker-container-stopped
-source $zshConfigDir/completion/_docker-images
+# Docker
+source $zshConfigDir/completion/dcc
+source $zshConfigDir/completion/dcsta
+source $zshConfigDir/completion/dcsto
+source $zshConfigDir/completion/dcR
+# Git
 source $zshConfigDir/completion/_git-branches
 source $zshConfigDir/completion/_git-files
 source $zshConfigDir/completion/_git-remotes
 source $zshConfigDir/completion/_git-tags
+# Misc
 source $zshConfigDir/completion/mark
 # Kubernetes completion
 # This takes ~200ms. This is disabled until I heavily start using kube

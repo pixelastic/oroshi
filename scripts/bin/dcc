@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# [d]ocker [c]ontainer [c]onnect
+# Run an interactive shell in an existing container
+docker exec -it "$1" /bin/bash

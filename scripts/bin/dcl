@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+# [D]ocker [c]ontainer [l]ist
+# List all containers
 require_relative '../etc/docker-helper/docker_helper'
 
 Container = Struct.new(:name, :hash, :image, :ports, :is_running)

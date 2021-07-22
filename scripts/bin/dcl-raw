@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+# [D]ocker [c]ontainer [l]ist for zsh completion
+# Returns the list of all containers
+# The list can be filtered down through the --running and --stopped flags
+
+# FILTER RESULTS
+# By default, we want to return all containers, so we set the --all flag
+# To return only the running containers, we need to remove this flag
+# To return only the stopped container, we need to filter on status
+filterFlag=(--all)
+[[ "$*" =~ "--running" ]] && filterFlag=()
+[[ "$*" =~ "--stopped" ]] && filterFlag=(--filter 'status=exited')
+
+docker container list \
+  "${filterFlag[@]}" \
+  --format "{{.Names}}"

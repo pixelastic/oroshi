@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# [d]ocker [c]ontainer [sta]rt
+# Start a stopped container
+
+docker start -ai "$1"

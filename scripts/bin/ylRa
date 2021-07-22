@@ -2,7 +2,7 @@
 # Unlink all linked modules, except for the one part of the same monorepo
 set -e
 
-local linkedModules=($(yll-porcelain))
+local linkedModules=($(yll-raw))
 
 typeset -a modulesToUnlink
 for module in $linkedModules; do

@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+# [d]ocker [c]ontainer [R]emove
+require_relative '../etc/docker-helper/docker_helper'
+
+# Delete containers
+class DockerContainerRemove
+  include DockerHelper
+
+  def initialize(*args)
+    @containers = args.to_a
+    if @containers.include?('--all')
+      @containers = `dcl-raw`.lines
+    end
+
+    return unless @containers.empty?
+
+    puts 'Usage:'
+    puts '$ dcR container_name [container_name] [--all]'
+    exit 1
+  end
+
+  def run
+    @containers.each do |container|
+      container.chomp!
+      unless container?(container)
+        puts "✘ Container #{colorize(container, :container)} does not exist"
+        next
+      end
+
+      `docker rm --force #{container}`
+      puts "✔ Container #{colorize(container, :container)} deleted."
+    end
+  end
+end
+DockerContainerRemove.new(*ARGV).run

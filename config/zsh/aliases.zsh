@@ -136,10 +136,6 @@ alias dimv='docker-image-rename'
 alias dcr='docker-container-run'
 alias dce='docker-container-run --exec-mode'
 alias dr='docker run'
-alias dcl='docker-container-list'
-alias dcR='docker-container-remove'
-alias dcRa='docker-container-remove --all'
-alias dcsto='docker-container-stop'
 # }}}
 # Directories {{{
 alias cde='cd ~/local/etc/'
