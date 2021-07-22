@@ -1,4 +1,0 @@
-function _complete_docker_container_running {
-  reply=($(docker ps --format "{{.Names}}"))
-}
-compctl -K _complete_docker_container_running docker-container-stop

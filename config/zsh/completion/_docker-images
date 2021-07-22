@@ -1,9 +1,0 @@
-function _completion_docker_images {
-  reply=($(docker-image-list-completion))
-}
-compctl -K _completion_docker_images docker-image-remove
-compctl -K _completion_docker_images docker-image-rename
-# We might need to rebuild on top of an existing one, so it's handy to be able to select the name in the list
-compctl -K _completion_docker_images docker-image-build 
-# We need to select the image to run
-compctl -K _completion_docker_images docker-container-run
