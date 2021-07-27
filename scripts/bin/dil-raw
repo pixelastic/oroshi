@@ -3,6 +3,6 @@
 # Returns the list of all images
 
 docker images \
-  --format "{{.Repository}}:{{.Tag}}" \
+  --format "{{.Repository}}" \
   | sort \
   | grep -v "<none>"

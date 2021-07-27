@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# [d]ocker [i]mage exists
+# Check if the specified image exists
+
+imageName="$1"
+
+dil-raw | grep -q "^${imageName}\$"

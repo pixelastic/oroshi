@@ -1,0 +1,31 @@
+#!/usr/bin/env zsh
+# [d]ocker [i]mage [r]un
+# Creates a container from an image and run it
+#
+# Options:
+# --name: Name of the container. Same name as the image by default
+
+imageName="$1"
+
+# IMAGE DETECTION
+# If no image is specified, we use the image of the current directory
+if [[ $imageName == "" ]]; then
+  imageName=$(path.basename .)
+  # If the image do not exist, we build it
+  if ! di-exists $imageName; then
+    dib --name="$imageName"
+  fi
+fi
+
+
+# CONTAINER NAME
+# Container name is the same as the image name
+containerName="${imageName}"
+
+# RUN THE CONTAINER
+# We create a container from the specified image and run it
+# We will remove it after it's done running
+docker run \
+  --name="$containerName" \
+  --rm \
+  $imageName
