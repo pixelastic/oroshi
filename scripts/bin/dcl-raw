@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# [D]ocker [c]ontainer [l]ist for zsh completion
+# [D]ocker [c]ontainer [l]ist (raw version)
 # Returns the list of all containers
 # The list can be filtered down through the --running and --stopped flags
 

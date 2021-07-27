@@ -1,0 +1,66 @@
+#!/usr/bin/env ruby
+# [D]ocker [i]mage [l]ist
+# List all images
+require_relative '../etc/docker-helper/docker_helper'
+
+Image = Struct.new(:name, :tag, :hash)
+# Display the list of current docker images
+class DockerImageList
+  include DockerHelper
+
+  def initialize(*args)
+    @args = args
+    @image_list = image_list
+  end
+
+  def image_list
+    options = [
+      'docker',
+      'images',
+      @args.join(' ')
+    ]
+    output = `#{options.join(' ')}`
+    images = []
+    output.each_line.with_index do |line, index|
+      next if index.zero?
+
+      name, tag, hash = line.split(' ').compact
+      next if name == '<none>'
+
+      images << Image.new(name, tag, hash)
+    end
+    images.sort_by do |i|
+      [i[:name], i[:tag]]
+    end
+  end
+
+  def longest_name_length
+    @image_list.map { |obj| obj[:name] }.group_by(&:size).max.last[0].length
+  end
+
+  def longest_tag_length
+    @image_list.map { |obj| obj[:tag] }.group_by(&:size).max.last[0].length
+  end
+
+  def output_name(image)
+    colorize(image[:name].ljust(longest_name_length), color(:image))
+  end
+
+  def output_tag(image)
+    colorize(image[:tag].ljust(longest_tag_length), color(:tag))
+  end
+
+  def output_hash(image)
+    colorize(image[:hash], color(:hash))
+  end
+
+  def run
+    @image_list.each do |image|
+      name = output_name(image)
+      tag = output_tag(image)
+      hash = output_hash(image)
+      puts "#{name} #{tag} #{hash}"
+    end
+  end
+end
+DockerImageList.new(*ARGV).run

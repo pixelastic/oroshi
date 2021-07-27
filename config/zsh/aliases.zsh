@@ -127,11 +127,7 @@ alias pdf2png='pdf2img -png'
 # Docker {{{
 alias dc="docker-compose"
 # Images
-alias dib='docker-image-build'
-alias db='docker build'
 alias dip='docker-image-prune'
-alias diR='docker-image-remove'
-alias dil='docker-image-list'
 alias dimv='docker-image-rename'
 # Containers
 alias dcr='docker-container-run'

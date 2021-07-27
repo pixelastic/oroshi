@@ -1,4 +1,0 @@
-function _complete_dcR {
-  reply=($(dcl-raw))
-}
-compctl -K _complete_dcR dcR

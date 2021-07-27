@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# [D]ocker [i]mages [l]ist (raw version)
+# Returns the list of all images
+
+docker images \
+  --format "{{.Repository}}:{{.Tag}}" \
+  | sort \
+  | grep -v "<none>"

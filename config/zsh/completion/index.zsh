@@ -27,10 +27,7 @@ source $zshConfigDir/completion/ylR
 source $zshConfigDir/completion/yr
 source $zshConfigDir/completion/yu
 # Docker
-source $zshConfigDir/completion/dcc
-source $zshConfigDir/completion/dcsta
-source $zshConfigDir/completion/dcsto
-source $zshConfigDir/completion/dcR
+source $zshConfigDir/completion/docker.zsh
 # Git
 source $zshConfigDir/completion/_git-branches
 source $zshConfigDir/completion/_git-files

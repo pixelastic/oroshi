@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# [d]ocker [i]mage [R]emove
+# Remove one or several images
+
+for imageName in "$@"; do
+  if docker image rm $imageName &>/dev/null; then
+    echo "✔ $imageName deleted"
+  else
+    echo "✘ $imageName not deleted"
+  fi
+done

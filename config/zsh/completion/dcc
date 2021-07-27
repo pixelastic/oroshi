@@ -1,4 +1,0 @@
-function _complete_dcc {
-  reply=($(dcl-raw --running))
-}
-compctl -K _complete_dcc dcc

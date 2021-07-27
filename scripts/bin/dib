@@ -1,0 +1,37 @@
+#!/usr/bin/env zsh
+# [d]ocker [i]mage [b]uild
+# Build an image
+
+# DEFAULT VALUES
+context="."
+name=""
+forceBuild=0
+
+# PARSE ARGUMENTS
+# We iterate on all arguments, trying to parse them and change the default
+# values
+while [[ "$#" -gt 0 ]]; do
+  argumentKey=$1
+  argumentValue=$2
+  case "$argumentKey" in
+    # Change the image name
+    --name=*) name="${argumentKey#*=}"; ;;
+    --name) name="$argumentValue"; shift ;;
+
+    # Force a rebuild
+    --force) forceBuild=1 ;;
+
+    # Context passed as unnamed argument
+    *) context=$argumentKey; ;;
+  esac
+  shift
+done
+
+# NAME
+# Default name is name of context directory
+[[ $name == "" ]] && name=$(path.basename $context)
+
+docker build \
+  --tag="$name" \
+  "$context"
+
