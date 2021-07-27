@@ -9,7 +9,7 @@ class DockerContainerRemove
   def initialize(*args)
     @containers = args.to_a
     if @containers.include?('--all')
-      @containers = `dcl-raw`.lines
+      @containers = `dcl-raw`.lines.map(&:chomp)
     end
 
     return unless @containers.empty?
@@ -21,7 +21,6 @@ class DockerContainerRemove
 
   def run
     @containers.each do |container|
-      container.chomp!
       unless container?(container)
         puts "✘ Container #{colorize(container, :container)} does not exist"
         next

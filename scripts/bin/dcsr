@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+# [d]ocker-[c]ompose [s]ervice [r]un
+# Run a specific service docker-compose service
+#
+# --rm 
+#   Attempts to delete the containers after use
+#   This might not work for long-running services
+# --service-ports
+#   Make port mapping available in the host
+#   Default is to have them only available inside the compose network
+docker-compose \
+  run \
+  --rm \
+  --service-ports \
+  "$1"

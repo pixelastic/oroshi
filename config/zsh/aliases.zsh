@@ -125,6 +125,7 @@ alias pdf2jpg='pdf2img'
 alias pdf2png='pdf2img -png'
 # }}}
 # Docker {{{
+alias dc="docker-compose"
 # Images
 alias dib='docker-image-build'
 alias db='docker build'
@@ -210,21 +211,6 @@ alias va="vim ~/.oroshi/config/zsh/aliases.zsh"
 alias vf="vim ~/.oroshi/config/zsh/filetypes.db.zsh"
 alias ve='vim ~/.oroshi/config/vim/vimrc'
 alias vw='vim-which'
-# }}}
-# DocSearch {{{
-export DOCSEARCH_DIR=~/local/www/algolia/docsearch/docsearch-scraper
-alias ds="$DOCSEARCH_DIR/docsearch "
-alias dsb="ds bootstrap "
-function dsr() {
-  cd $DOCSEARCH_DIR; 
-  ./docsearch docker:run ../docsearch-configs/configs/$1.json
-}
-alias dss="cd $DOCSEARCH_DIR/playground && serve"
-function dsrp() {
-  cd $DOCSEARCH_DIR; 
-  APPLICATION_ID=$APPLICATION_ID_PROD API_KEY=$API_KEY_PROD ./docsearch run ../docsearch-configs/configs/$1.json
-}
-alias dsd="cd $DOCSEARCH_DIR; ./docsearch deploy "
 # }}}
 # Tweet {{{
 alias tweet="t update"
