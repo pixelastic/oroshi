@@ -50,6 +50,7 @@ fi
 docker run \
   --rm \
   --interactive \
+  --tty \
   $commandPreArg \
   $imageName \
   $commandPostArg
