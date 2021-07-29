@@ -1,6 +1,12 @@
 #!/usr/bin/env zsh
 # [d]ocker [i]mage [b]uild
 # Build an image
+#
+# Usage:
+#   - dib => build current directory
+#   - dib ../subfolder => Build subfolder
+#   - dib --name="my_image" => specify image name
+#   - dib --force => Overwrites existing image
 
 # DEFAULT VALUES
 context="."
