@@ -2,10 +2,23 @@
 # [d]ocker [i]mage [r]un
 # Creates a container from an image and run it
 #
-# Options:
-# --name: Name of the container. Same name as the image by default
+# Usage:
+#   - dir => Run current Dockerfile
+#   - dir [command] => Run current Dockerfile with specific command
+#   - dir [imageName] => Run existing image
+#   - dir [imageName] [command] => Run existing image with specific command
 
+# DEFAULT ARGUMENTS
 imageName="$1"
+customCommand=("${@:2}")
+
+# IMAGE NAME
+# If the first argument is not an image, then we use the current folder for the
+# image, and the first argument is part of the command
+if ! di-exists "$imageName"; then
+  customCommand=("$imageName" "${customCommand[@]}")
+  imageName=""
+fi
 
 # IMAGE DETECTION
 # If no image is specified, we use the image of the current directory
@@ -17,15 +30,26 @@ if [[ $imageName == "" ]]; then
   fi
 fi
 
-
-# CONTAINER NAME
-# Container name is the same as the image name
-containerName="${imageName}"
+# CUSTOM COMMAND
+# Any unnamed argument passed to the command will overwrite the default command.
+# Note that for command requiring arguments, the arguments must be passed AFTER
+# the image name.
+# Example for running the image debian with "uname -a"
+# docker run --entrypoint="uname" debian -a
+commandPreArg=""
+commandPostArg=""
+# If a custom command is specified, it overwrites the default image command
+if [ ! ${#customCommand[@]} -eq 0 ]; then
+  commandPreArg="--entrypoint=${customCommand[1]}"
+  commandPostArg=${customCommand:1}
+fi
 
 # RUN THE CONTAINER
 # We create a container from the specified image and run it
 # We will remove it after it's done running
 docker run \
-  --name="$containerName" \
   --rm \
-  $imageName
+  --interactive \
+  $commandPreArg \
+  $imageName \
+  $commandPostArg
