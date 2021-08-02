@@ -1,2 +1,8 @@
 #!/usr/bin/env zsh
-echo "${1:a:t}"
+# Read from arg
+input=$1
+# Read from pipe
+[[ -p /dev/stdin ]] && input="$(cat -)"
+
+# /path/subdir/file.ext => file.ext
+echo "${input:a:t}"

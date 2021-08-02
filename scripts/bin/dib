@@ -5,11 +5,13 @@
 # Usage:
 #   - dib => build current directory
 #   - dib ../subfolder => Build subfolder
+#   - dib ./Dockerfile.test => Build specific dockerfile
 #   - dib --name="my_image" => specify image name
 #   - dib --force => Overwrites existing image
 
 # DEFAULT VALUES
-context="."
+dockerfile=""
+context=""
 name=""
 forceBuild=0
 
@@ -27,17 +29,42 @@ while [[ "$#" -gt 0 ]]; do
     # Force a rebuild
     --force) forceBuild=1 ;;
 
-    # Context passed as unnamed argument
-    *) context=$argumentKey; ;;
+    # Dockerfile passed as unnamed argument
+    *) dockerfile=$argumentKey; ;;
   esac
   shift
 done
 
+# DOCKERFILE
+# The Dockerfile is either passed as input, found in the dir passed as input, or
+# guessed from the current dir
+#
+# Default value is looking for Dockerfile in current directory
+[[ $dockerfile == "" ]] && dockerfile="./Dockerfile"
+# If specified dockerfile is a dir, we look for a Dockerfile there
+[[ -d $dockerfile ]] && dockerfile="${dockerfile}/Dockerfile"
+# No dockerfile found
+if [[ ! -f $dockerfile ]]; then
+  echo "✗ No Dockerfile found"
+  exit 1
+fi
+dockerfile="$(path.resolve $dockerfile)"
+
+# CONTEXT
+# Context is the directory where the docker command must run. We guess it from
+# the Dockerfile path
+context="$(path.dirname $dockerfile)"
+
 # NAME
-# Default name is name of context directory
-[[ $name == "" ]] && name=$(path.basename $context)
+# Default name is name of the Dockerfile directory
+[[ $name == "" ]] && name=$(path.dirname $dockerfile | path.basename)
+
+echo "File: $dockerfile"
+echo "Tag: $name"
+echo "Context: $context"
 
 docker build \
+  --file="$dockerfile" \
   --tag="$name" \
   "$context"
 
