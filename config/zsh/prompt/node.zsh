@@ -8,7 +8,7 @@ function __prompt-node-flags() {
   git-is-repository || return
 
   yarn-is-monorepo && echo -n "%F{$COLORS[yellow7]} %f"
-  yarn-has-global-links && echo -n "%F{$COLORS[blue7]} %f"
+  __prompt-yarn-links
 }
 
 # Display node version
@@ -36,4 +36,37 @@ function __prompt-node-version() {
     echo "%F{$COLORS[green]}$expectedVersion %f"
     return
   fi
+}
+
+# Display specific icons for each linked module
+function __prompt-yarn-links() {
+  local linkedModules=($(yll-raw))
+  local totalModuleCount=0
+  local displayedModuleCount=0
+  local displayedString=''
+
+  for module in $linkedModules; do
+    local split=(${(s/:/)module})
+    local moduleName=$split[1]
+    local moduleLinkType=$split[2]
+
+    # Keep only the global ones
+    [[ $moduleLinkType = 'local' ]] && continue
+    totalModuleCount=$(($totalModuleCount + 1));
+
+    # Add the module icon to the string
+    local moduleIcon=$PROJECTS[${moduleName},icon]
+    if [[ $moduleIcon != '' ]]; then
+      displayedString="${displayedString}${moduleIcon}"
+      displayedModuleCount=$(($displayedModuleCount + 1));
+    fi
+  done
+
+  # If some linked modules don't have an icon, we add the default chain ico
+  if [[ $displayedModuleCount != $totalModuleCount ]]; then
+    displayedString="${displayedString} "
+  fi
+
+  # Display the string
+  echo -n "%F{$COLORS[blue7]}${displayedString}%f"
 }
