@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# Source:
+# https://stackoverflow.com/questions/9229333/how-to-get-overall-cpu-usage-e-g-57-on-linux
+# Not sure what it's worth, but testing in my tmux statusbar as I seem to have
+# too many crashes lately and I want to see my CPU all the time
+
+local cpuUsed="$(grep 'cpu ' /proc/stat)"
+cpuUsed="$(echo $cpuUsed | awk '{print ($2+$4)*100/($2+$4+$5)}')"
+cpuUsed="$(echo $cpuUsed | cut -f1 -d'.')"
+echo $cpuUsed

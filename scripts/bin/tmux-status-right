@@ -36,6 +36,16 @@ if [[ $ram_percent -gt 50 ]]; then
   output="$ram_status $output"
 fi
 # }}}
+# CPU usage {{{
+# Display in green / yellow / red based on % usage
+local cpu_percent="$(cpu-percent)"
+local cpu_status=""
+if [[ $cpu_percent -gt 50 ]]; then
+  cpu_status="#[fg=colour${COLORS[yellow]}] ${cpu_percent}%#[default]"
+  [[ $cpu_percent -gt 80 ]] && cpu_status="#[fg=colour${COLORS[red]}] ${cpu_percent}%#[default]"
+  output="$cpu_status $output"
+fi
+# }}}
 # Battery life {{{
 # Do not display if full
 # Display in green if charging
