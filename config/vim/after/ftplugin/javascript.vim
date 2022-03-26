@@ -27,6 +27,9 @@ endif
 " coc should auto format on save, but this can fail depending on the repo
 " configuration, so we keep <F4> as a way to reformat
 
+" Note: If vim fails to reformat, but manually running scripts seems to work,
+" you might want to kill eslint_d. It might have been confused by plugins loaded
+" in various repos, and will require a reboot.
 function! JavascriptBeautify() 
   let l:initialLine = line('.')
   execute '%!eslint_d --stdin --fix-to-stdout'
