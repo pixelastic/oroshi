@@ -65,7 +65,7 @@ add mod2    = Num_Lock
 add mod4    = Super_L Hyper_L
 add mod5    = ISO_Level3_Shift
 
-!!!!!! Mapping Caps Lock to a phantom F15 key. This custom key will be used in
+!!!!!! Mapping Caps Lock to a phantom key. This custom key will be used in
 ! zsh and vim to switch from insert to normal mode
 ! Note that even if FXX is not on the keyboard, it might still be used by
 ! wrapping software. So far, F16 seems to do the trick

@@ -34,12 +34,23 @@ inoremap <silent> <C-Left> <Esc>:-tabmove<CR>
 inoremap <silent> <C-Right> <Esc>:+tabmove<CR>
 " }}}
 " CAPS LOCK {{{
-" .oroshi/config/xmodmap/xmodmaprc maps CAPS LOCK to F16 ([1;2S)
+" Different machines map CAPS LOCK to a different keycode
+" Press Ctrl-V, followed by Caps Lock to write the keycode of the current
+" machine
+" Nova is [1;2S {{{
 inoremap <silent> [1;2S <Esc>l
 nnoremap [1;2S i
 vnoremap [1;2S <Esc>
 cnoremap [1;2S <Esc>
 onoremap [1;2S <Esc>
+" }}}
+" Doty is [57379u {{{
+inoremap <silent> [57379u <Esc>l
+nnoremap [57379u i
+vnoremap [57379u <Esc>
+cnoremap [57379u <Esc>
+onoremap [57379u <Esc>
+" }}}
 " }}}
 " TAB KEY {{{
 "
