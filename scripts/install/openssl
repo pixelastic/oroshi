@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+set -ex
+
+# Creating a local/src/openssl folder
+cd ~/local/src
+mkdir openssl
+cd ./openssl
+
+# Downloading the source there
+wget \
+  https://www.openssl.org/source/openssl-1.0.2s.tar.gz \
+  -0 openssl.tgz
+tar xvzf openssl.tgz
+
+# Creating a sub directory ./src
+mv openssl-1.0.2s src
+cd ./src
+./config
+make
+make install

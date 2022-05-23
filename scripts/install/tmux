@@ -1,31 +1,27 @@
 #!/usr/bin/env bash
 set -ex
 
-ubuntuVersion="$(lsb_release -r -s)"
+sudo apt-get install tmux
 
-# Directly available in 20.04
-if [ "$ubuntuVersion" == "20.04" ]; then
-  sudo apt-get install tmux;
-else
-  echo "Download source"
-  cd ~/local/src/
-  git clone https://github.com/tmux/tmux
-  cd ./tmux
+# Below are the steps to install it for Ubuntu < 2020
+# echo "Download source"
+# cd ~/local/src/
+# git clone https://github.com/tmux/tmux
+# cd ./tmux
 
-  sudo apt-get install libevent-dev
+# sudo apt-get install libevent-dev
 
-  sudo apt-get install \
-    automake \
-    libncurses5-dev
+# sudo apt-get install \
+#   automake \
+#   libncurses5-dev
 
-  sh autogen.sh
-  ./configure --prefix="/home/$USER/local/"
-  make
+# sh autogen.sh
+# ./configure --prefix="/home/$USER/local/"
+# make
 
-  echo "Symlink"
-  cd ~/local/bin
-  ln -s ../src/tmux/tmux .
-fi
+# echo "Symlink"
+# cd ~/local/bin
+# ln -s ../src/tmux/tmux .
 
 # xclip needed to copy to clipboard
 sudo apt-get install xclip

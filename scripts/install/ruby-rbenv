@@ -12,9 +12,13 @@ sudo apt-get install \
   libssl-dev \
   zlib1g-dev
 
+# Need to manually install OpenSSL and define the directory in the install path
+~/.oroshi/scripts/install/openssl
+
+
 
 # Installing Ruby and gems
-~/.rbenv/bin/rbenv install 2.7.1
+RUBY_CONFIGURE_OPTS=--with-openssl-dir=$HOME/local/src/openssl/src ~/.rbenv/bin/rbenv install 2.7.1
 ~/.rbenv/bin/rbenv global 2.7.1
 ~/.rbenv/shims/gem install bundler
 ~/.rbenv/shims/gem install rubocop

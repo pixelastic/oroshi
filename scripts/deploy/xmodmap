@@ -11,10 +11,9 @@ local localFile=${configDir}/local/${HOST}.xmodmap
 
 # Starting with an empty file
 rm -f $destFile
-touch $destFile
 
 # Adding the default configuration last
-cat $defaultFile >> $destFile
+cp $defaultFile $destFile
 
 # Adding the local config
 if [[ -r $localFile ]]; then
