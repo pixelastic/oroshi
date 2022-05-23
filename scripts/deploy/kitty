@@ -1,7 +1,20 @@
 #!/usr/bin/env zsh
 set -e
 
+# We use a main kitty.conf config file, then a way to overwrite values based on
+# the host
+
 mkdir -p ~/.config/kitty
-ln \
-  -s ~/.oroshi/config/kitty/kitty.conf \
-  ~/.config/kitty/kitty.conf
+
+local targetFile=~/.config/kitty/kitty.conf
+local defaultConfig=~/.oroshi/config/kitty/kitty.conf
+local customConfig=~/.oroshi/config/kitty/local/${HOST}.conf
+
+# Start by adding the basic config
+rm -rf ~/.config/kitty/kitty.conf
+cp $defaultConfig $targetFile
+
+# Append custom config if one exists
+if [[ -r $customConfig ]]; then
+  cat $customConfig >> $targetFile
+fi
