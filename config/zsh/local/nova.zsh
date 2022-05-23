@@ -1,3 +1,8 @@
+# CONFIG
+# Nova is running Ubuntu 18.04
+# BAT theme was called ansi-dark
+export BAT_THEME="ansi-dark"
+
 # Dump file to online domain
 function dumptmp() {
   rsync -Pharz \

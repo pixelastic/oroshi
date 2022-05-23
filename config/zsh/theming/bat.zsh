@@ -8,6 +8,6 @@
 # TODO: Add a custom theme
 # https://github.com/sharkdp/bat#adding-new-themes
 
-export BAT_THEME="ansi-dark"
+export BAT_THEME="ansi"
 # Use bat to color man
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
