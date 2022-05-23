@@ -8,6 +8,3 @@ destFile=~/.config/redshift.conf
 
 # Link the config file
 ln -fs $configFile $destFile
-
-# Use a custom icon
-~/.oroshi/config/ubuntu/20.04/redshift
