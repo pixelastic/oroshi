@@ -1,0 +1,2 @@
+#!/usr/bin/env zsh
+flatpak run com.uploadedlobster.peek
