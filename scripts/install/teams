@@ -1,12 +1,11 @@
 #!/usr/bin/env zsh
 set -e
 
-cd ~/local/src
-mkdir -p teams
-cd ./teams
+local DOWNLOAD_URL="https://go.microsoft.com/fwlink/p/?LinkID=2112886&clcid=0x409&culture=en-us&country=US"
+local TMP_DIRECTORY=~/local/tmp/teams
 
-wget \
-  "https://go.microsoft.com/fwlink/p/?LinkID=2112886&clcid=0x409&culture=en-us&country=US" \
-  -O teams.deb
+mkdir -p $TMP_DIRECTORY
+cd $TMP_DIRECTORY
 
+wget $DOWNLOAD_URL -O teams.deb
 install-deb ./teams.deb

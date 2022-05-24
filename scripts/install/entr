@@ -5,7 +5,16 @@ local LATEST_VERSION="5.2"
 local DOWNLOAD_URL="https://eradman.com/entrproject/code/entr-${LATEST_VERSION}.tar.gz"
 
 
+# Download source
 mkdir $TMP_DIRECTORY
 cd $TMP_DIRECTORY
 wget $DOWNLOAD_URL -o entr.tgz
+
+# Extract
 tar xvzf entr.tgz
+cd ./entr-${LATEST_VERSION}
+
+# Build
+./configure
+CFLAGS="-static" make test
+PREFIX=$HOME/local make install
