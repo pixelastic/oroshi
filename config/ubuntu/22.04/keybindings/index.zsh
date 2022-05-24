@@ -4,6 +4,7 @@
 source ~/.oroshi/config/ubuntu/22.04/keybindings/launchers.zsh
 source ~/.oroshi/config/ubuntu/22.04/keybindings/navigation.zsh
 source ~/.oroshi/config/ubuntu/22.04/keybindings/screenshots.zsh
+source ~/.oroshi/config/ubuntu/22.04/keybindings/sound-and-media.zsh
 source ~/.oroshi/config/ubuntu/22.04/keybindings/system.zsh
 source ~/.oroshi/config/ubuntu/22.04/keybindings/windows.zsh
 
