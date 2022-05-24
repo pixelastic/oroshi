@@ -16,7 +16,6 @@ sudo apt-get install \
   libreadline-dev \
   libsqlite3-dev \
   llvm \
-  python-openssl \
   tk-dev \
   wget \
   xz-utils \
