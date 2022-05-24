@@ -2,13 +2,13 @@
 # shellcheck disable=SC1090
 set -e
 
-LATEST_NODE_VERSION="14.16.1"
+LATEST_NODE_LTS_VERSION="16.15.0"
 
 if [[ ! -d ~/.nvm ]]; then
   echo "Installing nvm"
   git clone git@github.com:creationix/nvm.git ~/.nvm
   source ~/.nvm/nvm.sh
-  nvm install $LATEST_NODE_VERSION
+  nvm install $LATEST_NODE_LTS_VERSION
 fi
 
 echo "Installing yarn to replace npm"

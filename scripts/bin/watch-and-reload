@@ -5,4 +5,10 @@
 local filesToWatch=(${(@)@[1,-2]})
 local commandToRun=$@[-1]
 
-when-changed -1 $filesToWatch -c "clear && $commandToRun"
+# If no command specified, we run the changed file
+[[ $commandToRun == "" ]] && commandToRun="/_"
+
+# -c: Clear the screen
+# -s: Run command using the shell
+ls $filesToWatch \
+  | entr -c -s "$commandToRun"

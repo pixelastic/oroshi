@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+local TMP_DIRECTORY=~/local/tmp/entr
+local LATEST_VERSION="5.2"
+local DOWNLOAD_URL="https://eradman.com/entrproject/code/entr-${LATEST_VERSION}.tar.gz"
+
+
+mkdir $TMP_DIRECTORY
+cd $TMP_DIRECTORY
+wget $DOWNLOAD_URL -o entr.tgz
+tar xvzf entr.tgz
