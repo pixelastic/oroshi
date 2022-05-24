@@ -135,7 +135,7 @@ function __prompt-git-branch-color() {
 function __prompt-github-issues-and-prs() {
   # No GITHUB_TOKEN
   if [[ ! -v GITHUB_TOKEN ]]; then
-    echo -n "%F{$COLORS[red]} %f"
+    echo -n "%F{$COLORS[red]}  %f"
     return
   fi
 
