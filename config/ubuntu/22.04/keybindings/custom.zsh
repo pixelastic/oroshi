@@ -35,10 +35,10 @@ custom[6,binding]='<Super>S'
 custom[7,name]='Flameshot'
 custom[7,command]='/usr/bin/flameshot gui'
 custom[7,binding]='<Super>Print'
-# TODO
-custom[8,name]='TODO'
-custom[8,command]='TODO'
-custom[8,binding]=''
+# Peek
+custom[8,name]='Peek'
+custom[8,command]='/home/tim/.oroshi/scripts/bin/peek'
+custom[8,binding]='<Super><Alt>Print'
 # TODO
 custom[9,name]='TODO'
 custom[9,command]='TODO'
