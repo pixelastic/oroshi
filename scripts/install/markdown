@@ -1,9 +1,10 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 set -e
 
 # Lint markdown
 yarn add global textlint \
                 prettier \
                 remark-cli \
-                remark-lint 
+                remark-lint
+
 echo "Also run yarn install from the root of ~/.oroshi"

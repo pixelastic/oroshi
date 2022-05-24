@@ -12,10 +12,10 @@
     "remark-reference-links": "4.0.4"
   },
   "dependencies": {
-    "global": "^4.4.0",
-    "prettier": "^2.3.0",
-    "remark-cli": "^9.0.0",
-    "remark-lint": "^8.0.0",
-    "textlint": "^11.9.1"
+    "global": "4.4.0",
+    "prettier": "2.6.2",
+    "remark-cli": "10.0.1",
+    "remark-lint": "9.1.1",
+    "textlint": "12.1.1"
   }
 }
