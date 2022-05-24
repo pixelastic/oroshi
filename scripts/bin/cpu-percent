@@ -5,6 +5,12 @@
 # too many crashes lately and I want to see my CPU all the time
 
 local cpuUsed="$(grep 'cpu ' /proc/stat)"
+
+# Calculate percentage
 cpuUsed="$(echo $cpuUsed | awk '{print ($2+$4)*100/($2+$4+$5)}')"
+
+# Round number after decimal
 cpuUsed="$(echo $cpuUsed | cut -f1 -d'.')"
+cpuUsed="$(echo $cpuUsed | cut -f1 -d',')"
+
 echo $cpuUsed
