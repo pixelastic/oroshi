@@ -10,19 +10,19 @@ declare -A custom
 # Terminal
 custom[0,name]='Kitty'
 custom[0,command]='/usr/bin/kitty'
-custom[0,binding]='<Super>t'
+custom[0,binding]='<Super>T'
 # Chrome
 custom[1,name]='Chrome'
 custom[1,command]='google-chrome'
-custom[1,binding]='<Primary><Super>c'
+custom[1,binding]='<Super>C'
 # Keepass
 custom[3,name]='Keepass'
 custom[3,command]='keepassx ~/perso/Dropbox/tim/keys.kdbx'
-custom[3,binding]='<Primary><Super>k'
+custom[3,binding]='<Super>K'
 # Tomate
 custom[4,name]='Pomodoro'
 custom[4,command]='gnome-pomodoro'
-custom[4,binding]='<Primary><Super>t'
+custom[4,binding]='<Super>P'
 # Calculator
 custom[5,name]='Calculator'
 custom[5,command]='gnome-calculator'
