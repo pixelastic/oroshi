@@ -1,10 +1,8 @@
 " COLORS {{{
-"
+
 " Enabling syntax highlighting
 syntax on
 colorscheme oroshi
-" Coloring current line
-set cursorline
 
 " FUNCTIONS {{{
 " Reloading the colorscheme
