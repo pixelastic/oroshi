@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+
+local NVIM_CONFIG_DIR=~/.config/nvim
+local OROSHI_CONFIG_DIR=~/.oroshi/config/nvim
+
+# Create config file
+mkdir -p $NVIM_CONFIG_DIR
+ln \
+  -fns $OROSHI_CONFIG_DIR/init.vim \
+  $NVIM_CONFIG_DIR/init.vim
+
+# Create runtime directories
+mkdir -p $NVIM_CONFIG_DIR/swap
+mkdir -p $NVIM_CONFIG_DIR/undo
+mkdir -p $NVIM_CONFIG_DIR/view
+
+# Link config directories
+ln -fns $OROSHI_CONFIG_DIR/includes $NVIM_CONFIG_DIR/includes
+ln -fns $OROSHI_CONFIG_DIR/colors $NVIM_CONFIG_DIR/colors
