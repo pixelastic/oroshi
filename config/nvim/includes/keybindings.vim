@@ -18,30 +18,12 @@ nmap <Space> .
 " }}}
 
 " CAPS LOCK {{{
-" Different machines map CAPS LOCK to a different keycode
-" Press Ctrl-V, followed by Caps Lock to write the keycode on the current
-" machine
-" Nova is [1;2S {{{
-inoremap <silent> [1;2S <Esc>l
-nnoremap [1;2S i
-vnoremap [1;2S <Esc>
-cnoremap [1;2S <Esc>
-onoremap [1;2S <Esc>
-" }}}
-" Doty (vim) is [57379u {{{
-inoremap <silent> [57379u <Esc>l
-nnoremap [57379u i
-vnoremap [57379u <Esc>
-cnoremap [57379u <Esc>
-onoremap [57379u <Esc>
-" }}}
-" Doty (nvim) is  {{{
-inoremap <silent>  <Esc>l
-nnoremap  i
-vnoremap  <Esc>
-cnoremap  <Esc>
-onoremap  <Esc>
-" }}}
+" Caps Lock has been remapped to ㉚through xmodmap
+inoremap <silent> ⇪ <Esc>l
+nnoremap ⇪ i
+vnoremap ⇪ <Esc>
+cnoremap ⇪ <Esc>
+onoremap ⇪ <Esc>
 " }}}
 
 " ARROWS {{{
@@ -58,6 +40,7 @@ endfunction
 inoremap <expr> <Down> (MultiPurposeDown())
 inoremap <expr> <Up> (MultiPurposeUp())
 " }}}
+
 " RETURN KEY {{{
 " - Select completion if completion menu open
 " - Normal new line otherwise (defers to endwise calling)
@@ -72,10 +55,10 @@ imap <expr> <CR> (MultiPurposeEnter())
 " Add line after this one
 nnoremap <CR> mzo<Esc>`z
 " Shift-Enter: Add new line before
-nnoremap [13;2u mzO<Esc>`z
-inoremap [13;2u <Esc>lmzO<Esc>`zi
+nnoremap ↰ mzO<Esc>`z
+inoremap ↰ <Esc>lmzO<Esc>`zi
 " Ctrl-Enter: Add new line after this char
-nnoremap [13;5u mzli<CR><Esc>`z
+nnoremap ↯ mzli<CR><Esc>`z
 " }}}
 " F6: Current file:line {{{
 function! CopyFileAndLine()
