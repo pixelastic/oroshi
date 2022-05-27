@@ -1,17 +1,20 @@
 source ~/.config/nvim/includes/security.vim
+source ~/.config/nvim/includes/encoding.vim
 source ~/.config/nvim/includes/plugins.vim
 source ~/.config/nvim/includes/functions.vim
+
+source ~/.config/nvim/includes/keybindings/index.vim
+source ~/.config/nvim/includes/statusline/index.vim
+source ~/.config/nvim/includes/lint/index.vim
 
 source ~/.config/nvim/includes/colors.vim
 source ~/.config/nvim/includes/display.vim
 source ~/.config/nvim/includes/file-editing.vim
 source ~/.config/nvim/includes/folding.vim
 source ~/.config/nvim/includes/indentation.vim
-source ~/.config/nvim/includes/keybindings/index.vim
 source ~/.config/nvim/includes/search.vim
 source ~/.config/nvim/includes/snippets.vim
 source ~/.config/nvim/includes/split.vim
-source ~/.config/nvim/includes/statusline/index.vim
 source ~/.config/nvim/includes/tabs.vim
 source ~/.config/nvim/includes/text-wrapping.vim
 source ~/.config/nvim/includes/triggers.vim
@@ -21,7 +24,6 @@ source ~/.config/nvim/includes/views.vim
 source ~/.config/nvim/includes/yank.vim
 source ~/.config/nvim/includes/completion.vim
 source ~/.config/nvim/includes/git.vim
-source ~/.config/nvim/includes/lint.vim
 
 " COMMANDS {{{
 " Keep more commands in history
@@ -53,8 +55,8 @@ nnoremap <silent> man :tabe<CR>:setlocal filetype=man<CR>:.!man<Space>
 
 " Custom Config {{{
 let hostname = system('echo -n $HOST')
-let customConfig=expand("~/.oroshi/config/nvim/local/".hostname.".vim")
+let customConfig=expand('~/.oroshi/config/nvim/local/'.hostname.'.vim')
 if filereadable(customConfig)
-  exec "source ".customConfig
+  exec 'source '.customConfig
 endif
 " }}}

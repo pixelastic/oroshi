@@ -43,18 +43,7 @@ Plug 'ekalinin/Dockerfile.vim'
 " Enhancing vim workflow {{{
 Plug 'sbdchd/neoformat'
 Plug 'scrooloose/syntastic'
-" Only add coc on machines that have a recent enough version of vim
-if v:version >= 801
-  let g:oroshi_coc_enabled=1
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  let g:coc_global_extensions = [
-    \ 'coc-eslint',
-    \ 'coc-prettier',
-    \ 'coc-html',
-    \ 'coc-json',
-    \ 'coc-tsserver'
-    \ ]
-endif
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " }}}
 " Git-related plugins {{{
 Plug 'airblade/vim-gitgutter'
