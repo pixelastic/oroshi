@@ -28,4 +28,16 @@ augroup autoread
   autocmd TabEnter ?* checktime
 augroup END
 " }}}
+" WORKING DIRECTORY {{{
+" By default, vim considers the shell working directory as vim working
+" directory. This means that a ":tabe " will only suggest files in the shell
+" working directory, not in the current file working directory.
+" This autocmd will se the current working directory as the current file
+" directory.
+" A vim option, "set autochdir" exists to do the same, but seems to confuse some
+" plugins (comittia and vimdeck)
+augroup autochdir
+  au!
+  autocmd BufEnter * silent! lchdir %:p:h
+augroup END
 " }}}
