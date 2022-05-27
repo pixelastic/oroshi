@@ -2,14 +2,12 @@ source ~/.config/nvim/includes/security.vim
 source ~/.config/nvim/includes/plugins.vim
 source ~/.config/nvim/includes/functions.vim
 
-
-
 source ~/.config/nvim/includes/colors.vim
 source ~/.config/nvim/includes/display.vim
 source ~/.config/nvim/includes/file-editing.vim
 source ~/.config/nvim/includes/folding.vim
 source ~/.config/nvim/includes/indentation.vim
-source ~/.config/nvim/includes/keybindings.vim
+source ~/.config/nvim/includes/keybindings/index.vim
 source ~/.config/nvim/includes/search.vim
 source ~/.config/nvim/includes/snippets.vim
 source ~/.config/nvim/includes/split.vim
