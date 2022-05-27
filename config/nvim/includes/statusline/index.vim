@@ -24,11 +24,11 @@ function! OroshiStatusLine()
   " Current mode {{{
   let rawMode = mode()
   let modeName = 'Unknown'
-  if rawMode == 'n' | let modeName = 'Normal' | endif
-  if rawMode == 'i' | let modeName = 'Insert' | endif
+  if rawMode ==# 'n' | let modeName = 'Normal' | endif
+  if rawMode ==# 'i' | let modeName = 'Insert' | endif
   " Both Search and Command are identified by "c", but we can check the content
   " of the commandline to see if it's a search ("\v") or a command
-  if rawMode == 'c'
+  if rawMode ==# 'c'
     let commandLine = getcmdline()
     if commandLine =~? '^\\v'
       let modeName = 'Search'
@@ -36,7 +36,7 @@ function! OroshiStatusLine()
       let modeName = 'Command'
     endif
   endif
-  if rawMode == 'v' || rawMode == 'V' || rawMode == ''
+  if rawMode ==? 'v' || rawMode ==# ''
     let modeName = 'Visual'
   endif
   let sl .= '%#StatusLineMode'.modeName.'# '.toupper(modeName).' %*'
@@ -60,13 +60,13 @@ function! OroshiStatusLine()
   " }}}
 
   " Git repo status {{{
-	if exists('b:gitStatus') && b:gitStatus != ''
+	if exists('b:gitStatus') && b:gitStatus !=# ''
     let sl .= '%#StatusLineGit'.b:gitStatus.'#ﰖ%* '
   endif
   " }}}
 
   " Line endings {{{
-  if &fileformat != "unix"
+  if &fileformat !=# 'unix'
     let sl .= '%#StatusLineFileFormatError# '.&fileformat.' %*'
   endif
   " }}}
@@ -76,7 +76,7 @@ function! OroshiStatusLine()
   " one defined in &fileencoding. If &fileencoding is empty, it fallbacks to
   " &encoding
   let fileEncoding = &fileencoding || &encoding
-  if fileEncoding != "utf-8"
+  if fileEncoding !=# 'utf-8'
     let sl .= '%#StatusLineFileEncodingError# '.fileEncoding.' %*'
   endif
   " }}}
@@ -88,8 +88,8 @@ function! OroshiStatusLine()
   "
   " Lint status {{{
   let b:lintStatusLine = LintStatusLine()
-  if b:lintStatusLine != ''
-    let sl .= b:lintStatusLine." "
+  if b:lintStatusLine !=# ''
+    let sl .= b:lintStatusLine.' '
   endif
   " }}}
 
@@ -104,19 +104,19 @@ function! OroshiStatusLine()
   " Foldmarker {{{
 
   let foldMarker = '?'
-  if &foldmethod == "manual" | let foldMarker = 'M' | endif
-  if &foldmethod == "marker" | let foldMarker = '{' | endif
-  if &foldmethod == "syntax" | let foldMarker = 'S' | endif
-  if &foldmethod == "indent" | let foldMarker = '▸' | endif
+  if &foldmethod ==# 'manual' | let foldMarker = 'M' | endif
+  if &foldmethod ==# 'marker' | let foldMarker = '{' | endif
+  if &foldmethod ==# 'syntax' | let foldMarker = 'S' | endif
+  if &foldmethod ==# 'indent' | let foldMarker = '▸' | endif
   let sl .= ' '.foldMarker.' '
   " }}}
 
   " Ruler {{{
-  let sl .= " "
-  let sl .= "0x%2.B" " current char
-  let sl .= " %2.c/%2.{&textwidth}" " current colum / max columns
-  let sl .= " %3l/%3L" " current line / max line
-  let sl .= " %3p%%" " percentage in file
+  let sl .= ' '
+  let sl .= '0x%2.B' " current char
+  let sl .= ' %2.c/%2.{&textwidth}' " current colum / max columns
+  let sl .= ' %3l/%3L' " current line / max line
+  let sl .= ' %3p%%' " percentage in file
   " }}}
   let sl .= '%*'
 

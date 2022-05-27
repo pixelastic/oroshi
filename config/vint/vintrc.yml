@@ -2,3 +2,10 @@ cmdargs:
   color: true
   env:
     neovim: true
+
+policies:
+  # UTF-8 is the default in nvim; this shouldn't be an issue
+  # See https://rbtnn.hateblo.jp/entry/2014/12/28/010913 for details
+  ProhibitMissingScriptEncoding:
+    enabled: false
+
