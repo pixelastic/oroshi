@@ -4,6 +4,12 @@
 syntax on
 colorscheme oroshi
 
+" set termguicolors 
+" hi Cursor guifg=green guibg=green
+" hi Cursor2 guifg=red guibg=red
+" set guicursor=n-v-c:block-Cursor,i-ci-ve:block-Cursor2,r-cr:hor20,o:hor50
+
+
 " FUNCTIONS {{{
 " Reloading the colorscheme
 function! ReloadColorScheme(scheme)

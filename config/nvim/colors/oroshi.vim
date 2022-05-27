@@ -3,76 +3,181 @@
 " "C'est parce qu'il y a 6 matières, c'est ca ?"
 
 " Initialization {{{
-set t_Co=256
+" Needed for nvim to color the cursor
+set termguicolors
 set background=dark
+" Coloring current line
+set cursorline
 hi clear
 if exists('syntax_on')
    syntax reset
 endif
 let g:colors_name = 'oroshi'
 " }}}
-" Generating the palette {{{
-" The order of the colors is important and must match what is defined in
-" kitty.conf
+" Defining the palette {{{
 let s:color = {}
-let s:color.black=0
-let s:color.white=15
-let s:color.terminal=16
-let orderedColors = [
-      \'gray', 
-      \'red', 
-      \'green', 
-      \'yellow', 
-      \'blue', 
-      \'purple', 
-      \'teal', 
-      \'orange', 
-      \'indigo', 
-      \'pink'
-      \]
+let s:color.black='#000000'
+let s:color.white='#FFFFFF'
+let s:color.terminal='#0c0f15'
+" Gray {{{
+let s:color.gray0='#808080'
+let s:color.gray1='#f7fafc'
+let s:color.gray2='#edf2f7'
+let s:color.gray3='#e2e8f0'
+let s:color.gray4='#cbd5e0'
+let s:color.gray5='#a0aec0'
+let s:color.gray6='#718096'
+let s:color.gray7='#4a5568'
+let s:color.gray8='#2d3748'
+let s:color.gray9='#1a202c'
+" }}}
+" Red {{{
+let s:color.red0='#ff0000'
+let s:color.red1='#fff5f5'
+let s:color.red2='#fed7d7'
+let s:color.red3='#feb2b2'
+let s:color.red4='#fc8181'
+let s:color.red5='#f56565'
+let s:color.red6='#e53e3e'
+let s:color.red7='#c53030'
+let s:color.red8='#9b2c2c'
+let s:color.red9='#742a2a'
+" }}}
+" Green {{{
+let s:color.green0='#00ff00'
+let s:color.green1='#f0fff4'
+let s:color.green2='#c6f6d5'
+let s:color.green3='#9ae6b4'
+let s:color.green4='#68d391'
+let s:color.green5='#48bb78'
+let s:color.green6='#38a169'
+let s:color.green7='#2f855a'
+let s:color.green8='#276749'
+let s:color.green9='#22543d'
+" }}}
+" Yellow {{{
+let s:color.yellow0='#ffff00'
+let s:color.yellow1='#fffff0'
+let s:color.yellow2='#fefcbf'
+let s:color.yellow3='#faf089'
+let s:color.yellow4='#f6e05e'
+let s:color.yellow5='#ecc94b'
+let s:color.yellow6='#d69e2e'
+let s:color.yellow7='#b7791f'
+let s:color.yellow8='#975a16'
+let s:color.yellow9='#744210'
+" }}}
+" Blue {{{
+let s:color.blue0='#0000ff'
+let s:color.blue1='#ebf8ff'
+let s:color.blue2='#bee3f8'
+let s:color.blue3='#90cdf4'
+let s:color.blue4='#63b3ed'
+let s:color.blue5='#4299e1'
+let s:color.blue6='#3182ce'
+let s:color.blue7='#2b6cb0'
+let s:color.blue8='#2c5282'
+let s:color.blue9='#2a4365'
+" }}}
+" Purple {{{
+let s:color.purple0='#ff00ff'
+let s:color.purple1='#faf5ff'
+let s:color.purple2='#e9d8fd'
+let s:color.purple3='#d6bcfa'
+let s:color.purple4='#b794f4'
+let s:color.purple5='#9f7aea'
+let s:color.purple6='#805ad5'
+let s:color.purple7='#6b46c1'
+let s:color.purple8='#553c9a'
+let s:color.purple9='#44337a'
+" }}}
+" Teal {{{
+let s:color.teal0='#00ffff'
+let s:color.teal1='#e6fffa'
+let s:color.teal2='#b2f5ea'
+let s:color.teal3='#81e6d9'
+let s:color.teal4='#4fd1c5'
+let s:color.teal5='#38b2ac'
+let s:color.teal6='#319795'
+let s:color.teal7='#2c7a7b'
+let s:color.teal8='#285e61'
+let s:color.teal9='#234e52'
+" }}}
+" Orange {{{
+let s:color.orange0='#ff8700'
+let s:color.orange1='#fffaf0'
+let s:color.orange2='#feebc8'
+let s:color.orange3='#fbd38d'
+let s:color.orange4='#ffaf00'
+let s:color.orange5='#ed8936'
+let s:color.orange6='#dd6b20'
+let s:color.orange7='#c05621'
+let s:color.orange8='#9c4221'
+let s:color.orange9='#7b341e'
+" }}}
+" Indigo {{{
+let s:color.indigo0='#5f00ff'
+let s:color.indigo1='#ebf4ff'
+let s:color.indigo2='#c3dafe'
+let s:color.indigo3='#a3bffa'
+let s:color.indigo4='#7f9cf5'
+let s:color.indigo5='#667eea'
+let s:color.indigo6='#5a67d8'
+let s:color.indigo7='#4c51bf'
+let s:color.indigo8='#434190'
+let s:color.indigo9='#3c366b'
+" }}}
+" Pink {{{
+let s:color.pink0='#d787ff'
+let s:color.pink1='#fff5f7'
+let s:color.pink2='#fed7e2'
+let s:color.pink3='#fbb6ce'
+let s:color.pink4='#f687b3'
+let s:color.pink5='#ed64a6'
+let s:color.pink6='#d53f8c'
+let s:color.pink7='#b83280'
+let s:color.pink8='#97266d'
+let s:color.pink9='#702459'
+" }}}
 
-let colorCount=len(orderedColors)
-let colorGroupIndex = 0
-while colorGroupIndex < colorCount
-  let colorGroupName = get(orderedColors, colorGroupIndex)
-
-  let colorIndex = 1
-  while colorIndex < 10
-    let colorName = colorGroupName . colorIndex
-    let colorValue = 20 + (colorGroupIndex * 10) + colorIndex
-    let s:color[colorName]=colorValue
-    let colorIndex += 1
-  endwhile
-  " Easy access to the color
-  let s:color[colorGroupName]=s:color[colorGroupName.'6']
-
-  let colorGroupIndex += 1
-endwhile
+" Make {color} equal to {color}6
+let s:color_names = keys(s:color)
+for s:color_name in keys(s:color)
+   " Skip non -6 colors
+   if s:color_name !~? '6$'
+      continue
+   endif
+   " Save base color as the -6
+   let s:base_color_name = substitute(s:color_name, '6', '', '')
+   let s:color[s:base_color_name] = s:color[s:color_name]
+endfor
 " }}}
 " Highlighting function {{{
-" args : group, foreground, background, cterm
+" args : group, foreground, background, decoration
 function! s:Highlight(group,...)
   let name = get(a:, 'group')
   let foreground = get(a:, '1', '')
   let background = get(a:, '2', '')
   let decoration = get(a:, '3', '')
 
-  " Everything is empty, we clear the highlight
+  " We clear all previous highlight, to start from a clean slate
+  execute 'hi clear '.name
+
+  " Everything is empty, we stop now
   if foreground == '' && background == '' && decoration == ''
-    execute 'hi clear '.name
     return
   endif
 
   " We build the highlight string
   let result = 'hi! '.name
   if foreground != ''
-    let result .= ' ctermfg='.get(s:color, foreground)
+    let result .= ' guifg='.get(s:color, foreground)
   endif
   if background != ''
-    let result .= ' ctermbg='.get(s:color, background)
+    let result .= ' guibg='.get(s:color, background)
   endif
   if decoration != ''
-    let result .= ' cterm='.decoration
+    let result .= ' gui='.decoration
   endif
 
   execute result
@@ -119,12 +224,6 @@ call s:Highlight('TabLine', 'gray4', 'gray9', 'none')
 " Cursor {{{
 call s:Highlight('CursorLineNr', 'yellow', '', 'bold')
 call s:Highlight('CursorLine', '', 'gray9', 'none')
-if &term =~ "xterm"
-  " Cursor in insert mode
-  let &t_SI = "\<Esc>]12;#AF8700\x7"
-  " Cursor in normal mode
-  let &t_EI = "\<Esc>]12;#D70000\x7"
-endif
 " }}}
 " Folds {{{
 call s:Highlight('Folded', 'gray5', 'gray9')
@@ -210,7 +309,7 @@ call s:Highlight('CocFloating', 'gray5', 'gray9')
 call s:Highlight('CocWarningFloat', 'yellow', 'gray9', 'bold')
 call s:Highlight('CocErrorFloat', 'red', 'gray9', 'bold')
 call s:Highlight('CocErrorHighlight', '', '', 'bold')
-" }}}
+
 " call s:Highlight('CocBold', 'pink', 'white')
 " call s:Highlight('CocCodeLens', 'pink', 'white')
 " call s:Highlight('CocCursorRange', 'pink', 'white')
@@ -243,7 +342,7 @@ call s:Highlight('MatchParen', 'white', 'teal9')
 call s:Highlight('ErrorMsg', 'red', 'none', 'bold')
 call s:Highlight('WarningMsg', 'yellow8')
 " }}}
-" Spell Checking / Errors
+" Spell Checking / Errors {{{
 call s:Highlight('SpellBad', 'red', 'terminal', 'bold,underline')
 call s:Highlight('SpellCap', 'red', 'terminal', 'bold,underline')
 " }}}
@@ -435,96 +534,12 @@ call s:Highlight('zshVariableDef', 'indigo4')
 " call s:Link('ansibleRepeat', 'oroshi_CodeChute')
 " call s:Link('ansibleConditional', 'oroshi_CodeStatement')
 " " }}}
-" " CSS {{{
-" call s:Link('sassClass', 'oroshi_CodeFunction')
-" call s:Link('sassClassChar', 'oroshi_CodeFunction')
-" call s:Link('sassAmpersand', 'oroshi_CodeSelf')
-" call s:Link('scssSelectorName', 'oroshi_CodeVariable')
-" call s:Link('scssProperty', 'oroshi_CodeSymbol')
-" call s:Link('scssParameterList', 'oroshi_CodeSymbol')
-" call s:Link('cssAttrComma', 'oroshi_Text')
-" call s:Link('cssAttr', 'oroshi_CodeSymbol')
-" call s:Link('cssBraces', 'oroshi_Text')
-" call s:Link('cssColor', 'oroshi_CodeNumber')
-" call s:Link('cssClassName', 'oroshi_CodeVariable')
-" call s:Link('cssClassNameDot', 'oroshi_TextSpecial')
-" call s:Link('cssFunction', 'oroshi_CodeSymbol')
-" call s:Link('cssImportant', 'oroshi_Error')
-" call s:Link('cssIncludeKeyword', 'oroshi_CodeInclude')
-" call s:Link('cssMedia', 'oroshi_CodeInclude')
-" call s:Link('cssProp', 'oroshi_CodeType')
-" call s:Link('cssPseudoClassId', 'oroshi_CodeVariable')
-" call s:Link('cssUnitDecorators', 'oroshi_CodeNumber')
-" call s:Link('cssValueLength', 'oroshi_CodeNumber')
-" call s:Link('cssVendorPrefixProp', 'oroshi_CodeType')
-" " }}}
-" " HTML {{{
-" call s:Link('htmlTag', 'oroshi_CodeStatement')
-" call s:Link('htmlTagName', 'oroshi_CodeStatement')
-" call s:Link('htmlEndTag', 'oroshi_CodeStatement')
-" call s:Link('htmlSpecialTagName', 'oroshi_CodeStatement')
-" call s:Link('htmlTagN', 'oroshi_CodeStatement')
-" call s:Link('htmlH1', 'oroshi_Text')
-" call s:Link('htmlItalic', 'oroshi_Text')
-" call s:Link('htmlLink', 'oroshi_Text')
-" call s:Link('htmlTitle', 'oroshi_Text')
-" " }}}
-" " Markdown {{{
-" call s:Link('MarkdownRule', 'oroshi_TextDelimiter')
-" call s:Link('MarkdownBold', 'oroshi_TextBold')
-" call s:Link('MarkdownItalic', 'oroshi_TextItalic')
-" call s:Link('MarkdownListMarker', 'oroshi_Text')
-" " Links
-" call s:Link('markdownLinkDelimiter', 'oroshi_TextLink')
-" call s:Link('markdownIdDeclaration', 'oroshi_TextLink')
-" call s:Link('markdownLinkTextDelimiter', 'oroshi_TextLink')
-" call s:Link('markdownLinkText', 'oroshi_TextLink')
-" call s:Link('markdownUrl', 'oroshi_TextUrl')
-" call s:Link('markdownId', 'oroshi_TextUrl')
-" call s:Link('markdownIdDelimiter', 'oroshi_TextUrl')
-" " Headings
-" call s:Link('MarkdownH1', 'oroshi_TextHeadingOne')
-" call s:Link('MarkdownH2', 'oroshi_TextHeadingTwo')
-" call s:Link('MarkdownH3', 'oroshi_TextHeadingThree')
-" call s:Link('MarkdownH4', 'oroshi_TextHeadingFour')
-" call s:Link('MarkdownH5', 'oroshi_TextHeadingFive')
-" call s:Link('MarkdownHeadingDelimiter', 'oroshi_TextDelimiter')
-" " Code
-" call s:Link('MarkdownCode', 'oroshi_CodeString')
-" call s:Link('MarkdownCodeblock', 'oroshi_CodeString')
-" call s:Link('MarkdownCodeDelimiter', 'oroshi_CodeString')
-" " }}}
-" " Pug {{{
-" call s:Link('pugAttributes', 'oroshi_CodeType')
-" call s:Link('pugTag', 'oroshi_CodeSymbol')
-" " }}}
-" " Ruby {{{
-" call s:Link('rubyPseudoVariable', 'oroshi_CodeSelf')
-" call s:Link('rubySymbol', 'oroshi_CodeSymbol')
-" call s:Link('rubyStringDelimiter', 'oroshi_CodeString')
-" call s:Link('rubyStringEscape', 'oroshi_TextSpecial')
-" call s:Link('rubyInterpolation', 'oroshi_TextSpecial')
-" call s:Link('rubyInterpolationDelimiter', 'oroshi_TextSpecial')
-" call s:Link('rubyModule', 'oroshi_CodeType')
-" call s:Link('rubyClass', 'oroshi_CodeType')
-" call s:Link('rubyDefine', 'oroshi_CodeType')
-" call s:Link('rubyConstant', 'oroshi_CodeClass')
-" call s:Link('rubyRegexp', 'oroshi_CodeRegexp')
-" call s:Link('rubyRegexpDelimiter', 'oroshi_CodeRegexpDelimiter')
-" call s:Link('rubyRegexpSpecial', 'oroshi_CodeRegexp')
-" call s:Link('rubyRegexpEscape', 'oroshi_TextSpecial')
-" " }}}
 " " Robots {{{
 " call s:Link('robotsDelimiter', 'oroshi_Text')
 " call s:Link('robotsAgent', 'oroshi_CodeStatement')
 " call s:Link('robotsDisallow', 'oroshi_CodeType')
 " call s:Link('robotsLine', 'oroshi_CodeString')
 " call s:Link('robotsStar', 'oroshi_CodeSymbol')
-" " }}}
-" " Shell {{{
-" " }}}
-" " VueJS {{{
-" call s:Link('vueSurroundingTag', 'oroshi_CodeStatement')
 " " }}}
 " " Vim {{{
 " call s:Highlight('VimLineComment', 'gray')

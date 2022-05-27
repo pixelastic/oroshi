@@ -1,0 +1,2 @@
+" TIDYRC
+setlocal commentstring=#\ %s

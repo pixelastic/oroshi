@@ -203,10 +203,10 @@ alias tmsl='tmux list-sessions'
 require 'aliases-git.zsh'
 # }}}
 # Vim {{{
-alias v='vim -p'
-alias va="vim ~/.oroshi/config/zsh/aliases.zsh"
-alias vf="vim ~/.oroshi/config/zsh/filetypes.db.zsh"
-alias ve='vim ~/.oroshi/config/vim/vimrc'
+alias v='nvim -p'
+alias va="v ~/.oroshi/config/zsh/aliases.zsh"
+alias vf="v ~/.oroshi/config/zsh/filetypes.db.zsh"
+alias ve='v ~/.oroshi/config/nvim/init.vim'
 alias vw='vim-which'
 # }}}
 # Tweet {{{

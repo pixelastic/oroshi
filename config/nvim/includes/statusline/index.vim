@@ -6,6 +6,8 @@ source ~/.vim/includes/statusline/lint.vim
 set laststatus=2
 " Custom statusline
 set statusline=%!OroshiStatusLine()
+" Hide  -- INSERT -- or -- VISUAL -- text, we already have it in the statusbar
+set noshowmode
 
 
 " Building the statusline
