@@ -5,5 +5,5 @@
 
 # If not inside tmux already and not connected through ssh, then start tmux
 if [[ -z "$TMUX" && -z "$SSH_CLIENT" ]]; then
-  # (tmux attach || tmux new-session) &>/dev/null
+  (tmux attach || tmux new-session) &>/dev/null
 fi
