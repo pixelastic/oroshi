@@ -26,6 +26,7 @@ source ~/.config/nvim/includes/keybindings/f8.vim
 source ~/.config/nvim/includes/keybindings/f9.vim
 
 source ~/.config/nvim/includes/keybindings/ctrl-s.vim
+source ~/.config/nvim/includes/keybindings/ctrl-p.vim
 source ~/.config/nvim/includes/keybindings/ctrl-d.vim
 source ~/.config/nvim/includes/keybindings/ctrl-a.vim
 

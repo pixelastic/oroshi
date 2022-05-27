@@ -242,14 +242,15 @@ call s:Highlight('CursorVisual', '', 'blue', 'none')
 let s:guicursor .= ",v:block-CursorVisual"
 
 " Command mode
-call s:Highlight('CursorCommand', '', 'orange', 'none')
+call s:Highlight('CursorCommand', '', 'teal', 'none')
 let s:guicursor .= ",c:block-CursorCommand"
+" When editing the current command
+call s:Highlight('CursorCommandInsert', '', 'teal', 'none')
+let s:guicursor .= ",ci:block-CursorCommandInsert"
 
 " Not sure what those do, so let's color them pink and see when that happens
 call s:Highlight('CursorReplace', '', 'pink', 'none')
 let s:guicursor .= ",r:block-CursorReplace"
-call s:Highlight('CursorCommandInsert', '', 'pink', 'none')
-let s:guicursor .= ",ci:block-CursorCommandInsert"
 call s:Highlight('CursorCommandReplace', '', 'pink', 'none')
 let s:guicursor .= ",cr:block-CursorCommandReplace"
 call s:Highlight('CursorInsertShowmatch', '', 'pink', 'none')
@@ -264,8 +265,8 @@ call s:Highlight('Folded', 'gray5', 'gray9')
 call s:Highlight('Visual', 'white', 'blue', 'bold')
 " }}}
 " Search {{{
-call s:Highlight('IncSearch', 'black', 'yellow', 'none')
-call s:Highlight('Search', 'black', 'yellow', 'bold')
+call s:Highlight('IncSearch', 'black', 'green', 'none')
+call s:Highlight('Search', 'black', 'green', 'bold')
 " }}}
 " Syntastic gutter {{{
 call s:Highlight('SyntasticErrorSign', 'red')
@@ -292,10 +293,12 @@ call s:Highlight('StatusLineModeCtrlPSeparator', 'red5', 'gray8')
 call s:Highlight('StatusLineModeCtrlP', 'black', 'red5', 'bold')
 call s:Highlight('StatusLineModeInsertSeparator', 'yellow', 'gray8')
 call s:Highlight('StatusLineModeInsert', 'black', 'yellow', 'bold')
-call s:Highlight('StatusLineModeNormalSeparator', 'none', 'gray8')
+call s:Highlight('StatusLineModeNormalSeparator', 'black', 'gray8')
 call s:Highlight('StatusLineModeNormal', 'white', 'black')
-call s:Highlight('StatusLineModeSearchSeparator', 'yellow', 'gray8')
-call s:Highlight('StatusLineModeSearch', 'black', 'yellow', 'bold')
+call s:Highlight('StatusLineModeSearchSeparator', 'green', 'gray8')
+call s:Highlight('StatusLineModeSearch', 'black', 'green', 'bold')
+call s:Highlight('StatusLineModeCommandSeparator', 'teal', 'gray8')
+call s:Highlight('StatusLineModeCommand', 'black', 'teal', 'bold')
 call s:Highlight('StatusLineModeUnknownSeparator', 'red', 'white')
 call s:Highlight('StatusLineModeUnknown', 'white', 'red')
 call s:Highlight('StatusLineModeVisualSeparator', 'blue', 'gray8')

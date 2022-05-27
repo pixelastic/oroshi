@@ -9,7 +9,6 @@ set statusline=%!OroshiStatusLine()
 " Hide  -- INSERT -- or -- VISUAL -- text, we already have it in the statusbar
 set noshowmode
 
-
 " Building the statusline
 " This will be called whenever a redraw is needed, so basically whenever we type
 " something or move the cursor around.
@@ -27,13 +26,23 @@ function! OroshiStatusLine()
   let modeName = 'Unknown'
   if rawMode == 'n' | let modeName = 'Normal' | endif
   if rawMode == 'i' | let modeName = 'Insert' | endif
-  if rawMode == 'c' | let modeName = 'Search' | endif
+  " Both Search and Command are identified by "c", but we can check the content
+  " of the commandline to see if it's a search ("\v") or a command
+  if rawMode == 'c'
+    let commandLine = getcmdline()
+    if commandLine =~? '^\\v'
+      let modeName = 'Search'
+    else
+      let modeName = 'Command'
+    endif
+  endif
   if rawMode == 'v' || rawMode == 'V' || rawMode == ''
-    let modeName = 'Visual' 
+    let modeName = 'Visual'
   endif
   let sl .= '%#StatusLineMode'.modeName.'# '.toupper(modeName).' %*'
   let sl .= '%#StatusLineMode'.modeName.'Separator#%* '
   " }}}
+  "
   
   " Current file {{{
   let filepath = expand('%:p:h:t').'/'.expand('%:t')
