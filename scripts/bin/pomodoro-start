@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+# Start a 25mn pomodoro
+pomodoro start &>/dev/null

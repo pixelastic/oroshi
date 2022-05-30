@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# Stop a currently running pomodoro. This will cancel it, to count it has
+# finished
+pomodoro cancel

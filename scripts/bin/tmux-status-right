@@ -10,6 +10,20 @@ else
   output="#[fg=colour${COLORS[red]}] #[default] $output"
 fi
 # }}}
+# Pomodoro status {{{
+local pomodoro_status=""
+local raw_pomodoro_status="$(pomodoro-status)"
+local pomodoro_status_split=("${(@s/:/)raw_pomodoro_status}")
+local pomodoro_status_name=$pomodoro_status_split[1]
+local pomodoro_status_remaining=$pomodoro_status_split[2]
+
+[[ $raw_pomodoro_status == "stopped" ]] && pomodoro_status="#[fg=colour${COLORS[gray7]}]#[default]"
+[[ $raw_pomodoro_status == "finished" ]] && pomodoro_status="#[fg=colour${COLORS[red]}] #[default]"
+[[ $pomodoro_status_name == "running" ]] && pomodoro_status="#[fg=colour${COLORS[yellow]}] ${pomodoro_status_remaining}m#[default]"
+[[ $pomodoro_status_name == "paused" ]] && pomodoro_status="#[fg=colour${COLORS[gray]}] ${pomodoro_status_remaining}m#[default]"
+
+output="$pomodoro_status $output"
+# }}}
 # Clock {{{
 local clock="$(date +'%d/%m %H:%M')"
 output=" $clock $output"

@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# Saves the current remaining time in a file, and cancel the current pomodoro
+
+local PAUSED_DATA_FILE=/tmp/pomodoro-pause.txt
+
+pomodoro status -f "%R" > $PAUSED_DATA_FILE
+pomodoro cancel

@@ -1,8 +1,7 @@
 #!/usr/bin/env zsh
-# Start a pomodoro if none is started, otherwise put it on hold
-#
-# Running => Paused (saving the remaining time)
-# Paused => Running (restarting on last saved time)
+# Start/Stop a Pomodoro
+# Running => Stopped
+# Paused => Stopped
 # Stopped => Running
 # Finished => Running
 
@@ -13,6 +12,12 @@ path+=('/home/tim/.oroshi/scripts/bin')
 export PATH
 
 local currentStatus="$(pomodoro-status)"
+
+# Currently running pomodoro, we stop it
+if [[ $currentStatus == running* ]]; then
+  pomodoro-stop
+  exit 0
+fi
 
 # Already stopped, we start a new one
 if [[ $currentStatus == "stopped" ]]; then
@@ -25,17 +30,4 @@ if [[ $currentStatus == "finished" ]]; then
   pomodoro-start
   exit 0
 fi
-
-# Currently running pomodoro, we pause it
-if [[ $currentStatus == running* ]]; then
-  pomodoro-pause
-  exit 0
-fi
-
-# Already paused Pomodoro, we resume from where we left
-if [[ $currentStatus == paused* ]]; then
-  pomodoro-resume
-  exit 0
-fi
-
 

@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+local pomodoroStatus=$(pomodoro-status)
+# Not started
+[[ $pomodoroStatus == "" ]] && exit 1
+# Finished
+[[ $pomodoroStatus == "❗️" ]] && exit 1
+exit 0
