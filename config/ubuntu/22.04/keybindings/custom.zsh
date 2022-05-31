@@ -2,7 +2,7 @@
 local GSETTINGS_ROOT="org.gnome.settings-daemon.plugins.media-keys.custom-keybinding"
 local GSETTINGS_DIRECTORY="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
 
-local shortcuts=(
+local                  shortcuts=(
 # Name                 Command                                               Binding
 "Calculator"           "gnome-calculator"                                    "Insert"
 "Chrome"               "google-chrome"                                       "<Super>C"
@@ -13,6 +13,9 @@ local shortcuts=(
 "Pomodoro Start/Pause" "/home/tim/.oroshi/scripts/bin/pomodoro-toggle-pause" "<Super><Alt>I"
 "Pomodoro Start/Stop"  "/home/tim/.oroshi/scripts/bin/pomodoro-toggle-stop"  "<Super><Alt>O"
 "Slack"                "/usr/bin/slack"                                      "<Super>S"
+"Music Start/Pause"    "/home/tim/.oroshi/scripts/bin/music-toggle-pause"    "<Super>I"
+"Music Next"           "/home/tim/.oroshi/scripts/bin/music-next"            "<Super>L"
+"Music Previous"       "/home/tim/.oroshi/scripts/bin/music-next"            "<Super>H"
 )
 
 
