@@ -1,55 +1,44 @@
 #!/usr/bin/env zsh
-gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings '["/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/", "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom10/"]'
+local GSETTINGS_ROOT="org.gnome.settings-daemon.plugins.media-keys.custom-keybinding"
+local GSETTINGS_DIRECTORY="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
 
-# Sometimes it seems impossible to remap a shortcut to a specific key, maybe
-# because the OS is already remapping it a higher level
-# Run the custom script `kbl '<Super>t'` for example to see what is using
-# this mapping, or unmap all instances with `kbR '<Super>t'`
+local shortcuts=(
+# Name                 Command                                               Binding
+"Calculator"           "gnome-calculator"                                    "Insert"
+"Chrome"               "google-chrome"                                       "<Super>C"
+"Flameshot"            "/usr/bin/flameshot gui"                              "<Super>Print"
+"Keepass"              "keepassx ~/perso/Dropbox/tim/keys.kdbx"              "<Super>K"
+"Kitty"                "/usr/bin/kitty"                                      "<Super>T"
+"Peek"                 "/home/tim/.oroshi/scripts/bin/peek"                  "<Super><Alt>Print"
+"Pomodoro Start/Pause" "/home/tim/.oroshi/scripts/bin/pomodoro-toggle-pause" "<Super><Alt>I"
+"Pomodoro Start/Stop"  "/home/tim/.oroshi/scripts/bin/pomodoro-toggle-stop"  "<Super><Alt>O"
+"Slack"                "/usr/bin/slack"                                      "<Super>S"
+)
 
-declare -A custom
-# Terminal
-custom[0,name]='Kitty'
-custom[0,command]='/usr/bin/kitty'
-custom[0,binding]='<Super>T'
-# Chrome
-custom[1,name]='Chrome'
-custom[1,command]='google-chrome'
-custom[1,binding]='<Super>C'
-# Keepass
-custom[3,name]='Keepass'
-custom[3,command]='keepassx ~/perso/Dropbox/tim/keys.kdbx'
-custom[3,binding]='<Super>K'
-# TODO
-custom[4,name]=''
-custom[4,command]=''
-custom[4,binding]=''
-# Calculator
-custom[5,name]='Calculator'
-custom[5,command]='gnome-calculator'
-custom[5,binding]='Insert'
-# Slack
-custom[6,name]='Slack'
-custom[6,command]='/usr/bin/slack'
-custom[6,binding]='<Super>S'
-# Flameshot
-custom[7,name]='Flameshot'
-custom[7,command]='/usr/bin/flameshot gui'
-custom[7,binding]='<Super>Print'
-# Peek
-custom[8,name]='Peek'
-custom[8,command]='/home/tim/.oroshi/scripts/bin/peek'
-custom[8,binding]='<Super><Alt>Print'
-# Pomodoro Start/Pause
-custom[9,name]='Pomodoro Start/Pause'
-custom[9,command]='/home/tim/.oroshi/scripts/bin/pomodoro-toggle-pause'
-custom[9,binding]='<Super><Alt>I'
-# Pomodoro Start/Stop
-custom[10,name]='Pomodoro Start/Stop'
-custom[10,command]='/home/tim/.oroshi/scripts/bin/pomodoro-toggle-stop'
-custom[10,binding]='<Super><Alt>O'
 
-for ((i=0;i<=11;i++)) do
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom${i}/ name "'${custom[$i,name]}'"
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom${i}/ command "'${custom[$i,command]}'"
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom${i}/ binding "'${custom[$i,binding]}'"
+# Iterating through all the bindings
+local shortcut_count=$((${#shortcuts[@]} / 3))
+local shortcut_inventory=()
+for shortcut_index in {1..$shortcut_count}; do
+  local array_index=$((1 + ($shortcut_index - 1) * 3))
+
+  local shortcut_name=$shortcuts[$array_index]
+  local shortcut_command=$shortcuts[$array_index+1]
+  local shortcut_binding=$shortcuts[$array_index+2]
+
+  # Setting each shortcut individually
+  gsettings set ${GSETTINGS_ROOT}:${GSETTINGS_DIRECTORY}/custom${shortcut_index}/ name    "'${shortcut_name}'"
+  gsettings set ${GSETTINGS_ROOT}:${GSETTINGS_DIRECTORY}/custom${shortcut_index}/ command "'${shortcut_command}'"
+  gsettings set ${GSETTINGS_ROOT}:${GSETTINGS_DIRECTORY}/custom${shortcut_index}/ binding "'${shortcut_binding}'"
+
+  echo "$shortcut_index/ $shortcut_name: [$shortcut_binding] => $shortcut_command"
+
+  shortcut_inventory+="\"${GSETTINGS_DIRECTORY}/custom${shortcut_index}/\""
 done
+
+gsettings set \
+  org.gnome.settings-daemon.plugins.media-keys \
+  custom-keybindings \
+  "[${(j:,:)shortcut_inventory}]"
+
+

@@ -8,6 +8,7 @@ call plug#begin('~/.config/nvim/plugins')
 Plug 'danro/rename.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/vim-easy-align'
 Plug 'pixelastic/vim-undodir-tree'
 Plug 'gioele/vim-autoswap'
 Plug 'tpope/vim-commentary'
@@ -17,7 +18,6 @@ Plug 'tpope/vim-ragtag'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
-Plug 'vim-scripts/Align'
 Plug 'vim-scripts/argtextobj.vim'
 " }}}
 " Language specific syntax {{{

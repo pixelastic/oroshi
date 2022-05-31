@@ -35,7 +35,8 @@ source ~/.config/nvim/includes/keybindings/dash.vim
 source ~/.config/nvim/includes/keybindings/underscore.vim
 source ~/.config/nvim/includes/keybindings/hjkl.vim
 
-source ~/.config/nvim/includes/keybindings/lines.vim
+source ~/.config/nvim/includes/keybindings/sort.vim
+source ~/.config/nvim/includes/keybindings/align.vim
 
 
 
@@ -103,10 +104,4 @@ nnoremap gcp vipgc
 " Increment/Decrement number under cursor
 nnoremap <C-J> <C-X>
 nnoremap <C-K> <C-A>
-" }}}
-
-
-" PLUGINS {{{
-" Preventing Align from loading the whole list of its mappings
-let g:loaded_AlignMapsPlugin = '1'
 " }}}
