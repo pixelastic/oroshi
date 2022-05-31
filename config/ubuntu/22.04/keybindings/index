@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+# The name of the files follow the headers in Settings > Keyboard Shortcuts
+./launchers
+./navigation
+./screenshots
+./sound-and-media
+./system
+./windows
+./custom

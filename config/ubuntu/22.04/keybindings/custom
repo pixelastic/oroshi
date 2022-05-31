@@ -13,35 +13,36 @@ local                  shortcuts=(
 "Pomodoro Start/Pause" "/home/tim/.oroshi/scripts/bin/pomodoro-toggle-pause" "<Super><Alt>I"
 "Pomodoro Start/Stop"  "/home/tim/.oroshi/scripts/bin/pomodoro-toggle-stop"  "<Super><Alt>O"
 "Slack"                "/usr/bin/slack"                                      "<Super>S"
-"Music Start/Pause"    "/home/tim/.oroshi/scripts/bin/music-toggle-pause"    "<Super>I"
-"Music Next"           "/home/tim/.oroshi/scripts/bin/music-next"            "<Super>L"
-"Music Previous"       "/home/tim/.oroshi/scripts/bin/music-next"            "<Super>H"
 )
+
+function gsettings_set {
+  local path=$1
+  local key=$2
+  local value=$3
+  echo "gsettings set $path $key $value"
+  /usr/bin/gsettings set "$path" "$key" "$value"
+}
 
 
 # Iterating through all the bindings
 local shortcut_count=$((${#shortcuts[@]} / 3))
 local shortcut_inventory=()
 for shortcut_index in {1..$shortcut_count}; do
-  local array_index=$((1 + ($shortcut_index - 1) * 3))
+  local custom_index=$((shortcut_index - 1))
+  local array_index=$((1 + $custom_index * 3))
 
   local shortcut_name=$shortcuts[$array_index]
   local shortcut_command=$shortcuts[$array_index+1]
   local shortcut_binding=$shortcuts[$array_index+2]
 
   # Setting each shortcut individually
-  gsettings set ${GSETTINGS_ROOT}:${GSETTINGS_DIRECTORY}/custom${shortcut_index}/ name    "'${shortcut_name}'"
-  gsettings set ${GSETTINGS_ROOT}:${GSETTINGS_DIRECTORY}/custom${shortcut_index}/ command "'${shortcut_command}'"
-  gsettings set ${GSETTINGS_ROOT}:${GSETTINGS_DIRECTORY}/custom${shortcut_index}/ binding "'${shortcut_binding}'"
+  gsettings_set "${GSETTINGS_ROOT}:${GSETTINGS_DIRECTORY}/custom${custom_index}/" "name" "'${shortcut_name}'"
+  gsettings_set "${GSETTINGS_ROOT}:${GSETTINGS_DIRECTORY}/custom${custom_index}/" "command" "'${shortcut_command}'"
+  gsettings_set "${GSETTINGS_ROOT}:${GSETTINGS_DIRECTORY}/custom${custom_index}/" "binding" "'${shortcut_binding}'"
 
-  echo "$shortcut_index/ $shortcut_name: [$shortcut_binding] => $shortcut_command"
-
-  shortcut_inventory+="\"${GSETTINGS_DIRECTORY}/custom${shortcut_index}/\""
+  shortcut_inventory+="'${GSETTINGS_DIRECTORY}/custom${custom_index}/'"
 done
 
-gsettings set \
-  org.gnome.settings-daemon.plugins.media-keys \
-  custom-keybindings \
-  "[${(j:,:)shortcut_inventory}]"
+gsettings_set "org.gnome.settings-daemon.plugins.media-keys" "custom-keybindings" "[${(j:,:)shortcut_inventory}]"
 
 
