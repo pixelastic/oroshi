@@ -1,10 +1,10 @@
 #!/usr/bin/env zsh
 
 # The name of the files follow the headers in Settings > Keyboard Shortcuts
-./launchers
-./navigation
-./screenshots
-./sound-and-media
-./system
-./windows
-./custom
+~/.oroshi/config/ubuntu/22.04/keybindings/launchers
+~/.oroshi/config/ubuntu/22.04/keybindings/navigation
+~/.oroshi/config/ubuntu/22.04/keybindings/screenshots
+~/.oroshi/config/ubuntu/22.04/keybindings/sound-and-media
+~/.oroshi/config/ubuntu/22.04/keybindings/system
+~/.oroshi/config/ubuntu/22.04/keybindings/windows
+~/.oroshi/config/ubuntu/22.04/keybindings/custom
