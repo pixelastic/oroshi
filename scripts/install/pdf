@@ -2,13 +2,12 @@
 # To extract pdf to images
 sudo apt-get install xpdf
 
-# To extract pages from pdf. This is no longer part of the official Ubuntu repos
-# as of 18.04 as it depends on an old GCJ runtime. This custom package uses
-# other dependecies
-sudo add-apt-repository ppa:malteworld/ppa
-sudo apt update
+# To extract pages from pdf
 sudo apt install pdftk
 
 # Includes pdfcrop (also adds margins)
 sudo apt-get install texlive-extra-utils
+
+# To sign pdf
+sudo apt-get install xournal
 

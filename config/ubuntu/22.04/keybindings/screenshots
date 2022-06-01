@@ -1,22 +1,16 @@
 #!/usr/bin/env zsh
 # Keyboards and shortcuts > Screenshots
-# We disable them all as we're using flameshot to do them
+# We disable them all.
+# We use flameshot and peek to do that, defined in custom keybindings
 
-# Area > Clipboard
-kbz '/org/gnome/settings-daemon/plugins/media-keys/area-screenshot-clip'
-# Area > Save to disk
-kbz '/org/gnome/settings-daemon/plugins/media-keys/area-screenshot'
+# Record a screencast interactively
+kbz '/org/gnome/shell/keybindings/show-screen-recording-ui'
 
-# Window > Clipboard
-kbz '/org/gnome/settings-daemon/plugins/media-keys/window-screenshot-clip'
-# Window > Save to disk
-kbz '/org/gnome/settings-daemon/plugins/media-keys/window-screenshot'
+# Take a screenshot
+kbz '/org/gnome/shell/keybindings/screenshot'
 
-# Screen > Clipboard
-kbz '/org/gnome/settings-daemon/plugins/media-keys/screenshot-clip'
-# Screen > Save to disk
-kbz '/org/gnome/settings-daemon/plugins/media-keys/screenshot'
+# Take a screenshot interactively
+kbz '/org/gnome/shell/keybindings/show-screenshot-ui'
 
-# Screencast
-kbz '/org/gnome/settings-daemon/plugins/media-keys/screencast'
-
+# Take a screenshot of a window
+kbz '/org/gnome/shell/keybindings/screenshot-window'
