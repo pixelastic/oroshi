@@ -1,4 +1,9 @@
 #!/usr/bin/env zsh
+set -e
+
+# Note that some keybindings can't be defined at the Ubuntu level, they seem to
+# be intercepted before (for example <Super>I). For those, we use xbindkeys
+# instead
 local GSETTINGS_ROOT="org.gnome.settings-daemon.plugins.media-keys.custom-keybinding"
 local GSETTINGS_DIRECTORY="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
 
@@ -19,7 +24,7 @@ function gsettings_set {
   local path=$1
   local key=$2
   local value=$3
-  echo "gsettings set $path $key $value"
+  # echo "gsettings set $path $key $value"
   /usr/bin/gsettings set "$path" "$key" "$value"
 }
 

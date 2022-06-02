@@ -1,6 +1,11 @@
 # Reload keybindings
 function ok() {
-  # Reload keybindings
-  ~/.oroshi/scripts/deploy/xmodmap # Custom keys
-  ~/.oroshi/config/ubuntu/22.04/keybindings/index # App bindings
+  # Custom keys
+  ~/.oroshi/scripts/deploy/xmodmap 
+
+  # App bindings
+  ~/.oroshi/config/ubuntu/22.04/keybindings/index 
+
+  # Keybindings that couldn't work with Ubuntu directly
+  ~/.oroshi/scripts/deploy/xbindkeys 
 }

@@ -1,10 +1,13 @@
 #!/usr/bin/env zsh
-
 # Mute/Unmute microphone
 kba "/org/gnome/settings-daemon/plugins/media-keys/mic-mute" "<Super>M"
+
+# We disable them all, because the play/pause works on the last focused sound,
+# so once one start playing a YouTube video, it's no longer possible to focus
+# Spotify.
 # Next song
-kba "/org/gnome/settings-daemon/plugins/media-keys/next" "<Super>L"
+kbz "/org/gnome/settings-daemon/plugins/media-keys/next"
 # Previous song
-kba "/org/gnome/settings-daemon/plugins/media-keys/previous" "<Super>H"
+kbz "/org/gnome/settings-daemon/plugins/media-keys/previous"
 # Play/Pause
-kba "/org/gnome/settings-daemon/plugins/media-keys/play" "<Super>I"
+kbz "/org/gnome/settings-daemon/plugins/media-keys/play"
