@@ -1,11 +1,7 @@
 " MARKDOWN
-" I write most of my markdown in english, and sometimes in french. I will
-" disable English-only settings when I know I'm in a french directory
-let b:thisFile = shellescape(expand('%:p'))
-let isRoleplay = b:thisFile =~# 'roleplay'
-let isBooks = b:thisFile =~# 'books'
-
 " Saving {{{
+" This will save the file on disk as often as possible. When writing markdown,
+" I don't want to lose what I wrote because of a glitch.
 augroup markdown_autosave
   au!
   autocmd CursorHold <Buffer> update
@@ -28,6 +24,9 @@ vnoremap <buffer> _ <Esc>mzg`>a_<Esc>g`<i_<Esc>`zl
 vnoremap <buffer> * <Esc>mzg`>a**<Esc>g`<i**<Esc>`zl
 " }}}
 " Linters {{{
+"
+"kjksjid
+"
 let b:npmRoot = GetNpmRoot()
 
 " Textlint
@@ -46,11 +45,9 @@ if b:prettierBin ==# ''
   let b:prettierBin = StrTrim(system('which prettier'))
 endif
 
-if or(isRoleplay, isBooks) ==# 0
-  let b:syntastic_checkers = ['textlint', 'remark_lint']
-  let b:syntastic_markdown_textlint_exec = b:textlintBin
-  let b:syntastic_markdown_remark_lint_exec = b:remarkLintBin
-endif
+let b:syntastic_checkers = ['textlint', 'remark_lint']
+let b:syntastic_markdown_textlint_exec = b:textlintBin
+let b:syntastic_markdown_remark_lint_exec = b:remarkLintBin
 " }}}
 " Cleaning the file {{{
 inoremap <silent> <buffer> <F4> <Esc>:call MarkdownBeautify()<CR>
@@ -105,12 +102,7 @@ vnoremap <buffer> ]] "zc[]()<Esc>hhh"zpll"*p
 " }}}
 " Spellchecking {{{
 setlocal spelllang=en
-if isRoleplay ==# 1
-  setlocal spelllang=fr
-endif
 " Change language and/or toggle
-nnoremap <buffer> se :setlocal spelllang=en<CR>
-nnoremap <buffer> sf :setlocal spelllang=fr<CR>
 nnoremap <buffer> <F6> :setlocal spell!<CR>
 inoremap <buffer> <F6> <Esc>:setlocal spell!<CR>i
 " Next/Previous error

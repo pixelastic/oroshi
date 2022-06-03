@@ -1,4 +1,3 @@
-/* eslint-disable import/no-commonjs */
 const os = require('os');
 module.exports = {
   rules: {
@@ -9,13 +8,19 @@ module.exports = {
         'attack',
         'bigger',
         'black',
-        'color',
+        'bullshit', // "Developers have a bullshit detector"
         'colors',
+        'color',
         'crash',
         'desire',
         'executed',
         'execution',
+        'kills', // "Run this command to kill all the processes"
+        'poverty', // "End world poverty"
+        'dirty', // "Don't use dirty tactics"
         'failed',
+        'failures', // "We all learn from our failures"
+        'failure',  // "Failure is a learning experience"
         'fear',
         'firing',
         'harder',
@@ -37,9 +42,12 @@ module.exports = {
     'en-capitalization': true,
     'stop-words': {
       exclude: [
+        'Saas', // Software as a Service is fine
         'relative to', // We need to talk about links "relative to the root",
         'pick out', // Needed word, not to clumsy
         'encounter', // Needed word, not to clumsy
+        'outside the box', // This is a required quality for DevRel
+        'think outside the box',
       ],
     },
     terminology: {

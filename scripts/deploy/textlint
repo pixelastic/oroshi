@@ -1,2 +1,7 @@
-#!/usr/bin/env bash
-ln -fs ~/.oroshi/config/textlint/textlintrc.js ~/.textlintrc.js
+#!/usr/bin/env zsh
+
+local OROSHI_CONFIG=~/.oroshi/config/textlint/textlintrc.js
+local TEXTLINT_CONFIG=~/.textlintrc.js
+ln \
+  -fs $OROSHI_CONFIG \
+  $TEXTLINT_CONFIG
