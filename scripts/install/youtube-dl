@@ -1,8 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 set -e
 
-# Youtube-dl
-wget https://yt-dl.org/downloads/latest/youtube-dl \
-	-O ~/local/bin/youtube-dl
-chmod +x ~/local/bin/youtube-dl
-~/local/bin/youtube-dl -U
+# Install latest master
+pip install \
+	https://github.com/ytdl-org/youtube-dl/archive/master.zip
+
