@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+# Display the number of files / directories in the current directory
+find ./* | wc -l
