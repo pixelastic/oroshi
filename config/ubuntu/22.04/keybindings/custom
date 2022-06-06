@@ -14,6 +14,7 @@ local                  shortcuts=(
 "Flameshot"            "/usr/bin/flameshot gui"                              "<Super>Print"
 "Keepass"              "keepassx ~/perso/Dropbox/tim/keys.kdbx"              "<Super>K"
 "Kitty"                "/usr/bin/kitty"                                      "<Super>T"
+"Notion"               "notion-snap"                                         "<Super>N"
 "Peek"                 "/home/tim/.oroshi/scripts/bin/peek"                  "<Super><Alt>Print"
 "Pomodoro Start/Pause" "/home/tim/.oroshi/scripts/bin/pomodoro-toggle-pause" "<Super><Alt>I"
 "Pomodoro Start/Stop"  "/home/tim/.oroshi/scripts/bin/pomodoro-toggle-stop"  "<Super><Alt>O"

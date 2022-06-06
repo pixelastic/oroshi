@@ -8,6 +8,6 @@ nohup \
   kdocker \
     -qol \
     -d 15 \
-    -i /home/tim/.oroshi/config/spotify/icon.png \
+    -i /home/tim/.oroshi/config/spotify/spotify.svg \
     /snap/bin/spotify \
     </dev/null >/dev/null 2>&1 &
