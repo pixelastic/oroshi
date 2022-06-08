@@ -70,8 +70,9 @@ add mod5    = ISO_Level3_Shift
 keycode 66 = U21EA
 
 !!!!! Enter key
-! Shift Enter is ↰
-keycode 36 = Return U21B0 Return U21B3
+! Note that Shift-Enter and Ctrl-Enter are mapped in Kitty
+keycode 36 = Return NoSymbol Return
+
 
 ! Space bar
 keycode 65 = space space space space
