@@ -19,6 +19,7 @@ local                  shortcuts=(
 "Pomodoro Start/Pause" "/home/tim/.oroshi/scripts/bin/pomodoro-toggle-pause" "<Super><Alt>I"
 "Pomodoro Start/Stop"  "/home/tim/.oroshi/scripts/bin/pomodoro-toggle-stop"  "<Super><Alt>O"
 "Slack"                "/usr/bin/slack"                                      "<Super>S"
+"Snippet Pixie"        "snippetpixie"                                        "<Super>P"
 )
 
 function gsettings_set {
