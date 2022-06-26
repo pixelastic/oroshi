@@ -23,6 +23,8 @@ module.exports = {
         'failure',  // "Failure is a learning experience"
         'fear',
         'firing',
+        'he-she', // We should be able to use the right pronoun
+        'her-him',
         'harder',
         'hooks',
         'hook',
@@ -31,6 +33,7 @@ module.exports = {
         'killed',
         'kill',
         'middleman-middlewoman',
+        'refugees', // "Konexio helps refugees"
         'nuts',
         'oral',
         'pros',
