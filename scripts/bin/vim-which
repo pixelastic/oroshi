@@ -20,7 +20,7 @@ class VimWhich
       path_list << path
     end
 
-    exec "vim -p #{path_list.join(' ')}"
+    exec "nvim -p #{path_list.join(' ')}"
   end
 
   def get_path(name)
