@@ -11,3 +11,15 @@ sudo apt-get install texlive-extra-utils
 # To sign pdf
 sudo apt-get install xournal
 
+## Note:
+# If you're having an error similar to this one when attempting to convert
+# a pdf:
+# convert-im6.q16: attempt to perform an operation not allowed by the security policy `PDF' @ error/constitute.c/IsCoderAuthorized/421.
+#
+# Then, you need to edit the /etc/ImageMagick-6/policy.xml file
+# You need to find a line similar to
+# <policy domain="coder" rights="none" pattern="{PS,PS2,PS3,EPS,PDF,XPS}" />
+# and comment it out.
+# Sometimes, it's several lines instead of just one
+
+
