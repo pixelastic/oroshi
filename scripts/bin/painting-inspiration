@@ -1,0 +1,45 @@
+#!/usr/bin/env ruby
+require 'fileutils'
+
+# Move all screenshots to /home/tim/Dropbox/backup/pictures/Painting/2 - Inspiration
+class PaintingInspiration
+  def initialize
+    @destination = File.expand_path(
+      File.join('~', 'Dropbox', 'backup', 'pictures', 'Painting', '2 - Inspiration')
+    )
+    @phone_height = 2400
+  end
+
+  def run
+    # Check dimension of all files in the directory
+    command = 'exiftool -ImageHeight *.jpg'
+    # To build a list of those that have a height equal to my phone
+    screenshots = []
+    filename = ''
+
+    IO.popen(command).each do |line|
+      # Parse the header line
+      # ======== 2022-06-25 18.57.26.jpg
+      if line.start_with?('===')
+        filename = line[9..-1].chomp
+        next
+      end
+
+      # Parse the Image Height
+      # Image Height                    : 2400
+      next unless line.start_with?('Image Height')
+
+      # Keep only height equal to the one on my phone
+      height = line.split(':')[1].to_i
+      filepath = File.join(Dir.pwd, filename)
+      screenshots.push(filepath) if height == @phone_height
+    end
+
+    screenshots.each do |screenshot|
+      FileUtils.mv(screenshot, @destination)
+    end
+    puts "Moved #{screenshots.size} files"
+  end
+end
+
+PaintingInspiration.new(*ARGV).run
