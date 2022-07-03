@@ -2,11 +2,14 @@
 # Watch for changes in files and run specific command when they change
 # Usage:
 #   $ watch-and-reload ./file1.txt ./file2.txt 'something && ls'
-local filesToWatch=(${(@)@[1,-2]})
 local commandToRun=$@[-1]
+local filesToWatch=(${(@)@[1,-2]})
 
-# If no command specified, we run the changed file
-[[ $commandToRun == "" ]] && commandToRun="/_"
+# If only one argument, the command to run is the file to watch
+if [[ $# == 1 ]]; then
+  commandToRun=$@[1]
+  filesToWatch=$@[1]
+fi
 
 # -c: Clear the screen
 # -s: Run command using the shell
