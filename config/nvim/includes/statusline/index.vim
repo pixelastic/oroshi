@@ -42,8 +42,7 @@ function! OroshiStatusLine()
   let sl .= '%#StatusLineMode'.modeName.'# '.toupper(modeName).' %*'
   let sl .= '%#StatusLineMode'.modeName.'Separator#%* '
   " }}}
-  "
-  
+
   " Current file {{{
   let filepath = expand('%:p:h:t').'/'.expand('%:t')
   let isWritable = &readonly == 0
@@ -82,8 +81,8 @@ function! OroshiStatusLine()
   " }}}
   
   " Right / Left separator {{{
-  let sl .= '%='
-  let sl .= '%#StatusLineRight#'
+  let sl .= '%<' " Cut statusline here if not enough room
+  let sl .= '%=' " Add whitespace to align next part on the right
   " }}}
   "
   " Lint status {{{
@@ -118,7 +117,6 @@ function! OroshiStatusLine()
   let sl .= ' %3l/%3L' " current line / max line
   let sl .= ' %3p%%' " percentage in file
   " }}}
-  let sl .= '%*'
 
 
   return sl
