@@ -13,5 +13,7 @@ fi
 
 # -c: Clear the screen
 # -s: Run command using the shell
+# Note: If the command to run takes too long, the script will hand until it
+# ended its execution.
 ls $filesToWatch \
-  | entr -c -s "$commandToRun"
+  | entr -a -c -s "$commandToRun"
