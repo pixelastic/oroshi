@@ -14,3 +14,6 @@ sudo dpkg -i ./dropbox.deb
 sudo apt-get -f install
 
 rm ./dropbox.deb
+
+# Dropbox overlays in Nautilus are WAY too big
+# Check in /usr/share/icons/Yaru for the emblem-dropbox-uptodate.png files
