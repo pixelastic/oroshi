@@ -79,7 +79,7 @@ alias guard='guard --clear'
 alias p8='ping 8.8.8.8'
 # Journal entries
 alias jrnle='jrnl --edit'
-alias jrnll='jrnl -n 15'
+alias jrnll='jrnl -n 10'
 # }}}
 # Download {{{
 alias pd='plowdown'
