@@ -79,7 +79,7 @@ alias guard='guard --clear'
 alias p8='ping 8.8.8.8'
 # Journal entries
 alias jrnle='jrnl --edit'
-alias jrnll='jrnl -n 3'
+alias jrnll='jrnl -n 15'
 # }}}
 # Download {{{
 alias pd='plowdown'
@@ -180,7 +180,6 @@ alias oa="~/.oroshi/scripts/deploy/autostart"
 alias oc="~/.oroshi/scripts/deploy/dircolors && source ~/.zshrc"
 alias of="fc-cache -f -v"
 alias oh="~/.oroshi/scripts/deploy/hosts"
-alias or="redshift -x && redshift -o"
 alias os="~/.oroshi/scripts/deploy/ssh"
 alias oz="source ~/.zshrc"
 alias vk="v ~/.oroshi/config/kitty/kitty.conf"
