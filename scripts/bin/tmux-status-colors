@@ -5,10 +5,10 @@
 source ~/.oroshi/config/zsh/theming/colors.zsh
 source ~/.oroshi/config/zsh/theming/projects.zsh
 
-local name="$1"
+local projectSlug="$1"
 
-local backgroundColor=$PROJECTS[${name},background]
-local textColor=$PROJECTS[${name},text]
+local projectBackground=$PROJECT_BACKGROUND[$projectSlug]
+local projectText=$PROJECT_TEXT[$projectSlug]
 
 
-echo "${COLORS[$backgroundColor]}:${COLORS[$textColor]}"
+echo "${COLORS[$projectBackground]}:${COLORS[$projectText]}"

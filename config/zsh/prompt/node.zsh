@@ -55,7 +55,7 @@ function __prompt-yarn-links() {
     totalModuleCount=$(($totalModuleCount + 1));
 
     # Add the module icon to the string
-    local moduleIcon=$PROJECTS[${moduleName},icon]
+    local moduleIcon=$PROJECT_ICON[$moduleName]
     if [[ $moduleIcon != '' ]]; then
       displayedString="${displayedString}${moduleIcon}"
       displayedModuleCount=$(($displayedModuleCount + 1));

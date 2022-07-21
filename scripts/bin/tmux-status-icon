@@ -4,6 +4,6 @@
 #   tmux-status-symbol projects
 source ~/.oroshi/config/zsh/theming/projects.zsh
 
-local name="$1"
+local projectSlug="$1"
 
-echo -n $PROJECTS[${name},icon]
+echo -n $PROJECT_ICON[$projectSlug]

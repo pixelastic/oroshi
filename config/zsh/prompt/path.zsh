@@ -1,23 +1,3 @@
-# We define an array of all known project path alongs with their short form
-knownPaths=()
-for key fullPath in "${(@kv)PROJECTS}"; do
-  # Skip non-path keys
-  [[ $key != *,path ]] &&  continue
-
-  # Build the short form
-  local projectName=${key%,*}
-  local backgroundColor=$COLORS[$PROJECTS[${projectName},background]]
-  local textColor=$COLORS[$PROJECTS[${projectName},text]]
-  local icon=$PROJECTS[${projectName},icon]
-  local slug=$projectName
-  [[ $PROJECTS[${projectName},hideNameInPath] == "1" ]] && slug=""
-  local shortPath="%K{$backgroundColor}%F{$textColor} ${icon}${slug} %f%k%F{$backgroundColor}%f "
-
-  # Save real path and short path
-  knownPaths+="${fullPath}:${shortPath}"
-done
-
-
 # Path
 # Displays the current path in a shortened form:
 # - Use a colored prefix icon for known paths
@@ -26,21 +6,23 @@ done
 function __prompt-path() {
   local currentPath="$(print -D $PWD)/"
 
-  # Remove known paths from the current path, to be replaced with short path
-  # later
-  local shortPath=""
-  for entry in ${(O)knownPaths}; do
-    local split=(${(s/:/)entry})
-    local knownPath=$split[1]
-
+  # We loop through each known project, to see if the current path matches one
+  # of the projects
+  local projectSlug=""
+  # Note: 
+  # - k: only keeping the keys (paths) of the array
+  # - O: ordering them, so the most precise are coming first
+  for projectPath in ${(kO)PROJECT_SLUG_BY_PATH}; do
     # Skip if do not start with this known path
-    [[ $currentPath != $knownPath* ]] && continue
+    [[ $currentPath != $projectPath* ]] && continue
+    
+    # We remove the full path from the current path
+    eval "currentPath=\${currentPath:s_${projectPath}_}"
 
-    # Store short path
-    shortPath=$split[2]
-    eval "currentPath=\${currentPath:s_${knownPath}_}"
+    # We keep in memory the slug of the current project
+    projectSlug=$PROJECT_SLUG_BY_PATH[$projectPath]
 
-    # We found it, no need to search for more
+    # Stop the loop now, we found the best match
     break
   done
 
@@ -56,9 +38,18 @@ function __prompt-path() {
     echo -n "%F{$COLORS[orange]}  $hostname %f%k"
   fi
 
-  # Add optional known path prefix
-  if [[ $shortPath != '' ]]; then
-    echo -n $shortPath
+  # Prefix with a shortened colored version of the project if in an active
+  # project
+  if [[ $projectSlug != '' ]]; then
+    local displayBackground=$COLORS[$PROJECT_BACKGROUND[$projectSlug]]
+    local displayText=$COLORS[$PROJECT_TEXT[$projectSlug]]
+    local displayIcon=$PROJECT_ICON[$projectSlug]
+
+    local displaySlug=$projectSlug
+    [[ $PROJECT_HIDE_NAME_IN_PROMPT[${projectSlug}] == "1" ]] && displaySlug=""
+
+    local displayProjectPrefix="%K{$displayBackground}%F{$displayText} ${displayIcon}${displaySlug} %f%k%F{$displayBackground}%f "
+    echo -n $displayProjectPrefix
   fi
 
 
