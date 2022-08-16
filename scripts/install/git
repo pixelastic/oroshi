@@ -19,6 +19,3 @@ sudo apt-get install \
 # Compiling
 make prefix="/home/$USER/local" all doc info
 sudo make prefix="/home/$USER/local" install install-doc install-html install-info
-
-# installing Github commandline tool
-yarn global add gh
