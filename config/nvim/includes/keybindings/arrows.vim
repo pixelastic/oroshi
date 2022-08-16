@@ -1,14 +1,10 @@
 " ARROWS {{{
-function! MultiPurposeDown()
-  let simple_down = "\<Down>"
-  let autocomplete_down_one_line = "\<C-N>"
-  return pumvisible() ? autocomplete_down_one_line : simple_down
-endfunction
-function! MultiPurposeUp()
-  let simple_up = "\<Up>"
-  let autocomplete_up_one_line = "\<C-P>"
-  return pumvisible() ? autocomplete_up_one_line : simple_up
-endfunction
-inoremap <expr> <Down> (MultiPurposeDown())
-inoremap <expr> <Up> (MultiPurposeUp())
-" }}}
+" In autocomplete mode, we hijack arrows to act as up and down
+
+" Autocomplete in insert mode
+inoremap <expr> <Down> pumvisible() ? "\<C-N>" : "\<Down>"
+inoremap <expr> <Up> pumvisible() ? "\<C-P>" : "\<Up>"
+
+" Autocomplete in command mode (opening a file for example)
+cnoremap <expr> <Down> pumvisible() ? "\<C-N>" : "\<Down>"
+cnoremap <expr> <Up> pumvisible() ? "\<C-P>" : "\<Up>"

@@ -1,19 +1,18 @@
-" HJKL in normal mode allow to move on the grid
-" In autocomplete, they act as arrow keys
-function! MultiPurposeJ()
-  let simple_j = 'j'
-  let autocomplete_down_one_line = "\<C-N>"
-  return pumvisible() ? autocomplete_down_one_line : simple_j
-endfunction
-function! MultiPurposeK()
-  let simple_k = 'k'
-  let autocomplete_up_one_line = "\<C-P>"
-  return pumvisible() ? autocomplete_up_one_line : simple_k
-endfunction
-" Move down/up including wrapped lines
-inoremap <expr> j (MultiPurposeJ())
-inoremap <expr> k (MultiPurposeK())
+" HJKL {{{
+" I use hjkl to move around, visually, on the grid
 nnoremap j gj
 nnoremap k gk
 vnoremap j gj
 vnoremap k gk
+
+" In autocomplete mode, we hijack them to act as up and down
+
+" Autocomplete in insert mode
+inoremap <expr> j pumvisible() ? "\<C-N>" : "j"
+inoremap <expr> k pumvisible() ? "\<C-P>" : "k"
+"
+" Autocomplete in command mode (opening a file for example)
+cnoremap <expr> j pumvisible() ? "\<C-N>" : "j"
+cnoremap <expr> k pumvisible() ? "\<C-P>" : "k"
+
+" }}}

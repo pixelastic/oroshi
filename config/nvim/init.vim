@@ -47,7 +47,7 @@ augroup END
 " ,ve to edit vimrc
 nnoremap <leader>ve :tabe ~/.oroshi/config/vim/vimrc<CR>
 " ,vr to reload vimrc
-nnoremap <leader>vr mz:source ~/.config/nvim/init.vim<CR>:let &filetype=&filetype<CR>:loadview<CR>:nohlsearch<CR>`z 
+nnoremap <leader>vr mz:source ~/.config/nvim/init.vim<CR>:let &filetype=&filetype<CR>:nohlsearch<CR>`z 
 " man to open the manpage of a command in a new tab
 nnoremap <silent> man :tabe<CR>:setlocal filetype=man<CR>:.!man<Space>
 " }}}
