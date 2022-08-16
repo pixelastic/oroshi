@@ -46,7 +46,7 @@ function __prompt-path() {
     local displayIcon=$PROJECT_ICON[$projectSlug]
 
     local displaySlug=$projectSlug
-    [[ $PROJECT_HIDE_NAME_IN_PROMPT[${projectSlug}] == "1" ]] && displaySlug=""
+    [[ $PROJECT_HIDE_NAME_IN_PROMPT[$projectSlug] == "1" ]] && displaySlug=""
 
     local displayProjectPrefix="%K{$displayBackground}%F{$displayText} ${displayIcon}${displaySlug} %f%k%F{$displayBackground}%f "
     echo -n $displayProjectPrefix
