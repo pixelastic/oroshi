@@ -23,4 +23,4 @@ ln -fns $OROSHI_CONFIG_DIR/includes $NVIM_CONFIG_DIR/includes
 ln -fns $OROSHI_CONFIG_DIR/snippets $NVIM_CONFIG_DIR/UltiSnips
 
 # Link Coc config file
-ln -fs ${OROSHI_CONFIG_DIR}/includes/lint/coc-settings.json $NVIM_CONFIG_DIR
+ln -fs ${OROSHI_CONFIG_DIR}/includes/plugins/coc-settings.json $NVIM_CONFIG_DIR

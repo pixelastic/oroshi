@@ -16,6 +16,9 @@
   /* Reduce noise in completion popup */
   "suggest.snippetIndicator": "  ",
   "suggest.disableKind": true,
+  /* Complete hidden filepaths */
+  "coc.source.file.ignoreHidden": false,
+  "suggest.virtualText": true,
 
   /* SIGNATURE HELP */
   "signature.enable": false,

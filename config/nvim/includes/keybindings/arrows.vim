@@ -1,10 +1,24 @@
 " ARROWS {{{
-" In autocomplete mode, we hijack arrows to act as up and down
+"
+" AUTOCOMPLETE
+" In autocomplete mode, we hijack arrows to act as up and down in the menu
 
-" Autocomplete in insert mode
-inoremap <expr> <Down> pumvisible() ? "\<C-N>" : "\<Down>"
-inoremap <expr> <Up> pumvisible() ? "\<C-P>" : "\<Up>"
+" Insert mode autocomplete
+inoremap <expr> <Up> SendCompletionKey("\<Up>", coc#pum#prev(1))
+inoremap <expr> <Right> SendCompletionKey("\<Right>", coc#pum#next(1))
+inoremap <expr> <Down> SendCompletionKey("\<Down>", coc#pum#next(1))
+inoremap <expr> <Left> SendCompletionKey("\<Left>", coc#pum#prev(1))
 
-" Autocomplete in command mode (opening a file for example)
-cnoremap <expr> <Down> pumvisible() ? "\<C-N>" : "\<Down>"
-cnoremap <expr> <Up> pumvisible() ? "\<C-P>" : "\<Up>"
+" Command mode autocomplete
+" TODO: Doesn't seem to work
+cnoremap <expr> <Up> SendCompletionKey("\<Up>", coc#pum#prev(1))
+cnoremap <expr> <Right> SendCompletionKey("\<Right>", coc#pum#next(1))
+cnoremap <expr> <Down> SendCompletionKey("\<Down>", coc#pum#next(1))
+cnoremap <expr> <Left> SendCompletionKey("\<Left>", coc#pum#prev(1))
+
+" NORMAL MODE
+" Use Arrow in normal mode to move accros splits
+nnoremap <Up> <C-W>k
+nnoremap <Right> <C-W>l
+nnoremap <Down> <C-W>j
+nnoremap <Left> <C-W>h

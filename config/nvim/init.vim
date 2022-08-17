@@ -2,10 +2,11 @@ source ~/.config/nvim/includes/security.vim
 source ~/.config/nvim/includes/encoding.vim
 source ~/.config/nvim/includes/plugins.vim
 source ~/.config/nvim/includes/functions.vim
+source ~/.config/nvim/includes/completion.vim
 
 source ~/.config/nvim/includes/keybindings/index.vim
 source ~/.config/nvim/includes/statusline/index.vim
-source ~/.config/nvim/includes/lint/index.vim
+source ~/.config/nvim/includes/plugins/index.vim
 
 source ~/.config/nvim/includes/colors.vim
 source ~/.config/nvim/includes/display.vim
@@ -22,7 +23,6 @@ source ~/.config/nvim/includes/typos.vim
 source ~/.config/nvim/includes/undo.vim
 source ~/.config/nvim/includes/views.vim
 source ~/.config/nvim/includes/yank.vim
-source ~/.config/nvim/includes/completion.vim
 source ~/.config/nvim/includes/git.vim
 
 " COMMANDS {{{

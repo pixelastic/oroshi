@@ -3,8 +3,9 @@
 " - Normal new line otherwise (defers to endwise calling)
 let g:endwise_no_mappings = 1
 function! MultiPurposeEnter()
-  if pumvisible() 
-    return "\<C-y>" 
+  if coc#pum#visible()
+    echom coc#pum#info()
+    return coc#pum#confirm()
   endif
   return "\<CR>\<Plug>DiscretionaryEnd"
 endfunction

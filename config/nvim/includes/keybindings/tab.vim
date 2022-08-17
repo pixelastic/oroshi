@@ -4,8 +4,8 @@
 " - After a space: adds a tab
 function! MultiPurposeTab()
   " Aucompletion already open, looping through it
-  if pumvisible()
-    return "\<C-N>"
+  if coc#pum#visible()
+    return coc#pum#next(1)
   endif
 
   " Start of a line, adding a real Tab
@@ -29,15 +29,7 @@ vnoremap <Tab> >gv
 
 
 " [Shift-Tab]
-function! MultiPurposeShiftTab()
-  " Aucompletion already open, going back one selection
-  if pumvisible()
-    return "\<C-P>"
-  endif
-
-  return "\<Esc><<^i"
-endfunction
-inoremap <expr> <S-Tab> (MultiPurposeShiftTab())
+inoremap <expr> <S-Tab> SendCompletionKey("\<Esc><<^i", coc#pum#prev(1))
 nnoremap <S-Tab> <<^
 vnoremap <S-Tab> <gv
 " }}}

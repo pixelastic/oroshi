@@ -319,6 +319,26 @@ call s:Highlight('StatusLineError', 'red', 'gray8')
 call s:Highlight('StatusLineWarning', 'yellow', 'gray8')
 call s:Highlight('StatusLine', 'gray4', 'gray8', 'none')
 " }}}
+" Completion {{{
+" Dropdown default colors
+call s:Highlight('Pmenu', 'gray4', 'green8')
+" [F] and [A] on right hand side
+call s:Highlight('CocPumShortcut', 'gray4', '')
+" Selected item (used either by Coc or default menu)
+call s:Highlight('PmenuSel', 'black', 'yellow', 'bold')
+call s:Highlight('CocMenuSel', 'black', 'yellow', 'bold')
+" Scrollbar
+call s:Highlight('PmenuSbar', '', 'green9')
+" Thumb of the scrollbar
+call s:Highlight('PmenuThumb', '', 'gray4')
+" Matching results in the dropdown
+call s:Highlight('CocPumSearch', 'yellow', 'green9', 'underline')
+" Suggested text on the line
+call s:Highlight('CocPumVirtualText', 'gray6', '')
+" Below are unknown groups, so we put them pink to see if they appear
+call s:Highlight('CocPumMenu', 'pink', 'pink')
+call s:Highlight('CocPumDeprecated', 'pink', 'pink')
+" }}}
 " FZF {{{
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
@@ -337,20 +357,17 @@ let g:fzf_colors =
 " }}}
 " COC {{{
 " Autocompletion menu
-call s:Highlight('Pmenu', 'white', 'teal9')
-call s:Highlight('PmenuSel', 'yellow', 'teal8', 'bold')
-call s:Highlight('PmenuSbar', 'gray9', 'gray9')
-call s:Highlight('PmenuThumb', 'teal8', 'teal8')
+
 " Error checking
 " Note: We don't highlight Coc errors as they tend to put everything under the
 " same color and make it hard to visually parse. We rely on the gutter symbol
 " instead.
 " call s:Highlight('CocWarningHighlight', 'yellow', '', 'bold,underline')
 " call s:Highlight('CocInfoHighlight', '', '', 'none')
-call s:Highlight('CocFloating', 'gray5', 'gray9')
-call s:Highlight('CocWarningFloat', 'yellow', 'gray9', 'bold')
-call s:Highlight('CocErrorFloat', 'red', 'gray9', 'bold')
-call s:Highlight('CocErrorHighlight', '', '', 'bold')
+" call s:Highlight('CocFloating', 'gray5', 'gray9')
+" call s:Highlight('CocWarningFloat', 'yellow', 'gray9', 'bold')
+" call s:Highlight('CocErrorFloat', 'red', 'gray9', 'bold')
+" call s:Highlight('CocErrorHighlight', '', '', 'bold')
 
 " call s:Highlight('CocBold', 'pink', 'white')
 " call s:Highlight('CocCodeLens', 'pink', 'white')
