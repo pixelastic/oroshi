@@ -4,7 +4,6 @@
 let g:endwise_no_mappings = 1
 function! MultiPurposeEnter()
   if coc#pum#visible()
-    echom coc#pum#info()
     return coc#pum#confirm()
   endif
   return "\<CR>\<Plug>DiscretionaryEnd"

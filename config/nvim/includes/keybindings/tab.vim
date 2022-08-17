@@ -23,13 +23,19 @@ function! MultiPurposeTab()
   return coc#refresh()
 endfunction
 
+" Note: Somehow it is not needed to map it in command mode, it already works
 inoremap <expr> <Tab> (MultiPurposeTab())
+
+" In normal and visual mode, it indent the line(s)
 nnoremap <Tab> >>^
 vnoremap <Tab> >gv
 
 
 " [Shift-Tab]
-inoremap <expr> <S-Tab> SendCompletionKey("\<Esc><<^i", coc#pum#prev(1))
+" Note: Somehow it is not needed to map it in command mode, it already works
+inoremap <expr> <S-Tab> SendCocCompletionKey("\<Esc><<^i", coc#pum#prev(1))
+
+" In normal and visual mode, it dedent the lines
 nnoremap <S-Tab> <<^
 vnoremap <S-Tab> <gv
 " }}}

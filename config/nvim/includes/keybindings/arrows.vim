@@ -4,17 +4,16 @@
 " In autocomplete mode, we hijack arrows to act as up and down in the menu
 
 " Insert mode autocomplete
-inoremap <expr> <Up> SendCompletionKey("\<Up>", coc#pum#prev(1))
-inoremap <expr> <Right> SendCompletionKey("\<Right>", coc#pum#next(1))
-inoremap <expr> <Down> SendCompletionKey("\<Down>", coc#pum#next(1))
-inoremap <expr> <Left> SendCompletionKey("\<Left>", coc#pum#prev(1))
+inoremap <expr> <Up> SendCocCompletionKey("\<Up>", coc#pum#prev(1))
+inoremap <expr> <Right> SendCocCompletionKey("\<Right>", coc#pum#next(1))
+inoremap <expr> <Down> SendCocCompletionKey("\<Down>", coc#pum#next(1))
+inoremap <expr> <Left> SendCocCompletionKey("\<Left>", coc#pum#prev(1))
 
 " Command mode autocomplete
-" TODO: Doesn't seem to work
-cnoremap <expr> <Up> SendCompletionKey("\<Up>", coc#pum#prev(1))
-cnoremap <expr> <Right> SendCompletionKey("\<Right>", coc#pum#next(1))
-cnoremap <expr> <Down> SendCompletionKey("\<Down>", coc#pum#next(1))
-cnoremap <expr> <Left> SendCompletionKey("\<Left>", coc#pum#prev(1))
+cnoremap <expr> <Up> SendPumCompletionKey("\<Up>", "\<C-P>")
+cnoremap <expr> <Right> SendPumCompletionKey("\<Right>", "\<C-N>")
+cnoremap <expr> <Down> SendPumCompletionKey("\<Down>", "\<C-N>")
+cnoremap <expr> <Left> SendPumCompletionKey("\<Left>", "\<C-P>")
 
 " NORMAL MODE
 " Use Arrow in normal mode to move accros splits
