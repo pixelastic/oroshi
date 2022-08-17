@@ -32,7 +32,7 @@ augroup END
 " By default, vim considers the shell working directory as vim working
 " directory. This means that a ":tabe " will only suggest files in the shell
 " working directory, not in the current file working directory.
-" This autocmd will se the current working directory as the current file
+" This autocmd will set the current working directory as the current file
 " directory.
 " A vim option, "set autochdir" exists to do the same, but seems to confuse some
 " plugins (comittia and vimdeck)

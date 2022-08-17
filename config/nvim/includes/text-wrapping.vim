@@ -1,22 +1,36 @@
 " TEXT WRAPPING {{{
-" Lines too long to fit on one screen will be truncated.
-set nowrap
-let &showbreak='↪ '
-" Force a 79 column policy with an auto-break on words in comments to assure
-" maximum readability. Visually add a column to see where the cut will be.
-set linebreak
-set colorcolumn=81
+" We define the expected maximum line length
 set textwidth=80
-" Create two format modes, for code and for text
-" c : Comments are wrapped based on textwidth
-" r : New line in comment is a comment when pressing <Enter>
-" o : New line in comment is a comment when pressing 'o'
-" n : Handles list while formatting
+" Display a visual clue to indicate where the cut will happen
+set colorcolumn=81
+" Always keep at least 15 characters displayed right and left of the cursor
+set sidescrolloff=15
+
+" Configure when and how this maximum width should apply
+set formatoptions=
+" c : Applies to comments only
+set formatoptions+=c
+" r : Pressing <Enter> in a comment creates a new comment line
+set formatoptions+=r
+" o : Pression o in normal mode in a comment creates a new comment line
+set formatoptions+=o
 " q : Comments can be re-wrapped using gq
+set formatoptions+=q
+" n : Handles list while formatting
+set formatoptions+=n
+" vb
 " 1 : Do not end lines with one-char words
-set formatoptions=cronq1
-" We make sure that backspace in insert mode can delete new lines and tabs
-set backspace=indent,eol,start
+set formatoptions+=1
+
+" VISUAL WRAPPING
+" By default, longer lines extend beyond the limit, and don't wrap
+" Note: Pressing <F9> will toggle that
+set nowrap
+" Lines will visually wrap at words (not in the middle of them)
+set linebreak
+" A ↪ will be displayed to indicate the continuation of a previous line
+let &showbreak='↪ '
+
 " Format whole paragraph
 nnoremap gqp mzvipgq`z
 "}}}

@@ -9,17 +9,21 @@ set viewoptions=cursor,folds
 " Save sessions on save/close/switch, load it on open
 " The ?* makes it skip non-existing files
 augroup views
-  au!
+  autocmd!
   " Save the view when...
   " ...switching tabs, closing a tab
-  au BufLeave ?* mkview 1
+  autocmd BufLeave ?* mkview 1
   " ...saving a file
-  au BufWrite ?* mkview 1
+  autocmd BufWrite ?* mkview 1
   " ...closing the last tab (BufLeave does not trigger in that case)
-  au VimLeavePre ?* mkview 1
+  autocmd VimLeavePre ?* mkview 1
 
   " Reload it when...
   " ...entering the tab
-  au BufWinEnter ?* silent! loadview 1
+  autocmd BufWinEnter ?* silent! loadview 1
+
+  " We also make sure to move the cursor to the first column when opening a new
+  " file so the text is always left aligned
+  autocmd BufWinEnter * normal 0
 augroup END
 " }}}

@@ -17,10 +17,11 @@ let mapleader=','
 nmap <Space> .
 " }}}
 
+source ~/.config/nvim/includes/keybindings/arrows.vim
+source ~/.config/nvim/includes/keybindings/backspace.vim
 source ~/.config/nvim/includes/keybindings/capslock.vim
 source ~/.config/nvim/includes/keybindings/enter.vim
 source ~/.config/nvim/includes/keybindings/tab.vim
-source ~/.config/nvim/includes/keybindings/arrows.vim
 
 source ~/.config/nvim/includes/keybindings/f1.vim
 source ~/.config/nvim/includes/keybindings/f6.vim
