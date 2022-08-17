@@ -23,7 +23,7 @@ set autowrite
 " Reload files when changed from outside
 set autoread
 augroup autoread
-  au!
+  autocmd!
   autocmd CursorHold ?* checktime
   autocmd TabEnter ?* checktime
 augroup END
@@ -37,7 +37,7 @@ augroup END
 " A vim option, "set autochdir" exists to do the same, but seems to confuse some
 " plugins (comittia and vimdeck)
 augroup autochdir
-  au!
+  autocmd!
   autocmd BufEnter * silent! lchdir %:p:h
 augroup END
 " }}}

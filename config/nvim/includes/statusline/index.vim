@@ -125,8 +125,8 @@ endfunction
 " Updating expensive status line variables only when moving through buffers or
 " saving the file
 augroup git_statusline
-  au!
-	au BufWritePost,BufEnter * call OroshiStatusLineUpdateGit()
+  autocmd!
+	autocmd BufWritePost,BufEnter * call OroshiStatusLineUpdateGit()
 augroup END
 
 function! OroshiStatusLineUpdateGit()
