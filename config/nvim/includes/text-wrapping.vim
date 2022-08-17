@@ -18,18 +18,8 @@ set formatoptions+=o
 set formatoptions+=q
 " n : Handles list while formatting
 set formatoptions+=n
-" vb
 " 1 : Do not end lines with one-char words
 set formatoptions+=1
-
-" VISUAL WRAPPING
-" By default, longer lines extend beyond the limit, and don't wrap
-" Note: Pressing <F9> will toggle that
-set nowrap
-" Lines will visually wrap at words (not in the middle of them)
-set linebreak
-" A ↪ will be displayed to indicate the continuation of a previous line
-let &showbreak='↪ '
 
 " Format whole paragraph
 nnoremap gqp mzvipgq`z

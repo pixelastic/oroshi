@@ -4,25 +4,6 @@
 syntax on
 colorscheme oroshi
 " FUNCTIONS {{{
-" Reloading the colorscheme
-function! ReloadColorScheme(scheme)
-  silent! mkview!
-  execute 'colorscheme '.a:scheme
-  silent! loadview
-endfunction
-" }}}
-
-" [F2] Toggle between Light and Dark themes {{{
-function! ToggleColorScheme()
-  if g:colors_name ==# 'oroshi'
-    call ReloadColorScheme('lucius')
-    LuciusLightHighContrast
-    return
-  endif
-  call ReloadColorScheme('oroshi')
-endfunction
-nnoremap <silent> <F2> :call ToggleColorScheme()<CR>
-inoremap <silent> <F2> <Esc>:call ToggleColorScheme()<CR>li
 " }}}
 " [F3] Display the current highlight group of the word under cursor {{{
 function! Debugcolor()

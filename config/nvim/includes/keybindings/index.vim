@@ -24,6 +24,7 @@ source ~/.config/nvim/includes/keybindings/enter.vim
 source ~/.config/nvim/includes/keybindings/tab.vim
 
 source ~/.config/nvim/includes/keybindings/f1.vim
+source ~/.config/nvim/includes/keybindings/f2.vim
 source ~/.config/nvim/includes/keybindings/f6.vim
 source ~/.config/nvim/includes/keybindings/f8.vim
 source ~/.config/nvim/includes/keybindings/f9.vim

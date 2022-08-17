@@ -204,9 +204,9 @@ call s:Highlight('String', 'blue5')
 call s:Highlight('Title', 'yellow')
 call s:Highlight('Todo', 'yellow', 'terminal', 'bold')
 call s:Highlight('Type', 'red5')
-call s:Highlight('TrailingWhitespace', '', 'gray9')
+" call s:Highlight('TrailingWhitespace', '', 'gray9')
 " The matcher needs to be defined after the colorscheme
-match TrailingWhitespace /\s\+$/
+" match TrailingWhitespace /\s\+$/
 
 " Hidden characters (F8) {{{
 " Line endings and horizontal scroll markers
