@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 # Installing git from source
 cd ~/local/etc
@@ -19,3 +20,6 @@ sudo apt-get install \
 # Compiling
 make prefix="/home/$USER/local" all doc info
 sudo make prefix="/home/$USER/local" install install-doc install-html install-info
+
+# Installing gh
+~/.oroshi/scripts/install/gh

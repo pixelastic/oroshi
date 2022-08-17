@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# gh is the official GitHub CLI. 
+# It replaces hub, and the deprecated yarn gh tool
+# https://cli.github.com/
+set -e
+
+DOWNLOAD_URL="https://github.com/cli/cli/releases/download/v2.14.4/gh_2.14.4_linux_386.deb"
+LOCAL_DEB="gh.deb"
+
+cd ~/local/tmp
+wget "$DOWNLOAD_URL" -O "./$LOCAL_DEB"
+install-deb "./$LOCAL_DEB"
