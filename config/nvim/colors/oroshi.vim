@@ -191,7 +191,6 @@ call s:Highlight('Error', 'red', 'black', 'bold')
 call s:Highlight('Function', 'yellow')
 call s:Highlight('Identifier', 'indigo4', '', 'none')
 call s:Highlight('Noise', 'teal7')
-call s:Highlight('NonText', 'gray8')
 call s:Highlight('Normal', 'gray4')
 call s:Highlight('Number', 'blue5', '', 'bold')
 call s:Highlight('Operator', 'teal7')
@@ -205,9 +204,17 @@ call s:Highlight('String', 'blue5')
 call s:Highlight('Title', 'yellow')
 call s:Highlight('Todo', 'yellow', 'terminal', 'bold')
 call s:Highlight('Type', 'red5')
-call s:Highlight('ExtraWhitespace', '', 'gray9')
+call s:Highlight('TrailingWhitespace', '', 'gray9')
 " The matcher needs to be defined after the colorscheme
-match ExtraWhitespace /\s\+$/
+match TrailingWhitespace /\s\+$/
+
+" Hidden characters (F8) {{{
+" Line endings and horizontal scroll markers
+call s:Highlight('NonText', 'gray8')
+" Tabs and whitespaces
+call s:Highlight('Whitespace', 'yellow')
+" }}}
+"
 " }}}
 " UI {{{
 " Borders {{{
