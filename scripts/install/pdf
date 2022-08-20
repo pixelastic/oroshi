@@ -21,5 +21,15 @@ sudo apt-get install xournal
 # <policy domain="coder" rights="none" pattern="{PS,PS2,PS3,EPS,PDF,XPS}" />
 # and comment it out.
 # Sometimes, it's several lines instead of just one
+#
+## Note:
+# If you're having an error similar to this one when merging images into a pdf:
+# convert-im6.q16: cache resources exhausted `IMG_0007.jpg' @ error/cache.c/OpenPixelCache/4095.
+#
+# Then you need to edit the same file, and find the <policymap> section and
+# comment out the following line:
+# <policy domain="resource" name="disk" value="1GiB"/>
+# This will remove limits and allow converting large files
+
 
 
