@@ -1,7 +1,17 @@
 #!/usr/bin/env zsh
 set -e
 
-# Install latest master
-pip install \
-	https://github.com/ytdl-org/youtube-dl/archive/master.zip
+# The original youtube-dl seems to have a long-standing issue with slow speed.
+# I tried to build from the tip of master, but couldn't make it work, so instead
+# I used a (still maintained) patch called yt-dlp
+# https://github.com/ytdl-org/youtube-dl/issues/30583#issuecomment-1033668493
+
+DOWNLOAD_URL="https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp"
+cd ~/local/bin
+wget "$DOWNLOAD_URL"
+chmod +x yt-dlp
+
+# # Install latest master
+# pip install \
+# 	https://github.com/ytdl-org/youtube-dl/archive/master.zip
 
