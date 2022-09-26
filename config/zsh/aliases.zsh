@@ -28,6 +28,7 @@ alias mv='mv -vi'
 alias ping="prettyping --nolegend"
 alias rmdir='better-rmdir'
 alias rm='trash-put'
+alias rmz='trash-restore'
 alias scp='scp -r '
 alias serve='live-server'
 disable -r time # ZSH overrides the time method
@@ -60,7 +61,6 @@ alias mc="mv"
 alias sl="l"
 alias s="l"
 alias cta="cat"
-alias trash-restore="restore-trash"
 alias spoify='spotify'
 alias spotufy='spotify'
 alias spotofy='spotify'
@@ -186,7 +186,6 @@ alias vk="v ~/.oroshi/config/kitty/kitty.conf"
 # }}}
 # Trash {{{
 alias tr?='trash-exists'
-
 alias trl='trash-list'
 alias trr='trash-restore'
 # }}}
