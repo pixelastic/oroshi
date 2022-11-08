@@ -1,4 +1,6 @@
 # CONFIG
+# Rorohiko is my second Algolia Laptop, not using it much as the keyboard and
+# hardware are subpar
 # Rorohiko is running Ubuntu 20.04
 # BAT theme was called ansi-dark
 export BAT_THEME="ansi-dark"

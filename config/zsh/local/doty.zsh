@@ -1,4 +1,5 @@
 # Reload keybindings
+# Doty is my Contentsquare laptop
 function ok() {
   # Custom keys
   ~/.oroshi/scripts/deploy/xmodmap 

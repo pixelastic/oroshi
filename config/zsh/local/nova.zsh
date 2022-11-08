@@ -1,4 +1,5 @@
 # CONFIG
+# Nova is my first Algolia Laptop, still using it.
 # Nova is running Ubuntu 18.04
 # BAT theme was called ansi-dark
 export BAT_THEME="ansi-dark"

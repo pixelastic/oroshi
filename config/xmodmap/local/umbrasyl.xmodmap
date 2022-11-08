@@ -1,0 +1,9 @@
+! I'm used to having Home/End keys near my arrow keys for quick movement, so
+! I remapped the PageUp/PageDown. I also mapped the original Home/End keys
+! (situated in the top right of the keyboard) to PageUp/PageDown
+keycode 112 = Home
+keycode 117 = End
+keycode 110 = Prior
+keycode 115 = Next
+
+

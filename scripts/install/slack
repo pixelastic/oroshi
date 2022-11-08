@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 set -e
 
-DOWNLOAD_URL="https://downloads.slack-edge.com/releases/linux/4.26.1/prod/x64/slack-desktop-4.26.1-amd64.deb"
+DOWNLOAD_URL="https://downloads.slack-edge.com/releases/linux/4.28.184/prod/x64/slack-desktop-4.28.184-amd64.deb"
 
 cd ~/local/tmp
 wget $DOWNLOAD_URL -O slack.deb
