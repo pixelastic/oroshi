@@ -4,11 +4,11 @@ set -ex
 DOWNLOAD_URL="https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2020.03.04_amd64.deb"
 
 cd ~/local/tmp
-wget $DOWNLOAD_URL -O dropbox.deb
+wget "$DOWNLOAD_URL" -O dropbox.deb
 
 # Dependency has changed name since Dropbox .deb release (2020), need to be
 # manually installed
-sudo apt-get install libpango-1.0-0
+sudo apt-get install libpango1.0-0
 
 sudo dpkg -i ./dropbox.deb
 sudo apt-get -f install
