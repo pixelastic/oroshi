@@ -1,23 +1,26 @@
 #!/usr/bin/env bash
 
-# We don't use the official gifsicle version as it seems unmaintained and lacks
-# the lossy feature
-GIFLOSSY_VERSION=1.91
-cd ~/local/src
-wget \
-  "https://github.com/kornelski/giflossy/archive/$GIFLOSSY_VERSION.zip" \
-  -O ./giflossy.zip
-extract ./giflossy.zip
-mv "./giflossy-$GIFLOSSY_VERSION" "./giflossy"
-cd ./giflossy
-autoreconf -i
-./configure --prefix="/home/$USER/local"
-make install
+# TODO: Seems to have been integrated into gifsicle, so better to go use that
+# one
+
+# # We don't use the official gifsicle version as it seems unmaintained and lacks
+# # the lossy feature
+# GIFLOSSY_VERSION=1.91
+# cd ~/local/src
+# wget \
+#   "https://github.com/kornelski/giflossy/archive/$GIFLOSSY_VERSION.zip" \
+#   -O ./giflossy.zip
+# extract ./giflossy.zip
+# mv "./giflossy-$GIFLOSSY_VERSION" "./giflossy"
+# cd ./giflossy
+# autoreconf -i
+# ./configure --prefix="/home/$USER/local"
+# make install
 
 
-# Converting terminal to gif
-sudo apt-add-repository ppa:zanchey/asciinema
-sudo apt-get update
-sudo apt-get install asciinema
-yarn add global asciicast2gif
+# # Converting terminal to gif
+# sudo apt-add-repository ppa:zanchey/asciinema
+# sudo apt-get update
+# sudo apt-get install asciinema
+# yarn add global asciicast2gif
 
