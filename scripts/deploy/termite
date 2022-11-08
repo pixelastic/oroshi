@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-mkdir -p ~/.config/termite
-ln -fs ~/.oroshi/config/termite/termite.conf ~/.config/termite/config
