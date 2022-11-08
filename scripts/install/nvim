@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-sudo apt-get install nvim
+sudo apt-get install neovim
 
 # Vint, vim linter
 pip install --user vim-vint

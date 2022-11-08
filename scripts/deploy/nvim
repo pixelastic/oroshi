@@ -24,3 +24,5 @@ ln -fns $OROSHI_CONFIG_DIR/snippets $NVIM_CONFIG_DIR/UltiSnips
 
 # Link Coc config file
 ln -fs ${OROSHI_CONFIG_DIR}/includes/plugins/coc-settings.json $NVIM_CONFIG_DIR
+
+echo "Now, open nvim and type :PlugUpdate<CR> to install all plugins"

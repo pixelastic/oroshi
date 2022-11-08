@@ -1,2 +1,0 @@
-" TIDYRC
-setlocal commentstring=#\ %s
