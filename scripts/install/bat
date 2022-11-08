@@ -5,13 +5,3 @@ sudo apt-get install bat
 
 # bat is available as batcat by default, we create an alias
 ln -s /usr/bin/batcat ~/local/bin/bat
-
-# Below lines are only for Ubuntu < 2020
-# cd ~/local/tmp
-# wget \
-#   "https://github.com/sharkdp/bat/releases/download/v0.16.0/bat_0.16.0_amd64.deb" \
-#   -O bat.deb
-
-# sudo dpkg -i bat.deb
-# sudo apt-get -f install
-# rm ~/local/tmp/bat.deb
