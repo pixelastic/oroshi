@@ -1,6 +1,6 @@
 " STATUS LINE
-source ~/.vim/includes/statusline/git.vim
-source ~/.vim/includes/statusline/lint.vim
+source ~/.config/nvim/includes/statusline/git.vim
+source ~/.config/nvim/includes/statusline/lint.vim
 
 " Always display the status line
 set laststatus=2
