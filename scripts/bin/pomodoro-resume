@@ -1,9 +1,0 @@
-#!/usr/bin/env zsh
-# Start a new Pomodoro, from where we left off
-
-local PAUSED_DATA_FILE=/tmp/pomodoro-pause.txt
-
-local duration="$(cat $PAUSED_DATA_FILE)"
-pomodoro start --duration $duration &>/dev/null
-
-rm $PAUSED_DATA_FILE
