@@ -45,10 +45,10 @@ function __prompt-git-right() {
     return
   fi
 
-  # echo -n "$(__prompt-git-tag)"
+  echo -n "$(__prompt-git-tag)"
   echo -n "$(__prompt-git-remote)"
-  # echo -n "$(__prompt-github-issues-and-prs)"
-  # echo -n "$(__prompt-git-branch)"
+  echo -n "$(__prompt-github-issues-and-prs)"
+  echo -n "$(__prompt-git-branch)"
 }
 
 # Display the current state of the rebase:
