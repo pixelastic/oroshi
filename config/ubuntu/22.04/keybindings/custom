@@ -18,6 +18,7 @@ local                  shortcuts=(
 "Peek"                 "/home/tim/.oroshi/scripts/bin/peek"                  "<Super><Alt>Print"
 "Slack"                "/usr/bin/slack"                                      "<Super>S"
 "Snippet Pixie"        "snippetpixie --search-and-paste"                     "<Super>P"
+"Emote"                "emote"                                               "<Super>E"
 )
 
 function gsettings_set {
