@@ -15,6 +15,7 @@ sudo apt-get install \
   libncursesw5-dev \
   libreadline-dev \
   libsqlite3-dev \
+  libssl-dev \
   llvm \
   tk-dev \
   wget \
@@ -31,12 +32,12 @@ LATEST_PYTHON_3="3.9.5"
 LATEST_PYTHON_2="2.7.18"
 ~/.pyenv/bin/pyenv install $LATEST_PYTHON_3
 
-# Libssl needs to be installed for installing python 2
-sudo apt install --reinstall libssl1.1
 sudo apt-get install libssl-dev
 ~/.pyenv/bin/pyenv install $LATEST_PYTHON_2
 # Make them both available, but looking for v3 first and v2 as fallback
 ~/.pyenv/bin/pyenv global $LATEST_PYTHON_3 $LATEST_PYTHON_2
+
+pip install --upgrade pip
 
 
 # # Linter

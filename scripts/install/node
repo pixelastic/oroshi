@@ -2,7 +2,7 @@
 # shellcheck disable=SC1090
 set -e
 
-LATEST_NODE_LTS_VERSION="16.15.0"
+LATEST_NODE_LTS_VERSION="18.12.1"
 
 if [[ ! -d ~/.nvm ]]; then
   echo "Installing nvm"
