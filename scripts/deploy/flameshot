@@ -3,4 +3,4 @@
 mkdir -p ~/.config/Dharkael/
 ln \
   -fs ~/.oroshi/config/flameshot/flameshot.ini \
-  ~/.config/Dharkael/flameshot.ini
+  ~/.config/flameshot/flameshot.ini

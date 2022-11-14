@@ -17,6 +17,13 @@ dconf write "/org/gnome/desktop/interface/gtk-theme" "'Yaru-dark'"
 dconf write "/org/gnome/desktop/interface/color-scheme" "'prefer-dark'"
 dconf write "/org/gnome/gedit/preferences/editor/scheme" "'Yaru-dark'"
 
+# Enable night mode all day long
+dconf write "/org/gnome/settings-daemon/plugins/color/night-light-enabled" true
+dconf write "/org/gnome/settings-daemon/plugins/color/night-light-schedule-automatic" false
+dconf write "/org/gnome/settings-daemon/plugins/color/night-light-temperature" "uint32 4200"
+dconf write "/org/gnome/settings-daemon/plugins/color/night-light-schedule-from" 4.0
+dconf write "/org/gnome/settings-daemon/plugins/color/night-light-schedule-to" 3.5
+
 # Disable Dock
 dconf write "/org/gnome/shell/extensions/dash-to-dock/dock-fixed" false
 dconf write "/org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size" 16

@@ -1,3 +1,4 @@
+# Note: Options are defined in tools/fzf.zsh
 # UI
 export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color border:$COLORS[red5]" # Border all around
 export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color prompt:$COLORS[white]" # > at the start of the input
