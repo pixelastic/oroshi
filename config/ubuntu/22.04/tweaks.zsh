@@ -35,3 +35,7 @@ dconf write "/org/gnome/desktop/notifications/show-banners" false
 # Natural scrolling for touchpad
 dconf write "/org/gnome/desktop/peripherals/touchpad/natural-scroll" false
 dconf write "/org/gnome/desktop/peripherals/touchpad/speed" 0.75
+
+# Disable the Windows / Super key from displaying the open apps (so we can
+# rebind it to something else)
+dconf write "/org/gnome/mutter/overlay-key" "'F18'"
