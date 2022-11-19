@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -e
+
+# Basic image support
+sudo apt-get install \
+  libimage-exiftool-perl \
+  imagemagick
+
+# WEBP
+~/.oroshi/scripts/install/image/webp
+
+# JPG
+~/.oroshi/scripts/install/image/jpg
+~/.oroshi/scripts/install/image/mozjpg
+
+# PNG
+
+# GIF
+
+# PDF
+

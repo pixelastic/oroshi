@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 
-# jpegoptim is the main library to compress JPG
 sudo apt-get install jpegoptim

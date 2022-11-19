@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+cd ~/local/src
+git clone git@github.com:mozilla/mozjpeg.git

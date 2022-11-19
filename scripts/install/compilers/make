@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-echo "Installing compilers"
-
 sudo apt-get install \
   automake \
   autotools-dev \

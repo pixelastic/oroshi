@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
+~/.oroshi/scripts/install/compilers/make
+~/.oroshi/scripts/install/compilers/qmake
+~/.oroshi/scripts/install/compilers/nasm
