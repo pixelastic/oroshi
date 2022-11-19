@@ -1,4 +1,16 @@
 #!/usr/bin/env bash
 
+# Clone
 cd ~/local/src
 git clone git@github.com:mozilla/mozjpeg.git
+
+# Build
+cd ~/local/etc
+mkdir ./mozjpeg
+cd ./mozjpeg
+cmake -G"Unix Makefiles" ~/local/src/mozjpeg
+make
+
+# Link binary
+cd ~/local/bin
+ln -fs ~/local/etc/mozjpeg/cjpeg ./cjpeg

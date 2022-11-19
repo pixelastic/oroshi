@@ -6,6 +6,9 @@ sudo apt-get install \
   libimage-exiftool-perl \
   imagemagick
 
+# DSSIM
+~/.oroshi/scripts/install/image/dssim
+
 # WEBP
 ~/.oroshi/scripts/install/image/webp
 
@@ -14,8 +17,13 @@ sudo apt-get install \
 ~/.oroshi/scripts/install/image/mozjpg
 
 # PNG
+~/.oroshi/scripts/install/image/png
 
 # GIF
+~/.oroshi/scripts/install/image/gifsicle
+~/.oroshi/scripts/install/image/asciinema
 
 # PDF
+~/.oroshi/scripts/install/image/pdf
+~/.oroshi/scripts/install/image/xournal
 

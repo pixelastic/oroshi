@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
 sudo apt-get install jpegoptim
+sudo apt-get install mozjpeg

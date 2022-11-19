@@ -1,15 +1,10 @@
 #!/usr/bin/env bash
-# To extract pdf to images
-sudo apt-get install xpdf
 
-# To extract pages from pdf
-sudo apt install pdftk
-
-# Includes pdfcrop (also adds margins)
-sudo apt-get install texlive-extra-utils
-
-# To sign pdf
-sudo apt-get install xournal
+sudo apt-get install \
+  xpdf \
+  pdftk \
+  texlive-extra-utils
+  xournal
 
 ## Note:
 # If you're having an error similar to this one when attempting to convert
