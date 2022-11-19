@@ -10,7 +10,7 @@
 dconf write "/org/gnome/desktop/interface/enable-animations" false
 
 # Remove delay before repeating keys
-dconf write "/org/gnome/desktop/peripherals/keyboard/delay" "uint32 150"
+dconf write "/org/gnome/desktop/peripherals/keyboard/delay" "uint32 300"
 
 # Use darkmode
 dconf write "/org/gnome/desktop/interface/gtk-theme" "'Yaru-dark'"
@@ -29,3 +29,9 @@ dconf write "/org/gnome/shell/extensions/dash-to-dock/dock-fixed" false
 dconf write "/org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size" 16
 dconf write "/org/gnome/shell/extensions/dash-to-dock/show-mounts-network" false
 
+# Enable Do Not Disturb
+dconf write "/org/gnome/desktop/notifications/show-banners" false
+
+# Natural scrolling for touchpad
+dconf write "/org/gnome/desktop/peripherals/touchpad/natural-scroll" false
+dconf write "/org/gnome/desktop/peripherals/touchpad/speed" 0.75
