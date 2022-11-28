@@ -134,7 +134,7 @@ function __prompt-git-branch-color() {
 # Returns the number of currently opened issues
 function __prompt-github-issues-and-prs() {
   # No GITHUB_TOKEN
-  if [[ ! -v GITHUB_TOKEN ]]; then
+  if [[ ! -v GITHUB_TOKEN_READONLY ]]; then
     echo -n "%F{$COLORS[red]}  %f"
     return
   fi
@@ -167,7 +167,6 @@ function __prompt-github-issues-and-prs() {
     display="${display} %F{$COLORS[yellow]} ${issueCount}%f"
   fi
 
-
-  # echo $display
+  echo $display
 }
 # }}}

@@ -9,4 +9,4 @@ project=${project:s/git@github.com:/}
 project=${project:s/.git/}
 local apiUrl="https://api.github.com/${namespace}/${project}/${endpoint}"
 
-curl -s -H"authorization: Bearer $GITHUB_TOKEN" "$apiUrl"
+curl -s -H"authorization: Bearer $GITHUB_TOKEN_READONLY" "$apiUrl"
