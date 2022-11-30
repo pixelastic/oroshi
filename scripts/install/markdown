@@ -1,12 +1,12 @@
 #!/usr/bin/env zsh
 set -e
 
-# Parse and lint markdown
-yarn global add remark-cli@11.0.0 \
-                remark-lint@9.1.1 \
-                prettier
+# Prettier
+yarn global add prettier
 
-# Lint text
+# Textlint
+# Textlint plugins need to be installed globally if textlint is to be called
+# globally
 yarn global add textlint@12.2.3 \
                 textlint-rule-alex@3.0.0 \
                 textlint-rule-common-misspellings@1.0.1 \
@@ -15,3 +15,11 @@ yarn global add textlint@12.2.3 \
                 textlint-rule-stop-words@3.0.1 \
                 textlint-rule-terminology@3.0.1 \
                 textlint-rule-write-good@2.0.0
+
+# Remark
+# Remark-lint plugins need to be installed in the same folder as the config file
+# so we need to run `yarn install` in `~/.oroshi` to add them.
+yarn global add remark-cli@11.0.0 \
+                remark-lint@9.1.1
+
+echo "Now, run yarn install in ~.oroshi"

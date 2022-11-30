@@ -41,7 +41,9 @@ module.exports = {
       ],
     },
     'common-misspellings': true,
-    editorconfig: true,
+    editorconfig: {
+      "charset": false // Charset detection is not reliable, so we disable it
+    },
     'en-capitalization': true,
     'stop-words': {
       exclude: [
