@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -ex
+
+ln -fs ~/.oroshi/config/editorconfig/editorconfig.conf ~/.editorconfig

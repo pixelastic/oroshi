@@ -1,6 +1,5 @@
 /* eslint-disable import/no-commonjs */
 const os = require('os');
-const home = os.homedir();
 /**
  * Linting config.
  * Check the following links for the list of all rules:
@@ -10,10 +9,10 @@ const home = os.homedir();
  **/
 module.exports = {
   plugins: [
-    `${home}/.oroshi/node_modules/remark-frontmatter/index.js`,
-    `${home}/.oroshi/node_modules/remark-preset-lint-consistent/index.js`,
-    `${home}/.oroshi/node_modules/remark-preset-lint-recommended/index.js`,
-    `${home}/.oroshi/node_modules/remark-preset-lint-markdown-style-guide/index.js`,
+    `remark-frontmatter`,
+    `remark-preset-lint-consistent`,
+    `remark-preset-lint-recommended`,
+    `remark-preset-lint-markdown-style-guide`,
 
     // Following rules are configured to fit what prettier does
     'lint-no-trailing-spaces', // No trailing spaces
