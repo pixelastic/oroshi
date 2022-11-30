@@ -1,13 +1,18 @@
 {
-    "type": "folder",
-    "title": "My Phrases",
+    "type": "phrase",
+    "description": "t@p",
     "modes": [
-        3
+        1
     ],
-    "usageCount": 9,
+    "usageCount": 0,
+    "prompt": false,
+    "omitTrigger": false,
+    "matchCase": false,
     "showInTrayMenu": false,
     "abbreviation": {
-        "abbreviations": [],
+        "abbreviations": [
+            "t@p"
+        ],
         "backspace": true,
         "ignoreCase": false,
         "immediate": false,
@@ -15,13 +20,12 @@
         "wordChars": "[\\w]"
     },
     "hotkey": {
-        "modifiers": [
-            "<super>"
-        ],
-        "hotKey": "p"
+        "modifiers": [],
+        "hotKey": null
     },
     "filter": {
         "regex": null,
         "isRecursive": false
-    }
+    },
+    "sendMode": "kb"
 }
