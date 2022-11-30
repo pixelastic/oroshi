@@ -82,7 +82,7 @@ if spotify-is-running; then
   if [ "${#currently_playing}" -gt 40 ]; then
     currently_playing="$(echo $currently_playing | cut -c 1-40)…"
   fi
-  currently_playing="#[fg=colour${COLORS[green]}]契$currently_playing#[default]"
+  currently_playing="#[fg=colour${COLORS[green]}] $currently_playing#[default]"
 else if cmus-is-running; then
   currently_playing="$(cmus-data title)"
   local music_status="$(cmus-data status)"
