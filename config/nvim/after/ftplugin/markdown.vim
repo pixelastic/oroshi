@@ -25,8 +25,6 @@ vnoremap <buffer> * <Esc>mzg`>a**<Esc>g`<i**<Esc>`zl
 " }}}
 " Linters {{{
 "
-"kjksjid
-"
 let b:npmRoot = GetNpmRoot()
 
 " Textlint

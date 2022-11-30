@@ -1,10 +1,23 @@
 #!/usr/bin/env zsh
 set -e
 
-# Lint markdown
-yarn add global textlint \
-                prettier \
-                remark-cli \
-                remark-lint
+# Parse and lint markdown
+yarn global add remark-cli@11.0.0 \
+                remark-lint@9.1.1 \
+                remark-frontmatter@1.3.2 \
+                remark-lint-no-trailing-spaces@2.0.1 \
+                remark-preset-lint-consistent@2.0.3 \
+                remark-preset-lint-markdown-style-guide@2.1.3 \
+                remark-preset-lint-recommended@3.0.3 \
+                remark-reference-links@4.0.4 \
+                prettier
 
-echo "Also run yarn install from the root of ~/.oroshi"
+# Lint text
+yarn global add textlint@12.2.3 \
+                textlint-rule-alex@3.0.0 \
+                textlint-rule-common-misspellings@1.0.1 \
+                textlint-rule-editorconfig@1.0.3 \
+                textlint-rule-en-capitalization@2.0.3 \
+                textlint-rule-stop-words@3.0.1 \
+                textlint-rule-terminology@3.0.1 \
+                textlint-rule-write-good@2.0.0
