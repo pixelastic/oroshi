@@ -1,4 +1,13 @@
 #!/usr/bin/env zsh
-# Opens the current repo page on GitHub
-local pullRequestsUrl="$(ghurl)/pulls"
-$BROWSER $pullRequestsUrl &>/dev/null
+# Opens PRs in the browser
+local prNumber=$1
+local openedUrl="$(ghurl)"
+
+# Open a specific PR or the full list
+if [[ $prNumber != "" ]]; then
+  openedUrl="${openedUrl}/pull/${prNumber}"
+else
+  openedUrl="${openedUrl}/pulls"
+fi
+
+$BROWSER $openedUrl &>/dev/null

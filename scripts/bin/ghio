@@ -1,5 +1,14 @@
 #!/usr/bin/env zsh
-# Opens the current repo page on GitHub
-local issuesUrl="$(ghurl)/issues"
-$BROWSER $issuesUrl &>/dev/null
+# Opens issues in the browser
+local issueNumber=$1
+local openedUrl="$(ghurl)"
+
+# Open a specific issue or the full list
+if [[ $issueNumber != "" ]]; then
+  openedUrl="${openedUrl}/issues/${issueNumber}"
+else
+  openedUrl="${openedUrl}/issues/"
+fi
+
+$BROWSER $openedUrl &>/dev/null
 

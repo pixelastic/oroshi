@@ -1,5 +1,3 @@
 #!/usr/bin/env zsh
 # Create a new issue
-local issuesUrl="$(ghurl)/issues/new"
-$BROWSER $issuesUrl &>/dev/null
-
+gh issue create
