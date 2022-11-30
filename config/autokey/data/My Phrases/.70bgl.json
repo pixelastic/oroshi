@@ -1,6 +1,6 @@
 {
     "type": "phrase",
-    "description": "t@p",
+    "description": "70bgl",
     "modes": [
         1
     ],
@@ -11,7 +11,7 @@
     "showInTrayMenu": false,
     "abbreviation": {
         "abbreviations": [
-            "t@p"
+            "70bgl"
         ],
         "backspace": true,
         "ignoreCase": false,

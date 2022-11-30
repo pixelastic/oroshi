@@ -1,6 +1,6 @@
 {
     "type": "phrase",
-    "description": "t@p",
+    "description": "ccalp",
     "modes": [
         1
     ],
@@ -11,11 +11,11 @@
     "showInTrayMenu": false,
     "abbreviation": {
         "abbreviations": [
-            "t@p"
+            "ccalp"
         ],
         "backspace": true,
         "ignoreCase": false,
-        "immediate": true,
+        "immediate": false,
         "triggerInside": false,
         "wordChars": "[\\w]"
     },
