@@ -1,12 +1,15 @@
 # Reload keybindings
 # Umbrasyl is my temporary Algolia laptop
 function ok() {
-  # Custom keys
+  # Xmodmap (keys)
   ~/.oroshi/scripts/deploy/xmodmap
 
-  # App bindings
+  # Ubuntu (window management, apps)
   ~/.oroshi/config/ubuntu/22.04/keybindings/index
 
-  # # Keybindings that couldn't work with Ubuntu directly
-  # ~/.oroshi/scripts/deploy/xbindkeys
+  # Xbindkey (media playback)
+  ~/.oroshi/scripts/deploy/xbindkeys
+
+  # Autokey (abbreviations, templates)
+  gui autokey
 }
