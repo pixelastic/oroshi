@@ -20,3 +20,37 @@ function lazyloadNvm {
   unalias nvm;
   source ~/.nvm/nvm.sh
 }
+
+# Automatically switch to local node version when entering a directory with
+# .nvmrc
+function chpwdAutoNvmUse() {
+  local nvmrcPath="$(find-up .nvmrc)"
+
+  # No local version defined, nothing to do
+  if [[ $nvmrcPath = '' ]]; then
+    return
+  fi
+
+
+  # Local version is not even installed
+  # We won't install it automatically as it takes too long
+  expectedVersion="$(<$nvmrcPath)"
+  if nvm version $expectedVersion | grep -q "N/A"; then
+    return
+  fi
+
+  # Local version is already the right one, nothing to do
+  local currentVersion="$(node --version)"
+  currentVersion=${currentVersion:s/v/}
+  if [[ $currentVersion == $expectedVersion ]]; then
+    return
+  fi
+
+  # Switch to the correct nvm version
+  # TODO: Is it possible to load this asynchronously, so we can start typing
+  # right away?
+  nvm use --silent
+}
+autoload -U add-zsh-hook
+add-zsh-hook chpwd chpwdAutoNvmUse
+chpwdAutoNvmUse

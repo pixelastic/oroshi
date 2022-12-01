@@ -11,33 +11,6 @@ function __prompt-node-flags() {
   __prompt-yarn-links
 }
 
-# Display node version
-# - Only if different from the one defined in the project
-function __prompt-node-version() {
-  # Not even a system-wide node installation
-  if [[ ! -v commands[node] ]]; then
-    echo -n "%F{$COLORS[red]} %f"
-    return
-  fi
-
-  nvmrcPath="$(find-up .nvmrc)"
-  
-  # Stop if project has no version specified
-  [[ $nvmrcPath = '' ]] && return
-
-  currentVersion="$(node --version)"
-  currentVersion=${currentVersion:s/v/}
-  expectedVersion="$(<$nvmrcPath)"
-
-  # Not using the project specific version
-  if [[ $currentVersion != $expectedVersion ]]; then
-    echo -n "%F{$COLORS[red]} $currentVersion%f"
-    echo -n "%F{$COLORS[yellow]}%f"
-    echo "%F{$COLORS[green]}$expectedVersion %f"
-    return
-  fi
-}
-
 # Display specific icons for each linked module
 function __prompt-yarn-links() {
   local linkedModules=($(yll-raw))
@@ -70,3 +43,45 @@ function __prompt-yarn-links() {
   # Display the string
   echo -n "%F{$COLORS[blue7]}${displayedString}%f"
 }
+
+# Display project node version
+# -  (red) if no global node
+# - {nothing} if not a node repo (no .nvmrc)
+# -  X.Y.Z (red) if local version isn't installed
+# -  X.Y.Z (yellow) if local and current don't match match
+# -  X.Y.Z (green) if local and current match
+function __prompt-node-version() {
+  # Not even a system-wide node installation
+  if [[ ! -v commands[node] ]]; then
+    echo -n "%F{$COLORS[red]} %f"
+    return
+  fi
+
+  local currentVersion="$(node --version)"
+  currentVersion=${currentVersion:s/v/}
+
+  local nvmrcPath="$(find-up .nvmrc)"
+
+  # No local version defined
+  if [[ $nvmrcPath = '' ]]; then
+    return
+  fi
+
+  local expectedVersion="$(<$nvmrcPath)"
+
+  # Local version is the same as the current one
+  if [[ $currentVersion == $expectedVersion ]]; then
+    echo -n "%F{$COLORS[green]} $expectedVersion%f"
+    return
+  fi
+
+  # Local version is not even installed
+  if nvm version $expectedVersion | grep -q "N/A"; then
+    echo -n "%F{$COLORS[red]} $expectedVersion%f"
+    return
+  fi
+
+  # Local version is not in use
+  echo -n "%F{$COLORS[yellow]} $expectedVersion%f"
+}
+
