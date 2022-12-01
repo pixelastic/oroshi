@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+
+local switchRoot="/media/tim/JVCCAM_SD"
+local switchPath="${switchRoot}/Nintendo/Album"
+local outputPath=~/perso/Dropbox/backup/pictures/tmp/switch
+local picturePath="${outputPath}/pictures"
+local videoPath="${outputPath}/videos"
+
+mkdir -p $picturePath
+mv ${switchPath}/**/*.jpg $picturePath
+
+mkdir -p $videoPath
+mv ${switchPath}/**/*.mp4 $videoPath
+
