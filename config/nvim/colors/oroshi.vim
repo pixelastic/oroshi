@@ -164,19 +164,19 @@ function! s:Highlight(group,...)
   execute 'hi clear '.name
 
   " Everything is empty, we stop now
-  if foreground == '' && background == '' && decoration == ''
+  if foreground ==# '' && background ==# '' && decoration ==# ''
     return
   endif
 
   " We build the highlight string
   let result = 'hi! '.name
-  if foreground != ''
+  if foreground !=# ''
     let result .= ' guifg='.get(s:color, foreground)
   endif
-  if background != ''
+  if background !=# ''
     let result .= ' guibg='.get(s:color, background)
   endif
-  if decoration != ''
+  if decoration !=# ''
     let result .= ' gui='.decoration
   endif
 
@@ -234,34 +234,34 @@ call s:Highlight('CursorLine', '', 'gray9', 'none')
 
 " Normal mode
 call s:Highlight('CursorNormal', '', 'red', 'none')
-let s:guicursor = "n:block-CursorNormal"
+let s:guicursor = 'n:block-CursorNormal'
 
 " Waiting for an operator
 call s:Highlight('CursorOperatorPending', '', 'red5', 'none')
-let s:guicursor .= ",o:block-CursorOperatorPending"
+let s:guicursor .= ',o:block-CursorOperatorPending'
 
 " Insert mode
 call s:Highlight('CursorInsert', '', 'yellow', 'none')
-let s:guicursor .= ",i:block-CursorInsert"
+let s:guicursor .= ',i:block-CursorInsert'
 
 " Visual mode
 call s:Highlight('CursorVisual', '', 'blue', 'none')
-let s:guicursor .= ",v:block-CursorVisual"
+let s:guicursor .= ',v:block-CursorVisual'
 
 " Command mode
 call s:Highlight('CursorCommand', '', 'teal', 'none')
-let s:guicursor .= ",c:block-CursorCommand"
+let s:guicursor .= ',c:block-CursorCommand'
 " When editing the current command
 call s:Highlight('CursorCommandInsert', '', 'teal', 'none')
-let s:guicursor .= ",ci:block-CursorCommandInsert"
+let s:guicursor .= ',ci:block-CursorCommandInsert'
 
 " Not sure what those do, so let's color them pink and see when that happens
 call s:Highlight('CursorReplace', '', 'pink', 'none')
-let s:guicursor .= ",r:block-CursorReplace"
+let s:guicursor .= ',r:block-CursorReplace'
 call s:Highlight('CursorCommandReplace', '', 'pink', 'none')
-let s:guicursor .= ",cr:block-CursorCommandReplace"
+let s:guicursor .= ',cr:block-CursorCommandReplace'
 call s:Highlight('CursorInsertShowmatch', '', 'pink', 'none')
-let s:guicursor .= ",sm:block-CursorInsertShowmatch"
+let s:guicursor .= ',sm:block-CursorInsertShowmatch'
 
 execute 'set guicursor='.s:guicursor
 " }}}
@@ -272,8 +272,8 @@ call s:Highlight('Folded', 'gray5', 'gray9')
 call s:Highlight('Visual', 'white', 'blue', 'bold')
 " }}}
 " Search {{{
-call s:Highlight('IncSearch', 'black', 'green', 'none')
-call s:Highlight('Search', 'black', 'green', 'bold')
+call s:Highlight('IncSearch', 'black', 'yellow', 'none')
+call s:Highlight('Search', 'black', 'yellow', 'bold')
 " }}}
 " Syntastic gutter {{{
 call s:Highlight('SyntasticErrorSign', 'red')
