@@ -1,11 +1,11 @@
 #!/usr/bin/env zsh
 set -e
 
-DOWNLOAD_URL="https://downloads.slack-edge.com/releases/linux/4.28.184/prod/x64/slack-desktop-4.28.184-amd64.deb"
+DOWNLOAD_URL="https://github.com/kornelski/dssim/releases/download/3.2.3/dssim_3.2.3_amd64.deb"
 
 cd ~/local/tmp
-wget $DOWNLOAD_URL -O slack.deb
-sudo dpkg -i ./slack.deb
+wget $DOWNLOAD_URL -O dssim.deb
+sudo dpkg -i ./dssim.deb
 sudo apt-get -f install
-rm ./slack.deb
+rm ./dssim.deb
 
