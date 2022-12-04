@@ -1,6 +1,12 @@
 # Ruby
 # Display ruby-related information
 
+# Display project ruby version
+# -  (red) if no global ruby
+# -  (orange) if no global rbenv
+# - {nothing} if not a ruby repo (no .ruby-version)
+# -  X.Y.Z (red) if local version isn't installed
+# -  X.Y.Z (green) if local and current match
 function __prompt-ruby-version() {
   # Not even a system-wide ruby installation
   if [[ ! -v commands[ruby] ]]; then
@@ -14,18 +20,21 @@ function __prompt-ruby-version() {
     return
   fi
 
-  # No specified version
-  expectedVersionPath="$(git root)/.ruby-version"
-  [[ ! -f $expectedVersionPath ]] && return
+  local rubyVersionPath="$(find-up .ruby-version)"
 
-  currentVersion="$(rbenv version-name)"
-  expectedVersion="$(cat $expectedVersionPath)"
-
-  # Not using the project specific version
-  if [[ $currentVersion != $expectedVersion ]]; then
-    echo -n "%F{$COLORS[red]} $currentVersion%f"
-    echo -n "%F{$COLORS[yellow]}%f"
-    echo -n "%F{$COLORS[green]}$expectedVersion %f"
+  # No local version defined
+  if [[ $rubyVersionPath == '' ]]; then
     return
   fi
+
+  local expectedVersion="$(<$rubyVersionPath)"
+
+  # Local version is in use
+  if rbenv version-name &>/dev/null; then
+    echo -n "%F{$COLORS[green]}  $expectedVersion%f"
+    return
+  fi
+
+  # Local version is not even installed
+  echo -n "%F{$COLORS[red]}  $expectedVersion%f"
 }

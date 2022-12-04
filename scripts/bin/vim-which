@@ -36,6 +36,7 @@ class VimWhich
   # Calls `which` on the argument, using any alias defined in zsh
   def which_with_aliases(name)
     zsh_commands = [
+      'source ~/.oroshi/config/zsh/require.zsh',
       'source ~/.oroshi/config/zsh/aliases.zsh',
       "which #{name}"
     ]

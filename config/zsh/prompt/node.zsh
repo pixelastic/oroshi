@@ -57,9 +57,6 @@ function __prompt-node-version() {
     return
   fi
 
-  local currentVersion="$(node --version)"
-  currentVersion=${currentVersion:s/v/}
-
   local nvmrcPath="$(find-up .nvmrc)"
 
   # No local version defined
@@ -67,6 +64,8 @@ function __prompt-node-version() {
     return
   fi
 
+  local currentVersion="$(node --version)"
+  currentVersion=${currentVersion:s/v/}
   local expectedVersion="$(<$nvmrcPath)"
 
   # Local version is the same as the current one
