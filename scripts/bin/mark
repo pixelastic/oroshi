@@ -9,11 +9,5 @@ dirname=$(basename "$pwd")
 markname=$1
 [ "$markname" == '' ] && markname=$dirname
 
-# Error if such a mark already exists
-if [ -h "$MARKPATH/$markname" ]; then
-  echo "⚠ Mark $markname already exists. Run 'unmark $markname' to delete it."
-  exit 0
-fi
-
 cd "$MARKPATH"
-ln -s "$pwd" "$markname"
+ln -fs "$pwd" "$markname"
