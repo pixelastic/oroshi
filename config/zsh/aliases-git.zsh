@@ -66,9 +66,11 @@ alias vdcl='git tabula-rasa'
 alias vdc='git-directory-create'
 alias vde='vim $(git root)/.git/config'
 alias vdl='git status --short'
+alias vdo='git directory-open'
+alias vdrd='vdr && cd ./docs'
 alias vdrr='vsm? && vdr && cd .. && vdr'
 alias vdr='vd? && cd "$(git root)"'
-alias vdrd='vdr && cd ./docs'
+alias vdu='git directory-url'
 alias vd?='git-is-repository'
 # }}}
 # [f]iles {{{
@@ -88,10 +90,20 @@ alias vfua='git reset'
 # [g]it {{{
 alias vgv='git git-version'
 # }}}
+# [g]it [h]ub {{{
+alias vghapi='git github-api'
+alias vghapi='git github-rate-limit'
+# }}}
+# [i]ssues {{{
+alias vic='git issue-create'
+alias vil='git issue-list'
+alias vio='git issue-open'
+alias vi#='git issue-count'
+# }}}
 # [p]ull [r]equests {{{
-alias vprcd='git-pullrequest-create develop'
-alias vprcm='git-pullrequest-create master'
-alias vprc='git-pullrequest-create'
+alias vpr#='git pr-count'
+alias vprl='git pr-list'
+alias vpro='git pr-open'
 # }}}
 # [re]base {{{
 alias vrea='git rebase --abort'

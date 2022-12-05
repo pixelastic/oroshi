@@ -76,7 +76,7 @@ function __prompt-git-rebase() {
 # - Colored gray if it's a parent commit
 function __prompt-git-tag() {
   local TAG_VERSION_REGEXP="v?[0-9].*"
-  local tagName="$(git tag-current)"
+  local tagName="$(git-tag-current)"
   [[ ! $tagName =~ $TAG_VERSION_REGEXP ]] && return
 
   # Check if commits have been added since last tag
@@ -87,7 +87,7 @@ function __prompt-git-tag() {
 # Display the current remote:
 # - only if not origin
 function __prompt-git-remote() {
-  local remoteName="$(git remote-current)"
+  local remoteName="$(git-remote-current)"
   [[ $remoteName = 'origin' || $remoteName == '' ]] && return;
 
   echo " %F{$COLORS[yellow]} $remoteName%f"
@@ -97,12 +97,12 @@ function __prompt-git-remote() {
 # - Known branches are color-coded
 # - Symbol is added if upstream is gone, detached, need pull/push/force-push
 function __prompt-git-branch() {
-  local branchName="$(git branch-current)"
+  local branchName="$(git-branch-current)"
   [[ $branchName = '' ]] && return;
 
   # Detached
   if [[ $branchName = 'HEAD' ]]; then
-    branchName=" $(git commit-current)"
+    branchName=" $(git-commit-current)"
     echo " %F{$COLORS[red]}${branchName}%f"
     return
   fi
@@ -151,10 +151,10 @@ function __prompt-github-issues-and-prs() {
 
   # We update the count if file does not exist, or too old
   if [[ ! -r $issueCacheFile ]] || is-older $issueCacheFile $cacheDuration; then
-    ghic > $issueCacheFile
+    git-issue-count > $issueCacheFile
   fi
   if [[ ! -r $prCacheFile ]] || is-older $prCacheFile $cacheDuration; then
-    ghprc > $prCacheFile
+    git-pr-count > $prCacheFile
   fi
 
   local display=""

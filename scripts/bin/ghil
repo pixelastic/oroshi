@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-# List all issues of current repo
-gh issue list
-
-# Update local cache of issue count
-ghic > "$(git root)/.git/oroshi_issue_count"

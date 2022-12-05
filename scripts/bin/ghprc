@@ -1,5 +1,0 @@
-#!/usr/bin/env zsh
-# Count how many open PRs the current repo has
-gh pr list --limit=1000 --json=number \
-  | cat '-' \
-  | jq length

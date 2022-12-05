@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-# Returns the current repo url
-gh repo view --json=url | jx 'url'
