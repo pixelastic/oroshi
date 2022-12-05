@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+# Only return positional arguments passed
+
+local output=()
+
+for arg in $argv; do
+  # Exclude any argument starting with - or --
+  if [[ $arg == -* ]]; then
+    continue
+  fi
+
+  # Keep a final list
+  output+="$arg"
+done
+
+echo $output

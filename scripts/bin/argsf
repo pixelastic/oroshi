@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+# Only return flag arguments passed
+
+local output=()
+
+# Iterate through all arguments by index.
+# Using $@, $* or $argv excludes single-hyphen flags
+for i in {1..$#}; do
+  arg=$@[$i]
+  # Exclude any argument starting with - or --
+  if [[ $arg != -* ]]; then
+    continue
+  fi
+
+  # Keep a final list
+  output+="$arg"
+done
+
+echo $output
+
