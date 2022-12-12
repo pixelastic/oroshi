@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+# Split a multi-line text based on delimiter
+# Usage:
+# $ text-split "one, two, three" ", "
+# $ echo "one, two, three" ", " | text-split ","
+
+# Read from args
+local text=$1
+local delimiter=$2
+
+# Read from pipe
+if [[ -p /dev/stdin ]]; then
+  text="$(cat -)"
+  delimiter=$1
+fi
+
+echo $text | sed "s/${delimiter}/\n/g"

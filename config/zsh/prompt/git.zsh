@@ -88,9 +88,10 @@ function __prompt-git-tag() {
 # - only if not origin
 function __prompt-git-remote() {
   local remoteName="$(git-remote-current)"
-  [[ $remoteName = 'origin' || $remoteName == '' ]] && return;
+  [[ $remoteName = 'origin' ]] && return;
 
-  echo " %F{$COLORS[yellow]} $remoteName%f"
+  local remoteColor="$(git-remote-color $remoteName)"
+  echo " %F{$COLORS[$remoteColor]} $remoteName%f"
 }
 
 # Display the current branch:
@@ -111,7 +112,7 @@ function __prompt-git-branch() {
   git-branch-gone && echo " %F{$COLORS[red]} ${branchName}%f" && return
 
 
-  local branchColor="$(__prompt-git-branch-color $branchName)"
+  local branchColor="$(git-branch-color $branchName)"
 
   local remoteStatus
   remoteStatus="$(git-branch-remote-status)"
@@ -120,15 +121,6 @@ function __prompt-git-branch() {
   [[ $remoteStatus = 'local_diverged' ]] && echo -n " %F{$COLORS[red]} $branchName%f"
   [[ $remoteStatus = 'local_never_pushed' ]] && echo -n " %F{$COLORS[$branchColor]} $branchName%f"
   [[ $remoteStatus = 'local_identical' ]] && echo -n " %F{$COLORS[$branchColor]}$branchName%f"
-}
-
-# Get the color of a known branch
-function __prompt-git-branch-color() {
-  [[ $1 == "master" ]] && echo "blue" && return;
-  [[ $1 == "main" ]] && echo "blue" && return;
-  [[ $1 == "develop" ]] && echo "yellow" && return;
-  [[ $1 == "heroku" ]] && echo "purple" && return;
-  echo "orange"
 }
 
 # Returns the number of currently opened issues

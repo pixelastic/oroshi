@@ -1,17 +1,17 @@
 {
     "type": "phrase",
-    "description": "ttrain",
+    "description": "IIBAN",
     "modes": [
         1
     ],
-    "usageCount": 4,
+    "usageCount": 0,
     "prompt": false,
     "omitTrigger": false,
     "matchCase": false,
     "showInTrayMenu": false,
     "abbreviation": {
         "abbreviations": [
-            "ttrain"
+            "IIBAN"
         ],
         "backspace": true,
         "ignoreCase": false,
@@ -27,5 +27,5 @@
         "regex": null,
         "isRecursive": false
     },
-    "sendMode": "<ctrl>+<shift>+v"
+    "sendMode": "kb"
 }

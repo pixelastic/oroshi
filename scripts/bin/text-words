@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# Return an array of all words in the input
+
+# Read from arg or from pipe
+local input=$1
+[[ -p /dev/stdin ]] && input="$(cat -)"
+
+echo $input | text-trim | tr " " "\n"

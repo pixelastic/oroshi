@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# Remove all empty lines from a multi-line text
+
+# Read from arg or from pipe
+local input=$1
+[[ -p /dev/stdin ]] && input="$(cat -)"
+
+echo $input | sed '/^[[:space:]]*$/d'
+

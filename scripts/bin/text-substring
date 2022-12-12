@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+# Extract a substring from an input string
+# Usage:
+# $ text-substring "Hello" 1 => ello
+# $ text-substring "Hello" -3 => llo
+# $ text-substring "Hello" 1 3 => ell
+# $ echo "Hello" | text-substring 1 => ello
+
+# Read from args
+local text=$1
+local start=$2
+local stop=$3
+
+# Read from pipe
+if [[ -p /dev/stdin ]]; then
+  text="$(cat -)"
+  start=$1
+  stop=$2
+fi
+
+# No stop bound
+if [[ $stop == "" ]]; then
+  echo ${text:$start}
+  exit 0
+fi
+
+# Stop bound
+echo ${text:$start:$stop}
+

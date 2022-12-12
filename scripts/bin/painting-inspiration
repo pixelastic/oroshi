@@ -5,7 +5,7 @@ require 'fileutils'
 class PaintingInspiration
   def initialize
     @destination = File.expand_path(
-      File.join('~', 'Dropbox', 'backup', 'pictures', 'Painting', '2 - Inspiration')
+      File.join('~', 'perso', 'Dropbox', 'backup', 'pictures', 'Painting', '2 - Inspiration')
     )
     @phone_height = 2400
   end

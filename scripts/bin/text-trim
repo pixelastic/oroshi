@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# Trim starting and trailing whitespace from a string
+
+# Read from arg or from pipe
+local input=$1
+[[ -p /dev/stdin ]] && input="$(cat -)"
+
+# Pass through awk to remove whitespace
+echo $input | awk '{$1=$1;print}'

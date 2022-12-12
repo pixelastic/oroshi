@@ -1,21 +1,21 @@
 {
     "type": "phrase",
-    "description": "ttrain",
+    "description": "fwk",
     "modes": [
         1
     ],
-    "usageCount": 4,
+    "usageCount": 0,
     "prompt": false,
     "omitTrigger": false,
     "matchCase": false,
     "showInTrayMenu": false,
     "abbreviation": {
         "abbreviations": [
-            "ttrain"
+            "fwk"
         ],
         "backspace": true,
         "ignoreCase": false,
-        "immediate": true,
+        "immediate": false,
         "triggerInside": false,
         "wordChars": "[\\w]"
     },
@@ -27,5 +27,5 @@
         "regex": null,
         "isRecursive": false
     },
-    "sendMode": "<ctrl>+<shift>+v"
+    "sendMode": "kb"
 }

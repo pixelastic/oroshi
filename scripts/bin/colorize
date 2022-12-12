@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+# Colorize the given text in the given color
+# Usage:
+#   $ colorize main blue
+#   $ colorize anything 145
+
+source ~/.oroshi/config/zsh/theming/colors.zsh
+
+local input="$1"
+local colorToken="$2"
+
+# Use named color if known
+local colorValue=$colorToken
+if [[ $COLORS[$colorToken] != '' ]]; then
+  colorValue=$COLORS[$colorToken]
+fi
+
+# Output the magic codes
+echo "[38;5;${colorValue}m${input}[00m"

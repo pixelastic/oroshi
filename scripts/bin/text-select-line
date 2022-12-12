@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+# Select one line out of a multi-line text and return it
+# Usage:
+# $ text-select-line $myText $myLine
+# $ echo $myText | text-select-line $myLine
+
+# Read from args
+local text=$1
+local index=$2
+
+# Read from pipe
+if [[ -p /dev/stdin ]]; then
+  text="$(cat -)"
+  index=$1
+fi
+
+echo $text | sed -n ${index}p
+
