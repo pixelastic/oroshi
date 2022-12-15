@@ -152,7 +152,7 @@ function __prompt-github-issues-and-prs() {
   local display=""
   local prCount="$(\cat $prCacheFile)"
   if [[ ! $prCount = 0 ]]; then
-    display="${display} %F{$COLORS[green]} ${prCount}%f"
+    display="${display} %F{$COLORS[purple]} ${prCount}%f"
   fi
   local issueCount="$(\cat $issueCacheFile)"
   if [[ ! $issueCount = 0 ]]; then
