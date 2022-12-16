@@ -47,11 +47,10 @@ function precmd() {
     kill -s HUP $PROMPT_ASYNC_PID >/dev/null 2>&1 || :
   fi
 
-  # Write RPROMPT to a tmp file
-  # Signal parent process that we're done (will trigger TRAPUSR1)
+  # Write RPROMPT to a tmp file and refresh the prompt
   function async() {
     echo "$(__prompt-right)" >! "/tmp/zsh_rprompt"
-    kill -s USR1 $$
+    prompt-refresh
   }
 
   # Fork subprocess, but keep a reference to its PID
@@ -59,14 +58,4 @@ function precmd() {
   PROMPT_ASYNC_PID=$!
 }
 
-# TRAPUSR1
-# This is called whenever the USR1 signal is received
-# We'll read the content of the prompt and set it
-function TRAPUSR1() {
-  RPROMPT="$(\cat /tmp/zsh_rprompt)"
-  # Redraw
-  zle && zle reset-prompt
-  # Reset PID
-  PROMPT_ASYNC_PID=0
-}
 

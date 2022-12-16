@@ -25,7 +25,12 @@ fi
 # - Then only if it worked, evaluate our custom command
 # - Wrap it in "()" as well so we can hide all its output with "&>/dev/null"
 # - No matter if the previous command fails or succeed, we remove our lockfile
+# - We refresh the parent zsh terminal prompt
+
+local promptPid="$(prompt-pid)"
 (\
   touch "$lockfilePath" \
-  && (eval $commandToRun) &>/dev/null; rm "$lockfilePath" \
+  && (eval $commandToRun) &>/dev/null; \
+     rm "$lockfilePath"; \
+     prompt-refresh $promptPid
 ) &

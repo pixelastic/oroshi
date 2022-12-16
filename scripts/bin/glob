@@ -4,7 +4,10 @@
 # $ glob "./*.js"
 # $ glob "./**/**"
 
+# The below zsh patterns work as follow
+# - "~" expands any glob pattern
+# - (N) means to ignore patterns that don't match anything 
 for arg in $@; do
-  echo $~arg | xargs -n1
+  echo $~arg(N) | xargs -n1
 done
 
