@@ -18,7 +18,7 @@ while read line; do
   fi
 
   # Do we have unpushed changes?
-  status="$(git-branch-remote-status)$?"
+  status="$(git-branch-push-status)$?"
   if [ "$status" -eq 2 ]; then
     echo "Unpushed: $repo"
   fi

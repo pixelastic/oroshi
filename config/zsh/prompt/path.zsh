@@ -15,7 +15,7 @@ function __prompt-path() {
   for projectPath in ${(kO)PROJECT_SLUG_BY_PATH}; do
     # Skip if do not start with this known path
     [[ $currentPath != $projectPath* ]] && continue
-    
+
     # We remove the full path from the current path
     eval "currentPath=\${currentPath:s_${projectPath}_}"
 

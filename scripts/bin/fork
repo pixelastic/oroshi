@@ -1,0 +1,31 @@
+#!/usr/bin/env zsh
+# Run a command in the background, and write a lockfile while it executes
+# Usage:
+# $ fork "yarn install" /tmp/yarn-install-in-progress
+
+local commandToRun="$1"
+local lockfilePath="$2"
+
+# Lockfile is mandatory
+if [[ $lockfilePath == '' ]]; then
+  echo "✘ You must pass a lockfile path"
+  exit 1
+fi
+
+# If lockfile already exists, we stop, because we don't want to run twice the
+# same command
+if [[ -r $lockfilePath ]]; then
+  exit 0
+fi
+
+# The complex bash command below works like this:
+# - Add "&" at the end to run it in the background
+# - Wrap it in "()" so the "1" applies to everything, not just the last command
+# - Start by creating the lockfile
+# - Then only if it worked, evaluate our custom command
+# - Wrap it in "()" as well so we can hide all its output with "&>/dev/null"
+# - No matter if the previous command fails or succeed, we remove our lockfile
+(\
+  touch "$lockfilePath" \
+  && (eval $commandToRun) &>/dev/null; rm "$lockfilePath" \
+) &

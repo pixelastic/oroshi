@@ -115,12 +115,12 @@ function __prompt-git-branch() {
   local branchColor="$(git-branch-color $branchName)"
 
   local remoteStatus
-  remoteStatus="$(git-branch-remote-status)"
-  [[ $remoteStatus = 'local_ahead' ]] && echo -n " %F{$COLORS[$branchColor]}  $branchName%f"
-  [[ $remoteStatus = 'local_behind' ]] && echo -n " %F{$COLORS[$branchColor]} $branchName%f"
-  [[ $remoteStatus = 'local_diverged' ]] && echo -n " %F{$COLORS[red]} $branchName%f"
-  [[ $remoteStatus = 'local_never_pushed' ]] && echo -n " %F{$COLORS[$branchColor]} $branchName%f"
-  [[ $remoteStatus = 'local_identical' ]] && echo -n " %F{$COLORS[$branchColor]}$branchName%f"
+  remoteStatus="$(git-branch-push-status)"
+  [[ $remoteStatus = 'ahead' ]] && echo -n " %F{$COLORS[$branchColor]}  $branchName%f"
+  [[ $remoteStatus = 'behind' ]] && echo -n " %F{$COLORS[$branchColor]} $branchName%f"
+  [[ $remoteStatus = 'diverged' ]] && echo -n " %F{$COLORS[red]} $branchName%f"
+  [[ $remoteStatus = 'never_pushed' ]] && echo -n " %F{$COLORS[$branchColor]} $branchName%f"
+  [[ $remoteStatus = 'identical' ]] && echo -n " %F{$COLORS[$branchColor]}$branchName%f"
 }
 
 # Returns the number of currently opened issues
@@ -136,6 +136,9 @@ function __prompt-github-issues-and-prs() {
   # Stop early if no .git folder at the root (like in submodules, where it's
   # a file)
   [[ ! -d $gitFolder ]] && return
+
+  # Stop if not in a GitHub repo
+  git-directory-is-github || return
 
   local issueCacheFile="${gitFolder}/oroshi_issue_count"
   local prCacheFile="${gitFolder}/oroshi_pr_count"

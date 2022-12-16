@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# Convert glob patterns to real filepaths
+# Usage:
+# $ glob "./*.js"
+# $ glob "./**/**"
+
+for arg in $@; do
+  echo $~arg | xargs -n1
+done
+
