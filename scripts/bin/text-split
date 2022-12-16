@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Split a multi-line text based on delimiter
+# Split a string into multilines based on delimiter
 # Usage:
 # $ text-split "one, two, three" ", "
 # $ echo "one, two, three" ", " | text-split ","

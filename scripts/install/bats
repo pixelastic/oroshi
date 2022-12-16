@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+# BATS is a CLI testing framework
+yarn global add -- bats

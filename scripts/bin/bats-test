@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# Run tests for one of my binaries
+
+local binaryName="$1"
+bats ~/.oroshi/scripts/bin/__tests__/${binaryName}.bats

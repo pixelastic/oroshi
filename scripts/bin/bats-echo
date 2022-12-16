@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Output a text from bats
+# See: https://bats-core.readthedocs.io/en/stable/writing-tests.html#printing-to-the-terminal
+echo "$@" >&3

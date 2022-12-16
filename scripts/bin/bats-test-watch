@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# Run tests and watch for one of my binaries
+
+local binaryName="$1"
+
+watch-and-reload \
+  ~/.oroshi/scripts/bin/$binaryName \
+  ~/.oroshi/scripts/bin/__tests__/${binaryName}.bats \
+  "bats ~/.oroshi/scripts/bin/__tests__/${binaryName}.bats"
