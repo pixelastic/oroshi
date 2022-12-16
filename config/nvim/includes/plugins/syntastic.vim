@@ -18,7 +18,7 @@ let g:syntastic_mode_map={ 'mode': 'passive',
                        \ 'php',
                        \ 'python',
                        \ 'ruby',
-                       \ 'bash', 'sh', 'zsh',
+                       \ 'bash', 'bats', 'sh', 'zsh',
                        \ 'vim',
                        \ 'yaml',
                        \ 'xml'

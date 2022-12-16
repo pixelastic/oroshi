@@ -24,8 +24,9 @@ Plug 'vim-scripts/argtextobj.vim'
 " - markdown: Uses plasticboy/vim-markdown which seem to clear all syntax
 "   coloring
 let g:polyglot_disabled = ['markdown']
-Plug 'sheerun/vim-polyglot'
+Plug 'aliou/bats.vim'
 Plug 'ekalinin/Dockerfile.vim'
+Plug 'sheerun/vim-polyglot'
 " Plug 'StanAngeloff/php.vim'
 " Plug 'avakhov/vim-yaml'
 " Plug 'cakebaker/scss-syntax.vim'
