@@ -9,7 +9,4 @@ function ok() {
 
   # Xbindkey (media playback)
   ~/.oroshi/scripts/deploy/xbindkeys
-
-  # Autokey (abbreviations, templates)
-  gui autokey
 }

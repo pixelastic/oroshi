@@ -1,16 +1,14 @@
 #!/usr/bin/env zsh
-# Only return positional arguments passed
-
-local output=()
+# Only return positional passed, one by line
+# Can then be used in a script to only keep positional arguments with:
+# local argsp=(${(f)"$(argsp $@)"})
 
 for arg in $argv; do
   # Exclude any argument starting with - or --
-  if [[ $arg == -* ]]; then
+  if [[ $arg = -* ]]; then
     continue
   fi
 
   # Keep a final list
-  output+="$arg"
+  echo $arg
 done
-
-echo $output

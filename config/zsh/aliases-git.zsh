@@ -57,6 +57,7 @@ alias vcsq='git commit-squash'
 alias vcv='git show'
 alias vcz='git commit-cancel'
 alias vc.='git commit-current'
+alias vc?='git commit-exists'
 # }}}
 # [c]herry [p]ick {{{
 alias vcp='git cherry-pick'

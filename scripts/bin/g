@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-rg --glob='!.git' "$*" | less -R
+rg --glob='!.git' -- "$*" | less -R

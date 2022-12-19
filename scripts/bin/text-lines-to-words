@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+# Return all lines as different words, ready to be iterated upon
+# Usage:
+# $ text-lines-to-words "one\ntwo and three"
+# $ echo "one\ntwo and three" | text-lines-to-words
+
+# Read from arg or from pipe
+local input=$1
+[[ -p /dev/stdin ]] && input="$(cat -)"
+
+
+# Change default delimiter from spaces to new lines
+IFS=$'\n';
+
+# Build the final output, encoding each line
+local output=()
+for line in `echo $input`; do
+  output+=${(qq)line}
+done
+echo $output
+

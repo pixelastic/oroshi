@@ -1,13 +1,18 @@
 #!/usr/bin/env zsh
 # Colorize the given text in the given color
 # Usage:
-#   $ colorize main blue
-#   $ colorize anything 145
+#   $ colorize main blue           # Displays "main" in blue
+#   $ colorize anything 145        # Displays "anything" in color 145
 
 source ~/.oroshi/config/zsh/theming/colors.zsh
 
-local input="$1"
-local colorToken="$2"
+# Parsing arguments into positional and flags
+local argsf=(${(f)"$(argsf $@)"})
+local argsp=(${(f)"$(argsp $@)"})
+
+local input="$argsp[1]"
+local colorToken="$argsp[2]"
+local displayType="terminal"
 
 # Use named color if known
 local colorValue=$colorToken
@@ -15,5 +20,9 @@ if [[ $COLORS[$colorToken] != '' ]]; then
   colorValue=$COLORS[$colorToken]
 fi
 
-# Output the magic codes
-echo "[38;5;${colorValue}m${input}[00m"
+# Output the magic codes differently if running from the prompt or not
+if [[ "$OROSHI_IS_PROMPT" = 1 ]]; then
+  echo "%F{${colorValue}}${input}%f"
+else
+  echo "[38;5;${colorValue}m${input}[00m"
+fi

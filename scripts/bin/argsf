@@ -1,20 +1,17 @@
 #!/usr/bin/env zsh
-# Only return flag arguments passed
-
-local output=()
+# Only return flag arguments passed, one by line
+# Can then be used in a script to only keep flag arguments with:
+# local argsf=(${(f)"$(argsf $@)"})
 
 # Iterate through all arguments by index.
-# Using $@, $* or $argv excludes single-hyphen flags
+# Using $@, as $* or $argv excludes single-hyphen flags
 for i in {1..$#}; do
   arg=$@[$i]
-  # Exclude any argument starting with - or --
+  # Exclude any argument not starting with - or --
   if [[ $arg != -* ]]; then
     continue
   fi
 
-  # Keep a final list
-  output+="$arg"
+  # Displaying the flag
+  echo $arg
 done
-
-echo $output
-

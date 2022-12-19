@@ -37,6 +37,7 @@ function __prompt-git-right() {
   [[ -v commands[ruby] ]] || return
 
   # Also stop if not a git repo
+  # echo -n "$(git-is-repository)"
   git-is-repository || return
 
   # Replace all with rebase information
@@ -70,18 +71,9 @@ function __prompt-git-rebase() {
   echo -n "%F{$COLORS[$transplantColor]}[${transplantBranch}]%f"
 }
 
-# Display the closest git tag:
-# - Keep only tags representing a version
-# - Colored orange if the current commit is taggued
-# - Colored gray if it's a parent commit
+# Display the most relevant git tag
 function __prompt-git-tag() {
-  local TAG_VERSION_REGEXP="v?[0-9].*"
-  local tagName="$(git-tag-current)"
-  [[ ! $tagName =~ $TAG_VERSION_REGEXP ]] && return
-
-  # Check if commits have been added since last tag
-  git-commit-tagged && echo -n " %F{$COLORS[orange]} $tagName" && return
-  echo -n " %F{$COLORS[gray7]}炙$tagName%f"
+  echo -n "$(OROSHI_IS_PROMPT=1 git-tag-colorize --with-icon) "
 }
 
 # Display the current remote:
@@ -90,37 +82,12 @@ function __prompt-git-remote() {
   local remoteName="$(git-remote-current)"
   [[ $remoteName = 'origin' ]] && return;
 
-  local remoteColor="$(git-remote-color $remoteName)"
-  echo " %F{$COLORS[$remoteColor]} $remoteName%f"
+  echo -n "$(OROSHI_IS_PROMPT=1 git-remote-colorize --with-icon) "
 }
 
-# Display the current branch:
-# - Known branches are color-coded
-# - Symbol is added if upstream is gone, detached, need pull/push/force-push
+# Display the current branch
 function __prompt-git-branch() {
-  local branchName="$(git-branch-current)"
-  [[ $branchName = '' ]] && return;
-
-  # Detached
-  if [[ $branchName = 'HEAD' ]]; then
-    branchName=" $(git-commit-current)"
-    echo " %F{$COLORS[red]}${branchName}%f"
-    return
-  fi
-
-  # Upstream is gone
-  git-branch-gone && echo " %F{$COLORS[red]} ${branchName}%f" && return
-
-
-  local branchColor="$(git-branch-color $branchName)"
-
-  local remoteStatus
-  remoteStatus="$(git-branch-push-status)"
-  [[ $remoteStatus = 'ahead' ]] && echo -n " %F{$COLORS[$branchColor]}  $branchName%f"
-  [[ $remoteStatus = 'behind' ]] && echo -n " %F{$COLORS[$branchColor]} $branchName%f"
-  [[ $remoteStatus = 'diverged' ]] && echo -n " %F{$COLORS[red]} $branchName%f"
-  [[ $remoteStatus = 'never_pushed' ]] && echo -n " %F{$COLORS[$branchColor]} $branchName%f"
-  [[ $remoteStatus = 'identical' ]] && echo -n " %F{$COLORS[$branchColor]}$branchName%f"
+  echo -n "$(OROSHI_IS_PROMPT=1 git-branch-colorize --with-icon)"
 }
 
 # Returns the number of currently opened issues

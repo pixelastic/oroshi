@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
 # Return an array of all words in the input
 # Usage:
-# $ text-words-to-line "one two three"
-# $ echo "one two three" | text-words-to-line
+# $ text-words-to-lines "one two three"
+# $ echo "one two three" | text-words-to-lines
 
 # Read from arg or from pipe
 local input=$1
