@@ -8,11 +8,11 @@ PROJECT_SLUG_BY_PATH=()
 
 # We will now create custom PROJECT_* variables that will let us access specific
 # metadata of a project more easily.
-declare -gA PROJECT_BACKGROUND 
+declare -gA PROJECT_BACKGROUND
 PROJECT_BACKGROUND=()
-declare -gA PROJECT_ICON 
+declare -gA PROJECT_ICON
 PROJECT_ICON=()
-declare -gA PROJECT_TEXT 
+declare -gA PROJECT_TEXT
 PROJECT_TEXT=()
 declare -gA PROJECT_HIDE_NAME_IN_PROMPT
 PROJECT_HIDE_NAME_IN_PROMPT=()
