@@ -2,8 +2,10 @@
 " https://github.com/junegunn/vim-easy-align
 "
 " ga<Space> aligns on spaces
-" This is clever enough to handle strings as one word, and ignores comments
-xmap ga<Space> <Plug>(EasyAlign)*<Space>
-
+vnoremap ga<Space> <Plug>(EasyAlign)*<Space>
 " ga| aligns on pipes
 vnoremap ga\| :EasyAlign * /\|/<CR>
+" ga# aligns on hashes
+vnoremap ga# :EasyAlign * #<CR>
+" ga= aligns on equal signs
+vnoremap ga= :EasyAlign * =<CR>

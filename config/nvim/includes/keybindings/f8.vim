@@ -8,7 +8,7 @@ let g:default_listchars=''
 let g:default_listchars .= 'eol: ,'
 let g:default_listchars .= 'extends:,'
 let g:default_listchars .= 'lead: ,'
-let g:default_listchars .= 'multispace:,'
+let g:default_listchars .= 'multispace: ,'
 let g:default_listchars .= 'nbsp:∅,'
 let g:default_listchars .= 'precedes:,'
 let g:default_listchars .= 'tab:  ,'
@@ -29,7 +29,7 @@ let g:extended_listchars .= 'trail:,'
 " and revert to the default listchars (tab:> ,trail:-,nbsp:+)
 let &listchars=g:default_listchars
 
-" When pressing F8, we toggle between the default and  extended    lists
+" When pressing F8, we toggle between the default and extended lists
 function! ToggleListChars()
   set list
   if &listchars ==# g:default_listchars

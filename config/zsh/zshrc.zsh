@@ -9,11 +9,12 @@ source ~/.oroshi/config/zsh/require.zsh
 # Setting env variables
 require 'env.zsh'
 require 'tmux.zsh'
-# The COLORS and PROJECTS constants are used in many other config files so it
-# should be loaded early. As they are using an associative array, it has to be
-# `source`d directly
+# The COLORS, PROJECTS and FILETYPES constants are used in many other config
+# files so it should be loaded early. As they are using an associative array, it
+# has to be `source`d directly
 source ~/.oroshi/config/zsh/theming/colors.zsh
 source ~/.oroshi/config/zsh/theming/projects.zsh
+source ~/.oroshi/config/zsh/theming/filetypes.zsh
 
 require 'completion/index.zsh'
 require 'history.zsh'

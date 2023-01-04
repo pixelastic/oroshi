@@ -44,6 +44,7 @@ function! OroshiStatusLine()
   " }}}
 
   " Current file {{{
+  " TODO: Add prefix of the projects
   let filepath = expand('%:p:h:t').'/'.expand('%:t')
   let isWritable = &readonly == 0
   let hasUnsavedChanges = &modified
@@ -98,6 +99,8 @@ function! OroshiStatusLine()
   " }}}
 
   " Filetype {{{
+  " TODO: Use icons for filtypes
+  " TODO: Use filetype colors
   let sl .= ' '.&filetype.' '
   " }}}
   " Foldmarker {{{
@@ -111,11 +114,11 @@ function! OroshiStatusLine()
   " }}}
 
   " Ruler {{{
-  let sl .= ' '
-  let sl .= '0x%2.B' " current char
-  let sl .= ' %2.c/%2.{&textwidth}' " current colum / max columns
-  let sl .= ' %3l/%3L' " current line / max line
-  let sl .= ' %3p%%' " percentage in file
+  let sl .= ' %2.c:%2.l ' " current char
+  let sl .= ' 0x%2.B' " current char
+  " let sl .= ' %2.c/%2.{&textwidth}' " current colum / max columns
+  " let sl .= ' %3l/%3L' " current line / max line
+  " let sl .= ' %3p%%' " percentage in file
   " }}}
 
 
