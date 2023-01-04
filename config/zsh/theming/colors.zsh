@@ -10,7 +10,7 @@
 # value from the 6th step
 
 # The order of the colors is important and must match what is defined in
-# kitty.cong
+# kitty.conf
 local -a orderedColors
 orderedColors=(gray red green yellow blue purple teal orange indigo pink)
 

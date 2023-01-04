@@ -1,7 +1,7 @@
 # FILETYPE_GROUPS {{{
-# - Extensions starting with a dot (as in .md) are checked against the end of
+# - patterns starting with a dot (as in .md) are checked against the end of
 #   the filename
-# - Extensions not starting with a dot are checked against the whole filename
+# - patterns not starting with a dot are checked against the whole filename
 declare -gA FILETYPE_GROUPS
 FILETYPE_GROUPS=()
 declare -gA FILETYPES
@@ -9,7 +9,7 @@ FILETYPES=()
 
 # FILETYPE_GROUPS {{{
 # Text files
-FILETYPE_GROUPS[text,extensions]="\
+FILETYPE_GROUPS[text,patterns]="\
   CODEOWNERS \
   LICENSE \
   MAINTAINERS \
@@ -20,7 +20,7 @@ FILETYPE_GROUPS[text,color]="orange5"
 FILETYPE_GROUPS[text,icon]=" "
 
 # Script files
-FILETYPE_GROUPS[script,extensions]="\
+FILETYPE_GROUPS[script,patterns]="\
   .au3 \
   .bats \
   .cfg \
@@ -62,7 +62,7 @@ FILETYPE_GROUPS[script,color]="purple5"
 FILETYPE_GROUPS[script,icon]=" "
 
 # Image files
-FILETYPE_GROUPS[image,extensions]="\
+FILETYPE_GROUPS[image,patterns]="\
   .gif \
   .ico \
   .jpg \
@@ -72,7 +72,7 @@ FILETYPE_GROUPS[image,color]="yellow5"
 FILETYPE_GROUPS[image,icon]=" "
 
 # Audio files
-FILETYPE_GROUPS[audio,extensions]="\
+FILETYPE_GROUPS[audio,patterns]="\
   .mp3 \
   .wav \
 "
@@ -80,7 +80,7 @@ FILETYPE_GROUPS[audio,color]="blue4"
 FILETYPE_GROUPS[audio,icon]=" "
 
 # Video files
-FILETYPE_GROUPS[video,extensions]="\
+FILETYPE_GROUPS[video,patterns]="\
   .avi \
   .mkv \
   .mp4 \
@@ -91,7 +91,7 @@ FILETYPE_GROUPS[video,icon]=" "
 FILETYPE_GROUPS[video,bold]="1"
 
 # Archive files
-FILETYPE_GROUPS[archive,extensions]="\
+FILETYPE_GROUPS[archive,patterns]="\
   .cbr \
   .cbz \
   .deb \
@@ -106,7 +106,7 @@ FILETYPE_GROUPS[archive,icon]=" "
 FILETYPE_GROUPS[archive,bold]="1"
 
 # Documents files
-FILETYPE_GROUPS[document,extensions]="\
+FILETYPE_GROUPS[document,patterns]="\
   .epub \
   .pdf \
 "
@@ -114,13 +114,13 @@ FILETYPE_GROUPS[document,color]="yellow7"
 FILETYPE_GROUPS[document,icon]=" "
 
 # Binary files
-FILETYPE_GROUPS[binary,extensions]=".exe"
+FILETYPE_GROUPS[binary,patterns]=".exe"
 FILETYPE_GROUPS[binary,color]="blue"
 FILETYPE_GROUPS[binary,icon]=" "
 FILETYPE_GROUPS[binary,bold]="1"
 
 # Minor files files
-FILETYPE_GROUPS[minor,extensions]="\
+FILETYPE_GROUPS[minor,patterns]="\
   .js.map \
   .lock \
   .log \

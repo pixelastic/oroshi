@@ -102,6 +102,7 @@ function! OroshiStatusLine()
   " TODO: Use icons for filtypes
   " TODO: Use filetype colors
   let sl .= ' '.&filetype.' '
+  let sl .= "$FILETYPES[.css,icon]"
   " }}}
   " Foldmarker {{{
 
