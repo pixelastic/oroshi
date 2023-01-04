@@ -147,7 +147,7 @@ for s:color_name in keys(s:color)
    if s:color_name !~? '6$'
       continue
    endif
-   " Save base color as the -6
+   " Save base color as the 6
    let s:base_color_name = substitute(s:color_name, '6', '', '')
    let s:color[s:base_color_name] = s:color[s:color_name]
 endfor
@@ -182,6 +182,14 @@ function! s:Highlight(group,...)
 
   execute result
 endfunction
+
+" }}}
+" Defining raw 256 highlight groups {{{
+let colorIndex=0
+while colorIndex <= 256
+   execute "hi RawColor" . colorIndex . " ctermfg=" . colorIndex
+   let colorIndex += 1
+endwhile
 " }}}
 " Text {{{
 call s:Highlight('Boolean', 'orange5')
@@ -583,6 +591,8 @@ call s:Highlight('zshStringDelimiter', 'blue5')
 call s:Highlight('zshSwitches', 'indigo4')
 call s:Highlight('zshVariableDef', 'indigo4')
 " }}}
+" Arbitrary colors
+call s:Highlight('color1', 'red', 'gray8')
 
 
 " " Ansible {{{

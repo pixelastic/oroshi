@@ -1,6 +1,7 @@
 " STATUS LINE
 source ~/.config/nvim/includes/statusline/git.vim
 source ~/.config/nvim/includes/statusline/lint.vim
+source ~/.config/nvim/includes/statusline/filetype.vim
 
 " Always display the status line
 set laststatus=2
@@ -99,11 +100,12 @@ function! OroshiStatusLine()
   " }}}
 
   " Filetype {{{
-  " TODO: Use icons for filtypes
-  " TODO: Use filetype colors
-  let sl .= ' '.&filetype.' '
-  let sl .= "$FILETYPES[.css,icon]"
+  let b:filetypeStatusLine = FiletypeStatusLine()
+  if b:filetypeStatusLine !=# ''
+    let sl .= b:filetypeStatusLine.' '
+  endif
   " }}}
+
   " Foldmarker {{{
 
   let foldMarker = '?'

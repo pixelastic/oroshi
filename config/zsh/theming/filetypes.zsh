@@ -27,23 +27,24 @@ function () {
     [[ $groupBold == "" ]] && groupBold="0"
 
 
-    # Creating FILETYPES entries for each pattern, for example:
-    # - FILETYPES_CSS_ICON
+    # Creating FILETYPES entries for type pattern, for example:
+    # - FILETYPES_CSS_PATTERN
     # - FILETYPES_CSS_COLOR
     # - FILETYPES_CSS_BOLD
+    # - FILETYPES_CSS_ICON
     local patterns=(${=value})
     for pattern in $patterns; do
       # Only assign them if they aren't already defined
       local color=${FILETYPES[${pattern},color]:-$groupColor}
-      local icon=${FILETYPES[${pattern},icon]:-$groupIcon}
       local bold=${FILETYPES[${pattern},bold]:-$groupBold}
+      local icon=${FILETYPES[${pattern},icon]:-$groupIcon}
 
       # Export the ENV variables
       local indexName=${(U)pattern:gs/\.//}
       export FILETYPES_${indexName}_PATTERN=$pattern
-      export FILETYPES_${indexName}_ICON=$icon
       export FILETYPES_${indexName}_COLOR=$COLORS[$color]
       export FILETYPES_${indexName}_BOLD=$bold
+      export FILETYPES_${indexName}_ICON=$icon
       FILETYPES_INDEX+=" $indexName"
     done
   done

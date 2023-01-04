@@ -2,9 +2,9 @@
 # - patterns starting with a dot (as in .md) are checked against the end of
 #   the filename
 # - patterns not starting with a dot are checked against the whole filename
-declare -gA FILETYPE_GROUPS
+declare -A FILETYPE_GROUPS
 FILETYPE_GROUPS=()
-declare -gA FILETYPES
+declare -A FILETYPES
 FILETYPES=()
 
 # FILETYPE_GROUPS {{{
