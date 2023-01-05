@@ -37,7 +37,7 @@ function () {
   namedColors[20]="SKY"
   namedColors[21]="VIOLET"
   namedColors[22]="TEAL"
-  namedColors[23]="SLATE"
+  namedColors[23]="NEUTRAL"
   namedColors[24]="GRAY_LIGHT"
   namedColors[25]="ORANGE_LIGHT"
   namedColors[26]="EMERALD_LIGHT"
@@ -45,7 +45,7 @@ function () {
   namedColors[28]="SKY_LIGHT"
   namedColors[29]="VIOLET_LIGHT"
   namedColors[30]="TEAL_LIGHT"
-  namedColors[31]="SLATE_LIGHT"
+  namedColors[31]="NEUTRAL_LIGHT"
   # }}}
   # Color palettes {{{
   local colorRanges=()
@@ -64,7 +64,7 @@ function () {
   colorRanges[17]="SKY"
   colorRanges[18]="VIOLET"
   colorRanges[19]="TEAL"
-  colorRanges[20]="SLATE"
+  colorRanges[20]="NEUTRAL"
   # }}}
 
   local colorsIndex=()
