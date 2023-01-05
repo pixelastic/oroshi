@@ -16,7 +16,7 @@ FILETYPE_GROUPS[text,patterns]="\
   .md \
   .txt \
 "
-FILETYPE_GROUPS[text,color]="orange5"
+FILETYPE_GROUPS[text,color]="ORANGE_5"
 FILETYPE_GROUPS[text,icon]=" "
 
 # Script files
@@ -58,7 +58,7 @@ FILETYPE_GROUPS[script,patterns]="\
   Rakefile \
   Vagrantfile \
 "
-FILETYPE_GROUPS[script,color]="purple5"
+FILETYPE_GROUPS[script,color]="PURPLE_5"
 FILETYPE_GROUPS[script,icon]=" "
 
 # Image files
@@ -68,7 +68,7 @@ FILETYPE_GROUPS[image,patterns]="\
   .jpg \
   .png \
 "
-FILETYPE_GROUPS[image,color]="yellow5"
+FILETYPE_GROUPS[image,color]="YELLOW_5"
 FILETYPE_GROUPS[image,icon]=" "
 
 # Audio files
@@ -76,7 +76,7 @@ FILETYPE_GROUPS[audio,patterns]="\
   .mp3 \
   .wav \
 "
-FILETYPE_GROUPS[audio,color]="blue4"
+FILETYPE_GROUPS[audio,color]="BLUE_4"
 FILETYPE_GROUPS[audio,icon]=" "
 
 # Video files
@@ -86,7 +86,7 @@ FILETYPE_GROUPS[video,patterns]="\
   .mp4 \
   .mpg \
 "
-FILETYPE_GROUPS[video,color]="blue"
+FILETYPE_GROUPS[video,color]="BLUE"
 FILETYPE_GROUPS[video,icon]=" "
 FILETYPE_GROUPS[video,bold]="1"
 
@@ -101,7 +101,7 @@ FILETYPE_GROUPS[archive,patterns]="\
   .tgz \
   .zip \
 "
-FILETYPE_GROUPS[archive,color]="green"
+FILETYPE_GROUPS[archive,color]="GREEN"
 FILETYPE_GROUPS[archive,icon]=" "
 FILETYPE_GROUPS[archive,bold]="1"
 
@@ -110,12 +110,12 @@ FILETYPE_GROUPS[document,patterns]="\
   .epub \
   .pdf \
 "
-FILETYPE_GROUPS[document,color]="yellow7"
+FILETYPE_GROUPS[document,color]="YELLOW_7"
 FILETYPE_GROUPS[document,icon]=" "
 
 # Binary files
 FILETYPE_GROUPS[binary,patterns]=".exe"
-FILETYPE_GROUPS[binary,color]="blue"
+FILETYPE_GROUPS[binary,color]="BLUE"
 FILETYPE_GROUPS[binary,icon]=" "
 FILETYPE_GROUPS[binary,bold]="1"
 
@@ -130,7 +130,7 @@ FILETYPE_GROUPS[minor,patterns]="\
   .pid \
   _algolia_api_key \
 "
-FILETYPE_GROUPS[minor,color]="gray7"
+FILETYPE_GROUPS[minor,color]="GRAY_7"
 FILETYPE_GROUPS[minor,icon]=" "
 # }}}
 

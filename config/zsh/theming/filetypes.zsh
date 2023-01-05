@@ -1,14 +1,20 @@
-# This will load FILETYPE_GROUPS and FILETYPES definitions. For example:
-#
-# Broad strokes definitions for whole groups of patterns
-# - FILETYPE_GROUPS[scripts,patterns] // .rb,.js
-# - FILETYPE_GROUPS[scripts,color] // yellow
-# - FILETYPE_GROUPS[scripts,icon] // 
-#
-# Custom overrides for specific patterns
-# - FILETYPE[.js,icon] // 
-# - FILETYPE[.js,bold] // 1
+# Creating FILETYPES entries for type pattern, for example:
+# - FILETYPES_CSS_PATTERN
+# - FILETYPES_CSS_COLOR
+# - FILETYPES_CSS_COLOR_HEXA
+# - FILETYPES_CSS_BOLD
+# - FILETYPES_CSS_ICON
 function () {
+  # This will load FILETYPE_GROUPS and FILETYPES definitions. For example:
+  #
+  # Broad strokes definitions for whole groups of patterns
+  # - FILETYPE_GROUPS[scripts,patterns] // .rb,.js
+  # - FILETYPE_GROUPS[scripts,color] // yellow
+  # - FILETYPE_GROUPS[scripts,icon] // 
+  #
+  # Custom overrides for specific patterns
+  # - FILETYPE[.js,icon] // 
+  # - FILETYPE[.js,bold] // 1
   source ~/.oroshi/config/zsh/theming/filetypes-list.zsh
 
   # Export FILETYPES_INDEX that contains the list of all the filetypes for which
@@ -27,11 +33,7 @@ function () {
     [[ $groupBold == "" ]] && groupBold="0"
 
 
-    # Creating FILETYPES entries for type pattern, for example:
-    # - FILETYPES_CSS_PATTERN
-    # - FILETYPES_CSS_COLOR
-    # - FILETYPES_CSS_BOLD
-    # - FILETYPES_CSS_ICON
+    # Creating FILETYPES entries for each pattern
     local patterns=(${=value})
     for pattern in $patterns; do
       # Only assign them if they aren't already defined
@@ -41,10 +43,11 @@ function () {
 
       # Export the ENV variables
       local indexName=${(U)pattern:gs/\.//}
-      export FILETYPES_${indexName}_PATTERN=$pattern
-      export FILETYPES_${indexName}_COLOR=$COLORS[$color]
-      export FILETYPES_${indexName}_BOLD=$bold
-      export FILETYPES_${indexName}_ICON=$icon
+      export FILETYPE_${indexName}_PATTERN=$pattern
+      export FILETYPE_${indexName}_COLOR=${(P)${:-COLOR_${color}}}
+      export FILETYPE_${indexName}_COLOR_HEXA=${(P)${:-COLOR_${color}_HEXA}}
+      export FILETYPE_${indexName}_BOLD=$bold
+      export FILETYPE_${indexName}_ICON=$icon
       FILETYPES_INDEX+=" $indexName"
     done
   done

@@ -1,15 +1,13 @@
 #!/usr/bin/env zsh
-# Name of the current session, on the leftmost part
-
+# Used in tmux, to display the left-most part: name of the current session
 local sessionName="$1"
-
 local sessionColors="$(tmux-status-colors $sessionName)"
-local splitColors=(${(s/:/)sessionColors})
-local textColor=$splitColors[2]
-[[ $textColor == "" ]] && textColor="235"
+local splitColors=(${=sessionColors})
 local backgroundColor=$splitColors[1]
+local foregroundColor=$splitColors[2]
+[[ $foregroundColor == "" ]] && foregroundColor="235"
 
 local sessionIcon="$(tmux-status-icon $sessionName)"
 
-echo -n "#[bg=colour${backgroundColor},fg=colour${textColor}] ${sessionIcon}${sessionName} "
+echo -n "#[bg=colour${backgroundColor},fg=colour${foregroundColor}] ${sessionIcon}${sessionName} #[default]"
 echo -n "#[bg=colour235,fg=colour${backgroundColor}]"

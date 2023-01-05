@@ -1,8 +1,7 @@
 #!/usr/bin/env zsh
 # List open issues and PRs of my repos
-source ~/.oroshi/config/zsh/theming/colors.zsh
 
-local -a repos
+local repos=()
 repos+=("/home/tim/local/www/projects/firost/")
 repos+=("/home/tim/local/www/projects/golgoth/")
 repos+=("/home/tim/local/www/projects/norska/")
@@ -25,12 +24,13 @@ repos+=("/home/tim/local/www/pixelastic.com/gamemaster/society/society-data/")
 repos+=("/home/tim/local/www/pixelastic.com/gamemaster/society/society-search/")
 
 local RESET="\e[0m"
-local GREEN="\e[38;5;$COLORS[green]m"
-local YELLOW="\e[38;5;$COLORS[yellow]m"
+local GREEN="\e[38;5;${COLOR_GREEN}m"
+local YELLOW="\e[38;5;${COLOR_YELLOW}m"
 for repo in $repos; do
+  [[ ! -r $repo ]] && continue
   cd $repo
-  local issueCount="$(ghic)"
-  local prCount="$(ghprc)"
+  local issueCount="$(git-issue-count)"
+  local prCount="$(git-pr-count)"
   local baseName="$(path.basename $repo)"
   [[ $issueCount = 0 && $prCount = 0 ]] && continue
 

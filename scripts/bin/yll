@@ -12,8 +12,8 @@ for module in $linkedModules; do
   local RESET="\e[0m"
 
 
-  [[ $moduleLinkType = 'local' ]] && echo "\e[38;5;$COLORS[yellow]m  $moduleName\e[0m"
-  [[ $moduleLinkType = 'global' ]] && echo "\e[38;5;$COLORS[blue7]m  $moduleName\e[0m"
+  [[ $moduleLinkType = 'local' ]] && echo "\e[38;5;${COLOR_YELLOW}m  $moduleName\e[0m"
+  [[ $moduleLinkType = 'global' ]] && echo "\e[38;5;${COLOR_BLUE_7}m  $moduleName\e[0m"
 done
 
 exit 0

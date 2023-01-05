@@ -2,13 +2,11 @@
 # Return the background:text color for a specific name
 # Usage:
 #   tmux-status-color projects
-source ~/.oroshi/config/zsh/theming/colors.zsh
-source ~/.oroshi/config/zsh/theming/projects.zsh
+local projectName="$1"
+local projectKey=${(U)projectName:gs/-/_/}
 
-local projectSlug="$1"
-
-local projectBackground=$PROJECT_BACKGROUND[$projectSlug]
-local projectText=$PROJECT_TEXT[$projectSlug]
+local projectBackground=${(P)${:-PROJECT_${projectKey}_BACKGROUND}}
+local projectForeground=${(P)${:-PROJECT_${projectKey}_FOREGROUND}}
 
 
-echo "${COLORS[$projectBackground]}:${COLORS[$projectText]}"
+echo -n "${projectBackground} ${projectForeground}"

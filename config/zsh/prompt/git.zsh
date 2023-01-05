@@ -13,9 +13,9 @@ function __prompt-git-flags() {
   # Or in a non-git repo
   git-is-repository || return
 
-  git-is-submodule && echo -n "%F{$COLORS[yellow]} %f"
-  git stash show &>/dev/null && echo -n "%F{$COLORS[pink8]} %f"
-  git-rebase-inprogress && echo -n "%F{$COLORS[red6]} %f"
+  git-is-submodule && echo -n "%F{$COLOR_YELLOW} %f"
+  git stash show &>/dev/null && echo -n "%F{$COLOR_PINK_8} %f"
+  git-rebase-inprogress && echo -n "%F{$COLOR_RED_6} %f"
   echo -n "$(__prompt-git-status)"
 }
 
@@ -24,9 +24,9 @@ function __prompt-git-flags() {
 # - Red if any file has been added/deleted/modified
 # - Purple if files are added to the index
 function __prompt-git-status() {
-  git-directory-has-staged-files && echo "%F{$COLORS[purple]}ﰖ %f" && return
-  git-directory-is-dirty && echo "%F{$COLORS[red]}ﰖ %f" && return
-  echo "%F{$COLORS[green]}ﰖ %f"
+  git-directory-has-staged-files && echo "%F{$COLOR_PURPLE}ﰖ %f" && return
+  git-directory-is-dirty && echo "%F{$COLOR_RED}ﰖ %f" && return
+  echo "%F{$COLOR_GREEN}ﰖ %f"
 }
 
 # Display all the git-related informations on the right
@@ -59,7 +59,7 @@ function __prompt-git-rebase() {
   local currentStep="$(git-rebase-step-current)"
   local maxStep="$(git-rebase-step-max)"
 
-  echo -n "%B%F{$COLORS[red6]} ${currentStep}/${maxStep} %f%b"
+  echo -n "%B%F{$COLOR_RED_6} ${currentStep}/${maxStep} %f%b"
 
   local ontoBranch="$(git-rebase-onto)"
   local ontoColor="$(__prompt-git-branch-color $ontoBranch)"
@@ -67,8 +67,8 @@ function __prompt-git-rebase() {
   local transplantColor="$(__prompt-git-branch-color $transplantBranch)"
 
 
-  echo -n "%F{$COLORS[$ontoColor]}[${ontoBranch:0:8}]%f"
-  echo -n "%F{$COLORS[$transplantColor]}[${transplantBranch}]%f"
+  echo -n "%F{${(P)${:-COLOR_${ontoColor}}}[${ontoBranch:0:8}]%f"
+  echo -n "%F{${(P)${:-COLOR_${transpantColor}}}[${transplantBranch}]%f"
 }
 
 # Display the most relevant git tag
@@ -94,7 +94,7 @@ function __prompt-git-branch() {
 function __prompt-github-issues-and-prs() {
   # No GITHUB_TOKEN
   if [[ ! -v GITHUB_TOKEN_READONLY ]]; then
-    echo -n "%F{$COLORS[red]}  %f"
+    echo -n "%F{$COLOR_RED}  %f"
     return
   fi
 
@@ -122,11 +122,11 @@ function __prompt-github-issues-and-prs() {
   local display=""
   local prCount="$(\cat $prCacheFile)"
   if [[ ! $prCount = 0 ]]; then
-    display="${display} %F{$COLORS[purple]} ${prCount}%f"
+    display="${display} %F{$COLOR_PURPLE} ${prCount}%f"
   fi
   local issueCount="$(\cat $issueCacheFile)"
   if [[ ! $issueCount = 0 ]]; then
-    display="${display} %F{$COLORS[yellow]} ${issueCount}%f"
+    display="${display} %F{$COLOR_YELLOW} ${issueCount}%f"
   fi
 
   echo $display

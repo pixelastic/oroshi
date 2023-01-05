@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+# Refresh all colors by:
+# - Reloading kitty color config
+# - Redefining COLOR_*** env variables
+# - Bubbling those variables to tmux
+# - Refreshing tmux
+
+
+# Reload kitty configuration by sending it SIGUSR1
+kill -SIGUSR1 $(pgrep kitty)
+
+# Redefine all colors
+source ~/.oroshi/config/zsh/theming/index.zsh
+
+# Bubble up all PROJECT_* and COLOR_* env vars to tmux
+local envs="$(env)"
+for envLine in ${(f)envs}; do
+  local lineSplit=(${=envLine:s/=/ /})
+  local varName=$lineSplit[1]
+  local varValue=${(P)varName}
+  [[ $varName != PROJECT_* ]] && [[ $varName != COLOR_* ]] && continue
+  [[ $varValue == "" ]] && continue
+  tmux setenv -g $varName $varValue
+done
+
+# Force a tmux refresh
+tmux refresh-client -S

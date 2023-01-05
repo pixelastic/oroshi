@@ -10,13 +10,13 @@
 function __prompt-ruby-version() {
   # Not even a system-wide ruby installation
   if [[ ! -v commands[ruby] ]]; then
-    echo -n "%F{$COLORS[red]} %f"
+    echo -n "%F{$COLOR_RED} %f"
     return
   fi
 
   # No Rbenv
   if [[ ! -v commands[rbenv] ]]; then
-    echo -n "%F{$COLORS[orange]} %f"
+    echo -n "%F{$COLOR_ORANGE} %f"
     return
   fi
 
@@ -31,10 +31,10 @@ function __prompt-ruby-version() {
 
   # Local version is in use
   if rbenv version-name &>/dev/null; then
-    echo -n "%F{$COLORS[green]}  $expectedVersion%f"
+    echo -n "%F{$COLOR_GREEN}  $expectedVersion%f"
     return
   fi
 
   # Local version is not even installed
-  echo -n "%F{$COLORS[red]}  $expectedVersion%f"
+  echo -n "%F{$COLOR_RED}  $expectedVersion%f"
 }

@@ -6,25 +6,19 @@
 function __prompt-path() {
   local currentPath="$(print -D $PWD)/"
 
-  # We loop through each known project, to see if the current path matches one
-  # of the projects
-  local projectSlug=""
-  # Note: 
-  # - k: only keeping the keys (paths) of the array
-  # - O: ordering them, so the most precise are coming first
-  for projectPath in ${(kO)PROJECT_SLUG_BY_PATH}; do
-    # Skip if do not start with this known path
-    [[ $currentPath != $projectPath* ]] && continue
-
-    # We remove the full path from the current path
+  # Checking if part of a known project
+  local projectKey="$(project-by-path $currentPath)"
+  if [[ $projectKey != "" ]]; then
+    local projectName=${(P)${:-PROJECT_${projectKey}_NAME}}
+    local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
+    local projectBackground=${(P)${:-PROJECT_${projectKey}_BACKGROUND}}
+    local projectForeground=${(P)${:-PROJECT_${projectKey}_FOREGROUND}}
+    local projectIcon=${(P)${:-PROJECT_${projectKey}_ICON}}
+    local projectHideNameInPrompt=${(P)${:-PROJECT_${projectKey}_HIDE_NAME_IN_PROMPT}}
+    
+    # Simplifying the displayed path by removing the prefix
     eval "currentPath=\${currentPath:s_${projectPath}_}"
-
-    # We keep in memory the slug of the current project
-    projectSlug=$PROJECT_SLUG_BY_PATH[$projectPath]
-
-    # Stop the loop now, we found the best match
-    break
-  done
+  fi
 
   # Simplify string path if too long
   local -a pathArray
@@ -35,30 +29,27 @@ function __prompt-path() {
 
   # Add marker if connected through SSH
   if [[ $SSH_CLIENT != '' ]]; then
-    echo -n "%F{$COLORS[orange]}  $hostname %f%k"
+    echo -n "%F{$COLOR_ORANGE}  $hostname %f%k"
   fi
 
   # Prefix with a shortened colored version of the project if in an active
   # project
-  if [[ $projectSlug != '' ]]; then
-    local displayBackground=$COLORS[$PROJECT_BACKGROUND[$projectSlug]]
-    local displayText=$COLORS[$PROJECT_TEXT[$projectSlug]]
-    local displayIcon=$PROJECT_ICON[$projectSlug]
+  if [[ $projectKey != '' ]]; then
+    # Some projects are only displayed with their icon
+    local displayProjectName="${projectIcon}${projectName}"
+    [[ $projectHideNameInPrompt == "1" ]] && displayProjectName="${projectIcon}"
 
-    local displaySlug=$projectSlug
-    [[ $PROJECT_HIDE_NAME_IN_PROMPT[$projectSlug] == "1" ]] && displaySlug=""
-
-    local displayProjectPrefix="%K{$displayBackground}%F{$displayText} ${displayIcon}${displaySlug} %f%k%F{$displayBackground}%f "
+    local displayProjectPrefix="%K{$projectBackground}%F{$projectForeground} ${displayProjectName} %f%k%F{$projectBackground}%f "
     echo -n $displayProjectPrefix
   fi
 
 
   # Color the string path
   if [[ $currentPath != '' ]]; then
-    git-is-dot-git-folder && echo "%F{$COLORS[orange]}${currentPath:s_.git/_ }%f" && return
-    [[ ! -r $PWD ]] && echo "%F{$COLORS[gray]} ${currentPath}%f " && return
-    [[ ! -w $PWD ]] && echo "%F{$COLORS[red]}!${currentPath}%f " && return
+    git-is-dot-git-folder && echo "%F{$COLOR_ORANGE}${currentPath:s_.git/_ }%f" && return
+    [[ ! -r $PWD ]] && echo "%F{$COLOR_GRAY} ${currentPath}%f " && return
+    [[ ! -w $PWD ]] && echo "%F{$COLOR_RED}!${currentPath}%f " && return
 
-    echo "%F{$COLORS[green]}${currentPath}%f " && return
+    echo "%F{$COLOR_GREEN}${currentPath}%f " && return
   fi
 }

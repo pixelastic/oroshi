@@ -1,38 +1,83 @@
-declare -gA PROJECTS
-PROJECTS=()
-source ~/.oroshi/config/zsh/theming/projects-list.zsh
+# Creating PROJECT entries, for example:
+# - PROJECT_ABERLAAS_NAME
+# - PROJECT_ABERLAAS_PATH
+# - PROJECT_ABERLAAS_ICON
+# - PROJECT_ABERLAAS_BACKGROUND
+# - PROJECT_ABERLAAS_BACKGROUND_HEXA
+# - PROJECT_ABERLAAS_FOREGROUND
+# - PROJECT_ABERLAAS_FOREGROUND_HEXA
+# - PROJECT_ABERLAAS_HIDE_NAME_IN_PROMPT
+function () {
+  # This will load PROJECTS definitions. For example:
+  #
+  # - PROJECTS[aberlaas,background]="YELLOW_7"
+  # - PROJECTS[aberlaas,icon]=" "
+  # - PROJECTS[aberlaas,path]="~/local/www/projects/aberlaas/"
+  # - PROJECTS[aberlaas,text]="GRAY_9"
+  source ~/.oroshi/config/zsh/theming/projects-list.zsh
 
-# This associative array will match each project path with the project slug
-declare -gA PROJECT_SLUG_BY_PATH
-PROJECT_SLUG_BY_PATH=()
+  # We'll keep a list of all projects, and a list of all paths
+  # - PROJECTS_INDEX will contains an alphabetical list of all projects
+  # - PROJECTS_INDEX_BY_PATH will contains the same list, ordered by path
+  # For now, we gather them in an array, and we'll sort them one we have them
+  # all
+  local projectsIndex=()
+  declare -gA projectsIndexByPath
+  projectsIndexByPath=()
 
-# We will now create custom PROJECT_* variables that will let us access specific
-# metadata of a project more easily.
-declare -gA PROJECT_BACKGROUND
-PROJECT_BACKGROUND=()
-declare -gA PROJECT_ICON
-PROJECT_ICON=()
-declare -gA PROJECT_TEXT
-PROJECT_TEXT=()
-declare -gA PROJECT_HIDE_NAME_IN_PROMPT
-PROJECT_HIDE_NAME_IN_PROMPT=()
+  # Export PROJECT_{TYPE}_{KEY} environment variables:
+  for key value in "${(@kv)PROJECTS}"; do
+    [[ $key != *,icon ]] && continue
 
-for key value in "${(@kv)PROJECTS}"; do
-  # Our loop will iterate over all project keys, but we're only interested into
-  # one key per project. As all projects have at least an icon, this is the one
-  # we'll keep.
-  [[ $key != *,icon ]] && continue
+    # Finding the values
+    # Project name: aberlaas
+    local projectName=${key%,*}
+    # Capitalized project name: ABERLAAS
+    local projectKey=${(U)projectName:gs/-/_/}
+    # Background colors
+    local backgroundColorName=$PROJECTS[${projectName},background]
+    local backgroundColorTerm=${(P)${:-COLOR_${backgroundColorName}}}
+    local backgroundColorHexa=${(P)${:-COLOR_${backgroundColorName}_HEXA}}
+    # Text colors
+    local textColorName=$PROJECTS[${projectName},text]
+    local textColorTerm=${(P)${:-COLOR_${textColorName}}}
+    local textColorHexa=${(P)${:-COLOR_${textColorName}_HEXA}}
+    # Icon
+    local icon=$PROJECTS[${projectName},icon]
+    # Path
+    local projectPath=$PROJECTS[${projectName},path]
+    # Should hide the name in prompt?
+    local hideNameInPrompt=$PROJECTS[${projectName},hideNameInPrompt]
+    [[ $hideNameInPrompt == "" ]] && hideNameInPrompt="0"
 
-  local projectSlug=${key%,*}
+    # Creating PROJECT entries
+    export PROJECT_${projectKey}_NAME=$projectName
+    export PROJECT_${projectKey}_PATH=$projectPath
+    export PROJECT_${projectKey}_ICON=$icon
+    export PROJECT_${projectKey}_BACKGROUND=$backgroundColorTerm
+    export PROJECT_${projectKey}_BACKGROUND_HEXA=$backgroundColorHexa
+    export PROJECT_${projectKey}_FOREGROUND=$textColorTerm
+    export PROJECT_${projectKey}_FOREGROUND_HEXA=$textColorHexa
+    export PROJECT_${projectKey}_HIDE_NAME_IN_PROMPT=$hideNameInPrompt
 
-  # Saving the path in PROJECT_SLUG_BY_PATH so we can find the project from the
-  # path
-  local projectPath=$PROJECTS[${projectSlug},path]
-  PROJECT_SLUG_BY_PATH[$projectPath]=$projectSlug
+    # Building the indices
+    projectsIndex+=($projectKey)
+    if [[ $projectPath != "" ]]; then
+      projectsIndexByPath[$projectPath]=$projectKey
+    fi
+  done
 
-  # Saving the other metadata so we can access them from the project slug
-  PROJECT_BACKGROUND[$projectSlug]=$PROJECTS[${projectSlug},background]
-  PROJECT_TEXT[$projectSlug]=$PROJECTS[${projectSlug},text]
-  PROJECT_ICON[$projectSlug]=$PROJECTS[${projectSlug},icon]
-  PROJECT_HIDE_NAME_IN_PROMPT[$projectSlug]=$PROJECTS[${projectSlug},hideNameInPrompt]
-done
+  # Alphabetical list of all projects
+  export PROJECTS_INDEX=""
+  for projectKey in ${(o)projectsIndex}; do
+    PROJECTS_INDEX+=" $projectKey"
+  done
+
+  # List of all projects, ordered by path, from specific to generic
+  export PROJECTS_INDEX_BY_PATH=""
+  for projectPath in ${(kO)projectsIndexByPath}; do
+    local projectKey=$projectsIndexByPath[$projectPath]
+    PROJECTS_INDEX_BY_PATH+=" $projectKey"
+  done
+
+}

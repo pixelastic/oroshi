@@ -7,7 +7,7 @@ function __prompt-node-flags() {
   # All yarn methods depend on git root, so better stop early if no git
   git-is-repository || return
 
-  yarn-is-monorepo && echo -n "%F{$COLORS[yellow7]} %f"
+  yarn-is-monorepo && echo -n "%F{$COLOR_YELLOW_7} %f"
   __prompt-yarn-links
 }
 
@@ -41,7 +41,7 @@ function __prompt-yarn-links() {
   fi
 
   # Display the string
-  echo -n "%F{$COLORS[blue7]}${displayedString}%f"
+  echo -n "%F{$COLOR_BLUE_7}${displayedString}%f"
 }
 
 # Display project node version
@@ -53,7 +53,7 @@ function __prompt-yarn-links() {
 function __prompt-node-version() {
   # Not even a system-wide node installation
   if [[ ! -v commands[node] ]]; then
-    echo -n "%F{$COLORS[red]} %f"
+    echo -n "%F{$COLOR_RED} %f"
     return
   fi
 
@@ -70,17 +70,17 @@ function __prompt-node-version() {
 
   # Local version is the same as the current one
   if [[ $currentVersion == $expectedVersion ]]; then
-    echo -n "%F{$COLORS[green]} $expectedVersion%f"
+    echo -n "%F{$COLOR_GREEN} $expectedVersion%f"
     return
   fi
 
   # Local version is not even installed
   if nvm version $expectedVersion | grep -q "N/A"; then
-    echo -n "%F{$COLORS[red]} $expectedVersion%f"
+    echo -n "%F{$COLOR_RED} $expectedVersion%f"
     return
   fi
 
   # Local version is not in use
-  echo -n "%F{$COLORS[yellow]} $expectedVersion%f"
+  echo -n "%F{$COLOR_YELLOW} $expectedVersion%f"
 }
 

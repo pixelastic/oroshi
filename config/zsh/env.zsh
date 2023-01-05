@@ -29,4 +29,3 @@ path=(
 # See: http://zsh.sourceforge.net/Doc/Release/Shell-Builtin-Commands.html
 typeset -U path PATH
 # }}}
-#

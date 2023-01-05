@@ -1,14 +1,11 @@
 #!/usr/bin/env zsh
-source ~/.oroshi/config/zsh/theming/colors.zsh
-
 local output=''
-output="#{continuum_status}"
 
 # Dropbox status {{{
 if dropbox-is-running; then
   output=" $output"
 else
-  output="#[fg=colour${COLORS[red]}] #[default] $output"
+  output="#[fg=colour${COLOR_RED}] #[default] $output"
 fi
 # }}}
 # Clock {{{
@@ -19,11 +16,11 @@ output=" $clock $output"
 local connection_status=''
 if is-online; then
   local ping="$(ping-average)"
-  [[ $ping -lt 230 ]] && connection_status="#[fg=colour${COLORS[red]}] ${ping}ms#[default]"
-  [[ $ping -lt 160 ]] && connection_status="#[fg=colour${COLORS[yellow]}] ${ping}ms#[default]"
-  [[ $ping -lt 80 ]] && connection_status="#[fg=colour${COLORS[green]}] ${ping}ms#[default]"
+  [[ $ping -lt 230 ]] && connection_status="#[fg=colour${COLOR_RED}] ${ping}ms#[default]"
+  [[ $ping -lt 160 ]] && connection_status="#[fg=colour${COLOR_YELLOW}] ${ping}ms#[default]"
+  [[ $ping -lt 80 ]] && connection_status="#[fg=colour${COLOR_GREEN}] ${ping}ms#[default]"
 else
-  connection_status="#[fg=colour${COLORS[red]},bold]offline#[default]"
+  connection_status="#[fg=colour${COLOR_RED},bold]offline#[default]"
 fi
 output="$connection_status $output"
 # }}}
@@ -32,8 +29,8 @@ output="$connection_status $output"
 local ram_percent="$(ram-percent)"
 local ram_status=""
 if [[ $ram_percent -gt 50 ]]; then
-  ram_status="#[fg=colour${COLORS[yellow]}] ${ram_percent}%#[default]"
-  [[ $ram_percent -gt 80 ]] && ram_status="#[fg=colour${COLORS[red]}] ${ram_percent}%#[default]"
+  ram_status="#[fg=colour${COLOR_YELLOW}] ${ram_percent}%#[default]"
+  [[ $ram_percent -gt 80 ]] && ram_status="#[fg=colour${COLOR_RED}] ${ram_percent}%#[default]"
   output="$ram_status $output"
 fi
 # }}}
@@ -42,8 +39,8 @@ fi
 local cpu_percent="$(cpu-percent)"
 local cpu_status=""
 if [[ $cpu_percent -gt 50 ]]; then
-  cpu_status="#[fg=colour${COLORS[yellow]}] ${cpu_percent}%#[default]"
-  [[ $cpu_percent -gt 80 ]] && cpu_status="#[fg=colour${COLORS[red]}] ${cpu_percent}%#[default]"
+  cpu_status="#[fg=colour${COLOR_YELLOW}] ${cpu_percent}%#[default]"
+  [[ $cpu_percent -gt 80 ]] && cpu_status="#[fg=colour${COLOR_RED}] ${cpu_percent}%#[default]"
   output="$cpu_status $output"
 fi
 # }}}
@@ -61,16 +58,16 @@ if [[ $battery_percent -ne 99 ]]; then
   fi
   # Charging, green
   if [[ $battery_status == 'charging' ]]; then
-     output="#[fg=colour${COLORS[green]}] $battery_display#[default] $output"
+     output="#[fg=colour${COLOR_GREEN}] $battery_display#[default] $output"
   else
     if [[ $battery_percent -lt 100 && $battery_percent -ge 50 ]]; then
       output="  $battery_display $output"
     fi
     if [[ $battery_percent -lt 50 && $battery_percent -ge 10 ]]; then
-      output="#[fg=colour${COLORS[yellow]}6]  $battery_display#[default] $output"
+      output="#[fg=colour${COLOR_YELLOW}6]  $battery_display#[default] $output"
     fi
     if [[ $battery_percent -lt 10 ]]; then
-      output="#[fg=colour${COLORS[red]}0,bold]  $battery_display#[default] $output"
+      output="#[fg=colour${COLOR_RED}0,bold]  $battery_display#[default] $output"
     fi
   fi
 fi
@@ -82,7 +79,7 @@ if spotify-is-running; then
   if [ "${#currently_playing}" -gt 40 ]; then
     currently_playing="$(echo $currently_playing | cut -c 1-40)…"
   fi
-  currently_playing="#[fg=colour${COLORS[green]}] $currently_playing#[default]"
+  currently_playing="#[fg=colour${COLOR_GREEN}] $currently_playing#[default]"
 else if cmus-is-running; then
   currently_playing="$(cmus-data title)"
   local music_status="$(cmus-data status)"
@@ -98,9 +95,9 @@ else if cmus-is-running; then
   fi
   # Adding color
   if [[ $music_status == 'playing' ]]; then
-    currently_playing="#[fg=colour${COLORS[green]}]$currently_playing#[default]"
+    currently_playing="#[fg=colour${COLOR_GREEN}]$currently_playing#[default]"
   else
-    currently_playing="#[fg=colour${COLORS[gray]}1]$currently_playing#[default]"
+    currently_playing="#[fg=colour${COLOR_GRAY}]$currently_playing#[default]"
   fi
 fi
 fi

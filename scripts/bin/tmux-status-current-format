@@ -1,27 +1,27 @@
 #!/usr/bin/env zsh
-
+# Used to display the current window name in the top panel
+# The name of the session, window and if it is currently zoomed is passed by
+# whichever script calls this one
 local sessionName="$1"
 local windowName="$2"
 local isZoomed="$3"
 
 # Use window colors, or fallback to session color
 local colors="$(tmux-status-colors $windowName)"
-[[ $colors == ":" ]] && colors="$(tmux-status-colors $sessionName)"
+[[ $colors == " " ]] && colors="$(tmux-status-colors $sessionName)"
 
-local splitColors=(${(s/:/)colors})
-local textColor=$splitColors[2]
-[[ $textColor == "" ]] && textColor="235"
+local splitColors=(${=colors})
 local backgroundColor=$splitColors[1]
+local foregroundColor=$splitColors[2]
+[[ $foregroundColor == "" ]] && foregroundColor="235"
 
 local windowIcon="$(tmux-status-icon $windowName)"
 
 local zoomSymbol=""
 [[ $isZoomed == "1" ]] && zoomSymbol="  "
 
-local rightSeparator="#[fg=${windowColor},bg=${textColor}]"
-
 echo -n "#[bg=colour${backgroundColor},fg=colour235]"
-echo -n "#[bg=colour${backgroundColor},fg=colour${textColor}] ${windowIcon}${windowName}${zoomSymbol} "
+echo -n "#[bg=colour${backgroundColor},fg=colour${foregroundColor}] ${windowIcon}${windowName}${zoomSymbol} "
 echo -n "#[bg=colour235,fg=colour${backgroundColor}]"
 
 
