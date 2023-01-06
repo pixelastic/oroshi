@@ -108,8 +108,8 @@ local COLORS_INDEX=""
 for colorName in ${(o)colorsIndex}; do
   COLORS_INDEX+=" $colorName"
 done
-output="export COLORS_INDEX=\"${COLORS_INDEX:1}\"\n$output"
+output+="export COLORS_INDEX=\"${COLORS_INDEX:1}\"\n"
 
 # Generate the file
-echo $output > ~/.oroshi/config/zsh/theming/dist/colors.zsh
+echo $output > ~/.oroshi/config/zsh/theming/env/colors.zsh
 

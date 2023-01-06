@@ -58,7 +58,7 @@ local FILETYPES_INDEX=""
 for filetypeName in ${(o)filetypesIndex}; do
   FILETYPES_INDEX+=" $filetypeName"
 done
-output="export FILETYPES_INDEX=\"${FILETYPES_INDEX:1}\"\n$output"
+output+="export FILETYPES_INDEX=\"${FILETYPES_INDEX:1}\"\n"
 
 # Generate the file
-echo $output > ~/.oroshi/config/zsh/theming/dist/filetypes.zsh
+echo $output > ~/.oroshi/config/zsh/theming/env/filetypes.zsh

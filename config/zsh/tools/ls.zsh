@@ -5,8 +5,8 @@
 function () {
   # Define the custom LS_COLORS
   LS_COLORS=""
-  LS_COLORS="${LS_COLORS}:di=38;5;$COLOR_GREEN"     # Directory
-  LS_COLORS="${LS_COLORS}:ex=4;38;5;$COLOR_PURPLE_5" # Executable
+  LS_COLORS="${LS_COLORS}:di=38;5;$COLOR_GREEN"      # Directory
+  LS_COLORS="${LS_COLORS}:ex=4;38;5;$COLOR_VIOLET_4" # Executable
   LS_COLORS="${LS_COLORS}:ln=34;4;$COLOR_BLUE_6"     # Symlink
   LS_COLORS="${LS_COLORS}:.*=38;5;$COLOR_RED_5"      # Hidden files
 

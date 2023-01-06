@@ -17,3 +17,12 @@ augroup ft_nvim_config
   autocmd BufWritePost *config/nvim mkview | source ~/.config/nvim/init.vim | loadview
 augroup END
 " }}}
+" RELOAD COLORS {{{
+" Reload colors whenever a color file is edited
+augroup ft_colors_config
+  autocmd!
+  autocmd BufWritePost *config/kitty/colors.conf :silent !colors-refresh
+  autocmd BufWritePost *config/tmux/colors.conf  :silent !colors-refresh
+  autocmd BufWritePost *config/zsh/theming/src/* :silent !colors-refresh
+augroup END
+" }}}

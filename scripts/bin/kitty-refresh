@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# Refresh kitty by send it SIGUSR1
+local kittyPID="$(pgrep kitty)"
+[[ "$kittyPID" == "" ]] && exit 1
+kill -SIGUSR1 $kittyPID

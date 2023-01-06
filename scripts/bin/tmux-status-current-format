@@ -8,8 +8,8 @@ local isZoomed="$3"
 
 # Load the color definitions. This is required as tmux is loaded before zsh and
 # its definitions
-source ~/.oroshi/config/zsh/theming/dist/colors.zsh
-source ~/.oroshi/config/zsh/theming/dist/projects.zsh
+source ~/.oroshi/config/zsh/theming/env/colors.zsh
+source ~/.oroshi/config/zsh/theming/env/projects.zsh
 
 # Use window colors, or fallback to session color
 local windowColors="$(tmux-status-colors $windowName)"

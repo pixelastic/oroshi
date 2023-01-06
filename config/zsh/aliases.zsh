@@ -181,7 +181,7 @@ alias oc="~/.oroshi/scripts/deploy/dircolors && source ~/.zshrc"
 alias of="fc-cache -f -v"
 alias oh="~/.oroshi/scripts/deploy/hosts"
 alias os="~/.oroshi/scripts/deploy/ssh"
-alias oz="source ~/.zshrc"
+alias oz="colors-refresh && source ~/.zshrc"
 alias vk="v ~/.oroshi/config/kitty/kitty.conf"
 # }}}
 # Trash {{{

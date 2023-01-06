@@ -15,7 +15,7 @@ local output=""
 # - PROJECTS[aberlaas,background]="YELLOW_7"
 # - PROJECTS[aberlaas,icon]=" "
 # - PROJECTS[aberlaas,path]="~/local/www/projects/aberlaas/"
-# - PROJECTS[aberlaas,text]="GRAY_9"
+# - PROJECTS[aberlaas,foreground]="GRAY_9"
 source ~/.oroshi/config/zsh/theming/src/projects-list.zsh
 
 # We'll keep a list of all projects, and a list of all paths
@@ -40,10 +40,10 @@ for key value in "${(@kv)PROJECTS}"; do
   local backgroundColorName=$PROJECTS[${projectName},background]
   local backgroundColorTerm=${(P)${:-COLOR_${backgroundColorName}}}
   local backgroundColorHexa=${(P)${:-COLOR_${backgroundColorName}_HEXA}}
-  # Text colors
-  local textColorName=$PROJECTS[${projectName},text]
-  local textColorTerm=${(P)${:-COLOR_${textColorName}}}
-  local textColorHexa=${(P)${:-COLOR_${textColorName}_HEXA}}
+  # Foreground colors
+  local foregroundColorName=$PROJECTS[${projectName},foreground]
+  local foregroundColorTerm=${(P)${:-COLOR_${foregroundColorName}}}
+  local foregroundColorHexa=${(P)${:-COLOR_${foregroundColorName}_HEXA}}
   # Icon
   local icon=$PROJECTS[${projectName},icon]
   # Path
@@ -60,10 +60,12 @@ for key value in "${(@kv)PROJECTS}"; do
   output+="export PROJECT_${projectKey}_ICON=\"$icon\"\n"
   output+="export PROJECT_${projectKey}_BACKGROUND=\"$backgroundColorTerm\"\n"
   output+="export PROJECT_${projectKey}_BACKGROUND_HEXA=\"$backgroundColorHexa\"\n"
-  if [[ "$textColorTem" != "" ]]; then
-    output+="export PROJECT_${projectKey}_FOREGROUND=\"$textColorTerm\"\n"
-    output+="export PROJECT_${projectKey}_FOREGROUND_HEXA=\"$textColorHexa\"\n"
+
+  if [[ "$foregroundColorTerm" != "" ]]; then
+    output+="export PROJECT_${projectKey}_FOREGROUND=\"$foregroundColorTerm\"\n"
+    output+="export PROJECT_${projectKey}_FOREGROUND_HEXA=\"$foregroundColorHexa\"\n"
   fi
+
   output+="export PROJECT_${projectKey}_HIDE_NAME_IN_PROMPT=\"$hideNameInPrompt\"\n"
 
   # Building the indices
@@ -73,20 +75,20 @@ for key value in "${(@kv)PROJECTS}"; do
   fi
 done
 
+# Alphabetical list of all projects
+local PROJECTS_INDEX=""
+for projectKey in ${(o)projectsIndex}; do
+  PROJECTS_INDEX+=" $projectKey"
+done
+output+="export PROJECTS_INDEX=\"${PROJECTS_INDEX:1}\"\n"
+
 # List of all projects, ordered by path, from specific to generic
 local PROJECTS_INDEX_BY_PATH=""
 for projectPath in ${(kO)projectsIndexByPath}; do
   local projectKey=$projectsIndexByPath[$projectPath]
   PROJECTS_INDEX_BY_PATH+=" $projectKey"
 done
-output="export PROJECTS_INDEX_BY_PATH=\"${PROJECTS_INDEX_BY_PATH:1}\"\n$output"
-
-# Alphabetical list of all projects
-local PROJECTS_INDEX=""
-for projectKey in ${(o)projectsIndex}; do
-  PROJECTS_INDEX+=" $projectKey"
-done
-output="export PROJECTS_INDEX=\"${PROJECTS_INDEX:1}\"\n$output"
+output+="export PROJECTS_INDEX_BY_PATH=\"${PROJECTS_INDEX_BY_PATH:1}\"\n"
 
 # Generate the file
-echo $output > ~/.oroshi/config/zsh/theming/dist/projects.zsh
+echo $output > ~/.oroshi/config/zsh/theming/env/projects.zsh
