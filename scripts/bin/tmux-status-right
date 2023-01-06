@@ -1,16 +1,22 @@
 #!/usr/bin/env zsh
+# Used in tmux, to display the right topbar
+
+# Load the color definitions. This is required as tmux is loaded before zsh and
+# its definitions
+source ~/.oroshi/config/zsh/theming/dist/colors.zsh
+source ~/.oroshi/config/zsh/theming/dist/projects.zsh
 local output=''
 
 # Dropbox status {{{
 if dropbox-is-running; then
-  output=" $output"
+  output="#[fg=colour${COLOR_NEUTRAL}] #[default]$output"
 else
   output="#[fg=colour${COLOR_RED}] #[default] $output"
 fi
 # }}}
 # Clock {{{
 local clock="$(date +'%d/%m %H:%M')"
-output=" $clock $output"
+output="#[fg=colour${COLOR_SKY}] $clock#[default] $output"
 # }}}
 # Connection status {{{
 local connection_status=''
@@ -18,7 +24,7 @@ if is-online; then
   local ping="$(ping-average)"
   [[ $ping -lt 230 ]] && connection_status="#[fg=colour${COLOR_RED}] ${ping}ms#[default]"
   [[ $ping -lt 160 ]] && connection_status="#[fg=colour${COLOR_YELLOW}] ${ping}ms#[default]"
-  [[ $ping -lt 80 ]] && connection_status="#[fg=colour${COLOR_GREEN}] ${ping}ms#[default]"
+  [[ $ping -lt 80 ]] && connection_status="#[fg=colour${COLOR_NEUTRAL_5}] ${ping}ms#[default]"
 else
   connection_status="#[fg=colour${COLOR_RED},bold]offline#[default]"
 fi

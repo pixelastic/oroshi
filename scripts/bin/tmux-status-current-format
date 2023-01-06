@@ -6,22 +6,34 @@ local sessionName="$1"
 local windowName="$2"
 local isZoomed="$3"
 
-# Use window colors, or fallback to session color
-local colors="$(tmux-status-colors $windowName)"
-[[ $colors == " " ]] && colors="$(tmux-status-colors $sessionName)"
+# Load the color definitions. This is required as tmux is loaded before zsh and
+# its definitions
+source ~/.oroshi/config/zsh/theming/dist/colors.zsh
+source ~/.oroshi/config/zsh/theming/dist/projects.zsh
 
-local splitColors=(${=colors})
+# Use window colors, or fallback to session color
+local windowColors="$(tmux-status-colors $windowName)"
+# [[ $colors == " " ]] && colors="$(tmux-status-colors $sessionName)"
+
+local splitColors=(${=windowColors})
+
+# Use either the window background, or the session one if none defined
 local backgroundColor=$splitColors[1]
+if [[ "$backgroundColor" == "#{status-bg}" ]]; then
+  local sessionColors="$(tmux-status-colors $sessionName)"
+  local splitSessionColors=(${=sessionColors})
+  backgroundColor=$splitSessionColors[1]
+fi
+
 local foregroundColor=$splitColors[2]
-[[ $foregroundColor == "" ]] && foregroundColor="84"
 
 local windowIcon="$(tmux-status-icon $windowName)"
 
 local zoomSymbol=""
 [[ $isZoomed == "1" ]] && zoomSymbol="  "
 
-echo -n "#[bg=colour${backgroundColor},fg=colour0]"
-echo -n "#[bg=colour${backgroundColor},fg=colour${foregroundColor}] ${windowIcon}${windowName}${zoomSymbol} "
-echo -n "#[bg=colour0,fg=colour${backgroundColor}]"
+echo -n "#[bg=${backgroundColor},fg=#{status-bg}]"
+echo -n "#[bg=${backgroundColor},fg=${foregroundColor}] ${windowIcon}${windowName}${zoomSymbol} "
+echo -n "#[bg=#{status-bg},fg=${backgroundColor}]"
 
 

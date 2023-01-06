@@ -1,13 +1,18 @@
 #!/usr/bin/env zsh
 # Used in tmux, to display the left-most part: name of the current session
+
+# Load the color definitions. This is required as tmux is loaded before zsh and
+# its definitions
+source ~/.oroshi/config/zsh/theming/dist/colors.zsh
+source ~/.oroshi/config/zsh/theming/dist/projects.zsh
+
 local sessionName="$1"
 local sessionColors="$(tmux-status-colors $sessionName)"
 local splitColors=(${=sessionColors})
 local backgroundColor=$splitColors[1]
 local foregroundColor=$splitColors[2]
-[[ $foregroundColor == "" ]] && foregroundColor="235"
 
 local sessionIcon="$(tmux-status-icon $sessionName)"
 
-echo -n "#[bg=colour${backgroundColor},fg=colour${foregroundColor}] ${sessionIcon}${sessionName} #[default]"
-echo -n "#[bg=colour235,fg=colour${backgroundColor}]"
+echo -n "#[bg=${backgroundColor},fg=${foregroundColor}] ${sessionIcon}${sessionName} #[default]"
+echo -n "#[bg=#{status-bg},fg=${backgroundColor}]"
