@@ -5,9 +5,10 @@
 # - Bubbling those variables to tmux
 # - Refreshing tmux
 
-
 # Reload kitty configuration by sending it SIGUSR1
-kill -SIGUSR1 $(pgrep kitty)
+local kittyPID="$(pgrep kitty)"
+[[ "$kittyPID" == "" ]] && exit 1
+kill -SIGUSR1 $kittyPID
 
 # Redefine all colors
 source ~/.oroshi/config/zsh/theming/index.zsh
