@@ -14,13 +14,6 @@ if exists('syntax_on')
 endif
 let g:colors_name = 'oroshi'
 " }}}
-" Defining the palette from the ENV variables {{{
-let s:color = {}
-let colorsIndex=split($COLORS_INDEX, ' ')
-for colorKey in colorsIndex
-   execute 'let s:color[colorKey]=$COLOR_' . colorKey . '_HEXA'
-endfor
-" }}}
 
 " Highlighting function {{{
 " args : group, foreground, background, decoration
@@ -52,6 +45,14 @@ function! s:Highlight(group,...)
 
   execute result
 endfunction
+" }}}
+
+" Defining the palette from the ENV variables {{{
+let s:color = {}
+" Build the s:color palette
+for key in split($COLORS_INDEX, ' ')
+   execute 'let s:color[key]=$COLOR_' . key . '_HEXA'
+endfor
 " }}}
 
 " Text {{{
@@ -190,6 +191,19 @@ call s:Highlight('StatusLineRight', 'GRAY_4', 'GRAY_8', 'none')
 call s:Highlight('StatusLineError', 'RED', 'GRAY_8')
 call s:Highlight('StatusLineWarning', 'YELLOW', 'GRAY_8')
 call s:Highlight('StatusLine', 'GRAY_4', 'GRAY_8', 'none')
+" Coloring the StatusLine filetypes
+for key in split($FILETYPES_INDEX, ' ')
+  execute 'let filetypeColor=$FILETYPE_' . key . '_COLOR_NAME'
+  call s:Highlight('Filetype_' . key, filetypeColor, 'GRAY_8')
+endfor
+" Coloring the StatusLine projects
+for key in split($PROJECTS_INDEX, ' ')
+  execute 'let projectForeground=$PROJECT_' . key . '_FOREGROUND_NAME'
+  execute 'let projectBackground=$PROJECT_' . key . '_BACKGROUND_NAME'
+  call s:Highlight('ProjectPre_' . key, 'GRAY_8', projectBackground)
+  call s:Highlight('Project_' . key, projectForeground, projectBackground)
+  call s:Highlight('ProjectPost_' . key, projectBackground, 'GRAY_8')
+endfor
 " }}}
 " Completion {{{
 " Dropdown default colors
@@ -426,20 +440,23 @@ call s:Highlight('shVarAssign', 'TEAL_7')
 call s:Highlight('tmuxBoolean', 'ORANGE', '', 'bold')
 call s:Highlight('tmuxCommands', 'YELLOW')
 call s:Highlight('tmuxFlags', 'ORANGE')
-call s:Highlight('tmuxOptions', 'PURPLE')
+call s:Highlight('tmuxOptions', 'VIOLET')
 call s:Highlight('tmuxKey', 'CYAN')
+call s:Highlight('tmuxFormatString', 'YELLOW')
 " }}}
 " Vim {{{
 call s:Highlight('vimCommand', 'GREEN_7')
-call s:Highlight('vimLet', 'RED_4')
+call s:Highlight('vimLet', 'RED_LIGHT')
 call s:Highlight('vimFunction', 'YELLOW_6')
 call s:Highlight('vimFunc', 'YELLOW_6')
-call s:Highlight('vimOper', 'NEUTRAL_LIGHT')
-call s:Highlight('vimOperParen', 'NEUTRAL_LIGHT')
-call s:Highlight('vimOption', 'VIOLET_5')
-call s:Highlight('vimParenSep', 'NEUTRAL')
+call s:Highlight('vimOper', 'TEAL_7')
+call s:Highlight('vimOperParen', 'TEAL_7')
+call s:Highlight('vimOption', 'VIOLET', '', 'bold')
+call s:Highlight('vimParenSep', 'TEAL_7')
 call s:Highlight('vimSep', 'NEUTRAL')
-call s:Highlight('vimUserFunc', 'YELLOW_6')
+call s:Highlight('vimSynType', 'YELLOW')
+call s:Highlight('vimUserFunc', 'YELLOW')
+call s:Highlight('vim9Comment', 'RED')
 " }}}
 " Yaml {{{
 call s:Highlight('yamlAlias', 'YELLOW_6')
@@ -451,15 +468,24 @@ call s:Highlight('yamlPlainScalar', 'BLUE')
 " Zsh {{{
 call s:Highlight('ZinitIceModifiers', 'PURPLE_4')
 call s:Highlight('zshBrackets', 'TEAL_7')
-call s:Highlight('zshCommands', 'GREEN_7')
+call s:Highlight('zshCommands', 'GREEN')
+call s:Highlight('zshConditional', 'EMERALD')
+call s:Highlight('zshDelimiter', 'EMERALD')
 call s:Highlight('zshDelim', 'TEAL_7')
+call s:Highlight('zshQuoted', 'BLUE_LIGHT')
+call s:Highlight('zshDeref', 'VIOLET')
 call s:Highlight('zshKeyword', 'GREEN_7')
 call s:Highlight('zshOptStart', 'GREEN_7', '', 'bold')
 call s:Highlight('zshOption', 'ORANGE', '', 'bold')
 call s:Highlight('zshParentheses', 'TEAL_7')
+call s:Highlight('zshRepeat', 'EMERALD')
 call s:Highlight('zshStringDelimiter', 'BLUE')
-call s:Highlight('zshSwitches', 'PURPLE_4')
-call s:Highlight('zshVariableDef', 'PURPLE_4')
+call s:Highlight('zshSubst', 'YELLOW_6')
+call s:Highlight('zshSubstDelim', 'YELLOW_5')
+call s:Highlight('zshSwitches', 'AMBER')
+call s:Highlight('zshTypes', 'RED_LIGHT')
+call s:Highlight('zshVariableDef', 'VIOLET')
+call s:Highlight('zshVariable', 'VIOLET')
 " }}}
 
 

@@ -59,10 +59,12 @@ for key value in "${(@kv)PROJECTS}"; do
   fi
   output+="export PROJECT_${projectKey}_ICON=\"$icon\"\n"
   output+="export PROJECT_${projectKey}_BACKGROUND=\"$backgroundColorTerm\"\n"
+  output+="export PROJECT_${projectKey}_BACKGROUND_NAME=\"$backgroundColorName\"\n"
   output+="export PROJECT_${projectKey}_BACKGROUND_HEXA=\"$backgroundColorHexa\"\n"
 
   if [[ "$foregroundColorTerm" != "" ]]; then
     output+="export PROJECT_${projectKey}_FOREGROUND=\"$foregroundColorTerm\"\n"
+    output+="export PROJECT_${projectKey}_FOREGROUND_NAME=\"$foregroundColorName\"\n"
     output+="export PROJECT_${projectKey}_FOREGROUND_HEXA=\"$foregroundColorHexa\"\n"
   fi
 

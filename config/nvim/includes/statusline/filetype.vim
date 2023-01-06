@@ -1,8 +1,4 @@
 " Display colored information about the current filetype
-  " TODO: Use icons for filtypes
-  " TODO: Use filetype colors
-  " let sl .= ' '.&filetype.' '
-  " let sl .= "$FILETYPES[.css,icon]"
 
 " Returns a string representation of the filetype
 " - Colored based on colors in filetypes-list.zsh
@@ -10,23 +6,18 @@
 " - With the filetype as detected by vim if different
 function! FiletypeStatusLine()
   let extension=expand('%:e')
-  let filetype_index= toupper(extension)
+  let filetypeKey=toupper(extension)
 
   " vint: -ProhibitUsingUndeclaredVariable
-  execute 'let icon=$FILETYPES_' . filetype_index . '_ICON'
-  execute 'let color=$FILETYPES_' . filetype_index . '_COLOR'
-
+  execute 'let icon=$FILETYPE_' . filetypeKey . '_ICON'
   let filetypeStatus=''
-  let filetypeStatus.='%#RawColor2#'
+  let filetypeStatus.='%#Filetype_' . filetypeKey . '#'
   let filetypeStatus.=icon
-  let filetypeStatus.=extension
-  let filetypeStatus.=' %*'
-
+  if &filetype !=# extension
+    let filetypeStatus .=  &filetype
+  endif
+  let filetypeStatus.='%*'
   " vint: +ProhibitUsingUndeclaredVariable
+
   return filetypeStatus
-
-  return extension
-
-  let filepath = expand('%:p:h:t').'/'.expand('%:t')
-  return '{}kjkj'
 endfunction

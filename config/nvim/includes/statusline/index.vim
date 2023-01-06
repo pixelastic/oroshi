@@ -2,6 +2,7 @@
 source ~/.config/nvim/includes/statusline/git.vim
 source ~/.config/nvim/includes/statusline/lint.vim
 source ~/.config/nvim/includes/statusline/filetype.vim
+source ~/.config/nvim/includes/statusline/project.vim
 
 " Always display the status line
 set laststatus=2
@@ -41,11 +42,17 @@ function! OroshiStatusLine()
     let modeName = 'Visual'
   endif
   let sl .= '%#StatusLineMode'.modeName.'# '.toupper(modeName).' %*'
-  let sl .= '%#StatusLineMode'.modeName.'Separator#%* '
+  let sl .= '%#StatusLineMode'.modeName.'Separator#%*'
+  " }}}
+
+  " Current project {{{
+  let b:projectStatusLine = ProjectStatusLine()
+  if b:projectStatusLine !=# ''
+    let sl .= b:projectStatusLine.' '
+  endif
   " }}}
 
   " Current file {{{
-  " TODO: Add prefix of the projects
   let filepath = expand('%:p:h:t').'/'.expand('%:t')
   let isWritable = &readonly == 0
   let hasUnsavedChanges = &modified

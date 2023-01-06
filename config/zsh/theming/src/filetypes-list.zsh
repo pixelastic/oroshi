@@ -20,7 +20,7 @@ FILETYPE_GROUPS[text,patterns]="\
 "
 
 # Script files
-FILETYPE_GROUPS[script,color]="VIOLET_4"
+FILETYPE_GROUPS[script,color]="VIOLET"
 FILETYPE_GROUPS[script,icon]=" "
 FILETYPE_GROUPS[script,patterns]="\
   .au3 \
@@ -136,6 +136,7 @@ FILETYPE_GROUPS[minor,patterns]="\
 
 # FILETYPES {{{
 FILETYPES[.pdf,bold]="1"
+FILETYPES[.vim,icon]=" "
 # }}}
 
 

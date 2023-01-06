@@ -46,7 +46,7 @@ fi
 local cpu_percent="$(cpu-percent)"
 local cpu_status=""
 if [[ $cpu_percent -gt 50 ]]; then
-  cpu_status="#[fg=colour${COLOR_YELLOW}] ${cpu_percent}%#[default]"
+  cpu_status="#[fg=colour${COLOR_YELLOW_6}] ${cpu_percent}%#[default]"
   [[ $cpu_percent -gt 80 ]] && cpu_status="#[fg=colour${COLOR_RED}] ${cpu_percent}%#[default]"
   output="$cpu_status $output"
 fi
@@ -71,10 +71,10 @@ if [[ $battery_percent -ne 99 ]]; then
       output="  $battery_display $output"
     fi
     if [[ $battery_percent -lt 50 && $battery_percent -ge 10 ]]; then
-      output="#[fg=colour${COLOR_YELLOW}6]  $battery_display#[default] $output"
+      output="#[fg=colour${COLOR_YELLOW_6}]  $battery_display#[default] $output"
     fi
     if [[ $battery_percent -lt 10 ]]; then
-      output="#[fg=colour${COLOR_RED}0,bold]  $battery_display#[default] $output"
+      output="#[fg=colour${COLOR_RED},bold]  $battery_display#[default] $output"
     fi
   fi
 fi
