@@ -137,6 +137,8 @@ FILETYPE_GROUPS[minor,patterns]="\
 # FILETYPES {{{
 FILETYPES[.pdf,bold]="1"
 FILETYPES[.vim,icon]=" "
+FILETYPES[.js,icon]=" "
+FILETYPES[.js,color]="YELLOW"
 # }}}
 
 
