@@ -58,7 +58,7 @@ FILETYPE_GROUPS[script,patterns]="\
   Rakefile \
   Vagrantfile \
 "
-FILETYPE_GROUPS[script,color]="PURPLE_5"
+FILETYPE_GROUPS[script,color]="VIOLET_5"
 FILETYPE_GROUPS[script,icon]=" "
 
 # Image files

@@ -8,7 +8,7 @@
 [color "diff"]
   meta = 3           # Diff header
   frag = 0           # @@ -9,14 +9,15 @@
-  func = 28          # First line of context
+  func = 16          # First line of context
   context = 16       # Lines untouched
   old = 1           # Lines deleted
   new = 2            # Lines added
