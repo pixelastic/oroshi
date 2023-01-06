@@ -28,7 +28,7 @@ Plug 'aliou/bats.vim'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'fladson/vim-kitty', { 'branch': 'main' }
 Plug 'sheerun/vim-polyglot'
-Plug 'gko/vim-coloresque'
+Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
 " Plug 'StanAngeloff/php.vim'
 " Plug 'avakhov/vim-yaml'
 " Plug 'cakebaker/scss-syntax.vim'

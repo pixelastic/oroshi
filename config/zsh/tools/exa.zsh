@@ -29,11 +29,11 @@ EXA_COLORS="${EXA_COLORS}:un=38;5;$COLOR_RED_5" # Not me
 
 EXA_COLORS="${EXA_COLORS}:da=38;5;$COLOR_SKY_9" # Date
 
-EXA_COLORS="${EXA_COLORS}:ga=38;5;$COLOR_GREEN" # File added
+EXA_COLORS="${EXA_COLORS}:ga=38;5;$COLOR_GREEN"    # File added
 EXA_COLORS="${EXA_COLORS}:gm=38;5;$COLOR_VIOLET_5" # File modified
-EXA_COLORS="${EXA_COLORS}:gd=38;5;$COLOR_RED" # File Deleted
-EXA_COLORS="${EXA_COLORS}:gv=38;5;$COLOR_AMBER" # File renamed
-EXA_COLORS="${EXA_COLORS}:gt=38;5;$COLOR_YELLOW" # File type changed
+EXA_COLORS="${EXA_COLORS}:gd=38;5;$COLOR_RED"      # File Deleted
+EXA_COLORS="${EXA_COLORS}:gv=38;5;$COLOR_AMBER"    # File renamed
+EXA_COLORS="${EXA_COLORS}:gt=38;5;$COLOR_YELLOW"   # File type changed
 
 EXA_COLORS="${EXA_COLORS}:di=38;5;$COLOR_GREEN" # Directories
 EXA_COLORS="${EXA_COLORS}:ex=4;38;5;$COLOR_VIOLET_4" # Executable

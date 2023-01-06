@@ -9,10 +9,8 @@ source ~/.gvm/scripts/gvm
 sudo apt-get install \
   bison
 
-# Go 1.5+ must be compiled with Go, so we need a working go version first
-gvm install go1.4 -B
-gvm use go1.4
+local LATEST_VERSION="go1.19.4"
 
 # Now installing latest
-gvm install go1.16
-gvm use go1.16 --default
+gvm install $LATEST_VERSION -B
+gvm use $LATEST_VERSION --default
