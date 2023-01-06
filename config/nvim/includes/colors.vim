@@ -28,7 +28,11 @@ nnoremap <F3> :call Debugcolor()<CR>
 " foregroundful
 let g:Hexokinase_highlighters = ['backgroundfull', 'virtual']
 
-" Which color notation to highlight
+" Which files and which color notation to highlight
 " Values: full_hex, triple_hex, rgb, rgba, hsl, hsla, colour_name
-let g:Hexokinase_optInPatterns = ['full_hex']
+let g:Hexokinase_ftEnabled = ['kitty', 'vim']
+let g:Hexokinase_ftOptInPatterns = {
+\     'kitty': 'full_hex',
+\     'vim': 'full_hex'
+\ }
 "}}}

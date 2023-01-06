@@ -14,144 +14,14 @@ if exists('syntax_on')
 endif
 let g:colors_name = 'oroshi'
 " }}}
-" Defining the palette {{{
+" Defining the palette from the ENV variables {{{
 let s:color = {}
-let s:color.black='#000000'
-let s:color.white='#FFFFFF'
-let s:color.terminal='#0c0f15'
-" Gray {{{
-let s:color.gray0='#808080'
-let s:color.gray1='#f7fafc'
-let s:color.gray2='#edf2f7'
-let s:color.gray3='#e2e8f0'
-let s:color.gray4='#cbd5e0'
-let s:color.gray5='#a0aec0'
-let s:color.gray6='#718096'
-let s:color.gray7='#4a5568'
-let s:color.gray8='#2d3748'
-let s:color.gray9='#1a202c'
-" }}}
-" Red {{{
-let s:color.red0='#ff0000'
-let s:color.red1='#fff5f5'
-let s:color.red2='#fed7d7'
-let s:color.red3='#feb2b2'
-let s:color.red4='#fc8181'
-let s:color.red5='#f56565'
-let s:color.red6='#e53e3e'
-let s:color.red7='#c53030'
-let s:color.red8='#9b2c2c'
-let s:color.red9='#742a2a'
-" }}}
-" Green {{{
-let s:color.green0='#00ff00'
-let s:color.green1='#f0fff4'
-let s:color.green2='#c6f6d5'
-let s:color.green3='#9ae6b4'
-let s:color.green4='#68d391'
-let s:color.green5='#48bb78'
-let s:color.green6='#38a169'
-let s:color.green7='#2f855a'
-let s:color.green8='#276749'
-let s:color.green9='#22543d'
-" }}}
-" Yellow {{{
-let s:color.yellow0='#ffff00'
-let s:color.yellow1='#fffff0'
-let s:color.yellow2='#fefcbf'
-let s:color.yellow3='#faf089'
-let s:color.yellow4='#f6e05e'
-let s:color.yellow5='#ecc94b'
-let s:color.yellow6='#d69e2e'
-let s:color.yellow7='#b7791f'
-let s:color.yellow8='#975a16'
-let s:color.yellow9='#744210'
-" }}}
-" Blue {{{
-let s:color.blue0='#0000ff'
-let s:color.blue1='#ebf8ff'
-let s:color.blue2='#bee3f8'
-let s:color.blue3='#90cdf4'
-let s:color.blue4='#63b3ed'
-let s:color.blue5='#4299e1'
-let s:color.blue6='#3182ce'
-let s:color.blue7='#2b6cb0'
-let s:color.blue8='#2c5282'
-let s:color.blue9='#2a4365'
-" }}}
-" Purple {{{
-let s:color.purple0='#ff00ff'
-let s:color.purple1='#faf5ff'
-let s:color.purple2='#e9d8fd'
-let s:color.purple3='#d6bcfa'
-let s:color.purple4='#b794f4'
-let s:color.purple5='#9f7aea'
-let s:color.purple6='#805ad5'
-let s:color.purple7='#6b46c1'
-let s:color.purple8='#553c9a'
-let s:color.purple9='#44337a'
-" }}}
-" Teal {{{
-let s:color.teal0='#00ffff'
-let s:color.teal1='#e6fffa'
-let s:color.teal2='#b2f5ea'
-let s:color.teal3='#81e6d9'
-let s:color.teal4='#4fd1c5'
-let s:color.teal5='#38b2ac'
-let s:color.teal6='#319795'
-let s:color.teal7='#2c7a7b'
-let s:color.teal8='#285e61'
-let s:color.teal9='#234e52'
-" }}}
-" Orange {{{
-let s:color.orange0='#ff8700'
-let s:color.orange1='#fffaf0'
-let s:color.orange2='#feebc8'
-let s:color.orange3='#fbd38d'
-let s:color.orange4='#ffaf00'
-let s:color.orange5='#ed8936'
-let s:color.orange6='#dd6b20'
-let s:color.orange7='#c05621'
-let s:color.orange8='#9c4221'
-let s:color.orange9='#7b341e'
-" }}}
-" Indigo {{{
-let s:color.indigo0='#5f00ff'
-let s:color.indigo1='#ebf4ff'
-let s:color.indigo2='#c3dafe'
-let s:color.indigo3='#a3bffa'
-let s:color.indigo4='#7f9cf5'
-let s:color.indigo5='#667eea'
-let s:color.indigo6='#5a67d8'
-let s:color.indigo7='#4c51bf'
-let s:color.indigo8='#434190'
-let s:color.indigo9='#3c366b'
-" }}}
-" Pink {{{
-let s:color.pink0='#d787ff'
-let s:color.pink1='#fff5f7'
-let s:color.pink2='#fed7e2'
-let s:color.pink3='#fbb6ce'
-let s:color.pink4='#f687b3'
-let s:color.pink5='#ed64a6'
-let s:color.pink6='#d53f8c'
-let s:color.pink7='#b83280'
-let s:color.pink8='#97266d'
-let s:color.pink9='#702459'
-" }}}
-
-" Make {color} equal to {color}6
-let s:color_names = keys(s:color)
-for s:color_name in keys(s:color)
-   " Skip non -6 colors
-   if s:color_name !~? '6$'
-      continue
-   endif
-   " Save base color as the 6
-   let s:base_color_name = substitute(s:color_name, '6', '', '')
-   let s:color[s:base_color_name] = s:color[s:color_name]
+let colorsIndex=split($COLORS_INDEX, ' ')
+for colorKey in colorsIndex
+   execute 'let s:color[colorKey]=$COLOR_' . colorKey . '_HEXA'
 endfor
 " }}}
+
 " Highlighting function {{{
 " args : group, foreground, background, decoration
 function! s:Highlight(group,...)
@@ -182,170 +52,164 @@ function! s:Highlight(group,...)
 
   execute result
 endfunction
+" }}}
 
-" }}}
-" Defining raw 256 highlight groups {{{
-let colorIndex=0
-while colorIndex <= 256
-   execute "hi RawColor" . colorIndex . " ctermfg=" . colorIndex
-   let colorIndex += 1
-endwhile
-" }}}
 " Text {{{
-call s:Highlight('Boolean', 'orange5')
-call s:Highlight('Comment', 'gray')
-call s:Highlight('Constant', 'yellow', '', 'bold')
-call s:Highlight('Error', 'red', 'black', 'bold')
-call s:Highlight('Function', 'yellow')
-call s:Highlight('Identifier', 'indigo4', '', 'none')
-call s:Highlight('Noise', 'teal7')
-call s:Highlight('Normal', 'gray4')
-call s:Highlight('Number', 'blue5', '', 'bold')
-call s:Highlight('Operator', 'teal7')
-call s:Highlight('PreProc', 'yellow')
-call s:Highlight('SpecialComment', 'yellow')
-call s:Highlight('SpecialKey', 'yellow8')
-call s:Highlight('Special', 'yellow')
-call s:Highlight('Statement', 'pink')
-call s:Highlight('StorageClass', 'red5')
-call s:Highlight('String', 'blue5')
-call s:Highlight('Title', 'yellow')
-call s:Highlight('Todo', 'yellow', 'terminal', 'bold')
-call s:Highlight('Type', 'red5')
-" call s:Highlight('TrailingWhitespace', '', 'gray9')
+call s:Highlight('Boolean', 'ORANGE_5')
+call s:Highlight('Comment', 'GRAY_5')
+call s:Highlight('Constant', 'YELLOW', '', 'bold')
+call s:Highlight('Error', 'RED', 'BLACK', 'bold')
+call s:Highlight('Function', 'YELLOW')
+call s:Highlight('Identifier', 'VIOLET', '', 'none')
+call s:Highlight('Keyword', 'GREEN')
+call s:Highlight('Noise', 'TEAL_7')
+call s:Highlight('Normal', 'GRAY_4')
+call s:Highlight('Number', 'BLUE', '', 'bold')
+call s:Highlight('Operator', 'TEAL_7')
+call s:Highlight('PreProc', 'YELLOW')
+call s:Highlight('SpecialComment', 'YELLOW')
+call s:Highlight('SpecialKey', 'YELLOW_8')
+call s:Highlight('Special', 'YELLOW')
+call s:Highlight('Statement', 'CYAN')
+call s:Highlight('StorageClass', 'RED_5')
+call s:Highlight('String', 'BLUE')
+call s:Highlight('Title', 'YELLOW')
+call s:Highlight('Todo', 'YELLOW', 'terminal', 'bold')
+call s:Highlight('Type', 'RED_5')
+" call s:Highlight('TrailingWhitespace', _'', 'GRAY9')
 " The matcher needs to be defined after the colorscheme
 " match TrailingWhitespace /\s\+$/
 
 " Hidden characters (F8) {{{
 " Line endings and horizontal scroll markers
-call s:Highlight('NonText', 'gray8')
+call s:Highlight('NonText', 'GRAY_8')
 " Tabs and whitespaces
-call s:Highlight('Whitespace', 'yellow')
+call s:Highlight('Whitespace', 'YELLOW')
 " }}}
 "
 " }}}
 " UI {{{
 " Borders {{{
-call s:Highlight('ColorColumn', 'yellow', 'gray9')
-call s:Highlight('LineNr', 'gray')
-call s:Highlight('SignColumn', 'none', 'terminal')
-call s:Highlight('VertSplit', 'gray9', 'gray9', 'bold')
+call s:Highlight('ColorColumn', 'YELLOW', 'GRAY_9')
+call s:Highlight('LineNr', 'GRAY')
+call s:Highlight('SignColumn', 'NONE', 'terminal')
+call s:Highlight('VertSplit', 'GRAY_9', 'GRAY_9', 'bold')
 " }}}
 " Tabs {{{
-call s:Highlight('TabLineFill', 'gray8', 'gray9', 'none')
-call s:Highlight('TabLineSel', 'yellow', 'gray8', 'bold')
-call s:Highlight('TabLine', 'gray4', 'gray9', 'none')
+call s:Highlight('TabLineFill', 'GRAY_8', 'GRAY_9', 'none')
+call s:Highlight('TabLineSel', 'YELLOW', 'GRAY_8', 'bold')
+call s:Highlight('TabLine', 'GRAY_4', 'GRAY_9', 'none')
 " }}}
 " Cursor {{{
-call s:Highlight('CursorLineNr', 'yellow', '', 'bold')
-call s:Highlight('CursorLine', '', 'gray9', 'none')
+call s:Highlight('CursorLineNr', 'YELLOW', '', 'bold')
+call s:Highlight('CursorLine', '', 'GRAY_9', 'none')
 
 " Normal mode
-call s:Highlight('CursorNormal', '', 'red', 'none')
+call s:Highlight('CursorNormal', '', 'RED', 'none')
 let s:guicursor = 'n:block-CursorNormal'
 
 " Waiting for an operator
-call s:Highlight('CursorOperatorPending', '', 'red5', 'none')
+call s:Highlight('CursorOperatorPending', '', 'RED_5', 'none')
 let s:guicursor .= ',o:block-CursorOperatorPending'
 
 " Insert mode
-call s:Highlight('CursorInsert', '', 'yellow', 'none')
+call s:Highlight('CursorInsert', '', 'YELLOW', 'none')
 let s:guicursor .= ',i:block-CursorInsert'
 
 " Visual mode
-call s:Highlight('CursorVisual', '', 'blue', 'none')
+call s:Highlight('CursorVisual', '', 'BLUE', 'none')
 let s:guicursor .= ',v:block-CursorVisual'
 
 " Command mode
-call s:Highlight('CursorCommand', '', 'teal', 'none')
+call s:Highlight('CursorCommand', '', 'TEAL', 'none')
 let s:guicursor .= ',c:block-CursorCommand'
 " When editing the current command
-call s:Highlight('CursorCommandInsert', '', 'teal', 'none')
+call s:Highlight('CursorCommandInsert', '', 'TEAL', 'none')
 let s:guicursor .= ',ci:block-CursorCommandInsert'
 
-" Not sure what those do, so let's color them pink and see when that happens
-call s:Highlight('CursorReplace', '', 'pink', 'none')
+" Not sure what those do, so let's color them cyan and see when that happens
+call s:Highlight('CursorReplace', '', 'CYAN', 'none')
 let s:guicursor .= ',r:block-CursorReplace'
-call s:Highlight('CursorCommandReplace', '', 'pink', 'none')
+call s:Highlight('CursorCommandReplace', '', 'CYAN', 'none')
 let s:guicursor .= ',cr:block-CursorCommandReplace'
-call s:Highlight('CursorInsertShowmatch', '', 'pink', 'none')
+call s:Highlight('CursorInsertShowmatch', '', 'CYAN', 'none')
 let s:guicursor .= ',sm:block-CursorInsertShowmatch'
 
 execute 'set guicursor='.s:guicursor
 " }}}
 " Folds {{{
-call s:Highlight('Folded', 'gray5', 'gray9')
+call s:Highlight('Folded', 'GRAY_5', 'GRAY_9')
 " }}}
 " Visual selection {{{
-call s:Highlight('Visual', 'white', 'blue', 'bold')
+call s:Highlight('Visual', 'WHITE', 'BLUE', 'bold')
 " }}}
 " Search {{{
-call s:Highlight('IncSearch', 'black', 'yellow', 'none')
-call s:Highlight('Search', 'black', 'yellow', 'bold')
+call s:Highlight('IncSearch', 'BLACK', 'YELLOW', 'none')
+call s:Highlight('Search', 'BLACK', 'YELLOW', 'bold')
 " }}}
 " Syntastic gutter {{{
-call s:Highlight('SyntasticErrorSign', 'red')
-call s:Highlight('SyntasticStyleErrorSign', 'red')
-call s:Highlight('SyntasticStyleWarningSign', 'yellow')
-call s:Highlight('SyntasticWarningSign', 'yellow')
+call s:Highlight('SyntasticErrorSign', 'RED')
+call s:Highlight('SyntasticStyleErrorSign', 'RED')
+call s:Highlight('SyntasticStyleWarningSign', 'YELLOW')
+call s:Highlight('SyntasticWarningSign', 'YELLOW')
 " }}}
 " Coc Gutter {{{
-call s:Highlight('CocErrorSign', 'red')
-call s:Highlight('CocWarningSign', 'yellow')
-call s:Highlight('CocInfoSign', 'blue')
+call s:Highlight('CocErrorSign', 'RED')
+call s:Highlight('CocWarningSign', 'YELLOW')
+call s:Highlight('CocInfoSign', 'BLUE')
 " }}}
 " GitGutter {{{
-call s:Highlight('GitGutterAdd', 'green')
+call s:Highlight('GitGutterAdd', 'GREEN')
 call s:Highlight('GitGutterChange', 'purple')
 " }}}
 " Status line {{{
-call s:Highlight('StatusLineFileEncodingError', 'red', 'gray8')
-call s:Highlight('StatusLineFileFormatError', 'red', 'gray8')
-call s:Highlight('StatusLineGitClean', 'green', 'gray8')
-call s:Highlight('StatusLineGitDirty', 'red', 'gray8', 'bold')
-call s:Highlight('StatusLineGitStaged', 'purple4', 'gray8')
-call s:Highlight('StatusLineModeCtrlPSeparator', 'red5', 'gray8')
-call s:Highlight('StatusLineModeCtrlP', 'black', 'red5', 'bold')
-call s:Highlight('StatusLineModeInsertSeparator', 'yellow', 'gray8')
-call s:Highlight('StatusLineModeInsert', 'black', 'yellow', 'bold')
-call s:Highlight('StatusLineModeNormalSeparator', 'black', 'gray8')
-call s:Highlight('StatusLineModeNormal', 'white', 'black')
-call s:Highlight('StatusLineModeSearchSeparator', 'green', 'gray8')
-call s:Highlight('StatusLineModeSearch', 'black', 'green', 'bold')
-call s:Highlight('StatusLineModeCommandSeparator', 'teal', 'gray8')
-call s:Highlight('StatusLineModeCommand', 'black', 'teal', 'bold')
-call s:Highlight('StatusLineModeUnknownSeparator', 'red', 'white')
-call s:Highlight('StatusLineModeUnknown', 'white', 'red')
-call s:Highlight('StatusLineModeVisualSeparator', 'blue', 'gray8')
-call s:Highlight('StatusLineModeVisual', 'white', 'blue', 'bold')
-call s:Highlight('StatusLineNC', '', 'gray8', 'none')
-call s:Highlight('StatusLinePathModified', 'purple4', 'gray8')
-call s:Highlight('StatusLinePathReadonly', 'red', 'gray8')
-call s:Highlight('StatusLinePath', 'green', 'gray8', 'bold')
-call s:Highlight('StatusLineRight', 'gray4', 'gray8', 'none')
-call s:Highlight('StatusLineError', 'red', 'gray8')
-call s:Highlight('StatusLineWarning', 'yellow', 'gray8')
-call s:Highlight('StatusLine', 'gray4', 'gray8', 'none')
+call s:Highlight('StatusLineFileEncodingError', 'RED', 'GRAY_8')
+call s:Highlight('StatusLineFileFormatError', 'RED', 'GRAY_8')
+call s:Highlight('StatusLineGitClean', 'GREEN', 'GRAY_8')
+call s:Highlight('StatusLineGitDirty', 'RED', 'GRAY_8', 'bold')
+call s:Highlight('StatusLineGitStaged', 'purple4', 'GRAY_8')
+call s:Highlight('StatusLineModeCtrlPSeparator', 'RED5', 'GRAY_8')
+call s:Highlight('StatusLineModeCtrlP', 'BLACK', 'RED_5', 'bold')
+call s:Highlight('StatusLineModeInsertSeparator', 'YELLOW', 'GRAY_8')
+call s:Highlight('StatusLineModeInsert', 'BLACK', 'YELLOW', 'bold')
+call s:Highlight('StatusLineModeNormalSeparator', 'BLACK', 'GRAY_8')
+call s:Highlight('StatusLineModeNormal', 'white', 'BLACK')
+call s:Highlight('StatusLineModeSearchSeparator', 'GREEN', 'GRAY_8')
+call s:Highlight('StatusLineModeSearch', 'BLACK', 'GREEN', 'bold')
+call s:Highlight('StatusLineModeCommandSeparator', 'TEAL', 'GRAY_8')
+call s:Highlight('StatusLineModeCommand', 'BLACK', 'TEAL', 'bold')
+call s:Highlight('StatusLineModeUnknownSeparator', 'RED', 'white')
+call s:Highlight('StatusLineModeUnknown', 'white', 'RED')
+call s:Highlight('StatusLineModeVisualSeparator', 'BLUE', 'GRAY_8')
+call s:Highlight('StatusLineModeVisual', 'white', 'BLUE', 'bold')
+call s:Highlight('StatusLineNC', '', 'GRAY_8', 'none')
+call s:Highlight('StatusLinePathModified', 'VIOLET_4', 'GRAY_8')
+call s:Highlight('StatusLinePathReadonly', 'RED', 'GRAY_8')
+call s:Highlight('StatusLinePath', 'GREEN', 'GRAY_8', 'bold')
+call s:Highlight('StatusLineRight', 'GRAY_4', 'GRAY_8', 'none')
+call s:Highlight('StatusLineError', 'RED', 'GRAY_8')
+call s:Highlight('StatusLineWarning', 'YELLOW', 'GRAY_8')
+call s:Highlight('StatusLine', 'GRAY_4', 'GRAY_8', 'none')
 " }}}
 " Completion {{{
 " Dropdown default colors
-call s:Highlight('Pmenu', 'gray4', 'green8')
+call s:Highlight('Pmenu', 'GRAY_4', 'GREEN_8')
 " [F] and [A] on right hand side
-call s:Highlight('CocPumShortcut', 'gray4', '')
+call s:Highlight('CocPumShortcut', 'GRAY_4', '')
 " Selected item (used either by Coc or default menu)
-call s:Highlight('PmenuSel', 'black', 'yellow', 'bold')
-call s:Highlight('CocMenuSel', 'black', 'yellow', 'bold')
+call s:Highlight('PmenuSel', 'BLACK', 'YELLOW', 'bold')
+call s:Highlight('CocMenuSel', 'BLACK', 'YELLOW', 'bold')
 " Scrollbar
-call s:Highlight('PmenuSbar', '', 'green9')
+call s:Highlight('PmenuSbar', '', 'GREEN_9')
 " Thumb of the scrollbar
-call s:Highlight('PmenuThumb', '', 'gray4')
+call s:Highlight('PmenuThumb', '', 'GRAY_4')
 " Matching results in the dropdown
-call s:Highlight('CocPumSearch', 'yellow', 'green9', 'underline')
+call s:Highlight('CocPumSearch', 'YELLOW', 'GREEN_9', 'underline')
 " Suggested text on the line
-call s:Highlight('CocPumVirtualText', 'gray6', '')
-" Below are unknown groups, so we put them pink to see if they appear
-call s:Highlight('CocPumMenu', 'pink', 'pink')
-call s:Highlight('CocPumDeprecated', 'pink', 'pink')
+call s:Highlight('CocPumVirtualText', 'GRAY_6', '')
+" Below are unknown groups, so we put them cyan to see if they appear
+call s:Highlight('CocPumMenu', 'CYAN', 'CYAN')
+call s:Highlight('CocPumDeprecated', 'CYAN', 'CYAN')
 " }}}
 " FZF {{{
 let g:fzf_colors =
@@ -370,319 +234,357 @@ let g:fzf_colors =
 " Note: We don't highlight Coc errors as they tend to put everything under the
 " same color and make it hard to visually parse. We rely on the gutter symbol
 " instead.
-" call s:Highlight('CocWarningHighlight', 'yellow', '', 'bold,underline')
+" call s:Highlight('CocWarningHighlight', 'YELLOW', '', 'bold,underline')
 " call s:Highlight('CocInfoHighlight', '', '', 'none')
-" call s:Highlight('CocFloating', 'gray5', 'gray9')
-" call s:Highlight('CocWarningFloat', 'yellow', 'gray9', 'bold')
-" call s:Highlight('CocErrorFloat', 'red', 'gray9', 'bold')
+" call s:Highlight('CocFloating', 'GRAY5', 'GRAY9')
+" call s:Highlight('CocWarningFloat', 'YELLOW', 'GRAY9', 'bold')
+" call s:Highlight('CocErrorFloat', 'RED', 'GRAY9', 'bold')
 " call s:Highlight('CocErrorHighlight', '', '', 'bold')
 
-" call s:Highlight('CocBold', 'pink', 'white')
-" call s:Highlight('CocCodeLens', 'pink', 'white')
-" call s:Highlight('CocCursorRange', 'pink', 'white')
-" call s:Highlight('CocErrorHighlight', 'pink', 'white')
-" call s:Highlight('CocHighlightRead', 'pink', 'white')
-" call s:Highlight('CocHighlightText', 'pink', 'white')
-" call s:Highlight('CocHighlightWrite', 'pink', 'white')
-" call s:Highlight('CocHintFloat', 'pink', 'white')
-" call s:Highlight('CocHintHighlight', 'pink', 'white')
-" call s:Highlight('CocHintSign', 'pink', 'white')
-" call s:Highlight('CocHoverRange', 'pink', 'white')
-" call s:Highlight('CocInfoFloat', 'pink', 'white')
-" call s:Highlight('CocInfoHighlight', 'pink', 'white')
-" call s:Highlight('CocInfoSign', 'pink', 'white')
-" call s:Highlight('CocItalic', 'pink', 'white')
-" call s:Highlight('CocListMode', 'pink', 'white')
-" call s:Highlight('CocListPath', 'pink', 'white')
-" call s:Highlight('CocMarkdownCode', 'pink', 'white')
-" call s:Highlight('CocMarkdownHeader', 'pink', 'white')
-" call s:Highlight('CocMarkdownLink', 'pink', 'white')
-" call s:Highlight('CocMenuSel', 'pink', 'white')
-" call s:Highlight('CocSelectedText', 'pink', 'white')
-" call s:Highlight('CocUnderline', 'pink', 'white')
-" call s:Highlight('CocWarningHighlight', 'pink', 'white')
+" call s:Highlight('CocBold', 'CYAN', 'white')
+" call s:Highlight('CocCodeLens', 'CYAN', 'white')
+" call s:Highlight('CocCursorRange', 'CYAN', 'white')
+" call s:Highlight('CocErrorHighlight', 'CYAN', 'white')
+" call s:Highlight('CocHighlightRead', 'CYAN', 'white')
+" call s:Highlight('CocHighlightText', 'CYAN', 'white')
+" call s:Highlight('CocHighlightWrite', 'CYAN', 'white')
+" call s:Highlight('CocHintFloat', 'CYAN', 'white')
+" call s:Highlight('CocHintHighlight', 'CYAN', 'white')
+" call s:Highlight('CocHintSign', 'CYAN', 'white')
+" call s:Highlight('CocHoverRange', 'CYAN', 'white')
+" call s:Highlight('CocInfoFloat', 'CYAN', 'white')
+" call s:Highlight('CocInfoHighlight', 'CYAN', 'white')
+" call s:Highlight('CocInfoSign', 'CYAN', 'white')
+" call s:Highlight('CocItalic', 'CYAN', 'white')
+" call s:Highlight('CocListMode', 'CYAN', 'white')
+" call s:Highlight('CocListPath', 'CYAN', 'white')
+" call s:Highlight('CocMarkdownCode', 'CYAN', 'white')
+" call s:Highlight('CocMarkdownHeader', 'CYAN', 'white')
+" call s:Highlight('CocMarkdownLink', 'CYAN', 'white')
+" call s:Highlight('CocMenuSel', 'CYAN', 'white')
+" call s:Highlight('CocSelectedText', 'CYAN', 'white')
+" call s:Highlight('CocUnderline', 'CYAN', 'white')
+" call s:Highlight('CocWarningHighlight', 'CYAN', 'white')
 " }}}
 " Matching parenthesis {{{
-call s:Highlight('MatchParen', 'white', 'teal9')
+call s:Highlight('MatchParen', 'white', 'TEAL_9')
 " }}}
 " Messages {{{
-call s:Highlight('ErrorMsg', 'red', 'none', 'bold')
-call s:Highlight('WarningMsg', 'yellow8')
+call s:Highlight('ErrorMsg', 'RED', 'none', 'bold')
+call s:Highlight('WarningMsg', 'YELLOW_8')
 " }}}
 " Spell Checking / Errors {{{
-call s:Highlight('SpellBad', 'red', 'terminal', 'bold,underline')
-call s:Highlight('SpellCap', 'red', 'terminal', 'bold,underline')
+call s:Highlight('SpellBad', 'RED', 'BLACK', 'bold,underline')
+call s:Highlight('SpellCap', 'RED', 'BLACK', 'bold,underline')
 " }}}
 
 " AutoIt {{{
-call s:Highlight('autoitString', 'blue5')
-call s:Highlight('autoitQuote', 'blue5')
-call s:Highlight('autoitNumber', 'blue5', '', 'bold')
-call s:Highlight('autoitParen', 'teal7')
-call s:Highlight('autoitKeyword', 'green7')
-call s:Highlight('autoitVariable', 'indigo4')
-call s:Highlight('autoitVarSelector', 'indigo4', '', 'bold')
-call s:Highlight('autoitFunction', 'yellow')
-call s:Highlight('autoitBuiltin', 'yellow', '', 'bold')
+call s:Highlight('autoitString', 'BLUE')
+call s:Highlight('autoitQuote', 'BLUE')
+call s:Highlight('autoitNumber', 'BLUE', '', 'bold')
+call s:Highlight('autoitParen', 'TEAL_7')
+call s:Highlight('autoitKeyword', 'GREEN_7')
+call s:Highlight('autoitVariable', 'PURPLE_4')
+call s:Highlight('autoitVarSelector', 'PURPLE_4', '', 'bold')
+call s:Highlight('autoitFunction', 'YELLOW')
+call s:Highlight('autoitBuiltin', 'YELLOW', '', 'bold')
 " }}}
 " CSS {{{
-call s:Highlight('scssImport', 'yellow', '', 'bold')
-call s:Highlight('cssBraces', 'teal7')
-call s:Highlight('scssSelectorChar', 'teal7')
-call s:Highlight('scssSemicolon', 'teal7')
+call s:Highlight('scssImport', 'YELLOW', '', 'bold')
+call s:Highlight('cssBraces', 'TEAL_7')
+call s:Highlight('scssSelectorChar', 'TEAL_7')
+call s:Highlight('scssSemicolon', 'TEAL_7')
 " }}}
 " Git {{{
-call s:Highlight('diffAdded', 'green5')
-call s:Highlight('diffFile', 'yellow6')
-call s:Highlight('diffIndexLine', 'yellow7')
-call s:Highlight('diffOldFile', 'yellow8')
-call s:Highlight('diffNewFile', 'yellow8')
-call s:Highlight('diffLine', 'terminal')
-call s:Highlight('diffRemoved', 'red7')
-call s:Highlight('diffSubname', 'gray6')
-call s:Highlight('gitDiff', 'gray')
-call s:Highlight('gitcommitBlank', 'red')
-call s:Highlight('gitcommitBranch', 'orange')
-call s:Highlight('gitcommitDiff', 'gray')
-call s:Highlight('gitcommitHeader', 'gray')
-call s:Highlight('gitcommitOverflow', 'white', 'red')
-call s:Highlight('gitcommitSelectedFile', 'green')
+call s:Highlight('diffAdded', 'GREEN_5')
+call s:Highlight('diffFile', 'YELLOW_6')
+call s:Highlight('diffIndexLine', 'YELLOW_7')
+call s:Highlight('diffOldFile', 'YELLOW_8')
+call s:Highlight('diffNewFile', 'YELLOW_8')
+call s:Highlight('diffLine', 'BLACK')
+call s:Highlight('diffRemoved', 'RED_7')
+call s:Highlight('diffSubname', 'GRAY_6')
+call s:Highlight('gitDiff', 'GRAY')
+call s:Highlight('gitcommitBlank', 'RED')
+call s:Highlight('gitcommitBranch', 'ORANGE')
+call s:Highlight('gitcommitDiff', 'GRAY')
+call s:Highlight('gitcommitHeader', 'GRAY')
+call s:Highlight('gitcommitOverflow', 'white', 'RED')
+call s:Highlight('gitcommitSelectedFile', 'GREEN')
 call s:Highlight('gitcommitSummary', 'white')
-call s:Highlight('gitcommitUntrackedFile', 'gray')
-call s:Highlight('gitconfigAssignment', 'blue')
-call s:Highlight('gitconfigVariable', 'indigo')
+call s:Highlight('gitcommitUntrackedFile', 'GRAY')
+call s:Highlight('gitconfigAssignment', 'BLUE')
+call s:Highlight('gitconfigVariable', 'PURPLE')
 " }}}
 " HTML {{{
-call s:Highlight('htmlTagName', 'green7')
-call s:Highlight('htmlTag', 'teal7')
+call s:Highlight('htmlTagName', 'GREEN_7')
+call s:Highlight('htmlTag', 'TEAL_7')
 " }}}
 " JavaScript / TypeScript {{{
-call s:Highlight('jsArrowFunction', 'teal7')
-call s:Highlight('jsAsyncKeyword', 'green7')
-call s:Highlight('jsBooleanFalse', 'red5', '', 'bold')
-call s:Highlight('jsBooleanTrue', 'green', '', 'bold')
-call s:Highlight('jsDestructuringBlock', 'indigo5')
-call s:Highlight('jsForAwait', 'green7')
-call s:Highlight('jsFuncArgs', 'indigo5')
-call s:Highlight('jsFunction', 'red5')
-call s:Highlight('jsNoise', 'teal7')
-call s:Highlight('jsNull', 'pink5', '', 'bold')
-call s:Highlight('jsOperatorKeyword', 'green7', '', 'bold')
-call s:Highlight('jsParens', 'teal7')
-call s:Highlight('jsRegexpBoundary', 'orange')
-call s:Highlight('jsRegexpGroup', 'green')
-call s:Highlight('jsRegexpOr', 'orange')
-call s:Highlight('jsRegexpQuantifier', 'orange')
-call s:Highlight('jsRegexpString', 'blue4')
-call s:Highlight('jsReturn', 'green', '', 'bold')
-call s:Highlight('jsStorageClass', 'green7')
-call s:Highlight('jsTemplateBraces', 'indigo4')
-call s:Highlight('jsTemplateExpression', 'indigo4')
-call s:Highlight('jsTemplateString', 'blue6')
-call s:Highlight('jsThis', 'indigo4')
-call s:Highlight('jsUndefined', 'orange6', '', 'bold')
-call s:Highlight('jsVariableDef', 'indigo4')
-call s:Highlight('typescriptAccessibilityModifier', 'green7')
-call s:Highlight('typescriptAssign', 'teal7')
-call s:Highlight('typescriptBOMWindowProp', 'yellow', '', 'bold')
-call s:Highlight('typescriptBraces', 'teal7')
-call s:Highlight('typescriptClassKeyword', 'green7')
-call s:Highlight('typescriptClassName', 'pink8', '', 'bold')
-call s:Highlight('typescriptDOMDocProp', 'yellow')
-call s:Highlight('typescriptDotNotation', 'teal7')
-call s:Highlight('typescriptEndColons', 'teal7')
-call s:Highlight('typescriptFuncCallArg', 'indigo5')
-call s:Highlight('typescriptFuncKeyword', 'red5')
-call s:Highlight('typescriptInterfaceKeyword', 'green7')
-call s:Highlight('typescriptInterfaceName', 'pink8', '', 'bold')
-call s:Highlight('typescriptMember', 'indigo5')
-call s:Highlight('typescriptOperator', 'green7', '', 'bold')
-call s:Highlight('typescriptObjectLabel', 'indigo5')
-call s:Highlight('typescriptParens', 'teal7')
-call s:Highlight('typescriptPredefinedType', 'pink8')
-call s:Highlight('typescriptStatementKeyword', 'green', '', 'bold')
-call s:Highlight('typescriptTypeAnnotation', 'teal7')
-call s:Highlight('typescriptTypeReference', 'pink6')
-call s:Highlight('typescriptTypeBrackets', 'teal7')
-call s:Highlight('typescriptVariableDeclaration', 'indigo4')
-call s:Highlight('typescriptVariable', 'green7')
+call s:Highlight('jsArrowFunction', 'TEAL_7')
+call s:Highlight('jsAsyncKeyword', 'GREEN_7')
+call s:Highlight('jsBooleanFalse', 'RED_5', '', 'bold')
+call s:Highlight('jsBooleanTrue', 'GREEN', '', 'bold')
+call s:Highlight('jsDestructuringBlock', 'PURPLE_5')
+call s:Highlight('jsForAwait', 'GREEN_7')
+call s:Highlight('jsFuncArgs', 'PURPLE_5')
+call s:Highlight('jsFunction', 'RED_5')
+call s:Highlight('jsNoise', 'TEAL_7')
+call s:Highlight('jsNull', 'CYAN_5', '', 'bold')
+call s:Highlight('jsOperatorKeyword', 'GREEN_7', '', 'bold')
+call s:Highlight('jsParens', 'TEAL_7')
+call s:Highlight('jsRegexpBoundary', 'ORANGE')
+call s:Highlight('jsRegexpGroup', 'GREEN')
+call s:Highlight('jsRegexpOr', 'ORANGE')
+call s:Highlight('jsRegexpQuantifier', 'ORANGE')
+call s:Highlight('jsRegexpString', 'BLUE_4')
+call s:Highlight('jsReturn', 'GREEN', '', 'bold')
+call s:Highlight('jsStorageClass', 'GREEN_7')
+call s:Highlight('jsTemplateBraces', 'PURPLE_4')
+call s:Highlight('jsTemplateExpression', 'PURPLE_4')
+call s:Highlight('jsTemplateString', 'BLUE_6')
+call s:Highlight('jsThis', 'PURPLE_4')
+call s:Highlight('jsUndefined', 'ORANGE_6', '', 'bold')
+call s:Highlight('jsVariableDef', 'PURPLE_4')
+call s:Highlight('typescriptAccessibilityModifier', 'GREEN_7')
+call s:Highlight('typescriptAssign', 'TEAL_7')
+call s:Highlight('typescriptBOMWindowProp', 'YELLOW', '', 'bold')
+call s:Highlight('typescriptBraces', 'TEAL_7')
+call s:Highlight('typescriptClassKeyword', 'GREEN_7')
+call s:Highlight('typescriptClassName', 'CYAN_8', '', 'bold')
+call s:Highlight('typescriptDOMDocProp', 'YELLOW')
+call s:Highlight('typescriptDotNotation', 'TEAL_7')
+call s:Highlight('typescriptEndColons', 'TEAL_7')
+call s:Highlight('typescriptFuncCallArg', 'PURPLE_5')
+call s:Highlight('typescriptFuncKeyword', 'RED_5')
+call s:Highlight('typescriptInterfaceKeyword', 'GREEN_7')
+call s:Highlight('typescriptInterfaceName', 'CYAN_8', '', 'bold')
+call s:Highlight('typescriptMember', 'PURPLE_5')
+call s:Highlight('typescriptOperator', 'GREEN_7', '', 'bold')
+call s:Highlight('typescriptObjectLabel', 'PURPLE_5')
+call s:Highlight('typescriptParens', 'TEAL_7')
+call s:Highlight('typescriptPredefinedType', 'CYAN_8')
+call s:Highlight('typescriptStatementKeyword', 'GREEN', '', 'bold')
+call s:Highlight('typescriptTypeAnnotation', 'TEAL_7')
+call s:Highlight('typescriptTypeReference', 'CYAN_6')
+call s:Highlight('typescriptTypeBrackets', 'TEAL_7')
+call s:Highlight('typescriptVariableDeclaration', 'PURPLE_4')
+call s:Highlight('typescriptVariable', 'GREEN_7')
 " This doesn't seem to apply v
-call s:Highlight('typescriptIdentifierName', 'white', 'red', 'bold')
-call s:Highlight('typescriptProp', 'yellow', 'red', 'bold')
+call s:Highlight('typescriptIdentifierName', 'white', 'RED', 'bold')
+call s:Highlight('typescriptProp', 'YELLOW', 'RED', 'bold')
 " }}}
 " JSONC {{{
-call s:Highlight('jsoncKeywordMatch', 'blue5')
+call s:Highlight('jsoncKeywordMatch', 'BLUE')
 augroup oroshi_jsonc
   autocmd!
   " The "Normal" highlight group is used for commas
-  autocmd FileType jsonc call s:Highlight('Normal', 'teal7')
+  autocmd FileType jsonc call s:Highlight('Normal', 'TEAL_7')
 augroup END
 " }}}
 " Markdown {{{
-call s:Highlight('markdownCodeDelimiter', 'blue5')
-call s:Highlight('markdownCode', 'blue5')
-call s:Highlight('markdownH1', 'green4', '', 'bold')
-call s:Highlight('markdownH2', 'green5', '', 'bold')
-call s:Highlight('markdownH3', 'green6', '', 'bold')
-call s:Highlight('markdownH4', 'green7', '', 'bold')
-call s:Highlight('markdownH5', 'green8', '', 'bold')
-call s:Highlight('markdownH6', 'green9', '', 'bold')
-call s:Highlight('markdownLinkDelimiter', 'yellow8')
-call s:Highlight('markdownLinkTextDelimiter', 'indigo8')
-call s:Highlight('markdownLinkText', 'indigo5', '', 'underline')
-call s:Highlight('markdownRule', 'teal')
-call s:Highlight('markdownUrl', 'yellow')
+call s:Highlight('markdownCodeDelimiter', 'BLUE')
+call s:Highlight('markdownCode', 'BLUE')
+call s:Highlight('markdownH1', 'GREEN_4', '', 'bold')
+call s:Highlight('markdownH2', 'GREEN_5', '', 'bold')
+call s:Highlight('markdownH3', 'GREEN_6', '', 'bold')
+call s:Highlight('markdownH4', 'GREEN_7', '', 'bold')
+call s:Highlight('markdownH5', 'GREEN_8', '', 'bold')
+call s:Highlight('markdownH6', 'GREEN_9', '', 'bold')
+call s:Highlight('markdownLinkDelimiter', 'YELLOW_8')
+call s:Highlight('markdownLinkTextDelimiter', 'PURPLE_8')
+call s:Highlight('markdownLinkText', 'PURPLE_5', '', 'underline')
+call s:Highlight('markdownRule', 'TEAL')
+call s:Highlight('markdownUrl', 'YELLOW')
 " }}}
 " Pug {{{
-call s:Highlight('pugAngular2', 'blue4', '', 'italic,bold')
-call s:Highlight('pugAttributes', 'red5')
-call s:Highlight('pugClassChar', 'teal7')
-call s:Highlight('pugJavascriptChar', 'teal7')
-call s:Highlight('pugJavascriptOutputChar', 'teal7')
-call s:Highlight('pugScriptLoopKeywords', 'yellow')
-call s:Highlight('pugTag', 'yellow')
+call s:Highlight('pugAngular2', 'BLUE_4', '', 'italic,bold')
+call s:Highlight('pugAttributes', 'RED_5')
+call s:Highlight('pugClassChar', 'TEAL_7')
+call s:Highlight('pugJavascriptChar', 'TEAL_7')
+call s:Highlight('pugJavascriptOutputChar', 'TEAL_7')
+call s:Highlight('pugScriptLoopKeywords', 'YELLOW')
+call s:Highlight('pugTag', 'YELLOW')
 " }}}
 " Ruby {{{
-call s:Highlight('rubyDefine', 'green')
-call s:Highlight('rubyStringDelimiter', 'blue5')
-call s:Highlight('rubySymbol', 'orange5')
+call s:Highlight('rubyDefine', 'GREEN')
+call s:Highlight('rubyStringDelimiter', 'BLUE')
+call s:Highlight('rubySymbol', 'ORANGE_5')
 " }}}
 " Shell {{{
-call s:Highlight('shDerefSimple', 'indigo4')
-call s:Highlight('shDerefVar', 'indigo4')
-call s:Highlight('shOption', 'indigo4')
-call s:Highlight('shQuote', 'blue5')
-call s:Highlight('shSemicolon', 'teal7')
-call s:Highlight('shSetOption', 'indigo4')
-call s:Highlight('shSet', 'green7')
-call s:Highlight('shStatement', 'yellow7')
-call s:Highlight('shVarAssign', 'teal7')
+call s:Highlight('shDerefSimple', 'PURPLE_4')
+call s:Highlight('shDerefVar', 'PURPLE_4')
+call s:Highlight('shOption', 'PURPLE_4')
+call s:Highlight('shQuote', 'BLUE')
+call s:Highlight('shSemicolon', 'TEAL_7')
+call s:Highlight('shSetOption', 'PURPLE_4')
+call s:Highlight('shSet', 'GREEN_7')
+call s:Highlight('shStatement', 'YELLOW_7')
+call s:Highlight('shVarAssign', 'TEAL_7')
 " }}}
 " Tmux {{{
-call s:Highlight('tmuxBoolean', 'orange', '', 'bold')
-call s:Highlight('tmuxCommands', 'green')
+call s:Highlight('tmuxBoolean', 'ORANGE', '', 'bold')
+call s:Highlight('tmuxCommands', 'YELLOW')
+call s:Highlight('tmuxFlags', 'ORANGE')
+call s:Highlight('tmuxOptions', 'PURPLE')
+call s:Highlight('tmuxKey', 'CYAN')
 " }}}
 " Vim {{{
-call s:Highlight('vimCommand', 'green7')
-call s:Highlight('vimFunction', 'yellow6')
-call s:Highlight('vimFunc', 'yellow6')
-call s:Highlight('vimOperParen', 'teal7')
-call s:Highlight('vimOption', 'indigo4')
-call s:Highlight('vimParenSep', 'teal7')
-call s:Highlight('vimUserFunc', 'yellow6')
+call s:Highlight('vimCommand', 'GREEN_7')
+call s:Highlight('vimLet', 'RED_4')
+call s:Highlight('vimFunction', 'YELLOW_6')
+call s:Highlight('vimFunc', 'YELLOW_6')
+call s:Highlight('vimOper', 'NEUTRAL_LIGHT')
+call s:Highlight('vimOperParen', 'NEUTRAL_LIGHT')
+call s:Highlight('vimOption', 'VIOLET_5')
+call s:Highlight('vimParenSep', 'NEUTRAL')
+call s:Highlight('vimSep', 'NEUTRAL')
+call s:Highlight('vimUserFunc', 'YELLOW_6')
 " }}}
 " Yaml {{{
-call s:Highlight('yamlAlias', 'yellow6')
-call s:Highlight('yamlBlockCollectionItemStart', 'teal7')
-call s:Highlight('yamlFlowString', 'blue5')
-call s:Highlight('yamlKeyValueDelimiter', 'teal7')
-call s:Highlight('yamlPlainScalar', 'blue5')
+call s:Highlight('yamlAlias', 'YELLOW_6')
+call s:Highlight('yamlBlockCollectionItemStart', 'TEAL_7')
+call s:Highlight('yamlFlowString', 'BLUE')
+call s:Highlight('yamlKeyValueDelimiter', 'TEAL_7')
+call s:Highlight('yamlPlainScalar', 'BLUE')
 " }}}
 " Zsh {{{
-call s:Highlight('ZinitIceModifiers', 'indigo4')
-call s:Highlight('zshBrackets', 'teal7')
-call s:Highlight('zshCommands', 'green7')
-call s:Highlight('zshDelim', 'teal7')
-call s:Highlight('zshKeyword', 'green7')
-call s:Highlight('zshOptStart', 'green7', '', 'bold')
-call s:Highlight('zshOption', 'orange', '', 'bold')
-call s:Highlight('zshParentheses', 'teal7')
-call s:Highlight('zshStringDelimiter', 'blue5')
-call s:Highlight('zshSwitches', 'indigo4')
-call s:Highlight('zshVariableDef', 'indigo4')
+call s:Highlight('ZinitIceModifiers', 'PURPLE_4')
+call s:Highlight('zshBrackets', 'TEAL_7')
+call s:Highlight('zshCommands', 'GREEN_7')
+call s:Highlight('zshDelim', 'TEAL_7')
+call s:Highlight('zshKeyword', 'GREEN_7')
+call s:Highlight('zshOptStart', 'GREEN_7', '', 'bold')
+call s:Highlight('zshOption', 'ORANGE', '', 'bold')
+call s:Highlight('zshParentheses', 'TEAL_7')
+call s:Highlight('zshStringDelimiter', 'BLUE')
+call s:Highlight('zshSwitches', 'PURPLE_4')
+call s:Highlight('zshVariableDef', 'PURPLE_4')
 " }}}
-" Arbitrary colors
-call s:Highlight('color1', 'red', 'gray8')
 
 
-" " Ansible {{{
-" call s:Link('jinjaVariable', 'oroshi_TextSpecial')
-" call s:Link('jinjaOperator', 'oroshi_TextSpecial')
-" call s:Link('jinjaAttribute', 'oroshi_TextSpecial')
-" call s:Link('jinjaVarDelim', 'oroshi_TextSpecial')
-" call s:Link('ansibleRepeat', 'oroshi_CodeChute')
-" call s:Link('ansibleConditional', 'oroshi_CodeStatement')
+
+
+
+" Original palette {{{
+" " Gray {{{
+" let s:color.gray0='#808080'
+" let s:color.gray1='#f7fafc'
+" let s:color.gray2='#edf2f7'
+" let s:color.gray3='#e2e8f0'
+" let s:color.gray4='#cbd5e0'
+" let s:color.gray5='#a0aec0'
+" let s:color.gray6='#718096'
+" let s:color.gray7='#4a5568'
+" let s:color.gray8='#2d3748'
+" let s:color.gray9='#1a202c'
 " " }}}
-" " Robots {{{
-" call s:Link('robotsDelimiter', 'oroshi_Text')
-" call s:Link('robotsAgent', 'oroshi_CodeStatement')
-" call s:Link('robotsDisallow', 'oroshi_CodeType')
-" call s:Link('robotsLine', 'oroshi_CodeString')
-" call s:Link('robotsStar', 'oroshi_CodeSymbol')
+" " Red {{{
+" let s:color.red0='#ff0000'
+" let s:color.red1='#fff5f5'
+" let s:color.red2='#fed7d7'
+" let s:color.red3='#feb2b2'
+" let s:color.red4='#fc8181'
+" let s:color.red5='#f56565'
+" let s:color.red6='#e53e3e'
+" let s:color.red7='#c53030'
+" let s:color.red8='#9b2c2c'
+" let s:color.red9='#742a2a'
 " " }}}
-" " Vim {{{
-" call s:Highlight('VimLineComment', 'gray')
-" call s:Highlight('VimCommentTitle', 'yellow')
-" call s:Highlight('VimTodo', 'yellow')
-" call s:Link('vimParenSep', 'oroshi_Text')
-" call s:Link('vimIsCommand', 'oroshi_CodeVariable')
-" " Option keys
-" call s:Link('vimOption', 'oroshi_CodeSymbol')
-" call s:Link('vimFTOption', 'oroshi_CodeSymbol')
-" call s:Link('vimHiClear', 'oroshi_CodeSymbol')
-" call s:Link('vimSynType', 'oroshi_CodeSymbol')
-" call s:Link('vimAutoEvent', 'oroshi_CodeSymbol')
-" call s:Link('vimNormCmds', 'oroshi_CodeSymbol')
-" call s:Link('vimMapLhs', 'oroshi_CodeSymbol')
-" " , 'orange', 'none')
-" " Option values
-" call s:Link('vimSet', 'oroshi_CodeString')
-" call s:Link('vimSetEqual', 'oroshi_CodeString')
-" call s:Link('vimMapRhs', 'oroshi_CodeString')
-" " Functions
-" call s:Link('vimFunction', 'oroshi_CodeFunction')
-" call s:Link('vimUserFunc', 'oroshi_CodeFunction')
-" call s:Link('vimFuncKey', 'oroshi_CodeType')
-" " Normal commands
-" call s:Link('vimNormCmds', 'oroshi_Text')
-" call s:Link('vimUserAttrb', 'oroshi_Text')
-" " Special keys
-" call s:Highlight('vimMapMod', 'yellow')
-" call s:Highlight('vimMapModKey', 'yellow')
-" call s:Link('vimAutoCmdSfxList', 'oroshi_TextSpecial')
-" call s:Link('vimCtrlCharMod', 'oroshi_TextSpecial')
-" " Regexps
-" call s:Link('vimSubstFlags', 'oroshi_CodeRegexpFlags')
-" call s:Link('vimAddress', 'oroshi_CodeRegexpFlags')
-" call s:Link('vimSubst1', 'oroshi_CodeRegexpFlags')
-" call s:Link('vimSubstPat', 'oroshi_CodeRegexp')
-" call s:Link('vimSubstRep4', 'oroshi_CodeRegexp')
-" call s:Link('vimSubstDelim', 'oroshi_CodeRegexpDelimiter')
-" " Vim Help
-" call s:Link('helpHeader', 'oroshi_TextHeadingOne')
-" call s:Link('helpVim', 'oroshi_TextHeadingOne')
-" call s:Link('helpNotVi', 'oroshi_Notice')
-" call s:Link('helpSectionDelim', 'oroshi_TextDelimiter')
-" call s:Link('helpSpecial', 'oroshi_CodeString')
-" call s:Link('helpHyperTextEntry', 'oroshi_TextLink')
-" call s:Link('helpExample', 'oroshi_CodeString')
-" call s:Link('helpOption', 'oroshi_CodeSymbol')
+" " Green {{{
+" let s:color.green0='#00ff00'
+" let s:color.green1='#f0fff4'
+" let s:color.green2='#c6f6d5'
+" let s:color.green3='#9ae6b4'
+" let s:color.green4='#68d391'
+" let s:color.green5='#48bb78'
+" let s:color.green6='#38a169'
+" let s:color.green7='#2f855a'
+" let s:color.green8='#276749'
+" let s:color.green9='#22543d'
 " " }}}
-" " YAML {{{
-" call s:Link('yamlBlockMappingKey', 'oroshi_CodeType')
-" call s:Link('yamlBlockCollectionItemStart', 'oroshi_Text')
-" call s:Link('yamlDelimiter', 'oroshi_Text')
-" call s:Link('yamlKeyValueDelimiter', 'oroshi_Text')
-" call s:Link('yamlKey', 'oroshi_CodeType')
-" call s:Link('yamlNull', 'yamlScalar')
-" call s:Link('yamlPlainScalar', 'oroshi_CodeStatement')
-" call s:Link('yamlAlias', 'oroshi_CodeInclude')
-" call s:Highlight('yamlAnchor', 'yellow8', 'none', 'bold')
-" call s:Highlight('yamlBlockMappingMerge', 'yellow8', 'none', 'bold')
+" " Yellow {{{
+" let s:color.yellow0='#ffff00'
+" let s:color.yellow1='#fffff0'
+" let s:color.yellow2='#fefcbf'
+" let s:color.yellow3='#faf089'
+" let s:color.yellow4='#f6e05e'
+" let s:color.yellow5='#ecc94b'
+" let s:color.yellow6='#d69e2e'
+" let s:color.yellow7='#b7791f'
+" let s:color.yellow8='#975a16'
+" let s:color.yellow9='#744210'
 " " }}}
-" " XML {{{
-" call s:Link('xmlAttribPunct', 'oroshi_CodeStatement')
-" call s:Link('xmlNamespace', 'oroshi_CodeStatement')
-" call s:Link('xmlTag', 'oroshi_CodeStatement')
-" call s:Link('xmlTagName', 'oroshi_CodeStatement')
-" call s:Link('xmlEndTag', 'oroshi_CodeStatement')
+" " Blue {{{
+" let s:color.blue0='#0000ff'
+" let s:color.blue1='#ebf8ff'
+" let s:color.blue2='#bee3f8'
+" let s:color.blue3='#90cdf4'
+" let s:color.blue4='#63b3ed'
+" let s:color.blue5='#4299e1'
+" let s:color.blue6='#3182ce'
+" let s:color.blue7='#2b6cb0'
+" let s:color.blue8='#2c5282'
+" let s:color.blue9='#2a4365'
 " " }}}
-" " Diff {{{
-" call s:Link('diffAdded', 'oroshi_DiffAdded')
-" call s:Link('diffRemoved', 'oroshi_DiffRemoved')
-" call s:Link('DiffFile', 'oroshi_CodeComment')
-" call s:Link('DiffNewFile', 'oroshi_CodeComment')
-" call s:Link('DiffLine', 'oroshi_DiffLine')
-" call s:Link('diffSubname', 'oroshi_Normal')
-" call s:Link('diffBDiffer', 'oroshi_CodeInclude')
+" " Purple {{{
+" let s:color.purple0='#ff00ff'
+" let s:color.purple1='#faf5ff'
+" let s:color.purple2='#e9d8fd'
+" let s:color.purple3='#d6bcfa'
+" let s:color.purple4='#b794f4'
+" let s:color.purple5='#9f7aea'
+" let s:color.purple6='#805ad5'
+" let s:color.purple7='#6b46c1'
+" let s:color.purple8='#553c9a'
+" let s:color.purple9='#44337a'
 " " }}}
+" " Teal {{{
+" let s:color.teal0='#00ffff'
+" let s:color.teal1='#e6fffa'
+" let s:color.teal2='#b2f5ea'
+" let s:color.teal3='#81e6d9'
+" let s:color.teal4='#4fd1c5'
+" let s:color.teal5='#38b2ac'
+" let s:color.teal6='#319795'
+" let s:color.teal7='#2c7a7b'
+" let s:color.teal8='#285e61'
+" let s:color.teal9='#234e52'
+" " }}}
+" " Orange {{{
+" let s:color.orange0='#ff8700'
+" let s:color.orange1='#fffaf0'
+" let s:color.orange2='#feebc8'
+" let s:color.orange3='#fbd38d'
+" let s:color.orange4='#ffaf00'
+" let s:color.orange5='#ed8936'
+" let s:color.orange6='#dd6b20'
+" let s:color.orange7='#c05621'
+" let s:color.orange8='#9c4221'
+" let s:color.orange9='#7b341e'
+" " }}}
+" " Indigo {{{
+" let s:color.indigo0='#5f00ff'
+" let s:color.indigo1='#ebf4ff'
+" let s:color.indigo2='#c3dafe'
+" let s:color.indigo3='#a3bffa'
+" let s:color.indigo4='#7f9cf5'
+" let s:color.indigo5='#667eea'
+" let s:color.indigo6='#5a67d8'
+" let s:color.indigo7='#4c51bf'
+" let s:color.indigo8='#434190'
+" let s:color.indigo9='#3c366b'
+" " }}}
+" " Pink {{{
+" let s:color.pink0='#d787ff'
+" let s:color.pink1='#fff5f7'
+" let s:color.pink2='#fed7e2'
+" let s:color.pink3='#fbb6ce'
+" let s:color.pink4='#f687b3'
+" let s:color.pink5='#ed64a6'
+" let s:color.pink6='#d53f8c'
+" let s:color.pink7='#b83280'
+" let s:color.pink8='#97266d'
+" let s:color.pink9='#702459'
+" " }}}
+" }}}
