@@ -335,8 +335,7 @@ alias ta="transmission-remote -a "
 alias tl="transmission-remote -l"
 # }}}
 # mark / jump {{{
-# Thanks to
-# : http://jeroenjanssens.com/2013/08/16/quickly-navigate-your-filesystem-from-the-command-line.html
+# Thanks to https://jeroenjanssens.com/navigate/
 export MARKPATH=$HOME/.marks
 alias m='mark'
 alias mR='unmark'

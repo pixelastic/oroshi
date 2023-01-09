@@ -70,17 +70,17 @@ function __prompt-node-version() {
 
   # Local version is the same as the current one
   if [[ $currentVersion == $expectedVersion ]]; then
-    echo -n "%F{$COLOR_ALIAS_SUCCESS} $expectedVersion%f"
+    echo -n "%F{$COLOR_ALIAS_SUCCESS} $expectedVersion%f "
     return
   fi
 
   # Local version is not even installed
   if nvm version $expectedVersion | grep -q "N/A"; then
-    echo -n "%F{$COLOR_ALIAS_ERROR} $expectedVersion%f"
+    echo -n "%F{$COLOR_ALIAS_ERROR} $expectedVersion%f "
     return
   fi
 
   # Local version is not in use
-  echo -n "%F{$COLOR_ALIAS_WARNING} $expectedVersion%f"
+  echo -n "%F{$COLOR_ALIAS_WARNING} $expectedVersion%f "
 }
 

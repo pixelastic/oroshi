@@ -13,7 +13,7 @@ function __prompt-git-flags() {
   # Or in a non-git repo
   git-is-repository || return
 
-  git-is-submodule && echo -n "%F{$COLOR_ALIAS_GIT_SUBMODULE} %f"
+  git-is-submodule && echo -n "%F{$COLOR_ALIAS_LOCAL_DEPENDENCY} %f"
   git stash show &>/dev/null && echo -n "%F{$COLOR_ALIAS_GIT_STASH} %f"
   git-rebase-inprogress && echo -n "%F{$COLOR_ALIAS_GIT_REBASE} %f"
   echo -n "$(__prompt-git-status)"
