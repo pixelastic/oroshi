@@ -93,19 +93,24 @@ aliasColors[GIT_DIRTY]="RED"
 aliasColors[GIT_PULL_REQUEST]="PURPLE"
 aliasColors[GIT_ISSUE]="YELLOW"
 # Code
+aliasColors[BOOLEAN]="ORANGE_5"
 aliasColors[COMMENT]="GRAY"
+aliasColors[NOISE]="TEAL_7"
+aliasColors[TEXT]="GRAY_LIGHT"
 aliasColors[DATE]="SKY"
 aliasColors[FLAG]="AMBER"
 aliasColors[FUNCTION]="YELLOW"
 aliasColors[HEADER]="YELLOW"
+aliasColors[KEYWORD]="GREEN"
 aliasColors[INTERPOLATION_STRING]="BLUE"
-aliasColors[INTERPOLATION_VARIABLE]="YELLOW"
+aliasColors[INTERPOLATION_VARIABLE]="YELLOW_6"
+aliasColors[INTERPOLATION_WRAPPER]="YELLOW"
 aliasColors[NUMBER]="BLUE" # Bold
 aliasColors[PUNCTUATION]="TEAL"
 aliasColors[STATEMENT]="GREEN"
 aliasColors[STRING]="BLUE"
 aliasColors[VARIABLE]="VIOLET"
-aliasColors[VARIABLE_TYPE]="VIOLET"
+aliasColors[VARIABLE_TYPE]="RED_LIGHT"
 # }}}
 
 # This will also create a COLORS_INDEX env variable, with all the color names
@@ -145,17 +150,22 @@ for line in ${(f)kittyColors}; do
   colorsIndex+=(${colorKey})
 done
 
+# Adding all color aliases
+for aliasName colorName in "${(@kv)aliasColors}"; do
+  output+="export COLOR_ALIAS_${aliasName}=\$COLOR_${colorName}\n"
+  output+="export COLOR_ALIAS_${aliasName}_HEXA=\$COLOR_${colorName}_HEXA\n"
+done
+
 # Alphabetical list of all colors
 local COLORS_INDEX=""
 for colorName in ${(o)colorsIndex}; do
   COLORS_INDEX+=" $colorName"
 done
+for colorName in ${(ko)aliasColors}; do
+  COLORS_INDEX+=" ALIAS_${colorName}"
+done
 output+="export COLORS_INDEX=\"${COLORS_INDEX:1}\"\n"
 
-# Adding all color aliases
-for aliasName colorName in "${(@kv)aliasColors}"; do
-  output+="export COLOR_ALIAS_${aliasName}=\$COLOR_${colorName}\n"
-done
 
 # Generate the file
 echo $output > ~/.oroshi/config/zsh/theming/env/colors.zsh
