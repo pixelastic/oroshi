@@ -5,9 +5,9 @@
 function () {
   # Define the custom LS_COLORS
   LS_COLORS=""
-  LS_COLORS="${LS_COLORS}:di=38;5;$COLOR_GREEN"      # Directory
-  LS_COLORS="${LS_COLORS}:ex=4;38;5;$COLOR_VIOLET_4" # Executable
-  LS_COLORS="${LS_COLORS}:ln=34;4;$COLOR_BLUE"       # Symlink
+  LS_COLORS="${LS_COLORS}:di=38;5;$COLOR_ALIAS_FILEPATH"     # Directory
+  LS_COLORS="${LS_COLORS}:ex=4;38;5;$COLOR_ALIAS_EXECUTABLE" # Executable
+  LS_COLORS="${LS_COLORS}:ln=34;4;$COLOR_ALIAS_LINK"         # Symlink
 
   # Define LS_COLORS by looping through all FILETYPES_***_color
   for extension in ${=FILETYPES_INDEX}; do

@@ -65,6 +65,48 @@ colorRanges[18]="VIOLET"
 colorRanges[19]="TEAL"
 colorRanges[20]="NEUTRAL"
 # }}}
+# Alias colors {{{
+declare -A aliasColors
+aliasColors=()
+# Common
+aliasColors[LOCAL_DEPENDENCY]="YELLOW"
+aliasColors[FILEPATH]="GREEN"
+aliasColors[EXECUTABLE]="VIOLET"
+aliasColors[LINK]="BLUE"
+aliasColors[UNKNOWN]="PURPLE_4"
+aliasColors[UI]="NEUTRAL"
+aliasColors[SELECTED_BACKGROUND]="GRAY_9"
+aliasColors[MATCH]="YELLOW"
+# Languages
+aliasColors[LANGUAGE_JAVASCRIPT]="YELLOW"
+aliasColors[LANGUAGE_RUBY]="ORANGE"
+# States
+aliasColors[ERROR]="RED"
+aliasColors[SUCCESS]="GREEN"
+aliasColors[WARNING]="YELLOW"
+aliasColors[NOTICE]="VIOLET"
+# Git
+aliasColors[GIT_STASH]="TEAL_8"
+aliasColors[GIT_REBASE]="RED_LIGHT"
+aliasColors[GIT_MODIFIED]="VIOLET"
+aliasColors[GIT_DIRTY]="RED"
+aliasColors[GIT_PULL_REQUEST]="PURPLE"
+aliasColors[GIT_ISSUE]="YELLOW"
+# Code
+aliasColors[COMMENT]="GRAY"
+aliasColors[DATE]="SKY"
+aliasColors[FLAG]="AMBER"
+aliasColors[FUNCTION]="YELLOW"
+aliasColors[HEADER]="YELLOW"
+aliasColors[INTERPOLATION_STRING]="BLUE"
+aliasColors[INTERPOLATION_VARIABLE]="YELLOW"
+aliasColors[NUMBER]="BLUE" # Bold
+aliasColors[PUNCTUATION]="TEAL"
+aliasColors[STATEMENT]="GREEN"
+aliasColors[STRING]="BLUE"
+aliasColors[VARIABLE]="VIOLET"
+aliasColors[VARIABLE_TYPE]="VIOLET"
+# }}}
 
 # This will also create a COLORS_INDEX env variable, with all the color names
 local colorsIndex=()
@@ -109,6 +151,11 @@ for colorName in ${(o)colorsIndex}; do
   COLORS_INDEX+=" $colorName"
 done
 output+="export COLORS_INDEX=\"${COLORS_INDEX:1}\"\n"
+
+# Adding all color aliases
+for aliasName colorName in "${(@kv)aliasColors}"; do
+  output+="export COLOR_ALIAS_${aliasName}=\$COLOR_${colorName}\n"
+done
 
 # Generate the file
 echo $output > ~/.oroshi/config/zsh/theming/env/colors.zsh

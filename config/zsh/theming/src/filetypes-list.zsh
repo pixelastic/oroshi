@@ -120,7 +120,7 @@ FILETYPE_GROUPS[binary,bold]="1"
 FILETYPE_GROUPS[binary,patterns]=".exe"
 
 # Minor files files
-FILETYPE_GROUPS[minor,color]="GRAY_7"
+FILETYPE_GROUPS[minor,color]="NEUTRAL"
 FILETYPE_GROUPS[minor,icon]=" "
 FILETYPE_GROUPS[minor,patterns]="\
   .js.map \
@@ -137,6 +137,8 @@ FILETYPE_GROUPS[minor,patterns]="\
 # FILETYPES {{{
 FILETYPES[.pdf,bold]="1"
 FILETYPES[.vim,icon]=" "
+FILETYPES[.md,icon]=" "
+FILETYPES[.mkd,icon]=" "
 FILETYPES[.js,icon]=" "
 FILETYPES[.js,color]="YELLOW"
 # }}}

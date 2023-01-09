@@ -10,7 +10,7 @@
   frag = 0           # @@ -9,14 +9,15 @@
   func = 16          # First line of context
   context = 16       # Lines untouched
-  old = 1           # Lines deleted
+  old = 1            # Lines deleted
   new = 2            # Lines added
   whitespace = 54 54 # Any diff whitespace
 [color "diff-highlight"]

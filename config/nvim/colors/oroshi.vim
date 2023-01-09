@@ -47,6 +47,22 @@ function! s:Highlight(group,...)
 endfunction
 " }}}
 
+" Highlight linking function {{{
+" Links an highlight group to an existing one, allowing to change color of all
+" element of a given type in one go, and adding consistency accross languages.
+" args : highlightName, aliasName
+function! s:Alias(highlightName, aliasName)
+  let highlightName = get(a:, 'highlightName')
+  let aliasName = get(a:, 'aliasName')
+
+  " We clear all previous highlight, to start from a clean slate
+  execute 'hi clear '.highlightName
+
+  execute 'hi! def link ' . highlightName . ' ' . aliasName
+endfunction
+" }}}
+
+
 " Defining the palette from the ENV variables {{{
 let s:color = {}
 " Build the s:color palette
@@ -64,7 +80,7 @@ call s:Highlight('Function', 'YELLOW')
 call s:Highlight('Identifier', 'VIOLET', '', 'none')
 call s:Highlight('Keyword', 'GREEN')
 call s:Highlight('Noise', 'TEAL_7')
-call s:Highlight('Normal', 'GRAY_4')
+call s:Highlight('Normal', 'GRAY_3')
 call s:Highlight('Number', 'BLUE', '', 'bold')
 call s:Highlight('Operator', 'TEAL_7')
 call s:Highlight('PreProc', 'YELLOW')
@@ -76,10 +92,7 @@ call s:Highlight('StorageClass', 'RED_5')
 call s:Highlight('String', 'BLUE')
 call s:Highlight('Title', 'YELLOW')
 call s:Highlight('Todo', 'YELLOW', 'terminal', 'bold')
-call s:Highlight('Type', 'RED_5')
-" call s:Highlight('TrailingWhitespace', _'', 'GRAY9')
-" The matcher needs to be defined after the colorscheme
-" match TrailingWhitespace /\s\+$/
+call s:Highlight('Type', 'RED_LIGHT')
 
 " Hidden characters (F8) {{{
 " Line endings and horizontal scroll markers
@@ -304,9 +317,21 @@ call s:Highlight('autoitFunction', 'YELLOW')
 call s:Highlight('autoitBuiltin', 'YELLOW', '', 'bold')
 " }}}
 " CSS {{{
-call s:Highlight('scssImport', 'YELLOW', '', 'bold')
+call s:Highlight('cssAttr', 'VIOLET')
 call s:Highlight('cssBraces', 'TEAL_7')
-call s:Highlight('scssSelectorChar', 'TEAL_7')
+call s:Highlight('cssColor', 'VIOLET')
+call s:Highlight('cssCommonAttr', 'VIOLET')
+call s:Highlight('cssNoise', 'NEUTRAL')
+call s:Highlight('cssProp', 'AMBER')
+call s:Highlight('cssUnitDecorators', 'NEUTRAL_LIGHT')
+call s:Highlight('cssPseudoClassId', 'CYAN')
+call s:Highlight('cssPseudoClass', 'CYAN')
+call s:Highlight('cssTagName', 'GREEN_8')
+call s:Highlight('scssImport', 'YELLOW', '', 'bold')
+call s:Highlight('scssVariable', 'YELLOW')
+call s:Highlight('scssProperty', 'YELLOW')
+call s:Highlight('scssSelectorChar', 'GREEN')
+call s:Highlight('scssSelectorName', 'GREEN')
 call s:Highlight('scssSemicolon', 'TEAL_7')
 " }}}
 " Git {{{
@@ -327,12 +352,19 @@ call s:Highlight('gitcommitOverflow', 'white', 'RED')
 call s:Highlight('gitcommitSelectedFile', 'GREEN')
 call s:Highlight('gitcommitSummary', 'white')
 call s:Highlight('gitcommitUntrackedFile', 'GRAY')
+call s:Highlight('gitconfigSection', 'YELLOW')
 call s:Highlight('gitconfigAssignment', 'BLUE')
 call s:Highlight('gitconfigVariable', 'PURPLE')
 " }}}
 " HTML {{{
+call s:Highlight('htmlEndTag', 'EMERALD')
+call s:Highlight('htmlLink', 'NEUTRAL_LIGHT')
+call s:Highlight('htmlScriptTag', 'EMERALD')
+call s:Highlight('htmlSpecialTagName', 'GREEN_7')
 call s:Highlight('htmlTagName', 'GREEN_7')
-call s:Highlight('htmlTag', 'TEAL_7')
+call s:Highlight('htmlTag', 'EMERALD')
+call s:Highlight('htmlTitle', 'NEUTRAL_LIGHT')
+call s:Highlight('htmlh1', 'NEUTRAL_LIGHT')
 " }}}
 " JavaScript / TypeScript {{{
 call s:Highlight('jsArrowFunction', 'TEAL_7')

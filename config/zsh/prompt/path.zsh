@@ -47,9 +47,9 @@ function __prompt-path() {
   # Color the string path
   if [[ $currentPath != '' ]]; then
     git-is-dot-git-folder && echo "%F{$COLOR_ORANGE}${currentPath:s_.git/_ }%f" && return
-    [[ ! -r $PWD ]] && echo "%F{$COLOR_GRAY} ${currentPath}%f " && return
-    [[ ! -w $PWD ]] && echo "%F{$COLOR_RED}!${currentPath}%f " && return
+    [[ ! -r $PWD ]] && echo "%F{$COLOR_ALIAS_COMMENT} ${currentPath}%f " && return
+    [[ ! -w $PWD ]] && echo "%F{$COLOR_ALIAS_ERROR}!${currentPath}%f " && return
 
-    echo "%F{$COLOR_GREEN}${currentPath}%f " && return
+    echo "%F{$COLOR_ALIAS_FILEPATH}${currentPath}%f " && return
   fi
 }

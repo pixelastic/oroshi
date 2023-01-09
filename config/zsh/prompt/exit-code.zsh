@@ -5,8 +5,8 @@
 # - Purple if any other error code
 function __prompt-exit-code() {
   local exit=$OROSHI_LAST_COMMAND_EXIT;
-  [[ $exit = 1 ]] && echo "%B%F{$COLOR_RED}❯ %f%b" && return
-  [[ $exit > 1 ]] && echo "%F{$COLOR_PURPLE}❯ %f" && return
-  echo "%F{$COLOR_GREEN}❯ %f"
+  [[ $exit = 1 ]] && echo "%B%F{$COLOR_ALIAS_ERROR}❯ %f%b" && return
+  [[ $exit > 1 ]] && echo "%F{$COLOR_ALIAS_NOTICE}❯ %f" && return
+  echo "%F{$COLOR_ALIAS_SUCCESS}❯ %f"
 }
 # }}}
