@@ -69,6 +69,7 @@ call s:Highlight('StorageClass', 'ALIAS_VARIABLE_TYPE')
 call s:Highlight('Conditional', 'ALIAS_STATEMENT')
 call s:Highlight('Operator', 'ALIAS_PUNCTUATION')
 call s:Highlight('Keyword', 'ALIAS_KEYWORD')
+call s:Highlight('PreProc', 'ALIAS_HEADER')
 
 " Hidden characters (F8) {{{
 " Line endings and horizontal scroll markers
@@ -439,15 +440,14 @@ call s:Highlight('rubyStringDelimiter', 'BLUE')
 call s:Highlight('rubySymbol', 'ORANGE_5')
 " }}}
 " Shell {{{
-call s:Highlight('shDerefSimple', 'PURPLE_4')
-call s:Highlight('shDerefVar', 'PURPLE_4')
-call s:Highlight('shOption', 'PURPLE_4')
-call s:Highlight('shQuote', 'BLUE')
-call s:Highlight('shSemicolon', 'TEAL_7')
-call s:Highlight('shSetOption', 'PURPLE_4')
-call s:Highlight('shSet', 'GREEN_7')
-call s:Highlight('shStatement', 'YELLOW_7')
-call s:Highlight('shVarAssign', 'TEAL_7')
+call s:Highlight('shDerefSimple', 'ALIAS_INTERPOLATION_VARIABLE')
+call s:Highlight('shOption', 'ALIAS_FLAG')
+call s:Highlight('shQuote', 'ALIAS_STRING')
+call s:Highlight('shRANGE', 'ALIAS_PUNCTUATION')
+call s:Highlight('shSetOption', 'ALIAS_FLAG')
+call s:Highlight('shSet', 'ALIAS_FUNCTION')
+call s:Highlight('shStatement', 'ALIAS_STATEMENT')
+call s:Highlight('shSemicolon', 'ALIAS_PUNCTUATION')
 " }}}
 " Tmux {{{
 call s:Highlight('tmuxBoolean', 'ORANGE', '', 'bold')
