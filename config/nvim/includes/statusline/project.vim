@@ -9,10 +9,15 @@ function! ProjectStatusLine()
 
   " vint: -ProhibitUsingUndeclaredVariable
   execute 'let icon=$PROJECT_' . projectKey . '_ICON'
+  execute 'let shouldHideName=$PROJECT_' . projectKey . '_HIDE_NAME_IN_PROMPT'
 
   let projectStatus=''
   let projectStatus.='%#ProjectPre_' . projectKey . '# %*'
-  let projectStatus.='%#Project_' . projectKey . '#' . icon . projectName . ' %*'
+  let projectStatus.='%#Project_' . projectKey . '#' . icon
+  if shouldHideName ==# '0'
+    let projectStatus.=projectName
+  endif
+  let projectStatus.=' %*'
   let projectStatus.='%#ProjectPost_' . projectKey . '#%*'
   " vint: +ProhibitUsingUndeclaredVariable
   "
