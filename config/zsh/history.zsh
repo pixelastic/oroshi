@@ -1,20 +1,19 @@
 # In which file to save history
-HISTFILE=~/.history
-# How many lines to save in history
-SAVEHIST=10000
-# Maximum size of the file
-HISTSIZE=10000
-# We want to share history accross all opened terminal windows
+export HISTFILE=~/.history
+# How many commands do we keep stored in the file
+export SAVEHIST=1000000000
+# How many commands do load in our running session history
+export HISTSIZE=1000
+# Any command is added to the history file as soon as it's entered, and shared
+# across sessions
 setopt SHARE_HISTORY
-# We do not want dupes to show in the history
+# Log timestamps in history
+setopt EXTENDED_HISTORY 
+# Entering the same command several times in a row won't add it several times
 setopt HIST_IGNORE_DUPS
 # Empty commands should not appear in the history
 setopt HIST_REDUCE_BLANKS
-# We want the history to be appended to the existing file, not create a new one
-setopt APPEND_HISTORY
-# Always print the last command before executing it when using "!!"
-setopt HIST_VERIFY
-# Log timestamps in history
-setopt EXTENDED_HISTORY 
 # Commands starting with a space are not loggued in history
 setopt HIST_IGNORE_SPACE
+# Always print the last command before executing it when using "!!"
+setopt HIST_VERIFY

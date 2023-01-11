@@ -98,19 +98,20 @@ aliasColors[COMMENT]="GRAY"
 aliasColors[NOISE]="TEAL_7"
 aliasColors[TEXT]="GRAY_LIGHT"
 aliasColors[DATE]="SKY"
-aliasColors[FLAG]="AMBER"
+aliasColors[FLAG]="AMBER"                      # -h, --help
 aliasColors[FUNCTION]="YELLOW"
 aliasColors[HEADER]="YELLOW"
 aliasColors[KEYWORD]="GREEN"
-aliasColors[INTERPOLATION_STRING]="BLUE"
-aliasColors[INTERPOLATION_VARIABLE]="YELLOW_6"
-aliasColors[INTERPOLATION_WRAPPER]="YELLOW"
-aliasColors[NUMBER]="BLUE" # Bold
+aliasColors[INTERPOLATION_STRING]="BLUE"       # The wrapping string
+aliasColors[INTERPOLATION_VARIABLE]="VIOLET" # The variable name
+aliasColors[INTERPOLATION_WRAPPER]="YELLOW"    # The ${} delimiter
+aliasColors[NUMBER]="BLUE"                     # Bold
 aliasColors[PUNCTUATION]="TEAL"
-aliasColors[STATEMENT]="GREEN"
+aliasColors[STATEMENT]="GREEN"                 # for, if, while
 aliasColors[STRING]="BLUE"
-aliasColors[VARIABLE]="VIOLET"
-aliasColors[VARIABLE_TYPE]="RED_LIGHT"
+aliasColors[VARIABLE]="VIOLET"                 # Reading it
+aliasColors[VARIABLE_TYPE]="RED_LIGHT"         # const, let, function
+aliasColors[VARIABLE_DEFINITION]="VIOLET_LIGHT"    # Left-hand side, writing it
 # }}}
 
 # This will also create a COLORS_INDEX env variable, with all the color names

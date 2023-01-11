@@ -3,6 +3,10 @@
 declare -A PROJECTS
 PROJECTS=()
 
+PROJECTS[jekyll,background]="BLUE_5"
+PROJECTS[jekyll,icon]=" "
+PROJECTS[jekyll,path]="~/local/www/algolia/jekyll-algolia/"
+PROJECTS[jekyll,foreground]="WHITE"
 PROJECTS[aberlaas,background]="YELLOW_7"
 PROJECTS[aberlaas,icon]=" "
 PROJECTS[aberlaas,path]="~/local/www/projects/aberlaas/"
