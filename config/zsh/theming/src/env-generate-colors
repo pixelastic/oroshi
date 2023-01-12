@@ -107,6 +107,7 @@ aliasColors[INTERPOLATION_VARIABLE]="VIOLET" # The variable name
 aliasColors[INTERPOLATION_WRAPPER]="YELLOW"    # The ${} delimiter
 aliasColors[NUMBER]="BLUE"                     # Bold
 aliasColors[PUNCTUATION]="TEAL"
+aliasColors[SYMBOL]="ORANGE"                 # :symbol in ruby
 aliasColors[STATEMENT]="GREEN"                 # for, if, while
 aliasColors[STRING]="BLUE"
 aliasColors[VARIABLE]="VIOLET"                 # Reading it

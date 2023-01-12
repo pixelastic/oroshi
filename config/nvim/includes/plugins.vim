@@ -41,7 +41,7 @@ Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
 " Plug 'pangloss/vim-javascript'
 " Plug 'tmhedberg/SimpylFold' " Python folding
 " Plug 'tpope/vim-markdown'
-" Plug 'vim-ruby/vim-ruby'
+Plug 'vim-ruby/vim-ruby'
 " }}}
 " Enhancing vim workflow {{{
 Plug 'sbdchd/neoformat'

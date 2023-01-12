@@ -7,7 +7,10 @@
 
 local pathToCheck="$1"
 [[ "$pathToCheck" == "" ]] && pathToCheck="$PWD/"
+
+# Replace home path with ~
 pathToCheck=$(print -D $pathToCheck)
+
 
 for projectKey in ${=PROJECTS_INDEX_BY_PATH}; do
   local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
