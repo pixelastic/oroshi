@@ -30,9 +30,11 @@ class TmuxFuzzySession
 
       session_prefix = "#{session_icon} #{session_name}".ljust(session_width + 2, ' ')
 
-      item = "#{session_prefix}  #{window_icon} #{window_name}"
-      list << item
-      @reverse_list[item] = {
+      display_line = "#{session_prefix}  #{window_icon} #{window_name}"
+      list << display_line
+
+      normalized_line = display_line.strip
+      @reverse_list[normalized_line] = {
         session: session_name,
         window: window_name
       }
@@ -46,32 +48,22 @@ class TmuxFuzzySession
     need_zoom = !system('tmux-is-zoomed')
     `tmux resize-pane -Z` if need_zoom
 
-    selection = select_window
-    return unless selection
+    raw_selection = select_window
+    return unless raw_selection
 
-    # Move to the specific session and window
-    `tmux switch -t #{selection[:session]}:#{selection[:window]}`
+    detailed_selection = @reverse_list[raw_selection]
+
+    `tmux switch -t #{detailed_selection[:session]}:#{detailed_selection[:window]}`
 
     # Revert the full screen if we changed it before
     `tmux resize-pane -Z` if need_zoom
   end
 
-  # Pass all options to fzf-tmux
+  # Use a custom local version of fzf with all options configured
+  # As this will be loaded from TMUX, it won't inherit the ENV variables by
+  # default which is why we need to pass them
   def fzf_tmux_bin
-    bin = []
-    bin << '/home/tim/local/src/fzf/bin/fzf-tmux'
-    bin << '-u 100%'
-    bin << '--reverse'
-    bin << '--color fg:23'
-    bin << '--color bg:-1'
-    bin << '--color hl:35'
-    bin << '--color fg+:0'
-    bin << '--color bg+:35'
-    bin << '--color hl+:15'
-    bin << '--color info:56'
-    bin << '--color prompt:15'
-    bin << '--color pointer:0'
-    bin.join(' ')
+    '/home/tim/.oroshi/scripts/bin/tmux-fuzzy-session-fzf'
   end
 
   # Is there an icon for this session/window?
@@ -87,7 +79,7 @@ class TmuxFuzzySession
     selection = `echo "#{@list}" | #{fzf_tmux_bin}`.strip
     return false if selection.empty?
 
-    @reverse_list[selection]
+    selection
   end
 end
 TmuxFuzzySession.new.run

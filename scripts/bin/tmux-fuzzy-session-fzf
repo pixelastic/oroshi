@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# Called by tmux-fuzzy-session, itself called with Alt-P i tmux
+
+# Load the fzf default configuration
+source ~/.oroshi/config/zsh/theming/env/colors.zsh
+source ~/.oroshi/config/zsh/tools/fzf.zsh
+
+/home/tim/local/src/fzf/bin/fzf-tmux \
+  -u 100% \
+  --reverse \
+  --color fg:$COLOR_NEUTRAL_LIGHT
+
