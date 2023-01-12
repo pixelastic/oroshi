@@ -19,3 +19,5 @@ yarn global add \
   eslint_d \
   pkg-dir-cli@2.1.0 \
   prettier
+
+Also instal

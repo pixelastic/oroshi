@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# Website downloader
+
+sudo apt-get install webhttrack
