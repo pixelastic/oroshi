@@ -93,7 +93,7 @@ aliasColors[GIT_DIRTY]="RED"
 aliasColors[GIT_PULL_REQUEST]="PURPLE"
 aliasColors[GIT_ISSUE]="YELLOW"
 # Code
-aliasColors[BOOLEAN]="ORANGE_5"
+aliasColors[BOOLEAN]="CYAN_LIGHT"
 aliasColors[COMMENT]="GRAY"
 aliasColors[NOISE]="TEAL_7"
 aliasColors[TEXT]="GRAY_LIGHT"

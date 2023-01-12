@@ -21,14 +21,19 @@ Plug 'tpope/vim-unimpaired'
 Plug 'vim-scripts/argtextobj.vim'
 " }}}
 " Language specific syntax {{{
-" - markdown: Uses plasticboy/vim-markdown which seem to clear all syntax
-"   coloring
-let g:polyglot_disabled = ['markdown']
+" Bats (bash testing framework)
 Plug 'aliou/bats.vim'
-Plug 'ekalinin/Dockerfile.vim'
-Plug 'fladson/vim-kitty', { 'branch': 'main' }
-Plug 'sheerun/vim-polyglot'
+" Colors (hexa decimal code)
 Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
+" Docker
+Plug 'ekalinin/Dockerfile.vim'
+" Kitty
+Plug 'fladson/vim-kitty', { 'branch': 'main' }
+" Ruby
+Plug 'vim-ruby/vim-ruby'
+
+" Plug 'sheerun/vim-polyglot'
+" Plug 'vim-ruby/vim-ruby'
 " Plug 'StanAngeloff/php.vim'
 " Plug 'avakhov/vim-yaml'
 " Plug 'cakebaker/scss-syntax.vim'
@@ -41,7 +46,6 @@ Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
 " Plug 'pangloss/vim-javascript'
 " Plug 'tmhedberg/SimpylFold' " Python folding
 " Plug 'tpope/vim-markdown'
-Plug 'vim-ruby/vim-ruby'
 " }}}
 " Enhancing vim workflow {{{
 Plug 'sbdchd/neoformat'

@@ -451,13 +451,13 @@ call s:Highlight('rubyConstant', 'ALIAS_VARIABLE_DEFINITION')
 call s:Highlight('rubyClassName', 'ALIAS_VARIABLE_DEFINITION')
 call s:Highlight('rubyStringDelimiter', 'ALIAS_STRING')
 call s:Highlight('rubyArrayDelimiter', 'ALIAS_PUNCTUATION')
+call s:Highlight('rubyBlockParameterList', 'ALIAS_VARIABLE')
 call s:Highlight('rubyCurlyBlockDelimiter', 'ALIAS_PUNCTUATION')
 call s:Highlight('rubyInterpolation', 'ALIAS_INTERPOLATION_VARIABLE')
 call s:Highlight('rubyInterpolationDelimiter', 'ALIAS_INTERPOLATION_WRAPPER')
 call s:Highlight('rubySymbol', 'ALIAS_SYMBOL')
 " Following groups should be highlighted but aren't
-call s:Highlight('rubyKeywordAsMethod', 'ALIAS_RED', 'RED')
-" call s:Highlight('rubySymbol', 'ORANGE_5')
+call s:Highlight('rubyKeywordAsMethod', 'RED', 'CYAN')
 " }}}
 " Shell {{{
 call s:Highlight('shDerefSimple', 'ALIAS_INTERPOLATION_VARIABLE')
