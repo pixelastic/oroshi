@@ -11,7 +11,6 @@ unsetopt NOMATCH
 # }}}
 
 # Basic commands {{{
-alias man='batman'
 alias gf='rg -l --color=never'
 alias c='bat'
 alias cat='bat'
@@ -20,11 +19,13 @@ alias cp='cp -rvi'
 alias cpv='copy-verbose'
 alias diff='git diff --no-index --word-diff=color --word-diff-regex=.'
 alias grep='grep -i --color=auto'
+alias h='help'
 alias ls="l"
 alias la="l --all"
 alias l@="l --long --extended"
 alias la@="ls --all --extended --long"
 alias l@a="la@"
+alias man='batman'
 alias mkdir="mkdir -p"
 alias mv='mv -vi'
 alias mvv='move-verbose'

@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# Display help of a command, testing the various syntaxes for help in turn
+local commandName="$1"
+
+batman "$commandName" 2>/dev/null \
+  || $commandName --help 2>/dev/null \
+  || $commandName -h 2>/dev/null \
+  || tldr $commandName 2>/dev/null \
+  || echo "No help found for $commandLine"
+
