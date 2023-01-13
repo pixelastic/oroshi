@@ -1,6 +1,7 @@
 " Name:         Oroshi
 " Maintainer:   Tim Carry <tim@pixelastic.com>
 " "C'est parce qu'il y a 6 matières, c'est ca ?"
+" "J'ai un coude chaud."
 
 " Initialization {{{
 " Needed for nvim to color the cursor
@@ -73,6 +74,7 @@ call s:Highlight('PreProc', 'ALIAS_HEADER')
 call s:Highlight('Title', 'ALIAS_HEADER')
 call s:Highlight('Statement', 'ALIAS_STATEMENT')
 call s:Highlight('StorageClass', 'ALIAS_VARIABLE_TYPE')
+call s:Highlight('Type', 'ALIAS_VARIABLE_TYPE')
 call s:Highlight('StringDelimiter', 'ALIAS_STRING')
 call s:Highlight('String', 'ALIAS_STRING')
 
@@ -236,45 +238,6 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 " }}}
-" COC {{{
-" Autocompletion menu
-
-" Error checking
-" Note: We don't highlight Coc errors as they tend to put everything under the
-" same color and make it hard to visually parse. We rely on the gutter symbol
-" instead.
-" call s:Highlight('CocWarningHighlight', 'YELLOW', '', 'bold,underline')
-" call s:Highlight('CocInfoHighlight', '', '', 'none')
-" call s:Highlight('CocFloating', 'GRAY5', 'GRAY9')
-" call s:Highlight('CocWarningFloat', 'YELLOW', 'GRAY9', 'bold')
-" call s:Highlight('CocErrorFloat', 'RED', 'GRAY9', 'bold')
-" call s:Highlight('CocErrorHighlight', '', '', 'bold')
-
-" call s:Highlight('CocBold', 'CYAN', 'white')
-" call s:Highlight('CocCodeLens', 'CYAN', 'white')
-" call s:Highlight('CocCursorRange', 'CYAN', 'white')
-" call s:Highlight('CocErrorHighlight', 'CYAN', 'white')
-" call s:Highlight('CocHighlightRead', 'CYAN', 'white')
-" call s:Highlight('CocHighlightText', 'CYAN', 'white')
-" call s:Highlight('CocHighlightWrite', 'CYAN', 'white')
-" call s:Highlight('CocHintFloat', 'CYAN', 'white')
-" call s:Highlight('CocHintHighlight', 'CYAN', 'white')
-" call s:Highlight('CocHintSign', 'CYAN', 'white')
-" call s:Highlight('CocHoverRange', 'CYAN', 'white')
-" call s:Highlight('CocInfoFloat', 'CYAN', 'white')
-" call s:Highlight('CocInfoHighlight', 'CYAN', 'white')
-" call s:Highlight('CocInfoSign', 'CYAN', 'white')
-" call s:Highlight('CocItalic', 'CYAN', 'white')
-" call s:Highlight('CocListMode', 'CYAN', 'white')
-" call s:Highlight('CocListPath', 'CYAN', 'white')
-" call s:Highlight('CocMarkdownCode', 'CYAN', 'white')
-" call s:Highlight('CocMarkdownHeader', 'CYAN', 'white')
-" call s:Highlight('CocMarkdownLink', 'CYAN', 'white')
-" call s:Highlight('CocMenuSel', 'CYAN', 'white')
-" call s:Highlight('CocSelectedText', 'CYAN', 'white')
-" call s:Highlight('CocUnderline', 'CYAN', 'white')
-" call s:Highlight('CocWarningHighlight', 'CYAN', 'white')
-" }}}
 " Matching parenthesis {{{
 call s:Highlight('MatchParen', 'white', 'TEAL_9')
 " }}}
@@ -340,7 +303,9 @@ call s:Highlight('gitconfigVariable', 'PURPLE')
 " }}}
 " HTML {{{
 call s:Highlight('htmlArg', 'ALIAS_VARIABLE_DEFINITION')
+call s:Highlight('htmlBold', 'NEUTRAL_LIGHT', '', 'bold')
 call s:Highlight('htmlEndTag', 'ALIAS_PUNCTUATION')
+call s:Highlight('htmlItalic', 'NEUTRAL_LIGHT')
 call s:Highlight('htmlLink', 'ALIAS_TEXT')
 call s:Highlight('htmlSpecialChar', 'ALIAS_INTERPOLATION_VARIABLE')
 call s:Highlight('htmlSpecialTagName', 'ALIAS_KEYWORD')
@@ -361,57 +326,6 @@ call s:Highlight('jsArrowFunction', 'ALIAS_PUNCTUATION')
 call s:Highlight('jsTemplateBraces', 'ALIAS_INTERPOLATION_WRAPPER')
 call s:Highlight('jsTemplateExpression', 'ALIAS_INTERPOLATION_VARIABLE')
 call s:Highlight('jsGlobalNodeObjects', 'ALIAS_FUNCTION', '', 'bold')
-" call s:Highlight('jsArrowFunction', 'TEAL_7')
-" call s:Highlight('jsAsyncKeyword', 'GREEN_7')
-" call s:Highlight('jsBooleanFalse', 'RED_5', '', 'bold')
-" call s:Highlight('jsBooleanTrue', 'GREEN', '', 'bold')
-" call s:Highlight('jsDestructuringBlock', 'PURPLE_5')
-" call s:Highlight('jsForAwait', 'GREEN_7')
-" call s:Highlight('jsFuncArgs', 'VIOLET')
-" call s:Highlight('jsFunction', 'RED_LIGHT')
-" call s:Highlight('jsNoise', 'TEAL_7')
-" call s:Highlight('jsNull', 'CYAN_5', '', 'bold')
-" call s:Highlight('jsOperatorKeyword', 'GREEN_7', '', 'bold')
-" call s:Highlight('jsParens', 'TEAL_7')
-" call s:Highlight('jsRegexpBoundary', 'ORANGE')
-" call s:Highlight('jsRegexpGroup', 'GREEN')
-" call s:Highlight('jsRegexpOr', 'ORANGE')
-" call s:Highlight('jsRegexpQuantifier', 'ORANGE')
-" call s:Highlight('jsRegexpString', 'BLUE_4')
-" call s:Highlight('jsReturn', 'GREEN', '', 'bold')
-" call s:Highlight('jsStorageClass', 'GREEN_7')
-" call s:Highlight('jsTemplateBraces', 'PURPLE_4')
-" call s:Highlight('jsTemplateExpression', 'PURPLE_4')
-" call s:Highlight('jsTemplateString', 'BLUE_6')
-" call s:Highlight('jsThis', 'PURPLE_4')
-" call s:Highlight('jsUndefined', 'ORANGE_6', '', 'bold')
-" call s:Highlight('typescriptAccessibilityModifier', 'GREEN_7')
-" call s:Highlight('typescriptAssign', 'TEAL_7')
-" call s:Highlight('typescriptBOMWindowProp', 'YELLOW', '', 'bold')
-" call s:Highlight('typescriptBraces', 'TEAL_7')
-" call s:Highlight('typescriptClassKeyword', 'GREEN_7')
-" call s:Highlight('typescriptClassName', 'CYAN_8', '', 'bold')
-" call s:Highlight('typescriptDOMDocProp', 'YELLOW')
-" call s:Highlight('typescriptDotNotation', 'TEAL_7')
-" call s:Highlight('typescriptEndColons', 'TEAL_7')
-" call s:Highlight('typescriptFuncCallArg', 'PURPLE_5')
-" call s:Highlight('typescriptFuncKeyword', 'RED_5')
-" call s:Highlight('typescriptInterfaceKeyword', 'GREEN_7')
-" call s:Highlight('typescriptInterfaceName', 'CYAN_8', '', 'bold')
-" call s:Highlight('typescriptMember', 'PURPLE_5')
-" call s:Highlight('typescriptOperator', 'GREEN_7', '', 'bold')
-" call s:Highlight('typescriptObjectLabel', 'PURPLE_5')
-" call s:Highlight('typescriptParens', 'TEAL_7')
-" call s:Highlight('typescriptPredefinedType', 'CYAN_8')
-" call s:Highlight('typescriptStatementKeyword', 'GREEN', '', 'bold')
-" call s:Highlight('typescriptTypeAnnotation', 'TEAL_7')
-" call s:Highlight('typescriptTypeReference', 'CYAN_6')
-" call s:Highlight('typescriptTypeBrackets', 'TEAL_7')
-" call s:Highlight('typescriptVariableDeclaration', 'PURPLE_4')
-" call s:Highlight('typescriptVariable', 'GREEN_7')
-" This doesn't seem to apply v
-call s:Highlight('typescriptIdentifierName', 'white', 'RED', 'bold')
-call s:Highlight('typescriptProp', 'YELLOW', 'RED', 'bold')
 " }}}
 " JSONC {{{
 call s:Highlight('jsoncKeywordMatch', 'BLUE')
@@ -422,19 +336,20 @@ augroup oroshi_jsonc
 augroup END
 " }}}
 " Markdown {{{
-call s:Highlight('markdownCodeDelimiter', 'BLUE')
-call s:Highlight('markdownCode', 'BLUE')
-call s:Highlight('markdownH1', 'GREEN_4', '', 'bold')
-call s:Highlight('markdownH2', 'GREEN_5', '', 'bold')
-call s:Highlight('markdownH3', 'GREEN_6', '', 'bold')
-call s:Highlight('markdownH4', 'GREEN_7', '', 'bold')
-call s:Highlight('markdownH5', 'GREEN_8', '', 'bold')
-call s:Highlight('markdownH6', 'GREEN_9', '', 'bold')
-call s:Highlight('markdownLinkDelimiter', 'YELLOW_8')
-call s:Highlight('markdownLinkTextDelimiter', 'PURPLE_8')
-call s:Highlight('markdownLinkText', 'PURPLE_5', '', 'underline')
-call s:Highlight('markdownRule', 'TEAL')
-call s:Highlight('markdownUrl', 'YELLOW')
+call s:Highlight('markdownCodeDelimiter', 'ALIAS_STRING')
+call s:Highlight('markdownCode', 'ALIAS_STRING')
+call s:Highlight('markdownH1', 'ALIAS_HEADER', '', 'bold')
+call s:Highlight('markdownH2', 'ALIAS_HEADER', '', 'bold')
+call s:Highlight('markdownH3', 'ALIAS_HEADER', '', 'bold')
+call s:Highlight('markdownH4', 'ALIAS_HEADER', '', 'bold')
+call s:Highlight('markdownH5', 'ALIAS_HEADER', '', 'bold')
+call s:Highlight('markdownH6', 'ALIAS_HEADER', '', 'bold')
+call s:Highlight('markdownListMarker', 'ALIAS_PUNCTUATION')
+call s:Highlight('markdownLinkDelimiter', 'ALIAS_PUNCTUATION')
+call s:Highlight('markdownLinkTextDelimiter', 'ALIAS_PUNCTUATION')
+call s:Highlight('markdownLinkText', 'ALIAS_KEYWORD', '', 'underline')
+call s:Highlight('markdownRule', 'ALIAS_PUNCTUATION')
+call s:Highlight('markdownUrl', 'ALIAS_LINK')
 " }}}
 " Pug {{{
 call s:Highlight('pugAngular2', 'BLUE_4', '', 'italic,bold')
@@ -511,147 +426,4 @@ call s:Highlight('zshSwitches', 'ALIAS_FLAG')
 call s:Highlight('zshTypes', 'ALIAS_VARIABLE_TYPE')
 call s:Highlight('zshVariableDef', 'ALIAS_VARIABLE_DEFINITION')
 call s:Highlight('zshVariable', 'ALIAS_VARIABLE_DEFINITION')
-
-" call s:Highlight('ZinitIceModifiers', 'PURPLE_4')
-" call s:Highlight('zshBrackets', 'TEAL_7')
-" call s:Highlight('zshCommands', 'GREEN')
-" call s:Highlight('zshConditional', 'EMERALD')
-" call s:Highlight('zshDelimiter', 'EMERALD')
-" call s:Highlight('zshDelim', 'TEAL_7')
-" call s:Highlight('zshQuoted', 'BLUE_LIGHT')
-" call s:Highlight('zshDeref', 'VIOLET')
-" call s:Highlight('zshOptStart', 'GREEN_7', '', 'bold')
-" call s:Highlight('zshOption', 'ORANGE', '', 'bold')
-" call s:Highlight('zshParentheses', 'TEAL_7')
-" call s:Highlight('zshRepeat', 'EMERALD')
-" call s:Highlight('zshStringDelimiter', 'BLUE')
-" call s:Highlight('zshSubst', 'YELLOW_6')
-" call s:Highlight('zshVariable', 'ALIAS_VARIABLE')
-" }}}
-
-
-
-
-
-" Original palette {{{
-" " Gray {{{
-" let s:color.gray0='#808080'
-" let s:color.gray1='#f7fafc'
-" let s:color.gray2='#edf2f7'
-" let s:color.gray3='#e2e8f0'
-" let s:color.gray4='#cbd5e0'
-" let s:color.gray5='#a0aec0'
-" let s:color.gray6='#718096'
-" let s:color.gray7='#4a5568'
-" let s:color.gray8='#2d3748'
-" let s:color.gray9='#1a202c'
-" " }}}
-" " Red {{{
-" let s:color.red0='#ff0000'
-" let s:color.red1='#fff5f5'
-" let s:color.red2='#fed7d7'
-" let s:color.red3='#feb2b2'
-" let s:color.red4='#fc8181'
-" let s:color.red5='#f56565'
-" let s:color.red6='#e53e3e'
-" let s:color.red7='#c53030'
-" let s:color.red8='#9b2c2c'
-" let s:color.red9='#742a2a'
-" " }}}
-" " Green {{{
-" let s:color.green0='#00ff00'
-" let s:color.green1='#f0fff4'
-" let s:color.green2='#c6f6d5'
-" let s:color.green3='#9ae6b4'
-" let s:color.green4='#68d391'
-" let s:color.green5='#48bb78'
-" let s:color.green6='#38a169'
-" let s:color.green7='#2f855a'
-" let s:color.green8='#276749'
-" let s:color.green9='#22543d'
-" " }}}
-" " Yellow {{{
-" let s:color.yellow0='#ffff00'
-" let s:color.yellow1='#fffff0'
-" let s:color.yellow2='#fefcbf'
-" let s:color.yellow3='#faf089'
-" let s:color.yellow4='#f6e05e'
-" let s:color.yellow5='#ecc94b'
-" let s:color.yellow6='#d69e2e'
-" let s:color.yellow7='#b7791f'
-" let s:color.yellow8='#975a16'
-" let s:color.yellow9='#744210'
-" " }}}
-" " Blue {{{
-" let s:color.blue0='#0000ff'
-" let s:color.blue1='#ebf8ff'
-" let s:color.blue2='#bee3f8'
-" let s:color.blue3='#90cdf4'
-" let s:color.blue4='#63b3ed'
-" let s:color.blue5='#4299e1'
-" let s:color.blue6='#3182ce'
-" let s:color.blue7='#2b6cb0'
-" let s:color.blue8='#2c5282'
-" let s:color.blue9='#2a4365'
-" " }}}
-" " Purple {{{
-" let s:color.purple0='#ff00ff'
-" let s:color.purple1='#faf5ff'
-" let s:color.purple2='#e9d8fd'
-" let s:color.purple3='#d6bcfa'
-" let s:color.purple4='#b794f4'
-" let s:color.purple5='#9f7aea'
-" let s:color.purple6='#805ad5'
-" let s:color.purple7='#6b46c1'
-" let s:color.purple8='#553c9a'
-" let s:color.purple9='#44337a'
-" " }}}
-" " Teal {{{
-" let s:color.teal0='#00ffff'
-" let s:color.teal1='#e6fffa'
-" let s:color.teal2='#b2f5ea'
-" let s:color.teal3='#81e6d9'
-" let s:color.teal4='#4fd1c5'
-" let s:color.teal5='#38b2ac'
-" let s:color.teal6='#319795'
-" let s:color.teal7='#2c7a7b'
-" let s:color.teal8='#285e61'
-" let s:color.teal9='#234e52'
-" " }}}
-" " Orange {{{
-" let s:color.orange0='#ff8700'
-" let s:color.orange1='#fffaf0'
-" let s:color.orange2='#feebc8'
-" let s:color.orange3='#fbd38d'
-" let s:color.orange4='#ffaf00'
-" let s:color.orange5='#ed8936'
-" let s:color.orange6='#dd6b20'
-" let s:color.orange7='#c05621'
-" let s:color.orange8='#9c4221'
-" let s:color.orange9='#7b341e'
-" " }}}
-" " Indigo {{{
-" let s:color.indigo0='#5f00ff'
-" let s:color.indigo1='#ebf4ff'
-" let s:color.indigo2='#c3dafe'
-" let s:color.indigo3='#a3bffa'
-" let s:color.indigo4='#7f9cf5'
-" let s:color.indigo5='#667eea'
-" let s:color.indigo6='#5a67d8'
-" let s:color.indigo7='#4c51bf'
-" let s:color.indigo8='#434190'
-" let s:color.indigo9='#3c366b'
-" " }}}
-" " Pink {{{
-" let s:color.pink0='#d787ff'
-" let s:color.pink1='#fff5f7'
-" let s:color.pink2='#fed7e2'
-" let s:color.pink3='#fbb6ce'
-" let s:color.pink4='#f687b3'
-" let s:color.pink5='#ed64a6'
-" let s:color.pink6='#d53f8c'
-" let s:color.pink7='#b83280'
-" let s:color.pink8='#97266d'
-" let s:color.pink9='#702459'
-" " }}}
 " }}}
