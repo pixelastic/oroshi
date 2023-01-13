@@ -11,6 +11,7 @@ unsetopt NOMATCH
 # }}}
 
 # Basic commands {{{
+alias man='batman'
 alias gf='rg -l --color=never'
 alias c='bat'
 alias cat='bat'

@@ -18,17 +18,17 @@
 				<key>foreground</key>
 				<string>$COLOR_ALIAS_TEXT_HEXA</string>
 				<key>gutter</key>
-				<string>$COLOR_CYAN_1_HEXA</string>
+				<string>$COLOR_RED_HEXA</string>
 				<key>invisibles</key>
-				<string>$COLOR_CYAN_2_HEXA</string>
+				<string>$COLOR_RED_HEXA</string>
 				<key>lineHighlight</key>
-				<string>$COLOR_CYAN_3_HEXA</string>
+				<string>$COLOR_RED_HEXA</string>
 				<key>misspelling</key>
-				<string>$COLOR_CYAN_4_HEXA</string>
+				<string>$COLOR_RED_HEXA</string>
 				<key>selection</key>
-				<string>$COLOR_CYAN_5_HEXA</string>
+				<string>$COLOR_RED_HEXA</string>
 				<key>selectionBorder</key>
-				<string>$COLOR_CYAN_5_HEXA</string>
+				<string>$COLOR_RED_HEXA</string>
 			</dict>
 		</dict>
 
@@ -184,7 +184,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>$COLOR_ALIAS_VARIABLE_TYPE</string>
+				<string>$COLOR_ALIAS_VARIABLE_TYPE_HEXA</string>
 			</dict>
 		</dict>
 		<dict>
@@ -835,6 +835,43 @@
 			</dict>
 		</dict>
 
+		<!-- Man Pages -->
+		<dict>
+			<key>name</key>
+			<string>man: Headers</string>
+			<key>scope</key>
+			<string>markup.heading.title.man, markup.heading.synopsis.man, markup.heading.other.man</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>$COLOR_ALIAS_HEADER_HEXA</string>
+				<key>fontStyle</key>
+				<string>bold</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>man: Flags</string>
+			<key>scope</key>
+			<string>entity.name.command-line-option</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>$COLOR_ALIAS_FLAG_HEXA</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>man: flag description (sometimes turns another color, so we revert it to normal text)</string>
+			<key>scope</key>
+			<string>variable.parameter.man</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>$COLOR_ALIAS_TEXT_HEXA</string>
+			</dict>
+		</dict>
+
 		<!-- C++ -->
 		<dict>
 			<key>name</key>
@@ -946,7 +983,7 @@
 			<key>Name</key>
 			<string>Markdown heading</string>
 			<key>scope</key>
-			<string>markup.heading, punctuation.definition.heading.markdown</string>
+			<string>markdown.heading, markup.heading | markup.heading entity.name, markup.heading.markdown punctuation.definition.heading.markdown</string>
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
