@@ -12,10 +12,10 @@ unsetopt NOMATCH
 
 # Basic commands {{{
 alias gf='rg -l --color=never'
-
 alias cat='c'
 alias cmus='TERM=screen-256color cmus'
-alias cp='cp -rv'
+alias cp='cp -rvi'
+alias cpv='copy-verbose'
 alias diff='git diff --no-index --word-diff=color --word-diff-regex=.'
 alias grep='grep -i --color=auto'
 alias ls="l"
@@ -25,6 +25,7 @@ alias la@="ls --all --extended --long"
 alias l@a="la@"
 alias mkdir="mkdir -p"
 alias mv='mv -vi'
+alias mvv='move-verbose'
 alias ping="prettyping --nolegend"
 alias rmdir='better-rmdir'
 alias rm='trash-put'

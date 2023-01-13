@@ -21,6 +21,8 @@ Plug 'tpope/vim-unimpaired'
 Plug 'vim-scripts/argtextobj.vim'
 " }}}
 " Language specific syntax {{{
+" All languages
+Plug 'sheerun/vim-polyglot'
 " Bats (bash testing framework)
 Plug 'aliou/bats.vim'
 " Colors (hexa decimal code)
@@ -32,8 +34,6 @@ Plug 'fladson/vim-kitty', { 'branch': 'main' }
 " Ruby
 Plug 'vim-ruby/vim-ruby'
 
-" Plug 'sheerun/vim-polyglot'
-" Plug 'vim-ruby/vim-ruby'
 " Plug 'StanAngeloff/php.vim'
 " Plug 'avakhov/vim-yaml'
 " Plug 'cakebaker/scss-syntax.vim'

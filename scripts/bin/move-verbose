@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# [m]o[v]e [v]erbose
+# Same as mv, but with a % progress
+
+mv $@ \
+  & progress \
+    --monitor \
+    --pid $!
+
+

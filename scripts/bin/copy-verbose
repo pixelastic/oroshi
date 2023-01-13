@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# [c]o[p]y [v]erbose
+# Same as cp, but with a % progress
+
+cp $@ \
+  & progress \
+    --monitor \
+    --pid $!
+
