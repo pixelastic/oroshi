@@ -22,6 +22,7 @@ Plug 'vim-scripts/argtextobj.vim'
 " }}}
 " Language specific syntax {{{
 " All languages
+let g:polyglot_disabled = ['markdown']
 Plug 'sheerun/vim-polyglot'
 " Bats (bash testing framework)
 Plug 'aliou/bats.vim'

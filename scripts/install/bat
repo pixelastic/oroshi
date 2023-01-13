@@ -1,7 +1,24 @@
 #!/usr/bin/env sh
+# Better cat, with syntax highlight
+# https://github.com/sharkdp/bat
 set -e
 
 sudo apt-get install bat
 
 # bat is available as batcat by default, we create an alias
 ln -s /usr/bin/batcat ~/local/bin/bat
+
+# Also install bat-extras for more goodness
+# https://github.com/eth-p/bat-extras
+# https://github.com/eth-p/bat-extras/blob/master/doc/batman.md
+# https://github.com/eth-p/bat-extras/blob/master/doc/batpipe.md
+# https://github.com/eth-p/bat-extras/blob/master/doc/batwatch.md
+# https://github.com/eth-p/bat-extras/blob/master/doc/batdiff.md
+# https://github.com/eth-p/bat-extras/blob/master/doc/prettybat.md
+cd ~/local/etc
+git clone git@github.com:eth-p/bat-extras.git
+ln -fs ~/local/etc/bat-extras/src/batdiff.sh ~/local/bin/batdiff
+ln -fs ~/local/etc/bat-extras/src/batman.sh ~/local/bin/batman
+ln -fs ~/local/etc/bat-extras/src/batpipe.sh ~/local/bin/batpipe
+ln -fs ~/local/etc/bat-extras/src/batwatch.sh ~/local/bin/batwatch
+ln -fs ~/local/etc/bat-extras/src/prettybat.sh ~/local/bin/prettybat

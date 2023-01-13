@@ -24,5 +24,7 @@ augroup ft_colors_config
   autocmd BufWritePost *config/kitty/colors.conf :silent !colors-refresh
   autocmd BufWritePost *config/tmux/colors.conf  :silent !colors-refresh
   autocmd BufWritePost *config/zsh/theming/src/* :silent !colors-refresh
+  autocmd BufWritePost *scripts/bin/env-generate-colors :silent !colors-refresh
+  autocmd BufWritePost *config/bat/src/oroshi.xml :silent !~/.oroshi/config/bat/generate-theme
 augroup END
 " }}}

@@ -12,7 +12,8 @@ unsetopt NOMATCH
 
 # Basic commands {{{
 alias gf='rg -l --color=never'
-alias cat='c'
+alias c='bat'
+alias cat='bat'
 alias cmus='TERM=screen-256color cmus'
 alias cp='cp -rvi'
 alias cpv='copy-verbose'
@@ -204,8 +205,8 @@ require 'aliases-git.zsh'
 # }}}
 # Vim {{{
 alias v='nvim -p'
+alias vo="v ~/.oroshi/config/nvim/colors/oroshi.vim"
 alias va="v ~/.oroshi/config/zsh/aliases.zsh"
-alias vf="v ~/.oroshi/config/zsh/filetypes.db.zsh"
 alias ve='v ~/.oroshi/config/nvim/init.vim'
 alias vw='vim-which'
 # }}}

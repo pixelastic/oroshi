@@ -2,5 +2,9 @@
 set -ex
 
 ln -fs ~/.oroshi/config/git/gitconfig ~/.gitconfig
-ln -fs ~/.oroshi/config/git/gitignore ~/.gitignore
+# I'm disabling the system-wide gitignore as I think I want each repository to
+# have each own gitignore and I don't want repo-level issues to be transparently
+# fixed by system-wide gitignore, I want to catch them and have local
+# gitignores.
+# ln -fs ~/.oroshi/config/git/gitignore ~/.gitignore
 

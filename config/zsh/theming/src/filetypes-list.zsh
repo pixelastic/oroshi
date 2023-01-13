@@ -44,6 +44,7 @@ FILETYPE_GROUPS[script,patterns]="\
   .sh \
   .svg \
   .theme \
+  .tmTheme \
   .toml \
   .tsx \
   .ts \
