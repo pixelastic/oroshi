@@ -1,6 +1,14 @@
 # Ctrl-P fuzzy find in files 
 oroshi-ctrl-p-widget() {
-  LBUFFER="${LBUFFER}$(fzf-files) "
+  local selection="$(fzf-files)"
+
+  # Stop if no selection is made
+  if [[ "$selection" == "" ]]; then
+    zle reset-prompt
+    return 1
+  fi
+
+  LBUFFER="${LBUFFER}${selection} "
   zle reset-prompt
   return 0
 }

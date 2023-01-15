@@ -1,6 +1,14 @@
 # Ctrl-O fuzzy find in sub directories
 oroshi-ctrl-o-widget() {
-  LBUFFER="${LBUFFER}$(fzf-directories) "
+  local selection="$(fzf-directories)"
+
+  # Stop if no selection is made
+  if [[ "$selection" == "" ]]; then
+    zle reset-prompt
+    return 1
+  fi
+
+  LBUFFER="${LBUFFER}${selection} "
   zle reset-prompt
   return 0
 }
