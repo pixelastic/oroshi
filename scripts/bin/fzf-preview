@@ -11,6 +11,7 @@ fi
 
 # Display file
 bat \
+  --paging=never \
   --style=numbers \
   --color=always \
   --line-range :50 \
