@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# Fuzzy finding in all subfiles.
+f \
+  --color always \
+  --type file \
+    | fzf \
+      --ansi \
+      --preview 'fzf-preview {}'

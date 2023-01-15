@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+# Fuzzy finding in history
+
+# Find unique raw history command
+local rawHistory="$(\
+  tac $HISTFILE \
+  | cut -d';' -f2 \
+  | awk '! seen[$0]++'\
+)"
+
+# Color them using bat
+local coloredHistory="$(\
+  bat \
+    --language=sh \
+    --paging=never \
+    --decorations=never \
+    --color=always \
+    <<< "$rawHistory "\
+)"
+
+# Pass them to fzf
+fzf --ansi <<< "$coloredHistory"

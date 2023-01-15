@@ -4,6 +4,6 @@ function! FzfCtrlPSink(line)
   execute "tab drop " . GetRepoRoot() . "/" . a:line
 endfunction
 
-nnoremap <silent> <C-P> :call fzf#run({'source': 'vim-fzf-ctrlp', 'sink': function('FzfCtrlPSink')})<CR>
-inoremap <silent> <C-P> <Esc>:call fzf#run({'source': 'vim-fzf-ctrlp', 'sink': function('FzfCtrlPSink')})<CR>
+nnoremap <silent> <C-P> :call fzf#run({'source': 'vim-fzf-ctrlp', 'options': '--ansi', 'sink': function('FzfCtrlPSink')})<CR>
+inoremap <silent> <C-P> <Esc>:call fzf#run({'source': 'vim-fzf-ctrlp', 'options': '--ansi', 'sink': function('FzfCtrlPSink')})<CR>
 " }}}

@@ -3,7 +3,7 @@
 local commandName="$1"
 
 batman "$commandName" 2>/dev/null \
-  || $commandName --help 2>/dev/null \
+  || $commandName --help 2>/dev/null | less\
   || $commandName -h 2>/dev/null \
   || tldr $commandName 2>/dev/null \
   || echo "No help found for $commandLine"

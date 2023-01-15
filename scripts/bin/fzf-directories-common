@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# Fuzzy finding in common directories
+
+source ~/local/etc/zsh-z/zsh-z.plugin.zsh 
+
+z -l \
+  | awk '{print $2}' \
+  | fzf \
+    --color fg:$COLOR_ALIAS_FILEPATH \
+    --preview 'fzf-preview {}'
+

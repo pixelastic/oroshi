@@ -1,9 +1,11 @@
 #!/usr/bin/env zsh
-local fullPath="${PWD}/$1"
+local fullPath="$1"
+[[ $fullPath[1] == "~" ]] && fullPath=${~fullPath}
+[[ $fullPath[1] != "/" ]] && fullPath="${PWD}/${fullPath}"
 
-# Display directory listing
+# Display directory listing using exa
 if [ -d $fullPath ]; then
-  ls $fullPath
+  l --long $fullPath
   exit 0
 fi
 

@@ -1,23 +1,5 @@
-# Disable default terminal flow control through Ctrl+S/Ctrl+Q so it can be used
-# as mapping (like in vim)
-stty ixoff -ixon
-
 # Enabling vim mode
 bindkey -v
- 
-# Ctrl-E to edit the line in Vim
-autoload -U edit-command-line
-zle -N edit-command-line
-bindkey '^E' edit-command-line
-
-# Ctrl-P fuzzy finding {{{
-if [[ -r ~/.fzf.zsh ]]; then
-  source ~/.fzf.zsh
-  bindkey '^P' fzf-file-widget
-fi
-# }}}
- 
-# (re)enabling keybindings
 # Note: press Ctrl-V followed by a key to see its keycode
 bindkey -M viins "[3~" delete-char        # Delete
 bindkey -M viins ""    backward-delete-char  # Backspace
@@ -67,4 +49,3 @@ zle-line-init() {
 	_cursor-ins
 }
 zle -N zle-line-init
-# }}}
