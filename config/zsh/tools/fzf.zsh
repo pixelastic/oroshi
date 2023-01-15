@@ -11,7 +11,7 @@ function () {
   export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --reverse"
   export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --border"
   export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --height=90%"
-  export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --preview-window=down"
+  export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --preview-window=right"
   # UI
   export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color border:$COLOR_ALIAS_UI"               # Border all around
   export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --color prompt:$COLOR_ALIAS_UI"               # > at the start of the input

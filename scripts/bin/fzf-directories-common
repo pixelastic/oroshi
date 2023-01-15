@@ -1,9 +1,11 @@
 #!/usr/bin/env zsh
 # Fuzzy finding in common directories
 
+# z is a built, not a binary, so we need to load it
 source ~/local/etc/zsh-z/zsh-z.plugin.zsh 
 
 z -l \
+  | tac \
   | awk '{print $2}' \
   | fzf \
     --color fg:$COLOR_ALIAS_FILEPATH \
