@@ -3,10 +3,11 @@
 # https://github.com/sharkdp/bat
 set -e
 
-sudo apt-get install bat
-
-# bat is available as batcat by default, we create an alias
-ln -s /usr/bin/batcat ~/local/bin/bat
+DOWNLOAD_URL="https://github.com/sharkdp/bat/releases/download/v0.22.1/bat_0.22.1_amd64.deb"
+cd ~/local/tmp
+wget $DOWNLOAD_URL -O bat.deb
+sudo dpkg -i ./bat.deb
+sudo apt-get -f install
 
 # Also install bat-extras for more goodness
 # https://github.com/eth-p/bat-extras

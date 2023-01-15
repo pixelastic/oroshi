@@ -86,6 +86,8 @@ aliasColors[SUCCESS]="GREEN"
 aliasColors[WARNING]="YELLOW"
 aliasColors[NOTICE]="VIOLET"
 # Git
+aliasColors[GIT_COMMIT]="NEUTRAL"
+aliasColors[GIT_MESSAGE]="GRAY"
 aliasColors[GIT_STASH]="TEAL_8"
 aliasColors[GIT_REBASE]="RED_LIGHT"
 aliasColors[GIT_ADDED]="GREEN"
@@ -113,6 +115,7 @@ aliasColors[NOISE]="TEAL_7"
 aliasColors[NUMBER]="BLUE"                      # Bold
 aliasColors[PUNCTUATION]="TEAL"
 aliasColors[REGEXP]="BLUE"
+aliasColors[ESCAPE_CHARS]="AMBER_LIGHT"              # Escape sequences
 aliasColors[STATEMENT]="GREEN"                  # for, if, while
 aliasColors[STRING]="BLUE"
 aliasColors[SYMBOL]="ORANGE"                    # :symbol in ruby
