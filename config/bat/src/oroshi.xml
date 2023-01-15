@@ -162,7 +162,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>$COLOR_ALIAS_UNKNOWN_HEXA</string>
+				<string>$COLOR_ALIAS_VARIABLE_TYPE_HEXA</string>
 			</dict>
 		</dict>
 		<dict>
@@ -173,7 +173,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>$COLOR_ALIAS_UNKNOWN_HEXA</string>
+				<string>$COLOR_ALIAS_VARIABLE_TYPE_HEXA</string>
 			</dict>
 		</dict>
 		<dict>
