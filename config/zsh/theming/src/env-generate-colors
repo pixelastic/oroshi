@@ -70,7 +70,7 @@ declare -A aliasColors
 aliasColors=()
 # Common
 aliasColors[LOCAL_DEPENDENCY]="YELLOW"
-aliasColors[FILEPATH]="GREEN"
+aliasColors[DIRECTORY]="GREEN"
 aliasColors[EXECUTABLE]="VIOLET"
 aliasColors[LINK]="BLUE"
 aliasColors[UNKNOWN]="CYAN_4"
@@ -86,7 +86,7 @@ aliasColors[SUCCESS]="GREEN"
 aliasColors[WARNING]="YELLOW"
 aliasColors[NOTICE]="VIOLET"
 # Git
-aliasColors[GIT_COMMIT]="NEUTRAL"
+aliasColors[GIT_COMMIT]="AMBER_6"
 aliasColors[GIT_MESSAGE]="GRAY"
 aliasColors[GIT_STASH]="TEAL_8"
 aliasColors[GIT_REBASE]="RED_LIGHT"
@@ -100,7 +100,7 @@ aliasColors[GIT_ISSUE]="YELLOW"
 aliasColors[BOOLEAN]="CYAN_LIGHT"
 aliasColors[COMMENT]="GRAY"
 aliasColors[CONSTANT]="ORANGE"
-aliasColors[DATE]="SKY"
+aliasColors[DATE]="SKY_9"
 aliasColors[EXCEPTION]="RED"
 aliasColors[FLAG]="AMBER"                       # -h, --help
 aliasColors[FUNCTION]="YELLOW"

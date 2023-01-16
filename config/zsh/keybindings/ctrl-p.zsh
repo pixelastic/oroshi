@@ -1,5 +1,5 @@
 # Ctrl-P fuzzy find in files 
-oroshi-ctrl-p-widget() {
+oroshi-fzf-subfiles-widget() {
   export PROMPT_PREVENT_REFRESH="1"
   local selection="$(fzf-files)"
   export PROMPT_PREVENT_REFRESH="0"
@@ -14,5 +14,5 @@ oroshi-ctrl-p-widget() {
   zle reset-prompt
   return 0
 }
-zle -N oroshi-ctrl-p-widget
-bindkey '^P' oroshi-ctrl-p-widget
+zle -N oroshi-fzf-subfiles-widget
+bindkey '^P' oroshi-fzf-subfiles-widget

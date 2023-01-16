@@ -8,6 +8,6 @@ z -l \
   | tac \
   | awk '{print $2}' \
   | fzf \
-    --color fg:$COLOR_ALIAS_FILEPATH \
+    --color fg:$COLOR_ALIAS_DIRECTORY \
     --preview 'fzf-preview {}'
 

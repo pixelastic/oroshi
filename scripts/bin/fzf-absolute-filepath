@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+# Fuzzy finding in all files of the current project
+# Returns the full filepath
+local gitRoot="$(git root)"
+
+local selection="$(\
+f \
+  --base-directory "$gitRoot" \
+  . \
+  --color always \
+    | fzf \
+      --ansi \
+      --preview "fzf-preview ${gitRoot}/{}" \
+)"
+
+print -D "${gitRoot}/${selection}"

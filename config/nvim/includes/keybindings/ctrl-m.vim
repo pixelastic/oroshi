@@ -1,14 +1,14 @@
 " [CTRL-G] Allows navigating into the file history, and pulling an old version
 
 " Command to call to build the list of choices
-function FzfCtrlGSource() 
-  let fzfSource='vim-fzf-ctrlg'
+function FzfGitHistorySource()
+  let fzfSource='vim-fzf-git-file-history'
   let fzfSource.=' "' . expand('%') . '"'
   return fzfSource
 endfunction
 
 " fzf options, to display colors and a preview window
-function FzfCtrlGOptions() 
+function FzfGitHistoryOptions() 
   let gitPath= StrTrim(system('git-file-path "'. expand('%') . '"'))
   let fzfOptions=''
   let fzfOptions.='--ansi '
@@ -18,7 +18,7 @@ function FzfCtrlGOptions()
 endfunction
 
 " Open a new file with content at a specific commit
-function! FzfCtrlGSink(line)
+function! FzfGitHistorySink(line)
   " Stop if no selection is made
   if a:line ==# ''
     return
@@ -41,5 +41,5 @@ function! FzfCtrlGSink(line)
   write
 endfunction
 
-nnoremap <silent> <C-G> :call fzf#run({'source': FzfCtrlGSource(), 'options': FzfCtrlGOptions(), 'sink': function('FzfCtrlGSink') })<CR>
-inoremap <silent> <C-G> <Esc>:call fzf#run({'source': FzfCtrlGSource(), 'options': FzfCtrlGOptions(), 'sink': function('FzfCtrlGSink') })<CR>
+nnoremap <silent> <C-G> :call fzf#run({'source': FzfGitHistorySource(), 'options': FzfGitHistoryOptions(), 'sink': function('FzfGitHistorySink') })<CR>
+inoremap <silent> <C-G> <Esc>:call fzf#run({'source': FzfGitHistorySource(), 'options': FzfGitHistoryOptions(), 'sink': function('FzfGitHistorySink') })<CR>

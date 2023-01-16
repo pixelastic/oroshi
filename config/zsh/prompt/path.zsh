@@ -50,6 +50,6 @@ function __prompt-path() {
     [[ ! -r $PWD ]] && echo "%F{$COLOR_ALIAS_COMMENT} ${currentPath}%f " && return
     [[ ! -w $PWD ]] && echo "%F{$COLOR_ALIAS_ERROR}!${currentPath}%f " && return
 
-    echo "%F{$COLOR_ALIAS_FILEPATH}${currentPath}%f " && return
+    echo "%F{$COLOR_ALIAS_DIRECTORY}${currentPath}%f " && return
   fi
 }

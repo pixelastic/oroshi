@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Called by vim when pressing Ctrl-G
+# Called by vim to check all previous versions of the current file
 # Returns the list of all commits that changed the current file
 
 local absolutePath="${1:a}"

@@ -1,5 +1,5 @@
 # Ctrl-J fuzzy find in common directories
-oroshi-ctrl-j-widget() {
+oroshi-fzf-common-directories-widget() {
   export PROMPT_PREVENT_REFRESH="1"
   local selection="$(fzf-directories-common)"
   export PROMPT_PREVENT_REFRESH="0"
@@ -16,5 +16,5 @@ oroshi-ctrl-j-widget() {
   zle reset-prompt
   return 0
 }
-zle -N oroshi-ctrl-j-widget
-bindkey '^J' oroshi-ctrl-j-widget
+zle -N oroshi-fzf-common-directories-widget
+bindkey '^J' oroshi-fzf-common-directories-widget
