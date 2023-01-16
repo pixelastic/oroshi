@@ -11,5 +11,5 @@ fi
 # When called with arguments, it will link the modules specified as argument
 # here. Because of mono-repo setup, we always link to the top-level git root
 
-cd "$(git root)"
+cd "$(git-directory-root)"
 yarn link "$@"

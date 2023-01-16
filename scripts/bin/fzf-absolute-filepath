@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # Fuzzy finding in all files of the current project
 # Returns the full filepath
-local gitRoot="$(git root)"
+local gitRoot="$(git-directory-root)"
 
 local selection="$(\
 f \

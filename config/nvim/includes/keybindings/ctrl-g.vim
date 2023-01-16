@@ -1,14 +1,14 @@
 " [CTRL-G] Allows navigating into the file history, and pulling an old version
 
 " Command to call to build the list of choices
-function FzfGitHistorySource()
+function! FzfGitHistorySource()
   let fzfSource='vim-fzf-git-file-history'
   let fzfSource.=' "' . expand('%') . '"'
   return fzfSource
 endfunction
 
 " fzf options, to display colors and a preview window
-function FzfGitHistoryOptions() 
+function! FzfGitHistoryOptions() 
   let gitPath= StrTrim(system('git-file-path "'. expand('%') . '"'))
   let fzfOptions=''
   let fzfOptions.='--ansi '
@@ -18,14 +18,14 @@ function FzfGitHistoryOptions()
 endfunction
 
 " Open a new file with content at a specific commit
-function! FzfGitHistorySink(line)
+function! FzfGitHistorySink(selection)
   " Stop if no selection is made
-  if a:line ==# ''
+  if a:selection ==# ''
     return
   endif
 
   " Find the commit hash
-  let commitHash=split(a:line, ' ')[1]
+  let commitHash=split(a:selection, ' ')[1]
 
   " Find new filename 
   let dirname=expand('%:p:r')

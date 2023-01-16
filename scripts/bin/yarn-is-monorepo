@@ -8,5 +8,5 @@
 grep \
   --quiet \
   '"workspaces":' \
-  "$(git root)/package.json" &>/dev/null
+  "$(git-directory-root)/package.json" &>/dev/null
 

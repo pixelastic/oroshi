@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# Called by vim when pressing Ctrl-P
+# Returns the list of files in the repo
+
+local gitRoot="$(git-directory-root -f)"
+cd $gitRoot
+f \
+  --base-directory "$gitRoot" \
+  . \
+  --color always \
+  --type file

@@ -16,6 +16,7 @@ class SearchReplace
 
   def run
     @files.each do |file|
+      next if File.directory?(file)
       content = File.read(file)
       updated_content = content.gsub(@search, @replace)
       if @is_dry_run

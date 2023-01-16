@@ -1,7 +1,0 @@
-#!/usr/bin/env zsh
-# Called by vim when pressing Ctrl-P
-# Returns the list of all searchable files in the repo;
-
-local gitRoot="$(git root)"
-cd $gitRoot
-f --color always --type file

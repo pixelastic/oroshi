@@ -1,6 +1,6 @@
 [alias]
   download = clone --depth=1
-  root = !pwd
+  pwd = !pwd
   tabula-rasa = !git reset --hard && git clean -fd
   resurect = resurrect
 [color]

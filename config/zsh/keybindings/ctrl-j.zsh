@@ -12,7 +12,6 @@ oroshi-fzf-common-directories-widget() {
 
   # Move to that directory
   LBUFFER="${LBUFFER}${selection} "
-  BUFFER="cd $selection"
   zle reset-prompt
   return 0
 }

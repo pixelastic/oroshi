@@ -9,7 +9,7 @@ set -e
 
 # Run local hook with the same name
 this_script="${0##*/}"
-local_hook="$(git root)/.git/hooks/${this_script}"
+local_hook="$(git-directory-root)/.git/hooks/${this_script}"
 if [[ -x "$local_hook" ]]; then
   $local_hook "$@"
 fi

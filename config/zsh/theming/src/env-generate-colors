@@ -97,7 +97,7 @@ aliasColors[GIT_REMOVED]="RED"
 aliasColors[GIT_PULL_REQUEST]="PURPLE"
 aliasColors[GIT_ISSUE]="YELLOW"
 # Code
-aliasColors[BOOLEAN]="CYAN_LIGHT"
+aliasColors[BOOLEAN]="CYAN"
 aliasColors[COMMENT]="GRAY"
 aliasColors[CONSTANT]="ORANGE"
 aliasColors[DATE]="SKY_9"

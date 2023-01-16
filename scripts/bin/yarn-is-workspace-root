@@ -6,7 +6,7 @@ set -e
 yarn-is-monorepo || exit 1
 
 closestPackage="$(find-up package.json)"
-rootPackage="$(git root)/package.json"
+rootPackage="$(git-directory-root)/package.json"
 
 # The closest package.json is not the root one? We're in a subrepo
 [[ "$closestPackage" != "$rootPackage" ]] && exit 1

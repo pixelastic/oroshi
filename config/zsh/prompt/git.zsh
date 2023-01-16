@@ -98,7 +98,7 @@ function __prompt-github-issues-and-prs() {
     return
   fi
 
-  local gitFolder="$(git root)/.git"
+  local gitFolder="$(git-directory-root)/.git"
 
   # Stop early if no .git folder at the root (like in submodules, where it's
   # a file)

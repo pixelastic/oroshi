@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # Check if a bundle install is currently running
 # The lockfile is set by vit
-local lockfile="$(git root)/.git/oroshi_bundle_install_in_progress"
+local lockfile="$(git-directory-root)/.git/oroshi_bundle_install_in_progress"
 
 [[ -r $lockfile ]] && exit 0
 exit 1

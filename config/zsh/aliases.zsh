@@ -332,7 +332,7 @@ alias rr='rake release'
 alias rt='rake test'
 alias rw='rake watch'
 alias rl='rake lint'
-alias rta='$(git root)/scripts/test_all_ruby_versions'
+alias rta='$(git-directory-root)/scripts/test_all_ruby_versions'
 # }}}
 # Transmission {{{
 alias ta="transmission-remote -a "

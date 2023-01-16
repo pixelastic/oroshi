@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Make sure we move to the git root
 [[ git-is-submodule ]] && cd ..
-gitRoot="$(git root)"
+gitRoot="$(git-directory-root)"
 
 # Save the name of branch we rebase onto
 mkdir -p $gitRoot/.git/rebase-apply/
