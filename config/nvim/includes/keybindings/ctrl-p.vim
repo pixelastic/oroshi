@@ -6,13 +6,13 @@ function! FzfCtrlPSink(line)
 endfunction
 
 " Command to call to build the list of choices
-let fzfSource='vim-fzf-ctrlp'
+let fzfCtrlPSource='vim-fzf-ctrlp'
 
 " fzf options, to display colors and a preview window
-let fzfOptions=''
-let fzfOptions.='--ansi '
-let fzfOptions.="--preview 'fzf-preview " . GetRepoRoot() ."/{}' "
+let fzfCtrlPOptions=''
+let fzfCtrlPOptions.='--ansi '
+let fzfCtrlPOptions.="--preview 'fzf-preview " . GetRepoRoot() ."/{}' "
 
-nnoremap <silent> <C-P> :call fzf#run({'source': fzfSource, 'options': fzfOptions, 'sink': function('FzfCtrlPSink') })<CR>
-inoremap <silent> <C-P> <Esc>:call fzf#run({'source': fzfSource, 'options': fzfOptions, 'sink': function('FzfCtrlPSink') })<CR>
+nnoremap <silent> <C-P> :call fzf#run({'source': fzfCtrlPSource, 'options': fzfCtrlPOptions, 'sink': function('FzfCtrlPSink') })<CR>
+inoremap <silent> <C-P> <Esc>:call fzf#run({'source': fzfCtrlPSource, 'options': fzfCtrlPOptions, 'sink': function('FzfCtrlPSink') })<CR>
 " }}}

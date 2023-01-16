@@ -12,7 +12,7 @@ augroup views
   autocmd!
   " Save the view when...
   " ...switching tabs, closing a tab
-  autocmd BufLeave ?* mkview 1
+  autocmd BufLeave ?* silent! mkview 1
   " ...saving a file
   autocmd BufWrite ?* mkview 1
   " ...closing the last tab (BufLeave does not trigger in that case)

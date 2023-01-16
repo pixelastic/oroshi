@@ -29,11 +29,11 @@ source ~/.config/nvim/includes/keybindings/f6.vim
 source ~/.config/nvim/includes/keybindings/f8.vim
 source ~/.config/nvim/includes/keybindings/f9.vim
 
-source ~/.config/nvim/includes/keybindings/ctrl-a.vim
-source ~/.config/nvim/includes/keybindings/ctrl-d.vim
-source ~/.config/nvim/includes/keybindings/ctrl-g.vim
-source ~/.config/nvim/includes/keybindings/ctrl-p.vim
-source ~/.config/nvim/includes/keybindings/ctrl-s.vim
+source ~/.config/nvim/includes/keybindings/ctrl-a.vim " Select all
+source ~/.config/nvim/includes/keybindings/ctrl-d.vim " Close tab/vim
+source ~/.config/nvim/includes/keybindings/ctrl-g.vim " Check previous versions of the file
+source ~/.config/nvim/includes/keybindings/ctrl-p.vim " Fuzzy-find file and open in new tab
+source ~/.config/nvim/includes/keybindings/ctrl-s.vim " Save file
 
 source ~/.config/nvim/includes/keybindings/dash.vim
 source ~/.config/nvim/includes/keybindings/underscore.vim

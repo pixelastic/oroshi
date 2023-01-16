@@ -9,7 +9,7 @@ Plug 'danro/rename.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
-Plug 'pixelastic/vim-undodir-tree'
+" Plug 'pixelastic/vim-undodir-tree'
 Plug 'gioele/vim-autoswap'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-abolish'

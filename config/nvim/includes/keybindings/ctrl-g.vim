@@ -1,22 +1,45 @@
 " [CTRL-G] Allows navigating into the file history, and pulling an old version
-function! FzfCtrlGSink(line)
-  " " Open result in new tab, or re-use existing one if already opened
-  " execute 'tab drop ' . GetRepoRoot() . '/' . a:line
-endfunction
 
 " Command to call to build the list of choices
-let s:fzfSource='fzf-vim-ctrlg'
-let s:fzfSource.=' "' . expand('%') . '"'
-
+function FzfCtrlGSource() 
+  let fzfSource='vim-fzf-ctrlg'
+  let fzfSource.=' "' . expand('%') . '"'
+  return fzfSource
+endfunction
 
 " fzf options, to display colors and a preview window
-let s:fzfOptions=''
-let s:fzfOptions.='--ansi '
-" let fzfOptions.="--preview 'fzf-preview " . GetRepoRoot() ."/{}' "
-" let fzfOptions.='--preview-window=right '
+function FzfCtrlGOptions() 
+  let gitPath= StrTrim(system('git-file-path "'. expand('%') . '"'))
+  let fzfOptions=''
+  let fzfOptions.='--ansi '
+  " let fzfOptions.="--preview-window 'right,50%,border-left,<79(bottom,80%,border-top)'"
+  let fzfOptions.='--preview "git-file-history-preview {} "'. gitPath .'""'
+  return fzfOptions
+endfunction
 
-" Sink method, called with the fzf selection
-let s:fzfSink="function('FzfCtrlGSink')"
+" Open a new file with content at a specific commit
+function! FzfCtrlGSink(line)
+  " Stop if no selection is made
+  if a:line ==# ''
+    return
+  endif
 
-nnoremap <silent> <C-G> :call fzf#run({'source': s:fzfSource, 'options': s:fzfOptions, 'sink': s:fzfSink})<CR>
-inoremap <silent> <C-G> <Esc>:call fzf#run({'source': s:fzfSource, 'options': s:fzfOptions, 'sink': s:fzfSink})<CR>
+  " Find the commit hash
+  let commitHash=split(a:line, ' ')[1]
+
+  " Find new filename 
+  let dirname=expand('%:p:r')
+  let extension=expand('%:e')
+  let newFilepath=dirname.'.'.commitHash.'.'.extension
+  let gitPath= StrTrim(system('git-file-path "'. expand('%') . '"'))
+
+
+  " Open a new tab with the name, set the content and save it
+  execute 'tabedit '.newFilepath
+  execute 'read !git show '.commitHash.':"'.gitPath.'"'
+  normal gg
+  write
+endfunction
+
+nnoremap <silent> <C-G> :call fzf#run({'source': FzfCtrlGSource(), 'options': FzfCtrlGOptions(), 'sink': function('FzfCtrlGSink') })<CR>
+inoremap <silent> <C-G> <Esc>:call fzf#run({'source': FzfCtrlGSource(), 'options': FzfCtrlGOptions(), 'sink': function('FzfCtrlGSink') })<CR>
