@@ -13,9 +13,6 @@ let fzfOptions=''
 let fzfOptions.='--ansi '
 let fzfOptions.="--preview 'fzf-preview " . GetRepoRoot() ."/{}' "
 
-" Sink method, called with the fzf selection
-let fzfSink="function('FzfCtrlPSink')"
-
-nnoremap <silent> <C-P> :call fzf#run({'source': fzfSource, 'options': fzfOptions, 'sink': fzfSink})<CR>
-inoremap <silent> <C-P> <Esc>:call fzf#run({'source': fzfSource, 'options': fzfOptions, 'sink': fzfSink})<CR>
+nnoremap <silent> <C-P> :call fzf#run({'source': fzfSource, 'options': fzfOptions, 'sink': function('FzfCtrlPSink') })<CR>
+inoremap <silent> <C-P> <Esc>:call fzf#run({'source': fzfSource, 'options': fzfOptions, 'sink': function('FzfCtrlPSink') })<CR>
 " }}}
