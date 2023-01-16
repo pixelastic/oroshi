@@ -18,5 +18,5 @@ let s:fzfOptions.='--ansi '
 " Sink method, called with the fzf selection
 let s:fzfSink="function('FzfCtrlGSink')"
 
-nnoremap <silent> <C-G> :call fzf#run({'source': fzfSource, 'options': fzfOptions, 'sink': fzfSink})<CR>
-inoremap <silent> <C-G> <Esc>:call fzf#run({'source': fzfSource, 'options': fzfOptions, 'sink': fzfSink})<CR>
+nnoremap <silent> <C-G> :call fzf#run({'source': s:fzfSource, 'options': s:fzfOptions, 'sink': s:fzfSink})<CR>
+inoremap <silent> <C-G> <Esc>:call fzf#run({'source': s:fzfSource, 'options': s:fzfOptions, 'sink': s:fzfSink})<CR>

@@ -73,7 +73,7 @@ call s:Highlight('Number', 'ALIAS_NUMBER', '', 'bold')
 call s:Highlight('Operator', 'ALIAS_PUNCTUATION')
 call s:Highlight('PreProc', 'ALIAS_HEADER')
 call s:Highlight('Title', 'ALIAS_HEADER')
-call s:Highlight('Special', 'ALIAS_ESCAPE_CHAR')
+call s:Highlight('Special', 'ALIAS_SPECIAL_CHAR')
 call s:Highlight('Statement', 'ALIAS_STATEMENT')
 call s:Highlight('StorageClass', 'ALIAS_VARIABLE_TYPE')
 call s:Highlight('Type', 'ALIAS_VARIABLE_TYPE')
@@ -225,21 +225,21 @@ call s:Highlight('CocPumMenu', 'CYAN', 'CYAN')
 call s:Highlight('CocPumDeprecated', 'CYAN', 'CYAN')
 " }}}
 " FZF {{{
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
-" }}}
+" let g:fzf_colors =
+" \ { 'fg':      ['fg', 'Normal'],
+"   \ 'bg':      ['bg', 'Normal'],
+"   \ 'hl':      ['fg', 'Comment'],
+"   \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+"   \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+"   \ 'hl+':     ['fg', 'Statement'],
+"   \ 'info':    ['fg', 'PreProc'],
+"   \ 'border':  ['fg', 'Ignore'],
+"   \ 'prompt':  ['fg', 'Conditional'],
+"   \ 'pointer': ['fg', 'Exception'],
+"   \ 'marker':  ['fg', 'Keyword'],
+"   \ 'spinner': ['fg', 'Label'],
+"   \ 'header':  ['fg', 'Comment'] }
+" " }}}
 " Matching parenthesis {{{
 call s:Highlight('MatchParen', 'white', 'TEAL_9')
 " }}}
@@ -397,9 +397,12 @@ call s:Highlight('tmuxFormatString', 'YELLOW')
 " }}}
 " Vim {{{
 call s:Highlight('vim9Comment', 'ALIAS_ERROR') " Comments using #
+call s:Highlight('vimOption', 'ALIAS_VARIABLE')
+call s:Highlight('vimMapLhs', 'ALIAS_SPECIAL_CHAR')
+call s:Highlight('vimMapRhs', 'ALIAS_FUNCTION')
 call s:Highlight('vimComment', 'ALIAS_COMMENT')
 call s:Highlight('vimLet', 'ALIAS_VARIABLE_TYPE')
-call s:Highlight('vimSetEqual', 'ALIAS_PUNCTUATION')
+call s:Highlight('vimSetEqual', 'ALIAS_KEYWORD')
 call s:Highlight('vimSetSep', 'ALIAS_PUNCTUATION')
 call s:Highlight('vimUserFunc', 'ALIAS_FUNCTION')
 " }}}

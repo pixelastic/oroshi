@@ -18,7 +18,7 @@ function () {
 
   # Preview window
   local fzfOptionPreview="\
-    --preview-window 'right,50%,border-left,<80(bottom,50%,border-top)' \
+    --preview-window 'right,50%,border-left,<79(bottom,50%,border-top)' \
   "
 
   # Generic options
