@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+# Called by vim when pressing Ctrl-P
+# Returns the list of all searchable files in the repo;
+
+local absolutePath="${relativePath:a}"
+
+# Build the display line
+local formatString=""
+formatString+="%C(${COLOR_ALIAS_GIT_COMMIT}) %h%Creset "
+formatString+="%C(${COLOR_ALIAS_GIT_MESSAGE})%s%Creset"
+
+# Find all commits where this file was modified
+git \
+  --no-pager \
+  log \
+  --format="$formatString" \
+  --color=always \
+  $absolutePath
+

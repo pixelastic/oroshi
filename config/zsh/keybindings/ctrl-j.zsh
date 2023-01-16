@@ -1,6 +1,8 @@
 # Ctrl-J fuzzy find in common directories
 oroshi-ctrl-j-widget() {
+  export PROMPT_PREVENT_REFRESH="1"
   local selection="$(fzf-directories-common)"
+  export PROMPT_PREVENT_REFRESH="0"
 
   # Stop if no selection is made
   if [[ "$selection" == "" ]]; then

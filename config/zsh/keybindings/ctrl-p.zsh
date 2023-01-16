@@ -1,6 +1,8 @@
 # Ctrl-P fuzzy find in files 
 oroshi-ctrl-p-widget() {
+  export PROMPT_PREVENT_REFRESH="1"
   local selection="$(fzf-files)"
+  export PROMPT_PREVENT_REFRESH="0"
 
   # Stop if no selection is made
   if [[ "$selection" == "" ]]; then

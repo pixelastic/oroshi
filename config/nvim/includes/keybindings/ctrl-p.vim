@@ -1,4 +1,5 @@
-" Search all files in the current project and jump to them
+" [CTRL-P] Fuzzy-finder into all the git project files
+" TODO: Should search above submodules
 function! FzfCtrlPSink(line)
   " Open result in new tab, or re-use existing one if already opened
   execute 'tab drop ' . GetRepoRoot() . '/' . a:line

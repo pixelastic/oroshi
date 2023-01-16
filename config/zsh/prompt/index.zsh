@@ -17,6 +17,10 @@ function TRAPUSR1() {
     PROMPT_ASYNC_PID=0
   fi
 
+  # We add a protection, to prevent the refreshing of the prompt, for example
+  # if fzf is currently running, as it will mess the display up
+  [[ $PROMPT_PREVENT_REFRESH == "1" ]] && return
+
   # Redraw
   zle && zle reset-prompt
 }
