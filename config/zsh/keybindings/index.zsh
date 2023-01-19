@@ -2,7 +2,8 @@
 # as mapping (like in vim)
 stty ixoff -ixon
 
-# TODO: Check more ideas from https://pragmaticpineapple.com/four-useful-fzf-tricks-for-your-terminal/
+# TODO: https://github.com/Aloxaf/fzf-tab
+# TODO: https://pragmaticpineapple.com/improving-vim-workflow-with-fzf/#speed-search-your-project
 
 require 'keybindings/clean.zsh'
 require 'keybindings/vim.zsh'
