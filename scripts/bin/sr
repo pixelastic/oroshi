@@ -1,30 +1,38 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env zsh
+# Search and Replace content in various files
+# Usage:
+# sr 'query' 'replacement' ./filepaths/*
 
-# Search and replace content in files
-class SearchReplace
-  def initialize(*args)
-    if args.length < 3
-      puts 'Usage:'
-      puts "$ sr 'search' 'replace' ./files/to/match"
-      exit 1
-    end
-    @is_dry_run = args.include?('-n')
-    args -= ['-n']
+local query="$1"
+local replacement="$2"
 
-    @search, @replace, *@files = args
-  end
+##!/usr/bin/env ruby
 
-  def run
-    @files.each do |file|
-      next if File.directory?(file)
-      content = File.read(file)
-      updated_content = content.gsub(@search, @replace)
-      if @is_dry_run
-        puts updated_content
-      else
-        File.write(file, updated_content)
-      end
-    end
-  end
-end
-SearchReplace.new(*ARGV).run
+## Search and replace content in files
+#class SearchReplace
+#  def initialize(*args)
+#    if args.length < 3
+#      puts 'Usage:'
+#      puts "$ sr 'search' 'replace' ./files/to/match"
+#      exit 1
+#    end
+#    @is_dry_run = args.include?('-n')
+#    args -= ['-n']
+
+#    @search, @replace, *@files = args
+#  end
+
+#  def run
+#    @files.each do |file|
+#      next if File.directory?(file)
+#      content = File.read(file)
+#      updated_content = content.gsub(@search, @replace)
+#      if @is_dry_run
+#        puts updated_content
+#      else
+#        File.write(file, updated_content)
+#      end
+#    end
+#  end
+#end
+#SearchReplace.new(*ARGV).run
