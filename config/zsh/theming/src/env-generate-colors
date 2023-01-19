@@ -98,6 +98,7 @@ aliasColors[GIT_PULL_REQUEST]="PURPLE"
 aliasColors[GIT_ISSUE]="YELLOW"
 # Code
 aliasColors[BOOLEAN]="CYAN"
+aliasColors[GLOB]="SKY_LIGHT"
 aliasColors[COMMENT]="GRAY"
 aliasColors[CONSTANT]="ORANGE"
 aliasColors[DATE]="SKY_9"

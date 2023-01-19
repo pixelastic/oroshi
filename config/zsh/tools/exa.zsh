@@ -1,13 +1,9 @@
 # Exa
 #
 # See https://the.exa.website/docs/colour-themes
-#
-# Configuring the colors used by exa (ls clone). 
-# To configure the colors used for the individual files, check
-# filetypes-list.zsh
 
 EXA_COLORS=""
-EXA_COLORS="${EXA_COLORS}:xx=38;5;$COLOR_ALIAS_PUNCTUATION" # Punctuation
+EXA_COLORS="${EXA_COLORS}:xx=38;5;$COLOR_ALIAS_UI" # Punctuation
 
 EXA_COLORS="${EXA_COLORS}:ur=38;5;$COLOR_GRAY_7" # User read
 EXA_COLORS="${EXA_COLORS}:uw=38;5;$COLOR_GRAY_7" # User write
