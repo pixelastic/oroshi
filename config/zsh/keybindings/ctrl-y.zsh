@@ -1,4 +1,4 @@
-# Ctrl-G fuzzy find all git commits
+# Ctrl-Y fuzzy find all git commits
 oroshi-fzf-git-commits-widget() {
   export PROMPT_PREVENT_REFRESH="1"
   local selection="$(fzf-git-commits)"
@@ -15,4 +15,4 @@ oroshi-fzf-git-commits-widget() {
   return 0
 }
 zle -N oroshi-fzf-git-commits-widget
-bindkey '^G' oroshi-fzf-git-commits-widget
+bindkey '^Y' oroshi-fzf-git-commits-widget

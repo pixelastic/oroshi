@@ -1,4 +1,4 @@
-" [CTRL-G] Allows navigating into the file history, and pulling an old version
+" [CTRL-Y] Allows navigating into the file history, and pulling an old version
 
 " Command to call to build the list of choices
 function! FzfGitHistorySource()
@@ -41,5 +41,5 @@ function! FzfGitHistorySink(selection)
   write
 endfunction
 
-nnoremap <silent> <C-G> :call fzf#run({'source': FzfGitHistorySource(), 'options': FzfGitHistoryOptions(), 'sink': function('FzfGitHistorySink') })<CR>
-inoremap <silent> <C-G> <Esc>:call fzf#run({'source': FzfGitHistorySource(), 'options': FzfGitHistoryOptions(), 'sink': function('FzfGitHistorySink') })<CR>
+nnoremap <silent> <C-Y> :call fzf#run({'source': FzfGitHistorySource(), 'options': FzfGitHistoryOptions(), 'sink': function('FzfGitHistorySink') })<CR>
+inoremap <silent> <C-Y> <Esc>:call fzf#run({'source': FzfGitHistorySource(), 'options': FzfGitHistoryOptions(), 'sink': function('FzfGitHistorySink') })<CR>
