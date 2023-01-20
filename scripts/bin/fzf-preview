@@ -1,12 +1,57 @@
 #!/usr/bin/env zsh
-local fullPath="$1"
+
+local highlightLine=""
+local argsf=()
+local argsp=()
+
+# Loop through arguments and process them
+for arg in "$@"; do
+  case $arg in
+    # Allow passing "--highlight-line 12" or "--highlight-line=12"
+    --highlight-line=*)
+    highlightLine="${arg#*=}"
+    shift 2>/dev/null
+    ;;
+    --highlight-line)
+    highlightLine="$2"
+    shift 2>/dev/null
+    shift 2>/dev/null
+    ;;
+    # Store flag arguments
+    -*)
+    argsf+=("$1")
+    shift 2>/dev/null
+    ;;
+    # Store positional arguments
+    *)
+    argsp+=("$1")
+    shift 2>/dev/null
+    ;;
+  esac
+done
+
+# Get full path of file to preview
+local fullPath="$argsp[1]"
 [[ $fullPath[1] == "~" ]] && fullPath=${~fullPath}
 [[ $fullPath[1] != "/" ]] && fullPath="${PWD}/${fullPath}"
 
-# Display directory listing using exa
+# Display directory listing if not a file
 if [ -d $fullPath ]; then
   l --long $fullPath
   exit 0
+fi
+
+
+local lineRangeMin=0
+local lineRangeMax=50
+local contextSize=4
+
+# If a specific line is passed, we highlight it and the context around only
+if [[ $highlightLine != "" ]]; then
+  local lineRangeMin=$(($highlightLine - $contextSize))
+  [[ $lineRangeMin < 0 ]] && lineRangeMin=0
+  local lineRangeMax=$(($highlightLine + $contextSize))
+  local highlightFlag="--highlight-line $highlightLine"
 fi
 
 # Display file
@@ -14,5 +59,6 @@ bat \
   --paging=never \
   --style=numbers \
   --color=always \
-  --line-range :50 \
+  ${=highlightFlag} \
+  --line-range $lineRangeMin:$lineRangeMax \
   $fullPath

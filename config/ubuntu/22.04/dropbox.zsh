@@ -1,19 +1,29 @@
 #!/usr/bin/env zsh
-# Nautilus overlays are way too big. We'll reduce them by using a custom icon
-# instead
+# Nautilus overlays are way too big.
+# We'll reduce them by using custom icons stored in ./icons instead
+
+# We need to have fd installed first
+if [[ ! -v commands[fd] ]]; then
+  echo "You need to install fd first"
+  exit 1
+fi
 
 local iconPath="/usr/share/icons/Yaru"
-local allSizes=("24x24" "32x32" "48x48" "256x256")
+local overwritePath="/home/tim/.oroshi/config/ubuntu/22.04/icons"
 
-# Overwrite the icons with our modified one
-local sourcePath="/home/tim/.oroshi/config/ubuntu/22.04/icons/emblem-default.png"
-for size in $allSizes; do
-  local thisPath="${iconPath}/${size}/emblems/emblem-default.png"
-  local thisPath2x="${iconPath}/${size}@2x/emblems/emblem-default.png"
+for newIcon in $overwritePath/*.png; do
+  local iconBasename="${newIcon:t}"
 
-  sudo cp -f $sourcePath $thisPath
-  sudo cp -f $sourcePath $thisPath2x
+  # Find all icons with the same name and override them
+  local existingIcons="$(\
+    fd \
+    --base-directory=${iconPath} \
+    --absolute-path \
+    --color=never \
+    ${iconBasename}\
+  )"
+
+  for oldIcon in ${(f)existingIcons}; do
+    sudo cp -f $newIcon $oldIcon
+  done
 done
-
-
-

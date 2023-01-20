@@ -11,7 +11,7 @@ unsetopt NOMATCH
 # }}}
 
 # Basic commands {{{
-alias gf='rg -l --color=never'
+alias gf='rg --no-ignore'
 alias c='bat'
 alias cat='bat'
 alias cmus='TERM=screen-256color cmus'

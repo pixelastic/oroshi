@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<!--
+		Check the following links for inspiration to build the theme:
+		https://github.com/sharkdp/bat/tree/master/assets/themes 
+	-->
 	<key>name</key>
 	<string>Oroshi</string>
 	<key>settings</key>
@@ -74,7 +78,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>$COLOR_ALIAS_ESCAPE_CHAR_HEXA</string>
+				<string>$COLOR_ALIAS_SPECIAL_CHAR_HEXA</string>
 			</dict>
 		</dict>
 		<dict>
