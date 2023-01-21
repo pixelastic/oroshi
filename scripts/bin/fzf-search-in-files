@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+# Search in files interactively
+# Results are updated as we type and selecting a result opens it in nvim
+
+
+local selection="$(\
+  fzf-g | \
+  fzf \
+    --disabled \
+    --ansi \
+    --bind "change:reload:sleep 0.1; fzf-g {q} || true" \
+    --delimiter ':' \
+    --preview 'fzf-preview {1} --highlight-line {2}' \
+)"
+
+# We open the file in vim
+local filepath="$(cut -d ':' -f 1 <<< $selection)"
+local lineNumber="$(cut -d ':' -f 2 <<< $selection)"
+echo "${filepath}" ${lineNumber}

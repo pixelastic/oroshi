@@ -12,6 +12,7 @@ require 'keybindings/ctrl-f.zsh' # Fuzzy-find absolute files (output as full pat
 require 'keybindings/ctrl-j.zsh' # Fuzzy-find common directories
 require 'keybindings/ctrl-n.zsh' # Open current directory in Nautilus
 require 'keybindings/ctrl-o.zsh' # Fuzzy-find directories
+require 'keybindings/ctrl-g.zsh' # Search in files
 require 'keybindings/ctrl-p.zsh' # Fuzzy-find relative files
 require 'keybindings/ctrl-r.zsh' # Fuzzy-find history commands
 require 'keybindings/ctrl-y.zsh' # Fuzzy-find all git commits hashes

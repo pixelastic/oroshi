@@ -1,33 +1,20 @@
 #!/usr/bin/env zsh
-
-# Filter positional arguments and flags
-local argsp=()
-local -A argsf; argsf=()
-for arg in $argv; do
-  [[ "$arg" =~ "^-" ]] && argsf[$arg]=1 || argsp+="$arg"
-done
-
-# Find all matches in files
-local rgMatches="$(rg \
-  --glob='!.git' \
-  --context 0 \
-  --line-number \
-  --no-heading \
-  ${(k)argsf} \
-  -- "$argsp"\
-)"
+# Search in files for a specific query, and allow selecting one
+# Usage:
+# $ g query       # Display all files matching a specific query
 
 # Show them in fzf
-local selection="$(fzf \
+local selection="$(fzf-g $@ | \
+  fzf \
   --no-sort \
   --ansi \
   --no-keep-right \
   --delimiter ':' \
   --nth 1,3 \
-  --preview 'fzf-preview {1} --highlight-line {2}' \
-  <<< $rgMatches\
+  --preview 'fzf-preview {1} --highlight-line {2}'
 )"
 
+# Open selected file
 local filepath="$(cut -d ':' -f 1 <<< $selection)"
 local lineNumber="$(cut -d ':' -f 2 <<< $selection)"
-echo "$filepath:$lineNumber"
+nvim "${filepath}" +$lineNumber
