@@ -1,15 +1,17 @@
 # Parse arguments (argsf, argsp)
 
 # ====
-local argsp=()
-local -A argsf; argsf=()
-for arg in $argv; do
-  [[ "$arg" =~ "^-" ]] && argsf[$arg]=1 || argsp+="$arg"
-done
+# https://xpmo.gitlab.io/post/using-zparseopts/
+# https://linux.die.net/man/1/zshmodules
+zmodload zsh/zutil
+# -E : Don't stop on unknown flags
+# -D : $@ is updated by removing all found flags
+zparseopts \
+  -E \
+  -D \
+  -highlight-line:=flagHighlightLine \
+  -highlight-query:=flagHighlightQuery \
 
-local branchName="$argsp[1]"
-if [[ "$argsf[--with-icon]" != 1 ]]; then
-  colorize "$branchName" $branchColor
-  exit
-fi
+local highlightLine=${flagHighlightLine[2]}
+local highlightQuery=${flagHighlightQuery[2]}
 # ===

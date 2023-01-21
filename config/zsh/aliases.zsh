@@ -19,7 +19,7 @@ alias cp='cp -rvi'
 alias cpf='\cp -rvf'
 alias cpv='copy-verbose'
 alias diff='git diff --no-index --word-diff=color --word-diff-regex=.'
-alias grep='grep -i --color=auto'
+alias grep='rg -i --color=auto'
 alias h='help'
 alias ls="l"
 alias la="l --all"
@@ -51,7 +51,7 @@ alias -g .....='../../../..'
 alias -g ....='../../..'
 alias -g ...='../..'
 alias -g F="| fzf"
-alias -g G="| grep"
+alias -g G="| rg"
 alias -g H="| head"
 alias -g L="| less -R"
 alias -g X="| xargs"

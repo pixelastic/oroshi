@@ -1,41 +1,25 @@
 #!/usr/bin/env zsh
+# Preview a file or directory inside fzf
+# Usage
+# $ fzf-preview ./path/to/file                  # Display the file or directory
+# $ fzf-preview ./file --highlight-line 42      # Highlight the specified line
+# $ fzf-preview ./file --highlight-word "query" # Highlight the specified query
 
-local highlightLine=""
-local argsf=()
-local argsp=()
+# Parse arguments
+zmodload zsh/zutil
+zparseopts -E -D \
+  -highlight-line:=flagHighlightLine \
+  -highlight-query:=flagHighlightQuery \
 
-# Loop through arguments and process them
-for arg in "$@"; do
-  case $arg in
-    # Allow passing "--highlight-line 12" or "--highlight-line=12"
-    --highlight-line=*)
-    highlightLine="${arg#*=}"
-    shift 2>/dev/null
-    ;;
-    --highlight-line)
-    highlightLine="$2"
-    shift 2>/dev/null
-    shift 2>/dev/null
-    ;;
-    # Store flag arguments
-    -*)
-    argsf+=("$1")
-    shift 2>/dev/null
-    ;;
-    # Store positional arguments
-    *)
-    argsp+=("$1")
-    shift 2>/dev/null
-    ;;
-  esac
-done
+local highlightLine=${flagHighlightLine[2]}
+local highlightQuery=${flagHighlightQuery[2]}
 
 # Get full path of file to preview
-local fullPath="$argsp[1]"
+local fullPath="$1"
 [[ $fullPath[1] == "~" ]] && fullPath=${~fullPath}
 [[ $fullPath[1] != "/" ]] && fullPath="${PWD}/${fullPath}"
 
-# Display directory listing if not a file
+# Display directory listing
 if [ -d $fullPath ]; then
   l --long $fullPath
   exit 0
@@ -55,10 +39,23 @@ if [[ $highlightLine != "" ]]; then
 fi
 
 # Display file
-bat \
+local output="$(bat \
   --paging=never \
   --style=numbers \
   --color=always \
   ${=highlightFlag} \
   --line-range $lineRangeMin:$lineRangeMax \
   $fullPath
+)"
+
+# If no query passed, we display it like this
+if [[ $highlightQuery == "" ]]; then
+  echo $output
+  exit 0
+fi
+
+# We highlight the query
+rg \
+  --no-line-number \
+  "$highlightQuery" \
+  <<< "$output"

@@ -10,7 +10,7 @@ local selection="$(\
     --ansi \
     --bind "change:reload:sleep 0.1; fzf-g {q} || true" \
     --delimiter ':' \
-    --preview 'fzf-preview {1} --highlight-line {2}' \
+    --preview 'fzf-preview {1} --highlight-line {2} --highlight-query {q}' \
 )"
 
 # We open the file in vim
