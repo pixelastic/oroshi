@@ -25,6 +25,9 @@ augroup ft_colors_config
   autocmd BufWritePost *config/tmux/colors.conf  :silent !colors-refresh
   autocmd BufWritePost *config/zsh/theming/src/* :silent !colors-refresh
   autocmd BufWritePost *scripts/bin/env-generate-colors :silent !colors-refresh
+
+  " Regenerate configs that uses ENV variables on save
   autocmd BufWritePost *config/bat/src/oroshi.xml :silent !~/.oroshi/config/bat/generate-theme
+  autocmd BufWritePost *config/rg/src/rgrc.conf :silent !~/.oroshi/config/rg/generate-config
 augroup END
 " }}}

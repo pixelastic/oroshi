@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-local themes="$(bat --list-themes)"
-
-for theme in ${(f)themes}; do
-  echo "==== $theme" && \cat cp.man | head -n 20 | bat -l man --theme "$theme" --pager=never
-done

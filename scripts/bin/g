@@ -14,6 +14,9 @@ local selection="$(fzf-g $@ | \
   --preview 'fzf-preview {1} --highlight-line {2}'
 )"
 
+# Stop if no selection
+[[ $selection == "" ]] && exit 1
+
 # Open selected file
 local filepath="$(cut -d ':' -f 1 <<< $selection)"
 local lineNumber="$(cut -d ':' -f 2 <<< $selection)"
