@@ -41,7 +41,9 @@ for rawLine in ${(f)rawSessions}; do
 
   local coloredLine=""
   coloredLine+="[38;5;${sessionForeground}m[48;5;${sessionBackground}m ${sessionIcon}${sessionName} [00m"
-  coloredLine+="[38;5;${sessionBackground}m[48;5;${windowBackground}m[00m"
+  coloredLine+="[38;5;${sessionBackground}m[00m"
+  coloredLine+="¤"
+  coloredLine+="[38;5;${COLOR_BLACK_PURE}m[48;5;${windowBackground}m[00m"
   coloredLine+="[38;5;${windowForeground}m[48;5;${windowBackground}m ${windowIcon}${windowName} [00m"
   coloredLine+="[38;5;${windowBackground}m[00m"
 
@@ -55,12 +57,14 @@ for rawLine in ${(f)rawSessions}; do
   coloredList+="${coloredLine}\n"
 done
 
+
 # Fuzzy search in all opened session
 # head -c -1 will remove the last byte, which is the last \n
 local fzfBin=/home/tim/local/src/fzf/bin/fzf-tmux
 local rawSelection="$(\
   echo $coloredList | \
     head -c -1 | \
+    table --separator "¤" |
     $fzfBin \
       -p 80% \
       --ansi \
