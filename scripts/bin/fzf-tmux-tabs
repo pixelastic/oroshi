@@ -1,0 +1,80 @@
+#!/usr/bin/env zsh
+# Fuzzy finding in all tmux tabs currently opened
+
+# This script is most probably triggered by pressing Alt-P in tmux,
+# which means it doesn't have any of the ENV variables defined in zsh.
+source ~/.oroshi/config/zsh/theming/env/colors.zsh
+source ~/.oroshi/config/zsh/theming/env/projects.zsh
+source ~/.oroshi/config/zsh/tools/fzf.zsh
+
+# Get the list of all opened tmux windows.
+# -a allow listing them all, even in another session
+# -F formats it to only display the session name and window name
+local rawSessions="$(
+  tmux list-windows \
+  -a \
+  -F "#S:#W"
+)"
+
+# We convert this raw list into something full of colors for display
+local coloredList=""
+local -A invertedList; invertedList=()
+for rawLine in ${(f)rawSessions}; do
+  local lineSplit=(${(@s/:/)rawLine})
+
+  # Session
+  local sessionName=$lineSplit[1]
+  local sessionKey=${(U)sessionName:gs/-/_/}
+  local sessionForeground=${(P)${:-PROJECT_${sessionKey}_FOREGROUND}}
+  [[ $sessionForeground == "" ]] && sessionForeground=$COLOR_BLACK
+  local sessionBackground=${(P)${:-PROJECT_${sessionKey}_BACKGROUND}}
+  local sessionIcon=${(P)${:-PROJECT_${sessionKey}_ICON}}
+ 
+  # Window key
+  local windowName=$lineSplit[2]
+  local windowKey=${(U)windowName:gs/-/_/}
+  local windowForeground=${(P)${:-PROJECT_${windowKey}_FOREGROUND}}
+  [[ $windowForeground == "" ]] && windowForeground=$COLOR_WHITE
+  local windowBackground=${(P)${:-PROJECT_${windowKey}_BACKGROUND}}
+  [[ $windowBackground == "" ]] && windowBackground=$COLOR_BLACK
+  local windowIcon=${(P)${:-PROJECT_${windowKey}_ICON}}
+
+  local coloredLine=""
+  coloredLine+="[38;5;${sessionForeground}m[48;5;${sessionBackground}m ${sessionIcon}${sessionName} [00m"
+  coloredLine+="[38;5;${sessionBackground}m[48;5;${windowBackground}m[00m"
+  coloredLine+="[38;5;${windowForeground}m[48;5;${windowBackground}m ${windowIcon}${windowName} [00m"
+  coloredLine+="[38;5;${windowBackground}m[00m"
+
+  # Once selected, the line will be stripped of all color characters
+  # To be able to find the match later, we'll saved the uncolored line in the
+  # inverted list
+  local uncoloredLine="$(sed "s,\x1B\[[0-9;]*[a-zA-Z],,g" <<< "$coloredLine")"
+  invertedList[$uncoloredLine]=$rawLine
+
+  # We keep it for display
+  coloredList+="${coloredLine}\n"
+done
+
+# Fuzzy search in all opened session
+# head -c -1 will remove the last byte, which is the last \n
+local fzfBin=/home/tim/local/src/fzf/bin/fzf-tmux
+local rawSelection="$(\
+  echo $coloredList | \
+    head -c -1 | \
+    $fzfBin \
+      -p 80% \
+      --ansi \
+)"
+
+[[ $rawSelection == "" ]] && exit 0
+
+# Switch to the selected tab
+local selection=$invertedList[$rawSelection]
+local selectionSplit=${(@s/:/)selection}
+tmux switch -t "$selection"
+
+
+
+
+
+
