@@ -13,8 +13,13 @@ function! ProjectStatusLine()
   let projectName = tolower(projectKey)
 
   " vint: -ProhibitUsingUndeclaredVariable
-  execute 'let icon=$PROJECT_' . projectKey . '_ICON'
-  execute 'let shouldHideName=$PROJECT_' . projectKey . '_HIDE_NAME_IN_PROMPT'
+  silent! execute 'let icon=$PROJECT_' . projectKey . '_ICON'
+  silent! execute 'let shouldHideName=$PROJECT_' . projectKey . '_HIDE_NAME_IN_PROMPT'
+  " Failsafe if the above commands don't work (maybe because I messed up my
+  " project listing file)
+  if !exists('icon')
+    return
+  endif
 
   let projectStatus=''
   let projectStatus.='%#ProjectPre_' . projectKey . '# %*'
