@@ -12,5 +12,6 @@ f \
       --ansi \
       --preview "fzf-preview ${gitRoot}/{}" \
 )"
+selection=${selection:gs/ /\\ /}
 
 print -D "${gitRoot}/${selection}"

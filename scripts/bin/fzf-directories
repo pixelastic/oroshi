@@ -1,9 +1,14 @@
 #!/usr/bin/env zsh
 # Fuzzy finding in all subdirectories
+local selection="$(\
 f \
   --color always \
   --type directory \
     | fzf \
       --ansi \
-      --preview 'fzf-preview {}'
+      --preview 'fzf-preview {}' \
+)"
+
+
+echo ${selection:gs/ /\\ /}
 
