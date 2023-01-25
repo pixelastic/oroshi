@@ -9,15 +9,10 @@ function __prompt-path() {
   # Checking if part of a known project
   local projectKey="$(project-by-path $currentPath)"
   if [[ $projectKey != "" ]]; then
-    local projectName=${(P)${:-PROJECT_${projectKey}_NAME}}
-    local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
-    local projectBackground=${(P)${:-PROJECT_${projectKey}_BACKGROUND}}
-    local projectForeground=${(P)${:-PROJECT_${projectKey}_FOREGROUND}}
-    local projectIcon=${(P)${:-PROJECT_${projectKey}_ICON}}
-    local projectHideNameInPrompt=${(P)${:-PROJECT_${projectKey}_HIDE_NAME_IN_PROMPT}}
-    
     # Simplifying the displayed path by removing the prefix
+    local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
     eval "currentPath=\${currentPath:s_${projectPath}_}"
+
   fi
 
   # Simplify string path if too long
@@ -35,12 +30,8 @@ function __prompt-path() {
   # Prefix with a shortened colored version of the project if in an active
   # project
   if [[ $projectKey != '' ]]; then
-    # Some projects are only displayed with their icon
-    local displayProjectName="${projectIcon}${projectName}"
-    [[ $projectHideNameInPrompt == "1" ]] && displayProjectName="${projectIcon}"
-
-    local displayProjectPrefix="%K{$projectBackground}%F{$projectForeground} ${displayProjectName} %f%k%F{$projectBackground}%f "
-    echo -n $displayProjectPrefix
+    local projectPrefix="$(OROSHI_IS_PROMPT=1; colorize-project $projectKey)"
+    echo -n $projectPrefix
   fi
 
 

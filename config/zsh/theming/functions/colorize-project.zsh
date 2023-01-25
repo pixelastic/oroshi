@@ -15,9 +15,15 @@ function colorize-project () {
   # Don't display the project name (for ~ for example)
   [[ $projectHideNameInPrompt == "1" ]] && projectName=""
 
-  # Display the final colorized string
   local output=""
-  output+="[38;5;${projectForeground}m[48;5;${projectBackground}m ${projectIcon}${projectName} [00m"
-  output+="[38;5;${projectBackground}m[00m"
+  if [[ "$OROSHI_IS_PROMPT" == 1 ]]; then
+    output+="%K{$projectBackground}%F{$projectForeground} ${projectIcon}${projectName} %f"
+    output+="%k%F{$projectBackground}%f "
+  else
+    output+="[38;5;${projectForeground}m[48;5;${projectBackground}m ${projectIcon}${projectName} [00m"
+    output+="[38;5;${projectBackground}m[00m"
+  fi
+
+  # Display the final colorized string
   echo $output
 }
