@@ -6,8 +6,8 @@ set -ex
 # logs and .pid files that we don't want to have in our git history
 
 rm -rf ~/.config/autokey/autokey.json
-ln -s ~/.oroshi/config/autokey/autokey.json ~/.config/autokey/autokey.json
+ln -s ~/.oroshi/private/config/autokey/autokey.json ~/.config/autokey/autokey.json
 
 
 rm -rf ~/.config/autokey/data
-ln -s ~/.oroshi/config/autokey/data ~/.config/autokey/data
+ln -s ~/.oroshi/private/config/autokey/data ~/.config/autokey/data
