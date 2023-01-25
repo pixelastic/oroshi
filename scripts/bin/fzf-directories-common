@@ -1,13 +1,59 @@
 #!/usr/bin/env zsh
 # Fuzzy finding in common directories
 
-# z is a built, not a binary, so we need to load it
-source ~/local/etc/zsh-z/zsh-z.plugin.zsh 
+# We load the functions that are needed. For performance reasons it's better if
+# they are defined as zsh function and not binaries
+source ~/local/etc/zsh-z/zsh-z.plugin.zsh
+source ~/.oroshi/config/zsh/theming/functions/project-by-path.zsh
+source ~/.oroshi/config/zsh/theming/functions/colorize-project.zsh
 
+# We get the sorted list of the most used folders
+local rawList="$(
 z -l \
   | tac \
-  | awk '{print $2}' \
-  | fzf \
-    --color fg:$COLOR_ALIAS_DIRECTORY \
-    --preview 'fzf-preview {}'
+  | cut -d ' ' -f 1 --complement \
+  | awk '{$1=$1;print}'
+)"
 
+# We iterate on each path, to potentially color them using the project prefix
+local coloredList=""
+local -A invertedList; invertedList=()
+for fullPath in ${(f)rawList}; do
+  local displayPath="$fullPath"
+  local projectKey="$(project-by-path $displayPath)"
+
+  # Update display if known project
+  if [[ $projectKey != "" ]]; then
+    local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
+    eval "displayPath=\${displayPath:s_${projectPath}_}"
+
+    local projectPrefix="$(colorize-project $projectKey)"
+
+    displayPath="${projectPrefix} ${displayPath}"
+  fi
+
+  local coloredLine="[38;5;${COLOR_ALIAS_DIRECTORY}m${displayPath}[00m"
+  coloredList+="${coloredLine}\n"
+
+  # Once selected, the line will be stripped of all color characters
+  # To be able to find the match later, we'll saved the uncolored line in the
+  # inverted list
+  local uncoloredLine="$(sed "s,\x1B\[[0-9;]*[a-zA-Z],,g" <<< "$coloredLine")"
+  invertedList[$uncoloredLine]=$fullPath
+done
+
+local rawSelection="$(\
+echo "$coloredList" \
+  | sort \
+  | fzf \
+    --ansi \
+    --color fg:$COLOR_ALIAS_DIRECTORY \
+    --color fg+:$COLOR_ALIAS_DIRECTORY \
+    --preview 'fzf-preview {}' \
+)"
+
+[[ $rawSelection == "" ]] && exit 0
+
+# Switch to the selected tab
+local selection=$invertedList[$rawSelection]
+echo ${selection:gs/ /\\ /}

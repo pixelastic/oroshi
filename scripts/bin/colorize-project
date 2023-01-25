@@ -5,5 +5,5 @@
 # Still, sometimes we need it as a binary (to be called from tmux or from vim
 # for example), so this file acts as a wrapper around the zsh function
 
-source ~/.oroshi/config/zsh/theming/functions/project-by-path.zsh
-project-by-path $1
+source ~/.oroshi/config/zsh/theming/functions/colorize-project.zsh
+colorize-project $1
