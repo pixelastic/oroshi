@@ -10,9 +10,8 @@ oroshi-fzf-common-directories-widget() {
     return 1
   fi
 
-  # Move to that directory
+  # Add the path to the buffer
   LBUFFER="${LBUFFER}${selection} "
-  zle reset-prompt
   return 0
 }
 zle -N oroshi-fzf-common-directories-widget

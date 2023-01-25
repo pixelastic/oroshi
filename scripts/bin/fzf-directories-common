@@ -12,15 +12,15 @@ local rawList="$(
 z -l \
   | tac \
   | cut -d ' ' -f 1 --complement \
-  | awk '{$1=$1;print}'
+  | awk '{$1=$1;print}' \
 )"
 
 # We iterate on each path, to potentially color them using the project prefix
 local coloredList=""
 local -A invertedList; invertedList=()
 for fullPath in ${(f)rawList}; do
-  local displayPath="$fullPath"
-  local projectKey="$(project-by-path $displayPath)"
+  local displayPath="$fullPath/"
+  local projectKey="$(project-by-path ${displayPath})"
 
   # Update display if known project
   if [[ $projectKey != "" ]]; then
@@ -42,8 +42,11 @@ for fullPath in ${(f)rawList}; do
   invertedList[$uncoloredLine]=$fullPath
 done
 
+# Display all colored path in order.
+# head -c -1 removes the last character (a new line)
 local rawSelection="$(\
-echo "$coloredList" \
+  echo "$coloredList" \
+  | head -c -1 \
   | sort \
   | fzf \
     --ansi \

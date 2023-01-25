@@ -11,7 +11,6 @@ oroshi-fzf-subdirectories-widget() {
   fi
 
   LBUFFER="${LBUFFER}${selection} "
-  zle reset-prompt
   return 0
 }
 zle -N oroshi-fzf-subdirectories-widget

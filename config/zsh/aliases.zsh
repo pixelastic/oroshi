@@ -51,7 +51,7 @@ alias -g .....='../../../..'
 alias -g ....='../../..'
 alias -g ...='../..'
 alias -g F="| fzf"
-alias -g G="| rg"
+alias -g G="| rg --context=0 --no-line-number"
 alias -g H="| head"
 alias -g L="| less -R"
 alias -g X="| xargs"
