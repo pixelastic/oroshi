@@ -6,7 +6,6 @@ oroshi-fzf-common-directories-widget() {
 
   # Stop if no selection is made
   if [[ "$selection" == "" ]]; then
-    zle reset-prompt
     return 1
   fi
 
