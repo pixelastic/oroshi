@@ -36,16 +36,16 @@ for rawLine in ${(f)rawSessions}; do
   local windowForeground=${(P)${:-PROJECT_${windowKey}_FOREGROUND}}
   [[ $windowForeground == "" ]] && windowForeground=$COLOR_WHITE
   local windowBackground=${(P)${:-PROJECT_${windowKey}_BACKGROUND}}
-  [[ $windowBackground == "" ]] && windowBackground=$COLOR_BLACK
+  [[ $windowBackground == "" ]] && windowBackground=$COLOR_GRAY
   local windowIcon=${(P)${:-PROJECT_${windowKey}_ICON}}
 
   local coloredLine=""
-  coloredLine+="[38;5;${sessionForeground}m[48;5;${sessionBackground}m ${sessionIcon}${sessionName} [00m"
+  coloredLine+="[48;5;${sessionBackground}m[38;5;${sessionForeground}m ${sessionIcon}${sessionName} [00m"
   coloredLine+="[38;5;${sessionBackground}m[00m"
   coloredLine+="¤"
-  coloredLine+="[38;5;${COLOR_BLACK_PURE}m[48;5;${windowBackground}m[00m"
-  coloredLine+="[38;5;${windowForeground}m[48;5;${windowBackground}m ${windowIcon}${windowName} [00m"
-  coloredLine+="[38;5;${windowBackground}m[00m"
+  # coloredLine+="[48;5;${windowBackground}m[38;5;${COLOR_BLACK_PURE}m[00m"
+  coloredLine+="[48;5;${windowBackground}m[38;5;${windowForeground}m ${windowIcon}${windowName} [00m"
+  coloredLine+="[48;5;${COLOR_BLACK_PURE}m[38;5;${windowBackground}m[00m"
 
   # Once selected, the line will be stripped of all color characters
   # To be able to find the match later, we'll saved the uncolored line in the
