@@ -1,3 +1,9 @@
+" We use latest node version to run coc, not the local one of the current
+" project.
+" First, we find the version number of the current default node used by nvm
+let s:nodeVersion=readfile($HOME . '/.nvm/alias/default')[0]
+let g:coc_node_path = $HOME . '/.nvm/versions/node/v' . s:nodeVersion . '/bin/node'
+
 let g:coc_global_extensions = [
   \ 'coc-eslint',
   \ 'coc-prettier',

@@ -75,7 +75,7 @@ aliasColors[EXECUTABLE]="VIOLET"
 aliasColors[LINK]="BLUE"
 aliasColors[UNKNOWN]="CYAN_4"
 aliasColors[UI]="NEUTRAL"
-aliasColors[SELECTED_BACKGROUND]="GRAY"
+aliasColors[SELECTED_BACKGROUND]="GRAY_8"
 aliasColors[SELECTED_FOREGROUND]="WHITE"
 aliasColors[MATCH]="YELLOW"
 # Languages
@@ -98,7 +98,8 @@ aliasColors[GIT_REMOVED]="RED"
 aliasColors[GIT_PULL_REQUEST]="PURPLE"
 aliasColors[GIT_ISSUE]="YELLOW"
 # Code
-aliasColors[BOOLEAN]="CYAN"
+aliasColors[EVAL]="YELLOW"                      # - in pug
+aliasColors[BOOLEAN]="AMBER_5"
 aliasColors[COMMENT]="GRAY"
 aliasColors[CONSTANT]="ORANGE"
 aliasColors[DATE]="SKY_9"
@@ -106,6 +107,7 @@ aliasColors[EXCEPTION]="RED"
 aliasColors[FLAG]="AMBER"                       # -h, --help
 aliasColors[FUNCTION]="YELLOW"
 aliasColors[GLOB]="GREEN_LIGHT"
+aliasColors[MODIFIER]="ORANGE_LIGHT"                    # :hover
 aliasColors[HEADER]="YELLOW"
 aliasColors[IMPORT]="YELLOW_LIGHT"
 aliasColors[INTERPOLATION_STRING]="BLUE"        # The wrapping string
