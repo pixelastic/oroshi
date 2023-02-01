@@ -8,6 +8,8 @@ setopt AUTO_CD
 # Allow special chars (^ or ?) in aliases, otherwise they are treated as regexp
 # markers
 unsetopt NOMATCH
+# Do not display the name of the directory we moved to
+setopt CD_SILENT
 # }}}
 
 # Basic commands {{{
@@ -186,7 +188,7 @@ alias oc="~/.oroshi/scripts/deploy/dircolors && source ~/.zshrc"
 alias of="fc-cache -f -v"
 alias oh="~/.oroshi/scripts/deploy/hosts"
 alias os="~/.oroshi/scripts/deploy/ssh"
-alias oz="colors-refresh && source ~/.zshrc"
+alias oz="colors-refresh && source ~/.zshenv && source ~/.zshrc"
 alias vk="v ~/.oroshi/config/kitty/kitty.conf"
 # }}}
 # Trash {{{
@@ -204,7 +206,7 @@ alias tmsl='tmux list-sessions'
 # }}}
  
 # Versioning {{{
-require 'aliases-git.zsh'
+require 'aliases-git'
 # }}}
 # Vim {{{
 alias v='nvim -p'

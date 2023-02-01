@@ -1,0 +1,55 @@
+#!/usr/bin/env zsh
+# Display the list of local tags
+# Usage:
+# $ git-tag-list   # Display all local tags
+
+# Hopefully this sign will never be used in tags or commits
+local separator="〷"
+local gitTagFormat=""
+gitTagFormat+="%(refname:short)${separator}"
+gitTagFormat+="%(objectname:short)${separator}"
+gitTagFormat+="%(committerdate:relative)${separator}"
+gitTagFormat+="%(contents:subject)${separator}"
+
+local rawGitTags="$(git tag --sort=-committerdate --format="$gitTagFormat\n")"
+# Stop if no tag
+if [[ "$rawGitTags" == "" ]]; then
+  echo "✘ No tags found"
+  exit
+fi
+
+
+# Loop through all the raw output, and format/color them before adding them to
+# the output
+local output=""
+for rawGitTag in ${(f)rawGitTags}; do
+  # Splitting the line into its various parts
+  local splitLine=(${(f)"$(text-split "$rawGitTag" "$separator")"})
+  local tagName="$splitLine[1]"
+  local commitHash="$splitLine[2]"
+  local relativeTime="$splitLine[3]"
+  local commitMessage="$splitLine[4]"
+
+  local row=""
+
+  # Tag name {{{
+  row+="$(git-tag-colorize $tagName --with-icon)${separator}"
+  # }}}
+
+  # Commit {{{
+  row+="$(git-commit-colorize "$commitHash" --with-icon)${separator}"
+  # }}}
+
+  # Date {{{
+  relativeTime=${relativeTime/ ago/}
+  row+="$(git-date-colorize "$relativeTime" --with-icon)${separator}"
+  # }}}
+
+  # Commit message {{{
+  row+="$(git-message-colorize "$commitMessage")${separator}"
+  # }}}
+
+  output+="$row\n"
+done
+
+echo $output | column --table-noheadings --separator "$separator" -t

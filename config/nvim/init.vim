@@ -5,7 +5,7 @@ source ~/.config/nvim/includes/functions.vim
 source ~/.config/nvim/includes/completion.vim
 
 source ~/.config/nvim/includes/keybindings/index.vim
-source ~/.config/nvim/includes/statusline/index.vim
+" source ~/.config/nvim/includes/statusline/index.vim
 source ~/.config/nvim/includes/plugins/index.vim
 
 source ~/.config/nvim/includes/colors.vim

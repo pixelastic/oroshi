@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+# Delete local branches
+# Usage:
+# $ git-branch-remove develop            # Remove a branch
+# $ git-branch-remove develop feature    # Remove several branches
+
+local branches=($@)
+for branchName in $branches; do
+  local displayBranchName="$(git-branch-colorize "$branchName" --with-icon)"
+  git branch --delete --force --quiet "$branchName"
+
+  echo "Branch $displayBranchName deleted"
+done

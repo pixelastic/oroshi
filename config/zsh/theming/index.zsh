@@ -17,5 +17,3 @@ function () {
   source ${filetypesFilePath}
 }
 
-# Load the helper functions to colorize
-require 'theming/functions/index.zsh'

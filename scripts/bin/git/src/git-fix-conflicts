@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+require 'shellwords'
+# Will open all files marked as conflicts
+
+class FixConflicts
+
+  def get_file_list
+    output = %x[git diff --name-only --diff-filter=U]
+    return output.split("\n")
+  end
+
+  def run
+    files = get_file_list
+    git_root=%x[git root].strip
+    files.map! do |file|
+      file = File.join(git_root, file)
+      file = File.expand_path(file)
+      file.shellescape
+    end
+    if files.length == 0
+      puts "No conflict found"
+      return
+    end
+    puts "Loading vim with #{files.length} files"
+    exec("vim -p #{files.join(' ')}")
+  end
+end
+FixConflicts.new(*ARGV).run();
+

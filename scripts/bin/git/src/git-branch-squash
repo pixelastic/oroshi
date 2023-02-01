@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+# Squash all commits of the current branch together
+# It will create a new commit with a text message set as the sum of all commits
+#
+# Usage :
+# $ git-branch-squash                 # Squash from the latest fork
+# $ git-branch-squash develop         # Squash from develop
+
+set -e
+
+# Find the parent of the branch
+local branchParent=$1
+[[ $branchParent == '' ]] && branchParent="$(git-branch-parent)"
+
+# Gather all commit messages since then
+local tmpCommitMessagePath=/tmp/vit_git-branch-squash-commitmsg
+# First, the main commit message being the branch name
+echo "$branchParent\n\n" > $tmpCommitMessagePath
+# Now, the core of the message being all the commits
+git log --format=%B --reverse ${branchParent}... \
+  >> $tmpCommitMessagePath
+
+# Cancel all commits
+git reset --soft $branchParent
+
+# Commit them in one commit
+git commit --edit -F $tmpCommitMessagePath

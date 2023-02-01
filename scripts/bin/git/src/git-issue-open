@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+# Opens issues in the browser
+# Usage:
+# $ git-issue-open            # Opens issue page
+# $ git-issue-open 42         # Opens issue 42
+
+# Stop if not in a GitHub repo
+git-directory-is-github || exit 1
+
+local issueNumber=$1
+local openedUrl="$(git directory-url)"
+
+# Open a specific issue or the full list
+if [[ $issueNumber != "" ]]; then
+  openedUrl="${openedUrl}/issues/${issueNumber}"
+else
+  openedUrl="${openedUrl}/issues/"
+fi
+
+$BROWSER $openedUrl &>/dev/null
+

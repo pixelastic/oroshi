@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# Create a new issue
+# Usage:
+# $ git-issue-create
+
+# Stop if not in a GitHub repo
+git-directory-is-github || exit 1
+
+gh issue create

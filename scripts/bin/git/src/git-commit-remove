@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# Remove a local commit from history, like it never existed.
+
+local commitHash=$1
+if [[ $commitHash = '' ]]; then
+  git reset --hard HEAD^
+  exit
+fi
+
+git rebase --onto $commitHash^ $commitHash

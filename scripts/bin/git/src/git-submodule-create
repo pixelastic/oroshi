@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+require 'shellwords'
+
+# Will add a new submodule to a repo.
+# Usage :
+# $ git-submodule-create url@to:repo.git
+# $ git-submodule-create url@to:repo.git ./filepath
+# $ git-submodule-create ./filepath url@to:repo.git
+class SubmoduleCreate
+  def initialize(*args)
+    if args.empty?
+      puts '✘ You must pass at least the repository url'
+      exit 1
+    end
+    @repo_url = args[0]
+    @submodule_path = args[1]
+    @submodule_path = path_from_url(@repo_url) if @submodule_path.nil?
+
+    # Swap them if the path looks like a git url
+    if @submodule_path =~ /\.git$/
+      @repo_url, @submodule_path = @submodule_path, @repo_url
+    end
+  end
+
+  def path_from_url(url)
+    dirname = File.basename(url).gsub(/\.git$/, '')
+    File.join(File.expand_path('.'), dirname)
+  end
+
+  def run
+    command = "git submodule add -b master #{@repo_url} #{@submodule_path.shellescape}"
+    system(command)
+  end
+end
+
+SubmoduleCreate.new(*ARGV).run

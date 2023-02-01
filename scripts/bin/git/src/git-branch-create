@@ -1,0 +1,30 @@
+#!/usr/bin/env zsh
+# Create a new local branch
+# Usage:
+# $ git-branch-create foo      # Create branch foo
+
+local branchName="$1"
+
+# Stop if no branch name given
+if [[ $branchName == '' ]]; then
+  echo "✘ You must pass the name of branch to create"
+  exit 1
+fi
+
+# Stop if such a branch already exists
+if git-branch-exists $branchName; then
+  local colorizedBranchName="$(git-branch-colorize $branchName --with-icon)"
+  echo "✘ Branch $colorizedBranchName already exists"
+  exit 1
+fi
+
+# Stop if tag with the same name already exists as it will only lead to
+# confusion
+if git-tag-exists $branchName; then
+  local colorizedTagName="$(git-tag-colorize $branchName --with-icon)"
+  echo "✘ Tag $colorizedTagName with the same name already exists"
+  exit 1
+fi
+
+# New local branch
+git checkout -b "$branchName"

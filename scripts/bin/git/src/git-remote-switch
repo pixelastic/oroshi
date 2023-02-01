@@ -1,0 +1,24 @@
+#!/usr/bin/env zsh
+# Change the remote of the current branch
+# Usage:
+# $ git-remote-switch pixelastic    # Make pixelastic the branch remote
+
+local remoteName="$1"
+# A remote name is needed
+if [[ "$remoteName" == '' ]]; then
+  echo "✘ You must pass a remote name"
+  exit 1
+fi
+
+# Stop if remote doesn't exist
+local displayRemoteName="$(git-remote-colorize "$remoteName" --with-icon)"
+if ! git-remote-exists "$remoteName"; then
+  echo "✘ Remote $displayRemoteName does not exist"
+  exit 1
+fi
+
+# We change the remote name directly in the config
+# If we use git branch --set-upstream-to it might warn us about the branch not
+# existing on the remote
+local currentBranch="$(git-branch-current)"
+git-config-set "branch.${currentBranch}.remote" "$remoteName"

@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+require_relative '../lib/git_helper'
+# Display the list of commits, as a graph
+# Usage:
+# $ git commit-list
+# $ git commit-list --more
+# $ git commit-list --all
+class GitCommitList
+  include GitHelper
+
+  def initialize(*args)
+    @is_more = args.include?('--more')
+    @is_all = args.include?('--all')
+  end
+
+  def run
+    options = [
+      '--graph',
+      "--date=format:'%Y-%m-%d %H:%M:%S'"
+    ]
+
+    if @is_all
+      options << '-p' # Add diff
+      options << '-D' # Do not include file deletions
+    end
+    if @is_more
+      options << '--stat' # Include overview stats
+    end
+
+    message = '  %C(250)%s%Creset'
+    message = '%C(250)%B%Creset' if @is_all
+
+    format = [
+      '%C(67)%h%Creset',
+      ' ',
+      '%C(24)(%cd, %ar)%Creset',
+      ' ',
+      '%C(241)%an%Creset',
+      '%C(bold 202)%d%Creset',
+      '%n',
+      message,
+      '%n'
+    ]
+
+    system "git log #{options.join(' ')} --pretty=format:'#{format.join('')}'"
+  end
+end
+GitCommitList.new(*ARGV).run

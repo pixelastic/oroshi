@@ -1,0 +1,25 @@
+#!/usr/bin/env zsh
+# Push a branch
+# Usage:
+# $ git-branch-push                  # Pushes current branch to current remote
+# $ git-branch-push master           # Pushes branch master
+# $ git-branch-push master origin    # Pushes branch master to remote origin
+# $ git-branch-push --flag1          # Also pass in flags
+
+# Filter positional arguments and flags
+local argsp=()
+local -A argsf; argsf=()
+for arg in $argv; do
+  [[ "$arg" =~ "^-" ]] && argsf[$arg]=1 || argsp+="$arg"
+done
+
+# Defaults to current branch and remote if none is passed
+local branchName="$argsp[1]"
+[[ "$branchName" == "" ]] && branchName="$(git-branch-current)"
+local remoteName="$argsp[2]"
+[[ "$remoteName" == "" ]] && remoteName="$(git-remote-current)"
+
+git push \
+  --set-upstream "$remoteName" \
+  "$branchName" \
+  ${(k)argsf}

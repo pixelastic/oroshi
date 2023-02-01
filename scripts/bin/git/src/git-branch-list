@@ -1,0 +1,98 @@
+#!/usr/bin/env zsh
+# Display the list of local branches
+# Usage:
+# $ git-branch-list          # Display all local branches
+
+# Hopefully this sign will never be used in tags or commits
+local separator="〷"
+local gitBranchFormat=""
+gitBranchFormat+="_%(refname:short)${separator}"           # master
+gitBranchFormat+="_%(objectname:short)${separator}"        # abcdef
+gitBranchFormat+="_%(upstream:remotename)${separator}"     # origin
+gitBranchFormat+="_%(upstream:remoteref)${separator}"      # refs/heads/master
+gitBranchFormat+="_%(upstream:track)${separator}"          # [ahead 4]
+gitBranchFormat+="_%(committerdate:relative)${separator}"  # 3 months ago
+gitBranchFormat+="_%(contents:subject)${separator}"        # fix typo
+
+local rawGitBranches="$(git branch --sort=-committerdate --format="$gitBranchFormat\n")"
+local currentBranch="$(git-branch-current)"
+
+# Loop through all the raw output, and format/color them before adding them to
+# the output
+local output=""
+while read -r rawGitBranch; do
+  # Splitting the line into its various parts {{{
+  local splitLine=(${(f)"$(text-split "$rawGitBranch" "$separator")"})
+
+  # Branch name {{{
+  local branchName="${splitLine[1]:1}"
+  # Detached head branches look like "(HEAD detached at d57afca)"
+  [[ "$branchName" =~ "^\(HEAD" ]] &&  branchName="HEAD"
+  # }}}
+
+  # Commit hash {{{
+  local commitHash="${splitLine[2]:1}"
+  # }}}
+
+  # Remote name {{{
+  local remoteName="${splitLine[3]:1}"
+  # Can be empty for branches that have never been pushed
+  # In that case, we check the branch remote locally
+  [[ $remoteName == "" ]] && remoteName="$(git-branch-remote "$branchName")"
+  # }}}
+
+  # Remote branch name {{{
+  local remoteBranchName="${splitLine[4]:12}"
+  # Can be empty for branches that have never been pushed, so we assume it's the
+  # same name as locally
+  [[ $remoteBranchName == "" ]] && remoteBranchName="$branchName"
+  # }}}
+
+  local remoteDistance="${splitLine[5]:1}"
+  local relativeTime="${splitLine[6]:1}"
+  local commitMessage="${splitLine[7]:1}"
+  # }}}
+
+  # Building the output row {{{
+  local row=""
+  #  to mark the current branch {{{
+  if [[ $branchName == $currentBranch ]]; then
+    row+="$(colorize  GREEN)${separator}"
+  else
+    row+="$separator"
+  fi
+  # }}}
+  # Branch name {{{
+  row+="$(git-branch-colorize "$branchName" --with-icon)${separator}"
+  # }}}
+  # Ahead/behind {{{
+  row+="$(git-distance-colorize "$remoteDistance" --with-icon)${separator}"
+  # }}}
+  # Commit {{{
+  row+="$(git-commit-colorize "$commitHash" --with-icon)${separator}"
+  # }}}
+  # Remote {{{
+  # We display it only if it's different from origin/{branchName}
+  if [[ "$remoteName" != "origin" ]] || \
+     [[ "$remoteBranchName" != "$branchName" ]]; then
+       row+="$(git-remote-colorize "$remoteName/$remoteBranchName" --with-icon)${separator}"
+   else
+    row+="$separator"
+  fi
+  # }}}
+  # Date {{{
+  row+="$(git-date-colorize "$relativeTime" --with-icon)${separator}"
+  # }}}
+  # Commit message {{{
+  row+="$(git-message-colorize "$commitMessage")${separator}"
+  # }}}
+  # }}}
+
+  output+="$row\n"
+done <<<$rawGitBranches
+
+# Output as columns
+echo $output | column \
+  --separator "$separator" \
+  --table \
+  --table-noheadings

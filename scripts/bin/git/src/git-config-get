@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+# Display a config value
+# Usage:
+# $ git-config-get branch.master.remote  # Display the value
+
+local configName="$1"
+
+if [[ "$configName" == '' ]]; then
+  echo "✘ You must pass a config name"
+  exit 1
+fi
+
+local configValue="$(git config --get "$configName" 2>/dev/null)"
+if [[ "$configValue" == '' ]]; then
+  exit 1
+fi
+
+echo $configValue

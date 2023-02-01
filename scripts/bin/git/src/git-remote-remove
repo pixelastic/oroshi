@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+# Remove a remote
+# Usage:
+# $ git-remote-remove pixelastic    # Removes the pixelastic remote
+
+local remoteName="$1"
+# A remote name is needed
+if [[ "$remoteName" == "" ]]; then
+  echo "✘ You must pass the name of the remote"
+  exit 1
+fi
+
+local displayRemoteName="$(git-remote-colorize "$remoteName" --with-icon)"
+git remote rm "$remoteName"
+echo "Remote $displayRemoteName removed"

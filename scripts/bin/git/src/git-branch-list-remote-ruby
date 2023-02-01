@@ -1,0 +1,63 @@
+#!/usr/bin/env ruby
+require_relative '../lib/git_helper'
+# Display the list of current remote branches
+# Usage :
+# $ git-branch-list-remote {remote}
+# develop  9242a33
+# master   7548e9a
+
+Branch = Struct.new(:branch, :hash)
+class BranchListRemote
+  include GitHelper
+
+  def initialize(*args)
+    @args = get_real_args(args)
+    elements = guess_elements(@args)
+    @remoteName = elements[:remote]
+  end
+
+  def branch_list
+    output = %x[git ls-remote --heads #{@remoteName} 2>/dev/null | awk '{print $2, $1}' | sort -V]
+    branches = []
+    output.each_line do |line|
+      branch, hash = line.match(/^refs\/heads\/(.*) (.{7}).*\n$/).captures
+      branches << Branch.new(branch, hash)
+    end
+    return branches
+  end
+
+  def difference(branch_name)
+    difference = branch_difference('master', branch_name)
+    
+    ahead = difference[:ahead] > 0 ? "  #{difference[:ahead]} ahead" : ""
+    behind = difference[:behind] > 0 ? "  #{difference[:behind]} behind" : ""
+
+    return [
+      colorize(ahead.ljust(15), color(:ahead)),
+      colorize(behind.ljust(15), color(:behind))
+    ].join(' ')
+  end
+
+  def run
+    @branch_list = branch_list
+
+    longest_branch = @branch_list.map {|obj| obj[:branch] }.group_by(&:size).max.last[0]
+
+    @branch_list.each do |branch|
+      branch_name = branch[:branch]
+      remote_branch_name = "#{@remoteName}/#{branch_name}"
+
+      difference = difference(remote_branch_name)
+      date_ago = branch_date_ago(remote_branch_name)
+
+      colored_branch_name = colorize(branch_name.ljust(longest_branch.size), branch_color(branch[:branch]))
+      colored_hash = colorize(branch[:hash], color(:hash))
+      colored_date = colorize(date_ago, color(:date))
+
+      puts "  #{colored_branch_name}  #{colored_hash}  #{difference} #{colored_date}"
+    end
+  end
+
+end
+BranchListRemote.new(*ARGV).run()
+

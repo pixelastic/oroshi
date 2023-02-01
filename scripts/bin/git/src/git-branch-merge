@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Merges current branch with specified one
+# Usage:
+# $ git-branch-merge develop
+
+git merge --no-edit $@

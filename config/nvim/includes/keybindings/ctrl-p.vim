@@ -5,7 +5,7 @@ let fzfProjectFilesSource='vim-fzf-project-files'
 
 " fzf options, to display colors and a preview window
 function! FzfProjectFilesOptions()
-  let gitRoot=StrTrim(system('git-directory-root -f'))
+  let gitRoot=StrTrim(system('git-directory-root-bin -f'))
   let fzfOptions=''
   let fzfOptions.='--ansi '
   let fzfOptions.="--preview 'fzf-preview " . gitRoot ."/{}' "
@@ -18,7 +18,7 @@ function! FzfProjectFilesSink(selection)
     return
   endif
 
-  let gitRoot=StrTrim(system('git-directory-root -f'))
+  let gitRoot=StrTrim(system('git-directory-root-bin -f'))
 
   " Open result in new tab, or re-use existing one if already opened
   execute 'tab drop '. gitRoot. '/' . a:selection

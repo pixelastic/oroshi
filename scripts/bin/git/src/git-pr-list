@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# List all issues of current repo
+# Usage:
+# $ git-pr-count
+
+# Stop if not in a GitHub repo
+git-directory-is-github || exit 1
+
+gh pr list
+
+# Update local cache of issue count
+git-pr-count > "$(git-directory-root)/.git/oroshi_pr_count"

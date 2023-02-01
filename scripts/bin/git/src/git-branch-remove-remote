@@ -1,0 +1,31 @@
+#!/usr/bin/env zsh
+# Remove one or several branches from a remote
+# Usage :
+# $ git-branch-remove-remote branch
+# $ git-branch-remove-remote branch1 branch2
+
+set -e
+
+local inputBranches="$*"
+
+# Fail safe
+if [[ $# -eq 0 ]]; then
+  echo "You need to pass at least one branch name."
+  exit 1
+fi
+
+local currentRemote="$(git-remote-current)"
+local displayRemoteName="$(git-remote-colorize $currentRemote --with-icon)"
+
+for branchName in $inputBranches; do
+  local displayBranchName="$(git-branch-colorize $branchName --with-icon)"
+
+  # Exclude branches that are not on the remote
+  if ! git-branch-exists-remote $branchName; then
+    echo "$displayBranchName doesn't exist on $displayRemoteName"
+    break;
+  fi
+
+  git push $currentRemote --no-verify --delete $branchName
+  echo "$displayBranchName deleted from $displayRemoteName"
+done

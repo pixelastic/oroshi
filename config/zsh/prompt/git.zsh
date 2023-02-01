@@ -14,7 +14,7 @@ function __prompt-git-flags() {
   git-is-repository || return
 
   git-is-submodule && echo -n "%F{$COLOR_ALIAS_LOCAL_DEPENDENCY} %f"
-  git stash show &>/dev/null && echo -n "%F{$COLOR_ALIAS_GIT_STASH} %f"
+  git-stash-exists && echo -n "%F{$COLOR_ALIAS_GIT_STASH} %f"
   git-rebase-inprogress && echo -n "%F{$COLOR_ALIAS_GIT_REBASE} %f"
   echo -n "$(__prompt-git-status)"
 }
@@ -31,13 +31,7 @@ function __prompt-git-status() {
 
 # Display all the git-related informations on the right
 function __prompt-git-right() {
-  # Many vit utility functions require ruby, which may not be installed on
-  # a brand new machine yet. So we disable all right git info until ruby is
-  # available
-  [[ -v commands[ruby] ]] || return
-
-  # Also stop if not a git repo
-  # echo -n "$(git-is-repository)"
+  # Stop if not a git repo
   git-is-repository || return
 
   # Replace all with rebase information

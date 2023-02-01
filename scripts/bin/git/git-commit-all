@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+# Commit all changes
+# Usage:
+# $ git-commit-all
+# $ git-commit-all "Commit message"
+# TODO:
+# vca
+# vca -n
+# vca "message"
+# vca -n "message"
+# ^ Find message as the last argument that don't start with a -
+set -e
+
+git add --all
+
+if [[ $# == 1 ]]; then
+  git commit -v -m $1
+  return
+fi
+
+git commit -v $*

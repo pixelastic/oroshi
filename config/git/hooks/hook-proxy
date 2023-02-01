@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 # By defining hooksPath in our global git config, we override ALL git hooks with
 # those file. This will become an issue when specific repositories have their
 # own hooks defined.

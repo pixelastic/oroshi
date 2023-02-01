@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+# Count the number of commits between two commits
+# Usage:
+# $ git-commit-count {sha} // Count between current commit and sha
+# $ git-commit-count {sha1} {sha2} // Count between sha1 and sha2
+local sha1=$1
+local sha2=$2
+if [[ $sha1 == '' ]]; then
+  echo "Usage:"
+  echo "$ git-commit-count {sha} // Count between current commit and sha"
+  echo "$ git-commit-count {sha1} {sha2} // Count between sha1 and sha2"
+  exit 1
+fi
+[[ $sha2 == '' ]] && sha2="$(git-commit-current)"
+
+
+git rev-list --count $sha2 ^$sha1

@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# Rename a branch
+# Usage
+# $ git-branch-rename docs            # Rename current branch to docs
+# $ git-branch-rename docs archive    # Rename branch docs to archive
+
+git branch -m $@
+

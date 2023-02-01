@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Rebase current branch on top of specified branch
+# Usage:
+# $ git-branch-rebase
+
+git rebase $@

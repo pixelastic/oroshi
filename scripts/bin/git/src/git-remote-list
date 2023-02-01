@@ -1,0 +1,42 @@
+#!/usr/bin/env zsh
+# Display the list of remotes
+# Usage:
+# $ git-remote-list
+
+# Hopefully this sign will never be used in tags or commits
+local separator="〷"
+
+local rawGitRemotes="$(git remote)"
+local currentRemote="$(git-remote-current)"
+
+# Loop through all the raw output, and format/color them before adding them to
+# the output
+local output=""
+for remoteName in ${(f)rawGitRemotes}; do
+  local row=""
+
+  # Current remote
+  if [[ "$remoteName" == "$currentRemote" ]]; then
+    row+="$(colorize "" GREEN)${separator}"
+  else
+    row+="$separator"
+  fi
+  # }}}
+
+  # Remote name {{{
+  row+="$(git-remote-colorize "$remoteName" --with-icon)${separator}"
+  # }}}
+
+  # Remote url {{{
+  local remoteUrl="$(git-remote-url "$remoteName")"
+  row+="$(colorize "$remoteUrl" NEUTRAL)${separator}"
+  # }}}
+
+  output+="$row\n"
+done
+
+echo $output | column --table-noheadings --separator "$separator" -t
+
+
+
+

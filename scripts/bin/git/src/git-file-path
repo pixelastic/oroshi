@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# For any given relative path in the git repository, returns the path from the
+# root
+local inputPath="$1"
+git ls-files --full-name $inputPath

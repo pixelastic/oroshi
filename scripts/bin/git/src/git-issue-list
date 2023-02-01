@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# List all issues of current repo
+# Usage:
+# $ git-issue-list
+
+# Stop if not in a GitHub repo
+git-directory-is-github || exit 1
+
+gh issue list
+
+# Update local cache of issue count
+git-issue-count > "$(git-directory-root)/.git/oroshi_issue_count"

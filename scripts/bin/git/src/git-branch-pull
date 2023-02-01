@@ -1,0 +1,49 @@
+#!/usr/bin/env zsh
+# Pull a branch
+# Usage:
+# $ git-branch-pull           # Pull the current branch
+# $ git-branch-pull develop   # Pull a specific branch and switch to it
+set -e
+
+local currentBranch="$(git-branch-current)"
+local currentRemote="$(git-remote-current)"
+
+# First argument is the name of the branch to pull
+local targetBranch="$1"
+if [[ $targetBranch == '' ]]; then
+  targetBranch=$currentBranch
+fi
+
+local colorizedBranch="$(git-branch-colorize $targetBranch --with-icon)"
+local colorizedRemote="$(git-remote-colorize $currentRemote --with-icon)"
+
+# We always update tags when pulling
+git fetch --tags
+
+# Stop if the branch does not exist on the remote
+if ! git-branch-exists-remote $targetBranch; then
+  echo "✘ Branch $colorizedBranch doesn't exist on $colorizedRemote"
+  exit 1
+fi
+
+# Pulling on top of the current branch
+if [[ $targetBranch == $currentBranch ]]; then
+  local currentCommit="$(git-commit-current)"
+
+  # Pull remote branch
+  git pull $currentRemote $targetBranch
+
+  # Update dependencies
+  git-dependencies-update $previousCommit
+
+  echo "$colorizedBranch branch updated"
+
+  exit 0
+fi
+
+# Pulling a different branch
+
+# We fetch the branch locally, then we switch to it
+git fetch $currentRemote $targetBranch:$targetBranch
+git-branch-switch $targetBranch
+echo "Switched to latest branch $colorizedBranch"

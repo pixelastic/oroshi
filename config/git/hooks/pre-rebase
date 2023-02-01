@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 # Make sure we move to the git root
 [[ git-is-submodule ]] && cd ..
 gitRoot="$(git-directory-root)"

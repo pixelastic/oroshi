@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+require_relative '../lib/git_helper'
+
+# Checks if the specified commit is tagged
+# Usage:
+#   $ git commit-tagged {commitReference}
+class GitCommitTagged
+  include GitHelper
+  def initialize(*args)
+    @commit_ref = args[0]
+  end
+
+  def run
+    exit 1 unless commit_tagged?(@commit_ref)
+    exit 0
+  end
+end
+GitCommitTagged.new(*ARGV).run

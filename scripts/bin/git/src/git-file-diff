@@ -1,0 +1,38 @@
+#!/usr/bin/env zsh
+# Display the diff of the specified file
+# Usage:
+# $ git-file-diff package.json 
+#   => Show diff in working directory since last commit
+# $ git-file-diff package.json abcdef 
+#   => Show diff in working directory since specific commit
+# $ git-file-diff package.json abcdef d34db33f
+#   => Show diff between two commits
+
+local filepath=$1
+local commitStart=$2
+local commitEnd=$3
+
+local diff=''
+
+# Diff in working directory
+if [[ $commitStart == '' && $commitEnd == '' ]]; then
+  diff="$(git diff --color=always $filepath)"
+fi
+
+# Diff since specific commit
+if [[ $commitStart != '' && $commitEnd == '' ]]; then
+  diff="$(git diff --color=always ${commitStart}.. -- $filepath)"
+fi
+
+# Diff between two commits
+if [[ $commitStart != '' && $commitEnd != '' ]]; then
+  diff="$(git diff --color=always ${commitStart}..${commitEnd} -- $filepath)"
+fi
+
+# No diff, the file hasn't been changed, so we fail the script
+if [[ $diff == '' ]]; then
+  exit 1
+fi
+
+echo $diff
+exit 0
