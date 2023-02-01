@@ -17,6 +17,5 @@ function () {
   source ${filetypesFilePath}
 }
 
-# Load the helper function to guess a project and colorize it
-require 'theming/functions/project-by-path.zsh'
-require 'theming/functions/colorize-project.zsh'
+# Load the helper functions to colorize
+require 'theming/functions/index.zsh'

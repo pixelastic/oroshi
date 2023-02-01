@@ -1,4 +1,6 @@
 # Pyenv
+# Currently disabling this, as I don't much python
+return
 # Switch python version
 [[ $commands[pyenv] ]] || return
 
