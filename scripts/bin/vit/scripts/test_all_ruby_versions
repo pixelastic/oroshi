@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Run tests in all supported Ruby versions
+set -e
+
+versions=("ruby-2.4.2" "ruby-2.3.5" "ruby-2.3.0")
+installed_version="$(rvm list strings)"
+for version in "${versions[@]}"; do
+  echo "Testing $version"
+  # Install this ruby version if not yet installed
+  if [[ "$installed_version" != *"$version"* ]]; then
+    echo "$version not found, installing it"
+    rvm install "$version"
+  fi
+
+  echo "Updating dependencies"
+  rvm "$version" 'do' gem install bundler
+  rvm "$version" 'do' bundle install --quiet
+  echo "✔ Dependencies updated"
+
+  echo "Running tests"
+  rvm "$version" 'do' bundle exec rake test
+done

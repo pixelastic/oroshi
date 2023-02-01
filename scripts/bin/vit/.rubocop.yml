@@ -1,0 +1,35 @@
+require:
+  - rubocop/rspec/focused
+
+AllCops:
+  DisplayCopNames: true
+
+Metrics/AbcSize:
+  Max: 100
+
+Metrics/ClassLength:
+  Max: 200
+
+Metrics/ModuleLength:
+  Max: 200
+
+Metrics/MethodLength:
+  Max: 50
+
+Metrics/BlockLength:
+  Max: 50
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/PerceivedComplexity:
+  Max: 10
+
+Naming/FileName:
+  Enabled: false
+
+Layout/MultilineOperationIndentation:
+  Enabled: false
+
+RSpec/Focused:
+  Enabled: true
