@@ -1,5 +1,4 @@
-!/usr/bin/env zsh;
-#
+#!/usr/bin/env zsh
 # Commit all staged changes (just like a regular git commit)
 # Usage:
 # $ git-commit-staged

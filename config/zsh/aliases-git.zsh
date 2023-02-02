@@ -160,30 +160,26 @@ alias vsmR='git-submodule-remove'
 alias vsm?='git-is-submodule'
 # }}}
 # [p]rivate [s]ub-[m]odule {{{
-alias vsmpu='git commit-private-submodule'
-alias vsmup='git commit-private-submodule'
+alias vsmpu='git commit-submodule ./private'
+alias vsmup='git commit-submodule ./private'
 # }}}
 # [c]oriolis [s]ub-[m]odule {{{
-alias vsmuc='git commit-coriolis-submodule'
-alias vsmcu='git commit-coriolis-submodule'
+alias vsmuc='git commit-submodule ./scripts/bin/coriolis'
+alias vsmcu='git commit-submodule ./scripts/bin/coriolis'
 # }}}
-# [v]it [s]ub-[m]odule {{{
-alias vsmuv='git commit-vit-submodule'
-alias vsmvu='git commit-vit-submodule'
+# [i]mg [s]ub-[m]odule {{{
+alias vsmui='git commit-submodule ./scripts/bin/img'
+alias vsmiu='git commit-submodule ./scripts/bin/img'
 # }}}
-# [i]img [s]ub-[m]odule {{{
-alias vsmui='git commit-img-submodule'
-alias vsmiu='git commit-img-submodule'
-# }}}
-# [pd]it [s]ub-[m]odule {{{
-alias vsmupd='git commit-pdf-submodule'
-alias vsmpdu='git commit-pdf-submodule'
-alias vsmcpd='git commit-pdf-submodule'
-alias vsmpdc='git commit-pdf-submodule'
+# [pd]f [s]ub-[m]odule {{{
+alias vsmupd='git commit-submodule ./scripts/bin/pdf'
+alias vsmpdu='git commit-submodule ./scripts/bin/pdf'
+alias vsmcpd='git commit-submodule ./scripts/bin/pdf'
+alias vsmpdc='git commit-submodule ./scripts/bin/pdf'
 # }}}
 # [a]nsible [s]ub-[m]odule {{{
-alias vsmua='git commit-ansible-submodule'
-alias vsmau='git commit-ansible-submodule'
-alias vsmca='git commit-ansible-submodule'
-alias vsmac='git commit-ansible-submodule'
+alias vsmua='git commit-submodule ./config/ansible/galactica'
+alias vsmau='git commit-submodule ./config/ansible/galactica'
+alias vsmca='git commit-submodule ./config/ansible/galactica'
+alias vsmac='git commit-submodule ./config/ansible/galactica'
 # }}}

@@ -1,7 +1,0 @@
-#!/usr/bin/env zsh
-# Update the ./scripts/bin/pdf submodule with message:
-# chore(pdf): Update pdf submodule
-
-cd "$(git-directory-root -f)"
-git add ./scripts/bin/pdf
-git commit -m "chore(pdf): Update pdf submodule"

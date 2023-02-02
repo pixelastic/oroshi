@@ -1,5 +1,0 @@
-#!/usr/bin/env zsh
-# Edit last commit
-
-git add .
-git commit --amend $@

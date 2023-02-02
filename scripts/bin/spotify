@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-
 # Start spotify docked into the tray
 # See
 # https://stackoverflow.com/questions/10408816/how-do-i-use-the-nohup-command-without-getting-nohup-out

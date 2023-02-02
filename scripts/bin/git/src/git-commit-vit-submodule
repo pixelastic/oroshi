@@ -1,7 +1,0 @@
-#!/usr/bin/env zsh
-# Update the ./scripts/bin/vit submodule with message:
-# chore(vit): Update vit submodule
-
-cd "$(git-directory-root -f)"
-git add ./scripts/bin/vit
-git commit -m "chore(vit): Update vit submodule"

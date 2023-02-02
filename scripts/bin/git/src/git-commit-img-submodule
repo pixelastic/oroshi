@@ -1,7 +1,0 @@
-#!/usr/bin/env zsh
-# Update the ./scripts/bin/img submodule with message:
-# chore(img): Update img submodule
-
-cd "$(git-directory-root -f)"
-git add ./scripts/bin/img
-git commit -m "chore(img): Update img submodule"

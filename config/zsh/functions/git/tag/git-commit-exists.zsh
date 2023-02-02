@@ -1,0 +1,14 @@
+# Check if the given local commit exists
+# Usage:
+# $ git-commit-exists 13cd455   # Checks if commit exists
+# $ git-commit-exists master    # Checks if branch exists
+# $ git-commit-exists alpha     # Checks if tag exists
+function git-commit-exists() {
+  local commitReference="$1"
+
+  local inputType="$(git cat-file -t $commitReference 2>/dev/null)"
+  if [[ $inputType =~ "commit" ]]; then
+    return 0
+  fi
+  return 1
+}

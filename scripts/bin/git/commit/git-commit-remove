@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+# Remove a local commit from history, like it never existed.
+# Usage:
+# $ git-commit-remove           # Removes last commit
+# $ git-commit-remove d34db33f  # Rewrites history to remove the commit
+
+local commitHash=$1
+if [[ $commitHash = '' ]]; then
+  git reset --hard HEAD^
+  exit
+fi
+
+git rebase --onto $commitHash^ $commitHash

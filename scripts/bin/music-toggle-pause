@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
-if spotify-is-running; then
-  spotify-toggle-pause
-else
-  cmus-toggle-pause
+# Toggle the Play/Pause on spotify
+
+# Start spotify if not yet started
+if ! spotify-is-running; then
+  spotify
+  exit
 fi
+
+spotify-toggle-pause
 

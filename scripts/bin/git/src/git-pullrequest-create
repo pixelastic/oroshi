@@ -62,10 +62,10 @@ class GitPullRequestCreate
   end
 
   def commit_recap
-    # If the origin is closer than the local version, we use it
+    # If the origin is closest than the local version, we use it
     branch_origin = "#{current_remote}/#{@branch}"
-    closer_branch = `git-commit-closer #{@branch} #{branch_origin}`.strip
-    command = "git log --pretty='format:%s\n%b' #{closer_branch}..."
+    closest_branch = `git-commit-closest #{@branch} #{branch_origin}`.strip
+    command = "git log --pretty='format:%s\n%b' #{closest_branch}..."
     `#{command}`.strip
   end
 

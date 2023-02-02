@@ -1,4 +1,0 @@
-#!/usr/bin/env zsh
-# Cancel last commit
-
-git reset --soft HEAD~1

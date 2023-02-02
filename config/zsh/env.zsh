@@ -12,6 +12,8 @@ path=(
   ~/.cargo/bin
   ~/.oroshi/scripts/bin
   ~/.oroshi/scripts/bin/git
+  ~/.oroshi/scripts/bin/git/branch
+  ~/.oroshi/scripts/bin/git/commit
   ~/.oroshi/scripts/bin/img/bin
   ~/.oroshi/scripts/bin/video/bin
   ~/.oroshi/scripts/bin/pdf/bin

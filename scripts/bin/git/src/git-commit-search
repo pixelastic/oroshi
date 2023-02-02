@@ -1,4 +1,0 @@
-#!/usr/bin/env zsh
-# Search in the commit list for argument passed
-
-git log --pretty=format:"%C(67)%h%Creset %C(24)(%ar)%Creset %C(241)%an%Creset %C(250)%s%Creset" -i --grep="$1"
