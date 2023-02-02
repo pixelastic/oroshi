@@ -22,7 +22,6 @@ source ~/.config/nvim/includes/keybindings/backspace.vim
 source ~/.config/nvim/includes/keybindings/capslock.vim
 source ~/.config/nvim/includes/keybindings/enter.vim
 source ~/.config/nvim/includes/keybindings/tab.vim
-source ~/.config/nvim/includes/keybindings/ctrl-del.vim   " Delete current file
 
 source ~/.config/nvim/includes/keybindings/f1.vim         " Show help
 source ~/.config/nvim/includes/keybindings/f2.vim         " Toggle colorscheme
@@ -35,6 +34,7 @@ source ~/.config/nvim/includes/keybindings/ctrl-d.vim     " Close tab/vim
 source ~/.config/nvim/includes/keybindings/ctrl-y.vim     " Check previous versions of the file
 source ~/.config/nvim/includes/keybindings/ctrl-p.vim     " Fuzzy-find file and open in new tab
 source ~/.config/nvim/includes/keybindings/ctrl-s.vim     " Save file
+source ~/.config/nvim/includes/keybindings/ctrl-del.vim   " Delete current file
 
 source ~/.config/nvim/includes/keybindings/dash.vim       " Move line above
 source ~/.config/nvim/includes/keybindings/underscore.vim " Move line below

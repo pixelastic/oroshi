@@ -4,6 +4,6 @@ function git-is-submodule() {
   # directory
   (
     cd "$(git pwd)/.."
-    git-is-repository
+    git-directory-is-repository
   )
 }

@@ -8,10 +8,10 @@
 # - A color-coded status icon
 function __prompt-git-flags() {
   # Do nothing if in a .git folder
-  git-is-dot-git-folder && return
+  git-directory-is-dot-git && return
 
   # Or in a non-git repo
-  git-is-repository || return
+  git-directory-is-repository || return
 
   git-is-submodule && echo -n "%F{$COLOR_ALIAS_LOCAL_DEPENDENCY} %f"
   git-stash-exists && echo -n "%F{$COLOR_ALIAS_GIT_STASH} %f"
@@ -32,7 +32,7 @@ function __prompt-git-status() {
 # Display all the git-related informations on the right
 function __prompt-git-right() {
   # Stop if not a git repo
-  git-is-repository || return
+  git-directory-is-repository || return
 
   # Replace all with rebase information
   if git-rebase-inprogress; then
@@ -110,7 +110,7 @@ function __prompt-github-issues-and-prs() {
     git-issue-count > $issueCacheFile
   fi
   if [[ ! -r $prCacheFile ]] || is-older $prCacheFile $cacheDuration; then
-    git-pr-count > $prCacheFile
+    git-pullrequest-count > $prCacheFile
   fi
 
   local display=""

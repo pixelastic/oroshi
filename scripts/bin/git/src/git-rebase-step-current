@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-gitRoot="$(git-directory-root)"
-rebaseDir="${gitRoot}/.git/rebase-apply"
-currentStep="${rebaseDir}/next"
-
-cat "$currentStep"

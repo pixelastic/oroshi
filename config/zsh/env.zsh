@@ -14,6 +14,14 @@ path=(
   ~/.oroshi/scripts/bin/git
   ~/.oroshi/scripts/bin/git/branch
   ~/.oroshi/scripts/bin/git/commit
+  ~/.oroshi/scripts/bin/git/directory
+  ~/.oroshi/scripts/bin/git/file
+  ~/.oroshi/scripts/bin/git/issue
+  ~/.oroshi/scripts/bin/git/remote
+  ~/.oroshi/scripts/bin/git/tag
+  ~/.oroshi/scripts/bin/git/stash
+  ~/.oroshi/scripts/bin/fzf
+  ~/.oroshi/scripts/bin/fzf/preview
   ~/.oroshi/scripts/bin/img/bin
   ~/.oroshi/scripts/bin/video/bin
   ~/.oroshi/scripts/bin/pdf/bin

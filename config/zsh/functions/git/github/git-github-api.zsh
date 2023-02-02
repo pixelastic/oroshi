@@ -1,0 +1,13 @@
+# Calls the GitHub API on the specified namespace and endpoint for the current
+# repo
+function git-github-api() {
+  local namespace=$1
+  local endpoint=$2
+
+  local project="$(git config --get remote.origin.url)"
+  project=${project:s/git@github.com:/}
+  project=${project:s/.git/}
+  local apiUrl="https://api.github.com/${namespace}/${project}/${endpoint}"
+
+  curl -s -H"authorization: Bearer $GITHUB_TOKEN_READONLY" "$apiUrl"
+}

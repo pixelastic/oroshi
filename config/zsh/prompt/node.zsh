@@ -5,7 +5,7 @@
 # - If there are currently any "yarn linked" modules
 function __prompt-node-flags() {
   # All yarn methods depend on git root, so better stop early if no git
-  git-is-repository || return
+  git-directory-is-repository || return
 
   yarn-is-monorepo && echo -n "%F{$COLOR_ALIAS_LOCAL_DEPENDENCY} %f"
   __prompt-yarn-links

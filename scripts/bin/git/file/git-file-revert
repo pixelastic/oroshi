@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Cancel all changes made to a file since last commit
+# Usage:
+# $ git-file-revert ./path/to/file
+
+git checkout -- $@

@@ -13,7 +13,7 @@ function! FzfGitHistoryOptions()
   let fzfOptions=''
   let fzfOptions.='--ansi '
   " let fzfOptions.="--preview-window 'right,50%,border-left,<79(bottom,80%,border-top)'"
-  let fzfOptions.='--preview "git-file-history-preview {} "'. gitPath .'""'
+  let fzfOptions.='--preview "fzf-preview-git-file-history {} "'. gitPath .'""'
   return fzfOptions
 endfunction
 

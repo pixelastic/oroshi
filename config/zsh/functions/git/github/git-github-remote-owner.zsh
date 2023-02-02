@@ -1,0 +1,15 @@
+# Gets the owner of a specified remote.
+# Usage:
+# $ git-github-remote-owner
+# $ git-github-remote-owner {remote}
+#
+# The owner is the user/group in a github remote url
+# If no remote specified, we use the current one
+function git-github-remote-owner() {
+  local remoteName=$1
+  [[ $remoteName == '' ]] && remoteName=$(git-remote-current)
+
+  local remoteUrl=$(git-remote-url $remoteName)
+
+  echo $remoteUrl | sed 's/^\(.*\)@\(.*\):\(.*\)\/\(.*\)/\3/'
+}

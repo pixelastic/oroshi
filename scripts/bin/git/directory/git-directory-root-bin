@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# This is made as a binary to tools external to zsh (like tmux, or vim) can use
+# the function
+git-directory-root $@

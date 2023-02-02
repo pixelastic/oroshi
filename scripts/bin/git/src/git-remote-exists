@@ -1,9 +1,0 @@
-#!/usr/bin/env zsh
-# Check if a remote exists
-# Usage:
-# $ git-remote-exists            # Checks if current remote is defined
-# $ git-remote-exists upstream   # Checks if remote named upstream is defined
-
-# Check if the remote has a URL, if not, it is not configured
-git-remote-url $1 &>/dev/null || exit 1
-exit 0

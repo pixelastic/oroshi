@@ -1,0 +1,9 @@
+# Returns the current repo url
+# Usage:
+# $ git-directory-url
+function git-directory-url() {
+  # Stop if not in a GitHub repo
+  git-directory-is-github || return 1
+
+  gh repo view --json=url | jx 'url'
+}
