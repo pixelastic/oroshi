@@ -1,0 +1,44 @@
+# Count how many commits the branch is ahead/behind of another
+#
+# Note: This does call to the remote, and so is pretty slow. A more hackish
+# (yet faster) way is to parse the output of "git branch -vv" instead.
+# Also, I don't really get how the calculation are done...
+#
+# Usage:
+# $ git-branch-distance master develop               # Between two local branches
+# $ git-branch-distance master origin/master         # Between branch and its remote
+# $ git-branch-distance origin/master origin/develop # Between two remote branches
+# $ git-branch-distance master                       # Between master and its remote
+# $ git-branch-distance                              # Between current branch and its remote
+function git-branch-distance() {
+  # Main branch, default to the current branch
+  local branchSource="$1"
+  if [[ "$branchSource" == "" ]]; then
+    branchSource="$(git-branch-current)"
+  fi
+  if ! git-branch-exists "$branchSource"; then
+    echo "✘ Branch $branchSource does not exist"
+    return 1
+  fi
+
+  # Branch to compare to, default to the main branch remote counterpart
+  local branchDestination="$2"
+  if [[ "$branchDestination" == "" ]]; then
+    local remoteName="$(git-remote-current "$branchSource")"
+    local remoteBranch="$(git-remote-branch "$branchName")"
+    branchDestination="${remoteName}/${remoteBranch}"
+  fi
+  if ! git-branch-exists "$branchDestination"; then
+    echo "✘ Branch $branchSource does not exist"
+    return 1
+  fi
+
+  local distance=($(git rev-list --left-right --count $branchSource...$branchDestination 2>/dev/null| xargs -n1))
+  if [[ "$distance" == "" ]]; then
+    return
+  fi
+  local ahead=$distance[0]
+  local behind=$distance[1]
+
+  echo "ahead ${ahead:-0}, behind ${behind:-0}"
+}

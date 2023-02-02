@@ -1,9 +1,0 @@
-#!/usr/bin/env zsh
-# NOTE:
-# For performance reasons, it's better if this code is defined as a zsh
-# function, as it will be called often by the prompt and by fzf.
-# Still, sometimes we need it as a binary (to be called from tmux or from vim
-# for example), so this file acts as a wrapper around the zsh function
-
-source ~/.oroshi/config/zsh/theming/functions/project-by-path.zsh
-project-by-path $1

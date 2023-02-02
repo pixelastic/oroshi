@@ -1,11 +1,8 @@
 #!/usr/bin/env zsh
 # Fuzzy finding in common directories
 
-# We load the functions that are needed. For performance reasons it's better if
-# they are defined as zsh function and not binaries
+# We load z
 source ~/local/etc/zsh-z/zsh-z.plugin.zsh
-source ~/.oroshi/config/zsh/theming/functions/project-by-path.zsh
-source ~/.oroshi/config/zsh/theming/functions/colorize-project.zsh
 
 # We get the sorted list of the most used folders
 local rawList="$(
