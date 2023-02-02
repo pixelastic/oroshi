@@ -1,12 +1,17 @@
 # Ctrl-R to search in the history
-oroshi-ctrl-r-widget() {
+oroshi-fzf-command-history-widget() {
   export PROMPT_PREVENT_REFRESH="1"
-  BUFFER="$(fzf-history)"
+  local selection="$(fzf-command-history)"
   export PROMPT_PREVENT_REFRESH="0"
 
-  zle reset-prompt
+  # Stop if no selection is made
+  if [[ "$selection" == "" ]]; then
+    return 1
+  fi
+
+  LBUFFER="${LBUFFER}${selection} "
   return 0
 }
-zle -N oroshi-ctrl-r-widget
-bindkey '^R' oroshi-ctrl-r-widget
+zle -N oroshi-fzf-command-history-widget
+bindkey '^R' oroshi-fzf-command-history-widget
 # }}}

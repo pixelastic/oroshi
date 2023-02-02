@@ -1,11 +1,11 @@
 #!/usr/bin/env zsh
-# Fuzzy finding in history
+# Fuzzy finding in command history
 
 # Find unique raw history command
 local rawHistory="$(\
   tac $HISTFILE \
   | cut -d';' -f2 \
-  | awk '! seen[$0]++'\
+  | awk '! seen[$0]++' \
 )"
 
 # Color them using bat
@@ -19,4 +19,4 @@ local coloredHistory="$(\
 )"
 
 # Pass them to fzf
-fzf --ansi <<< "$coloredHistory"
+fzf <<< "$coloredHistory"

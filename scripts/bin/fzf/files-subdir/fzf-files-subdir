@@ -1,13 +1,11 @@
 #!/usr/bin/env zsh
-# Fuzzy finding in all subfiles.
+# Fuzzy finding files in subdirectories
 local selection="$(\
-f \
-  --color always \
-  --type file \
+  fzf-files-subdir-source \
     | fzf \
-      --ansi \
-      --preview 'fzf-preview {}' \
+      --preview 'fzf-files-subdir-preview {}' \
 )"
+
 # Escape spaces in selections
 selection=${selection:gs/ /\\ /}
 

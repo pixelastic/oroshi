@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+# Fuzzy finding into all the project files
+local gitRoot="$(git-directory-root -f)"
+local selection="$(\
+
+  fzf-files-project-source \
+    | fzf \
+      --preview "fzf-files-project-preview ${gitRoot}/{}" \
+)"
+
+if [[ "$selection" == "" ]]; then
+  exit 0
+fi
+
+# Escape spaces in selections
+selection=${selection:gs/ /\\ /}
+
+# Convert multi selections into single line
+selection=("${(f)selection}")
+
+echo "${gitRoot}/${selection}"

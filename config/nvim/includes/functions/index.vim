@@ -7,7 +7,7 @@ source ~/.config/nvim/includes/functions/Debug.vim
 source ~/.config/nvim/includes/functions/DeleteCurrentFile.vim
 source ~/.config/nvim/includes/functions/FixEpub.vim
 source ~/.config/nvim/includes/functions/GetNpmRoot.vim
-source ~/.config/nvim/includes/functions/GetRepoRoot.vim
+source ~/.config/nvim/includes/functions/GitRoot.vim
 source ~/.config/nvim/includes/functions/IndentLevel.vim
 source ~/.config/nvim/includes/functions/IndentWithSpaces.vim
 source ~/.config/nvim/includes/functions/IndentWithTabs.vim

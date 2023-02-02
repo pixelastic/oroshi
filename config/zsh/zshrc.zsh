@@ -6,6 +6,7 @@ export ZSH_PROMPT_TIMER=0 # Set to 1 to show prompt timing
 
 # Setting env variables
 require 'env'
+require 'path'
 require 'tmux'
 require 'theming/index'
 

@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# Display all the files in subdiretctories
+# Usage:
+# $ fzf-files-subdir-source
+
+f \
+  --color always \
+  --type file \
+

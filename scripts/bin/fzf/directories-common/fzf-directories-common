@@ -46,14 +46,15 @@ local rawSelection="$(\
   | head -c -1 \
   | sort \
   | fzf \
-    --ansi \
     --color fg:$COLOR_ALIAS_DIRECTORY \
     --color fg+:$COLOR_ALIAS_DIRECTORY \
-    --preview 'fzf-preview {}' \
+    --preview 'fzf-directories-common-preview {}' \
 )"
 
 [[ $rawSelection == "" ]] && exit 0
 
-# Switch to the selected tab
+# Find the relevant textual selection based on the inverted list
 local selection=$invertedList[$rawSelection]
-echo ${selection:gs/ /\\ /}
+selection=${selection:gs/ /\\ /}
+
+echo $selection

@@ -33,6 +33,7 @@ function () {
 
   # Generic options
   local fzfOptionBase="\
+    --ansi \
     --reverse \
     --keep-right \
     --bind 'ctrl-l:clear-query' \

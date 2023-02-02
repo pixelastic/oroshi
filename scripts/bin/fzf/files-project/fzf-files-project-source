@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# Display all the files of the current repository
+# Usage:
+# $ fzf-files-project-source
+
+local gitRoot="$(git-directory-root -f)"
+cd $gitRoot
+f \
+  --base-directory "$gitRoot" \
+  . \
+  --color always \
+  --type file

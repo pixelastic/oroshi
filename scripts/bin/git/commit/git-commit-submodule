@@ -9,4 +9,4 @@ local gitRoot="$(git-directory-root -f)"
 
 cd "$gitRoot"
 git add $submodulePath
-git commit -m "chore(${submoduleName}): Update $submodulePath submodule""
+git commit -m "chore(${submoduleName}): Update $submodulePath submodule"

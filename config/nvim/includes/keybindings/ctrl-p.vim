@@ -1,24 +1,25 @@
-" [CTRL-P] Fuzzy-finder into all the git project files
+" [CTRL-P] Fuzzy find files in the whole project
+" TODO: Update the name of the tab when doing a fzf search
 
 " Command to call to build the list of choices
-let fzfProjectFilesSource='vim-fzf-project-files'
+let fzfProjectFilesSource='fzf-files-project-source'
 
-" fzf options, to display colors and a preview window
+" FZF options
 function! FzfProjectFilesOptions()
-  let gitRoot=StrTrim(system('git-directory-root-bin -f'))
+  let gitRoot=GitRoot()
   let fzfOptions=''
-  let fzfOptions.='--ansi '
-  let fzfOptions.="--preview 'fzf-preview " . gitRoot ."/{}' "
+  let fzfOptions.="--preview 'fzf-files-project-preview " . gitRoot ."/{}' "
   return fzfOptions
 endfunction
 
+" What to do with the selection
 function! FzfProjectFilesSink(selection)
   " Stop if no selection is made
   if a:selection ==# ''
     return
   endif
 
-  let gitRoot=StrTrim(system('git-directory-root-bin -f'))
+  let gitRoot=GitRoot()
 
   " Open result in new tab, or re-use existing one if already opened
   execute 'tab drop '. gitRoot. '/' . a:selection

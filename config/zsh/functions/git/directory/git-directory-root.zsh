@@ -19,8 +19,7 @@ function git-directory-root {
   [[ $targetPath == "" ]] && targetPath="$PWD"
   [[ ! -d "$targetPath" ]] && targetPath="${targetPath:r}"
 
-  cd $targetPath
-  local gitRoot="$(git pwd)"
+  local gitRoot="$(cd $targetPath && git pwd)"
 
   # If -f is not passed, we can safely display this path
   if [[ $argsf[-f] != "1" ]]; then

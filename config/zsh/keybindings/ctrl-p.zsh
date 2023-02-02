@@ -1,7 +1,7 @@
-# Ctrl-P fuzzy find in files 
-oroshi-fzf-subfiles-widget() {
+# Ctrl-P fuzzy find in project files
+oroshi-fzf-files-project-widget() {
   export PROMPT_PREVENT_REFRESH="1"
-  local selection="$(fzf-files)"
+  local selection="$(fzf-files-project)"
   export PROMPT_PREVENT_REFRESH="0"
 
   # Stop if no selection is made
@@ -12,5 +12,5 @@ oroshi-fzf-subfiles-widget() {
   LBUFFER="${LBUFFER}${selection} "
   return 0
 }
-zle -N oroshi-fzf-subfiles-widget
-bindkey '^P' oroshi-fzf-subfiles-widget
+zle -N oroshi-fzf-files-project-widget
+bindkey '^P' oroshi-fzf-files-project-widget
