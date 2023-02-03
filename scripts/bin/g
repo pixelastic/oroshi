@@ -5,6 +5,4 @@
 
 rg \
   --glob='!.git' \
-  "$@" \
-  | bat \
-  --decorations never
+  "$@"

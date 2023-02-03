@@ -1,7 +1,7 @@
 # Count how many open PRs the current repo has
 # Usage:
 # $ git-pr-count
-function git-pr-count() {
+function git-pullrequest-count() {
   # Stop if not in a GitHub repo
   git-directory-is-github || return 1
 

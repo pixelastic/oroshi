@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+# Runs a dynamic search inside of files
+
+local gitRoot="$(git-directory-root -f)"
+
+local rawSelection="$(\
+  fzf \
+      --disabled \
+      --delimiter="   " \
+      --with-nth=3 \
+      --bind "change:reload:sleep 0.1; fzf-regexp-search-source {q} || true" \
+)"
+
+# We only need to keep the filepath from the selections
+typeset -aU selection
+local selection=()
+for line in ${(f)rawSelection}; do
+  local split=(${(@s/   /)line})
+  local filepath="${gitRoot}/$split[1]"
+  # Skip selections that are not files (this can happen when selecting
+  # a separator)
+  [[ ! -r $filepath ]] && continue
+  selection+=($filepath)
+done
+
+# Deduplicate elements
+echo $selection
