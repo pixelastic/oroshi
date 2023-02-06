@@ -35,6 +35,7 @@ source ~/.config/nvim/includes/keybindings/ctrl-s.vim     " Save file
 source ~/.config/nvim/includes/keybindings/ctrl-del.vim   " Delete current file
 source ~/.config/nvim/includes/keybindings/ctrl-p.vim     " Fuzzy-find files in project
 source ~/.config/nvim/includes/keybindings/ctrl-f.vim     " Fuzzy-find files in subdirectories
+source ~/.config/nvim/includes/keybindings/ctrl-g.vim     " Search inside of files with regexp
 source ~/.config/nvim/includes/keybindings/ctrl-y.vim     " Check previous versions of the file
 
 source ~/.config/nvim/includes/keybindings/dash.vim       " Move line above

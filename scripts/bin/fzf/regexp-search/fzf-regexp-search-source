@@ -1,18 +1,10 @@
 #!/usr/bin/env zsh
 # Returns a list of matches for a given query
 # Usage:
-# $ fzf-regexp-search-source "query"                            # Search in current dir
-# $ fzf-regexp-search-source "query" --directory ~/.oroshi      # Search in ~/.oroshi
+# $ fzf-regexp-search-source "query" /path/to/directory
 
-# Parse arguments {{{
-zmodload zsh/zutil
-zparseopts -E -D \
-  -directory:=flagDirectory
-
-local directory=${flagDirectory[2]}
-[[ $directory == "" ]] && directory="$(git-directory-root -f)"
 local query="$1"
-# }}}
+local directory="$2"
 
 # Adding headings {{{
 # ripgrep either displays filename as a heading before all matches, or as

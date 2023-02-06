@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+# Display all the files of a given directory
+# Usage:
+# $ fzf-files-search-source /path/to/directory
+
+local directory="$1"
+
+cd $directory
+f \
+  --base-directory "$directory" \
+  . \
+  --color always \
+  --type file

@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# Starts a dynamic file search, in the current folder
+
+local here="$PWD"
+
+fzf-files-search \
+  "fzf-files-search-subdir-source" \
+  "${here}"

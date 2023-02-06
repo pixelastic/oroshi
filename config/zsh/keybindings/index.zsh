@@ -7,15 +7,17 @@ stty ixoff -ixon
 
 require 'keybindings/clean'
 require 'keybindings/vim'
-require 'keybindings/ctrl-e' # Edit line in vim
-require 'keybindings/ctrl-n' # Open current directory in Nautilus
+require 'keybindings/ctrl-e'       # Edit line in vim
+require 'keybindings/ctrl-n'       # Open current directory in Nautilus
 
-require 'keybindings/ctrl-g' # Search in files
+require 'keybindings/ctrl-g'       # Regexp search in files in project
+require 'keybindings/ctrl-shift-g' # Regexp search in files in subdir
 
-require 'keybindings/ctrl-p' # Fuzzy-find files in project
-require 'keybindings/ctrl-f' # Fuzzy-find files in subdirectories
-require 'keybindings/ctrl-j' # Fuzzy-find common directories
+require 'keybindings/ctrl-p'       # Fuzzy-find files in project
+require 'keybindings/ctrl-shift-p' # Fuzzy-find files in subdirectories
 
-require 'keybindings/ctrl-h' # Fuzzy-find all git commits hashes
-require 'keybindings/ctrl-r' # Fuzzy-find history commands
+require 'keybindings/ctrl-j'       # Fuzzy-find common directories
+
+require 'keybindings/ctrl-h'       # Fuzzy-find all git commits hashes
+require 'keybindings/ctrl-r'       # Fuzzy-find history commands
 

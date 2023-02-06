@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# Starts a dynamic regexp search in file, in the current folder
+
+local here="$PWD"
+
+fzf-regexp-search \
+  "fzf-regexp-search-subdir-source" \
+  "${here}"
+

@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+# Returns the specific options required to pass to fzf
+# This is needed by fzf-vim
+# Usage:
+# $ fzf-regexp-search-options fzf-regexp-search-***-source
+
+local sourceBinary="$1"
+
+local fzfOptions=""
+fzfOptions+="--disabled "
+fzfOptions+="--delimiter=\"   \" "
+fzfOptions+="--with-nth=3 "
+fzfOptions+="--bind=\"change:reload:sleep 0.1; ${sourceBinary} {q} || true\" "
+
+echo $fzfOptions

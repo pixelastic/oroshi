@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# Starts a dynamic file search, in the current project
+
+local gitRoot="$(git-directory-root -f)"
+
+fzf-files-search \
+  "fzf-files-search-project-source" \
+  "${gitRoot}"

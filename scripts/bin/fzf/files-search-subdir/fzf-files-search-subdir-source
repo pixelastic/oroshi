@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# Returns a list of files, in the current folder
+local query="$1"
+local here="$PWD"
+
+fzf-files-search-source \
+  "${here}"
+

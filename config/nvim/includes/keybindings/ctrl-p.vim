@@ -2,13 +2,13 @@
 " TODO: Update the name of the tab when doing a fzf search
 
 " Command to call to build the list of choices
-let fzfProjectFilesSource='fzf-files-project-source'
+let fzfProjectFilesSource='fzf-files-search-project-source'
 
 " FZF options
 function! FzfProjectFilesOptions()
   let gitRoot=GitRoot()
   let fzfOptions=''
-  let fzfOptions.="--preview 'fzf-files-project-preview " . gitRoot ."/{}' "
+  let fzfOptions.="--preview 'fzf-files-search-project-preview " . gitRoot ."/{}' "
   return fzfOptions
 endfunction
 

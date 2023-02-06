@@ -1,8 +1,9 @@
 #!/usr/bin/env zsh
-# Preview a file or directory inside fzf
+# Preview a file inside fzf
 # Usage
-# $ fzf-preview ./path/to/directory             # Display the directory
-# $ fzf-preview " x oroshi  scripts/install"   # Understands known projects
+# $ fzf-files-search-preview ./path/to/file                  # Display the file
+# $ fzf-files-search-preview ./file --highlight-line 42      # Highlight the specified line
+# $ fzf-files-search-preview ./file --highlight-word "query" # Highlight the specified query
 
 # Parse arguments
 zmodload zsh/zutil
@@ -15,34 +16,6 @@ local highlightQuery=${flagHighlightQuery[2]}
 
 # Get full path of file to preview
 local fullPath="$1"
-
-# Parse project shortform paths
-# Example: "   perso/Dropbox/backup/pictures/2022"
-if [[ $fullPath == ** ]]; then
-  local shortformSplit=(${(@s//)fullPath})
-  
-  # Parsing the path inside the project
-  local pathSuffix=$shortformSplit[2]
-  pathSuffix=(${=pathSuffix})
-
-  # Parsing the project part
-  local rawProject=$shortformSplit[1]
-  local projectSplit=(${=rawProject})
-  local projectName=$projectSplit[2]
-  [[ $projectName == "" ]] && projectName="home"
-  local projectKey=${projectName:u}
-  local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
-  fullPath="${projectPath}${pathSuffix}"
-fi
-
-[[ $fullPath[1] == "~" ]] && fullPath=${~fullPath}
-[[ $fullPath[1] != "/" ]] && fullPath="${PWD}/${fullPath}"
-
-# Display directory listing
-if [ -d "$fullPath" ]; then
-  l "$fullPath"
-  exit 0
-fi
 
 
 local lineRangeMin=0

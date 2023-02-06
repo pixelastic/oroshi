@@ -1,0 +1,25 @@
+#!/usr/bin/env zsh
+# Fuzzy finding into all files of a given directory
+# Usage:
+# $ fzf-files-search fzf-files-search-***-source /path/to/directory
+
+local sourceBinary="$1"
+local directory="$2"
+
+local selection="$(\
+  $sourceBinary \
+    | fzf \
+      --preview "fzf-files-search-preview ${directory}/{}" \
+)"
+
+if [[ "$selection" == "" ]]; then
+  exit 0
+fi
+
+# Escape spaces in selections
+selection=${selection:gs/ /\\ /}
+
+# Convert multi selections into single line
+selection=("${(f)selection}")
+
+echo "${directory}/${selection}"

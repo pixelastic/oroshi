@@ -1,5 +1,6 @@
 " [CTRL-F] Fuzzy-find files in subdirectories
 " TODO: Update the name of the tab when doing a fzf search
+" TODO: Open several files at once
 
 " Command to call to build the list of choices
 let fzfSubdirFilesSource='fzf-files-subdir-source'
@@ -18,6 +19,8 @@ function! FzfSubdirFilesSink(selection)
   if a:selection ==# ''
     return
   endif
+
+  echom a:selection
 
   let pwd=expand('%:p:h')
 
