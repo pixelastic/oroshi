@@ -1,18 +1,28 @@
 #!/usr/bin/env zsh
-# Fuzzy finding into all directories of a given directory
+# Fuzzy finding into a list of directories
 # Usage:
-# $ fzf-directories-search fzf-directories-search-***-source /path/to/directory
+# $ fzf-directories-search \
+# --source         # Mandatory, list of suggestions
+# --options        # Binary to return the fzf options
+# --postprocess    # Binary to sanitize the selection
 
-local sourceBinary="$1"
-local directory="$2"
+zmodload zsh/zutil
+zparseopts -E -D \
+  -source:=flagSource \
+  -options:=flagOptions \
+  -postprocess:=flagPostprocess
+
+local fzfSourcePath=${flagSource[2]}
+local fzfOptionsPath=${flagOptions[2]:-fzf-directories-search-options}
+local fzfPostprocessPath=${flagPostprocess[2]:-fzf-directories-search-postprocess}
 
 # The options to pass to fzf
-local fzfOptions="$(fzf-directories-search-options $directory)"
+local fzfOptions="$($fzfOptionsPath)"
 
 # Actual fzf selection
-local rawSelection="$($sourceBinary | fzf ${(f)fzfOptions})"
+local rawSelection="$($fzfSourcePath | fzf ${(f)fzfOptions})"
 
 # Parsing the selection to extract only relevant information
-local selection="$(fzf-directories-search-postprocess "$rawSelection" $directory)"
+local selection="$($fzfPostprocessPath "$rawSelection")"
 
 echo $selection

@@ -1,38 +1,15 @@
 #!/usr/bin/env zsh
 # Returns the specific options required to pass to fzf
-# Using fzf inside of vim requires to pass the options as their own input, which
-# is why we need to externalize this file.
-#
-# Zsh will use one argument per line, while vim will require them separated by
-# spaces.
-#
-# Usage:
-# $ fzf-directories-search-options /path/to/directory       # For zsh
-# $ fzf-directories-search-options /path/to/directory --vim # For vim
 
-# Parse arguments {{{
-zmodload zsh/zutil
-zparseopts -E -D \
-  -vim=vimFlag
-
-local directory="$1"
-local isForVim=${#vimFlag}
-# }}}
 
 local fzfOptions=()
 fzfOptions+="--color=fg:$COLOR_ALIAS_DIRECTORY"
 fzfOptions+="--color=fg+:$COLOR_ALIAS_DIRECTORY"
-if [[ $isForVim == "1" ]]; then
-  fzfOptions+="--preview='fzf-directories-search-preview ${directory}{}'"
-else
-  fzfOptions+="--preview=fzf-directories-search-preview ${directory}{}"
-fi
+fzfOptions+="--delimiter=   "
+fzfOptions+="--with-nth=2"
+fzfOptions+="--preview=fzf-directories-search-preview {1}"
 
-# One per line, or separated by space.
+# One per line
 for fzfOption in $fzfOptions; do
-  if [[ $isForVim == "1" ]]; then
-    echo -n "$fzfOption "
-  else
-    echo $fzfOption
-  fi
+  echo $fzfOption
 done

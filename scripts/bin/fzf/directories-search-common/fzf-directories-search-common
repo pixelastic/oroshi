@@ -2,5 +2,4 @@
 # Fuzzy search in all the most common directories
 
 fzf-directories-search \
-  "fzf-directories-search-common-source" \
-  ""
+  --source "fzf-directories-search-common-source"

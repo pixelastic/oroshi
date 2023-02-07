@@ -1,8 +1,5 @@
 #!/usr/bin/env zsh
-# Fuzzy search in all this directory subdirs
-
-local here="$PWD/"
+# Fuzzy search in all the directory subdirectories
 
 fzf-directories-search \
-  "fzf-directories-search-subdir-source" \
-  "${here}"
+  --source "fzf-directories-search-subdir-source"

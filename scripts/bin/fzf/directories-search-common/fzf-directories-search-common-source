@@ -26,12 +26,5 @@ for fullPath in ${(f)rawList}; do
     displayPath="${projectPrefix} ${displayPath}"
   fi
 
-  local coloredLine="[38;5;${COLOR_ALIAS_DIRECTORY}m${displayPath}[00m"
-  coloredList+="${coloredLine}\n"
+  echo "$fullPath   ${displayPath}"
 done
-
-# Display all colored path in order.
-# head -c -1 removes the last character (a new line)
-echo "$coloredList" \
-  | head -c -1 \
-  | sort

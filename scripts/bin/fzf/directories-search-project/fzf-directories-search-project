@@ -1,8 +1,5 @@
 #!/usr/bin/env zsh
 # Fuzzy search in all the project directories
 
-local gitRoot="$(git-directory-root -f)/"
-
 fzf-directories-search \
-  "fzf-directories-search-project-source" \
-  "${gitRoot}"
+  --source "fzf-directories-search-project-source"
