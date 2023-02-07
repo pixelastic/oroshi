@@ -1,19 +1,16 @@
-" [CTRL-P] Fuzzy find files in the whole project
-" TODO: Update the name of the tab when doing a fzf search
+" [CTRL-P] Files search in the whole project
 
 " Command to call to build the list of choices
-let fzfProjectFilesSource='fzf-files-search-project-source'
+let fzfFilesSearchProjectSource='fzf-files-search-project-source'
 
 " FZF options
-function! FzfProjectFilesOptions()
-  let gitRoot=GitRoot()
-  let fzfOptions=''
-  let fzfOptions.="--preview 'fzf-files-search-project-preview " . gitRoot ."/{}' "
+function! FzfFilesSearchProjectOptions()
+  let fzfOptions= system('fzf-files-search-options fzf-files-search-project-source --vim')
   return fzfOptions
 endfunction
 
 " What to do with the selection
-function! FzfProjectFilesSink(selection)
+function! FzfFilesSearchProjectSink(selection)
   " Stop if no selection is made
   if a:selection ==# ''
     return
@@ -25,6 +22,6 @@ function! FzfProjectFilesSink(selection)
   execute 'tab drop '. gitRoot. '/' . a:selection
 endfunction
 
-nnoremap <silent> <C-P> :call fzf#run({'source': fzfProjectFilesSource, 'options': FzfProjectFilesOptions(), 'sink': function('FzfProjectFilesSink') })<CR>
-inoremap <silent> <C-P> <Esc>:call fzf#run({'source': fzfProjectFilesSource, 'options': FzfProjectFilesOptions(), 'sink': function('FzfProjectFilesSink') })<CR>
+nnoremap <silent> <C-P> :call fzf#run({'source': fzfFilesSearchProjectSource, 'options': FzfFilesSearchProjectOptions(), 'sink': function('FzfFilesSearchProjectSink') })<CR>
+inoremap <silent> <C-P> <Esc>:call fzf#run({'source': fzfFilesSearchProjectSource, 'options': FzfFilesSearchProjectOptions(), 'sink': function('FzfFilesSearchProjectSink') })<CR>
 " }}}

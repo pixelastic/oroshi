@@ -1,14 +1,13 @@
-scriptencoding utf-8
-" [CTRL-G] Regexp search inside of files
+" [CTRL-G] Regexp search inside of files in whole project
 
 " FZF options
-function! FzfRegexpSearchOptions()
+function! FzfRegexpSearchProjectOptions()
   let fzfOptions= system('fzf-regexp-search-options fzf-regexp-search-project-source --vim')
   return fzfOptions
 endfunction
 
 " What to do with the selection
-function! FzfRegexpSearchSink(selection)
+function! FzfRegexpSearchProjectSink(selection)
   let rawSelection=join(a:selection, "\n")
   if rawSelection ==# ''
     return
@@ -28,6 +27,6 @@ function! FzfRegexpSearchSink(selection)
   endfor
 endfunction
 
-nnoremap <silent> <C-G> :call fzf#run({'options': FzfRegexpSearchOptions(), 'sinklist': function('FzfRegexpSearchSink') })<CR>
-inoremap <silent> <C-G> <Esc>:call fzf#run({'options': FzfRegexpSearchOptions(), 'sinklist': function('FzfRegexpSearchSink') })<CR>
+nnoremap <silent> <C-G> :call fzf#run({'options': FzfRegexpSearchProjectOptions(), 'sinklist': function('FzfRegexpSearchProjectSink') })<CR>
+inoremap <silent> <C-G> <Esc>:call fzf#run({'options': FzfRegexpSearchProjectOptions(), 'sinklist': function('FzfRegexpSearchProjectSink') })<CR>
 " }}}

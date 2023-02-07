@@ -23,24 +23,29 @@ source ~/.config/nvim/includes/keybindings/capslock.vim
 source ~/.config/nvim/includes/keybindings/enter.vim
 source ~/.config/nvim/includes/keybindings/tab.vim
 
-source ~/.config/nvim/includes/keybindings/f1.vim         " Show help
-source ~/.config/nvim/includes/keybindings/f2.vim         " Toggle colorscheme
-source ~/.config/nvim/includes/keybindings/f3.vim         " Debug colorschem
-source ~/.config/nvim/includes/keybindings/f8.vim         " Toggle hidden characters
-source ~/.config/nvim/includes/keybindings/f9.vim         " Toggle line wrap
+source ~/.config/nvim/includes/keybindings/f1.vim           " Show help
+source ~/.config/nvim/includes/keybindings/f2.vim           " Toggle colorscheme
+source ~/.config/nvim/includes/keybindings/f3.vim           " Debug colorschem
+source ~/.config/nvim/includes/keybindings/f8.vim           " Toggle hidden characters
+source ~/.config/nvim/includes/keybindings/f9.vim           " Toggle line wrap
 
-source ~/.config/nvim/includes/keybindings/ctrl-a.vim     " Select all
-source ~/.config/nvim/includes/keybindings/ctrl-d.vim     " Close tab/vim
-source ~/.config/nvim/includes/keybindings/ctrl-s.vim     " Save file
-source ~/.config/nvim/includes/keybindings/ctrl-del.vim   " Delete current file
-source ~/.config/nvim/includes/keybindings/ctrl-p.vim     " Fuzzy-find files in project
-source ~/.config/nvim/includes/keybindings/ctrl-f.vim     " Fuzzy-find files in subdirectories
-source ~/.config/nvim/includes/keybindings/ctrl-g.vim     " Search inside of files with regexp
-source ~/.config/nvim/includes/keybindings/ctrl-y.vim     " Check previous versions of the file
+source ~/.config/nvim/includes/keybindings/ctrl-a.vim       " Select all
 
-source ~/.config/nvim/includes/keybindings/dash.vim       " Move line above
-source ~/.config/nvim/includes/keybindings/underscore.vim " Move line below
-source ~/.config/nvim/includes/keybindings/hjkl.vim       " Move around
+source ~/.config/nvim/includes/keybindings/ctrl-s.vim       " Save file
+source ~/.config/nvim/includes/keybindings/ctrl-d.vim       " Close tab/vim
+source ~/.config/nvim/includes/keybindings/ctrl-del.vim     " Delete current file
+
+source ~/.config/nvim/includes/keybindings/ctrl-p.vim       " Fuzzy-find files in project
+" source ~/.config/nvim/includes/keybindings/ctrl-f.vim       " Fuzzy-find files in subdirectories
+
+source ~/.config/nvim/includes/keybindings/ctrl-g.vim       " Regex search in project
+source ~/.config/nvim/includes/keybindings/ctrl-shift-g.vim " Regex search in subdir
+
+source ~/.config/nvim/includes/keybindings/ctrl-y.vim       " Check previous versions of the file
+
+source ~/.config/nvim/includes/keybindings/dash.vim         " Move line above
+source ~/.config/nvim/includes/keybindings/underscore.vim   " Move line below
+source ~/.config/nvim/includes/keybindings/hjkl.vim         " Move around
 
 source ~/.config/nvim/includes/keybindings/sort.vim
 source ~/.config/nvim/includes/keybindings/align.vim

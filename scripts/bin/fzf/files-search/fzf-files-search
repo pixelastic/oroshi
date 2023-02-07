@@ -6,20 +6,13 @@
 local sourceBinary="$1"
 local directory="$2"
 
-local selection="$(\
-  $sourceBinary \
-    | fzf \
-      --preview "fzf-files-search-preview ${directory}/{}" \
-)"
+# The options to pass to fzf
+local fzfOptions="$(fzf-files-search-options $directory)"
 
-if [[ "$selection" == "" ]]; then
-  exit 0
-fi
+# Actual fzf selection
+local rawSelection="$($sourceBinary | fzf ${(f)fzfOptions})"
 
-# Escape spaces in selections
-selection=${selection:gs/ /\\ /}
+# Parsing the selection to extract only relevant information
+local selection="$(fzf-files-search-postprocess "$rawSelection" $directory)"
 
-# Convert multi selections into single line
-selection=("${(f)selection}")
-
-echo "${directory}/${selection}"
+echo $selection

@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+# Parses the return of an fzf multi-selection
+#
+# Usage:
+# $ fzf-files-search-postprocess {multiLineSelection} /path/to/directory
+
+local rawSelection="$1"
+local directory="$2"
+
+# Stop early
+[[ $rawSelection == "" ]] && exit
+
+# Sanitize selection
+local files=()
+for filepath in ${(f)rawSelection}; do
+  filepath=${filepath:gs/ /\\ /}
+  filepath=${directory}/${filepath}
+  files+=($filepath)
+done
+
+echo $files
