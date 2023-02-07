@@ -16,13 +16,7 @@ local fzfSourcePath=${flagSource[2]}
 local fzfOptionsPath=${flagOptions[2]:-fzf-directories-search-options}
 local fzfPostprocessPath=${flagPostprocess[2]:-fzf-directories-search-postprocess}
 
-# The options to pass to fzf
-local fzfOptions="$($fzfOptionsPath)"
-
-# Actual fzf selection
-local rawSelection="$($fzfSourcePath | fzf ${(f)fzfOptions})"
-
-# Parsing the selection to extract only relevant information
-local selection="$($fzfPostprocessPath "$rawSelection")"
-
-echo $selection
+fzf-search \
+  --source "$fzfSourcePath" \
+  --options "$fzfOptionsPath" \
+  --postprocess "$fzfPostprocessPath"

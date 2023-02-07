@@ -1,7 +1,6 @@
 #!/usr/bin/env zsh
 # Returns the specific options required to pass to fzf
 
-
 local fzfOptions=()
 fzfOptions+="--color=fg:$COLOR_ALIAS_DIRECTORY"
 fzfOptions+="--color=fg+:$COLOR_ALIAS_DIRECTORY"

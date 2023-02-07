@@ -6,8 +6,15 @@
 local directory="$1"
 
 cd $directory
+local items="$(\
 f \
   --base-directory "$directory" \
   . \
   --color always \
   --type file
+)"
+
+# Display it as two columns: full path and colored path
+for item in ${(f)items}; do
+  echo "${directory}/${item}   ${item}"
+done
