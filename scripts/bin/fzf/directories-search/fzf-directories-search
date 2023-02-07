@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+# Fuzzy finding into all directories of a given directory
+# Usage:
+# $ fzf-directories-search fzf-directories-search-***-source /path/to/directory
+
+local sourceBinary="$1"
+local directory="$2"
+
+# The options to pass to fzf
+local fzfOptions="$(fzf-directories-search-options $directory)"
+
+# Actual fzf selection
+local rawSelection="$($sourceBinary | fzf ${(f)fzfOptions})"
+
+# Parsing the selection to extract only relevant information
+local selection="$(fzf-directories-search-postprocess "$rawSelection" $directory)"
+
+echo $selection

@@ -1,0 +1,47 @@
+#!/usr/bin/env zsh
+# Parses the return of a fzf multi-selection
+#
+# Usage:
+# $ fzf-directories-search-postprocess {multiLineSelection} /path/to/directory
+
+local rawSelection="$1"
+local directory="$2"
+
+# Stop early
+[[ $rawSelection == "" ]] && exit
+
+# Expand project shortform paths
+# Example: " <> aoinan  perso/Dropbox/backup/pictures/2022"
+function expandProject() {
+  local input="$1"
+  [[ $input != *​* ]] && echo $input && return
+
+  local inputSplit=(${(@s/​/)input})
+
+  # Suffix path, from the project root
+  local suffixPath=$inputSplit[-1]
+  suffixPath=(${=suffixPath})
+
+  # Project root
+  local projectIcon=$inputSplit[2]
+  local projectName=$inputSplit[3]
+
+  # Parsing the project key from the project name and icon
+  [[ $projectIcon == "" ]] && projectName="home"
+  local projectKey=${projectName:u}
+  projectKey=${projectKey:s/-/_/}
+  local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
+  echo "${projectPath}${suffixPath}"
+}
+
+
+# Sanitize selection
+local directories=()
+for line in ${(f)rawSelection}; do
+  local selection="$(expandProject "$line")"
+  selection=${selection:gs/ /\\ /}
+  selection=${directory}${selection}
+  directories+=($selection)
+done
+
+echo $directories

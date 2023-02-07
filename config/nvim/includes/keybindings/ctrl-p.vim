@@ -5,23 +5,28 @@ let fzfFilesSearchProjectSource='fzf-files-search-project-source'
 
 " FZF options
 function! FzfFilesSearchProjectOptions()
-  let fzfOptions= system('fzf-files-search-options fzf-files-search-project-source --vim')
+  let gitRoot=GitRoot()
+  let fzfOptions= system('fzf-files-search-options '. gitRoot .' --vim')
   return fzfOptions
 endfunction
 
 " What to do with the selection
 function! FzfFilesSearchProjectSink(selection)
-  " Stop if no selection is made
-  if a:selection ==# ''
+  let rawSelection=join(a:selection, "\n")
+  if rawSelection ==# ''
     return
   endif
 
+  " Parse the raw selection
   let gitRoot=GitRoot()
+  let selection=system('fzf-files-search-postprocess '.shellescape(rawSelection).' '.gitRoot)
 
-  " Open result in new tab, or re-use existing one if already opened
-  execute 'tab drop '. gitRoot. '/' . a:selection
+  " Open each file
+  for filepath in split(selection, ' ')
+    execute 'tab drop '.filepath
+  endfor
 endfunction
 
-nnoremap <silent> <C-P> :call fzf#run({'source': fzfFilesSearchProjectSource, 'options': FzfFilesSearchProjectOptions(), 'sink': function('FzfFilesSearchProjectSink') })<CR>
-inoremap <silent> <C-P> <Esc>:call fzf#run({'source': fzfFilesSearchProjectSource, 'options': FzfFilesSearchProjectOptions(), 'sink': function('FzfFilesSearchProjectSink') })<CR>
+nnoremap <silent> <C-P> :call fzf#run({'source': fzfFilesSearchProjectSource, 'options': FzfFilesSearchProjectOptions(), 'sinklist': function('FzfFilesSearchProjectSink') })<CR>
+inoremap <silent> <C-P> <Esc>:call fzf#run({'source': fzfFilesSearchProjectSource, 'options': FzfFilesSearchProjectOptions(), 'sinklist': function('FzfFilesSearchProjectSink') })<CR>
 " }}}

@@ -16,8 +16,8 @@ local directory="$2"
 
 local regexpSearch=""
 # We match either the start of the text, or the end of a section separator.
-# We defined those to end with a Zero-Width Space (​) for easier splitting.
-regexpSearch+="(^|​\n)"
+# We defined those to end with an invisible separator for easier splitting.
+regexpSearch+="(^|${INVISIBLE_SEPARATOR}\n)"
 # We capture the whole line after it, because we'll have to display it again
 regexpSearch+="("
 # We capture anything that is before a   (the filepath), and captures until the end

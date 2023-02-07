@@ -1,0 +1,37 @@
+#!/usr/bin/env zsh
+# We load z
+source ~/local/etc/zsh-z/zsh-z.plugin.zsh
+
+# We get the sorted list of the most used folders
+local rawList="$(
+z -l \
+  | tac \
+  | cut -d ' ' -f 1 --complement \
+  | awk '{$1=$1;print}' \
+)"
+
+# We iterate on each path, to potentially color them using the project prefix
+local coloredList=""
+for fullPath in ${(f)rawList}; do
+  local displayPath="$fullPath/"
+  local projectKey="$(project-by-path ${displayPath})"
+
+  # Update display if known project
+  if [[ $projectKey != "" ]]; then
+    local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
+    eval "displayPath=\${displayPath:s_${projectPath}_}"
+
+    local projectPrefix="$(colorize-project $projectKey)"
+
+    displayPath="${projectPrefix} ${displayPath}"
+  fi
+
+  local coloredLine="[38;5;${COLOR_ALIAS_DIRECTORY}m${displayPath}[00m"
+  coloredList+="${coloredLine}\n"
+done
+
+# Display all colored path in order.
+# head -c -1 removes the last character (a new line)
+echo "$coloredList" \
+  | head -c -1 \
+  | sort

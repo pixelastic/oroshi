@@ -20,8 +20,10 @@ function colorize-project () {
     output+="%K{$projectBackground}%F{$projectForeground} ${projectIcon}${projectName} %f"
     output+="%k%F{$projectBackground}%f "
   else
-    output+="[38;5;${projectForeground}m[48;5;${projectBackground}m ${projectIcon}${projectName} [00m"
-    output+="[38;5;${projectBackground}m[00m"
+    # We wrap each part in ​ (Zero-Width Space) to parse them back more easily
+    # later
+    output+="[38;5;${projectForeground}m[48;5;${projectBackground}m ​${projectIcon}​${projectName}​ [00m"
+    output+="[38;5;${projectBackground}m​[00m"
   fi
 
   # Display the final colorized string

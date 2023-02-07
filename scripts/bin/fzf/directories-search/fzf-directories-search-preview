@@ -1,0 +1,33 @@
+#!/usr/bin/env zsh
+# Preview a directory inside fzf
+# Usage
+# $ fzf-directories-search-preview ./path/to/directory             # Display the directory
+# $ fzf-directories-search-preview " x oroshi  scripts/install"   # Understands known projects
+
+# Get full path to preview
+local fullPath="$1"
+
+# Parse project shortform paths
+# Example: "   perso/Dropbox/backup/pictures/2022"
+if [[ $fullPath == ** ]]; then
+  local shortformSplit=(${(@s//)fullPath})
+  
+  # Parsing the path inside the project
+  local pathSuffix=$shortformSplit[2]
+  pathSuffix=(${=pathSuffix})
+
+  # Parsing the project part
+  local rawProject=$shortformSplit[1]
+  local projectSplit=(${=rawProject})
+  local projectName=$projectSplit[2]
+  [[ $projectName == "" ]] && projectName="home"
+  local projectKey=${projectName:u}
+  projectKey=${projectKey:s/-/_/}
+  local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
+  fullPath="${projectPath}${pathSuffix}"
+fi
+
+[[ $fullPath[1] == "~" ]] && fullPath=${~fullPath}
+
+# Display directory listing
+l "$fullPath"

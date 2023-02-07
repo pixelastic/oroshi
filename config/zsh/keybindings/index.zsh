@@ -16,6 +16,9 @@ require 'keybindings/ctrl-shift-g' # Regexp search in files in subdir
 require 'keybindings/ctrl-p'       # Fuzzy-find files in project
 require 'keybindings/ctrl-shift-p' # Fuzzy-find files in subdirectories
 
+require 'keybindings/ctrl-o'       # Fuzzy-find directories in project
+require 'keybindings/ctrl-shift-o' # Fuzzy-find directories in subdir
+
 require 'keybindings/ctrl-j'       # Fuzzy-find common directories
 
 require 'keybindings/ctrl-h'       # Fuzzy-find all git commits hashes

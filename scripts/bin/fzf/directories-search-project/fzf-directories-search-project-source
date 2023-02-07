@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# Returns a list of directories, in the project
+local query="$1"
+local gitRoot="$(git-directory-root -f)"
+
+fzf-directories-search-source \
+  "${gitRoot}"
+

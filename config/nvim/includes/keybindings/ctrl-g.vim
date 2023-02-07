@@ -22,7 +22,7 @@ function! FzfRegexpSearchProjectSink(selection)
     let lineSplit=split(line, ':')
     let filepath=lineSplit[0]
     let lineNumber=lineSplit[1]
-    execute 'tabnew '.filepath
+    execute 'tab drop '.filepath
     execute lineNumber
   endfor
 endfunction
