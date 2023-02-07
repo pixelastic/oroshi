@@ -6,27 +6,13 @@
 local sourceBinary="$1"
 local directory="$2"
 
-local gitRoot="$(git-directory-root -f)"
+# The options to pass to fzf
+local fzfOptions="$(fzf-regexp-search-options $sourceBinary)"
 
-local rawSelection="$(\
-  fzf \
-      --disabled \
-      --delimiter="   " \
-      --with-nth=3 \
-      --bind "change:reload:sleep 0.1; ${sourceBinary} {q} || true" \
-)"
+# Actual fzf selection
+local rawSelection="$(fzf ${(f)fzfOptions})"
 
-# We only need to keep the filepath from the selections
-typeset -aU selection
-local selection=()
-for line in ${(f)rawSelection}; do
-  local split=(${(@s/   /)line})
-  local filepath="${directory}/$split[1]"
-  # Skip selections that are not files (this can happen when selecting
-  # a separator)
-  [[ ! -r $filepath ]] && continue
-  selection+=($filepath)
-done
+# Parsing the selection to extract only relevant information
+local selection="$(fzf-regexp-search-postprocess "$rawSelection" $directory)"
 
-# Deduplicate elements
 echo $selection

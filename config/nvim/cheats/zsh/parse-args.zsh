@@ -6,12 +6,18 @@
 zmodload zsh/zutil
 # -E : Don't stop on unknown flags
 # -D : $@ is updated by removing all found flags
-zparseopts \
-  -E \
-  -D \
-  -highlight-line:=flagHighlightLine \
-  -highlight-query:=flagHighlightQuery \
+# a:=     : Short argument, like -s "xxx"
+# -arg:=  : Long argument, like --separator "xxx"
+# f:      : Short flag, like -f
+# -force  : Long flag, like --force
+zparseopts -E -D \
+  s:=flagSeparator \
+  -separator:=flagSeparator \
+  f:flagForce \
+  -force:flagForce
 
-local highlightLine=${flagHighlightLine[2]}
-local highlightQuery=${flagHighlightQuery[2]}
+
+local separator=${flagSeparator[2]}
+local isForce=${#flagForce}
+
 # ===

@@ -9,7 +9,13 @@ oroshi-fzf-regexp-search-project-widget() {
     return 1
   fi
 
-  nvim -p ${=selection}
+  local filesToOpen=()
+  for item in ${=selection}; do
+    local split=(${(@s/:/)item})
+    filesToOpen+=($split[1])
+  done
+
+  nvim -p ${=filesToOpen}
 
   return 0
 }

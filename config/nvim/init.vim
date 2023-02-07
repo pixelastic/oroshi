@@ -2,6 +2,7 @@ source ~/.config/nvim/includes/security.vim
 source ~/.config/nvim/includes/encoding.vim
 source ~/.config/nvim/includes/plugins.vim
 source ~/.config/nvim/includes/functions/index.vim
+
 source ~/.config/nvim/includes/completion.vim
 
 source ~/.config/nvim/includes/keybindings/index.vim

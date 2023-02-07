@@ -3,50 +3,31 @@ scriptencoding utf-8
 
 " FZF options
 function! FzfRegexpSearchOptions()
-  let pwd=expand('%:p:h')
-  let fzfOptions=''
-  let fzfOptions.='--disabled '
-  let fzfOptions.='--delimiter="   " '
-  let fzfOptions.='--with-nth=3 '
-  let fzfOptions.="--bind \"change:reload:sleep 0.1; fzf-regexp-search-source {q} || true\" "
+  let fzfOptions= system('fzf-regexp-search-options fzf-regexp-search-project-source --vim')
   return fzfOptions
 endfunction
 
 " What to do with the selection
 function! FzfRegexpSearchSink(selection)
-  " Stop if no selection is made
-  if a:selection ==# ''
+  let rawSelection=join(a:selection, "\n")
+  if rawSelection ==# ''
     return
   endif
 
-  echom "===="
-  echom a:selection
-  echom "===="
+  " Parse the raw selection
+  let gitRoot=GitRoot()
+  let selection=system('fzf-regexp-search-postprocess '.shellescape(rawSelection).' '.gitRoot)
 
-  for line in a:selection
-    echom line
+  " Open each file and jump to right line
+  for line in split(selection, ' ')
+    let lineSplit=split(line, ':')
+    let filepath=lineSplit[0]
+    let lineNumber=lineSplit[1]
+    execute 'tabnew '.filepath
+    execute lineNumber
   endfor
-
-
-" # We only need to keep the filepath from the selections
-" typeset -aU selection
-" local selection=()
-" for line in ${(f)rawSelection}; do
-"   local split=(${(@s/   /)line})
-"   local filepath="${gitRoot}/$split[1]"
-"   # Skip selections that are not files (this can happen when selecting
-"   # a separator)
-"   [[ ! -r $filepath ]] && continue
-"   selection+=($filepath)
-" done
-
-
-  " let pwd=expand('%:p:h')
-
-  " " Open result in new tab, or re-use existing one if already opened
-  " execute 'tab drop '. pwd. '/' . a:selection
 endfunction
 
-nnoremap <silent> <C-G> :call fzf#run({'options': FzfRegexpSearchOptions(), 'sink': function('FzfRegexpSearchSink') })<CR>
-inoremap <silent> <C-G> <Esc>:call fzf#run({'options': FzfRegexpSearchOptions(), 'sink': function('FzfRegexpSearchSink') })<CR>
+nnoremap <silent> <C-G> :call fzf#run({'options': FzfRegexpSearchOptions(), 'sinklist': function('FzfRegexpSearchSink') })<CR>
+inoremap <silent> <C-G> <Esc>:call fzf#run({'options': FzfRegexpSearchOptions(), 'sinklist': function('FzfRegexpSearchSink') })<CR>
 " }}}
