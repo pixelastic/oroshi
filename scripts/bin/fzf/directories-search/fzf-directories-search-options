@@ -1,14 +1,9 @@
 #!/usr/bin/env zsh
 # Returns the specific options required to pass to fzf
 
-local fzfOptions=()
-fzfOptions+="--color=fg:$COLOR_ALIAS_DIRECTORY"
-fzfOptions+="--color=fg+:$COLOR_ALIAS_DIRECTORY"
-fzfOptions+="--delimiter=   "
-fzfOptions+="--with-nth=2"
-fzfOptions+="--preview=fzf-directories-search-preview {1}"
+echo "--color=fg:$COLOR_ALIAS_DIRECTORY"
+echo "--color=fg+:$COLOR_ALIAS_DIRECTORY"
+echo "--delimiter=   "
+echo "--with-nth=2"
+echo "--preview=fzf-directories-search-preview {1}"
 
-# One per line
-for fzfOption in $fzfOptions; do
-  echo $fzfOption
-done

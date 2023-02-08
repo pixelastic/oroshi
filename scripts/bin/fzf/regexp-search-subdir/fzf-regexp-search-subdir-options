@@ -3,4 +3,6 @@
 fzf-regexp-search-options \
   --source fzf-regexp-search-subdir-source
 
-echo "--prompt=grep ❯ "
+local prompt="$(simplify-path $PWD)"
+echo "--prompt=${prompt} ❯ "
+echo "--color=prompt:${COLOR_ALIAS_DIRECTORY}:regular"

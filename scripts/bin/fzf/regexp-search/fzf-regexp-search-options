@@ -10,13 +10,15 @@ zparseopts -E -D \
 
 local fzfSourcePath=${flagSource[2]}
 
-local fzfOptions=()
-fzfOptions+="--disabled"
-fzfOptions+="--delimiter=   "
-fzfOptions+="--with-nth=3"
-fzfOptions+="--bind=change:reload:sleep 0.1;${fzfSourcePath} {q} || true"
+echo "--disabled"
+echo "--delimiter=   "
+echo "--with-nth=3"
+echo "--bind=change:reload:sleep 0.1;${fzfSourcePath} {q} || true"
 
-# One per line
-for fzfOption in $fzfOptions; do
-  echo $fzfOption
-done
+# Color the UI in regexp color
+echo "--color=disabled:${COLOR_ALIAS_REGEXP}:regular"
+echo "--color=info:$COLOR_ALIAS_REGEXP"
+echo "--color=separator:$COLOR_ALIAS_REGEXP"
+echo "--color=pointer:${COLOR_ALIAS_REGEXP}"
+echo "--color=marker:${COLOR_ALIAS_REGEXP}"
+

@@ -1,12 +1,6 @@
 #!/usr/bin/env zsh
 # Returns the specific options required to pass to fzf
 
-local fzfOptions=()
-fzfOptions+="--delimiter=   "
-fzfOptions+="--with-nth=2"
-fzfOptions+="--preview=fzf-files-search-preview {1}"
-
-# One per line
-for fzfOption in $fzfOptions; do
-  echo $fzfOption
-done
+echo "--delimiter=   "
+echo "--with-nth=2"
+echo "--preview=fzf-files-search-preview {1}"

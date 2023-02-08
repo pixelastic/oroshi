@@ -14,6 +14,10 @@ zparseopts -E -D \
 local directory=${flagDirectory[2]}
 local query=${flagQuery[2]}
 
+if [[ $query == "" ]]; then
+  exit
+fi
+
 # Adding headings {{{
 # ripgrep either displays filename as a heading before all matches, or as
 # a prefix before each match. We need it as a heading (for display) AND as

@@ -16,11 +16,7 @@ function __prompt-path() {
   fi
 
   # Simplify string path if too long
-  local -a pathArray
-  pathArray=(${(s:/:)currentPath})
-  if [[ ${#pathArray[*]} -ge 4 ]]; then
-    currentPath="${pathArray[1]}/…/${pathArray[-2]}/${pathArray[-1]}/"
-  fi
+  currentPath="$(simplify-path "$currentPath")"
 
   # Add marker if connected through SSH
   if [[ $SSH_CLIENT != '' ]]; then

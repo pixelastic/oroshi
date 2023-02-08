@@ -3,27 +3,25 @@ scriptencoding utf-8
 
 " FZF options
 function! FzfRegexpSearchSubdirOptions()
-  let fzfOptions= system('fzf-regexp-search-options fzf-regexp-search-subdir-source --vim')
-  return fzfOptions
+  let fzfOptions= system('fzf-regexp-search-subdir-options')
+  return split(fzfOptions, "\n")
 endfunction
 
 " What to do with the selection
 function! FzfRegexpSearchSubdirSink(selection)
-  let rawSelection=join(a:selection, "\n")
-  if rawSelection ==# ''
+  if len(a:selection) ==# 0
     return
   endif
 
-  " Parse the raw selection
-  let subdir=expand('%:p:h')
-  let selection=system('fzf-regexp-search-postprocess '.shellescape(rawSelection).' '.subdir)
+  let rawSelection=join(a:selection, "\n")
+  let selection=system('fzf-regexp-search-postprocess '.shellescape(rawSelection))
 
   " Open each file and jump to right line
   for line in split(selection, ' ')
     let lineSplit=split(line, ':')
     let filepath=lineSplit[0]
     let lineNumber=lineSplit[1]
-    execute 'tabnew '.filepath
+    execute 'tab drop '.filepath
     execute lineNumber
   endfor
 endfunction

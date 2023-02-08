@@ -3,4 +3,8 @@
 fzf-regexp-search-options \
   --source fzf-regexp-search-project-source
 
-echo "--prompt=grep ❯ "
+local projectKey="$(project-by-path $PWD)"
+local prompt="$(colorize-project $projectKey)"
+# fzf in vim fails to parse the prompt if there is ​ in it
+prompt=${prompt:gs/​//}
+echo "--prompt=$prompt "

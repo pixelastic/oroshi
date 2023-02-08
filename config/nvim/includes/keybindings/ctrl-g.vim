@@ -2,20 +2,18 @@
 
 " FZF options
 function! FzfRegexpSearchProjectOptions()
-  let fzfOptions= system('fzf-regexp-search-options $sourceBinaryfzf-regexp-search-options fzf-regexp-search-project-source --vim')
-  return fzfOptions
+  let fzfOptions= system('fzf-regexp-search-project-options')
+  return split(fzfOptions, "\n")
 endfunction
 
 " What to do with the selection
 function! FzfRegexpSearchProjectSink(selection)
-  let rawSelection=join(a:selection, "\n")
-  if rawSelection ==# ''
+  if len(a:selection) ==# 0
     return
   endif
 
-  " Parse the raw selection
-  let gitRoot=GitRoot()
-  let selection=system('fzf-regexp-search-postprocess '.shellescape(rawSelection).' '.gitRoot)
+  let rawSelection=join(a:selection, "\n")
+  let selection=system('fzf-regexp-search-postprocess '.shellescape(rawSelection))
 
   " Open each file and jump to right line
   for line in split(selection, ' ')
