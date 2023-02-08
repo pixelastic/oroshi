@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# Options to pass to fzf
+
+echo "--no-sort"

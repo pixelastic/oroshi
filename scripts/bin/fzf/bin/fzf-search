@@ -14,19 +14,27 @@ zparseopts -E -D \
 
 local fzfSourcePath=${flagSource[2]}
 local fzfOptionsPath=${flagOptions[2]}
-local fzfPostprocessPath=${flagPostprocess[2]:-echo}
+local fzfPostprocessPath=${flagPostprocess[2]}
 
 # The options to pass to fzf
 local fzfOptions="$($fzfOptionsPath)"
 
 # Actual fzf selection
 if [[ $fzfSourcePath == "" ]]; then
-  local rawSelection="$(fzf ${(f)fzfOptions})"
+  local selection="$(fzf ${(f)fzfOptions})"
 else
-  local rawSelection="$($fzfSourcePath | fzf ${(f)fzfOptions})"
+  local selection="$($fzfSourcePath | fzf ${(f)fzfOptions})"
+fi
+
+# Stop if no selection
+[[ $selection == "" ]] && exit
+
+# Postprocessing the selection
+if [[ $fzfPostprocessPath == "" ]]; then
+  # -E: Display \n characters instead of adding a new line
+  echo -E $selection
+  exit
 fi
 
 # Parsing the selection to extract only relevant information
-local selection="$($fzfPostprocessPath "$rawSelection")"
-
-echo $selection
+$fzfPostprocessPath "$selection"
