@@ -1,39 +1,22 @@
 #!/usr/bin/env zsh
 # Returns the specific options required to pass to fzf
-# Using fzf inside of vim requires to pass the options as their own input, which
-# is why we need to externalize this file.
-#
-# Zsh will use one argument per line, while vim will require them separated by
-# spaces.
-#
 # Usage:
-# $ fzf-regexp-search-options fzf-regexp-search-***-source       # For zsh
-# $ fzf-regexp-search-options fzf-regexp-search-***-source --vim # For vim
+# $ fzf-regexp-search-options
+# --source         # Mandatory, list of suggestions
 
-# Parse arguments {{{
 zmodload zsh/zutil
 zparseopts -E -D \
-  -vim=vimFlag
+  -source:=flagSource
 
-local sourceBinary="$1"
-local isForVim=${#vimFlag}
-# }}}
+local fzfSourcePath=${flagSource[2]}
 
 local fzfOptions=()
 fzfOptions+="--disabled"
 fzfOptions+="--delimiter=   "
 fzfOptions+="--with-nth=3"
-if [[ $isForVim == "1" ]]; then
-  fzfOptions+="--bind='change:reload:sleep 0.1;${sourceBinary} {q} || true'"
-else
-  fzfOptions+="--bind=change:reload:sleep 0.1;${sourceBinary} {q} || true"
-fi
+fzfOptions+="--bind=change:reload:sleep 0.1;${fzfSourcePath} {q} || true"
 
-# One per line, or separated by space.
+# One per line
 for fzfOption in $fzfOptions; do
-  if [[ $isForVim == "1" ]]; then
-    echo -n "$fzfOption "
-  else
-    echo $fzfOption
-  fi
+  echo $fzfOption
 done

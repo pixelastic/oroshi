@@ -20,7 +20,11 @@ local fzfPostprocessPath=${flagPostprocess[2]:-echo}
 local fzfOptions="$($fzfOptionsPath)"
 
 # Actual fzf selection
-local rawSelection="$($fzfSourcePath | fzf ${(f)fzfOptions})"
+if [[ $fzfSourcePath == "" ]]; then
+  local rawSelection="$(fzf ${(f)fzfOptions})"
+else
+  local rawSelection="$($fzfSourcePath | fzf ${(f)fzfOptions})"
+fi
 
 # Parsing the selection to extract only relevant information
 local selection="$($fzfPostprocessPath "$rawSelection")"

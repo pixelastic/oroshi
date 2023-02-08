@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Returns the specific options to pass to fzf
+fzf-regexp-search-options \
+  --source fzf-regexp-search-project-source
+
+echo "--prompt=grep ❯ "

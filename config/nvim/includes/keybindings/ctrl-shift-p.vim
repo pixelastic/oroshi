@@ -6,21 +6,18 @@ let fzfFilesSearchSubdirSource='fzf-files-search-subdir-source'
 
 " FZF options
 function! FzfFilesSearchSubdirOptions()
-  let subdir=expand('%:p:h')
-  let fzfOptions= system('fzf-files-search-options '. subdir .' --vim')
-  return fzfOptions
+  let fzfOptions= system('fzf-files-search-options')
+  return split(fzfOptions, "\n")
 endfunction
 
 " What to do with the selection
 function! FzfFilesSearchSubdirSink(selection)
-  let rawSelection=join(a:selection, "\n")
-  if rawSelection ==# ''
+  if len(a:selection) ==# 0
     return
   endif
 
-  " Parse the raw selection
-  let subdir=expand('%:p:h')
-  let selection=system('fzf-files-search-postprocess '.shellescape(rawSelection).' '.subdir)
+  let rawSelection=join(a:selection, "\n")
+  let selection=system('fzf-files-search-postprocess '.shellescape(rawSelection))
 
   " Open each file
   for filepath in split(selection, ' ')

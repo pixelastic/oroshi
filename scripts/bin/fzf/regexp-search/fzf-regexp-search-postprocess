@@ -6,10 +6,9 @@
 # number will be returned.
 #
 # Usage:
-# $ fzf-regexp-search-postprocess {multiLineSelection} /path/to/directory
+# $ fzf-regexp-search-postprocess {multiLineSelection}
 
 local rawSelection="$1"
-local directory="$2"
 
 # Stop early
 [[ $rawSelection == "" ]] && exit
@@ -23,7 +22,7 @@ for line in ${(f)rawSelection}; do
   # Skip empty/UI lines
   [[ ${#split[@]} != 3 ]] && continue
   
-  local filepath="${directory}/$split[1]"
+  local filepath="$split[1]"
   local lineNumber="$split[2]"
 
   [[ $files[$filepath] != "" ]] && continue

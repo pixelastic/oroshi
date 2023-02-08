@@ -2,7 +2,7 @@
 
 " FZF options
 function! FzfRegexpSearchProjectOptions()
-  let fzfOptions= system('fzf-regexp-search-options fzf-regexp-search-project-source --vim')
+  let fzfOptions= system('fzf-regexp-search-options $sourceBinaryfzf-regexp-search-options fzf-regexp-search-project-source --vim')
   return fzfOptions
 endfunction
 

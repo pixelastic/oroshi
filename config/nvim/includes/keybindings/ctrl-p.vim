@@ -5,21 +5,18 @@ let fzfFilesSearchProjectSource='fzf-files-search-project-source'
 
 " FZF options
 function! FzfFilesSearchProjectOptions()
-  let gitRoot=GitRoot()
-  let fzfOptions= system('fzf-files-search-options '. gitRoot .' --vim')
-  return fzfOptions
+  let fzfOptions= system('fzf-files-search-options')
+  return split(fzfOptions, "\n")
 endfunction
 
 " What to do with the selection
 function! FzfFilesSearchProjectSink(selection)
-  let rawSelection=join(a:selection, "\n")
-  if rawSelection ==# ''
+  if len(a:selection) ==# 0
     return
   endif
 
-  " Parse the raw selection
-  let gitRoot=GitRoot()
-  let selection=system('fzf-files-search-postprocess '.shellescape(rawSelection).' '.gitRoot)
+  let rawSelection=join(a:selection, "\n")
+  let selection=system('fzf-files-search-postprocess '.shellescape(rawSelection))
 
   " Open each file
   for filepath in split(selection, ' ')

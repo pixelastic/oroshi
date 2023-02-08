@@ -4,6 +4,6 @@ local query="$1"
 local here="$PWD"
 
 fzf-regexp-search-source \
-  "${query}" \
-  "${here}"
+  --directory "${here}" \
+  --query     "${query}"
 

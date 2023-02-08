@@ -1,18 +1,16 @@
 #!/usr/bin/env zsh
-# Starts a dynamic regexp search in file
+# Dynamic regexp search inside of files
 # Usage:
-# $ fzf-regexp-search fzf-regexp-search-***-source /path/to/directory
+# $ fzf-regexp-search \
+# --options         # Mandatory, options to pass to fzf
 
-local sourceBinary="$1"
-local directory="$2"
+zmodload zsh/zutil
+zparseopts -E -D \
+  -options:=flagOptions
 
-# The options to pass to fzf
-local fzfOptions="$(fzf-regexp-search-options $sourceBinary)"
+local fzfOptionsPath=${flagOptions[2]}
+local fzfPostprocessPath="fzf-regexp-search-postprocess"
 
-# Actual fzf selection
-local rawSelection="$(fzf ${(f)fzfOptions})"
-
-# Parsing the selection to extract only relevant information
-local selection="$(fzf-regexp-search-postprocess "$rawSelection" $directory)"
-
-echo $selection
+fzf-search \
+  --options "$fzfOptionsPath" \
+  --postprocess "$fzfPostprocessPath"

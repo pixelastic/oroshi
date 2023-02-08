@@ -1,10 +1,18 @@
 #!/usr/bin/env zsh
 # Returns a list of matches for a given query
 # Usage:
-# $ fzf-regexp-search-source "query" /path/to/directory
+# $ fzf-regexp-search-source
+# --query             # Mandatory, query to look for
+# --directory         # Mandatory, base directory to search
 
-local query="$1"
-local directory="$2"
+
+zmodload zsh/zutil
+zparseopts -E -D \
+  -query:=flagQuery \
+  -directory:=flagDirectory
+
+local directory=${flagDirectory[2]}
+local query=${flagQuery[2]}
 
 # Adding headings {{{
 # ripgrep either displays filename as a heading before all matches, or as
@@ -14,31 +22,39 @@ local directory="$2"
 # add a heading manually by copying the prefix of the first line of each
 # section.
 
-local regexpSearch=""
+local regexpTitleSearch=""
 # We match either the start of the text, or the end of a section separator.
 # We defined those to end with an Zero-Width Space (​) for easier splitting.
-regexpSearch+="(^|​\n)"
+regexpTitleSearch+="(^|​\n)"
 # We capture the whole line after it, because we'll have to display it again
-regexpSearch+="("
+regexpTitleSearch+="("
 # We capture anything that is before a   (the filepath), and captures until the end
 # of the line. Sed does not have a non-greedy mode, so we need to explicitly
 # define [^\n] to force it to stop at the end of the line.
-regexpSearch+="([^\n ]*)   ([^\n]*)"
+regexpTitleSearch+="([^\n ]*)   ([^\n]*)"
 # We close our line capturing group
-regexpSearch+=")\n"
+regexpTitleSearch+=")\n"
 
 # We replace our matches with by adding a new line above the matching one
-local regexpReplace=""
+local regexpTitleReplace=""
 # We re-add our initial delimiter (either start of text, or new line after
 # a separator
-regexpReplace+="\1"
+regexpTitleReplace+="\1"
 # We display the filepath twice, and a 0 as the line number, just like any other
 # line. The first filepath will be used by the selection, the second one will be
 # displayed
-regexpReplace+="\3   0   \3"
+regexpTitleReplace+="\3   0   \3"
 # We display our matching line again
-regexpReplace+="\n\2\n"
+regexpTitleReplace+="\n\2\n"
 # }}}
+
+# Prepending the full directory {{{
+# The output uses a column format (separated by    ) to be parsed by fzf. fzf
+# will only display (and search into) the third column, but we use the 1st and
+# 2nd one to store the full path and the line number
+local regexpDirectorySearch="\n(.[^ \n]*) "
+
+local regexpDirectoryReplace="\n${directory}\1 "
 
 cd $directory
 # Note:
@@ -51,4 +67,4 @@ rg \
   | sed \
       --null-data \
       --regexp-extended \
-      "s_${regexpSearch}_${regexpReplace}_g"
+      "s_${regexpTitleSearch}_${regexpTitleReplace}_g; s_${regexpDirectorySearch}_${regexpDirectoryReplace}_g"

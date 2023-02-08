@@ -1,8 +1,5 @@
 #!/usr/bin/env zsh
-# Starts a dynamic regexp search in file, in the current project
-
-local gitRoot="$(git-directory-root -f)"
+# Dynamic regexp search inside of project
 
 fzf-regexp-search \
-  "fzf-regexp-search-project-source" \
-  "${gitRoot}"
+  --options "fzf-regexp-search-project-options"
