@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
 # Starts a dynamic file search, in the current project
 fzf-files-search \
-  --source "fzf-files-search-project-source"
+  --source "fzf-files-search-project-source" \
+  --options "fzf-files-search-project-options"

@@ -71,6 +71,7 @@ aliasColors=()
 # Common
 aliasColors[LOCAL_DEPENDENCY]="YELLOW"
 aliasColors[DIRECTORY]="GREEN"
+aliasColors[FILE]="VIOLET"
 aliasColors[EXECUTABLE]="VIOLET"
 aliasColors[LINK]="BLUE"
 aliasColors[UNKNOWN]="CYAN_4"

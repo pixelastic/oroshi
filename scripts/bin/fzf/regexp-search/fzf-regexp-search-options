@@ -17,8 +17,8 @@ echo "--bind=change:reload:sleep 0.1;${fzfSourcePath} {q} || true"
 
 # Color the UI in regexp color
 echo "--color=disabled:${COLOR_ALIAS_REGEXP}:regular"
-echo "--color=info:$COLOR_ALIAS_REGEXP"
-echo "--color=separator:$COLOR_ALIAS_REGEXP"
+echo "--color=separator:${COLOR_ALIAS_REGEXP}"
+echo "--color=info:${COLOR_ALIAS_REGEXP}"
 echo "--color=pointer:${COLOR_ALIAS_REGEXP}"
 echo "--color=marker:${COLOR_ALIAS_REGEXP}"
 

@@ -6,7 +6,7 @@ let fzfFilesSearchSubdirSource='fzf-files-search-subdir-source'
 
 " FZF options
 function! FzfFilesSearchSubdirOptions()
-  let fzfOptions= system('fzf-files-search-options')
+  let fzfOptions= system('fzf-files-search-subdir-options')
   return split(fzfOptions, "\n")
 endfunction
 

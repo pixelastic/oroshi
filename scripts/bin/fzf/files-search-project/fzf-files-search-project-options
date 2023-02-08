@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# Returns the specific options to pass to fzf
+fzf-files-search-options 
+
+local projectKey="$(project-by-path $PWD)"
+local prompt="$(colorize-project $projectKey)"
+# fzf in vim fails to parse the prompt if there is ​ in it
+prompt=${prompt:gs/​//}
+echo "--prompt=$prompt "
+

@@ -5,7 +5,7 @@ let fzfFilesSearchProjectSource='fzf-files-search-project-source'
 
 " FZF options
 function! FzfFilesSearchProjectOptions()
-  let fzfOptions= system('fzf-files-search-options')
+  let fzfOptions= system('fzf-files-search-project-options')
   return split(fzfOptions, "\n")
 endfunction
 
