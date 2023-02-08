@@ -2,6 +2,10 @@
 # Returns the specific options to pass to fzf
 fzf-directories-search-options 
 
+# Keep the sort of z
+echo "--no-sort"
+
+# Prompt
 local promptPrefix="$(colorize "  Jump to " $COLOR_WHITE $COLOR_ALIAS_DIRECTORY)"
 local promptSuffix="$(colorize "" $COLOR_ALIAS_DIRECTORY)"
 echo "--prompt=${promptPrefix}${promptSuffix} "
