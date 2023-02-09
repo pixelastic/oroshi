@@ -10,6 +10,13 @@
 # - If a rebase is in progress
 # - A color-coded status icon
 function __prompt-git-flags() {
+  # Quick display: only the git icon
+  if [[ $OROSHI_PROMPT_ENHANCED_MODE == "0" ]]; then
+    (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
+    echo -n "ﰖ "
+    return
+  fi
+
   # Do nothing if in a .git folder
   git-directory-is-dot-git && return
 
@@ -28,15 +35,15 @@ function __prompt-git-flags() {
 # - Red if any file has been added/deleted/modified
 # - Purple if files are added to the index
 function __prompt-git-status() {
-  git-directory-has-staged-files && echo -n "%F{$COLOR_ALIAS_GIT_MODIFIED}ﰖ %f" && return
-  git-directory-is-dirty && echo -n "%F{$COLOR_ALIAS_ERROR}ﰖ %f" && return
+  (( $GIT_DIRECTORY_HAS_STAGED_FILES )) && echo -n "%F{$COLOR_ALIAS_GIT_MODIFIED}ﰖ %f" && return
+  (( $GIT_DIRECTORY_IS_DIRTY )) && echo -n "%F{$COLOR_ALIAS_ERROR}ﰖ %f" && return
   echo -n "%F{$COLOR_ALIAS_SUCCESS}ﰖ %f"
 }
 
 # Display all the git-related informations on the right
 function __prompt-git-right() {
   # Stop if not a git repo
-  git-directory-is-repository || return
+  (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
 
   # Replace all with rebase information
   if git-rebase-inprogress; then
@@ -71,21 +78,21 @@ function __prompt-git-rebase() {
 
 # Display the most relevant git tag
 function __prompt-git-tag() {
-  echo -n "$(OROSHI_IS_PROMPT=1 git-tag-colorize --with-icon) "
+  local gitTag="$(OROSHI_IS_PROMPT=1 git-tag-colorize --with-icon)"
+  [[ $gitTag == "" ]] && echo -n "${gitTag} "
 }
 
 # Display the current remote:
 # - only if not origin
 function __prompt-git-remote() {
-  local remoteName="$(git-remote-current)"
-  [[ $remoteName = 'origin' ]] && return;
+  [[ $GIT_REMOTE_CURRENT == 'origin' ]] && return;
 
-  echo -n "$(OROSHI_IS_PROMPT=1 git-remote-colorize --with-icon) "
+  echo -n "$(OROSHI_IS_PROMPT=1 git-remote-colorize $GIT_REMOTE_CURRENT --with-icon) "
 }
 
 # Display the current branch
 function __prompt-git-branch() {
-  echo -n "$(OROSHI_IS_PROMPT=1 git-branch-colorize --with-icon)"
+  echo -n "$(OROSHI_IS_PROMPT=1 git-branch-colorize $GIT_BRANCH_CURRENT --with-icon)"
 }
 
 # Returns the number of currently opened issues
@@ -96,14 +103,14 @@ function __prompt-github-issues-and-prs() {
     return
   fi
 
-  local gitFolder="$(git-directory-root)/.git"
+  local gitFolder="${GIT_DIRECTORY_ROOT}/.git"
 
   # Stop early if no .git folder at the root (like in submodules, where it's
   # a file)
   [[ ! -d $gitFolder ]] && return
 
   # Stop if not in a GitHub repo
-  git-directory-is-github || return
+  (( $GIT_DIRECTORY_IS_GITHUB )) || return
 
   local issueCacheFile="${gitFolder}/oroshi_issue_count"
   local prCacheFile="${gitFolder}/oroshi_pr_count"
@@ -118,15 +125,14 @@ function __prompt-github-issues-and-prs() {
   fi
 
   local display=""
-  local prCount="$(\cat $prCacheFile)"
+  local prCount="$(<$prCacheFile)"
   if [[ ! $prCount = 0 ]]; then
     display="${display}%F{$COLOR_ALIAS_GIT_PULL_REQUEST} ${prCount}%f "
   fi
-  local issueCount="$(\cat $issueCacheFile)"
+  local issueCount="$(<$issueCacheFile)"
   if [[ ! $issueCount = 0 ]]; then
     display="${display}%F{$COLOR_ALIAS_GIT_ISSUE} ${issueCount}%f "
   fi
-
-  echo $display
+  echo -n $display
 }
 # }}}
