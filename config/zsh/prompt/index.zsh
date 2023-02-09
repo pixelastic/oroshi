@@ -2,9 +2,13 @@ setopt PROMPT_SUBST
 autoload -U promptinit
 promptinit
 
-# We'll asynchronously generate the right and left prompt by running background
-# processes
-OROSHI_PROMPT_ENHANCED_MODE=0
+# When the prompt gets displayed for the first time, both left and right prompt
+# display a fast version, so we can use the prompt quickly.
+#
+# Then, on each new command:
+# - Left prompt will display its fast version, then update to the enhanced one
+# - Right prompt will keep previous display, then update it
+OROSHI_PROMPT_ENHANCED_MODE=0 
 OROSHI_PROMPT_GENERATION_PID=0
 OROSHI_PROMPT_RIGHT_PATH=/tmp/oroshi_prompt_right
 OROSHI_PROMPT_LEFT_PATH=/tmp/oroshi_prompt_left
@@ -20,14 +24,15 @@ require 'prompt/ruby'
 
 
 # Left {{{
+# The left prompt displays information quickly. Heavy computation is done in the
+# background and the prompt is updated afterwards.
 function __prompt-left() {
-  oroshi-debug-timer-prompt-reset
-
   __prompt-path
-  prompt-timer __prompt-node-flags
-  prompt-timer __prompt-background-flags
-  prompt-timer __prompt-git-flags
-  prompt-timer __prompt-exit-code
+  __prompt-node-flags
+  __prompt-background-flags
+  __prompt-git-flags
+  __prompt-git-status
+  __prompt-exit-code
 }
 function __prompt-left-enhanced() {
   OROSHI_PROMPT_ENHANCED_MODE=1
@@ -40,9 +45,13 @@ PROMPT='$(__prompt-left)'
 function __prompt-right() {
   [[ ! -r $PWD ]] && return
 
-  # __prompt-ruby-version
-  # __prompt-node-version
-  # __prompt-git-right
+  __prompt-ruby-version
+  __prompt-node-version
+  __prompt-git-right
+}
+function __prompt-right-enhanced() {
+  OROSHI_PROMPT_ENHANCED_MODE=1
+  __prompt-right
 }
 RPROMPT='$(__prompt-right)'
 # }}}
@@ -63,7 +72,7 @@ function precmd() {
   # Write left and right prompts to a tmp file and refresh the prompt
   function async() {
     __prompt-left-enhanced >! $OROSHI_PROMPT_LEFT_PATH
-    __prompt-right >! $OROSHI_PROMPT_RIGHT_PATH
+    __prompt-right-enhanced >! $OROSHI_PROMPT_RIGHT_PATH
     prompt-refresh
   }
 
@@ -89,7 +98,10 @@ function TRAPUSR1() {
   # if fzf is currently running, as it will mess the display up
   [[ $PROMPT_PREVENT_REFRESH == "1" ]] && return
 
-  # Redraw 
+  # Redraw
   zle && zle reset-prompt
+
+  # Reset prompt to fast display for next one
+  PROMPT='$(__prompt-left)'
 }
 # }}}

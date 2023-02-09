@@ -4,12 +4,6 @@
 # - Shorten the actual path to no more than 3 items
 # - Color the path if not writable
 function __prompt-path() {
-  # Quick display: only the git icon
-  if [[ $OROSHI_PROMPT_ENHANCED_MODE == "0" ]]; then
-    echo -n "%F{$COLOR_ALIAS_DIRECTORY}$PWD %f"
-    return
-  fi
-
   local currentPath="$(print -D $PWD)/"
 
   # Checking if part of a known project
@@ -35,7 +29,6 @@ function __prompt-path() {
     local projectPrefix="$(OROSHI_IS_PROMPT=1; colorize-project $projectKey)"
     echo -n $projectPrefix
   fi
-
 
   # Color the string path
   if [[ $currentPath != '' ]]; then

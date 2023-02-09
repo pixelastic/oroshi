@@ -1,8 +1,5 @@
 # Git
 # Display git-related information
-# TODO: Have a look at gitstatus, which is a faster gitstatus implementation,
-# specifically for shell usage.
-# https://github.com/romkatv/gitstatus
 
 # Display git flags:
 # - If in a submodule
@@ -10,24 +7,20 @@
 # - If a rebase is in progress
 # - A color-coded status icon
 function __prompt-git-flags() {
-  # Quick display: only the git icon
+  # Do nothing if not in a git repo
+  (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
+
+  # Quick display: we don't display anything
   if [[ $OROSHI_PROMPT_ENHANCED_MODE == "0" ]]; then
-    (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
-    echo -n "ﰖ "
     return
   fi
 
   # Do nothing if in a .git folder
   git-directory-is-dot-git && return
 
-  # Or in a non-git repo
-  (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
-
   git-is-submodule && echo -n "%F{$COLOR_ALIAS_LOCAL_DEPENDENCY} %f"
-
   (( $GIT_STASH_EXISTS )) && echo -n "%F{$COLOR_ALIAS_GIT_STASH} %f"
   git-rebase-inprogress && echo -n "%F{$COLOR_ALIAS_GIT_REBASE} %f"
-  prompt-timer __prompt-git-status
 }
 
 # Display a colored coded git symbol
@@ -45,16 +38,23 @@ function __prompt-git-right() {
   # Stop if not a git repo
   (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
 
-  # Replace all with rebase information
-  if git-rebase-inprogress; then
-    prompt-timer __prompt-git-rebase
+  # Quick display: only the branch name
+  if [[ $OROSHI_PROMPT_ENHANCED_MODE == "0" ]]; then
+    echo -n "%F{$COLOR_ALIAS_UI}${GIT_BRANCH_CURRENT}%f"
     return
   fi
 
-  prompt-timer __prompt-git-tag
-  prompt-timer __prompt-git-remote
-  prompt-timer __prompt-github-issues-and-prs
-  prompt-timer __prompt-git-branch
+
+  # Replace all with rebase information
+  if git-rebase-inprogress; then
+    __prompt-git-rebase
+    return
+  fi
+
+  __prompt-git-tag
+  __prompt-git-remote
+  __prompt-github-issues-and-prs
+  __prompt-git-branch
 }
 
 # Display the current state of the rebase:

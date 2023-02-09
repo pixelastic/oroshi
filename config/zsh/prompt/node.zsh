@@ -4,6 +4,11 @@
 # Display node flags:
 # - If there are currently any "yarn linked" modules
 function __prompt-node-flags() {
+  # Quick display: do nothing
+  if [[ $OROSHI_PROMPT_ENHANCED_MODE == "0" ]]; then
+    return
+  fi
+
   # All yarn methods depend on git root, so better stop early if no git
   git-directory-is-repository || return
 
@@ -51,6 +56,11 @@ function __prompt-yarn-links() {
 # -  X.Y.Z (yellow) if local and current don't match match
 # -  X.Y.Z (green) if local and current match
 function __prompt-node-version() {
+  # Quick display: don't display anything
+  if [[ $OROSHI_PROMPT_ENHANCED_MODE == "0" ]]; then
+    return
+  fi
+
   # Not even a system-wide node installation
   if [[ ! -v commands[node] ]]; then
     echo -n "%F{$COLOR_ALIAS_ERROR} %f"

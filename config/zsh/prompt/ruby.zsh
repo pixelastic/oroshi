@@ -8,6 +8,11 @@
 # -  X.Y.Z (red) if local version isn't installed
 # -  X.Y.Z (green) if local and current match
 function __prompt-ruby-version() {
+  # Quick display: don't display anything
+  if [[ $OROSHI_PROMPT_ENHANCED_MODE == "0" ]]; then
+    return
+  fi
+
   # Not even a system-wide ruby installation
   if [[ ! -v commands[ruby] ]]; then
     echo -n "%F{$COLOR_ALIAS_ERROR} %f"

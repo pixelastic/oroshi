@@ -1,3 +1,3 @@
 function git-env-stop() {
-  gitstatus_stop 'MY'
+  gitstatus_stop 'OROSHI'
 }
