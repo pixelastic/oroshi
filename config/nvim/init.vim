@@ -6,7 +6,7 @@ source ~/.config/nvim/includes/functions/index.vim
 source ~/.config/nvim/includes/completion.vim
 
 source ~/.config/nvim/includes/keybindings/index.vim
-" source ~/.config/nvim/includes/statusline/index.vim
+source ~/.config/nvim/includes/statusline/index.vim
 source ~/.config/nvim/includes/plugins/index.vim
 
 source ~/.config/nvim/includes/colors.vim
@@ -48,7 +48,7 @@ augroup END
 " ,ve to edit vimrc
 nnoremap <leader>ve :tabe ~/.oroshi/config/vim/vimrc<CR>
 " ,vr to reload vimrc
-nnoremap <leader>vr mz:source ~/.config/nvim/init.vim<CR>:let &filetype=&filetype<CR>:nohlsearch<CR>`z 
+nnoremap <silent> <leader>vr mz:source ~/.config/nvim/init.vim<CR>:let &filetype=&filetype<CR>:nohlsearch<CR>`z 
 " man to open the manpage of a command in a new tab
 nnoremap <silent> man :tabe<CR>:setlocal filetype=man<CR>:.!man<Space>
 " }}}
