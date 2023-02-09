@@ -1,8 +1,8 @@
 # Only source this file for interactive shells
 [[ $- != *i* ]] && return
 
-export ZSH_SOURCE_TIMER=0 # Set to 1 to show source timing
-export ZSH_PROMPT_TIMER=0 # Set to 1 to show prompt timing
+export OROSHI_TIMER_REQUIRE=0 # Set to 1 to show source timing
+export OROSHI_TIMER_PROMPT=1  # Set to 1 to show prompt timing
 
 require 'env'               # Global environment variables
 require 'path'              # Definition of $PATH
@@ -19,6 +19,4 @@ require 'prompt/index'      # Prompt display
 require 'local/index'       # Laptop-specific configuration
 
 # Display all source timers
-if [[ $ZSH_SOURCE_TIMER == '1' ]]; then
-  oroshi_debug_source_timer
-fi
+oroshi-debug-timer-require

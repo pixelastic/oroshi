@@ -8,12 +8,12 @@ function () {
 
   # Generate env vars if missing, and load them
   [[ ! -r ${colorsFilePath} ]] && env-generate-colors
-  source ${colorsFilePath}
+  require ${colorsFilePath}
 
   [[ ! -r ${projectsFilePath} ]] && env-generate-projects
-  source ${projectsFilePath}
+  require ${projectsFilePath}
 
   [[ ! -r ${filetypesFilePath} ]] && env-generate-filetypes
-  source ${filetypesFilePath}
+  require ${filetypesFilePath}
 }
 

@@ -2,8 +2,8 @@
 local hostname="$(hostname)"
 local localConfig=~/.oroshi/config/zsh/local/${hostname}.zsh
 
-[[ -r $localConfig ]] && source $localConfig
+[[ -r $localConfig ]] && require $localConfig
 
 local privateLocalConfig=~/.oroshi/private/config/zsh/local/${hostname}.zsh
-[[ -r $privateLocalConfig ]] && source $privateLocalConfig
+[[ -r $privateLocalConfig ]] && require $privateLocalConfig
 # }}}

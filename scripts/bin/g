@@ -4,5 +4,4 @@
 # $ g query       # Display all files matching a specific query
 
 rg \
-  --glob='!.git' \
   "$@"
