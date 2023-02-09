@@ -1,5 +1,8 @@
 # Git
 # Display git-related information
+# TODO: Have a look at gitstatus, which is a faster gitstatus implementation,
+# specifically for shell usage.
+# https://github.com/romkatv/gitstatus
 
 # Display git flags:
 # - If in a submodule
@@ -11,12 +14,13 @@ function __prompt-git-flags() {
   git-directory-is-dot-git && return
 
   # Or in a non-git repo
-  git-directory-is-repository || return
+  (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
 
   git-is-submodule && echo -n "%F{$COLOR_ALIAS_LOCAL_DEPENDENCY} %f"
-  git-stash-exists && echo -n "%F{$COLOR_ALIAS_GIT_STASH} %f"
+
+  (( $GIT_STASH_EXISTS )) && echo -n "%F{$COLOR_ALIAS_GIT_STASH} %f"
   git-rebase-inprogress && echo -n "%F{$COLOR_ALIAS_GIT_REBASE} %f"
-  echo -n "$(__prompt-git-status)"
+  prompt-timer __prompt-git-status
 }
 
 # Display a colored coded git symbol
@@ -24,9 +28,9 @@ function __prompt-git-flags() {
 # - Red if any file has been added/deleted/modified
 # - Purple if files are added to the index
 function __prompt-git-status() {
-  git-directory-has-staged-files && echo "%F{$COLOR_ALIAS_GIT_MODIFIED}ﰖ %f" && return
-  git-directory-is-dirty && echo "%F{$COLOR_ALIAS_ERROR}ﰖ %f" && return
-  echo "%F{$COLOR_ALIAS_SUCCESS}ﰖ %f"
+  git-directory-has-staged-files && echo -n "%F{$COLOR_ALIAS_GIT_MODIFIED}ﰖ %f" && return
+  git-directory-is-dirty && echo -n "%F{$COLOR_ALIAS_ERROR}ﰖ %f" && return
+  echo -n "%F{$COLOR_ALIAS_SUCCESS}ﰖ %f"
 }
 
 # Display all the git-related informations on the right
@@ -36,14 +40,14 @@ function __prompt-git-right() {
 
   # Replace all with rebase information
   if git-rebase-inprogress; then
-    echo "$(__prompt-git-rebase)"
+    prompt-timer __prompt-git-rebase
     return
   fi
 
-  echo -n "$(__prompt-git-tag)"
-  echo -n "$(__prompt-git-remote)"
-  echo -n "$(__prompt-github-issues-and-prs)"
-  echo -n "$(__prompt-git-branch)"
+  prompt-timer __prompt-git-tag
+  prompt-timer __prompt-git-remote
+  prompt-timer __prompt-github-issues-and-prs
+  prompt-timer __prompt-git-branch
 }
 
 # Display the current state of the rebase:

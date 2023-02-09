@@ -2,9 +2,8 @@ setopt PROMPT_SUBST
 autoload -U promptinit
 promptinit
 
-OROSHI_RPROMPT_GENERATION_PID=0
-OROSHI_RPROMPT_PATH=/tmp/oroshi_rprompt
-
+OROSHI_RPROMPT_GENERATION_PID=0         # pid of the script generating the RPROMPT
+OROSHI_RPROMPT_PATH=/tmp/oroshi_rprompt # Where to save the output of the RPROMT
 
 # Dependencies {{{
 require 'prompt/background'
@@ -15,24 +14,16 @@ require 'prompt/path'
 require 'prompt/ruby'
 # }}}
 
+
 # Left {{{
 function __prompt-left() {
-  if [[ $ZSH_PROMPT_TIMER == 1 ]]; then
-    local before=$(/bin/date +%s%N)
-  fi
+  oroshi-debug-timer-prompt-reset
 
-  echo -n "$(__prompt-path)"
-  echo -n "$(__prompt-node-flags)"
-  echo -n "$(__prompt-background-flags)"
-  echo -n "$(__prompt-git-flags)"
-  echo -n "$(__prompt-exit-code)"
-
-  if [[ $ZSH_PROMPT_TIMER == 1 ]]; then
-    local after=$(/bin/date +%s%N)
-
-    local difference=$((($after - $before)/1000000))
-    echo "${difference}ms"
-  fi
+  prompt-timer __prompt-path
+  prompt-timer __prompt-node-flags
+  prompt-timer __prompt-background-flags
+  prompt-timer __prompt-git-flags
+  prompt-timer __prompt-exit-code
 }
 PROMPT='$(__prompt-left)'
 # }}}
@@ -41,26 +32,29 @@ PROMPT='$(__prompt-left)'
 function __prompt-right() {
   [[ ! -r $PWD ]] && return
 
-  echo -n "$(__prompt-ruby-version)"
-  echo -n "$(__prompt-node-version)"
-  echo -n "$(__prompt-git-right)"
+  __prompt-ruby-version
+  __prompt-node-version
+  __prompt-git-right
 }
 RPROMPT=''
 # }}}
 
 # precmd: Called after each command, right before the prompt is displayed {{{
 function precmd() {
+  # Update env GIT_ variables
+  git-env-update
+
   # We keep a reference to the last command exit code
   OROSHI_LAST_COMMAND_EXIT="$?"
 
   # Kill the previous RPROMPT generation process if it was already running
-  if [[ "${OROSHI_RPROMPT_GENERATION_PID}" != 0 ]]; then
+  if [[ "${OROSHI_RPROMPT_GENERATION_PID}" != "0" ]]; then
     kill -s HUP $OROSHI_RPROMPT_GENERATION_PID >/dev/null 2>&1 || :
   fi
 
   # Write RPROMPT to a tmp file and refresh the prompt
   function async() {
-    echo "$(__prompt-right)" >! $OROSHI_RPROMPT_PATH
+    __prompt-right >! $OROSHI_RPROMPT_PATH
     prompt-refresh
   }
 
@@ -75,7 +69,7 @@ function precmd() {
 # We use it to force a refresh of the prompt
 function TRAPUSR1() {
   # RPROMPT was generated in the background, we display it
-  if [[ $OROSHI_RPROMPT_GENERATION_PID != 0 ]]; then
+  if [[ $OROSHI_RPROMPT_GENERATION_PID != "0" ]]; then
     RPROMPT="$(\cat $OROSHI_RPROMPT_PATH)"
     OROSHI_RPROMPT_GENERATION_PID=0
   fi
@@ -84,7 +78,7 @@ function TRAPUSR1() {
   # if fzf is currently running, as it will mess the display up
   [[ $PROMPT_PREVENT_REFRESH == "1" ]] && return
 
-  # Redraw
+  # Redraw (only if not in debug mode)
   zle && zle reset-prompt
 }
 # }}}

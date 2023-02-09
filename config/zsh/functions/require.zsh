@@ -23,7 +23,7 @@ function require {
 
   # Stop if already loaded
   [[ $OROSHI_REQUIRED_FILES[$requirePath] == '1' ]] && return
-  
+
   # Mark this file as loaded
   OROSHI_REQUIRED_FILES[$requirePath]='1'
 
