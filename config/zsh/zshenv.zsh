@@ -6,6 +6,3 @@
 for functionPath in ~/.oroshi/config/zsh/functions/**/*.zsh; do
   source $functionPath
 done
-
-
-

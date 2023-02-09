@@ -1,12 +1,5 @@
 # Custom shell tools, like nvm, rvm, etc
-require 'tools/bat'
-require 'tools/direnv'
-require 'tools/exa'
-require 'tools/fzf'
-require 'tools/gvm'
-require 'tools/ls'
-require 'tools/nvm'
-require 'tools/pyenv'
-require 'tools/rg'
-require 'tools/zsh'
-require 'tools/z'
+for toolPath in ~/.oroshi/config/zsh/tools/**/*.zsh; do
+  [[ ${toolPath:t} == 'index.zsh' ]] && continue
+  source $toolPath
+done

@@ -4,21 +4,21 @@
 export ZSH_SOURCE_TIMER=0 # Set to 1 to show source timing
 export ZSH_PROMPT_TIMER=0 # Set to 1 to show prompt timing
 
-# Setting env variables
-require 'env'
-require 'path'
-require 'tmux'
-require 'theming/index'
+require 'env'               # Global environment variables
+require 'path'              # Definition of $PATH
+require 'tmux'              # Tmux load
+require 'theming/index'     # Colors
 
-require 'completion/index'
-require 'history'
-require 'aliases'
-require 'tools/index'
-require 'keybindings/index'
-require 'prompt/index'
+require 'completion/index'  # Autocompletion
+require 'history'           # History of commands
+require 'aliases/index'     # Aliases definitions
+require 'tools/index'       # Tools (nvm, bat, rg, fzf, etc) configuration
+require 'keybindings/index' # Ctrl-G, Ctrl-P, etc
+require 'prompt/index'      # Prompt display
 
-require 'local/index'
+require 'local/index'       # Laptop-specific configuration
 
+# Display all source timers
 if [[ $ZSH_SOURCE_TIMER == '1' ]]; then
   oroshi_debug_source_timer
 fi
