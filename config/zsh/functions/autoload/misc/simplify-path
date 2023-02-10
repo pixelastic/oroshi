@@ -8,7 +8,7 @@ function simplify-path () {
   pathArray=(${(s:/:)fullPath})
   if [[ ${#pathArray[*]} -lt 4 ]]; then
     echo $fullPath
-    exit 0
+    return 0
   fi
 
   echo "${pathArray[1]}/…/${pathArray[-2]}/${pathArray[-1]}/"

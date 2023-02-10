@@ -1,4 +1,3 @@
-#!/usr/bin/env zsh
 # Given two commit, display the one that is closer
 # Usage:
 # $ git-commit-closest {sha1} {sha2}

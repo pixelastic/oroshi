@@ -2,9 +2,21 @@
 # - Interactive shells (just like zshrc)
 # - zsh scripts
 
-# Load functions
-# TODO: See autoload
-# https://htr3n.github.io/2018/07/faster-zsh/
-for functionPath in ~/.oroshi/config/zsh/functions/**/*.zsh; do
-  source $functionPath
+local functionDirectory=~/.oroshi/config/zsh/functions
+# Manually loading all functions saved in ./functions
+for item in ${functionDirectory}/*.zsh; do
+  source $item
 done
+# Lazy loading all functions saved in ./autoload
+for item in ${functionDirectory}/autoload/**/*; do
+  # If it's a folder, we add it to fpath, so zsh knows where to look
+  if [[ -d $item ]]; then
+    fpath+=($item)
+    continue
+  fi
+
+  # If it's a file, we mark the function as autoloadable, so zsh replaces it
+  # with a lazy-loaded
+  autoload -Uz ${item:t}
+done
+
