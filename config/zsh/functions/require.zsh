@@ -1,5 +1,6 @@
 declare -A OROSHI_REQUIRED_FILES
 OROSHI_REQUIRED_FILES=()
+OROSHI_TIMER_REQUIRE_STACK=''
 
 # Source a config file, and make sure it is only loaded once
 # Usage:

@@ -1,4 +1,3 @@
-function git-env-start() {
-  gitstatus_check 'OROSHI' && return
-  gitstatus_start 'OROSHI'
-}
+# gitstatus_check 'OROSHI' && return
+gitstatus_stop 'OROSHI'
+gitstatus_start 'OROSHI'

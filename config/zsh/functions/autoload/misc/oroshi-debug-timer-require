@@ -1,4 +1,3 @@
-local OROSHI_TIMER_REQUIRE_STACK=''
 
 function oroshi-debug-timer-require() {
   [[ $OROSHI_TIMER_REQUIRE_STACK == '' ]] && return
