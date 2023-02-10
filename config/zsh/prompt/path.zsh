@@ -36,7 +36,7 @@ function oroshi-prompt-path-populate() {
 
     # In .git
     if git-directory-is-dot-git; then
-      OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ORANGE}${currentPath:s_.git/_ }%f"
+      OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ORANGE}${currentPath:s_.git/_ }%f "
       return
     fi
 

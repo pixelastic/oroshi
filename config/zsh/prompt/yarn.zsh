@@ -21,18 +21,19 @@ function oroshi-prompt-yarn-link-populate() {
     local projectKey=${moduleName:u}
     local projectIcon=${(P)${:-PROJECT_${projectKey}_ICON}}
     if [[ $projectIcon != '' ]]; then
-      displayedString="${displayedString}${projectIcon}"
+      displayedString+="${projectIcon}"
       displayedModuleCount=$(($displayedModuleCount + 1));
     fi
   done
 
   # If some linked modules don't have an icon, we add the default chain ico
   if [[ $displayedModuleCount != $totalModuleCount ]]; then
-    displayedString="${displayedString} "
+    displayedString+=" "
   fi
 
-  # Save the full string
-  OROSHI_PROMPT_PARTS[yarn-link]="%F{$COLOR_ALIAS_STRING}${displayedString}%f "
+  if [[ $displayedString != "" ]]; then
+    OROSHI_PROMPT_PARTS[yarn-link]="%F{$COLOR_ALIAS_STRING}${displayedString}%f "
+  fi
 }
 
 # Check if a yarn install is in progress
