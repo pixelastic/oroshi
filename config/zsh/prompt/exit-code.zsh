@@ -3,10 +3,21 @@
 # - Green if success
 # - Red if error
 # - Purple if any other error code
-function __prompt-exit-code() {
-  local exit=$OROSHI_LAST_COMMAND_EXIT
-  [[ $exit = 1 ]] && echo -n "%B%F{$COLOR_ALIAS_ERROR}❯ %f%b" && return
-  [[ $exit > 1 ]] && echo -n "%F{$COLOR_ALIAS_NOTICE}❯ %f" && return
-  echo -n "%F{$COLOR_ALIAS_SUCCESS}❯ %f"
+function oroshi-prompt-exit-code-populate() {
+  OROSHI_PROMPT_PARTS[exit-code]=""
+
+  # Error
+  if [[ $OROSHI_LAST_COMMAND_EXIT == 1 ]]; then
+    OROSHI_PROMPT_PARTS[exit-code]="%F{$COLOR_ALIAS_ERROR}❯ %f"
+    return
+  fi
+
+  # Warning
+  if [[ $OROSHI_LAST_COMMAND_EXIT > 1 ]]; then
+    OROSHI_PROMPT_PARTS[exit-code]="%F{$COLOR_ALIAS_NOTICE}❯ %f"
+    return
+  fi
+
+  OROSHI_PROMPT_PARTS[exit-code]="%F{$COLOR_ALIAS_SUCCESS}❯ %f"
 }
 # }}}

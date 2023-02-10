@@ -6,31 +6,67 @@
 # - If has changes stashed
 # - If a rebase is in progress
 # - A color-coded status icon
-function __prompt-git-flags() {
-  # Do nothing if not in a git repo
-  (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
+function oroshi-prompt-git-flags-populate() {
+  OROSHI_PROMPT_PARTS[git-flags]=""
 
-  # Quick display: we don't display anything
-  if [[ $OROSHI_PROMPT_ENHANCED_MODE == "0" ]]; then
+  # Do nothing if not in a git repo
+  if [[ $GIT_DIRECTORY_IS_REPOSITORY == "0" ]]; then
     return
   fi
 
   # Do nothing if in a .git folder
   git-directory-is-dot-git && return
 
-  git-is-submodule && echo -n "%F{$COLOR_ALIAS_LOCAL_DEPENDENCY} %f"
-  (( $GIT_STASH_EXISTS )) && echo -n "%F{$COLOR_ALIAS_GIT_STASH} %f"
-  git-rebase-inprogress && echo -n "%F{$COLOR_ALIAS_GIT_REBASE} %f"
+  # Submodule
+  if git-is-submodule; then
+    OROSHI_PROMPT_PARTS[git-flags]+="%F{$COLOR_ALIAS_LOCAL_DEPENDENCY} %f"
+  fi
+
+  # Has a stach
+  if (( $GIT_STASH_EXISTS )); then
+    OROSHI_PROMPT_PARTS[git-flags]+="%F{$COLOR_ALIAS_GIT_STASH} %f"
+  fi
+
+  # Has a rebase in progress
+  if git-rebase-inprogress; then
+    OROSHI_PROMPT_PARTS[git-flags]+="%F{$COLOR_ALIAS_GIT_REBASE} %f"
+  fi
 }
 
 # Display a colored coded git symbol
 # - Green if no files were changed
 # - Red if any file has been added/deleted/modified
 # - Purple if files are added to the index
-function __prompt-git-status() {
-  (( $GIT_DIRECTORY_HAS_STAGED_FILES )) && echo -n "%F{$COLOR_ALIAS_GIT_MODIFIED}ﰖ %f" && return
-  (( $GIT_DIRECTORY_IS_DIRTY )) && echo -n "%F{$COLOR_ALIAS_ERROR}ﰖ %f" && return
-  echo -n "%F{$COLOR_ALIAS_SUCCESS}ﰖ %f"
+function oroshi-prompt-git-status-populate() {
+  OROSHI_PROMPT_PARTS[git-status]=""
+
+  (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
+
+  # Staged files
+  if (( $GIT_DIRECTORY_HAS_STAGED_FILES )); then
+    OROSHI_PROMPT_PARTS[git-status]="%F{$COLOR_ALIAS_GIT_MODIFIED}ﰖ %f"
+    return
+  fi
+
+  # Dirty directory
+  if (( $GIT_DIRECTORY_IS_DIRTY )); then
+    OROSHI_PROMPT_PARTS[git-status]="%F{$COLOR_ALIAS_ERROR}ﰖ %f"
+    return
+  fi
+
+  # Clean directory
+  OROSHI_PROMPT_PARTS[git-status]="%F{$COLOR_ALIAS_SUCCESS}ﰖ %f"
+}
+
+# Populate the current branch
+function oroshi-prompt-git-branch-populate() {
+  # Quick display: only the branch name
+  if [[ $OROSHI_PROMPT_EXTENDED_MODE == "0" ]]; then
+    OROSHI_PROMPT_PARTS[git-branch]="%F{$COLOR_ALIAS_UI}${GIT_BRANCH_CURRENT}%f"
+    return
+  fi
+
+  OROSHI_PROMPT_PARTS[git-branch]="$(OROSHI_IS_PROMPT=1 git-branch-colorize $GIT_BRANCH_CURRENT --with-icon)"
 }
 
 # Display all the git-related informations on the right
@@ -54,7 +90,6 @@ function __prompt-git-right() {
   __prompt-git-tag
   __prompt-git-remote
   __prompt-github-issues-and-prs
-  __prompt-git-branch
 }
 
 # Display the current state of the rebase:
@@ -90,10 +125,6 @@ function __prompt-git-remote() {
   echo -n "$(OROSHI_IS_PROMPT=1 git-remote-colorize $GIT_REMOTE_CURRENT --with-icon) "
 }
 
-# Display the current branch
-function __prompt-git-branch() {
-  echo -n "$(OROSHI_IS_PROMPT=1 git-branch-colorize $GIT_BRANCH_CURRENT --with-icon)"
-}
 
 # Returns the number of currently opened issues
 function __prompt-github-issues-and-prs() {

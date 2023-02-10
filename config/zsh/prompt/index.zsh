@@ -2,17 +2,6 @@ setopt PROMPT_SUBST
 autoload -U promptinit
 promptinit
 
-# When the prompt gets displayed for the first time, both left and right prompt
-# display a fast version, so we can use the prompt quickly.
-#
-# Then, on each new command:
-# - Left prompt will display its fast version, then update to the enhanced one
-# - Right prompt will keep previous display, then update it
-OROSHI_PROMPT_ENHANCED_MODE=0 
-OROSHI_PROMPT_GENERATION_PID=0
-OROSHI_PROMPT_RIGHT_PATH=/tmp/oroshi_prompt_right
-OROSHI_PROMPT_LEFT_PATH=/tmp/oroshi_prompt_left
-
 # Dependencies {{{
 require 'prompt/background'
 require 'prompt/exit-code'
@@ -22,76 +11,135 @@ require 'prompt/path'
 require 'prompt/ruby'
 # }}}
 
-
-# Left {{{
-# The left prompt displays information quickly. Heavy computation is done in the
-# background and the prompt is updated afterwards.
-function __prompt-left() {
-  __prompt-path
-  __prompt-node-flags
-  __prompt-background-flags
-  __prompt-git-flags
-  __prompt-git-status
-  __prompt-exit-code
-}
-function __prompt-left-enhanced() {
-  OROSHI_PROMPT_ENHANCED_MODE=1
-  __prompt-left
-}
-PROMPT='$(__prompt-left)'
+# Overview {{{ The best prompt is one that is blazingly fast, and also displays
+# all the relevant information. But, as the computation to get this information
+# can be slow, tricks have to be deployed to keep the display fast.
+#
+# Both right and left prompt are designed to be fast to display on their first
+# invocation. They only display relevant information that is quick to access
+# (ie. no heavy git or node calls).
+#
+# More expensive information is fetched in the background, and the prompts are
+# updated once the information is obtained. Subsequent displays then recomputes
+# data that need to stay fresh (like filepaths and exit codes), and freezes old
+# data in place (like branch name or git status) while fetching fresh data in
+# the background and displaying it once obtained.
 # }}}
 
-# Right {{{
-function __prompt-right() {
-  [[ ! -r $PWD ]] && return
+# Variables {{{
+# Those variable holds the various states of the prompt. Because the display of
+# the prompt happens in several phases, those variables help us hold a shared
+# state.
 
-  __prompt-ruby-version
-  __prompt-node-version
-  __prompt-git-right
-}
-function __prompt-right-enhanced() {
-  OROSHI_PROMPT_ENHANCED_MODE=1
-  __prompt-right
-}
-RPROMPT='$(__prompt-right)'
+# Those two arrays define all the prompt path that will be fetched (calling
+# related oroshi-prompt-***-populate methods). Depending on the array, they will
+# be fetched synchronously or asynchronously.
+OROSHI_SYNCHRONOUS_PROMPT_PARTS=(path git-status exit-code)
+OROSHI_ASYNCHRONOUS_PROMPT_PARTS=(git-flags)
+
+# This variables holds the pid of the function currently generating all the
+# information in the background. We need it to make sure we're only running one
+# such method at a time
+OROSHI_ASYNCHRONOUS_PID=0
+
+# Folder to store the asynchronously generated prompt parts
+OROSHI_ASYNCHRONOUS_SAVE_PATH=/tmp/oroshi/prompt-parts
+mkdir -p $OROSHI_ASYNCHRONOUS_SAVE_PATH
+
+# This is the global variable that holds all the prompt parts for display
+declare -Ag OROSHI_PROMPT_PARTS
+OROSHI_PROMPT_PARTS=()
+
+# We store the exit code of the last command played as we'll use it to change
+# the color of our prompt
+OROSHI_LAST_COMMAND_EXIT="0"
+
 # }}}
 
-# precmd: Called after each command, right before the prompt is displayed {{{
-function precmd() {
-  # Update env GIT_ variables
-  git-env-update
+# Prompts {{{
+# Those methods are called by PROMPT and RPROMPT and display the left and right
+# prompts.
 
-  # We keep a reference to the last command exit code
+# Left prompt
+function oroshi-prompt-left() {
+  echo -n $OROSHI_PROMPT_PARTS[path]
+  echo -n $OROSHI_PROMPT_PARTS[node-flags]
+  echo -n $OROSHI_PROMPT_PARTS[background-flags]
+  echo -n $OROSHI_PROMPT_PARTS[git-flags]
+  echo -n $OROSHI_PROMPT_PARTS[git-status]
+  echo -n $OROSHI_PROMPT_PARTS[exit-code]
+}
+PROMPT='$(oroshi-prompt-left)'
+
+function oroshi-prompt-right() {
+  echo -n $OROSHI_PROMPT_PARTS[git-branch]
+  # OROSHI_PROMPT_PARTS[ruby-version]="$(__prompt-ruby-version)"
+  # OROSHI_PROMPT_PARTS[node-version]="$(__prompt-node-version)"
+  # OROSHI_PROMPT_PARTS[git-right]="$(__prompt-git-right)"
+}
+RPROMPT='$(oroshi-prompt-right)'
+
+# }}}
+
+# precmd {{{
+# Those methods are called right after each command, just before the prompt is
+# displayed. We use them to set some global variables used by the prompt
+autoload -Uz add-zsh-hook
+
+# Keep a reference to the last command exit code as it will probably be
+# overwritten by our other functions
+function oroshi-last-command-exit-store() {
   OROSHI_LAST_COMMAND_EXIT="$?"
+}
+add-zsh-hook precmd oroshi-last-command-exit-store
 
+# Update the $GIT_ env variables that are used by the prompt
+add-zsh-hook precmd git-env-update
+
+# Synchronously populate prompt parts that are quick to generate
+function oroshi-prompt-synchronous-populate() {
+  for promptPart in $OROSHI_SYNCHRONOUS_PROMPT_PARTS; do
+    eval "oroshi-prompt-${promptPart}-populate"
+  done
+}
+add-zsh-hook precmd oroshi-prompt-synchronous-populate
+
+# Asynchronously populate prompt parts that are slow to generate
+function oroshi-prompt-asynchronous-populate() {
   # Kill the previous prompt generation process if it was already running
-  if [[ "${OROSHI_PROMPT_GENERATION_PID}" != "0" ]]; then
-    kill -s HUP $OROSHI_PROMPT_GENERATION_PID >/dev/null 2>&1 || :
+  # This allows keeping only one generation at a time
+  if [[ "${OROSHI_ASYNCHRONOUS_PID}" != "0" ]]; then
+    kill -s HUP $OROSHI_ASYNCHRONOUS_PID >/dev/null 2>&1 || :
   fi
 
-  # Write left and right prompts to a tmp file and refresh the prompt
   function async() {
-    __prompt-left-enhanced >! $OROSHI_PROMPT_LEFT_PATH
-    __prompt-right-enhanced >! $OROSHI_PROMPT_RIGHT_PATH
+    # Save all new parts in a file
+    for promptPart in $OROSHI_ASYNCHRONOUS_PROMPT_PARTS; do
+      eval "oroshi-prompt-${promptPart}-populate"
+      echo $OROSHI_PROMPT_PARTS[$promptPart] >! ${OROSHI_ASYNCHRONOUS_SAVE_PATH}/${promptPart}
+    done
+
     prompt-refresh
   }
 
-  # Fork subprocess, but keep a reference to its PID
   async &!
-  OROSHI_PROMPT_GENERATION_PID=$!
+  OROSHI_ASYNCHRONOUS_PID=$!
 }
-# }}}
+add-zsh-hook precmd oroshi-prompt-asynchronous-populate
+
 
 # TRAPUSR1: Refresh prompt on demand {{{
 # Whenever we receive USR1, we refresh the prompt display
-# We use it to force a refresh of the prompt
 function TRAPUSR1() {
   # Prompt was generated in the background, we update it
-  if [[ $OROSHI_PROMPT_GENERATION_PID != "0" ]]; then
-    PROMPT="$(<$OROSHI_PROMPT_LEFT_PATH)"
-    RPROMPT="$(<$OROSHI_PROMPT_RIGHT_PATH)"
-    OROSHI_PROMPT_GENERATION_PID=0
-    OROSHI_PROMPT_ENHANCED_MODE=0
+  if [[ $OROSHI_ASYNCHRONOUS_PID != "0" ]]; then
+    # Load all prompt parts saved on disk to the global variable
+    for promptPart in $OROSHI_ASYNCHRONOUS_PROMPT_PARTS; do
+      OROSHI_PROMPT_PARTS[$promptPart]="$(<${OROSHI_ASYNCHRONOUS_SAVE_PATH}/${promptPart})"
+    done
+
+    # Mark the generation as finished
+    OROSHI_ASYNCHRONOUS_PID=0
   fi
 
   # We add a protection, to prevent the refreshing of the prompt, for example
@@ -100,8 +148,5 @@ function TRAPUSR1() {
 
   # Redraw
   zle && zle reset-prompt
-
-  # Reset prompt to fast display for next one
-  PROMPT='$(__prompt-left)'
 }
 # }}}

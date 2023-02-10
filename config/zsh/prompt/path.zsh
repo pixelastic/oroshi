@@ -3,7 +3,8 @@
 # - Use a colored prefix icon for known paths
 # - Shorten the actual path to no more than 3 items
 # - Color the path if not writable
-function __prompt-path() {
+function oroshi-prompt-path-populate() {
+  OROSHI_PROMPT_PARTS[path]=""
   local currentPath="$(print -D $PWD)/"
 
   # Checking if part of a known project
@@ -20,26 +21,38 @@ function __prompt-path() {
 
   # Add marker if connected through SSH
   if [[ $SSH_CLIENT != '' ]]; then
-    echo -n "%F{$COLOR_ORANGE}  $hostname %f%k"
+    OROSHI_PROMPT_PARTS[path]="%F{$COLOR_ORANGE}  $hostname %f%k"
   fi
 
   # Prefix with a shortened colored version of the project if in an active
   # project
   if [[ $projectKey != '' ]]; then
     local projectPrefix="$(OROSHI_IS_PROMPT=1; colorize-project $projectKey)"
-    echo -n $projectPrefix
+    OROSHI_PROMPT_PARTS[path]+=$projectPrefix
   fi
 
   # Color the string path
   if [[ $currentPath != '' ]]; then
-    git-directory-is-dot-git && echo "%F{$COLOR_ORANGE}${currentPath:s_.git/_ }%f" && return
-    [[ ! -r $PWD ]] && echo "%F{$COLOR_ALIAS_COMMENT} ${currentPath}%f " && return
-    # Path is not writable
-    if [[ ! -w $PWD ]]; then
-      echo -n "%K{$COLOR_ALIAS_ERROR}%F{$COLOR_WHITE}  %f%k%F{$COLOR_ALIAS_ERROR}%f"
-      echo -n "%F{$COLOR_ALIAS_ERROR}/${currentPath}%f " && return
+
+    # In .git
+    if git-directory-is-dot-git; then
+      OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ORANGE}${currentPath:s_.git/_ }%f"
+      return
     fi
 
-    echo -n "%F{$COLOR_ALIAS_DIRECTORY}${currentPath}%f " && return
+    # Deleted path
+    if [[ ! -r $PWD ]]; then
+      OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ALIAS_COMMENT} ${currentPath}%f "
+      return
+    fi
+
+    # Path is not writable
+    if [[ ! -w $PWD ]]; then
+      OROSHI_PROMPT_PARTS[path]+="%K{$COLOR_ALIAS_ERROR}%F{$COLOR_WHITE}  %f%k%F{$COLOR_ALIAS_ERROR}%f"
+      OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ALIAS_ERROR}/${currentPath}%f "
+      return
+    fi
+
+    OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ALIAS_DIRECTORY}${currentPath}%f "
   fi
 }
