@@ -1,5 +1,5 @@
 # Check if current repo is currently rebasing
-function git-rebase-inprogress() {
+function git-rebase-in-progress() {
   local gitRoot="$(git-directory-root)"
   local rebaseDir="${gitRoot}/.git/rebase-apply"
 

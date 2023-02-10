@@ -46,13 +46,13 @@ function git-tag-colorize() {
 
   # Parent: The tag is somewhere in the branch
   if [[ "$tagStatus" = "parent" ]]; then
-    colorize "炙$tagName" CYAN_8
+    colorize " $tagName" CYAN_8
     return
   fi
 
   # Unrelated: The tag is not in the branch
   if [[ "$tagStatus" = "unrelated" ]]; then
-    colorize "炙$tagName" GRAY
+    colorize " $tagName" GRAY
     return
   fi
 

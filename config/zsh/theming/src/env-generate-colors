@@ -90,13 +90,13 @@ aliasColors[NOTICE]="VIOLET"
 # Git
 aliasColors[GIT_COMMIT]="AMBER_6"
 aliasColors[GIT_MESSAGE]="GRAY"
-aliasColors[GIT_STASH]="TEAL_8"
+aliasColors[GIT_STASH]="TEAL_3"
 aliasColors[GIT_REBASE]="RED_LIGHT"
 aliasColors[GIT_ADDED]="GREEN"
 aliasColors[GIT_MODIFIED]="VIOLET"
 aliasColors[GIT_DIRTY]="RED"
 aliasColors[GIT_REMOVED]="RED"
-aliasColors[GIT_PULL_REQUEST]="PURPLE"
+aliasColors[GIT_PULLREQUEST]="PURPLE"
 aliasColors[GIT_ISSUE]="YELLOW"
 # Code
 aliasColors[EVAL]="YELLOW"                      # - in pug

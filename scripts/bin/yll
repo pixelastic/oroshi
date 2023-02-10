@@ -1,8 +1,6 @@
 #!/usr/bin/env zsh
 [[ ! $commands[yarn] ]] && return
 
-source ~/.oroshi/config/zsh/theming/colors.zsh
-
 local linkedModules=($(yll-raw))
 
 for module in $linkedModules; do

@@ -1,4 +1,5 @@
 # [r]emote
+alias vrc='git-remote-create'
 alias vrR='git-remote-remove'
 alias vrl='git-remote-list'
 alias vrmv='git-remote-rename'

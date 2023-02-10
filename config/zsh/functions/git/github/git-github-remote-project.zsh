@@ -1,11 +1,9 @@
-# Gets the owner of a specified remote.
+# Gets the name of the project name of the given remote
 # Usage:
-# $ git-github-remote-owner
+# $ git-github-remote-owner               # pixelastic/oroshi
 # $ git-github-remote-owner {remote}
-#
-# The owner is the user in a github remote url
-# If no remote specified, we use the current one
-function git-github-remote-owner() {
+
+function git-github-remote-project() {
   local remoteName=$1
   [[ $remoteName == '' ]] && remoteName=$(git-remote-current)
 
@@ -14,5 +12,5 @@ function git-github-remote-owner() {
   echo $remoteUrl \
     | sed \
       --regexp-extended \
-      's_^(.*)@(.*):(.*)/(.*)_\3_'
+      's_.git$__; s_^git@github.com:(.*)/(.*)_\1/\2_'
 }

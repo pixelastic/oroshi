@@ -1,5 +1,4 @@
 # Ruby
-# Display ruby-related information
 
 # Display project ruby version
 # -  (red) if no global ruby
@@ -7,21 +6,18 @@
 # - {nothing} if not a ruby repo (no .ruby-version)
 # -  X.Y.Z (red) if local version isn't installed
 # -  X.Y.Z (green) if local and current match
-function __prompt-ruby-version() {
-  # Quick display: don't display anything
-  if [[ $OROSHI_PROMPT_ENHANCED_MODE == "0" ]]; then
-    return
-  fi
+function oroshi-prompt-ruby-version-populate() {
+  OROSHI_PROMPT_PARTS[ruby-version]=""
 
   # Not even a system-wide ruby installation
   if [[ ! -v commands[ruby] ]]; then
-    echo -n "%F{$COLOR_ALIAS_ERROR} %f"
+    OROSHI_PROMPT_PARTS[ruby-version]="%F{$COLOR_ALIAS_ERROR} %f"
     return
   fi
 
   # No Rbenv
   if [[ ! -v commands[rbenv] ]]; then
-    echo -n "%F{$COLOR_ALIAS_WARNING} %f"
+    OROSHI_PROMPT_PARTS[ruby-version]="%F{$COLOR_ALIAS_WARNING} %f"
     return
   fi
 
@@ -36,10 +32,19 @@ function __prompt-ruby-version() {
 
   # Local version is in use
   if rbenv version-name &>/dev/null; then
-    echo -n "%F{$COLOR_ALIAS_SUCCESS}  $expectedVersion%f"
+    OROSHI_PROMPT_PARTS[ruby-version]="%F{$COLOR_ALIAS_SUCCESS} $expectedVersion%f "
     return
   fi
 
   # Local version is not even installed
-  echo -n "%F{$COLOR_ALIAS_ERROR}  $expectedVersion%f"
+  OROSHI_PROMPT_PARTS[ruby-version]="%F{$COLOR_ALIAS_ERROR} $expectedVersion%f "
+}
+
+# Check if a bundle install is in progress
+function oroshi-prompt-bundle-install-in-progress-populate() {
+  OROSHI_PROMPT_PARTS[bundle-install-in-progress]=""
+
+  if bundle-install-in-progress; then
+    OROSHI_PROMPT_PARTS[bundle-install-in-progress]="%F{$COLORS_RED_8} %f"
+  fi
 }

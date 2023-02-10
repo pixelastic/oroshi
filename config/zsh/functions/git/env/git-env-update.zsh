@@ -18,7 +18,4 @@ function git-env-update() {
   export GIT_REMOTE_URL=$VCS_STATUS_REMOTE_URL
 
   export GIT_STASH_EXISTS=$VCS_STATUS_STASHES
-
-  export GIT_DIRECTORY_IS_GITHUB="0"
-  [[ $VCS_STATUS_REMOTE_URL == *github.com* ]] && GIT_DIRECTORY_IS_GITHUB="1"
 }
