@@ -32,12 +32,12 @@ function oroshi-prompt-ruby-version-populate() {
 
   # Local version is in use
   if rbenv version-name &>/dev/null; then
-    OROSHI_PROMPT_PARTS[ruby-version]="%F{$COLOR_ALIAS_SUCCESS} $expectedVersion%f "
+    OROSHI_PROMPT_PARTS[ruby-version]="%F{$COLOR_ALIAS_SUCCESS} $expectedVersion%f"
     return
   fi
 
   # Local version is not even installed
-  OROSHI_PROMPT_PARTS[ruby-version]="%F{$COLOR_ALIAS_ERROR} $expectedVersion%f "
+  OROSHI_PROMPT_PARTS[ruby-version]="%F{$COLOR_ALIAS_ERROR} $expectedVersion%f"
 }
 
 # Check if a bundle install is in progress

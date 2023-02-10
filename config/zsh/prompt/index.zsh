@@ -83,36 +83,34 @@ OROSHI_LAST_COMMAND_EXIT="0"
 
 # Left prompt
 function oroshi-prompt-left() {
-  echo -n $OROSHI_PROMPT_PARTS[path]
-
-  # Node
-  echo -n $OROSHI_PROMPT_PARTS[node-monorepo]
-  echo -n $OROSHI_PROMPT_PARTS[yarn-link]
-  echo -n $OROSHI_PROMPT_PARTS[yarn-install-in-progress]
-
-  # Ruby
-  echo -n $OROSHI_PROMPT_PARTS[bundle-install-in-progress]
-
-  # Git
-  echo -n $OROSHI_PROMPT_PARTS[git-is-submodule]
-  echo -n $OROSHI_PROMPT_PARTS[git-has-stash]
-  echo -n $OROSHI_PROMPT_PARTS[git-rebase-in-progress]
-
-  echo -n $OROSHI_PROMPT_PARTS[git-status]
-
-  echo -n $OROSHI_PROMPT_PARTS[exit-code]
+  local promptLeft=(
+    $OROSHI_PROMPT_PARTS[path]
+    $OROSHI_PROMPT_PARTS[node-monorepo]
+    $OROSHI_PROMPT_PARTS[yarn-link]
+    $OROSHI_PROMPT_PARTS[yarn-install-in-progress]
+    $OROSHI_PROMPT_PARTS[bundle-install-in-progress]
+    $OROSHI_PROMPT_PARTS[git-is-submodule]
+    $OROSHI_PROMPT_PARTS[git-has-stash]
+    $OROSHI_PROMPT_PARTS[git-rebase-in-progress]
+    $OROSHI_PROMPT_PARTS[git-status]
+    $OROSHI_PROMPT_PARTS[exit-code]
+  )
+  echo $promptLeft
 }
 PROMPT='$(oroshi-prompt-left)'
 
 function oroshi-prompt-right() {
-  echo -n $OROSHI_PROMPT_PARTS[ruby-version]
-  echo -n $OROSHI_PROMPT_PARTS[node-version]
-  echo -n $OROSHI_PROMPT_PARTS[git-rebase-status]
-  echo -n $OROSHI_PROMPT_PARTS[git-issues]
-  echo -n $OROSHI_PROMPT_PARTS[git-pullrequests]
-  echo -n $OROSHI_PROMPT_PARTS[git-tag]
-  echo -n $OROSHI_PROMPT_PARTS[git-remote]
-  echo -n $OROSHI_PROMPT_PARTS[git-branch]
+  local promptRight=(
+    $OROSHI_PROMPT_PARTS[ruby-version]
+    $OROSHI_PROMPT_PARTS[node-version]
+    $OROSHI_PROMPT_PARTS[git-rebase-status]
+    $OROSHI_PROMPT_PARTS[git-issues]
+    $OROSHI_PROMPT_PARTS[git-pullrequests]
+    $OROSHI_PROMPT_PARTS[git-tag]
+    $OROSHI_PROMPT_PARTS[git-remote]
+    $OROSHI_PROMPT_PARTS[git-branch]
+  )
+  echo -n $promptRight
 }
 RPROMPT='$(oroshi-prompt-right)'
 
@@ -162,7 +160,7 @@ function oroshi-prompt-asynchronous-populate() {
   async &!
   OROSHI_ASYNCHRONOUS_PID=$!
 }
-# add-zsh-hook precmd oroshi-prompt-asynchronous-populate
+add-zsh-hook precmd oroshi-prompt-asynchronous-populate
 
 
 # TRAPUSR1: Refresh prompt on demand {{{

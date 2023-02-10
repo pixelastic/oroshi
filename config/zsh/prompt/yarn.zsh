@@ -1,6 +1,6 @@
 # Add icons for each known yarn linked project
 function oroshi-prompt-yarn-link-populate() {
-  OROSHI_PROMPT_PARTS[node-yarn-link]=""
+  OROSHI_PROMPT_PARTS[yarn-link]=""
   (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
 
   local linkedModules="$(yll-raw)"
@@ -32,7 +32,7 @@ function oroshi-prompt-yarn-link-populate() {
   fi
 
   if [[ $displayedString != "" ]]; then
-    OROSHI_PROMPT_PARTS[yarn-link]="%F{$COLOR_ALIAS_STRING}${displayedString}%f "
+    OROSHI_PROMPT_PARTS[yarn-link]="%F{$COLOR_ALIAS_STRING}${displayedString}%f"
   fi
 }
 

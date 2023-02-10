@@ -11,18 +11,18 @@ function oroshi-prompt-git-status-populate() {
 
   # Staged files
   if (( $GIT_DIRECTORY_HAS_STAGED_FILES )); then
-    OROSHI_PROMPT_PARTS[git-status]="%F{$COLOR_ALIAS_GIT_MODIFIED}ﰖ %f"
+    OROSHI_PROMPT_PARTS[git-status]="%F{$COLOR_ALIAS_GIT_MODIFIED}ﰖ%f"
     return
   fi
 
   # Dirty directory
   if (( $GIT_DIRECTORY_IS_DIRTY )); then
-    OROSHI_PROMPT_PARTS[git-status]="%F{$COLOR_ALIAS_ERROR}ﰖ %f"
+    OROSHI_PROMPT_PARTS[git-status]="%F{$COLOR_ALIAS_ERROR}ﰖ%f"
     return
   fi
 
   # Clean directory
-  OROSHI_PROMPT_PARTS[git-status]="%F{$COLOR_ALIAS_SUCCESS}ﰖ %f"
+  OROSHI_PROMPT_PARTS[git-status]="%F{$COLOR_ALIAS_SUCCESS}ﰖ%f"
 }
 
 # Display a colored branch, with icons
@@ -30,7 +30,7 @@ function oroshi-prompt-git-branch-populate() {
   OROSHI_PROMPT_PARTS[git-branch]=""
   (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
 
-  OROSHI_PROMPT_PARTS[git-branch]="$(OROSHI_IS_PROMPT=1 git-branch-colorize $GIT_BRANCH_CURRENT --with-icon) "
+  OROSHI_PROMPT_PARTS[git-branch]="$(OROSHI_IS_PROMPT=1 git-branch-colorize $GIT_BRANCH_CURRENT --with-icon)"
 }
 
 # Display the most relevant git tag
@@ -38,7 +38,7 @@ function oroshi-prompt-git-tag-populate() {
   OROSHI_PROMPT_PARTS[git-tag]=""
   (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
 
-  OROSHI_PROMPT_PARTS[git-tag]="$(OROSHI_IS_PROMPT=1 git-tag-colorize --with-icon) "
+  OROSHI_PROMPT_PARTS[git-tag]="$(OROSHI_IS_PROMPT=1 git-tag-colorize --with-icon)"
 }
 
 # Display the current remote
@@ -48,7 +48,7 @@ function oroshi-prompt-git-remote-populate() {
 
   [[ $GIT_REMOTE_CURRENT == 'origin' ]] && return;
 
-  OROSHI_PROMPT_PARTS[git-remote]="$(OROSHI_IS_PROMPT=1 git-remote-colorize $GIT_REMOTE_CURRENT--with-icon) "
+  OROSHI_PROMPT_PARTS[git-remote]="$(OROSHI_IS_PROMPT=1 git-remote-colorize $GIT_REMOTE_CURRENT--with-icon)"
 }
 
 # Check if in a submodule
@@ -113,7 +113,7 @@ function oroshi-prompt-git-issues-populate() {
 
   # No GITHUB_TOKEN
   if [[ $GITHUB_TOKEN_READONLY == "" ]]; then
-    OROSHI_PROMPT_PARTS[git-issues]="%F{$COLOR_ALIAS_ERROR} %f "
+    OROSHI_PROMPT_PARTS[git-issues]="%F{$COLOR_ALIAS_ERROR} %f"
     return
   fi
 
@@ -131,7 +131,7 @@ function oroshi-prompt-git-issues-populate() {
 
   local issueCount="$(<$issuesCacheFile)"
   if [[ ! $issueCount = 0 ]]; then
-    OROSHI_PROMPT_PARTS[git-issues]="%F{$COLOR_ALIAS_GIT_ISSUE} ${issueCount}%f "
+    OROSHI_PROMPT_PARTS[git-issues]="%F{$COLOR_ALIAS_GIT_ISSUE} ${issueCount}%f"
   fi
 }
 
@@ -143,7 +143,7 @@ function oroshi-prompt-git-pullrequests-populate() {
 
   # No GITHUB_TOKEN
   if [[ $GITHUB_TOKEN_READONLY == "" ]]; then
-    OROSHI_PROMPT_PARTS[git-pullrequests]="%F{$COLOR_ALIAS_ERROR} %f "
+    OROSHI_PROMPT_PARTS[git-pullrequests]="%F{$COLOR_ALIAS_ERROR} %f"
     return
   fi
 
@@ -161,7 +161,7 @@ function oroshi-prompt-git-pullrequests-populate() {
 
   local pullrequestCount="$(<$pullrequestsCacheFile)"
   if [[ ! $pullrequestCount = 0 ]]; then
-    OROSHI_PROMPT_PARTS[git-pullrequests]="%F{$COLOR_ALIAS_GIT_PULLREQUEST} ${pullrequestCount}%f "
+    OROSHI_PROMPT_PARTS[git-pullrequests]="%F{$COLOR_ALIAS_GIT_PULLREQUEST} ${pullrequestCount}%f"
   fi
 }
 

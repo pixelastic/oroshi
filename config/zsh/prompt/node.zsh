@@ -37,17 +37,17 @@ function oroshi-prompt-node-version-populate() {
 
   # Local version is the same as the current one
   if [[ $currentVersion == $expectedVersion ]]; then
-    OROSHI_PROMPT_PARTS[node-version]="%F{$COLOR_ALIAS_SUCCESS} $expectedVersion%f "
+    OROSHI_PROMPT_PARTS[node-version]="%F{$COLOR_ALIAS_SUCCESS} $expectedVersion%f"
     return
   fi
 
   # Local version is not even installed
   if nvm version $expectedVersion | grep -q "N/A"; then
-    OROSHI_PROMPT_PARTS[node-version]="%F{$COLOR_ALIAS_ERROR} $expectedVersion%f "
+    OROSHI_PROMPT_PARTS[node-version]="%F{$COLOR_ALIAS_ERROR} $expectedVersion%f"
     return
   fi
 
   # Local version is not in use
-  OROSHI_PROMPT_PARTS[node-version]="%F{$COLOR_ALIAS_WARNING} $expectedVersion%f "
+  OROSHI_PROMPT_PARTS[node-version]="%F{$COLOR_ALIAS_WARNING} $expectedVersion%f"
 }
 
