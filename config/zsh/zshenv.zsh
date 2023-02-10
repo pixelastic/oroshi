@@ -2,6 +2,8 @@
 # - Interactive shells (just like zshrc)
 # - zsh scripts
 
+typeset -U fpath
+
 local functionDirectory=~/.oroshi/config/zsh/functions
 # Manually loading all functions saved in ./functions
 for item in ${functionDirectory}/*.zsh; do

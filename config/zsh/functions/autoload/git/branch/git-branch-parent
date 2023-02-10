@@ -4,6 +4,8 @@
 # Usage:
 # $ git-branch-parent
 function git-branch-parent() {
+  echo "⚠ Method git-branch-parent spawns a lot of subshell"
+  echo "TODO: Refactor by using only zsh modifiers"
   git log --format=%d \
     | text-remove-empty-lines \
     | text-select-line 2 \

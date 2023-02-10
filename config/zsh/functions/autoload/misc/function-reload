@@ -1,0 +1,6 @@
+# Forces reload of a function definition
+# This is needed as autoloaded functions are not overwritten by default
+
+local functionName="$1"
+unfunction $functionName
+autoload -U $functionName

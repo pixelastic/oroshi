@@ -17,6 +17,7 @@ mkdir -p $NVIM_CONFIG_DIR/view
 
 # Link config directories
 ln -fns $OROSHI_CONFIG_DIR/after $NVIM_CONFIG_DIR/after
+ln -fns $OROSHI_CONFIG_DIR/ftdetect $NVIM_CONFIG_DIR/ftdetect
 ln -fns $OROSHI_CONFIG_DIR/autoload $NVIM_CONFIG_DIR/autoload
 ln -fns $OROSHI_CONFIG_DIR/colors $NVIM_CONFIG_DIR/colors
 ln -fns $OROSHI_CONFIG_DIR/includes $NVIM_CONFIG_DIR/includes

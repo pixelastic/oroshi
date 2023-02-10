@@ -1,6 +1,3 @@
-export OROSHI_TIMER_REQUIRE=0 # Set to 1 to show source timing
-export OROSHI_TIMER_PROMPT=1    # Set to 1 to show prompt timing
-
 # Loading gitstatus. It can't be loaded from inside a require
 source /home/tim/local/etc/gitstatus/gitstatus.plugin.zsh
 
@@ -17,6 +14,3 @@ require 'keybindings/index' # Ctrl-G, Ctrl-P, etc
 require 'prompt/index'      # Prompt display
 
 require 'local/index'       # Laptop-specific configuration
-
-# Display all source timers
-oroshi-debug-timer-require
