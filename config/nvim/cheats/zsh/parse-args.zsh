@@ -6,15 +6,15 @@
 zmodload zsh/zutil
 # -E : Don't stop on unknown flags
 # -D : $@ is updated by removing all found flags
-# a:=     : Short argument, like -s "xxx"
-# -arg:=  : Long argument, like --separator "xxx"
-# f:      : Short flag, like -f
-# -force  : Long flag, like --force
+# a:=      : Short argument, like -s "xxx"
+# -arg:=   : Long argument, like --separator "xxx"
+# f=       : Short flag, like -f
+# -force=  : Long flag, like --force
 zparseopts -E -D \
   s:=flagSeparator \
   -separator:=flagSeparator \
-  f:flagForce \
-  -force:flagForce
+  f=flagForce \
+  -force=flagForce
 
 
 local separator=${flagSeparator[2]}

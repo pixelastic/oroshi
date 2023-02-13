@@ -4,25 +4,31 @@
 # $ git-directory-root /path/to/file # Root of the given path
 # $ git-directory-root -f            # Goes all the way up submodules
 # TODO: Write tests
-# TODO: Refactor argsp/argsf parsing
 function git-directory-root {
 
-  # Filter positional arguments and flags
-  local argsp=()
-  local -A argsf; argsf=()
-  for arg in $argv; do
-    [[ "$arg" =~ "^-" ]] && argsf[$arg]=1 || argsp+="$arg"
-  done
+  zmodload zsh/zutil
+  zparseopts -E -D \
+    f=flagForce \
+    -force=flagForce
+
+  local isForce=${#flagForce}
 
   # Check from the given directory, or the current one if none specified
-  local targetPath="$argsp[1]"
+  local targetPath="$1"
   [[ $targetPath == "" ]] && targetPath="$PWD"
   [[ ! -d "$targetPath" ]] && targetPath="${targetPath:r}"
+  [[ $targetPath[-1] != "/" ]] && targetPath+="/"
+
+  # If path contains a .git/ folder, we remove anything after it
+  if [[ $targetPath == *.git/* ]]; then
+    echo ${targetPath//\/.git\/*/}
+    return 0
+  fi
 
   local gitRoot="$(cd $targetPath && git pwd)"
 
   # If -f is not passed, we can safely display this path
-  if [[ $argsf[-f] != "1" ]]; then
+  if [[ $isForce != "1" ]]; then
     echo $gitRoot
     return 0
   fi

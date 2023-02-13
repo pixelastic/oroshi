@@ -18,7 +18,7 @@ function colorize-project () {
   local output=""
   if [[ "$OROSHI_IS_PROMPT" == 1 ]]; then
     output+="%K{$projectBackground}%F{$projectForeground} ${projectIcon}${projectName} %f"
-    output+="%k%F{$projectBackground}%f "
+    output+="%k%F{$projectBackground}%f"
   else
     # We wrap each part in ​ (Zero-Width Space) to parse them back more easily
     # later

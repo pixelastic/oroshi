@@ -31,28 +31,30 @@ function oroshi-prompt-path-populate() {
     OROSHI_PROMPT_PARTS[path]+=$projectPrefix
   fi
 
-  # Color the string path
-  if [[ $currentPath != '' ]]; then
-
-    # In .git
-    if git-directory-is-dot-git; then
-      OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ORANGE}${currentPath:s_.git/_ }%f"
-      return
-    fi
-
-    # Deleted path
-    if [[ ! -r $PWD ]]; then
-      OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ALIAS_COMMENT} ${currentPath}%f"
-      return
-    fi
-
-    # Path is not writable
-    if [[ ! -w $PWD ]]; then
-      OROSHI_PROMPT_PARTS[path]+="%K{$COLOR_ALIAS_ERROR}%F{$COLOR_WHITE}  %f%k%F{$COLOR_ALIAS_ERROR}%f"
-      OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ALIAS_ERROR}/${currentPath}%f"
-      return
-    fi
-
-    OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ALIAS_DIRECTORY}${currentPath}%f"
+  # Stop if no more path
+  [[ $currentPath == '' ]] && return
+ 
+  # In .git
+  if git-directory-is-dot-git; then
+    OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ORANGE}  "
+    currentPath=${currentPath:s_.git/__}
+    [[ $currentPath != "" ]] && OROSHI_PROMPT_PARTS[path]+=" $currentPath%f"
+    return
   fi
+
+
+  # Deleted path
+  if [[ ! -r $PWD ]]; then
+    OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ALIAS_COMMENT} ${currentPath}%f"
+    return
+  fi
+
+  # Path is not writable
+  if [[ ! -w $PWD ]]; then
+    OROSHI_PROMPT_PARTS[path]+="%K{$COLOR_ALIAS_ERROR}%F{$COLOR_WHITE}  %f%k%F{$COLOR_ALIAS_ERROR}%f"
+    OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ALIAS_ERROR}/${currentPath}%f"
+    return
+  fi
+
+  OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ALIAS_DIRECTORY}${currentPath}%f"
 }

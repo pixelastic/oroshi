@@ -1,5 +1,8 @@
 # Check if current directory is a submodule
 function git-is-submodule() {
+  # Can't be a submodule if itself in a .git directory
+  [[ $PWD == */.git* ]] && exit 1
+
   # We do that by going one level higher and checking if it's also a git
   # directory
   (
