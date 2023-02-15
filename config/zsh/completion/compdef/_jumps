@@ -1,0 +1,24 @@
+#compdef
+function _jumps() {
+
+  # Generate the list of marks
+  function _jumps_marks() {
+    for item in $MARKPATH/*; do
+
+      local projectKey=${item:t:u}
+      local projectIcon=${(P)${:-PROJECT_${projectKey}_ICON}}
+      if [[ $projectIcon != "" ]]; then
+        local description="${projectIcon}${projectKey}"
+      else
+        local description="${item:A:s_/home/tim/__}"
+      fi
+
+      echo "${item:t}:${description}"
+    done
+  }
+
+  # Suggest the marks
+  local suggestions="$(_jumps_marks)"
+  suggestions=(${(f)suggestions})
+  _describe 'command' suggestions
+}

@@ -154,7 +154,7 @@ function oroshi-prompt-asynchronous-populate() {
       echo $OROSHI_PROMPT_PARTS[$promptPart] >! ${OROSHI_ASYNCHRONOUS_SAVE_PATH}/${promptPart}
     done
 
-    prompt-refresh
+    # prompt-refresh
   }
 
   async &!
@@ -166,6 +166,8 @@ add-zsh-hook precmd oroshi-prompt-asynchronous-populate
 # TRAPUSR1: Refresh prompt on demand {{{
 # Whenever we receive USR1, we refresh the prompt display
 function TRAPUSR1() {
+  return
+
   # Prompt was generated in the background, we update it
   if [[ $OROSHI_ASYNCHRONOUS_PID != "0" ]]; then
     # Load all prompt parts saved on disk to the global variable

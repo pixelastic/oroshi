@@ -56,5 +56,5 @@ function oroshi-prompt-path-populate() {
     return
   fi
 
-  OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ALIAS_DIRECTORY}${currentPath}%f"
+  [[ $currentPath != "" ]] && OROSHI_PROMPT_PARTS[path]+=" %F{$COLOR_ALIAS_DIRECTORY}${currentPath}%f"
 }

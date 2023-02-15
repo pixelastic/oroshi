@@ -1,9 +1,0 @@
-# m to create a mark in a dir
-# j to jump to it
-# mR to remove it
-function _completemarks {
-  reply=($(ls $MARKPATH))
-}
-compctl -K _completemarks j
-compctl -K _completemarks mR unmark
-

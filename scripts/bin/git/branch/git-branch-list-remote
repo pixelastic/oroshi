@@ -1,133 +1,125 @@
 #!/usr/bin/env zsh
 # Display the list of remote branches
 # Usage:
-# $ git-branch-list-remote            # List all current remote branches
-# $ git-branch-list-remote origin     # List all remote branches on origin
-# $ git-branch-list-remote --all      # List all branches on all remotes
-# $ git-branch-list-remote --no-cache # Forces a refresh of data
-#
-# TODO: Add caching mechanism
-# TODO: Mark dependabot shorter
-# TODO: Fix mungling of author colors
-# TODO: USe better parsing of arguments
-# TODO: Use better looping of multi-line results
+# $ git-branch-list-remote                 # List all current remote branches
+# $ git-branch-list-remote origin          # List all remote branches on origin
+# $ git-branch-list-remote --all / -a      # List all branches on all remotes
 
-# Filter positional arguments and flags
-local argsp=()
-local -A argsf; argsf=()
-for arg in $argv; do
-  [[ "$arg" =~ "^-" ]] && argsf[$arg]=1 || argsp+="$arg"
-done
+zparseopts -E -D \
+  a=flagAll \
+  -all=flagAll \
+
+local isAll=${#flagAll}
 
 # Init values {{{
-local separator="〷"
 local output=""
 local currentRemote="$(git-remote-current)"
 local currentRemoteBranch="$currentRemote/$(git-remote-branch)"
-# }}}
 
-# Expected usage is to specific the remote to list branch from
-local remoteNames=($argsp[1])
+# Expected usage is to specify the remote to list branch from
+local remoteNames=($1)
 # If none is specified, we list the current remote branches
 [[ "${#remoteNames[@]}" == 0 ]] && remoteNames=($currentRemote)
 # If --all is passed, we list branches from all remotes
-[[ "$argsf[--all]" == 1 ]] && remoteNames=($(git remote))
+[[ "$isAll" == 1 ]] && remoteNames=($(git remote))
+# }}}
 
 # Gathering local branch information {{{
 # Before we loop through all the remote branches, we'll gather all information
 # about the local branches
 local gitLocalBranchFormat=""
-gitLocalBranchFormat+="_%(upstream:remotename)${separator}"     # origin
-gitLocalBranchFormat+="_%(upstream:remoteref)${separator}"      # refs/heads/master
-gitLocalBranchFormat+="_%(refname:short)${separator}"           # master
-gitLocalBranchFormat+="_%(upstream:track)${separator}"          # [ahead 4]
+gitLocalBranchFormat+="%(upstream:remotename)▮"     # origin
+gitLocalBranchFormat+="%(upstream:remoteref)▮"      # refs/heads/master
+gitLocalBranchFormat+="%(refname:short)▮"           # master
+gitLocalBranchFormat+="%(upstream:track)▮"          # [ahead 4]
 
 # Looping through all local branches to build a list of:
 # remoteBranchName <=> localBranchName
 # remoteBranchName <=> remoteDistance
 local -A localBranchesNames; localBranchesNames=()
 local -A remoteDistances; remoteDistances=()
-local rawLocalBranches="$(git branch --format="$gitLocalBranchFormat\n")"
-while read -r rawLocalBranch; do
+local rawLocalBranches="$(git branch --format="$gitLocalBranchFormat")"
+for rawLocalBranch in ${(f)rawLocalBranches}; do
   # Extracting relevant data {{{
-  local splitRawLocalBranch=(${(@s:〷:)rawLocalBranch})
+  local splitRawLocalBranch=(${(@s:▮:)rawLocalBranch})
 
-  local remoteBranchName="${splitRawLocalBranch[1]:1}/${splitRawLocalBranch[2]:12}"
-  local localBranchName="${splitRawLocalBranch[3]:1}"
-  local remoteDistance="${splitRawLocalBranch[4]:1}"
+  local remoteBranchName="${splitRawLocalBranch[1]}/${splitRawLocalBranch[2]:11}"
+  local localBranchName="${splitRawLocalBranch[3]}"
+  local remoteDistance="${splitRawLocalBranch[4]}"
   # }}}
 
   localBranchesNames[$remoteBranchName]="$localBranchName"
   remoteDistances[$remoteBranchName]="$remoteDistance"
-done <<<$rawLocalBranches
+  echo "$remoteBranchName $remoteDistance"
+done
 # }}}
 
 # Display all remote branches {{{
 local gitRemoteBranchFormat=""
-gitRemoteBranchFormat+="_%(refname:short)${separator}"           # master
-gitRemoteBranchFormat+="_%(objectname:short)${separator}"        # abcdef
-gitRemoteBranchFormat+="_%(committerdate:relative)${separator}"  # 3 months ago
-gitRemoteBranchFormat+="_%(contents:subject)${separator}"        # fix typo
-local rawRemoteBranches="$(git branch --sort=-committerdate --remote --format="$gitRemoteBranchFormat\n")"
+gitRemoteBranchFormat+="%(refname:short)▮"           # master
+gitRemoteBranchFormat+="%(objectname:short)▮"        # abcdef
+gitRemoteBranchFormat+="%(committerdate:relative)▮"  # 3 months ago
+gitRemoteBranchFormat+="%(contents:subject)▮"        # fix typo
+local rawRemoteBranches="$(git branch --sort=committerdate --remote --format="$gitRemoteBranchFormat")"
 
 # Looping through all defined remotes
 for remoteName in $remoteNames; do
   # Looping through all branches on this remote
-  while read -r rawRemoteBranch; do
+  for rawRemoteBranch in ${(f)rawRemoteBranches}; do
     local row=""
 
     # Extracting relevant data {{{
-    local splitRawRemoteBranch=(${(@s:〷:)rawRemoteBranch})
+    local splitRawRemoteBranch=(${(@s:▮:)rawRemoteBranch})
 
-    local remoteBranchName="${splitRawRemoteBranch[1]:1}"
+    local remoteBranchName="${splitRawRemoteBranch[1]}"
     # Skip remote HEAD
     [[ "$remoteBranchName" =~ "/HEAD$" ]] && continue
     # Skip branches that are not one the remote we're looping on
     [[ ! "$remoteBranchName" =~ "^${remoteName}/" ]] && continue
 
-    local commitHash="${splitRawRemoteBranch[2]:1}"
-    local relativeTime="${splitRawRemoteBranch[3]:1}"
-    local commitMessage="${splitRawRemoteBranch[4]:1}"
+    local commitHash="${splitRawRemoteBranch[2]}"
+    local relativeTime="${splitRawRemoteBranch[3]}"
+    local commitMessage="${splitRawRemoteBranch[4]}"
     # }}}
-    which colorize
 
     # Building the row display {{{
     # Currently tracked branch {{{
     if [[ "$remoteBranchName" == "$currentRemoteBranch" ]]; then
-      row+="$(colorize  ALIAS_SUCCESS)${separator}"
+      row+="$(colorize  ALIAS_SUCCESS)▮"
     else
-      row+="$separator"
+      row+="▮"
     fi
+
     # Remote branch name {{{
-    row+="$(git-remote-colorize "$remoteBranchName" --with-icon)${separator}"
+    row+="$(git-remote-colorize "$remoteBranchName" --with-icon)▮"
     # }}}
     
-    # # Commit hash {{{
-    # row+="$(git-commit-colorize "$commitHash" --with-icon)${separator}"
-    # # }}}
-    # # Ahead/behind {{{
-    # local remoteDistance=$remoteDistances[$remoteBranchName]
-    # row+="$(git-distance-colorize "$remoteDistance" --with-icon)${separator}"
-    # # }}}
-    # # Local branch name {{{
-    # local localBranchName=$localBranchesNames[$remoteBranchName]
-    # if [[ "$localBranchName" != "" ]]; then
-    #   row+="$(git-branch-colorize "$localBranchName" --with-icon)${separator}"
-    # else
-    #   row+="$(colorize "untracked" gray8)${separator}"
-    # fi
-    # # }}}
-    # # Date {{{
-    # row+="$(git-date-colorize "$relativeTime" --with-icon)${separator}"
-    # # }}}
-    # # Commit message {{{
-    # row+="$(git-message-colorize "$commitMessage")${separator}"
-    # # }}}
-    # # }}}
+    # Commit hash {{{
+    row+="$(git-commit-colorize "$commitHash" --with-icon)▮"
+    # }}}
+    # Ahead/behind {{{
+    local remoteDistance=$remoteDistances[$remoteBranchName]
+    row+="$(git-distance-colorize "$remoteDistance" --with-icon)▮"
+    # }}}
+    # Local branch name {{{
+    local localBranchName=$localBranchesNames[$remoteBranchName]
+    if [[ "$localBranchName" != "" ]]; then
+      row+="$(git-branch-colorize "$localBranchName" --with-icon)▮"
+    else
+      row+="$(colorize "untracked" ALIAS_COMMENT)▮"
+    fi
+    # }}}
+    # Date {{{
+    row+="$(git-date-colorize "$relativeTime" --with-icon)▮"
+    # }}}
+    # Commit message {{{
+    row+="$(git-message-colorize "$commitMessage")▮"
+    # }}}
+    # }}}
 
     output+="$row\n"
-  done <<<$rawRemoteBranches
+  done
 done
 
-echo $output | column --table-noheadings --separator "$separator" -t
+echo $output | column --table-noheadings --separator "▮" -t
 # }}}

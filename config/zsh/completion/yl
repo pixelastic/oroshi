@@ -1,4 +1,0 @@
-function _complete_yl {
-  reply=($(zsh-complete-yl))
-}
-compctl -K _complete_yl yl

@@ -1,8 +1,0 @@
-function _complete_git_remotes {
-  reply=($(git remote))
-}
-
-compctl -K _complete_git_remotes git-remote-remove
-compctl -K _complete_git_remotes git-remote-rename
-compctl -K _complete_git_remotes git-remote-switch
-compctl -K _complete_git_remotes git-remote-url
