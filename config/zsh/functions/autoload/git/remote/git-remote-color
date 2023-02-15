@@ -10,7 +10,7 @@ function git-remote-color() {
     remoteName="$(git-remote-current)"
   fi
 
-  local DEFAULT_REMOTE_COLOR='YELLOW'
+  local DEFAULT_REMOTE_COLOR='ALIAS_REMOTE'
 
   declare -A REMOTE_COLORS
   REMOTE_COLORS=()

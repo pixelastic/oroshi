@@ -6,7 +6,6 @@
 # $ git-branch-switch master       # Move to the master branch
 # $ git-branch-switch 13cd455      # Go into detached HEAD at this commit
 # $ git-branch-switch master main  # Go to master or main
-set -e
 
 for commitRef in $argv; do
   # Skip non-existing commits

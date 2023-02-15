@@ -10,4 +10,6 @@ function git-dependencies-update() {
 
   git-dependencies-update-node $originCommit
   git-dependencies-update-ruby $originCommit
+
+  return 0
 }

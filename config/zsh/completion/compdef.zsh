@@ -9,3 +9,7 @@
 fpath+=(/home/tim/.oroshi/config/zsh/completion/compdef)
 
 compdef _jumps unmark j
+
+# Git {{{
+compdef _git-branch-remote git-branch-pull
+# }}}

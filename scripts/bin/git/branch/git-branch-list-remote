@@ -50,7 +50,6 @@ for rawLocalBranch in ${(f)rawLocalBranches}; do
 
   localBranchesNames[$remoteBranchName]="$localBranchName"
   remoteDistances[$remoteBranchName]="$remoteDistance"
-  echo "$remoteBranchName $remoteDistance"
 done
 # }}}
 
@@ -106,7 +105,7 @@ for remoteName in $remoteNames; do
     if [[ "$localBranchName" != "" ]]; then
       row+="$(git-branch-colorize "$localBranchName" --with-icon)▮"
     else
-      row+="$(colorize "untracked" ALIAS_COMMENT)▮"
+      row+="$(colorize "~untracked~" ALIAS_COMMENT)▮"
     fi
     # }}}
     # Date {{{

@@ -18,6 +18,7 @@ local colorizedBranch="$(git-branch-colorize $targetBranch --with-icon)"
 local colorizedRemote="$(git-remote-colorize $currentRemote --with-icon)"
 
 # We always update tags when pulling
+echo "Fetch tags..."
 git fetch --tags
 
 # Stop if the branch does not exist on the remote

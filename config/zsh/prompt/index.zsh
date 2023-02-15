@@ -154,13 +154,13 @@ function oroshi-prompt-asynchronous-populate() {
       echo $OROSHI_PROMPT_PARTS[$promptPart] >! ${OROSHI_ASYNCHRONOUS_SAVE_PATH}/${promptPart}
     done
 
-    # prompt-refresh
+    prompt-refresh
   }
 
   async &!
   OROSHI_ASYNCHRONOUS_PID=$!
 }
-add-zsh-hook precmd oroshi-prompt-asynchronous-populate
+# add-zsh-hook precmd oroshi-prompt-asynchronous-populate
 
 
 # TRAPUSR1: Refresh prompt on demand {{{

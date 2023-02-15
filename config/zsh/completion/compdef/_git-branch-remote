@@ -1,0 +1,16 @@
+#compdef
+# List of all branches on the remote
+function _git-branch-remote() {
+  local suggestions="$(\
+    git branch \
+      --remote \
+      --format="%(refname:short)" \
+      | sed 's_origin/__g' \
+  )"
+  suggestions=(${(f)suggestions})
+  # Remove HEAD from the list
+  suggestions[$suggestions[(i)HEAD]]=()
+
+  # Suggest the remote branches
+  _describe "$(completion-header $COLOR_ALIAS_GIT_REMOTE $COLOR_BLACK '  Remote branches ')" suggestions
+}

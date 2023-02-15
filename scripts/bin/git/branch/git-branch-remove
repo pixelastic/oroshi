@@ -3,10 +3,18 @@
 # Usage:
 # $ git-branch-remove develop            # Remove a branch
 # $ git-branch-remove develop feature    # Remove several branches
+set -e
 
 local branches=($@)
+local currentBranch="$(git-branch-current)"
 for branchName in $branches; do
   local displayBranchName="$(git-branch-colorize "$branchName" --with-icon)"
+
+  if [[ "$branchName" == "$currentBranch" ]]; then
+    echo "✘ Can't delete $displayBranchName as it is the current branch"
+    continue
+  fi
+
   git branch --delete --force --quiet "$branchName"
 
   echo "Branch $displayBranchName deleted"
