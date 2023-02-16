@@ -1,0 +1,8 @@
+# Displays a message in tmux
+# Useful for debugging
+# Usage:
+# $ tmux-echo "Hello world"
+function tmux-echo() {
+  local output="$1"
+  tmux display-message "$output"
+}

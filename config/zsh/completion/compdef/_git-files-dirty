@@ -1,0 +1,21 @@
+#compdef
+
+# List of all files that are dirty (added, deleted, modified)
+function _git-files-dirty() {
+  # Getting all changed files
+  local dirtyFiles="$(git status --short)"
+  local suggestions=()
+  for file in ${(f)dirtyFiles}; do
+    local fileSymbol=$file[2]
+    local filePath=${file:3}
+    [[ $fileSymbol == " " ]] && continue # Already staged
+    suggestions+=($filePath)
+  done
+
+  # Sort by putting closest files first
+  # TODO: Should suggest files in current directory first
+  suggestions=(${(ov)suggestions})
+
+  # Suggest the dirty and unstaged files
+  _describe -V "$(completion-header $COLOR_ALIAS_GIT_MODIFIED $COLOR_WHITE ' ﰖ Changed files ')" suggestions
+}

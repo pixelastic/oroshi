@@ -10,7 +10,7 @@ function oroshi-prompt-git-status-populate() {
   (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
 
   # Staged files
-  if (( $GIT_DIRECTORY_HAS_STAGED_FILES )); then
+  if git-directory-has-staged-files; then
     OROSHI_PROMPT_PARTS[git-status]="%F{$COLOR_ALIAS_GIT_MODIFIED}ﰖ%f"
     return
   fi

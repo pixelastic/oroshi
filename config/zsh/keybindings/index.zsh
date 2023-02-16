@@ -7,6 +7,8 @@ stty ixoff -ixon
 
 require 'keybindings/clean'
 require 'keybindings/vim'
+require 'keybindings/tab'          # Completion
+
 require 'keybindings/ctrl-e'       # Edit line in vim
 require 'keybindings/ctrl-n'       # Open current directory in Nautilus
 
@@ -23,4 +25,3 @@ require 'keybindings/ctrl-j'       # Fuzzy-find common directories
 
 require 'keybindings/ctrl-h'       # Fuzzy-find all git commits hashes
 require 'keybindings/ctrl-r'       # Fuzzy-find history commands
-

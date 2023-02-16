@@ -6,6 +6,8 @@
 #                            # Useful when running background processes,
 #                            # detached from the prompt
 function prompt-refresh() {
+  tmux-echo "Refresh prompt"
+
   local promptPid="$1"
   if [[ $promptPid == '' ]]; then
     promptPid="$(prompt-pid)"

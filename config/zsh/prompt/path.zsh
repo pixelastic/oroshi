@@ -5,7 +5,7 @@
 # - Color the path if not writable
 function oroshi-prompt-path-populate() {
   OROSHI_PROMPT_PARTS[path]=""
-  local currentPath="$(print -D $PWD)/"
+  local currentPath="${PWD/#$HOME/~}/"
 
   # Checking if part of a known project
   local projectKey="$(project-by-path $currentPath)"

@@ -12,5 +12,5 @@ function _git-branch-remote() {
   suggestions[$suggestions[(i)HEAD]]=()
 
   # Suggest the remote branches
-  _describe "$(completion-header $COLOR_ALIAS_GIT_REMOTE $COLOR_BLACK '  Remote branches ')" suggestions
+  _describe -V "$(completion-header $COLOR_ALIAS_GIT_REMOTE $COLOR_BLACK '  Remote branches ')" suggestions
 }

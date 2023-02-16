@@ -1,9 +1,9 @@
 # Styling {{{
 function completion-header() {
   local colorBackground=$1
-  local colorForeground=$2
-  local content=${3:- %d }
-  echo "%K{$colorBackground}%F{$colorForeground}$content%F{$COLOR_ALIAS_TERMINAL}%f%f%k"
+  local colorForeground=${2:-$COLOR_BLACK}
+  local content=${3:-%d}
+  echo "%K{$colorBackground}%F{$colorForeground}$content%f%F{$COLOR_ALIAS_TERMINAL}%f%k"
 }
 
 # Default style for header descriptions

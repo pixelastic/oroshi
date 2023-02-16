@@ -1,3 +1,26 @@
+# TRAPUSR1: Refresh prompt on demand {{{
+# Whenever we receive USR1, we refresh the prompt display
+function TRAPUSR1() {
+  # Prompt was generated in the background, we update it
+  if [[ $OROSHI_ASYNCHRONOUS_PID != "0" ]]; then
+    # Mark the generation as finished
+    OROSHI_ASYNCHRONOUS_PID=0
+
+    # Load all prompt parts saved on disk to the global variable
+    for promptPart in $OROSHI_ASYNCHRONOUS_PROMPT_PARTS; do
+      OROSHI_PROMPT_PARTS[$promptPart]="$(<${OROSHI_ASYNCHRONOUS_SAVE_PATH}/${promptPart})"
+    done
+  fi
+
+  # We add a protection, to prevent the refreshing of the prompt, for example
+  # if fzf is currently running, as it will mess the display up
+  [[ $PROMPT_PREVENT_REFRESH == "1" ]] && return
+
+  # Redraw
+  zle && zle reset-prompt
+}
+# }}}
+#
 setopt PROMPT_SUBST
 autoload -U promptinit
 promptinit
@@ -86,7 +109,6 @@ OROSHI_LAST_COMMAND_EXIT="0"
 # Left prompt
 function oroshi-prompt-left() {
   local promptLeft=(
-    $(prompt-pid)
     $OROSHI_PROMPT_PARTS[path]
     $OROSHI_PROMPT_PARTS[node-monorepo]
     $OROSHI_PROMPT_PARTS[yarn-link]
@@ -131,8 +153,8 @@ function oroshi-last-command-exit-store() {
 }
 add-zsh-hook precmd oroshi-last-command-exit-store
 
-# Update the $GIT_ env variables that are used by the prompt
-# add-zsh-hook precmd git-env-update
+# Update the shared $GIT_ env variables that are used by the prompt
+add-zsh-hook precmd git-env-update
 
 # Synchronously populate prompt parts that are quick to generate
 function oroshi-prompt-synchronous-populate() {
@@ -157,7 +179,7 @@ function oroshi-prompt-asynchronous-populate() {
       echo $OROSHI_PROMPT_PARTS[$promptPart] >! ${OROSHI_ASYNCHRONOUS_SAVE_PATH}/${promptPart}
     done
 
-    prompt-refresh
+    prompt-refresh $OROSHI_ZSH_PID
   }
 
   async &!
@@ -165,25 +187,3 @@ function oroshi-prompt-asynchronous-populate() {
 }
 add-zsh-hook precmd oroshi-prompt-asynchronous-populate
 
-# TRAPUSR1: Refresh prompt on demand {{{
-# Whenever we receive USR1, we refresh the prompt display
-function TRAPUSR1() {
-  # Prompt was generated in the background, we update it
-  if [[ $OROSHI_ASYNCHRONOUS_PID != "0" ]]; then
-    # Mark the generation as finished
-    OROSHI_ASYNCHRONOUS_PID=0
-
-    # Load all prompt parts saved on disk to the global variable
-    for promptPart in $OROSHI_ASYNCHRONOUS_PROMPT_PARTS; do
-      OROSHI_PROMPT_PARTS[$promptPart]="$(<${OROSHI_ASYNCHRONOUS_SAVE_PATH}/${promptPart})"
-    done
-  fi
-
-  # We add a protection, to prevent the refreshing of the prompt, for example
-  # if fzf is currently running, as it will mess the display up
-  [[ $PROMPT_PREVENT_REFRESH == "1" ]] && return
-
-  # Redraw
-  zle && zle reset-prompt
-}
-# }}}
