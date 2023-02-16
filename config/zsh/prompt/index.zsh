@@ -41,6 +41,8 @@ OROSHI_SYNCHRONOUS_PROMPT_PARTS=(
   path
 )
 # TODO: Benchmark this to see the slowest and improve them
+# TODO: I think one of those methods returns a malformed ANSI sequence that
+# messes up the terminal
 OROSHI_ASYNCHRONOUS_PROMPT_PARTS=(
   git-is-submodule
   git-has-stash
@@ -84,6 +86,7 @@ OROSHI_LAST_COMMAND_EXIT="0"
 # Left prompt
 function oroshi-prompt-left() {
   local promptLeft=(
+    $(prompt-pid)
     $OROSHI_PROMPT_PARTS[path]
     $OROSHI_PROMPT_PARTS[node-monorepo]
     $OROSHI_PROMPT_PARTS[yarn-link]
@@ -129,7 +132,7 @@ function oroshi-last-command-exit-store() {
 add-zsh-hook precmd oroshi-last-command-exit-store
 
 # Update the $GIT_ env variables that are used by the prompt
-add-zsh-hook precmd git-env-update
+# add-zsh-hook precmd git-env-update
 
 # Synchronously populate prompt parts that are quick to generate
 function oroshi-prompt-synchronous-populate() {
@@ -160,23 +163,20 @@ function oroshi-prompt-asynchronous-populate() {
   async &!
   OROSHI_ASYNCHRONOUS_PID=$!
 }
-# add-zsh-hook precmd oroshi-prompt-asynchronous-populate
-
+add-zsh-hook precmd oroshi-prompt-asynchronous-populate
 
 # TRAPUSR1: Refresh prompt on demand {{{
 # Whenever we receive USR1, we refresh the prompt display
 function TRAPUSR1() {
-  return
-
   # Prompt was generated in the background, we update it
   if [[ $OROSHI_ASYNCHRONOUS_PID != "0" ]]; then
+    # Mark the generation as finished
+    OROSHI_ASYNCHRONOUS_PID=0
+
     # Load all prompt parts saved on disk to the global variable
     for promptPart in $OROSHI_ASYNCHRONOUS_PROMPT_PARTS; do
       OROSHI_PROMPT_PARTS[$promptPart]="$(<${OROSHI_ASYNCHRONOUS_SAVE_PATH}/${promptPart})"
     done
-
-    # Mark the generation as finished
-    OROSHI_ASYNCHRONOUS_PID=0
   fi
 
   # We add a protection, to prevent the refreshing of the prompt, for example

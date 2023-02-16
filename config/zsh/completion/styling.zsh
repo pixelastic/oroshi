@@ -2,7 +2,7 @@
 function completion-header() {
   local colorBackground=$1
   local colorForeground=$2
-  local content=${3:-%d}
+  local content=${3:- %d }
   echo "%K{$colorBackground}%F{$colorForeground}$content%F{$COLOR_ALIAS_TERMINAL}%f%f%k"
 }
 
@@ -28,25 +28,21 @@ zstyle ':completion:*:options' format "$(completion-header $COLOR_ALIAS_FLAG $CO
 # Variables
 zstyle ':completion:*:parameters' format "$(completion-header $COLOR_ALIAS_VARIABLE $COLOR_WHITE ' $ Variables ')"
 
-# Fuzzy-find corrections
-zstyle ':completion:*:corrections' format "$(completion-header $COLOR_ALIAS_MATCH $COLOR_BLACK ' ~ Fuzzyfind ')"
-
-# Arbitrary values
-# zstyle ':completion:*:values' format "$(completion-header $COLOR_ALIAS_UI $COLOR_WHITE)"
-
+# Running processes
+zstyle ':completion:*:processes-names' format "$(completion-header $COLOR_ALIAS_PROCESS $COLOR_BLACK '  Running processes ')"
 
 # Original query if no match found
 zstyle ':completion:*:original' format "$(completion-header $COLOR_ALIAS_UI $COLOR_WHITE ' ✘ Original query ')"
+
+# Fuzzy-find corrections
+zstyle ':completion:*:corrections' format "$(completion-header $COLOR_ALIAS_MATCH $COLOR_BLACK ' ~ Fuzzyfind ')"
 
 # Error messages
 zstyle ':completion:*:warnings' format "$(completion-header $COLOR_ALIAS_ERROR $COLOR_WHITE ' No match found ')"
 # }}}
 
 
-# Mi# ---
-
-# Files
-# Directories
+# Unknown elements
 zstyle ':completion:*:arguments' format "arguments: %d"
 zstyle ':completion:*:builtins' format "builtins: %d"
 zstyle ':completion:*:directories' format "directories: %d"
@@ -59,6 +55,7 @@ zstyle ':completion:*:named-directories' format "named-directories: %d"
 zstyle ':completion:*:names' format "names: %d"
 zstyle ':completion:*:paths' format "paths: %d"
 zstyle ':completion:*:path-directories' format "path-directories: %d"
-zstyle ':completion:*:processes-names' format "processes-names: %d"
 zstyle ':completion:*:suffixes' format "suffixes: %d"
 zstyle ':completion:*:urls' format "urls: %d"
+# Arbitrary values
+zstyle ':completion:*:values' format "$(completion-header $COLOR_ALIAS_UI $COLOR_WHITE)"

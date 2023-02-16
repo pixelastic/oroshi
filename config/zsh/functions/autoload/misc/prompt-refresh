@@ -11,5 +11,10 @@ function prompt-refresh() {
     promptPid="$(prompt-pid)"
   fi
 
+  # Stop if no pid found, maybe because we killed the process
+  if [[ $promptPid == "" ]]; then
+    return 1
+  fi
+
   kill -s USR1 $promptPid
 }

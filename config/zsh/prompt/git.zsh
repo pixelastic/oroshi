@@ -102,7 +102,7 @@ function oroshi-prompt-git-rebase-status-populate() {
 
 
   OROSHI_PROMPT_PARTS[git-rebase-status]+="%F{${(P)${:-COLOR_${ontoColor}}}[${ontoBranch:0:8}]%f"
-  OROSHI_PROMPT_PARTS[git-rebase-status]+="%F{${(P)${:-COLOR_${transpantColor}}}[${transplantBranch}]%f"
+  OROSHI_PROMPT_PARTS[git-rebase-status]+="%F{${(P)${:-COLOR_${transplantColor}}}[${transplantBranch}]%f"
 }
 
 # Returns the number of currently opened issues
