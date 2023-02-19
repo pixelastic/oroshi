@@ -21,6 +21,7 @@ zstyle ':completion:*:local-directories' format "$(completion-header $COLOR_ALIA
 # Commands
 zstyle ':completion:*:commands' format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK '  Commands ')"
 zstyle ':completion:*:functions' format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK ' {} Functions ')"
+zstyle ':completion:*:builtins' format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK '  Zsh Builtins ')"
 
 # Flags
 zstyle ':completion:*:options' format "$(completion-header $COLOR_ALIAS_FLAG $COLOR_WHITE ' -- Flags ')"
@@ -44,7 +45,6 @@ zstyle ':completion:*:warnings' format "$(completion-header $COLOR_ALIAS_ERROR $
 
 # Unknown elements
 zstyle ':completion:*:arguments' format "arguments: %d"
-zstyle ':completion:*:builtins' format "builtins: %d"
 zstyle ':completion:*:directories' format "directories: %d"
 zstyle ':completion:*:files' format "files: %d"
 zstyle ':completion:*:history-words' format "history-words: %d"

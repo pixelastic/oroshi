@@ -13,8 +13,7 @@ function _git-files-dirty() {
   done
 
   # Sort by putting closest files first
-  # TODO: Should suggest files in current directory first
-  suggestions=(${(ov)suggestions})
+  suggestions=($(sort-filepaths $suggestions))
 
   # Suggest the dirty and unstaged files
   _describe -V "$(completion-header $COLOR_ALIAS_GIT_MODIFIED $COLOR_WHITE ' ﰖ Changed files ')" suggestions

@@ -15,7 +15,7 @@ zstyle ':completion:*' menu select
 # Group suggestions by type
 zstyle ':completion:*' group-name ''
 # Display results in lines instead of columns
-# setopt LIST_ROWS_FIRST
+setopt LIST_ROWS_FIRST
 # Auto-select the first element of the menu
 setopt MENU_COMPLETE
 # }}}

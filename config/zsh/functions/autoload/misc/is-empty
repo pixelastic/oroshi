@@ -1,0 +1,10 @@
+# Check if the output piped to this command is empty or not
+#
+# Usage:
+# $ echo "hello world" | is-empty      # false
+# $ echo "" | is-empty                 # true
+function is-empty() {
+  read input
+  [[ $input == "" ]] && return 0
+  return 1
+}

@@ -1,0 +1,26 @@
+# Sort a list of filepath, from the closest to the furthest
+#
+# Usage:
+# $ echo "here\n../far\n../../even-further" | sort-filepath
+# $ sort-filepath "here\n../far" "../../even-further"
+
+function sort-filepaths() {
+  # Get input from stdin, or as arguments
+  if [[ -p /dev/stdin ]]; then
+    local filepaths=($(cat -))
+  else
+    local filepaths=()
+    for arg in $@; do
+      filepaths+=(${(@s/\n/)arg})
+    done
+  fi
+
+  # Add ./ in front of relative files
+  for index in {1..$#filepaths}; do
+    local value=$filepaths[$index]
+    [[ $value == .* ]] && continue
+    filepaths[$index]="./${value}"
+  done
+
+  echo ${(F)${(O)filepaths}}
+}

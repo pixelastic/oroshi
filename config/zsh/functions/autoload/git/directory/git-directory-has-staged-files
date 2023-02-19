@@ -2,7 +2,7 @@
 function git-directory-has-staged-files() {
   # --exit-code makes it return 1 if there are changes, and 0 if not
   # We need to swap this around
-  
+
   git diff \
     --cached \
     --quiet \

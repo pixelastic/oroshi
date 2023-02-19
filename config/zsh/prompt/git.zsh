@@ -16,7 +16,7 @@ function oroshi-prompt-git-status-populate() {
   fi
 
   # Dirty directory
-  if (( $GIT_DIRECTORY_IS_DIRTY )); then
+  if git-directory-is-dirty; then
     OROSHI_PROMPT_PARTS[git-status]="%F{$COLOR_ALIAS_ERROR}ﰖ%f"
     return
   fi
