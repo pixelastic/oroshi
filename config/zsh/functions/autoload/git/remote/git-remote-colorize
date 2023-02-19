@@ -6,15 +6,12 @@
 # $ git-remote-colorize --with-icon        #  upstream
 
 function git-remote-colorize() {
-  # Filter positional arguments and flags
-  local argsp=()
-  local -A argsf; argsf=()
-  for arg in $argv; do
-    [[ "$arg" =~ "^-" ]] && argsf[$arg]=1 || argsp+="$arg"
-  done
+  zparseopts -E -D \
+    -with-icon=flagWithIcon
+  local isWithIcon=${#flagWithIcon}
 
   # Remote name
-  local remoteName="$argsp[1]"
+  local remoteName="$1"
   if [[ $remoteName == '' ]]; then
     remoteName="$(git-remote-current)"
   fi
@@ -30,7 +27,7 @@ function git-remote-colorize() {
   local remoteColor="$(git-remote-color $remoteName)"
 
   # If --with-icon is not passed, we simply display the colored commit
-  if [[ "$argsf[--with-icon]" != 1 ]]; then
+  if [[ "$isWithIcon" != 1 ]]; then
     colorize "$displayRemoteName" "$remoteColor"
     return
   fi

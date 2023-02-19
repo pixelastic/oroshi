@@ -1,6 +1,3 @@
-# Loading gitstatus. It can't be loaded from inside a require
-source /home/tim/local/etc/gitstatus/gitstatus.plugin.zsh
-
 require 'env'               # Global environment variables
 require 'path'              # Definition of $PATH
 require 'tmux'              # Tmux load

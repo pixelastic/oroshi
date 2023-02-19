@@ -4,15 +4,12 @@
 # $ git-branch-colorize master             # master
 # $ git-branch-colorize --with-icon        #  master
 function git-branch-colorize() {
-  # Filter positional arguments and flags
-  local argsp=()
-  local -A argsf; argsf=()
-  for arg in $argv; do
-    [[ "$arg" =~ "^-" ]] && argsf[$arg]=1 || argsp+="$arg"
-  done
+  zparseopts -E -D \
+    -with-icon=flagWithIcon
+  local isWithIcon=${#flagWithIcon}
 
   # Branch name {{{
-  local branchName="$argsp[1]"
+  local branchName="$1"
   # Default to current branch if none specified
   if [[ "$branchName" == '' ]]; then
     branchName="$(git-branch-current)"
@@ -22,7 +19,7 @@ function git-branch-colorize() {
   local branchColor="$(git-branch-color $branchName)"
 
   # If --with-icon is not passed, we simply display the colored branch
-  if [[ "$argsf[--with-icon]" != 1 ]]; then
+  if [[ "$isWithIcon" != 1 ]]; then
     colorize "$branchName" $branchColor
     return
   fi

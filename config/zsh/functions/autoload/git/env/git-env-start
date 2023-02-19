@@ -1,3 +1,0 @@
-# gitstatus_check 'OROSHI' && return
-gitstatus_stop 'OROSHI'
-gitstatus_start 'OROSHI'

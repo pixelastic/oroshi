@@ -64,8 +64,6 @@ OROSHI_SYNCHRONOUS_PROMPT_PARTS=(
   path
 )
 # TODO: Benchmark this to see the slowest and improve them
-# TODO: I think one of those methods returns a malformed ANSI sequence that
-# messes up the terminal
 OROSHI_ASYNCHRONOUS_PROMPT_PARTS=(
   git-is-submodule
   git-has-stash
@@ -153,8 +151,12 @@ function oroshi-last-command-exit-store() {
 }
 add-zsh-hook precmd oroshi-last-command-exit-store
 
-# Update the shared $GIT_ env variables that are used by the prompt
-add-zsh-hook precmd git-env-update
+# Keep a reference to commonly used $GIT_ variables, so we don't compute them
+# too often
+function oroshi-git-env-store() {
+  GIT_DIRECTORY_IS_REPOSITORY="$(git-directory-is-repository && echo 1 || echo 0)"
+}
+add-zsh-hook precmd oroshi-git-env-store
 
 # Synchronously populate prompt parts that are quick to generate
 function oroshi-prompt-synchronous-populate() {
@@ -166,11 +168,15 @@ add-zsh-hook precmd oroshi-prompt-synchronous-populate
 
 # Asynchronously populate prompt parts that are slow to generate
 function oroshi-prompt-asynchronous-populate() {
-  # Kill the previous prompt generation process if it was already running
-  # This allows keeping only one generation at a time
+  # Don't start another background generation if one is already occuring
   if [[ "${OROSHI_ASYNCHRONOUS_PID}" != "0" ]]; then
-    kill -s HUP $OROSHI_ASYNCHRONOUS_PID >/dev/null 2>&1 || :
+    return
   fi
+  # # Kill the previous prompt generation process if it was already running
+  # # This allows keeping only one generation at a time
+  # if [[ "${OROSHI_ASYNCHRONOUS_PID}" != "0" ]]; then
+  #   kill -s HUP $OROSHI_ASYNCHRONOUS_PID >/dev/null 2>&1 || :
+  # fi
 
   function async() {
     # Save all new parts in a file

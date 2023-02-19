@@ -22,5 +22,6 @@ function sort-filepaths() {
     filepaths[$index]="./${value}"
   done
 
+  # Display in reverse order, one by line
   echo ${(F)${(O)filepaths}}
 }

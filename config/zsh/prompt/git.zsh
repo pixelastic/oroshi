@@ -30,7 +30,7 @@ function oroshi-prompt-git-branch-populate() {
   OROSHI_PROMPT_PARTS[git-branch]=""
   (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
 
-  OROSHI_PROMPT_PARTS[git-branch]="$(OROSHI_IS_PROMPT=1 git-branch-colorize $GIT_BRANCH_CURRENT --with-icon)"
+  OROSHI_PROMPT_PARTS[git-branch]="$(OROSHI_IS_PROMPT=1 git-branch-colorize --with-icon)"
 }
 
 # Display the most relevant git tag
@@ -48,7 +48,7 @@ function oroshi-prompt-git-remote-populate() {
 
   [[ $GIT_REMOTE_CURRENT == 'origin' ]] && return;
 
-  OROSHI_PROMPT_PARTS[git-remote]="$(OROSHI_IS_PROMPT=1 git-remote-colorize $GIT_REMOTE_CURRENT--with-icon)"
+  OROSHI_PROMPT_PARTS[git-remote]="$(OROSHI_IS_PROMPT=1 git-remote-colorize --with-icon)"
 }
 
 # Check if in a submodule
