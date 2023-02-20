@@ -16,8 +16,8 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' group-name ''
 # Display results in lines instead of columns
 setopt LIST_ROWS_FIRST
-# Auto-select the first element of the menu
-setopt MENU_COMPLETE
+# On TAB press, display the menu, but don't autoselect the first one
+unsetopt MENU_COMPLETE
 # }}}
 
 # Globs {{{

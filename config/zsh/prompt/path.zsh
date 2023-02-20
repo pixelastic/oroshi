@@ -52,7 +52,7 @@ function oroshi-prompt-path-populate() {
   # Path is not writable
   if [[ ! -w $PWD ]]; then
     OROSHI_PROMPT_PARTS[path]+="%K{$COLOR_ALIAS_ERROR}%F{$COLOR_WHITE}  %f%k%F{$COLOR_ALIAS_ERROR}%f"
-    OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ALIAS_ERROR}/${currentPath}%f"
+    OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ALIAS_ERROR}${currentPath}%f"
     return
   fi
 
