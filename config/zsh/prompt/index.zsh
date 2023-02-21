@@ -59,10 +59,10 @@ require 'prompt/ruby'
 # related oroshi-prompt-***-populate methods). Depending on the array, they will
 # be fetched synchronously or asynchronously.
 OROSHI_SYNCHRONOUS_PROMPT_PARTS=(
-  exit-code
-  git-status
   path
+  git-status
   git-is-submodule
+  exit-code
 )
 # TODO: Benchmark this to see the slowest and improve them
 OROSHI_ASYNCHRONOUS_PROMPT_PARTS=(

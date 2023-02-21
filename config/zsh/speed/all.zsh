@@ -1,4 +1,5 @@
 require 'env'               # Global environment variables
+require 'path'              # Definition of $PATH
 require 'tmux'              # Tmux load
 require 'theming/index'     # Colors
 

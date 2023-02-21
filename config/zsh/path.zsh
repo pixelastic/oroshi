@@ -39,8 +39,4 @@ function () {
 
   # Prepend our path to the existing path
   path=($customPath $path)
-
-  # Deduplicate entries in path
-  # See: http://zsh.sourceforge.net/Doc/Release/Shell-Builtin-Commands.html
-  typeset -U path PATH
 }
