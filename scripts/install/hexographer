@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+sudo apt install openjdk-11-jdk
+
 cd ~/local/src
 mkdir -p ./hexographer
 cd ./hexographer
