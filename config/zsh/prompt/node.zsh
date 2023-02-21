@@ -12,6 +12,7 @@ function oroshi-prompt-node-monorepo-populate() {
 # Display project node version
 # -  (red) if no global node
 # - {nothing} if not a node repo (no .nvmrc)
+# -  X.Y.Z (grey) if local version detected, but nvm hasn't been loaded
 # -  X.Y.Z (red) if local version isn't installed
 # -  X.Y.Z (yellow) if local and current don't match match
 # -  X.Y.Z (green) if local and current match
@@ -20,7 +21,7 @@ function oroshi-prompt-node-version-populate() {
 
   # Not even a system-wide node installation
   if [[ ! -v commands[node] ]]; then
-    OROSHI_PROMPT_PARTS[node-version]="%F{$COLOR_ALIAS_ERROR} %f"
+    OROSHI_PROMPT_PARTS[node-version]+="%F{$COLOR_ALIAS_ERROR} %f"
     return
   fi
 
@@ -31,23 +32,29 @@ function oroshi-prompt-node-version-populate() {
     return
   fi
 
-  local currentVersion="$(node --version)"
-  currentVersion=${currentVersion:s/v/}
   local expectedVersion="$(<$nvmrcPath)"
 
-  # Local version is the same as the current one
-  if [[ $currentVersion == $expectedVersion ]]; then
-    OROSHI_PROMPT_PARTS[node-version]="%F{$COLOR_ALIAS_SUCCESS} $expectedVersion%f"
+  # If nvm isn't loaded, we display in gray
+  if [[ $OROSHI_NVM_LOADED == "0" ]]; then
+    OROSHI_PROMPT_PARTS[node-version]+="%F{$COLOR_ALIAS_COMMENT} $expectedVersion%f"
     return
   fi
 
   # Local version is not even installed
-  if nvm version $expectedVersion | grep -q "N/A"; then
-    OROSHI_PROMPT_PARTS[node-version]="%F{$COLOR_ALIAS_ERROR} $expectedVersion%f"
+  if [[ ! -d ~/.nvm/versions/node/v${expectedVersion} ]]; then
+    OROSHI_PROMPT_PARTS[node-version]+="%F{$COLOR_ALIAS_ERROR} $expectedVersion%f"
     return
   fi
 
-  # Local version is not in use
-  OROSHI_PROMPT_PARTS[node-version]="%F{$COLOR_ALIAS_WARNING} $expectedVersion%f"
+  local currentVersion="${$(node --version):s/v/}"
+
+  # Local version is different than the current node version
+  if [[ $currentVersion != $expectedVersion ]]; then
+    OROSHI_PROMPT_PARTS[node-version]+="%F{$COLOR_ALIAS_WARNING} $expectedVersion%f"
+    return
+  fi
+
+  # Local version is the same as the one in use
+  OROSHI_PROMPT_PARTS[node-version]+="%F{$COLOR_ALIAS_SUCCESS} $expectedVersion%f"
 }
 
