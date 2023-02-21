@@ -4,6 +4,9 @@
 function simplify-path () {
   local fullPath="$1"
 
+  local startsWithSlash="0"
+  [[ $fullPath[1] == "/" ]] && startsWithSlash="1"
+
   local -a pathArray
   pathArray=(${(s:/:)fullPath})
   if [[ ${#pathArray[*]} -lt 4 ]]; then
@@ -11,5 +14,9 @@ function simplify-path () {
     return 0
   fi
 
-  echo "/${pathArray[1]}/…/${pathArray[-2]}/${pathArray[-1]}/"
+  if [[ $startsWithSlash == "1" ]]; then
+    echo -n "/"
+  fi
+
+  echo "${pathArray[1]}/…/${pathArray[-2]}/${pathArray[-1]}/"
 }
