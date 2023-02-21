@@ -1,12 +1,12 @@
 # Refresh the current prompt
-# Works by sending a TRAPUSR1 signal to it
+# Works by sending a TRAPUSR1 signal to zsh
 # Usage:
 # $ prompt-refresh           # Guesses the topmost zsh process
 # $ prompt-refresh 1794568   # Specify the prompt to refresh.
 #                            # Useful when running background processes,
 #                            # detached from the prompt
 function prompt-refresh() {
-  tmux-echo "Prompt refreshed"
+  # tmux-echo "Prompt refreshed"
 
   local promptPid="$1"
   if [[ $promptPid == '' ]]; then

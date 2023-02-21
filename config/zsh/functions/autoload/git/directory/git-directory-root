@@ -5,6 +5,11 @@
 # $ git-directory-root -f / --force  # Goes all the way up submodules
 # TODO: Write tests
 function git-directory-root {
+  # If not in a git repo, we simply return the current path
+  if ! git-directory-is-repository; then
+    echo "$PWD"
+    return 1
+  fi
 
   zmodload zsh/zutil
   zparseopts -E -D \
@@ -25,22 +30,18 @@ function git-directory-root {
     return 0
   fi
 
-  local gitRoot="$(cd $targetPath && git pwd)"
-
-  # If -f is not passed, we can safely display this path
-  if [[ $isForce != "1" ]]; then
-    echo $gitRoot
-    return 0
+  # If -f is passed, we try the superproject root
+  if [[ $isForce == "1" ]]; then
+    local gitRoot="$(git rev-parse --show-superproject-working-tree)"
+    if [[ $gitRoot != "" ]]; then
+      echo $gitRoot
+      return 0
+    fi
   fi
 
-  # If not in a submodule, we can stop
-  if ! git-is-submodule; then
-    echo $gitRoot
-    return 0
-  fi
-
-  # In a submodule, so we test the parent directory of the git root
-  git-directory-root "${gitRoot:h}"
+  # Otherwise, we fallback to the current root
+  local gitRoot="$(git rev-parse --show-toplevel)"
+  echo $gitRoot
 }
 
 

@@ -62,10 +62,10 @@ OROSHI_SYNCHRONOUS_PROMPT_PARTS=(
   exit-code
   git-status
   path
+  git-is-submodule
 )
 # TODO: Benchmark this to see the slowest and improve them
 OROSHI_ASYNCHRONOUS_PROMPT_PARTS=(
-  git-is-submodule
   git-has-stash
   git-rebase-in-progress
   git-rebase-status
