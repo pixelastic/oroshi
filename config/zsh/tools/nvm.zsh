@@ -53,4 +53,4 @@ function chpwdAutoNvmUse() {
 }
 autoload -U add-zsh-hook
 add-zsh-hook chpwd chpwdAutoNvmUse
-chpwdAutoNvmUse
+# chpwdAutoNvmUse

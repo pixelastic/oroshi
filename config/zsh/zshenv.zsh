@@ -2,7 +2,11 @@
 # - Interactive shells (just like zshrc)
 # - zsh scripts
 
+# Reference to the zsh config folder, so our `source` calls are easier to write
 export ZSH_CONFIG_PATH=~/.oroshi/config/zsh
+
+# This will disable the automated loading of compinit in /etc/zsh/zshrc
+skip_global_compinit=1
 
 # Define the $PATH, with unique values
 # Note: the `typeset -aU path` line can't be included in a sourced function

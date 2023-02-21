@@ -1,1 +1,0 @@
-require 'completion/index'  # Autocompletion

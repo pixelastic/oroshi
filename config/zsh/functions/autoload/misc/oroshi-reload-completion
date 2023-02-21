@@ -3,8 +3,10 @@ function oroshi-reload-completion() {
   # Clear the completion cache
   \rm -f ~/.zcompdump 2>/dev/null
 
-  for item in ~/.oroshi/config/zsh/completion/compdef/*; do
+  for item in $ZSH_CONFIG_PATH/completion/compdef/*; do
     unfunction ${item:t}
     autoload -U ${item:t}
   done
+
+  compinit -C
 }

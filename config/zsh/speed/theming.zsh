@@ -1,1 +1,0 @@
-require 'theming/index'     # Colors
