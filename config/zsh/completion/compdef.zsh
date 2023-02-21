@@ -12,3 +12,6 @@ compdef _git-branch-local git-branch-switch
 compdef _git-branch-remote git-branch-pull
 compdef _git-files-dirty git-file-add
 # }}}
+# Yarn {{{
+compdef _package-scripts yarn-run
+# }}}
