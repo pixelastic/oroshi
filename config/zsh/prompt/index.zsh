@@ -74,9 +74,9 @@ OROSHI_ASYNCHRONOUS_PROMPT_PARTS=(
   git-remote
   git-issues
   git-pullrequests
-  # node-monorepo
-  # yarn-link
-  # yarn-install-in-progress
+  node-monorepo
+  yarn-link
+  yarn-install-in-progress
   node-version
   ruby-version
 )

@@ -1,5 +1,5 @@
 # Define a custom $PATH variable that look for all our binaries
-function () {
+function oroshi_path() {
   local hostname="$(hostname)"
   local customPath=(
     # Language binaries
@@ -40,3 +40,5 @@ function () {
   # Prepend our path to the existing path
   path=($customPath $path)
 }
+oroshi_path
+unfunction oroshi_path

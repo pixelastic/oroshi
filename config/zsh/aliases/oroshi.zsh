@@ -1,4 +1,4 @@
-alias oz="oroshi-reload-zsh"
+alias oz="colors-refresh && source ~/.zshenv && source ~/.zshrc"
 alias of="oroshi-autoload-functions"
 alias oc="oroshi-reload-completion"
 

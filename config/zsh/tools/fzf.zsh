@@ -1,5 +1,5 @@
 # FZF
-function () {
+function oroshi_tools_fzf() {
   # Stop if fzf not installed
   local fzfPath=~/.fzf.zsh
   [[ -r $fzfPath ]] || return
@@ -42,5 +42,7 @@ function () {
   # Default config
   export FZF_DEFAULT_OPTS="$fzfOptionBase $fzfOptionsMulti $fzfOptionColors $fzfOptionPreview"
 }
+oroshi_tools_fzf
+unfunction oroshi_tools_fzf
 
 

@@ -1,6 +1,0 @@
-# Reload all the interactive shell
-function oroshi-reload-zsh() {
-  colors-refresh
-  source ~/.zshenv
-  source ~/.zshrc
-}
