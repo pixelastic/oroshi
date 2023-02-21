@@ -1,0 +1,23 @@
+# Find the specified file up the directory tree
+# Returns the filepath if found, "" if not found
+# Usage:
+#   $ find-up .nvmrc
+function find-up() {
+  local needle="$1"
+
+  # Stop if no needle passed
+  [[ $needle == "" ]] && return 1
+
+  # Loop through all parents to check for the existence of the file/directory
+  local checkedDirectory="$PWD"
+  while [[ $checkedDirectory != "/" ]]; do
+    local checkedFile="${checkedDirectory}/${needle}"
+    if [[ -r ${checkedFile} ]]; then
+      echo $checkedFile
+      return 0
+    fi
+    checkedDirectory="${checkedDirectory:h}"
+  done
+
+  return 1
+}
