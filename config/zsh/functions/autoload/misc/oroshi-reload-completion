@@ -1,5 +1,6 @@
 # Reload all completion definitions
 function oroshi-reload-completion() {
+  # Clear the completion cache
   \rm -f ~/.zcompdump 2>/dev/null
 
   for item in ~/.oroshi/config/zsh/completion/compdef/*; do

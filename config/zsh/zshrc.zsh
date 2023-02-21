@@ -1,12 +1,16 @@
-require 'env'               # Global environment variables
-require 'tmux'              # Tmux load
-require 'theming/index'     # Colors
+# zmodload zsh/zprof
 
-require 'history'           # History of commands
-require 'aliases/index'     # Aliases definitions
-require 'tools/index'       # Tools (nvm, bat, rg, fzf, etc) configuration
-require 'keybindings/index' # Ctrl-G, Ctrl-P, etc
-require 'completion/index'  # Autocompletion
-require 'prompt/index'      # Prompt display
+source $ZSH_CONFIG_PATH/env.zsh               # Global environment variables
+source $ZSH_CONFIG_PATH/tmux.zsh              # Tmux load
+source $ZSH_CONFIG_PATH/theming/index.zsh     # Colors
 
-require 'local/index'       # Laptop-specific configuration
+source $ZSH_CONFIG_PATH/history.zsh           # History of commands
+source $ZSH_CONFIG_PATH/aliases/index.zsh     # Aliases definitions
+source $ZSH_CONFIG_PATH/tools/index.zsh       # Tools (nvm, bat, rg, fzf, etc) configuration
+source $ZSH_CONFIG_PATH/keybindings/index.zsh # Ctrl-G, Ctrl-P, etc
+source $ZSH_CONFIG_PATH/completion/index.zsh  # Autocompletion
+source $ZSH_CONFIG_PATH/prompt/index.zsh      # Prompt display
+
+source $ZSH_CONFIG_PATH/local/index.zsh       # Laptop-specific configuration
+
+# zprof

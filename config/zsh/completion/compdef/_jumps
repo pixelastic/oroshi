@@ -1,4 +1,5 @@
 #compdef
+
 # List of all folders marked as marks, that we can jump to
 function _jumps() {
 

@@ -2,7 +2,8 @@
 # markers
 unsetopt NOMATCH
 
-for aliasPath in ~/.oroshi/config/zsh/aliases/**/*.zsh; do
-  require $aliasPath
+for item in $ZSH_CONFIG_PATH/aliases/**/*.zsh; do
+  [[ ${item:t} == "index.zsh" ]] && continue
+  source ${item}
 done
 

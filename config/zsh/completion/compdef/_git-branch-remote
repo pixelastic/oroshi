@@ -1,4 +1,5 @@
 #compdef
+
 # List of all branches on the remote
 function _git-branch-remote() {
   local suggestions="$(\

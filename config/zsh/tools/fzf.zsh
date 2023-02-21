@@ -3,7 +3,7 @@ function () {
   # Stop if fzf not installed
   local fzfPath=~/.fzf.zsh
   [[ -r $fzfPath ]] || return
-  require $fzfPath
+  source $fzfPath
 
   # Colors
   local fzfColors=()

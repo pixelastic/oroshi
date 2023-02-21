@@ -7,9 +7,6 @@ OROSHI_TIMER_REQUIRE_STACK=''
 # $ require 'tools/nvm'        # Loads the tools/nvm.zsh file in oroshi
 # $ require ~/.oroshi/config/zsh/tools/nvm'        # Loads the tools/nvm.zsh file in oroshi
 function require {
-  # Start debug timer
-  local before=$(/bin/date +%s%N)
-
   local basePath=~/.oroshi/config/zsh/
   basePath="${~basePath}"
 
@@ -29,8 +26,8 @@ function require {
   source ${requirePath}
 
   # Store debug timer
-  local after=$(/bin/date +%s%N)
+  # local after=$(/bin/date +%s%N)
 
-  local difference=$((($after - $before)/1000000))
-  OROSHI_TIMER_REQUIRE_STACK+="${difference}:${requirePath}\n"
+  # local difference=$((($after - $before)/1000000))
+  # OROSHI_TIMER_REQUIRE_STACK+="${difference}:${requirePath}\n"
 }

@@ -5,23 +5,23 @@ stty ixoff -ixon
 # TODO: https://github.com/Aloxaf/fzf-tab
 # TODO: https://pragmaticpineapple.com/improving-vim-workflow-with-fzf/#speed-search-your-project
 
-require 'keybindings/clean'
-require 'keybindings/vim'
-require 'keybindings/tab'          # Completion
+source $ZSH_CONFIG_PATH/keybindings/clean.zsh
+source $ZSH_CONFIG_PATH/keybindings/vim.zsh
+source $ZSH_CONFIG_PATH/keybindings/tab.zsh          # Completion
 
-require 'keybindings/ctrl-e'       # Edit line in vim
-require 'keybindings/ctrl-n'       # Open current directory in Nautilus
+source $ZSH_CONFIG_PATH/keybindings/ctrl-e.zsh       # Edit line in vim
+source $ZSH_CONFIG_PATH/keybindings/ctrl-n.zsh       # Open current directory in Nautilus
 
-require 'keybindings/ctrl-g'       # Regexp search in files in project
-require 'keybindings/ctrl-shift-g' # Regexp search in files in subdir
+source $ZSH_CONFIG_PATH/keybindings/ctrl-g.zsh       # Regexp search in files in project
+source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-g.zsh # Regexp search in files in subdir
 
-require 'keybindings/ctrl-p'       # Fuzzy-find files in project
-require 'keybindings/ctrl-shift-p' # Fuzzy-find files in subdirectories
+source $ZSH_CONFIG_PATH/keybindings/ctrl-p.zsh       # Fuzzy-find files in project
+source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-p.zsh # Fuzzy-find files in subdirectories
 
-require 'keybindings/ctrl-o'       # Fuzzy-find directories in project
-require 'keybindings/ctrl-shift-o' # Fuzzy-find directories in subdir
+source $ZSH_CONFIG_PATH/keybindings/ctrl-o.zsh       # Fuzzy-find directories in project
+source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-o.zsh # Fuzzy-find directories in subdir
 
-require 'keybindings/ctrl-j'       # Fuzzy-find common directories
+source $ZSH_CONFIG_PATH/keybindings/ctrl-j.zsh       # Fuzzy-find common directories
 
-require 'keybindings/ctrl-h'       # Fuzzy-find all git commits hashes
-require 'keybindings/ctrl-r'       # Fuzzy-find history commands
+source $ZSH_CONFIG_PATH/keybindings/ctrl-h.zsh       # Fuzzy-find all git commits hashes
+source $ZSH_CONFIG_PATH/keybindings/ctrl-r.zsh       # Fuzzy-find history commands

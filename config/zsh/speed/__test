@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+
+
+hyperfine --warmup 3 \
+  'zsh -i -c "source ~/.oroshi/config/zsh/speed/aliases.zsh"' \
+  'zsh -i -c "source ~/.oroshi/config/zsh/speed/all.zsh"' \
+  'zsh -i -c "source ~/.oroshi/config/zsh/speed/completion.zsh"' \
+  'zsh -i -c "source ~/.oroshi/config/zsh/speed/env.zsh"' \
+  'zsh -i -c "source ~/.oroshi/config/zsh/speed/history.zsh"' \
+  'zsh -i -c "source ~/.oroshi/config/zsh/speed/keybindings.zsh"' \
+  'zsh -i -c "source ~/.oroshi/config/zsh/speed/local.zsh"' \
+  'zsh -i -c "source ~/.oroshi/config/zsh/speed/path.zsh"' \
+  'zsh -i -c "source ~/.oroshi/config/zsh/speed/prompt.zsh"' \
+  'zsh -i -c "source ~/.oroshi/config/zsh/speed/theming.zsh"' \
+  'zsh -i -c "source ~/.oroshi/config/zsh/speed/tmux.zsh"' \
+  'zsh -i -c "source ~/.oroshi/config/zsh/speed/tools.zsh"'
