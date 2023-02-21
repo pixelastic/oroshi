@@ -46,7 +46,8 @@ function oroshi-prompt-git-remote-populate() {
   OROSHI_PROMPT_PARTS[git-remote]=""
   (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
 
-  [[ $GIT_REMOTE_CURRENT == 'origin' ]] && return;
+  local currentRemoteName="$(git-remote-current)"
+  [[ $currentRemoteName == 'origin' ]] && return;
 
   OROSHI_PROMPT_PARTS[git-remote]="$(OROSHI_IS_PROMPT=1 git-remote-colorize --with-icon)"
 }
