@@ -1,0 +1,9 @@
+# Reload all completion definitions
+function oroshi-reload-completion() {
+  \rm -f ~/.zcompdump 2>/dev/null
+
+  for item in ~/.oroshi/config/zsh/completion/compdef/*; do
+    unfunction ${item:t}
+    autoload -U ${item:t}
+  done
+}

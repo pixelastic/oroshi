@@ -1,8 +1,5 @@
-alias oa="~/.oroshi/scripts/deploy/autostart"
-alias oc="~/.oroshi/scripts/deploy/dircolors && source ~/.zshrc"
-alias of="fc-cache -f -v"
-alias oh="~/.oroshi/scripts/deploy/hosts"
-alias or="reload-completion"
-alias os="~/.oroshi/scripts/deploy/ssh"
-alias oz="colors-refresh && source ~/.zshenv && source ~/.zshrc"
+alias oz="oroshi-reload-zsh"
+alias of="oroshi-autoload-functions"
+alias oc="oroshi-reload-completion"
+
 alias vk="v ~/.oroshi/config/kitty/kitty.conf"

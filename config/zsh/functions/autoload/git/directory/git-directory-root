@@ -2,7 +2,7 @@
 # Usage:
 # $ git-directory-root               # Path to the root
 # $ git-directory-root /path/to/file # Root of the given path
-# $ git-directory-root -f            # Goes all the way up submodules
+# $ git-directory-root -f / --force  # Goes all the way up submodules
 # TODO: Write tests
 function git-directory-root {
 
@@ -39,9 +39,8 @@ function git-directory-root {
     return 0
   fi
 
-  # In a submodule, so we test the parent directory, recursively
-  local parentDirectory="${gitRoot}/.."
-  git-directory-root -f "${parentDirectory:a}"
+  # In a submodule, so we test the parent directory of the git root
+  git-directory-root "${gitRoot:h}"
 }
 
 
