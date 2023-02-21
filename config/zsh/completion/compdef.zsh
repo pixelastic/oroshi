@@ -8,6 +8,7 @@
 compdef _jumps unmark j
 
 # Git {{{
+compdef _git-branch-local git-branch-switch
 compdef _git-branch-remote git-branch-pull
 compdef _git-files-dirty git-file-add
 # }}}

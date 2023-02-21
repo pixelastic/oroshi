@@ -4,8 +4,11 @@ function oroshi-reload-completion() {
   \rm -f ~/.zcompdump 2>/dev/null
 
   for item in $ZSH_CONFIG_PATH/completion/compdef/*; do
-    unfunction ${item:t}
-    autoload -U ${item:t}
+    local functionName=${item:t}
+    if [[ $functions[$functionName] ]]; then
+      unfunction ${functionName}
+    fi
+    autoload -U ${functionName}
   done
 
   compinit -C

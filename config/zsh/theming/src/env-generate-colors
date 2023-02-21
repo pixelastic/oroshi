@@ -101,6 +101,11 @@ aliasColors[GIT_REMOTE]="YELLOW"
 aliasColors[GIT_REMOVED]="RED"
 aliasColors[GIT_PULLREQUEST]="PURPLE"
 aliasColors[GIT_ISSUE]="YELLOW"
+aliasColors[GIT_BRANCH_DEFAULT]="ORANGE"
+aliasColors[GIT_BRANCH_HEAD]="RED"
+aliasColors[GIT_BRANCH_DEVELOP]="YELLOW"
+aliasColors[GIT_BRANCH_MAIN]="BLUE"
+aliasColors[GIT_BRANCH_MASTER]="BLUE"
 # Code
 aliasColors[EVAL]="YELLOW"                      # - in pug
 aliasColors[BOOLEAN]="AMBER_5"

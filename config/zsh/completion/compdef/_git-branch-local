@@ -1,0 +1,14 @@
+#compdef
+
+# List of all local branches
+function _git-branch-local() {
+  local suggestions="$(\
+    git branch \
+      --sort=-committerdate \
+      --format="%(refname:short):%(contents:subject)"
+  )"
+  suggestions=(${(f)suggestions})
+
+  # Suggest the local branches
+  _describe -V "$(completion-header $COLOR_ALIAS_GIT_BRANCH_DEFAULT $COLOR_WHITE '  Local branches ')" suggestions
+}

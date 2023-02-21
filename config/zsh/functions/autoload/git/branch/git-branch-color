@@ -10,14 +10,12 @@ function git-branch-color() {
     branchName="$(git-branch-current)"
   fi
 
-  local DEFAULT_BRANCH_COLOR='ORANGE'
-
   declare -A BRANCH_COLORS
   BRANCH_COLORS=()
-  BRANCH_COLORS[HEAD]='RED'
-  BRANCH_COLORS[develop]='YELLOW'
-  BRANCH_COLORS[master]='BLUE'
-  BRANCH_COLORS[main]='BLUE'
+  BRANCH_COLORS[HEAD]=$COLOR_ALIAS_GIT_BRANCH_HEAD
+  BRANCH_COLORS[develop]=$COLOR_ALIAS_GIT_BRANCH_DEVELOP
+  BRANCH_COLORS[master]=$COLOR_ALIAS_GIT_BRANCH_MASTER
+  BRANCH_COLORS[main]=$COLOR_ALIAS_GIT_BRANCH_MAIN
 
   # Known branch
   local knownColor=$BRANCH_COLORS[$branchName]
@@ -27,5 +25,5 @@ function git-branch-color() {
   fi
 
   # Default branch
-  echo $DEFAULT_BRANCH_COLOR
+  echo $COLOR_ALIAS_GIT_BRANCH_DEFAULT
 }

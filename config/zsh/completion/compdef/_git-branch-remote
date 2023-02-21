@@ -5,7 +5,7 @@ function _git-branch-remote() {
   local suggestions="$(\
     git branch \
       --remote \
-      --format="%(refname:short)" \
+      --format="%(refname:short):%(contents:subject)" \
       | sed 's_origin/__g' \
   )"
   suggestions=(${(f)suggestions})
