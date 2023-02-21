@@ -17,9 +17,10 @@ function lazyloadNvm {
   # a function because aliases are expanded in the function body
   [[ ! $aliases[nvm] ]] && return;
 
-
   unalias nvm;
-  # Using --no-use prevent nvm from running `nvm use` automatically
+
+  # Using --no-use prevent nvm from running `nvm use` automatically, which takes
+  # about 800ms
   source ~/.nvm/nvm.sh --no-use
 }
 
