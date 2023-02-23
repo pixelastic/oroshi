@@ -90,7 +90,7 @@ for remoteName in $remoteNames; do
     fi
 
     # Remote branch name {{{
-    row+="$(git-remote-colorize "$remoteBranchName" --with-icon)▮"
+    row+="$(git-branch-colorize "$remoteBranchName" --with-icon --remote)▮"
     # }}}
     
     # Commit hash {{{

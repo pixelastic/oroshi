@@ -17,8 +17,8 @@ fi
 local currentRemote="$(git-remote-current)"
 local displayRemoteName="$(git-remote-colorize $currentRemote --with-icon)"
 
-for branchName in $inputBranches; do
-  local displayBranchName="$(git-branch-colorize $branchName --with-icon)"
+for branchName in ${=inputBranches}; do
+  local displayBranchName="$(git-branch-colorize $branchName --with-icon --remote)"
 
   # Exclude branches that are not on the remote
   if ! git-branch-exists-remote $branchName; then

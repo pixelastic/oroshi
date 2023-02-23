@@ -28,4 +28,7 @@ setopt RM_STAR_WAIT
 # Files {{{
 # Hidden files should be suggested
 setopt GLOB_DOTS
+# Do not add symbols after file names to indicate their type (*, @ or /)
+unsetopt LIST_TYPES
 # }}}
+

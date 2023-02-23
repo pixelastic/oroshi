@@ -5,6 +5,11 @@ fpath+=($ZSH_CONFIG_PATH/completion/compdef)
 source $ZSH_CONFIG_PATH/completion/misc.zsh
 source $ZSH_CONFIG_PATH/completion/styling.zsh
 
+# TODO: Check zsh-autosuggestion to display a fish-like autosuggestion
+# TODO: Change the color of the currently selected suggestion to match what we
+# do in fzf
+
+
 # If the completion cache file is older than 20 hours, we regenerate it
 # Source: https://gist.github.com/ctechols/ca1035271ad134841284#gistcomment-2308206
 function oroshi_completion_compinit() {

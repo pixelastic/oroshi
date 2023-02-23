@@ -2,15 +2,21 @@
 
 # List of all branches on the remote
 function _git-branch-remote() {
-  local suggestions="$(\
+  local currentRemote="$(git-remote-current)"
+  local rawSuggestions="$(\
     git branch \
       --remote \
       --format="%(refname:short):%(contents:subject)" \
-      | sed 's_origin/__g' \
+      | sed "s_${currentRemote}/__g"
   )"
-  suggestions=(${(f)suggestions})
-  # Remove HEAD from the list
-  suggestions[$suggestions[(i)HEAD]]=()
+
+  local suggestions=()
+  for line in ${(f)rawSuggestions}; do
+    # Skip HEAD
+    [[ $line == HEAD* ]] && continue
+
+    suggestions+=$line
+  done
 
   # Suggest the remote branches
   _describe -V "$(completion-header $COLOR_ALIAS_GIT_REMOTE $COLOR_BLACK '  Remote branches ')" suggestions

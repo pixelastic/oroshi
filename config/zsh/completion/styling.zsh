@@ -6,25 +6,30 @@ function completion-header() {
   echo "%K{$colorBackground}%F{$colorForeground}$content%f%F{$COLOR_ALIAS_TERMINAL}%f%k"
 }
 
+# Default coloring:
+# - Descriptions in gray
+# - Files/Folders following LS_COLORS
+zstyle ':completion:*:default' list-colors \
+  "=(#b)* (--) (*)=38;5;$COLOR_WHITE=38;5;$COLOR_ALIAS_UI=38;5;$COLOR_ALIAS_COMMENT" \
+  ${(s.:.)LS_COLORS}
+
 # Default style for header descriptions
 zstyle ':completion:*:descriptions' format "$(completion-header $COLOR_ALIAS_HEADER $COLOR_BLACK)"
 
-
 # Files
 zstyle ':completion:*:globbed-files' format "$(completion-header $COLOR_ALIAS_FILE $COLOR_WHITE '  Files ')"
-# Re-use LS_COLORS for coloring the files and directories
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 # Directories
 zstyle ':completion:*:local-directories' format "$(completion-header $COLOR_ALIAS_DIRECTORY $COLOR_WHITE '  Directories ')"
 
 # Commands
-zstyle ':completion:*:commands' format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK '  Commands ')"
+zstyle ':completion:*:commands'  format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK '  Commands ')"
 zstyle ':completion:*:functions' format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK ' {} Functions ')"
-zstyle ':completion:*:builtins' format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK '  Zsh Builtins ')"
+zstyle ':completion:*:builtins'  format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK '  Zsh Builtins ')"
 
 # Flags
 zstyle ':completion:*:options' format "$(completion-header $COLOR_ALIAS_FLAG $COLOR_WHITE ' -- Flags ')"
+zstyle ':completion:*:options' list-colors "=(#b)(*) (--) (*)=38;5;$COLOR_WHITE=38;5;$COLOR_ALIAS_FLAG=38;5;$COLOR_ALIAS_UI=38;5;$COLOR_ALIAS_COMMENT"
 
 # Variables
 zstyle ':completion:*:parameters' format "$(completion-header $COLOR_ALIAS_VARIABLE $COLOR_WHITE ' $ Variables ')"

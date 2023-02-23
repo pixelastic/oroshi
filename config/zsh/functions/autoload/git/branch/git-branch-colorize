@@ -1,12 +1,15 @@
 # Displays a colorized version of a branch name
 # Usage:
-# $ git-branch-colorize                    # {currentBranch}
-# $ git-branch-colorize master             # master
-# $ git-branch-colorize --with-icon        #  master
+# $ git-branch-colorize                         # {currentBranch}
+# $ git-branch-colorize master                  # master
+# $ git-branch-colorize --with-icon             #  master
+# $ git-branch-colorize origin/develop --remote #  origin/remote
 function git-branch-colorize() {
   zparseopts -E -D \
-    -with-icon=flagWithIcon
+    -with-icon=flagWithIcon \
+    -remote=flagRemote
   local isWithIcon=${#flagWithIcon}
+  local isRemote=${#flagRemote}
 
   # Branch name {{{
   local branchName="$1"
@@ -14,9 +17,15 @@ function git-branch-colorize() {
   if [[ "$branchName" == '' ]]; then
     branchName="$(git-branch-current)"
   fi
+  branchName=${branchName:s#/dependabot/npm_and_yarn#/  }
   # }}}
-  # Branch color
-  local branchColor="$(git-branch-color $branchName)"
+  # Branch color {{{
+  if [[ "$isRemote" == "1" ]]; then
+    local branchColor=$COLOR_ALIAS_GIT_REMOTE
+  else
+    local branchColor="$(git-branch-color $branchName)"
+  fi
+  # }}}
 
   # If --with-icon is not passed, we simply display the colored branch
   if [[ "$isWithIcon" != 1 ]]; then
@@ -26,6 +35,13 @@ function git-branch-colorize() {
 
   # If --with-icon is passed, we need to add an icon and display a specific
   # color based on the local/remote relationship
+
+  # For remote branches, color as a remote
+  if [[ $isRemote == '1' ]]; then
+    colorize " $branchName" $branchColor
+    return
+  fi
+
   local branchPushStatus="$(git-branch-push-status $branchName)"
 
   if [[ $branchPushStatus = 'never_pushed' ]]; then

@@ -65,6 +65,8 @@ OROSHI_SYNCHRONOUS_PROMPT_PARTS=(
   exit-code
 )
 # TODO: Benchmark this to see the slowest and improve them
+# TODO: Check vcs_info to see if it makes things easier/faster:
+# https://git-scm.com/book/en/v2/Appendix-A%3A-Git-in-Other-Environments-Git-in-Zsh
 OROSHI_ASYNCHRONOUS_PROMPT_PARTS=(
   git-has-stash
   git-rebase-in-progress
