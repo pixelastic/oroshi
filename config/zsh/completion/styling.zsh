@@ -45,7 +45,6 @@ function oroshi-completion-styling() {
     # File and directory colors
     ${(s.:.)LS_COLORS}
   )
-  echo $listColorsDefault
   # Color flags
   local listColorsFlag=(\
     "${(f)$(♣ "*" $COLOR_ALIAS_FLAG)}" \
