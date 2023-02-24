@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest the defined ssh hosts
+function _ssh-known-hosts() {
+  local suggestions=(${(f)"$(complete-ssh-known-hosts)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_DIRECTORY $COLOR_WHITE '  SSH hosts ')" suggestions
+}

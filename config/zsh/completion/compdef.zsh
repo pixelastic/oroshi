@@ -23,3 +23,6 @@ compdef _git-files-dirty git-file-add
 # Yarn {{{
 compdef _package-scripts yarn-run
 # }}}
+# SSH {{{
+compdef _ssh-known-hosts ssh
+# }}}

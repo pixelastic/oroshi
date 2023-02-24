@@ -1,0 +1,47 @@
+# List all defined hosts
+function complete-ssh-known-hosts() {
+  local raw="$(\
+    cat ~/.ssh/config \
+    | grep '^ *\(Host\|Hostname\|User\)')"
+
+  # We'll build a list of all hosts, and memorize their users and hostnames
+  declare -A hostnamesByHost
+  hostnamesByHost=()
+  declare -A usersByHost
+  usersByHost=()
+  local allHost=()
+  local currentHosts=()
+  for line in ${(f)raw}; do
+    local parts=(${=line})
+
+    # Skip the * wildcard
+    [[ $parts[2] == "*" ]] && continue
+
+    # First, we get the list of hosts
+    if [[ $parts[1] == 'Host' ]]; then
+      currentHosts=(${parts:1})
+      allHosts+=($currentHosts)
+      continue
+    fi
+
+    # We save the matching hostnames
+    if [[ $parts[1] == 'HostName' ]]; then
+      for host in $currentHosts; do
+        hostnamesByHost[$host]=$parts[2]
+      done
+      continue
+    fi
+
+    # And the matching users
+    if [[ $parts[1] == 'User' ]]; then
+      for host in $currentHosts; do
+        usersByHost[$host]=$parts[2]
+      done
+      continue
+    fi
+  done
+
+  for host in $allHosts; do
+    echo "${host}:${usersByHost[$host]}@${hostnamesByHost[$host]}"
+  done
+}
