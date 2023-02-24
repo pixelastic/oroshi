@@ -9,6 +9,8 @@ zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower
 zstyle ':completion:*' menu select
 # Group suggestions by type
 zstyle ':completion:*' group-name ''
+# Use // to separate the description
+zstyle ':completion:*' list-separator '//'
 # Display results in lines instead of columns
 setopt LIST_ROWS_FIRST
 # On TAB press, display the menu, but don't autoselect the first one

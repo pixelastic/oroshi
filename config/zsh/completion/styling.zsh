@@ -6,18 +6,66 @@ function completion-header() {
   echo "%K{$colorBackground}%F{$colorForeground}$content%f%F{$COLOR_ALIAS_TERMINAL}%f%k"
 }
 
+# Color specific values in a specific color
+function ♣() {
+  local pattern="$1"
+  local color="$2"
+  # The string is split in 4 parts, separated by =
+  # The first part is the pattern to match. 
+  # The second part is the default color
+  # The 3rd and 4th parts are the colors for the 1st and 2nd matching groups of
+  # the pattern
+  #
+  # (#b) is required at the start of a pattern to allow for multiple matching
+  # groups.
+  # ## is similar to ? in other regexp: allow a match, or nothing
+  # The first matching group is whatever is before // and the second is // and
+  # the description
+  echo "=(#b)(${pattern})(// *)##=38;5;$COLOR_WHITE=38;5;${color}=38;5;$COLOR_ALIAS_COMMENT"
+
+  # Matches suggestions that are alone (when several suggestions share the same
+  # description).
+  # We don't enable it for the default * matcher as it would overwrite the
+  # colors of the files defined with LS_COLORS
+  if [[ $pattern != "*" ]]; then
+    echo "=${pattern}=38;5;${color}"
+  fi
+}
+
 function oroshi-completion-styling() {
-  # Display descriptions as comments and use LS_COLORS for files and directories
+  # Default coloring
   local listColorsDefault=(\
-    "=(#b)* (--) (*)=38;5;$COLOR_WHITE=38;5;$COLOR_ALIAS_UI=38;5;$COLOR_ALIAS_COMMENT" \
-    ${(s.:.)LS_COLORS} \
+    # Default color
+    "${(f)$(♣ "*" $COLOR_WHITE)}"
+
+    # Description when alone (when several suggestions share the same
+    # description)
+    "=// *=38;5;$COLOR_ALIAS_COMMENT"
+
+    # File and directory colors
+    ${(s.:.)LS_COLORS}
+  )
+  echo $listColorsDefault
+  # Color flags
+  local listColorsFlag=(\
+    "${(f)$(♣ "*" $COLOR_ALIAS_FLAG)}" \
+    $listColorsDefault \
   )
   # Color git branches
   local listColorsGitBranch=(\
-    "=(#b)(master*) (--) (*)=38;5;$COLOR_WHITE=38;5;$COLOR_ALIAS_GIT_BRANCH_MASTER=38;5;$COLOR_ALIAS_UI=38;5;$COLOR_ALIAS_COMMENT" \
-    "=(#b)(develop*) (--) (*)=38;5;$COLOR_WHITE=38;5;$COLOR_ALIAS_GIT_BRANCH_DEVELOP=38;5;$COLOR_ALIAS_UI=38;5;$COLOR_ALIAS_COMMENT" \
-    "=(#b)(dependabot*) (--) (*)=38;5;$COLOR_WHITE=38;5;$COLOR_ALIAS_GIT_BRANCH_DEPENDABOT=38;5;$COLOR_ALIAS_UI=38;5;$COLOR_ALIAS_COMMENT" \
-    "=(#b)(*) (--) (*)=38;5;$COLOR_WHITE=38;5;$COLOR_ALIAS_GIT_BRANCH_DEFAULT=38;5;$COLOR_ALIAS_UI=38;5;$COLOR_ALIAS_COMMENT" \
+    # Known branches
+    "${(f)$(♣ "master*" $COLOR_ALIAS_GIT_BRANCH_MASTER)}" \
+    "${(f)$(♣ "develop*" $COLOR_ALIAS_GIT_BRANCH_DEVELOP)}" \
+    "${(f)$(♣ "dependabot*" $COLOR_ALIAS_GIT_BRANCH_DEPENDABOT)}" \
+    # Default branch color
+    "${(f)$(♣ "*" $COLOR_ALIAS_GIT_BRANCH_DEFAULT)}" \
+    $listColorsDefault \
+  )
+  # Color remote ssh
+  local listColorsKnownHost=(\
+    "${(f)$(♣ "pixelastic*" $COLOR_ALIAS_HOST_PIXELASTIC)}" \
+    "${(f)$(♣ "github*" $COLOR_ALIAS_HOST_GITHUB)}" \
+    $listColorsDefault \
   )
 
 
@@ -38,7 +86,7 @@ function oroshi-completion-styling() {
 
   # Flags
   zstyle ':completion:*:options' format "$(completion-header $COLOR_ALIAS_FLAG $COLOR_WHITE ' -- Flags ')"
-  zstyle ':completion:*:complete:*:*:options' list-colors "=(#b)(*) (--) (*)=38;5;$COLOR_WHITE=38;5;$COLOR_ALIAS_FLAG=38;5;$COLOR_ALIAS_UI=38;5;$COLOR_ALIAS_COMMENT"
+  zstyle ':completion:*:complete:*:*:options' list-colors $listColorsFlag
 
   # Variables
   zstyle ':completion:*:parameters' format "$(completion-header $COLOR_ALIAS_VARIABLE $COLOR_WHITE ' $ Variables ')"
@@ -48,6 +96,9 @@ function oroshi-completion-styling() {
   zstyle ':completion:*:complete:git-branch-remove-remote:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-switch:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-remove:*:*' list-colors $listColorsGitBranch
+
+  # SSH Host
+  zstyle ':completion:*:complete:ssh:*:*' list-colors $listColorsKnownHost
 
   # Running processes
   zstyle ':completion:*:processes-names' format "$(completion-header $COLOR_ALIAS_PROCESS $COLOR_BLACK '  Running processes ')"

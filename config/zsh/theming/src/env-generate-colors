@@ -109,6 +109,9 @@ aliasColors[GIT_BRANCH_DEVELOP]="YELLOW"
 aliasColors[GIT_BRANCH_MAIN]="BLUE"
 aliasColors[GIT_BRANCH_MASTER]="BLUE"
 aliasColors[GIT_BRANCH_DEPENDABOT]="CYAN"
+# Hosts
+aliasColors[HOST_PIXELASTIC]="GREEN"
+aliasColors[HOST_GITHUB]="BLUE"
 # Code
 aliasColors[EVAL]="YELLOW"                      # - in pug
 aliasColors[BOOLEAN]="AMBER_5"

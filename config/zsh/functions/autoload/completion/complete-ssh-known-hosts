@@ -2,7 +2,8 @@
 function complete-ssh-known-hosts() {
   local raw="$(\
     cat ~/.ssh/config \
-    | grep '^ *\(Host\|Hostname\|User\)')"
+    | grep '^ *\(Host\|Hostname\|User\)' \
+  )"
 
   # We'll build a list of all hosts, and memorize their users and hostnames
   declare -A hostnamesByHost
