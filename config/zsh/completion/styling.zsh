@@ -38,7 +38,7 @@ function oroshi-completion-styling() {
 
   # Flags
   zstyle ':completion:*:options' format "$(completion-header $COLOR_ALIAS_FLAG $COLOR_WHITE ' -- Flags ')"
-  zstyle ':completion:*:options' list-colors "=(#b)(*) (--) (*)=38;5;$COLOR_WHITE=38;5;$COLOR_ALIAS_FLAG=38;5;$COLOR_ALIAS_UI=38;5;$COLOR_ALIAS_COMMENT"
+  zstyle ':completion:*:complete:*:*:options' list-colors "=(#b)(*) (--) (*)=38;5;$COLOR_WHITE=38;5;$COLOR_ALIAS_FLAG=38;5;$COLOR_ALIAS_UI=38;5;$COLOR_ALIAS_COMMENT"
 
   # Variables
   zstyle ':completion:*:parameters' format "$(completion-header $COLOR_ALIAS_VARIABLE $COLOR_WHITE ' $ Variables ')"
