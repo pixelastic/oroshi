@@ -6,8 +6,12 @@ fpath+=($ZSH_CONFIG_PATH/completion/compdef)
 #
 # Source:
 # https://thevaluable.dev/zsh-completion-guide-examples/
+# http://zv.github.io/a-review-of-zsh-completion-utilities
+# https://wikimatze.de/writing-zsh-completion-for-padrino/
 # TODO: Write tests
 # https://unix.stackexchange.com/questions/668618/how-to-write-automated-tests-for-zsh-completion
+# TODO: Hide tags, or re-order them:
+# https://serverfault.com/questions/353270/excluding-environment-variables-from-zsh-autocomplete
 
 # Generic config
 source $ZSH_CONFIG_PATH/completion/misc.zsh
