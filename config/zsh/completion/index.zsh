@@ -6,6 +6,8 @@ fpath+=($ZSH_CONFIG_PATH/completion/compdef)
 #
 # Source:
 # https://thevaluable.dev/zsh-completion-guide-examples/
+# TODO: Write tests
+# https://unix.stackexchange.com/questions/668618/how-to-write-automated-tests-for-zsh-completion
 
 # Generic config
 source $ZSH_CONFIG_PATH/completion/misc.zsh
