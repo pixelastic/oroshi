@@ -10,6 +10,7 @@ source $ZSH_CONFIG_PATH/keybindings/vim.zsh
 
 source $ZSH_CONFIG_PATH/keybindings/tab.zsh          # Completion
 source $ZSH_CONFIG_PATH/keybindings/ctrl-space.zsh   # Add completion item
+source $ZSH_CONFIG_PATH/keybindings/ctrl-a.zsh       # Accept all suggestions
 
 source $ZSH_CONFIG_PATH/keybindings/ctrl-e.zsh       # Edit line in vim
 source $ZSH_CONFIG_PATH/keybindings/ctrl-n.zsh       # Open current directory in Nautilus

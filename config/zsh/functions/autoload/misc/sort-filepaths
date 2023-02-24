@@ -7,21 +7,31 @@
 function sort-filepaths() {
   # Get input from stdin, or as arguments
   if [[ -p /dev/stdin ]]; then
-    local filepaths=($(cat -))
+    local unsortedFilepaths=($(cat -))
   else
-    local filepaths=()
+    local unsortedFilepaths=()
     for arg in $@; do
-      filepaths+=(${(@s/\n/)arg})
+      unsortedFilepaths+=(${(@s/\n/)arg})
     done
   fi
 
-  # Add ./ in front of relative files
-  for index in {1..$#filepaths}; do
-    local value=$filepaths[$index]
-    [[ $value == .* ]] && continue
-    filepaths[$index]="./${value}"
+  local weightedFilepaths=()
+
+  # Add weighted prefix before each entry
+  for filepath in $unsortedFilepaths; do
+    # We count the number of slash as a mesure of the distance
+    local slashCount=${#${filepath//[^\/]}}
+    # We weight those in directories above as further than those in directories
+    # down
+    if [[ $filepath == ../* ]]; then
+      weightedFilepaths+=("1${slashCount} $filepath")
+    else
+      weightedFilepaths+=("0${slashCount} $filepath")
+    fi
   done
 
-  # Display in reverse order, one by line
-  echo ${(F)${(O)filepaths}}
+  # Display only the filepath, and not the weight
+  for filepath in ${(o)weightedFilepaths}; do
+    echo ${${=filepath}[2]}
+  done
 }

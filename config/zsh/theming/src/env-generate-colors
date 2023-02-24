@@ -80,6 +80,8 @@ aliasColors[SELECTED_BACKGROUND]="GRAY_8"
 aliasColors[SELECTED_FOREGROUND]="WHITE"
 aliasColors[TERMINAL]="BLACK_PURE"
 aliasColors[UI]="NEUTRAL"
+aliasColors[POINTER]="GREEN" #  current line
+aliasColors[MARKER]="CYAN"   #  marked line
 aliasColors[UNKNOWN]="CYAN_4"
 # Languages
 aliasColors[LANGUAGE_JAVASCRIPT]="YELLOW"
@@ -106,6 +108,7 @@ aliasColors[GIT_BRANCH_HEAD]="RED"
 aliasColors[GIT_BRANCH_DEVELOP]="YELLOW"
 aliasColors[GIT_BRANCH_MAIN]="BLUE"
 aliasColors[GIT_BRANCH_MASTER]="BLUE"
+aliasColors[GIT_BRANCH_DEPENDABOT]="CYAN"
 # Code
 aliasColors[EVAL]="YELLOW"                      # - in pug
 aliasColors[BOOLEAN]="AMBER_5"

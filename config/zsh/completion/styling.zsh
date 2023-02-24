@@ -13,7 +13,7 @@ zstyle ':completion:*:default' list-colors \
   "=(#b)* (--) (*)=38;5;$COLOR_WHITE=38;5;$COLOR_ALIAS_UI=38;5;$COLOR_ALIAS_COMMENT" \
   ${(s.:.)LS_COLORS}
 
-# Default style for header descriptions
+# Headers
 zstyle ':completion:*:descriptions' format "$(completion-header $COLOR_ALIAS_HEADER $COLOR_BLACK)"
 
 # Files
@@ -33,6 +33,22 @@ zstyle ':completion:*:options' list-colors "=(#b)(*) (--) (*)=38;5;$COLOR_WHITE=
 
 # Variables
 zstyle ':completion:*:parameters' format "$(completion-header $COLOR_ALIAS_VARIABLE $COLOR_WHITE ' $ Variables ')"
+
+# Git
+# TODO: Move git compdef and styling together
+function () {
+  local listColorsGitBranch=(\
+    "=(#b)(master*) (--) (*)=38;5;$COLOR_WHITE=38;5;$COLOR_ALIAS_GIT_BRANCH_MASTER=38;5;$COLOR_ALIAS_UI=38;5;$COLOR_ALIAS_COMMENT" \
+    "=(#b)(develop*) (--) (*)=38;5;$COLOR_WHITE=38;5;$COLOR_ALIAS_GIT_BRANCH_DEVELOP=38;5;$COLOR_ALIAS_UI=38;5;$COLOR_ALIAS_COMMENT" \
+    "=(#b)(dependabot*) (--) (*)=38;5;$COLOR_WHITE=38;5;$COLOR_ALIAS_GIT_BRANCH_DEPENDABOT=38;5;$COLOR_ALIAS_UI=38;5;$COLOR_ALIAS_COMMENT" \
+    "=(#b)(*) (--) (*)=38;5;$COLOR_WHITE=38;5;$COLOR_ALIAS_GIT_BRANCH_DEFAULT=38;5;$COLOR_ALIAS_UI=38;5;$COLOR_ALIAS_COMMENT"
+  )
+
+  zstyle ':completion:*:*:git-branch-pull:*' list-colors $listColorsGitBranch
+  zstyle ':completion:*:*:git-branch-remove-remote:*' list-colors $listColorsGitBranch
+  zstyle ':completion:*:*:git-branch-switch:*' list-colors $listColorsGitBranch
+  zstyle ':completion:*:*:git-branch-remove:*' list-colors $listColorsGitBranch
+}
 
 # Running processes
 zstyle ':completion:*:processes-names' format "$(completion-header $COLOR_ALIAS_PROCESS $COLOR_BLACK '  Running processes ')"

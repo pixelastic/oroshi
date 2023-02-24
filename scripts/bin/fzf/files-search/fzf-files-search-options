@@ -12,10 +12,11 @@ echo "--bind=tab:down"
 # [Ctrl-A] Select all
 echo "--bind=ctrl-a:toggle-all"
 
-
-# Color the UI in file color
+# Color the UI
 echo "--color=query:${COLOR_ALIAS_FILE}:regular"
 echo "--color=separator:${COLOR_ALIAS_FILE}"
 echo "--color=info:${COLOR_ALIAS_FILE}"
-echo "--color=pointer:${COLOR_ALIAS_FILE}"
-echo "--color=marker:${COLOR_ALIAS_FILE}"
+echo "--pointer="
+echo "--color=pointer:${COLOR_ALIAS_POINTER}"
+echo "--marker="
+echo "--color=marker:${COLOR_ALIAS_MARKER}"
