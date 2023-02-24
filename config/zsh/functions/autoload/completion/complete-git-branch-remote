@@ -1,0 +1,18 @@
+# List all local branches
+function complete-git-branch-remote() {
+  local currentRemote="$(git-remote-current)"
+  local rawSuggestions="$(\
+    git branch \
+      --remote \
+      --format="%(refname:short):%(contents:subject)" \
+      | sed "s_${currentRemote}/__g"
+  )"
+
+  local suggestions=()
+  for line in ${(f)rawSuggestions}; do
+    # Skip HEAD
+    [[ $line == HEAD* ]] && continue
+
+    echo $line
+  done
+}

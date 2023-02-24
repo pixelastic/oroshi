@@ -1,23 +1,8 @@
 #compdef
 
-# List of all branches on the remote
+# Suggest the remote branches
 function _git-branch-remote() {
-  local currentRemote="$(git-remote-current)"
-  local rawSuggestions="$(\
-    git branch \
-      --remote \
-      --format="%(refname:short):%(contents:subject)" \
-      | sed "s_${currentRemote}/__g"
-  )"
+  local suggestions=(${(f)"$(complete-git-branch-remote)"})
 
-  local suggestions=()
-  for line in ${(f)rawSuggestions}; do
-    # Skip HEAD
-    [[ $line == HEAD* ]] && continue
-
-    suggestions+=$line
-  done
-
-  # Suggest the remote branches
   _describe -V "$(completion-header $COLOR_ALIAS_GIT_REMOTE $COLOR_BLACK '  Remote branches ')" suggestions
 }

@@ -1,20 +1,8 @@
 #compdef
 
-# List of all scripts entry in package.json
+# Suggest the available scripts
 function _package-scripts() {
-  # Stop if no package.json
-  local packageJsonPath="$(find-up package.json)"
-  [[ $packageJsonPath == "" ]] && return 0
+  local suggestions=(${(f)"$(complete-package-scripts)"})
 
-  # Create a list of all key:value of the .scripts key
-  local suggestions="$(\
-    cat $packageJsonPath \
-    | jq \
-      --raw-output \
-      '.scripts | to_entries[] | [(.key | gsub(":";"\\:")), .value] | join(":")'
-  )"
-  suggestions=(${(f)suggestions})
-
-  # Suggest the available scripts
   _describe -V "$(completion-header $COLOR_ALIAS_LANGUAGE_JAVASCRIPT $COLOR_BLACK '  package.json scripts ')" suggestions
 }

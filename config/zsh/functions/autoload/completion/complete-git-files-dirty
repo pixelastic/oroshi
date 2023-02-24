@@ -1,0 +1,19 @@
+# List all changed/added files in the current git repo
+function complete-git-files-dirty() {
+  # Getting all changed files
+  local dirtyFiles="$(git status --short)"
+  local suggestions=()
+  for file in ${(f)dirtyFiles}; do
+    local fileSymbol=$file[2]
+    local filePath=${file:3}
+    [[ $fileSymbol == " " ]] && continue # Already staged
+    suggestions+=($filePath)
+  done
+
+  # Sort by putting closest files first
+  if [[ $#suggestions != "0" ]]; then
+    suggestions=($(sort-filepaths $suggestions))
+  fi
+
+  echo ${(F)suggestions}
+}

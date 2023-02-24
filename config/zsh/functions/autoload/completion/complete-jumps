@@ -1,0 +1,16 @@
+# Display list of jumps and their paths
+function complete-jumps() {
+  local suggestions=()
+  for item in $MARKPATH/*; do
+
+    local projectKey=${item:t:u}
+    local projectIcon=${(P)${:-PROJECT_${projectKey}_ICON}}
+    if [[ $projectIcon != "" ]]; then
+      local description="${projectIcon}${projectKey}"
+    else
+      local description="${item:A:s_/home/tim/__}"
+    fi
+
+    echo "${item:t}:${description}"
+  done
+}

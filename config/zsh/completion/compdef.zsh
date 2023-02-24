@@ -1,5 +1,13 @@
 # Custom completions
 #
+# We map in this file which completion functions to call with which commands
+# Completion functions start with _ and are stored in ./compdef/
+#
+# To make dev and debug easier, those completion functions actually call real
+# function (starting with complete- instead of the _) that are autoloaded and
+# can be manually tested. Those functions are stored in ./functions/autoload/completion
+#
+#
 # Sources:
 # https://unix.stackexchange.com/questions/239528/dynamic-zsh-autocomplete-for-custom-commands
 # https://unix.stackexchange.com/questions/27236/zsh-autocomplete-ls-command-with-directories-only

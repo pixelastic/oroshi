@@ -1,22 +1,8 @@
 #compdef
 
-# List of all folders marked as marks, that we can jump to
+# Suggest the marks
 function _jumps() {
+  local suggestions=(${(f)"$(complete-jumps)"})
 
-  local suggestions=()
-  for item in $MARKPATH/*; do
-
-    local projectKey=${item:t:u}
-    local projectIcon=${(P)${:-PROJECT_${projectKey}_ICON}}
-    if [[ $projectIcon != "" ]]; then
-      local description="${projectIcon}${projectKey}"
-    else
-      local description="${item:A:s_/home/tim/__}"
-    fi
-
-    suggestions+=("${item:t}:${description}")
-  done
-
-  # Suggest the marks
-  _describe "$(completion-header $COLOR_ALIAS_DIRECTORY $COLOR_WHITE '  Jump to ')" suggestions
+  _describe -V "$(completion-header $COLOR_ALIAS_DIRECTORY $COLOR_WHITE '  Jump to ')" suggestions
 }
