@@ -5,18 +5,7 @@ echo "--delimiter=   "
 echo "--with-nth=2"
 echo "--preview=fzf-files-search-preview {1}"
 
-# [Ctrl-Space] Select the suggestion
-echo "--bind=ctrl-space:toggle+down"
-# [Tab] Move to next
-echo "--bind=tab:down"
-# [Ctrl-A] Select all
-echo "--bind=ctrl-a:toggle-all"
-
 # Color the UI
 echo "--color=query:${COLOR_ALIAS_FILE}:regular"
 echo "--color=separator:${COLOR_ALIAS_FILE}"
 echo "--color=info:${COLOR_ALIAS_FILE}"
-echo "--pointer="
-echo "--color=pointer:${COLOR_ALIAS_POINTER}"
-echo "--marker="
-echo "--color=marker:${COLOR_ALIAS_MARKER}"

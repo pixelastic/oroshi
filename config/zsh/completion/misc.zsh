@@ -1,8 +1,3 @@
-# Syntax is
-# :completion:<function>:<completer>:<command>:<argument>:<tag>
-#
-# Source:
-# https://thevaluable.dev/zsh-completion-guide-examples/
 
 # Order of completions
 zstyle ':completion:*' completer _extensions _complete

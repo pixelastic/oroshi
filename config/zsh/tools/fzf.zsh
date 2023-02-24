@@ -11,8 +11,8 @@ function oroshi_tools_fzf() {
   fzfColors+=("prompt:$COLOR_ALIAS_UI")                   # > before query
   fzfColors+=("bg+:$COLOR_ALIAS_SELECTED_BACKGROUND")     # selected result background
   fzfColors+=("fg+:$COLOR_ALIAS_SELECTED_FOREGROUND")     # selected result foreground
-  fzfColors+=("pointer:$COLOR_ALIAS_SELECTED_FOREGROUND") # > before current line
-  fzfColors+=("marker:$COLOR_ALIAS_SUCCESS")                    # > before selected result
+  fzfColors+=("pointer:$COLOR_ALIAS_POINTER")             #  before current line
+  fzfColors+=("marker:$COLOR_ALIAS_MARKER")               #  before selected result
   fzfColors+=("hl:reverse:$COLOR_ALIAS_MATCH")            # match
   fzfColors+=("hl+:reverse:$COLOR_ALIAS_MATCH")           # match in current line
   fzfColors+=("gutter:-1")                                # suggestion gutter
@@ -24,18 +24,21 @@ function oroshi_tools_fzf() {
     --bind 'ctrl-j:preview-down' \
     --bind 'ctrl-k:preview-up' \
   "
-
   # Multi-select options
   local fzfOptionsMulti="\
     --multi \
+    --marker= \
+    --bind 'ctrl-space:toggle+down' \
     --bind 'ctrl-a:toggle-all' \
   "
 
   # Generic options
   local fzfOptionBase="\
+    --pointer= \
     --ansi \
     --reverse \
     --keep-right \
+    --bind 'tab:down' \
     --bind 'ctrl-l:clear-query' \
   "
 

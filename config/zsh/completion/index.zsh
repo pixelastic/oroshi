@@ -1,6 +1,12 @@
 # Add custom completion functions fo fpath
 fpath+=($ZSH_CONFIG_PATH/completion/compdef)
 
+# Syntax is
+# :completion:<function>:<completer>:<command>:<argument>:<tag>
+#
+# Source:
+# https://thevaluable.dev/zsh-completion-guide-examples/
+
 # Generic config
 source $ZSH_CONFIG_PATH/completion/misc.zsh
 source $ZSH_CONFIG_PATH/completion/styling.zsh
