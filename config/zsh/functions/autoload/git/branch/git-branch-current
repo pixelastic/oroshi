@@ -1,6 +1,6 @@
 # Display name of current branch
 # Usage:
-# $ git-branch-current     # master
+# $ git-branch-current     # main
 function git-branch-current() {
   git rev-parse --abbrev-ref HEAD
 }

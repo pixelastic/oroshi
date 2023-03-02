@@ -2,8 +2,8 @@
 # Push a branch
 # Usage:
 # $ git-branch-push                  # Pushes current branch to current remote
-# $ git-branch-push master           # Pushes branch master
-# $ git-branch-push master origin    # Pushes branch master to remote origin
+# $ git-branch-push main             # Pushes branch main
+# $ git-branch-push main origin      # Pushes branch main to remote orin
 # $ git-branch-push --flag1          # Also pass in flags
 
 # Filter positional arguments and flags

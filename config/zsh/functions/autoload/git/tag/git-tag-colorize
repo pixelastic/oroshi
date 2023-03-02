@@ -1,7 +1,7 @@
 # Displays a colorized version of a tag name
 # Usage:
 # $ git-tag-colorize                    # {currentTag}
-# $ git-tag-colorize master             # v1.0
+# $ git-tag-colorize main               # v1.0
 # $ git-tag-colorize --with-icon        # 炙v1.0
 function git-tag-colorize() {
   # Filter positional arguments and flags

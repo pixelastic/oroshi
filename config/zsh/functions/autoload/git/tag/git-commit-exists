@@ -1,7 +1,7 @@
 # Check if the given local commit exists
 # Usage:
 # $ git-commit-exists 13cd455   # Checks if commit exists
-# $ git-commit-exists master    # Checks if branch exists
+# $ git-commit-exists mai  n    # Checks if branch exists
 # $ git-commit-exists alpha     # Checks if tag exists
 function git-commit-exists() {
   local commitReference="$1"

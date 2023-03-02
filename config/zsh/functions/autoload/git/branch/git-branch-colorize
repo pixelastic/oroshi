@@ -1,8 +1,8 @@
 # Displays a colorized version of a branch name
 # Usage:
 # $ git-branch-colorize                         # {currentBranch}
-# $ git-branch-colorize master                  # master
-# $ git-branch-colorize --with-icon             #  master
+# $ git-branch-colorize main                    # main
+# $ git-branch-colorize --with-icon             #  main
 # $ git-branch-colorize origin/develop --remote #  origin/remote
 function git-branch-colorize() {
   zparseopts -E -D \

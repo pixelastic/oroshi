@@ -1,7 +1,7 @@
 # Count how many commits the branch is ahead/behind of its remote counterpart
 #
 # Usage:
-# $ git-branch-distance master    # Compare the specified branch to its remote
+# $ git-branch-distance main      # Compare the specified branch to its remote
 # $ git-branch-distance           # Compare the current branch to its remote
 #
 # Output:

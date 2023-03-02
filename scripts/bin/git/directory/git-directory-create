@@ -111,7 +111,7 @@ class GitDirectoryCreate
       exit 1
     end
 
-    if command_success?('git push origin master')
+    if command_success?('git push origin main')
       puts '✔ Pushed to repository'
     else
       puts '✘ Failed to push to repository'

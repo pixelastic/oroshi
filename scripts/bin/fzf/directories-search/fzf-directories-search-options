@@ -11,6 +11,4 @@ echo "--preview=fzf-directories-search-preview {1}"
 echo "--color=query:${COLOR_ALIAS_DIRECTORY}:regular"
 echo "--color=separator:${COLOR_ALIAS_DIRECTORY}"
 echo "--color=info:${COLOR_ALIAS_DIRECTORY}"
-echo "--color=pointer:${COLOR_ALIAS_DIRECTORY}"
-echo "--color=marker:${COLOR_ALIAS_DIRECTORY}"
 

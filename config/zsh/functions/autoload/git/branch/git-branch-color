@@ -1,7 +1,7 @@
 # Return the string color of a specific branch
 # Usage:
 # $ git-branch-color             # (current branch) blue
-# $ git-branch-color master      # blue
+# $ git-branch-color main        # blue
 function git-branch-color() {
 
   # Branch name

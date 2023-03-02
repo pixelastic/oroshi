@@ -6,10 +6,10 @@
 # Hopefully this sign will never be used in tags or commits
 local separator="〷"
 local gitBranchFormat=""
-gitBranchFormat+="_%(refname:short)${separator}"           # master
+gitBranchFormat+="_%(refname:short)${separator}"           # main
 gitBranchFormat+="_%(objectname:short)${separator}"        # abcdef
 gitBranchFormat+="_%(upstream:remotename)${separator}"     # origin
-gitBranchFormat+="_%(upstream:remoteref)${separator}"      # refs/heads/master
+gitBranchFormat+="_%(upstream:remoteref)${separator}"      # refs/heads/main
 gitBranchFormat+="_%(upstream:track)${separator}"          # [ahead 4]
 gitBranchFormat+="_%(committerdate:relative)${separator}"  # 3 months ago
 gitBranchFormat+="_%(contents:subject)${separator}"        # fix typo

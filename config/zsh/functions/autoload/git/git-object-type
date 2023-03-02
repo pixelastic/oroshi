@@ -1,7 +1,7 @@
 # Displays the type of the object
 # Usage:
 # $ git-object-type origin    # remote
-# $ git-object-type master    # branch
+# $ git-object-type main      # branch
 # $ git-object-type beta      # tag
 # $ git-object-type 13cd455   # commit
 # $ git-object-type NONSENSE  # unknown

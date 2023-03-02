@@ -3,9 +3,9 @@
 # If several elements are passed, switch to the first one that exists
 #
 # Usage :
-# $ git-branch-switch master       # Move to the master branch
+# $ git-branch-switch main         # Move to the main branch
 # $ git-branch-switch 13cd455      # Go into detached HEAD at this commit
-# $ git-branch-switch master main  # Go to master or main
+# $ git-branch-switch main master  # Go to main or master
 
 for commitRef in $argv; do
   # Skip non-existing commits

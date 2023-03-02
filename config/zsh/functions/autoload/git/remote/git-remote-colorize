@@ -2,7 +2,7 @@
 # Usage:
 # $ git-remote-colorize                    # {currentRemote}
 # $ git-remote-colorize upstream           # upstream
-# $ git-remote-colorize upstream/master    # upstream/master
+# $ git-remote-colorize upstream/main      # upstream/main
 # $ git-remote-colorize --with-icon        #  upstream
 
 function git-remote-colorize() {

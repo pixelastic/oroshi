@@ -29,8 +29,8 @@ local remoteNames=($1)
 # about the local branches
 local gitLocalBranchFormat=""
 gitLocalBranchFormat+="%(upstream:remotename)▮"     # origin
-gitLocalBranchFormat+="%(upstream:remoteref)▮"      # refs/heads/master
-gitLocalBranchFormat+="%(refname:short)▮"           # master
+gitLocalBranchFormat+="%(upstream:remoteref)▮"      # refs/heads/main
+gitLocalBranchFormat+="%(refname:short)▮"           # main
 gitLocalBranchFormat+="%(upstream:track)▮"          # [ahead 4]
 
 # Looping through all local branches to build a list of:
@@ -55,7 +55,7 @@ done
 
 # Display all remote branches {{{
 local gitRemoteBranchFormat=""
-gitRemoteBranchFormat+="%(refname:short)▮"           # master
+gitRemoteBranchFormat+="%(refname:short)▮"           # main
 gitRemoteBranchFormat+="%(objectname:short)▮"        # abcdef
 gitRemoteBranchFormat+="%(committerdate:relative)▮"  # 3 months ago
 gitRemoteBranchFormat+="%(contents:subject)▮"        # fix typo

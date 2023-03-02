@@ -19,6 +19,4 @@ echo "--bind=change:reload:sleep 0.3;${fzfSourcePath} {q} || true"
 echo "--color=disabled:${COLOR_ALIAS_REGEXP}:regular"
 echo "--color=separator:${COLOR_ALIAS_REGEXP}"
 echo "--color=info:${COLOR_ALIAS_REGEXP}"
-echo "--color=pointer:${COLOR_ALIAS_REGEXP}"
-echo "--color=marker:${COLOR_ALIAS_REGEXP}"
 

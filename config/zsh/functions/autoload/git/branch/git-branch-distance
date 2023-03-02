@@ -5,11 +5,11 @@
 # Also, I don't really get how the calculation are done...
 #
 # Usage:
-# $ git-branch-distance master develop               # Between two local branches
-# $ git-branch-distance master origin/master         # Between branch and its remote
-# $ git-branch-distance origin/master origin/develop # Between two remote branches
-# $ git-branch-distance master                       # Between master and its remote
-# $ git-branch-distance                              # Between current branch and its remote
+# $ git-branch-distance main develop               # Between two local branches
+# $ git-branch-distance main origin/main           # Between branch and its remote
+# $ git-branch-distance origin/main origin/develop # Between two remote branches
+# $ git-branch-distance main                       # Between main and its remote
+# $ git-branch-distance                            # Between current branch and its remote
 function git-branch-distance() {
   # Main branch, default to the current branch
   local branchSource="$1"

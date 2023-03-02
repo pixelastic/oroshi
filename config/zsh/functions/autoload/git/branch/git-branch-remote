@@ -1,7 +1,7 @@
 # Display remote of a given branch
 # Usage:
 # $ git-branch-remote         # Name of current remote
-# $ git-branch-remote master  # Name of current master remote
+# $ git-branch-remote main    # Name of current main remote
 function git-branch-remote() {
   local branchName="$1"
   if [[ "$branchName" == '' ]]; then

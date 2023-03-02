@@ -1,7 +1,7 @@
 # Check if the given branch exists
 # Usage:
-# $ git-branch-exists master         # Check a local branch
-# $ git-branch-exists origin/master  # Check a remote branch
+# $ git-branch-exists main           # Check a local branch
+# $ git-branch-exists origin/main    # Check a remote branch
 function git-branch-exists() {
   local branchName="$1"
   if [[ "$branchName" == "" ]]; then
