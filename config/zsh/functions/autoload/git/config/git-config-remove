@@ -1,6 +1,6 @@
 # Remove a config value
 # Usage:
-# $ git-config-remove branch.master.remote  # Remove the value
+# $ git-config-remove branch.main.remote  # Remove the value
 function git-config-remove() {
   local configName="$1"
 

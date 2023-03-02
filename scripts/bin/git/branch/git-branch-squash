@@ -5,23 +5,30 @@
 # Usage :
 # $ git-branch-squash                 # Squash from the latest fork
 # $ git-branch-squash develop         # Squash from develop
+# $ git-branch-squash abcdef          # Squash from commit abcdef
 
 set -e
 
-# Find the parent of the branch
-local branchParent=$1
-[[ $branchParent == '' ]] && branchParent="$(git-branch-parent)"
+local commitHash=$1
+# If no commit hash provided, we squash from the branch closest parent
+[[ $commitHash == '' ]] && commitHash="$(git-branch-parent)"
+
+# Stop if no such commit
+if ! git-commit-exists $commitHash; then
+  echo "Commit $commitHash does not exist"
+  exit 1
+fi
 
 # Gather all commit messages since then
 local tmpCommitMessagePath=/tmp/vit_git-branch-squash-commitmsg
 # First, the main commit message being the branch name
-echo "$branchParent\n\n" > $tmpCommitMessagePath
+echo "$commitHash\n\n" > $tmpCommitMessagePath
 # Now, the core of the message being all the commits
-git log --format=%B --reverse ${branchParent}... \
+git log --format=%B --reverse ${commitHash}... \
   >> $tmpCommitMessagePath
 
 # Cancel all commits
-git reset --soft $branchParent
+git reset --soft $commitHash
 
 # Commit them in one commit
 git commit --edit -F $tmpCommitMessagePath

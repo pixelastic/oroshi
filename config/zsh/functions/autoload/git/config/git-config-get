@@ -1,6 +1,6 @@
 # Display a config value
 # Usage:
-# $ git-config-get branch.master.remote  # Display the value
+# $ git-config-get branch.main.remote  # Display the value
 function git-config-get() {
   local configName="$1"
 

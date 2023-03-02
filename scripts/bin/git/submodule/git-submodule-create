@@ -28,7 +28,7 @@ class SubmoduleCreate
   end
 
   def run
-    command = "git submodule add -b master #{@repo_url} #{@submodule_path.shellescape}"
+    command = "git submodule add #{@repo_url} #{@submodule_path.shellescape}"
     system(command)
   end
 end
