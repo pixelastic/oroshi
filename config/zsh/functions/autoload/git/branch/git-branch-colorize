@@ -55,28 +55,28 @@ function git-branch-colorize() {
   fi
 
   if [[ $branchPushStatus = 'ahead' ]]; then
-    colorize " $branchName" BLUE
+    colorize " $branchName" $branchColor
     return
   fi
 
   if [[ $branchPushStatus = 'behind' ]]; then
-    colorize " $branchName" BLUE_LIGHT
+    colorize " $branchName" $branchColor
     return
   fi
 
   if [[ $branchPushStatus = 'gone' ]]; then
-    colorize " $branchName" RED_LIGHT
+    colorize " $branchName" $branchColor
     return
   fi
 
   if [[ $branchPushStatus = 'diverged' ]]; then
-    colorize " $branchName" RED
+    colorize " $branchName" $branchColor
     return
   fi
 
   if [[ $branchPushStatus = 'detached' ]]; then
     local currentCommit="$(git-commit-current)"
-    colorize " HEAD ($currentCommit)" RED
+    colorize " HEAD ($currentCommit)" $branchColor
     return
   fi
 
