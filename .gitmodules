@@ -1,7 +1,7 @@
 [submodule "private"]
   path = private
   url = git@github.com:pixelastic/oroshi-private.git
-  branch = master
+  branch = main
 [submodule "scripts/etc/dconf-export"]
   path = scripts/etc/dconf-export
   url = git@github.com:pixelastic/dconf-export.git

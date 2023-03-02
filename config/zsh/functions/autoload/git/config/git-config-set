@@ -1,6 +1,6 @@
 # Set a config value
 # Usage:
-# $ git-config-set branch.master.remote origin # Update the value
+# $ git-config-set branch.main.remote origin # Update the value
 function git-config-set() {;
   local configName="$1"
   local configValue="$2"
