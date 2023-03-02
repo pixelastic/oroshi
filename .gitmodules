@@ -14,24 +14,24 @@
 [submodule "scripts/bin/img"]
   path = scripts/bin/img
   url = git@github.com:pixelastic/img.git
-  branch = master
+  branch = main
 [submodule "scripts/bin/pdf"]
   path = scripts/bin/pdf
   url = git@github.com:pixelastic/pdf.git
-  branch = master
+  branch = main
 [submodule "scripts/bin/video"]
   path = scripts/bin/video
   url = git@github.com:pixelastic/video.git
-  branch = master
+  branch = main
 [submodule "config/ansible/galactica"]
   path = config/ansible/galactica
   url = git@github.com:pixelastic/ansible-galactica.git
-  branch = master
+  branch = main
 [submodule "scripts/bin/convert"]
 	path = scripts/bin/convert
 	url = git@github.com:pixelastic/convert.git
-	branch = master
+	branch = main
 [submodule "scripts/bin/coriolis"]
 	path = scripts/bin/coriolis
 	url = git@github.com:pixelastic/coriolis.git
-	branch = master
+	branch = main
