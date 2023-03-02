@@ -4,5 +4,5 @@
 function _git-branch-local() {
   local suggestions=(${(f)"$(complete-git-branch-local)"})
 
-  _describe -V "$(completion-header $COLOR_ALIAS_GIT_BRANCH_DEFAULT $COLOR_WHITE '  Local branches ')" suggestions
+  _describe -V "$(completion-header $COLOR_ALIAS_GIT_BRANCH $COLOR_WHITE '  Local branches ')" suggestions
 }

@@ -25,5 +25,5 @@ function git-branch-color() {
   fi
 
   # Default branch
-  echo $COLOR_ALIAS_GIT_BRANCH_DEFAULT
+  echo $COLOR_ALIAS_GIT_BRANCH
 }

@@ -4,7 +4,7 @@
 # $ git-branch-list          # Display all local branches
 
 # Hopefully this sign will never be used in tags or commits
-local separator="〷"
+local separator="▮"
 local gitBranchFormat=""
 gitBranchFormat+="_%(refname:short)${separator}"           # main
 gitBranchFormat+="_%(objectname:short)${separator}"        # abcdef

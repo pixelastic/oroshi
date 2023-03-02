@@ -26,7 +26,7 @@ function git-tag-colorize() {
 
   # If --with-icon is not passed, we simply display the colored tag
   if [[ "$argsf[--with-icon]" != 1 ]]; then
-    colorize $colorizeArguments "$tagName" TEAL
+    colorize $colorizeArguments "$tagName" $COLOR_ALIAS_GIT_TAG
     return
   fi
 
@@ -34,29 +34,29 @@ function git-tag-colorize() {
 
   # Exact: The tag points specifically to the current commit
   if [[ "$tagStatus" = "exact" ]]; then
-    colorize " $tagName" CYAN_5
+    colorize " $tagName" $COLOR_ALIAS_GIT_TAG_EXACT
     return
   fi
 
   # Closest: The tag is the closest in the branch
   if [[ "$tagStatus" = "closest" ]]; then
-    colorize " $tagName" CYAN
+    colorize " $tagName" $COLOR_ALIAS_GIT_TAG_CLOSEST
     return
   fi
 
   # Parent: The tag is somewhere in the branch
   if [[ "$tagStatus" = "parent" ]]; then
-    colorize " $tagName" CYAN_8
+    colorize " $tagName" $COLOR_ALIAS_GIT_TAG_PARENT
     return
   fi
 
   # Unrelated: The tag is not in the branch
   if [[ "$tagStatus" = "unrelated" ]]; then
-    colorize " $tagName" GRAY
+    colorize " $tagName" $COLOR_ALIAS_GIT_TAG_UNRELATED
     return
   fi
 
   # Fallback on unknown status
-  colorize " $tagName" RED
+  colorize " $tagName" $COLOR_ALIAS_ERROR
   return
 }

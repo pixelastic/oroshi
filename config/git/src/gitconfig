@@ -1,0 +1,130 @@
+[core]
+  editor = vim
+  excludesfile = ~/.gitignore
+  safecrlf = false
+  autocrlf = input
+  hooksPath = ~/.oroshi/config/git/hooks
+[user]
+	name = Tim Carry
+	email = tim@pixelastic.com
+[github]
+  user = pixelastic
+[alias]
+  download = clone --depth=1
+  pwd = !pwd
+  tabula-rasa = !git reset --hard && git clean -fd
+  resurect = resurrect
+[merge]
+  tool = fugitive
+[mergetool "fugitive"]
+  cmd = vim -f -c \"Gdiff\" \"$MERGED\"
+[interactive]
+	diffFilter = diff-so-fancy --patch
+[push]
+  default = simple
+[rebase]
+  autoStash = true
+[remote "origin"]
+  prune = true
+[rerere]
+  enabled = true
+[status]
+  showUntrackedFiles = all
+[filter "lfs"]
+  clean = git lfs clean %f
+  smudge = git lfs smudge %f
+  required = true
+
+# Colors {{{
+[color]
+  ui = true
+[color "advice"]
+  hint = $COLOR_ALIAS_UNKNOWN
+[color "blame"]
+  highlightRecent = $COLOR_ALIAS_UNKNOWN
+  repeatedLines = $COLOR_ALIAS_UNKNOWN
+[color "branch"]
+  current = $COLOR_ALIAS_UNKNOWN
+  local = $COLOR_ALIAS_UNKNOWN
+  plain = $COLOR_ALIAS_UNKNOWN
+  remote = $COLOR_ALIAS_UNKNOWN
+  reset = $COLOR_ALIAS_UNKNOWN
+  upstream = $COLOR_ALIAS_UNKNOWN
+  worktree = $COLOR_ALIAS_UNKNOWN
+[color "decorate"]
+  HEAD = $COLOR_ALIAS_GIT_BRANCH # HEAD ->
+  branch = $COLOR_ALIAS_GIT_BRANCH # Branch name
+  remoteBranch = $COLOR_ALIAS_GIT_REMOTE # Remote branches
+  stash = $COLOR_ALIAS_GIT_STASH # Stashes
+  tag = $COLOR_ALIAS_GIT_TAG # Tags
+
+  grafted = $COLOR_ALIAS_UNKNOWN
+[color "diff"]
+  plain = $COLOR_ALIAS_COMMENT   # Default color
+  context = $COLOR_ALIAS_COMMENT # Lines untouched
+  frag = $COLOR_ALIAS_TERMINAL   # @@ -9,14 +9,15 @@
+  func = $COLOR_ALIAS_COMMENT    # First line of context
+  meta = $COLOR_ALIAS_HEADER     # Diff header
+  new = $COLOR_ALIAS_GIT_ADDED   # Lines added
+  old = $COLOR_ALIAS_GIT_REMOVED # Lines deleted
+  whitespace = $COLOR_RED $COLOR_RED             # Any diff whitespace
+  commit = $COLOR_ALIAS_UI # Also used as the default color for decorate, to display punctuation
+
+  contextBold = $COLOR_ALIAS_UNKNOWN
+  contextDimmed = $COLOR_ALIAS_UNKNOWN
+  newBold = $COLOR_ALIAS_UNKNOWN
+  newDimmed = $COLOR_ALIAS_UNKNOWN
+  newMoved = $COLOR_ALIAS_UNKNOWN
+  newMovedAlternative = $COLOR_ALIAS_UNKNOWN
+  newMovedAlternativeDimmed = $COLOR_ALIAS_UNKNOWN
+  newMovedDimmed = $COLOR_ALIAS_UNKNOWN
+  oldBold = $COLOR_ALIAS_UNKNOWN
+  oldDimmed = $COLOR_ALIAS_UNKNOWN
+  oldMoved = $COLOR_ALIAS_UNKNOWN
+  oldMovedAlternative = $COLOR_ALIAS_UNKNOWN
+  oldMovedAlternativeDimmed = $COLOR_ALIAS_UNKNOWN
+  oldMovedDimmed = $COLOR_ALIAS_UNKNOWN
+[color "diff-highlight"]
+	oldNormal = $COLOR_ALIAS_GIT_REMOVED
+	oldHighlight = $COLOR_ALIAS_GIT_REMOVED bold $COLOR_CYAN
+	newNormal = $COLOR_ALIAS_GIT_ADDED
+	newHighlight = $COLOR_ALIAS_GIT_ADDED bold $COLOR_CYAN
+[color "grep"]
+  column = $COLOR_ALIAS_UNKNOWN
+  context = $COLOR_ALIAS_UNKNOWN
+  filename = $COLOR_ALIAS_UNKNOWN
+  function = $COLOR_ALIAS_UNKNOWN
+  lineNumber = $COLOR_ALIAS_UNKNOWN
+  match = $COLOR_ALIAS_UNKNOWN
+  matchContext = $COLOR_ALIAS_UNKNOWN
+  matchSelected = $COLOR_ALIAS_UNKNOWN
+  selected = $COLOR_ALIAS_UNKNOWN
+  separator = $COLOR_ALIAS_UNKNOWN
+[color "interactive"]
+  error = $COLOR_ALIAS_UNKNOWN
+  header = $COLOR_ALIAS_UNKNOWN
+  help = $COLOR_ALIAS_UNKNOWN
+  plain = $COLOR_ALIAS_UNKNOWN
+  prompt = $COLOR_ALIAS_UNKNOWN
+  reset = $COLOR_ALIAS_UNKNOWN
+[color "push"]
+  error = $COLOR_ALIAS_UNKNOWN
+[color "remote"]
+  error = $COLOR_ALIAS_UNKNOWN
+  hint = $COLOR_ALIAS_UNKNOWN
+  success = $COLOR_ALIAS_UNKNOWN
+  warning = $COLOR_ALIAS_UNKNOWN
+[color "status"]
+  header = $COLOR_ALIAS_COMMENT         # Default text
+  branch = $COLOR_ALIAS_GIT_BRANCH      # Current branch
+  added = $COLOR_ALIAS_SUCCESS          # File added to staging area
+  changed = $COLOR_ALIAS_ERROR          # Changed, but not staged
+  untracked = $COLOR_ALIAS_GIT_MODIFIED # New file
+  ; updated = $COLOR_ALIAS_UNKNOWN        # Added to staging area
+
+  localBranch = $COLOR_ALIAS_UNKNOWN
+  noBranch = $COLOR_ALIAS_UNKNOWN
+  remoteBranch = $COLOR_ALIAS_UNKNOWN
+  unmerged = $COLOR_ALIAS_UNKNOWN
+# }}}
+

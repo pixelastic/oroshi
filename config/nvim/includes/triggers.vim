@@ -28,6 +28,7 @@ augroup ft_colors_config
 
   " Regenerate configs that uses ENV variables on save
   autocmd BufWritePost *config/bat/src/oroshi.xml :silent !~/.oroshi/config/bat/generate-theme
+  autocmd BufWritePost *config/git/src/gitconfig :silent !~/.oroshi/config/git/generate-config
   autocmd BufWritePost *config/rg/src/rgrc.conf :silent !~/.oroshi/config/rg/generate-config
 augroup END
 " }}}

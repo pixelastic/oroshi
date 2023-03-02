@@ -1,0 +1,130 @@
+[core]
+  editor = vim
+  excludesfile = ~/.gitignore
+  safecrlf = false
+  autocrlf = input
+  hooksPath = ~/.oroshi/config/git/hooks
+[user]
+	name = Tim Carry
+	email = tim@pixelastic.com
+[github]
+  user = pixelastic
+[alias]
+  download = clone --depth=1
+  pwd = !pwd
+  tabula-rasa = !git reset --hard && git clean -fd
+  resurect = resurrect
+[merge]
+  tool = fugitive
+[mergetool "fugitive"]
+  cmd = vim -f -c \"Gdiff\" \"\"
+[interactive]
+	diffFilter = diff-so-fancy --patch
+[push]
+  default = simple
+[rebase]
+  autoStash = true
+[remote "origin"]
+  prune = true
+[rerere]
+  enabled = true
+[status]
+  showUntrackedFiles = all
+[filter "lfs"]
+  clean = git lfs clean %f
+  smudge = git lfs smudge %f
+  required = true
+
+# Colors {{{
+[color]
+  ui = true
+[color "advice"]
+  hint = 114
+[color "blame"]
+  highlightRecent = 114
+  repeatedLines = 114
+[color "branch"]
+  current = 114
+  local = 114
+  plain = 114
+  remote = 114
+  reset = 114
+  upstream = 114
+  worktree = 114
+[color "decorate"]
+  HEAD = 17 # HEAD ->
+  branch = 17 # Branch name
+  remoteBranch = 3 # Remote branches
+  stash = 193 # Stashes
+  tag = 22 # Tags
+
+  grafted = 114
+[color "diff"]
+  plain = 16   # Default color
+  context = 16 # Lines untouched
+  frag = 8   # @@ -9,14 +9,15 @@
+  func = 16    # First line of context
+  meta = 3     # Diff header
+  new = 2   # Lines added
+  old = 1 # Lines deleted
+  whitespace = 1 1             # Any diff whitespace
+  commit = 23 # Also used as the default color for decorate, to display punctuation
+
+  contextBold = 114
+  contextDimmed = 114
+  newBold = 114
+  newDimmed = 114
+  newMoved = 114
+  newMovedAlternative = 114
+  newMovedAlternativeDimmed = 114
+  newMovedDimmed = 114
+  oldBold = 114
+  oldDimmed = 114
+  oldMoved = 114
+  oldMovedAlternative = 114
+  oldMovedAlternativeDimmed = 114
+  oldMovedDimmed = 114
+[color "diff-highlight"]
+	oldNormal = 1
+	oldHighlight = 1 bold 6
+	newNormal = 2
+	newHighlight = 2 bold 6
+[color "grep"]
+  column = 114
+  context = 114
+  filename = 114
+  function = 114
+  lineNumber = 114
+  match = 114
+  matchContext = 114
+  matchSelected = 114
+  selected = 114
+  separator = 114
+[color "interactive"]
+  error = 114
+  header = 114
+  help = 114
+  plain = 114
+  prompt = 114
+  reset = 114
+[color "push"]
+  error = 114
+[color "remote"]
+  error = 114
+  hint = 114
+  success = 114
+  warning = 114
+[color "status"]
+  header = 16         # Default text
+  branch = 17      # Current branch
+  added = 2          # File added to staging area
+  changed = 1          # Changed, but not staged
+  untracked = 21 # New file
+  ; updated = 114        # Added to staging area
+
+  localBranch = 114
+  noBranch = 114
+  remoteBranch = 114
+  unmerged = 114
+# }}}
+

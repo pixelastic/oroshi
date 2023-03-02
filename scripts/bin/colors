@@ -7,15 +7,15 @@ local RESET="\e[0m"
 for colorName in ${=COLORS_INDEX}; do
   local colorValue=${(P)${:-COLOR_${colorName}}}
   local colorValueHexa=${(P)${:-COLOR_${colorName}_HEXA}}
-  output+="\e[48;5;${colorValue}m          $RESET\e[38;5;${colorValue}m$RESET 〷"
-  output+="\e[38;5;${colorValue}m  ${colorName}$RESET 〷"
-  output+="\e[38;5;${colorValue}m  ${colorValueHexa} $RESET 〷"
-  output+="\e[38;5;${colorValue}m  ${colorValue} $RESET 〷"
-  output+="\e[38;5;${colorValue}m Lorem ipsum $RESET 〷"
+  output+="\e[48;5;${colorValue}m          $RESET\e[38;5;${colorValue}m$RESET ▮"
+  output+="\e[38;5;${colorValue}m  ${colorName}$RESET ▮"
+  output+="\e[38;5;${colorValue}m  ${colorValueHexa} $RESET ▮"
+  output+="\e[38;5;${colorValue}m  ${colorValue} $RESET ▮"
+  output+="\e[38;5;${colorValue}m Lorem ipsum $RESET ▮"
   output+="\n"
 done
 
 echo $output | column \
-  --separator "〷" \
+  --separator "▮" \
   --table \
   --table-noheadings

@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# Regenerate ./dist/gitconfig from ./src/gitconfig
+
+local currentDir=${0:a:h}
+
+envsubst \
+  < ${currentDir}/src/gitconfig \
+  > ${currentDir}/dist/gitconfig

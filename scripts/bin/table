@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
 # Display passed content as a table
 # Usage:
-# $ echo "foo〷bar" | table         # foo  bar
-# $ table "foo〷bar"                # foo  bar
+# $ echo "foo▮bar" | table         # foo  bar
+# $ table "foo▮bar"                # foo  bar
 # $ table "foo¤bar" --separator "¤" # foo  bar
 
 
@@ -11,7 +11,7 @@ zmodload zsh/zutil
 zparseopts -E -D \
   -separator:=flagSeparator
 
-local separator=${flagSeparator[2]:-〷}
+local separator=${flagSeparator[2]:-▮}
 
 # Read from arg or from pipe
 local input="$1"

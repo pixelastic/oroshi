@@ -11,13 +11,13 @@ function oroshi-prompt-git-status-populate() {
 
   # Staged files
   if git-directory-has-staged-files; then
-    OROSHI_PROMPT_PARTS[git-status]="%F{$COLOR_ALIAS_GIT_MODIFIED}ﰖ%f"
+    OROSHI_PROMPT_PARTS[git-status]="%F{$COLOR_ALIAS_GIT_TRACKED}ﰖ%f"
     return
   fi
 
   # Dirty directory
   if git-directory-is-dirty; then
-    OROSHI_PROMPT_PARTS[git-status]="%F{$COLOR_ALIAS_ERROR}ﰖ%f"
+    OROSHI_PROMPT_PARTS[git-status]="%F{$COLOR_ALIAS_GIT_UNTRACKED}ﰖ%f"
     return
   fi
 
