@@ -274,16 +274,19 @@ call s:Highlight('scssParameterList', 'ALIAS_PUNCTUATION')
 " Git {{{
 " Git Config
 call s:Highlight('gitconfigSection', 'ALIAS_HEADER')
+" Git Commit
+call s:Highlight('gitcommitDiff', 'ALIAS_COMMENT')
+call s:Highlight('gitcommitSelectedFile', 'ALIAS_FILE')
+call s:Highlight('gitcommitDiscardedFile', 'ALIAS_FILE')
+call s:Highlight('gitcommitSummary', 'ALIAS_TEXT')
 " Git Diff
+call s:Highlight('gitDiff', 'ALIAS_COMMENT')
 call s:Highlight('diffAdded', 'ALIAS_GIT_ADDED')
 call s:Highlight('diffFile', 'ALIAS_HEADER')
 call s:Highlight('diffLine', 'ALIAS_TERMINAL')
 call s:Highlight('diffRemoved', 'ALIAS_GIT_REMOVED')
 call s:Highlight('diffSubname', 'ALIAS_COMMENT')
 call s:Highlight('gitDiff', 'ALIAS_COMMENT')
-call s:Highlight('gitcommitDiff', 'ALIAS_COMMENT')
-call s:Highlight('gitcommitSelectedFile', 'ALIAS_FILE')
-call s:Highlight('gitcommitDiscardedFile', 'ALIAS_FILE')
 " }}}
 " HTML {{{
 call s:Highlight('htmlArg', 'ALIAS_VARIABLE_DEFINITION')
