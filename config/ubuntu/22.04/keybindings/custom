@@ -10,7 +10,7 @@ local GSETTINGS_DIRECTORY="/org/gnome/settings-daemon/plugins/media-keys/custom-
 local                  shortcuts=(
 # Name                 Command                                               Binding
 "Calculator"           "gnome-calculator"                                    "Insert"
-"Chrome"               "google-chrome"                                       "<Super>C"
+"Chrome"               "google-chrome --profile-directory=\"Profile 5\""                                       "<Super>C"
 "Flameshot"            "/usr/bin/flameshot gui"                              "<Super>Print"
 "Keepass"              "keepassx ~/perso/Dropbox/tim/keys.kdbx"              "<Super>K"
 "Kitty"                "/usr/bin/kitty"                                      "<Super>T"
