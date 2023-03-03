@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# Returns the specific options required to pass to fzf
+
+echo "--delimiter=   "
+echo "--with-nth=2"
+echo "--preview=fzf-files-preview {1}"
+
+# Color the UI
+echo "--color=query:${COLOR_ALIAS_FILE}:regular"
+echo "--color=separator:${COLOR_ALIAS_FILE}"
+echo "--color=info:${COLOR_ALIAS_FILE}"

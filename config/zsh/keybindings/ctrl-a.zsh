@@ -1,6 +1,6 @@
-# Add all suggestions to the command line
+# Ctrl-A selects all suggestions, and add them to the current line
 #
-# I have no idea how it works, but it does
+# Note: I have no idea how it works, but it does
 zle -C all-matches complete-word _generic
 bindkey '^a' all-matches
 zstyle ':completion:all-matches:*' old-matches only

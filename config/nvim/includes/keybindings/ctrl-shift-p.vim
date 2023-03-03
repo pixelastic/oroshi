@@ -2,11 +2,11 @@ scriptencoding utf-8
 " [CTRL-Shift-P] Files search in the subdirectory
 
 " Command to call to build the list of choices
-let fzfFilesSearchSubdirSource='fzf-files-search-subdir-source'
+let fzfFilesSearchSubdirSource='fzf-files-subdir-source'
 
 " FZF options
 function! FzfFilesSearchSubdirOptions()
-  let fzfOptions= system('fzf-files-search-subdir-options')
+  let fzfOptions= system('fzf-files-subdir-options')
   return split(fzfOptions, "\n")
 endfunction
 
@@ -17,7 +17,7 @@ function! FzfFilesSearchSubdirSink(selection)
   endif
 
   let rawSelection=join(a:selection, "\n")
-  let selection=system('fzf-files-search-postprocess '.shellescape(rawSelection))
+  let selection=system('fzf-files-postprocess '.shellescape(rawSelection))
 
   " Open each file
   for filepath in split(selection, ' ')

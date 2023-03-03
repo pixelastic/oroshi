@@ -1,0 +1,23 @@
+# List all packages
+# Usage:
+#   $ apt-list              # Display the list of all available packages
+#   $ apt-list --installed  # Display the list of all installed packages
+function apt-list() {
+  local query="$1"
+
+  zparseopts -E -D \
+    -installed=flagInstalled \
+
+  local isInstalled=${#flagInstalled}
+
+  # Full list of all packages
+  if [[ $isInstalled == "0" ]]; then
+    apt-cache pkgnames | sort
+    return 0
+  fi
+
+  # List of installed packages
+  apt list --installed 2>/dev/null \
+    | tail -n +2 \
+    | cut -d'/' -f1
+}

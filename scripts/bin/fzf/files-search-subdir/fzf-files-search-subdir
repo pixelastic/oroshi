@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-# Starts a dynamic file search, in the current folder
-
-fzf-files-search \
-  --source "fzf-files-search-subdir-source" \
-  --options "fzf-files-search-subdir-options"

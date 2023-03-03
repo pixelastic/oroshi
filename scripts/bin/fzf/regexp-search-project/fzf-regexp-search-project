@@ -1,5 +1,0 @@
-#!/usr/bin/env zsh
-# Dynamic regexp search inside of project
-
-fzf-regexp-search \
-  --options "fzf-regexp-search-project-options"

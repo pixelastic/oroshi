@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# Returns a list of directories, in the current directory
+local here="$PWD"
+
+fzf-directories-source "${here}"

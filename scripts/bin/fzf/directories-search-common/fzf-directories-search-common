@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-# Fuzzy search in all the most common directories
-
-fzf-directories-search \
-  --source "fzf-directories-search-common-source" \
-  --options "fzf-directories-search-common-options"

@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-# Fuzzy search in all the directory subdirectories
-
-fzf-directories-search \
-  --source "fzf-directories-search-subdir-source" \
-  --options "fzf-directories-search-subdir-options"

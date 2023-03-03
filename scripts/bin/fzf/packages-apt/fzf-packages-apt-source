@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+# Returns a list of all possible packages to install
+
+local cacheDestination=/tmp/oroshi/fzf/packages-apt
+
+# File too old? We regenerate
+[[ ! -n ${cacheDestination}(#qN.mh+20) ]] && fzf-packages-apt-source-generate
+
+# File not there? We create
+[[ ! -r $cacheDestination ]] && fzf-packages-apt-source-generate
+
+cat $cacheDestination
+
+
+

@@ -117,6 +117,10 @@ aliasColors[GIT_REBASE]="RED_LIGHT"
 aliasColors[GIT_REMOTE]="YELLOW"
 aliasColors[GIT_REMOVED]="RED"
 aliasColors[GIT_STASH]="TEAL_3"
+# Packages
+aliasColors[PACKAGE_INSTALLED]="GREEN"
+aliasColors[PACKAGE_NOT_INSTALLED]="GRAY"
+aliasColors[PACKAGE_VERSION_MISMATCH]="VIOLET"
 # Hosts
 aliasColors[HOST_PIXELASTIC]="GREEN"
 aliasColors[HOST_GITHUB]="BLUE"

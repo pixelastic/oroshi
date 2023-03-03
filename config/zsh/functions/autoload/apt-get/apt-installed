@@ -1,0 +1,10 @@
+# Check if a package has been installed
+# Usage:
+#   $ apt-exists zsh        # Exit with 0 if installed
+function apt-installed() {
+  local packageName="$1"
+
+  local versionNumber="$(apt-version $packageName)"
+  [[ $versionNumber != "" ]] && return 0
+  return 1
+}

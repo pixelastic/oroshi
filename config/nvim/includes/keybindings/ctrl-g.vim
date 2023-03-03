@@ -2,7 +2,7 @@
 
 " FZF options
 function! FzfRegexpSearchProjectOptions()
-  let fzfOptions= system('fzf-regexp-search-project-options')
+  let fzfOptions= system('fzf-regexp-project-options')
   return split(fzfOptions, "\n")
 endfunction
 
@@ -13,7 +13,7 @@ function! FzfRegexpSearchProjectSink(selection)
   endif
 
   let rawSelection=join(a:selection, "\n")
-  let selection=system('fzf-regexp-search-postprocess '.shellescape(rawSelection))
+  let selection=system('fzf-regexp-postprocess '.shellescape(rawSelection))
 
   " Open each file and jump to right line
   for line in split(selection, ' ')

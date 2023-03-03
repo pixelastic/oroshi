@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+# Returns the specific options required to pass to fzf
+# Usage:
+# $ fzf-regexp-options
+# --source         # Mandatory, list of suggestions
+
+zmodload zsh/zutil
+zparseopts -E -D \
+  -source:=flagSource
+
+local fzfSourcePath=${flagSource[2]}
+
+echo "--disabled"
+echo "--delimiter=   "
+echo "--with-nth=3"
+echo "--bind=change:reload:sleep 0.3;${fzfSourcePath} {q} || true"
+
+# Color the UI in regexp color
+echo "--color=disabled:${COLOR_ALIAS_REGEXP}:regular"
+echo "--color=separator:${COLOR_ALIAS_REGEXP}"
+echo "--color=info:${COLOR_ALIAS_REGEXP}"
+

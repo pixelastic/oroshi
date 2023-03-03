@@ -3,4 +3,58 @@
 #   $ apt-search zsh   # Display any software that matches zsh
 #   $ apt-search       # Provides a searchable list of software to install
 function apt-search() {
+  local query="$1"
+
+  # If no query is passed, we open the fuzzy finder
+  if [[ $query == "" ]]; then
+    fzf-packages-apt
+    return
+  fi
+
+  # Get the list of packages matching the query
+  local rawOutput="$(apt-cache search --names-only --full $query)"
+  eval $'local rawPackageList=(${(@s:\n\n:)rawOutput})'
+
+  # Get the list of all installed packages
+  local allPackages=($(apt-list --installed))
+  
+  # Iterate on each package and build a list of them
+  local packageList=()
+  for packageDetails in $rawPackageList;do
+    # Read each package description line to get info
+    local packageLines=(${(f)packageDetails})
+    local packageName=""
+    local packageVersion=""
+    for packageLine in $packageLines; do
+      # Grab the name
+      if [[ $packageLine == Package:* ]]; then
+        packageName=${${=packageLine}[2]}
+        continue
+      fi
+      # Grab the version
+      if [[ $packageLine == Version:* ]]; then
+        packageVersion=${${=packageLine}[2]}
+        continue
+      fi
+    done
+
+    # If the package is installed, we color it
+    if [[ ${allPackages[(ie)${packageName}]} -lt ${#allPackages} ]]; then
+      local currentVersion="$(apt-version $packageName)"
+      packageName="$(colorize $packageName $COLOR_ALIAS_PACKAGE_INSTALLED)"
+
+      if [[ $packageVersion == $currentVersion ]]; then
+        packageVersion="$(colorize $packageVersion $COLOR_ALIAS_PACKAGE_INSTALLED)"
+      else
+        packageVersion="$(colorize $packageVersion $COLOR_ALIAS_VERSION_MISMATCH)"
+      fi
+    else
+      packageVersion="$(colorize $packageVersion $COLOR_ALIAS_PACKAGE_NOT_INSTALLED)"
+    fi
+
+
+    packageList+=("$packageName▮$packageVersion")
+  done
+
+  echo ${(F)packageList} | sort | table
 }

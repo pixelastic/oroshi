@@ -1,7 +1,7 @@
 # Ctrl-Shift-G search into files in current directory
-oroshi-fzf-regexp-search-subdir-widget() {
+oroshi-fzf-regexp-subdir-widget() {
   export PROMPT_PREVENT_REFRESH="1"
-  local selection="$(fzf-regexp-search-subdir)"
+  local selection="$(fzf-regexp-subdir)"
   export PROMPT_PREVENT_REFRESH="0"
 
   # Stop if no selection is made
@@ -15,5 +15,5 @@ oroshi-fzf-regexp-search-subdir-widget() {
 
   return 0
 }
-zle -N oroshi-fzf-regexp-search-subdir-widget
-bindkey 'Ⓖ' oroshi-fzf-regexp-search-subdir-widget
+zle -N oroshi-fzf-regexp-subdir-widget
+bindkey 'Ⓖ' oroshi-fzf-regexp-subdir-widget

@@ -34,9 +34,10 @@ function oroshi_tools_fzf() {
 
   # Generic options
   local fzfOptionBase="\
-    --pointer= \
     --ansi \
+    --pointer= \
     --reverse \
+    --cycle \
     --keep-right \
     --bind 'tab:down' \
     --bind 'ctrl-l:clear-query' \

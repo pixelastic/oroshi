@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+# Display all the directories of a given directory
+# Usage:
+# $ fzf-directories-source /path/to/directory
+
+local directory="$1"
+
+cd $directory
+local items="$(\
+f \
+  --base-directory "$directory" \
+  . \
+  --color always \
+  --type directory \
+)"
+
+# Display it as two columns: full path and colored path
+for item in ${(f)items}; do
+  echo "${directory}/${item}   ${item}"
+done

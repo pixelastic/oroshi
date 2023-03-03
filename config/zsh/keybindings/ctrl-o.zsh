@@ -1,7 +1,7 @@
 # Ctrl-O fuzzy find in project directories
-oroshi-fzf-directories-search-project-widget() {
+oroshi-fzf-directories-project-widget() {
   export PROMPT_PREVENT_REFRESH="1"
-  local selection="$(fzf-directories-search-project)"
+  local selection="$(fzf-directories-project)"
   export PROMPT_PREVENT_REFRESH="0"
 
   # Stop if no selection is made
@@ -12,5 +12,5 @@ oroshi-fzf-directories-search-project-widget() {
   LBUFFER="${LBUFFER}${selection} "
   return 0
 }
-zle -N oroshi-fzf-directories-search-project-widget
-bindkey '^O' oroshi-fzf-directories-search-project-widget
+zle -N oroshi-fzf-directories-project-widget
+bindkey '^O' oroshi-fzf-directories-project-widget

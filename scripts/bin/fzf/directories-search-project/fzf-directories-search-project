@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-# Fuzzy search in all the project directories
-
-fzf-directories-search \
-  --source "fzf-directories-search-project-source" \
-  --options "fzf-directories-search-project-options"

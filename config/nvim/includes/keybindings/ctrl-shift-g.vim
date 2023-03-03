@@ -3,7 +3,7 @@ scriptencoding utf-8
 
 " FZF options
 function! FzfRegexpSearchSubdirOptions()
-  let fzfOptions= system('fzf-regexp-search-subdir-options')
+  let fzfOptions= system('fzf-regexp-subdir-options')
   return split(fzfOptions, "\n")
 endfunction
 
@@ -14,7 +14,7 @@ function! FzfRegexpSearchSubdirSink(selection)
   endif
 
   let rawSelection=join(a:selection, "\n")
-  let selection=system('fzf-regexp-search-postprocess '.shellescape(rawSelection))
+  let selection=system('fzf-regexp-postprocess '.shellescape(rawSelection))
 
   " Open each file and jump to right line
   for line in split(selection, ' ')

@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# Returns the specific options to pass to fzf
+fzf-regexp-options \
+  --source fzf-regexp-subdir-source
+
+local prompt="/$(simplify-path $PWD)"
+echo "--prompt=${prompt} ❯ "
+echo "--color=prompt:${COLOR_ALIAS_DIRECTORY}:regular"

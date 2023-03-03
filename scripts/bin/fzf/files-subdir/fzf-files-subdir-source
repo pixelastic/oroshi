@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# Returns a list of files, in the current folder
+local here="$PWD"
+fzf-files-source "${here}"
+
