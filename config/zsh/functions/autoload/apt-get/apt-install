@@ -1,0 +1,6 @@
+# Install a given software, or allow searching into a list
+# Usage:
+#   $ apt-install zsh   # Installs zsh, or fails if already installed
+#   $ apt-install       # Provides a searchable list of software to install
+function apt-install() {
+}

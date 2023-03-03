@@ -1,0 +1,6 @@
+# Search into the list of all available software
+# Usage:
+#   $ apt-search zsh   # Display any software that matches zsh
+#   $ apt-search       # Provides a searchable list of software to install
+function apt-search() {
+}

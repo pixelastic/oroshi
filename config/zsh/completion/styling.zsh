@@ -58,7 +58,7 @@ function oroshi-completion-styling() {
     "${(f)$(♣ "develop*" $COLOR_ALIAS_GIT_BRANCH_DEVELOP)}" \
     "${(f)$(♣ "dependabot*" $COLOR_ALIAS_GIT_BRANCH_DEPENDABOT)}" \
     # Default branch color
-    "${(f)$(♣ "*" $COLOR_ALIAS_GIT_BRANCH_DEFAULT)}" \
+    "${(f)$(♣ "*" $COLOR_ALIAS_GIT_BRANCH)}" \
     $listColorsDefault \
   )
   # Color remote ssh

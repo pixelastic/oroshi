@@ -1,0 +1,15 @@
+# Returns the current installed version of a package
+# Usage:
+#   $ apt-version zsh              # 5.8.1-1
+function apt-version() {
+  local input="$1"
+
+  local policyOutput="$(apt-cache policy $input | \grep 'Installed')"
+  
+  # No match, so no version to be found
+  [[ $policyOutput == "" ]] && return 1
+
+  echo ${policyOutput:s/\^ //}
+  echo ${=policyOutput}
+  echo ${policyOutput:s/Installed: //}
+}
