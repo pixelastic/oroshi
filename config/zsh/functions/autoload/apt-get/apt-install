@@ -1,6 +1,32 @@
 # Install a given software, or allow searching into a list
 # Usage:
-#   $ apt-install zsh   # Installs zsh, or fails if already installed
-#   $ apt-install       # Provides a searchable list of software to install
+#   $ apt-install zsh       # Installs zsh
+#   $ apt-install zsh fish  # Installs zsh and fish
+#   $ apt-install           # Provides a searchable list of software to install
 function apt-install() {
+  local packages="$@"
+
+  # If no input passed, we find them in a fuzzy search
+  if [[ $packages == "" ]]; then
+    packages="$(fzf-packages-apt)"
+  fi
+
+  # Install the specified packages
+  local hasInstalledPackages="0"
+  for packageName in ${=packages}; do
+    # Skip already install
+    if apt-is-installed $packageName; then
+      echo "✘ $packageName already installed"
+      continue
+    fi
+
+    # Install the package
+    sudo apt-get install ${packageName}
+    hasInstalledPackages="1"
+  done
+
+  # Once done, we update our cached fzf list in the background
+  if [[ $hasInstalledPackages == "1" ]]; then
+    fzf-packages-apt-source-generate &!
+  fi
 }

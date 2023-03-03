@@ -4,12 +4,13 @@
 local cacheDestination=/tmp/oroshi/fzf/packages-apt
 
 # File too old? We regenerate
-[[ ! -n ${cacheDestination}(#qN.mh+20) ]] && fzf-packages-apt-source-generate
+if [[ ! -n ${cacheDestination}(#qN.mh+20) ]]; then
+  fzf-packages-apt-source-generate
+fi
 
 # File not there? We create
-[[ ! -r $cacheDestination ]] && fzf-packages-apt-source-generate
+if [[ ! -r $cacheDestination ]]; then
+  fzf-packages-apt-source-generate
+fi
 
 cat $cacheDestination
-
-
-

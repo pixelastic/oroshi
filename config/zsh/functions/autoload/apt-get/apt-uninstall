@@ -1,0 +1,32 @@
+# Uninstall a given software
+# Usage:
+#   $ apt-uninstall zsh       # Uninstall zsh
+#   $ apt-uninstall zsh fish  # Uninstalls zsh and fish
+#   $ apt-uninstall           # Provides a searchable list of software to uninstall
+function apt-uninstall() {
+  local packages="$@"
+
+  # If no input passed, we find them in a fuzzy search
+  if [[ $packages == "" ]]; then
+    packages="$(fzf-packages-apt-installed)"
+  fi
+
+  # Uninstall the specified packages
+  local hasInstalledPackages="0"
+  for packageName in ${=packages}; do
+    # Skip if not installed
+    if ! apt-is-installed $packageName; then
+      echo "✘ $packageName is not installed"
+      continue
+    fi
+
+    # Uninstall the package
+    sudo apt-get remove -y ${packageName}
+    hasInstalledPackages="1"
+  done
+
+  # Once done, we update our cached fzf list in the background
+  if [[ $hasInstalledPackages == "1" ]]; then
+    fzf-packages-apt-source-generate &!
+  fi
+}

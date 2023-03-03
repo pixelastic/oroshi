@@ -2,8 +2,6 @@
 # Writes on disk a list of all packages to populate the fzf search
 # This will help speed up the search, as the list takes ~5s to generate
 
-local cacheDestination=/tmp/oroshi/fzf/packages-apt
-
 local allPackages="$(apt-list)"
 
 # Make an inverted list out of the list of installed packages
@@ -28,6 +26,7 @@ done
 
 # Generate the list to chose from
 local output=()
+local outputInstalled=()
 for packageName in ${(f)allPackages}; do
   local packageVersion=$installedPackages[$packageName]
 
@@ -43,11 +42,20 @@ for packageName in ${(f)allPackages}; do
 
   # First column will be selected
   # Second column will be displayed and searched
-  output+="$packageName▮$packageDisplayName $packageDisplayVersion"
+  local displayedLine="$packageName▮$packageDisplayName $packageDisplayVersion"
+  output+=("$displayedLine")
+
+  # Also add it to the list of installed softwares
+  [[ $packageVersion != "" ]] && outputInstalled+=("$displayedLine")
+
 done
 
 # Write the file to disk
+local cacheDestination=/tmp/oroshi/fzf/packages-apt
+local cacheInstalledDestination=/tmp/oroshi/fzf/packages-apt-installed
+
 mkdir -p ${cacheDestination:a:h}
 echo "${(F)output}" > $cacheDestination
+echo "${(F)outputInstalled}" > $cacheInstalledDestination
 
 
