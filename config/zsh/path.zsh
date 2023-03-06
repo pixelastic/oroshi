@@ -14,7 +14,6 @@ function oroshi_path() {
     ~/local/bin
     ~/.local/bin
     ~/.oroshi/scripts/bin
-    ~/.oroshi/scripts/bin/img/bin
     ~/.oroshi/scripts/bin/video/bin
     ~/.oroshi/scripts/bin/pdf/bin
     ~/.oroshi/scripts/bin/convert/bin
@@ -34,6 +33,10 @@ function oroshi_path() {
   done
   # Custom fzf-related binaries
   for directory in ~/.oroshi/scripts/bin/fzf/*; do
+    customPath+=($directory)
+  done
+  # Custom img-related binaries
+  for directory in ~/.oroshi/scripts/bin/img/*; do
     customPath+=($directory)
   done
 
