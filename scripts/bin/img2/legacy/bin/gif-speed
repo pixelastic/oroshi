@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+require_relative '../lib/image_helper'
+
+# Return the speed of the animation of a GIF
+class GifLoop
+  include ImageHelper
+  def initialize(*inputs)
+    @usage = 'gif-speed ./input.gif [./input2.gif]'
+
+    @inputs = validate_inputs(inputs, :gif)
+  end
+
+  def run
+    @inputs.each do |input|
+      puts speed(input)
+    end
+  end
+end
+GifLoop.new(*ARGV).run

@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+require_relative '../lib/image_helper'
+
+# Resize image to the specified dimensions
+# TODO: Should correctly handle resizing animated gif (coalesce)
+# Should allow passing a -f to force discarding the ratio
+class Resize
+  include ImageHelper
+  def initialize(*inputs)
+    @usage = [
+      'resize [-f] ./input.{jpg,gif,png} [./input2.{jpg,gif,png}] 200x300',
+      'resize [-f] ./input.{jpg,gif,png} [./input2.{jpg,gif,png}] 200x',
+      'resize [-f] ./input.{jpg,gif,png} [./input2.{jpg,gif,png}] x300'
+    ]
+
+    @documentation = 'Resize input files'
+
+    @allow_increase = false
+    @bypass_ratio = false
+
+    # By default, we keep the aspect ratio. If -f is passed, we bypass it
+    if inputs.include?('-f')
+      @bypass_ratio = true
+      @allow_increase = true
+      inputs.delete('-f')
+    end
+
+    # Dimensions to pass to the underlying imagemagick
+    @dimensions = inputs.pop
+    display_usage if @dimensions.nil?
+    @inputs = validate_inputs(inputs, 'jpg,gif,png')
+  end
+
+  def run
+    @inputs.each do |input|
+      resize(input,
+             @dimensions,
+             bypass_ratio: @bypass_ratio,
+             allow_increase: @allow_increase)
+      puts "✔ Resize #{File.basename(input)} to #{@dimensions}"
+    end
+  end
+end
+Resize.new(*ARGV).run

@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+require_relative '../lib/image_helper'
+
+# Loop an animated GIF file
+class GifLoop
+  include ImageHelper
+  def initialize(*inputs)
+    @usage = 'gif-loop ./input.gif [./input2.gif]'
+    @documentation = 'Takes animated GIF files and make their animation an infinite loop'
+
+    @inputs = validate_inputs(inputs, :gif)
+  end
+
+  def run
+    @inputs.each do |input|
+      make_loop(input)
+    end
+  end
+end
+GifLoop.new(*ARGV).run

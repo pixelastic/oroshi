@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+require_relative '../lib/image_helper'
+
+# Compress JPG images in the best lossy way
+class JPGmin
+  include ImageHelper
+  def initialize(*inputs)
+    @usage = 'jpgmin ./input.jpg [./input2.jpg]'
+    @documentation = 'Compress jpg files'
+
+    @inputs = validate_inputs(inputs, 'jpg')
+  end
+
+  def run
+    @inputs.each do |input|
+      puts File.basename(input)
+      compress_best_dssim(input) do |quality|
+        if quality == false
+          puts 'Skipping, already too much compressed'
+          next
+        end
+        puts "Testing quality #{quality}"
+      end
+    end
+  end
+end
+JPGmin.new(*ARGV).run

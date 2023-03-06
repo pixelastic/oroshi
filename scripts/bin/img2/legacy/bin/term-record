@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# Checking dependencies
+if [[ ! $(which asciinema) ]]; then
+  echo "asciinema is not installed"
+  exit 1
+fi
+if [[ ! $(which asciicast2gif) ]]; then
+  echo "asciicast2gif is not installed"
+  exit 1
+fi
+
+# Creating tmp directory
+tmp_dir="/tmp/term-record"
+mkdir -p "$tmp_dir"
+mkdir -p "$tmp_dir/json"
+mkdir -p "$tmp_dir/gif"
+
+# Recording the session
+now=$(date +"%Y-%m-%d_%H-%M-%S")
+json_file_tmp="${tmp_dir}/json/${now}.json"
+asciinema rec "$json_file_tmp"
+
+# Converting to gif
+gif_file_tmp="${tmp_dir}/gif/${now}.gif"
+asciicast2gif \
+  -s 1 \
+  -S 2 \
+  "$json_file_tmp" \
+  "$gif_file_tmp"
+
+eog "$gif_file_tmp" && \
+  nautilus "$tmp_dir/gif"

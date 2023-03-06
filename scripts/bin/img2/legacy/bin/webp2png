@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+require_relative '../lib/image_helper'
+
+# Convert .webp files to .png files
+class Webp2Png
+  include ImageHelper
+  def initialize(*inputs)
+    @usage = 'webp2png ./input.webp [./input2.webp]'
+    @documentation = 'Takes Webp files as input and create PNG equivalents'
+
+    @inputs = validate_inputs(inputs, 'webp')
+  end
+
+  def run
+    @inputs.each do |input|
+      convert(input, 'png')
+    end
+  end
+end
+Webp2Png.new(*ARGV).run

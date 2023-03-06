@@ -1,0 +1,34 @@
+#!/usr/bin/env zsh
+# Convert a svg to a png
+# Usage:
+# $ svg2png ./path/to/file.svg                    # Creates ./path/to/file.png
+# $ svg2png ./path/to/file.svg ./other/file.svg   # Creates multiple files
+
+zparseopts -E -D \
+  f=flagForce \
+  -force=flagForce
+
+local input="$@"
+
+local isForce=${#flagForce}
+
+for inputPath in ${=input}; do
+  local outputPath="${inputPath:a:r}.png"
+
+  # Skip if not a valid svg
+  if [[ $inputPath != *.svg ]]; then
+    echo "✘ $inputPath is not an svg file. Skipping."
+    continue
+  fi
+
+  # Skip it output already exists (unless --force)
+  if [[ -r $outputPath ]] && [[ $isForce == "0" ]]; then
+    echo "✘ $outputPath already exists. Pass --force / -f to overwrite"
+    continue
+  fi
+
+  convert \
+    -background none \
+    $inputPath \
+    $outputPath
+done

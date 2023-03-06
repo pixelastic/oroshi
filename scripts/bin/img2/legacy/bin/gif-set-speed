@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+require_relative '../lib/image_helper'
+
+# Change the speed of the animated GIF
+class GifLoop
+  include ImageHelper
+  def initialize(*inputs)
+    @usage = 'gif-set-speed ./input.gif [./input2.gif]'
+
+    @speed = inputs.pop
+    @inputs = validate_inputs(inputs, :gif)
+    if @inputs.empty? || @speed.nil?
+      puts 'You must pass at least one file and a speed value'
+      exit 1
+    end
+  end
+
+  def run
+    @inputs.each do |input|
+      set_speed(input, @speed)
+    end
+  end
+end
+GifLoop.new(*ARGV).run

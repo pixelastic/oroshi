@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+require_relative '../lib/image_helper'
+
+# Convert JPG files to PNG files
+class Jpg2Png
+  include ImageHelper
+  def initialize(*inputs)
+    @usage = 'jpg2png ./input.jpg [./input2.jpg]'
+    @documentation = 'Takes JPG files as input and create PNG equivalents'
+
+    @inputs = validate_inputs(inputs, 'jpg')
+  end
+
+  def run
+    @inputs.each do |input|
+      convert(input, 'png')
+    end
+  end
+end
+Jpg2Png.new(*ARGV).run

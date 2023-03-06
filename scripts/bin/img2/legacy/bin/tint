@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+require_relative '../lib/image_helper'
+
+# Tint images with a specific color
+class Tint
+  include ImageHelper
+  def initialize(*inputs)
+    @color = inputs.pop
+    @inputs = validate_inputs(inputs, 'gif,jpg,png')
+    if @inputs.empty? || @color.nil?
+      puts 'You must pass at least one file and a color value'
+      exit 1
+    end
+  end
+
+  def run
+    @inputs.each do |input|
+      tint(input, @color)
+    end
+  end
+end
+Tint.new(*ARGV).run

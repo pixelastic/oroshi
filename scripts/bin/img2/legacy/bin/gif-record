@@ -1,0 +1,171 @@
+#!/usr/bin/env ruby
+require 'time'
+require_relative '../lib/image_helper'
+
+# Select part of the screen and record first time it is run. Stops recording
+# second time it is run
+class GifRecord
+  include ImageHelper
+  def initialize
+    @tmp_dir = File.expand_path(File.join('~', 'local', 'tmp', 'gif-record'))
+    @tmp_dir_frames = File.expand_path(File.join(@tmp_dir, 'frames'))
+    @tmp_gif_file = File.expand_path(
+      File.join(@tmp_dir, 'frames', 'uncompressed.gif')
+    )
+    @screenshot_dir = File.expand_path(
+      File.join('~', 'Pictures', 'gif-records')
+    )
+    FileUtils.mkdir_p(@tmp_dir)
+    FileUtils.mkdir_p(@screenshot_dir)
+    @lock_file = File.join(@tmp_dir, 'lock')
+    @tmp_video_file = File.join(@tmp_dir, 'raw.mkv')
+    @gif_file = File.join(
+      @screenshot_dir,
+      "#{Time.now.strftime('%F_%Hh%Mm%S')}.gif"
+    )
+  end
+
+  def check_dependencies
+    puts 'Checking dependencies...'
+    deps = %w[ffmpeg slop exiftool eog nautilus gifsicle]
+    deps.each do |dep|
+      unless installed?(dep)
+        puts "#{dep} is not installed, please install it before continuing"
+        exit 1
+      end
+    end
+  end
+
+  # Write the lock file, meaning a record is in progress
+  def write_lock
+    FileUtils.touch(@lock_file)
+  end
+
+  # Delete the lock file, meaning no record is in progress
+  def remove_lock
+    File.delete(@lock_file)
+  end
+
+  # Write the PID of the process running the record
+  def set_pid(pid)
+    File.open(@lock_file, 'w') { |file| file.write(pid) }
+  end
+
+  # Read the PID of the process running the record
+  def get_pid
+    File.open(@lock_file, 'r').read.to_i
+  end
+
+  # Check if a record is in progress
+  def running?
+    File.exist?(@lock_file)
+  end
+
+  def stop_recording
+    # Stop the current recording
+    begin
+      Process.kill('QUIT', get_pid)
+      sleep 1
+      notify 'Record stopped'
+    rescue(StandardError)
+      puts 'Error when recording!'
+      exit 1
+    end
+
+    # Remove the lock
+    remove_lock
+
+    # Convert to gif
+    convert_to_gif
+
+    `eog #{@gif_file.shellescape} && nautilus #{@screenshot_dir.shellescape}`
+  end
+
+  def convert_to_gif
+    # Prepare frames/ folder
+    FileUtils.mkdir_p(@tmp_dir_frames)
+    FileUtils.rm_rf(Dir.glob("#{@tmp_dir_frames}/*.png"), secure: true)
+
+    # FPS in the first command will define the delay in the second one
+    fps_value = 10
+    delay = (100 / fps_value).to_i
+    two_seconds = 2 * fps_value
+
+    # Convert the file to png files
+    notify 'Converting video to still frames'
+    frame_options = [
+      "-i #{@tmp_video_file.shellescape}",
+      "-r #{fps_value}",
+      "'#{@tmp_dir_frames}/%04d.png'",
+      '-loglevel quiet'
+    ]
+    command = "ffmpeg #{frame_options.join(' ')}"
+    `#{command}`
+
+    # Remove the last files, to cut the video a bit short
+    all_frames = Dir.glob("#{@tmp_dir_frames}/*.png").sort
+    length = all_frames.length
+    frames_to_delete = all_frames[-two_seconds...length]
+    FileUtils.rm_rf(frames_to_delete)
+
+    # Convert png files to gif
+    notify 'Converting still frames to gif'
+    convert_options = [
+      "-delay #{delay}",
+      '-loop 0',
+      "#{@tmp_dir_frames}/*.png",
+      @tmp_gif_file
+    ]
+    command = "convert #{convert_options.join(' ')}"
+    `#{command}`
+
+    # Compressing the output
+    gifsicle_options = [
+      @tmp_gif_file,
+      '--colors 256',
+      '--lossy=80',
+      "-o #{@gif_file}"
+    ]
+    command = "gifsicle #{gifsicle_options.join(' ')}"
+    `#{command}`
+
+    notify 'Video converted to gif'
+  end
+
+  def start_recording
+    coordinates = screenshot_coordinates
+
+    # We write the lock so the next call to gif-record will stop the recording
+    write_lock
+
+    ffmpeg_options = [
+      '-y', # Overwrite existing files without asking
+      '-t 60', # No more than 60s
+      '-f x11grab',
+      '-r 25',
+      "-s #{coordinates[:width]}x#{coordinates[:height]}",
+      "-i :0.0+#{coordinates[:x]},#{coordinates[:y]}",
+      '-q 1',
+      @tmp_video_file.shellescape,
+      '-loglevel quiet'
+    ]
+    command = "ffmpeg #{ffmpeg_options.join(' ')}"
+
+    # We record the screen in a background process but save its PID
+    background = IO.popen(command)
+    pid = background.pid
+    set_pid(pid)
+  end
+
+  def run
+    # Stop the current recording
+    if running?
+      stop_recording
+      return
+    end
+
+    check_dependencies
+    start_recording
+  end
+end
+GifRecord.new.run

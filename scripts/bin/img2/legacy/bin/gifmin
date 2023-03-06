@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+require_relative '../lib/image_helper'
+
+# Compress a GIF images as much as possible
+class Gifmin
+  include ImageHelper
+  def initialize(*inputs)
+    @usage = 'gifmin ./input.gif [./input2.gif]'
+    @documentation = 'Compress GIF files'
+
+    @inputs = validate_inputs(inputs, 'gif')
+  end
+
+  def run
+    @inputs.each do |input|
+      compress_gif(input)
+    end
+  end
+end
+Gifmin.new(*ARGV).run
+

@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+require_relative '../lib/image_helper'
+
+# Check if an image is grayscale
+class ImageIsGrayscale
+  include ImageHelper
+  def initialize(input)
+    @input = input
+  end
+
+  def run
+    exit 1 unless grayscale?(@input)
+    exit 0
+  end
+end
+ImageIsGrayscale.new(ARGV[0]).run

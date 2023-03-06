@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+require 'tmpdir'
+require_relative '../lib/image_helper'
+
+# Apply a mask on another file, like a cookie cutter
+class PNGMask
+  include ImageHelper
+  def initialize(*inputs)
+    @image, @mask = validate_inputs(inputs, 'png')
+    @output = inputs[2]
+    if @image.nil? || @mask.nil? || @output.nil?
+      puts 'Usage:'
+      puts 'png-mask ./image.png ./mask.png ./output.png'
+      exit 1
+    end
+  end
+
+  def run
+    # Resize the mask to the same size as the image
+    width = width(@image)
+    height = height(@image)
+    tmp_mask = Tempfile.new('mask').path << '.png'
+    FileUtils.cp(@mask, tmp_mask)
+    resize(tmp_mask, "#{width}x#{height}")
+
+    options = [
+      '-compose CopyOpacity',
+      tmp_mask.shellescape,
+      @image.shellescape,
+      @output.shellescape
+    ]
+    `composite #{options.join(' ')}`
+
+    trim(@output)
+  end
+end
+PNGMask.new(*ARGV).run

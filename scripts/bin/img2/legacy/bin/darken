@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+require_relative '../lib/image_helper'
+
+# Darken an image
+class Darken
+  include ImageHelper
+  def initialize(*inputs)
+    @inputs = validate_inputs(inputs, 'jpg,png,gif')
+  end
+
+  def run
+    @inputs.each do |input|
+      darken(input)
+    end
+  end
+end
+Darken.new(*ARGV).run

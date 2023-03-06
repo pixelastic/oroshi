@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+require_relative '../lib/image_helper'
+
+# Check if an image is transparent
+class ImageIsTransparent
+  include ImageHelper
+  def initialize(input)
+    @input = input
+  end
+
+  def run
+    exit 1 unless transparent?(@input)
+    exit 0
+  end
+end
+ImageIsTransparent.new(ARGV[0]).run

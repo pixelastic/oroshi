@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+require_relative '../lib/image_helper'
+
+# Convert PNG files to ICO files
+class Png2Ico
+  include ImageHelper
+  def initialize(*inputs)
+    @usage = 'png2ico ./input.png [./input2.png]'
+    @documentation = 'Takes PNG files as input and create ICO equivalents'
+
+    @inputs = validate_inputs(inputs, 'png')
+  end
+
+  def run
+    @inputs.each do |input|
+      convert(input, 'ico')
+    end
+  end
+end
+Png2Ico.new(*ARGV).run
+

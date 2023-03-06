@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+require_relative '../lib/image_helper'
+
+# Convert TIF files to JPG files
+# My Doxie scanner creates TIF files with a .jpg extension
+class Tif2Jpg
+  include ImageHelper
+  def initialize(*inputs)
+    @usage = 'tif2jpg ./input.tif [./input2.tif]'
+    @documentation = 'Takes TIF files as input and create JPG equivalents'
+
+    @inputs = validate_inputs(inputs, 'tif')
+  end
+
+  def run
+    puts @inputs
+    @inputs.each do |input|
+      convert(input, 'jpg')
+    end
+  end
+end
+Tif2Jpg.new(*ARGV).run

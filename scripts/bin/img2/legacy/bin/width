@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+require_relative '../lib/image_helper'
+
+# Display the image width in pixel
+class ImgWidth
+  include ImageHelper
+  def initialize(*inputs)
+    @usage = 'img-width ./input.{gif,jpg,png}'
+    @documentation = 'Returns the image width'
+
+    @inputs = validate_inputs(inputs, 'jpg,gif,png')
+  end
+
+  def run
+    if @inputs.length == 1
+      puts "#{width(@inputs[0])}px"
+      exit 0
+    end
+
+    @inputs.each do |input|
+      name = File.basename(input)
+      puts "#{name}: #{width(input)}px"
+    end
+  end
+end
+ImgWidth.new(*ARGV).run
