@@ -155,13 +155,13 @@ call s:Highlight('SyntasticStyleWarningSign', 'YELLOW')
 call s:Highlight('SyntasticWarningSign', 'YELLOW')
 " }}}
 " Coc Gutter {{{
-call s:Highlight('CocErrorSign', 'RED')
-call s:Highlight('CocWarningSign', 'YELLOW')
-call s:Highlight('CocInfoSign', 'BLUE')
+call s:Highlight('CocErrorSign', 'ALIAS_ERROR')
+call s:Highlight('CocWarningSign', 'ALIAS_WARNING')
+call s:Highlight('CocInfoSign', 'ALIAS_INFO')
 " }}}
 " GitGutter {{{
-call s:Highlight('GitGutterAdd', 'GREEN')
-call s:Highlight('GitGutterChange', 'purple')
+call s:Highlight('GitGutterAdd', 'ALIAS_GIT_ADDED')
+call s:Highlight('GitGutterChange', 'ALIAS_GIT_MODIFIED')
 " }}}
 " Status line {{{
 call s:Highlight('StatusLineFileEncodingError', 'RED', 'GRAY_8')

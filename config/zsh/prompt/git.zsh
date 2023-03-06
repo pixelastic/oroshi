@@ -7,7 +7,10 @@
 # - Purple if files are added to the index
 function oroshi-prompt-git-status-populate() {
   OROSHI_PROMPT_PARTS[git-status]=""
+  # Stop if not in a git repo
   (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
+  # Or if in a .git/ folder
+  git-directory-is-dot-git && return
 
   # Staged files
   if git-directory-has-staged-files; then
