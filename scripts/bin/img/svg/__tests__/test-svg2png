@@ -1,0 +1,60 @@
+#!/usr/bin/env zsh
+source ~/.oroshi/config/zsh/functions/assert/assert.zsh
+
+function test_create_png() {
+  assert-name "Can create a png from a svg"
+  # Given
+  cp $T_FIXTURES/logo.svg $T_SANDBOX
+
+  # When
+  svg2png $T_SANDBOX/logo.svg
+
+  # Then
+  assert-file-exists $T_SANDBOX/logo.png
+}
+function test_create_several_pngs() {
+  assert-name "Can create multiple pngs"
+
+  # Given
+  cp $T_FIXTURES/logo.svg $T_SANDBOX
+  cp $T_FIXTURES/logo.svg $T_SANDBOX/logo2.svg
+
+  # When
+  svg2png $T_SANDBOX/logo.svg $T_SANDBOX/logo2.svg
+
+  # Then
+  assert-file-exists $T_SANDBOX/logo.png
+  assert-file-exists $T_SANDBOX/logo2.png
+}
+function test_no_overwrite() {
+  assert-name "Do not overwrite existing png by default"
+
+  # Given
+  cp $T_FIXTURES/logo.svg $T_SANDBOX
+  echo "unchanged" > $T_SANDBOX/logo.png
+
+  # When
+  svg2png $T_SANDBOX/logo.svg
+
+  # Then
+  assert-file-content $T_SANDBOX/logo.png "unchanged"
+}
+function test_force() {
+  assert-name "Overwrites if -f or --force"
+
+  # Given
+  cp $T_FIXTURES/logo.svg $T_SANDBOX/logo-f.svg
+  cp $T_FIXTURES/logo.svg $T_SANDBOX/logo-force.svg
+  echo "default" > $T_SANDBOX/logo-f.png
+  echo "default" > $T_SANDBOX/logo-force.png
+
+  # When
+  svg2png $T_SANDBOX/logo-f.svg -f
+  svg2png $T_SANDBOX/logo-force.svg --force
+
+  # Then
+  assert-not-file-content $T_SANDBOX/logo-f.png "default"
+  assert-not-file-content $T_SANDBOX/logo-force.png "default"
+}
+
+assert
