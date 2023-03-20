@@ -11,7 +11,6 @@ z -l \
 )"
 
 # We iterate on each path, to potentially color them using the project prefix
-local coloredList=""
 for fullPath in ${(f)rawList}; do
   local displayPath="$fullPath/"
   local projectKey="$(project-by-path ${displayPath})"

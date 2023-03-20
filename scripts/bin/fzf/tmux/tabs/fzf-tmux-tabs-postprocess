@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+local selection="$1"
+
+# Stop early
+[[ $selection == "" ]] && exit 0
+
+tmux switch -t "$selection"
+

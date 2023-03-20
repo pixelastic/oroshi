@@ -10,9 +10,12 @@ function oroshi_path() {
     ~/.pyenv/bin
     ~/.cargo/bin
 
-    # Custom binaries
+    # Installed binaries
     ~/local/bin
     ~/.local/bin
+    ~/local/src/fzf/bin
+
+    # Custom binaries
     ~/.oroshi/scripts/bin
     ~/.oroshi/scripts/bin/video/bin
     ~/.oroshi/scripts/bin/pdf/bin

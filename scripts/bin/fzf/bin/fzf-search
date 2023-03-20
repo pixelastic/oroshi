@@ -5,25 +5,32 @@
 # --source         # Mandatory, list of suggestions
 # --options        # Binary to return the fzf options
 # --postprocess    # Binary to sanitize the selection
+# --tmux           # Use fzf-tmux instead of fzf
 
 zmodload zsh/zutil
 zparseopts -E -D \
   -source:=flagSource \
   -options:=flagOptions \
-  -postprocess:=flagPostprocess
+  -postprocess:=flagPostprocess \
+  -tmux=flagTmux
 
 local fzfSourcePath=${flagSource[2]}
 local fzfOptionsPath=${flagOptions[2]}
 local fzfPostprocessPath=${flagPostprocess[2]}
+local isTmux=${#flagTmux}
 
 # The options to pass to fzf
 local fzfOptions="$($fzfOptionsPath)"
 
+# The fzf binary
+local fzfBinary="fzf"
+[[ $isTmux == "1" ]] && fzfBinary=(fzf-tmux -p 80%)
+
 # Actual fzf selection
 if [[ $fzfSourcePath == "" ]]; then
-  local selection="$(fzf ${(f)fzfOptions})"
+  local selection="$(${fzfBinary} ${(f)fzfOptions})"
 else
-  local selection="$($fzfSourcePath | fzf ${(f)fzfOptions})"
+  local selection="$($fzfSourcePath | ${fzfBinary} ${(f)fzfOptions})"
 fi
 
 # Stop if no selection

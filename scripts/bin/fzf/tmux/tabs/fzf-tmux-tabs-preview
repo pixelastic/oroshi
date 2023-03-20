@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# Display a preview of a specific window
+
+local tmuxTarget="$1"
+tmux capture-pane -ep -t ${tmuxTarget}

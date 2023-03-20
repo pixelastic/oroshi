@@ -1,0 +1,43 @@
+#!/usr/bin/env zsh
+
+# We get the whole list of open windows
+local rawList="$(
+  tmux list-windows \
+    -a \
+    -F "#S:#W" \
+)"
+
+local fullList=()
+for rawTarget in ${(f)rawList}; do
+  local split=(${(@s/:/)rawTarget})
+  local sessionName=$split[1]
+  local windowName=$split[2]
+
+  # Session
+  local sessionKey=${(U)sessionName:gs/-/_/}
+  local sessionForeground=${(P)${:-PROJECT_${sessionKey}_FOREGROUND}}
+  [[ $sessionForeground == "" ]] && sessionForeground=$COLOR_BLACK
+  local sessionBackground=${(P)${:-PROJECT_${sessionKey}_BACKGROUND}}
+  local sessionIcon=${(P)${:-PROJECT_${sessionKey}_ICON}}
+  
+  # Window
+  local windowKey=${(U)windowName:gs/-/_/}
+  local windowForeground=${(P)${:-PROJECT_${windowKey}_FOREGROUND}}
+  [[ $windowForeground == "" ]] && windowForeground=$COLOR_WHITE
+  local windowBackground=${(P)${:-PROJECT_${windowKey}_BACKGROUND}}
+  [[ $windowBackground == "" ]] && windowBackground=$COLOR_GRAY
+  local windowIcon=${(P)${:-PROJECT_${windowKey}_ICON}}
+
+  local displayTarget=""
+  displayTarget+="[48;5;${sessionBackground}m[38;5;${sessionForeground}m ${sessionIcon}${sessionName} [00m"
+  displayTarget+="[38;5;${sessionBackground}m[00m"
+  displayTarget+="▮"
+  displayTarget+="[48;5;${windowBackground}m[38;5;${windowForeground}m ${windowIcon}${windowName} [00m"
+  displayTarget+="[48;5;${COLOR_BLACK_PURE}m[38;5;${windowBackground}m[00m"
+
+  fullList+=("${displayTarget}   ${rawTarget}")
+done
+
+# Display the full list
+echo ${(F)fullList} \
+  | table
