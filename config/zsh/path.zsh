@@ -32,7 +32,7 @@ function oroshi_path() {
     customPath+=($directory)
   done
   # Custom fzf-related binaries
-  for directory in ~/.oroshi/scripts/bin/fzf/*; do
+  for directory in ~/.oroshi/scripts/bin/fzf/**/; do
     customPath+=($directory)
   done
   # Custom img-related binaries

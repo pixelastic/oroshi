@@ -1,6 +1,9 @@
 #!/usr/bin/env zsh
 # Fuzzy finding in all tmux tabs currently opened
 
+echo $COLORS_INDEX
+return
+
 # This script is most probably triggered by pressing Alt-P in tmux,
 # which means it doesn't have any of the ENV variables defined in zsh.
 source ~/.oroshi/config/zsh/theming/env/colors.zsh

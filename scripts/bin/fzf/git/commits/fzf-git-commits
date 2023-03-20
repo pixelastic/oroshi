@@ -15,7 +15,7 @@ git \
   --format="$formatString" \
   --color=always \
   | fzf \
-    --preview "fzf-git-commit-history-preview {}" \
+    --preview "fzf-git-commits-preview {}" \
 )"
 
 # Stop if no selection

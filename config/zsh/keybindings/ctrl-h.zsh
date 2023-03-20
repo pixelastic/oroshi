@@ -1,7 +1,7 @@
 # Ctrl-H fuzzy find all git commits to find their hashes
-oroshi-fzf-git-commit-history-widget() {
+oroshi-fzf-git-commits-widget() {
   export PROMPT_PREVENT_REFRESH="1"
-  local selection="$(fzf-git-commit-history)"
+  local selection="$(fzf-git-commits)"
   export PROMPT_PREVENT_REFRESH="0"
 
   # Stop if no selection is made
@@ -12,5 +12,5 @@ oroshi-fzf-git-commit-history-widget() {
   LBUFFER="${LBUFFER}${selection} "
   return 0
 }
-zle -N oroshi-fzf-git-commit-history-widget
-bindkey '^H' oroshi-fzf-git-commit-history-widget
+zle -N oroshi-fzf-git-commits-widget
+bindkey '^H' oroshi-fzf-git-commits-widget

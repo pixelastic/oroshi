@@ -13,7 +13,6 @@ function oroshi-prompt-path-populate() {
     # Simplifying the displayed path by removing the prefix
     local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
     eval "currentPath=\${currentPath:s_${projectPath}_}"
-
   fi
 
   # Simplify string path if too long

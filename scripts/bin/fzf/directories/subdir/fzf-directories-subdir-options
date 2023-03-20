@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+# Returns the specific options to pass to fzf
+fzf-directories-options
+
+# Prefix the prompt with the project and current directory
+local currentPath="${PWD/#$HOME/~}/"
+local projectKey="$(project-by-path $currentPath)"
+if [[ $projectKey != "" ]]; then
+  local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
+  eval "currentPath=\${currentPath:s_${projectPath}_}"
+  local projectPrefix="$(colorize-project $projectKey) "
+fi
+
+currentPath="$(colorize "$currentPath ❯" $COLOR_ALIAS_DIRECTORY)"
+local prompt="${projectPrefix}${currentPath} "
+
+
+echo "--prompt=${prompt}"
+echo "--color=prompt:${COLOR_ALIAS_DIRECTORY}:regular"
+
