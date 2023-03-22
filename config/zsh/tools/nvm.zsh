@@ -22,10 +22,14 @@ path+=($HOME/.nvm/versions/node/v${defaultNodeVersion}/bin $path)
 # nvm for real, destroy themselves, and run the real command
 
 export OROSHI_NVM_LOADED="0"
-alias node="lazyloadNvm node"
-alias npm="lazyloadNvm npm"
-alias nvm="lazyloadNvm nvm"
-alias yarn="lazyloadNvm yarn"
+
+# Add aliases for all command that would need node, so nvm loads it on first
+# invocation
+export OROSHI_NVM_LAZYLOAD_ALIASES=(node npm nvm yarn yarn-run)
+for command in $OROSHI_NVM_LAZYLOAD_ALIASES; do
+  alias $command="lazyloadNvm $command"
+done
+
 function lazyloadNvm {
   # When zsh starts, aliases in function bodies are expanded. So the `nvm use`
   # in this function is actually transformed into `lazyloadNvm nvm use`, which
@@ -38,7 +42,7 @@ function lazyloadNvm {
   fi
 
   # Unregister all the aliases, so the commands refer to the real commands now
-  unalias node npm nvm yarn;
+  unalias $OROSHI_NVM_LAZYLOAD_ALIASES
 
   # Source nvm
   source ~/.nvm/nvm.sh --no-use

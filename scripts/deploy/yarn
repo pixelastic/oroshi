@@ -3,6 +3,6 @@
 # Force pinning version numbers (no ^ nor ~)
 yarn config set save-prefix ""
 
-# Following line might not work and require to manually edit .yarnrc
-# yarn config set "--run-silent" true
+# Make log output minimal
+yarn config set silent true
 

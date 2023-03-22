@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
-set -e
+# This is wrapper around "yarn run", to allow for a specific autocompletion to
+# take place
 
-yarn run --silent "$@"
+yarn run "$@"
