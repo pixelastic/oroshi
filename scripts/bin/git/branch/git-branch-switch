@@ -22,5 +22,9 @@ for commitRef in $argv; do
   git-dependencies-update $previousCommit
 
   # Stop when we found a matching branch
-  break
+  exit 0
 done
+
+# No matching branch found
+echo "✘ Specified branch not found"
+exit 1
