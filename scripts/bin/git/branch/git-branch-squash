@@ -22,7 +22,7 @@ fi
 # Gather all commit messages since then
 local tmpCommitMessagePath=/tmp/vit_git-branch-squash-commitmsg
 # First, the main commit message being the branch name
-echo "$commitHash\n\n" > $tmpCommitMessagePath
+echo "Squash up to $commitHash\n\n" > $tmpCommitMessagePath
 # Now, the core of the message being all the commits
 git log --format=%B --reverse ${commitHash}... \
   >> $tmpCommitMessagePath

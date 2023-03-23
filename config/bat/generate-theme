@@ -9,4 +9,4 @@ envsubst \
   < ${currentDir}/src/oroshi.xml \
   > ${currentDir}/dist/oroshi.tmTheme
 
-bat cache --build
+bat cache --build 1>/dev/null

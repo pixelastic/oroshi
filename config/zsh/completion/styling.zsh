@@ -96,6 +96,7 @@ function oroshi-completion-styling() {
   zstyle ':completion:*:complete:git-branch-remove-remote:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-switch:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-remove:*:*' list-colors $listColorsGitBranch
+  zstyle ':completion:*:complete:git-branch-merge:*:*' list-colors $listColorsGitBranch
 
   # SSH Host
   zstyle ':completion:*:complete:ssh:*:*' list-colors $listColorsKnownHost

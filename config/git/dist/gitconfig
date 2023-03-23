@@ -56,7 +56,7 @@
   branch = 17 # Branch name
   remoteBranch = 3 # Remote branches
   stash = 193 # Stashes
-  tag = 22 # Tags
+  tag = 6 # Tags
 
   grafted = 114
 [color "diff"]

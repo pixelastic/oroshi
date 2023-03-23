@@ -4,13 +4,14 @@
 # Usage:
 # $ git-branch-parent
 function git-branch-parent() {
-  echo "⚠ Method git-branch-parent spawns a lot of subshell"
-  echo "TODO: Refactor by using only zsh modifiers"
-  git log --format=%d \
-    | text-remove-empty-lines \
-    | text-select-line 2 \
-    | text-trim \
-    | text-substring 1 -1 \
-    | text-split ", " \
-    | text-select-line 1
+  # We get the list of all "decorations", ie branchnames and tags, and then
+  # massage it until we get the name of the second closest decoration
+
+  local result="$(git log --format=%d)" # We start with the full list
+  result=(${(f)result})                 # We turn it into an array, with newlines as separators. This removes empty lines
+  result="$(echo $result[2] | xargs)"   # We trim the second line
+  result=${result:1:-1}                 # We remove the wrapping parenthesis
+  result=(${(@s/, /)result})            # We split on commas
+  result=$result[1]                     # We keep the first element
+  echo $result
 }

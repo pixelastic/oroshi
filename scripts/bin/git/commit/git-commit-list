@@ -16,7 +16,7 @@ local prettyFormat=(\
   # Commit hash
   "[38;5;${COLOR_ALIAS_GIT_COMMIT}m %<(10)%h[00m" \
   # Date
-  "[38;5;${COLOR_ALIAS_DATE}m %cd, %<(16)%ar[00m" \
+  "[38;5;${COLOR_ALIAS_DATE}m %cd, %<(25)%ar[00m" \
   # Author name
   "[38;5;${COLOR_ALIAS_GIT_AUTHOR}m%an[00m" \
   # Branches and tags, but only if non-empty
