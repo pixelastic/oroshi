@@ -11,7 +11,7 @@ for line in ${(f)rawSelection}; do
   local split=(${(@s/   /)line})
   
   local filepath="$split[1]"
-  filepath=${filepath:gs/ /\\ /}
+  filepath=${filepath:q}
   filepath=${~filepath}
 
   files+=($filepath)

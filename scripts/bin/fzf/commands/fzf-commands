@@ -2,5 +2,5 @@
 # Fuzzy finding in command history
 
 fzf-search \
-  --source "fzf-command-history-source" \
-  --options "fzf-command-history-options"
+  --source "fzf-commands-source" \
+  --options "fzf-commands-options"
