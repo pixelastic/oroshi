@@ -33,7 +33,7 @@ done
 function lazyloadNvm {
   # When zsh starts, aliases in function bodies are expanded. So the `nvm use`
   # in this function is actually transformed into `lazyloadNvm nvm use`, which
-  # trigger an infinite recursive loop.
+  # triggers an infinite recursive loop.
   # To short-circuit it, we check if nvm is already loaded, and if so, we simply
   # run the method passed
   if [[ $OROSHI_NVM_LOADED == "1" ]]; then

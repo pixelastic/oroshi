@@ -23,6 +23,10 @@ compdef _git-files-dirty git-file-add
 # Yarn {{{
 compdef _package-scripts yarn-run
 # }}}
+# Nvm {{{
+# Proxy completion of lazyloaded commands
+compdef _nvm-lazyload lazyloadNvm
+# }}}
 # SSH {{{
 compdef _ssh-known-hosts ssh
 # }}}

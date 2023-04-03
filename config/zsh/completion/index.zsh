@@ -4,6 +4,10 @@ fpath+=($ZSH_CONFIG_PATH/completion/compdef)
 # Syntax is
 # :completion:<function>:<completer>:<command>:<argument>:<tag>
 #
+# Debug:
+# Press Ctrl-X, then h on the commandline to see what complete function are
+# called
+#
 # Source:
 # https://thevaluable.dev/zsh-completion-guide-examples/
 # http://zv.github.io/a-review-of-zsh-completion-utilities
@@ -12,15 +16,13 @@ fpath+=($ZSH_CONFIG_PATH/completion/compdef)
 # https://unix.stackexchange.com/questions/668618/how-to-write-automated-tests-for-zsh-completion
 # TODO: Hide tags, or re-order them:
 # https://serverfault.com/questions/353270/excluding-environment-variables-from-zsh-autocomplete
-
-# Generic config
-source $ZSH_CONFIG_PATH/completion/misc.zsh
-source $ZSH_CONFIG_PATH/completion/styling.zsh
-
 # TODO: Check zsh-autosuggestion to display a fish-like autosuggestion
 # TODO: Change the color of the currently selected suggestion to match what we
 # do in fzf
 
+# Generic config
+source $ZSH_CONFIG_PATH/completion/misc.zsh
+source $ZSH_CONFIG_PATH/completion/styling.zsh
 
 # If the completion cache file is older than 20 hours, we regenerate it
 # Source: https://gist.github.com/ctechols/ca1035271ad134841284#gistcomment-2308206
