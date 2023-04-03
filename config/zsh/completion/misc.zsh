@@ -15,6 +15,8 @@ zstyle ':completion:*' list-separator '//'
 setopt LIST_ROWS_FIRST
 # On TAB press, display the menu, but don't autoselect the first one
 unsetopt MENU_COMPLETE
+# In case of ambiguous selection, display them in a menu
+unsetopt LIST_AMBIGUOUS
 # }}}
 
 # Globs {{{

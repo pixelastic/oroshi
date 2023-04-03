@@ -1,4 +1,11 @@
+# To debug performance issue, uncomment the following lines:
+# - zmodload zsh/zprof at the top of the file
+# - zprof at the end
 # zmodload zsh/zprof
+
+# Another way to evaluate performance is to benchmark zsh loading time with
+# hyperfine --warmup 3 "zsh -i -c exit"
+# Target should be under 150ms
 
 source $ZSH_CONFIG_PATH/env.zsh               # Global environment variables
 source $ZSH_CONFIG_PATH/tmux.zsh              # Tmux load
