@@ -1,3 +1,4 @@
 #!/usr/bin/env zsh
 
+# Note: If it fails, use python 3.10
 pip install -U openai-whisper
