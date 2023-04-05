@@ -1,4 +1,3 @@
 #!/usr/bin/env zsh
-
-trans $1 -sp -b -d fr: &>/dev/null
-
+# Say something in french
+say --fr $@

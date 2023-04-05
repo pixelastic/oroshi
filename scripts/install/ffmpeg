@@ -1,32 +1,5 @@
 #!/usr/bin/env bash
-# ffmpeg is not really ffmpeg
+# Note: On some Ubuntu versions, ffmpeg might not really be ffmeg
 # http://stackoverflow.com/questions/9477115/what-are-the-differences-and-similarities-between-ffmpeg-libav-and-avconv/9477756#9477756
 
-echo "Installing ffmpeg from source"
-# Needs to be done from etc, not src
-cd ~/local/src
-git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg
-
-echo "Downloading needed libs"
-sudo apt-get install yasm \
-  libxvidcore-dev \
-  libmp3lame-dev \
-  libtheora-dev \
-  libvorbis-dev \
-  libass-dev
-
-cd ./ffmpeg
-# --enable-gpl needed for --enable-libxvid
-# fontconfig and libass are needed by gifify
-./configure \
-  --prefix=/home/"$USER"/local/ \
-  --enable-libmp3lame \
-  --enable-libtheora \
-  --enable-libvorbis \
-  --enable-gpl \
-  --enable-fontconfig \
-  --enable-libass \
-  --enable-libxvid \
-  --enable-nonfree
-make
-make install
+sudo apt-get install ffmpeg

@@ -1,0 +1,8 @@
+# Clear cache on all ai-related functions
+function oroshi-reload-ai() {
+  # Disable the warning on "sure you want to delete ..."
+  setopt localoptions rmstarsilent
+  rm -rf \
+    ~/.config/shell_gpt/cache/* \
+    ~/.config/shell_gpt/chat/*
+}

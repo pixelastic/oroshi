@@ -1,0 +1,10 @@
+#compdef
+
+function _pyenv-lazyload() {
+  # Remove the first word (lazyloadPyenv)
+  shift words
+  # Update which word is currently being focused for tab completion
+  (( CURRENT-- ))
+  # Re-run completion with the new input
+  _normal
+}

@@ -1,3 +1,26 @@
 #!/usr/bin/env zsh
+# Say out loud a specific sentence
+# Usage:
+# $ say "Hello world"
+# $ echo "Hello world" | say
+# $ say --fr "Bonjour Monde"
 
-trans $1 -sp -b &>/dev/null
+# Allow specifying french
+zparseopts -E -D \
+  -fr=flagFrench
+local isFrench=${#flagFrench}
+
+# Read from pipe 
+local input="$1"
+[[ -p /dev/stdin ]] && input="$(cat -)"
+
+local additionalFlags=()
+[[ $isFrench == "1" ]] && additionalFlags+=('fr:')
+
+trans \
+  -speak \
+  -brief \
+  -no-translate \
+  $additionalFlags \
+  $input \
+  >/dev/null

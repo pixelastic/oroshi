@@ -1,0 +1,5 @@
+To list all files in the current directory, use the command:
+
+ls -a
+
+This will show all files, including hidden files, in the current directory.

@@ -4,8 +4,15 @@
 
 export PYENV_ROOT="$HOME/.pyenv"
 
-# Lazyload pyenv only when using it directly, or one of the shims
-export OROSHI_PYENV_LAZYLOAD_ALIASES=(pyenv ~/.pyenv/shims/*(:t))
+# Lazyload pyenv automatically when needed:
+# - pyenv
+# - all its shims
+# - ai-powered tools like sgpt and whisper that rely on python
+export OROSHI_PYENV_LAZYLOAD_ALIASES=(
+  pyenv
+  ~/.pyenv/shims/*(:t)
+  ~/.oroshi/scripts/bin/ai/*(:t)
+)
 for command in $OROSHI_PYENV_LAZYLOAD_ALIASES; do
   alias $command="lazyloadPyenv $command"
 done
@@ -20,3 +27,5 @@ function lazyloadPyenv {
   # Run initial command
   "$@"
 }
+
+source /home/tim/.pyenv/completions/pyenv.zsh 

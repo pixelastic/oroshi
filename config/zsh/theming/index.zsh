@@ -6,14 +6,25 @@ function oroshi_theming_index() {
   local filetypesFilePath=$ZSH_CONFIG_PATH/theming/env/filetypes.zsh
 
   # Generate env vars if missing, and load them
-  [[ ! -r ${colorsFilePath} ]] && env-generate-colors
-  source ${colorsFilePath}
+  # Note: We wrap this in functions that we immediably call to provide a more
+  # precise stacktrace when running zprof
+  function oroshi_theming_colors() {
+    [[ ! -r ${colorsFilePath} ]] && env-generate-colors
+    source ${colorsFilePath}
+  }
+  oroshi_theming_colors && unfunction oroshi_theming_colors
 
-  [[ ! -r ${projectsFilePath} ]] && env-generate-projects
-  source ${projectsFilePath}
+  function oroshi_theming_projects() {
+    [[ ! -r ${projectsFilePath} ]] && env-generate-projects
+    source ${projectsFilePath}
+  }
+  oroshi_theming_projects && unfunction oroshi_theming_projects
 
-  [[ ! -r ${filetypesFilePath} ]] && env-generate-filetypes
-  source ${filetypesFilePath}
+  function oroshi_theming_filetypes() {
+    [[ ! -r ${filetypesFilePath} ]] && env-generate-filetypes
+    source ${filetypesFilePath}
+  }
+  oroshi_theming_filetypes && unfunction oroshi_theming_filetypes
 }
 oroshi_theming_index
 unfunction oroshi_theming_index

@@ -10,8 +10,3 @@ DOWNLOAD_URL="https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp"
 cd ~/local/bin
 wget "$DOWNLOAD_URL"
 chmod +x yt-dlp
-
-# # Install latest master
-# pip install \
-# 	https://github.com/ytdl-org/youtube-dl/archive/master.zip
-

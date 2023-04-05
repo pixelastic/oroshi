@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+
+local args="$@"
+
+local prompt="
+Provide only zsh commands for Ubuntu.
+If there is a lack of details, provide most logical solution.
+Ensure the output is a valid shell command.
+If multiple steps required try to combine them together.
+Explain each part of the command.
+
+Prompt: $args"
+
+sgpt --chat shell "$prompt"

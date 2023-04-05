@@ -20,12 +20,12 @@ compdef _git-branch-local git-branch-switch git-branch-remove git-branch-merge
 compdef _git-branch-remote git-branch-pull git-branch-remove-remote
 compdef _git-files-dirty git-file-add
 # }}}
-# Yarn {{{
+# JavaScript {{{
 compdef _package-scripts yarn-run
-# }}}
-# Nvm {{{
-# Proxy completion of lazyloaded commands
 compdef _nvm-lazyload lazyloadNvm
+# }}}
+# Python {{{
+compdef _pyenv-lazyload lazyloadPyenv
 # }}}
 # SSH {{{
 compdef _ssh-known-hosts ssh

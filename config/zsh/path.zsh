@@ -17,6 +17,7 @@ function oroshi_path() {
 
     # Custom binaries
     ~/.oroshi/scripts/bin
+    ~/.oroshi/scripts/bin/ai
     ~/.oroshi/scripts/bin/video/bin
     ~/.oroshi/scripts/bin/pdf/bin
     ~/.oroshi/scripts/bin/convert/bin
