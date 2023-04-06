@@ -7,13 +7,19 @@
 # function (starting with complete- instead of the _) that are autoloaded and
 # can be manually tested. Those functions are stored in ./functions/autoload/completion
 #
-#
 # Sources:
 # https://unix.stackexchange.com/questions/239528/dynamic-zsh-autocomplete-for-custom-commands
 # https://unix.stackexchange.com/questions/27236/zsh-autocomplete-ls-command-with-directories-only
 # https://github.com/zsh-users/zsh-completions/blob/master/zsh-completions-howto.org
+#
+# Note: Because of compdef cache, compdef association defined here can stay
+# active even if deleted from this file. To be sure to remove them:
+# - rm -f ~/.zcompdump 
+# - reload the shell
+
 
 compdef _jumps unmark j
+compdef _oroshi_bat bat
 
 # Git {{{
 compdef _git-branch-local git-branch-switch git-branch-remove git-branch-merge
