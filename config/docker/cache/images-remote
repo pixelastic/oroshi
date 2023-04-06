@@ -1,0 +1,78 @@
+#!/usr/bin/env zsh
+# Writes on disk a list of all official Docker images on Docker Hub
+# This takes a long time to run, so the output is stored in the repo and read
+# from there. If for whatever reason I need to regenerate the list, I can just
+# re-run this script
+#
+# This is used by docker-images-list-remote to display the fuzzy list, as well
+# as by the autocomplete
+
+local cacheFolder=/tmp/oroshi/fzf/docker-images-remote
+mkdir -p ${cacheFolder}
+
+local outputFile=~/.oroshi/config/docker/cache/src/images-remote.txt
+
+# Get the list of all official from GitHub
+# For each, do a query with docker search and fill the values
+# Iterate on the next, if not in the list skip
+
+# Save the list of all official images, as stored on GitHub
+curl \
+  --silent \
+  --header "Authorization: token $GITHUB_TOKEN_READONLY" \
+  https://api.github.com/repos/docker-library/official-images/contents/library \
+  > ${cacheFolder}/library.json
+
+# Transform that JSON into a list of the actual names
+local imageNames="$(cat ${cacheFolder}/library.json | jq -r '.[].name')"
+
+# Create an associative array with names, to be later filed with descriptions
+declare -A images
+for imageName in ${(f)imageNames}; do
+  images[$imageName]="1"
+done
+
+# Fill the associative array with descriptions
+for imageName in ${(k)images}; do
+  # If the description is already filled from a previous search, we skip
+  if [[ $images[$imageName] != "1" ]]; then
+    echo "✘ $imageName already filled"
+    continue
+  fi
+
+  # We search with docker search to get the description
+  local searchResults="$(\
+    docker search \
+      --filter is-official=true \
+      --no-trunc \
+      --format "{{.Name}}▮{{.Description}}" \
+      $imageName
+  )"
+
+  # There can be several results, so we iterate on them all
+  for line in ${(f)searchResults}; do
+    local splitLine=(${(@s/▮/)line})
+
+    local splitImageName=$splitLine[1]
+    local splitImageDescription=$splitLine[2]
+
+    # Skip search results that were not in our initial list
+    [[ $images[$splitImageName] != "1" ]] && continue
+
+    # Skip deprecated images
+    [[ $splitImageDescription == *DEPRECATED* ]] && continue
+
+    echo "$splitImageName: $splitImageDescription"
+    images[$splitImageName]=$splitImageDescription
+  done
+done
+
+# Save this list of names + descriptions in an file
+local rawFileContent=()
+for imageName in ${(k)images}; do
+  local description=$images[$imageName]
+  # Skip images we couldn't get a description of (probably because deprecated)
+  [[ $description == "1" ]] && continue
+  rawFileContent+=("$imageName   $images[$imageName]")
+done
+echo ${(F)rawFileContent} | sort > ${outputFile}

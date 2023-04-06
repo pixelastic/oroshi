@@ -1,8 +1,8 @@
 #compdef
 
 # Suggest the remote branches
-function _git-branch-remote() {
-  local suggestions=(${(f)"$(complete-git-branch-remote)"})
+function _git-branches-remote() {
+  local suggestions=(${(f)"$(complete-git-branches-remote)"})
 
   _describe -V "$(completion-header $COLOR_ALIAS_GIT_REMOTE $COLOR_BLACK '  Remote branches ')" suggestions
 }

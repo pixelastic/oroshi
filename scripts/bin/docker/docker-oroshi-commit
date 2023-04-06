@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# Saves a cosmos image
+# Usage:
+# $ docker-cosmos-save
+#
+# TODO: Need to provide a commit message, and creates an history of past changes
+
+docker \
+  commit \
+  --pause \
+  cosmos \
+  cosmos

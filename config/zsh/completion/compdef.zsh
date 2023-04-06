@@ -22,9 +22,12 @@ compdef _jumps unmark j
 compdef _oroshi_bat bat
 
 # Git {{{
-compdef _git-branch-local git-branch-switch git-branch-remove git-branch-merge
-compdef _git-branch-remote git-branch-pull git-branch-remove-remote
+compdef _git-branches-local git-branch-switch git-branch-remove git-branch-merge
+compdef _git-branches-remote git-branch-pull git-branch-remove-remote
 compdef _git-files-dirty git-file-add
+# }}}
+# Docker {{{
+compdef _docker-images-remote docker-image-pull
 # }}}
 # JavaScript {{{
 compdef _package-scripts yarn-run

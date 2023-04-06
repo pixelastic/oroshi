@@ -1,0 +1,8 @@
+# List all remote Docker images
+function complete-docker-images-remote() {
+
+  local outputFile=~/.oroshi/config/docker/cache/src/images-remote.txt
+  local suggestions="$(cat $outputFile)"
+
+  echo "${suggestions//   /:}"
+}

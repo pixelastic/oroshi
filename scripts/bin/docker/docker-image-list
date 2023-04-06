@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# [D]ocker [i]mage [l]ist
+
+docker images

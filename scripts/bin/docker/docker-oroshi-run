@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+# Runs my cosmos image
+# Usage:
+# $ docker-cosmos-run
+
+docker \
+  run \
+  --rm \
+  --interactive \
+  --tty \
+  --user 1000:1000 \
+  --workdir /home/tim \
+  --hostname cosmos \
+  --name cosmos \
+  cosmos

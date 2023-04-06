@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# TODO: Make a version to only display the running, and the non-running
+#
+# To get more info:
+# docker ps -a --format "{{.Names}};{{.ID}};{{.Image}};{{.Ports}};{{.Status}}"
+
+docker ps
+

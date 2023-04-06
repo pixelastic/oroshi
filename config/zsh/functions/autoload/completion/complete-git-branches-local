@@ -1,5 +1,5 @@
 # List all local branches
-function complete-git-branch-local() {
+function complete-git-branches-local() {
   local suggestions="$(\
     git branch \
       --sort=-committerdate \

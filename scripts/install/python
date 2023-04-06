@@ -31,5 +31,5 @@ git clone git@github.com:pyenv/pyenv.git ~/.pyenv
 ~/.pyenv/bin/pyenv install --verbose 3
 # python will default to python 3, but python3 and python2 are also specifically
 # available
-pyenv global 3 2
+~/.pyenv/bin/pyenv global 3 2
 

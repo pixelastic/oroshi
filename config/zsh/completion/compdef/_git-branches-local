@@ -1,8 +1,8 @@
 #compdef
 
 # Suggest the local branches
-function _git-branch-local() {
-  local suggestions=(${(f)"$(complete-git-branch-local)"})
+function _git-branches-local() {
+  local suggestions=(${(f)"$(complete-git-branches-local)"})
 
   _describe -V "$(completion-header $COLOR_ALIAS_GIT_BRANCH $COLOR_WHITE '  Local branches ')" suggestions
 }

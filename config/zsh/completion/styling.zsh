@@ -67,6 +67,11 @@ function oroshi-completion-styling() {
     "${(f)$(♣ "github*" $COLOR_ALIAS_HOST_GITHUB)}" \
     $listColorsDefault \
   )
+  # Color Docker images
+  local listColorsDockerImageRemote=(\
+    "${(f)$(♣ "*" $COLOR_ALIAS_DOCKER_IMAGE_REMOTE)}" \
+    $listColorsDefault \
+  )
 
 
   # Default
@@ -97,6 +102,9 @@ function oroshi-completion-styling() {
   zstyle ':completion:*:complete:git-branch-switch:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-remove:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-merge:*:*' list-colors $listColorsGitBranch
+  
+  # Docker
+  zstyle ':completion:*:complete:docker-image-pull:*:*' list-colors $listColorsDockerImageRemote
 
   # SSH Host
   zstyle ':completion:*:complete:ssh:*:*' list-colors $listColorsKnownHost

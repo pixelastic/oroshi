@@ -1,5 +1,5 @@
 # List all local branches
-function complete-git-branch-remote() {
+function complete-git-branches-remote() {
   local currentRemote="$(git-remote-current)"
   local rawSuggestions="$(\
     git branch \

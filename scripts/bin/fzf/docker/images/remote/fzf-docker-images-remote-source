@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# Returns a list of all possible Docker images to pull
+
+local cacheFile=~/.oroshi/config/docker/cache/src/images-remote.txt
+cat $cacheFile

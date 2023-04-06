@@ -117,7 +117,12 @@ aliasColors[GIT_REBASE]="RED_LIGHT"
 aliasColors[GIT_REMOTE]="YELLOW"
 aliasColors[GIT_REMOVED]="RED"
 aliasColors[GIT_STASH]="TEAL_3"
+# Docker
+aliasColors[DOCKER_IMAGE]="SKY"
+aliasColors[DOCKER_IMAGE_REMOTE]="BLUE"
+aliasColors[DOCKER_CONTAINER]="YELLOW"
 # Packages
+aliasColors[PACKAGE]="YELLOW"
 aliasColors[PACKAGE_INSTALLED]="GREEN"
 aliasColors[PACKAGE_NOT_INSTALLED]="GRAY"
 aliasColors[PACKAGE_VERSION_MISMATCH]="VIOLET"
