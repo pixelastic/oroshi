@@ -39,10 +39,10 @@ function docker-image-colorize() {
   # If --with-icon is passed, we display a different icon based on if the image
   # is local or remote
   if [[ "$isRemote" == "1" ]]; then
-    echo "$(colorize " ${imageName}" $imageColor)${tagSuffix}"
+    echo "$(colorize " ${imageName}" $imageColor)${tagSuffix}"
     return
   else
-    echo "$(colorize " $imageName" $imageColor)${tagSuffix}"
+    echo "$(colorize " $imageName" $imageColor)${tagSuffix}"
     return
   fi
 }
