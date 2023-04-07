@@ -1,10 +1,13 @@
 #!/usr/bin/env zsh
 # Display the list of all local images
 # Usage:
-# $ docker-image-list
+# $ docker-image-list          # List all images
+# $ docker-image-list ubuntu   # List only ubuntu images images
+
+local query="$1"
 
 local rawImageList="$(\
-  docker images \
+  docker images $query \
   --format='{{.Repository}}▮{{.Tag}}▮{{.ID}}▮{{.CreatedSince}}▮{{.Size}}▮{{.Containers}}' \
 )"
 

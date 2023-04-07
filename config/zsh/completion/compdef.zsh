@@ -28,6 +28,8 @@ compdef _git-files-dirty git-file-add
 # }}}
 # Docker {{{
 compdef _docker-images-remote docker-image-pull
+compdef _docker-images-local docker-image-list docker-image-count
+compdef _docker-images-local-with-tags docker-image-exists docker-image-remove
 # }}}
 # JavaScript {{{
 compdef _package-scripts yarn-run

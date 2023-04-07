@@ -1,0 +1,14 @@
+# Checks if a local image exists
+# Usage:
+# $ docker-image-exists ubuntu         # return 0
+# $ docker-image-exists ubuntu:latest  # Allow passing tags
+# $ docker-image-exists kjlkjkd        # return 1
+function docker-image-exists() {
+  local imageName="$1"
+
+  if docker image inspect --format '{{.Id}}' $imageName &>/dev/null; then
+    return 0
+  fi
+
+  return 1
+}

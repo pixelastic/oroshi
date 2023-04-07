@@ -1,0 +1,13 @@
+# Returns the color of a given tag
+# Usage:
+# $ docker-tag-color latest
+function docker-tag-color() {
+  local tagName="$1"
+
+  if [[ "$tagName" == "latest" ]]; then
+    echo $COLOR_ALIAS_DOCKER_TAG_LATEST
+    return
+  fi
+
+  echo $COLOR_ALIAS_DOCKER_TAG
+}

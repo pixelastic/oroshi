@@ -13,8 +13,8 @@ function ♣() {
   # The string is split in 4 parts, separated by =
   # The first part is the pattern to match. 
   # The second part is the default color
-  # The 3rd and 4th parts are the colors for the 1st and 2nd matching groups of
-  # the pattern
+  # The 3rd and 4th parts are the colors for the 1st (value) and 2nd (comment)
+  # matching groups of the pattern
   #
   # (#b) is required at the start of a pattern to allow for multiple matching
   # groups.
@@ -37,10 +37,6 @@ function oroshi-completion-styling() {
   local listColorsDefault=(\
     # Default color
     "${(f)$(♣ "*" $COLOR_WHITE)}"
-
-    # Description when alone (when several suggestions share the same
-    # description)
-    "=// *=38;5;$COLOR_ALIAS_COMMENT"
 
     # File and directory colors
     ${(s.:.)LS_COLORS}
@@ -67,11 +63,19 @@ function oroshi-completion-styling() {
     "${(f)$(♣ "github*" $COLOR_ALIAS_HOST_GITHUB)}" \
     $listColorsDefault \
   )
-  # Color Docker images
+  # Docker {{{
+  # Remote images
   local listColorsDockerImageRemote=(\
     "${(f)$(♣ "*" $COLOR_ALIAS_DOCKER_IMAGE_REMOTE)}" \
     $listColorsDefault \
   )
+  # Note: [a-z]* seems to be required to properly color elements that share the
+  # same description. Without it, the whole suggestion list is uncolored
+  local listColorsDockerImage=(\
+    "${(f)$(♣ "[a-z]*" $COLOR_ALIAS_DOCKER_IMAGE)}" \
+    $listColorsDefault \
+  )
+  # }}}
 
 
   # Default
@@ -105,6 +109,10 @@ function oroshi-completion-styling() {
   
   # Docker
   zstyle ':completion:*:complete:docker-image-pull:*:*' list-colors $listColorsDockerImageRemote
+  zstyle ':completion:*:complete:docker-image-list:*:*' list-colors $listColorsDockerImage
+  zstyle ':completion:*:complete:docker-image-count:*:*' list-colors $listColorsDockerImage
+  zstyle ':completion:*:complete:docker-image-exists:*:*' list-colors $listColorsDockerImage
+  zstyle ':completion:*:complete:docker-image-remove:*:*' list-colors $listColorsDockerImage
 
   # SSH Host
   zstyle ':completion:*:complete:ssh:*:*' list-colors $listColorsKnownHost

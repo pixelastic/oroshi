@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest the available local images (not including their tags)
+function _docker-images-local() {
+  local suggestions=(${(f)"$(complete-docker-images-local)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_DOCKER_IMAGE $COLOR_WHITE '   Docker local images ')" suggestions
+}

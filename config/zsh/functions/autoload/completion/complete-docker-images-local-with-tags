@@ -1,0 +1,9 @@
+# List all local Docker images (including their tags)
+function complete-docker-images-local-with-tags() {
+  local suggestions="$(\
+    docker images \
+    --format '{{.Repository}}\:{{.Tag}}:{{.CreatedSince}} ({{.Size}})' \
+  )"
+
+  echo ${suggestions}
+}

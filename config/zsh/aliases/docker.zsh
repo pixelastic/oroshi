@@ -1,7 +1,9 @@
 # Images
 alias dip="docker-image-pull"
 alias dil="docker-image-list"
-# alias diR="docker-image-remove"
+alias di?="docker-image-exists"
+alias di#="docker-image-count"
+alias diR="docker-image-remove"
 
 alias dr="docker-run"
 alias dcl="docker-container-list"

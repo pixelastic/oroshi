@@ -1,6 +1,7 @@
 # Displays a colorized version of an image name
 # Usage:
 # $ docker-image-colorize alpine                      # alpine
+# $ docker-image-colorize alpine:latest               # alpine:latest
 # $ docker-image-colorize alpine --with-icon          #   alpine
 # $ docker-image-colorize alpine --with-icon --remote #   alpine
 function docker-image-colorize() {
@@ -10,9 +11,11 @@ function docker-image-colorize() {
   local isWithIcon=${#flagWithIcon}
   local isRemote=${#flagRemote}
 
-  # Image name {{{
-  local imageName="$1"
-  # }}}
+  # Split image name and its tag
+  local inputSplit=(${(@s/:/)1})
+  local imageName=$inputSplit[1]
+  local tagName=$inputSplit[2]
+
   # Image color {{{
   if [[ "$isRemote" == "1" ]]; then
     local imageColor=$COLOR_ALIAS_DOCKER_IMAGE_REMOTE
@@ -20,20 +23,26 @@ function docker-image-colorize() {
     local imageColor=$COLOR_ALIAS_DOCKER_IMAGE
   fi
   # }}}
+  
+  # Tag color {{{
+  local tagSuffix=""
+  if [[ "$tagName" != "" ]]; then
+    tagSuffix=":$(docker-tag-colorize $tagName)"
+  fi
 
   # If --with-icon is not passed, we simply display the colored image
   if [[ "$isWithIcon" != 1 ]]; then
-    colorize "$imageName" $imageColor
+    echo "$(colorize "${imageName}" $imageColor)${tagSuffix}"
     return
   fi
 
   # If --with-icon is passed, we display a different icon based on if the image
   # is local or remote
   if [[ "$isRemote" == "1" ]]; then
-    colorize "  $imageName" $imageColor
+    echo "$(colorize " ${imageName}" $imageColor)${tagSuffix}"
     return
   else
-    colorize "  $imageName" $imageColor
+    echo "$(colorize " $imageName" $imageColor)${tagSuffix}"
     return
   fi
 }

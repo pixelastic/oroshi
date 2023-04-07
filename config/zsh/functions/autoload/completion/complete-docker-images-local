@@ -1,0 +1,15 @@
+# List all local Docker images (without their tags)
+function complete-docker-images-local() {
+
+  # Find the unique image names
+  local allUniqueImages="$(docker images --format '{{.Repository}}' | uniq)"
+
+  # Build the list of suggestions by adding the descriptions
+  local suggestions=""
+  for imageName in ${=allUniqueImages}; do
+    local imageDescription="$(docker-image-description $imageName)"
+    suggestions+="$imageName:$imageDescription\n"
+  done
+
+  echo ${suggestions}
+}

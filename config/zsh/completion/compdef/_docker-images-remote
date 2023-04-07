@@ -1,8 +1,8 @@
 #compdef
 
-# Suggest the available Docker images
+# Suggest the available Docker images on Docker Hub
 function _docker-images-remote() {
   local suggestions=(${(f)"$(complete-docker-images-remote)"})
 
-  _describe -V "$(completion-header $COLOR_ALIAS_DOCKER_IMAGE_REMOTE $COLOR_WHITE '   Remote Images ')" suggestions
+  _describe -V "$(completion-header $COLOR_ALIAS_DOCKER_IMAGE_REMOTE $COLOR_WHITE '   Docker remote images ')" suggestions
 }

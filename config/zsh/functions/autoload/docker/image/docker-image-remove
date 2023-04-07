@@ -1,0 +1,38 @@
+# Remove docker images
+# Usage:
+# $ docker-image-remove ubuntu         # Removes ubuntu
+# $ docker-image-remove ubuntu alpine  # Removes ubuntu and alpine
+# $ docker-image-remove nope           # Do nothing as nope doesn't exist
+function docker-image-remove() {
+
+  local images="$@"
+
+  for imageName in ${=images}; do
+    local displayImageName="$(docker-image-colorize $imageName --with-icon)"
+
+    # Warn about image not existing
+    if ! docker-image-exists "$imageName"; then
+      echo "✘ Image $displayImageName does not exist"
+      continue
+    fi
+
+    # If several matches, stop and ask to be more explicit
+    local imageCount=$(docker-image-count $imageName)
+    if [[ $imageCount > 1 ]]; then
+      echo "✘ There are multiple images named $displayImageName:"
+      docker-image-list $imageName
+      continue
+    fi
+
+    docker image rm $imageName
+    echo "✔ Image $displayImageName deleted"
+
+    # echo "only one"
+
+    # if docker image rm $imageName --force &>/dev/null; then
+    #   echo "✔ $imageName deleted"
+    # else
+    #   echo "✘ $imageName not deleted"
+    # fi
+  done
+}

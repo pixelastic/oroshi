@@ -8,16 +8,13 @@ function docker-tag-colorize() {
     -with-icon=flagWithIcon
   local isWithIcon=${#flagWithIcon}
 
-  # Tag name {{{
   local tagName="$1"
-  # }}}
-  # Tag color {{{
+
   if [[ "$tagName" == "latest" ]]; then
     local tagColor=$COLOR_ALIAS_DOCKER_TAG_LATEST
-  else
+  else 
     local tagColor=$COLOR_ALIAS_DOCKER_TAG
   fi
-  # }}}
 
   # If --with-icon is not passed, we simply display the colored tag
   if [[ "$isWithIcon" != 1 ]]; then
