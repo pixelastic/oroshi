@@ -1,0 +1,13 @@
+# Checks if a container exists
+# Usage:
+# $ docker-container-exist alpine_latest         # return 0
+# $ docker-container-exist ksjkdjskjd            # return 1
+function docker-container-exists() {
+  local containerName="$1"
+
+  if docker container inspect --format '{{.Id}}' $containerName &>/dev/null; then
+    return 0
+  fi
+
+  return 1
+}

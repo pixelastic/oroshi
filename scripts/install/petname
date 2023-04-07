@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+# Generate random readable names, useful for naming temporary elements
+sudo apt-get install petname

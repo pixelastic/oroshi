@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest all the containers
+function _docker-containers() {
+  local suggestions=(${(f)"$(complete-docker-containers)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_DOCKER_CONTAINER $COLOR_BLACK '  Docker containers ')" suggestions
+}

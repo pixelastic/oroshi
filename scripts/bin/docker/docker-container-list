@@ -1,8 +1,48 @@
 #!/usr/bin/env zsh
-# TODO: Make a version to only display the running, and the non-running
-#
-# To get more info:
-# docker ps -a --format "{{.Names}};{{.ID}};{{.Image}};{{.Ports}};{{.Status}}"
+# Display the list of all local containers
+# Usage:
+# $ docker-container-list          # List all containers
 
-docker ps
+local rawContainerList="$(\
+  docker ps \
+  --all \
+  --format='{{.Names}}▮{{.Image}}▮{{.ID}}▮{{.Status}}▮{{.State}}' \
+)"
 
+local output=""
+for rawContainerLine in ${(f)rawContainerList}; do
+  local splitLine=(${(@s/▮/)rawContainerLine})
+
+  local containerName=$splitLine[1]
+  local containerImage=$splitLine[2]
+  local containerHash=$splitLine[3]
+  local containerStatus=$splitLine[4]
+  local containerState=$splitLine[5]
+
+  local row=""
+
+  # Name {{{
+  row+="$(docker-container-colorize $containerName --with-icon --state $containerState)▮"
+  # }}}
+
+  # Image {{{
+  [[ $containerImage != *:* ]] && containerImage+=':latest'
+  row+="$(docker-image-colorize $containerImage --with-icon)▮"
+  # }}}
+  
+  # Hash {{{
+  row+="$(docker-hash-colorize $containerHash --with-icon)▮"
+  # }}}
+  
+  # Status {{{
+  row+="$(docker-status-colorize $containerStatus)▮"
+  # }}}
+  
+  output+="$row\n"
+done
+
+# Output as columns
+echo $output | column \
+  --separator "▮" \
+  --table \
+  --table-noheadings

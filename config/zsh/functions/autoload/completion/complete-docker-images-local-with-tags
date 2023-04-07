@@ -3,6 +3,7 @@ function complete-docker-images-local-with-tags() {
   local suggestions="$(\
     docker images \
     --format '{{.Repository}}\:{{.Tag}}:{{.CreatedSince}} ({{.Size}})' \
+    | sort
   )"
 
   echo ${suggestions}

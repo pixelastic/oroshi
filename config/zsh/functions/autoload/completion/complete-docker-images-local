@@ -2,7 +2,7 @@
 function complete-docker-images-local() {
 
   # Find the unique image names
-  local allUniqueImages="$(docker images --format '{{.Repository}}' | uniq)"
+  local allUniqueImages="$(docker images --format '{{.Repository}}' | sort | uniq)"
 
   # Build the list of suggestions by adding the descriptions
   local suggestions=""

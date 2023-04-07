@@ -1,0 +1,22 @@
+# Remove docker containes
+# Usage:
+# $ docker-container-remove alpine_latest              # Removes one
+# $ docker-container-remove alpine_latest nice_jepsen  # Removes several
+# $ docker-container-remove nope                       # Do nothing as nope doesn't exist
+function docker-container-remove() {
+
+  local containers="$@"
+
+  for containerName in ${=containers}; do
+    local displaycontainerName="$(docker-container-colorize $containerName --with-icon)"
+
+    # Warn about container not existing
+    if ! docker-container-exists "$containerName"; then
+      echo "✘ container $displaycontainerName does not exist"
+      continue
+    fi
+
+    docker container rm $containerName > /dev/null
+    echo "✔ container $displaycontainerName deleted"
+  done
+}

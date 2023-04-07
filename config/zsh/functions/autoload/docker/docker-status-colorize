@@ -1,0 +1,13 @@
+# Displays a colorized version of a status
+# Usage:
+# $ docker-status-colorize "Exited (0) 21 seconds ago"
+function docker-status-colorize() {
+  local message="$1"
+  # We need a message passed
+  if [[ $message == '' ]]; then
+    return 0
+  fi
+  # }}}
+
+  colorize "$message" $COLOR_ALIAS_DOCKER_STATUS
+}

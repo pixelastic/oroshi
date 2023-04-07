@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# Runs a specific image interactively
+# Usage:
+# $ docker-run-interactive ubuntu
+
+local args=($@)
+
+docker-run \
+  --tty \
+  --interactive \
+  $args

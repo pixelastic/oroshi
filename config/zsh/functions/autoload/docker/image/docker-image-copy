@@ -1,0 +1,18 @@
+# Copy a Docker image onto a new name
+# Usage:
+# $ docker-image-copy ubuntu my-version   # Duplicates ubuntu under my-version
+function docker-image-copy() {
+  local originalName="$1"
+  local newName="$2"
+
+  # Early stop if no destination
+  if [[ $newName == "" ]]; then
+    echo "Usage:"
+    echo "docker-image-copy originalName newName"
+    return 1
+  fi
+
+  docker tag \
+    $originalName \
+    $newName
+}

@@ -120,10 +120,13 @@ aliasColors[GIT_STASH]="TEAL_3"
 # Docker
 aliasColors[DOCKER_IMAGE]="SKY"
 aliasColors[DOCKER_IMAGE_REMOTE]="BLUE"
+aliasColors[DOCKER_IMAGE_GITHUB]="GREEN"
 aliasColors[DOCKER_TAG]="ORANGE_6"
 aliasColors[DOCKER_TAG_LATEST]="ORANGE_5"
 aliasColors[DOCKER_HASH]="PURPLE"
+aliasColors[DOCKER_STATUS]="GRAY_4"
 aliasColors[DOCKER_CONTAINER]="YELLOW"
+aliasColors[DOCKER_CONTAINER_RUNNING]="GREEN"
 # Packages
 aliasColors[PACKAGE]="YELLOW"
 aliasColors[PACKAGE_INSTALLED]="GREEN"

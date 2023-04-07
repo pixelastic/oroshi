@@ -1,0 +1,9 @@
+#compdef
+
+# Suggest the available local images (including their tags), but excluding any
+# image pointing to the GitHub Registry
+function _docker-images-local-with-tags-without-github() {
+  local suggestions=(${(f)"$(complete-docker-images-local-with-tags-without-github)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_DOCKER_IMAGE $COLOR_WHITE '  Docker local images ')" suggestions
+}

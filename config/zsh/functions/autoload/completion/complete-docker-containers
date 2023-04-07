@@ -1,0 +1,8 @@
+# List all containers
+function complete-docker-containers() {
+
+  # Find the unique image names
+  local suggestions="$(docker ps --all --format '{{.Names}}:[{{.State}}]  {{.Image}}  {{.ID}} ' | sort)"
+
+  echo ${suggestions}
+}

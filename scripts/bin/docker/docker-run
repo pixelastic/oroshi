@@ -1,13 +1,60 @@
 #!/usr/bin/env zsh
-# Runs a specific image
+# Runs a specific image, as a wrapper around docker run
 # Usage:
-# $ docker-run ubuntu
+# $ docker-run ubuntu         # Run ubuntu
+# $ docker-run --tty ubuntu   # Accepts flags
+# $ docker-run ubuntu --tty    # No matter where
 
-local args=($@)
+zparseopts -E -D \
+  -name:=flagContainerName
+local containerName=${flagContainerName[2]}
 
-docker \
-  run \
+local args="$@"
+
+# Image name {{{
+# Guess which argument is the imageName
+local imageFullName=""
+for arg in ${=args}; do
+  [[ $arg == -* ]] && continue
+  docker-image-exists $arg || continue
+  imageFullName="$arg"
+  break
+done
+
+# Stop if no image name
+if [[ $imageFullName == "" ]]; then
+  echo "You must pass an image name"
+  exit 1
+fi
+# }}}
+
+# Tag name {{{
+local imageSplit=(${(@s/:/)imageFullName})
+imageName=$imageSplit[1]
+local tagName=$imageSplit[2]
+[[ $tagName == "" ]] && tagName="latest"
+# }}}
+
+# Container name {{{
+# The container name is picked based on the following:
+# - If --name is passed, we use it
+# - We default to the same name as the image (with _ instead of :)
+# - If already taken, we append a random word
+if [[ $containerName == "" ]]; then
+  local containerName="${imageName}_${tagName}"
+
+  # Already exists? Append a random string if the name is already take
+  if docker-container-exists $containerName; then
+    if which petname; then
+      containerName+="-$(petname --words 1)"
+    else
+      containerName+="-$(echo $RANDOM | md5sum | head -c 5)"
+    fi
+  fi
+fi
+# }}}
+
+docker run \
   --rm \
-  --interactive \
-  --tty \
-  $args
+  --name $containerName \
+  ${=args}

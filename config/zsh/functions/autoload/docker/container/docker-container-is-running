@@ -1,0 +1,12 @@
+# Checks if a container is running
+# Usage:
+# $ docker-container-is-running alpine_latest         # return 0 if running
+# $ docker-container-is-running alpine_latest         # return 1 if not running
+# $ docker-container-is-running ksjkdjskjd            # return 0 if does not exist
+function docker-container-is-running() {
+  local containerName="$1"
+  local state="$(docker-container-state $containerName)"
+
+  [[ $state == "running" ]] && return 0
+  return 1
+}

@@ -1,0 +1,29 @@
+# Count the number of containers of a specific image
+# Usage:
+# $ docker-container-count ubuntu:latest  # For a specific tag
+# $ docker-container-count ubuntu         # For all tags
+function docker-container-count() {
+  local query="$1"
+
+  # Stop if no query
+  if [[ $query == "" ]]; then
+    echo "You need to pass the name of an image"
+    return 1
+  fi
+
+  # Assume that latest is the default tag
+  [[ $query != *:* ]] && query+=':latest'
+
+
+  # Get the list of all images used by the containers
+  local allRawImages="$(docker ps --all --format '{{.Image}}')"
+  # If no tag was specified when running the container, latest is implied, but
+  # not returned by the above command, so we need to add it
+  local allImages=()
+  for imageName in ${(f)allRawImages}; do
+    [[ $imageName != *:* ]] && imageName+=':latest'
+    allImages+=($imageName)
+  done
+
+  echo ${(F)allImages} | \grep "^$query" | wc -l
+}

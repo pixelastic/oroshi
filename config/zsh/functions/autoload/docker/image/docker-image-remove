@@ -24,15 +24,7 @@ function docker-image-remove() {
       continue
     fi
 
-    docker image rm $imageName
+    docker image rm $imageName > /dev/null
     echo "✔ Image $displayImageName deleted"
-
-    # echo "only one"
-
-    # if docker image rm $imageName --force &>/dev/null; then
-    #   echo "✔ $imageName deleted"
-    # else
-    #   echo "✘ $imageName not deleted"
-    # fi
   done
 }

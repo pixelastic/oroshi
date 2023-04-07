@@ -27,9 +27,26 @@ compdef _git-branches-remote git-branch-pull git-branch-remove-remote
 compdef _git-files-dirty git-file-add
 # }}}
 # Docker {{{
-compdef _docker-images-remote docker-image-pull
-compdef _docker-images-local docker-image-list docker-image-count
-compdef _docker-images-local-with-tags docker-image-exists docker-image-remove
+compdef _docker-images-remote \
+	docker-image-pull
+compdef _docker-images-local \
+	docker-image-list \
+	docker-image-count
+compdef _docker-images-local-with-tags \
+	docker-image-exists \
+	docker-image-remove \
+	docker-image-copy \
+	docker-run \
+	docker-run-interactive \
+	docker-image-push \
+	docker-container-count
+compdef _docker-images-local-with-tags-without-github \
+	docker-image-copy-github
+compdef _docker-containers \
+	docker-container-exists \
+	docker-container-remove \
+	docker-container-is-running \
+	docker-container-state
 # }}}
 # JavaScript {{{
 compdef _package-scripts yarn-run

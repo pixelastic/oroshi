@@ -69,10 +69,17 @@ function oroshi-completion-styling() {
     "${(f)$(♣ "*" $COLOR_ALIAS_DOCKER_IMAGE_REMOTE)}" \
     $listColorsDefault \
   )
+  # Local images
   # Note: [a-z]* seems to be required to properly color elements that share the
   # same description. Without it, the whole suggestion list is uncolored
   local listColorsDockerImage=(\
+    "${(f)$(♣ "ghcr.io/*" $COLOR_ALIAS_DOCKER_IMAGE_GITHUB)}" \
     "${(f)$(♣ "[a-z]*" $COLOR_ALIAS_DOCKER_IMAGE)}" \
+    $listColorsDefault \
+  )
+  # Containers
+  local listColorsDockerContainer=(\
+    "${(f)$(♣ "[a-z]*" $COLOR_ALIAS_DOCKER_CONTAINER)}" \
     $listColorsDefault \
   )
   # }}}
@@ -107,12 +114,25 @@ function oroshi-completion-styling() {
   zstyle ':completion:*:complete:git-branch-remove:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-merge:*:*' list-colors $listColorsGitBranch
   
-  # Docker
-  zstyle ':completion:*:complete:docker-image-pull:*:*' list-colors $listColorsDockerImageRemote
-  zstyle ':completion:*:complete:docker-image-list:*:*' list-colors $listColorsDockerImage
+  # Docker {{{
+  # Local images
   zstyle ':completion:*:complete:docker-image-count:*:*' list-colors $listColorsDockerImage
+  zstyle ':completion:*:complete:docker-image-copy:*:*' list-colors $listColorsDockerImage
+  zstyle ':completion:*:complete:docker-image-copy-github:*:*' list-colors $listColorsDockerImage
   zstyle ':completion:*:complete:docker-image-exists:*:*' list-colors $listColorsDockerImage
+  zstyle ':completion:*:complete:docker-image-list:*:*' list-colors $listColorsDockerImage
   zstyle ':completion:*:complete:docker-image-remove:*:*' list-colors $listColorsDockerImage
+  zstyle ':completion:*:complete:docker-image-push:*:*' list-colors $listColorsDockerImage
+  zstyle ':completion:*:complete:docker-run:*:*' list-colors $listColorsDockerImage
+  zstyle ':completion:*:complete:docker-run-interactive:*:*' list-colors $listColorsDockerImage
+  zstyle ':completion:*:complete:docker-container-count:*:*' list-colors $listColorsDockerImage
+  # Remote images
+  zstyle ':completion:*:complete:docker-image-pull:*:*' list-colors $listColorsDockerImageRemote
+  # Containers
+  zstyle ':completion:*:complete:docker-container-exists:*:*' list-colors $listColorsDockerContainer
+  zstyle ':completion:*:complete:docker-container-remove:*:*' list-colors $listColorsDockerContainer
+  zstyle ':completion:*:complete:docker-container-state:*:*' list-colors $listColorsDockerContainer
+  zstyle ':completion:*:complete:docker-container-is-running:*:*' list-colors $listColorsDockerContainer
 
   # SSH Host
   zstyle ':completion:*:complete:ssh:*:*' list-colors $listColorsKnownHost

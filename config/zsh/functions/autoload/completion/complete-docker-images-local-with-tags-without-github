@@ -1,0 +1,13 @@
+# List all local Docker images (including their tags), but excluding any image
+# that is coming from GitHub. This is used to suggestion images when copying
+# them by adding the ghcr.io namespace
+function complete-docker-images-local-with-tags-without-github() {
+  local suggestions="$(\
+    docker images \
+    --format '{{.Repository}}\:{{.Tag}}:{{.CreatedSince}} ({{.Size}})' \
+    | sort \
+    | \grep -v "^ghcr.io/"
+  )"
+
+  echo ${suggestions}
+}

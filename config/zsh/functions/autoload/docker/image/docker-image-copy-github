@@ -1,0 +1,25 @@
+# Copy a Docker image to follow the GitHub Registry naming
+# Usage:
+# $ docker-image-copy-github ubuntu             # ghcr.io/pixelastic/ubuntu:latest
+# $ docker-image-copy-github ubuntu:22.04       # ghcr.io/pixelastic/ubuntu:22.04
+function docker-image-copy-github() {
+  local input="$1"
+  local inputSplit=(${(@s/:/)input})
+  local imageName=$inputSplit[1]
+  local tagName=$inputSplit[2]
+  [[ $tagName == "" ]] && tagName="latest"
+
+
+  local displayImageName="$(docker-image-colorize ${input} --with-icon)"
+
+  # If is already a ghcr.io image, we stop
+  if [[ "$imageName" == ghcr.io/* ]]; then
+    echo "✘ $displayImageName is already a GitHub Registry image"
+    return 1
+  fi
+
+  # Copy it, by adding the ghcr.io namespace prefix
+  docker tag \
+    $input \
+    "ghcr.io/pixelastic/${imageName}:${tagName}"
+}
