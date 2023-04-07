@@ -1,0 +1,20 @@
+# Displays a colorized version of a filesize
+# Usage:
+# $ docker-size-colorize 485MB    # Value and unit colored differently
+function docker-size-colorize() {
+  # Raw size
+  local rawSize="$1"
+
+  # Split value and unit
+  [[ $rawSize == *MB ]] && local unit="MB"
+
+  # Constraint value into 5 chars, so it's aligned on the right
+  local value=${rawSize//${unit}/}
+  value="${(l(4)( ))value}"
+
+  local output=""
+  output+="$(colorize $value $COLOR_ALIAS_SIZE_VALUE)"
+  output+="$(colorize $unit $COLOR_ALIAS_SIZE_UNIT)"
+
+  echo $output
+}

@@ -20,9 +20,9 @@ local currentBranch="$(git-branch-current)"
 # Loop through all the raw output, and format/color them before adding them to
 # the output
 local output=""
-while read -r rawGitBranch; do
+for rawGitBranch in ${(f)rawGitBranches}; do
   # Splitting the line into its various parts {{{
-  local splitLine=(${(f)"$(text-split "$rawGitBranch" "$separator")"})
+  local splitLine=(${(@s/▮/)rawGitBranch})
 
   # Branch name {{{
   local branchName="${splitLine[1]:1}"
@@ -89,7 +89,7 @@ while read -r rawGitBranch; do
   # }}}
 
   output+="$row\n"
-done <<<$rawGitBranches
+done
 
 # Output as columns
 echo $output | column \

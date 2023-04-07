@@ -1,0 +1,39 @@
+# Displays a colorized version of an image name
+# Usage:
+# $ docker-image-colorize alpine                      # alpine
+# $ docker-image-colorize alpine --with-icon          #   alpine
+# $ docker-image-colorize alpine --with-icon --remote #   alpine
+function docker-image-colorize() {
+  zparseopts -E -D \
+    -with-icon=flagWithIcon \
+    -remote=flagRemote
+  local isWithIcon=${#flagWithIcon}
+  local isRemote=${#flagRemote}
+
+  # Image name {{{
+  local imageName="$1"
+  # }}}
+  # Image color {{{
+  if [[ "$isRemote" == "1" ]]; then
+    local imageColor=$COLOR_ALIAS_DOCKER_IMAGE_REMOTE
+  else
+    local imageColor=$COLOR_ALIAS_DOCKER_IMAGE
+  fi
+  # }}}
+
+  # If --with-icon is not passed, we simply display the colored image
+  if [[ "$isWithIcon" != 1 ]]; then
+    colorize "$imageName" $imageColor
+    return
+  fi
+
+  # If --with-icon is passed, we display a different icon based on if the image
+  # is local or remote
+  if [[ "$isRemote" == "1" ]]; then
+    colorize "  $imageName" $imageColor
+    return
+  else
+    colorize "  $imageName" $imageColor
+    return
+  fi
+}

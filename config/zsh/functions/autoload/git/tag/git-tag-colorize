@@ -4,17 +4,14 @@
 # $ git-tag-colorize main               # v1.0
 # $ git-tag-colorize --with-icon        # 炙v1.0
 function git-tag-colorize() {
-  # Filter positional arguments and flags
-  local argsp=()
-  local -A argsf; argsf=()
-  for arg in $argv; do
-    [[ "$arg" =~ "^-" ]] && argsf[$arg]=1 || argsp+="$arg"
-  done
+  zparseopts -E -D \
+    -with-icon=flagWithIcon
+  local isWithIcon=${#flagWithIcon}
 
   local currentTag="$(git-tag-current)"
 
   # Tag name
-  local tagName="$argsp[1]"
+  local tagName="$1"
   # Use the closest tag if none is passed
   if [[ $tagName == '' ]]; then
     tagName="$currentTag"
@@ -25,7 +22,7 @@ function git-tag-colorize() {
   fi
 
   # If --with-icon is not passed, we simply display the colored tag
-  if [[ "$argsf[--with-icon]" != 1 ]]; then
+  if [[ "$isWithIcon" != 1 ]]; then
     colorize $colorizeArguments "$tagName" $COLOR_ALIAS_GIT_TAG
     return
   fi

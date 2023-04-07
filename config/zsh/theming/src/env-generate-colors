@@ -1,6 +1,4 @@
 #!/usr/bin/env zsh
-# Regenerate the COLOR_ definition file f
-#
 # This will define COLORS environment variables
 # - COLOR_RED_0 will be the lightest shade of red
 # - COLOR_RED_9 will be the darkest shade of red
@@ -80,9 +78,11 @@ aliasColors[SELECTED_BACKGROUND]="GRAY_8"
 aliasColors[SELECTED_FOREGROUND]="WHITE"
 aliasColors[TERMINAL]="BLACK_PURE"
 aliasColors[UI]="NEUTRAL"
-aliasColors[POINTER]="GREEN" #  current line
-aliasColors[MARKER]="CYAN"   #  marked line
+aliasColors[POINTER]="GREEN"     #  current line
+aliasColors[MARKER]="CYAN"       #  marked line
 aliasColors[UNKNOWN]="CYAN_4"
+aliasColors[SIZE_VALUE]="GRAY"   # 485
+aliasColors[SIZE_UNIT]="GRAY_4" # MB
 # Languages
 aliasColors[LANGUAGE_JAVASCRIPT]="YELLOW"
 aliasColors[LANGUAGE_RUBY]="ORANGE"
@@ -100,7 +100,7 @@ aliasColors[GIT_BRANCH_DEVELOP]="YELLOW"
 aliasColors[GIT_BRANCH_HEAD]="RED"
 aliasColors[GIT_BRANCH_MAIN]="BLUE"
 aliasColors[GIT_BRANCH_MASTER]="RED"
-aliasColors[GIT_COMMIT]="PURPLE_3"
+aliasColors[GIT_COMMIT]="PURPLE"
 aliasColors[GIT_DIRTY]="RED"
 aliasColors[GIT_ISSUE]="YELLOW"
 aliasColors[GIT_TAG]="CYAN"
@@ -120,6 +120,9 @@ aliasColors[GIT_STASH]="TEAL_3"
 # Docker
 aliasColors[DOCKER_IMAGE]="SKY"
 aliasColors[DOCKER_IMAGE_REMOTE]="BLUE"
+aliasColors[DOCKER_TAG]="ORANGE_6"
+aliasColors[DOCKER_TAG_LATEST]="ORANGE_5"
+aliasColors[DOCKER_HASH]="PURPLE"
 aliasColors[DOCKER_CONTAINER]="YELLOW"
 # Packages
 aliasColors[PACKAGE]="YELLOW"

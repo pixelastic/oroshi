@@ -1,0 +1,25 @@
+# Displays a colorized version of a hash
+# Usage:
+# $ docker-hash-colorize 9ed4aefc74f6                # 9ed4aefc74f6
+# $ docker-hash-colorize alpine --with-icon          #  9ed4aefc74f6
+function docker-hash-colorize() {
+  zparseopts -E -D \
+    -with-icon=flagWithIcon
+  local isWithIcon=${#flagWithIcon}
+
+  # Hash name {{{
+  local hashName="$1"
+  # }}}
+  # Hash color {{{
+  local hashColor=$COLOR_ALIAS_DOCKER_HASH
+  # }}}
+
+  # If --with-icon is not passed, we simply display the colored hash
+  if [[ "$isWithIcon" != 1 ]]; then
+    colorize "$hashName" $hashColor
+    return
+  fi
+
+  # If --with-icon is passed, we add the icon
+  colorize " $hashName" $hashColor
+}

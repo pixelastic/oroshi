@@ -1,4 +1,53 @@
 #!/usr/bin/env zsh
-# [D]ocker [i]mage [l]ist
+# Display the list of all local images
+# Usage:
+# $ docker-image-list
 
-docker images
+local rawImageList="$(\
+  docker images \
+  --format='{{.Repository}}▮{{.Tag}}▮{{.ID}}▮{{.CreatedSince}}▮{{.Size}}▮{{.Containers}}' \
+)"
+
+local output=""
+for rawImageLine in ${(f)rawImageList}; do
+  local splitLine=(${(@s/▮/)rawImageLine})
+
+  local imageName=$splitLine[1]
+  local imageTag=$splitLine[2]
+  local imageHash=$splitLine[3]
+  local imageDate=$splitLine[4]
+  local imageSize=$splitLine[5]
+  local imageContainers=$splitLine[6]
+
+  local row=""
+
+  # Name {{{
+  row+="$(docker-image-colorize $imageName --with-icon)▮"
+  # }}}
+
+  # Tag {{{
+  row+="$(docker-tag-colorize $imageTag --with-icon)▮"
+  # }}}
+  
+  # Hash {{{
+  row+="$(docker-hash-colorize $imageHash --with-icon)▮"
+  # }}}
+  
+  # Date {{{
+  row+="$(docker-date-colorize $imageDate --with-icon)▮"
+  # }}}
+  
+  # Size {{{
+  row+="$(docker-size-colorize $imageSize)▮"
+  # }}}
+
+  row+="$imageContainers"
+
+  output+="$row\n"
+done
+
+# Output as columns
+echo $output | column \
+  --separator "▮" \
+  --table \
+  --table-noheadings

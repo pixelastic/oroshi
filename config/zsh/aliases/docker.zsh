@@ -1,7 +1,9 @@
+# Images
 alias dip="docker-image-pull"
+alias dil="docker-image-list"
+# alias diR="docker-image-remove"
 
 alias dr="docker-run"
-alias dil="docker-image-list"
 alias dcl="docker-container-list"
 
 # Cosmos
