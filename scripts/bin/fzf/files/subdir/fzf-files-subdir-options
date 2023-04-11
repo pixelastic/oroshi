@@ -13,6 +13,8 @@ fi
 
 currentPath="$(colorize "$currentPath ❯" $COLOR_ALIAS_DIRECTORY)"
 local prompt="${projectPrefix}${currentPath} "
+# fzf in vim fails to parse the prompt if there is ​ in it
+prompt=${prompt:gs/​//}
 
 
 echo "--prompt=${prompt}"

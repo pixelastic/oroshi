@@ -17,9 +17,7 @@
 # - rm -f ~/.zcompdump 
 # - reload the shell
 
-
 compdef _jumps unmark j
-compdef _oroshi_bat bat
 
 # Git {{{
 compdef _git-branches-local git-branch-switch git-branch-remove git-branch-merge
