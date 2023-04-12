@@ -83,6 +83,10 @@ function oroshi-completion-styling() {
     $listColorsDefault \
   )
   # }}}
+  
+
+  # In case of ambiguity, coloring the first letter to type to fix the ambiguity
+  zstyle ':completion:*' show-ambiguity "1;38;5;$COLOR_GREEN"
 
 
   # Default
@@ -97,6 +101,7 @@ function oroshi-completion-styling() {
 
   # Commands
   zstyle ':completion:*:commands'  format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK '  Commands ')"
+  zstyle ':completion:*:aliases'  format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK '  Aliases ')";
   zstyle ':completion:*:functions' format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK ' {} Functions ')"
   zstyle ':completion:*:builtins'  format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK '  Zsh Builtins ')"
 

@@ -2,15 +2,15 @@
 # zstyle -s ':completion:*' menu myVar
 # echo $myVar
 
+
 # Search for completion in the whole filename, not just on the start
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
-
 
 # Menu {{{
 # Configure the menu to use for suggestions:
 # - select: displays a menu with highlightable elements, when pressing tab
 # - yes: forces selecting the first element on tab completion
-zstyle ':completion:*' menu select yes
+zstyle ':completion:*' menu select
 # Group suggestions by type
 zstyle ':completion:*' group-name ''
 # Use // to separate the description
