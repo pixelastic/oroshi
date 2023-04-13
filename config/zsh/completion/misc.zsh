@@ -1,10 +1,34 @@
-# To read the value of a zstyle element (for example menu), use:
-# zstyle -s ':completion:*' menu myVar
-# echo $myVar
 
+# Matcher list {{{
+# matcher-list defines how the command line should be completed. It has a very
+# obscure syntax that I don't understand very well (even if I read the whole
+# documentation and many Stack Overflow questions, I can barely read what it
+# does, and I can't write any of it).
 
-# Search for completion in the whole filename, not just on the start
-zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
+# Sources: 
+# https://stackoverflow.com/a/68794830/285283
+#
+# The ./sandbox/ folder sitting next to this file contains a dummy set of
+# folders and files that act as a fixture for our completion. If I ever change
+# the matcher-list definition, I need to make sure it still:
+# ✔ cd p<TAB> | cd perso/
+# ✔ cd P<TAB> | cd Pictures/
+# ✔ cd a-g<TAB> | cd apt-get/
+# ✔ cp server<TAB> | cp 2023-04-05-SERVERLESS-paris-meetup.md
+# ✔ cp paris<TAB> | suggests 2022-02-01-paris-ai-meetup.md and 2023-04-05-SERVERLESS-paris-meetup.md
+#
+# Explanation:
+# 0 -- vanilla completion (cd a<TAB> => cd abc/)
+# 1 -- smart case completion (cd pic<TAB> => cd Pictures/)
+# 2 -- word flex completion (cd ag<TABD> => cd apt-get/)
+# 3 -- full flex completion (cp server<TAB> => cp 2023-01-02-serverless-meetup.md)
+zstyle ':completion:*' matcher-list \
+	'' \
+  'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' \
+  'r:[^[:alpha:]]||[[:alpha:]]=** r:|=* m:{[:lower:][:upper:]}={[:upper:][:lower:]}' \
+  'r:|?=** m:{[:lower:][:upper:]}={[:upper:][:lower:]}'
+# }}}
+
 
 # Menu {{{
 # Configure the menu to use for suggestions:
@@ -16,7 +40,7 @@ zstyle ':completion:*' group-name ''
 # Use // to separate the description
 zstyle ':completion:*' list-separator '//'
 # Display results in lines instead of columns
-setopt LIST_ROWS_FIRST
+zstyle ':completion:*' list-rows-first true
 # }}}
 
 # Globs {{{
