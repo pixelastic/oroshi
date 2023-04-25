@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Display the list of all oroshi images
+# Usage:
+# $ docker-oroshi-list
+
+docker-image-list oroshi

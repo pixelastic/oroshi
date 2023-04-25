@@ -1,0 +1,7 @@
+# List all containers ids
+function complete-docker-containers-ids() {
+  # Suggest container ids, but add info in description
+  local suggestions="$(docker ps --all --format '{{.ID}}:{{.Names}} [{{.State}}]  {{.Image}}' | sort)"
+
+  echo ${suggestions}
+}

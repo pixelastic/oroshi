@@ -1,0 +1,21 @@
+# Returns the id of the image used by a container
+# Usage:
+# $ docker-container-image-id oroshi_latest    # 0fb077bb968b
+# $ docker-container-image-id ksjkdjskjd       # return 1 if does not exist
+function docker-container-image-id() {
+  local containerName="$1"
+
+  local result="$(
+    docker container inspect \
+      --format '{{.Image}}' $containerName
+  )"
+
+  # Stop if no match
+  [[ $result == "" ]] && return 1
+
+  # Find only the 12 relevant chars
+  local resultSplit=(${(@s/:/)result})
+  local imageId=$resultSplit[2]
+  imageId=${imageId:0:12}
+  echo $imageId
+}

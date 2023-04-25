@@ -20,10 +20,18 @@ function docker-image-colorize() {
   local isGitHub="0"
   [[ $imageName == ghcr.io/* ]] && isGitHub="1"
 
+  local isOroshi="0"
+  [[ $imageName == "oroshi" ]] && isOroshi="1"
+
+  local isOrphan="0"
+  docker-image-exists "${imageName}" || isOrphan="1"
+
   # Image color {{{
   local imageColor=$COLOR_ALIAS_DOCKER_IMAGE
   [[ "$isRemote" == "1" ]] && imageColor=$COLOR_ALIAS_DOCKER_IMAGE_REMOTE
   [[ "$isGitHub" == "1" ]] && imageColor=$COLOR_ALIAS_DOCKER_IMAGE_GITHUB
+  [[ "$isOroshi" == "1" ]] && imageColor=$COLOR_ALIAS_DOCKER_IMAGE_OROSHI
+  [[ "$isOrphan" == "1" ]] && imageColor=$COLOR_ALIAS_DOCKER_IMAGE_ORPHAN
   # }}}
   
   # Tag color {{{
@@ -44,6 +52,8 @@ function docker-image-colorize() {
   local imageIcon=" "
   [[ $isRemote == "1" ]] && imageIcon=" "
   [[ $isGitHub == "1" ]] && imageIcon=" "
+  [[ $isOroshi == "1" ]] && imageIcon=" "
+  [[ $isOrphan == "1" ]] && imageIcon=" "
 
   echo "$(colorize "${imageIcon}${imageName}" $imageColor)${tagSuffix}"
 }

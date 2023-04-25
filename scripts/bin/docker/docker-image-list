@@ -1,20 +1,29 @@
 #!/usr/bin/env zsh
-# Display the list of all local images
+# Display the list of all local images. Ordered first by alphabetical image,
+# then by reverse tag
 # Usage:
-# $ docker-image-list          # List all images
-# $ docker-image-list ubuntu   # List only ubuntu images images
+# $ docker-image-list                  # List all images
+# $ docker-image-list ubuntu           # List only ubuntu images images
+# $ docker-image-list --exclude oroshi # Exclude specific images
+
+zparseopts -E -D \
+  -exclude:=flagExclude
+local excludedImage=${flagExclude[2]}
 
 local query="$1"
 
 local rawImageList="$(\
   docker images $query \
-  --format='{{.Repository}}▮{{.Tag}}▮{{.ID}}▮{{.CreatedSince}}▮{{.Size}}▮{{.Containers}}' \
-  | sort
+  --format='{{.Repository}}|{{.Tag}}|{{.ID}}|{{.CreatedSince}}|{{.Size}}|{{.Containers}}' \
+  | sort \
+    --field-separator '|' \
+    --key 1,1d \
+    --key 2,2r
 )"
 
 local output=""
 for rawImageLine in ${(f)rawImageList}; do
-  local splitLine=(${(@s/▮/)rawImageLine})
+  local splitLine=(${(@s/|/)rawImageLine})
 
   local imageName=$splitLine[1]
   local imageTag=$splitLine[2]
@@ -22,6 +31,9 @@ for rawImageLine in ${(f)rawImageList}; do
   local imageDate=$splitLine[4]
   local imageSize=$splitLine[5]
   local imageContainers=$splitLine[6]
+
+  # Skipping excluded images
+  [[ $imageName == $excludedImage ]] && continue
 
   local row=""
 

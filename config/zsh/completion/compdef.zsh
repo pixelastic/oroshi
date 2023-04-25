@@ -32,21 +32,29 @@ compdef _docker-images-remote \
 compdef _docker-images-local \
 	docker-image-list \
 	docker-image-count
+compdef _docker-images-local-ids \
+	docker-image-name
 compdef _docker-images-local-with-tags \
-	docker-image-exists \
-	docker-image-remove \
+	docker-container-count \
 	docker-image-copy \
-	docker-run \
-	docker-run-interactive \
+	docker-image-exists \
+	docker-image-id \
 	docker-image-push \
-	docker-container-count
+	docker-image-remove \
+	docker-run \
+	docker-run-interactive
 compdef _docker-images-local-with-tags-without-github \
 	docker-image-copy-github
 compdef _docker-containers \
 	docker-container-exists \
-	docker-container-remove \
+	docker-container-id \
+	docker-container-image-id \
+	docker-container-image-name \
 	docker-container-is-running \
+	docker-container-remove \
 	docker-container-state
+compdef _docker-containers-ids \
+	docker-container-name
 # }}}
 # JavaScript {{{
 compdef _package-scripts yarn-run

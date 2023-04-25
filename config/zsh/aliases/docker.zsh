@@ -1,12 +1,14 @@
 # Images
 alias dipl="docker-image-pull"
 alias dips="docker-image-push"
-alias dil="docker-image-list"
+alias dil="docker-image-list --exclude oroshi"
 alias di?="docker-image-exists"
 alias di#="docker-image-count"
 alias diR="docker-image-remove"
 alias dicp="docker-image-copy"
 alias dicpgh="docker-image-copy-github"
+alias din="docker-image-name"
+alias dii="docker-image-id"
 
 # Run
 alias dr="docker-run"
@@ -19,6 +21,15 @@ alias dc#="docker-container-count"
 alias dcr?="docker-container-is-running"
 alias dcs="docker-container-state"
 alias dcR="docker-container-remove"
+alias dci="docker-container-id"
+alias dcn="docker-container-name"
+alias dcii="docker-container-image-id"
+alias dcin="docker-container-image-name"
+
+# Oroshi specific image
+alias dol="docker-oroshi-list"
+alias dor="docker-oroshi-run"
+alias doc="docker-oroshi-commit"
 
 # TODO:
 # - dcc: Commit container. Needs to be running

@@ -1,15 +1,19 @@
 #!/usr/bin/env zsh
-# Runs my cosmos image
+# Runs my oroshi image
 # Usage:
-# $ docker-cosmos-run
+# $ docker-oroshi-run
 
-docker \
-  run \
-  --rm \
-  --interactive \
-  --tty \
+docker-run-interactive \
   --user 1000:1000 \
   --workdir /home/tim \
-  --hostname cosmos \
-  --name cosmos \
-  cosmos
+  oroshi
+
+
+# docker \
+#   run \
+#   --rm \
+#   --interactive \
+#   --tty \
+#   --hostname cosmos \
+#   --name cosmos \
+#   cosmos

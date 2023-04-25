@@ -1,0 +1,11 @@
+# Returns the name of the image used by a container
+# Usage:
+# $ docker-container-image-name oroshi_latest    # oroshi:latest
+# $ docker-container-image-name ksjkdjskjd       # return 1 if does not exist
+function docker-container-image-name() {
+  local containerName="$1"
+
+  local imageId="$(docker-container-image-id $containerName)"
+  docker-image-name $imageId
+
+}

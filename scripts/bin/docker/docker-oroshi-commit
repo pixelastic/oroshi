@@ -1,12 +1,44 @@
 #!/usr/bin/env zsh
-# Saves a cosmos image
+# Commits a running oroshi container into an image
 # Usage:
-# $ docker-cosmos-save
-#
-# TODO: Need to provide a commit message, and creates an history of past changes
+# $ docker-oroshi-commit               # Updates oroshi:latest image
+# $ docker-oroshi-commit patch         # Creates a new patch tag
 
-docker \
-  commit \
+local containerName="oroshi_latest"
+
+# Stops if oroshi is not running
+if ! docker-container-is-running $containerName; then
+  echo "Oroshi is not running"
+  exit 1
+fi
+
+# We keep a reference to the current image ID being used
+local imageId="$(docker images $imageName --format '{{.ID}}')"
+
+# We save the running container as a new image
+docker commit \
   --pause \
-  cosmos \
-  cosmos
+  $containerName \
+  $imageName
+
+# We delete the previous image, 
+
+
+
+# docker commit \
+#   --pause
+
+# docker \
+#   commit \
+#   --pause \
+#   cosmos \
+#   cosmos
+
+
+
+# TODO: Need to provide a commit message, and creates an history of past changes
+#
+# docker-container-commit containerName
+# Asks for a commit message
+# Finds the current tag, and by default increment the patch
+# Have push automatically create a copy with ghcr.io, puhs and delete the copu

@@ -1,0 +1,14 @@
+# Return the name of a container, from its id
+# Usage:
+# $ docker-container-name 8a0cb8cc03eb   # infallible_leakey
+# $ docker-container-name nope           # Exits with 1
+function docker-container-name() {
+  local containerId="$1"
+
+  local result="$(
+    docker container inspect ${containerId} \
+    --format '{{.Name}}'
+  )"
+
+  echo ${result:1}
+}

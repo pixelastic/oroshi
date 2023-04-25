@@ -1,0 +1,25 @@
+# Return the id of an image, from its name
+# Usage:
+# $ docker-image-id ubuntu:latest  # 08d22c0ceb15
+# $ docker-image-id ubuntu         # 08d22c0ceb15, id of ubuntu:latest
+# $ docker-image-id nope           # Exits with 1
+function docker-image-id() {
+  local imageName="$1"
+
+  local result="$(docker images $imageName --format '{{.ID}}')"
+  local imageIds=(${(f)result})
+  local imageCount=${#${imageIds}}
+  
+  # If no results, we stop
+  if [[ $imageCount == "0" ]]; then
+    return 1
+  fi
+
+  # If several results, we ask for clarification
+  if [[ ${imageCount} -gt 1 ]]; then
+    echo "There are multiple images named $imageName. Please, specify a tag."
+    return 1
+  fi
+
+  echo $result
+}

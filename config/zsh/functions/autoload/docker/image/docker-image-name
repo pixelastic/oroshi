@@ -1,0 +1,18 @@
+# Return the name of an image, from its id
+# Usage:
+# $ docker-image-name 0fb077bb968b   # ubuntu:latest
+# $ docker-image-name nope           # Exits with 1
+function docker-image-name() {
+  local imageId="$1"
+
+  local result="$(docker images \
+    --format '{{.ID}}|{{.Repository}}:{{.Tag}}' \
+    | \grep "^${imageId}"
+  )"
+
+  # Exits with error code 1 if not found
+  [[ $result = "" ]] && return 1
+
+  local splitResult=(${(@s/|/)result})
+  echo $splitResult[2]
+}

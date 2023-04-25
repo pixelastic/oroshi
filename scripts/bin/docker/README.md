@@ -50,6 +50,10 @@ ubuntu` will output `2`.
 Outputs the description of an official image. This is an internal function,
 reading a cache file we are using to build the list of official images.
 
+### `docker-image-name` and `docker-image-id`
+
+Outputs the name of an image from its id, or the id from its name.
+
 ## Containers
 
 ### `docker-container-list`
@@ -78,6 +82,14 @@ Check if the specified container is currently running or not.
 
 Returns the specified container state. It exists with 1 if the container does
 not exist. Possible values are `running`, `stopped`, etc
+
+### `docker-container-name` and `docker-container-id`
+
+Outputs the name of a container from its id, or the id from its name.
+
+### `docker-container-image-name` and `docker-container-image-id`
+
+Outputs the image name, or image id, of a given container
 
 ## Run
 

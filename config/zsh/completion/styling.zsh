@@ -70,10 +70,12 @@ function oroshi-completion-styling() {
     $listColorsDefault \
   )
   # Local images
-  # Note: [a-z]* seems to be required to properly color elements that share the
-  # same description. Without it, the whole suggestion list is uncolored
+  # Note: I still need to find a way to color hashes differently than image
+  # names
+  # "${(f)$(♣ "*" $COLOR_ALIAS_DOCKER_IMAGE_ORPHAN)}" \
   local listColorsDockerImage=(\
     "${(f)$(♣ "ghcr.io/*" $COLOR_ALIAS_DOCKER_IMAGE_GITHUB)}" \
+    "${(f)$(♣ "oroshi:*" $COLOR_ALIAS_DOCKER_IMAGE_OROSHI)}" \
     "${(f)$(♣ "[a-z]*" $COLOR_ALIAS_DOCKER_IMAGE)}" \
     $listColorsDefault \
   )
@@ -122,6 +124,8 @@ function oroshi-completion-styling() {
   # Docker {{{
   # Local images
   zstyle ':completion:*:complete:docker-image-count:*:*' list-colors $listColorsDockerImage
+  zstyle ':completion:*:complete:docker-image-id:*:*' list-colors $listColorsDockerImage
+  zstyle ':completion:*:complete:docker-image-name:*:*' list-colors $listColorsDockerImage
   zstyle ':completion:*:complete:docker-image-copy:*:*' list-colors $listColorsDockerImage
   zstyle ':completion:*:complete:docker-image-copy-github:*:*' list-colors $listColorsDockerImage
   zstyle ':completion:*:complete:docker-image-exists:*:*' list-colors $listColorsDockerImage
@@ -137,6 +141,10 @@ function oroshi-completion-styling() {
   zstyle ':completion:*:complete:docker-container-exists:*:*' list-colors $listColorsDockerContainer
   zstyle ':completion:*:complete:docker-container-remove:*:*' list-colors $listColorsDockerContainer
   zstyle ':completion:*:complete:docker-container-state:*:*' list-colors $listColorsDockerContainer
+  zstyle ':completion:*:complete:docker-container-name:*:*' list-colors $listColorsDockerContainer
+  zstyle ':completion:*:complete:docker-container-id:*:*' list-colors $listColorsDockerContainer
+  zstyle ':completion:*:complete:docker-container-image-name:*:*' list-colors $listColorsDockerContainer
+  zstyle ':completion:*:complete:docker-container-image-id:*:*' list-colors $listColorsDockerContainer
   zstyle ':completion:*:complete:docker-container-is-running:*:*' list-colors $listColorsDockerContainer
 
   # SSH Host

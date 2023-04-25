@@ -1,5 +1,6 @@
 # Global aliases
 alias -g F="| fzf"
+alias -g J="| jq"
 alias -g H="| head"
 alias -g L="| less -R"
 alias -g X="| xargs"
