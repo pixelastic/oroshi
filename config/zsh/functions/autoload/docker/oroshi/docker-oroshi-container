@@ -1,0 +1,14 @@
+# Output the name of the container running the highest version of oroshi
+# Usage:
+# $ docker-oroshi-container   # oroshi_1.9.2
+function docker-oroshi-container() {
+  local result="$(
+    docker ps \
+      --format '{{.Image}}|{{.Names}}' \
+    | sort -r \
+    | head -n 1
+  )"
+
+  local splitResult=(${(@s/|/)result})
+  echo $splitResult[2]
+}

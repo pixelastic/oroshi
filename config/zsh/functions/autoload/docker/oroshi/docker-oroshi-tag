@@ -1,0 +1,9 @@
+# Outputs the highest oroshi tag (excluding "latest")
+# Usage:
+# $ docker-oroshi-tag   # 1.0.2
+function docker-oroshi-tag() {
+    docker images oroshi \
+      --format='{{.Tag}}' \
+      | sort -gr \
+      | head -n 1
+}

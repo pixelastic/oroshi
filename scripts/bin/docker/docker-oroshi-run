@@ -3,10 +3,13 @@
 # Usage:
 # $ docker-oroshi-run
 
+local oroshiTag="$(docker-oroshi-tag)"
+
 docker-run-interactive \
   --user 1000:1000 \
   --workdir /home/tim \
-  oroshi
+  --hostname oroshi \
+  oroshi:${oroshiTag}
 
 
 # docker \

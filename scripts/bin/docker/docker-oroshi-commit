@@ -3,8 +3,11 @@
 # Usage:
 # $ docker-oroshi-commit               # Updates oroshi:latest image
 # $ docker-oroshi-commit patch         # Creates a new patch tag
+#
+# TODO: Need a commit message (on the CLI, or through editor)
+# TODO: Need to pass a --minor or --major flag
 
-local containerName="oroshi_latest"
+local containerName="$(docker-oroshi-container)"
 
 # Stops if oroshi is not running
 if ! docker-container-is-running $containerName; then
@@ -12,33 +15,14 @@ if ! docker-container-is-running $containerName; then
   exit 1
 fi
 
-# We keep a reference to the current image ID being used
-local imageId="$(docker images $imageName --format '{{.ID}}')"
+# Increment the version
+local oroshiTagCurrent="$(docker-oroshi-tag)"
+local oroshiTagNext="$(version-increment $oroshiTagCurrent)"
 
-# We save the running container as a new image
 docker commit \
   --pause \
   $containerName \
-  $imageName
+  "oroshi:${oroshiTagNext}" \
+  >/dev/null
 
-# We delete the previous image, 
-
-
-
-# docker commit \
-#   --pause
-
-# docker \
-#   commit \
-#   --pause \
-#   cosmos \
-#   cosmos
-
-
-
-# TODO: Need to provide a commit message, and creates an history of past changes
-#
-# docker-container-commit containerName
-# Asks for a commit message
-# Finds the current tag, and by default increment the patch
-# Have push automatically create a copy with ghcr.io, puhs and delete the copu
+echo "oroshi:${oroshiTagNext} commited"

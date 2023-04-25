@@ -1,0 +1,17 @@
+# Checks if a specified image is used by a running container
+# Usage:
+# $ docker-image-is-running oroshi:0.0.1  # 0 if running, 1 if not running
+# $ docker-image-is-running oroshi        # 0 if at least one container runs it
+function docker-image-is-running() {
+  local imageName="$1"
+
+  local result="$(
+    docker container ls \
+      --format '{{.Image}}' \
+    | \grep "^${imageName}"
+  )"
+
+  [[ $result == "" ]] && return 1
+
+  return 0
+}
