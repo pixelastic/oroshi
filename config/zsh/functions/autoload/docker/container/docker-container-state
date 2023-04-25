@@ -1,7 +1,7 @@
 # Returns the state of a container
 # Usage:
 # $ docker-container-state alpine_latest         # running / stopped / etc
-# $ docker-container-state ksjkdjskjd            # return 0 if does not exist
+# $ docker-container-state ksjkdjskjd            # return 1 if does not exist
 function docker-container-state() {
   local containerName="$1"
 

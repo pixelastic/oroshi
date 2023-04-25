@@ -3,7 +3,7 @@
 # Usage:
 # $ docker-run ubuntu         # Run ubuntu
 # $ docker-run --tty ubuntu   # Accepts flags
-# $ docker-run ubuntu --tty    # No matter where
+# $ docker-run ubuntu --tty   # No matter where
 
 zparseopts -E -D \
   -name:=flagContainerName
