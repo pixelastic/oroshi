@@ -1,5 +1,5 @@
 # List all local Docker images (without their tags)
-function complete-docker-images-local() {
+function complete-docker-images-local-names() {
 
   # Find the unique image names
   local allUniqueImages="$(docker images --format '{{.Repository}}' | sort | uniq)"

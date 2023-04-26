@@ -5,8 +5,11 @@
 
 local oroshiTag="$(docker-oroshi-tag)"
 
+local currentUser="$(id -u)"
+local currentGroup="$(id -g)"
+
 docker-run-interactive \
-  --user 1000:1000 \
+  --user "${currentUser}:${currentGroup}" \
   --workdir /home/tim \
   --hostname oroshi \
   oroshi:${oroshiTag}

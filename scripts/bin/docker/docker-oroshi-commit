@@ -1,28 +1,57 @@
 #!/usr/bin/env zsh
 # Commits a running oroshi container into an image
 # Usage:
-# $ docker-oroshi-commit               # Updates oroshi:latest image
+# $ docker-oroshi-commit               # Creates 1.9.2, if was on 1.9.1
+# $ docker-oroshi-commit "Install bat" # Auto-feed the commit message
 # $ docker-oroshi-commit patch         # Creates a new patch tag
 #
-# TODO: Need a commit message (on the CLI, or through editor)
+# Note: It will create a new tag, incrementing the patch number of the currently
+# highest version
+#
 # TODO: Need to pass a --minor or --major flag
 
 local containerName="$(docker-oroshi-container)"
+local commitMessage="$1"
 
-# Stops if oroshi is not running
+# Stops if oroshi is not running {{{
 if ! docker-container-is-running $containerName; then
   echo "Oroshi is not running"
   exit 1
 fi
+# }}}
+
+# Ask for a commit message if none is passed {{{
+if [[ $commitMessage == "" ]]; then
+  # Creating a file to hold the message
+  local commitMessagePath=/tmp/docker/commit-message
+  mkdir -p ${commitMessagePath:h}
+  rm -rf $commitMessagePath
+  touch $commitMessagePath
+
+  # Writing the commit message
+  nvim $commitMessagePath
+  commitMessage="$(cat $commitMessagePath)"
+
+  if [[ $commitMessage == "" ]]; then
+    echo "Commit message empty, aborting"
+    exit 1
+  fi
+fi
+# }}}
 
 # Increment the version
 local oroshiTagCurrent="$(docker-oroshi-tag)"
 local oroshiTagNext="$(version-increment $oroshiTagCurrent)"
+echo "===$commitMessage==="
+echo "===${commitMessage:q}==="
 
 docker commit \
-  --pause \
+  --message=${commitMessage} \
   $containerName \
   "oroshi:${oroshiTagNext}" \
   >/dev/null
+
+# Also make :latest point to this one
+docker-image-copy "oroshi:${oroshiTagNext}" "oroshi:latest"
 
 echo "oroshi:${oroshiTagNext} commited"

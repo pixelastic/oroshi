@@ -9,6 +9,7 @@ alias dicp="docker-image-copy"
 alias dicpgh="docker-image-copy-github"
 alias din="docker-image-name"
 alias dii="docker-image-id"
+alias dic="docker-image-comment"
 
 # Run
 alias dr="docker-run"

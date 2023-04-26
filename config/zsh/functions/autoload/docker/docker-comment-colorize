@@ -1,0 +1,14 @@
+# Displays a colorized version of a commit message
+# Usage:
+# $ docker-comment-colorize "Install bat"       # fix stuff
+function docker-comment-colorize() {
+  # Message {{{
+  local message="$1"
+  # We need a message passed
+  if [[ $message == '' ]]; then
+    return 0
+  fi
+  # }}}
+
+  colorize "$message" ALIAS_DOCKER_COMMENT
+}

@@ -29,13 +29,14 @@ compdef _git-files-dirty git-file-add
 # Docker {{{
 compdef _docker-images-remote \
 	docker-image-pull
-compdef _docker-images-local \
-	docker-image-list \
-	docker-image-count
 compdef _docker-images-local-ids \
 	docker-image-name
+compdef _docker-images-local-names \
+	docker-image-list \
+	docker-image-count
 compdef _docker-images-local-with-tags \
 	docker-container-count \
+	docker-image-comment \
 	docker-image-copy \
 	docker-image-exists \
 	docker-image-id \

@@ -127,6 +127,7 @@ function oroshi-completion-styling() {
   zstyle ':completion:*:complete:docker-image-id:*:*' list-colors $listColorsDockerImage
   zstyle ':completion:*:complete:docker-image-name:*:*' list-colors $listColorsDockerImage
   zstyle ':completion:*:complete:docker-image-copy:*:*' list-colors $listColorsDockerImage
+  zstyle ':completion:*:complete:docker-image-comment:*:*' list-colors $listColorsDockerImage
   zstyle ':completion:*:complete:docker-image-copy-github:*:*' list-colors $listColorsDockerImage
   zstyle ':completion:*:complete:docker-image-exists:*:*' list-colors $listColorsDockerImage
   zstyle ':completion:*:complete:docker-image-list:*:*' list-colors $listColorsDockerImage

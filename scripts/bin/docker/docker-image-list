@@ -14,7 +14,7 @@ local query="$1"
 
 local rawImageList="$(\
   docker images $query \
-  --format='{{.Repository}}|{{.Tag}}|{{.ID}}|{{.CreatedSince}}|{{.Size}}|{{.Containers}}' \
+  --format='{{.Repository}}|{{.Tag}}|{{.ID}}|{{.CreatedSince}}|{{.Size}}' \
   | sort \
     --field-separator '|' \
     --key 1,1d \
@@ -30,10 +30,11 @@ for rawImageLine in ${(f)rawImageList}; do
   local imageHash=$splitLine[3]
   local imageDate=$splitLine[4]
   local imageSize=$splitLine[5]
-  local imageContainers=$splitLine[6]
 
   # Skipping excluded images
   [[ $imageName == $excludedImage ]] && continue
+
+  local imageComment="$(docker-image-comment ${imageName}:${imageTag})"
 
   local row=""
 
@@ -57,7 +58,9 @@ for rawImageLine in ${(f)rawImageList}; do
   row+="$(docker-size-colorize $imageSize)▮"
   # }}}
 
-  row+="$imageContainers"
+  # Message {{{
+  row+="$(docker-comment-colorize $imageComment)▮"
+  # }}}
 
   output+="$row\n"
 done
