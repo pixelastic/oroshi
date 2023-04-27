@@ -1,0 +1,7 @@
+# Link modules specified as argument here
+# Usage:
+# $ yarn-link aberlaas norska   # Uses aberlaas and norska as linked modules
+function yarn-link-create() {
+  cd "$(git-directory-root)"
+  yarn link "$@"
+}

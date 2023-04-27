@@ -1,0 +1,6 @@
+# Register the current module for future linking
+# Usage:
+# $ yarn-link-create         # In a node repo, will now allow linking it later
+function yarn-link-create() {
+  yarn link
+}

@@ -4,6 +4,8 @@
   safecrlf = false
   autocrlf = input
   hooksPath = ~/.oroshi/config/git/hooks
+[init]
+  defaultBranch = main
 [user]
 	name = Tim Carry
 	email = tim@pixelastic.com

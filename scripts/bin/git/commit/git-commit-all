@@ -1,21 +1,32 @@
 #!/usr/bin/env zsh
+set -e
 # Commit all changes
 # Usage:
-# $ git-commit-all
-# $ git-commit-all "Commit message"
-# TODO:
-# vca
-# vca -n
-# vca "message"
-# vca -n "message"
-# ^ Find message as the last argument that don't start with a -
-set -e
+# $ git-commit-all                      # Commit all changes, and ask for message
+# $ git-commit-all "Commit message"     # Commit all changes with message
+# $ git-commit-all -n "Commit message"  # Can pass arguments to git commit
 
-git add --all
+local args=($@)
 
-if [[ $# == 1 ]]; then
-  git commit -v -m $1
-  return
+# Find the commit message
+local commitMessage=""
+local commitMessageIndex=""
+for ((argIndex=1; argIndex <= ${#args}; argIndex++)); do
+  local argValue=$args[$argIndex]
+  [[ $argValue = -* ]] && continue
+  commitMessage=$argValue
+  args[$argIndex]=()
+done
+
+# If a commit message is passed, we add it to the args
+if [[ $commitMessage != "" ]]; then
+  args+=("--message")
+  args+=($commitMessage)
 fi
 
-git commit -v $*
+# We always make it verbose
+args+=("--verbose")
+
+# Commit all files
+git add --all
+git commit ${args}

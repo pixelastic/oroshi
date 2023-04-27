@@ -1,6 +1,7 @@
 # working [d]irectory
 alias vdcl='git tabula-rasa'
 alias vdc='git-directory-create'
+alias vdca='git-directory-create-all'
 alias vde='vim $(git-directory-root)/.git/config'
 alias vdl='git status --short'
 alias vdo='git-directory-open'

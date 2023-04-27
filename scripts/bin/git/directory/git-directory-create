@@ -1,139 +1,66 @@
-#!/usr/bin/env ruby
-require_relative '../lib/git_helper'
+#!/usr/bin/env zsh
+set -e
+# Create a new repository locally, and on GitHub
+# Usage:
+# $ git-directory-create ./npcs    # Creates pixelastic/npcs and ./npcs
+# $ git-directory-create -n ./npcs # Only creates locally
+# $ git-directory-create -p ./npcs # Creates it private on GitHub
 
-# Creates a new repository, and plug it to github by default
-# Usage :
-# $ git-directory-create
-# $ git-directory-create ./path/to/repo
-# $ git-directory-create ./path/to/repo url@to:repo.git
-# $ git-directory-create url@to:repo.git ./path/to/repo
-# Options:
-#   By default it will create a repo on GitHub and set it as the remote
-#  -n : Only create a local repo
-#  -b : Set the remote to BitBucket
-#  -a : Set the repo on the Algolia username
-#  -p : Set the repo as private (GitHub only)
-class GitDirectoryCreate
-  include GitHelper
-  def initialize(*args)
-    elements = guess_elements(args)
+zparseopts -E -D \
+  n=flagLocal \
+  p=flagPrivate \
 
-    # Use specified path (if guessed) or unknown element. Fallback to current
-    # directory
-    @path = elements[:path]
-    @path = elements[:unknown][0] if @path.nil?
-    @path = '.' if @path.nil?
-    @path = File.expand_path(@path)
+local isLocal=${#flagLocal}
+local isPrivate=${#flagPrivate}
 
-    # Name of the repo is dirname by default
-    @name = File.basename(@path)
+local repoName="${1:t}"
+local repoNameFull="pixelastic/${repoName}"
+local repoPath="${repoName:a}"
 
-    # Set remote type
-    @remote_type = :github
-    @remote_type = :bitbucket if elements[:arguments].include?('-b')
-    @remote_type = :none if elements[:arguments].include?('-n')
+# Stop if no repo name given {{{
+if [[ $repoName == "" ]]; then
+  echo "You must pass the name of the new repo"
+  exit 1
+fi
+# }}}
+# Stop if such a folder already exists {{{
+if [[ -d $repoPath ]]; then
+  echo "Local repository already exists."
+  exit 1
+fi
+# }}}
+# Stop if remote repo already exists {{{
+if [[ $isLocal == "0" ]]; then
+  if git-github-repo-exists $repoNameFull; then
+    echo "Remote repository already exists: https://github.com/${repoNameFull}"
+    exit 1
+  fi
+fi
+# }}}
 
-    @is_algolia = elements[:arguments].include?('-a')
+# Create the local repo {{{
+mkdir -p $repoPath
+cd $repoPath
+git init --quiet
 
-    # Set private
-    @is_private = elements[:arguments].include?('-p')
-  end
+# Add default files
+cp ~/.oroshi/config/git/gitignore ./.gitignore
+echo "# ${repoName}" > ./README.md
 
-  # Adds readme and gitignore
-  def add_default_files
-    # Add .gitignore
-    gitignore_path = File.join(@path, '.gitignore')
-    unless File.exist?(gitignore_path)
-      default_gitignore = File.expand_path('~/.oroshi/config/git/gitignore')
-      FileUtils.cp(default_gitignore, gitignore_path)
-    end
+# Commit
+git-commit-all "Add .gitignore and README.md"
+# }}}
 
-    # Add readme
-    readme_path = File.join(@path, 'README.md')
-    unless File.exist?(readme_path)
-      File.open(readme_path, 'w') do |file|
-        file.write("# #{@name}\n\n")
-      end
-    end
+# Create remote repo {{{
+if [[ $isLocal == "0" ]]; then
+  # Add remote
+  git-remote-create origin git@github.com:${repoNameFull}.git
 
-    stage_all
-    create_commit('Add .gitignore and README.md')
-    puts '✔ Adding initial commit'
-  end
+  # Create GitHub repo
+  local repoVisibilityArg="--public"
+  [[ $isPrivate == "1" ]] && repoVisibilityArg="--private"
+  gh repo create ${repoVisibilityArg} ${repoNameFull}
 
-  # Define the origin remote
-  def set_remote
-    return if @remote_type == :none
-
-    url = "git@github.com:pixelastic/#{@name}.git" if @remote_type == :github
-    if @remote_type == :bitbucket
-      url = "git@bitbucket.org:pixelastic/#{@name}.git"
-    end
-
-    if create_remote('origin', url)
-      puts '✔ Configuring remote'
-    else
-      puts '✘ Failed to configure remote'
-      exit 1
-    end
-  end
-
-  # Push to the remote
-  def push_to_repo
-    return if @remote_type == :none
-
-    if @remote_type == :bitbucket
-      puts 'Cannot automatically create BitBucket repository.'
-      puts 'Please, open it manually at https://bitbucket.org/repo/create'
-      `#{ENV['BROWSER']} https://bitbucket.org/repo/create`
-      return
-    end
-
-    return unless %i[github].include?(@remote_type)
-
-    gh_options = [
-      @name,
-    ]
-    gh_options << '--team algolia' if @is_algolia
-
-    if @is_private
-      gh_options << '--private'
-    else
-      gh_options << '--public'
-    end
-
-    command = "gh repo create #{gh_options.join(' ')}"
-
-    if command_success?(command)
-      puts '✔ Creating GitHub repository'
-    else
-      puts '✘ Failed to create GitHub repository'
-      exit 1
-    end
-
-    if command_success?('git push origin main')
-      puts '✔ Pushed to repository'
-    else
-      puts '✘ Failed to push to repository'
-      exit 1
-    end
-  end
-
-  def run
-    if repository?(@path)
-      puts "✘ Aborting, #{@path} is already a git repo"
-      exit 1
-    end
-
-    create_repo(@path)
-    puts '✔ Creating local repository'
-    Dir.chdir(@path)
-    add_default_files
-
-    return if @remote_type == :none
-
-    set_remote
-    push_to_repo
-  end
-end
-GitDirectoryCreate.new(*ARGV).run
+  # Push the branch
+  git-branch-push
+fi

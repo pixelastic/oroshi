@@ -1,0 +1,11 @@
+# Checks if the specified repo exists
+# Usage:
+# $ git-github-repo-exists pixelastic/oroshi   # Return 0
+# $ git-github-repo-exists kjdslkjd/kjsqlqj    # Return 1
+function git-github-repo-exists() {
+  local repoName=$1
+
+  gh repo view --json id $repoName &>/dev/null \
+    && return 0 \
+    || return 1
+}

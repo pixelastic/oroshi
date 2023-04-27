@@ -27,8 +27,10 @@ function oroshi-prompt-node-version-populate() {
 
   local nvmrcPath="$(find-up .nvmrc)"
 
-  # No local version defined
+  # No local version defined, using global one
   if [[ $nvmrcPath = '' ]]; then
+    local globalVersion="$(node --version)"
+    OROSHI_PROMPT_PARTS[node-version]+="%F{$COLOR_ALIAS_WARNING} $globalVersion%f"
     return
   fi
 

@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+set -e
+# Create a new repository locally, and on GitHub, and install all deps
+# Usage:
+# $ git-directory-create-all ./npcs    # Creates pixelastic/npcs and ./npcs
+
+# Create a new repo
+local repoName="${1:t}"
+git-directory-create $repoName
+
+cd ./${repoName}
+
+# Setup aberlaas
+yarn add --dev aberlaas
+yarn run aberlaas init
+
+# Commit and push
+git-commit-all -m "chore(init): Scaffolding"
+git-branch-push
+
+# Configure GitHub and CircleCi
+yarn run aberlaas setup
+
+# Mark it for future jump and yarn link
+yarn-link-create
+mark
