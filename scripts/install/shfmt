@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# shfmt is a shell formatter. Prettifies shell code
+# https://github.com/mvdan/sh
+
+sudo apt-get install shfmt

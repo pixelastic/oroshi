@@ -148,6 +148,10 @@ call s:Highlight('Visual', 'WHITE', 'BLUE', 'bold')
 call s:Highlight('IncSearch', 'BLACK', 'YELLOW', 'none')
 call s:Highlight('Search', 'BLACK', 'YELLOW', 'bold')
 " }}}
+" ALE gutter {{{
+call s:Highlight('ALEErrorSign', 'RED')
+call s:Highlight('ALEWarningSign', 'YELLOW')
+" }}}
 " Syntastic gutter {{{
 call s:Highlight('SyntasticErrorSign', 'RED')
 call s:Highlight('SyntasticStyleErrorSign', 'RED')

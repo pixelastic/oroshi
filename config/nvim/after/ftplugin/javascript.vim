@@ -18,26 +18,26 @@ function! JavascriptFoldText()
   return output
 endfunction
 " }}}
-" Linting {{{
-" If coc is not enabled, we revert to syntastic
-if !exists('g:oroshi_coc_enabled')
-  let b:syntastic_checkers = ['eslint']
-  let b:syntastic_javascript_eslint_exec = 'eslint_d'
-endif
-" coc should auto format on save, but this can fail depending on the repo
-" configuration, so we keep <F4> as a way to reformat
+" " Linting {{{
+" " If coc is not enabled, we revert to syntastic
+" if !exists('g:oroshi_coc_enabled')
+"   let b:syntastic_checkers = ['eslint']
+"   let b:syntastic_javascript_eslint_exec = 'eslint_d'
+" endif
+" " coc should auto format on save, but this can fail depending on the repo
+" " configuration, so we keep <F4> as a way to reformat
 
-" Note: If vim fails to reformat, but manually running scripts seems to work,
-" you might want to kill eslint_d. It might have been confused by plugins loaded
-" in various repos, and will require a reboot.
-function! JavascriptBeautify() 
-  let l:initialLine = line('.')
-  execute '%!eslint_d --stdin --fix-to-stdout'
-  execute 'normal '.initialLine.'gg'
-  SyntasticCheck()
-endfunction
-inoremap <silent> <buffer> <F4> <Esc>:call JavascriptBeautify()<CR><CR>
-nnoremap <silent> <buffer> <F4> :call JavascriptBeautify()<CR><CR>
+" " Note: If vim fails to reformat, but manually running scripts seems to work,
+" " you might want to kill eslint_d. It might have been confused by plugins loaded
+" " in various repos, and will require a reboot.
+" function! JavascriptBeautify()
+"   let l:initialLine = line('.')
+"   execute '%!eslint_d --stdin --fix-to-stdout'
+"   execute 'normal '.initialLine.'gg'
+"   SyntasticCheck()
+" endfunction
+" inoremap <silent> <buffer> <F4> <Esc>:call JavascriptBeautify()<CR><CR>
+" nnoremap <silent> <buffer> <F4> :call JavascriptBeautify()<CR><CR>
 " }}}
 
 " Keybindings {{{
@@ -90,25 +90,25 @@ inoremap <buffer> rqgot const got = require('golgoth/got');<CR>
 inoremap <buffer> rqpath const path = require('path');<CR>
 inoremap <buffer> rqpat const path = require('path');<CR>
 " JSDoc helpers
-inoremap <buffer> @para @param {Array} 
-inoremap <buffer> @parb @param {boolean} 
-inoremap <buffer> @parf @param {Function} 
-inoremap <buffer> @parn @param {number} 
-inoremap <buffer> @paro @param {object} 
-inoremap <buffer> @pars @param {string} 
-inoremap <buffer> @par* @param {*} 
-inoremap <buffer> @reta @returns {Array} 
-inoremap <buffer> @retb @returns {boolean} 
-inoremap <buffer> @retf @returns {Function} 
-inoremap <buffer> @retn @returns {number} 
-inoremap <buffer> @reto @returns {object} 
-inoremap <buffer> @retp @returns {Promise} 
-inoremap <buffer> @rets @returns {string} 
-inoremap <buffer> @ret* @returns {*} 
+inoremap <buffer> @para @param {Array}
+inoremap <buffer> @parb @param {boolean}
+inoremap <buffer> @parf @param {Function}
+inoremap <buffer> @parn @param {number}
+inoremap <buffer> @paro @param {object}
+inoremap <buffer> @pars @param {string}
+inoremap <buffer> @par* @param {*}
+inoremap <buffer> @reta @returns {Array}
+inoremap <buffer> @retb @returns {boolean}
+inoremap <buffer> @retf @returns {Function}
+inoremap <buffer> @retn @returns {number}
+inoremap <buffer> @reto @returns {object}
+inoremap <buffer> @retp @returns {Promise}
+inoremap <buffer> @rets @returns {string}
+inoremap <buffer> @ret* @returns {*}
 inoremap <buffer> @paroa @param {Array} options.
 inoremap <buffer> @parob @param {boolean} options.
 inoremap <buffer> @parof @param {Function} options.
 inoremap <buffer> @paron @param {number} options.
 inoremap <buffer> @paroo @param {object} options.
 inoremap <buffer> @paros @param {string} options.
-inoremap <buffer> @retps @returns {Promise.<string>} 
+inoremap <buffer> @retps @returns {Promise.<string>}

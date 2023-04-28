@@ -8,6 +8,3 @@ setlocal omnifunc=syntaxcomplete#Complete
 " remove the _
 setlocal iskeyword=@,48-57,192-255,-,#
 " }}}
-" Syntastic {{{
-let g:syntastic_vim_checkers = ['vint']
-"}}}

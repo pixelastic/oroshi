@@ -9,7 +9,6 @@ Plug 'danro/rename.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
-" Plug 'pixelastic/vim-undodir-tree'
 Plug 'gioele/vim-autoswap'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-abolish'
@@ -49,9 +48,10 @@ Plug 'vim-ruby/vim-ruby'
 " Plug 'tpope/vim-markdown'
 " }}}
 " Enhancing vim workflow {{{
-Plug 'sbdchd/neoformat'
-Plug 'scrooloose/syntastic'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'sbdchd/neoformat'          " Format
+Plug 'dense-analysis/ale'        " Lint & Fix
+" Plug 'scrooloose/syntastic'
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " }}}
 " Git-related plugins {{{
 Plug 'airblade/vim-gitgutter'

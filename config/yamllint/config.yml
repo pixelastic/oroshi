@@ -2,10 +2,10 @@ extends: default
 
 rules:
   # yaml documents can have an optional --- as their first line.
-  # Prettier removes it, and their is a pending issue to have yamllint correctly
+  # Prettier removes it, and there is a pending issue to have yamllint correctly
   # handle this use-case for multi-document yaml files:
   # https://github.com/adrienverge/yamllint/issues/115
   # So for now, we'll just disable the rule to prevent an infinite loop between
   # prettier and yamllint
   document-start: disable
-  comments: {min-spaces-from-content: 1}
+  comments: { min-spaces-from-content: 1 }

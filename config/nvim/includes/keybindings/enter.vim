@@ -3,9 +3,9 @@
 " - Normal new line otherwise (defers to endwise calling)
 let g:endwise_no_mappings = 1
 function! MultiPurposeEnter()
-  if coc#pum#visible()
-    return coc#pum#confirm()
-  endif
+  " if coc#pum#visible()
+  "   return coc#pum#confirm()
+  " endif
   return "\<CR>\<Plug>DiscretionaryEnd"
 endfunction
 imap <expr> <CR> (MultiPurposeEnter())

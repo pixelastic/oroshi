@@ -26,6 +26,7 @@ source ~/.config/nvim/includes/keybindings/tab.vim
 source ~/.config/nvim/includes/keybindings/f1.vim           " Show help
 source ~/.config/nvim/includes/keybindings/f2.vim           " Toggle colorscheme
 source ~/.config/nvim/includes/keybindings/f3.vim           " Debug colorschem
+source ~/.config/nvim/includes/keybindings/f4.vim           " Lint
 source ~/.config/nvim/includes/keybindings/f8.vim           " Toggle hidden characters
 source ~/.config/nvim/includes/keybindings/f9.vim           " Toggle line wrap
 

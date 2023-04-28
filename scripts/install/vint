@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Vint, vim linter
+pip install vim-vint
