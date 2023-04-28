@@ -2,4 +2,4 @@
 
 local args="$@"
 
-sgpt --chat oroshi "$args"
+sgpt "$args"

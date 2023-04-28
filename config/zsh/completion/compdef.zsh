@@ -61,6 +61,13 @@ compdef _docker-containers-ids \
 compdef _package-scripts yarn-run
 compdef _nvm-lazyload lazyloadNvm
 # }}}
+# JSON {{{
+compdef '_files -g "*.json"' \
+	json-filter \
+	json-head
+compdef '_files -g "*.jsonl"' \
+	jsonl2json
+# }}}
 # Python {{{
 compdef _pyenv-lazyload lazyloadPyenv
 # }}}

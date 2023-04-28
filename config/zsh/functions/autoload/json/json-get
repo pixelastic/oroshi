@@ -1,0 +1,24 @@
+# Return the content of a specific key in a json file or piped input
+# Usage:
+# $ cat file.json  | json-get '.name'  # Tim
+# $ json-get file.json '.name'         # Tim
+#
+# Note: Arrays will be returned as comma-separated lists
+function json-get() {
+  # Read either from args or from pipe
+  if [[ -p /dev/stdin ]]; then
+    local jsonInput="$(cat -)"
+    local jsonKey="$1"
+  else 
+    local jsonInput="$(cat $1)"
+    local jsonKey="$2"
+  fi
+
+  echo $jsonInput \
+    | jq \
+      --raw-output \
+      ".${jsonKey} \
+        | if type == \"array\" \
+          then join(\", \") \
+          else tostring end" 
+}

@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+# Filter a JSON array to only keep specific elements
+# Usage:
+# $ json-filter file.json name         # Keep elements that have the name key
+# $ json-filter file.json era fantasy  # Keep elements where era = fantasy
+
+local inputFile="${1:a}"
+local filterKey="$2"
+local filterValue="$3"
+
+# Filtering only on key existence
+if [[ $filterValue == "" ]]; then
+  jq "[.[] | select(has(\"${filterKey}\"))]" $inputFile
+  exit 0
+fi
+
+# Filtering on key and value
+jq "[.[] | select(.${filterKey} == \"${filterValue}\")]" $inputFile
+

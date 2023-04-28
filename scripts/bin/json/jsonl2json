@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+# Convert a .jsonl file to .json
+# Usage:
+# jsonl2json masks.jsonl         # Creates a JSON array file
+
+local inputFile="${1:a}"
+local outputFile="${inputFile:r}.json"
+
+jq \
+  --slurp \
+  '.' \
+  $inputFile \
+  >  $outputFile
+

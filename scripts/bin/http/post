@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# Make a POST request with a json as body
+# Usage:
+# $ post https://url.com/ file.json      # POST file.json as body
+
+local targetUrl="$1"
+local filePath="${2:a}"
+
+http POST $targetUrl< $filePath

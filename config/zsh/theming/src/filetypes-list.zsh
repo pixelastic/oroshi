@@ -33,6 +33,7 @@ FILETYPE_GROUPS[script,patterns]="\
   .html \
   .ini \
   .json \
+  .jsonl \
   .js \
   .ps1 \
   .pug \

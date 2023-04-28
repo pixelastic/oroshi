@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+# Download an algolia index as jsonl file
+# Usage:
+# $ algolia-download monsters                   # monsters.jsonl from preferred app
+# TODO:
+# $ algolia-download monsters --json            # Forces json format
+# $ algolia-download --app ABCDEF monsters      # Switch to different app
+# $ algolia-download --apiKey abcdef monsters   # Uses a different apiKey
+
+local indexName="$1"
+local outputFile="${indexName}.jsonl"
+
+# Stop if no index name
+if [[ $indexName == "" ]]; then
+  echo "✘ You need to pass an index name"
+  exit 1
+fi
+
+algolia objects browse ${indexName} > ${outputFile}
+echo "Index saved as $outputFile"
+
+
+

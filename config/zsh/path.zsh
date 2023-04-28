@@ -19,6 +19,8 @@ function oroshi_path() {
     ~/.oroshi/scripts/bin
     ~/.oroshi/scripts/bin/ai
     ~/.oroshi/scripts/bin/docker
+    ~/.oroshi/scripts/bin/json
+    ~/.oroshi/scripts/bin/http
     ~/.oroshi/scripts/bin/video/bin
     ~/.oroshi/scripts/bin/pdf/bin
     ~/.oroshi/scripts/bin/convert/bin
