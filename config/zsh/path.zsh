@@ -18,6 +18,7 @@ function oroshi_path() {
     # Custom binaries
     ~/.oroshi/scripts/bin
     ~/.oroshi/scripts/bin/ai
+    ~/.oroshi/scripts/bin/img
     ~/.oroshi/scripts/bin/docker
     ~/.oroshi/scripts/bin/json
     ~/.oroshi/scripts/bin/http

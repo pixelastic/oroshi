@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# Resize images to a specific size
+# Usage:
+# $ resize image.jpg 200            # Resize the largest size to 200
+# $ resize image.jpg 200x250        # Resize to 200x250, but keep ratio
+# $ TODO: resize image.jpg 200x           # Resize width to 200
+# $ TODO: resize image.jpg x250           # Resize height to 250
+# $ TODO: resize image.jpg 50%            # Shrink to 50% of the size
+# $ TODO: resize image.jpg 200x250 -f     # Force a resize to 200x250 even if it's distorted
+# $ TODO: resize *.jpg 200x250     # Resize several images
+
+

@@ -40,7 +40,7 @@ end
 " postCSS emulates many of the features of CSS, but we're not using it in every
 " project yet, so we only whitelist the directories where it should add specific
 " config
-if expand('%:p') =~# 'tachyons-algolia'
+if expand('%:p') =~# "tachyons-algolia"
   " Allow gcc to set // comments
   setlocal commentstring=//\ %s
   " Make sure stylelint understand SCSS config even in CSS files
