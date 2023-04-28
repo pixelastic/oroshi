@@ -8,5 +8,3 @@
 # $ TODO: resize image.jpg 50%            # Shrink to 50% of the size
 # $ TODO: resize image.jpg 200x250 -f     # Force a resize to 200x250 even if it's distorted
 # $ TODO: resize *.jpg 200x250     # Resize several images
-
-

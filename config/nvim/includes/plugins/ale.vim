@@ -32,8 +32,9 @@ let g:ale_fixers = {
 " current machine.
 let g:ale_linters = {
 \   'json': ['jsonlint', 'prettier'],
-\   'yml': ['yamllint'],
+\   'sh': ['shellcheck'],
 \   'vim': ['vint'],
+\   'yml': ['yamllint'],
 \}
 let b:ale_vim_vint_executable = '/home/tim/.pyenv/shims/vint' " vint is loaded through pyenv
 
