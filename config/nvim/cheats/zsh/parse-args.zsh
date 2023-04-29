@@ -16,7 +16,6 @@ zparseopts -E -D \
   f=flagForce \
   -force=flagForce
 
-
 local separator=${flagSeparator[2]}
 local isForce=${#flagForce}
 

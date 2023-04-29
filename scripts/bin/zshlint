@@ -1,0 +1,44 @@
+#!/usr/bin/env zsh
+# Lint a zsh file
+# This is a wrapper around shellcheck. Shellcheck does not support zsh by
+# default, but many of the warning triggered on bash also apply on zsh, so we
+# will simply silence the ones that are not relevant.
+#
+# This file can be also called by ale (vim plugin) with the following arguments:
+# $ zshlint --version
+# $ zshlint -s zsh -x -f gcc - < /path/to/file
+# Note: Run :ALEInfo after having run :ALELint in a zsh file to see the command
+# executed
+
+# Parsing the arguments sent by ale
+zparseopts -E -D \
+  s:=flagShell \
+  f:=flagFormat \
+  x=flagSources \
+  -version=flagVersion
+local shellName=${flagShell[2]}
+local isVersion=${#flagVersion}
+
+# List of rules that are not relevant in zsh
+local excludedRules=()
+excludedRules+=(SC1091) # note: Not following: ./path/to/file openBinaryFile: does not exist (No such file or directory)
+excludedRules+=(SC1099) # note: The mentioned syntax error was in this simple command.
+excludedRules+=(SC2034) # warning: {var} appears unused. Verify use (or export if used externally).
+excludedRules+=(SC2086) # note: Double quote to prevent globbing and word splitting.
+excludedRules+=(SC2155) # warning: Declare and assign separately to avoid masking return values.
+excludedRules+=(SC2168) # error: 'local' is only valid in functions.
+
+
+# ALE integration {{{
+if [[ $isVersion == "1" ]]; then
+  shellcheck --version
+  exit 0
+fi
+if [[ $shellName == "zshlint" ]]; then
+  shellcheck -s bash -x -f gcc --exclude ${(j:,:)excludedRules} -
+  exit -2
+fi
+# }}}
+
+# Check the input file
+shellcheck -s bash -x -f gcc --exclude ${(j:,:)excludedRules} $@

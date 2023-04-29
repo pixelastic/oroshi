@@ -12,10 +12,8 @@ function! FiletypeStatusLine()
   execute 'let icon=$FILETYPE_' . filetypeKey . '_ICON'
   let filetypeStatus=''
   let filetypeStatus.='%#Filetype_' . filetypeKey . '#'
-  let filetypeStatus.=icon
-  if &filetype !=# extension
-    let filetypeStatus .=  &filetype
-  endif
+  let filetypeStatus.=&filetype
+  let filetypeStatus.=' ' . icon
   let filetypeStatus.='%*'
   " vint: +ProhibitUsingUndeclaredVariable
 

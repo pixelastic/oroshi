@@ -8,4 +8,3 @@ policies:
   # See https://rbtnn.hateblo.jp/entry/2014/12/28/010913 for details
   ProhibitMissingScriptEncoding:
     enabled: false
-

@@ -12,7 +12,7 @@ let b:syntastic_checkers = ['flake8']
 " }}}
 " Cleaning the file {{{
 nnoremap <silent> <buffer> <F4> :call PythonClean()<CR>
-function! PythonClean() 
+function! PythonClean()
   let l:initialLine = line('.')
 
   execute '%!cat %:p | black --quiet -'

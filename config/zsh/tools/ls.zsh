@@ -2,6 +2,7 @@
 #
 # Configure the colors used by ls (and exa) to display the various files and
 # directories
+
 function oroshi_tools_ls() {
   # Define the custom LS_COLORS
   LS_COLORS="di=38;5;$COLOR_ALIAS_DIRECTORY"     # Directory
@@ -27,7 +28,3 @@ function oroshi_tools_ls() {
 }
 oroshi_tools_ls
 unfunction oroshi_tools_ls
-
-
-
-

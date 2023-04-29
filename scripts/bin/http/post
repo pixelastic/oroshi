@@ -6,4 +6,4 @@
 local targetUrl="$1"
 local filePath="${2:a}"
 
-http POST $targetUrl< $filePath
+http POST $targetUrl <$filePath

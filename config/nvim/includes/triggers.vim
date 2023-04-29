@@ -10,11 +10,12 @@ augroup ft_add_chmodx
   autocmd BufWritePost * call AddExecutablePermissionIfScript()
 augroup END
 " }}}
-" Lint the file on save
+" LINT AND FIX ON SAVE {{{
 augroup lint_onsave
    autocmd!
    autocmd BufWritePre * call Lint()
 augroup END
+" }}}
 " RELOAD NVIM CONFIG {{{
 " Reload the vimrc file whenever it is edited
 augroup ft_nvim_config

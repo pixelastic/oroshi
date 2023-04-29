@@ -7,8 +7,11 @@ scriptencoding utf-8
 " Note: Supported linters
 " https://github.com/dense-analysis/ale/blob/master/supported-tools.md
 "
-" Note: Use :ALEInfo to see the defined vars
-" Note: Use :ALEFixSuggest for ideas of potential fixers
+" Note: Ale fix and Neoformat might overlap. The rule of thumb is to use Ale fix
+" in priority and if a fixer is not available, use neoformat instead.
+"
+" Note: Use :ALEInfo to see the defined vars Note: Use :ALEFixSuggest for ideas
+" of potential fixers
 "
 " TODO: Display the number of errors in the status line
 
@@ -23,21 +26,21 @@ let g:ale_fix_on_save = 0                " Do not fix on save (we use Lint())
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'json': ['prettier'],
-\   'yml': ['prettier'],
+\   'yaml': ['prettier'],
+\   'sh': ['shfmt'],
 \}
 
 " How to lint
-" Any filetype not defined will use the default list for this language. I prefer
-" to write my lists explicitly, so they don't depend on what is installed on the
-" current machine.
+" By default, Ale runs all linters it knows on all filetypes. I prefer a more
+" conservative approach of defining what linters I want to run for each filetype
+let g:ale_linters_explicit = 1
 let g:ale_linters = {
 \   'json': ['jsonlint', 'prettier'],
 \   'sh': ['shellcheck'],
 \   'vim': ['vint'],
 \   'yml': ['yamllint'],
+\   'zsh': ['shellcheck'],
 \}
-let b:ale_vim_vint_executable = '/home/tim/.pyenv/shims/vint' " vint is loaded through pyenv
-
 
 
 let g:ale_sign_error = ' '               " Error sign in gutter
