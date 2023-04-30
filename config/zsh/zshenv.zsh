@@ -17,7 +17,7 @@ source $ZSH_CONFIG_PATH/path.zsh
 # Manually loading all real functions saved in ./functions/*.zsh
 local functionDirectory=$ZSH_CONFIG_PATH/functions
 for item in ${functionDirectory}/*.zsh; do
-  source $item
+	source $item
 done
 
 # Autoload all other functions saved in ./functions/autoload/**/*

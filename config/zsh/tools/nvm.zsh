@@ -27,33 +27,33 @@ export OROSHI_NVM_LOADED="0"
 # invocation
 export OROSHI_NVM_LAZYLOAD_ALIASES=(node npm nvm yarn yarn-run)
 for command in $OROSHI_NVM_LAZYLOAD_ALIASES; do
-  alias $command="lazyloadNvm $command"
+	alias $command="lazyloadNvm $command"
 done
 
 function lazyloadNvm {
-  # When zsh starts, aliases in function bodies are expanded. So the `nvm use`
-  # in this function is actually transformed into `lazyloadNvm nvm use`, which
-  # triggers an infinite recursive loop.
-  # To short-circuit it, we check if nvm is already loaded, and if so, we simply
-  # run the method passed
-  if [[ $OROSHI_NVM_LOADED == "1" ]]; then
-    "$@"
-    return
-  fi
+	# When zsh starts, aliases in function bodies are expanded. So the `nvm use`
+	# in this function is actually transformed into `lazyloadNvm nvm use`, which
+	# triggers an infinite recursive loop.
+	# To short-circuit it, we check if nvm is already loaded, and if so, we simply
+	# run the method passed
+	if [[ $OROSHI_NVM_LOADED == "1" ]]; then
+		"$@"
+		return
+	fi
 
-  # Unregister all the aliases, so the commands refer to the real commands now
-  unalias $OROSHI_NVM_LAZYLOAD_ALIASES
+	# Unregister all the aliases, so the commands refer to the real commands now
+	unalias $OROSHI_NVM_LAZYLOAD_ALIASES
 
-  # Source nvm
-  source ~/.nvm/nvm.sh --no-use
+	# Source nvm
+	source ~/.nvm/nvm.sh --no-use
 
-  # Mark nvm as loaded
-  OROSHI_NVM_LOADED="1"
+	# Mark nvm as loaded
+	OROSHI_NVM_LOADED="1"
 
-  # Initialize nvm for real, using the locally defined node version (if any)
-  # Note: This is slow, but it's as far away as we can delay it
-  nvm use --quiet &>/dev/null
+	# Initialize nvm for real, using the locally defined node version (if any)
+	# Note: This is slow, but it's as far away as we can delay it
+	nvm use --quiet &>/dev/null
 
-  # Run initial command
-  "$@"
+	# Run initial command
+	"$@"
 }

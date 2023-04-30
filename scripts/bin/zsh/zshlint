@@ -37,6 +37,7 @@ excludedRules+=(SC1088) # error: Parsing stopped here. Invalid use of parenthese
 excludedRules+=(SC1090) # warning: ShellCheck can't follow non-constant source. Use a directive to specify location.
 excludedRules+=(SC1091) # note: Not following: ./path/to/file openBinaryFile: does not exist (No such file or directory)
 excludedRules+=(SC1099) # note: The mentioned syntax error was in this simple command.
+excludedRules+=(SC2004) # note: $/${} is unnecessary on arithmetic variables.
 excludedRules+=(SC2034) # warning: {var} appears unused. Verify use (or export if used externally).
 excludedRules+=(SC2035) # note: Use ./*glob* or -- *glob* so names with dashes won't become options.
 excludedRules+=(SC2068) # error: Double quote array expansions to avoid re-splitting elements.
@@ -53,10 +54,13 @@ excludedRules+=(SC2193) # warning: The arguments to this comparison can never be
 excludedRules+=(SC2203) # error: Globs are ignored in [[ ]] except right of =/!=. Use a loop.
 excludedRules+=(SC2206) # warning: Quote to prevent word splitting/globbing, or split robustly with mapfile or read -a.
 excludedRules+=(SC2207) # warning: Prefer mapfile or read -a to split command output (or quote to avoid splitting).
+excludedRules+=(SC2231) # note: Quote expansions in this for loop glob to prevent wordsplitting, e.g. "$dir"/*.txt
 excludedRules+=(SC2296) # error: Parameter expansions can't start with (. Double check syntax.
 excludedRules+=(SC2298) # error: ${${x}} is invalid. For expansion, use ${x}. For indirection, use arrays, ${!x} or (for sh) eval.
-excludedRules+=(SC2004) # note: $/${} is unnecessary on arithmetic variables.
 excludedRules+=(SC2300) # error: Parameter expansion can't be applied to command substitutions. Use temporary variables.
+excludedRules+=(SC1058) # error: Expected 'do'.
+
+
 
 # Exclude directories from the inputs
 local input=()

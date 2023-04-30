@@ -1,66 +1,108 @@
 # Highlighting as I type {{{
 source $ZSH_CONFIG_PATH/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-# Documentation: 
+# Documentation:
 # https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters/main.md
 # https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/highlighters/main/main-highlighter.zsh
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
-# Methods
-ZSH_HIGHLIGHT_STYLES[alias]="fg=$COLOR_ALIAS_FUNCTION"
-ZSH_HIGHLIGHT_STYLES[builtin]="fg=$COLOR_ALIAS_FUNCTION"
-ZSH_HIGHLIGHT_STYLES[command]="fg=$COLOR_ALIAS_FUNCTION"
-ZSH_HIGHLIGHT_STYLES[function]="fg=$COLOR_ALIAS_FUNCTION"
-ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=$COLOR_ALIAS_FUNCTION"
-# Path
-ZSH_HIGHLIGHT_STYLES[path]="fg=$COLOR_ALIAS_DIRECTORY"
-# Glob
-ZSH_HIGHLIGHT_STYLES[globbing]="fg=$COLOR_ALIAS_GLOB"
-# Arguments
-ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="fg=$COLOR_ALIAS_FLAG"
-ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="fg=$COLOR_ALIAS_FLAG"
-# Strings (blue)
-ZSH_HIGHLIGHT_STYLES[back-quoted-argument]="fg=$COLOR_ALIAS_INTERPOLATION_STRING"
-ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=$COLOR_ALIAS_STRING"
-ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=$COLOR_ALIAS_STRING"
-# Numbers (bold blue)
-ZSH_HIGHLIGHT_STYLES[arithmetic-expansion]="fg=$COLOR_ALIAS_NUMBER"
-# Punctuation
-ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]="fg=$COLOR_ALIAS_PUNCTUATION"
-ZSH_HIGHLIGHT_STYLES[commandseparator]="fg=$COLOR_ALIAS_PUNCTUATION"
-# Repetition of last command using !
-ZSH_HIGHLIGHT_STYLES[history-expansion]="fg=$COLOR_NEUTRAL"
-# Variables
-ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]="fg=$COLOR_ALIAS_INTERPOLATION_VARIABLE"
-ZSH_HIGHLIGHT_STYLES[assign]="fg=$COLOR_ALIAS_INTERPOLATION_VARIABLE"
-# Errors
-ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=$COLOR_ALIAS_ERROR"
-# sudo
-ZSH_HIGHLIGHT_STYLES[precommand]="fg=$COLOR_ALIAS_WARNING,bold"
 
+# shfmt, not made for zsh, reformats associative array keys that contains
+# dashes, with spaces between the dashes. It's because in bash, keys must be
+# enclosed in strings, and dashes are minus signs for arithmetic expressions.
+# In bash, keys are interpreted as variables, unless they are quotes.
+# In zsh, keys are interpreted as strings, unless they are prefixed with a $
 
-# Even if the following styles are documented, I could not make them work last
-# time I tried
-ZSH_HIGHLIGHT_STYLES[arg0]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[arithmetic-expansion]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[back-quoted-argument-unclosed]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[double-quoted-argument-unclosed]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[path-prefix]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[redirection]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[single-quoted-argument-unclosed]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[suffix-alias]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[comment]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[global-alias]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[default]="fg=$$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[autodirectory]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[path_pathseparator]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[path_prefix_pathseparator]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[command-substitution]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[command-substitution-delimiter]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[process-substitution]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[process-substitution-delimiter]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[back-quoted-argument-delimiter]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[rc-quote]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[back-dollar-quoted-argument]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[named-fd]="fg=$COLOR_ALIAS_UNKNOWN"
-ZSH_HIGHLIGHT_STYLES[numeric-fd]="fg=$COLOR_ALIAS_UNKNOWN"
-# }}}
+# The only way to work around that is to not use keys with dashes. I can do that
+# with my own code, but here, I'm configuring existing keys of zsh, so I can't
+# rename them.
+#
+# The workaround might be to define the keys as variables, but I'll need them
+# stored somewhere before...
+typeset -A ZSH_HIGHLIGHT_STYLES=(
+	# Fallback color
+	'default' "fg=$COLOR_ALIAS_TEXT"
+
+	# Methods
+	'alias' "fg=$COLOR_ALIAS_FUNCTION"
+	'builtin' "fg=$COLOR_ALIAS_FUNCTION"
+	'command' "fg=$COLOR_ALIAS_FUNCTION"
+	'function' "fg=$COLOR_ALIAS_FUNCTION"
+	'reserved-word' "fg=$COLOR_ALIAS_FUNCTION"
+
+	# Path
+	'path' "fg=$COLOR_ALIAS_DIRECTORY"
+
+	# Glob
+	'globbing' "fg=$COLOR_ALIAS_GLOB"
+
+	# Arguments
+	'double-hyphen-option' "fg=$COLOR_ALIAS_FLAG"
+	'single-hyphen-option' "fg=$COLOR_ALIAS_FLAG"
+
+	# Strings (blue)
+	'back-quoted-argument' "fg=$COLOR_ALIAS_INTERPOLATION_STRING"
+	'double-quoted-argument' "fg=$COLOR_ALIAS_STRING"
+	'single-quoted-argument' "fg=$COLOR_ALIAS_STRING"
+
+	# Numbers (bold blue)
+	'arithmetic-expansion' "fg=$COLOR_ALIAS_NUMBER"
+
+	# Punctuation
+	'back-double-quoted-argument' "fg=$COLOR_ALIAS_PUNCTUATION"
+	'commandseparator' "fg=$COLOR_ALIAS_PUNCTUATION"
+
+	# Repetition of last command using !
+	'history-expansion' "fg=$COLOR_NEUTRAL"
+
+	# Variables
+	'dollar-double-quoted-argument' "fg=$COLOR_ALIAS_INTERPOLATION_VARIABLE"
+	'assign' "fg=$COLOR_ALIAS_INTERPOLATION_VARIABLE"
+
+	# Errors
+	'unknown-token' "fg=$COLOR_ALIAS_ERROR"
+
+	# While typing, but doesn't match anything yet
+	'path_approx' "fg=$COLOR_ALIAS_COMMENT"
+	'path_prefix' "fg=$COLOR_ALIAS_COMMENT"
+
+	# sudo
+	'precommand' "fg=$COLOR_ALIAS_WARNING,bold"
+
+	# ???
+	# 'arg0' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'arithmetic-expansion' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'autodirectory' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'back-dollar-quoted-argument' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'back-quoted-argument-delimiter' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'back-quoted-argument-unclosed' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'bracket-error' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'bracket-level-1' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'bracket-level-2' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'bracket-level-3' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'bracket-level-4' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'bracket-level-5' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'command-substitution' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'command-substitution-delimiter' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'comment' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'cursor' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'cursor-matchingbracket' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'dollar-quoted-argument' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'double-quoted-argument-unclosed' "fg=$COLOR_ALIAS_UNKNOWN"
+
+	# 'global-alias' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'hashed-command' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'line' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'named-fd' "fg=$COLOR_ALIAS_UNKNOWN"
+	#
+	# 'numeric-fd' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'path-prefix' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'path_pathseparator' "fg=$COLOR_ALIAS_UNKNOWN"
+	'path_prefix_pathseparator' "fg=$COLOR_ALIAS_UNKNOWN"
+	#
+	# 'process-substitution' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'process-substitution-delimiter' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'rc-quote' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'redirection' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'root' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'single-quoted-argument-unclosed' "fg=$COLOR_ALIAS_UNKNOWN"
+	# 'suffix-alias' "fg=$COLOR_ALIAS_UNKNOWN"
+)

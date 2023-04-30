@@ -15,7 +15,7 @@ scriptencoding utf-8
 " When to lint
 let g:ale_lint_on_text_changed = 'never' " Do not lint while typing
 let g:ale_lint_on_insert_leave = 0       " Do not lint when leaving insert mode
-let g:ale_lint_on_enter = 'never'        " Do not lint when opening the file
+let g:ale_lint_on_enter = 0              " Do not lint when opening the file
 let g:ale_fix_on_save = 1                " Fix on save
 let g:ale_lint_on_save = 1               " Lint on save
 

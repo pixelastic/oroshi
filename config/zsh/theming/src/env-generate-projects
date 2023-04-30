@@ -12,10 +12,10 @@ local output=""
 
 # This will load PROJECTS definitions. For example:
 #
-# - PROJECTS[aberlaas,background]="YELLOW_7"
-# - PROJECTS[aberlaas,icon]=" "
-# - PROJECTS[aberlaas,path]="~/local/www/projects/aberlaas/"
-# - PROJECTS[aberlaas,foreground]="GRAY_9"
+# - PROJECTS[aberlaas:background]="YELLOW_7"
+# - PROJECTS[aberlaas:icon]=" "
+# - PROJECTS[aberlaas:path]="~/local/www/projects/aberlaas/"
+# - PROJECTS[aberlaas:foreground]="GRAY_9"
 source ~/.oroshi/config/zsh/theming/src/projects-list.zsh
 
 # We'll keep a list of all projects, and a list of all paths
@@ -29,27 +29,27 @@ projectsIndexByPath=()
 
 # Export PROJECT_{TYPE}_{KEY} environment variables:
 for key value in "${(@kv)PROJECTS}"; do
-  [[ $key != *,icon ]] && continue
+  [[ $key != *:icon ]] && continue
 
   # Finding the values
   # Project name: aberlaas
-  local projectName=${key%,*}
+  local projectName=${key%:*}
   # Capitalized project name: ABERLAAS
   local projectKey=${(U)projectName:gs/-/_/}
   # Background colors
-  local backgroundColorName=$PROJECTS[${projectName},background]
+  local backgroundColorName=$PROJECTS[${projectName}:background]
   local backgroundColorTerm=${(P)${:-COLOR_${backgroundColorName}}}
   local backgroundColorHexa=${(P)${:-COLOR_${backgroundColorName}_HEXA}}
   # Foreground colors
-  local foregroundColorName=$PROJECTS[${projectName},foreground]
+  local foregroundColorName=$PROJECTS[${projectName}:foreground]
   local foregroundColorTerm=${(P)${:-COLOR_${foregroundColorName}}}
   local foregroundColorHexa=${(P)${:-COLOR_${foregroundColorName}_HEXA}}
   # Icon
-  local icon=$PROJECTS[${projectName},icon]
+  local icon=$PROJECTS[${projectName}:icon]
   # Path
-  local projectPath=$PROJECTS[${projectName},path]
+  local projectPath=$PROJECTS[${projectName}:path]
   # Should hide the name in prompt?
-  local hideNameInPrompt=$PROJECTS[${projectName},hideNameInPrompt]
+  local hideNameInPrompt=$PROJECTS[${projectName}:hideNameInPrompt]
   [[ $hideNameInPrompt == "" ]] && hideNameInPrompt="0"
 
   # Creating PROJECT entries
