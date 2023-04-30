@@ -60,27 +60,27 @@ source $ZSH_CONFIG_PATH/prompt/ruby.zsh
 # be fetched synchronously or asynchronously.
 OROSHI_SYNCHRONOUS_PROMPT_PARTS=(
   path
-  git-status
-  git-is-submodule
-  exit-code
+  git_status
+  git_is_submodule
+  exit_code
 )
 # TODO: Benchmark this to see the slowest and improve them
 # TODO: Check vcs_info to see if it makes things easier/faster:
 # https://git-scm.com/book/en/v2/Appendix-A%3A-Git-in-Other-Environments-Git-in-Zsh
 OROSHI_ASYNCHRONOUS_PROMPT_PARTS=(
-  git-has-stash
-  git-rebase-in-progress
-  git-rebase-status
-  git-branch
-  git-tag
-  git-remote
-  git-issues
-  git-pullrequests
-  node-monorepo
-  yarn-link
-  yarn-install-in-progress
-  node-version
-  ruby-version
+  git_has_stash
+  git_rebase_in_progress
+  git_rebase_status
+  git_branch
+  git_tag
+  git_remote
+  git_issues
+  git_pullrequests
+  node_monorepo
+  yarn_link
+  yarn_install_in_progress
+  node_version
+  ruby_version
 )
 
 # This variables holds the pid of the function currently generating all the
@@ -110,15 +110,15 @@ OROSHI_LAST_COMMAND_EXIT="0"
 function oroshi-prompt-left() {
   local promptLeft=(
     $OROSHI_PROMPT_PARTS[path]
-    $OROSHI_PROMPT_PARTS[node-monorepo]
-    $OROSHI_PROMPT_PARTS[yarn-link]
-    $OROSHI_PROMPT_PARTS[yarn-install-in-progress]
-    $OROSHI_PROMPT_PARTS[bundle-install-in-progress]
-    $OROSHI_PROMPT_PARTS[git-is-submodule]
-    $OROSHI_PROMPT_PARTS[git-has-stash]
-    $OROSHI_PROMPT_PARTS[git-rebase-in-progress]
-    $OROSHI_PROMPT_PARTS[git-status]
-    $OROSHI_PROMPT_PARTS[exit-code]
+    $OROSHI_PROMPT_PARTS[node_monorepo]
+    $OROSHI_PROMPT_PARTS[yarn_link]
+    $OROSHI_PROMPT_PARTS[yarn_install_in_progress]
+    $OROSHI_PROMPT_PARTS[bundle_install_in_progress]
+    $OROSHI_PROMPT_PARTS[git_is_submodule]
+    $OROSHI_PROMPT_PARTS[git_has_stash]
+    $OROSHI_PROMPT_PARTS[git_rebase_in_progress]
+    $OROSHI_PROMPT_PARTS[git_status]
+    $OROSHI_PROMPT_PARTS[exit_code]
   )
   echo $promptLeft
 }
@@ -126,14 +126,14 @@ PROMPT='$(oroshi-prompt-left)'
 
 function oroshi-prompt-right() {
   local promptRight=(
-    $OROSHI_PROMPT_PARTS[ruby-version]
-    $OROSHI_PROMPT_PARTS[node-version]
-    $OROSHI_PROMPT_PARTS[git-rebase-status]
-    $OROSHI_PROMPT_PARTS[git-issues]
-    $OROSHI_PROMPT_PARTS[git-pullrequests]
-    $OROSHI_PROMPT_PARTS[git-tag]
-    $OROSHI_PROMPT_PARTS[git-remote]
-    $OROSHI_PROMPT_PARTS[git-branch]
+    $OROSHI_PROMPT_PARTS[ruby_version]
+    $OROSHI_PROMPT_PARTS[node_version]
+    $OROSHI_PROMPT_PARTS[git_rebase_status]
+    $OROSHI_PROMPT_PARTS[git_issues]
+    $OROSHI_PROMPT_PARTS[git_pullrequests]
+    $OROSHI_PROMPT_PARTS[git_tag]
+    $OROSHI_PROMPT_PARTS[git_remote]
+    $OROSHI_PROMPT_PARTS[git_branch]
   )
   echo -n $promptRight
 }
@@ -163,6 +163,7 @@ add-zsh-hook precmd oroshi-git-env-store
 # Synchronously populate prompt parts that are quick to generate
 function oroshi-prompt-synchronous-populate() {
   for promptPart in $OROSHI_SYNCHRONOUS_PROMPT_PARTS; do
+    promptPart=${promptPart//_/-}
     eval "oroshi-prompt-${promptPart}-populate"
   done
 }
@@ -183,6 +184,7 @@ function oroshi-prompt-asynchronous-populate() {
   function async() {
     # Save all new parts in a file
     for promptPart in $OROSHI_ASYNCHRONOUS_PROMPT_PARTS; do
+      promptPart=${promptPart//_/-}
       eval "oroshi-prompt-${promptPart}-populate"
       echo $OROSHI_PROMPT_PARTS[$promptPart] >! ${OROSHI_ASYNCHRONOUS_SAVE_PATH}/${promptPart}
     done

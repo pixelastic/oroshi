@@ -1,3 +1,4 @@
+# shellcheck disable=SC2154
 # Path
 # Displays the current path in a shortened form:
 # - Use a colored prefix icon for known paths
@@ -20,6 +21,7 @@ function oroshi-prompt-path-populate() {
 
   # Add marker if connected through SSH
   if [[ $SSH_CLIENT != '' ]]; then
+    local hostname="$(hostname)"
     OROSHI_PROMPT_PARTS[path]="%F{$COLOR_ORANGE}  $hostname %f%k"
   fi
 

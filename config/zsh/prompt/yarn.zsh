@@ -1,7 +1,8 @@
+# shellcheck disable=SC2154
 # Add icons for each known yarn linked project
 function oroshi-prompt-yarn-link-populate() {
-  OROSHI_PROMPT_PARTS[yarn-link]=""
-  (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
+  OROSHI_PROMPT_PARTS[yarn_link]=""
+  [[ $GIT_DIRECTORY_IS_REPOSITORY == 0 ]] && return
 
   local linkedModules="$(yll-raw)"
   local totalModuleCount=0
@@ -27,20 +28,20 @@ function oroshi-prompt-yarn-link-populate() {
   done
 
   # If some linked modules don't have an icon, we add the default chain ico
-  if [[ $displayedModuleCount != $totalModuleCount ]]; then
+  if [[ $displayedModuleCount != "$totalModuleCount" ]]; then
     displayedString+=" "
   fi
 
   if [[ $displayedString != "" ]]; then
-    OROSHI_PROMPT_PARTS[yarn-link]="%F{$COLOR_ALIAS_STRING}${displayedString}%f"
+    OROSHI_PROMPT_PARTS[yarn_link]="%F{$COLOR_ALIAS_STRING}${displayedString}%f"
   fi
 }
 
 # Check if a yarn install is in progress
 function oroshi-prompt-yarn-install-in-progress-populate() {
-  OROSHI_PROMPT_PARTS[yarn-install-in-progress]=""
+  OROSHI_PROMPT_PARTS[yarn_install_in_progress]=""
 
   if yarn-install-in-progress; then
-    OROSHI_PROMPT_PARTS[yarn-install-in-progress]="%F{$COLOR_GREEN_8} %f"
+    OROSHI_PROMPT_PARTS[yarn_install_in_progress]="%F{$COLOR_GREEN_8} %f"
   fi
 }
