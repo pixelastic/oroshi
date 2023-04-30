@@ -6,8 +6,8 @@
 # - Green if no files were changed
 # - Red if any file has been added/deleted/modified
 # - Purple if files are added to the index
-function oroshi-prompt-git-status-populate() {
-  OROSHI_PROMPT_PARTS[git_status]=""
+function oroshi-prompt-populate:git_status() {
+  OROSHI_PROMPT_PARTS[git-status]=""
   # Stop if not in a git repo
   (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
   # Or if in a .git/ folder
@@ -30,7 +30,7 @@ function oroshi-prompt-git-status-populate() {
 }
 
 # Display a colored branch, with icons
-function oroshi-prompt-git-branch-populate() {
+function oroshi-prompt-populate:git_branch() {
   OROSHI_PROMPT_PARTS[git_branch]=""
   (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
 
@@ -38,7 +38,7 @@ function oroshi-prompt-git-branch-populate() {
 }
 
 # Display the most relevant git tag
-function oroshi-prompt-git-tag-populate() {
+function oroshi-prompt-populate:git_tag() {
   OROSHI_PROMPT_PARTS[git_tag]=""
   (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
 
@@ -46,7 +46,7 @@ function oroshi-prompt-git-tag-populate() {
 }
 
 # Display the current remote
-function oroshi-prompt-git-remote-populate() {
+function oroshi-prompt-populate:git_remote() {
   OROSHI_PROMPT_PARTS[git_remote]=""
   (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
 
@@ -57,7 +57,7 @@ function oroshi-prompt-git-remote-populate() {
 }
 
 # Check if in a submodule
-function oroshi-prompt-git-is-submodule-populate() {
+function oroshi-prompt-populate:git_is_submodule() {
   OROSHI_PROMPT_PARTS[git_is_submodule]=""
   (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
 
@@ -67,7 +67,7 @@ function oroshi-prompt-git-is-submodule-populate() {
 }
 
 # Check if has stashes
-function oroshi-prompt-git-has-stash-populate() {
+function oroshi-prompt-populate:git_has_stash() {
   OROSHI_PROMPT_PARTS[git_has_stash]=""
   (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
 
@@ -77,7 +77,7 @@ function oroshi-prompt-git-has-stash-populate() {
 }
 
 # Check if rebase is in progress
-function oroshi-prompt-git-rebase-in-progress-populate() {
+function oroshi-prompt-populate:git_rebase_in_progress() {
   OROSHI_PROMPT_PARTS[git_rebase_in_progress]=""
 
   git-rebase-in-progress || return
@@ -88,7 +88,7 @@ function oroshi-prompt-git-rebase-in-progress-populate() {
 # Display the current state of the rebase:
 # - How many steps are there
 # - commitId of the current commit being rebased
-function oroshi-prompt-git-rebase-status-populate() {
+function oroshi-prompt-populate:git_rebase_status() {
   OROSHI_PROMPT_PARTS[git_rebase_status]=""
   (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
 
@@ -111,7 +111,7 @@ function oroshi-prompt-git-rebase-status-populate() {
 }
 
 # Returns the number of currently opened issues
-function oroshi-prompt-git-issues-populate() {
+function oroshi-prompt-populate:git_issues() {
   OROSHI_PROMPT_PARTS[git_issues]=""
   (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
   git-directory-is-github || return
@@ -141,7 +141,7 @@ function oroshi-prompt-git-issues-populate() {
 }
 
 # Returns the number of currently opened pullrequests
-function oroshi-prompt-git-pullrequests-populate() {
+function oroshi-prompt-populate:git_pullrequests() {
   OROSHI_PROMPT_PARTS[git_pullrequests]=""
   (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
   git-directory-is-github || return

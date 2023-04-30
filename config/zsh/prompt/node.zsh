@@ -2,7 +2,7 @@
 # Node
 
 # Add an icon if in a monorepo
-function oroshi-prompt-node-monorepo-populate() {
+function oroshi-prompt-populate:node_monorepo() {
   OROSHI_PROMPT_PARTS[node_monorepo]=""
   (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
   yarn-is-monorepo || return
@@ -17,7 +17,7 @@ function oroshi-prompt-node-monorepo-populate() {
 # -  X.Y.Z (red) if local version isn't installed
 # -  X.Y.Z (yellow) if local and current don't match match
 # -  X.Y.Z (green) if local and current match
-function oroshi-prompt-node-version-populate() {
+function oroshi-prompt-populate:node_version() {
   OROSHI_PROMPT_PARTS[node_version]=""
 
   # Not even a system-wide node installation

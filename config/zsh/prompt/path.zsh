@@ -4,7 +4,7 @@
 # - Use a colored prefix icon for known paths
 # - Shorten the actual path to no more than 3 items
 # - Color the path if not writable
-function oroshi-prompt-path-populate() {
+function oroshi-prompt-populate:path() {
   OROSHI_PROMPT_PARTS[path]=""
   local currentPath="${PWD/#$HOME/~}/"
 
@@ -34,7 +34,7 @@ function oroshi-prompt-path-populate() {
 
   # Stop if no more path
   [[ $currentPath == '' ]] && return
- 
+
   # In .git
   if git-directory-is-dot-git; then
     OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ORANGE}  "

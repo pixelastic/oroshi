@@ -34,7 +34,7 @@ source $ZSH_CONFIG_PATH/prompt/path.zsh
 source $ZSH_CONFIG_PATH/prompt/ruby.zsh
 # }}}
 
-# Overview {{{ 
+# Overview {{{
 # The best prompt is one that is blazingly fast, and also displays
 # all the relevant information. But, as the computation to get this information
 # can be slow, tricks have to be deployed to keep the display fast.
@@ -163,8 +163,7 @@ add-zsh-hook precmd oroshi-git-env-store
 # Synchronously populate prompt parts that are quick to generate
 function oroshi-prompt-synchronous-populate() {
   for promptPart in $OROSHI_SYNCHRONOUS_PROMPT_PARTS; do
-    promptPart=${promptPart//_/-}
-    eval "oroshi-prompt-${promptPart}-populate"
+    eval "oroshi-prompt-populate:${promptPart}"
   done
 }
 add-zsh-hook precmd oroshi-prompt-synchronous-populate
@@ -184,8 +183,7 @@ function oroshi-prompt-asynchronous-populate() {
   function async() {
     # Save all new parts in a file
     for promptPart in $OROSHI_ASYNCHRONOUS_PROMPT_PARTS; do
-      promptPart=${promptPart//_/-}
-      eval "oroshi-prompt-${promptPart}-populate"
+      eval "oroshi-prompt-populate:${promptPart}"
       echo $OROSHI_PROMPT_PARTS[$promptPart] >! ${OROSHI_ASYNCHRONOUS_SAVE_PATH}/${promptPart}
     done
 

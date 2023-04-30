@@ -7,7 +7,7 @@
 # - {nothing} if not a ruby repo (no .ruby-version)
 # -  X.Y.Z (red) if local version isn't installed
 # -  X.Y.Z (green) if local and current match
-function oroshi-prompt-ruby-version-populate() {
+function oroshi-prompt-populate:ruby_version() {
 	OROSHI_PROMPT_PARTS[ruby_version]=""
 
 	# Not even a system-wide ruby installation
@@ -42,7 +42,7 @@ function oroshi-prompt-ruby-version-populate() {
 }
 
 # Check if a bundle install is in progress
-function oroshi-prompt-bundle-install-in-progress-populate() {
+function oroshi-prompt-populate:bundle_install_in_progress() {
 	OROSHI_PROMPT_PARTS[bundle_install_in_progress]=""
 
 	if bundle-install-in-progress; then

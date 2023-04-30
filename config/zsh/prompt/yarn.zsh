@@ -1,6 +1,6 @@
 # shellcheck disable=SC2154
 # Add icons for each known yarn linked project
-function oroshi-prompt-yarn-link-populate() {
+function oroshi-prompt-populate:yarn_link() {
   OROSHI_PROMPT_PARTS[yarn_link]=""
   [[ $GIT_DIRECTORY_IS_REPOSITORY == 0 ]] && return
 
@@ -38,7 +38,7 @@ function oroshi-prompt-yarn-link-populate() {
 }
 
 # Check if a yarn install is in progress
-function oroshi-prompt-yarn-install-in-progress-populate() {
+function oroshi-prompt-populate:yarn_install_in_progress() {
   OROSHI_PROMPT_PARTS[yarn_install_in_progress]=""
 
   if yarn-install-in-progress; then
