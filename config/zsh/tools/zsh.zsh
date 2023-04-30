@@ -5,18 +5,6 @@ source $ZSH_CONFIG_PATH/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.
 # https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/highlighters/main/main-highlighter.zsh
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
 
-# shfmt, not made for zsh, reformats associative array keys that contains
-# dashes, with spaces between the dashes. It's because in bash, keys must be
-# enclosed in strings, and dashes are minus signs for arithmetic expressions.
-# In bash, keys are interpreted as variables, unless they are quotes.
-# In zsh, keys are interpreted as strings, unless they are prefixed with a $
-
-# The only way to work around that is to not use keys with dashes. I can do that
-# with my own code, but here, I'm configuring existing keys of zsh, so I can't
-# rename them.
-#
-# The workaround might be to define the keys as variables, but I'll need them
-# stored somewhere before...
 typeset -A ZSH_HIGHLIGHT_STYLES=(
 	# Fallback color
 	'default' "fg=$COLOR_ALIAS_TEXT"
