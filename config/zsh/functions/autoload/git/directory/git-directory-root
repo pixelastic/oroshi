@@ -5,45 +5,42 @@
 # $ git-directory-root -f / --force  # Goes all the way up submodules
 # TODO: Write tests
 function git-directory-root {
-  # If not in a git repo, we simply return the current path
-  if ! git-directory-is-repository; then
-    echo "$PWD"
-    return 1
-  fi
+	# If not in a git repo, we simply return the current path
+	if ! git-directory-is-repository; then
+		echo "$PWD"
+		return 1
+	fi
 
-  zmodload zsh/zutil
-  zparseopts -E -D \
-    f=flagForce \
-    -force=flagForce
+	zmodload zsh/zutil
+	zparseopts -E -D \
+		f=flagForce \
+		-force=flagForce
 
-  local isForce=${#flagForce}
+	# shellcheck disable=SC2154
+	local isForce=${#flagForce}
 
-  # Check from the given directory, or the current one if none specified
-  local targetPath="$1"
-  [[ $targetPath == "" ]] && targetPath="$PWD"
-  [[ ! -d "$targetPath" ]] && targetPath="${targetPath:r}"
-  [[ $targetPath[-1] != "/" ]] && targetPath+="/"
+	# Check from the given directory, or the current one if none specified
+	local targetPath="$1"
+	[[ $targetPath == "" ]] && targetPath="$PWD"
+	[[ ! -d "$targetPath" ]] && targetPath="${targetPath:r}"
+	[[ $targetPath[-1] != "/" ]] && targetPath+="/"
 
-  # If path contains a .git/ folder, we remove anything after it
-  if [[ $targetPath == *.git/* ]]; then
-    echo ${targetPath//\/.git\/*/}
-    return 0
-  fi
+	# If path contains a .git/ folder, we remove anything after it
+	if [[ $targetPath == *.git/* ]]; then
+		echo ${targetPath//\/.git\/*/}
+		return 0
+	fi
 
-  # If -f is passed, we try the superproject root
-  if [[ $isForce == "1" ]]; then
-    local gitRoot="$(git rev-parse --show-superproject-working-tree)"
-    if [[ $gitRoot != "" ]]; then
-      echo $gitRoot
-      return 0
-    fi
-  fi
+	# If -f is passed, we try the superproject root
+	if [[ $isForce == "1" ]]; then
+		local gitRoot="$(git rev-parse --show-superproject-working-tree)"
+		if [[ $gitRoot != "" ]]; then
+			echo $gitRoot
+			return 0
+		fi
+	fi
 
-  # Otherwise, we fallback to the current root
-  local gitRoot="$(git rev-parse --show-toplevel)"
-  echo $gitRoot
+	# Otherwise, we fallback to the current root
+	local gitRoot="$(git rev-parse --show-toplevel)"
+	echo $gitRoot
 }
-
-
-
-

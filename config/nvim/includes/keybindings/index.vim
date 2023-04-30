@@ -32,6 +32,9 @@ source ~/.config/nvim/includes/keybindings/f9.vim           " Toggle line wrap
 
 source ~/.config/nvim/includes/keybindings/ctrl-a.vim       " Select all
 
+source ~/.config/nvim/includes/keybindings/ctrl-e.vim       " Go to next error
+source ~/.config/nvim/includes/keybindings/ctrl-shift-e.vim " Go to previous error
+
 source ~/.config/nvim/includes/keybindings/ctrl-s.vim       " Save file
 source ~/.config/nvim/includes/keybindings/ctrl-d.vim       " Close tab/vim
 source ~/.config/nvim/includes/keybindings/ctrl-del.vim     " Delete current file
@@ -85,8 +88,6 @@ nnoremap <silent> <Leader>q :cprev<CR>
 nnoremap <silent> <Leader>d :cnext<CR>
 " Select the current block of text
 nnoremap vip {jv}k$
-" Go to next error
-nnoremap <silent> <C-E> :lnext<CR>
 " }}}
 
 " MUSCLE MEMORY {{{

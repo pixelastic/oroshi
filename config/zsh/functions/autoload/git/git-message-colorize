@@ -3,29 +3,27 @@
 # $ git-message-colorize "fix stuff"                  # fix stuff
 # $ git-message-colorize "fix stuff" --with-icon      #  fix stuff
 function git-message-colorize() {
+	zparseopts -E -D \
+		-with-icon=flagWithIcon
 
-  # Filter positional arguments and flags
-  local argsp=()
-  local -A argsf; argsf=()
-  for arg in $argv; do
-    [[ "$arg" =~ "^-" ]] && argsf[$arg]=1 || argsp+="$arg"
-  done
+	# shellcheck disable=SC2154
+	local isWithIcon=${#flagWithIcon}
 
-  # Message {{{
-  local message="$argsp[1]"
-  # We need a message passed
-  if [[ $message == '' ]]; then
-    return 0
-  fi
-  # }}}
+	# Message {{{
+	local message="$1"
+	# We need a message passed
+	if [[ $message == '' ]]; then
+		return 0
+	fi
+	# }}}
 
-  # If --with-icon is not passed, we simply display the colored message
-  if [[ "$argsf[--with-icon]" != 1 ]]; then
-    colorize "$message" ALIAS_GIT_MESSAGE
-    return
-  fi
+	# If --with-icon is not passed, we simply display the colored message
+	if [[ "$isWithIcon" != 1 ]]; then
+		colorize "$message" ALIAS_GIT_MESSAGE
+		return
+	fi
 
-  # Otherwise we add the icon
-  colorize " $message" ALIAS_GIT_MESSAGE
-  return
+	# Otherwise we add the icon
+	colorize " $message" ALIAS_GIT_MESSAGE
+	return
 }

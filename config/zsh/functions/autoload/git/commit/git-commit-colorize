@@ -4,25 +4,24 @@
 # $ git-commit-colorize upstream           # abcdef
 # $ git-commit-colorize --with-icon        #  abcdef
 function git-commit-colorize() {
-  # Filter positional arguments and flags
-  local argsp=()
-  local -A argsf; argsf=()
-  for arg in $argv; do
-    [[ "$arg" =~ "^-" ]] && argsf[$arg]=1 || argsp+="$arg"
-  done
+	zparseopts -E -D \
+		-with-icon=flagWithIcon
 
-  # Commit hash
-  local commitHash="$argsp[1]"
-  if [[ $commitHash == '' ]]; then
-    commitHash="$(git-commit-current)"
-  fi
+	# shellcheck disable=SC2154
+	local isWithIcon=${#flagWithIcon}
 
-  # If --with-icon is passed, we add an icon
-  if [[ "$argsf[--with-icon]" == 1 ]]; then
-    colorize " $commitHash" ALIAS_GIT_COMMIT
-    return
-  fi
+	# Commit hash
+	local commitHash="$1"
+	if [[ $commitHash == '' ]]; then
+		commitHash="$(git-commit-current)"
+	fi
 
-  colorize "$commitHash" ALIAS_GIT_COMMIT
-  return
+	# If --with-icon is passed, we add an icon
+	if [[ "$isWithIcon" == 1 ]]; then
+		colorize " $commitHash" ALIAS_GIT_COMMIT
+		return
+	fi
+
+	colorize "$commitHash" ALIAS_GIT_COMMIT
+	return
 }

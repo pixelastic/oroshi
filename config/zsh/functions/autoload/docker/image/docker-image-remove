@@ -24,7 +24,7 @@ function docker-image-remove() {
 
     # If several matches, stop and ask to be more explicit
     local imageCount=$(docker-image-count $imageName)
-    if [[ $imageCount > 1 ]]; then
+    if [[ $imageCount -gt 1 ]]; then
       echo "✘ There are multiple images named $displayImageName:"
       docker-image-list $imageName
       continue

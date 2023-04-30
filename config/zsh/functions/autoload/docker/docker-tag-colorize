@@ -4,30 +4,32 @@
 # $ docker-tag-colorize latest --with-icon          #  latest
 # $ docker-tag-colorize 22.04 --with-icon           #  22.04
 function docker-tag-colorize() {
-  zparseopts -E -D \
-    -with-icon=flagWithIcon
-  local isWithIcon=${#flagWithIcon}
+	zparseopts -E -D \
+		-with-icon=flagWithIcon
 
-  local tagName="$1"
+	# shellcheck disable=SC2154
+	local isWithIcon=${#flagWithIcon}
 
-  if [[ "$tagName" == "latest" ]]; then
-    local tagColor=$COLOR_ALIAS_DOCKER_TAG_LATEST
-  else 
-    local tagColor=$COLOR_ALIAS_DOCKER_TAG
-  fi
+	local tagName="$1"
 
-  # If --with-icon is not passed, we simply display the colored tag
-  if [[ "$isWithIcon" != 1 ]]; then
-    colorize "$tagName" $tagColor
-    return
-  fi
+	if [[ "$tagName" == "latest" ]]; then
+		local tagColor=$COLOR_ALIAS_DOCKER_TAG_LATEST
+	else
+		local tagColor=$COLOR_ALIAS_DOCKER_TAG
+	fi
 
-  # If latest tag, we use a different icon
-  if [[ "$tagName" == "latest" ]]; then
-    colorize " $tagName" $tagColor
-    return
-  else
-    colorize " $tagName" $tagColor
-    return
-  fi
+	# If --with-icon is not passed, we simply display the colored tag
+	if [[ "$isWithIcon" != 1 ]]; then
+		colorize "$tagName" $tagColor
+		return
+	fi
+
+	# If latest tag, we use a different icon
+	if [[ "$tagName" == "latest" ]]; then
+		colorize " $tagName" $tagColor
+		return
+	else
+		colorize " $tagName" $tagColor
+		return
+	fi
 }

@@ -19,8 +19,8 @@ scriptencoding utf-8
 let g:ale_lint_on_text_changed = 'never' " Do not lint while typing
 let g:ale_lint_on_insert_leave = 0       " Do not lint when leaving insert mode
 let g:ale_lint_on_enter = 'never'        " Do not lint when opening the file
-let g:ale_lint_on_save = 0               " Do not lint on save (we use Lint())
-let g:ale_fix_on_save = 0                " Do not fix on save (we use Lint())
+let g:ale_lint_on_save = 1               " Do not lint on save (we use Lint())
+let g:ale_fix_on_save = 1                " Do not fix on save (we use Lint())
 
 " How to fix
 let g:ale_fixers = {

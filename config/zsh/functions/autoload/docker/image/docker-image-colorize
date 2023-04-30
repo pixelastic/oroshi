@@ -9,8 +9,12 @@ function docker-image-colorize() {
   zparseopts -E -D \
     -with-icon=flagWithIcon \
     -remote=flagRemote
-  local isWithIcon=${#flagWithIcon}
-  local isRemote=${#flagRemote}
+
+	# shellcheck disable=SC2154
+  {
+    local isWithIcon=${#flagWithIcon}
+    local isRemote=${#flagRemote}
+  }
 
   # Split image name and its tag
   local inputSplit=(${(@s/:/)1})

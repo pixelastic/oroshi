@@ -25,5 +25,5 @@ function docker-container-count() {
     allImages+=($imageName)
   done
 
-  echo ${(F)allImages} | \grep "^$query" | wc -l
+  echo ${(F)allImages} | \grep -c "^$query"
 }

@@ -1,9 +1,6 @@
 # List all defined hosts
 function complete-ssh-known-hosts() {
-  local raw="$(\
-    cat ~/.ssh/config \
-    | grep '^ *\(Host\|Hostname\|User\)' \
-  )"
+  local raw="$(grep '^ *\(Host\|Hostname\|User\)' < ~/.ssh/config)"
 
   # We'll build a list of all hosts, and memorize their users and hostnames
   declare -A hostnamesByHost

@@ -3,33 +3,35 @@
 # $ git-date-colorize "3 months, 2 days ago"             # 3 m., 2d.
 # $ git-date-colorize "3 months, 2 days ago" --with-icon #  3m., 2d.
 function git-date-colorize() {
-  zparseopts -E -D \
-    -with-icon=flagWithIcon
-  local isWithIcon=${#flagWithIcon}
+	zparseopts -E -D \
+		-with-icon=flagWithIcon
 
-  # Raw Date {{{
-  local rawDate="$1"
-  # We need a date passed
-  if [[ $rawDate == '' ]]; then
-    return 0
-  fi
-  local displayDate="$rawDate"
-  displayDate="${displayDate/ ago/}"
-  displayDate="${displayDate/ years/y}"
-  displayDate="${displayDate/ months/mo}"
-  displayDate="${displayDate/ weeks/w}"
-  displayDate="${displayDate/ days/d}"
-  displayDate="${displayDate/ hours/h}"
-  displayDate="${displayDate/ minutes/mn}"
-  # }}}
+	# shellcheck disable=SC2154
+	local isWithIcon=${#flagWithIcon}
 
-  # If --with-icon is not passed, we simply display the colored date
-  if [[ "$isWithIcon" != 1 ]]; then
-    colorize "$displayDate" ALIAS_DATE
-    return
-  fi
+	# Raw Date {{{
+	local rawDate="$1"
+	# We need a date passed
+	if [[ $rawDate == '' ]]; then
+		return 0
+	fi
+	local displayDate="$rawDate"
+	displayDate="${displayDate/ ago/}"
+	displayDate="${displayDate/ years/y}"
+	displayDate="${displayDate/ months/mo}"
+	displayDate="${displayDate/ weeks/w}"
+	displayDate="${displayDate/ days/d}"
+	displayDate="${displayDate/ hours/h}"
+	displayDate="${displayDate/ minutes/mn}"
+	# }}}
 
-  # Otherwise we add the icon
-  colorize " $displayDate" ALIAS_DATE
-  return
+	# If --with-icon is not passed, we simply display the colored date
+	if [[ "$isWithIcon" != 1 ]]; then
+		colorize "$displayDate" ALIAS_DATE
+		return
+	fi
+
+	# Otherwise we add the icon
+	colorize " $displayDate" ALIAS_DATE
+	return
 }

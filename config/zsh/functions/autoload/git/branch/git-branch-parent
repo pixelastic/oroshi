@@ -3,6 +3,7 @@
 # branch is that?
 # Usage:
 # $ git-branch-parent
+# shellcheck disable=SC2178
 function git-branch-parent() {
   # We get the list of all "decorations", ie branchnames and tags, and then
   # massage it until we get the name of the second closest decoration

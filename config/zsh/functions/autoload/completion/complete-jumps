@@ -1,7 +1,7 @@
 # Display list of jumps and their paths
 function complete-jumps() {
   local suggestions=()
-  for item in $MARKPATH/*; do
+  for item in "$MARKPATH"/*; do
 
     local projectKey=${item:t:u}
     local projectIcon=${(P)${:-PROJECT_${projectKey}_ICON}}

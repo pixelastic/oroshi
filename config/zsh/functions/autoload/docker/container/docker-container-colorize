@@ -5,32 +5,36 @@
 # $ docker-container-colorize alpine_latest --with-icon --state stopped #  alpine
 # $ docker-container-colorize alpine_latest --with-icon --state running #  alpine
 function docker-container-colorize() {
-  zparseopts -E -D \
-    -with-icon=flagWithIcon \
-    -state:=flagState
-  local isWithIcon=${#flagWithIcon}
-  local state=${flagState[2]}
+	zparseopts -E -D \
+		-with-icon=flagWithIcon \
+		-state:=flagState
 
-  # Split container name and its tag
-  local containerName=$1
+	# shellcheck disable=SC2154
+	{
+		local isWithIcon=${#flagWithIcon}
+		local state=${flagState[2]}
+	}
 
-  # Container color {{{
-  local containerColor=$COLOR_ALIAS_DOCKER_CONTAINER
-  [[ $state == "running" ]] && containerColor=$COLOR_ALIAS_DOCKER_CONTAINER_RUNNING
-  [[ $state == "exited" ]] && containerColor=$COLOR_GRAY
-  # }}}
-  
-  # If --with-icon is not passed, we simply display the colored container
-  if [[ "$isWithIcon" != 1 ]]; then
-    echo "$(colorize "${containerName}" $containerColor)"
-    return
-  fi
+	# Split container name and its tag
+	local containerName=$1
 
-  # If --with-icon is passed, we display a different icon based on if the container
-  # is local or remote
-  local containerIcon=" "
-  [[ $state == "running" ]] && containerIcon=" "
-  [[ $state == "exited" ]] && containerIcon=" "
+	# Container color {{{
+	local containerColor=$COLOR_ALIAS_DOCKER_CONTAINER
+	[[ $state == "running" ]] && containerColor=$COLOR_ALIAS_DOCKER_CONTAINER_RUNNING
+	[[ $state == "exited" ]] && containerColor=$COLOR_GRAY
+	# }}}
 
-  echo "$(colorize "${containerIcon}${containerName}" $containerColor)${tagSuffix}"
+	# If --with-icon is not passed, we simply display the colored container
+	if [[ "$isWithIcon" != 1 ]]; then
+		colorize "${containerName}" $containerColor
+		return
+	fi
+
+	# If --with-icon is passed, we display a different icon based on if the container
+	# is local or remote
+	local containerIcon=" "
+	[[ $state == "running" ]] && containerIcon=" "
+	[[ $state == "exited" ]] && containerIcon=" "
+
+	colorize "${containerIcon}${containerName}" $containerColor
 }
