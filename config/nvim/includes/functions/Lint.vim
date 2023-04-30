@@ -9,7 +9,7 @@ function! Lint()
   " Note: Neoformat should be called before ALE. Neoformat is synchronous, so it
   " should not be called while ALE is trying to fix the file, or it risks
   " changing the file before ALE has had time to finish.
-  silent Neoformat
+  " silent Neoformat
 
   ALEFix
   ALELint

@@ -20,7 +20,7 @@ function apt-search() {
   
   # Iterate on each package and build a list of them
   local packageList=()
-  for packageDetails in $rawPackageList;do
+  for packageDetails in $allPackages;do
     # Read each package description line to get info
     local packageLines=(${(f)packageDetails})
     local packageName=""
@@ -43,7 +43,7 @@ function apt-search() {
       local currentVersion="$(apt-version $packageName)"
       packageName="$(colorize $packageName $COLOR_ALIAS_PACKAGE_INSTALLED)"
 
-      if [[ $packageVersion == $currentVersion ]]; then
+      if [[ $packageVersion == "$currentVersion" ]]; then
         packageVersion="$(colorize $packageVersion $COLOR_ALIAS_PACKAGE_INSTALLED)"
       else
         packageVersion="$(colorize $packageVersion $COLOR_ALIAS_VERSION_MISMATCH)"

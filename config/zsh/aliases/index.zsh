@@ -2,8 +2,7 @@
 # markers
 unsetopt NOMATCH
 
-for item in $ZSH_CONFIG_PATH/aliases/**/*.zsh; do
-  [[ ${item:t} == "index.zsh" ]] && continue
-  source ${item}
+for item in "$ZSH_CONFIG_PATH"/aliases/**/*.zsh; do
+	[[ ${item:t} == "index.zsh" ]] && continue
+	source ${item}
 done
-

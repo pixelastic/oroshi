@@ -28,6 +28,7 @@ let g:ale_fixers = {
 \   'json': ['prettier'],
 \   'yaml': ['prettier'],
 \   'sh': ['shfmt'],
+\   'zsh': ['shfmt'],
 \}
 
 " How to lint

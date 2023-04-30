@@ -11,11 +11,12 @@ zmodload zsh/zutil
 # f=       : Short flag, like -f
 # -force=  : Long flag, like --force
 zparseopts -E -D \
-  s:=flagSeparator \
-  -separator:=flagSeparator \
-  f=flagForce \
-  -force=flagForce
+	s:=flagSeparator \
+	-separator:=flagSeparator \
+	f=flagForce \
+	-force=flagForce
 
+# shellcheck disable=SC2154
 local separator=${flagSeparator[2]}
 local isForce=${#flagForce}
 

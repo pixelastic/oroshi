@@ -45,8 +45,6 @@ alias doc="docker-oroshi-commit"
 # dcc incremets the patch, unless a specific version, minor, major
 # ???
 
-
-
 # # Docker Composer
 # alias dc="docker-compose"
 # # Images

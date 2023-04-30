@@ -48,7 +48,7 @@ Plug 'vim-ruby/vim-ruby'
 " Plug 'tpope/vim-markdown'
 " }}}
 " Enhancing vim workflow {{{
-Plug 'sbdchd/neoformat'          " Format
+" Plug 'sbdchd/neoformat'          " Format
 Plug 'dense-analysis/ale'        " Lint & Fix
 " Plug 'scrooloose/syntastic'
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}

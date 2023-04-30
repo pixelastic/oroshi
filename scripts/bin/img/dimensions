@@ -10,18 +10,18 @@ local input=$args[1]
 
 # One image
 if [[ $argCount == 1 ]]; then
-  identify -format "%wx%h\n" $input
-  exit 0
+	identify -format "%wx%h\n" $input
+	exit 0
 fi
 
 # Multiple images
 local output=""
 for arg in $args; do
-  local dimensions="$(identify -format "%wx%h\n" $arg)"
-  output+="${arg:t}▮${dimensions}\n"
+	local dimensions="$(identify -format "%wx%h\n" $arg)"
+	output+="${arg:t}▮${dimensions}\n"
 done
 
 echo $output | column \
-  --separator "▮" \
-  --table \
-  --table-noheadings
+	--separator "▮" \
+	--table \
+	--table-noheadings
