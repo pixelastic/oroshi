@@ -1,4 +1,6 @@
 " VIM
+" Linting
+let b:ale_linters = ['vint']
 " Fold {{{
 setlocal foldmethod=marker
 "}}}
@@ -8,7 +10,4 @@ setlocal omnifunc=syntaxcomplete#Complete
 " remove the _
 setlocal iskeyword=@,48-57,192-255,-,#
 " }}}
-"
-" Use the vint executable from pyenv {{{
-let b:ale_vim_vint_executable = '/home/tim/.pyenv/shims/vint'
 " }}}

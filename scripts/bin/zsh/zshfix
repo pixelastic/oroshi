@@ -1,0 +1,32 @@
+#!/usr/bin/zsh
+# Fix a zsh file in place
+# Usage:
+# $ zshfix file.zsh   # Format the file
+# $ zshfix ./*.zsh    # Format several files
+#
+# This is a wrapper around shfmt and beautysh. None of those tools actually
+# support zsh.
+# - shfmt is very powerful, but chokes on some zsh-specific syntax
+# (most notably variable modifiers) and refuse to format a file that contains
+# them.
+# - beautysh is slower and does way less things, but doesn't seem to mind
+# zsh-specific syntax.
+#
+# So we'll try shfmt, and if it fails, fallback on beautysh
+
+local inputs=($@)
+
+for input in $inputs; do
+	# First, try to format with shfmt
+	shfmt \
+		-ci \
+		-w \
+		${input} \
+		2>/dev/null \
+		&& continue
+
+	# If it fails, execute beautysh instead
+	beautysh \
+		--indent-size 2 \
+		${input}
+done

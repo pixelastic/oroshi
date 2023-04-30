@@ -4,4 +4,4 @@ local sessionName="$1"
 local windowName="$2"
 
 local windowIcon="$(tmux-status-icon $windowName)"
-echo -n " ${windowIcon}${windowName} #[fg=colour239]#[default]";
+echo -n " ${windowIcon}${windowName} #[fg=colour239]#[default]"

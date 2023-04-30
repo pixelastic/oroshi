@@ -8,6 +8,7 @@ function oroshi_path() {
     ~/.rbenv/bin
     ~/.rbenv/shims
     ~/.pyenv/bin
+    ~/.pyenv/shims
     ~/.cargo/bin
 
     # Installed binaries
@@ -18,14 +19,15 @@ function oroshi_path() {
     # Custom binaries
     ~/.oroshi/scripts/bin
     ~/.oroshi/scripts/bin/ai
-    ~/.oroshi/scripts/bin/img
-    ~/.oroshi/scripts/bin/docker
-    ~/.oroshi/scripts/bin/json
-    ~/.oroshi/scripts/bin/http
-    ~/.oroshi/scripts/bin/video/bin
-    ~/.oroshi/scripts/bin/pdf/bin
     ~/.oroshi/scripts/bin/convert/bin
     ~/.oroshi/scripts/bin/coriolis/bin
+    ~/.oroshi/scripts/bin/docker
+    ~/.oroshi/scripts/bin/http
+    ~/.oroshi/scripts/bin/img
+    ~/.oroshi/scripts/bin/json
+    ~/.oroshi/scripts/bin/pdf/bin
+    ~/.oroshi/scripts/bin/video/bin
+    ~/.oroshi/scripts/bin/zsh
 
     # Private binaries
     ~/.oroshi/private/scripts/bin

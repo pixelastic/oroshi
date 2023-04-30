@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+# Wrapper of zshfix to be used by ALE in vim
+# Usage:
+# $ zshfix-ale -filename=file.zsh < tmpfile.zsh  # As called by ALE
+
+# ALE passes the filepath as the -filename= argument, and the content through
+# stdin.
+# We convert the filepath as a regular argument and discard stdin
+local input=""
+for arg in $@; do
+	if [[ $arg == -filename=* ]]; then
+		input=${arg:10}
+		break
+	fi
+done
+
+# ALE expect the result to be output, so we apply zshfix on a temporary copy of
+# the file
+local uuid="$(md5 ${input:a})"
+local tmpFile="/tmp/oroshi/zshfix/${uuid}.zsh"
+rm -f ${tmpFile}
+mkdir -p ${tmpFile:h}
+cp ${input:a} ${tmpFile}
+
+# If the fix is successful, we display the content
+zshfix ${tmpFile} && cat ${tmpFile}
+
