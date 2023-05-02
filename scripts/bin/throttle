@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+# Call a command only once every n seconds.
+# If the exact same command is called again in less than the defined frequency,
+# nothing happens
+# Usage:
+# $ throttle 30 generate-output    # Calling generate-output again in the next 30s won't do anything
+
+# Arguments
+local frequency="$1"
+local subCommand=(${@[@]:2})
+
+# Cache file
+local uuid="$(md5 "$subCommand)")"
+local cachePath="/tmp/oroshi/throttle/${uuid}"
+
+# Check if the cache file is still fresh
+if ! find ${cachePath} -type f -newermt "${frequency} seconds ago" &>/dev/null; then
+  exit 0
+fi
+
+# Create a cache file
+mkdir -p ${cachePath:h}
+touch $cachePath
+
+# Execute the command
+$subCommand

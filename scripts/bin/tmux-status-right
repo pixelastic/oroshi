@@ -9,11 +9,11 @@ source ~/.oroshi/config/zsh/theming/env/projects.zsh
 local output=''
 
 # Dropbox status {{{
-if dropbox-is-running; then
-  output="#[fg=colour${COLOR_ALIAS_COMMENT}] #[default]$output"
-else
-  output="#[fg=colour${COLOR_ALIAS_ERROR}] #[default] $output"
-fi
+# if dropbox-is-running; then
+# 	output="#[fg=colour${COLOR_ALIAS_COMMENT}] #[default]$output"
+# else
+# 	output="#[fg=colour${COLOR_ALIAS_ERROR}] #[default] $output"
+# fi
 # }}}
 # Clock {{{
 local clock="$(date +'%d/%m %H:%M')"
@@ -22,12 +22,12 @@ output="#[fg=colour${COLOR_ALIAS_DATE}] $clock#[default] $output"
 # Connection status {{{
 local connection_status=''
 if is-online; then
-  local ping="$(ping-average)"
-  [[ $ping -lt 230 ]] && connection_status="#[fg=colour${COLOR_ALIAS_ERROR}] ${ping}ms#[default]"
-  [[ $ping -lt 160 ]] && connection_status="#[fg=colour${COLOR_ALIAS_WARNING}] ${ping}ms#[default]"
-  [[ $ping -lt 80 ]] && connection_status="#[fg=colour${COLOR_ALIAS_NOTICE}] ${ping}ms#[default]"
+	local ping="$(ping-average)"
+	[[ $ping -lt 230 ]] && connection_status="#[fg=colour${COLOR_ALIAS_ERROR}] ${ping}ms#[default]"
+	[[ $ping -lt 160 ]] && connection_status="#[fg=colour${COLOR_ALIAS_WARNING}] ${ping}ms#[default]"
+	[[ $ping -lt 80 ]] && connection_status="#[fg=colour${COLOR_ALIAS_NOTICE}] ${ping}ms#[default]"
 else
-  connection_status="#[fg=colour${COLOR_ALIAS_ERROR},bold]offline#[default]"
+	connection_status="#[fg=colour${COLOR_ALIAS_ERROR},bold]offline#[default]"
 fi
 output="$connection_status $output"
 # }}}
@@ -36,9 +36,9 @@ output="$connection_status $output"
 local ram_percent="$(ram-percent)"
 local ram_status=""
 if [[ $ram_percent -gt 50 ]]; then
-  ram_status="#[fg=colour${COLOR_YELLOW}] ${ram_percent}%#[default]"
-  [[ $ram_percent -gt 80 ]] && ram_status="#[fg=colour${COLOR_RED}] ${ram_percent}%#[default]"
-  output="$ram_status $output"
+	ram_status="#[fg=colour${COLOR_YELLOW}] ${ram_percent}%#[default]"
+	[[ $ram_percent -gt 80 ]] && ram_status="#[fg=colour${COLOR_RED}] ${ram_percent}%#[default]"
+	output="$ram_status $output"
 fi
 # }}}
 # CPU usage {{{
@@ -46,9 +46,9 @@ fi
 local cpu_percent="$(cpu-percent)"
 local cpu_status=""
 if [[ $cpu_percent -gt 50 ]]; then
-  cpu_status="#[fg=colour${COLOR_ALIAS_WARNING}] ${cpu_percent}%#[default]"
-  [[ $cpu_percent -gt 80 ]] && cpu_status="#[fg=colour${COLOR_ALIAS_ERROR}] ${cpu_percent}%#[default]"
-  output="$cpu_status $output"
+	cpu_status="#[fg=colour${COLOR_ALIAS_WARNING}] ${cpu_percent}%#[default]"
+	[[ $cpu_percent -gt 80 ]] && cpu_status="#[fg=colour${COLOR_ALIAS_ERROR}] ${cpu_percent}%#[default]"
+	output="$cpu_status $output"
 fi
 # }}}
 # Battery life {{{
@@ -59,54 +59,55 @@ local battery_status="$(battery-status)"
 local battery_percent="$(battery-percent)"
 local battery_duration="$(battery-duration)"
 if [[ $battery_percent -ne 99 ]]; then
-  local battery_display="${battery_percent}%"
-  if [[ $battery_status == 'discharging' ]]; then
-    battery_display="${battery_display} (${battery_duration})"
-  fi
-  # Charging, green
-  if [[ $battery_status == 'charging' ]]; then
-     output="#[fg=colour${COLOR_ALIAS_SUCCESS}] $battery_display#[default] $output"
-  else
-    if [[ $battery_percent -lt 100 && $battery_percent -ge 50 ]]; then
-      output="#[fg=colour${COLOR_ALIAS_COMMENT}]  $battery_display $output#[default]"
-    fi
-    if [[ $battery_percent -lt 50 && $battery_percent -ge 10 ]]; then
-      output="#[fg=colour${COLOR_ALIAS_WARNING}]  $battery_display#[default] $output"
-    fi
-    if [[ $battery_percent -lt 10 ]]; then
-      output="#[fg=colour${COLOR_ALIAS_ERROR},bold]  $battery_display#[default] $output"
-    fi
-  fi
+	local battery_display="${battery_percent}%"
+	if [[ $battery_status == 'discharging' ]]; then
+		battery_display="${battery_display} (${battery_duration})"
+	fi
+	# Charging, green
+	if [[ $battery_status == 'charging' ]]; then
+		output="#[fg=colour${COLOR_ALIAS_SUCCESS}] $battery_display#[default] $output"
+	else
+		if [[ $battery_percent -lt 100 && $battery_percent -ge 50 ]]; then
+			output="#[fg=colour${COLOR_ALIAS_COMMENT}]  $battery_display $output#[default]"
+		fi
+		if [[ $battery_percent -lt 50 && $battery_percent -ge 10 ]]; then
+			output="#[fg=colour${COLOR_ALIAS_WARNING}]  $battery_display#[default] $output"
+		fi
+		if [[ $battery_percent -lt 10 ]]; then
+			output="#[fg=colour${COLOR_ALIAS_ERROR},bold]  $battery_display#[default] $output"
+		fi
+	fi
 fi
 # }}}
 # Currently playing {{{
 local currently_playing=''
 if spotify-is-running; then
-  currently_playing="$(spotify-data)"
-  if [ "${#currently_playing}" -gt 40 ]; then
-    currently_playing="$(echo $currently_playing | cut -c 1-40)…"
-  fi
-  currently_playing="#[fg=colour${COLOR_ALIAS_SUCCESS}] $currently_playing#[default]"
-else if cmus-is-running; then
-  currently_playing="$(cmus-data title)"
-  local music_status="$(cmus-data status)"
-  # Adding play/pause icon
-  if [[ $music_status == 'playing' ]]; then
-    currently_playing=" $currently_playing"
-  else
-    currently_playing=" $currently_playing"
-  fi
-  # Adding shuffle icon
-  if [[ "$(cmus-data shuffle)" == "true" ]]; then
-    currently_playing=" $currently_playing"
-  fi
-  # Adding color
-  if [[ $music_status == 'playing' ]]; then
-    currently_playing="#[fg=colour${COLOR_ALIAS_SUCCESS}]$currently_playing#[default]"
-  else
-    currently_playing="#[fg=colour${COLOR_ALIAS_COMMENT}]$currently_playing#[default]"
-  fi
-fi
+	currently_playing="$(spotify-data)"
+	if [ "${#currently_playing}" -gt 40 ]; then
+		currently_playing="$(echo $currently_playing | cut -c 1-40)…"
+	fi
+	currently_playing="#[fg=colour${COLOR_ALIAS_SUCCESS}] $currently_playing#[default]"
+else
+	if cmus-is-running; then
+		currently_playing="$(cmus-data title)"
+		local music_status="$(cmus-data status)"
+		# Adding play/pause icon
+		if [[ $music_status == 'playing' ]]; then
+			currently_playing=" $currently_playing"
+		else
+			currently_playing=" $currently_playing"
+		fi
+		# Adding shuffle icon
+		if [[ "$(cmus-data shuffle)" == "true" ]]; then
+			currently_playing=" $currently_playing"
+		fi
+		# Adding color
+		if [[ $music_status == 'playing' ]]; then
+			currently_playing="#[fg=colour${COLOR_ALIAS_SUCCESS}]$currently_playing#[default]"
+		else
+			currently_playing="#[fg=colour${COLOR_ALIAS_COMMENT}]$currently_playing#[default]"
+		fi
+	fi
 fi
 output="$currently_playing $output"
 # }}}

@@ -1,0 +1,11 @@
+# Get the md5 hash of a string
+# Usage:
+# $ md5 my-thing    # 09aba8b0082a20bb0f846317d0170462
+function md5() {
+	local input="$1"
+	echo -n "${input}" |
+		md5sum |
+		cut \
+			--delimiter ' ' \
+			--fields 1
+}
