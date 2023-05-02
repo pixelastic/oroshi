@@ -1,0 +1,5 @@
+# Clear tmux status cache and refresh it
+function oroshi-reload-tmux() {
+	rm -f /tmp/oroshi/tmux/*
+	tmux-refresh
+}

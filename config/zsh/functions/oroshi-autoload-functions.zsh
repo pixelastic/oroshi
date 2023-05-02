@@ -1,4 +1,7 @@
 # Reload all autoloaded functions
+# WARNING: Make a copy of this file before editing it.
+# WARNING: As it is sourced by zshenv, ALL scripts will run it (including tmux,
+# prompt and others). Any error or output can have consequences.
 declare -A OROSHI_AUTOLOADED_FUNCTIONS
 declare -A OROSHI_AUTOLOADED_FUNCTIONS_BACKUP
 
@@ -19,7 +22,7 @@ function oroshi-autoload-functions() {
     local functionName="${item:t}"
 
     # If was already loaded, we unload it, so sourcing this file is idempotent
-    if [[ $OROSHI_AUTOLOADED_FUNCTIONS_BACKUP[$functionName] == "1" ]]; then 
+    if [[ $OROSHI_AUTOLOADED_FUNCTIONS_BACKUP[$functionName] == "1" ]]; then
       unfunction $functionName
     fi
 

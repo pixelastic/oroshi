@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-ping -c 1 -w 3 www.google.com &>/dev/null 

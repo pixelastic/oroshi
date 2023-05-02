@@ -26,6 +26,8 @@ function oroshi_path() {
 		~/.oroshi/scripts/bin/img
 		~/.oroshi/scripts/bin/json
 		~/.oroshi/scripts/bin/pdf/bin
+		~/.oroshi/scripts/bin/spotify
+		~/.oroshi/scripts/bin/tmux
 		~/.oroshi/scripts/bin/video/bin
 		~/.oroshi/scripts/bin/zsh
 

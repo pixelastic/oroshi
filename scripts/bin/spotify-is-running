@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-status="$(sp current)"
-
-if [[ "$status" == "Error: Spotify is not running." ]]; then
-  exit 1
-fi
-exit 0

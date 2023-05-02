@@ -1,0 +1,11 @@
+# Check if we are currently connected
+#
+# Usage:
+# $ is-online    # exit 0 is www.google.com is reachable
+function is-online() {
+	ping \
+		-c 1 \
+		-w 3 \
+		www.google.com \
+		&>/dev/null
+}

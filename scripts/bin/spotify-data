@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-eval "$(sp eval)"
-echo "$SPOTIFY_ARTIST - $SPOTIFY_TITLE"

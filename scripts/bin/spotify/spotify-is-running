@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# Check if spotify is currently running
+# Usage:
+# $ spotify-is-running   # exit 0 if currently running
+#
+# Note: This needs to stay as a binary and not a function as it is used by
+# scripts called through keybindings
+sp current |
+	\grep --silent "Error: Spotify is not running" &&
+	exit 1
+exit 0
