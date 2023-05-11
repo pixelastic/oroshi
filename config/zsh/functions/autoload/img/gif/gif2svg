@@ -1,0 +1,6 @@
+# Convert gif files to svg
+# Usage:
+# $ gif2svg ./*.gif
+function gif2svg() {
+	image-convert $1 svg
+}

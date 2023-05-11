@@ -1,0 +1,6 @@
+# Convert png files to jpg
+# Usage:
+# $ png2jpg ./*.png
+function png2jpg() {
+	image-convert $1 jpg
+}

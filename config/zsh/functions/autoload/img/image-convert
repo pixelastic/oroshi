@@ -1,0 +1,40 @@
+# Convert images to a specific extension
+# Usage:
+# $ image-convert ./*.jpg ./*.svg png    # Convert all jpg and svg files to png
+# $ image-convert -f ./*.svg png         # Overwrites existing destinations
+
+function image-convert() {
+  zparseopts -E -D \
+    f=flagForce \
+    -force=flagForce
+
+  # shellcheck disable=SC2154
+  local isForce=${#flagForce}
+
+  # Inputs are all the arguments, except the last one which is the new type
+  local inputs=(${@[@]:1:-1})
+  local newExtension=${@[-1]}
+
+  for input in $inputs; do
+    local inputPath=${input:a}
+
+    # Skip missing files
+    [[ ! -f $inputPath ]] && continue
+
+    local outputPath="${inputPath:r}.${newExtension}"
+
+    # Skip if output already exists (unless --force)
+    if [[ -r $outputPath ]] && [[ $isForce == "0" ]]; then
+      echo "✘ $outputPath already exists. Pass --force / -f to overwrite"
+      continue
+    fi
+
+
+    # svg2png
+
+    convert \
+      -background none \
+      $inputPath \
+      $outputPath
+  done
+}

@@ -1,0 +1,6 @@
+# Convert svg files to jpg
+# Usage:
+# $ svg2jpg ./*.svg
+function svg2jpg() {
+	image-convert $1 jpg
+}

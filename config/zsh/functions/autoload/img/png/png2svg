@@ -1,0 +1,6 @@
+# Convert png files to svg
+# Usage:
+# $ png2svg ./*.png
+function png2svg() {
+	image-convert $1 svg
+}

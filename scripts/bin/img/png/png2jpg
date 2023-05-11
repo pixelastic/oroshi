@@ -10,6 +10,7 @@ zparseopts -E -D \
 
 local input="$@"
 
+# shellcheck disable=SC2154
 local isForce=${#flagForce}
 
 for inputPath in ${=input}; do

@@ -59,6 +59,23 @@ compdef _docker-containers-ids \
 compdef '_files -g "*.{bmp,gif,jpg,jpeg,png,svg,tiff,webp}"' \
 	dimensions
 compdef _image-resize resize
+compdef '_files -g "*.png"' \
+	png2gif \
+	png2jpg \
+	png-trim \
+	png2svg
+compdef '_files -g "*.{jpg,jpeg}"' \
+	jpg2gif \
+	jpg2png \
+	jpg2svg
+compdef '_files -g "*.gif"' \
+	gif2jpg \
+	gif2png \
+	gif2svg
+compdef '_files -g "*.svg"' \
+	svg2gif \
+	svg2jpg \
+	svg2png
 # }}}
 # JavaScript {{{
 compdef _package-scripts yarn-run

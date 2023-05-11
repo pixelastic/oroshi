@@ -1,0 +1,4 @@
+#!/usr/bin/env
+# Returns a value between 0 and 100 representing how much two images are
+# similar.
+# 0 is for similar images, 100 for very different images

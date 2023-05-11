@@ -3,8 +3,8 @@ set -e
 
 # Basic image support
 sudo apt-get install \
-  libimage-exiftool-perl \
-  imagemagick
+	libimage-exiftool-perl \
+	imagemagick
 
 # DSSIM
 ~/.oroshi/scripts/install/image/dssim
@@ -19,6 +19,9 @@ sudo apt-get install \
 # PNG
 ~/.oroshi/scripts/install/image/png
 
+# SVG
+~/.oroshi/scripts/install/image/svg
+
 # GIF
 ~/.oroshi/scripts/install/image/gifsicle
 ~/.oroshi/scripts/install/image/asciinema
@@ -26,4 +29,3 @@ sudo apt-get install \
 # PDF
 ~/.oroshi/scripts/install/image/pdf
 ~/.oroshi/scripts/install/image/xournal
-

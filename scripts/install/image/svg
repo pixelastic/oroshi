@@ -1,3 +1,5 @@
 #!/usr/bin/env sh
 
+sudo apt-get install potrace
+
 yarn global add svgo

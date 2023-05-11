@@ -1,0 +1,6 @@
+# Convert png files to gif
+# Usage:
+# $ png2gif ./*.png
+function png2gif() {
+	image-convert $1 gif
+}

@@ -1,0 +1,6 @@
+# Convert jpg files to gif
+# Usage:
+# $ jpg2gif ./*.jpg
+function jpg2gif() {
+	image-convert $1 gif
+}
