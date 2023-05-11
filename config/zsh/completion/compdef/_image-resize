@@ -1,0 +1,11 @@
+#compdef
+
+# Suggest image files and resize options
+function _image-resize() {
+  local suggestions=(${(f)"$(resize --completion)"})
+
+  _files -g "*.{bmp,gif,jpg,jpeg,png,svg,tiff,webp}"
+
+  _describe -V "$(completion-header $COLOR_ALIAS_FLAG $COLOR_WHITE '-- Flags ')" suggestions
+
+}

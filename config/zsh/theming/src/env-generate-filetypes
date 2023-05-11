@@ -34,7 +34,7 @@ for key value in "${(@kv)FILETYPE_GROUPS}"; do
   local groupBold=$FILETYPE_GROUPS[${groupName}:bold]
   [[ $groupBold == "" ]] && groupBold="0"
 
-  # Creating FILETYPES entries for each pattern
+  # Creating FILETYPE entries for each pattern
   local patterns=(${=value})
   for pattern in $patterns; do
     # Only assign them if they aren't already defined
@@ -52,6 +52,15 @@ for key value in "${(@kv)FILETYPE_GROUPS}"; do
     output+="export FILETYPE_${indexName}_ICON=\"$icon\"\n"
     filetypesIndex+=($indexName)
   done
+
+  # Create the FILETYPE_GROUP_{GROUPNAME}_* variables, for the whole group
+  # Used if we want to get the generic icon/color for all images/documents/etc
+  groupName=${(U)groupName}
+  output+="export FILETYPE_GROUP_${groupName}_COLOR=\"${(P)${:-COLOR_${color}}}\"\n"
+  output+="export FILETYPE_GROUP_${groupName}_COLOR_NAME=\"${color}\"\n"
+  output+="export FILETYPE_GROUP_${groupName}_COLOR_HEXA=\"${(P)${:-COLOR_${color}_HEXA}}\"\n"
+  output+="export FILETYPE_GROUP_${groupName}_BOLD=\"$bold\"\n"
+  output+="export FILETYPE_GROUP_${groupName}_ICON=\"$icon\"\n"
 done
 
 # Alphabetical list of all filetypes

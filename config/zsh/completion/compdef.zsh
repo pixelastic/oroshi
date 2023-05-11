@@ -14,10 +14,8 @@
 #
 # Note: Because of compdef cache, compdef association defined here can stay
 # active even if deleted from this file. To be sure to remove them:
-# - rm -f ~/.zcompdump 
+# - rm -f ~/.zcompdump
 # - reload the shell
-
-
 
 compdef _jumps unmark j
 
@@ -57,6 +55,11 @@ compdef _docker-containers \
 compdef _docker-containers-ids \
 	docker-container-name
 # }}}
+# Images {{{
+compdef '_files -g "*.{bmp,gif,jpg,jpeg,png,svg,tiff,webp}"' \
+	dimensions
+compdef _image-resize resize
+# }}}
 # JavaScript {{{
 compdef _package-scripts yarn-run
 compdef _nvm-lazyload lazyloadNvm
@@ -74,6 +77,3 @@ compdef _pyenv-lazyload lazyloadPyenv
 # SSH {{{
 compdef _ssh-known-hosts ssh
 # }}}
-
-
-

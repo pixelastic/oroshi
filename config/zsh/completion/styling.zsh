@@ -11,7 +11,7 @@ function ♣() {
   local pattern="$1"
   local color="$2"
   # The string is split in 4 parts, separated by =
-  # The first part is the pattern to match. 
+  # The first part is the pattern to match.
   # The second part is the default color
   # The 3rd and 4th parts are the colors for the 1st (value) and 2nd (comment)
   # matching groups of the pattern
@@ -35,7 +35,7 @@ function ♣() {
 function oroshi-completion-styling() {
   # Default coloring
   local listColorsDefault=(\
-    # Default color
+      # Default color
     "${(f)$(♣ "*" $COLOR_WHITE)}"
 
     # File and directory colors
@@ -43,52 +43,54 @@ function oroshi-completion-styling() {
   )
   # Color flags
   local listColorsFlag=(\
-    "${(f)$(♣ "*" $COLOR_ALIAS_FLAG)}" \
-    $listColorsDefault \
-  )
+      "${(f)$(♣ "*" $COLOR_ALIAS_FLAG)}" \
+      $listColorsDefault \
+    )
   # Color git branches
   local listColorsGitBranch=(\
-    # Known branches
+      # Known branches
     "${(f)$(♣ "master*" $COLOR_ALIAS_GIT_BRANCH_MASTER)}" \
-    "${(f)$(♣ "main*" $COLOR_ALIAS_GIT_BRANCH_MAIN)}" \
-    "${(f)$(♣ "develop*" $COLOR_ALIAS_GIT_BRANCH_DEVELOP)}" \
-    "${(f)$(♣ "dependabot*" $COLOR_ALIAS_GIT_BRANCH_DEPENDABOT)}" \
-    # Default branch color
+      "${(f)$(♣ "main*" $COLOR_ALIAS_GIT_BRANCH_MAIN)}" \
+      "${(f)$(♣ "develop*" $COLOR_ALIAS_GIT_BRANCH_DEVELOP)}" \
+      "${(f)$(♣ "dependabot*" $COLOR_ALIAS_GIT_BRANCH_DEPENDABOT)}" \
+      # Default branch color
     "${(f)$(♣ "*" $COLOR_ALIAS_GIT_BRANCH)}" \
-    $listColorsDefault \
-  )
+      $listColorsDefault \
+    )
   # Color remote ssh
   local listColorsKnownHost=(\
-    "${(f)$(♣ "pixelastic*" $COLOR_ALIAS_HOST_PIXELASTIC)}" \
-    "${(f)$(♣ "github*" $COLOR_ALIAS_HOST_GITHUB)}" \
-    $listColorsDefault \
-  )
+      "${(f)$(♣ "pixelastic*" $COLOR_ALIAS_HOST_PIXELASTIC)}" \
+      "${(f)$(♣ "github*" $COLOR_ALIAS_HOST_GITHUB)}" \
+      $listColorsDefault \
+    )
   # Docker {{{
   # Remote images
   local listColorsDockerImageRemote=(\
-    "${(f)$(♣ "*" $COLOR_ALIAS_DOCKER_IMAGE_REMOTE)}" \
-    $listColorsDefault \
-  )
+      "${(f)$(♣ "*" $COLOR_ALIAS_DOCKER_IMAGE_REMOTE)}" \
+      $listColorsDefault \
+    )
   # Local images
   # Note: I still need to find a way to color hashes differently than image
   # names
   # "${(f)$(♣ "*" $COLOR_ALIAS_DOCKER_IMAGE_ORPHAN)}" \
-  local listColorsDockerImage=(\
-    "${(f)$(♣ "ghcr.io/*" $COLOR_ALIAS_DOCKER_IMAGE_GITHUB)}" \
-    "${(f)$(♣ "oroshi:*" $COLOR_ALIAS_DOCKER_IMAGE_OROSHI)}" \
-    "${(f)$(♣ "[a-z]*" $COLOR_ALIAS_DOCKER_IMAGE)}" \
-    $listColorsDefault \
-  )
+    local listColorsDockerImage=(\
+      "${(f)$(♣ "ghcr.io/*" $COLOR_ALIAS_DOCKER_IMAGE_GITHUB)}" \
+      "${(f)$(♣ "oroshi:*" $COLOR_ALIAS_DOCKER_IMAGE_OROSHI)}" \
+      "${(f)$(♣ "[a-z]*" $COLOR_ALIAS_DOCKER_IMAGE)}" \
+      $listColorsDefault \
+    )
   # Containers
   local listColorsDockerContainer=(\
-    "${(f)$(♣ "[a-z]*" $COLOR_ALIAS_DOCKER_CONTAINER)}" \
-    $listColorsDefault \
-  )
+      "${(f)$(♣ "[a-z]*" $COLOR_ALIAS_DOCKER_CONTAINER)}" \
+      $listColorsDefault \
+    )
   # }}}
-  
 
+
+  # Note: Disabled because it seems to prevent coloring filetypes and other
+  # styling
   # In case of ambiguity, coloring the first letter to type to fix the ambiguity
-  zstyle ':completion:*' show-ambiguity "1;38;5;$COLOR_GREEN"
+  # zstyle ':completion:*' show-ambiguity "1;38;5;$COLOR_GREEN"
 
 
   # Default
@@ -120,7 +122,7 @@ function oroshi-completion-styling() {
   zstyle ':completion:*:complete:git-branch-switch:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-remove:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-merge:*:*' list-colors $listColorsGitBranch
-  
+
   # Docker {{{
   # Local images
   zstyle ':completion:*:complete:docker-image-count:*:*' list-colors $listColorsDockerImage

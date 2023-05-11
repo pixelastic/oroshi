@@ -1,6 +1,0 @@
-# List all files in current directory
-function complete-files() {
-  local suggestions="$(ls)"
-
-  echo ${(F)suggestions}
-}
