@@ -11,10 +11,6 @@
 [submodule "config/zsh/completion/docker-zsh-completion"]
   path = config/zsh/completion/docker-zsh-completion
   url = git@github.com:felixr/docker-zsh-completion.git
-[submodule "scripts/bin/pdf"]
-  path = scripts/bin/pdf
-  url = git@github.com:pixelastic/pdf.git
-  branch = main
 [submodule "scripts/bin/video"]
   path = scripts/bin/video
   url = git@github.com:pixelastic/video.git

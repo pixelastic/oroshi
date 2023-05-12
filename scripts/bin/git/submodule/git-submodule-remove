@@ -4,13 +4,21 @@
 # $ git-submodule-remove ./path/to/submodule # Removes the submodule
 # $ git-submodule-remove ./one ./two         # Removes multiple submodules
 
+cd "$(git-directory-root)"
+
 for submoduleName in $@; do
 	local absolutePath="${submoduleName:a}"
 
 	# Skip missing directories
-	[[ ! -d $absolutePath ]] && continue
+	if [[ ! -d $absolutePath ]]; then
+		echo "✘ ${absolutePath} does not exist"
+		continue
+	fi
 	# Skip non-submodules
-	git-is-submodule $absolutePath || continue
+	if ! git-is-submodule $absolutePath; then
+		echo "✘ ${submoduleName} is not a submodule"
+		continue
+	fi
 
 	# Tell git to stop tracking the files
 	git rm --quiet $absolutePath
