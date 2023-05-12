@@ -23,10 +23,6 @@
   path = config/ansible/galactica
   url = git@github.com:pixelastic/ansible-galactica.git
   branch = main
-[submodule "scripts/bin/convert"]
-	path = scripts/bin/convert
-	url = git@github.com:pixelastic/convert.git
-	branch = main
 [submodule "scripts/bin/coriolis"]
 	path = scripts/bin/coriolis
 	url = git@github.com:pixelastic/coriolis.git
