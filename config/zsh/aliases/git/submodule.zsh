@@ -1,8 +1,9 @@
 # [s]ub-[m]odule
+alias vsmR='git-submodule-remove'
 alias vsmc='git-submodule-create'
 alias vsmi='git submodule init'
+alias vsml='git-submodule-list'
 alias vsmu='git submodule update'
-alias vsmR='git-submodule-remove'
 # [p]rivate [s]ub-[m]odule {{{
 alias vsmpu='git commit-submodule ./private'
 alias vsmup='git commit-submodule ./private'

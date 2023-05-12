@@ -63,7 +63,7 @@ function oroshi-prompt-populate:git_is_submodule() {
 
   git-is-submodule || return
 
-  OROSHI_PROMPT_PARTS[git_is_submodule]="%F{$COLOR_ALIAS_LOCAL_DEPENDENCY} %f"
+  OROSHI_PROMPT_PARTS[git_is_submodule]="%F{$COLOR_ALIAS_GIT_SUBMODULE} %f"
 }
 
 # Check if has stashes

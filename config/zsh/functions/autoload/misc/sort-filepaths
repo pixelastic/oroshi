@@ -7,7 +7,8 @@
 function sort-filepaths() {
   # Get input from stdin, or as arguments
   if [[ -p /dev/stdin ]]; then
-    local unsortedFilepaths=($(cat -))
+    local stdin=$(cat -)
+    local unsortedFilepaths=(${(f)stdin})
   else
     local unsortedFilepaths=()
     for arg in $@; do
@@ -17,21 +18,18 @@ function sort-filepaths() {
 
   local weightedFilepaths=()
 
-  # Add weighted prefix before each entry
+  # We sort first files in the current directory, then those downward and
+  # finally those upward
   for filepath in $unsortedFilepaths; do
-    # We count the number of slash as a mesure of the distance
     local slashCount=${#${filepath//[^\/]}}
-    # We weight those in directories above as further than those in directories
-    # down
-    if [[ $filepath == ../* ]]; then
-      weightedFilepaths+=("1${slashCount} $filepath")
-    else
-      weightedFilepaths+=("0${slashCount} $filepath")
-    fi
+    local weightedFilepath="2|$filepath"
+    [[ $slashCount == "0" || $filepath == ./* ]] && weightedFilepath="1|$filepath"
+    [[ $filepath == ../* ]] && weightedFilepath="3|$filepath"
+
+    weightedFilepaths+=($weightedFilepath)
   done
 
-  # Display only the filepath, and not the weight
-  for filepath in ${(o)weightedFilepaths}; do
-    echo ${${=filepath}[2]}
-  done
+  echo ${(F)weightedFilepaths} \
+    | sort \
+    | awk -F '|' '{print $2}'
 }

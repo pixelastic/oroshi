@@ -1,0 +1,53 @@
+#!/usr/bin/env zsh
+# Display the list of submodules
+# Usage:
+# $ git-submodule-list          # Display all submodules
+
+local rawList="$(git submodule status)"
+
+typeset -A submoduleList
+
+# Build an associative array of all submodules
+for rawSubmoduleLine in ${(f)rawList}; do
+  # Split the line
+  local splitLine=(${(@s/ /)rawSubmoduleLine})
+  local submoduleHash=${splitLine[1]}
+  submoduleHash=${submoduleHash:0:8}
+
+  local submoduleName=${splitLine[2]}
+
+  local submoduleBranch=${splitLine[3]}
+  submoduleBranch=${submoduleBranch:1:-1}
+
+  submoduleList[$submoduleName]="${submoduleHash}▮${submoduleBranch}"
+done
+
+local sortedList="$(sort-filepaths ${(k)submoduleList})"
+local output=""
+for submoduleName in ${(f)sortedList}; do
+  local submoduleValue=$submoduleList[$submoduleName]
+  local splitValue=(${(@s/▮/)submoduleValue})
+  local submoduleHash=$splitValue[1]
+  local submoduleBranch=$splitValue[2]
+
+  # Build each part
+  local row=""
+
+  # Name
+  row+="$(git-submodule-colorize "$submoduleName" --with-icon)▮"
+
+  # Branch
+  row+="$(git-branch-colorize "$submoduleBranch" --with-icon)▮"
+
+  # Commit
+  row+="$(git-commit-colorize "$submoduleHash" --with-icon)▮"
+
+  output+="$row\n"
+done
+
+# Output as columns
+echo $output | column \
+  --separator "▮" \
+  --table \
+  --table-noheadings
+
