@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+require 'ruby-progressbar'
+require_relative '../lib/pdf_helper'
+
+# Extract internal images from a PDF file
+class PdfExtractImages
+  include PdfHelper
+  def initialize(*args)
+    @inputs = args
+  end
+
+  def run
+    progress = ProgressBar.create(
+      title: 'Extracting images',
+      total: @inputs.size
+    )
+    @inputs.each do |input|
+      images(input)
+      progress.increment
+    end
+  end
+end
+PdfExtractImages.new(*ARGV).run

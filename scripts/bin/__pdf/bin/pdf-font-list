@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+require_relative '../lib/pdf_helper'
+
+# List all fonts in a pdf file
+class PdfFontList
+  include PdfHelper
+  def initialize(*args)
+    @input = args[0]
+  end
+
+  def raw
+    `pdffonts #{@input.shellescape}`
+  end
+
+  def run
+    # Getting list of all fonts in the PDF, sorted alphabetically
+    fonts = raw.lines[2..-1].map do |line|
+      line.split(' ').first
+    end
+    fonts.sort!.uniq!
+
+    # Putting them in two buckets, based on if they are available on the system
+    # or not
+    available = []
+    unavailable = []
+    fonts.each do |font|
+      if system("font-exists #{font}")
+        available << font
+        next
+      end
+      unavailable << font
+    end
+
+    unless available.empty?
+      puts 'Fonts available on your system:'
+      available.each do |font|
+        puts "  ✔ #{font}"
+      end
+      puts ''
+    end
+
+    unless unavailable.empty?
+      puts 'Fonts unavailable on your system:'
+      unavailable.each do |font|
+        puts "  ✘ #{font}"
+      end
+    end
+  end
+end
+PdfFontList.new(*ARGV).run

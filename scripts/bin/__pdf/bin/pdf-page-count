@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+require_relative '../lib/pdf_helper'
+
+# Display the number of pages of the PDF
+class PdfPageCount
+  include PdfHelper
+  def initialize(*inputs)
+    @usage = 'pdf-page-count ./input.pdf'
+    @documentation = 'Display the number of pages'
+
+    @inputs = inputs
+  end
+
+  def run
+    if @inputs.length == 1
+      puts page_count(@inputs[0])
+      exit 0
+    end
+
+    @inputs.each do |input|
+      name = File.basename(input)
+      puts "#{name}: #{page_count(input)}"
+    end
+  end
+end
+PdfPageCount.new(*ARGV).run
+

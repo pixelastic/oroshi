@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Displays the number of pages of a given pdf file
+
+pdftk "$1" dump_data 2>/dev/null | \
+  grep BookmarkTitle | \
+  cut -d ":" -f 2 | \
+  tr -d ' '

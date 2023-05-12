@@ -1,0 +1,189 @@
+#!/usr/bin/env ruby
+require 'fileutils'
+require 'shellwords'
+
+# lulu.com asks for PDF to be of a specific format. This script will attempt to
+# prepare everything so the manual upload works seamlessly.
+#
+# 1" = 2.54cm = 72pt
+#
+# US Letter size is
+# - 8.5" x 11"
+# - 21.59cm x 27.94cm
+# - 612pt x 792pt
+#
+# Lulu.com told me that the size of a US Letter, with Bleed box should be of
+# - 8.75" x 11.25"
+# - 22.22cm x 28.57cm
+# - 630pt x 810pt
+# They also told me it means adding a margin of
+# - 0.25"
+# - 0.635cm
+# - 18pt
+# So I guessed it means adding a margin of 9pt all around. I will add 18pt just
+# to be sure
+#
+# I also want the resulting PDF to be of 300 dpi (dots per inch), which means
+# 8.75" x 300dpi = 2625px
+# 11.25" x 300dpi = 3375px
+class PdfLulu
+  def initialize(input)
+    @input = input
+
+    basename = File.basename(@input, File.extname(@input))
+    dirname = File.dirname(@input)
+    @directory = File.join(dirname, "lulu/#{basename}")
+    FileUtils.mkdir_p(@directory)
+  end
+
+  def page_count
+    `pdf-page-count #{@input.shellescape}`.strip.to_i
+  end
+
+  # Split a pdf from `from` to `to`
+  def pdf_split(input, from, to, output)
+    if from == to
+      range = from
+    else
+      range = "#{from}-#{to}"
+    end
+
+    options = [
+      input.shellescape,
+      'cat',
+      range,
+      'output',
+      output.shellescape
+    ]
+    `pdftk #{options.join(' ')}`
+  end
+
+  def extract_png(page_number, name)
+    filepath = File.join(@directory, "#{name}.pdf")
+    pngfile = File.join(@directory, "#{name}.png")
+
+    pdf_split(@input, page_number, page_number, filepath)
+
+    convert_options = [
+      '-flatten',
+      '-density 300',
+      '-quality 100',
+      filepath.shellescape,
+      pngfile.shellescape
+    ]
+    `convert #{convert_options.join(' ')}`
+
+    `rm #{filepath.shellescape}`
+  end
+
+  # Extract first and last pages as cover
+  def extract_cover
+    puts 'Extract front cover'
+    extract_png(1, 'cover')
+    puts 'Extract back cover'
+    extract_png(page_count, 'back')
+  end
+
+  # Extract only middle pages
+  def extract_middle(input, output)
+    pdf_split(input, 2, page_count - 1, output)
+  end
+
+  # Cleanup the file, by passing it through Ghostscript
+  # This will set the compatibility to 1.3, as asked by lulu.com as well as
+  # remove any potential "Printer friendly" mode that could confuse `pdfcrop`
+  def clean_file(input, output)
+    gs_options = [
+      '-sDEVICE=pdfwrite',
+      '-dNOPAUSE',
+      '-dBATCH',
+      '-dPDFFitPage',
+      '-dPDFSETTINGS=/prepress',
+      '-r300',
+      '-dCompatibilityLevel=1.3',
+      "-sOutputFile=#{output.shellescape}",
+      input.shellescape
+    ]
+    `gs #{gs_options.join(' ')}`
+  end
+
+  # Add margins to the file
+  # Note: pdfcrop seems unreliable and can mess up the file often. It is better
+  # to it after cleaning the file but before resize it
+  def add_margins(input, output)
+    `pdfcrop --margins 18 #{input.shellescape} #{output.shellescape}`
+  end
+
+  def resize_and_set_black_and_white(input, output)
+    gs_options = [
+      '-sDEVICE=pdfwrite',
+      '-dNOPAUSE',
+      '-dBATCH',
+      '-dPDFFitPage',
+      '-dPDFSETTINGS=/prepress',
+      '-r300',
+      '-dCompatibilityLevel=1.3',
+      '-g2625x3375',
+      '-sColorConversionStrategy=Gray',
+      '-dProcessColorModel=/DeviceGray',
+      "-sOutputFile=#{output.shellescape}",
+      input.shellescape
+    ]
+    `gs #{gs_options.join(' ')}`
+  end
+
+  def remove_transparency(input, output)
+    `pdftk #{input.shellescape} output #{output.shellescape} flatten`
+  end
+
+  # Convert the input pdf to one that can be used by lulu.com. Namely it:
+  # - do not contain the front and back cover
+  # - has a 18pt margin all around
+  # - the inner content (inside the margins) is the size of a US Letter
+  # - is 300dpi
+  # - has no transparent layers
+  # - is black and white
+  # - is compatible PDF 1.3
+  #
+  # I need to go through a lot of hoops to get the correct final file and use
+  # several tools in this task. The two GhostScript calls *could* be merged, but
+  # it seem that I need to clean the file before giving it to pdfcrop, otherwise
+  # it can render it blank.
+  def convert_main
+    input = @input
+    middle = File.join(@directory, 'middle.pdf')
+    cleaned = File.join(@directory, 'cleaned.pdf')
+    margins = File.join(@directory, 'margins.pdf')
+    resized = File.join(@directory, 'resized.pdf')
+    flattened = File.join(@directory, 'flatenned.pdf')
+    final = File.join(@directory, 'main.pdf')
+
+    puts 'Extract middle part of pdf'
+    extract_middle(input, middle)
+
+    puts 'Clean the file'
+    clean_file(middle, cleaned)
+
+    puts 'Add margins'
+    add_margins(cleaned, margins)
+
+    puts 'Resize and set black and white'
+    resize_and_set_black_and_white(margins, resized)
+
+    puts 'Remove transparency'
+    remove_transparency(resized, flattened)
+
+    # Cleanup
+    `mv #{flattened.shellescape} #{final.shellescape}`
+    `rm #{middle.shellescape}`
+    `rm #{cleaned.shellescape}`
+    `rm #{margins.shellescape}`
+    `rm #{resized.shellescape}`
+  end
+
+  def run
+    extract_cover
+    convert_main
+  end
+end
+PdfLulu.new(*ARGV).run

@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+# encoding : utf-8
+require 'shellwords'
+require 'fileutils'
+# Merge a list of pdf as a new file
+# Usage :
+#  $ pdf-merge input.pdf input2.pdf {inputX.pdf} output.pdf
+class PdfMerge
+  def initialize(*args)
+    if args.size < 3
+      puts 'You need at least two files to merge and one output file'
+      exit
+    end
+
+    # Output file
+    @output = args[-1]
+    if File.exist?(@output)
+      puts "Warning : #{File.basename(@output)} already exists"
+      puts 'As a security measure, you cannot overwrite an existing file.'
+      exit
+    end
+
+    # List of inputs
+    @inputs = args[0..-1]
+    @inputs.collect! { |input| File.expand_path(input) }
+    @inputs.select! { |input| File.exist?(input) }
+  end
+
+  def run
+    puts "Merging files as #{File.basename(@output)}"
+    # Adding the inputs
+    options = []
+    @inputs.each do |input|
+      options << input.shellescape
+    end
+    options << 'cat output'
+    options << @output.shellescape
+
+    `pdftk #{options.join(' ')}`
+  end
+end
+
+PdfMerge.new(*ARGV).run

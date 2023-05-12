@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+require 'ruby-progressbar'
+require_relative '../lib/pdf_helper'
+
+# Extract a pdf into several pages
+class PdfExplode
+  include PdfHelper
+  def initialize(*args)
+    @input = args[0]
+  end
+
+  def run
+    page_count = page_count(@input)
+    progress = ProgressBar.create(
+      title: 'Exploding',
+      total: page_count
+    )
+
+    puts "#{page_count} pages to extract"
+    page_count.times do |index|
+      split(
+        input: @input,
+        range: index + 1
+      )
+      progress.increment
+    end
+  end
+end
+PdfExplode.new(*ARGV).run

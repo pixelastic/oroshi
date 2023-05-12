@@ -18,6 +18,7 @@ function oroshi_path() {
 		~/local/src/fzf/bin
 
 		# Custom binaries
+		# TODO: Load those automatically based on the directory structure
 		~/.oroshi/scripts/bin
 		~/.oroshi/scripts/bin/ai
 		~/.oroshi/scripts/bin/convert/bin

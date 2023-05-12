@@ -1,6 +1,8 @@
 # List all submodules
 function complete-git-submodules() {
+	cd "$(git-directory-root)" || return 0
+
 	git submodule status |
-		awk '{print $2 ":" $3}' |
+		awk '{print $2}' |
 		sort-filepaths
 }

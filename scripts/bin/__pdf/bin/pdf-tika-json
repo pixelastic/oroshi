@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+java \
+  -jar ~/local/src/tika/tika.jar \
+  --json \
+  "$1" \
+  2>/dev/null

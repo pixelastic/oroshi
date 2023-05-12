@@ -1,0 +1,51 @@
+#!/usr/bin/env ruby
+require 'shellwords'
+
+# Converts a pdf to a set of flat images.
+# Usage:
+# $ pdf2img /path/to/pdf
+# $ pdf2img /path/to/pdf /path/to/other/pdf
+# $ pdf2img /path/to/pdf -png
+class Pdf2Img
+  def initialize(*args)
+    @extname = 'jpg'
+
+    # Default is output to jpg, but one can pass -png for png
+    if args.include?('-png')
+      @extname = 'png' if args.include?('-png')
+      args.delete('-png')
+    end
+
+    @files = args.map { |file| File.expand_path(file) }
+    @files.select! do |file|
+      File.exist?(file) && File.extname(file).downcase == '.pdf'
+    end
+  end
+
+  def pages(pdf)
+    `pdf-page-count #{pdf.shellescape}`.strip.to_i
+  end
+
+  def flatten_pages(pdf)
+    basename = File.basename(pdf, File.extname(pdf))
+    extname = @extname
+    output_format = "#{basename}-%03d.#{extname}"
+    # If only one page, we can use a simple format
+    output_format = "#{basename}.#{extname}" if pages(pdf) == 1
+    options = [
+      '-flatten',
+      '-density 300',
+      '-quality 100',
+      pdf.shellescape,
+      output_format.shellescape
+    ]
+    `convert #{options.join(' ')}`
+  end
+
+  def run
+    @files.each do |file|
+      flatten_pages(file)
+    end
+  end
+end
+Pdf2Img.new(*ARGV).run

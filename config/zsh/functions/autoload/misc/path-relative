@@ -1,0 +1,12 @@
+# Convert an absolute path to a path relative to a root
+# Usage:
+# $ path-relative ~/.oroshi/scripts/bin ~/.oroshi/scripts   # bin
+function path-relative() {
+	local inputPath="${1:a}"
+	local rootPath="${2:a}"
+	[[ $rootPath == "" ]] && rootPath="${PWD:a}"
+
+	realpath \
+		--relative-to="$rootPath" \
+		"$inputPath"
+}

@@ -1,0 +1,57 @@
+#!/usr/bin/env ruby
+# encoding : utf-8
+require "shellwords"
+require "fileutils"
+# Rotate a list of pdf
+# Usage :
+#  $ pdf-rotate input.pdf {input2.pdf} {90|180|270}
+
+
+class PdfRotate
+
+	def initialize(*args)
+		# Catching the potential angle
+		@angle = args[-1].to_i
+		if @angle > 0
+			args.pop
+		else
+			@angle = 90
+		end
+
+		# Getting the list of input files
+		@inputs = args
+		@inputs.collect!{|input| File.expand_path(input)}
+		@inputs.select!{|input| File.exists?(input)}
+	end
+
+	def rotate(input, angle)
+		# We first make a copy of the original file
+		backup_file = input+'.bak'
+		FileUtils.rm_f(backup_file) if File.exists?(backup_file)
+		FileUtils.cp(input, backup_file)
+
+		# We then create a new file, rotated
+		tmp_file = input+'.tmp'
+		options = [
+			"-rotate #{angle}",
+			"-density 150",
+			"-compress lzw",
+			input.shellescape,
+			tmp_file.shellescape
+		]
+		%x[convert #{options.join(' ')}]
+
+		# We finally put the new file in place of the old one
+		FileUtils.mv(tmp_file, input)
+	end
+
+	def run
+		@inputs.each do |input|
+			puts "Rotating #{File.basename(input)}"
+			rotate(input, @angle)
+		end
+	end
+
+end
+
+PdfRotate.new(*ARGV).run()

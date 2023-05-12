@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+require_relative '../lib/pdf_helper'
+
+# Display textual content of a PDF file
+class PdfText
+  include PdfHelper
+  def initialize(*args)
+    @input = args[0]
+  end
+
+  def run
+    puts text(@input)
+  end
+end
+PdfText.new(*ARGV).run

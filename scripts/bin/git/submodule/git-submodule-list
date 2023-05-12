@@ -4,6 +4,7 @@
 # $ git-submodule-list          # Display all submodules
 
 local rawList="$(git submodule status)"
+local gitRoot="$(git-directory-root)"
 
 typeset -A submoduleList
 
@@ -15,6 +16,7 @@ for rawSubmoduleLine in ${(f)rawList}; do
   submoduleHash=${submoduleHash:0:8}
 
   local submoduleName=${splitLine[2]}
+  submoduleName="$(path-relative ${submoduleName:a} $gitRoot)"
 
   local submoduleBranch=${splitLine[3]}
   submoduleBranch=${submoduleBranch:1:-1}

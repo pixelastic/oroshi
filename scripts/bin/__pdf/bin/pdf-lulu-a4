@@ -1,0 +1,61 @@
+#!/usr/bin/env ruby
+
+# Split a pdf file to be printed by lulu
+class LuluA4
+  def initialize(*args)
+    @input = args[0]
+    @page_count = page_count
+  end
+
+  def run
+    extract_covers
+    extract_middle
+  end
+
+  def page_count
+    `pdf-page-count #{@input}`.to_i
+  end
+
+  def extract_covers
+    `pdf-split #{@input} 1 front.pdf`
+    `convert -density 400 front.pdf front.png`
+    `png-trim front.png`
+
+    `pdf-split #{@input} #{@page_count} back.pdf`
+    `convert -density 400 back.pdf back.png`
+    `png-trim back.png`
+  end
+
+  def extract_middle
+    `pdf-split #{@input} 2 #{@page_count - 1} middle.pdf`
+
+    options = [
+      '-o middle_01.pdf',
+      '-sDEVICE=pdfwrite',
+      '-sPAPERSIZE=a4',
+      '-dFIXEDMEDIA',
+      '-dPDFFitPage',
+      '-dCompatibilityLevel=1.3',
+      '-dPDFSETTINGS=/prepress',
+      '-r300',
+      '-sColorConversionStrategy=Gray',
+      '-dProcessColorModel=/DeviceGray',
+      'middle.pdf'
+    ]
+    `gs #{options.join(' ')}`
+
+    `convert -density 300 middle_01.pdf middle_02.pdf`
+
+    options = [
+      '-o middle_final.pdf',
+      '-sDEVICE=pdfwrite',
+      '-dCompatibilityLevel=1.3',
+      'middle_02.pdf'
+    ]
+    `gs #{options.join(' ')}`
+
+    `rm middle_01.pdf`
+    `rm middle_02.pdf`
+  end
+end
+LuluA4.new(*ARGV).run

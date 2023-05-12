@@ -1,5 +1,0 @@
-#!/bin/sh
-gksudo mount ~/local/mnt/serenity/music/ &> /dev/null
-nautilus ~/local/mnt/serenity/music/
-
-

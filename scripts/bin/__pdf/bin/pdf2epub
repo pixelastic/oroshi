@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+# Will convert a .pdf file to an .epub file
+
+
+# Check for dependencies
+if [[ `which ebook-convert` = '' ]]; then
+	echo "ebook-convert not found, please sudo apt-get install calibre"
+	return
+fi
+
+for file in $@; do
+	if [[ ! ${file:e} = 'pdf' ]]; then
+		echo "$file is not a pdf, skipping"
+		continue
+	fi
+	ebook-convert $file .epub
+done

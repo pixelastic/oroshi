@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+require_relative '../lib/pdf_helper'
+
+# Extract a single page or a range from a PDF
+class PdfSplit
+  include PdfHelper
+  def initialize(*args)
+    @input = args[0]
+    @range = args[1]
+    @output = args[2]
+  end
+
+  def run
+    split(
+      input: @input,
+      output: @output,
+      range: @range
+    )
+  end
+end
+PdfSplit.new(*ARGV).run
