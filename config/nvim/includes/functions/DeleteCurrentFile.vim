@@ -1,5 +1,4 @@
 " Delete the current file from disk, and close its tab
-scriptencoding utf-8
 function! DeleteCurrentFile(...)
   let currentFilepath = expand('%:p')
 

@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 # Vint, vim linter
 pip install vim-vint
+
+~/.oroshi/scripts/deploy/vint

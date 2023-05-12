@@ -1,4 +1,3 @@
-scriptencoding utf-8
 function! SeemsLatin1InUTF8(str)
   " Note: When a Windows-1252 (known as ISO-8859-1) is encoded in UTF-8, it
   " results in garbage (Ã© in place of é).

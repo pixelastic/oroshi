@@ -1,4 +1,3 @@
-scriptencoding utf-8
 " ALE lints files
 " https://github.com/dense-analysis/ale
 " It's Syntastic successor, and check files for linting errors and display them.

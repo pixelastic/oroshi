@@ -1,4 +1,3 @@
-scriptencoding utf-8
 " [CTRL-Shift-P] Files search in the subdirectory
 
 " Command to call to build the list of choices

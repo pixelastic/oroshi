@@ -1,4 +1,3 @@
-scriptencoding utf-8
 " [CTRL-Shift-G] Regexp search inside of files in current directory
 
 " FZF options
