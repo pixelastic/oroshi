@@ -48,13 +48,16 @@ function oroshi-completion-styling() {
     )
   # Color git branches
   local listColorsGitBranch=(\
-      # Known branches
-    "${(f)$(♣ "master*" $COLOR_ALIAS_GIT_BRANCH_MASTER)}" \
+      "${(f)$(♣ "master*" $COLOR_ALIAS_GIT_BRANCH_MASTER)}" \
       "${(f)$(♣ "main*" $COLOR_ALIAS_GIT_BRANCH_MAIN)}" \
       "${(f)$(♣ "develop*" $COLOR_ALIAS_GIT_BRANCH_DEVELOP)}" \
       "${(f)$(♣ "dependabot*" $COLOR_ALIAS_GIT_BRANCH_DEPENDABOT)}" \
-      # Default branch color
-    "${(f)$(♣ "*" $COLOR_ALIAS_GIT_BRANCH)}" \
+      "${(f)$(♣ "*" $COLOR_ALIAS_GIT_BRANCH)}" \
+      $listColorsDefault \
+    )
+  # Color git submodules
+  local listColorsGitSubmodule=(\
+      "${(f)$(♣ "*" $COLOR_ALIAS_GIT_SUBMODULE)}" \
       $listColorsDefault \
     )
   # Color remote ssh
@@ -125,6 +128,9 @@ function oroshi-completion-styling() {
   zstyle ':completion:*:complete:git-branch-switch:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-remove:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-merge:*:*' list-colors $listColorsGitBranch
+
+  # Submodules
+  zstyle ':completion:*:complete:git-submodule-remove:*:*' list-colors $listColorsGitSubmodule
   # }}}
 
   # Docker {{{

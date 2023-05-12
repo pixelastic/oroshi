@@ -1,0 +1,6 @@
+# List all submodules
+function complete-git-submodules() {
+	git submodule status |
+		awk '{print $2 ":" $3}' |
+		sort-filepaths
+}

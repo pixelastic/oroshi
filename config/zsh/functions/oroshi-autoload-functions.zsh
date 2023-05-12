@@ -5,7 +5,7 @@
 declare -A OROSHI_AUTOLOADED_FUNCTIONS
 declare -A OROSHI_AUTOLOADED_FUNCTIONS_BACKUP
 
-function oroshi-autoload-functions() {
+function oroshi-reload-functions() {
   # Autoload functions {{{
   OROSHI_AUTOLOADED_FUNCTIONS_BACKUP=(${(kv)OROSHI_AUTOLOADED_FUNCTIONS})
   OROSHI_AUTOLOADED_FUNCTIONS=()

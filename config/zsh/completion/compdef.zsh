@@ -20,9 +20,17 @@
 compdef _jumps unmark j
 
 # Git {{{
-compdef _git-branches-local git-branch-switch git-branch-remove git-branch-merge
-compdef _git-branches-remote git-branch-pull git-branch-remove-remote
-compdef _git-files-dirty git-file-add
+compdef _git-branches-local \
+	git-branch-merge \
+	git-branch-remove \
+	git-branch-switch
+compdef _git-branches-remote \
+	git-branch-pull \
+	git-branch-remove-remote
+compdef _git-files-dirty \
+	git-file-add
+compdef _git-submodules \
+	git-submodule-remove
 # }}}
 # Docker {{{
 compdef _docker-images-remote \

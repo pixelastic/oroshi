@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest the submodules
+function _git-submodules() {
+  local suggestions=(${(f)"$(complete-git-submodules)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_GIT_SUBMODULE $COLOR_BLACK '  Git Submodules ')" suggestions
+}
