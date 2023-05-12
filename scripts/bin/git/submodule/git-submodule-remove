@@ -4,7 +4,7 @@
 # $ git-submodule-remove ./path/to/submodule # Removes the submodule
 # $ git-submodule-remove ./one ./two         # Removes multiple submodules
 
-cd "$(git-directory-root)"
+cd "$(git-directory-root)" || exit 0
 
 for submoduleName in $@; do
 	local absolutePath="${submoduleName:a}"
