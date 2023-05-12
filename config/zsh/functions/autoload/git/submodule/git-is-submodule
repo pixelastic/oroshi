@@ -1,7 +1,20 @@
-# Check if current directory is a submodule
+# Check if a directory is a submodule
+# Usage:
+# $ git-is-submodule         # Checks if current directory is a submodule
+# $ git-is-submodule /path   # Checks if /path is a submodule
 function git-is-submodule() {
-  git rev-parse --show-superproject-working-tree \
-    | is-empty \
-    && return 1 \
-    || return 0
+	local pathToCheck="$1"
+
+	# Note: git rev-parse seems to only work if we are in the actual repository,
+	# so we need to move before executing the command.
+	# We wrap in a subshell to make sure the directory change is temporary.
+	(
+		if [[ $pathToCheck != "" ]]; then
+			cd $pathToCheck || return 0
+		fi
+		git rev-parse --show-superproject-working-tree 2>/dev/null |
+			is-empty &&
+			return 1 ||
+			return 0
+	)
 }

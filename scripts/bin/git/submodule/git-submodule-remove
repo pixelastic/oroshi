@@ -4,9 +4,24 @@
 # $ git-submodule-remove ./path/to/submodule # Removes the submodule
 # $ git-submodule-remove ./one ./two         # Removes multiple submodules
 
-# TODO: Fails if not a submodule
-# TODO: Fails if not valid directories
+for submoduleName in $@; do
+	local absolutePath="${submoduleName:a}"
 
-#      `git rm #{@full_path}`
-#      `git config -f .git/config --remove-section submodule.#{@relative_path}`
-#      `rm -rf .git/modules/#{@relative_path}`
+	# Skip missing directories
+	[[ ! -d $absolutePath ]] && continue
+	# Skip non-submodules
+	git-is-submodule $absolutePath || continue
+
+	# Tell git to stop tracking the files
+	git rm $absolutePath
+
+	# Remove the submodule from the config
+	git config \
+		--file .git/config \
+		--remove-section "submodule.${submoduleName}"
+
+	# Delete the .git/modules cache
+	rm -rf .git/modules/${submoduleName}
+
+	echo "✔ $submoduleName deleted"
+done
