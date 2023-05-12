@@ -1,9 +1,14 @@
 #!/usr/bin/env zsh
-[[ ! $commands[yarn] ]] && return
+# Display a list of all the linked yarn modules
+# Usage:
+# $ yarn-link-list    # Display list of all locally linked yarn modules
 
-local linkedModules=($(yll-raw))
+# Stop if yarn isn't installed
+[[ ! $commands[yarn] ]] && exit 1
 
-for module in $linkedModules; do
+local linkedModules="$(yarn-link-list-raw)"
+
+for module in ${(f)linkedModules}; do
   local split=(${(s/:/)module})
   local moduleName=$split[1]
   local moduleLinkType=$split[2]

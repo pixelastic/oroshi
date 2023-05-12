@@ -1,17 +1,16 @@
 #!/usr/bin/env zsh
-# ypu: Yarn Policies Update
-set -e
-cd "$(git-directory-root)"
+# Update local source code version of yarn
+cd "$(git-directory-root)" || exit 1
 
 # Download latest version
 yarn policies set-version
 
 # Rename current yarn so we don't delete it
-currentYarn=`yarn config get yarn-path`;
+local currentYarn="$(yarn config get yarn-path)"
 mv ${currentYarn} ${currentYarn}.back
 
-# Delete all old yarn
+# Delete all old yarns
 rm -r ./.yarn/releases/*.js
 
-# Move yarn back
+# Move our new yarn back
 mv ${currentYarn}.back ${currentYarn}

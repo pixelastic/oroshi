@@ -1,29 +1,31 @@
-# Helper function to return the list of linked modules in the current directory
-# The list is returned in the format
-# moduleName:type
+# Return a raw list of all the linked yarn modules
+# Usage:
+# $ yarn-link-list-raw    # List of moduleName:type
 function yarn-link-list-raw() {
-  [[ ! $commands[yarn] ]] && return
+  # Stop if yarn not available
+  [[ ! $commands[yarn] ]] && return 1
 
   # This prevents zsh from displaying a warning if the node_modules/@* does not
   # match anything
   setopt +o nomatch
 
   local node_modules="$(pkg-dir)/node_modules"
-  local linkedModules=($(find \
+  local linkedModules="$(find \
         $node_modules \
         $node_modules/@* \
         -maxdepth 1 \
         -type l \
         -printf "%f:%l\n" \
         2>/dev/null \
-    | sort))
+    | sort)"
 
-  for module in $linkedModules; do
+  for module in ${(f)linkedModules}; do
     local split=(${(s/:/)module})
     local moduleName=$split[1]
     local moduleDestination=$split[2]
     local moduleLinkType='local'
 
+    # Global if in .config/yarn/link
     [[ $moduleDestination == */.config/yarn/link/* ]] && moduleLinkType='global'
 
     if [[ $moduleLinkType == 'global' ]]; then
