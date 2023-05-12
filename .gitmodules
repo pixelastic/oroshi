@@ -23,7 +23,3 @@
   path = config/ansible/galactica
   url = git@github.com:pixelastic/ansible-galactica.git
   branch = main
-[submodule "scripts/bin/coriolis"]
-	path = scripts/bin/coriolis
-	url = git@github.com:pixelastic/coriolis.git
-	branch = main

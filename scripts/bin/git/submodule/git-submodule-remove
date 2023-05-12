@@ -13,7 +13,7 @@ for submoduleName in $@; do
 	git-is-submodule $absolutePath || continue
 
 	# Tell git to stop tracking the files
-	git rm $absolutePath
+	git rm --quiet $absolutePath
 
 	# Remove the submodule from the config
 	git config \
