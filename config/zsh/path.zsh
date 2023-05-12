@@ -1,6 +1,7 @@
 # Define a custom $PATH variable that look for all our binaries
 function oroshi_path() {
 	local hostname="$(hostname)"
+
 	local customPath=(
 		# Language binaries
 		~/.yarn/bin

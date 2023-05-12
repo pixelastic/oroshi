@@ -1,0 +1,15 @@
+# Check if the current directory is in a workspace root.
+function yarn-is-workspace-root() {
+	set -e
+
+	# Never in a workspace root if not even in a monorepo setup
+	yarn-is-monorepo || return 1
+
+	closestPackage="$(find-up package.json)"
+	rootPackage="$(git-directory-root)/package.json"
+
+	# The closest package.json is not the root one? We're in a subrepo
+	[[ "$closestPackage" != "$rootPackage" ]] && return 1
+
+	return 0
+}

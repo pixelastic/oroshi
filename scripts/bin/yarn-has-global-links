@@ -1,5 +1,0 @@
-#!/usr/bin/env zsh
-# Check if current repository has global linked modules
-local linked_modules="$(yll-raw)"
-[[ "$linked_modules" =~ ":global" ]] && exit 0
-exit 1
