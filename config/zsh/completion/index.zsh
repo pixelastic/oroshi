@@ -40,18 +40,9 @@ fpath+=($ZSH_CONFIG_PATH/completion/compdef)
 # do in fzf
 #
 # TODO:
-# - In case of ambiguity, pressing <TAB> should open the menu and auto-select
-# the first suggestion
-#
-# TODO:
 # The next line suggests any .log files after a 2> redirect
 # I might want to auto-suggest /dev/null as well
 # zstyle ':completion:*:*:-redirect-,2>,*:*' file-patterns '*.log'
-#
-# TODO:
-# The next line allow to define specific patterns for specific commands
-# This could be useful for completing img conversion commands, or code minifiers
-# compdef '_files -g "*.h"' foo
 #
 # TODO:
 # The next line specify the comletion of dvips -o and only suggests files

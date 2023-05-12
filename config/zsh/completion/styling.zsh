@@ -116,12 +116,16 @@ function oroshi-completion-styling() {
   # Variables
   zstyle ':completion:*:parameters' format "$(completion-header $COLOR_ALIAS_VARIABLE $COLOR_WHITE ' $ Variables ')"
 
-  # Git
+  # Git {{{
+  # Branches
+  zstyle ':completion:*:complete:git-branch-*:*:*' list-grouped false
+
   zstyle ':completion:*:complete:git-branch-pull:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-remove-remote:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-switch:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-remove:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-merge:*:*' list-colors $listColorsGitBranch
+  # }}}
 
   # Docker {{{
   # Local images
