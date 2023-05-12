@@ -7,8 +7,8 @@ scriptencoding utf-8
 " Note: Supported linters
 " https://github.com/dense-analysis/ale/blob/master/supported-tools.md
 "
-" Note: Use :ALEInfo to see the defined vars Note: Use :ALEFixSuggest for ideas
-" of potential fixers
+" Note: Use :ALEInfo to see the defined vars
+" Note: Use :ALEFixSuggest for ideas of potential fixers
 "
 " TODO: Display the number of errors in the status line
 
@@ -20,7 +20,7 @@ let g:ale_fix_on_save = 1                " Fix on save
 let g:ale_lint_on_save = 1               " Lint on save
 
 " How to fix
-" Language-specific fixers are defined in each ftplugin file
+" Note: Language-specific fixers are defined in each ftplugin file
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \}
@@ -28,7 +28,7 @@ let g:ale_fixers = {
 " How to lint
 " By default, Ale runs all linters it knows on all filetypes. I prefer a more
 " conservative approach of defining what linters I want to run for each filetype
-" Language-specific linters are defined in each ftplugin file
+" Note: Language-specific linters are defined in each ftplugin file
 let g:ale_linters_explicit = 1
 
 

@@ -18,27 +18,13 @@ function! JavascriptFoldText()
   return output
 endfunction
 " }}}
-" " Linting {{{
-" " If coc is not enabled, we revert to syntastic
-" if !exists('g:oroshi_coc_enabled')
-"   let b:syntastic_checkers = ['eslint']
-"   let b:syntastic_javascript_eslint_exec = 'eslint_d'
-" endif
-" " coc should auto format on save, but this can fail depending on the repo
-" " configuration, so we keep <F4> as a way to reformat
-
-" " Note: If vim fails to reformat, but manually running scripts seems to work,
-" " you might want to kill eslint_d. It might have been confused by plugins loaded
-" " in various repos, and will require a reboot.
-" function! JavascriptBeautify()
-"   let l:initialLine = line('.')
-"   execute '%!eslint_d --stdin --fix-to-stdout'
-"   execute 'normal '.initialLine.'gg'
-"   SyntasticCheck()
-" endfunction
-" inoremap <silent> <buffer> <F4> <Esc>:call JavascriptBeautify()<CR><CR>
-" nnoremap <silent> <buffer> <F4> :call JavascriptBeautify()<CR><CR>
-" }}}
+" Fixing
+let b:ale_fixers = ['eslint']
+" Linting
+let b:ale_linters = ['eslint']
+" We use global eslint_d instead of local eslint
+let b:ale_javascript_eslint_use_global = 1
+let b:ale_javascript_eslint_executable = 'eslint_d'
 
 " Keybindings {{{
 " $ù is easy to type on my keyboard. Use it for debug calls
