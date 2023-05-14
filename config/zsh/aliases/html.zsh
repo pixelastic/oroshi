@@ -1,0 +1,2 @@
+# HTML
+alias hq="htmlq"
