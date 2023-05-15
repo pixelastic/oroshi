@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+# Outputs video dimensions
+# Usage:
+# $ video-dimensions ./path/video.mkv    # 1888x1080
+
+local input="$1"
+
+exiftool $input |
+	grep 'Image Size' |
+	cut \
+		--delimiter ":" \
+		--fields 2 |
+	xargs echo

@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# Return video info from a video file
+# Usage:
+# $ video-info ./path/video.mkv
+
+ffprobe \
+	-v quiet \
+	-print_format json \
+	-show_format \
+	-show_streams \
+	$1 |
+	jq

@@ -455,15 +455,15 @@ call s:Link('shOption', 'FLAG')
 " }}}
 " Zsh {{{
 call s:Link('shStatement', 'FUNCTION')
+call s:Link('zshSubstDelim', 'INTERPOLATION_WRAPPER')
+call s:Link('zshSwitches', 'FLAG')
+call s:Link('zshVariable', 'VARIABLE_DEFINITION')
 " call s:Highlight('zshCommands', 'ALIAS_FUNCTION')
 " call s:Highlight('zshDereferencing', 'ALIAS_VARIABLE')
 " call s:Highlight('zshKSHFunction', 'ALIAS_VARIABLE_DEFINITION')
 " call s:Highlight('zshKeyword', 'ALIAS_VARIABLE_TYPE')
 " call s:Highlight('zshSubst', 'ALIAS_INTERPOLATION_VARIABLE')
-call s:Link('zshSwitches', 'FLAG')
 " call s:Highlight('zshTypes', 'ALIAS_VARIABLE_TYPE')
-call s:Link('zshVariable', 'VARIABLE_DEFINITION')
-call s:Link('zshSubstDelim', 'INTERPOLATION_WRAPPER')
 " call s:Highlight('zshVariableDef', 'ALIAS_VARIABLE_DEFINITION')
 " }}}
 " }}}

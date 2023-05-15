@@ -8,16 +8,32 @@ local args=($@)
 local argCount=${#args}
 local input=$args[1]
 
+function getDimensions() {
+	local extension="${1:e}"
+	if [[ $extension =~ "mp4|mkv|webm" ]]; then
+		getVideoDimensions $1
+		return
+	fi
+	echo "nope"
+	# getImageDimensions $1
+}
+function getImageDimensions() {
+	identify -format "%wx%h\n" $1
+}
+function getVideoDimensions() {
+	video-dimensions $1
+}
+
 # One image
 if [[ $argCount == 1 ]]; then
-	identify -format "%wx%h\n" $input
+	getDimensions $args[1]
 	exit 0
 fi
 
 # Multiple images
 local output=""
 for arg in $args; do
-	local dimensions="$(identify -format "%wx%h\n" $arg)"
+	local dimensions="$(getDimensions $arg)"
 	output+="${arg:t}▮${dimensions}\n"
 done
 

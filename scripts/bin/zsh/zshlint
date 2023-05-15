@@ -43,6 +43,7 @@ excludedRules+=(SC2034) # warning: {var} appears unused. Verify use (or export i
 excludedRules+=(SC2035) # note: Use ./*glob* or -- *glob* so names with dashes won't become options.
 excludedRules+=(SC2051) # warning: Bash doesn't support variables in brace range expansions. [SC2051]
 excludedRules+=(SC2068) # error: Double quote array expansions to avoid re-splitting elements.
+excludedRules+=(SC2076) # warning: Remove quotes from right-hand side of =~ to match as a regex rather than literally. [SC2076]
 excludedRules+=(SC2086) # note: Double quote to prevent globbing and word splitting.
 excludedRules+=(SC2102) # note: Ranges can only match single chars (mentioned due to duplicates)
 excludedRules+=(SC2124) # warning: Assigning an array to a string! Assign as array, or use * instead of @ to concatenate.
