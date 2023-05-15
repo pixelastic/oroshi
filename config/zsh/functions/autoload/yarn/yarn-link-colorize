@@ -1,0 +1,31 @@
+# Displays a colorized version of a linked module
+# Usage:
+# $ yarn-link-colorize norska                         # norska
+# $ yarn-link-colorize norska --with-icon             # 煮norska
+# $ yarn-link-colorize norska-cms --with-icon --local #  norska-cms
+# TODO: Use module own icon
+function yarn-link-colorize() {
+	zparseopts -E -D \
+		-local=flagLocal \
+		-with-icon=flagWithIcon
+	# shellcheck disable=SC2154
+	{
+		local isLocal=${#flagLocal}
+		local isWithIcon=${#flagWithIcon}
+	}
+
+	local moduleName="$1"
+	local moduleColor=$COLOR_ALIAS_YARN_LINK_GLOBAL
+	[[ $isLocal == "1" ]] && moduleColor=$COLOR_ALIAS_YARN_LINK_LOCAL
+
+	# If --with-icon is not passed, we simply display the colored module
+	if [[ "$isWithIcon" != 1 ]]; then
+		colorize "$moduleName" $moduleColor
+		return
+	fi
+
+	# Fallback on unknown status
+	colorize "  $moduleName" $moduleColor
+
+	return
+}

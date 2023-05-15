@@ -1,0 +1,25 @@
+# List modules available for global linking
+function complete-yarn-link-global() {
+
+  local linkDirectory=~/.config/yarn/link
+
+  # Building the list
+  local linkList=()
+  for link in ${linkDirectory}/*; do
+    local linkName=${link:t}
+
+    # Without namespace
+    if [[ $linkName != @* ]]; then
+      linkList+=($linkName)
+      continue
+    fi
+
+    # With namespace
+    for sublink in ${linkDirectory}/${linkName}/*; do
+      local sublinkName=${sublink:t}
+      linkList+=(${linkName}/${sublinkName})
+    done
+  done
+
+  echo ${(F)linkList}
+}

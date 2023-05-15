@@ -83,6 +83,15 @@ aliasColors[MARKER]="CYAN"       #  marked line
 aliasColors[UNKNOWN]="CYAN_4"
 aliasColors[SIZE_VALUE]="GRAY"   # 485
 aliasColors[SIZE_UNIT]="GRAY_4" # MB
+# Vim
+aliasColors[VIM_VISUAL_CURSOR]="BLUE"
+aliasColors[VIM_VISUAL_BACKGROUND]="BLUE"
+aliasColors[VIM_VISUAL_FOREGROUND]="WHITE"
+aliasColors[VIM_SEARCH_BACKGROUND]="YELLOW"
+aliasColors[VIM_SEARCH_FOREGROUND]="BLACK"
+aliasColors[VIM_NORMAL_CURSOR]="RED"
+aliasColors[VIM_INSERT_CURSOR]="YELLOW"
+aliasColors[VIM_COMMAND_CURSOR]="TEAL"
 # Languages
 aliasColors[LANGUAGE_JAVASCRIPT]="YELLOW"
 aliasColors[LANGUAGE_RUBY]="ORANGE"
@@ -136,6 +145,10 @@ aliasColors[PACKAGE]="YELLOW"
 aliasColors[PACKAGE_INSTALLED]="GREEN"
 aliasColors[PACKAGE_NOT_INSTALLED]="GRAY"
 aliasColors[PACKAGE_VERSION_MISMATCH]="VIOLET"
+# Yarn
+aliasColors[YARN_LINK_LOCAL]="YELLOW"
+aliasColors[YARN_LINK_GLOBAL]="BLUE"
+aliasColors[YARN_LINK_DESCRIPTION]="GRAY_4"  # package.json description
 # Hosts
 aliasColors[HOST_PIXELASTIC]="GREEN"
 aliasColors[HOST_GITHUB]="BLUE"
@@ -160,7 +173,7 @@ aliasColors[NOISE]="TEAL_7"
 aliasColors[NUMBER]="BLUE"                      # Bold
 aliasColors[PUNCTUATION]="TEAL"
 aliasColors[REGEXP]="BLUE"
-aliasColors[SPECIAL_CHAR]="AMBER"               # Escape sequences, keybindings
+aliasColors[SPECIAL_CHAR]="YELLOW"               # Escape sequences, keybindings
 aliasColors[STATEMENT]="GREEN"                  # for, if, while
 aliasColors[STRING]="BLUE"
 aliasColors[SYMBOL]="ORANGE"                    # :symbol in ruby

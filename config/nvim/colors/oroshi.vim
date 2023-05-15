@@ -16,6 +16,73 @@ endif
 let g:colors_name = 'oroshi'
 " }}}
 
+" Defining the palette from the ENV variables {{{
+let s:color = {}
+" Build the s:color palette
+for key in split($COLORS_INDEX, ' ')
+   execute 'let s:color[key]=$COLOR_' . key . '_HEXA'
+endfor
+" }}}
+
+" Defining the core highlight groups {{{
+" Vim has its own set of core groups, and I have my own. They have a lot of
+" overlap but some difference in naming (example vim Delimiter is my
+" PUNCTUATION). We will use my own naming when defining highlight group, which
+" will internally be converted to vim naming
+" The key is my naming, the values are {VimNaming}:{BackgroundColor}:{Boldness}
+" We prefer to use existing core vim groups, but sometimes we need to create our
+" own, prefixed with "oroshi"
+let s:coreGroups = {
+      \ 'BOOLEAN': 'Boolean:_:bold',
+      \ 'COMMENT': 'Comment:_:_',
+      \ 'CONSTANT': 'Constant:_:bold',
+      \ 'DATE': 'oroshiDate:_:_',
+      \ 'ERROR': 'Error:BLACK:bold',
+      \ 'SUCCESS': 'oroshiSuccess:_:_',
+      \ 'WARNING': 'oroshiWarning:_:_',
+      \ 'NOTICE': 'oroshiNotice:_:_',
+      \ 'EVAL': 'oroshiEval:_:_',
+      \ 'EXCEPTION': 'oroshiException:_:_',
+      \ 'FLAG': 'oroshiFlag:_:_',
+      \ 'FUNCTION': 'Function:_:_',
+      \ 'GIT_ADDED': 'oroshiGitAdded:_:_',
+      \ 'GIT_MODIFIED': 'oroshiGitModified:_:_',
+      \ 'GIT_REMOVED': 'oroshiGitRemoved:_:_',
+      \ 'GLOB': 'oroshiGlob:_:_',
+      \ 'HEADER': 'Title:_:_',
+      \ 'IMPORT': 'oroshiImport:_:_',
+      \ 'INTERPOLATION_STRING': 'oroshiInterpolationString:_:_',
+      \ 'INTERPOLATION_VARIABLE': 'oroshiInterpolationVariable:_:_',
+      \ 'INTERPOLATION_WRAPPER': 'oroshiInterpolationWrapper:_:_',
+      \ 'KEYWORD': 'Keyword:_:_',
+      \ 'MODIFIER': 'oroshiModifier:_:_',
+      \ 'NOISE': 'Noise:_:_',
+      \ 'NUMBER': 'Number:_:bold',
+      \ 'PUNCTUATION': 'Delimiter:_:_',
+      \ 'REGEXP': 'oroshiRegexp:_:_',
+      \ 'SPECIAL_CHAR': 'Special:_:_',
+      \ 'STATEMENT': 'Statement:_:_',
+      \ 'STRING': 'String:_:_',
+      \ 'SYMBOL': 'oroshiSymbol:_:_',
+      \ 'TEXT': 'Normal:_:_',
+      \ 'TODO': 'Todo:_:bold',
+      \ 'VARIABLE': 'Identifier:_:_',
+      \ 'VARIABLE_DEFINITION': 'oroshiVariableDefinition:_:_',
+      \ 'VARIABLE_TYPE': 'Type:_:_',
+      \ }
+
+" Below are other core groups, that share coloring with the main ones. We will
+" later link those secondary groups to the main ones
+let s:secondaryCoreGroups= {
+      \ 'PreProc': 'HEADER',
+      \ 'Operator': 'PUNCTUATION',
+      \ 'Conditional': 'STATEMENT',
+      \ 'Repeat': 'STATEMENT',
+      \ 'StorageClass': 'VARIABLE_TYPE',
+      \ 'StringDelimiter': 'STRING',
+      \ }
+" }}}
+
 " Highlighting function {{{
 " args : group, foreground, background, decoration
 function! s:Highlight(group,...)
@@ -25,7 +92,7 @@ function! s:Highlight(group,...)
   let decoration = get(a:, '3', '')
 
   " We clear all previous highlight, to start from a clean slate
-  execute 'hi clear '.name
+  execute 'highlight clear '.name
 
   " Everything is empty, we stop now
   if foreground ==# '' && background ==# '' && decoration ==# ''
@@ -48,43 +115,50 @@ function! s:Highlight(group,...)
 endfunction
 " }}}
 
-" Defining the palette from the ENV variables {{{
-let s:color = {}
-" Build the s:color palette
-for key in split($COLORS_INDEX, ' ')
-   execute 'let s:color[key]=$COLOR_' . key . '_HEXA'
+" Linking function {{{
+" Link a vim highlight definition group to own of our core colors
+function! s:Link(vimGroupName, oroshiGroupName)
+  execute 'highlight clear '. a:vimGroupName
+
+  " Find the vim core group from the passed core group
+  let s:coreGroupValue=s:coreGroups[a:oroshiGroupName]
+  let s:split=split(s:coreGroupValue,':')
+  let s:vimCoreGroupName=s:split[0]
+
+  execute 'highlight! link '. a:vimGroupName .' '. s:vimCoreGroupName
+endfunction
+" }}}
+
+" Highlight core groups {{{
+" We highlight the core vim groups with our colors
+for s:colorAliasName in keys(s:coreGroups)
+  " Parse the value into its parts
+  let s:colorDefinition=s:coreGroups[s:colorAliasName]
+  let s:split=split(s:colorDefinition,':')
+  let s:vimGroupName=s:split[0]
+  let s:backgroundColor=s:split[1]
+  let s:decoration=s:split[2]
+  if s:backgroundColor ==# '_' | let s:backgroundColor='' | endif
+  if s:decoration ==# '_' | let s:decoration='' | endif
+
+  call s:Highlight(s:vimGroupName, 'ALIAS_' . s:colorAliasName, s:backgroundColor, s:decoration)
+endfor
+" }}}
+
+" Linking secondary groups to core groups {{{
+" We link other core vim groups to those groups
+for s:secondaryGroupName in keys(s:secondaryCoreGroups)
+  let s:coreGroupName=s:secondaryCoreGroups[s:secondaryGroupName]
+  call s:Link(s:secondaryGroupName, s:coreGroupName)
 endfor
 " }}}
 
 " Text {{{
-call s:Highlight('Boolean', 'ALIAS_BOOLEAN', '', 'bold')
-call s:Highlight('Comment', 'ALIAS_COMMENT')
-call s:Highlight('Conditional', 'ALIAS_STATEMENT')
-call s:Highlight('Constant', 'ALIAS_CONSTANT', '', 'bold')
-call s:Highlight('Delimiter', 'ALIAS_PUNCTUATION')
-call s:Highlight('Error', 'ALIAS_ERROR', 'BLACK', 'bold')
-call s:Highlight('Function', 'ALIAS_FUNCTION')
-call s:Highlight('Identifier', 'ALIAS_VARIABLE')
-call s:Highlight('Keyword', 'ALIAS_KEYWORD')
-call s:Highlight('Noise', 'ALIAS_NOISE')
-call s:Highlight('Normal', 'ALIAS_TEXT')
-call s:Highlight('Number', 'ALIAS_NUMBER', '', 'bold')
-call s:Highlight('Operator', 'ALIAS_PUNCTUATION')
-call s:Highlight('PreProc', 'ALIAS_HEADER')
-call s:Highlight('Repeat', 'ALIAS_STATEMENT')
-call s:Highlight('Special', 'ALIAS_SPECIAL_CHAR')
-call s:Highlight('Statement', 'ALIAS_STATEMENT')
-call s:Highlight('StorageClass', 'ALIAS_VARIABLE_TYPE')
-call s:Highlight('StringDelimiter', 'ALIAS_STRING')
-call s:Highlight('String', 'ALIAS_STRING')
-call s:Highlight('Title', 'ALIAS_HEADER')
-call s:Highlight('Todo', 'ALIAS_TODO', '', 'bold')
-call s:Highlight('Type', 'ALIAS_VARIABLE_TYPE')
-
 " Hidden characters (F8) {{{
 " Line endings and horizontal scroll markers
 call s:Highlight('NonText', 'GRAY_8')
 " Tabs and whitespaces
+" call s:Link('WhiteSpace', 'SPECIAL_CHAR')
 call s:Highlight('Whitespace', 'YELLOW')
 " }}}
 "
@@ -106,7 +180,7 @@ call s:Highlight('CursorLineNr', 'YELLOW', '', 'bold')
 call s:Highlight('CursorLine', '', 'GRAY_9', 'none')
 
 " Normal mode
-call s:Highlight('CursorNormal', '', 'RED', 'none')
+call s:Highlight('CursorNormal', '', 'ALIAS_VIM_NORMAL_CURSOR', 'none')
 let s:guicursor = 'n:block-CursorNormal'
 
 " Waiting for an operator
@@ -114,18 +188,18 @@ call s:Highlight('CursorOperatorPending', '', 'RED_5', 'none')
 let s:guicursor .= ',o:block-CursorOperatorPending'
 
 " Insert mode
-call s:Highlight('CursorInsert', '', 'YELLOW', 'none')
+call s:Highlight('CursorInsert', '', 'ALIAS_VIM_INSERT_CURSOR', 'none')
 let s:guicursor .= ',i:block-CursorInsert'
 
 " Visual mode
-call s:Highlight('CursorVisual', '', 'BLUE', 'none')
+call s:Highlight('CursorVisual', '', 'ALIAS_VIM_VISUAL_CURSOR', 'none')
 let s:guicursor .= ',v:block-CursorVisual'
 
 " Command mode
-call s:Highlight('CursorCommand', '', 'TEAL', 'none')
+call s:Highlight('CursorCommand', '', 'ALIAS_VIM_COMMAND_CURSOR', 'none')
 let s:guicursor .= ',c:block-CursorCommand'
 " When editing the current command
-call s:Highlight('CursorCommandInsert', '', 'TEAL', 'none')
+call s:Highlight('CursorCommandInsert', '', 'ALIAS_VIM_COMMAND_CURSOR', 'none')
 let s:guicursor .= ',ci:block-CursorCommandInsert'
 
 " Not sure what those do, so let's color them cyan and see when that happens
@@ -142,30 +216,19 @@ execute 'set guicursor='.s:guicursor
 call s:Highlight('Folded', 'ALIAS_TEXT', 'GRAY_8')
 " }}}
 " Visual selection {{{
-call s:Highlight('Visual', 'WHITE', 'BLUE', 'bold')
+call s:Highlight('Visual', 'ALIAS_VIM_VISUAL_FOREGROUND', 'ALIAS_VIM_VISUAL_BACKGROUND', 'bold')
 " }}}
 " Search {{{
-call s:Highlight('IncSearch', 'BLACK', 'YELLOW', 'none')
-call s:Highlight('Search', 'BLACK', 'YELLOW', 'bold')
+call s:Highlight('IncSearch', 'ALIAS_VIM_SEARCH_FOREGROUND', 'ALIAS_VIM_SEARCH_BACKGROUND', 'none')
+call s:Highlight('Search', 'ALIAS_VIM_SEARCH_FOREGROUND', 'ALIAS_VIM_SEARCH_BACKGROUND', 'bold')
 " }}}
 " ALE gutter {{{
-call s:Highlight('ALEErrorSign', 'RED')
-call s:Highlight('ALEWarningSign', 'YELLOW')
-" }}}
-" Syntastic gutter {{{
-call s:Highlight('SyntasticErrorSign', 'RED')
-call s:Highlight('SyntasticStyleErrorSign', 'RED')
-call s:Highlight('SyntasticStyleWarningSign', 'YELLOW')
-call s:Highlight('SyntasticWarningSign', 'YELLOW')
-" }}}
-" Coc Gutter {{{
-call s:Highlight('CocErrorSign', 'ALIAS_ERROR')
-call s:Highlight('CocWarningSign', 'ALIAS_WARNING')
-call s:Highlight('CocInfoSign', 'ALIAS_INFO')
+call s:Link('ALEErrorSign', 'ERROR')
+call s:Link('ALEWarningSign', 'WARNING')
 " }}}
 " GitGutter {{{
-call s:Highlight('GitGutterAdd', 'ALIAS_GIT_ADDED')
-call s:Highlight('GitGutterChange', 'ALIAS_GIT_MODIFIED')
+call s:Link('GitGutterAdd', 'GIT_ADDED')
+call s:Link('GitGutterChange', 'GIT_MODIFIED')
 " }}}
 " Status line {{{
 call s:Highlight('StatusLineFileEncodingError', 'RED', 'GRAY_8')
@@ -209,32 +272,12 @@ for key in split($PROJECTS_INDEX, ' ')
   call s:Highlight('ProjectPost_' . key, projectBackground, 'GRAY_8')
 endfor
 " }}}
-" Completion {{{
-" Dropdown default colors
-call s:Highlight('Pmenu', 'GRAY_4', 'GREEN_8')
-" [F] and [A] on right hand side
-call s:Highlight('CocPumShortcut', 'GRAY_4', '')
-" Selected item (used either by Coc or default menu)
-call s:Highlight('PmenuSel', 'BLACK', 'YELLOW', 'bold')
-call s:Highlight('CocMenuSel', 'BLACK', 'YELLOW', 'bold')
-" Scrollbar
-call s:Highlight('PmenuSbar', '', 'GREEN_9')
-" Thumb of the scrollbar
-call s:Highlight('PmenuThumb', '', 'GRAY_4')
-" Matching results in the dropdown
-call s:Highlight('CocPumSearch', 'YELLOW', 'GREEN_9', 'underline')
-" Suggested text on the line
-call s:Highlight('CocPumVirtualText', 'GRAY_6', '')
-" Below are unknown groups, so we put them cyan to see if they appear
-call s:Highlight('CocPumMenu', 'CYAN', 'CYAN')
-call s:Highlight('CocPumDeprecated', 'CYAN', 'CYAN')
-" }}}
 " Matching parenthesis {{{
 call s:Highlight('MatchParen', 'white', 'TEAL_9')
 " }}}
 " Messages {{{
-call s:Highlight('ErrorMsg', 'RED', 'none', 'bold')
-call s:Highlight('WarningMsg', 'YELLOW_8')
+call s:Link('ErrorMsg', 'ERROR')
+call s:Link('WarningMsg', 'WARNING')
 " }}}
 " Spell Checking / Errors {{{
 call s:Highlight('SpellBad', 'RED', 'BLACK', 'bold,underline')
@@ -242,183 +285,185 @@ call s:Highlight('SpellCap', 'RED', 'BLACK', 'bold,underline')
 " }}}
 
 " AutoIt {{{
-call s:Highlight('autoitString', 'BLUE')
-call s:Highlight('autoitQuote', 'BLUE')
-call s:Highlight('autoitNumber', 'BLUE', '', 'bold')
-call s:Highlight('autoitParen', 'TEAL_7')
-call s:Highlight('autoitKeyword', 'GREEN_7')
-call s:Highlight('autoitVariable', 'PURPLE_4')
-call s:Highlight('autoitVarSelector', 'PURPLE_4', '', 'bold')
-call s:Highlight('autoitFunction', 'YELLOW')
-call s:Highlight('autoitBuiltin', 'YELLOW', '', 'bold')
+" call s:Highlight('autoitString', 'BLUE')
+" call s:Highlight('autoitQuote', 'BLUE')
+" call s:Highlight('autoitNumber', 'BLUE', '', 'bold')
+" call s:Highlight('autoitParen', 'TEAL_7')
+" call s:Highlight('autoitKeyword', 'GREEN_7')
+" call s:Highlight('autoitVariable', 'PURPLE_4')
+" call s:Highlight('autoitVarSelector', 'PURPLE_4', '', 'bold')
+" call s:Highlight('autoitFunction', 'YELLOW')
+" call s:Highlight('autoitBuiltin', 'YELLOW', '', 'bold')
 " }}}
 " CSS {{{
-call s:Highlight('cssVendor', 'ALIAS_WARNING')
-call s:Highlight('cssAttrComma', 'ALIAS_PUNCTUATION')
-call s:Highlight('cssSelectorOp', 'ALIAS_PUNCTUATION')
-call s:Highlight('scssAmpersand', 'ALIAS_MODIFIER')
-call s:Highlight('cssPseudoClassId', 'ALIAS_MODIFIER')
-call s:Highlight('cssBraces', 'ALIAS_PUNCTUATION')
-call s:Highlight('scssSelectorChar', 'ALIAS_PUNCTUATION')
-call s:Highlight('scssSelectorName', 'ALIAS_KEYWORD')
-call s:Highlight('cssAttr', 'ALIAS_TEXT')
-call s:Highlight('cssColor', 'ALIAS_SYMBOL')
-call s:Highlight('cssFontAttr', 'ALIAS_SYMBOL')
-call s:Highlight('cssCommonAttr', 'ALIAS_SYMBOL')
-call s:Highlight('cssBorderAttr', 'ALIAS_SYMBOL')
-call s:Highlight('cssTextAttr', 'ALIAS_SYMBOL')
-call s:Highlight('cssFlexibleBoxAttr', 'ALIAS_SYMBOL')
-call s:Highlight('cssPositioningAttr', 'ALIAS_SYMBOL')
-call s:Highlight('cssBackgroundAttr', 'ALIAS_SYMBOL')
-call s:Highlight('cssBoxAttr', 'ALIAS_SYMBOL')
-call s:Highlight('cssUIAttr', 'ALIAS_SYMBOL')
-call s:Highlight('cssUnitDecorators', 'ALIAS_PUNCTUATION')
-call s:Highlight('scssParameterList', 'ALIAS_PUNCTUATION')
+" call s:Highlight('cssVendor', 'ALIAS_WARNING')
+" call s:Highlight('cssAttrComma', 'ALIAS_PUNCTUATION')
+" call s:Highlight('cssSelectorOp', 'ALIAS_PUNCTUATION')
+" call s:Highlight('scssAmpersand', 'ALIAS_MODIFIER')
+" call s:Highlight('cssPseudoClassId', 'ALIAS_MODIFIER')
+" call s:Highlight('cssBraces', 'ALIAS_PUNCTUATION')
+" call s:Highlight('scssSelectorChar', 'ALIAS_PUNCTUATION')
+" call s:Highlight('scssSelectorName', 'ALIAS_KEYWORD')
+" call s:Highlight('cssAttr', 'ALIAS_TEXT')
+" call s:Highlight('cssColor', 'ALIAS_SYMBOL')
+" call s:Highlight('cssFontAttr', 'ALIAS_SYMBOL')
+" call s:Highlight('cssCommonAttr', 'ALIAS_SYMBOL')
+" call s:Highlight('cssBorderAttr', 'ALIAS_SYMBOL')
+" call s:Highlight('cssTextAttr', 'ALIAS_SYMBOL')
+" call s:Highlight('cssFlexibleBoxAttr', 'ALIAS_SYMBOL')
+" call s:Highlight('cssPositioningAttr', 'ALIAS_SYMBOL')
+" call s:Highlight('cssBackgroundAttr', 'ALIAS_SYMBOL')
+" call s:Highlight('cssBoxAttr', 'ALIAS_SYMBOL')
+" call s:Highlight('cssUIAttr', 'ALIAS_SYMBOL')
+" call s:Highlight('cssUnitDecorators', 'ALIAS_PUNCTUATION')
+" call s:Highlight('scssParameterList', 'ALIAS_PUNCTUATION')
 " }}}
 " Git {{{
-" Git Config
-call s:Highlight('gitconfigSection', 'ALIAS_HEADER')
-" Git Commit
-call s:Highlight('gitcommitDiff', 'ALIAS_COMMENT')
-call s:Highlight('gitcommitSelectedFile', 'ALIAS_FILE')
-call s:Highlight('gitcommitDiscardedFile', 'ALIAS_FILE')
-call s:Highlight('gitcommitSummary', 'ALIAS_TEXT')
-" Git Diff
-call s:Highlight('gitDiff', 'ALIAS_COMMENT')
-call s:Highlight('diffAdded', 'ALIAS_GIT_ADDED')
-call s:Highlight('diffFile', 'ALIAS_HEADER')
-call s:Highlight('diffLine', 'ALIAS_TERMINAL')
-call s:Highlight('diffRemoved', 'ALIAS_GIT_REMOVED')
-call s:Highlight('diffSubname', 'ALIAS_COMMENT')
-call s:Highlight('gitDiff', 'ALIAS_COMMENT')
+" " Git Config
+" call s:Highlight('gitconfigSection', 'ALIAS_HEADER')
+" " Git Commit
+" call s:Highlight('gitcommitDiff', 'ALIAS_COMMENT')
+" call s:Highlight('gitcommitSelectedFile', 'ALIAS_FILE')
+" call s:Highlight('gitcommitDiscardedFile', 'ALIAS_FILE')
+" call s:Highlight('gitcommitSummary', 'ALIAS_TEXT')
+" " Git Diff
+" call s:Highlight('gitDiff', 'ALIAS_COMMENT')
+" call s:Highlight('diffAdded', 'ALIAS_GIT_ADDED')
+" call s:Highlight('diffFile', 'ALIAS_HEADER')
+" call s:Highlight('diffLine', 'ALIAS_TERMINAL')
+" call s:Highlight('diffRemoved', 'ALIAS_GIT_REMOVED')
+" call s:Highlight('diffSubname', 'ALIAS_COMMENT')
+" call s:Highlight('gitDiff', 'ALIAS_COMMENT')
 " }}}
 " HTML {{{
-call s:Highlight('htmlArg', 'ALIAS_VARIABLE_DEFINITION')
-call s:Highlight('htmlBold', 'NEUTRAL_LIGHT', '', 'bold')
-call s:Highlight('htmlEndTag', 'ALIAS_PUNCTUATION')
-call s:Highlight('htmlItalic', 'NEUTRAL_LIGHT')
-call s:Highlight('htmlLink', 'ALIAS_TEXT')
-call s:Highlight('htmlSpecialChar', 'ALIAS_INTERPOLATION_VARIABLE')
-call s:Highlight('htmlSpecialTagName', 'ALIAS_KEYWORD')
-call s:Highlight('htmlTagName', 'ALIAS_KEYWORD')
-call s:Highlight('htmlTag', 'ALIAS_PUNCTUATION')
-call s:Highlight('htmlTitle', 'ALIAS_TEXT')
-call s:Highlight('htmlh1', 'ALIAS_TEXT')
-call s:Highlight('htmlh2', 'ALIAS_TEXT')
-call s:Highlight('htmlh3', 'ALIAS_TEXT')
-call s:Highlight('htmlh4', 'ALIAS_TEXT')
-call s:Highlight('htmlh5', 'ALIAS_TEXT')
-call s:Highlight('htmlh6', 'ALIAS_TEXT')
+" call s:Highlight('htmlArg', 'ALIAS_VARIABLE_DEFINITION')
+" call s:Highlight('htmlBold', 'NEUTRAL_LIGHT', '', 'bold')
+" call s:Highlight('htmlEndTag', 'ALIAS_PUNCTUATION')
+" call s:Highlight('htmlItalic', 'NEUTRAL_LIGHT')
+" call s:Highlight('htmlLink', 'ALIAS_TEXT')
+" call s:Highlight('htmlSpecialChar', 'ALIAS_INTERPOLATION_VARIABLE')
+" call s:Highlight('htmlSpecialTagName', 'ALIAS_KEYWORD')
+" call s:Highlight('htmlTagName', 'ALIAS_KEYWORD')
+" call s:Highlight('htmlTag', 'ALIAS_PUNCTUATION')
+" call s:Highlight('htmlTitle', 'ALIAS_TEXT')
+" call s:Highlight('htmlh1', 'ALIAS_TEXT')
+" call s:Highlight('htmlh2', 'ALIAS_TEXT')
+" call s:Highlight('htmlh3', 'ALIAS_TEXT')
+" call s:Highlight('htmlh4', 'ALIAS_TEXT')
+" call s:Highlight('htmlh5', 'ALIAS_TEXT')
+" call s:Highlight('htmlh6', 'ALIAS_TEXT')
 " }}}
 " JavaScript / TypeScript {{{
-call s:Highlight('jsVariableDef', 'ALIAS_VARIABLE')
-call s:Highlight('jsTaggedTemplate', 'ALIAS_FUNCTION')
-call s:Highlight('jsArrowFunction', 'ALIAS_PUNCTUATION')
-call s:Highlight('jsTemplateBraces', 'ALIAS_INTERPOLATION_WRAPPER')
-call s:Highlight('jsTemplateExpression', 'ALIAS_INTERPOLATION_VARIABLE')
-call s:Highlight('jsGlobalNodeObjects', 'ALIAS_FUNCTION', '', 'bold')
+" call s:Highlight('jsVariableDef', 'ALIAS_VARIABLE')
+" call s:Highlight('jsTaggedTemplate', 'ALIAS_FUNCTION')
+" call s:Highlight('jsArrowFunction', 'ALIAS_PUNCTUATION')
+" call s:Highlight('jsTemplateBraces', 'ALIAS_INTERPOLATION_WRAPPER')
+" call s:Highlight('jsTemplateExpression', 'ALIAS_INTERPOLATION_VARIABLE')
+" call s:Highlight('jsGlobalNodeObjects', 'ALIAS_FUNCTION', '', 'bold')
 " }}}
 " JSONC {{{
-call s:Highlight('jsoncKeywordMatch', 'BLUE')
-augroup oroshi_jsonc
-  autocmd!
-  " The "Normal" highlight group is used for commas
-  autocmd FileType jsonc call s:Highlight('Normal', 'TEAL_7')
-augroup END
+" call s:Highlight('jsoncKeywordMatch', 'BLUE')
+" augroup oroshi_jsonc
+"   autocmd!
+"   " The "Normal" highlight group is used for commas
+"   autocmd FileType jsonc call s:Highlight('Normal', 'TEAL_7')
+" augroup END
 " }}}
 " Markdown {{{
-call s:Highlight('markdownCodeDelimiter', 'ALIAS_STRING')
-call s:Highlight('markdownCode', 'ALIAS_STRING')
-call s:Highlight('markdownHeadingDelimiter', 'ALIAS_HEADER')
-call s:Highlight('markdownH1', 'ALIAS_HEADER', '', 'bold')
-call s:Highlight('markdownH2', 'ALIAS_HEADER')
-call s:Highlight('markdownH3', 'ALIAS_HEADER')
-call s:Highlight('markdownH4', 'ALIAS_HEADER')
-call s:Highlight('markdownH5', 'ALIAS_HEADER')
-call s:Highlight('markdownH6', 'ALIAS_HEADER')
-call s:Highlight('markdownListMarker', 'ALIAS_PUNCTUATION')
-call s:Highlight('markdownLinkDelimiter', 'ALIAS_PUNCTUATION')
-call s:Highlight('markdownLinkTextDelimiter', 'ALIAS_PUNCTUATION')
-call s:Highlight('markdownLinkText', 'ALIAS_KEYWORD', '', 'underline')
-call s:Highlight('markdownRule', 'ALIAS_PUNCTUATION')
-call s:Highlight('markdownUrl', 'ALIAS_LINK')
+" call s:Highlight('markdownCodeDelimiter', 'ALIAS_STRING')
+" call s:Highlight('markdownCode', 'ALIAS_STRING')
+" call s:Highlight('markdownHeadingDelimiter', 'ALIAS_HEADER')
+" call s:Highlight('markdownH1', 'ALIAS_HEADER', '', 'bold')
+" call s:Highlight('markdownH2', 'ALIAS_HEADER')
+" call s:Highlight('markdownH3', 'ALIAS_HEADER')
+" call s:Highlight('markdownH4', 'ALIAS_HEADER')
+" call s:Highlight('markdownH5', 'ALIAS_HEADER')
+" call s:Highlight('markdownH6', 'ALIAS_HEADER')
+" call s:Highlight('markdownListMarker', 'ALIAS_PUNCTUATION')
+" call s:Highlight('markdownLinkDelimiter', 'ALIAS_PUNCTUATION')
+" call s:Highlight('markdownLinkTextDelimiter', 'ALIAS_PUNCTUATION')
+" call s:Highlight('markdownLinkText', 'ALIAS_KEYWORD', '', 'underline')
+" call s:Highlight('markdownRule', 'ALIAS_PUNCTUATION')
+" call s:Highlight('markdownUrl', 'ALIAS_LINK')
 " }}}
 " Pug {{{
-call s:Highlight('pugInterpolation', 'ALIAS_INTERPOLATION_VARIABLE')
-call s:Highlight('pugInterpolationDelimiter', 'ALIAS_INTERPOLATION_WRAPPER')
-call s:Highlight('pugAttributes', 'ALIAS_PUNCTUATION')
-call s:Highlight('pugJavascriptChar', 'ALIAS_EVAL')
+" call s:Highlight('pugInterpolation', 'ALIAS_INTERPOLATION_VARIABLE')
+" call s:Highlight('pugInterpolationDelimiter', 'ALIAS_INTERPOLATION_WRAPPER')
+" call s:Highlight('pugAttributes', 'ALIAS_PUNCTUATION')
+" call s:Highlight('pugJavascriptChar', 'ALIAS_EVAL')
 " }}}
 " Ruby {{{
-call s:Highlight('rubyDefine', 'ALIAS_VARIABLE_TYPE')
-call s:Highlight('rubyConstant', 'ALIAS_VARIABLE_DEFINITION')
-call s:Highlight('rubyClassName', 'ALIAS_VARIABLE_DEFINITION')
-call s:Highlight('rubyStringDelimiter', 'ALIAS_STRING')
-call s:Highlight('rubyArrayDelimiter', 'ALIAS_PUNCTUATION')
-call s:Highlight('rubyBlockParameterList', 'ALIAS_VARIABLE')
-call s:Highlight('rubyCurlyBlockDelimiter', 'ALIAS_PUNCTUATION')
-call s:Highlight('rubyInterpolation', 'ALIAS_INTERPOLATION_VARIABLE')
-call s:Highlight('rubyInterpolationDelimiter', 'ALIAS_INTERPOLATION_WRAPPER')
-call s:Highlight('rubySymbol', 'ALIAS_SYMBOL')
-" Following groups should be highlighted but aren't
-call s:Highlight('rubyKeywordAsMethod', 'RED', 'CYAN')
+" call s:Highlight('rubyDefine', 'ALIAS_VARIABLE_TYPE')
+" call s:Highlight('rubyConstant', 'ALIAS_VARIABLE_DEFINITION')
+" call s:Highlight('rubyClassName', 'ALIAS_VARIABLE_DEFINITION')
+" call s:Highlight('rubyStringDelimiter', 'ALIAS_STRING')
+" call s:Highlight('rubyArrayDelimiter', 'ALIAS_PUNCTUATION')
+" call s:Highlight('rubyBlockParameterList', 'ALIAS_VARIABLE')
+" call s:Highlight('rubyCurlyBlockDelimiter', 'ALIAS_PUNCTUATION')
+" call s:Highlight('rubyInterpolation', 'ALIAS_INTERPOLATION_VARIABLE')
+" call s:Highlight('rubyInterpolationDelimiter', 'ALIAS_INTERPOLATION_WRAPPER')
+" call s:Highlight('rubySymbol', 'ALIAS_SYMBOL')
+" " Following groups should be highlighted but aren't
+" call s:Highlight('rubyKeywordAsMethod', 'RED', 'CYAN')
 " }}}
 " Shell {{{
-call s:Highlight('shDerefSimple', 'ALIAS_INTERPOLATION_VARIABLE')
-call s:Highlight('shOption', 'ALIAS_FLAG')
-call s:Highlight('shQuote', 'ALIAS_STRING')
-call s:Highlight('shRANGE', 'ALIAS_PUNCTUATION')
-call s:Highlight('shSetOption', 'ALIAS_FLAG')
-call s:Highlight('shSet', 'ALIAS_FUNCTION')
-call s:Highlight('shStatement', 'ALIAS_STATEMENT')
-call s:Highlight('shSemicolon', 'ALIAS_PUNCTUATION')
+call s:Link('shWrapLineOperator', 'SPECIAL_CHAR')
+" call s:Highlight('shDerefSimple', 'ALIAS_INTERPOLATION_VARIABLE')
+call s:Link('shOption', 'FLAG')
+" call s:Highlight('shQuote', 'ALIAS_STRING')
+" call s:Highlight('shRANGE', 'ALIAS_PUNCTUATION')
+" call s:Highlight('shSetOption', 'ALIAS_FLAG')
+" call s:Highlight('shSet', 'ALIAS_FUNCTION')
+" call s:Highlight('shStatement', 'ALIAS_STATEMENT')
+" call s:Highlight('shSemicolon', 'ALIAS_PUNCTUATION')
 " }}}
 " Tmux {{{
-call s:Highlight('tmuxBoolean', 'ORANGE', '', 'bold')
-call s:Highlight('tmuxCommands', 'YELLOW')
-call s:Highlight('tmuxFlags', 'ORANGE')
-call s:Highlight('tmuxOptions', 'VIOLET')
-call s:Highlight('tmuxKey', 'CYAN')
-call s:Highlight('tmuxFormatString', 'YELLOW')
+" call s:Highlight('tmuxBoolean', 'ORANGE', '', 'bold')
+" call s:Highlight('tmuxCommands', 'YELLOW')
+" call s:Highlight('tmuxFlags', 'ORANGE')
+" call s:Highlight('tmuxOptions', 'VIOLET')
+" call s:Highlight('tmuxKey', 'CYAN')
+" call s:Highlight('tmuxFormatString', 'YELLOW')
 " }}}
 " Vim {{{
-call s:Highlight('vim9Comment', 'ALIAS_ERROR') " Comments using #
-call s:Highlight('vimOption', 'ALIAS_VARIABLE')
-call s:Highlight('vimBracket', 'ALIAS_SPECIAL_CHAR')
-call s:Highlight('vimMapMod', 'ALIAS_SPECIAL_CHAR')
-call s:Highlight('vimMapLhs', 'ALIAS_SPECIAL_CHAR')
-call s:Highlight('vimMapRhs', 'ALIAS_FUNCTION')
-call s:Highlight('vimComment', 'ALIAS_COMMENT')
-call s:Highlight('vimLet', 'ALIAS_VARIABLE_TYPE')
-call s:Highlight('vimSetEqual', 'ALIAS_KEYWORD')
-call s:Highlight('vimSetSep', 'ALIAS_PUNCTUATION')
-call s:Highlight('vimUserFunc', 'ALIAS_FUNCTION')
+" call s:Highlight('vim9Comment', 'ALIAS_ERROR') " Comments using #
+" call s:Highlight('vimOption', 'ALIAS_VARIABLE')
+" call s:Highlight('vimBracket', 'ALIAS_SPECIAL_CHAR')
+" call s:Highlight('vimMapMod', 'ALIAS_SPECIAL_CHAR')
+" call s:Highlight('vimMapLhs', 'ALIAS_SPECIAL_CHAR')
+" call s:Highlight('vimMapRhs', 'ALIAS_FUNCTION')
+" call s:Highlight('vimComment', 'ALIAS_COMMENT')
+" call s:Highlight('vimLet', 'ALIAS_VARIABLE_TYPE')
+" call s:Highlight('vimSetEqual', 'ALIAS_KEYWORD')
+" call s:Highlight('vimSetSep', 'ALIAS_PUNCTUATION')
+" call s:Highlight('vimUserFunc', 'ALIAS_FUNCTION')
 " }}}
 " XML {{{
-call s:Highlight('xmlTag', 'ALIAS_PUNCTUATION')
-call s:Highlight('xmlEqual', 'ALIAS_PUNCTUATION')
-call s:Highlight('xmlDocTypeDecl', 'ALIAS_PUNCTUATION')
-call s:Highlight('xmlProcessingDelim', 'ALIAS_PUNCTUATION')
-call s:Highlight('xmlTagName', 'ALIAS_KEYWORD')
-call s:Highlight('xmlAttrib', 'ALIAS_VARIABLE')
+" call s:Highlight('xmlTag', 'ALIAS_PUNCTUATION')
+" call s:Highlight('xmlEqual', 'ALIAS_PUNCTUATION')
+" call s:Highlight('xmlDocTypeDecl', 'ALIAS_PUNCTUATION')
+" call s:Highlight('xmlProcessingDelim', 'ALIAS_PUNCTUATION')
+" call s:Highlight('xmlTagName', 'ALIAS_KEYWORD')
+" call s:Highlight('xmlAttrib', 'ALIAS_VARIABLE')
 " }}}
 " Yaml {{{
-call s:Highlight('yamlAlias', 'YELLOW_6')
-call s:Highlight('yamlBlockCollectionItemStart', 'TEAL_7')
-call s:Highlight('yamlFlowString', 'BLUE')
-call s:Highlight('yamlKeyValueDelimiter', 'TEAL_7')
-call s:Highlight('yamlPlainScalar', 'BLUE')
+" call s:Highlight('yamlAlias', 'YELLOW_6')
+" call s:Highlight('yamlBlockCollectionItemStart', 'TEAL_7')
+" call s:Highlight('yamlFlowString', 'BLUE')
+" call s:Highlight('yamlKeyValueDelimiter', 'TEAL_7')
+" call s:Highlight('yamlPlainScalar', 'BLUE')
 " }}}
 " Zsh {{{
-call s:Highlight('shStatement', 'ALIAS_FUNCTION')
-call s:Highlight('zshCommands', 'ALIAS_FUNCTION')
-call s:Highlight('zshDereferencing', 'ALIAS_VARIABLE')
-call s:Highlight('zshKSHFunction', 'ALIAS_VARIABLE_DEFINITION')
-call s:Highlight('zshKeyword', 'ALIAS_VARIABLE_TYPE')
-call s:Highlight('zshSubst', 'ALIAS_INTERPOLATION_VARIABLE')
-call s:Highlight('zshSubstDelim', 'ALIAS_INTERPOLATION_WRAPPER')
-call s:Highlight('zshSwitches', 'ALIAS_FLAG')
-call s:Highlight('zshTypes', 'ALIAS_VARIABLE_TYPE')
-call s:Highlight('zshVariableDef', 'ALIAS_VARIABLE_DEFINITION')
-call s:Highlight('zshVariable', 'ALIAS_VARIABLE_DEFINITION')
+call s:Link('shStatement', 'FUNCTION')
+" call s:Highlight('zshCommands', 'ALIAS_FUNCTION')
+" call s:Highlight('zshDereferencing', 'ALIAS_VARIABLE')
+" call s:Highlight('zshKSHFunction', 'ALIAS_VARIABLE_DEFINITION')
+" call s:Highlight('zshKeyword', 'ALIAS_VARIABLE_TYPE')
+" call s:Highlight('zshSubst', 'ALIAS_INTERPOLATION_VARIABLE')
+call s:Link('zshSwitches', 'FLAG')
+" call s:Highlight('zshTypes', 'ALIAS_VARIABLE_TYPE')
+call s:Link('zshVariable', 'VARIABLE_DEFINITION')
+call s:Link('zshSubstDelim', 'INTERPOLATION_WRAPPER')
+" call s:Highlight('zshVariableDef', 'ALIAS_VARIABLE_DEFINITION')
+" }}}
 " }}}

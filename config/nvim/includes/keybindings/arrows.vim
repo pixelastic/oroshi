@@ -16,9 +16,20 @@
 " cnoremap <expr> <Down> SendPumCompletionKey("\<Down>", "\<C-N>")
 " cnoremap <expr> <Left> SendPumCompletionKey("\<Left>", "\<C-P>")
 
-" NORMAL MODE
-" Use Arrow in normal mode to move accros splits
-nnoremap <Up> <C-W>k
-nnoremap <Right> <C-W>l
-nnoremap <Down> <C-W>j
-nnoremap <Left> <C-W>h
+" Default arrows are disabled
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+
+" [Ctrl-Arrows] To move across splits
+nnoremap <silent> <C-Up> <C-W>k
+nnoremap <silent> <C-Right> <C-W>l
+nnoremap <silent> <C-Down> <C-W>j
+nnoremap <silent> <C-Left> <C-W>h
+
+" [Ctrl-Shift-Arrows] To resize splits
+nnoremap <silent> ⍐ <C-W>5+
+nnoremap <silent> ⍈ <C-W>5>
+nnoremap <silent> ⍗ <C-W>5-
+nnoremap <silent> ⍇ <C-W>5-

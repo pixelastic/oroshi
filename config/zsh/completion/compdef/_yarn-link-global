@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest the globally available modules for linking
+function _yarn-link-global() {
+  local suggestions=(${(f)"$(complete-yarn-link-global)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_YARN_LINK_GLOBAL $COLOR_WHITE '  global yarn link modules ')" suggestions
+}

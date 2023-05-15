@@ -8,15 +8,60 @@
 
 local linkedModules="$(yarn-link-list-raw)"
 
+[[ $linkedModules == "" ]] && exit 0
+
+# Get all names and types
+local moduleNames=()
+typeset -A moduleTypes=()
 for module in ${(f)linkedModules}; do
   local split=(${(s/:/)module})
   local moduleName=$split[1]
-  local moduleLinkType=$split[2]
-  local RESET="\e[0m"
+  local moduleType=$split[2]
 
-
-  [[ $moduleLinkType = 'local' ]] && echo "\e[38;5;${COLOR_YELLOW}m  $moduleName\e[0m"
-  [[ $moduleLinkType = 'global' ]] && echo "\e[38;5;${COLOR_BLUE_7}m  $moduleName\e[0m"
+  moduleNames+=($moduleName)
+  moduleTypes[$moduleName]=$moduleType
 done
 
-exit 0
+# Get the descriptions
+# Note: jq would be slow if we run it on each module one by one. We'd rather run
+# it on all module package.json files in one go
+typeset -A moduleDescriptions=()
+local packageFiles=()
+for moduleName in $moduleNames; do
+  packageFiles+=("./node_modules/${moduleName}/package.json")
+done
+local rawDescriptions="$(jq -r '.name + ":" +.description' < $packageFiles)"
+for rawDescription in ${(f)rawDescriptions}; do
+  local split=(${(s/:/)rawDescription})
+  local moduleName=$split[1]
+  local moduleDescription=$split[2]
+
+  moduleDescriptions[$moduleName]=$moduleDescription
+done
+
+# Build the output
+local output=""
+for moduleName in ${moduleNames}; do
+  local row=""
+
+  local moduleType=$moduleTypes[$moduleName]
+  local moduleDescription=$moduleDescriptions[$moduleName]
+
+  # Name
+  local colorizeNameAdditionalArgument=""
+  [[ $moduleType == "local" ]] && colorizeNameAdditionalArgument="--local"
+  row+="$(yarn-link-colorize $moduleName --with-icon $colorizeNameAdditionalArgument)▮"
+
+  # Description
+  row+="$(colorize "$moduleDescription" $COLOR_ALIAS_YARN_LINK_DESCRIPTION)▮"
+
+
+  output+="$row\n"
+done
+
+# Output as columns
+echo $output | column \
+  --separator "▮" \
+  --table \
+  --table-noheadings
+

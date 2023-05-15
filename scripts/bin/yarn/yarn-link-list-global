@@ -1,0 +1,52 @@
+#!/usr/bin/env zsh
+# List all modules that are globally available and can be linked
+# Usage:
+# $ yarn-link-list-global
+# TODO: Create a yarn-link-list-global-raw that exposes the name and
+# descriptions, and re-use it in complete-yarn-link-global
+
+# Global links are stored by yarn in this directory
+local linkDirectory=~/.config/yarn/link
+
+# Building the list
+local linkList=()
+for link in ${linkDirectory}/*; do
+	local linkName=${link:t}
+
+	# Without namespace
+	if [[ $linkName != @* ]]; then
+		linkList+=($linkName)
+		continue
+	fi
+
+	# With namespace
+	for sublink in ${linkDirectory}/${linkName}/*; do
+		local sublinkName=${sublink:t}
+		linkList+=(${linkName}/${sublinkName})
+	done
+done
+
+# Build the display
+local output=""
+for linkName in $linkList; do
+	local row=""
+
+	# Get description
+	local packagePath="${linkDirectory}/${linkName}/package.json"
+	local description="$(jx $packagePath description)"
+
+	# Link name
+	row+="$(yarn-link-colorize "$linkName" --with-icon)▮"
+
+	# Link description
+	row+="$(colorize "$description" $COLOR_ALIAS_YARN_LINK_DESCRIPTION)▮"
+
+	output+="$row\n"
+
+done
+
+# Output as columns
+echo $output | column \
+	--separator "▮" \
+	--table \
+	--table-noheadings
