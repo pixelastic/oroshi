@@ -46,6 +46,7 @@ local tmpOutputFile=${fileInput:a:r}.tmp.${fileInput:e}
 
 mkvmerge \
   --output $tmpOutputFile \
+  --quiet \
   ${=videoArgument} \
   ${=audioArgument} \
   ${=subtitleArgument} \
