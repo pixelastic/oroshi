@@ -436,7 +436,7 @@ call s:Link('shOption', 'FLAG')
 " call s:Highlight('vimLet', 'ALIAS_VARIABLE_TYPE')
 " call s:Highlight('vimSetEqual', 'ALIAS_KEYWORD')
 " call s:Highlight('vimSetSep', 'ALIAS_PUNCTUATION')
-" call s:Highlight('vimUserFunc', 'ALIAS_FUNCTION')
+call s:Link('vimUserFunc', 'FUNCTION')
 " }}}
 " XML {{{
 " call s:Highlight('xmlTag', 'ALIAS_PUNCTUATION')
@@ -455,15 +455,15 @@ call s:Link('shOption', 'FLAG')
 " }}}
 " Zsh {{{
 call s:Link('shStatement', 'FUNCTION')
+call s:Link('zshCommands', 'FUNCTION')
 call s:Link('zshSubstDelim', 'INTERPOLATION_WRAPPER')
 call s:Link('zshSwitches', 'FLAG')
+call s:Link('zshVariableDef', 'VARIABLE_DEFINITION')
 call s:Link('zshVariable', 'VARIABLE_DEFINITION')
-" call s:Highlight('zshCommands', 'ALIAS_FUNCTION')
 " call s:Highlight('zshDereferencing', 'ALIAS_VARIABLE')
 " call s:Highlight('zshKSHFunction', 'ALIAS_VARIABLE_DEFINITION')
 " call s:Highlight('zshKeyword', 'ALIAS_VARIABLE_TYPE')
 " call s:Highlight('zshSubst', 'ALIAS_INTERPOLATION_VARIABLE')
 " call s:Highlight('zshTypes', 'ALIAS_VARIABLE_TYPE')
-" call s:Highlight('zshVariableDef', 'ALIAS_VARIABLE_DEFINITION')
 " }}}
 " }}}

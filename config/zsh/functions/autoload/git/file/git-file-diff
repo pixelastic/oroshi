@@ -1,0 +1,19 @@
+# Display diff of modified files in current directory
+# Usage:
+# $ git-file-diff                   # Display diff
+# $ git-file-diff --staged          # Display diff of staged files only
+function git-file-diff() {
+	zparseopts -E -D \
+		-staged=flagStaged
+
+	# shellcheck disable=SC2154
+	local isStaged=${#flagStaged}
+
+	local additionalArgument=""
+	[[ $isStaged == "1" ]] && additionalArgument="--staged"
+
+	git diff \
+		--ignore-all-space \
+		--color-words \
+		${additionalArgument}
+}

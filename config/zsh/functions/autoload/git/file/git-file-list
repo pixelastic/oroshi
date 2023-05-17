@@ -1,0 +1,6 @@
+# List all files available for commit
+# Usage:
+# $ git-file-list  # List all changed/edited/added files
+function git-file-list() {
+	git status --short
+}
