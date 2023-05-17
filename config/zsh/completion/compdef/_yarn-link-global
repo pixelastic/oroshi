@@ -4,5 +4,5 @@
 function _yarn-link-global() {
   local suggestions=(${(f)"$(complete-yarn-link-global)"})
 
-  _describe -V "$(completion-header $COLOR_ALIAS_YARN_LINK_GLOBAL $COLOR_WHITE '  global yarn link modules ')" suggestions
+  _describe -V "$(completion-header $COLOR_ALIAS_YARN_LINK_GLOBAL $COLOR_WHITE '  globally available modules ')" suggestions
 }

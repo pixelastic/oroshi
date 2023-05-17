@@ -1,25 +1,14 @@
 # List modules available for global linking
 function complete-yarn-link-global() {
 
-  local linkDirectory=~/.config/yarn/link
+  local rawList="$(yarn-link-list-raw --global --with-descriptions)"
+  for rawLine in ${(f)rawList}; do
+    local split=(${(s/▮/)rawLine})
+    local moduleName=$split[1]
+    local moduleDescription=$split[3]
 
-  # Building the list
-  local linkList=()
-  for link in ${linkDirectory}/*; do
-    local linkName=${link:t}
+    echo "${moduleName}:${moduleDescription}"
 
-    # Without namespace
-    if [[ $linkName != @* ]]; then
-      linkList+=($linkName)
-      continue
-    fi
-
-    # With namespace
-    for sublink in ${linkDirectory}/${linkName}/*; do
-      local sublinkName=${sublink:t}
-      linkList+=(${linkName}/${sublinkName})
-    done
   done
 
-  echo ${(F)linkList}
 }

@@ -46,6 +46,7 @@ function oroshi-completion-styling() {
       "${(f)$(♣ "*" $COLOR_ALIAS_FLAG)}" \
       $listColorsDefault \
     )
+  # Git {{{
   # Color git branches
   local listColorsGitBranch=(\
       "${(f)$(♣ "master*" $COLOR_ALIAS_GIT_BRANCH_MASTER)}" \
@@ -60,12 +61,15 @@ function oroshi-completion-styling() {
       "${(f)$(♣ "*" $COLOR_ALIAS_GIT_SUBMODULE)}" \
       $listColorsDefault \
     )
+  # }}}
+  # SSH {{{
   # Color remote ssh
   local listColorsKnownHost=(\
       "${(f)$(♣ "pixelastic*" $COLOR_ALIAS_HOST_PIXELASTIC)}" \
       "${(f)$(♣ "github*" $COLOR_ALIAS_HOST_GITHUB)}" \
       $listColorsDefault \
     )
+  # }}}
   # Docker {{{
   # Remote images
   local listColorsDockerImageRemote=(\
@@ -85,6 +89,13 @@ function oroshi-completion-styling() {
   # Containers
   local listColorsDockerContainer=(\
       "${(f)$(♣ "[a-z]*" $COLOR_ALIAS_DOCKER_CONTAINER)}" \
+      $listColorsDefault \
+    )
+  # }}}
+  # Yarn {{{
+  # Yarn globally available modules
+  local listColorsYarnLinkGlobal=(\
+      "${(f)$(♣ "*" $COLOR_ALIAS_YARN_LINK_GLOBAL)}" \
       $listColorsDefault \
     )
   # }}}
@@ -159,6 +170,12 @@ function oroshi-completion-styling() {
   zstyle ':completion:*:complete:docker-container-image-name:*:*' list-colors $listColorsDockerContainer
   zstyle ':completion:*:complete:docker-container-image-id:*:*' list-colors $listColorsDockerContainer
   zstyle ':completion:*:complete:docker-container-is-running:*:*' list-colors $listColorsDockerContainer
+  # }}}
+
+  # Yarn {{{
+  zstyle ':completion:*:complete:yarn-link:*:*' list-colors $listColorsYarnLinkGlobal
+  zstyle ':completion:*:complete:yarn-link-remove-global:*:*' list-colors $listColorsYarnLinkGlobal
+  # }}}
 
   # SSH Host
   zstyle ':completion:*:complete:ssh:*:*' list-colors $listColorsKnownHost
