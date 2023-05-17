@@ -10,7 +10,7 @@ function yarn-link-create() {
 		echo "To make the current module available for global linking, use yarn-link-create without arguments."
 		echo ""
 		echo "To link existing modules to the current one, use yarn-link with the name of the modules"
-		exit 1
+		return 1
 	fi
 
 	# Noop if module already globally available

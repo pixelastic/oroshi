@@ -2,6 +2,17 @@
 # Usage:
 # $ yarn-link aberlaas norska   # Uses aberlaas and norska as linked modules
 function yarn-link() {
+	local input="$1"
+	if [[ $input == "" ]]; then
+		echo "⚠ Warning:"
+		echo "You didn't pass an argument to yarn-link."
+		echo ""
+		echo "To make the current module available for global linking, use yarn-link-create instead."
+		echo ""
+		echo "To link existing modules to the current one, use yarn-link with the name of the modules"
+		return 1
+	fi
+
 	# Make sure we are at the module root before linking
 	cd "$(git-directory-root)" || return
 
