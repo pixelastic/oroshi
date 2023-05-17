@@ -75,12 +75,12 @@ function tmux-generate-status:battery() {
 
 	[[ $batteryPercent -gt 99 ]] && return
 
-	local batteryDisplay="${batteryPercent}% (${batteryDuration}h)"
-
 	if [[ $batteryStatus == 'charging' ]]; then
-		echo "#[fg=colour${COLOR_ALIAS_SUCCESS}] ${batteryDisplay}#[default]"
+		echo "#[fg=colour${COLOR_ALIAS_SUCCESS}] ${batteryPercent}%#[default]"
 		return
 	fi
+
+	local batteryDisplay="${batteryPercent}% (${batteryDuration}h)"
 	if [[ $batteryPercent -lt 100 && $batteryPercent -ge 50 ]]; then
 		echo "#[fg=colour${COLOR_ALIAS_COMMENT}]  ${batteryDisplay}#[default]"
 	fi
