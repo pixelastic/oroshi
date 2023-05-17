@@ -3,10 +3,12 @@
 # $ yarn-link-remove reddinx        # Removes reddinx from links
 # $ yarn-link-remove reddinx firost # Removes reddinx and firost
 function yarn-link-remove() {
-	set -e
+	local moduleNames=$@
 
-	# Unlink the modules
-	yarn unlink $@
+	for moduleName in $moduleNames; do
+		yarn unlink $moduleName 1>/dev/null
+		echo "✔ $moduleName unlinked"
+	done
 
 	# Forces a re-install
 	yarn install --force

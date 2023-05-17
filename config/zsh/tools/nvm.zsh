@@ -25,7 +25,7 @@ export OROSHI_NVM_LOADED="0"
 
 # Add aliases for all command that would need node, so nvm loads it on first
 # invocation
-export OROSHI_NVM_LAZYLOAD_ALIASES=(node npm nvm yarn yarn-run)
+export OROSHI_NVM_LAZYLOAD_ALIASES=(node npm nvm yarn yarn-run yarn-link-remove)
 for command in $OROSHI_NVM_LAZYLOAD_ALIASES; do
 	alias $command="lazyloadNvm $command"
 done

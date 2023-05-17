@@ -1,6 +1,0 @@
-#!/usr/bin/env sh
-# Unlink a module and reinstall it
-set -e
-
-yarn unlink "$@"
-yarn install --force

@@ -18,11 +18,11 @@ function yarn-link-list-raw() {
   }
 
 
+  # Variables to fill
   local moduleNames=()
   typeset -A moduleTypes=()
   typeset -A moduleDescriptions=()
   typeset -A modulePaths=()
-
 
   # getLocalLinkList {{{
   # Populate the module variables with values from the locally linked modules
@@ -54,11 +54,11 @@ function yarn-link-list-raw() {
       local moduleType='local'
       [[ $modulePath == */.config/yarn/link/* ]] && moduleType='global'
 
-      # We get the module name from the path relative from node_modules, to
-      # handle the scoped packages
+      # Path of global modules are relative to the yarn directory
       if [[ $moduleType == 'global' ]]; then
         local split=(${(s_config/yarn/link/_)modulePath})
-        local moduleName=$split[2]
+        moduleName=$split[2]
+        modulePath=~/.config/yarn/link/${moduleName}
       fi
       moduleNames+=($moduleName)
 
@@ -100,6 +100,9 @@ function yarn-link-list-raw() {
   # Get the list either from locally linked modules, or globally available
   [[ $isGlobal == "0" ]] && getLocalLinkList
   [[ $isGlobal == "1" ]] && getGlobalLinkList
+
+  # Stop if no module linked
+  [[ ${moduleNames} == "" ]] && return 0
 
   # Find description of all modules
   # Note: jq would be slow if we run it on each module one by one. We'd rather run

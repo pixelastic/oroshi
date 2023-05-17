@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest the locally linked modules
+function _yarn-link-local() {
+  local suggestions=(${(f)"$(complete-yarn-link-local)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_YARN_LINK_LOCAL $COLOR_BLACK '  locally linked modules ')" suggestions
+}

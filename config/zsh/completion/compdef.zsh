@@ -85,12 +85,16 @@ compdef '_files -g "*.svg"' \
 	svg2jpg \
 	svg2png
 # }}}
-# JavaScript {{{
+# NVM {{{
+compdef _nvm-lazyload lazyloadNvm
+# }}}
+# Yarn {{{
 compdef _package-scripts yarn-run
+compdef _yarn-link-local \
+	yarn-link-remove
 compdef _yarn-link-global \
 	yarn-link \
 	yarn-link-remove-global
-compdef _nvm-lazyload lazyloadNvm
 # }}}
 # JSON {{{
 compdef '_files -g "*.json"' \

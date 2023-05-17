@@ -93,9 +93,14 @@ function oroshi-completion-styling() {
     )
   # }}}
   # Yarn {{{
-  # Yarn globally available modules
+  # Globally available modules
   local listColorsYarnLinkGlobal=(\
       "${(f)$(♣ "*" $COLOR_ALIAS_YARN_LINK_GLOBAL)}" \
+      $listColorsDefault \
+    )
+  # Locally linked modules
+  local listColorsYarnLinkLocal=(\
+      "${(f)$(♣ "*" $COLOR_ALIAS_YARN_LINK_LOCAL)}" \
       $listColorsDefault \
     )
   # }}}
@@ -173,8 +178,13 @@ function oroshi-completion-styling() {
   # }}}
 
   # Yarn {{{
+  # Globally available modules {{{
   zstyle ':completion:*:complete:yarn-link:*:*' list-colors $listColorsYarnLinkGlobal
   zstyle ':completion:*:complete:yarn-link-remove-global:*:*' list-colors $listColorsYarnLinkGlobal
+  # }}}
+  # Locally linked modules {{{
+  zstyle ':completion:*:complete:yarn-link-remove:*:*' list-colors $listColorsYarnLinkLocal
+  # }}}
   # }}}
 
   # SSH Host
