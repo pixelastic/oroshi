@@ -1,0 +1,25 @@
+# This makes an update of a given package, taking the latest available
+# shellcheck disable=SC2199
+function yarn-update() {
+	set -e
+
+	ARGS=("$@")
+	[[ " ${ARGS[@]} " =~ " --force " ]] && IS_FORCED=1
+
+	# Stop if in a monorepo root
+	if yarn-is-workspace-root && [ "$IS_FORCED" != "1" ]; then
+		echo "Are you sure you want to update dependencies at the root of the monorepo?"
+		echo "- If so, use the --force flag"
+		echo "- Or maybe you want to run this in ./lib or ./docs?"
+		return 0
+	fi
+
+	# Build the list of deps
+	deps=()
+	for depName in "${ARGS[@]}"; do
+		[[ "$depName" == "--force" ]] && continue
+		deps+=("${depName}@latest")
+	done
+
+	yarn upgrade "${deps[@]}"
+}

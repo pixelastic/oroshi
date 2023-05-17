@@ -18,6 +18,9 @@ function yarn-link-colorize() {
 	local moduleColor=$COLOR_ALIAS_YARN_LINK_GLOBAL
 	[[ $isLocal == "1" ]] && moduleColor=$COLOR_ALIAS_YARN_LINK_LOCAL
 
+	local moduleIcon=""
+	[[ $isLocal == "1" ]] && moduleIcon=""
+
 	# If --with-icon is not passed, we simply display the colored module
 	if [[ "$isWithIcon" != 1 ]]; then
 		colorize "$moduleName" $moduleColor
@@ -25,7 +28,7 @@ function yarn-link-colorize() {
 	fi
 
 	# Fallback on unknown status
-	colorize "  $moduleName" $moduleColor
+	colorize "${moduleIcon}  ${moduleName}" $moduleColor
 
 	return
 }

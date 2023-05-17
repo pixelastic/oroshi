@@ -1,0 +1,14 @@
+# Remove a module from the list of globally available links
+# Usage:
+# $ yarn-link-remove-global reddinx         # Remove reddinx from globally available modules
+# $ yarn-link-remove-global reddinx firost  # Remove reddinx and firost
+function yarn-link-remove-global() {
+	local modules=$@
+	for moduleName in $modules; do
+		local linkFolder=~/.config/yarn/link/${moduleName}
+		[[ ! -e $linkFolder ]] && continue
+
+		rm -rf $linkFolder
+		echo "✔ $moduleName removed"
+	done
+}

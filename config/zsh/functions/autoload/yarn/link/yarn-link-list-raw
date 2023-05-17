@@ -1,0 +1,132 @@
+# Return a raw list of all the linked yarn modules
+# Usage:
+# $ yarn-link-list-raw                     # List of local modules with moduleName▮type▮
+# $ yarn-link-list-raw --with-descriptions # List of moduleName▮type▮descriptions
+# $ yarn-link-list-raw --global            # List of global modules
+function yarn-link-list-raw() {
+  # Stop if yarn not available
+  [[ ! $commands[yarn] ]] && return 1
+
+  zparseopts -E -D \
+    -global=flagGlobal \
+    -with-descriptions=flagWithDescriptions
+
+  # shellcheck disable=SC2154
+  {
+    local isGlobal=${#flagGlobal}
+    local isWithDescriptions=${#flagWithDescriptions}
+  }
+
+
+  local moduleNames=()
+  typeset -A moduleTypes=()
+  typeset -A moduleDescriptions=()
+  typeset -A modulePaths=()
+
+
+  # getLocalLinkList {{{
+  # Populate the module variables with values from the locally linked modules
+  function getLocalLinkList() {
+    # This prevents zsh from displaying a warning if the node_modules/@* does not
+    # match anything
+    setopt +o nomatch
+
+    local packageRoot="$(pkg-dir)"
+    local node_modules="${packageRoot}/node_modules"
+    local linkedModules="$(find \
+        $node_modules \
+        $node_modules/@* \
+        -maxdepth 1 \
+        -type l \
+        -printf "%f:%l\n" \
+        2>/dev/null \
+    | sort)"
+
+
+    # Find types of each module
+    for rawLine in ${(f)linkedModules}; do
+      local split=(${(s/:/)rawLine})
+      local moduleName=$split[1]
+      local modulePath="${node_modules}/${split[2]}"
+      modulePath=${modulePath:a}
+
+      # Check if local or global module
+      local moduleType='local'
+      [[ $modulePath == */.config/yarn/link/* ]] && moduleType='global'
+
+      # We get the module name from the path relative from node_modules, to
+      # handle the scoped packages
+      if [[ $moduleType == 'global' ]]; then
+        local split=(${(s_config/yarn/link/_)modulePath})
+        local moduleName=$split[2]
+      fi
+      moduleNames+=($moduleName)
+
+      modulePaths[$moduleName]=$modulePath
+      moduleTypes[$moduleName]=$moduleType
+    done
+  }
+  # }}}
+  # getGlobalLinkList {{{
+  # Populate the module variables with values from the globally available modules
+  function getGlobalLinkList() {
+    local linkDirectory=~/.config/yarn/link
+
+    # Getting all module names
+    for rawLink in ${linkDirectory}/*; do
+      local moduleName=${rawLink:t}
+
+      # Without namespace
+      if [[ $moduleName != @* ]]; then
+        moduleNames+=($moduleName)
+        continue
+      fi
+
+      # With namespace
+      for rawSubLink in ${linkDirectory}/${moduleName}/*; do
+        local submoduleName=${rawSubLink:t}
+        moduleNames+=(${moduleName}/${submoduleName})
+      done
+    done
+
+    # Saving their type and path
+    for moduleName in $moduleNames; do
+      moduleTypes[$moduleName]="global"
+      modulePaths[$moduleName]="${linkDirectory}/${moduleName}"
+    done
+  }
+  # }}}
+
+  # Get the list either from locally linked modules, or globally available
+  [[ $isGlobal == "0" ]] && getLocalLinkList
+  [[ $isGlobal == "1" ]] && getGlobalLinkList
+
+  # Find description of all modules
+  # Note: jq would be slow if we run it on each module one by one. We'd rather run
+  # it on all module package.json files in one go
+  if [[ $isWithDescriptions == "1" ]]; then
+    local packageFiles=()
+    for moduleName in $moduleNames; do
+      local modulePath=$modulePaths[$moduleName]
+      packageFiles+=("${modulePath}/package.json")
+    done
+    local rawDescriptions="$(jq -r '.name + ":" +.description' < $packageFiles)"
+    for rawDescription in ${(f)rawDescriptions}; do
+      local split=(${(s/:/)rawDescription})
+      local moduleName=$split[1]
+      local moduleDescription=$split[2]
+
+      moduleDescriptions[$moduleName]=$moduleDescription
+    done
+
+  fi
+
+  # Output the results
+  for moduleName in ${(o)moduleNames}; do
+    local moduleType=$moduleTypes[$moduleName]
+    local moduleDescription=$moduleDescriptions[$moduleName]
+    echo "${moduleName}▮${moduleType}▮${moduleDescription}"
+  done
+
+  return 0
+}

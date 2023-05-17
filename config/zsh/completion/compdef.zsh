@@ -87,7 +87,9 @@ compdef '_files -g "*.svg"' \
 # }}}
 # JavaScript {{{
 compdef _package-scripts yarn-run
-compdef _yarn-link-global yarn-link-create
+compdef _yarn-link-global \
+	yarn-link \
+	yarn-link-remove-global
 compdef _nvm-lazyload lazyloadNvm
 # }}}
 # JSON {{{

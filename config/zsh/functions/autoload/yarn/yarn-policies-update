@@ -1,0 +1,17 @@
+# Update local source code version of yarn
+function yarn-policies-update() {
+	cd "$(git-directory-root)" || return 1
+
+	# Download latest version
+	yarn policies set-version
+
+	# Rename current yarn so we don't delete it
+	local currentYarn="$(yarn config get yarn-path)"
+	mv ${currentYarn} ${currentYarn}.back
+
+	# Delete all old yarns
+	rm -r ./.yarn/releases/*.js
+
+	# Move our new yarn back
+	mv ${currentYarn}.back ${currentYarn}
+}

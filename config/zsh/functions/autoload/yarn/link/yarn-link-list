@@ -1,0 +1,49 @@
+# Display a list of all the linked yarn modules
+# Usage:
+# $ yarn-link-list            # Display list of all locally linked yarn modules
+# $ yarn-link-list --global   # Display list of globally available modules
+function yarn-link-list() {
+  # Stop if yarn isn't installed
+  [[ ! $commands[yarn] ]] && return 1
+
+  zparseopts -E -D \
+    -global=flagGlobal
+
+  # shellcheck disable=SC2154
+  {
+    local isGlobal=${#flagGlobal}
+  }
+
+  local additionalArgument=""
+  [[ $isGlobal == "1" ]] && additionalArgument="--global"
+  local rawList="$(yarn-link-list-raw --with-descriptions $additionalArgument)"
+
+  # Build the output
+  local output=""
+  for rawLine in ${(f)rawList}; do
+    local row=""
+
+    local split=(${(s/▮/)rawLine})
+    local moduleName=$split[1]
+    local moduleType=$split[2]
+    local moduleDescription=$split[3]
+
+    # Name
+    local colorizeNameAdditionalArgument=""
+    [[ $moduleType == "local" ]] && colorizeNameAdditionalArgument="--local"
+    row+="$(yarn-link-colorize $moduleName --with-icon $colorizeNameAdditionalArgument)▮"
+
+    # Description
+    row+="$(colorize "$moduleDescription" $COLOR_ALIAS_YARN_LINK_DESCRIPTION)▮"
+
+    output+="$row\n"
+  done
+
+  # Output as columns
+  echo $output | column \
+    --separator "▮" \
+    --table \
+    --table-noheadings
+
+}
+

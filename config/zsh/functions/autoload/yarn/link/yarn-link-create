@@ -1,0 +1,22 @@
+# Register the current module for future linking
+# Usage:
+# $ yarn-link-create         # In a node repo, will now allow linking it later
+function yarn-link-create() {
+	local input="$1"
+	if [[ $input != "" ]]; then
+		echo "⚠ Warning:"
+		echo "You passed an argument to yarn-link-create."
+		echo ""
+		echo "To make the current module available for global linking, use yarn-link-create without arguments."
+		echo ""
+		echo "To link existing modules to the current one, use yarn-link with the name of the modules"
+		exit 1
+	fi
+
+	# Noop if module already globally available
+	local moduleName="$(jq -r ".name" <package.json)"
+	yarn-link-exists-global $moduleName && return 0
+
+	# Make this module available globally
+	yarn link
+}

@@ -1,0 +1,13 @@
+# Remove a linked module from the current module
+# Usage:
+# $ yarn-link-remove reddinx        # Removes reddinx from links
+# $ yarn-link-remove reddinx firost # Removes reddinx and firost
+function yarn-link-remove() {
+	set -e
+
+	# Unlink the modules
+	yarn unlink $@
+
+	# Forces a re-install
+	yarn install --force
+}

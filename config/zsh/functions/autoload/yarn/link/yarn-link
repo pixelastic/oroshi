@@ -2,6 +2,8 @@
 # Usage:
 # $ yarn-link aberlaas norska   # Uses aberlaas and norska as linked modules
 function yarn-link() {
+	# Make sure we are at the module root before linking
 	cd "$(git-directory-root)" || return
-	yarn link "$@"
+
+	yarn link $@
 }

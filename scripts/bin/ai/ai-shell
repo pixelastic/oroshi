@@ -11,4 +11,4 @@ Explain each part of the command.
 
 Prompt: $args"
 
-sgpt --chat shell "$prompt"
+sgpt "$prompt"

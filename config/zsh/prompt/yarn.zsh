@@ -10,7 +10,7 @@ function oroshi-prompt-populate:yarn_link() {
   local displayedString=''
 
   for module in ${(f)linkedModules}; do
-    local split=(${(s/:/)module})
+    local split=(${(s/▮/)module})
     local moduleName=$split[1]
     local moduleLinkType=$split[2]
 
