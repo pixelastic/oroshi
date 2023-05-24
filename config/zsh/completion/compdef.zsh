@@ -90,6 +90,7 @@ compdef _nvm-lazyload lazyloadNvm
 # }}}
 # Yarn {{{
 compdef _package-scripts yarn-run
+compdef _package-dependencies yarn-update
 compdef _yarn-link-local \
 	yarn-link-remove
 compdef _yarn-link-global \

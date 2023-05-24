@@ -1,0 +1,22 @@
+# Display the list of all dependencies of the current project
+# Usage:
+# $ yarn-dependency-list         # Only regular dependencies
+# $ yarn-dependency-list --dev   # Only dev dependencies
+# $ yarn-dependency-list --all   # All dependencies
+function yarn-dependency-list() {
+	# Stop if no package.json
+	local packageJsonPath="$(find-up package.json)"
+	[[ $packageJsonPath == "" ]] && return 0
+
+	# Get all dependencies
+	local rawDependencies="$(jq \
+		--raw-output \
+		'.dependencies | to_entries[] | [.key, .value] | join("▮")' \
+		<$packageJsonPath)"
+
+	local output=""
+	for rawDependency in $rawDependencies; do
+
+	done
+
+}

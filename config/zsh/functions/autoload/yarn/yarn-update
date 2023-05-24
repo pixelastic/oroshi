@@ -1,25 +1,38 @@
 # This makes an update of a given package, taking the latest available
-# shellcheck disable=SC2199
+# Usage:
+# $ yarn-update firost          # Update the firost dependency
+# $ yarn-update firost aberlass # Update the firost and aberlaas dependencies
+# $ yarn-update                 # Stops and display a warning
+# $ yarn-update --force firost  # Allows updating a dependency in the workspace
+# root
 function yarn-update() {
-	set -e
+  zparseopts -E -D \
+    -force=flagForce
 
-	ARGS=("$@")
-	[[ " ${ARGS[@]} " =~ " --force " ]] && IS_FORCED=1
+  # shellcheck disable=SC2154
+  local isForce=${#flagForce}
 
-	# Stop if in a monorepo root
-	if yarn-is-workspace-root && [ "$IS_FORCED" != "1" ]; then
-		echo "Are you sure you want to update dependencies at the root of the monorepo?"
-		echo "- If so, use the --force flag"
-		echo "- Or maybe you want to run this in ./lib or ./docs?"
-		return 0
-	fi
+  local dependencies=$@
 
-	# Build the list of deps
-	deps=()
-	for depName in "${ARGS[@]}"; do
-		[[ "$depName" == "--force" ]] && continue
-		deps+=("${depName}@latest")
-	done
+  # Stop if no dependency passed
+  if [[ $dependencies == "" ]]; then
+    echo "✘ You must pass at least one dependency to update"
+    return 1
+  fi
 
-	yarn upgrade "${deps[@]}"
+  # By default, we prevent updating dependencies in a monorepo root
+  if yarn-is-workspace-root && [ "$flagForce" == "O" ]; then
+    echo "Are you sure you want to update dependencies at the root of the monorepo?"
+    echo "- If so, use the --force flag"
+    echo "- Or maybe you want to run this in ./lib or ./docs?"
+    return 1
+  fi
+
+  # Build the list of deps
+  local dependencylist=()
+  for dependencyName in $dependencies; do
+    dependencyList+=(${dependencyName}@latest)
+  done
+
+  yarn upgrade ${=dependencyList}
 }
