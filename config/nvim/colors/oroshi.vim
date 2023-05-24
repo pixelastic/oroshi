@@ -354,12 +354,12 @@ call s:Highlight('SpellCap', 'RED', 'BLACK', 'bold,underline')
 " call s:Highlight('htmlh6', 'ALIAS_TEXT')
 " }}}
 " JavaScript / TypeScript {{{
-" call s:Highlight('jsVariableDef', 'ALIAS_VARIABLE')
+call s:Link('jsVariableDef', 'VARIABLE')
 " call s:Highlight('jsTaggedTemplate', 'ALIAS_FUNCTION')
 " call s:Highlight('jsArrowFunction', 'ALIAS_PUNCTUATION')
-" call s:Highlight('jsTemplateBraces', 'ALIAS_INTERPOLATION_WRAPPER')
-" call s:Highlight('jsTemplateExpression', 'ALIAS_INTERPOLATION_VARIABLE')
-" call s:Highlight('jsGlobalNodeObjects', 'ALIAS_FUNCTION', '', 'bold')
+call s:Link('jsTemplateBraces', 'INTERPOLATION_WRAPPER')
+call s:Link('jsTemplateExpression', 'INTERPOLATION_VARIABLE')
+call s:Highlight('jsGlobalNodeObjects', 'ALIAS_FUNCTION', '', 'bold')
 " }}}
 " JSONC {{{
 " call s:Highlight('jsoncKeywordMatch', 'BLUE')
