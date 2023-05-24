@@ -4,15 +4,14 @@
 # $ git-branch-list          # Display all local branches
 
 # Hopefully this sign will never be used in tags or commits
-local separator="▮"
 local gitBranchFormat=""
-gitBranchFormat+="_%(refname:short)${separator}"           # main
-gitBranchFormat+="_%(objectname:short)${separator}"        # abcdef
-gitBranchFormat+="_%(upstream:remotename)${separator}"     # origin
-gitBranchFormat+="_%(upstream:remoteref)${separator}"      # refs/heads/main
-gitBranchFormat+="_%(upstream:track)${separator}"          # [ahead 4]
-gitBranchFormat+="_%(committerdate:relative)${separator}"  # 3 months ago
-gitBranchFormat+="_%(contents:subject)${separator}"        # fix typo
+gitBranchFormat+="_%(refname:short)▮"           # main
+gitBranchFormat+="_%(objectname:short)▮"        # abcdef
+gitBranchFormat+="_%(upstream:remotename)▮"     # origin
+gitBranchFormat+="_%(upstream:remoteref)▮"      # refs/heads/main
+gitBranchFormat+="_%(upstream:track)▮"          # [ahead 4]
+gitBranchFormat+="_%(committerdate:relative)▮"  # 3 months ago
+gitBranchFormat+="_%(contents:subject)▮"        # fix typo
 
 local rawGitBranches="$(git branch --sort=-committerdate --format="$gitBranchFormat\n")"
 local currentBranch="$(git-branch-current)"
@@ -56,35 +55,35 @@ for rawGitBranch in ${(f)rawGitBranches}; do
   # Building the output row {{{
   local row=""
   #  to mark the current branch {{{
-  if [[ $branchName == $currentBranch ]]; then
-    row+="$(colorize  ALIAS_POINTER)${separator}"
+  if [[ $branchName == "$currentBranch" ]]; then
+    row+="$(colorize  ALIAS_POINTER)▮"
   else
-    row+="$separator"
+    row+="▮"
   fi
   # }}}
   # Branch name {{{
-  row+="$(git-branch-colorize "$branchName" --with-icon)${separator}"
+  row+="$(git-branch-colorize "$branchName" --with-icon)▮"
   # }}}
   # Ahead/behind {{{
-  row+="$(git-distance-colorize "$remoteDistance" --with-icon)${separator}"
+  row+="$(git-distance-colorize "$remoteDistance" --with-icon)▮"
   # }}}
   # Commit {{{
-  row+="$(git-commit-colorize "$commitHash" --with-icon)${separator}"
+  row+="$(git-commit-colorize "$commitHash" --with-icon)▮"
   # }}}
   # Remote {{{
   # We display it only if it's different from origin/{branchName}
   if [[ "$remoteName" != "origin" ]] || \
-     [[ "$remoteBranchName" != "$branchName" ]]; then
-       row+="$(git-remote-colorize "$remoteName/$remoteBranchName" --with-icon)${separator}"
-   else
-    row+="$separator"
+    [[ "$remoteBranchName" != "$branchName" ]]; then
+    row+="$(git-remote-colorize "$remoteName/$remoteBranchName" --with-icon)▮"
+  else
+    row+="▮"
   fi
   # }}}
   # Date {{{
-  row+="$(git-date-colorize "$relativeTime" --with-icon)${separator}"
+  row+="$(git-date-colorize "$relativeTime" --with-icon)▮"
   # }}}
   # Commit message {{{
-  row+="$(git-message-colorize "$commitMessage")${separator}"
+  row+="$(git-message-colorize "$commitMessage")▮"
   # }}}
   # }}}
 
@@ -92,7 +91,4 @@ for rawGitBranch in ${(f)rawGitBranches}; do
 done
 
 # Output as columns
-echo $output | column \
-  --separator "$separator" \
-  --table \
-  --table-noheadings
+table $output

@@ -4,7 +4,4 @@
 video-info $1 |
 	jq -r \
 		'.streams[] | "\(.index)▮\(.codec_type)▮\(.tags.title)▮\(.tags.language)"' |
-	column \
-		--separator "▮" \
-		--table \
-		--table-noheadings
+	table

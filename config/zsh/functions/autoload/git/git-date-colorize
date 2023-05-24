@@ -19,8 +19,11 @@ function git-date-colorize() {
 	displayDate="${displayDate/ ago/}"
 	displayDate="${displayDate/ years/y}"
 	displayDate="${displayDate/ months/mo}"
+	displayDate="${displayDate/ month/mo}"
 	displayDate="${displayDate/ weeks/w}"
+	displayDate="${displayDate/ week/w}"
 	displayDate="${displayDate/ days/d}"
+	displayDate="${displayDate/ day/d}"
 	displayDate="${displayDate/ hours/h}"
 	displayDate="${displayDate/ minutes/mn}"
 	# }}}

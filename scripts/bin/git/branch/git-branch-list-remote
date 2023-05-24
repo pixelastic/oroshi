@@ -9,7 +9,7 @@ zparseopts -E -D \
   a=flagAll \
   -all=flagAll \
 
-local isAll=${#flagAll}
+  local isAll=${#flagAll}
 
 # Init values {{{
 local output=""
@@ -92,7 +92,7 @@ for remoteName in $remoteNames; do
     # Remote branch name {{{
     row+="$(git-branch-colorize "$remoteBranchName" --with-icon --remote)▮"
     # }}}
-    
+
     # Commit hash {{{
     row+="$(git-commit-colorize "$commitHash" --with-icon)▮"
     # }}}
@@ -120,5 +120,5 @@ for remoteName in $remoteNames; do
   done
 done
 
-echo $output | column --table-noheadings --separator "▮" -t
+table $output
 # }}}

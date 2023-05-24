@@ -3,9 +3,6 @@
 # Usage:
 # $ git-remote-list
 
-# Hopefully this sign will never be used in tags or commits
-local separator="▮"
-
 local rawGitRemotes="$(git remote)"
 local currentRemote="$(git-remote-current)"
 
@@ -17,25 +14,25 @@ for remoteName in ${(f)rawGitRemotes}; do
 
   # Current remote
   if [[ "$remoteName" == "$currentRemote" ]]; then
-    row+="$(colorize "" GREEN)${separator}"
+    row+="$(colorize "" GREEN)▮"
   else
-    row+="$separator"
+    row+="▮"
   fi
   # }}}
 
   # Remote name {{{
-  row+="$(git-remote-colorize "$remoteName" --with-icon)${separator}"
+  row+="$(git-remote-colorize "$remoteName" --with-icon)▮"
   # }}}
 
   # Remote url {{{
   local remoteUrl="$(git-remote-url "$remoteName")"
-  row+="$(colorize "$remoteUrl" NEUTRAL)${separator}"
+  row+="$(colorize "$remoteUrl" NEUTRAL)▮"
   # }}}
 
   output+="$row\n"
 done
 
-echo $output | column --table-noheadings --separator "$separator" -t
+table $output
 
 
 

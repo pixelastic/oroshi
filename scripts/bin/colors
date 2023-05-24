@@ -15,7 +15,4 @@ for colorName in ${=COLORS_INDEX}; do
   output+="\n"
 done
 
-echo $output | column \
-  --separator "▮" \
-  --table \
-  --table-noheadings
+table $output

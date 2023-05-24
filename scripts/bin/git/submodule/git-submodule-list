@@ -48,8 +48,5 @@ for submoduleName in ${(f)sortedList}; do
 done
 
 # Output as columns
-echo $output | column \
-  --separator "▮" \
-  --table \
-  --table-noheadings
+table $output
 
