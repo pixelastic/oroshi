@@ -14,11 +14,12 @@ nnoremap <C-L> gt
 inoremap <C-L> <Esc>gt
 cnoremap <C-L> <C-C>gt
 
-" [CTRL-Shift-LEFT] Move tab to the left
-inoremap <silent> <C-Left> <Esc>:-tabmove<CR>
-" [CTRL-Shift-RIGHT] Move tab to the right
-nnoremap <silent> <C-Right> :+tabmove<CR>
-inoremap <silent> <C-Right> <Esc>:+tabmove<CR>
+" [CTRL-Shift-H] Move tab to the left
+nnoremap <silent> ⒣ :-tabmove<CR>
+inoremap <silent> ⒣ <Esc>:-tabmove<CR>
+" [CTRL-Shift-L] Move tab to the right
+nnoremap <silent> ⒧ :+tabmove<CR>
+inoremap <silent> ⒧ <Esc>:+tabmove<CR>
 " }}}
 "
 "
