@@ -39,7 +39,7 @@ let b:syntastic_html_tidy_exec = '~/.oroshi/scripts/bin/tidycheck'
 " Cleaning the file {{{
 inoremap <silent> <buffer> <F4> <Esc>:call HtmlBeautify()<CR>
 nnoremap <silent> <buffer> <F4> :call HtmlBeautify()<CR>
-function! HtmlBeautify() 
+function! HtmlBeautify()
   let linenr=line('.')
   execute '%!html'
   execute 'normal '.linenr.'gg'
@@ -53,11 +53,8 @@ inoremap <buffer> $ù console.info(
 nnoremap <silent> <buffer> [31~ :call OpenUrlInBrowser(expand('%:p'))<CR>
 " }}}
 
-" Ctrl+C closes opened tags (using ragtags)
-imap <buffer> <C-c> <C-X>/<Esc>mzvat=`zi<Right>
 " Ctrl+E expands zen-coding string (using emmet)
 imap <buffer> <C-e> <C-Y>,
 " Ctrl+B adds a <br />
 inoremap <buffer> <C-b> <br /><CR>
 nnoremap <buffer> <C-b> i<br /><CR><Esc>
-

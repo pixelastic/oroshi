@@ -31,6 +31,7 @@ source ~/.config/nvim/includes/keybindings/f8.vim           " Toggle hidden char
 source ~/.config/nvim/includes/keybindings/f9.vim           " Toggle line wrap
 
 source ~/.config/nvim/includes/keybindings/ctrl-a.vim       " Select all
+source ~/.config/nvim/includes/keybindings/ctrl-c.vim       " Cancel completion
 
 source ~/.config/nvim/includes/keybindings/ctrl-e.vim       " Go to next error
 source ~/.config/nvim/includes/keybindings/ctrl-shift-e.vim " Go to previous error

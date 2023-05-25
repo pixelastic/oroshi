@@ -16,7 +16,11 @@ function yarn-dependency-list() {
 
 	local output=""
 	for rawDependency in $rawDependencies; do
+		local row=""
+		/etc
 
+
+		local splitLine=(${(@s/▮/)rawDependency})
 	done
 
 }

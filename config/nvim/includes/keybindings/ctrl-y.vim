@@ -8,7 +8,7 @@ function! FzfGitHistorySource()
 endfunction
 
 " fzf options, to display colors and a preview window
-function! FzfGitHistoryOptions() 
+function! FzfGitHistoryOptions()
   let gitPath= StrTrim(system('git-file-path "'. expand('%') . '"'))
   let fzfOptions=''
   let fzfOptions.='--ansi '
@@ -27,7 +27,7 @@ function! FzfGitHistorySink(selection)
   " Find the commit hash
   let commitHash=split(a:selection, ' ')[1]
 
-  " Find new filename 
+  " Find new filename
   let dirname=expand('%:p:r')
   let extension=expand('%:e')
   let newFilepath=dirname.'.'.commitHash.'.'.extension

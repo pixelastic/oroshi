@@ -23,57 +23,6 @@ vnoremap <buffer> _ <Esc>mzg`>a_<Esc>g`<i_<Esc>`zl
 " **Bold**
 vnoremap <buffer> * <Esc>mzg`>a**<Esc>g`<i**<Esc>`zl
 " }}}
-" Linters {{{
-"
-let b:npmRoot = GetNpmRoot()
-
-" Textlint
-let b:textlintBin = StrTrim(system('yarn bin textlint 2>/dev/null'))
-if b:textlintBin ==# ''
-  let b:textlintBin = StrTrim(system('which textlint'))
-endif
-
-" Remark (as a linter and a fixer)
-let b:remarkLintBin = StrTrim(system('which remark-lint'))
-let b:remarkFixBin = StrTrim(system('which remark-fix'))
-
-" Prettier
-let b:prettierBin = StrTrim(system('yarn bin prettier 2>/dev/null'))
-if b:prettierBin ==# ''
-  let b:prettierBin = StrTrim(system('which prettier'))
-endif
-
-let b:syntastic_checkers = ['textlint', 'remark_lint']
-let b:syntastic_markdown_textlint_exec = b:textlintBin
-let b:syntastic_markdown_remark_lint_exec = b:remarkLintBin
-" }}}
-" Cleaning the file {{{
-inoremap <silent> <buffer> <F4> <Esc>:call MarkdownBeautify()<CR>
-nnoremap <silent> <buffer> <F4> :call MarkdownBeautify()<CR>
-function! MarkdownBeautify() 
-  let l:initialLine = line('.')
-
-  " Remark: fix markdown formatting. This will mostly convert links to references
-  execute '%!'.b:remarkFixBin.' "%:p"'
-
-  " Textlint: fix fixable textlint issues. As this will change the file in place, we use
-  " /tmp as a buffer
-  let tmpFile = '/tmp/vim-textlint-markdown.md'
-  let command = '%!> ' . tmpFile .
-        \' && ' . b:textlintBin . ' --fix ' . tmpFile . ' --output-file /dev/null' .
-        \' && cat ' . tmpFile
-  execute command
-
-  " Prettier: Make everything look the same
-  write
-  silent execute '%!' . b:prettierBin . ' --parser markdown "%:p"'
-
-  " call RemoveTrailingSpaces()
-
-  execute 'normal '.initialLine.'gg'
-  SyntasticCheck()
-endfunction
-" }}}
 " Folding {{{
 function! MarkdownLevel()
   let currentLine = getline(v:lnum)
@@ -86,8 +35,8 @@ function! MarkdownLevel()
 
   return '='
 endfunction
-setlocal foldexpr=MarkdownLevel()  
-setlocal foldmethod=expr  
+setlocal foldexpr=MarkdownLevel()
+setlocal foldmethod=expr
 " }}}
 " Wrapping {{{
 " Auto-wrap text

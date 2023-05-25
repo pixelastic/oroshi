@@ -158,7 +158,6 @@ endfor
 " Line endings and horizontal scroll markers
 call s:Highlight('NonText', 'GRAY_8')
 " Tabs and whitespaces
-" call s:Link('WhiteSpace', 'SPECIAL_CHAR')
 call s:Highlight('Whitespace', 'YELLOW')
 " }}}
 "
@@ -171,9 +170,9 @@ call s:Highlight('SignColumn', 'NONE', 'terminal')
 call s:Highlight('VertSplit', 'GRAY_9', 'GRAY_9', 'bold')
 " }}}
 " Tabs {{{
-call s:Highlight('TabLineFill', 'GRAY_8', 'GRAY_9', 'none')
-call s:Highlight('TabLineSel', 'YELLOW', 'GRAY_8', 'bold')
-call s:Highlight('TabLine', 'GRAY_4', 'GRAY_9', 'none')
+call s:Highlight('TabLine', 'GRAY_4', 'GRAY_9', 'none')     " Tabs
+call s:Highlight('TabLineSel', 'YELLOW', 'GRAY_8', 'bold')  " Current tab
+call s:Highlight('TabLineFill', 'GRAY_8', 'GRAY_9', 'none') " Rest of line
 " }}}
 " Cursor {{{
 call s:Highlight('CursorLineNr', 'YELLOW', '', 'bold')
@@ -221,6 +220,12 @@ call s:Highlight('Visual', 'ALIAS_VIM_VISUAL_FOREGROUND', 'ALIAS_VIM_VISUAL_BACK
 " Search {{{
 call s:Highlight('IncSearch', 'ALIAS_VIM_SEARCH_FOREGROUND', 'ALIAS_VIM_SEARCH_BACKGROUND', 'none')
 call s:Highlight('Search', 'ALIAS_VIM_SEARCH_FOREGROUND', 'ALIAS_VIM_SEARCH_BACKGROUND', 'bold')
+" }}}
+" Completion {{{
+call s:Highlight('Pmenu', 'GRAY_4', 'GRAY_9')            " Item
+call s:Highlight('PmenuSel', 'YELLOW', 'GRAY_8', 'bold') " Selected item
+call s:Highlight('PmenuSbar', 'GRAY_9', 'GRAY_9')        " Scrollbar
+call s:Highlight('PmenuThumb', 'GRAY_8', 'GRAY_9')       " Scrollbar handle
 " }}}
 " ALE gutter {{{
 call s:Link('ALEErrorSign', 'ERROR')
@@ -280,8 +285,8 @@ call s:Link('ErrorMsg', 'ERROR')
 call s:Link('WarningMsg', 'WARNING')
 " }}}
 " Spell Checking / Errors {{{
-call s:Highlight('SpellBad', 'RED', 'BLACK', 'bold,underline')
-call s:Highlight('SpellCap', 'RED', 'BLACK', 'bold,underline')
+" call s:Highlight('SpellBad', 'RED', 'BLACK', 'bold,underline')
+" call s:Highlight('SpellCap', 'RED', 'BLACK', 'bold,underline')
 " }}}
 
 " AutoIt {{{

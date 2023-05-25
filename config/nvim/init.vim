@@ -1,13 +1,14 @@
-source ~/.config/nvim/includes/security.vim
-source ~/.config/nvim/includes/encoding.vim
-source ~/.config/nvim/includes/plugins.vim
-source ~/.config/nvim/includes/functions/index.vim
+source ~/.config/nvim/includes/nvim.vim            " nvim-specific, as high as possible
+source ~/.config/nvim/includes/security.vim        " security protections
+source ~/.config/nvim/includes/encoding.vim        " encoding
+source ~/.config/nvim/includes/plugins.vim         " loading plugins
+source ~/.config/nvim/includes/functions/index.vim " loading functions
 
-source ~/.config/nvim/includes/completion.vim
 
-source ~/.config/nvim/includes/keybindings/index.vim
-source ~/.config/nvim/includes/statusline/index.vim
-source ~/.config/nvim/includes/plugins/index.vim
+source ~/.config/nvim/includes/completion.vim        " Completion
+source ~/.config/nvim/includes/keybindings/index.vim " Keybindings
+source ~/.config/nvim/includes/statusline/index.vim  " Statusline
+source ~/.config/nvim/includes/plugins/index.vim     " Plugin configuration
 
 source ~/.config/nvim/includes/colors.vim
 source ~/.config/nvim/includes/display.vim
@@ -48,16 +49,7 @@ augroup END
 " ,ve to edit vimrc
 nnoremap <leader>ve :tabe ~/.oroshi/config/vim/vimrc<CR>
 " ,vr to reload vimrc
-nnoremap <silent> <leader>vr mz:source ~/.config/nvim/init.vim<CR>:let &filetype=&filetype<CR>:nohlsearch<CR>`z 
+nnoremap <silent> <leader>vr mz:source ~/.config/nvim/init.vim<CR>:let &filetype=&filetype<CR>:nohlsearch<CR>`z
 " man to open the manpage of a command in a new tab
 nnoremap <silent> man :tabe<CR>:setlocal filetype=man<CR>:.!man<Space>
-" }}}
-
-
-" Custom Config {{{
-let hostname = system('echo -n $HOST')
-let customConfig=expand('~/.oroshi/config/nvim/local/'.hostname.'.vim')
-if filereadable(customConfig)
-  exec 'source '.customConfig
-endif
 " }}}
