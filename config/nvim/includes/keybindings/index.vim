@@ -33,7 +33,7 @@ source ~/.config/nvim/includes/keybindings/ctrl-p.vim       " Fuzzy-find files i
 source ~/.config/nvim/includes/keybindings/ctrl-t.vim       " Fuzzy-find files in subdir
 
 source ~/.config/nvim/includes/keybindings/ctrl-g.vim       " Regex search in project
-source ~/.config/nvim/includes/keybindings/ctrl-shift-g.vim " Regex search in subdir
+source ~/.config/nvim/includes/keybindings/ctrl-f.vim       " Regex search in subdir
 
 source ~/.config/nvim/includes/keybindings/ctrl-y.vim       " Check previous versions of the file
 

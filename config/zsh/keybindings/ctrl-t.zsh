@@ -13,4 +13,4 @@ oroshi-fzf-files-subdir-widget() {
 	return 0
 }
 zle -N oroshi-fzf-files-subdir-widget
-bindkey 'Ⓣ' oroshi-fzf-files-subdir-widget
+bindkey '^T' oroshi-fzf-files-subdir-widget

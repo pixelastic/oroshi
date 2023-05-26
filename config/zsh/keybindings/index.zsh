@@ -19,7 +19,7 @@ source $ZSH_CONFIG_PATH/keybindings/ctrl-t.zsh       # Fuzzy-find files in subdi
 source $ZSH_CONFIG_PATH/keybindings/ctrl-o.zsh       # Fuzzy-find directories in project
 source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-o.zsh # Fuzzy-find directories in subdir
 source $ZSH_CONFIG_PATH/keybindings/ctrl-g.zsh       # Regexp search in files in project
-source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-g.zsh # Regexp search in files in subdir
+source $ZSH_CONFIG_PATH/keybindings/ctrl-f.zsh       # Regexp search in files in subdir
 source $ZSH_CONFIG_PATH/keybindings/ctrl-j.zsh       # Fuzzy-find common directories
 source $ZSH_CONFIG_PATH/keybindings/ctrl-h.zsh       # Fuzzy-find all git commits hashes
 source $ZSH_CONFIG_PATH/keybindings/ctrl-r.zsh       # Fuzzy-find history commands

@@ -1,4 +1,4 @@
-# Ctrl-Shift-G search into files in current directory
+# Ctrl-F search into files in current directory
 oroshi-fzf-regexp-subdir-widget() {
   export PROMPT_PREVENT_REFRESH="1"
   local selection="$(fzf-regexp-subdir)"
@@ -16,4 +16,4 @@ oroshi-fzf-regexp-subdir-widget() {
   return 0
 }
 zle -N oroshi-fzf-regexp-subdir-widget
-bindkey 'Ⓖ' oroshi-fzf-regexp-subdir-widget
+bindkey '^F' oroshi-fzf-regexp-subdir-widget
