@@ -6,8 +6,9 @@
 
 zmodload zsh/zutil
 zparseopts -E -D \
-  -source:=flagSource
+	-source:=flagSource
 
+# shellcheck disable=SC2154
 local fzfSourcePath=${flagSource[2]}
 
 echo "--disabled"
@@ -19,4 +20,3 @@ echo "--bind=change:reload:sleep 0.3;${fzfSourcePath} {q} || true"
 echo "--color=disabled:${COLOR_ALIAS_REGEXP}:regular"
 echo "--color=separator:${COLOR_ALIAS_REGEXP}"
 echo "--color=info:${COLOR_ALIAS_REGEXP}"
-

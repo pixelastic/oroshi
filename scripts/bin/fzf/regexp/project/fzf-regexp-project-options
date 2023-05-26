@@ -3,8 +3,11 @@
 fzf-regexp-options \
   --source fzf-regexp-project-source
 
+# Prompt
+local promptPrefix="$(colorize "  GREP " $COLOR_WHITE $COLOR_ALIAS_REGEXP)"
 local projectKey="$(project-by-path $PWD)"
 local prompt="$(colorize-project $projectKey)"
 # fzf in vim fails to parse the prompt if there is ​ in it
 prompt=${prompt:gs/​//}
-echo "--prompt=$prompt "
+echo "--prompt=${promptPrefix}${prompt} "
+echo "--color=prompt:${COLOR_ALIAS_REGEXP}:regular"
