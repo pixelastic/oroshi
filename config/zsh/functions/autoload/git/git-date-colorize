@@ -6,7 +6,6 @@ function git-date-colorize() {
 	zparseopts -E -D \
 		-with-icon=flagWithIcon
 
-	# shellcheck disable=SC2154
 	local isWithIcon=${#flagWithIcon}
 
 	# Raw Date {{{

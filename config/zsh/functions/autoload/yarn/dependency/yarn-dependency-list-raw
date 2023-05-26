@@ -8,14 +8,11 @@ function yarn-dependency-list-raw() {
   zparseopts -E -D \
     -dev=flagDev \
     -all=flagAll \
-    -with-descriptions=flagWithDescriptions \
+    -with-descriptions=flagWithDescriptions
 
-    # shellcheck disable=SC2154
-  {
-    local isDev=${#flagDev}
-    local isAll=${#flagAll}
-    local isWithDescriptions=${#flagWithDescriptions}
-  }
+  local isDev=${#flagDev}
+  local isAll=${#flagAll}
+  local isWithDescriptions=${#flagWithDescriptions}
 
   # Stop if no package.json
   local packageJsonPath="$(find-up package.json)"

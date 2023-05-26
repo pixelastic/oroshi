@@ -10,17 +10,14 @@ function docker-image-colorize() {
     -with-icon=flagWithIcon \
     -remote=flagRemote
 
-	# shellcheck disable=SC2154
-  {
-    local isWithIcon=${#flagWithIcon}
-    local isRemote=${#flagRemote}
-  }
+  local isWithIcon=${#flagWithIcon}
+  local isRemote=${#flagRemote}
 
   # Split image name and its tag
   local inputSplit=(${(@s/:/)1})
   local imageName=$inputSplit[1]
   local tagName=$inputSplit[2]
-  
+
   local isGitHub="0"
   [[ $imageName == ghcr.io/* ]] && isGitHub="1"
 
@@ -37,7 +34,7 @@ function docker-image-colorize() {
   [[ "$isOroshi" == "1" ]] && imageColor=$COLOR_ALIAS_DOCKER_IMAGE_OROSHI
   [[ "$isOrphan" == "1" ]] && imageColor=$COLOR_ALIAS_DOCKER_IMAGE_ORPHAN
   # }}}
-  
+
   # Tag color {{{
   local tagSuffix=""
   if [[ "$tagName" != "" ]]; then

@@ -8,7 +8,6 @@ function image-convert() {
     f=flagForce \
     -force=flagForce
 
-  # shellcheck disable=SC2154
   local isForce=${#flagForce}
 
   # Inputs are all the arguments, except the last one which is the new type

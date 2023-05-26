@@ -64,8 +64,6 @@ excludedRules+=(SC2298) # error: ${${x}} is invalid. For expansion, use ${x}. Fo
 excludedRules+=(SC2299) # error: Parameter expansions can't be nested. Use temporary variables. [SC2299]
 excludedRules+=(SC2300) # error: Parameter expansion can't be applied to command substitutions. Use temporary variables.
 
-
-
 # Exclude directories from the inputs
 local input=()
 for item in $@; do
@@ -74,4 +72,19 @@ for item in $@; do
 done
 
 # Output errors of input files
-shellcheck -s bash -x -f gcc --exclude ${(j:,:)excludedRules} $input
+# [SC2154]
+# Exclude all SC2154 about flagXXX values being referenced but not assigned.
+# This is a zsh-specific syntax that I use to parse arguments that is not
+# recognized by shellcheck. I can't disable the whole warning as I still want it
+# to let me know when I use a variable without defining it, just not flagXXX
+# variables
+shellcheck \
+  --shell bash \
+  --external-sources \
+  --format gcc \
+  --exclude ${(j:,:)excludedRules} \
+  $input \
+  | grep \
+  --extended-regexp \
+  --invert-match \
+  '(.*)warning: flag(.*)(\[SC2154\])$'

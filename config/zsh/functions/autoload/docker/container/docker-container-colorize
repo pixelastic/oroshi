@@ -9,11 +9,8 @@ function docker-container-colorize() {
 		-with-icon=flagWithIcon \
 		-state:=flagState
 
-	# shellcheck disable=SC2154
-	{
-		local isWithIcon=${#flagWithIcon}
-		local state=${flagState[2]}
-	}
+	local isWithIcon=${#flagWithIcon}
+	local state=${flagState[2]}
 
 	# Split container name and its tag
 	local containerName=$1

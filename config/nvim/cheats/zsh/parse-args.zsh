@@ -16,10 +16,7 @@ zparseopts -E -D \
 	f=flagForce \
 	-force=flagForce
 
-# shellcheck disable=SC2154
-{
-	local separator=${flagSeparator[2]}
-	local isForce=${#flagForce}
-}
+local separator=${flagSeparator[2]}
+local isForce=${#flagForce}
 
 # ===

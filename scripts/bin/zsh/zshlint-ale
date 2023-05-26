@@ -13,11 +13,8 @@ zparseopts -E -D \
 	f:=flagFormat \
 	x=flagSources \
 	-version=flagVersion
-# shellcheck disable=SC2154
-{
-	local shellName=${flagShell[2]}
-	local isVersion=${#flagVersion}
-}
+local shellName=${flagShell[2]}
+local isVersion=${#flagVersion}
 
 # ALE integration
 if [[ $isVersion == "1" ]]; then

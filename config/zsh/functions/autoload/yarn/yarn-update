@@ -9,7 +9,6 @@ function yarn-update() {
   zparseopts -E -D \
     -force=flagForce
 
-  # shellcheck disable=SC2154
   local isForce=${#flagForce}
 
   local dependencies=$@

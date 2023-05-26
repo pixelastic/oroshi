@@ -11,11 +11,8 @@ function yarn-link-list-raw() {
     -global=flagGlobal \
     -with-descriptions=flagWithDescriptions
 
-  # shellcheck disable=SC2154
-  {
-    local isGlobal=${#flagGlobal}
-    local isWithDescriptions=${#flagWithDescriptions}
-  }
+  local isGlobal=${#flagGlobal}
+  local isWithDescriptions=${#flagWithDescriptions}
 
 
   # Variables to fill

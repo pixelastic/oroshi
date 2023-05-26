@@ -8,11 +8,8 @@ function git-branch-colorize() {
   zparseopts -E -D \
     -with-icon=flagWithIcon \
     -remote=flagRemote
-  # shellcheck disable=SC2154
-  {
-    local isWithIcon=${#flagWithIcon}
-    local isRemote=${#flagRemote}
-  }
+  local isWithIcon=${#flagWithIcon}
+  local isRemote=${#flagRemote}
 
   # Branch name {{{
   local branchName="$1"

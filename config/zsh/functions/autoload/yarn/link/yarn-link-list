@@ -9,7 +9,6 @@ function yarn-link-list() {
   zparseopts -E -D \
     -global=flagGlobal
 
-  # shellcheck disable=SC2154
   local isGlobal=${#flagGlobal}
 
   local additionalArgument=""

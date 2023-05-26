@@ -8,7 +8,6 @@ function apt-list() {
 	zparseopts -E -D \
 		-installed=flagInstalled
 
-	# shellcheck disable=SC2154
 	local isInstalled=${#flagInstalled}
 
 	# Full list of all packages

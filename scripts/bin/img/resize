@@ -15,12 +15,9 @@ zparseopts -E -D \
   -no-ratio=flagNoRatio \
   -upscale=flagUpscale
 
-# shellcheck disable=SC2154
-{
-  local isCompletion=${#flagCompletion}
-  local isNoRatio=${#flagNoRatio}
-  local isUpscale=${#flagUpscale}
-}
+local isCompletion=${#flagCompletion}
+local isNoRatio=${#flagNoRatio}
+local isUpscale=${#flagUpscale}
 
 # Display completion help
 if [[ $isCompletion == "1" ]]; then

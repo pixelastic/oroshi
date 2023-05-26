@@ -7,7 +7,6 @@ function git-tag-colorize() {
 	zparseopts -E -D \
 		-with-icon=flagWithIcon
 
-	# shellcheck disable=SC2154
 	local isWithIcon=${#flagWithIcon}
 
 	local currentTag="$(git-tag-current)"

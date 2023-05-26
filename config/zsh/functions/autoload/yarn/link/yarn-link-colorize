@@ -8,11 +8,8 @@ function yarn-link-colorize() {
 	zparseopts -E -D \
 		-local=flagLocal \
 		-with-icon=flagWithIcon
-	# shellcheck disable=SC2154
-	{
-		local isLocal=${#flagLocal}
-		local isWithIcon=${#flagWithIcon}
-	}
+	local isLocal=${#flagLocal}
+	local isWithIcon=${#flagWithIcon}
 
 	local moduleName="$1"
 	local moduleColor=$COLOR_ALIAS_YARN_LINK_GLOBAL

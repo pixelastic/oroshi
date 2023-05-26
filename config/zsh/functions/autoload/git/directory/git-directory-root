@@ -16,7 +16,6 @@ function git-directory-root {
 		f=flagForce \
 		-force=flagForce
 
-	# shellcheck disable=SC2154
 	local isForce=${#flagForce}
 
 	# Check from the given directory, or the current one if none specified
