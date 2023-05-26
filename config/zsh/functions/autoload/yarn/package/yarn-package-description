@@ -1,0 +1,24 @@
+# Display the description(s) of given package(s) in a raw table
+# Usage:
+# $ yarn-package-description /path/to/package /other/one  # Outputs raw table
+function yarn-package-description() {
+  local packagePaths=($@)
+
+  # Build the list of all package.json, to give it in bulk to jq
+  local packageJsonList=()
+  for packagePath in ${packagePaths}; do
+    local packageJsonPath="${packagePath:a}/package.json"
+    packageJsonList+=($packageJsonPath)
+  done
+
+  local rawDescriptions="$(jq -r '.name + ":" +.description' <$packageJsonList)"
+  for rawDescription in ${(f)rawDescriptions}; do
+    local split=(${(s/:/)rawDescription})
+    local moduleName=$split[1]
+    local moduleDescription=$split[2]
+    [[ $moduleDescription == "" ]] && moduleDescription="N/A"
+
+    echo "${moduleName}▮${moduleDescription}"
+  done
+
+}

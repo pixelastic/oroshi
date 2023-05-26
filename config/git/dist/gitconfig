@@ -65,7 +65,7 @@
   plain = 16   # Default color
   context = 16 # Lines untouched
   frag = 8   # @@ -9,14 +9,15 @@
-  func = 16    # First line of context
+  func = 8   # Name of function into which code is changed
   meta = 3     # Diff header
   new = 2   # Lines added
   old = 1 # Lines deleted
@@ -129,4 +129,3 @@
   remoteBranch = 114
   unmerged = 114
 # }}}
-

@@ -105,23 +105,14 @@ function yarn-link-list-raw() {
   [[ ${moduleNames} == "" ]] && return 0
 
   # Find description of all modules
-  # Note: jq would be slow if we run it on each module one by one. We'd rather run
-  # it on all module package.json files in one go
   if [[ $isWithDescriptions == "1" ]]; then
-    local packageFiles=()
-    for moduleName in $moduleNames; do
-      local modulePath=$modulePaths[$moduleName]
-      packageFiles+=("${modulePath}/package.json")
-    done
-    local rawDescriptions="$(jq -r '.name + ":" +.description' < $packageFiles)"
-    for rawDescription in ${(f)rawDescriptions}; do
-      local split=(${(s/:/)rawDescription})
+    local rawModuleDescriptions="$(yarn-package-description $modulePaths)"
+    for rawModuleDescription in ${(f)rawModuleDescriptions}; do
+      local split=(${(s/▮/)rawModuleDescription})
       local moduleName=$split[1]
       local moduleDescription=$split[2]
-
       moduleDescriptions[$moduleName]=$moduleDescription
     done
-
   fi
 
   # Output the results

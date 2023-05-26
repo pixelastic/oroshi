@@ -285,8 +285,10 @@ call s:Link('ErrorMsg', 'ERROR')
 call s:Link('WarningMsg', 'WARNING')
 " }}}
 " Spell Checking / Errors {{{
-" call s:Highlight('SpellBad', 'RED', 'BLACK', 'bold,underline')
-" call s:Highlight('SpellCap', 'RED', 'BLACK', 'bold,underline')
+call s:Highlight('SpellBad', 'RED', 'BLACK', 'bold,underline')
+call s:Highlight('SpellCap', 'RED', 'BLACK', 'bold,underline')
+call s:Highlight('SpellLocal', 'VIOLET', 'BLACK', 'bold,underline')
+call s:Highlight('SpellRare', 'GREEN', 'BLACK', 'bold,underline')
 " }}}
 
 " AutoIt {{{

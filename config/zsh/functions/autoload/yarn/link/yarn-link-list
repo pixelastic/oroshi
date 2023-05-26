@@ -10,9 +10,7 @@ function yarn-link-list() {
     -global=flagGlobal
 
   # shellcheck disable=SC2154
-  {
-    local isGlobal=${#flagGlobal}
-  }
+  local isGlobal=${#flagGlobal}
 
   local additionalArgument=""
   [[ $isGlobal == "1" ]] && additionalArgument="--global"
@@ -34,7 +32,7 @@ function yarn-link-list() {
     row+="$(yarn-link-colorize $moduleName --with-icon $colorizeNameAdditionalArgument)▮"
 
     # Description
-    row+="$(colorize "$moduleDescription" $COLOR_ALIAS_YARN_LINK_DESCRIPTION)▮"
+    row+="$(colorize "$moduleDescription" $COLOR_ALIAS_YARN_PACKAGE_DESCRIPTION)▮"
 
     output+="$row\n"
   done

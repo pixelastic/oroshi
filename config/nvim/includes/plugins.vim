@@ -42,7 +42,8 @@ Plug 'vim-ruby/vim-ruby'                                  " Ruby
 " }}}
 " Enhancing vim workflow {{{
 Plug 'dense-analysis/ale'        " Lint & Fix
-Plug 'lifepillar/vim-mucomplete' " Completion
+Plug 'lifepillar/vim-mucomplete' " Completion cycling wrapper
+" Plug 'natebosch/vim-lsc'         " Completion with LSP
 " }}}
 " Git-related plugins {{{
 Plug 'airblade/vim-gitgutter' " Added/Modified signs in the gutter

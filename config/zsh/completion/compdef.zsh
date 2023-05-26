@@ -110,3 +110,7 @@ compdef _pyenv-lazyload lazyloadPyenv
 # SSH {{{
 compdef _ssh-known-hosts ssh
 # }}}
+# Watch and reload {{{
+# TODO: Ideally watch-and-reload should complete to files in the current
+# directory or any defined command/alias/function
+# }}}

@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Fuzzy finding in command history
+
+fzf-search \
+	--source "fzf-history-source" \
+	--options "fzf-history-options"

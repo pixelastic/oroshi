@@ -1,15 +1,4 @@
 " KEYBINDINGS
-"  [F1] Help
-"  [F2] Toggle colorscheme
-"  [F3] Debug colorscheme
-"  [F4] Clean file
-"  [F5] Run file
-"  [F6] N/A
-"  [F7] Show error
-"  [F8] Display hidden chars
-"  [F9] Toggle wrap
-" -----------------------------------------------------------------------------
-
 " DEFAULT {{{
 " Defining leader key
 let mapleader=','

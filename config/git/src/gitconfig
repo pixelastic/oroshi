@@ -65,7 +65,7 @@
   plain = $COLOR_ALIAS_COMMENT   # Default color
   context = $COLOR_ALIAS_COMMENT # Lines untouched
   frag = $COLOR_ALIAS_TERMINAL   # @@ -9,14 +9,15 @@
-  func = $COLOR_ALIAS_COMMENT    # First line of context
+  func = $COLOR_ALIAS_TERMINAL   # Name of function into which code is changed
   meta = $COLOR_ALIAS_HEADER     # Diff header
   new = $COLOR_ALIAS_GIT_ADDED   # Lines added
   old = $COLOR_ALIAS_GIT_REMOVED # Lines deleted
@@ -129,4 +129,3 @@
   remoteBranch = $COLOR_ALIAS_UNKNOWN
   unmerged = $COLOR_ALIAS_UNKNOWN
 # }}}
-

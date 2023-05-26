@@ -18,5 +18,10 @@ nnoremap <CR> mzo<Esc>`z
 nnoremap ↰ mzO<Esc>d$`z
 inoremap ↰ <Esc>lmzO<Esc>d$`zi
 
-" [Ctrl-Enter] Add new line after this char
+" [Ctrl-Enter]
+" Normal: Add new line after this char
 nnoremap ↯ mzli<CR><Esc>`z
+
+" Insert: Move to next completion bucket
+inoremap <silent> <plug>(MUcompleteFwdKey) ↯
+imap ↯ <plug>(MUcompleteCycFwd)

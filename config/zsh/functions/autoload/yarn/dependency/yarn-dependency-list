@@ -4,23 +4,28 @@
 # $ yarn-dependency-list --dev   # Only dev dependencies
 # $ yarn-dependency-list --all   # All dependencies
 function yarn-dependency-list() {
-	# Stop if no package.json
-	local packageJsonPath="$(find-up package.json)"
-	[[ $packageJsonPath == "" ]] && return 0
+  local rawList="$(yarn-dependency-list-raw --with-descriptions $@)"
+  [[ $rawList == "" ]] && return 0
 
-	# Get all dependencies
-	local rawDependencies="$(jq \
-		--raw-output \
-		'.dependencies | to_entries[] | [.key, .value] | join("▮")' \
-		<$packageJsonPath)"
+  local output=""
+  for rawLine in ${(f)rawList}; do
+    local row=""
+    local split=(${(s/▮/)rawLine})
+    local dependencyName=$split[1]
+    local dependencyVersion=$split[2]
+    local dependencyDescription=$split[3]
 
-	local output=""
-	for rawDependency in $rawDependencies; do
-		local row=""
-		/etc
+    # Name
+    row+="$(yarn-package-colorize $dependencyName --with-icon)▮"
 
+    # Version
+    row+="$(colorize "$dependencyVersion" $COLOR_ALIAS_YARN_PACKAGE_VERSION)▮"
 
-		local splitLine=(${(@s/▮/)rawDependency})
-	done
+    # Description
+    row+="$(colorize "$dependencyDescription" $COLOR_ALIAS_YARN_PACKAGE_DESCRIPTION)▮"
 
+    output+="$row\n"
+  done
+
+  table $output
 }

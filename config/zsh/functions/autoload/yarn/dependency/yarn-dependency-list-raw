@@ -1,0 +1,75 @@
+# Display a raw table of all dependencies
+# Usage:
+# $ yarn-dependency-list-raw                     # Only regular dependencies
+# $ yarn-dependency-list-raw --dev               # Only dev dependencies
+# $ yarn-dependency-list-raw --all               # All dependencies
+# $ yarn-dependency-list-raw --with-descriptions # Add a last description colum
+function yarn-dependency-list-raw() {
+  zparseopts -E -D \
+    -dev=flagDev \
+    -all=flagAll \
+    -with-descriptions=flagWithDescriptions \
+
+    # shellcheck disable=SC2154
+  {
+    local isDev=${#flagDev}
+    local isAll=${#flagAll}
+    local isWithDescriptions=${#flagWithDescriptions}
+  }
+
+  # Stop if no package.json
+  local packageJsonPath="$(find-up package.json)"
+  [[ $packageJsonPath == "" ]] && return 0
+
+  # Get either the dependencies, devDependencies, or both
+  local dependencyKey=".dependencies"
+  [[ $isDev == "1" ]] && dependencyKey=".devDependencies"
+  [[ $isAll == "1" ]] && dependencyKey=".dependencies,.devDependencies"
+
+  # Store information about each dependency in its own hash
+  local dependencyNames=()
+  typeset -A dependencyVersions=()
+  typeset -A dependencyPaths=()
+  typeset -A dependencyDescriptions=()
+
+  # Get all dependencies
+  local rawDependencies="$(jq \
+		--raw-output \
+		"${dependencyKey} | to_entries[] | [.key, .value] | join(\"▮\")" \
+		<$packageJsonPath 2>/dev/null)"
+  [[ $rawDependencies == "" ]] && return 0
+
+  # Default pass, to fill the list of dependencies and version
+  for rawDependency in ${(f)rawDependencies}; do
+    local splitLine=(${(@s/▮/)rawDependency})
+    local dependencyName=$splitLine[1]
+    local dependencyVersion=$splitLine[2]
+
+    dependencyNames+=($dependencyName)
+    dependencyVersions[$dependencyName]=$dependencyVersion
+  done
+
+  # Get descriptions
+  if [[ $isWithDescriptions == "1" ]]; then
+    # Get all dependency paths
+    for dependencyName in $dependencyNames; do
+      dependencyPaths[$dependencyName]="${packageJsonPath:h}/node_modules/${dependencyName}/"
+    done
+
+    local rawDependencyDescriptions="$(yarn-package-description $dependencyPaths)"
+    for rawDependencyDescription in ${(f)rawDependencyDescriptions}; do
+      local split=(${(s/▮/)rawDependencyDescription})
+      local dependencyName=$split[1]
+      local dependencyDescription=$split[2]
+      dependencyDescriptions[$dependencyName]=$dependencyDescription
+    done
+  fi
+
+  # Display the full list
+  for dependencyName in ${(o)dependencyNames}; do
+    local dependencyVersion=$dependencyVersions[$dependencyName]
+    local dependencyDescription=$dependencyDescriptions[$dependencyName]
+
+    echo "${dependencyName}▮${dependencyVersion}▮${dependencyDescription}"
+  done
+}
