@@ -26,26 +26,25 @@ endfor
 
 " Defining the core highlight groups {{{
 " Vim has its own set of core groups, and I have my own. They have a lot of
-" overlap but some difference in naming (example vim Delimiter is my
-" PUNCTUATION). We will use my own naming when defining highlight group, which
+" overlap but some difference in naming (for example vim Delimiter is my
+" PUNCTUATION). I will use my own naming when defining highlight group, which
 " will internally be converted to vim naming
-" The key is my naming, the values are {VimNaming}:{BackgroundColor}:{Boldness}
-" We prefer to use existing core vim groups, but sometimes we need to create our
-" own, prefixed with "oroshi"
+" The key is my naming as defined in the $COLOR_ALIAS_XXX values, the values are
+" {VimNaming}:{BackgroundColor}:{Boldness} I prefer to use existing core vim
+" groups, but sometimes I need to create my own, prefixed with "oroshi"
 let s:coreGroups = {
       \ 'BOOLEAN': 'Boolean:_:bold',
       \ 'COMMENT': 'Comment:_:_',
       \ 'CONSTANT': 'Constant:_:bold',
       \ 'DATE': 'oroshiDate:_:_',
       \ 'ERROR': 'Error:BLACK:bold',
-      \ 'SUCCESS': 'oroshiSuccess:_:_',
-      \ 'WARNING': 'oroshiWarning:_:_',
-      \ 'NOTICE': 'oroshiNotice:_:_',
       \ 'EVAL': 'oroshiEval:_:_',
       \ 'EXCEPTION': 'oroshiException:_:_',
+      \ 'FILE': 'oroshiFile:_:_',
       \ 'FLAG': 'oroshiFlag:_:_',
       \ 'FUNCTION': 'Function:_:_',
       \ 'GIT_ADDED': 'oroshiGitAdded:_:_',
+      \ 'GIT_BRANCH': 'oroshiGitBranch:_:_',
       \ 'GIT_MODIFIED': 'oroshiGitModified:_:_',
       \ 'GIT_REMOVED': 'oroshiGitRemoved:_:_',
       \ 'GLOB': 'oroshiGlob:_:_',
@@ -57,18 +56,22 @@ let s:coreGroups = {
       \ 'KEYWORD': 'Keyword:_:_',
       \ 'MODIFIER': 'oroshiModifier:_:_',
       \ 'NOISE': 'Noise:_:_',
+      \ 'NOTICE': 'oroshiNotice:_:_',
       \ 'NUMBER': 'Number:_:bold',
       \ 'PUNCTUATION': 'Delimiter:_:_',
       \ 'REGEXP': 'oroshiRegexp:_:_',
       \ 'SPECIAL_CHAR': 'Special:_:_',
       \ 'STATEMENT': 'Statement:_:_',
       \ 'STRING': 'String:_:_',
+      \ 'SUCCESS': 'oroshiSuccess:_:_',
       \ 'SYMBOL': 'oroshiSymbol:_:_',
+      \ 'TERMINAL': 'oroshiTerminal:_:_',
       \ 'TEXT': 'Normal:_:_',
       \ 'TODO': 'Todo:_:bold',
       \ 'VARIABLE': 'Identifier:_:_',
       \ 'VARIABLE_DEFINITION': 'oroshiVariableDefinition:_:_',
       \ 'VARIABLE_TYPE': 'Type:_:_',
+      \ 'WARNING': 'oroshiWarning:_:_',
       \ }
 
 " Below are other core groups, that share coloring with the main ones. We will
@@ -326,21 +329,23 @@ call s:Highlight('SpellRare', 'GREEN', 'BLACK', 'bold,underline')
 " call s:Highlight('scssParameterList', 'ALIAS_PUNCTUATION')
 " }}}
 " Git {{{
-" " Git Config
+" Git Config
 " call s:Highlight('gitconfigSection', 'ALIAS_HEADER')
-" " Git Commit
-" call s:Highlight('gitcommitDiff', 'ALIAS_COMMENT')
-" call s:Highlight('gitcommitSelectedFile', 'ALIAS_FILE')
+" Git Commit
+call s:Link('gitcommitDiff', 'COMMENT')
+call s:Link('gitcommitBranch', 'GIT_BRANCH')
+call s:Link('gitcommitHeader', 'COMMENT')
+call s:Link('gitcommitSelectedFile', 'FILE')
 " call s:Highlight('gitcommitDiscardedFile', 'ALIAS_FILE')
-" call s:Highlight('gitcommitSummary', 'ALIAS_TEXT')
-" " Git Diff
-" call s:Highlight('gitDiff', 'ALIAS_COMMENT')
-" call s:Highlight('diffAdded', 'ALIAS_GIT_ADDED')
-" call s:Highlight('diffFile', 'ALIAS_HEADER')
-" call s:Highlight('diffLine', 'ALIAS_TERMINAL')
-" call s:Highlight('diffRemoved', 'ALIAS_GIT_REMOVED')
-" call s:Highlight('diffSubname', 'ALIAS_COMMENT')
-" call s:Highlight('gitDiff', 'ALIAS_COMMENT')
+call s:Link('gitcommitSummary', 'TEXT')
+" Git Diff
+" call s:Link('gitDiff', 'COMMENT')
+call s:Link('diffAdded', 'GIT_ADDED')
+call s:Link('diffFile', 'HEADER')
+call s:Link('diffLine', 'TERMINAL')
+call s:Link('diffRemoved', 'GIT_REMOVED')
+call s:Link('diffSubname', 'COMMENT')
+" call s:Link('gitDiff', 'COMMENT')
 " }}}
 " HTML {{{
 " call s:Highlight('htmlArg', 'ALIAS_VARIABLE_DEFINITION')

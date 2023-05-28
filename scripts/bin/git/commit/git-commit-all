@@ -1,5 +1,4 @@
 #!/usr/bin/env zsh
-set -e
 # Commit all changes
 # Usage:
 # $ git-commit-all                      # Commit all changes, and ask for message
@@ -8,7 +7,7 @@ set -e
 
 local args=($@)
 
-# Find the commit message
+# Find the commit message as the first argument without a dash as prefix
 local commitMessage=""
 local commitMessageIndex=""
 for ((argIndex=1; argIndex <= ${#args}; argIndex++)); do

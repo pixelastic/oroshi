@@ -33,6 +33,7 @@ export OROSHI_NVM_LAZYLOAD_ALIASES=(
 	yarn-link-remove
 	yarn-link-remove-all
 	yarn-run
+	yarn-update
 )
 for command in $OROSHI_NVM_LAZYLOAD_ALIASES; do
 	alias $command="lazyloadNvm $command"

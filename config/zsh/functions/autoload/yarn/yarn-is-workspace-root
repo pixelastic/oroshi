@@ -1,7 +1,5 @@
 # Check if the current directory is in a workspace root.
 function yarn-is-workspace-root() {
-	set -e
-
 	# Never in a workspace root if not even in a monorepo setup
 	yarn-is-monorepo || return 1
 
