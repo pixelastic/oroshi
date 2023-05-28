@@ -54,6 +54,7 @@ let s:coreGroups = {
       \ 'INTERPOLATION_VARIABLE': 'oroshiInterpolationVariable:_:_',
       \ 'INTERPOLATION_WRAPPER': 'oroshiInterpolationWrapper:_:_',
       \ 'KEYWORD': 'Keyword:_:_',
+      \ 'LINK': 'oroshiLink:_:underline',
       \ 'MODIFIER': 'oroshiModifier:_:_',
       \ 'NOISE': 'Noise:_:_',
       \ 'NOTICE': 'oroshiNotice:_:_',
@@ -384,19 +385,19 @@ call s:Highlight('jsGlobalNodeObjects', 'ALIAS_FUNCTION', '', 'bold')
 " Markdown {{{
 " call s:Highlight('markdownCodeDelimiter', 'ALIAS_STRING')
 " call s:Highlight('markdownCode', 'ALIAS_STRING')
-" call s:Highlight('markdownHeadingDelimiter', 'ALIAS_HEADER')
-" call s:Highlight('markdownH1', 'ALIAS_HEADER', '', 'bold')
-" call s:Highlight('markdownH2', 'ALIAS_HEADER')
-" call s:Highlight('markdownH3', 'ALIAS_HEADER')
-" call s:Highlight('markdownH4', 'ALIAS_HEADER')
-" call s:Highlight('markdownH5', 'ALIAS_HEADER')
-" call s:Highlight('markdownH6', 'ALIAS_HEADER')
+call s:Link('markdownHeadingDelimiter', 'HEADER')
+call s:Highlight('markdownH1', 'ALIAS_HEADER', '', 'bold')
+call s:Link('markdownH2', 'HEADER')
+call s:Link('markdownH3', 'HEADER')
+call s:Link('markdownH4', 'HEADER')
+call s:Link('markdownH5', 'HEADER')
+call s:Link('markdownH6', 'HEADER')
 " call s:Highlight('markdownListMarker', 'ALIAS_PUNCTUATION')
-" call s:Highlight('markdownLinkDelimiter', 'ALIAS_PUNCTUATION')
-" call s:Highlight('markdownLinkTextDelimiter', 'ALIAS_PUNCTUATION')
-" call s:Highlight('markdownLinkText', 'ALIAS_KEYWORD', '', 'underline')
-" call s:Highlight('markdownRule', 'ALIAS_PUNCTUATION')
-" call s:Highlight('markdownUrl', 'ALIAS_LINK')
+call s:Link('markdownLinkDelimiter', 'PUNCTUATION')
+call s:Link('markdownLinkTextDelimiter', 'PUNCTUATION')
+call s:Link('markdownLinkText', 'STRING')
+call s:Link('markdownRule', 'PUNCTUATION')
+call s:Link('markdownUrl', 'LINK')
 " }}}
 " Pug {{{
 " call s:Highlight('pugInterpolation', 'ALIAS_INTERPOLATION_VARIABLE')
