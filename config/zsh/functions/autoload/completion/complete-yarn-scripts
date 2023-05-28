@@ -1,0 +1,11 @@
+# Display list of all scripts commands
+function complete-yarn-scripts() {
+	# Stop if no package.json
+	local packageJsonPath="$(find-up package.json)"
+	[[ $packageJsonPath == "" ]] && return 0
+
+	cat $packageJsonPath |
+		jq \
+			--raw-output \
+			'.scripts | to_entries[] | [(.key | gsub(":";"\\:")), .value] | join(":")'
+}

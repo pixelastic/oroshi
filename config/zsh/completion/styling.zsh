@@ -103,6 +103,11 @@ function oroshi-completion-styling() {
       "${(f)$(♣ "*" $COLOR_ALIAS_YARN_LINK_LOCAL)}" \
       $listColorsDefault \
     )
+  # Local dependencies
+  local listColorsYarnDependency=(\
+      "${(f)$(♣ "*" $COLOR_ALIAS_YARN_PACKAGE)}" \
+      $listColorsDefault \
+    )
   # }}}
 
 
@@ -184,6 +189,9 @@ function oroshi-completion-styling() {
   # }}}
   # Locally linked modules {{{
   zstyle ':completion:*:complete:yarn-link-remove:*:*' list-colors $listColorsYarnLinkLocal
+  # }}}
+  # Local dependencies {{{
+  zstyle ':completion:*:complete:yarn-update:*:*' list-colors $listColorsYarnDependency
   # }}}
   # }}}
 

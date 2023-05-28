@@ -1,8 +1,8 @@
 #compdef
 
 # Suggest the available scripts
-function _package-scripts() {
-  local suggestions=(${(f)"$(complete-package-scripts)"})
+function _yarn-scripts() {
+  local suggestions=(${(f)"$(complete-yarn-scripts)"})
 
   _describe -V "$(completion-header $COLOR_ALIAS_LANGUAGE_JAVASCRIPT $COLOR_BLACK '  package.json scripts ')" suggestions
 }

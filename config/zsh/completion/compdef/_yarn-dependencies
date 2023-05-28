@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest all dependencies of current project
+function _yarn-dependencies() {
+  local suggestions=(${(f)"$(complete-yarn-dependencies)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_LANGUAGE_JAVASCRIPT $COLOR_BLACK '  package.json dependencies ')" suggestions
+}

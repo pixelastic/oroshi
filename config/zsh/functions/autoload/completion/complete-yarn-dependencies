@@ -1,0 +1,11 @@
+# Display list of all local dependencies
+function complete-yarn-dependencies() {
+  local rawList="$(yarn-dependency-list-raw)"
+
+  for rawLine in ${(f)rawList}; do
+    local split=(${(@s/▮/)rawLine})
+    local dependencyName=$split[1]
+    local dependencyVersion=$split[2]
+    echo "${dependencyName}:${dependencyVersion}"
+  done
+}
