@@ -330,7 +330,7 @@ call s:Highlight('SpellRare', 'GREEN', 'BLACK', 'bold,underline')
 " }}}
 " Git {{{
 " Git Config
-" call s:Highlight('gitconfigSection', 'ALIAS_HEADER')
+call s:Link('gitconfigSection', 'HEADER')
 " Git Commit
 call s:Link('gitcommitDiff', 'COMMENT')
 call s:Link('gitcommitBranch', 'GIT_BRANCH')
