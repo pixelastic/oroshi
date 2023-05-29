@@ -48,8 +48,8 @@ function yarn-dependency-list-raw() {
 
   # Pick either dependencies, devDependencies or both
   local rawDependencies=()
-  [[ $includeDependencies == "1" ]] && rawDependencies+=($(getRawDependencies ".dependencies"))
-  [[ $includeDevDependencies == "1" ]] && rawDependencies+=($(getRawDependencies ".devDependencies" ))
+  [[ $includeDependencies == "1" ]] && rawDependencies+=("$(getRawDependencies ".dependencies")")
+  [[ $includeDevDependencies == "1" ]] && rawDependencies+=("$(getRawDependencies ".devDependencies" )")
 
   [[ $rawDependencies == "" ]] && return 0
 
