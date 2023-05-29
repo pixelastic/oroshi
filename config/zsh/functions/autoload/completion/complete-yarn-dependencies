@@ -1,6 +1,6 @@
 # Display list of all local dependencies
 function complete-yarn-dependencies() {
-  local rawList="$(yarn-dependency-list-raw)"
+  local rawList="$(yarn-dependency-list-raw --all)"
 
   for rawLine in ${(f)rawList}; do
     local split=(${(@s/▮/)rawLine})

@@ -19,9 +19,16 @@ function yarn-dependency-list-raw() {
   [[ $packageJsonPath == "" ]] && return 0
 
   # Get either the dependencies, devDependencies, or both
-  local dependencyKey=".dependencies"
-  [[ $isDev == "1" ]] && dependencyKey=".devDependencies"
-  [[ $isAll == "1" ]] && dependencyKey=".dependencies,.devDependencies"
+  local includeDependencies="1"
+  local includeDevDependencies="0"
+  if [[ $isDev == "1" ]]; then
+    includeDependencies="0"
+    includeDevDependencies="1"
+  fi
+  if [[ $isAll == "1" ]]; then
+    includeDependencies="1"
+    includeDevDependencies="1"
+  fi
 
   # Store information about each dependency in its own hash
   local dependencyNames=()
@@ -29,11 +36,21 @@ function yarn-dependency-list-raw() {
   typeset -A dependencyPaths=()
   typeset -A dependencyDescriptions=()
 
-  # Get all dependencies
-  local rawDependencies="$(jq \
-		--raw-output \
-		"${dependencyKey} | to_entries[] | [.key, .value] | join(\"▮\")" \
-		<$packageJsonPath 2>/dev/null)"
+  # jq invocation to get dependencies of a given field
+  function getRawDependencies() {
+    local key=$1
+    jq \
+      --raw-output \
+      "${key} | to_entries[] | [.key, .value] | join(\"▮\")" \
+      <$packageJsonPath \
+      2>/dev/null
+  }
+
+  # Pick either dependencies, devDependencies or both
+  local rawDependencies=()
+  [[ $includeDependencies == "1" ]] && rawDependencies+=($(getRawDependencies ".dependencies"))
+  [[ $includeDevDependencies == "1" ]] && rawDependencies+=($(getRawDependencies ".devDependencies" ))
+
   [[ $rawDependencies == "" ]] && return 0
 
   # Default pass, to fill the list of dependencies and version
