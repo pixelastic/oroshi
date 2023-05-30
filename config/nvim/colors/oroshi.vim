@@ -238,6 +238,7 @@ call s:Link('ALEWarningSign', 'WARNING')
 " GitGutter {{{
 call s:Link('GitGutterAdd', 'GIT_ADDED')
 call s:Link('GitGutterChange', 'GIT_MODIFIED')
+call s:Link('GitGutterDelete', 'GIT_REMOVED')
 " }}}
 " Status line {{{
 call s:Highlight('StatusLineFileEncodingError', 'RED', 'GRAY_8')

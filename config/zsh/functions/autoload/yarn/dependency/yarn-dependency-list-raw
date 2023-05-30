@@ -34,6 +34,8 @@ function yarn-dependency-list-raw() {
   local dependencyNames=()
   typeset -A dependencyVersions=()
   typeset -A dependencyPaths=()
+  typeset -A dependencyTypes=()
+  typeset -A dependencyLinkTypes=()
   typeset -A dependencyDescriptions=()
 
   # jq invocation to get dependencies of a given field
@@ -41,26 +43,28 @@ function yarn-dependency-list-raw() {
     local key=$1
     jq \
       --raw-output \
-      "${key} | to_entries[] | [.key, .value] | join(\"▮\")" \
+      ".${key} | to_entries[] | [.key, .value, \"$key\"] | join(\"▮\")" \
       <$packageJsonPath \
       2>/dev/null
   }
 
   # Pick either dependencies, devDependencies or both
   local rawDependencies=()
-  [[ $includeDependencies == "1" ]] && rawDependencies+=("$(getRawDependencies ".dependencies")")
-  [[ $includeDevDependencies == "1" ]] && rawDependencies+=("$(getRawDependencies ".devDependencies" )")
+  [[ $includeDependencies == "1" ]] && rawDependencies+=($(getRawDependencies "dependencies"))
+  [[ $includeDevDependencies == "1" ]] && rawDependencies+=($(getRawDependencies "devDependencies"))
 
   [[ $rawDependencies == "" ]] && return 0
 
   # Default pass, to fill the list of dependencies and version
-  for rawDependency in ${(f)rawDependencies}; do
+  for rawDependency in ${rawDependencies}; do
     local splitLine=(${(@s/▮/)rawDependency})
     local dependencyName=$splitLine[1]
     local dependencyVersion=$splitLine[2]
+    local dependencyType=$splitLine[3]
 
     dependencyNames+=($dependencyName)
     dependencyVersions[$dependencyName]=$dependencyVersion
+    dependencyTypes[$dependencyName]=$dependencyType
   done
 
   # Get descriptions
@@ -79,11 +83,23 @@ function yarn-dependency-list-raw() {
     done
   fi
 
+  # Get list of all links, and mark those dependencies as such
+  local rawLinkList="$(yarn-link-list-raw)"
+  for rawLinkLine in ${(f)rawLinkList}; do
+    local split=(${(@s/▮/)rawLinkLine})
+    local dependencyName=$split[1]
+    local dependencyLinkType=$split[2]
+    dependencyLinkTypes[$dependencyName]="link-${dependencyLinkType}"
+  done
+
   # Display the full list
-  for dependencyName in ${(o)dependencyNames}; do
+  for dependencyName in ${dependencyNames}; do
     local dependencyVersion=$dependencyVersions[$dependencyName]
     local dependencyDescription=$dependencyDescriptions[$dependencyName]
+    local dependencyType=$dependencyTypes[$dependencyName]
+    local dependencyLinkType=$dependencyLinkTypes[$dependencyName]
+    [[ $dependencyLinkType == "" ]] && dependencyLinkType="link-none"
 
-    echo "${dependencyName}▮${dependencyVersion}▮${dependencyDescription}"
+    echo "${dependencyName}▮${dependencyVersion}▮${dependencyType}▮${dependencyLinkType}▮${dependencyDescription}"
   done
 }

@@ -5,11 +5,10 @@
 # $ table "foo▮bar"                # foo  bar
 # $ table "foo¤bar" --separator "¤" # foo  bar
 
-
 # Parse arguments
 zmodload zsh/zutil
 zparseopts -E -D \
-  -separator:=flagSeparator
+	-separator:=flagSeparator
 
 local separator=${flagSeparator[2]:-▮}
 
@@ -17,8 +16,8 @@ local separator=${flagSeparator[2]:-▮}
 local input="$1"
 [[ -p /dev/stdin ]] && input="$(cat -)"
 
-echo $input | \
-  column \
-    --table-noheadings \
-    --table \
-    --separator "${separator}"
+echo $input |
+	column \
+		--table-noheadings \
+		--table \
+		--separator "${separator}"

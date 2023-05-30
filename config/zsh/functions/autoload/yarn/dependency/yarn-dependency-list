@@ -13,13 +13,26 @@ function yarn-dependency-list() {
     local split=(${(s/▮/)rawLine})
     local dependencyName=$split[1]
     local dependencyVersion=$split[2]
-    local dependencyDescription=$split[3]
+    local dependencyType=$split[3]
+    local dependencyLinkType=$split[4]
+    local dependencyDescription=$split[5]
 
     # Name
-    row+="$(yarn-package-colorize $dependencyName --with-icon)▮"
+    local additionalPackageColorizeOption=""
+    [[ $dependencyLinkType == "link-local" ]] && additionalPackageColorizeOption="--link-local"
+    [[ $dependencyLinkType == "link-global" ]] && additionalPackageColorizeOption="--link-global"
+    row+="$(yarn-package-colorize $dependencyName --with-icon $additionalPackageColorizeOption)▮"
+
+    # Key
+    if [[ $dependencyType == "devDependencies" ]]; then
+      row+="$(colorize "dev" $COLOR_ALIAS_COMMENT)▮"
+    else
+      row+="▮"
+    fi
 
     # Version
     row+="$(colorize "$dependencyVersion" $COLOR_ALIAS_YARN_PACKAGE_VERSION)▮"
+
 
     # Description
     row+="$(colorize "$dependencyDescription" $COLOR_ALIAS_YARN_PACKAGE_DESCRIPTION)▮"
