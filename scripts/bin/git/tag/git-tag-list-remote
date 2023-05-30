@@ -1,49 +1,43 @@
-#!/usr/bin/env ruby
-require_relative '../lib/git_helper'
-# Display the list of current remote tags
-# Usage :
-# $ git-tag-list-remote {remote}
-# v1.1.2  9242a33 
-# v1.1.3  7548e9a
-# v1.1.4  87967bb
+#!/usr/bin/env zsh
+# Get the list of all remote tags
+# Usage:
+# $ git-tag-list-remote           # Display all tags of current remote
+# $ git-tag-list-remote upstream  # Display all tags of upstream
 
-Tag = Struct.new(:name, :hash)
-class TagListRemote
-  include GitHelper
+local rawList="$(
+  git \
+    ls-remote \
+    --tags \
+    --quiet \
+    --sort=-creatordate \
+    | grep -v '\^{}$'
+)"
 
-  def initialize(*args)
-    @args = get_real_args(args)
-    elements = guess_elements(@args)
-    @remoteName = elements[:remote]
-    @currentTags = current_tags
-    @tagList = tag_list
-  end
+# Stop if no tag
+if [[ "$rawList" == "" ]]; then
+  echo "✘ No tags found"
+  exit
+fi
 
-  def tag_list
-    output = %x[git ls-remote --tags #{@remoteName} 2>/dev/null | grep -v '\\^{}$' | awk '{print $2, $1}' | sort -V]
-    tags = []
-    output.each_line do |line|
-      name, hash = line.match(/^refs\/tags\/(.*) (.{7}).*\n$/).captures
-      tags << Tag.new(name, hash)
-    end
-    return tags
-  end
+# Loop through them all
+local output=""
+local currentTag="$(git-tag-current)"
+for rawLine in ${(f)rawList}; do
+  local row=""
 
-  def output_current_tag(tag)
-    return colorize("", color(:valid)) if @currentTags.include? tag
-    return " "
-  end
+  # Splitting the line into its various parts
+  local split=(${=rawLine})
+  local commitHash=${split[1]:0:7}
+  local tagName=${split[2]:10}
 
-  def run
-    longest_tag = longest_by_type(@tagList, :name)
+  # Tag name
+  row+="$(git-tag-colorize $tagName --with-icon)▮"
 
-    @tagList.each do |tag|
-      current_tag = output_current_tag(tag[:name])
-      tag_name = colorize(tag[:name].ljust(longest_tag.size), color(:tag))
-      hash = colorize(tag[:hash], color(:hash))
-      puts "#{current_tag}  #{tag_name}  #{hash}"
-    end
-  end
+  # Hash
+  row+="$(git-commit-colorize $commitHash --with-icon)▮"
 
-end
-TagListRemote.new(*ARGV).run()
+  output+="$row\n"
+done
+
+
+table $output
