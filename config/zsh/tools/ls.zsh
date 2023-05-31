@@ -10,6 +10,8 @@ function oroshi_tools_ls() {
   LS_COLORS+=":ln=34;4;$COLOR_ALIAS_LINK"         # Symlink
 
   # Define LS_COLORS by looping through all FILETYPES_***_color
+  # TODO: Need to color .nvmrc, .eslintignore, and all files starting with
+  # a dot, without an extension
   for extension in ${=FILETYPES_INDEX}; do
     # Those are nested zsh modifiers:
     # - ${AAA:-BBB} reads AAA variables, and if empty sets BBB as the value
@@ -21,7 +23,7 @@ function oroshi_tools_ls() {
     local bold=${(P)${:-FILETYPE_${extension}_BOLD}}
 
     # Add to LS_COLORS
-    LS_COLORS+=":*${pattern}=${bold};38;5;$color"
+    LS_COLORS+=":${pattern}=${bold};38;5;$color"
   done
 
   export LS_COLORS

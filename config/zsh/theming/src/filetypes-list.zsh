@@ -1,7 +1,9 @@
 # FILETYPE_GROUPS {{{
-# - patterns starting with a dot (as in .md) are checked against the end of
-#   the filename
-# - patterns not starting with a dot are checked against the whole filename
+# This file will be read by env-generate-filetypes to generate the list of ENV
+# variables used to color files in ls (and other places)
+#
+# - by default, patterns will be treated as extensions
+# - patterns wrapped in [] will be treated as exact mac
 declare -A FILETYPE_GROUPS
 FILETYPE_GROUPS=()
 declare -A FILETYPES
@@ -12,73 +14,79 @@ FILETYPES=()
 FILETYPE_GROUPS[text:color]="AMBER"
 FILETYPE_GROUPS[text:icon]=" "
 FILETYPE_GROUPS[text:patterns]="\
-  CODEOWNERS \
-  LICENSE \
-  MAINTAINERS \
-  .md \
-  .txt \
+  [CODEOWNERS] \
+  [LICENSE] \
+  [MAINTAINERS] \
+  md \
+  txt \
 "
 
 # Script files
 FILETYPE_GROUPS[script:color]="VIOLET"
 FILETYPE_GROUPS[script:icon]=" "
 FILETYPE_GROUPS[script:patterns]="\
-  .au3 \
-  .bats \
-  .cfg \
-  .conf \
-  .css \
-  .eot \
-  .gemspec \
-  .html \
-  .ini \
-  .json \
-  .jsonl \
-  .js \
-  .ps1 \
-  .pug \
-  .py \
-  .rb \
-  .ru \
-  .sass \
-  .scss \
-  .sh \
-  .svg \
-  .theme \
-  .tmTheme \
-  .toml \
-  .tsx \
-  .ts \
-  .ttf \
-  .vim \
-  .woff \
-  .xml \
-  .yaml \
-  .yml \
-  .zsh \
-  Dockerfile \
-  Gemfile \
-  Guardfile \
-  Rakefile \
-  Vagrantfile \
+  au3 \
+  bats \
+  cfg \
+  conf \
+  css \
+  eot \
+  gemspec \
+  html \
+  ini \
+  jsonl \
+  json \
+  js \
+  ps1 \
+  pug \
+  py \
+  rb \
+  ru \
+  sass \
+  scss \
+  sh \
+  svg \
+  theme \
+  tmTheme \
+  toml \
+  tsx \
+  ts \
+  ttf \
+  vim \
+  woff \
+  xml \
+  yaml \
+  yml \
+  zsh \
+  [Dockerfile] \
+  [Gemfile] \
+  [Guardfile] \
+  [Rakefile] \
+  [Vagrantfile] \
+  [.eslintignore] \
+  [.gitignore] \
+  [.nvmrc] \
+  [.prettierignore] \
+  [.stylelintignore] \
+  [.yarnrc] \
 "
 
 # Image files
 FILETYPE_GROUPS[image:color]="YELLOW_5"
 FILETYPE_GROUPS[image:icon]=" "
 FILETYPE_GROUPS[image:patterns]="\
-  .gif \
-  .ico \
-  .jpg \
-  .png \
+  gif \
+  ico \
+  jpg \
+  png \
 "
 
 # Audio files
 FILETYPE_GROUPS[audio:color]="BLUE_4"
 FILETYPE_GROUPS[audio:icon]=" "
 FILETYPE_GROUPS[audio:patterns]="\
-  .mp3 \
-  .wav \
+  mp3 \
+  wav \
 "
 
 # Video files
@@ -86,10 +94,10 @@ FILETYPE_GROUPS[video:color]="BLUE"
 FILETYPE_GROUPS[video:icon]=" "
 FILETYPE_GROUPS[video:bold]="1"
 FILETYPE_GROUPS[video:patterns]="\
-  .avi \
-  .mkv \
-  .mp4 \
-  .mpg \
+  avi \
+  mkv \
+  mp4 \
+  mpg \
 "
 
 # Archive files
@@ -97,50 +105,50 @@ FILETYPE_GROUPS[archive:color]="GREEN"
 FILETYPE_GROUPS[archive:icon]=" "
 FILETYPE_GROUPS[archive:bold]="1"
 FILETYPE_GROUPS[archive:patterns]="\
-  .cbr \
-  .cbz \
-  .deb \
-  .gz \
-  .rar \
-  .tar.gz \
-  .tgz \
-  .zip \
+  cbr \
+  cbz \
+  deb \
+  gz \
+  rar \
+  tar.gz \
+  tgz \
+  zip \
 "
 
 # Documents files
 FILETYPE_GROUPS[document:color]="YELLOW_7"
 FILETYPE_GROUPS[document:icon]=" "
 FILETYPE_GROUPS[document:patterns]="\
-  .epub \
-  .pdf \
+  epub \
+  pdf \
 "
 
 # Binary files
 FILETYPE_GROUPS[binary:color]="BLUE"
 FILETYPE_GROUPS[binary:icon]=" "
 FILETYPE_GROUPS[binary:bold]="1"
-FILETYPE_GROUPS[binary:patterns]=".exe"
+FILETYPE_GROUPS[binary:patterns]="exe"
 
 # Minor files files
 FILETYPE_GROUPS[minor:color]="NEUTRAL"
 FILETYPE_GROUPS[minor:icon]=" "
 FILETYPE_GROUPS[minor:patterns]="\
-  .js.map \
-  .lock \
-  .log \
-  .min.css \
-  .min.js \
-  .part \
-  .pid \
-  _algolia_api_key \
+  js.map \
+  lock \
+  log \
+  min.css \
+  min.js \
+  part \
+  pid \
+  [_algolia_api_key] \
 "
 # }}}
 
 # FILETYPES {{{
-FILETYPES[.pdf:bold]="1"
-FILETYPES[.vim:icon]=" "
-FILETYPES[.md:icon]=" "
-FILETYPES[.mkd:icon]=" "
-FILETYPES[.js:icon]=" "
-FILETYPES[.js:color]="YELLOW"
+FILETYPES[pdf:bold]="1"
+FILETYPES[vim:icon]=" "
+FILETYPES[md:icon]=" "
+FILETYPES[mkd:icon]=" "
+FILETYPES[js:icon]=" "
+FILETYPES[js:color]="YELLOW"
 # }}}
