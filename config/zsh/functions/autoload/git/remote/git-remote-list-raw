@@ -1,0 +1,14 @@
+# Display the list of remotes in raw format, without columns not colors
+# Usage:
+# $ git-remote-list
+
+function git-remote-list-raw() {
+  local rawList="$(git remote)"
+
+  for remoteName in ${(f)rawList}; do
+    local remoteUrl="$(git-remote-url $remoteName)"
+    echo "${remoteName}▮${remoteUrl}"
+  done
+
+}
+

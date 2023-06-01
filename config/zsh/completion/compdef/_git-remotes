@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest the remotes
+function _git-remotes() {
+  local suggestions=(${(f)"$(complete-git-remotes)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_GIT_REMOTE $COLOR_BLACK '   Remotes ')" suggestions
+}

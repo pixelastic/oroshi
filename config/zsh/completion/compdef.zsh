@@ -31,6 +31,10 @@ compdef _git-files-dirty \
 	git-file-add
 compdef _git-submodules \
 	git-submodule-remove
+compdef _git-remotes \
+	git-remote-switch \
+	git-remote-remove \
+	git-remote-rename
 # }}}
 # Docker {{{
 compdef _docker-images-remote \

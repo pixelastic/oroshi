@@ -4,36 +4,35 @@
 # $ git-remote-color upstream    # blue
 function git-remote-color() {
 
-  # Remote name
-  local remoteName="$1"
-  if [[ $remoteName == '' ]]; then
-    remoteName="$(git-remote-current)"
-  fi
+	# Remote name
+	local remoteName="$1"
+	if [[ $remoteName == '' ]]; then
+		remoteName="$(git-remote-current)"
+	fi
 
-  local DEFAULT_REMOTE_COLOR='ALIAS_REMOTE'
+	local DEFAULT_REMOTE_COLOR=$COLOR_ALIAS_GIT_REMOTE
 
-  declare -A REMOTE_COLORS
-  REMOTE_COLORS=()
-  REMOTE_COLORS[HEAD]='RED'
-  REMOTE_COLORS[algolia]='BLUE_4'
-  REMOTE_COLORS[origin]='YELLOW'
-  REMOTE_COLORS[pixelastic]='GREEN'
-  REMOTE_COLORS[upstream]='BLUE'
+	declare -A REMOTE_COLORS
+	REMOTE_COLORS=()
+	REMOTE_COLORS[HEAD]=$COLOR_ALIAS_GIT_REMOTE_HEAD
+	REMOTE_COLORS[algolia]=$COLOR_ALIAS_GIT_REMOTE_ALGOLIA
+	REMOTE_COLORS[origin]=$COLOR_ALIAS_GIT_REMOTE_ORIGIN
+	REMOTE_COLORS[pixelastic]=$COLOR_ALIAS_GIT_REMOTE_PIXELASTIC
+	REMOTE_COLORS[upstream]=$COLOR_ALIAS_GIT_REMOTE_UPSTREAM
 
-  # Remote doesn't exist
-  if ! git-remote-exists "$remoteName"; then
-    echo RED
-    return
-  fi
+	# Remote doesn't exist
+	if ! git-remote-exists "$remoteName"; then
+		echo RED
+		return
+	fi
 
-  # Known remote
-  local knownColor=$REMOTE_COLORS[$remoteName]
-  if [[ $knownColor != '' ]]; then
-    echo $knownColor
-    return
-  fi
+	# Known remote
+	local knownColor=$REMOTE_COLORS[$remoteName]
+	if [[ $knownColor != '' ]]; then
+		echo $knownColor
+		return
+	fi
 
-
-  # Default remote
-  echo $DEFAULT_REMOTE_COLOR
+	# Default remote
+	echo $DEFAULT_REMOTE_COLOR
 }

@@ -61,6 +61,11 @@ function oroshi-completion-styling() {
       "${(f)$(♣ "*" $COLOR_ALIAS_GIT_SUBMODULE)}" \
       $listColorsDefault \
     )
+  # Color git remotes
+  local listColorsGitRemote=(\
+      "${(f)$(♣ "*" $COLOR_ALIAS_GIT_REMOTE)}" \
+      $listColorsDefault \
+    )
   # }}}
   # SSH {{{
   # Color remote ssh
@@ -152,6 +157,11 @@ function oroshi-completion-styling() {
 
   # Submodules
   zstyle ':completion:*:complete:git-submodule-remove:*:*' list-colors $listColorsGitSubmodule
+
+  # Remotes
+  zstyle ':completion:*:complete:git-remote-remove:*:*' list-colors $listColorsGitRemote
+  zstyle ':completion:*:complete:git-remote-rename:*:*' list-colors $listColorsGitRemote
+  zstyle ':completion:*:complete:git-remote-switch:*:*' list-colors $listColorsGitRemote
   # }}}
 
   # Docker {{{

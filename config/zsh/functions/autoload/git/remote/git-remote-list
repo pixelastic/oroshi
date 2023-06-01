@@ -1,0 +1,38 @@
+# Display the list of remotes
+# Usage:
+# $ git-remote-list
+
+function git-remote-list() {
+  local rawList="$(git-remote-list-raw)"
+  local currentRemote="$(git-remote-current)"
+
+  local output=""
+  for rawLine in ${(f)rawList}; do
+    local row=""
+
+    local split=(${(@s/▮/)rawLine})
+    local remoteName=$split[1]
+    local remoteUrl=$split[2]
+
+    # Current remote
+    if [[ "$remoteName" == "$currentRemote" ]]; then
+      row+="$(colorize "" GREEN)▮"
+    else
+      row+="▮"
+    fi
+    # }}}
+
+    # Remote name {{{
+    row+="$(git-remote-colorize "$remoteName" --with-icon)▮"
+    # }}}
+
+    # Remote url {{{
+    row+="$(colorize "$remoteUrl" ALIAS_TEXT)▮"
+    # }}}
+
+    output+="$row\n"
+  done
+
+  table $output
+}
+
