@@ -22,6 +22,8 @@
   cmd = vim -f -c \"Gdiff\" \"$MERGED\"
 [interactive]
 	diffFilter = diff-so-fancy --patch
+[pull]
+	rebase = true
 [push]
   default = simple
 [rebase]
