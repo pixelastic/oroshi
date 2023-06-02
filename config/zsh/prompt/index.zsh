@@ -126,9 +126,9 @@ PROMPT='$(oroshi-prompt-left)'
 
 function oroshi-prompt-right() {
   local promptRight=(
+    $OROSHI_PROMPT_PARTS[git_rebase_status]
     $OROSHI_PROMPT_PARTS[ruby_version]
     $OROSHI_PROMPT_PARTS[node_version]
-    $OROSHI_PROMPT_PARTS[git_rebase_status]
     $OROSHI_PROMPT_PARTS[git_issues]
     $OROSHI_PROMPT_PARTS[git_pullrequests]
     $OROSHI_PROMPT_PARTS[git_tag]

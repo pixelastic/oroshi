@@ -22,6 +22,8 @@
   cmd = vim -f -c \"Gdiff\" \"$MERGED\"
 [interactive]
 	diffFilter = diff-so-fancy --patch
+[pull]
+  rebase = true # If the remote has been forced pushed, pulling it will correctly overwrite
 [push]
   default = simple
 [rebase]
@@ -119,13 +121,13 @@
 [color "status"]
   header = $COLOR_ALIAS_COMMENT         # Default text
   branch = $COLOR_ALIAS_GIT_BRANCH      # Current branch
-  added = $COLOR_ALIAS_SUCCESS          # File added to staging area
+  added = $COLOR_ALIAS_GIT_ADDED        # File added to staging area
   changed = $COLOR_ALIAS_ERROR          # Changed, but not staged
   untracked = $COLOR_ALIAS_GIT_MODIFIED # New file
   unmerged = $COLOR_ALIAS_GIT_MODIFIED  # Both added and modified at the same time
-  ; updated = $COLOR_ALIAS_UNKNOWN        # Added to staging area
+  noBranch = $COLOR_ALIAS_ERROR         # Rebase in progress
 
-  localBranch = $COLOR_ALIAS_UNKNOWN
-  noBranch = $COLOR_ALIAS_UNKNOWN
-  remoteBranch = $COLOR_ALIAS_UNKNOWN
+  ; updated = $COLOR_ALIAS_UNKNOWN      # Should stay commented
+  ; localBranch = $COLOR_ALIAS_UNKNOWN
+  ; remoteBranch = $COLOR_ALIAS_UNKNOWN
 # }}}

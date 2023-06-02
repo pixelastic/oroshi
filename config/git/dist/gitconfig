@@ -22,6 +22,8 @@
   cmd = vim -f -c \"Gdiff\" \"\"
 [interactive]
 	diffFilter = diff-so-fancy --patch
+[pull]
+  rebase = true # If the remote has been forced pushed, pulling it will correctly overwrite
 [push]
   default = simple
 [rebase]
@@ -119,13 +121,13 @@
 [color "status"]
   header = 16         # Default text
   branch = 17      # Current branch
-  added = 2          # File added to staging area
+  added = 2        # File added to staging area
   changed = 1          # Changed, but not staged
   untracked = 21 # New file
   unmerged = 21  # Both added and modified at the same time
-  ; updated = 114        # Added to staging area
+  noBranch = 1         # Rebase in progress
 
-  localBranch = 114
-  noBranch = 114
-  remoteBranch = 114
+  ; updated = 114      # Should stay commented
+  ; localBranch = 114
+  ; remoteBranch = 114
 # }}}

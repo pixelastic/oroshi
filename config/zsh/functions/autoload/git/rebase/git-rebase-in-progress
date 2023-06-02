@@ -1,11 +1,11 @@
 # Check if current repo is currently rebasing
 function git-rebase-in-progress() {
-  local gitRoot="$(git-directory-root)"
-  local rebaseDir="${gitRoot}/.git/rebase-apply"
+	local gitRoot="$(git-directory-root)"
 
-  # No rebase in progress
-  if [[ ! -r $rebaseDir/rebasing ]]; then
-    return 1
-  fi
-  return 0
+	# a folder rebase-apply is created during a rebase, and a rebase-merge during
+	# an interactive one
+
+	[[ -d ${gitRoot}/.git/rebase-apply ]] && return 0
+	[[ -d ${gitRoot}/.git/rebase-merge ]] && return 0
+	return 1
 }
