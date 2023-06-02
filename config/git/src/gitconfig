@@ -22,8 +22,6 @@
   cmd = vim -f -c \"Gdiff\" \"$MERGED\"
 [interactive]
 	diffFilter = diff-so-fancy --patch
-[pull]
-	rebase = true
 [push]
   default = simple
 [rebase]
@@ -43,7 +41,7 @@
 [color]
   ui = true
 [color "advice"]
-  hint = $COLOR_ALIAS_UNKNOWN
+  hint = $COLOR_ALIAS_WARNING
 [color "blame"]
   highlightRecent = $COLOR_ALIAS_UNKNOWN
   repeatedLines = $COLOR_ALIAS_UNKNOWN
@@ -112,7 +110,7 @@
   prompt = $COLOR_ALIAS_UNKNOWN
   reset = $COLOR_ALIAS_UNKNOWN
 [color "push"]
-  error = $COLOR_ALIAS_UNKNOWN
+  error = $COLOR_ALIAS_ERROR
 [color "remote"]
   error = $COLOR_ALIAS_UNKNOWN
   hint = $COLOR_ALIAS_UNKNOWN
@@ -124,10 +122,10 @@
   added = $COLOR_ALIAS_SUCCESS          # File added to staging area
   changed = $COLOR_ALIAS_ERROR          # Changed, but not staged
   untracked = $COLOR_ALIAS_GIT_MODIFIED # New file
+  unmerged = $COLOR_ALIAS_GIT_MODIFIED  # Both added and modified at the same time
   ; updated = $COLOR_ALIAS_UNKNOWN        # Added to staging area
 
   localBranch = $COLOR_ALIAS_UNKNOWN
   noBranch = $COLOR_ALIAS_UNKNOWN
   remoteBranch = $COLOR_ALIAS_UNKNOWN
-  unmerged = $COLOR_ALIAS_UNKNOWN
 # }}}

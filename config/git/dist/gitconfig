@@ -22,8 +22,6 @@
   cmd = vim -f -c \"Gdiff\" \"\"
 [interactive]
 	diffFilter = diff-so-fancy --patch
-[pull]
-	rebase = true
 [push]
   default = simple
 [rebase]
@@ -43,7 +41,7 @@
 [color]
   ui = true
 [color "advice"]
-  hint = 114
+  hint = 3
 [color "blame"]
   highlightRecent = 114
   repeatedLines = 114
@@ -112,7 +110,7 @@
   prompt = 114
   reset = 114
 [color "push"]
-  error = 114
+  error = 1
 [color "remote"]
   error = 114
   hint = 114
@@ -124,10 +122,10 @@
   added = 2          # File added to staging area
   changed = 1          # Changed, but not staged
   untracked = 21 # New file
+  unmerged = 21  # Both added and modified at the same time
   ; updated = 114        # Added to staging area
 
   localBranch = 114
   noBranch = 114
   remoteBranch = 114
-  unmerged = 114
 # }}}
