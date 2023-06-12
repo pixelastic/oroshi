@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
-# Make sure we move to the git root
-[[ git-is-submodule ]] && cd ..
-gitRoot="$(git-directory-root)"
+# # Make sure we move to the git root
+# [[ git-is-submodule ]] && cd ..
+# gitRoot="$(git-directory-root)"
 
-# Save the name of branch we rebase onto
-mkdir -p $gitRoot/.git/rebase-apply/
-echo "$1" > $gitRoot/.git/rebase-apply/x-onto-branch
+# # Save the name of branch we rebase onto
+# mkdir -p $gitRoot/.git/rebase-apply/
+# echo "$1" > $gitRoot/.git/rebase-apply/x-onto-branch

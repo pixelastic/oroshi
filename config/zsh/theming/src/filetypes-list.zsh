@@ -116,8 +116,9 @@ FILETYPE_GROUPS[archive:patterns]="\
 "
 
 # Documents files
-FILETYPE_GROUPS[document:color]="YELLOW_7"
+FILETYPE_GROUPS[document:color]="YELLOW_6"
 FILETYPE_GROUPS[document:icon]=" "
+FILETYPE_GROUPS[document:bold]="1"
 FILETYPE_GROUPS[document:patterns]="\
   epub \
   pdf \
