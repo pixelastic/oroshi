@@ -294,6 +294,7 @@ call s:Highlight('SpellBad', 'RED', 'BLACK', 'bold,underline')
 call s:Highlight('SpellCap', 'RED', 'BLACK', 'bold,underline')
 call s:Highlight('SpellLocal', 'VIOLET', 'BLACK', 'bold,underline')
 call s:Highlight('SpellRare', 'GREEN', 'BLACK', 'bold,underline')
+call s:Highlight('ALEError', '', 'RED_9')
 " }}}
 
 " AutoIt {{{
