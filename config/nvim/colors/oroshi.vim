@@ -384,8 +384,8 @@ call s:Highlight('jsGlobalNodeObjects', 'ALIAS_FUNCTION', '', 'bold')
 " augroup END
 " }}}
 " Markdown {{{
-" call s:Highlight('markdownCodeDelimiter', 'ALIAS_STRING')
-" call s:Highlight('markdownCode', 'ALIAS_STRING')
+call s:Link('markdownCodeDelimiter', 'STRING')
+call s:Link('markdownCode', 'STRING')
 call s:Link('markdownHeadingDelimiter', 'HEADER')
 call s:Highlight('markdownH1', 'ALIAS_HEADER', '', 'bold')
 call s:Link('markdownH2', 'HEADER')

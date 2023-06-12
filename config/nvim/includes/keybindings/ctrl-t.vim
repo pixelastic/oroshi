@@ -15,13 +15,12 @@ function! FzfFilesSearchSubdirSink(selection)
     return
   endif
 
-  let rawSelection=join(a:selection, "\n")
-  let selection=system('fzf-files-postprocess '.shellescape(rawSelection))
+  " Sanitize the file names from the fzf selection
+  let joinedSelection=join(a:selection, "\n")
+  let selection=system('fzf-files-postprocess '.shellescape(joinedSelection))
 
   " Open each file
-  for filepath in split(selection, ' ')
-    execute 'tab drop '.filepath
-  endfor
+  execute 'tab drop '.selection
 endfunction
 
 nnoremap <silent> <C-T> :call fzf#run({'source': fzfFilesSearchSubdirSource, 'options': FzfFilesSearchSubdirOptions(), 'sinklist': function('FzfFilesSearchSubdirSink') })<CR>

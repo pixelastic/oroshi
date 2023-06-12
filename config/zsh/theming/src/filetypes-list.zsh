@@ -63,6 +63,7 @@ FILETYPE_GROUPS[script:patterns]="\
   [Guardfile] \
   [Rakefile] \
   [Vagrantfile] \
+  [.envrc] \
   [.eslintignore] \
   [.gitignore] \
   [.nvmrc] \

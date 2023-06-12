@@ -1,15 +1,15 @@
 #!/usr/bin/env zsh
 # Parses the return of a fzf multi-selection
-local rawSelection="$1"
+local input="$@"
 
 # Stop early
-[[ $rawSelection == "" ]] && exit
+[[ $input == "" ]] && exit
 
 # Sanitize selection
 local files=()
-for line in ${(f)rawSelection}; do
+for line in ${(f)input}; do
   local split=(${(@s/   /)line})
-  
+
   local filepath="$split[1]"
   filepath=${filepath:q}
   filepath=${~filepath}

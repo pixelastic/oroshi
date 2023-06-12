@@ -15,13 +15,12 @@ function! FzfFilesSearchProjectSink(selection)
     return
   endif
 
-  let rawSelection=join(a:selection, "\n")
-  let selection=system('fzf-files-postprocess '.shellescape(rawSelection))
+  " Sanitize the file names from the fzf selection
+  let joinedSelection=join(a:selection, "\n")
+  let selection=system('fzf-files-postprocess '.shellescape(joinedSelection))
 
   " Open each file
-  for filepath in split(selection, ' ')
-    execute 'tab drop '.filepath
-  endfor
+  execute 'tab drop '.selection
 endfunction
 
 nnoremap <silent> <C-P> :call fzf#run({'source': fzfFilesSearchProjectSource, 'options': FzfFilesSearchProjectOptions(), 'sinklist': function('FzfFilesSearchProjectSink') })<CR>
