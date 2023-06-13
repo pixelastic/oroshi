@@ -1,13 +1,22 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
+# Save the current directory as a "mark" (to jump to it later)
+# Usage:
+# $ mark         # Save the current directory
+# $ mark my-name # Save the current directory as a mark named my-name
 set -e
+
+# Where are we?
+local currentDirFull=$PWD
+local currentDirName=${PWD:t}
+
+# Named mark
+local markName=$1
+[[ $markName == "" ]] && markName=$currentDirName
+
+# If the mark already exist, we remove it first
+local newMarkPath="$MARKPATH/$markName"
+rm -f $newMarkPath
+
+# Save the mark
 mkdir -p "$MARKPATH"
-
-pwd=$(pwd)
-dirname=$(basename "$pwd")
-
-# Mark name is either the first argument or the current dirname
-markname=$1
-[ "$markname" == '' ] && markname=$dirname
-
-cd "$MARKPATH"
-ln -fs "$pwd" "$markname"
+ln -fs $currentDirFull "$MARKPATH/$markName"
