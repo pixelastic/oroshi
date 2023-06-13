@@ -294,7 +294,17 @@ call s:Highlight('SpellBad', 'RED', 'BLACK', 'bold,underline')
 call s:Highlight('SpellCap', 'RED', 'BLACK', 'bold,underline')
 call s:Highlight('SpellLocal', 'VIOLET', 'BLACK', 'bold,underline')
 call s:Highlight('SpellRare', 'GREEN', 'BLACK', 'bold,underline')
+
 call s:Highlight('ALEError', '', 'RED_9')
+call s:Highlight('ALEWarning', '', 'YELLOW_9')
+" Below are other ALE highlight groups
+" call s:Highlight('ALEInfo', '', 'RED')
+" call s:Highlight('ALEStyleError', 'RED')
+" call s:Highlight('ALEStyleWarning', 'RED')
+" call s:Highlight('ALEVirtualTextError', 'RED')
+" call s:Highlight('ALEVirtualTextStyleError', 'RED')
+" call s:Highlight('ALEVirtualTextStyleWarning', 'RED')
+" call s:Highlight('ALEVirtualTextWarning', 'RED')
 " }}}
 
 " AutoIt {{{

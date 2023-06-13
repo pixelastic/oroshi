@@ -8,14 +8,13 @@
 git-directory-is-github || exit 1
 
 local issueNumber=$1
-local openedUrl="$(git directory-url)"
+local openedUrl="$(git-directory-url)"
 
 # Open a specific issue or the full list
 if [[ $issueNumber != "" ]]; then
-  openedUrl="${openedUrl}/issues/${issueNumber}"
+	openedUrl="${openedUrl}/issues/${issueNumber}"
 else
-  openedUrl="${openedUrl}/issues/"
+	openedUrl="${openedUrl}/issues/"
 fi
 
 $BROWSER $openedUrl &>/dev/null
-
