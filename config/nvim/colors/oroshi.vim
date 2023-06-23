@@ -380,6 +380,7 @@ call s:Link('diffSubname', 'COMMENT')
 " }}}
 " JavaScript / TypeScript {{{
 call s:Link('jsVariableDef', 'VARIABLE')
+call s:Highlight('jsOperatorKeyword', 'ALIAS_FUNCTION', '', 'bold')
 " call s:Highlight('jsTaggedTemplate', 'ALIAS_FUNCTION')
 " call s:Highlight('jsArrowFunction', 'ALIAS_PUNCTUATION')
 call s:Link('jsTemplateBraces', 'INTERPOLATION_WRAPPER')
