@@ -1,2 +1,26 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
+# ncdu: Interactive tool to drill down to folders with the more heavy files
+#
+# Example output:
+# ncdu 1.15.1 ~ Use the arrow keys to navigate, press ? for help
+# --- /home/tim -----------------------------------------------------------------
+#   137,8 GiB [##########] /perso
+#   135,0 GiB [######### ] /local
+#    10,3 GiB [          ] /.cache
+#     5,0 GiB [          ] /.pyenv
+#     5,0 GiB [          ] /.config
+#     4,8 GiB [          ] /snap
+#     2,0 GiB [          ] /.nvm
+#     1,7 GiB [          ] /.local
+#     1,2 GiB [          ] /.rbenv
+#     1,2 GiB [          ] /.rustup
+#     1,1 GiB [          ] /.gvm
+#     1,1 GiB [          ] /Downloads
+#   764,8 MiB [          ] /.npm
+#   604,8 MiB [          ] /.cargo
+#   310,0 MiB [          ] /websites
+#   261,4 MiB [          ] /Documents
+#   220,2 MiB [          ] /.dropbox-dist
+#  Total disk usage: 308,8 GiB  Apparent size: 299,7 GiB  Items: 3555740
+#
 sudo apt-get install ncdu

@@ -6,6 +6,7 @@ alias serve='live-server'
 disable -r time # ZSH overrides the time method
 alias time='time -p '
 alias w='which'
+alias disk-space='duf'
 alias mkdir="mkdir -p"
 alias p8='ping 8.8.8.8'
 alias n="gui nautilus"
