@@ -28,6 +28,8 @@ function yarn-link-list-raw() {
     # match anything
     setopt +o nomatch
 
+    [[ $commands[pkg-dir] ]] && return ""
+
     local packageRoot="$(pkg-dir)"
     local node_modules="${packageRoot}/node_modules"
     local linkedModules="$(find \

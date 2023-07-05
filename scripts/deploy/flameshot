@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-mkdir -p ~/.config/Dharkael/
+mkdir -p ~/.config/flameshot/
 ln \
-  -fs ~/.oroshi/config/flameshot/flameshot.ini \
-  ~/.config/flameshot/flameshot.ini
+	-fs ~/.oroshi/config/flameshot/flameshot.ini \
+	~/.config/flameshot/flameshot.ini

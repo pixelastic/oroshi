@@ -46,7 +46,7 @@ Plug 'lifepillar/vim-mucomplete' " Completion cycling wrapper
 " Plug 'natebosch/vim-lsc'         " Completion with LSP
 " }}}
 " Git-related plugins {{{
-Plug 'airblade/vim-gitgutter' " Added/Modified signs in the gutter
+Plug 'airblade/vim-gitgutter', { 'branch': 'main' } " Added/Modified signs in the gutter
 " Plug 'rhysd/committia.vim'
 " Plug 'tpope/vim-fugitive'
 " }}}

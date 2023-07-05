@@ -1,13 +1,14 @@
 #!/usr/bin/env zsh
 # Add Autokey config
-set -ex
+set -e
+
+mkdir -p ~/.config/autokey
 
 # We cannot do a symlink of the whole dir, as Autokey is using it to generate
 # logs and .pid files that we don't want to have in our git history
 
 rm -rf ~/.config/autokey/autokey.json
 ln -s ~/.oroshi/private/config/autokey/autokey.json ~/.config/autokey/autokey.json
-
 
 rm -rf ~/.config/autokey/data
 ln -s ~/.oroshi/private/config/autokey/data ~/.config/autokey/data
