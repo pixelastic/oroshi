@@ -1,5 +1,9 @@
-! Top line of numpad: Suppr, Pause, Print Screen, End
+! Remap Suppr to Num Lock
 keycode 119 = Num_Lock
+clear Mod2
+add Mod2 = Num_Lock
+
+! Rest of top line of numpad: Suppr, Pause, Print Screen, End
 keycode 127 = NoSymbol
 keycode 107 = NoSymbol
 keycode 110 = Delete
