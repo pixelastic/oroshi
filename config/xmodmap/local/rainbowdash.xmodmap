@@ -1,2 +1,18 @@
+! Top line of numpad: Suppr, Pause, Print Screen, End
+keycode 119 = Num_Lock
+keycode 127 = NoSymbol
+keycode 107 = NoSymbol
+keycode 110 = Delete
 
+! Second line of numpad: Num Lock, /, *, -
+keycode 77  = Home
+keycode 106 = Prior
+keycode 63  = Next
+keycode 82  = End
 
+! Right Shift, that I never use, will be better used as an extension to the
+! Enter key
+keycode 62 = Return
+
+! I'll remap Right Ctrl with Print Screen
+keycode 105 = Print
