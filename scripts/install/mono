@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
-sudo apt-get install mono-2.0-devel
+# mono: .NET development framework.
+# May be needed when running windows applications through Wine
+sudo apt-get install mono-devel
 
