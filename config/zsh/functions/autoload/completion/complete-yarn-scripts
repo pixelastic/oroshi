@@ -7,5 +7,6 @@ function complete-yarn-scripts() {
 	cat $packageJsonPath |
 		jq \
 			--raw-output \
-			'.scripts | to_entries[] | [(.key | gsub(":";"\\:")), .value] | join(":")'
+			'.scripts | to_entries[] | [(.key | gsub(":";"\\:")), .value] | join(":")' \
+			2>/dev/null
 }

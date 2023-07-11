@@ -1,0 +1,12 @@
+# Display list of local yarn binaries
+function complete-yarn-binaries() {
+	local packageRoot="$(pkg-dir)"
+	local binFolder="${packageRoot}/node_modules/.bin"
+	find \
+		$binFolder \
+		-maxdepth 1 \
+		-type l \
+		-printf "%f\n" \
+		2>/dev/null |
+		sort
+}
