@@ -8,16 +8,15 @@ local GSETTINGS_ROOT="org.gnome.settings-daemon.plugins.media-keys.custom-keybin
 local GSETTINGS_DIRECTORY="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
 
 local                  shortcuts=(
-# Name                 Command                                               Binding
-"Calculator"           "gnome-calculator"                                    "Insert"
-"Chrome"               "google-chrome --profile-directory=\"Profile 5\""                                       "<Super>C"
-"Flameshot"            "/usr/bin/flameshot gui"                              "<Super>Print"
-"Keepass"              "keepassx ~/perso/Dropbox/tim/keys.kdbx"              "<Super>K"
-"Kitty"                "/usr/bin/kitty"                                      "<Super>T"
-"Notion"               "google-chrome \'https://notion.so/\'"                "<Super>N"
-"Peek"                 "/home/tim/.oroshi/scripts/bin/peek"                  "<Super><Alt>Print"
-"Slack"                "/usr/bin/slack"                                      "<Super>S"
-"Emote"                "emote"                                               "<Super>E"
+  # Name                 Command                                               Binding
+  "Calculator"           "gnome-calculator"                                    "Insert"
+  "Chrome"               "google-chrome --profile-directory=\"Profile 5\""     "<Super>C"
+  "Flameshot"            "/usr/bin/flameshot gui"                              "<Super>Print"
+  "Keepass"              "keepassx ~/perso/Dropbox/tim/keys.kdbx"              "<Super>K"
+  "Kitty"                "/usr/bin/kitty"                                      "<Super>T"
+  "Notion"               "google-chrome \'https://notion.so/\'"                "<Super>N"
+  "Peek"                 "/home/tim/.oroshi/scripts/bin/peek"                  "<Super><Alt>Print"
+  "Slack"                "/usr/bin/slack"                                      "<Super>S"
 )
 
 

@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
-sudo snap install emote
+# Emote: emoji picker
+# https://github.com/tom-james-watson/Emote
+flatpak install com.tomjwatson.Emote
