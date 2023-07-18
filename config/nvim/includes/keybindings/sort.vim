@@ -1,15 +1,15 @@
 " Sort selection (using version sort)
-vnoremap s :!sort --version-sort<CR>
-vnoremap S :!sort --version-sort --reverse<CR>
+vnoremap ss :!sort --version-sort<CR>
+vnoremap sS :!sort --version-sort --reverse<CR>
 
 " Sort lines by line length
-vnoremap L :!sort-by-length<CR>
+vnoremap sl :!sort-by-length<CR>
 
 " Remove duplicate lines
-vnoremap u :sort u<CR>
+vnoremap su :sort u<CR>
 
 " Randomize lines
-vnoremap R :!shuf<CR>
+vnoremap sr :!shuf<CR>
 
 " Number lines
-vnoremap n :!cat -n<CR>
+vnoremap sn :!cat -n<CR>
