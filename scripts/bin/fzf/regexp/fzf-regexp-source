@@ -5,17 +5,16 @@
 # --query             # Mandatory, query to look for
 # --directory         # Mandatory, base directory to search
 
-
 zmodload zsh/zutil
 zparseopts -E -D \
-  -query:=flagQuery \
-  -directory:=flagDirectory
+	-query:=flagQuery \
+	-directory:=flagDirectory
 
 local directory=${flagDirectory[2]}
 local query=${flagQuery[2]}
 
 if [[ $query == "" ]]; then
-  exit
+	exit
 fi
 
 # Adding headings {{{
@@ -56,19 +55,19 @@ regexpTitleReplace+="\n\2\n"
 # The output uses a column format (separated by    ) to be parsed by fzf. fzf
 # will only display (and search into) the third column, but we use the 1st and
 # 2nd one to store the full path and the line number
-local regexpDirectorySearch="\n(.[^ \n]*) "
+local regexpDirectorySearch="(^|\n)(.[^ \n]*) "
 
-local regexpDirectoryReplace="\n${directory}\1 "
+local regexpDirectoryReplace="\1${directory}\2 "
 
 cd $directory
 # Note:
 # --null-data makes sed operate on the full text instead of individual lines
 # --regexp-extended allow to use () instead of \(\), for readability
 rg \
-  --no-heading \
-  --with-filename \
-  "$query" \
-  | sed \
-      --null-data \
-      --regexp-extended \
-      "s_${regexpTitleSearch}_${regexpTitleReplace}_g; s_${regexpDirectorySearch}_${regexpDirectoryReplace}_g"
+	--no-heading \
+	--with-filename \
+	"$query" |
+	sed \
+		--null-data \
+		--regexp-extended \
+		"s_${regexpTitleSearch}_${regexpTitleReplace}_g;s_${regexpDirectorySearch}_${regexpDirectoryReplace}_g"
