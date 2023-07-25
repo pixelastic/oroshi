@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# Opens the current repo settings page on GitHub
+local settingsUrl="$(git-directory-url)/settings"
+$BROWSER $settingsUrl &>/dev/null

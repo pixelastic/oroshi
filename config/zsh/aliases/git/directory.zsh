@@ -5,6 +5,7 @@ alias vdca='git-directory-create-all'
 alias vde='vim $(git-directory-root)/.git/config'
 alias vdl='echo "Use vfl instead" && git-file-list' # My muscle memory is here
 alias vdo='git-directory-open'
+alias vdos='git-directory-open-settings'
 alias vdrd='vdr && cd ./docs'
 alias vdrr='vd? && cd "$(git-directory-root -f)"'
 alias vdr='vd? && cd "$(git-directory-root)"'
