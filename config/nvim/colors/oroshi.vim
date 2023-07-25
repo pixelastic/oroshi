@@ -387,6 +387,11 @@ call s:Link('jsTemplateBraces', 'INTERPOLATION_WRAPPER')
 call s:Link('jsTemplateExpression', 'INTERPOLATION_VARIABLE')
 call s:Highlight('jsGlobalNodeObjects', 'ALIAS_FUNCTION', '', 'bold')
 " }}}
+" JSON {{{
+call s:Link('jsonQuote', 'PUNCTUATION')
+call s:Link('jsonKeywordMatch', 'PUNCTUATION')
+call s:Link('jsonKeyword', 'VARIABLE')
+" }}}
 " JSONC {{{
 " call s:Highlight('jsoncKeywordMatch', 'BLUE')
 " augroup oroshi_jsonc

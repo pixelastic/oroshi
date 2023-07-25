@@ -33,5 +33,4 @@ function git-file-diff() {
 		${gitDiffArguments} \
 		${fromCommit} \
 		${toCommit} \
-		-- ${filepath}
 }
