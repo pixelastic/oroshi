@@ -29,3 +29,6 @@ for branchName in ${=inputBranches}; do
   git push $currentRemote --no-verify --delete $branchName
   echo "$displayBranchName deleted from $displayRemoteName"
 done
+
+# Update the local cache of branches
+git fetch --quiet
