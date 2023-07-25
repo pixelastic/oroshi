@@ -20,7 +20,7 @@ function yarn-update() {
   fi
 
   # By default, we prevent updating dependencies in a monorepo root
-  if yarn-is-workspace-root && [ "$flagForce" == "O" ]; then
+  if yarn-is-workspace-root && [ "$flagForce" == "0" ]; then
     echo "Are you sure you want to update dependencies at the root of the monorepo?"
     echo "- If so, use the --force flag"
     echo "- Or maybe you want to run this in ./lib or ./docs?"
