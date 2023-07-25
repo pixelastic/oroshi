@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# Read/Write flac
+sudo apt-get install flac

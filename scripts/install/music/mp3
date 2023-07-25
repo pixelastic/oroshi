@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Encode to mp3
+sudo apt-get install lame
+# Write replaygain tags to mp3
+# mp3gain is no longer available in 16.04
+sudo add-apt-repository ppa:flexiondotorg/audio
+sudo apt-get update
+sudo apt-get install mp3gain

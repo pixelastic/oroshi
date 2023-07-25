@@ -1,4 +1,0 @@
-#/usr/bin/env bash
-
-sudo apt-get install libav-tools
-pip install instantmusic

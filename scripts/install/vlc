@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-sudo apt-get install vlc
-
-echo "Do not forget to run the ./dvd install script to install encrypted DVD playback."
-

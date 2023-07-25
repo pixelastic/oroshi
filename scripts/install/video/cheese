@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# cheese: Webcam recorder
+
+# Uninstall the default one, as it does not correctly detect webcams
+# https://ubuntuhandbook.org/index.php/2022/04/workaround-cheese-ubuntu-2204/
+sudo apt remove cheese
+
+# Install it again through flatpak
+flatpak install https://dl.flathub.org/repo/appstream/org.gnome.Cheese.flatpakref
+# Run with flatpak run org.gnome.Cheese

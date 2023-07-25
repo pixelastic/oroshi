@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# ffmpeg: Main utility to deal with video files
+#
 # Note: On some Ubuntu versions, ffmpeg might not really be ffmeg
 # http://stackoverflow.com/questions/9477115/what-are-the-differences-and-similarities-between-ffmpeg-libav-and-avconv/9477756#9477756
 

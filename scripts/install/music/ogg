@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Read/write ogg
+sudo apt-get install vorbis-tools
+# Write replaygain tags to ogg
+sudo apt-get install vorbisgain
