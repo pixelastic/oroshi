@@ -8,4 +8,4 @@ alias -g NE='2>/dev/null'
 alias -g NO='1>/dev/null'
 alias -g S="| sort -V"
 alias -g T="| tail"
-alias -g V="&& jobsdone || say 'This failed'"
+alias -g ♪="&& jobsdone || say 'This failed'"

@@ -61,7 +61,7 @@ add shift   = Shift_L  Shift_R
 add control = Control_L Control_R
 add mod1    = Alt_L
 add mod2    = Num_Lock
-! add mod3    = Mode_switch 
+! add mod3    = Mode_switch
 add mod4    = Super_L Hyper_L
 add mod5    = ISO_Level3_Shift
 
@@ -73,84 +73,108 @@ keycode 66 = U21EA
 ! Note that Shift-Enter and Ctrl-Enter are mapped in Kitty
 keycode 36 = Return NoSymbol Return
 
-
 ! Space bar
-keycode 65 = space space space space
+! [{Space} {Zero-Width Space}]
+! Note: Spacebar can only react to normal and shift press, not altgr press
+! U200B is a zero-width space
+keycode 65 = space U200B space U200B
 
-! rtl and ltr overrides on < and >
-keycode 94 = less greater less greater U202E U202D
+! Legend:
+! [{normal} {shift} {altgr} {altgr+shift}]
+! XXX denotes an unused combination
 
-! U21C8 = ⇈
-! U21CA = ⇊
+! [& 1 ⇈ ⇊]
 keycode 10 = ampersand 1 ampersand 1 U21C8 U21CA
-! UC9 = É
+! [é 2 ~ É]
 keycode 11 = eacute 2 eacute 2 asciitilde UC9
-! U2665 = ♥
-keycode 12 = quotedbl 3 3 numbersign numbersign U2665
-! UC8 = È
+! [" 3 # ♥]
+keycode 12 = quotedbl 3 quotedbl 3 numbersign U2665
+! [' 4 { XXX]
+keycode 13 = apostrophe 4 apostrophe 4 braceleft
+! [( 5 [ XXX]
+keycode 14 = parenleft 5 parenleft 5 bracketleft
+! [- 6 | —]
+keycode 15 = minus 6 minus 6 bar U2014
+! [è 7 ` È]
 keycode 16 = egrave 7 egrave 7 grave UC8
-! U221E = ∞
+! [_ 8 \ ∞]
 keycode 17 = underscore 8 underscore 8 backslash U221E
-! asciicircum = ^
-! UC7 = Ç
+! [ç 9 ^ Ç]
 keycode 18 = ccedilla 9 ccedilla 9 asciicircum UC7
-! UC0 = À
+! [à 0 @ À]
 keycode 19 = agrave 0 agrave 0 at UC0
-! U2260 = ≠
+! [= + } ≠]
 keycode 21 = equal plus equal plus braceright U2260
 
-! Adding some common symbols on easy AltGr on common keys
+! [a A æ Æ]
 keycode 24 = a A a A ae AE
+![z Z XXX XXX]
 keycode 25 = z Z z Z
+! [e E € XXX]
 keycode 26 = e E e E EuroSign
+! [r R ` ®]
 keycode 27 = r R r R grave registered
+! [t T ™ XXX]
 keycode 28 = t T t T trademark
+! [y Y XXX XXX]
 keycode 29 = y Y y Y
-! U00B5 = µ
+! [u U \ µ]
 keycode 30 = u U u U backslash U00B5
-! U00B7 = ·
+! [i I - ·]
 keycode 31 = i I i I minus U00B7
+! [o O _ œ]
 keycode 32 = o O o O underscore oe
+![p P XXX XXX]
 keycode 33 = p P p P
+![$ £ ¤ ¥]
 keycode 35 = dollar sterling dollar sterling currency yen
-
+! [q Q ~ XXX]
 keycode 38 = q Q q Q asciitilde
+! [s S XXX XXX]
 keycode 39 = s S s S
-! U2610 = ☐
-! U2611 = ☑
+! [d D ☐ ☑]
 keycode 40 = d D d D U2610 U2611
-! U1F5CE = 🗎
-! U1F5C0 = 🗀
+! [f F 🗎 🗀]
 keycode 41 = f F f F U1F5CE U1F5C0
+! [g G XXX XXX]
 keycode 42 = g G g G
+! [h H # XXX]
 keycode 43 = h H h H numbersign
-! U25AE = ▮
+! [j J | ▮]
 keycode 44 = j J j J bar U25AE
+! [k K [ (]
 keycode 45 = k K k K bracketleft parenleft
+! [l L ] )]
 keycode 46 = l L l L bracketright parenright
-keycode 47 = m M m M 
-! U00FA = ú
+! [m M ♪ ♫]
+keycode 47 = m M m M U266A U266B
+! [ù % ú XXX]
 keycode 48 = ugrave percent ugrave percent U00FA
-
-! U26C0 = ⛀
-! U26C2 = ⛂
+! [* µ ⛀ ⛂]
 keycode 51 = asterisk mu asterisk mu U26C0 U26C2
+! [< > ‮{rtl override} ‭{ltr override}]
+! U202E is RTL override
+! U202D is LTR override
+keycode 94 = less greater less greater U202E U202D
+! [w W XXX XXX]
 keycode 52 = w W w W
-! U2717 = ✗
-! U2718 = ✘
+! [x X ✗ ✘]
 keycode 53 = x X x X U2717 U2718
-keycode 54 = c C c C copyright 
-! U2713 = ✓
-! U2714 = ✔
+! [c C © XXX]
+keycode 54 = c C c C copyright
+! [v V ✓ ✔]
 keycode 55 = v V v V U2713 U2714
+! [b B XXX XXX]
 keycode 56 = b B b B
-keycode 57 = n N n N nobreakspace U202F
-! U230D = ‽
-! U2E2E = ⸮
+! [n N  {Non-Breaking Space}  {Fine Non-Breaking Space}]
+! UA0 is a non-breaking space
+! U202F is a smaller non-breaking space
+keycode 57 = n N n N UA0 U202F
+! [, ? ‽ ⸮]
 keycode 58 = comma question comma question U203D U2E2E
-! Period can also produce …
+! [; . … XXX]
 keycode 59 = semicolon period semicolon period ellipsis
-! U26A0 = ⚠
+! [: / XXX XXX]
+keycode  60 = colon slash colon slash
+! [! § ⚠ XXX]
 keycode 61 = exclam section exclam section U26A0
-
-
