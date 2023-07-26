@@ -10,14 +10,26 @@ function oroshi_path() {
 		localBinariesPath+=(${directory:0:-1})
 	done
 
-	local customPath=(
+	path=(
+		# System paths
+		# (Check /etc/environment for the exact list)
+		/usr/local/sbin
+		/usr/local/bin
+		/usr/sbin
+		/usr/bin
+		/sbin
+		/bin
+		/usr/games
+		/usr/local/games
+		/snap/bin
+
 		# Language binaries
 		~/.yarn/bin
 		~/.config/yarn/global/node_modules/.bin
 		~/.rbenv/bin
 		~/.rbenv/shims
-		~/.pyenv/bin
-		~/.pyenv/shims
+		# ~/.pyenv/bin
+		# ~/.pyenv/shims
 		~/.cargo/bin
 
 		# Installed binaries
@@ -34,9 +46,6 @@ function oroshi_path() {
 		# Local binaries
 		~/.oroshi/private/scripts/bin/local/$hostname
 	)
-
-	# Prepend our path to the existing path
-	path=($customPath $path)
 }
 oroshi_path
 unfunction oroshi_path
