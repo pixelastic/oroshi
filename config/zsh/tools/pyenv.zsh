@@ -1,5 +1,4 @@
 # Pyenv
-return
 # Stop if pyenv isn't installed
 [[ -r ~/.pyenv/bin/pyenv ]] || return
 

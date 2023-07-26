@@ -28,8 +28,8 @@ function oroshi_path() {
 		~/.config/yarn/global/node_modules/.bin
 		~/.rbenv/bin
 		~/.rbenv/shims
-		# ~/.pyenv/bin
-		# ~/.pyenv/shims
+		~/.pyenv/bin
+		~/.pyenv/shims
 		~/.cargo/bin
 
 		# Installed binaries
