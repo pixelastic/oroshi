@@ -149,11 +149,12 @@ function oroshi-completion-styling() {
   # Branches
   zstyle ':completion:*:complete:git-branch-*:*:*' list-grouped false
 
-  zstyle ':completion:*:complete:git-branch-pull:*:*' list-colors $listColorsGitBranch
-  zstyle ':completion:*:complete:git-branch-remove-remote:*:*' list-colors $listColorsGitBranch
-  zstyle ':completion:*:complete:git-branch-switch:*:*' list-colors $listColorsGitBranch
-  zstyle ':completion:*:complete:git-branch-remove:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-merge:*:*' list-colors $listColorsGitBranch
+  zstyle ':completion:*:complete:git-branch-pull:*:*' list-colors $listColorsGitBranch
+  zstyle ':completion:*:complete:git-branch-rebase:*:*' list-colors $listColorsGitBranch
+  zstyle ':completion:*:complete:git-branch-remove-remote:*:*' list-colors $listColorsGitBranch
+  zstyle ':completion:*:complete:git-branch-remove:*:*' list-colors $listColorsGitBranch
+  zstyle ':completion:*:complete:git-branch-switch:*:*' list-colors $listColorsGitBranch
 
   # Submodules
   zstyle ':completion:*:complete:git-submodule-remove:*:*' list-colors $listColorsGitSubmodule
