@@ -1,6 +1,13 @@
 #!/usr/bin/env zsh
 # Merges current branch with specified one
+# This will actually do a rebase, as this is my preferred strategy
 # Usage:
 # $ git-branch-merge develop
+set -e
 
-git merge --no-edit $@
+local otherBranch=$1
+local currentBranch="$(git-branch-current)"
+
+git-branch-switch $otherBranch
+git rebase $currentBranch
+git-branch-switch $currentBranch
