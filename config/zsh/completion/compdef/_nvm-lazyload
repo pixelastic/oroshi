@@ -1,10 +1,15 @@
 #compdef
 
 function _nvm-lazyload() {
-  # Remove the first word (lazyloadNvm)
-  shift words
-  # Update which word is currently being focused for tab completion
-  (( CURRENT-- ))
-  # Re-run completion with the new input
-  _normal
+	# Load nvm when triggering the completion, as we know we are going to use it
+	# Loading nvm is also needed to be able to display some of the completion
+	# (like the list of available versions)
+	lazyloadNvm
+
+	# Remove the first word (lazyloadNvm)
+	shift words
+	# Update which word is currently being focused for tab completion
+	((CURRENT--))
+	# Re-run completion with the new input
+	_normal
 }
