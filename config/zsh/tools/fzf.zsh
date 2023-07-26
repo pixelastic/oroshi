@@ -28,6 +28,7 @@ function oroshi_tools_fzf() {
   local fzfOptionsMulti="\
     --multi \
     --marker= \
+    --bind 'enter:toggle+accept' \
     --bind 'ctrl-space:toggle+down' \
     --bind 'ctrl-a:toggle-all' \
   "
@@ -40,7 +41,12 @@ function oroshi_tools_fzf() {
     --cycle \
     --keep-right \
     --bind 'tab:down' \
-    --bind 'ctrl-l:clear-query' \
+    --bind 'shift-up:half-page-up' \
+    --bind 'shift-down:half-page-down' \
+    --bind 'home:first' \
+    --bind 'end:last' \
+    --bind 'ctrl-l:clear-query+first' \
+    --bind 'bspace:backward-delete-char/eof+first' \
   "
 
   # Default config
