@@ -5,22 +5,22 @@ set -e
 
 # Dependencies for compiling python
 sudo apt-get install \
-  build-essential \
-  curl \
-  git \
-  libbz2-dev \
-  libffi-dev \
-  liblzma-dev \
-  libncurses5-dev \
-  libncursesw5-dev \
-  libreadline-dev \
-  libsqlite3-dev \
-  llvm \
-  python-openssl \
-  tk-dev \
-  wget \
-  xz-utils \
-  zlib1g-dev
+	build-essential \
+	curl \
+	git \
+	libbz2-dev \
+	libffi-dev \
+	liblzma-dev \
+	libncurses5-dev \
+	libncursesw5-dev \
+	libreadline-dev \
+	libsqlite3-dev \
+	llvm \
+	python-openssl \
+	tk-dev \
+	wget \
+	xz-utils \
+	zlib1g-dev
 
 # Pyenv
 cd ~/local/src
@@ -28,7 +28,7 @@ git clone git@github.com:pyenv/pyenv-installer.git
 ./pyenv-installer/bin/pyenv-installer
 
 # Install both latest 3.x and latest 2.7.0
-LATEST_PYTHON_3="3.9.5"
+LATEST_PYTHON_3="3.11"
 LATEST_PYTHON_2="2.7.18"
 ~/.pyenv/bin/pyenv install $LATEST_PYTHON_3
 
@@ -38,7 +38,6 @@ sudo apt-get install libssl-dev
 ~/.pyenv/bin/pyenv install $LATEST_PYTHON_2
 # Make them both available, but looking for v3 first and v2 as fallback
 ~/.pyenv/bin/pyenv global $LATEST_PYTHON_3 $LATEST_PYTHON_2
-
 
 # # Linter
 # pip install flake8
