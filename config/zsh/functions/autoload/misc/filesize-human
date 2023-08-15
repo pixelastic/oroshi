@@ -9,5 +9,5 @@ function filesize-human() {
 		--format="%s" \
 		$filepath |
 		numfmt \
-			--to=iec
+			--to=si
 }

@@ -10,18 +10,11 @@ local splitInput=(${(@s/   /)@})
 local imageName=$splitInput[1]
 local imageDescription=$splitInput[2]
 
+local dimensions="$(dimensions $filepath)"
+local filesize="$(filesize-human $filepath)"
+
 # Filename
 colorize "$baseName" $FILETYPE_GROUP_IMAGE_COLOR
+echo $filesize
 echo ""
-
-# Dimensions
-local dimensions="$(dimensions $filepath)"
 echo "Dimensions: $dimensions"
-
-# Filesize
-local filesize="$(filesize-human $filepath)"
-echo "Filesize:   $filesize"
-
-# echo ""
-# echo " $(colorize "${imageDescription}" $COLOR_ALIAS_COMMENT)" | fold -sw 80
-
