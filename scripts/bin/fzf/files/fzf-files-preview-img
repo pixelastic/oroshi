@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+# Display the details of an image file
+# Usage
+# $ fzf-files-preview-img /full/path/to/image.png
+
+local filepath=$1
+local baseName=${filepath:t}
+
+local splitInput=(${(@s/   /)@})
+local imageName=$splitInput[1]
+local imageDescription=$splitInput[2]
+
+# Filename
+colorize "$baseName" $FILETYPE_GROUP_IMAGE_COLOR
+echo ""
+
+# Dimensions
+local dimensions="$(dimensions $filepath)"
+echo "Dimensions: $dimensions"
+
+# Filesize
+local filesize="$(filesize-human $filepath)"
+echo "Filesize:   $filesize"
+
+# echo ""
+# echo " $(colorize "${imageDescription}" $COLOR_ALIAS_COMMENT)" | fold -sw 80
+

@@ -10,13 +10,21 @@ zmodload zsh/zutil
 zparseopts -E -D \
   -highlight-line:=flagHighlightLine \
   -highlight-query:=flagHighlightQuery \
-
-local highlightLine=${flagHighlightLine[2]}
-local highlightQuery=${flagHighlightQuery[2]}
-
+  
 # Get full path of file to preview
 local fullPath="$1"
 
+local filetypeGroup="$(filetype-group $fullPath)"
+
+# Handle image preview
+if [[ $filetypeGroup == "image" ]]; then
+  fzf-files-preview-img $fullPath
+  exit 0
+fi
+
+# Default is text preview
+local highlightLine=${flagHighlightLine[2]}
+local highlightQuery=${flagHighlightQuery[2]}
 
 local lineRangeMin=0
 local lineRangeMax=50

@@ -1,0 +1,13 @@
+# Return the filesize in a human readable format
+
+# Usage:
+# $ filesize-human ./path/to/file.png    # 1.5K
+
+function filesize-human() {
+	local filepath=$1
+	stat \
+		--format="%s" \
+		$filepath |
+		numfmt \
+			--to=iec
+}

@@ -14,8 +14,7 @@ function getDimensions() {
 		getVideoDimensions $1
 		return
 	fi
-	echo "nope"
-	# getImageDimensions $1
+	getImageDimensions $1
 }
 function getImageDimensions() {
 	identify -format "%wx%h\n" $1
