@@ -1,0 +1,13 @@
+# Return the type of file based on its extension
+# Will use the FILETYPE_XXX_GROUP environment variables
+
+# Usage:
+# $ filetype-group ./path/to/file.png    # image
+
+function filetype-group() {
+	local filepath=${1:a}
+	local extension=${filepath:e:u}
+	local group=${(P)${:-FILETYPE_${extension}_GROUP}}
+
+	echo $group
+}
