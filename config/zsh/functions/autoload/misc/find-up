@@ -1,23 +1,28 @@
-# Find the specified file up the directory tree
+# Find the path to a file up the directory tree
 # Returns the filepath if found, "" if not found
 # Usage:
-#   $ find-up .nvmrc
+#   $ find-up .nvmrc                     # Returns path to closest .nvmrc
+#   $ find-up .nvmrc --root /other/path  # Change the working directory
 function find-up() {
-  local needle="$1"
+	zparseopts -E -D \
+		-root:=flagRoot
 
-  # Stop if no needle passed
-  [[ $needle == "" ]] && return 1
+	local root=${flagRoot[2]:-${PWD}}
+	local needle="$1"
 
-  # Loop through all parents to check for the existence of the file/directory
-  local checkedDirectory="$PWD"
-  while [[ $checkedDirectory != "/" ]]; do
-    local checkedFile="${checkedDirectory}/${needle}"
-    if [[ -r ${checkedFile} ]]; then
-      echo $checkedFile
-      return 0
-    fi
-    checkedDirectory="${checkedDirectory:h}"
-  done
+	# Stop if no needle passed
+	[[ $needle == "" ]] && return 1
 
-  return 1
+	# Loop through all parents to check for the existence of the file/directory
+	local checkedDirectory="$root"
+	while [[ $checkedDirectory != "/" ]]; do
+		local checkedFile="${checkedDirectory}/${needle}"
+		if [[ -r ${checkedFile} ]]; then
+			echo $checkedFile
+			return 0
+		fi
+		checkedDirectory="${checkedDirectory:h}"
+	done
+
+	return 1
 }
