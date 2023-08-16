@@ -45,15 +45,6 @@ function find-up() {
 				return 0
 			fi
 		done
-
-		# local checkedDirectory=$pathSplit[1]
-		# while [[ $checkedDirectory != "/" ]]; do
-		# 	if [[ -r ${checkedFile} ]]; then
-		# 		echo $checkedFile
-		# 		return 0
-		# 	fi
-		# 	checkedDirectory="${checkedDirectory:h}"
-		# done
 	fi
 
 	return 1

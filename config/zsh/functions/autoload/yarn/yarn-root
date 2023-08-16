@@ -1,0 +1,30 @@
+# Returns the path to the yarn root
+#
+# Usage:
+# 	$ yarn-root                    # Exit 1 if no package.json above
+# 	$ yarn-root                    # Displays absolute path of first found package.json
+# 	$ yarn-root /path/to/directory # Allow passing a specific working directory
+# 	$ yarn-root --force            # Do not stop at first package.json found
+function yarn-root() {
+	zparseopts -E -D \
+		-force=flagForce
+
+	local isForce=${#flagForce}
+	local workingDirectory=$1
+
+	# Build the find-up arguments:
+	local findUpArguments=()
+	# --root to start from another root directory
+	[[ $workingDirectory != "" ]] && findUpArguments+=(--root $workingDirectory)
+	# --force to not stop at the first match
+	[[ $isForce == "1" ]] && findUpArguments+=(--force)
+
+	# Find the closest package.json
+	local packagePath="$(find-up ${findUpArguments} package.json)"
+
+	# Stop if none found
+	[[ $packagePath == "" ]] && return 1
+
+	local root=${packagePath:h}
+	echo $root
+}

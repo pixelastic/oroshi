@@ -3,7 +3,7 @@ vnoremap s :!sort --version-sort<CR>
 vnoremap r :!sort --version-sort --reverse<CR>
 
 " Sort lines by line length
-vnoremap l :!sort-by-length<CR>
+vnoremap L :!sort-by-length<CR>
 
 " Remove duplicate lines
 vnoremap u :sort u<CR>
