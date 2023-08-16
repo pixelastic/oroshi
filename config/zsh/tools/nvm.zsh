@@ -59,6 +59,11 @@ function lazyloadNvm {
 	# Mark nvm as loaded
 	OROSHI_NVM_LOADED="1"
 
+	# ZSH completion methods set a PREFIX variable internally that leaks to here
+	# when lazyloadNvm is called from a zsh completion. Unfortunately, nvm fails
+	# is such a variable is set, so we unset it here
+	unset PREFIX
+
 	# Initialize nvm for real, using the locally defined node version (if any)
 	# Note: This is slow, but it's as far away as we can delay it
 	nvm use --quiet &>/dev/null

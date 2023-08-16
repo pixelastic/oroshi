@@ -1,7 +1,7 @@
 #compdef
 
 function _nvm-lazyload() {
-	# Load nvm when triggering the completion, as we know we are going to use it
+	# Loads nvm when triggering the completion, as we know we are going to use it
 	# Loading nvm is also needed to be able to display some of the completion
 	# (like the list of available versions)
 	lazyloadNvm
