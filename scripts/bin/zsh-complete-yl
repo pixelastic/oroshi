@@ -1,4 +1,0 @@
-#!/usr/bin/env zsh
-# List all modules that can be linked
-local link_path=~/.config/yarn/link
-find $link_path -maxdepth 2 -type l | xargs realpath -s --relative-to $link_path
