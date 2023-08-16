@@ -94,7 +94,7 @@ compdef '_files -g "*.svg"' \
 compdef _nvm-lazyload lazyloadNvm
 # }}}
 # Yarn {{{
-compdef _yarn-scripts yarn-run
+compdef _yarn-runnables yarn-run
 compdef _yarn-dependencies yarn-update
 compdef _yarn-link-local \
 	yarn-link-remove
