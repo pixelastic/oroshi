@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 set -ex
 
+# Link the config file
+ln -fs \
+	~/.oroshi/config/bat/batrc.conf \
+	~/.config/bat/config
+
 # Deploy the theme
 mkdir -p ~/.config/bat/themes/oroshi
 ln -fs \
-  ~/.oroshi/config/bat/dist/oroshi.tmTheme \
-  ~/.config/bat/themes/oroshi/oroshi.tmTheme
+	~/.oroshi/config/bat/dist/oroshi.tmTheme \
+	~/.config/bat/themes/oroshi/oroshi.tmTheme
 
 bat cache --build &>/dev/null
-
