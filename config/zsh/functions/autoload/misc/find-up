@@ -3,26 +3,58 @@
 # Usage:
 #   $ find-up .nvmrc                     # Returns path to closest .nvmrc
 #   $ find-up .nvmrc --root /other/path  # Change the working directory
+#   $ find-up .nvmrc --force             # Do not stop at first found, go to the highest
 function find-up() {
 	zparseopts -E -D \
-		-root:=flagRoot
+		-root:=flagRoot \
+		-force=flagForce
 
 	local root=${flagRoot[2]:-${PWD}}
+	local isForce=${#flagForce}
 	local needle="$1"
 
 	# Stop if no needle passed
 	[[ $needle == "" ]] && return 1
 
-	# Loop through all parents to check for the existence of the file/directory
-	local checkedDirectory="$root"
-	while [[ $checkedDirectory != "/" ]]; do
-		local checkedFile="${checkedDirectory}/${needle}"
-		if [[ -r ${checkedFile} ]]; then
-			echo $checkedFile
-			return 0
-		fi
-		checkedDirectory="${checkedDirectory:h}"
-	done
+	# Stop at FIRST found
+	if [[ $isForce == "0" ]]; then
+		# Loop through all parents to check for the existence of the file/directory
+		local checkedDirectory="$root"
+		while [[ $checkedDirectory != "/" ]]; do
+			local checkedFile="${checkedDirectory}/${needle}"
+			if [[ -r ${checkedFile} ]]; then
+				echo $checkedFile
+				return 0
+			fi
+			checkedDirectory="${checkedDirectory:h}"
+		done
+	fi
+
+	# Stop at LAST found
+	if [[ $isForce == "1" ]]; then
+		# Instead of looping from the bottom and stopping at the last found,
+		# we loop from the top and stop at the first found
+		local pathSplit=(${(@s_/_)root})
+
+		local checkedDirectory=""
+		for pathPart in $pathSplit; do
+			checkedDirectory="${checkedDirectory}/${pathPart}"
+			local checkedFile="${checkedDirectory}/${needle}"
+			if [[ -r ${checkedFile} ]]; then
+				echo $checkedFile
+				return 0
+			fi
+		done
+
+		# local checkedDirectory=$pathSplit[1]
+		# while [[ $checkedDirectory != "/" ]]; do
+		# 	if [[ -r ${checkedFile} ]]; then
+		# 		echo $checkedFile
+		# 		return 0
+		# 	fi
+		# 	checkedDirectory="${checkedDirectory:h}"
+		# done
+	fi
 
 	return 1
 }
