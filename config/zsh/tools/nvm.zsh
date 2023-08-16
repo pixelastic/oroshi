@@ -2,10 +2,6 @@
 # Stop if nvm isn't installed
 [[ -r ~/.nvm/nvm.sh ]] || return
 
-# We add the default node version to the path
-local defaultNodeVersion="$(<~/.nvm/alias/default)"
-path+=($HOME/.nvm/versions/node/v${defaultNodeVersion}/bin $path)
-
 # Running `nvm use` is slow. Sourcing nvm.sh actually runs `nvm use` by default
 # (unless --no-use is passed). No matter what we do, `nvm use` will always be
 # slow.
@@ -66,7 +62,7 @@ function lazyloadNvm {
 
 	# Initialize nvm for real, using the locally defined node version (if any)
 	# Note: This is slow, but it's as far away as we can delay it
-	nvm use --quiet &>/dev/null
+	nvm use --silent &>/dev/null
 
 	# Run initial command
 	"$@"

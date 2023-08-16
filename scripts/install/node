@@ -9,6 +9,9 @@ if [[ ! -d ~/.nvm ]]; then
 	git clone git@github.com:creationix/nvm.git ~/.nvm
 	source ~/.nvm/nvm.sh
 	nvm install $LATEST_NODE_LTS_VERSION
+
+	# Configure husky to use the right nvm version
+	~/.oroshi/scripts/deploy/husky
 fi
 
 echo "Installing yarn to replace npm"

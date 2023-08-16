@@ -10,6 +10,10 @@ function oroshi_path() {
 		localBinariesPath+=(${directory:0:-1})
 	done
 
+	# The default node version to use is the one marked as "default" in nvm
+	local defaultNodeVersion="$(<~/.nvm/alias/default)"
+	local nodeBinariesPath=$HOME/.nvm/versions/node/${defaultNodeVersion}/bin
+
 	path=(
 		# System paths
 		# (Check /etc/environment for the exact list)
@@ -24,8 +28,7 @@ function oroshi_path() {
 		/snap/bin
 
 		# Language binaries
-		~/.yarn/bin
-		~/.config/yarn/global/node_modules/.bin
+		$nodeBinariesPath
 		~/.rbenv/bin
 		~/.rbenv/shims
 		~/.pyenv/bin
