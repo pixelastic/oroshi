@@ -46,7 +46,7 @@ function oroshi_tools_fzf() {
     --bind 'home:first' \
     --bind 'end:last' \
     --bind 'ctrl-l:clear-query+first' \
-    --bind 'bspace:backward-delete-char/eof+first' \
+    --bind 'bspace:backward-delete-char+first' \
   "
 
   # Default config
