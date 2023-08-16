@@ -1,11 +1,10 @@
-
 # Matcher list {{{
 # matcher-list defines how the command line should be completed. It has a very
 # obscure syntax that I don't understand very well (even if I read the whole
 # documentation and many Stack Overflow questions, I can barely read what it
 # does, and I can't write any of it).
 
-# Sources: 
+# Sources:
 # https://stackoverflow.com/a/68794830/285283
 #
 # The ./sandbox/ folder sitting next to this file contains a dummy set of
@@ -24,11 +23,10 @@
 # 3 -- full flex completion (cp server<TAB> => cp 2023-01-02-serverless-meetup.md)
 zstyle ':completion:*' matcher-list \
 	'' \
-  'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' \
-  'r:[^[:alpha:]]||[[:alpha:]]=** r:|=* m:{[:lower:][:upper:]}={[:upper:][:lower:]}' \
-  'r:|?=** m:{[:lower:][:upper:]}={[:upper:][:lower:]}'
+	'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' \
+	'r:[^[:alpha:]]||[[:alpha:]]=** r:|=* m:{[:lower:][:upper:]}={[:upper:][:lower:]}' \
+	'r:|?=** m:{[:lower:][:upper:]}={[:upper:][:lower:]}'
 # }}}
-
 
 # Menu {{{
 # Configure the menu to use for suggestions:
@@ -41,6 +39,8 @@ zstyle ':completion:*' group-name ''
 zstyle ':completion:*' list-separator '//'
 # Display results in lines instead of columns
 zstyle ':completion:*' list-rows-first true
+# Keep suggestions on separate lines, even if they share the same description
+zstyle ':completion:*' list-grouped false
 # }}}
 
 # Globs {{{
@@ -54,4 +54,3 @@ setopt GLOB_DOTS
 # Do not add symbols after file names to indicate their type (*, @ or /)
 unsetopt LIST_TYPES
 # }}}
-

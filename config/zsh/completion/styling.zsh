@@ -147,8 +147,6 @@ function oroshi-completion-styling() {
 
   # Git {{{
   # Branches
-  zstyle ':completion:*:complete:git-branch-*:*:*' list-grouped false
-
   zstyle ':completion:*:complete:git-branch-merge:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-pull:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-rebase:*:*' list-colors $listColorsGitBranch
