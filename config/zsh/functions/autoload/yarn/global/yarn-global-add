@@ -12,8 +12,8 @@
 # --global-folder defines where to store the global packages code
 #
 # Usage:
-# $ yarn-package-add-global eslint_d   # Install into the current node version as selected by nvm
-function yarn-package-add-global() {
+# $ yarn-global-add eslint_d   # Install into the current node version as selected by nvm
+function yarn-global-add() {
 	# Stop if no package given
 	[[ $1 == "" ]] && return 1
 

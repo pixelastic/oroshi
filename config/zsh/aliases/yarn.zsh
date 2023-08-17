@@ -1,18 +1,31 @@
 # Yarn
-alias yF='yarn --force'
+
+# Global packages
+# 	Add
+alias yag='yarn-global-add'
+alias yga='yarn-global-add'
+# 	Remove
+alias yagR='yarn-global-remove'
+alias yRg='yarn-global-remove'
+# 	List
+alias ygl='yarn-global-list'
+alias ydlg='yarn-global-list'
+# 	Upgrade
+alias yug='yarn global upgrade'
+
+# Local dependencies
 alias yR='yarn remove'
 alias yadf='yarn add --dev -W -- '
 alias yad='yarn add --dev -- '
 alias yaf='yarn add -W -- '
-alias yagR='yarn global remove'
-alias yag='yarn-package-add-global'
 alias ya='yarn add -- '
 alias ydla='yarn-dependency-list --all'
 alias ydld='yarn-dependency-list --dev'
 alias ydl='yarn-dependency-list'
-alias yRg='yarn global remove'
-alias yga='yarn-package-add-global'
-alias yi='yarn init'
+alias yuF='yu --force'
+alias yu='yarn-update'
+
+# Linked packages
 alias ylRa='yarn-link-remove-all'
 alias ylRg='yarn-link-remove-global'
 alias ylR='yarn-link-remove'
@@ -22,8 +35,8 @@ alias yllr='yarn-link-list-raw'
 alias yll='yarn-link-list'
 alias ylr='yarn-link-reload'
 alias yl='yarn-link'
-alias ypc='depcheck . --ignore-dirs=dist,tmp,build --specials=eslint,webpack,babel --ignores=husky,jest'
-alias ypu='yarn-policies-update'
+
+# Scripts
 alias yrbp='yr build:prod'
 alias yrbw='yr build:watch'
 alias yrb='yr build'
@@ -60,10 +73,12 @@ alias yrtw='yr test:watch'
 alias yrt='yr test'
 alias yrw='yr watch'
 alias yr='yarn-run'
+
+# Misc
+alias yF='yarn --force'
+alias yi='yarn init'
+alias ypu='yarn-policies-update'
 alias ysd='emma -D'
 alias ys='emma'
-alias yuF='yu --force'
-alias yug='yarn global upgrade'
-alias yu='yarn-update'
 alias yw='yarn why'
 alias y='yarn'

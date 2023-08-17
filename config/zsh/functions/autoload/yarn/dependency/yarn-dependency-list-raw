@@ -4,6 +4,7 @@
 # $ yarn-dependency-list-raw --dev               # Only dev dependencies
 # $ yarn-dependency-list-raw --all               # All dependencies
 # $ yarn-dependency-list-raw --with-descriptions # Add a last description colum
+# $ yarn-dependency-list-raw ./path/to/project   # List dependencies of another project
 function yarn-dependency-list-raw() {
   zparseopts -E -D \
     -dev=flagDev \
@@ -14,8 +15,11 @@ function yarn-dependency-list-raw() {
   local isAll=${#flagAll}
   local isWithDescriptions=${#flagWithDescriptions}
 
+  # Check in current directory, unless a directory is passed
+  local projectRoot=${1:-$PWD}
+
   # Stop if no package.json
-  local packageJsonPath="$(find-up package.json)"
+  local packageJsonPath="$(find-up --root $projectRoot package.json)"
   [[ $packageJsonPath == "" ]] && return 0
 
   # Get either the dependencies, devDependencies, or both
