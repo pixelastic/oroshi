@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+source ~/.oroshi/config/zsh/tools/nvm.zsh
+
+lazyloadNvm yarn-global-add jsonlint
