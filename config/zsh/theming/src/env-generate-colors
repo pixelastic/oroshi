@@ -100,6 +100,7 @@ aliasColors[ERROR]="RED"
 aliasColors[SUCCESS]="GREEN"
 aliasColors[WARNING]="YELLOW"
 aliasColors[NOTICE]="VIOLET"
+aliasColors[INFO]="BLUE"
 # Git
 aliasColors[GIT_ADDED]="GREEN"
 aliasColors[GIT_AUTHOR]="NEUTRAL"

@@ -11,16 +11,23 @@ function oroshi-prompt-populate:node_monorepo() {
 }
 
 # Display project node version
+#
 # -  (red) if no global node
-# - {nothing} if not a node repo (no .nvmrc)
+#
+# When not in a node repo
+# - {nothing} if nvm hasn't been loaded
+# -  (green) if using the default version
+# -  X.Y.Z (violet) if using a specific node version
+#
+# When in a node repo
 # -  X.Y.Z (grey) if local version detected, but nvm hasn't been loaded
 # -  X.Y.Z (red) if local version isn't installed
-# -  X.Y.Z (yellow) if local and current don't match match
+# -  X.Y.Z (yellow) if local and current don't match
 # -  X.Y.Z (green) if local and current match
 function oroshi-prompt-populate:node_version() {
   OROSHI_PROMPT_PARTS[node_version]=""
 
-  # Not even a system-wide node installation
+  # Not even a global node installation
   if [[ ! -v commands[node] ]]; then
     OROSHI_PROMPT_PARTS[node_version]+="%F{$COLOR_ALIAS_ERROR} %f"
     return
@@ -28,11 +35,28 @@ function oroshi-prompt-populate:node_version() {
 
   local nvmrcPath="$(find-up .nvmrc)"
 
-  # No local version defined, using global one
+  # No local version defined, we use the global node version
+  # In that case we use the default node version
   if [[ $nvmrcPath = '' ]]; then
-    local globalVersion="$(node --version)"
-    OROSHI_PROMPT_PARTS[node_version]+="%F{$COLOR_ALIAS_WARNING} $globalVersion%f"
+    # Nvm not loaded
+    if [[ $OROSHI_NVM_LOADED == "0" ]]; then
+      return
+    fi
+
+    local nvmDefaultVersion="$(<~/.nvm/alias/default)"
+    local nvmCurrentVersion="$(nvm current)"
+
+    # Using default version
+    if [[ $nvmDefaultVersion == "$nvmCurrentVersion" ]]; then
+      OROSHI_PROMPT_PARTS[node_version]+="%F{$COLOR_ALIAS_INFO} %f"
+      return
+    fi
+
+    # Custom version
+    OROSHI_PROMPT_PARTS[node_version]+="%F{$COLOR_ALIAS_INFO} $nvmCurrentVersion%f"
     return
+
+
   fi
 
   local expectedVersion="$(<$nvmrcPath)"
