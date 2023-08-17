@@ -1,0 +1,2 @@
+# Make sure we install yarn each time we install a new version of node
+yarn

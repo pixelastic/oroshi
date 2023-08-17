@@ -28,8 +28,10 @@ export OROSHI_NVM_LAZYLOAD_ALIASES=(
 	yarn
 	yarn-link-remove
 	yarn-link-remove-all
-	yarn-package-add-global
-	yarn-package-remove-global
+	yarn-global-add
+	yarn-global-remove
+	yarn-global-list
+	yarn-global-list-raw
 	yarn-run
 	yarn-update
 )
