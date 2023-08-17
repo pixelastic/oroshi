@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
+set -e
 
 echo "Installing HTMLMin"
-yarn global add html-minifier
+yarn-global-add html-minifier
 
 echo "Installing pup"
 cd ~/local/src
 wget \
-  https://github.com/ericchiang/pup/releases/download/v0.4.0/pup_v0.4.0_linux_amd64.zip \
-  -O pup.zip
+	https://github.com/ericchiang/pup/releases/download/v0.4.0/pup_v0.4.0_linux_amd64.zip \
+	-O pup.zip
 unzip pup.zip
 mv ./pup ~/local/bin
 rm pup.zip
@@ -21,4 +22,4 @@ make
 make install
 
 echo "Installing html, to pretty-print"
-yarn global add html
+yarn-global-add html

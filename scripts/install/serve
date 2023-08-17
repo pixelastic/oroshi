@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-yarn global add live-server@1.2.1
+yarn-global-add live-server@1.2.1
 
 # Weirdly enough, seems like v1.2.2 uses windows line ending on its executable,
 # which breaks running it. It tries to use "node\r" instead of "node"

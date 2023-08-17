@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 set -e
 
-yarn global add pug-cli
-yarn global add pug-lint
+yarn-global-add pug-cli
+yarn-global-add pug-lint

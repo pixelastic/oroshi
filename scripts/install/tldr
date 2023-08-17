@@ -1,3 +1,5 @@
 #!/usr/bin/env zsh
+# tldr; Command cheatsheet
+# https://github.com/tldr-pages/tldr
 
 yarn global add tldr
