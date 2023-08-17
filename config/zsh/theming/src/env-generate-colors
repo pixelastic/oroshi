@@ -153,6 +153,7 @@ aliasColors[PACKAGE_NOT_INSTALLED]="GRAY"
 aliasColors[PACKAGE_VERSION_MISMATCH]="VIOLET"
 # Yarn
 aliasColors[YARN_PACKAGE]="YELLOW"             # package name
+aliasColors[YARN_PACKAGE_GLOBAL]="BLUE"        # globally installed package names
 aliasColors[YARN_PACKAGE_DESCRIPTION]="GRAY_4" # package.json description
 aliasColors[YARN_PACKAGE_VERSION]="CYAN"       # package version
 aliasColors[YARN_LINK_LOCAL]="YELLOW"          # Packages that are linked to local module in a monorepo

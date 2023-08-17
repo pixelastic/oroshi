@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest all globally installed yarn packages
+function _yarn-global-packages() {
+  local suggestions=(${(f)"$(complete-yarn-global-packages)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_YARN_PACKAGE_GLOBAL $COLOR_WHITE '  global yarn packages ')" suggestions
+}

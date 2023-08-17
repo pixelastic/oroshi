@@ -7,6 +7,7 @@ alias yga='yarn-global-add'
 # 	Remove
 alias yagR='yarn-global-remove'
 alias yRg='yarn-global-remove'
+alias ygR='yarn-global-remove'
 # 	List
 alias ygl='yarn-global-list'
 alias ydlg='yarn-global-list'
