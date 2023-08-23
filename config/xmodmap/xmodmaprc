@@ -74,10 +74,10 @@ keycode 66 = U21EA
 keycode 36 = Return NoSymbol Return
 
 ! Space bar
-! [{Space} {Zero-Width Space}]
 ! Note: Spacebar can only react to normal and shift press, not altgr press
-! U200B is a zero-width space
-keycode 65 = space U200B space U200B
+! I often press Shift-Space when typing in caps, so I want it to keep doing
+! regular space, not a special character
+keycode 65 = space space space space
 
 ! Legend:
 ! [{normal} {shift} {altgr} {altgr+shift}]
@@ -166,10 +166,10 @@ keycode 54 = c C c C copyright
 keycode 55 = v V v V U2713 U2714
 ! [b B XXX XXX]
 keycode 56 = b B b B
-! [n N  {Non-Breaking Space}  {Fine Non-Breaking Space}]
+! [n N  {Non-Breaking Space}  {Zero-Width Space}]
 ! UA0 is a non-breaking space
-! U202F is a smaller non-breaking space
-keycode 57 = n N n N UA0 U202F
+! U200B is a zero-width space
+keycode 57 = n N n N UA0 U200B
 ! [, ? ‽ ⸮]
 keycode 58 = comma question comma question U203D U2E2E
 ! [; . … XXX]

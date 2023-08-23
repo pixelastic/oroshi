@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Kitty: The fast, feature-rich, GPU based terminal emulator
+# https://sw.kovidgoyal.net/kitty/
+set -e
+
+DOWNLOAD_URL="https://github.com/kovidgoyal/kitty/releases/download/v0.29.2/kitty-0.29.2-x86_64.txz"
+
+# Download and extract
+# Ubuntu versions are too old
+mkdir -p ~/local/etc/kitty
+cd ~/local/etc/kitty
+wget $DOWNLOAD_URL -O kitty.txz
+extract kitty.txz
+rm kitty.txz
+
+cd ~/local/bin
+ln -fs ../etc/kitty/bin/kitty ./kitty

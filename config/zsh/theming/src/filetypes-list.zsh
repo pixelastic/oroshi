@@ -114,6 +114,7 @@ FILETYPE_GROUPS[archive:patterns]="\
   tar.gz \
   tar.xz \
   tgz \
+  txz \
   zip \
 "
 

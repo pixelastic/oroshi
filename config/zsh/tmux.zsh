@@ -3,7 +3,9 @@
 # a tmux session will also fire zsh, so in that case we should not try to attach
 # to anything and just continue.
 
+# We will try to get rid of tmux, and only use kitty
+
 # If not inside tmux already and not connected through ssh, then start tmux
-if [[ -z "$TMUX" && -z "$SSH_CLIENT" ]]; then
-	(tmux attach || tmux new-session) &>/dev/null
-fi
+# if [[ -z "$TMUX" && -z "$SSH_CLIENT" ]]; then
+# 	(tmux attach || tmux new-session) &>/dev/null
+# fi
