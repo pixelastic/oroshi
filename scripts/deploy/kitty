@@ -1,17 +1,18 @@
 #!/usr/bin/env zsh
 set -e
-# Each kitty conf is made of a main configuration file, and an host-specific
-# override
+# Each kitty conf is made of:
+# - a global configuration file
+# - a custom tab_bar.py script
 
 mkdir -p ~/.config/kitty
 
 local CONFIG_FILE=~/.config/kitty/kitty.conf
-local CONFIG_OVERRIDE_FILE=~/.config/kitty/override.conf
-local OROSHI_FILE=~/.oroshi/config/kitty/kitty.conf
-local OROSHI_OVERRIDE_FILE=~/.oroshi/config/kitty/local/${HOST}.conf
+local TABBAR_FILE=~/.oroshi/config/kitty/tab_bar.py
+
+local OROSHI_CONFIG_FILE=~/.oroshi/config/kitty/kitty.conf
+local OROSHI_TABBAR_FILE=~/.oroshi/config/kitty/tab_bar.py
 
 # Base file
-ln -fs $OROSHI_FILE $CONFIG_FILE
-# Host specific file
-ln -fs $OROSHI_OVERRIDE_FILE $CONFIG_OVERRIDE_FILE
-
+ln -fs $OROSHI_CONFIG_FILE $CONFIG_FILE
+# Custom tab bar
+ln -fs $OROSHI_TABBAR_FILE $TABBAR_FILE

@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+# Flake8 is a linter that follows PEP8 specification
+pip install flake8

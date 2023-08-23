@@ -6,22 +6,22 @@ set -e
 # Pyenv will compile python locally on installation, so dependencies are
 # required
 sudo apt-get install \
-  build-essential \
-  curl \
-  git \
-  libbz2-dev \
-  libffi-dev \
-  liblzma-dev \
-  libncurses5-dev \
-  libncursesw5-dev \
-  libreadline-dev \
-  libsqlite3-dev \
-  libssl-dev \
-  llvm \
-  tk-dev \
-  wget \
-  xz-utils \
-  zlib1g-dev
+	build-essential \
+	curl \
+	git \
+	libbz2-dev \
+	libffi-dev \
+	liblzma-dev \
+	libncurses5-dev \
+	libncursesw5-dev \
+	libreadline-dev \
+	libsqlite3-dev \
+	libssl-dev \
+	llvm \
+	tk-dev \
+	wget \
+	xz-utils \
+	zlib3g-dev
 
 # Cloning
 git clone git@github.com:pyenv/pyenv.git ~/.pyenv
@@ -32,4 +32,3 @@ git clone git@github.com:pyenv/pyenv.git ~/.pyenv
 # python will default to python 3, but python3 and python2 are also specifically
 # available
 ~/.pyenv/bin/pyenv global 3 2
-
