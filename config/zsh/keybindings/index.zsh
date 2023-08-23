@@ -5,7 +5,6 @@ stty ixoff -ixon
 # TODO: https://github.com/Aloxaf/fzf-tab
 # TODO: https://pragmaticpineapple.com/improving-vim-workflow-with-fzf/#speed-search-your-project
 
-source $ZSH_CONFIG_PATH/keybindings/clean.zsh
 source $ZSH_CONFIG_PATH/keybindings/vim.zsh
 
 source $ZSH_CONFIG_PATH/keybindings/tab.zsh        # Completion
@@ -24,3 +23,5 @@ source $ZSH_CONFIG_PATH/keybindings/ctrl-j.zsh       # Fuzzy-find common directo
 source $ZSH_CONFIG_PATH/keybindings/ctrl-h.zsh       # Fuzzy-find all git commits hashes
 source $ZSH_CONFIG_PATH/keybindings/ctrl-r.zsh       # Fuzzy-find history commands
 source $ZSH_CONFIG_PATH/keybindings/ctrl-b.zsh       # Fuzzy-find binaries in $PATH
+
+source $ZSH_CONFIG_PATH/keybindings/clean.zsh
