@@ -1,7 +1,8 @@
 # pyright: reportMissingImports=false
 # from datetime import datetime
 # from kitty.boss import get_boss
-#
+
+import json
 from pprint import pprint
 from kitty.fast_data_types import (
     Screen,
@@ -19,6 +20,9 @@ from kitty.tab_bar import (
     # draw_attributed_string,
     draw_title,
 )
+
+
+PROJECT_LIST = None
 
 opts = get_options()
 icon_fg = as_rgb(color_as_int(opts.color16))
@@ -78,14 +82,77 @@ def draw_tab(
     # )
 
 
-def _oroshi_tab_fg(tab: TabBarData, draw_data: DrawData) -> Color:
-    value = draw_data.active_fg if tab.is_active else draw_data.inactive_fg
-    return as_rgb(int(value))
+def _oroshi_get_project_list():
+    jsonPath = "/home/tim/.oroshi/config/zsh/theming/env/projects.json"
+    projectList = {}
+
+    rawProjectData = json.load(open(jsonPath, "r"))
+
+    # First, build a top level hash of each project
+    for key, value in rawProjectData.items():
+        # Keep only name keys (ending with _NAME, but not FOREGROUND_NAME nor
+        # BACKGROUND_NAME)
+        if not (key.endswith("_NAME") and not key.endswith("GROUND_NAME")):
+            continue
+
+        projectName = value
+        projectPrefix = key.replace("_NAME", "")
+        projectList[projectName] = {"__prefix": projectPrefix}
+
+    # Fill each entry with icon and colors
+    kittyOptions = get_options()
+    for _, projectData in projectList.items():
+        projectPrefix = projectData["__prefix"]
+
+        # Icon
+        projectData["icon"] = rawProjectData.get(f"{projectPrefix}_ICON")
+
+        # Background
+        projectBgRaw = rawProjectData.get(f"{projectPrefix}_BACKGROUND", None)
+        if projectBgRaw:
+            projectData["bg"] = as_rgb(
+                color_as_int(getattr(kittyOptions, f"color{projectBgRaw}"))
+            )
+
+        # Foreground
+        projectFgRaw = rawProjectData.get(f"{projectPrefix}_FOREGROUND", None)
+        if projectFgRaw:
+            projectData["fg"] = as_rgb(
+                color_as_int(getattr(kittyOptions, f"color{projectFgRaw}"))
+            )
+
+    return projectList
 
 
-def _oroshi_tab_bg(tab: TabBarData, draw_data: DrawData) -> Color:
-    value = draw_data.active_bg if tab.is_active else draw_data.inactive_bg
-    return as_rgb(int(value))
+def _oroshi_tab_data(tab: TabBarData, draw_data: DrawData):
+    if not tab:
+        return {}
+
+    global PROJECT_LIST
+    tabTitle = tab.title
+    projectData = PROJECT_LIST.get(tabTitle, {})
+    tabIcon = projectData.get("icon", "")
+
+    tabData = {
+        "title": tabTitle,
+        "icon": tabIcon,
+    }
+
+    defaultInactiveFg = as_rgb(int(draw_data.inactive_fg))
+    defaultInactiveBg = as_rgb(int(draw_data.inactive_bg))
+    defaultActiveFg = as_rgb(int(draw_data.active_fg))
+    defaultActiveBg = as_rgb(int(draw_data.active_bg))
+
+    # Inactive tab, revert to default styles
+    if not tab.is_active:
+        tabData["fg"] = defaultInactiveFg
+        tabData["bg"] = defaultInactiveBg
+    # Active tab, use project colors if defined
+    else:
+        tabData["fg"] = projectData.get("fg", defaultActiveFg)
+        tabData["bg"] = projectData.get("bg", defaultActiveBg)
+
+    return tabData
 
 
 def _draw_left_status(
@@ -98,78 +165,31 @@ def _draw_left_status(
     is_last: bool,
     extra_data: ExtraData,
 ) -> int:
+    # Build project list once
+    global PROJECT_LIST
+    if not PROJECT_LIST:
+        PROJECT_LIST = _oroshi_get_project_list()
+
     # Definitions
-    tabTitle = tab.title
-    currentFg = _oroshi_tab_fg(tab, draw_data)
-    currentBg = _oroshi_tab_bg(tab, draw_data)
-    defaultBg = as_rgb(int(draw_data.default_bg))
-    nextTab = extra_data.next_tab
+    tabData = _oroshi_tab_data(tab, draw_data)
+    tabTitle = tabData["title"]
+    tabIcon = tabData["icon"]
+    tabFg = tabData["fg"]
+    tabBg = tabData["bg"]
 
     # Tab name
-    screen.cursor.fg = currentFg
-    screen.cursor.bg = currentBg
-    screen.draw(f" {tabTitle} ")
+    screen.cursor.fg = tabFg
+    screen.cursor.bg = tabBg
+    screen.draw(f" {tabIcon}{tabTitle} ")
 
     # Separator
-    screen.cursor.bg = _oroshi_tab_bg(nextTab, draw_data) if nextTab else defaultBg
-    screen.cursor.fg = currentBg
+    defaultBg = as_rgb(int(draw_data.default_bg))
+    nextTabData = _oroshi_tab_data(extra_data.next_tab, draw_data)
+    screen.cursor.bg = nextTabData.get("bg", defaultBg)
+    screen.cursor.fg = tabBg
     screen.draw("")
 
     return screen.cursor.x
-
-    activeFg = as_rgb(int(draw_data.active_fg))
-    activeFg = as_rgb(int(draw_data.active_fg))
-    pprint(draw_data)
-
-    # if screen.cursor.x >= screen.columns - right_status_length:
-    #     return screen.cursor.x
-    tab_bg = screen.cursor.bg
-    tab_fg = screen.cursor.fg
-    default_bg = as_rgb(int(draw_data.default_bg))
-    # print(
-    #     f"is_active: {tab.is_active}",
-    #     f"tab_bg: {tab_bg}",
-    #     f"tab_fg: {tab_fg}",
-    #     f"default_bg2: {default_bg}",
-    # )
-    # if extra_data.next_tab:
-    #     next_tab_bg = as_rgb(draw_data.tab_bg(extra_data.next_tab))
-    #     needs_soft_separator = next_tab_bg == tab_bg
-    # else:
-    #     next_tab_bg = default_bg
-    #     needs_soft_separator = False
-    # if screen.cursor.x <= len(ICON):
-    #     screen.cursor.x = len(ICON)
-    # screen.cursor.bg = tab_bg
-
-    # pprint(vars(extra_data))
-    # print(tab)
-
-    tabTitle = tab.title
-    screen.draw(tabTitle)
-
-    # draw_title(draw_data, screen, tab, index)
-    screen.draw(" ")
-    screen.draw(f"fg:{tab_fg} ")
-    screen.draw(f"bg:{tab_bg} ")
-    # screen.draw(screen.cursor.fg)
-    # screen.cursor.fg = tab_bg
-    # screen.cursor.bg = default_bg
-    # screen.draw(SEPARATOR_SYMBOL)
-    # if not needs_soft_separator:
-    # else:
-    #     prev_fg = screen.cursor.fg
-    #     if tab_bg == tab_fg:
-    #         screen.cursor.fg = default_bg
-    #     elif tab_bg != default_bg:
-    #         c1 = draw_data.inactive_bg.contrast(draw_data.default_bg)
-    #         c2 = draw_data.inactive_bg.contrast(draw_data.inactive_fg)
-    #         if c1 < c2:
-    #             screen.cursor.fg = default_bg
-    #     screen.draw(" " + SOFT_SEPARATOR_SYMBOL)
-    #     screen.cursor.fg = prev_fg
-    end = screen.cursor.x
-    return end
 
 
 # UNPLUGGED_ICONS = {
