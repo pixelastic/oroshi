@@ -6,6 +6,7 @@
 # - FILETYPES_CSS_BOLD
 # - FILETYPES_CSS_ICON
 local output=""
+local outputFile=~/.oroshi/config/zsh/theming/env/filetypes.zsh
 
 # This will load FILETYPE_GROUPS and FILETYPES definitions. For example:
 #
@@ -81,4 +82,7 @@ done
 output+="export FILETYPES_INDEX=\"${FILETYPES_INDEX:1}\"\n"
 
 # Generate the file
-echo $output > ~/.oroshi/config/zsh/theming/env/filetypes.zsh
+echo $output > $outputFile
+
+# Convert the output to json
+zsh2json $outputFile

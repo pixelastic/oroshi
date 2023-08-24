@@ -31,8 +31,10 @@ augroup ft_colors_config
   autocmd BufWritePost *config/git/src/gitconfig :silent !~/.oroshi/config/git/generate-config
   autocmd BufWritePost *config/rg/src/rgrc.conf :silent !~/.oroshi/config/rg/generate-config
 
-  " Whenever we change the main color definition, we need to regenerate all the
-  " files that depend on those ENV variables
+  " Whenever we change the way colors, filetypes or projects are defined, we need
+  " to regenerate the ENV variables
   autocmd BufWritePost *scripts/bin/env-generate-colors :silent !colors-refresh
+  autocmd BufWritePost *scripts/bin/env-generate-filetypes :silent !colors-refresh
+  autocmd BufWritePost *scripts/bin/env-generate-projects :silent !colors-refresh
 augroup END
 " }}}

@@ -18,11 +18,7 @@ source ~/.oroshi/config/zsh/theming/env/colors.zsh
 source ~/.oroshi/config/zsh/theming/env/projects.zsh
 source ~/.oroshi/config/zsh/theming/env/filetypes.zsh
 
-
 # Rewrite the config files coming from ENV files
 ~/.oroshi/config/bat/generate-theme
 ~/.oroshi/config/git/generate-config
 ~/.oroshi/config/rg/generate-config
-
-# Refresh tmux
-tmux-refresh

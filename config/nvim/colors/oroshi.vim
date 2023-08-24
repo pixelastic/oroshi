@@ -426,6 +426,10 @@ call s:Link('pugInlineDelimiter', 'INTERPOLATION_WRAPPER')
 " call s:Highlight('pugInterpolationDelimiter', 'ALIAS_INTERPOLATION_WRAPPER')
 " call s:Link('pugAttributes', 'PUNCTUATION')
 " }}}
+" Python {{{
+call s:Link('pythonStrInterpregion', 'INTERPOLATION_WRAPPER')
+call s:Link('pythonOperator', 'STATEMENT')
+" }}}
 " Ruby {{{
 " call s:Highlight('rubyDefine', 'ALIAS_VARIABLE_TYPE')
 " call s:Highlight('rubyConstant', 'ALIAS_VARIABLE_DEFINITION')

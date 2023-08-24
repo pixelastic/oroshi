@@ -9,6 +9,7 @@
 # - PROJECT_ABERLAAS_FOREGROUND_HEXA
 # - PROJECT_ABERLAAS_HIDE_NAME_IN_PROMPT
 local output=""
+local outputFile=~/.oroshi/config/zsh/theming/env/projects.zsh
 
 # This will load PROJECTS definitions. For example:
 #
@@ -93,4 +94,7 @@ done
 output+="export PROJECTS_INDEX_BY_PATH=\"${PROJECTS_INDEX_BY_PATH:1}\"\n"
 
 # Generate the file
-echo $output > ~/.oroshi/config/zsh/theming/env/projects.zsh
+echo $output > $outputFile
+
+# Convert the output to json
+zsh2json $outputFile

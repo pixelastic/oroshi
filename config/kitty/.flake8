@@ -1,0 +1,6 @@
+[flake8]
+; This is configuration for flake8, the python linter, to help me write better
+; python code in tab_bar.py
+
+; black, the python fixer expect a line-length of 88
+max-line-length = 88

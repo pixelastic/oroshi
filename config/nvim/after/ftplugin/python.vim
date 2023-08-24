@@ -1,5 +1,7 @@
 " PYTHON
 
+" Fixing
+let b:ale_fixers = ['black']
 " Linting
 let b:ale_linters = ['flake8']
 
