@@ -14,9 +14,7 @@ colorscheme oroshi
 set format_current=   %n. %t%=  %a  %l    
 set format_playlist=%3n. %t %=  %-15a  %-15l   %d    
 set format_title=TITLE
-set format_trackwin=%3n. %t%=  %d 
-# Tell tmux to update its status bar when the cmus statusline is updated
-set status_display_program=~/.oroshi/scripts/tmux-refresh
+set format_trackwin=%3n. %t%=  %d
 
 # Browser: Navigate with hjkl
 bind -f browser h browser-up

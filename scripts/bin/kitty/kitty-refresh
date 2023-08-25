@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+# Refresh Kitty configuration, by sending SIGUSR1 to every instance of it
+local kittyPIDs="$(pgrep kitty)"
+[[ "$kittyPIDs" == "" ]] && exit 1
+for pid in ${=kittyPIDs}; do
+  kill -SIGUSR1 $pid
+done
+
+# Tell kitty to redraw its statusbar
+touch /tmp/oroshi/kitty-refresh

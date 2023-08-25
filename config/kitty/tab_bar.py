@@ -1,3 +1,4 @@
+import os
 import json
 import subprocess
 from pprint import pprint
@@ -26,7 +27,7 @@ STATUSBAR_DEFINITION = [
     "battery:60",
     "cpu:30",
     "ram:30",
-    "ping:30",
+    # "ping:30",
     "clock:60",
     "dropbox:300",
 ]
@@ -43,45 +44,26 @@ def _oroshi_get_cursor_color(colorNumber: int):  # {{{
 
 
 # }}}
-# Update a specific statusbar part
-# Works by running an external command, and updating the internal representation
-#
-# I previously used tmux, and had each part of the statusbar being built from
-# a separate function. I converted those functions into statusbar-XXX scripts
-# that now output JSON, to be more easily parsed by this script.
-def _oroshi_statusbar_update(statusbarName: str):  # {{{
-    # Path to the executable
-    binName = f"statusbar-{statusbarName}"
-    binPath = f"/home/tim/.oroshi/scripts/bin/statusbar/{binName}"
 
-    # Convert raw JSON output to object
-    rawOutput = subprocess.check_output(binPath)
-    chunks = json.loads(rawOutput.decode())
 
-    # Cast all fg/bg to expected format
-    for chunk in chunks:
-        if chunk.get("fg", None):
-            chunk["fg"] = _oroshi_get_cursor_color(int(chunk["fg"]))
-        if chunk.get("bg", None):
-            chunk["bg"] = _oroshi_get_cursor_color(int(chunk["bg"]))
-
-    # Update the representation of this part of statusbar
-    STATUSBAR["items"][statusbarName]["chunks"] = chunks
-
-    # Mark the tab manager as dirty so Kitty will update it again
+# Mark the tab manager as dirty so Kitty will redraw it whenever it can
+def _oroshi_refresh_statusbar():  # {{{
     kittyTabManager = get_boss().active_tab_manager
     if kittyTabManager is not None:
         kittyTabManager.mark_tab_bar_dirty()
 
 
 # }}}
+
+
 # }}}
 
 
-# INIT {{{
+# TABS {{{
+# PROJECT_LIST {{{
 # Set the PROJECT_LIST object, that contains name, icons and colors of all
 # projects
-def _oroshi_init_project_list():  # {{{
+def _oroshi_init_project_list():
     global PROJECT_LIST
     PROJECT_LIST = {}
 
@@ -120,14 +102,11 @@ def _oroshi_init_project_list():  # {{{
             projectData["fg"] = _oroshi_get_cursor_color(projectFgRaw)
 
 
-# }}}
-
 PROJECT_LIST = {}
 _oroshi_init_project_list()
 # }}}
 
 
-# TABS {{{
 # Draw a tab. Called for each tab.
 def _oroshi_draw_tab(  # {{{
     draw_data: DrawData,
@@ -175,6 +154,8 @@ def _oroshi_draw_tab(  # {{{
 
 
 # }}}
+
+
 # Returns a hash of useful data for a given tab
 def _oroshi_tab_data(tab: TabBarData, draw_data: DrawData):  # {{{
     global PROJECT_LIST
@@ -221,6 +202,38 @@ def _oroshi_tab_data(tab: TabBarData, draw_data: DrawData):  # {{{
 
 
 # STATUSBAR {{{
+# Update a specific statusbar part
+# Works by running an external command, and updating the internal representation
+#
+# I previously used tmux, and had each part of the statusbar being built from
+# a separate function. I converted those functions into statusbar-XXX scripts
+# that now output JSON, to be more easily parsed by this script.
+def _oroshi_statusbar_update(statusbarName: str):  # {{{
+    # Path to the executable
+    binName = f"statusbar-{statusbarName}"
+    binPath = f"/home/tim/.oroshi/scripts/bin/statusbar/{binName}"
+
+    # Convert raw JSON output to object
+    rawOutput = subprocess.check_output(binPath)
+    chunks = json.loads(rawOutput.decode())
+
+    # Cast all fg/bg to expected format
+    for chunk in chunks:
+        if chunk.get("fg", None):
+            chunk["fg"] = _oroshi_get_cursor_color(int(chunk["fg"]))
+        if chunk.get("bg", None):
+            chunk["bg"] = _oroshi_get_cursor_color(int(chunk["bg"]))
+
+    # Update the representation of this part of statusbar
+    STATUSBAR["items"][statusbarName]["chunks"] = chunks
+
+    # Refresh the whole statusbar
+    _oroshi_refresh_statusbar()
+
+
+# }}}
+
+
 # Init the STATUSBAR object
 def _oroshi_init_statusbar():  # {{{
     global STATUSBAR
@@ -253,8 +266,30 @@ def _oroshi_init_statusbar():  # {{{
 
 STATUSBAR = {}
 _oroshi_init_statusbar()
+# }}}
 
 
+# External tools can call kitty-refresh (which will create a beacon file)
+# We will periodically check for this beacon, and if present refresh the
+# statusbar
+def _oroshi_check_for_forced_refresh(_=None):  # {{{
+    beaconPath = "/tmp/oroshi/kitty-refresh"
+    print("check for", beaconPath)
+
+    # Nothing to do
+    if not os.path.exists(beaconPath):
+        return
+
+    # We re-run all statusbar parts
+    for itemName in STATUSBAR["order"]:
+        _oroshi_statusbar_update(itemName)
+
+    # We remove the beacon
+    os.remove(beaconPath)
+
+
+# Check for the beacon every 5s
+add_timer(_oroshi_check_for_forced_refresh, 5, True)
 # }}}
 
 
@@ -289,6 +324,8 @@ def _oroshi_draw_statusbar(screen: Screen):  # {{{
 
 
 # }}}
+
+
 # Get the statusbar width, to correctly position it
 def _oroshi_get_statusbar_width():  # {{{
     global STATUSBAR
