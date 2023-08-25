@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+# JSON info about currently played music
+if sp current | grep --silent "Error: Spotify is not running"; then
+	echo "[]"
+	exit 0
+fi
+
+eval "$(sp eval)"
+
+local currentTitle="$SPOTIFY_ARTIST - $SPOTIFY_TITLE"
+[[ "${#currentTitle}" -gt 40 ]] && currentTitle="${currentTitle:0:40}…"
+
+jq -n \
+	--arg text " ${currentTitle} " \
+	--arg fg $COLOR_ALIAS_SUCCESS \
+	'$ARGS.named | [.]'

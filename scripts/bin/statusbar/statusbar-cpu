@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+# JSON info about CPU usage
+# Display in green / yellow / red based on % usage
+local cpuUsed="$(
+	grep 'cpu ' /proc/stat |
+		awk '{print ($2+$4)*100/($2+$4+$5)}' |
+		cut --delimiter "." --fields 1
+)"
+
+if [[ $cpuUsed -gt 80 ]]; then
+	jq -n \
+		--arg text " ${cpuUsed}% " \
+		--arg fg $COLOR_ALIAS_ERROR \
+		'$ARGS.named | [.]'
+	exit
+fi
+
+if [[ $cpuUsed -gt 50 ]]; then
+	jq -n \
+		--arg text " ${cpuUsed}% " \
+		--arg fg $COLOR_ALIAS_WARNING \
+		'$ARGS.named | [.]'
+	exit
+fi
+
+echo "[]"

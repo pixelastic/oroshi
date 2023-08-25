@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+# JSON info about RAM usage
+# Display in green / yellow / red based on % usage
+local memoryUsed="$(
+	free -m |
+		grep Mem |
+		awk '{print $3/$2 * 100}' |
+		cut --delimiter "." --fields 1
+)"
+
+if [[ $memoryUsed -gt 80 ]]; then
+	jq -n \
+		--arg text " ${memoryUsed}% " \
+		--arg fg $COLOR_ALIAS_ERROR \
+		'$ARGS.named | [.]'
+	exit
+fi
+if [[ $memoryUsed -gt 50 ]]; then
+	jq -n \
+		--arg text " ${memoryUsed}% " \
+		--arg fg $COLOR_ALIAS_WARNING \
+		'$ARGS.named | [.]'
+	exit
+fi
+
+echo "[]"

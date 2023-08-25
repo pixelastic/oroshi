@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# JSON info about current date
+local clock="$(date +'%d/%m %H:%M')"
+
+jq -n \
+	--arg text " $clock " \
+	--arg fg $COLOR_ALIAS_DATE \
+	--arg style "bold" \
+	'$ARGS.named | [.]'

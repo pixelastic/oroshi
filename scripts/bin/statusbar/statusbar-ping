@@ -1,0 +1,50 @@
+#!/usr/bin/env zsh
+# JSON info about current latency
+
+local STATUS_SAVE_PATH="/tmp/oroshi/statusbar"
+mkdir -p $STATUS_SAVE_PATH
+
+if ! is-online; then
+	jq -n \
+		--arg text "offline " \
+		--arg fg $COLOR_ALIAS_ERROR \
+		--arg style "bold" \
+		'$ARGS.named | [.]'
+	exit
+fi
+
+local pingRawPath="${STATUS_SAVE_PATH}/ping-raw"
+
+# We build the final display based on the raw ping value
+if [[ -f $pingRawPath ]]; then
+	local fg=$COLOR_ALIAS_TEXT
+	local ping="$(cat ${pingRawPath})"
+
+	if [[ $ping == "" ]]; then
+		ping="N/A"
+	else
+		[[ $ping -lt 230 ]] && fg=${COLOR_ALIAS_ERROR}
+		[[ $ping -lt 160 ]] && fg=${COLOR_ALIAS_WARNING}
+		[[ $ping -lt 80 ]] && fg=${COLOR_ALIAS_NOTICE}
+		ping="${ping}ms"
+	fi
+
+	jq -n \
+		--arg text " ${ping} " \
+		--arg fg $fg \
+		'$ARGS.named | [.]'
+else
+	echo "[]"
+fi
+
+# We start an asynchronous process to fill the raw ping value for next call
+# Note: If the ping part frequency is shorter than the ping time, the
+# displayed ping might be empty
+ping \
+	-c 5 \
+	8.8.8.8 |
+	tail -1 |
+	awk '{print $4}' |
+	cut --delimiter "/" --fields 2 |
+	awk '{printf("%d\n",$1 + 0.5)}' \
+		>"${pingRawPath}" &

@@ -1,0 +1,57 @@
+#!/usr/bin/env zsh
+# Outputs JSON information about the current battery level
+#
+# Do not display if full
+# Display in green if charging
+# Display in grey, yellow and red when level drops
+#
+local batteryDevice="$(upower -e | grep BAT)"
+local batteryStatus="$(
+	upower -i ${batteryDevice} |
+		grep state |
+		awk '{print $2}'
+)"
+local batteryPercent="$(
+	upower -i ${batteryDevice} |
+		grep percentage |
+		awk '{print $2}' |
+		sed 's/.$//'
+)"
+local batteryDuration="$(
+	upower -i ${batteryDevice} |
+		grep 'time to empty' |
+		awk '{print $4}'
+)"
+
+if [[ $batteryPercent -gt 99 ]]; then
+	echo "[]"
+	exit 0
+fi
+
+if [[ $batteryStatus == 'charging' ]]; then
+	jq -n \
+		--arg text " ${batteryPercent}% " \
+		--arg fg $COLOR_ALIAS_SUCCESS \
+		'$ARGS.named | [.]'
+	exit
+fi
+
+local batteryDisplay="${batteryPercent}% (${batteryDuration}h)"
+if [[ $batteryPercent -lt 100 && $batteryPercent -ge 50 ]]; then
+	jq -n \
+		--arg text "  ${batteryDisplay} " \
+		--arg fg $COLOR_ALIAS_COMMENT \
+		'$ARGS.named | [.]'
+fi
+if [[ $batteryPercent -lt 50 && $batteryPercent -ge 10 ]]; then
+	jq -n \
+		--arg text "  ${batteryDisplay} " \
+		--arg fg $COLOR_ALIAS_WARNING \
+		'$ARGS.named | [.]'
+fi
+if [[ $batteryPercent -lt 10 ]]; then
+	jq -n \
+		--arg text "  ${batteryDisplay} " \
+		--arg fg $COLOR_ALIAS_ERROR \
+		'$ARGS.named | [.]'
+fi
