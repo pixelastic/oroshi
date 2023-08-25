@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 # JSON info about current date
+source ~/.oroshi/config/zsh/theming/env/colors.zsh
+
 local clock="$(date +'%d/%m %H:%M')"
 
 jq -n \

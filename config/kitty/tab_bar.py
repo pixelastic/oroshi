@@ -15,7 +15,6 @@ from kitty.tab_bar import (
     TabBarData,
     as_rgb,
     draw_attributed_string,
-    # draw_title,
 )
 
 KITTY_OPTIONS = get_options()
@@ -123,7 +122,7 @@ def _oroshi_init_project_list():  # {{{
 
 # }}}
 
-PROJECT_LIST = []
+PROJECT_LIST = {}
 _oroshi_init_project_list()
 # }}}
 

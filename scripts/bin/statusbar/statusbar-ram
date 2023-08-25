@@ -1,6 +1,9 @@
 #!/usr/bin/env zsh
 # JSON info about RAM usage
 # Display in green / yellow / red based on % usage
+
+source ~/.oroshi/config/zsh/theming/env/colors.zsh
+
 local memoryUsed="$(
 	free -m |
 		grep Mem |

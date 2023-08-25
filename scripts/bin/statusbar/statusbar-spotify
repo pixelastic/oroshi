@@ -1,5 +1,8 @@
 #!/usr/bin/env zsh
 # JSON info about currently played music
+
+source ~/.oroshi/config/zsh/theming/env/colors.zsh
+
 if sp current | grep --silent "Error: Spotify is not running"; then
 	echo "[]"
 	exit 0

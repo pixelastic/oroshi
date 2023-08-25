@@ -1,6 +1,8 @@
 #!/usr/bin/env zsh
 # JSON info about if dropbox is running
 
+source ~/.oroshi/config/zsh/theming/env/colors.zsh
+
 function dropbox-is-running() {
 	[[ ! $commands[dropbox] ]] && return 1
 	dropbox status 2>/dev/null |

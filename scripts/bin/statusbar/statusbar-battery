@@ -4,7 +4,9 @@
 # Do not display if full
 # Display in green if charging
 # Display in grey, yellow and red when level drops
-#
+
+source ~/.oroshi/config/zsh/theming/env/colors.zsh
+
 local batteryDevice="$(upower -e | grep BAT)"
 local batteryStatus="$(
 	upower -i ${batteryDevice} |

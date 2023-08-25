@@ -13,7 +13,7 @@ local                  shortcuts=(
   "Chrome"               "google-chrome --profile-directory=\"Profile 5\""     "<Super>C"
   "Flameshot"            "/usr/bin/flameshot gui"                              "<Super>Print"
   "Keepass"              "keepassx ~/perso/Dropbox/tim/keys.kdbx"              "<Super>K"
-  "Kitty"                "/home/tim/local/bin/kitty --session ~/.oroshi/config/kitty/debug_session"                                      "<Super>T"
+  "Kitty"                "/home/tim/local/bin/kitty"                                      "<Super>T"
   "Notion"               "google-chrome \'https://notion.so/\'"                "<Super>N"
   "Peek"                 "/home/tim/.oroshi/scripts/bin/peek"                  "<Super><Alt>Print"
   "Slack"                "/usr/bin/slack"                                      "<Super>S"
