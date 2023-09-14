@@ -1,0 +1,40 @@
+#!/usr/bin/env zx
+// Load a saved session from a previous save
+
+// Read file
+const tmpDir=path.resolve(os.homedir(), 'local/tmp/kitty')
+const input = require(path.resolve(tmpDir, 'save.json'))
+const output=[]
+
+for (const tab of input[0].tabs) {
+  const { title, layout, windows } = tab;
+  output.push(`new_tab ${title}`)
+
+  // Get list of windows
+  const windowsById = {}
+  for (const tabWindow in windows) {
+    windowsById[tabWindow.id] = { cwd: tabWindow.cwd }
+  }
+
+  output.push(`layout ${layout}`)
+  if (layout == "splits") {
+    const layoutState = tab.layout_state;
+    const pairs = layoutState.pairs;
+    if (pairs.horizontal) {
+
+
+
+    }
+
+  }
+
+}
+
+function splitVertical(cwd) {
+  output.push(`launch --location vsplit --cwd ${cwd} /usr/bin/zsh`)
+}
+function splitHorizontal(cwd) {
+  output.push(`launch --location hsplit --cwd ${cwd} /usr/bin/zsh`)
+}
+
+console.info(output.join("\n"))

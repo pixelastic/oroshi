@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# Saves the current kitty context into a file
+set -e
+mkdir -p ~/local/tmp/kitty
+
+cd ~/local/tmp/kitty
+
+kitty @ ls >save.json

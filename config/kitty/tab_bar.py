@@ -274,7 +274,6 @@ _oroshi_init_statusbar()
 # statusbar
 def _oroshi_check_for_forced_refresh(_=None):  # {{{
     beaconPath = "/tmp/oroshi/kitty-refresh"
-    print("check for", beaconPath)
 
     # Nothing to do
     if not os.path.exists(beaconPath):
@@ -299,7 +298,9 @@ def _oroshi_draw_statusbar(screen: Screen):  # {{{
 
     # Position cursor at beginning of line
     statusbarWidth = _oroshi_get_statusbar_width()
-    screen.cursor.x = screen.columns - statusbarWidth
+    # Note: Putting a negative value here make kitty fail with a segfault, so we
+    # keep it positive with max()
+    screen.cursor.x = max(screen.cursor.x, screen.columns - statusbarWidth)
 
     # Write all statuses
     for itemName in STATUSBAR["order"]:

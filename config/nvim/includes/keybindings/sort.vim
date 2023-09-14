@@ -1,6 +1,6 @@
 " Sort selection (using version sort)
 vnoremap s :!sort --version-sort<CR>
-vnoremap r :!sort --version-sort --reverse<CR>
+" vnoremap r :!sort --version-sort --reverse<CR>
 
 " Sort lines by line length
 vnoremap L :!sort-by-length<CR>
