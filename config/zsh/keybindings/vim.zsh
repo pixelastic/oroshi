@@ -1,22 +1,22 @@
 # Enabling vim mode
 bindkey -v
-# Note: press Ctrl-V followed by a key to see its keycode
+# Note: In the terminal, start "cat" without arguments and press keys to see
+# their keycodes.
+# Alternatively, you can hit Ctrl-V here in vim, followed by the key to get its
+# keycode as well
+
 bindkey -M viins "[3~" delete-char       # Delete
 bindkey -M viins "" backward-delete-char # Backspace
-bindkey -M viins "O2M" accept-line       # Shift-Enter works as Enter
+bindkey -M viins "↰" accept-line          # Shift-Enter works as Enter
 
 # Beginning of line
-bindkey -M viins "[1~" beginning-of-line # Home (in termite)
-bindkey -M viins "[5~" beginning-of-line # Page Up
+bindkey -M viins "[H" beginning-of-line # Home
+bindkey -M vicmd "[H" beginning-of-line # Home
 bindkey -M vicmd "H" beginning-of-line
-bindkey -M vicmd "[1~" beginning-of-line # Home (in termite)
-bindkey -M vicmd "[5~" beginning-of-line # Page Up
 # End of line
-bindkey -M viins "[4~" end-of-line # End (in termite)
-bindkey -M viins "[6~" end-of-line # Page Down
+bindkey -M viins "[F" end-of-line # End
+bindkey -M vicmd "[F" end-of-line # End
 bindkey -M vicmd "L" end-of-line
-bindkey -M vicmd "[4~" end-of-line # End (in termite)
-bindkey -M vicmd "[6~" end-of-line # Page Down
 
 # Switching mode with CAPS LOCK
 bindkey -M viins "⇪" vi-cmd-mode
