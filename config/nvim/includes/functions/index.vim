@@ -11,6 +11,7 @@ source ~/.config/nvim/includes/functions/GitRoot.vim
 source ~/.config/nvim/includes/functions/IndentLevel.vim
 source ~/.config/nvim/includes/functions/IndentWithSpaces.vim
 source ~/.config/nvim/includes/functions/IndentWithTabs.vim
+source ~/.config/nvim/includes/functions/JavaScriptIsZx.vim
 source ~/.config/nvim/includes/functions/Lint.vim
 source ~/.config/nvim/includes/functions/NextNonBlankLine.vim
 source ~/.config/nvim/includes/functions/RemoveTrailingSpaces.vim

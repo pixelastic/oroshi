@@ -1,0 +1,6 @@
+#!/usr/bin/env zx
+// Load a saved session from a previous save
+
+// Read file
+const tmpDir=path.resolve(os.homedir(), 'local/tmp/kitty')
+console.info(tmpDir)

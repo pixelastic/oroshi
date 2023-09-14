@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+# Runs eslint on zx files
+# Uses eslint_d and a custom config that extends the base aberlaas one, but with
+# specific tweaks for zx
+
+# Usage:
+# $ eslint-zx /path/to/file         # Lint the file
+# $ eslint-zx --args /path/to/file  # Any eslint_d valid argument can be passed
+#
+
+local args=($@)
+local configFolder=${0:a:h}
+
+eslint_d \
+	--config $configFolder/eslintrc.zx.js \
+	$args
