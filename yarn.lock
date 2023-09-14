@@ -1008,7 +1008,7 @@ abab@^2.0.3, abab@^2.0.5:
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.6.tgz#41b80f2c871d19686216b82309231cfd3cb3d291"
   integrity sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==
 
-aberlaas@1.25.1:
+aberlaas@^1.25.1:
   version "1.25.1"
   resolved "https://registry.yarnpkg.com/aberlaas/-/aberlaas-1.25.1.tgz#ea5b41e19e9e4fd9d4705ceb08d4ad9c48547699"
   integrity sha512-d6hQWfd4glk1gmiAmgF90hWdRc6QKguw4WU0Odp4vv6oBV0MQ/Tnt+63lVVZ//y55olSXWbRGRyV49cLR7eLHA==
@@ -2724,6 +2724,32 @@ firost@2.16.2:
     untildify "4.0.0"
     which "2.0.2"
 
+firost@2.17.0:
+  version "2.17.0"
+  resolved "https://registry.yarnpkg.com/firost/-/firost-2.17.0.tgz#688574206c845c663fd4b9133a28a5668952095b"
+  integrity sha512-9ig35bkdO3urte8IUacBj2NNarfl/BzEMLn53eIlJGbUxuHAThIizFJooc+rLxsClmVMCVSc2+8wO5VinnPiGA==
+  dependencies:
+    callsites "3.1.0"
+    chokidar "3.5.2"
+    clear-module "4.1.1"
+    eventemitter2 "6.4.4"
+    execa "5.1.1"
+    find-up "5.0.0"
+    fs-extra "10.0.0"
+    globby "11.0.4"
+    golgoth "2.1.0"
+    inquirer "8.1.2"
+    is-glob "4.0.1"
+    json-stable-stringify "1.0.1"
+    nanoid "3.1.25"
+    normalize-url "6.1.0"
+    ora "5.4.1"
+    std-mocks "1.0.1"
+    strip-ansi "6.0.0"
+    temp-dir "2.0.0"
+    untildify "4.0.0"
+    which "2.0.2"
+
 flat-cache@^3.0.4:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/flat-cache/-/flat-cache-3.1.0.tgz#0e54ab4a1a60fe87e2946b6b00657f1c99e1af3f"
@@ -3361,6 +3387,26 @@ inquirer@8.1.1:
     ora "^5.3.0"
     run-async "^2.4.0"
     rxjs "^6.6.6"
+    string-width "^4.1.0"
+    strip-ansi "^6.0.0"
+    through "^2.3.6"
+
+inquirer@8.1.2:
+  version "8.1.2"
+  resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-8.1.2.tgz#65b204d2cd7fb63400edd925dfe428bafd422e3d"
+  integrity sha512-DHLKJwLPNgkfwNmsuEUKSejJFbkv0FMO9SMiQbjI3n5NQuCrSIBqP66ggqyz2a6t2qEolKrMjhQ3+W/xXgUQ+Q==
+  dependencies:
+    ansi-escapes "^4.2.1"
+    chalk "^4.1.1"
+    cli-cursor "^3.1.0"
+    cli-width "^3.0.0"
+    external-editor "^3.0.3"
+    figures "^3.0.0"
+    lodash "^4.17.21"
+    mute-stream "0.0.8"
+    ora "^5.3.0"
+    run-async "^2.4.0"
+    rxjs "^7.2.0"
     string-width "^4.1.0"
     strip-ansi "^6.0.0"
     through "^2.3.6"
@@ -4948,6 +4994,11 @@ nanoid@3.1.23:
   version "3.1.23"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.23.tgz#f744086ce7c2bc47ee0a8472574d5c78e4183a81"
   integrity sha512-FiB0kzdP0FFVGDKlRLEQ1BgDzU87dy5NnzjeW9YZNt+/c3+q82EQDUwniSAUxp/F0gFNI1ZhKU1FqYsMuqZVnw==
+
+nanoid@3.1.25:
+  version "3.1.25"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.25.tgz#09ca32747c0e543f0e1814b7d3793477f9c8e152"
+  integrity sha512-rdwtIXaXCLFAQbnfqDRnI6jaRHp9fTcYBjtFKE8eezcZ7LuLjhUaQGNeMXf1HmRoCH32CLz6XwX0TtxEOS/A3Q==
 
 nanomatch@^1.2.9:
   version "1.2.13"
@@ -6602,7 +6653,7 @@ rxjs@^6.3.3, rxjs@^6.4.0, rxjs@^6.5.3, rxjs@^6.6.0, rxjs@^6.6.3, rxjs@^6.6.6:
   dependencies:
     tslib "^1.9.0"
 
-rxjs@^7.5.1:
+rxjs@^7.2.0, rxjs@^7.5.1:
   version "7.8.1"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.8.1.tgz#6f6f3d99ea8044291efd92e7c7fcf562c4057543"
   integrity sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==

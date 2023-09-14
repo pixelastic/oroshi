@@ -5,6 +5,8 @@
   "description": "This package.json is here to allow me to have pinned node libs",
   "devDependencies": {
     "aberlaas": "^1.25.1",
+    "firost": "^2.17.0",
+    "golgoth": "^2.1.0",
     "remark-frontmatter": "^1.3.2",
     "remark-lint-no-trailing-spaces": "^2.0.1",
     "remark-preset-lint-consistent": "^2.0.3",

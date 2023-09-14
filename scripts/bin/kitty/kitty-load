@@ -1,6 +1,9 @@
 #!/usr/bin/env zx
 // Load a saved session from a previous save
 
+// import golgoth from 'golgoth';
+// import firost from 'firost';
+
 // Read file
 const tmpDir = path.resolve(os.homedir(), 'local/tmp/kitty');
 const input = require(path.resolve(tmpDir, 'save.json'));
