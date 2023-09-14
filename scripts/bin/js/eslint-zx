@@ -4,9 +4,23 @@
 # specific tweaks for zx
 
 # Usage:
+# $ eslint-zx --version
 # $ eslint-zx /path/to/file         # Lint the file
 # $ eslint-zx --args /path/to/file  # Any eslint_d valid argument can be passed
 #
+# Note: Run :ALEInfo after having run :ALELint in a zx file to see the command
+# executed
+
+# Handling special case of running it with --version
+zparseopts -E -D \
+	-version=flagVersion
+local isVersion=${#flagVersion}
+
+# ALE integration
+if [[ $isVersion == "1" ]]; then
+	eslint_d --version
+	exit 0
+fi
 
 local args=($@)
 local configFolder=${0:a:h}

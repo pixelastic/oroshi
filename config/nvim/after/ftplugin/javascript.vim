@@ -19,7 +19,7 @@ function! JavascriptFoldText()
 endfunction
 " }}}
 " Fixing
-" let b:ale_fixers = ['eslint']
+let b:ale_fixers = ['eslint']
 " Linting
 let b:ale_linters = ['eslint']
 " We use global eslint_d instead of local eslint
