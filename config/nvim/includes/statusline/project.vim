@@ -18,7 +18,7 @@ function! StatusLineGetProject()
   " Failsafe if the above commands don't work (maybe because I messed up my
   " project listing file)
   if !exists('icon')
-    return
+    return ""
   endif
 
   let projectStatus=''

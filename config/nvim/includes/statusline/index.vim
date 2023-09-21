@@ -19,7 +19,6 @@ set noshowmode
 " it should be done outside of the OroshiStatusLine() method and shared through
 " a variable when available.
 let b:oroshiStatusLineGitStatus = ''
-let b:oroshiStatusLineProject = StatusLineGetProject()
 
 function! OroshiStatusLine()
   let sl = ''
@@ -48,6 +47,10 @@ function! OroshiStatusLine()
   " }}}
 
   " Current project {{{
+  " Guess the project based on the filename on first call, then keep it in cache
+  if !exists('b:oroshiStatusLineProject')
+    let b:oroshiStatusLineProject = StatusLineGetProject()
+  endif
   if b:oroshiStatusLineProject !=# ''
     let sl .= b:oroshiStatusLineProject.' '
   endif
@@ -69,7 +72,7 @@ function! OroshiStatusLine()
   " }}}
 
   " Git repo status {{{
-	if b:oroshiStatusLineGitStatus !=# ''
+	if exists('b:oroshiStatusLineGitStatus') && b:oroshiStatusLineGitStatus !=# ''
     let sl .= '%#StatusLineGit'.b:oroshiStatusLineGitStatus.'#ﰖ%* '
   endif
   " }}}
