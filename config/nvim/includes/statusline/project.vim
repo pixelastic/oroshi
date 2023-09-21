@@ -2,7 +2,7 @@
 " - Colored based on colors in PROJECT_
 " - With an icon matching the extension
 " - With the filetype as detected by vim if different
-function! ProjectStatusLine()
+function! StatusLineGetProject()
   " Disable in vim-plug update window
   if &filetype ==# 'vim-plug'
     return

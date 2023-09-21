@@ -18,10 +18,12 @@ set noshowmode
 " in the statusline. If such a call is needed (for example to gather Git stats),
 " it should be done outside of the OroshiStatusLine() method and shared through
 " a variable when available.
-let b:gitStatus = ''
+let b:oroshiStatusLineGitStatus = ''
+let b:oroshiStatusLineProject = StatusLineGetProject()
 
-function! OroshiStatusLine() 
+function! OroshiStatusLine()
   let sl = ''
+
 
   " Current mode {{{
   let rawMode = mode()
@@ -46,9 +48,8 @@ function! OroshiStatusLine()
   " }}}
 
   " Current project {{{
-  let b:projectStatusLine = ProjectStatusLine()
-  if b:projectStatusLine !=# ''
-    let sl .= b:projectStatusLine.' '
+  if b:oroshiStatusLineProject !=# ''
+    let sl .= b:oroshiStatusLineProject.' '
   endif
   " }}}
 
@@ -68,8 +69,8 @@ function! OroshiStatusLine()
   " }}}
 
   " Git repo status {{{
-	if exists('b:gitStatus') && b:gitStatus !=# ''
-    let sl .= '%#StatusLineGit'.b:gitStatus.'#ﰖ%* '
+	if b:oroshiStatusLineGitStatus !=# ''
+    let sl .= '%#StatusLineGit'.b:oroshiStatusLineGitStatus.'#ﰖ%* '
   endif
   " }}}
 
@@ -88,7 +89,7 @@ function! OroshiStatusLine()
     let sl .= '%#StatusLineFileEncodingError# '.fileEncoding.' %*'
   endif
   " }}}
-  
+
   " Right / Left separator {{{
   let sl .= '%<' " Cut statusline here if not enough room
   let sl .= '%=' " Add whitespace to align next part on the right
@@ -137,11 +138,10 @@ endfunction
 
 " Updating expensive status line variables only when moving through buffers or
 " saving the file
-augroup git_statusline
+augroup statusline_git
   autocmd!
 	autocmd BufWritePost,BufEnter * call OroshiStatusLineUpdateGit()
 augroup END
-
 function! OroshiStatusLineUpdateGit()
-  let b:gitStatus = GitFileStatus()
+  let b:statusLineGitStatus = GitFileStatus()
 endfunction
