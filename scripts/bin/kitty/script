@@ -1,0 +1,36 @@
+#!/usr/bin/env zsh
+# https://sw.kovidgoyal.net/kitty/remote-control/#kitty-launch
+
+# create a new tab
+kitty @ launch --type tab --tab-title algolia --env OROSHI_KITTY_ID=1
+
+# set layout to splits
+kitty @ goto-layout splits
+
+kitty @ launch \
+	--type window \
+	--location vsplit \
+	--env OROSHI_KITTY_ID=2
+
+kitty @ launch \
+	--type window \
+	--location hsplit \
+	--env OROSHI_KITTY_ID=3
+
+kitty @ focus-window --match env:OROSHI_KITTY_ID=2
+kitty @ launch \
+	--type window \
+	--location vsplit \
+	--env OROSHI_KITTY_ID=4
+
+kitty @ focus-window --match env:OROSHI_KITTY_ID=1
+kitty @ launch \
+	--type window \
+	--location hsplit \
+	--env OROSHI_KITTY_ID=5
+
+kitty @ focus-window --match env:OROSHI_KITTY_ID=5
+kitty @ launch \
+	--type window \
+	--location vsplit \
+	--env OROSHI_KITTY_ID=6

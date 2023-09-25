@@ -1,44 +1,184 @@
 #!/usr/bin/env zx
-// Load a saved session from a previous save
+/**
+ * Alt-Shift-S Saves the current Kitty layout configuration in a file
+ * Alt-Shift-L Will reload it
+ 
+ * Kitty startup session are great, but they have limitations.
+ * They can only follow a linear set of instructions and can't change
+ * the focus to a specific window, preventing us from replicating complex
+ * layouts.
+ *
+ * Thankfull, Kitty comes with remote control, and it is possible to do much
+ * more with it.
+ *
+ * The current script will transform the saved layout configuration into a set
+ * of kitty remote instructions, save it to a file, and run it.
+ **/
 
-// import golgoth from 'golgoth';
-// import firost from 'firost';
+import { _ } from 'golgoth';
+import firost from 'firost';
 
-// Read file
 const tmpDir = path.resolve(os.homedir(), 'local/tmp/kitty');
-const input = require(path.resolve(tmpDir, 'save.json'));
-const output = [];
+const windows = {};
+const KittyLoad = {
+  // The save is the JSON file extracted by kitty-save
+  saveFilepath: path.resolve(tmpDir, 'save.json'),
+  // The script is the final script executing kitty-remote commands we're
+  // building
+  scriptFilepath: path.resolve(tmpDir, 'kitty-load-script'),
+  scriptContent: [],
+  async run() {
+    const tabs = this.getTabs();
+    this.registerWindows(tabs);
 
-for (const tab of input[0].tabs) {
-  const { title, layout, windows } = tab;
-  output.push(`new_tab ${title}`);
+    // Add all tabs to script
+    _.each(tabs, (tab) => {
+      this.addTabToScript(tab);
+    });
 
-  // Get list of windows
-  const windowsById = {};
-  for (const tabWindow in windows) {
-    windowsById[tabWindow.id] = { cwd: tabWindow.cwd };
-  }
+    await this.runScript();
+  },
+  getTabs() {
+    const rawTabs = require(this.saveFilepath)[0].tabs;
+    return _.reject(rawTabs, { title: 'Saving...' });
+  },
+  /**
+   * Returns a hash of all windows of a given tab.
+   * Each key is the window id and each value the window data
+   * Layout information is not stored here, just the content of each window
+   * @param {Array} tabs All tabs saved with kitty-save
+   **/
+  registerWindows(tabs) {
+    _.each(tabs, (tab) => {
+      const firstWindowId = tab.active_window_history[0];
+      const tabId = tab.id;
+      // Add all windows to our hash
+      _.each(tab.windows, (window) => {
+        const uuid = firost.uuid();
+        const { id, cmdline, cwd, env } = window;
+        const windowId = id;
+        const isFirstWindow = firstWindowId == windowId;
+        // Keep only relevant information from the windows
+        windows[id] = {
+          tabId,
+          windowId,
+          isFirstWindow,
+          cmdline,
+          cwd,
+          env,
+          uuid,
+        };
+      });
+    });
+  },
+  /**
+   * Get the kitty remote instructions to create the specified tab
+   * @param {object} tab Tab to replicate
+   **/
+  addTabToScript(tab) {
+    const { id, title, layout, layout_state } = tab;
 
-  output.push(`layout ${layout}`);
-  if (layout == 'splits') {
-    const layoutState = tab.layout_state;
-    const pairs = layoutState.pairs;
-    if (pairs.horizontal) {
+    // Create a new tab with the first window in it
+    const firstWindow = _.find(windows, {
+      tabId: id,
+      isFirstWindow: true,
+    });
+    this.kitty('launch', {
+      type: 'tab',
+      'tab-title': title,
+      cwd: firstWindow.cwd,
+      env: `OROSHI_KITTY_UUID=${firstWindow.uuid}`,
+    });
+    this.kitty('goto-layout', layout);
+
+    this.addSplitToScript(layout_state.pairs, firstWindow);
+    console.info(layout_state);
+
+    // console.info(tab);
+    // const windows = this.getWindows(tab);
+    // const firstWindowId = tab.active_window_history[0];
+    // const firstWindow = windows[firstWindowId];
+    // const layoutState = this.getLayoutState(layout_state.pairs, windows);
+    // console.info(JSON.stringify(layoutState, 0, 2));
+    // this.addSplitToScript(layoutState);
+  },
+  addSplitToScript(layoutState) {
+    // If the layout is an integer, it represents the window id, and thus will
+    // does not need more splitting
+    if (_.isInteger(layoutState)) {
+      return;
     }
-  }
-}
 
-/**
- * @param cwd
- */
-function splitVertical(cwd) {
-  output.push(`launch --location vsplit --cwd ${cwd} /usr/bin/zsh`);
-}
-/**
- * @param cwd
- */
-function splitHorizontal(cwd) {
-  output.push(`launch --location hsplit --cwd ${cwd} /usr/bin/zsh`);
-}
+    // Focus the main window
+    const mainWindow = this.getMainSplitWindow(layoutState.one);
+    this.kitty('focus-window', {
+      match: `env:OROSHI_KITTY_UUID=${mainWindow.uuid}`,
+    });
 
-console.info(output.join('\n'));
+    // Split the window
+    const secondaryWindow = this.getMainSplitWindow(layoutState.two);
+    const location = layoutState.horizontal ? 'vsplit' : 'hsplit';
+    this.kitty('launch', {
+      type: 'window',
+      location,
+      env: `OROSHI_KITTY_UUID=${secondaryWindow.uuid}`,
+      cwd: secondaryWindow.cwd,
+    });
+
+    // Do the same for the other children
+    this.addSplitToScript(layoutState.one);
+    this.addSplitToScript(layoutState.two);
+  },
+  /**
+   * Find which window is the main window of a split. It means the one you find
+   * if you go deep into the chain of one.one.one, etc
+   * @param {object} layoutState WindowID or split state
+   * @returns {object} Window representation
+   **/
+  getMainSplitWindow(layoutState) {
+    if (_.isInteger(layoutState)) {
+      return windows[layoutState];
+    }
+    return this.getMainSplitWindow(layoutState.one);
+  },
+  /**
+   * Build a kitty remote command
+   * @param {string} method Name of the method
+   * @param {object} options Hash of arguments
+   **/
+  kitty(method, options = null) {
+    const result = ['kitty @', method];
+
+    // Passing all options as --flags
+    if (_.isObject(options)) {
+      _.each(options, (value, key) => {
+        result.push(`--${key} ${value}`);
+      });
+    }
+
+    // Passing single option as-is
+    if (_.isString(options)) {
+      result.push(options);
+    }
+
+    this.scriptContent.push(result.join(' '));
+  },
+
+  async runScript() {
+    const content = [
+      '#!/usr/bin/env zsh',
+      '# THIS FILE IS AUTOGENERATED',
+      "# Check the kitty-load script to see how it's done",
+      '',
+      ...this.scriptContent,
+    ].join('\n');
+    await firost.write(content, this.scriptFilepath);
+    await firost.run(`chmod +x ${this.scriptFilepath}`);
+    console.info(content);
+    await firost.run(this.scriptFilepath);
+  },
+};
+
+(async () => {
+  await KittyLoad.run();
+})();

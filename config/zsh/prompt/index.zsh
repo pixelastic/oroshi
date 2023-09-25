@@ -120,7 +120,7 @@ function oroshi-prompt-left() {
     $OROSHI_PROMPT_PARTS[git_status]
     $OROSHI_PROMPT_PARTS[exit_code]
   )
-  echo $promptLeft
+  echo "${promptLeft} - [${OROSHI_KITTY_ID}]"
 }
 PROMPT='$(oroshi-prompt-left)'
 
