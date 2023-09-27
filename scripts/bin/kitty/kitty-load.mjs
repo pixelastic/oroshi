@@ -19,7 +19,7 @@ import { _ } from 'golgoth';
 import firost from 'firost';
 
 const tmpDir = path.resolve(os.homedir(), 'local/tmp/kitty');
-const manifest = {};
+const windows = {};
 const KittyLoad = {
   // The save is the JSON file extracted by kitty-save
   saveFilepath: path.resolve(tmpDir, 'save.json'),
@@ -29,7 +29,7 @@ const KittyLoad = {
   scriptContent: [],
   async run() {
     const tabs = this.getTabs();
-    this.populateManifest(tabs);
+    this.registerWindows(tabs);
 
     // Add all tabs to script
     _.each(tabs, (tab) => {
@@ -43,30 +43,22 @@ const KittyLoad = {
     return _.reject(rawTabs, { title: 'Saving...' });
   },
   /**
-   * Populates the manifest variable:
-   *  - Each key is an id as references on layout_state
-   *  - Each value is the corresponding window data
-   *
-   * Explanation: The layout_state key contains references to groups, which in
-   * turn contain references to windows. We'll create a better matching, where
-   * the id in layout_state matches an entry in the manifest, referencing
-   * a window.
-   *
-   * Each key is the state_layout id, each value the window data
+   * Returns a hash of all windows of a given tab.
+   * Each key is the window id and each value the window data
+   * Layout information is not stored here, just the content of each window
    * @param {Array} tabs All tabs saved with kitty-save
    **/
-  populateManifest(tabs) {
+  registerWindows(tabs) {
     _.each(tabs, (tab) => {
-      const tabId = tab.id;
       const firstWindowId = tab.active_window_history[0];
-
-      // We create a mapping of windowId to window data
-      const windows = {};
+      const tabId = tab.id;
+      // Add all windows to our hash
       _.each(tab.windows, (window) => {
         const uuid = firost.uuid();
         const { id, cmdline, cwd, env } = window;
         const windowId = id;
         const isFirstWindow = firstWindowId == windowId;
+        // Keep only relevant information from the windows
         windows[id] = {
           tabId,
           windowId,
@@ -75,18 +67,6 @@ const KittyLoad = {
           cwd,
           env,
           uuid,
-        };
-      });
-
-      // We save in the global manifest a reference from each group id to the
-      // matching window
-      _.each(tab.groups, (group) => {
-        // Each group seem to only have one window
-        const windowId = group.windows[0];
-        const groupId = group.id;
-        manifest[groupId] = {
-          groupId,
-          ...windows[windowId],
         };
       });
     });
@@ -99,7 +79,7 @@ const KittyLoad = {
     const { id, title, layout, layout_state } = tab;
 
     // Create a new tab with the first window in it
-    const firstWindow = _.find(manifest, {
+    const firstWindow = _.find(windows, {
       tabId: id,
       isFirstWindow: true,
     });
@@ -107,15 +87,15 @@ const KittyLoad = {
       type: 'tab',
       'tab-title': title,
       cwd: firstWindow.cwd,
-      var: `OROSHI_KITTY_UUID=${firstWindow.uuid}`,
+      env: `OROSHI_KITTY_UUID=${firstWindow.uuid}`,
     });
     this.kitty('goto-layout', layout);
 
     this.addSplitToScript(layout_state.pairs, firstWindow);
   },
   addSplitToScript(layoutState) {
-    // If the layout is an integer, it's a leaf and will already have been
-    // created
+    // If the layout is an integer, it represents the window id, and thus will
+    // does not need more splitting
     if (_.isInteger(layoutState)) {
       return;
     }
@@ -123,7 +103,7 @@ const KittyLoad = {
     // Focus the main window
     const mainWindow = this.getMainSplitWindow(layoutState.one);
     this.kitty('focus-window', {
-      match: `var:OROSHI_KITTY_UUID=${mainWindow.uuid}`,
+      match: `env:OROSHI_KITTY_UUID=${mainWindow.uuid}`,
     });
 
     // Split the window
@@ -132,7 +112,7 @@ const KittyLoad = {
     this.kitty('launch', {
       type: 'window',
       location,
-      var: `OROSHI_KITTY_UUID=${secondaryWindow.uuid}`,
+      env: `OROSHI_KITTY_UUID=${secondaryWindow.uuid}`,
       cwd: secondaryWindow.cwd,
     });
 
@@ -148,7 +128,7 @@ const KittyLoad = {
    **/
   getMainSplitWindow(layoutState) {
     if (_.isInteger(layoutState)) {
-      return manifest[layoutState];
+      return windows[layoutState];
     }
     return this.getMainSplitWindow(layoutState.one);
   },

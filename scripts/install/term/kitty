@@ -3,14 +3,19 @@
 # https://sw.kovidgoyal.net/kitty/
 set -e
 
-DOWNLOAD_URL="https://github.com/kovidgoyal/kitty/releases/download/v0.29.2/kitty-0.29.2-x86_64.txz"
-
 # Download and extract
-# Ubuntu versions are too old
-mkdir -p ~/local/etc/kitty
-cd ~/local/etc/kitty
+# Kitty releases are coming often and the Ubuntu source files are usually too
+# old to reflect the current documentation. Better to grab it from the GitHub
+# nighthly releases.
+DOWNLOAD_URL="https://github.com/kovidgoyal/kitty/releases/download/nightly/kitty-nightly-x86_64.txz"
+
+INSTALL_DIR=~/local/etc/kitty
+rm -rf $INSTALL_DIR
+mkdir -p $INSTALL_DIR
+cd $INSTALL_DIR
+
 wget $DOWNLOAD_URL -O kitty.txz
-extract kitty.txz
+tar Jxvf kitty.txz
 rm kitty.txz
 
 cd ~/local/bin
