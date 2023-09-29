@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# htmlmin is an HTML Minified
+# https://github.com/kangax/html-minifier
+set -e
+
+yarn-global-add html-minifier

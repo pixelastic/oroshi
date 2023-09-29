@@ -36,6 +36,9 @@ const KittyLoad = {
       this.addTabToScript(tab);
     });
 
+    // Focus last focused window
+    this.addFocusToScript();
+
     await this.runScript();
   },
   getTabs() {
@@ -59,18 +62,21 @@ const KittyLoad = {
     _.each(tabs, (tab) => {
       const tabId = tab.id;
       const firstWindowId = tab.active_window_history[0];
+      const isTabFocused = tab.is_focused;
 
       // We create a mapping of windowId to window data
       const windows = {};
       _.each(tab.windows, (window) => {
         const uuid = firost.uuid();
-        const { id, cmdline, cwd, env } = window;
+        const { id, cmdline, cwd, env, is_focused } = window;
         const windowId = id;
         const isFirstWindow = firstWindowId == windowId;
+        const isFocused = isTabFocused && is_focused;
         windows[id] = {
           tabId,
           windowId,
           isFirstWindow,
+          isFocused,
           cmdline,
           cwd,
           env,
@@ -107,7 +113,7 @@ const KittyLoad = {
       type: 'tab',
       'tab-title': title,
       cwd: firstWindow.cwd,
-      var: `OROSHI_KITTY_UUID=${firstWindow.uuid}`,
+      var: `OROSHI_RESTORE_UUID=${firstWindow.uuid}`,
     });
     this.kitty('goto-layout', layout);
 
@@ -120,10 +126,15 @@ const KittyLoad = {
       return;
     }
 
+    // If there are no further split to do, we can also stop
+    if (!layoutState.two) {
+      return;
+    }
+
     // Focus the main window
     const mainWindow = this.getMainSplitWindow(layoutState.one);
     this.kitty('focus-window', {
-      match: `var:OROSHI_KITTY_UUID=${mainWindow.uuid}`,
+      match: `var:OROSHI_RESTORE_UUID=${mainWindow.uuid}`,
     });
 
     // Split the window
@@ -132,7 +143,7 @@ const KittyLoad = {
     this.kitty('launch', {
       type: 'window',
       location,
-      var: `OROSHI_KITTY_UUID=${secondaryWindow.uuid}`,
+      var: `OROSHI_RESTORE_UUID=${secondaryWindow.uuid}`,
       cwd: secondaryWindow.cwd,
     });
 
@@ -153,12 +164,21 @@ const KittyLoad = {
     return this.getMainSplitWindow(layoutState.one);
   },
   /**
+   * Put the focus on the last focused window of the last focused tab
+   **/
+  addFocusToScript() {
+    const focusedWindow = _.find(manifest, { isFocused: true });
+    this.kitty('focus-window', {
+      match: `var:OROSHI_RESTORE_UUID=${focusedWindow.uuid}`,
+    });
+  },
+  /**
    * Build a kitty remote command
    * @param {string} method Name of the method
    * @param {object} options Hash of arguments
    **/
   kitty(method, options = null) {
-    const result = ['kitty @', method];
+    const result = ['kitty @', `--to unix:${tmpDir}/kitty-socket`, method];
 
     // Passing all options as --flags
     if (_.isObject(options)) {
@@ -186,7 +206,7 @@ const KittyLoad = {
     await firost.write(content, this.scriptFilepath);
     await firost.run(`chmod +x ${this.scriptFilepath}`);
     console.info(content);
-    await firost.run(this.scriptFilepath);
+    // await firost.run(this.scriptFilepath);
   },
 };
 

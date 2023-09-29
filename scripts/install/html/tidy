@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# tidy is a linter/fixer for HTML
+# https://www.html-tidy.org/
+set -e
+
+local DOWNLOAD_URL="https://github.com/htacg/tidy-html5/releases/download/5.8.0/tidy-5.8.0-Linux-64bit.deb"
+
+cd ~/local/tmp
+wget $DOWNLOAD_URL -O tidy.deb
+sudo dpkg -i ./tidy.deb
+sudo apt-get -f install

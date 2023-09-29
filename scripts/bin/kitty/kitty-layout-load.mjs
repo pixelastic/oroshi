@@ -19,7 +19,7 @@ import { _ } from 'golgoth';
 import firost from 'firost';
 
 const tmpDir = path.resolve(os.homedir(), 'local/tmp/kitty');
-const windows = {};
+const manifest = {};
 const KittyLoad = {
   // The save is the JSON file extracted by kitty-save
   saveFilepath: path.resolve(tmpDir, 'save.json'),
@@ -29,12 +29,15 @@ const KittyLoad = {
   scriptContent: [],
   async run() {
     const tabs = this.getTabs();
-    this.registerWindows(tabs);
+    this.populateManifest(tabs);
 
     // Add all tabs to script
     _.each(tabs, (tab) => {
       this.addTabToScript(tab);
     });
+
+    // Focus last focused window
+    this.addFocusToScript();
 
     await this.runScript();
   },
@@ -43,30 +46,53 @@ const KittyLoad = {
     return _.reject(rawTabs, { title: 'Saving...' });
   },
   /**
-   * Returns a hash of all windows of a given tab.
-   * Each key is the window id and each value the window data
-   * Layout information is not stored here, just the content of each window
+   * Populates the manifest variable:
+   *  - Each key is an id as references on layout_state
+   *  - Each value is the corresponding window data
+   *
+   * Explanation: The layout_state key contains references to groups, which in
+   * turn contain references to windows. We'll create a better matching, where
+   * the id in layout_state matches an entry in the manifest, referencing
+   * a window.
+   *
+   * Each key is the state_layout id, each value the window data
    * @param {Array} tabs All tabs saved with kitty-save
    **/
-  registerWindows(tabs) {
+  populateManifest(tabs) {
     _.each(tabs, (tab) => {
-      const firstWindowId = tab.active_window_history[0];
       const tabId = tab.id;
-      // Add all windows to our hash
+      const firstWindowId = tab.active_window_history[0];
+      const isTabFocused = tab.is_focused;
+
+      // We create a mapping of windowId to window data
+      const windows = {};
       _.each(tab.windows, (window) => {
         const uuid = firost.uuid();
-        const { id, cmdline, cwd, env } = window;
+        const { id, cmdline, cwd, env, is_focused } = window;
         const windowId = id;
         const isFirstWindow = firstWindowId == windowId;
-        // Keep only relevant information from the windows
+        const isFocused = isTabFocused && is_focused;
         windows[id] = {
           tabId,
           windowId,
           isFirstWindow,
+          isFocused,
           cmdline,
           cwd,
           env,
           uuid,
+        };
+      });
+
+      // We save in the global manifest a reference from each group id to the
+      // matching window
+      _.each(tab.groups, (group) => {
+        // Each group seem to only have one window
+        const windowId = group.windows[0];
+        const groupId = group.id;
+        manifest[groupId] = {
+          groupId,
+          ...windows[windowId],
         };
       });
     });
@@ -79,7 +105,7 @@ const KittyLoad = {
     const { id, title, layout, layout_state } = tab;
 
     // Create a new tab with the first window in it
-    const firstWindow = _.find(windows, {
+    const firstWindow = _.find(manifest, {
       tabId: id,
       isFirstWindow: true,
     });
@@ -87,23 +113,28 @@ const KittyLoad = {
       type: 'tab',
       'tab-title': title,
       cwd: firstWindow.cwd,
-      env: `OROSHI_KITTY_UUID=${firstWindow.uuid}`,
+      var: `OROSHI_RESTORE_UUID=${firstWindow.uuid}`,
     });
     this.kitty('goto-layout', layout);
 
     this.addSplitToScript(layout_state.pairs, firstWindow);
   },
   addSplitToScript(layoutState) {
-    // If the layout is an integer, it represents the window id, and thus will
-    // does not need more splitting
+    // If the layout is an integer, it's a leaf and will already have been
+    // created
     if (_.isInteger(layoutState)) {
+      return;
+    }
+
+    // If there are no further split to do, we can also stop
+    if (!layoutState.two) {
       return;
     }
 
     // Focus the main window
     const mainWindow = this.getMainSplitWindow(layoutState.one);
     this.kitty('focus-window', {
-      match: `env:OROSHI_KITTY_UUID=${mainWindow.uuid}`,
+      match: `var:OROSHI_RESTORE_UUID=${mainWindow.uuid}`,
     });
 
     // Split the window
@@ -112,7 +143,7 @@ const KittyLoad = {
     this.kitty('launch', {
       type: 'window',
       location,
-      env: `OROSHI_KITTY_UUID=${secondaryWindow.uuid}`,
+      var: `OROSHI_RESTORE_UUID=${secondaryWindow.uuid}`,
       cwd: secondaryWindow.cwd,
     });
 
@@ -128,9 +159,18 @@ const KittyLoad = {
    **/
   getMainSplitWindow(layoutState) {
     if (_.isInteger(layoutState)) {
-      return windows[layoutState];
+      return manifest[layoutState];
     }
     return this.getMainSplitWindow(layoutState.one);
+  },
+  /**
+   * Put the focus on the last focused window of the last focused tab
+   **/
+  addFocusToScript() {
+    const focusedWindow = _.find(manifest, { isFocused: true });
+    this.kitty('focus-window', {
+      match: `var:OROSHI_RESTORE_UUID=${focusedWindow.uuid}`,
+    });
   },
   /**
    * Build a kitty remote command
@@ -138,7 +178,7 @@ const KittyLoad = {
    * @param {object} options Hash of arguments
    **/
   kitty(method, options = null) {
-    const result = ['kitty @', method];
+    const result = ['kitty @', `--to unix:${tmpDir}/kitty-socket`, method];
 
     // Passing all options as --flags
     if (_.isObject(options)) {

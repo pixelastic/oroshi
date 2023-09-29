@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+# Start kitty and restore to previous state
+
+# Start kitty and make it listen to remote commands on this socket
+# This allow remote commands to be sent from outside of kitty itself
+kitty \
+	--listen-on unix:/home/$USER/local/tmp/kitty/kitty-socket \
+	--session /home/$USER/.oroshi/config/kitty/startup_session_restore.conf \
+	&
+
+# Fetch last saved state and load it
+kitty-layout-load
+
+# Get bac
+kitty @ \
+	--to unix:/home/$USER/local/tmp/kitty/kitty-socket \
+	close-window \
+	--match var:OROSHI_RESTORE_UUID=initial
