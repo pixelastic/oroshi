@@ -27,7 +27,6 @@ nnoremap <silent> za :call FoldToggle()<CR>
 " Custom foldtext
 function! OroshiFoldText(...)
 	let displayedSymbol = ''
-	let displayedLineCount = ' ' . (v:foldend - v:foldstart) . ' '
 
 	let line = getline(v:foldstart)
 
@@ -36,26 +35,6 @@ function! OroshiFoldText(...)
 		return line
 	endif
 
-	" We check if we can add the number of lines
-	let hasLineCount=0
-	let displayedLineCountLength = StrLength(displayedLineCount)
-	let lineCountInsertRangeStart = byteidx(line, 1)
-	let lineCountInsertRangeEnd = byteidx(line, displayedLineCountLength)
-	let cookieCutter = line[lineCountInsertRangeStart:lineCountInsertRangeEnd]
-	let emptyString = repeat(' ', displayedLineCountLength)
-	if cookieCutter == emptyString
-		let hasLineCount=1
-	endif
-
-	let foldtext = displayedSymbol
-	if hasLineCount == 1
-		let foldtext .= displayedLineCount
-	else
-		let foldtext .= cookieCutter
-	endif
-
-	let foldtext .= line[lineCountInsertRangeEnd + 1:-1]
-
-	return foldtext
+	return displayedSymbol . line[byteidx(line, 1):-1]
 endfunction
 set foldtext=OroshiFoldText()
