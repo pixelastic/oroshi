@@ -26,9 +26,9 @@ Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' } " Colors (hexa decimal
 Plug 'ekalinin/Dockerfile.vim'                            " Docker
 Plug 'fladson/vim-kitty', { 'branch': 'main' }            " Kitty
 Plug 'vim-ruby/vim-ruby'                                  " Ruby
+Plug 'pedrohdz/vim-yaml-folds'                            " Yaml (folding)
 
 " Plug 'StanAngeloff/php.vim'
-" Plug 'avakhov/vim-yaml'
 " Plug 'cakebaker/scss-syntax.vim'
 " Plug 'cespare/vim-toml'
 " Plug 'chase/vim-ansible-yaml'

@@ -241,6 +241,8 @@ call s:Link('GitGutterChange', 'GIT_MODIFIED')
 call s:Link('GitGutterDelete', 'GIT_REMOVED')
 " }}}
 " Status line {{{
+call s:Highlight('StatusLineLintError', 'RED', 'GRAY_8')
+call s:Highlight('StatusLineLintWarning', 'YELLOW', 'GRAY_8')
 call s:Highlight('StatusLineFileEncodingError', 'RED', 'GRAY_8')
 call s:Highlight('StatusLineFileFormatError', 'RED', 'GRAY_8')
 call s:Highlight('StatusLineGitClean', 'GREEN', 'GRAY_8')
@@ -485,11 +487,12 @@ call s:Link('vimUserFunc', 'FUNCTION')
 " call s:Highlight('xmlAttrib', 'ALIAS_VARIABLE')
 " }}}
 " Yaml {{{
-" call s:Highlight('yamlAlias', 'YELLOW_6')
+call s:Link('yamlPlainScalar', 'STRING')
+call s:Link('yamlAlias', 'FUNCTION')
 " call s:Highlight('yamlBlockCollectionItemStart', 'TEAL_7')
 " call s:Highlight('yamlFlowString', 'BLUE')
-" call s:Highlight('yamlKeyValueDelimiter', 'TEAL_7')
-" call s:Highlight('yamlPlainScalar', 'BLUE')
+call s:Link('yamlKeyValueDelimiter', 'PUNCTUATION')
+call s:Link('yamlBlockCollectionItemStart', 'PUNCTUATION')
 " }}}
 " Zsh {{{
 call s:Link('shStatement', 'FUNCTION')

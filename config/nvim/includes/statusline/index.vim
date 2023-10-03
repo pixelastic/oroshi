@@ -23,7 +23,6 @@ let b:oroshiStatusLineGitStatus = ''
 function! OroshiStatusLine()
   let sl = ''
 
-
   " Current mode {{{
   let rawMode = mode()
   let modeName = 'Unknown'
@@ -75,6 +74,19 @@ function! OroshiStatusLine()
 	if exists('b:oroshiStatusLineGitStatus') && b:oroshiStatusLineGitStatus !=# ''
     let sl .= '%#StatusLineGit'.b:oroshiStatusLineGitStatus.'#ﰖ%* '
   endif
+  " }}}
+
+  " Linting errors {{{
+  let rawErrors = ale#statusline#Count(bufnr(''))
+  let errorCount = rawErrors.error + rawErrors.style_error
+  let warningCount = rawErrors.warning + rawErrors.style_warning
+  if errorCount !=# 0
+    let sl .= '%#StatusLineLintError# '.errorCount.' %*'
+  endif
+  if warningCount !=# 0
+    let sl .= '%#StatusLineLintWarning# '.warningCount.' %*'
+  endif
+
   " }}}
 
   " Line endings {{{
