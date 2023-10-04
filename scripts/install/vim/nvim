@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
-# Neovim
+# Neovim is the modern vim
+# https://neovim.io/
 sudo apt-get install neovim

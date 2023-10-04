@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Vint is a vimscript linter
+# https://github.com/Vimjas/vint
+
+# Vint needs to be installed with python 3 because it depends on some libraries
+# that are only available in python 3
+pyenv global 3
+pip install vim-vint
+
+~/.oroshi/scripts/deploy/vint
