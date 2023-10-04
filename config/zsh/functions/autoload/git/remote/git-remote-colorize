@@ -32,6 +32,6 @@ function git-remote-colorize() {
     return
   fi
 
-  colorize " $displayRemoteName" "$remoteColor"
+  colorize " $displayRemoteName" "$remoteColor"
   return
 }
