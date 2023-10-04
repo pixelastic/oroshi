@@ -1,7 +1,9 @@
 # Check if currently in a .git folder
 function git-directory-is-dot-git() {
-  if [[ $PWD == */\.git* ]]; then
-    return 0
-  fi
-  return 1
+	# In .git
+	[[ $PWD == *\.git ]] && return 0
+	# In a subdirectory of .git
+	[[ $PWD == *\.git/* ]] && return 0
+	return 1
+
 }
