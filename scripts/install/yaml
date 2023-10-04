@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-# Linter
-sudo apt-get install yamllint

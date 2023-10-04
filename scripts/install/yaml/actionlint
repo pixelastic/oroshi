@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+# actionlint is a linter for GitHub Actions yaml files
+# https://github.com/rhysd/actionlint
+set -e
+
+local DOWNLOAD_URL="https://github.com/rhysd/actionlint/releases/download/v1.6.26/actionlint_1.6.26_linux_amd64.tar.gz"
+local DOWNLOAD_NAME="actionlint.tar.gz"
+local INSTALL_PATH=~/local/etc/actionlint
+local BINARY_NAME="actionlint"
+
+mkdir -p $INSTALL_PATH
+cd $INSTALL_PATH
+
+wget $DOWNLOAD_URL -O $DOWNLOAD_NAME
+tar xvzf $DOWNLOAD_NAME
+
+cd ~/local/bin
+ln -s ${INSTALL_PATH}/$BINARY_NAME

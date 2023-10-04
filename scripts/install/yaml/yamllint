@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# yamllint is a linter for YAML
+# https://github.com/adrienverge/yamllint
+
+sudo apt-get install yamllint
