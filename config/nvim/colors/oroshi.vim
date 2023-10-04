@@ -466,7 +466,7 @@ call s:Link('shOption', 'FLAG')
 " call s:Highlight('tmuxFormatString', 'YELLOW')
 " }}}
 " Vim {{{
-" call s:Highlight('vim9Comment', 'ALIAS_ERROR') " Comments using #
+call s:Link('vim9Comment', 'ERROR') " Comments shouldn't start with #
 " call s:Highlight('vimOption', 'ALIAS_VARIABLE')
 " call s:Highlight('vimBracket', 'ALIAS_SPECIAL_CHAR')
 " call s:Highlight('vimMapMod', 'ALIAS_SPECIAL_CHAR')
