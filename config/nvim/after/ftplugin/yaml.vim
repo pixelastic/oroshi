@@ -2,7 +2,12 @@
 " Fixing
 let b:ale_fixers = ['prettier']
 " Linting
-let b:ale_linters = ['yamllint']
+" We have a specific linter for GitHub Actions workflows
+if YamlIsGitHubActions()
+  let b:ale_linters = ['actionlint']
+else
+  let b:ale_linters = ['yamllint']
+endif
 " Indentation rules {{{
 setlocal tabstop=2
 setlocal shiftwidth=2
