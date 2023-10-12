@@ -9,6 +9,10 @@ augroup markdown_autosave
   autocmd TabEnter <Buffer> update
 augroup END
 " }}}
+" Linting
+let b:ale_linters = ['textlint']
+let g:ale_textlint_executable = '/home/tim/.oroshi/scripts/bin/markdown/textlint-ale'
+" let b:ale_linters = ['textlint']
 " Styling {{{
 " Add headers with ,(1|2|3|4|5)
 nnoremap <buffer> <leader>& I# <Esc>j

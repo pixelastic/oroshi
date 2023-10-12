@@ -53,6 +53,7 @@ let s:coreGroups = {
       \ 'INTERPOLATION_STRING': 'oroshiInterpolationString:_:_',
       \ 'INTERPOLATION_VARIABLE': 'oroshiInterpolationVariable:_:_',
       \ 'INTERPOLATION_WRAPPER': 'oroshiInterpolationWrapper:_:_',
+      \ 'KEY': 'oroshiKey:_:_',
       \ 'KEYWORD': 'Keyword:_:_',
       \ 'LINK': 'oroshiLink:_:underline',
       \ 'MODIFIER': 'oroshiModifier:_:_',
@@ -381,13 +382,26 @@ call s:Link('htmlh6', 'TEXT')
 " call s:Highlight('htmlSpecialTagName', 'ALIAS_KEYWORD')
 " }}}
 " JavaScript / TypeScript {{{
-call s:Link('jsVariableDef', 'VARIABLE')
+call s:Highlight('jsGlobalNodeObjects', 'ALIAS_FUNCTION', '', 'bold')
 call s:Highlight('jsOperatorKeyword', 'ALIAS_FUNCTION', '', 'bold')
-" call s:Highlight('jsTaggedTemplate', 'ALIAS_FUNCTION')
-" call s:Highlight('jsArrowFunction', 'ALIAS_PUNCTUATION')
+call s:Highlight('typescriptOperator', 'ALIAS_FUNCTION', '', 'bold')
+call s:Highlight('typescriptExport', 'ALIAS_FUNCTION', '', 'bold')
 call s:Link('jsTemplateBraces', 'INTERPOLATION_WRAPPER')
 call s:Link('jsTemplateExpression', 'INTERPOLATION_VARIABLE')
-call s:Highlight('jsGlobalNodeObjects', 'ALIAS_FUNCTION', '', 'bold')
+call s:Link('jsVariableDef', 'VARIABLE')
+call s:Link('jsObjectKey', 'KEY')
+call s:Link('jsObjectValue', 'VARIABLE')
+call s:Link('typescriptObjectLabel', 'KEY')
+call s:Link('typescriptIdentifierName', 'VARIABLE')
+call s:Link('typescriptAssign', 'PUNCTUATION')
+call s:Link('typescriptDotNotation', 'PUNCTUATION')
+call s:Link('typescriptBraces', 'PUNCTUATION')
+call s:Link('typescriptParens', 'PUNCTUATION')
+call s:Link('typescriptTypeBracket', 'PUNCTUATION')
+call s:Link('typescriptTypeAnnotation', 'PUNCTUATION')
+call s:Link('typescriptObjectColon', 'PUNCTUATION')
+call s:Link('typescriptVariableDeclaration', 'VARIABLE')
+call s:Link('typescriptVariable', 'VARIABLE_TYPE')
 " }}}
 " JSON {{{
 call s:Link('jsonQuote', 'PUNCTUATION')

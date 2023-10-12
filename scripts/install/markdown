@@ -1,26 +1,32 @@
 #!/usr/bin/env zsh
 set -e
+# This has been commented out as all markdown linting should ideally be handled
+# through irori. But irori is still a work in progress.
+#
+# Still, to avoid having stuff in many different places, and as all dependencies
+# are node packages, they should be added as dependencies to irori, and irori
+# available globally.
 
-# Prettier
-yarn-global-add prettier
+# # Prettier
+# yarn-global-add prettier
 
-# Textlint
-# Textlint plugins need to be installed globally if textlint is to be called
-# globally
-yarn-global-add \
-	textlint@12.2.3 \
-	textlint-rule-alex@3.0.0 \
-	textlint-rule-common-misspellings@1.0.1 \
-	textlint-rule-editorconfig@1.0.3 \
-	textlint-rule-en-capitalization@2.0.3 \
-	textlint-rule-stop-words@3.0.1 \
-	textlint-rule-terminology@3.0.1 \
-	textlint-rule-write-good@2.0.0
+# # Textlint
+# # Textlint plugins need to be installed globally if textlint is to be called
+# # globally
+# yarn-global-add \
+# 	textlint@12.2.3 \
+# 	textlint-rule-alex@3.0.0 \
+# 	textlint-rule-common-misspellings@1.0.1 \
+# 	textlint-rule-editorconfig@1.0.3 \
+# 	textlint-rule-en-capitalization@2.0.3 \
+# 	textlint-rule-stop-words@3.0.1 \
+# 	textlint-rule-terminology@3.0.1 \
+# 	textlint-rule-write-good@2.0.0
 
-# Remark
-# Remark-lint plugins need to be installed in the same folder as the config file
-# so we need to run `yarn install` in `~/.oroshi` to add them.
-yarn-global-add remark-cli@11.0.0 \
-	remark-lint@9.1.1
+# # Remark
+# # Remark-lint plugins need to be installed in the same folder as the config file
+# # so we need to run `yarn install` in `~/.oroshi` to add them.
+# yarn-global-add remark-cli@11.0.0 \
+# 	remark-lint@9.1.1
 
-echo "Now, run yarn install in ~.oroshi"
+# echo "Now, run yarn install in ~.oroshi"

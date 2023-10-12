@@ -178,6 +178,7 @@ aliasColors[IMPORT]="YELLOW_LIGHT"
 aliasColors[INTERPOLATION_STRING]="BLUE"        # The wrapping string
 aliasColors[INTERPOLATION_VARIABLE]="VIOLET"    # The variable name
 aliasColors[INTERPOLATION_WRAPPER]="YELLOW"     # The ${} delimiter
+aliasColors[KEY]="VIOLET_3"                     # Keys of dictionaries
 aliasColors[KEYWORD]="GREEN"
 aliasColors[NOISE]="TEAL_7"
 aliasColors[NUMBER]="BLUE"                      # Bold
