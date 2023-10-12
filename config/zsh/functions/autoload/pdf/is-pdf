@@ -1,0 +1,9 @@
+# Check if given file is a pdf
+# Usage:
+# $ is-pdf ./path/to/file.pdf    # True if file is a pdf
+function is-pdf() {
+	local input=$1
+
+	file $input |
+		grep --quiet ": PDF document"
+}

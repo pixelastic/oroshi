@@ -1,0 +1,49 @@
+# Extract one or multiple pages from a given pdf
+# Usage:
+# $ pdf-split ./path/to/file.pdf 1     # Extract page 1
+# $ pdf-split ./path/to/file.pdf 1-4   # Extract from page 1 to 4
+# $ pdf-split ./path/to/file.pdf last  # Extract last page
+function pdf-split() {
+	local input=$1
+	local rawRange=$2
+
+	# Stop if no input given
+	if [[ $input == "" ]]; then
+		echo "Usage:"
+		echo "$ pdf-split ./path/to/file.pdf 3"
+		echo "$ pdf-split ./path/to/file.pdf 3-5"
+		echo "$ pdf-split ./path/to/file.pdf last"
+		return 0
+	fi
+	# Stop if no range given
+	if [[ $rangeStart == "" ]]; then
+		echo "You need to pass either a page number (like 3) or a range (like 3-5)"
+		return 0
+	fi
+
+	# Stop if not a pdf
+	is-pdf $input || return 0
+
+	# Read page start and page end
+	local rangeSplit=(${(@s/-/)rawRange})
+	local rangeStart=$rangeSplit[1]
+	local rangeEnd=$rangeSplit[2]
+
+	# Force range in the actual number of pages
+	local pageCount="$(pdf-page-count $input)"
+	[[ $rangeStart == "last" ]] && rangeStart=$pageCount
+	[[ $rangeEnd == "" ]] && rangeEnd=$rangeStart
+	[[ $rangeStart -gt $pageCount ]] && rangeStart=$pageCount
+	[[ $rangeEnd -gt $pageCount ]] && rangeEnd=$pageCount
+
+	# Build the final range
+	local range="${rangeStart}-${rangeEnd}"
+	[[ $rangeStart == "$rangeEnd" ]] && range=$rangeStart
+
+	# Generate the output filename
+	local output="${input//\.pdf/_${range}.pdf}"
+	
+	pdftk $input \
+		cat $range \
+		output $output
+}

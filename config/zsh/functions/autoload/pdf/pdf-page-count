@@ -1,0 +1,9 @@
+# Return the number of pages of a given PDF file
+# Usage:
+# $ pdf-page-count ./path/to/file.pdf    # 42
+function pdf-page-count() {
+	local input=$1
+	pdfinfo $input |
+		grep '^Pages:' |
+		grep --only-matching '[0-9]\+'
+}
