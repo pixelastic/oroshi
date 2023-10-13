@@ -1,4 +1,11 @@
 " MARKDOWN
+" Fixing & Linting {{{
+" We trick ALE into using a custom version of textlint that actually defers to
+" the irori config
+let b:ale_fixers = ['textlint']
+let b:ale_linters = ['textlint']
+let g:ale_textlint_executable = '/home/tim/.oroshi/scripts/bin/markdown/textlint-ale'
+" }}}
 " Saving {{{
 " This will save the file on disk as often as possible. When writing markdown,
 " I don't want to lose what I wrote because of a glitch.
@@ -9,10 +16,6 @@ augroup markdown_autosave
   autocmd TabEnter <Buffer> update
 augroup END
 " }}}
-" Linting
-let b:ale_linters = ['textlint']
-let g:ale_textlint_executable = '/home/tim/.oroshi/scripts/bin/markdown/textlint-ale'
-" let b:ale_linters = ['textlint']
 " Styling {{{
 " Add headers with ,(1|2|3|4|5)
 nnoremap <buffer> <leader>& I# <Esc>j

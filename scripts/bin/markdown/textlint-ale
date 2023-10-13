@@ -1,31 +1,39 @@
 #!/usr/bin/env zsh
-# Wrapper of textlint to be used by ALE in vim
-# Usage:
+# Wrapper of textlint to be used by ALE in vim. This will internally call either
+# textlint-ale-lint or textlint-ale-fix depending on the usage
+#
+# Usage (Lint):
 # $ textlint-ale \
 #   -f json \
 #   --stdin \
 #   --stdin-filename '/path/to/original/file.md' \
 #   < '/path/to/tmp/file.md'
+
+# Usage (Fix):
+# $ textlint-ale \
+#   --fix \
+#   '/path/to/tmp/file.md'
 #
-# textlint reads it config from .textlinrc files, recursively up the tree. There
-# doesn't seem to have a way to define a textlintrc file to use specifically, so
-# we'll move our file to a directory where the file is present and run it from
-# there
+# textlint reads its config from .textlinrc files, recursively up the tree.
+# There doesn't seem to have a way to define a textlintrc file to use
+# specifically from the commandline, so we'll put all our config in a custom dir
+# and run textlint from there
 set -e
 
-# We get the name of the original file from --stdin-filename
+# We parse the options
 zparseopts -E -D \
-	-stdin-filename:=flagStdinFilename
+	-stdin-filename:=flagStdinFilename \
+	-fix=flagFix
+
+local isFix=${#flagFix}
 local stdinFilename=${flagStdinFilename[2]}
 
-if [[ $stdinFilename == "" ]]; then
-	exit 1
-fi
-
+# Global variables
+local sandbox=/tmp/oroshi/textlint
 local iroriFolder=~/local/www/projects/irori
+local textlintBin="${iroriFolder}/node_modules/.bin/textlint"
 
 # Create the sandbox folder
-local sandbox=/tmp/oroshi/textlint
 mkdir -p $sandbox
 
 # Add the config
@@ -34,15 +42,14 @@ ln -fs $textlintrcPath "${sandbox}/.textlintrc.js"
 local terminologyPath="${iroriFolder}/lib/configs/terminology.json"
 ln -fs $terminologyPath ${sandbox}
 
-# Copy the source file here
-local uuid="$(md5 ${stdinFilename})"
-local tmpFilepath="${sandbox}/${uuid}.md"
-cp $stdinFilename $tmpFilepath
-
-# Run textlint on it
+# Run a different subcommand if lint or fix
 cd $sandbox
-local textlintBin="${iroriFolder}/node_modules/.bin/textlint"
-${textlintBin} -f json --stdin --stdin-filename "$stdinFilename" <$tmpFilepath
-
-# Cleanup once done
-rm $tmpFilepath
+if [[ $isFix == "1" ]]; then
+	# ALE creates a temporary copy of the file, so we'll execute the fix on it
+	local input=${1:a}
+	${textlintBin} --fix "$input"
+else
+	# We'll execute the lint directly on the file being edited
+	local input=$stdinFilename
+	${textlintBin} -f json --stdin --stdin-filename "$input" <$input
+fi
