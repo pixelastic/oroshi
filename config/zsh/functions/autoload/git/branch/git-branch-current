@@ -4,17 +4,26 @@
 # $ git-branch-current     # If in an empty repo, still returns main
 # $ git-branch-current     # Returns 1 if not in a git repo
 function git-branch-current() {
-  local branchName="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
+	local branchName="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
 
-  # No result? Then we might not be in a git repo
-  if [[ $branchName == "" ]]; then
-    return 1
-  fi
+	# No result? Then we might not be in a git repo
+	if [[ $branchName == "" ]]; then
+		return 1
+	fi
 
-  # If it returns HEAD, it's because we are in a bare repo. We'll assume it's
-  # main instead
-  [[ $branchName == "HEAD" ]] && branchName="main"
+	# If it returns HEAD, it's because we are either:
+	# - rebasing
+	# - in a bare repo
+	if [[ $branchName == "HEAD" ]]; then
+		if git-rebase-in-progress; then
+			local gitRoot="$(git-directory-root)"
+			local rebaseRoot="${gitRoot}/.git/rebase-merge"
+			local headName="$(cat ${rebaseRoot}/head-name)"
+			branchName=$headName[12,-1]
+		else
+			branchName="$(git-config-get init.defaultBranch)"
+		fi
+	fi
 
-  echo $branchName
+	echo $branchName
 }
-
