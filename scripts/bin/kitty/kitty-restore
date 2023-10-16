@@ -8,11 +8,17 @@ kitty \
 	--session /home/$USER/.oroshi/config/kitty/startup_session_restore.conf \
 	&
 
-# Fetch last saved state and load it
-kitty-layout-load
-
-# Get bac
-kitty @ \
-	--to unix:/home/$USER/local/tmp/kitty/kitty-socket \
-	close-window \
-	--match var:OROSHI_RESTORE_UUID=initial
+# Fetch last saved state and load it if available
+if kitty-layout-load; then
+	# Delete the initial window created by first Kitty invocation
+	kitty @ \
+		--to unix:/home/$USER/local/tmp/kitty/kitty-socket \
+		close-window \
+		--match var:OROSHI_RESTORE_UUID=initial
+else
+	kitty @ \
+		--to unix:/home/$USER/local/tmp/kitty/kitty-socket \
+		set-tab-title \
+		--match var:OROSHI_RESTORE_UUID=initial \
+		"zsh (failed to restore)"
+fi

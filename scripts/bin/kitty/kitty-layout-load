@@ -49,8 +49,13 @@ const KittyLoad = {
     await this.runScript();
   },
   getTabs() {
-    const rawTabs = require(this.saveFilepath)[0].tabs;
-    return _.reject(rawTabs, { title: 'Saving...' });
+    try {
+      const rawTabs = require(this.saveFilepath)[0].tabs;
+      return _.reject(rawTabs, { title: 'Saving...' });
+    } catch (e) {
+      console.info(`Unable to read ${this.saveFilepath}`);
+      firost.exit(1);
+    }
   },
   /**
    * Populates the manifest variable:
