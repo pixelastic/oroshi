@@ -1,6 +1,24 @@
 #!/usr/bin/env zsh
 # Rebase current branch on top of specified branch
 # Usage:
-# $ git-branch-rebase
+# $ git-branch-rebase master   # Rebase master on current branch
+# $ git-branch-rebase master --keep-local  # Prefer local updates over remote
+# $ git-branch-rebase master --keep-remote # Prefer remote updates over local
 
-git rebase $@
+zparseopts -E -D \
+	-keep-remote=flagKeepRemote \
+	-keep-local=flagKeepLocal
+
+local isKeepLocal=${#flagKeepLocal}
+local isKeepRemote=${#flagKeepRemote}
+
+if [[ $isKeepLocal == "1" && $isKeepRemote == "1" ]]; then
+	echo "You need to pick either --keep-local or --keep-remote, not both"
+	exit 1
+fi
+
+local additionalArguments=""
+[[ $isKeepLocal == "1" ]] && additionalArguments="--strategy-option=theirs"
+[[ $isKeepRemote == "1" ]] && additionalArguments="--strategy-option=ours"
+
+git rebase $additionalArguments $@

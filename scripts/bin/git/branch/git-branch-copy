@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# Copy a branch
+# Usage
+# $ git-branch-copy docs            # Create a copy of the current branch, named docs
+# $ git-branch-copy docs archive    # Create a copy of the docs branch, named archive
+
+git branch --copy $@

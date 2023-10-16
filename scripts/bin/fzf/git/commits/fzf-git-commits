@@ -4,6 +4,7 @@
 # Build the display line
 local formatString=""
 formatString+="%C(${COLOR_ALIAS_GIT_COMMIT}) %h%Creset  "
+formatString+="%C(${COLOR_ALIAS_GIT_AUTHOR}) %an%Creset  "
 formatString+="%C(${COLOR_ALIAS_DATE}) %cd%Creset  "
 formatString+="%C(${COLOR_ALIAS_GIT_MESSAGE})%s%Creset"
 
@@ -15,6 +16,7 @@ git \
   --format="$formatString" \
   --color=always \
   | fzf \
+    --no-keep-right \
     --preview "fzf-git-commits-preview {}" \
 )"
 
