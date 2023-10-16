@@ -1,0 +1,48 @@
+# Create a window and run the specified command in it
+new_tab one
+launch zsh
+
+new_tab two
+launch zsh
+
+new_tab three
+launch zsh
+
+new_tab four
+launch zsh
+
+new_tab five
+launch zsh
+
+new_tab six
+launch zsh
+
+new_tab seven
+launch zsh
+
+new_tab eight
+launch zsh
+
+new_tab nine
+launch zsh
+
+new_tab ten
+launch zsh
+
+new_tab eleven
+launch zsh
+
+new_tab twelve
+launch zsh
+
+new_tab thirteen
+launch zsh
+
+new_tab fourteen
+launch zsh
+
+new_tab fifteen
+launch zsh
+
+new_tab sixteen
+launch zsh
