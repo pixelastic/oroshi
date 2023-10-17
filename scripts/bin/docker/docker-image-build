@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+# Build a new image from a Dockerfile
+# Usage:
+# $ docker-image-build            # Build local directory image
+# $ docker-image-build image-name # Set the image name
+
+# If no image name passed, we default to the repository name
+local imageName=$1
+[[ $imageName == "" ]] && imageName="$(git-github-remote-project)"
+
+# If another image with the same name already exist, we need to remove it first
+if docker-image-exists $imageName; then
+	docker-image-remove $imageName
+fi
+
+# We build our new image
+docker build . --tag ${imageName}

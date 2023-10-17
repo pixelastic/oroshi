@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Squash all commits of the current branch together
+# Squash all commits before the specified commit together
 # It will create a new commit with a text message set as the sum of all commits
 #
 # Usage :
@@ -15,17 +15,17 @@ local commitHash=$1
 
 # Stop if no such commit
 if ! git-commit-exists $commitHash; then
-  echo "Commit $commitHash does not exist"
-  exit 1
+	echo "Commit $commitHash does not exist"
+	exit 1
 fi
 
 # Gather all commit messages since then
 local tmpCommitMessagePath=/tmp/vit_git-branch-squash-commitmsg
 # First, the main commit message being the branch name
-echo "Squash up to $commitHash\n\n" > $tmpCommitMessagePath
+echo "Squash up to $commitHash\n\n" >$tmpCommitMessagePath
 # Now, the core of the message being all the commits
 git log --format=%B --reverse ${commitHash}... \
-  >> $tmpCommitMessagePath
+	>>$tmpCommitMessagePath
 
 # Cancel all commits
 git reset --soft $commitHash

@@ -2,10 +2,7 @@
 # Push a docker image to GitHub
 # Usage:
 # $ docker-image-push ghcr.io/pixelastic/alpine    # Push the image
-#
-# Note: See all images here: https://github.com/users/pixelastic/packages/container/package/alpine
 
 local imageName="$1"
 
 docker push $imageName
-

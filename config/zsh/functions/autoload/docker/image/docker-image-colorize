@@ -3,7 +3,7 @@
 # $ docker-image-colorize alpine                                # alpine
 # $ docker-image-colorize alpine:latest                         # alpine:latest
 # $ docker-image-colorize alpine --with-icon                    #  alpine
-# $ docker-image-colorize alpine --with-icon                    #  alpine
+# $ docker-image-colorize alpine --with-icon --remote           #  alpine
 # $ docker-image-colorize ghcr.io/pixelastic/alpine --with-icon #  alpine
 function docker-image-colorize() {
   zparseopts -E -D \

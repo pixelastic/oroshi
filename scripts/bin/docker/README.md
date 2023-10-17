@@ -19,6 +19,11 @@ to pull them. With arguments, it pulls the specific images.
 
 Completion suggests all official images.
 
+### `docker-image-build`
+
+Build a new image from the local `Dockerfile` with the specified name (default
+to name of the repository)
+
 ### `docker-image-remove`
 
 Deletes local images. `docker-image-remove ubuntu alpine` will remove all
