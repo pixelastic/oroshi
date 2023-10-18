@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+# act is a GitHub Actions local runner
+# https://github.com/nektos/act
+set -e
+
+local DOWNLOAD_URL="https://github.com/nektos/act/releases/download/v0.2.52/act_Linux_x86_64.tar.gz"
+local INSTALL_DIRECTORY=~/local/etc/act
+local LOCAL_FILE="act.tar.gz"
+
+# Download file
+mkdir -p $INSTALL_DIRECTORY
+cd $INSTALL_DIRECTORY
+wget "$DOWNLOAD_URL" -O "$LOCAL_FILE"
+
+# Extract it
+tar xvzf $LOCAL_FILE
+rm $LOCAL_FILE
+
+# Link binary
+cd ~/local/bin
+ln -fs ../etc/act/act .

@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-
-go install github.com/nektos/act@latest

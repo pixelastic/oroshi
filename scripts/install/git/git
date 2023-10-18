@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Git is a version control system
 set -e
 
 # Installing git from source
@@ -8,18 +9,15 @@ cd ./git
 
 # Installing dependencies
 sudo apt-get install \
-  libcurl4-gnutls-dev \
-  libexpat1-dev \
-  gettext \
-  libz-dev \
-  libssl-dev \
-  asciidoc \
-  xmlto \
-  docbook2x
+	libcurl4-gnutls-dev \
+	libexpat1-dev \
+	gettext \
+	libz-dev \
+	libssl-dev \
+	asciidoc \
+	xmlto \
+	docbook2x
 
 # Compiling
 make prefix="/home/$USER/local" all doc info
 sudo make prefix="/home/$USER/local" install install-doc install-html install-info
-
-# Installing gh
-~/.oroshi/scripts/install/gh
