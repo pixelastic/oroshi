@@ -4,10 +4,15 @@
 #
 # Usage :
 # $ git-branch-squash                 # Squash from the latest fork
+# $ git-branch-squash -f / --force    # Skip the pre-commit hook
 # $ git-branch-squash develop         # Squash from develop
 # $ git-branch-squash abcdef          # Squash from commit abcdef
-
 set -e
+
+zparseopts -E -D \
+	f=flagForce \
+	-force=flagForce
+local isForce=${#flagForce}
 
 local commitHash=$1
 # If no commit hash provided, we squash from the branch closest parent
@@ -31,4 +36,6 @@ git log --format=%B --reverse ${commitHash}... \
 git reset --soft $commitHash
 
 # Commit them in one commit
-git commit --edit -F $tmpCommitMessagePath
+local additionalArguments=""
+[[ $isForce == "1" ]] && additionalArguments="--no-verify"
+git commit --edit -F $additionalArguments $tmpCommitMessagePath

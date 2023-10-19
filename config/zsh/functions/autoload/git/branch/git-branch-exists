@@ -1,7 +1,9 @@
 # Check if the given branch exists
 # Usage:
-# $ git-branch-exists main           # Check a local branch
-# $ git-branch-exists origin/main    # Check a remote branch
+# $ git-branch-exists main                 # Check a local branch
+# $ git-branch-exists feat/actions         # Check a local branch
+# $ git-branch-exists origin/main          # Check a remote branch
+# $ git-branch-exists origin/feat/actions  # Check a remote branch
 function git-branch-exists() {
   local branchName="$1"
   if [[ "$branchName" == "" ]]; then
@@ -9,13 +11,17 @@ function git-branch-exists() {
     return 1
   fi
 
-  # Checking a remote branch instead
+  # It is a xxxx/yyyy branch. Is it a remote one?
   if [[ "$branchName" =~ "/" ]]; then
     local branchSplit=(${(@s:/:)branchName})
     local remoteName="$branchSplit[1]"
-    branchName="$branchSplit[2]"
+    local remoteBranchName=${(j:/:)branchSplit[2,-1]}
 
-    git-branch-exists-remote "$branchName" "$remoteName"
+    # Is it a remote
+    if git-remote-exists $remoteName; then
+      git-branch-exists-remote "$remoteBranchName" "$remoteName"
+    fi
+
     return $?
   fi
 
