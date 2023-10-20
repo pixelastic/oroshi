@@ -17,12 +17,11 @@ function git-branch-exists() {
     local remoteName="$branchSplit[1]"
     local remoteBranchName=${(j:/:)branchSplit[2,-1]}
 
-    # Is it a remote
+    # Is the first part a remote, or part of the local branch name?
     if git-remote-exists $remoteName; then
       git-branch-exists-remote "$remoteBranchName" "$remoteName"
+      return $?
     fi
-
-    return $?
   fi
 
   # Check locally if the branch exists
