@@ -38,7 +38,7 @@ if [[ $1 == "" ]]; then
 fi
 
 # Inputs are all arguments, except the last one
-local inputs=${@[@]:1:-1}
+local inputs=(${@[1,-2]})
 local newDimensions=${@[-1]}
 
 for input in $inputs; do
@@ -61,8 +61,13 @@ for input in $inputs; do
     newHeight=$newDimensions
   fi
 
-  # By default, we prevent resizing to a bigger dimension
-  if [[ $isUpscale == "0" ]]; then
+  # Check if resize is absolute or relative
+  local isRelativeResize=0
+  [[ $newDimensions == *%* ]] && isRelativeResize=1
+
+  # By default, we prevent resizing to a bigger dimension (unless it's
+  # a relative resize)
+  if [[ $isUpscale == "0" && $isRelativeResize == "0" ]]; then
     [[ $newWidth -gt $currentWidth ]] && newWidth=$currentWidth
     [[ $newHeight -gt $currentHeight ]] && newHeight=$currentHeight
   fi
