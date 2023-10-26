@@ -29,7 +29,7 @@ for branchName in $@; do
 		continue
 	fi
 
-	git rebase $additionalArguments $@
+	git rebase $additionalArguments $branchName
 
 	# Stop when we found a matching branch
 	exit 0

@@ -8,7 +8,6 @@
 # $ git-branch-switch main master  # Go to main or master
 
 for commitRef in $@; do
-	echo $commitRef
 	# Skip non-existing commits
 	if ! git-commit-exists $commitRef; then
 		continue
