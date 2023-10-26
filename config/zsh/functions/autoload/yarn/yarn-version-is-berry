@@ -1,0 +1,6 @@
+# Returns true if we are using yarn berry (anything above yarn 1)
+# Usage:
+# $ yarn-version-is-berry           # true if using yarn 2+
+function yarn-version-is-berry() {
+	yarn --version | grep --invert-match --quiet '^1'
+}

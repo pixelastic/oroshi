@@ -27,11 +27,16 @@ function yarn-update() {
     return 1
   fi
 
-  # Build the list of deps
-  local dependencylist=()
-  for dependencyName in $dependencies; do
-    dependencyList+=(${dependencyName}@latest)
-  done
-
-  yarn upgrade ${=dependencyList}
+  # The underlying method to call is different in yarn classic (v1) and yarn
+  # berry (2+)
+  if yarn-version-is-berry; then
+    yarn up --exact ${=dependencies}
+  else
+    # yarn classic requires @latest to be added
+    local dependencylist=()
+    for dependencyName in $dependencies; do
+      dependencyList+=(${dependencyName}@latest)
+    done
+    yarn upgrade ${=dependencyList}
+  fi
 }
