@@ -1,9 +1,10 @@
 #!/usr/bin/env zsh
 # Rebase current branch on top of specified branch
 # Usage:
-# $ git-branch-rebase master   # Rebase master on current branch
-# $ git-branch-rebase master --keep-local  # Prefer local updates over remote
-# $ git-branch-rebase master --keep-remote # Prefer remote updates over local
+# $ git-branch-rebase main               # Rebase main on current branch
+# $ git-branch-rebase main master        # Rebase master if main does not exist
+# $ git-branch-rebase main --keep-local  # Prefer local updates over remote
+# $ git-branch-rebase main --keep-remote # Prefer remote updates over local
 
 zparseopts -E -D \
 	-keep-remote=flagKeepRemote \
@@ -21,4 +22,18 @@ local additionalArguments=""
 [[ $isKeepLocal == "1" ]] && additionalArguments="--strategy-option=theirs"
 [[ $isKeepRemote == "1" ]] && additionalArguments="--strategy-option=ours"
 
-git rebase $additionalArguments $@
+# Check all arguments until we find a branch that matches
+for branchName in $@; do
+	# Skip non-existing commits
+	if ! git-branch-exists $branchName; then
+		continue
+	fi
+
+	git rebase $additionalArguments $@
+
+	# Stop when we found a matching branch
+	exit 0
+done
+
+echo "Branche(s) not found"
+exit 1

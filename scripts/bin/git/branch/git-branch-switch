@@ -7,22 +7,23 @@
 # $ git-branch-switch 13cd455      # Go into detached HEAD at this commit
 # $ git-branch-switch main master  # Go to main or master
 
-for commitRef in $argv; do
-  # Skip non-existing commits
-  if ! git-commit-exists $commitRef; then
-    continue
-  fi
+for commitRef in $@; do
+	echo $commitRef
+	# Skip non-existing commits
+	if ! git-commit-exists $commitRef; then
+		continue
+	fi
 
-  local previousCommit="$(git-commit-current)"
+	local previousCommit="$(git-commit-current)"
 
-  # Switch to the branch
-  git checkout --quiet $commitRef
+	# Switch to the branch
+	git checkout --quiet $commitRef
 
-  # Update dependencies if needed
-  git-dependencies-update $previousCommit
+	# Update dependencies if needed
+	git-dependencies-update $previousCommit
 
-  # Stop when we found a matching branch
-  exit 0
+	# Stop when we found a matching branch
+	exit 0
 done
 
 # No matching branch found
