@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
-
 # Refresh Kitty configuration, by sending SIGUSR1 to every instance of it
+
 local kittyPIDs="$(pgrep kitty)"
 [[ "$kittyPIDs" == "" ]] && exit 1
 for pid in ${=kittyPIDs}; do

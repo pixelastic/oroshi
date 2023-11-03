@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+# Toggle fullscreen in the current kitty tab
+# This should have no effect if there is only one split
+
+local unixSocket="--to unix:/home/tim/local/tmp/kitty/kitty-socket"
+
+# We extract the current layout and number of splits in one jq pass
+# as something like 3:splits
+function getCurrentTabJSON() {
+	kitty @ ${=unixSocket} \
+		ls \
+		--match-tab state:focuses |
+		jq -r '.[0].tabs[0] | "\(.groups | length):\(.layout)"'
+
+}
+local tabInfo="$(getCurrentTabJSON)"
+local tabInfoSplit=(${(@s/:/)tabInfo})
+local splitCount=$tabInfoSplit[1]
+local currentLayout=$tabInfoSplit[2]
+
+# Stop if only one split
+[[ $splitCount == "1" ]] && exit 0
+
+# Now switch between splits and stack
+[[ $currentLayout == "splits" ]] && nextLayout="stack"
+[[ $currentLayout == "stack" ]] && nextLayout="splits"
+kitty @ ${=unixSocket} goto-layout $nextLayout
