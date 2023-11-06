@@ -1,0 +1,9 @@
+# Open a pdf for visualization
+# Note: This looks like a simple wrapper, but is used to define a custom
+# completion method to only suggest image files
+# Usage:
+# $ pdf-open ./file.pdf        # Display file
+
+function pdf-open() {
+	evince $@
+}

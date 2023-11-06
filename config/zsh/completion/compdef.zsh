@@ -92,6 +92,12 @@ compdef '_files -g "*.svg"' \
 	svg2jpg \
 	svg2png
 # }}}
+# PDF {{{
+compdef '_files -g "*.pdf"' \
+	pdf-open \
+	pdf-page-count \
+	png-split
+# }}}
 # NVM {{{
 compdef _nvm-lazyload lazyloadNvm
 # }}}
