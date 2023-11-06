@@ -15,11 +15,6 @@ function pdf-split() {
 		echo "$ pdf-split ./path/to/file.pdf last"
 		return 0
 	fi
-	# Stop if no range given
-	if [[ $rangeStart == "" ]]; then
-		echo "You need to pass either a page number (like 3) or a range (like 3-5)"
-		return 0
-	fi
 
 	# Stop if not a pdf
 	is-pdf $input || return 0
@@ -28,6 +23,12 @@ function pdf-split() {
 	local rangeSplit=(${(@s/-/)rawRange})
 	local rangeStart=$rangeSplit[1]
 	local rangeEnd=$rangeSplit[2]
+	
+	# Stop if no range given
+	if [[ $rangeStart == "" ]]; then
+		echo "You need to pass either a page number (like 3) or a range (like 3-5)"
+		return 0
+	fi
 
 	# Force range in the actual number of pages
 	local pageCount="$(pdf-page-count $input)"
