@@ -22,6 +22,12 @@ if [[ $filetypeGroup == "image" ]]; then
   exit 0
 fi
 
+# Cleanup the screen from any previously displayed image
+kitty icat \
+	--clear \
+	--transfer-mode=memory \
+	--stdin=no
+
 # Default is text preview
 local highlightLine=${flagHighlightLine[2]}
 local highlightQuery=${flagHighlightQuery[2]}
@@ -33,7 +39,7 @@ local contextSize=4
 # If a specific line is passed, we highlight it and the context around only
 if [[ $highlightLine != "" ]]; then
   local lineRangeMin=$(($highlightLine - $contextSize))
-  [[ $lineRangeMin < 0 ]] && lineRangeMin=0
+  [[ $lineRangeMin -lt 0 ]] && lineRangeMin=0
   local lineRangeMax=$(($highlightLine + $contextSize))
   local highlightFlag="--highlight-line $highlightLine"
 fi
