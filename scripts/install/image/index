@@ -25,7 +25,3 @@ sudo apt-get install \
 # GIF
 ~/.oroshi/scripts/install/image/gifsicle
 ~/.oroshi/scripts/install/image/asciinema
-
-# PDF
-~/.oroshi/scripts/install/image/pdf
-~/.oroshi/scripts/install/image/xournal

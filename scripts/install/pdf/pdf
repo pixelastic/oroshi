@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
 sudo apt-get install \
-  xpdf \
-  pdftk \
-  texlive-extra-utils
-  xournal
+	xpdf \
+	pdftk \
+	texlive-extra-utils
 
 ## Note:
 # If you're having an error similar to this one when attempting to convert
@@ -25,6 +24,3 @@ sudo apt-get install \
 # comment out the following line:
 # <policy domain="resource" name="disk" value="1GiB"/>
 # This will remove limits and allow converting large files
-
-
-

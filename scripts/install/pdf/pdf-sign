@@ -1,0 +1,25 @@
+#!/usr/bin/env zsh
+# PDFSign is a GUI tool to visually add a transparent signature on a PDF
+# file
+# https://github.com/svenssonaxel/pdf-sign
+#
+# Usage:
+# $ pdf-sign ./file-to-sign.pdf  # Move the signature in a GUI, then save
+set -e
+
+# Install dependencies
+sudo apt-get update
+sudo apt-get install python3-tk
+
+# Clone code
+cd ~/local/etc
+git clone git@github.com:svenssonaxel/pdf-sign.git
+cd pdf-sign
+
+# Create binaries
+cd ~/local/bin
+ln -fs ../etc/pdf-sign/pdf-sign .
+
+# Copy my signature
+mkdir -p ~/.pdf_signatures
+cp ~/perso/Dropbox/tim/ids/Signature.pdf ~/.pdf_signatures/tim.pdf

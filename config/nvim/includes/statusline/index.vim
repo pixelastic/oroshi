@@ -140,7 +140,7 @@ function! OroshiStatusLine()
   " }}}
 
   " Ruler {{{
-  let sl .= ' %2.c:%2.l %2p%% ' " current char
+  let sl .= ' %2.c:%2.l %3p%% ' " current char
   let sl .= ' 0x%2.B' " current char
   " let sl .= ' %2.c/%2.{&textwidth}' " current colum / max columns
   " let sl .= ' %3l/%3L' " current line / max line
