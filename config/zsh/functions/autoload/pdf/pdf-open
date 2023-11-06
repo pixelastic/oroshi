@@ -5,5 +5,5 @@
 # $ pdf-open ./file.pdf        # Display file
 
 function pdf-open() {
-	evince $@
+	gui evince $@
 }
