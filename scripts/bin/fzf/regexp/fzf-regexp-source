@@ -4,6 +4,7 @@
 # $ fzf-regexp-source
 # --query             # Mandatory, query to look for
 # --directory         # Mandatory, base directory to search
+set -e
 
 zmodload zsh/zutil
 zparseopts -E -D \
@@ -63,6 +64,8 @@ cd $directory
 # Note:
 # --null-data makes sed operate on the full text instead of individual lines
 # --regexp-extended allow to use () instead of \(\), for readability
+# We use ":" (colon) instead of "/" (slash) in the sed search and replace as
+# : will probably not exist in the filepath
 rg \
 	--no-heading \
 	--with-filename \
@@ -70,4 +73,4 @@ rg \
 	sed \
 		--null-data \
 		--regexp-extended \
-		"s_${regexpTitleSearch}_${regexpTitleReplace}_g;s_${regexpDirectorySearch}_${regexpDirectoryReplace}_g"
+		"s:${regexpTitleSearch}:${regexpTitleReplace}:g;s:${regexpDirectorySearch}:${regexpDirectoryReplace}:g"
