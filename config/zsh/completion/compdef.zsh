@@ -5,7 +5,8 @@
 #
 # To make dev and debug easier, those completion functions actually call real
 # function (starting with complete- instead of the _) that are autoloaded and
-# can be manually tested. Those functions are stored in ./functions/autoload/completion
+# can be manually tested. Those functions are stored in
+# ./functions/autoload/completion
 #
 # Sources:
 # https://unix.stackexchange.com/questions/239528/dynamic-zsh-autocomplete-for-custom-commands
@@ -70,7 +71,8 @@ compdef _docker-containers-ids \
 # }}}
 # Images {{{
 compdef '_files -g "*.{bmp,gif,jpg,jpeg,png,svg,tiff,webp}"' \
-	dimensions
+	dimensions \
+	image-open
 compdef _image-resize resize
 compdef '_files -g "*.png"' \
 	png2gif \

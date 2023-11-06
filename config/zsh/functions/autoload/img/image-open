@@ -1,0 +1,9 @@
+# Open an image for visualization
+# Note: This looks like a simple wrapper, but is used to define a custom
+# completion method to only suggest image files
+# Usage:
+# $ image-open ./file.png           # Display file
+
+function image-open() {
+	eog $@
+}
