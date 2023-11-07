@@ -4,6 +4,10 @@
 declare -A PROJECTS
 PROJECTS=()
 
+PROJECTS[npm-search:background]="SKY_6"
+PROJECTS[npm-search:foreground]="WHITE"
+PROJECTS[npm-search:icon]="  "
+PROJECTS[npm-search:path]="~/local/www/algolia/npm-search/"
 PROJECTS[aberlaas:background]="YELLOW_7"
 PROJECTS[aberlaas:foreground]="GRAY_9"
 PROJECTS[aberlaas:icon]=" "
