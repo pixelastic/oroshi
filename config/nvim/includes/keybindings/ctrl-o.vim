@@ -6,13 +6,18 @@
 " Instead, I want it to open a new tab (or re-use an existing one) if
 " jumping to another file. This requires manually parsing the :jumplist and
 " doing a few hacks to keep the jump context when creating/switching tabs
-function! JumpToPrevious()
-  let previousJump = OroshiJump_Previous()
-  if type(previousJump) == v:t_number && previousJump ==# 0
+" TODO: Ctrl-Shift-O does work consistently. If moving backward to another
+" filer, then forward you do not always come back to the original file as each
+" window has its own jumplist.
+function! OroshiJump(increment)
+  let upcomingJump = OroshiJump_Upcoming(a:increment)
+  if type(upcomingJump) == v:t_number && upcomingJump ==# 0
     echom 'No more jumps'
     return
   endif
 
+  " The command to pass is Ctrl-O to move backward and Ctrl-I to move forward
+  let jumpKeys = a:increment < 0 ? "\<C-o>" : "\<C-i>"
 
   " We now have three possible outcomes:
   " 1. The jump is in the same file
@@ -23,37 +28,39 @@ function! JumpToPrevious()
   " 3. The jump is in another file, and we already have it opened
   "   => We switch to the tab that has it opened
   "   => We find the same jump in this tab jumplist and jump to it
-  let jumpFile = previousJump.filepath
-
+  let jumpFile = upcomingJump.filepath
 
   " 1. Jump in the same file
   let currentFile = expand('%:p')
   if jumpFile ==# currentFile
-    execute "normal! \<C-o>"
+    " echo 'same file'
+    execute 'normal! 1'.jumpKeys
     return
   endif
 
   " 2. Jump in a new file
   let tabNumber = OroshiJump_TabNumberFromFilepath(jumpFile)
   if !tabNumber
+    " echo 'new file'
     execute 'keepjumps tabe'
-    execute "normal! \<C-o>"
+    execute 'normal! 1'.jumpKeys
     return
   endif
 
   " 3. Jump in an existing file
-  execute tabNumber.'tabnext'
+  " echo 'existing file'
+  execute ''.tabNumber.'tabnext'
 
   let newTabJumpList = OroshiJump_RawList()
-  let jumpLine = previousJump.line
-  let jumpColumn = previousJump.column
-  let jumpNumber = OroshiJumpFindNumber(newTabJumpList, jumpFile, jumpLine, jumpColumn)
-  execute 'normal! '.jumpNumber."\<C-o>"
+  let jumpLine = upcomingJump.line
+  let jumpColumn = upcomingJump.column
+  let jumpNumber = OroshiJump_FindNumber(newTabJumpList, jumpFile, jumpLine, jumpColumn)
+  execute 'normal! '.jumpNumber.''.jumpKeys
+
 endfunction
 
-nnoremap <silent> <C-O> :call JumpToPrevious()<CR>
-" nnoremap <silent> Ⓘ :call JumpToNext()<CR>
-"
+nnoremap <silent> <C-O> :call OroshiJump(-1)<CR>
+nnoremap <silent> Ⓞ :call OroshiJump(1)<CR>
 
 " Returns an array of all raw entries in the jumplist
 function! OroshiJump_RawList() " {{{
@@ -69,26 +76,28 @@ function! OroshiJump_RawList() " {{{
 endfunction
 " }}}
 
-" Return the previous jump as an object with filepath, line, column and number
-function! OroshiJump_Previous() " {{{
+" Return the upcoming jump as an object with filepath, line, column and number.
+" The direction can be defined with 1 or -1 as argument.
+function! OroshiJump_Upcoming(increment) " {{{
   let jumpList = OroshiJump_RawList()
+  let jumpListSize = len(jumpList)
 
   " Find the entry that starts with ">"
   let currentJumpIndex = -1
-  for l:index in reverse(range(len(jumpList)))
+  for l:index in reverse(range(jumpListSize))
     if jumpList[l:index][0] ==# '>'
       let currentJumpIndex = l:index
       break
     endif
   endfor
 
-  " Can't find previous jump
-  let previousJumpIndex = currentJumpIndex - 1
-  if previousJumpIndex < 0
+  " Can't find upcoming jump
+  let upcomingJumpIndex = currentJumpIndex + a:increment
+  if upcomingJumpIndex < 0 || upcomingJumpIndex > jumpListSize - 1
     return 0
   endif
 
-  return OroshiJump_Parse(jumpList[previousJumpIndex])
+  return OroshiJump_Parse(jumpList[upcomingJumpIndex])
 endfunction
 " }}}
 
@@ -125,17 +134,30 @@ function! OroshiJump_Filepath(jumpText, jumpLine) " {{{
   " Text of the raw jump is a simplified version of the actual content of the
   " line, so we need to perform the same simplification before comparing them:
   " - Any starting whitespace is excluded
+  " - Any special character (like ^I) is displayed as a literal ^I
   let rawLineInCurrentFile = getline(a:jumpLine)
   let formattedLineInCurrentFile = trim(rawLineInCurrentFile)
+  let formattedLineInCurrentFile = substitute(formattedLineInCurrentFile, '\t', '^I' , 'g')
+  let formattedLineInCurrentFile = substitute(formattedLineInCurrentFile, '\r', '^M' , 'g')
 
-  " If jump text is the same as what we have in the current file, the target is
-  " the current path
-  if a:jumpText ==# formattedLineInCurrentFile
+
+  " We compare our current line in this file with a regexp of the jump text. If
+  " it matches, then the jump is in the current file.
+  " Regexp-shenanigans to take into account:
+  " - Jump text can be truncated, so we only compare to the start of the line
+  " - Jump text can contain regexp-special characters, so we need to escape them
+  let regexp = '^'.escape(a:jumpText, '\')
+  if formattedLineInCurrentFile =~# regexp
     return currentFile
   endif
 
   " Otherwise, the target is the filepath written in the text
-  return expand(a:jumpText)
+  " We still need to sanitize the filepath as it can be relative, or include ~
+  let filepath = expand(a:jumpText)
+  if filepath[0] !=# '/'
+    let filepath = getcwd() . '/' . filepath
+  endif
+  return filepath
 endfunction
 " }}}
 
@@ -161,7 +183,7 @@ endfunction
 
 " Given a raw jumplist and a filter made of filepath, line and column, returns
 " the number of the matching jump
-function! OroshiJumpFindNumber(jumpList, filepath, line, column) " {{{
+function! OroshiJump_FindNumber(jumpList, filepath, line, column) " {{{
   " Note: Jumplist numbering is relative to the window it's part of. Even if two
   " windows have the same jumplist, the same jump won't have the same number.
 
