@@ -3,4 +3,3 @@
 "
 " ga starts the plugin, and we only need to type the delimiter
 xmap ga <Plug>(EasyAlign)
-
