@@ -41,8 +41,9 @@ Plug 'pedrohdz/vim-yaml-folds'                            " Yaml (folding)
 " Plug 'tpope/vim-markdown'
 " }}}
 " Enhancing vim workflow {{{
-Plug 'dense-analysis/ale'        " Lint & Fix
-Plug 'lifepillar/vim-mucomplete' " Completion cycling wrapper
+Plug 'dense-analysis/ale'                          " Lint & Fix
+Plug 'lifepillar/vim-mucomplete'                   " Completion cycling wrapper
+Plug 'github/copilot.vim', { 'branch': 'release' } " GitHub Copilot
 " Plug 'natebosch/vim-lsc'         " Completion with LSP
 " }}}
 " Git-related plugins {{{
