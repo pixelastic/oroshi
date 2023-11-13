@@ -3,7 +3,7 @@
 # Usage:
 # $ json-count file.json   # Number of elements
 
-# Check if has stdin
+# Check if has input from pipe
 if [ -p /dev/stdin ]; then
 	cat - | jq '. | length'
 	exit 0

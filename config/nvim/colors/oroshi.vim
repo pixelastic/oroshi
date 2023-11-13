@@ -28,7 +28,7 @@ endfor
 " Vim has its own set of core groups, and I have my own. They have a lot of
 " overlap but some difference in naming (for example vim Delimiter is my
 " PUNCTUATION). I will use my own naming when defining highlight group, which
-" will internally be converted to vim naming
+" will internally be converted to vim naming.
 " The key is my naming as defined in the $COLOR_ALIAS_XXX values, the values are
 " {VimNaming}:{BackgroundColor}:{Boldness} I prefer to use existing core vim
 " groups, but sometimes I need to create my own, prefixed with "oroshi"
@@ -231,6 +231,7 @@ call s:Highlight('Pmenu', 'GRAY_4', 'GRAY_9')            " Item
 call s:Highlight('PmenuSel', 'YELLOW', 'GRAY_8', 'bold') " Selected item
 call s:Highlight('PmenuSbar', 'GRAY_9', 'GRAY_9')        " Scrollbar
 call s:Highlight('PmenuThumb', 'GRAY_8', 'GRAY_9')       " Scrollbar handle
+call s:Highlight('CopilotSuggestion', 'ALIAS_AI_SUGGESTION', 'GRAY_9') " Copilot suggestion
 " }}}
 " ALE gutter {{{
 call s:Link('ALEErrorSign', 'ERROR')
@@ -246,9 +247,10 @@ call s:Highlight('StatusLineLintError', 'RED', 'GRAY_8')
 call s:Highlight('StatusLineLintWarning', 'YELLOW', 'GRAY_8')
 call s:Highlight('StatusLineFileEncodingError', 'RED', 'GRAY_8')
 call s:Highlight('StatusLineFileFormatError', 'RED', 'GRAY_8')
-call s:Highlight('StatusLineGitClean', 'GREEN', 'GRAY_8')
-call s:Highlight('StatusLineGitDirty', 'RED', 'GRAY_8', 'bold')
-call s:Highlight('StatusLineGitStaged', 'purple4', 'GRAY_8')
+call s:Highlight('StatusLineGitClean', 'ALIAS_SUCCESS', 'GRAY_8')
+call s:Highlight('StatusLineGitDirty', 'ALIAS_GIT_UNTRACKED', 'GRAY_8', 'bold')
+call s:Highlight('StatusLineGitStaged', 'ALIAS_GIT_TRACKED', 'GRAY_8')
+call s:Highlight('StatusLineCopilot', 'ALIAS_AI_ENABLED', 'GRAY_8')
 call s:Highlight('StatusLineModeCtrlPSeparator', 'RED5', 'GRAY_8')
 call s:Highlight('StatusLineModeCtrlP', 'BLACK', 'RED_5', 'bold')
 call s:Highlight('StatusLineModeInsertSeparator', 'YELLOW', 'GRAY_8')

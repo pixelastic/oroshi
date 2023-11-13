@@ -27,6 +27,8 @@ source ~/.config/nvim/includes/keybindings/ctrl-shift-e.vim " Go to previous err
 
 source ~/.config/nvim/includes/keybindings/ctrl-o.vim       " Go to previous jump position
 
+source ~/.config/nvim/includes/keybindings/ctrl-i.vim       " Toggle Copilot
+
 source ~/.config/nvim/includes/keybindings/ctrl-s.vim       " Save file
 source ~/.config/nvim/includes/keybindings/ctrl-d.vim       " Close tab/vim
 source ~/.config/nvim/includes/keybindings/ctrl-del.vim     " Delete current file

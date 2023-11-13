@@ -70,6 +70,12 @@ function! OroshiStatusLine()
   endif
   " }}}
 
+  " Copilot status {{{
+	if exists('b:copilot_enabled') && b:copilot_enabled ==# v:true
+    let sl .= '%#StatusLineCopilot# %* '
+  endif
+  " }}}
+
   " Git repo status {{{
 	if exists('b:oroshiStatusLineGitStatus') && b:oroshiStatusLineGitStatus !=# ''
     let sl .= '%#StatusLineGit'.b:oroshiStatusLineGitStatus.'#ﰖ%* '

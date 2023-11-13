@@ -83,7 +83,7 @@ aliasColors[POINTER]="GREEN"     #  current line
 aliasColors[MARKER]="CYAN"       #  marked line
 aliasColors[UNKNOWN]="CYAN_4"
 aliasColors[SIZE_VALUE]="GRAY"   # 485
-aliasColors[SIZE_UNIT]="GRAY_4" # MB
+aliasColors[SIZE_UNIT]="GRAY_4"  # MB
 # Vim
 aliasColors[VIM_VISUAL_CURSOR]="BLUE"
 aliasColors[VIM_VISUAL_BACKGROUND]="BLUE"
@@ -102,6 +102,9 @@ aliasColors[SUCCESS]="GREEN"
 aliasColors[WARNING]="YELLOW"
 aliasColors[NOTICE]="VIOLET"
 aliasColors[INFO]="BLUE"
+# AI
+aliasColors[AI_ENABLED]="TEAL_4"
+aliasColors[AI_SUGGESTION]="TEAL_6"
 # Git
 aliasColors[GIT_ADDED]="GREEN"
 aliasColors[GIT_AUTHOR]="NEUTRAL"
