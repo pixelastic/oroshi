@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+# Return the number of elements in JSON array file
+# Usage:
+# $ json-count file.json   # Number of elements
+
+# Check if has stdin
+if [ -p /dev/stdin ]; then
+	cat - | jq '. | length'
+	exit 0
+fi
+
+local input=$1
+jq '. | length' $input

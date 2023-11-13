@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+# Return a random element from the JSON array
+# Usage:
+# $ json-random file.json   # Random item
+
+# Check if has stdin
+if [ -p /dev/stdin ]; then
+	# Return a random element from the JSON array
+	cat - | jq --argjson random $RANDOM '.[$random % length]'
+	exit 0
+fi
+
+local input=$1
+jq --argjson random $RANDOM '.[$random % length]' $input
