@@ -118,6 +118,10 @@ function! s:Highlight(group,...)
 
   execute result
 endfunction
+" Global wrapper function, available outside of this script
+function! OroshiHighlight(arg,...)
+  call s:Highlight(get(a:, 'arg'), get(a:, '1'), get(a:, '2'), get(a:, '3'))
+endfunction
 " }}}
 
 " Linking function {{{

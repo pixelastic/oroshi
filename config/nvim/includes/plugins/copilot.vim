@@ -1,5 +1,8 @@
 " Disable Copilot by default
-let b:copilot_enabled = v:false
+augroup OroshiCopilot
+  autocmd!
+  autocmd BufReadPost * let b:copilot_enabled = v:false
+augroup END
 
 " Checks if a Copilot suggestion is displayed
 " Used by both <Tab> and <Enter> mappings
