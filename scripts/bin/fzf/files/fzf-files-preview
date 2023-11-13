@@ -17,16 +17,12 @@ local fullPath="$1"
 local filetypeGroup="$(filetype-group $fullPath)"
 
 # Handle image preview
+image-display --clear
 if [[ $filetypeGroup == "image" ]]; then
-  fzf-files-preview-img $fullPath
+  image-display --fzf-preview $fullPath
   exit 0
 fi
 
-# Cleanup the screen from any previously displayed image
-kitty icat \
-	--clear \
-	--transfer-mode=memory \
-	--stdin=no
 
 # Default is text preview
 local highlightLine=${flagHighlightLine[2]}

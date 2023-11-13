@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+# Output the content of the file(s) passed as arguments
+# Usage:
+# $ better-cat ./path/to/file.txt   # Output file.txt
+# $ better-cat ./path/to/*.txt      # Output all *.txt
+# $ better-cat ./path/to/file.png   # Display file.png in terminal
+
+for arg in ${=@}; do
+  local filepath=${arg:a}
+  local filetypeGroup="$(filetype-group $filepath)"
+
+  # Image file
+  if [[ $filetypeGroup == "image" ]]; then
+    image-display $filepath
+    continue
+  fi
+
+  # Textual file
+  bat $filepath
+done

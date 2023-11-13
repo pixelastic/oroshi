@@ -79,6 +79,7 @@ FILETYPE_GROUPS[image:patterns]="\
   gif \
   ico \
   jpg \
+  jpeg \
   png \
 "
 
