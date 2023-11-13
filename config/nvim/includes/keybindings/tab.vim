@@ -19,9 +19,9 @@ function! MultiPurposeTab()
     return copilot#Next()
   endif
 
-  call mucomplete#tab_complete(1)
+  return mucomplete#tab_complete(1)
 endfunction
-inoremap <Tab> <Cmd>call MultiPurposeTab()<CR>
+imap <expr> <Tab> MultiPurposeTab()
 
 " [Shift-Tab]
 " Dedent lines in normal and visual mode
@@ -34,6 +34,6 @@ function! MultiPurposeShiftTab()
     return copilot#Previous()
   endif
 
-  call mucomplete#tab_complete(-1)
+  return mucomplete#tab_complete(-1)
 endfunction
-inoremap <S-Tab> <Cmd>call MultiPurposeShiftTab()<CR>
+imap <expr> <S-Tab> MultiPurposeShiftTab()

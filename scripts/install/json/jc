@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+# jc converts command output into nice formatted data
+# https://github.com/kellyjonbrazil/jc
+set -e
+
+DOWNLOAD_URL="https://github.com/kellyjonbrazil/jc/releases/download/v1.23.6/jc-1.23.6-linux-x86_64.tar.gz"
+INSTALL_DIR=~/local/etc/jc
+BINARY_NAME=jc
+
+# Download and extract
+rm -rf $INSTALL_DIR
+mkdir -p $INSTALL_DIR
+
+wget $DOWNLOAD_URL -O ${BINARY_NAME}.tar.gz
+tar xvzf ${BINARY_NAME}.tar.gz
+rm ${BINARY_NAME}.tar.gz
+
+cd ~/local/bin
+ln -fs $INSTALL_DIR/$BINARY_NAME $BINARY_NAME
