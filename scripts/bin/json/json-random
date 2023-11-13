@@ -1,14 +1,19 @@
 #!/usr/bin/env zsh
-# Return a random element from the JSON array
+# Return a random element from the JSON array, and save it to clipboard
 # Usage:
 # $ json-random file.json   # Random item
 
+local output=""
+
 # Check if has stdin
 if [ -p /dev/stdin ]; then
-	# Return a random element from the JSON array
-	cat - | jq --argjson random $RANDOM '.[$random % length]'
-	exit 0
+	output="$(cat - | jq --argjson random $RANDOM '.[$random % length]')"
+else
+	local input="$1"
+	output="$(jq --argjson random $RANDOM '.[$random % length]' $input)"
 fi
 
-local input=$1
-jq --argjson random $RANDOM '.[$random % length]' $input
+# Output
+echo $output
+# Save to clipboard
+echo $output | xclip -selection clipboard
