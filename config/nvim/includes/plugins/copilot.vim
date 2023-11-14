@@ -1,7 +1,7 @@
 " Disable Copilot by default on each buffer
 augroup OroshiCopilot
   autocmd!
-  autocmd BufNewFile,BufRead * let b:copilot_enabled = v:false
+  autocmd VimEnter,BufNewFile,BufRead * let b:copilot_enabled = v:false
 augroup END
 
 " Checks if a Copilot suggestion is displayed

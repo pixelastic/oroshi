@@ -103,7 +103,7 @@ aliasColors[WARNING]="YELLOW"
 aliasColors[NOTICE]="VIOLET"
 aliasColors[INFO]="BLUE"
 # AI
-aliasColors[AI_ENABLED]="CYAN_4"
+aliasColors[AI_ENABLED]="CYAN"
 aliasColors[AI_SUGGESTION]="CYAN_6"
 # Git
 aliasColors[GIT_ADDED]="GREEN"
