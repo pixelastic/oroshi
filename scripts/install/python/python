@@ -27,8 +27,10 @@ sudo apt-get install \
 git clone git@github.com:pyenv/pyenv.git ~/.pyenv
 
 # Install latest 2 and 3 branches
-~/.pyenv/bin/pyenv install --verbose 2
-~/.pyenv/bin/pyenv install --verbose 3
+LATEST_PYTHON_2="2.7.18"
+LATEST_PYTHON_3="3.11.2"
+~/.pyenv/bin/pyenv install --verbose $LATEST_PYTHON_2
+~/.pyenv/bin/pyenv install --verbose $LATEST_PYTHON_3
 # python will default to python 3, but python3 and python2 are also specifically
 # available
-~/.pyenv/bin/pyenv global 3 2
+~/.pyenv/bin/pyenv global $LATEST_PYTHON_3 $LATEST_PYTHON_2
