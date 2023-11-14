@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+local args="$@"
+
+local prompt="
+Explain in one sentence what the whole prompt does.
+Then explain what each component and flag does.
+
+Prompt: $args"
+
+sgpt "$prompt"

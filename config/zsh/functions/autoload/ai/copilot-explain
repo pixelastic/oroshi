@@ -1,0 +1,12 @@
+# Explain a command
+# Usage:
+#   $ copilot-explain 'tar xvjf'   # Explain the command
+#
+# Note: As of November 2023, gh copilot has a nicer output than sgpt, but
+# requires manual interactivity, so I will still be using ai-shell-explain
+# instead
+function copilot-explain() {
+	local args="$@"
+	GITHUB_TOKEN='' \
+		gh copilot explain $args
+}

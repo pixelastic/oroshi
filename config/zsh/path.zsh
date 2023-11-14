@@ -7,6 +7,8 @@ function oroshi_path() {
 	for directory in ~/.oroshi/scripts/bin/**/; do
 		# Skip all directories starting with __
 		[[ $directory == */__* ]] && continue
+		# As well as node_modules added by zx
+		[[ $directory == */node_modules* ]] && continue
 		localBinariesPath+=(${directory:0:-1})
 	done
 
@@ -15,6 +17,28 @@ function oroshi_path() {
 	local nodeBinariesPath=$HOME/.nvm/versions/node/${defaultNodeVersion}/bin
 
 	path=(
+		# Local binaries
+		~/.oroshi/private/scripts/bin/local/$hostname
+
+		# Private binaries
+		~/.oroshi/private/scripts/bin
+
+		# Custom binaries
+		$localBinariesPath
+
+		# Installed binaries
+		~/local/bin
+		~/.local/bin
+		~/local/src/fzf/bin
+
+		# Language binaries
+		$nodeBinariesPath
+		~/.rbenv/bin
+		~/.rbenv/shims
+		~/.pyenv/bin
+		~/.pyenv/shims
+		~/.cargo/bin
+
 		# System paths
 		# (Check /etc/environment for the exact list)
 		/usr/local/sbin
@@ -26,28 +50,6 @@ function oroshi_path() {
 		/usr/games
 		/usr/local/games
 		/snap/bin
-
-		# Language binaries
-		$nodeBinariesPath
-		~/.rbenv/bin
-		~/.rbenv/shims
-		~/.pyenv/bin
-		~/.pyenv/shims
-		~/.cargo/bin
-
-		# Installed binaries
-		~/local/bin
-		~/.local/bin
-		~/local/src/fzf/bin
-
-		# Custom binaries
-		$localBinariesPath
-
-		# Private binaries
-		~/.oroshi/private/scripts/bin
-
-		# Local binaries
-		~/.oroshi/private/scripts/bin/local/$hostname
 	)
 }
 oroshi_path

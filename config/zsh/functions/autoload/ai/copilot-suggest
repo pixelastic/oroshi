@@ -1,0 +1,12 @@
+# Suggest how to write a command
+# Usage:
+#   $ copilot-suggest 'list all files bigger than 10MB'   # Output the command
+#
+# Note: As of November 2023, gh copilot has a nicer output than sgpt, but
+# requires manual interactivity, so I will still be using ai-shell-suggest
+# instead
+function copilot-suggest() {
+	local args="$@"
+	GITHUB_TOKEN='' \
+		gh copilot suggest $args
+}
