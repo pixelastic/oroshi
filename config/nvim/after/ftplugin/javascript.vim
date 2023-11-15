@@ -18,7 +18,7 @@ function! JavascriptFoldText()
   return output
 endfunction
 " }}}
-" Fixing
+" Fixing & Linting {{{
 let b:ale_fixers = ['eslint']
 " Linting
 let b:ale_linters = ['eslint']
@@ -26,6 +26,7 @@ let b:ale_linters = ['eslint']
 let b:ale_javascript_eslint_use_global = 1
 
 let b:ale_sign_error = ' '               " Error sign in gutter
+" }}}
 
 if JavaScriptIsZx()
   let b:ale_javascript_eslint_executable = 'eslint-zx'
