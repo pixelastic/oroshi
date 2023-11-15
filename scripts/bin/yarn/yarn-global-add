@@ -22,10 +22,10 @@
 # Stop if no package given
 [[ $1 == "" ]] && exit 1
 
-# Find the path the current node version
+# Find the path the default node version
 # This assumes that node has been installed through nvm
-local currentNodeVersion="$(node --version)"
-local nodePrefixPath=$HOME/.nvm/versions/node/${currentNodeVersion}
+local defaultNodeVersion="$(<~/.nvm/alias/default)"
+local nodePrefixPath=$HOME/.nvm/versions/node/${defaultNodeVersion}
 local yarnGlobalPath="${nodePrefixPath}/yarn/global"
 
 mkdir -p $yarnGlobalPath
