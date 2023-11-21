@@ -11,6 +11,7 @@ git-directory-create $repoName
 cd ./${repoName}
 
 # Setup aberlaas
+nvm use 16.20.0
 yarn add --dev aberlaas
 yarn run aberlaas init
 
