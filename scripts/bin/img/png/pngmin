@@ -1,0 +1,107 @@
+#!/usr/bin/env zsh
+# Compress an image to the best compression ratio
+# Usage:
+# $ pngmin ./path/to/file.png               # Overwrites file
+# $ pngmin ./path/to/file.png ./other.png   # Overwrites files
+
+local inputs=($@)
+
+# Configuration
+local maxDifference=0.001
+local initialQuality=60
+
+# Setup
+local tmpDir=/tmp/oroshi/pngmin
+mkdir -p $tmpDir
+
+# Test all qualities until finding the one with a small dssim difference
+function findOptimalQuality() {
+	local filepath=$1
+	local currentQuality=$2
+
+	# Compress the file to the current quality
+	pngquant \
+		$filepath \
+		--quality=0-${currentQuality} \
+		--ext="-${currentQuality}.png" \
+		--floyd=1 \
+		--strip
+	local currentFile="${filepath:r}-${currentQuality}.png"
+
+	# Get the difference with original
+	local currentDifference="$(dssim $filepath $currentFile | awk '{print $1}')"
+	echo "Testing quality $currentQuality, $currentDifference difference"
+
+	# We narrow down the interval we need to test:
+	# If it's too different, it means we shouldn't lower quality more
+	# If it's not enough different, it means we shouldn't increase quality more
+	local differenceIsTooBig="$(echo "$currentDifference > $maxDifference" | bc)"
+	if [[ $differenceIsTooBig == "1" ]]; then
+		QUALITY_MIN=$currentQuality
+	else
+		QUALITY_MAX=$currentQuality
+	fi
+
+	# We stop if:
+	# - we had the same difference twice in a row
+	# - we've compressed the interval and there is no more values to test
+	local sameDifferenceTwiceInARow=0
+	[[ $OPTIMAL_DIFFERENCE == "$currentDifference" ]] && sameDifferenceTwiceInARow=1
+	local noMoreValuesToTest="$(echo "$QUALITY_MAX - $QUALITY_MIN == 1" | bc)"
+	if [[ $sameDifferenceTwiceInARow == "1" || $noMoreValuesToTest == "1" ]]; then
+		return
+	fi
+
+	# Here we go again, one more turn with the next quality
+	OPTIMAL_QUALITY=$currentQuality
+	OPTIMAL_FILE=$currentFile
+	OPTIMAL_DIFFERENCE=$currentDifference
+
+	local nextQuality="$(getNextQuality)"
+	findOptimalQuality $filepath $nextQuality
+}
+
+# Returns the next quality to test
+# This takes the middle of the current boundaries we currently have
+function getNextQuality() {
+	echo "$QUALITY_MIN + ($QUALITY_MAX - $QUALITY_MIN) / 2" | bc
+}
+
+# Cleanup any leftover files of a given uuid
+# Note: (N) prevents a zsh warning if the glob does not match anything
+function cleanupFiles() {
+	local uuid=$1
+	local leftoverFiles=(${tmpDir}/${uuid}*(N))
+	[[ $leftoverFiles == "" ]] && return
+	rm -f $leftoverFiles
+}
+
+# For each file passed as input
+for input in $inputs; do
+	local originalFile=${input:a}
+	local uuid="$(md5 $originalFile)"
+	echo "Compressing ${originalFile:t}"
+
+	# Cleanup any leftover files from previous runs
+	cleanupFiles $uuid
+
+	# We work on a copy of the original file
+	local alphaFile="${tmpDir}/${uuid}.png"
+	cp $originalFile $alphaFile
+
+	# Global variables we'll be playing with until we find the optimal quality
+	local QUALITY_MIN=0
+	local QUALITY_MAX=100
+	local OPTIMAL_QUALITY=''
+	local OPTIMAL_FILE=''
+	local OPTIMAL_DIFFERENCE=''
+
+	# Find the best quality in CURRENT_QUALITY
+	findOptimalQuality $alphaFile $initialQuality
+
+	# Overwrite the source file with the new file
+	mv -f $OPTIMAL_FILE $originalFile
+
+	# Remove our previously created files
+	cleanupFiles $uuid
+done
