@@ -19,7 +19,7 @@ function findOptimalQuality() {
 	local filepath=$1
 	local currentQuality=$2
 
-	# Compress the file to the current quality
+	# Compress the file to the specified quality
 	pngquant \
 		$filepath \
 		--quality=0-${currentQuality} \
@@ -44,7 +44,7 @@ function findOptimalQuality() {
 
 	# We stop if:
 	# - we had the same difference twice in a row
-	# - we've compressed the interval and there is no more values to test
+	# - there are no more values to test
 	local sameDifferenceTwiceInARow=0
 	[[ $OPTIMAL_DIFFERENCE == "$currentDifference" ]] && sameDifferenceTwiceInARow=1
 	local noMoreValuesToTest="$(echo "$QUALITY_MAX - $QUALITY_MIN == 1" | bc)"
@@ -52,11 +52,12 @@ function findOptimalQuality() {
 		return
 	fi
 
-	# Here we go again, one more turn with the next quality
+	# We save the current values as the best we could find (so far)
 	OPTIMAL_QUALITY=$currentQuality
 	OPTIMAL_FILE=$currentFile
 	OPTIMAL_DIFFERENCE=$currentDifference
 
+	# Here we go again, one more turn with the next quality
 	local nextQuality="$(getNextQuality)"
 	findOptimalQuality $filepath $nextQuality
 }
@@ -76,16 +77,34 @@ function cleanupFiles() {
 	rm -f $leftoverFiles
 }
 
+# Check if a file has already been compressed (because of a comment added to its
+# metadata)
+function isAlreadyCompressed() {
+	local filepath=$1
+	local exifComment="$(exiftool -Comment $filepath | awk '{print $3}')"
+	if [[ $exifComment == "oroshi_compressed" ]]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
 # For each file passed as input
 for input in $inputs; do
 	local originalFile=${input:a}
-	local uuid="$(md5 $originalFile)"
 	echo "Compressing ${originalFile:t}"
+
+	# Stop if file has already been compressed
+	if isAlreadyCompressed $originalFile; then
+		echo "Already compressed"
+		continue
+	fi
 
 	# Cleanup any leftover files from previous runs
 	cleanupFiles $uuid
 
 	# We work on a copy of the original file
+	local uuid="$(md5 $originalFile)"
 	local alphaFile="${tmpDir}/${uuid}.png"
 	cp $originalFile $alphaFile
 
@@ -101,6 +120,13 @@ for input in $inputs; do
 
 	# Overwrite the source file with the new file
 	mv -f $OPTIMAL_FILE $originalFile
+
+	# Add a comment to the file to flag it as already compressed
+	exiftool \
+		-quiet \
+		-overwrite_original \
+		-Comment="oroshi_compressed" \
+		$originalFile
 
 	# Remove our previously created files
 	cleanupFiles $uuid
