@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
-# Compress an image to the best compression ratio
+# Compress PNG images to the best compression ratio possible without altering
+# perceived quality too much
 # Usage:
 # $ pngmin ./path/to/file.png               # Overwrites file
 # $ pngmin ./path/to/file.png ./other.png   # Overwrites files
@@ -32,7 +33,7 @@ function findOptimalQuality() {
 	local currentDifference="$(dssim $filepath $currentFile | awk '{print $1}')"
 	echo "Testing quality $currentQuality, $currentDifference difference"
 
-	# We narrow down the interval we need to test:
+	# We narrow down the quality interval we need to test:
 	# If it's too different, it means we shouldn't lower quality more
 	# If it's not enough different, it means we shouldn't increase quality more
 	local differenceIsTooBig="$(echo "$currentDifference > $maxDifference" | bc)"
@@ -43,8 +44,9 @@ function findOptimalQuality() {
 	fi
 
 	# We stop if:
-	# - we had the same difference twice in a row
-	# - there are no more values to test
+	# - we had the same difference twice in a row, meaning further optimization
+	# won't change the perceived quality, so let's not waste cycles
+	# - there are no more values to test, the last one is good enough
 	local sameDifferenceTwiceInARow=0
 	[[ $OPTIMAL_DIFFERENCE == "$currentDifference" ]] && sameDifferenceTwiceInARow=1
 	local noMoreValuesToTest="$(echo "$QUALITY_MAX - $QUALITY_MIN == 1" | bc)"
@@ -89,6 +91,16 @@ function isAlreadyCompressed() {
 	fi
 }
 
+# Mark a file as already compressed by adding a metadata comment
+function markAsAlreadyCompressed() {
+	local filepath=$1
+	exiftool \
+		-quiet \
+		-overwrite_original \
+		-Comment="oroshi_compressed" \
+		$filepath
+}
+
 # For each file passed as input
 for input in $inputs; do
 	local originalFile=${input:a}
@@ -118,15 +130,11 @@ for input in $inputs; do
 	# Find the best quality in CURRENT_QUALITY
 	findOptimalQuality $alphaFile $initialQuality
 
+	# Add a comment to the file to flag it as already compressed
+	markAsAlreadyCompressed $OPTIMAL_FILE
+
 	# Overwrite the source file with the new file
 	mv -f $OPTIMAL_FILE $originalFile
-
-	# Add a comment to the file to flag it as already compressed
-	exiftool \
-		-quiet \
-		-overwrite_original \
-		-Comment="oroshi_compressed" \
-		$originalFile
 
 	# Remove our previously created files
 	cleanupFiles $uuid
