@@ -5,6 +5,7 @@
 # Usage:
 # $ yarn-dependency-all-list-raw              # Only regular dependencies
 function yarn-dependency-list-recursive() {
+	local yarnLockPath="$(find-up --root $PWD yarn.lock)"
 	# Explanation:
 	# - We read yarn.lock but only keep the header lines
 	#   - We remove lines starting with a space
@@ -13,7 +14,7 @@ function yarn-dependency-list-recursive() {
 	# - We ditch everything after the first @, to only keep package name
 	# - We ditch starting quotes
 	# - We deduplicate
-	grep -vE '^( |#|$)' yarn.lock |
+	grep -vE '^( |#|$)' $yarnLockPath |
 		sed \
 			-e 's/@.*//' \
 			-e 's/^"//' |
