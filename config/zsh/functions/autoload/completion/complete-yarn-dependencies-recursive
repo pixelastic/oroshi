@@ -1,0 +1,4 @@
+# Display list of all recursive local subdependencies
+function complete-yarn-dependencies-recursive() {
+	yarn-dependency-list-recursive
+}

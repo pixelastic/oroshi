@@ -113,10 +113,10 @@ for input in $inputs; do
 	fi
 
 	# Cleanup any leftover files from previous runs
+	local uuid="$(md5 $originalFile)"
 	cleanupFiles $uuid
 
 	# We work on a copy of the original file
-	local uuid="$(md5 $originalFile)"
 	local alphaFile="${tmpDir}/${uuid}.png"
 	cp $originalFile $alphaFile
 

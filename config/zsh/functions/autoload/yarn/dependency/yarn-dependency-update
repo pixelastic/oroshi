@@ -1,11 +1,10 @@
-# This makes an update of a given package, taking the latest available
+# This makes an update of a given local package, taking the latest available
 # Usage:
-# $ yarn-update firost          # Update the firost dependency
-# $ yarn-update firost aberlass # Update the firost and aberlaas dependencies
-# $ yarn-update                 # Stops and display a warning
-# $ yarn-update --force firost  # Allows updating a dependency in the workspace
-# root
-function yarn-update() {
+# $ yarn-dependency-update firost          # Update the firost dependency
+# $ yarn-dependency-update firost aberlass # Update the firost and aberlaas dependencies
+# $ yarn-dependency-update                 # Stops and display a warning
+# $ yarn-dependency-update --force firost  # Allows updating a dependency in the workspace root
+function yarn-dependency-update() {
   zparseopts -E -D \
     -force=flagForce
 

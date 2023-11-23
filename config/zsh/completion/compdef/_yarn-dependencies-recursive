@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest all recursive subdependencies of current project
+function _yarn-dependencies-recursive() {
+  local suggestions=(${(f)"$(complete-yarn-dependencies-recursive)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_LANGUAGE_JAVASCRIPT $COLOR_BLACK '  package.json subdependencies ')" suggestions
+}

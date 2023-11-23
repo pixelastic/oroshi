@@ -1,0 +1,21 @@
+# Display a raw table of ALL dependencies of the project, recursively including
+# subdependencies
+#
+# This list is consumed by the autocomplete of commands like "yarn why"
+# Usage:
+# $ yarn-dependency-all-list-raw              # Only regular dependencies
+function yarn-dependency-list-recursive() {
+	# Explanation:
+	# - We read yarn.lock but only keep the header lines
+	#   - We remove lines starting with a space
+	#   - We remove comments
+	#   - We remove empty lines
+	# - We ditch everything after the first @, to only keep package name
+	# - We ditch starting quotes
+	# - We deduplicate
+	grep -vE '^( |#|$)' yarn.lock |
+		sed \
+			-e 's/@.*//' \
+			-e 's/^"//' |
+		uniq
+}

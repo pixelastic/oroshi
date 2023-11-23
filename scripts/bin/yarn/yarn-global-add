@@ -1,6 +1,10 @@
 #!/usr/bin/env zsh
 # Globally install a yarn package
 #
+# Note: This is defined as a script in ./bin instead of as a zsh autoloaded
+# function as it is used in install scripts, where zsh functions might not be
+# available.
+#
 # Yarn is managed through nvm, but by default:
 # - Installs global code to ~/.config/yarn/global (`yarn global dir`)
 # - Installs binary syminks to ~/.yarn/bin (`yarn global bin`)
@@ -11,10 +15,6 @@
 # This can be achieved through yarn flags:
 # --prefix defines where the main node installation is
 # --global-folder defines where to store the global packages code
-#
-# Note: This is defined as a script in ./bin instead of as a zsh autoloaded
-# function as it is used in install scripts, where zsh functions might not be
-# available.
 #
 # Usage:
 # $ yarn-global-add eslint_d   # Install into the current node version as selected by nvm

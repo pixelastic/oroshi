@@ -1,0 +1,5 @@
+# Relink the link: from package.json
+function yarn-link-colorize() {
+	set -e
+	yarn install --ignore-scripts
+}
