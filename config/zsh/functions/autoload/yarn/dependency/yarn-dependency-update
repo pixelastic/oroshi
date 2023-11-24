@@ -32,10 +32,15 @@ function yarn-dependency-update() {
     yarn up --exact ${=dependencies}
   else
     # yarn classic requires @latest to be added
-    local dependencylist=()
-    for dependencyName in $dependencies; do
+    local dependencyList=()
+    for dependencyName in ${=dependencies}; do
       dependencyList+=(${dependencyName}@latest)
     done
     yarn upgrade ${=dependencyList}
+
+    # Upgrading with yarn upgrade only updates the version number in package
+    # .json, it doesn't seem to actually install the packages in node_modules
+    yarn install
   fi
+
 }
