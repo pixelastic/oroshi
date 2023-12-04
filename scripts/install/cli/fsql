@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+# FSQL: Query filesystem with SQL-like syntax
+# https://github.com/kashav/fsql
+set -ex
+
+local DOWNLOAD_URL="https://github.com/kashav/fsql/releases/download/v0.5.2/fsql-0.5.2-fsql-linux-amd64.zip"
+local BINARY_NAME="fsql"
+
+# Create dir
+cd ~/local/tmp
+mkdir -p ./$BINARY_NAME
+cd ./$BINARY_NAME
+
+# Download
+wget $DOWNLOAD_URL -O ${BINARY_NAME}.zip
+unzip -o ./${BINARY_NAME}.zip
+
+# Add to path
+mv ./linux-amd64/${BINARY_NAME} ~/local/bin/${BINARY_NAME}
