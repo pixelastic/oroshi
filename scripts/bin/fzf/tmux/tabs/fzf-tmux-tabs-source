@@ -33,7 +33,7 @@ for rawTarget in ${(f)rawList}; do
   displayTarget+="[38;5;${sessionBackground}m[00m"
   displayTarget+="▮"
   displayTarget+="[48;5;${windowBackground}m[38;5;${windowForeground}m ${windowIcon}${windowName} [00m"
-  displayTarget+="[48;5;${COLOR_BLACK_PURE}m[38;5;${windowBackground}m[00m"
+  displayTarget+="[48;5;${COLOR_BLACK}m[38;5;${windowBackground}m[00m"
 
   fullList+=("${displayTarget}   ${rawTarget}")
 done
