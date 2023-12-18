@@ -1,9 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-# Paths
-configDir=~/.oroshi/config/jrnl
-configFile=${configDir}/jrnl.yaml
-destFile=~/.config/jrnl/jrnl.yaml
+local SOURCE_PATH=~/.oroshi/config/jrnl/jrnl.yaml
+local CONFIG_DIR=~/.config/jrnl/
+local DESTINATION_PATH=${CONFIG_DIR}/jrnl.yaml
 
-# Link the config file
-ln -fs $configFile $destFile
+mkdir -p $CONFIG_DIR
+ln -fs $SOURCE_PATH $DESTINATION_PATH

@@ -10,7 +10,7 @@ encrypt: false
 highlight: true
 indent_character: '|'
 journals:
-  default: /home/tim/Dropbox/tim/misc/jrnl.txt
+  default: /home/tim/perso/Dropbox/tim/misc/jrnl/algolia.txt
 linewrap: 79
 tagsymbols: '@'
 template: false
