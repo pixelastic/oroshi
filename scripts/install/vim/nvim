@@ -1,4 +1,24 @@
 #!/usr/bin/env bash
 # Neovim is the modern vim
 # https://neovim.io/
-sudo apt-get install neovim
+
+# We install from the official GitHub release page as Ubuntu package manager is
+# late
+
+BINARY_NAME="nvim"
+DOWNLOAD_URL="https://github.com/neovim/neovim/releases/download/v0.9.4/nvim-linux64.tar.gz"
+DOWNLOAD_DIR=~/local/tmp/nvim
+DOWNLOAD_PATH="${DOWNLOAD_DIR}/${BINARY_NAME}.tar.gz"
+INSTALL_DIR=~/local/etc/nvim
+
+# Download
+mkdir -p $DOWNLOAD_DIR
+wget $DOWNLOAD_URL -O $DOWNLOAD_PATH
+tar xvzf $DOWNLOAD_PATH
+rm $DOWNLOAD_PATH
+
+# Move to etc
+mv ${DOWNLOAD_DIR}/nvim-linux64/ $INSTALL_DIR/nvim
+
+# Create a symlink
+ln -fs ~/local/etc/nvim/bin/nvim ~/local/bin/nvim
