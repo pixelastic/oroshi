@@ -1,5 +1,5 @@
 # Environment variables {{{
-export EDITOR=vim                     # Default text editor
+export EDITOR=nvim                    # Default text editor
 export BROWSER=/usr/bin/google-chrome # Default browser
 export LANG=en_US.UTF-8               # Default language
 export LC_COLLATE=C                   # Default sort order (in ls, sort, etc)
