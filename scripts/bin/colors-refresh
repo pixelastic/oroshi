@@ -2,8 +2,6 @@
 # Refresh all colors by:
 # - Reloading kitty color config
 # - Redefining COLOR_*** env variables
-# - Bubbling those variables to tmux
-# - Refreshing tmux
 
 # Reload kitty config
 kitty-refresh

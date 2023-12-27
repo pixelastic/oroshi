@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+set -e
+
+local VERSION="4.9"
+local DOWNLOAD_URL="https://github.com/jarun/nnn/archive/refs/tags/v${VERSION}.zip"
+local INSTALL_DIR=~/local/src/nnn
+local BINARY_NAME="nnn"
+
+# Download
+mkdir -p "$INSTALL_DIR"
+cd "$INSTALL_DIR"
+wget "$DOWNLOAD_URL" -O "./${BINARY_NAME}.zip"
+
+# Unzip
+unzip -o "./${BINARY_NAME}.zip"
+mv ./nnn-${VERSION}/* .
+
+# Cleanup
+rm "./${BINARY_NAME}.zip"
+rm -rf ./nnn-${VERSION}
+
+# Install
+sudo make strip install PREFIX=/home/$USER/local
