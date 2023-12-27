@@ -12,3 +12,14 @@ echo "--color=query:${COLOR_ALIAS_DIRECTORY}:regular"
 echo "--color=separator:${COLOR_ALIAS_DIRECTORY}"
 echo "--color=info:${COLOR_ALIAS_DIRECTORY}"
 
+# Keybindings
+# => [Right] goes down into the folder
+echo "--bind=right:execute-silent(fzf-pwd-save {1})"
+echo "--bind=right:+reload(fzf-directories-source)"
+echo "--bind=right:+transform-prompt(fzf-pwd-prompt)"
+echo "--bind=right:+first"
+# <= [Left] goes up into the parent
+echo "--bind=left:execute-silent(fzf-pwd-save __FZF_DIRECTORIES_UP__)"
+echo "--bind=left:+reload(fzf-directories-source)"
+echo "--bind=left:+transform-prompt(fzf-pwd-prompt)"
+echo "--bind=left:+first"

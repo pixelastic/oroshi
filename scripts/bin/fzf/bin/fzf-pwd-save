@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+# Save the current PWD context of fzf in a file, so we can access it later.
+# fzf has no real concept of PWD, but we need it to be able to navigate through
+# up directories, so we save it in a file. We keep one file per Kitty window, so
+# as to be able to have various fzf open at the same time
+#
+# fzf-pwd-save /home/tim   # Save "/home/tim" as the current pwd for this kitty
+# window
+set -e
+
+local currentDirectory=$1
+
+local saveFilepath="/tmp/oroshi/fzf/${KITTY_WINDOW_ID}_pwd"
+mkdir -p ${saveFilepath:h}
+
+# Special value "__FZF_DIRECTORIES_UP__" means we need to move one directory up
+# from the previously saved file
+if [[ $currentDirectory == "__FZF_DIRECTORIES_UP__" ]]; then
+	currentDirectory="$(cat $saveFilepath)"
+	currentDirectory=${currentDirectory:h}
+fi
+
+currentDirectory=${currentDirectory:a}
+# Save on disk
+echo $currentDirectory >$saveFilepath
+# Display it so we can grab it
+echo $currentDirectory

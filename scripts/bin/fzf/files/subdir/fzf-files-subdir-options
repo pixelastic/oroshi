@@ -2,20 +2,7 @@
 # Returns the specific options to pass to fzf
 fzf-files-options
 
-# Prefix the prompt with the project and current directory
-local currentPath="${PWD/#$HOME/~}/"
-local projectKey="$(project-by-path $currentPath)"
-if [[ $projectKey != "" ]]; then
-  local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
-  eval "currentPath=\${currentPath:s_${projectPath}_}"
-  local projectPrefix="$(colorize-project $projectKey) "
-fi
+local fzfPrompt="$(fzf-prompt-directory $PWD)"
 
-currentPath="$(colorize "$currentPath ❯" $COLOR_ALIAS_DIRECTORY)"
-local prompt="${projectPrefix}${currentPath} "
-# fzf in vim fails to parse the prompt if there is ​ in it
-prompt=${prompt:gs/​//}
-
-
-echo "--prompt=${prompt}"
+echo "--prompt=${fzfPrompt}"
 echo "--color=prompt:${COLOR_ALIAS_DIRECTORY}:regular"

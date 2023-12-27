@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Output the current pwd context as a prompt
+set -e
+
+local input="$(cat "/tmp/oroshi/fzf/${KITTY_WINDOW_ID}_pwd")"
+fzf-prompt-directory "$input"
