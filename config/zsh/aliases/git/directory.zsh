@@ -2,7 +2,7 @@
 alias vdcl='git tabula-rasa'
 alias vdc='git-directory-create'
 alias vdca='git-directory-create-all'
-alias vde='vim $(git-directory-root)/.git/config'
+alias vde='nvim $(git-directory-root)/.git/config'
 alias vdl='echo "Use vfl instead" && git-file-list' # My muscle memory is here
 alias vdo='git-directory-open'
 alias vdos='git-directory-open-settings'
