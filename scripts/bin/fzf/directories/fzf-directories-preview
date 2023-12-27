@@ -1,7 +1,0 @@
-#!/usr/bin/env zsh
-# Preview a directory
-
-local fullPath="$1"
-fullPath=${~fullPath}
-
-l "$fullPath"

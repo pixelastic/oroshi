@@ -13,12 +13,7 @@ fi
 
 # Find all directories in that target
 cd $target
-local items="$(\
-f \
-  . \
-  --color always \
-  --type directory \
-)"
+local items="$(f . --color always --type directory)"
 
 # Display it as two columns: full path and colored path
 for item in ${(f)items}; do

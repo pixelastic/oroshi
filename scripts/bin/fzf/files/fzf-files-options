@@ -9,3 +9,15 @@ echo "--preview=fzf-files-preview {1}"
 echo "--color=query:${COLOR_ALIAS_FILE}:regular"
 echo "--color=separator:${COLOR_ALIAS_FILE}"
 echo "--color=info:${COLOR_ALIAS_FILE}"
+
+# Keybindings
+# => [Right] goes down into the folder
+echo "--bind=right:execute-silent(fzf-pwd-save {1})"
+echo "--bind=right:+reload(fzf-files-source)"
+echo "--bind=right:+transform-prompt(fzf-pwd-prompt)"
+echo "--bind=right:+first"
+# <= [Left] goes up into the parent
+echo "--bind=left:execute-silent(fzf-pwd-save __FZF_DIRECTORIES_UP__)"
+echo "--bind=left:+reload(fzf-files-source)"
+echo "--bind=left:+transform-prompt(fzf-pwd-prompt)"
+echo "--bind=left:+first"

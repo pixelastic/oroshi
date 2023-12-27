@@ -20,6 +20,11 @@ if [[ $currentDirectory == "__FZF_DIRECTORIES_UP__" ]]; then
 	currentDirectory=${currentDirectory:h}
 fi
 
+# If selecting a file, we use the parent directory
+if [[ ! -d $currentDirectory ]]; then
+	currentDirectory=${currentDirectory:h}
+fi
+
 currentDirectory=${currentDirectory:a}
 # Save on disk
 echo $currentDirectory >$saveFilepath

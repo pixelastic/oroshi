@@ -1,20 +1,21 @@
 #!/usr/bin/env zsh
 # Display all the files of a given directory
 # Usage:
-# $ fzf-files-source /path/to/directory
+# $ fzf-files-source /path/to/directory     # Find in specified dir
+# $ fzf-files-source                        # Find in last visited dir
+set -e
 
-local directory="$1"
+# We find in specified directory, and if not specified in the last saved one
+local target="$1"
+if [[ $target == "" ]]; then
+ target="$(cat "/tmp/oroshi/fzf/${KITTY_WINDOW_ID}_pwd")"
+fi
 
-cd $directory
-local items="$(\
-f \
-  --base-directory "$directory" \
-  . \
-  --color always \
-  --type file
-)"
+# Find all files & directories in that target
+cd $target
+local items="$(f . --color always)"
 
 # Display it as two columns: full path and colored path
 for item in ${(f)items}; do
-  echo "${directory}/${item}   ${item}"
+  echo "${target}/${item}   ${item}"
 done

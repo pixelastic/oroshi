@@ -5,7 +5,7 @@ echo "--color=fg:$COLOR_ALIAS_DIRECTORY"
 echo "--color=fg+:$COLOR_ALIAS_DIRECTORY"
 echo "--delimiter=   "
 echo "--with-nth=2"
-echo "--preview=fzf-directories-preview {1}"
+echo "--preview=fzf-files-preview {1}"
 
 # Color the UI in directory color
 echo "--color=query:${COLOR_ALIAS_DIRECTORY}:regular"
