@@ -24,13 +24,14 @@ function git-file-diff() {
 		return
 	fi
 
-	# At a file is passed, we compare that specific file against potential commits
+	# If a file is passed, we compare that specific file against potential commits
 	local filepath=$1
 	local fromCommit=$2
 	local toCommit=$3
 
 	git diff \
 		${gitDiffArguments} \
+		${filepath} \
 		${fromCommit} \
-		${toCommit} \
+		${toCommit}
 }
