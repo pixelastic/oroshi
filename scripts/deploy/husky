@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-ln -fs \
-	~/.oroshi/config/husky/huskyrc.sh \
-	~/.huskyrc

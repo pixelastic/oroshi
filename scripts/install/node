@@ -10,7 +10,4 @@ if [[ ! -d ~/.nvm ]]; then
 	ln -fs ~/.oroshi/config/nvm/default-packages ~/.nvm
 	source ~/.nvm/nvm.sh
 	nvm install $LATEST_NODE_LTS_VERSION
-
-	# Configure husky to use the right nvm version
-	~/.oroshi/scripts/deploy/husky
 fi
