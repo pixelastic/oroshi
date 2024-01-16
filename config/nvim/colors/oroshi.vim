@@ -425,6 +425,7 @@ call s:Link('jsonKeyword', 'VARIABLE')
 " Markdown {{{
 call s:Link('markdownCodeDelimiter', 'STRING')
 call s:Link('markdownCode', 'STRING')
+call s:Link('markdownCodeBlock', 'STRING')
 call s:Link('markdownHeadingDelimiter', 'HEADER')
 call s:Highlight('markdownH1', 'ALIAS_HEADER', '', 'bold')
 call s:Link('markdownH2', 'HEADER')
