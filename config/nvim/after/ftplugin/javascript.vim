@@ -42,7 +42,7 @@ inoremap <buffer> ## ${}<Left>
 " Typos I often make
 inoremap <buffer> awiat await
 " Test boilerplate
-inoremap <buffer> jspo jest.spyOn()i
+inoremap <buffer> vspo vi.spyOn()i
 inoremap <buffer> bfe beforeEach(async () => {});ko
 inoremap <buffer> bfa beforeAll(async () => {});ko
 inoremap <buffer> iit it('', async () => {<CR>});k2li
@@ -52,37 +52,35 @@ inoremap <buffer> mrv mockReturnValue();hi
 inoremap <buffer> thp toHaveProperty('');hhi
 inoremap <buffer> thbc toHaveBeenCalled();
 inoremap <buffer> thbw toHaveBeenCalledWith();hi
-" Require firost boilerplate
-inoremap <buffer> rqcone const consoleError = require('firost/consoleError');<CR>
-inoremap <buffer> rqconi const consoleInfo = require('firost/consoleInfo');<CR>
-inoremap <buffer> rqconw const consoleWarn = require('firost/consoleWarn');<CR>
-inoremap <buffer> rqemp const emptyDir = require('firost/emptyDir');<CR>
-inoremap <buffer> rqerr const firostError = require('firost/error');<CR>
-inoremap <buffer> rqexis const exists = require('firost/exists');<CR>
-inoremap <buffer> rqexi const exit = require('firost/exit');<CR>
-inoremap <buffer> rqglo const glob = require('firost/glob');<CR>
-inoremap <buffer> rqmkd const mkdirp = require('firost/mkdirp');<CR>
-inoremap <buffer> rqnor const normalizeUrl = require('firost/normalizeUrl');<CR>
-inoremap <buffer> rqreadj const readJson = require('firost/readJson');<CR>
-inoremap <buffer> rqread const read = require('firost/read');<CR>
-inoremap <buffer> rqrun const run = require('firost/run');<CR>
-inoremap <buffer> rqspi const spinner = require('firost/spinner');<CR>
-inoremap <buffer> rqspin const spinner = require('firost/spinner');<CR>
-inoremap <buffer> rqspinn const spinner = require('firost/spinner');<CR>
-inoremap <buffer> rqtmp const tmpDirectory = require('firost/tmpDirectory');<CR>
-inoremap <buffer> rqurl const urlToFilepath = require('firost/urlToFilepath');<CR>
-inoremap <buffer> rqwritej const writeJson = require('firost/writeJson');<CR>
-inoremap <buffer> rqwritj const writeJson = require('firost/writeJson');<CR>
-inoremap <buffer> rqwrij const writeJson = require('firost/writeJson');<CR>
-inoremap <buffer> rqwri const write = require('firost/write');<CR>
+" Import firost boilerplate
+inoremap <buffer> impcone import consoleError from 'firost/consoleError.js';<CR>
+inoremap <buffer> impconi import consoleInfo from 'firost/consoleInfo.js';<CR>;
+inoremap <buffer> impconw import consoleWarn from 'firost/consoleWarn.js';<CR>;
+inoremap <buffer> impemp import emptyDir from 'firost/emptyDir.js';<CR>;
+inoremap <buffer> imperr import firostError from 'firost/error.js';<CR>;
+inoremap <buffer> impexis import exists from 'firost/exists.js';<CR>;
+inoremap <buffer> impexit import exit from 'firost/exit.js';<CR>;
+inoremap <buffer> impglo import glob from 'firost/glob.js';<CR>;
+inoremap <buffer> impmkd import mkdirp from 'firost/mkdirp.js';<CR>;
+inoremap <buffer> impnor import normalizeUrl from 'firost/normalizeUrl.js';<CR>;
+inoremap <buffer> impreadj import readJson from 'firost/readJson.js';<CR>;
+inoremap <buffer> impread import read from 'firost/read.js';<CR>;
+inoremap <buffer> imprun import run from 'firost/run.js';<CR>;
+inoremap <buffer> impspi import spinner from 'firost/spinner.js';<CR>;
+inoremap <buffer> imptmp import tmpDirectory from 'firost/tmpDirectory.js';<CR>;
+inoremap <buffer> impurl import urlToFilepath from 'firost/urlToFilepath.js';<CR>;
+inoremap <buffer> impwritej import writeJson from 'firost/writeJson.js';<CR>;
+inoremap <buffer> impwritj import writeJson from 'firost/writeJson.js';<CR>;
+inoremap <buffer> impwrij import writeJson from 'firost/writeJson.js';<CR>;
+inoremap <buffer> impwri import write from 'firost/write.js';<CR>;
 " Require golgoth boilerplate
-inoremap <buffer> rqpmap const pMap = require('golgoth/pMap');<CR>
-inoremap <buffer> rq_ const _ = require('golgoth/lodash');<CR>
-inoremap <buffer> rqday const dayjs = require('golgoth/dayjs');<CR>
-inoremap <buffer> rqgot const got = require('golgoth/got');<CR>
+inoremap <buffer> imppmap import pMap from 'golgoth/pMap.js';<CR>;
+inoremap <buffer> imp_ import _ from 'golgoth/lodash.js';<CR>;
+inoremap <buffer> impday import dayjs from 'golgoth/dayjs.js';<CR>;
+inoremap <buffer> impgot import got from 'golgoth/got.js';<CR>;
 " Require main modules
-inoremap <buffer> rqpath const path = require('path');<CR>
-inoremap <buffer> rqpat const path = require('path');<CR>
+inoremap <buffer> imppath import path from 'path';<CR>;
+inoremap <buffer> imppat import path from 'path';<CR>;
 " JSDoc helpers
 inoremap <buffer> @para @param {Array}
 inoremap <buffer> @parb @param {boolean}
