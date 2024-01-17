@@ -65,6 +65,7 @@ FILETYPE_GROUPS[script:patterns]="\
   [Vagrantfile] \
   [.envrc] \
   [.eslintignore] \
+  [.gitattributes] \
   [.gitignore] \
   [.nvmrc] \
   [.prettierignore] \

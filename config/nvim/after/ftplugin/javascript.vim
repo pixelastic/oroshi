@@ -52,6 +52,10 @@ inoremap <buffer> mrv mockReturnValue();hi
 inoremap <buffer> thp toHaveProperty('');hhi
 inoremap <buffer> thbc toHaveBeenCalled();
 inoremap <buffer> thbw toHaveBeenCalledWith();hi
+inoremap <buffer> expact expect(actual).a
+inoremap <buffer> epxact expect(actual).a
+inoremap <buffer> tbt toBe(true);a
+inoremap <buffer> tbf toBe(false);a
 " Import firost boilerplate
 inoremap <buffer> impcone import consoleError from 'firost/consoleError.js';<CR>
 inoremap <buffer> impconi import consoleInfo from 'firost/consoleInfo.js';<CR>;
