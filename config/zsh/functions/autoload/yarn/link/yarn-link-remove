@@ -3,13 +3,26 @@
 # $ yarn-link-remove reddinx        # Removes reddinx from links
 # $ yarn-link-remove reddinx firost # Removes reddinx and firost
 function yarn-link-remove() {
+	local hostRoot="$(yarn-root)"
 	local moduleNames=$@
 
+	# Note: Behavior is different in Yarn Classic (v1) and Yarn Berry (v2+).
+	# Classic implementation relies on default yarn link command, while Berry
+	# implementation uses custom symlinks
+
 	for moduleName in $moduleNames; do
-		yarn unlink $moduleName 1>/dev/null
+		if ! yarn-version-is-berry; then
+			# Classic
+			yarn unlink $moduleName 1>/dev/null
+		else
+			# Berry
+			local hostRoot="$(yarn-root)"
+			rm -rf ${hostRoot}/node_modules/$moduleName
+		fi
+
 		echo "✔ $moduleName unlinked"
 	done
 
 	# Forces a re-install
-	yarn install --force
+	yarn install
 }
