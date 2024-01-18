@@ -44,21 +44,17 @@ function yarn-link-list-raw() {
     for rawLine in ${(f)linkedModules}; do
       local split=(${(s/:/)rawLine})
       local moduleName=$split[1]
-      local modulePath="${node_modules}/${split[2]}"
-      modulePath=${modulePath:a}
+      local modulePath=$split[2]
+      if [[ $modulePath[1] == '.' ]]; then
+        modulePath="${node_modules}/${split[2]}"
+        modulePath=${modulePath:a}
+      fi
 
       # Check if local or global module
-      local moduleType='local'
-      [[ $modulePath == */.config/yarn/link/* ]] && moduleType='global'
+      local moduleType='global'
+      [[ $modulePath == ${packageRoot}* ]] && moduleType='local'
 
-      # Path of global modules are relative to the yarn directory
-      if [[ $moduleType == 'global' ]]; then
-        local split=(${(s_config/yarn/link/_)modulePath})
-        moduleName=$split[2]
-        modulePath=~/.config/yarn/link/${moduleName}
-      fi
       moduleNames+=($moduleName)
-
       modulePaths[$moduleName]=$modulePath
       moduleTypes[$moduleName]=$moduleType
     done
