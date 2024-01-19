@@ -1,12 +1,12 @@
 # Display list of all scripts commands
 function complete-yarn-scripts() {
-	# Stop if no package.json
-	local packageJsonPath="$(find-up package.json)"
-	[[ $packageJsonPath == "" ]] && return 0
+	local rawList="$(yarn-script-list-raw)"
+	[[ $rawList == "" ]] && return 0
 
-	cat $packageJsonPath |
-		jq \
-			--raw-output \
-			'.scripts | to_entries[] | [(.key | gsub(":";"\\:")), .value] | join(":")' \
-			2>/dev/null
+  for rawLine in ${(f)rawList}; do
+    local split=(${(s/▮/)rawLine})
+		local scriptName="${split[1]/:/\:}"
+		local scriptCommand=$split[2];
+		echo "${scriptName}:${scriptCommand}"
+	done
 }

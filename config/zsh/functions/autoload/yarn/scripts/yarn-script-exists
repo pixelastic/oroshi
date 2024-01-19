@@ -1,0 +1,18 @@
+# Check if a given script can be called
+# Usage:
+# $ yarn-script-exist g:lint      # Return 0 if g:lint can be called, 1 otherwise
+function yarn-script-exists() {
+	# Stop if yarn isn't installed
+	[[ ! $commands[yarn] ]] && return 1
+
+  local input="$1"
+
+	local rawList="$(yarn-script-list-raw)"
+
+  for rawLine in ${(f)rawList}; do
+    local split=(${(s/▮/)rawLine})
+    [[ $split[1] == "$input" ]] && return 0
+  done
+
+  return 1
+}

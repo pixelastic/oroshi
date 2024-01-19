@@ -1,0 +1,41 @@
+# Return a raw list of all the scripts defined in package.json
+# Usage:
+# $ yarn-script-list-raw                      # List of all available scripts to use with yarn run
+function yarn-script-list-raw() {
+	# Parse options
+	zparseopts -E -D \
+		-with-descriptions=flagWithDescriptions
+
+	local isWithDescriptions=${#flagWithDescriptions}
+
+	# Stop if yarn not available
+	[[ ! $commands[yarn] ]] && return 1
+
+	# Get scripts from local package.json
+	local localPackageJson="$(find-up package.json)"
+	[[ $localPackageJson == "" ]] && return 0
+
+	local output="$(
+		jq -r \
+			'.scripts|to_entries[]|"\(.key)▮\(.value)▮local"' \
+			${localPackageJson}
+	)"
+
+	# Get global scripts frop root package.json
+	local yarnRoot="$(git-directory-root)"
+	local rootPackageJson="${yarnRoot}/package.json"
+	if [[ $rootPackageJson != "$localPackageJson" ]]; then
+		local globalScripts="$(
+			jq -r \
+				'.scripts
+					| to_entries[]
+					| select(.key | startswith("g:"))
+					| "\(.key)▮{root}\(.value)▮global"
+				' \
+				${rootPackageJson}
+		)"
+		output="${globalScripts}\n${output}"
+	fi
+
+	echo $output
+}

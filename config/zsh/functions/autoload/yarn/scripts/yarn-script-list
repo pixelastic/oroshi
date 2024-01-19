@@ -1,0 +1,38 @@
+# Display a list of all the available yarn run scripts
+# Usage:
+# $ yarn-script-list       # Display list of yarn run scripts
+function yarn-script-list() {
+	# Stop if yarn isn't installed
+	[[ ! $commands[yarn] ]] && return 1
+
+	local rawList="$(yarn-script-list-raw)"
+
+  # Build the output
+  local output=""
+  for rawLine in ${(f)rawList}; do
+    local row=""
+
+    local split=(${(s/▮/)rawLine})
+    local scriptName=$split[1]
+    local scriptCommand=$split[2]
+    local scriptType=$split[3]
+
+    # Coloe
+    local scriptColor=$COLOR_ALIAS_YARN_SCRIPT_LOCAL
+    [[ $scriptType == "global" ]] && scriptColor=$COLOR_ALIAS_YARN_SCRIPT_GLOBAL
+
+    # Name
+    row+="$(colorize "$scriptName" $scriptColor)▮"
+
+    # Command
+    row+="$(colorize "$scriptCommand" $COLOR_ALIAS_YARN_SCRIPT_COMMAND)▮"
+
+    output+="$row\n"
+  done
+
+  # Output as columns
+  echo $output | column \
+    --separator "▮" \
+    --table \
+    --table-noheadings
+}

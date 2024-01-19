@@ -1,5 +1,28 @@
-# This is wrapper around "yarn run", to allow for a specific autocompletion to
-# take place
+# This is wrapper around "yarn run"
+#
+# Using a customn function allows for specifying custom autocompletion
+#
+# If using a command that starts with `g:` (like `yarn run g:lint`), it will
+# first check for such a command to be defined at the root level, and if not
+# found will fallback to the normal command (without the `g:`) in the local
+# workspace.
+#
+# Why?
+# Why Yarn Berry (v2+), only the workspace root has access to the dependency
+# binaries, so one need to call top-level scripts from child workspaces, using
+# the `g:` syntax. So `yrl` is actually `yarn run g:lint`. But not all repos
+# uses Yarn Berry, so if such a script doesn't exist in the root, we use the
+# regular script in the current workspace.
 function yarn-run() {
-	yarn run $@
+	local commandName="$1"
+	local args=($@)
+
+	# If the global script does not exist, we run the local version instead
+	if [[ $commandName == g:* ]]; then
+		if ! yarn-script-exists $commandName; then
+			args[1]=$commandName[3,-1]
+		fi
+	fi
+
+	yarn run $args
 }
