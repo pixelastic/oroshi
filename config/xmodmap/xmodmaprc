@@ -124,8 +124,8 @@ keycode 30 = u U u U backslash U00B5
 keycode 31 = i I i I minus U00B7
 ! [o O _ œ]
 keycode 32 = o O o O underscore oe
-![p P XXX XXX]
-keycode 33 = p P p P
+![p P 🟧 🟩]
+keycode 33 = p P p P U1F7E7 U1F7E9
 ![$ £ ¤ ¥]
 keycode 35 = dollar sterling dollar sterling currency yen
 ! [q Q ~ XXX]
