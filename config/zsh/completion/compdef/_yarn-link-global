@@ -1,8 +1,15 @@
 #compdef
 
-# Suggest the globally available modules for linking
+# Suggest modules for linking
 function _yarn-link-global() {
-  local suggestions=(${(f)"$(complete-yarn-link-global)"})
+  # In yarn Classic, they are stored in their own list
+	if ! yarn-version-is-berry; then
+    local suggestions=(${(f)"$(complete-yarn-link-global)"})
 
-  _describe -V "$(completion-header $COLOR_ALIAS_YARN_LINK_GLOBAL $COLOR_WHITE '  globally available modules ')" suggestions
+    _describe -V "$(completion-header $COLOR_ALIAS_YARN_LINK_GLOBAL $COLOR_WHITE '  globally available modules ')" suggestions
+    return
+  fi
+
+  # In Yarn Berry, we can suggest any directory
+  _directories -W $PWD
 }

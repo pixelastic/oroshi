@@ -131,6 +131,7 @@ function oroshi-completion-styling() {
 
   # Directories
   zstyle ':completion:*:local-directories' format "$(completion-header $COLOR_ALIAS_DIRECTORY $COLOR_WHITE '  Directories ')"
+  zstyle ':completion:*:directories' format "$(completion-header $COLOR_ALIAS_DIRECTORY $COLOR_WHITE '  Directories ')"
 
   # Commands
   zstyle ':completion:*:commands'  format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK '  Commands ')"
@@ -226,7 +227,6 @@ unfunction oroshi-completion-styling
 
 # Unknown elements
 zstyle ':completion:*:arguments' format "arguments: %d"
-zstyle ':completion:*:directories' format "directories: %d"
 zstyle ':completion:*:files' format "files: %d"
 zstyle ':completion:*:history-words' format "history-words: %d"
 zstyle ':completion:*:host' format "host: %d"
