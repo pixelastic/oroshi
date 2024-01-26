@@ -1,0 +1,15 @@
+# Create a new PNG file, as small as possible
+# Usage:
+# $ image-png-create ./path/to/file.png
+function image-png-create() {
+	local input="$1"
+
+	if [[ $input == "" ]]; then
+		echo "You need to pass the path of the file to create"
+		return 1
+	fi
+
+	cp \
+		/home/tim/.oroshi/config/zsh/functions/autoload/img/png/default.png \
+		$1
+}

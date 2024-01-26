@@ -1,0 +1,15 @@
+# Outputs the cover of the ebooke
+# Usage:
+# $ ebook-cover-current ./book.epub  # Saves as ./book.jpg
+function ebook-cover-current() {
+	local input="$1"
+
+	[[ $input == "" ]] && return 1
+
+	local coverPath="${input//.epub/.jpg}"
+
+	ebook-meta \
+		$input \
+		--get-cover="${coverPath}" \
+		&>/dev/null
+}

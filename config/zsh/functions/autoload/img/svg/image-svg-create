@@ -1,0 +1,15 @@
+# Create a new SVG file, as small as possible
+# Usage:
+# $ image-svg-create ./path/to/file.svg
+function image-svg-create() {
+	local input="$1"
+
+	if [[ $input == "" ]]; then
+		echo "You need to pass the path of the file to create"
+		return 1
+	fi
+
+	cp \
+		/home/tim/.oroshi/config/zsh/functions/autoload/img/svg/default.svg \
+		$1
+}

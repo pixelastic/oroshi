@@ -1,0 +1,45 @@
+# Update internal metadata of an ebook based on where it's saved in the disk
+# Usage:
+# $ ebook-metadata-update ./GAIMAN Neil - Good Omens.epub
+function ebook-metadata-update() {
+  set -x
+  zparseopts -E -D \
+    -cover:=flagCover
+
+  local input="$1"
+  local coverPath=${flagCover[2]}
+
+  local basename="${input:t}"
+  local split=(${(@s/ - /)basename})
+  local authorName=$split[1]
+  local bookName=$split[2]
+
+  local authorSplit=(${(@s/ /)authorName})
+  local authorLastName=$authorSplit[1]
+  local authorFirstName=(${authorSplit[@]:1})
+
+  if [[ $coverPath == "" ]]; then
+    coverPath="${input//.epub/.jpg}"
+  fi
+
+  # TODO: Add serie information with
+  # --series="Wheel of Time (The)"
+  # --index="7"
+  # --title-sort="Wheel of Time (The) - 7"
+
+  ebook-meta $input \
+    --title="${bookName}" \
+    --authors="${authorName}" \
+    --author-sort="${authorLastName}, ${authorFirstName}" \
+    --cover="${coverPath:a}" \
+    --book-producer='' \
+    --comments='' \
+    --identifier amazon:'' \
+    --identifier isbn:'' \
+    --isbn='' \
+    --language='fra' \
+    --publisher='' \
+    --tags='' \
+		&>/dev/null
+
+}

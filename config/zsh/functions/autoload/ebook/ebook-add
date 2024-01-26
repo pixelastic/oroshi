@@ -1,0 +1,45 @@
+# Add an ebook to the collection
+# Usage:
+# $ ebook-collection-add ./path/to/file.epub  # Add the file to the collection
+# $ ebook-collection-add ./file.epub --author "GAIMAN Neil" --name "Good Omens"
+function ebook-add() {
+	zparseopts -E -D \
+		-name:=flagName \
+		-author:=flagAuthor
+
+	local authorName=${flagAuthor[2]}
+	local bookName=${flagName[2]}
+
+	local input="$1"
+	local basename="${input:t}"
+	local basenameSplit=(${(@s/ - /)basename})
+
+	# Need the author name
+	if [[ $authorName == "" ]]; then
+		echo 'Use --author to specify the author name'
+		echo 'Use the syntax "LASTNAME First name"'
+		echo 'Example: --author "GAIMAN Neil"'
+		return 1
+	fi
+	if [[ $bookName == "" ]]; then
+		echo 'Use --name to specify the book name'
+		echo 'Example: --name "Good Omens"'
+		return 1
+	fi
+
+	# Create a directory for the author, like G/GAIMAN Neil
+	local ebookBaseDirectory=~/perso/Dropbox/backup/books
+	local authorDirectory="${ebookBaseDirectory}/$authorName[1]/$authorName"
+	mkdir -p $authorDirectory
+
+	# Create a directory for the book, like G/GAIMAN Neil/Good Omens
+	local bookDirectory="${authorDirectory}/${bookName}"
+	mkdir -p $bookDirectory
+
+	# Move the file to the folder
+	local bookPath="${bookDirectory}/${authorName} - ${bookName}.epub"
+	mv $input $bookPath
+	
+	echo $bookPath
+}
+

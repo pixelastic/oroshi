@@ -1,0 +1,27 @@
+# Update a book cover
+# Usage:
+# $ ebook-cover-add ./book.epub                     # Update the cover with book.jpg
+# $ ebook-cover-add ./book.epub --cover=./cover.png  # Update the book cover with specified one
+function ebook-cover-update() {
+	zparseopts -E -D \
+		-cover:=flagCover
+
+	local coverPath=${flagCover[2]}
+
+	local input="$1"
+
+	# Guess the cover from the original file
+	if [[ $coverPath == "" ]]; then
+		coverPath="${input//.epub/.jpg}"
+	fi
+
+	# Check if coverPath exists
+	if [[ ! -f $coverPath ]]; then
+		echo "No cover found"
+		return 1
+	fi
+
+	ebook-meta $input \
+		--cover="${coverPath:a}" \
+		&>/dev/null
+}
