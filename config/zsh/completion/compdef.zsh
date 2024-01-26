@@ -98,6 +98,13 @@ compdef '_files -g "*.pdf"' \
 	pdf-page-count \
 	png-split
 # }}}
+# Ebooks {{{
+compdef '_files -g "*.epub"' \
+	ebook-cover-current \
+	ebook-cover-remove \
+	ebook-cover-update \
+	epub2mobi
+# }}}
 # NVM {{{
 compdef _nvm-lazyload lazyloadNvm
 # }}}

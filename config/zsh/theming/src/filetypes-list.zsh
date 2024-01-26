@@ -126,6 +126,7 @@ FILETYPE_GROUPS[document:icon]=" "
 FILETYPE_GROUPS[document:bold]="1"
 FILETYPE_GROUPS[document:patterns]="\
   epub \
+  mobi \
   pdf \
 "
 

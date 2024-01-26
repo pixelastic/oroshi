@@ -1,0 +1,82 @@
+#!/usr/bin/env zsh
+# Sync the local book library with the Kindle
+# - Only copy .mobi files
+# - Removing a file in Dropbox will remove the file in the Kindle
+# - Empty directories are cleaned
+# - Additional directory metadata added by Kindle are preserved
+
+local libraryRoot="/home/$USER/perso/Dropbox/backup/books/"
+local kindleRoot="/media/$USER/Kindle/documents/books"
+
+# local libraryRoot="/home/$USER/local/tmp/kindle-sync/dropbox/"
+# local kindleRoot="/home/$USER/local/tmp/kindle-sync/kindle"
+
+# FIRST: COPY NEW FILES {{{
+# We first copy all .mobi books that are in the library onto the kindle
+
+# The Kindle is a FAT32 device, and it comes with a few limitations:
+# --size-only is used to compare files based on their filesize only, not their
+# other attributes, as we lose precision when comparing between FAT32 and ext3
+# and that results in files considered always changed
+rsync \
+	--verbose \
+	--recursive \
+	--size-only \
+	--exclude="tmp/" \
+	--include="*/" \
+	--include="*.mobi" \
+	--exclude="*" \
+	$libraryRoot \
+	$kindleRoot
+# }}}
+
+# SECOND: CLEANUP REMOVED BOOKS {{{
+# We then remove from the Kindle any .mobi book that are no longer in the
+# library
+
+function getAllMobi() {
+	local input=$1
+	# We find all .mobi files,
+	# display them line by line,
+	# replace any "TOLKIEN J. R. R./" with "TOLKIEN J. R. R/" as this is how the
+	# Kindle handles the trailing dots,
+	# and we sort them for easier comparison
+	find \
+		$input \
+		-type f \
+		-name "*.mobi" \
+		-printf "%P\n" \
+		| sed 's_\./_/_g' \
+		| sort
+}
+
+local libraryList="$(getAllMobi $libraryRoot)"
+local kindleList="$(getAllMobi $kindleRoot)"
+# Get the list of .mobi files present in the kindle but not in the library
+local removedBooks=$(comm -23 <(echo "$kindleList") <(echo "$libraryList"))
+# Remove them all
+for removedBook in ${(f)removedBooks}; do
+	echo "Removing ${removedBook}"
+	rm "${kindleRoot}/${removedBook}"
+done
+# }}}
+
+# THIRD: REMOVE EMPTY DIRECTORIES {{{
+# We check all directories on the Kindle. If a directory doesn't contain
+# a .mobi, and isn't a metadata directory, we remove it.
+
+# Finding all directories
+local kindleDirectories="$(find $kindleRoot -type d ! -name "*.sdr" -printf "%P\n")"
+for kindleDirectory in ${(f)kindleDirectories}; do
+	local fullpath="${kindleRoot}/${kindleDirectory}"
+
+	# Skip if already deleted
+	[[ ! -d $fullpath ]] && continue
+
+	# Skip if has .mobi files in it
+	local booksInFolder="$(find $fullpath -type f -name "*.mobi")";
+	[[ $booksInFolder != "" ]] && continue;
+
+	echo "Deleting ${kindleDirectory}"
+	rm -rf $fullpath
+done

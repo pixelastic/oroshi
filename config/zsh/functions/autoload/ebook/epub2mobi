@@ -1,0 +1,10 @@
+# Convert an epub to mobi
+# Usage:
+# $epub2mobi ./book.epub     # Convert to book.mobi
+function epub2mobi() {
+	for input in $@; do
+		local epubFilepath=${input:a}
+		local mobiFilepath="${epubFilepath:r}.mobi"
+		ebook-convert "$epubFilepath" "$mobiFilepath"
+	done
+}
