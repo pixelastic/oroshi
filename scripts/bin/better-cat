@@ -5,16 +5,18 @@
 # $ better-cat ./path/to/*.txt      # Output all *.txt
 # $ better-cat ./path/to/file.png   # Display file.png in terminal
 
-for arg in ${=@}; do
-  local filepath=${arg:a}
-  local filetypeGroup="$(filetype-group $filepath)"
+# Display each argument
 
-  # Image file
-  if [[ $filetypeGroup == "image" ]]; then
-    image-display $filepath
-    continue
-  fi
+for arg in $@; do
+	local filepath=${arg:a}
+	local filetypeGroup="$(filetype-group $filepath)"
 
-  # Textual file
-  bat $filepath
+	# Image file
+	if [[ $filetypeGroup == "image" ]]; then
+		image-display $filepath
+		continue
+	fi
+
+	# Textual file
+	bat "$filepath"
 done
