@@ -1,0 +1,13 @@
+# Download only the audio of a given YouTube video
+# Usage:
+# $ youtube-audio-download ${videoId/videoUrl}
+
+function youtube-audio-download() {
+	local input="$1"
+
+	yt-dlp \
+		--extract-audio \
+		--audio-format mp3 \
+		--output "%(title)s.%(ext)s" \
+		$input
+}

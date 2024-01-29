@@ -1,0 +1,18 @@
+# Download all videos of a given playlist
+# Usage:
+# $ youtube-playlist-download ${playlistId/playlistUrl}
+
+function youtube-playlist-download() {
+  local input="$1"
+  local rawList="$(youtube-playlist-list-raw $1)"
+
+  local videoIds=()
+  for rawLine in ${(f)rawList}; do
+    local split=(${(@s/▮/)rawLine})
+    local videoId=$split[1]
+
+    videoIds+=($videoId)
+  done
+
+  youtube-video-download $videoIds
+}

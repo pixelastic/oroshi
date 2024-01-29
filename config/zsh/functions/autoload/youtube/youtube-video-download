@@ -1,0 +1,15 @@
+# Download a given YouTube video
+# Usage:
+# $ youtube-video-download ${videoId/videoUrl}
+
+function youtube-video-download() {
+	local args=($@)
+
+	for videoId in $args; do
+		yt-dlp \
+			--format 'b[ext=mp4]' \
+			--output "%(title)s.%(ext)s" \
+			-- \
+			$videoId
+	done
+}

@@ -1,0 +1,20 @@
+# Output a list of all videos in a given playlist
+# Usage:
+# $ youtube-playlist-list-raw ${playlistId}  # List of all videos from id
+# $ youtube-playlist-list-raw ${playlistUrl}  # List of all videos from url
+function youtube-playlist-list-raw() {
+	local playlistUrl="$1"
+
+	# Prefix the input with https:// if it isn't an url
+	if [[ "$playlistUrl" != http* ]]; then
+		playlistUrl="https://www.youtube.com/playlist?list=$playlistUrl"
+	fi
+
+	yt-dlp \
+		--flat-playlist \
+		-j \
+		$playlistUrl |
+		jq \
+			-r \
+			'"\(.id)▮\(.playlist_index)▮\(.title)▮\(.duration_string)"'
+}

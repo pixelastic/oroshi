@@ -1,0 +1,29 @@
+# Display the list of videos in a given playlist
+# Usage:
+# $ youtube-playlist-list ${playlistId/playlistUrl}
+
+function youtube-playlist-list() {
+  local input="$1"
+  local rawList="$(youtube-playlist-list-raw $1)"
+
+  local output=""
+  for rawLine in ${(f)rawList}; do
+    local row=""
+
+    local split=(${(@s/▮/)rawLine})
+    local videoId=$split[1]
+    local videoIndex=$split[2]
+    local videoTitle=$split[3]
+    local videoDuration=$split[4]
+
+    row+="$(colorize "#${videoIndex}" ALIAS_YOUTUBE_VIDEO_INDEX)▮"
+    row+="$(colorize "$videoId" ALIAS_YOUTUBE_VIDEO_ID)▮"
+    row+="$(colorize "$videoTitle" ALIAS_YOUTUBE_VIDEO_TITLE)▮"
+    row+="$(colorize "$videoDuration" ALIAS_YOUTUBE_VIDEO_DURATION)▮"
+
+    output+="$row\n"
+  done
+
+  table $output
+}
+

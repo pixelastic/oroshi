@@ -165,6 +165,12 @@ aliasColors[YARN_LINK_GLOBAL]="BLUE"           # Packages that are linked to glo
 aliasColors[YARN_SCRIPT_LOCAL]="YELLOW"        # yarn run scripts defined in this workspace
 aliasColors[YARN_SCRIPT_GLOBAL]="BLUE"         # yarn run scripts defined in the root workspace
 aliasColors[YARN_SCRIPT_COMMAND]="GRAY_4"      # yarn run script command
+# YouTube
+aliasColors[YOUTUBE_VIDEO_INDEX]="SKY"
+aliasColors[YOUTUBE_VIDEO_ID]="ORANGE"
+aliasColors[YOUTUBE_VIDEO_DURATION]="NEUTRAL"
+aliasColors[YOUTUBE_VIDEO_TITLE]="GRAY_4"
+
 # Hosts
 aliasColors[HOST_PIXELASTIC]="GREEN"
 aliasColors[HOST_GITHUB]="BLUE"
