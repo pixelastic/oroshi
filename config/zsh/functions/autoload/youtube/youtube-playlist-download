@@ -3,16 +3,31 @@
 # $ youtube-playlist-download ${playlistId/playlistUrl}
 
 function youtube-playlist-download() {
-  local input="$1"
-  local rawList="$(youtube-playlist-list-raw $1)"
+	local args=($@)
 
-  local videoIds=()
-  for rawLine in ${(f)rawList}; do
-    local split=(${(@s/▮/)rawLine})
-    local videoId=$split[1]
+	yt-dlp \
+		--no-warnings \
+		--format 'bestvideo[height<=1080]+bestaudio/best[height<=1080]' \
+		--merge-output-format mp4 \
+		--output "%(upload_date)s - %(title)s.%(ext)s" \
+		-- \
+		$args
 
-    videoIds+=($videoId)
-  done
+	# local input="$1"
+	# local rawList="$(youtube-playlist-list-raw $1)"
 
-  youtube-video-download $videoIds
+	# local videoIds=()
+	# for rawLine in ${(f)rawList}; do
+	#   local split=(${(@s/▮/)rawLine})
+	#   local videoId=$split[1]
+
+	#   videoIds+=($videoId)
+	# done
+
+	# youtube-video-download $videoIds
+
+	# # TODO: Prefix with the playlist index
+	# # yt-dlp \
+	# # -- \
+	# # $videoId
 }
