@@ -40,6 +40,9 @@ function oroshi-completion-styling() {
 
     # File and directory colors
     ${(s.:.)LS_COLORS}
+
+    # Whitespace (empty areas)
+    "no=38;5;$COLOR_BLACK"
   )
   # Color flags
   local listColorsFlag=(\

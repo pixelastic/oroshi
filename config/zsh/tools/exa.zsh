@@ -33,13 +33,14 @@ EXA_COLORS="${EXA_COLORS}:gt=38;5;$COLOR_ALIAS_VARIABLE_TYPE" # File type change
 
 EXA_COLORS="${EXA_COLORS}:di=38;5;$COLOR_GREEN"      # Directories
 EXA_COLORS="${EXA_COLORS}:ex=4;38;5;$COLOR_VIOLET_4" # Executable
-export EXA_COLORS
 
 # EXA_COLORS="${EXA_COLORS}:fi=38;5;252" # Files
-# EXA_COLORS="${EXA_COLORS}:ln=38;5;69" # Symlink source
-# EXA_COLORS="${EXA_COLORS}:lp=38;5;69" # Symlink destination
+# EXA_COLORS="${EXA_COLORS}:ln=38;5;69"  # Symlink source
+# EXA_COLORS="${EXA_COLORS}:lp=38;5;69"  # Symlink destination
 # EXA_COLORS="${EXA_COLORS}:or=38;5;160" # Broken symlink
-# EXA_COLORS="${EXA_COLORS}:pi=48;5;13" # Named pipe (unstyled)
-# EXA_COLORS="${EXA_COLORS}:cd=48;5;13" # Character device (unstyled)
-# EXA_COLORS="${EXA_COLORS}:so=48;5;13" # Socket (unstyled)
-# EXA_COLORS="${EXA_COLORS}:bd=48;5;13" # Block device (unstyled)
+# EXA_COLORS="${EXA_COLORS}:pi=48;5;13"  # Named pipe (unstyled)
+# EXA_COLORS="${EXA_COLORS}:cd=48;5;13"  # Character device (unstyled)
+# EXA_COLORS="${EXA_COLORS}:so=48;5;13"  # Socket (unstyled)
+# EXA_COLORS="${EXA_COLORS}:bd=48;5;13"  # Block device (unstyled)
+
+export EXA_COLORS
