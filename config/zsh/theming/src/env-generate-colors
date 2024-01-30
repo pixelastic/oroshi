@@ -12,6 +12,7 @@ local outputFile=~/.oroshi/config/zsh/theming/env/colors.zsh
 # Named colors {{{
 declare -A namedColors
 namedColors=()
+
 namedColors[0]="BLACK"
 namedColors[1]="RED"
 namedColors[2]="GREEN"
@@ -20,15 +21,17 @@ namedColors[4]="BLUE"
 namedColors[5]="PURPLE"
 namedColors[6]="CYAN"
 namedColors[7]="WHITE"
-namedColors[8]="GRAY"
+
+namedColors[8]="LIGHT_BLACK"
 namedColors[9]="RED_LIGHT"
 namedColors[10]="GREEN_LIGHT"
 namedColors[11]="YELLOW_LIGHT"
 namedColors[12]="BLUE_LIGHT"
 namedColors[13]="PURPLE_LIGHT"
 namedColors[14]="CYAN_LIGHT"
-namedColors[15]="WHITE_PURE"
-namedColors[16]="GRAY_DARK"
+namedColors[15]="LIGHT_WHITE"
+
+namedColors[16]="GRAY"
 namedColors[17]="ORANGE"
 namedColors[18]="EMERALD"
 namedColors[19]="AMBER"
@@ -36,6 +39,7 @@ namedColors[20]="SKY"
 namedColors[21]="VIOLET"
 namedColors[22]="TEAL"
 namedColors[23]="NEUTRAL"
+
 namedColors[24]="GRAY_LIGHT"
 namedColors[25]="ORANGE_LIGHT"
 namedColors[26]="EMERALD_LIGHT"

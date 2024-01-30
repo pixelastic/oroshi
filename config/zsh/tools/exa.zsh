@@ -5,6 +5,8 @@
 EXA_COLORS=""
 EXA_COLORS="${EXA_COLORS}:xx=38;5;$COLOR_ALIAS_UI" # Punctuation
 
+EXA_COLORS="${EXA_COLORS}:fi=38;5;$COLOR_ALIAS_UI" # File marker (.)
+
 EXA_COLORS="${EXA_COLORS}:ur=38;5;$COLOR_GRAY_7"   # User read
 EXA_COLORS="${EXA_COLORS}:uw=38;5;$COLOR_GRAY_7"   # User write
 EXA_COLORS="${EXA_COLORS}:ux=4;38;5;$COLOR_PURPLE" # User execute
@@ -34,7 +36,6 @@ EXA_COLORS="${EXA_COLORS}:gt=38;5;$COLOR_ALIAS_VARIABLE_TYPE" # File type change
 EXA_COLORS="${EXA_COLORS}:di=38;5;$COLOR_GREEN"      # Directories
 EXA_COLORS="${EXA_COLORS}:ex=4;38;5;$COLOR_VIOLET_4" # Executable
 
-# EXA_COLORS="${EXA_COLORS}:fi=38;5;252" # Files
 # EXA_COLORS="${EXA_COLORS}:ln=38;5;69"  # Symlink source
 # EXA_COLORS="${EXA_COLORS}:lp=38;5;69"  # Symlink destination
 # EXA_COLORS="${EXA_COLORS}:or=38;5;160" # Broken symlink

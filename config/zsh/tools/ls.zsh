@@ -10,8 +10,7 @@ function oroshi_tools_ls() {
 	LS_COLORS+=":ex=4;38;5;$COLOR_ALIAS_EXECUTABLE" # Executable
 	LS_COLORS+=":ln=34;4;$COLOR_ALIAS_LINK"         # Symlink
 
-	# Other known LS_COLORS fields, used by the completion styling system
-	LS_COLORS+=":fi=1;38;5;$COLOR_RED"     # file
+	# Other known LS_COLORS fields, potentially used by the completion styling system
 	LS_COLORS+=":st=1;38;5;$COLOR_RED"     # file with sticky bit set
 	LS_COLORS+=":pi=1;38;5;$COLOR_GREEN"   # fifo file
 	LS_COLORS+=":mh=1;38;5;$COLOR_GREEN"   # file with 'b' set (for access control lists)
@@ -26,7 +25,6 @@ function oroshi_tools_ls() {
 	LS_COLORS+=":sg=1;38;5;$COLOR_TEAL"    # file with setgid bit set
 	LS_COLORS+=":su=1;38;5;$COLOR_VIOLET"  # file with setuid bit set
 	LS_COLORS+=":cd=1;38;5;$COLOR_PURPLE"  # character (unbuffered) special file
-	LS_COLORS+=":ex=1;38;5;$COLOR_ORANGE"  # executable file (-x)
 	LS_COLORS+=":mi=1;38;5;$COLOR_ORANGE"  # non-existent file pointed to by a symbolic link (visible when you type ls -l)
 	LS_COLORS+=":tw=1;38;5;$COLOR_AMBER"   # sticky other-writable (o+w) file; and sticky other-writable directory
 

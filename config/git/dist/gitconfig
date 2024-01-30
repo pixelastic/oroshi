@@ -64,8 +64,8 @@
 
   grafted = 114
 [color "diff"]
-  plain = 8   # Default color
-  context = 8 # Lines untouched
+  plain = 16   # Default color
+  context = 16 # Lines untouched
   frag = 0   # @@ -9,14 +9,15 @@
   func = 0   # Name of function into which code is changed
   meta = 3     # Diff header
@@ -119,7 +119,7 @@
   success = 114
   warning = 114
 [color "status"]
-  header = 8         # Default text
+  header = 16         # Default text
   branch = 17      # Current branch
   added = 2        # File added to staging area
   changed = 1          # Changed, but not staged
