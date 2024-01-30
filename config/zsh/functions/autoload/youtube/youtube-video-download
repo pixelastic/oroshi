@@ -7,7 +7,7 @@ function youtube-video-download() {
 
 	for videoId in $args; do
 		yt-dlp \
-			--format 'b[ext=mp4]' \
+			--format 'best[height<=720][ext=mp4]' \
 			--output "%(title)s.%(ext)s" \
 			-- \
 			$videoId

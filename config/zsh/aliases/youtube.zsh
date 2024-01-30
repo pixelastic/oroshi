@@ -13,6 +13,7 @@ alias ytad='youtube-audio-download'
 
 # Playlist
 alias ytp="youtube-playlist-download"
+alias ytpl="youtube-playlist-download"
 alias ytpd="youtube-playlist-download"
 alias ytpllr="youtube-playlist-list-raw"
 alias ytpll="youtube-playlist-list"
