@@ -131,6 +131,10 @@ compdef _pyenv-lazyload lazyloadPyenv
 # SSH {{{
 compdef _ssh-known-hosts ssh
 # }}}
+# Archives {{{
+compdef '_files -g "*.{bz2,rar,tar,tar.gz,tgz,zip,ZIP,7z}"' \
+	extract
+# }}}
 # Watch and reload {{{
 # TODO: Ideally watch-and-reload should complete to files in the current
 # directory or any defined command/alias/function
