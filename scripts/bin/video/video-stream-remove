@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # Removes streams from a video file
 # Usage:
-# $ vidoe-stream-remove file.mkv 1 2 4   # Remove streams 1 2 and 4 from file.mkv
+# $ video-stream-remove file.mkv 1 2 4   # Remove streams 1 2 and 4 from file.mkv
 set -e
 
 # Parse args
