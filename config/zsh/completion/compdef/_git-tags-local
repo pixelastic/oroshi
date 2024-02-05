@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest the local tags
+function _git-tags-local() {
+  local suggestions=(${(f)"$(complete-git-tags-local)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_GIT_TAG $COLOR_WHITE '  Local tags ')" suggestions
+}

@@ -29,6 +29,10 @@ compdef _git-branches-local \
 compdef _git-branches-remote \
 	git-branch-pull \
 	git-branch-remove-remote
+compdef _git-tags-local \
+	git-tag-switch \
+	git-tag-remove \
+	git-tag-status
 compdef _git-files-dirty \
 	git-file-add
 compdef _git-submodules \

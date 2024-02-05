@@ -1,0 +1,13 @@
+# Switch to specific tag
+# Usage:
+# $ git-tag-swicth v8.54.0         # Switch to tag v8.54.0
+function git-tag-switch() {
+	local tagName="$1"
+
+	if ! git-tag-exists $tagName; then
+		echo "Tag ${tagName} does not exist"
+		return 1
+	fi
+
+	git checkout $tagName
+}

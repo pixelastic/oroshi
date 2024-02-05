@@ -56,14 +56,19 @@ function oroshi-completion-styling() {
       "${(f)$(♣ "*" $COLOR_ALIAS_GIT_BRANCH)}" \
       $listColorsDefault \
     )
-  # Color git submodules
-  local listColorsGitSubmodule=(\
-      "${(f)$(♣ "*" $COLOR_ALIAS_GIT_SUBMODULE)}" \
+  # Color git tags
+  local listColorsGitTag=(\
+      "${(f)$(♣ "*" $COLOR_ALIAS_GIT_TAG)}" \
       $listColorsDefault \
     )
   # Color git remotes
   local listColorsGitRemote=(\
       "${(f)$(♣ "*" $COLOR_ALIAS_GIT_REMOTE)}" \
+      $listColorsDefault \
+    )
+  # Color git submodules
+  local listColorsGitSubmodule=(\
+      "${(f)$(♣ "*" $COLOR_ALIAS_GIT_SUBMODULE)}" \
       $listColorsDefault \
     )
   # }}}
@@ -154,14 +159,19 @@ function oroshi-completion-styling() {
   zstyle ':completion:*:complete:git-branch-remove-remote:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-remove:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-switch:*:*' list-colors $listColorsGitBranch
-
-  # Submodules
-  zstyle ':completion:*:complete:git-submodule-remove:*:*' list-colors $listColorsGitSubmodule
+  
+  # Tags
+  zstyle ':completion:*:complete:git-tag-switch:*:*' list-colors $listColorsGitTag
+  zstyle ':completion:*:complete:git-tag-remove:*:*' list-colors $listColorsGitTag
+  zstyle ':completion:*:complete:git-tag-status:*:*' list-colors $listColorsGitTag
 
   # Remotes
   zstyle ':completion:*:complete:git-remote-remove:*:*' list-colors $listColorsGitRemote
   zstyle ':completion:*:complete:git-remote-rename:*:*' list-colors $listColorsGitRemote
   zstyle ':completion:*:complete:git-remote-switch:*:*' list-colors $listColorsGitRemote
+  
+  # Submodules
+  zstyle ':completion:*:complete:git-submodule-remove:*:*' list-colors $listColorsGitSubmodule
   # }}}
 
   # Docker {{{

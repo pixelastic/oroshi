@@ -1,9 +1,6 @@
 # List all local branches
 function complete-git-branches-local() {
-  local suggestions="$(\
-    git branch \
-      --sort=-committerdate \
-      --format="%(refname:short):%(contents:subject)" \
-  )"
-  echo ${suggestions}
+	git branch \
+		--sort=-committerdate \
+		--format="%(refname:short):%(contents:subject)"
 }

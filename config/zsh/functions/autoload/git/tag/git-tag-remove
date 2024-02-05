@@ -1,0 +1,16 @@
+# Delete local tags
+# Usage:
+# $ git-tag-remove alpha    # Remove a tag
+# $ git-tag-remove beta     # Remove several tags
+function git-tag-remove() {
+	local tags=($@)
+	for tagName in $tags; do
+		local displayTagName="$(git-tag-colorize "$tagName" --with-icon)"
+		if git tag --delete "$tagName" 1>/dev/null; then
+			echo "Tag $displayTagName deleted"
+		else
+			echo "Unable to delete tag ${displayTagName}, stopping."
+			return 0
+		fi
+	done
+}

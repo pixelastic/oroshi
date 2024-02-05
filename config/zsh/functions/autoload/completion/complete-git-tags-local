@@ -1,0 +1,6 @@
+# List all local tags
+function complete-git-tags-local() {
+	git tag \
+		--sort=-creatordate \
+		--format="%(refname:short):%(creatordate:relative)"
+}
