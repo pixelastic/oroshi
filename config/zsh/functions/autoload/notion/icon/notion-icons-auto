@@ -1,0 +1,16 @@
+# Automatically set the icons of all subpages
+# Usage:
+# $ notion-icons-auto {pageUrl}
+function notion-icons-auto() {
+	local pageUrl="$1"
+
+	local subPages="$(notion-page-list-raw $pageUrl)"
+
+	for rawLine in ${(f)subPages}; do
+		local split=(${(@s/▮/)rawLine})
+		local pageId=$split[1];
+		local pageName=$split[2];
+		echo "Updating ${pageName}"
+		notion-icon-auto $pageId
+	done
+}

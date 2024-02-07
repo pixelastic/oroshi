@@ -1,0 +1,25 @@
+# List all pages in a given page
+# Usage:
+# $ notion-page-list-raw {pageUrl}
+function notion-page-list-raw() {
+	local pageId="$(notion-page-id $1)"
+
+	# Find all blocks of the page, and only keep the one of type "child_page"
+	local pageBlocks="$(notion-api blocks/${pageId}/children)"
+	local hasErrors="$(echo $pageBlocks | jq '.object != "error"')"
+	if [[ $hasErrors == "false" ]]; then
+		echo $pageBlocks | jq -r '
+				.results
+				| map(select(.type == "child_page"))
+				| .[]
+				| "\(.id)▮\(.child_page.title)"
+			'
+		return 0
+	fi
+
+	# Otherwise, the page wasn't a page with blocks, but a database with pages
+	notion-api-post databases/${pageId}/query '{}' |
+		jq -r '
+		.results[] | "\(.id)▮\(.properties.Name.title[0].plain_text)"
+		'
+}

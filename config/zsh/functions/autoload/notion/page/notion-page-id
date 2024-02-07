@@ -5,10 +5,18 @@
 # It accepts:
 # - Full page URL:
 #   example: https://www.notion.so/pixelastic/Charme-Personne-Charm-Person-c01af08fdd5344ceab5b958712e65fd2
-# - TODO: Preview URL:
+# - Preview URL:
 #   example: https://www.notion.so/pixelastic/f30ede4f849b48fcbd59969d3ac0452a?v=779ec9264d1f415188f3381f464d8a29&p=c01af08fdd5344ceab5b958712e65fd2&pm=c
+# - Page ID:
+# 	example: 09b77f8c-7e1b-432e-b52c-4cf8f6a7ec37
 function notion-page-id() {
 	local fullUrl="$1"
+
+	# We assume that if it's not an url, it's already an id
+	if [[ $fullUrl != http** ]]; then
+		echo $fullUrl
+		return
+	fi
 
 	# zsh weird syntax notes
 	# "##" removes longest match from beginning of the string
