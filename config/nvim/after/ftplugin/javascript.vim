@@ -31,7 +31,7 @@ let b:ale_sign_error = ' '               " Error sign in gutter
 if JavaScriptIsZx()
   let b:ale_javascript_eslint_executable = 'eslint-zx'
 else
-  let b:ale_javascript_eslint_executable = 'eslint_d'
+  let b:ale_javascript_eslint_executable = 'eslint-js'
 endif
 
 " Keybindings {{{
