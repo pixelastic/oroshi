@@ -1,0 +1,17 @@
+# Do a patch call to the notion API
+# Usage:
+# $ notion-api-patch pages/c01af08f-dd53-44ce-ab5b-958712e65fd2 '{}' # Patch with data
+function notion-api-patch() {
+	local input=$1
+	local data=$2
+
+	curl \
+		--silent \
+		--output /dev/null \
+		https://api.notion.com/v1/${input} \
+		-H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+		-H "Notion-Version: 2022-06-28" \
+		-H "Content-Type: application/json" \
+		-X PATCH \
+		--data ''"${data}"''
+}

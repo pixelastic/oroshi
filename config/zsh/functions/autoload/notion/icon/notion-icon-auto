@@ -1,0 +1,27 @@
+# Automatically set the icon of a page to its preview image
+# Usage:
+# $ notion-icon-auto {pageUrl}
+function notion-icon-auto() {
+	local pageUrl="$1"
+	local pageId="$(notion-page-id $1)"
+
+	# Find the preview image
+	local previewUrl="$(notion-page-preview $pageUrl)"
+	if [[ $previewUrl == "" ]]; then
+		echo "No preview found"
+		return
+	fi
+
+	# Download the preview image
+	local previewFilepath=~/local/tmp/notion/${pageId}.png
+	wget --quiet "$previewUrl" -O "$previewFilepath"
+
+	# Upload it to my server
+	rsync -az \
+		$previewFilepath \
+		pixelastic:./local/www/assets.pixelastic.com/notion
+	local iconUrl="https://assets.pixelastic.com/notion/${pageId}.png"
+
+	# Update the icon of the page
+	notion-icon-update $pageUrl $iconUrl
+}

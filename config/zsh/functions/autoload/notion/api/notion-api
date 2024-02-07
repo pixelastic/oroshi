@@ -1,0 +1,12 @@
+# Do a GET call to the notion API
+# Usage:
+# $ notion-api blocks/c01af08f-dd53-44ce-ab5b-958712e65fd2 # Returns json
+function notion-api() {
+	local input=$1
+
+	curl \
+		--silent \
+		https://api.notion.com/v1/${input} \
+		-H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+		-H "Notion-Version: 2022-06-28"
+}

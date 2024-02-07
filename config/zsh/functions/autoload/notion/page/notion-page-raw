@@ -1,0 +1,10 @@
+# Display the raw JSON output of a given page
+# Usage:
+# $ notion-page-raw {pageUrl}
+function notion-page-raw() {
+	local pageUrl="$1"
+
+	local pageId="$(notion-page-id $pageUrl)"
+
+	notion-api pages/${pageId}
+}

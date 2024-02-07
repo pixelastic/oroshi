@@ -1,0 +1,13 @@
+# Update the icon of a given page
+# Usage:
+# $ notion-icon-update {pageUrl} {iconUrl}
+function notion-icon-update() {
+	local pageUrl="$1"
+	local iconUrl="$2"
+
+	local pageId="$(notion-page-id $pageUrl)"
+
+	notion-api-patch \
+		pages/${pageId} \
+		'{"icon": {"type": "external", "external": {"url": "'"$iconUrl"'"}}}'
+}

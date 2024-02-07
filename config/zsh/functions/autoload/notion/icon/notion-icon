@@ -1,0 +1,16 @@
+# Returns the page icon
+# Usage:
+# $ notion-icon {pageUrl}  # Either a URL to an image, or an emoji
+function notion-icon() {
+	local pageUrl="$1"
+
+	local pageId="$(notion-page-id $pageUrl)"
+
+	notion-api pages/${pageId} |
+		jq -r '
+			if .icon.type == "external" then
+				.icon.external.url
+			else
+				.icon.emoji
+			end'
+}

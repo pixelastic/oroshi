@@ -1,0 +1,41 @@
+# Return the notion page id from a given URL
+# Usage:
+# $ notion-page-id {notionUrl}
+#
+# It accepts:
+# - Full page URL:
+#   example: https://www.notion.so/pixelastic/Charme-Personne-Charm-Person-c01af08fdd5344ceab5b958712e65fd2
+# - TODO: Preview URL:
+#   example: https://www.notion.so/pixelastic/f30ede4f849b48fcbd59969d3ac0452a?v=779ec9264d1f415188f3381f464d8a29&p=c01af08fdd5344ceab5b958712e65fd2&pm=c
+function notion-page-id() {
+	local fullUrl="$1"
+
+	# zsh weird syntax notes
+	# "##" removes longest match from beginning of the string
+
+	if [[ $fullUrl == *p=* ]]; then
+		# Url is a preview url
+		# example:
+		# 	https://www.notion.so/pixelastic/f30ede4f849b48fcbd59969d3ac0452a?v=779ec9264d1f415188f3381f464d8a29&p=c01af08fdd5344ceab5b958712e65fd2&pm=c
+		local queryString=${fullUrl##*\?}
+		local rawId="$(
+			echo "$queryString" |
+				jq -r -R '
+					split("&") 
+					| .[] 
+					| select(startswith("p=")) 
+					| split("=") 
+					| .[1]'
+		)"
+	else
+		# Url is a canonical url
+		# example:
+		# 	https://www.notion.so/pixelastic/Charme-Personne-Charm-Person-c01af08fdd5344ceab5b958712e65fd2
+		local fullPage=${fullUrl##*/}
+		local rawId=${fullPage##*-}
+	fi
+
+	# Convert the raw id by adding the dashes at the right spots (8-4-4-4-12)
+	local pageId="${rawId[1, 8]}-${rawId[9, 12]}-${rawId[13, 16]}-${rawId[17, 20]}-${rawId[21, 32]}"
+	echo $pageId
+}
