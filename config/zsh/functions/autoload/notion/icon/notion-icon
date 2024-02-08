@@ -8,9 +8,15 @@ function notion-icon() {
 
 	notion-api pages/${pageId} |
 		jq -r '
+		if .icon then
+			# If we have an icon
 			if .icon.type == "external" then
 				.icon.external.url
 			else
 				.icon.emoji
-			end'
+			end
+		else
+			# When we do not have an icon
+			""
+		end'
 }

@@ -1,9 +1,22 @@
 # Automatically set the icon of a page to its preview image
 # Usage:
-# $ notion-icon-auto {pageUrl}
+# $ notion-icon-auto {pageUrl}           # Set the icon as the preview
+# $ notion-icon-auto --force {pageUrl}   # Set the icon as the preview, even if already has one
 function notion-icon-auto() {
+	zparseopts -E -D \
+		-force=flagForce
+
+	local isForce=${#flagForce}
+
 	local pageUrl="$1"
 	local pageId="$(notion-page-id $1)"
+
+	# If already has an icon, we skip (unless --force)
+	local pageIcon="$(notion-icon $pageId)"
+	if [[ $pageIcon != "" && $isForce == "0" ]]; then
+		echo "Already has an icon, skipping. Use --force to overwrite"
+		return 0
+	fi
 
 	# Find the preview image
 	local previewUrl="$(notion-page-preview $pageUrl)"
