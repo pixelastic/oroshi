@@ -1,0 +1,14 @@
+# Darken images
+# Usage:
+# $ img-darken ./path/to/images  # Darken all specified images
+function img-darken() {
+	local modulate=75
+	for input in $@; do
+		local extension=${input:e}
+		local filename=${input:t:r}
+		local output="${input:t:r}.${modulate}.${extension}"
+		convert $input \
+			-modulate $modulate \
+			$output
+	done
+}
