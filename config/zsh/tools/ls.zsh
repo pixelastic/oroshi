@@ -27,6 +27,24 @@ function oroshi_tools_ls() {
 	# LS_COLORS+=":cd=1;38;5;$COLOR_PURPLE"  # character (unbuffered) special file
 	# LS_COLORS+=":mi=1;38;5;$COLOR_ORANGE"  # non-existent file pointed to by a symbolic link (visible when you type ls -l)
 	# LS_COLORS+=":tw=1;38;5;$COLOR_AMBER"   # sticky other-writable (o+w) file; and sticky other-writable directory
+	
+
+	# Enhance LS_COLORS by looping through all FILETYPES_***_color
+	# Note: It isn't possible to color all hidden files (.*) with LS_COLORS
+	# Instead, we have a known list of the most common files defined in
+	# filetype-list.zsh
+	for extension in ${=FILETYPES_INDEX}; do
+		# Those are nested zsh modifiers:
+		# - ${AAA:-BBB} reads AAA variables, and if empty sets BBB as the value
+		# - Here, we set AAA as empty, so it jumps rights to BBB
+		# - Which is converted into the string FILETYPES_XXX_YYY
+		# - ${(P}CCC} reads the value of CCC and uses it as the variable name
+		local pattern=${(P)${:-FILETYPE_${extension}_PATTERN}}
+		local color=${(P)${:-FILETYPE_${extension}_COLOR}}
+		local bold=${(P)${:-FILETYPE_${extension}_BOLD}}
+
+		LS_COLORS="${LS_COLORS}:${pattern}=${bold};38;5;$color"
+	done
 
 	export LS_COLORS
 }

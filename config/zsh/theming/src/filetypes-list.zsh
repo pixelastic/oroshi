@@ -64,9 +64,11 @@ FILETYPE_GROUPS[script:patterns]="\
   [Rakefile] \
   [Vagrantfile] \
   [.envrc] \
+  [.fdignore] \
   [.eslintignore] \
   [.gitattributes] \
   [.gitignore] \
+  [.gitmodules] \
   [.nvmrc] \
   [.prettierignore] \
   [.stylelintignore] \

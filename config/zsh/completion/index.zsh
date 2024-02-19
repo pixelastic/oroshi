@@ -119,8 +119,8 @@ source $ZSH_CONFIG_PATH/completion/styling.zsh
 # If the completion cache file is older than 20 hours, we regenerate it
 # Source: https://gist.github.com/ctechols/ca1035271ad134841284#gistcomment-2308206
 function oroshi_completion_compinit() {
-	setopt local_options
-	setopt extendedglob
+	setopt LOCAL_OPTIONS
+	setopt EXTENDED_GLOB
 
 	autoload -Uz compinit
 

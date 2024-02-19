@@ -44,22 +44,4 @@ EXA_COLORS="${EXA_COLORS}:ex=4;38;5;$COLOR_VIOLET_4" # Executable
 # EXA_COLORS="${EXA_COLORS}:so=48;5;13"  # Socket (unstyled)
 # EXA_COLORS="${EXA_COLORS}:bd=48;5;13"  # Block device (unstyled)
 
-
-# Enhance EXA_COLORS by looping through all FILETYPES_***_color
-# TODO: Need to color .nvmrc, .eslintignore, and all files starting with
-# a dot, without an extension
-for extension in ${=FILETYPES_INDEX}; do
-  # Those are nested zsh modifiers:
-  # - ${AAA:-BBB} reads AAA variables, and if empty sets BBB as the value
-  # - Here, we set AAA as empty, so it jumps rights to BBB
-  # - Which is converted into the string FILETYPES_XXX_YYY
-  # - ${(P}CCC} reads the value of CCC and uses it as the variable name
-  local pattern=${(P)${:-FILETYPE_${extension}_PATTERN}}
-  local color=${(P)${:-FILETYPE_${extension}_COLOR}}
-  local bold=${(P)${:-FILETYPE_${extension}_BOLD}}
-
-  EXA_COLORS="${EXA_COLORS}:${pattern}=${bold};38;5;$color"
-done
-
-
 export EXA_COLORS

@@ -33,44 +33,56 @@ function ♣() {
 }
 
 function oroshi-completion-styling() {
+  setopt EXTENDED_GLOB
+
+  # We'll use the mapping of extensions to color defined in LS_COLORS to
+  # colorize the completion. ZSH has an added syntax where if the first part of
+  # the definition starts with an "=", then it performs an exact match instead
+  # of a glob.
+  # So we need to convert our LS_COLORS so every definition that doesn't start
+  # with a "*" will have a "=" added.
+  local completion_LS_COLORS=${LS_COLORS//(#b):([^*])/:=${match[1]}}
+  # We split the long string on :
+  completion_LS_COLORS=${(s.:.)completion_LS_COLORS}
+  
   # Default coloring
   local listColorsDefault=(\
-      # Default color
+    # Default color
     "${(f)$(♣ "*" $COLOR_WHITE)}"
-
+    
     # File and directory colors
-    ${(s.:.)LS_COLORS}
+    ${completion_LS_COLORS}
   )
   # Color flags
   local listColorsFlag=(\
-      "${(f)$(♣ "*" $COLOR_ALIAS_FLAG)}" \
-      $listColorsDefault \
-    )
+    "${(f)$(♣ "*" $COLOR_ALIAS_FLAG)}" \
+    $listColorsDefault \
+  )
   # Git {{{
   # Color git branches
   local listColorsGitBranch=(\
-      "${(f)$(♣ "master*" $COLOR_ALIAS_GIT_BRANCH_MASTER)}" \
-      "${(f)$(♣ "main*" $COLOR_ALIAS_GIT_BRANCH_MAIN)}" \
-      "${(f)$(♣ "develop*" $COLOR_ALIAS_GIT_BRANCH_DEVELOP)}" \
-      "${(f)$(♣ "dependabot*" $COLOR_ALIAS_GIT_BRANCH_DEPENDABOT)}" \
-      "${(f)$(♣ "*" $COLOR_ALIAS_GIT_BRANCH)}" \
-      $listColorsDefault \
-    )
+    "${(f)$(♣ "master*" $COLOR_ALIAS_GIT_BRANCH_MASTER)}" \
+    "${(f)$(♣ "main*" $COLOR_ALIAS_GIT_BRANCH_MAIN)}" \
+    "${(f)$(♣ "develop*" $COLOR_ALIAS_GIT_BRANCH_DEVELOP)}" \
+    "${(f)$(♣ "dependabot*" $COLOR_ALIAS_GIT_BRANCH_DEPENDABOT)}" \
+    "${(f)$(♣ "*" $COLOR_ALIAS_GIT_BRANCH)}" \
+    $listColorsDefault \
+  )
   # Color git tags
   local listColorsGitTag=(\
-      "${(f)$(♣ "*" $COLOR_ALIAS_GIT_TAG)}" \
-      $listColorsDefault \
-    )
+    "${(f)$(♣ "*" $COLOR_ALIAS_GIT_TAG)}" \
+    $listColorsDefault \
+  )
   # Color git remotes
   local listColorsGitRemote=(\
-      "${(f)$(♣ "*" $COLOR_ALIAS_GIT_REMOTE)}" \
-      $listColorsDefault \
-    )
+    "${(f)$(♣ "*" $COLOR_ALIAS_GIT_REMOTE)}" \
+    $listColorsDefault \
+  )
   # Color git submodules
   local listColorsGitSubmodule=(\
-      "${(f)$(♣ "*" $COLOR_ALIAS_GIT_SUBMODULE)}" \
-      $listColorsDefault \
-    )
+    "${(f)$(♣ "*" $COLOR_ALIAS_GIT_SUBMODULE)}" \
+    $listColorsDefault \
+  )
   # }}}
   # SSH {{{
   # Color remote ssh
