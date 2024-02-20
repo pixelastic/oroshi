@@ -1,0 +1,21 @@
+# Opens issues in the browser
+# Usage:
+# $ git-issue-open            # Opens issue page
+# $ git-issue-open 42         # Opens issue 42
+
+function git-github-open-issues() {
+	# Stop if not in a GitHub repo
+	git-directory-is-github || return 1
+
+	local issueNumber=$1
+	local openedUrl="$(git-directory-url)"
+
+	# Open a specific issue or the full list
+	if [[ $issueNumber != "" ]]; then
+		openedUrl="${openedUrl}/issues/${issueNumber}"
+	else
+		openedUrl="${openedUrl}/issues/"
+	fi
+
+	$BROWSER $openedUrl &>/dev/null
+}
