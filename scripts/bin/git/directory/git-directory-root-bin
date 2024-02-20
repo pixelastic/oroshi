@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
-# This is made as a binary to tools external to zsh (like tmux, or vim) can use
-# the function
+# Note: This is a binary wrapper around the git-directory-root zsh function, so
+# it can be called from environments where the zsh functions are not availabe.
+# Example: from vim
 git-directory-root $@

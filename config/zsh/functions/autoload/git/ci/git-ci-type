@@ -1,0 +1,22 @@
+# Returns the type of CI used (either circleci or actions)
+# Usage:
+# git-ci-type                 # Returns CI type of the current repo
+# git-ci-type ./path/to/repo  # Returns CI type of the specified repo
+function git-ci-type() {
+	local repoRoot=$1
+	[[ $repoRoot == "" ]] && repoRoot="$(git-directory-root)"
+
+	# CircleCI
+	if [[ -f "$repoRoot/.circleci/config.yml" ]]; then
+		echo "circleci"
+		return
+	fi
+
+	# GitHub Actions
+	if [[ -d "$repoRoot/.github/workflows" ]]; then
+		echo "actions"
+		return
+	fi
+
+	echo "unknown"
+}

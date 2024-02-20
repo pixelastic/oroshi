@@ -1,0 +1,24 @@
+# Returns the base url of the CI web UI
+# Usage:
+# $ git-ci-url                 # Returns CI url of current repo
+# $ git-ci-url ./path/to/repo  # Returns CI url of specified repo
+function git-ci-url() {
+	local input="$1"
+	local ciType="$(git-ci-type)"
+
+	local githubProject="$(git-github-remote-project)"
+
+	# CircleCi
+	if [[ $ciType == "circleci" ]]; then
+		echo "https://app.circleci.com/pipelines/github/${githubProject}"
+		return 0
+	fi
+
+	# GitHub Actions
+	if [[ $ciType == "actions" ]]; then
+		echo "https://github.com/${githubProject}/actions"
+		return 0
+	fi
+
+	return 1
+}
