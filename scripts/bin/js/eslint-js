@@ -13,5 +13,5 @@ if [[ $output == "No ESLint found" ]]; then
 	eslint_d restart
 	eslint_d $@
 else
-	echo $output
+	printf '%s' "$output"
 fi
