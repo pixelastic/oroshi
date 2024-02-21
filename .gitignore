@@ -2,8 +2,8 @@
 .cache
 Thumbs.db
 node_modules/
+tmp/
 npm-debug.log
 yarn-error.log
 *~
 *.rej
-tmp/

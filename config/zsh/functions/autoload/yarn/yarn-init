@@ -1,0 +1,8 @@
+# Init a new Yarn project
+# This is a wrapper around yarn init, but that will force usin Yarn Berry with
+# the right config
+function yarn-init() {
+	echo '{"packageManager": "yarn@4.0.2"}' >package.json
+	echo "nodeLinker: node-modules" >.yarnrc.yml
+	yarn init
+}

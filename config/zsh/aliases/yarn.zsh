@@ -16,10 +16,10 @@ alias yug='yarn global upgrade'
 
 # Local dependencies
 alias yR='yarn remove'
-alias yadf='yarn add --dev -W -- '
-alias yad='yarn add --dev -- '
-alias yaf='yarn add -W -- '
-alias ya='yarn add -- '
+alias yadf='yarn-dependency-add-dev-root'
+alias yad='yarn-dependency-add-dev'
+alias yaf='yarn-dependency-add-root'
+alias ya='yarn-dependency-add'
 alias ydla='yarn-dependency-list --all'
 alias ydld='yarn-dependency-list --dev'
 alias ydl='yarn-dependency-list'
@@ -74,7 +74,7 @@ alias ysl='yarn-script-list'
 
 # Misc
 alias yF='yarn --force'
-alias yi='yarn init'
+alias yi='yarn-init'
 alias ypu='yarn-policies-update'
 alias ysd='emma -D'
 alias ys='emma'

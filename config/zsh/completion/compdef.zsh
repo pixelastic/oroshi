@@ -113,11 +113,16 @@ compdef '_files -g "*.epub"' \
 compdef _nvm-lazyload lazyloadNvm
 # }}}
 # Yarn {{{
-compdef _yarn-runnables yarn-run
-compdef _yarn-dependencies yarn-dependency-update
-compdef _yarn-dependencies-recursive yarn-dependency-why
-compdef _yarn-global-packages yarn-global-remove
-compdef _yarn-link-local yarn-link-remove
+compdef _yarn-runnables \
+	yarn-run
+compdef _yarn-dependencies \
+	yarn-dependency-update
+compdef _yarn-dependencies-recursive \
+	yarn-dependency-why
+compdef _yarn-global-packages \
+	yarn-global-remove
+compdef _yarn-link-local \
+	yarn-link-remove
 compdef _yarn-link-global \
 	yarn-link \
 	yarn-link-remove-global
