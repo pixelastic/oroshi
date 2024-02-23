@@ -1,6 +1,6 @@
 # This is wrapper around "yarn run"
 #
-# Using a customn function allows for specifying custom autocompletion
+# Using a custom function allows for specifying custom autocompletion
 function yarn-run() {
 	yarn run $@
 }

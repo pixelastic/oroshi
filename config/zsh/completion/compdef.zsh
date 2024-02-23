@@ -126,6 +126,8 @@ compdef _yarn-link-local \
 compdef _yarn-link-global \
 	yarn-link \
 	yarn-link-remove-global
+compdef _yarn-lintable-files \
+	yarn-run-lint
 # }}}
 # JSON {{{
 compdef '_files -g "*.json"' \

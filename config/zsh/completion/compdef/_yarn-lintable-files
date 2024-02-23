@@ -1,0 +1,6 @@
+#compdef
+
+# Suggest only files that can be linted
+function _yarn-lintable-files() {
+	_files -g "*.{css,js,json,yml}"
+}
