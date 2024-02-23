@@ -54,6 +54,7 @@ inoremap <buffer> thbc toHaveBeenCalled();
 inoremap <buffer> thbw toHaveBeenCalledWith();hi
 inoremap <buffer> expact expect(actual).a
 inoremap <buffer> epxact expect(actual).a
+inoremap <buffer> tbn toBe(null);a
 inoremap <buffer> tbt toBe(true);a
 inoremap <buffer> tbf toBe(false);a
 " Import firost boilerplate
