@@ -6,8 +6,15 @@ function notion-icon-update() {
 	local iconUrl="$2"
 
 	local pageId="$(notion-page-id $pageUrl)"
+	local previewFilepath=~/local/tmp/notion/${pageId}.png
+	local crc32Result=($(crc32 $previewFilepath))
+	local iconHash=$crc32Result[1]
+
+	# We add a hash to the url because notion refuses to update the icon if the
+	# url is the same (even if the actual file changes)
+	local hashedIconUrl="${iconUrl}?hash=${iconHash}"
 
 	notion-api-patch \
 		pages/${pageId} \
-		'{"icon": {"type": "external", "external": {"url": "'"$iconUrl"'"}}}'
+		'{"icon": {"type": "external", "external": {"url": "'"$hashedIconUrl"'"}}}'
 }
