@@ -1,0 +1,6 @@
+# This is wrapper around "yarn run test:watch"
+#
+# Using a custom function allows for specifying custom autocompletion
+function yarn-run-test-watch() {
+	yarn run test:watch $@
+}

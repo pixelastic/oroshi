@@ -1,0 +1,6 @@
+#compdef
+
+# Suggest only files that can be tested
+function _yarn-testable-files() {
+	_files -g "*.js"
+}

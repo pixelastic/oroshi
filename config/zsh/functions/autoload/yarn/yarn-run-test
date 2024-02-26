@@ -1,0 +1,6 @@
+# This is wrapper around "yarn run test"
+#
+# Using a custom function allows for specifying custom autocompletion
+function yarn-run-test() {
+	yarn run test $@
+}
