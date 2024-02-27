@@ -4,7 +4,7 @@ function oroshi-prompt-populate:yarn_link() {
   OROSHI_PROMPT_PARTS[yarn_link]=""
   [[ $GIT_DIRECTORY_IS_REPOSITORY == 0 ]] && return
 
-  local linkedModules="$(yarn-link-list-raw)"
+  local linkedModules="$(yarn-link-list-raw --include-workspace-root)"
   local totalModuleCount=0
   local displayedModuleCount=0
   local displayedString=''

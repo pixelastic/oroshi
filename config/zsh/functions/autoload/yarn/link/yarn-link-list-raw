@@ -1,18 +1,21 @@
 # Return a raw list of all the linked yarn modules
 # Usage:
-# $ yarn-link-list-raw                     # List of local modules with moduleName▮type▮
-# $ yarn-link-list-raw --with-descriptions # List of moduleName▮type▮descriptions
-# $ yarn-link-list-raw --global            # List of global modules
+# $ yarn-link-list-raw                          # List of local modules with moduleName▮type▮
+# $ yarn-link-list-raw --with-descriptions      # List of moduleName▮type▮descriptions
+# $ yarn-link-list-raw --include-workspace-root # Include links in the workspace root
+# $ yarn-link-list-raw --global                 # List of global modules
 function yarn-link-list-raw() {
   # Stop if yarn not available
   [[ ! $commands[yarn] ]] && return 1
 
   zparseopts -E -D \
     -global=flagGlobal \
-    -with-descriptions=flagWithDescriptions
+    -with-descriptions=flagWithDescriptions \
+    -include-workspace-root=flagIncludeWorkspaceRoot
 
   local isGlobal=${#flagGlobal}
   local isWithDescriptions=${#flagWithDescriptions}
+  local includeWorkspaceRoot=${#flagIncludeWorkspaceRoot}
 
 
   # Variables to fill
@@ -21,14 +24,15 @@ function yarn-link-list-raw() {
   typeset -A moduleDescriptions=()
   typeset -A modulePaths=()
 
-  # getLocalLinkList {{{
+  # populateLocalLinkList {{{
   # Populate the module variables with values from the locally linked modules
-  function getLocalLinkList() {
+  function populateLocalLinkList() {
     # This prevents zsh from displaying a warning if the node_modules/@* does not
     # match anything
     setopt +o nomatch
 
-    local packageRoot="$(yarn-root)"
+    # We look for modules from the root, or the passed argument
+    local packageRoot="${1:-$(yarn-root)}"
     local node_modules="${packageRoot}/node_modules"
     local linkedModules="$(find \
         $node_modules \
@@ -60,9 +64,9 @@ function yarn-link-list-raw() {
     done
   }
   # }}}
-  # getGlobalLinkList {{{
+  # populateGlobalLinkList {{{
   # Populate the module variables with values from the globally available modules
-  function getGlobalLinkList() {
+  function populateGlobalLinkList() {
     local linkDirectory=~/.config/yarn/link
 
     # Getting all module names
@@ -91,8 +95,16 @@ function yarn-link-list-raw() {
   # }}}
 
   # Get the list either from locally linked modules, or globally available
-  [[ $isGlobal == "0" ]] && getLocalLinkList
-  [[ $isGlobal == "1" ]] && getGlobalLinkList
+  [[ $isGlobal == "0" ]] && populateLocalLinkList
+  [[ $isGlobal == "1" ]] && populateGlobalLinkList
+
+  # If --include-workspace-root, we also add the local modules from the root
+  if [[ $isGlobal == "0" && $includeWorkspaceRoot == "1" ]]; then
+    if ! yarn-is-workspace-root; then
+      local workspaceRoot="$(yarn-root --force)"
+      populateLocalLinkList $workspaceRoot
+    fi
+  fi
 
   # Stop if no module linked
   [[ ${moduleNames} == "" ]] && return 0
