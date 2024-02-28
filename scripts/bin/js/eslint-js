@@ -1,13 +1,30 @@
 #!/usr/bin/env zsh
 # Runs eslint on js files
 # Wrapper around eslint_d to be used from Vim/ALE config
+#
+# This fixes two issues around using eslint_d from vim
+#
+# 1. Retry on errors
 # Sometimes when updating eslint dependencies, eslint_d needs a restart,
 # otherwise it output "No ESLint found", and the whole file is replaced with
-# that string in vim
+# that string in vim.
+# This wrapper will catch it, restart eslint_d and try again
+#
+# 2. Work within the aberlaas monorepo
+# In the aberlaas monorepos, ESLint plugins are located inside
+# ./lib/node_modules instead of the top level ./node_modules, so we need to tell
+# that to eslint_d
 #
 # This wrapper script should take care of restarting eslint_d when that happens
 
-local output="$(eslint_d $@)"
+local additionalEslintFlags=""
+
+local currentProject="$(project-by-path $PWD)"
+if [[ $currentProject == "ABERLAAS" ]]; then
+	additionalEslintFlags=--resolve-plugins-relative-to="${PROJECT_ABERLAAS_PATH}/lib"
+fi
+
+local output="$(eslint_d ${additionalEslintFlags} $@)"
 
 if [[ $output == "No ESLint found" ]]; then
 	eslint_d restart
