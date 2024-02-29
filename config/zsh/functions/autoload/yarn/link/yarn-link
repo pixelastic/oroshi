@@ -44,13 +44,20 @@ function yarn-link() {
 
 	# Add the binaries
 	local moduleBinaries="$(jq -r \
-		'if .bin|type=="string" then
-      "\(.name)▮\(.bin)"
-    else 
-      .bin|to_entries[]|"\(.key)▮\(.value)" 
-    end' \
+		'if .bin|type=="null" then 
+			empty 
+		else
+			if .bin|type=="string" then
+				"\(.name)▮\(.bin)"
+			else 
+				.bin|to_entries[]|"\(.key)▮\(.value)" 
+			end
+		end' \
 		${modulePath}/package.json
 	)"
+
+	# Stop if no binary
+	[[ $moduleBinaries == "" ]] && return
 
 	for rawLine in ${(f)moduleBinaries}; do
 		local split=(${(@s/▮/)rawLine})
