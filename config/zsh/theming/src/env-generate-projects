@@ -56,7 +56,7 @@ for key value in "${(@kv)PROJECTS}"; do
   # Creating PROJECT entries
   output+="export PROJECT_${projectKey}_NAME=\"$projectName\"\n"
   if [[ "$projectPath" != "" ]]; then
-    output+="export PROJECT_${projectKey}_PATH=\"$projectPath\"\n"
+    output+="export PROJECT_${projectKey}_PATH=\"${projectPath}\"\n"
   fi
   output+="export PROJECT_${projectKey}_ICON=\"$icon\"\n"
   output+="export PROJECT_${projectKey}_BACKGROUND=\"$backgroundColorTerm\"\n"

@@ -21,7 +21,8 @@ local additionalEslintFlags=""
 
 local currentProject="$(project-by-path $PWD)"
 if [[ $currentProject == "ABERLAAS" ]]; then
-	additionalEslintFlags=--resolve-plugins-relative-to="${PROJECT_ABERLAAS_PATH}/lib"
+	local absolutePath=${~PROJECT_ABERLAAS_PATH}
+	additionalEslintFlags=--resolve-plugins-relative-to="${absolutePath}lib"
 fi
 
 local output="$(eslint_d ${additionalEslintFlags} $@)"
