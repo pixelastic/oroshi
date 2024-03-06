@@ -29,6 +29,9 @@ function notion-icon-auto() {
 	local previewFilepath=~/local/tmp/notion/${pageId}.png
 	wget --quiet "$previewUrl" -O "$previewFilepath"
 
+	# Resize it so it takes less space
+	resize $previewFilepath 250
+
 	# Upload it to my server
 	rsync -az \
 		$previewFilepath \
