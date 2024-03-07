@@ -1,0 +1,45 @@
+# Convert a PDF to png files
+# Usage:
+# $ pdf2img ./path/to/file.pdf # Creates one png file for each page of the
+# $ pdf2img --jpg ./path/to/file.pdf # Creates one jpg file for each page of the
+# $ pdf2img ./path/to/file.pdf 12 # Creates only a png file for page 12
+function pdf2img() {
+	zparseopts -E -D \
+		-jpg=flagJpg
+
+	local isJpg=${#flagJpg}
+
+	# Default is png output
+	local outputExtension="png"
+	[[ $isJpg == "1" ]] && outputExtension="jpg"
+
+	# Filepath
+	local filepath=${1:a}
+
+	# If a page number is given, we need to first extract that page
+	local pageNumber=$2
+	if [[ $pageNumber != "" ]]; then
+		pdf-split $filepath $pageNumber
+		filepath="${filepath:r}_${pageNumber}.pdf"
+	fi
+
+	# Output files
+	local pageCount="$(pdf-page-count $filepath)"
+	local filepathBasename=${filepath:t:r}
+	local outputFilepath="${filepathBasename}-%03d.${outputExtension}"
+	if [[ $pageCount == "1" ]]; then
+		outputFilepath="${filepathBasename}.${outputExtension}"
+	fi
+
+	convert \
+		-flatten \
+		-density 300 \
+		-quality 100 \
+		$filepath \
+		$outputFilepath
+
+	# Cleaning up specific page extracted
+	if [[ $pageNumber != "" ]]; then
+		rm $filepath
+	fi
+}

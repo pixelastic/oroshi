@@ -100,7 +100,8 @@ compdef '_files -g "*.svg"' \
 compdef '_files -g "*.pdf"' \
 	pdf-open \
 	pdf-page-count \
-	png-split
+	pdf2img \
+	pdf-split
 # }}}
 # Ebooks {{{
 compdef '_files -g "*.epub"' \
