@@ -32,11 +32,17 @@ function notion-icon-auto() {
 	# Resize it so it takes less space
 	resize $previewFilepath 250
 
+	# Rename it to include a hash of its content
+	local crc32Result=($(crc32 $previewFilepath))
+	local imageHash=$crc32Result[1]
+	local hashedPreviewFilepath="${previewFilepath:t:r}-${imageHash}.png"
+	mv $previewFilepath $hashedPreviewFilepath
+
 	# Upload it to my server
 	rsync -az \
-		$previewFilepath \
+		$hashedPreviewFilepath \
 		pixelastic:./local/www/assets.pixelastic.com/notion
-	local iconUrl="https://assets.pixelastic.com/notion/${pageId}.png"
+	local iconUrl="https://assets.pixelastic.com/notion/${hashedPreviewFilepath:t}"
 
 	# Update the icon of the page
 	notion-icon-update $pageUrl $iconUrl
