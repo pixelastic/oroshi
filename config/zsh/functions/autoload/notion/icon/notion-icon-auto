@@ -19,7 +19,7 @@ function notion-icon-auto() {
 	fi
 
 	# Find the preview image
-	local previewUrl="$(notion-page-preview $pageUrl)"
+	local previewUrl="$(notion-preview $pageUrl)"
 	if [[ $previewUrl == "" ]]; then
 		echo "No preview found"
 		return
@@ -35,7 +35,7 @@ function notion-icon-auto() {
 	# Rename it to include a hash of its content
 	local crc32Result=($(crc32 $previewFilepath))
 	local imageHash=$crc32Result[1]
-	local hashedPreviewFilepath="${previewFilepath:t:r}-${imageHash}.png"
+	local hashedPreviewFilepath="${previewFilepath:r}-${imageHash}.png"
 	mv $previewFilepath $hashedPreviewFilepath
 
 	# Upload it to my server

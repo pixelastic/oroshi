@@ -1,0 +1,45 @@
+# Return the first image of a page or block
+# This will recursively check every nested block until it finds one with an
+# image in it
+# Usage:
+# $ notion-preview {pageUrl|pageId|blockId}
+function notion-preview() {
+	local parentBlockId="$1"
+
+	# If input is a url, convert it to an id
+	if [[ $parentBlockId == http* ]]; then
+		parentBlockId="$(notion-page-id $parentBlockId)"
+	fi
+
+	# Find data about each top level block
+	local topLevelBlocks="$(notion-api blocks/${parentBlockId}/children |
+		jq -r '.results[] | "\(.id)▮\(.image.file.url)▮\(.has_children)"')"
+
+	# Iterate on each top level block
+	for rawLine in ${=topLevelBlocks}; do
+		local split=(${(@s/▮/)rawLine})
+		local blockId=$split[1]
+		local imageUrl=$split[2]
+		local hasChildren=$split[3]
+
+		# We found our image we can return it
+		if [[ $imageUrl != "null" ]]; then
+			echo $imageUrl
+			return 0
+		fi
+
+		# Block has no children, we skip it
+		if [[ $hasChildren == "false" ]]; then
+			continue
+		fi
+
+		# We go deeper, recursively, into this specific child
+		local output="$(notion-preview ${blockId})"
+
+		# We actually found an image in that child, we can stop
+		if [[ $output != "" ]]; then
+			echo $output
+			return 0
+		fi
+	done
+}
