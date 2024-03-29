@@ -1,0 +1,25 @@
+# Display the list of all packages installed by pip
+# Usage:
+# $ pip-list         # All installed packages
+function pip-list() {
+  local rawList="$(pip-list-raw)"
+  [[ $rawList == "" ]] && return 0
+
+  local output=""
+  for rawLine in ${(f)rawList}; do
+    local row=""
+    local split=(${(s/▮/)rawLine})
+    local packageName=$split[1]
+    local packageVersion=$split[2]
+
+    # Name
+    row+="$(yarn-package-colorize $packageName --with-icon)▮"
+
+    # Version
+    row+="$(colorize "$packageVersion" $COLOR_ALIAS_PACKAGE_VERSION)▮"
+
+    output+="$row\n"
+  done
+
+  table $output
+}

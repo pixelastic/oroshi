@@ -72,6 +72,7 @@ colorRanges[20]="NEUTRAL"
 declare -A aliasColors
 aliasColors=()
 # Common
+# Common {{{
 aliasColors[DIRECTORY]="GREEN"
 aliasColors[EXECUTABLE]="VIOLET"
 aliasColors[FILE]="VIOLET"
@@ -88,28 +89,80 @@ aliasColors[MARKER]="CYAN"       #  marked line
 aliasColors[UNKNOWN]="CYAN_4"
 aliasColors[SIZE_VALUE]="GRAY"   # 485
 aliasColors[SIZE_UNIT]="GRAY_4"  # MB
-# Vim
-aliasColors[VIM_VISUAL_CURSOR]="BLUE"
-aliasColors[VIM_VISUAL_BACKGROUND]="BLUE"
-aliasColors[VIM_VISUAL_FOREGROUND]="WHITE"
-aliasColors[VIM_SEARCH_BACKGROUND]="YELLOW"
-aliasColors[VIM_SEARCH_FOREGROUND]="BLACK"
-aliasColors[VIM_NORMAL_CURSOR]="RED"
-aliasColors[VIM_INSERT_CURSOR]="YELLOW"
-aliasColors[VIM_COMMAND_CURSOR]="TEAL"
-# Languages
-aliasColors[LANGUAGE_JAVASCRIPT]="YELLOW"
-aliasColors[LANGUAGE_RUBY]="ORANGE"
-# States
+# }}}
+# Code {{{
+aliasColors[EVAL]="YELLOW"                      # - in pug
+aliasColors[BOOLEAN]="AMBER_5"
+aliasColors[COMMENT]="GRAY"
+aliasColors[CONSTANT]="ORANGE"
+aliasColors[DATE]="SKY_7"
+aliasColors[EXCEPTION]="RED"
+aliasColors[FLAG]="AMBER"                       # -h, --help
+aliasColors[FUNCTION]="YELLOW"
+aliasColors[GLOB]="GREEN_LIGHT"
+aliasColors[MODIFIER]="ORANGE_LIGHT"                    # :hover
+aliasColors[HEADER]="YELLOW"
+aliasColors[IMPORT]="YELLOW_LIGHT"
+aliasColors[INTERPOLATION_STRING]="BLUE"        # The wrapping string
+aliasColors[INTERPOLATION_VARIABLE]="VIOLET"    # The variable name
+aliasColors[INTERPOLATION_WRAPPER]="YELLOW"     # The ${} delimiter
+aliasColors[KEY]="VIOLET_3"                     # Keys of dictionaries
+aliasColors[KEYWORD]="GREEN"
+aliasColors[NOISE]="TEAL_7"
+aliasColors[NUMBER]="BLUE"                      # Bold
+aliasColors[PUNCTUATION]="TEAL"
+aliasColors[REGEXP]="BLUE"
+aliasColors[SPECIAL_CHAR]="YELLOW"               # Escape sequences, keybindings
+aliasColors[STATEMENT]="GREEN"                  # for, if, while
+aliasColors[STRING]="BLUE"
+aliasColors[SYMBOL]="ORANGE"                    # :symbol in ruby
+aliasColors[TEXT]="GRAY_LIGHT"
+aliasColors[TODO]="RED"
+aliasColors[VARIABLE]="VIOLET"                  # Reading it
+aliasColors[VARIABLE_DEFINITION]="VIOLET_LIGHT" # Left-hand side, writing it
+aliasColors[VARIABLE_TYPE]="RED_LIGHT"          # const, let, function
+# }}}
+# States {{{
 aliasColors[ERROR]="RED"
 aliasColors[SUCCESS]="GREEN"
 aliasColors[WARNING]="YELLOW"
 aliasColors[NOTICE]="VIOLET"
 aliasColors[INFO]="BLUE"
-# AI
+# }}}
+# Languages {{{
+aliasColors[LANGUAGE_JAVASCRIPT]="YELLOW"
+aliasColors[LANGUAGE_PYTHON]="GREEN"
+aliasColors[LANGUAGE_RUBY]="ORANGE"
+# }}}
+# Packages {{{
+aliasColors[PACKAGE]="YELLOW"
+aliasColors[PACKAGE_DESCRIPTION]="GRAY_4"
+aliasColors[PACKAGE_INSTALLED]="GREEN"
+aliasColors[PACKAGE_NOT_INSTALLED]="GRAY"
+aliasColors[PACKAGE_VERSION]="CYAN"
+aliasColors[PACKAGE_VERSION_MISMATCH]="VIOLET"
+# }}}
+
+# Tool-specific
+# AI {{{
 aliasColors[AI_ENABLED]="CYAN"
 aliasColors[AI_SUGGESTION]="CYAN_6"
-# Git
+# }}}
+# Docker {{{
+aliasColors[DOCKER_CONTAINER]="YELLOW"
+aliasColors[DOCKER_CONTAINER_RUNNING]="GREEN"
+aliasColors[DOCKER_HASH]="PURPLE"
+aliasColors[DOCKER_IMAGE]="SKY"
+aliasColors[DOCKER_IMAGE_GITHUB]="GREEN"
+aliasColors[DOCKER_IMAGE_OROSHI]="GREEN"
+aliasColors[DOCKER_IMAGE_ORPHAN]="RED"   # Container is running, but image has been deleted
+aliasColors[DOCKER_IMAGE_REMOTE]="BLUE"
+aliasColors[DOCKER_COMMENT]="GRAY_4"  # Commit messages
+aliasColors[DOCKER_STATUS]="GRAY_4"
+aliasColors[DOCKER_TAG]="ORANGE_6"
+aliasColors[DOCKER_TAG_LATEST]="ORANGE_5"
+# }}}
+# Git {{{
 aliasColors[GIT_ADDED]="GREEN"
 aliasColors[GIT_AUTHOR]="NEUTRAL"
 aliasColors[GIT_BRANCH]="ORANGE"
@@ -141,25 +194,22 @@ aliasColors[GIT_TAG_PARENT]="CYAN_8"
 aliasColors[GIT_TAG_UNRELATED]="GRAY"
 aliasColors[GIT_TRACKED]="VIOLET"
 aliasColors[GIT_UNTRACKED]="RED"
-# Docker
-aliasColors[DOCKER_CONTAINER]="YELLOW"
-aliasColors[DOCKER_CONTAINER_RUNNING]="GREEN"
-aliasColors[DOCKER_HASH]="PURPLE"
-aliasColors[DOCKER_IMAGE]="SKY"
-aliasColors[DOCKER_IMAGE_GITHUB]="GREEN"
-aliasColors[DOCKER_IMAGE_OROSHI]="GREEN"
-aliasColors[DOCKER_IMAGE_ORPHAN]="RED"   # Container is running, but image has been deleted
-aliasColors[DOCKER_IMAGE_REMOTE]="BLUE"
-aliasColors[DOCKER_COMMENT]="GRAY_4"  # Commit messages
-aliasColors[DOCKER_STATUS]="GRAY_4"
-aliasColors[DOCKER_TAG]="ORANGE_6"
-aliasColors[DOCKER_TAG_LATEST]="ORANGE_5"
-# Packages
-aliasColors[PACKAGE]="YELLOW"
-aliasColors[PACKAGE_INSTALLED]="GREEN"
-aliasColors[PACKAGE_NOT_INSTALLED]="GRAY"
-aliasColors[PACKAGE_VERSION_MISMATCH]="VIOLET"
-# Yarn
+# }}}
+# Hosts {{{
+aliasColors[HOST_PIXELASTIC]="GREEN"
+aliasColors[HOST_GITHUB]="BLUE"
+# }}}
+# Vim {{{
+aliasColors[VIM_VISUAL_CURSOR]="BLUE"
+aliasColors[VIM_VISUAL_BACKGROUND]="BLUE"
+aliasColors[VIM_VISUAL_FOREGROUND]="WHITE"
+aliasColors[VIM_SEARCH_BACKGROUND]="YELLOW"
+aliasColors[VIM_SEARCH_FOREGROUND]="BLACK"
+aliasColors[VIM_NORMAL_CURSOR]="RED"
+aliasColors[VIM_INSERT_CURSOR]="YELLOW"
+aliasColors[VIM_COMMAND_CURSOR]="TEAL"
+# }}}
+# Yarn {{{
 aliasColors[YARN_PACKAGE]="YELLOW"             # package name
 aliasColors[YARN_PACKAGE_GLOBAL]="BLUE"        # globally installed package names
 aliasColors[YARN_PACKAGE_DESCRIPTION]="GRAY_4" # package.json description
@@ -169,46 +219,13 @@ aliasColors[YARN_LINK_GLOBAL]="BLUE"           # Packages that are linked to glo
 aliasColors[YARN_SCRIPT_LOCAL]="YELLOW"        # yarn run scripts defined in this workspace
 aliasColors[YARN_SCRIPT_GLOBAL]="BLUE"         # yarn run scripts defined in the root workspace
 aliasColors[YARN_SCRIPT_COMMAND]="GRAY_4"      # yarn run script command
-# YouTube
+# }}}
+# YouTube {{{
 aliasColors[YOUTUBE_VIDEO_INDEX]="SKY"
 aliasColors[YOUTUBE_VIDEO_ID]="ORANGE"
 aliasColors[YOUTUBE_VIDEO_DURATION]="NEUTRAL"
 aliasColors[YOUTUBE_VIDEO_TITLE]="GRAY_4"
-
-# Hosts
-aliasColors[HOST_PIXELASTIC]="GREEN"
-aliasColors[HOST_GITHUB]="BLUE"
-# Code
-aliasColors[EVAL]="YELLOW"                      # - in pug
-aliasColors[BOOLEAN]="AMBER_5"
-aliasColors[COMMENT]="GRAY"
-aliasColors[CONSTANT]="ORANGE"
-aliasColors[DATE]="SKY_7"
-aliasColors[EXCEPTION]="RED"
-aliasColors[FLAG]="AMBER"                       # -h, --help
-aliasColors[FUNCTION]="YELLOW"
-aliasColors[GLOB]="GREEN_LIGHT"
-aliasColors[MODIFIER]="ORANGE_LIGHT"                    # :hover
-aliasColors[HEADER]="YELLOW"
-aliasColors[IMPORT]="YELLOW_LIGHT"
-aliasColors[INTERPOLATION_STRING]="BLUE"        # The wrapping string
-aliasColors[INTERPOLATION_VARIABLE]="VIOLET"    # The variable name
-aliasColors[INTERPOLATION_WRAPPER]="YELLOW"     # The ${} delimiter
-aliasColors[KEY]="VIOLET_3"                     # Keys of dictionaries
-aliasColors[KEYWORD]="GREEN"
-aliasColors[NOISE]="TEAL_7"
-aliasColors[NUMBER]="BLUE"                      # Bold
-aliasColors[PUNCTUATION]="TEAL"
-aliasColors[REGEXP]="BLUE"
-aliasColors[SPECIAL_CHAR]="YELLOW"               # Escape sequences, keybindings
-aliasColors[STATEMENT]="GREEN"                  # for, if, while
-aliasColors[STRING]="BLUE"
-aliasColors[SYMBOL]="ORANGE"                    # :symbol in ruby
-aliasColors[TEXT]="GRAY_LIGHT"
-aliasColors[TODO]="RED"
-aliasColors[VARIABLE]="VIOLET"                  # Reading it
-aliasColors[VARIABLE_DEFINITION]="VIOLET_LIGHT" # Left-hand side, writing it
-aliasColors[VARIABLE_TYPE]="RED_LIGHT"          # const, let, function
+# }}}
 # }}}
 
 # This will also create a COLORS_INDEX env variable, with all the color names

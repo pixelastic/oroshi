@@ -1,0 +1,7 @@
+# Update a given package using pip
+# Usage:
+# $ pip-update sgpt   # Update sgpt to latest version
+function pip-update() {
+	local packageName=$1
+	pip install $packageName --upgrade
+}

@@ -143,6 +143,8 @@ compdef '_files -g "*.jsonl"' \
 # }}}
 # Python {{{
 compdef _pyenv-lazyload lazyloadPyenv
+compdef _pip-packages \
+	pip-update
 # }}}
 # SSH {{{
 compdef _ssh-known-hosts ssh

@@ -1,0 +1,26 @@
+# Displays a colorized version of a package name
+# Usage:
+# $ pip-package-colorize vim-vint                     # vim-vint
+# $ pip-package-colorize --with-icon                #  vim-vint
+function pip-package-colorize() {
+	zparseopts -E -D \
+		-with-icon=flagWithIcon
+	local isWithIcon=${#flagWithIcon}
+
+	# Package name
+	local packageName="$1"
+
+	# Color
+	local packageColor="$COLOR_ALIAS_PACKAGE"
+
+	# Icon
+	local packageIcon=" "
+
+	# If --with-icon is not passed, we simply display the colored branch
+	if [[ "$isWithIcon" != 1 ]]; then
+		colorize "$packageName" $packageColor
+		return
+	fi
+
+	colorize "${packageIcon} ${packageName}" $packageColor
+}

@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest all packages installed by pip
+function _pip-packages() {
+  local suggestions=(${(f)"$(complete-pip-packages)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_LANGUAGE_PYTHON $COLOR_BLACK '  pip packages ')" suggestions
+}
