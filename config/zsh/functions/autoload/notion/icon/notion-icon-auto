@@ -46,4 +46,5 @@ function notion-icon-auto() {
 
 	# Update the icon of the page
 	notion-icon-update $pageUrl $iconUrl
+	echo "Icon updated to ${iconUrl}"
 }
