@@ -1,0 +1,22 @@
+# Change image luminosity
+# Usage:
+# $ img-luminosity ./path/to/images 150   # Modulate all specified images by 150
+function img-luminosity() {
+	local files=($@[1,-2])
+	local modulate=$@[-1]
+
+  if [[ $modulate == "" ]]; then
+    echo "Usage:"
+    echo "img-luminosity ./path/to/images {modulateLevel}"
+    return 1
+  fi
+
+	for input in $files; do
+		local extension=${input:e}
+		local filename=${input:t:r}
+		local output="${input:t:r}.luminosity-${modulate}.${extension}"
+		convert $input \
+			-modulate $modulate \
+			$output
+	done
+}
