@@ -7,7 +7,7 @@ function slugify() {
   # and capitalize the first letter of each word
   local capitalized="$(
     echo "$input" |
-     sed -r 's/[^a-zA-Z0-9]/ /g' |
+     sed -r 's/[^a-zA-Z0-9]//g' |
      tr -s ' ' |
      sed -r 's/(^| )([a-zA-Z])/\U\2/g' |
      sed -r 's/ //g'

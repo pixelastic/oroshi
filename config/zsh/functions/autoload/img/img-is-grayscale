@@ -1,0 +1,19 @@
+# Check if an image is only made of grayscale
+# Usage:
+# $ img-is-grayscale ./path/to/img.png     # Returns 0 if grayscale
+#
+# Note: By testing the average saturation of the image we can guess if it's
+# grayscale (then the saturation is 0)
+# Source: http://www.imagemagick.org/discourse-server/viewtopic.php?t=19580
+function img-is-grayscale() {
+	local input="$1"
+	local saturation="$(convert \
+		$input \
+		-colorspace HCL \
+		-channel g \
+		-separate +channel \
+		-format "%[fx:mean]" info:)"
+
+	[[ $saturation == "0" ]] && return 0
+	return 1
+}
