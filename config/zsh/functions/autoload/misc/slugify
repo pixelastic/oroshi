@@ -1,0 +1,22 @@
+# Slugify a string (ie. camelCase it)
+# Usage:
+# $ slugify "The Eternal Obelisk"    # theEternalObelisk
+function slugify() {
+	local input="$1"
+  # Remove all non-alphanumeric characters
+  # and capitalize the first letter of each word
+  local capitalized="$(
+    echo "$input" |
+     sed -r 's/[^a-zA-Z0-9]/ /g' |
+     tr -s ' ' |
+     sed -r 's/(^| )([a-zA-Z])/\U\2/g' |
+     sed -r 's/ //g'
+  )"
+  # Uncapitalize the first letter
+  local firstLetter=$capitalized[1]
+  capitalized[1]=${(L)firstLetter}
+
+  echo $capitalized
+
+
+}
