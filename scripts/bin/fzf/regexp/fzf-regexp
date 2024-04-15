@@ -6,11 +6,15 @@
 
 zmodload zsh/zutil
 zparseopts -E -D \
-  -options:=flagOptions
+	-options:=flagOptions
 
 local fzfOptionsPath=${flagOptions[2]}
 local fzfPostprocessPath="fzf-regexp-postprocess"
 
+# TODO:
+# - keybinding for switching from all results, to only the name of files
+# - keybinding (more generic) to go down/up one page at a time
+
 fzf-search \
-  --options "$fzfOptionsPath" \
-  --postprocess "$fzfPostprocessPath"
+	--options "$fzfOptionsPath" \
+	--postprocess "$fzfPostprocessPath"
