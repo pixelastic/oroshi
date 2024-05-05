@@ -1,25 +1,10 @@
 # Returns the specific options to pass to fzf
 function fzf-regexp-subdir-options() {
-  fzf-regexp-options \
-    --source fzf-regexp-subdir-source
+	fzf-regexp-options \
+		--source fzf-regexp-subdir-source
 
-  # Prompt prefix
-  local promptPrefix="$(colorize "  GREP " $COLOR_WHITE $COLOR_ALIAS_REGEXP)"
+	local prompt="$(fzf-regexp-prompt $PWD)"
 
-  # Project prefix, and subdir path
-  local currentPath="${PWD/#$HOME/~}/"
-  local projectKey="$(project-by-path $currentPath)"
-  if [[ $projectKey != "" ]]; then
-    local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
-    eval "currentPath=\${currentPath:s_${projectPath}_}"
-    local projectPrefix="$(colorize-project $projectKey) "
-  fi
-
-  currentPath="$(colorize "$currentPath ❯" $COLOR_ALIAS_DIRECTORY)"
-  local prompt="${promptPrefix}${projectPrefix}${currentPath} "
-  # fzf in vim fails to parse the prompt if there is ​ in it
-  prompt=${prompt:gs/​//}
-
-  echo "--prompt=${prompt}"
-  echo "--color=prompt:${COLOR_ALIAS_DIRECTORY}:regular"
+	echo "--prompt=${prompt}"
+	echo "--color=prompt:${COLOR_ALIAS_DIRECTORY}:regular"
 }

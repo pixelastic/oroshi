@@ -15,15 +15,18 @@ function fzf-regexp-options() {
 	echo "--disabled"
 	echo "--delimiter=   "
 	echo "--with-nth=3"
-	# Do not reload the search on each keystroke, wait a bit
+
+	# Keybindings
+	# Update the results on each keystroke, but as it's intensive, wait a bit
 	echo "--bind=change:reload:sleep 0.3;${fzfSourcePath} {q} || true"
-	# TODO
-	# When pressing ctrl-1, save the current state of multi/single file
-	# Save it a file with the kitty window id in its name
-	# Re-use the fzf-pwd-save, to make it more generic with a key-value store
-	# Then reload the search, but in the search script, depending on this value
-	# display one result per file or all of them
-	# make another script to read the value
+	# => [F1] toggle single/multi results
+	echo "--bind=f1:execute-silent(fzf-regexp-fold-toggle)"
+	echo "--bind=f1:+reload(${fzfSourcePath} {q})"
+	# TODO: I should create a fzf-regexp-subdir-prompt and
+	# fzf-regexp-project-prompt script, pass them as arguments like the --source
+	# and use them here, because prompts for each are slightly differet
+	echo "--bind=f1:+transform-prompt(fzf-regexp-prompt)"
+	echo "--bind=f1:+first"
 
 	# Color the UI in regexp color
 	echo "--color=disabled:${COLOR_ALIAS_REGEXP}:regular"

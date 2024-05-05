@@ -1,0 +1,15 @@
+# Display the icon to show based on the current single/multi folding mode
+function fzf-regexp-fold-icon() {
+	local key="regexp-fold-mode"
+
+	local currentMode="$(fzf-var-read regexp-fold-mode)"
+	[[ $currentMode == "" ]] && currentMode="multi"
+
+	if [[ $currentMode == "multi" ]]; then
+		local icon=" "
+	elif [[ $currentMode == "single" ]]; then
+		local icon=" "
+	fi
+
+	echo " $icon(f1)"
+}

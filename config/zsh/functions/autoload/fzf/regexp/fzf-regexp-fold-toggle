@@ -1,0 +1,16 @@
+# Toggle the single/multi result mode
+function fzf-regexp-fold-toggle() {
+	local key="regexp-fold-mode"
+
+	local currentMode="$(fzf-var-read regexp-fold-mode)"
+	[[ $currentMode == "" ]] && currentMode="multi"
+
+	# Toggle mode
+	if [[ $currentMode == "multi" ]]; then
+		currentMode="single"
+	elif [[ $currentMode == "single" ]]; then
+		currentMode="multi"
+	fi
+
+	fzf-var-write $key $currentMode
+}

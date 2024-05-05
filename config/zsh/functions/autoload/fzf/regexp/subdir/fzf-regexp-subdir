@@ -1,6 +1,5 @@
+# Dynamic regexp search inside of subdir
 function fzf-regexp-subdir() {
-	# Dynamic regexp search inside of subdi
-
 	fzf-regexp \
 		--options "fzf-regexp-subdir-options"
 }
