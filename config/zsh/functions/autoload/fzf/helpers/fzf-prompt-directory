@@ -1,4 +1,7 @@
 # Return a colored directory path suitable for a prompt
+# Contains the current project short code (if available), followed by
+# a simplified path, with long hierarchy replaced with …
+#
 # Usage:
 # $ fzf-prompt-directory   # Colored prompt for current directory
 # $ fzf-prompt-directory ~/.oroshi/  # Colored prompt for ~/.oroshi

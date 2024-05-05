@@ -14,13 +14,13 @@ function fzf-directories-options() {
 
 	# Keybindings
 	# => [Right] goes down into the folder
-	echo "--bind=right:execute-silent(fzf-pwd-save {1})"
+	echo "--bind=right:execute-silent(fzf-pwd-write {1})"
 	echo "--bind=right:+reload(fzf-directories-source)"
-	echo "--bind=right:+transform-prompt(fzf-pwd-prompt)"
+	echo "--bind=right:+transform-prompt(fzf-prompt-pwd)"
 	echo "--bind=right:+first"
 	# <= [Left] goes up into the parent
-	echo "--bind=left:execute-silent(fzf-pwd-save __FZF_DIRECTORIES_UP__)"
+	echo "--bind=left:execute-silent(fzf-pwd-write __FZF_DIRECTORIES_UP__)"
 	echo "--bind=left:+reload(fzf-directories-source)"
-	echo "--bind=left:+transform-prompt(fzf-pwd-prompt)"
+	echo "--bind=left:+transform-prompt(fzf-prompt-pwd)"
 	echo "--bind=left:+first"
 }

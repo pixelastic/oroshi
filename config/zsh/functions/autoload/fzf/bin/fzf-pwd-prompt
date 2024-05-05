@@ -1,7 +1,0 @@
-# Output the current pwd context as a prompt
-function fzf-pwd-prompt() {
-	set -e
-
-	local input="$(fzf-var-read pwd)"
-	fzf-prompt-directory "$input"
-}

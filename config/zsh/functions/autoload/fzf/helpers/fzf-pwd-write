@@ -1,8 +1,10 @@
-# Save the current PWD context of fzf, so we can access it from the source
-# script
+# Save the "current pwd" of fzf.
+# This is used to keep some state when using the [left] and [right] keys to
+# navigate folders
 #
-# fzf-pwd-save /home/tim   # Save "/home/tim" as the current pwd
-function fzf-pwd-save() {
+# fzf-pwd-write /home/tim   # Save "/home/tim" as the current pwd
+# fzf-pwd-write __FZF_DIRECTORIES_UP__  # Special value to save the parent folder
+function fzf-pwd-write() {
 	local key="pwd"
 	local value=$1
 
