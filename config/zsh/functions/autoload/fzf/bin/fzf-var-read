@@ -1,0 +1,10 @@
+# Read any arbitrary string previously saved with fzf-var-write
+#
+# Usage:
+# fzf-var-read {key} {value}  # Display the previously saved var
+function fzf-var-read() {
+	local key=$1
+
+	local saveFilepath="/tmp/oroshi/fzf/${KITTY_WINDOW_ID}_${key}"
+	cat $saveFilepath
+}

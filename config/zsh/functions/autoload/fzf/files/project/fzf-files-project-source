@@ -1,0 +1,6 @@
+# Returns a list of files, in the project
+function fzf-files-project-source() {
+	local gitRoot="$(git-directory-root -f)"
+
+	fzf-files-source "${gitRoot}"
+}

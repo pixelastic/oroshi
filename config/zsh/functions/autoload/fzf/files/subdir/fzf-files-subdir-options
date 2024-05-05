@@ -1,0 +1,9 @@
+# Returns the specific options to pass to fzf
+function fzf-files-subdir-options() {
+	fzf-files-options
+
+	local fzfPrompt="$(fzf-prompt-directory $PWD)"
+
+	echo "--prompt=${fzfPrompt}"
+	echo "--color=prompt:${COLOR_ALIAS_DIRECTORY}:regular"
+}

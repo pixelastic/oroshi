@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-# Returns a list of files, in the project
-local gitRoot="$(git-directory-root -f)"
-
-fzf-files-source "${gitRoot}"
-

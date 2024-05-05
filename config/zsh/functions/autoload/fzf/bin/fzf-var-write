@@ -1,0 +1,15 @@
+# Save any arbitrary string (in a file on disk), so it can later be read.
+# The variable is scoped to the current Kitty window, so later invocations
+# in the same window will have access to the variable
+#
+# Usage:
+# fzf-var-write {key} {value}  # Save {value} under the name {key}
+function fzf-var-write() {
+	local key=$1
+	local value=$2
+
+	# Save on disk
+	local saveFilepath="/tmp/oroshi/fzf/${KITTY_WINDOW_ID}_${key}"
+	mkdir -p ${saveFilepath:h}
+	echo $value >$saveFilepath
+}

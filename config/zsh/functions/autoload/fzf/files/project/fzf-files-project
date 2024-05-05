@@ -1,0 +1,6 @@
+# Starts a dynamic file search, in the current project
+function fzf-files-project() {
+	fzf-files \
+		--source "fzf-files-project-source" \
+		--options "fzf-files-project-options"
+}

@@ -1,0 +1,5 @@
+# Returns a list of files, in the current folder
+function fzf-files-subdir-source() {
+	local here="$PWD"
+	fzf-files-source "${here}"
+}
