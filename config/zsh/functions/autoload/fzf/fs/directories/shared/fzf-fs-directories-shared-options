@@ -1,15 +1,15 @@
-# Outputs the options shared by all search for a specific file
+# Outputs the options shared by all search for a specific directory
 
 # This is called by:
-# - fzf-fs-files-project-options
-# - fzf-fs-files-subdir-options
+# - fzf-fs-directories-project-options
+# - fzf-fs-directories-subdir-options
 # with specific --source and --prompt values
 #
 # Usage:
-# $ fzf-fs-files-shared-options \
+# $ fzf-fs-directories-shared-options \
 # --source         # Mandatory, function that displays the list of suggestions
 # --prompt         # Mandatory, function that displays the prompt
-function fzf-fs-files-shared-options() {
+function fzf-fs-directories-shared-options() {
 	zmodload zsh/zutil
 	zparseopts -E -D \
 		-prompt:=flagPrompt \
@@ -38,9 +38,11 @@ function fzf-fs-files-shared-options() {
 	echo "--bind=left:+transform-prompt(${fzfPromptPath})"
 	echo "--bind=left:+first"
 
-	# Color the UI
-	echo "--color=query:${COLOR_ALIAS_FILE}:regular"
-	echo "--color=separator:${COLOR_ALIAS_FILE}"
-	echo "--color=info:${COLOR_ALIAS_FILE}"
+	# Color the UI in directory color
+	echo "--color=fg:$COLOR_ALIAS_DIRECTORY"
+	echo "--color=fg+:$COLOR_ALIAS_DIRECTORY"
+	echo "--color=query:${COLOR_ALIAS_DIRECTORY}:regular"
+	echo "--color=separator:${COLOR_ALIAS_DIRECTORY}"
+	echo "--color=info:${COLOR_ALIAS_DIRECTORY}"
 	echo "--color=prompt:${COLOR_ALIAS_TEXT}:regular"
 }

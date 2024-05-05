@@ -3,7 +3,7 @@ function fzf-fs-files-shared-postprocess() {
   local input="$@"
 
   # Stop early
-  [[ $input == "" ]] && exit
+  [[ $input == "" ]] && return
 
   # Sanitize selection
   local files=()

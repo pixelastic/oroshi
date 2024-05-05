@@ -1,10 +1,10 @@
 # Display the current directory, when traversing a project
-# We read if from the cache, but if empty revert to the $PWD
+# We read if from the cache, but if empty revert to the project root
 function fzf-fs-shared-pwd-project() {
-
 	local currentDirectory="$(fzf-var-read pwd)"
+
 	if [[ $currentDirectory == "" ]]; then
-		currentDirectory="$(git-directory-root -f)/"
+		currentDirectory="$(git-directory-root -f)"
 	fi
 
 	echo $currentDirectory

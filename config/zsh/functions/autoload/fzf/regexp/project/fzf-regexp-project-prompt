@@ -1,5 +1,5 @@
 # Display the prompt for a search in file, in whole project
 function fzf-regexp-project-prompt() {
 	local gitRoot="$(git-directory-root -f)/"
-	fzf-regexp-shared-prompt $gitRoot
+	echo "$(fzf-regexp-shared-prompt $gitRoot) "
 }

@@ -1,4 +1,4 @@
-# Ctrl-Shift-O fuzzy find in subdir directories
+# Ctrl-Shift-O: Search for a specific directory, in the current directory
 oroshi-fzf-directories-subdir-widget() {
 	export PROMPT_PREVENT_REFRESH="1"
 	local selection="$(fzf-fs-directories-subdir)"

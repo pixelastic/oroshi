@@ -1,4 +1,4 @@
-# Ctrl-F search into files in current directory
+# Ctrl-F: Search inside of text files in the current directory
 oroshi-fzf-regexp-subdir-widget() {
 	export PROMPT_PREVENT_REFRESH="1"
 	local selection="$(fzf-regexp-subdir)"

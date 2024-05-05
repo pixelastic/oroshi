@@ -1,13 +1,10 @@
+# Outputs specific options for searching for a directory in the most common
+# directories
 function fzf-fs-directories-common-options() {
-	# Returns the specific options to pass to fzf
-	fzf-directories-options
+	fzf-fs-directories-shared-options \
+		--prompt fzf-fs-directories-common-prompt \
+		--source fzf-fs-directories-common-source
 
 	# Keep the sort of z
 	echo "--no-sort"
-
-	# Prompt
-	local promptPrefix="$(colorize "  Jump to " $COLOR_WHITE $COLOR_ALIAS_DIRECTORY)"
-	local promptSuffix="$(colorize "" $COLOR_ALIAS_DIRECTORY)"
-	echo "--prompt=${promptPrefix}${promptSuffix} "
-
 }

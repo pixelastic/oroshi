@@ -1,6 +1,5 @@
-# Returns a list of directories, in the project
+# Returns a list of directories, in the current project
 function fzf-fs-directories-project-source() {
-	local gitRoot="$(git-directory-root -f)"
-
-	fzf-directories-source "${gitRoot}"
+	local currentDirectory="$(fzf-fs-shared-pwd-project)"
+	fzf-fs-directories-shared-source "${currentDirectory}"
 }

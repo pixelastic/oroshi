@@ -1,7 +1,6 @@
-# Fuzzy search in all the project directories
+# Search for a specific directory in the current project
 function fzf-fs-directories-project() {
-
-	fzf-directories \
-		--source "fzf-directories-project-source" \
-		--options "fzf-directories-project-options"
+	fzf-fs-directories \
+		--source fzf-fs-directories-project-source \
+		--options fzf-fs-directories-project-options
 }

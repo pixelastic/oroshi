@@ -6,18 +6,17 @@
 # --query             # Mandatory, query to look for
 # --directory         # Mandatory, base directory to search
 function fzf-regexp-shared-source() {
-	set -e
-
 	zmodload zsh/zutil
 	zparseopts -E -D \
 		-query:=flagQuery \
 		-directory:=flagDirectory
 
-	local directory=${flagDirectory[2]}
 	local query=${flagQuery[2]}
+	# Ensure a final slash
+	local directory="${flagDirectory[2]}/"
 
 	if [[ $query == "" ]]; then
-		exit
+		return
 	fi
 
 	# Adding headings {{{

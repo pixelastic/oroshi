@@ -13,11 +13,15 @@ function fzf-fs-directories() {
 		-postprocess:=flagPostprocess
 
 	local fzfSourcePath=${flagSource[2]}
-	local fzfOptionsPath=${flagOptions[2]:-fzf-directories-options}
-	local fzfPostprocessPath=${flagPostprocess[2]:-fzf-directories-postprocess}
+	local fzfOptionsPath=${flagOptions[2]:-fzf-fs-directories-shared-options}
+	local fzfPostprocessPath=${flagPostprocess[2]:-fzf-fs-directories-shared-postprocess}
 
 	fzf-search \
 		--source "$fzfSourcePath" \
 		--options "$fzfOptionsPath" \
 		--postprocess "$fzfPostprocessPath"
+
+	# Clean up the cache of the current pwd, otherwise next call will start in the
+	# previous folder
+	fzf-var-write pwd ""
 }

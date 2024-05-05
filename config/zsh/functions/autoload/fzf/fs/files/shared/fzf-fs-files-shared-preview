@@ -13,12 +13,12 @@ function fzf-fs-files-shared-preview() {
 
   # Get full path of file to preview
   local fullPath="$1"
+  fullPath=${~fullPath}
 
   # Directory
   if [[ -d $fullPath ]]; then
-    # fullPath=${~fullPath}
     l "$fullPath"
-    exit 0
+    return 0
   fi
 
   local filetypeGroup="$(filetype-group $fullPath)"
@@ -27,7 +27,7 @@ function fzf-fs-files-shared-preview() {
   image-display --clear
   if [[ $filetypeGroup == "image" ]]; then
     image-display --fzf-preview $fullPath
-    exit 0
+    return 0
   fi
 
   # Text preview
@@ -59,7 +59,7 @@ function fzf-fs-files-shared-preview() {
   # If no query passed, we display it like this
   if [[ $highlightQuery == "" ]]; then
     echo $output
-    exit 0
+    return 0
   fi
 
   # We highlight the query

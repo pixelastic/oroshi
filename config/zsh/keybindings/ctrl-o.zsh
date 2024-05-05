@@ -1,4 +1,4 @@
-# Ctrl-O fuzzy find in project directories
+# Ctrl-O: Search for a specific directory, in the whole project
 oroshi-fzf-directories-project-widget() {
 	export PROMPT_PREVENT_REFRESH="1"
 	local selection="$(fzf-fs-directories-project)"

@@ -1,9 +1,6 @@
-# Returns the specific options to pass to fzf
+# Outputs specific options for searching for a file in the current direcotory
 function fzf-fs-directories-subdir-options() {
-	fzf-directories-options
-
-	local fzfPrompt="$(fzf-prompt-directory $PWD)"
-
-	echo "--prompt=${fzfPrompt}"
-	echo "--color=prompt:${COLOR_ALIAS_DIRECTORY}:regular"
+	fzf-fs-files-shared-options \
+		--prompt fzf-fs-files-subdir-prompt \
+		--source fzf-fs-files-subdir-source
 }

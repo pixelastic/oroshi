@@ -1,7 +1,6 @@
-# Fuzzy search in all the directory subdirectories
+# Search for a specific directory in the current subdir
 function fzf-fs-directories-subdir() {
-
-	fzf-directories \
-		--source "fzf-directories-subdir-source" \
-		--options "fzf-directories-subdir-options"
+	fzf-fs-directories \
+		--source fzf-fs-directories-subdir-source \
+		--options fzf-fs-directories-subdir-options
 }

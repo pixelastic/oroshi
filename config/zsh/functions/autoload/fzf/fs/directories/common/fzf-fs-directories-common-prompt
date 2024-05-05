@@ -1,0 +1,6 @@
+# Display the prompt for finding a directory in the most common directories
+function fzf-fs-directories-common-prompt() {
+	local promptPrefix="$(colorize "  Jump to " $COLOR_WHITE $COLOR_ALIAS_DIRECTORY)"
+	local promptSuffix="$(colorize "" $COLOR_ALIAS_DIRECTORY)"
+	echo "${promptPrefix}${promptSuffix} "
+}

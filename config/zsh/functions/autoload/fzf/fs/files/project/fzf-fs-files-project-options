@@ -3,5 +3,4 @@ function fzf-fs-files-project-options() {
 	fzf-fs-files-shared-options \
 		--prompt fzf-fs-files-project-prompt \
 		--source fzf-fs-files-project-source
-
 }

@@ -11,7 +11,7 @@ function fzf-regexp-shared-postprocess() {
   local rawSelection="$1"
 
   # Stop early
-  [[ $rawSelection == "" ]] && exit
+  [[ $rawSelection == "" ]] && return
 
   # Deduplicate selection and store first selected line
   declare -A files

@@ -1,4 +1,4 @@
-# Ctrl-P fuzzy find in project files
+# Ctrl-P: Search for a specific file, in the whole project
 oroshi-fzf-files-project-widget() {
 	export PROMPT_PREVENT_REFRESH="1"
 	local selection="$(fzf-fs-files-project)"

@@ -1,9 +1,9 @@
-function fzf-fs-directories-postprocess() {
+function fzf-fs-directories-shared-postprocess() {
   # Parses the return of a fzf multi-selection
   local rawSelection="$1"
 
   # Stop early
-  [[ $rawSelection == "" ]] && exit
+  [[ $rawSelection == "" ]] && return
 
   # Sanitize selection
   local directories=()

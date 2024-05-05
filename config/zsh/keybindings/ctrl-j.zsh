@@ -1,4 +1,4 @@
-# Ctrl-J fuzzy find in common directories
+# Ctrl-J: Search for a specific directory, from all known locations
 oroshi-fzf-common-directories-widget() {
 	export PROMPT_PREVENT_REFRESH="1"
 	local selection="$(fzf-fs-directories-common)"

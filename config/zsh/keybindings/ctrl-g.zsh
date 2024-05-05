@@ -1,4 +1,4 @@
-# Ctrl-G search into files in project
+# Ctrl-G: Search inside of text files in the whole project
 oroshi-fzf-regexp-project-widget() {
   export PROMPT_PREVENT_REFRESH="1"
   local selection="$(fzf-regexp-project)"
