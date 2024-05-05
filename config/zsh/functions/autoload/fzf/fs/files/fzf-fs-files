@@ -1,10 +1,11 @@
-# Fuzzy finding into a list of files
+# Search for a specific file
+#
 # Usage:
 # $ fzf-files \
 # --source         # Mandatory, list of suggestions
 # --options        # Binary to return the fzf options
 # --postprocess    # Binary to sanitize the selection
-function fzf-files() {
+function fzf-fs-files() {
 	zmodload zsh/zutil
 	zparseopts -E -D \
 		-source:=flagSource \
@@ -12,8 +13,8 @@ function fzf-files() {
 		-postprocess:=flagPostprocess
 
 	local fzfSourcePath=${flagSource[2]}
-	local fzfOptionsPath=${flagOptions[2]:-fzf-files-options}
-	local fzfPostprocessPath=${flagPostprocess[2]:-fzf-files-postprocess}
+	local fzfOptionsPath=${flagOptions[2]:-fzf-fs-files-shared-options}
+	local fzfPostprocessPath=${flagPostprocess[2]:-fzf-fs-files-shared-postprocess}
 
 	fzf-search \
 		--source "$fzfSourcePath" \

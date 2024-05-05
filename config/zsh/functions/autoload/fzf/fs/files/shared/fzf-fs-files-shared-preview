@@ -1,10 +1,10 @@
 # Preview a file inside fzf
 # Usage
-# $ fzf-files-preview ./path/to/file                  # Display the file
-# $ fzf-files-preview ./path/to/folder                # Display the folder
-# $ fzf-files-preview ./file --highlight-line 42      # Highlight the specified line
-# $ fzf-files-preview ./file --highlight-word "query" # Highlight the specified query
-function fzf-files-preview() {
+# $ fzf-fs-files-shared-preview ./path/to/file                  # Display the file
+# $ fzf-fs-files-shared-preview ./path/to/folder                # Display the folder
+# $ fzf-fs-files-shared-preview ./file --highlight-line 42      # Highlight the specified line
+# $ fzf-fs-files-shared-preview ./file --highlight-word "query" # Highlight the specified query
+function fzf-fs-files-shared-preview() {
   # Parse arguments
   zmodload zsh/zutil
   zparseopts -E -D \

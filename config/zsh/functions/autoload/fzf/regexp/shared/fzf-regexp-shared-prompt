@@ -25,5 +25,5 @@ function fzf-regexp-shared-prompt() {
 	# Directory
 	local promptDirectory="$(fzf-prompt-directory $directory)"
 
-	echo "${promptPrefix}${promptFoldIcon}${promptDirectory} "
+	echo "${promptPrefix}${promptFoldIcon}${promptDirectory}"
 }

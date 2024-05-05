@@ -1,11 +1,11 @@
 " [CTRL-P] Files search in the whole project
 
 " Command to call to build the list of choices
-let fzfFilesSearchProjectSource='fzf-files-project-source'
+let fzfFilesSearchProjectSource='fzf-fs-files-project-source'
 
 " FZF options
 function! FzfFilesSearchProjectOptions()
-  let fzfOptions= system('fzf-files-project-options')
+  let fzfOptions= system('fzf-fs-files-project-options')
   return split(fzfOptions, "\n")
 endfunction
 
@@ -17,7 +17,7 @@ function! FzfFilesSearchProjectSink(selection)
 
   " Sanitize the file names from the fzf selection
   let joinedSelection=join(a:selection, "\n")
-  let selection=system('fzf-files-postprocess '.shellescape(joinedSelection))
+  let selection=system('fzf-fs-files-shared-postprocess '.shellescape(joinedSelection))
 
   " Open each file
   execute 'tab drop '.selection

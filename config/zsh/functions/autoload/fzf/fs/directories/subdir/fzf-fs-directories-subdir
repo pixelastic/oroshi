@@ -1,5 +1,5 @@
 # Fuzzy search in all the directory subdirectories
-function fzf-directories-subdir() {
+function fzf-fs-directories-subdir() {
 
 	fzf-directories \
 		--source "fzf-directories-subdir-source" \

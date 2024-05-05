@@ -1,5 +1,5 @@
 # Returns the specific options to pass to fzf
-function fzf-directories-subdir-options() {
+function fzf-fs-directories-subdir-options() {
 	fzf-directories-options
 
 	local fzfPrompt="$(fzf-prompt-directory $PWD)"

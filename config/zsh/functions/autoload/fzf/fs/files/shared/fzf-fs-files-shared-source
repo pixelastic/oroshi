@@ -1,8 +1,8 @@
 # Display all the files of a given directory
 # Usage:
-# $ fzf-files-source /path/to/directory     # Find in specified dir
-# $ fzf-files-source                        # Find in last visited dir
-function fzf-files-source() {
+# $ fzf-fs-files-shared-source /path/to/directory     # Find in specified dir
+# $ fzf-fs-files-shared-source                        # Find in last visited dir
+function fzf-fs-files-shared-source() {
   set -e
 
   # We find in specified directory, and if not specified in the last saved one

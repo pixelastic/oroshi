@@ -2,7 +2,7 @@
 # Usage:
 # $ fzf-directories-source /path/to/directory     # Find in specified dir
 # $ fzf-directories-source                        # Find in last visited dir
-function fzf-directories-source() {
+function fzf-fs-directories-source() {
 set -e
 
 # We find in specified directory, and if not specified in the last saved one

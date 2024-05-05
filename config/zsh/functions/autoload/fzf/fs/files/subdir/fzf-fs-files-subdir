@@ -1,6 +1,9 @@
-# Starts a dynamic file search, in the current folder
-function fzf-files-subdir() {
-	fzf-files \
-		--source "fzf-files-subdir-source" \
-		--options "fzf-files-subdir-options"
+# Search for a specific file in the current subdir
+function fzf-fs-files-subdir() {
+	# Mark the current directory (for fzf) as the current one
+	fzf-var-write pwd $PWD
+
+	fzf-fs-files \
+		--source fzf-fs-files-subdir-source \
+		--options fzf-fs-files-subdir-options
 }

@@ -1,5 +1,5 @@
 # Fuzzy search in all the project directories
-function fzf-directories-project() {
+function fzf-fs-directories-project() {
 
 	fzf-directories \
 		--source "fzf-directories-project-source" \

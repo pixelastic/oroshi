@@ -1,5 +1,5 @@
 # Returns the specific options required to pass to fzf
-function fzf-directories-options() {
+function fzf-fs-directories-options() {
 
 	echo "--color=fg:$COLOR_ALIAS_DIRECTORY"
 	echo "--color=fg+:$COLOR_ALIAS_DIRECTORY"

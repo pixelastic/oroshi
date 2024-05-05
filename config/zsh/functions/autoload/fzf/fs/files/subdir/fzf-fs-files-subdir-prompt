@@ -1,0 +1,5 @@
+# Display the prompt for finding a file in a given directory
+function fzf-fs-files-subdir-prompt() {
+	local currentDirectory="$(fzf-var-read pwd)"
+	echo "$(fzf-fs-files-shared-prompt $currentDirectory) "
+}

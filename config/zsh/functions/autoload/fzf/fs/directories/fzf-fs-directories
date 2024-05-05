@@ -4,7 +4,7 @@
 # --source         # Mandatory, list of suggestions
 # --options        # Binary to return the fzf options
 # --postprocess    # Binary to sanitize the selection
-function fzf-directories() {
+function fzf-fs-directories() {
 
 	zmodload zsh/zutil
 	zparseopts -E -D \

@@ -1,4 +1,4 @@
-function fzf-directories-postprocess() {
+function fzf-fs-directories-postprocess() {
   # Parses the return of a fzf multi-selection
   local rawSelection="$1"
 

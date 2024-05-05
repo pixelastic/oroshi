@@ -1,4 +1,4 @@
-function fzf-directories-common() {
+function fzf-fs-directories-common() {
 	# Fuzzy search in all the most common directories
 
 	fzf-directories \

@@ -1,10 +1,7 @@
-# Returns the specific options to pass to fzf
-function fzf-files-project-options() {
-  fzf-files-options
+# Outputs specific options for searching for a file in the current project
+function fzf-fs-files-project-options() {
+	fzf-fs-files-shared-options \
+		--prompt fzf-fs-files-project-prompt \
+		--source fzf-fs-files-project-source
 
-  local projectKey="$(project-by-path $PWD)"
-  local prompt="$(colorize-project $projectKey)"
-  # fzf in vim fails to parse the prompt if there is ​ in it
-  prompt=${prompt:gs/​//}
-  echo "--prompt=$prompt "
 }

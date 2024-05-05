@@ -1,4 +1,4 @@
-function fzf-directories-common-source() {
+function fzf-fs-directories-common-source() {
   # We load z
   source ~/local/etc/zsh-z/zsh-z.plugin.zsh
 
