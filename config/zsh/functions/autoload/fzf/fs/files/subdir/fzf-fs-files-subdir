@@ -1,8 +1,8 @@
 # Search for a specific file in the current subdir
+#
+# Note: This file is called by zsh only. Vim directly calls the -source,
+# -options and -postprocess files individually
 function fzf-fs-files-subdir() {
-	# Mark the current directory (for fzf) as the current one
-	fzf-var-write pwd $PWD
-
 	fzf-fs-files \
 		--source fzf-fs-files-subdir-source \
 		--options fzf-fs-files-subdir-options

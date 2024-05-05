@@ -21,4 +21,7 @@ function fzf-fs-files() {
 		--options "$fzfOptionsPath" \
 		--postprocess "$fzfPostprocessPath"
 
+	# Clean up the cache of the current pwd, otherwise next call will start in the
+	# previous folder
+	fzf-var-write pwd ""
 }

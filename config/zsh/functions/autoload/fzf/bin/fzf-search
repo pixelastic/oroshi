@@ -26,7 +26,7 @@ function fzf-search() {
   fi
 
   # Stop if no selection
-  [[ $selection == "" ]] && exit
+  [[ $selection == "" ]] && return 1
 
   # Postprocessing the selection
   if [[ $fzfPostprocessPath == "" ]]; then

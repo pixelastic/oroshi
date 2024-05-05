@@ -1,5 +1,5 @@
 # Returns a list of files, in the current folder
 function fzf-fs-files-subdir-source() {
-	local currentDirectory="$(fzf-var-read pwd)"
+	local currentDirectory="$(fzf-fs-shared-pwd-subdir)"
 	fzf-fs-files-shared-source "${currentDirectory}"
 }

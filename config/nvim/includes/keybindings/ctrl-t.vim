@@ -1,11 +1,11 @@
 " [CTRL-T] Files search in the subdirectory
 
 " Command to call to build the list of choices
-let fzfFilesSearchSubdirSource='fzf-files-subdir-source'
+let fzfFilesSearchSubdirSource='fzf-fs-files-subdir-source'
 
 " FZF options
 function! FzfFilesSearchSubdirOptions()
-  let fzfOptions= system('fzf-files-subdir-options')
+  let fzfOptions= system('fzf-fs-files-subdir-options')
   return split(fzfOptions, "\n")
 endfunction
 
@@ -17,7 +17,7 @@ function! FzfFilesSearchSubdirSink(selection)
 
   " Sanitize the file names from the fzf selection
   let joinedSelection=join(a:selection, "\n")
-  let selection=system('fzf-files-postprocess '.shellescape(joinedSelection))
+  let selection=system('fzf-fs-files-shared-postprocess '.shellescape(joinedSelection))
 
   " Open each file
   execute 'tab drop '.selection

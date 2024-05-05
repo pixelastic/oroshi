@@ -1,9 +1,8 @@
 # Search for a specific file in the current project
+#
+# Note: This file is called by zsh only. Vim directly calls the -source,
+# -options and -postprocess files individually
 function fzf-fs-files-project() {
-	# Mark the current directory (for fzf) as the project root
-	local gitRoot="$(git-directory-root -f)/"
-	fzf-var-write pwd $gitRoot
-
 	fzf-fs-files \
 		--source fzf-fs-files-project-source \
 		--options fzf-fs-files-project-options

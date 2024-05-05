@@ -13,7 +13,7 @@ function! FzfRegexpSearchProjectSink(selection)
   endif
 
   let rawSelection=join(a:selection, "\n")
-  let selection=system('fzf-regexp-postprocess '.shellescape(rawSelection))
+  let selection=system('fzf-regexp-shared-postprocess '.shellescape(rawSelection))
 
   " Open each file and jump to right line
   for line in split(selection, ' ')
