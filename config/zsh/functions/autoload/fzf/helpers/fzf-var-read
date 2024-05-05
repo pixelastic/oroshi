@@ -1,14 +1,16 @@
 # Read any arbitrary string previously saved with fzf-var-write
 #
 # Usage:
-# fzf-var-read {key} {value}  # Display the previously saved var
+# fzf-var-read {key}                # Display the previously saved var
+# fzf-var-read {key} {defaultValue} # ...or {defaultValue} if not found
 function fzf-var-read() {
 	local key=$1
+	local defaultValue=$2
 
 	local saveFilepath="/tmp/oroshi/fzf/${KITTY_WINDOW_ID}_${key}"
 	if [[ -f $saveFilepath ]]; then
 		cat $saveFilepath
 		return 0
 	fi
-	echo ""
+	echo $defaultValue
 }

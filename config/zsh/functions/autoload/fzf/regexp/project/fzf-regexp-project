@@ -1,6 +1,5 @@
-# Dynamic regexp search inside of project
+# Search inside of text files, from the project root
 function fzf-regexp-project() {
-
 	fzf-regexp \
 		--options "fzf-regexp-project-options"
 }

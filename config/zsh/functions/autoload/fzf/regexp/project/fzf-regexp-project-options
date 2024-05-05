@@ -1,12 +1,11 @@
-# Returns the specific options to pass to fzf
+# Output options required to search inside of text files, in the whole project
 function fzf-regexp-project-options() {
-	fzf-regexp-options \
+	fzf-regexp-common-options \
+		--prompt fzf-regexp-project-prompt \
 		--source fzf-regexp-project-source
 
-	# Prompt
-	local gitRoot="$(git-directory-root -f)/"
-	local prompt="$(fzf-regexp-prompt $gitRoot)"
-
-	echo "--prompt=${prompt} "
-	echo "--color=prompt:${COLOR_ALIAS_REGEXP}:regular"
+	# # Options specific to project search
+	# local gitRoot="$(git-directory-root -f)/"
+	# local prompt="$(fzf-regexp-prompt $gitRoot)"
+	# echo "--prompt=${prompt}"
 }

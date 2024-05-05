@@ -1,9 +1,11 @@
-# Returns a list of matches for a given query
+# Returns a list of matches for searching inside of files, for a given query and
+# directory
+#
 # Usage:
-# $ fzf-regexp-source
+# $ fzf-regexp-common-source
 # --query             # Mandatory, query to look for
 # --directory         # Mandatory, base directory to search
-function fzf-regexp-source() {
+function fzf-regexp-common-source() {
 	set -e
 
 	zmodload zsh/zutil
@@ -68,12 +70,13 @@ function fzf-regexp-source() {
 	# We use ":" (colon) instead of "/" (slash) in the sed search and replace as
 	# : will probably not exist in the filepath
 	#
-	# --max-count is infinite, but when my (custom) toggle mode is switched in fzf
-	# to single, it should display only one result per file
 
-	local toggleMode="$(fzf-var-read regexp-fold-mode)"
+	# --max-count is infinite by default, but when my (custom) toggle mode is
+	# switched in fzf to single, it should display only one result per file
+	local toggleMode="$(fzf-var-read regexp-fold-mode multi)"
 	local maxCount=999
 	[[ $toggleMode == "single" ]] && maxCount=1
+
 	rg \
 		--no-heading \
 		--with-filename \

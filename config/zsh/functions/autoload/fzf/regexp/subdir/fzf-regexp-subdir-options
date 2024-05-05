@@ -1,10 +1,7 @@
-# Returns the specific options to pass to fzf
+# Output options required to search inside of text files, in the current
+# directory
 function fzf-regexp-subdir-options() {
-	fzf-regexp-options \
+	fzf-regexp-common-options \
+		--prompt fzf-regexp-subdir-prompt \
 		--source fzf-regexp-subdir-source
-
-	local prompt="$(fzf-regexp-prompt $PWD)"
-
-	echo "--prompt=${prompt}"
-	echo "--color=prompt:${COLOR_ALIAS_DIRECTORY}:regular"
 }

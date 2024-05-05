@@ -1,0 +1,29 @@
+# Display a prompt for searching inside of files in a given directory
+#
+# It is made of three parts:
+# 1. The GREP prefix
+# 2. An icon to define if the folding is single or multi
+# 3. The simplified path to the defined folder
+function fzf-regexp-common-prompt() {
+	local directory=$1
+
+	# Regexp prefix
+	local promptPrefix="$(colorize "  GREP " $COLOR_WHITE $COLOR_ALIAS_REGEXP)"
+
+	# Folding icon {{{
+	local currentMode="$(fzf-var-read regexp-fold-mode multi)"
+
+	if [[ $currentMode == "multi" ]]; then
+		local icon=" "
+	elif [[ $currentMode == "single" ]]; then
+		local icon=" "
+	fi
+
+	local promptFoldIcon="$(colorize "${icon}(f1)" $COLOR_WHITE $COLOR_ALIAS_REGEXP)"
+	# }}}
+
+	# Directory
+	local promptDirectory="$(fzf-prompt-directory $directory)"
+
+	echo "${promptPrefix}${promptFoldIcon}${promptDirectory} "
+}

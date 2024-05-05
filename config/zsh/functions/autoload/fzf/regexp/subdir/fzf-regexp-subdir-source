@@ -1,10 +1,9 @@
-# Returns a list of matches for a query, in the current folder
+# Return a list of all matches inside of files, in the current folder
 function fzf-regexp-subdir-source() {
 	local query="$1"
-	local here="$PWD/"
 
-	fzf-regexp-source \
-		--directory "${here}" \
+	fzf-regexp-common-source \
+		--directory "${PWD}" \
 		--query "${query}"
 
 }

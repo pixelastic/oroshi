@@ -1,9 +1,9 @@
+# Return a list of all matches inside of files, from the project root
 function fzf-regexp-project-source() {
-	# Returns a list of matches for a query, in the project
 	local query="$1"
 	local gitRoot="$(git-directory-root -f)/"
 
-	fzf-regexp-source \
+	fzf-regexp-common-source \
 		--directory "${gitRoot}" \
 		--query "${query}"
 }

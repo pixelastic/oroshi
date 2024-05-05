@@ -1,4 +1,4 @@
-# Dynamic regexp search inside of subdir
+# Search inside of text files, from the current directory
 function fzf-regexp-subdir() {
 	fzf-regexp \
 		--options "fzf-regexp-subdir-options"
