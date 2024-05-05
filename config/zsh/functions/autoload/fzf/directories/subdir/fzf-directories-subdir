@@ -1,0 +1,7 @@
+# Fuzzy search in all the directory subdirectories
+function fzf-directories-subdir() {
+
+	fzf-directories \
+		--source "fzf-directories-subdir-source" \
+		--options "fzf-directories-subdir-options"
+}

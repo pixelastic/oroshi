@@ -1,0 +1,33 @@
+# Fuzzy finding in git commits, returning the hash
+function fzf-git-commits() {
+
+  # Build the display line
+  local formatString=""
+  formatString+="%C(${COLOR_ALIAS_GIT_COMMIT}) %h%Creset  "
+  formatString+="%C(${COLOR_ALIAS_GIT_AUTHOR}) %an%Creset  "
+  formatString+="%C(${COLOR_ALIAS_DATE}) %cd%Creset  "
+  formatString+="%C(${COLOR_ALIAS_GIT_MESSAGE})%s%Creset"
+
+  # Find all commits
+  local selection="$(\
+  git \
+    log \
+    --date=format:'%Y-%m-%d' \
+    --format="$formatString" \
+    --color=always \
+    | fzf \
+      --no-keep-right \
+      --preview "fzf-git-commits-preview {}" \
+  )"
+
+  # Stop if no selection
+  [[ "$selection" == "" ]] && exit 1
+
+  # Find the commit
+  selection="$(cut -d ' ' -f2 <<< "$selection")"
+
+  # Convert multi selections into single line
+  selection=("${(f)selection}")
+
+  echo $selection
+}

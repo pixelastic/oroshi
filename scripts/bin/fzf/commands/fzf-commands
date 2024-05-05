@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-# Fuzzy finding in all existing commands/aliases/functions
-
-fzf-search \
-	--source "fzf-commands-source" \
-	--options "fzf-commands-options"

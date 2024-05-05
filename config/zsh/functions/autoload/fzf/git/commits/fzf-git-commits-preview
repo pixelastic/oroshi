@@ -1,0 +1,21 @@
+# Display the details of a commit
+function fzf-git-commits-preview() {
+	local commitHash="$(cut -d ' ' -f2 <<<"$1")"
+
+	local formatString="\
+%C($COLOR_ALIAS_GIT_COMMIT) %h%Creset \
+%C($COLOR_ALIAS_DATE) %cd%Creset \
+%n\
+%C($COLOR_ALIAS_GIT_AUTHOR) %an%Creset\
+%n\
+%n\
+%C($COLOR_ALIAS_GIT_MESSAGE) %B%Creset
+"
+
+	git show \
+		--date=format:'%Y-%m-%d %H:%M:%S' \
+		--color=always \
+		--stat \
+		--pretty="format:$formatString" \
+		$commitHash
+}

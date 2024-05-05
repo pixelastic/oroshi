@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-# Dynamic regexp search inside of subdi
-
-fzf-regexp \
-  --options "fzf-regexp-subdir-options"
-

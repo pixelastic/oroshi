@@ -1,8 +1,0 @@
-#!/usr/bin/env zsh
-# Returns a list of matches for a query, in the project
-local query="$1"
-local gitRoot="$(git-directory-root -f)/"
-
-fzf-regexp-source \
-  --directory "${gitRoot}" \
-  --query     "${query}"

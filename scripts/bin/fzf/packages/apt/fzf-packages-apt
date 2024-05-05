@@ -1,7 +1,0 @@
-#!/usr/bin/env zsh
-# Fuzzy search in all apt packages
-
-fzf-search \
-  --source "fzf-packages-apt-source" \
-  --options "fzf-packages-apt-options" \
-  --postprocess "fzf-packages-apt-postprocess"

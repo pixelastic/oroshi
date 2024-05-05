@@ -1,0 +1,6 @@
+# Dynamic regexp search inside of project
+function fzf-regexp-project() {
+
+	fzf-regexp \
+		--options "fzf-regexp-project-options"
+}

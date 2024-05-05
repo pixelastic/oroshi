@@ -1,0 +1,7 @@
+function fzf-directories-common() {
+	# Fuzzy search in all the most common directories
+
+	fzf-directories \
+		--source "fzf-directories-common-source" \
+		--options "fzf-directories-common-options"
+}

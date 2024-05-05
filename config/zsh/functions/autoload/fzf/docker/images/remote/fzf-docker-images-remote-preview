@@ -1,0 +1,14 @@
+# Display the details of a Docker image
+# Usage
+# $ fzf-files-preview "ubuntu   {Description}  # Display the description
+function fzf-docker-images-remote-preview() {
+  local splitInput=(${(@s/   /)@})
+  local imageName=$splitInput[1]
+  local imageDescription=$splitInput[2]
+
+  colorize " $imageName" $COLOR_ALIAS_FUNCTION
+
+
+  echo ""
+  echo " $(colorize "${imageDescription}" $COLOR_ALIAS_COMMENT)" | fold -sw 80
+}

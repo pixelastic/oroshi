@@ -1,0 +1,8 @@
+# Fuzzy search in all installed apt packages
+function fzf-packages-apt-installed() {
+
+	fzf-search \
+		--source "fzf-packages-apt-installed-source" \
+		--options "fzf-packages-apt-options" \
+		--postprocess "fzf-packages-apt-postprocess"
+}

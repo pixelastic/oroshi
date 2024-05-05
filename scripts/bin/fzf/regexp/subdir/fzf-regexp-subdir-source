@@ -1,9 +1,0 @@
-#!/usr/bin/env zsh
-# Returns a list of matches for a query, in the current folder
-local query="$1"
-local here="$PWD/"
-
-fzf-regexp-source \
-  --directory "${here}" \
-  --query     "${query}"
-

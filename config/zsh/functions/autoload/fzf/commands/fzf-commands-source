@@ -1,0 +1,4 @@
+# Display list of all past command history, in reverse order
+function fzf-commands-source() {
+  echo ${(Fk)commands} ${(Fk)aliases} ${(Fk)functions} | sort
+}

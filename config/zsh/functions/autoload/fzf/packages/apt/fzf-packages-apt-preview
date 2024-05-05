@@ -1,0 +1,55 @@
+# Preview a package inside of fzf
+# Usage
+# $ fzf-apt-package-preview zsh   # Display info about zsh
+function fzf-packages-apt-preview() {
+
+  local packageName="$1"
+
+  local rawDetails="$(apt-cache show $packageName)"
+  local packageVersion=""
+  local packageDescription=()
+  local isInDescription="0"
+  for line in ${(f)rawDetails}; do
+    # Keep adding to the description
+    if [[ $isInDescription == "1" ]]; then
+      # All descriptions start with a space, so if it doesn't, we're no longer in
+      # the description
+      if [[ $line[1] != " " ]]; then
+        isInDescription="0"
+        continue
+      fi
+      
+      # Keep adding to the description
+      packageDescription+=($line)
+      continue
+    fi
+
+    # Get the version
+    if [[ $line == Version:* ]]; then
+      packageVersion=${${=line}[2]}
+      continue
+    fi
+
+    # Start the description
+    if [[ $line == Description* ]]; then
+      # Keeping only the line part after the Description: part
+      local split=(${(@s/:/)line})
+      packageDescription+=(${split[@]:1})
+
+      # Mark is as description for the next loop
+      isInDescription="1"
+      continue
+    fi
+  done
+
+  packageDescription="${(F)packageDescription}"
+
+  echo "$(colorize " $packageName" $COLOR_ALIAS_FUNCTION) v${packageVersion}"
+
+  if apt-is-installed $packageName; then
+    colorize " ✔ Installed" $COLOR_ALIAS_SUCCESS
+  fi
+
+  echo ""
+  colorize "${packageDescription}" $COLOR_ALIAS_COMMENT
+}

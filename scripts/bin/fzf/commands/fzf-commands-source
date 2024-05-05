@@ -1,4 +1,0 @@
-#!/usr/bin/env zsh
-# Display list of all past command history, in reverse order
-
-echo ${(Fk)commands} ${(Fk)aliases} ${(Fk)functions} | sort

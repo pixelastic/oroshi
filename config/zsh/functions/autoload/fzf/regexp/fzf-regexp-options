@@ -1,0 +1,32 @@
+# Returns the specific options required to pass to fzf for a regexp search
+# inside of files.
+# Is usually prepended to all fzf-regexp specific searches
+# Usage:
+# $ fzf-regexp-options
+# --source         # Mandatory, list of suggestions
+function fzf-regexp-options() {
+
+	zmodload zsh/zutil
+	zparseopts -E -D \
+		-source:=flagSource
+
+	local fzfSourcePath=${flagSource[2]}
+
+	echo "--disabled"
+	echo "--delimiter=   "
+	echo "--with-nth=3"
+	# Do not reload the search on each keystroke, wait a bit
+	echo "--bind=change:reload:sleep 0.3;${fzfSourcePath} {q} || true"
+	# TODO
+	# When pressing ctrl-1, save the current state of multi/single file
+	# Save it a file with the kitty window id in its name
+	# Re-use the fzf-pwd-save, to make it more generic with a key-value store
+	# Then reload the search, but in the search script, depending on this value
+	# display one result per file or all of them
+	# make another script to read the value
+
+	# Color the UI in regexp color
+	echo "--color=disabled:${COLOR_ALIAS_REGEXP}:regular"
+	echo "--color=separator:${COLOR_ALIAS_REGEXP}"
+	echo "--color=info:${COLOR_ALIAS_REGEXP}"
+}

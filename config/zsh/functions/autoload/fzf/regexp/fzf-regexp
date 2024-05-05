@@ -1,0 +1,17 @@
+# Dynamic regexp search inside of files
+# Usage:
+# $ fzf-regexp \
+# --options         # Mandatory, options to pass to fzf
+function fzf-regexp() {
+
+	zmodload zsh/zutil
+	zparseopts -E -D \
+		-options:=flagOptions
+
+	local fzfOptionsPath=${flagOptions[2]}
+	local fzfPostprocessPath="fzf-regexp-postprocess"
+
+	fzf-search \
+		--options "$fzfOptionsPath" \
+		--postprocess "$fzfPostprocessPath"
+}

@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-
-# Note: I'm unsure about what options to pass here.
-# I want results to be sorted by relevance first, then by date of use
-
-echo "--no-sort"
