@@ -1,7 +1,7 @@
 # Output options required to search inside of text files, in the current
 # directory
 function fzf-regexp-subdir-options() {
-	fzf-regexp-common-options \
+	fzf-regexp-shared-options \
 		--prompt fzf-regexp-subdir-prompt \
 		--source fzf-regexp-subdir-source
 }

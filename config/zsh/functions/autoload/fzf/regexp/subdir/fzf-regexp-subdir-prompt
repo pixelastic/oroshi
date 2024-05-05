@@ -1,4 +1,4 @@
 # Display the prompt for a search in file, in the current directory
 function fzf-regexp-subdir-prompt() {
-	fzf-regexp-common-prompt $PWD
+	fzf-regexp-shared-prompt $PWD
 }

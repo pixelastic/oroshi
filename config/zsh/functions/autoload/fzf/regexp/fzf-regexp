@@ -12,5 +12,5 @@ function fzf-regexp() {
 
 	fzf-search \
 		--options "$fzfOptionsPath" \
-		--postprocess "fzf-regexp-postprocess"
+		--postprocess "fzf-regexp-shared-postprocess"
 }

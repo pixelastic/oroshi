@@ -2,7 +2,7 @@
 function fzf-regexp-subdir-source() {
 	local query="$1"
 
-	fzf-regexp-common-source \
+	fzf-regexp-shared-source \
 		--directory "${PWD}" \
 		--query "${query}"
 

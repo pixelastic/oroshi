@@ -1,4 +1,4 @@
-# Outputs all the common options required to configure search inside of text
+# Outputs all the shared options required to configure search inside of text
 # files
 #
 # This is called by:
@@ -7,10 +7,10 @@
 # with specific --source and --prompt values
 #
 # Usage:
-# $ fzf-regexp-common-options \
+# $ fzf-regexp-shared-options \
 # --source         # Mandatory, function that displays the list of suggestions
 # --prompt         # Mandatory, function that displays the prompt
-function fzf-regexp-common-options() {
+function fzf-regexp-shared-options() {
 	zmodload zsh/zutil
 	zparseopts -E -D \
 		-source:=flagSource \

@@ -3,7 +3,7 @@ function fzf-regexp-project-source() {
 	local query="$1"
 	local gitRoot="$(git-directory-root -f)/"
 
-	fzf-regexp-common-source \
+	fzf-regexp-shared-source \
 		--directory "${gitRoot}" \
 		--query "${query}"
 }

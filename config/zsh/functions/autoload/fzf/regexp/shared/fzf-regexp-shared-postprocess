@@ -5,8 +5,8 @@
 # number will be returned.
 #
 # Usage:
-# $ fzf-regexp-common-postprocess {multiLineSelection}
-function fzf-regexp-postprocess() {
+# $ fzf-regexp-shared-postprocess {multiLineSelection}
+function fzf-regexp-shared-postprocess() {
 
   local rawSelection="$1"
 

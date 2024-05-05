@@ -1,5 +1,5 @@
 # Toggle the single/multi result mode
-function fzf-regexp-common-fold-toggle() {
+function fzf-regexp-shared-fold-toggle() {
 	local key="regexp-fold-mode"
 
 	local currentMode="$(fzf-var-read regexp-fold-mode multi)"

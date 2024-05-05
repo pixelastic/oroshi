@@ -2,10 +2,10 @@
 # directory
 #
 # Usage:
-# $ fzf-regexp-common-source
+# $ fzf-regexp-shared-source
 # --query             # Mandatory, query to look for
 # --directory         # Mandatory, base directory to search
-function fzf-regexp-common-source() {
+function fzf-regexp-shared-source() {
 	set -e
 
 	zmodload zsh/zutil

@@ -4,7 +4,7 @@
 # 1. The GREP prefix
 # 2. An icon to define if the folding is single or multi
 # 3. The simplified path to the defined folder
-function fzf-regexp-common-prompt() {
+function fzf-regexp-shared-prompt() {
 	local directory=$1
 
 	# Regexp prefix

@@ -1,11 +1,6 @@
 # Output options required to search inside of text files, in the whole project
 function fzf-regexp-project-options() {
-	fzf-regexp-common-options \
+	fzf-regexp-shared-options \
 		--prompt fzf-regexp-project-prompt \
 		--source fzf-regexp-project-source
-
-	# # Options specific to project search
-	# local gitRoot="$(git-directory-root -f)/"
-	# local prompt="$(fzf-regexp-prompt $gitRoot)"
-	# echo "--prompt=${prompt}"
 }
