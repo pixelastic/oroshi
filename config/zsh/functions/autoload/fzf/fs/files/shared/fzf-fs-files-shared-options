@@ -22,9 +22,4 @@ function fzf-fs-files-shared-options() {
 		--prompt $fzfPromptPath \
 		--source $fzfSourcePath \
 		--color ${COLOR_ALIAS_FILE}
-
-	# Color the UI
-	echo "--color=query:${COLOR_ALIAS_FILE}:regular"
-	echo "--color=separator:${COLOR_ALIAS_FILE}"
-	echo "--color=info:${COLOR_ALIAS_FILE}"
 }

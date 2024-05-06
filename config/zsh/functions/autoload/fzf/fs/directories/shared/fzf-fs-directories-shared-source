@@ -1,20 +1,10 @@
 # Display all the directories of a given directory
 # Usage:
-# $ fzf-fs-directories-source /path/to/directory     # Find in specified dir
-# $ fzf-fs-directories-source                        # Find in last visited dir
+# $ fzf-fs-directories-shared-source /path/to/directory     # Find in specified dir
+# $ fzf-fs-directories-shared-source                        # Find in last visited dir
 function fzf-fs-directories-shared-source() {
-  # We find in specified directory, and if not specified in the last saved one
-  local target="$1"
-  if [[ $target == "" ]]; then
-    target="$(fzf-var-read pwd)"
-  fi
-
-  # Find all files & directories in that target
-  cd $target
-  local items="$(f . --color always --type directory)"
-
-  # Display it as two columns: full path and colored path
-  for item in ${(f)items}; do
-    echo "${target}/${item}   ${item}"
-  done
+	local searchPath=$1
+	fzf-fs-shared-source \
+		--directories \
+		$searchPath
 }
