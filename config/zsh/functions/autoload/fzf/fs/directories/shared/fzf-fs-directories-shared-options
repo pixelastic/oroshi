@@ -18,31 +18,8 @@ function fzf-fs-directories-shared-options() {
 	local fzfPromptPath=${flagPrompt[2]}
 	local fzfSourcePath=${flagSource[2]}
 
-	echo "--delimiter=   "
-	echo "--with-nth=2"
-	echo "--preview=fzf-fs-files-shared-preview {1}"
-
-	# Prompt
-	local prompt="$($fzfPromptPath)"
-	echo "--prompt=${prompt}"
-
-	# Keybindings
-	# => [Right] goes down into the folder
-	echo "--bind=right:execute-silent(fzf-fs-shared-cd {1})"
-	echo "--bind=right:+reload(${fzfSourcePath})"
-	echo "--bind=right:+transform-prompt(${fzfPromptPath})"
-	echo "--bind=right:+first"
-	# <= [Left] goes up into the parent
-	echo "--bind=left:execute-silent(fzf-fs-shared-cd-up)"
-	echo "--bind=left:+reload(${fzfSourcePath})"
-	echo "--bind=left:+transform-prompt(${fzfPromptPath})"
-	echo "--bind=left:+first"
-
-	# Color the UI in directory color
-	echo "--color=fg:$COLOR_ALIAS_DIRECTORY"
-	echo "--color=fg+:$COLOR_ALIAS_DIRECTORY"
-	echo "--color=query:${COLOR_ALIAS_DIRECTORY}:regular"
-	echo "--color=separator:${COLOR_ALIAS_DIRECTORY}"
-	echo "--color=info:${COLOR_ALIAS_DIRECTORY}"
-	echo "--color=prompt:${COLOR_ALIAS_TEXT}:regular"
+	fzf-fs-shared-options \
+		--prompt $fzfPromptPath \
+		--source $fzfSourcePath \
+		--color ${COLOR_ALIAS_DIRECTORY}
 }
