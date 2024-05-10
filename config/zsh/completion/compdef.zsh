@@ -96,6 +96,19 @@ compdef '_files -g "*.svg"' \
 	svg2jpg \
 	svg2png
 # }}}
+# Videos {{{
+compdef '_files -g "*.{avi,mkv,mp4,mpg}"' \
+	video-dimensions \
+	video-has-sound \
+	video-increase-volume \
+	video-index-fix \
+	video-info \
+	video-split \
+	video-stream-list \
+	video-stream-remove \
+	video-upload-youtube \
+	vlc
+# }}}
 # PDF {{{
 compdef '_files -g "*.pdf"' \
 	pdf-open \
