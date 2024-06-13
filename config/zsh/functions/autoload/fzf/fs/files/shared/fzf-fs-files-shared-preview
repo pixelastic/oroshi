@@ -15,18 +15,39 @@ function fzf-fs-files-shared-preview() {
   local fullPath="$1"
   fullPath=${~fullPath}
 
-  # Directory
+  # Cleanup previously displayed image
+  image-display --clear
+
+  # Directory {{{
   if [[ -d $fullPath ]]; then
     l "$fullPath"
     return 0
   fi
+  # }}}
 
   local filetypeGroup="$(filetype-group $fullPath)"
+  local extension=${fullPath:e}
 
-  # Handle image preview
-  image-display --clear
+  # Image display
   if [[ $filetypeGroup == "image" ]]; then
     image-display --fzf-preview $fullPath
+    return 0
+  fi
+
+  # PDF display
+  if [[ $extension == "pdf" ]]; then
+    local pdfCoverCache="/tmp/oroshi/fzf/pdf-covers"
+    local pdfCoverHash=$(file-hash $fullPath);
+    local pdfCoverPath="${pdfCoverCache}/${pdfCoverHash}.png"
+
+    # Create the cover if none exist
+    if [[ ! -f $pdfCoverPath ]]; then
+      mkdir -p $pdfCoverCache
+      convert "${fullPath}[0]" $pdfCoverPath
+      png-trim $pdfCoverPath
+    fi
+
+    image-display --no-metadata --fzf-preview $pdfCoverPath
     return 0
   fi
 

@@ -1,18 +1,15 @@
 #!/usr/bin/env zsh
-# Display an image in the terminal
+# Display the cover of a pdf in the terminal
 # Usage:
-# $ image-display --clear                     # Clear screen from images
-# $ image-display ./path/to/file.png          # Output file.png
-# $ image-display ./file.png --fzf-preview    # Pass additional flags to display
-#                                               in fzf preview
-# $ image-display ./file.png --no-metadata    # Hide metadata
+# $ pdf-cover-display --clear                     # Clear screen from images
+# $ pdf-cover-display ./path/to/file.pdf          # Output cover of file.pdf
+# $ pdf-cover-display ./file.png --fzf-preview    # Pass additional flags to display
+#                                                   in fzf preview
 zparseopts -E -D \
 	-fzf-preview=flagFzfPreview \
-	-clear=flagClear \
-	-no-metadata=flagNoMetadata
+	-clear=flagClear
 local isFzfPreview=${#flagFzfPreview}
 local isClear=${#flagClear}
-local isNoMetadata=${#flagNoMetadata}
 
 # Check if running inside of Kitty
 local isKitty=0
@@ -39,15 +36,13 @@ if [[ $filetypeGroup != "image" ]]; then
 fi
 
 # Metadata
-if [[ $isNoMetadata == "0" ]]; then
-	local baseName=${filepath:t}
-	local filesize="$(filesize-human $filepath)"
-	local dimensions="$(dimensions $filepath)"
+local baseName=${filepath:t}
+local filesize="$(filesize-human $filepath)"
+local dimensions="$(dimensions $filepath)"
 
-	colorize "$baseName" $FILETYPE_GROUP_IMAGE_COLOR
-	echo "Filesize: $filesize"
-	echo "Dimensions: $dimensions"
-fi
+colorize "$baseName" $FILETYPE_GROUP_IMAGE_COLOR
+echo "Filesize: $filesize"
+echo "Dimensions: $dimensions"
 
 # Stop if displaying the image is not possible
 if [[ $isKitty == 0 ]]; then

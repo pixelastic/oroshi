@@ -1,0 +1,6 @@
+# Return a unique hash of a given filename, based on its content
+function file-hash() {
+	local input=$1
+	local crc32Result=($(crc32 $input))
+	echo $crc32Result[1]
+}

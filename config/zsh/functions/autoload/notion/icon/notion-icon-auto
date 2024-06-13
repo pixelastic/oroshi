@@ -33,8 +33,7 @@ function notion-icon-auto() {
 	resize $previewFilepath 250
 
 	# Rename it to include a hash of its content
-	local crc32Result=($(crc32 $previewFilepath))
-	local imageHash=$crc32Result[1]
+	local imageHash=$(file-hash $previewFilepath)
 	local hashedPreviewFilepath="${previewFilepath:r}-${imageHash}.png"
 	mv $previewFilepath $hashedPreviewFilepath
 
