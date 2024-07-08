@@ -3,7 +3,7 @@
 # $ png-trim ./path/to/file.png                   # Trims the file in place
 # $ png-trim ./path/to/file.png ./other-file.png  # Trims several files
 function png-trim() {
-	local input=$@
+	local input=($@)
 
 	for inputPath in ${input}; do
 		local outputPath="${inputPath:a:r}.png"
