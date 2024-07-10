@@ -13,7 +13,7 @@ for arg in $@; do
 
 	# Image file
 	if [[ $filetypeGroup == "image" ]]; then
-		image-display $filepath
+		img-display $filepath
 		continue
 	fi
 

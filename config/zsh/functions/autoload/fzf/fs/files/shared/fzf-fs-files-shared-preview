@@ -16,7 +16,7 @@ function fzf-fs-files-shared-preview() {
   fullPath=${~fullPath}
 
   # Cleanup previously displayed image
-  image-display --clear
+  img-display --clear
 
   # Directory {{{
   if [[ -d $fullPath ]]; then
@@ -30,7 +30,7 @@ function fzf-fs-files-shared-preview() {
 
   # Image display
   if [[ $filetypeGroup == "image" ]]; then
-    image-display --fzf-preview $fullPath
+    img-display --fzf-preview $fullPath
     return 0
   fi
 
@@ -47,7 +47,7 @@ function fzf-fs-files-shared-preview() {
       png-trim $pdfCoverPath
     fi
 
-    image-display --no-metadata --fzf-preview $pdfCoverPath
+    img-display --no-metadata --fzf-preview $pdfCoverPath
     return 0
   fi
 

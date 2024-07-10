@@ -1,0 +1,72 @@
+# Display an image in the terminal
+# Usage:
+# $ img-display --clear                     # Clear screen from images
+# $ img-display ./path/to/file.png          # Output file.png
+# $ img-display ./file.png --fzf-preview    # Pass additional flags to display
+#                                               in fzf preview
+# $ img-display ./file.png --no-metadata    # Hide metadata
+function img-display() {
+	zparseopts -E -D \
+		-fzf-preview=flagFzfPreview \
+		-clear=flagClear \
+		-no-metadata=flagNoMetadata
+	local isFzfPreview=${#flagFzfPreview}
+	local isClear=${#flagClear}
+	local isNoMetadata=${#flagNoMetadata}
+
+	# Check if running inside of Kitty
+	local isKitty=0
+	[[ $TERM == "xterm-kitty" ]] && isKitty=1
+
+	# --clear: Clear screen and stop
+	if [[ $isClear == 1 ]]; then
+		# Do nothing if not running in kitty
+		if [[ $isKitty == 1 ]]; then
+			kitty icat \
+				--transfer-mode=memory \
+				--stdin=no \
+				--clear
+		fi
+		return 0
+	fi
+
+	# Stop if not an image
+	local filepath=${1:a}
+	local filetypeGroup="$(filetype-group $filepath)"
+	if [[ $filetypeGroup != "image" ]]; then
+		echo "✘ ${filepath} is not an image"
+		return 1
+	fi
+
+	# Metadata
+	if [[ $isNoMetadata == "0" ]]; then
+		local baseName=${filepath:t}
+		local filesize="$(filesize-human $filepath)"
+		local dimensions="$(dimensions $filepath)"
+
+		colorize "$baseName" $FILETYPE_GROUP_IMAGE_COLOR
+		echo "Filesize: $filesize"
+		echo "Dimensions: $dimensions"
+	fi
+
+	# Stop if displaying the image is not possible
+	if [[ $isKitty == 0 ]]; then
+		echo ""
+		echo "✘ Preview not available as $TERM ≠ xterm-kitty"
+		return 0
+	fi
+
+	# Add additional flags in fzf preview:
+	# --stdin=no because some stdin is passed and we need to ignore it
+	# --place= because we need to display the image at some specific coordinates
+	local additionalFlags=()
+	if [[ $isFzfPreview == "1" ]]; then
+		additionalFlags+=("--stdin=no")
+		additionalFlags+=("--place=${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES}@0x0")
+	fi
+
+	kitty icat \
+		--transfer-mode=memory \
+		${additionalFlags} \
+		$filepath
+}
