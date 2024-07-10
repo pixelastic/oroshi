@@ -10,7 +10,7 @@ function ebook-cover-remove() {
 	# I couldn't find a way to actually "remove" the cover
 	local coverPath=/tmp/oroshi/ebook/cover.jpg
 	mkdir -p ${coverPath:a:h}
-	image-jpg-create $coverPath
+	img-jpg-create $coverPath
 
 	ebook-meta \
 		$input \

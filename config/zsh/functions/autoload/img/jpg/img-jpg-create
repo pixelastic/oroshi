@@ -1,7 +1,7 @@
 # Create a new JPG file, as small as possible
 # Usage:
-# $ image-jpg-create ./path/to/file.jpg
-function image-jpg-create() {
+# $ img-jpg-create ./path/to/file.jpg
+function img-jpg-create() {
 	local input="$1"
 
 	if [[ $input == "" ]]; then

@@ -1,7 +1,7 @@
 # Create a new PNG file, as small as possible
 # Usage:
-# $ image-png-create ./path/to/file.png
-function image-png-create() {
+# $ img-png-create ./path/to/file.png
+function img-png-create() {
 	local input="$1"
 
 	if [[ $input == "" ]]; then

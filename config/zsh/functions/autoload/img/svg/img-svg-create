@@ -1,7 +1,7 @@
 # Create a new SVG file, as small as possible
 # Usage:
-# $ image-svg-create ./path/to/file.svg
-function image-svg-create() {
+# $ img-svg-create ./path/to/file.svg
+function img-svg-create() {
 	local input="$1"
 
 	if [[ $input == "" ]]; then

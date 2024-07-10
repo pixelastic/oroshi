@@ -1,7 +1,7 @@
 # Create a new GIF file, as small as possible
 # Usage:
-# $ image-gif-create ./path/to/file.gif
-function image-gif-create() {
+# $ img-gif-create ./path/to/file.gif
+function img-gif-create() {
 	local input="$1"
 
 	if [[ $input == "" ]]; then
