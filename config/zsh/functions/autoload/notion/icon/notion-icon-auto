@@ -30,7 +30,7 @@ function notion-icon-auto() {
 	wget --quiet "$previewUrl" -O "$previewFilepath"
 
 	# Resize it so it takes less space
-	resize $previewFilepath 250
+	img-resize $previewFilepath 250
 
 	# Rename it to include a hash of its content
 	local imageHash=$(file-hash $previewFilepath)

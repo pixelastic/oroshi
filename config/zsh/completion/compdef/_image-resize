@@ -2,7 +2,7 @@
 
 # Suggest image files and resize options
 function _image-resize() {
-  local suggestions=(${(f)"$(resize --completion)"})
+  local suggestions=(${(f)"$(img-resize --completion)"})
 
   _files -g "*.{bmp,gif,jpg,jpeg,png,svg,tiff,webp}"
 

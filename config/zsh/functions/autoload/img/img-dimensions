@@ -1,0 +1,42 @@
+# Outputs dimensions of images
+# Usage:
+# $ img-dimensions image.jpg             # 1024x1024
+# $ img-dimensions image.jpg picture.png # Returns a table of the dimensions
+function img-dimensions() {
+	local args=($@)
+	local argCount=${#args}
+	local input=$args[1]
+
+	function getDimensions() {
+		local extension="${1:e}"
+		if [[ $extension =~ "mp4|mkv|webm" ]]; then
+			getVideoDimensions $1
+			return
+		fi
+		getImageDimensions $1
+	}
+	function getImageDimensions() {
+		identify -format "%wx%h\n" $1
+	}
+	function getVideoDimensions() {
+		video-dimensions $1
+	}
+
+	# One image
+	if [[ $argCount == 1 ]]; then
+		getDimensions $args[1]
+		return 0
+	fi
+
+	# Multiple images
+	local output=""
+	for arg in $args; do
+		local dimensions="$(getDimensions $arg)"
+		output+="${arg:t}▮${dimensions}\n"
+	done
+
+	echo $output | column \
+		--separator "▮" \
+		--table \
+		--table-noheadings
+}

@@ -1,0 +1,87 @@
+# Resize images to a specific size
+# Usage:
+# $ img-resize image.jpg 200                    # Resize the largest size to 200
+# $ img-resize *.jpg 200                        # Resize several images
+# $ img-resize image.jpg 200x250                # Resize to 200x250, but keep ratio
+# $ img-resize image.jpg 200x                   # Resize width to 200
+# $ img-resize image.jpg x250                   # Resize height to 250
+# $ img-resize image.jpg 50%                    # Shrink to 50% of the size
+# $ img-resize image.jpg 3000x5000 --upscale    # Force a resize to bigger image
+# $ img-resize image.jpg 200x250 --no-ratio     # Do not respect aspect ratio
+function img-resize() {
+  zparseopts -E -D \
+    -completion=flagCompletion \
+    -no-ratio=flagNoRatio \
+    -upscale=flagUpscale
+
+  local isCompletion=${#flagCompletion}
+  local isNoRatio=${#flagNoRatio}
+  local isUpscale=${#flagUpscale}
+
+  # Display completion help
+  if [[ $isCompletion == "1" ]]; then
+    echo "--upscale:Allow creating a bigger image"
+    echo "--no-ratio:Do not maintain original aspect ratio"
+    return 0
+  fi
+
+  # Usage
+  if [[ $1 == "" ]]; then
+    echo "Usage:"
+    echo "resize ./*.jpg 250x300"
+    echo ""
+    echo "Use --upscale to allow upscaling (default does not allow to create bigger images)"
+    echo "Use --no-ratio to force explicit dimensions (default is to keep the aspect ratio)"
+    echo "Use 250x to only resize width and x300 to only resize height"
+    echo "Use 50% to reduce in half"
+  fi
+
+  # Inputs are all arguments, except the last one
+  local inputs=(${@[1,-2]})
+  local newDimensions=${@[-1]}
+
+  for input in $inputs; do
+    # Get current image dimensions
+    local currentDimensions="$(identify -format "%wx%h\n" $input)"
+    local currentDimensionsSplit=(${(@s/x/)currentDimensions})
+    local currentWidth=$currentDimensionsSplit[1]
+    local currentHeight=$currentDimensionsSplit[2]
+
+    # Find the width and height from the dimension passed
+    [[ $newDimensions == x* ]] && newDimensions="{DummyWidth}${newDimensions}"
+    local newDimensionsSplit=(${(@s/x/)newDimensions})
+    local newWidth=$newDimensionsSplit[1]
+    local newHeight=$newDimensionsSplit[2]
+    [[ $newWidth == "{DummyWidth}" ]] && newWidth=""
+
+    # If only one value is passed, both sides should use that value
+    if [[ $newDimensions != *x* ]]; then
+      newWidth=$newDimensions
+      newHeight=$newDimensions
+    fi
+
+    # Check if resize is absolute or relative
+    local isRelativeResize=0
+    [[ $newDimensions == *%* ]] && isRelativeResize=1
+
+    # By default, we prevent resizing to a bigger dimension (unless it's
+    # a relative resize)
+    if [[ $isUpscale == "0" && $isRelativeResize == "0" ]]; then
+      [[ $newWidth -gt $currentWidth ]] && newWidth=$currentWidth
+      [[ $newHeight -gt $currentHeight ]] && newHeight=$currentHeight
+    fi
+
+    local finalDimensions="${newWidth}x${newHeight}"
+
+    # By default, aspect ratio is maintained, unless --no-ratio is passed
+    if [[ $isNoRatio == "1" ]]; then
+      finalDimensions="${finalDimensions}!"
+    fi
+
+    mogrify \
+      -resize "${finalDimensions}" \
+      ${input:a}
+    echo "✔ ${input} resized"
+  done
+}
+

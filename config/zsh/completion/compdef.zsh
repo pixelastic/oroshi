@@ -75,14 +75,15 @@ compdef _docker-containers-ids \
 # }}}
 # Images {{{
 compdef '_files -g "*.{bmp,gif,jpg,jpeg,png,svg,tiff,webp}"' \
-	dimensions \
+	img-dimensions \
+	img-display \
 	img-open
-compdef _image-resize resize
 compdef '_files -g "*.png"' \
 	png2gif \
 	png2jpg \
-	png-trim \
-	png2svg
+	png2svg \
+	pngmin \
+	png-trim
 compdef '_files -g "*.{jpg,jpeg}"' \
 	jpg2gif \
 	jpg2png \
@@ -95,6 +96,7 @@ compdef '_files -g "*.svg"' \
 	svg2gif \
 	svg2jpg \
 	svg2png
+compdef _image-resize img-resize
 # }}}
 # Videos {{{
 compdef '_files -g "*.{avi,mkv,mp4,mpg}"' \
