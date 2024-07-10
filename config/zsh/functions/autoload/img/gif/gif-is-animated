@@ -1,0 +1,13 @@
+# Check if a gif is animated
+# Usage:
+# $ gif-is-animated static.gif      # 0
+# $ gif-is-animated animated.gif    # 1
+function gif-is-animated() {
+	local input=$1
+
+	local rawOutput=($(identify -format "%n\n" $input))
+	local numberOfFrames=$rawOutput[1]
+
+	[[ $numberOfFrames == "1" ]] && return 1
+	return 0
+}

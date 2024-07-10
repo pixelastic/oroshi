@@ -75,9 +75,19 @@ compdef _docker-containers-ids \
 # }}}
 # Images {{{
 compdef '_files -g "*.{bmp,gif,jpg,jpeg,png,svg,tiff,webp}"' \
+	img2json \
+	img-color-count \
+	img-convert \
+	img-darken \
 	img-dimensions \
 	img-display \
-	img-open
+	img-is-grayscale \
+	img-is-landscape \
+	img-is-portrait \
+	img-lighten \
+	img-luminosity \
+	img-open \
+	img-resize
 compdef '_files -g "*.png"' \
 	png2gif \
 	png2jpg \
@@ -91,7 +101,9 @@ compdef '_files -g "*.{jpg,jpeg}"' \
 compdef '_files -g "*.gif"' \
 	gif2jpg \
 	gif2png \
-	gif2svg
+	gif2svg \
+	gif-is-animated \
+	gif-is-looping
 compdef '_files -g "*.svg"' \
 	svg2gif \
 	svg2jpg \
@@ -110,6 +122,10 @@ compdef '_files -g "*.{avi,mkv,mp4,mpg}"' \
 	video-stream-remove \
 	video-upload-youtube \
 	vlc
+# }}}
+# Images + Videos {{{
+compdef '_files -g "*.{bmp,gif,jpg,jpeg,png,svg,tiff,webp,avi,mkv,mp4,mpg,webm}"' \
+	dimensions
 # }}}
 # PDF {{{
 compdef '_files -g "*.pdf"' \

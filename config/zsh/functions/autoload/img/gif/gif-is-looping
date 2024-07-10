@@ -1,0 +1,14 @@
+# Check if an animated gif is looping
+# Usage:
+# $ gif-is-looping once.gif      # 0
+# $ gif-is-looping loop.gif    # 1
+function gif-is-looping() {
+	local input=$1
+
+	local rawOutput="$(exiftool $input | \grep 'Animation Iterations')"
+	local split=(${(@s/:/)rawOutput})
+	
+	[[ $split[2] == " Infinite" ]] && return 0
+	return 1
+
+}

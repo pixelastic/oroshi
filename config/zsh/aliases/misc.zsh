@@ -3,6 +3,7 @@
 alias diff='git diff --no-index --word-diff=color --word-diff-regex=.'
 alias ping="prettyping --nolegend"
 alias serve='live-server'
+alias dim="dimensions"
 disable -r time # ZSH overrides the time method
 alias time='time -p '
 alias w='which'

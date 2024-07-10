@@ -42,7 +42,7 @@ function img-display() {
 	if [[ $isNoMetadata == "0" ]]; then
 		local baseName=${filepath:t}
 		local filesize="$(filesize-human $filepath)"
-		local dimensions="$(dimensions $filepath)"
+		local dimensions="$(img-dimensions $filepath)"
 
 		colorize "$baseName" $FILETYPE_GROUP_IMAGE_COLOR
 		echo "Filesize: $filesize"

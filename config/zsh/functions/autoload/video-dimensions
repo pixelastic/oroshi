@@ -1,4 +1,6 @@
-# Outputs video dimensions
+# Outputs dimensions of one video
+# Note: To output dimensions of several videos (and images), check the
+# dimensions function
 # Usage:
 # $ video-dimensions ./path/video.mkv    # 1888x1080
 function video-dimensions() {
