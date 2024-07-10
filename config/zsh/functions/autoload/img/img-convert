@@ -1,9 +1,9 @@
 # Convert images to a specific extension
 # Usage:
-# $ image-convert ./*.jpg ./*.svg png    # Convert all jpg and svg files to png
-# $ image-convert -f ./*.svg png         # Overwrites existing destinations
+# $ img-convert ./*.jpg ./*.svg png    # Convert all jpg and svg files to png
+# $ img-convert -f ./*.svg png         # Overwrites existing destinations
 
-function image-convert() {
+function img-convert() {
   zparseopts -E -D \
     f=flagForce \
     -force=flagForce

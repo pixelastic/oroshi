@@ -2,5 +2,5 @@
 # Usage:
 # $ svg2png ./*.svg
 function svg2png() {
-	image-convert $1 png
+	img-convert $1 png
 }

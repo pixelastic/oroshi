@@ -2,5 +2,5 @@
 # Usage:
 # $ jpg2png ./*.jpg
 function jpg2png() {
-	image-convert $1 png
+	img-convert $1 png
 }

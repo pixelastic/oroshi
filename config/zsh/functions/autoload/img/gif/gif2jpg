@@ -2,5 +2,5 @@
 # Usage:
 # $ gif2jpg ./*.gif
 function gif2jpg() {
-	image-convert $1 jpg
+	img-convert $1 jpg
 }
