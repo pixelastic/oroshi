@@ -149,7 +149,6 @@ function img-min() {
 
 		# We work on a copy of the original file
 		local alphaFile="${tmpDir}/${uuid}.${extension}"
-		echo "Copy $originalFile to $alphaFile"
 		cp $originalFile $alphaFile
 
 		# Global variables we'll be playing with until we find the optimal quality
