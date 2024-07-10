@@ -76,7 +76,7 @@ compdef _docker-containers-ids \
 # Images {{{
 compdef '_files -g "*.{bmp,gif,jpg,jpeg,png,svg,tiff,webp}"' \
 	dimensions \
-	image-open
+	img-open
 compdef _image-resize resize
 compdef '_files -g "*.png"' \
 	png2gif \
