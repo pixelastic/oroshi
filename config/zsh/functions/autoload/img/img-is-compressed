@@ -1,0 +1,13 @@
+# Check if an image has already been compressed by img-min
+# Usage:
+# $ img-is-compressed raw.jpg   # Returns 1
+# $ img-is-compressed compressed.jpg   # Returns 0
+function img-is-compressed() {
+	local filepath=$1
+	local exifComment="$(exiftool -Comment $filepath | awk '{print $3}')"
+	if [[ $exifComment == "oroshi_compressed" ]]; then
+		return 0
+	else
+		return 1
+	fi
+}

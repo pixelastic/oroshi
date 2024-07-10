@@ -1,9 +1,9 @@
-# Compress PNG images to the best compression ratio possible without altering
-# perceived quality too much
+# Compress images using lossy algorithm, but without reducing perceived
+# perception too much
 # Usage:
-# $ pngmin ./path/to/file.png               # Overwrites file
-# $ pngmin ./path/to/file.png ./other.png   # Overwrites files
-function pngmin() {
+# $ img-min ./path/to/file.png               # Overwrites file
+# $ img-min ./path/to/file.png ./other.jpg   # Overwrites files
+function img-min() {
 	local inputs=($@)
 
 	# Configuration
@@ -11,22 +11,65 @@ function pngmin() {
 	local initialQuality=60
 
 	# Setup
-	local tmpDir=/tmp/oroshi/pngmin
+	local tmpDir=/tmp/oroshi/img-min
 	mkdir -p $tmpDir
+
+	# compressPNG {{{
+	# Compress a PNG file to the given quality, and returns the path to the
+	# converted file
+	function compressPNG() {
+		local filepath=$1
+		local quality=$2
+
+		pngquant \
+			$filepath \
+			--quality=0-${quality} \
+			--ext="-${quality}.png" \
+			--floyd=1 \
+			--strip
+
+		echo "${filepath:r}-${quality}.png"
+	}
+	# }}}
+
+	# compressJPG {{{
+	# Compress a JPG file to the given quality, and returns the path to the
+	# converted file
+	function compressJPG() {
+		local filepath=$1
+		local quality=$2
+		local outputFile="${filepath:r}-${quality}.jpg"
+
+		jpegoptim \
+			--quiet \
+			--preserve \
+			--force \
+			--strip-all \
+			--all-progressive \
+			--max=${quality} \
+			--stdout \
+			$filepath \
+			>$outputFile
+
+		echo $outputFile
+	}
+	# }}}
 
 	# Test all qualities until finding the one with a small dssim difference
 	function findOptimalQuality() {
 		local filepath=$1
 		local currentQuality=$2
+		local extension=${filepath:e:l}
 
-		# Compress the file to the specified quality
-		pngquant \
-			$filepath \
-			--quality=0-${currentQuality} \
-			--ext="-${currentQuality}.png" \
-			--floyd=1 \
-			--strip
-		local currentFile="${filepath:r}-${currentQuality}.png"
+		# Compress the file to the specified quality and get the path to the
+		# converted path
+		local currentFile=""
+		[[ $extension == "png" ]] && currentFile="$(compressPNG $filepath $currentQuality)"
+		[[ $extension == "jpg" ]] && currentFile="$(compressJPG $filepath $currentQuality)"
+		if [[ $currentFile == "" ]]; then
+			echo "✘ ${extension} files not supported, skipping"
+			return
+		fi
 
 		# Get the difference with original
 		local currentDifference="$(dssim $filepath $currentFile | awk '{print $1}')"
@@ -78,18 +121,6 @@ function pngmin() {
 		rm -f $leftoverFiles
 	}
 
-	# Check if a file has already been compressed (because of a comment added to its
-	# metadata)
-	function isAlreadyCompressed() {
-		local filepath=$1
-		local exifComment="$(exiftool -Comment $filepath | awk '{print $3}')"
-		if [[ $exifComment == "oroshi_compressed" ]]; then
-			return 0
-		else
-			return 1
-		fi
-	}
-
 	# Mark a file as already compressed by adding a metadata comment
 	function markAsAlreadyCompressed() {
 		local filepath=$1
@@ -103,10 +134,11 @@ function pngmin() {
 	# For each file passed as input
 	for input in $inputs; do
 		local originalFile=${input:a}
+		local extension=${originalFile:e:l}
 		echo "Compressing ${originalFile:t}"
 
 		# Stop if file has already been compressed
-		if isAlreadyCompressed $originalFile; then
+		if img-is-compressed $originalFile; then
 			echo "Already compressed"
 			continue
 		fi
@@ -116,7 +148,8 @@ function pngmin() {
 		cleanupFiles $uuid
 
 		# We work on a copy of the original file
-		local alphaFile="${tmpDir}/${uuid}.png"
+		local alphaFile="${tmpDir}/${uuid}.${extension}"
+		echo "Copy $originalFile to $alphaFile"
 		cp $originalFile $alphaFile
 
 		# Global variables we'll be playing with until we find the optimal quality
@@ -138,4 +171,5 @@ function pngmin() {
 		# Remove our previously created files
 		cleanupFiles $uuid
 	done
+
 }
