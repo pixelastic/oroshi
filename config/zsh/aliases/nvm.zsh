@@ -1,7 +1,7 @@
 # nvm
-alias nvs='nvm use'
-alias nvu='nvm use'
+alias nvs='node-version-switch'
+alias nvi='nvm install'
 alias nvud='nvm use default'
-alias nvl='nvm list'
+alias nvl='node-version-list'
 alias nvd='nvm version default'
 alias nvc='nvm current'

@@ -1,0 +1,10 @@
+#compdef
+
+# Suggest all installed node versions
+function _node-versions-installed() {
+  lazyloadNvm
+
+  local suggestions=(${(f)"$(complete-node-versions-installed)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_LANGUAGE_NODE $COLOR_WHITE '  node versions ')" suggestions
+}

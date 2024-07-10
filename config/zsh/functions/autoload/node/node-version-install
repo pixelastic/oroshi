@@ -1,0 +1,3 @@
+# Install a given node version, through nvm
+function node-version-install() {
+}

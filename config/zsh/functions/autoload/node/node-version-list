@@ -1,0 +1,38 @@
+# Display the list of all node versions currently installed
+# Usage:
+# $ node-version-list         # All installed node versions
+function node-version-list() {
+  local rawList="$(node-version-list-raw)"
+  [[ $rawList == "" ]] && return 0
+
+  local output=""
+  for rawLine in ${(f)rawList}; do
+    local split=(${(s/▮/)rawLine})
+    local versionName=$split[1]
+    local isCurrentVersion=$split[2]
+    local isDefaultVersion=$split[3]
+    local stringTag=$split[4]
+
+    # Color
+    # Gray for all installed versions
+    # Overwrite with blue if defined as default
+    # Overwrite with green if currently used version
+    local versionColor=$COLOR_ALIAS_NODE_VERSION_INSTALLED
+    [[ $isDefaultVersion == "1" ]] && versionColor=$COLOR_ALIAS_NODE_VERSION_DEFAULT
+    [[ $isCurrentVersion == "1" ]] && versionColor=$COLOR_ALIAS_NODE_VERSION_CURRENT
+
+    local row=""
+    [[ $isCurrentVersion == "1" ]] && row+="$(colorize  $versionColor)▮"
+    [[ $isCurrentVersion == "0" ]] && row+="▮"
+
+    # Name
+    row+="$(colorize ${versionName} $versionColor)▮"
+
+    # String tag combination of isCurrent / isDefault
+    row+="$(colorize "${stringTag}" $versionColor)▮"
+
+    output+="$row\n"
+  done
+
+  table $output
+}

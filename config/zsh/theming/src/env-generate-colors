@@ -131,6 +131,7 @@ aliasColors[INFO]="BLUE"
 # }}}
 # Languages {{{
 aliasColors[LANGUAGE_JAVASCRIPT]="YELLOW"
+aliasColors[LANGUAGE_NODE]="GREEN"
 aliasColors[LANGUAGE_PYTHON]="GREEN"
 aliasColors[LANGUAGE_RUBY]="ORANGE"
 # }}}
@@ -198,6 +199,12 @@ aliasColors[GIT_UNTRACKED]="RED"
 # Hosts {{{
 aliasColors[HOST_PIXELASTIC]="GREEN"
 aliasColors[HOST_GITHUB]="BLUE"
+# }}}
+# Node {{{
+aliasColors[NODE_VERSION_INSTALLED]="GRAY_4"
+aliasColors[NODE_VERSION_UNINSTALLED]="YELLOW"
+aliasColors[NODE_VERSION_CURRENT]="GREEN"
+aliasColors[NODE_VERSION_DEFAULT]="BLUE"
 # }}}
 # Vim {{{
 aliasColors[VIM_VISUAL_CURSOR]="BLUE"

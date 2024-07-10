@@ -1,0 +1,11 @@
+# Display list of all installed node versions
+function complete-node-versions-installed() {
+  local rawList="$(node-version-list-raw)"
+
+  for rawLine in ${(f)rawList}; do
+    local split=(${(@s/▮/)rawLine})
+    local versionName=$split[1]
+    local stringTag=$split[4]
+    echo "${versionName}:${stringTag}"
+  done
+}

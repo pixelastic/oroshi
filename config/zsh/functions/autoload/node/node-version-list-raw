@@ -1,0 +1,35 @@
+# Display a raw list of all installed node version
+# Usage:
+# $ node-version-list-raw       # All installed node versions
+function node-version-list-raw() {
+  # Gives an output like:
+  #          v9.2.0 *
+  # ->     v14.17.0 *
+  local rawList="$(nvm ls --no-colors --no-alias)"
+  local defaultVersion="$(<~/.nvm/alias/default)"
+
+  for rawLine in ${(f)rawList}; do
+    local split=(${(@s/ /)rawLine})
+    local versionName=$split[1]
+
+    # Assume it's not the current version for initial parsing
+    # If current version, update the parsing
+    local isCurrentVersion=0
+    if [[ $split[1] == "->" ]]; then
+      isCurrentVersion=1
+      versionName=$split[2]
+    fi
+
+    # Check if it's the default version
+    local isDefaultVersion=0
+    [[ $versionName == "$defaultVersion" ]] && isDefaultVersion=1
+
+    # String version of the isDefault/isCurrent combination
+    local stringTag=""
+    [[ $isDefaultVersion == "1" && $isCurrentVersion == "0" ]] && stringTag="default"
+    [[ $isDefaultVersion == "0" && $isCurrentVersion == "1" ]] && stringTag="current"
+    [[ $isDefaultVersion == "1" && $isCurrentVersion == "1" ]] && stringTag="current + default"
+
+    echo "${versionName}▮${isCurrentVersion}▮${isDefaultVersion}▮${stringTag}"
+  done
+}

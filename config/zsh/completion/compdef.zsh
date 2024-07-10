@@ -125,6 +125,7 @@ compdef '_files -g "*.epub"' \
 # }}}
 # NVM {{{
 compdef _nvm-lazyload lazyloadNvm
+compdef _node-versions-installed node-version-switch
 # }}}
 # Yarn {{{
 compdef _yarn-runnables \

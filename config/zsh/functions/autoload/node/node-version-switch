@@ -1,0 +1,4 @@
+# Switch to a given node version
+function node-version-switch() {
+	nvm use $1
+}
