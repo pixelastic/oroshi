@@ -1,4 +1,5 @@
 # NVM
+export OROSHI_NVM_LOADED="0"
 # Stop if nvm isn't installed
 [[ -r ~/.nvm/nvm.sh ]] || return
 
@@ -16,8 +17,6 @@
 # We'll manually craft something similar to the zsh autoload functions. We
 # define dummy node, npm, yarn and nvm function that don't do much. They load
 # nvm for real, destroy themselves, and run the real command
-
-export OROSHI_NVM_LOADED="0"
 
 # Add aliases for all command that would need node, so nvm loads it on first
 # invocation
