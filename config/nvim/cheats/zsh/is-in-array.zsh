@@ -1,8 +1,13 @@
 # To check if an element is in an array, we need to get its index with (ie) and
 # make sure the result is not more than the size of the array
 #
-if [[ ! ${myArray[(ie)${myVar}]} -le ${#myArray} ]]; then
+if [[ ${myArray[(ie)${myVar}]} -le ${#myArray} ]]; then
   # It's in the array
+  true
+fi
+
+if [[ ${myArray[(ie)${myVar}]} -gt ${#myArray} ]]; then
+  # It's not in the array
   true
 fi
 

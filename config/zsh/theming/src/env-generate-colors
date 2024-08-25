@@ -216,6 +216,9 @@ aliasColors[VIM_NORMAL_CURSOR]="RED"
 aliasColors[VIM_INSERT_CURSOR]="YELLOW"
 aliasColors[VIM_COMMAND_CURSOR]="TEAL"
 # }}}
+# Video {{{
+aliasColors[VIDEO_STREAM_AUDIO]="BLUE"
+# }}}
 # Yarn {{{
 aliasColors[YARN_PACKAGE]="YELLOW"             # package name
 aliasColors[YARN_PACKAGE_GLOBAL]="BLUE"        # globally installed package names

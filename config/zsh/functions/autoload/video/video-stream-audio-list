@@ -1,0 +1,23 @@
+# List all audio streams
+# Usage:
+# $ video-stream-audio-list ./path/video.mp4
+function video-stream-audio-list() {
+	local rawOutput=$(video-stream-audio-list-raw $1)
+
+	local output="Index▮Codec▮Language\n"
+	for rawLine in ${(f)rawOutput}; do
+		# Splitting the line into its various parts
+		local splitLine=(${(@s/▮/)rawLine})
+		local index=$splitLine[1]
+		local codec=$splitLine[2]
+		local language=$splitLine[3]
+
+		# Building the output row
+		local row="${index}▮${codec}▮${language}"
+
+		output+="$row\n"
+	done
+
+	# Output as columns
+	table $output
+}

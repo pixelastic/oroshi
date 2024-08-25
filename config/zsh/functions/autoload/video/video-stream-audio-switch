@@ -1,0 +1,36 @@
+# Change which audio stream is the default one
+# Usage:
+# Set the third stream as default (they are zero-indexed)
+# $ video-stream-audio-switch ./path/video.mp4 4
+# Set the first stream as default
+# $ video-stream-audio-switch ./path/video.mp4
+function video-stream-audio-switch() {
+	local fileInput=$1
+	local defaultStream=$2
+	[[ $defaultStream == "" ]] && defaultStream="0"
+
+	local fileOutputTmp=${fileInput:a:r}.tmp.${fileInput:e}
+	local ffmpegArguments=()
+
+	# Rebuild the full list of other streams
+	local allAudioChannelsRaw=$(video-stream-audio-list-raw $1)
+	for rawLine in ${(f)allAudioChannelsRaw}; do
+		local splitLine=(${(@s/▮/)rawLine})
+		local index=$splitLine[1]
+		# Skip the default stream
+		[[ $index == "$defaultStream" ]] && continue
+		ffmpegArguments+=(-map 0:a:${index})
+	done
+
+	ffmpeg \
+		-i $fileInput \
+		-loglevel quiet \
+		-y \
+		-codec copy \
+		-map 0:v \
+		-map 0:a:${defaultStream} \
+		$ffmpegArguments \
+		$fileOutputTmp
+
+	mv $fileOutputTmp $fileInput
+}

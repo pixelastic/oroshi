@@ -1,0 +1,21 @@
+#compdef
+
+# Suggest all audio streams
+# This is a complex one as the second and more arguments depends on the value of
+# the first argument
+function _video-streams-audio() {
+	# First argument, always ask for the video file
+	if [[ $CURRENT -eq 2 ]]; then
+		_files -g "*.{avi,mkv,mp4,mpg}"
+	fi
+
+	# Any other argument, suggest the list of audio streams from the file
+	# selected above
+	if [[ ! $CURRENT -eq 2 ]]; then
+		local selectedVideo=$words[2]
+		local suggestions=(${(f)"$(complete-video-streams-audio ${selectedVideo})"})
+
+		_describe -V "$(completion-header $COLOR_ALIAS_VIDEO_STREAM_AUDIO $COLOR_BLACK '  Audio Streams ')" suggestions
+	fi
+
+}

@@ -1,0 +1,39 @@
+# Remove an audio stream
+# Usage:
+# $ video-stream-audio-remove ./path/video.mp4 4 5 # Remove stream 4 and 5
+function video-stream-audio-remove() {
+	local fileInput=$1
+	local streamsToRemove=(${@[@]:2})
+
+	if [[ $streamsToRemove == "" ]]; then
+		echo "Usage:"
+		echo "video-stream-audio-remove {pathToFile} {streamIndex} {streamIndex} ..."
+		exit 0
+	fi
+
+	local fileOutputTmp=${fileInput:a:r}.tmp.${fileInput:e}
+	local ffmpegArguments=()
+
+	# Rebuild the full list of audio streams, without the one we delete
+	local allAudioChannelsRaw=$(video-stream-audio-list-raw $1)
+	for rawLine in ${(f)allAudioChannelsRaw}; do
+		local splitLine=(${(@s/▮/)rawLine})
+		local index=$splitLine[1]
+
+		# If the index is in the list of streams we should remove, we skip it
+		[[ ${streamsToRemove[(ie)${index}]} -le ${#streamsToRemove} ]] && continue
+
+		ffmpegArguments+=(-map 0:a:${index})
+	done
+
+	ffmpeg \
+		-i $fileInput \
+		-loglevel quiet \
+		-y \
+		-codec copy \
+		-map 0:v \
+		$ffmpegArguments \
+		$fileOutputTmp
+
+	mv $fileOutputTmp $fileInput
+}

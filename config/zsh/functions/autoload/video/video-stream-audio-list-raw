@@ -1,0 +1,19 @@
+# List all audio streams in raw form
+# Usage:
+# $ video-stream-audio-list-raw ./path/video.mp4
+function video-stream-audio-list-raw() {
+  # First, we get the list of all audio streams, with their code and language
+	local rawOutput=$(
+    video-info $1 | jq -r '
+      .streams[] |
+      select(.codec_type == "audio") |
+      "\(.codec_name)▮\(.tags.language)"'
+  )
+
+  # Then, we display them, indexed from 0
+  local indexCount=0
+  for rawLine in ${(f)rawOutput}; do
+    echo "${indexCount}▮${rawLine}"
+    ((indexCount++))
+  done
+}

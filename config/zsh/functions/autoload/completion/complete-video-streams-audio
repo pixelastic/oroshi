@@ -1,0 +1,13 @@
+# Display list of all audio streams of the specified file
+function complete-video-streams-audio() {
+  local inputFile=$1
+  local rawList="$(video-stream-audio-list-raw $inputFile)"
+
+  for rawLine in ${(f)rawList}; do
+    local split=(${(@s/▮/)rawLine})
+    local index=$split[1]
+    local codec=$split[2]
+    local language=$split[3]
+    echo "${index}:${language} [${codec}]"
+  done
+}

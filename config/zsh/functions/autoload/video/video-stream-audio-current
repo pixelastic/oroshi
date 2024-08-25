@@ -1,0 +1,15 @@
+# Display the current default audio stream
+# Usage:
+# $ video-stream-audio-current ./path/video.mp4
+function video-stream-audio-current() {
+	local fileInput=$1
+
+	# Output the first audio stream
+	local rawOutput=$(
+		video-info $1 | jq -r '
+      [.streams[] | select(.codec_type == "audio")][0] |
+			"\(.tags.language) [\(.codec_name)]"'
+	)
+
+	echo $rawOutput
+}

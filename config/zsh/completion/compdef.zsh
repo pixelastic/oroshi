@@ -112,16 +112,22 @@ compdef _image-resize img-resize
 # }}}
 # Videos {{{
 compdef '_files -g "*.{avi,mkv,mp4,mpg}"' \
+	better-vlc \
 	video-dimensions \
 	video-has-sound \
 	video-increase-volume \
 	video-index-fix \
 	video-info \
 	video-split \
+	video-stream-audio-current \
+	video-stream-audio-list \
+	video-stream-audio-list-raw \
 	video-stream-list \
 	video-stream-remove \
-	video-upload-youtube \
-	vlc
+	video-upload-youtube
+compdef _video-streams-audio \
+	video-stream-audio-switch \
+	video-stream-audio-remove
 # }}}
 # Images + Videos {{{
 compdef '_files -g "*.{bmp,gif,jpg,jpeg,png,svg,tiff,webp,avi,mkv,mp4,mpg,webm}"' \
