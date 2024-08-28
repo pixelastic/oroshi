@@ -2,16 +2,20 @@
 # Usage:
 # $ ebook-metadata-update ./GAIMAN Neil - Good Omens.epub
 function ebook-metadata-update() {
+  # Parse inputs {{{
   zparseopts -E -D \
     -cover:=flagCover
 
   local input="$1"
   local coverPath=${flagCover[2]}
 
-  # Pick the cover in the same folder if no --cover is specified
-  if [[ $coverPath == "" ]]; then
-    coverPath="${input//.epub/.jpg}"
-  fi
+  # There are some slight variations between setting metadata for epub (to read
+  # on phone) and to set it for mobi (to read on kindle)
+  local extension=${input:e}
+  local isEpub=0
+  [[ $extension == 'epub' ]] && isEpub=1
+  local isMobi=0
+  [[ $extension == 'mobi' ]] && isMobi=1
 
   # Names can follow one of those patterns:
   # Simple: PALAHNIUK Chuck - Survivor
@@ -34,37 +38,113 @@ function ebook-metadata-update() {
   [[ $isSerie == 1 ]] && bookName=$split[4]
 
   # If a serie, we also need the name of the serie and the book index in it
-  local additionalArgumentsForSerie=()
   if [[ $isSerie == 1 ]]; then
     local serieName=$split[2]
     local bookIndexString=$split[3]
     local bookIndexNumeric=$((10#$bookIndexString))
-
-    additionalArgumentsForSerie+=(--series="${serieName}")
-    additionalArgumentsForSerie+=(--index="${bookIndexNumeric}")
-    additionalArgumentsForSerie+=(--title-sort="${serieName} - ${bookIndexString} - ${bookName}")
   fi
 
+  # We get the language of the file
+  local bookLanguage=$(ebook-language-current $input)
+  [[ $bookLanguage == "" ]] && bookLanguage="eng"
+  # }}}
 
-  # TODO: Add serie information with
-  # --series="Wheel of Time (The)"
-  # --index="7"
-  # --title-sort="Wheel of Time (The) - 7"
+  # Build list of arguments {{{
+  # We now build the list of arguments
+  local ebookMetaArguments=()
+
+  # Cover
+  # Pick the cover in the same folder if no --cover is specified
+  [[ $coverPath == "" ]] &&  coverPath="${input//.${extension}/.jpg}"
+  # Add the cover if the file exists
+  if [[ -e $coverPath ]]; then
+    ebookMetaArguments+=(--cover="${coverPath:a}")
+  fi
+
+  # Author
+  # Note: There are two notions here. How the author name should be displayed,
+  # and how it should be sorted. Usually, it's displayed as "firstName
+  # lastName", but should be ordered by "lastName firstName". Both epub and mobi
+  # handle that differently.
+  if [[ $isEpub == 1 ]]; then
+    # Epub allow both:
+    # --authors for how it's displayed (Terry PRATCHETT)
+    # --author-sort for how it's sorted (PRATCHETT, Terry)
+    ebookMetaArguments+=(--authors="${authorFirstName} ${authorLastName}")
+    ebookMetaArguments+=(--author-sort="${authorLastName}, ${authorFirstName}")
+  fi
+  if [[ $isMobi == 1 ]]; then
+    # Mobi only uses the --authors argument:
+    # - It uses it both for display and sorting
+    # - BUT, if the field contains a comma, it assumes it means "lastName,
+    # firstName" and will use it to display and sort accordingly
+    ebookMetaArguments+=(--authors="${authorLastName}, ${authorFirstName}")
+  fi
+
+  # Title of the book
+  # When the book is a one-shot, defining the title is easy.
+  # The complexity will start when it's part of a serie (see below)
+  if [[ $isSerie == 0 ]]; then
+    ebookMetaArguments+=(--title="${bookName}")
+  fi
+
+  # Series
+  if [[ $isSerie == 1 ]]; then
+    # Books of a given serie should be ordered by their index in the serie, not
+    # by their alphabetical name. Once again, epub and mobi vary greatly in what
+    # they allow us to do here
+    if [[ $isEpub == 1 ]]; then
+      # We just tell the epub the name of book, the name of the serie and the
+      # index of the book, and it will take care of all sorting for us
+      ebookMetaArguments+=(--title="${bookName}")
+      ebookMetaArguments+=(--series="${serieName}")
+      ebookMetaArguments+=(--index="${bookIndexNumeric}")
+      ebookMetaArguments+=(--title-sort="${serieName} - ${bookIndexString} - ${bookName}")
+    fi
+    if [[ $isMobi == 1 ]]; then
+      # Mobi has no notion of series, or index, so to correctly order the book
+      # in a serie, we need to change its name
+      ebookMetaArguments+=(--title="${serieName} - ${bookIndexString} - ${bookName}")
+    fi
+  fi
+
+  # Tags
+  # It's possible to attribute tags to books. I will add some data to it to
+  # potentially find them more easily in a UI
+  local tags=()
+  tags+=(${bookLanguage})
+  tags+=(${authorLastName})
+  if [[ $isSerie == 1 ]]; then
+    tags+=(${serieName})
+  fi
+  # Tags should be separated by commas
+  ebookMetaArguments+=(--tags=${(j/,/)tags})
+
+  # Metadata
+  # Each format (epub and mobi) seems to have a different list of default
+  # metadata added, and different ways of cleaning them.
+  if [[ $isEpub == 1 ]]; then
+    ebookMetaArguments+=(--book-producer='')
+    # Remove some of the common identifiers on epub files
+    ebookMetaArguments+=(--identifier amazon:'')
+    ebookMetaArguments+=(--identifier isbn:'')
+    ebookMetaArguments+=(--identifier url:'')
+  fi
+  if [[ $isMobi == 1 ]]; then
+    # Setting an empty string for mobi makes Calibre add its default [Calibre]
+    # string. It works by adding a single space
+    ebookMetaArguments+=(--book-producer=' ')
+    # Seems like passing empty strings to --isbn or to --identifier isbn: has no
+    # effect on mobi, but passing an invalid ISBN seem to work
+    ebookMetaArguments+=(--isbn='##INVALID_ISBN##')
+
+    # Note: It doesn't seem possible to remove the mobi-asin: identifier from
+    # mobi files
+  fi
+  # }}}
 
   ebook-meta $input \
-    --title="${bookName}" \
-    --authors="${authorName}" \
-    --author-sort="${authorLastName}, ${authorFirstName}" \
-    --cover="${coverPath:a}" \
-    $additionalArgumentsForSerie \
-    --book-producer='' \
-    --comments='' \
-    --identifier amazon:'' \
-    --identifier isbn:'' \
-    --isbn='' \
-    --language='fra' \
-    --publisher='' \
-    --tags='' \
+    $ebookMetaArguments \
     &>/dev/null
 
 }

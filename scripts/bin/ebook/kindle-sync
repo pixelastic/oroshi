@@ -1,15 +1,14 @@
 #!/usr/bin/env zsh
 # Sync the local book library with the Kindle
+# What it should do:
 # - Only copy .mobi files
 # - Removing a file in Dropbox will remove the file in the Kindle
-# - Empty directories are cleaned
-# - Additional directory metadata added by Kindle are preserved
+# - Empty directories are cleaned in the Kindle
+# - Additional directory metadata added by Kindle are preserved, so I still have
+#   my bookmarks, highlights and reading progress
 
 local libraryRoot="/home/$USER/perso/Dropbox/backup/books/"
 local kindleRoot="/media/$USER/Kindle/documents/books"
-
-# local libraryRoot="/home/$USER/local/tmp/kindle-sync/dropbox/"
-# local kindleRoot="/home/$USER/local/tmp/kindle-sync/kindle"
 
 # FIRST: COPY NEW FILES {{{
 # We first copy all .mobi books that are in the library onto the kindle
@@ -18,6 +17,10 @@ local kindleRoot="/media/$USER/Kindle/documents/books"
 # --size-only is used to compare files based on their filesize only, not their
 # other attributes, as we lose precision when comparing between FAT32 and ext3
 # and that results in files considered always changed
+#
+# Note: Sometimes the Kindle seems to overheat and turn the device read-only.
+# Looks like closing the lid and adding --bwlimit=100 to rsync to limit the
+# transfer rate helps.
 rsync \
 	--verbose \
 	--recursive \
