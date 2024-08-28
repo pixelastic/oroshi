@@ -1,0 +1,10 @@
+# Display a specific metadata value
+function ebook-metadata-value() {
+	local inputFile=$1
+	local keyName=$2
+	if [[ $keyName == "" ]]; then
+		echo "You need pass both the input file and the key to read"
+		return 0
+	fi
+	ebook-meta "$inputFile" | \grep "${keyName}" | awk -F': ' '{print $2}'
+}

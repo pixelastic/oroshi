@@ -1,6 +1,0 @@
-# Display the language of the ebook
-function ebook-language-current() {
-	ebook-meta "$1" |
-		grep "Language" |
-		awk -F': ' '{print $2}'
-}

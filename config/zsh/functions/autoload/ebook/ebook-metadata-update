@@ -6,6 +6,13 @@ function ebook-metadata-update() {
   zparseopts -E -D \
     -cover:=flagCover
 
+  # TODO: Better parsing of lastName/firstName
+  # It currently considers the first word as the last name, but that fails on
+  # LE GUIN Ursula. A solution would be to take the lastName as the serie of
+  # words made only of capital letters (or dashes)
+  # That might work
+  # The edge case are names like ROWLINK J. K.
+
   local input="$1"
   local coverPath=${flagCover[2]}
 
@@ -45,8 +52,14 @@ function ebook-metadata-update() {
   fi
 
   # We get the language of the file
-  local bookLanguage=$(ebook-language-current $input)
+  local bookLanguage=$(ebook-metadata-value $input Languages)
   [[ $bookLanguage == "" ]] && bookLanguage="eng"
+
+  # We get the identifiers of the file
+  local bookIdentifiers=$(ebook-metadata-value $input Identifiers)
+  
+  # We get the rating
+  local bookRating=$(ebook-metadata-value $input Rating)
   # }}}
 
   # Build list of arguments {{{
@@ -121,23 +134,61 @@ function ebook-metadata-update() {
   ebookMetaArguments+=(--tags=${(j/,/)tags})
 
   # Metadata
+  # Remove all identifiers
+  # This usually contains stuff like isbn:, url:
+  # Specifically, the mobi-asin: identifier on mobi files can't be removed
+  #
+  if [[ $bookIdentifiers != "" ]]; then
+    local rawIdentifiers=(${(@s/, /)bookIdentifiers})
+    for rawIdentifier in $rawIdentifiers; do
+      local split=(${(@s/:/)rawIdentifier})
+      local identifierName=$split[1]
+      local identifierValue=''
+
+      # Some identifiers can't be removed but only renamed
+      [[ $identifierName == 'sonybookid' ]] && identifierValue='_'
+
+      # Some identifiers have their own flag, so we will rather use the
+      # dedicated flag
+      [[ $identifierName == 'isbn' ]] && continue;
+
+      ebookMetaArguments+=(--identifier ${identifierName}:${identifierValue})
+    done
+  fi
+
   # Each format (epub and mobi) seems to have a different list of default
   # metadata added, and different ways of cleaning them.
   if [[ $isEpub == 1 ]]; then
+    # When a value is already set as an weird or empty string, it seems that
+    # best way to delete it is to first write something, then set it to an empty
+    # string (or sometimes a single space).
+    ebookMetaArguments+=(--isbn='__INVALID__')
+    ebookMetaArguments+=(--isbn='')
+    ebookMetaArguments+=(--publisher='__INVALID__')
+    ebookMetaArguments+=(--publisher='')
+    ebookMetaArguments+=(--book-producer='__INVALID__')
     ebookMetaArguments+=(--book-producer='')
-    # Remove some of the common identifiers on epub files
-    ebookMetaArguments+=(--identifier amazon:'')
-    ebookMetaArguments+=(--identifier isbn:'')
-    ebookMetaArguments+=(--identifier url:'')
+    # Comments need a single space, doesn't work with empty string
+    ebookMetaArguments+=(--comments='__INVALID__')
+    ebookMetaArguments+=(--comments=' ')
+
+    # I couldn't find a way to remove, or even edit the "Rights" field
+
+    # There doesn't seem to be a way to remove the ratings, so the best I can do
+    # is change them to the weirdest value I could find: 42. Somehow the value
+    # I pass is divided by 2.
+    if [[ $bookRating != "" ]]; then
+      ebookMetaArguments+=(--rating=84)
+    fi
   fi
   if [[ $isMobi == 1 ]]; then
-    # Setting an empty string for mobi makes Calibre add its default [Calibre]
-    # string. It works by adding a single space
+    # Seems like passing an empty string is not enough, and one need to pass
+    # a single space instead
+    ebookMetaArguments+=(--publisher=' ')
     ebookMetaArguments+=(--book-producer=' ')
-    # Seems like passing empty strings to --isbn or to --identifier isbn: has no
-    # effect on mobi, but passing an invalid ISBN seem to work
-    ebookMetaArguments+=(--isbn='##INVALID_ISBN##')
-
+    ebookMetaArguments+=(--comments=' ')
+    # For isbn, I need to pass an invalid one, for mobi only
+    ebookMetaArguments+=(--isbn='__INVALID__')
     # Note: It doesn't seem possible to remove the mobi-asin: identifier from
     # mobi files
   fi
@@ -146,5 +197,7 @@ function ebook-metadata-update() {
   ebook-meta $input \
     $ebookMetaArguments \
     &>/dev/null
+
+  ebook-meta $input
 
 }

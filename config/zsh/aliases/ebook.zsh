@@ -7,6 +7,7 @@ alias ev='better-ebook-viewer'
 # Metadata
 alias em='ebook-meta'
 alias emu='ebook-metadata-update'
+alias emv='ebook-metadata-value'
 
 # Cover
 alias ecR="ebook-cover-remove"
