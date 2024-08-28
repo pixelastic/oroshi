@@ -146,6 +146,8 @@ compdef '_files -g "*.epub"' \
 	ebook-cover-current \
 	ebook-cover-remove \
 	ebook-cover-update \
+	ebook-metadata-update \
+	ebook-meta \
 	epub2mobi
 # }}}
 # NVM {{{

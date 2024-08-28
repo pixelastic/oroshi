@@ -2,25 +2,49 @@
 # Usage:
 # $ ebook-metadata-update ./GAIMAN Neil - Good Omens.epub
 function ebook-metadata-update() {
-  set -x
   zparseopts -E -D \
     -cover:=flagCover
 
   local input="$1"
   local coverPath=${flagCover[2]}
 
-  local basename="${input:t}"
-  local split=(${(@s/ - /)basename})
-  local authorName=$split[1]
-  local bookName=$split[2]
+  # Pick the cover in the same folder if no --cover is specified
+  if [[ $coverPath == "" ]]; then
+    coverPath="${input//.epub/.jpg}"
+  fi
 
+  # Names can follow one of those patterns:
+  # Simple: PALAHNIUK Chuck - Survivor
+  # Serie:  PRATCHETT Terry - Discworld - 05 - Sourcery
+  local basename="${input:t:r}"
+  local split=(${(@s/ - /)basename})
+
+  # Author is always the first one
+  local authorName=$split[1]
   local authorSplit=(${(@s/ /)authorName})
   local authorLastName=$authorSplit[1]
   local authorFirstName=(${authorSplit[@]:1})
 
-  if [[ $coverPath == "" ]]; then
-    coverPath="${input//.epub/.jpg}"
+  # If there are more than 2 elements, it's a serie
+  local isSerie=0
+  [[ ${#split[@]} -gt 2 ]] && isSerie=1
+
+  # Book name is either the second or the last, depending if it's a serie or not
+  local bookName=$split[2]
+  [[ $isSerie == 1 ]] && bookName=$split[4]
+
+  # If a serie, we also need the name of the serie and the book index in it
+  local additionalArgumentsForSerie=()
+  if [[ $isSerie == 1 ]]; then
+    local serieName=$split[2]
+    local bookIndexString=$split[3]
+    local bookIndexNumeric=$((10#$bookIndexString))
+
+    additionalArgumentsForSerie+=(--series="${serieName}")
+    additionalArgumentsForSerie+=(--index="${bookIndexNumeric}")
+    additionalArgumentsForSerie+=(--title-sort="${serieName} - ${bookIndexString} - ${bookName}")
   fi
+
 
   # TODO: Add serie information with
   # --series="Wheel of Time (The)"
@@ -32,6 +56,7 @@ function ebook-metadata-update() {
     --authors="${authorName}" \
     --author-sort="${authorLastName}, ${authorFirstName}" \
     --cover="${coverPath:a}" \
+    $additionalArgumentsForSerie \
     --book-producer='' \
     --comments='' \
     --identifier amazon:'' \
@@ -40,6 +65,6 @@ function ebook-metadata-update() {
     --language='fra' \
     --publisher='' \
     --tags='' \
-		&>/dev/null
+    &>/dev/null
 
 }
