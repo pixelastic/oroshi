@@ -142,6 +142,7 @@ compdef '_files -g "*.pdf"' \
 # }}}
 # Ebooks {{{
 compdef '_files -g "*.epub"' \
+	better-ebook-viewer \
 	ebook-cover-current \
 	ebook-cover-remove \
 	ebook-cover-update \

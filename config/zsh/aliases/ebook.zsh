@@ -1,8 +1,8 @@
 # Ebook
-alias ebook-viewer='gui ebook-viewer'
+alias ebook-viewer='better-ebook-viewer'
 alias ec='ebook-convert'
 alias ea='ebook-add'
-alias ev='ebook-viewer'
+alias ev='better-ebook-viewer'
 
 # Metadata
 alias em='ebook-meta'

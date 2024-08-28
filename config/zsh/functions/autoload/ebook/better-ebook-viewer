@@ -1,0 +1,6 @@
+# Open ebook-viewer in its own GUI window
+# Note: Having it as its own function and not an alias allows to use custom
+# completion definitions on it
+function better-ebook-viewer() {
+	gui ebook-viewer $@
+}
