@@ -143,12 +143,15 @@ compdef '_files -g "*.pdf"' \
 # Ebooks {{{
 compdef '_files -g "*.epub"' \
 	better-ebook-viewer \
+	epub2mobi
+compdef '_files -g "*.mobi"' \
+	mobi2epub
+compdef '_files -g "*.{epub,mobi}"' \
 	ebook-cover-current \
 	ebook-cover-remove \
 	ebook-cover-update \
-	ebook-metadata-update \
 	ebook-meta \
-	epub2mobi
+	ebook-metadata-update
 # }}}
 # NVM {{{
 compdef _nvm-lazyload lazyloadNvm
