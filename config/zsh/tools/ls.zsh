@@ -32,7 +32,7 @@ function oroshi_tools_ls() {
 	# Enhance LS_COLORS by looping through all FILETYPES_***_color
 	# Note: It isn't possible to color all hidden files (.*) with LS_COLORS
 	# Instead, we have a known list of the most common files defined in
-	# filetype-list.zsh
+	# filetypes-list.zsh
 	for extension in ${=FILETYPES_INDEX}; do
 		# Those are nested zsh modifiers:
 		# - ${AAA:-BBB} reads AAA variables, and if empty sets BBB as the value

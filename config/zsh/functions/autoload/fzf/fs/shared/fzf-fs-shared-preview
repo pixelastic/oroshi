@@ -21,7 +21,7 @@ function fzf-fs-shared-preview() {
 
   # Directory {{{
   if [[ -d $fullPath ]]; then
-    l "$fullPath"
+    l --all "$fullPath"
     return 0
   fi
   # }}}
@@ -37,7 +37,7 @@ function fzf-fs-shared-preview() {
   fi
 
   # Document preview (pdf, epub, mobi)
-  if [[ $filetypeGroup == "document" ]]; then
+  if [[ $filetypeGroup == "document" || $filetypeGroup == "ebook" ]]; then
     local previewCacheFolder="/tmp/oroshi/fzf/previews/"
     local previewCacheHash=$(file-hash $fullPath);
     local previewCachePath="${previewCacheFolder}/${previewCacheHash}.png"
@@ -47,12 +47,12 @@ function fzf-fs-shared-preview() {
       mkdir -p $previewCacheFolder
 
       # For pdf, we extract the first page
-      if [[ $extension == "pdf" ]]; then
+      if [[ $filetypeGroup == "document" ]]; then
         convert "${fullPath}[0]" $previewCachePath
         png-trim $previewCachePath
       fi
       # For ebooks, we extract the cover
-      if [[ $extension == "epub" || $extension == "mobi" ]]; then
+      if [[ $filetypeGroup == "ebook" ]]; then
         ebook-cover-extract "$fullPath" $previewCachePath
       fi
     fi

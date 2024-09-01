@@ -1,0 +1,32 @@
+# Returns the size of a given directory
+# Usage
+# $ dirsize                           # Size of current dir
+# $ dirsize /some/dir                 # Size of one dir
+# $ dirsize /some/dir /some/other/dir # List of sizes
+function dirsize() {
+  local testOneDirectory=1
+  [[ ${#@[@]} -gt 1 ]] && testOneDirectory=0
+
+  # Get the size of a given dir
+  function __dirsize() {
+    local input="$1"
+    [[ $input == "" ]] && input="."
+
+    LC_NUMERIC=en_US du -ch $input | tail -1 | sed 's/\ttotal//'
+  }
+
+  # One directory
+  if [[ $testOneDirectory == 1 ]]; then
+    local input="$1"
+    __dirsize $input
+    return 0
+  fi
+
+  # Several directories
+  if [[ $testOneDirectory == 0 ]]; then
+    for input in $@; do
+      local size="$(__dirsize $input)"
+      echo "${input:a}▮${size}"
+    done
+  fi
+}

@@ -49,9 +49,9 @@ for key value in "${(@kv)FILETYPE_GROUPS}"; do
     fi
 
     # Only assign them if they aren't already defined
-    local color=${FILETYPES[${pattern}:color]:-$groupColor}
-    local bold=${FILETYPES[${pattern}:bold]:-$groupBold}
-    local icon=${FILETYPES[${pattern}:icon]:-$groupIcon}
+    local color=${FILETYPES[${indexName}:color]:-$groupColor}
+    local bold=${FILETYPES[${indexName}:bold]:-$groupBold}
+    local icon=${FILETYPES[${indexName}:icon]:-$groupIcon}
 
     # Export the ENV variables
     output+="export FILETYPE_${indexName}_PATTERN=\"$pattern\"\n"

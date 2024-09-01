@@ -53,11 +53,11 @@ function fzf-fs-shared-preview-header() {
 			metadataArray+=($(video-duration $fullPath))
 		fi
 		# PDF Metadata
-		if [[ $fileExtension == "pdf" ]]; then
+		if [[ $filetypeGroup == "document" ]]; then
 			metadataArray+=("$(pdf-page-count $fullPath) pages")
 		fi
 		# Ebook Metadata
-		if [[ $fileExtension == "epub" || $fileExtension == "mobi" ]]; then
+		if [[ $filetypeGroup == "ebook" ]]; then
 			metadataArray+=("$(ebook-metadata-value "$fullPath" Tags)")
 		fi
 	fi
@@ -66,6 +66,18 @@ function fzf-fs-shared-preview-header() {
 	if [[ $isDirectory == 1 ]]; then
 		local directoryPath="$(simplify-path ${displayedPath} 6)"
 		local fileName=""
+		local subFilesCount=$(find "$fullPath" -maxdepth 1 -type f | wc -l)
+		local subDirectoriesCount=$(($(find "$fullPath" -maxdepth 1 -type d | wc -l) - 1))
+
+		metadataArray+=("$(dirsize "$fullPath")")
+		if [[ $subDirectoriesCount != 0 ]]; then
+			[[ $subDirectoriesCount == 1 ]] && metadataArray+=("1 subdir")
+			[[ $subDirectoriesCount != 1 ]] && metadataArray+=("${subDirectoriesCount} subdirs")
+		fi
+		if [[ $subFilesCount != 0 ]]; then
+			[[ $subFilesCount == 1 ]] && metadataArray+=("1 file")
+			[[ $subFilesCount != 1 ]] && metadataArray+=("${subFilesCount} files")
+		fi
 	fi
 
 	local displayedHeaderArray=()

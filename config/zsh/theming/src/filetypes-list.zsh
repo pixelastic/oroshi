@@ -3,7 +3,7 @@
 # variables used to color files in ls (and other places)
 #
 # - by default, patterns will be treated as extensions
-# - patterns wrapped in [] will be treated as exact mac
+# - patterns wrapped in [] will be treated as exact match
 declare -A FILETYPE_GROUPS
 FILETYPE_GROUPS=()
 declare -A FILETYPES
@@ -127,9 +127,15 @@ FILETYPE_GROUPS[document:color]="YELLOW_6"
 FILETYPE_GROUPS[document:icon]=" "
 FILETYPE_GROUPS[document:bold]="1"
 FILETYPE_GROUPS[document:patterns]="\
+  pdf \
+"
+
+FILETYPE_GROUPS[ebook:color]="YELLOW_7"
+FILETYPE_GROUPS[ebook:icon]=" "
+FILETYPE_GROUPS[ebook:bold]="1"
+FILETYPE_GROUPS[ebook:patterns]="\
   epub \
   mobi \
-  pdf \
 "
 
 # Binary files
@@ -153,11 +159,11 @@ FILETYPE_GROUPS[minor:patterns]="\
 "
 # }}}
 
-# FILETYPES {{{
-FILETYPES[pdf:bold]="1"
-FILETYPES[vim:icon]=" "
-FILETYPES[md:icon]=" "
-FILETYPES[mkd:icon]=" "
-FILETYPES[js:icon]=" "
-FILETYPES[js:color]="YELLOW"
+# FILETYPES OVERRIDES{{{
+FILETYPES[MOBI:bold]="0"
+FILETYPES[VIM:icon]=" "
+FILETYPES[MD:icon]=" "
+FILETYPES[MKD:icon]=" "
+FILETYPES[JS:icon]=" "
+FILETYPES[JS:color]="YELLOW"
 # }}}
