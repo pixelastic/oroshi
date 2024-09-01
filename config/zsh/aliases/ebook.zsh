@@ -12,4 +12,4 @@ alias emv='ebook-metadata-value'
 # Cover
 alias ecR="ebook-cover-remove"
 alias ecu="ebook-cover-update"
-alias ec.="ebook-cover-current"
+alias ece="ebook-cover-extract"

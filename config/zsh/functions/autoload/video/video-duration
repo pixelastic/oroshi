@@ -1,0 +1,22 @@
+# Output the duration of a video, in human-readable format
+function video-duration() {
+	local input="$1"
+
+	local rawDuration="$(video-info "$input" | jq -r '.format.duration')"
+
+	local hours=$(printf "%02d" $(($rawDuration / 3600)))
+	local minutes=$(printf "%02d" $(($rawDuration % 3600 / 60)))
+	local seconds=$(printf "%02d" $(($rawDuration % 60)))
+
+	local outputArray=()
+	# 45s
+	if [[ $hours == "00" && $minutes == "00" ]]; then
+		echo "${seconds}s"
+		return 0
+	fi
+	if [[ $hours == "00" ]]; then
+		echo "${minutes}:${seconds}"
+		return
+	fi
+	echo "${hours}:${minutes}:${seconds}"
+}

@@ -1,10 +1,10 @@
 # Preview a file inside fzf
 # Usage
-# $ fzf-fs-files-shared-preview ./path/to/file                  # Display the file
-# $ fzf-fs-files-shared-preview ./path/to/folder                # Display the folder
-# $ fzf-fs-files-shared-preview ./file --highlight-line 42      # Highlight the specified line
-# $ fzf-fs-files-shared-preview ./file --highlight-word "query" # Highlight the specified query
-function fzf-fs-files-shared-preview() {
+# $ fzf-fs-shared-preview ./path/to/file                  # Display the file
+# $ fzf-fs-shared-preview ./path/to/folder                # Display the folder
+# $ fzf-fs-shared-preview ./file --highlight-line 42      # Highlight the specified line
+# $ fzf-fs-shared-preview ./file --highlight-word "query" # Highlight the specified query
+function fzf-fs-shared-preview() {
   # Parse arguments
   zmodload zsh/zutil
   zparseopts -E -D \
@@ -17,6 +17,7 @@ function fzf-fs-files-shared-preview() {
 
   # Cleanup previously displayed image
   img-display --clear
+  fzf-fs-shared-preview-header "$fullPath"
 
   # Directory {{{
   if [[ -d $fullPath ]]; then
@@ -24,30 +25,39 @@ function fzf-fs-files-shared-preview() {
     return 0
   fi
   # }}}
+  
 
   local filetypeGroup="$(filetype-group $fullPath)"
   local extension=${fullPath:e}
 
   # Image display
   if [[ $filetypeGroup == "image" ]]; then
-    img-display --fzf-preview $fullPath
+    img-display --no-metadata --fzf-preview $fullPath
     return 0
   fi
 
-  # PDF display
-  if [[ $extension == "pdf" ]]; then
-    local pdfCoverCache="/tmp/oroshi/fzf/pdf-covers"
-    local pdfCoverHash=$(file-hash $fullPath);
-    local pdfCoverPath="${pdfCoverCache}/${pdfCoverHash}.png"
+  # Document preview (pdf, epub, mobi)
+  if [[ $filetypeGroup == "document" ]]; then
+    local previewCacheFolder="/tmp/oroshi/fzf/previews/"
+    local previewCacheHash=$(file-hash $fullPath);
+    local previewCachePath="${previewCacheFolder}/${previewCacheHash}.png"
 
-    # Create the cover if none exist
-    if [[ ! -f $pdfCoverPath ]]; then
-      mkdir -p $pdfCoverCache
-      convert "${fullPath}[0]" $pdfCoverPath
-      png-trim $pdfCoverPath
+    # Create the cover in tmp if none exist
+    if [[ ! -f $previewCachePath ]]; then
+      mkdir -p $previewCacheFolder
+
+      # For pdf, we extract the first page
+      if [[ $extension == "pdf" ]]; then
+        convert "${fullPath}[0]" $previewCachePath
+        png-trim $previewCachePath
+      fi
+      # For ebooks, we extract the cover
+      if [[ $extension == "epub" || $extension == "mobi" ]]; then
+        ebook-cover-extract "$fullPath" $previewCachePath
+      fi
     fi
 
-    img-display --no-metadata --fzf-preview $pdfCoverPath
+    img-display --no-metadata --fzf-preview $previewCachePath
     return 0
   fi
 

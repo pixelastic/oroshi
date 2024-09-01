@@ -26,7 +26,7 @@ function fzf-fs-shared-options() {
 	# Config
 	echo "--delimiter=   "
 	echo "--with-nth=2"
-	echo "--preview=fzf-fs-files-shared-preview {1}"
+	echo "--preview=fzf-fs-shared-preview {1}"
 
 	# Prompt
 	local prompt="$($fzfPromptPath)"

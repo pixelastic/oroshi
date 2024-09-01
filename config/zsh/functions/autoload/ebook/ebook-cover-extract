@@ -1,0 +1,17 @@
+# Extract the cover of the ebooke
+# Usage:
+# $ ebook-cover-extract ./book.epub              # Saves as ./book.jpg
+# $ ebook-cover-extract ./book.epub  ./file.jpg  # Saves as ./file.jpg
+function ebook-cover-extract() {
+	local input="$1"
+	local output="$2"
+
+	[[ $input == "" ]] && return 1
+
+	[[ $output == "" ]] && output="${input//.epub/.jpg}"
+
+	ebook-meta \
+		$input \
+		--get-cover="${output}" \
+		&>/dev/null
+}

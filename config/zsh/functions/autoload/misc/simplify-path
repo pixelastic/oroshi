@@ -1,22 +1,54 @@
 # Simplifies a path by only displaying the important bits
+# This will take either a real full path, or a partial path, depending where
+# it's called from, so we should only deal with the input as a string, not as
+# a real path on disk.
 # Usage:
 # $ simplify-path /path/to/somewhere
-function simplify-path () {
-  local fullPath="$1"
+# $ simplify-path path/to/somewhere
+# $ simplify-path path/to/somewhere 6   # Simplify if more than 6 level deep
+function simplify-path() {
+  local input="$1"
+  local maxDepth=$2
+  [[ $maxDepth == "" ]] && maxDepth=4
 
-  local startsWithSlash="0"
-  [[ $fullPath[1] == "/" ]] && startsWithSlash="1"
+  # We convert /home/{user} with ~
+  local fullPath=${input}
+  fullPath=${fullPath/#$HOME/\~}
 
-  local -a pathArray
-  pathArray=(${(s:/:)fullPath})
-  if [[ ${#pathArray[*]} -lt 4 ]]; then
-    echo $fullPath
-    return 0
+  # Split the path as an array
+  local inputPathArray=(${(s:/:)fullPath})
+  local isTooDeep=0
+  [[ ${#inputPathArray[*]} -gt ${maxDepth} ]] && isTooDeep=1
+
+  # Remember if starts/end with slashes
+  local startsWithSlash=0
+  [[ $fullPath[1] == "/" ]] && startsWithSlash=1
+  local endsWithSlash=0
+  [[ $fullPath[-1] == "/" ]] && endsWithSlash=1
+
+  # Build the output
+  local outputPathArray=()
+
+
+  # If not at the maximum directory depth, we keep the same path
+  if [[ $isTooDeep == 0 ]]; then
+    outputPathArray+=($inputPathArray)
   fi
 
-  if [[ $startsWithSlash == "1" ]]; then
-    echo -n "/"
+  # If past the maximum depth, we remove the mid directories
+  if [[ $isTooDeep == 1 ]]; then
+    outputPathArray+=(${inputPathArray[1]})
+    outputPathArray+=("…")
+    outputPathArray+=(${inputPathArray[-2]})
+    outputPathArray+=(${inputPathArray[-1]})
   fi
 
-  echo "${pathArray[1]}/…/${pathArray[-2]}/${pathArray[-1]}/"
+  # We add a starting slash only if the input had one
+  [[ $startsWithSlash == 1 ]] && outputPathArray[1]="/${outputPathArray[1]}"
+  # We add a trailing slash only if the input had one
+  [[ $endsWithSlash == 1 ]] && outputPathArray[-1]="${outputPathArray[-1]}/"
+
+  # We join all the elements with /
+  local outputPath=${(j_/_)outputPathArray}
+  echo $outputPath
 }

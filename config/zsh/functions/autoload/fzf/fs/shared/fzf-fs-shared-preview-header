@@ -1,0 +1,124 @@
+# Display a header for a given file or directory in the preview
+# Usage
+# $ fzf-fs-shared-preview-header ./path/to/file      # Display the file
+# $ fzf-fs-shared-preview-header ./path/to/folder    # Display the folder
+function fzf-fs-shared-preview-header() {
+	local input=$1
+
+	local fullPath=${input:a}
+	local displayedPath=$fullPath
+  displayedPath=${displayedPath/#$HOME/\~}
+
+	local isDirectory=0
+	[[ -d $fullPath ]] && isDirectory=1
+
+	# Simplifying the displayed path by removing the project prefix, if any
+  local projectKey="$(project-by-path $fullPath)"
+  if [[ $projectKey != "" ]]; then
+    eval "displayedPath=\${displayedPath:s_${(P)${:-PROJECT_${projectKey}_PATH}}_}"
+		local projectPrefix=$(colorize-project $projectKey)
+  fi
+
+	local metadataArray=()
+
+	# For files
+	if [[ $isDirectory == 0 ]]; then
+		local directoryPath=${displayedPath:h}
+		[[ $directoryPath == "." ]] \
+			&& directoryPath="" \
+			|| directoryPath="$(simplify-path ${directoryPath} 6)"
+
+		local fileName=${displayedPath:t}
+		local fileExtension=${fullPath:e}
+		local filetypeGroup="$(filetype-group $fullPath)"
+		local color=${(P)${:-FILETYPE_${fileExtension:u}_COLOR}}
+		local icon=${(P)${:-FILETYPE_${fileExtension:u}_ICON}}
+
+		# Special handling of executables. They do not have an extension, so can't
+		# be found with the above method
+		if [[ -x $fullPath ]]; then
+			icon=""
+			color=$COLOR_ALIAS_EXECUTABLE
+		fi
+
+		# Filesize
+		metadataArray+=($(filesize-human $fullPath))
+		# Image metadata
+		if [[ $filetypeGroup == "image" ]]; then
+			metadataArray+=($(img-dimensions $fullPath))
+		fi
+		# Video metadata
+		if [[ $filetypeGroup == "video" ]]; then
+			metadataArray+=($(video-dimensions $fullPath))
+			metadataArray+=($(video-duration $fullPath))
+		fi
+		# PDF Metadata
+		if [[ $fileExtension == "pdf" ]]; then
+			metadataArray+=("$(pdf-page-count $fullPath) pages")
+		fi
+		# Ebook Metadata
+		if [[ $fileExtension == "epub" || $fileExtension == "mobi" ]]; then
+			metadataArray+=("$(ebook-metadata-value "$fullPath" Tags)")
+		fi
+	fi
+
+	# For directories
+	if [[ $isDirectory == 1 ]]; then
+		local directoryPath="$(simplify-path ${displayedPath} 6)"
+		local fileName=""
+	fi
+
+	local displayedHeaderArray=()
+
+	# Project
+	if [[ $projectPrefix != "" ]]; then
+		displayedHeaderArray+=("$projectPrefix ")
+	fi
+
+	# Directory
+	if [[ $directoryPath != "" ]]; then
+		displayedHeaderArray+=("$(colorize "${directoryPath}/" $COLOR_ALIAS_DIRECTORY)")
+	fi
+
+	# File
+	if [[ $fileName != "" ]]; then
+		displayedHeaderArray+=("\n")
+		displayedHeaderArray+=("$(colorize " ${icon} ${fileName}" $color)")
+	fi
+
+	# Metadata
+	if [[ $metadataArray != "" ]]; then
+		displayedHeaderArray+=("\n")
+		displayedHeaderArray+=("$(colorize " ${(j/, /)metadataArray}" $COLOR_ALIAS_COMMENT)")
+	fi
+
+
+	echo ${(j//)displayedHeaderArray}
+	echo ""
+
+
+	# [icon] [simplified path]
+	# 17.8kb, 800x600, transparent
+
+	# Need to get
+	# The fullpath
+	# its icon
+	# its short display path
+	# a specific color?
+	# some metadata, like the filesize at least
+	# probbaly also more info for each type
+	# - image: dimensions
+	# - pdf: number of pages
+	# - ebook: author and name?
+	#
+	# The header should contain
+	# filename with the right icon and color?
+	# 4.74kb, 1200x600, une liste de metadata en gris en dessous
+	# Il me faut une methode qui fasse img-metadata, pdf-metadata, etc qui output
+	# en table ou en JSON la data dont j'ai besoin (ou en version raw)
+	# et que je l'utilise pour l'afficher dans la liste ici
+	# filesize pour tout le monde
+	# dimensions pour une image
+	# nombre de pages pour un pdf, et
+
+}
