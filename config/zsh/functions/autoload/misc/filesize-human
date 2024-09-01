@@ -5,9 +5,14 @@
 
 function filesize-human() {
 	local filepath=$1
-	stat \
-		--format="%s" \
-		$filepath |
-		numfmt \
-			--to=si
+	local size="$(
+		stat \
+			--format="%s" \
+			$filepath |
+			numfmt \
+				--to=si
+	)"
+	[[ $size[-1] == [0-9] ]] && size="${size}B"
+
+	echo $size
 }

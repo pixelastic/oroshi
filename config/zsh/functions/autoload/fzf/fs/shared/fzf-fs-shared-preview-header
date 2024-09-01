@@ -39,10 +39,15 @@ function fzf-fs-shared-preview-header() {
 		if [[ -x $fullPath ]]; then
 			icon=""
 			color=$COLOR_ALIAS_EXECUTABLE
+			filetypeGroup="script"
 		fi
 
 		# Filesize
 		metadataArray+=($(filesize-human $fullPath))
+		# Script metadata
+		if [[ $filetypeGroup == "script" ]]; then
+			metadataArray+=("$(cat $fullPath | wc -l) lines")
+		fi
 		# Image metadata
 		if [[ $filetypeGroup == "image" ]]; then
 			metadataArray+=($(img-dimensions $fullPath))
