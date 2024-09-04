@@ -1,11 +1,13 @@
 # Extract one or multiple pages from a given pdf
 # Usage:
-# $ pdf-split ./path/to/file.pdf 1     # Extract page 1
-# $ pdf-split ./path/to/file.pdf 1-4   # Extract from page 1 to 4
-# $ pdf-split ./path/to/file.pdf last  # Extract last page
+# $ pdf-split ./path/to/file.pdf 1             # Extract page 1
+# $ pdf-split ./path/to/file.pdf 1-4           # Extract from page 1 to 4
+# $ pdf-split ./path/to/file.pdf last          # Extract last page
+# $ pdf-split ./path/to/file.pdf 1 output.pdf  # Extract page 1 into output.pdf
 function pdf-split() {
 	local input=$1
 	local rawRange=$2
+	local output=$3
 
 	# Stop if no input given
 	if [[ $input == "" ]]; then
@@ -13,6 +15,7 @@ function pdf-split() {
 		echo "$ pdf-split ./path/to/file.pdf 3"
 		echo "$ pdf-split ./path/to/file.pdf 3-5"
 		echo "$ pdf-split ./path/to/file.pdf last"
+		echo "$ pdf-split ./path/to/file.pdf 3 output.pdf"
 		return 0
 	fi
 
@@ -42,7 +45,7 @@ function pdf-split() {
 	[[ $rangeStart == "$rangeEnd" ]] && range=$rangeStart
 
 	# Generate the output filename
-	local output="${input//\.pdf/_${range}.pdf}"
+	[[ $output == "" ]] && output="${input//\.pdf/_${range}.pdf}"
 	
 	pdftk $input \
 		cat $range \
