@@ -11,7 +11,7 @@ set tabline=%!OroshiTabLine()
 
 " OroshiTabLine {{{
 " Builds the whole tabline, but defers the name of each tag to OroshiTabLabel
-function OroshiTabLine()
+function! OroshiTabLine()
   let tabLine = ''
 
   for rawTabIndex in range(tabpagenr('$'))
@@ -47,7 +47,7 @@ endfunction
 " OroshiTabLabel {{{
 " Define the label of each tab, with a slightly different for current and
 " non-current tabs
-function OroshiTabLabel(tabIndex, isCurrentTab)
+function! OroshiTabLabel(tabIndex, isCurrentTab)
   let bufferId = tabpagebuflist(a:tabIndex)[0]
   let fullPath = expand('#' . bufferId . ':p')
   let basename = fnamemodify(fullPath, ':t')
@@ -70,6 +70,12 @@ function OroshiTabLabel(tabIndex, isCurrentTab)
   " Empty file
   if tabLabel ==# ''
     let tabLabel = '[No Name]'
+  endif
+
+  " If the tabLabel is a useless index.* file, we add the directory name
+  if tabLabel =~# '^index\.'
+    let directoryName = fnamemodify(fullPath, ':h:t')
+    let tabLabel = directoryName . '/' . tabLabel
   endif
 
   " Mark as modified
