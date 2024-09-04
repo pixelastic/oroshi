@@ -17,6 +17,7 @@ FILETYPE_GROUPS[text:patterns]="\
   [CODEOWNERS] \
   [LICENSE] \
   [MAINTAINERS] \
+  [README] \
   md \
   txt \
 "
