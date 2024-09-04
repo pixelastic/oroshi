@@ -87,7 +87,7 @@ inoremap <buffer> impgot import got from 'golgoth/got.js';<CR>;
 inoremap <buffer> imppath import path from 'path';<CR>;
 inoremap <buffer> imppat import path from 'path';<CR>;
 " JSDoc helpers
-inoremap <buffer> @para @param {Array}
+inoremap <buffer> @para @param {Array}\
 inoremap <buffer> @parb @param {boolean}
 inoremap <buffer> @parf @param {Function}
 inoremap <buffer> @parn @param {number}

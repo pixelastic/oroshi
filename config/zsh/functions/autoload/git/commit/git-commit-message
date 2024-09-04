@@ -1,0 +1,11 @@
+# Generate a potential commit message for the current changes
+# Usage:
+# $ git-commit-message    # Generate a commit message
+function git-commit-message() {
+	git diff |
+		sgpt \
+			--model gpt-4 \
+			--code 'Based on the changes above, create a short commit message following best practices' |
+		sed 's/^"\(.*\)"$/\1/'
+
+}

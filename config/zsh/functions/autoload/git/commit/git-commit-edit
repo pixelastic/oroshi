@@ -1,0 +1,8 @@
+# Edit last commit
+# Adds updated file, and allow changing the commit message
+# Usage:
+# $ git-commit-edit    # Update files and messages
+function git-commit-edit() {
+	git add .
+	git commit --amend $@
+}

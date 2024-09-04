@@ -1,7 +1,0 @@
-#!/usr/bin/env zsh
-# Edit last commit, by adding updated files and changing the message
-# Usage:
-# $ git-commit-edit    # Update files and messages
-
-git add .
-git commit --amend $@

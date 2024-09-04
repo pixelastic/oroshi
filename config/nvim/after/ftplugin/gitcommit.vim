@@ -2,22 +2,39 @@
 " When writing a commit message {{{
 if expand('%') =~ 'COMMIT_EDITMSG'
   let b:onBufEnterFired = 0
+
   " Add possible convention types {{{
   augroup gitcommit_BufEnter
     autocmd!
     au BufEnter <buffer> call GitCommitOnBufEnter()
   augroup END
+
   " We need to delay the call a bit, so we use BufEnter. We also take care to
-  " only fire it once because each time we move into split windows, it will
-  " fire it again (and we use split windows with committia).
-  function! GitCommitOnBufEnter() 
+  " only fire it once because each time we move into split windows, it will fire
+  " it again (and we use split windows with committia).
+  function! GitCommitOnBufEnter()
     if b:onBufEnterFired ==# 1
       return
     endif
     let b:onBufEnterFired = 1
 
+
+    " TODO:
+    " Need to call a function asynchronously
+    " And run another method once done
+    " So I need to run sgpt
+    " And once done do something else
+    " function something() {}
+    " function something2() {}
+    " asyncCall(something, something2)
+    " Call something. Once done, call something2 with the results
+
+
+    call  system('npm-is-local stylelint')
+
     " Add reminder of convention types
-    normal! ggo# 
+    normal! ggo#
+
     normal! APossible types : feat, fix, dev, test, refactor, docs, chore
     normal! xo# BREAKING CHANGE:
     normal! x
