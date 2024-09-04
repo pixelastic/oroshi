@@ -27,4 +27,4 @@ oroshi-fzf-regexp-subdir-widget() {
 	return 0
 }
 zle -N oroshi-fzf-regexp-subdir-widget
-bindkey '^F' oroshi-fzf-regexp-subdir-widget
+bindkey 'Ⓖ' oroshi-fzf-regexp-subdir-widget

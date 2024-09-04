@@ -16,11 +16,11 @@ source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-l.zsh       # Clear terminal
 source $ZSH_CONFIG_PATH/keybindings/ctrl-n.zsh             # Open current directory in Nautilus
 source $ZSH_CONFIG_PATH/keybindings/ctrl-question-mark.zsh # Explain what the current command does
 source $ZSH_CONFIG_PATH/keybindings/ctrl-p.zsh             # Fuzzy-find files in project
-source $ZSH_CONFIG_PATH/keybindings/ctrl-t.zsh             # Fuzzy-find files in subdirectories
+source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-p.zsh       # Fuzzy-find files in subdirectories
 source $ZSH_CONFIG_PATH/keybindings/ctrl-o.zsh             # Fuzzy-find directories in project
 source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-o.zsh       # Fuzzy-find directories in subdir
 source $ZSH_CONFIG_PATH/keybindings/ctrl-g.zsh             # Regexp search in files in project
-source $ZSH_CONFIG_PATH/keybindings/ctrl-f.zsh             # Regexp search in files in subdir
+source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-g.zsh       # Regexp search in files in subdir
 source $ZSH_CONFIG_PATH/keybindings/ctrl-j.zsh             # Fuzzy-find common directories
 source $ZSH_CONFIG_PATH/keybindings/ctrl-h.zsh             # Fuzzy-find all git commits hashes
 source $ZSH_CONFIG_PATH/keybindings/ctrl-r.zsh             # Fuzzy-find history commands
