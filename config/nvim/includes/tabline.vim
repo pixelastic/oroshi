@@ -52,10 +52,9 @@ function! OroshiTabLabel(tabIndex, isCurrentTab)
   let fullPath = expand('#' . bufferId . ':p')
   let basename = fnamemodify(fullPath, ':t')
   let isModified = getbufvar(bufferId, '&mod')
-  " Find the filetypeKey, to color based on the type of file
   let filetypeKey = FiletypeKey(fullPath)
   " Define the icon for the current tab, we'll need it later
-  if a:isCurrentTab == 1 && filetypeKey !=# ''
+  if a:isCurrentTab == 1
     execute 'let icon=$FILETYPE_' . filetypeKey . '_ICON'
   endif
 

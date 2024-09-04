@@ -8,9 +8,12 @@ function! FiletypeKey(fullPath)
   let extension = fnamemodify(a:fullPath, ':e')
   let filetypeKey = toupper(extension)
 
-  " Let's consider executable files without extensions as ZSH files
-  if filetypeKey ==# '' && executable(a:fullPath)
-    let filetypeKey = 'ZSH'
+  " Let's define some filetypeKey for files without extension
+  if filetypeKey ==# ''
+    " zsh function or executable
+    if a:fullPath =~# 'zsh/functions/autoload/' || executable(a:fullPath)
+      let filetypeKey = 'ZSH'
+    endif
   endif
 
   return filetypeKey
