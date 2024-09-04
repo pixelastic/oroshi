@@ -1,4 +1,4 @@
-" [CTRL-F] Regexp search inside of files in current directory
+" [CTRL-Shift-G] Regexp search inside of current directory
 
 " FZF options
 function! FzfRegexpSearchSubdirOptions()
@@ -25,6 +25,6 @@ function! FzfRegexpSearchSubdirSink(selection)
   endfor
 endfunction
 
-nnoremap <silent> <C-F> :call fzf#run({'options': FzfRegexpSearchSubdirOptions(), 'sinklist': function('FzfRegexpSearchSubdirSink') })<CR>
-inoremap <silent> <C-F> <Esc>:call fzf#run({'options': FzfRegexpSearchSubdirOptions(), 'sinklist': function('FzfRegexpSearchSubdirSink') })<CR>
+nnoremap <silent> Ⓖ :call fzf#run({'options': FzfRegexpSearchSubdirOptions(), 'sinklist': function('FzfRegexpSearchSubdirSink') })<CR>
+inoremap <silent> Ⓖ <Esc>:call fzf#run({'options': FzfRegexpSearchSubdirOptions(), 'sinklist': function('FzfRegexpSearchSubdirSink') })<CR>
 " }}}
