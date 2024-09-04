@@ -179,9 +179,16 @@ call s:Highlight('SignColumn', 'NONE', 'terminal')
 call s:Highlight('VertSplit', 'GRAY_9', 'GRAY_9', 'bold')
 " }}}
 " Tabs {{{
-call s:Highlight('TabLine', 'GRAY_4', 'GRAY_9', 'none')     " Tabs
-call s:Highlight('TabLineSel', 'YELLOW', 'GRAY_8', 'bold')  " Current tab
-call s:Highlight('TabLineFill', 'GRAY_8', 'GRAY_9', 'none') " Rest of line
+call s:Highlight('TabLine', 'GRAY_4', 'GRAY_8', 'none')     " Tabs
+call s:Highlight('TabLineSel', 'YELLOW', 'BLACK', 'bold')  " Current tab
+call s:Highlight('TabLineSelSeparator', 'BLACK', 'GRAY_8', 'bold')  " Current tab
+call s:Highlight('TabLineFill', 'GRAY_4', 'GRAY_8', 'none') " Rest of line
+" Coloring the TabLine filetypes
+for key in split($FILETYPES_INDEX, ' ')
+  execute 'let filetypeColor=$FILETYPE_' . key . '_COLOR_NAME'
+  call s:Highlight('TabLineFiletype_' . key, filetypeColor, 'GRAY_8')
+  call s:Highlight('TabLineSelFiletype_' . key, filetypeColor, 'BLACK')
+endfor
 " }}}
 " Cursor {{{
 call s:Highlight('CursorLineNr', 'YELLOW', '', 'bold')
@@ -255,14 +262,12 @@ call s:Highlight('StatusLineGitClean', 'ALIAS_SUCCESS', 'GRAY_8')
 call s:Highlight('StatusLineGitDirty', 'ALIAS_GIT_UNTRACKED', 'GRAY_8', 'bold')
 call s:Highlight('StatusLineGitStaged', 'ALIAS_GIT_TRACKED', 'GRAY_8')
 call s:Highlight('StatusLineCopilot', 'ALIAS_AI_ENABLED', 'GRAY_8')
-call s:Highlight('StatusLineModeCtrlPSeparator', 'RED5', 'GRAY_8')
-call s:Highlight('StatusLineModeCtrlP', 'BLACK', 'RED_5', 'bold')
 call s:Highlight('StatusLineModeInsertSeparator', 'YELLOW', 'GRAY_8')
 call s:Highlight('StatusLineModeInsert', 'BLACK', 'YELLOW', 'bold')
 call s:Highlight('StatusLineModeNormalSeparator', 'BLACK', 'GRAY_8')
 call s:Highlight('StatusLineModeNormal', 'white', 'BLACK')
-call s:Highlight('StatusLineModeSearchSeparator', 'GREEN', 'GRAY_8')
-call s:Highlight('StatusLineModeSearch', 'BLACK', 'GREEN', 'bold')
+call s:Highlight('StatusLineModeSearchSeparator', 'ALIAS_VIM_SEARCH_BACKGROUND', 'ALIAS_VIM_SEARCH_FOREGROUND')
+call s:Highlight('StatusLineModeSearch', 'ALIAS_VIM_SEARCH_FOREGROUND', 'ALIAS_VIM_SEARCH_BACKGROUND', 'bold')
 call s:Highlight('StatusLineModeCommandSeparator', 'TEAL', 'GRAY_8')
 call s:Highlight('StatusLineModeCommand', 'BLACK', 'TEAL', 'bold')
 call s:Highlight('StatusLineModeUnknownSeparator', 'RED', 'white')
@@ -280,7 +285,7 @@ call s:Highlight('StatusLine', 'GRAY_4', 'GRAY_8', 'none')
 " Coloring the StatusLine filetypes
 for key in split($FILETYPES_INDEX, ' ')
   execute 'let filetypeColor=$FILETYPE_' . key . '_COLOR_NAME'
-  call s:Highlight('Filetype_' . key, filetypeColor, 'GRAY_8')
+  call s:Highlight('StatusLineFiletype_' . key, filetypeColor, 'GRAY_8')
 endfor
 " Coloring the StatusLine projects
 for key in split($PROJECTS_INDEX, ' ')

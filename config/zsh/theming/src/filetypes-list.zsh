@@ -27,13 +27,10 @@ FILETYPE_GROUPS[script:icon]=" "
 FILETYPE_GROUPS[script:patterns]="\
   au3 \
   bats \
-  cfg \
-  conf \
   css \
   eot \
   gemspec \
   html \
-  ini \
   jsonl \
   json \
   js \
@@ -63,6 +60,15 @@ FILETYPE_GROUPS[script:patterns]="\
   [Guardfile] \
   [Rakefile] \
   [Vagrantfile] \
+"
+
+# Config files
+FILETYPE_GROUPS[config:color]="YELLOW"
+FILETYPE_GROUPS[config:icon]=" "
+FILETYPE_GROUPS[config:patterns]="\
+  cfg \
+  conf \
+  ini \
   [.envrc] \
   [.fdignore] \
   [.eslintignore] \
@@ -155,6 +161,7 @@ FILETYPE_GROUPS[minor:patterns]="\
   min.js \
   part \
   pid \
+  session \
   [_algolia_api_key] \
 "
 # }}}

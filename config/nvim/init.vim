@@ -20,7 +20,7 @@ source ~/.config/nvim/includes/jumps.vim
 source ~/.config/nvim/includes/search.vim
 source ~/.config/nvim/includes/snippets.vim
 source ~/.config/nvim/includes/split.vim
-source ~/.config/nvim/includes/tabs.vim
+source ~/.config/nvim/includes/tabline.vim
 source ~/.config/nvim/includes/text-wrapping.vim
 source ~/.config/nvim/includes/triggers.vim
 source ~/.config/nvim/includes/typos.vim

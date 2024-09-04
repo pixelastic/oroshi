@@ -5,16 +5,12 @@
 " - With an icon matching the extension
 " - With the filetype as detected by vim if different
 function! FiletypeStatusLine()
-  let extension=expand('%:e')
-  let filetypeKey=toupper(extension)
+  let fullPath=expand('%:p')
+  let filetypeKey=FiletypeKey(fullPath)
 
   " vint: -ProhibitUsingUndeclaredVariable
   execute 'let icon=$FILETYPE_' . filetypeKey . '_ICON'
-  let filetypeStatus=''
-  let filetypeStatus.='%#Filetype_' . filetypeKey . '#'
-  let filetypeStatus.=&filetype
-  let filetypeStatus.=' ' . icon
-  let filetypeStatus.='%*'
+  let filetypeStatus = Colorize(&filetype . ' ' . icon, 'StatusLineFiletype_' . filetypeKey)
   " vint: +ProhibitUsingUndeclaredVariable
 
   return filetypeStatus
