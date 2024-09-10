@@ -18,7 +18,7 @@
 import { _ } from 'golgoth';
 import firost from 'firost';
 
-const tmpDir = path.resolve(os.homedir(), 'local/tmp/kitty');
+const tmpDir = '/tmp/oroshi/kitty';
 const manifest = {};
 const KittyLoad = {
   // The save is the JSON file extracted by kitty-save
@@ -199,7 +199,7 @@ const KittyLoad = {
   },
   /**
    * Put the focus on the last focused window of the last focused tab
-   * @param focusedWindow
+   * @param {number} focusedWindow UUID of the focused window
    **/
   addFocusToScript(focusedWindow) {
     this.kitty('focus-window', {

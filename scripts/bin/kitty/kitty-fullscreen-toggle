@@ -2,7 +2,8 @@
 # Toggle fullscreen in the current kitty tab
 # This should have no effect if there is only one split
 
-local unixSocket="--to unix:/home/tim/local/tmp/kitty/kitty-socket"
+local kittySocketPath=/tmp/oroshi/kitty/kitty-socket
+local unixSocket="--to unix:${kittySocketPath}"
 
 # We extract the current layout and number of splits in one jq pass
 # as something like 3:splits

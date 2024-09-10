@@ -1,10 +1,12 @@
 #!/usr/bin/env zsh
 # Start kitty and restore to previous state
 
+local kittySocketPath=/tmp/oroshi/kitty/kitty-socket
+
 # Start kitty and make it listen to remote commands on this socket
 # This allow remote commands to be sent from outside of kitty itself
 kitty \
-	--listen-on unix:/home/$USER/local/tmp/kitty/kitty-socket \
+	--listen-on unix:$kittySocketPath \
 	--session /home/$USER/.oroshi/config/kitty/startup_session_restore.conf \
 	&
 
@@ -12,12 +14,12 @@ kitty \
 if kitty-layout-load; then
 	# Delete the initial window created by first Kitty invocation
 	kitty @ \
-		--to unix:/home/$USER/local/tmp/kitty/kitty-socket \
+		--to unix:$kittySocketPath \
 		close-window \
 		--match var:OROSHI_RESTORE_UUID=initial
 else
 	kitty @ \
-		--to unix:/home/$USER/local/tmp/kitty/kitty-socket \
+		--to unix:$kittySocketPath \
 		set-tab-title \
 		--match var:OROSHI_RESTORE_UUID=initial \
 		"zsh (failed to restore)"
