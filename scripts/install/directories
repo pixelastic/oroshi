@@ -5,6 +5,7 @@ mkdir -p ~/local/etc
 mkdir -p ~/local/src
 mkdir -p ~/local/bin
 mkdir -p ~/local/tmp
+mkdir -p ~/local/tmp/oroshi
 mkdir -p ~/local/www
 
 mkdir ~/.marks
