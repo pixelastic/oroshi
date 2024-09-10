@@ -1,6 +1,7 @@
 # rm
 alias rmdir='better-rmdir'
 alias rm='trash-put'
+alias tm='trash-put'
 alias rmz='trash-restore'
 
 alias tr?='trash-exists'
