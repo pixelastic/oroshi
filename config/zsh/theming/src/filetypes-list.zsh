@@ -35,6 +35,7 @@ FILETYPE_GROUPS[script:patterns]="\
   jsonl \
   json \
   js \
+  mjs \
   ps1 \
   pug \
   py \
@@ -69,6 +70,7 @@ FILETYPE_GROUPS[config:icon]=" "
 FILETYPE_GROUPS[config:patterns]="\
   cfg \
   conf \
+  csv \
   ini \
   [.envrc] \
   [.fdignore] \
@@ -164,6 +166,13 @@ FILETYPE_GROUPS[minor:patterns]="\
   pid \
   session \
   [_algolia_api_key] \
+"
+
+# Unknown filetypes
+FILETYPE_GROUPS[unknown:color]="RED_4"
+FILETYPE_GROUPS[unknown:icon]=" "
+FILETYPE_GROUPS[unknown:patterns]="\
+  [__UNKNOWN__] \
 "
 # }}}
 

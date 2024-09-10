@@ -16,5 +16,13 @@ function! FiletypeKey(fullPath)
     endif
   endif
 
+  " vint: -ProhibitUsingUndeclaredVariable
+  " if the extension is unknown, we use the unknown type
+  execute 'let filetypeGroup=$FILETYPE_' . filetypeKey . '_GROUP'
+  if filetypeGroup ==# ''
+    let filetypeKey='__UNKNOWN__'
+  endif
+  " vint: +ProhibitUsingUndeclaredVariable
+
   return filetypeKey
 endfunction
