@@ -14,10 +14,30 @@ function pdf-cover-extract() {
 	# Use same path, but as png if no output given
 	[[ $output == "" ]] && output="${fullPath//.pdf/.png}"
 
+	# This command has a lot of edge cases to handle:
+	# -alpha remove
+	# 	This removes all transparency in the output file, forcing it to output
+	# 	text on a white background instead of transparent
+	# -trim
+	# 	Removes any leftover whitespace in the file, forcing it to take as little
+	# 	space as possible.
+	# PNG32:
+	# 	This forces an output as PNG32, to avoid creating PNG8, for the sake of
+	# 	consistency
+	# 2> >(\grep -v '${knownErrorsPattern}' >&2)
+	# 	stderr is passed through a filter, to ignore some errors we know are
+	# 	coming from corrupted PDFs, and there isn't much we can do about that.
+
+	# Known errors that we can ignore
+	local knownErrorsPattern=''
+	knownErrorsPattern+='openjpeg warning\|'
+	knownErrorsPattern+='Short look-up table in the Indexed color space was padded with 0\|'
+	knownErrorsPattern+='Output may be incorrect'
+
 	convert \
 		-alpha remove \
+		-trim \
 		"${fullPath}[0]" \
-		PNG32:$output
-
-	png-trim $output
+		PNG32:$output \
+		2> >(\grep -v "${knownErrorsPattern}" >&2)
 }
