@@ -8,4 +8,4 @@ for pid in ${=kittyPIDs}; do
 done
 
 # Tell kitty to redraw its statusbar
-touch /tmp/oroshi/kitty-refresh
+touch /home/tim/local/tmp/oroshi/kitty-refresh

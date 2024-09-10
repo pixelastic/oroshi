@@ -38,7 +38,7 @@ function fzf-fs-shared-preview() {
 
   # Document preview (pdf, epub, mobi)
   if [[ $filetypeGroup == "document" || $filetypeGroup == "ebook" ]]; then
-    local previewCacheFolder="/tmp/oroshi/fzf/previews/"
+    local previewCacheFolder="${OROSHI_TMP_FOLDER}/fzf/previews/"
     local previewCacheHash=$(file-hash $fullPath);
     local previewCachePath="${previewCacheFolder}/${previewCacheHash}.png"
 

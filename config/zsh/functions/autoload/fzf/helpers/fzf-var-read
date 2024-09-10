@@ -7,7 +7,7 @@ function fzf-var-read() {
 	local key=$1
 	local defaultValue=$2
 
-	local saveFilepath="/tmp/oroshi/fzf/${KITTY_WINDOW_ID}_${key}"
+	local saveFilepath="${OROSHI_TMP_FOLDER}/fzf/${KITTY_WINDOW_ID}_${key}"
 	if [[ -f $saveFilepath ]]; then
 		cat $saveFilepath
 		return 0

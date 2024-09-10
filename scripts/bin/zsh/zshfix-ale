@@ -17,7 +17,7 @@ done
 # ALE expect the result to be output, so we apply zshfix on a temporary copy of
 # the file
 local uuid="$(md5 ${input:a})"
-local tmpFile="/tmp/oroshi/zshfix/${uuid}.zsh"
+local tmpFile="${OROSHI_TMP_FOLDER}/zshfix/${uuid}.zsh"
 rm -f ${tmpFile}
 mkdir -p ${tmpFile:h}
 cp ${input:a} ${tmpFile}

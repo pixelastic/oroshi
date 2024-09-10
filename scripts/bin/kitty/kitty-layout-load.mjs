@@ -18,7 +18,7 @@
 import { _ } from 'golgoth';
 import firost from 'firost';
 
-const tmpDir = '/tmp/oroshi/kitty';
+const tmpDir = '/home/tim/local/tmp/oroshi/kitty';
 const manifest = {};
 const KittyLoad = {
   // The save is the JSON file extracted by kitty-save

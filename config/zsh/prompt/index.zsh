@@ -89,7 +89,7 @@ OROSHI_ASYNCHRONOUS_PROMPT_PARTS=(
 OROSHI_ASYNCHRONOUS_PID=0
 
 # Folder to store the asynchronously generated prompt parts
-OROSHI_ASYNCHRONOUS_SAVE_PATH=/tmp/oroshi/prompt-parts
+OROSHI_ASYNCHRONOUS_SAVE_PATH=${OROSHI_TMP_FOLDER}/prompt-parts
 mkdir -p $OROSHI_ASYNCHRONOUS_SAVE_PATH
 
 # This is the global variable that holds all the prompt parts for display

@@ -29,7 +29,7 @@ local isFix=${#flagFix}
 local stdinFilename=${flagStdinFilename[2]}
 
 # Global variables
-local sandbox=/tmp/oroshi/textlint
+local sandbox=${OROSHI_TMP_FOLDER}/textlint
 local iroriFolder=~/local/www/projects/irori
 local textlintBin="${iroriFolder}/node_modules/.bin/textlint"
 

@@ -403,7 +403,7 @@ _oroshi_init_statusbar()
 # We will periodically check for this beacon, and if present refresh the
 # statusbar
 def _oroshi_check_for_forced_refresh(_=None):  # {{{
-    beaconPath = "/tmp/oroshi/kitty-refresh"
+    beaconPath = "/home/tim/local/tmp/oroshi/kitty-refresh"
 
     # Nothing to do
     if not os.path.exists(beaconPath):

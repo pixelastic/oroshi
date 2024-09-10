@@ -51,8 +51,8 @@ function fzf-packages-apt-source-generate() {
   done
 
   # Write the file to disk
-  local cacheDestination=/tmp/oroshi/fzf/packages-apt
-  local cacheInstalledDestination=/tmp/oroshi/fzf/packages-apt-installed
+  local cacheDestination=${OROSHI_TMP_FOLDER}/fzf/packages-apt
+  local cacheInstalledDestination=${OROSHI_TMP_FOLDER}/fzf/packages-apt-installed
 
   mkdir -p ${cacheDestination:a:h}
   echo "${(F)output}" > $cacheDestination

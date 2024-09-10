@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # Start kitty and restore to previous state
 
-local kittySocketPath=/tmp/oroshi/kitty/kitty-socket
+local kittySocketPath=/home/tim/local/tmp/oroshi/kitty/kitty-socket
 
 # Start kitty and make it listen to remote commands on this socket
 # This allow remote commands to be sent from outside of kitty itself

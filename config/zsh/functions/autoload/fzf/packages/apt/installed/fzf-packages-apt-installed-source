@@ -1,7 +1,7 @@
 # Returns a list of all possible packages to install
 function fzf-packages-apt-installed-source() {
 
-  local cacheDestination=/tmp/oroshi/fzf/packages-apt-installed
+  local cacheDestination=${OROSHI_TMP_FOLDER}/fzf/packages-apt-installed
 
   # File too old? We regenerate
   [[ ! -n ${cacheDestination}(#qN.mh+20) ]] && fzf-packages-apt-source-generate
