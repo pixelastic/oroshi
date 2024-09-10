@@ -17,6 +17,6 @@ function png-trim() {
 		convert \
 			$inputPath \
 			-trim \
-			$inputPath
+			PNG32:$inputPath
 	done
 }

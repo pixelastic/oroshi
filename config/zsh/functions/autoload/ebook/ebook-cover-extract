@@ -1,4 +1,4 @@
-# Extract the cover of the ebooke
+# Extract the cover of the ebook
 # Usage:
 # $ ebook-cover-extract ./book.epub              # Saves as ./book.jpg
 # $ ebook-cover-extract ./book.epub  ./file.jpg  # Saves as ./file.jpg

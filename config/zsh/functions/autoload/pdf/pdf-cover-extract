@@ -1,0 +1,23 @@
+# Extract the cover of the pdf
+# Usage:
+# $ pdf-cover-extract ./file.pdf              # Saves as ./book.jpg
+# $ pdf-cover-extract ./file.pdf  ./file.jpg  # Saves as ./file.jpg
+function pdf-cover-extract() {
+	local input="$1"
+	local output="$2"
+
+	local fullPath=${input:a}
+
+	# Stop if no input
+	[[ $input == "" ]] && return 1
+
+	# Use same path, but as png if no output given
+	[[ $output == "" ]] && output="${fullPath//.pdf/.png}"
+
+	convert \
+		-alpha remove \
+		"${fullPath}[0]" \
+		PNG32:$output
+
+	png-trim $output
+}

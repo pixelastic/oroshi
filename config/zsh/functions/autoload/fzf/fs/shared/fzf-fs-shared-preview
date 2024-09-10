@@ -48,8 +48,7 @@ function fzf-fs-shared-preview() {
 
       # For pdf, we extract the first page
       if [[ $filetypeGroup == "document" ]]; then
-        convert "${fullPath}[0]" $previewCachePath
-        png-trim $previewCachePath
+        pdf-cover-extract "$fullPath" $previewCachePath
       fi
       # For ebooks, we extract the cover
       if [[ $filetypeGroup == "ebook" ]]; then
