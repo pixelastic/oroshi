@@ -26,7 +26,7 @@ function notion-icon-auto() {
 	fi
 
 	# Download the preview image
-	local previewFilepath=~/local/tmp/notion/${pageId}.png
+	local previewFilepath=${OROSHI_TMP_FOLDER}/notion/${pageId}.png
 	wget --quiet "$previewUrl" -O "$previewFilepath"
 
 	# Resize it so it takes less space
