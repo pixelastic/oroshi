@@ -9,7 +9,7 @@ vnoremap L :!sort-by-length<CR>
 vnoremap u :sort u<CR>
 
 " Randomize lines
-vnoremap * :!shuf<CR>
+vnoremap r :!shuf<CR>
 
 " Number lines
 vnoremap n :!cat -n<CR>
