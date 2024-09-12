@@ -11,7 +11,7 @@ function! FiletypeKey(fullPath)
   " Let's define some filetypeKey for files without extension
   if filetypeKey ==# ''
     " zsh function or executable
-    if a:fullPath =~# 'zsh/functions/autoload/' || executable(a:fullPath)
+    if a:fullPath =~# 'zsh/functions/autoload/' || a:fullPath =~# 'zsh/completion/compdef' || executable(a:fullPath)
       let filetypeKey = 'ZSH'
     endif
   endif

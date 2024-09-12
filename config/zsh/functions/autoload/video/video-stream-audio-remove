@@ -8,7 +8,7 @@ function video-stream-audio-remove() {
 	if [[ $streamsToRemove == "" ]]; then
 		echo "Usage:"
 		echo "video-stream-audio-remove {pathToFile} {streamIndex} {streamIndex} ..."
-		exit 0
+		return 0
 	fi
 
 	local fileOutputTmp=${fileInput:a:r}.tmp.${fileInput:e}
@@ -25,6 +25,8 @@ function video-stream-audio-remove() {
 
 		ffmpegArguments+=(-map 0:a:${index})
 	done
+
+	echo "Removing audio channel(s). Please wait..."
 
 	ffmpeg \
 		-i $fileInput \

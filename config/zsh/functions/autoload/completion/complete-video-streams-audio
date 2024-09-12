@@ -1,7 +1,7 @@
 # Display list of all audio streams of the specified file
 function complete-video-streams-audio() {
   local inputFile=$1
-  local rawList="$(video-stream-audio-list-raw $inputFile)"
+  local rawList="$(video-stream-audio-list-raw "$inputFile")"
 
   for rawLine in ${(f)rawList}; do
     local split=(${(@s/▮/)rawLine})

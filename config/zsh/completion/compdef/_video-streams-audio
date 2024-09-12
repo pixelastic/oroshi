@@ -1,4 +1,5 @@
 #compdef
+declare words
 
 # Suggest all audio streams
 # This is a complex one as the second and more arguments depends on the value of
@@ -12,9 +13,13 @@ function _video-streams-audio() {
 	# Any other argument, suggest the list of audio streams from the file
 	# selected above
 	if [[ ! $CURRENT -eq 2 ]]; then
+		# Parse the previous word to get the selected video file as an absolute
+		# path, without escaping
 		local selectedVideo=$words[2]
-		local suggestions=(${(f)"$(complete-video-streams-audio ${selectedVideo})"})
+		selectedVideo=${selectedVideo:a}
+		selectedVideo=${selectedVideo//\\/}
 
+		local suggestions=(${(f)"$(complete-video-streams-audio "${selectedVideo:a}")"})
 		_describe -V "$(completion-header $COLOR_ALIAS_VIDEO_STREAM_AUDIO $COLOR_BLACK '  Audio Streams ')" suggestions
 	fi
 

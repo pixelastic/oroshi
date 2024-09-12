@@ -2,9 +2,10 @@
 # Usage:
 # $ video-stream-audio-list-raw ./path/video.mp4
 function video-stream-audio-list-raw() {
+  local inputFile=$1
   # First, we get the list of all audio streams, with their code and language
 	local rawOutput=$(
-    video-info $1 | jq -r '
+    video-info "$inputFile" | jq -r '
       .streams[] |
       select(.codec_type == "audio") |
       "\(.codec_name)▮\(.tags.language)"'
