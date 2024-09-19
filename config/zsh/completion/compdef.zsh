@@ -167,11 +167,14 @@ compdef _yarn-dependencies-recursive \
 	yarn-dependency-why
 compdef _yarn-global-packages \
 	yarn-global-remove
+compdef _yarn-link-classic \
+	yarn-link-classic-remove
+
 compdef _yarn-link-local \
 	yarn-link-remove
 compdef _yarn-link-global \
-	yarn-link \
-	yarn-link-remove-global
+	yarn-link
+
 compdef _yarn-lintable-files \
 	yarn-run-lint \
 	yarn-run-lint-fix

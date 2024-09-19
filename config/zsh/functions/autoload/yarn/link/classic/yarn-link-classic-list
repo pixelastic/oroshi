@@ -1,0 +1,39 @@
+# List all "registered" global modules
+# Note: This is only relevant when using Yarn v1
+function yarn-link-classic-list() {
+	# Stop if yarn isn't installed
+	[[ ! $commands[yarn] ]] && return 1
+
+	# Stop if not using yarn classic
+	if yarn-version-is-berry; then
+		echo "⚠ This function is not supported in yarn Berry"
+		echo "Yarn Berry (2+) does not have a concept of registered list of modules to link"
+		return 1
+	fi
+
+  local rawList="$(yarn-link-classic-list-raw --with-descriptions)"
+
+  # Build the output
+  local output=""
+  for rawLine in ${(f)rawList}; do
+    local row=""
+
+    local split=(${(s/▮/)rawLine})
+    local moduleName=$split[1]
+    local moduleDescription=$split[2]
+
+    # Name
+    row+="$(colorize " ${moduleName}" $COLOR_ALIAS_YARN_LINK_CLASSIC)▮"
+
+    # Description
+    row+="$(colorize "$moduleDescription" $COLOR_ALIAS_YARN_PACKAGE_DESCRIPTION)▮"
+
+    output+="$row\n"
+  done
+
+  # Output as columns
+  echo $output | column \
+    --separator "▮" \
+    --table \
+    --table-noheadings
+}

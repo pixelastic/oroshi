@@ -1,0 +1,33 @@
+# Remove a module from the list of registered modules ready to be used for linking
+# Note: This only works with Yarn Classic (v1)
+# Usage:
+# $ yarn-link-classic-remove reddinx         # Removes reddinx from the list of registered packages
+# $ yarn-link-classic-remove reddinx firost  # Removes reddinx and firost
+# $ yarn-link-classic-create                 # Removes current module from the list
+function yarn-link-classic-remove() {
+	local registerPath=~/.config/yarn/link
+
+	# Stop if not using yarn classic
+	if yarn-version-is-berry; then
+		echo "⚠ This function is not supported in yarn Berry"
+		echo "Yarn Berry (2+) does not have a concept of registered list of modules to link"
+		return 1
+	fi
+
+	local moduleNames=($@)
+	# If no module passed, we remove the current one
+	if [[ $moduleNames == "" ]]; then
+		local currentRoot="$(yarn-root)"
+		moduleNames=("$(jq -r ".name" ${currentRoot}/package.json)")
+	fi
+
+	# Iterate through all modules to remove
+	for moduleName in $moduleNames; do
+		# Skip if the module is not in the list of registered modules
+		! yarn-link-classic-exists $moduleName && continue
+
+		# Remove it
+		rm -rf "${registerPath:?}/${moduleName}"
+		echo "✔ ${moduleName} removed"
+	done
+}

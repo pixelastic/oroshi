@@ -1,0 +1,11 @@
+# Checks if a package has been added to the registered list of packages that
+# can be linked
+# Note: This only works with Yarn Classic (v1)
+# $ yarn-link-classic-exists reddinx      # True if reddinx is added to the list of registered packages
+function yarn-link-classic-exists() {
+	local moduleName="$1"
+
+	local registerPath=~/.config/yarn/link/${moduleName}
+	[[ -e $registerPath ]] && return 0
+	return 1
+}

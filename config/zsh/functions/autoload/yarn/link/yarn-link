@@ -1,6 +1,6 @@
 # Link a local module to be used in place of a dependency
 # Usage:
-# $ yarn-link ../path/to/aberlaas   # Uses local version of aberlaas instead of dependency
+# $ yarn-link ../path/to/aberlaas-monorepo/lib   # Uses local version of aberlaas instead of dependency
 #
 # Note that the behavior of the `yarn link` command changed between Yarn Classic
 # (v1) and Yarn Berry (v2+). In Classic, one needed to "register" a module for
@@ -13,7 +13,6 @@
 #
 # This is why I came up with my own implementation of linking in Berry instead
 # of using the default commands. I kept the nice API DX though.
-# Link modules specified as argument here
 function yarn-link() {
 	local hostRoot="$(yarn-root)"
 

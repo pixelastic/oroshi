@@ -1,0 +1,14 @@
+# List modules registered for linking in Yarn Classic (v1)
+function complete-yarn-link-classic() {
+
+  local rawList="$(yarn-link-classic-list-raw --with-descriptions)"
+  for rawLine in ${(f)rawList}; do
+    local split=(${(s/▮/)rawLine})
+    local moduleName=$split[1]
+    local moduleDescription=$split[2]
+
+    echo "${moduleName}:${moduleDescription}"
+
+  done
+
+}

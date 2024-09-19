@@ -1,0 +1,67 @@
+# List all "registered" global modules in a raw format
+# Note: This is only relevant when using Yarn v1
+function yarn-link-classic-list-raw() {
+  zparseopts -E -D \
+    -with-descriptions=flagWithDescriptions
+
+  local isWithDescriptions=${#flagWithDescriptions}
+
+	# Stop if yarn isn't installed
+	[[ ! $commands[yarn] ]] && return 1
+
+	# Stop if not using yarn classic
+	if yarn-version-is-berry; then
+		echo "⚠ This function is not supported in yarn Berry"
+		echo "Yarn Berry (2+) does not have a concept of registered list of modules to link"
+		return 1
+	fi
+
+	# Variables to fill
+	local moduleNames=()
+  typeset -A modulePaths=()
+  typeset -A moduleDescriptions=()
+
+	# Getting all module names
+	local registerPath=~/.config/yarn/link
+	for rawLink in ${registerPath}/*; do
+		local moduleName=${rawLink:t}
+
+		# If it doesn't have a namespace, we add it directly
+		if [[ $moduleName != @* ]]; then
+			moduleNames+=($moduleName)
+			modulePaths[$moduleName]="${registerPath}/${moduleName}"
+			continue
+		fi
+
+		# With a namespace, we add each submodule
+		for rawSubLink in ${registerPath}/${moduleName}/*; do
+			# Failsafe in case the @parent folder has no child, then the above glob
+			# will return the raw path with an ending *. We skip that possibility
+			[[ $rawSubLink == *\* ]] && continue
+
+			local submoduleName=${rawSubLink:t}
+			moduleNames+=(${moduleName}/${submoduleName})
+			modulePaths[$moduleName]="${registerPath}/${moduleName}/${submoduleName}"
+		done
+	done
+	
+	# Stop if no module linked
+	[[ ${moduleNames} == "" ]] && return 0
+
+	# Enriching with description
+  if [[ $isWithDescriptions == "1" ]]; then
+    local rawModuleDescriptions="$(yarn-package-description $modulePaths)"
+    for rawModuleDescription in ${(f)rawModuleDescriptions}; do
+      local split=(${(s/▮/)rawModuleDescription})
+      local moduleName=$split[1]
+      local moduleDescription=$split[2]
+      moduleDescriptions[$moduleName]=$moduleDescription
+    done
+	fi
+	
+  # Output the results
+  for moduleName in ${(o)moduleNames}; do
+    local moduleDescription=$moduleDescriptions[$moduleName]
+    echo "${moduleName}▮${moduleDescription}"
+  done
+}

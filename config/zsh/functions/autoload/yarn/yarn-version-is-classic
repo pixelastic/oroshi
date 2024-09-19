@@ -1,0 +1,6 @@
+# Returns true if we are using yarn classic (aka. yarn 1)
+# Usage:
+# $ yarn-version-is-classic           # true if using yarn 1
+function yarn-version-is-classic() {
+	yarn --version | grep --quiet '^1'
+}

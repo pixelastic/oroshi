@@ -1,0 +1,36 @@
+# Register a module to be used as a link later
+# Note: This only works with Yarn Classic (v1)
+# Usage:
+# $ yarn-link-classic-create ./path/to/reddinx   # Adds reddinx to the list of registered packages
+# $ yarn-link-classic-create                     # Adds current module to the list
+function yarn-link-classic-create() {
+	# Stop if not using yarn classic
+	if yarn-version-is-berry; then
+		echo "⚠ This function is not supported in yarn Berry"
+		echo "Yarn Berry (2+) does not have a concept of registered list of modules to link"
+		return 1
+	fi
+
+	# Store current path, so we can get back there later
+	local currentPath="$(pwd)"
+
+	# Store path to yarn classic bin
+	local yarnClassicBinary="$(yarn --version >/dev/null && which yarn)"
+
+	# Find which package path to register
+	local modulePath=${1:a}
+	[[ $modulePath == "" ]] && modulePath="$(yarn-root)"
+
+	# We try to move to the defined folder
+	if ! cd $modulePath; then
+		echo "⚠ Folder $modulePath does not exist"
+		return 1
+	fi
+
+	# We add it to the list, using the Yarn Classic (v1) binary that called this
+	# very script. Moving to the target module folder might trigger nvm to load
+	# a new yarn, and we want to keep the v1
+	$yarnClassicBinary link
+
+	cd $currentPath || return
+}

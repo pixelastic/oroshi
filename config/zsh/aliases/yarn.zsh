@@ -37,6 +37,12 @@ alias yll='yarn-link-list'
 alias ylr='yarn-link-reload'
 alias yl='yarn-link'
 
+# Linked packages (Classic)
+alias ylcl='yarn-link-classic-list'
+alias ylcc='yarn-link-classic-create'
+alias ylc?='yarn-link-classic-exists'
+alias ylcR='yarn-link-classic-remove'
+
 # Scripts
 alias yrbp='yr build:prod'
 alias yrbw='yr build:watch'
