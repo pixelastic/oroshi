@@ -14,8 +14,13 @@ function yarn-link-list-raw() {
   local isWithDescriptions=${#flagWithDescriptions}
   local includeWorkspaceRoot=${#flagIncludeWorkspaceRoot}
 
-  # Discard --include-workspace-root if already in the root
-  yarn-is-workspace-root && includeWorkspaceRoot="0"
+  # If --include-workspace-root is set, we double check that it makes sense, to
+  # avoid listing the same links twice
+  if [[ $includeWorkspaceRoot == "1" ]]; then
+    # If we're not in a monorepo, or if we already are in the root, we turn it
+    # back off
+    ( (! yarn-is-monorepo) || yarn-is-workspace-root) && includeWorkspaceRoot="0"
+  fi
 
   # Variables to fill
   local linkNames=()
