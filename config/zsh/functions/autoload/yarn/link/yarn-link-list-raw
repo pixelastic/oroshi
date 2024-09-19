@@ -3,38 +3,38 @@
 # $ yarn-link-list-raw                          # List of local modules with moduleName▮type▮
 # $ yarn-link-list-raw --with-descriptions      # List of moduleName▮type▮descriptions
 # $ yarn-link-list-raw --include-workspace-root # Include links in the workspace root
-# $ yarn-link-list-raw --global                 # List of global modules
 function yarn-link-list-raw() {
   # Stop if yarn not available
   [[ ! $commands[yarn] ]] && return 1
 
   zparseopts -E -D \
-    -global=flagGlobal \
     -with-descriptions=flagWithDescriptions \
     -include-workspace-root=flagIncludeWorkspaceRoot
 
-  local isGlobal=${#flagGlobal}
   local isWithDescriptions=${#flagWithDescriptions}
   local includeWorkspaceRoot=${#flagIncludeWorkspaceRoot}
 
+  # Discard --include-workspace-root if already in the root
+  yarn-is-workspace-root && includeWorkspaceRoot="0"
 
   # Variables to fill
-  local moduleNames=()
-  typeset -A moduleTypes=()
-  typeset -A moduleDescriptions=()
-  typeset -A modulePaths=()
+  local linkNames=()
+  typeset -A linkTypes=()
+  typeset -A linkDescriptions=()
+  typeset -A linkPaths=()
 
-  # populateLocalLinkList {{{
-  # Populate the module variables with values from the locally linked modules
+  # populateLinkList {{{
+  # Populate the module variables (names, types, paths, descriptions) based on
+  # the symlinks in node_modules
   function populateLocalLinkList() {
     # This prevents zsh from displaying a warning if the node_modules/@* does not
     # match anything
     setopt +o nomatch
 
     # We look for modules from the root, or the passed argument
-    local packageRoot="${1:-$(yarn-root)}"
+    local packageRoot="$1"
     local node_modules="${packageRoot}/node_modules"
-    local linkedModules="$(find \
+    local rawModules="$(find \
         $node_modules \
         $node_modules/@* \
         -maxdepth 1 \
@@ -45,86 +45,52 @@ function yarn-link-list-raw() {
 
 
     # Find types of each module
-    for rawLine in ${(f)linkedModules}; do
+    for rawLine in ${(f)rawModules}; do
       local split=(${(s/:/)rawLine})
-      local moduleName=$split[1]
-      local modulePath=$split[2]
-      if [[ $modulePath[1] == '.' ]]; then
-        modulePath="${node_modules}/${split[2]}"
-        modulePath=${modulePath:a}
+      local linkName=$split[1]
+      local linkPath=$split[2]
+      # We convert relative paths to absolute ones
+      if [[ $linkPath[1] == '.' ]]; then
+        linkPath="${node_modules}/${split[2]}"
+        linkPath=${linkPath:a}
       fi
 
-      # Check if local or global module
-      local moduleType='global'
-      [[ $modulePath == ${packageRoot}* ]] && moduleType='local'
+      local linkType="$(yarn-link-type $linkPath)"
 
-      moduleNames+=($moduleName)
-      modulePaths[$moduleName]=$modulePath
-      moduleTypes[$moduleName]=$moduleType
-    done
-  }
-  # }}}
-  # populateGlobalLinkList {{{
-  # Populate the module variables with values from the globally available modules
-  function populateGlobalLinkList() {
-    local linkDirectory=~/.config/yarn/link
-
-    # Getting all module names
-    for rawLink in ${linkDirectory}/*; do
-      local moduleName=${rawLink:t}
-
-      # Without namespace
-      if [[ $moduleName != @* ]]; then
-        moduleNames+=($moduleName)
-        continue
-      fi
-
-      # With namespace
-      for rawSubLink in ${linkDirectory}/${moduleName}/*; do
-        local submoduleName=${rawSubLink:t}
-        moduleNames+=(${moduleName}/${submoduleName})
-      done
-    done
-
-    # Saving their type and path
-    for moduleName in $moduleNames; do
-      moduleTypes[$moduleName]="global"
-      modulePaths[$moduleName]="${linkDirectory}/${moduleName}"
+      linkNames+=($linkName)
+      linkPaths[$linkName]=$linkPath
+      linkTypes[$linkName]=$linkType
     done
   }
   # }}}
 
-  # Get the list either from locally linked modules, or globally available
-  [[ $isGlobal == "0" ]] && populateLocalLinkList
-  [[ $isGlobal == "1" ]] && populateGlobalLinkList
+  # Add all links from the root
+  populateLocalLinkList "$(yarn-root)"
 
-  # If --include-workspace-root, we also add the local modules from the root
-  if [[ $isGlobal == "0" && $includeWorkspaceRoot == "1" ]]; then
-    if ! yarn-is-workspace-root; then
-      local workspaceRoot="$(yarn-root --force)"
-      populateLocalLinkList $workspaceRoot
-    fi
+  # If --include-workspace-root, we also add the links from the root
+  if [[ $includeWorkspaceRoot == "1" ]]; then
+    populateLocalLinkList "$(yarn-root --force)"
   fi
 
   # Stop if no module linked
-  [[ ${moduleNames} == "" ]] && return 0
+  [[ ${linkNames} == "" ]] && return 0
 
   # Find description of all modules
   if [[ $isWithDescriptions == "1" ]]; then
-    local rawModuleDescriptions="$(yarn-package-description $modulePaths)"
-    for rawModuleDescription in ${(f)rawModuleDescriptions}; do
-      local split=(${(s/▮/)rawModuleDescription})
-      local moduleName=$split[1]
-      local moduleDescription=$split[2]
-      moduleDescriptions[$moduleName]=$moduleDescription
+    local rawLinkDescriptions="$(yarn-package-description $linkPaths)"
+    for rawLinkDescription in ${(f)rawLinkDescriptions}; do
+      local split=(${(s/▮/)rawLinkDescription})
+      local linkName=$split[1]
+      local linkDescription=$split[2]
+      linkDescriptions[$linkName]=$linkDescription
     done
   fi
 
   # Output the results
-  for moduleName in ${(o)moduleNames}; do
-    local moduleType=$moduleTypes[$moduleName]
-    local moduleDescription=$moduleDescriptions[$moduleName]
-    echo "${moduleName}▮${moduleType}▮${moduleDescription}"
+  for linkName in ${(o)linkNames}; do
+    local linkType=$linkTypes[$linkName]
+    local linkDescription=$linkDescriptions[$linkName]
+    echo "${linkName}▮${linkType}▮${linkDescription}"
   done
 
   return 0

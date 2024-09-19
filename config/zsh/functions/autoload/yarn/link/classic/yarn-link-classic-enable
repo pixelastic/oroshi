@@ -1,0 +1,34 @@
+# Link a previously registered module into the current project
+# Note: This only works with Yarn Classic (v1)
+# Usage:
+# $ yarn-link-classic-enable reddinx         # Links reddinx into the current project
+# $ yarn-link-classic-enable reddinx firost  # Links reddinx and firost
+function yarn-link-classic-enable() {
+	# Stop if not using yarn classic
+	if yarn-version-is-berry; then
+		echo "⚠ This function is not supported in yarn Berry"
+		echo "Yarn Berry (2+) does not have a concept of registered list of modules to link"
+		return 1
+	fi
+
+	local linkNames=($@)
+	# If no module passed, we remove the current one
+	if [[ $linkNames == "" ]]; then
+		echo "⚠ You need to pass at least one package to link"
+		return 1
+	fi
+
+	# Module linking only works from the project root
+	local projectRoot="$(yarn-root)"
+	cd $projectRoot || return
+
+	# Iterate through all modules to enable
+	for linkName in $linkNames; do
+		# Skip if the module is already enabled
+		yarn-link-exists $linkName && continue
+
+		# Add it
+		yarn link $linkName >/dev/null
+		echo "✔ ${linkName} linked"
+	done
+}

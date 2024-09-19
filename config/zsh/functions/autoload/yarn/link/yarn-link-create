@@ -1,0 +1,40 @@
+# Create a "fake" link between the current repository and an external module on
+# disk
+# This isn't using the official Yarn Berry link methods, as those updates the
+# content of package.json and I only want a silent symlink, so I do the symlink
+# manually here
+# Usage:
+# $ yarn-link-create ./path/to/module   # Link current project to module
+function yarn-link-create() {
+	local modulePath="${1:a}"
+	local moduleName="$(yarn-package-name "$modulePath")"
+
+	if yarn-link-exists ${moduleName}; then
+		echo "✗ ${moduleName} is already linked"
+		return 1
+	fi
+
+	local hostRoot="$(yarn-root)"
+	local nodeModulesFolder="${hostRoot}/node_modules"
+
+	# Create a symlink in node_modules
+	rm -rf "${nodeModulesFolder:?}/${moduleName}"
+	ln -fs ${modulePath} "${nodeModulesFolder}/${moduleName}"
+	echo "Symlinking ./node_modules/${moduleName} to ${modulePath}"
+
+	# Also symlink the binaries
+	local moduleBinaries="$(yarn-package-binaries "$modulePath")"
+	[[ $moduleBinaries == "" ]] && return
+
+	for rawLine in ${(f)moduleBinaries}; do
+		local split=(${(@s/▮/)rawLine})
+		local binaryName=$split[1]
+		local binaryPath=$split[2]
+
+		rm -f ${nodeModulesFolder}/.bin/${binaryName}
+		ln -fs \
+			../${moduleName}/${binaryPath} \
+			${nodeModulesFolder}/.bin/${binaryName}
+		echo "Symlinking local binary ${binaryName}"
+	done
+}

@@ -1,0 +1,17 @@
+# Check if a given module is already linked in the project
+# Usage:
+# $ yarn-link-exists reddinx   # false if not a linked project
+function yarn-link-exists() {
+  local linkName=$1
+  
+  # Check all links one by one to see if one matches
+  local rawList="$(yarn-link-list-raw --with-descriptions)"
+  for rawLine in ${(f)rawList}; do
+    local split=(${(s/▮/)rawLine})
+    local thisLinkName=$split[1]
+    [[ $linkName == "$thisLinkName" ]] && return 0
+  done
+
+  # Can't find anything
+  return 1
+}

@@ -1,8 +1,8 @@
 #compdef
 
 # Suggest Yarn Classic (v1) modules registered for linking
-function _yarn-link-classic() {
-  local suggestions=(${(f)"$(complete-yarn-link-classic)"})
+function _yarn-link-classic-all() {
+  local suggestions=(${(f)"$(complete-yarn-link-classic-all)"})
 
   _describe -V "$(completion-header $COLOR_ALIAS_YARN_LINK_CLASSIC $COLOR_WHITE '  Yarn Classic (v1) registered modules for linking ')" suggestions
   return

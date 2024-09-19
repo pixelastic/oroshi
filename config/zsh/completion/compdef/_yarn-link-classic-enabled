@@ -1,0 +1,9 @@
+#compdef
+
+# Suggest Yarn Classic (v1) modules already enabled
+function _yarn-link-classic-enabled() {
+  local suggestions=(${(f)"$(complete-yarn-link-classic-enabled)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_YARN_LINK_CLASSIC $COLOR_WHITE '  Yarn links ')" suggestions
+  return
+}

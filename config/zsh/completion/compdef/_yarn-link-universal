@@ -1,0 +1,15 @@
+#compdef
+
+# Triggered when trying to add a new link
+function _yarn-link-universal() {
+	# The completion will be different based on the Yarn version used:
+	# - Classic (v1): We suggest the links already registered, but not yet enabled
+	# - Berry (v2+): We suggest classical folder path
+
+	if yarn-version-is-classic; then
+		_yarn-link-classic-disabled
+		return
+	fi
+
+	_directories -W $PWD
+}

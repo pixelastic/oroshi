@@ -1,0 +1,19 @@
+# Return a list of all binaries defined for a given package
+# Usage:
+# $ yarn-package-binaries ./path/to/package    # binaryName▮binaryPath
+function yarn-package-binaries() {
+	local inputPath=${1:a}
+	local packageRoot="$(yarn-root "$inputPath")"
+
+	jq -r \
+		'if .bin|type=="null" then 
+			empty 
+		else
+			if .bin|type=="string" then
+				"\(.name)▮\(.bin)"
+			else 
+				.bin|to_entries[]|"\(.key)▮\(.value)" 
+			end
+		end' \
+		${packageRoot}/package.json
+}

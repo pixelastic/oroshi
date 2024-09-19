@@ -2,6 +2,7 @@
 # Add icons for each known yarn linked project
 function oroshi-prompt-populate:yarn_link() {
   OROSHI_PROMPT_PARTS[yarn_link]=""
+  return
   [[ $GIT_DIRECTORY_IS_REPOSITORY == 0 ]] && return
 
   local linkedModules="$(yarn-link-list-raw --include-workspace-root)"

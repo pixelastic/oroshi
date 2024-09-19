@@ -1,8 +1,6 @@
 # Link a local module to be used in place of a dependency
-# Usage:
-# $ yarn-link ../path/to/aberlaas-monorepo/lib   # Uses local version of aberlaas instead of dependency
 #
-# Note that the behavior of the `yarn link` command changed between Yarn Classic
+# Note that the behavior of the raw `yarn link` command changed between Yarn Classic
 # (v1) and Yarn Berry (v2+). In Classic, one needed to "register" a module for
 # linking, then linking it. In Berry, one only need to pass the path to the
 # module.
@@ -11,62 +9,26 @@
 # change the content of package.json to reflect this linking mechanism, while
 # this is something I don't want to commit and keep local.
 #
-# This is why I came up with my own implementation of linking in Berry instead
-# of using the default commands. I kept the nice API DX though.
+# This script and its siblings are a way to abstract the differences between
+# Classic and Berry under a common DX API.
+#
+# Usage:
+# $ yarn-link ../path/to/aberlaas-monorepo/lib   # Uses local version of aberlaas instead of dependency
 function yarn-link() {
-	local hostRoot="$(yarn-root)"
-
 	local modulePath="${1:a}"
-	local moduleName="$(jq -r ".name" ${modulePath}/package.json)"
 
-	# Classic
-	if ! yarn-version-is-berry; then
-		# Register module if not already registered
-		if !yarn-link-exists-global $moduleName; then
-			cd $modulePath || return
-			yarn link
-		fi
+	# If we're using Yarn Classic (v1), it has it's own flow
+	# 1. Register the destination in the list of linkable modules
+	# 2. Actually link the source to the destination
+	if yarn-version-is-classic; then
+		local moduleName="$(yarn-package-name "$modulePath")"
 
-		# Link module to here
-		cd $hostRoot || return
-		yarn link $moduleName
-		return 0
+		yarn-link-classic-create $modulePath
+		yarn-link-classic-enable $moduleName
+		return
 	fi
 
-	# Berry
-	# Make a symlink in node_modules
-	rm -rf ${hostRoot}/node_modules/${moduleName}
-	ln -fs \
-		${modulePath} \
-		${hostRoot}/node_modules/${moduleName}
-	echo "Symlinking ./node_modules/${moduleName} to ${modulePath}"
-
-	# Add the binaries
-	local moduleBinaries="$(jq -r \
-		'if .bin|type=="null" then 
-			empty 
-		else
-			if .bin|type=="string" then
-				"\(.name)▮\(.bin)"
-			else 
-				.bin|to_entries[]|"\(.key)▮\(.value)" 
-			end
-		end' \
-		${modulePath}/package.json
-	)"
-
-	# Stop if no binary
-	[[ $moduleBinaries == "" ]] && return
-
-	for rawLine in ${(f)moduleBinaries}; do
-		local split=(${(@s/▮/)rawLine})
-		local binaryName=$split[1]
-		local binaryPath=$split[2]
-		rm -f ${hostRoot}/node_modules/.bin/${binaryName}
-		ln -fs \
-			../${moduleName}/${binaryPath} \
-			${hostRoot}/node_modules/.bin/${binaryName}
-		echo "Symlinking local binary ${binaryName}"
-	done
-
+	# If using Yarn Berry (v2+), we only need to pass the path to the linked
+	# module. We will create all the required symlinks
+	yarn-link-create $modulePath
 }

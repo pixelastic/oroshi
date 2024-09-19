@@ -23,7 +23,7 @@ function yarn-link-classic-list() {
     local moduleDescription=$split[2]
 
     # Name
-    row+="$(colorize " ${moduleName}" $COLOR_ALIAS_YARN_LINK_CLASSIC)▮"
+    row+="$(yarn-link-colorize "$moduleName" classic --with-icon)▮"
 
     # Description
     row+="$(colorize "$moduleDescription" $COLOR_ALIAS_YARN_PACKAGE_DESCRIPTION)▮"

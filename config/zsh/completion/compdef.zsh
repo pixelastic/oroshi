@@ -167,20 +167,26 @@ compdef _yarn-dependencies-recursive \
 	yarn-dependency-why
 compdef _yarn-global-packages \
 	yarn-global-remove
-compdef _yarn-link-classic \
-	yarn-link-classic-remove
-
-compdef _yarn-link-local \
-	yarn-link-remove
-compdef _yarn-link-global \
-	yarn-link
-
 compdef _yarn-lintable-files \
 	yarn-run-lint \
 	yarn-run-lint-fix
 compdef _yarn-testable-files \
 	yarn-run-test \
 	yarn-run-test-watch
+# Yarn links
+# => For Yarn Classic (v1)
+compdef _yarn-link-classic-all \
+	yarn-link-classic-remove
+compdef _yarn-link-classic-disabled \
+	yarn-link-classic-enable
+compdef _yarn-link-classic-enabled \
+	yarn-link-classic-disable
+# => For wrapper on top of both versions
+compdef _yarn-link-universal \
+	yarn-link
+compdef _yarn-link-universal-enabled \
+	yarn-link-remove
+
 # }}}
 # JSON {{{
 compdef '_files -g "*.json"' \

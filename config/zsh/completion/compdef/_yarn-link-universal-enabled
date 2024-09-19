@@ -1,0 +1,20 @@
+#compdef
+
+# Suggest all links enabled in the current project
+function _yarn-link-universal-enabled() {
+	# The completion will be different based on the Yarn version used:
+	# - Classic (v1): We suggest only the "classical" enabled links (we do not
+  # want to remove any "workspace" links)
+	# - Berry (v2+): We suggest all enabled links, they should all be "external"
+
+  # Yarn Classic (v1)
+	if yarn-version-is-classic; then
+		_yarn-link-classic-enabled
+		return
+	fi
+
+  # Yarn Berry (v2+)
+  local suggestions=(${(f)"$(complete-yarn-link-universal-enabled)"})
+  _describe -V "$(completion-header $COLOR_ALIAS_YARN_LINK_EXTERNAL $COLOR_WHITE '  Yarn links ')" suggestions
+  return
+}

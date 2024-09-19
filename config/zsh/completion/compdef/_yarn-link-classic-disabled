@@ -1,0 +1,9 @@
+#compdef
+
+# Suggest Yarn Classic (v1) modules registered for linking but not yet enabled
+function _yarn-link-classic-disabled() {
+  local suggestions=(${(f)"$(complete-yarn-link-classic-disabled)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_YARN_LINK_CLASSIC $COLOR_WHITE '  Yarn Classic (v1) registered modules for linking ')" suggestions
+  return
+}

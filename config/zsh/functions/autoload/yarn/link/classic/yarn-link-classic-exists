@@ -5,7 +5,7 @@
 function yarn-link-classic-exists() {
 	local moduleName="$1"
 
-	local registerPath=~/.config/yarn/link/${moduleName}
+	local registerPath=${OROSHI_YARN_CLASSIC_LINK_FOLDER}/${moduleName}
 	[[ -e $registerPath ]] && return 0
 	return 1
 }

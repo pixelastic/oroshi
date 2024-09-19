@@ -1,0 +1,29 @@
+# List modules registered for linking in Yarn Classic (v1), but not yet enabled
+# in the current repository
+function complete-yarn-link-classic-disabled() {
+  # First, we build a list of all the modules already linked
+  local existingLinks=()
+
+  local linkListRaw="$(yarn-link-list-raw)"
+  for rawLine in ${(f)linkListRaw}; do
+    local split=(${(s/▮/)rawLine})
+    local linkName=$split[1]
+    existingLinks+=($linkName)
+  done
+
+  # Now, we filter out all those links from the list of registered links
+  local classicLinkListRaw="$(yarn-link-classic-list-raw --with-descriptions)"
+  for rawLine in ${(f)classicLinkListRaw}; do
+    local split=(${(s/▮/)rawLine})
+    local moduleName=$split[1]
+    local moduleDescription=$split[2]
+
+    # Exclude any link already linked
+    if [[ ${existingLinks[(ie)${moduleName}]} -le ${#existingLinks} ]]; then
+      continue
+    fi
+
+    echo "${moduleName}:${moduleDescription}"
+  done
+
+}

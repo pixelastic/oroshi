@@ -1,5 +1,5 @@
 # List modules registered for linking in Yarn Classic (v1)
-function complete-yarn-link-classic() {
+function complete-yarn-link-classic-all() {
 
   local rawList="$(yarn-link-classic-list-raw --with-descriptions)"
   for rawLine in ${(f)rawList}; do

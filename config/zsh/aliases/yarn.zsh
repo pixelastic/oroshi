@@ -28,13 +28,9 @@ alias yu='yarn-dependency-update'
 alias yw='yarn-dependency-why'
 
 # Linked packages
-alias ylRa='yarn-link-remove-all'
-alias ylRg='yarn-link-remove-global'
 alias ylR='yarn-link-remove'
-alias yllg='yarn-link-list --global'
 alias yllr='yarn-link-list-raw'
 alias yll='yarn-link-list'
-alias ylr='yarn-link-reload'
 alias yl='yarn-link'
 
 # Linked packages (Classic)
@@ -42,6 +38,8 @@ alias ylcl='yarn-link-classic-list'
 alias ylcc='yarn-link-classic-create'
 alias ylc?='yarn-link-classic-exists'
 alias ylcR='yarn-link-classic-remove'
+alias ylc+='yarn-link-classic-enable'
+alias ylc-='yarn-link-classic-disable'
 
 # Scripts
 alias yrbp='yr build:prod'

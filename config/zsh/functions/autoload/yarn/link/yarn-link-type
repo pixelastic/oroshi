@@ -1,0 +1,24 @@
+# Returns the type of a given link
+# Types can be one of the following:
+# - "external" if it's a Yarn Berry (v2) link, pointing to a folder on disk
+# - "classic" if it's a Yarn Classic (v1) link, pointing to module previously registered
+# - "workspace" if the Yarn Classic (v1) workspace link, pointing to a subfolder
+function yarn-link-type() {
+	local linkDestination=${1:a}
+
+	# If in the Yarn Classic (v1) link folder, it's a classic
+	if [[ $linkDestination == ${OROSHI_YARN_CLASSIC_LINK_FOLDER}* ]]; then
+		echo "classic"
+		return 0
+	fi
+
+	# If the target is a subfolder of the root, we can assume it's a workspace
+	local yarnRoot="$(yarn-root)"
+	if [[ $linkDestination == ${yarnRoot}* ]]; then
+		echo "workspace"
+		return 0
+	fi
+
+	# Anything else is external
+	echo "external"
+}

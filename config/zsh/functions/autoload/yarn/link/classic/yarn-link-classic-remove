@@ -5,8 +5,6 @@
 # $ yarn-link-classic-remove reddinx firost  # Removes reddinx and firost
 # $ yarn-link-classic-create                 # Removes current module from the list
 function yarn-link-classic-remove() {
-	local registerPath=~/.config/yarn/link
-
 	# Stop if not using yarn classic
 	if yarn-version-is-berry; then
 		echo "⚠ This function is not supported in yarn Berry"
@@ -27,7 +25,10 @@ function yarn-link-classic-remove() {
 		! yarn-link-classic-exists $moduleName && continue
 
 		# Remove it
-		rm -rf "${registerPath:?}/${moduleName}"
+		rm -rf "${OROSHI_YARN_CLASSIC_LINK_FOLDER:?}/${moduleName}"
 		echo "✔ ${moduleName} removed"
 	done
+
+	# Just to be safe, we re-install modules
+	yarn install
 }

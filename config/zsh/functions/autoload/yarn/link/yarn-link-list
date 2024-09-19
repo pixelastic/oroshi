@@ -1,19 +1,12 @@
-# Display a list of all the linked yarn modules
+# Display a list of all the linked yarn links
 # Usage:
-# $ yarn-link-list            # Display list of all locally linked yarn modules
-# $ yarn-link-list --global   # Display list of globally available modules
+# $ yarn-link-list            # Display list of all locally linked yarn
+# modules
 function yarn-link-list() {
   # Stop if yarn isn't installed
   [[ ! $commands[yarn] ]] && return 1
 
-  zparseopts -E -D \
-    -global=flagGlobal
-
-  local isGlobal=${#flagGlobal}
-
-  local additionalArgument=""
-  [[ $isGlobal == "1" ]] && additionalArgument="--global"
-  local rawList="$(yarn-link-list-raw --with-descriptions $additionalArgument)"
+  local rawList="$(yarn-link-list-raw --with-descriptions)"
 
   # Build the output
   local output=""
@@ -21,17 +14,15 @@ function yarn-link-list() {
     local row=""
 
     local split=(${(s/▮/)rawLine})
-    local moduleName=$split[1]
-    local moduleType=$split[2]
-    local moduleDescription=$split[3]
+    local linkName=$split[1]
+    local linkType=$split[2]
+    local linkDescription=$split[3]
 
     # Name
-    local colorizeNameAdditionalArgument=""
-    [[ $moduleType == "local" ]] && colorizeNameAdditionalArgument="--local"
-    row+="$(yarn-link-colorize $moduleName --with-icon $colorizeNameAdditionalArgument)▮"
+    row+="$(yarn-link-colorize $linkName $linkType --with-icon)▮"
 
     # Description
-    row+="$(colorize "$moduleDescription" $COLOR_ALIAS_YARN_PACKAGE_DESCRIPTION)▮"
+    row+="$(colorize "$linkDescription" $COLOR_ALIAS_YARN_PACKAGE_DESCRIPTION)▮"
 
     output+="$row\n"
   done

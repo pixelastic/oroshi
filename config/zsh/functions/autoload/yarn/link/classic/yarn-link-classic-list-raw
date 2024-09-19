@@ -22,26 +22,25 @@ function yarn-link-classic-list-raw() {
   typeset -A moduleDescriptions=()
 
 	# Getting all module names
-	local registerPath=~/.config/yarn/link
-	for rawLink in ${registerPath}/*; do
+	for rawLink in ${OROSHI_YARN_CLASSIC_LINK_FOLDER}/*; do
 		local moduleName=${rawLink:t}
 
 		# If it doesn't have a namespace, we add it directly
 		if [[ $moduleName != @* ]]; then
 			moduleNames+=($moduleName)
-			modulePaths[$moduleName]="${registerPath}/${moduleName}"
+			modulePaths[$moduleName]="${OROSHI_YARN_CLASSIC_LINK_FOLDER}/${moduleName}"
 			continue
 		fi
 
 		# With a namespace, we add each submodule
-		for rawSubLink in ${registerPath}/${moduleName}/*; do
+		for rawSubLink in ${OROSHI_YARN_CLASSIC_LINK_FOLDER}/${moduleName}/*; do
 			# Failsafe in case the @parent folder has no child, then the above glob
 			# will return the raw path with an ending *. We skip that possibility
 			[[ $rawSubLink == *\* ]] && continue
 
 			local submoduleName=${rawSubLink:t}
 			moduleNames+=(${moduleName}/${submoduleName})
-			modulePaths[$moduleName]="${registerPath}/${moduleName}/${submoduleName}"
+			modulePaths[$moduleName]="${OROSHI_YARN_CLASSIC_LINK_FOLDER}/${moduleName}/${submoduleName}"
 		done
 	done
 	

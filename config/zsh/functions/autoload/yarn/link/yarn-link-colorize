@@ -1,31 +1,39 @@
 # Displays a colorized version of a linked module
 # Usage:
-# $ yarn-link-colorize norska                         # norska
-# $ yarn-link-colorize norska --with-icon             # 煮norska
-# $ yarn-link-colorize norska-cms --with-icon --local #  norska-cms
-# TODO: Use module own icon
+# $ yarn-link-colorize norska                           # norska
+# $ yarn-link-colorize norska classic                   # As a classic (Yarn v1) link
+# $ yarn-link-colorize norska --with-icon               # 煮norska
+# $ yarn-link-colorize norska-cms workspace --with-icon #  norska-cms
 function yarn-link-colorize() {
 	zparseopts -E -D \
-		-local=flagLocal \
 		-with-icon=flagWithIcon
-	local isLocal=${#flagLocal}
 	local isWithIcon=${#flagWithIcon}
 
-	local moduleName="$1"
-	local moduleColor=$COLOR_ALIAS_YARN_LINK_GLOBAL
-	[[ $isLocal == "1" ]] && moduleColor=$COLOR_ALIAS_YARN_LINK_LOCAL
+	local linkName="$1"
+	local linkType="${2}"
 
-	local moduleIcon=""
-	[[ $isLocal == "1" ]] && moduleIcon=""
+	local linkColor=$COLOR_ALIAS_ERROR
+	local linkIcon="?"
 
-	# If --with-icon is not passed, we simply display the colored module
-	if [[ "$isWithIcon" != 1 ]]; then
-		colorize "$moduleName" $moduleColor
-		return
+	if [[ $linkType == "classic" ]]; then
+		linkColor=$COLOR_ALIAS_YARN_LINK_CLASSIC
+		linkIcon=" "
+	fi
+	if [[ $linkType == "workspace" ]]; then
+		linkColor=$COLOR_ALIAS_YARN_LINK_WORKSPACE
+		linkIcon=" "
+	fi
+	if [[ $linkType == "external" ]]; then
+		linkColor=$COLOR_ALIAS_YARN_LINK_EXTERNAL
+		linkIcon=" "
 	fi
 
-	# Fallback on unknown status
-	colorize "${moduleIcon}  ${moduleName}" $moduleColor
+	# Add the icon
+	if [[ "$isWithIcon" == 1 ]]; then
+		linkName="${linkIcon} ${linkName}"
+	fi
+
+	colorize "${linkName}" $linkColor
 
 	return
 }
