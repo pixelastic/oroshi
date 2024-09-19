@@ -18,8 +18,10 @@ function yarn-script-list-raw() {
 	local output="$(
 		jq -r \
 			'.scripts|to_entries[]|"\(.key)▮\(.value)▮local"' \
-			${localPackageJson}
+			${localPackageJson} \
+			2>/dev/null
 	)"
+	[[ $output == "" ]] && return 0
 
 	# Get global scripts frop root package.json
 	local yarnRoot="$(git-directory-root)"
