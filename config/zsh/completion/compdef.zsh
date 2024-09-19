@@ -135,9 +135,10 @@ compdef '_files -g "*.{bmp,gif,jpg,jpeg,png,svg,tiff,webp,avi,mkv,mp4,mpg,webm}"
 # }}}
 # PDF {{{
 compdef '_files -g "*.pdf"' \
+	pdf2txt \
+	pdf2img \
 	pdf-open \
 	pdf-page-count \
-	pdf2img \
 	pdf-split
 # }}}
 # Ebooks {{{
