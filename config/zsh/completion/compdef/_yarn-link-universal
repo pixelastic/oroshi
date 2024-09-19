@@ -2,14 +2,8 @@
 
 # Triggered when trying to add a new link
 function _yarn-link-universal() {
-	# The completion will be different based on the Yarn version used:
-	# - Classic (v1): We suggest the links already registered, but not yet enabled
-	# - Berry (v2+): We suggest classical folder path
-
-	if yarn-version-is-classic; then
-		_yarn-link-classic-disabled
-		return
-	fi
+	# We suggest a filepath to a given directory, both for Classic (v1) and Berry
+	# (v2+), as this is what the wrapper script expect
 
 	_directories -W $PWD
 }

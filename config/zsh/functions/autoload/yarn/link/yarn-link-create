@@ -7,12 +7,21 @@
 # $ yarn-link-create ./path/to/module   # Link current project to module
 function yarn-link-create() {
 	local modulePath="${1:a}"
+
+	# Stop if not a linkable directory
+	if [[ ! -e "${modulePath}/package.json" ]]; then
+		echo "✗ Unable to find a package.json in ${modulePath}"
+		return 1
+	fi
+
 	local moduleName="$(yarn-package-name "$modulePath")"
 
+	# Stop if already linked
 	if yarn-link-exists ${moduleName}; then
 		echo "✗ ${moduleName} is already linked"
 		return 1
 	fi
+
 
 	local hostRoot="$(yarn-root)"
 	local nodeModulesFolder="${hostRoot}/node_modules"

@@ -13,7 +13,7 @@ function yarn-link-type() {
 	fi
 
 	# If the target is a subfolder of the root, we can assume it's a workspace
-	local yarnRoot="$(yarn-root)"
+	local yarnRoot="$(yarn-root --force)"
 	if [[ $linkDestination == ${yarnRoot}* ]]; then
 		echo "workspace"
 		return 0
