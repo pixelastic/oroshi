@@ -28,6 +28,7 @@ FILETYPE_GROUPS[script:icon]=" "
 FILETYPE_GROUPS[script:patterns]="\
   au3 \
   bats \
+  cjs \
   css \
   eot \
   gemspec \

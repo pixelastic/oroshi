@@ -77,6 +77,11 @@ function! OroshiTabLabel(tabIndex, isCurrentTab)
     let tabLabel = directoryName . '/' . tabLabel
   endif
 
+  " If the file is in __tests__, we prefix test/
+  if fullPath =~# '__tests__'
+    let tabLabel = 'tests/' . tabLabel
+  endif
+
   " Mark as modified
   if isModified == 1
     let tabLabel = tabLabel . ' '
