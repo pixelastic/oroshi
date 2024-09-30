@@ -33,6 +33,9 @@ alias yllr='yarn-link-list-raw'
 alias yll='yarn-link-list'
 alias yl='yarn-link'
 
+alias ylaberlaas='yarn-link /home/tim/local/www/projects/aberlaas/lib'
+alias ylfirost='yarn-link /home/tim/local/www/projects/firost/lib'
+
 # Linked packages (Classic)
 alias ylcl='yarn-link-classic-list'
 alias ylcc='yarn-link-classic-create'
