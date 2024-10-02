@@ -18,7 +18,11 @@ function fzf-fs-shared-source() {
   local additionalArguments=($(fzf-fs-shared-zsh-filters))
 
   # Only searching for directories
-  [[ $isDirectories == "1" ]] && additionalArguments=(--type directory)
+  if [[ $isDirectories == "1" ]]; then
+    additionalArguments=(--type directory)
+  else
+    additionalArguments=(--type file)
+  fi
 
   # Find all elements in that directory
   local items="$(fd \
