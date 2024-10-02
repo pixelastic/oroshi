@@ -1,0 +1,10 @@
+# Trim a string, removing trailing slashes
+# Usage:
+# $ trim "Hello World!  "         # "Hello World!"
+# $ echo "Hello World!  " | trim  # "Hello World!"
+function trim() {
+	local input="$1"
+	# Read from pipe
+	[[ -p /dev/stdin ]] && input="$(\cat -)"
+	echo "${input%%[[:space:]]}"
+}

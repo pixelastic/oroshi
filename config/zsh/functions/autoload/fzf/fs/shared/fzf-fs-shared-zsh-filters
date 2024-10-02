@@ -1,0 +1,19 @@
+# If used on the zsh command line, returns potential additional fd arguments, to further
+# filter the list of elements
+# Usage:
+# $ fzf-fs-shared-zsh-filters
+function fzf-fs-shared-zsh-filters() {
+	local input="$1"
+
+	# We read the value of LBUFFER, that has been set in ctrl-p.zsh
+	local ZSH_LBUFFER="$(fzf-var-read ZSH_LBUFFER | trim)"
+
+	if [[ 
+		$ZSH_LBUFFER == "yrt" ||
+		$ZSH_LBUFFER == "yrtw" ]] \
+		; then
+		echo "--extension js --full-path __tests__"
+		return
+	fi
+
+}

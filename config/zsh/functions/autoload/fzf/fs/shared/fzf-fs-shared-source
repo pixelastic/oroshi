@@ -14,8 +14,10 @@ function fzf-fs-shared-source() {
   local searchPath="$1"
   [[ $searchPath == "" ]] && searchPath="$(fzf-var-read pwd)"
 
+  # Find additional arguments based on what is typed on the zsh commandline
+  local additionalArguments=($(fzf-fs-shared-zsh-filters))
+
   # Only searching for directories
-  local additionalArguments=()
   [[ $isDirectories == "1" ]] && additionalArguments=(--type directory)
 
   # Find all elements in that directory
@@ -31,7 +33,11 @@ function fzf-fs-shared-source() {
   # Display it as two columns: full path (for selection) and relative path (for
   # display)
   for item in ${(f)items}; do
+    # Remove starting ./ from filepaths
+    item=${item//.\//}
+
     echo "${searchPath}/${item}   ${item}"
   done
+
 }
 

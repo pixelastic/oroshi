@@ -9,7 +9,7 @@ function fzf-var-write() {
 	local value=$2
 
 	# Save on disk
-	local saveFilepath="${OROSHI_TMP_FOLDER}/fzf/${KITTY_WINDOW_ID}_${key}"
+	local saveFilepath="${OROSHI_TMP_FOLDER}/fzf/var/${KITTY_WINDOW_ID}/${key}"
 	mkdir -p ${saveFilepath:h}
 	echo $value >$saveFilepath
 }
