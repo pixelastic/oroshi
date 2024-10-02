@@ -8,11 +8,22 @@ function fzf-fs-shared-zsh-filters() {
 	# We read the value of LBUFFER, that has been set in ctrl-p.zsh
 	local ZSH_LBUFFER="$(fzf-var-read ZSH_LBUFFER | trim)"
 
+	# Yarn run test: Only JS test files
 	if [[ 
 		$ZSH_LBUFFER == "yrt" ||
 		$ZSH_LBUFFER == "yrtw" ]] \
 		; then
 		echo "--extension js --full-path __tests__"
+		return
+	fi
+
+	# Vim: Only files
+	if [[ 
+		$ZSH_LBUFFER == "v" ||
+		$ZSH_LBUFFER == "vim" ||
+		$ZSH_LBUFFER == "nvim" ]] \
+		; then
+		echo "--type file"
 		return
 	fi
 
