@@ -19,9 +19,9 @@ function fzf-fs-shared-source() {
 
   # Only searching for directories
   if [[ $isDirectories == "1" ]]; then
-    additionalArguments=(--type directory)
+    additionalArguments+=(--type directory)
   else
-    additionalArguments=(--type file)
+    additionalArguments+=(--type file)
   fi
 
   # Find all elements in that directory
