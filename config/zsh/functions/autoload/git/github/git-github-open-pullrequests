@@ -16,5 +16,5 @@ function git-github-open-pullrequests() {
 		openedUrl="${openedUrl}/pulls"
 	fi
 
-	$BROWSER $openedUrl &>/dev/null
+	gui $BROWSER $openedUrl
 }
