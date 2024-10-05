@@ -11,6 +11,7 @@ function fzf-fs-shared-zsh-filters() {
 	# Yarn run test: Only JS test files
 	if [[ 
 		$ZSH_LBUFFER == "yrt" ||
+		$ZSH_LBUFFER == "yrtff" ||
 		$ZSH_LBUFFER == "yrtw" ]] \
 		; then
 		echo "--extension js --full-path __tests__"

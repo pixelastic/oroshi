@@ -58,31 +58,31 @@ inoremap <buffer> tbn toBe(null);a
 inoremap <buffer> tbt toBe(true);a
 inoremap <buffer> tbf toBe(false);a
 " Import firost boilerplate
-inoremap <buffer> impcone import consoleError from 'firost/consoleError.js';<CR>
-inoremap <buffer> impconi import consoleInfo from 'firost/consoleInfo.js';<CR>;
-inoremap <buffer> impconw import consoleWarn from 'firost/consoleWarn.js';<CR>;
-inoremap <buffer> impemp import emptyDir from 'firost/emptyDir.js';<CR>;
-inoremap <buffer> imperr import firostError from 'firost/error.js';<CR>;
-inoremap <buffer> impexis import exists from 'firost/exists.js';<CR>;
-inoremap <buffer> impexit import exit from 'firost/exit.js';<CR>;
-inoremap <buffer> impglo import glob from 'firost/glob.js';<CR>;
-inoremap <buffer> impmkd import mkdirp from 'firost/mkdirp.js';<CR>;
-inoremap <buffer> impnor import normalizeUrl from 'firost/normalizeUrl.js';<CR>;
-inoremap <buffer> impreadj import readJson from 'firost/readJson.js';<CR>;
-inoremap <buffer> impread import read from 'firost/read.js';<CR>;
-inoremap <buffer> imprun import run from 'firost/run.js';<CR>;
-inoremap <buffer> impspi import spinner from 'firost/spinner.js';<CR>;
-inoremap <buffer> imptmp import tmpDirectory from 'firost/tmpDirectory.js';<CR>;
-inoremap <buffer> impurl import urlToFilepath from 'firost/urlToFilepath.js';<CR>;
-inoremap <buffer> impwritej import writeJson from 'firost/writeJson.js';<CR>;
-inoremap <buffer> impwritj import writeJson from 'firost/writeJson.js';<CR>;
-inoremap <buffer> impwrij import writeJson from 'firost/writeJson.js';<CR>;
-inoremap <buffer> impwri import write from 'firost/write.js';<CR>;
+inoremap <buffer> impcone import { consoleError } from 'firost';<CR>
+inoremap <buffer> impconi import { consoleInfo } from 'firost';<CR>
+inoremap <buffer> impconw import { consoleWarn } from 'firost';<CR>
+inoremap <buffer> impemp import { emptyDir } from 'firost';<CR>
+inoremap <buffer> imperr import { firostError } from 'firost';<CR>
+inoremap <buffer> impexis import { exists } from 'firost';<CR>
+inoremap <buffer> impexit import { exit } from 'firost';<CR>;
+inoremap <buffer> impglo import { glob } from 'firost';<CR>
+inoremap <buffer> impmkd import { mkdirp } from 'firost';<CR>
+inoremap <buffer> impnor import { normalizeUrl } from 'firost';<CR>
+inoremap <buffer> impreadj import { readJson } from 'firost';<CR>
+inoremap <buffer> impread import { read } from 'firost';<CR>
+inoremap <buffer> imprun import { run } from 'firost';<CR>
+inoremap <buffer> impspi import { spinner } from 'firost';<CR>
+inoremap <buffer> imptmp import { tmpDirectory } from 'firost';<CR>;
+inoremap <buffer> impurl import { urlToFilepath } from 'firost';<CR>
+inoremap <buffer> impwritej import { writeJson } from 'firost';<CR>;
+inoremap <buffer> impwritj import { writeJson } from 'firost';<CR>;
+inoremap <buffer> impwrij import { writeJson } from 'firost';<CR>
+inoremap <buffer> impwri import { write } from 'firost';<CR>
 " Require golgoth boilerplate
-inoremap <buffer> imppmap import pMap from 'golgoth/pMap.js';<CR>;
-inoremap <buffer> imp_ import _ from 'golgoth/lodash.js';<CR>;
-inoremap <buffer> impday import dayjs from 'golgoth/dayjs.js';<CR>;
-inoremap <buffer> impgot import got from 'golgoth/got.js';<CR>;
+inoremap <buffer> imppmap import { pMap } from 'golgoth';<CR>;
+inoremap <buffer> imp_ import { _ } from 'golgoth';<CR>;
+inoremap <buffer> impday import { dayjs } from 'golgoth';<CR>;
+inoremap <buffer> impgot import { got } from 'golgoth';<CR>;
 " Require main modules
 inoremap <buffer> imppath import path from 'path';<CR>;
 inoremap <buffer> imppat import path from 'path';<CR>;
