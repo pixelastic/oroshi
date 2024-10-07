@@ -72,20 +72,20 @@ inoremap <buffer> impreadj import { readJson } from 'firost';<CR>
 inoremap <buffer> impread import { read } from 'firost';<CR>
 inoremap <buffer> imprun import { run } from 'firost';<CR>
 inoremap <buffer> impspi import { spinner } from 'firost';<CR>
-inoremap <buffer> imptmp import { tmpDirectory } from 'firost';<CR>;
+inoremap <buffer> imptmp import { tmpDirectory } from 'firost';<CR>
 inoremap <buffer> impurl import { urlToFilepath } from 'firost';<CR>
-inoremap <buffer> impwritej import { writeJson } from 'firost';<CR>;
-inoremap <buffer> impwritj import { writeJson } from 'firost';<CR>;
+inoremap <buffer> impwritej import { writeJson } from 'firost';<CR>
+inoremap <buffer> impwritj import { writeJson } from 'firost';<CR>
 inoremap <buffer> impwrij import { writeJson } from 'firost';<CR>
 inoremap <buffer> impwri import { write } from 'firost';<CR>
 " Require golgoth boilerplate
-inoremap <buffer> imppmap import { pMap } from 'golgoth';<CR>;
-inoremap <buffer> imp_ import { _ } from 'golgoth';<CR>;
-inoremap <buffer> impday import { dayjs } from 'golgoth';<CR>;
-inoremap <buffer> impgot import { got } from 'golgoth';<CR>;
+inoremap <buffer> imppmap import { pMap } from 'golgoth';<CR>
+inoremap <buffer> imp_ import { _ } from 'golgoth';<CR>
+inoremap <buffer> impday import { dayjs } from 'golgoth';<CR>
+inoremap <buffer> impgot import { got } from 'golgoth';<CR>
 " Require main modules
-inoremap <buffer> imppath import path from 'path';<CR>;
-inoremap <buffer> imppat import path from 'path';<CR>;
+inoremap <buffer> imppath import path from 'path';<CR>
+inoremap <buffer> imppat import path from 'path';<CR>
 " JSDoc helpers
 inoremap <buffer> @para @param {Array}\
 inoremap <buffer> @parb @param {boolean}
