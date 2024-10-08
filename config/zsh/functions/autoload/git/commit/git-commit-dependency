@@ -1,0 +1,20 @@
+# Ease committing updated dependency
+# Usage:
+# $ git-commit-dependency firost  # dev(deps): Update firost to v4.0.0
+# $ git-commit-dependency # dev(deps): Update dependencies
+function git-commit-dependency() {
+	local dependencyName=$1
+
+	if [[ $dependencyName == "" ]]; then
+		git-commit-all "dev(deps): Update dependencies"
+		return
+	fi
+
+	local newVersion="$(
+		git diff package.json |
+			rg --context=0 --no-line-number "\+(.*)${dependencyName}" |
+			awk '{print $3}' |
+			tr -d '",'
+	)"
+	git-commit-all "dev(deps): Update ${dependencyName} to ${newVersion}"
+}
