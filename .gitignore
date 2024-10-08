@@ -1,9 +1,29 @@
+# Hidden files
 .DS_Store
-.cache
-Thumbs.db
+.envrc
+
+# Directories
+build/
+dist/
 node_modules/
 tmp/
+
+# Files
+Thumbs.db
+lerna-debug.log
 npm-debug.log
 yarn-error.log
 *~
-*.rej
+
+# Yarn
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+
+# Netlify
+.netlify

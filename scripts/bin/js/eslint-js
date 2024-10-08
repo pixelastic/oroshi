@@ -10,22 +10,9 @@
 # that string in vim.
 # This wrapper will catch it, restart eslint_d and try again
 #
-# 2. Work within the aberlaas monorepo
-# In the aberlaas monorepos, ESLint plugins are located inside
-# ./lib/node_modules instead of the top level ./node_modules, so we need to tell
-# that to eslint_d
-#
 # This wrapper script should take care of restarting eslint_d when that happens
 
-local additionalEslintFlags=""
-
-local currentProject="$(project-by-path $PWD)"
-if [[ $currentProject == "ABERLAAS" ]]; then
-	local absolutePath=${~PROJECT_ABERLAAS_PATH}
-	additionalEslintFlags=--resolve-plugins-relative-to="${absolutePath}lib"
-fi
-
-local output="$(eslint_d ${additionalEslintFlags} $@)"
+local output="$(eslint_d $@)"
 
 if [[ $output == "No ESLint found" ]]; then
 	eslint_d restart
