@@ -27,10 +27,6 @@ export OROSHI_NVM_LAZYLOAD_ALIASES=(
 	yarn
 	yarn-link-remove
 	yarn-link-remove-all
-	node-module-add
-	node-module-remove
-	node-module-list
-	node-module-list-raw
 	yarn-run
 	yarn-update
 	node-module-add
@@ -64,7 +60,7 @@ function lazyloadNvm {
 
 	# ZSH completion methods set a PREFIX variable internally that leaks to here
 	# when lazyloadNvm is called from a zsh completion. Unfortunately, nvm fails
-	# is such a variable is set, so we unset it here
+	# if such a variable is set, so we unset it here
 	unset PREFIX
 
 	# Initialize nvm for real, using the locally defined node version (if any)
