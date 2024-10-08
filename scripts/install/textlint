@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-yarn-global-add \
+node-module-add \
 	textlint \
 	textlint-rule-alex \
 	textlint-rule-common-misspellings \

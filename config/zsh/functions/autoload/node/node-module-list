@@ -1,0 +1,9 @@
+# Display the list of all globally installed packages
+# Usage:
+# $ node-module-list    # List of all packages
+function node-module-list() {
+	local nodeVersion="$(node --version)"
+	local installDirectory="${OROSHI_TMP_FOLDER}/node/${nodeVersion}"
+
+	yarn-dependency-list $installDirectory
+}

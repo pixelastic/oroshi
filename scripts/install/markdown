@@ -8,12 +8,12 @@ set -e
 # available globally.
 
 # # Prettier
-# yarn-global-add prettier
+# node-module-add prettier
 
 # # Textlint
 # # Textlint plugins need to be installed globally if textlint is to be called
 # # globally
-# yarn-global-add \
+# node-module-add \
 # 	textlint@12.2.3 \
 # 	textlint-rule-alex@3.0.0 \
 # 	textlint-rule-common-misspellings@1.0.1 \
@@ -26,7 +26,7 @@ set -e
 # # Remark
 # # Remark-lint plugins need to be installed in the same folder as the config file
 # # so we need to run `yarn install` in `~/.oroshi` to add them.
-# yarn-global-add remark-cli@11.0.0 \
+# node-module-add remark-cli@11.0.0 \
 # 	remark-lint@9.1.1
 
 # echo "Now, run yarn install in ~.oroshi"

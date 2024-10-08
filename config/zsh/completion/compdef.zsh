@@ -154,9 +154,11 @@ compdef '_files -g "*.{epub,mobi}"' \
 	ebook-meta \
 	ebook-metadata-update
 # }}}
-# NVM {{{
+# Node {{{
 compdef _nvm-lazyload lazyloadNvm
 compdef _node-versions-installed node-version-switch
+compdef _node-modules \
+	node-module-remove
 # }}}
 # Yarn {{{
 compdef _yarn-runnables \
@@ -165,8 +167,6 @@ compdef _yarn-dependencies \
 	yarn-dependency-update
 compdef _yarn-dependencies-recursive \
 	yarn-dependency-why
-compdef _yarn-global-packages \
-	yarn-global-remove
 compdef _yarn-lintable-files \
 	yarn-run-lint \
 	yarn-run-lint-fix

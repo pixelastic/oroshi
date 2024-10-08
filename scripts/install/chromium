@@ -3,5 +3,3 @@ sudo apt-get install chromium-browser
 
 # We all need to manually install the mp3 (and other format) support
 sudo apt-get install chromium-codecs-ffmpeg-extra
-
-

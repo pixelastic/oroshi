@@ -16,4 +16,3 @@ echo "Run sudo dpkg-reconfigure davfs2 and select yes to mount in userspace"
 
 echo "Installing nfs"
 sudo apt-get install nfs-common
-

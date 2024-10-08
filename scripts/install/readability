@@ -4,4 +4,3 @@ cd ~/local/src
 git clone https://github.com/gfxmonk/python-readability.git
 cd ~/local/bin/
 ln -s ../src/python-readability/readability/readability.py readability
-

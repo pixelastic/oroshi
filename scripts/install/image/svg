@@ -2,4 +2,4 @@
 
 sudo apt-get install potrace
 
-yarn-global-add svgo
+node-module-add svgo

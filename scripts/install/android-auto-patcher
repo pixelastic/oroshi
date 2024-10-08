@@ -29,5 +29,3 @@ echo $zip
 mv restore-* update-* $initial_dir
 ' > ./android-auto-patcher
 chmod +x ./android-auto-patcher
-
-

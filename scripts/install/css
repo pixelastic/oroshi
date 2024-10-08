@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
 echo "Minifier: CleanCSS"
-yarn-global-add clean-css-cli
+node-module-add clean-css-cli
 
 echo "Linter: Stylelint"
-yarn-global-add stylelint
-yarn-global-add stylelint-config-standard
-yarn-global-add stylelint-scss
+node-module-add stylelint
+node-module-add stylelint-config-standard
+node-module-add stylelint-scss
 
 echo "Prettifier: Prettier"
-yarn-global-add prettier
+node-module-add prettier
 
 echo "Installing Sass"
 gem install sass

@@ -8,4 +8,3 @@ wget $DOWNLOAD_URL -O dssim.deb
 sudo dpkg -i ./dssim.deb
 sudo apt-get -f install
 rm ./dssim.deb
-

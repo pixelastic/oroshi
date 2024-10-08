@@ -15,4 +15,3 @@ rm phantomjs.tar.bz2
 
 cd ~/local/bin
 ln -s ../etc/phantomjs/bin/phantomjs .
-

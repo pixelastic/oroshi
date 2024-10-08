@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest all globally installed node modules
+function _node-modules() {
+  local suggestions=(${(f)"$(complete-node-modules)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_YARN_PACKAGE_GLOBAL $COLOR_WHITE '  global node modules ')" suggestions
+}

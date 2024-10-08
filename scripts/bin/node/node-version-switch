@@ -1,8 +1,0 @@
-#!/usr/bin/env zsh
-
-# By default, I have the node binaries of the default version loaded
-# If I do a nvm use of another version, it adds this version binaries to my path
-# I might not have yarn installed, so I need to add it
-#
-# Also add a node-version-install? That install the node version, and yarn
-# This should already be the case with default-packages though

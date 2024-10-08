@@ -12,5 +12,3 @@ echo "--------------"
 echo "You should manually edit /etc/passwd to add /usr/bin/zsh as your shell"
 echo "You should now reboot for the shell change to take effect correctly."
 echo "--------------"
-
-

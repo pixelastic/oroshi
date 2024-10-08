@@ -1,0 +1,11 @@
+# Remove a globally installed package
+# Usage:
+# $ node-module-remove eslint_d    # Remove eslint_d
+function node-module-remove() {
+	local moduleName=$1
+	local nodeVersion="$(node --version)"
+	local installDirectory="${OROSHI_TMP_FOLDER}/node/${nodeVersion}"
+
+	cd $installDirectory || return
+	yarn remove $moduleName
+}

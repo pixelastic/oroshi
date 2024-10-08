@@ -1,0 +1,49 @@
+#!/usr/bin/env zsh
+# Globally install a node binary
+#
+# Note: This is defined as a script in ./bin instead of as a zsh autoloaded
+# function as it is used in install scripts, where zsh functions might not be
+# available.
+#
+# Sometimes, I need to install an npm package, and have its binary globally available in
+# my $PATH. For example eslint_d, that I use in vim for linting.
+#
+# Problems with npm and yarn:
+# - Yarn v2 no longer has a "yarn global add" command
+# - npm install -g and Yarn v1 also make the library itself (not only the
+# binary) globally accessible, which is an anti-pattern
+# - when using nvm, those global installs are not scoped to a specific node
+# version, but shared across all version
+#
+# All those points means that I needed to come up with my own way of globally
+# installing a package and having its binary globally accessible.
+#
+# The way it works is creating local repository, where the dep will be
+# installed, and its binary linked
+#
+# Usage:
+# $ node-add-global eslint_d   # Install into the current node version as selected by nvm
+set -e
+
+local moduleName=$1
+local nodeVersion="$(node --version)"
+local installDirectory="${OROSHI_TMP_FOLDER}/node/${nodeVersion}"
+local nvmDirectory="${HOME}/.nvm/versions/node/${nodeVersion}"
+
+mkdir -p $installDirectory
+cd $installDirectory
+
+# Init package.json if first time we add a global package
+if [[ ! -f package.json ]]; then
+	echo nodeVersion >.nvmrc
+	yarn init -y &>/dev/null
+fi
+
+# Add the module
+yarn add $moduleName
+
+# Find its binary
+local binPath=$(yarn bin $moduleName)
+
+# Make a symlink from the nvm binaries to it
+ln -sf $binPath $nvmDirectory/bin

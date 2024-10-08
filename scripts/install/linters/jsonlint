@@ -1,4 +1,4 @@
 #!/usr/bin/env zsh
 # JSONLint: a JSON Linter
 
-yarn-global-add jsonlint
+node-module-add jsonlint

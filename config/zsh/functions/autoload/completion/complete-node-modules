@@ -1,6 +1,6 @@
-# Display list of all global yarn packages
-function complete-yarn-global-packages() {
-  local rawList="$(yarn-global-list-raw)"
+# Display list of all global node modules
+function complete-node-modules() {
+  local rawList="$(node-module-list-raw)"
 
   for rawLine in ${(f)rawList}; do
     local split=(${(@s/▮/)rawLine})

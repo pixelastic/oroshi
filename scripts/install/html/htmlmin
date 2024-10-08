@@ -3,4 +3,4 @@
 # https://github.com/kangax/html-minifier
 set -e
 
-yarn-global-add html-minifier
+node-module-add html-minifier

@@ -23,4 +23,3 @@ make
 
 cd ~/local/bin
 ln -s ../etc/MPQExtractor/build/bin/MPQExtractor 
-

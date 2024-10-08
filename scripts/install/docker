@@ -39,4 +39,3 @@ sudo usermod -aG docker "$USER"
 sudo systemctl enable docker
 
 echo "You should log out and back in for this to work"
-

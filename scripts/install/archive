@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 sudo apt-get install unrar rar
 sudo apt-get install p7zip-full
-

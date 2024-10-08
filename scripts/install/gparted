@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 # GUI for formating and partitioning volumes
 sudo apt-get install gparted
-

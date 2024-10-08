@@ -9,5 +9,3 @@ echo "Creating wrapper script"
 cd ~/local/bin
 echo "#!/usr/bin/env zsh" > subtitle-delay
 echo "ruby ~/local/etc/subtitly/subtitly.rb \$@" >> subtitle-delay
-
-

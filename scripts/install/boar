@@ -6,4 +6,3 @@ hg clone https://code.google.com/p/boar/
 
 cd ~/local/bin
 ln -s ../etc/boar/boar .
-

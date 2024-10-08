@@ -9,5 +9,3 @@ make install PREFIX=/home/$USER/local
 
 rehash
 plowmod --install
-
-

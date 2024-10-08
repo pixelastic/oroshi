@@ -12,4 +12,3 @@ echo "/home/$USER/local/src/vimeo_downloader/vimeo_downloader.sh \$1" >> ./vimeo
 echo "rm -f ./response.html" >> ./vimeo-download
 
 chmod +x ./vimeo-download
-

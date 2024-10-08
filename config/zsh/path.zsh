@@ -18,9 +18,6 @@ function oroshi_path() {
 		# The default node version to use is the one marked as "default" in nvm
 		local defaultNodeVersion="$(<~/.nvm/alias/default)"
 		local nodeBinariesPath=$HOME/.nvm/versions/node/${defaultNodeVersion}/bin
-		# We install yarn global binaries in a ./yarn subdir of the nvm version folder
-		# (check yarn-global-add for details)
-		local yarnBinariesPath=$HOME/.nvm/versions/node/${defaultNodeVersion}/yarn/global/node_modules/.bin
 	fi
 
 	# Python
@@ -51,7 +48,6 @@ function oroshi_path() {
 
 		# Language binaries
 		$nodeBinariesPath
-		$yarnBinariesPath
 		~/.rbenv/bin
 		~/.rbenv/shims
 		~/.pyenv/bin

@@ -1,9 +1,0 @@
-#!/usr/bin/env sh
-set -e
-here="$(pwd)"
-node_modules="$(npm root)"
-node_root="$(dirname "$node_modules")"
-
-cd "$node_root"
-eval "$@"
-cd "$here"

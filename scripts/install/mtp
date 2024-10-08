@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 # To access devices using MTP
 sudo apt-get install mtpfs mtp-tools
-

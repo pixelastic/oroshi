@@ -13,4 +13,3 @@ rm winehq.key
 sudo add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main'
 sudo apt-get update
 sudo apt-get install --install-recommends winehq-stable
-

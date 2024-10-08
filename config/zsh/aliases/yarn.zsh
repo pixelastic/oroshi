@@ -1,19 +1,5 @@
 # Yarn
 
-# Global packages
-# 	Add
-alias yag='yarn-global-add'
-alias yga='yarn-global-add'
-# 	Remove
-alias yagR='yarn-global-remove'
-alias yRg='yarn-global-remove'
-alias ygR='yarn-global-remove'
-# 	List
-alias ygl='yarn-global-list'
-alias ydlg='yarn-global-list'
-# 	Upgrade
-alias yug='yarn global upgrade'
-
 # Local dependencies
 alias yR='yarn remove'
 alias yadf='yarn-dependency-add-dev-root'

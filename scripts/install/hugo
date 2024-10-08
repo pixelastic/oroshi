@@ -6,5 +6,3 @@ cd /tmp
 wget "$url" -O ./hugo.deb
 install-deb ./hugo.deb
  
-
-

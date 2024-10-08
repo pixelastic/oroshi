@@ -5,34 +5,19 @@
 
 local query="$1"
 local replacement="$2"
+local files=("${@:3}")
 
-##!/usr/bin/env ruby
+if [[ -z "$query" || -z "$replacement" || -z "$files" ]]; then
+	echo "Usage:"
+	echo "$ sr 'query' 'replacement' ./filepaths/*"
+	exit 1
+fi
 
-## Search and replace content in files
-#class SearchReplace
-#  def initialize(*args)
-#    if args.length < 3
-#      puts 'Usage:'
-#      puts "$ sr 'search' 'replace' ./files/to/match"
-#      exit 1
-#    end
-#    @is_dry_run = args.include?('-n')
-#    args -= ['-n']
+for file in $files; do
+	[[ ! -f "$file" ]] && continue
 
-#    @search, @replace, *@files = args
-#  end
+	local content=$(cat "$file")
+	local newContent="${content//${query}/${replacement}}"
 
-#  def run
-#    @files.each do |file|
-#      next if File.directory?(file)
-#      content = File.read(file)
-#      updated_content = content.gsub(@search, @replace)
-#      if @is_dry_run
-#        puts updated_content
-#      else
-#        File.write(file, updated_content)
-#      end
-#    end
-#  end
-#end
-#SearchReplace.new(*ARGV).run
+	echo "$newContent" >"$file"
+done
