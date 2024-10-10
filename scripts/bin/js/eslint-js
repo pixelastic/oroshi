@@ -2,16 +2,10 @@
 # Runs eslint on js files
 # Wrapper around eslint_d to be used from Vim/ALE config
 #
-# This fixes two issues around using eslint_d from vim
-#
-# 1. Retry on errors
 # Sometimes when updating eslint dependencies, eslint_d needs a restart,
 # otherwise it output "No ESLint found", and the whole file is replaced with
 # that string in vim.
 # This wrapper will catch it, restart eslint_d and try again
-#
-# This wrapper script should take care of restarting eslint_d when that happens
-
 local output="$(eslint_d $@)"
 
 if [[ $output == "No ESLint found" ]]; then

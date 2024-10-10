@@ -3,7 +3,7 @@
 # $ yarn-dependency-add-dev vitest # Add vitest
 function yarn-dependency-add-dev() {
 	# Init the project with the right yarn version if not set
-	[[ -f "package.json" ]] || yarn-init
+	yarn-is-initialized || yarn-init
 
 	yarn add --dev -- $@
 }

@@ -2,7 +2,29 @@
 # This is a wrapper around yarn init, but that will force usin Yarn Berry with
 # the right config
 function yarn-init() {
-	echo '{"packageManager": "yarn@4.0.2"}' >package.json
-	echo "nodeLinker: node-modules" >.yarnrc.yml
-	yarn init
+	# Default .yarnrc.yml
+	cp \
+		~/.oroshi/config/node/_yarnrc.default.yml \
+		./.yarnrc.yml
+
+	# Default .gitignore
+	cp \
+		~/.oroshi/config/git/gitignore \
+		./.gitignore
+
+
+	yarn init -2 &>/dev/null
+	
+	# Custom package.json
+	local packageContent="$(cat ~/.oroshi/config/node/package.default.json)"
+	local yarnVersion="$(yarn --version)"
+	local moduleName="${PWD:a:t:r}"
+
+	packageContent="${packageContent//\{yarnVersion\}/${yarnVersion}}"
+	packageContent="${packageContent//\{moduleName\}/${moduleName}}"
+	echo $packageContent >'./package.json'
+
+	git-commit-edit -m "First commit" --quiet
+
+	echo "✔ yarn init"
 }

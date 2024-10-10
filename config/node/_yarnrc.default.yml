@@ -1,0 +1,6 @@
+compressionLevel: 0
+defaultSemverRangePrefix: ''
+enableGlobalCache: true
+nmHoistingLimits: workspaces
+nmMode: hardlinks-local
+nodeLinker: node-modules
