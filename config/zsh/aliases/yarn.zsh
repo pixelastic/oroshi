@@ -19,7 +19,7 @@ alias yllr='yarn-link-list-raw'
 alias yll='yarn-link-list'
 alias yl='yarn-link'
 
-alias ylaberlaas='yarn-link /home/tim/local/www/projects/aberlaas/lib'
+alias ylaberlaas='yarn-link /home/tim/local/www/projects/aberlaas/modules/lib'
 alias ylesmify='yarn-link /home/tim/local/www/projects/esmify/lib'
 alias ylfirost='yarn-link /home/tim/local/www/projects/firost/lib'
 alias ylgilmore='yarn-link /home/tim/local/www/projects/gilmore/lib'

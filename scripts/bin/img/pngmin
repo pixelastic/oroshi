@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# Note this is a wrapper around the img-min function because aberlaas expect
+# `pngmin` to be findable through `which`
+img-min $@
