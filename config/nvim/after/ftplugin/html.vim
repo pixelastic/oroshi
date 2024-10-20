@@ -41,7 +41,7 @@ inoremap <silent> <buffer> <F4> <Esc>:call HtmlBeautify()<CR>
 nnoremap <silent> <buffer> <F4> :call HtmlBeautify()<CR>
 function! HtmlBeautify()
   let linenr=line('.')
-  execute '%!prettier'
+  execute '%!html-pretty'
   execute 'normal '.linenr.'gg'
 endfunction
 " }}}

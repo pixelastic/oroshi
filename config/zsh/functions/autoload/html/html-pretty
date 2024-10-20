@@ -1,0 +1,14 @@
+# Pretty print HTML
+# Usage:
+# $ html-pretty ./path/to/file.html
+# $ cat ./path/to/file.html | html-pretty
+function html-pretty() {
+	local filepath=$1
+
+	# Filepath given
+	if [[ $filepath != "" ]]; then
+		prettier $filepath
+	else
+		cat - | prettier --parser html
+	fi
+}
