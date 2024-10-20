@@ -11,7 +11,7 @@ setlocal expandtab
 " }}}
 " Wrapping {{{
 " Extend line-width to 140
-if &ft == "html"
+if &filetype ==# 'html'
   setlocal colorcolumn=140
   setlocal textwidth=139
 endif
@@ -29,7 +29,7 @@ endfunction
 nnoremap <silent> <buffer>  zr :set foldmethod=syntax<CR>:set foldmethod=manual<CR>
 " Note: We only want this mapping for html files, not markdown or other types
 " using using this ftplugin file.
-if &ft == "html"
+if &filetype ==# 'html'
   nnoremap <silent> <buffer> za :call HTMLFoldTag()<CR>
 endif
 " }}}
@@ -41,7 +41,7 @@ inoremap <silent> <buffer> <F4> <Esc>:call HtmlBeautify()<CR>
 nnoremap <silent> <buffer> <F4> :call HtmlBeautify()<CR>
 function! HtmlBeautify()
   let linenr=line('.')
-  execute '%!html'
+  execute '%!prettier'
   execute 'normal '.linenr.'gg'
 endfunction
 " }}}
