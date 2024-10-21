@@ -1,0 +1,10 @@
+# Return a channel ID from its name
+# Usage:
+# $ youtube-channel-id Miscast
+function youtube-channel-id() {
+	local channelName=$1
+	curl \
+		--silent \
+		"https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&q=${channelName}&key=${YOUTUBE_API_KEY}" |
+		jq -r '.items[0].id.channelId'
+}
