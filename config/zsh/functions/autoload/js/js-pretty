@@ -1,0 +1,14 @@
+# Pretty print JS
+# Usage:
+# $ js-pretty ./path/to/file.js
+# $ cat ./path/to/file.js | js-pretty
+function js-pretty() {
+	local filepath=$1
+
+	# Filepath given
+	if [[ $filepath != "" ]]; then
+		prettier $filepath
+	else
+		cat - | prettier --parser js
+	fi
+}
