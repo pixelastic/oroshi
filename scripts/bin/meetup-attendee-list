@@ -1,0 +1,66 @@
+#!/usr/bin/env node
+// Example: https://www.meetup.com/paris-dribbble-meetup/events/298629053/
+const inputUrl = process.argv[2];
+
+if (!inputUrl) {
+  console.error("Please provide the meetup URL as an argument");
+  process.exit(1);
+}
+
+const eventId = inputUrl.split("/")[5];
+if (!eventId) {
+  console.error("Could not extract event ID from URL");
+  process.exit(1);
+}
+
+async function getList(eventId, after = null, fullList = []) {
+  const body = {
+    operationName: "getEventByIdForAttendees",
+    extensions: {
+      persistedQuery: {
+        version: 1,
+        sha256Hash: "f78e61dbd9610ab27d429c287ad2f09bfd65244de8622c1c3d64349d8d07c713",
+      },
+    },
+    variables: {
+      eventId,
+      after,
+      first: 100,
+      filter: {
+        rsvpStatus: ["YES", "ATTENDED"],
+      },
+      sort: {
+        sortField: "RSVP_ID",
+        sortOrder: "ASC",
+      },
+    },
+  };
+
+  const response = await fetch("https://www.meetup.com/gql2", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  const data = await response.json();
+  const rsvps = data.data.event.rsvps;
+  rsvps.edges.forEach(({ node }) => {
+    fullList.push(node.member.name);
+  });
+
+  const endCursor = rsvps.pageInfo.endCursor;
+  if (endCursor) {
+    return await getList(eventId, endCursor, fullList);
+  }
+
+  return fullList.sort();
+}
+
+(async () => {
+  const list = await getList(eventId);
+  list.forEach((name) => {
+    console.log(name);
+  });
+})();
