@@ -7,7 +7,8 @@ if (!inputUrl) {
   process.exit(1);
 }
 
-const eventId = inputUrl.split("/")[5];
+const splitUrl = inputUrl.split("/").filter(Boolean);
+const eventId = splitUrl[splitUrl.length - 1]
 if (!eventId) {
   console.error("Could not extract event ID from URL");
   process.exit(1);
