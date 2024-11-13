@@ -9,11 +9,14 @@ function fzf-regexp-shared-source() {
 	zmodload zsh/zutil
 	zparseopts -E -D \
 		-query:=flagQuery \
-		-directory:=flagDirectory
+		-directory:=flagDirectory \
+		-no-ignore=flagNoIgnore
 
 	local query=${flagQuery[2]}
 	# Ensure a final slash
 	local directory="${flagDirectory[2]}/"
+	# If should search in all files
+	local isNoIgnore=${#flagNoIgnore}
 
 	if [[ $query == "" ]]; then
 		return
@@ -76,10 +79,16 @@ function fzf-regexp-shared-source() {
 	local maxCount=999
 	[[ $toggleMode == "single" ]] && maxCount=1
 
+	# If should search into all files (for example when specifically searching in
+	# a given folder, we assume we want to search into everything)
+	local noIgnoreArg=""
+	[[ $isNoIgnore == "1" ]] && noIgnoreArg="--no-ignore"
+
 	rg \
 		--no-heading \
 		--with-filename \
 		--max-count=${maxCount} \
+		$noIgnoreArg \
 		"$query" |
 		sed \
 			--null-data \
