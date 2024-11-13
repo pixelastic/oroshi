@@ -3,7 +3,6 @@
 # Colors and icons will be used in tmux and for short path in zsh
 declare -A PROJECTS
 PROJECTS=()
-
 PROJECTS[aberlaas:background]="YELLOW_7"
 PROJECTS[aberlaas:foreground]="GRAY_9"
 PROJECTS[aberlaas:icon]=" "
@@ -204,6 +203,10 @@ PROJECTS[pietro:background]="BLUE_7"
 PROJECTS[pietro:foreground]="YELLOW_4"
 PROJECTS[pietro:icon]=" "
 PROJECTS[pietro:path]="~/local/www/projects/pietro/"
+PROJECTS[pixelastic.workers.dev:background]="ORANGE"
+PROJECTS[pixelastic.workers.dev:foreground]="WHITE"
+PROJECTS[pixelastic.workers.dev:icon]="  "
+PROJECTS[pixelastic.workers.dev:path]="~/local/www/projects/pixelastic.workers.dev/"
 PROJECTS[projects:background]="GREEN"
 PROJECTS[projects:foreground]="GRAY_2"
 PROJECTS[projects:icon]=" "

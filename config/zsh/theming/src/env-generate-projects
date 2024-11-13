@@ -36,7 +36,9 @@ for key value in "${(@kv)PROJECTS}"; do
   # Project name: aberlaas
   local projectName=${key%:*}
   # Capitalized project name: ABERLAAS
+  # Remove special characters: pixelastic.workers.dev => PIXELASTIC_WORKERS_DEV
   local projectKey=${(U)projectName:gs/-/_/}
+  projectKey=${(U)projectKey:gs/\./_/}
   # Background colors
   local backgroundColorName=$PROJECTS[${projectName}:background]
   local backgroundColorTerm=${(P)${:-COLOR_${backgroundColorName}}}
