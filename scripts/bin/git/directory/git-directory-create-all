@@ -22,6 +22,5 @@ git-branch-push
 # Configure GitHub and CircleCi
 yarn run aberlaas setup
 
-# Mark it for future jump and yarn link
-yarn-link-create
+# Mark it for future jump
 mark
