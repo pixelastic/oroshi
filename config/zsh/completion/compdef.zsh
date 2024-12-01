@@ -204,7 +204,7 @@ compdef _pip-packages \
 compdef _ssh-known-hosts ssh
 # }}}
 # Archives {{{
-compdef '_files -g "*.{bz2,rar,tar,tar.gz,tgz,zip,ZIP,7z}"' \
+compdef '_files -g "*.{7z,Z,bz2,cbr,cbz,deb,gz,htmlz,rar,tar,tar.bz2,tar.gz,tar.lzma,tar.xz,tbz2,tgz,txz,xz,zip,ZIP}"' \
 	extract
 # }}}
 # Watch and reload {{{
