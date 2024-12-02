@@ -24,9 +24,11 @@ function dirsize() {
 
   # Several directories
   if [[ $testOneDirectory == 0 ]]; then
+    local output=""
     for input in $@; do
       local size="$(__dirsize $input)"
-      echo "${input:a}▮${size}"
+      output+="${input:a}▮${size}\n"
     done
+    table $output
   fi
 }
