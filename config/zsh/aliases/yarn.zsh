@@ -1,7 +1,8 @@
 # Yarn
 
 # Local dependencies
-alias yR='yarn remove'
+alias yR='yarn-dependency-remove'
+alias yRd='yarn-dependency-remove-dev'
 alias yadf='yarn-dependency-add-dev-root'
 alias yad='yarn-dependency-add-dev'
 alias yaf='yarn-dependency-add-root'

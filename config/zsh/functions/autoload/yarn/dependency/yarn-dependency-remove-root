@@ -1,0 +1,6 @@
+# Remove dependency from the root, and not the current workspace
+# Usage:
+# $ yarn-dependency-remove-root firost   # remove firost from root
+function yarn-dependency-remove-root() {
+	yarn remove -W -- $@
+}

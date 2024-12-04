@@ -1,0 +1,6 @@
+# Remove devDependencies from the current workspace
+# Usage:
+# $ yarn-dependency-remove-dev vitest # Remove vitest
+function yarn-dependency-remove-dev() {
+	yarn remove --dev -- $@
+}

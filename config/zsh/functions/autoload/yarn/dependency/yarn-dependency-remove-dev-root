@@ -1,0 +1,6 @@
+# Remove devDependency from the root, and not the current workspace
+# Usage:
+# $ yarn-dependency-remove-dev-root aberlaas   # Remove aberlaas from root
+function yarn-dependency-remove-dev-root() {
+	yarn remove --dev -W -- $@
+}

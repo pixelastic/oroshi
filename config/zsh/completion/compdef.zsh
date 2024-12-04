@@ -164,6 +164,7 @@ compdef _node-modules \
 compdef _yarn-runnables \
 	yarn-run
 compdef _yarn-dependencies \
+	yarn-dependency-remove \
 	yarn-dependency-update
 compdef _yarn-dependencies-recursive \
 	yarn-dependency-why
