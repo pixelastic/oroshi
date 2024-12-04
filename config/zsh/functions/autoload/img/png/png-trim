@@ -14,7 +14,7 @@ function png-trim() {
 			continue
 		fi
 
-		convert \
+		magick \
 			$inputPath \
 			-trim \
 			PNG32:$inputPath

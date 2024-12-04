@@ -3,8 +3,10 @@ set -e
 
 # Basic image support
 sudo apt-get install \
-	libimage-exiftool-perl \
-	imagemagick
+	libimage-exiftool-perl
+
+# DSSIM
+~/.oroshi/scripts/install/image/imagemagick
 
 # DSSIM
 ~/.oroshi/scripts/install/image/dssim

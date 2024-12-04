@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -e
+
+# Ubuntu 22.04 ships with ImageMagick 6
+# ImageMagick 7 is available as a single binary
+# It replaces the old `convert` method, and all other methods should use this as
+# its primary entrypoint
+
+# Download the binary
+mkdir -p ~/local/etc/magick
+cd ~/local/etc/magick
+rm -rf ./magick
+wget "https://imagemagick.org/archive/binaries/magick"
+chmod +x ./magick
+
+# Create links
+cd ~/local/bin
+ln -fs ./../etc/magick/magick ./magick

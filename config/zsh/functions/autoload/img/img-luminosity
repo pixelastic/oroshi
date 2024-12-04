@@ -15,7 +15,7 @@ function img-luminosity() {
 		local extension=${input:e}
 		local filename=${input:t:r}
 		local output="${input:t:r}.luminosity-${modulate}.${extension}"
-		convert $input \
+		magick $input \
 			-modulate $modulate \
 			$output
 	done

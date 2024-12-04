@@ -5,7 +5,7 @@
 function gif-is-animated() {
 	local input=$1
 
-	local rawOutput=($(identify -format "%n\n" $input))
+	local rawOutput=($(magick identify -format "%n\n" $input))
 	local numberOfFrames=$rawOutput[1]
 
 	[[ $numberOfFrames == "1" ]] && return 1

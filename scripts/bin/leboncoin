@@ -1,5 +1,0 @@
-#!/usr/bin/env zsh
-# Will convert images to a format suitable for uploading on leboncoin.fr
-
-
-mogrify -verbose -resize 640 $@

@@ -5,6 +5,6 @@ function img-color-count() {
 	local input=$1
 
 	# Only display the first line of output (animated gif can have multiple lines)
-	local rawOutput=($(identify -format "%k\n" $input))
+	local rawOutput=($(magick identify -format "%k\n" $input))
 	echo $rawOutput[1]
 }

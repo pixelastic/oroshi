@@ -42,7 +42,7 @@ function img-resize() {
 
   for input in $inputs; do
     # Get current image dimensions
-    local currentDimensions="$(identify -format "%wx%h\n" $input)"
+    local currentDimensions="$(magick identify -format "%wx%h\n" $input)"
     local currentDimensionsSplit=(${(@s/x/)currentDimensions})
     local currentWidth=$currentDimensionsSplit[1]
     local currentHeight=$currentDimensionsSplit[2]
@@ -72,13 +72,14 @@ function img-resize() {
     fi
 
     local finalDimensions="${newWidth}x${newHeight}"
+    echo $finalDimensions
 
     # By default, aspect ratio is maintained, unless --no-ratio is passed
     if [[ $isNoRatio == "1" ]]; then
       finalDimensions="${finalDimensions}!"
     fi
 
-    mogrify \
+    magick mogrify \
       -resize "${finalDimensions}" \
       ${input:a}
     echo "✔ ${input} resized"

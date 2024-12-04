@@ -28,10 +28,7 @@ function img-convert() {
       continue
     fi
 
-
-    # svg2png
-
-    convert \
+    magick \
       -background none \
       $inputPath \
       $outputPath

@@ -7,7 +7,7 @@
 # Source: http://www.imagemagick.org/discourse-server/viewtopic.php?t=19580
 function img-is-grayscale() {
 	local input="$1"
-	local saturation="$(convert \
+	local saturation="$(magick \
 		$input \
 		-colorspace HCL \
 		-channel g \
