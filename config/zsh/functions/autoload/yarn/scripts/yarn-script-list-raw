@@ -23,10 +23,10 @@ function yarn-script-list-raw() {
 	)"
 	[[ $output == "" ]] && return 0
 
-	# Get global scripts frop root package.json
+	# Get global scripts from root package.json
 	local yarnRoot="$(git-directory-root)"
 	local rootPackageJson="${yarnRoot}/package.json"
-	if [[ $rootPackageJson != "$localPackageJson" ]]; then
+	if [[ -e $rootPackageJson && $rootPackageJson != "$localPackageJson" ]]; then
 		local globalScripts="$(
 			jq -r \
 				'.scripts
