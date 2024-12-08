@@ -120,6 +120,7 @@ FILETYPE_GROUPS[archive:color]="GREEN"
 FILETYPE_GROUPS[archive:icon]=" "
 FILETYPE_GROUPS[archive:bold]="1"
 FILETYPE_GROUPS[archive:patterns]="\
+  7z \
   cbr \
   cbz \
   deb \
