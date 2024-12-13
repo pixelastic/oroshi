@@ -73,6 +73,8 @@ FILETYPE_GROUPS[config:patterns]="\
   conf \
   csv \
   ini \
+  opt \
+  rmp \
   [.envrc] \
   [.fdignore] \
   [.eslintignore] \
