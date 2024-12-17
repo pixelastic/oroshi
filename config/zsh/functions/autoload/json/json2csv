@@ -1,0 +1,13 @@
+# Convert a JSON file into a CSV
+
+# Usage:
+# $ cat file.json  | json2csv
+# $ json2csv file.json
+#
+# This will output the CSV
+# Works on single objects and array of objects
+function json2csv() {
+	local inputFilepath=$1
+
+	cat $inputFilepath | jq --raw-output '(.[0] | keys_unsorted | @csv), (.[] | [.[]] | @csv)'
+}
