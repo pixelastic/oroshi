@@ -28,7 +28,7 @@ function oroshi_tools_fzf() {
   local fzfOptionsMulti="\
     --multi \
     --marker= \
-    --bind 'enter:toggle+accept' \
+    --bind 'enter:accept' \
     --bind 'ctrl-space:toggle+down' \
     --bind 'ctrl-a:toggle-all' \
   "
