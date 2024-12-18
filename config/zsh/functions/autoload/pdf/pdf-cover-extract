@@ -34,10 +34,10 @@ function pdf-cover-extract() {
 	knownErrorsPattern+='Short look-up table in the Indexed color space was padded with 0\|'
 	knownErrorsPattern+='Output may be incorrect'
 
-	convert \
+	magick \
+		"${fullPath}[0]" \
 		-alpha remove \
 		-trim \
-		"${fullPath}[0]" \
 		PNG32:$output \
 		2> >(\grep -v "${knownErrorsPattern}" >&2)
 }
