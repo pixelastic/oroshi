@@ -8,6 +8,7 @@ cd ~/local/tmp
 wget $DOWNLOAD_URL -O bat.deb
 sudo dpkg -i ./bat.deb
 sudo apt-get -f install
+rm ./bat.deb
 
 # Also install bat-extras for more goodness
 # https://github.com/eth-p/bat-extras
