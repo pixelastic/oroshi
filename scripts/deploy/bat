@@ -2,6 +2,7 @@
 set -ex
 
 # Link the config file
+mkdir -p ~/.config/bat
 ln -fs \
 	~/.oroshi/config/bat/batrc.conf \
 	~/.config/bat/config
