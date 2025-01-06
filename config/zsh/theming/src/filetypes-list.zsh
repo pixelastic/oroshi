@@ -99,10 +99,13 @@ FILETYPE_GROUPS[image:patterns]="\
 "
 
 # Audio files
-FILETYPE_GROUPS[audio:color]="BLUE_4"
+FILETYPE_GROUPS[audio:color]="BLUE_5"
 FILETYPE_GROUPS[audio:icon]=" "
+FILETYPE_GROUPS[audio:bold]="1"
 FILETYPE_GROUPS[audio:patterns]="\
+  m4a \
   mp3 \
+  ogg \
   wav \
 "
 

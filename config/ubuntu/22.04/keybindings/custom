@@ -11,13 +11,15 @@ local                  shortcuts=(
   # Name                 Command                                               Binding
   "Calculator"           "gnome-calculator"                                    "Insert"
   "Chrome"               "google-chrome --profile-directory=\"Profile 5\""     "<Super>C"
+  "Firefox"              "firefox"                                             "<Super>F"
   "Flameshot"            "/usr/bin/flameshot gui"                              "<Super>Print"
   "Keepass"              "keepassx ~/perso/Dropbox/tim/keys.kdbx"              "<Super>K"
-  "Kitty"                "/home/tim/.oroshi/scripts/bin/kitty/kitty-restore"                           "<Super>T"
+  "Kitty"                "/home/tim/.oroshi/scripts/bin/kitty/kitty-restore"   "<Super>T"
   "Notion"               "google-chrome \'https://notion.so/\'"                "<Super>N"
   "Peek"                 "/home/tim/.oroshi/scripts/bin/peek"                  "<Super><Alt>Print"
   "Slack"                "/usr/bin/slack"                                      "<Super>S"
 )
+
 
 
 function gsettings_set {
