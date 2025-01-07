@@ -109,9 +109,10 @@ const KittyLoad = {
       });
 
       // We mark the first window of this tab as the first window
-      const tabFirstWindowId = this.getMainSplitWindowId(
-        tab.layout_state.pairs
-      );
+      // TODO: There is an error here. Somehow some tabs do not have
+      // a layout_state and so this fails. I don't know what I should be doing
+      // in that case, I'll need to investigate
+      const tabFirstWindowId = this.getMainSplitWindowId(tab.layout_state.pairs);
       manifest[tabFirstWindowId].isTabFirstWindow = true;
     });
   },

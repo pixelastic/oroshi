@@ -8,21 +8,24 @@ mkdir -p $kittySocketFolder
 # Start kitty and make it listen to remote commands on this socket
 # This allow remote commands to be sent from outside of kitty itself
 kitty \
-	--listen-on unix:$kittySocketPath \
-	--session /home/$USER/.oroshi/config/kitty/startup_session_restore.conf \
-	&
+	--listen-on unix:$kittySocketPath
 
-# Fetch last saved state and load it if available
-if kitty-layout-load; then
-	# Delete the initial window created by first Kitty invocation
-	kitty @ \
-		--to unix:$kittySocketPath \
-		close-window \
-		--match var:OROSHI_RESTORE_UUID=initial
-else
-	kitty @ \
-		--to unix:$kittySocketPath \
-		set-tab-title \
-		--match var:OROSHI_RESTORE_UUID=initial \
-		"zsh (failed to restore)"
-fi
+# We comment out auto-loading of last session as the script currently bugs, and
+# prevent kitty from creatin the socket altogether
+# --session /home/$USER/.oroshi/config/kitty/startup_session_restore.conf \
+# &
+
+# # Fetch last saved state and load it if available
+# if kitty-layout-load; then
+# 	# Delete the initial window created by first Kitty invocation
+# 	kitty @ \
+# 		--to unix:$kittySocketPath \
+# 		close-window \
+# 		--match var:OROSHI_RESTORE_UUID=initial
+# else
+# 	kitty @ \
+# 		--to unix:$kittySocketPath \
+# 		set-tab-title \
+# 		--match var:OROSHI_RESTORE_UUID=initial \
+# 		"zsh (failed to restore)"
+# fi
