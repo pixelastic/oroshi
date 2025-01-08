@@ -26,22 +26,23 @@ alias ls='ls -lhN --color=auto'
 alias la='ls -lahN --color=auto'
 alias ..='cd ..'
 
-
-# Basic prompt
-local hostname="$(hostname)"
-local prompt="[%m]"
-if [[ $hostname == "rg353v" ]]; then
-	promptPrefix="%{[38;5;${COLOR_BLUE}m%}●%{[00m%}"
-	promptPrefix+="%{[38;5;${COLOR_GREEN}m%}●%{[00m%}"
-	promptPrefix+="%{[38;5;${COLOR_RED}m%}●%{[00m%}"
-	promptPrefix+="%{[38;5;${COLOR_YELLOW}m%}●%{[00m%}"
-fi
-
-PS1="${promptPrefix} %{[38;5;2m%}%~/%{[00m%} "
-
 # Basic history settings
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 setopt appendhistory
 
+# Host-specific settings
+local hostname="$(hostname)"
+local promptPrefix="[%m]"
+if [[ $hostname == "rg353v" ]]; then
+	promptPrefix="%{[38;5;${COLOR_BLUE}m%}●%{[00m%}"
+	promptPrefix+="%{[38;5;${COLOR_GREEN}m%}●%{[00m%}"
+	promptPrefix+="%{[38;5;${COLOR_RED}m%}●%{[00m%}"
+	promptPrefix+="%{[38;5;${COLOR_YELLOW}m%}●%{[00m%}"
+
+	cd "/roms2/"
+fi
+
+# Basic prompt
+PS1="${promptPrefix} %{[38;5;2m%}%~/%{[00m%} "
