@@ -88,7 +88,7 @@ FILETYPE_GROUPS[config:patterns]="\
 "
 
 # Image files
-FILETYPE_GROUPS[image:color]="YELLOW_5"
+FILETYPE_GROUPS[image:color]="YELLOW_6"
 FILETYPE_GROUPS[image:icon]=" "
 FILETYPE_GROUPS[image:patterns]="\
   gif \
