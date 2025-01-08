@@ -2,6 +2,8 @@
 export TERM=xterm-256color
 bindkey "[3~" delete-char       # Delete
 bindkey "" backward-delete-char # Backspace
+bindkey "OH" beginning-of-line  # Home
+bindkey "OF" end-of-line        # End
 
 # Basic completion system
 autoload -Uz compinit
@@ -25,6 +27,10 @@ alias v='vi'
 alias ls='ls -lhN --color=auto'
 alias la='ls -lahN --color=auto'
 alias ..='cd ..'
+function f() {
+	find . -name "*$1*" | sed 's|^./||'
+}
+
 
 # Basic history settings
 HISTFILE=~/.zsh_history
