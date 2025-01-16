@@ -51,4 +51,4 @@ if [[ $hostname == "rg353v" ]]; then
 fi
 
 # Basic prompt
-PS1="${promptPrefix} %{[38;5;2m%}%~/%{[00m%} "
+PS1="${promptPrefix} %{[38;5;${COLOR_GREEN}m%}%~/%{[00m%} "
