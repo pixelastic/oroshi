@@ -15,9 +15,15 @@ local args="$@"
 # Guess which argument is the imageName
 local imageFullName=""
 for arg in ${=args}; do
+  # Skip -arguments
   [[ $arg == -* ]] && continue
+  # Skip non-existing images
   docker-image-exists $arg || continue
+
+  # Save the image name, and remove it from the args list
   imageFullName="$arg"
+  args=(${args//${imageFullName}/})
+
   break
 done
 
@@ -45,7 +51,7 @@ if [[ $containerName == "" ]]; then
 
   # Already exists? Append a random string if the name is already take
   if docker-container-exists $containerName; then
-    if which petname; then
+    if which petname > /dev/null; then
       containerName+="-$(petname --words 1)"
     else
       containerName+="-$(echo $RANDOM | md5sum | head -c 5)"
@@ -53,8 +59,10 @@ if [[ $containerName == "" ]]; then
   fi
 fi
 # }}}
+#
 
 docker run \
   --rm \
   --name $containerName \
-  ${=args}
+  ${=args} \
+  $imageFullName

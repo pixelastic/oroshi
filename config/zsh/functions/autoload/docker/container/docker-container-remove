@@ -16,7 +16,13 @@ function docker-container-remove() {
       continue
     fi
 
-    docker container rm $containerName > /dev/null
+    # Force stop the container if running
+    if docker-container-is-running $containerName; then
+      docker kill $containerName > /dev/null
+    fi
+
+    # Remove the container
+    docker container rm $containerName 2> /dev/null
     echo "✔ container $displaycontainerName deleted"
   done
 }
