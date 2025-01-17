@@ -47,7 +47,7 @@ local tagName=$imageSplit[2]
 # - We default to the same name as the image (with _ instead of :)
 # - If already taken, we append a random word
 if [[ $containerName == "" ]]; then
-  local containerName="${imageName}_${tagName}"
+  local containerName="${imageName//\//_}_${tagName}"
 
   # Already exists? Append a random string if the name is already take
   if docker-container-exists $containerName; then
