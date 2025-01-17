@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+# Install fly in custom dir
+export FLYCTL_INSTALL=~/local/etc/flyctl
+mkdir $FLYCTL_INSTALL
+
+curl -L https://fly.io/install.sh | sh
+
+# Make global symlink
+ln -fs $FLYCTL_INSTALL/bin/flyctl ~/local/bin/fly
