@@ -35,6 +35,8 @@ compdef _git-tags-local \
 	git-tag-status
 compdef _git-files-dirty \
 	git-file-add
+compdef _git-files-staged \
+	git-file-unstage
 compdef _git-submodules \
 	git-submodule-remove
 compdef _git-remotes \

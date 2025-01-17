@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-# Unstage the specified file
-# Usage:
-# $ git-file-unstage ./path/to/file
-
-git reset HEAD $@

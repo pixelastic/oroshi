@@ -1,5 +1,0 @@
-#!/usr/bin/env zsh
-# Add a file to the staging area
-# Usage:
-# $ git-file-add ./path/to/file   # Adds the file
-git add --all $@

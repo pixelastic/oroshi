@@ -1,0 +1,15 @@
+# Add a file to the staging area
+# Usage:
+# $ git-file-add ./relative/path/to/file  # Adds the file
+# $ git-file-add /absolute/path/to/file   # Adds the file
+function git-file-add() {
+	# Convert absolute paths (found with Ctrl-P, usually) into relative ones,
+	# as expected by git
+	local gitRoot="$(git-directory-root)/"
+	local filesToAdd=()
+	for inputFile in "$@"; do
+		filesToAdd+=("${inputFile//${gitRoot}/}")
+	done
+
+	git add --all "${filesToAdd[@]}"
+}

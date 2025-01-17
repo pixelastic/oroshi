@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest the staged files
+function _git-files-staged() {
+  local suggestions=(${(f)"$(complete-git-files-staged)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_GIT_MODIFIED $COLOR_WHITE ' ﰖ Staged files ')" suggestions
+}
