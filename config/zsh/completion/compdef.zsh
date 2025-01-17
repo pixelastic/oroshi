@@ -72,6 +72,8 @@ compdef _docker-containers \
 	docker-container-is-running \
 	docker-container-remove \
 	docker-container-state
+compdef _docker-containers-running \
+	docker-container-stop
 compdef _docker-containers-ids \
 	docker-container-name
 # }}}

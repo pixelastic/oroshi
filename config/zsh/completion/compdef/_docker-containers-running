@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest all the running containers
+function _docker-containers-running() {
+  local suggestions=(${(f)"$(complete-docker-containers-running)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_DOCKER_CONTAINER_RUNNING $COLOR_WHITE '  Docker containers running ')" suggestions
+}

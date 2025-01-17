@@ -1,0 +1,20 @@
+# Stop a running container
+# Usage:
+# $ docker-container-stop alpine_latest              # Stops one container
+# $ docker-container-stop alpine_latest nice_jepsen  # Stop several
+function docker-container-stop() {
+  local containers="$@"
+
+  for containerName in ${=containers}; do
+    local displaycontainerName="$(docker-container-colorize $containerName --with-icon)"
+
+    # Warn about container not existing
+    if ! docker-container-exists "$containerName"; then
+      echo "✘ container $displaycontainerName does not exist"
+      continue
+    fi
+
+    docker stop $containerName > /dev/null
+    echo "✔ container $displaycontainerName stopped"
+  done
+}
