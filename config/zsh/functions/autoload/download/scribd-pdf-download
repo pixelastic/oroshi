@@ -1,0 +1,18 @@
+# Download a PDF from scribd.com
+# Usage:
+# $ scribd-dl "https://www.scribd.com/ZZZ"
+function scribd-pdf-download() {
+	local url=$1
+	local split=(${(@s_/_)url})
+	local pdfName=$split[-1]
+	local pdfId=$split[-2]
+	echo "Downloading ${pdfName}"
+
+	# Go to the local scribd-dl install
+	local initialPwd="$(pwd)";
+	cd ~/local/src/scribd-dl || return 0
+	yarn run start "$url"
+
+	# Files are saved in ./output by default. We move them to the current folder
+	mv ./output/${pdfId}.pdf "${initialPwd}/${pdfName}.pdf"
+}

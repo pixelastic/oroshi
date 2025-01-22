@@ -1,0 +1,18 @@
+# Download a file based on its URL
+# Usage:
+# $ dl https://scribd.com/file.pdf        # Downloads form scribd
+function dl() {
+	local input=$1
+
+	if [[ $input =~ "www.scribd.com" ]]; then
+		scribd-pdf-download $input
+		return
+	fi
+
+	if [[ $input =~ "www.youtube.com" ]]; then
+		youtube-video-download $input
+		return
+	fi
+
+	wget $input
+}

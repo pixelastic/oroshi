@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+set -e
+
+cd ~/local/src
+git clone git@github.com:rkwyu/scribd-dl.git
+
+cd ./scribd-dl
