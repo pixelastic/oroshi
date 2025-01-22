@@ -1,0 +1,13 @@
+# Check if the given file is a JPG
+# Usage:
+# $ img-is-jpg ./unknownfile    # Exit 0 if jpg, 1 if not
+function img-is-jpg() {
+	local input="$1"
+
+	if [[ $input == "" ]]; then
+		echo "You need to pass the path of the file"
+		return 1
+	fi
+
+	file $input | grep -q 'JPEG image data'
+}

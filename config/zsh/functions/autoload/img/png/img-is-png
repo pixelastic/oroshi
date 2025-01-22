@@ -1,0 +1,13 @@
+# Check if the given file is a PNG
+# Usage:
+# $ img-is-png./unknownfile    # Exit 0 if png, 1 if not
+function img-is-png() {
+	local input="$1"
+
+	if [[ $input == "" ]]; then
+		echo "You need to pass the path of the file"
+		return 1
+	fi
+
+	file $input | grep -q 'PNG image data'
+}
