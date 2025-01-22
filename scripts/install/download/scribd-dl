@@ -1,7 +1,10 @@
 #!/usr/bin/env zsh
 set -e
 
+# Clone latest copy
 cd ~/local/src
 git clone git@github.com:rkwyu/scribd-dl.git
 
+# Install deps
 cd ./scribd-dl
+yarn install
