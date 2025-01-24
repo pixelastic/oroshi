@@ -2,17 +2,20 @@
 # Usage:
 # $ dl https://scribd.com/file.pdf        # Downloads form scribd
 function dl() {
-	local input=$1
+	local url=$1
+	local split=(${(@s_/_)url})
+	local targetHost=$split[2]
 
-	if [[ $input =~ "www.scribd.com" ]]; then
-		scribd-pdf-download $input
-		return
+	if [[ $targetHost == "www.scribd.com" ]]; then
+		scribd-pdf-download $url
+		return $?
 	fi
 
-	if [[ $input =~ "www.youtube.com" ]]; then
-		youtube-video-download $input
-		return
+	if [[ $targetHost == "www.youtube.com" ]]; then
+		youtube-video-download $url
+		return $?
 	fi
 
-	wget $input
+	echo "Unsupported host: ${targetHost}"
+	return 1
 }
