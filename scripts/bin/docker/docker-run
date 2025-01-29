@@ -1,9 +1,10 @@
 #!/usr/bin/env zsh
 # Runs a specific image, as a wrapper around docker run
 # Usage:
-# $ docker-run ubuntu         # Run ubuntu
-# $ docker-run --tty ubuntu   # Accepts flags
-# $ docker-run ubuntu --tty   # No matter where
+# $ docker-run ubuntu          # Run ubuntu
+# $ docker-run --tty ubuntu    # Accepts flags
+# $ docker-run ubuntu --tty    # No matter where
+# $ docker-run ubuntu -- pwd   # Run pwd in the guest
 
 zparseopts -E -D \
   -name:=flagContainerName
@@ -14,18 +15,43 @@ local args="$@"
 # Image name {{{
 # Guess which argument is the imageName
 local imageFullName=""
+local isPassingCommandArguments="0"
+local guestCommands=()
+local dockerArguments=()
 for arg in ${=args}; do
-  # Skip -arguments
-  [[ $arg == -* ]] && continue
-  # Skip non-existing images
-  docker-image-exists $arg || continue
+  # -- detected, anything after is going to be command arguments
+  if [[ $arg == "--" ]]; then
+    isPassingCommandArguments="1"
+    continue
+  fi
 
-  # Save the image name, and remove it from the args list
-  imageFullName="$arg"
-  args=(${args//${imageFullName}/})
+  # Saving the command arguments
+  if [[ $isPassingCommandArguments == "1" ]]; then
+    guestCommands+=($arg)
+    continue;
+  fi
 
-  break
+  # Skip named arguments
+  if [[ $arg == -* ]]; then
+    dockerArguments+=($arg)
+    continue
+  fi
+
+  # Stop once an argument is a valid image name
+  if docker-image-exists $arg; then
+    imageFullName="$arg"
+    args=(${args//${imageFullName}/})
+    continue
+  fi
+
+  # If it's none of the above, it's probably the value of a given argument
+  dockerArguments+=($arg)
 done
+
+# echo "args: $args"
+# echo "imageFullName: $imageFullName"
+# echo "dockerArguments: $dockerArguments"
+# echo "guestCommands: $guestCommands"
 
 # Stop if no image name
 if [[ $imageFullName == "" ]]; then
@@ -59,10 +85,10 @@ if [[ $containerName == "" ]]; then
   fi
 fi
 # }}}
-#
 
 docker run \
   --rm \
   --name $containerName \
-  ${=args} \
-  $imageFullName
+  ${=dockerArguments} \
+  $imageFullName \
+  ${=guestCommands}
