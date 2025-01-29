@@ -8,8 +8,9 @@ function prompt-pid() {
   for line in ${(f)pidTree}; do
     line=${line// *\`-/}
     [[ $line != zsh* ]] && continue
-    local split=(${(@s/,/)line})
-    echo $split[2]
+    local firstSplit=(${(@s/,/)line})
+    local secondSplit=(${(@s/ /)firstSplit[2]})
+    echo $secondSplit[1]
     return
   done
 }
