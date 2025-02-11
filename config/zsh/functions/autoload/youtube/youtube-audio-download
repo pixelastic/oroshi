@@ -11,6 +11,7 @@ function youtube-audio-download() {
 	fi
 
 	yt-dlp \
+		--cookies-from-browser firefox \
 		--extract-audio \
 		--audio-format mp3 \
 		--output "%(title)s.%(ext)s" \

@@ -7,6 +7,7 @@ function youtube-video-download() {
 
 	for videoId in $args; do
 		yt-dlp \
+			--cookies-from-browser firefox \
 			--format 'bestvideo[height<=720]+bestaudio/best[height<=720]' \
 			--merge-output-format mp4 \
 			--output "%(title)s.%(ext)s" \
