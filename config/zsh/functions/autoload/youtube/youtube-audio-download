@@ -5,9 +5,14 @@
 function youtube-audio-download() {
 	local input="$1"
 
+	# Handle both URLs and IDs
+	if [[ $input != http* ]]; then
+		input="https://www.youtube.com/watch?v=${input}"
+	fi
+
 	yt-dlp \
 		--extract-audio \
 		--audio-format mp3 \
 		--output "%(title)s.%(ext)s" \
-		$input
+		"$input"
 }
