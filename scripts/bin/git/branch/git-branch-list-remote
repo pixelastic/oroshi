@@ -9,7 +9,7 @@ zparseopts -E -D \
   a=flagAll \
   -all=flagAll \
 
-  local isAll=${#flagAll}
+local isAll=${#flagAll}
 
 # Init values {{{
 local output=""
@@ -23,6 +23,9 @@ local remoteNames=($1)
 # If --all is passed, we list branches from all remotes
 [[ "$isAll" == 1 ]] && remoteNames=($(git remote))
 # }}}
+
+# Need to update info from the remote to have latest info
+git fetch origin
 
 # Gathering local branch information {{{
 # Before we loop through all the remote branches, we'll gather all information
