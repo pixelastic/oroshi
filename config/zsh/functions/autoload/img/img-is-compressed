@@ -1,4 +1,4 @@
-# Check if an image has already been compressed by img-min
+# Check if an image has already been compressed by imgmin
 # Usage:
 # $ img-is-compressed raw.jpg   # Returns 1
 # $ img-is-compressed compressed.jpg   # Returns 0

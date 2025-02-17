@@ -10,7 +10,7 @@ alias convert="magick"
 alias ipc="img-png-create"
 # JPG
 alias ijc="img-jpg-create"
-alias jpgmin="img-min"
+alias jpgmin="imgmin"
 
 alias igc="img-gif-create"
 alias isc="img-svg-create"
