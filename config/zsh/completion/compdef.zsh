@@ -22,9 +22,11 @@ compdef _jumps unmark j
 
 # Git {{{
 compdef _git-branches-local \
+	git-branch-copy \
 	git-branch-merge \
 	git-branch-rebase \
 	git-branch-remove \
+	git-branch-rename \
 	git-branch-switch
 compdef _git-branches-remote \
 	git-branch-pull \
