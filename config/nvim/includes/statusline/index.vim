@@ -83,14 +83,21 @@ function! OroshiStatusLine()
   " }}}
 
   " Linting errors {{{
-  let rawErrors = ale#statusline#Count(bufnr(''))
-  let errorCount = rawErrors.error + rawErrors.style_error
-  let warningCount = rawErrors.warning + rawErrors.style_warning
-  if errorCount !=# 0
-    let sl .= '%#StatusLineLintError# '.errorCount.' %*'
-  endif
-  if warningCount !=# 0
-    let sl .= '%#StatusLineLintWarning# '.warningCount.' %*'
+  " Note: When we load vim for the first time, and Ale isn't yet installed, this
+  " part of the code will trigger a lot of errors. So, we wrap it, to only
+  " conditionally add the errors if ale is ready
+  if exists('g:loaded_ale')
+    let rawErrors = ale#statusline#Count(bufnr(''))
+    let errorCount = rawErrors.error + rawErrors.style_error
+    let warningCount = rawErrors.warning + rawErrors.style_warning
+    if errorCount !=# 0
+      let sl .= '%#StatusLineLintError# '.errorCount.' %*'
+    endif
+    if warningCount !=# 0
+      let sl .= '%#StatusLineLintWarning# '.warningCount.' %*'
+    endif
+  else
+      let sl .= '%#StatusLineLintError# Ale not installed%*'
   endif
 
   " }}}
