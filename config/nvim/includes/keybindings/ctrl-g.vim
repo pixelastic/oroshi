@@ -1,5 +1,10 @@
 " [CTRL-G] Regexp search inside of files in whole project
 
+" Initial list of sources
+function! FzfRegexpSearchProjectSource()
+  return []
+endfunction
+
 " FZF options
 function! FzfRegexpSearchProjectOptions()
   let fzfOptions= system('fzf-regexp-project-options')
@@ -25,6 +30,6 @@ function! FzfRegexpSearchProjectSink(selection)
   endfor
 endfunction
 
-nnoremap <silent> <C-G> :call fzf#run({'options': FzfRegexpSearchProjectOptions(), 'sinklist': function('FzfRegexpSearchProjectSink') })<CR>
-inoremap <silent> <C-G> <Esc>:call fzf#run({'options': FzfRegexpSearchProjectOptions(), 'sinklist': function('FzfRegexpSearchProjectSink') })<CR>
+nnoremap <silent> <C-G> :call fzf#run({'source': FzfRegexpSearchProjectSource(), 'options': FzfRegexpSearchProjectOptions(), 'sinklist': function('FzfRegexpSearchProjectSink') })<CR>
+inoremap <silent> <C-G> <Esc>:call fzf#run({'source': FzfRegexpSearchProjectSource(), 'options': FzfRegexpSearchProjectOptions(), 'sinklist': function('FzfRegexpSearchProjectSink') })<CR>
 " }}}

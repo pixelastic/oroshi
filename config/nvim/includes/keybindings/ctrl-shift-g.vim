@@ -1,5 +1,10 @@
 " [CTRL-Shift-G] Regexp search inside of current directory
 
+" Initial list of sources
+function! FzfRegexpSearchSubdirSource()
+  return []
+endfunction
+
 " FZF options
 function! FzfRegexpSearchSubdirOptions()
   let fzfOptions= system('fzf-regexp-subdir-options')
@@ -25,6 +30,6 @@ function! FzfRegexpSearchSubdirSink(selection)
   endfor
 endfunction
 
-nnoremap <silent> Ⓖ :call fzf#run({'options': FzfRegexpSearchSubdirOptions(), 'sinklist': function('FzfRegexpSearchSubdirSink') })<CR>
-inoremap <silent> Ⓖ <Esc>:call fzf#run({'options': FzfRegexpSearchSubdirOptions(), 'sinklist': function('FzfRegexpSearchSubdirSink') })<CR>
+nnoremap <silent> Ⓖ :call fzf#run({'source': FzfRegexpSearchProjectSource(), 'options': FzfRegexpSearchSubdirOptions(), 'sinklist': function('FzfRegexpSearchSubdirSink') })<CR>
+inoremap <silent> Ⓖ <Esc>:call fzf#run({'source': FzfRegexpSearchProjectSource(), 'options': FzfRegexpSearchSubdirOptions(), 'sinklist': function('FzfRegexpSearchSubdirSink') })<CR>
 " }}}

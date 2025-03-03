@@ -1,7 +1,10 @@
 " [CTRL-Shift-P] Files search in the subdirectory
 
-" Command to call to build the list of choices
-let fzfFilesSearchSubdirSource='fzf-fs-files-subdir-source'
+" Initial list of sources
+function! FzfFilesSearchSubdirSource()
+  let fzfSource= system('fzf-fs-files-subdir-source')
+  return split(fzfSource, "\n")
+endfunction
 
 " FZF options
 function! FzfFilesSearchSubdirOptions()
@@ -23,6 +26,6 @@ function! FzfFilesSearchSubdirSink(selection)
   execute 'tab drop '.selection
 endfunction
 
-nnoremap <silent> Ⓟ :call fzf#run({'source': fzfFilesSearchSubdirSource, 'options': FzfFilesSearchSubdirOptions(), 'sinklist': function('FzfFilesSearchSubdirSink') })<CR>
-inoremap <silent> Ⓟ <Esc>:call fzf#run({'source': fzfFilesSearchSubdirSource, 'options': FzfFilesSearchSubdirOptions(), 'sinklist': function('FzfFilesSearchSubdirSink') })<CR>
+nnoremap <silent> Ⓟ :call fzf#run({'source': FzfFilesSearchSubdirSource(), 'options': FzfFilesSearchSubdirOptions(), 'sinklist': function('FzfFilesSearchSubdirSink') })<CR>
+inoremap <silent> Ⓟ <Esc>:call fzf#run({'source': FzfFilesSearchSubdirSource(), 'options': FzfFilesSearchSubdirOptions(), 'sinklist': function('FzfFilesSearchSubdirSink') })<CR>
 " }}}

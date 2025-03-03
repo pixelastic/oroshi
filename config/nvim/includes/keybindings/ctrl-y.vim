@@ -2,9 +2,10 @@
 
 " Command to call to build the list of choices
 function! FzfGitHistorySource()
-  let fzfSource='vim-fzf-git-file-history'
-  let fzfSource.=' "' . expand('%') . '"'
-  return fzfSource
+  let fzfSourceCommand='vim-fzf-git-file-history'
+  let fzfSourceCommand.=' "' . expand('%') . '"'
+  let fzfSource= system(fzfSourceCommand)
+  return split(fzfSource, "\n")
 endfunction
 
 " fzf options, to display colors and a preview window

@@ -1,7 +1,10 @@
 " [CTRL-P] Files search in the whole project
 
-" Command to call to build the list of choices
-let fzfFilesSearchProjectSource='fzf-fs-files-project-source'
+" Initial list of sources
+function! FzfFilesSearchProjectSource()
+  let fzfSource= system('fzf-fs-files-project-source')
+  return split(fzfSource, "\n")
+endfunction
 
 " FZF options
 function! FzfFilesSearchProjectOptions()
@@ -23,6 +26,6 @@ function! FzfFilesSearchProjectSink(selection)
   execute 'tab drop '.selection
 endfunction
 
-nnoremap <silent> <C-P> :call fzf#run({'source': fzfFilesSearchProjectSource, 'options': FzfFilesSearchProjectOptions(), 'sinklist': function('FzfFilesSearchProjectSink') })<CR>
-inoremap <silent> <C-P> <Esc>:call fzf#run({'source': fzfFilesSearchProjectSource, 'options': FzfFilesSearchProjectOptions(), 'sinklist': function('FzfFilesSearchProjectSink') })<CR>
+nnoremap <silent> <C-P> :call fzf#run({'source': FzfFilesSearchProjectSource(), 'options': FzfFilesSearchProjectOptions(), 'sinklist': function('FzfFilesSearchProjectSink') })<CR>
+inoremap <silent> <C-P> <Esc>:call fzf#run({'source': FzfFilesSearchProjectSource(), 'options': FzfFilesSearchProjectOptions(), 'sinklist': function('FzfFilesSearchProjectSink') })<CR>
 " }}}
