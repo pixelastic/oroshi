@@ -6,7 +6,7 @@ call plug#begin('~/.config/nvim/plugins')
 
 " Basic vim functions {{{
 Plug 'danro/rename.vim'                             " :Rename command
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " Main fzf
+Plug '~/local/src/fzf'                              " Use globally installed fzf
 Plug 'junegunn/fzf.vim'                             " Vim-specific fzf plugin
 Plug 'junegunn/vim-easy-align'                      " Align text in columns
 Plug 'tpope/vim-commentary'                         " gcc to comment/uncomment
