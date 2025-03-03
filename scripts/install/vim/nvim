@@ -13,7 +13,8 @@ INSTALL_DIR=~/local/etc/nvim
 
 # Download
 mkdir -p $DOWNLOAD_DIR
-wget $DOWNLOAD_URL -O $DOWNLOAD_PATH
+cd $DOWNLOAD_DIR || exit
+wget $DOWNLOAD_URL -O "${BINARY_NAME}.tar.gz"
 tar xvzf $DOWNLOAD_PATH
 rm $DOWNLOAD_PATH
 
