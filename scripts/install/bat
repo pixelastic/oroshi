@@ -3,7 +3,7 @@
 # https://github.com/sharkdp/bat
 set -e
 
-DOWNLOAD_URL="https://github.com/sharkdp/bat/releases/download/v0.22.1/bat_0.22.1_amd64.deb"
+DOWNLOAD_URL="https://github.com/sharkdp/bat/releases/download/v0.25.0/bat_0.25.0_amd64.deb"
 cd ~/local/tmp
 wget $DOWNLOAD_URL -O bat.deb
 sudo dpkg -i ./bat.deb
