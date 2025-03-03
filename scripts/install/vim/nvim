@@ -18,7 +18,7 @@ tar xvzf $DOWNLOAD_PATH
 rm $DOWNLOAD_PATH
 
 # Move to etc
-mv ${DOWNLOAD_DIR}/nvim-linux64/ $INSTALL_DIR/nvim
+mv ${DOWNLOAD_DIR}/nvim-linux64/ $INSTALL_DIR
 
 # Create a symlink
 ln -fs ~/local/etc/nvim/bin/nvim ~/local/bin/nvim

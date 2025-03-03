@@ -13,4 +13,5 @@ ln -fs \
 	~/.oroshi/config/bat/dist/oroshi.tmTheme \
 	~/.config/bat/themes/oroshi/oroshi.tmTheme
 
-bat cache --build &>/dev/null
+echo "Updating bat cache, to include the custom theme"
+bat cache --build

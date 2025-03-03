@@ -16,7 +16,6 @@ for file in $@; do
     *.cbr) unrar x $file;;
     *.cbz) unzip $file;;
     *.deb) sudo dpkg -i $file && sudo apt-get -f install;;
-    *.gz) gunzip $file;;
     *.htmlz) unzip $file;;
     *.rar) unrar x $file;;
     *.r([0-9][0-9])) unrar x $file;;
@@ -29,6 +28,7 @@ for file in $@; do
     *.tgz) tar xvzf $file;;
     *.txz) tar Jxvf $file;;
     *.xz) 7z x $file;;
+    *.gz) gunzip $file;;
     *.(zip|ZIP)) unzip -o $file;;
     *) echo "'$file' cannot be extracted via >extract<";;
   esac
