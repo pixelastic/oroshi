@@ -25,6 +25,7 @@ alias ylesmify='yarn-link /home/tim/local/www/projects/esmify/lib'
 alias ylfirost='yarn-link /home/tim/local/www/projects/firost/lib'
 alias ylgilmore='yarn-link /home/tim/local/www/projects/gilmore/lib'
 alias ylgolgoth='yarn-link /home/tim/local/www/projects/golgoth/lib'
+alias ylnorska='yarn-link /home/tim/local/www/projects/norska/norska/modules/lib'
 
 # Linked packages (Classic)
 alias ylcl='yarn-link-classic-list'
