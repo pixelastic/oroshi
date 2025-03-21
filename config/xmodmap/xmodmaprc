@@ -130,8 +130,8 @@ keycode 33 = p P p P
 keycode 35 = dollar sterling dollar sterling currency yen
 ! [q Q ~ XXX]
 keycode 38 = q Q q Q asciitilde
-! [s S 🟨 XXX]
-keycode 39 = s S s S U1F7E8
+! [s S 🟦 XXX]
+keycode 39 = s S s S U1F7E6
 ! [d D 🟩 🟥]
 keycode 40 = d D d D U1F7E9 U1F7E5
 ! [f F 🗎 🗀]
