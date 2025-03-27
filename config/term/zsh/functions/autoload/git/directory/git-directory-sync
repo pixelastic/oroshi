@@ -10,7 +10,7 @@ function git-directory-sync() {
 	# If the repo isn't cloned, we clone it
 	if [[ ! -d ./${projectName} ]]; then
 		git clone $gitUrl
-		exit 0
+		return
 	fi
 
 	# If the repo is already cloned, we fetch the latest version

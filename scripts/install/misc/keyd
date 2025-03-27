@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# Key remapping daemon
+# https://github.com/rvaiya/keyd
+
+# Clone repo
+cd ~/local/src 
+git-directory-sync https://github.com/rvaiya/keyd
+
+# Install
+cd keyd
+make && sudo make install
+sudo systemctl enable --now keyd
