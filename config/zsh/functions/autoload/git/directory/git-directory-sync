@@ -1,0 +1,20 @@
+# Clone or pull a directory to its latest version
+# This is helpful to make clone idempotent
+# Usage:
+# $ git-directory-sync git@github.com:user/repo.git  # Clone the repo as it doesn't exist
+# $ git-directory-sync git@github.com:user/repo.git  # Update the repo as it now exists
+function git-directory-sync() {
+	local gitUrl=$1
+	local projectName=$(basename $gitUrl ".git")
+
+	# If the repo isn't cloned, we clone it
+	if [[ ! -d ./${projectName} ]]; then
+		git clone $gitUrl
+		exit 0
+	fi
+
+	# If the repo is already cloned, we fetch the latest version
+	cd ./$projectName || return
+	git-branch-pull
+	cd .. || return
+}
