@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-# Paths
-configDir=~/.oroshi/private/config/sup
-configFile=${configDir}/offlineimaprc.conf
-destFile=~/.offlineimaprc
-
-# Link the config file
-ln -fs $configFile $destFile

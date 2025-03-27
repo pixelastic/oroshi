@@ -3,3 +3,4 @@ set -e
 
 ~/.oroshi/scripts/install/compilers/make
 ~/.oroshi/scripts/install/compilers/nasm
+~/.oroshi/scripts/install/compilers/flatpack

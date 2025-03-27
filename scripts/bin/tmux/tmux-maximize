@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-# Maximize a tmux pane.
-# Will have no effect if already maximized
-# https://stackoverflow.com/questions/38780607/tmux-zoom-in-or-out-without-toggle
-
-tmux list-panes -F '#F' | grep -q Z || tmux resize-pane -Z
-exit 0
