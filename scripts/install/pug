@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-set -e
-
-node-module-add pug-cli
-node-module-add pug-lint

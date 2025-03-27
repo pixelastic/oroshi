@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# Parse YAML with a jq-like syntax
+# https://github.com/mikefarah/yq
+pip install yq

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# JSON CLI explorer
+# https://github.com/simeji/jid
+set -e
+
+sudo apt-get install jid

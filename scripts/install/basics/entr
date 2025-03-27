@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+# Run arbitrary commands when file change
+# Used by watch-and-reload
+# https://github.com/eradman/entr
+set -e
+
+# Download
+cd ~/local/src
+git-directory-sync git@github.com:eradman/entr.git
+
+# Install
+cd ./entr
+./configure
+CFLAGS="-static" make test
+PREFIX=$HOME/local make install

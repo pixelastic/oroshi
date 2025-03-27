@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-set -e
-
-sudo apt-get install \
-  mplayer \
-  translate-shell

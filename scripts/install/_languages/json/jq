@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# Parse JSON on the CLI
+# https://github.com/jqlang/jq
+set -e
+
+local DOWNLOAD_URL="https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64"
+
+cd ~/local/bin
+wget $DOWNLOAD_URL -O jq
+chmod +x ./jq

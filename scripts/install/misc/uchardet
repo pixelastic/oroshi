@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Encoding detector
+# https://github.com/BYVoid/uchardet
+sudo apt-get install uchardet

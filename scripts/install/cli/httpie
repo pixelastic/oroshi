@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# Simple HTTP requests from the CLI
+# https://github.com/httpie/cli
+sudo apt-get install httpie

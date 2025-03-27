@@ -1,8 +1,0 @@
-#!/usr/bin/env sh
-# Phash library to check if two images are similar using perception instead of
-# hash
-
-sudo apt-get install libphash0
-sudo apt-get install libphash0-dev
-
-gem install pHash

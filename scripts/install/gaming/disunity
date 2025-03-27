@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+# Tool to extract information from Unity game files
+# https://github.com/ata4/disunity
+
+# sudo apt-get install default-jre
+
+# cd ~/local/src
+# wget https://github.com/ata4/disunity/releases/download/v0.3.4/disunity_v0.3.4.zip -O disunity.zip
+# unzip disunity.zip -d disunity
+# rm disunity.zip
+
+# cd ~/local/bin
+# echo "#!/usr/bin/env bash" >./disunity
+# echo "java -jar \"/home/$USER/local/src/disunity/disunity.jar\" \"\$@\"" >>./disunity
+# chmod +x ./disunity

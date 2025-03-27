@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Better ping, running continuously
+# https://github.com/denilsonsa/prettyping
+
+# Try on apt first
+sudo apt-get install prettyping && exit 0
+
+cd ~/local/bin
+curl -O https://raw.githubusercontent.com/denilsonsa/prettyping/master/prettyping
+chmod +x prettyping

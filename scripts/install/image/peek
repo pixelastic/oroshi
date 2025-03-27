@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# Record part of screen as GIF
+# Original project is deprecated because of Wayland, etc.
+# Possible alternative: https://github.com/firatkiral/pypeek/
+
+# sudo apt-get install xdg-desktop-portal-gtk
+
+# flatpak install flathub com.uploadedlobster.peek

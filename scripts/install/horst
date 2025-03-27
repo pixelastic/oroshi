@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-echo "Cloning from github"
-cd ~/local/etc
-git clone git@github.com:pixelastic/horst
-
-cd ~/local/bin
-ln -s ../etc/horst/horst .

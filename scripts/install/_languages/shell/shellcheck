@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Shell linter
+# https://github.com/koalaman/shellcheck
+sudo apt-get install shellcheck

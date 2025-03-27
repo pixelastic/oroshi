@@ -1,4 +1,0 @@
-#!/usr/bin/env zsh
-
-# jq wrapper to parse xml as xq and yml as yq
-pip install yq

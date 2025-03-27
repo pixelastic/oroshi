@@ -1,4 +1,0 @@
-#!/usr/bin/env zsh
-
-cd ~/local/tmp
-pd https://www.mediafire.com/file/c327m0zs2p0awws/MSE.zip

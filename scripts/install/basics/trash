@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Make the CLI also use the trash rather than delete
+sudo apt-get install trash-cli

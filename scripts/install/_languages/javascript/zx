@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Write CLI scripts in JavaScript
+# https://github.com/google/zx
+set -ex
+
+sudo apt-get install zx

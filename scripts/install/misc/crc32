@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Get the CRC32 value of a given file
+sudo apt-get install libarchive-zip-perl

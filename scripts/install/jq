@@ -1,8 +1,0 @@
-#!/usr/bin/env zsh
-set -e
-
-local DOWNLOAD_URL="https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64"
-
-cd ~/local/bin
-wget $DOWNLOAD_URL -O jq
-chmod +x ./jq

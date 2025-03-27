@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Charset converter
+# https://github.com/rrthomas/recode
+sudo apt-get install recode

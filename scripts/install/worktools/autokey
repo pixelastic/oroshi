@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Automate the OS through keybindings
+# https://github.com/autokey/autokey
+set -ex
+
+sudo apt-get install autokey-gtk

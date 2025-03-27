@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# Map keys to launch specific commands
+# https://www.nongnu.org/xbindkeys/
+
+sudo apt-get install xbindkeys

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Take screenshots
+# https://github.com/flameshot-org/flameshot
+set -e
+
+sudo apt-get install flameshot

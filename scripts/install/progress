@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-# Tool to monitor progress of Core Utils 
-# https://github.com/Xfennec/progress
-
-sudo apt-get install progress

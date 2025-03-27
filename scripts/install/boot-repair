@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-sudo add-apt-repository ppa:yannubuntu/boot-repair
-sudo apt-get install -y boot-repair

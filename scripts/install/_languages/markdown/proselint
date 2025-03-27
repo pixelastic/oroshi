@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# A linter for prose
+# https://github.com/amperser/proselint
+pip install proselint

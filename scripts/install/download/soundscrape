@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# SoundCloud, BandCamp and MixCloud downloaded
+# https://github.com/Miserlou/SoundScrape
+
+pip install --user soundscrape

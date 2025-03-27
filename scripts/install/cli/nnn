@@ -1,4 +1,6 @@
 #!/usr/bin/env zsh
+# File explorer in the terminal
+# https://github.com/jarun/nnn
 set -e
 
 local VERSION="4.9"
