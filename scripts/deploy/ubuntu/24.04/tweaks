@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# Update generic Ubuntu config, for a better usage suited to my preference.
+# This will do small things like remove the key repeat delay, enable dark mode,
+# or the orange color filter, etc.
+#
+# The best way to know which values to update is to run dconf-watch, then to
+# change values in the Settings UI, then save it here, so I only have to run
+# this script later to find my config back.
+
+# Disable Dock on the left side
+gnome-extensions disable ubuntu-dock@ubuntu.com

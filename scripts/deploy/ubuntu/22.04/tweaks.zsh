@@ -3,6 +3,7 @@
 # Run `dconf-watch` to see in real time which settings are changed when you
 # tinker in the settings UI
 #
+#
 # Note: If keybindings or config does not work, don't forget to click on the
 # gear icon when logging in and picking X11 and not Wayland.
 
