@@ -2,7 +2,7 @@
 set -ex
 
 cd ~/local/src/
-git clone git@github.com:so-fancy/diff-so-fancy.git
+git-directory-sync git@github.com:so-fancy/diff-so-fancy.git
 
 ln \
   -s ./diff-so-fancy/diff-so-fancy \

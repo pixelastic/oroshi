@@ -6,7 +6,7 @@ LATEST_NODE_LTS_VERSION="18.18.0"
 
 if [[ ! -d ~/.nvm ]]; then
 	echo "Installing nvm"
-	git clone git@github.com:creationix/nvm.git ~/.nvm
+	git-directory-sync git@github.com:creationix/nvm.git ~/.nvm
 	ln -fs ~/.oroshi/config/nvm/default-packages ~/.nvm
 	source ~/.nvm/nvm.sh
 	nvm install $LATEST_NODE_LTS_VERSION

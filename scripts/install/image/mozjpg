@@ -2,7 +2,7 @@
 
 # Clone
 cd ~/local/src
-git clone git@github.com:mozilla/mozjpeg.git
+git-directory-sync git@github.com:mozilla/mozjpeg.git
 
 # Build
 cd ~/local/etc

@@ -7,7 +7,7 @@ install-deb ./virtualbox.deb
 
 
 cd ~/local/src
-git clone git@github.com:xdissent/ievms.git
+git-directory-sync git@github.com:xdissent/ievms.git
 sudo apt-get install unar
 cd ./ievms
 bash ./ievms.sh

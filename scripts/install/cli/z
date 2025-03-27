@@ -3,4 +3,4 @@
 # https://github.com/agkozak/zsh-z
 
 cd ~/local/etc
-git clone git@github.com:agkozak/zsh-z.git
+git-directory-sync git@github.com:agkozak/zsh-z.git

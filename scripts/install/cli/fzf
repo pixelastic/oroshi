@@ -2,7 +2,7 @@
 set -ex
 
 cd ~/local/src
-git clone https://github.com/junegunn/fzf.git
+git-directory-sync https://github.com/junegunn/fzf.git
 cd ./fzf
 echo "If asked, confirm that you want to enable autocompletion and keybindings (but not update your zshrc files)"
 ./install

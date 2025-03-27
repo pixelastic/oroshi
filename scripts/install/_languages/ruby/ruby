@@ -6,7 +6,7 @@ local RUBY_VERSION="3.1.2"
 
 # Adding rbenv
 cd ~/local/src
-git clone git@github.com:rbenv/rbenv-installer.git
+git-directory-sync git@github.com:rbenv/rbenv-installer.git
 ./rbenv-installer/bin/rbenv-installer
 
 # Ruby needs a few dependencies to install correctly
@@ -27,4 +27,4 @@ sudo apt-get install \
 
 # Installing rbenv-update plugin to update local ruby versions
 mkdir -p ~/.rbenv/plugins
-git clone git@github.com:rkh/rbenv-update.git ~/.rbenv/plugins/rbenv-update
+git-directory-sync git@github.com:rkh/rbenv-update.git ~/.rbenv/plugins/rbenv-update

@@ -3,7 +3,7 @@
 
 echo "Cloning repo"
 cd ~/local/etc
-git clone git://github.com/Kanma/MPQExtractor.git
+git-directory-sync git://github.com/Kanma/MPQExtractor.git
 
 echo "Updating submodules"
 cd ./MPQExtractor

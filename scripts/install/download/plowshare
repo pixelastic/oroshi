@@ -2,7 +2,7 @@
 # Easy download/upload of files from Rapidshare and co
 
 cd ~/local/src
-git clone git@github.com:mcrapet/plowshare.git
+git-directory-sync git@github.com:mcrapet/plowshare.git
 
 cd ./plowshare
 make install PREFIX=/home/$USER/local

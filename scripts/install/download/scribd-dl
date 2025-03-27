@@ -3,7 +3,7 @@ set -e
 
 # Clone latest copy
 cd ~/local/src
-git clone git@github.com:rkwyu/scribd-dl.git
+git-directory-sync git@github.com:rkwyu/scribd-dl.git
 
 # Install deps
 cd ./scribd-dl

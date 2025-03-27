@@ -4,7 +4,7 @@ set -e
 
 # Installing git from source
 cd ~/local/etc
-git clone https://github.com/git/git.git
+git-directory-sync https://github.com/git/git.git
 cd ./git
 
 # Installing dependencies

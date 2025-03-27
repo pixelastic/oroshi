@@ -18,7 +18,7 @@ rm ./bat.deb
 # https://github.com/eth-p/bat-extras/blob/master/doc/batdiff.md
 # https://github.com/eth-p/bat-extras/blob/master/doc/prettybat.md
 cd ~/local/etc
-git clone git@github.com:eth-p/bat-extras.git
+git-directory-sync git@github.com:eth-p/bat-extras.git
 ln -fs ~/local/etc/bat-extras/src/batdiff.sh ~/local/bin/batdiff
 ln -fs ~/local/etc/bat-extras/src/batman.sh ~/local/bin/batman
 ln -fs ~/local/etc/bat-extras/src/batpipe.sh ~/local/bin/batpipe

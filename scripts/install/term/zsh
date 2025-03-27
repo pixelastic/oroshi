@@ -6,7 +6,7 @@ sudo apt-get install zsh
 # Install additional completions
 mkdir -p ~/local/src
 cd ~/local/src
-git clone git@github.com:zsh-users/zsh-completions.git
+git-directory-sync git@github.com:zsh-users/zsh-completions.git
 
 echo "--------------"
 echo "You should manually edit /etc/passwd to add /usr/bin/zsh as your shell"
