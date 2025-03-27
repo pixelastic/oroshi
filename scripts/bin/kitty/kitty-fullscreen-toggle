@@ -12,8 +12,8 @@ function getCurrentTabJSON() {
 		ls \
 		--match-tab state:focused |
 		jq -r '.[0].tabs[0] | "\(.groups | length):\(.layout)"'
-
 }
+
 local tabInfo="$(getCurrentTabJSON)"
 local tabInfoSplit=(${(@s/:/)tabInfo})
 local splitCount=$tabInfoSplit[1]
