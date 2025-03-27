@@ -5,6 +5,11 @@
 # Reference to the zsh config folder, so our `source` calls are easier to write
 export ZSH_CONFIG_PATH=~/.oroshi/config/zsh
 
+# Also make the HOSTNAME globally available. Some tools (like Kitty) can use ENV
+# variables in their config, but can't call binaries, so having the HOSTNAME
+# available allow me to define per-host config easily.
+export HOSTNAME="$(hostname)"
+
 # This will disable the automated loading of compinit in /etc/zsh/zshrc
 skip_global_compinit=1
 

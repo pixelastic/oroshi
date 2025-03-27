@@ -10,7 +10,7 @@ local unixSocket="--to unix:${kittySocketPath}"
 function getCurrentTabJSON() {
 	kitty @ ${=unixSocket} \
 		ls \
-		--match-tab state:focuses |
+		--match-tab state:focused |
 		jq -r '.[0].tabs[0] | "\(.groups | length):\(.layout)"'
 
 }
