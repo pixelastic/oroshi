@@ -1,16 +1,26 @@
 #!/usr/bin/env zsh
-set -e
 
-# Install gvm, no manage go versions
-bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
-source ~/.gvm/scripts/gvm
+local LATEST_VERSION="go1.24.0"
 
+echo "Installing GVM"
+
+if [[ ! -d ~/.gvm ]]; then
+  echo "Step 1 / 2"
+  bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
+  echo "===================="
+  echo "Now:"
+  echo "- Close this terminal window"
+  echo "- Open a new one"
+  echo "- Restart this script"
+  exit 0
+fi
+
+echo "Step 2 / 2"
 # Install dependencies
 sudo apt-get install \
   bison
 
-local LATEST_VERSION="go1.19.4"
-
-# Now installing latest
+# Install latest version
+source $GVM_ROOT/scripts/gvm
 gvm install $LATEST_VERSION -B
 gvm use $LATEST_VERSION --default

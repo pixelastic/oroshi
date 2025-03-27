@@ -1,5 +1,6 @@
 # Gvm
 # Currently disabling this, as I don't much go
+# TODO: Make this smarter, like the lazyloading we use for JavaScript
 return
 
 # Switch go version
