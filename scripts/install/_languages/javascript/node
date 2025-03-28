@@ -1,13 +1,28 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 # shellcheck disable=SC1090
 set -e
 
-LATEST_NODE_LTS_VERSION="18.18.0"
+local LATEST_NODE_LTS_VERSION="20.12.0"
 
-if [[ ! -d ~/.nvm ]]; then
-	echo "Installing nvm"
-	git-directory-sync git@github.com:creationix/nvm.git ~/.nvm
-	ln -fs ~/.oroshi/config/nvm/default-packages ~/.nvm
-	source ~/.nvm/nvm.sh
-	nvm install $LATEST_NODE_LTS_VERSION
+local CONFIG_DIR=~/.oroshi/config/_languages/javascript/nvm
+local DEST_DIR=~/.nvm
+
+if [[ ! -d $DEST_DIR ]]; then
+	echo "Installing nvm (1 / 2)"
+
+	git-directory-sync \
+		git@github.com:creationix/nvm.git \
+		$DEST_DIR
+
+	ln -fs \
+		$CONFIG_DIR/default-packages \
+		$DEST_DIR
+
+	echo "Now, start a new zsh session and re-run this script"
+	exit 0
 fi
+
+
+echo "Installing node (2 / 2)"
+source $DEST_DIR/nvm.sh
+nvm install $LATEST_NODE_LTS_VERSION

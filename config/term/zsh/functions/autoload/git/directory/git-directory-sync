@@ -3,18 +3,20 @@
 # Usage:
 # $ git-directory-sync git@github.com:user/repo.git  # Clone the repo as it doesn't exist
 # $ git-directory-sync git@github.com:user/repo.git  # Update the repo as it now exists
+# $ git-directory-sync git@github.com:user/repo.git  ./here # Or specify where to clone/update it
 function git-directory-sync() {
 	local gitUrl=$1
-	local projectName=$(basename $gitUrl ".git")
+	local repoName=$2
+	[[ $repoName == "" ]] && repoName=$(basename $gitUrl ".git")
 
 	# If the repo isn't cloned, we clone it
-	if [[ ! -d ./${projectName} ]]; then
-		git clone $gitUrl
+	if [[ ! -d ${repoName} ]]; then
+		git clone $gitUrl $repoName
 		return
 	fi
 
 	# If the repo is already cloned, we fetch the latest version
-	cd ./$projectName || return
+	cd $repoName || return
 	git-branch-pull
 	cd .. || return
 }
