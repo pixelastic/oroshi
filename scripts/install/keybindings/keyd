@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Key remapping daemon
+# Note: I moved from xmodmap to keyd as xmodmap only works with X11
 # https://github.com/rvaiya/keyd
 
 # Clone repo
