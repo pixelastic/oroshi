@@ -10,6 +10,9 @@ ln -fs \
 	$CONFIG_DIR/batrc.conf \
 	$DEST_DIR/config
 
+# Generate the theme from a template
+$CONFIG_DIR/generate-theme
+
 # Deploy the theme
 mkdir -p $DEST_DIR/themes/oroshi
 ln -fs \
