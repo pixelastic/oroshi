@@ -1,4 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 set -ex
 
-ln -fs ~/.oroshi/config/editorconfig/editorconfig.conf ~/.editorconfig
+local CONFIG_DIR=~/.oroshi/config/basics/editorconfig
+
+ln -fs \
+	$CONFIG_DIR/editorconfig.conf \
+	~/.editorconfig

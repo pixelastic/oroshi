@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 # Link zsh main config file to ~/.zshrc
 
+CONFIG_DIR=~/.oroshi/config/term/zsh
+
 # Create link
 ln -fs \
-	~/.oroshi/config/zsh/zshrc.zsh \
+	$CONFIG_DIR/zshrc.zsh \
 	~/.zshrc
 ln -fs \
-	~/.oroshi/config/zsh/zshenv.zsh \
+	$CONFIG_DIR/zshenv.zsh \
 	~/.zshenv
 
 # Source file

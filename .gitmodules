@@ -2,16 +2,9 @@
   path = private
   url = git@github.com:pixelastic/oroshi-private.git
   branch = main
-[submodule "scripts/etc/dconf-export"]
-  path = scripts/etc/dconf-export
-  url = git@github.com:pixelastic/dconf-export.git
-[submodule "config/zsh/plugins/zsh-syntax-highlighting"]
-  path = config/zsh/plugins/zsh-syntax-highlighting
-  url = git@github.com:zsh-users/zsh-syntax-highlighting.git
-[submodule "config/zsh/completion/docker-zsh-completion"]
-  path = config/zsh/completion/docker-zsh-completion
-  url = git@github.com:felixr/docker-zsh-completion.git
-[submodule "config/ansible/galactica"]
-  path = config/ansible/galactica
-  url = git@github.com:pixelastic/ansible-galactica.git
-  branch = main
+[submodule "config/infrastructure/ansible/galactica"]
+	path = config/infrastructure/ansible/galactica
+	url = git@github.com:pixelastic/ansible-galactica.git
+[submodule "config/term/zsh/plugins/zsh-syntax-highlighting"]
+	path = config/term/zsh/plugins/zsh-syntax-highlighting
+	url = git@github.com:zsh-users/zsh-syntax-highlighting.git

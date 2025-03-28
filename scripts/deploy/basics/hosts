@@ -1,17 +1,23 @@
 #!/usr/bin/env zsh
 # Generate a custom /etc/hosts file
 
-# Default 
-local defaultContent="$(cat ~/.oroshi/config/hosts/default)"
+local CONFIG_DIR=~/.oroshi/config/basics/hosts
+local LOCAL_DIR=~/.oroshi/private/config/basics/hosts/local/$HOSTNAME
+
+# Default
+local defaultContent="$(cat $CONFIG_DIR/default)"
+
 # Loopback to myself
-local loopback="127.0.0.1\t$HOST"
+local loopback="127.0.0.1\t$HOSTNAME"
+
 # Kill various domains
-local zeroContent="$(cat ~/.oroshi/config/hosts/zero)"
+local zeroContent="$(cat $CONFIG_DIR/zero)"
+
 # Custom private files
 local customContent=""
-for file in ~/.oroshi/private/config/hosts/local/${HOST}/*; do
-  customContent="${customContent}\n$(cat $file)"
+for localFile in $LOCAL_DIR/*; do
+	customContent="${customContent}\n$(cat $localFile)"
 done
 
-echo "${defaultContent}\n\n${loopback}\n\n${zeroContent}\n\n${customContent}" \
-  | sudo tee /etc/hosts > /dev/null
+echo "${defaultContent}\n\n${loopback}\n\n${zeroContent}\n\n${customContent}" |
+	sudo tee /etc/hosts >/dev/null

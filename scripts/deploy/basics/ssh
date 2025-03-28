@@ -3,20 +3,18 @@
 # - files in ./private/config/ssh/local/{hostname}
 # - default values
 
-# Paths
-local hostname=$(hostname)
-local defaultFile=~/.oroshi/config/ssh/default
-local privateFiles="~/.oroshi/private/config/ssh/local/${hostname}/*"
-local destDir=~/.ssh
-local destFile=$destDir/config
+local CONFIG_DIR=~/.oroshi/config/basics/ssh
+local LOCAL_FILES="~/.oroshi/private/config/basics/ssh/local/${HOSTNAME}/*"
+local DEST_DIR=~/.ssh
+local DEST_FILE=$DEST_DIR/config
 
-mkdir -p $destDir
-rm -f $destFile
-touch $destFile
+mkdir -p $DEST_DIR
+rm -f $DEST_FILE
+touch $DEST_FILE
 
 # Custom config
-for file in ${~privateFiles}; do
-	cat $file >> $destFile
+for localFile in ${~LOCAL_FILES}; do
+	cat $localFile >> $DEST_FILE
 done
 # Default config
-cat $defaultFile >> $destFile
+cat $CONFIG_DIR/default >> $DEST_FILE

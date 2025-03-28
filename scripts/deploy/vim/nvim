@@ -1,29 +1,29 @@
 #!/usr/bin/env zsh
 
-local NVIM_CONFIG_DIR=~/.config/nvim
-local OROSHI_CONFIG_DIR=~/.oroshi/config/nvim
+local CONFIG_DIR=~/.oroshi/config/vim/nvim
+local DEST_DIR=~/.config/nvim
 
 # Create config file
-mkdir -p $NVIM_CONFIG_DIR
+mkdir -p $DEST_DIR
 ln \
-  -fns $OROSHI_CONFIG_DIR/init.vim \
-  $NVIM_CONFIG_DIR/init.vim
+	-fns $CONFIG_DIR/init.vim \
+	$DEST_DIR/init.vim
 
 # Create runtime directories
-mkdir -p $NVIM_CONFIG_DIR/plugins
-mkdir -p $NVIM_CONFIG_DIR/swap
-mkdir -p $NVIM_CONFIG_DIR/undo
-mkdir -p $NVIM_CONFIG_DIR/view
+mkdir -p $DEST_DIR/plugins
+mkdir -p $DEST_DIR/swap
+mkdir -p $DEST_DIR/undo
+mkdir -p $DEST_DIR/view
 
 # Link config directories
-ln -fns $OROSHI_CONFIG_DIR/after $NVIM_CONFIG_DIR/after
-ln -fns $OROSHI_CONFIG_DIR/ftdetect $NVIM_CONFIG_DIR/ftdetect
-ln -fns $OROSHI_CONFIG_DIR/autoload $NVIM_CONFIG_DIR/autoload
-ln -fns $OROSHI_CONFIG_DIR/colors $NVIM_CONFIG_DIR/colors
-ln -fns $OROSHI_CONFIG_DIR/includes $NVIM_CONFIG_DIR/includes
-ln -fns $OROSHI_CONFIG_DIR/snippets $NVIM_CONFIG_DIR/UltiSnips
+ln -fns $CONFIG_DIR/after $DEST_DIR/after
+ln -fns $CONFIG_DIR/ftdetect $DEST_DIR/ftdetect
+ln -fns $CONFIG_DIR/autoload $DEST_DIR/autoload
+ln -fns $CONFIG_DIR/colors $DEST_DIR/colors
+ln -fns $CONFIG_DIR/includes $DEST_DIR/includes
+ln -fns $CONFIG_DIR/snippets $DEST_DIR/UltiSnips
 
 # Link Coc config file
-ln -fs ${OROSHI_CONFIG_DIR}/includes/plugins/coc-settings.json $NVIM_CONFIG_DIR
+ln -fs ${CONFIG_DIR}/includes/plugins/coc-settings.json $DEST_DIR
 
 echo "Now, open nvim and type :PlugUpdate<CR> to install all plugins"

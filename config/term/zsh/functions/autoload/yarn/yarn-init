@@ -1,0 +1,31 @@
+# Init a new Yarn project
+# This is a wrapper around yarn init, but that will force usin Yarn Berry with
+# the right config
+function yarn-init() {
+	local NODE_CONFIG_DIR=~/.oroshi/config/_languages/javascript/node
+	# Default .yarnrc.yml
+	cp \
+		$NODE_CONFIG_DIR/node/_yarnrc.default.yml \
+		./.yarnrc.yml
+
+	# Default .gitignore
+	cp \
+		~/.oroshi/config/git/git/gitignore \
+		./.gitignore
+
+
+	yarn init -2 &>/dev/null
+	
+	# Custom package.json
+	local packageContent="$(cat $NODE_CONFIG_DIR/package.default.json)"
+	local yarnVersion="$(yarn --version)"
+	local moduleName="${PWD:a:t:r}"
+
+	packageContent="${packageContent//\{yarnVersion\}/${yarnVersion}}"
+	packageContent="${packageContent//\{moduleName\}/${moduleName}}"
+	echo $packageContent >'./package.json'
+
+	git-commit-edit -m "First commit" --quiet
+
+	echo "✔ yarn init"
+}

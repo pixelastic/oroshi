@@ -1,1 +1,0 @@
-changeset = "\033[38;5;12m{rev}:{node|short}\033[0m \033[38;5;24m({date|age})\033[0m \033[38;5;250m{desc|strip|fill68|tabindent|firstline}\033[0m\n"

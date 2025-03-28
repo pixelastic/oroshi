@@ -1,20 +1,19 @@
 #!/usr/bin/env zsh
-
-# Paths
-local destFile=~/.xbindkeysrc
-local configDir=~/.oroshi/config/xbindkeys
-local defaultFile=${configDir}/xbindkeysrc.conf
-local localFile=${configDir}/local/${HOST}.conf
+# Clear the current ~/.xbindkeysrc file, and create a new one by concatenating
+# (optional) local file and default xbindkeys config.
+local CONFIG_DIR=~/.oroshi/config/keybindings/xbindkeys
+local LOCAL_FILE=$CONFIG_DIR/local/${HOSTNAME}.conf
+local DEST_FILE=~/.xbindkeysrc
 
 # Kill previous bindings
 killall xbindkeys &>/dev/null
 
 # Create a ~/.xbindkeysrc
-cat $defaultFile > $destFile
+cat $CONFIG_DIR/xbindkeysrc.conf >$DEST_FILE
 
 # Add custom bindings for this machine, if any
-if [[ -r $localFile ]]; then
-  cat ${localFile} >> $destFile
+if [[ -r $LOCAL_FILE ]]; then
+	cat $LOCAL_FILE >>$DEST_FILE
 fi
 
 # Reload config

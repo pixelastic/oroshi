@@ -1,0 +1,303 @@
+#!/usr/bin/env zsh
+# This will define COLORS environment variables
+# - COLOR_RED_0 will be the lightest shade of red
+# - COLOR_RED_9 will be the darkest shade of red
+# - COLOR_RED will be equivalent to COLOR_RED_5
+# - The default variables will return the color number
+# - Adding _HEXA at the end will return the hexadecimal value
+local output=""
+local outputFile=$ZSH_CONFIG_PATH/theming/env/colors.zsh
+
+# The following ranges and color number should match what is defined in kitty/colors.conf
+# Named colors {{{
+declare -A namedColors
+namedColors=()
+
+namedColors[0]="BLACK"
+namedColors[1]="RED"
+namedColors[2]="GREEN"
+namedColors[3]="YELLOW"
+namedColors[4]="BLUE"
+namedColors[5]="PURPLE"
+namedColors[6]="CYAN"
+namedColors[7]="WHITE"
+
+namedColors[8]="BLACK_LIGHT"
+namedColors[9]="RED_LIGHT"
+namedColors[10]="GREEN_LIGHT"
+namedColors[11]="YELLOW_LIGHT"
+namedColors[12]="BLUE_LIGHT"
+namedColors[13]="PURPLE_LIGHT"
+namedColors[14]="CYAN_LIGHT"
+namedColors[15]="WHITE_LIGHT"
+
+namedColors[16]="GRAY"
+namedColors[17]="ORANGE"
+namedColors[18]="EMERALD"
+namedColors[19]="AMBER"
+namedColors[20]="SKY"
+namedColors[21]="VIOLET"
+namedColors[22]="TEAL"
+namedColors[23]="NEUTRAL"
+
+namedColors[24]="GRAY_LIGHT"
+namedColors[25]="ORANGE_LIGHT"
+namedColors[26]="EMERALD_LIGHT"
+namedColors[27]="AMBER_LIGHT"
+namedColors[28]="SKY_LIGHT"
+namedColors[29]="VIOLET_LIGHT"
+namedColors[30]="TEAL_LIGHT"
+namedColors[31]="NEUTRAL_LIGHT"
+# }}}
+# Color palettes {{{
+local colorRanges=()
+# colorRanges[5]="XXX?"
+colorRanges[6]="RED"
+colorRanges[7]="GREEN"
+colorRanges[8]="YELLOW"
+colorRanges[9]="BLUE"
+colorRanges[10]="PURPLE"
+colorRanges[11]="CYAN"
+# colorRanges[12]="XXX?"
+colorRanges[13]="GRAY"
+colorRanges[14]="ORANGE"
+colorRanges[15]="EMERALD"
+colorRanges[16]="AMBER"
+colorRanges[17]="SKY"
+colorRanges[18]="VIOLET"
+colorRanges[19]="TEAL"
+colorRanges[20]="NEUTRAL"
+# }}}
+# Alias colors {{{
+declare -A aliasColors
+aliasColors=()
+# Common
+# Common {{{
+aliasColors[DIRECTORY]="GREEN"
+aliasColors[EXECUTABLE]="VIOLET"
+aliasColors[FILE]="VIOLET"
+aliasColors[LINK]="BLUE_4"
+aliasColors[LOCAL_DEPENDENCY]="YELLOW"
+aliasColors[MATCH]="YELLOW"
+aliasColors[PROCESS]="CYAN"
+aliasColors[SELECTED_BACKGROUND]="GRAY_8"
+aliasColors[SELECTED_FOREGROUND]="WHITE"
+aliasColors[TERMINAL]="BLACK"
+aliasColors[UI]="NEUTRAL"
+aliasColors[POINTER]="GREEN"     #  current line
+aliasColors[MARKER]="CYAN"       #  marked line
+aliasColors[UNKNOWN]="CYAN_4"
+aliasColors[SIZE_VALUE]="GRAY"   # 485
+aliasColors[SIZE_UNIT]="GRAY_4"  # MB
+# }}}
+# Code {{{
+aliasColors[EVAL]="YELLOW"                      # - in pug
+aliasColors[BOOLEAN]="AMBER_5"
+aliasColors[COMMENT]="GRAY"
+aliasColors[CONSTANT]="ORANGE"
+aliasColors[DATE]="SKY_7"
+aliasColors[EXCEPTION]="RED"
+aliasColors[FLAG]="AMBER"                       # -h, --help
+aliasColors[FUNCTION]="YELLOW"
+aliasColors[GLOB]="GREEN_LIGHT"
+aliasColors[MODIFIER]="ORANGE_LIGHT"                    # :hover
+aliasColors[HEADER]="YELLOW"
+aliasColors[IMPORT]="YELLOW_LIGHT"
+aliasColors[INTERPOLATION_STRING]="BLUE"        # The wrapping string
+aliasColors[INTERPOLATION_VARIABLE]="VIOLET"    # The variable name
+aliasColors[INTERPOLATION_WRAPPER]="YELLOW"     # The ${} delimiter
+aliasColors[KEY]="VIOLET_3"                     # Keys of dictionaries
+aliasColors[KEYWORD]="GREEN"
+aliasColors[NOISE]="TEAL_7"
+aliasColors[NUMBER]="BLUE"                      # Bold
+aliasColors[PUNCTUATION]="TEAL"
+aliasColors[REGEXP]="BLUE"
+aliasColors[SPECIAL_CHAR]="YELLOW"               # Escape sequences, keybindings
+aliasColors[STATEMENT]="GREEN"                  # for, if, while
+aliasColors[STRING]="BLUE"
+aliasColors[SYMBOL]="ORANGE"                    # :symbol in ruby
+aliasColors[TEXT]="GRAY_LIGHT"
+aliasColors[TODO]="RED"
+aliasColors[VARIABLE]="VIOLET"                  # Reading it
+aliasColors[VARIABLE_DEFINITION]="VIOLET_LIGHT" # Left-hand side, writing it
+aliasColors[VARIABLE_TYPE]="RED_LIGHT"          # const, let, function
+# }}}
+# States {{{
+aliasColors[ERROR]="RED"
+aliasColors[SUCCESS]="GREEN"
+aliasColors[WARNING]="YELLOW"
+aliasColors[NOTICE]="VIOLET"
+aliasColors[INFO]="BLUE"
+# }}}
+# Languages {{{
+aliasColors[LANGUAGE_JAVASCRIPT]="YELLOW"
+aliasColors[LANGUAGE_NODE]="GREEN"
+aliasColors[LANGUAGE_PYTHON]="GREEN"
+aliasColors[LANGUAGE_RUBY]="ORANGE"
+# }}}
+# Packages {{{
+aliasColors[PACKAGE]="YELLOW"
+aliasColors[PACKAGE_DESCRIPTION]="GRAY_4"
+aliasColors[PACKAGE_INSTALLED]="GREEN"
+aliasColors[PACKAGE_NOT_INSTALLED]="GRAY"
+aliasColors[PACKAGE_VERSION]="CYAN"
+aliasColors[PACKAGE_VERSION_MISMATCH]="VIOLET"
+# }}}
+
+# Tool-specific
+# AI {{{
+aliasColors[AI_ENABLED]="CYAN"
+aliasColors[AI_SUGGESTION]="CYAN_6"
+# }}}
+# Docker {{{
+aliasColors[DOCKER_CONTAINER]="YELLOW"
+aliasColors[DOCKER_CONTAINER_RUNNING]="GREEN"
+aliasColors[DOCKER_HASH]="PURPLE"
+aliasColors[DOCKER_IMAGE]="SKY"
+aliasColors[DOCKER_IMAGE_GITHUB]="GREEN"
+aliasColors[DOCKER_IMAGE_OROSHI]="GREEN"
+aliasColors[DOCKER_IMAGE_ORPHAN]="RED"   # Container is running, but image has been deleted
+aliasColors[DOCKER_IMAGE_REMOTE]="BLUE"
+aliasColors[DOCKER_COMMENT]="GRAY_4"  # Commit messages
+aliasColors[DOCKER_STATUS]="GRAY_4"
+aliasColors[DOCKER_TAG]="ORANGE_6"
+aliasColors[DOCKER_TAG_LATEST]="ORANGE_5"
+# }}}
+# Git {{{
+aliasColors[GIT_ADDED]="GREEN"
+aliasColors[GIT_AUTHOR]="NEUTRAL"
+aliasColors[GIT_BRANCH]="ORANGE"
+aliasColors[GIT_BRANCH_DEPENDABOT]="CYAN"
+aliasColors[GIT_BRANCH_DEVELOP]="YELLOW"
+aliasColors[GIT_BRANCH_HEAD]="RED"
+aliasColors[GIT_BRANCH_MAIN]="BLUE"
+aliasColors[GIT_BRANCH_MASTER]="RED"
+aliasColors[GIT_COMMIT]="PURPLE"
+aliasColors[GIT_DIRTY]="RED"
+aliasColors[GIT_ISSUE]="YELLOW"
+aliasColors[GIT_MESSAGE]="GRAY_4"
+aliasColors[GIT_MODIFIED]="VIOLET"
+aliasColors[GIT_PULLREQUEST]="PURPLE"
+aliasColors[GIT_REBASE]="RED"
+aliasColors[GIT_REMOTE]="YELLOW"
+aliasColors[GIT_REMOTE_HEAD]="RED"
+aliasColors[GIT_REMOTE_ALGOLIA]="BLUE_4"
+aliasColors[GIT_REMOTE_ORIGIN]="YELLOW"
+aliasColors[GIT_REMOTE_PIXELASTIC]="GREEN"
+aliasColors[GIT_REMOTE_UPSTREAM]="BLUE"
+aliasColors[GIT_REMOVED]="RED"
+aliasColors[GIT_STASH]="TEAL_3"
+aliasColors[GIT_SUBMODULE]="YELLOW"
+aliasColors[GIT_TAG]="CYAN"
+aliasColors[GIT_TAG_CLOSEST]="CYAN"
+aliasColors[GIT_TAG_EXACT]="CYAN_5"
+aliasColors[GIT_TAG_PARENT]="CYAN_8"
+aliasColors[GIT_TAG_UNRELATED]="GRAY"
+aliasColors[GIT_TRACKED]="VIOLET"
+aliasColors[GIT_UNTRACKED]="RED"
+# }}}
+# Hosts {{{
+aliasColors[HOST_PIXELASTIC]="GREEN"
+aliasColors[HOST_GITHUB]="BLUE"
+# }}}
+# Node {{{
+aliasColors[NODE_VERSION_INSTALLED]="GRAY_4"
+aliasColors[NODE_VERSION_UNINSTALLED]="YELLOW"
+aliasColors[NODE_VERSION_CURRENT]="GREEN"
+aliasColors[NODE_VERSION_DEFAULT]="BLUE"
+# }}}
+# Vim {{{
+aliasColors[VIM_VISUAL_CURSOR]="BLUE"
+aliasColors[VIM_VISUAL_BACKGROUND]="BLUE"
+aliasColors[VIM_VISUAL_FOREGROUND]="WHITE"
+aliasColors[VIM_SEARCH_BACKGROUND]="YELLOW"
+aliasColors[VIM_SEARCH_FOREGROUND]="BLACK"
+aliasColors[VIM_NORMAL_CURSOR]="RED"
+aliasColors[VIM_INSERT_CURSOR]="YELLOW"
+aliasColors[VIM_COMMAND_CURSOR]="TEAL"
+# }}}
+# Video {{{
+aliasColors[VIDEO_STREAM_AUDIO]="BLUE"
+# }}}
+# Yarn {{{
+aliasColors[YARN_PACKAGE]="YELLOW"             # package name
+aliasColors[YARN_PACKAGE_GLOBAL]="BLUE"        # globally installed package names
+aliasColors[YARN_PACKAGE_DESCRIPTION]="GRAY_4" # package.json description
+aliasColors[YARN_PACKAGE_VERSION]="CYAN"       # package version
+aliasColors[YARN_LINK_CLASSIC]="CYAN_6"        # Yarn Classic (v1) linked package, registred in a global list
+aliasColors[YARN_LINK_WORKSPACE]="YELLOW"      # Packages that are linked to local module in a monorepo
+aliasColors[YARN_LINK_EXTERNAL]="BLUE"         # Packages that are linked to external modules on disk
+aliasColors[YARN_SCRIPT_LOCAL]="YELLOW"        # yarn run scripts defined in this workspace
+aliasColors[YARN_SCRIPT_GLOBAL]="BLUE"         # yarn run scripts defined in the root workspace
+aliasColors[YARN_SCRIPT_COMMAND]="GRAY_4"      # yarn run script command
+# }}}
+# YouTube {{{
+aliasColors[YOUTUBE_VIDEO_INDEX]="SKY"
+aliasColors[YOUTUBE_VIDEO_ID]="ORANGE"
+aliasColors[YOUTUBE_VIDEO_DURATION]="NEUTRAL"
+aliasColors[YOUTUBE_VIDEO_TITLE]="GRAY_4"
+# }}}
+# }}}
+
+# This will also create a COLORS_INDEX env variable, with all the color names
+local colorsIndex=()
+declare -A colorsByName colorsByNameHexa
+
+# We define all ENV variables for all colors
+local kittyColors="$(cat ~/.oroshi/config/kitty/colors.conf | grep '^color')"
+for line in ${(f)kittyColors}; do
+  # Full line: color105  #6b7280
+  local split=(${=line})
+  # Term value: 105
+  local colorTermValue=${split[1]:5}
+  # Hexadecimal value
+  local colorHexaValue=$split[2]
+
+  # Known color
+  if [[ $namedColors[$colorTermValue] != "" ]]; then
+    local colorKey="$namedColors[$colorTermValue]"
+    [[ "$colorKey" == "" ]] && continue
+  else
+    # Palette color
+    # Range start: 10 (GRAY)
+    local colorRangeValue=${colorTermValue:0:-1}
+    [[ $colorRangeValue == "" ]] && continue
+    local colorRangeName=$colorRanges[$colorRangeValue]
+    [[ $colorRangeName == "" ]] && continue
+
+    # Scale index: 5
+    local colorScaleValue=$colorTermValue[-1]
+
+    local colorKey="${colorRangeName}_${colorScaleValue}"
+  fi
+
+  colorsByName[$colorKey]=$colorTermValue
+  colorsByNameHexa[$colorKey]=$colorHexaValue
+
+  output+="export COLOR_${colorKey}=\"${colorTermValue}\"\n"
+  output+="export COLOR_${colorKey}_HEXA=\"${colorHexaValue}\"\n"
+
+  colorsIndex+=(${colorKey})
+done
+
+# Adding all color aliases
+for aliasName colorName in "${(@kv)aliasColors}"; do
+  output+="export COLOR_ALIAS_${aliasName}=\"${colorsByName[$colorName]}\"\n"
+  output+="export COLOR_ALIAS_${aliasName}_HEXA=\"${colorsByNameHexa[$colorName]}\"\n"
+done
+
+# Alphabetical list of all colors
+local COLORS_INDEX=""
+for colorName in ${(o)colorsIndex}; do
+  COLORS_INDEX+=" $colorName"
+done
+for colorName in ${(ko)aliasColors}; do
+  COLORS_INDEX+=" ALIAS_${colorName}"
+done
+output+="export COLORS_INDEX=\"${COLORS_INDEX:1}\"\n"
+
+
+# Generate the file
+echo $output > $outputFile
+
+# Convert the output to json

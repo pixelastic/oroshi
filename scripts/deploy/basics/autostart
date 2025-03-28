@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# Add startup scripts to autostart dir
+set -ex
+
+local CONFIG_DIR=~/.oroshi/config/basics/autostart
+local DEST_DIR=~/.config/autostart
+
+rm -rf $DEST_DIR
+ln -s $CONFIG_DIR $DEST_DIR

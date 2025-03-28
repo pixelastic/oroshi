@@ -1,16 +1,16 @@
 #!/usr/bin/env zsh
 
-local OROSHI_FOLDER=~/.oroshi/config/ubuntu/22.04/gtk-3.0
-local CONFIG_FOLDER=~/.config/gtk-3.0
+local CONFIG_DIR=~/.oroshi/config/ubuntu/22.04/gtk-3.0
+local DEST_DIR=~/.config/gtk-3.0
 
 # Note that we do HARD links, not SYM links
 # File picker does not understand symlinks
-rm -rf $CONFIG_FOLDER
-mkdir -p $CONFIG_FOLDER
-for OROSHI_FILE in $OROSHI_FOLDER/*; do
-ln \
-  -fn $OROSHI_FILE \
-  $CONFIG_FOLDER
+rm -rf $DEST_DIR
+mkdir -p $DEST_DIR
+for configFile in $CONFIG_DIR/*; do
+	ln \
+		-fn $configFile \
+		$DEST_DIR
 done
 
 # Disable "recent" startup mode in file chooser

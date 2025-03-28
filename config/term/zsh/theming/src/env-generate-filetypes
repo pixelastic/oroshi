@@ -1,0 +1,88 @@
+#!/usr/bin/env zsh
+# Creating FILETYPES entries for type pattern, for example:
+# - FILETYPES_CSS_PATTERN
+# - FILETYPES_CSS_COLOR
+# - FILETYPES_CSS_COLOR_HEXA
+# - FILETYPES_CSS_BOLD
+# - FILETYPES_CSS_ICON
+local output=""
+local outputFile=$ZSH_CONFIG_PATH/theming/env/filetypes.zsh
+
+# This will load FILETYPE_GROUPS and FILETYPES definitions. For example:
+#
+# Broad strokes definitions for whole groups of patterns
+# - FILETYPE_GROUPS[scripts:patterns] // rb,js
+# - FILETYPE_GROUPS[scripts:color] // yellow
+# - FILETYPE_GROUPS[scripts:icon] // 
+#
+# Custom overrides for specific patterns
+# - FILETYPE[js:icon] // 
+# - FILETYPE[js:bold] // 1
+source $ZSH_CONFIG_PATH/theming/src/filetypes-list.zsh
+
+# Export FILETYPES_INDEX that contains the list of all the filetypes for which
+# we have an icon and color defined
+local filetypesIndex=()
+
+# Export FILETYPE_{TYPE}_{KEY} environment variables:
+for key value in "${(@kv)FILETYPE_GROUPS}"; do
+  [[ $key != *:patterns ]] && continue
+
+  # Finding the default color, icon and boldness of the group
+  local groupName=${key%:*}
+  local groupColor=$FILETYPE_GROUPS[${groupName}:color]
+  local groupIcon=$FILETYPE_GROUPS[${groupName}:icon]
+  local groupBold=$FILETYPE_GROUPS[${groupName}:bold]
+  [[ $groupBold == "" ]] && groupBold="0"
+
+  # Creating FILETYPE entries for each pattern
+  local patterns=(${=value})
+  for pattern in $patterns; do
+    # Patterns wrapped in [] should be considered exact matches
+    # Others should be considered extensions
+    if [[ $pattern[1] == "[" ]]; then
+      pattern=${pattern:1:-1}
+      local indexName=${(U)pattern:gs/\./_/}
+    else
+      local indexName=${(U)pattern:gs/\./_/}
+      pattern="*.${pattern}"
+    fi
+
+    # Only assign them if they aren't already defined
+    local color=${FILETYPES[${indexName}:color]:-$groupColor}
+    local bold=${FILETYPES[${indexName}:bold]:-$groupBold}
+    local icon=${FILETYPES[${indexName}:icon]:-$groupIcon}
+
+    # Export the ENV variables
+    output+="export FILETYPE_${indexName}_PATTERN=\"$pattern\"\n"
+    output+="export FILETYPE_${indexName}_GROUP=\"$groupName\"\n"
+    output+="export FILETYPE_${indexName}_COLOR=\"${(P)${:-COLOR_${color}}}\"\n"
+    output+="export FILETYPE_${indexName}_COLOR_NAME=\"${color}\"\n"
+    output+="export FILETYPE_${indexName}_COLOR_HEXA=\"${(P)${:-COLOR_${color}_HEXA}}\"\n"
+    output+="export FILETYPE_${indexName}_BOLD=\"$bold\"\n"
+    output+="export FILETYPE_${indexName}_ICON=\"$icon\"\n"
+    filetypesIndex+=($indexName)
+  done
+
+  # Create the FILETYPE_GROUP_{GROUPNAME}_* variables, for the whole group
+  # Used if we want to get the generic icon/color for all images/documents/etc
+  groupName=${(U)groupName}
+  output+="export FILETYPE_GROUP_${groupName}_COLOR=\"${(P)${:-COLOR_${color}}}\"\n"
+  output+="export FILETYPE_GROUP_${groupName}_COLOR_NAME=\"${color}\"\n"
+  output+="export FILETYPE_GROUP_${groupName}_COLOR_HEXA=\"${(P)${:-COLOR_${color}_HEXA}}\"\n"
+  output+="export FILETYPE_GROUP_${groupName}_BOLD=\"$bold\"\n"
+  output+="export FILETYPE_GROUP_${groupName}_ICON=\"$icon\"\n"
+done
+
+# Alphabetical list of all filetypes
+local FILETYPES_INDEX=""
+for filetypeName in ${(o)filetypesIndex}; do
+  FILETYPES_INDEX+=" $filetypeName"
+done
+output+="export FILETYPES_INDEX=\"${FILETYPES_INDEX:1}\"\n"
+
+# Generate the file
+echo $output > $outputFile
+
+# Convert the output to json
+zsh2json $outputFile

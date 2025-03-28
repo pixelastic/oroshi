@@ -1,3 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-ln -fs ~/.oroshi/config/vint/vintrc.yml ~/.vintrc.yaml
+local CONFIG_DIR=~/.oroshi/config/vim/vint
+
+ln -fs \
+	$CONFIG_DIR/vintrc.yml \
+	~/.vintrc.yaml

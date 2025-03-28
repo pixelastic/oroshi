@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 sudo apt-get install msttcorefonts
 
+CONFIG_DIR=~/.oroshi/config/basics/fonts
 
 mkdir -p ~/.fonts
-cp ~/.oroshi/config/fonts/DejaVuSansMono/*.ttf ~/.fonts 
-cp ~/.oroshi/config/fonts/Nerd.ttf ~/.fonts 
-# cp ~/.oroshi/private/config/fonts/*.ttf ~/.fonts
+cp $CONFIG_DIR/DejaVuSansMono/*.ttf ~/.fonts
+cp $CONFIG_DIR/Nerd.ttf ~/.fonts
 
 fc-cache -f

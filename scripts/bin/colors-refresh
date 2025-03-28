@@ -12,11 +12,11 @@ env-generate-projects
 env-generate-filetypes
 
 # Source them for this session
-source ~/.oroshi/config/zsh/theming/env/colors.zsh
-source ~/.oroshi/config/zsh/theming/env/projects.zsh
-source ~/.oroshi/config/zsh/theming/env/filetypes.zsh
+source $ZSH_CONFIG_PATH/theming/env/colors.zsh
+source $ZSH_CONFIG_PATH/theming/env/projects.zsh
+source $ZSH_CONFIG_PATH/theming/env/filetypes.zsh
 
 # Rewrite the config files coming from ENV files
-~/.oroshi/config/bat/generate-theme
-~/.oroshi/config/git/generate-config
-~/.oroshi/config/rg/generate-config
+~/.oroshi/config/cli/bat/generate-theme
+~/.oroshi/config/git/git/generate-config
+~/.oroshi/config/cli/rg/generate-config

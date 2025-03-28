@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+CONFIG_DIR=~/.oroshi/config/basics/apt-get
+
 sudo ln -fs \
-  ~/.oroshi/config/apt-get/aptget.conf \
-  /etc/apt/apt.conf.d/90oroshi
+	$CONFIG_DIR/aptget.conf \
+	/etc/apt/apt.conf.d/90oroshi

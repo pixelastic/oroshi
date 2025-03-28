@@ -2,13 +2,15 @@
 # Add Autokey config
 set -e
 
-mkdir -p ~/.config/autokey
+local CONFIG_DIR=~/.oroshi/private/config/worktools/autokey
+local DEST_DIR=~/.config/autokey
 
-# We cannot do a symlink of the whole dir, as Autokey is using it to generate
-# logs and .pid files that we don't want to have in our git history
+mkdir -p $DEST_DIR
 
-rm -rf ~/.config/autokey/autokey.json
-ln -s ~/.oroshi/private/config/autokey/autokey.json ~/.config/autokey/autokey.json
+# Generic configuration
+rm -rf $DEST_DIR/autokey.json
+ln -s $CONFIG_DIR/autokey.json $DEST_DIR/autokey.json
 
+# Custom scripts and phrases
 rm -rf ~/.config/autokey/data
-ln -s ~/.oroshi/private/config/autokey/data ~/.config/autokey/data
+ln -s $CONFIG_DIR/data $DEST_DIR/data

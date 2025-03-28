@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
 ln -fs \
-  ~/.oroshi/config/fd/fdignore.conf \
-  ~/.fdignore
+	~/.oroshi/config/cli/fd/fdignore.conf \
+	~/.fdignore

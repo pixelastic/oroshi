@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-# Add startup scripts to autostart dir
-set -ex
-
-rm -rf ~/.config/autostart
-ln -s ~/.oroshi/config/autostart ~/.config/autostart

@@ -1,8 +1,12 @@
 #!/usr/bin/env zsh
-# Add SheelGPT config
 set -e
 
-mkdir -p ~/.config/shell_gpt
-mkdir -p ~/.config/shell_gpt/cache
+local CONFIG_DIR=~/.oroshi/config/misc/sgpt
+local DEST_DIR=~/.config/shell_gpt
 
-ln -fs ~/.oroshi/config/sgpt/sgptrc.conf ~/.config/shell_gpt/.sgptrc
+mkdir -p $DEST_DIR
+mkdir -p $DEST_DIR/cache
+
+ln -fs \
+	$CONFIG_DIR/sgptrc.conf \
+	$DEST_DIR/.sgptrc

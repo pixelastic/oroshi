@@ -1,6 +1,10 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-mkdir -p ~/.config/flameshot/
+local CONFIG_DIR=~/.oroshi/config/image/flameshot
+local DEST_DIR=~/.config/flameshot
+
+mkdir -p $DEST_DIR
 ln \
-	-fs ~/.oroshi/config/flameshot/flameshot.ini \
-	~/.config/flameshot/flameshot.ini
+	-fs \
+	$CONFIG_DIR/flameshot.ini \
+	$DEST_DIR/flameshot.ini

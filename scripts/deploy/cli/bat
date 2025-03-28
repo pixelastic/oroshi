@@ -1,17 +1,20 @@
 #!/usr/bin/env bash
 set -ex
 
+CONFIG_DIR=~/.oroshi/config/cli/bat
+DEST_DIR=~/.config/bat
+
 # Link the config file
-mkdir -p ~/.config/bat
+mkdir -p $CONFIG_DIR
 ln -fs \
-	~/.oroshi/config/bat/batrc.conf \
-	~/.config/bat/config
+	$CONFIG_DIR/batrc.conf \
+	$DEST_DIR/config
 
 # Deploy the theme
-mkdir -p ~/.config/bat/themes/oroshi
+mkdir -p $DEST_DIR/themes/oroshi
 ln -fs \
-	~/.oroshi/config/bat/dist/oroshi.tmTheme \
-	~/.config/bat/themes/oroshi/oroshi.tmTheme
+	$CONFIG_DIR/dist/oroshi.tmTheme \
+	$DEST_DIR/themes/oroshi/oroshi.tmTheme
 
 echo "Updating bat cache, to include the custom theme"
 bat cache --build

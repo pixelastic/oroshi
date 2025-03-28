@@ -1,0 +1,16 @@
+# Reload all completion definitions
+function oroshi-reload-completion() {
+	for item in $ZSH_CONFIG_PATH/completion/compdef/*; do
+		local functionName=${item:t}
+		if [[ $functions[$functionName] ]]; then
+			unfunction ${functionName}
+		fi
+		autoload -U ${functionName}
+	done
+
+	# Clear the completion cache
+	compdump
+	# \rm -f ~/.zcompdump 2>/dev/null
+
+	compinit -C
+}

@@ -4,15 +4,17 @@ set -e
 # - a global configuration file
 # - a custom tab_bar.py script
 
-mkdir -p ~/.config/kitty
+local CONFIG_DIR=~/.oroshi/config/term/kitty
+local DEST_DIR=~/.config/kitty
 
-local CONFIG_FILE=~/.config/kitty/kitty.conf
-local TABBAR_FILE=~/.config/kitty/tab_bar.py
-
-local OROSHI_CONFIG_FILE=~/.oroshi/config/kitty/kitty.conf
-local OROSHI_TABBAR_FILE=~/.oroshi/config/kitty/tab_bar.py
+mkdir -p $DEST_DIR
 
 # Base file
-ln -fs $OROSHI_CONFIG_FILE $CONFIG_FILE
+ln -fs \
+	$CONFIG_DIR/kitty.conf \
+	$DEST_DIR
+
 # Custom tab bar
-ln -fs $OROSHI_TABBAR_FILE $TABBAR_FILE
+ln -fs \
+	$CONFIG_DIR/tab_bar.py \
+	$DEST_DIR

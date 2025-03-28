@@ -1,9 +1,13 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 # Default plowshare config
 
-src=~/.oroshi/private/config/plowshare/plowshare.conf
-dest=~/.config/plowshare/plowshare.conf
+local CONFIG_DIR=~/.oroshi/private/config/download/plowshare
+local DEST_DIR=~/.config/plowshare
 
-mkdir -p "$(dirname $dest)"
-cp -f $src $dest
-chmod 600 $dest
+mkdir -p $DEST_DIR
+cp \
+	-f \
+	$CONFIG_DIR/plowshare.conf \
+	$DEST_DIR/plowshare.conf
+
+chmod 600 $DEST_DIR/plowshare.conf
