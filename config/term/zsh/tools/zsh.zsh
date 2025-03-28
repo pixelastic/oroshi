@@ -17,7 +17,11 @@ typeset -A ZSH_HIGHLIGHT_STYLES=(
 	'reserved-word' "fg=$COLOR_ALIAS_FUNCTION"
 
 	# Path
-	'path' "fg=$COLOR_ALIAS_DIRECTORY"
+	'path' "fg=$COLOR_ALIAS_DIRECTORY"                      # Existing path
+	'path_pathseparator' "fg=$COLOR_ALIAS_DIRECTORY"        # / in existing path
+	'path_prefix' "fg=$COLOR_ALIAS_DIRECTORY"               # Incomplete path
+	'path_prefix_pathseparator' "fg=$COLOR_ALIAS_DIRECTORY" # / in incomplete path
+	# 'path_approx' "fg=$COLOR_ALIAS_DIRECTORY_UNTERMINATED"
 
 	# Glob
 	'globbing' "fg=$COLOR_ALIAS_GLOB"
@@ -50,16 +54,13 @@ typeset -A ZSH_HIGHLIGHT_STYLES=(
 	# Errors
 	'unknown-token' "fg=$COLOR_ALIAS_ERROR"
 
-	# While typing, but doesn't match anything yet
-	'path_approx' "fg=$COLOR_ALIAS_COMMENT"
-	'path_prefix' "fg=$COLOR_ALIAS_COMMENT"
-
 	# sudo
 	'precommand' "fg=$COLOR_ALIAS_WARNING,bold"
 
+	# &>, 1>, 2> redirection
+	'redirection' "fg=$COLOR_ALIAS_SYMBOL"
+
 	# ???
-	# TODO: echo "
-	# TODO: cd ./
 	'arg0' "fg=$COLOR_ALIAS_UNKNOWN"
 	'arithmetic-expansion' "fg=$COLOR_ALIAS_UNKNOWN"
 	'autodirectory' "fg=$COLOR_ALIAS_UNKNOWN"
@@ -83,13 +84,9 @@ typeset -A ZSH_HIGHLIGHT_STYLES=(
 	'line' "fg=$COLOR_ALIAS_UNKNOWN"
 	'named-fd' "fg=$COLOR_ALIAS_UNKNOWN"
 	'numeric-fd' "fg=$COLOR_ALIAS_UNKNOWN"
-	'path-prefix' "fg=$COLOR_ALIAS_UNKNOWN"
-	'path_pathseparator' "fg=$COLOR_ALIAS_UNKNOWN"
-	'path_prefix_pathseparator' "fg=$COLOR_ALIAS_UNKNOWN"
 	'process-substitution' "fg=$COLOR_ALIAS_UNKNOWN"
 	'process-substitution-delimiter' "fg=$COLOR_ALIAS_UNKNOWN"
 	'rc-quote' "fg=$COLOR_ALIAS_UNKNOWN"
-	'redirection' "fg=$COLOR_ALIAS_UNKNOWN"
 	'root' "fg=$COLOR_ALIAS_UNKNOWN"
 	'suffix-alias' "fg=$COLOR_ALIAS_UNKNOWN"
 )
