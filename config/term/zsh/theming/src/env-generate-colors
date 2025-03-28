@@ -115,6 +115,7 @@ aliasColors[REGEXP]="BLUE"
 aliasColors[SPECIAL_CHAR]="YELLOW"               # Escape sequences, keybindings
 aliasColors[STATEMENT]="GREEN"                  # for, if, while
 aliasColors[STRING]="BLUE"
+aliasColors[STRING_UNTERMINATED]="BLUE_4"
 aliasColors[SYMBOL]="ORANGE"                    # :symbol in ruby
 aliasColors[TEXT]="GRAY_LIGHT"
 aliasColors[TODO]="RED"
@@ -244,7 +245,7 @@ local colorsIndex=()
 declare -A colorsByName colorsByNameHexa
 
 # We define all ENV variables for all colors
-local kittyColors="$(cat ~/.oroshi/config/kitty/colors.conf | grep '^color')"
+local kittyColors="$(cat ~/.oroshi/config/term/kitty/colors.conf | grep '^color')"
 for line in ${(f)kittyColors}; do
   # Full line: color105  #6b7280
   local split=(${=line})

@@ -2,7 +2,7 @@
 # JSON info about CPU usage
 # Display in green / yellow / red based on % usage
 
-source ~/.oroshi/config/zsh/theming/env/colors.zsh
+source $ZSH_CONFIG_PATH/theming/env/colors.zsh
 
 local cpuUsed="$(
 	grep 'cpu ' /proc/stat |

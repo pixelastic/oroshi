@@ -29,7 +29,9 @@ typeset -A ZSH_HIGHLIGHT_STYLES=(
 	# Strings (blue)
 	'back-quoted-argument' "fg=$COLOR_ALIAS_INTERPOLATION_STRING"
 	'double-quoted-argument' "fg=$COLOR_ALIAS_STRING"
+	'double-quoted-argument-unclosed' "fg=$COLOR_ALIAS_STRING"
 	'single-quoted-argument' "fg=$COLOR_ALIAS_STRING"
+	'single-quoted-argument-unclosed' "fg=$COLOR_ALIAS_STRING"
 
 	# Numbers (bold blue)
 	'arithmetic-expansion' "fg=$COLOR_ALIAS_NUMBER"
@@ -56,6 +58,8 @@ typeset -A ZSH_HIGHLIGHT_STYLES=(
 	'precommand' "fg=$COLOR_ALIAS_WARNING,bold"
 
 	# ???
+	# TODO: echo "
+	# TODO: cd ./
 	'arg0' "fg=$COLOR_ALIAS_UNKNOWN"
 	'arithmetic-expansion' "fg=$COLOR_ALIAS_UNKNOWN"
 	'autodirectory' "fg=$COLOR_ALIAS_UNKNOWN"
@@ -74,7 +78,6 @@ typeset -A ZSH_HIGHLIGHT_STYLES=(
 	'cursor' "fg=$COLOR_ALIAS_UNKNOWN"
 	'cursor-matchingbracket' "fg=$COLOR_ALIAS_UNKNOWN"
 	'dollar-quoted-argument' "fg=$COLOR_ALIAS_UNKNOWN"
-	'double-quoted-argument-unclosed' "fg=$COLOR_ALIAS_UNKNOWN"
 	'global-alias' "fg=$COLOR_ALIAS_UNKNOWN"
 	'hashed-command' "fg=$COLOR_ALIAS_UNKNOWN"
 	'line' "fg=$COLOR_ALIAS_UNKNOWN"
@@ -88,6 +91,5 @@ typeset -A ZSH_HIGHLIGHT_STYLES=(
 	'rc-quote' "fg=$COLOR_ALIAS_UNKNOWN"
 	'redirection' "fg=$COLOR_ALIAS_UNKNOWN"
 	'root' "fg=$COLOR_ALIAS_UNKNOWN"
-	'single-quoted-argument-unclosed' "fg=$COLOR_ALIAS_UNKNOWN"
 	'suffix-alias' "fg=$COLOR_ALIAS_UNKNOWN"
 )
