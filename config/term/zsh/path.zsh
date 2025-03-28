@@ -14,8 +14,10 @@ function oroshi_path() {
 	done
 
 	# Node
-	if [[ -d ~/.nvm/ ]]; then
+	if [[ -f ~/.nvm/alias/default ]]; then
 		# The default node version to use is the one marked as "default" in nvm
+		# Note that this file is only created when a node version is being set as
+		# default
 		local defaultNodeVersion="$(<~/.nvm/alias/default)"
 		local nodeBinariesPath=$HOME/.nvm/versions/node/${defaultNodeVersion}/bin
 	fi
