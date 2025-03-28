@@ -21,7 +21,7 @@ typeset -A ZSH_HIGHLIGHT_STYLES=(
 	'path_pathseparator' "fg=$COLOR_ALIAS_DIRECTORY"        # / in existing path
 	'path_prefix' "fg=$COLOR_ALIAS_DIRECTORY"               # Incomplete path
 	'path_prefix_pathseparator' "fg=$COLOR_ALIAS_DIRECTORY" # / in incomplete path
-	# 'path_approx' "fg=$COLOR_ALIAS_DIRECTORY_UNTERMINATED"
+	'autodirectory' "fg=$COLOR_ALIAS_DIRECTORY"
 
 	# Glob
 	'globbing' "fg=$COLOR_ALIAS_GLOB"
@@ -63,7 +63,6 @@ typeset -A ZSH_HIGHLIGHT_STYLES=(
 	# ???
 	'arg0' "fg=$COLOR_ALIAS_UNKNOWN"
 	'arithmetic-expansion' "fg=$COLOR_ALIAS_UNKNOWN"
-	'autodirectory' "fg=$COLOR_ALIAS_UNKNOWN"
 	'back-dollar-quoted-argument' "fg=$COLOR_ALIAS_UNKNOWN"
 	'back-quoted-argument-delimiter' "fg=$COLOR_ALIAS_UNKNOWN"
 	'back-quoted-argument-unclosed' "fg=$COLOR_ALIAS_UNKNOWN"
@@ -84,6 +83,7 @@ typeset -A ZSH_HIGHLIGHT_STYLES=(
 	'line' "fg=$COLOR_ALIAS_UNKNOWN"
 	'named-fd' "fg=$COLOR_ALIAS_UNKNOWN"
 	'numeric-fd' "fg=$COLOR_ALIAS_UNKNOWN"
+	'path_approx' "fg=$COLOR_ALIAS_UNKNOWN"
 	'process-substitution' "fg=$COLOR_ALIAS_UNKNOWN"
 	'process-substitution-delimiter' "fg=$COLOR_ALIAS_UNKNOWN"
 	'rc-quote' "fg=$COLOR_ALIAS_UNKNOWN"
