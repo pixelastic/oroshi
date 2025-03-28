@@ -3,6 +3,8 @@
 
 local currentDir=${0:a:h}
 
+mkdir -p $currentDir/dist
+
 envsubst \
-  < ${currentDir}/src/gitconfig \
-  > ${currentDir}/dist/gitconfig
+	<${currentDir}/src/gitconfig \
+	>${currentDir}/dist/gitconfig

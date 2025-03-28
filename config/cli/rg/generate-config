@@ -5,6 +5,8 @@ source $ZSH_CONFIG_PATH/theming/env/colors.zsh
 
 local currentDir=${0:a:h}
 
+mkdir -p $currentDir/dist
+
 envsubst \
 	<${currentDir}/src/rgrc.conf \
 	>${currentDir}/dist/rgrc.conf
