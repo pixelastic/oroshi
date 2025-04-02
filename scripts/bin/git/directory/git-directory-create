@@ -44,7 +44,7 @@ cd $repoPath
 git init --quiet
 
 # Add default files
-cp ~/.oroshi/config/git/gitignore ./.gitignore
+cp ~/.oroshi/config/git/git/gitignore ./.gitignore
 echo "# ${repoName}" >./README.md
 
 # Commit

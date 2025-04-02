@@ -5,7 +5,7 @@ function yarn-init() {
 	local NODE_CONFIG_DIR=~/.oroshi/config/_languages/javascript/node
 	# Default .yarnrc.yml
 	cp \
-		$NODE_CONFIG_DIR/node/_yarnrc.default.yml \
+		$NODE_CONFIG_DIR/_yarnrc.default.yml \
 		./.yarnrc.yml
 
 	# Default .gitignore
