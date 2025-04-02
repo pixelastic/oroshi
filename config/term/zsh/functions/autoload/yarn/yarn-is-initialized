@@ -2,6 +2,7 @@
 # Usage:
 # $ yarn-is-initialized    # Return 0 if was init, 1 otherwise
 function yarn-is-initialized() {
-	[[ ! -f package.json ]] && return 1
+	local yarnRoot="$(yarn-root)"
+	[[ $yarnRoot == "" ]] && return 1
 	return 0
 }
