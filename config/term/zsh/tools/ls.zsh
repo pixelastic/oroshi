@@ -56,6 +56,8 @@ function oroshi_tools_ls() {
 
 		LS_COLORS="${LS_COLORS}:${pattern}=${bold};38;5;$color"
 	done
+
+	export LS_COLORS
 }
 oroshi_tools_ls
 unfunction oroshi_tools_ls
