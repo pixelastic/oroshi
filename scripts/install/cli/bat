@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env zsh
 # Better cat, with syntax highlight
 # https://github.com/sharkdp/bat
 set -e
