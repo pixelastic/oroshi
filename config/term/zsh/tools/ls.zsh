@@ -57,7 +57,9 @@ function oroshi_tools_ls() {
 		LS_COLORS="${LS_COLORS}:${pattern}=${bold};38;5;$color"
 	done
 
+	# Export the vars, to make them available to all other scripts
 	export LS_COLORS
+	export LS_COLORS_SIMPLE
 }
 oroshi_tools_ls
 unfunction oroshi_tools_ls
