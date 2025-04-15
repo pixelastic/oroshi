@@ -21,15 +21,14 @@ augroup END
 " Reload colors whenever a color file is edited
 augroup ft_colors_config
   autocmd!
-  " Reload colors whenever we update them in kitty, tmux or zsh
-  autocmd BufWritePost *config/kitty/colors.conf :silent !colors-refresh
-  autocmd BufWritePost *config/tmux/colors.conf  :silent !colors-refresh
-  autocmd BufWritePost *config/zsh/theming/src/* :silent !colors-refresh
+  " Reload colors whenever we update them in zsh or kitty
+  autocmd BufWritePost *config/term/kitty/colors.conf :silent !colors-refresh
+  autocmd BufWritePost *config/term/zsh/theming/src/* :silent !colors-refresh
 
   " Regenerate configs that uses ENV variables on save
-  autocmd BufWritePost *config/bat/src/oroshi.xml :silent !~/.oroshi/config/bat/generate-theme
-  autocmd BufWritePost *config/git/src/gitconfig :silent !~/.oroshi/config/git/generate-config
-  autocmd BufWritePost *config/rg/src/rgrc.conf :silent !~/.oroshi/config/rg/generate-config
+  autocmd BufWritePost *config/cli/bat/src/oroshi.xml :silent !~/.oroshi/config/bat/generate-theme
+  autocmd BufWritePost *config/cli/rg/src/rgrc.conf :silent !~/.oroshi/config/rg/generate-config
+  autocmd BufWritePost *config/git/git/src/gitconfig :silent !~/.oroshi/config/git/generate-config
 
   " Whenever we change the way colors, filetypes or projects are defined, we need
   " to regenerate the ENV variables

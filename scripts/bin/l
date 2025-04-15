@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# better ls
+#
+# Uses exa instead of ls by default
+# In case exa fails (probably because not yet installed), it will fallback on ls
 
 exa \
 	--long \
@@ -6,4 +10,8 @@ exa \
 	--git \
 	--time-style=long-iso \
 	--color=always \
-	"$@" || ls
+	"$@" ||
+	(
+		echo "✗ exa failed, fallback on ls" &&
+			LS_COLORS=$LS_COLORS_SIMPLE ls -l --human --color
+	)
