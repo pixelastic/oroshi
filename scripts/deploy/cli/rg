@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -ex
+
+CONFIG_DIR=~/.oroshi/config/cli/rg
+
+# Generate the final config from a template
+$CONFIG_DIR/generate-config

@@ -1,6 +1,5 @@
 #!/usr/bin/env zsh
 # shellcheck disable=SC1090
-set -e
 
 local LATEST_NODE_LTS_VERSION="20.12.0"
 
@@ -33,3 +32,4 @@ echo "Step 2 / 2"
 export NVM_DIR=$DEST_DIR
 source $NVM_DIR/nvm.sh
 nvm install $LATEST_NODE_LTS_VERSION --no-nvmrc
+nvm alias default $LATEST_NODE_LTS_VERSION
