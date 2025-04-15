@@ -7,8 +7,11 @@ local LATEST_NODE_LTS_VERSION="20.12.0"
 local CONFIG_DIR=~/.oroshi/config/_languages/javascript/nvm
 local DEST_DIR=~/.nvm
 
+echo "Installing NVM"
+
 # Installing nvm if not installed
 if [[ ! -d $DEST_DIR ]]; then
+	echo "Step 1 / 2"
 	git-directory-sync \
 		git@github.com:creationix/nvm.git \
 		$DEST_DIR
@@ -17,10 +20,16 @@ if [[ ! -d $DEST_DIR ]]; then
 		$CONFIG_DIR/default-packages \
 		$DEST_DIR
 
-	echo "Now, start a new zsh session and re-run this script"
+	echo "===================="
+	echo "Now:"
+	echo "- Close this terminal window"
+	echo "- Open a new one"
+	echo "- Restart this script"
+	exit 0
 fi
 
-# Installing node
+echo "Step 2 / 2"
+
 export NVM_DIR=$DEST_DIR
 source $NVM_DIR/nvm.sh
 nvm install $LATEST_NODE_LTS_VERSION --no-nvmrc

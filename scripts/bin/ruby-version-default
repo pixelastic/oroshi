@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-# Get the default ruby version used by rvm
-cat ~/.rvm/config/alias | cut -d '-' -f 2

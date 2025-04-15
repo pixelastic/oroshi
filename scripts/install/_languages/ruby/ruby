@@ -2,7 +2,7 @@
 # shellcheck disable=SC1091
 set -ex
 
-local RUBY_VERSION="3.1.2"
+local RUBY_VERSION="3.4.3"
 
 # Adding rbenv
 cd ~/local/src
@@ -11,8 +11,10 @@ git-directory-sync git@github.com:rbenv/rbenv-installer.git
 
 # Ruby needs a few dependencies to install correctly
 sudo apt-get install \
-  libssl-dev \
-  zlib1g-dev
+	libffi-dev \
+	libssl-dev \
+	libyaml-dev \
+	zlib1g-dev
 
 ~/.rbenv/bin/rbenv install $RUBY_VERSION
 ~/.rbenv/bin/rbenv global $RUBY_VERSION
