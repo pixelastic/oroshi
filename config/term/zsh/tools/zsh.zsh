@@ -11,6 +11,7 @@ typeset -A ZSH_HIGHLIGHT_STYLES=(
 
 	# Methods
 	'alias' "fg=$COLOR_ALIAS_FUNCTION"
+	'global-alias' "fg=$COLOR_ALIAS_FUNCTION"
 	'builtin' "fg=$COLOR_ALIAS_FUNCTION"
 	'command' "fg=$COLOR_ALIAS_FUNCTION"
 	'function' "fg=$COLOR_ALIAS_FUNCTION"
@@ -78,7 +79,6 @@ typeset -A ZSH_HIGHLIGHT_STYLES=(
 	'cursor' "fg=$COLOR_ALIAS_UNKNOWN"
 	'cursor-matchingbracket' "fg=$COLOR_ALIAS_UNKNOWN"
 	'dollar-quoted-argument' "fg=$COLOR_ALIAS_UNKNOWN"
-	'global-alias' "fg=$COLOR_ALIAS_UNKNOWN"
 	'hashed-command' "fg=$COLOR_ALIAS_UNKNOWN"
 	'line' "fg=$COLOR_ALIAS_UNKNOWN"
 	'named-fd' "fg=$COLOR_ALIAS_UNKNOWN"
