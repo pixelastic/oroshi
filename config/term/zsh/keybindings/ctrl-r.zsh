@@ -1,5 +1,12 @@
 # Ctrl-R to search in the history
 oroshi-fzf-history-widget() {
+	# Stop if not available
+	if ! command -v fzf >/dev/null; then
+		echo "fzf is not installed"
+		zle reset-prompt
+		return
+	fi
+
 	export PROMPT_PREVENT_REFRESH="1"
 	local selection="$(fzf-history)"
 	export PROMPT_PREVENT_REFRESH="0"

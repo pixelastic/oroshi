@@ -1,5 +1,12 @@
 # Ctrl-O: Search for a specific directory, in the whole project
 oroshi-fzf-directories-project-widget() {
+	# Stop if not available
+	if ! command -v fzf >/dev/null; then
+		echo "fzf is not installed"
+		zle reset-prompt
+		return
+	fi
+
 	export PROMPT_PREVENT_REFRESH="1"
 	local selection="$(fzf-fs-directories-project)"
 	export PROMPT_PREVENT_REFRESH="0"

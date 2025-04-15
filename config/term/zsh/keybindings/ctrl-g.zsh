@@ -1,5 +1,12 @@
 # Ctrl-G: Search inside of text files in the whole project
 oroshi-fzf-regexp-project-widget() {
+	# Stop if not available
+	if ! command -v fzf >/dev/null; then
+		echo "fzf is not installed"
+		zle reset-prompt
+		return
+	fi
+
   export PROMPT_PREVENT_REFRESH="1"
   local selection="$(fzf-regexp-project)"
   export PROMPT_PREVENT_REFRESH="0"

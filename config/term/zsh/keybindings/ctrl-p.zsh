@@ -1,5 +1,12 @@
 # Ctrl-P: Search for a specific file, in the whole project
 oroshi-fzf-files-project-widget() {
+	# Stop if not available
+	if ! command -v fzf >/dev/null; then
+		echo "fzf is not installed"
+		zle reset-prompt
+		return
+	fi
+
 	fzf-var-write ZSH_LBUFFER "${LBUFFER}"
 
 	export PROMPT_PREVENT_REFRESH="1"
