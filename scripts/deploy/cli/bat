@@ -5,7 +5,7 @@ CONFIG_DIR=~/.oroshi/config/cli/bat
 DEST_DIR=~/.config/bat
 
 # Link the config file
-mkdir -p $CONFIG_DIR
+mkdir -p $DEST_DIR
 ln -fs \
 	$CONFIG_DIR/batrc.conf \
 	$DEST_DIR/config
