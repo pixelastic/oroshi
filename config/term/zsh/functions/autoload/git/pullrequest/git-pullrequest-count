@@ -1,12 +1,12 @@
 # Count how many open PRs the current repo has
 # Usage:
-# $ git-pr-count
+# $ git-pullrequest-count
 function git-pullrequest-count() {
   # Stop if not in a GitHub repo
   git-directory-is-github || return 1
 
-  gh pr list --limit=1000 --json=number \
-    | cat '-' \
-    | jq length
+  (gh pr list --limit=1000 --json=number 2>/dev/null || echo "0" ) |
+    cat '-' |
+    jq length
 }
 
