@@ -9,3 +9,27 @@
 
 # Disable Dock on the left side
 gnome-extensions disable ubuntu-dock@ubuntu.com
+
+# Touchpad {{{
+# Speed
+gsettings set org.gnome.desktop.peripherals.touchpad speed 0.65000
+# Scroll direction
+gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll false
+# }}}
+
+# Appearance {{{
+# Dark mode
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+gsettings set org.gnome.desktop.interface gtk-theme 'Yaru-dark'
+# Night light
+gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled true
+gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-automatic false
+gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-from 4.0
+gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-to 3.5
+gsettings set org.gnome.settings-daemon.plugins.color night-light-temperature 4200
+# Accessibility
+gsettings set org.gnome.desktop.interface enable-animations false
+gsettings set org.gnome.desktop.interface text-scaling-factor 1.25
+
+
+# }}}
