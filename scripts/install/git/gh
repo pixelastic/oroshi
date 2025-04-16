@@ -7,11 +7,11 @@ set -e
 local DOWNLOAD_URL="https://github.com/cli/cli/releases/download/v2.70.0/gh_2.70.0_linux_amd64.deb"
 local LOCAL_DEB="gh.deb"
 
+# Install gh
 cd ~/local/tmp
 wget "$DOWNLOAD_URL" -O "./$LOCAL_DEB"
 install-deb "./$LOCAL_DEB"
 
-# This doesn't seem to work anymore
-# # Adding zsh autocompletion
-# /usr/bin/gh completion -s zsh |
-# 	sudo tee /usr/local/share/zsh/site-functions/_gh
+# install completion
+gh completion --shell zsh \
+  > ~/.oroshi/config/term/zsh/completion/compdef/_gh
