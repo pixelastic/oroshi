@@ -4,7 +4,7 @@
 # https://cli.github.com/
 set -e
 
-local DOWNLOAD_URL="https://github.com/cli/cli/releases/download/v2.20.2/gh_2.20.2_linux_386.deb"
+local DOWNLOAD_URL="https://github.com/cli/cli/releases/download/v2.70.0/gh_2.70.0_linux_386.deb"
 local LOCAL_DEB="gh.deb"
 
 cd ~/local/tmp
