@@ -30,6 +30,31 @@ gsettings set org.gnome.settings-daemon.plugins.color night-light-temperature 42
 # Accessibility
 gsettings set org.gnome.desktop.interface enable-animations false
 gsettings set org.gnome.desktop.interface text-scaling-factor 1.25
+# }}}
 
+# Top bar (aka. Tray) {{{
+# Requires the following gnome extensions:
+# - Just Perfection
+# - Unite
+# Note that we need to use dconf rather than gsettings here as extensions
+# might not have a schema registered, so using gsettings will do nothing
+#
+# Options are grouped by icon as they are displayed in the top bar, even if the
+# config spans several extensions. They are ordered from left to right
 
+dconf write /org/gnome/shell/extensions/unite/reduce-panel-spacing true
+
+# Hide accessibility icon
+dconf write /org/gnome/shell/extensions/just-perfection/accessibility-menu false
+
+# Window buttons (down, window, maximize)
+dconf write /org/gnome/shell/extensions/unite/show-window-buttons "'always'"
+dconf write /org/gnome/shell/extensions/unite/window-buttons-placement "'right'"
+
+# Clock
+dconf write /org/gnome/shell/extensions/just-perfection/clock-menu-position 1
+dconf write /org/gnome/shell/extensions/just-perfection/clock-menu-position-offset 10
+
+# Battery
+gsettings set org.gnome.desktop.interface show-battery-percentage true
 # }}}

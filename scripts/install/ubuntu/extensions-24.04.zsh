@@ -58,8 +58,19 @@ function enableExtension() {
 }
 
 
+# Just Perfection
+# https://gitlab.gnome.org/jrahmatzadeh/just-perfection
+# Includes moving the clock, hiding icons from the topbar
 addExtension \
   "justPerfection" \
   "https://extensions.gnome.org/extension-data/just-perfection-desktopjust-perfection.v34.shell-extension.zip" \
   "just-perfection-desktop@just-perfection"
+
+# Unite
+# https://github.com/hardpixel/unite-shell
+# Merges window title bar with Ubuntu top bar
+addExtension \
+  "unite" \
+  "https://github.com/hardpixel/unite-shell/releases/download/v82/unite-v82.zip" \
+  "unite@hardpixel.eu"
 
