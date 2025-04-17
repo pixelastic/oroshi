@@ -27,3 +27,19 @@
   lctl wkup lmet lalt                spc            ralt rctl      pgup  up  pgdn
                                                                    left down rght
 )
+
+
+
+#|
+deflayer template
+
+(deflayer xxxxxxx
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _                   _              _    _         _    _    _
+                                                                   _    _    _
+)
+|#
