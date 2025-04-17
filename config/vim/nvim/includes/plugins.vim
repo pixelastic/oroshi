@@ -27,6 +27,7 @@ Plug 'ekalinin/Dockerfile.vim'                            " Docker
 Plug 'fladson/vim-kitty', { 'branch': 'main' }            " Kitty
 Plug 'vim-ruby/vim-ruby'                                  " Ruby
 Plug 'pedrohdz/vim-yaml-folds'                            " Yaml (folding)
+Plug 'kmonad/kmonad-vim'                                  " Kmonad (keyboard mapping)
 
 " Plug 'StanAngeloff/php.vim'
 " Plug 'cakebaker/scss-syntax.vim'

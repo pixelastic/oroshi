@@ -36,6 +36,7 @@ FILETYPE_GROUPS[script:patterns]="\
   jsonl \
   json \
   js \
+  kbd \
   mjs \
   ps1 \
   pug \
