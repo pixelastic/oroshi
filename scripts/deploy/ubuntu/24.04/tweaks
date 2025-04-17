@@ -50,6 +50,7 @@ dconf write /org/gnome/shell/extensions/just-perfection/accessibility-menu false
 # Window buttons (down, window, maximize)
 dconf write /org/gnome/shell/extensions/unite/show-window-buttons "'always'"
 dconf write /org/gnome/shell/extensions/unite/window-buttons-placement "'right'"
+dconf write /org/gnome/shell/extensions/unite/window-buttons-theme "'adwaita'"
 
 # Clock
 dconf write /org/gnome/shell/extensions/just-perfection/clock-menu-position 1
@@ -58,3 +59,4 @@ dconf write /org/gnome/shell/extensions/just-perfection/clock-menu-position-offs
 # Battery
 gsettings set org.gnome.desktop.interface show-battery-percentage true
 # }}}
+dconf write /org/gnome/shell/extensions/unite/window-buttons-theme "'right'"

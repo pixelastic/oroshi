@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# Watcher to know which key is being pressed in Wayland
+
+sudo apt-get install wev
+
