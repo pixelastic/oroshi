@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# Watcher to know which key is pressed (at the kernel level)
+
+sudo apt-get install evtest
+

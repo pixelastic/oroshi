@@ -1,0 +1,2 @@
+#!/usr/bin/env zsh
+kmonad ~/.oroshi/config/keybindings/kmonad/kmonad.kbd

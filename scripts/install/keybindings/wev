@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Watcher to know which key is being pressed in Wayland
+# Watcher to know which key is being pressed (at the Wayland level)
 
 sudo apt-get install wev
 
