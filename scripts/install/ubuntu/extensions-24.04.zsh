@@ -17,11 +17,11 @@ local installedExtensions="$(gnome-extensions list)"
 function addExtension() {
   echo ""
   local extensionName=$1
-  local extensionId=$2
-  local downloadUrl=$3
+  local extensionUrl=$2
+  local extensionId=$3
 
   if [[ "$installedExtensions" != *"$extensionId"* ]]; then
-    downloadExtension $extensionName $extensionId $downloadUrl;
+    downloadExtension $extensionName $extensionUrl;
   else
     enableExtension $extensionName $extensionId;
   fi
@@ -33,16 +33,17 @@ function addExtension() {
 function downloadExtension() {
   echo ""
   local extensionName=$1
-  local extensionId=$2
-  local downloadUrl=$3
-  local downloadPath=~/local/tmp/${extensionId}.zip
+  local extensionUrl=$2
+  local downloadPath=~/local/tmp/${extensionName}.zip
 
   echo "[$extensionName] [1/3] Downloading"
   rm -f $downloadPath
-  wget -q $downloadUrl -O $downloadPath
+  wget -q $extensionUrl -O $downloadPath
 
   echo "[$extensionName] [2/3] Installing"
   gnome-extensions install --force $downloadPath
+
+  echo "[$extensionName] Now, log out and back in, and restart the same script"
 }
 
 # After a logout/login cycle, we can enable the extension
@@ -58,12 +59,7 @@ function enableExtension() {
 
 
 addExtension \
-  "fripperyMoveClock" \
-  "Move_Clock@rmy.pobox.com" \
-  "https://extensions.gnome.org/extension-data/Move_Clockrmy.pobox.com.v33.shell-extension.zip"
-
-addExtension \
-  "hideUniversalAccess.zip" \
-  "hide-universal-access@akiirui.github.io" \
-  "https://extensions.gnome.org/extension-data/hide-universal-accessakiirui.github.io.v17.shell-extension.zip"
+  "justPerfection" \
+  "https://extensions.gnome.org/extension-data/just-perfection-desktopjust-perfection.v34.shell-extension.zip" \
+  "just-perfection-desktop@just-perfection"
 
