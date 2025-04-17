@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# Advance keyboard manager
+# Note: I moved from xmodmap to keyd as xmodmap only works with X11
+# https://github.com/kmonad/kmonad
+
+local DOWNLOAD_URL="https://github.com/kmonad/kmonad/releases/download/0.4.4/kmonad"
+local DOWNLOAD_PATH=~/local/bin/kmonad
+
+cd ~/local/bin || return
+wget $DOWNLOAD_URL -O $DOWNLOAD_PATH
+chmod +x $DOWNLOAD_PATH
+
