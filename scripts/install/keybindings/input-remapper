@@ -1,5 +1,0 @@
-#!/usr/bin/env zsh
-# GUI application to remap keyboard keys under Wayland
-
-sudo apt-get install input-remapper
-

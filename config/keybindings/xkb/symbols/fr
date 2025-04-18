@@ -1,10 +1,8 @@
 partial alphanumeric_keys modifier_keys
-xkb_symbols "banana" {
+xkb_symbols "oroshi" {
     name[Group1]= "Banana (fr)";
 
     include "fr(basic)"
 
-
-    key <LatO>  { [ u, o ] };
     key <CAPS> { [ X ] };
 };
