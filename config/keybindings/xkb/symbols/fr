@@ -1,0 +1,10 @@
+partial alphanumeric_keys modifier_keys
+xkb_symbols "banana" {
+    name[Group1]= "Banana (fr)";
+
+    include "fr(basic)"
+
+
+    key <LatO>  { [ u, o ] };
+    key <CAPS> { [ X ] };
+};

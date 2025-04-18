@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xkbConfigRegistry SYSTEM "xkb.dtd">
+<xkbConfigRegistry version="1.1">
+  <layoutList>
+    <layout>
+      <configItem>
+        <name>fr</name>
+      </configItem>
+      <variantList>
+        <variant>
+          <configItem>
+            <name>banana</name>
+            <shortDescription>banana_desc</shortDescription>
+            <description>US(Banana)_desc</description>
+          </configItem>
+        </variant>
+      </variantList>
+    </layout>
+  </layoutList>
+  XXXXXXXXXXXXXX
+
+
+  <optionList>
+    <group allowMultipleSelection="true">
+      <configItem>
+        <name>oroshi</name>
+        <description>OROSHI_GORASH</description>
+      </configItem>
+      <option>
+        <configItem>
+          <name>oroshi:test</name>
+          <description>OROSHI_AMIRI</description>
+        </configItem>
+      </option>
+    </group>
+  </optionList>
+</xkbConfigRegistry>

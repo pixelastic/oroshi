@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+
+# Set the xkb to french, to align with what is set in gsettings
+setxkbmap fr
+
+echo ""
+echo "Values in gsettings"
+gsettings get org.gnome.desktop.input-sources sources
+
+echo ""
+echo "Values in xkbmap"
+setxkbmap -query
+
+
+# Compile configuration
+xkbcomp -w3 ~/.config/xkb/custom-layout.xkb $DISPLAY

@@ -1,0 +1,4 @@
+partial alphanumeric_keys
+xkb_symbols "test" {
+    key <LatO>  { [ u, o ] };
+};
