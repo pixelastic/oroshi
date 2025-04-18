@@ -24,4 +24,4 @@ https://web.archive.org/web/20170825051821/http://madduck.net/docs/extending-xkb
 https://web.archive.org/web/20160623192544/http://git.madduck.net/v/etc/xsession.git?a=blob;f=.xsession.d/01-xkb;h=6d19628ee7764172377cb30fbcbac731b3bad4d6;hb=refs/heads/xkb
 https://web.archive.org/web/20160623194314/http://git.madduck.net/v/etc/xsession.git?a=blob;f=.xkb/keymap/default;h=985428984ac6a63b841fb46e2f961950c4a9b5fa;hb=refs/heads/xkb
 
-
+https://xkbcommon.org/doc/current/keymap-text-format-v1.html

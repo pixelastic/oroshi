@@ -1,4 +1,0 @@
-! option = symbols
-  oroshi:test    = +oroshi(test)
-
-! include %S/evdev

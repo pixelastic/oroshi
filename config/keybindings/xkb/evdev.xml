@@ -4,14 +4,18 @@
   <layoutList>
     <layout>
       <configItem>
+        <!-- This means to look in the "symbols/fr" file -->
         <name>fr</name>
       </configItem>
       <variantList>
         <variant>
           <configItem>
+            <!-- This means to look in the xkb_symbols section named "oroshi" -->
             <name>oroshi</name>
-            <shortDescription>oroshi_desc</shortDescription>
-            <description>FR(Oroshi)</description>
+            <!-- Displayed in the topbar -->
+            <shortDescription>oroshi</shortDescription>
+            <!-- Displayed in the Settings keyboard selector -->
+            <description>French (Oroshi)</description>
           </configItem>
         </variant>
       </variantList>

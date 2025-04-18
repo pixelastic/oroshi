@@ -1,16 +1,19 @@
 #!/usr/bin/env zsh
+# Configure a custom keyboard layout with my own mappings
 
-# Set the xkb to french, to align with what is set in gsettings
-setxkbmap fr
+local CONFIG_DIR=~/.oroshi/config/keybindings/xkb
+local DEST_DIR=~/.config/xkb
 
-echo ""
-echo "Values in gsettings"
-gsettings get org.gnome.desktop.input-sources sources
+# Make symlinks to config files
+mkdir -p $DEST_DIR
 
-echo ""
-echo "Values in xkbmap"
-setxkbmap -query
+mkdir -p $DEST_DIR/rules
+ln -fs $CONFIG_DIR/evdev.xml $DEST_DIR/rules/evdev.xml
 
+mkdir -p $DEST_DIR/symbols
+ln -fs $CONFIG_DIR/xkbmaprc.conf $DEST_DIR/symbols/fr
 
-# Compile configuration
-xkbcomp -w3 ~/.config/xkb/custom-layout.xkb $DISPLAY
+# Set both classic azerty and oroshi as enabled keyboard
+gsettings reset org.gnome.desktop.input-sources sources
+gsettings set   org.gnome.desktop.input-sources sources \
+  "[('xkb', 'fr+oroshi'), ('xkb', 'fr+azerty')]"
