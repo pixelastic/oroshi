@@ -19,8 +19,8 @@ bindkey -M vicmd "[F" end-of-line # End
 bindkey -M vicmd "L" end-of-line
 
 # Switching mode with CAPS LOCK
-bindkey -M viins "⇪" vi-cmd-mode
-bindkey -M vicmd "⇪" vi-insert
+bindkey -M viins "[57376u" vi-cmd-mode
+bindkey -M vicmd "[57376u" vi-insert
 # As well as the classic Esc and i
 bindkey -M viins "" vi-cmd-mode
 bindkey -M vicmd "i" vi-insert
