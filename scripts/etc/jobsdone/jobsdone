@@ -1,2 +1,5 @@
-#!/usr/bin/env bash
-mplayer -volume 140 ~/.oroshi/scripts/etc/jobsdone/jobsdone.mp3 &>/dev/null
+#!/usr/bin/env zsh
+# Play a Warcraft 3 "Job's done!" audio sound
+
+audio-play \
+  ~/.oroshi/scripts/etc/jobsdone/jobsdone.mp3

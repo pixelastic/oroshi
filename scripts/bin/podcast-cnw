@@ -1,4 +1,0 @@
-#!/usr/bin/env ruby
-require_relative '../etc/podcasts/cnw/cnw_podcast_downloader'
-CNWPodcastDownloader.new(*ARGV).run()
-

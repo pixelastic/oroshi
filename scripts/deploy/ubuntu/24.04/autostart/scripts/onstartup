@@ -1,0 +1,33 @@
+#!/usr/bin/env zsh
+# Called whenever the PC boots
+
+local LOG_FILE=/home/tim/local/tmp/autostart
+
+rm -rf $LOG_FILE
+
+# Function to reload the Gnome tweaks, as Gnome extensions tend to lose their
+# settings when coming from sleep.
+function reloadTweaks() {
+  ~/.oroshi/scripts/deploy/ubuntu/24.04/tweaks
+}
+
+# For a reason I ignore, running the script as soon as the PC boots doesn't seem
+# to have an impact. It seems I need to wait "a bit". Exactly how long, I'm not
+# sure. From my tests, it seems that it's somewhere between 2mn and 4mn. Just to
+# be sure, I'll wait 5mn before running it.
+sleep 300
+reloadTweaks
+
+# We also listens to DBus events, and calls it again when we get back from sleep
+dbus-monitor \
+  --session "type='signal',interface=org.gnome.ScreenSaver,member=WakeUpScreen" | 
+  (while true; do
+      read logLine;
+
+      # We still need to grep on the actual string because the script display
+      # some generic string at the beginning
+      if [[ $logLine = *"member=WakeUpScreen"* ]]; then
+        reloadTweaks
+      fi
+
+    done)

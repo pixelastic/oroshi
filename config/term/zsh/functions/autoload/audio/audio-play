@@ -1,0 +1,12 @@
+# Play an audio file
+# Usage:
+# $ audio-play ./path/to/file.mp3    # "Hello World!"
+function audio-play() {
+	local input="$1"
+
+  ffplay \
+    -nodisp \
+    -autoexit \
+    -loglevel quiet \
+    $1
+}

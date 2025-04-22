@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Dropbox
+Comment=Sync files across computers
+Type=Application
+Exec=dropbox start -i
+Icon=dropbox
+Terminal=false
+StartupNotify=false

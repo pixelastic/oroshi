@@ -72,6 +72,7 @@ FILETYPE_GROUPS[config:icon]=" "
 FILETYPE_GROUPS[config:patterns]="\
   cfg \
   conf \
+  desktop \
   csv \
   ini \
   opt \

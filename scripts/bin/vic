@@ -1,5 +1,0 @@
-#!/usr/bin/env zsh
-# Count how many open issues the current repo has
-gh issue list --limit=1000 --json=number \
-  | cat '-' \
-  | jq length

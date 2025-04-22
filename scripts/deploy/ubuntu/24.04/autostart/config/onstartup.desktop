@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/home/tim/.oroshi/scripts/deploy/ubuntu/24.04/autostart/scripts/onstartup
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=Test
+Name=Test
+Comment[en_US]=Test
+Comment=Test

@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# Configure scripts and apps to load at startup
+
+local CONFIG_DIR=~/.oroshi/scripts/deploy/ubuntu/24.04/autostart/config
+local DEST_DIR=~/.config/autostart
+
+rm -rf $DEST_DIR
+ln -fs $CONFIG_DIR $DEST_DIR

@@ -1,4 +1,0 @@
-#!/usr/bin/env ruby
-require_relative '../etc/podcasts/gameblog/gameblog_podcast_downloader'
-GameblogPodcastDownloader.new(*ARGV).run()
-

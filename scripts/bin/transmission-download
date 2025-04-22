@@ -1,4 +1,0 @@
-#!/usr/bin/env ruby
-require_relative '../etc/transmission-download/transmission-download.rb'
-TransmissionDownload.new(*ARGV).run()
-
