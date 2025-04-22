@@ -10,6 +10,10 @@
 # Disable Dock on the left side
 gnome-extensions disable ubuntu-dock@ubuntu.com
 
+# Mouse {{{
+gsettings set org.gnome.desktop.peripherals.mouse speed -0.19000
+# }}}
+
 # Touchpad {{{
 # Speed
 gsettings set org.gnome.desktop.peripherals.touchpad speed 0.65000

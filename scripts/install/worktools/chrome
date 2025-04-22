@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# Google Chrome
+# Still the best browser to use with GSlides and GDocs
+
+local DOWNLOAD_URL="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+local DOWNLOAD_FILE="chrome.deb";
+
+cd ~/local/tmp
+wget $DOWNLOAD_URL -O $DOWNLOAD_FILE
+install-deb $DOWNLOAD_FILE
