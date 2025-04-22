@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Main compilation dependencies
+# This is a list of the main dependencies and compilation tools that I find most
+# compilation commands need
+
+sudo apt-get install \
+  automake \
+  autotools-dev \
+  build-essential \
+  clang \
+  cmake \
+  g++ \
+  intltool \
+  libssl-dev \
+  libtool \
+  libxml2-dev \
+  libxslt1-dev \
+  nasm \
+  pkg-config \
+  xsltproc
