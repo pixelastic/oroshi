@@ -1,0 +1,25 @@
+#!/usr/bin/env zsh
+# This is loaded when the PC boots, and it register a callback to run whenever
+# the PC comes back from sleep.
+
+# Function to call when coming back from sleep
+function onWakeUp() {
+  # Reload the Gnome tweaks as Gnome extensions tend to lose their settings when
+  # coming from sleep.
+  ~/.oroshi/scripts/deploy/ubuntu/24.04/tweaks
+}
+
+# Listen to DBus events and wait for one that tells us we're coming back from
+# sleep
+dbus-monitor \
+  --session "type='signal',interface=org.gnome.ScreenSaver,member=WakeUpScreen" | 
+  (while true; do
+      read logLine;
+
+      # We still need to grep on the actual string because the script display
+      # some generic string at the beginning
+      if [[ $logLine = *"member=WakeUpScreen"* ]]; then
+        onWakeUp
+      fi
+
+    done)

@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
-# Configure global keybinding
+# Configure custom global keybinding
+# Those open specific applications when pressed
 
 local                  shortcuts=(
   # Name                 Command                                               Binding

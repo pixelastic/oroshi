@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# Configure global keybinding
+
+
+gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver "['<Control><Super>L']"
