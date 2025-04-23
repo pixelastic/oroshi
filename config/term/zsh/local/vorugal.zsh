@@ -5,6 +5,8 @@ function ok() {
   ~/.oroshi/scripts/deploy/keybindings/xkb
 
   # Reload Gnome keybindings
+  ~/.oroshi/scripts/deploy/ubuntu/24.04/keybindings/basic
+  ~/.oroshi/scripts/deploy/ubuntu/24.04/keybindings/windows
   ~/.oroshi/scripts/deploy/ubuntu/24.04/keybindings/custom
 
 }
