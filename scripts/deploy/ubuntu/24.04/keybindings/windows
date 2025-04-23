@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
-# Keybindings to interact with windows and workspaces
+# Keybindings to interact with windows
 
-# Windows {{{
+# Alt-Tab {{{
 # [Alt-Tab] Switch through windows in one workspace at a time
 dconf write /org/gnome/shell/extensions/advanced-alt-tab-window-switcher/switcher-popup-position 2
 dconf write /org/gnome/shell/extensions/advanced-alt-tab-window-switcher/switcher-popup-preview-selected 1
@@ -18,34 +18,12 @@ dconf write /org/gnome/shell/extensions/advanced-alt-tab-window-switcher/win-swi
 dconf write /org/gnome/desktop/wm/keybindings/switch-windows "['<Alt>Tab']"
 # }}}
 
+# 
+dconf write /org/gnome/shell/extensions/tiling-assistant/enable-tiling-popup false
+dconf write /org/gnome/shell/extensions/tiling-assistant/tile-maximize "['<Super>Up']"
+dconf write /org/gnome/shell/extensions/tiling-assistant/restore-window "['<Super>Down']"
+dconf write /org/gnome/shell/extensions/tiling-assistant/tile-right-half "['<Super>Right','<Super><Alt>Right']"
+dconf write /org/gnome/shell/extensions/tiling-assistant/tile-left-half "['<Super>Left','<Super><Alt>Left']"
+dconf write /org/gnome/shell/extensions/tiling-assistant/tile-top-half "['<Super><Alt>Up']"
+dconf write /org/gnome/shell/extensions/tiling-assistant/tile-bottom-half "['<Super><Alt>Down']"
 
-# Workspaces {{{
-# [Super-Tab] Shows a workspace overview
-dconf write /org/gnome/shell/extensions/swmatrix/show-popup true
-dconf write /org/gnome/shell/extensions/swmatrix/show-thumbnails true
-dconf write /org/gnome/shell/extensions/swmatrix/show-workspace-names false
-dconf write /org/gnome/shell/extensions/swmatrix/enable-popup-workspace-hover true
-
-gsettings set org.gnome.desktop.wm.keybindings switch-applications '@as []'
-gsettings --schemadir ~/.local/share/gnome-shell/extensions/wsmatrix@martin.zurowietz.de/schemas/ \
-   set org.gnome.shell.extensions.wsmatrix-keybindings workspace-overview-toggle "['<Super>Tab']"
-#
-
-
-# Configure a 3x3 workspace matrix
-dconf write /org/gnome/shell/extensions/wsmatrix/num-columns 3
-dconf write /org/gnome/shell/extensions/wsmatrix/num-rows 3
-dconf write /org/gnome/desktop/wm/preferences/num-workspaces 9
-
-# Switch workspaces
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-up    "['<Ctrl><Super>Up']"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-right "['<Ctrl><Super>Right']"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-down  "['<Ctrl><Super>Down']"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left  "['<Ctrl><Super>Left']"
-
-# Move windows to workspace
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-up      "['<Shift><Super>Up']"
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-right   "['<Shift><Super>Right']"
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-down    "['<Shift><Super>Down']"
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-left    "['<Shift><Super>Left']"
-# }}}
