@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# pipx: Install python CLI tools in dedicated environments
+# https://pypi.org/project/pipx/
+# Note: pipx is perfect to install 3rd party CLI tools written in python,
+# without having to bother with installing the right python version and
+# dependencies; it does all of that automatically.
+
+
+sudo apt-get install pipx
+pipx ensurepath
