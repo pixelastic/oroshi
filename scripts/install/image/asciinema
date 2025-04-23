@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-sudo apt-get install asciinema
-yarn add global asciicast2gif

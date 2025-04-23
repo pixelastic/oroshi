@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# gifsicle: GIF compression tool
+# https://github.com/kohler/gifsicle
 set -e
 
 sudo apt-get install gifsicle

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# jpegoptim: Compress JPEG files
+# https://github.com/tjko/jpegoptim
+
+sudo apt-get install jpegoptim

@@ -1,16 +1,23 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
+# Image Magick: Convert to and from all image formats
 set -e
 
-# Ubuntu 22.04 ships with ImageMagick 6
+# Ubuntu 24.04 ships with ImageMagick 6
 # ImageMagick 7 is available as a single binary
 # It replaces the old `convert` method, and all other methods should use this as
 # its primary entrypoint
 
+local DOWNLOAD_URL="https://imagemagick.org/archive/binaries/magick"
+local DOWNLOAD_DIR=~/local/etc/magick
+
+# Dependencies needed
+sudo apt install libfuse2t64
+
 # Download the binary
-mkdir -p ~/local/etc/magick
-cd ~/local/etc/magick
+mkdir -p $DOWNLOAD_DIR
+cd $DOWNLOAD_DIR
 rm -rf ./magick
-wget "https://imagemagick.org/archive/binaries/magick"
+wget $DOWNLOAD_URL -O ./magick
 chmod +x ./magick
 
 # Create links

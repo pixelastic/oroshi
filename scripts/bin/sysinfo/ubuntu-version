@@ -1,2 +1,2 @@
 #!/usr/bin/env zsh
-lsb_release -r -s
+lsb_release -r -s 2>/dev/null

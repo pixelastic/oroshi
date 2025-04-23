@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
+# Image compression and conversion tools
 set -e
 
 # Basic image support
 sudo apt-get install \
 	libimage-exiftool-perl
 
-# DSSIM
+# ImageMagick
 ~/.oroshi/scripts/install/image/imagemagick
 
 # DSSIM
@@ -15,15 +16,10 @@ sudo apt-get install \
 ~/.oroshi/scripts/install/image/webp
 
 # JPG
-~/.oroshi/scripts/install/image/jpg
-~/.oroshi/scripts/install/image/mozjpg
+~/.oroshi/scripts/install/image/jpegoptim
 
 # PNG
-~/.oroshi/scripts/install/image/png
-
-# SVG
-~/.oroshi/scripts/install/image/svg
+~/.oroshi/scripts/install/image/pngquant
 
 # GIF
 ~/.oroshi/scripts/install/image/gifsicle
-~/.oroshi/scripts/install/image/asciinema

@@ -1,10 +1,12 @@
 #!/usr/bin/env zsh
+# dssim: Calculate image dissimilarity score between two images
+# https://github.com/kornelski/dssim
 set -e
 
-DOWNLOAD_URL="https://github.com/kornelski/dssim/releases/download/3.2.3/dssim_3.2.3_amd64.deb"
+local DOWNLOAD_URL="https://github.com/kornelski/dssim/releases/download/3.2.3/dssim_3.2.3_amd64.deb"
 
 cd ~/local/tmp
 wget $DOWNLOAD_URL -O dssim.deb
-sudo dpkg -i ./dssim.deb
-sudo apt-get -f install
+
+install-deb ./dssim.deb
 rm ./dssim.deb

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# pngquant: PNG Compression
+# https://github.com/kornelski/pngquant
+
+sudo apt-get install pngquant

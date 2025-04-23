@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
+# webp: Web image format
 
 sudo apt-get install webp
