@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-# To convert vcd to mpg
-sudo apt-get install vcdimager

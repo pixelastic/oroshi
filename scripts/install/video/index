@@ -1,16 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
-# Utilities
+# Conversion
 ~/.oroshi/scripts/install/video/ffmpeg
 
-# Formats
-~/.oroshi/scripts/install/music/mkv
-~/.oroshi/scripts/install/music/dvd
-
 # Players
-~/.oroshi/scripts/install/music/vlc
+~/.oroshi/scripts/install/video/vlc
 
-# Screen recording
-~/.oroshi/scripts/install/music/obs
-~/.oroshi/scripts/install/music/cheese
+# mkv
+~/.oroshi/scripts/install/video/mkv
