@@ -13,9 +13,7 @@ dconf write /org/gnome/shell/extensions/unite/reduce-panel-spacing true
 dconf write /org/gnome/shell/extensions/just-perfection/activities-button false
 
 # Window buttons (down, window, maximize)
-dconf write /org/gnome/shell/extensions/unite/show-window-buttons "'always'"
-dconf write /org/gnome/shell/extensions/unite/window-buttons-placement "'first'"
-dconf write /org/gnome/shell/extensions/unite/window-buttons-theme "'adwaita'"
+dconf write /org/gnome/shell/extensions/unite/show-window-buttons "'never'"
 
 # Spotify
 dconf write /org/gnome/shell/extensions/sp-tray/display-mode 0
@@ -41,6 +39,19 @@ gsettings set org.gnome.desktop.interface show-battery-percentage true
 dconf write /org/gnome/shell/extensions/just-perfection/quick-settings-dark-mode false
 dconf write /org/gnome/shell/extensions/just-perfection/quick-settings-night-light false
 dconf write /org/gnome/shell/extensions/just-perfection/quick-settings-airplane-mode false
+
+# The extensions are displayed in the order they are enabled, from right to
+# left. To ensure a consistent placement, we will enable them in turn.
+if command -v gext >/dev/null; then
+  function stackExtension() {
+    gext disable $1 &>/dev/null
+    gext enable $1 &>/dev/null
+  }
+  # From right to left...
+  stackExtension just-perfection-desktop@just-perfection # Just Perfection
+  stackExtension ubuntu-appindicators@ubuntu.com         # App Indicators
+  stackExtension sp-tray@sp-tray.esenliyim.github.com    # spotify-tray
+fi
 
 
 # }}}

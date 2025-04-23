@@ -5,6 +5,5 @@
 # without having to bother with installing the right python version and
 # dependencies; it does all of that automatically.
 
-
 sudo apt-get install pipx
 pipx ensurepath
