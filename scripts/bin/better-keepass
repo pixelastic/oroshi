@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Open Keepass
+
+# keepassxc uses GTK, and by default it is no honoring the Ubuntu scale factor,
+# so we force it here
+QT_SCALE_FACTOR=1.3 keepassxc $@

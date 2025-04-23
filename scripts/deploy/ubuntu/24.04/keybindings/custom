@@ -8,7 +8,7 @@ local                  shortcuts=(
   "Chrome"               "google-chrome"                                          "<Super>C"
   "Firefox"              "firefox"                                                "<Super>F"
   "Kitty"                "/home/tim/.oroshi/scripts/bin/kitty/kitty-restore"      "<Super>T"
-  "Keepass"              "keepassxc /home/tim/perso/Dropbox/tim/keys.kdbx"        "<Super>K"
+  "Keepass"              "/home/tim/.oroshi/scripts/bin/better-keepass /home/tim/perso/Dropbox/tim/keys.kdbx"        "<Super>K"
   "Spotify Pause"        "/home/tim/.oroshi/scripts/bin/spotify/spotify"          "<Super>I"
   "Spotify Next"         "/home/tim/.oroshi/scripts/bin/spotify/spotify-next"     "<Super>L"
   "Spotify Previous"     "/home/tim/.oroshi/scripts/bin/spotify/spotify-previous" "<Super>H"
