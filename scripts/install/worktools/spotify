@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+# Spotify: Listen to music
 set -e
 
 # Main spotify app

@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# Returns the current Gnome shell version
+
+gnome-shell --version

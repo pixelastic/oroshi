@@ -15,8 +15,9 @@ function reloadTweaks() {
 # to have an impact. It seems I need to wait "a bit". Exactly how long, I'm not
 # sure. From my tests, it seems that it's somewhere between 2mn and 4mn. Just to
 # be sure, I'll wait 5mn before running it.
-sleep 300
-reloadTweaks
+# sleep 300
+# reloadTweaks
+# jobsdone
 
 # We also listens to DBus events, and calls it again when we get back from sleep
 dbus-monitor \

@@ -57,9 +57,28 @@ function enableExtension() {
   gnome-extensions info $extensionId
 }
 
+# Note:
+# I want to add new extensions to this list, how do I do that?
+#
+# - Go to https://extensions.gnome.org/
+# - Fin the extension you need
+# - Select the right shell version (`gnome-shell-version` will help)
+# - Pick the latest extension version
+# - Open the DevTools and grab the .zip url of the file downloaded
+# - Add a line below, with:
+#   - A name (first argument)
+#   - A url (that you picked from above)
+#   - A random string as third argument (we need it to be unique for now)
+# - Run the current script, it will put a zip file in ~/local/tmp
+# - Open that zip file and look for the .uuid key in metadata.json
+# - Set that as the last argument
+# - Log out
+# - Re-run the script
+
 
 # Just Perfection
 # https://gitlab.gnome.org/jrahmatzadeh/just-perfection
+# https://extensions.gnome.org/extension/3843/just-perfection/
 # Includes moving the clock, hiding icons from the topbar
 addExtension \
   "justPerfection" \
@@ -68,9 +87,9 @@ addExtension \
 
 # Unite
 # https://github.com/hardpixel/unite-shell
+# https://extensions.gnome.org/extension/1287/unite/ (outdated)
 # Merges window title bar with Ubuntu top bar
 addExtension \
   "unite" \
   "https://github.com/hardpixel/unite-shell/releases/download/v82/unite-v82.zip" \
   "unite@hardpixel.eu"
-
