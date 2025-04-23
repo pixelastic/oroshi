@@ -19,8 +19,12 @@ function oroshi_tools_fzf() {
   local fzfOptionColors="--color '${fzfColors:gs/ /,}'"
 
   # Preview window
+  # If the preview on the right get smaller than that number of chars, we pass
+  # it in horizontal mode. Note that this number will kinda depend on the
+  # font size used.
+  local maxCharWidth=72
   local fzfOptionPreview="\
-    --preview-window 'right,50%,border-left,<79(bottom,50%,border-top)' \
+    --preview-window 'right,50%,border-left,<${maxCharWidth}(bottom,50%,border-top)' \
     --bind 'ctrl-j:preview-down' \
     --bind 'ctrl-k:preview-up' \
   "
