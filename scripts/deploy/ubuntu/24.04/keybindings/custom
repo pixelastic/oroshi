@@ -3,15 +3,19 @@
 # Those open specific applications when pressed
 
 local                  shortcuts=(
-  # Name                 Command                                               Binding
-  "Calculator"           "gnome-calculator"                                    "Insert"
-  "Chrome"               "google-chrome"                                       "<Super>C"
-  "Firefox"              "firefox"                                             "<Super>F"
-  "Kitty"                "/home/tim/.oroshi/scripts/bin/kitty/kitty-restore"   "<Super>T"
-  "Keepass"              "keepassxc /home/tim/perso/Dropbox/tim/keys.kdbx"     "<Super>K"
+  # Name                 Command                                                  Binding
+  "Calculator"           "gnome-calculator"                                       "Insert"
+  "Chrome"               "google-chrome"                                          "<Super>C"
+  "Firefox"              "firefox"                                                "<Super>F"
+  "Kitty"                "/home/tim/.oroshi/scripts/bin/kitty/kitty-restore"      "<Super>T"
+  "Keepass"              "keepassxc /home/tim/perso/Dropbox/tim/keys.kdbx"        "<Super>K"
+  "Spotify Pause"        "/home/tim/.oroshi/scripts/bin/spotify/spotify"          "<Super>I"
+  "Spotify Next"         "/home/tim/.oroshi/scripts/bin/spotify/spotify-next"     "<Super>L"
+  "Spotify Previous"     "/home/tim/.oroshi/scripts/bin/spotify/spotify-previous" "<Super>H"
   # "Flameshot"            "/usr/bin/flameshot gui"                              "<Super>Print"
   # "Peek"                 "/home/tim/.oroshi/scripts/bin/peek"                  "<Super><Alt>Print"
   # "Slack"                "/usr/bin/slack"                                      "<Super>S"
+
 )
 
 local GSETTINGS_ROOT="org.gnome.settings-daemon.plugins.media-keys.custom-keybinding"
