@@ -18,12 +18,17 @@ dconf write /org/gnome/shell/extensions/advanced-alt-tab-window-switcher/win-swi
 dconf write /org/gnome/desktop/wm/keybindings/switch-windows "['<Alt>Tab']"
 # }}}
 
-# 
-dconf write /org/gnome/shell/extensions/tiling-assistant/enable-tiling-popup false
+
+# [Super-Up / Super-Down] Maximize / Restore
 dconf write /org/gnome/shell/extensions/tiling-assistant/tile-maximize "['<Super>Up']"
 dconf write /org/gnome/shell/extensions/tiling-assistant/restore-window "['<Super>Down']"
+# [Super-Right / Super-Left] Align right / Align left
+# Note: I also bind it with a Alt in addition, so it mimics the up/down as well
 dconf write /org/gnome/shell/extensions/tiling-assistant/tile-right-half "['<Super>Right','<Super><Alt>Right']"
 dconf write /org/gnome/shell/extensions/tiling-assistant/tile-left-half "['<Super>Left','<Super><Alt>Left']"
+# [Super-Alt-Up/Down] Align top / bottom
 dconf write /org/gnome/shell/extensions/tiling-assistant/tile-top-half "['<Super><Alt>Up']"
 dconf write /org/gnome/shell/extensions/tiling-assistant/tile-bottom-half "['<Super><Alt>Down']"
+# Prevent Ubuntu from asking which windows to split when aligning on a side
+dconf write /org/gnome/shell/extensions/tiling-assistant/enable-tiling-popup false
 
