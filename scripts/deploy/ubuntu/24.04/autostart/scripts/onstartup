@@ -12,6 +12,8 @@ function reloadTopbar() {
 }
 reloadTopbar
 
+# Move to workspace 5 (main)
+wmctrl -s 4
 
 # We also listens to DBus events, and calls it again when we get back from sleep
 dbus-monitor \

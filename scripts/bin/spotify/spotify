@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env zsh
 # Start spotify docked into the tray, or toggle play/pause if already started
 # See
 # https://stackoverflow.com/questions/10408816/how-do-i-use-the-nohup-command-without-getting-nohup-out
@@ -8,6 +8,21 @@ if spotify-is-running; then
 	exit
 fi
 
+# In latest Ubuntu version, I'm loading spotify in its own workspace, fullscreen
+if [[ $(ubuntu-version) == "24.04" ]]; then
+	# Go to bottom workspace
+	workspace-switch 8
+
+	# Start spotify and wait a bit
+	nohup /snap/bin/spotify &>/dev/null &
+	sleep 5
+
+	# Move back to main workspace
+	workspace-switch 5
+	exit 0
+fi
+
+# In older Ubuntu version, I'm using a hack to keep it in the top bar
 nohup \
 	kdocker \
 	-qol \

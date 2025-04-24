@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# wmctrl: Window Management Controller
+# Allow switching workspaces from the CLI
+
+sudo apt-get install wmctrl
