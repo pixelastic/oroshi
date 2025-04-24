@@ -3,16 +3,16 @@
 # Those open specific applications when pressed
 
 local                  shortcuts=(
-  # Name                 Command                                                  Binding
-  "Calculator"           "gnome-calculator"                                       "Insert"
-  "Chrome"               "google-chrome"                                          "<Super>C"
-  "Firefox"              "firefox"                                                "<Super>F"
-  "Kitty"                "/home/tim/.oroshi/scripts/bin/kitty/kitty-restore"      "<Super>T"
-  "Keepass"              "/home/tim/.oroshi/scripts/bin/better-keepass /home/tim/perso/Dropbox/tim/keys.kdbx"        "<Super>K"
-  "Spotify Pause"        "/home/tim/.oroshi/scripts/bin/spotify/spotify"          "<Super>I"
-  "Spotify Next"         "/home/tim/.oroshi/scripts/bin/spotify/spotify-next"     "<Super>L"
-  "Spotify Previous"     "/home/tim/.oroshi/scripts/bin/spotify/spotify-previous" "<Super>H"
-  # "Flameshot"            "/usr/bin/flameshot gui"                              "<Super>Print"
+  # Name                 Binding           Command
+  "Calculator"           "Insert"          "gnome-calculator"
+  "Chrome"               "<Super>C"        "google-chrome"
+  "Firefox"              "<Super>F"        "firefox"
+  "Kitty"                "<Super>T"        "/home/tim/.oroshi/scripts/bin/kitty/kitty-restore"
+  "Keepass"              "<Super>K"        "/home/tim/.oroshi/scripts/bin/better-keepass /home/tim/perso/Dropbox/tim/keys.kdbx"
+  "Spotify Pause"        "<Super>I"        "/home/tim/.oroshi/scripts/bin/spotify/spotify"
+  "Spotify Next"         "<Super>L"        "/home/tim/.oroshi/scripts/bin/spotify/spotify-next"
+  "Spotify Previous"     "<Super>H"        "/home/tim/.oroshi/scripts/bin/spotify/spotify-previous"
+  "Flameshot"            "Print"           "script --command \"flameshot gui\" /dev/null"     # Flameshot need to be called in a fork when called from a keybinding
   # "Peek"                 "/home/tim/.oroshi/scripts/bin/peek"                  "<Super><Alt>Print"
   # "Slack"                "/usr/bin/slack"                                      "<Super>S"
 
@@ -36,13 +36,13 @@ for shortcut_index in {1..$shortcut_count}; do
   local array_index=$((1 + $custom_index * 3))
 
   local shortcut_name=$shortcuts[$array_index]
-  local shortcut_command=$shortcuts[$array_index+1]
-  local shortcut_binding=$shortcuts[$array_index+2]
+  local shortcut_binding=$shortcuts[$array_index+1]
+  local shortcut_command=$shortcuts[$array_index+2]
 
   # Setting each shortcut individually
   setKeybinding "${GSETTINGS_ROOT}:${GSETTINGS_DIRECTORY}/custom${custom_index}/" "name" "'${shortcut_name}'"
-  setKeybinding "${GSETTINGS_ROOT}:${GSETTINGS_DIRECTORY}/custom${custom_index}/" "command" "'${shortcut_command}'"
   setKeybinding "${GSETTINGS_ROOT}:${GSETTINGS_DIRECTORY}/custom${custom_index}/" "binding" "'${shortcut_binding}'"
+  setKeybinding "${GSETTINGS_ROOT}:${GSETTINGS_DIRECTORY}/custom${custom_index}/" "command" "'${shortcut_command}'"
 
   shortcut_inventory+=("'${GSETTINGS_DIRECTORY}/custom${custom_index}/'")
 done

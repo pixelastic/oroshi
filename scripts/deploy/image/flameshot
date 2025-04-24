@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# Flameshot: Take screenshots
 
 local CONFIG_DIR=~/.oroshi/config/image/flameshot
 local DEST_DIR=~/.config/flameshot
