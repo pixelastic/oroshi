@@ -1,5 +1,10 @@
 #!/usr/bin/env zsh
+# Zoom: Online video calls
+set -e
 
-cd ~/local/tmp
-wget https://zoom.us/client/latest/zoom_amd64.deb -O zoom.deb
-install-deb ./zoom.deb
+local DOWNLOAD_URL="https://zoom.us/client/latest/zoom_amd64.deb"
+local DOWNLOAD_PATH=~/local/tmp/zoom.deb
+
+wget $DOWNLOAD_URL -O $DOWNLOAD_PATH
+sudo apt install $DOWNLOAD_PATH
+rm $DOWNLOAD_PATH
