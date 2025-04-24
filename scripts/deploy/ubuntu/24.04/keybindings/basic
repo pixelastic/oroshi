@@ -1,5 +1,13 @@
 #!/usr/bin/env zsh
 # Configure global keybinding
+#
+# Run `gsettings list-recursively G '<MyBinding>'` to find what is mapping
+# a specific key
 
-
+# [Ctrl-Super-L] Lock screen
 gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver "['<Control><Super>L']"
+
+# [² (Above tab)] Gnome "Activities"
+dconf write /org/gnome/settings-daemon/plugins/media-keys/search "@as []"
+dconf write /org/gnome/mutter/overlay-key "'XF86Search'"
+

@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# gext: List and install gnome extensions from the CLI
+
+# pipx is required to install dependencies
+if ! command -v pipx >/dev/null; then
+  echo "You need to install pipx first"
+  exit 1
+fi
+
+pipx install gnome-extensions-cli

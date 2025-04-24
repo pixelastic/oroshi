@@ -1,15 +1,10 @@
 #!/usr/bin/env zsh
 # Install GNOME extensions to improve the default Gnome UI
 
-# pipx is required to install dependencies
-if ! command -v pipx >/dev/null; then
-  echo "You need to install pipx first"
-  exit 1
-fi
-
-# Installing gext, to simplify installing Gnome extensions
+# gext is required to install dependencies
 if ! command -v gext >/dev/null; then
-  pipx install gnome-extensions-cli
+  echo "You need to install gext first"
+  exit 1
 fi
 
 # Installing extensions
