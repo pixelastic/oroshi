@@ -15,6 +15,8 @@ if [[ ! -d $DEST_DIR ]]; then
 		git@github.com:creationix/nvm.git \
 		$DEST_DIR
 
+	# Add a config file to tell nvm which packages to install on each new node
+	# version installation (basically, yarn)
 	ln -fs \
 		$CONFIG_DIR/default-packages \
 		$DEST_DIR
@@ -33,3 +35,6 @@ export NVM_DIR=$DEST_DIR
 source $NVM_DIR/nvm.sh
 nvm install $LATEST_NODE_LTS_VERSION --no-nvmrc
 nvm alias default $LATEST_NODE_LTS_VERSION
+
+# Enable corepack, needed for Yarn 2+ to work
+corepack enable

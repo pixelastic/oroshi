@@ -20,6 +20,7 @@ FILETYPE_GROUPS[text:patterns]="\
   [README] \
   md \
   txt \
+  vtt \
 "
 
 # Script files
