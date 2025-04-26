@@ -40,6 +40,11 @@ Plug 'pedrohdz/vim-yaml-folds'                            " Yaml (folding)
 " Plug 'tmhedberg/SimpylFold' " Python folding
 " Plug 'tpope/vim-markdown'
 " }}}
+" Language Server Protocols (LSP) {{{
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
+
+" }}}
 " Enhancing vim workflow {{{
 Plug 'pixelastic/ale'              " Lint & Fix
 Plug 'junegunn/vader.vim'          " A Vim test framework
