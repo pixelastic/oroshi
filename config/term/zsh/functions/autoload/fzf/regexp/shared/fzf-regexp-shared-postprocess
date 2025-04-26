@@ -18,10 +18,10 @@ function fzf-regexp-shared-postprocess() {
   local files=()
   for line in ${(f)rawSelection}; do
     local split=(${(@s/   /)line})
-    
+
     # Skip empty/UI lines
     [[ ${#split[@]} != 3 ]] && continue
-    
+
     local filepath="$split[1]"
     local lineNumber="$split[2]"
 
