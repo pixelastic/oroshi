@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+# Whisper: Speech-to-text model and cli tool
+# https://github.com/ggml-org/whisper.cpp
+set -e
+
+local REPO_URL="git@github.com:ggml-org/whisper.cpp.git"
+local REPO_PATH=~/local/etc/whisper.cpp
+
+# Clone the repo
+git-directory-sync $REPO_URL $REPO_PATH
+cd $REPO_PATH
+
+# Download the model(s)
+sh ./models/download-ggml-model.sh base
+# (TODO: Test large, medium, small) from https://huggingface.co/ggerganov/whisper.cpp/tree/main
+
+# Build the CLI
+cmake -B build
+cmake --build build --config Release
+
+# Set the CLI in the path
+ln -fs $REPO_PATH/build/bin/whisper-cli ~/local/bin
+

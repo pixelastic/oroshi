@@ -1,0 +1,61 @@
+#!/usr/bin/env zsh
+# mic2text: Transcribe what is being said into text
+# Greatly inspired by https://github.com/QuantiusBenignus/BlahST
+
+local modelFile=~/local/etc/whisper.cpp/models/ggml-small.bin
+local tmpFolder=/dev/shm/oroshi_speech-to-text
+local pidFile=${tmpFolder}/PID
+local recordFile=${tmpFolder}/record.wav
+
+# Check if a recording is already running (so we can stop it), or not (so we can
+# start it)
+mkdir -p $tmpFolder;
+local isRecordingRunning=0
+[[ -f $pidFile ]] && isRecordingRunning=1
+
+
+# RECORD {{{
+# No recording running, starting one
+if [[ $isRecordingRunning == "0" ]]; then
+  rec \
+    --rate 16000 \
+    --channels 1 \
+    $recordFile &
+
+  # Save the pid
+  echo $! > $pidFile
+  exit 0
+fi
+# }}}
+
+# TRANSCRIBE {{{
+# A recording is already started, we stop it
+
+# Wait a bit, to be sure to catch the last seconds of the recording
+sleep 2
+
+# Now, kill the recording
+kill-pid "$(cat $pidFile)";
+
+# We transcribe to text
+local transcription="$(whisper-cli \
+  --file $recordFile \
+  --language fr \
+  --threads 9 \
+  --no-timestamps \
+  --model $modelFile \
+  2>/dev/null)"
+
+# Clean it a bit
+transcription="${transcription#*([[:space:]])}"
+transcription="${(C)str:0:1}${transcription#?}"
+
+# We paste it
+local currentClipboard="$(wl-paste)"
+echo $transcription | wl-copy
+wl-paste
+echo $currentClipboard | wl-copy
+
+# Cleanup the pid file
+rm $pidFile
+# }}}

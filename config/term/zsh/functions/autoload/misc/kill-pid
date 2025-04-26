@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+# Stop a process by its pid, and wait until it is really closed
+# It asks process to stop, and wait until its really stopped
+# Usage:
+# $ kill-pid 24356
+
+local pid=$1
+
+# Send signal to kill it
+kill -15 $pid
+
+# Just to be sure, check until it is really killed
+if kill -0 $pid &>/dev/null; then
+  while kill -0 $pid 2>/dev/null; do
+    sleep 0.1
+  done
+fi

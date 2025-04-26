@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # Music Swiss Army Knife for encoding various formats
 sudo apt-get install sox
-sudo apt-get install libsox-fmt-mp3
+sudo apt-get install libsox-fmt-all
