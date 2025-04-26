@@ -32,7 +32,7 @@ fi
 # A recording is already started, we stop it
 
 # Wait a bit, to be sure to catch the last seconds of the recording
-sleep 2
+sleep 1
 
 # Now, kill the recording
 kill-pid "$(cat $pidFile)";
@@ -50,11 +50,17 @@ local transcription="$(whisper-cli \
 transcription="${transcription#*([[:space:]])}"
 transcription="${(C)str:0:1}${transcription#?}"
 
+
 # We paste it
+# TODO: Doesn't properly paste when using a keybinding
+# Might need to check ydotool for that
+# wtype doesn't work on Ubuntu
+# wl-paste doesn't seem to be able to paste in Slack
+notify-send "$transcription"
 local currentClipboard="$(wl-paste)"
 echo $transcription | wl-copy
 wl-paste
-echo $currentClipboard | wl-copy
+# echo $currentClipboard | wl-copy
 
 # Cleanup the pid file
 rm $pidFile

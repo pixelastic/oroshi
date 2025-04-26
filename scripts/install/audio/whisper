@@ -11,8 +11,8 @@ git-directory-sync $REPO_URL $REPO_PATH
 cd $REPO_PATH
 
 # Download the model(s)
+# https://huggingface.co/ggerganov/whisper.cpp/tree/main
 sh ./models/download-ggml-model.sh base
-# (TODO: Test large, medium, small) from https://huggingface.co/ggerganov/whisper.cpp/tree/main
 
 # Build the CLI
 cmake -B build
