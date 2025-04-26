@@ -21,12 +21,6 @@ inoremap <silent> Ⓗ <Esc>:-tabmove<CR>
 nnoremap <silent> Ⓛ :+tabmove<CR>
 inoremap <silent> Ⓛ <Esc>:+tabmove<CR>
 
-" [CTRL-J] Next autocompletion
-cnoremap <C-J> <C-N>
-
-" [CTRL-K] Previous autocompletion
-cnoremap <C-K> <C-P>
-
 " }}}
 "
 "

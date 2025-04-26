@@ -5,12 +5,6 @@ noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
 
-" [Up] and [Down] can be used to navigate through completion items
-inoremap <expr> <Down> pumvisible() ? "\<C-N>" : "\<Down>"
-inoremap <expr> <Up> pumvisible() ? "\<C-P>" : "\<Up>"
-cnoremap <Down> <C-N>
-cnoremap <Up> <C-P>
-
 " [Ctrl-Arrows] To move across splits
 nnoremap <silent> <C-Up> <C-W>k
 nnoremap <silent> <C-Right> <C-W>l

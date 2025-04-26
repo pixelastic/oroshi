@@ -20,14 +20,11 @@ source ~/.config/nvim/includes/keybindings/f8.vim           " Toggle hidden char
 source ~/.config/nvim/includes/keybindings/f9.vim           " Toggle line wrap
 
 source ~/.config/nvim/includes/keybindings/ctrl-a.vim       " Select all
-source ~/.config/nvim/includes/keybindings/ctrl-c.vim       " Cancel completion
 
 source ~/.config/nvim/includes/keybindings/ctrl-e.vim       " Go to next error
 source ~/.config/nvim/includes/keybindings/ctrl-shift-e.vim " Go to previous error
 
 source ~/.config/nvim/includes/keybindings/ctrl-o.vim       " Go to previous jump position
-
-source ~/.config/nvim/includes/keybindings/ctrl-i.vim       " Toggle Copilot
 
 source ~/.config/nvim/includes/keybindings/ctrl-s.vim       " Save file
 source ~/.config/nvim/includes/keybindings/ctrl-d.vim       " Close tab/vim

@@ -238,11 +238,10 @@ call s:Highlight('IncSearch', 'ALIAS_VIM_SEARCH_FOREGROUND', 'ALIAS_VIM_SEARCH_B
 call s:Highlight('Search', 'ALIAS_VIM_SEARCH_FOREGROUND', 'ALIAS_VIM_SEARCH_BACKGROUND', 'bold')
 " }}}
 " Completion {{{
-call s:Highlight('Pmenu', 'GRAY_4', 'GRAY_9')            " Item
-call s:Highlight('PmenuSel', 'YELLOW', 'GRAY_8', 'bold') " Selected item
-call s:Highlight('PmenuSbar', 'GRAY_9', 'GRAY_9')        " Scrollbar
-call s:Highlight('PmenuThumb', 'GRAY_8', 'GRAY_9')       " Scrollbar handle
-call s:Highlight('CopilotSuggestion', 'ALIAS_AI_SUGGESTION', 'GRAY_9') " Copilot suggestion
+" call s:Highlight('Pmenu', 'GRAY_4', 'GRAY_9')            " Item
+" call s:Highlight('PmenuSel', 'YELLOW', 'GRAY_8', 'bold') " Selected item
+" call s:Highlight('PmenuSbar', 'GRAY_9', 'GRAY_9')        " Scrollbar
+" call s:Highlight('PmenuThumb', 'GRAY_8', 'GRAY_9')       " Scrollbar handle
 " }}}
 " ALE gutter {{{
 call s:Link('ALEErrorSign', 'ERROR')

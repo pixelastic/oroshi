@@ -41,16 +41,8 @@ Plug 'pedrohdz/vim-yaml-folds'                            " Yaml (folding)
 " Plug 'tpope/vim-markdown'
 " }}}
 " Enhancing vim workflow {{{
-" Note: I had to create a temporary fork of dense-analysis/ale to fix some
-" issues with actionlint. I will be able to revert to the official one, once the
-" following PRs will be merged:
-" - https://github.com/dense-analysis/ale/pull/4688 (only lint current file)
-" - https://github.com/dense-analysis/ale/pull/4689 (correctly assign shellcheck line numbers)
-Plug 'pixelastic/ale', { 'branch': 'pixelastic' }  " Lint & Fix
-Plug 'lifepillar/vim-mucomplete'                   " Completion cycling wrapper
-Plug 'github/copilot.vim', { 'branch': 'release' } " GitHub Copilot
-Plug 'junegunn/vader.vim'                          " A Vim test framework
-" Plug 'natebosch/vim-lsc'         " Completion with LSP
+Plug 'pixelastic/ale'              " Lint & Fix
+Plug 'junegunn/vader.vim'          " A Vim test framework
 " }}}
 " Git-related plugins {{{
 Plug 'airblade/vim-gitgutter', { 'branch': 'main' } " Added/Modified signs in the gutter
