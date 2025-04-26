@@ -1,6 +1,5 @@
 " STATUS LINE
 source ~/.config/nvim/includes/statusline/git.vim
-source ~/.config/nvim/includes/statusline/lint.vim
 source ~/.config/nvim/includes/statusline/filetype.vim
 source ~/.config/nvim/includes/statusline/project.vim
 
@@ -117,13 +116,6 @@ function! OroshiStatusLine()
   let sl .= '%=' " Add whitespace to align next part on the right
   " }}}
   "
-  " Lint status {{{
-  let b:lintStatusLine = LintStatusLine()
-  if b:lintStatusLine !=# ''
-    let sl .= b:lintStatusLine.' '
-  endif
-  " }}}
-
   " Debug var {{{
   let sl .= '%{exists("b:o_debug") ? "B[".b:o_debug."] " : ""}'
   let sl .= '%{exists("g:o_debug") ? "G[".g:o_debug."] " : ""}'

@@ -42,19 +42,12 @@ inoremap <buffer> Fen File.extname(
 " Folds {{{
 setlocal foldmethod=syntax
 " }}}
-" Linters {{{
-let b:syntastic_checkers = ['rubocop', 'mri']
-" }}}
 " Cleaning the file {{{
 inoremap <silent> <buffer> <F4> <Esc>:call RubyBeautify()<CR>
 nnoremap <silent> <buffer> <F4> :call RubyBeautify()<CR>
-function! RubyBeautify() 
+function! RubyBeautify()
   let l:initialLine = line('.')
   execute 'silent w !rubocop -a % &>/dev/null'
   execute 'normal '.initialLine.'gg'
-  SyntasticCheck()
 endfunction
-" }}}
-" Misc {{{
-setlocal omnifunc=rubycomplete#Complete
 " }}}

@@ -33,9 +33,6 @@ if &filetype ==# 'html'
   nnoremap <silent> <buffer> za :call HTMLFoldTag()<CR>
 endif
 " }}}
-" Syntax checking {{{
-let b:syntastic_html_tidy_exec = '~/.oroshi/scripts/bin/tidycheck'
-" }}}
 " Cleaning the file {{{
 inoremap <silent> <buffer> <F4> <Esc>:call HtmlBeautify()<CR>
 nnoremap <silent> <buffer> <F4> :call HtmlBeautify()<CR>

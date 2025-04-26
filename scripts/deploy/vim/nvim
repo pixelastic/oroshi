@@ -23,7 +23,4 @@ ln -fns $CONFIG_DIR/colors $DEST_DIR/colors
 ln -fns $CONFIG_DIR/includes $DEST_DIR/includes
 ln -fns $CONFIG_DIR/snippets $DEST_DIR/UltiSnips
 
-# Link Coc config file
-ln -fs ${CONFIG_DIR}/includes/plugins/coc-settings.json $DEST_DIR
-
 echo "Now, open nvim and type :PlugUpdate<CR> to install all plugins"

@@ -1,13 +1,11 @@
 " VUE
 " Linting {{{
 let b:eslint_bin = StrTrim(system('npm-which eslint'))
-let b:syntastic_checkers = ['pug_lint_vue', 'eslint']
-let b:syntastic_vue_eslint_exec = 'eslint_d'
 " }}}
 " Cleaning {{{
 inoremap <silent> <buffer> <F4> <Esc>:call VueBeautify()<CR><CR>
 nnoremap <silent> <buffer> <F4> :call VueBeautify()<CR><CR>
-function! VueBeautify() 
+function! VueBeautify()
   " Note: It seems that eslint_d cannot fix .vue files, so we have to manually
   " copy the file, run eslint --fix on it, and re-apply the file content to the
   " current buffer

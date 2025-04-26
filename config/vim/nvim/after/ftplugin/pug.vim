@@ -23,9 +23,6 @@ function! PugFoldExpr(lnum)
 
   return '0'
 endfunction
-setlocal foldexpr=PugFoldExpr(v:lnum)  
-setlocal foldmethod=expr  
-" }}}
-" Linter {{{
-let b:syntastic_checkers = ['pug_lint']
+setlocal foldexpr=PugFoldExpr(v:lnum)
+setlocal foldmethod=expr
 " }}}

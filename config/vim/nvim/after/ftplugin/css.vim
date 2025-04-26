@@ -30,11 +30,3 @@ nunmap  <buffer> ir
 noremap <buffer> ar :<C-U>execute "normal! ?{\rV/}\r"<CR>
 nunmap  <buffer> ar
 " }}}
-" Linters {{{
-let b:repo_root = GitRoot()
-let b:syntastic_checkers = ['stylelint']
-" Use the local stylelint if one is defined in the repo
-if filereadable(b:repo_root . '/.stylelintrc') || filereadable(b:repo_root . '/.stylelintrc.js')
-  let b:syntastic_css_stylelint_exec = StrTrim(system('npm-which stylelint'))
-end
-"}}}
