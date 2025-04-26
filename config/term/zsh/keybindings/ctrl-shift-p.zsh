@@ -1,4 +1,4 @@
-# Ctrl-T fuzzy find in directory files
+# Ctrl-Shift-P fuzzy find in directory files
 oroshi-fzf-files-subdir-widget() {
 	# Stop if not available
 	if ! command -v fzf >/dev/null; then

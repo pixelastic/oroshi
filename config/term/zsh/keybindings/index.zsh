@@ -17,6 +17,7 @@ source $ZSH_CONFIG_PATH/keybindings/ctrl-n.zsh             # Open current direct
 source $ZSH_CONFIG_PATH/keybindings/ctrl-question-mark.zsh # Explain what the current command does
 source $ZSH_CONFIG_PATH/keybindings/ctrl-p.zsh             # Fuzzy-find files in project
 source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-p.zsh       # Fuzzy-find files in subdirectories
+source $ZSH_CONFIG_PATH/keybindings/ctrl-t.zsh             # Fuzzy-find files in subdirectories (same as Ctrl-Shift-p)
 source $ZSH_CONFIG_PATH/keybindings/ctrl-o.zsh             # Fuzzy-find directories in project
 source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-o.zsh       # Fuzzy-find directories in subdir
 source $ZSH_CONFIG_PATH/keybindings/ctrl-g.zsh             # Regexp search in files in project
