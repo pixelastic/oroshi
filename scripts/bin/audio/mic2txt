@@ -32,7 +32,7 @@ fi
 # A recording is already started, we stop it
 
 # Add a 1s grace delay period
-sleep 1
+sleep 2
 
 # Now, kill the recording
 kill-pid "$(cat $pidFile)"
@@ -53,20 +53,8 @@ transcription="${(C)str:0:1}${transcription#?}"
 # We paste it
 notify-send "$transcription"
 
-# We save the current clipboard
-local currentClipboard="$(wl-paste)"
-
-# Save the transcription in the Ctrl-C clipboard
-echo $transcription | wl-copy
-# Press Ctrl-V
-export YDOTOOL_SOCKET=/home/tim/local/tmp/oroshi/ydotool/socket
-ydotool key 29:1 47:1 47:0 29:0
-
-# We revert the previous clipboard
-echo $currentClipboard | wl-copy
-
-# Also store the transcription in the middle click, in case we need it
-echo $transcription | wl-copy -p
+# Insert the transcription wherever I'm currently focused
+focus-insert "$transcription" &>/tmp/debug.log
 
 # Cleanup the pid file
 rm $pidFile

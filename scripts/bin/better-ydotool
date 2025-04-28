@@ -4,4 +4,4 @@
 # this wrapper to define the needed ENV variables
 
 YDOTOOL_SOCKET=/home/tim/local/tmp/oroshi/ydotool/socket \
- ydotool $@ &>>/tmp/debug.log
+ ydotool $@
