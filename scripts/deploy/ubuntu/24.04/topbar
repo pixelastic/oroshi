@@ -40,6 +40,9 @@ dconf write /org/gnome/shell/extensions/just-perfection/quick-settings-dark-mode
 dconf write /org/gnome/shell/extensions/just-perfection/quick-settings-night-light false
 dconf write /org/gnome/shell/extensions/just-perfection/quick-settings-airplane-mode false
 
+# Notifications below quick settings
+dconf write /org/gnome/shell/extensions/just-perfection/notification-banner-position 2
+
 # The extensions are displayed in the order they are enabled, from right to
 # left. To ensure a consistent placement, we will enable them in turn.
 if command -v gext >/dev/null; then
