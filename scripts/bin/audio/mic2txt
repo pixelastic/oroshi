@@ -1,8 +1,20 @@
 #!/usr/bin/env zsh
 # mic2text: Transcribe what is being said into text
 # Greatly inspired by https://github.com/QuantiusBenignus/BlahST
+# Usage:
+# $ mic2txt transcribe   # Starts recording then...
+#   mic2txt transcribe   # ...stops the recording and display the transcription
+#
+# $ mic2txt translate    # Translate the transcription in english
+# $ mic2txt slackify     # Synthetize and set to english
 
-local modelFile=~/local/etc/whisper.cpp/models/ggml-small.bin
+
+# Available methods:
+# transcribe: output text directly
+# translate:  output text, translated into english
+# slackify:   Translate to english and rewrite
+local method=${1:-transcribe}
+
 local tmpFolder=/dev/shm/oroshi_speech-to-text
 local pidFile=${tmpFolder}/PID
 local recordFile=${tmpFolder}/record.wav
@@ -12,7 +24,6 @@ local recordFile=${tmpFolder}/record.wav
 mkdir -p $tmpFolder;
 local isRecordingRunning=0
 [[ -f $pidFile ]] && isRecordingRunning=1
-
 
 # RECORD {{{
 # No recording running, starting one
@@ -28,33 +39,27 @@ if [[ $isRecordingRunning == "0" ]]; then
 fi
 # }}}
 
-# TRANSCRIBE {{{
-# A recording is already started, we stop it
-
-# Add a 1s grace delay period
+# OUTPUT {{{
+# A recording is already started, we stop it after 2s (to catch the last words)
 sleep 2
-
-# Now, kill the recording
 kill-pid "$(cat $pidFile)"
 
 # We transcribe to text
-local transcription="$(whisper-cli \
-  --file $recordFile \
-  --language fr \
-  --threads 9 \
-  --no-timestamps \
-  --model $modelFile \
-  2>/dev/null)"
-
-# Clean it a bit
-transcription="${transcription#*([[:space:]])}"
-transcription="${(C)str:0:1}${transcription#?}"
-
-# We paste it
-notify-send "$transcription"
+local transcription=""
+if [[ $method == 'transcribe' ]]; then
+  transcription="$(transcribe-api $recordFile)"
+fi
+if [[ $method == 'translate' ]]; then
+  transcription="$(translate-api $recordFile)"
+fi
+if [[ $method == 'slackify' ]]; then
+  transcription="$(translate-api $recordFile)"
+  transcription="$(slackify $transcription)"
+fi
 
 # Insert the transcription wherever I'm currently focused
-focus-insert "$transcription" &>/tmp/debug.log
+notify-send "$transcription"
+focus-insert "$transcription"
 
 # Cleanup the pid file
 rm $pidFile

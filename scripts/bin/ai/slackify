@@ -1,0 +1,32 @@
+#!/usr/bin/env zsh
+# slackify: Rewrite a text to make it a Slack message
+# Usage:
+# $ slackify "Here is what I want to say"     # Echo a concise version
+source ~/.oroshi/private/config/term/zsh/local/${HOSTNAME}/open_ai.zsh
+
+local input=$1
+
+local systemPrompt=""
+systemPrompt+="Rephrase this message, keeping the main info."
+systemPrompt+="Keep the original tone and intent of the original message."
+systemPrompt+="Avoid unnecessary words, repetition, or filler phrases."
+systemPrompt+="Use simple and direct language, active voice."
+systemPrompt+="Use short sentences and paragraphs that are easy to read and understand."
+
+local json=$(cat <<EOF
+{
+  "model": "gpt-3.5-turbo",
+  "messages": [
+    {"role": "system", "content": "${systemPrompt}"},
+    {"role": "user", "content": "${input}"}
+  ]
+}
+EOF
+)
+
+
+curl -s -X POST https://api.openai.com/v1/chat/completions \
+  -H "Authorization: Bearer $OPENAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d "$json" | \
+  jq -r '.choices[0].message.content'

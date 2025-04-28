@@ -55,7 +55,7 @@ typeset -A ZSH_HIGHLIGHT_STYLES=(
 	'history-expansion' "fg=$COLOR_NEUTRAL"
 
 	# Errors
-	# 'unknown-token' "fg=$COLOR_ALIAS_ERROR"
+	'unknown-token' "fg=$COLOR_ALIAS_ERROR"
 
 	# sudo
 	'precommand' "fg=$COLOR_ALIAS_WARNING,bold"

@@ -14,7 +14,8 @@ local                  shortcuts=(
   "Spotify Next"         "<Super>L"        "/home/tim/.oroshi/scripts/bin/spotify/spotify-next"
   "Spotify Previous"     "<Super>H"        "/home/tim/.oroshi/scripts/bin/spotify/spotify-previous"
   "Flameshot"            "<Super>F14"      "script --command \"flameshot gui\" /dev/null"     # Flameshot need to be called in a fork when called from a keybinding
-  "mic2text"             "F14"             "/home/tim/.oroshi/scripts/bin/audio/mic2txt"
+  "mic2text"             "F14"             "/home/tim/.oroshi/scripts/bin/audio/mic2txt transcribe"
+  "mic2text"             "<Shift>F14"      "/home/tim/.oroshi/scripts/bin/audio/mic2txt slackify"
   # "Peek"                 "/home/tim/.oroshi/scripts/bin/peek"                  "<Super><Alt>Print"
 
 )

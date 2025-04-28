@@ -6,5 +6,8 @@ function trim() {
 	local input="$1"
 	# Read from pipe
 	[[ -p /dev/stdin ]] && input="$(\cat -)"
-	echo "${input%%[[:space:]]}"
+
+	input="${input#"${input%%[![:space:]]*}"}"  # Trim spaces at beginning
+	input="${input%"${input##*[![:space:]]}"}"  # Trip spaces at end
+	echo "$input"
 }

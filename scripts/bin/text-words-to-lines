@@ -8,4 +8,4 @@
 local input=$1
 [[ -p /dev/stdin ]] && input="$(cat -)"
 
-echo $input | text-trim | tr " " "\n"
+echo $input | trim | tr " " "\n"
