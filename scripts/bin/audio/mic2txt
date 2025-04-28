@@ -6,7 +6,6 @@
 #   mic2txt transcribe   # ...stops the recording and display the transcription
 #
 # $ mic2txt translate    # Translate the transcription in english
-# $ mic2txt slackify     # Synthetize and set to english
 
 
 # Available methods:
@@ -44,18 +43,18 @@ fi
 sleep 2
 kill-pid "$(cat $pidFile)"
 
-# We transcribe to text
+# We transcribe to text (french or english)
 local transcription=""
 if [[ $method == 'transcribe' ]]; then
   transcription="$(transcribe-api $recordFile)"
 fi
+
 if [[ $method == 'translate' ]]; then
   transcription="$(translate-api $recordFile)"
 fi
-if [[ $method == 'slackify' ]]; then
-  transcription="$(translate-api $recordFile)"
-  transcription="$(slackify $transcription)"
-fi
+
+# Make it more concise
+transcription="$(slackify $transcription)"
 
 # Insert the transcription wherever I'm currently focused
 notify-send "$transcription"

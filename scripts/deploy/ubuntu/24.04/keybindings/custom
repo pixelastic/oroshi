@@ -2,6 +2,9 @@
 # Configure custom global keybinding
 # Those open specific applications when pressed
 
+local ROOT_KEY="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
+
+# Define keybindings {{{
 local                  shortcuts=(
   # Name                 Binding           Command
   "Calculator"           "Insert"          "gnome-calculator"
@@ -10,27 +13,31 @@ local                  shortcuts=(
   "Slack"                "<Super>S"        "slack"
   "Kitty"                "<Super>T"        "/home/tim/.oroshi/scripts/bin/kitty/kitty-restore"
   "Keepass"              "<Super>K"        "/home/tim/.oroshi/scripts/bin/better-keepass /home/tim/perso/Dropbox/tim/keys.kdbx"
+
   "Spotify Pause"        "<Super>I"        "/home/tim/.oroshi/scripts/bin/spotify/spotify"
   "Spotify Next"         "<Super>L"        "/home/tim/.oroshi/scripts/bin/spotify/spotify-next"
   "Spotify Previous"     "<Super>H"        "/home/tim/.oroshi/scripts/bin/spotify/spotify-previous"
-  "Flameshot"            "<Super>F14"      "script --command \"flameshot gui\" /dev/null"     # Flameshot need to be called in a fork when called from a keybinding
-  "mic2text"             "F14"             "/home/tim/.oroshi/scripts/bin/audio/mic2txt transcribe"
-  "mic2text"             "<Shift>F14"      "/home/tim/.oroshi/scripts/bin/audio/mic2txt slackify"
-  # "Peek"                 "/home/tim/.oroshi/scripts/bin/peek"                  "<Super><Alt>Print"
 
+  "mic2text (fr)"        "F14"             "/home/tim/.oroshi/scripts/bin/audio/mic2txt transcribe"
+  "mic2text (en)"        "<Shift>F14"      "/home/tim/.oroshi/scripts/bin/audio/mic2txt translate"
+  "Flameshot"            "<Super>F14"      'script --command "flameshot gui" /dev/null'
 )
+# }}}
 
-local GSETTINGS_ROOT="org.gnome.settings-daemon.plugins.media-keys.custom-keybinding"
-local GSETTINGS_DIRECTORY="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
-
-function setKeybinding() {
-  local bindingPath=$1
-  local bindingKey=$2
-  local bindingValue=$3
-  gsettings set "$bindingPath" "$bindingKey" "$bindingValue"
+# Reset all keybindings {{{
+function resetAllKeybindings() {
+  for shortcut_index in {1..20}; do
+    local custom_index=$((shortcut_index - 1))
+    dconf reset $ROOT_KEY/custom${custom_index}/name
+    dconf reset $ROOT_KEY/custom${custom_index}/binding
+    dconf reset $ROOT_KEY/custom${custom_index}/command
+  done
+  dconf reset $ROOT_KEY
 }
+resetAllKeybindings
+# }}}
 
-# Iterating through all the bindings
+# Apply new bindings {{{
 local shortcut_count=$((${#shortcuts[@]} / 3))
 local shortcut_inventory=()
 for shortcut_index in {1..$shortcut_count}; do
@@ -42,11 +49,11 @@ for shortcut_index in {1..$shortcut_count}; do
   local shortcut_command=$shortcuts[$array_index+2]
 
   # Setting each shortcut individually
-  setKeybinding "${GSETTINGS_ROOT}:${GSETTINGS_DIRECTORY}/custom${custom_index}/" "name" "'${shortcut_name}'"
-  setKeybinding "${GSETTINGS_ROOT}:${GSETTINGS_DIRECTORY}/custom${custom_index}/" "binding" "'${shortcut_binding}'"
-  setKeybinding "${GSETTINGS_ROOT}:${GSETTINGS_DIRECTORY}/custom${custom_index}/" "command" "'${shortcut_command}'"
+  dconf write $ROOT_KEY/custom${custom_index}/name "'${shortcut_name}'"
+  dconf write $ROOT_KEY/custom${custom_index}/binding "'${shortcut_binding}'"
+  dconf write $ROOT_KEY/custom${custom_index}/command "'${shortcut_command}'"
 
-  shortcut_inventory+=("'${GSETTINGS_DIRECTORY}/custom${custom_index}/'")
+  shortcut_inventory+=("'${ROOT_KEY}/custom${custom_index}/'")
 done
-
-setKeybinding "org.gnome.settings-daemon.plugins.media-keys" "custom-keybindings" "[${(j:,:)shortcut_inventory}]"
+dconf write $ROOT_KEY "[${(j:,:)shortcut_inventory}]"
+# }}}

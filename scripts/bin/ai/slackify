@@ -7,6 +7,7 @@ source ~/.oroshi/private/config/term/zsh/local/${HOSTNAME}/open_ai.zsh
 local input=$1
 
 local systemPrompt=""
+systemPrompt+="Keep the output in the same language as the input language"
 systemPrompt+="Rephrase this message, keeping the main info."
 systemPrompt+="Keep the original tone and intent of the original message."
 systemPrompt+="Avoid unnecessary words, repetition, or filler phrases."
