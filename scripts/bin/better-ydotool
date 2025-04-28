@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# better ydotool
+# As I sometimes call ydotool from keybindings, or outside of zsh, I'm adding
+# this wrapper to define the needed ENV variables
+
+YDOTOOL_SOCKET=/home/tim/local/tmp/oroshi/ydotool/socket \
+ ydotool $@ &>>/tmp/debug.log
