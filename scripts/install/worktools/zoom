@@ -1,10 +1,8 @@
 #!/usr/bin/env zsh
 # Zoom: Online video calls
+# Note: Zoom UI and controls never really feel native on Ubuntu.
+# The best I found, was the version from snap (rather than the .deb from the
+# website or the one from flatpak) was the most readable and responsive.
 set -e
 
-local DOWNLOAD_URL="https://zoom.us/client/latest/zoom_amd64.deb"
-local DOWNLOAD_PATH=~/local/tmp/zoom.deb
-
-wget $DOWNLOAD_URL -O $DOWNLOAD_PATH
-sudo apt install $DOWNLOAD_PATH
-rm $DOWNLOAD_PATH
+sudo snap install zoom-client
