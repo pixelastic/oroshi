@@ -20,3 +20,8 @@ rm kitty.txz
 
 cd ~/local/bin
 ln -fs ../etc/kitty/bin/kitty ./kitty
+
+# Prevents "WARNING: terminal is not fully functional" warnings when using
+# sudo systemctl status
+# See: https://github.com/kovidgoyal/kitty/issues/1567
+sudo apt-get install kitty-terminfo

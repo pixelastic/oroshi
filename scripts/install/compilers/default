@@ -17,4 +17,5 @@ sudo apt-get install \
   libxslt1-dev \
   nasm \
   pkg-config \
+  scdoc \
   xsltproc

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # Wayland utility to access the clipboard (wl-copy & wl-paste)
-# Used by Nvim internally
+# Used by Nvim internally to share the clipboard
 set -e
 
 sudo apt-get install wl-clipboard

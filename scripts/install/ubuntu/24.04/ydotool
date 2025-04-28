@@ -1,0 +1,37 @@
+#!/usr/bin/env zsh
+set -e
+
+local INSTALL_PATH=~/local/etc/ydotool
+
+# Clone repo
+cd ~/local/etc
+# git-directory-sync git@github.com:ReimuNotMoe/ydotool.git
+
+# Build if not yet built
+cd $INSTALL_PATH
+if [[ ! -d ./build ]]; then
+  mkdir build
+  cd build
+  cmake ..
+  make -j "`nproc`"
+fi
+
+# Put the binaries in /usr/local/bin/
+sudo ln -fs $INSTALL_PATH/build/ydotool /usr/local/bin
+sudo ln -fs $INSTALL_PATH/build/ydotoold /usr/local/bin
+
+# Allow ydotool access to input events
+sudo chmod +s /usr/local/bin/ydotool
+
+# Add the service file
+sudo ln \
+  -fs ~/.oroshi/config/ubuntu/24.04/ydotool/ydotoold.service \
+  /etc/systemd/system
+
+# Create the socket directory
+mkdir -p $OROSHI_TMP_FOLDER/ydotool
+
+# Enable and run the service
+sudo systemctl daemon-reload
+sudo systemctl enable --now ydotoold
+sudo systemctl status ydotoold

@@ -17,6 +17,18 @@ typeset -A ZSH_HIGHLIGHT_STYLES=(
 	'function' "fg=$COLOR_ALIAS_FUNCTION"
 	'reserved-word' "fg=$COLOR_ALIAS_FUNCTION"
 
+	# Arguments
+	'double-hyphen-option' "fg=$COLOR_ALIAS_FLAG"
+	'single-hyphen-option' "fg=$COLOR_ALIAS_FLAG"
+
+	# Variables
+	'dollar-double-quoted-argument' "fg=$COLOR_ALIAS_INTERPOLATION_VARIABLE"
+	'assign' "fg=$COLOR_ALIAS_INTERPOLATION_VARIABLE"
+
+	# Punctuation
+	'back-double-quoted-argument' "fg=$COLOR_ALIAS_PUNCTUATION"
+	'commandseparator' "fg=$COLOR_ALIAS_PUNCTUATION"
+
 	# Path
 	'path' "fg=$COLOR_ALIAS_DIRECTORY"                      # Existing path
 	'path_pathseparator' "fg=$COLOR_ALIAS_DIRECTORY"        # / in existing path
@@ -27,33 +39,23 @@ typeset -A ZSH_HIGHLIGHT_STYLES=(
 	# Glob
 	'globbing' "fg=$COLOR_ALIAS_GLOB"
 
-	# Arguments
-	'double-hyphen-option' "fg=$COLOR_ALIAS_FLAG"
-	'single-hyphen-option' "fg=$COLOR_ALIAS_FLAG"
-
 	# Strings (blue)
-	'back-quoted-argument' "fg=$COLOR_ALIAS_INTERPOLATION_STRING"
+	'back-quoted-argument' "fg=$COLOR_ALIAS_STRING"
+	'back-quoted-argument-unclosed' "bg=$COLOR_ALIAS_STRING,fg=$COLOR_BLACK"
+	'back-quoted-argument-delimiter' "fg=$COLOR_ALIAS_STRING"
 	'double-quoted-argument' "fg=$COLOR_ALIAS_STRING"
-	'double-quoted-argument-unclosed' "fg=$COLOR_ALIAS_STRING"
+	'double-quoted-argument-unclosed' "bg=$COLOR_ALIAS_STRING,fg=$COLOR_BLACK"
 	'single-quoted-argument' "fg=$COLOR_ALIAS_STRING"
-	'single-quoted-argument-unclosed' "fg=$COLOR_ALIAS_STRING"
+	'single-quoted-argument-unclosed' "bg=$COLOR_ALIAS_STRING,fg=$COLOR_BLACK"
 
 	# Numbers (bold blue)
 	'arithmetic-expansion' "fg=$COLOR_ALIAS_NUMBER"
 
-	# Punctuation
-	'back-double-quoted-argument' "fg=$COLOR_ALIAS_PUNCTUATION"
-	'commandseparator' "fg=$COLOR_ALIAS_PUNCTUATION"
-
 	# Repetition of last command using !
 	'history-expansion' "fg=$COLOR_NEUTRAL"
 
-	# Variables
-	'dollar-double-quoted-argument' "fg=$COLOR_ALIAS_INTERPOLATION_VARIABLE"
-	'assign' "fg=$COLOR_ALIAS_INTERPOLATION_VARIABLE"
-
 	# Errors
-	'unknown-token' "fg=$COLOR_ALIAS_ERROR"
+	# 'unknown-token' "fg=$COLOR_ALIAS_ERROR"
 
 	# sudo
 	'precommand' "fg=$COLOR_ALIAS_WARNING,bold"
@@ -65,8 +67,6 @@ typeset -A ZSH_HIGHLIGHT_STYLES=(
 	'arg0' "fg=$COLOR_ALIAS_UNKNOWN"
 	'arithmetic-expansion' "fg=$COLOR_ALIAS_UNKNOWN"
 	'back-dollar-quoted-argument' "fg=$COLOR_ALIAS_UNKNOWN"
-	'back-quoted-argument-delimiter' "fg=$COLOR_ALIAS_UNKNOWN"
-	'back-quoted-argument-unclosed' "fg=$COLOR_ALIAS_UNKNOWN"
 	'bracket-error' "fg=$COLOR_ALIAS_UNKNOWN"
 	'bracket-level-1' "fg=$COLOR_ALIAS_UNKNOWN"
 	'bracket-level-2' "fg=$COLOR_ALIAS_UNKNOWN"

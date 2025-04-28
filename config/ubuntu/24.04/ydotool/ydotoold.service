@@ -1,0 +1,15 @@
+[Unit]
+Description=Starts ydotoold Daemon
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=3
+ExecStartPre=/bin/sleep 2
+ExecStart=/usr/local/bin/ydotoold --socket-path /home/tim/local/tmp/oroshi/ydotool/socket --socket-own 1000:1000
+ExecReload=/usr/bin/kill -HUP $MAINPID
+KillMode=process
+TimeoutSec=180
+
+[Install]
+WantedBy=basic.target

@@ -73,11 +73,12 @@ FILETYPE_GROUPS[config:icon]=" "
 FILETYPE_GROUPS[config:patterns]="\
   cfg \
   conf \
-  desktop \
   csv \
+  desktop \
   ini \
   opt \
   rmp \
+  service \
   [.envrc] \
   [.fdignore] \
   [.eslintignore] \
