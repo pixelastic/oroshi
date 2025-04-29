@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
+# Direnv: Auto-load ENV variables in specific directories
+# https://direnv.net/
 sudo apt-get install direnv
