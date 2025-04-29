@@ -20,8 +20,11 @@ local currentClipboard="$(wl-paste)"
 # Save the transcription in the Ctrl-C clipboard
 echo $input | wl-copy
 
-# Press Ctrl-V
-better-ydotool key 29:1 47:1 47:0 29:0
+# Press Ctrl-Shift-V
+# 29: Ctrl
+# 42: Shift
+# 47: V
+better-ydotool key 29:1 42:1 47:1 47:0 42:0 29:0
 
 # We revert the previous clipboard after a short pause
 sleep 1

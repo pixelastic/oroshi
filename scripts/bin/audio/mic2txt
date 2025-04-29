@@ -70,7 +70,6 @@ if [[ $method == 'translate' ]]; then
 fi
 
 # Insert the transcription wherever I'm currently focused
-notify-send "$transcription"
 focus-insert "$transcription"
 
 # Cleanup the pid file
