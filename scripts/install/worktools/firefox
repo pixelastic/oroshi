@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+# Firefox: Web browser
+
+# Note: Firefox is installed by default on Ubuntu, but extensions are not
+# I couldn't find a way to automatically install extensions from the CLI, so
+# here is a more-or-less up-to-date list:
+# - uBlock Origin
+# - Vimium
+
+
+echo "Please install Vimium, and then copy the following mappings to its config:"
+local vimiumMappings=~/.oroshi/config/worktools/firefox/vimium-mappings.vim
+echo "Source: $vimiumMappings\n\n"
+echo "---"
+cat $vimiumMappings
+echo "---"
