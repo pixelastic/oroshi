@@ -15,3 +15,6 @@ install-deb "./$LOCAL_DEB"
 # install completion
 gh completion --shell zsh \
   > ~/.oroshi/config/term/zsh/completion/compdef/_gh
+
+# authenticate to GH
+gh auth login

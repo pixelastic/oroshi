@@ -7,6 +7,5 @@
 # instead
 function copilot-suggest() {
 	local args="$@"
-	GITHUB_TOKEN='' \
-		gh copilot suggest $args
+	gh copilot suggest $args
 }

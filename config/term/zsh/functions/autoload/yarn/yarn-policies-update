@@ -1,10 +1,5 @@
 # Update local source code version of yarn
 function yarn-policies-update() {
-	# If a GITHUB_TOKEN is available, yarn will try to authenticate, which can
-	# lead to cryptic errors if the token is outdated, so we remove it for the
-	# time of exectution
-	GITHUB_TOKEN=""
-
 	cd "$(git-directory-root)" || return 1
 
 	# Download latest version

@@ -7,6 +7,5 @@
 # instead
 function copilot-explain() {
 	local args="$@"
-	GITHUB_TOKEN='' \
-		gh copilot explain $args
+	gh copilot explain $args
 }

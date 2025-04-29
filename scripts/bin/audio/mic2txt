@@ -43,18 +43,31 @@ fi
 sleep 2
 kill-pid "$(cat $pidFile)"
 
+function saveToHistory() {
+  local name=$1
+  local content=$2
+  local now="$(date '+%Y-%m-%d-%H-%M')"
+  local historyFolder=~/local/tmp/oroshi/mic2txt/history
+
+  mkdir -p $historyFolder
+  echo $content > "${historyFolder}/${now}-${name}.log"
+}
+
+
 # We transcribe to text (french or english)
 local transcription=""
 if [[ $method == 'transcribe' ]]; then
   transcription="$(transcribe-api $recordFile)"
+  saveToHistory transcribe "$transcription"
 fi
 
 if [[ $method == 'translate' ]]; then
   transcription="$(translate-api $recordFile)"
-fi
+  saveToHistory translate "$transcription"
 
-# Make it more concise
-transcription="$(slackify $transcription)"
+  transcription="$(slackify $transcription)"
+  saveToHistory slackify "$transcription"
+fi
 
 # Insert the transcription wherever I'm currently focused
 notify-send "$transcription"
