@@ -1,4 +1,4 @@
-# Download a file based on its URL
+# Download a file from a sharing website
 # Usage:
 # $ dl https://scribd.com/file.pdf        # Downloads form scribd
 function dl() {
@@ -6,16 +6,11 @@ function dl() {
 	local split=(${(@s_/_)url})
 	local targetHost=$split[2]
 
-	if [[ $targetHost == "www.scribd.com" ]]; then
-		scribd-pdf-download $url
-		return $?
-	fi
+  case $targetHost in
+    *scribd.com)  scribd-pdf-downloadl $url;;
+    *youtube.com) youtube-video-download $url;;
+    *anyflip.com) anyflip-downloader $url;;
+    *) echo "Unsupported host: $targetHost" && return 1;;
+  esac
 
-	if [[ $targetHost == "www.youtube.com" ]]; then
-		youtube-video-download $url
-		return $?
-	fi
-
-	echo "Unsupported host: ${targetHost}"
-	return 1
 }
