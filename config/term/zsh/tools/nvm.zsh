@@ -64,8 +64,11 @@ function lazyloadNvm {
 	unset PREFIX
 
 	# Initialize nvm for real, using the locally defined node version (if any)
+	# If it fails, we fallback to the default version
 	# Note: This is slow, but it's as far away as we can delay it
-	nvm use --silent &>/dev/null
+	if ! nvm use --silent &>/dev/null; then
+		nvm use default --silent &>/dev/null
+	fi
 
 	# Run initial command
 	"$@"
