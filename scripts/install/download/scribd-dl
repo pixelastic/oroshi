@@ -1,4 +1,6 @@
 #!/usr/bin/env zsh
+# Scribd-dl: Download from scribd.com and slideshare.net
+# https://github.com/rkwyu/scribd-dl
 set -e
 
 # Clone latest copy

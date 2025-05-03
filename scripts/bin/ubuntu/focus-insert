@@ -10,8 +10,6 @@ set -ex
 # This will be useful in case the other methods fail
 echo $input | wl-copy -p
 
-
-
 local input=$1
 
 # We save the current clipboard

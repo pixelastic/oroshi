@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+# Anyflip Downloader: Download from anyflip.com
+# https://github.com/Lofter1/anyflip-downloader
+set -e
+
+local DOWNLOAD_URL="https://github.com/Lofter1/anyflip-downloader/releases/download/v0.1.12/anyflip-downloader_0.1.12_linux_amd64.tar.gz"
+local DOWNLOAD_DIR=~/local/etc/anyflip/
+local DOWNLOAD_PATH=$DOWNLOAD_DIR/anyflip.tar.gz
+
+
+# Download the released archive
+mkdir -p $DOWNLOAD_DIR
+wget $DOWNLOAD_URL -O $DOWNLOAD_PATH
+
+# Extract it
+cd $DOWNLOAD_DIR
+extract $DOWNLOAD_PATH
+
+# Add a binary link
+ln -fs $DOWNLOAD_DIR/anyflip-downloader ~/local/bin
+
+# Cleanup the archive
+rm $DOWNLOAD_PATH
