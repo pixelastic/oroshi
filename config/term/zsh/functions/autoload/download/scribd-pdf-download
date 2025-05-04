@@ -8,11 +8,31 @@ function scribd-pdf-download() {
 	local pdfId=$split[-2]
 	echo "Downloading ${pdfName}"
 
+	local SCRIBD_DL_PATH=~/local/src/scribd-dl
+	local CURRENT_PATH="$(pwd)";
+
+	# Stop if scribd-dl not installed
+	if [[ ! -d $SCRIBD_DL_PATH ]]; then
+		echo "✘ scribd-dl not installed in $SCRIBD_DL_PATH"
+		return 1
+	fi
+
 	# Go to the local scribd-dl install
-	local initialPwd="$(pwd)";
-	cd ~/local/src/scribd-dl || return 0
-	yarn run start "$url"
+	cd $SCRIBD_DL_PATH || return 1
+	
+	# make sure node is currently loaded
+	lazyloadNvm node --version &>/dev/null
+
+	# Ubuntu 23+ restricts sandbox of Chrome (used by Puppeteer), unless it is in
+	# a specific path on disk (which is not the case when installed as
+	# a dependency in package.json). We wrap the call in `aa-exec` with the chrome
+	# profile, so it correctly allow it.
+	# See: https://github.com/puppeteer/puppeteer/issues/12818#issuecomment-2250443567
+	aa-exec -p chrome -- node ./run.js "$url"
 
 	# Files are saved in ./output by default. We move them to the current folder
-	mv ./output/${pdfId}.pdf "${initialPwd}/${pdfName}.pdf"
+	mv ./output/${pdfName}.pdf "${CURRENT_PATH}/${pdfName}.pdf"
+
+	# Get back to the original folder
+	cd $CURRENT_PATH || return 1
 }

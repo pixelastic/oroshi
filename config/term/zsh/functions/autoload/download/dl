@@ -7,7 +7,7 @@ function dl() {
 	local targetHost=$split[2]
 
   case $targetHost in
-    *scribd.com)  scribd-pdf-downloadl $url;;
+    *scribd.com)  scribd-pdf-download $url;;
     *youtube.com) youtube-video-download $url;;
     *anyflip.com) anyflip-downloader $url;;
     *) echo "Unsupported host: $targetHost" && return 1;;
