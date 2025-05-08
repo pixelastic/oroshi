@@ -31,6 +31,7 @@ function pdf-cover-extract() {
 	# Known errors that we can ignore
 	local knownErrorsPattern=''
 	knownErrorsPattern+='openjpeg warning\|'
+	knownErrorsPattern+='Dereference of free object\|'
 	knownErrorsPattern+='Short look-up table in the Indexed color space was padded with 0\|'
 	knownErrorsPattern+='Output may be incorrect'
 
