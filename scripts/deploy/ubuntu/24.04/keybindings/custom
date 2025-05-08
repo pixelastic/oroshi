@@ -18,7 +18,7 @@ local                  shortcuts=(
   "Spotify Next"         "<Super>L"        "/home/tim/.oroshi/scripts/bin/spotify/spotify-next"
   "Spotify Previous"     "<Super>H"        "/home/tim/.oroshi/scripts/bin/spotify/spotify-previous"
 
-  "mic2text (fr)"        "F14"             "/home/tim/.oroshi/scripts/bin/audio/mic2txt transcribe"
+  "mic2text (fr)"        "<Ctrl>F14"             "/home/tim/.oroshi/scripts/bin/audio/mic2txt transcribe"
   "mic2text (en)"        "<Shift>F14"      "/home/tim/.oroshi/scripts/bin/audio/mic2txt translate"
   "Flameshot"            "<Super>F14"      'script --command "flameshot gui" /dev/null'
 )
