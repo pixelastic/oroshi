@@ -21,6 +21,14 @@ gsettings set org.gnome.desktop.peripherals.touchpad speed 0.65000
 gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll false
 # }}}
 
+# Sounds {{{
+# Disable shutter sound played whenever a screenshot is taken
+local shutterSound=/usr/share/sounds/freedesktop/stereo/camera-shutter.oga
+if [[ -f $shutterSound ]]; then
+  sudo mv $shutterSound "${shutterSound}.backup"
+fi
+# }}}
+
 # Appearance {{{
 # When laptop starts, display Desktop
 dconf write /org/gnome/shell/extensions/just-perfection/startup-status 0
