@@ -4,10 +4,9 @@
 " "J'ai un coude chaud."
 
 " Initialization {{{
-" Needed for nvim to color the cursor
 set background=dark
-" Coloring current line
 set cursorline
+
 hi clear
 if exists('syntax_on')
    syntax reset
@@ -249,32 +248,32 @@ call s:Link('GitGutterChange', 'GIT_MODIFIED')
 call s:Link('GitGutterDelete', 'GIT_REMOVED')
 " }}}
 " Status line {{{
-call s:Highlight('StatusLineLintError', 'RED', 'GRAY_8')
-call s:Highlight('StatusLineLintWarning', 'YELLOW', 'GRAY_8')
-call s:Highlight('StatusLineFileEncodingError', 'RED', 'GRAY_8')
-call s:Highlight('StatusLineFileFormatError', 'RED', 'GRAY_8')
-call s:Highlight('StatusLineGitClean', 'ALIAS_SUCCESS', 'GRAY_8')
-call s:Highlight('StatusLineGitDirty', 'ALIAS_GIT_UNTRACKED', 'GRAY_8', 'bold')
-call s:Highlight('StatusLineGitStaged', 'ALIAS_GIT_TRACKED', 'GRAY_8')
-call s:Highlight('StatusLineModeInsertSeparator', 'YELLOW', 'GRAY_8')
+call s:Highlight('StatusLineLintError', 'RED')
+call s:Highlight('StatusLineLintWarning', 'YELLOW')
+call s:Highlight('StatusLineFileEncodingError', 'RED')
+call s:Highlight('StatusLineFileFormatError', 'RED')
+call s:Highlight('StatusLineGitClean', 'ALIAS_SUCCESS')
+call s:Highlight('StatusLineGitDirty', 'ALIAS_GIT_UNTRACKED', '', 'bold')
+call s:Highlight('StatusLineGitStaged', 'ALIAS_GIT_TRACKED')
+call s:Highlight('StatusLineModeInsertSeparator', 'YELLOW')
 call s:Highlight('StatusLineModeInsert', 'BLACK', 'YELLOW', 'bold')
-call s:Highlight('StatusLineModeNormalSeparator', 'BLACK', 'GRAY_8')
+call s:Highlight('StatusLineModeNormalSeparator', 'BLACK')
 call s:Highlight('StatusLineModeNormal', 'white', 'BLACK')
 call s:Highlight('StatusLineModeSearchSeparator', 'ALIAS_VIM_SEARCH_BACKGROUND', 'ALIAS_VIM_SEARCH_FOREGROUND')
 call s:Highlight('StatusLineModeSearch', 'ALIAS_VIM_SEARCH_FOREGROUND', 'ALIAS_VIM_SEARCH_BACKGROUND', 'bold')
-call s:Highlight('StatusLineModeCommandSeparator', 'TEAL', 'GRAY_8')
+call s:Highlight('StatusLineModeCommandSeparator', 'TEAL')
 call s:Highlight('StatusLineModeCommand', 'BLACK', 'TEAL', 'bold')
 call s:Highlight('StatusLineModeUnknownSeparator', 'RED', 'white')
 call s:Highlight('StatusLineModeUnknown', 'white', 'RED')
-call s:Highlight('StatusLineModeVisualSeparator', 'BLUE', 'GRAY_8')
+call s:Highlight('StatusLineModeVisualSeparator', 'BLUE')
 call s:Highlight('StatusLineModeVisual', 'white', 'BLUE', 'bold')
 call s:Highlight('StatusLineNC', '', 'GRAY_8', 'none')
-call s:Highlight('StatusLinePathModified', 'VIOLET_4', 'GRAY_8')
-call s:Highlight('StatusLinePathReadonly', 'RED', 'GRAY_8')
-call s:Highlight('StatusLinePath', 'GREEN', 'GRAY_8', 'bold')
-call s:Highlight('StatusLineRight', 'GRAY_4', 'GRAY_8', 'none')
-call s:Highlight('StatusLineError', 'RED', 'GRAY_8')
-call s:Highlight('StatusLineWarning', 'YELLOW', 'GRAY_8')
+call s:Highlight('StatusLinePathModified', 'VIOLET_4')
+call s:Highlight('StatusLinePathReadonly', 'RED')
+call s:Highlight('StatusLinePath', 'GREEN', '', 'bold')
+call s:Highlight('StatusLineRight', 'GRAY_4', 'TEAL', 'none')
+call s:Highlight('StatusLineError', 'RED')
+call s:Highlight('StatusLineWarning', 'YELLOW')
 call s:Highlight('StatusLine', 'GRAY_4', 'GRAY_8', 'none')
 " Coloring the StatusLine filetypes
 for key in split($FILETYPES_INDEX, ' ')

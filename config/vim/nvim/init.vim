@@ -8,7 +8,6 @@ source ~/.config/nvim/includes/functions/index.vim " loading functions
 source ~/.config/nvim/includes/completion.vim        " Completion
 source ~/.config/nvim/includes/keybindings/index.vim " Keybindings
 source ~/.config/nvim/includes/statusline/index.vim  " Statusline
-source ~/.config/nvim/includes/statuscolumn.vim      " Statuscolumn
 source ~/.config/nvim/includes/plugins/index.vim     " Plugin configuration
 
 source ~/.config/nvim/includes/colors.vim
@@ -21,6 +20,7 @@ source ~/.config/nvim/includes/jumps.vim
 source ~/.config/nvim/includes/search.vim
 source ~/.config/nvim/includes/snippets.vim
 source ~/.config/nvim/includes/split.vim
+source ~/.config/nvim/includes/statuscolumn.vim
 source ~/.config/nvim/includes/tabline.vim
 source ~/.config/nvim/includes/text-wrapping.vim
 source ~/.config/nvim/includes/triggers.vim
