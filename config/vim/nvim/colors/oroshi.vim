@@ -229,8 +229,9 @@ call s:Highlight('Folded', 'ALIAS_TEXT', 'GRAY_8')
 call s:Highlight('Visual', 'ALIAS_VIM_VISUAL_FOREGROUND', 'ALIAS_VIM_VISUAL_BACKGROUND', 'bold')
 " }}}
 " Search {{{
-call s:Highlight('IncSearch', 'ALIAS_VIM_SEARCH_FOREGROUND', 'ALIAS_VIM_SEARCH_BACKGROUND', 'none')
-call s:Highlight('Search', 'ALIAS_VIM_SEARCH_FOREGROUND', 'ALIAS_VIM_SEARCH_BACKGROUND', 'bold')
+call s:Highlight('IncSearch', 'ALIAS_VIM_SEARCH_FOREGROUND', 'ALIAS_VIM_SEARCH_BACKGROUND', 'none')  " When typing
+call s:Highlight('Search', 'ALIAS_VIM_SEARCH_FOREGROUND', 'ALIAS_VIM_SEARCH_BACKGROUND', 'bold')     " All matches
+call s:Highlight('CurSearch', 'ALIAS_VIM_SEARCH_FOREGROUND', 'ALIAS_VIM_NORMAL_CURSOR', 'bold')      " Current match
 " }}}
 " Completion {{{
 call s:Highlight('Pmenu', 'GRAY_4', 'GRAY_9')            " Item

@@ -35,9 +35,6 @@ set history=1000
 " Save file using sudo
 cnoremap w!! w !sudo tee '%' >/dev/null<CR><CR>
 " }}}
-"
-" We make sure that backspace in insert mode can delete new lines and tabs
-set backspace=indent,eol,start
 
 
 
