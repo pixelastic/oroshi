@@ -6,12 +6,13 @@
 # late
 
 BINARY_NAME="nvim"
-DOWNLOAD_URL="https://github.com/neovim/neovim/releases/download/v0.9.4/nvim-linux64.tar.gz"
+DOWNLOAD_URL="https://github.com/neovim/neovim/releases/download/v0.11.1/nvim-linux-x86_64.tar.gz"
 DOWNLOAD_DIR=~/local/tmp/nvim
 DOWNLOAD_PATH="${DOWNLOAD_DIR}/${BINARY_NAME}.tar.gz"
 INSTALL_DIR=~/local/etc/nvim
 
 # Download
+rm -rf $DOWNLOAD_DIR
 mkdir -p $DOWNLOAD_DIR
 cd $DOWNLOAD_DIR || exit
 wget $DOWNLOAD_URL -O "${BINARY_NAME}.tar.gz"
@@ -19,7 +20,8 @@ tar xvzf $DOWNLOAD_PATH
 rm $DOWNLOAD_PATH
 
 # Move to etc
-mv ${DOWNLOAD_DIR}/nvim-linux64/ $INSTALL_DIR
+rm -rf $INSTALL_DIR
+mv ${DOWNLOAD_DIR}/nvim-linux-x86_64/ $INSTALL_DIR
 
 # Create a symlink
-ln -fs ~/local/etc/nvim/bin/nvim ~/local/bin/nvim
+ln -fs $INSTALL_DIR/bin/nvim ~/local/bin/nvim

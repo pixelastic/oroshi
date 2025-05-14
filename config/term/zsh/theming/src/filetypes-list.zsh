@@ -38,6 +38,7 @@ FILETYPE_GROUPS[script:patterns]="\
   json \
   js \
   kbd \
+  lua \
   mjs \
   ps1 \
   pug \

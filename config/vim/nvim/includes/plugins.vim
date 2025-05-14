@@ -41,8 +41,7 @@ Plug 'pedrohdz/vim-yaml-folds'                            " Yaml (folding)
 " Plug 'tpope/vim-markdown'
 " }}}
 " Language Server Protocols (LSP) {{{
-Plug 'williamboman/mason.nvim'
-Plug 'williamboman/mason-lspconfig.nvim'
+Plug 'mason-org/mason.nvim'
 
 " }}}
 " Enhancing vim workflow {{{
