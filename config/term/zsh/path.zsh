@@ -19,7 +19,7 @@ function oroshi_path() {
 		# Note that this file is only created when a node version is being set as
 		# default
 		local defaultNodeVersion="$(<~/.nvm/alias/default)"
-		local nodeBinariesPath=$HOME/.nvm/versions/node/${defaultNodeVersion}/bin
+		local nodeBinariesPath=$HOME/.nvm/versions/node/v${defaultNodeVersion}/bin
 	fi
 
 	# Python
