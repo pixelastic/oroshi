@@ -5,7 +5,6 @@
 
 " Initialization {{{
 " Needed for nvim to color the cursor
-set termguicolors
 set background=dark
 " Coloring current line
 set cursorline
@@ -106,12 +105,8 @@ function! s:Highlight(group,...)
 
   " We build the highlight string
   let result = 'hi! '.name
-  if foreground !=# ''
-    let result .= ' guifg='.get(s:color, foreground)
-  endif
-  if background !=# ''
-    let result .= ' guibg='.get(s:color, background)
-  endif
+  let result .= ' guifg='.get(s:color, foreground, 'None')
+  let result .= ' guibg='.get(s:color, background, 'None')
   if decoration !=# ''
     let result .= ' gui='.decoration
   endif
