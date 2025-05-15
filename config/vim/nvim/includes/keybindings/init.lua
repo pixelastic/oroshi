@@ -19,9 +19,10 @@ function cmap(input, output, description)
 end
 --- }}}
 
-require('oroshi.keybindings.ctrl-s')
-require('oroshi.keybindings.ctrl-d')
-require('oroshi.keybindings.enter')
-require('oroshi.keybindings.selection')
-require('oroshi.keybindings.hjkl')
 require('oroshi.keybindings.capslock')
+require('oroshi.keybindings.ctrl-d')
+require('oroshi.keybindings.ctrl-s')
+require('oroshi.keybindings.enter')
+require('oroshi.keybindings.movement')
+require('oroshi.keybindings.selection')
+require('oroshi.keybindings.space')
