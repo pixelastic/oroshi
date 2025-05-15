@@ -40,11 +40,12 @@ Plug 'pedrohdz/vim-yaml-folds'                            " Yaml (folding)
 " Plug 'tmhedberg/SimpylFold' " Python folding
 " Plug 'tpope/vim-markdown'
 " }}}
-" Language Server Protocols (LSP) {{{
+" Completion {{{
 Plug 'mason-org/mason.nvim'           " Package manager for LSP servers
 Plug 'neovim/nvim-lspconfig'          " Configurations of LSP servers
 Plug 'mason-org/mason-lspconfig.nvim' " Command to automatically install LSP servers
-
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
 " }}}
 " Enhancing vim workflow {{{
 Plug 'pixelastic/ale'              " Lint & Fix

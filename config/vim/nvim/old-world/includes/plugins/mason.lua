@@ -7,5 +7,8 @@ require("mason").setup()
 -- neovim/nvim-lspconfig plugins
 -- https://github.com/mason-org/mason-lspconfig.nvim
 require("mason-lspconfig").setup {
-    ensure_installed = { "bashls", "lua_ls" },
+    ensure_installed = { "bashls" },
 }
+
+
+local cmp = require('cmp')
