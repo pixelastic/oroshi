@@ -17,17 +17,17 @@ return {
 	 vim.keymap.set('n', input, output, { desc = desc, buffer = bfnr, noremap = true, silent = true, nowait = true })
       end
 
-      -- CTRL-H: Go up one level {{{
-      local function onCtrlH()
+      -- H: Go up one level {{{
+      local function onH()
         api.tree.change_root_to_parent()
       end
-      map('<C-H>', onCtrlH, 'Go up one level')
+      map('h', onH, 'Go up one level')
       --- }}}
 
-      -- CTRL-L: {{{
+      -- L: {{{
       --   on folders: Open/Close
       --   on files: Open in new tabs silently
-      local function onCtrlL()
+      local function onL()
         local node = api.tree.get_node_under_cursor()
 
 	-- Directories
@@ -42,7 +42,7 @@ return {
 	vim.cmd.tabnext(currentTab)  -- Go back to initial tab
         api.tree.open()              -- Keep focus on the tree
       end
-      map('<C-L>', onCtrlL, 'Open silently')
+      map('l', onL, 'Open silently')
       --- }}}
 
       -- ENTER: {{{
