@@ -8,19 +8,16 @@ return {
     vim.g.loaded_netrw = 1
     vim.g.loaded_netrwPlugin = 1
 
+    nmap("<C-!>", "<cmd>NvimTreeToggle<CR>", "Toggle file explorer")
+
     local function onAttach(bufnr)
       local api = require "nvim-tree.api"
-
-      local function map(input, output, desc)
-	 vim.keymap.set('n', input, output, { desc = desc, buffer = bfnr, noremap = true, silent = true, nowait = true })
-      end
-
 
       -- H: Go up one level {{{
       local function onH()
         api.tree.change_root_to_parent()
       end
-      map('h', onH, 'Go up one level')
+      nmap('h', onH, 'Go up one level', { buffer = bufnr })
       --- }}}
 
       -- L: {{{
@@ -29,19 +26,20 @@ return {
       local function onL()
         local node = api.tree.get_node_under_cursor()
 
-	-- Directories
+        -- Directories
         if node.nodes ~= nil then
-           api.node.open.edit()
-           return
-	end
+         api.node.open.edit()
+         return
+        end
 
-	-- Files
-	local currentTab = vim.fn.tabpagenr()
-	api.node.open.tab_drop(node) -- Open in new tab, or re-use existing if possible
-	vim.cmd.tabnext(currentTab)  -- Go back to initial tab
+        -- Files
+        local currentTab = vim.fn.tabpagenr()
+        api.node.open.tab_drop(node) -- Open in new tab, or re-use existing if possible
+        vim.cmd.tabnext(currentTab)  -- Go back to initial tab
         api.tree.open()              -- Keep focus on the tree
       end
-      map('l', onL, 'Open silently')
+      nmap('l', onL, 'Open silently', { buffer = bufnr })
+      nmap('<Right>', onL, 'Open silently', { buffer = bufnr })
       --- }}}
 
       -- ENTER: {{{
@@ -50,58 +48,24 @@ return {
       local function onEnter()
         local node = api.tree.get_node_under_cursor()
 
-	-- Directories
+        -- Directories
         if node.nodes ~= nil then
-           api.node.open.edit()
-           return
-	end
+         api.node.open.edit()
+         return
+        end
 
-	-- Files
-	local currentTab = vim.fn.tabpagenr()
+        -- Files
+        local currentTab = vim.fn.tabpagenr()
         api.tree.close()              -- Keep focus on the tree
-	api.node.open.tab_drop(node) -- Open in new tab, or re-use existing if possible
+        api.node.open.tab_drop(node) -- Open in new tab, or re-use existing if possible
       end
-      map('<CR>', onEnter, 'Open immediatly')
+      nmap('<CR>', onEnter, 'Open immediatly', { buffer = bufnr })
       --- }}}
     end
 
-    nmap("<C-!>", "<cmd>NvimTreeToggle<CR>", "Toggle file explorer")
-
     nvimtree.setup({
-      view = {
-        width = 30,
-      },
+      view = { width = 30, },
       on_attach = onAttach,
-      -- change folder arrow icons
-      -- renderer = {
-      --   indent_markers = {
-      --     enable = true,
-      --   },
-      --   icons = {
-      --     glyphs = {
-      --       folder = {
-      --         arrow_closed = "", -- arrow when folder is closed
-      --         arrow_open = "", -- arrow when folder is open
-      --       },
-      --     },
-      --   },
-      -- },
-      -- disable window_picker for
-      -- explorer to work well with
-      -- window splits
-      -- actions = {
-      --   open_file = {
-      --     window_picker = {
-      --       enable = false,
-      --     },
-      --   },
-      -- },
-      -- filters = {
-      --   custom = { ".DS_Store" },
-      -- },
-      -- git = {
-      --   ignore = false,
-      -- },
     })
   end
 }

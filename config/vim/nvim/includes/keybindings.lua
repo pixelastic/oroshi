@@ -18,7 +18,7 @@ vim.g.mapleader = ","
 -- TODO: Align on comma
 -- TODO: Fuzzy search and various tabs
 -- TODO: Allow folding
---
+-- TODO: Toggle display of hidden chars
 --
 
 -- Mapping functions {{{
@@ -26,9 +26,11 @@ function map(mode, input, output, description, options)
   local defaults = { 
     silent = true, 
     noremap = true,
+    nowait = true,
     desc = description, 
   }
   local config = vim.tbl_deep_extend("force", defaults, options or {})
+
   vim.keymap.set(mode, input, output, config)
 end
 function imap(input, output, description, options)
@@ -70,6 +72,13 @@ vmap("<C-S>", "<CMD>w<CR><ESC>", "Save file")
 imap("<C-D>", "<CMD>x<CR><ESC>", "Save file and quit")
 nmap("<C-D>", "<CMD>x<CR><ESC>", "Save file and quit")
 vmap("<C-D>", "<CMD>x<CR><ESC>", "Save file and quit")
+
+
+-- Tabs
+nmap('<C-H>', 'gT', 'Previous tab')
+imap('<C-H>', '<Esc>gT', 'Previous tab')
+nmap('<C-L>', 'gt', 'Next tab')
+imap('<C-L>', '<Esc>gt', 'Next tab')
 
 
 
