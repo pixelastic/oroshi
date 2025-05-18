@@ -9,13 +9,12 @@ return {
     vim.g.loaded_netrwPlugin = 1
 
     local function onAttach(bufnr)
-      -- default mappings
-      -- api.config.mappings.default_on_attach(bufnr)
       local api = require "nvim-tree.api"
 
       local function map(input, output, desc)
 	 vim.keymap.set('n', input, output, { desc = desc, buffer = bfnr, noremap = true, silent = true, nowait = true })
       end
+
 
       -- H: Go up one level {{{
       local function onH()

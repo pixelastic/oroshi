@@ -3,9 +3,12 @@ vim.opt.swapfile = false
 
 
 -- Config
-require('oroshi.clipboard')
-require('oroshi.display')
-require('oroshi.keybindings')
+require('oroshi/clipboard')
+require('oroshi/display')
+require('oroshi/functions')
+require('oroshi/keybindings')
 
 -- Plugins
-require('oroshi.lazy')
+require('oroshi/lazy')
+
+
