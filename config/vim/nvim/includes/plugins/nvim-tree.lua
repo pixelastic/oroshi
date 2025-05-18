@@ -20,7 +20,7 @@ return {
       nmap('h', onH, 'Go up one level', { buffer = bufnr })
       --- }}}
 
-      -- L: {{{
+      -- L / Right: {{{
       --   on folders: Open/Close
       --   on files: Open in new tabs silently
       local function onL()
@@ -61,6 +61,13 @@ return {
       end
       nmap('<CR>', onEnter, 'Open immediatly', { buffer = bufnr })
       --- }}}
+
+      -- CTRL+N: {{{
+      -- Create a new file
+      local function onCtrlN()
+        api.fs.create()
+      end
+      nmap('<C-N>', onCtrlN, 'Create new file', { buffer = bufnr })
     end
 
     nvimtree.setup({
