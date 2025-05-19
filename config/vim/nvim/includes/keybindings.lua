@@ -83,8 +83,11 @@ imap('<C-L>', '<Esc>gt', 'Next tab')
 
 
 
-
-
+-- Move in a grid
+nmap('j', 'gj', 'Move to the char below')
+vmap('j', 'gj', 'Move to the char below')
+nmap('k', 'gk', 'Move to the char up')
+vmap('k', 'gk', 'Move to the char up')
 
 -- Start / End of line
 nmap("H", "^", "Start of line")
@@ -97,6 +100,10 @@ nmap('<Tab>', '>>^', 'Indent line')
 vmap('<Tab>', '>gv', 'Indent selection')
 nmap('<S-Tab>', '<<^', 'Dedent line')
 vmap('<S-Tab>', '<gv', 'Dedent selection')
+
+-- Increment / Decrement numbers
+nmap('<C-J>', '<C-X>', 'Increment number under cursor')
+nmap('<C-K>', '<C-A>', 'Decrement number under cursor')
 
 
 

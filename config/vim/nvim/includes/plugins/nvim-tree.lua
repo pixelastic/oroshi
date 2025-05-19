@@ -9,6 +9,7 @@ return {
     vim.g.loaded_netrwPlugin = 1
 
     nmap("<C-!>", "<cmd>NvimTreeToggle<CR>", "Toggle file explorer")
+    imap("<C-!>", "<ESC><cmd>NvimTreeToggle<CR>", "Toggle file explorer")
 
     local function onAttach(bufnr)
       local api = require "nvim-tree.api"
