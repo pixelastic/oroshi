@@ -1,12 +1,12 @@
 # Return a list of all matches inside of files, in the current folder
 # This searches into all files, even those that are usually ignored
 function fzf-regexp-subdir-source() {
-	local query="$1"
-	local currentDirectory="$(fzf-fs-shared-pwd-subdir)"
+  local query="$1"
+  local subdirPath="$(fzf-var-read pwd)"
 
 	fzf-regexp-shared-source \
 		--no-ignore \
-		--directory "${currentDirectory}" \
+		--directory "${subdirPath}" \
 		--query "${query}"
 
 }

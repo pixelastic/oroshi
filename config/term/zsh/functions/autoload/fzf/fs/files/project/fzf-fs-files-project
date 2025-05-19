@@ -3,6 +3,10 @@
 # Note: This file is called by zsh only. Vim directly calls the -source,
 # -options and -postprocess files individually
 function fzf-fs-files-project() {
+  # Save the base directory, so other related fzf methods can use it
+  local rootDirectory="$(git-directory-root -f)"
+  fzf-var-write pwd $rootDirectory
+
 	fzf-fs-files \
 		--source fzf-fs-files-project-source \
 		--options fzf-fs-files-project-options

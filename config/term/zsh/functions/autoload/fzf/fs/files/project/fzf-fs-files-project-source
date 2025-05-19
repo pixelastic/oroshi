@@ -1,5 +1,5 @@
 # Returns a list of files, in the current project
 function fzf-fs-files-project-source() {
-	local currentDirectory="$(fzf-fs-shared-pwd-project)"
-	fzf-fs-files-shared-source "${currentDirectory}"
+	local rootDirectory="$(fzf-var-read pwd)"
+	fzf-fs-files-shared-source "${rootDirectory}"
 }

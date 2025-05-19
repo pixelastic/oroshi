@@ -1,5 +1,5 @@
-# If used on the zsh command line, returns potential additional fd arguments, to further
-# filter the list of elements
+# If used on the zsh command line, returns potential additional fd arguments, to
+# further filter the list of elements
 # Usage:
 # $ fzf-fs-shared-zsh-filters
 function fzf-fs-shared-zsh-filters() {

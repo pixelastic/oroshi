@@ -1,4 +1,5 @@
 # Display the prompt for a search in file, in the current directory
 function fzf-regexp-subdir-prompt() {
-	echo "$(fzf-regexp-shared-prompt $PWD) "
+  local subdirPath="$(fzf-var-read pwd)"
+	echo "$(fzf-regexp-shared-prompt $subdirPath) "
 }

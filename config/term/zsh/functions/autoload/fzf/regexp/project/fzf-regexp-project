@@ -1,5 +1,12 @@
 # Search inside of text files, from the project root
+#
+# Note: This file is called by zsh only. Vim directly calls the -options and
+# -postprocess files individually
 function fzf-regexp-project() {
+  # Save the base directory, so other related fzf methods can use it
+  local rootDirectory="$(git-directory-root -f)"
+  fzf-var-write pwd $rootDirectory
+
 	fzf-regexp \
 		--options "fzf-regexp-project-options"
 }

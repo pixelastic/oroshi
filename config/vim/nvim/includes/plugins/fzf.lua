@@ -48,6 +48,10 @@ return {
     -- CTRL-P: {{{
     -- Search in project
     local function onCtrlP()
+      -- Tell fzf what the root directory is
+      local rootDirectory = vim.fn.system('git-directory-root -f')
+      vim.fn.system("fzf-var-write pwd " .. rootDirectory)
+
       local source = vim.fn.systemlist('fzf-fs-files-project-source')
       local options = vim.fn.systemlist('fzf-fs-files-project-options')
 
@@ -64,9 +68,9 @@ return {
     -- CTRL-T: {{{
     -- Search in current directory
     local function onCtrlT()
-      -- Tell fzf what the current directory is
-      local currentDir = vim.fn.expand('%:p:h')
-      vim.fn.system("fzf-var-write pwd " .. currentDir)
+      -- Tell fzf what the base directory is
+      local subdirPath = vim.fn.expand('%:p:h')
+      vim.fn.system("fzf-var-write pwd " .. subdirPath)
 
       local source = vim.fn.systemlist('fzf-fs-files-subdir-source')
       local options = vim.fn.systemlist('fzf-fs-files-subdir-options')
@@ -86,6 +90,10 @@ return {
     -- CTRL-G: {{{
     -- Regex search inside of files
     local function onCtrlG()
+      -- Tell fzf what the root directory is
+      local rootDirectory = vim.fn.system('git-directory-root -f')
+      vim.fn.system("fzf-var-write pwd " .. rootDirectory)
+
       local source = {}
       local options = vim.fn.systemlist('fzf-regexp-project-options')
 
@@ -102,9 +110,9 @@ return {
     -- CTRL-SHIFT-G: {{{
     -- Regex search inside of files in the current directory
     local function onCtrlShiftG()
-      -- Tell fzf what the current directory is
-      local currentDir = vim.fn.expand('%:p:h')
-      vim.fn.system("fzf-var-write pwd " .. currentDir)
+      -- Tell fzf what the base directory is
+      local subdirPath = vim.fn.expand('%:p:h')
+      vim.fn.system("fzf-var-write pwd " .. subdirPath)
 
       local source = {}
       local options = vim.fn.systemlist('fzf-regexp-subdir-options')

@@ -3,6 +3,9 @@
 # Note: This file is called by zsh only. Vim directly calls the -source,
 # -options and -postprocess files individually
 function fzf-fs-files-subdir() {
+  # Save the base directory, so other related fzf methods can use it
+  fzf-var-write pwd $PWD
+
 	fzf-fs-files \
 		--source fzf-fs-files-subdir-source \
 		--options fzf-fs-files-subdir-options

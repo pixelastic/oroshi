@@ -1,5 +1,11 @@
 # Search inside of text files, from the current directory
+#
+# Note: This file is called by zsh only. Vim directly calls the -options and
+# -postprocess files individually
 function fzf-regexp-subdir() {
+  # Save the base directory, so other related fzf methods can use it
+  fzf-var-write pwd $PWD
+
 	fzf-regexp \
 		--options "fzf-regexp-subdir-options"
 }

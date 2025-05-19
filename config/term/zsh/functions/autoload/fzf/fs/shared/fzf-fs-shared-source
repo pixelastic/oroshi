@@ -12,7 +12,6 @@ function fzf-fs-shared-source() {
 
   # We find in specified directory, and if not specified in the last saved one
   local searchPath="$1"
-  [[ $searchPath == "" ]] && searchPath="$(fzf-var-read pwd)"
 
   # Find additional arguments based on what is typed on the zsh commandline
   local additionalArguments=($(fzf-fs-shared-zsh-filters))
