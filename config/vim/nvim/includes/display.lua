@@ -10,6 +10,7 @@ vim.opt.showbreak = '↪ '   -- Character to use to prefix wrapped lines
 vim.opt.number = true       -- Display line numbers
 vim.opt.signcolumn = "yes"  -- Always display sign
 vim.opt.cursorline = true   -- Highlight current line
+vim.opt.scrolloff = 999     -- Keep current line as centered as possible
 
 -- INDENTATION
 vim.opt.shiftwidth = 2 -- Indent by 2 spaces
@@ -19,4 +20,4 @@ vim.opt.autoindent = true -- copy indent from current line when creating a new o
 
 -- COLOR
 vim.opt.background = "dark"     -- Prefer dark mode
-vim.cmd [[colorscheme oroshi]]  -- Use oroshi colorscheme
+vim.cmd("colorscheme oroshi")  -- Use oroshi colorscheme
