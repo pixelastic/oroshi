@@ -1,5 +1,6 @@
 " [CTRL-G] Regexp search inside of files in whole project
 
+
 " Initial list of sources
 function! FzfRegexpSearchProjectSource()
   return []

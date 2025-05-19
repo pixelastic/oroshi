@@ -19,7 +19,8 @@ vim.g.mapleader = ","
 -- TODO: Fuzzy search and various tabs
 -- TODO: Allow folding
 -- TODO: Toggle display of hidden chars
---
+-- Remove which-key
+-- Remove telescope
 
 -- Mapping functions {{{
 function map(mode, input, output, description, options)
@@ -94,6 +95,12 @@ nmap("H", "^", "Start of line")
 vmap("H", "^", "Start of line")
 nmap("L", "g_", "End of line")
 vmap("H", "g_", "Start of line")
+
+-- Scroll one page at a time
+nmap('U', '<C-U>', 'Scroll up one page')
+vmap('U', '<C-U>', 'Scroll up one page')
+nmap('D', '<C-D>', 'Scroll down one page')
+vmap('D', '<C-D>', 'Scroll down one page')
 
 -- Indent / Dedent
 nmap('<Tab>', '>>^', 'Indent line')

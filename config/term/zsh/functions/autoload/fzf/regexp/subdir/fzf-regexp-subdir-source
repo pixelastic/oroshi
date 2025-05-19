@@ -2,10 +2,11 @@
 # This searches into all files, even those that are usually ignored
 function fzf-regexp-subdir-source() {
 	local query="$1"
+	local currentDirectory="$(fzf-fs-shared-pwd-subdir)"
 
 	fzf-regexp-shared-source \
 		--no-ignore \
-		--directory "${PWD}" \
+		--directory "${currentDirectory}" \
 		--query "${query}"
 
 }

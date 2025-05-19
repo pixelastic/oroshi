@@ -33,16 +33,16 @@ function fzf-fs-shared-options() {
 	echo "--prompt=${prompt}"
 
 	# Keybindings
-	# => [Right] goes down into the folder
-	echo "--bind=right:execute-silent(fzf-fs-shared-cd {1})"
-	echo "--bind=right:+reload(${fzfSourcePath})"
-	echo "--bind=right:+transform-prompt(${fzfPromptPath})"
-	echo "--bind=right:+first"
-	# <= [Left] goes up into the parent
-	echo "--bind=left:execute-silent(fzf-fs-shared-cd-up)"
-	echo "--bind=left:+reload(${fzfSourcePath})"
-	echo "--bind=left:+transform-prompt(${fzfPromptPath})"
-	echo "--bind=left:+first"
+	# # => [Right] goes down into the folder
+	# echo "--bind=right:execute-silent(fzf-fs-shared-cd {1})"
+	# echo "--bind=right:+reload(${fzfSourcePath})"
+	# echo "--bind=right:+transform-prompt(${fzfPromptPath})"
+	# echo "--bind=right:+first"
+	# # <= [Left] goes up into the parent
+	# echo "--bind=left:execute-silent(fzf-fs-shared-cd-up)"
+	# echo "--bind=left:+reload(${fzfSourcePath})"
+	# echo "--bind=left:+transform-prompt(${fzfPromptPath})"
+	# echo "--bind=left:+first"
 
 	# UI Coloring
 	echo "--color=prompt:${COLOR_ALIAS_TEXT}:regular"
