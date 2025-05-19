@@ -1,8 +1,10 @@
 -- TEXT WRAPPING
-vim.opt.wrap = false       -- Do not wrap text
+vim.opt.wrap = false       -- Do not wrap text by default
 vim.opt.textwidth = 80     -- Expected max length
 vim.opt.colorcolumn = "81"   -- Visual clue
 vim.opt.sidescrolloff = 15 -- Display 15 chars right and left of cursor
+vim.opt.linebreak = true   -- Wrap at words, not in the middle of them
+vim.opt.showbreak = '↪ '   -- Character to use to prefix wrapped lines
 
 -- LINE NUMBER
 vim.opt.number = true       -- Display line numbers

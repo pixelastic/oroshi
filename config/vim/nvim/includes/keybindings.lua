@@ -21,6 +21,10 @@ vim.g.mapleader = ","
 -- TODO: Toggle display of hidden chars
 -- Remove which-key
 -- Remove telescope
+-- Run linters
+-- Debug colorscheme
+-- Help pages take full screen
+-- zsh functions colored as zsh
 
 -- Mapping functions {{{
 function map(mode, input, output, description, options)
@@ -81,6 +85,12 @@ imap('<C-H>', '<Esc>gT', 'Previous tab')
 nmap('<C-L>', 'gt', 'Next tab')
 imap('<C-L>', '<Esc>gt', 'Next tab')
 
+-- Splits
+nmap('<C-Up>', '<C-W>k', 'Go to split up')
+nmap('<C-Right>', '<C-W>l', 'Go to split right')
+nmap('<C-Down>', '<C-W>j', 'Go to split bottom')
+nmap('<C-Left>', '<C-W>h', 'Go to split left')
+
 
 
 
@@ -103,14 +113,18 @@ nmap('D', '<C-D>', 'Scroll down one page')
 vmap('D', '<C-D>', 'Scroll down one page')
 
 -- Indent / Dedent
-nmap('<Tab>', '>>^', 'Indent line')
+nmap('<Tab>', '>>ll', 'Indent line')
 vmap('<Tab>', '>gv', 'Indent selection')
-nmap('<S-Tab>', '<<^', 'Dedent line')
+imap('<S-Tab>', '<Esc><<hi', 'Dedent line')
+nmap('<S-Tab>', '<<hh', 'Dedent line')
 vmap('<S-Tab>', '<gv', 'Dedent selection')
 
 -- Increment / Decrement numbers
 nmap('<C-J>', '<C-X>', 'Increment number under cursor')
 nmap('<C-K>', '<C-A>', 'Decrement number under cursor')
+
+-- Show help
+nmap('<F1>', 'K', 'Show help of word under cursor')
 
 
 
@@ -119,4 +133,7 @@ nmap('<C-K>', '<C-A>', 'Decrement number under cursor')
 -- Sort, Shuffle, Uniq 
 vmap("r", ":!shuf<CR>", "Randomize")
 vmap("s", ":!sort --version-sort<CR>", "Sort")
+vmap("S", ":!sort --version-sort --reverse<CR>", "Sort")
 vmap("u", ":sort u<CR>", "Remove duplicates")
+vmap("n", ":!cat -n<CR>", "Number lines")
+vmap("L", ":!sort-by-length<CR>", "Sort by length")
