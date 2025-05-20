@@ -4,7 +4,7 @@ vim.opt.undodir = vim.fs.normalize("~/.config/nvim/undo/") -- Where to save the 
 vim.opt.undolevels = 1000 -- Number of undos to save
 
 -- views
-vim.opt.viewdir = vim.fs.normalize("/home/tim/.config/nvim/view") -- Where to save views
+vim.opt.viewdir = vim.fs.normalize("~/.config/nvim/view") -- Where to save views
 vim.opt.viewoptions = "cursor,folds" -- What to save in views
 -- Functions
 local function saveView()

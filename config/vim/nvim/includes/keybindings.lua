@@ -1,5 +1,4 @@
--- Leader key
-vim.g.mapleader = ","
+vim.g.mapleader = "," -- Leader key
 
 
 
@@ -12,7 +11,7 @@ vmap("<F13>", "<Esc>", "Visual  => Normal")
 cmap("<F13>", "<Esc>", "Command => Normal")
 
 -- Space
-nmap('<Space>', '.', "Repeat")
+nmap('<Space>', '.', 'Repeat', { remap = true })
 
 
 -- CTRL + A

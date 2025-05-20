@@ -10,11 +10,9 @@ vim.opt.swapfile = false
 --  need more tools in vim first
 --
 --
--- TODO: Surround to change ' to "
 -- TODO: Toggle display of hidden chars
 -- TODO: Align on comma
 -- TODO: Allow folding
--- Help pages take full screen
 -- Maybe make nvim-tree verylazy so it is only loaded when I press the keymap?
 --    And jave the keymap defined as part of lazy.vim
 
@@ -22,14 +20,9 @@ vim.opt.swapfile = false
 -- Run linters
 -- Debug colorscheme
 
--- Remove which-key
--- Remove telescope
 -- TODO: Highlight TODO
 
--- TODO: Surround to select in quotes
--- TODO: motion to select argument
 -- TOOD: Kitty conf highlight
--- TODO: Add marker in tabline for unsaved changes
 
 -- Functions
 require('oroshi/functions')
@@ -41,6 +34,7 @@ require('oroshi/filetypes')
 require('oroshi/keybindings')
 require('oroshi/tabline')
 require('oroshi/sessions')
+require('oroshi/disk')
 
 -- Plugins
 require('oroshi/lazy')
