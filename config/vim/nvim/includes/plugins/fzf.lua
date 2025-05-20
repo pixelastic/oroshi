@@ -4,6 +4,11 @@ return {
     "junegunn/fzf",
   },
   config = function()
+    -- Change the buffer name to a simpler one
+    ftplugin('fzf', function()
+      vim.api.nvim_buf_set_name(0, "[FZF]")
+    end)
+
     -- openFilesInNewTabs {{{
     -- Used when selecting (multiple) filepaths
     local function openFilesInNewTabs(selection)

@@ -1,5 +1,6 @@
 return {
   'tummetott/unimpaired.nvim',
+  version = "0.4.0",
   event = 'VeryLazy',
   opts = {
     default_keymaps = false,

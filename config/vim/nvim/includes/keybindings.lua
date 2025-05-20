@@ -3,31 +3,6 @@ vim.g.mapleader = ","
 
 
 
--- Mapping functions {{{
-function map(mode, input, output, description, options)
-  local defaults = { 
-    silent = true, 
-    noremap = true,
-    nowait = true,
-    desc = description, 
-  }
-  local config = vim.tbl_deep_extend("force", defaults, options or {})
-
-  vim.keymap.set(mode, input, output, config)
-end
-function imap(input, output, description, options)
-  map("i", input, output, description, options)
-end
-function nmap(input, output, description, options)
-  map("n", input, output, description, options)
-end
-function vmap(input, output, description, options)
-  map("v", input, output, description, options)
-end
-function cmap(input, output, description, options)
-  map("c", input, output, description, options)
-end
---- }}}
 
 -- Capslock
 -- Switch between Normal and Insert mode

@@ -1,11 +1,3 @@
--- ftdetect:
--- Helper function to define a custom overide of filetype
-function ftdetect(pattern, callback)
-  vim.api.nvim_create_autocmd(
-    { 'BufRead', 'BufNewFile' }, 
-    { pattern = pattern, callback = callback }
-  )
-end
 
 -- xkb
 ftdetect(
