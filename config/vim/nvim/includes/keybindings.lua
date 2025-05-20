@@ -30,12 +30,16 @@ imap("<C-D>", "<CMD>x<CR><ESC>", "Save file and quit")
 nmap("<C-D>", "<CMD>x<CR><ESC>", "Save file and quit")
 vmap("<C-D>", "<CMD>x<CR><ESC>", "Save file and quit")
 
+-- F1: Show help
+nmap('<F1>', 'K', 'Show help of word under cursor')
+
 
 -- Tabs
 nmap('<C-H>', 'gT', 'Previous tab')
 imap('<C-H>', '<Esc>gT', 'Previous tab')
 nmap('<C-L>', 'gt', 'Next tab')
 imap('<C-L>', '<Esc>gt', 'Next tab')
+nmap(',t', ':tabedit<Space>', 'Open file in new tab', { silent = false })
 
 -- Splits
 nmap('<C-Up>', '<C-W>k', 'Go to split up')
@@ -75,8 +79,23 @@ vmap('<S-Tab>', '<gv', 'Dedent selection')
 nmap('<C-J>', '<C-X>', 'Increment number under cursor')
 nmap('<C-K>', '<C-A>', 'Decrement number under cursor')
 
--- Show help
-nmap('<F1>', 'K', 'Show help of word under cursor')
+-- Add semicolon
+local function addSemicolonAtEndOfLine()
+  local currentLine = vim.api.nvim_get_current_line();
+  local lastChar = currentLine:sub(-1)
+
+  if lastChar == ';' then
+    return
+  end
+
+  vim.api.nvim_set_current_line(currentLine .. ';')
+end
+nmap(';', addSemicolonAtEndOfLine, 'Add a semicolon at end of line')
+
+-- Paste
+nmap('gp', '`[v`]', "Select what was just pasted")
+nmap('c', '"_c', "Change without copying it")
+vmap('x', '"_x', "Delete without copying it")
 
 
 

@@ -9,40 +9,40 @@ nnoremap <Leader>t :tabe<Space>
 " Note: This is based on the example given in :help setting-tabline
 set tabline=%!OroshiTabLine()
 
-" OroshiTabLine {{{
-" Builds the whole tabline, but defers the name of each tag to OroshiTabLabel
-function! OroshiTabLine()
-  let tabLine = ''
-
-  for rawTabIndex in range(tabpagenr('$'))
-    let currentTab = tabpagenr()
-    let tabIndex = rawTabIndex + 1
-    let isCurrentTab = currentTab == tabIndex
-
-
-    " Add tab number metadata (for mouse clicks)
-    let tabLine ..= '%' .. (tabIndex) .. 'T'
-
-    " Now pass the actual label to OroshiTabLabel
-    " Highlight current tab differently
-    let tabLabel = OroshiTabLabel(tabIndex, isCurrentTab)
-    let tabLine ..= tabLabel
-  endfor
-
-  " Fill up to the right
-  let tabLine ..= '%#TabLineFill#'
-
-  " Reset the tab number metadata
-  let tabLine ..= '%T'
-
-  " Add a X to close, on the right (only if more than 1 tab)
-  if tabpagenr('$') > 1
-    let tabLine ..= '%=%#TabLine#%999XX'
-  endif
-
-  return tabLine
-endfunction
-" }}}
+"" OroshiTabLine {{{
+"" Builds the whole tabline, but defers the name of each tag to OroshiTabLabel
+"function! OroshiTabLine()
+"  let tabLine = ''
+"
+"  for rawTabIndex in range(tabpagenr('$'))
+"    let currentTab = tabpagenr()
+"    let tabIndex = rawTabIndex + 1
+"    let isCurrentTab = currentTab == tabIndex
+"
+"
+"    " Add tab number metadata (for mouse clicks)
+"    let tabLine ..= '%' .. (tabIndex) .. 'T'
+"
+"    " Now pass the actual label to OroshiTabLabel
+"    " Highlight current tab differently
+"    let tabLabel = OroshiTabLabel(tabIndex, isCurrentTab)
+"    let tabLine ..= tabLabel
+"  endfor
+"
+"  " Fill up to the right
+"  let tabLine ..= '%#TabLineFill#'
+"
+"  " Reset the tab number metadata
+"  let tabLine ..= '%T'
+"
+"  " Add a X to close, on the right (only if more than 1 tab)
+"  if tabpagenr('$') > 1
+"    let tabLine ..= '%=%#TabLine#%999XX'
+"  endif
+"
+"  return tabLine
+"endfunction
+"" }}}
 
 " OroshiTabLabel {{{
 " Define the label of each tab, with a slightly different for current and

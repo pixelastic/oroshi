@@ -4,9 +4,30 @@ return {
     "junegunn/fzf",
   },
   config = function()
-    -- Change the buffer name to a simpler one
+    -- Specific config for the fzf buffer
     ftplugin('fzf', function()
+      -- Display a simpler name in the buffer
       vim.api.nvim_buf_set_name(0, "[FZF]")
+
+      -- Hide part of the UI when opening
+      local originalShowmode = vim.opt.showmode;
+      local originalRuler = vim.opt.ruler;
+      local originalLaststatus = vim.opt.laststatus;
+      local originalShowtabline = vim.opt.showtabline;
+
+      vim.opt.showmode = false;
+      vim.opt.ruler = false;
+      vim.opt.laststatus = 0;
+      vim.opt.showtabline = 0;
+
+      -- Revert to previous settings when closing
+      local function restorePreviousSettings()
+        vim.opt.showmode = originalShowmode
+        vim.opt.ruler = originalRuler
+        vim.opt.laststatus = originalLaststatus;
+        vim.opt.showtabline = originalShowtabline;
+      end
+      autocmd('BufLeave', "*", restorePreviousSettings, { buffer = vim.api.nvim_get_current_buf() })
     end)
 
     -- openFilesInNewTabs {{{

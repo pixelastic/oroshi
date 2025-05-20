@@ -34,6 +34,7 @@ require('oroshi/clipboard')
 require('oroshi/display')
 require('oroshi/filetypes')
 require('oroshi/keybindings')
+require('oroshi/tabs')
 require('oroshi/sessions')
 
 -- Plugins

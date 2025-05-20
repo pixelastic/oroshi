@@ -89,6 +89,7 @@ inoremap °+ =>
 inoremap )= =>
 inoremap +° =>
 inoremap =) =>
+
 " Add ; at the end of the line
 function! AddMissingSemiColon()
   " Mark current spot (mx) and go to end of line ($)
