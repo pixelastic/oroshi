@@ -26,6 +26,11 @@ vim.opt.swapfile = false
 -- Remove telescope
 -- TODO: Highlight TODO
 
+-- TODO: Surround to select in quotes
+-- TODO: motion to select argument
+-- TOOD: Kitty conf highlight
+-- TODO: Add marker in tabline for unsaved changes
+
 -- Functions
 require('oroshi/functions')
 
