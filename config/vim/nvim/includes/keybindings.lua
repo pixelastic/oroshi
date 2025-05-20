@@ -30,6 +30,11 @@ imap("<C-D>", "<CMD>x<CR><ESC>", "Save file and quit")
 nmap("<C-D>", "<CMD>x<CR><ESC>", "Save file and quit")
 vmap("<C-D>", "<CMD>x<CR><ESC>", "Save file and quit")
 
+-- CTRL + M
+imap("<C-M>", "<Esc>:Rename<Space>", "Rename file", { silent = false })
+nmap("<C-M>", ":Rename<Space>", "Rename file", { silent = false })
+vmap("<C-M>", "<Esc>:Rename<Space>", "Rename file", { silent = false })
+
 -- F1: Show help
 nmap('<F1>', 'K', 'Show help of word under cursor')
 
