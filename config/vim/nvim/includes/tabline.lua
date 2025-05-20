@@ -7,35 +7,42 @@ function oroshiTabline()
   local currentTab = vim.fn.tabpagenr()
   local totalTabs = vim.fn.tabpagenr('$')
 
-  -- Define the label of a given tab
-  local function label(tabIndex)
+  -- Define how a given tab should be displayed
+  local function tab(tabIndex)
     local bufferId = vim.fn.tabpagebuflist(tabIndex)[1]
     local fullPath = vim.fn.expand('#' .. bufferId .. ':p')
     local basename = vim.fn.fnamemodify(fullPath, ':t')
     local isCurrentTab = (tabIndex == currentTab)
+    local isModified = vim.bo[bufferId].modified
 
+    -- Label: How is the tab named
     local label = {}
+    append(label, ' ')
+    append(label, basename)
+    if isModified then append(label, ' ') end
+    append(label, ' ')
+    local labelString = table.concat(label, '')
 
-    -- Current tab
-    if isCurrentTab then
-      append(label, color('', 'TabLineSelSeparator'))
-      append(label, color(' '..basename..' ', 'TabLineSel'))
-      append(label, color('', 'TabLineSelSeparator'))
-      return table.concat(label, '')
+    -- Tab: How is the tab presented
+    local tab = {}
+    if isCurrentTab then 
+      append(tab, color('', 'TabLineSelSeparator'))
+      append(tab, color(labelString, 'TabLineSel'))
+      append(tab, color('', 'TabLineSelSeparator'))
+    else
+      append(tab, color(labelString, 'TabLine'))
     end
 
-    -- Regular tab
-    append(label, color(' ' .. basename .. ' ', 'TabLine'))
-    return table.concat(label, '')
+    return table.concat(tab, '')
   end
 
 
   -- Add all labels to the tabline
   for tabIndex = 1, totalTabs do
-    local tabLabel = label(tabIndex)
+    local tab = tab(tabIndex)
 
     append(tabline, '%' .. (tabIndex) .. 'T') -- Start of click area
-    append(tabline, tabLabel)
+    append(tabline, tab)
     append(tabline, '%T') -- End of click area
   end
 
