@@ -1,4 +1,6 @@
 return {
+  -- https://github.com/tummetott/unimpaired.nvim
+  -- Move lines around, or toggle features
   'tummetott/unimpaired.nvim',
   version = "0.4.0",
   event = 'VeryLazy',

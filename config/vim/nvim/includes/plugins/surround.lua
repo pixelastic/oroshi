@@ -1,8 +1,6 @@
 return {
   -- https://github.com/kylechui/nvim-surround
-  -- LUA version of vim-surround. Its main advantage is that it can keep the
-  -- cursor at the exact position it was before, rather than jump to the
-  -- beginning
+  -- Change surrounding quotes or parentheses
   "kylechui/nvim-surround",
   version = "3.1.1",
   event = "VeryLazy",

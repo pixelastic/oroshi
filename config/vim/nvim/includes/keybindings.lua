@@ -1,8 +1,5 @@
 vim.g.mapleader = "," -- Leader key
 
-
-
-
 -- Capslock
 -- Switch between Normal and Insert mode
 imap("<F13>", "<Esc>l", "Insert  => Normal")

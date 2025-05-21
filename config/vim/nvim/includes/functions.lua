@@ -7,7 +7,6 @@ function color(input, color)
   return '%#' .. color .. '#' .. input .. '%*'
 end
 
-
 -- Autocmd functions {{{
 function autocmd(event, pattern, callback)
   local defaults = { 
@@ -26,7 +25,6 @@ end
 
 -- ftplugin: Helper function to run a custom function on specific filetypes
 function ftplugin(pattern, callback, options)
-
   autocmd('FileType', pattern, callback, options)
 end
 -- }}}

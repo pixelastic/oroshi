@@ -1,40 +1,26 @@
-vim.opt.swapfile = false
-
--- TODO: Delete file keybinding
---  I can use eunuch to add the Delete/Remove (difference?) methods
---  But it will not close the current buffer, I need to manually close that
---  Also, I need to add the case where there is only one buffer left and we
---  delete it
---  in that case, I will need to close vim altogether.
---  I coded that in vimscript already, I should recode it in lua, but I will
---  need more tools in vim first
---
---
--- TODO: Toggle display of hidden chars
--- TODO: Align on comma
--- TODO: Allow folding
--- Maybe make nvim-tree verylazy so it is only loaded when I press the keymap?
---    And jave the keymap defined as part of lazy.vim
-
+-- TODO: Toggle display of hidden chars with F9
+-- TODO: Align on antything
 -- TODO: statusline to show the mode
--- Run linters
--- Debug colorscheme
-
--- TODO: Highlight TODO
-
--- TOOD: Kitty conf highlight
+-- TODO: Linters linters
+-- TODO: Rewrite colorscheme in lua
+-- TODO: Add F3 to debug the highlight groups
+-- TODO: Make sure kitty.conf is correctly highlighted
+-- TODO: Find a plugin that can autoclose functions
+-- TODO: Completion
+-- TODO: See what to do with backup and swap
 
 -- Functions
 require('oroshi/functions')
 
 -- Config
 require('oroshi/clipboard')
+require('oroshi/disk')
 require('oroshi/display')
 require('oroshi/filetypes')
+require('oroshi/folding')
 require('oroshi/keybindings')
-require('oroshi/tabline')
 require('oroshi/sessions')
-require('oroshi/disk')
+require('oroshi/tabline')
 
 -- Plugins
 require('oroshi/lazy')
