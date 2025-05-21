@@ -35,6 +35,12 @@ nmap("<C-N>", ":tabedit<Space>", "Create new file in directory", { silent = fals
 -- F1: Show help
 nmap('<F1>', 'K', 'Show help of word under cursor')
 
+-- F2: Reload colorscheme
+nmap('<F2>', ':colorscheme irisho<CR>', 'Reload colorscheme')
+
+-- F3: Debug colors
+nmap('<F3>', ':Inspect<CR>', 'Display highlight groups')
+
 
 -- Tabs
 nmap('<C-H>', 'gT', 'Previous tab')

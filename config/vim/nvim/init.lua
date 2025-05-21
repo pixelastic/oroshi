@@ -8,6 +8,7 @@
 -- TODO: Find a plugin that can autoclose functions
 -- TODO: Completion
 -- TODO: See what to do with backup and swap
+-- TODO: Find what works and what does not in a macro
 
 -- Functions
 require('oroshi/functions')
