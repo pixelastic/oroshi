@@ -1,4 +1,7 @@
 return {
+  -- https://github.com/nvim-treesitter/nvim-treesitter
+  -- Highlight, indent, folding, AST
+  -- enabled = false,
   "nvim-treesitter/nvim-treesitter",
   version = "0.25.4",
   event = { "BufReadPre", "BufNewFile" },

@@ -1,4 +1,5 @@
-vim.opt.foldlevel = 3 -- Some folds opened by default
+vim.opt.foldmethod = 'syntax'
+vim.opt.foldlevel = 6 -- Some folds opened by default
 vim.opt.fillchars = "fold: "  -- Pad with spaces
 
 -- Custom foldtext method

@@ -1,6 +1,7 @@
 return {
   -- https://github.com/wellle/targets.vim
   -- Lots of new operators to select elements
+  -- enabled = false,
   "wellle/targets.vim",
   config = function()
     -- Arguments

@@ -50,7 +50,7 @@ function nmap(input, output, description, options)
   map("n", input, output, description, options)
 end
 function vmap(input, output, description, options)
-  map("v", input, output, description, options)
+  map("x", input, output, description, options)
 end
 function cmap(input, output, description, options)
   map("c", input, output, description, options)

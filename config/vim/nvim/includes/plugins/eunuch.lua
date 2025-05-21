@@ -1,6 +1,7 @@
 return {
   -- https://github.com/tpope/vim-eunuch
   -- Used to :Rename and :Delete files
+  -- enabled = false,
   "tpope/vim-eunuch",
   config = function()
     -- CTRL + M: Rename

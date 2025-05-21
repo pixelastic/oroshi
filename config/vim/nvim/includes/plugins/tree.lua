@@ -1,4 +1,7 @@
 return {
+  -- https://github.com/nvim-tree/nvim-tree.lua
+  -- File explorer
+  -- enabled = false,
   "nvim-tree/nvim-tree.lua",
   version = "1.12.0",
   dependencies = {

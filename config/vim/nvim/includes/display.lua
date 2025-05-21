@@ -20,4 +20,5 @@ vim.opt.autoindent = true -- copy indent from current line when creating a new o
 
 -- COLOR
 vim.opt.background = "dark"     -- Prefer dark mode
-vim.cmd("colorscheme oroshi")  -- Use oroshi colorscheme
+-- vim.cmd("colorscheme oroshi")  -- Use oroshi colorscheme
+vim.cmd("colorscheme irisho")  -- Use oroshi colorscheme

@@ -1,4 +1,7 @@
 return {
+  -- https://github.com/junegunn/fzf.vim
+  -- Fuzzy search in files and regex
+  -- enabled = false,
   "junegunn/fzf.vim",
   dependencies = {
     "junegunn/fzf",
