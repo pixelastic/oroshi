@@ -17,9 +17,10 @@ vmap('<C-A>', '<ESC>GVgg', 'Select everything')
 imap('<C-A>', '<ESC>GVgg', 'Select everything')
 
 -- CTRL + S
-imap("<C-S>", "<CMD>w<CR><ESC>", "Save file")
-nmap("<C-S>", "<CMD>w<CR><ESC>", "Save file")
-vmap("<C-S>", "<CMD>w<CR><ESC>", "Save file")
+-- silent! is for not displaying a message that the file is saved
+imap("<C-S>", "<CMD>silent! w<CR><ESC>", "Save file")
+nmap("<C-S>", "<CMD>silent! w<CR><ESC>", "Save file")
+vmap("<C-S>", "<CMD>silent! w<CR><ESC>", "Save file")
 
 -- CTRL + D
 imap("<C-D>", "<CMD>x<CR><ESC>", "Save file and quit")
@@ -36,7 +37,12 @@ nmap("<C-N>", ":tabedit<Space>", "Create new file in directory", { silent = fals
 nmap('<F1>', 'K', 'Show help of word under cursor')
 
 -- F2: Reload colorscheme
-nmap('<F2>', ':colorscheme irisho<CR>', 'Reload colorscheme')
+local function reloadColorScheme()
+  vim.cmd("colorscheme irisho")
+end
+nmap('<F2>', reloadColorScheme, 'Reload colorscheme')
+imap('<F2>', reloadColorScheme, 'Reload colorscheme')
+vmap('<F2>', reloadColorScheme, 'Reload colorscheme')
 
 -- F3: Debug colors
 nmap('<F3>', ':Inspect<CR>', 'Display highlight groups')

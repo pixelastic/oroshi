@@ -93,6 +93,7 @@ hl('Repeat', 'STATEMENT') --		for, do, while, etc.
 hl('SpecialChar', 'SPECIAL_CHAR') --	special character in a constant
 hl('SpecialComment', 'XXX') --	special things inside a comment
 hl('Special', 'SPECIAL_CHAR') 
+hl('SpecialKey', 'SPECIAL_CHAR') -- Unprintable characters
 hl('Statement', 'STATEMENT') 
 hl('StorageClass', 'VARIABLE_TYPE') --	static, register, volatile, etc.
 hl('String', 'STRING') 
@@ -122,16 +123,7 @@ hl('FloatFooter', 'XXX') --	Footer of floating windows.
 hl('FloatTitle', 'XXX') --	Title of floating windows.
 -- Fold
 hl('FoldColumn', 'XXX') --	'foldcolumn'
-
-hl('Conceal', 'XXX') --		Placeholder characters substituted for concealed
-hl('ComplMatchIns', 'XXX') --	Matched text of the currently inserted completion.
-hl('LineNrAbove', 'XXX') --	Line number for when the 'relativenumber'
-hl('LineNrBelow', 'XXX') --	Line number for when the 'relativenumber'
-hl('MatchParen', 'XXX') --	Character under the cursor or just before it, if it
-hl('MoreMsg', 'XXX') --		|more-prompt|
-hl('MsgSeparator', 'XXX') --	Separator for scrolled messages |msgsep|.
-hl('NonText', 'GRAY_8') --		'@' at the end of the window, characters from 'showbreak'
-hl('NormalFloat', 'XXX') --	Normal text in floating windows.
+-- PMenu
 hl('PmenuExtraSel', 'XXX') --	Popup menu: Selected item "extra text".
 hl('PmenuExtra', 'XXX') --	Popup menu: Normal item "extra text".
 hl('PmenuKindSel', 'XXX') --	Popup menu: Selected item "kind".
@@ -139,13 +131,25 @@ hl('PmenuKind', 'XXX') --	Popup menu: Normal item "kind".
 hl('PmenuMatchSel', 'XXX') --	Popup menu: Matched text in selected item. Combined with
 hl('PmenuMatch', 'XXX') --	Popup menu: Matched text in normal item. Combined with
 hl('PmenuSbar', 'XXX') --	Popup menu: Scrollbar.
-hl('PmenuSel', 'XXX') --	Popup menu: Selected item. Combined with |hl-Pmenu|.
 hl('PmenuThumb', 'XXX') --	Popup menu: Thumb of the scrollbar.
-hl('Pmenu', 'XXX') --		Popup menu: Normal item.
+hl('CmpItemKind', 'XXX')
+hl('CmpItemAbbrDeprecated', 'XXX')
+hl('CmpItemAbbrMatchFuzzy', 'XXX')
+hl('CmpItemMenu', 'XXX')
+
+
+hl('WildMenu', 'XXX') --	Current match in 'wildmenu' completion.
+hl('Conceal', 'XXX') --		Placeholder characters substituted for concealed
+hl('NormalFloat', 'XXX') --	Normal text in floating windows.
+hl('ComplMatchIns', 'XXX') --	Matched text of the currently inserted completion.
+hl('LineNrAbove', 'XXX') --	Line number for when the 'relativenumber'
+hl('LineNrBelow', 'XXX') --	Line number for when the 'relativenumber'
+hl('MoreMsg', 'XXX') --		|more-prompt|
+hl('MsgSeparator', 'XXX') --	Separator for scrolled messages |msgsep|.
+hl('NonText', 'GRAY_8') --		'@' at the end of the window, characters from 'showbreak'
 hl('Question', 'XXX') --	|hit-enter| prompt and yes/no questions.
 hl('QuickFixLine', 'XXX') --	Current |quickfix| item in the quickfix window. Combined with
 hl('SnippetTabstop', 'XXX') --	Tabstops in snippets. |vim.snippet|
-hl('SpecialKey', 'XXX') --	Unprintable characters: Text displayed differently from what
 hl('SpellBad', 'XXX') --	Word that is not recognized by the spellchecker. |spell|
 hl('SpellCap', 'XXX') --	Word that should start with a capital. |spell|
 hl('SpellLocal', 'XXX') --	Word that is recognized by the spellchecker as one that is
@@ -155,7 +159,6 @@ hl('TermCursor', 'XXX') --	Cursor in a focused terminal.
 hl('Title', 'HEADER') --		Titles for output from ":set all", ":autocmd" etc.
 hl('WarningMsg', 'XXX') --	Warning messages.
 hl('Whitespace', 'YELLOW') --	"nbsp", "space", "tab", "multispace", "lead" and "trail"
-hl('WildMenu', 'XXX') --	Current match in 'wildmenu' completion.
 hl('WinBarNC', 'XXX') --	Window bar of not-current windows.
 hl('WinBar', 'XXX') --		Window bar of current window.
 hl('lCursor', 'XXX') --		Character under the cursor when |language-mapping|
@@ -180,7 +183,7 @@ hl('TabLineFill', 'GRAY_4', { bg = 'GRAY_8' }) --	Tab pages line, where there ar
 
 -- Splits {{{
 hl('WinSeparator', 'YELLOW_9', { bg = 'BLACK', bold = true }) --	Separators between splits
-hl('NormalNC', 'none', { bg = 'GRAY_8' }) --	Normal text in non-current windows.
+-- hl('NormalNC', 'none', { bg = 'GRAY_8' }) --	Normal text in non-current windows.
 hl('StatusLineNC', 'none', { bg = 'GRAY_8' }) --	Status lines of not-current windows.
 hl('StatusLineTermNC', 'XXX') --
 -- }}}
@@ -192,6 +195,10 @@ hl('SignColumn', 'GRAY') --	Sign column
 
 -- Folds {{{
 hl('Folded', 'none', { bg = 'GRAY_8'}) --	Closed fold
+-- }}}
+
+-- Misc {{'
+hl('MatchParen', 'YELLOW', { bg = 'PUNCTUATION' }) -- Matching parenthesis
 -- }}}
 
 -- Cursor {{{
@@ -212,12 +219,19 @@ hl('Search', 'BLACK', { bg = 'YELLOW_6', bold = true }) -- All results
 
 -- Statusline {{{
 hl('StatusLineTerm', 'XXX') --	Status line of |terminal| window.
-hl('StatusLine', 'GRAY_4', { bg = 'GRAY_8' }) --	Status line of current window.
+hl('StatusLine', 'GRAY_4', { bg = 'YELLOW' }) --	Status line of current window.
+-- }}}
+
+-- Completion
+hl('Pmenu', 'BLACK', { bg = 'BLACK'})       -- Background
+hl('CmpItemAbbr', 'BLACK') -- Suggestions
+hl('PmenuSel', 'BLACK') -- Current selection
+hl('CmpItemAbbrMatch', 'BLACK') -- Partial match
 -- }}}
 
 -- Commandline {{{
-hl('ModeMsg', 'YYY') --		'showmode' message (e.g., "-- INSERT --").
-hl('MsgArea', 'TEXT') --		Area for messages and command-line, see also 'cmdheight'.
+hl('ModeMsg', 'XXX') --		'showmode' message (e.g., "-- INSERT --").
+hl('MsgArea', 'TEXT', { bg = 'NONE' }) -- Where messages are displayed
 -- }}}
 
 -- Custom groups {{{

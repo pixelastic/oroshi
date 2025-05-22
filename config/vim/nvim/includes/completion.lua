@@ -1,0 +1,15 @@
+-- Ghost text
+-- I want "Ghost text", ie. the first suggestion displayed as I type, that I can
+-- confirm with <Tab>. nvim-cmp can provide that, but only if the dropdown menu
+-- of ALL suggestions is displayed as I type. I don't want suggestions always
+-- popping, I find this distracting.
+--
+-- So I cheat. I keep the display of suggestions, but not as a dropdown below
+-- the cursor, but in the "wildmenu" bar (displayed above the command line). By
+-- default, it displays above the command line, but it overlaps with the
+-- statusline, so I hide the commandline; that way, the wildmenu appears above
+-- the statusline.
+--
+-- I also configure the highlight groups so it's black text on black background,
+-- making it invisible, and thus, not distracting.
+vim.opt.cmdheight = 0  -- Hide the command line

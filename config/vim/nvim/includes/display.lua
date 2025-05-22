@@ -18,6 +18,29 @@ vim.opt.tabstop = 2 -- Tab displayed as 2 spaces
 vim.opt.expandtab = true -- expand tab to spaces
 vim.opt.autoindent = true -- copy indent from current line when creating a new one
 
+-- HIDDEN CHARACTERS {{{
+local useDefaultListchars = true
+local defaultListchars = {
+  -- Only non-breakable spaces, trailing spaces, multispaces and scroll markers
+  nbsp = "∅", trail = "", precedes = "", extends = "", 
+  lead = " ", multispace = " ", tab = "  ", eol = ' '
+}
+-- Also end of lines, tabs and leading spaces
+local extendedListchars = {
+  nbsp = "∅", trail = "", precedes = "", extends = "", 
+  lead = "", multispace = "", tab = "  ", eol = '↲'
+}
+vim.opt.list = true
+vim.opt.listchars = defaultListchars
+function toggleListchars()
+  -- Swap between default and extended
+  vim.opt.listchars = useDefaultListchars and extendedListchars or defaultListchars
+  -- Change the current mode
+  useDefaultListchars = not useDefaultListchars
+end
+nmap('<F8>', toggleListchars, 'Toggle more or less hidden characters')
+-- }}}
+
 -- Unfocused splits
 local function disableCursorLine()
   vim.opt_local.cursorline = false

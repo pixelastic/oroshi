@@ -1,9 +1,10 @@
-vim.opt.foldmethod = 'syntax'
+vim.opt.foldmethod = 'marker'   -- Fold on markers by default
+vim.opt.foldmarker = '{{{,}}}'  -- markers to use
 vim.opt.foldlevel = 6 -- Some folds opened by default
 vim.opt.fillchars = "fold: "  -- Pad with spaces
+vim.opt.foldtext='v:lua.oroshiFoldText()' -- Method to display fold recap line
 
 -- Custom foldtext method
-vim.opt.foldtext='v:lua.oroshiFoldText()'
 function oroshiFoldText()
   local prefixSymbol = ''
   local firstLine = vim.fn.getline(vim.v.foldstart)
@@ -16,7 +17,6 @@ function oroshiFoldText()
 
   return prefixSymbol .. firstLine:sub(2)
 end
-
 
 -- Open folds to a certain level
 local function setFoldLevel(level)

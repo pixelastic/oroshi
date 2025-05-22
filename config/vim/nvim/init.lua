@@ -1,4 +1,3 @@
--- TODO: Toggle display of hidden chars with F9
 -- TODO: Align on antything
 -- TODO: statusline to show the mode
 -- TODO: Linters linters
@@ -15,15 +14,16 @@ require('oroshi/functions')
 
 -- Config
 require('oroshi/clipboard')
+require('oroshi/completion')
 require('oroshi/disk')
 require('oroshi/display')
 require('oroshi/filetypes')
 require('oroshi/folding')
 require('oroshi/keybindings')
-require('oroshi/sessions')
 require('oroshi/search')
-require('oroshi/tabline')
+require('oroshi/sessions')
 require('oroshi/statusline')
+require('oroshi/tabline')
 
 -- Plugins
 require('oroshi/lazy')

@@ -91,6 +91,7 @@ return {
       })
     end
     nmap('<C-P>', onCtrlP, 'Search in project')
+    vmap('<C-P>', onCtrlP, 'Search in project')
     imap('<C-P>', onCtrlP, 'Search in project')
     -- }}}
 
@@ -112,8 +113,10 @@ return {
     end
     nmap('Ⓟ', onCtrlT, 'Search in current directory')
     imap('Ⓟ', onCtrlT, 'Search in current directory')
+    vmap('Ⓟ', onCtrlT, 'Search in current directory')
     nmap('<C-T>', onCtrlT, 'Search in current directory')
     imap('<C-T>', onCtrlT, 'Search in current directory')
+    vmap('<C-T>', onCtrlT, 'Search in current directory')
     -- }}}
     
     -- CTRL-G: {{{
