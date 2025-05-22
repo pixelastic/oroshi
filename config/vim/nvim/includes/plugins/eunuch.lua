@@ -4,10 +4,10 @@ return {
   -- enabled = false,
   "tpope/vim-eunuch",
   config = function()
-    -- CTRL + M: Rename
-    imap("⒨", "<Esc>:Rename<Space>", "Rename file", { silent = false })
-    nmap("⒨", ":Rename<Space>", "Rename file", { silent = false })
-    vmap("⒨", "<Esc>:Rename<Space>", "Rename file", { silent = false })
+    -- CTRL + Shift + M: Rename
+    imap("Ⓜ", "<Esc>:Rename<Space>", "Rename file", { silent = false })
+    nmap("Ⓜ", ":Rename<Space>", "Rename file", { silent = false })
+    vmap("Ⓜ", "<Esc>:Rename<Space>", "Rename file", { silent = false })
 
     -- CTRL + Del
     local function deleteCurrentFile()

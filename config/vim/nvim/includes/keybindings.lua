@@ -105,6 +105,10 @@ nmap('gp', '`[v`]', "Select what was just pasted")
 nmap('c', '"_c', "Change without copying it")
 vmap('x', '"_x', "Delete without copying it")
 
+-- Marks and jump
+nmap('⒨', "`m", "Jump to mark set with mm") -- Ctrl-M jumps to m mark
+nmap('M', '`', 'Jump to specific mark')
+
 
 
 

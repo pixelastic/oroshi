@@ -41,12 +41,18 @@ local function hl(groupName, colorName, options)
     config.bg = vim.g.palette[config.bg]
   end
 
-  -- make XXX standout
+  -- make XXX and YYY standout
   if colorName == 'XXX' then
     config = {
       fg = vim.g.palette.WHITE,
       bg = vim.g.palette.CYAN,
       bold = true,
+    }
+  end
+  if colorName == 'YYY' then
+    config = {
+      fg = vim.g.palette.WHITE,
+      bg = vim.g.palette.PURPLE,
     }
   end
 
@@ -89,7 +95,7 @@ hl('Special', 'SPECIAL_CHAR')
 hl('Statement', 'STATEMENT') 
 hl('StorageClass', 'VARIABLE_TYPE') --	static, register, volatile, etc.
 hl('String', 'STRING') 
-hl('Structure', 'XXX') --	struct, union, enum, etc.
+hl('Structure', 'VARIABLE_TYPE') --	struct, union, enum, etc.
 hl('Tag', 'XXX') --		you can use CTRL-] on this
 hl('Todo', 'TODO', { bold = true }) 
 hl('Typedef', 'XXX') --		a typedef
@@ -98,40 +104,36 @@ hl('Underlined', 'none', { underline = true }) --	text that stands out, HTML lin
 -- }}}
 
 -- Standard UI groups {{{
-hl('ColorColumn', 'XXX') --	Used for the columns set with 'colorcolumn'.
-hl('ComplMatchIns', 'XXX') --	Matched text of the currently inserted completion.
-hl('Conceal', 'XXX') --		Placeholder characters substituted for concealed
-hl('CurSearch', 'XXX') --	Current match for the last search pattern (see 'hlsearch').
+-- Cursor
 hl('CursorColumn', 'XXX') --	Screen-column at the cursor, when 'cursorcolumn' is set.
 hl('CursorIM', 'XXX') --	Like Cursor, but used when in IME mode. *CursorIM*
-hl('CursorLineFold', 'XXX') --	Like FoldColumn when 'cursorline' is set for the cursor line.
-hl('CursorLineSign', 'XXX') --	Like SignColumn when 'cursorline' is set for the cursor line.
 hl('Cursor', 'XXX') --		Character under the cursor.
+-- Diff
 hl('DiffAdd', 'XXX') --		Diff mode: Added line. |diff.txt|
 hl('DiffChange', 'XXX') --	Diff mode: Changed line. |diff.txt|
 hl('DiffDelete', 'XXX') --	Diff mode: Deleted line. |diff.txt|
 hl('DiffText', 'XXX') --	Diff mode: Changed text within a changed line. |diff.txt|
+-- Files
 hl('Directory', 'XXX') --	Directory names (and other special names in listings).
-hl('EndOfBuffer', 'XXX') --	Filler lines (~) after the end of the buffer.
+-- Messages
 hl('ErrorMsg', 'XXX') --	Error messages on the command line.
+-- Windows
 hl('FloatBorder', 'XXX') --	Border of floating windows.
 hl('FloatFooter', 'XXX') --	Footer of floating windows.
 hl('FloatTitle', 'XXX') --	Title of floating windows.
+-- Fold
 hl('FoldColumn', 'XXX') --	'foldcolumn'
-hl('Folded', 'XXX') --		Line used for closed folds.
-hl('IncSearch', 'XXX') --	'incsearch' highlighting; also used for the text replaced with
+
+hl('Conceal', 'XXX') --		Placeholder characters substituted for concealed
+hl('ComplMatchIns', 'XXX') --	Matched text of the currently inserted completion.
 hl('LineNrAbove', 'XXX') --	Line number for when the 'relativenumber'
 hl('LineNrBelow', 'XXX') --	Line number for when the 'relativenumber'
-hl('LineNr', 'GRAY') --		Line number for ":number" and ":#" commands, and when 'number'
 hl('MatchParen', 'XXX') --	Character under the cursor or just before it, if it
-hl('ModeMsg', 'XXX') --		'showmode' message (e.g., "-- INSERT --").
 hl('MoreMsg', 'XXX') --		|more-prompt|
-hl('MsgArea', 'XXX') --		Area for messages and command-line, see also 'cmdheight'.
 hl('MsgSeparator', 'XXX') --	Separator for scrolled messages |msgsep|.
 hl('NonText', 'GRAY_8') --		'@' at the end of the window, characters from 'showbreak'
 hl('NormalFloat', 'XXX') --	Normal text in floating windows.
 hl('NormalNC', 'XXX') --	Normal text in non-current windows.
-hl('Normal', 'TEXT') --		Normal text.
 hl('PmenuExtraSel', 'XXX') --	Popup menu: Selected item "extra text".
 hl('PmenuExtra', 'XXX') --	Popup menu: Normal item "extra text".
 hl('PmenuKindSel', 'XXX') --	Popup menu: Selected item "kind".
@@ -144,18 +146,12 @@ hl('PmenuThumb', 'XXX') --	Popup menu: Thumb of the scrollbar.
 hl('Pmenu', 'XXX') --		Popup menu: Normal item.
 hl('Question', 'XXX') --	|hit-enter| prompt and yes/no questions.
 hl('QuickFixLine', 'XXX') --	Current |quickfix| item in the quickfix window. Combined with
-hl('Search', 'XXX') --		Last search pattern highlighting (see 'hlsearch').
-hl('SignColumn', 'XXX') --	Column where |signs| are displayed.
 hl('SnippetTabstop', 'XXX') --	Tabstops in snippets. |vim.snippet|
 hl('SpecialKey', 'XXX') --	Unprintable characters: Text displayed differently from what
 hl('SpellBad', 'XXX') --	Word that is not recognized by the spellchecker. |spell|
 hl('SpellCap', 'XXX') --	Word that should start with a capital. |spell|
 hl('SpellLocal', 'XXX') --	Word that is recognized by the spellchecker as one that is
 hl('SpellRare', 'XXX') --	Word that is recognized by the spellchecker as one that is
-hl('StatusLineNC', 'XXX') --	Status lines of not-current windows.
-hl('StatusLineTermNC', 'XXX') --
-hl('StatusLineTerm', 'XXX') --	Status line of |terminal| window.
-hl('StatusLine', 'XXX') --	Status line of current window.
 hl('Substitute', 'XXX') --	|:substitute| replacement text highlighting.
 hl('TermCursor', 'XXX') --	Cursor in a focused terminal.
 hl('Title', 'HEADER') --		Titles for output from ":set all", ":autocmd" etc.
@@ -164,8 +160,15 @@ hl('Whitespace', 'YELLOW') --	"nbsp", "space", "tab", "multispace", "lead" and "
 hl('WildMenu', 'XXX') --	Current match in 'wildmenu' completion.
 hl('WinBarNC', 'XXX') --	Window bar of not-current windows.
 hl('WinBar', 'XXX') --		Window bar of current window.
-hl('WinSeparator', 'GRAY_9', { bg = 'GRAY_9', bold = true }) --	Separators between window splits.
 hl('lCursor', 'XXX') --		Character under the cursor when |language-mapping|
+hl('CursorLineFold', 'XXX') --	Like FoldColumn when 'cursorline' is set for the cursor line.
+-- }}}
+
+-- UI {{{
+hl('Normal', 'TEXT') --		Normal text.
+hl('ColorColumn', 'none', { bg = 'GRAY_9'}) --	Max column
+hl('EndOfBuffer', 'BLACK') --	Filler lines (~) after the end of the buffer.
+hl('WinSeparator', 'GRAY_9', { bg = 'GRAY_9', bold = true }) --	Separators between window splits.
 -- }}}
 
 -- Tabs {{{
@@ -175,31 +178,64 @@ hl('TabLineSelSeparator', 'BLACK', { bg = 'GRAY_8', bold = true }) --	Tab pages 
 hl('TabLineFill', 'GRAY_4', { bg = 'GRAY_8' }) --	Tab pages line, where there are no labels.
 -- }}}
 
--- Cursor {{{
-hl('CursorLineNr', 'YELLOW', { bold = true }) --	Like LineNr when 'cursorline' is set and 'cursorlineopt'
-hl('CursorLine', 'none', { bg = 'GRAY_9' }) --	Screen-line at the cursor, when 'cursorline' is set.
+-- Line Number {{{
+hl('LineNr', 'GRAY') --	Line number column
+hl('SignColumn', 'GRAY') --	Sign column
+-- }}}
 
--- Visual mode
+-- Folds {{{
+hl('Folded', 'none', { bg = 'GRAY_8'}) --	Closed fold
+-- }}}
+
+-- Cursor {{{
+hl('CursorLine', 'none', { bg = 'GRAY_9' }) --	Current line
+hl('CursorLineNr', 'YELLOW', { bg = 'GRAY_9', bold = true }) --	Current line number
+hl('CursorLineSign', 'none', { bg = 'GRAY_9'}) --	Current line sign
+-- }}}
+
+-- Visual mode {{{
 hl('Visual', 'VIM_VISUAL_FOREGROUND', { bg = 'VIM_VISUAL_BACKGROUND', bold = true }) --		Visual mode selection.
+-- }}}
+
+-- Search mode {{{
+hl('IncSearch', 'BLACK', { bg = 'YELLOW_4', bold = true }) -- Match as I type
+hl('CurSearch', 'BLACK', { bg = 'YELLOW_4', bold = true }) --	Current selected match
+hl('Search', 'BLACK', { bg = 'YELLOW_6', bold = true }) -- All results
+-- }}}
+
+-- Statusline {{{
+hl('StatusLineNC', 'XXX') --	Status lines of not-current windows.
+hl('StatusLineTermNC', 'XXX') --
+hl('StatusLineTerm', 'XXX') --	Status line of |terminal| window.
+hl('StatusLine', 'GRAY_4', { bg = 'GRAY_8' }) --	Status line of current window.
+-- }}}
+
+-- Commandline {{{
+hl('ModeMsg', 'YYY') --		'showmode' message (e.g., "-- INSERT --").
+hl('MsgArea', 'TEXT') --		Area for messages and command-line, see also 'cmdheight'.
 -- }}}
 
 -- Custom groups {{{
 hl('Noise', 'NOISE') 
+-- }}}
 
-hl('@variable', 'VARIABLE')
-hl('@property', 'KEY')
-hl('@variable.member', 'KEY')
-hl('@punctuation', 'PUNCTUATION')
-hl('@operator', 'PUNCTUATION')
+-- TreeSitter {{{
 hl('@comment.note.comment', 'TODO', { bold = true })
+hl('@operator', 'PUNCTUATION')
+hl('@property', 'KEY')
+hl('@punctuation', 'PUNCTUATION')
+hl('@variable', 'VARIABLE')
+hl('@variable.member', 'KEY')
 
-
+-- lua {{{
 hl('@constructor.lua', 'PUNCTUATION')
-hl('@keyword.lua', 'VARIABLE_TYPE')
-hl('@keyword.return.lua', 'KEYWORD')
-hl('@keyword.repeat.lua', 'KEYWORD')
 hl('@keyword.function.lua', 'KEYWORD')
-
+hl('@keyword.lua', 'VARIABLE_TYPE')
+hl('@keyword.repeat.lua', 'KEYWORD')
+hl('@keyword.return.lua', 'KEYWORD')
+-- }}}
+-- yaml {{{
 hl('@property.yaml', 'VARIABLE')
+-- }}}
 -- }}}
 

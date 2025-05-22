@@ -21,6 +21,7 @@ require('oroshi/filetypes')
 require('oroshi/folding')
 require('oroshi/keybindings')
 require('oroshi/sessions')
+require('oroshi/search')
 require('oroshi/tabline')
 
 -- Plugins
