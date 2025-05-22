@@ -8,6 +8,7 @@ if vim.g.syntax_on then
     vim.cmd('syntax reset')
 end
 
+vim.opt.background = "dark"     -- Prefer dark mode
 vim.g.colors_name = "irisho"
 
 -- Palette {{{
@@ -113,8 +114,6 @@ hl('DiffAdd', 'XXX') --		Diff mode: Added line. |diff.txt|
 hl('DiffChange', 'XXX') --	Diff mode: Changed line. |diff.txt|
 hl('DiffDelete', 'XXX') --	Diff mode: Deleted line. |diff.txt|
 hl('DiffText', 'XXX') --	Diff mode: Changed text within a changed line. |diff.txt|
--- Files
-hl('Directory', 'XXX') --	Directory names (and other special names in listings).
 -- Messages
 hl('ErrorMsg', 'XXX') --	Error messages on the command line.
 -- Windows
@@ -133,7 +132,6 @@ hl('MoreMsg', 'XXX') --		|more-prompt|
 hl('MsgSeparator', 'XXX') --	Separator for scrolled messages |msgsep|.
 hl('NonText', 'GRAY_8') --		'@' at the end of the window, characters from 'showbreak'
 hl('NormalFloat', 'XXX') --	Normal text in floating windows.
-hl('NormalNC', 'XXX') --	Normal text in non-current windows.
 hl('PmenuExtraSel', 'XXX') --	Popup menu: Selected item "extra text".
 hl('PmenuExtra', 'XXX') --	Popup menu: Normal item "extra text".
 hl('PmenuKindSel', 'XXX') --	Popup menu: Selected item "kind".
@@ -168,14 +166,23 @@ hl('CursorLineFold', 'XXX') --	Like FoldColumn when 'cursorline' is set for the 
 hl('Normal', 'TEXT') --		Normal text.
 hl('ColorColumn', 'none', { bg = 'GRAY_9'}) --	Max column
 hl('EndOfBuffer', 'BLACK') --	Filler lines (~) after the end of the buffer.
-hl('WinSeparator', 'GRAY_9', { bg = 'GRAY_9', bold = true }) --	Separators between window splits.
 -- }}}
+
+-- Files
+hl('Directory', 'DIRECTORY') --	Directory names 
 
 -- Tabs {{{
 hl('TabLine', 'GRAY_4', { bg = 'GRAY_8' }) --		Tab pages line, not active tab page label.
 hl('TabLineSel', 'YELLOW', { bg = 'BLACK', bold = true }) --	Tab pages line, active tab page label.
 hl('TabLineSelSeparator', 'BLACK', { bg = 'GRAY_8', bold = true }) --	Tab pages line, active tab page label.
 hl('TabLineFill', 'GRAY_4', { bg = 'GRAY_8' }) --	Tab pages line, where there are no labels.
+-- }}}
+
+-- Splits {{{
+hl('WinSeparator', 'YELLOW_9', { bg = 'BLACK', bold = true }) --	Separators between splits
+hl('NormalNC', 'none', { bg = 'GRAY_8' }) --	Normal text in non-current windows.
+hl('StatusLineNC', 'none', { bg = 'GRAY_8' }) --	Status lines of not-current windows.
+hl('StatusLineTermNC', 'XXX') --
 -- }}}
 
 -- Line Number {{{
@@ -204,8 +211,6 @@ hl('Search', 'BLACK', { bg = 'YELLOW_6', bold = true }) -- All results
 -- }}}
 
 -- Statusline {{{
-hl('StatusLineNC', 'XXX') --	Status lines of not-current windows.
-hl('StatusLineTermNC', 'XXX') --
 hl('StatusLineTerm', 'XXX') --	Status line of |terminal| window.
 hl('StatusLine', 'GRAY_4', { bg = 'GRAY_8' }) --	Status line of current window.
 -- }}}

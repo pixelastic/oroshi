@@ -18,7 +18,17 @@ vim.opt.tabstop = 2 -- Tab displayed as 2 spaces
 vim.opt.expandtab = true -- expand tab to spaces
 vim.opt.autoindent = true -- copy indent from current line when creating a new one
 
+-- Unfocused splits
+local function disableCursorLine()
+  vim.opt_local.cursorline = false
+end
+local function enableCursorLine()
+  vim.opt_local.cursorline = true
+end
+autocmd({'WinLeave', 'FocusLost' }, '*', disableCursorLine) -- Disable current line highlight when out of focus
+autocmd({'WinEnter', 'FocusGained' }, '*', enableCursorLine) -- Re-enable current line hightlight when back in focus
+
 -- COLOR
-vim.opt.background = "dark"     -- Prefer dark mode
 -- vim.cmd("colorscheme oroshi")  -- Use oroshi colorscheme
 vim.cmd("colorscheme irisho")  -- Use oroshi colorscheme
+
