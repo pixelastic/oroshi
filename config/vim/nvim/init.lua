@@ -8,6 +8,7 @@
 -- TODO: See what to do with backup and swap
 -- TODO: Find what works and what does not in a macro
 -- TODO: Add colored line numbers based on if add/delete/modified
+-- TODO: Change color of cursor based on mode
 
 -- Functions
 require('oroshi/functions')
@@ -27,5 +28,3 @@ require('oroshi/tabline')
 
 -- Plugins
 require('oroshi/lazy')
-
-

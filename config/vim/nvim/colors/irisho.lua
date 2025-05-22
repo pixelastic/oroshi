@@ -11,58 +11,6 @@ end
 vim.opt.background = "dark"     -- Prefer dark mode
 vim.g.colors_name = "irisho"
 
--- Palette {{{
-local function getPalette()
-  local palette = {}
-
-  local env_COLORS_INDEX = os.getenv('COLORS_INDEX')
-  local items = vim.split(env_COLORS_INDEX, " ", { trimempty = true })
-  for _, item in ipairs(items) do
-    local key = string.gsub(item, 'ALIAS_', '')
-    local value = os.getenv('COLOR_' .. item .. '_HEXA')
-    palette[key] = value
-  end
-  return palette
-end
-vim.g.palette = getPalette()
--- }}}
-
--- Functions {{{
-local function hl(groupName, colorName, options)
-  local defaults = { 
-    fg = vim.g.palette[colorName],
-    bg = "none",
-    bold = false,
-    italic = false,
-  }
-  local config = vim.tbl_deep_extend("force", defaults, options or {})
-
-  -- Use color alias for background
-  if config.bg ~= 'none' then
-    config.bg = vim.g.palette[config.bg]
-  end
-
-  -- make XXX and YYY standout
-  if colorName == 'XXX' then
-    config = {
-      fg = vim.g.palette.WHITE,
-      bg = vim.g.palette.CYAN,
-      bold = true,
-    }
-  end
-  if colorName == 'YYY' then
-    config = {
-      fg = vim.g.palette.WHITE,
-      bg = vim.g.palette.PURPLE,
-    }
-  end
-
-
-  vim.api.nvim_set_hl(0, groupName, config)
-end
--- }}}
-
-
 -- Standard Syntax Groups {{{
 hl('Added', 'XXX') --		added line in a diff
 hl('Boolean', 'BOOLEAN', { bold = true })
@@ -99,7 +47,7 @@ hl('StorageClass', 'VARIABLE_TYPE') --	static, register, volatile, etc.
 hl('String', 'STRING') 
 hl('Structure', 'VARIABLE_TYPE') --	struct, union, enum, etc.
 hl('Tag', 'XXX') --		you can use CTRL-] on this
-hl('Todo', 'TODO', { bold = true }) 
+hl('Todo', 'ORANGE_3', { bg = 'RED_7', bold = true }) 
 hl('Typedef', 'XXX') --		a typedef
 hl('Type', 'VARIABLE_TYPE') 
 hl('Underlined', 'none', { underline = true }) --	text that stands out, HTML links
@@ -134,7 +82,6 @@ hl('PmenuSbar', 'XXX') --	Popup menu: Scrollbar.
 hl('PmenuThumb', 'XXX') --	Popup menu: Thumb of the scrollbar.
 hl('CmpItemKind', 'XXX')
 hl('CmpItemAbbrDeprecated', 'XXX')
-hl('CmpItemAbbrMatchFuzzy', 'XXX')
 hl('CmpItemMenu', 'XXX')
 
 
@@ -146,7 +93,6 @@ hl('LineNrAbove', 'XXX') --	Line number for when the 'relativenumber'
 hl('LineNrBelow', 'XXX') --	Line number for when the 'relativenumber'
 hl('MoreMsg', 'XXX') --		|more-prompt|
 hl('MsgSeparator', 'XXX') --	Separator for scrolled messages |msgsep|.
-hl('NonText', 'GRAY_8') --		'@' at the end of the window, characters from 'showbreak'
 hl('Question', 'XXX') --	|hit-enter| prompt and yes/no questions.
 hl('QuickFixLine', 'XXX') --	Current |quickfix| item in the quickfix window. Combined with
 hl('SnippetTabstop', 'XXX') --	Tabstops in snippets. |vim.snippet|
@@ -167,18 +113,36 @@ hl('CursorLineFold', 'XXX') --	Like FoldColumn when 'cursorline' is set for the 
 
 -- UI {{{
 hl('Normal', 'TEXT') --		Normal text.
+hl('NonText', 'GRAY_8') -- End-Of-Line (↲) and wrapped lines (↪) chars
 hl('ColorColumn', 'none', { bg = 'GRAY_9'}) --	Max column
 hl('EndOfBuffer', 'BLACK') --	Filler lines (~) after the end of the buffer.
 -- }}}
 
--- Files
-hl('Directory', 'DIRECTORY') --	Directory names 
+-- Line Number {{{
+hl('LineNr', 'GRAY') --	Line number column
+hl('SignColumn', 'GRAY') --	Sign column
+-- }}}
+
+-- Cursor {{{
+hl('CursorLine', 'none', { bg = 'GRAY_9' }) --	Current line
+hl('CursorLineNr', 'YELLOW', { bg = 'GRAY_9', bold = true }) --	Current line number
+hl('CursorLineSign', 'none', { bg = 'GRAY_9'}) --	Current line sign
+-- }}}
 
 -- Tabs {{{
 hl('TabLine', 'GRAY_4', { bg = 'GRAY_8' }) --		Tab pages line, not active tab page label.
 hl('TabLineSel', 'YELLOW', { bg = 'BLACK', bold = true }) --	Tab pages line, active tab page label.
 hl('TabLineSelSeparator', 'BLACK', { bg = 'GRAY_8', bold = true }) --	Tab pages line, active tab page label.
 hl('TabLineFill', 'GRAY_4', { bg = 'GRAY_8' }) --	Tab pages line, where there are no labels.
+-- }}}
+
+-- Statusline {{{
+hl('StatusLineTerm', 'XXX') --	Status line of |terminal| window.
+hl('StatusLine', 'GRAY_4', { bg = 'GRAY_8' }) --	Status line of current window.
+-- }}}
+
+-- Commandline {{{
+hl('ModeMsg', 'XXX') --		'showmode' message (e.g., "-- INSERT --").
 -- }}}
 
 -- Splits {{{
@@ -188,54 +152,59 @@ hl('StatusLineNC', 'none', { bg = 'GRAY_8' }) --	Status lines of not-current win
 hl('StatusLineTermNC', 'XXX') --
 -- }}}
 
--- Line Number {{{
-hl('LineNr', 'GRAY') --	Line number column
-hl('SignColumn', 'GRAY') --	Sign column
--- }}}
-
 -- Folds {{{
 hl('Folded', 'none', { bg = 'GRAY_8'}) --	Closed fold
 -- }}}
 
--- Misc {{'
-hl('MatchParen', 'YELLOW', { bg = 'PUNCTUATION' }) -- Matching parenthesis
+-- Normal mode {{{
+hl('StatuslineModeNormal', 'WHITE_LIGHT', { bg = 'BLACK', bold = true })
+hl('StatuslineModeNormalSeparator', 'BLACK')
 -- }}}
 
--- Cursor {{{
-hl('CursorLine', 'none', { bg = 'GRAY_9' }) --	Current line
-hl('CursorLineNr', 'YELLOW', { bg = 'GRAY_9', bold = true }) --	Current line number
-hl('CursorLineSign', 'none', { bg = 'GRAY_9'}) --	Current line sign
+-- Insert mode {{{
+hl('StatuslineModeInsert', 'BLACK', { bg = 'YELLOW', bold = true })
+hl('StatuslineModeInsertSeparator', 'YELLOW')
 -- }}}
 
 -- Visual mode {{{
-hl('Visual', 'VIM_VISUAL_FOREGROUND', { bg = 'VIM_VISUAL_BACKGROUND', bold = true }) --		Visual mode selection.
+hl('Visual', 'WHITE', { bg = 'BLUE', bold = true }) --		Visual mode selection.
+hl('StatuslineModeVisual', 'WHITE', { bg = 'BLUE', bold = true })
+hl('StatuslineModeVisualSeparator', 'BLUE')
+-- }}}
+
+-- Command mode {{{
+hl('StatuslineModeCommand', 'TEAL_1', { bg = 'TEAL', bold = true })
+hl('StatuslineModeCommandSeparator', 'TEAL')
+hl('MsgArea', 'WHITE') -- Where to type command and display output
 -- }}}
 
 -- Search mode {{{
-hl('IncSearch', 'BLACK', { bg = 'YELLOW_4', bold = true }) -- Match as I type
-hl('CurSearch', 'BLACK', { bg = 'YELLOW_4', bold = true }) --	Current selected match
-hl('Search', 'BLACK', { bg = 'YELLOW_6', bold = true }) -- All results
+hl('IncSearch', 'ORANGE_2', { bg = 'ORANGE_7', bold = true }) -- Match as I type
+hl('CurSearch', 'ORANGE_2', { bg = 'ORANGE_7', bold = true }) --	Current selected match
+hl('Search', 'ORANGE_9', { bg = 'ORANGE_3', bold = true }) -- All results
+hl('StatuslineModeSearch', 'ORANGE_2', { bg = 'ORANGE_7', bold = true })
+hl('StatuslineModeSearchSeparator', 'ORANGE_7')
 -- }}}
 
--- Statusline {{{
-hl('StatusLineTerm', 'XXX') --	Status line of |terminal| window.
-hl('StatusLine', 'GRAY_4', { bg = 'YELLOW' }) --	Status line of current window.
--- }}}
 
 -- Completion
-hl('Pmenu', 'BLACK', { bg = 'BLACK'})       -- Background
+hl('CmpGhostText', 'COMMENT') -- Ghost text
+-- Fake Wildmenu, displayed hidden above statusbar,
+hl('Pmenu', 'BLACK', { bg = 'BLACK'})       -- Fake Wildmenu Background
 hl('CmpItemAbbr', 'BLACK') -- Suggestions
 hl('PmenuSel', 'BLACK') -- Current selection
 hl('CmpItemAbbrMatch', 'BLACK') -- Partial match
+hl('CmpItemAbbrMatchFuzzy', 'BLACK') -- Fuzzy match
 -- }}}
 
--- Commandline {{{
-hl('ModeMsg', 'XXX') --		'showmode' message (e.g., "-- INSERT --").
-hl('MsgArea', 'TEXT', { bg = 'NONE' }) -- Where messages are displayed
+
+-- Misc {{'
+hl('MatchParen', 'YELLOW', { bg = 'PUNCTUATION' }) -- Matching parenthesis
+hl('Directory', 'DIRECTORY') --	Directory names 
 -- }}}
 
 -- Custom groups {{{
-hl('Noise', 'NOISE') 
+hl('Noise', 'NOISE')
 -- }}}
 
 -- TreeSitter {{{

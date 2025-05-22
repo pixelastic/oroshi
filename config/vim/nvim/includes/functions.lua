@@ -56,3 +56,52 @@ function cmap(input, output, description, options)
   map("c", input, output, description, options)
 end
 --- }}}
+
+-- Color functions
+local function getPalette()
+  local palette = {}
+
+  local env_COLORS_INDEX = os.getenv('COLORS_INDEX')
+  local items = vim.split(env_COLORS_INDEX, " ", { trimempty = true })
+  for _, item in ipairs(items) do
+    local key = string.gsub(item, 'ALIAS_', '')
+    local value = os.getenv('COLOR_' .. item .. '_HEXA')
+    palette[key] = value
+  end
+  return palette
+end
+vim.g.palette = getPalette()
+
+-- Highlight
+function hl(groupName, colorName, options)
+  local defaults = { 
+    fg = vim.g.palette[colorName],
+    bg = "none",
+    bold = false,
+    italic = false,
+  }
+  local config = vim.tbl_deep_extend("force", defaults, options or {})
+
+  -- Use color alias for background
+  if config.bg ~= 'none' then
+    config.bg = vim.g.palette[config.bg]
+  end
+
+  -- make XXX and YYY standout
+  if colorName == 'XXX' then
+    config = {
+      fg = vim.g.palette.WHITE,
+      bg = vim.g.palette.CYAN,
+      bold = true,
+    }
+  end
+  if colorName == 'YYY' then
+    config = {
+      fg = vim.g.palette.WHITE,
+      bg = vim.g.palette.PURPLE,
+    }
+  end
+
+  vim.api.nvim_set_hl(0, groupName, config)
+end
+-- }}}

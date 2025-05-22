@@ -1,3 +1,2 @@
--- Use the global clipboard
-vim.opt.clipboard = "unnamedplus"
+vim.opt.clipboard = "unnamedplus" -- Use the global clipboard
 

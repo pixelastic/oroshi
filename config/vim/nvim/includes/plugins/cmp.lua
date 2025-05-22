@@ -20,6 +20,7 @@ return {
   },
   config = function()
     local cmp = require("cmp")
+    local context = require('cmp.config.context')
 
     local function completeOrNext()
       if cmp.visible() then
@@ -29,48 +30,30 @@ return {
       end
     end
 
+    -- Disable completion based on context
+    local function isEnabled()
+      -- Disable in comments
+      local isInComment = context.in_treesitter_capture("comment")
+      local isInString = context.in_treesitter_capture("string")
+
+      return not(isInComment or isInString)
+    end
+
     -- When completing from wildmenu, flash of non focus, need to change the
     -- NormalNC highlight
     -- 
 
 
     cmp.setup({
-      completion = {
-        -- completeopt = "menu,menuone,preview,noselect",
-        -- autocomplete = false
-        -- autocomplete = {
-        --   require('cmp.types').cmp.TriggerEvent.TextChanged
-        -- }
-      },
+      enabled = isEnabled,
       view = {
         entries = "wildmenu",
       },
       experimental = {
         ghost_text = {
-          hl_group = 'Comment'
+          hl_group = 'CmpGhostText'
         }
       },
-      -- preselect = cmp.PreselectMode.None,
-      -- window = {
-        -- completion = {
-          -- winblend = 0,
-          -- width = 10,
-          -- max_width = 5,
-          -- max_height = 5,
-          -- col_offset = -99,
-          -- side_padding = 99,
-          -- scrolloff = 0,
-          -- scrollbar = 0,
-        -- }
-      -- },
-      -- window = {
-      --   completion = require('cmp.config.window').bordered({
-      --     winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
-      --     col_offset = 100,
-      --     side_padding = 10,
-      --     scrollbar = false,
-      --   }),
-      -- },
       mapping = {
         ["<Tab>"] = completeOrNext,
         ["<S-Tab>"] = cmp.mapping.select_prev_item(),

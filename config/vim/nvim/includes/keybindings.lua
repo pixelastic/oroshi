@@ -2,10 +2,19 @@ vim.g.mapleader = "," -- Leader key
 
 -- Capslock
 -- Switch between Normal and Insert mode
+function switchToInsertMode()
+  -- The Message Area tend to flicker on top of the status bar when going into
+  -- insert mode. So we set it to blend = 100 to make it invisible, then revert
+  -- it.
+  local currentHighlight = vim.api.nvim_get_hl(0, { name = "MsgArea" })
+  hl('MsgArea', 'NONE', { blend = 100 })
+  vim.cmd.startinsert()
+  hl('MsgArea', 'NONE', currentHighlight)
+end
 imap("<F13>", "<Esc>l", "Insert  => Normal")
-nmap("<F13>", "i", "Normal  => Insert")
+nmap("<F13>", switchToInsertMode, "Normal  => Insert")
 vmap("<F13>", "<Esc>", "Visual  => Normal")
-cmap("<F13>", "<Esc>", "Command => Normal")
+cmap("<F13>", "<C-C>", "Command => Normal")
 
 -- Space
 nmap('<Space>', '.', 'Repeat', { remap = true })
