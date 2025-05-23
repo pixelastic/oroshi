@@ -1,10 +1,8 @@
 -- TODO: Align on antything
--- TODO: statusline to show the mode
 -- TODO: Linters linters
--- TODO: Rewrite colorscheme in lua
 -- TODO: Make sure kitty.conf is correctly highlighted
 -- TODO: Find a plugin that can autoclose functions
--- TODO: Completion
+-- TODO: Display all completion suggestions with Ctrl-Space?
 -- TODO: See what to do with backup and swap
 -- TODO: Find what works and what does not in a macro
 -- TODO: Add colored line numbers based on if add/delete/modified
