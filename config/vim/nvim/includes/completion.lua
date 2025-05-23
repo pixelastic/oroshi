@@ -35,3 +35,24 @@ local function setCmdHeight(newHeight)
 end
 autocmd('CmdlineEnter', '*', setCmdHeight(1))
 autocmd('CmdlineLeave', '*', setCmdHeight(0))
+
+
+-- Change visibility / readability of the MsgArea
+function msgAreaReadable()
+  hl('MsgArea', 'TEXT', { bg = 'NEUTRAL' })
+end
+function msgAreaDefault()
+  hl('MsgArea', 'WHITE')
+end
+msgAreaDefault()
+
+-- Run a function, while making the MsgArea more readable
+-- Useful to make it stand out from the UI
+function withReadableMsgArea(callback)
+  msgAreaReadable()
+  vim.schedule(function()
+    callback()
+    msgAreaDefault()
+  end)
+end
+

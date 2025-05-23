@@ -2,17 +2,8 @@ vim.g.mapleader = "," -- Leader key
 
 -- Capslock
 -- Switch between Normal and Insert mode
-function switchToInsertMode()
-  -- The Message Area tend to flicker on top of the status bar when going into
-  -- insert mode. So we set it to blend = 100 to make it invisible, then revert
-  -- it.
-  local currentHighlight = vim.api.nvim_get_hl(0, { name = "MsgArea" })
-  hl('MsgArea', 'NONE', { blend = 100 })
-  vim.cmd.startinsert()
-  hl('MsgArea', 'NONE', currentHighlight)
-end
 imap("<F13>", "<Esc>l", "Insert  => Normal")
-nmap("<F13>", switchToInsertMode, "Normal  => Insert")
+nmap("<F13>", vim.cmd.startinsert, "Normal  => Insert")
 vmap("<F13>", "<Esc>", "Visual  => Normal")
 cmap("<F13>", "<C-C>", "Command => Normal")
 
@@ -54,8 +45,13 @@ imap('<F2>', reloadColorScheme, 'Reload colorscheme')
 vmap('<F2>', reloadColorScheme, 'Reload colorscheme')
 
 -- F3: Debug colors
-nmap('<F3>', vim.show_pos, 'Display highlight groups')
-imap('<F3>', vim.show_pos, 'Display highlight groups')
+local function debugColors()
+  withReadableMsgArea(function()
+    vim.show_pos()
+  end)
+end
+nmap('<F3>', debugColors, 'Display highlight groups')
+imap('<F3>', debugColors, 'Display highlight groups')
 
 
 -- Tabs

@@ -160,10 +160,6 @@ hl('Folded', 'none', { bg = 'GRAY_8'}) --	Closed fold
 hl('Visual', 'WHITE', { bg = 'BLUE', bold = true }) --		Visual mode selection.
 -- }}}
 
--- Command mode {{{
-hl('MsgArea', 'WHITE') -- Where to type command and display output
--- }}}
-
 -- Search mode {{{
 hl('IncSearch', 'ORANGE_2', { bg = 'ORANGE_7', bold = true }) -- Match as I type
 hl('CurSearch', 'ORANGE_2', { bg = 'ORANGE_7', bold = true }) --	Current selected match
