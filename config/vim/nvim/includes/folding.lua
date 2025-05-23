@@ -15,6 +15,7 @@ function oroshiFoldText()
     return firstLine
   end
 
+
   return prefixSymbol .. firstLine:sub(2)
 end
 

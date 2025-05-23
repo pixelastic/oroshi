@@ -5,8 +5,9 @@ return {
   "hrsh7th/nvim-cmp",
   event = "InsertEnter",
   dependencies = {
-    "hrsh7th/cmp-buffer", -- source for text in buffer
-    "hrsh7th/cmp-path", -- source for file system paths
+    "hrsh7th/cmp-nvim-lua", -- nvim-specific lua commands
+    "hrsh7th/cmp-buffer", -- text in buffer
+    "hrsh7th/cmp-path", -- paths on disk
     -- {
     --   "L3MON4D3/LuaSnip",
     --   -- follow latest release.
@@ -72,10 +73,10 @@ return {
       },
       -- sources for autocompletion
       sources = cmp.config.sources({
-        { name = 'nvim_lua' },
+        { name = 'nvim_lua' }, -- cmp-nvim-lua
+        { name = "path" }, -- cmp-path
+        { name = "buffer" }, -- cmp-buffer
         -- { name = "luasnip" }, -- snippets
-        -- { name = "buffer" }, -- text within current buffer
-        { name = "path" }, -- file system paths
       }),
       -- snippet = { -- configure how nvim-cmp interacts with snippet engine
       --   expand = function(args)

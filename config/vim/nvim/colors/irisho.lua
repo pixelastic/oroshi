@@ -156,25 +156,11 @@ hl('StatusLineTermNC', 'XXX') --
 hl('Folded', 'none', { bg = 'GRAY_8'}) --	Closed fold
 -- }}}
 
--- Normal mode {{{
-hl('StatuslineModeNormal', 'WHITE_LIGHT', { bg = 'BLACK', bold = true })
-hl('StatuslineModeNormalSeparator', 'BLACK')
--- }}}
-
--- Insert mode {{{
-hl('StatuslineModeInsert', 'BLACK', { bg = 'YELLOW', bold = true })
-hl('StatuslineModeInsertSeparator', 'YELLOW')
--- }}}
-
 -- Visual mode {{{
 hl('Visual', 'WHITE', { bg = 'BLUE', bold = true }) --		Visual mode selection.
-hl('StatuslineModeVisual', 'WHITE', { bg = 'BLUE', bold = true })
-hl('StatuslineModeVisualSeparator', 'BLUE')
 -- }}}
 
 -- Command mode {{{
-hl('StatuslineModeCommand', 'TEAL_1', { bg = 'TEAL', bold = true })
-hl('StatuslineModeCommandSeparator', 'TEAL')
 hl('MsgArea', 'WHITE') -- Where to type command and display output
 -- }}}
 
@@ -182,8 +168,6 @@ hl('MsgArea', 'WHITE') -- Where to type command and display output
 hl('IncSearch', 'ORANGE_2', { bg = 'ORANGE_7', bold = true }) -- Match as I type
 hl('CurSearch', 'ORANGE_2', { bg = 'ORANGE_7', bold = true }) --	Current selected match
 hl('Search', 'ORANGE_9', { bg = 'ORANGE_3', bold = true }) -- All results
-hl('StatuslineModeSearch', 'ORANGE_2', { bg = 'ORANGE_7', bold = true })
-hl('StatuslineModeSearchSeparator', 'ORANGE_7')
 -- }}}
 
 
