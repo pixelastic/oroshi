@@ -4,6 +4,11 @@ function append(container, item)
   table.insert(container, item)
 end
 
+-- debug: Display a variable in a floating window
+function d(input)
+  vim.notify(vim.inspect(input))
+end
+
 
 -- getColors: Define vim.g.colors once and for all
 local function getColors()

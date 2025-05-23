@@ -9,6 +9,8 @@
 -- TODO: Change color of cursor based on mode
 -- TODO: Commenting / uncommenting lines with comments should remove comment
 -- where there are already comment
+-- TODO: tab at start of line should indent, not complete
+-- TODO: Autoformat on save
 
 -- Functions
 require('oroshi/functions')

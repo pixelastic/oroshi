@@ -27,6 +27,7 @@ return {
         "json",
         "lua",
         "markdown",
+        "markdown_inline",
         "nginx",
         "pug",
         "regex",
@@ -60,15 +61,5 @@ return {
       }, 
     })
 
-    -- Use treesitter for folding specific files
-    ftplugin(
-      { "bash", "css", "csv", "dockerfile", "editorconfig", "html", 
-        "ini", "javascript", "json", "lua", "markdown", "nginx", "pug", 
-        "ruby", "xml", "yaml" },
-      function()
-        vim.opt_local.foldmethod = 'expr'
-        vim.opt_local.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-      end
-    )
   end,
 }
