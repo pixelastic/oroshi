@@ -114,6 +114,7 @@ vim.g.statusline = {
   --       }
   --   }
   getProject = function()
+    -- Check in buffer cache first
     if vim.b.statuslineProject then
       return vim.b.statuslineProject
     end
@@ -123,8 +124,7 @@ vim.g.statusline = {
     local project = getProject(projectKey)
 
     local display = project.icon .. project.name
-
-    return {
+    local statuslineProject = {
       display = display,
       name = project.name,
       icon = project.icon,
@@ -133,6 +133,10 @@ vim.g.statusline = {
         fg = project.fg,
       }
     }
+
+    -- Save in cache
+    vim.b.statuslineProject = statuslineProject
+    return statuslineProject
   end
 
 }

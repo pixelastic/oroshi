@@ -1,4 +1,7 @@
 return {
+  -- https://github.com/rcarriga/nvim-notify
+  -- Display messages in a floating notification window
+  -- enable = false,
   "rcarriga/nvim-notify",
   config = function()
     local notify = require('notify')
@@ -7,11 +10,5 @@ return {
     })
 
     vim.notify = notify
-    -- vim.print = notify
-    -- vim.error = notify
-
-    nmap('N', function()
-     notify("My super important message")
-    end, 'kjkjk')
   end
 }

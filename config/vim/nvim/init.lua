@@ -9,6 +9,8 @@
 -- TODO: Find what works and what does not in a macro
 -- TODO: Add colored line numbers based on if add/delete/modified
 -- TODO: Change color of cursor based on mode
+-- TODO: Commenting / uncommenting lines with comments should remove comment
+-- where there are already comment
 
 -- Functions
 require('oroshi/functions')
