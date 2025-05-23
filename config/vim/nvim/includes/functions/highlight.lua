@@ -12,7 +12,10 @@ end
 -- hl('Comment', 'none', { bg = 'GREEN' })              -- Keep foreground as parent
 -- hl('Comment', 'none', { fg = 'RED', bg = 'GREEN' })  -- Pass everything in last arg
 function hl(groupName, colorName, options)
+  -- Default options
   if not options then options = {} end
+  options = vim.deepcopy(options) -- Prevent subtables to be modified when passed by reference
+
   -- Convert colors from short names
   if options.fg and options.fg ~= 'none' then options.fg = vim.g.colors[options.fg] end
   if options.bg and options.bg ~= 'none' then options.bg = vim.g.colors[options.bg] end
@@ -23,7 +26,7 @@ function hl(groupName, colorName, options)
     bold = false,
     italic = false,
   }
-  local config = vim.tbl_deep_extend("force", defaults, options or {})
+  local config = vim.tbl_deep_extend("force", defaults, options)
 
   -- make XXX and YYY standout
   if colorName == 'XXX' then

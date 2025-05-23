@@ -6,6 +6,7 @@ vim.opt.statusline = '%!v:lua.oroshiStatusline()' -- Use custom function
 
 local function refreshStatusLine()
   package.loaded['oroshi.statusline'] = nil
+  vim.b.statuslineFileData = nil
   require('oroshi.statusline')
 end
 nmap('Ⓡ', refreshStatusLine, 'Refresh statusline code')
@@ -14,18 +15,33 @@ nmap('Ⓡ', refreshStatusLine, 'Refresh statusline code')
 function oroshiStatusline()
   local statusline = {}
 
+  -- Mode
   local mode = vim.g.statusline.getMode()
   local modeBg = mode.hl.bg; -- Need to be stored statically
+  -- Project & file
+  local fileData = vim.g.statusline.getFileData()
+  local file = fileData.file;
+  local project = fileData.project;
 
-  local project = vim.g.statusline.getProject()
-  local projectBg = project.hl.bg;
 
 
+  -- Coloring
   local add = vim.g.statusline.add
-  add(statusline, ' ' .. mode.content .. ' ', mode.hl)
-  add(statusline, '', { fg = modeBg, bg = projectBg })
-  add(statusline, ' ' .. project.display .. ' ', project.hl)
-  add(statusline, '', { fg = projectBg })
+  -- Mode
+  add(statusline, mode.content, mode.hl)
+  add(statusline, '', { fg = modeBg, bg = project.hl.bg})
+
+  -- Project
+  add(statusline, project.content, project.hl)
+  add(statusline, '', { fg = project.hl.bg })
+
+  -- Filepath
+  local isReadonly = vim.bo.readonly
+  local hasUnsavedChanges = vim.bo.modified
+  local fileHighlight = { fg = 'GREEN', bold = true }
+  if isReadonly then fileHighlight = { fg = 'RED' } end
+  if hasUnsavedChanges then fileHighlight = { fg = 'VIOLET_4' } end
+  add(statusline, file.content, fileHighlight)
 
   return table.concat(statusline, '')
 end
@@ -62,23 +78,23 @@ vim.g.statusline = {
     -- All possible modes
     local modes = {
       n = {
-        content = 'NORMAL',
+        content = ' NORMAL ',
         hl = { bg = 'BLACK', fg = 'WHITE_LIGHT', bold = true }
       },
       i = {
-        content = 'INSERT',
+        content = ' INSERT ',
         hl = { bg = 'YELLOW', fg = 'BLACK', bold = true }
       },
       v = {
-        content = 'VISUAL',
+        content = ' VISUAL ',
         hl = { bg = 'BLUE', fg = 'WHITE', bold = true }
       },
       s = {
-        content = 'SEARCH',
+        content = ' SEARCH ',
         hl = { bg = 'ORANGE_7', fg = 'ORANGE_2', bold = true }
       },
       c = {
-        content = 'COMMAND',
+        content = ' COMMAND ',
         hl = { bg = 'TEAL', fg = 'TEAL_1', bold = true }
       },
     }
@@ -100,45 +116,59 @@ vim.g.statusline = {
     return mode
   end,
 
-  -- Get information about current project
+
+  -- Get information about current file
   -- Stores info in buffer, so it is only called once per buffer
   -- Usage:
-  -- getProject() 
+  -- getFileData() 
   -- => { 
-  --       display = 'x oroshi',
-  --       name = 'oroshi',
-  --       icon = 'x ',
-  --       hl = {
-  --         bg = 'GREEN',
-  --         fg = 'WHITE'
+  --       project = {
+  --         content = 'x oroshi',
+  --         hl = {
+  --           bg = 'GREEN',
+  --           fg = 'WHITE'
+  --         }
+  --       },
+  --       file = {
+  --         path = 'config/vim/nvim/includes/statusline.lua',
   --       }
   --   }
-  getProject = function()
+  getFileData = function()
     -- Check in buffer cache first
-    if vim.b.statuslineProject then
-      return vim.b.statuslineProject
+    if vim.b.statuslineFileData then
+      return vim.b.statuslineFileData
     end
 
-    local filepath = vim.fn.expand('%:p')
-    local projectKey = vim.fn.systemlist('project-by-path ' .. filepath)[1]
-    local project = getProject(projectKey)
+    local rawFilepath = vim.fn.expand('%:p')
 
-    local display = project.icon .. project.name
-    local statuslineProject = {
-      display = display,
-      name = project.name,
-      icon = project.icon,
+    -- Project info
+    local projectKey = vim.fn.systemlist('project-by-path ' .. rawFilepath)[1]
+    local projectData = getProject(projectKey)
+    local projectContent = ' ' .. projectData.icon .. projectData.name .. ' '
+    local project = {
+      content = projectContent,
       hl = {
-        bg = project.bg,
-        fg = project.fg,
+        bg = projectData.bg,
+        fg = projectData.fg,
       }
     }
 
-    -- Save in cache
-    vim.b.statuslineProject = statuslineProject
-    return statuslineProject
-  end
+    -- File info
+    -- Content
+    local fileContent = ' ' .. rawFilepath:gsub(projectData.path, '')
+    local file = {
+      content = fileContent,
+    }
 
+
+    -- Save in cache
+    local statuslineFileData = {
+      project = project,
+      file = file
+    }
+    vim.b.statuslineFileData = statuslineFileData
+    return statuslineFileData
+  end,
 }
 
 

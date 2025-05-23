@@ -41,6 +41,7 @@ function getProject(projectKey)
   -- Get relevant project data
   local projectData = {
     name = projectKey:lower(),
+    path = vim.fn.expand(projectPath), -- Convert ~ to full path
     icon = getAttribute('ICON'),
     bg = getAttribute('BACKGROUND_NAME'),
     fg = getAttribute('FOREGROUND_NAME')
