@@ -30,7 +30,7 @@ function hl(groupName, colorName, options)
 
   -- make XXX and YYY standout
   if colorName == 'XXX' then
-    config = { fg = vim.g.colors.WHITE, bold = true, }
+    config = { fg = vim.g.colors.WHITE, bg = vim.g.colors.CYAN, bold = true, }
   end
   if colorName == 'YYY' then
     config = { fg = vim.g.colors.WHITE, bg = vim.g.colors.PURPLE, }

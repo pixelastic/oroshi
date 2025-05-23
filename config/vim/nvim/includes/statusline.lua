@@ -40,11 +40,18 @@ function oroshiStatusline()
   add(statusline, project.content, project.hl)
   add(statusline, '', { fg = project.hl.bg })
 
+  -- Recording macro
+  if vim.g.recordingMacro then
+    add(statusline, " 󰑋 ", { fg = 'RED' })
+    add(statusline, vim.g.recordingMacro, { fg = 'RED_4' })
+  end
+
   -- Filepath
   add(statusline, file.content, fileHighlight)
 
   -- Separator
   add(statusline, '%<%=')
+
 
   -- File encoding (only if not UTF-8)
   local fileencoding = vim.bo.fileencoding ~= '' and vim.bo.fileencoding or vim.o.encoding
@@ -201,6 +208,17 @@ vim.g.statusline = {
   end,
 }
 
+-- Switch a boolean when recording a macro
+local function setIsRecording(status)
+  return function()
+    if status then
+      vim.g.recordingMacro = vim.fn.reg_recording()
+    else
+      vim.g.recordingMacro = false
+    end
 
-
-
+    vim.cmd("redrawstatus")
+  end
+end
+autocmd('RecordingEnter', '*', setIsRecording(true))
+autocmd('RecordingLeave', '*', setIsRecording(false))
