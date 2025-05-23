@@ -44,7 +44,8 @@ function getProject(projectKey)
     path = vim.fn.expand(projectPath), -- Convert ~ to full path
     icon = getAttribute('ICON'),
     bg = getAttribute('BACKGROUND_NAME'),
-    fg = getAttribute('FOREGROUND_NAME')
+    fg = getAttribute('FOREGROUND_NAME'),
+    hideNameInPrompt = getAttribute('HIDE_NAME_IN_PROMPT')
   }
   vim.g.__projects[projectKey] = projectData;
 

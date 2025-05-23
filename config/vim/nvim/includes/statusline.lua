@@ -20,12 +20,17 @@ function oroshiStatusline()
   local modeBg = mode.hl.bg; -- Need to be stored statically
   -- Project & file
   local fileData = vim.g.statusline.getFileData()
+  -- File
   local file = fileData.file;
+  local isReadonly = vim.bo.readonly
+  local hasUnsavedChanges = vim.bo.modified
+  local fileHighlight = { fg = 'GREEN', bold = true }
+  if isReadonly then fileHighlight = { fg = 'RED' } end
+  if hasUnsavedChanges then fileHighlight = { fg = 'VIOLET_4' } end
+  -- Project
   local project = fileData.project;
 
 
-
-  -- Coloring
   local add = vim.g.statusline.add
   -- Mode
   add(statusline, mode.content, mode.hl)
@@ -36,12 +41,31 @@ function oroshiStatusline()
   add(statusline, '', { fg = project.hl.bg })
 
   -- Filepath
-  local isReadonly = vim.bo.readonly
-  local hasUnsavedChanges = vim.bo.modified
-  local fileHighlight = { fg = 'GREEN', bold = true }
-  if isReadonly then fileHighlight = { fg = 'RED' } end
-  if hasUnsavedChanges then fileHighlight = { fg = 'VIOLET_4' } end
   add(statusline, file.content, fileHighlight)
+
+  -- Separator
+  add(statusline, '%<%=')
+
+  -- File encoding (only if not UTF-8)
+  local fileencoding = vim.bo.fileencoding ~= '' and vim.bo.fileencoding or vim.o.encoding
+  if fileencoding ~= 'utf-8' then
+    add(statusline, ' ' .. fileencoding, { fg = 'RED' })
+  end
+
+  -- Filetype
+  local filetype = vim.bo.filetype
+  add(statusline, ' ' .. filetype)
+
+  -- Foldmarker
+  local foldmethod = vim.wo.foldmethod
+  local foldSymbolMap = { manuel = 'M', marker = '{', syntax = 'S', indent = '▸', expr = '󰊕 ' }
+  local foldSymbol = foldSymbolMap[foldmethod] or '?'
+  add(statusline, '  ' .. foldSymbol)
+
+  -- Ruler
+  add(statusline, '  %2.c:%2.l %2p%%')
+  add(statusline, '  0x%2.B')
+
 
   return table.concat(statusline, '')
 end
@@ -144,9 +168,13 @@ vim.g.statusline = {
     -- Project info
     local projectKey = vim.fn.systemlist('project-by-path ' .. rawFilepath)[1]
     local projectData = getProject(projectKey)
-    local projectContent = ' ' .. projectData.icon .. projectData.name .. ' '
+    -- Icon with name string
+    local projectContent = projectData.icon
+    if projectData.hideNameInPrompt == '0' then
+      projectContent = projectContent .. projectData.name
+    end
     local project = {
-      content = projectContent,
+      content = ' ' .. projectContent .. ' ',
       hl = {
         bg = projectData.bg,
         fg = projectData.fg,
@@ -155,7 +183,9 @@ vim.g.statusline = {
 
     -- File info
     -- Content
-    local fileContent = ' ' .. rawFilepath:gsub(projectData.path, '')
+    local relativePath = rawFilepath:gsub('^' .. projectData.path, '')
+    local simplifiedPath = vim.fn.systemlist('simplify-path ' .. relativePath .. ' 3')[1] -- Keep only three levels
+    local fileContent = ' ' .. simplifiedPath
     local file = {
       content = fileContent,
     }
