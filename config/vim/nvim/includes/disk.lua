@@ -1,5 +1,4 @@
 vim.opt.swapfile = false
-
 -- Working directory
 -- Set it as the directory of the currently edited file
 local function updateWorkingDirectory()

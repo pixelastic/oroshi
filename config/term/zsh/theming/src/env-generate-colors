@@ -120,7 +120,7 @@ aliasColors[TEXT]="GRAY_LIGHT"
 aliasColors[TODO]="RED"
 aliasColors[VARIABLE]="VIOLET"                  # Reading it
 aliasColors[VARIABLE_DEFINITION]="VIOLET_LIGHT" # Left-hand side, writing it
-aliasColors[VARIABLE_TYPE]="RED_3"          # const, let, function
+aliasColors[VARIABLE_TYPE]="RED_4"          # const, let, function
 # }}}
 # States {{{
 aliasColors[ERROR]="RED"

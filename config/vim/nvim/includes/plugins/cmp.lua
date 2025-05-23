@@ -31,28 +31,37 @@ return {
     end
 
     -- Disable completion based on context
-    local function isEnabled()
-      -- Disable in comments
-      local isInComment = context.in_treesitter_capture("comment")
-      local isInString = context.in_treesitter_capture("string")
+    local function disableBasedOnContext()
+      local blockerTypes = { "comment", "string", "number" }
 
-      return not(isInComment or isInString)
+      -- Check all blockers to see if they are part of the current highlights
+      local currentTypes = getHighlightGroups()
+      for _, typeName in ipairs(blockerTypes) do
+        local treesitterName = typeName:lower() -- string
+        if vim.tbl_contains(currentTypes, treesitterName) then
+          return false
+        end
+
+        local syntaxName = typeName:gsub('^%l', string.upper) -- String
+        if vim.tbl_contains(currentTypes, syntaxName) then
+          return false
+        end
+      end
+
+      -- If none found, we can enable completion
+      return true
     end
 
-    -- When completing from wildmenu, flash of non focus, need to change the
-    -- NormalNC highlight
-    -- 
-
-
     cmp.setup({
-      enabled = isEnabled,
-      view = {
-        entries = "wildmenu",
-      },
+      enabled = disableBasedOnContext,
+      keyword_length = 3,
       experimental = {
         ghost_text = {
           hl_group = 'CmpGhostText'
         }
+      },
+      view = {
+        entries = "wildmenu",
       },
       mapping = {
         ["<Tab>"] = completeOrNext,
@@ -63,8 +72,9 @@ return {
       },
       -- sources for autocompletion
       sources = cmp.config.sources({
+        { name = 'nvim_lua' },
         -- { name = "luasnip" }, -- snippets
-        { name = "buffer" }, -- text within current buffer
+        -- { name = "buffer" }, -- text within current buffer
         { name = "path" }, -- file system paths
       }),
       -- snippet = { -- configure how nvim-cmp interacts with snippet engine

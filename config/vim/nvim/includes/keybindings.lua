@@ -54,7 +54,8 @@ imap('<F2>', reloadColorScheme, 'Reload colorscheme')
 vmap('<F2>', reloadColorScheme, 'Reload colorscheme')
 
 -- F3: Debug colors
-nmap('<F3>', ':Inspect<CR>', 'Display highlight groups')
+nmap('<F3>', vim.show_pos, 'Display highlight groups')
+imap('<F3>', vim.show_pos, 'Display highlight groups')
 
 
 -- Tabs
@@ -116,8 +117,11 @@ end
 nmap(';', addSemicolonAtEndOfLine, 'Add a semicolon at end of line')
 
 -- Paste
+nmap('p', ':pu<CR>`[=`]', "Paste right after current line, and keep indent")
+nmap('P', ':pu!<CR>`[=`]', "Paste right before current line, and keep indent")
 nmap('gp', '`[v`]', "Select what was just pasted")
 nmap('c', '"_c', "Change without copying it")
+nmap('x', '"_x', "Delete without copying it")
 vmap('x', '"_x', "Delete without copying it")
 
 -- Marks and jump

@@ -7,8 +7,8 @@ return {
     })
 
     vim.notify = notify
-    vim.print = notify
-    vim.error = notify
+    -- vim.print = notify
+    -- vim.error = notify
 
     nmap('N', function()
      notify("My super important message")
