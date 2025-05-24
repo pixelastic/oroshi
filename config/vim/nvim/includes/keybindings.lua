@@ -16,6 +16,19 @@ nmap('<C-A>', 'GVgg', 'Select everything')
 vmap('<C-A>', '<ESC>GVgg', 'Select everything')
 imap('<C-A>', '<ESC>GVgg', 'Select everything')
 
+-- CTRL + SHIFT + R
+local function reloadConfig()
+  -- Tabline
+  package.loaded['oroshi.tabline'] = nil
+  require('oroshi.tabline')
+
+  -- Statusline
+  package.loaded['oroshi.statusline'] = nil
+  vim.b.statuslineFileData = nil
+  require('oroshi.statusline')
+end
+nmap('Ⓡ', reloadConfig, 'Reload nvim config')
+
 -- CTRL + S
 -- silent! is for not displaying a message that the file is saved
 imap("<C-S>", "<CMD>silent! w<CR><ESC>", "Save file")

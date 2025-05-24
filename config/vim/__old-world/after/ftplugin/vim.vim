@@ -1,4 +1,6 @@
 " VIM
+
+
 " Linting
 let b:ale_linters = ['vint']
 " Fold {{{

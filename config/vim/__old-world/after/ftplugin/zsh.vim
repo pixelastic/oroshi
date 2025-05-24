@@ -1,10 +1,13 @@
 " ZSH
+
 " Use markers for folding
 setlocal foldmethod=marker
 " ## creates a ${} variable
 inoremap <buffer> ## ${}<Left>
 
 " Fixing
+
+
 " We trick ALE into pretending to use shfmt, but actually using our custom
 " zshfix script for fixing zsh. See zshfix for details
 let b:ale_fixers = ['shfmt']

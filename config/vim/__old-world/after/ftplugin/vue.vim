@@ -1,4 +1,6 @@
 " VUE
+
+
 " Linting {{{
 let b:eslint_bin = StrTrim(system('npm-which eslint'))
 " }}}
@@ -20,6 +22,9 @@ function! VueBeautify()
 
   " Creating a copy of the file in the same dir (so imports works correctly)
   let l:tempPattern = l:dirname.'/'.l:basename.'.XXXXXX.'.l:extname
+
+
+
   let l:tempFile = StrTrim(system('mktemp '.l:tempPattern))
   let l:content = getline('1', '$')
  	call writefile(l:content, l:tempFile)

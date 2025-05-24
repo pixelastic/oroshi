@@ -3,15 +3,6 @@ vim.opt.laststatus = 2 -- Always display
 vim.opt.showmode = false -- Hide bottom line with mode
 vim.opt.statusline = '%!v:lua.oroshiStatusline()' -- Use custom function
 
-
-local function refreshStatusLine()
-  package.loaded['oroshi.statusline'] = nil
-  vim.b.statuslineFileData = nil
-  require('oroshi.statusline')
-end
-nmap('Ⓡ', refreshStatusLine, 'Refresh statusline code')
-
-
 function oroshiStatusline()
   local statusline = {}
 

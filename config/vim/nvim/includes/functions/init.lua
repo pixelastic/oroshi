@@ -4,6 +4,11 @@ function append(container, item)
   table.insert(container, item)
 end
 
+-- prepend: Add an item at the beginning of a table
+function prepend(container, item)
+  table.insert(container, 1, item)
+end
+
 -- debug: Display a variable in a floating window
 function d(input)
   vim.notify(vim.inspect(input))

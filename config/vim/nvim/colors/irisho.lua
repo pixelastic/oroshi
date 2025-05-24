@@ -132,7 +132,7 @@ hl('CursorLineSign', 'none', { bg = 'GRAY_9'}) --	Current line sign
 -- Tabs {{{
 hl('TabLine', 'GRAY_4', { bg = 'GRAY_8' }) --		Tab pages line, not active tab page label.
 hl('TabLineSel', 'YELLOW', { bg = 'BLACK', bold = true }) --	Tab pages line, active tab page label.
-hl('TabLineSelSeparator', 'BLACK', { bg = 'GRAY_8', bold = true }) --	Tab pages line, active tab page label.
+-- hl('TabLineSelSeparator', 'BLACK', { bg = 'GRAY_8', bold = true }) --	Tab pages line, active tab page label.
 hl('TabLineFill', 'GRAY_4', { bg = 'GRAY_8' }) --	Tab pages line, where there are no labels.
 -- }}}
 
