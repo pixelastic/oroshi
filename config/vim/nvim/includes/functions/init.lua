@@ -11,7 +11,9 @@ end
 
 -- debug: Display a variable in a floating window
 function d(input)
-  vim.notify(vim.inspect(input))
+  vim.schedule(function()
+    vim.notify(vim.inspect(input))
+  end)
 end
 
 

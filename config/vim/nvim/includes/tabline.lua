@@ -38,7 +38,7 @@ vim.g.tabline = {
     local hl = { fg = 'WHITE', bg = 'GRAY_8' }
     -- separator
     if isCurrent then
-      hl = { fg = 'ORANGE', bg = 'BLACK' }
+      hl = { fg = 'YELLOW', bg = 'BLACK' }
     end
 
     return {
@@ -89,70 +89,77 @@ vim.g.tabline = {
     -- We get all the tabs
     local allTabs = vim.g.tabline.allTabs()
 
-    -- Happy path: we have enough space to display everything
-    local availableWidth = vim.o.columns;
-    local maxTabWidth = 0
-    for _, tab in ipairs(allTabs) do
-      maxTabWidth = maxTabWidth + tab.width
-    end
-    if availableWidth >= maxTabWidth then
-      return allTabs
-    end
-
-    -- Edge case: We need to add tabs, one by one, around the current one, until
+    --  We need to add tabs, one by one, around the current one, until
     -- we run out of space
+    local availableWidth = vim.o.columns;
     local displayedTabs = {}
 
-    -- We first add the current tab
+    -- Add current tab, for sure
     local currentTab = vim.g.tabline.getCurrentTab(allTabs)
     append(displayedTabs, currentTab)
-
-
-    local tabCount = #allTabs
     local usedWidth = currentTab.width
-    local offset = 1
-    for i = 1, tabCount - 1 do
-      local direction = i % 2 == 0 and 'after' or 'before'
 
-      -- Which tab to pick?
-      if direction == 'before' then
-        local tabToAddIndex = currentTab.index - offset
-      else
-        local tabToAddIndex = currentTab.index + offset
+    -- Get all tabs, by order of importance (proximity with current tab)
+    local tabQueue = vim.g.tabline.buildTabQueue(allTabs, currentTab)
+
+    -- Add them to the list of displayed tabs until we run out of space
+    for i, item in ipairs(tabQueue) do
+      local direction = item.direction
+      local tab = item.tab
+
+      -- Stop if no enough space to add this tab
+      if usedWidth + tab.width > availableWidth then
+        return displayedTabs
       end
-      --
-      -- if tabToAddIndex <= 0 or tabToAddIndex >= tabCount then
-      --   goto continue
-      -- end
-      vim.schedule(function()
-        d(tabToAddIndex)
-      end)
-      --
-      -- local tabToAdd = allTabs[tabToAddIndex]
-      --
-      -- -- Stop if no enough space
-      -- if usedWidth + tabToAdd.width > availableWidth then
-      --   return displayedTabs
-      -- end
-      --
-      -- -- Which way to add?
-      -- if direction == 'before' then
-      --   prepend(displayedTabs, tabToAdd)
-      -- else
-      --   append(displayedTabs, tabToAdd)
-      --   offset = offset + 1
-      -- end
-      --
-      -- -- Increase width
-      -- usedWidth = usedWidth + tabToAdd.width
-      --
-      -- ::continue::
+
+      -- Add the tab, either before or after
+      if direction == 'before' then
+        prepend(displayedTabs, tab)
+      else
+        append(displayedTabs, tab)
+      end
+
+      -- Increase consumed width
+      usedWidth = usedWidth + tab.width
     end
 
 
     return displayedTabs
+  end,
 
+  -- Build a list of all tabs that should be added in addition to the current
+  -- one, in order of preference, and with their position (before or after)
+  buildTabQueue = function(allTabs, currentTab)
+    -- Build the list of tabs to try, one before, one after, etc
+    local totalTabCount = #allTabs
+    local offset = 1
+    local tabQueue = {}
+    for i = 1, totalTabCount - 1 do
+      local direction = i % 2 == 0 and 'after' or 'before'
 
+      -- Grab the tab before and after
+      local indexBefore = currentTab.index - offset
+      local indexAfter = currentTab.index + offset
+
+      -- Change direction if out of bounds
+      if direction == 'before' and indexBefore <= 0 then
+        direction = 'after'
+      end
+      if direction == 'after' and indexAfter > totalTabCount then
+        direction = 'before'
+        indexBefore = indexBefore - 1
+      end
+
+      -- Add the tab where needed
+      if direction == 'before' then
+        append(tabQueue, { direction = 'before', tab = allTabs[indexBefore] })
+      else
+        append(tabQueue, { direction = 'after', tab = allTabs[indexAfter] })
+        offset = offset + 1
+      end
+    end
+
+    return tabQueue
   end,
 
   -- Get metadata from all opened tabs
