@@ -19,19 +19,6 @@ end
 
 
 vim.g.tabline = {
-  -- Should be the same as TabLineFill
-  defaultBg = 'GRAY_8',
-  defaultFg = 'GRAY_4',
-  -- Get metadata from all opened tabs
-  allTabs = function()
-    local tabs = {}
-    local count = vim.fn.tabpagenr('$')
-    for i = 1, count do
-      append(tabs, vim.g.tabline.getTab(i))
-    end
-
-    return tabs
-  end,
   -- Get metadata for a given tab
   getTab = function(index)
     -- isCurrent
@@ -63,57 +50,7 @@ vim.g.tabline = {
       hl = hl
     }
   end,
-  -- Returns only the tabs to display
-  displayedTabs = function()
-    -- We get all the tabs
-    local allTabs = vim.g.tabline.allTabs()
 
-    -- Happy path: we have enough space to display everything
-    local availableWidth = vim.o.columns;
-    local maxTabWidth = 0
-    for _, tab in ipairs(allTabs) do
-      maxTabWidth = maxTabWidth + tab.width
-    end
-    if availableWidth >= maxTabWidth then
-      return allTabs
-    end
-
-    -- Edge case: We need to add tabs, one by one, around the current one, until
-    -- we run out of space
-    local displayedTabs = {}
-
-    -- We first add the current tab
-    local currentTab = vim.g.tabline.getCurrentTab(allTabs)
-    append(displayedTabs, currentTab)
-
-    return displayedTabs
-
-
-
-    -- Edge case, we need to specific which tabs to keep
-    -- On commence par ajouter le tab actif
-    -- S'il reste le la place, on ajouter le tab d'avant
-    -- s'il reste de la place, on ajoute le tab d'apres
-    -- puis avant, après, avant, apres, jusqu'à ce qu'il n'y ai plus de place
-
-  end,
-  -- Find the current tab
-  getCurrentTab = function(tabs)
-    for _, tab in ipairs(tabs) do
-      if tab.isCurrent then
-        return tab
-      end
-    end
-    return false
-  end,
-  -- Color a string in a given highlight
-  colorize = function(content, identifier, highlight)
-    -- Create a unique highlight group and define its colors
-    local highlightName = 'TablineSlot' .. identifier
-    hl(highlightName, 'none', highlight)
-    -- Wrap the content in this group
-    return color(content, highlightName)
-  end,
   -- Add the tab to the displayed tabline
   display = function(tabline, tab, nextTab)
     if not nextTab then nextTab = { hl = { bg = 'GRAY_8' } } end
@@ -146,6 +83,111 @@ vim.g.tabline = {
     -- End of click area
     append(tabline, '%T') 
   end,
+
+  -- Returns only the tabs to display
+  displayedTabs = function()
+    -- We get all the tabs
+    local allTabs = vim.g.tabline.allTabs()
+
+    -- Happy path: we have enough space to display everything
+    local availableWidth = vim.o.columns;
+    local maxTabWidth = 0
+    for _, tab in ipairs(allTabs) do
+      maxTabWidth = maxTabWidth + tab.width
+    end
+    if availableWidth >= maxTabWidth then
+      return allTabs
+    end
+
+    -- Edge case: We need to add tabs, one by one, around the current one, until
+    -- we run out of space
+    local displayedTabs = {}
+
+    -- We first add the current tab
+    local currentTab = vim.g.tabline.getCurrentTab(allTabs)
+    append(displayedTabs, currentTab)
+
+
+    local tabCount = #allTabs
+    local usedWidth = currentTab.width
+    local offset = 1
+    for i = 1, tabCount - 1 do
+      local direction = i % 2 == 0 and 'after' or 'before'
+
+      -- Which tab to pick?
+      if direction == 'before' then
+        local tabToAddIndex = currentTab.index - offset
+      else
+        local tabToAddIndex = currentTab.index + offset
+      end
+      --
+      -- if tabToAddIndex <= 0 or tabToAddIndex >= tabCount then
+      --   goto continue
+      -- end
+      vim.schedule(function()
+        d(tabToAddIndex)
+      end)
+      --
+      -- local tabToAdd = allTabs[tabToAddIndex]
+      --
+      -- -- Stop if no enough space
+      -- if usedWidth + tabToAdd.width > availableWidth then
+      --   return displayedTabs
+      -- end
+      --
+      -- -- Which way to add?
+      -- if direction == 'before' then
+      --   prepend(displayedTabs, tabToAdd)
+      -- else
+      --   append(displayedTabs, tabToAdd)
+      --   offset = offset + 1
+      -- end
+      --
+      -- -- Increase width
+      -- usedWidth = usedWidth + tabToAdd.width
+      --
+      -- ::continue::
+    end
+
+
+    return displayedTabs
+
+
+  end,
+
+  -- Get metadata from all opened tabs
+  allTabs = function()
+    local tabs = {}
+    local count = vim.fn.tabpagenr('$')
+    for i = 1, count do
+      append(tabs, vim.g.tabline.getTab(i))
+    end
+
+    return tabs
+  end,
+
+  -- Find the current tab
+  getCurrentTab = function(tabs)
+    for _, tab in ipairs(tabs) do
+      if tab.isCurrent then
+        return tab
+      end
+    end
+    return false
+  end,
+
+  -- Color a string in a given highlight
+  colorize = function(content, identifier, highlight)
+    -- Create a unique highlight group and define its colors
+    local highlightName = 'TablineSlot' .. identifier
+    hl(highlightName, 'none', highlight)
+    -- Wrap the content in this group
+    return color(content, highlightName)
+  end,
+
+  -- Should be the same as TabLineFill
+  defaultBg = 'GRAY_8',
+  defaultFg = 'GRAY_4',
 }
 
 

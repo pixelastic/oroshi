@@ -1,4 +1,5 @@
 " Folding {{{
+
 " Curly braces are already used by Ansible to delimit variables, so we'll have
 " to use another marker for folding.
 setlocal foldmethod=marker

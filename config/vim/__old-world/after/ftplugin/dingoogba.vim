@@ -1,4 +1,4 @@
-" DINGOOGBA
+"! DINGOOGBA
 setlocal foldmethod=indent
 " Must use Dos line endings
 setlocal fileformat=dos
