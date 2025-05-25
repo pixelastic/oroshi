@@ -196,6 +196,3 @@ vim.g.tabline = {
   defaultBg = 'GRAY_8',
   defaultFg = 'GRAY_4',
 }
-
-
-

@@ -22,7 +22,22 @@ return {
     config = function()
       local surround = require("nvim-surround")
       surround.setup({
-        move_cursor = 'sticky'
+        move_cursor = 'sticky',
+        keymaps = {
+          change = "cs",
+          normal = "ys",
+          delete = "ds",
+
+          -- Disable mappings I don't need
+          insert = false,
+          insert_line = false,
+          normal_cur = false,
+          normal_line = false,
+          normal_cur_line = false,
+          visual = false,
+          visual_line = false,
+          change_line = false
+        },
       })
     end
   },

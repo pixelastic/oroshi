@@ -15,17 +15,15 @@ frequire('oroshi/colorscheme')
 -- Keybindings
 frequire('oroshi/keybindings')
 
+-- Config
+frequire('oroshi/display')
+frequire('oroshi/disk')
+
 -- UI
 frequire('oroshi/tabline')
 frequire('oroshi/statusline')
 frequire('oroshi/completion')
 frequire('oroshi/folding')
-
--- Config
-frequire('oroshi/display')
-frequire('oroshi/disk')
-frequire('oroshi/sessions')
-frequire('oroshi/clipboard')
 frequire('oroshi/search')
 
 -- Filetype specific

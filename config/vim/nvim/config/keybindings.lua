@@ -119,9 +119,9 @@ nmap('M', '`', 'Jump to specific mark')
 
 
 -- Sort, Shuffle, Uniq 
-vmap("r", ":!shuf<CR>", "Randomize")
+vmap("r", ":!shuf<CR><CR>", "Randomize")
 vmap("s", ":!sort --version-sort<CR><CR>", "Sort")
-vmap("S", ":!sort --version-sort --reverse<CR>", "Sort")
+vmap("S", ":!sort --version-sort --reverse<CR><CR>", "Sort", { silent = false })
 vmap("u", ":sort u<CR>", "Remove duplicates")
-vmap("n", ":!cat -n<CR>", "Number lines")
-vmap("L", ":!sort-by-length<CR>", "Sort by length")
+vmap("n", ":!cat -n<CR><CR>", "Number lines")
+vmap("L", ":!sort-by-length<CR><CR>", "Sort by length")
