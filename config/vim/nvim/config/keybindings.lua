@@ -37,7 +37,7 @@ nmap('<F1>', 'K', 'Show help of word under cursor')
 
 -- F2: Reload
 local function reloadConfig()
-  frequire('oroshi/init')
+  frequire('oroshi/index')
   __.debug('Config reloaded')
 end
 nmap('<F2>', reloadConfig, 'Reload nvim config')
@@ -113,10 +113,6 @@ vmap('x', '"_x', "Delete without copying it")
 -- Marks and jump
 nmap('⒨', "`m", "Jump to mark set with mm") -- Ctrl-M jumps to m mark
 nmap('M', '`', 'Jump to specific mark')
-
-
-
-
 
 -- Sort, Shuffle, Uniq 
 vmap("r", ":!shuf<CR><CR>", "Randomize")
