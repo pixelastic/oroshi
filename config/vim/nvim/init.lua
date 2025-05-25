@@ -11,6 +11,8 @@
 -- where there are already comment
 -- TODO: tab at start of line should indent, not complete
 -- TODO: Autoformat on save
+-- TODO: Mapping to jump to end of current block (like going to end of the
+-- current function)
 
 -- Functions
 require('oroshi/functions')
