@@ -82,7 +82,7 @@ vim.g.statusline = {
 
     local coloredContent = color(content, highlightName)
 
-    append(statusline, coloredContent)
+    __.append(statusline, coloredContent)
   end,
 
   -- Get informations about current mode

@@ -1,4 +1,5 @@
 vim.g.mapleader = "," -- Leader key
+vim.g.timeoutlen = 300 -- Delay between keys in keybindings
 
 -- Capslock
 -- Switch between Normal and Insert mode
@@ -16,19 +17,6 @@ nmap('<C-A>', 'GVgg', 'Select everything')
 vmap('<C-A>', '<ESC>GVgg', 'Select everything')
 imap('<C-A>', '<ESC>GVgg', 'Select everything')
 
--- CTRL + SHIFT + R
-local function reloadConfig()
-  -- Tabline
-  package.loaded['oroshi.tabline'] = nil
-  require('oroshi.tabline')
-
-  -- Statusline
-  package.loaded['oroshi.statusline'] = nil
-  vim.b.statuslineFileData = nil
-  require('oroshi.statusline')
-end
-nmap('Ⓡ', reloadConfig, 'Reload nvim config')
-
 -- CTRL + S
 -- silent! is for not displaying a message that the file is saved
 imap("<C-S>", "<CMD>silent! w<CR><ESC>", "Save file")
@@ -44,28 +32,17 @@ vmap("<C-D>", "<CMD>x<CR><ESC>", "Save file and quit")
 nmap("<C-N>", ":tabedit<Space>", "Create new file in directory", { silent = false })
 
 
-
-
 -- F1: Show help
 nmap('<F1>', 'K', 'Show help of word under cursor')
 
--- F2: Reload colorscheme
-local function reloadColorScheme()
-  vim.cmd("colorscheme irisho")
+-- F2: Reload
+local function reloadConfig()
+  frequire('oroshi/init')
+  __.debug('Config reloaded')
 end
-nmap('<F2>', reloadColorScheme, 'Reload colorscheme')
-imap('<F2>', reloadColorScheme, 'Reload colorscheme')
-vmap('<F2>', reloadColorScheme, 'Reload colorscheme')
-
--- F3: Debug colors
-local function debugColors()
-  withReadableMsgArea(function()
-    vim.show_pos()
-  end)
-end
-nmap('<F3>', debugColors, 'Display highlight groups')
-imap('<F3>', debugColors, 'Display highlight groups')
-
+nmap('<F2>', reloadConfig, 'Reload nvim config')
+imap('<F2>', reloadConfig, 'Reload nvim config')
+vmap('<F2>', reloadConfig, 'Reload nvim config')
 
 -- Tabs
 nmap('<C-H>', 'gT', 'Previous tab')
@@ -95,11 +72,11 @@ vmap("H", "^", "Start of line")
 nmap("L", "g_", "End of line")
 vmap("H", "g_", "Start of line")
 
--- Scroll one page at a time
-nmap('U', '<C-U>', 'Scroll up one page')
-vmap('U', '<C-U>', 'Scroll up one page')
-nmap('D', '<C-D>', 'Scroll down one page')
-vmap('D', '<C-D>', 'Scroll down one page')
+-- Scroll half a page at a time
+nmap('U', '22k', 'Scroll up one half page')
+vmap('U', '22k', 'Scroll up one half page')
+nmap('D', '22j', 'Scroll down one half page')
+vmap('D', '22j', 'Scroll down one half page')
 
 -- Indent / Dedent
 nmap('<Tab>', '>>ll', 'Indent line')
@@ -143,7 +120,7 @@ nmap('M', '`', 'Jump to specific mark')
 
 -- Sort, Shuffle, Uniq 
 vmap("r", ":!shuf<CR>", "Randomize")
-vmap("s", ":!sort --version-sort<CR>", "Sort")
+vmap("s", ":!sort --version-sort<CR><CR>", "Sort")
 vmap("S", ":!sort --version-sort --reverse<CR>", "Sort")
 vmap("u", ":sort u<CR>", "Remove duplicates")
 vmap("n", ":!cat -n<CR>", "Number lines")

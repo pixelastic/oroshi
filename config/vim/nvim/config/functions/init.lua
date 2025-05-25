@@ -1,13 +1,41 @@
+__ = {
+  vars = {},
 
--- append: Add an item to a table
-function append(container, item)
-  table.insert(container, item)
-end
+  -- Table handling {{{
+  -- append: Add an element at the end of a table
+  append = function(container, item)
+    table.insert(container, item)
+  end,
+  -- prepend: Add an element at the beginning of a table
+  prepend = function(container, item)
+    table.insert(container, 1, item)
+  end,
+  -- }}}
 
--- prepend: Add an item at the beginning of a table
-function prepend(container, item)
-  table.insert(container, 1, item)
-end
+  -- Debug {{{
+  debug = function(input)
+    local inputType = type(input)
+    local displayedInput = input
+    if inputType == 'table' then
+      displayedInput = vim.inspect(input)
+    end
+
+    vim.notify(displayedInput, vim.log.levels.INFO)
+  end,
+  -- }}}
+
+  -- Hacks {{{
+  -- ensureVisualSelection
+  hack_ensureVisualSelection = function()
+    -- '< and '> marks are only updated when leaving visual mode
+    -- So if we need to use them in a lua method, we first need to leave and
+    -- quickly come back in visual mode to be able to use '< and '> in the
+    -- mapping
+    vim.api.nvim_command('normal ') -- <Esc> to leave visual mode
+    vim.cmd('normal gv') -- Reselecting previous selection
+  end,
+  -- }}}
+}
 
 -- debug: Display a variable in a floating window
 function d(input)
@@ -64,8 +92,6 @@ function getProject(projectKey)
   return projectData
 end
 
-
-
-require('oroshi/functions/autocmd')
-require('oroshi/functions/highlight')
-require('oroshi/functions/map')
+frequire('oroshi/functions/autocmd')
+frequire('oroshi/functions/highlight')
+frequire('oroshi/functions/map')

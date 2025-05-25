@@ -39,10 +39,10 @@ autocmd('CmdlineLeave', '*', setCmdHeight(0))
 
 -- Change visibility / readability of the MsgArea
 function msgAreaReadable()
-  hl('MsgArea', 'TEXT', { bg = 'NEUTRAL' })
+  hl('MsgArea', 'none', __.vars.commandline.hlReadable)
 end
 function msgAreaDefault()
-  hl('MsgArea', 'WHITE')
+  hl('MsgArea', 'none', __.vars.commandline.hlDefault)
 end
 msgAreaDefault()
 

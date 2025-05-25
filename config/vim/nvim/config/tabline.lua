@@ -56,12 +56,12 @@ vim.g.tabline = {
     if not nextTab then nextTab = { hl = { bg = 'GRAY_8' } } end
 
     -- Start of click area
-    append(tabline, '%' .. (tab.index) .. 'T')
+    __.append(tabline, '%' .. (tab.index) .. 'T')
 
     -- Content
     local displayedContent = tab.content
     local content = vim.g.tabline.colorize(displayedContent, tab.index, tab.hl)
-    append(tabline, content)
+    __.append(tabline, content)
 
     -- Separator
     local separatorString = ''
@@ -78,10 +78,10 @@ vim.g.tabline = {
       }
     end
     local separator = vim.g.tabline.colorize(separatorString, tab.index .. 'Separator', separatorHightlight)
-    append(tabline, separator)
+    __.append(tabline, separator)
 
     -- End of click area
-    append(tabline, '%T') 
+    __.append(tabline, '%T') 
   end,
 
   -- Returns only the tabs to display
@@ -96,7 +96,7 @@ vim.g.tabline = {
 
     -- Add current tab, for sure
     local currentTab = vim.g.tabline.getCurrentTab(allTabs)
-    append(displayedTabs, currentTab)
+    __.append(displayedTabs, currentTab)
     local usedWidth = currentTab.width
 
     -- Get all tabs, by order of importance (proximity with current tab)
@@ -114,9 +114,9 @@ vim.g.tabline = {
 
       -- Add the tab, either before or after
       if direction == 'before' then
-        prepend(displayedTabs, tab)
+        __.prepend(displayedTabs, tab)
       else
-        append(displayedTabs, tab)
+        __.append(displayedTabs, tab)
       end
 
       -- Increase consumed width
@@ -152,9 +152,9 @@ vim.g.tabline = {
 
       -- Add the tab where needed
       if direction == 'before' then
-        append(tabQueue, { direction = 'before', tab = allTabs[indexBefore] })
+        __.append(tabQueue, { direction = 'before', tab = allTabs[indexBefore] })
       else
-        append(tabQueue, { direction = 'after', tab = allTabs[indexAfter] })
+        __.append(tabQueue, { direction = 'after', tab = allTabs[indexAfter] })
         offset = offset + 1
       end
     end
@@ -167,7 +167,7 @@ vim.g.tabline = {
     local tabs = {}
     local count = vim.fn.tabpagenr('$')
     for i = 1, count do
-      append(tabs, vim.g.tabline.getTab(i))
+      __.append(tabs, vim.g.tabline.getTab(i))
     end
 
     return tabs

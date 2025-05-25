@@ -1,0 +1,19 @@
+-- TODO: Align on antything
+-- TODO: Linters linters
+-- TODO: Make sure kitty.conf is correctly highlighted
+-- TODO: Find a plugin that can autoclose functions
+-- TODO: Display all completion suggestions with Ctrl-Space?
+-- TODO: See what to do with backup and swap
+-- TODO: Find what works and what does not in a macro
+-- TODO: Add colored line numbers based on if add/delete/modified
+-- TODO: Change color of cursor based on mode
+-- TODO: Commenting / uncommenting lines with comments should remove comment
+-- where there are already comment
+-- TODO: tab at start of line should indent, not complete
+-- TODO: Autoformat on save
+-- TODO: Mapping to jump to end of current block (like going to end of the
+-- current function)
+-- TODO: Messages displayed when sorting lines
+-- TODO: Allow folding with expr AND with marker
+-- TODO: TEst https://github.com/Aasim-A/scrollEOF.nvim to allow not being stuck
+-- at bottom of screen

@@ -10,7 +10,7 @@ vim.opt.showbreak     = '↪ '   -- Character to use to prefix wrapped lines
 vim.opt.number     = true       -- Display line numbers
 vim.opt.signcolumn = "yes"  -- Always display sign
 vim.opt.cursorline = true   -- Highlight current line
-vim.opt.scrolloff  = 999     -- Keep current line as centered as possible
+vim.opt.scrolloff  = 22     -- Keep 22 lines above and below (centering the display)
 
 -- INDENTATION
 vim.opt.shiftwidth = 2 -- Indent by 2 spaces
@@ -51,8 +51,3 @@ local function enableCursorLine()
 end
 autocmd({'WinLeave', 'FocusLost' }, '*', disableCursorLine) -- Disable current line highlight when out of focus
 autocmd({'WinEnter', 'FocusGained' }, '*', enableCursorLine) -- Re-enable current line hightlight when back in focus
-
--- COLOR
--- vim.cmd("colorscheme oroshi")  -- Use oroshi colorscheme
-vim.cmd("colorscheme irisho")  -- Use oroshi colorscheme
-
