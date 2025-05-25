@@ -35,6 +35,13 @@ hl('NotifyINFOBorder', 'YELLOW_7')
 hl('NotifyINFOBody', 'YELLOW_6' )
 -- }}}
 
+-- Tree {{{
+hl('NvimTreeClosedFolderIcon', 'YELLOW_6' )
+hl('NvimTreeOpenedFolderIcon', 'YELLOW_6' )
+hl('NvimTreeFolderArrowClosed', 'NEUTRAL' )
+hl('NvimTreeFolderArrowOpen', 'NEUTRAL' )
+hl('NvimTreeGitDirtyIcon', 'GIT_DIRTY' )
+-- }}}
 
 -- Misc {{'
 hl('Directory', 'DIRECTORY') --	Directory names 
