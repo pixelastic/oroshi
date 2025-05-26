@@ -9,11 +9,6 @@ __.statusline = {
   main = function()
     local statusline = {}
 
-    -- Nvim-Specific statusline
-    if vim.bo.filetype == 'NvimTree' then
-      return __.statusline.nvimTreeStatusline()
-    end
-
     -- Mode
     local mode = __.statusline.getMode()
     local modeBg = mode.hl.bg; -- Need to be stored statically
@@ -104,7 +99,18 @@ __.statusline = {
     --     }
     --   }
 
-    -- All possible modes
+    -- NvimTree mode
+    if __.statusline.isNvimTree() then
+      return {
+        content = '  ',
+        hl = { 
+          bg = 'GREEN_9',
+          fg = 'YELLOW'
+        }
+      }
+    end
+
+    -- All regular modes
     local modes = {
       n = {
         content = ' NORMAL ',
@@ -163,12 +169,20 @@ __.statusline = {
     --       }
     --   }
 
+    -- Which file to check?
+    local rawFilepath = vim.fn.expand('%:p')
+
+    -- For NvimTree, we display the current selected folder
+    if __.statusline.isNvimTree() then
+      rawFilepath = __.nvimtree.currentDirectory
+      vim.b.statuslineFileData = nil -- No cache for this buffer
+    end
+
     -- Check in buffer cache first
     if vim.b.statuslineFileData then
       return vim.b.statuslineFileData
     end
 
-    local rawFilepath = vim.fn.expand('%:p')
 
     -- Project info
     local projectKey = vim.fn.systemlist('project-by-path ' .. rawFilepath)[1]
@@ -203,6 +217,11 @@ __.statusline = {
     }
     vim.b.statuslineFileData = statuslineFileData
     return statuslineFileData
+  end,
+
+  -- isNvimTree: Check if in a nvim tree window
+  isNvimTree = function()
+    return vim.bo.filetype == 'NvimTree'
   end,
 
   -- nvimTreeStatusline: Simple statusline for using NvimTree

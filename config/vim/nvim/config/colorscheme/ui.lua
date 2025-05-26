@@ -41,6 +41,7 @@ hl('NvimTreeOpenedFolderIcon', 'YELLOW_6' )
 hl('NvimTreeFolderArrowClosed', 'NEUTRAL' )
 hl('NvimTreeFolderArrowOpen', 'NEUTRAL' )
 hl('NvimTreeGitDirtyIcon', 'GIT_DIRTY' )
+hl('NvimTreeRootFolder', 'DIRECTORY' )
 -- }}}
 
 -- Misc {{'

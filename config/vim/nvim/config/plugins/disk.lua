@@ -230,8 +230,6 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     config = function()
-      local nvimtree = require("nvim-tree")
-
       -- Disable netrw as to not interfere with the tree
       vim.g.loaded_netrw = 1
       vim.g.loaded_netrwPlugin = 1
@@ -243,8 +241,8 @@ return {
         local api = require "nvim-tree.api"
 
         -- Disable Insert Mode
-        nmap('<F13>', '')
-        nmap('i', '')
+        nmap('<F13>', '', 'Disable Insert mode', { buffer = bufnr })
+        nmap('i', '', 'Disable Insert mode', { buffer = bufnr })
 
         -- H: Go up one level {{{
         local function onH()
@@ -303,9 +301,25 @@ return {
         nmap('<C-N>', onCtrlN, 'Create new file', { buffer = bufnr })
       end
 
+      __.nvimtree = {
+        currentDirectory = nil,
+      }
+      local nvimtree = require("nvim-tree")
+      local api = nvimtree.api
       nvimtree.setup({
         view = { width = 30, },
         on_attach = onAttach,
+
+        -- Display only folder name on top
+        renderer = {
+          root_folder_label = function(path)
+            -- Set the current directory, for display in the statusline
+            __.nvimtree.currentDirectory = path
+
+            local basename = vim.fs.basename(path) .. '/'
+            return basename
+          end
+        }
       })
 
     end
