@@ -20,7 +20,10 @@ __ = {
       displayedInput = vim.inspect(input)
     end
 
-    vim.notify(displayedInput, vim.log.levels.INFO)
+    pcall(function()
+      vim.notify(displayedInput, vim.log.levels.INFO)
+    end)
+
   end,
   -- }}}
 

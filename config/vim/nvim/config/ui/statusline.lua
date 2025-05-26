@@ -1,10 +1,15 @@
 -- Statusline
-vim.opt.laststatus = 2 -- Always display
+vim.opt.laststatus = 3 -- One global statusline instead of one per window
 vim.opt.showmode = false -- Hide bottom line with mode
 vim.opt.statusline = '%!v:lua.oroshiStatusline()' -- Use custom function
 
 function oroshiStatusline()
   local statusline = {}
+
+  -- Nvim-Specific statusline
+  if vim.bo.filetype == 'NvimTree' then
+    return vim.g.statusline.nvimTreeStatusline()
+  end
 
   -- Mode
   local mode = vim.g.statusline.getMode()
@@ -70,7 +75,7 @@ end
 
 vim.g.statusline = {
   -- Add an element to the statusline
-  -- Usage:
+  -- Usage :
   -- add(statusline, ' NORMAL ', { bg = 'BLACK', fg = 'WHITE' })
   add = function(statusline, content, highlight)
     if not highlight then highlight = {} end
@@ -197,6 +202,18 @@ vim.g.statusline = {
     vim.b.statuslineFileData = statuslineFileData
     return statuslineFileData
   end,
+
+
+  -- nvimTreeStatusline: Simple statusline for using NvimTree
+  nvimTreeStatusline = function()
+    local statusline = {}
+    local add = vim.g.statusline.add
+    add(statusline, '  ', { fg= 'YELLOW', bg = 'GREEN_9' })
+    add(statusline, 'TREE ', { fg= 'WHITE', bg = 'GREEN_9' })
+    add(statusline, '', { fg = 'GREEN_9' })
+    return table.concat(statusline, '')
+  end,
+
 }
 
 -- Switch a boolean when recording a macro
@@ -213,10 +230,3 @@ local function setIsRecording(status)
 end
 autocmd('RecordingEnter', '*', setIsRecording(true))
 autocmd('RecordingLeave', '*', setIsRecording(false))
-
-
--- Disable statusline on some types
-local function disableStatusline()
-  vim.opt.laststatus = 0
-end
-ftplugin('NvimTree', disableStatusline)

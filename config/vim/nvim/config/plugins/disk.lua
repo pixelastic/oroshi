@@ -242,6 +242,10 @@ return {
       local function onAttach(bufnr)
         local api = require "nvim-tree.api"
 
+        -- Disable Insert Mode
+        nmap('<F13>', '')
+        nmap('i', '')
+
         -- H: Go up one level {{{
         local function onH()
           api.tree.change_root_to_parent()
@@ -303,6 +307,7 @@ return {
         view = { width = 30, },
         on_attach = onAttach,
       })
+
     end
   }
 }
