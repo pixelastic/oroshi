@@ -25,9 +25,7 @@ vim.g.tabline = {
     local currentTab = vim.fn.tabpagenr()
     local isCurrent = currentTab == index
     -- filepath
-    local bufferId = vim.fn.tabpagebuflist(index)[1]
-    local fullPath = vim.fn.expand('#' .. bufferId .. ':p')
-
+    local fullPath = vim.g.tabline.getFullpath(index)
     -- content
     local basename = vim.fn.fnamemodify(fullPath, ':t')
     local content = ' ' .. basename .. ' '
@@ -57,6 +55,7 @@ vim.g.tabline = {
 
     -- Start of click area
     __.append(tabline, '%' .. (tab.index) .. 'T')
+
 
     -- Content
     local displayedContent = tab.content
@@ -181,6 +180,20 @@ vim.g.tabline = {
       end
     end
     return false
+  end,
+
+  -- getFullpath: Return the path to the file being edited in a given tab
+  getFullpath = function(tabIndex)
+    local bufferId = vim.fn.tabpagebuflist(tabIndex)[1]
+
+    -- If the first buffer is NvimTree, grab the next one
+    local filetype = vim.bo[bufferId].filetype
+    if filetype == 'NvimTree' then
+      bufferId = vim.fn.tabpagebuflist(tabIndex)[2]
+    end
+
+    local fullPath = vim.fn.expand('#' .. bufferId .. ':p')
+    return fullPath
   end,
 
   -- Color a string in a given highlight
