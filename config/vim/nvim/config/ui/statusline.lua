@@ -213,3 +213,10 @@ local function setIsRecording(status)
 end
 autocmd('RecordingEnter', '*', setIsRecording(true))
 autocmd('RecordingLeave', '*', setIsRecording(false))
+
+
+-- Disable statusline on some types
+local function disableStatusline()
+  vim.opt.laststatus = 0
+end
+ftplugin('NvimTree', disableStatusline)
