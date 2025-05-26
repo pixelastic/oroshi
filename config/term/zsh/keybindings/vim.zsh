@@ -27,7 +27,7 @@ bindkey -M vicmd "i" vi-insert
 
 # Vim cursor {{{
 function _cursor-cmd() {
-	print -n '\e]12;#D70000\a'
+	print -n '\e]12;#059669\a'
 }
 function _cursor-ins() {
 	print -n '\e]12;#AF8700\a'
