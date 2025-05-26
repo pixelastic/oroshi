@@ -1,6 +1,4 @@
 -- MUST HAVE
--- TODO: Disable statusline in Nvim Tree
--- TODO: Change color of cursor based on mode
 -- TODO: Add colored line numbers based on if add/delete/modified
 -- TODO: Align on antything
 -- TODO: Commenting / uncommenting lines with comments should remove comment where there are already comment

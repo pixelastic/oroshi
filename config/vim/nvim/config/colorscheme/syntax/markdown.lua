@@ -26,32 +26,32 @@ hl('RenderMarkdownLink', 'LINK') -- 	Image & hyperlink icons
 hl('RenderMarkdownSign', 'none') -- 	Sign column background
 
 -- header 1
-hl('RenderMarkdownH1', 'PURPLE_9')
-hl('RenderMarkdownH1Bg', 'PURPLE_2', { bg = 'PURPLE_9' })
-hl('@markup.heading.1.markdown', 'PURPLE_5', { bold = true })
+hl('RenderMarkdownH1', 'PURPLE_4') -- Gutter icon
+hl('RenderMarkdownH1Bg', 'PURPLE_2', { bg = 'PURPLE_9' }) -- Normal mode (full width)
+hl('@markup.heading.1.markdown', 'PURPLE_4', { bold = true }) -- Insert mode
 
 -- header 2
-hl('RenderMarkdownH2', 'BLUE_9')
+hl('RenderMarkdownH2', 'BLUE_4')
 hl('RenderMarkdownH2Bg', 'BLUE_2', { bg = 'BLUE_9' })
-hl('@markup.heading.2.markdown', 'BLUE_5', { bold = true })
+hl('@markup.heading.2.markdown', 'BLUE_4', { bold = true })
 
 -- header 3
-hl('RenderMarkdownH3', 'GREEN_9')
+hl('RenderMarkdownH3', 'GREEN_7')
 hl('RenderMarkdownH3Bg', 'GREEN_1', { bg = 'GREEN_9' })
 hl('@markup.heading.3.markdown', 'GREEN_7', { bold = true })
 
 -- header 4
-hl('RenderMarkdownH4', 'YELLOW_9')
+hl('RenderMarkdownH4', 'YELLOW_6')
 hl('RenderMarkdownH4Bg', 'YELLOW_1', { bg = 'YELLOW_9' })
 hl('@markup.heading.4.markdown', 'YELLOW_6', { bold = true })
 
 -- header 5
-hl('RenderMarkdownH5', 'ORANGE_9')
+hl('RenderMarkdownH5', 'ORANGE_7')
 hl('RenderMarkdownH5Bg', 'ORANGE_2', { bg = 'ORANGE_9' })
 hl('@markup.heading.5.markdown', 'ORANGE_7', { bold = true })
 
 -- header 6
-hl('RenderMarkdownH6', 'RED_9')
+hl('RenderMarkdownH6', 'RED_7')
 hl('RenderMarkdownH6Bg', 'RED_2', { bg = 'RED_9' })
 hl('@markup.heading.6.markdown', 'RED_7', { bold = true })
 

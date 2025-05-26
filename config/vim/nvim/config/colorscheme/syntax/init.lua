@@ -28,15 +28,26 @@ hl('Underlined', 'none', { underline = true }) --	text that stands out, HTML lin
 
 -- Treesitter groups {{{
 hl('@comment.note.comment', 'TODO', { bold = true })
+hl('@comment.note.vimdoc', 'YELLOW', { bold = true })
 hl('@operator', 'PUNCTUATION')
 hl('@property', 'KEY')
 hl('@punctuation', 'PUNCTUATION')
 hl('@variable', 'VARIABLE')
 hl('@variable.member', 'KEY')
+hl('@markup.link', 'LINK', { underline = true })
+-- Headers
+hl('@markup.heading.1', 'PURPLE_4', { bold = true })
+hl('@markup.heading.2', 'BLUE_4', { bold = true })
+hl('@markup.heading.3', 'GREEN_7', { bold = true })
+hl('@markup.heading.4', 'YELLOW_6', { bold = true })
+hl('@markup.heading.5', 'ORANGE_7', { bold = true })
+hl('@markup.heading.6', 'RED_7', { bold = true })
+
 -- }}}
 
 -- Language specific {{{
 frequire('oroshi/colorscheme/syntax/lua')
+frequire('oroshi/colorscheme/syntax/help')
 frequire('oroshi/colorscheme/syntax/markdown')
 frequire('oroshi/colorscheme/syntax/yaml')
 -- }}}

@@ -11,10 +11,40 @@ hl('MatchParen', 'WHITE', { bg = 'BLUE' }) -- Matching parenthesis
 hl('Folded', 'none', { bg = 'GRAY_8'}) --	Closed fold
 -- }}}
 
--- Cursor {{{
+-- Current line {{{
 hl('CursorLine', 'none', { bg = 'GRAY_9' }) --	Current line
 hl('CursorLineNr', 'YELLOW', { bg = 'GRAY_9', bold = true }) --	Current line number
 hl('CursorLineSign', 'none', { bg = 'GRAY_9'}) --	Current line sign
+-- }}}
+
+-- Cursor {{{
+vim.opt.guicursor = {
+  "n:block-CursorModeNormal",
+  "i:ver25-CursorModeInsert",
+  "v:block-blinkon300-blinkoff300-CursorModeVisual",
+  "c:hor25-CursorModeCommandNormal",
+
+  -- Unused (yet) modes below
+  "ve:block-CursorModeVisualExclusive",
+  "o:block-CursorModeOperator",
+  "r:block-CursorModeReplace",
+  "ci:block-CursorModeCommandInsert",
+  "cr:block-CursorModeCommandReplace",
+  "sm:block-CursorModeShowMatch",
+  "t:block-CursorModeTerminal",
+}
+hl('CursorModeNormal', 'none', { bg = 'EMERALD' })
+hl('CursorModeInsert', 'none', { bg = 'YELLOW_3' })
+hl('CursorModeVisual', 'none', { bg = 'BLUE_7' })
+hl('CursorModeCommandNormal', 'none', { bg = 'TEAL' })
+-- Unused (yet) modes
+hl('CursorModeVisualExclusive', 'YYY')
+hl('CursorModeOperator', 'YYY')
+hl('CursorModeReplace', 'YYY')
+hl('CursorModeCommandInsert', 'YYY')
+hl('CursorModeCommandReplace', 'YYY')
+hl('CursorModeShowMatch', 'YYY')
+hl('CursorModeTerminal', 'YYY')
 -- }}}
 
 -- Visual mode {{{

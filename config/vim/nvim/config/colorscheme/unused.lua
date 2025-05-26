@@ -22,6 +22,7 @@ hl('LineNrBelow', 'YYY') --	Line number for when the 'relativenumber'
 hl('ModeMsg', 'XXX') --		'showmode' message (e.g., "-- INSERT --").
 hl('NormalFloat', 'XXX') --	Normal text in floating windows.
 hl('PmenuExtraSel', 'YYY') --	Popup menu: Selected item "extra text".
+hl('DiagnosticInfo', 'XXX')
 
 hl('PmenuExtra', 'XXX') --	Popup menu: Normal item "extra text".
 hl('PmenuKindSel', 'XXX') --	Popup menu: Selected item "kind".

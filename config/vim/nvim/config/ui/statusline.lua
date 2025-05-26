@@ -114,7 +114,7 @@ __.statusline = {
     local modes = {
       n = {
         content = ' NORMAL ',
-        hl = { bg = 'BLACK', fg = 'WHITE_LIGHT', bold = true }
+        hl = { bg = 'EMERALD_9', fg = 'EMERALD_2', bold = true }
       },
       i = {
         content = ' INSERT ',
