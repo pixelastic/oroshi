@@ -12,15 +12,21 @@ __.statusline = {
     -- Mode
     local mode = __.statusline.getMode()
     local modeBg = mode.hl.bg; -- Need to be stored statically
+
     -- Project & file
     local fileData = __.statusline.getFileData()
+
     -- File
     local file = fileData.file;
+    -- Highlight based on file status
     local isReadonly = vim.bo.readonly
     local hasUnsavedChanges = vim.bo.modified
+    local isNoName = __.isNoName()
     local fileHighlight = { fg = 'GREEN', bold = true }
     if isReadonly then fileHighlight = { fg = 'RED' } end
     if hasUnsavedChanges then fileHighlight = { fg = 'VIOLET_4' } end
+    if isNoName then fileHighlight = { fg = 'COMMENT' } end
+
     -- Project
     local project = fileData.project;
 
@@ -165,12 +171,18 @@ __.statusline = {
     --         }
     --       },
     --       file = {
-    --         path = 'config/vim/nvim/includes/statusline.lua',
+    --         content = 'config/vim/…/statusline.lua',
+    --         basename = 'statusline.lua'
     --       }
     --   }
 
     -- Which file to check?
     local rawFilepath = vim.fn.expand('%:p')
+
+    -- For a [No Name] buffer
+    if __.isNoName() then
+      rawFilepath = vim.fn.getcwd() .. '/[No Name]'
+    end
 
     -- For NvimTree, we display the current selected folder
     if __.statusline.isNvimTree() then
@@ -183,9 +195,10 @@ __.statusline = {
       return vim.b.statuslineFileData
     end
 
-
     -- Project info
-    local projectKey = vim.fn.systemlist('project-by-path ' .. rawFilepath)[1]
+    local projectKey = vim.fn.systemlist(
+      'project-by-path ' .. vim.fn.shellescape(rawFilepath)
+    )[1]
     local projectData = getProject(projectKey)
     -- Icon with name string
     local projectContent = projectData.icon
@@ -200,15 +213,17 @@ __.statusline = {
       }
     }
 
-    -- File info
-    -- Content
+    -- Filepath
     local relativePath = rawFilepath:gsub('^' .. projectData.path, '')
-    local simplifiedPath = vim.fn.systemlist('simplify-path ' .. relativePath .. ' 3')[1] -- Keep only three levels
+    local basename = vim.fs.basename(rawFilepath)
+    local simplifiedPath = vim.fn.systemlist(
+      'simplify-path ' .. vim.fn.shellescape(relativePath) .. ' 3' -- Keep only three levels
+    )[1] 
     local fileContent = ' ' .. simplifiedPath
     local file = {
       content = fileContent,
+      basename = basename,
     }
-
 
     -- Save in cache
     local statuslineFileData = {

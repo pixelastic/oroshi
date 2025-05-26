@@ -11,6 +11,14 @@ __ = {
     table.insert(container, 1, item)
   end,
   -- }}}
+  
+  -- File handling {{{
+  -- isNoName: Check if the buffer is a [No Name] buffer, when vim is opened
+  -- without a filepath
+  isNoName = function()
+    return vim.fn.expand('%') == ''
+  end,
+  -- }}}
 
   -- Debug {{{
   debug = function(input)
@@ -20,8 +28,13 @@ __ = {
       displayedInput = vim.inspect(input)
     end
 
-    pcall(function()
-      vim.notify(displayedInput, vim.log.levels.INFO)
+    vim.schedule(function()
+      local success, error = pcall(function()
+        vim.notify(displayedInput, vim.log.levels.INFO)
+      end)
+      if error then
+        vim.print(displayedInput)
+      end
     end)
 
   end,
@@ -40,12 +53,6 @@ __ = {
   -- }}}
 }
 
--- debug: Display a variable in a floating window
-function d(input)
-  vim.schedule(function()
-    vim.notify(vim.inspect(input))
-  end)
-end
 
 
 -- getColors: Define vim.g.colors once and for all
