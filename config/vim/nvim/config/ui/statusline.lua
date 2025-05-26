@@ -1,83 +1,84 @@
 -- Statusline
 vim.opt.laststatus = 3 -- One global statusline instead of one per window
 vim.opt.showmode = false -- Hide bottom line with mode
-vim.opt.statusline = '%!v:lua.oroshiStatusline()' -- Use custom function
+vim.opt.statusline = '%!v:lua.__.statusline.main()' -- Use custom function
 
-function oroshiStatusline()
-  local statusline = {}
+-- Statusline methods
+__.statusline = {
+  -- main: What is being passed to vim.opt.statusline
+  main = function()
+    local statusline = {}
 
-  -- Nvim-Specific statusline
-  if vim.bo.filetype == 'NvimTree' then
-    return vim.g.statusline.nvimTreeStatusline()
-  end
+    -- Nvim-Specific statusline
+    if vim.bo.filetype == 'NvimTree' then
+      return __.statusline.nvimTreeStatusline()
+    end
 
-  -- Mode
-  local mode = vim.g.statusline.getMode()
-  local modeBg = mode.hl.bg; -- Need to be stored statically
-  -- Project & file
-  local fileData = vim.g.statusline.getFileData()
-  -- File
-  local file = fileData.file;
-  local isReadonly = vim.bo.readonly
-  local hasUnsavedChanges = vim.bo.modified
-  local fileHighlight = { fg = 'GREEN', bold = true }
-  if isReadonly then fileHighlight = { fg = 'RED' } end
-  if hasUnsavedChanges then fileHighlight = { fg = 'VIOLET_4' } end
-  -- Project
-  local project = fileData.project;
-
-
-  local add = vim.g.statusline.add
-  -- Mode
-  add(statusline, mode.content, mode.hl)
-  add(statusline, '', { fg = modeBg, bg = project.hl.bg})
-
-  -- Project
-  add(statusline, project.content, project.hl)
-  add(statusline, '', { fg = project.hl.bg })
-
-  -- Recording macro
-  if vim.g.recordingMacro then
-    add(statusline, " 󰑋 ", { fg = 'RED' })
-    add(statusline, vim.g.recordingMacro, { fg = 'RED_4' })
-  end
-
-  -- Filepath
-  add(statusline, file.content, fileHighlight)
-
-  -- Separator
-  add(statusline, '%<%=')
+    -- Mode
+    local mode = __.statusline.getMode()
+    local modeBg = mode.hl.bg; -- Need to be stored statically
+    -- Project & file
+    local fileData = __.statusline.getFileData()
+    -- File
+    local file = fileData.file;
+    local isReadonly = vim.bo.readonly
+    local hasUnsavedChanges = vim.bo.modified
+    local fileHighlight = { fg = 'GREEN', bold = true }
+    if isReadonly then fileHighlight = { fg = 'RED' } end
+    if hasUnsavedChanges then fileHighlight = { fg = 'VIOLET_4' } end
+    -- Project
+    local project = fileData.project;
 
 
-  -- File encoding (only if not UTF-8)
-  local fileencoding = vim.bo.fileencoding ~= '' and vim.bo.fileencoding or vim.o.encoding
-  if fileencoding ~= 'utf-8' then
-    add(statusline, ' ' .. fileencoding, { fg = 'RED' })
-  end
+    local add = __.statusline.add
+    -- Mode
+    add(statusline, mode.content, mode.hl)
+    add(statusline, '', { fg = modeBg, bg = project.hl.bg})
 
-  -- Filetype
-  local filetype = vim.bo.filetype
-  add(statusline, ' ' .. filetype)
+    -- Project
+    add(statusline, project.content, project.hl)
+    add(statusline, '', { fg = project.hl.bg })
 
-  -- Foldmarker
-  local foldmethod = vim.wo.foldmethod
-  local foldSymbolMap = { manuel = 'M', marker = '{', syntax = 'S', indent = '▸', expr = '󰊕 ' }
-  local foldSymbol = foldSymbolMap[foldmethod] or '?'
-  add(statusline, '  ' .. foldSymbol)
+    -- Recording macro
+    if __.macro.currentName then
+      add(statusline, " 󰑋 ", { fg = 'RED' })
+      add(statusline, __.macro.currentName, { fg = 'RED_4' })
+    end
 
-  -- Ruler
-  add(statusline, '  %2.c:%2.l %2p%%')
-  add(statusline, '  0x%2.B')
+    -- Filepath
+    add(statusline, file.content, fileHighlight)
+
+    -- Separator
+    add(statusline, '%<%=')
 
 
-  return table.concat(statusline, '')
-end
+    -- File encoding (only if not UTF-8)
+    local fileencoding = vim.bo.fileencoding ~= '' and vim.bo.fileencoding or vim.o.encoding
+    if fileencoding ~= 'utf-8' then
+      add(statusline, ' ' .. fileencoding, { fg = 'RED' })
+    end
 
-vim.g.statusline = {
-  -- Add an element to the statusline
-  -- Usage :
-  -- add(statusline, ' NORMAL ', { bg = 'BLACK', fg = 'WHITE' })
+    -- Filetype
+    local filetype = vim.bo.filetype
+    add(statusline, ' ' .. filetype)
+
+    -- Foldmarker
+    local foldmethod = vim.wo.foldmethod
+    local foldSymbolMap = { manuel = 'M', marker = '{', syntax = 'S', indent = '▸', expr = '󰊕 ' }
+    local foldSymbol = foldSymbolMap[foldmethod] or '?'
+    add(statusline, '  ' .. foldSymbol)
+
+    -- Ruler
+    add(statusline, '  %2.c:%2.l %2p%%')
+    add(statusline, '  0x%2.B')
+
+    return table.concat(statusline, '')
+  end,
+
+  -- add: Add an element to the statusline
   add = function(statusline, content, highlight)
+    -- Usage :
+    -- add(statusline, ' NORMAL ', { bg = 'BLACK', fg = 'WHITE' })
     if not highlight then highlight = {} end
 
     -- Define a highlight group based on the "slot" in the statusbar
@@ -90,18 +91,19 @@ vim.g.statusline = {
     __.append(statusline, coloredContent)
   end,
 
-  -- Get informations about current mode
-  -- Usage:
-  -- getMode() 
-  -- => { 
-  --     content = 'NORMAL', 
-  --     hl = { 
-  --       bg = 'BLACK', 
-  --       fg = 'WHITE_LIGHT,
-  --       bold = true
-  --     }
-  --   }
+  -- getMode: Get informations about current mode
   getMode = function() 
+    -- Usage:
+    -- getMode() 
+    -- => { 
+    --     content = 'NORMAL', 
+    --     hl = { 
+    --       bg = 'BLACK', 
+    --       fg = 'WHITE_LIGHT,
+    --       bold = true
+    --     }
+    --   }
+
     -- All possible modes
     local modes = {
       n = {
@@ -143,24 +145,24 @@ vim.g.statusline = {
     return mode
   end,
 
-
-  -- Get information about current file
-  -- Stores info in buffer, so it is only called once per buffer
-  -- Usage:
-  -- getFileData() 
-  -- => { 
-  --       project = {
-  --         content = 'x oroshi',
-  --         hl = {
-  --           bg = 'GREEN',
-  --           fg = 'WHITE'
-  --         }
-  --       },
-  --       file = {
-  --         path = 'config/vim/nvim/includes/statusline.lua',
-  --       }
-  --   }
+  -- getFileData: Get information about current file
   getFileData = function()
+    -- Stores info in buffer, so it is only called once per buffer
+    -- Usage:
+    -- getFileData() 
+    -- => { 
+    --       project = {
+    --         content = 'x oroshi',
+    --         hl = {
+    --           bg = 'GREEN',
+    --           fg = 'WHITE'
+    --         }
+    --       },
+    --       file = {
+    --         path = 'config/vim/nvim/includes/statusline.lua',
+    --       }
+    --   }
+
     -- Check in buffer cache first
     if vim.b.statuslineFileData then
       return vim.b.statuslineFileData
@@ -203,11 +205,10 @@ vim.g.statusline = {
     return statuslineFileData
   end,
 
-
   -- nvimTreeStatusline: Simple statusline for using NvimTree
   nvimTreeStatusline = function()
     local statusline = {}
-    local add = vim.g.statusline.add
+    local add = __.statusline.add
     add(statusline, '  ', { fg= 'YELLOW', bg = 'GREEN_9' })
     add(statusline, 'TREE ', { fg= 'WHITE', bg = 'GREEN_9' })
     add(statusline, '', { fg = 'GREEN_9' })
@@ -216,17 +217,3 @@ vim.g.statusline = {
 
 }
 
--- Switch a boolean when recording a macro
-local function setIsRecording(status)
-  return function()
-    if status then
-      vim.g.recordingMacro = vim.fn.reg_recording()
-    else
-      vim.g.recordingMacro = false
-    end
-
-    vim.cmd("redrawstatus")
-  end
-end
-autocmd('RecordingEnter', '*', setIsRecording(true))
-autocmd('RecordingLeave', '*', setIsRecording(false))
