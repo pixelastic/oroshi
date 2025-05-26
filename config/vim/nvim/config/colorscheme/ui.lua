@@ -1,4 +1,3 @@
---
 hl('Normal', 'GRAY_3') -- Normal text.
 hl('NormalNC', 'none') -- Normal text in unfocused windows. Should not be set.
 
@@ -20,9 +19,10 @@ __.vars.commandline = {
   hlDefault = { fg = 'WHITE' }, -- Default highlight
   hlReadable = { fg = 'TEXT', bg = 'GRAY_8' },  -- When need to be more readable
 }
-hl('MsgSeparator', 'NONE', { bg = 'GRAY_8' }) --	Top bar separator of messages
+hl('MsgSeparator', 'NONE', { bg = 'GRAY_6' }) --	Top bar separator of messsage
 hl('MoreMsg', 'TEXT') -- Some additional text, like in <F3>
-hl('Question', 'TEXT') --	"Press ENTER or type command to continue"
+hl('ErrorMsg', 'RED_8') --	Error messages
+hl('Question', 'COMMENT') --	"Press ENTER or type command to continue"
 -- }}}
 
 -- Splits {{{
@@ -35,7 +35,7 @@ hl('NotifyINFOBorder', 'YELLOW_7')
 hl('NotifyINFOBody', 'YELLOW_6' )
 -- }}}
 
--- Tree {{{
+-- Nvim Tree {{{
 hl('NvimTreeClosedFolderIcon', 'YELLOW_6' )
 hl('NvimTreeOpenedFolderIcon', 'YELLOW_6' )
 hl('NvimTreeFolderArrowClosed', 'NEUTRAL' )
@@ -44,7 +44,7 @@ hl('NvimTreeGitDirtyIcon', 'GIT_DIRTY' )
 hl('NvimTreeRootFolder', 'DIRECTORY' )
 -- }}}
 
--- Misc {{'
+-- Misc {{{
 hl('Directory', 'DIRECTORY') --	Directory names 
 -- }}}
 

@@ -12,17 +12,18 @@ hl('DiffAdd', 'XXX') --		Diff mode: Added line. |diff.txt|
 hl('DiffChange', 'XXX') --	Diff mode: Changed line. |diff.txt|
 hl('DiffDelete', 'XXX') --	Diff mode: Deleted line. |diff.txt|
 hl('DiffText', 'XXX') --	Diff mode: Changed text within a changed line. |diff.txt|
-hl('ErrorMsg', 'XXX') --	Error messages on the command line.
-hl('FloatBorder', 'XXX') --	Border of floating windows.
-hl('FloatFooter', 'XXX') --	Footer of floating windows.
-hl('FloatTitle', 'XXX') --	Title of floating windows.
+
+hl('FloatBorder', 'YYY') --	Border of floating windows.
+hl('FloatFooter', 'YYY') --	Footer of floating windows.
+hl('FloatTitle', 'YYY') --	Title of floating windows.
 hl('FoldColumn', 'YYY') --	'foldcolumn'
 hl('LineNrAbove', 'YYY') --	Line number for when the 'relativenumber'
 hl('LineNrBelow', 'YYY') --	Line number for when the 'relativenumber'
-hl('ModeMsg', 'XXX') --		'showmode' message (e.g., "-- INSERT --").
-hl('NormalFloat', 'XXX') --	Normal text in floating windows.
+
+hl('ModeMsg', 'YYY') --		'showmode' message (e.g., "-- INSERT --").
+hl('NormalFloat', 'YYY') --	Normal text in floating windows.
 hl('PmenuExtraSel', 'YYY') --	Popup menu: Selected item "extra text".
-hl('DiagnosticInfo', 'XXX')
+hl('DiagnosticInfo', 'YYY')
 
 hl('PmenuExtra', 'XXX') --	Popup menu: Normal item "extra text".
 hl('PmenuKindSel', 'XXX') --	Popup menu: Selected item "kind".
@@ -33,22 +34,23 @@ hl('PmenuSbar', 'XXX') --	Popup menu: Scrollbar.
 hl('PmenuThumb', 'XXX') --	Popup menu: Thumb of the scrollbar.
 hl('QuickFixLine', 'XXX') --	Current |quickfix| item in the quickfix window. Combined with
 hl('SnippetTabstop', 'XXX') --	Tabstops in snippets. |vim.snippet|
-hl('SpellBad', 'XXX') --	Word that is not recognized by the spellchecker. |spell|
-hl('SpellCap', 'XXX') --	Word that should start with a capital. |spell|
-hl('SpellLocal', 'XXX') --	Word that is recognized by the spellchecker as one that is
-hl('SpellRare', 'XXX') --	Word that is recognized by the spellchecker as one that is
-hl('StatusLineTermNC', 'XXX') --
-hl('StatusLineTerm', 'XXX') --	Status line of |terminal| window.
-hl('Substitute', 'XXX') --	|:substitute| replacement text highlighting.
-hl('TabLineSelSeparator', 'XXX') --	Tab pages line, active tab page label.
-hl('TabLineSel', 'XXX') --	Tab pages line, active tab page label.
-hl('TabLine', 'XXX') --		Tab pages line, not active tab page label.
-hl('TermCursor', 'XXX') --	Cursor in a focused terminal.
-hl('WarningMsg', 'XXX') --	Warning messages.
-hl('WildMenu', 'XXX') --	Current match in 'wildmenu' completion.
-hl('WinBarNC', 'XXX') --	Window bar of not-current windows.
-hl('WinBar', 'XXX') --		Window bar of current window.
-hl('lCursor', 'XXX') --		Character under the cursor when |language-mapping|
+
+hl('SpellBad', 'YYY') --	Word that is not recognized by the spellchecker. |spell|
+hl('SpellCap', 'YYY') --	Word that should start with a capital. |spell|
+hl('SpellLocal', 'YYY') --	Word that is recognized by the spellchecker as one that is
+hl('SpellRare', 'YYY') --	Word that is recognized by the spellchecker as one that is
+hl('StatusLineTermNC', 'YYY') --
+hl('StatusLineTerm', 'YYY') --	Status line of |terminal| window.
+hl('Substitute', 'YYY') --	|:substitute| replacement text highlighting.
+hl('TabLineSelSeparator', 'YYY') --	Tab pages line, active tab page label.
+hl('TabLineSel', 'YYY') --	Tab pages line, active tab page label.
+hl('TabLine', 'YYY') --		Tab pages line, not active tab page label.
+hl('TermCursor', 'YYY') --	Cursor in a focused terminal.
+hl('WarningMsg', 'YYY') --	Warning messages.
+hl('WildMenu', 'YYY') --	Current match in 'wildmenu' completion.
+hl('WinBarNC', 'YYY') --	Window bar of not-current windows.
+hl('WinBar', 'YYY') --		Window bar of current window.
+hl('lCursor', 'YYY') --		Character under the cursor when |language-mapping|
 -- }}}
 
 -- Unused (yet) syntax groups {{{
