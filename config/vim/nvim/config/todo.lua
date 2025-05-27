@@ -12,6 +12,7 @@
 -- TODO: tab at start of line should indent, not complete
 
 -- NICE TO HAVE
+-- TODO: When opening a dir, show explorer, and change colors
 -- TODO: Allow folding with expr AND with marker
 -- TODO: Find a plugin that can autoclose functions
 -- TODO: Mapping to jump to end of current block (like going to end of the current function)

@@ -27,14 +27,24 @@ hl('Underlined', 'none', { underline = true }) --	text that stands out, HTML lin
 -- }}}
 
 -- Treesitter groups {{{
+
+-- Comments
 hl('@comment.note.comment', 'TODO', { bold = true })
 hl('@comment.note.vimdoc', 'YELLOW', { bold = true })
+
+-- Punctuation
 hl('@operator', 'PUNCTUATION')
-hl('@property', 'KEY')
 hl('@punctuation', 'PUNCTUATION')
+
+-- Variables
 hl('@variable', 'VARIABLE')
 hl('@variable.member', 'KEY')
-hl('@markup.link', 'LINK', { underline = true })
+hl('@property', 'KEY')
+
+-- Keywords
+hl('@keyword.import', 'IMPORT')
+hl('@keyword.directive', 'ORANGE')
+
 -- Headers
 hl('@markup.heading.1', 'PURPLE_4', { bold = true })
 hl('@markup.heading.2', 'BLUE_4', { bold = true })
@@ -43,9 +53,13 @@ hl('@markup.heading.4', 'YELLOW_6', { bold = true })
 hl('@markup.heading.5', 'ORANGE_7', { bold = true })
 hl('@markup.heading.6', 'RED_7', { bold = true })
 
+-- Links
+hl('@markup.link', 'LINK', { underline = true })
+
 -- }}}
 
 -- Language specific {{{
+frequire('oroshi/colorscheme/syntax/css')
 frequire('oroshi/colorscheme/syntax/lua')
 frequire('oroshi/colorscheme/syntax/help')
 frequire('oroshi/colorscheme/syntax/markdown')

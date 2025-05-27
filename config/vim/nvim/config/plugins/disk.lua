@@ -251,9 +251,7 @@ return {
         nmap('h', onH, 'Go up one level', { buffer = bufnr })
         --- }}}
 
-        -- L / Right: {{{
-        --   on folders: Open/Close
-        --   on files: Open in new tabs silently
+        -- L: Open {{{
         local function onL()
           local node = api.tree.get_node_under_cursor()
 
@@ -270,7 +268,6 @@ return {
           api.tree.open()              -- Keep focus on the tree
         end
         nmap('l', onL, 'Open silently', { buffer = bufnr })
-        nmap('<Right>', onL, 'Open silently', { buffer = bufnr })
         --- }}}
 
         -- ENTER: {{{

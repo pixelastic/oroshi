@@ -48,6 +48,21 @@ hl('NvimTreeFolderArrowClosed', 'NEUTRAL' )
 hl('NvimTreeFolderArrowOpen', 'NEUTRAL' )
 hl('NvimTreeGitDirtyIcon', 'GIT_DIRTY' )
 hl('NvimTreeRootFolder', 'DIRECTORY' )
+hl('NvimTreeImageFile', 'YELLOW_6' )
+-- }}}
+
+-- Icons {{{
+hl('DevIconCss', 'VIOLET' )
+hl('DevIconEmbeddedOpenTypeFont', 'VIOLET' )
+hl('DevIconFavicon', 'YELLOW_6' )
+hl('DevIconJson', 'VIOLET' )
+hl('DevIconJs', 'YELLOW' )
+hl('DevIconPng', 'YELLOW_6' )
+hl('DevIconReadme', 'AMBER' )
+hl('DevIconSvg', 'VIOLET' )
+hl('DevIconTrueTypeFont', 'VIOLET' )
+hl('DevIconWebOpenFontFormat', 'VIOLET' )
+hl('DevIconYml', 'VIOLET' )
 -- }}}
 
 -- Misc {{{
