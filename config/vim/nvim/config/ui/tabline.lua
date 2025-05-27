@@ -1,31 +1,31 @@
 vim.opt.tabpagemax = 1000 -- Do not limit max number of tabs open
 vim.opt.showtabline = 1 -- Only show tabs if more than one
-vim.opt.tabline = '%!v:lua.oroshiTabline()' -- Use custom function
+vim.opt.tabline = '%!v:lua.__.tabline.main()' -- Use custom function
 
-function oroshiTabline()
-  local tabline = {}
+__.tabline = {
+  -- main: Main entrypoint for vim.opt.tabline
+  main = function()
+    local tabline = {}
 
-  -- We get all tabs that fit in the display
-  local tabs = vim.g.tabline.displayedTabs(allTabs)
+    -- We get all tabs that fit in the display
+    local tabs = __.tabline.displayedTabs(allTabs)
 
-  -- Display them
-  for i, tab in ipairs(tabs) do
-    local nextTab = tabs[i + 1]
-    vim.g.tabline.display(tabline, tab, nextTab)
-  end
+    -- Display them
+    for i, tab in ipairs(tabs) do
+      local nextTab = tabs[i + 1]
+      __.tabline.display(tabline, tab, nextTab)
+    end
 
-  return table.concat(tabline, '')
-end
+    return table.concat(tabline, '')
+  end,
 
-
-vim.g.tabline = {
   -- Get metadata for a given tab
   getTab = function(index)
     -- isCurrent
     local currentTab = vim.fn.tabpagenr()
     local isCurrent = currentTab == index
     -- filepath
-    local fullPath = vim.g.tabline.getFullpath(index)
+    local fullPath = __.tabline.getFullpath(index)
     -- content
     local basename = vim.fn.fnamemodify(fullPath, ':t')
     local content = ' ' .. basename .. ' '
@@ -59,15 +59,12 @@ vim.g.tabline = {
 
     -- Content
     local displayedContent = tab.content
-    local content = vim.g.tabline.colorize(displayedContent, tab.index, tab.hl)
+    local content = __.tabline.colorize(displayedContent, tab.index, tab.hl)
     __.append(tabline, content)
 
     -- Separator
     local separatorString = ''
-    local separatorHightlight = {
-      bg = vim.g.tabline.defaultBg,
-      fg = vim.g.tabline.defaultFg,
-    }
+    local separatorHightlight = __.vars.tabline.hl;
     -- Update colors if current or next is the current one
     if tab.isCurrent or nextTab.isCurrent then
       separatorString = ''
@@ -76,7 +73,7 @@ vim.g.tabline = {
         fg = nextTab.hl.bg
       }
     end
-    local separator = vim.g.tabline.colorize(separatorString, tab.index .. 'Separator', separatorHightlight)
+    local separator = __.tabline.colorize(separatorString, tab.index .. 'Separator', separatorHightlight)
     __.append(tabline, separator)
 
     -- End of click area
@@ -86,7 +83,7 @@ vim.g.tabline = {
   -- Returns only the tabs to display
   displayedTabs = function()
     -- We get all the tabs
-    local allTabs = vim.g.tabline.allTabs()
+    local allTabs = __.tabline.allTabs()
 
     --  We need to add tabs, one by one, around the current one, until
     -- we run out of space
@@ -94,12 +91,12 @@ vim.g.tabline = {
     local displayedTabs = {}
 
     -- Add current tab, for sure
-    local currentTab = vim.g.tabline.getCurrentTab(allTabs)
+    local currentTab = __.tabline.getCurrentTab(allTabs)
     __.append(displayedTabs, currentTab)
     local usedWidth = currentTab.width
 
     -- Get all tabs, by order of importance (proximity with current tab)
-    local tabQueue = vim.g.tabline.buildTabQueue(allTabs, currentTab)
+    local tabQueue = __.tabline.buildTabQueue(allTabs, currentTab)
 
     -- Add them to the list of displayed tabs until we run out of space
     for i, item in ipairs(tabQueue) do
@@ -134,7 +131,8 @@ vim.g.tabline = {
     local offset = 1
     local tabQueue = {}
     for i = 1, totalTabCount - 1 do
-      local direction = i % 2 == 0 and 'after' or 'before'
+      local isOdd = i % 2 == 1
+      local direction = isOdd and 'before' or 'after'
 
       -- Grab the tab before and after
       local indexBefore = currentTab.index - offset
@@ -166,7 +164,7 @@ vim.g.tabline = {
     local tabs = {}
     local count = vim.fn.tabpagenr('$')
     for i = 1, count do
-      __.append(tabs, vim.g.tabline.getTab(i))
+      __.append(tabs, __.tabline.getTab(i))
     end
 
     return tabs
@@ -204,8 +202,4 @@ vim.g.tabline = {
     -- Wrap the content in this group
     return color(content, highlightName)
   end,
-
-  -- Should be the same as TabLineFill
-  defaultBg = 'GRAY_8',
-  defaultFg = 'GRAY_4',
 }

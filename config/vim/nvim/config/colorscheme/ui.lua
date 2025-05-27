@@ -2,6 +2,12 @@ hl('Normal', 'GRAY_3') -- Normal text.
 hl('NormalNC', 'none') -- Normal text in unfocused windows. Should not be set.
 
 -- Tabs {{{
+__.vars.tabline = {
+  hl = { 
+    fg = 'GRAY_4',
+    bg = 'GRAY_8'
+  }
+}
 hl('TabLineFill', 'GRAY_4', { bg = 'GRAY_8' }) --	Tab pages line, where there are no labels.
 -- }}}
 

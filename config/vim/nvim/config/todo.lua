@@ -2,6 +2,7 @@
 -- TODO: Add colored line numbers based on if add/delete/modified
 -- TODO: Align on antything
 -- TODO: Commenting / uncommenting lines with comments should remove comment where there are already comment
+-- TODO: Refactor tabline in __.tabline
 
 -- BIG TOOLS
 -- TODO: Autoformat on save

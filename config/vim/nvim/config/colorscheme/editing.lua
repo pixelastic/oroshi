@@ -23,12 +23,12 @@ vim.opt.guicursor = {
   "i:ver25-CursorModeInsert",
   "v:block-blinkon300-blinkoff300-CursorModeVisual",
   "c:hor25-CursorModeCommandNormal",
+  "ci:hor25-CursorModeCommandInsert",
 
   -- Unused (yet) modes below
   "ve:block-CursorModeVisualExclusive",
   "o:block-CursorModeOperator",
   "r:block-CursorModeReplace",
-  "ci:block-CursorModeCommandInsert",
   "cr:block-CursorModeCommandReplace",
   "sm:block-CursorModeShowMatch",
   "t:block-CursorModeTerminal",
@@ -37,11 +37,12 @@ hl('CursorModeNormal', 'none', { bg = 'EMERALD' })
 hl('CursorModeInsert', 'none', { bg = 'YELLOW_3' })
 hl('CursorModeVisual', 'none', { bg = 'BLUE_7' })
 hl('CursorModeCommandNormal', 'none', { bg = 'TEAL' })
+hl('CursorModeCommandInsert', 'none', { bg = 'TEAL' })
+
 -- Unused (yet) modes
 hl('CursorModeVisualExclusive', 'YYY')
 hl('CursorModeOperator', 'YYY')
 hl('CursorModeReplace', 'YYY')
-hl('CursorModeCommandInsert', 'YYY')
 hl('CursorModeCommandReplace', 'YYY')
 hl('CursorModeShowMatch', 'YYY')
 hl('CursorModeTerminal', 'YYY')

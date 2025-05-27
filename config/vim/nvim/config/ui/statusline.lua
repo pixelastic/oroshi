@@ -248,6 +248,5 @@ __.statusline = {
     add(statusline, '', { fg = 'GREEN_9' })
     return table.concat(statusline, '')
   end,
-
 }
 
