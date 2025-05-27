@@ -194,4 +194,10 @@ function oroshi-prompt-asynchronous-populate() {
   OROSHI_ASYNCHRONOUS_PID=$!
 }
 add-zsh-hook precmd oroshi-prompt-asynchronous-populate
+# }}}
+
+# Cursors {{{
+function _cursor-cmd() { print -n "\e]12;${COLOR_EMERALD_HEXA}\a" }
+function _cursor-ins() { print -n "\e]12;${COLOR_AMBER_HEXA}\a" }
+# }}}
 
