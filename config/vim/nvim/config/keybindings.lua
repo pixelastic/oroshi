@@ -27,6 +27,7 @@ vmap("<C-S>", "<CMD>silent! w<CR><ESC>", "Save file")
 imap("<C-D>", "<CMD>x<CR><ESC>", "Save file and quit")
 nmap("<C-D>", "<CMD>x<CR><ESC>", "Save file and quit")
 vmap("<C-D>", "<CMD>x<CR><ESC>", "Save file and quit")
+cmap("<C-D>", "<C-C>", "Quit commandline")
 
 -- CTRL + N
 nmap("<C-N>", ":tabedit<Space>", "Create new file in directory", { silent = false })

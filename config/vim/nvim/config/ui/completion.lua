@@ -23,20 +23,6 @@
 -- search
 vim.opt.cmdheight = 0  -- Hide the command line
 
--- Increase cmdheight in Search and Command mode
-local function setCmdHeight(newHeight)
-  return function()
-    vim.opt.cmdheight = newHeight
-    -- Wait a bit, so the statusline is correctly redrawn
-    vim.schedule(function()
-      vim.cmd.redraw()
-    end)
-  end
-end
-autocmd('CmdlineEnter', '*', setCmdHeight(1))
-autocmd('CmdlineLeave', '*', setCmdHeight(0))
-
-
 -- Change visibility / readability of the MsgArea
 function msgAreaReadable()
   hl('MsgArea', 'none', __.vars.commandline.hlReadable)

@@ -20,6 +20,42 @@ hl('SignColumn', 'GRAY') --	Sign column
 hl('StatusLine', 'GRAY_4', { bg = 'GRAY_8' }) --	Status line of current window.
 -- }}}
 
+-- Cursor {{{
+vim.opt.guicursor = {
+  "n:block-CursorModeNormal",
+  "i:ver25-CursorModeInsert",
+  "v:block-blinkon300-blinkoff300-CursorModeVisual",
+  "t:block-CursorModeTerminal",  -- for example, in fzf search
+  "c:hor25-CursorModeCommandNormal", -- Commandline & Search, when typing
+  "ci:hor25-CursorModeCommandInsert", -- Commandline & Search, when editing
+
+  -- Unused (yet) modes below
+  "ve:block-CursorModeVisualExclusive",
+  "o:block-CursorModeOperator",
+  "r:block-CursorModeReplace",
+  "cr:block-CursorModeCommandReplace",
+  "sm:block-CursorModeShowMatch",
+}
+hl('CursorModeNormal', 'none', { bg = 'EMERALD' })
+hl('CursorModeInsert', 'none', { bg = 'YELLOW_3' })
+hl('CursorModeVisual', 'none', { bg = 'BLUE_7' })
+hl('CursorModeTerminal', 'none', { bg = 'YELLOW' }) -- In fzf search
+-- Commandline & Search, applied when entering commandline
+__.vars.cursor = {
+  hlDefault = { bg = 'TEAL' },
+  hlSearch = { bg = 'ORANGE' }
+}
+-- hl('CursorModeCommandNormal', 'YYY')
+-- hl('CursorModeCommandInsert', 'YYY')
+
+-- Unused (yet) modes
+hl('CursorModeVisualExclusive', 'XXX')
+hl('CursorModeOperator', 'XXX')
+hl('CursorModeReplace', 'XXX')
+hl('CursorModeCommandReplace', 'XXX')
+hl('CursorModeShowMatch', 'XXX')
+-- }}}
+
 -- Commandline {{{
 __.vars.commandline = {
   hlDefault = { fg = 'WHITE' }, -- Default highlight
