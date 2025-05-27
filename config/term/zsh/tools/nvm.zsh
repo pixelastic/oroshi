@@ -29,6 +29,7 @@ export OROSHI_NVM_LAZYLOAD_ALIASES=(
 	yarn-dependency-add-dev
 	yarn-dependency-add-root
 	yarn-dependency-add-root-dev
+  yarn-dependency-update
 	yarn-link-remove
 	yarn-link-remove-all
 	yarn-run

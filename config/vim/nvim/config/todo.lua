@@ -3,6 +3,7 @@
 -- TODO: Align on antything
 -- TODO: Commenting / uncommenting lines with comments should remove comment where there are already comment
 -- TODO: Refactor tabline in __.tabline
+-- TODO: Check old config on space and tabs
 
 -- BIG TOOLS
 -- TODO: Autoformat on save
