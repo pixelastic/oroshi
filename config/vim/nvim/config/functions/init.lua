@@ -34,7 +34,11 @@ __ = {
   end,
   -- getCursor: Returns cursor position (row, col)
   getCursor = function()
-    return vim.api.nvim_win_get_cursor(0)
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    return {
+      row = row,
+      col = col
+    }
   end,
   -- currentLine: get/set the current line
   currentLine = function(input)

@@ -1,3 +1,12 @@
+-- bold
+hl('@markup.strong.markdown_inline', 'TEXT', { bold = true }) -- **bold**
+
+-- links
+hl('@markup.link.url.markdown_inline', 'LINK', { underline = true }) -- [](url)
+hl('@markup.link.label.markdown_inline', 'STRING') -- [label]() 
+hl('@markup.link.markdown_inline', 'PUNCTUATION') -- []()
+hl('RenderMarkdownLink', 'LINK') -- 	Image & hyperlink icons
+
 -- inline code
 hl('@markup.raw.markdown_inline', 'STRING') -- `code`
 hl('RenderMarkdownCode', 'STRING', { bg = 'GRAY_8' }) -- 	Code block background
@@ -13,21 +22,17 @@ hl('RenderMarkdownCodeFallback', 'XXX') -- 	Fallback for code language
 hl('@markup.list.markdown', 'PUNCTUATION') -- bullet points
 hl('RenderMarkdownBullet', 'PUNCTUATION') -- 	List item bullet points
 
--- bold
-hl('@markup.strong.markdown_inline', 'TEXT', { bold = true }) -- **bold**
+-- <hr> separator
+hl('@punctuation.special.markdown', 'GRAY_8')
+hl('RenderMarkdownDash', 'GRAY_8') -- 	Thematic break line
 
--- links
-hl('@markup.link.url.markdown_inline', 'LINK', { underline = true }) -- [](url)
-hl('@markup.link.label.markdown_inline', 'STRING') -- [label]() 
-hl('@markup.link.markdown_inline', 'PUNCTUATION') -- []()
-hl('RenderMarkdownLink', 'LINK') -- 	Image & hyperlink icons
 
 -- Gutter sign
 hl('RenderMarkdownSign', 'none') -- 	Sign column background
 
 -- header 1
 hl('RenderMarkdownH1', 'PURPLE_4') -- Gutter icon
-hl('RenderMarkdownH1Bg', 'PURPLE_2', { bg = 'PURPLE_9' }) -- Normal mode (full width)
+hl('RenderMarkdownH1Bg', 'PURPLE_5') -- Normal mode (full width)
 hl('@markup.heading.1.markdown', 'PURPLE_4', { bold = true }) -- Insert mode
 
 -- header 2
@@ -64,7 +69,6 @@ hl('RenderMarkdownQuote4', 'XXX') -- 	Level 4 block quote marker
 hl('RenderMarkdownQuote5', 'XXX') -- 	Level 5 block quote marker
 hl('RenderMarkdownQuote6', 'XXX') -- 	Level 6 block quote marker
 hl('RenderMarkdownInlineHighlight', 'XXX') -- 	Inline highlights contents
-hl('RenderMarkdownDash', 'XXX') -- 	Thematic break line
 hl('RenderMarkdownMath', 'XXX') -- 	Latex lines
 hl('RenderMarkdownIndent', 'XXX') -- 	Indent icon
 hl('RenderMarkdownHtmlComment', 'XXX') -- 	HTML comment inline text

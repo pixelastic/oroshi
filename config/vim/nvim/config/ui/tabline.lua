@@ -96,7 +96,7 @@ __.tabline = {
     local usedWidth = currentTab.width
 
     -- Get all tabs, by order of importance (proximity with current tab)
-    local tabQueue = __.tabline.buildTabQueue(allTabs, currentTab)
+    local tabQueue = __.tabline.buildTabQueue(allTabs, currentTab.index)
 
     -- Add them to the list of displayed tabs until we run out of space
     for i, item in ipairs(tabQueue) do
@@ -125,40 +125,43 @@ __.tabline = {
 
   -- Build a list of all tabs that should be added in addition to the current
   -- one, in order of preference, and with their position (before or after)
-  -- TODO: There is an off by one error. I should remove elements from allTabs
-  -- as I add them to tabQueue, this would make it more efficient. But I want to
-  -- use a AI plugin to find how to do that
-  buildTabQueue = function(allTabs, currentTab)
-    -- Build the list of tabs to try, one before, one after, etc
-    local totalTabCount = #allTabs
-    local offset = 1
+  buildTabQueue = function(allTabs, referenceTabIndex)
+    -- We make a copy of allTabs as we're going to remove elements on iteration
+    local stack = __._.clone(allTabs)
+
+    -- Loop once for each element in the list
     local tabQueue = {}
-    for i = 1, totalTabCount - 1 do
-      local isOdd = i % 2 == 1
-      local direction = isOdd and 'before' or 'after'
+    for i = 1, #stack - 1 do
+      local totalTabCount = #stack
+      local indexBefore = referenceTabIndex - 1
+      local indexAfter = referenceTabIndex + 1
 
-      -- Grab the tab before and after
-      local indexBefore = currentTab.index - offset
-      local indexAfter = currentTab.index + offset
+      -- Alternate between picking before and after
+      local direction = i % 2 == 1 and 'before' or 'after'
+      local tabIndex = direction == 'before' and indexBefore or indexAfter
 
-      -- Change direction if out of bounds
-      if direction == 'before' and indexBefore <= 0 then
-        direction = 'after'
+      -- Loop on bounds
+      if tabIndex == 0 then
+        direction = "after"
+        tabIndex = indexAfter
       end
-      if direction == 'after' and indexAfter > totalTabCount then
-        direction = 'before'
-        indexBefore = indexBefore - 1
+      if tabIndex > totalTabCount then 
+        direction = "before"
+        tabIndex = indexBefore
       end
 
-      -- Add the tab where needed
-      if direction == 'before' then
-        __.append(tabQueue, { direction = 'before', tab = allTabs[indexBefore] })
-      else
-        __.append(tabQueue, { direction = 'after', tab = allTabs[indexAfter] })
-        offset = offset + 1
+      -- Get the tab, and remove it from the stack
+      local tab = stack[tabIndex]
+      table.remove(stack, tabIndex)
+
+      -- Shift the reference if we removed something before it
+      if tabIndex < referenceTabIndex then 
+        referenceTabIndex = referenceTabIndex - 1
       end
+
+      -- Save this
+      __.append(tabQueue, { direction = direction, tab = tab })
     end
-
     return tabQueue
   end,
 
