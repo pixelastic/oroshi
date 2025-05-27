@@ -11,20 +11,46 @@ __ = {
     table.insert(container, 1, item)
   end,
   -- }}}
-  
+
+  -- Types {{{
+  isTable = function(input)
+    return type(input) == 'table'
+  end,
+  -- }}}
+
   -- File handling {{{
   -- isNoName: Check if the buffer is a [No Name] buffer, when vim is opened
   -- without a filepath
   isNoName = function()
     return vim.fn.expand('%') == ''
   end,
+  -- isInsertMode: Check if we are in Insert mode
+  isInsertMode = function()
+    return vim.api.nvim_get_mode().mode == 'i'
+  end,
+  -- getBufferId: Returns current buffer id
+  getBufferId = function()
+    return vim.api.nvim_get_current_buf()
+  end,
+  -- getCursor: Returns cursor position (row, col)
+  getCursor = function()
+    return vim.api.nvim_win_get_cursor(0)
+  end,
+  -- currentLine: get/set the current line
+  currentLine = function(input)
+    if not input then
+      return vim.api.nvim_get_current_line();
+    end
+
+    vim.api.nvim_set_current_line(input)
+  end,
   -- }}}
 
-  -- Debug {{{
+  -- Misc {{{
+  -- debug: Display a variable
   debug = function(input)
-    local inputType = type(input)
     local displayedInput = input
-    if inputType == 'table' then
+    if __.isTable(input) then
       displayedInput = vim.inspect(input)
     end
 
@@ -36,7 +62,10 @@ __ = {
         vim.print(displayedInput)
       end
     end)
-
+  end,
+  -- env: Get an environment variable
+  env = function(name)
+    return os.getenv(name)
   end,
   -- }}}
 
@@ -53,17 +82,21 @@ __ = {
   -- }}}
 }
 
+frequire('oroshi/functions/_')
+frequire('oroshi/functions/autocmd')
+frequire('oroshi/functions/highlight')
+frequire('oroshi/functions/map')
 
 
 -- getColors: Define vim.g.colors once and for all
 local function getColors()
   local colors = {}
 
-  local env_COLORS_INDEX = os.getenv('COLORS_INDEX')
+  local env_COLORS_INDEX = __.env('COLORS_INDEX')
   local items = vim.split(env_COLORS_INDEX, " ", { trimempty = true })
   for _, item in ipairs(items) do
-    local key = string.gsub(item, 'ALIAS_', '')
-    local value = os.getenv('COLOR_' .. item .. '_HEXA')
+    local key = __._.replace(item, 'ALIAS_', '')
+    local value = __.env('COLOR_' .. item .. '_HEXA')
     colors[key] = value
   end
   return colors
@@ -79,7 +112,7 @@ function getProject(projectKey)
   end
 
   function getAttribute(type)
-    return os.getenv('PROJECT_' .. projectKey .. '_' .. type)
+    return __.env('PROJECT_' .. projectKey .. '_' .. type)
   end
 
   -- Stop if unknown project
@@ -101,7 +134,3 @@ function getProject(projectKey)
 
   return projectData
 end
-
-frequire('oroshi/functions/autocmd')
-frequire('oroshi/functions/highlight')
-frequire('oroshi/functions/map')

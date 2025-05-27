@@ -91,14 +91,14 @@ nmap('<C-K>', '<C-A>', 'Decrement number under cursor')
 
 -- Add semicolon
 local function addSemicolonAtEndOfLine()
-  local currentLine = vim.api.nvim_get_current_line();
+  local currentLine = __.currentLine()
   local lastChar = currentLine:sub(-1)
 
   if lastChar == ';' then
     return
   end
 
-  vim.api.nvim_set_current_line(currentLine .. ';')
+  __.currentLine(currentLine .. ';')
 end
 nmap(';', addSemicolonAtEndOfLine, 'Add a semicolon at end of line')
 

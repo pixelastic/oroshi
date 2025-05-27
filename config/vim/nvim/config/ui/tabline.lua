@@ -125,6 +125,9 @@ __.tabline = {
 
   -- Build a list of all tabs that should be added in addition to the current
   -- one, in order of preference, and with their position (before or after)
+  -- TODO: There is an off by one error. I should remove elements from allTabs
+  -- as I add them to tabQueue, this would make it more efficient. But I want to
+  -- use a AI plugin to find how to do that
   buildTabQueue = function(allTabs, currentTab)
     -- Build the list of tabs to try, one before, one after, etc
     local totalTabCount = #allTabs

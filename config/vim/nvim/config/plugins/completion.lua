@@ -36,18 +36,18 @@ return {
 
       -- Disable completion based on context
       local function disableBasedOnContext()
-        local blockerTypes = { "comment", "string", "number" }
+        local blockerTypes = { "comment", "zshComment", "string", "number" }
 
         -- Check all blockers to see if they are part of the current highlights
         local currentTypes = getHighlightGroups()
         for _, typeName in ipairs(blockerTypes) do
           local treesitterName = typeName:lower() -- string
-          if vim.tbl_contains(currentTypes, treesitterName) then
+          if __._.includes(currentTypes, treesitterName) then
             return false
           end
 
           local syntaxName = typeName:gsub('^%l', string.upper) -- String
-          if vim.tbl_contains(currentTypes, syntaxName) then
+          if __._.includes(currentTypes, syntaxName) then
             return false
           end
         end

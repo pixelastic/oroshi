@@ -55,7 +55,7 @@ local function toggleFold()
     vim.cmd('normal! za')
   end)
   if error then
-    d('No fold found')
+    __.debug('No fold found')
   end
 end
 nmap('za', toggleFold, 'Toggle fold')
