@@ -8,7 +8,6 @@
 -- TODO: Re-run the env-generate scripts when editing them
 
 -- NICE TO HAVE
--- TODO: Maybe put all colorscheme ft specific into same file. It is getting tedious to create a new file per filetype
 -- TODO: Allow folding with expr AND with marker
 -- TODO: Find a plugin that can autoclose functions
 -- TODO: Mapping to jump to end of current block (like going to end of the current function)
