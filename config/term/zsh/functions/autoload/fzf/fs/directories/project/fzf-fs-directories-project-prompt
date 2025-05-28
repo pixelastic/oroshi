@@ -1,5 +1,5 @@
 # Display the prompt for finding a directory in a given project
 function fzf-fs-directories-project-prompt() {
-	local currentDirectory="$(fzf-fs-shared-pwd-project)"
-	echo "$(fzf-fs-directories-shared-prompt $currentDirectory) "
+	local rootDirectory="$(fzf-var-read pwd)"
+	echo "$(fzf-fs-directories-shared-prompt $rootDirectory) "
 }

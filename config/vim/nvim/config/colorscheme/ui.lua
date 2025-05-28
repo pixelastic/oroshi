@@ -72,6 +72,26 @@ hl('WinSeparator', 'YELLOW_9', { bg = 'BLACK', bold = true }) --	Separators betw
 hl('StatusLineNC', 'none', { bg = 'GRAY_8' }) --	Status lines of not-current windows.
 -- }}}
 
+-- Statusline {{{
+__.vars.statusline = {
+  hlNormal = { bg = 'EMERALD_9', fg = 'EMERALD_2', bold = true },
+  hlInsert = { bg = 'YELLOW', fg = 'BLACK', bold = true },
+  hlVisual = { bg = 'BLUE', fg = 'WHITE', bold = true },
+  hlSearch = { bg = 'ORANGE_7', fg = 'ORANGE_2', bold = true },
+  hlCommand = { bg = 'TEAL', fg = 'TEAL_1', bold = true },
+  hlUnknown = { bg = 'CYAN'},
+  -- NvimTree
+  hlNvimTreeIcon = { fg= 'YELLOW', bg = 'GREEN_9' },
+  hlNvimTreeText = { fg= 'WHITE', bg = 'GREEN_9' },
+  hlNvimTreeSeparator = { fg = 'GREEN_9' },
+  -- Filepath
+  hlFilepathDefault = { fg = 'GREEN', bold = true },
+  hlFilepathReadonly = { fg = 'RED' },
+  hlFilepathUnsavedChanges = { fg = 'VIOLET_4' },
+  hlFilepathNoName = { fg = 'COMMENT' },
+}
+-- }}}
+
 -- Notify {{{
 hl('NotifyINFOBorder', 'YELLOW_7')
 hl('NotifyINFOBody', 'YELLOW_6' )

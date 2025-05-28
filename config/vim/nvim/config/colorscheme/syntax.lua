@@ -56,7 +56,6 @@ hl('@markup.link', 'LINK', { underline = true })
 hl('@keyword.directive.bash', 'YELLOW')
 hl('@function.builtin.bash', 'GREEN')
 hl('@constant.bash', 'VARIABLE')
-
 -- }}}
 -- CSS {{{
 hl('@tag.css', 'GREEN', { bold = true })
@@ -124,4 +123,13 @@ hl('@markup.heading.6.markdown', 'RED_7', { bold = true })
 -- }}}
 -- yaml {{{
 hl('@property.yaml', 'VARIABLE')
+-- }}}
+-- Zsh {{{
+hl('zshFunction', 'YELLOW')
+hl('zshVariableDef', 'VARIABLE_DEFINITION')
+hl('zshDeref', 'VARIABLE')
+hl('zshBrackets', 'PUNCTUATION')
+hl('zshParentheses', 'PUNCTUATION')
+hl('zshOperator', 'PUNCTUATION')
+hl('zshRedir', 'ORANGE')
 -- }}}

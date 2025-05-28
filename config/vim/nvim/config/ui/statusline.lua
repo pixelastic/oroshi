@@ -22,10 +22,10 @@ __.statusline = {
     local isReadonly = vim.bo.readonly
     local hasUnsavedChanges = vim.bo.modified
     local isNoName = __.isNoName()
-    local fileHighlight = { fg = 'GREEN', bold = true }
-    if isReadonly then fileHighlight = { fg = 'RED' } end
-    if hasUnsavedChanges then fileHighlight = { fg = 'VIOLET_4' } end
-    if isNoName then fileHighlight = { fg = 'COMMENT' } end
+    local fileHighlight = __.vars.statusline.hlFilepathDefault
+    if isReadonly then fileHighlight = __.vars.statusline.hlFilepathReadonly end
+    if hasUnsavedChanges then fileHighlight = __.vars.statusline.hlFilepathUnsavedChanges end
+    if isNoName then fileHighlight = __.vars.statusline.hlFilepathNoName end
 
     -- Project
     local project = fileData.project;
@@ -120,22 +120,23 @@ __.statusline = {
     local modes = {
       n = {
         content = ' NORMAL ',
-        hl = { bg = 'EMERALD_9', fg = 'EMERALD_2', bold = true }
+        hl = __.vars.statusline.hlNormal,
       },
       i = {
         content = ' INSERT ',
-        hl = { bg = 'YELLOW', fg = 'BLACK', bold = true }
+        hl = __.vars.statusline.hlInsert,
       },
       v = {
         content = ' VISUAL ',
-        hl = { bg = 'BLUE', fg = 'WHITE', bold = true }
+        hl = __.vars.statusline.hlVisual,
       },
       s = {
         content = ' SEARCH ',
-        hl = { bg = 'ORANGE_7', fg = 'ORANGE_2', bold = true }
+        hl = __.vars.statusline.hlSearch,
       },
       c = {
         content = ' COMMAND ',
+        hl = __.vars.statusline.hlCommand,
         hl = { bg = 'TEAL', fg = 'TEAL_1', bold = true }
       },
     }
@@ -152,7 +153,7 @@ __.statusline = {
     end
 
     -- Pick right mode
-    local mode = modes[modeKey] or { content = 'UNKNOWN', hl = { bg = 'CYAN'} }
+    local mode = modes[modeKey] or { content = 'UNKNOWN', hl = __.vars.statusline.hlUnknown }
 
     return mode
   end,
@@ -243,9 +244,9 @@ __.statusline = {
   nvimTreeStatusline = function()
     local statusline = {}
     local add = __.statusline.add
-    add(statusline, '  ', { fg= 'YELLOW', bg = 'GREEN_9' })
-    add(statusline, 'TREE ', { fg= 'WHITE', bg = 'GREEN_9' })
-    add(statusline, '', { fg = 'GREEN_9' })
+    add(statusline, '  ', __.vars.statusline.hlNvimTreeSymbol)
+    add(statusline, 'TREE ', __.vars.statusline.hlNvimTreeText)
+    add(statusline, '', __.vars.statusline.hlNvimTreeSeparator)
     return table.concat(statusline, '')
   end,
 }

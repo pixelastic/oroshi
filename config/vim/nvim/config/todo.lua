@@ -5,6 +5,7 @@
 -- TODO: Commenting / uncommenting lines with comments should remove comment where there are already comment
 -- TODO: Check old config on space and tabs. What should be done? SPace for everything?
 -- TODO: Better integrate gp.nvim
+-- TODO: Re-run the env-generate scripts when editing them
 
 -- NICE TO HAVE
 -- TODO: Maybe put all colorscheme ft specific into same file. It is getting tedious to create a new file per filetype

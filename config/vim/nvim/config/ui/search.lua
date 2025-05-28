@@ -8,3 +8,16 @@ nmap(':ù', ':%s/', 'Search and replace', { silent = false })
 nmap('ù:', ':%s/', 'Search and replace', { silent = false })
 vmap(':ù', ':s/', 'Search and replace', { silent = false })
 vmap('ù:', ':s/', 'Search and replace', { silent = false })
+
+
+-- Force highlight when searching
+local function setHlSearch(newValue)
+  return function()
+    -- Only in search mode
+    if vim.fn.getcmdtype() == '/' then
+      vim.opt.hlsearch = newValue
+    end
+  end
+end
+autocmd('CmdlineEnter', '*', setHlSearch(false))
+autocmd('CmdlineLeave', '*', setHlSearch(true))

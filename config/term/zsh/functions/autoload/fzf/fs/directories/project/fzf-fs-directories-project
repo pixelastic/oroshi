@@ -1,5 +1,9 @@
 # Search for a specific directory in the current project
 function fzf-fs-directories-project() {
+  # Save the base directory, so other related fzf methods can use it
+  local rootDirectory="$(git-directory-root -f)"
+  fzf-var-write pwd $rootDirectory
+
 	fzf-fs-directories \
 		--source fzf-fs-directories-project-source \
 		--options fzf-fs-directories-project-options

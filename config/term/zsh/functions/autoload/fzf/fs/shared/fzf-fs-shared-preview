@@ -21,7 +21,7 @@ function fzf-fs-shared-preview() {
 
   # Directory {{{
   if [[ -d $fullPath ]]; then
-    l --all "$fullPath"
+    better-ls --all "$fullPath"
     return 0
   fi
   # }}}
