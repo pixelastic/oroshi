@@ -46,11 +46,19 @@ imap('<F2>', reloadConfig, 'Reload nvim config')
 vmap('<F2>', reloadConfig, 'Reload nvim config')
 
 -- Tabs
+-- Switch
 nmap('<C-H>', 'gT', 'Previous tab')
 imap('<C-H>', '<Esc>gT', 'Previous tab')
 nmap('<C-L>', 'gt', 'Next tab')
 imap('<C-L>', '<Esc>gt', 'Next tab')
+-- Change position
+nmap('Ⓗ', '<CMD>-tabmove<CR>', 'Move tab to the left')
+imap('Ⓗ', '<CMD>-tabmove<CR>', 'Move tab to the left')
+nmap('Ⓛ', '<CMD>+tabmove<CR>', 'Move tab to the right')
+imap('Ⓛ', '<CMD>+tabmove<CR>', 'Move tab to the right')
+-- Open file in new tab
 nmap(',t', ':tabedit<Space>', 'Open file in new tab', { silent = false })
+
 
 -- Splits
 nmap('<C-Up>', '<C-W>k', 'Go to split up')

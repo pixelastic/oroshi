@@ -1,4 +1,15 @@
--- Unused (yet) UI groups {{{
+-- In this file, I list all Highlight groups that I haven't defined yet, and I
+-- set them as XXX (which results in a noticable CYAN background). 
+--
+-- If I see something looking like this, I go to this file, and change the XXX
+-- to YYY (turning it purple, can be done with Ctrl-X easily) until I find the
+-- right group.
+--
+-- Once found, I move it to the relevant file, and tweak it as I need it. Over
+-- time, this file will get less and less entries, as I identify them all.
+
+
+-- UI groups {{{
 hl('CmpItemAbbrDeprecated', 'XXX')
 hl('CmpItemKind', 'XXX')
 hl('CmpItemMenu', 'XXX')
@@ -53,7 +64,7 @@ hl('WinBar', 'YYY') --		Window bar of current window.
 hl('lCursor', 'YYY') --		Character under the cursor when |language-mapping|
 -- }}}
 
--- Unused (yet) syntax groups {{{
+-- Syntax groups {{{
 hl('Added', 'XXX') --		added line in a diff
 hl('Changed', 'XXX') --		changed line in a diff
 hl('Character', 'XXX') --	a character constant: 'c', '\n'
@@ -90,4 +101,30 @@ hl('NotifyERRORBody', 'XXX')
 hl('NotifyWARNBody', 'XXX')
 hl('NotifyDEBUGBody', 'XXX')
 hl('NotifyTRACEBody', 'XXX')
+-- }}}
+
+-- Render Markdown plugin {{{
+hl('RenderMarkdownQuote', 'XXX') -- 	Default for block quote
+hl('RenderMarkdownQuote1', 'XXX') -- 	Level 1 block quote marker
+hl('RenderMarkdownQuote2', 'XXX') -- 	Level 2 block quote marker
+hl('RenderMarkdownQuote3', 'XXX') -- 	Level 3 block quote marker
+hl('RenderMarkdownQuote4', 'XXX') -- 	Level 4 block quote marker
+hl('RenderMarkdownQuote5', 'XXX') -- 	Level 5 block quote marker
+hl('RenderMarkdownQuote6', 'XXX') -- 	Level 6 block quote marker
+hl('RenderMarkdownInlineHighlight', 'XXX') -- 	Inline highlights contents
+hl('RenderMarkdownMath', 'XXX') -- 	Latex lines
+hl('RenderMarkdownIndent', 'XXX') -- 	Indent icon
+hl('RenderMarkdownHtmlComment', 'XXX') -- 	HTML comment inline text
+hl('RenderMarkdownWikiLink', 'XXX') -- 	WikiLink icon & text
+hl('RenderMarkdownUnchecked', 'XXX') -- 	Unchecked checkbox
+hl('RenderMarkdownChecked', 'XXX') -- 	Checked checkbox
+hl('RenderMarkdownTodo', 'XXX') -- 	Todo custom checkbox
+hl('RenderMarkdownTableHead', 'XXX') -- 	Pipe table heading rows
+hl('RenderMarkdownTableRow', 'XXX') -- 	Pipe table body rows
+hl('RenderMarkdownTableFill', 'XXX') -- 	Pipe table inline padding
+hl('RenderMarkdownSuccess', 'XXX') -- 	Success related callouts
+hl('RenderMarkdownInfo', 'XXX') -- 	Info related callouts
+hl('RenderMarkdownHint', 'XXX') -- 	Hint related callouts
+hl('RenderMarkdownWarn', 'XXX') -- 	Warning related callouts
+hl('RenderMarkdownError', 'XXX') -- 	Error related callouts
 -- }}}
