@@ -11,9 +11,20 @@ __.vars.tabline = {
 hl('TabLineFill', 'GRAY_4', { bg = 'GRAY_8' }) --	Tab pages line, where there are no labels.
 -- }}}
 
+-- Splits {{{
+hl('WinSeparator', 'YELLOW_9', { bg = 'BLACK', bold = true }) --	Separators between splits
+hl('StatusLineNC', 'none', { bg = 'GRAY_8' }) --	Status lines of not-current windows.
+-- }}}
+
 -- Line Number {{{
 hl('LineNr', 'GRAY') --	Line number column
 hl('SignColumn', 'GRAY') --	Sign column
+-- }}}
+
+-- Current line {{{
+hl('CursorLine', 'none', { bg = 'GRAY_9' }) --	Current line
+hl('CursorLineNr', 'YELLOW', { bg = 'GRAY_9', bold = true }) --	Current line number
+hl('CursorLineSign', 'none', { bg = 'GRAY_9'}) --	Current line sign
 -- }}}
 
 -- Statusline {{{
@@ -56,20 +67,54 @@ hl('CursorModeCommandReplace', 'XXX')
 hl('CursorModeShowMatch', 'XXX')
 -- }}}
 
--- Commandline {{{
-__.vars.commandline = {
-  hlDefault = { fg = 'WHITE' }, -- Default highlight
-  hlReadable = { fg = 'TEXT', bg = 'GRAY_8' },  -- When need to be more readable
-}
-hl('MsgSeparator', 'NONE', { bg = 'GRAY_6' }) --	Top bar separator of messsage
-hl('MoreMsg', 'TEXT') -- Some additional text, like in <F3>
-hl('ErrorMsg', 'RED_8') --	Error messages
-hl('Question', 'COMMENT') --	"Press ENTER or type command to continue"
+-- Folds {{{
+hl('Folded', 'none', { bg = 'GRAY_8'}) --	Closed fold
 -- }}}
 
--- Splits {{{
-hl('WinSeparator', 'YELLOW_9', { bg = 'BLACK', bold = true }) --	Separators between splits
-hl('StatusLineNC', 'none', { bg = 'GRAY_8' }) --	Status lines of not-current windows.
+-- Visual mode {{{
+hl('Visual', 'WHITE', { bg = 'BLUE', bold = true }) --		Visual mode selection.
+-- }}}
+
+-- Search mode {{{
+hl('IncSearch', 'ORANGE_2', { bg = 'ORANGE_7', bold = true }) -- Match as I type
+hl('CurSearch', 'ORANGE_2', { bg = 'ORANGE_7', bold = true }) --	Current selected match
+hl('Search', 'ORANGE_9', { bg = 'ORANGE_3', bold = true }) -- All results
+-- }}}
+
+-- Completion (Ghost Text) {{{
+hl('CmpGhostText', 'COMMENT') -- Ghost text
+-- }}}
+
+-- Completion {{{
+hl('PmenuExtraSel', 'YYY') --	Popup menu: Selected item "extra text".
+hl('PmenuExtra', 'YYY') --	Popup menu: Normal item "extra text".
+hl('PmenuKindSel', 'YYY') --	Popup menu: Selected item "kind".
+hl('PmenuKind', 'YYY') --	Popup menu: Normal item "kind".
+
+__.vars.completion = {
+  -- Regular completion menu
+  hlVisible = {
+    Pmenu =  { fg = 'NEUTRAL', bg = 'GRAY_8'}, -- Default
+    PmenuSel = { fg = 'WHITE', bg = 'PURPLE', bold = true}, -- Selected line
+    PmenuMatch = { fg = 'PURPLE'}, -- Match
+    PmenuMatchSel = { fg = 'WHITE'}, -- Match on selected line
+    CmpItemAbbr = { fg = 'COMMENT' },
+    CmpItemAbbrMatch = { fg = 'PURPLE'}, -- Exact match
+    CmpItemAbbrMatchFuzzy = { fg = 'PURPLE_LIGHT'}, -- Fuzzy match
+    CmpItemKind = { fg = 'NEUTRAL'}, -- Type of result, on the right
+    PmenuSbar = { bg = 'GRAY_8' }, --	Scrollbar background
+    PmenuThumb = { bg = 'GRAY_7' }, --	Scrollbar thumb
+  },
+  -- Hidden completion menu, used for handling ghost text
+  hlHidden = {
+    Pmenu =  { fg='BLACK', bg = 'BLACK'},
+    CmpItemAbbr = { fg = 'BLACK' },
+    PmenuSel = { fg = 'BLACK'},
+    CmpItemAbbrMatch = { fg = 'BLACK'},
+    CmpItemAbbrMatchFuzzy = { fg = 'BLACK'}, 
+    CmpItemKind = { fg = 'BLACK'},
+  }
+}
 -- }}}
 
 -- Statusline {{{
@@ -90,6 +135,17 @@ __.vars.statusline = {
   hlFilepathUnsavedChanges = { fg = 'VIOLET_4' },
   hlFilepathNoName = { fg = 'COMMENT' },
 }
+-- }}}
+
+-- Commandline {{{
+__.vars.commandline = {
+  hlDefault = { fg = 'WHITE' }, -- Default highlight
+  hlReadable = { fg = 'TEXT', bg = 'GRAY_8' },  -- When need to be more readable
+}
+hl('MsgSeparator', 'NONE', { bg = 'GRAY_6' }) --	Top bar separator of messsage
+hl('MoreMsg', 'TEXT') -- Some additional text, like in <F3>
+hl('ErrorMsg', 'RED_8') --	Error messages
+hl('Question', 'COMMENT') --	"Press ENTER or type command to continue"
 -- }}}
 
 -- Notify {{{
@@ -122,6 +178,13 @@ hl('DevIconYml', 'VIOLET' )
 -- }}}
 
 -- Misc {{{
+hl('ColorColumn', 'none', { bg = 'GRAY_9'}) --	Max column
+hl('EndOfBuffer', 'BLACK') --	Filler lines (~) after the end of the buffer.
+hl('NonText', 'GRAY_8') -- End-Of-Line (↲) and wrapped lines (↪) chars
+hl('Whitespace', 'YELLOW') --	"nbsp", "space", "tab", "multispace", "lead" and "trail"
+hl('MatchParen', 'WHITE', { bg = 'BLUE' }) -- Matching parenthesis
 hl('Directory', 'DIRECTORY') --	Directory names 
 -- }}}
+
+
 

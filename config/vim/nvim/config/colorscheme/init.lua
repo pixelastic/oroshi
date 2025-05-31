@@ -16,7 +16,6 @@ if vim.g.syntax_on then
 end
 
 frequire('oroshi/colorscheme/ui') -- Tabline, statusline, split, etc
-frequire('oroshi/colorscheme/editing') -- Normal, visual, fold
 frequire('oroshi/colorscheme/syntax')  -- Syntax highlight
 frequire('oroshi/colorscheme/unused') -- List of known Highlight groups not yet used
 

@@ -14,6 +14,13 @@ __._ = {
     return vim.deepcopy(collection) 
   end,
 
+  -- each: Run callback on each element of the collection
+  each = function(collection, callback)
+    for key, value in pairs(collection) do
+      callback(value, key, collection)
+    end
+  end,
+
   -- includes: Check if a given value exists in a table
   includes = function(collection, value)
     return vim.tbl_contains(collection, value)
@@ -34,6 +41,8 @@ __._ = {
     end
 
     local ret = {}
+    -- TODO: ipairs will iterate only on numeric keys and stop on any gap. pairs
+    -- will iterate on everything, but do not guarantee order.
     for _, value in ipairs(collection) do
       __.append(ret, callback(value))
     end

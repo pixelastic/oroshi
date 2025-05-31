@@ -25,4 +25,3 @@ local function setCmdCursorColor()
   end
 end
 autocmd('CmdlineEnter', '*', setCmdCursorColor)
-

@@ -27,7 +27,6 @@ vmap("<C-S>", "<CMD>silent! w<CR><ESC>", "Save file")
 imap("<C-D>", "<CMD>x<CR><ESC>", "Save file and quit")
 nmap("<C-D>", "<CMD>x<CR><ESC>", "Save file and quit")
 vmap("<C-D>", "<CMD>x<CR><ESC>", "Save file and quit")
-cmap("<C-D>", "<C-C>", "Quit commandline")
 
 -- CTRL + N
 nmap("<C-N>", ":tabedit<Space>", "Create new file in directory", { silent = false })
@@ -71,6 +70,7 @@ end
 nmap('<F2>', reloadConfig, 'Reload nvim config')
 imap('<F2>', reloadConfig, 'Reload nvim config')
 vmap('<F2>', reloadConfig, 'Reload nvim config')
+cmap('<F2>', reloadConfig, 'Reload nvim config')
 
 -- F3: Debug colors
 local function debugColors()
@@ -94,6 +94,7 @@ nmap('Ⓛ', '<CMD>+tabmove<CR>', 'Move tab to the right')
 imap('Ⓛ', '<CMD>+tabmove<CR>', 'Move tab to the right')
 -- Open file in new tab
 nmap(',t', ':tabedit<Space>', 'Open file in new tab', { silent = false })
+
 
 
 -- Splits

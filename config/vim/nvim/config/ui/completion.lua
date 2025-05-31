@@ -42,3 +42,16 @@ function withReadableMsgArea(callback)
   end)
 end
 
+-- Change color of the completion menu, to either be visible when actually
+-- needed, or invisible when used for Ghost Text
+local function setCompletionHighlight(type)
+  local definitions = __.vars.completion[type]
+  return function()
+    __._.each(definitions, function(value, key)
+      hl(key, 'none', value)
+    end)
+  end
+end
+setCompletionHighlight('hlHidden')()
+autocmd('CmdlineEnter', '*', setCompletionHighlight('hlVisible'))
+autocmd('CmdlineLeave', '*', setCompletionHighlight('hlHidden'))

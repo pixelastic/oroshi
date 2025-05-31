@@ -3,6 +3,7 @@ function map(mode, input, output, description, options)
     silent = true, 
     noremap = true,
     nowait = true,
+    expr = false,
     desc = description, 
   }
   local config = vim.tbl_deep_extend("force", defaults, options or {})

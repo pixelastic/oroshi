@@ -11,7 +11,6 @@
 
 -- UI groups {{{
 hl('CmpItemAbbrDeprecated', 'XXX')
-hl('CmpItemKind', 'XXX')
 hl('CmpItemMenu', 'XXX')
 hl('ComplMatchIns', 'XXX') --	Matched text of the currently inserted completion.
 hl('Conceal', 'XXX') --		Placeholder characters substituted for concealed
@@ -33,16 +32,8 @@ hl('LineNrBelow', 'YYY') --	Line number for when the 'relativenumber'
 
 hl('ModeMsg', 'YYY') --		'showmode' message (e.g., "-- INSERT --").
 hl('NormalFloat', 'YYY') --	Normal text in floating windows.
-hl('PmenuExtraSel', 'YYY') --	Popup menu: Selected item "extra text".
 hl('DiagnosticInfo', 'YYY')
 
-hl('PmenuExtra', 'XXX') --	Popup menu: Normal item "extra text".
-hl('PmenuKindSel', 'XXX') --	Popup menu: Selected item "kind".
-hl('PmenuKind', 'XXX') --	Popup menu: Normal item "kind".
-hl('PmenuMatchSel', 'XXX') --	Popup menu: Matched text in selected item. Combined with
-hl('PmenuMatch', 'XXX') --	Popup menu: Matched text in normal item. Combined with
-hl('PmenuSbar', 'XXX') --	Popup menu: Scrollbar.
-hl('PmenuThumb', 'XXX') --	Popup menu: Thumb of the scrollbar.
 hl('QuickFixLine', 'XXX') --	Current |quickfix| item in the quickfix window. Combined with
 hl('SnippetTabstop', 'XXX') --	Tabstops in snippets. |vim.snippet|
 

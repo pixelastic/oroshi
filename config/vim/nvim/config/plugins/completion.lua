@@ -70,6 +70,8 @@ return {
         mapping = {
           ["<Tab>"] = completeOrNext,
           ["<S-Tab>"] = cmp.mapping.select_prev_item(),
+          ["<Up>"] = cmp.mapping.select_prev_item(),
+          ["<Down>"] = cmp.mapping.select_next_item(),
           ["<C-c>"] = cmp.mapping.abort(),
           ["<C-d>"] = cmp.mapping.abort(),
           ["<CR>"] = cmp.mapping.confirm({ select = false }),

@@ -1,4 +1,6 @@
 return {
+  -- https://github.com/robitx/gp.nvim
+  -- AI Chat in right panel
   "robitx/gp.nvim",
   config = function()
     local conf = {
