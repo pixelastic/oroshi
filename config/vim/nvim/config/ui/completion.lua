@@ -23,24 +23,6 @@
 -- search
 vim.opt.cmdheight = 0  -- Hide the command line
 
--- Change visibility / readability of the MsgArea
-function msgAreaReadable()
-  hl('MsgArea', 'none', __.vars.commandline.hlReadable)
-end
-function msgAreaDefault()
-  hl('MsgArea', 'none', __.vars.commandline.hlDefault)
-end
-msgAreaDefault()
-
--- Run a function, while making the MsgArea more readable
--- Useful to make it stand out from the UI
-function withReadableMsgArea(callback)
-  msgAreaReadable()
-  vim.schedule(function()
-    callback()
-    msgAreaDefault()
-  end)
-end
 
 -- Change color of the completion menu, to either be visible when actually
 -- needed, or invisible when used for Ghost Text
@@ -52,6 +34,13 @@ local function setCompletionHighlight(type)
     end)
   end
 end
-setCompletionHighlight('hlHidden')()
-autocmd('CmdlineEnter', '*', setCompletionHighlight('hlVisible'))
-autocmd('CmdlineLeave', '*', setCompletionHighlight('hlHidden'))
+
+__.completion = {
+  -- setHighlightHidden: Set menu hidden (for use in ghost text)
+  setHighlightHidden = setCompletionHighlight('hlHidden'),
+  -- setHighlightVisible: Set menu visible (for use in completion)
+  setHighlightVisible = setCompletionHighlight('hlVisible'),
+}
+__.completion.setHighlightHidden()
+autocmd('CmdlineEnter', '*', __.completion.setHighlightVisible)
+autocmd('CmdlineLeave', '*', __.completion.setHighlightHidden)

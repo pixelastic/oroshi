@@ -34,6 +34,31 @@ return {
         end
       end
 
+      -- toggleMenu: Display a visible menu
+      local function toggleMenu()
+        -- Close if already openeds
+        if cmp.visible() then
+          cmp.close()
+          __.completion.setHighlightHidden()
+          return
+        end
+
+        -- Open, as a real menu
+        __.completion.setHighlightVisible()
+        cmp.complete({
+          config = {
+            view = {
+              entries = "custom"
+            }
+          }
+        })
+      end
+
+      -- local function selectCompletion()
+      --   cmp.mapping.confirm({ select = false }),
+      -- end
+
+
       -- Disable completion based on context
       local function disableBasedOnContext()
         local blockerTypes = { "comment", "zshComment", "string", "number" }
@@ -69,13 +94,20 @@ return {
         },
         mapping = {
           ["<Tab>"] = completeOrNext,
+          ["<C-Space>"] = toggleMenu,
+          ["<Down>"] = cmp.mapping.select_next_item(),
           ["<S-Tab>"] = cmp.mapping.select_prev_item(),
           ["<Up>"] = cmp.mapping.select_prev_item(),
-          ["<Down>"] = cmp.mapping.select_next_item(),
           ["<C-c>"] = cmp.mapping.abort(),
           ["<C-d>"] = cmp.mapping.abort(),
           ["<CR>"] = cmp.mapping.confirm({ select = false }),
         },
+        -- TODO: There is a nice behavior here, when I tab through filepaths,
+        -- and select a folder, it keeps suggeting new subfolders
+        -- But if I remap to a new function doing the same thing, it doesn't
+        -- work
+        -- I think I still need to remap <cr> to switch back to the "hidden"
+        -- style for the menu anyway, on selection
         -- sources for autocompletion
         sources = cmp.config.sources({
           { name = 'nvim_lua' }, -- cmp-nvim-lua

@@ -25,3 +25,23 @@ local function setCmdCursorColor()
   end
 end
 autocmd('CmdlineEnter', '*', setCmdCursorColor)
+
+__.commandline = {
+  setHighlightHidden = function()
+    hl('MsgArea', 'none', __.vars.commandline.hlHidden)
+  end,
+  setHighlightVisible = function()
+    hl('MsgArea', 'none', __.vars.commandline.hlVisible)
+  end,
+
+  -- withReadableMsgArea: Call function in a readable zone
+  withReadableMsgArea = function(callback)
+    __.commandline.setHightlightVisible()
+
+    vim.schedule(function()
+      callback()
+      __.commandline.setHightlightHidden()
+    end)
+  end
+}
+__.commandline.setHighlightHidden()

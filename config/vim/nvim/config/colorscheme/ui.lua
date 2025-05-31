@@ -139,8 +139,8 @@ __.vars.statusline = {
 
 -- Commandline {{{
 __.vars.commandline = {
-  hlDefault = { fg = 'WHITE' }, -- Default highlight
-  hlReadable = { fg = 'TEXT', bg = 'GRAY_8' },  -- When need to be more readable
+  hlHidden = { fg = 'WHITE' }, -- Default highlight
+  hlVisible = { fg = 'TEXT', bg = 'GRAY_8' },  -- When need to be more readable
 }
 hl('MsgSeparator', 'NONE', { bg = 'GRAY_6' }) --	Top bar separator of messsage
 hl('MoreMsg', 'TEXT') -- Some additional text, like in <F3>
