@@ -1,5 +1,4 @@
 -- MUST HAVE
--- TODO: Autosave when switching tabs
 -- TODO: Add colored line numbers based on if add/delete/modified
 -- TODO: Align on antything
 -- TODO: Commenting / uncommenting lines with comments should remove comment where there are already comment
@@ -11,6 +10,7 @@
 -- TODO: Allow folding with expr AND with marker
 -- TODO: Find a plugin that can autoclose functions
 -- TODO: Mapping to jump to end of current block (like going to end of the current function)
+-- TODO: Make sure I can select a completion with <CR>, that it suggests more filepaths, and that it hides the wildmenu for ghost text
 
 -- BIG TOOLS
 -- TODO: Autoformat on save

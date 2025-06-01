@@ -14,13 +14,6 @@ mkdir -p $DEST_DIR/lua
 ln -fns $CONFIG_DIR/config $DEST_DIR/lua/oroshi
 
 # Create runtime directories
+mkdir -p $DEST_DIR/swap
 mkdir -p $DEST_DIR/undo
 mkdir -p $DEST_DIR/view
-# mkdir -p $DEST_DIR/swap
-
-# Link config directories
-# ln -fns $CONFIG_DIR/after $DEST_DIR/after
-# ln -fns $CONFIG_DIR/ftdetect $DEST_DIR/ftdetect
-# ln -fns $CONFIG_DIR/autoload $DEST_DIR/autoload
-# ln -fns $CONFIG_DIR/colors $DEST_DIR/colors
-# ln -fns $CONFIG_DIR/snippets $DEST_DIR/UltiSnips
