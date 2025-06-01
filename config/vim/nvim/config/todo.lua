@@ -1,12 +1,13 @@
 -- MUST HAVE
--- TODO: Add colored line numbers based on if add/delete/modified
+-- TODO: Better integrate gp.nvim
 -- TODO: Align on antything
 -- TODO: Commenting / uncommenting lines with comments should remove comment where there are already comment
 -- TODO: Check old config on space and tabs. What should be done? SPace for everything?
--- TODO: Better integrate gp.nvim
 -- TODO: Re-run the env-generate scripts when editing them
 
 -- NICE TO HAVE
+-- TODO: Use gitsigns to add hunks for commit
+-- TODO: F7 to show hunks more visibly?
 -- TODO: Allow folding with expr AND with marker
 -- TODO: Find a plugin that can autoclose functions
 -- TODO: Mapping to jump to end of current block (like going to end of the current function)
