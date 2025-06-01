@@ -19,6 +19,20 @@ hl('StatusLineNC', 'none', { bg = 'GRAY_8' }) --	Status lines of not-current win
 -- Line Number {{{
 hl('LineNr', 'GRAY') --	Line number column
 hl('SignColumn', 'GRAY') --	Sign column
+-- Signs
+hl('GitSignsAdd', 'GREEN_9')
+hl('GitSignsChange', 'PURPLE')
+hl('GitSignsChangedelete', 'PURPLE')
+hl('GitSignsTopdelete', 'RED_9')
+hl('GitSignsDelete', 'RED_9')
+hl('GitSignsUntracked', 'YYY')
+-- Line numbers
+hl('GitSignsAddNr', 'GREEN_9')
+hl('GitSignsChangeNr', 'PURPLE')
+hl('GitSignsChangedeleteNr', 'PURPLE')
+hl('GitSignsTopdeleteNr', 'RED_9')
+hl('GitSignsDeleteNr', 'RED_9')
+hl('GitSignsUntrackedNr', 'XXX')
 -- }}}
 
 -- Current line {{{
@@ -98,18 +112,18 @@ __.vars.completion = {
     PmenuSel = { fg = 'WHITE', bg = 'PURPLE', bold = true}, -- Selected line
     PmenuMatch = { fg = 'PURPLE'}, -- Match
     PmenuMatchSel = { fg = 'WHITE'}, -- Match on selected line
+    PmenuSbar = { bg = 'GRAY_8' }, --	Scrollbar background
+    PmenuThumb = { bg = 'GRAY_7' }, --	Scrollbar thumb
     CmpItemAbbr = { fg = 'COMMENT' },
     CmpItemAbbrMatch = { fg = 'PURPLE'}, -- Exact match
     CmpItemAbbrMatchFuzzy = { fg = 'PURPLE_LIGHT'}, -- Fuzzy match
     CmpItemKind = { fg = 'NEUTRAL'}, -- Type of result, on the right
-    PmenuSbar = { bg = 'GRAY_8' }, --	Scrollbar background
-    PmenuThumb = { bg = 'GRAY_7' }, --	Scrollbar thumb
   },
   -- Hidden completion menu, used for handling ghost text
   hlHidden = {
     Pmenu =  { fg='BLACK', bg = 'BLACK'},
-    CmpItemAbbr = { fg = 'BLACK' },
     PmenuSel = { fg = 'BLACK'},
+    CmpItemAbbr = { fg = 'BLACK' },
     CmpItemAbbrMatch = { fg = 'BLACK'},
     CmpItemAbbrMatchFuzzy = { fg = 'BLACK'}, 
     CmpItemKind = { fg = 'BLACK'},
@@ -175,6 +189,16 @@ hl('DevIconSvg', 'VIOLET' )
 hl('DevIconTrueTypeFont', 'VIOLET' )
 hl('DevIconWebOpenFontFormat', 'VIOLET' )
 hl('DevIconYml', 'VIOLET' )
+-- }}}
+
+-- GitSigns {{{
+-- Lines (:Gitsigns toggle_linehl)
+hl('GitSignsAddLn', 'none', { bg = 'GREEN_9'})
+hl('GitSignsChangeLn', 'none', { bg = 'PURPLE_9' })
+hl('GitSignsTopdeleteLn', 'none', { bg = 'RED_9' })
+hl('GitSignsDeleteLn', 'none', { bg = 'RED_9' })
+hl('GitSignsChangedeleteLn', 'XXX')
+hl('GitSignsUntrackedLn', 'XXX')
 -- }}}
 
 -- Misc {{{

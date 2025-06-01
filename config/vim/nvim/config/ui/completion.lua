@@ -23,7 +23,6 @@
 -- search
 vim.opt.cmdheight = 0  -- Hide the command line
 
-
 -- Change color of the completion menu, to either be visible when actually
 -- needed, or invisible when used for Ghost Text
 local function setCompletionHighlight(type)
@@ -41,6 +40,10 @@ __.completion = {
   -- setHighlightVisible: Set menu visible (for use in completion)
   setHighlightVisible = setCompletionHighlight('hlVisible'),
 }
+
+
+-- Hide / Show the completion menu {{{
 __.completion.setHighlightHidden()
 autocmd('CmdlineEnter', '*', __.completion.setHighlightVisible)
 autocmd('CmdlineLeave', '*', __.completion.setHighlightHidden)
+-- }}}

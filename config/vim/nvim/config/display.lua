@@ -7,10 +7,11 @@ vim.opt.linebreak     = true   -- Wrap at words, not in the middle of them
 vim.opt.showbreak     = '↪ '   -- Character to use to prefix wrapped lines
 
 -- LINE NUMBER
-vim.opt.number     = true       -- Display line numbers
-vim.opt.signcolumn = "yes"  -- Always display sign
-vim.opt.cursorline = true   -- Highlight current line
-vim.opt.scrolloff  = 22     -- Keep 22 lines above and below (centering the display)
+vim.opt.number      = true    -- Display line numbers
+vim.opt.numberwidth = 3       -- Use 3 cells, allow for a padding left and right
+vim.opt.signcolumn  = "auto"  -- display signs if any
+vim.opt.cursorline  = true    -- Highlight current line
+vim.opt.scrolloff   = 22      -- Keep 22 lines above and below (centering the display)
 
 -- INDENTATION
 vim.opt.shiftwidth = 2 -- Indent by 2 spaces

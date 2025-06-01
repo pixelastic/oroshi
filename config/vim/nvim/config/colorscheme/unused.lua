@@ -10,54 +10,48 @@
 
 
 -- UI groups {{{
-hl('CmpItemAbbrDeprecated', 'XXX')
-hl('CmpItemMenu', 'XXX')
-hl('ComplMatchIns', 'XXX') --	Matched text of the currently inserted completion.
-hl('Conceal', 'XXX') --		Placeholder characters substituted for concealed
-hl('CursorColumn', 'XXX') --	Screen-column at the cursor, when 'cursorcolumn' is set.
-hl('CursorIM', 'XXX') --	Like Cursor, but used when in IME mode. *CursorIM*
-hl('CursorLineFold', 'XXX') --	Like FoldColumn when 'cursorline' is set for the cursor line.
-hl('Cursor', 'XXX') --		Character under the cursor.
+hl('CmpItemAbbrDeprecated', 'YYY')
+hl('CmpItemMenu', 'YYY')
+hl('ComplMatchIns', 'YYY') --	Matched text of the currently inserted completion.
+hl('Conceal', 'YYY') --		Placeholder characters substituted for concealed
+hl('CursorColumn', 'YYY') --	Screen-column at the cursor, when 'cursorcolumn' is set.
+hl('CursorIM', 'YYY') --	Like Cursor, but used when in IME mode. *CursorIM*
+hl('CursorLineFold', 'YYY') --	Like FoldColumn when 'cursorline' is set for the cursor line.
+hl('Cursor', 'YYY') --		Character under the cursor.
 hl('DiffAdd', 'XXX') --		Diff mode: Added line. |diff.txt|
-hl('DiffChange', 'XXX') --	Diff mode: Changed line. |diff.txt|
-hl('DiffDelete', 'XXX') --	Diff mode: Deleted line. |diff.txt|
-hl('DiffText', 'XXX') --	Diff mode: Changed text within a changed line. |diff.txt|
-
+hl('DiffChange', 'YYY') --	Diff mode: Changed line. |diff.txt|
+hl('DiffText', 'YYY') --	Diff mode: Changed text within a changed line. |diff.txt|
 hl('FloatBorder', 'YYY') --	Border of floating windows.
 hl('FloatFooter', 'YYY') --	Footer of floating windows.
 hl('FloatTitle', 'YYY') --	Title of floating windows.
 hl('FoldColumn', 'YYY') --	'foldcolumn'
 hl('LineNrAbove', 'YYY') --	Line number for when the 'relativenumber'
 hl('LineNrBelow', 'YYY') --	Line number for when the 'relativenumber'
-
 hl('ModeMsg', 'YYY') --		'showmode' message (e.g., "-- INSERT --").
 hl('NormalFloat', 'YYY') --	Normal text in floating windows.
-hl('DiagnosticInfo', 'YYY')
 
+hl('DiagnosticInfo', 'XXX')
 hl('QuickFixLine', 'XXX') --	Current |quickfix| item in the quickfix window. Combined with
 hl('SnippetTabstop', 'XXX') --	Tabstops in snippets. |vim.snippet|
-
-hl('SpellBad', 'YYY') --	Word that is not recognized by the spellchecker. |spell|
-hl('SpellCap', 'YYY') --	Word that should start with a capital. |spell|
-hl('SpellLocal', 'YYY') --	Word that is recognized by the spellchecker as one that is
-hl('SpellRare', 'YYY') --	Word that is recognized by the spellchecker as one that is
-hl('StatusLineTermNC', 'YYY') --
-hl('StatusLineTerm', 'YYY') --	Status line of |terminal| window.
-hl('Substitute', 'YYY') --	|:substitute| replacement text highlighting.
-hl('TabLineSelSeparator', 'YYY') --	Tab pages line, active tab page label.
-hl('TabLineSel', 'YYY') --	Tab pages line, active tab page label.
-hl('TabLine', 'YYY') --		Tab pages line, not active tab page label.
+hl('SpellBad', 'XXX') --	Word that is not recognized by the spellchecker. |spell|
+hl('SpellCap', 'XXX') --	Word that should start with a capital. |spell|
+hl('SpellLocal', 'XXX') --	Word that is recognized by the spellchecker as one that is
+hl('SpellRare', 'XXX') --	Word that is recognized by the spellchecker as one that is
+hl('StatusLineTermNC', 'XXX') --
+hl('StatusLineTerm', 'XXX') --	Status line of |terminal| window.
+hl('Substitute', 'XXX') --	|:substitute| replacement text highlighting.
+hl('TabLineSelSeparator', 'XXX') --	Tab pages line, active tab page label.
+hl('TabLineSel', 'XXX') --	Tab pages line, active tab page label.
+hl('TabLine', 'XXX') --		Tab pages line, not active tab page label.
 hl('TermCursor', 'YYY') --	Cursor in a focused terminal.
-hl('WarningMsg', 'YYY') --	Warning messages.
-hl('WildMenu', 'YYY') --	Current match in 'wildmenu' completion.
-hl('WinBarNC', 'YYY') --	Window bar of not-current windows.
-hl('WinBar', 'YYY') --		Window bar of current window.
-hl('lCursor', 'YYY') --		Character under the cursor when |language-mapping|
+hl('WarningMsg', 'XXX') --	Warning messages.
+hl('WildMenu', 'XXX') --	Current match in 'wildmenu' completion.
+hl('WinBarNC', 'XXX') --	Window bar of not-current windows.
+hl('WinBar', 'XXX') --		Window bar of current window.
+hl('lCursor', 'XXX') --		Character under the cursor when |language-mapping|
 -- }}}
 
 -- Syntax groups {{{
-hl('Added', 'XXX') --		added line in a diff
-hl('Changed', 'XXX') --		changed line in a diff
 hl('Character', 'XXX') --	a character constant: 'c', '\n'
 hl('Debug', 'XXX') --		debugging statements
 hl('Define', 'XXX') --		preprocessor #define
@@ -67,7 +61,6 @@ hl('Ignore', 'XXX') --		left blank, hidden  |hl-Ignore|
 hl('Label', 'XXX') --		case, default, etc.
 hl('Macro', 'XXX') --		same as Define
 hl('PreCondit', 'XXX') --	preprocessor #if, #else, #endif, etc.
-hl('Removed', 'XXX') --		removed line in a diff
 hl('SpecialComment', 'XXX') --	special things inside a comment
 hl('Tag', 'XXX') --		you can use CTRL-] on this
 hl('Typedef', 'XXX') --		a typedef
@@ -118,4 +111,13 @@ hl('RenderMarkdownInfo', 'XXX') -- 	Info related callouts
 hl('RenderMarkdownHint', 'XXX') -- 	Hint related callouts
 hl('RenderMarkdownWarn', 'XXX') -- 	Warning related callouts
 hl('RenderMarkdownError', 'XXX') -- 	Error related callouts
+-- }}}
+
+-- GitSigns {{{
+hl('GitSignsAddCul', 'XXX')
+hl('GitSignsChangeCul', 'XXX')
+hl('GitSignsTopdeleteCul', 'XXX')
+hl('GitSignsDeleteCul', 'XXX')
+hl('GitSignsChangedeleteCul', 'XXX')
+hl('GitSignsUntrackedCul', 'XXX')
 -- }}}

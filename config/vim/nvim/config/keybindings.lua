@@ -104,6 +104,11 @@ nmap('<C-Down>', '<C-W>j', 'Go to split bottom')
 nmap('<C-Left>', '<C-W>h', 'Go to split left')
 
 
+-- Completion
+ccmpmap('<CR>', '<C-y> ', 'Accept suggestion')
+ccmpmap('<Down>', '<C-n>', 'Next suggestion')
+ccmpmap('<Up>', '<C-p>', 'Previous suggestion')
+ccmpmap('<C-c>', '<C-e>', 'Cancel suggestions')
 
 
 -- Move in a grid

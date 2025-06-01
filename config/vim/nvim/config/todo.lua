@@ -15,7 +15,6 @@
 -- BIG TOOLS
 -- TODO: Autoformat on save
 -- TODO: Linters linters
--- TODO: Display all completion suggestions with Ctrl-Space?
 -- TODO: tab at start of line should indent, not complete
 
 -- LEARNING

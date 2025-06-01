@@ -26,6 +26,13 @@ hl('Type', 'VARIABLE_TYPE')
 hl('Underlined', 'none', { underline = true }) --	text that stands out, HTML links
 -- }}}
 
+-- Diff / Git {{{
+hl('Added', 'GIT_ADDED')
+hl('Changed', 'GIT_MODIFIED')
+hl('Removed', 'GIT_REMOVED')
+hl('DiffDelete', 'GIT_REMOVED')
+-- }}}
+
 -- Treesitter groups {{{
 -- Comments
 hl('@comment.note.comment', 'TODO', { bold = true })

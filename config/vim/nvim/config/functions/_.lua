@@ -51,7 +51,7 @@ __._ = {
 
   -- merge: Recursively merge tables
   merge = function(one, two)
-    return vim.tbl_deep_extend("force", {}, one, two)
+    return vim.tbl_deep_extend("force", {}, one or {}, two or {})
   end,
 
   -- replace: Replace all occurrences of a string with another
