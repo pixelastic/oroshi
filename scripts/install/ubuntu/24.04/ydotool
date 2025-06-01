@@ -1,11 +1,14 @@
 #!/usr/bin/env zsh
+# https://github.com/ReimuNotMoe/ydotool
+# Command keyboard and mouse from a script. 
+# Wayland-compatible version of xdotool
 set -e
 
 local INSTALL_PATH=~/local/etc/ydotool
 
 # Clone repo
 cd ~/local/etc
-# git-directory-sync git@github.com:ReimuNotMoe/ydotool.git
+git-directory-sync git@github.com:ReimuNotMoe/ydotool.git
 
 # Build if not yet built
 cd $INSTALL_PATH

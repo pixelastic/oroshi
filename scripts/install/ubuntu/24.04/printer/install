@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# Install drivers for the Brother HL-L2375DW
+
+DRIVER_PATH=~/.oroshi/scripts/install/ubuntu/24.04/printer/driver-Brother-HL-L2375DW.deb
+
+# Allow installing i386 packages (that should be compatible with amd64 anyway)
+sudo dpkg --add-architecture i386
+
+install-deb $DRIVER_PATH

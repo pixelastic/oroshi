@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # wmctrl: Window Management Controller
 # Allow switching workspaces from the CLI
+# Useful to spawn apps in specific workspaces
 
 sudo apt-get install wmctrl
