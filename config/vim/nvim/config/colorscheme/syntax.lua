@@ -128,6 +128,9 @@ hl('RenderMarkdownH6', 'RED_7')
 hl('RenderMarkdownH6Bg', 'RED_2', { bg = 'RED_9' })
 hl('@markup.heading.6.markdown', 'RED_7', { bold = true })
 -- }}}
+-- vim {{{
+hl('@label.vim', 'STRING')
+-- }}}
 -- yaml {{{
 hl('@property.yaml', 'VARIABLE')
 -- }}}

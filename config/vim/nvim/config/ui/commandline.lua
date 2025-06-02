@@ -8,11 +8,11 @@ __.commandline = {
 
   -- withReadableMsgArea: Call function in a readable zone
   withReadableMsgArea = function(callback)
-    __.commandline.setHightlightVisible()
+    __.commandline.setHighlightVisible()
 
     vim.schedule(function()
       callback()
-      __.commandline.setHightlightHidden()
+      __.commandline.setHighlightHidden()
     end)
   end
 }

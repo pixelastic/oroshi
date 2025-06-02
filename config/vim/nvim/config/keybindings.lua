@@ -74,7 +74,7 @@ cmap('<F2>', reloadConfig, 'Reload nvim config')
 
 -- F3: Debug colors
 local function debugColors()
-  withReadableMsgArea(function()
+  __.commandline.withReadableMsgArea(function()
     vim.show_pos()
   end)
 end
