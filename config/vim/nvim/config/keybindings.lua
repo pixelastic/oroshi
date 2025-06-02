@@ -1,19 +1,19 @@
-vim.g.mapleader = "," -- Leader key
+vim.g.mapleader = ","  -- Leader key
 vim.g.timeoutlen = 300 -- Delay between keys in keybindings
 
 -- Capslock
 -- Switch between Normal and Insert mode
-imap("<F13>", "<Esc>l", "Insert  => Normal")
+imap("<F13>", "<Esc>l",            "Insert  => Normal")
 nmap("<F13>", vim.cmd.startinsert, "Normal  => Insert")
-vmap("<F13>", "<Esc>", "Visual  => Normal")
-cmap("<F13>", "<C-C>", "Command => Normal")
+vmap("<F13>", "<Esc>",             "Visual  => Normal")
+cmap("<F13>", "<C-C>",             "Command => Normal")
 
 -- Space
 nmap('<Space>', '.', 'Repeat', { remap = true })
 
 
 -- CTRL + A
-nmap('<C-A>', 'GVgg', 'Select everything')
+nmap('<C-A>', 'GVgg',      'Select everything')
 vmap('<C-A>', '<ESC>GVgg', 'Select everything')
 imap('<C-A>', '<ESC>GVgg', 'Select everything')
 
@@ -83,9 +83,9 @@ imap('<F3>', debugColors, 'Display highlight groups')
 
 -- Tabs
 -- Switch
-nmap('<C-H>', 'gT', 'Previous tab')
+nmap('<C-H>', 'gT',      'Previous tab')
 imap('<C-H>', '<Esc>gT', 'Previous tab')
-nmap('<C-L>', 'gt', 'Next tab')
+nmap('<C-L>', 'gt',      'Next tab')
 imap('<C-L>', '<Esc>gt', 'Next tab')
 -- Change position
 nmap('Ⓗ', '<CMD>-tabmove<CR>', 'Move tab to the left')
@@ -98,17 +98,17 @@ nmap(',t', ':tabedit<Space>', 'Open file in new tab', { silent = false })
 
 
 -- Splits
-nmap('<C-Up>', '<C-W>k', 'Go to split up')
+nmap('<C-Up>',    '<C-W>k', 'Go to split up')
 nmap('<C-Right>', '<C-W>l', 'Go to split right')
-nmap('<C-Down>', '<C-W>j', 'Go to split bottom')
-nmap('<C-Left>', '<C-W>h', 'Go to split left')
+nmap('<C-Down>',  '<C-W>j', 'Go to split bottom')
+nmap('<C-Left>',  '<C-W>h', 'Go to split left')
 
 
 -- Completion
-ccmpmap('<CR>', '<C-y> ', 'Accept suggestion')
-ccmpmap('<Down>', '<C-n>', 'Next suggestion')
-ccmpmap('<Up>', '<C-p>', 'Previous suggestion')
-ccmpmap('<C-c>', '<C-e>', 'Cancel suggestions')
+ccmpmap('<CR>',   '<C-y> ', 'Accept suggestion')
+ccmpmap('<Down>', '<C-n>',  'Next suggestion')
+ccmpmap('<Up>',   '<C-p>',  'Previous suggestion')
+ccmpmap('<C-c>',  '<C-e>',  'Cancel suggestions')
 
 
 -- Move in a grid

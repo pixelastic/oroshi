@@ -70,10 +70,10 @@ return {
           blank_above = { mapping = '<S-CR>' }, -- Add line above
           blank_below = { mapping = '<CR>' },   -- Add line below
 
-          exchange_above = { mapping = '-' },    -- Move current line up
+          exchange_above = { mapping = '-' }, -- Move current line up
           exchange_below = { mapping = '_' }, -- Move current line down
 
-          toggle_wrap = { mapping = '<F9>' }, -- Toggle Wrap
+          toggle_wrap     = { mapping = '<F9>' },     -- Toggle Wrap
           toggle_hlsearch = { mapping = ',<Space>' }, -- Toggle search highlight
         },
       })
@@ -99,6 +99,23 @@ return {
       vmap('-', moveSelectionUp, 'move up')
       vmap('_', moveSelectionDown, 'move up')
     end
+  },
 
-  }
+
+
+  -- Mini.align
+  -- https://github.com/echasnovski/mini.align
+  -- Align selection on specific delimiters
+  -- Use: Select text, then press "a," and it will be aligned on ,
+  { 
+    'echasnovski/mini.align', 
+    version = '*',
+    config = function()
+      require('mini.align').setup({
+        mappings = {
+          start = 'a'
+        },
+      })
+    end
+  },
 }
