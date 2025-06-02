@@ -32,7 +32,8 @@ vim.opt.clipboard = "unnamedplus" -- Use the global clipboard
 -- Write current changes to a swap file, in a shared directory, to restore in
 -- case of crash
 vim.opt.swapfile  = true
-vim.opt.directory = vim.fs.normalize("~/.config/nvim/swap/") -- Where to save the swap files
+vim.opt.directory = vim.fs.normalize("~/.config/nvim/swap/") .. '//' -- Where to save the swap files (// uses full paths with %)
+vim.opt.shortmess:append('A') -- Prevent error message when opening twice the same file
 -- }}}
 
 -- undos {{{
