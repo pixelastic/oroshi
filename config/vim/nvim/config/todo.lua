@@ -1,6 +1,5 @@
 -- MUST HAVE
 -- TODO: Better integrate gp.nvim
--- TODO: Align on antything
 -- TODO: Commenting / uncommenting lines with comments should remove comment where there are already comment
 -- TODO: Check old config on space and tabs. What should be done? SPace for everything?
 -- TODO: Re-run the env-generate scripts when editing them
