@@ -24,9 +24,4 @@ ftdetect(
 )
 
 -- zsh
-ftdetect(
-  "*config/term/zsh/functions/autoload/*", 
-  function()
-    vim.bo.filetype = "zsh"
-  end
-)
+ftset("*config/term/zsh/functions/autoload/*", "zsh")
