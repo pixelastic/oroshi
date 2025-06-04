@@ -24,9 +24,18 @@ nmap("<C-S>", "<CMD>silent! w<CR><ESC>", "Save file")
 vmap("<C-S>", "<CMD>silent! w<CR><ESC>", "Save file")
 
 -- CTRL + D
-imap("<C-D>", "<CMD>x<CR><ESC>", "Save file and quit")
-nmap("<C-D>", "<CMD>x<CR><ESC>", "Save file and quit")
-vmap("<C-D>", "<CMD>x<CR><ESC>", "Save file and quit")
+local function saveAndQuit()
+  -- If the file has no name, we simply quit
+  if __.isNoName() then
+    vim.cmd('q!')
+    return
+  end
+  -- Otherwise, we save and quit
+  vim.cmd('x')
+end
+imap("<C-D>", saveAndQuit, "Save file and quit")
+nmap("<C-D>", saveAndQuit, "Save file and quit")
+vmap("<C-D>", saveAndQuit, "Save file and quit")
 
 -- CTRL + N
 nmap("<C-N>", ":tabedit<Space>", "Create new file in directory", { silent = false })
