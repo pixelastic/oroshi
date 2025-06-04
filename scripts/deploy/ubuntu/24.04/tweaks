@@ -21,6 +21,20 @@ gsettings set org.gnome.desktop.peripherals.touchpad speed 0.65000
 gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll false
 # }}}
 
+# Keyboard {{{
+# Repeat key delay
+gsettings set org.gnome.desktop.peripherals.keyboard delay 300
+
+
+# }}}
+
+# Battery {{{
+# Blank screen after...
+gsettings set org.gnome.desktop.session idle-delay "uint32 900"
+# Do not dim screen
+gsettings set org.gnome.settings-daemon.plugins.power idle-dim false
+# }}}
+
 # Sounds {{{
 # Disable shutter sound played whenever a screenshot is taken
 local shutterSound=/usr/share/sounds/freedesktop/stereo/camera-shutter.oga
