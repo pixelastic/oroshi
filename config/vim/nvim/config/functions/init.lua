@@ -28,6 +28,14 @@ __ = {
   isInsertMode = function()
     return vim.api.nvim_get_mode().mode == 'i'
   end,
+  -- normalMode: Switch to normal mode
+  normalMode = function()
+    vim.api.nvim_command('normal ') -- Press <Esc>
+  end,
+  -- insertMode: Switch to insert mode
+  insertMode = function()
+    vim.cmd.startinsert()
+  end,
   -- getBufferId: Returns current buffer id
   getBufferId = function()
     return vim.api.nvim_get_current_buf()
@@ -93,7 +101,7 @@ __ = {
     -- So if we need to use them in a lua method, we first need to leave and
     -- quickly come back in visual mode to be able to use '< and '> in the
     -- mapping
-    vim.api.nvim_command('normal ') -- <Esc> to leave visual mode
+    __.normalMode()      -- <Esc> to leave visual mode
     vim.cmd('normal gv') -- Reselecting previous selection
   end,
   -- }}}

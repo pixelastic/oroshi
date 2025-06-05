@@ -4,7 +4,7 @@ vim.g.timeoutlen = 300 -- Delay between keys in keybindings
 -- Capslock
 -- Switch between Normal and Insert mode
 imap("<F13>", "<Esc>l",            "Insert  => Normal")
-nmap("<F13>", vim.cmd.startinsert, "Normal  => Insert")
+nmap("<F13>", __.insertMode, "Normal  => Insert")
 vmap("<F13>", "<Esc>",             "Visual  => Normal")
 cmap("<F13>", "<C-C>",             "Command => Normal")
 
@@ -31,7 +31,7 @@ local function saveAndQuit()
     return
   end
   -- Otherwise, we save and quit
-  vim.cmd('x')
+  vim.cmd('silent! x')
 end
 imap("<C-D>", saveAndQuit, "Save file and quit")
 nmap("<C-D>", saveAndQuit, "Save file and quit")

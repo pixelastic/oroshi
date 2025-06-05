@@ -64,8 +64,10 @@ return {
             goto continue
           end
 
-          -- Code
-          windows.code = windowId
+          -- Code (pick the oldest)
+          if not windows.code or windowId < windows.code then
+            windows.code = windowId
+          end
 
           ::continue::
         end
@@ -82,14 +84,15 @@ return {
         -- Open if not yet opened
         if not windows.avante then
           avanteApi.ask({ without_selection = true })
+          __.normalMode()
           return
         end
 
         -- Move between code and Avante
         local currentWindow = __.getWindowId()
-        if currentWindow == windows.code then __.focusWindow(windows.avanteInput) end
-        if currentWindow == windows.avante then __.focusWindow(windows.code) end
-        if currentWindow == windows.avanteInput then __.focusWindow(windows.code) end
+        local nextWindow = windows.code
+        if currentWindow == windows.code then nextWindow = windows.avanteInput end
+        __.focusWindow(nextWindow)
       end
       nmap('⒤', switchBetweenChatAndCode, 'Switch between Chat and Code')
       imap('⒤', switchBetweenChatAndCode, 'Switch between Chat and Code')
@@ -98,8 +101,8 @@ return {
 
       -- Toggle the display of the Chat window {{{
       local function toggleChat()
+        __.normalMode()
         local windows = getTabWindows()
-        vim.cmd.stopinsert()
 
         -- If opened, we close it
         if windows.avante then
@@ -136,7 +139,7 @@ return {
 
       -- Chat history {{{
       local function chatHistory()
-        vim.cmd.stopinsert() -- Go back to normal mode
+        __.normalMode()
         avanteApi.select_history()
       end
       nmap('<C-F>', chatHistory, 'Show Chat History')
