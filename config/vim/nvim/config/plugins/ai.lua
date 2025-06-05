@@ -106,7 +106,8 @@ return {
 
         -- If opened, we close it
         if windows.avante then
-          __.closeWindow(windows.avante)
+          __.focusWindow(windows.avante)
+          vim.cmd('q!')
           return
         end
 
