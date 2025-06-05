@@ -26,7 +26,8 @@ F = vim.tbl_extend('force', {},
   frequire('oroshi/functions/lodash'),
   frequire('oroshi/functions/map'),
   frequire('oroshi/functions/misc'),
-  frequire('oroshi/functions/modes')
+  frequire('oroshi/functions/modes'),
+  frequire('oroshi/functions/windows')
 )
 
 -- Colorscheme

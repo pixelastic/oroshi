@@ -160,7 +160,7 @@ return {
 
 
       ftplugin('AvanteInput', function()
-        local bufferId = F.getBufferId()
+        local bufferId = F.bufferId()
         local rawFilepath = vim.fn.expand('%:p')
 
         -- TODO: Change the cursor when entering/leaving

@@ -260,8 +260,8 @@ hl('AvanteButtonDefaultHover', 'AMBER_1', { bg = 'AMBER_7', bold = true })
 hl('AvanteConfirmTitle', 'AMBER_1', { bg = "AMBER_7", bold = true})
 hl('AvanteCommentFg', 'NEUTRAL')
 -- Response
-hl('AvanteTitle', 'AMBER_7', { bg = 'AMBER_7' })                              -- Avante title
-hl('AvanteReversedTitle', 'AMBER_7')                                          -- Avante title sides
+hl('AvanteTitle', 'GRAY_8', { bg = 'GRAY_8' })                              -- Avante title
+hl('AvanteReversedTitle', 'GRAY_8')                                          -- Avante title sides
 hl('AvanteSidebarNormal', 'TEXT', { bg = 'GRAY_8'})                           -- Normal text
 hl('AvanteStateSpinnerToolCalling', 'INFO')                                   -- name of the tool
 hl('AvanteStateSpinnerGenerating', 'AMBER_7')             -- "generating"
