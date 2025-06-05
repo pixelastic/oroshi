@@ -76,10 +76,11 @@ hl('CursorModeNormal', 'none', { bg = 'EMERALD' })
 hl('CursorModeInsert', 'none', { bg = 'YELLOW_3' })
 hl('CursorModeVisual', 'none', { bg = 'BLUE_7' })
 hl('CursorModeTerminal', 'none', { bg = 'YELLOW' }) -- In fzf search
+hl('CursorModeAiPrompt', 'none', { bg = 'AMBER' }) -- AI prompt
 -- Commandline & Search, applied when entering commandline
 __.vars.cursor = {
-  hlDefault = { bg = 'TEAL' },
-  hlSearch = { bg = 'ORANGE' }
+  hlCommand = { bg = 'TEAL' },
+  hlSearch = { bg = 'ORANGE' },
 }
 
 -- Unused (yet) modes

@@ -35,8 +35,8 @@ autocmd('CmdlineLeave', '*', setCmdHeight(0))
 local function setCmdCursorColor()
   local type = vim.fn.getcmdtype()
   if type == ':' then
-    hl('CursorModeCommandNormal', 'none', __.vars.cursor.hlDefault)
-    hl('CursorModeCommandInsert', 'none', __.vars.cursor.hlDefault)
+    hl('CursorModeCommandNormal', 'none', __.vars.cursor.hlCommand)
+    hl('CursorModeCommandInsert', 'none', __.vars.cursor.hlCommand)
   end
   if type == '/' then
     hl('CursorModeCommandNormal', 'none', __.vars.cursor.hlSearch)

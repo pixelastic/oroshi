@@ -145,7 +145,10 @@ return {
 
       -- Display {{{
       ftplugin('Avante', function()
-        vim.opt_local.colorcolumn = "0" 
+        vim.opt_local.colorcolumn = "0" -- Hide text wrap limit
+      end)
+      ftplugin('AvanteInput', function()
+        vim.opt.guicursor:append("i:block-CursorModeAiPrompt") -- Change cursor color
       end)
       -- }}}
 
