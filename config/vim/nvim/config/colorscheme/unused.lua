@@ -39,11 +39,9 @@ hl('Substitute', 'XXX') --	|:substitute| replacement text highlighting.
 hl('TabLineSelSeparator', 'XXX') --	Tab pages line, active tab page label.
 hl('TabLineSel', 'XXX') --	Tab pages line, active tab page label.
 hl('TabLine', 'XXX') --		Tab pages line, not active tab page label.
-hl('TermCursor', 'YYY') --	Cursor in a focused terminal.
+hl('TermCursor', 'XXX') --	Cursor in a focused terminal.
 hl('WarningMsg', 'XXX') --	Warning messages.
 hl('WildMenu', 'XXX') --	Current match in 'wildmenu' completion.
-hl('WinBarNC', 'XXX') --	Window bar of not-current windows.
-hl('WinBar', 'XXX') --		Window bar of current window.
 hl('lCursor', 'XXX') --		Character under the cursor when |language-mapping|
 -- }}}
 
@@ -116,4 +114,35 @@ hl('GitSignsTopdeleteCul', 'XXX')
 hl('GitSignsDeleteCul', 'XXX')
 hl('GitSignsChangedeleteCul', 'XXX')
 hl('GitSignsUntrackedCul', 'XXX')
+-- }}}
+
+-- Avante {{{
+hl('AvanteButtonDefault', 'XXX')
+hl('AvanteButtonDefaultHover', 'XXX')
+hl('AvanteButtonPrimary', 'XXX')
+hl('AvanteButtonPrimaryHover', 'XXX')
+hl('AvanteButtonDanger', 'XXX')
+hl('AvanteButtonDangerHover', 'XXX')
+hl('AvantePromptInput', 'XXX')
+hl('AvantePromptInputBorder', 'XXX')
+hl('AvanteSuggestion', 'XXX')
+hl('AvanteAnnotation', 'XXX')
+hl('AvanteInlineHint', 'XXX')
+hl('AvanteToBeDeleted', 'XXX')
+hl('AvanteToBeDeletedWOStrikethrough', 'XXX')
+hl('AvanteConfirmTitle', 'XXX')
+hl('AvanteCommentFg', 'XXX')
+hl('AvanteReversedNormal', 'XXX')
+hl('AvanteStateSpinnerGenerating', 'XXX')
+hl('AvanteStateSpinnerToolCalling', 'XXX')
+hl('AvanteStateSpinnerFailed', 'XXX')
+hl('AvanteStateSpinnerSucceeded', 'XXX')
+hl('AvanteStateSpinnerSearching', 'XXX')
+hl('AvanteStateSpinnerThinking', 'XXX')
+hl('AvanteStateSpinnerCompacting', 'XXX')
+hl('AvanteTaskCompleted', 'XXX')
+hl('AvanteConflictCurrent', 'XXX')
+hl('AvanteConflictCurrentLabel', 'XXX')
+hl('AvanteConflictIncoming', 'XXX')
+hl('AvanteConflictIncomingLabel', 'XXX')
 -- }}}

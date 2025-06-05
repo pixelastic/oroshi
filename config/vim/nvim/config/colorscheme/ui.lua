@@ -22,6 +22,8 @@ hl('StatusLineNC', 'none', { bg = 'GRAY_8' }) --	Status lines of not-current win
 -- }}}
 
 -- Floating windows {{{
+hl('WinBar', 'none', { bg = 'GRAY_8' } ) -- Window title
+hl('WinBarNC', 'none', { bg = 'GRAY_8' }) -- Window title, unfocuses
 hl('NormalFloat', 'GRAY_4', { bg = 'GRAY_8' }) --	Normal text in floating windows.
 -- }}}
 
@@ -221,6 +223,19 @@ hl('GitSignsTopdeleteLn', 'none', { bg = 'RED_9' })
 hl('GitSignsDeleteLn', 'none', { bg = 'RED_9' })
 hl('GitSignsChangedeleteLn', 'XXX')
 hl('GitSignsUntrackedLn', 'XXX')
+-- }}}
+
+-- Avante {{{
+hl('AvanteSidebarNormal', 'TEXT', { bg = 'GRAY_8'}) -- Normal text
+hl('AvantePopupHint', 'GRAY_8', { bg = 'GRAY_8', blend = 100 }) -- Tokens: 3482, etc in chat window
+hl('AvanteSidebarWinSeparator', 'GRAY_8', { bg = 'GRAY_8' }) -- Window seperators
+hl('AvanteTitle', 'AMBER_7', { bg = 'AMBER_7' }) -- Avante title
+hl('AvanteReversedTitle', 'AMBER_7')
+hl('AvanteSubtitle', 'AMBER_1', { bg = 'AMBER_7'}) -- File title
+hl('AvanteReversedSubtitle', 'AMBER_7')
+hl('AvanteThirdTitle', 'AMBER_7', { bg = 'AMBER_7' }) -- Chat title
+hl('AvanteReversedThirdTitle', 'AMBER_7')
+hl('AvanteSidebarWinHorizontalSeparator', 'AMBER_7', { bg = 'GRAY_8'}) -- Manual separator
 -- }}}
 
 -- Misc {{{

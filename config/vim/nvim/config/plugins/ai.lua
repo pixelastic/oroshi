@@ -41,6 +41,7 @@ return {
       end
       nmap('⒤', toggleChat, 'Toggle AI Chat')
       imap('⒤', toggleChat, 'Toggle AI Chat')
+      vmap('⒤', toggleChat, 'Toggle AI Chat')
       -- }}}
 
       -- Chat flexible width {{{
