@@ -1,3 +1,7 @@
+local nmap = F.nmap
+local vmap = F.vmap
+local autocmd = F.autocmd
+
 vim.opt.ignorecase = true -- Case-insensitive by default...
 vim.opt.smartcase = true  -- ...unless an uppercase letter is used
 vim.opt.incsearch = true  -- Search as I type
@@ -14,10 +18,10 @@ vmap('ù:', ':s/', 'Search and replace', { silent = false })
 local function setHlSearch(newValue)
   return function()
     -- Only in search mode
-    if vim.fn.getcmdtype() == '/' then
+    if F.isSearchMode() then
       vim.opt.hlsearch = newValue
     end
   end
 end
-autocmd('CmdlineEnter', '*', setHlSearch(false))
-autocmd('CmdlineLeave', '*', setHlSearch(true))
+autocmd('CmdlineEnter', setHlSearch(false))
+autocmd('CmdlineLeave', setHlSearch(true))

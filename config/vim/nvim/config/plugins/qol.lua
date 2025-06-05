@@ -1,5 +1,5 @@
--- QoL
--- Quality of life improvements
+-- -- QoL
+-- -- Quality of life improvements
 return {
   -- Notify
   -- https://github.com/rcarriga/nvim-notify

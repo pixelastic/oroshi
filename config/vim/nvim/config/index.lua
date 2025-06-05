@@ -3,11 +3,31 @@ function frequire(path)
   local normalizedPath = path:gsub('/', '.')
 
   package.loaded[normalizedPath] = nil
-  require(normalizedPath)
+  return require(normalizedPath)
 end
 
--- Functions
-frequire('oroshi/functions')
+
+-- Shared variables
+O = {
+  colors = {},
+  projects = {},
+  statusline = {},
+  nvimtree = {}
+}
+
+-- Shared functions
+F = vim.tbl_extend('force', {}, 
+  frequire('oroshi/functions/autocmd'),
+  frequire('oroshi/functions/buffer'),
+  frequire('oroshi/functions/collections'),
+  frequire('oroshi/functions/debug'),
+  frequire('oroshi/functions/hacks'),
+  frequire('oroshi/functions/highlight'),
+  frequire('oroshi/functions/lodash'),
+  frequire('oroshi/functions/map'),
+  frequire('oroshi/functions/misc'),
+  frequire('oroshi/functions/modes')
+)
 
 -- Colorscheme
 frequire('oroshi/colorscheme')
@@ -16,7 +36,13 @@ frequire('oroshi/colorscheme')
 frequire('oroshi/keybindings')
 
 -- UI
-frequire('oroshi/ui')
+frequire('oroshi/ui/commandline')
+frequire('oroshi/ui/completion')
+frequire('oroshi/ui/folding')
+frequire('oroshi/ui/macro')
+frequire('oroshi/ui/search')
+frequire('oroshi/ui/statusline')
+frequire('oroshi/ui/tabline')
 
 -- Config
 frequire('oroshi/display')

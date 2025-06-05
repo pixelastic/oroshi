@@ -1,5 +1,7 @@
--- Text
--- Better handling of text (selection, closing, moving, etc)
+-- -- Text
+-- -- Better handling of text (selection, closing, moving, etc)
+local nmap = F.nmap
+local vmap = F.vmap
 return {
   -- Autopairs
   -- https://github.com/windwp/nvim-autopairs
@@ -78,21 +80,13 @@ return {
         },
       })
 
-      -- Move selection up and down
-      -- '< and '> marks are only updated when leaving visual mode
-      -- So, we need to leave and quickly come back in visual mode to be able to
-      -- use '< and '> in the mapping
-      local function refreshSelectionBounds()
-        vim.api.nvim_command('normal ') -- <Esc> to leave visual mode
-        vim.cmd('normal gv') -- Reselecting previous selection
-      end
       local function moveSelectionUp()
-        refreshSelectionBounds()
+        F.ensureVisualSelection()
         vim.cmd("silent! '<,'>move '<--")
         vim.cmd('normal gv')
       end
       local function moveSelectionDown()
-        refreshSelectionBounds()
+        F.ensureVisualSelection()
         vim.cmd("silent! '<,'>move '>+")
         vim.cmd('normal gv')
       end

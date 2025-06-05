@@ -1,3 +1,6 @@
+local autocmd = F.autocmd
+local ftplugin = F.ftplugin
+
 -- auto-read {{{
 -- Update files, even if changed from outside
 vim.opt.autoread = true
@@ -14,7 +17,7 @@ local function saveBufferWhenLeavingTab()
 
   vim.cmd("silent! write")
 end
-autocmd('TabLeave', '*', saveBufferWhenLeavingTab)
+autocmd('TabLeave', saveBufferWhenLeavingTab)
 -- }}}
 
 -- backup {{{
@@ -62,8 +65,8 @@ local function loadView()
   vim.cmd('silent! loadview 1')
   vim.cmd('normal ^') -- Go to first character of the line
 end
-autocmd( { 'BufLeave', 'BufWrite', 'VimLeavePre' }, '?*', saveView) -- Save
-autocmd('BufWinEnter', '?*', loadView)                              -- Load
+autocmd( { 'BufLeave', 'BufWrite', 'VimLeavePre' }, saveView, { pattern = '?*' }) -- Save
+autocmd('BufWinEnter', loadView, { pattern = '?*' })                              -- Load
 
 -- Specific filetypes where we don't handle views
 local function disableView()
@@ -78,5 +81,5 @@ local function updateWorkingDirectory()
   local workingDirectory = vim.fn.expand('%:p:h')
   vim.cmd('lcd '.. vim.fn.fnameescape(workingDirectory))
 end
-autocmd('BufEnter', '*', updateWorkingDirectory)
+autocmd('BufEnter', updateWorkingDirectory)
 -- }}}

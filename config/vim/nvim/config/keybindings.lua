@@ -1,10 +1,16 @@
+local nmap = F.nmap
+local imap = F.imap
+local vmap = F.vmap
+local cmap = F.cmap
+local ccmpmap = F.ccmpmap
+
 vim.g.mapleader = ","  -- Leader key
 vim.g.timeoutlen = 300 -- Delay between keys in keybindings
 
 -- Capslock
 -- Switch between Normal and Insert mode
 imap("<F13>", "<Esc>l",            "Insert  => Normal")
-nmap("<F13>", __.insertMode, "Normal  => Insert")
+nmap("<F13>", F.insertMode, "Normal  => Insert")
 vmap("<F13>", "<Esc>",             "Visual  => Normal")
 cmap("<F13>", "<C-C>",             "Command => Normal")
 
@@ -26,7 +32,7 @@ vmap("<C-S>", "<CMD>silent! w<CR><ESC>", "Save file")
 -- CTRL + D
 local function saveAndQuit()
   -- If the file has no name, we simply quit
-  if __.isNoName() then
+  if F.isNoName() then
     vim.cmd('q!')
     return
   end
@@ -45,7 +51,7 @@ nmap("<C-N>", ":tabedit<Space>", "Create new file in directory", { silent = fals
 -- identify what a specific highlight group refers to
 local function visualTogglePlaceholders(from, to)
   local function changeSelection(from, to)
-    __.hack_ensureVisualSelection()
+    F.ensureVisualSelection()
     vim.cmd("silent! '<,'>s/" .. from .. "/" .. to)
     vim.cmd('normal gv')
   end
@@ -55,7 +61,7 @@ local function visualTogglePlaceholders(from, to)
   changeSelection('ZZZ', 'YYY')
 
   -- Go back to normal mode and save
-  vim.api.nvim_command('normal ') -- <Esc> to leave visual mode
+  F.normalMode()
   vim.cmd('silent! w!')
 end
 local function normalTogglePlaceholders()
@@ -74,7 +80,7 @@ nmap('<F1>', 'K', 'Show help of word under cursor')
 -- F2: Reload
 local function reloadConfig()
   frequire('oroshi/index')
-  __.debug('Config reloaded')
+  F.debug('Config reloaded')
 end
 nmap('<F2>', reloadConfig, 'Reload nvim config')
 imap('<F2>', reloadConfig, 'Reload nvim config')
@@ -83,7 +89,7 @@ cmap('<F2>', reloadConfig, 'Reload nvim config')
 
 -- F3: Debug colors
 local function debugColors()
-  __.commandline.withReadableMsgArea(function()
+  F.withReadableMsgArea(function()
     vim.show_pos()
   end)
 end
@@ -152,14 +158,14 @@ nmap('<C-K>', '<C-A>', 'Decrement number under cursor')
 
 -- Add semicolon
 local function addSemicolonAtEndOfLine()
-  local currentLine = __.currentLine()
+  local currentLine = F.currentLine()
   local lastChar = currentLine:sub(-1)
 
   if lastChar == ';' then
     return
   end
 
-  __.currentLine(currentLine .. ';')
+  F.setCurrentLine(currentLine .. ';')
 end
 nmap(';', addSemicolonAtEndOfLine, 'Add a semicolon at end of line')
 

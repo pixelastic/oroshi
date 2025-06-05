@@ -1,19 +1,19 @@
 vim.opt.tabpagemax = 1000 -- Do not limit max number of tabs open
 vim.opt.showtabline = 1 -- Only show tabs if more than one
-vim.opt.tabline = '%!v:lua.__.tabline.main()' -- Use custom function
+vim.opt.tabline = '%!v:lua.O_TABLINE.main()' -- Use custom function
 
-__.tabline = {
+O_TABLINE = {
   -- main: Main entrypoint for vim.opt.tabline
   main = function()
     local tabline = {}
 
     -- We get all tabs that fit in the display
-    local tabs = __.tabline.displayedTabs(allTabs)
+    local tabs = O_TABLINE.displayedTabs(allTabs)
 
     -- Display them
     for i, tab in ipairs(tabs) do
       local nextTab = tabs[i + 1]
-      __.tabline.display(tabline, tab, nextTab)
+      O_TABLINE.display(tabline, tab, nextTab)
     end
 
     return table.concat(tabline, '')
@@ -25,7 +25,7 @@ __.tabline = {
     local currentTab = vim.fn.tabpagenr()
     local isCurrent = currentTab == index
     -- filepath
-    local fullPath = __.tabline.getFullpath(index)
+    local fullPath = O_TABLINE.getFullpath(index)
     -- content
     local basename = vim.fn.fnamemodify(fullPath, ':t')
     local content = ' ' .. basename .. ' '
@@ -54,17 +54,17 @@ __.tabline = {
     if not nextTab then nextTab = { hl = { bg = 'GRAY_8' } } end
 
     -- Start of click area
-    __.append(tabline, '%' .. (tab.index) .. 'T')
+    F.append(tabline, '%' .. (tab.index) .. 'T')
 
 
     -- Content
     local displayedContent = tab.content
-    local content = __.tabline.colorize(displayedContent, tab.index, tab.hl)
-    __.append(tabline, content)
+    local content = O_TABLINE.colorize(displayedContent, tab.index, tab.hl)
+    F.append(tabline, content)
 
     -- Separator
     local separatorString = ''
-    local separatorHightlight = __.vars.tabline.hl;
+    local separatorHightlight = O.colors.tabline.hl;
     -- Update colors if current or next is the current one
     if tab.isCurrent or nextTab.isCurrent then
       separatorString = ''
@@ -73,17 +73,17 @@ __.tabline = {
         fg = nextTab.hl.bg
       }
     end
-    local separator = __.tabline.colorize(separatorString, tab.index .. 'Separator', separatorHightlight)
-    __.append(tabline, separator)
+    local separator = O_TABLINE.colorize(separatorString, tab.index .. 'Separator', separatorHightlight)
+    F.append(tabline, separator)
 
     -- End of click area
-    __.append(tabline, '%T') 
+    F.append(tabline, '%T') 
   end,
 
   -- Returns only the tabs to display
   displayedTabs = function()
     -- We get all the tabs
-    local allTabs = __.tabline.allTabs()
+    local allTabs = O_TABLINE.allTabs()
 
     --  We need to add tabs, one by one, around the current one, until
     -- we run out of space
@@ -91,12 +91,12 @@ __.tabline = {
     local displayedTabs = {}
 
     -- Add current tab, for sure
-    local currentTab = __.tabline.getCurrentTab(allTabs)
-    __.append(displayedTabs, currentTab)
+    local currentTab = O_TABLINE.getCurrentTab(allTabs)
+    F.append(displayedTabs, currentTab)
     local usedWidth = currentTab.width
 
     -- Get all tabs, by order of importance (proximity with current tab)
-    local tabQueue = __.tabline.buildTabQueue(allTabs, currentTab.index)
+    local tabQueue = O_TABLINE.buildTabQueue(allTabs, currentTab.index)
 
     -- Add them to the list of displayed tabs until we run out of space
     for i, item in ipairs(tabQueue) do
@@ -110,9 +110,9 @@ __.tabline = {
 
       -- Add the tab, either before or after
       if direction == 'before' then
-        __.prepend(displayedTabs, tab)
+        F.prepend(displayedTabs, tab)
       else
-        __.append(displayedTabs, tab)
+        F.append(displayedTabs, tab)
       end
 
       -- Increase consumed width
@@ -127,7 +127,7 @@ __.tabline = {
   -- one, in order of preference, and with their position (before or after)
   buildTabQueue = function(allTabs, referenceTabIndex)
     -- We make a copy of allTabs as we're going to remove elements on iteration
-    local stack = __._.clone(allTabs)
+    local stack = F.clone(allTabs)
 
     -- Loop once for each element in the list
     local tabQueue = {}
@@ -160,7 +160,7 @@ __.tabline = {
       end
 
       -- Save this
-      __.append(tabQueue, { direction = direction, tab = tab })
+      F.append(tabQueue, { direction = direction, tab = tab })
     end
     return tabQueue
   end,
@@ -170,7 +170,7 @@ __.tabline = {
     local tabs = {}
     local count = vim.fn.tabpagenr('$')
     for i = 1, count do
-      __.append(tabs, __.tabline.getTab(i))
+      F.append(tabs, O_TABLINE.getTab(i))
     end
 
     return tabs
@@ -204,8 +204,8 @@ __.tabline = {
   colorize = function(content, identifier, highlight)
     -- Create a unique highlight group and define its colors
     local highlightName = 'TablineSlot' .. identifier
-    hl(highlightName, 'none', highlight)
+    F.hl(highlightName, 'none', highlight)
     -- Wrap the content in this group
-    return color(content, highlightName)
+    return F.color(content, highlightName)
   end,
 }

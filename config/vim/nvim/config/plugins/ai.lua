@@ -1,3 +1,9 @@
+local ftplugin = F.ftplugin
+local autocmd = F.autocmd
+local nmap = F.nmap
+local imap = F.imap
+local vmap = F.vmap
+
 return {
   -- https://github.com/yetone/avante.nvim
   -- Avante: AI chat
@@ -35,8 +41,7 @@ return {
       ftplugin('Avante', function()
         setChatWidth()
 
-        local buffer = vim.api.nvim_get_current_buf()
-        autocmd('VimResized', "*", setChatWidth, { buffer = buffer })
+        autocmd('VimResized', setChatWidth, { buffer = F.bufferId() })
       end)
       -- }}}
 
@@ -50,7 +55,7 @@ return {
           local filetype = vim.api.nvim_buf_get_option(bufferId, 'filetype')
 
           -- Skip useless windows
-          if filetype == "" or __._.includes(ignoreList, filetype) then
+          if filetype == "" or F.includes(ignoreList, filetype) then
             goto continue
           end
           -- Avante Response
@@ -84,15 +89,15 @@ return {
         -- Open if not yet opened
         if not windows.avante then
           avanteApi.ask({ without_selection = true })
-          __.normalMode()
+          F.normalMode()
           return
         end
 
         -- Move between code and Avante
-        local currentWindow = __.getWindowId()
+        local currentWindow = F.windowId()
         local nextWindow = windows.code
         if currentWindow == windows.code then nextWindow = windows.avanteInput end
-        __.focusWindow(nextWindow)
+        F.focusWindow(nextWindow)
       end
       nmap('⒤', switchBetweenChatAndCode, 'Switch between Chat and Code')
       imap('⒤', switchBetweenChatAndCode, 'Switch between Chat and Code')
@@ -101,12 +106,12 @@ return {
 
       -- Toggle the display of the Chat window {{{
       local function toggleChat()
-        __.normalMode()
+        F.normalMode()
         local windows = getTabWindows()
 
         -- If opened, we close it
         if windows.avante then
-          __.focusWindow(windows.avante)
+          F.focusWindow(windows.avante)
           vim.cmd('q!')
           return
         end
@@ -151,8 +156,34 @@ return {
       ftplugin('Avante', function()
         vim.opt_local.colorcolumn = "0" -- Hide text wrap limit
       end)
+
+
+
       ftplugin('AvanteInput', function()
-        vim.opt.guicursor:append("i:block-CursorModeAiPrompt") -- Change cursor color
+        local bufferId = F.getBufferId()
+        local rawFilepath = vim.fn.expand('%:p')
+
+        -- TODO: Change the cursor when entering/leaving
+        -- vim.opt_local.guicursor:append("n:block-CursorModeAiResponse") -- Change cursor in response
+        -- vim.opt_local.guicursor:append("i:hor25-CursorModeAiPrompt") -- Change cursor in input
+        -- autocmd('BufEnter', nil, function()
+        --   __.debug('enter')
+        -- end, { buffer = bufferId })
+        -- -- vim.api.nvim_create_autocmd('BufEnter', {
+        --
+        -- --   buffer = bufferId,
+        -- --   pattern = nil,
+        -- --   callback = function() 
+        -- --     __.debug('enter')
+        -- --   end
+        -- -- })
+        -- vim.api.nvim_create_autocmd('BufLeave', {
+        --   buffer = bufferId,
+        --   pattern = nil,
+        --   callback = function() 
+        --     __.debug('leave')
+        --   end
+        -- })
       end)
       -- }}}
 

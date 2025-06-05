@@ -1,5 +1,5 @@
--- Filetypes
--- Specific tweaks and syntax for specific filetypes
+-- -- Filetypes
+-- -- Specific tweaks and syntax for specific filetypes
 return {
   -- Kitty
   -- https://github.com/fladson/vim-kitty

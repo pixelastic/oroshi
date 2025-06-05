@@ -1,19 +1,16 @@
--- Keep reference to if we are recording a macro (to display in statusline)
-__.macro = {
-  currentName = nil
-}
+local autocmd = F.autocmd
 
--- Switch a boolean when recording a macro
+-- Save name of currently recorded macro for statusline
 local function setIsRecording(status)
   return function()
     if status then
-      __.macro.currentName = vim.fn.reg_recording()
+      O.statusline.macroName = vim.fn.reg_recording()
     else
-      __.macro.currentName = nil
+      O.statusline.macroName = nil
     end
 
     vim.cmd("redrawstatus")
   end
 end
-autocmd('RecordingEnter', '*', setIsRecording(true))
-autocmd('RecordingLeave', '*', setIsRecording(false))
+autocmd('RecordingEnter', setIsRecording(true))
+autocmd('RecordingLeave', setIsRecording(false))

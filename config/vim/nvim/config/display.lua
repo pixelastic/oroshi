@@ -1,3 +1,7 @@
+local nmap = F.nmap
+local imap = F.imap
+local autocmd = F.autocmd
+
 -- TEXT WRAPPING
 vim.opt.wrap          = false      -- Do not wrap text by default
 vim.opt.textwidth     = 80         -- Expected max length
@@ -50,5 +54,5 @@ end
 local function enableCursorLine()
   vim.opt_local.cursorline = true
 end
-autocmd({'WinLeave', 'FocusLost' }, '*', disableCursorLine) -- Disable current line highlight when out of focus
-autocmd({'WinEnter', 'FocusGained' }, '*', enableCursorLine) -- Re-enable current line hightlight when back in focus
+autocmd({'WinLeave', 'FocusLost' },  disableCursorLine) -- Disable current line highlight when out of focus
+autocmd({'WinEnter', 'FocusGained' },  enableCursorLine) -- Re-enable current line hightlight when back in focus

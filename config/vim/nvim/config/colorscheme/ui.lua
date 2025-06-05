@@ -1,3 +1,5 @@
+local hl = F.hl
+
 hl('Normal', 'GRAY_3') -- Normal text.
 hl('NormalNC', 'none') -- Normal text in unfocused windows. Should not be set.
 
@@ -7,11 +9,9 @@ hl('Conceal', 'NEUTRAL') --	Hidden text
 -- }}}
 
 -- Tabs {{{
-__.vars.tabline = {
-  hl = { 
-    fg = 'GRAY_4',
-    bg = 'GRAY_8'
-  }
+O.colors.tabline = {
+  fg = 'GRAY_4',
+  bg = 'GRAY_8'
 }
 hl('TabLineFill', 'GRAY_4', { bg = 'GRAY_8' }) --	Tab pages line, where there are no labels.
 -- }}}
@@ -24,7 +24,8 @@ hl('StatusLineNC', 'none', { bg = 'GRAY_8' }) --	Status lines of not-current win
 -- Floating windows {{{
 hl('WinBar', 'none', { bg = 'GRAY_8' } ) -- Window title
 hl('WinBarNC', 'none', { bg = 'GRAY_8' }) -- Window title, unfocuses
-hl('FloatTitle', 'WHITE', { bg = 'GRAY_6'}) --	Title of floating windows.
+hl('FloatBorder', 'GRAY_6', { bg = 'BLACK'})
+hl('FloatTitle', 'TEXT', { bg = 'BLACK'}) --	Title of floating windows.
 hl('NormalFloat', 'GRAY_4', { bg = 'GRAY_8' }) --	Normal text in floating windows.
 -- }}}
 
@@ -78,10 +79,11 @@ hl('CursorModeInsert', 'none', { bg = 'YELLOW_3' })
 hl('CursorModeVisual', 'none', { bg = 'BLUE_7' })
 hl('CursorModeTerminal', 'none', { bg = 'YELLOW' }) -- In fzf search
 hl('CursorModeAiPrompt', 'none', { bg = 'AMBER' }) -- AI prompt
+hl('CursorModeAiResponse', 'none', { bg = 'AMBER' }) -- AI prompt
 -- Commandline & Search, applied when entering commandline
-__.vars.cursor = {
-  hlCommand = { bg = 'TEAL' },
-  hlSearch = { bg = 'ORANGE' },
+O.colors.cursor = {
+  command = { bg = 'TEAL' },
+  search = { bg = 'ORANGE' },
 }
 
 -- Unused (yet) modes
@@ -118,9 +120,9 @@ hl('PmenuExtra', 'YYY') --	Popup menu: Normal item "extra text".
 hl('PmenuKindSel', 'YYY') --	Popup menu: Selected item "kind".
 hl('PmenuKind', 'YYY') --	Popup menu: Normal item "kind".
 
-__.vars.completion = {
+O.colors.completion = {
   -- Regular completion menu
-  hlVisible = {
+  visible = {
     Pmenu =  { fg = 'NEUTRAL', bg = 'GRAY_8'}, -- Default
     PmenuSel = { fg = 'WHITE', bg = 'PURPLE', bold = true}, -- Selected line
     PmenuMatch = { fg = 'PURPLE'}, -- Match
@@ -133,7 +135,7 @@ __.vars.completion = {
     CmpItemKind = { fg = 'NEUTRAL'}, -- Type of result, on the right
   },
   -- Hidden completion menu, used for handling ghost text
-  hlHidden = {
+  hidden = {
     Pmenu =  { fg='BLACK', bg = 'BLACK'},
     PmenuSel = { fg = 'BLACK'},
     CmpItemAbbr = { fg = 'BLACK' },
@@ -145,29 +147,29 @@ __.vars.completion = {
 -- }}}
 
 -- Statusline {{{
-__.vars.statusline = {
-  hlNormal = { bg = 'EMERALD_9', fg = 'EMERALD_2', bold = true },
-  hlInsert = { bg = 'YELLOW', fg = 'BLACK', bold = true },
-  hlVisual = { bg = 'BLUE', fg = 'WHITE', bold = true },
-  hlSearch = { bg = 'ORANGE_7', fg = 'ORANGE_2', bold = true },
-  hlCommand = { bg = 'TEAL', fg = 'TEAL_1', bold = true },
-  hlUnknown = { bg = 'CYAN'},
+O.colors.statusline = {
+  normal = { bg = 'EMERALD_9', fg = 'EMERALD_2', bold = true },
+  insert = { bg = 'YELLOW', fg = 'BLACK', bold = true },
+  visual = { bg = 'BLUE', fg = 'WHITE', bold = true },
+  search = { bg = 'ORANGE_7', fg = 'ORANGE_2', bold = true },
+  command = { bg = 'TEAL', fg = 'TEAL_1', bold = true },
+  unknown = { bg = 'CYAN'},
   -- NvimTree
-  hlNvimTreeIcon = { fg= 'YELLOW', bg = 'GREEN_9' },
-  hlNvimTreeText = { fg= 'WHITE', bg = 'GREEN_9' },
-  hlNvimTreeSeparator = { fg = 'GREEN_9' },
+  nvimTreeIcon = { fg= 'YELLOW', bg = 'GREEN_9' },
+  nvimTreeText = { fg= 'WHITE', bg = 'GREEN_9' },
+  nvimTreeSeparator = { fg = 'GREEN_9' },
   -- Filepath
-  hlFilepathDefault = { fg = 'GREEN', bold = true },
-  hlFilepathReadonly = { fg = 'RED' },
-  hlFilepathUnsavedChanges = { fg = 'VIOLET_4' },
-  hlFilepathNoName = { fg = 'COMMENT' },
+  filepathDefault = { fg = 'GREEN', bold = true },
+  filepathReadonly = { fg = 'RED' },
+  filepathUnsavedChanges = { fg = 'VIOLET_4' },
+  filepathNoName = { fg = 'COMMENT' },
 }
 -- }}}
 
 -- Commandline {{{
-__.vars.commandline = {
-  hlHidden = { fg = 'WHITE' }, -- Default highlight
-  hlVisible = { fg = 'TEXT', bg = 'GRAY_8' },  -- When need to be more readable
+O.colors.commandline = {
+  hidden = { fg = 'WHITE' }, -- Default highlight
+  visible = { fg = 'TEXT', bg = 'GRAY_8' },  -- When need to be more readable
 }
 hl('MsgSeparator', 'NONE', { bg = 'GRAY_6' }) --	Top bar separator of messsage
 hl('MoreMsg', 'TEXT') -- Some additional text, like in <F3>
@@ -189,8 +191,30 @@ hl('LazySpecial', 'PUNCTUATION')
 -- }}}
 
 -- Notify {{{
-hl('NotifyINFOBorder', 'YELLOW_7')
-hl('NotifyINFOBody', 'YELLOW_6' )
+hl('NotifyDEBUGBody', 'NOTICE')
+hl('NotifyDEBUGBorder', 'NOTICE')
+hl('NotifyDEBUGIcon', 'NOTICE')
+hl('NotifyDEBUGTitle', 'NOTICE')
+
+hl('NotifyTRACEBody', 'TEXT')
+hl('NotifyTRACEBorder', 'TEXT')
+hl('NotifyTRACEIcon', 'TEXT')
+hl('NotifyTRACETitle', 'TEXT')
+
+hl('NotifyINFOIcon', 'INFO')
+hl('NotifyINFOTitle', 'INFO')
+hl('NotifyINFOBorder', 'INFO')
+hl('NotifyINFOBody', 'INFO' )
+
+hl('NotifyWARNBody', 'WARNING')
+hl('NotifyWARNBorder', 'WARNING')
+hl('NotifyWARNIcon', 'WARNING')
+hl('NotifyWARNTitle', 'WARNING')
+
+hl('NotifyERRORBody', 'ERROR')
+hl('NotifyERRORBorder', 'ERROR')
+hl('NotifyERRORIcon', 'ERROR')
+hl('NotifyERRORTitle', 'ERROR')
 -- }}}
 
 -- Nvim Tree {{{
@@ -240,14 +264,15 @@ hl('AvanteTitle', 'AMBER_7', { bg = 'AMBER_7' })                              --
 hl('AvanteReversedTitle', 'AMBER_7')                                          -- Avante title sides
 hl('AvanteSidebarNormal', 'TEXT', { bg = 'GRAY_8'})                           -- Normal text
 hl('AvanteStateSpinnerToolCalling', 'INFO')                                   -- name of the tool
+hl('AvanteStateSpinnerGenerating', 'AMBER_7')             -- "generating"
 hl('AvanteStateSpinnerSucceeded', 'GREEN_1', { bg = 'SUCCESS', bold = true }) -- "succeeded"
-hl('AvanteStateSpinnerGenerating', 'AMBER_1', { bg = 'AMBER_7' })             -- "generating"
+hl('AvanteStateSpinnerFailed', 'RED_1', { bg = 'RED_7', bold = true })
 hl('AvanteTaskCompleted', 'SUCCESS', { bold = true })                         -- completed tag
 hl('AvanteInlineHint', 'NEUTRAL')                                             -- Hint on output
 -- Files
 hl('AvanteSubtitle', 'AMBER_1', { bg = 'AMBER_7'}) -- File title
 hl('AvanteReversedSubtitle', 'AMBER_7')
--- Input
+-- Prompt
 hl('AvanteThirdTitle', 'AMBER_7', { bg = 'AMBER_7' })                  -- Chat title
 hl('AvanteReversedThirdTitle', 'AMBER_7')
 hl('AvanteSidebarWinHorizontalSeparator', 'AMBER_7', { bg = 'GRAY_8'}) -- Manual separator

@@ -1,3 +1,5 @@
+local hl = F.hl
+
 -- Syntax groups {{{
 hl('Boolean', 'BOOLEAN', { bold = true })
 hl('Comment', 'COMMENT')
@@ -146,3 +148,4 @@ hl('zshParentheses', 'PUNCTUATION')
 hl('zshOperator', 'PUNCTUATION')
 hl('zshRedir', 'ORANGE')
 -- }}}
+--

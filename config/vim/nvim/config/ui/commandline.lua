@@ -1,21 +1,5 @@
-__.commandline = {
-  setHighlightHidden = function()
-    hl('MsgArea', 'none', __.vars.commandline.hlHidden)
-  end,
-  setHighlightVisible = function()
-    hl('MsgArea', 'none', __.vars.commandline.hlVisible)
-  end,
-
-  -- withReadableMsgArea: Call function in a readable zone
-  withReadableMsgArea = function(callback)
-    __.commandline.setHighlightVisible()
-
-    vim.schedule(function()
-      callback()
-      __.commandline.setHighlightHidden()
-    end)
-  end
-}
+local autocmd = F.autocmd
+local hl = F.hl
 
 -- Increase cmdheight in Search and Command mode {{{
 local function setCmdHeight(newHeight)
@@ -27,26 +11,25 @@ local function setCmdHeight(newHeight)
     end)
   end
 end
-autocmd('CmdlineEnter', '*', setCmdHeight(1))
-autocmd('CmdlineLeave', '*', setCmdHeight(0))
+autocmd('CmdlineEnter', setCmdHeight(1))
+autocmd('CmdlineLeave', setCmdHeight(0))
 -- }}}
 
 -- Change cursor color in command and search {{{
 local function setCmdCursorColor()
-  local type = vim.fn.getcmdtype()
-  if type == ':' then
-    hl('CursorModeCommandNormal', 'none', __.vars.cursor.hlCommand)
-    hl('CursorModeCommandInsert', 'none', __.vars.cursor.hlCommand)
+  if F.isCommandMode() then
+    hl('CursorModeCommandNormal', 'none', O.colors.cursor.command)
+    hl('CursorModeCommandInsert', 'none', O.colors.cursor.command)
   end
-  if type == '/' then
-    hl('CursorModeCommandNormal', 'none', __.vars.cursor.hlSearch)
-    hl('CursorModeCommandInsert', 'none', __.vars.cursor.hlSearch)
+  if F.isSearchMode() then
+    hl('CursorModeCommandNormal', 'none', O.colors.cursor.search)
+    hl('CursorModeCommandInsert', 'none', O.colors.cursor.search)
   end
 end
-autocmd('CmdlineEnter', '*', setCmdCursorColor)
+autocmd('CmdlineEnter', setCmdCursorColor)
 -- }}}
 
 -- Hide MsgArea {{{
-__.commandline.setHighlightHidden()
+-- __.commandline.setHighlightHidden()
 -- }}}
 

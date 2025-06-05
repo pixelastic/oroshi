@@ -1,3 +1,8 @@
+local ftplugin = F.ftplugin
+local ftdetect = F.ftdetect
+local ftset = F.ftset
+local autocmd = F.autocmd
+
 -- help
 ftplugin(
   {'help', 'man'},
@@ -9,7 +14,7 @@ ftplugin(
     takeAllHeight()
 
     -- Expand again on each resize
-    autocmd('VimResized', "*", takeAllHeight, { buffer = vim.api.nvim_get_current_buf() })
+    autocmd('VimResized', takeAllHeight, { buffer = vim.api.nvim_get_current_buf() })
   end
 )
 
@@ -22,6 +27,7 @@ ftdetect(
     vim.bo.commentstring = "// %s"
   end
 )
+
 
 -- zsh
 ftset("*config/term/zsh/functions/autoload/*", "zsh")

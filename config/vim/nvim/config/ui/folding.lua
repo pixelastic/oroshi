@@ -1,3 +1,6 @@
+local nmap = F.nmap
+local ftplugin = F.ftplugin
+
 vim.opt.foldmethod = 'marker'   -- Fold on markers by default
 vim.opt.foldmarker = '{{{,}}}'  -- markers to use
 vim.opt.foldlevel = 99
@@ -26,7 +29,6 @@ function oroshiFoldText()
   if firstChar ~= ' ' then
     return firstLine
   end
-
 
   return prefixSymbol .. firstLine:sub(2)
 end

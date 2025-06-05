@@ -3,10 +3,13 @@
 -- TODO: Commenting / uncommenting lines with comments should remove comment where there are already comment
 -- TODO: Check old config on space and tabs. What should be done? SPace for everything?
 -- TODO: Re-run the env-generate scripts when editing them
+-- TODO: Differenciate between F2 that only reloads the colors and C-F2 that
+-- reloads everything
 
 -- AI:
 -- TODO: Switch between models in chat? ChatGPT and Claude
 -- TODO: Use Copilot for suggestion?
+-- TODO: Change the cursor color when in the AI sidebar
 
 -- NICE TO HAVE
 -- TODO: Use gitsigns to add hunks for commit

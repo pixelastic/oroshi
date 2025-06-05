@@ -1,3 +1,5 @@
+local autocmd = F.autocmd
+
 -- Ghost text
 
 -- GOAL: I want "Ghost text", ie. the first suggestion displayed as I type, that
@@ -23,27 +25,8 @@
 -- search
 vim.opt.cmdheight = 0  -- Hide the command line
 
--- Change color of the completion menu, to either be visible when actually
--- needed, or invisible when used for Ghost Text
-local function setCompletionHighlight(type)
-  local definitions = __.vars.completion[type]
-  return function()
-    __._.each(definitions, function(value, key)
-      hl(key, 'none', value)
-    end)
-  end
-end
-
-__.completion = {
-  -- setHighlightHidden: Set menu hidden (for use in ghost text)
-  setHighlightHidden = setCompletionHighlight('hlHidden'),
-  -- setHighlightVisible: Set menu visible (for use in completion)
-  setHighlightVisible = setCompletionHighlight('hlVisible'),
-}
-
-
 -- Hide / Show the completion menu {{{
-__.completion.setHighlightHidden()
-autocmd('CmdlineEnter', '*', __.completion.setHighlightVisible)
-autocmd('CmdlineLeave', '*', __.completion.setHighlightHidden)
+F.hideCompletionWildmenu()
+autocmd('CmdlineEnter',  F.showCompletionWildmenu)
+autocmd('CmdlineLeave',  F.hideCompletionWildmenu)
 -- }}}

@@ -1,85 +1,118 @@
--- color: Wrap a string in color highlight
-function color(input, color)
-  return '%#' .. color .. '#' .. input .. '%*'
-end
+return {
+  -- hl: Define colors for a specific highlight group
+  -- Usage:
+  -- hl('Comment', 'RED')                                 -- Foreground color only
+  -- hl('Comment', 'RED', { bg = 'GREEN' })               -- Also background
+  -- hl('Comment', 'RED', { bold = true })                -- Also bold
+  -- hl('Comment', 'RED', { blend = 100 })                -- Transparent background, doesn't always work
+  -- hl('Comment', 'none', { bg = 'GREEN' })              -- Keep foreground as parent
+  -- hl('Comment', 'none', { fg = 'RED', bg = 'GREEN' })  -- Pass everything in last arg
+  hl = function (groupName, colorName, options)
+    -- Default options
+    if not options then options = {} end
+    options = F.clone(options) -- Prevent subtables to be modified when passed by reference
 
--- hl: Define colors for a specific highlight group
--- Usage:
--- hl('Comment', 'RED')                                 -- Foreground color only
--- hl('Comment', 'RED', { bg = 'GREEN' })               -- Also background
--- hl('Comment', 'RED', { bold = true })                -- Also bold
--- hl('Comment', 'RED', { blend = 100 })                -- Transparent background, doesn't always work
--- hl('Comment', 'none', { bg = 'GREEN' })              -- Keep foreground as parent
--- hl('Comment', 'none', { fg = 'RED', bg = 'GREEN' })  -- Pass everything in last arg
-function hl(groupName, colorName, options)
-  -- Default options
-  if not options then options = {} end
-  options = __._.clone(options) -- Prevent subtables to be modified when passed by reference
+    -- Convert colors from short names
+    if options.fg and options.fg ~= 'none' then options.fg = O.colors.env[options.fg] end
+    if options.bg and options.bg ~= 'none' then options.bg = O.colors.env[options.bg] end
 
-  -- Convert colors from short names
-  if options.fg and options.fg ~= 'none' then options.fg = vim.g.colors[options.fg] end
-  if options.bg and options.bg ~= 'none' then options.bg = vim.g.colors[options.bg] end
+    local defaults = { 
+      fg = O.colors.env[colorName],
+      bg = "none",
+      bold = false,
+      italic = false,
+    }
+    local config = F.merge(defaults, options)
 
-  local defaults = { 
-    fg = vim.g.colors[colorName],
-    bg = "none",
-    bold = false,
-    italic = false,
-  }
-  local config = __._.merge(defaults, options)
-
-  -- make XXX and YYY standout
-  if colorName == 'XXX' then
-    config = { fg = vim.g.colors.WHITE, bg = vim.g.colors.CYAN, bold = true, }
-  end
-  if colorName == 'YYY' then
-    config = { fg = vim.g.colors.WHITE, bg = vim.g.colors.PURPLE, }
-  end
-
-  vim.api.nvim_set_hl(0, groupName, config)
-end
-
--- getHighlightGroups: Return table of all highlight groups under cursor
-function getHighlightGroups()
-  local bufferId = __.getBufferId()
-  local cursor = __.getCursor()
-
-  -- Get groups defined by Treesitter
-  local function getTreesitterCaptures(bufferId, cursor)
-    local treesitter = require('vim.treesitter')
-
-    local row = cursor.row - 1
-    local col = cursor.col
-    if __.isInsertMode() then
-      col = col - 1
+    -- make XXX and YYY standout
+    if colorName == 'XXX' then
+      config = { fg = O.colors.env.WHITE, bg = O.colors.env.CYAN, bold = true, }
+    end
+    if colorName == 'YYY' then
+      config = { fg = O.colors.env.WHITE, bg = O.colors.env.PURPLE, }
     end
 
-    local allCaptures = treesitter.get_captures_at_pos(bufferId, row, col)
-    return __._.map(allCaptures, 'capture')
-  end
+    vim.api.nvim_set_hl(0, groupName, config)
+  end,
 
-  -- Get groups defined by syntax
-  local function getSyntaxCaptures(bufferId, cursor)
-    local row = cursor.row
-    local col = cursor.col
-    if not __.isInsertMode() then
-      col = col + 1
+  -- color: Wrap a string in color highlight
+  color = function (input, color)
+    return '%#' .. color .. '#' .. input .. '%*'
+  end,
+
+  -- getData: Get info about a specific project, lazyloaded and cached
+  getProjectData = function(projectKey)
+    -- Return cached version
+    if O.projects[projectKey] then
+      return O.projects[projectKey]
     end
 
-    local ret = {}
-    for _, synId in ipairs(vim.fn.synstack(row, col)) do
-      synId = vim.fn.synIDtrans(synId)
-      local synName = vim.fn.synIDattr(synId, 'name')
-      __.append(ret, synName)
+    function getAttribute(type)
+      return F.env('PROJECT_' .. projectKey .. '_' .. type)
     end
 
-    return ret
+    -- Stop if unknown project
+    local projectPath = getAttribute('PATH')
+    if not projectPath then
+      return false
+    end
+
+    -- Get relevant project data
+    local projectData = {
+      name = projectKey:lower(),
+      path = vim.fn.expand(projectPath), -- Convert ~ to full path
+      icon = getAttribute('ICON'),
+      bg = getAttribute('BACKGROUND_NAME'),
+      fg = getAttribute('FOREGROUND_NAME'),
+      hideNameInPrompt = getAttribute('HIDE_NAME_IN_PROMPT')
+    }
+    O.projects[projectKey] = projectData;
+
+    return projectData
+  end,
+
+  -- getHighlightGroups: Return table of all highlight groups under cursor
+  getHighlightGroups = function()
+    local bufferId = F.bufferId()
+    local position = F.position()
+
+    -- Get groups defined by Treesitter
+    local function getTreesitterCaptures(bufferId, line, column)
+      local treesitter = require('vim.treesitter')
+
+      line = line - 1
+
+      if F.isInsertMode() then
+        column = column - 1
+      end
+
+      local allCaptures = treesitter.get_captures_at_pos(bufferId, line, column)
+      return F.map(allCaptures, 'capture')
+    end
+
+    -- Get groups defined by syntax
+    local function getSyntaxCaptures(bufferId, line, column)
+      if not F.isInsertMode() then
+        column = column + 1
+      end
+
+      local ret = {}
+      for _, synId in ipairs(vim.fn.synstack(line, column)) do
+        synId = vim.fn.synIDtrans(synId)
+        local synName = vim.fn.synIDattr(synId, 'name')
+        F.append(ret, synName)
+      end
+
+      return ret
+    end
+
+
+    local treesitterCaptures = getTreesitterCaptures(bufferId, position.line, position.column)
+    local syntaxCaptures = getSyntaxCaptures(bufferId, position.line, position.column)
+    return F.concat(treesitterCaptures, syntaxCaptures)
   end
+}
 
 
-  local treesitterCaptures = getTreesitterCaptures(bufferId, cursor)
-  local syntaxCaptures = getSyntaxCaptures(bufferId, cursor)
-  return __._.concat(treesitterCaptures, syntaxCaptures)
-end
-
-
+--
+--

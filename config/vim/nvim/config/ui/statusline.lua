@@ -1,37 +1,40 @@
+local hl = F.hl
+
+
 -- Statusline
 vim.opt.laststatus = 3 -- One global statusline instead of one per window
 vim.opt.showmode = false -- Hide bottom line with mode
-vim.opt.statusline = '%!v:lua.__.statusline.main()' -- Use custom function
+vim.opt.statusline = '%!v:lua.O_STATUSLINE.main()' -- Use custom function
 
 -- Statusline methods
-__.statusline = {
+O_STATUSLINE = {
   -- main: What is being passed to vim.opt.statusline
   main = function()
     local statusline = {}
 
     -- Mode
-    local mode = __.statusline.getMode()
+    local mode = O_STATUSLINE.getMode()
     local modeBg = mode.hl.bg; -- Need to be stored statically
 
     -- Project & file
-    local fileData = __.statusline.getFileData()
+    local fileData = O_STATUSLINE.getFileData()
 
     -- File
     local file = fileData.file;
     -- Highlight based on file status
     local isReadonly = vim.bo.readonly
     local hasUnsavedChanges = vim.bo.modified
-    local isNoName = __.isNoName()
-    local fileHighlight = __.vars.statusline.hlFilepathDefault
-    if isReadonly then fileHighlight = __.vars.statusline.hlFilepathReadonly end
-    if hasUnsavedChanges then fileHighlight = __.vars.statusline.hlFilepathUnsavedChanges end
-    if isNoName then fileHighlight = __.vars.statusline.hlFilepathNoName end
+    local isNoName = F.isNoName()
+    local fileHighlight = O.colors.statusline.filepathDefault
+    if isReadonly then fileHighlight = O.colors.statusline.filepathReadonly end
+    if hasUnsavedChanges then fileHighlight = O.colors.statusline.filepathUnsavedChanges end
+    if isNoName then fileHighlight = O.colors.statusline.filepathNoName end
 
     -- Project
     local project = fileData.project;
 
 
-    local add = __.statusline.add
+    local add = O_STATUSLINE.add
     -- Mode
     add(statusline, mode.content, mode.hl)
     add(statusline, '', { fg = modeBg, bg = project.hl.bg})
@@ -41,9 +44,9 @@ __.statusline = {
     add(statusline, '', { fg = project.hl.bg })
 
     -- Recording macro
-    if __.macro.currentName then
+    if O.statusline.macroName then
       add(statusline, " 󰑋 ", { fg = 'RED' })
-      add(statusline, __.macro.currentName, { fg = 'RED_4' })
+      add(statusline, O.statusline.macroName, { fg = 'RED_4' })
     end
 
     -- Filepath
@@ -87,9 +90,9 @@ __.statusline = {
     local highlightName = 'StatuslineSlot' .. slotNumber
     hl(highlightName, 'none', highlight)
 
-    local coloredContent = color(content, highlightName)
+    local coloredContent = F.color(content, highlightName)
 
-    __.append(statusline, coloredContent)
+    F.append(statusline, coloredContent)
   end,
 
   -- getMode: Get informations about current mode
@@ -106,7 +109,7 @@ __.statusline = {
     --   }
 
     -- NvimTree mode
-    if __.statusline.isNvimTree() then
+    if O_STATUSLINE.isNvimTree() then
       return {
         content = '  ',
         hl = { 
@@ -120,40 +123,40 @@ __.statusline = {
     local modes = {
       n = {
         content = ' NORMAL ',
-        hl = __.vars.statusline.hlNormal,
+        hl = O.colors.statusline.normal,
       },
       i = {
         content = ' INSERT ',
-        hl = __.vars.statusline.hlInsert,
+        hl = O.colors.statusline.insert,
       },
       v = {
         content = ' VISUAL ',
-        hl = __.vars.statusline.hlVisual,
+        hl = O.colors.statusline.visual,
       },
       s = {
         content = ' SEARCH ',
-        hl = __.vars.statusline.hlSearch,
+        hl = O.colors.statusline.search,
       },
       c = {
         content = ' COMMAND ',
-        hl = __.vars.statusline.hlCommand,
+        hl = O.colors.statusline.command,
         hl = { bg = 'TEAL', fg = 'TEAL_1', bold = true }
       },
     }
 
     -- Guess current mode
     local modeKey = vim.fn.mode()
-    if (modeKey == 'V' or modeKey == '') then
+    if F.isVisualMode() then
       -- All visual selection (grid or full line) are visual
       modeKey = 'v'
     end
-    if modeKey == 'c' and vim.fn.getcmdtype() == '/' then
+    if F.isSearchMode() then
       -- Dissociate command (:) from search (/)
       modeKey = 's'
     end
 
     -- Pick right mode
-    local mode = modes[modeKey] or { content = 'UNKNOWN', hl = __.vars.statusline.hlUnknown }
+    local mode = modes[modeKey] or { content = 'UNKNOWN', hl = O.colors.statusline.unknown }
 
     return mode
   end,
@@ -181,13 +184,13 @@ __.statusline = {
     local rawFilepath = vim.fn.expand('%:p')
 
     -- For a [No Name] buffer
-    if __.isNoName() then
+    if F.isNoName() then
       rawFilepath = vim.fn.getcwd() .. '/[No Name]'
     end
 
     -- For NvimTree, we display the current selected folder
-    if __.statusline.isNvimTree() then
-      rawFilepath = __.nvimtree.currentDirectory
+    if O_STATUSLINE.isNvimTree() then
+      rawFilepath = O.nvimtree.currentDirectory
       vim.b.statuslineFileData = nil -- No cache for this buffer
     end
 
@@ -200,7 +203,7 @@ __.statusline = {
     local projectKey = vim.fn.systemlist(
       'project-by-path ' .. vim.fn.shellescape(rawFilepath)
     )[1]
-    local projectData = getProject(projectKey)
+    local projectData = F.getProjectData(projectKey)
     -- Icon with name string
     local projectContent = projectData.icon
     if projectData.hideNameInPrompt == '0' then
@@ -243,10 +246,10 @@ __.statusline = {
   -- nvimTreeStatusline: Simple statusline for using NvimTree
   nvimTreeStatusline = function()
     local statusline = {}
-    local add = __.statusline.add
-    add(statusline, '  ', __.vars.statusline.hlNvimTreeSymbol)
-    add(statusline, 'TREE ', __.vars.statusline.hlNvimTreeText)
-    add(statusline, '', __.vars.statusline.hlNvimTreeSeparator)
+    local add = O_STATUSLINE.add
+    add(statusline, '  ', O.colors.statusline.nvimTreeSymbol)
+    add(statusline, 'TREE ', O.colors.statusline.nvimTreeText)
+    add(statusline, '', O.colors.statusline.nvimTreeSeparator)
     return table.concat(statusline, '')
   end,
 }

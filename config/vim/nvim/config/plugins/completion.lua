@@ -1,5 +1,5 @@
--- Completion
--- Suggest stuff as I type
+-- -- Completion
+-- -- Suggest stuff as I type
 return {
   -- Cmp
   -- https://github.com/hrsh7th/nvim-cmp
@@ -39,12 +39,12 @@ return {
         -- Close if already openeds
         if cmp.visible() then
           cmp.close()
-          __.completion.setHighlightHidden()
+          F.hideCompletionWildmenu()
           return
         end
 
         -- Open, as a real menu
-        __.completion.setHighlightVisible()
+        F.showCompletionWildmenu()
         cmp.complete({
           config = {
             view = {
@@ -64,15 +64,15 @@ return {
         local blockerTypes = { "comment", "zshComment", "string", "number" }
 
         -- Check all blockers to see if they are part of the current highlights
-        local currentTypes = getHighlightGroups()
+        local currentTypes = F.getHighlightGroups()
         for _, typeName in ipairs(blockerTypes) do
           local treesitterName = typeName:lower() -- string
-          if __._.includes(currentTypes, treesitterName) then
+          if F.includes(currentTypes, treesitterName) then
             return false
           end
 
           local syntaxName = typeName:gsub('^%l', string.upper) -- String
-          if __._.includes(currentTypes, syntaxName) then
+          if F.includes(currentTypes, syntaxName) then
             return false
           end
         end

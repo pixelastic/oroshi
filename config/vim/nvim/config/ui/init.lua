@@ -1,7 +1,0 @@
-frequire('oroshi/ui/commandline')
-frequire('oroshi/ui/completion')
-frequire('oroshi/ui/folding')
-frequire('oroshi/ui/macro')
-frequire('oroshi/ui/search')
-frequire('oroshi/ui/statusline')
-frequire('oroshi/ui/tabline')

@@ -1,3 +1,5 @@
+local hl = F.hl
+
 -- In this file, I list all Highlight groups that I haven't defined yet, and I
 -- set them as XXX (which results in a noticable CYAN background). 
 --
@@ -20,7 +22,6 @@ hl('Cursor', 'XXX') --		Character under the cursor.
 hl('DiffAdd', 'XXX') --		Diff mode: Added line. |diff.txt|
 hl('DiffChange', 'XXX') --	Diff mode: Changed line. |diff.txt|
 hl('DiffText', 'XXX') --	Diff mode: Changed text within a changed line. |diff.txt|
-hl('FloatBorder', 'XXX') --	Border of floating windows.
 hl('FloatFooter', 'XXX') --	Footer of floating windows.
 hl('FoldColumn', 'XXX') --	'foldcolumn'
 hl('LineNrAbove', 'XXX') --	Line number for when the 'relativenumber'
@@ -59,24 +60,7 @@ hl('Typedef', 'XXX') --		a typedef
 -- }}}
 
 -- Notify {{{
-hl('NotifyINFOIcon', 'XXX')
-hl('NotifyINFOTitle', 'XXX')
-hl('NotifyDEBUGBorder', 'XXX')
-hl('NotifyWARNBorder', 'XXX')
-hl('NotifyERRORBorder', 'XXX')
-hl('NotifyTRACEBorder', 'XXX')
-hl('NotifyERRORIcon', 'XXX')
-hl('NotifyWARNIcon', 'XXX')
-hl('NotifyDEBUGIcon', 'XXX')
-hl('NotifyTRACEIcon', 'XXX')
-hl('NotifyERRORTitle', 'XXX')
-hl('NotifyWARNTitle', 'XXX')
-hl('NotifyDEBUGTitle', 'XXX')
-hl('NotifyTRACETitle', 'XXX')
-hl('NotifyERRORBody', 'XXX')
-hl('NotifyWARNBody', 'XXX')
-hl('NotifyDEBUGBody', 'XXX')
-hl('NotifyTRACEBody', 'XXX')
+
 -- }}}
 
 -- Render Markdown plugin {{{
@@ -124,7 +108,6 @@ hl('AvanteAnnotation', 'XXX')
 hl('AvanteToBeDeleted', 'XXX')
 hl('AvanteToBeDeletedWOStrikethrough', 'XXX')
 hl('AvanteReversedNormal', 'XXX')
-hl('AvanteStateSpinnerFailed', 'XXX')
 hl('AvanteStateSpinnerSearching', 'XXX')
 hl('AvanteStateSpinnerThinking', 'XXX')
 hl('AvanteStateSpinnerCompacting', 'XXX')

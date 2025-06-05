@@ -1,5 +1,11 @@
--- Disk
--- Navigate, rename, delete files
+-- -- Disk
+-- -- Navigate, rename, delete files
+local nmap = F.nmap
+local imap = F.imap
+local vmap = F.vmap
+local ftplugin = F.ftplugin
+local autocmd = F.autocmd
+
 return {
   -- Eunuch
   -- https://github.com/tpope/vim-eunuch
@@ -44,7 +50,7 @@ return {
         if bufferLineCount > 1 then return end
 
         -- The only line has content? We keep working
-        local bufferFirstLine = vim.api.nvim_get_current_line()
+        local bufferFirstLine = F.currentLine()
         if bufferFirstLine ~= '' then return end
 
         -- At that stage, we're confident we can exit vim
@@ -89,7 +95,7 @@ return {
           vim.opt.laststatus = originalLaststatus;
           vim.opt.showtabline = originalShowtabline;
         end
-        autocmd('BufLeave', "*", restorePreviousSettings, { buffer = vim.api.nvim_get_current_buf() })
+        autocmd('BufLeave', restorePreviousSettings, { buffer = F.bufferId() })
       end)
 
       -- openFilesInNewTabs {{{
@@ -298,9 +304,8 @@ return {
         nmap('<C-N>', onCtrlN, 'Create new file', { buffer = bufnr })
       end
 
-      __.nvimtree = {
-        currentDirectory = nil,
-      }
+      O.nvimtree.currentDirectory = nil
+
       local nvimtree = require("nvim-tree")
       local api = nvimtree.api
       nvimtree.setup({
@@ -311,7 +316,7 @@ return {
         renderer = {
           root_folder_label = function(path)
             -- Set the current directory, for display in the statusline
-            __.nvimtree.currentDirectory = path
+            O.nvimtree.currentDirectory = path
 
             local basename = vim.fs.basename(path) .. '/'
             return basename

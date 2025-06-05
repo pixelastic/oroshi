@@ -1,4 +1,4 @@
-__._ = {
+return {
   -- concat: Concatenate two tables
   concat = function(one, two)
     -- Use it to concat two arrays together, to create a new array
@@ -49,7 +49,7 @@ __._ = {
     -- TODO: ipairs will iterate only on numeric keys and stop on any gap. pairs
     -- will iterate on everything, but do not guarantee order.
     for _, value in ipairs(collection) do
-      __.append(ret, callback(value))
+      F.append(ret, callback(value))
     end
     return ret
   end,
@@ -63,7 +63,4 @@ __._ = {
   replace = function(input, from, to)
     return string.gsub(input, from, to)
   end
-
-
-
 }
