@@ -26,6 +26,8 @@ hl('Type', 'VARIABLE_TYPE')
 hl('Underlined', 'none', { underline = true }) --	text that stands out, HTML links
 -- }}}
 
+-- Messages 
+
 -- Diff / Git {{{
 hl('Added', 'GIT_ADDED')
 hl('Changed', 'GIT_MODIFIED')

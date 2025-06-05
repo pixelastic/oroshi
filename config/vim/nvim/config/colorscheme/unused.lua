@@ -10,27 +10,23 @@
 
 
 -- UI groups {{{
-hl('CmpItemAbbrDeprecated', 'YYY')
-hl('CmpItemMenu', 'YYY')
-hl('ComplMatchIns', 'YYY') --	Matched text of the currently inserted completion.
-hl('Conceal', 'YYY') --		Placeholder characters substituted for concealed
-hl('CursorColumn', 'YYY') --	Screen-column at the cursor, when 'cursorcolumn' is set.
-hl('CursorIM', 'YYY') --	Like Cursor, but used when in IME mode. *CursorIM*
-hl('CursorLineFold', 'YYY') --	Like FoldColumn when 'cursorline' is set for the cursor line.
-hl('Cursor', 'YYY') --		Character under the cursor.
+hl('CmpItemAbbrDeprecated', 'XXX')
+hl('CmpItemMenu', 'XXX')
+hl('ComplMatchIns', 'XXX') --	Matched text of the currently inserted completion.
+hl('CursorColumn', 'XXX') --	Screen-column at the cursor, when 'cursorcolumn' is set.
+hl('CursorIM', 'XXX') --	Like Cursor, but used when in IME mode. *CursorIM*
+hl('CursorLineFold', 'XXX') --	Like FoldColumn when 'cursorline' is set for the cursor line.
+hl('Cursor', 'XXX') --		Character under the cursor.
 hl('DiffAdd', 'XXX') --		Diff mode: Added line. |diff.txt|
-hl('DiffChange', 'YYY') --	Diff mode: Changed line. |diff.txt|
-hl('DiffText', 'YYY') --	Diff mode: Changed text within a changed line. |diff.txt|
-hl('FloatBorder', 'YYY') --	Border of floating windows.
-hl('FloatFooter', 'YYY') --	Footer of floating windows.
-hl('FloatTitle', 'YYY') --	Title of floating windows.
-hl('FoldColumn', 'YYY') --	'foldcolumn'
-hl('LineNrAbove', 'YYY') --	Line number for when the 'relativenumber'
-hl('LineNrBelow', 'YYY') --	Line number for when the 'relativenumber'
-hl('ModeMsg', 'YYY') --		'showmode' message (e.g., "-- INSERT --").
-hl('NormalFloat', 'YYY') --	Normal text in floating windows.
-
-hl('DiagnosticInfo', 'XXX')
+hl('DiffChange', 'XXX') --	Diff mode: Changed line. |diff.txt|
+hl('DiffText', 'XXX') --	Diff mode: Changed text within a changed line. |diff.txt|
+hl('FloatBorder', 'XXX') --	Border of floating windows.
+hl('FloatFooter', 'XXX') --	Footer of floating windows.
+hl('FloatTitle', 'XXX') --	Title of floating windows.
+hl('FoldColumn', 'XXX') --	'foldcolumn'
+hl('LineNrAbove', 'XXX') --	Line number for when the 'relativenumber'
+hl('LineNrBelow', 'XXX') --	Line number for when the 'relativenumber'
+hl('ModeMsg', 'XXX') --		'showmode' message (e.g., "-- INSERT --").
 hl('QuickFixLine', 'XXX') --	Current |quickfix| item in the quickfix window. Combined with
 hl('SnippetTabstop', 'XXX') --	Tabstops in snippets. |vim.snippet|
 hl('SpellBad', 'XXX') --	Word that is not recognized by the spellchecker. |spell|

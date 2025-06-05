@@ -11,6 +11,7 @@
 -- TODO: Find a plugin that can autoclose functions
 -- TODO: Mapping to jump to end of current block (like going to end of the current function)
 -- TODO: Make sure I can select a completion with <CR>, that it suggests more filepaths, and that it hides the wildmenu for ghost text
+-- TODO: Might need to update nvim-treesitter to main branch.
 
 -- BIG TOOLS
 -- TODO: Autoformat on save

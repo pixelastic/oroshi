@@ -1,6 +1,11 @@
 hl('Normal', 'GRAY_3') -- Normal text.
 hl('NormalNC', 'none') -- Normal text in unfocused windows. Should not be set.
 
+-- Messages {{{
+hl('DiagnosticInfo', 'INFO')
+hl('Conceal', 'NEUTRAL') --	Hidden text
+-- }}}
+
 -- Tabs {{{
 __.vars.tabline = {
   hl = { 
@@ -14,6 +19,10 @@ hl('TabLineFill', 'GRAY_4', { bg = 'GRAY_8' }) --	Tab pages line, where there ar
 -- Splits {{{
 hl('WinSeparator', 'YELLOW_9', { bg = 'BLACK', bold = true }) --	Separators between splits
 hl('StatusLineNC', 'none', { bg = 'GRAY_8' }) --	Status lines of not-current windows.
+-- }}}
+
+-- Floating windows {{{
+hl('NormalFloat', 'GRAY_4', { bg = 'GRAY_8' }) --	Normal text in floating windows.
 -- }}}
 
 -- Line Number {{{
@@ -70,8 +79,6 @@ __.vars.cursor = {
   hlDefault = { bg = 'TEAL' },
   hlSearch = { bg = 'ORANGE' }
 }
--- hl('CursorModeCommandNormal', 'YYY')
--- hl('CursorModeCommandInsert', 'YYY')
 
 -- Unused (yet) modes
 hl('CursorModeVisualExclusive', 'XXX')
@@ -79,6 +86,8 @@ hl('CursorModeOperator', 'XXX')
 hl('CursorModeReplace', 'XXX')
 hl('CursorModeCommandReplace', 'XXX')
 hl('CursorModeShowMatch', 'XXX')
+hl('CursorModeCommandNormal', 'XXX')
+hl('CursorModeCommandInsert', 'XXX')
 -- }}}
 
 -- Folds {{{
@@ -160,6 +169,19 @@ hl('MsgSeparator', 'NONE', { bg = 'GRAY_6' }) --	Top bar separator of messsage
 hl('MoreMsg', 'TEXT') -- Some additional text, like in <F3>
 hl('ErrorMsg', 'RED_8') --	Error messages
 hl('Question', 'COMMENT') --	"Press ENTER or type command to continue"
+-- }}}
+
+-- Lazy {{{
+hl('LazyButtonActive', 'YELLOW', { bg = 'BLACK', bold = true })
+hl('LazyButton', 'none', { bg = 'GRAY_9' })
+hl('LazyCommit', 'GIT_COMMIT')
+hl('LazyProp', 'ORANGE')
+hl('LazyReasonEvent', 'ORANGE', { bold = false })
+hl('LazyReasonFt', 'VIOLET')
+hl('LazyReasonPlugin', 'YELLOW')
+hl('LazyReasonSource', 'VIOLET')
+hl('LazyReasonStart', 'GREEN')
+hl('LazySpecial', 'PUNCTUATION')
 -- }}}
 
 -- Notify {{{
