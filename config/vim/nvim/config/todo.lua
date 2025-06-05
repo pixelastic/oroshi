@@ -4,6 +4,10 @@
 -- TODO: Check old config on space and tabs. What should be done? SPace for everything?
 -- TODO: Re-run the env-generate scripts when editing them
 
+-- AI:
+-- TODO: Switch between models in chat? ChatGPT and Claude
+-- TODO: Use Copilot for suggestion?
+
 -- NICE TO HAVE
 -- TODO: Use gitsigns to add hunks for commit
 -- TODO: F7 to show hunks more visibly?

@@ -75,6 +75,7 @@ hl('@keyword.function.lua', 'KEYWORD')
 hl('@keyword.lua', 'VARIABLE_TYPE')
 hl('@keyword.repeat.lua', 'KEYWORD')
 hl('@keyword.return.lua', 'KEYWORD')
+hl('@label.lua', 'YELLOW_LIGHT', { bold = true})
 -- }}}
 -- help {{{
 hl('@markup.heading.1.vimdoc', 'BLUE_4')

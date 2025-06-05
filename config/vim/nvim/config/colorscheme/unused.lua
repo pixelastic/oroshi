@@ -52,7 +52,6 @@ hl('Define', 'XXX') --		preprocessor #define
 hl('Exception', 'XXX') --	try, catch, throw
 hl('Float', 'XXX') --		a floating point constant: 2.3e10
 hl('Ignore', 'XXX') --		left blank, hidden  |hl-Ignore|
-hl('Label', 'XXX') --		case, default, etc.
 hl('Macro', 'XXX') --		same as Define
 hl('PreCondit', 'XXX') --	preprocessor #if, #else, #endif, etc.
 hl('SpecialComment', 'XXX') --	special things inside a comment
@@ -140,7 +139,6 @@ hl('AvanteStateSpinnerSucceeded', 'XXX')
 hl('AvanteStateSpinnerSearching', 'XXX')
 hl('AvanteStateSpinnerThinking', 'XXX')
 hl('AvanteStateSpinnerCompacting', 'XXX')
-hl('AvanteTaskCompleted', 'XXX')
 hl('AvanteConflictCurrent', 'XXX')
 hl('AvanteConflictCurrentLabel', 'XXX')
 hl('AvanteConflictIncoming', 'XXX')

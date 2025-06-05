@@ -26,6 +26,11 @@ __._ = {
     return vim.tbl_contains(collection, value)
   end,
 
+  -- empty: Check if the collection is empty
+  isEmpty = function(collection)
+    return #collection == 0
+  end,
+
   -- map: Creates an table of values by running each element thru callback
   map = function(collection, callback)
     -- Usage:

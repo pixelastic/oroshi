@@ -209,7 +209,7 @@ hl('DevIconJson', 'VIOLET' )
 hl('DevIconJs', 'YELLOW' )
 hl('DevIconPng', 'YELLOW_6' )
 hl('DevIconReadme', 'AMBER' )
-hl('DevIconSvg', 'VIOLET' )
+hl('DevIconSvg', 'VIOLET')
 hl('DevIconTrueTypeFont', 'VIOLET' )
 hl('DevIconWebOpenFontFormat', 'VIOLET' )
 hl('DevIconYml', 'VIOLET' )
@@ -236,6 +236,7 @@ hl('AvanteReversedSubtitle', 'AMBER_7')
 hl('AvanteThirdTitle', 'AMBER_7', { bg = 'AMBER_7' }) -- Chat title
 hl('AvanteReversedThirdTitle', 'AMBER_7')
 hl('AvanteSidebarWinHorizontalSeparator', 'AMBER_7', { bg = 'GRAY_8'}) -- Manual separator
+hl('AvanteTaskCompleted', 'SUCCESS', { bold = true })
 -- }}}
 
 -- Misc {{{
