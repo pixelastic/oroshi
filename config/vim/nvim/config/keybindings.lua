@@ -104,14 +104,15 @@ imap('Ⓛ', '<CMD>+tabmove<CR>', 'Move tab to the right')
 -- Open file in new tab
 nmap(',t', ':tabedit<Space>', 'Open file in new tab', { silent = false })
 
-
-
 -- Splits
 nmap('<C-Up>',    '<C-W>k', 'Go to split up')
 nmap('<C-Right>', '<C-W>l', 'Go to split right')
 nmap('<C-Down>',  '<C-W>j', 'Go to split bottom')
 nmap('<C-Left>',  '<C-W>h', 'Go to split left')
-
+imap('<C-Up>',    '<Esc><C-W>k', 'Go to split up')
+imap('<C-Right>', '<Esc><C-W>l', 'Go to split right')
+imap('<C-Down>',  '<Esc><C-W>j', 'Go to split bottom')
+imap('<C-Left>',  '<Esc><C-W>h', 'Go to split left')
 
 -- Completion
 ccmpmap('<CR>',   '<C-y> ', 'Accept suggestion')
