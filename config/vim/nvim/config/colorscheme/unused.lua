@@ -22,7 +22,6 @@ hl('DiffChange', 'XXX') --	Diff mode: Changed line. |diff.txt|
 hl('DiffText', 'XXX') --	Diff mode: Changed text within a changed line. |diff.txt|
 hl('FloatBorder', 'XXX') --	Border of floating windows.
 hl('FloatFooter', 'XXX') --	Footer of floating windows.
-hl('FloatTitle', 'XXX') --	Title of floating windows.
 hl('FoldColumn', 'XXX') --	'foldcolumn'
 hl('LineNrAbove', 'XXX') --	Line number for when the 'relativenumber'
 hl('LineNrBelow', 'XXX') --	Line number for when the 'relativenumber'
@@ -116,31 +115,20 @@ hl('GitSignsUntrackedCul', 'XXX')
 -- }}}
 
 -- Avante {{{
-hl('AvanteButtonDefault', 'XXX')
-hl('AvanteButtonDefaultHover', 'XXX')
 hl('AvanteButtonPrimary', 'XXX')
 hl('AvanteButtonPrimaryHover', 'XXX')
 hl('AvanteButtonDanger', 'XXX')
 hl('AvanteButtonDangerHover', 'XXX')
-hl('AvantePromptInput', 'XXX')
-hl('AvantePromptInputBorder', 'XXX')
 hl('AvanteSuggestion', 'XXX')
 hl('AvanteAnnotation', 'XXX')
-hl('AvanteInlineHint', 'XXX')
 hl('AvanteToBeDeleted', 'XXX')
 hl('AvanteToBeDeletedWOStrikethrough', 'XXX')
-hl('AvanteConfirmTitle', 'XXX')
-hl('AvanteCommentFg', 'XXX')
 hl('AvanteReversedNormal', 'XXX')
-hl('AvanteStateSpinnerGenerating', 'XXX')
-hl('AvanteStateSpinnerToolCalling', 'XXX')
 hl('AvanteStateSpinnerFailed', 'XXX')
-hl('AvanteStateSpinnerSucceeded', 'XXX')
 hl('AvanteStateSpinnerSearching', 'XXX')
 hl('AvanteStateSpinnerThinking', 'XXX')
 hl('AvanteStateSpinnerCompacting', 'XXX')
 hl('AvanteConflictCurrent', 'XXX')
 hl('AvanteConflictCurrentLabel', 'XXX')
-hl('AvanteConflictIncoming', 'XXX')
 hl('AvanteConflictIncomingLabel', 'XXX')
 -- }}}

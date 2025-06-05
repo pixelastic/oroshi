@@ -15,10 +15,10 @@ return {
     config = function()
       local avantePlugin = require('avante')
       avantePlugin.setup({
+        provider = "claude",
         mode = "legacy",
         auto_set_keymap = false,
         enable_token_counting = false,
-        provider = "openai",
       })
 
       local avante = require('avante.init')

@@ -24,6 +24,7 @@ hl('StatusLineNC', 'none', { bg = 'GRAY_8' }) --	Status lines of not-current win
 -- Floating windows {{{
 hl('WinBar', 'none', { bg = 'GRAY_8' } ) -- Window title
 hl('WinBarNC', 'none', { bg = 'GRAY_8' }) -- Window title, unfocuses
+hl('FloatTitle', 'WHITE', { bg = 'GRAY_6'}) --	Title of floating windows.
 hl('NormalFloat', 'GRAY_4', { bg = 'GRAY_8' }) --	Normal text in floating windows.
 -- }}}
 
@@ -227,26 +228,46 @@ hl('GitSignsUntrackedLn', 'XXX')
 -- }}}
 
 -- Avante {{{
-hl('AvanteSidebarNormal', 'TEXT', { bg = 'GRAY_8'}) -- Normal text
-hl('AvantePopupHint', 'GRAY_8', { bg = 'GRAY_8', blend = 100 }) -- Tokens: 3482, etc in chat window
+-- UI
 hl('AvanteSidebarWinSeparator', 'GRAY_8', { bg = 'GRAY_8' }) -- Window seperators
-hl('AvanteTitle', 'AMBER_7', { bg = 'AMBER_7' }) -- Avante title
-hl('AvanteReversedTitle', 'AMBER_7')
+-- Popups
+hl('AvanteButtonDefault', 'WHITE', { bg = 'GRAY_7'})
+hl('AvanteButtonDefaultHover', 'AMBER_1', { bg = 'AMBER_7', bold = true })
+hl('AvanteConfirmTitle', 'AMBER_1', { bg = "AMBER_7", bold = true})
+hl('AvanteCommentFg', 'NEUTRAL')
+-- Response
+hl('AvanteTitle', 'AMBER_7', { bg = 'AMBER_7' })                              -- Avante title
+hl('AvanteReversedTitle', 'AMBER_7')                                          -- Avante title sides
+hl('AvanteSidebarNormal', 'TEXT', { bg = 'GRAY_8'})                           -- Normal text
+hl('AvanteStateSpinnerToolCalling', 'INFO')                                   -- name of the tool
+hl('AvanteStateSpinnerSucceeded', 'GREEN_1', { bg = 'SUCCESS', bold = true }) -- "succeeded"
+hl('AvanteStateSpinnerGenerating', 'AMBER_1', { bg = 'AMBER_7' })             -- "generating"
+hl('AvanteTaskCompleted', 'SUCCESS', { bold = true })                         -- completed tag
+hl('AvanteInlineHint', 'NEUTRAL')                                             -- Hint on output
+-- Files
 hl('AvanteSubtitle', 'AMBER_1', { bg = 'AMBER_7'}) -- File title
 hl('AvanteReversedSubtitle', 'AMBER_7')
-hl('AvanteThirdTitle', 'AMBER_7', { bg = 'AMBER_7' }) -- Chat title
+-- Input
+hl('AvanteThirdTitle', 'AMBER_7', { bg = 'AMBER_7' })                  -- Chat title
 hl('AvanteReversedThirdTitle', 'AMBER_7')
 hl('AvanteSidebarWinHorizontalSeparator', 'AMBER_7', { bg = 'GRAY_8'}) -- Manual separator
-hl('AvanteTaskCompleted', 'SUCCESS', { bold = true })
+hl('AvantePromptInput', 'TEXT')
+hl('AvantePromptInputBorder', 'none', { bg = 'GRAY_6'})
+hl('AvantePopupHint', 'GRAY_8', { bg = 'GRAY_8', blend = 100 })        -- Tokens: 3482, etc in chat window
+-- hl('Visual', 'WHITE', { bg = 'BLUE', bold = true }) -- Used for keycaps
+-- Code
+hl('AvanteConflictIncoming', 'none', { bg = 'GREEN_9'})
+--
+--
 -- }}}
 
 -- Misc {{{
-hl('ColorColumn', 'none', { bg = 'GRAY_9'}) --	Max column
-hl('EndOfBuffer', 'BLACK') --	Filler lines (~) after the end of the buffer.
-hl('NonText', 'GRAY_8') -- End-Of-Line (↲) and wrapped lines (↪) chars
-hl('Whitespace', 'YELLOW') --	"nbsp", "space", "tab", "multispace", "lead" and "trail"
-hl('MatchParen', 'WHITE', { bg = 'BLUE' }) -- Matching parenthesis
-hl('Directory', 'DIRECTORY') --	Directory names 
+hl('ColorColumn', 'none', { bg = 'GRAY_9'}) -- Max column
+hl('EndOfBuffer', 'BLACK')                  -- Filler lines (~) after the end of the buffer.
+hl('NonText', 'GRAY_8')                     -- End-Of-Line (↲) and wrapped lines (↪) chars
+hl('Whitespace', 'YELLOW')                  -- "nbsp", "space", "tab", "multispace", "lead" and "trail"
+hl('MatchParen', 'WHITE', { bg = 'BLUE' })  -- Matching parenthesis
+hl('Directory', 'DIRECTORY')                -- Directory names 
 -- }}}
 
 
