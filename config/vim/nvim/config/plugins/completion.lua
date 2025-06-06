@@ -93,19 +93,20 @@ return {
           entries = "wildmenu",
         },
         mapping = {
-          ["<Tab>"] = completeOrNext,
+          ["<Tab>"]     = completeOrNext,
           ["<C-Space>"] = toggleMenu,
-          ["<Down>"] = cmp.mapping.select_next_item(),
-          ["<S-Tab>"] = cmp.mapping.select_prev_item(),
-          ["<Up>"] = cmp.mapping.select_prev_item(),
-          ["<C-c>"] = cmp.mapping.abort(),
-          ["<C-d>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.mapping.confirm({ select = false }),
+          ["<Down>"]    = cmp.mapping.select_next_item(),
+          ["<S-Tab>"]   = cmp.mapping.select_prev_item(),
+          ["<Up>"]      = cmp.mapping.select_prev_item(),
+          ["<C-c>"]     = cmp.mapping.abort(),
+          ["<C-d>"]     = cmp.mapping.abort(),
+          ["<CR>"]      = cmp.mapping.confirm({ select = false }),
         },
         sources = cmp.config.sources({
-          { name = 'nvim_lua' }, -- cmp-nvim-lua
-          { name = "path" }, -- cmp-path
-          { name = "buffer" }, -- cmp-buffer
+          { name = "nvim_lsp"},
+          { name = 'nvim_lua' }, -- Nvim-specific LUA suggestions
+          { name = "path" },     -- Complete filepaths
+          { name = "buffer" },   -- Complete with words in buffers
           -- { name = "luasnip" }, -- snippets
         }),
         -- snippet = { -- configure how nvim-cmp interacts with snippet engine

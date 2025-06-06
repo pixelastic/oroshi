@@ -13,7 +13,7 @@ vim.opt.showbreak     = '↪ '       -- Character to use to prefix wrapped lines
 -- LINE NUMBER
 vim.opt.number      = true    -- Display line numbers
 vim.opt.numberwidth = 3       -- Use 3 cells, allow for a padding left and right
-vim.opt.signcolumn  = "auto"  -- display signs if any
+vim.opt.signcolumn  = "no"    -- Do not display signs in gutter
 vim.opt.cursorline  = true    -- Highlight current line
 vim.opt.scrolloff   = 22      -- Keep 22 lines above and below (centering the display)
 
@@ -27,17 +27,17 @@ vim.opt.autoindent = true -- copy indent from current line when creating a new o
 local useDefaultListchars = true
 local defaultListchars = {
   -- Only non-breakable spaces, trailing spaces, multispaces and scroll markers
-  nbsp = "∅", trail = "", precedes = "", extends = "", 
+  nbsp = "∅", trail = "", precedes = "", extends = "",
   lead = " ", multispace = " ", tab = "  ", eol = ' '
 }
 -- Also end of lines, tabs and leading spaces
 local extendedListchars = {
-  nbsp = "∅", trail = "", precedes = "", extends = "", 
+  nbsp = "∅", trail = "", precedes = "", extends = "",
   lead = "", multispace = "", tab = "  ", eol = '↲'
 }
 vim.opt.list = true
 vim.opt.listchars = defaultListchars
-function toggleListchars()
+local function toggleListchars()
   -- Swap between default and extended
   vim.opt.listchars = useDefaultListchars and extendedListchars or defaultListchars
   -- Change the current mode

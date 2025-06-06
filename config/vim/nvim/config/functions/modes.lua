@@ -14,7 +14,7 @@ return {
   -- isVisualMode: Check if in visual mode
   isVisualMode = function()
     local mode = vim.fn.mode()
-    return mode == 'v' or mode == 'V' or mod == ''
+    return mode == 'v' or mode == 'V' or mode == ''
   end,
 
   -- normalMode: Switch to normal mode

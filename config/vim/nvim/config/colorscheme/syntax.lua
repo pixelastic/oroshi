@@ -28,7 +28,6 @@ hl('Type', 'VARIABLE_TYPE')
 hl('Underlined', 'none', { underline = true }) --	text that stands out, HTML links
 -- }}}
 
--- Messages 
 
 -- Diff / Git {{{
 hl('Added', 'GIT_ADDED')
@@ -78,6 +77,9 @@ hl('@keyword.lua', 'VARIABLE_TYPE')
 hl('@keyword.repeat.lua', 'KEYWORD')
 hl('@keyword.return.lua', 'KEYWORD')
 hl('@label.lua', 'YELLOW_LIGHT', { bold = true})
+hl('@lsp.type.comment.lua', 'none')
+hl('@lsp.type.variable.lua', 'none')
+hl('@lsp.type.property.lua', 'none')
 -- }}}
 -- help {{{
 hl('@markup.heading.1.vimdoc', 'BLUE_4')

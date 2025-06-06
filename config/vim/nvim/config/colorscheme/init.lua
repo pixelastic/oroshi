@@ -30,9 +30,9 @@ end
 -- Save all color aliases from env
 O.colors.env = getEnvColors()
 
-frequire('oroshi/colorscheme/ui')      -- Tabline, statusline, split, etc
-frequire('oroshi/colorscheme/syntax')  -- Syntax highlight
-frequire('oroshi/colorscheme/unused')  -- List of known Highlight groups not yet used
+O_require('oroshi/colorscheme/ui')      -- Tabline, statusline, split, etc
+O_require('oroshi/colorscheme/syntax')  -- Syntax highlight
+O_require('oroshi/colorscheme/unused')  -- List of known Highlight groups not yet used
 
 
 

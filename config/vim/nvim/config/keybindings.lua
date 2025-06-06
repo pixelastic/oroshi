@@ -49,7 +49,7 @@ nmap("<C-N>", ":tabedit<Space>", "Create new file in directory", { silent = fals
 -- CTRL-X: Change XXX into YYY
 -- Easy way to toggle XXX placeholders into YYY placeholders, to more easily
 -- identify what a specific highlight group refers to
-local function visualTogglePlaceholders(from, to)
+local function visualTogglePlaceholders()
   local function changeSelection(from, to)
     F.ensureVisualSelection()
     vim.cmd("silent! '<,'>s/" .. from .. "/" .. to)
@@ -77,15 +77,23 @@ nmap('<C-X>', normalTogglePlaceholders, 'Replace YYY with XXX')
 -- F1: Show help
 nmap('<F1>', 'K', 'Show help of word under cursor')
 
--- F2: Reload
-local function reloadConfig()
-  frequire('oroshi/index')
-  F.debug('Config reloaded')
+-- F2: Reload colorscheme
+local function reloadColorscheme()
+  O_require('oroshi/colorscheme')
 end
-nmap('<F2>', reloadConfig, 'Reload nvim config')
-imap('<F2>', reloadConfig, 'Reload nvim config')
-vmap('<F2>', reloadConfig, 'Reload nvim config')
-cmap('<F2>', reloadConfig, 'Reload nvim config')
+nmap('<F2>', reloadColorscheme, 'Reload oroshi colorscheme')
+imap('<F2>', reloadColorscheme, 'Reload oroshi colorscheme')
+vmap('<F2>', reloadColorscheme, 'Reload oroshi colorscheme')
+cmap('<F2>', reloadColorscheme, 'Reload oroshi colorscheme')
+
+-- C-F2: Reload full config
+local function reloadConfig()
+  O_require('oroshi/index')
+end
+nmap('<C-F2>', reloadConfig, 'Reload nvim config')
+imap('<C-F2>', reloadConfig, 'Reload nvim config')
+vmap('<C-F2>', reloadConfig, 'Reload nvim config')
+cmap('<C-F2>', reloadConfig, 'Reload nvim config')
 
 -- F3: Debug colors
 local function debugColors()

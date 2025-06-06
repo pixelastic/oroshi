@@ -32,14 +32,12 @@ hl('NormalFloat', 'GRAY_4', { bg = 'GRAY_8' }) --	Normal text in floating window
 -- Line Number {{{
 hl('LineNr', 'GRAY') --	Line number column
 hl('SignColumn', 'GRAY') --	Sign column
--- Signs
-hl('GitSignsAdd', 'GREEN_9')
-hl('GitSignsChange', 'PURPLE')
-hl('GitSignsChangedelete', 'PURPLE')
-hl('GitSignsTopdelete', 'RED_9')
-hl('GitSignsDelete', 'RED_9')
-hl('GitSignsUntracked', 'YYY')
--- Line numbers
+-- LSP Diagnostics
+hl('DiagnosticLineNrError', 'RED_2', { bg = 'RED_9'})
+hl('DiagnosticLineNrWarn', 'YELLOW_5', { bg = 'YELLOW_9', bold = true })
+hl('DiagnosticLineNrHint', 'YELLOW_5', { bg = 'YELLOW_9', bold = true })
+hl('DiagnosticLineNrInfo', 'BLUE_5', { bg = 'BLUE_9' })
+-- Git coloring
 hl('GitSignsAddNr', 'GREEN_9')
 hl('GitSignsChangeNr', 'PURPLE')
 hl('GitSignsChangedeleteNr', 'PURPLE')
@@ -135,6 +133,20 @@ O.colors.completion = {
     CmpItemKind = { fg = 'BLACK'},
   }
 }
+-- }}}
+
+-- Diagnostics {{{
+hl('DiagnosticUnnecessary', 'YELLOW_5', { bg = 'YELLOW_9', bold = true })
+hl('DiagnosticUnderlineError', 'RED_2', { bg = 'RED_9', bold = true })
+hl('DiagnosticVirtualTextError', 'RED_3', { bg = 'RED_9' })
+
+hl('DiagnosticUnderlineWarn', 'YELLOW_5', { bg = 'YELLOW_9', bold = true })
+hl('DiagnosticUnderlineHint', 'YELLOW_5', { bg = 'YELLOW_9', bold = true })
+hl('DiagnosticVirtualTextWarn', 'YELLOW_5', { bg = 'YELLOW_9', italic = true, bold = true })
+hl('DiagnosticVirtualTextHint', 'YELLOW_5', { bg = 'YELLOW_9', italic = true, bold = true })
+
+hl('DiagnosticVirtualTextInfo', 'BLUE_3', { bg = 'BLUE_9'})
+hl('DiagnosticUnderlineInfo', 'BLUE_3', { bg = 'BLUE_9'})
 -- }}}
 
 -- Statusline {{{

@@ -1,4 +1,4 @@
-local M = {
+return {
   -- env: Get an environment variable
   env = function(name)
     return os.getenv(name)
@@ -8,6 +8,3 @@ local M = {
     return type(input) == 'table'
   end,
 }
-
-return M
-

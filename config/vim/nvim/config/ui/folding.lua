@@ -5,12 +5,12 @@ vim.opt.foldmethod = 'marker'   -- Fold on markers by default
 vim.opt.foldmarker = '{{{,}}}'  -- markers to use
 vim.opt.foldlevel = 99
 vim.opt.fillchars = "fold: "  -- Pad with spaces
-vim.opt.foldtext='v:lua.oroshiFoldText()' -- Method to display fold recap line
+vim.opt.foldtext='v:lua.O_FOLDTEXT()' -- Method to display fold recap line
 
 -- Use treesitter for folding specific files
 ftplugin(
-  { "bash", "css", "csv", "dockerfile", "editorconfig", "html", 
-    "ini", "javascript", "json", "lua", "markdown", "nginx", "pug", 
+  { "bash", "css", "csv", "dockerfile", "editorconfig", "html",
+    "ini", "javascript", "json", "lua", "markdown", "nginx", "pug",
     "ruby", "xml", "yaml" },
   function()
     vim.opt_local.foldmethod = 'expr'
@@ -20,7 +20,7 @@ ftplugin(
 
 
 -- Custom foldtext method
-function oroshiFoldText()
+O_FOLDTEXT = function()
   local prefixSymbol = ''
   local firstLine = vim.fn.getline(vim.v.foldstart)
   local firstChar = firstLine:sub(1, 1)
@@ -53,11 +53,11 @@ nmap('zà', setFoldLevel(0), 'Set fold level to 0')
 -- Toggle fold under cursor
 local function toggleFold()
   -- Wrap in a pcall() to prevent errors if
-  local success, error = pcall(function()
+  local _, error = pcall(function()
     vim.cmd('normal! za')
   end)
   if error then
-    __.debug('No fold found')
+    F.debug('No fold found')
   end
 end
 nmap('za', toggleFold, 'Toggle fold')

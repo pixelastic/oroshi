@@ -1,5 +1,5 @@
--- frequire: Force load a specific module.
-function frequire(path)
+-- O_require: Force load a specific module.
+function O_require(path)
   local normalizedPath = path:gsub('/', '.')
 
   package.loaded[normalizedPath] = nil
@@ -16,41 +16,41 @@ O = {
 }
 
 -- Shared functions
-F = vim.tbl_extend('force', {}, 
-  frequire('oroshi/functions/autocmd'),
-  frequire('oroshi/functions/buffer'),
-  frequire('oroshi/functions/collections'),
-  frequire('oroshi/functions/debug'),
-  frequire('oroshi/functions/hacks'),
-  frequire('oroshi/functions/highlight'),
-  frequire('oroshi/functions/lodash'),
-  frequire('oroshi/functions/map'),
-  frequire('oroshi/functions/misc'),
-  frequire('oroshi/functions/modes'),
-  frequire('oroshi/functions/windows')
+F = vim.tbl_extend('force', {},
+  O_require('oroshi/functions/autocmd'),
+  O_require('oroshi/functions/buffer'),
+  O_require('oroshi/functions/collections'),
+  O_require('oroshi/functions/debug'),
+  O_require('oroshi/functions/hacks'),
+  O_require('oroshi/functions/highlight'),
+  O_require('oroshi/functions/lodash'),
+  O_require('oroshi/functions/map'),
+  O_require('oroshi/functions/misc'),
+  O_require('oroshi/functions/modes'),
+  O_require('oroshi/functions/windows')
 )
 
 -- Colorscheme
-frequire('oroshi/colorscheme')
+O_require('oroshi/colorscheme')
 
 -- Keybindings
-frequire('oroshi/keybindings')
+O_require('oroshi/keybindings')
 
 -- UI
-frequire('oroshi/ui/commandline')
-frequire('oroshi/ui/completion')
-frequire('oroshi/ui/folding')
-frequire('oroshi/ui/macro')
-frequire('oroshi/ui/search')
-frequire('oroshi/ui/statusline')
-frequire('oroshi/ui/tabline')
+O_require('oroshi/ui/commandline')
+O_require('oroshi/ui/completion')
+O_require('oroshi/ui/folding')
+O_require('oroshi/ui/macro')
+O_require('oroshi/ui/search')
+O_require('oroshi/ui/statusline')
+O_require('oroshi/ui/tabline')
 
 -- Config
-frequire('oroshi/display')
-frequire('oroshi/disk')
+O_require('oroshi/display')
+O_require('oroshi/disk')
 
 -- Filetype specific
-frequire('oroshi/filetypes')
+O_require('oroshi/filetypes')
 
 -- Plugins
 -- Any config stored in plugins will NOT be reloaded when pressing <F2>, you

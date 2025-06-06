@@ -11,7 +11,7 @@ return {
 
   -- clone: Copy the collection to a new one
   clone = function(collection)
-    return vim.deepcopy(collection) 
+    return vim.deepcopy(collection)
   end,
 
   -- each: Run callback on each element of the collection
@@ -40,7 +40,7 @@ return {
     -- If a string, return the key by that name
     if type(callback) == 'string' then
       local key = callback
-      callback = function(item) 
+      callback = function(item)
         return item[key]
       end
     end

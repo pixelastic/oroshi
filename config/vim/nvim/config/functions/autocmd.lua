@@ -1,14 +1,14 @@
 return {
   -- autocmd: Trigger a callback on specific events
   autocmd = function(event, callback, userOptions)
-    local defaults = { 
+    local defaults = {
       pattern = '*', -- Apply on all files by default
       callback = callback
     }
     local options = F.merge(defaults, userOptions)
 
     -- Can't have both pattern and buffer
-    if options.buffer then options.pattern = nil end 
+    if options.buffer then options.pattern = nil end
 
     vim.api.nvim_create_autocmd(event, options)
   end,

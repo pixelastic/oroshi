@@ -51,7 +51,7 @@ return {
       return O.projects[projectKey]
     end
 
-    function getAttribute(type)
+    local function getAttribute(type)
       return F.env('PROJECT_' .. projectKey .. '_' .. type)
     end
 
@@ -81,7 +81,7 @@ return {
     local position = F.position()
 
     -- Get groups defined by Treesitter
-    local function getTreesitterCaptures(bufferId, line, column)
+    local function getTreesitterCaptures(line, column)
       local treesitter = require('vim.treesitter')
 
       line = line - 1
@@ -95,7 +95,7 @@ return {
     end
 
     -- Get groups defined by syntax
-    local function getSyntaxCaptures(bufferId, line, column)
+    local function getSyntaxCaptures(line, column)
       if not F.isInsertMode() then
         column = column + 1
       end
@@ -111,8 +111,8 @@ return {
     end
 
 
-    local treesitterCaptures = getTreesitterCaptures(bufferId, position.line, position.column)
-    local syntaxCaptures = getSyntaxCaptures(bufferId, position.line, position.column)
+    local treesitterCaptures = getTreesitterCaptures(position.line, position.column)
+    local syntaxCaptures = getSyntaxCaptures(position.line, position.column)
     return F.concat(treesitterCaptures, syntaxCaptures)
   end,
 
@@ -123,7 +123,7 @@ return {
     for _, value in ipairs(vim.opt.guicursor:get()) do
       local thisMode = F.split(value, ':')[1]
       if thisMode == mode then
-        vim.opt.guicursor:remove(value) 
+        vim.opt.guicursor:remove(value)
       end
     end
 

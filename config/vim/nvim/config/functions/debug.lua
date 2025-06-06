@@ -7,7 +7,7 @@ return {
     end
 
     vim.schedule(function()
-      local success, error = pcall(function()
+      local _, error = pcall(function()
         vim.notify(displayedInput, vim.log.levels.INFO)
       end)
       if error then

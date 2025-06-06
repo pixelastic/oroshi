@@ -20,7 +20,7 @@ ftplugin(
 
 -- xkb
 ftdetect(
-  "*config/keybindings/xkb/xkbmaprc.conf", 
+  "*config/keybindings/xkb/xkbmaprc.conf",
   function()
     vim.bo.filetype      = "c"
     vim.bo.syntax        = "xkb"

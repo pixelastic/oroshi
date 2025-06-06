@@ -8,7 +8,7 @@ O_TABLINE = {
     local tabline = {}
 
     -- We get all tabs that fit in the display
-    local tabs = O_TABLINE.displayedTabs(allTabs)
+    local tabs = O_TABLINE.displayedTabs()
 
     -- Display them
     for i, tab in ipairs(tabs) do
@@ -42,7 +42,6 @@ O_TABLINE = {
     return {
       index = index,
       isCurrent = isCurrent,
-      filepath = filepath,
       content = content,
       width = width,
       hl = hl
@@ -77,7 +76,7 @@ O_TABLINE = {
     F.append(tabline, separator)
 
     -- End of click area
-    F.append(tabline, '%T') 
+    F.append(tabline, '%T')
   end,
 
   -- Returns only the tabs to display
@@ -85,7 +84,7 @@ O_TABLINE = {
     -- We get all the tabs
     local allTabs = O_TABLINE.allTabs()
 
-    --  We need to add tabs, one by one, around the current one, until
+    -- We need to add tabs, one by one, around the current one, until
     -- we run out of space
     local availableWidth = vim.o.columns;
     local displayedTabs = {}
@@ -99,7 +98,7 @@ O_TABLINE = {
     local tabQueue = O_TABLINE.buildTabQueue(allTabs, currentTab.index)
 
     -- Add them to the list of displayed tabs until we run out of space
-    for i, item in ipairs(tabQueue) do
+    for _, item in ipairs(tabQueue) do
       local direction = item.direction
       local tab = item.tab
 
@@ -145,7 +144,7 @@ O_TABLINE = {
         direction = "after"
         tabIndex = indexAfter
       end
-      if tabIndex > totalTabCount then 
+      if tabIndex > totalTabCount then
         direction = "before"
         tabIndex = indexBefore
       end
@@ -155,7 +154,7 @@ O_TABLINE = {
       table.remove(stack, tabIndex)
 
       -- Shift the reference if we removed something before it
-      if tabIndex < referenceTabIndex then 
+      if tabIndex < referenceTabIndex then
         referenceTabIndex = referenceTabIndex - 1
       end
 

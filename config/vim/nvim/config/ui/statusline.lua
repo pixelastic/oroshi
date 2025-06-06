@@ -96,7 +96,7 @@ O_STATUSLINE = {
   end,
 
   -- getMode: Get informations about current mode
-  getMode = function() 
+  getMode = function()
     -- Usage:
     -- getMode() 
     -- => { 
@@ -112,7 +112,7 @@ O_STATUSLINE = {
     if O_STATUSLINE.isNvimTree() then
       return {
         content = '  ',
-        hl = { 
+        hl = {
           bg = 'GREEN_9',
           fg = 'YELLOW'
         }
@@ -140,7 +140,6 @@ O_STATUSLINE = {
       c = {
         content = ' COMMAND ',
         hl = O.colors.statusline.command,
-        hl = { bg = 'TEAL', fg = 'TEAL_1', bold = true }
       },
     }
 
@@ -233,12 +232,13 @@ O_STATUSLINE = {
     local basename = vim.fs.basename(rawFilepath)
     local simplifiedPath = vim.fn.systemlist(
       'simplify-path ' .. vim.fn.shellescape(relativePath) .. ' 3' -- Keep only three levels
-    )[1] 
+    )[1]
     local fileContent = ' ' .. simplifiedPath
     local file = {
       content = fileContent,
       basename = basename,
     }
+
 
     -- Save in cache
     local statuslineFileData = {
@@ -269,4 +269,3 @@ O_STATUSLINE = {
     return table.concat(statusline, '')
   end,
 }
-

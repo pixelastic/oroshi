@@ -6,10 +6,15 @@ local vmap = F.vmap
 local hl = F.hl
 
 return {
+  {
+    "github/copilot.vim",
+  },
+
   -- https://github.com/yetone/avante.nvim
   -- Avante: AI chat
   {
     "yetone/avante.nvim",
+    enabled = false,
     event = "VeryLazy",
     version = false,
     build = "make",

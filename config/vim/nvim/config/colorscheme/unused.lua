@@ -69,6 +69,27 @@ hl('CursorModeCommandNormal', 'XXX')
 hl('CursorModeCommandInsert', 'XXX')
 -- }}}
 
+-- Diagnostics {{{
+hl('DiagnosticDeprecated', 'XXX')
+hl('DiagnosticError', 'XXX')
+hl('DiagnosticFloatingError', 'XXX')
+hl('DiagnosticFloatingHint', 'XXX')
+hl('DiagnosticFloatingInfo', 'XXX')
+hl('DiagnosticFloatingOk', 'XXX')
+hl('DiagnosticFloatingWarn', 'XXX')
+hl('DiagnosticHint', 'XXX')
+hl('DiagnosticOk', 'XXX')
+hl('DiagnosticInfo', 'YYY')
+hl('DiagnosticSignOk', 'XXX')
+hl('DiagnosticVirtualTextOk', 'YYY')
+hl('DiagnosticUnderlineOk', 'XXX')
+hl('DiagnosticWarn', 'XXX')
+hl('DiagnosticSignError', 'XXX')
+hl('DiagnosticSignWarn', 'XXX')
+hl('DiagnosticSignInfo', 'XXX')
+hl('DiagnosticSignHint', 'XXX')
+-- }}}
+
 -- Render Markdown plugin {{{
 hl('RenderMarkdownQuote', 'XXX') -- 	Default for block quote
 hl('RenderMarkdownQuote1', 'XXX') -- 	Level 1 block quote marker
@@ -96,6 +117,12 @@ hl('RenderMarkdownError', 'XXX') -- 	Error related callouts
 -- }}}
 
 -- GitSigns {{{
+-- hl('GitSignsAdd', 'GREEN_9')
+-- hl('GitSignsChange', 'PURPLE')
+-- hl('GitSignsChangedelete', 'PURPLE')
+-- hl('GitSignsTopdelete', 'RED_9')
+-- hl('GitSignsDelete', 'RED_9')
+hl('GitSignsUntracked', 'YYY')
 hl('GitSignsAddCul', 'XXX')
 hl('GitSignsChangeCul', 'XXX')
 hl('GitSignsTopdeleteCul', 'XXX')
