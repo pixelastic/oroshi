@@ -34,10 +34,9 @@ return {
 
       -- Configure diagnostics
       vim.diagnostic.config({
-        signs = false,
-        virtual_text = { 
+        virtual_text = {
           prefix = '█',
-          current_line = true 
+          current_line = true
         },
         signs = {
           numhl = {
