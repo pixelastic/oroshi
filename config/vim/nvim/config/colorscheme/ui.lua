@@ -273,6 +273,8 @@ hl('AvantePopupHint', 'GRAY_8', { bg = 'GRAY_8', blend = 100 })        -- Tokens
 -- hl('Visual', 'WHITE', { bg = 'BLUE', bold = true }) -- Used for keycaps
 -- Code
 hl('AvanteConflictIncoming', 'none', { bg = 'GREEN_9'})
+hl('AvanteConflictCurrentLabel', 'RED_5', { bg = 'RED_9', bold = true })
+hl('AvanteConflictIncomingLabel', 'GREEN_6', { bg = 'GREEN_8', bold = true})
 hl('AvanteToBeDeletedWOStrikethrough', 'none', { bg = 'RED_9', strikethrough = true })
 --
 --

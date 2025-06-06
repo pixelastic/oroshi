@@ -10,7 +10,6 @@ return {
   -- Avante: AI chat
   {
     "yetone/avante.nvim",
-    enabled = false,
     event = "VeryLazy",
     version = false,
     build = "make",
@@ -35,7 +34,7 @@ return {
       -- Chat flexible width {{{
       local function setChatWidth()
         local maxWidth = vim.o.columns;
-        local widthFullScreen = 62
+        local widthFullScreen = 75
         local widthSmallScreen = 50
         local chatWidth = maxWidth > 73 and widthFullScreen or widthSmallScreen
         vim.api.nvim_win_set_width(0, chatWidth)
@@ -153,7 +152,7 @@ return {
       nmap('<C-F>', chatHistory, 'Show Chat History')
       imap('<C-F>', chatHistory, 'Show Chat History')
       -- }}}
-      
+
       -- Cursor {{{
       ftplugin('AvanteInput', function()
         local bufferId = F.bufferId()
@@ -186,14 +185,27 @@ return {
   },
 
 
-  -- https://github.com/olimorris/codecompanion.nvim
-  -- Codecompanion
-  {
-    "olimorris/codecompanion.nvim",
-    opts = {},
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-    },
-  },
+  -- -- https://github.com/olimorris/codecompanion.nvim
+  -- -- Codecompanion
+  -- {
+  --   "olimorris/codecompanion.nvim",
+  --   opts = {},
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "nvim-treesitter/nvim-treesitter",
+  --   },
+  --   config = function()
+  --     local codecompanion = require('codecompanion')
+  --     codecompanion.setup({
+  --       strategies = {
+  --         chat = {
+  --           adapter = "anthropic",
+  --         },
+  --       },
+  --       opts = {
+  --         log_level = "DEBUG",
+  --       },
+  --     })
+  --   end
+  -- },
 }
