@@ -6,6 +6,7 @@
 -- TODO: Differenciate between F2 that only reloads the colors and C-F2 that
 -- reloads everything
 -- TODO: https://github.com/tom-james-watson/Emote
+-- TODO: Having the commandline displayed as a popup window
 -- 
 -- 
 
@@ -13,6 +14,9 @@
 -- TODO: Switch between models in chat? ChatGPT and Claude
 -- TODO: Use Copilot for suggestion?
 -- TODO: Change the cursor color when in the AI sidebar
+-- ChatGPT plugin, works well, can chat, has tasks to explain code, write tests, etc
+-- Codeium, as you type suggestions, even in comments
+-- Copilot, ghost text, good code completion
 
 -- NICE TO HAVE
 -- TODO: Use gitsigns to add hunks for commit
@@ -22,6 +26,7 @@
 -- TODO: Mapping to jump to end of current block (like going to end of the current function)
 -- TODO: Make sure I can select a completion with <CR>, that it suggests more filepaths, and that it hides the wildmenu for ghost text
 -- TODO: Might need to update nvim-treesitter to main branch.
+-- TODO: Dim the lines when far from the cursor, to help focus?
 
 -- BIG TOOLS
 -- TODO: Autoformat on save
