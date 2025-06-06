@@ -42,6 +42,10 @@ return {
 
   -- getData: Get info about a specific project, lazyloaded and cached
   getProjectData = function(projectKey)
+    if not projectKey then
+      return {}
+    end
+
     -- Return cached version
     if O.projects[projectKey] then
       return O.projects[projectKey]

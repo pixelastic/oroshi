@@ -10,6 +10,7 @@ return {
   -- Avante: AI chat
   {
     "yetone/avante.nvim",
+    enabled = false,
     event = "VeryLazy",
     version = false,
     build = "make",
@@ -182,5 +183,17 @@ return {
       -- }}}
 
     end
-  }
+  },
+
+
+  -- https://github.com/olimorris/codecompanion.nvim
+  -- Codecompanion
+  {
+    "olimorris/codecompanion.nvim",
+    opts = {},
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+  },
 }

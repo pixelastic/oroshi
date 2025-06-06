@@ -194,6 +194,17 @@ O_STATUSLINE = {
       vim.b.statuslineFileData = nil -- No cache for this buffer
     end
 
+    -- For healthcheck
+    if O_STATUSLINE.isHealtcheck() then
+      return {
+        file = { content = "" },
+        project = {
+          content = "   healthcheck ",
+          hl = { bg = "RED_LIGHT", fg = "WHITE" }
+        }
+      }
+    end
+
     -- Check in buffer cache first
     if vim.b.statuslineFileData then
       return vim.b.statuslineFileData
@@ -241,6 +252,11 @@ O_STATUSLINE = {
   -- isNvimTree: Check if in a nvim tree window
   isNvimTree = function()
     return vim.bo.filetype == 'NvimTree'
+  end,
+
+  -- isHealthcheck: Check if in a healthcheck window
+  isHealtcheck= function()
+    return vim.bo.filetype == 'checkhealth'
   end,
 
   -- nvimTreeStatusline: Simple statusline for using NvimTree
