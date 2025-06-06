@@ -110,6 +110,21 @@ return {
     local treesitterCaptures = getTreesitterCaptures(bufferId, position.line, position.column)
     local syntaxCaptures = getSyntaxCaptures(bufferId, position.line, position.column)
     return F.concat(treesitterCaptures, syntaxCaptures)
+  end,
+
+
+  -- setGuicursor: Set the cursor shape and highlight for a specific mode
+  setGuicursor = function(mode, type, highlight)
+    -- First, remove any cursor set for this mode
+    for _, value in ipairs(vim.opt.guicursor:get()) do
+      local thisMode = F.split(value, ':')[1]
+      if thisMode == mode then
+        vim.opt.guicursor:remove(value) 
+      end
+    end
+
+    -- Add the new cursor
+    vim.opt.guicursor:append(mode .. ':' .. type .. '-' .. highlight)
   end
 }
 

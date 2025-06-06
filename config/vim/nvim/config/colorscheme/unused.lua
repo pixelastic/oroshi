@@ -59,8 +59,14 @@ hl('Tag', 'XXX') --		you can use CTRL-] on this
 hl('Typedef', 'XXX') --		a typedef
 -- }}}
 
--- Notify {{{
-
+-- Cursors {{{
+hl('CursorModeVisualExclusive', 'XXX')
+hl('CursorModeOperator', 'XXX')
+hl('CursorModeReplace', 'XXX')
+hl('CursorModeCommandReplace', 'XXX')
+hl('CursorModeShowMatch', 'XXX')
+hl('CursorModeCommandNormal', 'XXX')
+hl('CursorModeCommandInsert', 'XXX')
 -- }}}
 
 -- Render Markdown plugin {{{
@@ -105,8 +111,7 @@ hl('AvanteButtonDanger', 'XXX')
 hl('AvanteButtonDangerHover', 'XXX')
 hl('AvanteSuggestion', 'XXX')
 hl('AvanteAnnotation', 'XXX')
-hl('AvanteToBeDeleted', 'XXX')
-hl('AvanteToBeDeletedWOStrikethrough', 'XXX')
+hl('AvanteToBeDeleted', 'YYY')
 hl('AvanteReversedNormal', 'XXX')
 hl('AvanteStateSpinnerSearching', 'XXX')
 hl('AvanteStateSpinnerThinking', 'XXX')

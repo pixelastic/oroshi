@@ -3,6 +3,7 @@ local autocmd = F.autocmd
 local nmap = F.nmap
 local imap = F.imap
 local vmap = F.vmap
+local hl = F.hl
 
 return {
   -- https://github.com/yetone/avante.nvim
@@ -151,39 +152,32 @@ return {
       nmap('<C-F>', chatHistory, 'Show Chat History')
       imap('<C-F>', chatHistory, 'Show Chat History')
       -- }}}
+      
+      -- Cursor {{{
+      ftplugin('AvanteInput', function()
+        local bufferId = F.bufferId()
+
+        -- Set custom cursor when entering
+        autocmd('WinEnter', function()
+          vim.schedule(function()
+            F.setGuicursor('i', 'hor25', 'CursorModeInsert')
+            hl('CursorModeNormal', 'none', O.colors.cursor.ai)
+            hl('CursorModeInsert', 'none', O.colors.cursor.ai)
+          end)
+        end, { buffer = bufferId })
+
+        -- Revert to normal cursor when leaving
+        autocmd('WinLeave', function()
+          F.setGuicursor('i', 'ver25', 'CursorModeInsert')
+          hl('CursorModeNormal', 'none', O.colors.cursor.normal)
+          hl('CursorModeInsert', 'none', O.colors.cursor.insert)
+        end, { buffer = bufferId })
+      end)
+      -- }}}
 
       -- Display {{{
       ftplugin('Avante', function()
         vim.opt_local.colorcolumn = "0" -- Hide text wrap limit
-      end)
-
-
-
-      ftplugin('AvanteInput', function()
-        local bufferId = F.bufferId()
-        local rawFilepath = vim.fn.expand('%:p')
-
-        -- TODO: Change the cursor when entering/leaving
-        -- vim.opt_local.guicursor:append("n:block-CursorModeAiResponse") -- Change cursor in response
-        -- vim.opt_local.guicursor:append("i:hor25-CursorModeAiPrompt") -- Change cursor in input
-        -- autocmd('BufEnter', nil, function()
-        --   __.debug('enter')
-        -- end, { buffer = bufferId })
-        -- -- vim.api.nvim_create_autocmd('BufEnter', {
-        --
-        -- --   buffer = bufferId,
-        -- --   pattern = nil,
-        -- --   callback = function() 
-        -- --     __.debug('enter')
-        -- --   end
-        -- -- })
-        -- vim.api.nvim_create_autocmd('BufLeave', {
-        --   buffer = bufferId,
-        --   pattern = nil,
-        --   callback = function() 
-        --     __.debug('leave')
-        --   end
-        -- })
       end)
       -- }}}
 

@@ -5,6 +5,9 @@
 -- TODO: Re-run the env-generate scripts when editing them
 -- TODO: Differenciate between F2 that only reloads the colors and C-F2 that
 -- reloads everything
+-- TODO: https://github.com/tom-james-watson/Emote
+-- 
+-- 
 
 -- AI:
 -- TODO: Switch between models in chat? ChatGPT and Claude

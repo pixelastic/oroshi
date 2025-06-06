@@ -25,7 +25,7 @@ hl('StatusLineNC', 'none', { bg = 'GRAY_8' }) --	Status lines of not-current win
 hl('WinBar', 'none', { bg = 'GRAY_8' } ) -- Window title
 hl('WinBarNC', 'none', { bg = 'GRAY_8' }) -- Window title, unfocuses
 hl('FloatBorder', 'GRAY_6', { bg = 'BLACK'})
-hl('FloatTitle', 'TEXT', { bg = 'BLACK'}) --	Title of floating windows.
+hl('FloatTitle', 'YELLOW', { bg = 'GRAY_6'}) --	Title of floating windows.
 hl('NormalFloat', 'GRAY_4', { bg = 'GRAY_8' }) --	Normal text in floating windows.
 -- }}}
 
@@ -48,6 +48,35 @@ hl('GitSignsDeleteNr', 'RED_9')
 hl('GitSignsUntrackedNr', 'XXX')
 -- }}}
 
+-- Cursor {{{
+vim.opt.guicursor = {}
+F.setGuicursor('n',  'block',                        'CursorModeNormal')
+F.setGuicursor('i',  'ver25',                        'CursorModeInsert')
+F.setGuicursor("v",  "block-blinkon300-blinkoff300", "CursorModeVisual")
+F.setGuicursor("t",  "block",                        "CursorModeTerminal")        -- for example, in fzf search
+F.setGuicursor("c",  "hor25",                        "CursorModeCommandNormal")   -- Commandline & Search, when typing
+F.setGuicursor("ci", "hor25",                        "CursorModeCommandInsert")   -- Commandline & Search, when editing
+F.setGuicursor("ve", "block",                        "CursorModeVisualExclusive") -- UNUSED
+F.setGuicursor("o",  "block",                        "CursorModeOperator")        -- UNUSED
+F.setGuicursor("r",  "block",                        "CursorModeReplace")         -- UNUSED
+F.setGuicursor("cr", "block",                        "CursorModeCommandReplace")  -- UNUSED
+F.setGuicursor("sm", "block",                        "CursorModeShowMatch")       -- UNUSED
+
+O.colors.cursor = {
+  normal = { bg = 'EMERALD' },
+  visual = { bg = 'BLUE_7' },
+  insert = { bg = 'YELLOW_3' },
+  command = { bg = 'TEAL' },
+  search = { bg = 'ORANGE' },
+  terminal = { bg = 'YELLOW' }, -- In fzf search
+  ai = { bg = 'AMBER_7' },
+}
+hl('CursorModeInsert',   'none', O.colors.cursor.insert)
+hl('CursorModeNormal',   'none', O.colors.cursor.normal)
+hl('CursorModeVisual',   'none', O.colors.cursor.visual)
+hl('CursorModeTerminal', 'none', O.colors.cursor.terminal)
+-- }}}
+
 -- Current line {{{
 hl('CursorLine', 'none', { bg = 'GRAY_9' }) --	Current line
 hl('CursorLineNr', 'YELLOW', { bg = 'GRAY_9', bold = true }) --	Current line number
@@ -56,44 +85,6 @@ hl('CursorLineSign', 'none', { bg = 'GRAY_9'}) --	Current line sign
 
 -- Statusline {{{
 hl('StatusLine', 'GRAY_4', { bg = 'GRAY_8' }) --	Status line of current window.
--- }}}
-
--- Cursor {{{
-vim.opt.guicursor = {
-  "n:block-CursorModeNormal",
-  "i:ver25-CursorModeInsert",
-  "v:block-blinkon300-blinkoff300-CursorModeVisual",
-  "t:block-CursorModeTerminal",  -- for example, in fzf search
-  "c:hor25-CursorModeCommandNormal", -- Commandline & Search, when typing
-  "ci:hor25-CursorModeCommandInsert", -- Commandline & Search, when editing
-
-  -- Unused (yet) modes below
-  "ve:block-CursorModeVisualExclusive",
-  "o:block-CursorModeOperator",
-  "r:block-CursorModeReplace",
-  "cr:block-CursorModeCommandReplace",
-  "sm:block-CursorModeShowMatch",
-}
-hl('CursorModeNormal', 'none', { bg = 'EMERALD' })
-hl('CursorModeInsert', 'none', { bg = 'YELLOW_3' })
-hl('CursorModeVisual', 'none', { bg = 'BLUE_7' })
-hl('CursorModeTerminal', 'none', { bg = 'YELLOW' }) -- In fzf search
-hl('CursorModeAiPrompt', 'none', { bg = 'AMBER' }) -- AI prompt
-hl('CursorModeAiResponse', 'none', { bg = 'AMBER' }) -- AI prompt
--- Commandline & Search, applied when entering commandline
-O.colors.cursor = {
-  command = { bg = 'TEAL' },
-  search = { bg = 'ORANGE' },
-}
-
--- Unused (yet) modes
-hl('CursorModeVisualExclusive', 'XXX')
-hl('CursorModeOperator', 'XXX')
-hl('CursorModeReplace', 'XXX')
-hl('CursorModeCommandReplace', 'XXX')
-hl('CursorModeShowMatch', 'XXX')
-hl('CursorModeCommandNormal', 'XXX')
-hl('CursorModeCommandInsert', 'XXX')
 -- }}}
 
 -- Folds {{{
@@ -282,6 +273,7 @@ hl('AvantePopupHint', 'GRAY_8', { bg = 'GRAY_8', blend = 100 })        -- Tokens
 -- hl('Visual', 'WHITE', { bg = 'BLUE', bold = true }) -- Used for keycaps
 -- Code
 hl('AvanteConflictIncoming', 'none', { bg = 'GREEN_9'})
+hl('AvanteToBeDeletedWOStrikethrough', 'none', { bg = 'RED_9', strikethrough = true })
 --
 --
 -- }}}

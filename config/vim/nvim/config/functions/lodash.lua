@@ -62,5 +62,15 @@ return {
   -- replace: Replace all occurrences of a string with another
   replace = function(input, from, to)
     return string.gsub(input, from, to)
+  end,
+
+  -- split: Split a string on a delimiter
+  split = function(input, delimiter)
+    return vim.split(input, delimiter)
+  end,
+
+  -- startsWith = Check if string starts with a specific substring
+  startsWith = function(input, prefix)
+    return string.find(input, prefix, 1, true) == 1
   end
 }
