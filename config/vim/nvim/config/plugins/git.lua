@@ -3,7 +3,7 @@ return {
   event = { "BufReadPre", "BufNewFile" },
   opts = {
     signs_staged_enable = false,
-    signcolumn = true,
+    signcolumn = false,
     numhl = true,
     signs = {
       add          = { text = '█' },

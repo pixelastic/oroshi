@@ -23,6 +23,19 @@ return {
       local avantePlugin = require('avante')
       avantePlugin.setup({
         provider = "claude",
+        providers = {
+          claude = {
+            -- TODO: Mapping in insert mode, home should go to beginning of first chars, not beginning of line
+            -- TODO: C-C in the Avante window to cancel a request
+            -- TODO: Seems like opening the chat again in a new vim windows doesn't allow to continue the conversation
+            -- TODO: Opening the side chat should be per tab. So I can open two of them in two tabs
+            -- TODO: I might need to find a way to refresh them from one tab to the next
+
+            -- rag_search, python, git_diff, git_commit, list_files, search_files, search_keyword, read_file_toplevel_symbols, read_file, create_file, rename_file, delete_file, create_dir, rename_dir, delete_dir, bash, web_search, fetch
+            disable_tools = true,
+          }
+
+        },
         mode = "legacy",
         auto_set_keymap = false,
         enable_token_counting = false,
@@ -50,8 +63,9 @@ return {
       local function getTabWindows()
         local windows = {}
         local ignoreList = { 'notify', 'help'}
+        local tabId = vim.api.nvim_get_current_tabpage()
 
-        for _, windowId in ipairs(vim.api.nvim_list_wins()) do
+        for _, windowId in ipairs(vim.api.nvim_tabpage_list_wins(tabId)) do
           local bufferId = vim.api.nvim_win_get_buf(windowId)
           local filetype = vim.api.nvim_buf_get_option(bufferId, 'filetype')
 
