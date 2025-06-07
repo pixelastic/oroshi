@@ -27,6 +27,9 @@ hl('WinBarNC', 'none', { bg = 'GRAY_8' }) -- Window title, unfocuses
 hl('FloatBorder', 'GRAY_6', { bg = 'BLACK'})
 hl('FloatTitle', 'YELLOW', { bg = 'GRAY_6'}) --	Title of floating windows.
 hl('NormalFloat', 'GRAY_4', { bg = 'GRAY_8' }) --	Normal text in floating windows.
+-- Noice input window
+hl('NoiceCmdlinePopupBorderInput', 'GRAY_4')
+hl('NoiceCmdlinePrompt', 'GRAY_4')
 -- }}}
 
 -- Line Number {{{
@@ -73,6 +76,7 @@ hl('CursorModeInsert',   'none', O.colors.cursor.insert)
 hl('CursorModeNormal',   'none', O.colors.cursor.normal)
 hl('CursorModeVisual',   'none', O.colors.cursor.visual)
 hl('CursorModeTerminal', 'none', O.colors.cursor.terminal)
+hl('CursorModeCommandNormal', 'none', O.colors.cursor.command)
 -- }}}
 
 -- Current line {{{
@@ -97,6 +101,9 @@ hl('Visual', 'WHITE', { bg = 'BLUE', bold = true }) --		Visual mode selection.
 hl('IncSearch', 'ORANGE_2', { bg = 'ORANGE_7', bold = true }) -- Match as I type
 hl('CurSearch', 'ORANGE_2', { bg = 'ORANGE_7', bold = true }) --	Current selected match
 hl('Search', 'ORANGE_9', { bg = 'ORANGE_3', bold = true }) -- All results
+-- Noice
+hl('NoiceCmdlinePopupBorderSearch', 'ORANGE_9')
+hl('NoiceCmdlineIconSearch', 'ORANGE_9')
 -- }}}
 
 -- Completion (Ghost Text) {{{
@@ -129,10 +136,12 @@ O.colors.completion = {
     PmenuSel = { fg = 'BLACK'},
     CmpItemAbbr = { fg = 'BLACK' },
     CmpItemAbbrMatch = { fg = 'BLACK'},
-    CmpItemAbbrMatchFuzzy = { fg = 'BLACK'}, 
+    CmpItemAbbrMatchFuzzy = { fg = 'BLACK'},
     CmpItemKind = { fg = 'BLACK'},
   }
 }
+-- Copilot 
+hl('CopilotSuggestion', 'NEUTRAL', { bg = 'GRAY_8', italic = true, bold = true  })
 -- }}}
 
 -- Diagnostics {{{
@@ -166,10 +175,23 @@ O.colors.statusline = {
   filepathReadonly = { fg = 'RED' },
   filepathUnsavedChanges = { fg = 'VIOLET_4' },
   filepathNoName = { fg = 'COMMENT' },
+  -- Copilot
+  copilotNotLoaded = { bg = 'GRAY_7', fg = 'GRAY_8'},
+  copilotDisabled = { bg = 'GRAY_7', fg = 'AMBER_9'},
+  copilotEnabled = { bg = 'AMBER_7', fg = 'AMBER_1'},
 }
 -- }}}
 
 -- Commandline {{{
+-- Noice Cmdline Popup
+hl('NoiceCmdlinePopup', 'none', { bg = 'BLACK' })
+hl('NoiceCmdline', 'TEAL')
+hl('NoiceCmdlineIconCmdline', 'TEAL')
+hl('NoiceCmdlinePopupBorderCmdline', 'TEAL', { bg = 'BLACK' })
+-- Noice Help Popup
+hl('NoiceCmdlineIconHelp', 'BLUE')
+hl('NoiceCmdlinePopupBorderHelp', 'BLUE')
+
 O.colors.commandline = {
   hidden = { fg = 'WHITE' }, -- Default highlight
   visible = { fg = 'TEXT', bg = 'GRAY_8' },  -- When need to be more readable
@@ -194,6 +216,8 @@ hl('LazySpecial', 'PUNCTUATION')
 -- }}}
 
 -- Notify {{{
+hl('NotifyBackground', 'none', { bg = 'BLACK'})
+
 hl('NotifyDEBUGBody', 'NOTICE')
 hl('NotifyDEBUGBorder', 'NOTICE')
 hl('NotifyDEBUGIcon', 'NOTICE')
@@ -291,6 +315,7 @@ hl('AvanteToBeDeletedWOStrikethrough', 'none', { bg = 'RED_9', strikethrough = t
 --
 --
 -- }}}
+
 
 -- Misc {{{
 hl('ColorColumn', 'none', { bg = 'GRAY_9'}) -- Max column

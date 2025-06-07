@@ -10,6 +10,7 @@ vim.opt.statusline = '%!v:lua.O_STATUSLINE.main()' -- Use custom function
 O_STATUSLINE = {
   -- main: What is being passed to vim.opt.statusline
   main = function()
+    local add = O_STATUSLINE.add
     local statusline = {}
 
     -- Mode
@@ -34,7 +35,6 @@ O_STATUSLINE = {
     local project = fileData.project;
 
 
-    local add = O_STATUSLINE.add
     -- Mode
     add(statusline, mode.content, mode.hl)
     add(statusline, '', { fg = modeBg, bg = project.hl.bg})
@@ -55,26 +55,37 @@ O_STATUSLINE = {
     -- Separator
     add(statusline, '%<%=')
 
+    local fileencoding = vim.bo.fileencoding ~= '' and vim.bo.fileencoding or vim.o.encoding
+    local filetype = vim.bo.filetype
+    -- Copilot
+    local isCopilotLoaded = O.statusline.copilotLoaded
+    local isCopilotDisabled = vim.b.statuslineCopilotDisabled
+    local copilotColor = O.colors.statusline.copilotEnabled
+    if not isCopilotLoaded then copilotColor = O.colors.statusline.copilotNotLoaded end
+    if isCopilotDisabled then copilotColor = O.colors.statusline.copilotDisabled end
 
     -- File encoding (only if not UTF-8)
-    local fileencoding = vim.bo.fileencoding ~= '' and vim.bo.fileencoding or vim.o.encoding
     if fileencoding ~= 'utf-8' then
       add(statusline, ' ' .. fileencoding, { fg = 'RED' })
     end
 
+    -- Copilot
+    add(statusline, '', { bg = 'GRAY_8', fg = copilotColor.bg })
+    add(statusline, '   ' , copilotColor)
+
     -- Filetype
-    local filetype = vim.bo.filetype
-    add(statusline, ' ' .. filetype)
+    add(statusline, '', { fg = 'GRAY_9', bg = copilotColor.bg })
+    add(statusline, ' ' .. filetype .. ' ', { bg = 'GRAY_9', fg = 'WHITE' })
 
     -- Foldmarker
-    local foldmethod = vim.wo.foldmethod
-    local foldSymbolMap = { manuel = 'M', marker = '{', syntax = 'S', indent = '▸', expr = '󰊕 ' }
-    local foldSymbol = foldSymbolMap[foldmethod] or '?'
-    add(statusline, '  ' .. foldSymbol)
+    -- local foldmethod = vim.wo.foldmethod
+    -- local foldSymbolMap = { manuel = 'M', marker = '{', syntax = 'S', indent = '▸', expr = '󰊕 ' }
+    -- local foldSymbol = foldSymbolMap[foldmethod] or '?'
+    -- add(statusline, '  ' .. foldSymbol)
 
     -- Ruler
-    add(statusline, '  %2.c:%2.l %2p%%')
-    add(statusline, '  0x%2.B')
+    -- add(statusline, '  %2.c:%2.l %2p%%')
+    -- add(statusline, '  0x%2.B')
 
     return table.concat(statusline, '')
   end,

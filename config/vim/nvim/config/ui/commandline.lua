@@ -2,17 +2,17 @@ local autocmd = F.autocmd
 local hl = F.hl
 
 -- Increase cmdheight in Search and Command mode {{{
-local function setCmdHeight(newHeight)
-  return function()
-    vim.opt.cmdheight = newHeight
-
-    vim.schedule(function()
-      vim.cmd.redraw()
-    end)
-  end
-end
-autocmd('CmdlineEnter', setCmdHeight(1))
-autocmd('CmdlineLeave', setCmdHeight(0))
+-- local function setCmdHeight(newHeight)
+--   return function()
+--     vim.opt.cmdheight = newHeight
+--
+--     vim.schedule(function()
+--       vim.cmd.redraw()
+--     end)
+--   end
+-- end
+-- autocmd('CmdlineEnter', setCmdHeight(1))
+-- autocmd('CmdlineLeave', setCmdHeight(0))
 -- }}}
 
 -- Change cursor color in command and search {{{

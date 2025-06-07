@@ -12,7 +12,6 @@ if vim.g.syntax_on then
   vim.cmd('syntax reset')
 end
 
-vim.print(F.hl)
 -- getEnvColors: Returns the list of all colors defines in env
 local function getEnvColors()
   local colors = {}
@@ -33,7 +32,6 @@ O.colors.env = getEnvColors()
 O_require('oroshi/colorscheme/ui')      -- Tabline, statusline, split, etc
 O_require('oroshi/colorscheme/syntax')  -- Syntax highlight
 O_require('oroshi/colorscheme/unused')  -- List of known Highlight groups not yet used
-
 
 
 

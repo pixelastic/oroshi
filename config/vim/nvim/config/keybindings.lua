@@ -90,10 +90,10 @@ cmap('<F2>', reloadColorscheme, 'Reload oroshi colorscheme')
 local function reloadConfig()
   O_require('oroshi/index')
 end
-nmap('<C-F2>', reloadConfig, 'Reload nvim config')
-imap('<C-F2>', reloadConfig, 'Reload nvim config')
-vmap('<C-F2>', reloadConfig, 'Reload nvim config')
-cmap('<C-F2>', reloadConfig, 'Reload nvim config')
+nmap('<F26>', reloadConfig, 'Reload nvim config') -- <F26> is Ctrl-F2
+imap('<F26>', reloadConfig, 'Reload nvim config')
+vmap('<F26>', reloadConfig, 'Reload nvim config')
+cmap('<F26>', reloadConfig, 'Reload nvim config')
 
 -- F3: Debug colors
 local function debugColors()

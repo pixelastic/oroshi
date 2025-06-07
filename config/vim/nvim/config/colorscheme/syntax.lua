@@ -137,6 +137,8 @@ hl('@markup.heading.6.markdown', 'RED_7', { bold = true })
 -- }}}
 -- vim {{{
 hl('@label.vim', 'STRING')
+hl('@keyword.vim', 'TEAL')
+hl('@function.macro.vim', 'TEAL')
 -- }}}
 -- yaml {{{
 hl('@property.yaml', 'VARIABLE')
