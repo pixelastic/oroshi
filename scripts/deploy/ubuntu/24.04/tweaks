@@ -24,8 +24,6 @@ gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll false
 # Keyboard {{{
 # Repeat key delay
 gsettings set org.gnome.desktop.peripherals.keyboard delay 300
-
-
 # }}}
 
 # Battery {{{

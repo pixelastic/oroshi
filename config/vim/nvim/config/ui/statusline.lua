@@ -47,6 +47,10 @@ O_STATUSLINE = {
     -- Filepath
     add(statusline, file.content, fileHighlight)
 
+
+    -- TODO: This should give me the current treesitter status
+    -- nvim_treesitter#statusline(90)
+
     -- Separator
     add(statusline, '%<%=')
 

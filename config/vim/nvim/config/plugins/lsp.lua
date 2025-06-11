@@ -1,5 +1,10 @@
 return {
-  -- Mason
+  -- LSP
+  -- We will install LSP servers through Mason, and configure them through
+  -- mason-lspconfig
+  -- LSP servers are complex dynamic systems that understand code.
+  -- They can be used for auto-completion, type definition, linting,
+  -- refactoring, etc
   {
     "williamboman/mason.nvim",
     dependencies = {
@@ -52,7 +57,8 @@ return {
 
   -- Treesitter
   -- https://github.com/nvim-treesitter/nvim-treesitter
-  -- Highlight, indent, folding, AST
+  -- Treesitter is fast and static, and understands the structure of code.
+  -- It can be used for highlight, indentation, folding, etc
   {
     "nvim-treesitter/nvim-treesitter",
     version = "0.25.4",

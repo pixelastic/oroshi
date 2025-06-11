@@ -25,11 +25,22 @@ return {
         -- See all view configuration at:
         -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/views.lua
         views = {
+          -- Info messages
+          O_info = {
+            view = "mini",
+            timeout = 3000,
+            position = { col = "100%", row = 0 },
+            win_options = {
+              winhighlight = {
+                Normal = "NoiceOInfoNormal"
+              },
+            },
+          },
           -- Error messages
           O_error = {
             view = "mini",
             timeout = 5000,
-            position = { row = 0, col = 1, },
+            position = { col = 0, row = 0 },
             win_options = {
               winhighlight = {
                 ErrorMsg = "NoiceOErrorErrorMsg"
@@ -37,78 +48,54 @@ return {
             },
           },
           -- Warning messages
-          O_notify = {
+          O_warning = {
             view = "mini",
             timeout = 3000,
-            position = { row = 0, col = "100%", },
+            position = { col = "100%", row = -1 },
             win_options = {
               winhighlight = {
-                Normal = "NoiceONotifyNormal"
+                Normal = "NoiceOWarningNormal"
               },
             },
-          }
+          },
+          -- Commandline
+          O_cmdline = {
+            view = "mini",
+            position = { col = 0, row = -1 },
+            size = { width = "100%", },
+          },
         }, 
         -- ROUTES
         -- Routes define how a specific type of message should be displayed
         -- It takes a filter (what kind) and a view (how it should be displayed)
         --
-        -- Kinds are defined by neovim, and available in :h ui-messages:
-        --     "" (empty)	Unknown (consider a |feature-request|)
-        --     "bufwrite"	|:write| message
-        --     "confirm"	Message preceding a prompt (|:confirm|, |confirm()|, |inputlist()|, |z=|, …)
-        --     "emsg"		Error (|errors|, internal error, |:throw|, …)
-        --     "echo"		|:echo| message
-        --     "echomsg"	|:echomsg| message
-        --     "echoerr"	|:echoerr| message
-        --     "completion"    |ins-completion-menu| message
-        --     "list_cmd"	List output for various commands (|:ls|, |:set|, …)
-        --     "lua_error"	Error in |:lua| code
-        --     "lua_print"	|print()| from |:lua| code
-        --     "rpc_error"	Error response from |rpcrequest()|
-        --     "return_prompt"	|press-enter| prompt after a multiple messages
-        --     "quickfix"	Quickfix navigation message
-        --     "search_cmd"	Entered search command
-        --     "search_count"	Search count message ("S" flag of 'shortmess')
-        --     "shell_err"	|:!cmd| shell stderr output
-        --     "shell_out"	|:!cmd| shell stdout output
-        --     "shell_ret"	|:!cmd| shell return code
-        --     "undo"		|:undo| and |:redo| message
-        --     "verbose"	'verbose' message
-        --     "wildlist"	'wildmode' "list" message
-        --     "wmsg"		Warning ("search hit BOTTOM", |W10|, …)
+        -- See :help ui-messages for all possible kinds
         --
         -- See all route configuration at:
         -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/routes.lua
         routes = {
-          -- "__ lines yanked"
-          { filter = { find = "lines yanked", kind = { "" }, event = "msg_show" }, opts = { skip = true }, },
-          -- "__ lines indented"
-          { filter = { find = "lines indented", kind = { "" }, event = "msg_show" }, opts = { skip = true }, },
+          -- Hide
+          { filter = { find = "lines yanked", kind = { "" }, event = "msg_show" }, opts = { skip = true }, },   -- "__ lines yanked"
+          { filter = { find = "lines indented", kind = { "" }, event = "msg_show" }, opts = { skip = true }, }, -- "__ lines indented"
+          -- Warning
+          { filter = { find = "No items found at position", kind = { "echo"}, event = "msg_show" }, view = "O_warning" },
         },
+        -- Use a tiny commandline at the bottom of the screen
         cmdline = {
           enabled = true,
-          -- opts = {}, -- global options for the cmdline. See section on views
           format = {
-            cmdline = { pattern = "^:", icon = "", lang = "vim" },
-            search_down = { kind = "search", pattern = "^/", icon = " ", lang = "regex" },
-            search_up = { kind = "search", pattern = "^%?", icon = " ", lang = "regex" },
-            help = { pattern = "^:%s*he?l?p?%s+", icon = "" },
+            cmdline = { view = "O_cmdline", icon = "  ", conceal = false },
+            lua = { view = "O_cmdline", icon = "  ", conceal = false },
+            help = { view = "O_cmdline", icon = "  ", conceal = false },
+            search_down = { view = "O_cmdline", icon = "  ", conceal = false },
+            search_up = { view = "O_cmdline", icon = "  ", conceal = false },
           }
-          --   -- conceal: (default=true) This will hide the text in the cmdline that matches the pattern.
-          --   -- view: (default is cmdline view)
-          --   -- opts: any options passed to the view
-          --   -- icon_hl_group: optional hl_group for the icon
-          --   -- title: set to anything or empty string to hide
-          --   filter = { pattern = "^:%s*!", icon = "$", lang = "bash" },
-          --   lua = { pattern = { "^:%s*lua%s+", "^:%s*lua%s*=%s*", "^:%s*=%s*" }, icon = "", lang = "lua" },
-          --   input = { view = "cmdline_input", icon = "󰥻 " }, -- Used by input()
-          --   -- lua = false, -- to disable a format, set to `false`
         },
         messages = {
           enabled = true, -- enables the Noice messages UI
-          view = "O_notify", -- default view for messages
+          view = "O_info", -- default view for messages
           view_error = "O_error", -- view for errors
-          -- view_warn = "O_error", -- view for warnings
+          view_warn = "O_warning", -- view for warnings
           -- view_history = "messages", -- view for :messages
           view_search = false, -- view for search count messages. Set to `false` to disable
         },

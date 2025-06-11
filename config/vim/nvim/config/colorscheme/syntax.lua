@@ -145,6 +145,7 @@ hl('@property.yaml', 'VARIABLE')
 -- }}}
 -- Zsh {{{
 hl('zshFunction', 'YELLOW')
+hl('zshVariable', 'VARIABLE')
 hl('zshVariableDef', 'VARIABLE_DEFINITION')
 hl('zshDeref', 'VARIABLE')
 hl('zshBrackets', 'PUNCTUATION')

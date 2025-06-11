@@ -102,8 +102,8 @@ hl('IncSearch', 'ORANGE_2', { bg = 'ORANGE_7', bold = true }) -- Match as I type
 hl('CurSearch', 'ORANGE_2', { bg = 'ORANGE_7', bold = true }) --	Current selected match
 hl('Search', 'ORANGE_9', { bg = 'ORANGE_3', bold = true }) -- All results
 -- Noice
-hl('NoiceCmdlinePopupBorderSearch', 'ORANGE_9')
-hl('NoiceCmdlineIconSearch', 'ORANGE_9')
+hl('NoiceCmdlineIconSearch', 'BLACK', { bg = 'ORANGE_7' })
+-- hl('NoiceCmdlinePopupBorderSearch', 'ORANGE_9')
 -- }}}
 
 -- Completion (Ghost Text) {{{
@@ -183,23 +183,13 @@ O.colors.statusline = {
 -- }}}
 
 -- Commandline {{{
--- Noice Cmdline Popup
-hl('NoiceCmdlinePopup', 'none', { bg = 'BLACK' })
-hl('NoiceCmdline', 'TEAL')
-hl('NoiceCmdlineIconCmdline', 'TEAL')
-hl('NoiceCmdlinePopupBorderCmdline', 'TEAL', { bg = 'BLACK' })
--- Noice Help Popup
-hl('NoiceCmdlineIconHelp', 'BLUE')
-hl('NoiceCmdlinePopupBorderHelp', 'BLUE')
-
 O.colors.commandline = {
   hidden = { fg = 'WHITE' }, -- Default highlight
   visible = { fg = 'TEXT', bg = 'GRAY_8' },  -- When need to be more readable
 }
-hl('MsgSeparator', 'NONE', { bg = 'GRAY_6' }) --	Top bar separator of messsage
-hl('MoreMsg', 'TEXT') -- Some additional text, like in <F3>
-hl('ErrorMsg', 'RED_8') --	Error messages
-hl('Question', 'COMMENT') --	"Press ENTER or type command to continue"
+hl('NoiceCmdlineIconCmdline', 'BLACK', { bg = 'TEAL' }) -- Prefix
+hl('NoiceCmdlineIconHelp', 'BLACK', { bg = 'BLUE' })    -- Prefix
+hl('NoiceCmdlineIconLua', 'BLACK', { bg = 'VIOLET' })   -- Prefix
 -- }}}
 
 -- Lazy {{{
@@ -289,8 +279,11 @@ hl('AvanteToBeDeletedWOStrikethrough', 'none', { bg = 'RED_9', strikethrough = t
 -- }}}
 
 -- Noice {{{
--- O_notify
-hl('NoiceONotifyNormal', 'NOTICE')
+hl('NoiceMini', 'none')
+-- O_message
+hl('NoiceOMessageNormal', 'NOTICE')
+-- O_warning
+hl('NoiceOWarningNormal', 'WARNING')
 -- O_error
 hl('NoiceFormatLevelError', 'RED_2', { bg = 'RED_9', bold = true })
 hl('NoiceOErrorErrorMsg', 'RED_8')
