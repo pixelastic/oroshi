@@ -1,0 +1,33 @@
+# Extract subparts of a given video
+# Usage:
+# $ video-split ./path/to/file.mp4 5-30                     # Extract from 5s to 30s
+# $ video-split ./path/to/file.mp4 00:00:05-00:00:30        # Extract from 5s to 30s
+# $ video-split ./path/to/file.mp4 5-30 output.mp4          # Extract into specific file
+function video-split() {
+
+# input_file="$1"
+# shift
+#
+# # Compression optimisée pour meetups (contenu statique)
+# # CRF 23 : excellent compromis qualité/taille pour présentations
+# # Audio en copie directe pour éviter toute dégradation
+# codec_opts="-c:v libx264 -crf 23 -c:a copy"
+#
+#     # Split du range sur le tiret
+#     range_parts=(${(s:-:)range})
+#     start="$range_parts[1]"
+#     end="$range_parts[2]"
+#
+#     # Création du nom de fichier
+#     base="${input_file:r}"  # nom sans extension
+#     ext="${input_file:e}"   # extension
+#
+#     # Remplacer les : par des - pour le nom de fichier
+#     start_clean="${start//:/}"
+#     end_clean="${end//:/}"
+#
+#     output="${base}_${start_clean}-${end_clean}.${ext}"
+#
+#     echo "Extraction: $start -> $end dans $output"
+#     ffmpeg -i "$input_file" -ss "$start" -to "$end" $codec_opts "$output"
+}

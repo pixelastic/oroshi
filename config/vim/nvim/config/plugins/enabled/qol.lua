@@ -1,22 +1,6 @@
 -- -- QoL
 -- -- Quality of life improvements
 return {
-  -- Notify
-  -- https://github.com/rcarriga/nvim-notify
-  -- Display messages in a floating notification window
-  -- {
-  --   "rcarriga/nvim-notify",
-  --   config = function()
-  --     local notify = require('notify')
-  --     notify.setup({
-  --       minimum_width = 30,
-  --       render = 'wrapped-compact',
-  --       stages = "static"
-  --     })
-  --
-  --     -- vim.notify = notify
-  --   end
-  -- },
   -- Noice
   -- https://github.com/folke/noice.nvim
   -- Replaces the UI of messages, CmdLine and popupmenu
@@ -32,12 +16,74 @@ return {
     config = function()
       local noice = require('noice')
       noice.setup({
-        presets = {
-          -- bottom_search = false, -- use a classic bottom cmdline for search
-          -- command_palette = true, -- position the cmdline and popupmenu together
-          -- long_message_to_split = true, -- long messages will be sent to a split
-          -- inc_rename = false, -- enables an input dialog for inc-rename.nvim
-          -- lsp_doc_border = false, -- add a border to hover docs and signature help
+        -- VIEWS
+        -- Views represent the different UI components of Noice.
+        -- The most common views are: 
+        -- - notify: displayed in the top right corner, disappear afer a while
+        -- - popup: floating window at the center of the screen
+        -- - mini: small line at the bottom of the screen
+        -- See all view configuration at:
+        -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/views.lua
+        views = {
+          -- Error messages
+          O_error = {
+            view = "mini",
+            timeout = 5000,
+            position = { row = 0, col = 1, },
+            win_options = {
+              winhighlight = {
+                ErrorMsg = "NoiceOErrorErrorMsg"
+              },
+            },
+          },
+          -- Warning messages
+          O_notify = {
+            view = "mini",
+            timeout = 3000,
+            position = { row = 0, col = "100%", },
+            win_options = {
+              winhighlight = {
+                Normal = "NoiceONotifyNormal"
+              },
+            },
+          }
+        }, 
+        -- ROUTES
+        -- Routes define how a specific type of message should be displayed
+        -- It takes a filter (what kind) and a view (how it should be displayed)
+        --
+        -- Kinds are defined by neovim, and available in :h ui-messages:
+        --     "" (empty)	Unknown (consider a |feature-request|)
+        --     "bufwrite"	|:write| message
+        --     "confirm"	Message preceding a prompt (|:confirm|, |confirm()|, |inputlist()|, |z=|, …)
+        --     "emsg"		Error (|errors|, internal error, |:throw|, …)
+        --     "echo"		|:echo| message
+        --     "echomsg"	|:echomsg| message
+        --     "echoerr"	|:echoerr| message
+        --     "completion"    |ins-completion-menu| message
+        --     "list_cmd"	List output for various commands (|:ls|, |:set|, …)
+        --     "lua_error"	Error in |:lua| code
+        --     "lua_print"	|print()| from |:lua| code
+        --     "rpc_error"	Error response from |rpcrequest()|
+        --     "return_prompt"	|press-enter| prompt after a multiple messages
+        --     "quickfix"	Quickfix navigation message
+        --     "search_cmd"	Entered search command
+        --     "search_count"	Search count message ("S" flag of 'shortmess')
+        --     "shell_err"	|:!cmd| shell stderr output
+        --     "shell_out"	|:!cmd| shell stdout output
+        --     "shell_ret"	|:!cmd| shell return code
+        --     "undo"		|:undo| and |:redo| message
+        --     "verbose"	'verbose' message
+        --     "wildlist"	'wildmode' "list" message
+        --     "wmsg"		Warning ("search hit BOTTOM", |W10|, …)
+        --
+        -- See all route configuration at:
+        -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/routes.lua
+        routes = {
+          -- "__ lines yanked"
+          { filter = { find = "lines yanked", kind = { "" }, event = "msg_show" }, opts = { skip = true }, },
+          -- "__ lines indented"
+          { filter = { find = "lines indented", kind = { "" }, event = "msg_show" }, opts = { skip = true }, },
         },
         cmdline = {
           enabled = true,
@@ -58,16 +104,13 @@ return {
           --   input = { view = "cmdline_input", icon = "󰥻 " }, -- Used by input()
           --   -- lua = false, -- to disable a format, set to `false`
         },
-
         messages = {
-          -- NOTE: If you enable messages, then the cmdline is enabled automatically.
-          -- This is a current Neovim limitation.
           enabled = true, -- enables the Noice messages UI
-          view = "notify", -- default view for messages
-          view_error = "notify", -- view for errors
-          view_warn = "notify", -- view for warnings
-          view_history = "messages", -- view for :messages
-          view_search = "virtualtext", -- view for search count messages. Set to `false` to disable
+          view = "O_notify", -- default view for messages
+          view_error = "O_error", -- view for errors
+          -- view_warn = "O_error", -- view for warnings
+          -- view_history = "messages", -- view for :messages
+          view_search = false, -- view for search count messages. Set to `false` to disable
         },
         popupmenu = {
           enabled = true, -- enables the Noice popupmenu UI
@@ -75,6 +118,15 @@ return {
           backend = "nui", -- backend to use to show regular cmdline completions
           -- Icons for completion item kinds (see defaults at noice.config.icons.kinds)
           kind_icons = {}, -- set to `false` to disable icons
+        },
+        notify = {
+          -- Noice can be used as `vim.notify` so you can route any notification like other messages
+          -- Notification messages have their level and other properties set.
+          -- event is always "notify" and kind can be any log level as a string
+          -- The default routes will forward notifications to nvim-notify
+          -- Benefit of using Noice for this is the routing and consistent history view
+          enabled = true,
+          view = "notify",
         },
         -- default options for require('noice').redirect
         -- see the section on Command Redirection
@@ -127,15 +179,6 @@ return {
             opts = { enter = true, format = "details" },
             filter = {},
           },
-        },
-        notify = {
-          -- Noice can be used as `vim.notify` so you can route any notification like other messages
-          -- Notification messages have their level and other properties set.
-          -- event is always "notify" and kind can be any log level as a string
-          -- The default routes will forward notifications to nvim-notify
-          -- Benefit of using Noice for this is the routing and consistent history view
-          enabled = true,
-          view = "notify",
         },
         lsp = {
           progress = {
@@ -190,52 +233,6 @@ return {
             },
           },
         },
-        markdown = {
-          hover = {
-            ["|(%S-)|"] = vim.cmd.help, -- vim help links
-            ["%[.-%]%((%S-)%)"] = require("noice.util").open, -- markdown links
-          },
-          highlights = {
-            ["|%S-|"] = "@text.reference",
-            ["@%S+"] = "@parameter",
-            ["^%s*(Parameters:)"] = "@text.title",
-            ["^%s*(Return:)"] = "@text.title",
-            ["^%s*(See also:)"] = "@text.title",
-            ["{%S-}"] = "@parameter",
-          },
-        },
-        health = {
-          checker = true, -- Disable if you don't want health checks to run
-        },
-        throttle = 1000 / 30, -- how frequently does Noice need to check for ui updates? This has no effect when in blocking mode.
-        -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/views.lua
-        views = {
-          oroshi_search = {
-            view = "mini",
-            format = { "{message}", hl_group = 'WinSeparator' },
-            hl_group = "WinSeparator",
-          }
-        }, ---@see section on views
-        -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/routes.lua
-        --
-        routes = {
-          -- Search info
-          {
-            filter = {
-              event = "msg_show",
-              kind = { "search_count" },
-            },
-            view = "oroshi_search",
-            opts = {
-              hl_group = "WinSeparator",
-              format = {
-                "{message}",
-                hl_group = "WinSeparator",
-              },
-            }
-          }
-
-        }, --- @see section on routes
         status = {}, --- @see section on statusline components
         -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/format.lua
         format = {

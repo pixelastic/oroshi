@@ -9,6 +9,8 @@ require 'fileutils'
 # $ video-split input.mp4 '-00:00:15'
 # $ video-split input.mp4 '00:00:10-00:00:15' output.mp4
 # $ video-split input.mp4 '00:00:10-' output.mp4
+
+# 
 class VideoSplit
   def initialize(*args)
     @input = args[0]

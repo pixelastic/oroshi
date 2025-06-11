@@ -215,34 +215,6 @@ hl('LazyReasonStart', 'GREEN')
 hl('LazySpecial', 'PUNCTUATION')
 -- }}}
 
--- Notify {{{
-hl('NotifyBackground', 'none', { bg = 'BLACK'})
-
-hl('NotifyDEBUGBody', 'NOTICE')
-hl('NotifyDEBUGBorder', 'NOTICE')
-hl('NotifyDEBUGIcon', 'NOTICE')
-hl('NotifyDEBUGTitle', 'NOTICE')
-
-hl('NotifyTRACEBody', 'TEXT')
-hl('NotifyTRACEBorder', 'TEXT')
-hl('NotifyTRACEIcon', 'TEXT')
-hl('NotifyTRACETitle', 'TEXT')
-
-hl('NotifyINFOIcon', 'INFO')
-hl('NotifyINFOTitle', 'INFO')
-hl('NotifyINFOBorder', 'INFO')
-hl('NotifyINFOBody', 'INFO' )
-
-hl('NotifyWARNBody', 'WARNING')
-hl('NotifyWARNBorder', 'WARNING')
-hl('NotifyWARNIcon', 'WARNING')
-hl('NotifyWARNTitle', 'WARNING')
-
-hl('NotifyERRORBody', 'ERROR')
-hl('NotifyERRORBorder', 'ERROR')
-hl('NotifyERRORIcon', 'ERROR')
-hl('NotifyERRORTitle', 'ERROR')
--- }}}
 
 -- Nvim Tree {{{
 hl('NvimTreeClosedFolderIcon', 'YELLOW_6' )
@@ -314,6 +286,43 @@ hl('AvanteConflictIncomingLabel', 'GREEN_6', { bg = 'GREEN_8', bold = true})
 hl('AvanteToBeDeletedWOStrikethrough', 'none', { bg = 'RED_9', strikethrough = true })
 --
 --
+-- }}}
+
+-- Noice {{{
+-- O_notify
+hl('NoiceONotifyNormal', 'NOTICE')
+-- O_error
+hl('NoiceFormatLevelError', 'RED_2', { bg = 'RED_9', bold = true })
+hl('NoiceOErrorErrorMsg', 'RED_8')
+-- }}}
+
+-- Notify {{{
+hl('NotifyBackground', 'none', { bg = 'BLACK'})
+
+hl('NotifyDEBUGBody', 'NOTICE')
+hl('NotifyDEBUGBorder', 'NOTICE')
+hl('NotifyDEBUGIcon', 'NOTICE')
+hl('NotifyDEBUGTitle', 'NOTICE')
+
+hl('NotifyTRACEBody', 'TEXT')
+hl('NotifyTRACEBorder', 'TEXT')
+hl('NotifyTRACEIcon', 'TEXT')
+hl('NotifyTRACETitle', 'TEXT')
+
+hl('NotifyINFOIcon', 'INFO')
+hl('NotifyINFOTitle', 'INFO')
+hl('NotifyINFOBorder', 'INFO')
+hl('NotifyINFOBody', 'INFO' )
+
+hl('NotifyWARNBody', 'WARNING')
+hl('NotifyWARNBorder', 'WARNING')
+hl('NotifyWARNIcon', 'WARNING')
+hl('NotifyWARNTitle', 'WARNING')
+
+hl('NotifyERRORBody', 'ERROR')
+hl('NotifyERRORBorder', 'ERROR')
+hl('NotifyERRORIcon', 'ERROR')
+hl('NotifyERRORTitle', 'ERROR')
 -- }}}
 
 

@@ -43,11 +43,6 @@ O_STATUSLINE = {
     add(statusline, project.content, project.hl)
     add(statusline, '', { fg = project.hl.bg })
 
-    -- Recording macro
-    if O.statusline.macroName then
-      add(statusline, " 󰑋 ", { fg = 'RED' })
-      add(statusline, O.statusline.macroName, { fg = 'RED_4' })
-    end
 
     -- Filepath
     add(statusline, file.content, fileHighlight)
@@ -55,27 +50,52 @@ O_STATUSLINE = {
     -- Separator
     add(statusline, '%<%=')
 
+    -- We build a collection of what to display, with its colors, and then
+    -- display it in order, with the right overlapping
+    local rightStatusbar = {}
+
+    -- Encoding
     local fileencoding = vim.bo.fileencoding ~= '' and vim.bo.fileencoding or vim.o.encoding
+    if fileencoding ~= 'utf-8' then
+      F.append(rightStatusbar, {
+        content = ' ' .. fileencoding,
+        hl = { bg= 'RED_9', fg = 'RED_2' }
+      })
+    end
+
+    -- Recording macro
+    if O.statusline.macroName then
+      F.append(rightStatusbar, {
+        content = "󰑋 " .. O.statusline.macroName,
+        hl = { fg = 'RED', bg = 'RED_3' }
+      })
+    end
+
+    -- Filetype
     local filetype = vim.bo.filetype
+    F.append(rightStatusbar, { 
+      content = filetype,
+      hl = { bg = 'GRAY_9', fg = 'WHITE' }
+    })
+
     -- Copilot
     local isCopilotLoaded = O.statusline.copilotLoaded
     local isCopilotDisabled = vim.b.statuslineCopilotDisabled
     local copilotColor = O.colors.statusline.copilotEnabled
     if not isCopilotLoaded then copilotColor = O.colors.statusline.copilotNotLoaded end
     if isCopilotDisabled then copilotColor = O.colors.statusline.copilotDisabled end
+    F.append(rightStatusbar, { 
+      content = ' ',
+      hl = copilotColor
+    })
 
-    -- File encoding (only if not UTF-8)
-    if fileencoding ~= 'utf-8' then
-      add(statusline, ' ' .. fileencoding, { fg = 'RED' })
+    local separatorBg = 'GRAY_8'
+    for _, item in ipairs(rightStatusbar) do
+      add(statusline, '', { fg = item.hl.bg, bg = separatorBg })
+      add(statusline, ' ' .. item.content .. ' ', item.hl)
+      separatorBg = item.hl.bg;
     end
 
-    -- Copilot
-    add(statusline, '', { bg = 'GRAY_8', fg = copilotColor.bg })
-    add(statusline, '   ' , copilotColor)
-
-    -- Filetype
-    add(statusline, '', { fg = 'GRAY_9', bg = copilotColor.bg })
-    add(statusline, ' ' .. filetype .. ' ', { bg = 'GRAY_9', fg = 'WHITE' })
 
     -- Foldmarker
     -- local foldmethod = vim.wo.foldmethod

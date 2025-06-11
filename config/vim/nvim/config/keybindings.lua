@@ -134,7 +134,6 @@ ccmpmap('<Down>', '<C-n>',  'Next suggestion')
 ccmpmap('<Up>',   '<C-p>',  'Previous suggestion')
 ccmpmap('<C-c>',  '<C-e>',  'Cancel suggestions')
 
-
 -- Move in a grid
 nmap('j', 'gj', 'Move to the char below')
 vmap('j', 'gj', 'Move to the char below')

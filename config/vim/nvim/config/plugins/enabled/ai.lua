@@ -40,6 +40,7 @@ return {
         suggestion = {
           enabled = true,
           auto_trigger = true,
+          debounce = 500,
           keymap = {
             accept = "<Tab>",
             accept_word = false,
@@ -48,9 +49,6 @@ return {
             prev = "<C-j>",
             dismiss = "<C-c>",
           },
-          -- hide_during_completion = true,
-          -- debounce = 75,
-          -- trigger_on_accept = true,
         },
         filetypes = {
           -- yaml = false,
@@ -63,21 +61,6 @@ return {
           -- cvs = false,
           -- ["."] = false,
         },
-        -- auth_provider_url = nil, -- URL to authentication provider, if not "https://github.com/"
-        -- logger = {
-        --   file = vim.fn.stdpath("log") .. "/copilot-lua.log",
-        --   file_log_level = vim.log.levels.OFF,
-        --   print_log_level = vim.log.levels.WARN,
-        --   trace_lsp = "off", -- "off" | "messages" | "verbose"
-        --   trace_lsp_progress = false,
-        --   log_lsp_messages = false,
-        -- },
-        -- copilot_node_command = 'node', -- Node.js version must be > 20
-        -- workspace_folders = {},
-        -- copilot_model = "",
-        -- root_dir = function()
-        --   return vim.fs.dirname(vim.fs.find(".git", { upward = true })[1])
-        -- end,
         -- should_attach = function(_, _)
         --   if not vim.bo.buflisted then
         --     logger.debug("not attaching, buffer is not 'buflisted'")
@@ -91,11 +74,6 @@ return {
         --
         --   return true
         -- end,
-        -- server = {
-        --   type = "nodejs", -- "nodejs" | "binary"
-        --   custom_server_filepath = nil,
-        -- },
-        -- server_opts_overrides = {},
       })
       O.statusline.copilotLoaded = true
 
