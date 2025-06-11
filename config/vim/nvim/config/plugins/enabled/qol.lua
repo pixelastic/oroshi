@@ -208,10 +208,40 @@ return {
           checker = true, -- Disable if you don't want health checks to run
         },
         throttle = 1000 / 30, -- how frequently does Noice need to check for ui updates? This has no effect when in blocking mode.
-        views = {}, ---@see section on views
-        routes = {}, --- @see section on routes
+        -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/views.lua
+        views = {
+          oroshi_search = {
+            view = "mini",
+            format = { "{message}", hl_group = 'WinSeparator' },
+            hl_group = "WinSeparator",
+          }
+        }, ---@see section on views
+        -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/routes.lua
+        --
+        routes = {
+          -- Search info
+          {
+            filter = {
+              event = "msg_show",
+              kind = { "search_count" },
+            },
+            view = "oroshi_search",
+            opts = {
+              hl_group = "WinSeparator",
+              format = {
+                "{message}",
+                hl_group = "WinSeparator",
+              },
+            }
+          }
+
+        }, --- @see section on routes
         status = {}, --- @see section on statusline components
-        format = {}, --- @see section on formatting
+        -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/format.lua
+        format = {
+
+
+        }, --- @see section on formatting
      })
     end,
   },

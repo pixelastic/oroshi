@@ -19,7 +19,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Setup lazy.nvim
 require("lazy").setup({
   spec = {
-    { import = "oroshi.plugins" },
+    { import = "oroshi.plugins.enabled" },
   },
   checker = { enabled = true, notify = false }, -- Check for updates
   change_detection = { notify = false },        -- Be silent about file changes
