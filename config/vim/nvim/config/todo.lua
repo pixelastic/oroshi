@@ -6,7 +6,7 @@
 -- TODO: https://github.com/folke/trouble.nvim ? To see diagnostics
 -- TODO: Check https://github.com/folke/tokyonight.nvim for methods to lighten/darken colors?
 -- TODO: Display icon when LSP not yet loaded
-local a = {}
+-- TODO: Refactor the plugins/helpers/lint.lua to split into smaller chunks
 
 -- AI:
 -- TODO: ChatGPT to explain code, quick chat, write tests, write documentation, etc

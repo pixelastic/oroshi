@@ -172,9 +172,9 @@ hl('DiagnosticDiagLineInfo', 'BLUE_3', { bg = 'BLUE_9'})    -- Diag line
 -- Hints
 hl('DiagnosticLineNrHint', 'VIOLET_5', { bg = 'GRAY_7' })      -- Line number
 hl('DiagnosticUnderlineHint', 'VIOLET_5', { bg = 'VIOLET_9' }) -- Problematic code
-hl('DiagnosticHint', 'VIOLET_5', { bg = 'GRAY_7' })            -- Floating text
-hl('DiagnosticVirtualTextHint', 'VIOLET_5', { bg = 'GRAY_7' }) -- Virtual text
-hl('DiagnosticDiagLineHint', 'VIOLET_5', { bg = 'GRAY_7' })    -- Diag line
+hl('DiagnosticHint', 'VIOLET_5', { bg = 'GRAY_8' })            -- Floating text
+hl('DiagnosticVirtualTextHint', 'VIOLET_5', { bg = 'GRAY_8' }) -- Virtual text
+hl('DiagnosticDiagLineHint', 'VIOLET_4', { bg = 'GRAY_8' })    -- Diag line
 -- }}}
 
 -- Statusline {{{
