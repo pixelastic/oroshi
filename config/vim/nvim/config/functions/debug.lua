@@ -5,15 +5,11 @@ return {
     if F.isCollection(input) then
       displayedInput = vim.inspect(input)
     end
+    if input == nil then
+      displayedInput = 'nil'
+    end
 
-    vim.schedule(function()
-      local _, error = pcall(function()
-        vim.notify(displayedInput, vim.log.levels.INFO)
-      end)
-      if error then
-        vim.print(displayedInput)
-      end
-    end)
+    vim.notify(displayedInput, vim.log.levels.DEBUG)
   end,
 
 

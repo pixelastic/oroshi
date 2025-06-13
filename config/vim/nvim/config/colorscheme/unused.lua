@@ -12,12 +12,12 @@ local hl = F.hl
 
 
 -- UI groups {{{
-hl('MsgSeparator', 'XXX') --	Top bar separator of messsage
-hl('MoreMsg', 'XXX') -- Some additional text, like in <F3>
-hl('ErrorMsg', 'XXX') --	Error messages
-hl('Question', 'XXX') --	"Press ENTER or type command to continue"
 hl('CmpItemAbbrDeprecated', 'XXX')
 hl('CmpItemMenu', 'XXX')
+hl('PmenuExtraSel', 'XXX') --	Popup menu: Selected item "extra text".
+hl('PmenuExtra', 'XXX') --	Popup menu: Normal item "extra text".
+hl('PmenuKindSel', 'XXX') --	Popup menu: Selected item "kind".
+hl('PmenuKind', 'XXX') --	Popup menu: Normal item "kind".
 hl('ComplMatchIns', 'XXX') --	Matched text of the currently inserted completion.
 hl('CursorColumn', 'XXX') --	Screen-column at the cursor, when 'cursorcolumn' is set.
 hl('CursorIM', 'XXX') --	Like Cursor, but used when in IME mode. *CursorIM*
@@ -31,6 +31,8 @@ hl('FoldColumn', 'XXX') --	'foldcolumn'
 hl('LineNrAbove', 'XXX') --	Line number for when the 'relativenumber'
 hl('LineNrBelow', 'XXX') --	Line number for when the 'relativenumber'
 hl('ModeMsg', 'XXX') --		'showmode' message (e.g., "-- INSERT --").
+hl('MsgSeparator', 'XXX') --	Top bar separator of messsage
+hl('Question', 'XXX') --	"Press ENTER or type command to continue"
 hl('QuickFixLine', 'XXX') --	Current |quickfix| item in the quickfix window. Combined with
 hl('SnippetTabstop', 'XXX') --	Tabstops in snippets. |vim.snippet|
 hl('SpellBad', 'XXX') --	Word that is not recognized by the spellchecker. |spell|
@@ -74,19 +76,15 @@ hl('CursorModeCommandInsert', 'XXX')
 
 -- Diagnostics {{{
 hl('DiagnosticDeprecated', 'XXX')
-hl('DiagnosticError', 'XXX')
 hl('DiagnosticFloatingError', 'XXX')
 hl('DiagnosticFloatingHint', 'XXX')
 hl('DiagnosticFloatingInfo', 'XXX')
 hl('DiagnosticFloatingOk', 'XXX')
 hl('DiagnosticFloatingWarn', 'XXX')
-hl('DiagnosticHint', 'XXX')
 hl('DiagnosticOk', 'XXX')
-hl('DiagnosticInfo', 'XXX')
 hl('DiagnosticSignOk', 'XXX')
 hl('DiagnosticVirtualTextOk', 'XXX')
 hl('DiagnosticUnderlineOk', 'XXX')
-hl('DiagnosticWarn', 'XXX')
 hl('DiagnosticSignError', 'XXX')
 hl('DiagnosticSignWarn', 'XXX')
 hl('DiagnosticSignInfo', 'XXX')
@@ -120,18 +118,20 @@ hl('RenderMarkdownError', 'XXX') -- 	Error related callouts
 -- }}}
 
 -- GitSigns {{{
--- hl('GitSignsAdd', 'GREEN_9')
--- hl('GitSignsChange', 'PURPLE')
--- hl('GitSignsChangedelete', 'PURPLE')
--- hl('GitSignsTopdelete', 'RED_9')
--- hl('GitSignsDelete', 'RED_9')
-hl('GitSignsUntracked', 'XXX')
 hl('GitSignsAddCul', 'XXX')
+hl('GitSignsAdd', 'XXX')
 hl('GitSignsChangeCul', 'XXX')
-hl('GitSignsTopdeleteCul', 'XXX')
-hl('GitSignsDeleteCul', 'XXX')
 hl('GitSignsChangedeleteCul', 'XXX')
+hl('GitSignsChangedeleteLn', 'XXX')
+hl('GitSignsChangedelete', 'XXX')
+hl('GitSignsChange', 'XXX')
+hl('GitSignsDeleteCul', 'XXX')
+hl('GitSignsDelete', 'XXX')
+hl('GitSignsTopdeleteCul', 'XXX')
+hl('GitSignsTopdelete', 'XXX')
 hl('GitSignsUntrackedCul', 'XXX')
+hl('GitSignsUntrackedLn', 'XXX')
+hl('GitSignsUntracked', 'XXX')
 -- }}}
 
 -- Avante {{{
@@ -161,6 +161,11 @@ hl('NoiceCmdlineIcon', 'XXX')
 hl('NoiceCmdlinePopupBorderIncRename', 'XXX')
 hl('NoiceCmdlinePopupBorderLua', 'XXX')
 hl('NoiceCmdlinePopupTitle', 'XXX')
+hl('NoiceCmdlinePopup', 'XXX')
+hl('NoiceCmdline', 'XXX')
+hl('NoiceCmdlinePopupBorderCmdline', 'XXX')
+hl('NoiceCmdlinePopupBorderHelp', 'XXX')
+
 hl('NoiceCompletionItemKindClass', 'XXX')
 hl('NoiceCompletionItemKindColor', 'XXX')
 hl('NoiceCompletionItemKindConstant', 'XXX')
@@ -184,12 +189,9 @@ hl('NoiceCompletionItemKindUnit', 'XXX')
 hl('NoiceCompletionItemKindValue', 'XXX')
 hl('NoiceCompletionItemKindVariable', 'XXX')
 hl('NoiceCompletionItemMenu', 'XXX')
-hl('NoiceCmdlinePopup', 'XXX')
-hl('NoiceCmdline', 'XXX')
-hl('NoiceCmdlinePopupBorderCmdline', 'XXX')
-hl('NoiceCmdlinePopupBorderHelp', 'XXX')
-
-hl('NoiceCompletionItemWord', 'XXX')
+hl('NoicePopup', 'XXX')
+hl('NoicePopupBorder', 'XXX')
+hl('NoicePopupmenuBorder', 'XXX')
 hl('NoiceConfirm', 'XXX')
 hl('NoiceConfirmBorder', 'XXX')
 hl('NoiceCursor', 'XXX')
@@ -198,26 +200,16 @@ hl('NoiceFormatConfirmDefault', 'XXX')
 hl('NoiceFormatDate', 'XXX')
 hl('NoiceFormatEvent', 'XXX')
 hl('NoiceFormatKind', 'XXX')
-hl('NoiceFormatLevelDebug', 'XXX')
 hl('NoiceFormatLevelInfo', 'XXX')
 hl('NoiceFormatLevelOff', 'XXX')
 hl('NoiceFormatLevelTrace', 'XXX')
 hl('NoiceFormatLevelWarn', 'XXX')
 hl('NoiceFormatProgressDone', 'XXX')
 hl('NoiceFormatProgressTodo', 'XXX')
-hl('NoiceFormatTitle', 'YYY')
+hl('NoiceFormatTitle', 'XXX')
 hl('NoiceLspProgressClient', 'XXX')
 hl('NoiceLspProgressSpinner', 'XXX')
 hl('NoiceLspProgressTitle', 'XXX')
-hl('NoicePopup', 'XXX')
-hl('NoicePopupBorder', 'XXX')
-hl('NoicePopupmenu', 'XXX')
-hl('NoicePopupmenuBorder', 'XXX')
-hl('NoicePopupmenuMatch', 'XXX')
-hl('NoicePopupmenuSelected', 'XXX')
-hl('NoiceScrollbar', 'XXX')
-hl('NoiceScrollbarThumb', 'XXX')
-hl('NoiceSplit', 'XXX')
 hl('NoiceSplitBorder', 'XXX')
 hl('NoiceVirtualText', 'XXX')
 -- }}}

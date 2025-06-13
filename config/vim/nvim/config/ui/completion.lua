@@ -26,7 +26,8 @@ local autocmd = F.autocmd
 vim.opt.cmdheight = 0  -- Hide the command line
 
 -- Hide / Show the completion menu {{{
-F.hideCompletionWildmenu()
-autocmd('CmdlineEnter',  F.showCompletionWildmenu)
-autocmd('CmdlineLeave',  F.hideCompletionWildmenu)
+-- F.hideCompletionWildmenu()
+-- F.showCompletionWildmenu()
+-- autocmd('CmdlineEnter',  F.showCompletionWildmenu)
+-- autocmd('CmdlineLeave',  F.hideCompletionWildmenu)
 -- }}}

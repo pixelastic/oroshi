@@ -9,10 +9,11 @@ end
 
 -- Shared variables
 O = {
-  colors = {},
-  projects = {},
-  statusline = {},
-  nvimtree = {}
+  colors = {},  -- Mapping between color aliases and their hex values
+  projects = {}, -- Mapping between projects and their colors and icons
+  statusline = {}, -- Shared statusline info
+  diagnostics = {}, -- Buffer-indexed diagnostics info
+  nvimtree = {}, -- 
 }
 
 -- Shared functions

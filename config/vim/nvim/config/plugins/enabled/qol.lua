@@ -12,75 +12,12 @@ return {
     dependencies = {
       "MunifTanjim/nui.nvim",
       "rcarriga/nvim-notify",
+      "hrsh7th/nvim-cmp",
     },
     config = function()
       local noice = require('noice')
       noice.setup({
-        -- VIEWS
-        -- Views represent the different UI components of Noice.
-        -- The most common views are: 
-        -- - notify: displayed in the top right corner, disappear afer a while
-        -- - popup: floating window at the center of the screen
-        -- - mini: small line at the bottom of the screen
-        -- See all view configuration at:
-        -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/views.lua
-        views = {
-          -- Info messages
-          O_info = {
-            view = "mini",
-            timeout = 3000,
-            position = { col = "100%", row = 0 },
-            win_options = {
-              winhighlight = {
-                Normal = "NoiceOInfoNormal"
-              },
-            },
-          },
-          -- Error messages
-          O_error = {
-            view = "mini",
-            timeout = 5000,
-            position = { col = 0, row = 0 },
-            win_options = {
-              winhighlight = {
-                ErrorMsg = "NoiceOErrorErrorMsg"
-              },
-            },
-          },
-          -- Warning messages
-          O_warning = {
-            view = "mini",
-            timeout = 3000,
-            position = { col = "100%", row = -1 },
-            win_options = {
-              winhighlight = {
-                Normal = "NoiceOWarningNormal"
-              },
-            },
-          },
-          -- Commandline
-          O_cmdline = {
-            view = "mini",
-            position = { col = 0, row = -1 },
-            size = { width = "100%", },
-          },
-        }, 
-        -- ROUTES
-        -- Routes define how a specific type of message should be displayed
-        -- It takes a filter (what kind) and a view (how it should be displayed)
-        --
-        -- See :help ui-messages for all possible kinds
-        --
-        -- See all route configuration at:
-        -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/routes.lua
-        routes = {
-          -- Hide
-          { filter = { find = "lines yanked", kind = { "" }, event = "msg_show" }, opts = { skip = true }, },   -- "__ lines yanked"
-          { filter = { find = "lines indented", kind = { "" }, event = "msg_show" }, opts = { skip = true }, }, -- "__ lines indented"
-          -- Warning
-          { filter = { find = "No items found at position", kind = { "echo"}, event = "msg_show" }, view = "O_warning" },
-        },
-        -- Use a tiny commandline at the bottom of the screen
+        -- Commandline
         cmdline = {
           enabled = true,
           format = {
@@ -91,20 +28,142 @@ return {
             search_up = { view = "O_cmdline", icon = "  ", conceal = false },
           }
         },
+        -- Messages
         messages = {
-          enabled = true, -- enables the Noice messages UI
-          view = "O_info", -- default view for messages
-          view_error = "O_error", -- view for errors
-          view_warn = "O_warning", -- view for warnings
-          -- view_history = "messages", -- view for :messages
-          view_search = false, -- view for search count messages. Set to `false` to disable
+          enabled = true,
+          view = "O_info",          -- Default messages
+          view_warn = "O_warning",  -- Warning messages
+          view_error = "messages",  -- Error messages in their own split
+          view_search = false,      -- Do not show search count
         },
+        -- Popupmenu, used for completion
         popupmenu = {
-          enabled = true, -- enables the Noice popupmenu UI
-          ---@type 'nui'|'cmp'
-          backend = "nui", -- backend to use to show regular cmdline completions
-          -- Icons for completion item kinds (see defaults at noice.config.icons.kinds)
-          kind_icons = {}, -- set to `false` to disable icons
+          enabled = true,
+          backend = "nui",
+        },
+        -- Custom views
+        -- Views represent "how" Noice should display specific things
+        -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/views.lua
+        views = {
+          -- Debug message: Small line at the bottom right of the screen
+          O_debug = {
+            view = "mini",
+            timeout = 8000,
+            position = { col = "100%", row = -1 },
+            format = { "{message}" },
+            win_options = {
+              winhighlight = {
+                Normal = "NoiceODebugNormal"
+              },
+            },
+          },
+          -- Info message: Small line at the bottom right of the screen
+          O_info = {
+            view = "mini",
+            timeout = 3000,
+            position = { col = "100%", row = -1 },
+            win_options = {
+              winhighlight = {
+                Normal = "NoiceOInfoNormal"
+              },
+            },
+          },
+          -- Warning messages: Small line at the bottom right of the screen
+          O_warning = {
+            view = "mini",
+            timeout = 3000,
+            position = { col = "100%", row = -1 },
+            win_options = {
+              winhighlight = {
+                Normal = "NoiceOWarningNormal"
+              },
+            },
+          },
+          -- Error messages
+          O_error = {
+            view = "messages",
+          },
+          -- Commandline: Small line at the bottom left of the screen
+          O_cmdline = {
+            view = "mini",
+            position = { col = 0, row = -1 },
+            size = { width = "100%", },
+          },
+        },
+        -- Routes
+        -- Routes represent to which views Noice should send specific messages
+        -- See :help ui-messages for all possible kinds
+        -- See all route configuration at:
+        --
+        -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/routes.lua
+        routes = {
+          -- Hide
+          { filter = { find = "lines yanked", kind = { "" }, event = "msg_show" }, opts = { skip = true }, },   -- "__ lines yanked"
+          { filter = { find = "lines indented", kind = { "" }, event = "msg_show" }, opts = { skip = true }, }, -- "__ lines indented"
+          -- Messages
+          { filter = { find = "Treesitter", kind = { "echo" }, event = "msg_show" }, view = "messages" }, -- <F3> colorscheme debugger
+          -- Debug
+          { filter = { event = "notify", kind = "debug", max_height = 10 }, view = "O_debug", }, -- F.debug()
+          { filter = { event = "notify", kind = "debug", min_height = 10 }, view = "messages", }, -- Long debug messages
+          -- Warning
+          { filter = { find = "No items found at position", kind = { "echo" }, event = "msg_show" }, view = "O_warning" }, -- <F3> colorscheme debugger
+          { filter = { find = "Pattern not found", kind = { "emsg" } }, view = "O_warning", }, -- No search match
+          { filter = { event = "notify", kind = "warning" }, view = "O_warning", },
+          -- Error
+          { filter = { event = "notify", kind = "error" }, view = "O_error", },
+        },
+
+
+
+
+
+
+
+        lsp = {
+          enabled = false,
+          progress = { enabled = false, }, -- Disable progress bars when loading
+          hover = {
+            enabled = false,
+            silent = true, -- set to true to not show a message if hover is not available
+            view = nil, -- when nil, use defaults from documentation
+            opts = {}, -- merged with defaults from documentation
+          },
+          override = {
+            -- override the default lsp markdown formatter with Noice
+            ["vim.lsp.util.convert_input_to_markdown_lines"] = false,
+            -- override the lsp markdown formatter with Noice
+            ["vim.lsp.util.stylize_markdown"] = false,
+            -- override cmp documentation with Noice (needs the other options to work)
+            ["cmp.entry.get_documentation"] = false,
+          },
+          signature = {
+            enabled = false,
+            auto_open = {
+              enabled = true,
+              trigger = true, -- Automatically show signature help when typing a trigger character from the LSP
+              luasnip = true, -- Will open signature help when jumping to Luasnip insert nodes
+              throttle = 50, -- Debounce lsp signature help request by 50ms
+            },
+            view = nil, -- when nil, use defaults from documentation
+            opts = {}, -- merged with defaults from documentation
+          },
+          message = {
+            -- Messages shown by lsp servers
+            enabled = true,
+            view = "notify",
+            opts = {},
+          },
+          -- defaults for hover and signature help
+          documentation = {
+            view = "hover",
+            opts = {
+              lang = "markdown",
+              replace = true,
+              render = "plain",
+              format = { "{message}" },
+              win_options = { concealcursor = "n", conceallevel = 3 },
+            },
+          },
         },
         notify = {
           -- Noice can be used as `vim.notify` so you can route any notification like other messages
@@ -167,59 +226,6 @@ return {
             filter = {},
           },
         },
-        lsp = {
-          progress = {
-            enabled = true,
-            -- Lsp Progress is formatted using the builtins for lsp_progress. See config.format.builtin
-            -- See the section on formatting for more details on how to customize.
-            format = "lsp_progress",
-            format_done = "lsp_progress_done",
-            throttle = 1000 / 30, -- frequency to update lsp progress message
-            view = "mini",
-          },
-          override = {
-            -- override the default lsp markdown formatter with Noice
-            ["vim.lsp.util.convert_input_to_markdown_lines"] = false,
-            -- override the lsp markdown formatter with Noice
-            ["vim.lsp.util.stylize_markdown"] = false,
-            -- override cmp documentation with Noice (needs the other options to work)
-            ["cmp.entry.get_documentation"] = false,
-          },
-          hover = {
-            enabled = true,
-            silent = false, -- set to true to not show a message if hover is not available
-            view = nil, -- when nil, use defaults from documentation
-            opts = {}, -- merged with defaults from documentation
-          },
-          signature = {
-            enabled = true,
-            auto_open = {
-              enabled = true,
-              trigger = true, -- Automatically show signature help when typing a trigger character from the LSP
-              luasnip = true, -- Will open signature help when jumping to Luasnip insert nodes
-              throttle = 50, -- Debounce lsp signature help request by 50ms
-            },
-            view = nil, -- when nil, use defaults from documentation
-            opts = {}, -- merged with defaults from documentation
-          },
-          message = {
-            -- Messages shown by lsp servers
-            enabled = true,
-            view = "notify",
-            opts = {},
-          },
-          -- defaults for hover and signature help
-          documentation = {
-            view = "hover",
-            opts = {
-              lang = "markdown",
-              replace = true,
-              render = "plain",
-              format = { "{message}" },
-              win_options = { concealcursor = "n", conceallevel = 3 },
-            },
-          },
-        },
         status = {}, --- @see section on statusline components
         -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/format.lua
         format = {
@@ -229,6 +235,48 @@ return {
      })
     end,
   },
+
+  {
+    "folke/trouble.nvim",
+    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    cmd = "Trouble",
+    keys = {
+      {
+        "<leader>xx",
+        "<cmd>Trouble diagnostics toggle<cr>",
+        desc = "Diagnostics (Trouble)",
+      },
+      {
+        "<leader>xX",
+        "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+        desc = "Buffer Diagnostics (Trouble)",
+      },
+      {
+        "<leader>cs",
+        "<cmd>Trouble symbols toggle focus=false<cr>",
+        desc = "Symbols (Trouble)",
+      },
+      {
+        "<leader>cl",
+        "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+        desc = "LSP Definitions / references / ... (Trouble)",
+      },
+      {
+        "<leader>xL",
+        "<cmd>Trouble loclist toggle<cr>",
+        desc = "Location List (Trouble)",
+      },
+      {
+        "<leader>xQ",
+        "<cmd>Trouble qflist toggle<cr>",
+        desc = "Quickfix List (Trouble)",
+      },
+    },
+  },
+
+
+
+
   -- ScrollEOF
   -- https://github.com/Aasim-A/scrollEOF.nvim
   -- Keep current line always in the middle of screen

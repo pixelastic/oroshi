@@ -5,6 +5,7 @@ hl('NormalNC', 'none') -- Normal text in unfocused windows. Should not be set.
 
 -- Messages {{{
 hl('DiagnosticInfo', 'INFO')
+hl('ErrorMsg', 'RED_8', { bold = false}) --	Error messages
 hl('Conceal', 'NEUTRAL') --	Hidden text
 -- }}}
 
@@ -72,10 +73,10 @@ O.colors.cursor = {
   terminal = { bg = 'YELLOW' }, -- In fzf search
   ai = { bg = 'AMBER_7' },
 }
-hl('CursorModeInsert',   'none', O.colors.cursor.insert)
-hl('CursorModeNormal',   'none', O.colors.cursor.normal)
-hl('CursorModeVisual',   'none', O.colors.cursor.visual)
-hl('CursorModeTerminal', 'none', O.colors.cursor.terminal)
+hl('CursorModeInsert',        'none', O.colors.cursor.insert)
+hl('CursorModeNormal',        'none', O.colors.cursor.normal)
+hl('CursorModeVisual',        'none', O.colors.cursor.visual)
+hl('CursorModeTerminal',      'none', O.colors.cursor.terminal)
 hl('CursorModeCommandNormal', 'none', O.colors.cursor.command)
 -- }}}
 
@@ -111,51 +112,66 @@ hl('CmpGhostText', 'COMMENT') -- Ghost text
 -- }}}
 
 -- Completion {{{
-hl('PmenuExtraSel', 'YYY') --	Popup menu: Selected item "extra text".
-hl('PmenuExtra', 'YYY') --	Popup menu: Normal item "extra text".
-hl('PmenuKindSel', 'YYY') --	Popup menu: Selected item "kind".
-hl('PmenuKind', 'YYY') --	Popup menu: Normal item "kind".
+-- Noice completion, used when completing commandline
+hl('NoicePopupmenu', 'NEUTRAL', { bg = 'GRAY_8' })    -- Default, swapped when selected
+hl('NoicePopupmenuMatch', 'VIOLET')                   -- Matching letters, swapped when selected
+hl('NoiceCompletionItemWord', 'NEUTRAL')              -- Words
+hl('NoiceScrollbar', 'none', { bg = 'GRAY_8' })       -- Scrollbar background
+hl('NoiceScrollbarThumb', 'NEUTRAL', { bg = 'none' }) -- Scrollbar thumb
 
-O.colors.completion = {
-  -- Regular completion menu
-  visible = {
-    Pmenu =  { fg = 'NEUTRAL', bg = 'GRAY_8'}, -- Default
-    PmenuSel = { fg = 'WHITE', bg = 'PURPLE', bold = true}, -- Selected line
-    PmenuMatch = { fg = 'PURPLE'}, -- Match
-    PmenuMatchSel = { fg = 'WHITE'}, -- Match on selected line
-    PmenuSbar = { bg = 'GRAY_8' }, --	Scrollbar background
-    PmenuThumb = { bg = 'GRAY_7' }, --	Scrollbar thumb
-    CmpItemAbbr = { fg = 'COMMENT' },
-    CmpItemAbbrMatch = { fg = 'PURPLE'}, -- Exact match
-    CmpItemAbbrMatchFuzzy = { fg = 'PURPLE_LIGHT'}, -- Fuzzy match
-    CmpItemKind = { fg = 'NEUTRAL'}, -- Type of result, on the right
-  },
-  -- Hidden completion menu, used for handling ghost text
-  hidden = {
-    Pmenu =  { fg='BLACK', bg = 'BLACK'},
-    PmenuSel = { fg = 'BLACK'},
-    CmpItemAbbr = { fg = 'BLACK' },
-    CmpItemAbbrMatch = { fg = 'BLACK'},
-    CmpItemAbbrMatchFuzzy = { fg = 'BLACK'},
-    CmpItemKind = { fg = 'BLACK'},
-  }
-}
--- Copilot 
+-- O.colors.completion = {
+--   -- Regular completion menu
+--   visible = {
+--     Pmenu =  { fg = 'NEUTRAL', bg = 'GRAY_8'}, -- Default
+--     PmenuSel = { fg = 'WHITE', bg = 'PURPLE', bold = true}, -- Selected line
+--     PmenuMatch = { fg = 'PURPLE'}, -- Match
+--     PmenuMatchSel = { fg = 'WHITE'}, -- Match on selected line
+--     PmenuSbar = { bg = 'GRAY_8' }, --	Scrollbar background
+--     PmenuThumb = { bg = 'GRAY_7' }, --	Scrollbar thumb
+--     CmpItemAbbr = { fg = 'COMMENT' },
+--     CmpItemAbbrMatch = { fg = 'PURPLE'}, -- Exact match
+--     CmpItemAbbrMatchFuzzy = { fg = 'PURPLE_LIGHT'}, -- Fuzzy match
+--     CmpItemKind = { fg = 'NEUTRAL'}, -- Type of result, on the right
+--   },
+--   -- Hidden completion menu, used for handling ghost text
+--   hidden = {
+--     Pmenu =  { fg='BLACK', bg = 'BLACK'},
+--     PmenuSel = { fg = 'BLACK'},
+--     CmpItemAbbr = { fg = 'BLACK' },
+--     CmpItemAbbrMatch = { fg = 'BLACK'},
+--     CmpItemAbbrMatchFuzzy = { fg = 'BLACK'},
+--     CmpItemKind = { fg = 'BLACK'},
+--   }
+-- }
+-- }}}
+
+-- Copilot {{{
 hl('CopilotSuggestion', 'NEUTRAL', { bg = 'GRAY_8', italic = true, bold = true  })
 -- }}}
 
 -- Diagnostics {{{
-hl('DiagnosticUnnecessary', 'YELLOW_5', { bg = 'YELLOW_9', bold = true })
-hl('DiagnosticUnderlineError', 'RED_2', { bg = 'RED_9', bold = true })
-hl('DiagnosticVirtualTextError', 'RED_3', { bg = 'RED_9' })
+-- Errors
+hl('DiagnosticUnderlineError', 'RED_2', { bg = 'RED_9' }) -- Problematic code
+hl('DiagnosticError', 'RED_2', { bg = 'RED_9', bold = true }) -- Floating text
+hl('DiagnosticVirtualTextError', 'RED_3', { bg = 'RED_9' }) -- Virtual text
 
-hl('DiagnosticUnderlineWarn', 'YELLOW_5', { bg = 'YELLOW_9', bold = true })
-hl('DiagnosticUnderlineHint', 'YELLOW_5', { bg = 'YELLOW_9', bold = true })
-hl('DiagnosticVirtualTextWarn', 'YELLOW_5', { bg = 'YELLOW_9', italic = true, bold = true })
-hl('DiagnosticVirtualTextHint', 'YELLOW_5', { bg = 'YELLOW_9', italic = true, bold = true })
+-- Warning
+hl('DiagnosticUnderlineWarn', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Problematic code
+hl('DiagnosticWarn', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Floating text
+hl('DiagnosticVirtualTextWarn', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Virtual text
+-- Hints (considered as warnings)
+hl('DiagnosticUnderlineHint', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Problematic code
+hl('DiagnosticHint', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Floating text
+hl('DiagnosticVirtualTextHint', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Virtual text
+-- Unnecessary (considered as warnings)
+hl('DiagnosticUnnecessary', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Problematic code
 
-hl('DiagnosticVirtualTextInfo', 'BLUE_3', { bg = 'BLUE_9'})
-hl('DiagnosticUnderlineInfo', 'BLUE_3', { bg = 'BLUE_9'})
+-- Info
+hl('DiagnosticUnderlineInfo', 'BLUE_3', { bg = 'BLUE_9'})   -- Problematic code
+hl('DiagnosticInfo', 'BLUE', { bg = 'BLUE_9' })             -- Floating text
+hl('DiagnosticVirtualTextInfo', 'BLUE_3', { bg = 'BLUE_9'}) -- Virtual text
+
+hl('DiagnosticOWarning', 'YELLOW')
 -- }}}
 
 -- Statusline {{{
@@ -236,8 +252,6 @@ hl('GitSignsAddLn', 'none', { bg = 'GREEN_9'})
 hl('GitSignsChangeLn', 'none', { bg = 'PURPLE_9' })
 hl('GitSignsTopdeleteLn', 'none', { bg = 'RED_9' })
 hl('GitSignsDeleteLn', 'none', { bg = 'RED_9' })
-hl('GitSignsChangedeleteLn', 'XXX')
-hl('GitSignsUntrackedLn', 'XXX')
 -- }}}
 
 -- Avante {{{
@@ -287,6 +301,9 @@ hl('NoiceOWarningNormal', 'WARNING')
 -- O_error
 hl('NoiceFormatLevelError', 'RED_2', { bg = 'RED_9', bold = true })
 hl('NoiceOErrorErrorMsg', 'RED_8')
+-- Messages
+hl('NoiceSplit', 'none', { bg = 'BLACK'})
+hl('MoreMsg', 'COMMENT')
 -- }}}
 
 -- Notify {{{
@@ -296,6 +313,8 @@ hl('NotifyDEBUGBody', 'NOTICE')
 hl('NotifyDEBUGBorder', 'NOTICE')
 hl('NotifyDEBUGIcon', 'NOTICE')
 hl('NotifyDEBUGTitle', 'NOTICE')
+hl('NoiceFormatLevelDebug', 'NOTICE')
+hl('NoiceODebugNormal', 'NOTICE')
 
 hl('NotifyTRACEBody', 'TEXT')
 hl('NotifyTRACEBorder', 'TEXT')

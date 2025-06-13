@@ -16,7 +16,7 @@ return {
     if options.fg and options.fg ~= 'none' then options.fg = O.colors.env[options.fg] end
     if options.bg and options.bg ~= 'none' then options.bg = O.colors.env[options.bg] end
 
-    local defaults = { 
+    local defaults = {
       fg = O.colors.env[colorName],
       bg = "none",
       bold = false,

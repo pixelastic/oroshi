@@ -8,6 +8,10 @@ return {
   bufferId = function()
     return vim.api.nvim_get_current_buf()
   end,
+  -- lineNumber: Returns the current line number
+  lineNumber = function()
+    return vim.fn.line('.')
+  end,
   -- currentLine: Returns the content of the current line
   currentLine = function()
     return vim.api.nvim_get_current_line();

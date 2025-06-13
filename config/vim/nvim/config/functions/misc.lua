@@ -3,8 +3,12 @@ return {
   env = function(name)
     return os.getenv(name)
   end,
-  -- isTable: Check if variable is a collection
+  -- isCollection: Check if variable is a collection
   isCollection = function(input)
     return type(input) == 'table'
+  end,
+  -- isString: Check if variable is a string
+  isString = function(input)
+    return type(input) == 'string'
   end,
 }
