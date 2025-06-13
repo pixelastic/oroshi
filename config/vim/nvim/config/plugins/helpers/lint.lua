@@ -163,4 +163,38 @@ M.getErrorDetails = function(lineNumber)
   }
 end
 
+-- Configure the statusline to listen to LSP loading
+M.configureStatusline = function()
+  O.statusline.lsp = {}
+
+  -- Update the statusline when LSP is loading
+  F.autocmd('LspProgress', function()
+    local bufferId = F.bufferId()
+    O.statusline.lsp['buf'..bufferId] = 'loading'
+
+    vim.cmd("redrawstatus")
+  end, { pattern = 'begin'})
+
+  -- Update statusbar when LSP is updated
+  F.autocmd('DiagnosticChanged', function()
+    -- Find errors in that buffer
+    local bufferId = F.bufferId()
+    local errors = vim.diagnostic.get(bufferId)
+
+    -- Update the statusbar status
+    -- TODO: Find the higher type of error between error, warning and info and
+    -- use that as a color instead of only red for errors
+    local isClean = F.isEmpty(errors)
+    local status = isClean and 'ok' or 'error'
+    O.statusline.lsp['buf'..bufferId] = status
+
+    -- Hide the diag line if everything is clean
+    if isClean then
+      M.hideDiagLine(M.getDiagData())
+    end
+
+    vim.cmd("redrawstatus")
+  end)
+end
+
 return M

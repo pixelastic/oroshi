@@ -14,15 +14,20 @@ return {
     "mason-org/mason.nvim",
     dependencies = {
       "mason-org/mason-lspconfig.nvim",
-      "neovim/nvim-lspconfig",
-      'echasnovski/mini.notify',
+      "neovim/nvim-lspconfig"
     },
     config = function()
+      -- Install and load servers
       helper.loadServers()
 
+      -- Configure vim diagnostics
       helper.configureDiagnostics()
 
+      -- Configure display of the custom diag line
       helper.configureDiagLine()
+
+      -- Configure display in the statusline
+      helper.configureStatusline()
     end,
   },
   -- nvim-lint

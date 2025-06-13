@@ -197,6 +197,12 @@ O.colors.statusline = {
   copilotNotLoaded = { bg = 'GRAY_7', fg = 'GRAY_8'},
   copilotDisabled = { bg = 'GRAY_7', fg = 'AMBER_9'},
   copilotEnabled = { bg = 'AMBER_7', fg = 'AMBER_1'},
+  -- LSP
+  lsp = {
+    loading = { bg = 'GRAY_7', fg = 'GRAY_8' },
+    ok = { bg = 'GREEN_9', fg = 'GREEN_2' },
+    error = { bg = 'RED_9', fg = 'RED_2' }
+  }
 }
 -- }}}
 

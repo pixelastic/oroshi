@@ -67,6 +67,7 @@ O_STATUSLINE = {
       })
     end
 
+
     -- Recording macro
     if O.statusline.macroName then
       F.append(rightStatusbar, {
@@ -75,12 +76,24 @@ O_STATUSLINE = {
       })
     end
 
+    -- LSP loading
+    local bufferId = F.bufferId()
+    local lspStatus = F.get(O, 'statusline.lsp.buf' .. bufferId)
+    if lspStatus then
+      local lspColor = O.colors.statusline.lsp[lspStatus]
+      F.append(rightStatusbar, {
+        content = " ",
+        hl = lspColor,
+      })
+    end
+
     -- Filetype
     local filetype = vim.bo.filetype
-    F.append(rightStatusbar, { 
+    F.append(rightStatusbar, {
       content = filetype,
       hl = { bg = 'GRAY_9', fg = 'WHITE' }
     })
+
 
     -- Copilot
     local isCopilotLoaded = O.statusline.copilotLoaded
