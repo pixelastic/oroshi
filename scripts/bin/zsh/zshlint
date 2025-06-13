@@ -9,21 +9,6 @@
 # This is a wrapper around shellcheck. Shellcheck does not support zsh by
 # default, but many of the warning triggered on bash also apply on zsh, so we
 # will simply silence the ones that are not relevant.
-#
-# Note: Run :ALEInfo after having run :ALELint in a zsh file to see the command
-# executed
-
-# Parsing the arguments sent by ale
-zparseopts -E -D \
-  s:=flagShell \
-  f:=flagFormat \
-  x=flagSources \
-  -version=flagVersion
-# shellcheck disable=SC2154
-{
-  local shellName=${flagShell[2]}
-  local isVersion=${#flagVersion}
-}
 
 # List of rules that are not relevant in zsh
 local excludedRules=()
@@ -72,19 +57,9 @@ for item in $@; do
 done
 
 # Output errors of input files
-# [SC2154]
-# Exclude all SC2154 about flagXXX values being referenced but not assigned.
-# This is a zsh-specific syntax that I use to parse arguments that is not
-# recognized by shellcheck. I can't disable the whole warning as I still want it
-# to let me know when I use a variable without defining it, just not flagXXX
-# variables
 shellcheck \
   --shell bash \
   --external-sources \
-  --format gcc \
+  --format json \
   --exclude ${(j:,:)excludedRules} \
-  $input \
-  | grep \
-  --extended-regexp \
-  --invert-match \
-  '(.*)warning: flag(.*)(\[SC2154\])$'
+  $input

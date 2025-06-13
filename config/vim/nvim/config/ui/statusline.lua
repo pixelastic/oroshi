@@ -58,6 +58,9 @@ O_STATUSLINE = {
     -- display it in order, with the right overlapping
     local rightStatusbar = {}
 
+    -- Percentage in file
+    add(statusline, '%2p%% ')
+
     -- Encoding
     local fileencoding = vim.bo.fileencoding ~= '' and vim.bo.fileencoding or vim.o.encoding
     if fileencoding ~= 'utf-8' then
@@ -66,7 +69,6 @@ O_STATUSLINE = {
         hl = { bg= 'RED_9', fg = 'RED_2' }
       })
     end
-
 
     -- Recording macro
     if O.statusline.macroName then
@@ -93,7 +95,6 @@ O_STATUSLINE = {
       content = filetype,
       hl = { bg = 'GRAY_9', fg = 'WHITE' }
     })
-
 
     -- Copilot
     local isCopilotLoaded = O.statusline.copilotLoaded

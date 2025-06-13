@@ -8,23 +8,23 @@ function video-split() {
   local range="$2"
   local outputFile="$3"
 
-  if [[ $outputFile == "" ]] then;
+  if [[ $outputFile == "" ]]; then
     local extension="${inputFile:e}"
     local baseName="${inputFile:t:r}"
     local formattedRange="${range//:/-}"
-    outputFile = "${baseName}_${formattedRange}.${extension}"
-  end
+    outputFile="${baseName}_${formattedRange}.${extension}"
+  fi
 
   # Split range
   local rangeSplit=(${(@s/-/)range})
-  local rangeStart=$rangeSplit[0]
-  local rangeEnd=$rangeSplit[1]
+  local rangeStart=$rangeSplit[1]
+  local rangeEnd=$rangeSplit[2]
 
-  local codecOptions="-c:v libx264 -crf 23 -c:a copy"
+  local codecOptions=(-c:v libx264 -crf 23 -c:a copy)
   ffmpeg \
     -i "$inputFile" \
     -ss "$rangeStart" \
     -to "$rangeEnd" \
-    $codecOpts \
+    $codecOptions \
     "$outputFile"
 }

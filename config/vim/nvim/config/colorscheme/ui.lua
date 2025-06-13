@@ -37,10 +37,6 @@ hl('NoiceCmdlinePrompt', 'GRAY_4')
 hl('LineNr', 'GRAY') --	Line number column
 hl('SignColumn', 'GRAY') --	Sign column
 -- LSP Diagnostics
-hl('DiagnosticLineNrError', 'RED_2', { bg = 'RED_9'})
-hl('DiagnosticLineNrWarn', 'YELLOW_5', { bg = 'YELLOW_9', bold = true })
-hl('DiagnosticLineNrHint', 'YELLOW_5', { bg = 'YELLOW_9', bold = true })
-hl('DiagnosticLineNrInfo', 'BLUE_5', { bg = 'BLUE_9' })
 -- Git coloring
 hl('GitSignsAddNr', 'GREEN_9')
 hl('GitSignsChangeNr', 'PURPLE')
@@ -151,34 +147,39 @@ hl('CopilotSuggestion', 'NEUTRAL', { bg = 'GRAY_8', italic = true, bold = true  
 
 -- Diagnostics {{{
 -- Errors
-hl('DiagnosticUnderlineError', 'RED_2', { bg = 'RED_9' }) -- Problematic code
+hl('DiagnosticLineNrError', 'RED_2', { bg = 'RED_9'})         -- Line number
+hl('DiagnosticUnderlineError', 'RED_2', { bg = 'RED_9' })     -- Problematic code
 hl('DiagnosticError', 'RED_2', { bg = 'RED_9', bold = true }) -- Floating text
-hl('DiagnosticVirtualTextError', 'RED_3', { bg = 'RED_9' }) -- Virtual text
-hl('DiagnosticDiagLineError', 'RED_2', { bg = 'RED_9'})
+hl('DiagnosticVirtualTextError', 'RED_3', { bg = 'RED_9' })   -- Virtual text
+hl('DiagnosticDiagLineError', 'RED_2', { bg = 'RED_9'})       -- Diag line
 
 -- Warning
-hl('DiagnosticUnderlineWarn', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Problematic code
-hl('DiagnosticWarn', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Floating text
-hl('DiagnosticVirtualTextWarn', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Virtual text
-hl('DiagnosticDiagLineWarn', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Problematic code
--- Hints (considered as warnings)
-hl('DiagnosticUnderlineHint', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Problematic code
-hl('DiagnosticHint', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Floating text
-hl('DiagnosticVirtualTextHint', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Virtual text
-hl('DiagnosticDiagLineHint', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Problematic code
+hl('DiagnosticLineNrWarn', 'YELLOW_5', { bg = 'YELLOW_9', bold = true }) -- Line number
+hl('DiagnosticUnderlineWarn', 'YELLOW_5', { bg = 'YELLOW_9' })           -- Problematic code
+hl('DiagnosticWarn', 'YELLOW_5', { bg = 'YELLOW_9' })                    -- Floating text
+hl('DiagnosticVirtualTextWarn', 'YELLOW_5', { bg = 'YELLOW_9' })         -- Virtual text
+hl('DiagnosticDiagLineWarn', 'YELLOW_5', { bg = 'YELLOW_9' })            -- Diag line
 -- Unnecessary (considered as warnings)
 hl('DiagnosticUnnecessary', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Problematic code
 
 -- Info
+hl('DiagnosticLineNrInfo', 'BLUE_5', { bg = 'BLUE_9' })     -- Line number
 hl('DiagnosticUnderlineInfo', 'BLUE_3', { bg = 'BLUE_9'})   -- Problematic code
 hl('DiagnosticInfo', 'BLUE', { bg = 'BLUE_9' })             -- Floating text
 hl('DiagnosticVirtualTextInfo', 'BLUE_3', { bg = 'BLUE_9'}) -- Virtual text
-hl('DiagnosticDiagLineInfo', 'BLUE_3', { bg = 'BLUE_9'})   -- Problematic code
+hl('DiagnosticDiagLineInfo', 'BLUE_3', { bg = 'BLUE_9'})    -- Diag line
+
+-- Hints
+hl('DiagnosticLineNrHint', 'VIOLET_5', { bg = 'GRAY_7' })      -- Line number
+hl('DiagnosticUnderlineHint', 'VIOLET_5', { bg = 'VIOLET_9' }) -- Problematic code
+hl('DiagnosticHint', 'VIOLET_5', { bg = 'GRAY_7' })            -- Floating text
+hl('DiagnosticVirtualTextHint', 'VIOLET_5', { bg = 'GRAY_7' }) -- Virtual text
+hl('DiagnosticDiagLineHint', 'VIOLET_5', { bg = 'GRAY_7' })    -- Diag line
 -- }}}
 
 -- Statusline {{{
 O.colors.statusline = {
-  normal = { bg = 'EMERALD_9', fg = 'EMERALD_2', bold = true },
+  normal = { bg = 'EMERALD_9', fg = 'EMERALD_2', bold = true },  
   insert = { bg = 'YELLOW', fg = 'BLACK', bold = true },
   visual = { bg = 'BLUE', fg = 'WHITE', bold = true },
   search = { bg = 'ORANGE_7', fg = 'ORANGE_2', bold = true },
@@ -200,8 +201,11 @@ O.colors.statusline = {
   -- LSP
   lsp = {
     loading = { bg = 'GRAY_7', fg = 'GRAY_8' },
-    ok = { bg = 'GREEN_9', fg = 'GREEN_2' },
-    error = { bg = 'RED_9', fg = 'RED_2' }
+    error = { bg = 'RED_9', fg = 'RED_2' },
+    warning = { bg = 'YELLOW_9', fg = 'YELLOW_5' },
+    info = { bg = 'BLUE_9', fg = 'BLUE_3' },
+    hint = { bg = 'GRAY_7', fg = 'VIOLET_5' },
+    success = { bg = 'GREEN_9', fg = 'GREEN_2' },
   }
 }
 -- }}}
@@ -262,6 +266,32 @@ hl('GitSignsTopdeleteLn', 'none', { bg = 'RED_9' })
 hl('GitSignsDeleteLn', 'none', { bg = 'RED_9' })
 -- }}}
 
+-- Noice {{{
+hl('NoiceMini', 'none')
+-- O_message
+hl('NoiceOMessageNormal', 'NOTICE')
+-- O_warning
+hl('NoiceOWarningNormal', 'WARNING')
+-- O_error
+hl('NoiceFormatLevelError', 'RED_2', { bg = 'RED_9', bold = true })
+hl('NoiceOErrorErrorMsg', 'RED_8')
+-- Messages
+hl('NoiceSplit', 'none', { bg = 'BLACK'})
+hl('MoreMsg', 'COMMENT')
+-- }}}
+
+-- Misc {{{
+hl('ColorColumn', 'none', { bg = 'GRAY_9'}) -- Max column
+hl('EndOfBuffer', 'BLACK')                  -- Filler lines (~) after the end of the buffer.
+hl('NonText', 'GRAY_8')                     -- End-Of-Line (↲) and wrapped lines (↪) chars
+hl('Whitespace', 'YELLOW')                  -- "nbsp", "space", "tab", "multispace", "lead" and "trail"
+hl('MatchParen', 'WHITE', { bg = 'BLUE' })  -- Matching parenthesis
+hl('Directory', 'DIRECTORY')                -- Directory names 
+-- }}}
+
+
+
+
 -- Avante {{{
 -- UI
 hl('AvanteSidebarWinSeparator', 'GRAY_8', { bg = 'GRAY_8' }) -- Window seperators
@@ -296,22 +326,6 @@ hl('AvanteConflictIncoming', 'none', { bg = 'GREEN_9'})
 hl('AvanteConflictCurrentLabel', 'RED_5', { bg = 'RED_9', bold = true })
 hl('AvanteConflictIncomingLabel', 'GREEN_6', { bg = 'GREEN_8', bold = true})
 hl('AvanteToBeDeletedWOStrikethrough', 'none', { bg = 'RED_9', strikethrough = true })
---
---
--- }}}
-
--- Noice {{{
-hl('NoiceMini', 'none')
--- O_message
-hl('NoiceOMessageNormal', 'NOTICE')
--- O_warning
-hl('NoiceOWarningNormal', 'WARNING')
--- O_error
-hl('NoiceFormatLevelError', 'RED_2', { bg = 'RED_9', bold = true })
-hl('NoiceOErrorErrorMsg', 'RED_8')
--- Messages
-hl('NoiceSplit', 'none', { bg = 'BLACK'})
-hl('MoreMsg', 'COMMENT')
 -- }}}
 
 -- Notify {{{
@@ -345,15 +359,6 @@ hl('NotifyERRORIcon', 'ERROR')
 hl('NotifyERRORTitle', 'ERROR')
 -- }}}
 
-
--- Misc {{{
-hl('ColorColumn', 'none', { bg = 'GRAY_9'}) -- Max column
-hl('EndOfBuffer', 'BLACK')                  -- Filler lines (~) after the end of the buffer.
-hl('NonText', 'GRAY_8')                     -- End-Of-Line (↲) and wrapped lines (↪) chars
-hl('Whitespace', 'YELLOW')                  -- "nbsp", "space", "tab", "multispace", "lead" and "trail"
-hl('MatchParen', 'WHITE', { bg = 'BLUE' })  -- Matching parenthesis
-hl('Directory', 'DIRECTORY')                -- Directory names 
--- }}}
 
 
 

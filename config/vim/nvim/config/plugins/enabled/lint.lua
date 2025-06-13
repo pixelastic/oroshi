@@ -34,36 +34,23 @@ return {
   -- https://github.com/mfussenegger/nvim-lint
   -- Spawns linter asynchronously and display results
   -- This should be used only when LSP Diagnostics are not enough
-  -- {
-  --   "mfussenegger/nvim-lint",
-  --   event = { "BufReadPre", "BufNewFile" },
-  --   config = function()
-  --     local lint = require("lint")
-  --
-  --     lint.linters_by_ft = {
-  --       lua = { }
-  --       -- javascript = { "eslint_d" },
-  --       -- typescript = { "eslint_d" },
-  --       -- javascriptreact = { "eslint_d" },
-  --       -- typescriptreact = { "eslint_d" },
-  --       -- svelte = { "eslint_d" },
-  --       -- python = { "pylint" },
-  --     }
-  --
-  --     local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
-  --
-  --     vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
-  --       group = lint_augroup,
-  --       callback = function()
-  --         lint.try_lint()
-  --       end,
-  --     })
-  --
-  --     vim.keymap.set("n", "<leader>l", function()
-  --       lint.try_lint()
-  --     end, { desc = "Trigger linting for current file" })
-  --   end,
-  -- },
+  {
+    "mfussenegger/nvim-lint",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      local lint = require("lint")
+
+      helper.configureZshlint()
+
+      lint.linters_by_ft = {
+        zsh = { "zshlint" },
+      }
+
+      F.autocmd({"BufEnter", "BufWritePost", "InsertLeave"}, function()
+        lint.try_lint()
+      end)
+    end,
+  },
 
   -- Conform
   -- https://github.com/stevearc/conform.nvim
