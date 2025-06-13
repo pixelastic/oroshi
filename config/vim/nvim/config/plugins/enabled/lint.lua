@@ -1,6 +1,5 @@
 local helper = O_require('oroshi/plugins/helpers/lint')
 
-
 return {
   -- LSP
   -- Installs LSP servers and configure them.
