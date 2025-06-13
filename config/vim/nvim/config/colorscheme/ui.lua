@@ -154,15 +154,18 @@ hl('CopilotSuggestion', 'NEUTRAL', { bg = 'GRAY_8', italic = true, bold = true  
 hl('DiagnosticUnderlineError', 'RED_2', { bg = 'RED_9' }) -- Problematic code
 hl('DiagnosticError', 'RED_2', { bg = 'RED_9', bold = true }) -- Floating text
 hl('DiagnosticVirtualTextError', 'RED_3', { bg = 'RED_9' }) -- Virtual text
+hl('DiagnosticDiagLineError', 'RED_2', { bg = 'RED_9'})
 
 -- Warning
 hl('DiagnosticUnderlineWarn', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Problematic code
 hl('DiagnosticWarn', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Floating text
 hl('DiagnosticVirtualTextWarn', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Virtual text
+hl('DiagnosticDiagLineWarn', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Problematic code
 -- Hints (considered as warnings)
 hl('DiagnosticUnderlineHint', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Problematic code
 hl('DiagnosticHint', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Floating text
 hl('DiagnosticVirtualTextHint', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Virtual text
+hl('DiagnosticDiagLineHint', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Problematic code
 -- Unnecessary (considered as warnings)
 hl('DiagnosticUnnecessary', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Problematic code
 
@@ -170,8 +173,7 @@ hl('DiagnosticUnnecessary', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Problematic code
 hl('DiagnosticUnderlineInfo', 'BLUE_3', { bg = 'BLUE_9'})   -- Problematic code
 hl('DiagnosticInfo', 'BLUE', { bg = 'BLUE_9' })             -- Floating text
 hl('DiagnosticVirtualTextInfo', 'BLUE_3', { bg = 'BLUE_9'}) -- Virtual text
-
-hl('DiagnosticOWarning', 'YELLOW')
+hl('DiagnosticDiagLineInfo', 'BLUE_3', { bg = 'BLUE_9'})   -- Problematic code
 -- }}}
 
 -- Statusline {{{

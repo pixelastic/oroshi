@@ -64,14 +64,14 @@ M.configureDiagLine = function()
     data.lineNumber = currentLineNumber -- Update current line
 
     -- No error: We hide
-    local content = M.getDiagContent(currentLineNumber)
-    if not content then
+    local error = M.getErrorDetails(currentLineNumber)
+    if not error then
       M.hideDiagLine(data)
       return
     end
 
     -- Update content of the diag line
-    M.updateDiagLine(data, content)
+    M.updateDiagLine(data, error)
   end)
 end
 
@@ -116,34 +116,51 @@ M.hideDiagLine = function(data)
 end
 
 -- Update the content of the diag line
-M.updateDiagLine = function(data, content)
+M.updateDiagLine = function(data, error)
   if not data.windowId then
     M.createDiagLine(data)
   end
 
   -- Update content
-  vim.api.nvim_buf_set_lines(data.bufferId, 0, -1, false, { content })
+  vim.api.nvim_buf_set_lines(
+    data.bufferId,    -- bufferId
+    0, -1,            -- Range, from beginning to end 
+    false,            -- Do not error if adds more lines than previously
+    { error.content } -- Actual content
+  )
 
-  -- vim.api.nvim_set_option_value(
-  --   'winhighlight',
-  --   'Normal:DiagnosticOWarning',
-  --   { win = diagWindowId }
-  -- )
+  -- Change highlight groups
+  local severityToHighlight = {
+    [vim.diagnostic.severity.ERROR] = 'DiagnosticDiagLineError',
+    [vim.diagnostic.severity.WARN] = 'DiagnosticDiagLineWarn',
+    [vim.diagnostic.severity.INFO] = 'DiagnosticDiagLineInfo',
+    [vim.diagnostic.severity.HINT] = 'DiagnosticDiagLineHint',
+  }
+  vim.api.nvim_set_option_value(
+    'winhighlight',
+    'Normal:' .. severityToHighlight[error.severity],
+    { win = data.windowId }
+  )
 
   -- Show window
-  vim.api.nvim_win_set_config(data.windowId, { hide = false })
+  vim.api.nvim_win_set_config(data.windowId, {
+    width = F.windowWidth(),
+    hide = false
+  })
 end
 
-M.getDiagContent = function(lineNumber)
-  local rawDiagnostics = vim.diagnostic.get(0, { lnum = lineNumber - 1 })
+-- Returns the .severity and .content of the current line
+M.getErrorDetails = function(lineNumber)
+  local diag = vim.diagnostic.get(0, { lnum = lineNumber - 1 })
 
-  if F.isEmpty(rawDiagnostics) then
+  if F.isEmpty(diag) then
     return nil
   end
 
-  local message = rawDiagnostics[1].message
-  local code = rawDiagnostics[1].code
-  return code .. ': ' .. message
+  return {
+    severity = diag[1].severity,
+    content = diag[1].code .. ' : ' .. diag[1].message
+  }
 end
 
 return M

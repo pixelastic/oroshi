@@ -4,8 +4,8 @@ return {
   -- Kitty
   -- https://github.com/fladson/vim-kitty
   -- Syntax highlighting for kitty files
-  { 
-    "fladson/vim-kitty", 
+  {
+    "fladson/vim-kitty",
     ft = "kitty"
   },
 

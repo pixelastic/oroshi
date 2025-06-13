@@ -9,7 +9,6 @@
 -- TODO: Folding that folds on expr and markers
 -- TODO: https://github.com/folke/trouble.nvim ? To see diagnostics
 -- TODO: Check https://github.com/folke/tokyonight.nvim for methods to lighten/darken colors?
-local a = {}
 
 -- AI:
 -- TODO: Copilot to suggest code as I type with Ghost text

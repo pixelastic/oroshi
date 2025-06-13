@@ -152,19 +152,19 @@ return {
 
         for _, windowId in ipairs(vim.api.nvim_tabpage_list_wins(tabId)) do
           local bufferId = vim.api.nvim_win_get_buf(windowId)
-          local filetype = vim.api.nvim_buf_get_option(bufferId, 'filetype')
+          local filetype = vim.api.nvim_get_option_value('filetype', { buf = bufferId })
 
           -- Skip useless windows
           if filetype == "" or F.includes(ignoreList, filetype) then
             goto continue
           end
           -- Avante Response
-          if filetype == 'Avante' then 
+          if filetype == 'Avante' then
             windows.avante = windowId
             goto continue
           end
           -- Avante Input
-          if filetype == 'AvanteInput' then 
+          if filetype == 'AvanteInput' then
             windows.avanteInput = windowId
             goto continue
           end
@@ -231,9 +231,9 @@ return {
           avante.close_sidebar()
         end
 
-        avanteApi.ask({ 
+        avanteApi.ask({
           new_chat = true,
-          without_selection = true 
+          without_selection = true
         })
       end
       ftplugin({ 'Avante', 'AvanteInput' }, function()
