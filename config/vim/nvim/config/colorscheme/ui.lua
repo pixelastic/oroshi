@@ -7,6 +7,7 @@ hl('NormalNC', 'none') -- Normal text in unfocused windows. Should not be set.
 hl('DiagnosticInfo', 'INFO')
 hl('ErrorMsg', 'RED_8', { bold = false}) --	Error messages
 hl('Conceal', 'NEUTRAL') --	Hidden text
+hl('Question', 'NEUTRAL') --	"Press ENTER or type command to continue"
 -- }}}
 
 -- Tabs {{{
@@ -179,7 +180,7 @@ hl('DiagnosticDiagLineHint', 'VIOLET_4', { bg = 'GRAY_8' })    -- Diag line
 
 -- Statusline {{{
 O.colors.statusline = {
-  normal = { bg = 'EMERALD_9', fg = 'EMERALD_2', bold = true },  
+  normal = { bg = 'EMERALD_9', fg = 'EMERALD_2', bold = true },
   insert = { bg = 'YELLOW', fg = 'BLACK', bold = true },
   visual = { bg = 'BLUE', fg = 'WHITE', bold = true },
   search = { bg = 'ORANGE_7', fg = 'ORANGE_2', bold = true },
@@ -286,7 +287,7 @@ hl('EndOfBuffer', 'BLACK')                  -- Filler lines (~) after the end of
 hl('NonText', 'GRAY_8')                     -- End-Of-Line (↲) and wrapped lines (↪) chars
 hl('Whitespace', 'YELLOW')                  -- "nbsp", "space", "tab", "multispace", "lead" and "trail"
 hl('MatchParen', 'WHITE', { bg = 'BLUE' })  -- Matching parenthesis
-hl('Directory', 'DIRECTORY')                -- Directory names 
+hl('Directory', 'DIRECTORY')                -- Directory names
 -- }}}
 
 
@@ -358,7 +359,3 @@ hl('NotifyERRORBorder', 'ERROR')
 hl('NotifyERRORIcon', 'ERROR')
 hl('NotifyERRORTitle', 'ERROR')
 -- }}}
-
-
-
-

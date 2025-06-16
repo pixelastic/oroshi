@@ -1,7 +1,7 @@
 local hl = F.hl
 
 -- In this file, I list all Highlight groups that I haven't defined yet, and I
--- set them as XXX (which results in a noticable CYAN background). 
+-- set them as XXX (which results in a noticable CYAN background).
 --
 -- If I see something looking like this, I go to this file, and change the XXX
 -- to YYY (turning it purple, can be done with Ctrl-X easily) until I find the
@@ -32,8 +32,7 @@ hl('LineNrAbove', 'XXX') --	Line number for when the 'relativenumber'
 hl('LineNrBelow', 'XXX') --	Line number for when the 'relativenumber'
 hl('ModeMsg', 'XXX') --		'showmode' message (e.g., "-- INSERT --").
 hl('MsgSeparator', 'XXX') --	Top bar separator of messsage
-hl('Question', 'XXX') --	"Press ENTER or type command to continue"
-hl('QuickFixLine', 'XXX') --	Current |quickfix| item in the quickfix window. Combined with
+hl('QuickFixLine', 'YYY') --	Current |quickfix| item in the quickfix window. Combined with
 hl('SnippetTabstop', 'XXX') --	Tabstops in snippets. |vim.snippet|
 hl('SpellBad', 'XXX') --	Word that is not recognized by the spellchecker. |spell|
 hl('SpellCap', 'XXX') --	Word that should start with a capital. |spell|

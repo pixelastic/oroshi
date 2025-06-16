@@ -4,27 +4,27 @@ local hl = F.hl
 hl('Boolean', 'BOOLEAN', { bold = true })
 hl('Comment', 'COMMENT')
 hl('Conditional', 'STATEMENT') --	if, then, else, endif, switch, etc.
-hl('Constant', 'CONSTANT', { bold = true }) 
-hl('Delimiter', 'PUNCTUATION') 
-hl('Error', 'ERROR', { bold = true }) 
-hl('Function', 'FUNCTION') 
-hl('Identifier', 'VARIABLE') 
-hl('Include', 'IMPORT') 
-hl('Keyword', 'KEYWORD') 
-hl('Number', 'NUMBER', { bold = true }) 
+hl('Constant', 'CONSTANT', { bold = true })
+hl('Delimiter', 'PUNCTUATION')
+hl('Error', 'ERROR', { bold = true })
+hl('Function', 'FUNCTION')
+hl('Identifier', 'VARIABLE')
+hl('Include', 'IMPORT')
+hl('Keyword', 'KEYWORD')
+hl('Number', 'NUMBER', { bold = true })
 hl('Operator', 'PUNCTUATION') --	"sizeof", "+", "*", etc.
 hl('PreProc', 'HEADER') --		generic Preprocessor
 hl('Repeat', 'STATEMENT') --		for, do, while, etc.
 hl('SpecialChar', 'SPECIAL_CHAR') --	special character in a constant
 hl('SpecialKey', 'SPECIAL_CHAR') -- Unprintable characters
-hl('Special', 'SPECIAL_CHAR') 
-hl('Statement', 'STATEMENT') 
+hl('Special', 'SPECIAL_CHAR')
+hl('Statement', 'STATEMENT')
 hl('StorageClass', 'VARIABLE_TYPE') --	static, register, volatile, etc.
-hl('String', 'STRING') 
+hl('String', 'STRING')
 hl('Structure', 'VARIABLE_TYPE') --	struct, union, enum, etc.
-hl('Todo', 'ORANGE_3', { bg = 'RED_7', bold = true }) 
+hl('Todo', 'ORANGE_3', { bg = 'RED_7', bold = true })
 hl('Title', 'HEADER') --		Titles for output from ":set all", ":autocmd" etc.
-hl('Type', 'VARIABLE_TYPE') 
+hl('Type', 'VARIABLE_TYPE')
 hl('Underlined', 'none', { underline = true }) --	text that stands out, HTML links
 -- }}}
 
@@ -85,12 +85,26 @@ hl('@lsp.type.property.lua', 'none')
 hl('@markup.heading.1.vimdoc', 'BLUE_4')
 hl('@label.vimdoc', 'GREEN_7')
 -- }}}
+-- html {{{
+hl('@tag.delimiter.html', 'PUNCTUATION')
+hl('@tag.html', 'KEYWORD')
+-- call s:Link('htmlTagName', 'KEYWORD')
+-- call s:Link('htmlTag', 'PUNCTUATION')
+-- call s:Link('htmlEndTag', 'PUNCTUATION')
+-- call s:Link('htmlTitle', 'TEXT')
+-- call s:Link('htmlh1', 'TEXT')
+-- call s:Link('htmlh2', 'TEXT')
+-- call s:Link('htmlh3', 'TEXT')
+-- call s:Link('htmlh4', 'TEXT')
+-- call s:Link('htmlh5', 'TEXT')
+-- call s:Link('htmlh6', 'TEXT')
+-- }}}
 -- markdown {{{
 -- bold
 hl('@markup.strong.markdown_inline', 'TEXT', { bold = true }) -- **bold**
 -- links
 hl('@markup.link.url.markdown_inline', 'LINK', { underline = true }) -- [](url)
-hl('@markup.link.label.markdown_inline', 'STRING') -- [label]() 
+hl('@markup.link.label.markdown_inline', 'STRING') -- [label]()
 hl('@markup.link.markdown_inline', 'PUNCTUATION') -- []()
 hl('RenderMarkdownLink', 'LINK') -- 	Image & hyperlink icons
 -- inline code

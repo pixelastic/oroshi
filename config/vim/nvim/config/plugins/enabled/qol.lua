@@ -32,8 +32,9 @@ return {
         messages = {
           enabled = true,
           view = "O_info",          -- Default messages
-          view_warn = "O_warning",  -- Warning messages
           view_error = "messages",  -- Error messages in their own split
+          view_warn = "O_warning",  -- Warning messages
+          view_history = "messages",
           view_search = false,      -- Do not show search count
         },
         -- Popupmenu, used for completion
@@ -79,10 +80,6 @@ return {
               },
             },
           },
-          -- Error messages
-          O_error = {
-            view = "messages",
-          },
           -- Commandline: Small line at the bottom left of the screen
           O_cmdline = {
             view = "mini",
@@ -110,7 +107,7 @@ return {
           { filter = { find = "Pattern not found", kind = { "emsg" } }, view = "O_warning", }, -- No search match
           { filter = { event = "notify", kind = "warning" }, view = "O_warning", },
           -- Error
-          { filter = { event = "notify", kind = "error" }, view = "O_error", },
+          { filter = { event = "notify", kind = "error" }, view = "messages", },
         },
 
 

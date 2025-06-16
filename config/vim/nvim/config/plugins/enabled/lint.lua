@@ -39,6 +39,8 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     config = function()
       local lint = require("lint")
+      lint.linters = {}
+      lint.linters_by_ft = {}
 
       helperZsh.init()
 
@@ -46,6 +48,21 @@ return {
         lint.try_lint()
       end)
     end,
+  },
+
+  -- mini.trailspace
+  -- https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-trailspace.md
+  -- Remove trailing spaces on save
+  {
+    'echasnovski/mini.trailspace',
+    version = '*',
+    config = function()
+      local trailspace = require('mini.trailspace')
+      F.autocmd('BufWritePre', function()
+        trailspace.trim()            -- Remove trailing spaces
+        trailspace.trim_last_lines() -- Remove trailing lines
+      end)
+    end
   },
 
   -- Conform

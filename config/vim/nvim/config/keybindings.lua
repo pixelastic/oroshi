@@ -182,6 +182,7 @@ nmap(';', addSemicolonAtEndOfLine, 'Add a semicolon at end of line')
 -- Paste
 nmap('p', ':pu<CR>`[=`]', "Paste right after current line, and keep indent")
 nmap('P', ':pu!<CR>`[=`]', "Paste right before current line, and keep indent")
+vmap('p', '"_x:pu<CR>`[=`]', "Paste in place of current selection")
 nmap('gp', '`[v`]', "Select what was just pasted")
 nmap('c', '"_c', "Change without copying it")
 nmap('x', '"_x', "Delete without copying it")
@@ -191,7 +192,7 @@ vmap('x', '"_x', "Delete without copying it")
 nmap('⒨', "`m", "Jump to mark set with mm") -- Ctrl-M jumps to m mark
 nmap('M', '`', 'Jump to specific mark')
 
--- Sort, Shuffle, Uniq 
+-- Sort, Shuffle, Uniq
 vmap("r", ":!shuf<CR><CR>", "Randomize")
 vmap("s", ":!sort --version-sort<CR><CR>", "Sort")
 vmap("S", ":!sort --version-sort --reverse<CR><CR>", "Sort", { silent = false })
