@@ -22,6 +22,7 @@ hl('Statement', 'STATEMENT')
 hl('StorageClass', 'VARIABLE_TYPE') --	static, register, volatile, etc.
 hl('String', 'STRING')
 hl('Structure', 'VARIABLE_TYPE') --	struct, union, enum, etc.
+hl('Tag', 'VARIABLE_TYPE')
 hl('Todo', 'ORANGE_3', { bg = 'RED_7', bold = true })
 hl('Title', 'HEADER') --		Titles for output from ":set all", ":autocmd" etc.
 hl('Type', 'VARIABLE_TYPE')
@@ -88,16 +89,7 @@ hl('@label.vimdoc', 'GREEN_7')
 -- html {{{
 hl('@tag.delimiter.html', 'PUNCTUATION')
 hl('@tag.html', 'KEYWORD')
--- call s:Link('htmlTagName', 'KEYWORD')
--- call s:Link('htmlTag', 'PUNCTUATION')
--- call s:Link('htmlEndTag', 'PUNCTUATION')
--- call s:Link('htmlTitle', 'TEXT')
--- call s:Link('htmlh1', 'TEXT')
--- call s:Link('htmlh2', 'TEXT')
--- call s:Link('htmlh3', 'TEXT')
--- call s:Link('htmlh4', 'TEXT')
--- call s:Link('htmlh5', 'TEXT')
--- call s:Link('htmlh6', 'TEXT')
+hl('@tag.attribute.html', 'VARIABLE_TYPE')
 -- }}}
 -- markdown {{{
 -- bold
