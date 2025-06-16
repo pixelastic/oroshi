@@ -31,9 +31,9 @@ return {
         -- Messages
         messages = {
           enabled = true,
-          view = "O_info",          -- Default messages
+          view = "O_debug",          -- Default messages
+          view_warn = "O_warn",  -- Warning messages
           view_error = "messages",  -- Error messages in their own split
-          view_warn = "O_warning",  -- Warning messages
           view_history = "messages",
           view_search = false,      -- Do not show search count
         },
@@ -46,38 +46,37 @@ return {
         -- Views represent "how" Noice should display specific things
         -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/views.lua
         views = {
-          -- Debug message: Small line at the bottom right of the screen
-          O_debug = {
+          -- Error: Split, with all past errors, in reverse order
+          O_error = {
+
+          },
+          -- Warning: Small notification at bottom right
+          O_warn = {
             view = "mini",
-            timeout = 8000,
+            timeout = 4000,
             position = { col = "100%", row = -1 },
-            format = { "{message}" },
-            win_options = {
-              winhighlight = {
-                Normal = "NoiceODebugNormal"
-              },
+            format = {
+              { "{message} ", hl_group = "NoiceOWarningMessage" },
+              { "", hl_group = "NoiceOWarningIconSeparator" },
+              { "   ", hl_group = "NoiceOWarningIcon" },
             },
           },
-          -- Info message: Small line at the bottom right of the screen
+          -- Info: Small notification at bottom right
           O_info = {
             view = "mini",
-            timeout = 3000,
+            timeout = 4000,
             position = { col = "100%", row = -1 },
-            win_options = {
-              winhighlight = {
-                Normal = "NoiceOInfoNormal"
-              },
+            format = {
+              { "{message} ", hl_group = "NoiceOInfoMessage" },
+              { "", hl_group = "NoiceOInfoIconSeparator" },
+              { "   ", hl_group = "NoiceOInfoIcon" },
             },
           },
-          -- Warning messages: Small line at the bottom right of the screen
-          O_warning = {
-            view = "mini",
-            timeout = 3000,
-            position = { col = "100%", row = -1 },
+          -- Debug: Split, last info message displayed
+          O_debug = {
+            view = "split",
             win_options = {
-              winhighlight = {
-                Normal = "NoiceOWarningNormal"
-              },
+              number = false,
             },
           },
           -- Commandline: Small line at the bottom left of the screen
@@ -97,17 +96,80 @@ return {
           -- Hide
           { filter = { find = "lines yanked", kind = { "" }, event = "msg_show" }, opts = { skip = true }, },   -- "__ lines yanked"
           { filter = { find = "lines indented", kind = { "" }, event = "msg_show" }, opts = { skip = true }, }, -- "__ lines indented"
-          -- Messages
-          { filter = { find = "Treesitter", kind = { "echo" }, event = "msg_show" }, view = "messages" }, -- <F3> colorscheme debugger
           -- Debug
-          { filter = { event = "notify", kind = "debug", max_height = 10 }, view = "O_debug", }, -- F.debug()
-          { filter = { event = "notify", kind = "debug", min_height = 10 }, view = "messages", }, -- Long debug messages
+          { filter = { event = "notify", kind = "debug" }, opts = { skip = true, history = true }},
+          -- Info
+          { filter = { event = "notify", kind = "info" }, view = "O_info", },
           -- Warning
-          { filter = { find = "No items found at position", kind = { "echo" }, event = "msg_show" }, view = "O_warning" }, -- <F3> colorscheme debugger
-          { filter = { find = "Pattern not found", kind = { "emsg" } }, view = "O_warning", }, -- No search match
-          { filter = { event = "notify", kind = "warning" }, view = "O_warning", },
+          { filter = { find = "Pattern not found", kind = { "emsg" } }, view = "O_warn", }, -- No search match
+          { filter = { event = "notify", kind = "warn" }, view = "O_warn", },
+
+
+
+
+
+
           -- Error
-          { filter = { event = "notify", kind = "error" }, view = "messages", },
+          -- { filter = { event = "notify", kind = "error" }, view = "messages", },
+          -- { filter = { event = "notify", kind = "debug", max_height = 10 }, view = "O_debug", }, -- F.debug()
+          -- { filter = { event = "notify", kind = "debug", min_height = 10 }, view = "messages", }, -- Long debug messages
+
+        },
+        -- You can add any custom commands below that will be available with `:Noice command`
+        commands = {
+          showLastDebug = {
+            view = "O_debug",
+            opts = { enter = false },
+            filter = {
+              any = {
+                { event = "notify", kind = "debug" }
+              }
+            },
+            filter_opts = { count = 1 },
+          },
+          history = {
+            -- options for the message history that you get with `:Noice`
+            view = "split",
+            opts = { enter = true, format = "details" },
+            filter = {
+              any = {
+                { event = "notify" },
+                { error = true },
+                { warning = true },
+                { event = "msg_show", kind = { "" } },
+                { event = "lsp", kind = "message" },
+              },
+            },
+          },
+          -- :Noice last
+          last = {
+            view = "popup",
+            opts = { enter = true, format = "details" },
+            filter = {
+              any = {
+                { event = "notify" },
+                { error = true },
+                { warning = true },
+                { event = "msg_show", kind = { "" } },
+                { event = "lsp", kind = "message" },
+              },
+            },
+            filter_opts = { count = 1 },
+          },
+          -- :Noice errors
+          errors = {
+            -- options for the message history that you get with `:Noice`
+            view = "popup",
+            opts = { enter = true, format = "details" },
+            filter = { error = true },
+            filter_opts = { reverse = true },
+          },
+          all = {
+            -- options for the message history that you get with `:Noice`
+            view = "split",
+            opts = { enter = true, format = "details" },
+            filter = {},
+          },
         },
 
 
@@ -116,6 +178,12 @@ return {
 
 
 
+        -- default options for require('noice').redirect
+        -- see the section on Command Redirection
+        redirect = {
+          view = "popup",
+          filter = { event = "msg_show" },
+        },
         lsp = {
           enabled = false,
           progress = { enabled = false, }, -- Disable progress bars when loading
@@ -170,58 +238,6 @@ return {
           -- Benefit of using Noice for this is the routing and consistent history view
           enabled = true,
           view = "notify",
-        },
-        -- default options for require('noice').redirect
-        -- see the section on Command Redirection
-        redirect = {
-          view = "popup",
-          filter = { event = "msg_show" },
-        },
-        -- You can add any custom commands below that will be available with `:Noice command`
-        commands = {
-          history = {
-            -- options for the message history that you get with `:Noice`
-            view = "split",
-            opts = { enter = true, format = "details" },
-            filter = {
-              any = {
-                { event = "notify" },
-                { error = true },
-                { warning = true },
-                { event = "msg_show", kind = { "" } },
-                { event = "lsp", kind = "message" },
-              },
-            },
-          },
-          -- :Noice last
-          last = {
-            view = "popup",
-            opts = { enter = true, format = "details" },
-            filter = {
-              any = {
-                { event = "notify" },
-                { error = true },
-                { warning = true },
-                { event = "msg_show", kind = { "" } },
-                { event = "lsp", kind = "message" },
-              },
-            },
-            filter_opts = { count = 1 },
-          },
-          -- :Noice errors
-          errors = {
-            -- options for the message history that you get with `:Noice`
-            view = "popup",
-            opts = { enter = true, format = "details" },
-            filter = { error = true },
-            filter_opts = { reverse = true },
-          },
-          all = {
-            -- options for the message history that you get with `:Noice`
-            view = "split",
-            opts = { enter = true, format = "details" },
-            filter = {},
-          },
         },
         status = {}, --- @see section on statusline components
         -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/format.lua

@@ -90,11 +90,12 @@ M.update = function(data, error)
   end
 
   -- Update content
+  local content = F.split(error.content, '\n')
   vim.api.nvim_buf_set_lines(
     data.bufferId,    -- bufferId
-    0, -1,            -- Range, from beginning to end 
+    0, -1,            -- Range, from beginning to end
     false,            -- Do not error if adds more lines than previously
-    { error.content } -- Actual content
+    content -- Actual content
   )
 
   -- Change highlight groups

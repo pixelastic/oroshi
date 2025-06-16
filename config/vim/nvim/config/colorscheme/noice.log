@@ -1,0 +1,115 @@
+{
+  event = "msg_showcmd",
+  kind = {}
+}
+{
+  event = "msg_showcmd",
+  kind = { { 0, ":", 0 } }
+}
+{ 0, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "" } }
+}
+{ 1, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "N" } }
+}
+{ 2, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "Ni" } }
+}
+{ 3, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "Nic" } }
+}
+{ 4, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "Nice" } }
+}
+{ 5, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "Nice " } }
+}
+{ 4, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "Nice" } }
+}
+{ 3, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "Nic" } }
+}
+{ 2, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "Ni" } }
+}
+{ 1, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "N" } }
+}
+{ 2, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "No" } }
+}
+{ 3, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "Noi" } }
+}
+{ 4, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "Noic" } }
+}
+{ 5, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "Noice" } }
+}
+{ 6, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "Noice " } }
+}
+{ -1, 0, 6, -1,
+  event = "popupmenu_show",
+  kind = { { "viewstats", "", "", "" }, { "routes", "", "", "" }, { "log", "", "", "" }, { "enable", "", "", "" }, { "all", "", "", "" }, { "snacks", "", "", "" }, { "errors", "", "", "" }, { "fzf", "", "", "" }, { "debug", "", "", "" }, { "dismiss", "", "", "" }, { "pick", "", "", "" }, { "stats", "", "", "" }, { "history", "", "", "" }, { "disable", "", "", "" }, { "telescope", "", "", "" }, { "last", "", "", "" }, { "config", "", "", "" } }
+}
+{ 6, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "Noice " } }
+}
+{
+  event = "popupmenu_select",
+  kind = 0
+}
+{ 6, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "Noice " } }
+}
+{ 15, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "Noice viewstats" } }
+}
+{
+  event = "popupmenu_select",
+  kind = 1
+}
+{ 12, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "Noice routes" } }
+}
+{
+  event = "popupmenu_select",
+  kind = 2
+}
+{ 9, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "Noice log" } }
+}
+{
+  event = "popupmenu_hide"
+}
+{ 10, ":", "", 0, 1, 0,
+  event = "cmdline_show",
+  kind = { { 0, "Noice log " } }
+}
+{ false,
+  event = "cmdline_hide",
+  kind = 1
+}

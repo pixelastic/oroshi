@@ -269,10 +269,21 @@ hl('GitSignsDeleteLn', 'none', { bg = 'RED_9' })
 
 -- Noice {{{
 hl('NoiceMini', 'none')
+-- Error
+-- Warn
+hl('NoiceOWarningMessage', 'YELLOW')
+hl('NoiceOWarningIconSeparator', 'YELLOW_9', { bg = 'BLACK'})
+hl('NoiceOWarningIcon', 'YELLOW_5', { bg = 'YELLOW_9', bold = true })
+-- Info
+hl('NoiceOInfoMessage', 'BLUE')
+hl('NoiceOInfoIconSeparator', 'BLUE_9', { bg = 'BLACK'})
+hl('NoiceOInfoIcon', 'BLUE_3', { bg = 'BLUE_9', bold = true })
+-- Debug
+hl('NoiceODebugMessage', 'VIOLET')
+
 -- O_message
 hl('NoiceOMessageNormal', 'NOTICE')
 -- O_warning
-hl('NoiceOWarningNormal', 'WARNING')
 -- O_error
 hl('NoiceFormatLevelError', 'RED_2', { bg = 'RED_9', bold = true })
 hl('NoiceOErrorErrorMsg', 'RED_8')
