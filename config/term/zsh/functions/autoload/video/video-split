@@ -5,8 +5,9 @@
 # $ video-split ./path/to/file.mp4 5-30 output.mp4          # Extract into specific file
 function video-split() {
   local inputFile="${1:a}"
-  local range="$2"
+  local range="$2"    
   local outputFile="$3"
+  echo '${kj}'
 
   if [[ $outputFile == "" ]]; then
     local extension="${inputFile:e}"

@@ -1,4 +1,7 @@
-local helper = O_require('oroshi/plugins/helpers/lint')
+local helperLsp = O_require('oroshi/plugins/helpers/lint/lsp')
+local helperDiagline = O_require('oroshi/plugins/helpers/lint/diagline')
+local helperStatusline = O_require('oroshi/plugins/helpers/lint/statusline')
+local helperZsh = O_require('oroshi/plugins/helpers/lint/zsh')
 
 return {
   -- LSP
@@ -18,16 +21,13 @@ return {
     },
     config = function()
       -- Install and load servers
-      helper.loadServers()
+      helperLsp.init()
 
-      -- Configure vim diagnostics
-      helper.configureDiagnostics()
-
-      -- Configure display of the custom diag line
-      helper.configureDiagLine()
+      -- Configure diag line
+      helperDiagline.init()
 
       -- Configure display in the statusline
-      helper.configureStatusline()
+      helperStatusline.init()
     end,
   },
   -- nvim-lint
@@ -40,11 +40,7 @@ return {
     config = function()
       local lint = require("lint")
 
-      helper.configureZshlint()
-
-      lint.linters_by_ft = {
-        zsh = { "zshlint" },
-      }
+      helperZsh.init()
 
       F.autocmd({"BufEnter", "BufWritePost", "InsertLeave"}, function()
         lint.try_lint()
