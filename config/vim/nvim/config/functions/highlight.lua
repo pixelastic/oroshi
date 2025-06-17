@@ -164,23 +164,22 @@ return {
     -- This will actually be swallowed by noice, but added to the history
     vim.api.nvim_echo(content, true, {})
 
-
     -- Display the last element in history
     -- We need to wait a bit, to let noice process the echo
     F.defer(function()
-      F.closeWindow(function(bufferId)
-        -- Skip all non-noice
-        local filetype = F.getBufferOption('filetype', bufferId)
-        if filetype ~= 'noice' then return false end
-
-        -- Close if contains O_DEBUG_COLORS
-        local lines = F.getBufferLines(bufferId)
-        if F.includes(lines, 'O_DEBUG_COLORS') then
-          return true
-        end
-
-        return false
-      end)
+      -- F.closeWindow(function(bufferId)
+      --   -- Skip all non-noice
+      --   local filetype = F.getBufferOption('filetype', bufferId)
+      --   if filetype ~= 'noice' then return false end
+      --
+      --   -- Close if contains O_DEBUG_COLORS
+      --   local lines = F.getBufferLines(bufferId)
+      --   if F.includes(lines, 'O_DEBUG_COLORS') then
+      --     return true
+      --   end
+      --
+      --   return false
+      -- end)
 
       local noice = require('noice')
       noice.cmd('showDebugColors')
