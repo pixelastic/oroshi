@@ -132,60 +132,59 @@ return {
 
   -- debugColors: Show all highlight groups under cursor
   debugColors = function()
-    F.info('ok')
-    -- -- Build a list of all highlights under cursor
-    -- local highlightData = vim.inspect_pos()
-    -- local pick = function(item)
-    --   return { hl = item.hl_group, link = item.hl_group_link }
-    -- end
-    -- local highlights = F.concat(
-    --   F.map(highlightData.treesitter, pick),
-    --   F.map(highlightData.syntax, pick)
-    -- )
-    --
-    -- -- Stop if none found
-    -- if #highlights == 0 then
-    --   F.warn('No highlights')
-    --   return
-    -- end
-    --
-    -- -- Build a collection of string + color
-    -- local content = {}
-    -- for _, item in ipairs(highlights) do
-    --   F.append(content, { "   " , item.hl })
-    --   F.append(content, { item.hl , item.link })
-    --   F.append(content, { " linked to " , "Comment" })
-    --   F.append(content, { item.link , item.link })
-    --   F.append(content, { "\n" , "Normal" })
-    -- end
-    -- -- Add a invisible marker so we can filter it in noice routes
-    -- F.append(content, { "\nO_DEBUG_COLORS", "EndOfBuffer" })
-    --
-    -- -- Echo it (nvim_echo is the only way to display colors)
-    -- -- This will actually be swallowed by noice, but added to the history
-    -- vim.api.nvim_echo(content, true, {})
-    --
-    --
-    -- -- Display the last element in history
-    -- -- We need to wait a bit, to let noice process the echo
-    -- F.defer(function()
-    --   F.closeWindow(function(bufferId)
-    --     -- Skip all non-noice
-    --     local filetype = F.getBufferOption('filetype', bufferId)
-    --     if filetype ~= 'noice' then return false end
-    --
-    --     -- Close if contains O_DEBUG_COLORS
-    --     local lines = F.getBufferLines(bufferId)
-    --     if F.includes(lines, 'O_DEBUG_COLORS') then
-    --       return true
-    --     end
-    --
-    --     return false
-    --   end)
-    --
-    --   local noice = require('noice')
-    --   noice.cmd('showDebugColors')
-    -- end)
+    -- Build a list of all highlights under cursor
+    local highlightData = vim.inspect_pos()
+    local pick = function(item)
+      return { hl = item.hl_group, link = item.hl_group_link }
+    end
+    local highlights = F.concat(
+      F.map(highlightData.treesitter, pick),
+      F.map(highlightData.syntax, pick)
+    )
+
+    -- Stop if none found
+    if #highlights == 0 then
+      F.warn('No highlights')
+      return
+    end
+
+    -- Build a collection of string + color
+    local content = {}
+    for _, item in ipairs(highlights) do
+      F.append(content, { "   " , item.hl })
+      F.append(content, { item.hl , item.link })
+      F.append(content, { " linked to " , "Comment" })
+      F.append(content, { item.link , item.link })
+      F.append(content, { "\n" , "Normal" })
+    end
+    -- Add a invisible marker so we can filter it in noice routes
+    F.append(content, { "\n\n\nO_DEBUG_COLORS", "EndOfBuffer" })
+
+    -- Echo it (nvim_echo is the only way to display colors)
+    -- This will actually be swallowed by noice, but added to the history
+    vim.api.nvim_echo(content, true, {})
+
+
+    -- Display the last element in history
+    -- We need to wait a bit, to let noice process the echo
+    F.defer(function()
+      F.closeWindow(function(bufferId)
+        -- Skip all non-noice
+        local filetype = F.getBufferOption('filetype', bufferId)
+        if filetype ~= 'noice' then return false end
+
+        -- Close if contains O_DEBUG_COLORS
+        local lines = F.getBufferLines(bufferId)
+        if F.includes(lines, 'O_DEBUG_COLORS') then
+          return true
+        end
+
+        return false
+      end)
+
+      local noice = require('noice')
+      noice.cmd('showDebugColors')
+    end)
   end,
 }
 

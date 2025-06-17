@@ -53,6 +53,7 @@ return {
           -- Warning: Small notification at bottom right
           O_warn = {
             view = "mini",
+            relative = "editor",
             timeout = 4000,
             position = { col = "100%", row = -1 },
             format = {
@@ -64,6 +65,7 @@ return {
           -- Info: Small notification at bottom right
           O_info = {
             view = "mini",
+            relative = "editor",
             timeout = 4000,
             position = { col = "100%", row = -1 },
             format = {
@@ -80,9 +82,10 @@ return {
           -- DebugColors: Split, last debugColors call
           O_debugColors = {
             backend = "split",
+            relative = "editor",
             position = "bottom",
-            size = 5,
             enter = false,
+            size = 5,
             format = { "{message}" },
             close = {
               keys = { "q" },
