@@ -20,6 +20,14 @@ return {
   setCurrentLine = function(newLine)
     vim.api.nvim_set_current_line(newLine)
   end,
+  -- getBufferOption: Return the value of a specific buffer option
+  getBufferOption = function(optionName, bufferId)
+    return vim.api.nvim_get_option_value(optionName, { buf = bufferId})
+  end,
+  -- getBufferLines: Returns a collection of all lines in a buffer
+  getBufferLines = function(bufferId)
+    return vim.api.nvim_buf_get_lines(bufferId, 0, -1, false)
+  end,
   -- position: Returns {line, column} of current position
   position = function()
     local line, column = unpack(vim.api.nvim_win_get_cursor(0))

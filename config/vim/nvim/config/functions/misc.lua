@@ -11,4 +11,8 @@ return {
   isString = function(input)
     return type(input) == 'string'
   end,
+  -- isFunctions: Check if variable is a function
+  isFunction = function(input)
+    return type(input) == 'function'
+  end,
 }

@@ -9,11 +9,8 @@ local convertInput = function(input)
 
   return displayedInput
 end
-return {
-  message = function(input)
-    F.debug(input)
-  end,
 
+return {
   -- error: All past errors, in a split
   error = function(input)
     local output = convertInput(input)

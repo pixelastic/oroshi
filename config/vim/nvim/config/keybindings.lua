@@ -96,14 +96,8 @@ vmap('<F26>', reloadConfig, 'Reload nvim config')
 cmap('<F26>', reloadConfig, 'Reload nvim config')
 
 -- F3: Debug colors
-local function debugColors()
-  -- TODO: Parse inspect_pos() and build my own string that displays the
-  -- highlight groups and display them with F.debug()
-  local colors = vim.inspect_pos()
-  F.debug(colors)
-end
-nmap('<F3>', debugColors, 'Display highlight groups')
-imap('<F3>', debugColors, 'Display highlight groups')
+nmap('<F3>', F.debugColors, 'Display highlight groups')
+imap('<F3>', F.debugColors, 'Display highlight groups')
 
 -- Tabs
 -- Switch

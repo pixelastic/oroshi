@@ -75,9 +75,24 @@ return {
           -- Debug: Split, last info message displayed
           O_debug = {
             view = "split",
-            win_options = {
-              number = false,
+            format = { "{message}" },
+          },
+          -- DebugColors: Split, last debugColors call
+          O_debugColors = {
+            backend = "split",
+            position = "bottom",
+            size = 5,
+            enter = false,
+            format = { "{message}" },
+            close = {
+              keys = { "q" },
             },
+            win_options = {
+              cursorline = false,
+              list = false,
+              wrap = true,
+            },
+
           },
           -- Commandline: Small line at the bottom left of the screen
           O_cmdline = {
@@ -93,11 +108,24 @@ return {
         --
         -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/routes.lua
         routes = {
-          -- Hide
-          { filter = { find = "lines yanked", kind = { "" }, event = "msg_show" }, opts = { skip = true }, },   -- "__ lines yanked"
-          { filter = { find = "lines indented", kind = { "" }, event = "msg_show" }, opts = { skip = true }, }, -- "__ lines indented"
+          -- Debug colors
+          { filter = { event = "msg_show", kind = "echomsg", find = "O_DEBUG_COLORS" }, opts = { skip = true, history = true} },
+          -- Useless messages
+          {
+            filter = {
+              kind = { "" },
+              event = "msg_show",
+              any = {
+                { find = "fewer lines"},
+                { find = "lines indented"},
+                { find = "lines yanked"},
+                { find = "more lines"},
+              },
+            },
+            opts = { skip = true },
+          },
           -- Debug
-          { filter = { event = "notify", kind = "debug" }, opts = { skip = true, history = true }},
+          { filter = { event = "notify", kind = "debug" }, opts = { skip = true, history = true }}, -- Save in history, display with :Noice showLastDebug
           -- Info
           { filter = { event = "notify", kind = "info" }, view = "O_info", },
           -- Warning
@@ -117,6 +145,7 @@ return {
         },
         -- You can add any custom commands below that will be available with `:Noice command`
         commands = {
+          -- showLastDebug: Display the last debug message
           showLastDebug = {
             view = "O_debug",
             opts = { enter = false },
@@ -127,6 +156,20 @@ return {
             },
             filter_opts = { count = 1 },
           },
+          -- showDebugColors: Display the last debugColors call
+          showDebugColors = {
+            view = "O_debugColors",
+            opts = { enter = false },
+            filter = {
+              any = {
+                { event = "msg_show", kind = "echomsg", find = "O_DEBUG_COLORS" }
+              }
+            },
+            filter_opts = { count = 1 },
+          },
+
+
+
           history = {
             -- options for the message history that you get with `:Noice`
             view = "split",

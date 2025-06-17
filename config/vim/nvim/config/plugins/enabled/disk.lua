@@ -1,5 +1,5 @@
--- -- Disk
--- -- Navigate, rename, delete files
+-- Disk
+-- Navigate, rename, delete files
 local nmap = F.nmap
 local imap = F.imap
 local vmap = F.vmap

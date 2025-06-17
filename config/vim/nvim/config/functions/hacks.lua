@@ -1,4 +1,9 @@
 return {
+  -- defer: Wait a bit and execute the callback
+  defer = function(callback, timeout)
+    vim.defer_fn(callback, timeout or 0)
+  end,
+
   -- ensureVisualSelection
   ensureVisualSelection = function()
     -- '< and '> marks are only updated when leaving visual mode
@@ -17,7 +22,7 @@ return {
       F.hl(key, 'none', value)
     end)
   end,
-  -- showCompletionWildmenu: Show the wildmenu 
+  -- showCompletionWildmenu: Show the wildmenu
   -- In command mode, we use the Wildmenu for real completion, so we need to
   -- show it with a readable hightlight
   showCompletionWildmenu = function()
