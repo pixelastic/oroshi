@@ -62,24 +62,10 @@ return {
 
       -- Disable completion based on context
       local function disableBasedOnContext()
-        local blockerTypes = { "comment", "zshComment", "string", "number" }
+        -- local blockerTypes = { "comment", "zshComment", "string", "number" }
 
-        -- Check all blockers to see if they are part of the current highlights
-        local currentTypes = F.getHighlightGroups()
-        for _, typeName in ipairs(blockerTypes) do
-          local treesitterName = typeName:lower() -- string
-          if F.includes(currentTypes, treesitterName) then
-            return false
-          end
-
-          local syntaxName = typeName:gsub('^%l', string.upper) -- String
-          if F.includes(currentTypes, syntaxName) then
-            return false
-          end
-        end
-
-        -- If none found, we can enable completion
-        return true
+        -- TODO
+        return false
       end
 
       cmp.setup({

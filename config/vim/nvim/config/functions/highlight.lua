@@ -75,6 +75,21 @@ return {
     return projectData
   end,
 
+
+  -- setGuicursor: Set the cursor shape and highlight for a specific mode
+  setGuicursor = function(mode, type, highlight)
+    -- First, remove any cursor set for this mode
+    for _, value in ipairs(vim.opt.guicursor:get()) do
+      local thisMode = F.split(value, ':')[1]
+      if thisMode == mode then
+        vim.opt.guicursor:remove(value)
+      end
+    end
+
+    -- Add the new cursor
+    vim.opt.guicursor:append(mode .. ':' .. type .. '-' .. highlight)
+  end,
+
   -- getHighlightGroups: Return table of all highlight groups under cursor
   getHighlightGroups = function()
     local bufferId = F.bufferId()
@@ -116,73 +131,68 @@ return {
     return F.concat(treesitterCaptures, syntaxCaptures)
   end,
 
-  -- setGuicursor: Set the cursor shape and highlight for a specific mode
-  setGuicursor = function(mode, type, highlight)
-    -- First, remove any cursor set for this mode
-    for _, value in ipairs(vim.opt.guicursor:get()) do
-      local thisMode = F.split(value, ':')[1]
-      if thisMode == mode then
-        vim.opt.guicursor:remove(value)
-      end
-    end
-
-    -- Add the new cursor
-    vim.opt.guicursor:append(mode .. ':' .. type .. '-' .. highlight)
-  end,
-
-  -- debugColors: Show all highlight groups under cursor
-  debugColors = function()
-    -- Build a list of all highlights under cursor
+  -- getHighlightsUnderCursor: Returns a collection of hl and link under cursor
+  getHighlightsUnderCursor = function()
     local highlightData = vim.inspect_pos()
     local pick = function(item)
       return { hl = item.hl_group, link = item.hl_group_link }
     end
-    local highlights = F.concat(
+    return F.concat(
       F.map(highlightData.treesitter, pick),
       F.map(highlightData.syntax, pick)
     )
+  end,
 
+  -- debugColors: Show all highlight groups under cursor
+  debugColors = function()
+    -- Close the previously opened debugColors window.
+    -- Otherwise it will get re-used, even if offscreen in another tab
+    local closeExistingWindow = function()
+      F.closeWindow(function(bufferId)
+        -- Skip all non-noice
+        if F.getBufferOption('filetype', bufferId) ~= 'noice' then
+          return false
+        end
+
+        -- Close if contains O_DEBUG_COLORS
+        if F.includes(F.getBufferLines(bufferId) , 'O_DEBUG_COLORS') then
+          return true
+        end
+
+        return false
+      end)
+    end
+
+    -- Find current highlights
+    local highlights = F.getHighlightsUnderCursor()
     -- Stop if none found
     if #highlights == 0 then
+      closeExistingWindow()
       F.warn('No highlights')
       return
     end
 
-    -- Build a collection of string + color
+    -- Build the colored text to display
     local content = {}
     for _, item in ipairs(highlights) do
       F.append(content, { "   " , item.hl })
-      F.append(content, { item.hl , item.link })
+      F.append(content, { item.hl , item.hl })
       F.append(content, { " linked to " , "Comment" })
       F.append(content, { item.link , item.link })
-      F.append(content, { "\n" , "Normal" })
+      F.append(content, { "\n" , "Comment" })
     end
     -- Add a invisible marker so we can filter it in noice routes
     F.append(content, { "\n\n\nO_DEBUG_COLORS", "EndOfBuffer" })
 
-    -- Echo it (nvim_echo is the only way to display colors)
+    -- Echo it using nvim_echo as this is the only way to display colors that I
     -- This will actually be swallowed by noice, but added to the history
     vim.api.nvim_echo(content, true, {})
 
     -- Display the last element in history
     -- We need to wait a bit, to let noice process the echo
     F.defer(function()
-      -- F.closeWindow(function(bufferId)
-      --   -- Skip all non-noice
-      --   local filetype = F.getBufferOption('filetype', bufferId)
-      --   if filetype ~= 'noice' then return false end
-      --
-      --   -- Close if contains O_DEBUG_COLORS
-      --   local lines = F.getBufferLines(bufferId)
-      --   if F.includes(lines, 'O_DEBUG_COLORS') then
-      --     return true
-      --   end
-      --
-      --   return false
-      -- end)
-
-      local noice = require('noice')
-      noice.cmd('showDebugColors')
+      closeExistingWindow()
+      require('noice').cmd('showDebugColors')
     end)
   end,
 }
