@@ -91,7 +91,6 @@ hl('DiagnosticSignHint', 'XXX')
 
 -- Render Markdown plugin {{{
 hl('RenderMarkdownQuote', 'XXX') -- 	Default for block quote
-hl('RenderMarkdownQuote1', 'XXX') -- 	Level 1 block quote marker
 hl('RenderMarkdownQuote2', 'XXX') -- 	Level 2 block quote marker
 hl('RenderMarkdownQuote3', 'XXX') -- 	Level 3 block quote marker
 hl('RenderMarkdownQuote4', 'XXX') -- 	Level 4 block quote marker

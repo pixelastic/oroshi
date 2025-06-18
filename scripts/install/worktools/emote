@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Emote: Emoji picker
+# https://github.com/tom-james-watson/Emote
+set -e
+
+flatpak install com.tomjwatson.Emote

@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=com.tomjwatson.Emote
+Exec=flatpak run --command=emote com.tomjwatson.Emote
+X-Flatpak=com.tomjwatson.Emote

@@ -8,6 +8,7 @@ local ROOT_KEY="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings
 local                  shortcuts=(
   # Name                 Binding           Command
   "Calculator"           "Insert"          "gnome-calculator"
+  "Emote"                "<Super>E"        "flatpak run com.tomjwatson.Emote"
   "Chrome"               "<Super>C"        "google-chrome"
   "Firefox"              "<Super>F"        "firefox"
   "Slack"                "<Super>S"        "slack"

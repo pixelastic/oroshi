@@ -108,12 +108,15 @@ hl('@label.markdown', 'BLUE_5')
 hl('RenderMarkdownCodeInline', 'STRING') -- 	Inline code background
 hl('RenderMarkdownCodeBorder', 'none', { bg = 'GRAY_8'}) -- 	Code border background
 hl('RenderMarkdownCodeFallback', 'XXX') -- 	Fallback for code language
+-- quotes
+hl('RenderMarkdownQuote1', 'NEUTRAL') -- Indentation marker in normal mode
+hl('@markup.quote.markdown', 'GRAY_4', { italic = true, bold = true }) -- Quote text
 -- lists
 hl('@markup.list.markdown', 'PUNCTUATION') -- bullet points
 hl('RenderMarkdownBullet', 'PUNCTUATION') -- 	List item bullet points
 -- <hr> separator
-hl('@punctuation.special.markdown', 'GRAY_8')
-hl('RenderMarkdownDash', 'GRAY_8') -- 	Thematic break line
+hl('@punctuation.special.markdown', 'PUNCTUATION')
+hl('RenderMarkdownDash', 'PUNCTUATION') -- 	Thematic break line
 -- Header gutter sign
 hl('RenderMarkdownSign', 'none') -- 	Sign column background
 -- header 1
