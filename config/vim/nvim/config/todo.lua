@@ -1,12 +1,9 @@
 -- MUST HAVE
 -- TODO: Re-run the env-generate scripts when editing them
--- TODO: https://github.com/tom-james-watson/Emote
 -- TODO: Auto-formatter on save
 -- TODO: Folding that folds on expr and markers
 -- TODO: https://github.com/folke/trouble.nvim ? To see diagnostics
 -- TODO: Check https://github.com/folke/tokyonight.nvim for methods to lighten/darken colors?
--- TODO: Display icon when LSP not yet loaded
--- TODO: Refactor the plugins/helpers/lint.lua to split into smaller chunks
 
 -- AI:
 -- TODO: ChatGPT to explain code, quick chat, write tests, write documentation, etc
