@@ -123,6 +123,7 @@ return {
                 { find = "lines indented"},
                 { find = "lines yanked"},
                 { find = "more lines"},
+                { find = "lines <ed"},
               },
             },
             opts = { skip = true },
@@ -170,6 +171,38 @@ return {
             },
             filter_opts = { count = 1 },
           },
+          -- Noice all: Display (almost) all messages of history
+          -- Note: I actually filter some messages out, because I couldn't find
+          -- a way to NOT have them show up in the history
+          all = {
+            view = "split",
+            opts = {
+              enter = false,
+              format = {
+                { "--- ", hl_group = "NoiceOMessageSeparator" },
+                { "{event}", hl_group = "NoiceOMessageEvent" },
+                "DEBUG/title: {title}\n",
+                "DEBUG/level:{level}\n",
+                {
+                  "{kind}",
+                  hl_group = "NoiceOMessageKind",
+                  before = { ".", hl_group = "NoiceOMessageKind" },
+                },
+                "\n",
+                { "{cmdline}\n", hl_group = "NoiceOMessageCmdline" },
+                {
+                  "{message}\n",
+                  hl_group = "NoiceOMessageMessage",
+                  before = { "█ ", hl_group = "NoiceOMessagePrefix" },
+                },
+              }
+            },
+            filter = {
+              ['not'] = {
+                event = "msg_showcmd"
+              }
+            },
+          },
 
 
 
@@ -210,12 +243,12 @@ return {
             filter = { error = true },
             filter_opts = { reverse = true },
           },
-          all = {
-            -- options for the message history that you get with `:Noice`
-            view = "split",
-            opts = { enter = true, format = "details" },
-            filter = {},
-          },
+          -- all = {
+          --   -- options for the message history that you get with `:Noice`
+          --   view = "split",
+          --   opts = { enter = true, format = "details" },
+          --   filter = {},
+          -- },
         },
 
 

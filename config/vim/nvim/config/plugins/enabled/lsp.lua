@@ -59,9 +59,9 @@ return {
         },
 
         -- Indent selection with =
-        indent = { 
-          enable = true 
-        }, 
+        indent = {
+          enable = true
+        },
       })
     end,
   }

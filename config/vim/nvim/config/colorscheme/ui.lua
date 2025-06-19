@@ -83,10 +83,6 @@ hl('CursorLineNr', 'YELLOW', { bg = 'GRAY_9', bold = true }) --	Current line num
 hl('CursorLineSign', 'none', { bg = 'GRAY_9'}) --	Current line sign
 -- }}}
 
--- Statusline {{{
-hl('StatusLine', 'GRAY_4', { bg = 'GRAY_8' }) --	Status line of current window.
--- }}}
-
 -- Folds {{{
 hl('Folded', 'none', { bg = 'GRAY_8'}) --	Closed fold
 -- }}}
@@ -179,6 +175,7 @@ hl('DiagnosticDiagLineHint', 'VIOLET_4', { bg = 'GRAY_8' })    -- Diag line
 -- }}}
 
 -- Statusline {{{
+hl('StatusLine', 'GRAY_4', { bg = 'GRAY_8' }) --	Status line of current window.
 O.colors.statusline = {
   normal = { bg = 'EMERALD_9', fg = 'EMERALD_2', bold = true },
   insert = { bg = 'YELLOW', fg = 'BLACK', bold = true },
@@ -221,6 +218,38 @@ hl('NoiceCmdlineIconHelp', 'BLACK', { bg = 'BLUE' })    -- Prefix
 hl('NoiceCmdlineIconLua', 'BLACK', { bg = 'VIOLET' })   -- Prefix
 -- }}}
 
+-- Noice {{{
+hl('NoiceMini', 'none')
+-- Error
+-- Warn
+hl('NoiceOWarningMessage', 'YELLOW')
+hl('NoiceOWarningIconSeparator', 'YELLOW_9', { bg = 'BLACK'})
+hl('NoiceOWarningIcon', 'YELLOW_5', { bg = 'YELLOW_9', bold = true })
+-- Info
+hl('NoiceOInfoMessage', 'BLUE')
+hl('NoiceOInfoIconSeparator', 'BLUE_9', { bg = 'BLACK'})
+hl('NoiceOInfoIcon', 'BLUE_3', { bg = 'BLUE_9', bold = true })
+-- Debug
+hl('NoiceODebugMessage', 'VIOLET')
+
+-- O_message
+hl('NoiceOMessageNormal', 'NOTICE')
+-- O_warning
+-- O_error
+hl('NoiceFormatLevelError', 'RED_2', { bg = 'RED_9', bold = true })
+hl('NoiceOErrorErrorMsg', 'RED_8')
+-- Messages
+hl('NoiceSplit', 'none', { bg = 'BLACK'})
+hl('MoreMsg', 'COMMENT')
+-- :Noice all
+hl('NoiceOMessageSeparator', 'GRAY')
+hl('NoiceOMessageEvent', 'PURPLE_4')
+hl('NoiceOMessageKind', 'PURPLE_3')
+hl('NoiceOMessageCmdline', 'TEAL')
+hl('NoiceOMessagePrefix', 'GRAY')
+hl('NoiceOMessageMessage', 'GRAY')
+-- }}}
+
 -- Lazy {{{
 hl('LazyButtonActive', 'YELLOW', { bg = 'BLACK', bold = true })
 hl('LazyButton', 'none', { bg = 'GRAY_9' })
@@ -233,7 +262,6 @@ hl('LazyReasonSource', 'VIOLET')
 hl('LazyReasonStart', 'GREEN')
 hl('LazySpecial', 'PUNCTUATION')
 -- }}}
-
 
 -- Nvim Tree {{{
 hl('NvimTreeClosedFolderIcon', 'YELLOW_6' )
@@ -267,30 +295,6 @@ hl('GitSignsTopdeleteLn', 'none', { bg = 'RED_9' })
 hl('GitSignsDeleteLn', 'none', { bg = 'RED_9' })
 -- }}}
 
--- Noice {{{
-hl('NoiceMini', 'none')
--- Error
--- Warn
-hl('NoiceOWarningMessage', 'YELLOW')
-hl('NoiceOWarningIconSeparator', 'YELLOW_9', { bg = 'BLACK'})
-hl('NoiceOWarningIcon', 'YELLOW_5', { bg = 'YELLOW_9', bold = true })
--- Info
-hl('NoiceOInfoMessage', 'BLUE')
-hl('NoiceOInfoIconSeparator', 'BLUE_9', { bg = 'BLACK'})
-hl('NoiceOInfoIcon', 'BLUE_3', { bg = 'BLUE_9', bold = true })
--- Debug
-hl('NoiceODebugMessage', 'VIOLET')
-
--- O_message
-hl('NoiceOMessageNormal', 'NOTICE')
--- O_warning
--- O_error
-hl('NoiceFormatLevelError', 'RED_2', { bg = 'RED_9', bold = true })
-hl('NoiceOErrorErrorMsg', 'RED_8')
--- Messages
-hl('NoiceSplit', 'none', { bg = 'BLACK'})
-hl('MoreMsg', 'COMMENT')
--- }}}
 
 -- Misc {{{
 hl('ColorColumn', 'none', { bg = 'GRAY_9'}) -- Max column
