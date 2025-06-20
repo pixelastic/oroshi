@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+# Opens the Studio web UI to transfer files to the Lunii box
+
+local STUDIO_BIN=~/local/src/studio/studio-linux.sh
+local WEBUI_URL=http://localhost:8080/
+local AIRTABLE_URL="https://airtable.com/appPeKJE2w7yfGZyJ/shriXSXw9aGxZW8Kb/tblWJAQp2w3Ps4dvi"
+
+firefox \
+  --new-window "$WEBUI_URL" \
+  --new-tab "$AIRTABLE_URL" &
+
+echo "DO NOT FORGET TO PLUG THE LUNII AND TURN IT ON"
+
+# Open the server in the background
+$STUDIO_BIN

@@ -20,3 +20,4 @@ alias htmlmin="html-minifier --remove-comments --collapse-whitespace --remove-at
 alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test500.zip'
 # alias htop="htop --delay=10000"
 alias emote='flatpak run com.tomjwatson.Emote'
+alias lunii='studio'

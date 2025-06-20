@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+# Studio: Add stories to the Lunii box
+# https://github.com/marian-m12l/studio
+set -e
+
+local INSTALL_DIR=~/local/src/studio
+local DOWNLOAD_URL="https://github.com/marian-m12l/studio/releases/download/0.4.1/studio-web-ui-0.4.1-dist.zip"
+local PROJECT_NAME="studio"
+
+mkdir -p $INSTALL_DIR
+cd $INSTALL_DIR
+
+# Download and extract
+wget $DOWNLOAD_URL -O ./${PROJECT_NAME}.zip
+extract ./${PROJECT_NAME}.zip
+rm ./${PROJECT_NAME}.zip
+
+cp -r ./studio-web-ui-0.4.1/* .
+rm -rf ./studio-web-ui-0.4.1
