@@ -85,8 +85,8 @@ return {
         vim.b.statuslineCopilotDisabled = not vim.b.statuslineCopilotDisabled
         vim.cmd("redrawstatus")
       end
-      nmap('⒤', toggleCopilot, 'Toggle Copilot')
-      imap('⒤', toggleCopilot, 'Toggle Copilot')
+      nmap('<F12>', toggleCopilot, 'Toggle Copilot')
+      imap('<F12>', toggleCopilot, 'Toggle Copilot')
 
     end,
   },
@@ -105,11 +105,22 @@ return {
       -- Why display on left?
       -- Doesn't include the file by default
       local codecompanion = require('codecompanion')
-      local adapters = require("codecompanion.adapters");
       codecompanion.setup({
         strategies = {
           chat = {
-            adapter = "anthropic",
+            -- adapter = "anthropic",
+            adapter = "copilot",
+            keymaps = {
+              send = {
+                modes = { n = "<C-CR>", i = "<C-CR>" },
+                opts = {},
+              },
+              -- close = {
+              --   modes = { n = "<C-c>", i = "<C-c>" },
+              --   opts = {},
+              -- },
+              -- Add further custom keymaps here
+            },
           },
           inline = {
             adapter = "anthropic",
@@ -118,19 +129,45 @@ return {
           --   adapter = "deepseek",
           -- }
         },
-        adapters = {
-          anthropic = function()
-            return adapters.extend("anthropic", {
-              env = {
-                api_key = F.env('ANTHROPIC_API_KEY')
-              },
-            })
-          end,
+        display = {
+          chat = {
+            window = {
+              layout = "vertical",
+              position = "right", -- "left", "right", "bottom"
+              width = 50, -- Width of the chat window
+            }
+          }
         },
         opts = {
           log_level = "DEBUG",
         },
       })
+
+      -- Dynamic resizing of chat window {{{
+      local function setChatWidth()
+        local maxWidth = vim.o.columns;
+        local widthFullScreen = 75
+        local widthSmallScreen = 50
+        local chatWidth = maxWidth > 73 and widthFullScreen or widthSmallScreen
+        vim.api.nvim_win_set_width(0, chatWidth)
+      end
+      -- }}
+
+      -- Toggle chat window
+      nmap('⒤', "<cmd>CodeCompanionChat Toggle<cr>", "Toggle CodeCompanion Chat")
+      imap('⒤', "<cmd>CodeCompanionChat Toggle<cr>", "Toggle CodeCompanion Chat")
+
+      ftplugin('codecompanion', function()
+        local bufferId = F.bufferId()
+
+        -- Resize chat window
+        autocmd({'VimResized', 'BufEnter' }, setChatWidth, { buffer = bufferId })
+
+        -- Ctrl-B to add #buffer
+        imap('<C-B>', '#buffer<CR>', 'Add #buffer', { buffer = bufferId })
+        nmap('<C-B>', 'mZ^i#buffer<CR><Esc>`Zj', 'Add #buffer', { buffer = bufferId })
+      end)
+
     end
   },
 

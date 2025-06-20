@@ -14,10 +14,9 @@ ftplugin(
     local function takeAllHeight()
       vim.cmd('resize +999')
     end
-    takeAllHeight()
 
     -- Expand again on each resize
-    autocmd('VimResized', takeAllHeight, { buffer = bufferId() })
+    autocmd({'VimResized', 'BufEnter' }, takeAllHeight, { buffer = bufferId() })
   end
 )
 

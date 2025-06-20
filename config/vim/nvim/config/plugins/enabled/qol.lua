@@ -46,6 +46,12 @@ return {
         -- Views represent "how" Noice should display specific things
         -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/views.lua
         views = {
+          -- Commandline: Small line at the bottom left of the screen
+          O_cmdline = {
+            view = "mini",
+            position = { col = 0, row = -1 },
+            size = { width = "100%", },
+          },
           -- Error: Split, with all past errors, in reverse order
           O_error = {
 
@@ -74,12 +80,26 @@ return {
               { "   ", hl_group = "NoiceOInfoIcon" },
             },
           },
+          -- Temporary: Full-width notification at bottom of screen
+          O_temporary = {
+            view = "mini",
+            relative = "editor",
+            timeout = 10000,
+            anchor = "SW",
+            position = { col = 0, row = -1 },
+            size = { width = "100%", },
+            format = {
+              "{message}"
+            },
+          },
           -- Debug: Split, last info message displayed
+          -- Note: Do not call this view directly, it is used by F.debug
           O_debug = {
             view = "split",
             format = { "{message}" },
           },
           -- DebugColors: Split, last debugColors call
+          -- Note: Do not call this view directly, it is used by F.debugColors
           O_debugColors = {
             backend = "split",
             relative = "editor",
@@ -97,12 +117,6 @@ return {
             },
 
           },
-          -- Commandline: Small line at the bottom left of the screen
-          O_cmdline = {
-            view = "mini",
-            position = { col = 0, row = -1 },
-            size = { width = "100%", },
-          },
         },
         -- Routes
         -- Routes represent to which views Noice should send specific messages
@@ -111,6 +125,9 @@ return {
         --
         -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/routes.lua
         routes = {
+          -- Keybinding mappings
+          { filter = { event = "msg_show", kind = "list_cmd", find = "No mapping found" }, view = "O_warn", },
+          { filter = { event = "msg_show", kind = "list_cmd" }, view = "O_temporary", },
           -- Debug colors
           { filter = { event = "msg_show", kind = "echomsg", find = "O_DEBUG_COLORS" }, opts = { skip = true, history = true} },
           -- Useless messages
