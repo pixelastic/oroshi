@@ -61,13 +61,6 @@ O_STATUSLINE = {
     -- Percentage in file
     add(statusline, '%2p%% ')
 
-    -- Filetype
-    local filetype = vim.bo.filetype
-    F.append(rightStatusbar, {
-      content = filetype,
-      hl = { bg = 'GRAY_9', fg = 'WHITE' }
-    })
-
     -- Number of lines selected
     local selectedLinesCount = O_STATUSLINE.countSelectedLines();
     if selectedLinesCount then
@@ -82,7 +75,7 @@ O_STATUSLINE = {
     if fileencoding ~= 'utf-8' then
       F.append(rightStatusbar, {
         content = ' ' .. fileencoding,
-        hl = { bg= 'RED_9', fg = 'RED_2' }
+        hl = O.colors.statusline.fileencoding
       })
     end
 
@@ -90,9 +83,17 @@ O_STATUSLINE = {
     if O.statusline.macroName then
       F.append(rightStatusbar, {
         content = "󰑋 " .. O.statusline.macroName,
-        hl = { fg = 'RED', bg = 'RED_3' }
+        hl = O.colors.statusline.macro
       })
     end
+
+    -- Filetype
+    local filetype = vim.bo.filetype
+    F.append(rightStatusbar, {
+      content = filetype,
+      hl = O.colors.statusline.filetype
+    })
+
 
     -- LSP loading
     local bufferId = F.bufferId()
@@ -102,6 +103,15 @@ O_STATUSLINE = {
       content = " ",
       hl = lspColor,
     })
+
+    -- CodeCompanion thinking
+    local codeCompanionIsThinking = O.statusline.codecompanion.isThinking
+    if codeCompanionIsThinking then
+      F.append(rightStatusbar, {
+        content = "󰟶 ",
+        hl = O.colors.statusline.codecompanion
+      })
+    end
 
 
     -- Copilot
@@ -121,7 +131,6 @@ O_STATUSLINE = {
       add(statusline, ' ' .. item.content .. ' ', item.hl)
       separatorBg = item.hl.bg;
     end
-
 
     -- Foldmarker
     -- local foldmethod = vim.wo.foldmethod
@@ -261,7 +270,7 @@ O_STATUSLINE = {
       }
     end
 
-    -- For healthcheck
+    -- For CodeCompanion
     if O_STATUSLINE.isCodeCompanion() then
       return {
         file = { content = "" },

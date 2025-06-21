@@ -78,7 +78,9 @@ hl('CursorModeCommandNormal', 'none', O.colors.cursor.command)
 -- }}}
 
 -- Current line {{{
-hl('CursorLine', 'none', { bg = 'GRAY_9' }) --	Current line
+-- ctermfg is because of https://github.com/neovim/neovim/issues/9800
+-- Without it, nvim displays an underline on current line in diff mode
+hl('CursorLine', 'none', { bg = 'GRAY_9', ctermfg = 'black' }) --	Current line
 hl('CursorLineNr', 'YELLOW', { bg = 'GRAY_9', bold = true }) --	Current line number
 hl('CursorLineSign', 'none', { bg = 'GRAY_9'}) --	Current line sign
 -- }}}
@@ -177,9 +179,9 @@ hl('DiagnosticDiagLineHint', 'VIOLET_4', { bg = 'GRAY_8' })    -- Diag line
 -- }}}
 
 -- Diff {{{
-hl('DiffAdd', 'none', { bg = 'GREEN_9'}) --		Diff mode: Added line. |diff.txt|
-hl('DiffChange', 'none', { bg = 'PURPLE_9'}) --	Diff mode: Changed line. |diff.txt|
-hl('DiffText', 'YYY') --	Diff mode: Changed text within a changed line. |diff.txt|
+hl('DiffAdd', 'none', { bg = 'DARK_GREEN', ctermfg = 'WHITE' }) -- Added lines
+hl('DiffChange', 'none', { bg = 'DARK_GREEN' }) -- Changed lines
+hl('DiffText', 'none', { bg = 'DARK_PURPLE'}) -- Changed text specifically
 -- }}}
 
 -- Statusline {{{
@@ -204,6 +206,12 @@ O.colors.statusline = {
   healthcheck = { bg = "RED_LIGHT", fg = "WHITE" },
   -- CodeCompanion
   codecompanion = { bg = 'AMBER_7', fg = 'AMBER_1'},
+  -- Fileencoding
+  fileencoding = { bg= 'RED_9', fg = 'RED_2' },
+  -- Macro
+  macro = { fg = 'RED', bg = 'DARK_RED' },
+  -- Filetype
+  filetype = { bg = 'GRAY_9', fg = 'WHITE' },
   -- LSP
   lsp = {
     off = { fg = 'GRAY_8', bg = 'DARK_BLUE' },
@@ -235,6 +243,8 @@ hl('NoiceCmdlineIconLua', 'BLACK', { bg = 'VIOLET' })   -- Prefix
 -- Noice {{{
 hl('NoiceMini', 'none')
 -- Error
+hl('NoiceFormatLevelError', 'RED_2', { bg = 'RED_9', bold = true })
+hl('NoiceOErrorErrorMsg', 'RED_8')
 -- Warn
 hl('NoiceOWarningMessage', 'YELLOW')
 hl('NoiceOWarningIconSeparator', 'YELLOW_9', { bg = 'BLACK'})
@@ -243,18 +253,16 @@ hl('NoiceOWarningIcon', 'YELLOW_5', { bg = 'YELLOW_9', bold = true })
 hl('NoiceOInfoMessage', 'BLUE')
 hl('NoiceOInfoIconSeparator', 'BLUE_9', { bg = 'BLACK'})
 hl('NoiceOInfoIcon', 'BLUE_3', { bg = 'BLUE_9', bold = true })
+hl('NoiceFormatLevelInfo', 'BLUE')
 -- Debug
 hl('NoiceODebugMessage', 'VIOLET')
-
--- O_message
-hl('NoiceOMessageNormal', 'NOTICE')
--- O_warning
--- O_error
-hl('NoiceFormatLevelError', 'RED_2', { bg = 'RED_9', bold = true })
-hl('NoiceOErrorErrorMsg', 'RED_8')
 -- Messages
 hl('NoiceSplit', 'none', { bg = 'BLACK'})
 hl('MoreMsg', 'COMMENT')
+hl('NoiceFormatDate', 'DATE')
+hl('NoiceOMessageNormal', 'NOTICE')
+hl('NoiceFormatEvent', 'PURPLE_4')
+hl('NoiceFormatKind', 'PURPLE_3')
 -- :Noice all
 hl('NoiceOMessageSeparator', 'GRAY')
 hl('NoiceOMessageEvent', 'PURPLE_4')

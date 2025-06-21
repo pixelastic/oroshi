@@ -150,11 +150,21 @@ return {
         local chatWidth = maxWidth > 73 and widthFullScreen or widthSmallScreen
         vim.api.nvim_win_set_width(0, chatWidth)
       end
-      -- }}
+      -- }}}
 
-      -- Toggle chat window
+      -- Add "thinking" icon to statusbar when pending {{{
+      autocmd('User', function()
+        O.statusline.codecompanion.isThinking = true
+      end, { pattern = 'CodeCompanionRequestStarted' })
+      autocmd('User', function()
+        O.statusline.codecompanion.isThinking = false
+      end, { pattern = 'CodeCompanionRequestFinished' })
+      -- }}}
+
+      -- Toggle chat window {{{
       nmap('⒤', "<cmd>CodeCompanionChat Toggle<cr>", "Toggle CodeCompanion Chat")
       imap('⒤', "<cmd>CodeCompanionChat Toggle<cr>", "Toggle CodeCompanion Chat")
+      -- }}}
 
       ftplugin('codecompanion', function()
         local bufferId = F.bufferId()
@@ -166,6 +176,15 @@ return {
         imap('<C-B>', '#buffer<CR>', 'Add #buffer', { buffer = bufferId })
         nmap('<C-B>', 'mZ^i#buffer<CR><Esc>`Zj', 'Add #buffer', { buffer = bufferId })
       end)
+
+
+      -- TODO: ⒤ en mode visuel devrait ouvrir une floating window pour demander
+      -- le prompt.
+      -- Utiliser les floating window de base de vim, mais les hijack avec
+      -- noice? Ou demander à noice d'en ouvrir une directement?
+      -- Puis passer ce prompt à CodeCompanionInline
+      --
+
 
     end
   },

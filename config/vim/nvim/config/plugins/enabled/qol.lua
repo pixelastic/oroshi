@@ -197,9 +197,9 @@ return {
               enter = false,
               format = {
                 { "--- ", hl_group = "NoiceOMessageSeparator" },
+                "{level} ",
                 { "{event}", hl_group = "NoiceOMessageEvent" },
                 "DEBUG/title: {title}\n",
-                "DEBUG/level:{level}\n",
                 {
                   "{kind}",
                   hl_group = "NoiceOMessageKind",

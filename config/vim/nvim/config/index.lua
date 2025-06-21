@@ -12,10 +12,11 @@ O = {
   colors = {},  -- Mapping between color aliases and their hex values
   projects = {}, -- Mapping between projects and their colors and icons
   statusline = { -- Shared statusline info
-    lsp = {}
+    lsp = {},
+    codecompanion = {} -- CodeCompanion status
   },
   diagnostics = {}, -- Buffer-indexed diagnostics info
-  nvimtree = {}, -- 
+  nvimtree = {},
 }
 
 -- Shared functions

@@ -134,13 +134,31 @@ return {
   -- getHighlightsUnderCursor: Returns a collection of hl and link under cursor
   getHighlightsUnderCursor = function()
     local highlightData = vim.inspect_pos()
-    local pick = function(item)
-      return { hl = item.hl_group, link = item.hl_group_link }
+    local highlights = {}
+
+    -- Syntax
+    for _, item in ipairs(highlightData.syntax) do
+      F.append(highlights, {
+        hl = item.hl_group,
+        link = item.hl_group_link or '',
+      })
     end
-    return F.concat(
-      F.map(highlightData.treesitter, pick),
-      F.map(highlightData.syntax, pick)
-    )
+    -- Treesitter
+    for _, item in ipairs(highlightData.treesitter) do
+      F.append(highlights, {
+        hl = item.hl_group,
+        link = item.hl_group_link or '',
+      })
+    end
+    -- Extmarks
+    for _, item in ipairs(highlightData.extmarks) do
+      F.append(highlights, {
+        hl = item.opts.hl_group,
+        link = item.opts.hl_group_link,
+      })
+    end
+
+    return highlights
   end,
 
   -- debugColors: Show all highlight groups under cursor
