@@ -48,6 +48,28 @@ namedColors[28]="SKY_LIGHT"
 namedColors[29]="VIOLET_LIGHT"
 namedColors[30]="TEAL_LIGHT"
 namedColors[31]="NEUTRAL_LIGHT"
+
+# 210-229: Dark versions (for terminal background) {{{
+# 10 = Red       20 = Orange
+# 11 = Green     21 = Emerald
+# 12 = Yellow    22 = Amber
+# 13 = Blue      23 = Sky
+# 14 = Purple    24 = Violet
+# 15 = Cyan      25 = Teal
+#                26 = Neutral
+namedColors[210]="DARK_RED"
+namedColors[211]="DARK_GREEN"
+namedColors[212]="DARK_YELLOW"
+namedColors[213]="DARK_BLUE"
+namedColors[214]="DARK_PURPLE"
+namedColors[215]="DARK_CYAN"
+namedColors[220]="DARK_ORANGE"
+namedColors[221]="DARK_EMERALD"
+namedColors[222]="DARK_AMBER"
+namedColors[223]="DARK_SKY"
+namedColors[224]="DARK_VIOLET"
+namedColors[225]="DARK_TEAL"
+namedColors[226]="DARK_NEUTRAL"
 # }}}
 # Color palettes {{{
 local colorRanges=()

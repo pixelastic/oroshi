@@ -2,8 +2,6 @@ local ftplugin = F.ftplugin
 local autocmd = F.autocmd
 local nmap = F.nmap
 local imap = F.imap
-local vmap = F.vmap
-local hl = F.hl
 
 
 -- This is code example taken from https://github.com/hrsh7th/nvim-cmp/discussions/1034
@@ -16,12 +14,6 @@ local hl = F.hl
 --     vim.api.nvim_feedkeys(resolved_key, 'n', true)
 --   end
 -- end),
--- TODO: I should be able to trigger on/off Copilot
--- TODO: I should be able to trigger on/off the Diagnostics
--- Those can get messy after a while.
--- TODO: When doing search, there is a virtual text next to the current match.
--- Is that coming from LSP? Is that good?
--- TODO: Little diagnostic display at the bottom when loading
 -- TODO: Copilot as ghost text and manual completion for completion?
 
 return {
@@ -136,7 +128,14 @@ return {
               position = "right", -- "left", "right", "bottom"
               width = 50, -- Width of the chat window
             }
-          }
+          },
+          diff = {
+            enabled = true,
+            close_chat_at = 240, -- Close an open chat buffer if the total columns of your display are less than...
+            layout = "vertical", -- vertical|horizontal split for default provider
+            opts = { "internal", "filler", "closeoff", "algorithm:patience", "followwrap", "linematch:120" },
+            provider = "default", -- default|mini_diff
+          },
         },
         opts = {
           log_level = "DEBUG",

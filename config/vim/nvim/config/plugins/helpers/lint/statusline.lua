@@ -8,6 +8,14 @@ M.init = function()
   -- Update the statusline when LSP is loading
   autocmd('LspProgress', function()
     local bufferId = F.bufferId()
+    local currentStatus = O.statusline.lsp['buf'..bufferId]
+
+    -- Stop early if somehow the buffer already has a LSP statusline status
+    -- saved.
+    if currentStatus then
+      return
+    end
+
     O.statusline.lsp['buf'..bufferId] = 'loading'
 
     vim.cmd("redrawstatus")

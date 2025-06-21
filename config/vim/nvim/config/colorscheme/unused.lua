@@ -21,23 +21,21 @@ hl('PmenuKind', 'XXX') --	Popup menu: Normal item "kind".
 hl('ComplMatchIns', 'XXX') --	Matched text of the currently inserted completion.
 hl('CursorColumn', 'XXX') --	Screen-column at the cursor, when 'cursorcolumn' is set.
 hl('CursorIM', 'XXX') --	Like Cursor, but used when in IME mode. *CursorIM*
-hl('CursorLineFold', 'XXX') --	Like FoldColumn when 'cursorline' is set for the cursor line.
 hl('Cursor', 'XXX') --		Character under the cursor.
-hl('DiffAdd', 'XXX') --		Diff mode: Added line. |diff.txt|
-hl('DiffChange', 'XXX') --	Diff mode: Changed line. |diff.txt|
-hl('DiffText', 'XXX') --	Diff mode: Changed text within a changed line. |diff.txt|
-hl('FloatFooter', 'XXX') --	Footer of floating windows.
-hl('FoldColumn', 'XXX') --	'foldcolumn'
-hl('LineNrAbove', 'XXX') --	Line number for when the 'relativenumber'
-hl('LineNrBelow', 'XXX') --	Line number for when the 'relativenumber'
-hl('ModeMsg', 'XXX') --		'showmode' message (e.g., "-- INSERT --").
-hl('MsgSeparator', 'XXX') --	Top bar separator of messsage
+
+hl('FloatFooter', 'YYY') --	Footer of floating windows.
+hl('LineNrAbove', 'YYY') --	Line number for when the 'relativenumber'
+hl('LineNrBelow', 'YYY') --	Line number for when the 'relativenumber'
+hl('ModeMsg', 'YYY') --		'showmode' message (e.g., "-- INSERT --").
+hl('MsgSeparator', 'YYY') --	Top bar separator of messsage
+
 hl('QuickFixLine', 'YYY') --	Current |quickfix| item in the quickfix window. Combined with
 hl('SnippetTabstop', 'XXX') --	Tabstops in snippets. |vim.snippet|
 hl('SpellBad', 'XXX') --	Word that is not recognized by the spellchecker. |spell|
 hl('SpellCap', 'XXX') --	Word that should start with a capital. |spell|
 hl('SpellLocal', 'XXX') --	Word that is recognized by the spellchecker as one that is
 hl('SpellRare', 'XXX') --	Word that is recognized by the spellchecker as one that is
+
 hl('StatusLineTermNC', 'XXX') --
 hl('StatusLineTerm', 'XXX') --	Status line of |terminal| window.
 hl('Substitute', 'XXX') --	|:substitute| replacement text highlighting.

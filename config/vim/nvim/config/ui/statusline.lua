@@ -61,6 +61,22 @@ O_STATUSLINE = {
     -- Percentage in file
     add(statusline, '%2p%% ')
 
+    -- Filetype
+    local filetype = vim.bo.filetype
+    F.append(rightStatusbar, {
+      content = filetype,
+      hl = { bg = 'GRAY_9', fg = 'WHITE' }
+    })
+
+    -- Number of lines selected
+    local selectedLinesCount = O_STATUSLINE.countSelectedLines();
+    if selectedLinesCount then
+      F.append(rightStatusbar, {
+        content = "x" .. selectedLinesCount,
+        hl = O.colors.statusline.visual
+      })
+    end
+
     -- Encoding
     local fileencoding = vim.bo.fileencoding ~= '' and vim.bo.fileencoding or vim.o.encoding
     if fileencoding ~= 'utf-8' then
@@ -80,21 +96,13 @@ O_STATUSLINE = {
 
     -- LSP loading
     local bufferId = F.bufferId()
-    local lspStatus = F.get(O, 'statusline.lsp.buf' .. bufferId)
-    if lspStatus then
-      local lspColor = O.colors.statusline.lsp[lspStatus]
-      F.append(rightStatusbar, {
-        content = " ",
-        hl = lspColor,
-      })
-    end
-
-    -- Filetype
-    local filetype = vim.bo.filetype
+    local lspStatus = F.get(O, 'statusline.lsp.buf' .. bufferId) or 'off'
+    local lspColor = O.colors.statusline.lsp[lspStatus]
     F.append(rightStatusbar, {
-      content = filetype,
-      hl = { bg = 'GRAY_9', fg = 'WHITE' }
+      content = " ",
+      hl = lspColor,
     })
+
 
     -- Copilot
     local isCopilotLoaded = O.statusline.copilotLoaded
@@ -102,7 +110,7 @@ O_STATUSLINE = {
     local copilotColor = O.colors.statusline.copilotEnabled
     if not isCopilotLoaded then copilotColor = O.colors.statusline.copilotNotLoaded end
     if isCopilotDisabled then copilotColor = O.colors.statusline.copilotDisabled end
-    F.append(rightStatusbar, { 
+    F.append(rightStatusbar, {
       content = ' ',
       hl = copilotColor
     })
@@ -147,11 +155,11 @@ O_STATUSLINE = {
   -- getMode: Get informations about current mode
   getMode = function()
     -- Usage:
-    -- getMode() 
-    -- => { 
-    --     content = 'NORMAL', 
-    --     hl = { 
-    --       bg = 'BLACK', 
+    -- getMode()
+    -- => {
+    --     content = 'NORMAL',
+    --     hl = {
+    --       bg = 'BLACK',
     --       fg = 'WHITE_LIGHT,
     --       bold = true
     --     }
@@ -213,8 +221,8 @@ O_STATUSLINE = {
   getFileData = function()
     -- Stores info in buffer, so it is only called once per buffer
     -- Usage:
-    -- getFileData() 
-    -- => { 
+    -- getFileData()
+    -- => {
     --       project = {
     --         content = 'x oroshi',
     --         hl = {
@@ -243,12 +251,23 @@ O_STATUSLINE = {
     end
 
     -- For healthcheck
-    if O_STATUSLINE.isHealtcheck() then
+    if O_STATUSLINE.isHealthcheck() then
       return {
         file = { content = "" },
         project = {
           content = "   healthcheck ",
-          hl = { bg = "RED_LIGHT", fg = "WHITE" }
+          hl = O.colors.statusline.healthcheck
+        }
+      }
+    end
+
+    -- For healthcheck
+    if O_STATUSLINE.isCodeCompanion() then
+      return {
+        file = { content = "" },
+        project = {
+          content = "   CodeCompanion ",
+          hl = O.colors.statusline.codecompanion
         }
       }
     end
@@ -298,14 +317,32 @@ O_STATUSLINE = {
     return statuslineFileData
   end,
 
+  -- countSelectedLines: Count the number of lines currently selected
+  countSelectedLines = function()
+    if not F.isVisualMode() then
+      return nil
+    end
+
+
+    local startLine = vim.fn.line("v")
+    local endLine = vim.fn.line(".")
+    local count = math.abs(endLine - startLine) + 1
+    return count;
+  end,
+
   -- isNvimTree: Check if in a nvim tree window
   isNvimTree = function()
     return vim.bo.filetype == 'NvimTree'
   end,
 
   -- isHealthcheck: Check if in a healthcheck window
-  isHealtcheck= function()
+  isHealthcheck= function()
     return vim.bo.filetype == 'checkhealth'
+  end,
+
+  -- isCodeCompanion: Check if in CodeCompanion Chat buffer
+  isCodeCompanion= function()
+    return vim.bo.filetype == 'codecompanion'
   end,
 
   -- nvimTreeStatusline: Simple statusline for using NvimTree

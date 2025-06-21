@@ -85,6 +85,8 @@ hl('CursorLineSign', 'none', { bg = 'GRAY_9'}) --	Current line sign
 
 -- Folds {{{
 hl('Folded', 'none', { bg = 'GRAY_8'}) --	Closed fold
+hl('FoldColumn', 'GRAY') -- Column for fold symbol
+hl('CursorLineFold', 'none', { bg = 'GRAY_9' }) -- Column for fold symbol on active line
 -- }}}
 
 -- Visual mode {{{
@@ -174,6 +176,12 @@ hl('DiagnosticVirtualTextHint', 'VIOLET_5', { bg = 'GRAY_8' }) -- Virtual text
 hl('DiagnosticDiagLineHint', 'VIOLET_4', { bg = 'GRAY_8' })    -- Diag line
 -- }}}
 
+-- Diff {{{
+hl('DiffAdd', 'none', { bg = 'GREEN_9'}) --		Diff mode: Added line. |diff.txt|
+hl('DiffChange', 'none', { bg = 'PURPLE_9'}) --	Diff mode: Changed line. |diff.txt|
+hl('DiffText', 'YYY') --	Diff mode: Changed text within a changed line. |diff.txt|
+-- }}}
+
 -- Statusline {{{
 hl('StatusLine', 'GRAY_4', { bg = 'GRAY_8' }) --	Status line of current window.
 O.colors.statusline = {
@@ -183,28 +191,34 @@ O.colors.statusline = {
   search = { bg = 'ORANGE_7', fg = 'ORANGE_2', bold = true },
   command = { bg = 'TEAL', fg = 'TEAL_1', bold = true },
   unknown = { bg = 'CYAN'},
-  -- NvimTree
-  nvimTreeIcon = { fg= 'YELLOW', bg = 'GREEN_9' },
-  nvimTreeText = { fg= 'WHITE', bg = 'GREEN_9' },
-  nvimTreeSeparator = { fg = 'GREEN_9' },
   -- Filepath
   filepathDefault = { fg = 'GREEN', bold = true },
   filepathReadonly = { fg = 'RED' },
   filepathUnsavedChanges = { fg = 'VIOLET_4' },
   filepathNoName = { fg = 'COMMENT' },
-  -- Copilot
-  copilotNotLoaded = { bg = 'GRAY_7', fg = 'GRAY_8'},
-  copilotDisabled = { bg = 'GRAY_7', fg = 'AMBER_9'},
-  copilotEnabled = { bg = 'AMBER_7', fg = 'AMBER_1'},
+  -- NvimTree
+  nvimTreeIcon = { fg= 'YELLOW', bg = 'GREEN_9' },
+  nvimTreeText = { fg= 'WHITE', bg = 'GREEN_9' },
+  nvimTreeSeparator = { fg = 'GREEN_9' },
+  -- Healthcheck
+  healthcheck = { bg = "RED_LIGHT", fg = "WHITE" },
+  -- CodeCompanion
+  codecompanion = { bg = 'AMBER_7', fg = 'AMBER_1'},
   -- LSP
   lsp = {
-    loading = { bg = 'GRAY_7', fg = 'GRAY_8' },
-    error = { bg = 'RED_9', fg = 'RED_2' },
-    warning = { bg = 'YELLOW_9', fg = 'YELLOW_5' },
-    info = { bg = 'BLUE_9', fg = 'BLUE_3' },
-    hint = { bg = 'GRAY_7', fg = 'VIOLET_5' },
-    success = { bg = 'GREEN_9', fg = 'GREEN_2' },
-  }
+    off = { fg = 'GRAY_8', bg = 'DARK_BLUE' },
+    loading = { fg = 'BLUE_9', bg = 'DARK_BLUE' },
+
+    error = { fg = 'RED_2', bg = 'RED_9' },
+    warning = { fg = 'YELLOW_5',  bg = 'YELLOW_9' },
+    info = { fg = 'BLUE_3', bg = 'BLUE_9' },
+    hint = { fg = 'VIOLET_5', bg = 'GRAY_7' },
+    success = { fg = 'GREEN_2', bg = 'GREEN_9'  },
+  },
+  -- Copilot
+  copilotNotLoaded = { fg = 'GRAY_8', bg = 'DARK_AMBER' },
+  copilotEnabled = { fg = 'AMBER_1', bg = 'AMBER_7' },
+  copilotDisabled = { fg = 'AMBER_9', bg = 'DARK_AMBER' },
 }
 -- }}}
 
