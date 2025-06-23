@@ -52,6 +52,7 @@ return {
                 { find = "more lines"},
                 { find = "lines <ed"},
                 { find = "lines >ed"},
+                { find = "and press <Enter> to exit Nvim" },
               },
             },
             opts = { skip = true },

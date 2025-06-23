@@ -21,6 +21,16 @@ return {
     end
   end,
 
+  -- endsWith: Check if string ends with a specific substring
+  endsWith = function(input, prefix)
+    return string.find(input, prefix, -#prefix, true) == #input - #prefix + 1
+  end,
+
+  -- first: Returns the first element of a collection
+  first = function(collection)
+    return collection[1]
+  end,
+
   -- get: Return the value at the given path in the collection
   get = function(collection, path, defaultValue)
     local keys = F.split(path, '.')
@@ -124,7 +134,7 @@ return {
     return vim.split(input, delimiter, { plain = true })
   end,
 
-  -- startsWith = Check if string starts with a specific substring
+  -- startsWith: Check if string starts with a specific substring
   startsWith = function(input, prefix)
     return string.find(input, prefix, 1, true) == 1
   end

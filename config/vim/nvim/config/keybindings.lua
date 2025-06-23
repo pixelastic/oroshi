@@ -46,30 +46,23 @@ vmap("<C-D>", saveAndQuit, "Save file and quit")
 -- CTRL + N
 nmap("<C-N>", ":tabedit<Space>", "Create new file in directory", { silent = false })
 
--- CTRL-X: Change XXX into YYY
--- Easy way to toggle XXX placeholders into YYY placeholders, to more easily
--- identify what a specific highlight group refers to
-local function visualTogglePlaceholders()
-  local function changeSelection(from, to)
-    F.ensureVisualSelection()
-    vim.cmd("silent! '<,'>s/" .. from .. "/" .. to)
-    vim.cmd('normal gv')
+-- CTRL-X: Change XXX into YYY and vice-versa
+local function togglePlaceholders()
+  local selection = F.getSelection()
+  for i, line in ipairs(selection) do
+    line = F.replace(line, 'XXX', 'ZZZ')
+    line = F.replace(line, 'YYY', 'XXX')
+    line = F.replace(line, 'ZZZ', 'YYY')
+    selection[i] = line
   end
-
-  changeSelection('XXX', 'ZZZ')
-  changeSelection('YYY', 'XXX')
-  changeSelection('ZZZ', 'YYY')
-
-  -- Go back to normal mode and save
-  F.normalMode()
-  vim.cmd('silent! w!')
+  F.replaceSelection(selection)
 end
-local function normalTogglePlaceholders()
-  vim.cmd('normal V')
-  visualTogglePlaceholders()
+local function selectLineAndTogglePlaceholders()
+  F.selectLine()
+  togglePlaceholders()
 end
-vmap('<C-X>', visualTogglePlaceholders, 'Replace YYY with XXX')
-nmap('<C-X>', normalTogglePlaceholders, 'Replace YYY with XXX')
+vmap('<C-X>', togglePlaceholders, 'Replace YYY with XXX')
+nmap('<C-X>', selectLineAndTogglePlaceholders, 'Replace YYY with XXX')
 -- }}}
 
 

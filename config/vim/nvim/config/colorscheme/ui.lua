@@ -78,9 +78,7 @@ hl('CursorModeCommandNormal', 'none', O.colors.cursor.command)
 -- }}}
 
 -- Current line {{{
--- ctermfg is because of https://github.com/neovim/neovim/issues/9800
--- Without it, nvim displays an underline on current line in diff mode
-hl('CursorLine', 'none', { bg = 'GRAY_9', ctermfg = 'black' }) --	Current line
+hl('CursorLine', 'none', { bg = 'GRAY_9' }) --	Current line
 hl('CursorLineNr', 'YELLOW', { bg = 'GRAY_9', bold = true }) --	Current line number
 hl('CursorLineSign', 'none', { bg = 'GRAY_9'}) --	Current line sign
 -- }}}

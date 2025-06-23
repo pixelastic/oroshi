@@ -57,4 +57,14 @@ return {
       endColumn = endColumn
     }
   end,
+
+  -- selectWord: Select current word
+  selectWord = function()
+    vim.cmd.normal('viW')
+  end,
+
+  -- selectLine: Select current line
+  selectLine = function()
+    vim.cmd.normal('V')
+  end,
 }

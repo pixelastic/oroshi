@@ -15,6 +15,7 @@
 -- TODO: Might need to update nvim-treesitter to main branch, instead of master
 -- TODO: Dim the lines when far from the cursor, to help focus? https://github.com/folke/twilight.nvim
 -- TODO: Double check I can go to bottom of script and still have it centered
+-- TODO: Current line in diff mode has an underline. cf. https://github.com/neovim/neovim/issues/9800
 
 -- BIG TOOLS
 -- TODO: Add luacheck for linting lua
