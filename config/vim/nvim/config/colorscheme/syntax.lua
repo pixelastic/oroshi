@@ -121,11 +121,11 @@ hl('RenderMarkdownDash', 'PUNCTUATION') -- 	Thematic break line
 hl('RenderMarkdownSign', 'none') -- 	Sign column background
 -- header 1
 hl('RenderMarkdownH1', 'PURPLE_4') -- Gutter icon
-hl('RenderMarkdownH1Bg', 'PURPLE_5') -- Normal mode (full width)
+hl('RenderMarkdownH1Bg', 'PURPLE_4', { bg = "DARK_PURPLE" }) -- Normal mode (full width)
 hl('@markup.heading.1.markdown', 'PURPLE_4', { bold = true }) -- Insert mode
 -- header 2
 hl('RenderMarkdownH2', 'BLUE_4')
-hl('RenderMarkdownH2Bg', 'BLUE_2', { bg = 'BLUE_9' })
+hl('RenderMarkdownH2Bg', 'BLUE_4', { bg = 'DARK_BLUE' })
 hl('@markup.heading.2.markdown', 'BLUE_4', { bold = true })
 -- header 3
 hl('RenderMarkdownH3', 'GREEN_7')

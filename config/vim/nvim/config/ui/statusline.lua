@@ -332,10 +332,8 @@ O_STATUSLINE = {
       return nil
     end
 
-
-    local startLine = vim.fn.line("v")
-    local endLine = vim.fn.line(".")
-    local count = math.abs(endLine - startLine) + 1
+    local range = F.getRange()
+    local count = range.endLine - range.startLine + 1
     return count;
   end,
 

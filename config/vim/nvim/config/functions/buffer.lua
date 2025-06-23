@@ -16,6 +16,10 @@ return {
   currentLine = function()
     return vim.api.nvim_get_current_line();
   end,
+  -- getLine: Returns the content of a given line
+  getLine = function(lineNumber)
+    return vim.api.nvim_buf_get_lines(0, lineNumber - 1, lineNumber, false)[1]
+  end,
   -- setCurrentLine: Update the current line
   setCurrentLine = function(newLine)
     vim.api.nvim_set_current_line(newLine)

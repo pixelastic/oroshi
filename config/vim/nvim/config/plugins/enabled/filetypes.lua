@@ -15,5 +15,18 @@ return {
   {
     'MeanderingProgrammer/render-markdown.nvim',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    config = function()
+      require('render-markdown').setup({
+        heading = {
+          icons = { ' ', '  ', '   ', '    ', '     ', '      ' },
+        },
+        html = {
+          comment = {
+            conceal = false, -- Do not hide HTML comments
+          },
+
+        },
+      })
+    end
   }
 }

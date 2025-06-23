@@ -16,6 +16,10 @@ return {
     local mode = vim.fn.mode()
     return mode == 'v' or mode == 'V' or mode == ''
   end,
+  -- isVisualLineMode: Check if in visual line
+  isVisualLineMode = function()
+    return vim.fn.mode() == 'V'
+  end,
 
   -- normalMode: Switch to normal mode
   normalMode = function()

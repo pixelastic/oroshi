@@ -31,6 +31,7 @@ F = vim.tbl_extend('force', {},
   O_require('oroshi/functions/map'),
   O_require('oroshi/functions/misc'),
   O_require('oroshi/functions/modes'),
+  O_require('oroshi/functions/visual'),
   O_require('oroshi/functions/windows')
 )
 
@@ -54,7 +55,10 @@ O_require('oroshi/display')
 O_require('oroshi/disk')
 
 -- Filetype specific
-O_require('oroshi/filetypes')
+O_require('oroshi/filetypes/help')
+O_require('oroshi/filetypes/markdown')
+O_require('oroshi/filetypes/xkb')
+O_require('oroshi/filetypes/zsh')
 
 -- Plugins
 -- Any config stored in plugins will NOT be reloaded when pressing <F2>, you

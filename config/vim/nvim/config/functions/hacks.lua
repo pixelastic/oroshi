@@ -10,6 +10,7 @@ return {
     -- So if we need to use them in a lua method, we first need to leave and
     -- quickly come back in visual mode to be able to use '< and '> in the
     -- mapping
+    -- TODO: I might get away from that by using "." and "v" in getpos
     F.normalMode()      -- <Esc> to leave visual mode
     vim.cmd('normal gv') -- Reselecting previous selection
   end,

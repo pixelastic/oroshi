@@ -51,6 +51,7 @@ return {
                 { find = "lines yanked"},
                 { find = "more lines"},
                 { find = "lines <ed"},
+                { find = "lines >ed"},
               },
             },
             opts = { skip = true },
@@ -353,6 +354,10 @@ return {
 
         }, --- @see section on formatting
       })
+
+      F.ftplugin('noice', function()
+        F.nmap('<CR>', '', 'Unmap <CR>', { buffer = F.bufferId() }) -- Disable <CR>, was triggering issues
+      end)
     end,
   },
 }
