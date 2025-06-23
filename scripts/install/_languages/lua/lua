@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# lua: Simple programming language
+# https://www.lua.org/
+
+# 5.1 is what is used by nvim internally, so I'll stick to that
+sudo apt install lua5.1
