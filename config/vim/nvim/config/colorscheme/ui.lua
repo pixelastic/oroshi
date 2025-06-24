@@ -146,20 +146,19 @@ hl('CopilotSuggestion', 'NEUTRAL', { bg = 'GRAY_8', italic = true, bold = true  
 
 -- Diagnostics {{{
 -- Errors
-hl('DiagnosticLineNrError', 'RED_2', { bg = 'RED_9'})         -- Line number
-hl('DiagnosticUnderlineError', 'RED_2', { bg = 'RED_9' })     -- Problematic code
-hl('DiagnosticError', 'RED_2', { bg = 'RED_9', bold = true }) -- Floating text
-hl('DiagnosticVirtualTextError', 'RED_3', { bg = 'RED_9' })   -- Virtual text
-hl('DiagnosticDiagLineError', 'RED_2', { bg = 'RED_9'})       -- Diag line
+hl('DiagnosticLineNrError', 'RED_2', { bg = 'RED_9'})                        -- Line number
+hl('DiagnosticUnderlineError', 'none', { undercurl = true, sp = 'RED' })     -- Problematic code
+hl('DiagnosticError', 'RED_2', { bg = 'RED_9', bold = true })                -- Floating text
+hl('DiagnosticVirtualTextError', 'RED_3', { bg = 'RED_9' })                  -- Virtual text
+hl('DiagnosticDiagLineError', 'RED_2', { bg = 'RED_9'})                      -- Diag line
 
 -- Warning
-hl('DiagnosticLineNrWarn', 'YELLOW_5', { bg = 'YELLOW_9', bold = true }) -- Line number
-hl('DiagnosticUnderlineWarn', 'YELLOW_5', { bg = 'YELLOW_9' })           -- Problematic code
-hl('DiagnosticWarn', 'YELLOW_5', { bg = 'YELLOW_9' })                    -- Floating text
-hl('DiagnosticVirtualTextWarn', 'YELLOW_5', { bg = 'YELLOW_9' })         -- Virtual text
-hl('DiagnosticDiagLineWarn', 'YELLOW_5', { bg = 'YELLOW_9' })            -- Diag line
--- Unnecessary (considered as warnings)
-hl('DiagnosticUnnecessary', 'YELLOW_5', { bg = 'YELLOW_9' }) -- Problematic code
+hl('DiagnosticLineNrWarn', 'YELLOW_5', { bg = 'YELLOW_9', bold = true })             -- Line number
+hl('DiagnosticUnderlineWarn', 'none', { undercurl = true, sp = 'YELLOW_6' })           -- Problematic code
+hl('DiagnosticUnnecessary', 'none', { undercurl = true, sp = 'YELLOW_6' })             -- Problematic code
+hl('DiagnosticWarn', 'YELLOW_5', { bg = 'YELLOW_9' })                                -- Floating text
+hl('DiagnosticVirtualTextWarn', 'YELLOW_5', { bg = 'YELLOW_9' })                     -- Virtual text
+hl('DiagnosticDiagLineWarn', 'YELLOW_5', { bg = 'YELLOW_9' })                        -- Diag line
 
 -- Info
 hl('DiagnosticLineNrInfo', 'BLUE_5', { bg = 'BLUE_9' })     -- Line number
@@ -200,16 +199,11 @@ O.colors.statusline = {
   nvimTreeIcon = { fg= 'YELLOW', bg = 'GREEN_9' },
   nvimTreeText = { fg= 'WHITE', bg = 'GREEN_9' },
   nvimTreeSeparator = { fg = 'GREEN_9' },
-  -- Healthcheck
-  healthcheck = { bg = "RED_LIGHT", fg = "WHITE" },
-  -- CodeCompanion
-  codecompanion = { bg = 'AMBER_7', fg = 'AMBER_1'},
-  -- Fileencoding
-  fileencoding = { bg= 'RED_9', fg = 'RED_2' },
-  -- Macro
-  macro = { fg = 'RED', bg = 'DARK_RED' },
-  -- Filetype
-  filetype = { bg = 'GRAY_9', fg = 'WHITE' },
+  healthcheck = { bg = "RED_LIGHT", fg = "WHITE" },  -- Healthcheck
+  codecompanion = { bg = 'AMBER_7', fg = 'AMBER_1'}, -- CodeCompanion
+  fileencoding = { bg= 'RED_9', fg = 'RED_2' },      -- Fileencoding
+  macro = { fg = 'RED', bg = 'DARK_RED' },           -- Macro
+  filetype = { bg = 'GRAY_9', fg = 'WHITE' },        -- Filetype
   -- LSP
   lsp = {
     off = { fg = 'GRAY_8', bg = 'DARK_BLUE' },

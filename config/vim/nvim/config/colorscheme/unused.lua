@@ -201,3 +201,22 @@ hl('NoiceLspProgressTitle', 'XXX')
 hl('NoiceSplitBorder', 'XXX')
 hl('NoiceVirtualText', 'XXX')
 -- }}}
+
+-- Mini.pick {{{
+hl('MiniPickBorderBusy', 'XXX')
+hl('MiniPickBorderText', 'XXX')
+hl('MiniPickBorder', 'XXX')
+hl('MiniPickCursor', 'XXX')
+hl('MiniPickHeader', 'XXX')
+hl('MiniPickIconDirectory', 'XXX')
+hl('MiniPickIconFile', 'XXX')
+hl('MiniPickMatchCurrent', 'XXX')
+hl('MiniPickMatchMarked', 'XXX')
+hl('MiniPickMatchRanges', 'XXX')
+hl('MiniPickNormal', 'XXX')
+hl('MiniPickPreviewLine', 'XXX')
+hl('MiniPickPreviewRegion', 'XXX')
+hl('MiniPickPromptCaret', 'XXX')
+hl('MiniPickPromptPrefix', 'XXX')
+hl('MiniPickPrompt', 'XXX')
+-- }}}

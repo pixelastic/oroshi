@@ -1,6 +1,5 @@
 local hl = F.hl
 
-
 -- Statusline
 vim.opt.laststatus = 3 -- One global statusline instead of one per window
 vim.opt.showmode = false -- Hide bottom line with mode
@@ -34,7 +33,6 @@ O_STATUSLINE = {
     -- Project
     local project = fileData.project;
 
-
     -- Mode
     add(statusline, mode.content, mode.hl)
     add(statusline, '', { fg = modeBg, bg = project.hl.bg})
@@ -43,13 +41,8 @@ O_STATUSLINE = {
     add(statusline, project.content, project.hl)
     add(statusline, '', { fg = project.hl.bg })
 
-
     -- Filepath
     add(statusline, file.content, fileHighlight)
-
-
-    -- TODO: This should give me the current treesitter status
-    -- nvim_treesitter#statusline(90)
 
     -- Separator
     add(statusline, '%<%=')
@@ -241,9 +234,15 @@ O_STATUSLINE = {
     --       },
     --       file = {
     --         content = 'config/vim/…/statusline.lua',
-    --         basename = 'statusline.lua'
     --       }
     --   }
+
+    -- If this is a special buffer (healtcheck, CodeCompanion, etc.), we return
+    -- early
+    local specialBufferData = O_STATUSLINE.specialBufferData()
+    if specialBufferData then
+      return specialBufferData
+    end
 
     -- Which file to check?
     local rawFilepath = vim.fn.expand('%:p')
@@ -259,27 +258,6 @@ O_STATUSLINE = {
       vim.b.statuslineFileData = nil -- No cache for this buffer
     end
 
-    -- For healthcheck
-    if O_STATUSLINE.isHealthcheck() then
-      return {
-        file = { content = "" },
-        project = {
-          content = "   healthcheck ",
-          hl = O.colors.statusline.healthcheck
-        }
-      }
-    end
-
-    -- For CodeCompanion
-    if O_STATUSLINE.isCodeCompanion() then
-      return {
-        file = { content = "" },
-        project = {
-          content = "   CodeCompanion ",
-          hl = O.colors.statusline.codecompanion
-        }
-      }
-    end
 
     -- Check in buffer cache first
     if vim.b.statuslineFileData then
@@ -298,22 +276,17 @@ O_STATUSLINE = {
     end
     local project = {
       content = ' ' .. projectContent .. ' ',
-      hl = {
-        bg = projectData.bg,
-        fg = projectData.fg,
-      }
+      hl = projectData.hl
     }
 
     -- Filepath
     local relativePath = rawFilepath:gsub('^' .. projectData.path, '')
-    local basename = vim.fs.basename(rawFilepath)
     local simplifiedPath = vim.fn.systemlist(
       'simplify-path ' .. vim.fn.shellescape(relativePath) .. ' 3' -- Keep only three levels
     )[1]
     local fileContent = ' ' .. simplifiedPath
     local file = {
       content = fileContent,
-      basename = basename,
     }
 
 
@@ -337,19 +310,36 @@ O_STATUSLINE = {
     return count;
   end,
 
+  -- specialBufferData: Get special buffer data (e.g. NvimTree, healthcheck, etc.)
+  specialBufferData = function()
+    -- For healthcheck
+    if vim.bo.filetype == 'checkhealth' then
+      return {
+        file = { content = "" },
+        project = {
+          content = "   healthcheck ",
+          hl = O.colors.statusline.healthcheck
+        }
+      }
+    end
+
+    -- For CodeCompanion
+    if vim.bo.filetype == 'codecompanion' then
+      return {
+        file = { content = "" },
+        project = {
+          content = "   CodeCompanion ",
+          hl = O.colors.statusline.codecompanion
+        }
+      }
+    end
+
+    return nil
+  end,
+
   -- isNvimTree: Check if in a nvim tree window
   isNvimTree = function()
     return vim.bo.filetype == 'NvimTree'
-  end,
-
-  -- isHealthcheck: Check if in a healthcheck window
-  isHealthcheck= function()
-    return vim.bo.filetype == 'checkhealth'
-  end,
-
-  -- isCodeCompanion: Check if in CodeCompanion Chat buffer
-  isCodeCompanion= function()
-    return vim.bo.filetype == 'codecompanion'
   end,
 
   -- nvimTreeStatusline: Simple statusline for using NvimTree

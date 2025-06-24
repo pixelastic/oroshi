@@ -15,6 +15,7 @@ return {
     -- Convert colors from short names
     if options.fg and options.fg ~= 'none' then options.fg = O.colors.env[options.fg] end
     if options.bg and options.bg ~= 'none' then options.bg = O.colors.env[options.bg] end
+    if options.sp and options.sp ~= 'none' then options.sp = O.colors.env[options.sp] end
 
     local defaults = {
       fg = O.colors.env[colorName],
@@ -43,7 +44,13 @@ return {
   -- getData: Get info about a specific project, lazyloaded and cached
   getProjectData = function(projectKey)
     if not projectKey then
-      return {}
+      return {
+        name = '',
+        path = '',
+        icon = '',
+        hl = {},
+        hideNameInPrompt = false,
+      }
     end
 
     -- Return cached version
@@ -66,8 +73,10 @@ return {
       name = projectKey:lower(),
       path = vim.fn.expand(projectPath), -- Convert ~ to full path
       icon = getAttribute('ICON'),
-      bg = getAttribute('BACKGROUND_NAME'),
-      fg = getAttribute('FOREGROUND_NAME'),
+      hl = {
+        bg = getAttribute('BACKGROUND_NAME'),
+        fg = getAttribute('FOREGROUND_NAME'),
+      },
       hideNameInPrompt = getAttribute('HIDE_NAME_IN_PROMPT')
     }
     O.projects[projectKey] = projectData;

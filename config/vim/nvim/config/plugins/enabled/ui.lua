@@ -43,8 +43,8 @@ return {
           -- Useless messages
           {
             filter = {
-              kind = { "" },
               event = "msg_show",
+              kind = { "" },
               any = {
                 { find = "fewer lines"},
                 { find = "lines indented"},
@@ -66,8 +66,8 @@ return {
           -- Warning
           {
             filter = {
-              kind = { "emsg" },
               event = "msg_show",
+              kind = { "emsg" },
               any = {
                 { find = "Pattern not found"},
                 { find = "E20: Mark not set"},
@@ -76,8 +76,17 @@ return {
             },
             view = "O_warn",
           },
+          {
+            filter = {
+              event = "notify",
+              kind = { "error" },
+              any = {
+                { find = "no manual entry for"},
+              },
+            },
+            view = "O_warn",
+          },
           { filter = { event = "notify", kind = "warn" }, view = "O_warn", },
-
 
 
 

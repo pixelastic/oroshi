@@ -50,6 +50,12 @@ M.configureDiagLine = function()
     -- Update content of the diag line
     M.update(data, error)
   end)
+
+  -- Replace it at the bottom whenever we resize
+  autocmd({'VimResized', 'BufEnter' }, function()
+    local data = misc.getDiagData()
+    M.alignAtBottomOfScreen(data)
+  end)
 end
 
 -- Create a (hidden) diag line, as a window at the bottom of the screen
@@ -112,11 +118,24 @@ M.update = function(data, error)
   )
 
   -- Show window
+  M.alignAtBottomOfScreen(data)
+end
+
+M.alignAtBottomOfScreen = function(data)
+  -- No-op if no diagline
+  if not data.windowId then
+    return
+  end
+
   vim.api.nvim_win_set_config(data.windowId, {
+    relative = 'win',
     width = F.windowWidth(),
+    row = F.windowHeight(),
+    col = 0,
     hide = false
   })
 end
+
 
 -- Returns the .severity and .content of the current line
 M.getErrorDetails = function(lineNumber)
