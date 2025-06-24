@@ -4,10 +4,12 @@
 -- TODO: Folding that folds on expr and markers
 -- TODO: https://github.com/folke/trouble.nvim ? To see diagnostics
 -- TODO: Check https://github.com/folke/tokyonight.nvim for methods to lighten/darken colors?
+-- TODO: Completion in commandline, to see fuzzy find of commands
 
 -- AI:
 -- TODO: ChatGPT to explain code, quick chat, write tests, write documentation, etc
 -- TODO: Test codeium as completion
+-- TODO: Use mini.diff to have inplace diff with CodeCompanion inline
 
 -- NICE TO HAVE
 -- TODO: Git capabilities, like vfd in vim?
@@ -16,6 +18,7 @@
 -- TODO: Dim the lines when far from the cursor, to help focus? https://github.com/folke/twilight.nvim
 -- TODO: Double check I can go to bottom of script and still have it centered
 -- TODO: Current line in diff mode has an underline. cf. https://github.com/neovim/neovim/issues/9800
+-- TODO: Add a spinner when thinking in the statusline: https://github.com/folke/noice.nvim/issues/537
 
 -- BIG TOOLS
 -- TODO: Add luacheck for linting lua

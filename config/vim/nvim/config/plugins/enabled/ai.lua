@@ -100,18 +100,12 @@ return {
       codecompanion.setup({
         strategies = {
           chat = {
-            -- adapter = "anthropic",
             adapter = "copilot",
             keymaps = {
               send = {
                 modes = { n = "<C-CR>", i = "<C-CR>" },
                 opts = {},
               },
-              -- close = {
-              --   modes = { n = "<C-c>", i = "<C-c>" },
-              --   opts = {},
-              -- },
-              -- Add further custom keymaps here
             },
           },
           inline = {
@@ -125,17 +119,17 @@ return {
           chat = {
             window = {
               layout = "vertical",
-              position = "right", -- "left", "right", "bottom"
-              width = 50, -- Width of the chat window
+              position = "right",
+              width = 50,
             }
           },
-          diff = {
-            enabled = true,
-            close_chat_at = 240, -- Close an open chat buffer if the total columns of your display are less than...
-            layout = "vertical", -- vertical|horizontal split for default provider
-            opts = { "internal", "filler", "closeoff", "algorithm:patience", "followwrap", "linematch:120" },
-            provider = "default", -- default|mini_diff
-          },
+          -- diff = {
+          --   enabled = true,
+          --   close_chat_at = 240, -- Close an open chat buffer if the total columns of your display are less than...
+          --   layout = "vertical", -- vertical|horizontal split for default provider
+          --   opts = { "internal", "filler", "closeoff", "algorithm:patience", "followwrap", "linematch:120" },
+          --   provider = "default", -- default|mini_diff
+          -- },
         },
         opts = {
           log_level = "DEBUG",
@@ -175,6 +169,8 @@ return {
         -- Ctrl-B to add #buffer
         imap('<C-B>', '#buffer<CR>', 'Add #buffer', { buffer = bufferId })
         nmap('<C-B>', 'mZ^i#buffer<CR><Esc>`Zj', 'Add #buffer', { buffer = bufferId })
+
+        autocmd('BufEnter', F.insertMode, { buffer = bufferId })
       end)
 
 

@@ -33,8 +33,18 @@ hl('Underlined', 'none', { underline = true }) --	text that stands out, HTML lin
 -- Diff / Git {{{
 hl('Added', 'GIT_ADDED')
 hl('Changed', 'GIT_MODIFIED')
-hl('Removed', 'GIT_REMOVED')
 hl('DiffDelete', 'GIT_REMOVED')
+hl('Removed', 'GIT_REMOVED')
+hl('diffAdded', 'GIT_ADDED')
+hl('diffFile', 'HEADER')
+hl('diffLine', 'TERMINAL')
+hl('diffRemoved', 'GIT_REMOVED')
+hl('diffSubname', 'COMMENT')
+hl('gitcommitBranch', 'GIT_BRANCH')
+hl('gitcommitDiff', 'COMMENT')
+hl('gitcommitHeader', 'COMMENT')
+hl('gitcommitSelectedFile', 'FILE')
+hl('gitcommitSummary', 'TEXT')
 -- }}}
 
 -- Treesitter groups {{{

@@ -15,7 +15,6 @@ local toggleWrapping = function(before, after)
     local endsWithWrap = F.endsWith(F.last(selection), after)
     local isAlreadyWrapped = startsWithWrap and endsWithWrap
 
-
     -- failsafe so if we cannot revert, we do nothing
     if isAlreadyWrapped and not canBeToggled then
       F.normalMode()
