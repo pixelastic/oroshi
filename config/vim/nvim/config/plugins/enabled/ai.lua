@@ -118,10 +118,36 @@ return {
         display = {
           chat = {
             window = {
-              layout = "vertical",
-              position = "right",
-              width = 50,
-            }
+              layout = "float",
+              width = 0.8,
+              title = {
+                { "", "CodeCompanionChatTitleDecoration" },
+                {" AI Chat ", "CodeCompanionChatTitle"},
+                { "", "CodeCompanionChatTitleDecoration" }
+              },
+              border = {
+                { "▄", "CodeCompanionChatBorder"},
+                { "▄", "CodeCompanionChatBorder"},
+                { "▄", "CodeCompanionChatBorder"},
+                { "█", "CodeCompanionChatBorder"},
+                { "▀", "CodeCompanionChatBorder"},
+                { "▀", "CodeCompanionChatBorder"},
+                { "▀", "CodeCompanionChatBorder"},
+                { "█", "CodeCompanionChatBorder"},
+              },
+              opts = {
+                winhighlight = F.join({
+                  "Normal:CodeCompanionChatNormal",
+                  "EndOfBuffer:CodeCompanionChatEndOfBuffer",
+                  "@markup.heading.2.markdown:CodeCompanionChatInnerTitle"
+                }, ",")
+              }
+            },
+            intro_message = "",
+            start_in_insert_mode = false,
+            auto_scroll = false,
+            show_token_count = false,
+            separator = "SEPARATOR????"
           },
           -- diff = {
           --   enabled = true,
@@ -136,42 +162,46 @@ return {
         },
       })
 
-      -- Dynamic resizing of chat window {{{
-      local function setChatWidth()
-        local maxWidth = vim.o.columns;
-        local widthFullScreen = 75
-        local widthSmallScreen = 50
-        local chatWidth = maxWidth > 73 and widthFullScreen or widthSmallScreen
-        vim.api.nvim_win_set_width(0, chatWidth)
-      end
-      -- }}}
-
-      -- Add "thinking" icon to statusbar when pending {{{
-      autocmd('User', function()
-        O.statusline.codecompanion.isThinking = true
-      end, { pattern = 'CodeCompanionRequestStarted' })
-      autocmd('User', function()
-        O.statusline.codecompanion.isThinking = false
-      end, { pattern = 'CodeCompanionRequestFinished' })
-      -- }}}
-
       -- Toggle chat window {{{
       nmap('⒤', "<cmd>CodeCompanionChat Toggle<cr>", "Toggle CodeCompanion Chat")
       imap('⒤', "<cmd>CodeCompanionChat Toggle<cr>", "Toggle CodeCompanion Chat")
       -- }}}
 
+      -- On opening the chat window {{{
       ftplugin('codecompanion', function()
         local bufferId = F.bufferId()
-
-        -- Resize chat window
-        autocmd({'VimResized', 'BufEnter' }, setChatWidth, { buffer = bufferId })
 
         -- Ctrl-B to add #buffer
         imap('<C-B>', '#buffer<CR>', 'Add #buffer', { buffer = bufferId })
         nmap('<C-B>', 'mZ^i#buffer<CR><Esc>`Zj', 'Add #buffer', { buffer = bufferId })
 
-        autocmd('BufEnter', F.insertMode, { buffer = bufferId })
+        -- Init
+        autocmd('BufEnter', function()
+          vim.wo.number = false    -- Hide line numbers
+          vim.wo.colorcolumn = "0" -- Hide wrap column
+        end, { buffer = bufferId })
       end)
+      -- }}}
+
+      -- Update colors while thinking {{{
+      local function whenThinkingStarts()
+        F.hl("CodeCompanionChatBorder", 'none', O.colors.codecompanion.thinking.chatBorder)
+        F.hl("CodeCompanionChatNormal", 'none', O.colors.codecompanion.thinking.chatNormal)
+      end
+      autocmd('User', whenThinkingStarts,{ pattern = 'CodeCompanionRequestStarted' })
+
+      local function whenThinkingEnds()
+        F.hl("CodeCompanionChatBorder", 'none', O.colors.codecompanion.default.chatBorder)
+        F.hl("CodeCompanionChatNormal", 'none', O.colors.codecompanion.default.chatNormal)
+      end
+      autocmd('User', whenThinkingEnds,{ pattern = 'CodeCompanionRequestFinished' })
+      -- }}}
+
+
+
+
+
+
 
 
       -- TODO: ⒤ en mode visuel devrait ouvrir une floating window pour demander

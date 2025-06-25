@@ -3,6 +3,15 @@ local hl = F.hl
 hl('Normal', 'GRAY_3') -- Normal text.
 hl('NormalNC', 'none') -- Normal text in unfocused windows. Should not be set.
 
+-- Misc {{{
+hl('ColorColumn', 'none', { bg = 'GRAY_9'}) -- Max column
+hl('EndOfBuffer', 'BLACK')                  -- Filler lines (~) after the end of the buffer.
+hl('NonText', 'GRAY_8')                     -- End-Of-Line (↲) and wrapped lines (↪) chars
+hl('Whitespace', 'YELLOW')                  -- "nbsp", "space", "tab", "multispace", "lead" and "trail"
+hl('MatchParen', 'WHITE', { bg = 'BLUE' })  -- Matching parenthesis
+hl('Directory', 'DIRECTORY')                -- Directory names
+-- }}}
+
 -- Messages {{{
 hl('DiagnosticInfo', 'INFO')
 hl('ErrorMsg', 'RED_8', { bold = false}) --	Error messages
@@ -37,7 +46,6 @@ hl('NoiceCmdlinePrompt', 'GRAY_4')
 -- Line Number {{{
 hl('LineNr', 'GRAY') --	Line number column
 hl('SignColumn', 'GRAY') --	Sign column
--- LSP Diagnostics
 -- Git coloring
 hl('GitSignsAddNr', 'GREEN_9')
 hl('GitSignsChangeNr', 'PURPLE')
@@ -45,6 +53,9 @@ hl('GitSignsChangedeleteNr', 'PURPLE')
 hl('GitSignsTopdeleteNr', 'RED_9')
 hl('GitSignsDeleteNr', 'RED_9')
 hl('GitSignsUntrackedNr', 'XXX')
+-- Current line
+hl('CursorLineNr', 'YELLOW', { bg = 'GRAY_9', bold = true }) --	Current line number
+hl('CursorLineSign', 'none', { bg = 'GRAY_9'}) --	Current line sign
 -- }}}
 
 -- Cursor {{{
@@ -79,8 +90,6 @@ hl('CursorModeCommandNormal', 'none', O.colors.cursor.command)
 
 -- Current line {{{
 hl('CursorLine', 'none', { bg = 'GRAY_9' }) --	Current line
-hl('CursorLineNr', 'YELLOW', { bg = 'GRAY_9', bold = true }) --	Current line number
-hl('CursorLineSign', 'none', { bg = 'GRAY_9'}) --	Current line sign
 -- }}}
 
 -- Folds {{{
@@ -264,6 +273,27 @@ hl('NoiceOMessagePrefix', 'GRAY')
 hl('NoiceOMessageMessage', 'GRAY')
 -- }}}
 
+-- CodeCompanion {{{
+O.colors.codecompanion = {
+  default = {
+    chatNormal  = { fg = 'none', bg = 'GRAY_8' },
+    chatBorder  = { fg = 'DARK_AMBER', bg = 'BLACK' },
+  },
+  thinking = {
+    chatNormal  = { fg = 'none', bg = 'DARK_AMBER' },
+    chatBorder  = { fg = 'AMBER_7', bg = 'BLACK' },
+  }
+}
+hl("CodeCompanionChatTitle", 'AMBER_1', { bg = 'AMBER_7' })
+hl("CodeCompanionChatTitleDecoration", 'AMBER_7')
+hl("CodeCompanionChatBorder", 'none', O.colors.codecompanion.default.chatBorder)
+hl("CodeCompanionChatNormal", 'none', O.colors.codecompanion.default.chatNormal)
+hl("CodeCompanionChatInnerTitle", 'AMBER_5', { bold = true }) -- ## Headers
+hl("CodeCompanionChatVariable", 'VARIABLE', { bold = true })
+hl("CodeCompanionChatEndOfBuffer", 'GRAY_8')
+
+-- }}}
+
 -- Lazy {{{
 hl('LazyButtonActive', 'YELLOW', { bg = 'BLACK', bold = true })
 hl('LazyButton', 'none', { bg = 'GRAY_9' })
@@ -309,15 +339,6 @@ hl('GitSignsTopdeleteLn', 'none', { bg = 'RED_9' })
 hl('GitSignsDeleteLn', 'none', { bg = 'RED_9' })
 -- }}}
 
-
--- Misc {{{
-hl('ColorColumn', 'none', { bg = 'GRAY_9'}) -- Max column
-hl('EndOfBuffer', 'BLACK')                  -- Filler lines (~) after the end of the buffer.
-hl('NonText', 'GRAY_8')                     -- End-Of-Line (↲) and wrapped lines (↪) chars
-hl('Whitespace', 'YELLOW')                  -- "nbsp", "space", "tab", "multispace", "lead" and "trail"
-hl('MatchParen', 'WHITE', { bg = 'BLUE' })  -- Matching parenthesis
-hl('Directory', 'DIRECTORY')                -- Directory names
--- }}}
 
 
 

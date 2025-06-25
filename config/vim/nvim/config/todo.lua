@@ -12,6 +12,7 @@
 -- TODO: Use mini.diff to have inplace diff with CodeCompanion inline
 
 -- NICE TO HAVE
+-- TODO: Display parent function name in statusbar
 -- TODO: Git capabilities, like vfd in vim?
 -- TODO: Ensure I can complete filepaths
 -- TODO: Might need to update nvim-treesitter to main branch, instead of master

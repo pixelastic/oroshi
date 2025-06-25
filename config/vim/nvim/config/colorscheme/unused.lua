@@ -220,3 +220,16 @@ hl('MiniPickPromptCaret', 'XXX')
 hl('MiniPickPromptPrefix', 'XXX')
 hl('MiniPickPrompt', 'XXX')
 -- }}}
+
+-- CodeCompanion {{{
+hl('CodeCompanionChatInfo', 'XXX')
+hl('CodeCompanionChatError', 'XXX')
+hl('CodeCompanionChatWarn', 'XXX')
+hl('CodeCompanionChatSubtext', 'XXX')
+hl('CodeCompanionChatHeader', 'XXX')
+hl('CodeCompanionChatSeparator', 'XXX')
+hl('CodeCompanionChatTokens', 'XXX')
+hl('CodeCompanionChatTool', 'XXX')
+hl('CodeCompanionChatToolGroups', 'XXX')
+hl('CodeCompanionVirtualText', 'XXX')
+-- }}}
