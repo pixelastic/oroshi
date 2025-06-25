@@ -23,7 +23,8 @@ return {
 
   -- normalMode: Switch to normal mode
   normalMode = function()
-    vim.api.nvim_command('normal ') -- Press <Esc>
+    vim.cmd.stopinsert()
+    -- vim.api.nvim_command('normal ') -- Press <Esc>
   end,
   -- insertMode: Switch to insert mode
   insertMode = function()

@@ -5,6 +5,7 @@
 -- TODO: https://github.com/folke/trouble.nvim ? To see diagnostics
 -- TODO: Check https://github.com/folke/tokyonight.nvim for methods to lighten/darken colors?
 -- TODO: Completion in commandline, to see fuzzy find of commands
+-- TODO: https://github.com/jpmens/jo create JSON from the CLI
 
 -- AI:
 -- TODO: ChatGPT to explain code, quick chat, write tests, write documentation, etc
@@ -20,6 +21,7 @@
 -- TODO: Double check I can go to bottom of script and still have it centered
 -- TODO: Current line in diff mode has an underline. cf. https://github.com/neovim/neovim/issues/9800
 -- TODO: Add a spinner when thinking in the statusline: https://github.com/folke/noice.nvim/issues/537
+-- TODO: vim.cmd([[cab cc CodeCompanion]]) to remap cc to CodeCompanion in commandline
 
 -- BIG TOOLS
 -- TODO: Add luacheck for linting lua

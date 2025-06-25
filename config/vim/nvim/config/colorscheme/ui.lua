@@ -171,14 +171,14 @@ hl('DiagnosticDiagLineWarn', 'YELLOW_5', { bg = 'YELLOW_9' })                   
 
 -- Info
 hl('DiagnosticLineNrInfo', 'BLUE_5', { bg = 'BLUE_9' })     -- Line number
-hl('DiagnosticUnderlineInfo', 'BLUE_3', { bg = 'BLUE_9'})   -- Problematic code
+hl('DiagnosticUnderlineInfo', 'none', { undercurl = true, sp = 'BLUE_9' })           -- Problematic code
 hl('DiagnosticInfo', 'BLUE', { bg = 'BLUE_9' })             -- Floating text
 hl('DiagnosticVirtualTextInfo', 'BLUE_3', { bg = 'BLUE_9'}) -- Virtual text
 hl('DiagnosticDiagLineInfo', 'BLUE_3', { bg = 'BLUE_9'})    -- Diag line
 
 -- Hints
 hl('DiagnosticLineNrHint', 'VIOLET_5', { bg = 'GRAY_7' })      -- Line number
-hl('DiagnosticUnderlineHint', 'VIOLET_5', { bg = 'VIOLET_9' }) -- Problematic code
+hl('DiagnosticUnderlineHint', 'none', { undercurl = true, sp = 'VIOLET_7' })           -- Problematic code
 hl('DiagnosticHint', 'VIOLET_5', { bg = 'GRAY_8' })            -- Floating text
 hl('DiagnosticVirtualTextHint', 'VIOLET_5', { bg = 'GRAY_8' }) -- Virtual text
 hl('DiagnosticDiagLineHint', 'VIOLET_4', { bg = 'GRAY_8' })    -- Diag line

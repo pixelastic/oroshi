@@ -2,6 +2,7 @@ local ftplugin = F.ftplugin
 local autocmd = F.autocmd
 local nmap = F.nmap
 local imap = F.imap
+local vmap = F.vmap
 
 
 -- This is code example taken from https://github.com/hrsh7th/nvim-cmp/discussions/1034
@@ -104,8 +105,10 @@ return {
             keymaps = {
               send = {
                 modes = { n = "<C-CR>", i = "<C-CR>" },
-                opts = {},
               },
+              close = {
+                modes = { n = '<F99>', i = '<F99>' }, -- Map to a nonexistent key to disable it
+              }
             },
           },
           inline = {
@@ -144,10 +147,9 @@ return {
               }
             },
             intro_message = "",
-            start_in_insert_mode = false,
+            start_in_insert_mode = true,
             auto_scroll = false,
             show_token_count = false,
-            separator = "SEPARATOR????"
           },
           -- diff = {
           --   enabled = true,
@@ -162,18 +164,37 @@ return {
         },
       })
 
-      -- Toggle chat window {{{
-      nmap('⒤', "<cmd>CodeCompanionChat Toggle<cr>", "Toggle CodeCompanion Chat")
-      imap('⒤', "<cmd>CodeCompanionChat Toggle<cr>", "Toggle CodeCompanion Chat")
+      -- Open chat window {{{
+      local function openChatWindow()
+        codecompanion.toggle()
+      end
+      nmap('⒤', openChatWindow, "Open the chat window")
+      imap('⒤', openChatWindow, "Open the chat window")
+      vmap('⒤', "<cmd>CodeCompanionChat<CR><CR><CR>", "Open the chat window")
       -- }}}
 
-      -- On opening the chat window {{{
+      -- Specific bindings and config of the chat window {{{
       ftplugin('codecompanion', function()
         local bufferId = F.bufferId()
 
         -- Ctrl-B to add #buffer
         imap('<C-B>', '#buffer<CR>', 'Add #buffer', { buffer = bufferId })
         nmap('<C-B>', 'mZ^i#buffer<CR><Esc>`Zj', 'Add #buffer', { buffer = bufferId })
+
+        -- Various ways to close the window
+        local function closeChatWindow()
+          F.normalMode()
+          codecompanion.toggle()
+        end
+        nmap('⒤',     closeChatWindow, "Close the window", { buffer = bufferId })
+        nmap('<C-C>', closeChatWindow, "Close the window", { buffer = bufferId })
+        nmap('<C-D>', closeChatWindow, "Close the window", { buffer = bufferId })
+        imap('⒤',     closeChatWindow, "Close the window", { buffer = bufferId })
+        imap('<C-C>', closeChatWindow, "Close the window", { buffer = bufferId })
+        imap('<C-D>', closeChatWindow, "Close the window", { buffer = bufferId })
+        vmap('⒤',     closeChatWindow, "Close the window", { buffer = bufferId })
+        vmap('<C-C>', closeChatWindow, "Close the window", { buffer = bufferId })
+        vmap('<C-D>', closeChatWindow, "Close the window", { buffer = bufferId })
 
         -- Init
         autocmd('BufEnter', function()
@@ -196,22 +217,6 @@ return {
       end
       autocmd('User', whenThinkingEnds,{ pattern = 'CodeCompanionRequestFinished' })
       -- }}}
-
-
-
-
-
-
-
-
-      -- TODO: ⒤ en mode visuel devrait ouvrir une floating window pour demander
-      -- le prompt.
-      -- Utiliser les floating window de base de vim, mais les hijack avec
-      -- noice? Ou demander à noice d'en ouvrir une directement?
-      -- Puis passer ce prompt à CodeCompanionInline
-      --
-
-
     end
   },
 
