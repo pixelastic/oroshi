@@ -16,6 +16,7 @@ O = {
     codecompanion = {} -- CodeCompanion status
   },
   diagnostics = {}, -- Buffer-indexed diagnostics info
+  codecompanion = {}, -- Chat state
   nvimtree = {},
 }
 

@@ -104,7 +104,8 @@ return {
             adapter = "copilot",
             keymaps = {
               send = {
-                modes = { n = "<C-CR>", i = "<C-CR>" },
+                -- modes = { n = "<C-CR>", i = "<C-CR>" },
+                modes = { n = "<F99>", i = "<F99>" },
               },
               close = {
                 modes = { n = '<F99>', i = '<F99>' }, -- Map to a nonexistent key to disable it
@@ -147,7 +148,6 @@ return {
               }
             },
             intro_message = "",
-            start_in_insert_mode = true,
             auto_scroll = false,
             show_token_count = false,
           },
@@ -163,6 +163,13 @@ return {
           log_level = "DEBUG",
         },
       })
+
+      local function whenThinkingStarts(callback)
+        autocmd('User', callback, { pattern = 'CodeCompanionRequestStarted' })
+      end
+      local function whenThinkingEnds(callback)
+        autocmd('User', callback, { pattern = 'CodeCompanionRequestFinished' })
+      end
 
       -- Open chat window {{{
       local function openChatWindow()
@@ -196,27 +203,53 @@ return {
         vmap('<C-C>', closeChatWindow, "Close the window", { buffer = bufferId })
         vmap('<C-D>', closeChatWindow, "Close the window", { buffer = bufferId })
 
+        imap('<C-CR>', function()
+          local chat = require('codecompanion/strategies/chat')
+          F.debug(chat)
+          chat:submit()
+        end, "Close the window", { buffer = bufferId })
+
         -- Init
         autocmd('BufEnter', function()
           vim.wo.number = false    -- Hide line numbers
           vim.wo.colorcolumn = "0" -- Hide wrap column
+
+          -- Start in insert mode if no question has been asked
+          local isConversationStarted = F.get(O.codecompanion[bufferId], 'isConversationStarted')
+          if not isConversationStarted then
+            F.insertMode()
+          end
         end, { buffer = bufferId })
       end)
       -- }}}
 
       -- Update colors while thinking {{{
-      local function whenThinkingStarts()
+      whenThinkingStarts(function()
         F.hl("CodeCompanionChatBorder", 'none', O.colors.codecompanion.thinking.chatBorder)
         F.hl("CodeCompanionChatNormal", 'none', O.colors.codecompanion.thinking.chatNormal)
-      end
-      autocmd('User', whenThinkingStarts,{ pattern = 'CodeCompanionRequestStarted' })
-
-      local function whenThinkingEnds()
+      end)
+      whenThinkingEnds(function()
         F.hl("CodeCompanionChatBorder", 'none', O.colors.codecompanion.default.chatBorder)
         F.hl("CodeCompanionChatNormal", 'none', O.colors.codecompanion.default.chatNormal)
-      end
-      autocmd('User', whenThinkingEnds,{ pattern = 'CodeCompanionRequestFinished' })
+      end)
       -- }}}
+
+      -- Keep state in memory {{{
+      whenThinkingStarts(function(event)
+        local bufferId = event.buf;
+        O.codecompanion[bufferId] = {
+          isConversationStarted = true
+        }
+      end)
+      -- }}}
+      --
+      --
+      --
+      -- local windowId = F.windowId()
+      -- if not O.diagnostics[windowId] then
+      --   O.diagnostics[windowId] = {}
+      -- end
+      -- return O.diagnostics[windowId]
     end
   },
 

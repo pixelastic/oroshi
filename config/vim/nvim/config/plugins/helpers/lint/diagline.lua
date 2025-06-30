@@ -29,8 +29,6 @@ end
 
 -- Configure the diag line displayed at the bottom
 M.configureDiagLine = function()
-  O.diagnostics = {}
-
   -- Update it whenever the cursor moves
   autocmd('CursorMoved', function()
     local data = misc.getDiagData()
