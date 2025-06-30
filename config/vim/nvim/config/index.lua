@@ -16,6 +16,7 @@ O = {
     codecompanion = {} -- CodeCompanion status
   },
   diagnostics = {}, -- Buffer-indexed diagnostics info
+  folding = {}, -- Folding functions and helpers
   codecompanion = {}, -- Chat state
   nvimtree = {},
 }

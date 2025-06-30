@@ -20,6 +20,14 @@ return {
   getLine = function(lineNumber)
     return vim.api.nvim_buf_get_lines(0, lineNumber - 1, lineNumber, false)[1]
   end,
+  -- forEachLine: Call callback(number, content) for each line of the buffer
+  forEachLine = function(callback)
+    local lastLineCount = vim.api.nvim_buf_line_count(0)
+    for lineNumber = 1, lastLineCount do
+      local lineContent = F.getLine(lineNumber)
+      callback(lineNumber, lineContent)
+    end
+  end,
   -- setCurrentLine: Update the current line
   setCurrentLine = function(newLine)
     vim.api.nvim_set_current_line(newLine)

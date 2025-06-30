@@ -137,5 +137,5 @@ return {
   -- startsWith: Check if string starts with a specific substring
   startsWith = function(input, prefix)
     return string.find(input, prefix, 1, true) == 1
-  end
+  end,
 }

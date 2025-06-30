@@ -96,6 +96,13 @@ hl('CursorLine', 'none', { bg = 'GRAY_9' }) --	Current line
 hl('Folded', 'none', { bg = 'GRAY_8'}) --	Closed fold
 hl('FoldColumn', 'GRAY') -- Column for fold symbol
 hl('CursorLineFold', 'none', { bg = 'GRAY_9' }) -- Column for fold symbol on active line
+hl('FoldDebugMarker', 'VIOLET_9', { bg = 'DARK_VIOLET'}) -- Marker column in fold debug
+hl('FoldDebugLevel1', 'PURPLE', { bg = 'DARK_PURPLE'})   -- Level 1 in fold debug
+hl('FoldDebugLevel2', 'BLUE', { bg = 'DARK_BLUE'})       -- Level 2 in fold debug
+hl('FoldDebugLevel3', 'GREEN', { bg = 'DARK_GREEN'})     -- Level 3 in fold debug
+hl('FoldDebugLevel4', 'YELLOW', { bg = 'DARK_YELLOW'})   -- Level 4 in fold debug
+hl('FoldDebugLevel5', 'ORANGE', { bg = 'DARK_ORANGE'})   -- Level 5 in fold debug
+hl('FoldDebugLevel6', 'RED', { bg = 'DARK_RED'})         -- Level 6 in fold debug
 -- }}}
 
 -- Visual mode {{{
