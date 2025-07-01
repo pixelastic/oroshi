@@ -36,6 +36,7 @@ end
 
 -- getFoldDetails: Returns fold details about the specified line number
 local getFoldDetails = function(lineNumber)
+
   -- treesitter
   local line = vim.fn.getline(lineNumber)
   local treesitterLevel = vim.treesitter.foldexpr(lineNumber)
@@ -102,7 +103,12 @@ end
 -- Note: It is assumed that nvim will call this method for every line in the
 -- file, in order, setting vim.v.lnum to the line being checked
 O.folding.expr = function()
-  local level = getFoldDetails(vim.v.lnum)
+  local lineNumber = vim.v.lnum
+
+  -- Reset isInMarker if we are at the first line
+  if lineNumber == 1 then isInMarker = false end
+  local level = getFoldDetails(lineNumber)
+
   return level.expr
 end
 
@@ -168,7 +174,6 @@ O.folding.setLevel = function(level)
   end
 end
 -- }}}
-
 
 -- Toggle fold
 F.nmap('za', O.folding.toggle, 'Toggle fold')
