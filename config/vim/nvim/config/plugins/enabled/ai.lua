@@ -104,8 +104,8 @@ return {
             adapter = "copilot",
             keymaps = {
               send = {
-                -- modes = { n = "<C-CR>", i = "<C-CR>" },
-                modes = { n = "<F99>", i = "<F99>" },
+                modes = { n = "<C-CR>", i = "<C-CR>" },
+                -- modes = { n = "<F99>", i = "<F99>" },
               },
               close = {
                 modes = { n = '<F99>', i = '<F99>' }, -- Map to a nonexistent key to disable it
@@ -203,11 +203,11 @@ return {
         vmap('<C-C>', closeChatWindow, "Close the window", { buffer = bufferId })
         vmap('<C-D>', closeChatWindow, "Close the window", { buffer = bufferId })
 
-        imap('<C-CR>', function()
-          local chat = require('codecompanion/strategies/chat')
-          F.debug(chat)
-          chat:submit()
-        end, "Close the window", { buffer = bufferId })
+        -- imap('<C-CR>', function()
+        --   local chat = require('codecompanion/strategies/chat')
+        --   F.debug(chat)
+        --   chat:submit()
+        -- end, "Close the window", { buffer = bufferId })
 
         -- Init
         autocmd('BufEnter', function()
