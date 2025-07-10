@@ -57,6 +57,8 @@ O_require('oroshi/display')
 O_require('oroshi/disk')
 
 -- Filetype specific
+O_require('oroshi/filetypes/colors')
+O_require('oroshi/filetypes/config')
 O_require('oroshi/filetypes/help')
 O_require('oroshi/filetypes/markdown')
 O_require('oroshi/filetypes/xkb')

@@ -16,14 +16,11 @@
   pwd = !pwd
   tabula-rasa = !git reset --hard && git clean -fd
   resurect = resurrect
-[merge]
-  tool = fugitive
-[mergetool "fugitive"]
-  cmd = vim -f -c \"Gdiff\" \"$MERGED\"
 [interactive]
 	diffFilter = diff-so-fancy --patch
 [pull]
-  rebase = true # If the remote has been forced pushed, pulling it will correctly overwrite
+  # If the remote has been forced pushed, pulling it will correctly overwrite
+  rebase = true
 [push]
   default = simple
 [rebase]

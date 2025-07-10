@@ -13,15 +13,21 @@ return {
     vim.api.nvim_create_autocmd(event, options)
   end,
 
-  -- ftdetect: Trigger a callback when files of a specific pattern are opened
-  ftdetect = function(pattern, callback, userOptions)
-    local options = F.merge({ pattern = pattern }, userOptions)
+  -- onRead: Trigger a callback when files of a specific pattern are opened
+  onRead = function(pattern, callback)
+    local options = F.merge({ pattern = pattern })
     F.autocmd({ 'BufRead', 'BufNewFile' }, callback, options)
+  end,
+
+  -- onWrite: Trigger a callback when files of a specific pattern are written
+  onWrite = function(pattern, callback)
+    local options = F.merge({ pattern = pattern })
+    F.autocmd('BufWritePost', callback, options)
   end,
 
   -- ftset: Set a specific filetype on files of a specific pattern
   ftset = function(pattern, filetype)
-    F.ftdetect(pattern, function()
+    F.onRead(pattern, function()
       vim.bo.filetype = filetype
     end)
   end,
@@ -30,5 +36,6 @@ return {
   ftplugin = function(filetypes, callback, userOptions)
     local options = F.merge({ pattern = filetypes }, userOptions)
     F.autocmd('FileType', callback, options)
-  end
+  end,
+
 }

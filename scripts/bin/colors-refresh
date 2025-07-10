@@ -7,9 +7,9 @@
 kitty-refresh
 
 # Redefine all colors ENV vars
-env-generate-colors
-env-generate-projects
-env-generate-filetypes
+$ZSH_CONFIG_PATH/theming/src/env-generate-colors
+$ZSH_CONFIG_PATH/theming/src/env-generate-projects
+$ZSH_CONFIG_PATH/theming/src/env-generate-filetypes
 
 # Source them for this session
 source $ZSH_CONFIG_PATH/theming/env/colors.zsh
@@ -18,5 +18,5 @@ source $ZSH_CONFIG_PATH/theming/env/filetypes.zsh
 
 # Rewrite the config files coming from ENV files
 ~/.oroshi/config/cli/bat/generate-theme
-~/.oroshi/config/git/git/generate-config
 ~/.oroshi/config/cli/rg/generate-config
+~/.oroshi/config/git/git/generate-config

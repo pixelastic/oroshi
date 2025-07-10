@@ -3,6 +3,7 @@ vim.opt.foldenable = true
 vim.opt.foldmethod = 'marker'             -- Fold on markers by default
 vim.opt.foldmarker = '{{{,}}}'
 vim.opt.foldtext='v:lua.O.folding.text()' -- Method to display fold recap line
+vim.opt.foldexpr='v:lua.O.folding.expr()' -- Method to calculate fold level
 vim.opt.foldlevel = 99
 vim.opt.fillchars = "fold: "              -- Pad with spaces
 
@@ -13,7 +14,6 @@ F.ftplugin({
   "ruby", "xml", "yaml" },
   function()
     vim.opt_local.foldmethod = 'expr'
-    vim.opt_local.foldexpr='v:lua.O.folding.expr()'
   end
 )
 -- }}}

@@ -1,5 +1,5 @@
 -- xkb
-F.ftdetect(
+F.onRead(
   "*config/keybindings/xkb/xkbmaprc.conf",
   function()
     vim.bo.filetype      = "c"

@@ -81,6 +81,21 @@ hl('@constant.bash', 'VARIABLE')
 -- CSS {{{
 hl('@tag.css', 'GREEN', { bold = true })
 -- }}}
+-- help {{{
+hl('@markup.heading.1.vimdoc', 'BLUE_4')
+hl('@label.vimdoc', 'GREEN_7')
+-- }}}
+-- html {{{
+hl('@tag.delimiter.html', 'PUNCTUATION')
+hl('@tag.html', 'KEYWORD')
+hl('@tag.attribute.html', 'VARIABLE_TYPE')
+-- }}}
+-- Gitconfig {{{
+hl('@markup.heading.git_config', 'GREEN')
+hl('@string.special.git_config', 'STRING')
+hl('@string.special.path.git_config', 'DIRECTORY')
+
+-- }}}
 -- lua {{{
 hl('@constructor.lua', 'PUNCTUATION')
 hl('@keyword.function.lua', 'KEYWORD')
@@ -92,15 +107,6 @@ hl('@label.lua', 'YELLOW_LIGHT', { bold = true})
 hl('@lsp.type.comment.lua', 'none')
 hl('@lsp.type.variable.lua', 'none')
 hl('@lsp.type.property.lua', 'none')
--- }}}
--- help {{{
-hl('@markup.heading.1.vimdoc', 'BLUE_4')
-hl('@label.vimdoc', 'GREEN_7')
--- }}}
--- html {{{
-hl('@tag.delimiter.html', 'PUNCTUATION')
-hl('@tag.html', 'KEYWORD')
-hl('@tag.attribute.html', 'VARIABLE_TYPE')
 -- }}}
 -- markdown {{{
 -- bold
@@ -173,4 +179,4 @@ hl('zshParentheses', 'PUNCTUATION')
 hl('zshOperator', 'PUNCTUATION')
 hl('zshRedir', 'ORANGE')
 -- }}}
---
+-- }}}
