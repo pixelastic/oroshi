@@ -96,6 +96,7 @@ FILETYPE_GROUPS[config:patterns]="\
 FILETYPE_GROUPS[image:color]="YELLOW_6"
 FILETYPE_GROUPS[image:icon]=" "
 FILETYPE_GROUPS[image:patterns]="\
+  avif \
   gif \
   ico \
   jpg \

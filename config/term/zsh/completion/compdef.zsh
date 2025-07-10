@@ -80,7 +80,7 @@ compdef _docker-containers-ids \
 	docker-container-name
 # }}}
 # Images {{{
-compdef '_files -g "*.{bmp,gif,jpg,jpeg,png,svg,tiff,webp}"' \
+compdef '_files -g "*.{avif,bmp,gif,jpg,jpeg,png,svg,tiff,webp}"' \
 	img2json \
 	img-color-count \
 	img-convert \
@@ -114,6 +114,8 @@ compdef '_files -g "*.svg"' \
 	svg2gif \
 	svg2jpg \
 	svg2png
+compdef '_files -g "*.avif"' \
+  avif2png
 compdef _image-resize img-resize
 # }}}
 # Videos {{{

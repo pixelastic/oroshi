@@ -2,7 +2,7 @@
 
 # Suggest image files and resize options
 function _image-resize() {
-  _files -g "*.{bmp,gif,jpg,jpeg,png,svg,tiff,webp}"
+  _files -g "*.{avif,bmp,gif,jpg,jpeg,png,svg,tiff,webp}"
 
   local suggestions=(${(f)"$(img-resize --completion)"})
   _describe -V "$(completion-header $COLOR_ALIAS_FLAG $COLOR_WHITE '-- Flags ')" suggestions
