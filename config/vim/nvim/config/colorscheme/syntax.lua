@@ -94,7 +94,9 @@ hl('@tag.attribute.html', 'VARIABLE_TYPE')
 hl('@markup.heading.git_config', 'GREEN')
 hl('@string.special.git_config', 'STRING')
 hl('@string.special.path.git_config', 'DIRECTORY')
-
+-- }}}
+-- Gitignore {{{
+hl('@string.special.path.gitignore', 'TEXT')
 -- }}}
 -- lua {{{
 hl('@constructor.lua', 'PUNCTUATION')
@@ -160,6 +162,12 @@ hl('@markup.heading.5.markdown', 'ORANGE_7', { bold = true })
 hl('RenderMarkdownH6', 'RED_7')
 hl('RenderMarkdownH6Bg', 'RED_2', { bg = 'RED_9' })
 hl('@markup.heading.6.markdown', 'RED_7', { bold = true })
+-- }}}
+-- python {{{
+hl('@keyword.directive.python', 'YELLOW')
+hl('@keyword.import.python', 'YELLOW')
+hl('@function.method.call.python', 'GREEN')
+hl('@keyword.exception.python', 'ORANGE', { bold = true })
 -- }}}
 -- vim {{{
 hl('@label.vim', 'STRING')

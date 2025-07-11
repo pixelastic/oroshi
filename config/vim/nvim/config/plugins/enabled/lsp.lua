@@ -33,6 +33,7 @@ return {
           "markdown_inline",
           "nginx",
           "pug",
+          "python",
           "regex",
           "robots",
           "ruby",
