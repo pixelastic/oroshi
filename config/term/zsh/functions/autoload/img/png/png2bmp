@@ -1,0 +1,6 @@
+# Convert png files to bmp
+# Usage:
+# $ png2bmp ./*.jpg
+function png2bmp() {
+  img-convert $1 bmp
+}

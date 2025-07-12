@@ -11,3 +11,5 @@ function ok() {
   ~/.oroshi/scripts/deploy/ubuntu/24.04/keybindings/custom
 
 }
+
+alias loial=~/local/www/projects/loial/local/display

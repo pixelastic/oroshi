@@ -1,0 +1,6 @@
+# Convert gif files to bmp
+# Usage:
+# $ gif2bmp ./*.jpg
+function gif2bmp() {
+  img-convert $1 bmp
+}
