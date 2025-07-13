@@ -1,0 +1,37 @@
+# Compress videos to fit on a small mobile screen
+# Usage:
+# $ video-compress-mobile ./path/video.mkv                    # Creates ./mobile/video.mp4
+# $ video-compress-mobile --audio-stream 1 ./path/video.mkv   # Only keep second audio stream
+# $ video-compress-mobile -a 1 ./path/video.mkv               # Same, with a shorthand
+function video-compress-mobile() {
+  set -x
+  zmodload zsh/zutil
+  zparseopts -E -D \
+    a:=flagAudioStream \
+    -audiostream:=flagAudioStream \
+
+  local audioStreamNumber=${flagAudioStream[2]}
+
+  local input="$1"
+  local outputFolder="${input:a:h}/mobile"
+  local basename="${input:t:r}"
+  local output="${outputFolder}/${basename}.mp4"
+
+  local audioStreamArg=""
+  if [[ $audioStreamNumber != "" ]]; then
+    audioStreamArg="-map 0:a:${audioStreamNumber}"
+  fi
+
+  ffmpeg \
+    -i "$input" \
+    -map 0:v:0 \
+    ${(z)audioStreamArg} \
+    -c:v libx264 \
+    -preset medium \
+    -crf 23 \
+    -vf "scale=720:480:flags=lanczos" \
+    -c:a aac \
+    -b:a 128k \
+    -ac 2 \
+    "${output}"
+}
