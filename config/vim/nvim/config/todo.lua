@@ -6,6 +6,8 @@
 -- TODO: Check https://github.com/folke/tokyonight.nvim for methods to lighten/darken colors?
 -- TODO: Completion in commandline, to see fuzzy find of commands
 -- TODO: https://github.com/jpmens/jo create JSON from the CLI
+-- TODO: Typing !pwd in the commandline should be displayed somewhere, just like set foldmethod?
+-- TODO: Keybinding to rename the current file, in a popup
 
 -- AI:
 -- TODO: ChatGPT to explain code, quick chat, write tests, write documentation, etc
@@ -13,6 +15,7 @@
 -- TODO: Use mini.diff to have inplace diff with CodeCompanion inline
 
 -- NICE TO HAVE
+-- TODO: Ctrl-! to open the file system should open to where the current file is
 -- TODO: Display parent function name in statusbar
 -- TODO: Git capabilities, like vfd in vim?
 -- TODO: Ensure I can complete filepaths

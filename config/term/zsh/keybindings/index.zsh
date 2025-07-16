@@ -15,6 +15,7 @@ source $ZSH_CONFIG_PATH/keybindings/ctrl-l.zsh             # List all files in d
 source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-l.zsh       # Clear terminal
 source $ZSH_CONFIG_PATH/keybindings/ctrl-n.zsh             # Open current directory in Nautilus
 source $ZSH_CONFIG_PATH/keybindings/ctrl-question-mark.zsh # Explain what the current command does
+source $ZSH_CONFIG_PATH/keybindings/ctrl-i.zsh             # Open an AI chat
 source $ZSH_CONFIG_PATH/keybindings/ctrl-p.zsh             # Fuzzy-find files in project
 source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-p.zsh       # Fuzzy-find files in subdirectories
 source $ZSH_CONFIG_PATH/keybindings/ctrl-t.zsh             # Fuzzy-find files in subdirectories (same as Ctrl-Shift-p)
