@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# Interact with Claude from the terminal
+# https://www.anthropic.com/claude-code
+set -e
+
+# Install claude-code globally
+node-module-install @anthropic-ai/claude-code

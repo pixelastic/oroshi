@@ -43,8 +43,14 @@ fi
 # Add the module
 yarn add $moduleName
 
-# Find its binary
-local binPath=$(yarn bin $moduleName)
+# Find all installed binaries
+local nodeModulesDirectory="${installDirectory}/node_modules/${moduleName}"
+local allBinaries="$(jq -r '.bin | keys[]' ${nodeModulesDirectory}/package.json)"
 
-# Make a symlink from the nvm binaries to it
-ln -sf $binPath $nvmDirectory/bin
+# Add a symlink for each
+for binary in ${(f)allBinaries}; do
+  # Find its binary
+  local binPath=$(yarn bin $binary)
+  # Make a symlink from the nvm binaries to it
+  ln -sf $binPath $nvmDirectory/bin
+done
