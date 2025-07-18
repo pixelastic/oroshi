@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# Rclone: Rsync for cloud storage. Copy files from one cloud provider to another.
+# https://rclone.org/
+sudo apt-get install rclone
