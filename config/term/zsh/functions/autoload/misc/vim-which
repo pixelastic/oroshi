@@ -1,0 +1,35 @@
+# Edit a binary in vim
+# This should:
+# - Edit my own scripts
+# - Edit my own zsh functions
+# - Follow aliases
+#
+# Usage:
+# $ vim-which find-up
+function vim-which() {
+  local input="$1"
+  local target="$(which ${input})"
+
+  # Direct link to an existing file
+  if [[ -f "$target" ]]; then
+    nvim "$target"
+    return
+  fi
+
+  # Is an alias, we follow it
+  if [[ $target = "${input}: aliased to "* ]]; then
+    local aliasTarget="${target#*: aliased to }"
+    vim-which "${aliasTarget}"
+    return
+  fi
+
+  # Is a zsh function
+  if [[ $target = "${input} () {"* ]]; then
+    local zshFunctionsPath=~/.oroshi/config/term/zsh/functions/autoload
+    local functionPath="$(find ${zshFunctionsPath} -type f -name "${input}")"
+    nvim "$functionPath"
+    return
+  fi
+
+  echo "✘ Unable to find source of ${input}"
+}

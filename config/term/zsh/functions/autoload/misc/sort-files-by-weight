@@ -1,40 +1,40 @@
-#!/usr/bin/env zsh
 # Display files sorted by weight
 # Usage:
 # $ sort-files-by-weight                              # Use current dir
 # $ sort-files-by-weight /path/file.txt /path/img.jpg # Use specified paths
 # $ sort-files-by-weight --json                       # Output in JSON format
 # $ sort-files-by-weight --limit 30                   # Limit to the top 30
+function sort-files-by-weight () {
 
-zparseopts -E -D \
-	-json=flagJson \
-	-limit:=flagLimit \
+  zparseopts -E -D \
+    -json=flagJson \
+    -limit:=flagLimit \
 
-local isJson=${#flagJson}
-local limitCount=${flagLimit[2]}
+  local isJson=${#flagJson}
+  local limitCount=${flagLimit[2]}
 
-local inputs="$@"
-if [[ $inputs == "" ]]; then
-	inputs=./*
-fi
+  local inputs="$@"
+  if [[ $inputs == "" ]]; then
+    inputs=./*
+  fi
 
-local output="$(
-  du \
-    --max-depth=1 \
-    --human-readable \
-    ${~=inputs} \
-    | sort -hr
-)"
+  local output="$(
+    du \
+      --max-depth=1 \
+      --human-readable \
+      ${~=inputs} \
+      | sort -hr
+  )"
 
-# Limit
-if [[ $limitCount != "" ]]; then
-  output="$(echo $output | head -n${limitCount})"
-fi
+  # Limit
+  if [[ $limitCount != "" ]]; then
+    output="$(echo $output | head -n${limitCount})"
+  fi
 
-# JSON
-if [[ $isJson == "1" ]]; then
-  output="$(echo $output | jc --du)"
-fi
+  # JSON
+  if [[ $isJson == "1" ]]; then
+    output="$(echo $output | jc --du)"
+  fi
 
-echo $output
-
+  echo $output
+}

@@ -11,7 +11,7 @@ kill -15 $pid
 
 # Just to be sure, check until it is really killed
 if kill -0 $pid &>/dev/null; then
-  while kill -0 $pid 2>/dev/null; do
-    sleep 0.1
-  done
+while kill -0 $pid 2>/dev/null; do
+sleep 0.1
+done
 fi
