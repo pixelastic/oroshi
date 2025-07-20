@@ -45,7 +45,17 @@ yarn add $moduleName
 
 # Find all installed binaries
 local nodeModulesDirectory="${installDirectory}/node_modules/${moduleName}"
-local allBinaries="$(jq -r '.bin | keys[]' ${nodeModulesDirectory}/package.json)"
+local allBinaries="$(jq -r '
+if (.bin | type == "string") then
+  "ORIGINAL_MODULE_NAME"
+elif (.bin | type == "object") then
+  (.bin | keys[])
+end
+' ${nodeModulesDirectory}/package.json)"
+
+if [[ $allBinaries = "ORIGINAL_MODULE_NAME" ]]; then
+  allBinaries=($moduleName)
+fi
 
 # Add a symlink for each
 for binary in ${(f)allBinaries}; do

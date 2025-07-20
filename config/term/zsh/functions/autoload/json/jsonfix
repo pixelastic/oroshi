@@ -1,0 +1,24 @@
+# Fix the content of a JSON file
+# - Indent keys
+# - Remove trailing commas
+
+# Usage:
+# $ jsonfix file.json otherfile.json
+function jsonfix() {
+  local inputs=($@)
+
+  for input in $inputs; do
+    # Remove trailing commas
+    sed 's/,\s*]/]/g; s/,\s*}/}/g' $input
+
+    # # Reformat
+    # local tmpFile="$(mktemp --suffix=json)"
+    # jq '.' $input > $tmpFile
+    #
+    # # Overwrite the original file with the formatted content
+    # mv $tmpFile $input
+  done
+
+
+
+}

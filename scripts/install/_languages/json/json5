@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# json5: JSON 5 parser (that can also convert invalid JSON)
+
+node-module-install json5
