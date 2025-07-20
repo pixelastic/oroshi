@@ -11,7 +11,7 @@ function ebook-metadata-update() {
   # LE GUIN Ursula. A solution would be to take the lastName as the serie of
   # words made only of capital letters (or dashes)
   # That might work
-  # The edge case are names like ROWLINK J. K.
+  # The edge case are names like ROWLING J. K.
 
   local input="$1"
   local coverPath=${flagCover[2]}
@@ -57,7 +57,7 @@ function ebook-metadata-update() {
 
   # We get the identifiers of the file
   local bookIdentifiers=$(ebook-metadata-value $input Identifiers)
-  
+
   # We get the rating
   local bookRating=$(ebook-metadata-value $input Rating)
   # }}}
@@ -99,6 +99,7 @@ function ebook-metadata-update() {
   # The complexity will start when it's part of a serie (see below)
   if [[ $isSerie == 0 ]]; then
     ebookMetaArguments+=(--title="${bookName}")
+    ebookMetaArguments+=(--series="")
   fi
 
   # Series
@@ -165,6 +166,7 @@ function ebook-metadata-update() {
     ebookMetaArguments+=(--isbn='__INVALID__')
     ebookMetaArguments+=(--isbn='')
     ebookMetaArguments+=(--publisher='__INVALID__')
+    ebookMetaArguments+=(--publisher=' ')
     ebookMetaArguments+=(--publisher='')
     ebookMetaArguments+=(--book-producer='__INVALID__')
     ebookMetaArguments+=(--book-producer='')
