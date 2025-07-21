@@ -144,7 +144,7 @@ return {
       local function onCtrlP()
         -- Tell fzf what the root directory is
         local rootDirectory = vim.fn.system('git-directory-root -f')
-        vim.fn.system("fzf-var-write pwd " .. rootDirectory)
+        vim.fn.system("fzf-var-write pwd " .. vim.fn.shellescape(rootDirectory))
 
         local source = vim.fn.systemlist('fzf-fs-files-project-source')
         local options = vim.fn.systemlist('fzf-fs-files-project-options')
@@ -165,7 +165,7 @@ return {
       local function onCtrlT()
         -- Tell fzf what the base directory is
         local subdirPath = vim.fn.expand('%:p:h')
-        vim.fn.system("fzf-var-write pwd " .. subdirPath)
+        vim.fn.system("fzf-var-write pwd " .. vim.fn.shellescape(subdirPath))
 
         local source = vim.fn.systemlist('fzf-fs-files-subdir-source')
         local options = vim.fn.systemlist('fzf-fs-files-subdir-options')
@@ -189,7 +189,7 @@ return {
       local function onCtrlG()
         -- Tell fzf what the root directory is
         local rootDirectory = vim.fn.system('git-directory-root -f')
-        vim.fn.system("fzf-var-write pwd " .. rootDirectory)
+        vim.fn.system("fzf-var-write pwd " .. vim.fn.shellescape(rootDirectory))
 
         local source = {}
         local options = vim.fn.systemlist('fzf-regexp-project-options')
@@ -209,7 +209,7 @@ return {
       local function onCtrlShiftG()
         -- Tell fzf what the base directory is
         local subdirPath = vim.fn.expand('%:p:h')
-        vim.fn.system("fzf-var-write pwd " .. subdirPath)
+        vim.fn.system("fzf-var-write pwd " .. vim.fn.shellescape(subdirPath))
 
         local source = {}
         local options = vim.fn.systemlist('fzf-regexp-subdir-options')

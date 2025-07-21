@@ -15,6 +15,7 @@
 -- TODO: Use mini.diff to have inplace diff with CodeCompanion inline
 
 -- NICE TO HAVE
+-- TODO: Typing !pwd should display the current path somewhere visible
 -- TODO: saving a JSON file should remove trailing commas
 -- TODO: Ctrl-! to open the file system should open to where the current file is
 -- TODO: Display parent function name in statusbar
