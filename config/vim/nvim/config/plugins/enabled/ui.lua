@@ -21,11 +21,11 @@ return {
         cmdline = {
           enabled = true,
           format = {
-            cmdline = { view = "O_cmdline", icon = "  ", conceal = false },
-            lua = { view = "O_cmdline", icon = "  ", conceal = false },
-            help = { view = "O_cmdline", icon = "  ", conceal = false },
-            search_down = { view = "O_cmdline", icon = "  ", conceal = false },
-            search_up = { view = "O_cmdline", icon = "  ", conceal = false },
+            cmdline =     { view = "O_cmdline_center", icon = ":", conceal = true },
+            filter =      { view = "O_cmdline_center", icon = "❯", conceal = true }, -- Shell
+            lua =         { view = "O_cmdline_center", icon = " ", conceal = true },
+            help =        { view = "O_cmdline_center", icon = " ", conceal = true },
+            search_down = { view = "O_cmdline_bottom", icon = "", conceal = true },
           }
         },
         -- Routes
@@ -54,6 +54,7 @@ return {
                 { find = "lines <ed"},
                 { find = "lines >ed"},
                 { find = "and press <Enter> to exit Nvim" },
+                { find = "^:!" }, -- The command typed (eg :!pwd)
               },
             },
             opts = { skip = true },
@@ -62,7 +63,8 @@ return {
           { filter = { event = "notify", kind = "debug" }, opts = { skip = true, history = true }}, -- Save in history, display with :Noice showLastDebug
           -- Info
           { filter = { event = "notify", kind = "info" }, view = "O_info", },
-          { filter = { event = "msg_show", kind = "" }, view = "O_info", },
+          { filter = { event = "msg_show", kind = "" }, view = "O_info", }, -- :pwd
+          { filter = { event = "msg_show", kind = "shell_out" }, view = "O_info", }, -- :!pwd
           -- Warning
           {
             filter = {
@@ -116,11 +118,16 @@ return {
         -- Views represent "how" Noice should display specific things
         -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/views.lua
         views = {
-          -- Commandline: Small line at the bottom left of the screen
-          O_cmdline = {
-            view = "mini",
-            position = { col = 0, row = -1 },
-            size = { width = "100%", },
+          -- Commandline Centered
+          O_cmdline_center = {
+            view = "cmdline_popup",
+            size = { width = 50, },
+          },
+          -- Commandline Bottom
+          O_cmdline_bottom = {
+            view = "cmdline_popup",
+            position = { col = 0, row = -2 },
+            size = { width = 50, },
           },
           -- Error: Split, with all past errors, in reverse order
           O_error = {

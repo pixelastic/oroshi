@@ -73,13 +73,13 @@ F.setGuicursor("cr", "block",                        "CursorModeCommandReplace")
 F.setGuicursor("sm", "block",                        "CursorModeShowMatch")       -- UNUSED
 
 O.colors.cursor = {
-  normal = { bg = 'EMERALD' },
-  visual = { bg = 'BLUE_7' },
-  insert = { bg = 'YELLOW_3' },
-  command = { bg = 'TEAL' },
-  search = { bg = 'ORANGE' },
+  insert   = { bg = 'YELLOW_3' },
+  normal   = { bg = 'EMERALD' },
+  visual   = { bg = 'BLUE_7' },
   terminal = { bg = 'YELLOW' }, -- In fzf search
-  ai = { bg = 'AMBER_7' },
+  command  = { bg = 'TEAL' },
+  search   = { bg = 'ORANGE' },
+  ai       = { bg = 'AMBER_7' },
 }
 hl('CursorModeInsert',        'none', O.colors.cursor.insert)
 hl('CursorModeNormal',        'none', O.colors.cursor.normal)
@@ -114,8 +114,8 @@ hl('IncSearch', 'ORANGE_2', { bg = 'ORANGE_7', bold = true }) -- Match as I type
 hl('CurSearch', 'ORANGE_2', { bg = 'ORANGE_7', bold = true }) --	Current selected match
 hl('Search', 'ORANGE_9', { bg = 'ORANGE_3', bold = true }) -- All results
 -- Noice
-hl('NoiceCmdlineIconSearch', 'BLACK', { bg = 'ORANGE_7' })
--- hl('NoiceCmdlinePopupBorderSearch', 'ORANGE_9')
+hl('NoiceCmdlinePopupBorderSearch', 'ORANGE_7')
+hl('NoiceCmdlineIconSearch', 'ORANGE_7', { bg = 'none' })
 -- }}}
 
 -- Completion (Ghost Text) {{{
@@ -243,10 +243,28 @@ O.colors.commandline = {
   hidden = { fg = 'WHITE' }, -- Default highlight
   visible = { fg = 'TEXT', bg = 'GRAY_8' },  -- When need to be more readable
 }
-hl('NoiceCmdlineIconCmdline', 'BLACK', { bg = 'TEAL' }) -- Prefix
-hl('NoiceCmdlineIconHelp', 'BLACK', { bg = 'BLUE' })    -- Prefix
-hl('NoiceCmdlineIconLua', 'BLACK', { bg = 'VIOLET' })   -- Prefix
+hl('NoiceCmdlinePopup', 'none', { bg = 'GRAY_9' })
+-- Vim Cmdline {{{
+hl('NoiceCmdlinePopupBorderCmdline', 'TEAL')
+hl('NoiceCmdlineIconCmdline', 'TEAL', { bg = 'none' })
 -- }}}
+-- Shell {{{
+hl('NoiceCmdlinePopupBorderFilter', 'GREEN')
+hl('NoiceCmdlineIconFilter', 'GREEN', { bg = 'none' })
+-- }}}
+-- Lua {{{
+hl('NoiceCmdlinePopupBorderLua', 'VIOLET')
+hl('NoiceCmdlineIconLua', 'VIOLET', { bg = 'none' })   -- Prefix
+-- }}}
+-- Help {{{
+hl('NoiceCmdlinePopupBorderHelp', 'BLUE')
+hl('NoiceCmdlineIconHelp', 'BLUE', { bg = 'none' })
+-- }}}
+
+
+
+-- }}}
+
 
 -- Noice {{{
 hl('NoiceMini', 'none')
