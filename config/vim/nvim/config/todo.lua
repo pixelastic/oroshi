@@ -1,12 +1,10 @@
 -- MUST HAVE
--- TODO: Re-run the env-generate scripts when editing them
 -- TODO: Auto-formatter on save
 -- TODO: Folding that folds on expr and markers
 -- TODO: https://github.com/folke/trouble.nvim ? To see diagnostics
 -- TODO: Check https://github.com/folke/tokyonight.nvim for methods to lighten/darken colors?
 -- TODO: Completion in commandline, to see fuzzy find of commands
 -- TODO: https://github.com/jpmens/jo create JSON from the CLI
--- TODO: Typing !pwd in the commandline should be displayed somewhere, just like set foldmethod?
 -- TODO: Keybinding to rename the current file, in a popup
 
 -- AI:

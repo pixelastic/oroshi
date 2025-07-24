@@ -54,7 +54,6 @@ return {
                 { find = "lines <ed"},
                 { find = "lines >ed"},
                 { find = "and press <Enter> to exit Nvim" },
-                { find = "^/" },
               },
             },
             opts = { skip = true },
@@ -63,6 +62,7 @@ return {
           { filter = { event = "notify", kind = "debug" }, opts = { skip = true, history = true }}, -- Save in history, display with :Noice showLastDebug
           -- Info
           { filter = { event = "notify", kind = "info" }, view = "O_info", },
+          { filter = { event = "msg_show", kind = "" }, view = "O_info", },
           -- Warning
           {
             filter = {
