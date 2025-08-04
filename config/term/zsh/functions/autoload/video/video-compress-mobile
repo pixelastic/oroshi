@@ -22,6 +22,8 @@ function video-compress-mobile() {
     audioStreamArg="-map 0:a:${audioStreamNumber}"
   fi
 
+  mkdir -p "$outputFolder"
+
   ffmpeg \
     -i "$input" \
     -map 0:v:0 \
