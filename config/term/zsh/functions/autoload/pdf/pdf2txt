@@ -4,9 +4,6 @@
 # content
 # $ pdf2txt ./path/to/file.pdf 12    # Creates a dump of only page 12
 function pdf2txt() {
-	zparseopts -E -D \
-		-jpg=flagJpg
-
 	# Input filepath
 	local inputFilepath=${1:a}
 
