@@ -17,7 +17,7 @@ function video-compress-mobile() {
   local basename="${input:t:r}"
   local output="${outputFolder}/${basename}.mp4"
 
-  local audioStreamArg=""
+  local audioStreamArg="-map 0:a:0"
   if [[ $audioStreamNumber != "" ]]; then
     audioStreamArg="-map 0:a:${audioStreamNumber}"
   fi

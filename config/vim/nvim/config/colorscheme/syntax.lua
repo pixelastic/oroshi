@@ -148,7 +148,7 @@ hl('RenderMarkdownH2Bg', 'BLUE_4', { bg = 'DARK_BLUE' })
 hl('@markup.heading.2.markdown', 'BLUE_4', { bold = true })
 -- header 3
 hl('RenderMarkdownH3', 'GREEN_7')
-hl('RenderMarkdownH3Bg', 'GREEN_1', { bg = 'GREEN_9' })
+hl('RenderMarkdownH3Bg', 'GREEN_7', { bg = 'DARK_GREEN' })
 hl('@markup.heading.3.markdown', 'GREEN_7', { bold = true })
 -- header 4
 hl('RenderMarkdownH4', 'YELLOW_6')
