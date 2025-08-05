@@ -152,15 +152,15 @@ hl('RenderMarkdownH3Bg', 'GREEN_7', { bg = 'DARK_GREEN' })
 hl('@markup.heading.3.markdown', 'GREEN_7', { bold = true })
 -- header 4
 hl('RenderMarkdownH4', 'YELLOW_6')
-hl('RenderMarkdownH4Bg', 'YELLOW_1', { bg = 'YELLOW_9' })
+hl('RenderMarkdownH4Bg', 'YELLOW_6', { bg = 'DARK_YELLOW' })
 hl('@markup.heading.4.markdown', 'YELLOW_6', { bold = true })
 -- header 5
 hl('RenderMarkdownH5', 'ORANGE_7')
-hl('RenderMarkdownH5Bg', 'ORANGE_2', { bg = 'ORANGE_9' })
+hl('RenderMarkdownH5Bg', 'ORANGE_7', { bg = 'DARK_ORANGE' })
 hl('@markup.heading.5.markdown', 'ORANGE_7', { bold = true })
 -- header 6
 hl('RenderMarkdownH6', 'RED_7')
-hl('RenderMarkdownH6Bg', 'RED_2', { bg = 'RED_9' })
+hl('RenderMarkdownH6Bg', 'RED_7', { bg = 'DARK_RED' })
 hl('@markup.heading.6.markdown', 'RED_7', { bold = true })
 -- }}}
 -- python {{{
