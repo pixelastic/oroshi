@@ -6,92 +6,93 @@
 # --query             # Mandatory, query to look for
 # --directory         # Mandatory, base directory to search
 function fzf-regexp-shared-source() {
-	zmodload zsh/zutil
-	zparseopts -E -D \
-		-query:=flagQuery \
-		-directory:=flagDirectory \
-		-no-ignore=flagNoIgnore
+  zmodload zsh/zutil
+  zparseopts -E -D \
+    -query:=flagQuery \
+    -directory:=flagDirectory \
+    -no-ignore=flagNoIgnore
 
-	local query=${flagQuery[2]}
-	# Ensure a final slash
-	local directory="${flagDirectory[2]}/"
-	# If should search in all files
-	local isNoIgnore=${#flagNoIgnore}
+  local query=${flagQuery[2]}
+  # Ensure a final slash
+  local directory="${flagDirectory[2]}/"
+  # If should search in all files
+  local isNoIgnore=${#flagNoIgnore}
 
-	if [[ $query == "" ]]; then
-		return
-	fi
+    if [[ $query == "" ]]; then
+      return
+    fi
 
-	# Adding headings {{{
-	# ripgrep either displays filename as a heading before all matches, or as
-	# a prefix before each match. We need it as a heading (for display) AND as
-	# a prefix (for selection).
-	# So we'll ask ripgrep to add it as a prefix, and do some crazy regexp to also
-	# add a heading manually by copying the prefix of the first line of each
-	# section.
+    # Adding headings {{{
+    # ripgrep either displays filename as a heading before all matches, or as
+    # a prefix before each match. We need it as a heading (for display) AND as
+    # a prefix (for selection).
+    # So we'll ask ripgrep to add it as a prefix, and do some crazy regexp to also
+    # add a heading manually by copying the prefix of the first line of each
+    # section.
 
-	local regexpTitleSearch=""
-	# We match either the start of the text, or the end of a section separator.
-	# We defined those to end with an Zero-Width Space (​) for easier splitting.
-	regexpTitleSearch+="(^|​\n)"
-	# We capture the whole line after it, because we'll have to display it again
-	regexpTitleSearch+="("
-	# We capture anything that is before a   (the filepath), and captures until the end
-	# of the line. Sed does not have a non-greedy mode, so we need to explicitly
-	# define [^\n] to force it to stop at the end of the line.
-	regexpTitleSearch+="([^\n ]*)   ([^\n]*)"
-	# We close our line capturing group
-	regexpTitleSearch+=")\n"
+    local regexpTitleSearch=""
+    # We match either the start of the text, or the end of a section separator.
+    # We defined those to end with an Zero-Width Space (​) for easier splitting.
+    regexpTitleSearch+="(^|​\n)"
+    # We capture the whole line after it, because we'll have to display it again
+    regexpTitleSearch+="("
+    # We capture anything that is before a   (the filepath), and captures until the end
+    # of the line. Sed does not have a non-greedy mode, so we need to explicitly
+    # define [^\n] to force it to stop at the end of the line.
+    regexpTitleSearch+="([^\n ]*)   ([^\n]*)"
+    # We close our line capturing group
+    regexpTitleSearch+=")\n"
 
-	# We replace our matches with by adding a new line above the matching one
-	local regexpTitleReplace=""
-	# We re-add our initial delimiter (either start of text, or new line after
-	# a separator
-	regexpTitleReplace+="\1"
-	# We display the filepath twice, and a 0 as the line number, just like any other
-	# line. The first filepath will be used by the selection, the second one will be
-	# displayed
-	regexpTitleReplace+="\3   0   \3"
-	# We display our matching line again
-	regexpTitleReplace+="\n\2\n"
-	# }}}
+    # We replace our matches with by adding a new line above the matching one
+    local regexpTitleReplace=""
+    # We re-add our initial delimiter (either start of text, or new line after
+    # a separator
+    regexpTitleReplace+="\1"
+    # We display the filepath twice, and a 0 as the line number, just like any other
+    # line. The first filepath will be used by the selection, the second one will be
+    # displayed
+    regexpTitleReplace+="\3   0   \3"
+    # We display our matching line again
+    regexpTitleReplace+="\n\2\n"
+    # }}}
 
-	# Prepending the full directory {{{
-	# The output uses a column format (separated by    ) to be parsed by fzf. fzf
-	# will only display (and search into) the third column, but we use the 1st and
-	# 2nd one to store the full path and the line number
-	local regexpDirectorySearch="(^|\n)(.[^ \n]*) "
+    # Prepending the full directory {{{
+    # The output uses a column format (separated by    ) to be parsed by fzf. fzf
+    # will only display (and search into) the third column, but we use the 1st and
+    # 2nd one to store the full path and the line number
+    local regexpDirectorySearch="(^|\n)(.[^ \n]*) "
 
-	local regexpDirectoryReplace="\1${directory}\2 "
-	# }}}
+    local regexpDirectoryReplace="\1${directory}\2 "
+    # }}}
 
-	cd $directory
-	# Note:
-	# --null-data makes sed operate on the full text instead of individual lines
-	# --regexp-extended allow to use () instead of \(\), for readability
-	# We use ":" (colon) instead of "/" (slash) in the sed search and replace as
-	# : will probably not exist in the filepath
-	#
+    cd $directory
+    # Note:
+    # --null-data makes sed operate on the full text instead of individual lines
+    # --regexp-extended allow to use () instead of \(\), for readability
+    # We use ":" (colon) instead of "/" (slash) in the sed search and replace as
+    # : will probably not exist in the filepath
+    #
 
-	# --max-count is infinite by default, but when my (custom) toggle mode is
-	# switched in fzf to single, it should display only one result per file
-	local toggleMode="$(fzf-var-read regexp-fold-mode multi)"
-	local maxCount=999
-	[[ $toggleMode == "single" ]] && maxCount=1
+    # --max-count is infinite by default, but when my (custom) toggle mode is
+    # switched in fzf to single, it should display only one result per file
+    local toggleMode="$(fzf-var-read regexp-fold-mode multi)"
+    local maxCount=999
+    [[ $toggleMode == "single" ]] && maxCount=1
 
-	# If should search into all files (for example when specifically searching in
-	# a given folder, we assume we want to search into everything)
-	local noIgnoreArg=""
-	[[ $isNoIgnore == "1" ]] && noIgnoreArg="--no-ignore"
+    # If should search into all files (for example when specifically searching in
+    # a given folder, we assume we want to search into everything)
+    local noIgnoreArg=""
+    [[ $isNoIgnore == "1" ]] && noIgnoreArg="--no-ignore"
 
-	rg \
-		--no-heading \
-		--with-filename \
-		--max-count=${maxCount} \
-		$noIgnoreArg \
-		"$query" |
-		sed \
-			--null-data \
-			--regexp-extended \
-			"s:${regexpTitleSearch}:${regexpTitleReplace}:g;s:${regexpDirectorySearch}:${regexpDirectoryReplace}:g"
+    rg \
+      --color=always \
+      --no-heading \
+      --with-filename \
+      --max-count=${maxCount} \
+      $noIgnoreArg \
+      "$query" |
+      sed \
+      --null-data \
+      --regexp-extended \
+      "s:${regexpTitleSearch}:${regexpTitleReplace}:g;s:${regexpDirectorySearch}:${regexpDirectoryReplace}:g"
 }
