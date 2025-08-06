@@ -4,30 +4,19 @@
 # content
 # $ pdf2txt ./path/to/file.pdf 12    # Creates a dump of only page 12
 function pdf2txt() {
-	# Input filepath
-	local inputFilepath=${1:a}
+  for inputFilepath in "$@"; do
+    local inputFilepath=${inputFilepath:a}
+    local dirpath=${inputFilepath:h}
+    local filepathBasename=${inputFilepath:t:r}
+    local outputFilepath="${dirpath}/${filepathBasename}.txt"
 
-	# Page number
-	local pageNumber=$2
+    # Known errors that we can ignore
+    local knownErrorsPattern='Syntax Warning: Invalid Font Weight'
 
-	local pdftotextArguments=()
-	local filepathBasename=${inputFilepath:t:r}
-	local outputFilepath="${filepathBasename}.txt"
-
-	# If a specific page is given
-	if [[ $pageNumber != "" ]]; then
-		pdftotextArguments+=(-f ${pageNumber} -l ${pageNumber})
-		outputFilepath="${filepathBasename}-${pageNumber}.txt"
-	fi
-
-	# Known errors that we can ignore
-	local knownErrorsPattern=''
-	knownErrorsPattern+='Syntax Warning: Invalid Font Weight'
-
-	pdftotext \
-		$pdftotextArguments \
-		$inputFilepath \
-		- \
-		2> >(\grep -v "${knownErrorsPattern}" >&2) \
-		>$outputFilepath
+    pdftotext \
+      "$inputFilepath" \
+      - \
+      2> >(\grep -v "${knownErrorsPattern}" >&2) \
+      >"$outputFilepath"
+  done
 }
