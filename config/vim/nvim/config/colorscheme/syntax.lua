@@ -186,5 +186,6 @@ hl('zshBrackets', 'PUNCTUATION')
 hl('zshParentheses', 'PUNCTUATION')
 hl('zshOperator', 'PUNCTUATION')
 hl('zshRedir', 'ORANGE')
+hl('zshException', 'YELLOW')
 -- }}}
 -- }}}
