@@ -1,6 +1,6 @@
 # Outputs specific options for searching for a file in the current direcotory
 function fzf-fs-directories-subdir-options() {
-	fzf-fs-files-shared-options \
-		--prompt fzf-fs-files-subdir-prompt \
-		--source fzf-fs-files-subdir-source
+  fzf-fs-files-shared-options \
+    --prompt fzf-fs-files-subdir-prompt \
+    --source fzf-fs-files-subdir-source
 }

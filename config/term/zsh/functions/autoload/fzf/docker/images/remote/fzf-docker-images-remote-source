@@ -1,5 +1,5 @@
 # Returns a list of all possible Docker images to pull
 function fzf-docker-images-remote-source() {
-	local cacheFile=~/.oroshi/config/docker/cache/src/images-remote.txt
-	cat $cacheFile
+  local cacheFile=~/.oroshi/config/docker/cache/src/images-remote.txt
+  cat $cacheFile
 }

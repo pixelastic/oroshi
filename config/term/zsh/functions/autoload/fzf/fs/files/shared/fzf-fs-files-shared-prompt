@@ -1,5 +1,5 @@
 # Display a prompt for searching a specific file
 function fzf-fs-files-shared-prompt() {
-	local directory=$1
-	fzf-prompt-directory $directory
+  local directory=$1
+  fzf-prompt-directory $directory
 }

@@ -10,16 +10,16 @@
 # --source         # Mandatory, function that displays the list of suggestions
 # --prompt         # Mandatory, function that displays the prompt
 function fzf-fs-directories-shared-options() {
-	zmodload zsh/zutil
-	zparseopts -E -D \
-		-prompt:=flagPrompt \
-		-source:=flagSource
+  zmodload zsh/zutil
+  zparseopts -E -D \
+    -prompt:=flagPrompt \
+    -source:=flagSource
 
-	local fzfPromptPath=${flagPrompt[2]}
-	local fzfSourcePath=${flagSource[2]}
+  local fzfPromptPath=${flagPrompt[2]}
+  local fzfSourcePath=${flagSource[2]}
 
-	fzf-fs-shared-options \
-		--prompt $fzfPromptPath \
-		--source $fzfSourcePath \
-		--color ${COLOR_ALIAS_DIRECTORY}
+  fzf-fs-shared-options \
+    --prompt $fzfPromptPath \
+    --source $fzfSourcePath \
+    --color ${COLOR_ALIAS_DIRECTORY}
 }

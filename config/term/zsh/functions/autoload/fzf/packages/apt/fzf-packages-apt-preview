@@ -18,7 +18,7 @@ function fzf-packages-apt-preview() {
         isInDescription="0"
         continue
       fi
-      
+
       # Keep adding to the description
       packageDescription+=($line)
       continue

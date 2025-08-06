@@ -11,36 +11,36 @@
 # --source         # Mandatory, function that displays the list of suggestions
 # --prompt         # Mandatory, function that displays the prompt
 function fzf-regexp-shared-options() {
-	zmodload zsh/zutil
-	zparseopts -E -D \
-		-source:=flagSource \
-		-prompt:=flagPrompt
+  zmodload zsh/zutil
+  zparseopts -E -D \
+    -source:=flagSource \
+    -prompt:=flagPrompt
 
-	local fzfSourcePath=${flagSource[2]}
-	local fzfPromptPath=${flagPrompt[2]}
+  local fzfSourcePath=${flagSource[2]}
+  local fzfPromptPath=${flagPrompt[2]}
 
-	echo "--delimiter=   "
-	echo "--with-nth=3"
+  echo "--delimiter=   "
+  echo "--with-nth=3"
 
-	# Disabled by default, only activated on input
-	echo "--disabled"
+  # Disabled by default, only activated on input
+  echo "--disabled"
 
-	# Prompt
-	local prompt="$($fzfPromptPath)"
-	echo "--prompt=${prompt}"
+  # Prompt
+  local prompt="$($fzfPromptPath)"
+  echo "--prompt=${prompt}"
 
-	# Keybindings
-	# Update the results on each keystroke, but as it's intensive, wait a bit
-	echo "--bind=change:reload:sleep 0.3;${fzfSourcePath} {q} || true"
-	# => [F1] toggle single/multi results
-	echo "--bind=f1:execute-silent(fzf-regexp-shared-fold-toggle)"
-	echo "--bind=f1:+reload(${fzfSourcePath} {q})"
-	echo "--bind=f1:+transform-prompt(${fzfPromptPath})"
-	echo "--bind=f1:+first"
+  # Keybindings
+  # Update the results on each keystroke, but as it's intensive, wait a bit
+  echo "--bind=change:reload:sleep 0.3;${fzfSourcePath} {q} || true"
+  # => [F1] toggle single/multi results
+  echo "--bind=f1:execute-silent(fzf-regexp-shared-fold-toggle)"
+  echo "--bind=f1:+reload(${fzfSourcePath} {q})"
+  echo "--bind=f1:+transform-prompt(${fzfPromptPath})"
+  echo "--bind=f1:+first"
 
-	# Color the UI in regexp color
-	echo "--color=disabled:${COLOR_ALIAS_REGEXP}:regular"
-	echo "--color=separator:${COLOR_ALIAS_REGEXP}"
-	echo "--color=info:${COLOR_ALIAS_REGEXP}"
-	echo "--color=prompt:${COLOR_ALIAS_DIRECTORY}:regular"
+  # Color the UI in regexp color
+  echo "--color=disabled:${COLOR_ALIAS_REGEXP}:regular"
+  echo "--color=separator:${COLOR_ALIAS_REGEXP}"
+  echo "--color=info:${COLOR_ALIAS_REGEXP}"
+  echo "--color=prompt:${COLOR_ALIAS_DIRECTORY}:regular"
 }

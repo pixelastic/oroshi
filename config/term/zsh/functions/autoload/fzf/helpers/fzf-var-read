@@ -4,13 +4,13 @@
 # fzf-var-read {key}                # Display the previously saved var
 # fzf-var-read {key} {defaultValue} # ...or {defaultValue} if not found
 function fzf-var-read() {
-	local key=$1
-	local defaultValue=$2
+  local key=$1
+  local defaultValue=$2
 
-	local saveFilepath="${OROSHI_TMP_FOLDER}/fzf/var/${KITTY_WINDOW_ID}/${key}"
-	if [[ -f $saveFilepath ]]; then
-		cat $saveFilepath
-		return 0
-	fi
-	echo $defaultValue
+  local saveFilepath="${OROSHI_TMP_FOLDER}/fzf/var/${KITTY_WINDOW_ID}/${key}"
+  if [[ -f $saveFilepath ]]; then
+    cat $saveFilepath
+    return 0
+  fi
+  echo $defaultValue
 }

@@ -1,17 +1,17 @@
 function fzf-commands-options() {
 
-	echo "--color=fg:$COLOR_ALIAS_FUNCTION"
-	echo "--color=fg+:$COLOR_ALIAS_FUNCTION"
-	echo "--preview=which {1}"
+  echo "--color=fg:$COLOR_ALIAS_FUNCTION"
+  echo "--color=fg+:$COLOR_ALIAS_FUNCTION"
+  echo "--preview=which {1}"
 
-	# Color the UI in function color
-	echo "--color=preview-fg:${COLOR_ALIAS_TEXT}"
-	echo "--color=query:${COLOR_ALIAS_FUNCTION}:regular"
-	echo "--color=separator:${COLOR_ALIAS_FUNCTION}"
-	echo "--color=info:${COLOR_ALIAS_FUNCTION}"
+  # Color the UI in function color
+  echo "--color=preview-fg:${COLOR_ALIAS_TEXT}"
+  echo "--color=query:${COLOR_ALIAS_FUNCTION}:regular"
+  echo "--color=separator:${COLOR_ALIAS_FUNCTION}"
+  echo "--color=info:${COLOR_ALIAS_FUNCTION}"
 
-	# Prompt
-	local promptPrefix="$(colorize "  Commands " $COLOR_BLACK $COLOR_ALIAS_FUNCTION)"
-	local promptSuffix="$(colorize "" $COLOR_ALIAS_HEADER)"
-	echo "--prompt=${promptPrefix}${promptSuffix} "
+  # Prompt
+  local promptPrefix="$(colorize "  Commands " $COLOR_BLACK $COLOR_ALIAS_FUNCTION)"
+  local promptSuffix="$(colorize "" $COLOR_ALIAS_HEADER)"
+  echo "--prompt=${promptPrefix}${promptSuffix} "
 }

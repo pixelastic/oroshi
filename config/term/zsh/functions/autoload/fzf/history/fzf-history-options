@@ -1,5 +1,5 @@
 function fzf-history-options() {
-	echo "--sort"
-	echo "--exact"
-	echo "--tiebreak=index"
+  echo "--sort"
+  echo "--exact"
+  echo "--tiebreak=index"
 }

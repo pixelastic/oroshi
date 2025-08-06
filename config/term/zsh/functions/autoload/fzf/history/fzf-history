@@ -1,7 +1,6 @@
 # Fuzzy finding in command history
 function fzf-history() {
-
-	fzf-search \
-		--source "fzf-history-source" \
-		--options "fzf-history-options"
+  fzf-search \
+    --source "fzf-history-source" \
+    --options "fzf-history-options"
 }

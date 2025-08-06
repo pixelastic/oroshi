@@ -1,14 +1,14 @@
 # Toggle the single/multi result mode
 function fzf-regexp-shared-fold-toggle() {
-	local key="regexp-fold-mode"
+  local key="regexp-fold-mode"
 
-	local currentMode="$(fzf-var-read regexp-fold-mode multi)"
+  local currentMode="$(fzf-var-read regexp-fold-mode multi)"
 
-	# Toggle mode
-	if [[ $currentMode == "multi" ]]; then
-		fzf-var-write $key single
-		return 0
-	fi
+  # Toggle mode
+  if [[ $currentMode == "multi" ]]; then
+    fzf-var-write $key single
+    return 0
+  fi
 
-	fzf-var-write $key multi
+  fzf-var-write $key multi
 }

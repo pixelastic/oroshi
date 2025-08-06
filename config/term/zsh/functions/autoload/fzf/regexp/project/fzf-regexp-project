@@ -7,6 +7,6 @@ function fzf-regexp-project() {
   local rootDirectory="$(git-directory-root -f)"
   fzf-var-write pwd $rootDirectory
 
-	fzf-regexp \
-		--options "fzf-regexp-project-options"
+  fzf-regexp \
+    --options "fzf-regexp-project-options"
 }

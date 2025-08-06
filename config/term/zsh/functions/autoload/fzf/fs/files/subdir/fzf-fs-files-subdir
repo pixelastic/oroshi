@@ -6,7 +6,7 @@ function fzf-fs-files-subdir() {
   # Save the base directory, so other related fzf methods can use it
   fzf-var-write pwd $PWD
 
-	fzf-fs-files \
-		--source fzf-fs-files-subdir-source \
-		--options fzf-fs-files-subdir-options
+  fzf-fs-files \
+    --source fzf-fs-files-subdir-source \
+    --options fzf-fs-files-subdir-options
 }

@@ -1,5 +1,5 @@
 # Returns a list of directories, in the current directory
 function fzf-fs-directories-subdir-source() {
-	local currentDirectory="$(fzf-fs-shared-pwd-subdir)"
-	fzf-fs-directories-shared-source "${currentDirectory}"
+  local currentDirectory="$(fzf-fs-shared-pwd-subdir)"
+  fzf-fs-directories-shared-source "${currentDirectory}"
 }

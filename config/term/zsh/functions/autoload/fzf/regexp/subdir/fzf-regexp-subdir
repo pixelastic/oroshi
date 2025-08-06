@@ -6,6 +6,6 @@ function fzf-regexp-subdir() {
   # Save the base directory, so other related fzf methods can use it
   fzf-var-write pwd $PWD
 
-	fzf-regexp \
-		--options "fzf-regexp-subdir-options"
+  fzf-regexp \
+    --options "fzf-regexp-subdir-options"
 }

@@ -1,6 +1,6 @@
 # Output options required to search inside of text files, in the whole project
 function fzf-regexp-project-options() {
-	fzf-regexp-shared-options \
-		--prompt fzf-regexp-project-prompt \
-		--source fzf-regexp-project-source
+  fzf-regexp-shared-options \
+    --prompt fzf-regexp-project-prompt \
+    --source fzf-regexp-project-source
 }

@@ -1,21 +1,21 @@
 # Parses the return of a fzf multi-selection
 function fzf-fs-files-shared-postprocess() {
-	local input="$@"
+  local input="$@"
 
-	# Stop early
-	[[ $input == "" ]] && return
+  # Stop early
+  [[ $input == "" ]] && return
 
-	# Sanitize selection
-	local files=()
-	for line in ${(f)input}; do
-	  local split=(${(@s/   /)line})
+  # Sanitize selection
+  local files=()
+  for line in ${(f)input}; do
+    local split=(${(@s/   /)line})
 
-	  local filepath="$split[1]"
-	  filepath=${filepath:q}
-	  filepath=${~filepath}
+    local filepath="$split[1]"
+    filepath=${filepath:q}
+    filepath=${~filepath}
 
-	  files+=($filepath)
-	done
+    files+=($filepath)
+  done
 
-	echo $files
+  echo $files
 }

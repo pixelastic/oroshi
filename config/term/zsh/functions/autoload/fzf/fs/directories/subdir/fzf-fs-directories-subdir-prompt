@@ -1,5 +1,5 @@
 # Display the prompt for finding a directory in a given directory
 function fzf-fs-directory-subdir-prompt() {
-	local currentDirectory="$(fzf-fs-shared-pwd-subdir)"
-	echo "$(fzf-fs-directory-shared-prompt $currentDirectory) "
+  local currentDirectory="$(fzf-fs-shared-pwd-subdir)"
+  echo "$(fzf-fs-directory-shared-prompt $currentDirectory) "
 }

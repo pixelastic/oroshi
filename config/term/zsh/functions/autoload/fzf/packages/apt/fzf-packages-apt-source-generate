@@ -33,7 +33,7 @@ function fzf-packages-apt-source-generate() {
     # We display the package name with padded spaces, to align the version
     local packageDisplayName=${(r(40)( ))packageName}
     local packageDisplayVersion=$packageVersion
-    
+
     # Color the name if installed
     if [[ $packageVersion != "" ]]; then
       packageDisplayName="[38;5;${COLOR_ALIAS_PACKAGE_INSTALLED}m${packageDisplayName}[00m"

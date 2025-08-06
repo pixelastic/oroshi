@@ -39,4 +39,3 @@ function fzf-search() {
   $fzfPostprocessPath "$selection"
 
 }
-

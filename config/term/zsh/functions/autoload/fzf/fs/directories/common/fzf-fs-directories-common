@@ -1,6 +1,6 @@
 # Search for a specific directory in the most used directories
 function fzf-fs-directories-common() {
-	fzf-fs-directories \
-		--source fzf-fs-directories-common-source \
-		--options fzf-fs-directories-common-options
+  fzf-fs-directories \
+    --source fzf-fs-directories-common-source \
+    --options fzf-fs-directories-common-options
 }

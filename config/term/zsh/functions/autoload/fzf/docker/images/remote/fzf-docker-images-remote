@@ -1,8 +1,8 @@
 # Fuzzy search in all existing Docker Hub images
 function fzf-docker-images-remote() {
 
-	fzf-search \
-		--source "fzf-docker-images-remote-source" \
-		--options "fzf-docker-images-remote-options" \
-		--postprocess "fzf-docker-images-remote-postprocess"
+  fzf-search \
+    --source "fzf-docker-images-remote-source" \
+    --options "fzf-docker-images-remote-options" \
+    --postprocess "fzf-docker-images-remote-postprocess"
 }

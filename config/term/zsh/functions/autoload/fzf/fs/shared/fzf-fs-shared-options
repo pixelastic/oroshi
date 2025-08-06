@@ -13,28 +13,28 @@
 # --prompt         # Mandatory, function that displays the prompt
 # --color          # Default color for query, separator and info line
 function fzf-fs-shared-options() {
-	zmodload zsh/zutil
-	zparseopts -E -D \
-		-prompt:=flagPrompt \
-		-source:=flagSource \
-		-color:=flagColor
+  zmodload zsh/zutil
+  zparseopts -E -D \
+    -prompt:=flagPrompt \
+    -source:=flagSource \
+    -color:=flagColor
 
-	local fzfPromptPath=${flagPrompt[2]}
-	local fzfSourcePath=${flagSource[2]}
-	local fzfColor=${flagColor[2]}
+  local fzfPromptPath=${flagPrompt[2]}
+  local fzfSourcePath=${flagSource[2]}
+  local fzfColor=${flagColor[2]}
 
-	# Config
-	echo "--delimiter=   "
-	echo "--with-nth=2"
-	echo "--preview=fzf-fs-shared-preview {1}"
+  # Config
+  echo "--delimiter=   "
+  echo "--with-nth=2"
+  echo "--preview=fzf-fs-shared-preview {1}"
 
-	# Prompt
-	local prompt="$($fzfPromptPath)"
-	echo "--prompt=${prompt}"
+  # Prompt
+  local prompt="$($fzfPromptPath)"
+  echo "--prompt=${prompt}"
 
-	# UI Coloring
-	echo "--color=prompt:${COLOR_ALIAS_TEXT}:regular"
-	echo "--color=query:${fzfColor}:regular"
-	echo "--color=separator:${fzfColor}"
-	echo "--color=info:${fzfColor}"
+  # UI Coloring
+  echo "--color=prompt:${COLOR_ALIAS_TEXT}:regular"
+  echo "--color=query:${fzfColor}:regular"
+  echo "--color=separator:${fzfColor}"
+  echo "--color=info:${fzfColor}"
 }

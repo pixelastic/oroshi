@@ -9,7 +9,7 @@ function fzf-docker-images-remote-postprocess() {
   local selections=()
   for line in ${(f)rawSelection}; do
     local split=(${(@s/   /)line})
-    
+
     local selection="$split[1]"
     selections+=($selection)
   done

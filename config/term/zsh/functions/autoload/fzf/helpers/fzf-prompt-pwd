@@ -1,6 +1,6 @@
 # Wrapper around fzf-prompt-directory to return a styled path to be used in the
 # prompt, pointing at the current fzf pwd.
 function fzf-pwd-prompt() {
-	local pwd="$(fzf-var-read pwd)"
-	fzf-prompt-directory "$pwd"
+  local pwd="$(fzf-var-read pwd)"
+  fzf-prompt-directory "$pwd"
 }

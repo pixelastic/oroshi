@@ -1,11 +1,11 @@
 function fzf-docker-images-remote-options() {
 
-	echo "--delimiter=   "
-	echo "--with-nth=1"
-	echo "--preview=fzf-docker-images-remote-preview {}"
+  echo "--delimiter=   "
+  echo "--with-nth=1"
+  echo "--preview=fzf-docker-images-remote-preview {}"
 
-	# Prompt
-	local promptPrefix="$(colorize "  Docker remote images " $COLOR_WHITE $COLOR_ALIAS_DOCKER_IMAGE_REMOTE)"
-	local promptSuffix="$(colorize "" $COLOR_ALIAS_DOCKER_IMAGE_REMOTE)"
-	echo "--prompt=${promptPrefix}${promptSuffix} "
+  # Prompt
+  local promptPrefix="$(colorize "  Docker remote images " $COLOR_WHITE $COLOR_ALIAS_DOCKER_IMAGE_REMOTE)"
+  local promptSuffix="$(colorize "" $COLOR_ALIAS_DOCKER_IMAGE_REMOTE)"
+  echo "--prompt=${promptPrefix}${promptSuffix} "
 }

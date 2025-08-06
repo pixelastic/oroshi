@@ -4,13 +4,13 @@
 # $ fzf-regexp \
 # --options         # Mandatory, path to the file outputting the options
 function fzf-regexp() {
-	zmodload zsh/zutil
-	zparseopts -E -D \
-		-options:=flagOptions
+  zmodload zsh/zutil
+  zparseopts -E -D \
+    -options:=flagOptions
 
-	local fzfOptionsPath=${flagOptions[2]}
+  local fzfOptionsPath=${flagOptions[2]}
 
-	fzf-search \
-		--options "$fzfOptionsPath" \
-		--postprocess "fzf-regexp-shared-postprocess"
+  fzf-search \
+    --options "$fzfOptionsPath" \
+    --postprocess "fzf-regexp-shared-postprocess"
 }

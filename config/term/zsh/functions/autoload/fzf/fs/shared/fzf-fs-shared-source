@@ -4,9 +4,9 @@
 # $ fzf-fs-shared-source                        # Find in last visited dir
 # $ fzf-fs-shared-source --directories          # Find only directories
 function fzf-fs-shared-source() {
-	zmodload zsh/zutil
-	zparseopts -E -D \
-		-directories=flagDirectories
+  zmodload zsh/zutil
+  zparseopts -E -D \
+    -directories=flagDirectories
 
   local isDirectories=${#flagDirectories}
 
@@ -43,4 +43,3 @@ function fzf-fs-shared-source() {
   done
 
 }
-

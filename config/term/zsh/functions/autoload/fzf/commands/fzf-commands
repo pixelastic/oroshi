@@ -1,6 +1,6 @@
 # Fuzzy finding in all existing commands/aliases/functions
 function fzf-commands() {
-	fzf-search \
-		--source "fzf-commands-source" \
-		--options "fzf-commands-options"
+  fzf-search \
+    --source "fzf-commands-source" \
+    --options "fzf-commands-options"
 }

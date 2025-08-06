@@ -1,6 +1,6 @@
 # Outputs specific options for searching for a directory in the current project
 function fzf-fs-directories-project-options() {
-	fzf-fs-directories-shared-options \
-		--prompt fzf-fs-directories-project-prompt \
-		--source fzf-fs-directories-project-source
+  fzf-fs-directories-shared-options \
+    --prompt fzf-fs-directories-project-prompt \
+    --source fzf-fs-directories-project-source
 }

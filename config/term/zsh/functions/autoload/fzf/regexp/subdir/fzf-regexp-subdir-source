@@ -4,9 +4,9 @@ function fzf-regexp-subdir-source() {
   local query="$1"
   local subdirPath="$(fzf-var-read pwd)"
 
-	fzf-regexp-shared-source \
-		--no-ignore \
-		--directory "${subdirPath}" \
-		--query "${query}"
+  fzf-regexp-shared-source \
+    --no-ignore \
+    --directory "${subdirPath}" \
+    --query "${query}"
 
 }

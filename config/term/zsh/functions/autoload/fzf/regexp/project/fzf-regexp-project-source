@@ -1,9 +1,9 @@
 # Return a list of all matches inside of files, from the project root
 function fzf-regexp-project-source() {
-	local query="$1"
+  local query="$1"
   local rootDirectory="$(fzf-var-read pwd)"
 
-	fzf-regexp-shared-source \
-		--directory "${rootDirectory}" \
-		--query "${query}"
+  fzf-regexp-shared-source \
+    --directory "${rootDirectory}" \
+    --query "${query}"
 }

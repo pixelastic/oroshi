@@ -1,5 +1,5 @@
 # Display the prompt for finding a file in a given directory
 function fzf-fs-files-subdir-prompt() {
-	local subdirPath="$(fzf-var-read pwd)"
-	echo "$(fzf-fs-files-shared-prompt $subdirPath) "
+  local subdirPath="$(fzf-var-read pwd)"
+  echo "$(fzf-fs-files-shared-prompt $subdirPath) "
 }

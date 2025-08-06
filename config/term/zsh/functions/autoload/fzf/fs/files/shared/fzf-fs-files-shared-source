@@ -3,6 +3,6 @@
 # $ fzf-fs-files-shared-source /path/to/directory     # Find in specified dir
 # $ fzf-fs-files-shared-source                        # Find in last visited dir
 function fzf-fs-files-shared-source() {
-	local searchPath=$1
-	fzf-fs-shared-source $searchPath
+  local searchPath=$1
+  fzf-fs-shared-source $searchPath
 }

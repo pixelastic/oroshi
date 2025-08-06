@@ -25,7 +25,7 @@ function fzf-fs-shared-preview() {
     return 0
   fi
   # }}}
-  
+
 
   local filetypeGroup="$(filetype-group $fullPath)"
   local extension=${fullPath:e}
@@ -98,4 +98,3 @@ function fzf-fs-shared-preview() {
     "$highlightQuery" \
     <<< "$output"
 }
-

@@ -6,18 +6,18 @@
 # --options        # Binary to return the fzf options
 # --postprocess    # Binary to sanitize the selection
 function fzf-fs-files() {
-	zmodload zsh/zutil
-	zparseopts -E -D \
-		-source:=flagSource \
-		-options:=flagOptions \
-		-postprocess:=flagPostprocess
+  zmodload zsh/zutil
+  zparseopts -E -D \
+    -source:=flagSource \
+    -options:=flagOptions \
+    -postprocess:=flagPostprocess
 
-	local fzfSourcePath=${flagSource[2]}
-	local fzfOptionsPath=${flagOptions[2]:-fzf-fs-files-shared-options}
-	local fzfPostprocessPath=${flagPostprocess[2]:-fzf-fs-files-shared-postprocess}
+  local fzfSourcePath=${flagSource[2]}
+  local fzfOptionsPath=${flagOptions[2]:-fzf-fs-files-shared-options}
+  local fzfPostprocessPath=${flagPostprocess[2]:-fzf-fs-files-shared-postprocess}
 
-	fzf-search \
-		--source "$fzfSourcePath" \
-		--options "$fzfOptionsPath" \
-		--postprocess "$fzfPostprocessPath"
+  fzf-search \
+    --source "$fzfSourcePath" \
+    --options "$fzfOptionsPath" \
+    --postprocess "$fzfPostprocessPath"
 }
