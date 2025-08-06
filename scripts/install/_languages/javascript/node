@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # shellcheck disable=SC1090
 
-local LATEST_NODE_LTS_VERSION="20.12.0"
+local LATEST_NODE_LTS_VERSION="22.18.0"
 
 local CONFIG_DIR=~/.oroshi/config/_languages/javascript/nvm
 local DEST_DIR=~/.nvm

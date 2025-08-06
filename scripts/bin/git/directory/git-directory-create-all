@@ -16,7 +16,7 @@ if [[ $OROSHI_NVM_LOADED == "0" ]]; then
 fi
 
 # Use right node version
-nvm use 18.18.0
+nvm use 22.18.0
 
 # Init yarn
 yarn-init
