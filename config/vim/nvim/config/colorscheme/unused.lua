@@ -35,7 +35,6 @@ hl('SpellLocal', 'XXX') --	Word that is recognized by the spellchecker as one th
 hl('SpellRare', 'XXX') --	Word that is recognized by the spellchecker as one that is
 hl('StatusLineTermNC', 'XXX') --
 hl('StatusLineTerm', 'XXX') --	Status line of |terminal| window.
-hl('Substitute', 'XXX') --	|:substitute| replacement text highlighting.
 hl('TabLineSelSeparator', 'XXX') --	Tab pages line, active tab page label.
 hl('TabLineSel', 'XXX') --	Tab pages line, active tab page label.
 hl('TabLine', 'XXX') --		Tab pages line, not active tab page label.

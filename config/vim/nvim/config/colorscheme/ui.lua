@@ -110,9 +110,10 @@ hl('Visual', 'WHITE', { bg = 'BLUE', bold = true }) --		Visual mode selection.
 -- }}}
 
 -- Search mode {{{
-hl('IncSearch', 'ORANGE_2', { bg = 'ORANGE_7', bold = true }) -- Match as I type
-hl('CurSearch', 'ORANGE_2', { bg = 'ORANGE_7', bold = true }) --	Current selected match
-hl('Search', 'ORANGE_9', { bg = 'ORANGE_3', bold = true }) -- All results
+hl('IncSearch', 'ORANGE_2', { bg = 'ORANGE_7', bold = true })  -- Match as I type
+hl('CurSearch', 'ORANGE_2', { bg = 'ORANGE_7', bold = true })  -- Current selected match
+hl('Search', 'ORANGE_9', { bg = 'ORANGE_3', bold = true })     -- All results
+hl('Substitute', 'ORANGE_9', { bg = 'ORANGE_3', bold = true }) -- Replace as I type
 -- Noice
 hl('NoiceCmdlinePopupBorderSearch', 'ORANGE_7')
 hl('NoiceCmdlineIconSearch', 'ORANGE_7', { bg = 'none' })
