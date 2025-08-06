@@ -41,6 +41,9 @@ sudo apt-get install \
 # Verify it works
 sudo docker run hello-world
 
+# Add myself to the docker group
+sudo usermod -aG docker $USER
+
 # Start docker on boot
 sudo systemctl enable docker
 

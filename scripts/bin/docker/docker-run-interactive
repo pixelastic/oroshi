@@ -8,4 +8,5 @@ local args=($@)
 docker-run \
   --tty \
   --interactive \
-  $args
+  $args \
+  -- /bin/bash

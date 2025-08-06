@@ -10,7 +10,7 @@ zparseopts -E -D \
   -name:=flagContainerName
 local containerName=${flagContainerName[2]}
 
-local args="$@"
+local -a args=("$@")
 
 # Image name {{{
 # Guess which argument is the imageName
@@ -18,7 +18,7 @@ local imageFullName=""
 local isPassingCommandArguments="0"
 local guestCommands=()
 local dockerArguments=()
-for arg in ${=args}; do
+for arg in "${args[@]}"; do
   # -- detected, anything after is going to be command arguments
   if [[ $arg == "--" ]]; then
     isPassingCommandArguments="1"
@@ -88,7 +88,7 @@ fi
 
 docker run \
   --rm \
-  --name $containerName \
-  ${=dockerArguments} \
-  $imageFullName \
-  ${=guestCommands}
+  --name "$containerName" \
+  "${dockerArguments[@]}" \
+  "$imageFullName" \
+  "${guestCommands[@]}"
