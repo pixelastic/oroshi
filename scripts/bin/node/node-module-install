@@ -46,11 +46,12 @@ yarn add $moduleName
 # Find all installed binaries
 local nodeModulesDirectory="${installDirectory}/node_modules/${moduleName}"
 local allBinaries="$(jq -r '
-if (.bin | type == "string") then
+if has("bin") | not then
+  "ERROR"
+elif (.bin | type == "string") then
   "ORIGINAL_MODULE_NAME"
 elif (.bin | type == "object") then
   (.bin | keys[])
-else "ERROR"
 end
 ' ${nodeModulesDirectory}/package.json)"
 
