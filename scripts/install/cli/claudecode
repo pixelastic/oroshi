@@ -5,3 +5,17 @@ set -e
 
 # Install claude-code globally
 node-module-install @anthropic-ai/claude-code
+
+# Also install Task Master, to create a list of tasks from a PRD
+# https://github.com/eyaltoledano/claude-task-master
+
+# Install Task Master globally
+node-module-install task-master-ai
+
+# Add the Task Master MCP server to Claude
+local nodeVersionDefault="$(cat ~/.nvm/alias/default)"
+local npxBinary=~/.nvm/versions/node/v${nodeVersionDefault}/bin/npx
+claude mcp add \
+  --scope user \
+  task-master \
+    -- ${npxBinary} -y --package=task-master-ai task-master-ai

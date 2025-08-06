@@ -26,6 +26,10 @@
 # $ node-module-install eslint_d   # Install into the current node version as selected by nvm
 set -e
 
+# We specifically go in a directory where we know no specific .nvmrc has been
+# set, to be sure to be using the global version
+cd ~/local/tmp
+
 local moduleName=$1
 local nodeVersion="$(node --version)"
 local installDirectory="${OROSHI_TMP_FOLDER}/node/${nodeVersion}"

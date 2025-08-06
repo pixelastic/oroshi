@@ -12,5 +12,7 @@ alias v?="ai-question-editor"
 alias \$="ai-shell"
 alias _="ai-code"
 alias mj="ai-mj"
+alias tm="task-master"
+alias c="claude"
 
 alias cursor="gui ~/local/etc/cursor/cursor.AppImage"
