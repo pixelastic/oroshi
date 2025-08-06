@@ -1,10 +1,11 @@
 return {
-  -- concat: Concatenate two tables
-  concat = function(one, two)
-    -- Use it to concat two arrays together, to create a new array
-    local ret = one
-    for i = 1, #two do
-      ret[#ret + i] = two[i]
+  -- concat: Concatenate multiple tables together
+  concat = function(...)
+    local ret = {}
+    for _, tbl in ipairs({...}) do
+      for i = 1, #tbl do
+        ret[#ret + 1] = tbl[i]
+      end
     end
     return ret
   end,

@@ -9,16 +9,22 @@ end
 
 -- Shared variables
 O = {
-  colors = {},  -- Mapping between color aliases and their hex values
-  projects = {}, -- Mapping between projects and their colors and icons
-  statusline = { -- Shared statusline info
+  colors = {},         -- Mapping between color aliases and their hex values
+  projects = {},       -- Mapping between projects and their colors and icons
+  statusline = {       -- Shared statusline info
     lsp = {},
     codecompanion = {} -- CodeCompanion status
   },
-  diagnostics = {}, -- Buffer-indexed diagnostics info
-  folding = {}, -- Folding functions and helpers
-  codecompanion = {}, -- Chat state
+  diagnostics = {},    -- Buffer-indexed diagnostics info
+  folding = {},        -- Folding functions and helpers
+  codecompanion = {},  -- Chat state
   nvimtree = {},
+  dependencies = {     -- Mason dependencies
+    treesitters = {},
+    lspServers = {},
+    linters = {},
+    formatters = {},
+  }
 }
 
 -- Shared functions

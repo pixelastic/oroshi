@@ -333,6 +333,10 @@ hl('LazyReasonStart', 'GREEN')
 hl('LazySpecial', 'PUNCTUATION')
 -- }}}
 
+-- Mason {{{
+hl('MasonWarning', 'WARNING')
+-- }}}}
+
 -- Nvim Tree {{{
 hl('NvimTreeClosedFolderIcon', 'YELLOW_6' )
 hl('NvimTreeOpenedFolderIcon', 'YELLOW_6' )

@@ -2,16 +2,12 @@ local M = {}
 -- Install, load and configure all LSP servers
 -- Full list available on:
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
-M.init = function()
-  require("mason").setup()
-
+M.init = function(lspServers)
   -- Specific LSP servers need to be configured before being installed
   M.configureLuaServer()
 
   require("mason-lspconfig").setup({
-    ensure_installed = {
-      "lua_ls"
-    }
+    ensure_installed = lspServers
   })
 end
 

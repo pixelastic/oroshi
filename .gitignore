@@ -7,6 +7,7 @@ build/
 dist/
 node_modules/
 tmp/
+.claude/
 
 # Files
 Thumbs.db
