@@ -43,7 +43,7 @@ return {
   -- https://github.com/Aasim-A/scrollEOF.nvim
   -- Keep current line always in the middle of screen
   {
-    'Aasim-A/scrollEOF.nvim',
-    event = { 'CursorMoved', 'WinScrolled' },
-  }
+    "Aasim-A/scrollEOF.nvim",
+    event = { "CursorMoved", "WinScrolled" },
+  },
 }

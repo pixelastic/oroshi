@@ -49,16 +49,15 @@ return {
         cmp.complete({
           config = {
             view = {
-              entries = "custom"
-            }
-          }
+              entries = "custom",
+            },
+          },
         })
       end
 
       -- local function selectCompletion()
       --   cmp.mapping.confirm({ select = false }),
       -- end
-
 
       -- Disable completion based on context
       local function disableBasedOnContext()
@@ -73,27 +72,27 @@ return {
         keyword_length = 3,
         experimental = {
           ghost_text = {
-            hl_group = 'CmpGhostText'
-          }
+            hl_group = "CmpGhostText",
+          },
         },
         view = {
           entries = "wildmenu",
         },
         mapping = {
-          ["<Tab>"]     = completeOrNext,
+          ["<Tab>"] = completeOrNext,
           ["<C-Space>"] = toggleMenu,
-          ["<Down>"]    = cmp.mapping.select_next_item(),
-          ["<S-Tab>"]   = cmp.mapping.select_prev_item(),
-          ["<Up>"]      = cmp.mapping.select_prev_item(),
-          ["<C-c>"]     = cmp.mapping.abort(),
-          ["<C-d>"]     = cmp.mapping.abort(),
-          ["<CR>"]      = cmp.mapping.confirm({ select = false }),
+          ["<Down>"] = cmp.mapping.select_next_item(),
+          ["<S-Tab>"] = cmp.mapping.select_prev_item(),
+          ["<Up>"] = cmp.mapping.select_prev_item(),
+          ["<C-c>"] = cmp.mapping.abort(),
+          ["<C-d>"] = cmp.mapping.abort(),
+          ["<CR>"] = cmp.mapping.confirm({ select = false }),
         },
         sources = cmp.config.sources({
-          { name = "nvim_lsp"},
-          { name = 'nvim_lua' }, -- Nvim-specific LUA suggestions
-          { name = "path" },     -- Complete filepaths
-          { name = "buffer" },   -- Complete with words in buffers
+          { name = "nvim_lsp" },
+          { name = "nvim_lua" }, -- Nvim-specific LUA suggestions
+          { name = "path" }, -- Complete filepaths
+          { name = "buffer" }, -- Complete with words in buffers
           -- { name = "luasnip" }, -- snippets
         }),
         -- snippet = { -- configure how nvim-cmp interacts with snippet engine
@@ -112,5 +111,4 @@ return {
       })
     end,
   },
-
 }

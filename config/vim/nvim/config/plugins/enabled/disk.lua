@@ -22,15 +22,17 @@ return {
       -- CTRL + Del
       local function deleteCurrentFile()
         -- We delete the file
-        vim.cmd('Delete!')
+        vim.cmd("Delete!")
 
         -- The rest of the function will handle the edge case where the file we
         -- just deleted was the last opened file in vim, in which case, we will
         -- close vim. In another case, we keep working as usual
 
         -- More than one tab opened? We keep working
-        local totalTabs = vim.fn.tabpagenr('$')
-        if totalTabs ~= 1 then return end
+        local totalTabs = vim.fn.tabpagenr("$")
+        if totalTabs ~= 1 then
+          return
+        end
 
         -- Finding the currently opened buffer
         local allBuffers = vim.api.nvim_list_bufs()
@@ -39,28 +41,36 @@ return {
 
         -- The last buffer has a name? We keep working
         local bufferName = vim.api.nvim_buf_get_name(currentBuffer)
-        if bufferName ~= '' then return end
+        if bufferName ~= "" then
+          return
+        end
 
         -- The last buffer has a type? We keep working
-        local bufferType = vim.api.nvim_buf_get_option(currentBuffer, 'buftype')
-        if bufferType ~= '' then return end
+        local bufferType = vim.api.nvim_buf_get_option(currentBuffer, "buftype")
+        if bufferType ~= "" then
+          return
+        end
 
         -- The last buffer has more than one line? We keep working
         local bufferLineCount = vim.api.nvim_buf_line_count(currentBuffer)
-        if bufferLineCount > 1 then return end
+        if bufferLineCount > 1 then
+          return
+        end
 
         -- The only line has content? We keep working
         local bufferFirstLine = F.currentLine()
-        if bufferFirstLine ~= '' then return end
+        if bufferFirstLine ~= "" then
+          return
+        end
 
         -- At that stage, we're confident we can exit vim
-        vim.cmd('exit')
+        vim.cmd("exit")
       end
 
       imap("<C-Del>", deleteCurrentFile, "Delete current file")
       nmap("<C-Del>", deleteCurrentFile, "Delete current file")
       vmap("<C-Del>", deleteCurrentFile, "Delete current file")
-    end
+    end,
   },
 
   -- Fzf
@@ -73,29 +83,29 @@ return {
     },
     config = function()
       -- Specific config for the fzf buffer
-      ftplugin('fzf', function()
+      ftplugin("fzf", function()
         -- Display a simpler name in the buffer
         vim.api.nvim_buf_set_name(0, "[FZF]")
 
         -- Hide part of the UI when opening
-        local originalShowmode = vim.opt.showmode;
-        local originalRuler = vim.opt.ruler;
-        local originalLaststatus = vim.opt.laststatus;
-        local originalShowtabline = vim.opt.showtabline;
+        local originalShowmode = vim.opt.showmode
+        local originalRuler = vim.opt.ruler
+        local originalLaststatus = vim.opt.laststatus
+        local originalShowtabline = vim.opt.showtabline
 
-        vim.opt.showmode = false;
-        vim.opt.ruler = false;
-        vim.opt.laststatus = 0;
-        vim.opt.showtabline = 0;
+        vim.opt.showmode = false
+        vim.opt.ruler = false
+        vim.opt.laststatus = 0
+        vim.opt.showtabline = 0
 
         -- Revert to previous settings when closing
         local function restorePreviousSettings()
           vim.opt.showmode = originalShowmode
           vim.opt.ruler = originalRuler
-          vim.opt.laststatus = originalLaststatus;
-          vim.opt.showtabline = originalShowtabline;
+          vim.opt.laststatus = originalLaststatus
+          vim.opt.showtabline = originalShowtabline
         end
-        autocmd('BufLeave', restorePreviousSettings, { buffer = F.bufferId() })
+        autocmd("BufLeave", restorePreviousSettings, { buffer = F.bufferId() })
       end)
 
       -- openFilesInNewTabs {{{
@@ -109,10 +119,10 @@ return {
         -- Clean up selection
         local cleanSelection = table.concat(selection, "\n")
         cleanSelection = vim.fn.shellescape(cleanSelection)
-        cleanSelection = vim.fn.system('fzf-fs-files-shared-postprocess ' .. cleanSelection)
+        cleanSelection = vim.fn.system("fzf-fs-files-shared-postprocess " .. cleanSelection)
 
         -- Opening them all, one in each tab, re-using existing tabs
-        vim.cmd('tab drop ' .. cleanSelection)
+        vim.cmd("tab drop " .. cleanSelection)
       end
       -- }}}
 
@@ -126,104 +136,103 @@ return {
         -- Clean up selection
         local cleanSelection = table.concat(selection, "\n")
         cleanSelection = vim.fn.shellescape(cleanSelection)
-        cleanSelection = vim.fn.system('fzf-regexp-shared-postprocess ' .. cleanSelection)
+        cleanSelection = vim.fn.system("fzf-regexp-shared-postprocess " .. cleanSelection)
 
         -- Opening each filepath, one by one, and moving to the selected line
         local items = vim.split(cleanSelection, " ", { trimempty = true })
         for _, item in ipairs(items) do
           local filepath, line = item:match("(.+):(.+)")
-          vim.cmd('tab drop ' .. filepath)
+          vim.cmd("tab drop " .. filepath)
           vim.cmd(line)
         end
       end
       -- }}}
 
-
       -- CTRL-P: {{{
       -- Search in project
       local function onCtrlP()
         -- Tell fzf what the root directory is
-        local rootDirectory = vim.fn.system('git-directory-root -f')
+        local rootDirectory = vim.fn.system("git-directory-root -f")
         vim.fn.system("fzf-var-write pwd " .. vim.fn.shellescape(rootDirectory))
 
-        local source = vim.fn.systemlist('fzf-fs-files-project-source')
-        local options = vim.fn.systemlist('fzf-fs-files-project-options')
+        local source = vim.fn.systemlist("fzf-fs-files-project-source")
+        local options = vim.fn.systemlist("fzf-fs-files-project-options")
 
-        vim.fn['fzf#run']({
+        vim.fn["fzf#run"]({
           source = source,
           options = options,
-          sinklist = openFilesInNewTabs
+          sinklist = openFilesInNewTabs,
         })
       end
-      nmap('<C-P>', onCtrlP, 'Search in project')
-      vmap('<C-P>', onCtrlP, 'Search in project')
-      imap('<C-P>', onCtrlP, 'Search in project')
+      nmap("<C-P>", onCtrlP, "Search in project")
+      vmap("<C-P>", onCtrlP, "Search in project")
+      imap("<C-P>", onCtrlP, "Search in project")
       -- }}}
 
       -- CTRL-T: {{{
       -- Search in current directory
       local function onCtrlT()
         -- Tell fzf what the base directory is
-        local subdirPath = vim.fn.expand('%:p:h')
+        local subdirPath = vim.fn.expand("%:p:h")
         vim.fn.system("fzf-var-write pwd " .. vim.fn.shellescape(subdirPath))
 
-        local source = vim.fn.systemlist('fzf-fs-files-subdir-source')
-        local options = vim.fn.systemlist('fzf-fs-files-subdir-options')
+        local source = vim.fn.systemlist("fzf-fs-files-subdir-source")
+        local options = vim.fn.systemlist("fzf-fs-files-subdir-options")
 
-        vim.fn['fzf#run']({
+        vim.fn["fzf#run"]({
           source = source,
           options = options,
-          sinklist = openFilesInNewTabs
+          sinklist = openFilesInNewTabs,
         })
       end
-      nmap('Ⓟ', onCtrlT, 'Search in current directory')
-      imap('Ⓟ', onCtrlT, 'Search in current directory')
-      vmap('Ⓟ', onCtrlT, 'Search in current directory')
-      nmap('<C-T>', onCtrlT, 'Search in current directory')
-      imap('<C-T>', onCtrlT, 'Search in current directory')
-      vmap('<C-T>', onCtrlT, 'Search in current directory')
+      nmap("Ⓟ", onCtrlT, "Search in current directory")
+      imap("Ⓟ", onCtrlT, "Search in current directory")
+      vmap("Ⓟ", onCtrlT, "Search in current directory")
+      nmap("<C-T>", onCtrlT, "Search in current directory")
+      imap("<C-T>", onCtrlT, "Search in current directory")
+      vmap("<C-T>", onCtrlT, "Search in current directory")
       -- }}}
 
       -- CTRL-G: {{{
       -- Regex search inside of files
       local function onCtrlG()
         -- Tell fzf what the root directory is
-        local rootDirectory = vim.fn.system('git-directory-root -f')
+        local rootDirectory = vim.fn.system("git-directory-root -f")
         vim.fn.system("fzf-var-write pwd " .. vim.fn.shellescape(rootDirectory))
 
         local source = {}
-        local options = vim.fn.systemlist('fzf-regexp-project-options')
+        local options = vim.fn.systemlist("fzf-regexp-project-options")
 
-        vim.fn['fzf#run']({
+        vim.fn["fzf#run"]({
           source = source,
           options = options,
-          sinklist = openLinesInNewTabs
+          sinklist = openLinesInNewTabs,
         })
       end
-      nmap('<C-G>', onCtrlG, 'Regex search in files')
-      imap('<C-G>', onCtrlG, 'Search in current directory')
+      nmap("<C-G>", onCtrlG, "Regex search in files")
+      imap("<C-G>", onCtrlG, "Search in current directory")
       -- }}}
 
       -- CTRL-SHIFT-G: {{{
       -- Regex search inside of files in the current directory
       local function onCtrlShiftG()
         -- Tell fzf what the base directory is
-        local subdirPath = vim.fn.expand('%:p:h')
+        local subdirPath = vim.fn.expand("%:p:h")
         vim.fn.system("fzf-var-write pwd " .. vim.fn.shellescape(subdirPath))
 
         local source = {}
-        local options = vim.fn.systemlist('fzf-regexp-subdir-options')
+        local options = vim.fn.systemlist("fzf-regexp-subdir-options")
 
-        vim.fn['fzf#run']({
+        vim.fn["fzf#run"]({
           source = source,
           options = options,
-          sinklist = openLinesInNewTabs
+          sinklist = openLinesInNewTabs,
         })
       end
-      nmap('Ⓖ', onCtrlShiftG, 'Regex search in files')
-      imap('Ⓖ', onCtrlShiftG, 'Search in current directory')
+      nmap("Ⓖ", onCtrlShiftG, "Regex search in files")
+      imap("Ⓖ", onCtrlShiftG, "Search in current directory")
       -- }}}
-    end
+    end,
   },
 
   -- Nvim Tree
@@ -244,17 +253,17 @@ return {
       imap("<C-!>", "<ESC><cmd>NvimTreeToggle<CR>", "Toggle file explorer")
 
       local function onAttach(bufnr)
-        local api = require "nvim-tree.api"
+        local api = require("nvim-tree.api")
 
         -- Disable Insert Mode
-        nmap('<F13>', '', 'Disable Insert mode', { buffer = bufnr })
-        nmap('i', '', 'Disable Insert mode', { buffer = bufnr })
+        nmap("<F13>", "", "Disable Insert mode", { buffer = bufnr })
+        nmap("i", "", "Disable Insert mode", { buffer = bufnr })
 
         -- H: Go up one level {{{
         local function onH()
           api.tree.change_root_to_parent()
         end
-        nmap('h', onH, 'Go up one level', { buffer = bufnr })
+        nmap("h", onH, "Go up one level", { buffer = bufnr })
         --- }}}
 
         -- L: Open {{{
@@ -270,10 +279,10 @@ return {
           -- Files
           local currentTab = vim.fn.tabpagenr()
           api.node.open.tab_drop(node) -- Open in new tab, or re-use existing if possible
-          vim.cmd.tabnext(currentTab)  -- Go back to initial tab
-          api.tree.open()              -- Keep focus on the tree
+          vim.cmd.tabnext(currentTab) -- Go back to initial tab
+          api.tree.open() -- Keep focus on the tree
         end
-        nmap('l', onL, 'Open silently', { buffer = bufnr })
+        nmap("l", onL, "Open silently", { buffer = bufnr })
         --- }}}
 
         -- ENTER: {{{
@@ -290,10 +299,10 @@ return {
 
           -- Files
           local currentTab = vim.fn.tabpagenr()
-          api.tree.close()              -- Keep focus on the tree
+          api.tree.close() -- Keep focus on the tree
           api.node.open.tab_drop(node) -- Open in new tab, or re-use existing if possible
         end
-        nmap('<CR>', onEnter, 'Open immediatly', { buffer = bufnr })
+        nmap("<CR>", onEnter, "Open immediatly", { buffer = bufnr })
         --- }}}
 
         -- CTRL+N: {{{
@@ -301,7 +310,7 @@ return {
         local function onCtrlN()
           api.fs.create()
         end
-        nmap('<C-N>', onCtrlN, 'Create new file', { buffer = bufnr })
+        nmap("<C-N>", onCtrlN, "Create new file", { buffer = bufnr })
       end
 
       O.nvimtree.currentDirectory = nil
@@ -309,7 +318,7 @@ return {
       local nvimtree = require("nvim-tree")
       local api = nvimtree.api
       nvimtree.setup({
-        view = { width = 30, },
+        view = { width = 30 },
         on_attach = onAttach,
 
         -- Display only folder name on top
@@ -318,12 +327,11 @@ return {
             -- Set the current directory, for display in the statusline
             O.nvimtree.currentDirectory = path
 
-            local basename = vim.fs.basename(path) .. '/'
+            local basename = vim.fs.basename(path) .. "/"
             return basename
-          end
-        }
+          end,
+        },
       })
-
-    end
-  }
+    end,
+  },
 }

@@ -4,7 +4,6 @@ local nmap = F.nmap
 local imap = F.imap
 local vmap = F.vmap
 
-
 -- This is code example taken from https://github.com/hrsh7th/nvim-cmp/discussions/1034
 -- ['<C-o>'] = cmp.mapping(function(fallback)
 --   local fallback_key = vim.api.nvim_replace_termcodes('<Tab>', true, true, true)
@@ -26,8 +25,8 @@ return {
     cmd = "Copilot",
     event = "InsertEnter",
     config = function()
-      local copilot = require('copilot')
-      local commands = require('copilot.command')
+      local copilot = require("copilot")
+      local commands = require("copilot.command")
 
       copilot.setup({
         panel = { enabled = false },
@@ -78,9 +77,8 @@ return {
         vim.b.statuslineCopilotDisabled = not vim.b.statuslineCopilotDisabled
         vim.cmd("redrawstatus")
       end
-      nmap('<F12>', toggleCopilot, 'Toggle Copilot')
-      imap('<F12>', toggleCopilot, 'Toggle Copilot')
-
+      nmap("<F12>", toggleCopilot, "Toggle Copilot")
+      imap("<F12>", toggleCopilot, "Toggle Copilot")
     end,
   },
 
@@ -97,7 +95,7 @@ return {
       -- CodeCompanionChat to open the buffer
       -- Why display on left?
       -- Doesn't include the file by default
-      local codecompanion = require('codecompanion')
+      local codecompanion = require("codecompanion")
       codecompanion.setup({
         strategies = {
           chat = {
@@ -108,8 +106,8 @@ return {
                 -- modes = { n = "<F99>", i = "<F99>" },
               },
               close = {
-                modes = { n = '<F99>', i = '<F99>' }, -- Map to a nonexistent key to disable it
-              }
+                modes = { n = "<F99>", i = "<F99>" }, -- Map to a nonexistent key to disable it
+              },
             },
           },
           inline = {
@@ -126,26 +124,26 @@ return {
               width = 0.8,
               title = {
                 { "", "CodeCompanionChatTitleDecoration" },
-                {" AI Chat ", "CodeCompanionChatTitle"},
-                { "", "CodeCompanionChatTitleDecoration" }
+                { " AI Chat ", "CodeCompanionChatTitle" },
+                { "", "CodeCompanionChatTitleDecoration" },
               },
               border = {
-                { "▄", "CodeCompanionChatBorder"},
-                { "▄", "CodeCompanionChatBorder"},
-                { "▄", "CodeCompanionChatBorder"},
-                { "█", "CodeCompanionChatBorder"},
-                { "▀", "CodeCompanionChatBorder"},
-                { "▀", "CodeCompanionChatBorder"},
-                { "▀", "CodeCompanionChatBorder"},
-                { "█", "CodeCompanionChatBorder"},
+                { "▄", "CodeCompanionChatBorder" },
+                { "▄", "CodeCompanionChatBorder" },
+                { "▄", "CodeCompanionChatBorder" },
+                { "█", "CodeCompanionChatBorder" },
+                { "▀", "CodeCompanionChatBorder" },
+                { "▀", "CodeCompanionChatBorder" },
+                { "▀", "CodeCompanionChatBorder" },
+                { "█", "CodeCompanionChatBorder" },
               },
               opts = {
                 winhighlight = F.join({
                   "Normal:CodeCompanionChatNormal",
                   "EndOfBuffer:CodeCompanionChatEndOfBuffer",
-                  "@markup.heading.2.markdown:CodeCompanionChatInnerTitle"
-                }, ",")
-              }
+                  "@markup.heading.2.markdown:CodeCompanionChatInnerTitle",
+                }, ","),
+              },
             },
             intro_message = "",
             auto_scroll = false,
@@ -165,43 +163,43 @@ return {
       })
 
       local function whenThinkingStarts(callback)
-        autocmd('User', callback, { pattern = 'CodeCompanionRequestStarted' })
+        autocmd("User", callback, { pattern = "CodeCompanionRequestStarted" })
       end
       local function whenThinkingEnds(callback)
-        autocmd('User', callback, { pattern = 'CodeCompanionRequestFinished' })
+        autocmd("User", callback, { pattern = "CodeCompanionRequestFinished" })
       end
 
       -- Open chat window {{{
       local function openChatWindow()
         codecompanion.toggle()
       end
-      nmap('⒤', openChatWindow, "Open the chat window")
-      imap('⒤', openChatWindow, "Open the chat window")
-      vmap('⒤', "<cmd>CodeCompanionChat<CR><CR><CR>", "Open the chat window")
+      nmap("⒤", openChatWindow, "Open the chat window")
+      imap("⒤", openChatWindow, "Open the chat window")
+      vmap("⒤", "<cmd>CodeCompanionChat<CR><CR><CR>", "Open the chat window")
       -- }}}
 
       -- Specific bindings and config of the chat window {{{
-      ftplugin('codecompanion', function()
+      ftplugin("codecompanion", function()
         local bufferId = F.bufferId()
 
         -- Ctrl-B to add #buffer
-        imap('<C-B>', '#buffer<CR>', 'Add #buffer', { buffer = bufferId })
-        nmap('<C-B>', 'mZ^i#buffer<CR><Esc>`Zj', 'Add #buffer', { buffer = bufferId })
+        imap("<C-B>", "#buffer<CR>", "Add #buffer", { buffer = bufferId })
+        nmap("<C-B>", "mZ^i#buffer<CR><Esc>`Zj", "Add #buffer", { buffer = bufferId })
 
         -- Various ways to close the window
         local function closeChatWindow()
           F.normalMode()
           codecompanion.toggle()
         end
-        nmap('⒤',     closeChatWindow, "Close the window", { buffer = bufferId })
-        nmap('<C-C>', closeChatWindow, "Close the window", { buffer = bufferId })
-        nmap('<C-D>', closeChatWindow, "Close the window", { buffer = bufferId })
-        imap('⒤',     closeChatWindow, "Close the window", { buffer = bufferId })
-        imap('<C-C>', closeChatWindow, "Close the window", { buffer = bufferId })
-        imap('<C-D>', closeChatWindow, "Close the window", { buffer = bufferId })
-        vmap('⒤',     closeChatWindow, "Close the window", { buffer = bufferId })
-        vmap('<C-C>', closeChatWindow, "Close the window", { buffer = bufferId })
-        vmap('<C-D>', closeChatWindow, "Close the window", { buffer = bufferId })
+        nmap("⒤", closeChatWindow, "Close the window", { buffer = bufferId })
+        nmap("<C-C>", closeChatWindow, "Close the window", { buffer = bufferId })
+        nmap("<C-D>", closeChatWindow, "Close the window", { buffer = bufferId })
+        imap("⒤", closeChatWindow, "Close the window", { buffer = bufferId })
+        imap("<C-C>", closeChatWindow, "Close the window", { buffer = bufferId })
+        imap("<C-D>", closeChatWindow, "Close the window", { buffer = bufferId })
+        vmap("⒤", closeChatWindow, "Close the window", { buffer = bufferId })
+        vmap("<C-C>", closeChatWindow, "Close the window", { buffer = bufferId })
+        vmap("<C-D>", closeChatWindow, "Close the window", { buffer = bufferId })
 
         -- imap('<C-CR>', function()
         --   local chat = require('codecompanion/strategies/chat')
@@ -210,12 +208,12 @@ return {
         -- end, "Close the window", { buffer = bufferId })
 
         -- Init
-        autocmd('BufEnter', function()
-          vim.wo.number = false    -- Hide line numbers
+        autocmd("BufEnter", function()
+          vim.wo.number = false -- Hide line numbers
           vim.wo.colorcolumn = "0" -- Hide wrap column
 
           -- Start in insert mode if no question has been asked
-          local isConversationStarted = F.get(O.codecompanion[bufferId], 'isConversationStarted')
+          local isConversationStarted = F.get(O.codecompanion[bufferId], "isConversationStarted")
           if not isConversationStarted then
             F.insertMode()
           end
@@ -225,20 +223,20 @@ return {
 
       -- Update colors while thinking {{{
       whenThinkingStarts(function()
-        F.hl("CodeCompanionChatBorder", 'none', O.colors.codecompanion.thinking.chatBorder)
-        F.hl("CodeCompanionChatNormal", 'none', O.colors.codecompanion.thinking.chatNormal)
+        F.hl("CodeCompanionChatBorder", "none", O.colors.codecompanion.thinking.chatBorder)
+        F.hl("CodeCompanionChatNormal", "none", O.colors.codecompanion.thinking.chatNormal)
       end)
       whenThinkingEnds(function()
-        F.hl("CodeCompanionChatBorder", 'none', O.colors.codecompanion.default.chatBorder)
-        F.hl("CodeCompanionChatNormal", 'none', O.colors.codecompanion.default.chatNormal)
+        F.hl("CodeCompanionChatBorder", "none", O.colors.codecompanion.default.chatBorder)
+        F.hl("CodeCompanionChatNormal", "none", O.colors.codecompanion.default.chatNormal)
       end)
       -- }}}
 
       -- Keep state in memory {{{
       whenThinkingStarts(function(event)
-        local bufferId = event.buf;
+        local bufferId = event.buf
         O.codecompanion[bufferId] = {
-          isConversationStarted = true
+          isConversationStarted = true,
         }
       end)
       -- }}}
@@ -250,11 +248,8 @@ return {
       --   O.diagnostics[windowId] = {}
       -- end
       -- return O.diagnostics[windowId]
-    end
+    end,
   },
-
-
-
 
   -- -- https://github.com/yetone/avante.nvim
   -- -- Avante: AI chat
@@ -448,6 +443,4 @@ return {
   --
   --   end
   -- },
-
-
 }

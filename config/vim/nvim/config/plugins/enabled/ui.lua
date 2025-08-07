@@ -15,18 +15,18 @@ return {
       "hrsh7th/nvim-cmp",
     },
     config = function()
-      local noice = require('noice')
+      local noice = require("noice")
       noice.setup({
         -- Commandline
         cmdline = {
           enabled = true,
           format = {
-            cmdline =     { view = "O_cmdline_center", icon = ":", conceal = true },
-            filter =      { view = "O_cmdline_center", icon = "❯", conceal = true }, -- Shell
-            lua =         { view = "O_cmdline_center", icon = " ", conceal = true },
-            help =        { view = "O_cmdline_center", icon = " ", conceal = true },
+            cmdline = { view = "O_cmdline_center", icon = ":", conceal = true },
+            filter = { view = "O_cmdline_center", icon = "❯", conceal = true }, -- Shell
+            lua = { view = "O_cmdline_center", icon = " ", conceal = true },
+            help = { view = "O_cmdline_center", icon = " ", conceal = true },
             search_down = { view = "O_cmdline_bottom", icon = "", conceal = true },
-          }
+          },
         },
         -- Routes
         -- Routes represent to which views Noice should send specific messages
@@ -36,23 +36,26 @@ return {
         -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/routes.lua
         routes = {
           -- Keybinding mappings
-          { filter = { event = "msg_show", kind = "list_cmd", find = "No mapping found" }, view = "O_warn", },
-          { filter = { event = "msg_show", kind = "list_cmd" }, view = "O_temporary", },
+          { filter = { event = "msg_show", kind = "list_cmd", find = "No mapping found" }, view = "O_warn" },
+          { filter = { event = "msg_show", kind = "list_cmd" }, view = "O_temporary" },
           -- Debug colors
-          { filter = { event = "msg_show", kind = "echomsg", find = "O_DEBUG_COLORS" }, opts = { skip = true, history = true} },
+          {
+            filter = { event = "msg_show", kind = "echomsg", find = "O_DEBUG_COLORS" },
+            opts = { skip = true, history = true },
+          },
           -- Useless messages
           {
             filter = {
               event = "msg_show",
               kind = { "" },
               any = {
-                { find = "fewer lines"},
-                { find = "lines indented"},
-                { find = "lines yanked"},
-                { find = "lines filtered"},
-                { find = "more lines"},
-                { find = "lines <ed"},
-                { find = "lines >ed"},
+                { find = "fewer lines" },
+                { find = "lines indented" },
+                { find = "lines yanked" },
+                { find = "lines filtered" },
+                { find = "more lines" },
+                { find = "lines <ed" },
+                { find = "lines >ed" },
                 { find = "and press <Enter> to exit Nvim" },
                 { find = "^:!" }, -- The command typed (eg :!pwd)
               },
@@ -60,20 +63,20 @@ return {
             opts = { skip = true },
           },
           -- Debug
-          { filter = { event = "notify", kind = "debug" }, opts = { skip = true, history = true }}, -- Save in history, display with :Noice showLastDebug
+          { filter = { event = "notify", kind = "debug" }, opts = { skip = true, history = true } }, -- Save in history, display with :Noice showLastDebug
           -- Info
-          { filter = { event = "notify", kind = "info" }, view = "O_info", },
-          { filter = { event = "msg_show", kind = "" }, view = "O_info", }, -- :pwd
-          { filter = { event = "msg_show", kind = "shell_out" }, view = "O_info", }, -- :!pwd
+          { filter = { event = "notify", kind = "info" }, view = "O_info" },
+          { filter = { event = "msg_show", kind = "" }, view = "O_info" }, -- :pwd
+          { filter = { event = "msg_show", kind = "shell_out" }, view = "O_info" }, -- :!pwd
           -- Warning
           {
             filter = {
               event = "msg_show",
               kind = { "emsg" },
               any = {
-                { find = "Pattern not found"},
-                { find = "E20: Mark not set"},
-                { find = "E78: Unknown mark"},
+                { find = "Pattern not found" },
+                { find = "E20: Mark not set" },
+                { find = "E78: Unknown mark" },
               },
             },
             view = "O_warn",
@@ -83,31 +86,26 @@ return {
               event = "notify",
               kind = { "error" },
               any = {
-                { find = "no manual entry for"},
+                { find = "no manual entry for" },
               },
             },
             view = "O_warn",
           },
-          { filter = { event = "notify", kind = "warn" }, view = "O_warn", },
-
-
-
-
+          { filter = { event = "notify", kind = "warn" }, view = "O_warn" },
 
           -- Error
           -- { filter = { event = "notify", kind = "error" }, view = "messages", },
           -- { filter = { event = "notify", kind = "debug", max_height = 10 }, view = "O_debug", }, -- F.debug()
           -- { filter = { event = "notify", kind = "debug", min_height = 10 }, view = "messages", }, -- Long debug messages
-
         },
         -- Messages
         messages = {
           enabled = true,
-          view = "O_debug",          -- Default messages
-          view_warn = "O_warn",  -- Warning messages
-          view_error = "messages",  -- Error messages in their own split
+          view = "O_debug", -- Default messages
+          view_warn = "O_warn", -- Warning messages
+          view_error = "messages", -- Error messages in their own split
           view_history = "messages",
-          view_search = false,      -- Do not show search count
+          view_search = false, -- Do not show search count
         },
         -- Popupmenu, used for completion
         popupmenu = {
@@ -121,18 +119,16 @@ return {
           -- Commandline Centered
           O_cmdline_center = {
             view = "cmdline_popup",
-            size = { width = 50, },
+            size = { width = 50 },
           },
           -- Commandline Bottom
           O_cmdline_bottom = {
             view = "cmdline_popup",
             position = { col = 0, row = -2 },
-            size = { width = 50, },
+            size = { width = 50 },
           },
           -- Error: Split, with all past errors, in reverse order
-          O_error = {
-
-          },
+          O_error = {},
           -- Warning: Small notification at bottom right
           O_warn = {
             view = "mini",
@@ -164,9 +160,9 @@ return {
             timeout = 10000,
             anchor = "SW",
             position = { col = 0, row = -1 },
-            size = { width = "100%", },
+            size = { width = "100%" },
             format = {
-              "{message}"
+              "{message}",
             },
           },
           -- Debug: Split, last info message displayed
@@ -192,7 +188,6 @@ return {
               list = false,
               wrap = true,
             },
-
           },
         },
         -- You can add any custom commands below that will be available with `:Noice command`
@@ -203,8 +198,8 @@ return {
             opts = { enter = false },
             filter = {
               any = {
-                { event = "notify", kind = "debug" }
-              }
+                { event = "notify", kind = "debug" },
+              },
             },
             filter_opts = { count = 1 },
           },
@@ -214,8 +209,8 @@ return {
             opts = { enter = false },
             filter = {
               any = {
-                { event = "msg_show", kind = "echomsg", find = "O_DEBUG_COLORS" }
-              }
+                { event = "msg_show", kind = "echomsg", find = "O_DEBUG_COLORS" },
+              },
             },
             filter_opts = { count = 1 },
           },
@@ -243,16 +238,14 @@ return {
                   hl_group = "NoiceOMessageMessage",
                   before = { "█ ", hl_group = "NoiceOMessagePrefix" },
                 },
-              }
+              },
             },
             filter = {
-              ['not'] = {
-                event = "msg_showcmd"
-              }
+              ["not"] = {
+                event = "msg_showcmd",
+              },
             },
           },
-
-
 
           history = {
             -- options for the message history that you get with `:Noice`
@@ -299,12 +292,6 @@ return {
           -- },
         },
 
-
-
-
-
-
-
         -- default options for require('noice').redirect
         -- see the section on Command Redirection
         redirect = {
@@ -313,7 +300,7 @@ return {
         },
         lsp = {
           enabled = false,
-          progress = { enabled = false, }, -- Disable progress bars when loading
+          progress = { enabled = false }, -- Disable progress bars when loading
           hover = {
             enabled = false,
             silent = true, -- set to true to not show a message if hover is not available
@@ -368,14 +355,11 @@ return {
         },
         status = {}, --- @see section on statusline components
         -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/format.lua
-        format = {
-
-
-        }, --- @see section on formatting
+        format = {}, --- @see section on formatting
       })
 
-      F.ftplugin('noice', function()
-        F.nmap('<CR>', '', 'Unmap <CR>', { buffer = F.bufferId() }) -- Disable <CR>, was triggering issues
+      F.ftplugin("noice", function()
+        F.nmap("<CR>", "", "Unmap <CR>", { buffer = F.bufferId() }) -- Disable <CR>, was triggering issues
       end)
     end,
   },
