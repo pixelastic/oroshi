@@ -11,7 +11,6 @@ O.dependencies = {
     "css",
     "csv",
     "diff",
-    "dockerfile",
     "editorconfig",
     "gitignore",
     "git_config",
