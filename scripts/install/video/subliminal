@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Subliminal: Download subtitles from the CLI
+# https://github.com/Diaoul/subliminal
+set -e
+
+pipx install subliminal
