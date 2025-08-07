@@ -1,8 +1,11 @@
-local helperLsp = O_require("oroshi/plugins/helpers/lint/lsp")
-local helperDiagline = O_require("oroshi/plugins/helpers/lint/diagline")
-local helperStatusline = O_require("oroshi/plugins/helpers/lint/statusline")
-local helperZsh = O_require("oroshi/plugins/helpers/lint/zsh")
+local helperLsp = O_require("oroshi/plugins/helpers/lsp")
+local helperDiagline = O_require("oroshi/plugins/helpers/diagline")
+local helperStatusline = O_require("oroshi/plugins/helpers/statusline")
+local helperZsh = O_require("oroshi/plugins/helpers/zsh")
+local helperLua = O_require("oroshi/plugins/helpers/lua")
 O.dependencies = {
+	-- Treesitter:
+	-- https://github.com/nvim-treesitter/nvim-treesitter?tab=readme-ov-file#supported-languages
 	treesitters = {
 		"bash",
 		"comment",
@@ -169,6 +172,7 @@ return {
 
 			-- Configure language-specific formatters that require more work
 			helperZsh.configureFormatter()
+			helperLua.configureFormatter()
 		end,
 	},
 

@@ -1,6 +1,5 @@
 local autocmd = F.autocmd
-local misc = O_require('oroshi/plugins/helpers/lint/misc')
-local diagline = O_require('oroshi/plugins/helpers/lint/diagline')
+local diagline = O_require('oroshi/plugins/helpers/diagline')
 local M = {}
 
 -- Configure the statusline to listen to LSP loading
@@ -33,7 +32,7 @@ M.init = function()
 
     -- Hide the diag line if everything is clean
     if severity == 'success' then
-      diagline.hide(misc.getDiagData())
+      diagline.hide(diagline.getDiagData())
     end
 
     vim.cmd("redrawstatus")
@@ -60,5 +59,6 @@ M.severityIntToString = function(severityInt)
   }
   return severities[severityInt];
 end
+
 
 return M

@@ -1,6 +1,7 @@
 # ls
 alias la="better-ls --all"
 alias la@="ls --all --extended --long"
+alias lsc="better-ls --color=always"
 alias lsd="better-ls --only-dirs"
 alias ls="better-ls"
 alias l@a="la@"
