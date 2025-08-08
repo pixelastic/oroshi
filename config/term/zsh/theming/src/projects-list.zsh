@@ -2,7 +2,12 @@
 # Display config for the most common projects.
 # Colors and icons will be used in tmux and for short path in zsh
 declare -A PROJECTS
+
 PROJECTS=()
+PROJECTS[Korvosa:background]="RED_9"
+PROJECTS[Korvosa:foreground]="RED_1"
+PROJECTS[Korvosa:icon]="🩸 "
+PROJECTS[Korvosa:path]="~/local/www/projects/korvosa/"
 PROJECTS[aberlaas:background]="YELLOW_7"
 PROJECTS[aberlaas:foreground]="GRAY_9"
 PROJECTS[aberlaas:icon]=" "

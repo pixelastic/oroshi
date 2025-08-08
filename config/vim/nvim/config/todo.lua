@@ -1,4 +1,5 @@
 -- MUST HAVE
+-- TODO: gx on a not URL displays a big error at the bottom
 -- TODO: Folding that folds on expr and markers
 -- TODO: Ensure I can complete filepaths
 -- TODO: Add luacheck for linting lua
