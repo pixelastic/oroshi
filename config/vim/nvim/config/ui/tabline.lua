@@ -1,6 +1,6 @@
 vim.opt.tabpagemax = 1000 -- Do not limit max number of tabs open
 vim.opt.showtabline = 1 -- Only show tabs if more than one
-vim.opt.tabline = '%!v:lua.O_TABLINE.main()' -- Use custom function
+vim.opt.tabline = "%!v:lua.O_TABLINE.main()" -- Use custom function
 
 O_TABLINE = {
   -- main: Main entrypoint for vim.opt.tabline
@@ -16,7 +16,7 @@ O_TABLINE = {
       O_TABLINE.display(tabline, tab, nextTab)
     end
 
-    return table.concat(tabline, '')
+    return table.concat(tabline, "")
   end,
 
   -- Get metadata for a given tab
@@ -27,16 +27,16 @@ O_TABLINE = {
     -- filepath
     local fullPath = O_TABLINE.getFullpath(index)
     -- content
-    local basename = vim.fn.fnamemodify(fullPath, ':t')
-    local content = ' ' .. basename .. ' '
+    local basename = vim.fn.fnamemodify(fullPath, ":t")
+    local content = " " .. basename .. " "
     -- width
     local separatorWidth = 1
     local width = vim.fn.strdisplaywidth(content) + separatorWidth
     -- hl
-    local hl = { fg = 'WHITE', bg = 'GRAY_8' }
+    local hl = { fg = "WHITE", bg = "GRAY_8" }
     -- separator
     if isCurrent then
-      hl = { fg = 'YELLOW', bg = 'BLACK' }
+      hl = { fg = "YELLOW", bg = "BLACK" }
     end
 
     return {
@@ -44,17 +44,18 @@ O_TABLINE = {
       isCurrent = isCurrent,
       content = content,
       width = width,
-      hl = hl
+      hl = hl,
     }
   end,
 
   -- Add the tab to the displayed tabline
   display = function(tabline, tab, nextTab)
-    if not nextTab then nextTab = { hl = { bg = 'GRAY_8' } } end
+    if not nextTab then
+      nextTab = { hl = { bg = "GRAY_8" } }
+    end
 
     -- Start of click area
-    F.append(tabline, '%' .. (tab.index) .. 'T')
-
+    F.append(tabline, "%" .. tab.index .. "T")
 
     -- Content
     local displayedContent = tab.content
@@ -62,21 +63,21 @@ O_TABLINE = {
     F.append(tabline, content)
 
     -- Separator
-    local separatorString = ''
-    local separatorHightlight = O.colors.tabline.hl;
+    local separatorString = ""
+    local separatorHightlight = O.colors.tabline.hl
     -- Update colors if current or next is the current one
     if tab.isCurrent or nextTab.isCurrent then
-      separatorString = ''
+      separatorString = ""
       separatorHightlight = {
         bg = tab.hl.bg,
-        fg = nextTab.hl.bg
+        fg = nextTab.hl.bg,
       }
     end
-    local separator = O_TABLINE.colorize(separatorString, tab.index .. 'Separator', separatorHightlight)
+    local separator = O_TABLINE.colorize(separatorString, tab.index .. "Separator", separatorHightlight)
     F.append(tabline, separator)
 
     -- End of click area
-    F.append(tabline, '%T')
+    F.append(tabline, "%T")
   end,
 
   -- Returns only the tabs to display
@@ -86,7 +87,7 @@ O_TABLINE = {
 
     -- We need to add tabs, one by one, around the current one, until
     -- we run out of space
-    local availableWidth = vim.o.columns;
+    local availableWidth = vim.o.columns
     local displayedTabs = {}
 
     -- Add current tab, for sure
@@ -108,7 +109,7 @@ O_TABLINE = {
       end
 
       -- Add the tab, either before or after
-      if direction == 'before' then
+      if direction == "before" then
         F.prepend(displayedTabs, tab)
       else
         F.append(displayedTabs, tab)
@@ -117,7 +118,6 @@ O_TABLINE = {
       -- Increase consumed width
       usedWidth = usedWidth + tab.width
     end
-
 
     return displayedTabs
   end,
@@ -136,8 +136,8 @@ O_TABLINE = {
       local indexAfter = referenceTabIndex + 1
 
       -- Alternate between picking before and after
-      local direction = i % 2 == 1 and 'before' or 'after'
-      local tabIndex = direction == 'before' and indexBefore or indexAfter
+      local direction = i % 2 == 1 and "before" or "after"
+      local tabIndex = direction == "before" and indexBefore or indexAfter
 
       -- Loop on bounds
       if tabIndex == 0 then
@@ -167,7 +167,7 @@ O_TABLINE = {
   -- Get metadata from all opened tabs
   allTabs = function()
     local tabs = {}
-    local count = vim.fn.tabpagenr('$')
+    local count = vim.fn.tabpagenr("$")
     for i = 1, count do
       F.append(tabs, O_TABLINE.getTab(i))
     end
@@ -191,19 +191,19 @@ O_TABLINE = {
 
     -- If the first buffer is NvimTree, grab the next one
     local filetype = vim.bo[bufferId].filetype
-    if filetype == 'NvimTree' then
+    if filetype == "NvimTree" then
       bufferId = vim.fn.tabpagebuflist(tabIndex)[2]
     end
 
-    local fullPath = vim.fn.expand('#' .. bufferId .. ':p')
+    local fullPath = vim.fn.expand("#" .. bufferId .. ":p")
     return fullPath
   end,
 
   -- Color a string in a given highlight
   colorize = function(content, identifier, highlight)
     -- Create a unique highlight group and define its colors
-    local highlightName = 'TablineSlot' .. identifier
-    F.hl(highlightName, 'none', highlight)
+    local highlightName = "TablineSlot" .. identifier
+    F.hl(highlightName, "none", highlight)
     -- Wrap the content in this group
     return F.color(content, highlightName)
   end,

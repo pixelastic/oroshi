@@ -12,5 +12,5 @@ local function setIsRecording(status)
     vim.cmd("redrawstatus")
   end
 end
-autocmd('RecordingEnter', setIsRecording(true))
-autocmd('RecordingLeave', setIsRecording(false))
+autocmd("RecordingEnter", setIsRecording(true))
+autocmd("RecordingLeave", setIsRecording(false))

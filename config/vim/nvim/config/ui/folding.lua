@@ -1,42 +1,53 @@
 -- Options {{{
 vim.opt.foldenable = true
-vim.opt.foldmethod = 'marker'             -- Fold on markers by default
-vim.opt.foldmarker = '{{{,}}}'
-vim.opt.foldtext='v:lua.O.folding.text()' -- Method to display fold recap line
-vim.opt.foldexpr='v:lua.O.folding.expr()' -- Method to calculate fold level
+vim.opt.foldmethod = "marker" -- Fold on markers by default
+vim.opt.foldmarker = "{{{,}}}"
+vim.opt.foldtext = "v:lua.O.folding.text()" -- Method to display fold recap line
+vim.opt.foldexpr = "v:lua.O.folding.expr()" -- Method to calculate fold level
 vim.opt.foldlevel = 99
-vim.opt.fillchars = "fold: "              -- Pad with spaces
+vim.opt.fillchars = "fold: " -- Pad with spaces
 
 -- When treesitter is available, also fold on it
 F.ftplugin({
-  "bash", "css", "csv", "dockerfile", "editorconfig", "html",
-  "ini", "javascript", "json", "lua", "markdown", "nginx", "pug",
-  "ruby", "xml", "yaml" },
-  function()
-    vim.opt_local.foldmethod = 'expr'
-  end
-)
+  "bash",
+  "css",
+  "csv",
+  "dockerfile",
+  "editorconfig",
+  "html",
+  "ini",
+  "javascript",
+  "json",
+  "lua",
+  "markdown",
+  "nginx",
+  "pug",
+  "ruby",
+  "xml",
+  "yaml",
+}, function()
+  vim.opt_local.foldmethod = "expr"
+end)
 -- }}}
 
 -- Private helpers {{{
-local isInMarker = false; -- Status marking if line is between manual markers
+local isInMarker = false -- Status marking if line is between manual markers
 
 -- incrementExpr: Increment an expr (like 5 or >4) by one level
 local incrementExpr = function(expr)
-  local isStart = F.startsWith(expr, '>')
-  local currentLevel = tonumber('' .. F.replace(expr, '>', '')) or 0
+  local isStart = F.startsWith(expr, ">")
+  local currentLevel = tonumber("" .. F.replace(expr, ">", "")) or 0
   local nextLevel = currentLevel + 1
 
   if isStart then
-    return '>' .. nextLevel
+    return ">" .. nextLevel
   else
-    return '' .. nextLevel
+    return "" .. nextLevel
   end
 end
 
 -- getFoldDetails: Returns fold details about the specified line number
 local getFoldDetails = function(lineNumber)
-
   -- treesitter
   local line = vim.fn.getline(lineNumber)
   local treesitterLevel = vim.treesitter.foldexpr(lineNumber)
@@ -53,7 +64,7 @@ local getFoldDetails = function(lineNumber)
     markerSign = "="
   end
   if isOpeningMarker then
-    expr = '>' .. incrementExpr(treesitterLevel)
+    expr = ">" .. incrementExpr(treesitterLevel)
     isInMarker = true
     markerSign = "{"
   end
@@ -67,20 +78,22 @@ local getFoldDetails = function(lineNumber)
   return {
     markerSign = markerSign,
     treesitter = treesitterLevel,
-    expr = expr
+    expr = expr,
   }
 end
 
 -- getDebugInfo: Returns a normalized string and hlGroup for a given debug expr
 local getDebugInfo = function(expr)
-  local isStart = F.startsWith(expr, '>')
+  local isStart = F.startsWith(expr, ">")
 
   -- title
   local title = expr
-  if not isStart then title = ' ' .. title end
+  if not isStart then
+    title = " " .. title
+  end
 
   -- level
-  local levelAsString = F.replace(expr, '>', '')
+  local levelAsString = F.replace(expr, ">", "")
   local level = tonumber(levelAsString) or 0
 
   -- normalized title
@@ -93,7 +106,7 @@ local getDebugInfo = function(expr)
   local hlGroup = "FoldDebugLevel" .. level
   return {
     content = content,
-    hlGroup = hlGroup
+    hlGroup = hlGroup,
   }
 end
 -- }}}
@@ -106,7 +119,9 @@ O.folding.expr = function()
   local lineNumber = vim.v.lnum
 
   -- Reset isInMarker if we are at the first line
-  if lineNumber == 1 then isInMarker = false end
+  if lineNumber == 1 then
+    isInMarker = false
+  end
   local level = getFoldDetails(lineNumber)
 
   return level.expr
@@ -126,14 +141,14 @@ O.folding.debug = function()
     local foldLevel = getFoldDetails(lineNumber)
 
     local treesitterDisplay = getDebugInfo(foldLevel.treesitter) -- treesitter
-    local markerDisplay = foldLevel.markerSign                   -- markers
-    local exprDisplay = getDebugInfo(foldLevel.expr)             -- expr
+    local markerDisplay = foldLevel.markerSign -- markers
+    local exprDisplay = getDebugInfo(foldLevel.expr) -- expr
 
     vim.api.nvim_buf_set_extmark(bufferId, namespace, lineNumber - 1, 0, {
       virt_text = {
-        { treesitterDisplay.content,   treesitterDisplay.hlGroup },
-        { ' ' .. markerDisplay .. ' ', "FoldDebugMarker" },
-        { exprDisplay.content,         exprDisplay.hlGroup },
+        { treesitterDisplay.content, treesitterDisplay.hlGroup },
+        { " " .. markerDisplay .. " ", "FoldDebugMarker" },
+        { exprDisplay.content, exprDisplay.hlGroup },
       },
       virt_text_pos = "right_align",
       hl_mode = "combine",
@@ -143,12 +158,12 @@ end
 
 -- text: Text to display when folded
 O.folding.text = function()
-  local prefixSymbol = ''
+  local prefixSymbol = ""
   local firstLine = F.getLine(vim.v.foldstart)
   local firstChar = firstLine:sub(1, 1)
 
   -- Just return the line if I don't have enough space to add the marker
-  if firstChar ~= ' ' then
+  if firstChar ~= " " then
     return firstLine
   end
 
@@ -159,11 +174,11 @@ end
 O.folding.toggle = function()
   -- Wrap in a pcall() to prevent errors if
   local _, error = pcall(function()
-    vim.cmd('normal! za')
+    vim.cmd("normal! za")
   end)
 
   if error then
-    F.warn('No fold found')
+    F.warn("No fold found")
   end
 end
 
@@ -176,17 +191,17 @@ end
 -- }}}
 
 -- Toggle fold
-F.nmap('za', O.folding.toggle, 'Toggle fold')
+F.nmap("za", O.folding.toggle, "Toggle fold")
 -- Open folds to a certain level
-F.nmap('z&', O.folding.setLevel(1), 'Set fold level to 1')
-F.nmap('zé', O.folding.setLevel(2), 'Set fold level to 2')
-F.nmap('z"', O.folding.setLevel(3), 'Set fold level to 3')
-F.nmap("z'", O.folding.setLevel(4), 'Set fold level to 4')
-F.nmap('z(', O.folding.setLevel(5), 'Set fold level to 5')
-F.nmap('z-', O.folding.setLevel(6), 'Set fold level to 6')
-F.nmap('zè', O.folding.setLevel(7), 'Set fold level to 7')
-F.nmap('z_', O.folding.setLevel(8), 'Set fold level to 8')
-F.nmap('zç', O.folding.setLevel(9), 'Set fold level to 9')
-F.nmap('zà', O.folding.setLevel(0), 'Set fold level to 0')
+F.nmap("z&", O.folding.setLevel(1), "Set fold level to 1")
+F.nmap("zé", O.folding.setLevel(2), "Set fold level to 2")
+F.nmap('z"', O.folding.setLevel(3), "Set fold level to 3")
+F.nmap("z'", O.folding.setLevel(4), "Set fold level to 4")
+F.nmap("z(", O.folding.setLevel(5), "Set fold level to 5")
+F.nmap("z-", O.folding.setLevel(6), "Set fold level to 6")
+F.nmap("zè", O.folding.setLevel(7), "Set fold level to 7")
+F.nmap("z_", O.folding.setLevel(8), "Set fold level to 8")
+F.nmap("zç", O.folding.setLevel(9), "Set fold level to 9")
+F.nmap("zà", O.folding.setLevel(0), "Set fold level to 0")
 -- Show fold debug levels
-F.nmap('<F32>', O.folding.debug, 'Show fold debug info') -- C-F8
+F.nmap("<F32>", O.folding.debug, "Show fold debug info") -- C-F8
