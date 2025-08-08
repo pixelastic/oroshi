@@ -7,7 +7,6 @@
 #
 # $ mic2txt translate    # Translate the transcription in english
 
-
 # Available methods:
 # transcribe: output text directly
 # translate:  output text, translated into english
@@ -20,7 +19,7 @@ local recordFile=${tmpFolder}/record.wav
 
 # Check if a recording is already running (so we can stop it), or not (so we can
 # start it)
-mkdir -p $tmpFolder;
+mkdir -p $tmpFolder
 local isRecordingRunning=0
 [[ -f $pidFile ]] && isRecordingRunning=1
 
@@ -33,7 +32,7 @@ if [[ $isRecordingRunning == "0" ]]; then
     $recordFile &
 
   # Save the pid
-  echo $! > $pidFile
+  echo $! >$pidFile
   exit 0
 fi
 # }}}
@@ -50,9 +49,8 @@ function saveToHistory() {
   local historyFolder=~/local/tmp/oroshi/mic2txt/history
 
   mkdir -p $historyFolder
-  echo $content > "${historyFolder}/${now}-${name}.log"
+  echo $content >"${historyFolder}/${now}-${name}.log"
 }
-
 
 # We transcribe to text (french or english)
 local transcription=""
@@ -74,4 +72,7 @@ focus-insert "$transcription"
 
 # Cleanup the pid file
 rm $pidFile
+
+# Play a sound to indicate it's being pasted
+audio-play ~/.oroshi/scripts/bin/audio/pasted.wav
 # }}}
