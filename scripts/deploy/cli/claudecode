@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+set -e
+
+CONFIG_DIR=~/.oroshi/config/cli/claudecode
+
+ln -fs $CONFIG_DIR/CLAUDE.md ~/CLAUDE.md
