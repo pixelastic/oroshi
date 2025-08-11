@@ -21,8 +21,8 @@ hl("Question", "NEUTRAL") --	"Press ENTER or type command to continue"
 
 -- Tabs {{{
 O.colors.tabline = {
-	fg = "GRAY_4",
-	bg = "GRAY_8",
+  fg = "GRAY_4",
+  bg = "GRAY_8",
 }
 hl("TabLineFill", "GRAY_4", { bg = "GRAY_8" }) --	Tab pages line, where there are no labels.
 -- }}}
@@ -47,11 +47,11 @@ hl("NoiceCmdlinePrompt", "GRAY_4")
 hl("LineNr", "GRAY") --	Line number column
 hl("SignColumn", "GRAY") --	Sign column
 -- Git coloring
-hl("GitSignsAddNr", "GREEN_9")
-hl("GitSignsChangeNr", "PURPLE")
-hl("GitSignsChangedeleteNr", "PURPLE")
-hl("GitSignsTopdeleteNr", "RED_9")
-hl("GitSignsDeleteNr", "RED_9")
+hl("GitSignsAddNr", "GREEN_9", { bg = "DARK_GREEN" })
+hl("GitSignsChangeNr", "PURPLE", { bg = "DARK_PURPLE" })
+hl("GitSignsChangedeleteNr", "PURPLE", { bg = "DARK_PURPLE" })
+hl("GitSignsTopdeleteNr", "RED_9", { bg = "DARK_RED" })
+hl("GitSignsDeleteNr", "RED_9", { bg = "DARK_RED" })
 hl("GitSignsUntrackedNr", "XXX")
 -- Current line
 hl("CursorLineNr", "YELLOW", { bg = "GRAY_9", bold = true }) --	Current line number
@@ -73,13 +73,13 @@ F.setGuicursor("cr", "block", "CursorModeCommandReplace") -- UNUSED
 F.setGuicursor("sm", "block", "CursorModeShowMatch") -- UNUSED
 
 O.colors.cursor = {
-	insert = { bg = "YELLOW_3" },
-	normal = { bg = "EMERALD" },
-	visual = { bg = "BLUE_7" },
-	terminal = { bg = "YELLOW" }, -- In fzf search
-	command = { bg = "TEAL" },
-	search = { bg = "ORANGE" },
-	ai = { bg = "AMBER_7" },
+  insert = { bg = "YELLOW_3" },
+  normal = { bg = "EMERALD" },
+  visual = { bg = "BLUE_7" },
+  terminal = { bg = "YELLOW" }, -- In fzf search
+  command = { bg = "TEAL" },
+  search = { bg = "ORANGE" },
+  ai = { bg = "AMBER_7" },
 }
 hl("CursorModeInsert", "none", O.colors.cursor.insert)
 hl("CursorModeNormal", "none", O.colors.cursor.normal)
@@ -201,48 +201,48 @@ hl("DiffText", "none", { bg = "DARK_PURPLE" }) -- Changed text specifically
 -- Statusline {{{
 hl("StatusLine", "GRAY_4", { bg = "GRAY_8" }) --	Status line of current window.
 O.colors.statusline = {
-	normal = { bg = "EMERALD_9", fg = "EMERALD_2", bold = true },
-	insert = { bg = "YELLOW", fg = "BLACK", bold = true },
-	visual = { bg = "BLUE", fg = "WHITE", bold = true },
-	search = { bg = "ORANGE_7", fg = "ORANGE_2", bold = true },
-	command = { bg = "TEAL", fg = "TEAL_1", bold = true },
-	unknown = { bg = "CYAN" },
-	-- Filepath
-	filepathDefault = { fg = "GREEN", bold = true },
-	filepathReadonly = { fg = "RED" },
-	filepathUnsavedChanges = { fg = "VIOLET_4" },
-	filepathNoName = { fg = "COMMENT" },
-	-- NvimTree
-	nvimTreeIcon = { fg = "YELLOW", bg = "GREEN_9" },
-	nvimTreeText = { fg = "WHITE", bg = "GREEN_9" },
-	nvimTreeSeparator = { fg = "GREEN_9" },
-	healthcheck = { bg = "RED_LIGHT", fg = "WHITE" }, -- Healthcheck
-	codecompanion = { bg = "AMBER_7", fg = "AMBER_1" }, -- CodeCompanion
-	fileencoding = { bg = "RED_9", fg = "RED_2" }, -- Fileencoding
-	macro = { fg = "RED", bg = "DARK_RED" }, -- Macro
-	filetype = { bg = "GRAY_9", fg = "WHITE" }, -- Filetype
-	-- LSP
-	lsp = {
-		off = { fg = "GRAY_8", bg = "DARK_BLUE" },
-		loading = { fg = "BLUE_9", bg = "DARK_BLUE" },
+  normal = { bg = "EMERALD_9", fg = "EMERALD_2", bold = true },
+  insert = { bg = "YELLOW", fg = "BLACK", bold = true },
+  visual = { bg = "BLUE", fg = "WHITE", bold = true },
+  search = { bg = "ORANGE_7", fg = "ORANGE_2", bold = true },
+  command = { bg = "TEAL", fg = "TEAL_1", bold = true },
+  unknown = { bg = "CYAN" },
+  -- Filepath
+  filepathDefault = { fg = "GREEN", bold = true },
+  filepathReadonly = { fg = "RED" },
+  filepathUnsavedChanges = { fg = "VIOLET_4" },
+  filepathNoName = { fg = "COMMENT" },
+  -- NvimTree
+  nvimTreeIcon = { fg = "YELLOW", bg = "GREEN_9" },
+  nvimTreeText = { fg = "WHITE", bg = "GREEN_9" },
+  nvimTreeSeparator = { fg = "GREEN_9" },
+  healthcheck = { bg = "RED_LIGHT", fg = "WHITE" }, -- Healthcheck
+  codecompanion = { bg = "AMBER_7", fg = "AMBER_1" }, -- CodeCompanion
+  fileencoding = { bg = "RED_9", fg = "RED_2" }, -- Fileencoding
+  macro = { fg = "RED", bg = "DARK_RED" }, -- Macro
+  filetype = { bg = "GRAY_9", fg = "WHITE" }, -- Filetype
+  -- LSP
+  lsp = {
+    off = { fg = "GRAY_8", bg = "DARK_BLUE" },
+    loading = { fg = "BLUE_9", bg = "DARK_BLUE" },
 
-		error = { fg = "RED_2", bg = "RED_9" },
-		warning = { fg = "YELLOW_5", bg = "YELLOW_9" },
-		info = { fg = "BLUE_3", bg = "BLUE_9" },
-		hint = { fg = "VIOLET_5", bg = "GRAY_7" },
-		success = { fg = "GREEN_2", bg = "GREEN_9" },
-	},
-	-- Copilot
-	copilotNotLoaded = { fg = "GRAY_8", bg = "DARK_AMBER" },
-	copilotEnabled = { fg = "AMBER_1", bg = "AMBER_7" },
-	copilotDisabled = { fg = "AMBER_9", bg = "DARK_AMBER" },
+    error = { fg = "RED_2", bg = "RED_9" },
+    warning = { fg = "YELLOW_5", bg = "YELLOW_9" },
+    info = { fg = "BLUE_3", bg = "BLUE_9" },
+    hint = { fg = "VIOLET_5", bg = "GRAY_7" },
+    success = { fg = "GREEN_2", bg = "GREEN_9" },
+  },
+  -- Copilot
+  copilotNotLoaded = { fg = "GRAY_8", bg = "DARK_AMBER" },
+  copilotEnabled = { fg = "AMBER_1", bg = "AMBER_7" },
+  copilotDisabled = { fg = "AMBER_9", bg = "DARK_AMBER" },
 }
 -- }}}
 
 -- Commandline {{{
 O.colors.commandline = {
-	hidden = { fg = "WHITE" }, -- Default highlight
-	visible = { fg = "TEXT", bg = "GRAY_8" }, -- When need to be more readable
+  hidden = { fg = "WHITE" }, -- Default highlight
+  visible = { fg = "TEXT", bg = "GRAY_8" }, -- When need to be more readable
 }
 hl("NoiceCmdlinePopup", "none", { bg = "GRAY_9" })
 -- Vim Cmdline {{{
@@ -298,14 +298,14 @@ hl("NoiceOMessageMessage", "GRAY")
 
 -- CodeCompanion {{{
 O.colors.codecompanion = {
-	default = {
-		chatNormal = { fg = "none", bg = "GRAY_8" },
-		chatBorder = { fg = "DARK_AMBER", bg = "BLACK" },
-	},
-	thinking = {
-		chatNormal = { fg = "none", bg = "DARK_AMBER" },
-		chatBorder = { fg = "AMBER_7", bg = "BLACK" },
-	},
+  default = {
+    chatNormal = { fg = "none", bg = "GRAY_8" },
+    chatBorder = { fg = "DARK_AMBER", bg = "BLACK" },
+  },
+  thinking = {
+    chatNormal = { fg = "none", bg = "DARK_AMBER" },
+    chatBorder = { fg = "AMBER_7", bg = "BLACK" },
+  },
 }
 hl("CodeCompanionChatTitle", "AMBER_1", { bg = "AMBER_7" })
 hl("CodeCompanionChatTitleDecoration", "AMBER_7")
