@@ -1,0 +1,41 @@
+#!/usr/bin/env zsh
+# Put file(s) into Trash rather than deleting directly
+# Usage:
+# $ better-rm ./path/to/file.txt   # Delete one file
+# $ better-rm ./path/to/*.txt      # Delete all *.txt
+
+local mountDirs=(
+  "/home/$USER/local/mount/s3"
+  "/home/$USER/local/mount/gdrive"
+)
+local regularFiles=()
+local mountedFiles=()
+
+for arg in "$@"; do
+  filepath="${arg:A}"
+  local isMountedFile=0
+
+  # Check if file is a remote mount
+  for mountDir in $mountDirs; do
+    if [[ "$filepath" == $mountDir/* ]]; then
+      isMountedFile=1
+      break
+    fi
+  done
+
+  if [[ $isMountedFile == 1 ]]; then
+    mountedFiles+=("$filepath")
+  else
+    regularFiles+=("$filepath")
+  fi
+done
+
+# Delete regular files by putting in the trash
+if ((${#regularFiles[@]})); then
+  trash-put -- "${regularFiles[@]}"
+fi
+
+# For mounted files, delete them with the regular rm
+if ((${#mountedFiles[@]})); then
+  rm -rf -- "${mountedFiles[@]}"
+fi
