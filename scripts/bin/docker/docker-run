@@ -86,8 +86,13 @@ if [[ $containerName == "" ]]; then
 fi
 # }}}
 
+# Notes:
+# --rm removes the container from the list once it's closed
+# -it allows passing keyboard (like Ctrl-C) to the container
+
 docker run \
   --rm \
+  -it \
   --name "$containerName" \
   "${dockerArguments[@]}" \
   "$imageFullName" \
