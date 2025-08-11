@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Jo: Json Output, create JSON from the CLI
+# https://github.com/jpmens/jo
+set -e
+
+sudo apt-get install jo
