@@ -67,12 +67,12 @@ if [[ $method == 'translate' ]]; then
   saveToHistory slackify "$transcription"
 fi
 
+# Play a sound to indicate it's being pasted
+audio-play ~/.oroshi/scripts/bin/audio/pasted.wav &
+
 # Insert the transcription wherever I'm currently focused
 focus-insert "$transcription"
 
 # Cleanup the pid file
 rm $pidFile
-
-# Play a sound to indicate it's being pasted
-audio-play ~/.oroshi/scripts/bin/audio/pasted.wav
 # }}}
