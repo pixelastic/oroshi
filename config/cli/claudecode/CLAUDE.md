@@ -22,3 +22,4 @@ I want to use Task Master to organize my big projects into a list of small tasks
 Keep a consistent coding style matching my preferences across my projects
 
 - Prefer camelCase for variables, functions, directories, files, etc (unless that specific language/project has a strong opinion against it)
+- Don't suggest scripts in python. Prefer scripts in zsh or in JavaScript
