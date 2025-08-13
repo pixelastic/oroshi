@@ -7,16 +7,16 @@ return {
   tabCount = function()
     return #vim.api.nvim_list_tabpages()
   end,
-  -- getTabWindows: Returns all windows in a specific tab
-  getTabWindows = function(tabId)
+  -- getTabSplits: Returns all splits in a specific tab
+  getTabSplits = function(tabId)
     -- Default to current tab
     if not tabId then
       tabId = F.tabId()
     end
 
-    local allWindows = vim.api.nvim_tabpage_list_wins(tabId)
-    return F.filter(allWindows, function(windowId)
-      return F.isWindowValid(windowId)
+    local allSplits = vim.api.nvim_tabpage_list_wins(tabId)
+    return F.filter(allSplits, function(splitId)
+      return F.isSplitValid(splitId)
     end)
   end,
   -- getTabBuffers: Returns all buffers in a specific tab
@@ -27,8 +27,8 @@ return {
     end
 
     local buffers = {}
-    F.each(F.getTabWindows(tabId), function(windowId)
-      F.append(buffers, F.getWindowBuffer(windowId))
+    F.each(F.getTabSplits(tabId), function(splitId)
+      F.append(buffers, F.getSplitBuffer(splitId))
     end)
 
     return buffers

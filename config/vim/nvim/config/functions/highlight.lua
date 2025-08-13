@@ -180,8 +180,8 @@ return {
   debugColors = function()
     -- Close the previously opened debugColors window.
     -- Otherwise it will get re-used, even if offscreen in another tab
-    local closeExistingWindow = function()
-      F.closeWindow(function(bufferId)
+    local closeExistingSplit = function()
+      F.closeSplit(function(bufferId)
         -- Skip all non-noice
         if F.getBufferOption(bufferId, "filetype") ~= "noice" then
           return false
@@ -200,7 +200,7 @@ return {
     local highlights = F.getHighlightsUnderCursor()
     -- Stop if none found
     if #highlights == 0 then
-      closeExistingWindow()
+      closeExistingSplit()
       F.warn("No highlights")
       return
     end
@@ -233,7 +233,7 @@ return {
     -- Display the last element in history
     -- We need to wait a bit, to let noice process the echo
     F.defer(function()
-      closeExistingWindow()
+      closeExistingSplit()
       require("noice").cmd("showDebugColors")
     end)
   end,

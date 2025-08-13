@@ -38,22 +38,22 @@ local function saveAndQuit()
   -- Otherwise, we save and quit
   vim.cmd("silent! x")
 
-  -- If tab is only made of UI windows (noice, etc), we close them all
-  local windows = F.getTabWindows()
+  -- If tab is only made of UI splits (noice, etc), we close them all
+  local splits = F.getTabSplits()
   local uiFiletypes = { "noice", "help", "NvimTree" }
-  local hasUsefulWindow = false
-  F.each(windows, function(windowId)
-    local bufferId = F.getWindowBuffer(windowId)
+  local hasUsefulSplit = false
+  F.each(splits, function(splitId)
+    local bufferId = F.getSplitBuffer(splitId)
     local bufferFiletype = F.getBufferOption(bufferId, "filetype")
     if not F.includes(uiFiletypes, bufferFiletype) then
-      hasUsefulWindow = true
+      hasUsefulSplit = true
     end
   end)
 
-  if not hasUsefulWindow then
-    F.each(windows, function(windowId)
-      if F.isWindowValid(windowId) then
-        F.focusWindow(windowId)
+  if not hasUsefulSplit then
+    F.each(splits, function(splitId)
+      if F.isSplitValid(splitId) then
+        F.focusSplit(splitId)
         vim.cmd("q")
       end
     end)

@@ -65,8 +65,8 @@ M.create = function(data)
   -- Create a buffer
   data.bufferId = F.newBuffer()
 
-  -- Put that buffer into a window
-  data.windowId = vim.api.nvim_open_win(data.bufferId, false, {
+  -- Put that buffer into a split
+  data.splitId = vim.api.nvim_open_win(data.bufferId, false, {
     relative = "win",
     anchor = "SW",
     row = height,
@@ -81,16 +81,16 @@ end
 
 -- Hide the diag line
 M.hide = function(data)
-  if not data.windowId then
+  if not data.splitId then
     return
   end
 
-  vim.api.nvim_win_set_config(data.windowId, { hide = true })
+  vim.api.nvim_win_set_config(data.splitId, { hide = true })
 end
 
 -- Update the content of the diag line
 M.update = function(data, error)
-  if not data.windowId then
+  if not data.splitId then
     M.create(data)
   end
 
@@ -114,7 +114,7 @@ M.update = function(data, error)
   vim.api.nvim_set_option_value(
     "winhighlight",
     "Normal:" .. severityToHighlight[error.severity],
-    { win = data.windowId }
+    { win = data.splitId }
   )
 
   -- Show window
@@ -123,13 +123,13 @@ end
 
 M.alignAtBottomOfScreen = function(data)
   -- No-op if no diagline
-  if not data.windowId then
+  if not data.splitId then
     return
   end
 
-  vim.api.nvim_win_set_config(data.windowId, {
+  vim.api.nvim_win_set_config(data.splitId, {
     relative = "win",
-    width = F.windowWidth(),
+    width = F.splitWidth(),
     row = F.windowHeight(),
     col = 0,
     hide = false,
@@ -160,13 +160,13 @@ M.getErrorDetails = function(lineNumber)
   }
 end
 
--- Returns the diag data (lineNumber, windowId, bufferId)
+-- Returns the diag data (lineNumber, splitId, bufferId)
 M.getDiagData = function()
-  local windowId = F.windowId()
-  if not O.diagnostics[windowId] then
-    O.diagnostics[windowId] = {}
+  local splitId = F.splitId()
+  if not O.diagnostics[splitId] then
+    O.diagnostics[splitId] = {}
   end
-  return O.diagnostics[windowId]
+  return O.diagnostics[splitId]
 end
 
 return M
