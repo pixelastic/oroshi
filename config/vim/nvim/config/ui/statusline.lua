@@ -334,8 +334,19 @@ O_STATUSLINE = {
       return {
         file = { content = "" },
         project = {
-          content = "   CodeCompanion ",
+          content = "   AI CHAT ",
           hl = O.colors.statusline.codecompanion,
+        },
+      }
+    end
+
+    -- When nvim is used as a kitty pager
+    if vim.bo.filetype == "pager" then
+      return {
+        file = { content = "" },
+        project = {
+          content = " 󰄛  KITTY ",
+          hl = O.colors.statusline.kitty,
         },
       }
     end

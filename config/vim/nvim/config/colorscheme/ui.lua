@@ -216,8 +216,11 @@ O.colors.statusline = {
   nvimTreeIcon = { fg = "YELLOW", bg = "GREEN_9" },
   nvimTreeText = { fg = "WHITE", bg = "GREEN_9" },
   nvimTreeSeparator = { fg = "GREEN_9" },
+  -- Special
   healthcheck = { bg = "RED_LIGHT", fg = "WHITE" }, -- Healthcheck
   codecompanion = { bg = "AMBER_7", fg = "AMBER_1" }, -- CodeCompanion
+  kitty = { bg = "GRAY_7", fg = "YELLOW", bold = true }, -- Kitty pager
+  -- Right side
   fileencoding = { bg = "RED_9", fg = "RED_2" }, -- Fileencoding
   macro = { fg = "RED", bg = "DARK_RED" }, -- Macro
   filetype = { bg = "GRAY_9", fg = "WHITE" }, -- Filetype

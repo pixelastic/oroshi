@@ -2,19 +2,28 @@ return {
   -- isNoName: Check if the buffer is a [No Name] buffer, when vim is opened
   -- without a filepath
   isNoName = function()
-    return vim.fn.expand('%') == ''
+    return vim.fn.expand("%") == ""
   end,
   -- bufferId: Returns current buffer id
   bufferId = function()
     return vim.api.nvim_get_current_buf()
   end,
+  -- newBuffer: Creates a new buffer
+  newBuffer = function()
+    -- Note: false, true means: unlisted, scratch (ie. not saveable)
+    return vim.api.nvim_create_buf(false, true)
+  end,
+  -- deleteBuffer: Delete a given buffer
+  deleteBuffer = function(bufferId)
+    vim.api.nvim_buf_delete(bufferId, { force = true })
+  end,
   -- lineNumber: Returns the current line number
   lineNumber = function()
-    return vim.fn.line('.')
+    return vim.fn.line(".")
   end,
   -- currentLine: Returns the content of the current line
   currentLine = function()
-    return vim.api.nvim_get_current_line();
+    return vim.api.nvim_get_current_line()
   end,
   -- getLine: Returns the content of a given line
   getLine = function(lineNumber)
@@ -34,7 +43,7 @@ return {
   end,
   -- getBufferOption: Return the value of a specific buffer option
   getBufferOption = function(optionName, bufferId)
-    return vim.api.nvim_get_option_value(optionName, { buf = bufferId})
+    return vim.api.nvim_get_option_value(optionName, { buf = bufferId })
   end,
   -- getBufferLines: Returns a collection of all lines in a buffer
   getBufferLines = function(bufferId)
@@ -45,7 +54,7 @@ return {
     local line, column = unpack(vim.api.nvim_win_get_cursor(0))
     return {
       line = line,
-      column = column
+      column = column,
     }
   end,
 }

@@ -1,16 +1,30 @@
 -- Scrollback pager
 -- When bvim is used by Kitty as a pager (Alt-C)
 F.ftplugin("scrollback_pager", function()
-  local buf = vim.api.nvim_get_current_buf()
-  local b = vim.api.nvim_create_buf(false, true)
-  local chan = vim.api.nvim_open_term(b, {})
-  vim.api.nvim_chan_send(chan, table.concat(vim.api.nvim_buf_get_lines(buf, 0, -1, false), "\n"))
-  vim.api.nvim_win_set_buf(0, b)
-  -- -- Expand to full height
-  -- local function takeAllHeight()
-  --   vim.cmd("resize +999")
-  -- end
-  --
-  -- -- Expand again on each resize
-  -- F.autocmd({ "VimResized", "BufEnter" }, takeAllHeight, { buffer = F.bufferId() })
+  -- Remove the line number
+  vim.o.number = false
+
+  -- Get the raw content of the buffer
+  local rawBufferId = F.bufferId()
+  local rawLinesList = F.getBufferLines(rawBufferId)
+  local rawLinesText = F.trim(F.join(rawLinesList, "\n"))
+
+  -- Pass it to a terminal (for automatic parsing), and set this terminal as the
+  -- current buffer
+  local coloredBufferId = F.newBuffer()
+  local terminalChannel = vim.api.nvim_open_term(coloredBufferId, {})
+  vim.api.nvim_chan_send(terminalChannel, rawLinesText)
+  vim.api.nvim_win_set_buf(0, coloredBufferId)
+
+  -- Scroll to the bottom
+  vim.api.nvim_win_set_cursor(0, { vim.api.nvim_buf_line_count(0), 0 })
+  -- Define the ft, so we can set a custom statusline
+  vim.opt_local.ft = "pager"
+
+  -- We wait until all initialization is done, then delete the original buffer
+  -- If we don't wait we might mess some treesitter callback that expect the buffer
+  -- to exist
+  F.defer(function()
+    F.deleteBuffer(rawBufferId)
+  end)
 end)

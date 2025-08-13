@@ -2,7 +2,7 @@ return {
   -- concat: Concatenate multiple tables together
   concat = function(...)
     local ret = {}
-    for _, tbl in ipairs({...}) do
+    for _, tbl in ipairs({ ... }) do
       for i = 1, #tbl do
         ret[#ret + 1] = tbl[i]
       end
@@ -34,7 +34,7 @@ return {
 
   -- get: Return the value at the given path in the collection
   get = function(collection, path, defaultValue)
-    local keys = F.split(path, '.')
+    local keys = F.split(path, ".")
 
     local current = collection or {}
     for _, key in ipairs(keys) do
@@ -59,7 +59,7 @@ return {
 
   -- join: Join a collection with a delimiter
   join = function(collection, delimiter)
-    return table.concat(collection, delimiter or ', ')
+    return table.concat(collection, delimiter or ", ")
   end,
 
   -- last: Returns the last element of a collection
@@ -87,7 +87,7 @@ return {
     -- _.map(collection, function() end) -- apply function to all items
 
     -- If a string, return the key by that name
-    if type(callback) == 'string' then
+    if type(callback) == "string" then
       local key = callback
       callback = function(item)
         return item[key]
@@ -115,7 +115,7 @@ return {
 
   -- set: Set the value of a given key in a collection
   set = function(collection, path, value)
-    local keys = F.split(path, '.')
+    local keys = F.split(path, ".")
 
     -- Create the objects up to the last key if needed
     local current = collection or {}
@@ -138,5 +138,13 @@ return {
   -- startsWith: Check if string starts with a specific substring
   startsWith = function(input, prefix)
     return string.find(input, prefix, 1, true) == 1
+  end,
+
+  -- trim: Remove starting/trailing characters
+  trim = function(input, characters)
+    if not characters then
+      characters = "%s" -- Default to whitespace
+    end
+    return F.replace(input, "^" .. characters .. "*(.-)" .. characters .. "*$", "%1")
   end,
 }
