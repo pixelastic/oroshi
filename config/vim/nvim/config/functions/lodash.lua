@@ -32,6 +32,17 @@ return {
     return collection[1]
   end,
 
+  -- filter: Filter a collection based on a callback
+  filter = function(collection, callback)
+    local filteredList = {}
+    F.each(collection, function(value)
+      if callback(value) then
+        F.append(filteredList, value)
+      end
+    end)
+    return filteredList
+  end,
+
   -- get: Return the value at the given path in the collection
   get = function(collection, path, defaultValue)
     local keys = F.split(path, ".")

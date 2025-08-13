@@ -40,6 +40,7 @@ F = vim.tbl_extend(
   O_require("oroshi/functions/map"),
   O_require("oroshi/functions/misc"),
   O_require("oroshi/functions/modes"),
+  O_require("oroshi/functions/tabs"),
   O_require("oroshi/functions/visual"),
   O_require("oroshi/functions/windows")
 )

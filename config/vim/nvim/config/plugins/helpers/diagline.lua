@@ -144,9 +144,19 @@ M.getErrorDetails = function(lineNumber)
     return nil
   end
 
+  local severity = diag[1].severity or vim.diagnostic.severity.ERROR
+  local code = diag[1].code
+  local message = diag[1].message
+
+  -- Craft the message; not all diagnostics have a code
+  local content = message
+  if code and code ~= "" then
+    content = code .. " : " .. message
+  end
+
   return {
-    severity = diag[1].severity,
-    content = diag[1].code .. " : " .. diag[1].message,
+    severity = severity,
+    content = content,
   }
 end
 

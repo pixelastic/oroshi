@@ -181,6 +181,9 @@ hl("@keyword.exception.python", "ORANGE", { bold = true })
 hl("shOption", "SYMBOL")
 hl("shVarAssign", "PUNCTUATION")
 -- }}}
+-- Toml {{{
+hl("@property.toml", "none")
+--- }}}
 -- vim {{{
 hl("@label.vim", "STRING")
 hl("@keyword.vim", "TEAL")

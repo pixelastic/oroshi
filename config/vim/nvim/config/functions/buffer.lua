@@ -42,7 +42,7 @@ return {
     vim.api.nvim_set_current_line(newLine)
   end,
   -- getBufferOption: Return the value of a specific buffer option
-  getBufferOption = function(optionName, bufferId)
+  getBufferOption = function(bufferId, optionName)
     return vim.api.nvim_get_option_value(optionName, { buf = bufferId })
   end,
   -- getBufferLines: Returns a collection of all lines in a buffer

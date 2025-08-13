@@ -1,7 +1,24 @@
 local helperDiagline = O_require("oroshi/plugins/helpers/diagline")
 local helperStatusline = O_require("oroshi/plugins/helpers/statusline")
-local helperZsh = O_require("oroshi/plugins/helpers/filetypes/zsh")
-local helperLua = O_require("oroshi/plugins/helpers/filetypes/lua")
+
+local filetypeHelpers = {
+  O_require("oroshi/plugins/helpers/filetypes/bash"),
+  O_require("oroshi/plugins/helpers/filetypes/json"),
+  O_require("oroshi/plugins/helpers/filetypes/lua"),
+  O_require("oroshi/plugins/helpers/filetypes/sh"),
+  O_require("oroshi/plugins/helpers/filetypes/toml"),
+  O_require("oroshi/plugins/helpers/filetypes/zsh"),
+}
+
+-- If it exists, run the given method for each configured filetype helper.
+local function runForAllFiletypes(methodName)
+  F.each(filetypeHelpers, function(helper)
+    if helper[methodName] then
+      helper[methodName]()
+    end
+  end)
+end
+
 O.dependencies = {
   -- Treesitter:
   -- https://github.com/nvim-treesitter/nvim-treesitter?tab=readme-ov-file#supported-languages
@@ -29,6 +46,7 @@ O.dependencies = {
     "robots",
     "ruby",
     "ssh_config",
+    "toml",
     "xml",
     "yaml",
   },
@@ -36,12 +54,15 @@ O.dependencies = {
   -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
   lspServers = {
     "lua_ls",
+    -- "taplo", -- .toml
   },
   linters = {},
+  -- Formatters
   formatters = {
-    "prettier",
-    "shfmt",
-    "stylua",
+    "prettier", -- .js, .json
+    "shfmt", -- .sh, .bash (.zsh with custom zshlint)
+    "stylua", -- .lua
+    -- "taplo", -- .toml
   },
 }
 
@@ -87,7 +108,7 @@ return {
         highlight = {
           -- Advanced syntax highlight
           enable = true,
-          additional_vim_regex_highlighting = false,
+          additional_vim_regex_highlighting = true,
         },
 
         -- Select node with vv (then expand with CTRL-J / CTRL-K)
@@ -124,13 +145,12 @@ return {
       "neovim/nvim-lspconfig",
     },
     config = function()
-      -- Configure language-specific LSP Servers (they need to be configured
-      -- before they are installed)
-      helperLua.configureLsp()
+      -- Run additional LSP configuration for specific filetypes
+      runForAllFiletypes("configureLsp")
 
-      require("mason-lspconfig").setup({
-        ensure_installed = O.dependencies.lspServers,
-      })
+      -- require("mason-lspconfig").setup({
+      --   ensure_installed = O.dependencies.lspServers,
+      -- })
     end,
   },
 
@@ -146,8 +166,8 @@ return {
       lint.linters = {}
       lint.linters_by_ft = {}
 
-      -- Configure language-specific formatters that require more work
-      helperZsh.configureLinter()
+      -- Run additional Linting configuration for specific filetypes
+      runForAllFiletypes("configureLinter")
 
       F.autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, function()
         lint.try_lint()
@@ -165,20 +185,13 @@ return {
     },
     config = function()
       require("conform").setup({
-        formatters_by_ft = {
-          bash = { "shfmt" },
-          json = { "prettier" },
-          lua = { "stylua" },
-          sh = { "shfmt" },
-        },
         format_on_save = {
           timeout_ms = 500,
         },
       })
 
-      -- Configure language-specific formatters that require more work
-      helperZsh.configureFormatter()
-      helperLua.configureFormatter()
+      -- Run additional Formatter configuration for specific filetypes
+      runForAllFiletypes("configureFormatter")
     end,
   },
 
