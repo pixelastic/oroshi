@@ -1,3 +1,3 @@
 -- Load our custom config
 
-require('oroshi/index')
+require("oroshi/index")

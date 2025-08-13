@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# Kitty scrollback pager using nvim
+
+source /home/tim/.oroshi/config/term/zsh/theming/env/colors.zsh
+
+cat |
+  tail -n 500 |
+  nvim -c 'set filetype=scrollback_pager'
