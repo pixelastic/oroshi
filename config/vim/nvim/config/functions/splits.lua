@@ -1,4 +1,13 @@
 return {
+  -- createSplit: Create a new split (horizontal by default)
+  createSplit = function(vertical)
+    if vertical then
+      vim.cmd("vsplit")
+    else
+      vim.cmd("split")
+    end
+    return F.splitId()
+  end,
   -- splitId: Returns current split id
   splitId = function()
     return vim.api.nvim_get_current_win()

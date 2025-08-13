@@ -30,8 +30,12 @@ O = {
 F = vim.tbl_extend(
   "force",
   {},
+  O_require("oroshi/functions/tabs"),
+  O_require("oroshi/functions/splits"),
+  O_require("oroshi/functions/buffers"),
+  O_require("oroshi/functions/lines"),
+
   O_require("oroshi/functions/autocmd"),
-  O_require("oroshi/functions/buffer"),
   O_require("oroshi/functions/collections"),
   O_require("oroshi/functions/debug"),
   O_require("oroshi/functions/hacks"),
@@ -40,9 +44,7 @@ F = vim.tbl_extend(
   O_require("oroshi/functions/map"),
   O_require("oroshi/functions/misc"),
   O_require("oroshi/functions/modes"),
-  O_require("oroshi/functions/tabs"),
   O_require("oroshi/functions/visual"),
-  O_require("oroshi/functions/splits")
 )
 
 -- Colorscheme

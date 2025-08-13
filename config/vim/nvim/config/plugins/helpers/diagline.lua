@@ -63,7 +63,7 @@ M.create = function(data)
   local height = F.windowHeight()
 
   -- Create a buffer
-  data.bufferId = F.newBuffer()
+  data.bufferId = F.createBuffer()
 
   -- Put that buffer into a split
   data.splitId = vim.api.nvim_open_win(data.bufferId, false, {

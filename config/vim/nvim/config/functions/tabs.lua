@@ -1,4 +1,17 @@
 return {
+  -- createTab: Create a new tab page
+  createTab = function()
+    vim.cmd("tabnew")
+    return F.tabId()
+  end,
+  -- closeTab: Close a specific tab or current tab
+  closeTab = function(tabId)
+    if tabId then
+      vim.cmd(tabId .. "tabclose")
+    else
+      vim.cmd("tabclose")
+    end
+  end,
   -- tabId: Returns the current tabId
   tabId = function()
     return vim.api.nvim_get_current_tabpage()
@@ -7,8 +20,8 @@ return {
   tabCount = function()
     return #vim.api.nvim_list_tabpages()
   end,
-  -- getTabSplits: Returns all splits in a specific tab
-  getTabSplits = function(tabId)
+  -- tabSplits: Returns all splits in a specific tab
+  tabSplits = function(tabId)
     -- Default to current tab
     if not tabId then
       tabId = F.tabId()
@@ -19,15 +32,15 @@ return {
       return F.isSplitValid(splitId)
     end)
   end,
-  -- getTabBuffers: Returns all buffers in a specific tab
-  getTabBuffers = function(tabId)
+  -- tabBuffers: Returns all buffers in a specific tab
+  tabBuffers = function(tabId)
     -- Default to current tab
     if not tabId then
       tabId = F.tabId()
     end
 
     local buffers = {}
-    F.each(F.getTabSplits(tabId), function(splitId)
+    F.each(F.tabSplits(tabId), function(splitId)
       F.append(buffers, F.getSplitBuffer(splitId))
     end)
 

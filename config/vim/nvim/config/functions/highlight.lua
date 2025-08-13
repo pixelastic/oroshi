@@ -183,12 +183,12 @@ return {
     local closeExistingSplit = function()
       F.closeSplit(function(bufferId)
         -- Skip all non-noice
-        if F.getBufferOption(bufferId, "filetype") ~= "noice" then
+        if F.bufferOption(bufferId, "filetype") ~= "noice" then
           return false
         end
 
         -- Close if contains O_DEBUG_COLORS
-        if F.includes(F.getBufferLines(bufferId), "O_DEBUG_COLORS") then
+        if F.includes(F.bufferLines(bufferId), "O_DEBUG_COLORS") then
           return true
         end
 

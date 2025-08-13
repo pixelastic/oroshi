@@ -39,12 +39,12 @@ local function saveAndQuit()
   vim.cmd("silent! x")
 
   -- If tab is only made of UI splits (noice, etc), we close them all
-  local splits = F.getTabSplits()
+  local splits = F.tabSplits()
   local uiFiletypes = { "noice", "help", "NvimTree" }
   local hasUsefulSplit = false
   F.each(splits, function(splitId)
     local bufferId = F.getSplitBuffer(splitId)
-    local bufferFiletype = F.getBufferOption(bufferId, "filetype")
+    local bufferFiletype = F.bufferOption(bufferId, "filetype")
     if not F.includes(uiFiletypes, bufferFiletype) then
       hasUsefulSplit = true
     end

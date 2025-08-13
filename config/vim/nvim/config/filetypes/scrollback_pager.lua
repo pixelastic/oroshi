@@ -6,12 +6,12 @@ F.ftplugin("scrollback_pager", function()
 
   -- Get the raw content of the buffer
   local rawBufferId = F.bufferId()
-  local rawLinesList = F.getBufferLines(rawBufferId)
+  local rawLinesList = F.bufferLines(rawBufferId)
   local rawLinesText = F.trim(F.join(rawLinesList, "\n"))
 
   -- Pass it to a terminal (for automatic parsing), and set this terminal as the
   -- current buffer
-  local coloredBufferId = F.newBuffer()
+  local coloredBufferId = F.createBuffer()
   local terminalChannel = vim.api.nvim_open_term(coloredBufferId, {})
   vim.api.nvim_chan_send(terminalChannel, rawLinesText)
   vim.api.nvim_win_set_buf(0, coloredBufferId)
@@ -25,6 +25,6 @@ F.ftplugin("scrollback_pager", function()
   -- If we don't wait we might mess some treesitter callback that expect the buffer
   -- to exist
   F.defer(function()
-    F.deleteBuffer(rawBufferId)
+    F.closeBuffer(rawBufferId)
   end)
 end)
