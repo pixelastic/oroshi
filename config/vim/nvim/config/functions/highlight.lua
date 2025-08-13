@@ -188,7 +188,7 @@ return {
         end
 
         -- Close if contains O_DEBUG_COLORS
-        if F.includes(F.bufferLines(bufferId), "O_DEBUG_COLORS") then
+        if F.includes(F.allLines(bufferId), "O_DEBUG_COLORS") then
           return true
         end
 

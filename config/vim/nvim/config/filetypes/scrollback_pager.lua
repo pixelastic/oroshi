@@ -6,7 +6,7 @@ F.ftplugin("scrollback_pager", function()
 
   -- Get the raw content of the buffer
   local rawBufferId = F.bufferId()
-  local rawLinesList = F.bufferLines() -- current buffer
+  local rawLinesList = F.allLines() -- current buffer
   local rawLinesText = F.trim(F.join(rawLinesList, "\n"))
 
   -- Pass it to a terminal (for automatic parsing), and set this terminal as the

@@ -38,11 +38,6 @@ return {
     return vim.api.nvim_get_option_value(optionName, { buf = bufferId })
   end,
 
-  -- bufferLines: Returns a collection of all lines in a buffer (defaults to current buffer)
-  bufferLines = function(bufferId)
-    bufferId = bufferId or F.bufferId()
-    return vim.api.nvim_buf_get_lines(bufferId, 0, -1, false)
-  end,
   -- isNoName: Check if the buffer is a [No Name] buffer, when vim is opened
   -- without a filepath
   isNoName = function()
