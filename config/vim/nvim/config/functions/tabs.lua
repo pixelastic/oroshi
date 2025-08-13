@@ -29,7 +29,7 @@ return {
 
     local allSplits = vim.api.nvim_tabpage_list_wins(tabId)
     return F.filter(allSplits, function(splitId)
-      return F.isSplitValid(splitId)
+      return F.splitExists(splitId)
     end)
   end,
   -- tabBuffers: Returns all buffers in a specific tab
@@ -45,5 +45,9 @@ return {
     end)
 
     return buffers
+  end,
+  -- tabExists: Check if a tab exists
+  tabExists = function(tabId)
+    return vim.api.nvim_tabpage_is_valid(tabId)
   end,
 }

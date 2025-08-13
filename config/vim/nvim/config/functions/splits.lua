@@ -28,9 +28,9 @@ return {
   allSplits = function()
     return vim.api.nvim_list_wins()
   end,
-  -- isSplitValid: Check if a split handle is valid.
+  -- splitExists: Check if a split exists.
   -- Note: splits can get deleted, and thus operations on them will fail
-  isSplitValid = function(splitId)
+  splitExists = function(splitId)
     return vim.api.nvim_win_is_valid(splitId)
   end,
   -- getSplitBuffer: Returns the bufferId of the specified split
@@ -47,7 +47,7 @@ return {
       local allSplits = F.allSplits()
       for _, splitId in ipairs(allSplits) do
         -- Skip invalid splits
-        if not F.isSplitValid(splitId) then
+        if not F.splitExists(splitId) then
           goto continue
         end
 

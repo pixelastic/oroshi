@@ -43,10 +43,10 @@ return {
       startColumn, endColumn = endColumn, startColumn
     end
 
-   -- If in visual line mode, we extend the start/end columns to the full line
+    -- If in visual line mode, we extend the start/end columns to the full line
     if F.isVisualLineMode() then
       startColumn = 1
-      endColumn = F.getLine(endLine):len()
+      endColumn = F.line(endLine):len()
     end
 
     return {
@@ -54,17 +54,17 @@ return {
       startLine = startLine,
       endLine = endLine,
       startColumn = startColumn,
-      endColumn = endColumn
+      endColumn = endColumn,
     }
   end,
 
   -- selectWord: Select current word
   selectWord = function()
-    vim.cmd.normal('viW')
+    vim.cmd.normal("viW")
   end,
 
   -- selectLine: Select current line
   selectLine = function()
-    vim.cmd.normal('V')
+    vim.cmd.normal("V")
   end,
 }

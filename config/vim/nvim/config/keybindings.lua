@@ -52,7 +52,7 @@ local function saveAndQuit()
 
   if not hasUsefulSplit then
     F.each(splits, function(splitId)
-      if F.isSplitValid(splitId) then
+      if F.splitExists(splitId) then
         F.focusSplit(splitId)
         vim.cmd("q")
       end
