@@ -181,18 +181,20 @@ return {
     -- Close the previously opened debugColors window.
     -- Otherwise it will get re-used, even if offscreen in another tab
     local closeExistingSplit = function()
-      F.closeSplit(function(bufferId)
-        -- Skip all non-noice
-        if F.bufferOption("filetype", bufferId) ~= "noice" then
-          return false
+      F.each(F.globalSplits(), function(splitId)
+        -- Deleting the highlight debug split might also delete subsplits that
+        -- we now need to skip
+        if not F.splitExists(splitId) then
+          return
         end
 
-        -- Close if contains O_DEBUG_COLORS
-        if F.includes(F.allLines(bufferId), "O_DEBUG_COLORS") then
-          return true
+        -- Close the previous split used for that debugging
+        local bufferId = F.bufferId(splitId)
+        local bufferFiletype = F.bufferOption("filetype", bufferId)
+        local lastLine = F.line(-1, bufferId)
+        if bufferFiletype == "noice" and lastLine == "O_DEBUG_COLORS" then
+          F.closeSplit(splitId)
         end
-
-        return false
       end)
     end
 
@@ -207,21 +209,21 @@ return {
 
     -- Build the colored text to display
     local content = {}
-    for _, item in ipairs(highlights) do
+    F.each(highlights, function(item)
       -- If the group is linked to itself, it means it's disabled
       if item.link == item.hl then
         F.append(content, { " // ", "Comment" })
         F.append(content, { item.hl, "Comment" })
         F.append(content, { " is disabled", "Comment" })
         F.append(content, { "\n", "Comment" })
-        break
+        return
       end
       F.append(content, { "   ", item.hl })
       F.append(content, { item.hl, item.hl })
       F.append(content, { " linked to ", "Comment" })
       F.append(content, { item.link, item.link })
       F.append(content, { "\n", "Comment" })
-    end
+    end)
     -- Add a invisible marker so we can filter it in noice routes
     F.append(content, { "\n\n\nO_DEBUG_COLORS", "EndOfBuffer" })
 

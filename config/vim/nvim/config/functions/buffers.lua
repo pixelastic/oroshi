@@ -49,6 +49,20 @@ return {
     bufferId = bufferId or F.bufferId()
     return vim.api.nvim_buf_get_name(bufferId)
   end,
+  -- saveBuffer: Save a buffer if it can be saved (defaults to current buffer)
+  saveBuffer = function(bufferId)
+    bufferId = bufferId or F.bufferId()
+    
+    local filename = F.bufferName(bufferId)
+    local modifiable = F.bufferOption("modifiable", bufferId)
+    local modified = F.bufferOption("modified", bufferId)
+    
+    if filename == "" or not modifiable or not modified then
+      return
+    end
+    
+    vim.cmd("silent! w")
+  end,
   -- isNoName: Check if the buffer is a [No Name] buffer, when vim is opened
   -- without a filepath
   isNoName = function()

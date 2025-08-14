@@ -20,6 +20,14 @@ return {
   -- closeSplit: Close a split (defaults to current split)
   closeSplit = function(splitId)
     splitId = splitId or F.splitId()
+
+    -- If last split of last tab, close tab instead
+    if F.tabCount() == 1 and F.splitCount() == 1 then
+      F.closeTab()
+      return
+    end
+
+    -- Normal behavior: close the split
     local forceEvenIfUnsavedChanges = true
     vim.api.nvim_win_close(splitId, forceEvenIfUnsavedChanges)
   end,
@@ -42,14 +50,6 @@ return {
   -- focusSplit: Focus a specific split
   focusSplit = function(splitId)
     vim.api.nvim_set_current_win(splitId)
-  end,
-  -- closeSplitIf: Close splits where callback returns true (defaults to current tab)
-  closeSplitIf = function(callback, tabId)
-    F.forEachSplit(function(splitId)
-      if callback(splitId) then
-        F.closeSplit(splitId)
-      end
-    end, tabId)
   end,
   -- dimensions: Returns the split dimensions (defaults to current split)
   dimensions = function(splitId)

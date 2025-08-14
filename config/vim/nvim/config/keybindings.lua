@@ -30,34 +30,36 @@ vmap("<C-S>", "<CMD>silent! w<CR><ESC>", "Save file")
 
 -- CTRL + D
 local function saveAndQuit()
-  -- If the file has no name, we simply quit
-  if F.isNoName() then
-    vim.cmd("q!")
+  local currentTabId = F.tabId()
+
+  -- Save and close the current split
+  F.saveBuffer()
+  F.closeSplit()
+
+  -- Stop if it moved us to another tab because it was the last one
+  if F.tabId() ~= currentTabId then
     return
   end
-  -- Otherwise, we save and quit
-  vim.cmd("silent! x")
 
-  -- If tab is only made of UI splits (noice, etc), we close them all
-  local splits = F.tabSplits()
-  local uiFiletypes = { "noice", "help", "NvimTree" }
-  local hasUsefulSplit = false
-  F.each(splits, function(splitId)
-    local bufferId = F.getSplitBuffer(splitId)
-    local bufferFiletype = F.bufferOption("filetype", bufferId)
-    if not F.includes(uiFiletypes, bufferFiletype) then
-      hasUsefulSplit = true
+  -- Check if the splits we have left contain interesting data
+  local uiFiletypes = { "noice", "help", "qf", "NvimTree" }
+  local hasImportantSplits = false
+  F.forEachSplit(function(splitId)
+    local bufferId = F.bufferId(splitId)
+    local filetype = F.bufferOption("filetype", bufferId)
+
+    if not F.includes(uiFiletypes, filetype) then
+      hasImportantSplits = true
     end
   end)
 
-  if not hasUsefulSplit then
-    F.each(splits, function(splitId)
-      if F.splitExists(splitId) then
-        F.focusSplit(splitId)
-        vim.cmd("q")
-      end
-    end)
+  -- We still have important files open, we stop
+  if hasImportantSplits then
+    return
   end
+
+  -- We only have UI splits, we close the tab
+  F.closeTab()
 end
 imap("<C-D>", saveAndQuit, "Save file and quit")
 nmap("<C-D>", saveAndQuit, "Save file and quit")

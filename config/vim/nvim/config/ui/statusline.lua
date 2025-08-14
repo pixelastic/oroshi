@@ -40,6 +40,7 @@ O_STATUSLINE = {
     local project = fileData.project
 
     -- Mode
+    add(statusline, "S" .. F.splitId() .. " B" .. F.bufferId(), {})
     add(statusline, mode.content, mode.hl)
     add(statusline, "", { fg = modeBg, bg = project.hl.bg })
 
