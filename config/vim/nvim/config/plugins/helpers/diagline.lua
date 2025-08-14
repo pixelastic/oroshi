@@ -59,8 +59,8 @@ end
 
 -- Create a (hidden) diag line, as a window at the bottom of the screen
 M.create = function(data)
-  local width = F.windowWidth()
-  local height = F.windowHeight()
+  local width = F.width()
+  local height = F.height()
 
   -- Create a buffer
   data.bufferId = F.createBuffer()
@@ -129,8 +129,8 @@ M.alignAtBottomOfScreen = function(data)
 
   vim.api.nvim_win_set_config(data.splitId, {
     relative = "win",
-    width = F.splitWidth(),
-    row = F.windowHeight(),
+    width = F.width(),
+    row = F.height(),
     col = 0,
     hide = false,
   })

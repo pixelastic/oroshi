@@ -66,7 +66,6 @@ hl("CursorModeCommandInsert", "XXX")
 -- }}}
 
 -- Diagnostics {{{
-hl("DiagnosticDeprecated", "XXX")
 hl("DiagnosticFloatingError", "XXX")
 hl("DiagnosticFloatingHint", "XXX")
 hl("DiagnosticFloatingInfo", "XXX")

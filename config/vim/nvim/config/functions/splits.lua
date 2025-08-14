@@ -1,70 +1,71 @@
 return {
-  -- createSplit: Create a new split (horizontal by default)
-  createSplit = function(vertical)
-    if vertical then
-      vim.cmd("vsplit")
-    else
-      vim.cmd("split")
-    end
-    return F.splitId()
-  end,
   -- splitId: Returns current split id
   splitId = function()
     return vim.api.nvim_get_current_win()
   end,
-  -- splitWidth: Returns the width of the current split
-  splitWidth = function()
-    return vim.api.nvim_win_get_width(0)
+  -- splits: Returns all splitIds (defaults to current tab)
+  splits = function(tabId)
+    tabId = tabId or F.tabId()
+    return vim.api.nvim_tabpage_list_wins(tabId)
   end,
-  -- splitHeight: Returns the height of the current split
-  splitHeight = function()
-    return vim.api.nvim_win_get_height(0)
+  -- splitExists: Check if a split exists.
+  splitExists = function(splitId)
+    return vim.api.nvim_win_is_valid(splitId)
   end,
+  -- createSplit: Create a new split
+  createSplit = function()
+    vim.cmd("split")
+    return F.splitId()
+  end,
+  -- closeSplit: Close a split (defaults to current split)
+  closeSplit = function(splitId)
+    splitId = splitId or F.splitId()
+    local forceEvenIfUnsavedChanges = true
+    vim.api.nvim_win_close(splitId, forceEvenIfUnsavedChanges)
+  end,
+  -- splitCount: Returns the number of opened splits (defaults to current tab)
+  splitCount = function(tabId)
+    return #F.splits(tabId)
+  end,
+  -- forEachSplit: Apply a callback on each split (defaults to current tab)
+  forEachSplit = function(callback, tabId)
+    F.each(F.splits(tabId), function(splitId)
+      callback(splitId)
+    end)
+  end,
+
+  -- globalSplits: Returns all splitIds from all tabs
+  globalSplits = function()
+    return vim.api.nvim_list_wins()
+  end,
+
   -- focusSplit: Focus a specific split
   focusSplit = function(splitId)
     vim.api.nvim_set_current_win(splitId)
   end,
-  -- allSplits: Returns all splitIds
-  allSplits = function()
-    return vim.api.nvim_list_wins()
-  end,
-  -- splitExists: Check if a split exists.
-  -- Note: splits can get deleted, and thus operations on them will fail
-  splitExists = function(splitId)
-    return vim.api.nvim_win_is_valid(splitId)
-  end,
-  -- getSplitBuffer: Returns the bufferId of the specified split
-  getSplitBuffer = function(splitId)
-    return vim.api.nvim_win_get_buf(splitId)
-  end,
-  -- closeSplit: Close a split
-  closeSplit = function(input)
-    -- If a callback is passed, it is called with each bufferId currently
-    -- displayed in a split. If the callback returns true, the split is
-    -- closed.
-    if F.isFunction(input) then
-      local callback = input
-      local allSplits = F.allSplits()
-      for _, splitId in ipairs(allSplits) do
-        -- Skip invalid splits
-        if not F.splitExists(splitId) then
-          goto continue
-        end
-
-        -- Close if callback returns true
-        local bufferId = F.getSplitBuffer(splitId)
-        if callback(bufferId) then
-          F.closeSplit(splitId)
-        end
-
-        ::continue::
+  -- closeSplitIf: Close splits where callback returns true (defaults to current tab)
+  closeSplitIf = function(callback, tabId)
+    F.forEachSplit(function(splitId)
+      if callback(splitId) then
+        F.closeSplit(splitId)
       end
-      return
-    end
-
-    -- If the splitId is passed, the specified split is closed
-    local splitId = input
-    local forceEvenIfUnsavedChanges = true
-    vim.api.nvim_win_close(splitId, forceEvenIfUnsavedChanges)
+    end, tabId)
+  end,
+  -- dimensions: Returns the split dimensions (defaults to current split)
+  dimensions = function(splitId)
+    return {
+      width = F.width(splitId),
+      height = F.height(splitId),
+    }
+  end,
+  -- width: Returns the width of a split (defaults to current split)
+  width = function(splitId)
+    splitId = splitId or F.splitId()
+    return vim.api.nvim_win_get_width(splitId)
+  end,
+  -- height: Returns the height of a split (defaults to current split)
+  height = function(splitId)
+    splitId = splitId or F.splitId()
+    return vim.api.nvim_win_get_height(splitId)
   end,
 }

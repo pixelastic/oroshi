@@ -44,7 +44,7 @@ local function saveAndQuit()
   local hasUsefulSplit = false
   F.each(splits, function(splitId)
     local bufferId = F.getSplitBuffer(splitId)
-    local bufferFiletype = F.bufferOption(bufferId, "filetype")
+    local bufferFiletype = F.bufferOption("filetype", bufferId)
     if not F.includes(uiFiletypes, bufferFiletype) then
       hasUsefulSplit = true
     end

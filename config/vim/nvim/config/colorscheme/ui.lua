@@ -176,6 +176,7 @@ hl("DiagnosticUnnecessary", "none", { undercurl = true, sp = "YELLOW_6" }) -- Pr
 hl("DiagnosticWarn", "YELLOW_5", { bg = "YELLOW_9" }) -- Floating text
 hl("DiagnosticVirtualTextWarn", "YELLOW_5", { bg = "YELLOW_9" }) -- Virtual text
 hl("DiagnosticDiagLineWarn", "YELLOW_5", { bg = "YELLOW_9" }) -- Diag line
+hl("DiagnosticDeprecated", "YELLOW_5", { bg = "DARK_YELLOW", undercurl = true }) -- Deprecated
 
 -- Info
 hl("DiagnosticLineNrInfo", "BLUE_5", { bg = "BLUE_9" }) -- Line number

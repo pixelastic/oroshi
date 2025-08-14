@@ -30,21 +30,26 @@ O = {
 F = vim.tbl_extend(
   "force",
   {},
+  -- LUA functions
+  O_require("oroshi/functions/lodash"),
+  O_require("oroshi/functions/collections"),
+  -- Tabs / Splits / Buffers / Lines / Options
   O_require("oroshi/functions/tabs"),
   O_require("oroshi/functions/splits"),
   O_require("oroshi/functions/buffers"),
   O_require("oroshi/functions/lines"),
-
+  O_require("oroshi/functions/options"),
+  -- Modes
+  O_require("oroshi/functions/modes"),
+  O_require("oroshi/functions/visual"),
+  -- Other aspects of vim
   O_require("oroshi/functions/autocmd"),
-  O_require("oroshi/functions/collections"),
+  O_require("oroshi/functions/map"),
+  O_require("oroshi/functions/highlight"),
+  -- Debug
   O_require("oroshi/functions/debug"),
   O_require("oroshi/functions/hacks"),
-  O_require("oroshi/functions/highlight"),
-  O_require("oroshi/functions/lodash"),
-  O_require("oroshi/functions/map"),
-  O_require("oroshi/functions/misc"),
-  O_require("oroshi/functions/modes"),
-  O_require("oroshi/functions/visual")
+  O_require("oroshi/functions/misc")
 )
 
 -- Colorscheme

@@ -1,7 +1,18 @@
 return {
-  -- bufferId: Returns current buffer id
-  bufferId = function()
+  -- bufferId: Returns current buffer id, or buffer of specified split
+  bufferId = function(splitId)
+    if splitId then
+      return vim.api.nvim_win_get_buf(splitId)
+    end
     return vim.api.nvim_get_current_buf()
+  end,
+  -- buffers: Returns all buffer IDs in a tab (defaults to current tab)
+  buffers = function(tabId)
+    local bufferIds = {}
+    F.each(F.splits(tabId), function(splitId)
+      F.append(bufferIds, F.bufferId(splitId))
+    end)
+    return bufferIds
   end,
   -- bufferExists: Check if a buffer exists
   bufferExists = function(bufferId)
@@ -17,27 +28,27 @@ return {
     bufferId = bufferId or F.bufferId()
     vim.api.nvim_buf_delete(bufferId, { force = true })
   end,
-  -- allBuffers: Returns all buffer IDs
-  allBuffers = function()
-    return vim.api.nvim_list_bufs()
+  -- bufferCount: Returns the number of opened buffers (defaults to current tab)
+  bufferCount = function(tabId)
+    return #F.buffers(tabId)
   end,
-  -- forEachBuffer: Apply a callback on each buffer
-  forEachBuffer = function(callback)
-    F.each(F.allBuffers(), function(bufferId)
+  -- forEachBuffer: Apply a callback on each buffer (defaults to current tab)
+  forEachBuffer = function(callback, tabId)
+    F.each(F.buffers(tabId), function(bufferId)
       callback(bufferId)
     end)
   end,
+
+  -- globalBuffers: Returns all buffer IDs from all tabs
+  globalBuffers = function()
+    return vim.api.nvim_list_bufs()
+  end,
+
   -- bufferName: Returns the name/path of a buffer (defaults to current buffer)
   bufferName = function(bufferId)
     bufferId = bufferId or F.bufferId()
     return vim.api.nvim_buf_get_name(bufferId)
   end,
-  -- bufferOption: Return the value of a specific buffer option (defaults to current buffer)
-  bufferOption = function(bufferId, optionName)
-    bufferId = bufferId or F.bufferId()
-    return vim.api.nvim_get_option_value(optionName, { buf = bufferId })
-  end,
-
   -- isNoName: Check if the buffer is a [No Name] buffer, when vim is opened
   -- without a filepath
   isNoName = function()

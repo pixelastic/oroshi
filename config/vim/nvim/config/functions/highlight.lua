@@ -183,7 +183,7 @@ return {
     local closeExistingSplit = function()
       F.closeSplit(function(bufferId)
         -- Skip all non-noice
-        if F.bufferOption(bufferId, "filetype") ~= "noice" then
+        if F.bufferOption("filetype", bufferId) ~= "noice" then
           return false
         end
 
