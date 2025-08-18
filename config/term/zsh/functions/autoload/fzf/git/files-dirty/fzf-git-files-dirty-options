@@ -1,0 +1,13 @@
+# Outputs specific options for searching dirty git files
+function fzf-git-files-dirty-options() {
+  # Prompt
+  local promptPrefix="$(colorize "  " $COLOR_BLACK $COLOR_ALIAS_GIT_MODIFIED)"
+  local promptSuffix="$(colorize "" $COLOR_ALIAS_GIT_MODIFIED)"
+  echo "--prompt=${promptPrefix}${promptSuffix} "
+
+  echo "--delimiter=▮"
+  echo "--with-nth=2"
+
+  # Preview
+  echo "--preview=fzf-git-files-dirty-preview {1}"
+}

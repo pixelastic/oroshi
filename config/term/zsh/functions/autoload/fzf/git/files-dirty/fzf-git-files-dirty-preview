@@ -1,0 +1,17 @@
+# Show the diff of a file between the previous revision and the current state
+function fzf-git-files-dirty-preview() {
+  local filepath="${PWD}/$1"
+
+  local diff="$(git diff HEAD --color=always -- $filepath)"
+
+  # No diff, it's a new file
+  if [[ "$diff" == "" ]]; then
+    fzf-fs-shared-preview $filepath
+    return
+  fi
+
+  # Display the diff
+  img-display --clear
+  fzf-fs-shared-preview-header "$filepath"
+  echo $diff
+}

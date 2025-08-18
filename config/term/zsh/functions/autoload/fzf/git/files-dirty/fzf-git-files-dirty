@@ -1,0 +1,7 @@
+# Search for dirty git files that can be added to staging area
+function fzf-git-files-dirty() {
+  fzf-search \
+    --source "fzf-git-files-dirty-source" \
+    --options "fzf-git-files-dirty-options" \
+    --postprocess "fzf-git-files-dirty-postprocess"
+}

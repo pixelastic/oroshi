@@ -1,27 +1,35 @@
-# Ctrl-P: Search for a specific file, in the whole project
+# Ctrl-P: Search for a specific file, in the whole project or context-aware completion
 oroshi-fzf-files-project-widget() {
-	# Stop if not available
-	if ! command -v fzf >/dev/null; then
-		echo "fzf is not installed"
-		zle reset-prompt
-		return
-	fi
+  # Stop if not available
+  if ! command -v fzf >/dev/null; then
+    echo "fzf is not installed"
+    zle reset-prompt
+    return
+  fi
 
-	fzf-var-write ZSH_LBUFFER "${LBUFFER}"
+  # Common setup
+  fzf-var-write ZSH_LBUFFER "${LBUFFER}"
+  export PROMPT_PREVENT_REFRESH="1"
 
-	export PROMPT_PREVENT_REFRESH="1"
-	local selection="$(fzf-fs-files-project)"
-	export PROMPT_PREVENT_REFRESH="0"
+  # Context-aware selection
+  local selection=""
+  if [[ "${LBUFFER}" =~ "vfa( )?$" ]]; then
+    selection="$(fzf-git-files-dirty)"
+  else
+    selection="$(fzf-fs-files-project)"
+  fi
 
-	fzf-var-write ZSH_LBUFFER ""
+  # Common cleanup
+  export PROMPT_PREVENT_REFRESH="0"
+  fzf-var-write ZSH_LBUFFER ""
 
-	# Stop if no selection is made
-	if [[ "$selection" == "" ]]; then
-		return 1
-	fi
+  # Stop if no selection is made
+  if [[ "$selection" == "" ]]; then
+    return 1
+  fi
 
-	LBUFFER="${LBUFFER}${selection} "
-	return 0
+  LBUFFER="${LBUFFER}${selection} "
+  return 0
 }
 zle -N oroshi-fzf-files-project-widget
 bindkey '^P' oroshi-fzf-files-project-widget

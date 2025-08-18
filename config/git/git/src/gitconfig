@@ -116,13 +116,13 @@
   success = $COLOR_ALIAS_UNKNOWN
   warning = $COLOR_ALIAS_UNKNOWN
 [color "status"]
-  header = $COLOR_ALIAS_COMMENT         # Default text
-  branch = $COLOR_ALIAS_GIT_BRANCH      # Current branch
-  added = $COLOR_ALIAS_GIT_ADDED        # File added to staging area
-  changed = $COLOR_ALIAS_ERROR          # Changed, but not staged
-  untracked = $COLOR_ALIAS_GIT_MODIFIED # New file
-  unmerged = $COLOR_ALIAS_GIT_MODIFIED  # Both added and modified at the same time
-  noBranch = $COLOR_ALIAS_ERROR         # Rebase in progress
+  header = $COLOR_ALIAS_COMMENT                # Default text
+  branch = $COLOR_ALIAS_GIT_BRANCH             # Current branch
+  added = $COLOR_ALIAS_GIT_ADDED               # File added to staging area
+  changed = $COLOR_ALIAS_GIT_MODIFIED          # Changed, but not staged
+  untracked = $COLOR_ALIAS_GIT_ADDED           # New file
+  unmerged = $COLOR_ALIAS_GIT_MODIFIED         # Both added and modified at the same time
+  noBranch = $COLOR_ALIAS_ERROR                # Rebase in progress
 
   ; updated = $COLOR_ALIAS_UNKNOWN      # Should stay commented
   ; localBranch = $COLOR_ALIAS_UNKNOWN
