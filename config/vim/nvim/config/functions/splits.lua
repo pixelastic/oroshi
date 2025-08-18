@@ -21,15 +21,18 @@ return {
   closeSplit = function(splitId)
     splitId = splitId or F.splitId()
 
-    -- If last split of last tab, close tab instead
-    if F.tabCount() == 1 and F.splitCount() == 1 then
-      F.closeTab()
-      return
-    end
+    -- Try to close the window
+    local isClosed, errorMessage = pcall(function()
+      local forceEvenIfUnsavedChanges = true
+      vim.api.nvim_win_close(splitId, forceEvenIfUnsavedChanges)
+    end)
 
-    -- Normal behavior: close the split
-    local forceEvenIfUnsavedChanges = true
-    vim.api.nvim_win_close(splitId, forceEvenIfUnsavedChanges)
+    -- If this is the last window opened in vim, the above nvim_win_close will fail with
+    -- "Vim:E444: Cannot close last window". In that case, we close the whole
+    -- tab
+    if not isClosed and F.includes(errorMessage, "Vim:E444") then
+      F.closeTab()
+    end
   end,
   -- splitCount: Returns the number of opened splits (defaults to current tab)
   splitCount = function(tabId)

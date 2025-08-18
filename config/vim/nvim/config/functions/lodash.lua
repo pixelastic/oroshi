@@ -58,9 +58,14 @@ return {
     return current
   end,
 
-  -- includes: Check if a given value exists in a table
-  includes = function(collection, value)
-    return vim.tbl_contains(collection, value)
+  -- includes: Check if a given value exists in a table or string
+  includes = function(input, value)
+    -- String
+    if F.isString(input) then
+      return string.find(input, value, 1, true) ~= nil
+    end
+    -- Collection
+    return vim.tbl_contains(input, value)
   end,
 
   -- empty: Check if the collection is empty
