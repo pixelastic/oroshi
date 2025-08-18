@@ -47,7 +47,6 @@ hl("lCursor", "XXX") --		Character under the cursor when |language-mapping|
 hl("Character", "XXX") --	a character constant: 'c', '\n'
 hl("Debug", "XXX") --		debugging statements
 hl("Define", "XXX") --		preprocessor #define
-hl("Exception", "XXX") --	try, catch, throw
 hl("Float", "XXX") --		a floating point constant: 2.3e10
 hl("Ignore", "XXX") --		left blank, hidden  |hl-Ignore|
 hl("Macro", "XXX") --		same as Define
@@ -95,9 +94,6 @@ hl("RenderMarkdownWikiLink", "XXX") -- 	WikiLink icon & text
 hl("RenderMarkdownUnchecked", "XXX") -- 	Unchecked checkbox
 hl("RenderMarkdownChecked", "XXX") -- 	Checked checkbox
 hl("RenderMarkdownTodo", "XXX") -- 	Todo custom checkbox
-hl("RenderMarkdownTableHead", "XXX") -- 	Pipe table heading rows
-hl("RenderMarkdownTableRow", "XXX") -- 	Pipe table body rows
-hl("RenderMarkdownTableFill", "XXX") -- 	Pipe table inline padding
 hl("RenderMarkdownSuccess", "XXX") -- 	Success related callouts
 hl("RenderMarkdownInfo", "XXX") -- 	Info related callouts
 hl("RenderMarkdownHint", "XXX") -- 	Hint related callouts

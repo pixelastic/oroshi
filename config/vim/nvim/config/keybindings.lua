@@ -183,14 +183,14 @@ nmap("<C-K>", "<C-A>", "Decrement number under cursor")
 
 -- Add semicolon
 local function addSemicolonAtEndOfLine()
-  local currentLine = F.currentLine()
+  local currentLine = F.line()
   local lastChar = currentLine:sub(-1)
 
   if lastChar == ";" then
     return
   end
 
-  F.setCurrentLine(currentLine .. ";")
+  F.updateLine(currentLine .. ";")
 end
 nmap(";", addSemicolonAtEndOfLine, "Add a semicolon at end of line")
 

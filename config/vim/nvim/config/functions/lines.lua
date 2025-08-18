@@ -11,7 +11,7 @@ return {
     return vim.api.nvim_buf_get_lines(bufferId, 0, -1, false)
   end,
   -- updateLine: Update the content of a line (defaults to current line, current buffer)
-  updateLine = function(lineNumber, newContent, bufferId)
+  updateLine = function(newContent, lineNumber, bufferId)
     lineNumber = lineNumber or F.lineNumber()
     bufferId = bufferId or F.bufferId()
     vim.api.nvim_buf_set_lines(bufferId, lineNumber - 1, lineNumber, false, { newContent })

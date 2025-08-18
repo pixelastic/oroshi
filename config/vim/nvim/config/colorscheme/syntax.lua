@@ -7,6 +7,7 @@ hl("Conditional", "STATEMENT") --	if, then, else, endif, switch, etc.
 hl("Constant", "CONSTANT", { bold = true })
 hl("Delimiter", "PUNCTUATION")
 hl("Error", "ERROR", { bold = true })
+hl("Exception", "YELLOW", { bold = true }) --	try, catch, throw
 hl("Function", "FUNCTION")
 hl("Identifier", "VARIABLE")
 hl("Include", "IMPORT")
@@ -95,6 +96,10 @@ hl("@tag.delimiter.html", "PUNCTUATION")
 hl("@tag.html", "KEYWORD")
 hl("@tag.attribute.html", "VARIABLE_TYPE")
 -- }}}
+-- JavaScript {{{
+hl("@keyword.exception.javascript", "YELLOW", { bold = true })
+
+-- }}}
 -- json {{{
 hl("jsonQuote", "STRING")
 -- }}}
@@ -144,6 +149,10 @@ hl("RenderMarkdownBullet", "PUNCTUATION") -- 	List item bullet points
 -- <hr> separator
 hl("@punctuation.special.markdown", "PUNCTUATION")
 hl("RenderMarkdownDash", "PUNCTUATION") -- 	Thematic break line
+-- tables
+hl("RenderMarkdownTableHead", "NEUTRAL") -- 	Pipe table heading rows
+hl("RenderMarkdownTableRow", "NEUTRAL") -- 	Pipe table body rows
+hl("RenderMarkdownTableFill", "TERMINAL") -- 	Pipe table inline padding
 -- Header gutter sign
 hl("RenderMarkdownSign", "none") -- 	Sign column background
 -- header 1
