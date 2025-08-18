@@ -26,3 +26,6 @@ yarn-error.log
 
 # Netlify
 .netlify
+
+# Claude
+.claude/settings.local.json
