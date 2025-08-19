@@ -146,7 +146,7 @@ return {
     -- _.map(collection, function() end) -- apply function to all items
 
     -- If a string, return the key by that name
-    if type(callback) == "string" then
+    if F.isString(callback) then
       local key = callback
       callback = function(item)
         return item[key]
@@ -154,11 +154,9 @@ return {
     end
 
     local ret = {}
-    -- TODO: ipairs will iterate only on numeric keys and stop on any gap. pairs
-    -- will iterate on everything, but do not guarantee order.
-    for _, value in ipairs(collection) do
-      F.append(ret, callback(value))
-    end
+    F.each(collection, function(value, key)
+      F.append(ret, callback(value, key))
+    end)
     return ret
   end,
 

@@ -21,5 +21,7 @@ I want to use Task Master to organize my big projects into a list of small tasks
 
 Keep a consistent coding style matching my preferences across my projects
 
-- Prefer camelCase for variables, functions, directories, files, etc (unless that specific language/project has a strong opinion against it)
 - Don't suggest scripts in python. Prefer scripts in zsh or in JavaScript
+- Prefer camelCase for variables, functions, directories, files, etc (unless that specific language/project has a strong opinion against it)
+- Prefer to "return early" in functions if conditions are not met, rather than putting most of the code in a condition
+- Prefer a DX that makes simple things easy and complex things possible

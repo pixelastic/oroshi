@@ -1,61 +1,116 @@
-O.dependencies = {
-  -- Treesitter:
-  -- https://github.com/nvim-treesitter/nvim-treesitter?tab=readme-ov-file#supported-languages
-  treesitters = {
-    "bash",
-    "comment",
-    "css",
-    "csv",
-    "diff",
-    "editorconfig",
-    "gitignore",
-    "git_config",
-    "html",
-    "ini",
-    "javascript",
-    "jsdoc",
-    "json",
-    "markdown",
-    "markdown_inline",
-    "nginx",
-    "pug",
-    "python",
-    "regex",
-    "robots",
-    "ruby",
-    "ssh_config",
-    -- "toml",
-    "xml",
-    "yaml",
-  },
-  -- LSP servers:
-  -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
-  lspServers = {
-    "lua_ls",
-    -- "taplo", -- .toml
-  },
-  linters = {},
-  -- Formatters
-  formatters = {
-    "prettier", -- .js, .json
-    "shfmt", -- .sh, .bash (.zsh with custom zshlint)
-    "stylua", -- .lua
-    "taplo", -- .toml
-  },
-}
-
--- TODO: I have several issues with the way the various Treesitter / LSP /
--- Linters / Formatters are handled.
--- I'd like to have one config array (above) defining what is enabled but, I'm
--- having several issues like:
--- TODO: I installed taplo as a formatter, but is automatically added as an LSP
--- server as well without me doing anything.
--- TODO: I installed taplo as a formatter, but I still need to also configure
--- conform to tell it to use it.
-
 local helperDiagline = O_require("oroshi/plugins/helpers/diagline")
 local helperStatusline = O_require("oroshi/plugins/helpers/statusline")
 local helper = O_require("oroshi/plugins/helpers/code-quality")
+
+local config = {
+  -- Dependencies to install globally
+  dependencies = {
+    -- Mason packages (LSP servers, formatters, linters)
+    mason = {
+      "lua-language-server",
+      "prettier",
+      "shfmt",
+      "stylua",
+      "taplo",
+    },
+    -- Treesitter parsers
+    -- https://github.com/nvim-treesitter/nvim-treesitter?tab=readme-ov-file#supported-languages
+    treesitter = {
+      "bash",
+      "comment",
+      "css",
+      "csv",
+      "diff",
+      "editorconfig",
+      "gitignore",
+      "git_config",
+      "html",
+      "ini",
+      "javascript",
+      "jsdoc",
+      "json",
+      "markdown",
+      "markdown_inline",
+      "nginx",
+      "pug",
+      "python",
+      "regex",
+      "robots",
+      "ruby",
+      "ssh_config",
+      -- "toml",
+      "xml",
+      "yaml",
+    },
+  },
+
+  -- Per-filetype configuration
+  filetypes = {
+    bash = {
+      formatters = { "shfmt" },
+    },
+    javascript = {
+      formatters = { "prettier" },
+    },
+    json = {
+      formatters = { "prettier" },
+    },
+    lua = {
+      lsp = { "lua_ls" },
+      configureLsp = function()
+        helper.configureLspServer("lua_ls", {
+          on_init = function(client)
+            local config = {
+              runtime = { version = "LuaJIT" },
+              workspace = { checkThirdParty = false, library = { vim.env.VIMRUNTIME } },
+            }
+            client.config.settings.Lua = F.merge(client.config.settings.Lua or {}, config)
+          end,
+        })
+      end,
+      formatters = { "stylua" },
+      configureFormatter = function()
+        local conform = require("conform")
+        conform.formatters.stylua = {
+          prepend_args = {
+            "--indent-type",
+            "Spaces",
+            "--indent-width",
+            vim.o.shiftwidth,
+          },
+        }
+      end,
+    },
+    sh = {
+      formatters = { "shfmt" },
+    },
+    toml = {
+      formatters = { "taplo" },
+    },
+    zsh = {
+      formatters = { "shfmt_zsh" },
+      linters = { "zshlint" },
+      configureFormatter = function()
+        local conform = require("conform")
+        conform.formatters.shfmt_zsh = {
+          command = "shfmt",
+          args = { "-i", vim.o.shiftwidth },
+          exit_codes = { 0, 1 }, -- Fail silently on zsh-specific syntax
+        }
+      end,
+      configureLinter = function()
+        local lint = require("lint")
+        local zshHelper = O_require("oroshi/plugins/helpers/filetypes/zsh")
+        lint.linters.zshlint = {
+          cmd = "zshlint",
+          stdin = false,
+          ignore_exitcode = true,
+          parser = zshHelper.lintParser,
+        }
+      end,
+    },
+  },
+}
 
 return {
   -- Dependencies: Mason
@@ -65,24 +120,8 @@ return {
     "mason-org/mason.nvim",
     config = function()
       require("mason").setup()
-      local masonRegistry = require("mason-registry")
 
-      local expectedDependencies = F.concat(O.dependencies.formatters, O.dependencies.linters)
-      local installedDependencies = F.map(helper.installedFormatters(), "name")
-      local dependenciesToUninstall = F.difference(installedDependencies, expectedDependencies)
-
-      -- Install missing dependencies
-      F.each(expectedDependencies, function(dependency)
-        if not masonRegistry.is_installed(dependency) then
-          vim.cmd("MasonInstall " .. dependency)
-        end
-      end)
-
-      -- Uninstall old dependencies
-      F.each(dependenciesToUninstall, function(dependency)
-        F.info("uninstalling " .. dependency)
-        vim.cmd("MasonUninstall " .. dependency)
-      end)
+      helper.synchronizeDependencies(config.dependencies.mason)
 
       -- Configure various parts of the UI that depends on those dependencies
       helperDiagline.init()
@@ -101,25 +140,20 @@ return {
     build = ":TSUpdate",
     config = function()
       local treesitterConfig = require("nvim-treesitter.configs")
-      local treesitterInstall = require("nvim-treesitter.install")
 
-      -- Uninstall all parsers actually installed that are no longer in my list
-      local installedParsers = helper.installedTreesitter()
-      local expectedParsers = O.dependencies.treesitters
-      local parsersToUninstall = F.difference(installedParsers, expectedParsers)
-      F.each(parsersToUninstall, function(parserName)
-        treesitterInstall.uninstall(parserName)
-      end)
+      -- Synchronize parsers: uninstall unused ones, install via ensure_installed
+      helper.synchronizeTreesitterParsers(config.dependencies.treesitter)
 
       treesitterConfig.setup({
-        ensure_installed = O.dependencies.treesitters,
+        ensure_installed = config.dependencies.treesitter,
 
         highlight = {
-          -- Advanced syntax highlight
           enable = true,
           additional_vim_regex_highlighting = true,
         },
-
+        indent = {
+          enable = true,
+        },
         -- Select node with vv (then expand with CTRL-J / CTRL-K)
         incremental_selection = {
           enable = true,
@@ -129,11 +163,6 @@ return {
             node_decremental = "<C-J>", -- Deselect parent node
             scope_incremental = false,
           },
-        },
-
-        -- Indent selection with =
-        indent = {
-          enable = true,
         },
       })
     end,
@@ -154,12 +183,34 @@ return {
       "neovim/nvim-lspconfig",
     },
     config = function()
-      -- Run additional LSP configuration for specific filetypes
-      helper.runForAllFiletypes("configureLsp")
+      local lspconfig = require("lspconfig")
+      local mason_lspconfig = require("mason-lspconfig")
 
-      -- require("mason-lspconfig").setup({
-      --   ensure_installed = O.dependencies.lspServers,
-      -- })
+      -- Run all configureLsp functions
+      local configureLspFunctions = F.compact(F.map(config.filetypes, "configureLsp"))
+      F.each(configureLspFunctions, function(configureLsp)
+        configureLsp()
+      end)
+
+      -- Setup remaining LSP servers with default config
+      local allLspServers = F.uniq(F.flatten(F.compact(F.map(config.filetypes, "lsp"))))
+      local lspServersToSetup = F.difference(allLspServers, helper.manuallyConfiguredLspServers)
+      F.each(lspServersToSetup, function(lspServer)
+        lspconfig[lspServer].setup({})
+      end)
+
+      -- Setup mason-lspconfig with automatic server setup DISABLED
+      -- We'll manually setup only the servers we want
+      mason_lspconfig.setup({
+        automatic_installation = false,
+        handlers = {
+          -- Default handler that does NOTHING
+          -- This prevents automatic setup of all installed LSP servers
+          function(server_name)
+            -- Intentionally empty - we don't want automatic setup
+          end,
+        },
+      })
     end,
   },
 
@@ -175,8 +226,19 @@ return {
       lint.linters = {}
       lint.linters_by_ft = {}
 
-      -- Run additional Linting configuration for specific filetypes
-      helper.runForAllFiletypes("configureLinter")
+      -- Configure linters based on filetypeConfig
+      F.each(config.filetypes, function(config, filetype)
+        if not config.linters or F.isEmpty(config.linters) then
+          return
+        end
+        lint.linters_by_ft[filetype] = config.linters
+      end)
+
+      -- Run all configureLinter functions
+      local configureLinterFunctions = F.compact(F.map(config.filetypes, "configureLinter"))
+      F.each(configureLinterFunctions, function(configureLinter)
+        configureLinter()
+      end)
 
       F.autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, function()
         lint.try_lint()
@@ -193,14 +255,29 @@ return {
       "mason-org/mason.nvim",
     },
     config = function()
-      require("conform").setup({
+      local conform = require("conform")
+
+      -- Build formatters_by_ft from filetypeConfig
+      local formatters_by_ft = {}
+      F.each(config.filetypes, function(config, filetype)
+        if not config.formatters or F.isEmpty(config.formatters) then
+          return
+        end
+        formatters_by_ft[filetype] = config.formatters
+      end)
+
+      conform.setup({
+        formatters_by_ft = formatters_by_ft,
         format_on_save = {
           timeout_ms = 500,
         },
       })
 
-      -- Run additional Formatter configuration for specific filetypes
-      helper.runForAllFiletypes("configureFormatter")
+      -- Run all configureFormatter functions
+      local configureFormatterFunctions = F.compact(F.map(config.filetypes, "configureFormatter"))
+      F.each(configureFormatterFunctions, function(configureFormatter)
+        configureFormatter(conform)
+      end)
     end,
   },
 
