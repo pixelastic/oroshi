@@ -15,6 +15,24 @@ return {
     return vim.deepcopy(collection)
   end,
 
+  -- difference: Returns elements of reference that are not in comparison
+  difference = function(reference, comparison)
+    -- Build a lookup table for faster checks
+    local lookup = {}
+    F.each(comparison, function(value)
+      lookup[value] = true
+    end)
+
+    local result = {}
+    F.each(reference, function(value)
+      if not lookup[value] then
+        F.append(result, value)
+      end
+    end)
+
+    return result
+  end,
+
   -- each: Run callback on each element of the collection
   each = function(collection, callback)
     for key, value in pairs(collection) do
@@ -124,6 +142,17 @@ return {
     return vim.tbl_deep_extend("force", {}, one or {}, two or {})
   end,
 
+  -- pick: Return a collection with only the specified keys
+  pick = function(collection, keys)
+    local result = {}
+    F.each(keys, function(key)
+      if collection[key] ~= nil then
+        result[key] = collection[key]
+      end
+    end)
+    return result
+  end,
+
   -- replace: Replace all occurrences of a string with another
   replace = function(input, from, to)
     return string.gsub(input, from, to)
@@ -144,6 +173,30 @@ return {
     end
 
     current[F.last(keys)] = value
+  end,
+
+  -- sort: Return a sorted version of a collection
+  sort = function(collection)
+    local result = F.clone(collection)
+    table.sort(result)
+    return result
+  end,
+
+  -- sortBy: Sort a collection by a specific key or callback
+  sortBy = function(collection, callback)
+    -- If a string, return the key by that name
+    if F.isString(callback) then
+      local key = callback
+      callback = function(item)
+        return item[key]
+      end
+    end
+
+    local result = F.clone(collection)
+    table.sort(result, function(a, b)
+      return callback(a) < callback(b)
+    end)
+    return result
   end,
 
   -- split: Split a string on a delimiter

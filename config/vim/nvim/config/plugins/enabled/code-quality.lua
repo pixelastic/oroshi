@@ -2,7 +2,7 @@ O.dependencies = {
   -- Treesitter:
   -- https://github.com/nvim-treesitter/nvim-treesitter?tab=readme-ov-file#supported-languages
   treesitters = {
-    -- "bash",
+    "bash",
     "comment",
     "css",
     "csv",
@@ -15,7 +15,6 @@ O.dependencies = {
     "javascript",
     "jsdoc",
     "json",
-    "lua",
     "markdown",
     "markdown_inline",
     "nginx",
@@ -41,9 +40,18 @@ O.dependencies = {
     "prettier", -- .js, .json
     "shfmt", -- .sh, .bash (.zsh with custom zshlint)
     "stylua", -- .lua
-    -- "taplo", -- .toml
+    "taplo", -- .toml
   },
 }
+
+-- TODO: I have several issues with the way the various Treesitter / LSP /
+-- Linters / Formatters are handled.
+-- I'd like to have one config array (above) defining what is enabled but, I'm
+-- having several issues like:
+-- TODO: I installed taplo as a formatter, but is automatically added as an LSP
+-- server as well without me doing anything.
+-- TODO: I installed taplo as a formatter, but I still need to also configure
+-- conform to tell it to use it.
 
 local helperDiagline = O_require("oroshi/plugins/helpers/diagline")
 local helperStatusline = O_require("oroshi/plugins/helpers/statusline")
@@ -57,14 +65,23 @@ return {
     "mason-org/mason.nvim",
     config = function()
       require("mason").setup()
-
-      -- Install all missing dependencies
       local masonRegistry = require("mason-registry")
-      local masonDependencies = F.concat(O.dependencies.formatters, O.dependencies.linters)
-      F.each(masonDependencies, function(dependency)
+
+      local expectedDependencies = F.concat(O.dependencies.formatters, O.dependencies.linters)
+      local installedDependencies = F.map(helper.installedFormatters(), "name")
+      local dependenciesToUninstall = F.difference(installedDependencies, expectedDependencies)
+
+      -- Install missing dependencies
+      F.each(expectedDependencies, function(dependency)
         if not masonRegistry.is_installed(dependency) then
           vim.cmd("MasonInstall " .. dependency)
         end
+      end)
+
+      -- Uninstall old dependencies
+      F.each(dependenciesToUninstall, function(dependency)
+        F.info("uninstalling " .. dependency)
+        vim.cmd("MasonUninstall " .. dependency)
       end)
 
       -- Configure various parts of the UI that depends on those dependencies
@@ -83,9 +100,18 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     build = ":TSUpdate",
     config = function()
-      local treesitter = require("nvim-treesitter.configs")
+      local treesitterConfig = require("nvim-treesitter.configs")
+      local treesitterInstall = require("nvim-treesitter.install")
 
-      treesitter.setup({
+      -- Uninstall all parsers actually installed that are no longer in my list
+      local installedParsers = helper.installedTreesitter()
+      local expectedParsers = O.dependencies.treesitters
+      local parsersToUninstall = F.difference(installedParsers, expectedParsers)
+      F.each(parsersToUninstall, function(parserName)
+        treesitterInstall.uninstall(parserName)
+      end)
+
+      treesitterConfig.setup({
         ensure_installed = O.dependencies.treesitters,
 
         highlight = {

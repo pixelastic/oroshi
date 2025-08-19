@@ -18,20 +18,64 @@ function M.runForAllFiletypes(methodName)
   end)
 end
 
+-- Returns the list of all packages installed through Mason
+function M.installedMason()
+  local installedPackages = require("mason-registry").get_installed_packages()
+  local result = {}
+  F.each(installedPackages, function(package)
+    local interestingKeys = { "name", "description", "categories", "languages" }
+    F.append(result, F.pick(package.spec, interestingKeys))
+  end)
+  return F.sortBy(result, "name")
+end
+
+-- Returns the list of all currently installed Treesitter parsers
 function M.installedTreesitter()
-  local parsers = require("nvim-treesitter.info").installed_parsers()
-  table.sort(parsers)
-  return parsers
+  -- Some parsers are native to Neovim and are not really installed by
+  -- Treesitter
+  local installedParsers = require("nvim-treesitter.info").installed_parsers()
+  local coreParsers = { "c", "lua", "vim", "vimdoc", "query" }
+  return F.sort(F.difference(installedParsers, coreParsers))
+end
+
+-- Returns the list of all currently installed LSP Servers
+function M.installedLspServers()
+  local lspServers = vim.lsp.get_clients()
+  local results = F.map(lspServers, function(lspServer)
+    F.debug(lspServer)
+    return lspServer.config.name
+  end)
+  return results
+end
+
+-- Returns the list of all currently installed formatters
+function M.installedFormatters()
+  local masonPackages = M.installedMason()
+  local results = F.filter(masonPackages, function(package)
+    return F.includes(package.categories, "Formatter")
+  end)
+  return results
 end
 
 function M.debug()
   local output = {}
-  -- TreeSitter
-  F.append(output, "# TreeSitter")
-  F.append(output, "")
-  F.each(M.installedTreesitter(), function(parser)
-    F.append(output, "  - " .. parser)
+  -- -- TreeSitter
+  -- F.append(output, "# TreeSitter\n")
+  -- F.each(M.installedTreesitter(), function(parser)
+  --   F.append(output, "  - " .. parser)
+  -- end)
+
+  -- LSP Servers
+  F.append(output, "\n# LSP Servers\n")
+  F.each(M.installedLspServers(), function(lspServer)
+    F.append(output, "  - " .. lspServer)
   end)
+
+  -- -- Formatters
+  -- F.append(output, "\n# Formatters\n")
+  -- F.each(M.installedFormatters(), function(formatter)
+  --   F.append(output, "  - " .. formatter.name)
+  -- end)
 
   local bufferOptions = {
     ft = "markdown",
