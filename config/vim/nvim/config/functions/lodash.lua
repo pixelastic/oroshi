@@ -15,6 +15,17 @@ return {
     return vim.deepcopy(collection)
   end,
 
+  -- compact: Remove falsy values (nil, false) from array
+  compact = function(collection)
+    local result = {}
+    F.each(collection, function(value)
+      if value then
+        F.append(result, value)
+      end
+    end)
+    return result
+  end,
+
   -- difference: Returns elements of reference that are not in comparison
   difference = function(reference, comparison)
     -- Build a lookup table for faster checks
@@ -59,6 +70,20 @@ return {
       end
     end)
     return filteredList
+  end,
+
+  -- flatten: Flatten one level deep (like lodash flatten)
+  flatten = function(collection)
+    local result = {}
+    F.each(collection, function(value)
+      if not F.isCollection(value) then
+        F.append(result, value)
+        return
+      end
+
+      result = F.concat(result, value)
+    end)
+    return result
   end,
 
   -- get: Return the value at the given path in the collection
@@ -179,6 +204,20 @@ return {
   sort = function(collection)
     local result = F.clone(collection)
     table.sort(result)
+    return result
+  end,
+
+  -- uniq: Return unique values from array (removes duplicates)
+  uniq = function(collection)
+    local seen = {}
+    local result = {}
+    F.each(collection, function(value)
+      if seen[value] then
+        return
+      end
+      seen[value] = true
+      F.append(result, value)
+    end)
     return result
   end,
 
