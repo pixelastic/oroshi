@@ -15,7 +15,7 @@ function M.configureLspServer(serverName, options)
 end
 
 -- Synchronize Mason dependencies: install missing ones, uninstall unused ones
-function M.synchronizeDependencies(expectedDependencies)
+function M.synchronizeMasonDependencies(expectedDependencies)
   local masonRegistry = require("mason-registry")
   
   local installedPackages = F.map(masonRegistry.get_installed_packages(), "name")
@@ -54,5 +54,77 @@ function M.synchronizeTreesitterParsers(expectedParsers)
   -- This approach is more reliable than manual installation
 end
 
+-- Configure all LSP servers based on the filetypes config
+function M.configureLspServers(filetypesConfig)
+  local lspconfig = require("lspconfig")
+  local mason_lspconfig = require("mason-lspconfig")
+
+  -- Setup mason-lspconfig, but disable automatic installation
+  mason_lspconfig.setup({
+    ensure_installed = {},
+    automatic_enable = false,
+  })
+
+  -- Run custom configureLsp functions
+  local configureLspFunctions = F.compact(F.map(filetypesConfig, "configureLsp"))
+  F.each(configureLspFunctions, function(configureLsp)
+    configureLsp()
+  end)
+
+  -- Setup remaining LSP servers with default config
+  local allLspServers = F.uniq(F.flatten(F.compact(F.map(filetypesConfig, "lsp"))))
+  local lspServersToSetup = F.difference(allLspServers, M.manuallyConfiguredLspServers)
+  F.each(lspServersToSetup, function(lspServer)
+    lspconfig[lspServer].setup({})
+  end)
+end
+
+-- Configure all linters based on the filetypes config
+function M.configureLinters(filetypesConfig)
+  local lint = require("lint")
+  lint.linters = {}
+  lint.linters_by_ft = {}
+
+  -- Configure linters based on filetypeConfig
+  F.each(filetypesConfig, function(config, filetype)
+    if not config.linters or F.isEmpty(config.linters) then
+      return
+    end
+    lint.linters_by_ft[filetype] = config.linters
+  end)
+
+  -- Run all configureLinter functions
+  local configureLinterFunctions = F.compact(F.map(filetypesConfig, "configureLinter"))
+  F.each(configureLinterFunctions, function(configureLinter)
+    configureLinter()
+  end)
+end
+
+-- Configure all formatters based on the filetypes config
+function M.configureFormatters(filetypesConfig)
+  local conform = require("conform")
+
+  -- Build formatters_by_ft from filetypeConfig
+  local formatters_by_ft = {}
+  F.each(filetypesConfig, function(config, filetype)
+    if not config.formatters or F.isEmpty(config.formatters) then
+      return
+    end
+    formatters_by_ft[filetype] = config.formatters
+  end)
+
+  conform.setup({
+    formatters_by_ft = formatters_by_ft,
+    format_on_save = {
+      timeout_ms = 500,
+    },
+  })
+
+  -- Run all configureFormatter functions
+  local configureFormatterFunctions = F.compact(F.map(filetypesConfig, "configureFormatter"))
+  F.each(configureFormatterFunctions, function(configureFormatter)
+    configureFormatter(conform)
+  end)
+end
 
 return M

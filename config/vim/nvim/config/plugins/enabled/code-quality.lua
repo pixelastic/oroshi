@@ -85,6 +85,7 @@ local config = {
       formatters = { "shfmt" },
     },
     toml = {
+      lsp = { "taplo" },
       formatters = { "taplo" },
     },
     zsh = {
@@ -121,7 +122,7 @@ return {
     config = function()
       require("mason").setup()
 
-      helper.synchronizeDependencies(config.dependencies.mason)
+      helper.synchronizeMasonDependencies(config.dependencies.mason)
 
       -- Configure various parts of the UI that depends on those dependencies
       helperDiagline.init()
@@ -183,34 +184,7 @@ return {
       "neovim/nvim-lspconfig",
     },
     config = function()
-      local lspconfig = require("lspconfig")
-      local mason_lspconfig = require("mason-lspconfig")
-
-      -- Run all configureLsp functions
-      local configureLspFunctions = F.compact(F.map(config.filetypes, "configureLsp"))
-      F.each(configureLspFunctions, function(configureLsp)
-        configureLsp()
-      end)
-
-      -- Setup remaining LSP servers with default config
-      local allLspServers = F.uniq(F.flatten(F.compact(F.map(config.filetypes, "lsp"))))
-      local lspServersToSetup = F.difference(allLspServers, helper.manuallyConfiguredLspServers)
-      F.each(lspServersToSetup, function(lspServer)
-        lspconfig[lspServer].setup({})
-      end)
-
-      -- Setup mason-lspconfig with automatic server setup DISABLED
-      -- We'll manually setup only the servers we want
-      mason_lspconfig.setup({
-        automatic_installation = false,
-        handlers = {
-          -- Default handler that does NOTHING
-          -- This prevents automatic setup of all installed LSP servers
-          function(server_name)
-            -- Intentionally empty - we don't want automatic setup
-          end,
-        },
-      })
+      helper.configureLspServers(config.filetypes)
     end,
   },
 
@@ -222,24 +196,9 @@ return {
     "mfussenegger/nvim-lint",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
+      helper.configureLinters(config.filetypes)
+
       local lint = require("lint")
-      lint.linters = {}
-      lint.linters_by_ft = {}
-
-      -- Configure linters based on filetypeConfig
-      F.each(config.filetypes, function(config, filetype)
-        if not config.linters or F.isEmpty(config.linters) then
-          return
-        end
-        lint.linters_by_ft[filetype] = config.linters
-      end)
-
-      -- Run all configureLinter functions
-      local configureLinterFunctions = F.compact(F.map(config.filetypes, "configureLinter"))
-      F.each(configureLinterFunctions, function(configureLinter)
-        configureLinter()
-      end)
-
       F.autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, function()
         lint.try_lint()
       end)
@@ -255,29 +214,7 @@ return {
       "mason-org/mason.nvim",
     },
     config = function()
-      local conform = require("conform")
-
-      -- Build formatters_by_ft from filetypeConfig
-      local formatters_by_ft = {}
-      F.each(config.filetypes, function(config, filetype)
-        if not config.formatters or F.isEmpty(config.formatters) then
-          return
-        end
-        formatters_by_ft[filetype] = config.formatters
-      end)
-
-      conform.setup({
-        formatters_by_ft = formatters_by_ft,
-        format_on_save = {
-          timeout_ms = 500,
-        },
-      })
-
-      -- Run all configureFormatter functions
-      local configureFormatterFunctions = F.compact(F.map(config.filetypes, "configureFormatter"))
-      F.each(configureFormatterFunctions, function(configureFormatter)
-        configureFormatter(conform)
-      end)
+      helper.configureFormatters(config.filetypes)
     end,
   },
 
