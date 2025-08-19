@@ -52,16 +52,24 @@ return {
   -- saveBuffer: Save a buffer if it can be saved (defaults to current buffer)
   saveBuffer = function(bufferId)
     bufferId = bufferId or F.bufferId()
-    
+
     local filename = F.bufferName(bufferId)
     local modifiable = F.bufferOption("modifiable", bufferId)
     local modified = F.bufferOption("modified", bufferId)
-    
+
     if filename == "" or not modifiable or not modified then
       return
     end
-    
+
     vim.cmd("silent! w")
+  end,
+  -- updateBuffer: Replace the content of a buffer
+  updateBuffer = function(newContent, bufferId)
+    if F.isString(newContent) then
+      newContent = F.split(newContent, "\n")
+    end
+    bufferId = bufferId or F.bufferId()
+    vim.api.nvim_buf_set_lines(bufferId, 0, -1, false, newContent)
   end,
   -- isNoName: Check if the buffer is a [No Name] buffer, when vim is opened
   -- without a filepath

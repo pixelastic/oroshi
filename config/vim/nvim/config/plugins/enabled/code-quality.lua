@@ -1,29 +1,8 @@
-local helperDiagline = O_require("oroshi/plugins/helpers/diagline")
-local helperStatusline = O_require("oroshi/plugins/helpers/statusline")
-
-local filetypeHelpers = {
-  O_require("oroshi/plugins/helpers/filetypes/bash"),
-  O_require("oroshi/plugins/helpers/filetypes/json"),
-  O_require("oroshi/plugins/helpers/filetypes/lua"),
-  O_require("oroshi/plugins/helpers/filetypes/sh"),
-  O_require("oroshi/plugins/helpers/filetypes/toml"),
-  O_require("oroshi/plugins/helpers/filetypes/zsh"),
-}
-
--- If it exists, run the given method for each configured filetype helper.
-local function runForAllFiletypes(methodName)
-  F.each(filetypeHelpers, function(helper)
-    if helper[methodName] then
-      helper[methodName]()
-    end
-  end)
-end
-
 O.dependencies = {
   -- Treesitter:
   -- https://github.com/nvim-treesitter/nvim-treesitter?tab=readme-ov-file#supported-languages
   treesitters = {
-    "bash",
+    -- "bash",
     "comment",
     "css",
     "csv",
@@ -46,7 +25,7 @@ O.dependencies = {
     "robots",
     "ruby",
     "ssh_config",
-    "toml",
+    -- "toml",
     "xml",
     "yaml",
   },
@@ -65,6 +44,10 @@ O.dependencies = {
     -- "taplo", -- .toml
   },
 }
+
+local helperDiagline = O_require("oroshi/plugins/helpers/diagline")
+local helperStatusline = O_require("oroshi/plugins/helpers/statusline")
+local helper = O_require("oroshi/plugins/helpers/code-quality")
 
 return {
   -- Dependencies: Mason
@@ -146,7 +129,7 @@ return {
     },
     config = function()
       -- Run additional LSP configuration for specific filetypes
-      runForAllFiletypes("configureLsp")
+      helper.runForAllFiletypes("configureLsp")
 
       -- require("mason-lspconfig").setup({
       --   ensure_installed = O.dependencies.lspServers,
@@ -167,7 +150,7 @@ return {
       lint.linters_by_ft = {}
 
       -- Run additional Linting configuration for specific filetypes
-      runForAllFiletypes("configureLinter")
+      helper.runForAllFiletypes("configureLinter")
 
       F.autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, function()
         lint.try_lint()
@@ -191,7 +174,7 @@ return {
       })
 
       -- Run additional Formatter configuration for specific filetypes
-      runForAllFiletypes("configureFormatter")
+      helper.runForAllFiletypes("configureFormatter")
     end,
   },
 

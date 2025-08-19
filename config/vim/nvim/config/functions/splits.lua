@@ -12,10 +12,41 @@ return {
   splitExists = function(splitId)
     return vim.api.nvim_win_is_valid(splitId)
   end,
-  -- createSplit: Create a new split
-  createSplit = function()
-    vim.cmd("split")
-    return F.splitId()
+  -- createFloatingSplit: Create a floating window split
+  -- options: width, height, top, left
+  createFloatingSplit = function(content, userOptions)
+    userOptions = userOptions or {}
+
+    -- Create the buffer
+    local bufferId = F.createBuffer()
+    F.updateBuffer(content, bufferId)
+    -- Set buffer options
+    if userOptions.options then
+      F.each(userOptions.options, function(value, key)
+        F.updateBufferOption(key, value, bufferId)
+      end)
+    end
+
+    -- Position the window
+    local maxWidth = vim.o.columns
+    local windowWidth = userOptions.width or math.floor(maxWidth * 0.7)
+    local windowLeft = userOptions.left or (maxWidth - windowWidth) / 2
+
+    local maxHeight = vim.o.lines
+    local windowHeight = userOptions.height or math.floor(maxHeight * 0.5)
+    local windowTop = userOptions.top or (maxHeight - windowHeight) / 2
+    local options = {
+      relative = "editor",
+      style = "minimal",
+      border = "rounded",
+      width = windowWidth,
+      height = windowHeight,
+      col = windowLeft,
+      row = windowTop,
+    }
+
+    -- Display it
+    return vim.api.nvim_open_win(bufferId, true, options)
   end,
   -- closeSplit: Close a split (defaults to current split)
   closeSplit = function(splitId)
