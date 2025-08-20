@@ -87,6 +87,19 @@ local config = {
     toml = {
       lsp = { "taplo" },
       formatters = { "taplo" },
+      linters = { "flylint" },
+      configureLinter = function(lint)
+        -- Configure flylint for Fly.io specific errors
+        lint.linters.flylint = {
+          cmd = "flylint",
+          stdin = false, -- Reading from filepath
+          ignore_exitcode = true, -- Do not fail on exit 1
+          parser = require("lint.parser").from_errorformat("%f:%l:%c:%t%*[^:]:%m", {
+            warning = "warning",
+            error = "error",
+          }),
+        }
+      end,
     },
     zsh = {
       formatters = { "shfmt_zsh" },

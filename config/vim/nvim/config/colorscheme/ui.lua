@@ -17,6 +17,7 @@ hl("DiagnosticInfo", "INFO")
 hl("ErrorMsg", "RED_8", { bold = false }) --	Error messages
 hl("Conceal", "NEUTRAL") --	Hidden text
 hl("Question", "NEUTRAL") --	"Press ENTER or type command to continue"
+hl("WarningMsg", "WARNING") --	Warning messages.
 -- }}}
 
 -- Tabs {{{

@@ -4,8 +4,11 @@ setopt extendedglob
 
 local filepath=$(realpath "$1")
 
+# Only process files named fly.toml
+[[ "$(basename "$filepath")" != "fly.toml" ]] && exit 0
+
 # Run fly config validate and capture output
-local rawOutput=$(fly config validate --strict --config "$filepath" 2>&1)
+local rawOutput=$(fly config validate --config "$filepath" 2>&1)
 local exitCode=$?
 
 # Cleanup the output:
