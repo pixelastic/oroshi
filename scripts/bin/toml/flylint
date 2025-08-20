@@ -8,10 +8,16 @@ local filepath=$(realpath "$1")
 local rawOutput=$(fly config validate --strict --config "$filepath" 2>&1)
 local exitCode=$?
 
-# Remove ANSI color codes for easier parsing
-local cleanOutput=$(echo "$rawOutput" | remove-ansi)
+# Cleanup the output:
+# - Remove ANSI characters
+# - Remove "✔ Configuration is valid" line
+# - Remove code, starting with line numbers
+local cleanOutput=$(echo "$rawOutput" |
+  remove-ansi |
+  grep -v '^✓' |
+  grep -v '^.\{1,3\}|')
 
-# Split output into blocks using rare UTF-8 delimiter
+# Split output into blocks
 cleanOutput=${cleanOutput//(#b)(WARN|WARNING|Error)/▮${match[1]}}
 local blocks=(${(@s:▮:)cleanOutput})
 
@@ -30,8 +36,19 @@ for block in "${blocks[@]}"; do
   # Remove prefix automatically (WARN, WARNING, or Error followed by optional colon and space)
   message=${message#*(WARN|WARNING|Error)*( |: )}
 
+  # Extract line and column if present (e.g., "row 9 column 7")
+  local lineNumber=1
+  local columnNumber=1
+  if [[ "$message" =~ "row ([0-9]+) column ([0-9]+)" ]]; then
+    lineNumber=${match[1]}
+    columnNumber=${match[2]}
+    # Remove the "row X column Y" part from message
+    message=${message//row [0-9]# column [0-9]#/}
+  fi
+
+  message=$(trim "$message")
   # Format: filename:line:column:type:message
-  echo "$filepath:1:1:$messageType:$message"
+  echo "$filepath:$lineNumber:$columnNumber:$messageType:$message"
 done
 
 exit $exitCode
