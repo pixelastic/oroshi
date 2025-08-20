@@ -3,11 +3,13 @@
 # $ trim "Hello World!  "         # "Hello World!"
 # $ echo "Hello World!  " | trim  # "Hello World!"
 function trim() {
-	local input="$1"
-	# Read from pipe
-	[[ -p /dev/stdin ]] && input="$(\cat -)"
+  local input="$1"
+  # Read from pipe
+  [[ -p /dev/stdin ]] && input="$(\cat -)"
 
-	input="${input#"${input%%[![:space:]]*}"}"  # Trim spaces at beginning
-	input="${input%"${input##*[![:space:]]}"}"  # Trip spaces at end
-	echo "$input"
+  # Trim whitespace (space, tab, newline, carriage return) at beginning and end
+  local output=$input
+  output="${output#"${output%%[!$' \t\n\r']*}"}"
+  output="${output%"${output##*[!$' \t\n\r']}"}"
+  echo -n "$output"
 }

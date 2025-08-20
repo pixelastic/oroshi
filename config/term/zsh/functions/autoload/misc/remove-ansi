@@ -1,0 +1,13 @@
+# Remove ANSI color codes from text
+# Usage:
+# $ remove-ansi "Hello [33mWorld[0m"          # "Hello World"
+# $ echo "Hello [33mWorld[0m" | remove-ansi   # "Hello World"
+function remove-ansi() {
+  local input="$1"
+  # Read from pipe
+  [[ -p /dev/stdin ]] && input="$(\cat -)"
+
+  # Remove ANSI escape sequences
+  # shellcheck disable=SC2001 ZSH patterns are tricky here, sed is better
+  echo "$input" | sed 's/\x1b\[[0-9;]*m//g'
+}

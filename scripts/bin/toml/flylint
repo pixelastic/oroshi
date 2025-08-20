@@ -1,0 +1,35 @@
+#!/usr/bin/env zsh
+# flylint: Lint fly.toml files
+input="$1"
+
+# Get absolute path of input file
+absolutePath=$(realpath "$input")
+
+# Run fly config validate and capture output
+rawOutput=$(fly config validate --strict --config "$input" 2>&1)
+exitCode=$?
+
+# Remove ANSI color codes for easier parsing
+cleanOutput=$(echo "$rawOutput" | remove-ansi)
+
+# Split output into blocks on WARN but keep the delimiter
+outputWithDelimiters=${cleanOutput//WARN/$'\n'WARN}
+local warningBlocks=(${(f)outputWithDelimiters})
+
+# Process each warning block
+for block in "${warningBlocks[@]}"; do
+  local message=$(trim "$block") # Trim start and end
+  message=${message//[$'\n\r']/ } # Replace new lines with spaces
+
+  # Skip if doesn't start with WARN
+  [[ ! "$message" =~ ^WARN ]] && continue
+
+  # Remove WARN/WARNING prefix from message
+  message=${message#WARNING* }
+  message=${message#WARN* }
+
+  # Format: filename:line:column:warning:message
+  echo "$absolutePath:1:1:warning:$message"
+done
+
+exit $exitCode
