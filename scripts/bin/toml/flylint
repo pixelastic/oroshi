@@ -1,35 +1,37 @@
 #!/usr/bin/env zsh
 # flylint: Lint fly.toml files
-input="$1"
+setopt extendedglob
 
-# Get absolute path of input file
-absolutePath=$(realpath "$input")
+local filepath=$(realpath "$1")
 
 # Run fly config validate and capture output
-rawOutput=$(fly config validate --strict --config "$input" 2>&1)
-exitCode=$?
+local rawOutput=$(fly config validate --strict --config "$filepath" 2>&1)
+local exitCode=$?
 
 # Remove ANSI color codes for easier parsing
-cleanOutput=$(echo "$rawOutput" | remove-ansi)
+local cleanOutput=$(echo "$rawOutput" | remove-ansi)
 
-# Split output into blocks on WARN but keep the delimiter
-outputWithDelimiters=${cleanOutput//WARN/$'\n'WARN}
-local warningBlocks=(${(f)outputWithDelimiters})
+# Split output into blocks using rare UTF-8 delimiter
+cleanOutput=${cleanOutput//(#b)(WARN|WARNING|Error)/▮${match[1]}}
+local blocks=(${(@s:▮:)cleanOutput})
 
 # Process each warning block
-for block in "${warningBlocks[@]}"; do
+for block in "${blocks[@]}"; do
   local message=$(trim "$block") # Trim start and end
   message=${message//[$'\n\r']/ } # Replace new lines with spaces
 
-  # Skip if doesn't start with WARN
-  [[ ! "$message" =~ ^WARN ]] && continue
+  # Skip if doesn't start with WARN, WARNING, or Error
+  [[ ! "$message" =~ ^(WARN|WARNING|Error) ]] && continue
 
-  # Remove WARN/WARNING prefix from message
-  message=${message#WARNING* }
-  message=${message#WARN* }
+  # Determine message type
+  local messageType="warning"
+  [[ "$message" =~ ^Error ]] && messageType="error"
 
-  # Format: filename:line:column:warning:message
-  echo "$absolutePath:1:1:warning:$message"
+  # Remove prefix automatically (WARN, WARNING, or Error followed by optional colon and space)
+  message=${message#*(WARN|WARNING|Error)*( |: )}
+
+  # Format: filename:line:column:type:message
+  echo "$filepath:1:1:$messageType:$message"
 done
 
 exit $exitCode
