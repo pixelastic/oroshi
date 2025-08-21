@@ -13,6 +13,12 @@ alias \$="ai-shell"
 alias _="ai-code"
 alias mj="ai-mj"
 alias tm="task-master"
-alias c="claude"
 
 alias cursor="gui ~/local/etc/cursor/cursor.AppImage"
+
+# Claude
+# Make it use the global node version, circumventing the need to re-install it
+# in each project using a different node version
+local defaultNodeVersion="$(<~/.nvm/alias/default)"
+alias claude="~/.nvm/versions/node/v${defaultNodeVersion}/bin/claude"
+alias c="claude"
