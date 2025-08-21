@@ -211,13 +211,13 @@ return {
     local content = {}
     F.each(highlights, function(item)
       -- If the group is linked to itself, it means it's disabled
-      if item.link == item.hl then
-        F.append(content, { " // ", "Comment" })
-        F.append(content, { item.hl, "Comment" })
-        F.append(content, { " is disabled", "Comment" })
-        F.append(content, { "\n", "Comment" })
-        return
-      end
+      -- if item.link == item.hl then
+      --   F.append(content, { " // ", "Comment" })
+      --   F.append(content, { item.hl, "Comment" })
+      --   F.append(content, { " is disabled", "Comment" })
+      --   F.append(content, { "\n", "Comment" })
+      --   return
+      -- end
       F.append(content, { "   ", item.hl })
       F.append(content, { item.hl, item.hl })
       F.append(content, { " linked to ", "Comment" })

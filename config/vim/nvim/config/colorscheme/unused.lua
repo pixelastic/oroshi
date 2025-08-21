@@ -46,9 +46,7 @@ hl("lCursor", "XXX") --		Character under the cursor when |language-mapping|
 hl("Character", "XXX") --	a character constant: 'c', '\n'
 hl("Debug", "XXX") --		debugging statements
 hl("Define", "XXX") --		preprocessor #define
-hl("Float", "XXX") --		a floating point constant: 2.3e10
 hl("Ignore", "XXX") --		left blank, hidden  |hl-Ignore|
-hl("Macro", "XXX") --		same as Define
 hl("PreCondit", "XXX") --	preprocessor #if, #else, #endif, etc.
 hl("SpecialComment", "XXX") --	special things inside a comment
 hl("Typedef", "XXX") --		a typedef

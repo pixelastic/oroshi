@@ -9,9 +9,11 @@ hl("Delimiter", "PUNCTUATION")
 hl("Error", "ERROR", { bold = true })
 hl("Exception", "YELLOW", { bold = true }) --	try, catch, throw
 hl("Function", "FUNCTION")
+hl("Float", "BLUE")
 hl("Identifier", "VARIABLE")
 hl("Include", "IMPORT")
 hl("Keyword", "KEYWORD")
+hl("Macro", "RED_4")
 hl("Number", "NUMBER", { bold = true })
 hl("Operator", "PUNCTUATION") --	"sizeof", "+", "*", etc.
 hl("PreProc", "HEADER") --		generic Preprocessor
@@ -80,6 +82,9 @@ hl("@constant.bash", "VARIABLE")
 -- }}}
 -- CSS {{{
 hl("@tag.css", "GREEN", { bold = true })
+hl("@attribute.css", "RED_4") -- pseudo-classes
+hl("@property.css", "RED_4")
+hl("cssUnitDecorators", "BLUE_4", { bold = true })
 -- }}}
 -- Dockerfile {{{
 hl("dockerfileKeyword", "FUNCTION")
@@ -92,9 +97,11 @@ hl("@markup.heading.1.vimdoc", "BLUE_4")
 hl("@label.vimdoc", "GREEN_7")
 -- }}}
 -- html {{{
+hl("htmlHead", "none", { bg = "DARK_BLUE" })
 hl("@tag.delimiter.html", "PUNCTUATION")
 hl("@tag.html", "KEYWORD")
 hl("@tag.attribute.html", "VARIABLE_TYPE")
+hl("@markup.heading.html", "PURPLE_4", { bold = true })
 -- }}}
 -- JavaScript {{{
 hl("@keyword.exception.javascript", "YELLOW", { bold = true })
