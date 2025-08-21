@@ -131,6 +131,7 @@ hl("@markup.link.url.markdown_inline", "LINK", { underline = true }) -- [](url)
 hl("@markup.link.label.markdown_inline", "STRING") -- [label]()
 hl("@markup.link.markdown_inline", "PUNCTUATION") -- []()
 hl("RenderMarkdownLink", "LINK") -- 	Image & hyperlink icons
+hl("markdownUrl", "LINK") -- 	Image & hyperlink icons
 -- inline code
 hl("@markup.raw.markdown_inline", "STRING") -- `code`
 hl("RenderMarkdownCode", "STRING", { bg = "GRAY_8" }) -- 	Code block background
