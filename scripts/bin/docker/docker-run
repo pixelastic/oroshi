@@ -88,11 +88,11 @@ fi
 
 # Notes:
 # --rm removes the container from the list once it's closed
-# -it allows passing keyboard (like Ctrl-C) to the container
+# -it --init allows passing keyboard (like Ctrl-C) to the container
 
 docker run \
   --rm \
-  -it \
+  -it --init \
   --name "$containerName" \
   "${dockerArguments[@]}" \
   "$imageFullName" \
