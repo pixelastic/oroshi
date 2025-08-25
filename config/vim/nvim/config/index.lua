@@ -78,6 +78,7 @@ O_require("oroshi/filetypes/config")
 O_require("oroshi/filetypes/help")
 O_require("oroshi/filetypes/javascript")
 O_require("oroshi/filetypes/markdown")
+O_require("oroshi/filetypes/sh")
 O_require("oroshi/filetypes/xkb")
 O_require("oroshi/filetypes/zsh")
 

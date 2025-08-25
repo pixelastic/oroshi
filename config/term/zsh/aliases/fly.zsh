@@ -3,7 +3,7 @@
 # App
 alias fal='fly-app-list'
 alias fad='fly-app-deploy'
-alias fal='fly-app-logs'
+alias falo='fly-app-logs'
 alias fan='fly-app-name'
 alias fao='fly-app-open'
 alias fas='fly-app-status'

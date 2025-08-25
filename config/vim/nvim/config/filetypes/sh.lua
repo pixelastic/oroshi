@@ -1,5 +1,4 @@
--- zsh
-F.ftset("*config/term/zsh/functions/autoload/*", "zsh")
-F.ftplugin("zsh", function()
+-- sh
+F.ftplugin("sh", function()
   F.imap("##", "${}<Left>", "Create interpolated variable", { buffer = F.bufferId() })
 end)
