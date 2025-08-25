@@ -1,0 +1,18 @@
+# View logs for a Fly.io application
+# Usage:
+# $ fly-app-logs         # View logs for current app
+# $ fly-app-logs myapp   # View logs for specific app
+function fly-app-logs() {
+  local appName="$1"
+
+  local commandFlag=""
+  if [[ -n "$appName" ]]; then
+    commandFlag="--app $appName"
+  else
+    local flyConfig="$(fly-config-path)"
+    [[ -z $flyConfig ]] && return 1
+    commandFlag="--config $flyConfig"
+  fi
+
+  fly logs ${=commandFlag}
+}

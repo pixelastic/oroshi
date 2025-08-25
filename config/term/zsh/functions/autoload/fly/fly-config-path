@@ -1,0 +1,6 @@
+# Find the config path
+# Usage:
+# $ fly-config-path   # Returns path to the closest config
+function fly-config-path() {
+  find-up fly.toml
+}

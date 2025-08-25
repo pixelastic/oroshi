@@ -1,0 +1,44 @@
+# View logs for a Fly.io application
+# Usage:
+# $ fly-app-list   # View list of all apps
+function fly-app-list() {
+	local rawList="$(fly-app-list-raw)"
+
+  # Build the output
+  local output=""
+  for rawLine in ${(f)rawList}; do
+    local row=""
+
+    local split=(${(s/▮/)rawLine})
+    local appName=$split[1]
+    local appStatus=$split[2]
+    local appUrl=$split[3]
+    local appLastUpdate=$split[4]
+
+    # Icon
+    local appIcon=" "
+    [[ $appStatus == "deployed" ]] && appIcon=" "
+
+    # Color
+    local appColor=$COLOR_ALIAS_FLY_APP_SUSPENDED
+    [[ $appStatus == "deployed" ]] && appColor=$COLOR_ALIAS_FLY_APP_RUNNING
+
+    # Name
+    row+="$(colorize "${appIcon} ${appName}" $appColor)▮"
+
+    # Status
+    row+="$(colorize "${appStatus}" $appColor)▮"
+
+    # Url
+    row+="$(colorize "https://${appUrl}" $COLOR_ALIAS_LINK)▮"
+
+
+    output+="$row\n"
+  done
+
+  # Output as columns
+  echo $output | column \
+    --separator "▮" \
+    --table \
+    --table-noheadings
+}

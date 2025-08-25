@@ -1,0 +1,18 @@
+# View status for a Fly.io application
+# Usage:
+# $ fly-app-status         # View status for current app
+# $ fly-app-status myapp   # View status for specific app
+function fly-app-status() {
+  local appName="$1"
+
+  local commandFlag=""
+  if [[ -n "$appName" ]]; then
+    commandFlag="--app $appName"
+  else
+    local flyConfig="$(fly-config-path)"
+    [[ -z $flyConfig ]] && return 1
+    commandFlag="--config $flyConfig"
+  fi
+
+  fly status ${=commandFlag}
+}

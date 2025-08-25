@@ -179,10 +179,15 @@ aliasColors[DOCKER_IMAGE]="SKY"
 aliasColors[DOCKER_IMAGE_GITHUB]="GREEN"
 aliasColors[DOCKER_IMAGE_OROSHI]="GREEN"
 aliasColors[DOCKER_IMAGE_ORPHAN]="RED"   # Container is running, but image has been deleted
-aliasColors[DOCKER_IMAGE_REMOTE]="BLUE" aliasColors[DOCKER_COMMENT]="GRAY_4"  # Commit messages
+aliasColors[DOCKER_IMAGE_REMOTE]="BLUE"
+aliasColors[DOCKER_COMMENT]="GRAY_4"  # Commit messages
 aliasColors[DOCKER_STATUS]="GRAY_4"
 aliasColors[DOCKER_TAG]="ORANGE_6"
 aliasColors[DOCKER_TAG_LATEST]="ORANGE_5"
+# }}}
+# Fly.io {{{
+aliasColors[FLY_APP_RUNNING]="GREEN"
+aliasColors[FLY_APP_SUSPENDED]="GRAY"
 # }}}
 # Git {{{
 aliasColors[GIT_ADDED]="GREEN"
