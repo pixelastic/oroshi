@@ -92,6 +92,7 @@ return {
             view = "O_warn",
           },
           { filter = { event = "notify", kind = "warn" }, view = "O_warn" },
+          { filter = { event = "notify", kind = "error", find = "Formatter failed." }, view = "O_warn" },
 
           -- Error
           -- { filter = { event = "notify", kind = "error" }, view = "messages", },

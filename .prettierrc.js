@@ -1,4 +1,4 @@
-const prettierConfig = require('aberlaas/configs/prettier.js');
+const prettierConfig = require("aberlaas/configs/prettier");
 module.exports = {
   ...prettierConfig,
 };
