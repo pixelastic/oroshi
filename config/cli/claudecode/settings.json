@@ -16,12 +16,42 @@
     "deny": []
   },
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/tim/.oroshi/config/cli/claudecode/hooks/sessionStart"
+          }
+        ]
+      }
+    ]
     "Notification": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "/path/to/your/notification-script.sh"
+            "command": "/home/tim/.oroshi/config/cli/claudecode/hooks/notification"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/tim/.oroshi/config/cli/claudecode/hooks/stop"
+          }
+        ]
+      }
+    ],
+    "SessionStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/tim/.oroshi/config/cli/claudecode/hooks/sessionStop"
           }
         ]
       }

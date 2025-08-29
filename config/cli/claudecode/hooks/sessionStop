@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+echo "[$(date +"%Y-%m-%d %H:%M:%S")] sessionStop" >>~/local/tmp/claude-hooks.log
+cat - | jq '.' >>~/local/tmp/claude-hooks.log
+echo ""
