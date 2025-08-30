@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+# Toggle a global "Sound Mode"
+# The current value will be displayed in Kitty's statusbar
+# It is used by my custom Claude Code config to play sounds
+
+local storeDirectory=$OROSHI_TMP_FOLDER/sound-mode
+local storeFile="${storeDirectory}/on"
+mkdir -p $storeDirectory
+
+# Toggle the presence of the file
+if [[ -f $storeFile ]]; then
+  rm $storeFile
+else
+  touch $storeFile
+fi
+
+# Update kitty statusbar
+kitty-refresh

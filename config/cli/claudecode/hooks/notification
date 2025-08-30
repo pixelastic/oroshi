@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
+# Triggered when Claude needs my input to run a tool
 
-echo "[$(date +"%Y-%m-%d %H:%M:%S")] notification" >>~/local/tmp/claude-hooks.log
-cat - | jq '.' >>~/local/tmp/claude-hooks.log
-echo ""
+if sound-mode-is-enabled; then
+  audio-play ~/.oroshi/config/audio/sounds/bg-lock.wav &
+fi

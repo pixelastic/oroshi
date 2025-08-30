@@ -4,19 +4,16 @@
 source $ZSH_CONFIG_PATH/theming/env/colors.zsh
 
 function dropbox-is-running() {
-	[[ ! $commands[dropbox] ]] && return 1
-	dropbox status 2>/dev/null |
-		grep \
-			--quiet \
-			"Dropbox isn't running\!\|Syncing paused" &&
-		return 1 ||
-		return 0
+  [[ ! $commands[dropbox] ]] && return 1
+  dropbox status 2>/dev/null |
+    grep \
+      --quiet \
+      "Dropbox isn't running\!\|Syncing paused" &&
+    return 1 ||
+    return 0
 }
 
 local fg=$COLOR_ALIAS_COMMENT
 dropbox-is-running || fg=$COLOR_ALIAS_ERROR
 
-jq -n \
-	--arg text " " \
-	--arg fg $fg \
-	'$ARGS.named | [.]'
+jo text=" " fg=$fg | jo -a

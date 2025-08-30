@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# Check if "Sound Mode" is enabled
+local storeFile=$OROSHI_TMP_FOLDER/sound-mode/on
+
+if [[ -f $storeFile ]]; then
+  exit 0
+else
+  exit 1
+fi

@@ -22,8 +22,10 @@ KITTY_OPTIONS = get_options()
 
 # List of items to display in the status bar.
 # Order is important, and number is the refresh delay (in seconds)
+# Note: use kitty-refresh script to force-refresh the display for debugging
 STATUSBAR_DEFINITION = [
     # "spotify:5",
+    "sound-mode:60",
     "battery:60",
     "cpu:30",
     "ram:30",

@@ -9,51 +9,39 @@ source $ZSH_CONFIG_PATH/theming/env/colors.zsh
 
 local batteryDevice="$(upower -e | grep BAT)"
 local batteryStatus="$(
-	upower -i ${batteryDevice} |
-		grep state |
-		awk '{print $2}'
+  upower -i ${batteryDevice} |
+    grep state |
+    awk '{print $2}'
 )"
 local batteryPercent="$(
-	upower -i ${batteryDevice} |
-		grep percentage |
-		awk '{print $2}' |
-		sed 's/.$//'
+  upower -i ${batteryDevice} |
+    grep percentage |
+    awk '{print $2}' |
+    sed 's/.$//'
 )"
 local batteryDuration="$(
-	upower -i ${batteryDevice} |
-		grep 'time to empty' |
-		awk '{print $4}'
+  upower -i ${batteryDevice} |
+    grep 'time to empty' |
+    awk '{print $4}'
 )"
 
 if [[ $batteryPercent -gt 99 ]]; then
-	echo "[]"
-	exit 0
+  echo "[]"
+  exit 0
 fi
 
 if [[ $batteryStatus == 'charging' ]]; then
-	jq -n \
-		--arg text " ${batteryPercent}% " \
-		--arg fg $COLOR_ALIAS_SUCCESS \
-		'$ARGS.named | [.]'
-	exit
+  jo text=" ${batteryPercent}% " fg=$COLOR_ALIAS_SUCCESS | jo -a
+  exit
 fi
 
 local batteryDisplay="${batteryPercent}% (${batteryDuration}h)"
 if [[ $batteryPercent -lt 100 && $batteryPercent -ge 50 ]]; then
-	jq -n \
-		--arg text "  ${batteryDisplay} " \
-		--arg fg $COLOR_ALIAS_COMMENT \
-		'$ARGS.named | [.]'
+  jo text="  ${batteryDisplay} " fg=$COLOR_ALIAS_COMMENT | jo -a
 fi
 if [[ $batteryPercent -lt 50 && $batteryPercent -ge 10 ]]; then
-	jq -n \
-		--arg text "  ${batteryDisplay} " \
-		--arg fg $COLOR_ALIAS_WARNING \
-		'$ARGS.named | [.]'
+  jo text="  ${batteryDisplay} " fg=$COLOR_ALIAS_WARNING | jo -a
 fi
 if [[ $batteryPercent -lt 10 ]]; then
-	jq -n \
-		--arg text "  ${batteryDisplay} " \
-		--arg fg $COLOR_ALIAS_ERROR \
-		'$ARGS.named | [.]'
+  jo text="  ${batteryDisplay} " fg=$COLOR_ALIAS_ERROR | jo -a
 fi

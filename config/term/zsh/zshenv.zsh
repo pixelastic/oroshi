@@ -4,6 +4,8 @@
 
 # Reference to the zsh config folder, so our `source` calls are easier to write
 export ZSH_CONFIG_PATH=~/.oroshi/config/term/zsh
+# Reference to the path used to store runtime config
+export OROSHI_TMP_FOLDER=~/local/tmp/oroshi
 
 # Also make the HOSTNAME globally available. Some tools (like Kitty) can use ENV
 # variables in their config, but can't call binaries, so having the HOSTNAME
@@ -22,7 +24,7 @@ source $ZSH_CONFIG_PATH/path.zsh
 # Manually loading all real functions saved in ./functions/*.zsh
 local functionDirectory=$ZSH_CONFIG_PATH/functions
 for item in ${functionDirectory}/*.zsh; do
-	source $item
+  source $item
 done
 
 # Autoload all other functions saved in ./functions/autoload/**/*

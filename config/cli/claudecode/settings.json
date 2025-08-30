@@ -18,6 +18,7 @@
   "hooks": {
     "SessionStart": [
       {
+        "matcher": "startup",
         "hooks": [
           {
             "type": "command",
@@ -25,9 +26,10 @@
           }
         ]
       }
-    ]
+    ],
     "Notification": [
       {
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
@@ -38,6 +40,7 @@
     ],
     "Stop": [
       {
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
@@ -45,16 +48,7 @@
           }
         ]
       }
-    ],
-    "SessionStop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/home/tim/.oroshi/config/cli/claudecode/hooks/sessionStop"
-          }
-        ]
-      }
     ]
   }
 }
+

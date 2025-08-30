@@ -168,8 +168,7 @@ aliasColors[PACKAGE_VERSION_MISMATCH]="VIOLET"
 
 # Tool-specific
 # AI {{{
-aliasColors[AI_ENABLED]="CYAN"
-aliasColors[AI_SUGGESTION]="CYAN_6"
+aliasColors[AI_ENABLED]="AMBER_7"
 # }}}
 # Docker {{{
 aliasColors[DOCKER_CONTAINER]="YELLOW"

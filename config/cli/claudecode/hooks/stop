@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
+# Triggered whenever Claude finishes answering
 
-echo "[$(date +"%Y-%m-%d %H:%M:%S")] stop" >>~/local/tmp/claude-hooks.log
-cat - | jq '.' >>~/local/tmp/claude-hooks.log
-echo ""
+if sound-mode-is-enabled; then
+  jobsdone &
+fi

@@ -5,25 +5,19 @@
 source $ZSH_CONFIG_PATH/theming/env/colors.zsh
 
 local memoryUsed="$(
-	free -m |
-		grep Mem |
-		awk '{print $3/$2 * 100}' |
-		cut --delimiter "." --fields 1
+  free -m |
+    grep Mem |
+    awk '{print $3/$2 * 100}' |
+    cut --delimiter "." --fields 1
 )"
 
 if [[ $memoryUsed -gt 80 ]]; then
-	jq -n \
-		--arg text " ${memoryUsed}% " \
-		--arg fg $COLOR_ALIAS_ERROR \
-		'$ARGS.named | [.]'
-	exit
+  jo text=" ${memoryUsed}% " fg="$COLOR_ALIAS_ERROR" | jo -a
+  exit
 fi
 if [[ $memoryUsed -gt 50 ]]; then
-	jq -n \
-		--arg text " ${memoryUsed}% " \
-		--arg fg $COLOR_ALIAS_WARNING \
-		'$ARGS.named | [.]'
-	exit
+  jo text=" ${memoryUsed}% " fg="$COLOR_ALIAS_WARNING" | jo -a
+  exit
 fi
 
 echo "[]"
