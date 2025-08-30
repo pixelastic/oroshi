@@ -20,4 +20,5 @@ alias vlc='better-vlc'
 alias w='which'
 alias ydotool='better-ydotool'
 alias uuid="uuidgen"
+alias ="audio-play"
 disable -r time # ZSH overrides the time method

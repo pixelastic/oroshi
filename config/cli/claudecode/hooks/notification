@@ -2,5 +2,6 @@
 # Triggered when Claude needs my input to run a tool
 
 if sound-mode-is-enabled; then
-  audio-play ~/.oroshi/config/audio/sounds/bg-lock.wav &
+  audio-play ~/.oroshi/config/audio/sounds/bg-lock.wav
+  exit 2
 fi

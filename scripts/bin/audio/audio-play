@@ -7,8 +7,10 @@
 # $ audio-play ./path/to/file.mp3    # "Hello World!"
 local input="$1"
 
+# "&>/dev/null &" and "disown" allow running the command fully in the background
 ffplay \
   -nodisp \
   -autoexit \
   -loglevel quiet \
-  $1
+  $1 &>/dev/null &
+disown

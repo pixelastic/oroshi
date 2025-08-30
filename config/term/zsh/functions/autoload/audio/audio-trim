@@ -1,0 +1,58 @@
+# Trim silence from the beginning and end of audio files
+# Usage:
+# $ audio-trim ./path/to/audio.mp3                    # Trim silence and overwrite original
+# $ audio-trim ./path/to/audio.mp3 output.mp3         # Trim and save to output.mp3
+
+function audio-trim() {
+  local input=$1
+  local output=$2
+
+  # Validate input
+  if [[ $input == "" ]]; then
+    echo "Usage:"
+    echo "$ audio-trim ./path/to/audio.mp3"
+    echo "$ audio-trim ./path/to/audio.mp3 output.mp3"
+    return 0
+  fi
+  if [[ ! -f $input ]]; then
+    echo "✘ File not found: $input"
+    return 1
+  fi
+
+  local inputPath=${input:a}
+  local outputPath=${output:a}
+  local margin=0.05 # Margin in seconds to keep around audio
+
+  # Get audio info
+  local duration=$(ffprobe -v error -show_entries format=duration -of json $inputPath | jq -r '.format.duration')
+  local silenceInfo=$(ffmpeg -i $inputPath -af "silencedetect=n=-50dB:d=0.1" -f null - 2>&1)
+
+  # Extract silence boundaries
+  local firstSilenceEnd=$(echo $silenceInfo | \grep -oE "silence_end: [0-9.]+" | head -1 | \grep -oE "[0-9.]+$")
+  local lastSilenceStart=$(echo $silenceInfo | \grep -oE "silence_start: [0-9.]+" | tail -1 | \grep -oE "[0-9.]+$")
+
+  # Calculate trim points with margin
+  local trimStart=$(printf "%.2f" "$(echo "(${firstSilenceEnd:-0} - $margin)" | bc)")
+  local trimEnd=$(printf "%.2f" "$(echo "(${lastSilenceStart:-$duration} + $margin)" | bc)")
+
+  # Clamp values
+  [[ $(echo "$trimStart < 0" | bc) == "1" ]] && trimStart="0.00"
+  [[ $(echo "$trimEnd > $duration" | bc) == "1" ]] && trimEnd=$(printf "%.2f" $duration)
+  [[ $(echo "$trimEnd < $trimStart" | bc) == "1" ]] && trimEnd=$trimStart
+
+  local trimDuration=$(printf "%.2f" "$(echo "$trimEnd - $trimStart" | bc)")
+
+  # Prepare output path
+  local shouldReplace=0
+  local finalOutput=$outputPath
+  if [[ $output == "" ]]; then
+    finalOutput=$(mktemp /tmp/audio-trim.XXXXXX.${inputPath:e})
+    shouldReplace=1
+  fi
+
+  # Perform the trim
+  ffmpeg -i $inputPath -ss $trimStart -t $trimDuration -acodec copy $finalOutput -y
+
+  # Replace original if using temp file
+  [[ $shouldReplace == "1" ]] && mv $finalOutput $inputPath
+}

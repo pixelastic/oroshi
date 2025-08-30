@@ -11,6 +11,7 @@ BINARY_NAME=jc
 rm -rf $INSTALL_DIR
 mkdir -p $INSTALL_DIR
 
+cd $INSTALL_DIR
 wget $DOWNLOAD_URL -O ${BINARY_NAME}.tar.gz
 tar xvzf ${BINARY_NAME}.tar.gz
 rm ${BINARY_NAME}.tar.gz
