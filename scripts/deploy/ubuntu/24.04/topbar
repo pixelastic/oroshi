@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 # Top bar (aka. System Tray) config
+local LOG_FILE=/home/tim/local/tmp/autostart.log
+echo "[$(date)] topBar called" >>$LOG_FILE
 
 # Note that we need to use dconf rather than gsettings here as extensions
 # might not have a schema registered, so using gsettings will do nothing
@@ -56,6 +58,4 @@ if command -v gext >/dev/null; then
   stackExtension sp-tray@sp-tray.esenliyim.github.com    # spotify-tray
 fi
 
-
 # }}}
-
