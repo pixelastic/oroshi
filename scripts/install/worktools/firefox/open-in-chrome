@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+# Open in Chrome: Allow opening specific URL in Chrome rather than Firefox
+set -e
+
+# Install the native client
+local DOWNLOAD_URL="https://github.com/andy-portmen/native-client/releases/download/1.0.4/linux.zip"
+local installDir=~/local/src/open-in-chrome
+mkdir -p $installDir
+cd $installDir
+
+wget $DOWNLOAD_URL -O linux.zip
+extract linux.zip
+rm linux.zip
+
+./install.sh

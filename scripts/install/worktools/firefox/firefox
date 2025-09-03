@@ -6,6 +6,7 @@
 # here is a more-or-less up-to-date list:
 # - uBlock Origin
 # - Vimium
+# - Open in Google Chrome Browser (https://addons.mozilla.org/en-US/firefox/addon/open-in-chrome-browser/)
 
 
 echo "Please install Vimium, and then copy the following mappings to its config:"
