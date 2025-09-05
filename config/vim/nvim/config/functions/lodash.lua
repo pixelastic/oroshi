@@ -111,9 +111,24 @@ return {
     return vim.tbl_contains(input, value)
   end,
 
+  -- isCollection: Check if variable is a collection
+  isCollection = function(input)
+    return type(input) == "table"
+  end,
+
   -- empty: Check if the collection is empty
   isEmpty = function(collection)
     return #collection == 0
+  end,
+
+  -- isFunction: Check if variable is a function
+  isFunction = function(input)
+    return type(input) == "function"
+  end,
+
+  -- isString: Check if variable is a string
+  isString = function(input)
+    return type(input) == "string"
   end,
 
   -- join: Join a collection with a delimiter

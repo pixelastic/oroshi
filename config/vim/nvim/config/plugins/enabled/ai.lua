@@ -35,7 +35,7 @@ return {
           auto_trigger = true,
           debounce = 500,
           keymap = {
-            accept = "<Tab>",
+            accept = false, -- We'll handle Tab manually
             accept_word = false,
             accept_line = false,
             next = "<C-k>",

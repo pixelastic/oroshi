@@ -170,9 +170,25 @@ vmap("U", "22k", "Scroll up one half page")
 nmap("D", "22j", "Scroll down one half page")
 vmap("D", "22j", "Scroll down one half page")
 
--- Indent / Dedent
+-- Tab (Indent or Completion)
+local function indentOrComplete()
+  local copilot = require("copilot.suggestion")
+
+  -- Complete Copilot suggestion
+  if copilot.is_visible() then
+    copilot.accept()
+    return
+  end
+
+  -- No Copilot suggestion, insert a tab for indentation
+  F.sendKey("<Tab>")
+end
+imap("<Tab>", indentOrComplete, "Accept Copilot suggestion or indent")
+-- In normal and visual, always indent
 nmap("<Tab>", ">>ll", "Indent line")
 vmap("<Tab>", ">gv", "Indent selection")
+
+-- Shift-Tab: dedent
 imap("<S-Tab>", "<Esc><<hi", "Dedent line")
 nmap("<S-Tab>", "<<hh", "Dedent line")
 vmap("<S-Tab>", "<gv", "Dedent selection")
