@@ -8,7 +8,7 @@ I want to have working code examples and up-to-date information
 
 I don't want my custom aliases to get in the way of your parsing of commands.
 
-- When using Tools, always use the escaped version of the common commands, like `\grep`, `\cat`, `\ls`, to avoid using my custom aliases
+- When using Tools, always use the escaped version of the common commands, like `\grep`, `\cat`, `\ls`, `\rm` to avoid using my custom aliases
 
 # Task Master
 
