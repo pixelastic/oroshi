@@ -23,8 +23,8 @@ alias vsmcpd='git commit-submodule ./scripts/bin/pdf'
 alias vsmpdc='git commit-submodule ./scripts/bin/pdf'
 # }}}
 # [a]nsible [s]ub-[m]odule {{{
-alias vsmua='git commit-submodule ./config/ansible/galactica'
-alias vsmau='git commit-submodule ./config/ansible/galactica'
-alias vsmca='git commit-submodule ./config/ansible/galactica'
-alias vsmac='git commit-submodule ./config/ansible/galactica'
+alias vsmua='git commit-submodule ./config/infrastructure/ansible/galactica'
+alias vsmau='git commit-submodule ./config/infrastructure/ansible/galactica'
+alias vsmca='git commit-submodule ./config/infrastructure/ansible/galactica'
+alias vsmac='git commit-submodule ./config/infrastructure/ansible/galactica'
 # }}}
