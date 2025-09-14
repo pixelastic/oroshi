@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 sudo apt-get install ansible
-pip install --user ansible-lint
+pipx install ansible-lint
