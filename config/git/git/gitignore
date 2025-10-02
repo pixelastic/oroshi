@@ -27,7 +27,7 @@ yarn-error.log
 # Netlify
 .netlify
 
-# Claude
+# Vibe coding
 .claude/settings.local.json
 .cursor/
 .taskmaster/
