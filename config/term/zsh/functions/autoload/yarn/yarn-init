@@ -14,8 +14,8 @@ function yarn-init() {
 		./.gitignore
 
 
-	yarn init -2 &>/dev/null
-	
+	yarn init -2
+
 	# Custom package.json
 	local packageContent="$(cat $NODE_CONFIG_DIR/package.default.json)"
 	local yarnVersion="$(yarn --version)"
