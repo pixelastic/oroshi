@@ -1,9 +1,14 @@
 # Extract all text content from a PDF into a txt file
 # Usage
-# $ pdf2txt ./path/to/file.pdf       # Creates a large .txt file with all text
-# content
-# $ pdf2txt ./path/to/file.pdf 12    # Creates a dump of only page 12
+# $ pdf2txt ./path/to/file.pdf              # Creates a .txt file (default: no layout)
+# $ pdf2txt --keepLayout ./path/to/file.pdf # Creates a .txt file with layout preserved
+# $ pdf2txt ./path/to/file.pdf 12           # Creates a dump of only page 12
 function pdf2txt() {
+  # Parse arguments
+  zparseopts -E -D \
+    -keepLayout=flagKeepLayout
+  local isKeepLayout=${#flagKeepLayout}
+
   for inputFilepath in "$@"; do
     local inputFilepath=${inputFilepath:a}
     local dirpath=${inputFilepath:h}
@@ -13,7 +18,12 @@ function pdf2txt() {
     # Known errors that we can ignore
     local knownErrorsPattern='Syntax Warning: Invalid Font Weight'
 
+    # Build additional flags based on options
+    local additionalFlags=()
+    [[ $isKeepLayout == "1" ]] && additionalFlags+=('-layout')
+
     pdftotext \
+      $additionalFlags \
       "$inputFilepath" \
       - \
       2> >(\grep -v "${knownErrorsPattern}" >&2) \

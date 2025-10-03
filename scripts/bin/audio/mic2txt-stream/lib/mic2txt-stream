@@ -49,7 +49,7 @@ function startRecording() {
 
 function stopRecording() {
   # Wait to capture the last words being spoken
-  sleep 2
+  sleep 1.5
 
   # Kill the recording process
   pkill -f "MIC2TXT_DEEPGRAM_SESSION" 2>/dev/null
