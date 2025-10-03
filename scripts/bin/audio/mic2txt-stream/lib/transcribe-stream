@@ -1,0 +1,34 @@
+#!/usr/bin/env zsh
+# transcribe-deepgram: Convert a wav file into text using Deepgram streaming
+# Usage:
+# $ transcribe-deepgram ./path/to/file.wav     # Echo the transcript
+source ~/.oroshi/private/config/term/zsh/local/${HOSTNAME}/deepgram.zsh
+
+local input=$1
+local rootDir="${0:A:h}"
+local tmpFolder=/dev/shm/oroshi/mic2txt/deepgram
+local transcriptFile=${tmpFolder}/transcript.txt
+mkdir -p $tmpFolder
+
+# Clean previous transcript
+rm -f "$transcriptFile"
+
+# Convert to raw format and pipe to streamClient
+# Use pv to limit rate to 32KB/s (16kHz * 2 bytes = real-time audio rate)
+sox "$input" -r 16000 -c 1 -e signed-integer -b 16 -t raw - 2>/dev/null | \
+  pv -q -L 32000 | \
+  DEEPGRAM_API_KEY="$DEEPGRAM_API_KEY" \
+  NODE_PATH="${rootDir}/node_modules" \
+  node "${rootDir}/streamClient.js"
+
+# Wait for transcript (max 15 seconds)
+local timeout=15
+while [[ ! -f $transcriptFile ]] && [[ $timeout -gt 0 ]]; do
+  sleep 0.5
+  ((timeout--))
+done
+
+if [[ -f $transcriptFile ]]; then
+  cat $transcriptFile
+  rm $transcriptFile
+fi

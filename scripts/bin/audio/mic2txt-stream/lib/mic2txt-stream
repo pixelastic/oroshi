@@ -1,0 +1,101 @@
+#!/usr/bin/env zsh
+# mic2txt-stream: Real-time speech to text
+# Usage:
+# $ mic2txt-stream    # Starts recording and streaming to Deepgram
+#   mic2txt-stream    # Stops recording and exits
+
+# Configuration
+source ~/.oroshi/private/config/term/zsh/local/${HOSTNAME}/deepgram.zsh
+local rootDir="${0:A:h}"
+local nodeModulesDir="${rootDir}/../node_modules"
+
+local tmpFolder=/dev/shm/oroshi/mic2txt/deepgram
+local transcriptFile=${tmpFolder}/transcript.txt
+local pidFile=${tmpFolder}/PID
+mkdir -p $tmpFolder
+
+local historyFolder=~/local/tmp/oroshi/mic2txt/history
+mkdir -p $historyFolder
+
+function main() {
+  # Stop if missing some info
+  validateDependencies || exit 1
+
+  # Decide whether to start or stop
+  if [[ ! -f $pidFile ]]; then
+    startRecording
+  else
+    stopRecording
+  fi
+}
+
+function startRecording() {
+  # Start rec, and pipe it to streamClient.js
+  rec -q \
+    --rate 16000 \
+    --channels 1 \
+    --encoding signed-integer \
+    --bits 16 \
+    --type raw \
+    --comment "MIC2TXT_DEEPGRAM_SESSION" \
+    - 2>/dev/null |
+    DEEPGRAM_API_KEY="$DEEPGRAM_API_KEY" \
+      NODE_PATH="${nodeModulesDir}" \
+      node "${rootDir}/streamClient.js" &
+
+  # Save pipeline PID
+  echo $! >$pidFile
+}
+
+function stopRecording() {
+  # Wait to capture the last words being spoken
+  sleep 2
+
+  # Kill the recording process
+  pkill -f "MIC2TXT_DEEPGRAM_SESSION" 2>/dev/null
+  rm $pidFile
+
+  # Wait for transcript file to be created (max 10 seconds)
+  local timeout=10
+  while [[ ! -f $transcriptFile ]] && [[ $timeout -gt 0 ]]; do
+    sleep 1
+    ((timeout--))
+  done
+
+  # Error, can't find transcript
+  if [[ ! -f $transcriptFile ]]; then
+    focus-insert "mic2txt error: cannot get transcript"
+    return 1
+  fi
+
+  local content=$(cat $transcriptFile)
+  focus-insert "$content"
+
+  # Add to history
+  local now="$(date '+%Y-%m-%d-%H-%M')"
+  mv $transcriptFile "$historyFolder/${now}-deepgram.log"
+}
+
+function validateDependencies() {
+  # Check if API key is available
+  if [[ -z "$DEEPGRAM_API_KEY" ]]; then
+    echo "DEEPGRAM_API_KEY environment variable unavailable"
+    return 1
+  fi
+
+  # Check if Node.js is available
+  if ! command -v node &>/dev/null; then
+    echo "node binary unavailable"
+    return 1
+  fi
+
+  # Check if ws module is installed in the script directory
+  if [[ ! -d "${nodeModulesDir}/ws" ]]; then
+    echo "node_modules folder unavailable"
+    return 1
+  fi
+
+  return 0
+}
+
+main

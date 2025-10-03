@@ -1,0 +1,15 @@
+{
+  "name": "mic2txt-deepgram",
+  "version": "1.0.0",
+  "description": "Real-time streaming transcription using Deepgram API",
+  "main": "streamClient.js",
+  "type": "module",
+  "scripts": {
+    "start": "./mic2txt-deepgram"
+  },
+  "dependencies": {
+    "ws": "^8.14.2"
+  },
+  "author": "",
+  "license": "MIT"
+}
