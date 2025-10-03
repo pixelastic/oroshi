@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# Insomnia: API testing tool
+# https://insomnia.rest/
+set -e
+
+local DOWNLOAD_URL="https://updates.insomnia.rest/downloads/ubuntu/latest?&app=com.insomnia.app&source=website"
+local DOWNLOAD_FILE="insomnia.deb"
+
+cd ~/local/tmp
+wget $DOWNLOAD_URL -O $DOWNLOAD_FILE
+install-deb $DOWNLOAD_FILE
+
