@@ -1,3 +1,3 @@
 # Watch
-alias treew='watch -c ''l --tree'''
-alias wtree=treew
+alias watch='watch -c '
+alias wr='watch-and-reload'
