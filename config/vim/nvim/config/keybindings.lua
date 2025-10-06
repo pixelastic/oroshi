@@ -211,9 +211,8 @@ end
 nmap(";", addSemicolonAtEndOfLine, "Add a semicolon at end of line")
 
 -- Paste
-nmap("p", ":pu<CR>`[=`]", "Paste right after current line, and keep indent")
-nmap("P", ":pu!<CR>`[=`]", "Paste right before current line, and keep indent")
-vmap("p", '"_x:pu<CR>`[=`]', "Paste in place of current selection")
+nmap("P", ":pu!", "Paste right before current line")
+vmap("p", '"_x:pu', "Paste in place of current selection")
 nmap("gp", "`[v`]", "Select what was just pasted")
 nmap("c", '"_c', "Change without copying it")
 nmap("x", '"_x', "Delete without copying it")
