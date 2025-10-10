@@ -3,7 +3,6 @@
 # Usage:
 # $ js-fix ./path/to/file.js           # Output fixed code to stdout
 # $ js-fix --in-place ./path/to/file.js # Overwrite the file
-set -x
 
 zparseopts -E -D \
   -in-place=flagInPlace
@@ -42,4 +41,4 @@ fi
 eslint_d \
   --fix \
   --config "$configFile" \
-  "$inputFile"
+  "$inputFile" >&/dev/null

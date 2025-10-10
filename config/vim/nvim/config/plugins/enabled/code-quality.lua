@@ -62,12 +62,12 @@ local config = {
           parser = javascriptHelper.lintParser,
         }
       end,
-      configureFormatter = function()
-        local conform = require("conform")
+      configureFormatter = function(conform)
         conform.formatters.oroshi_js_fix = {
           command = "js-fix",
           stdin = false,
           args = { "--in-place", "$FILENAME" },
+          exit_codes = { 0, 1 }, -- Do not fail on unfixable errors
         }
       end,
     },
@@ -88,8 +88,7 @@ local config = {
         })
       end,
       formatters = { "stylua" },
-      configureFormatter = function()
-        local conform = require("conform")
+      configureFormatter = function(conform)
         conform.formatters.stylua = {
           prepend_args = {
             "--indent-type",
@@ -123,8 +122,7 @@ local config = {
     zsh = {
       formatters = { "shfmt_zsh" },
       linters = { "zshlint" },
-      configureFormatter = function()
-        local conform = require("conform")
+      configureFormatter = function(conform)
         conform.formatters.shfmt_zsh = {
           command = "shfmt",
           args = { "-i", vim.o.shiftwidth },
