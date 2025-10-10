@@ -51,6 +51,7 @@ local config = {
     },
     javascript = {
       linters = { "oroshi_js_lint" },
+      formatters = { "oroshi_js_fix" },
       configureLinter = function(lint)
         local javascriptHelper = O_require("oroshi/plugins/helpers/filetypes/javascript")
         lint.linters.oroshi_js_lint = {
@@ -61,7 +62,14 @@ local config = {
           parser = javascriptHelper.lintParser,
         }
       end,
-      -- formatters = { "eslint_d" },
+      configureFormatter = function()
+        local conform = require("conform")
+        conform.formatters.oroshi_js_fix = {
+          command = "js-fix",
+          stdin = false,
+          args = { "--in-place", "$FILENAME" },
+        }
+      end,
     },
     json = {
       formatters = { "prettier" },

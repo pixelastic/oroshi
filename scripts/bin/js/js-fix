@@ -1,12 +1,13 @@
 #!/usr/bin/env zsh
-# js-lint: Lint a JavaScript file
+# js-fix: Fix a JavaScript file
 # Usage:
-# $ js-lint  ./path/to/file.js       # For CLI
-# $ js-lint -json ./path/to/file.js  # For Vim
+# $ js-fix ./path/to/file.js           # Output fixed code to stdout
+# $ js-fix --in-place ./path/to/file.js # Overwrite the file
+set -x
 
 zparseopts -E -D \
-  -json=flagJson
-isJson=${#flagJson}
+  -in-place=flagInPlace
+isInPlace=${#flagInPlace}
 
 # Input file
 inputFile="${1:a}"
@@ -25,14 +26,20 @@ if [[ $projectRoot != "" ]]; then
   [[ -f "$projectRoot/eslint.config.js" ]] && configFile="$projectRoot/eslint.config.js"
 fi
 
-# Optional args
-formatAsJson=""
-if [[ $isJson -gt 0 ]]; then
-  formatAsJson="--format json"
+# Output to stdout
+if [[ $isInPlace = 0 ]]; then
+  # shellcheck disable=SC2094
+  eslint_d \
+    --config "$configFile" \
+    --fix-to-stdout \
+    --stdin \
+    --stdin-filename "$inputFile" \
+    <"$inputFile"
+  return
 fi
 
-# Run eslint_d
+# Update file in place
 eslint_d \
+  --fix \
   --config "$configFile" \
-  ${=formatAsJson} \
   "$inputFile"

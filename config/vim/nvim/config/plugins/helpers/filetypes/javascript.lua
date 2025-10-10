@@ -28,6 +28,7 @@ M.lintParser = function(output)
   end))
 end
 
+-- Convert eslint severity (1 = warning, 2 = error) to vim.diagnostic severity
 M.convertSeverity = function(jsonSeverity)
   return jsonSeverity == 1 and vim.diagnostic.severity.WARN or vim.diagnostic.severity.ERROR
 end
