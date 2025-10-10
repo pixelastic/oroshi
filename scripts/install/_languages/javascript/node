@@ -10,23 +10,23 @@ echo "Installing NVM"
 
 # Installing nvm if not installed
 if [[ ! -d $DEST_DIR ]]; then
-	echo "Step 1 / 2"
-	git-directory-sync \
-		git@github.com:creationix/nvm.git \
-		$DEST_DIR
+  echo "Step 1 / 2"
+  git-directory-sync \
+    git@github.com:creationix/nvm.git \
+    $DEST_DIR
 
-	# Add a config file to tell nvm which packages to install on each new node
-	# version installation (basically, yarn)
-	ln -fs \
-		$CONFIG_DIR/default-packages \
-		$DEST_DIR
+  # Add a config file to tell nvm which packages to install on each new node
+  # version installation (basically, yarn)
+  ln -fs \
+    $CONFIG_DIR/default-packages \
+    $DEST_DIR
 
-	echo "===================="
-	echo "Now:"
-	echo "- Close this terminal window"
-	echo "- Open a new one"
-	echo "- Restart this script"
-	exit 0
+  echo "===================="
+  echo "Now:"
+  echo "- Close this terminal window"
+  echo "- Open a new one"
+  echo "- Restart this script"
+  exit 0
 fi
 
 echo "Step 2 / 2"
@@ -38,3 +38,6 @@ nvm alias default $LATEST_NODE_LTS_VERSION
 
 # Enable corepack, needed for Yarn 2+ to work
 corepack enable
+
+# Use oroshi eslint config globally
+ln -sf ~/.oroshi/eslint.config.js ~/eslint.config.js

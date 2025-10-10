@@ -7,7 +7,6 @@ local config = {
   dependencies = {
     -- Mason packages (LSP servers, formatters, linters)
     mason = {
-      "eslint-lsp",
       "lua-language-server",
       "prettier",
       "shfmt",
@@ -51,8 +50,11 @@ local config = {
       formatters = { "shfmt" },
     },
     javascript = {
-      lsp = { "eslint" },
+      linters = { "eslint" },
       formatters = { "prettier" },
+      configureLinter = function(lint)
+        lint.linters.eslint = require("lint.linters.eslint")
+      end,
     },
     json = {
       formatters = { "prettier" },
