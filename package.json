@@ -6,7 +6,7 @@
   "type": "module",
   "description": "This package.json is here to allow me to have pinned node libs",
   "devDependencies": {
-    "aberlaas": "2.16.0",
+    "aberlaas": "2.17.0",
     "eslint_d": "14.3.0",
     "firost": "5.2.1",
     "golgoth": "3.0.0",

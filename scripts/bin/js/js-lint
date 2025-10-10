@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+
+# Write a zsh script that:
+# - takes one js file as arguments
+# - accepts an optional --json parameter
+#
+# Check where is located the input file by running "yarn-root --force". This
+# will give the path to the project root (where the package.json is)
+#
+# We then check if there is an eslint config file there (either eslint.config.js
+# or .eslintrc.js).
+#
+# - If it has such a config, it use it. Otherwise it should fallback to the
+# config in ~/.oroshi/eslint.config.js
+#
+# It should then run eslint_d on that file, with that config.
+# If --json is passed, it should output the results in json format.
