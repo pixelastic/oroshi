@@ -1,34 +1,5 @@
 local M = {}
 
-M.configureFormatter = function()
-  local conform = require("conform")
-
-  -- Add custom formatter
-  conform.formatters_by_ft.zsh = { "shfmt_zsh" }
-
-  -- Configure it
-  conform.formatters.shfmt_zsh = {
-    command = "shfmt",
-    args = { "-i", vim.o.shiftwidth },
-    exit_codes = { 0, 1 }, -- Fail silently if can't format because of zsh-specific syntax
-  }
-end
-
-M.configureLinter = function()
-  local lint = require("lint")
-
-  -- Add custom linter
-  lint.linters.zshlint = {
-    cmd = "zshlint",
-    stdin = false,
-    ignore_exitcode = true,
-    parser = M.lintParser,
-  }
-
-  -- Use it
-  lint.linters_by_ft.zsh = { "zshlint" }
-end
-
 -- Parser to convert CLI output to diagnostics
 M.lintParser = function(output)
   if output == "" then

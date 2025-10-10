@@ -50,11 +50,18 @@ local config = {
       formatters = { "shfmt" },
     },
     javascript = {
-      linters = { "eslint" },
-      formatters = { "eslint_d" },
+      linters = { "oroshi_js_lint" },
       configureLinter = function(lint)
-        lint.linters.eslint = require("lint.linters.eslint")
+        local javascriptHelper = O_require("oroshi/plugins/helpers/filetypes/javascript")
+        lint.linters.oroshi_js_lint = {
+          cmd = "js-lint",
+          stdin = false,
+          args = { "--json" },
+          ignore_exitcode = true,
+          parser = javascriptHelper.lintParser,
+        }
       end,
+      -- formatters = { "eslint_d" },
     },
     json = {
       formatters = { "prettier" },
@@ -116,8 +123,7 @@ local config = {
           exit_codes = { 0, 1 }, -- Fail silently on zsh-specific syntax
         }
       end,
-      configureLinter = function()
-        local lint = require("lint")
+      configureLinter = function(lint)
         local zshHelper = O_require("oroshi/plugins/helpers/filetypes/zsh")
         lint.linters.zshlint = {
           cmd = "zshlint",
