@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 # Runs eslint on js files
-# Wrapper around eslint_d to be used from Vim/ALE config
+# Wrapper around eslint_d to be used from Vim config
 #
 # Sometimes when updating eslint dependencies, eslint_d needs a restart,
 # otherwise it output "No ESLint found", and the whole file is replaced with
@@ -9,8 +9,8 @@
 local output="$(eslint_d $@)"
 
 if [[ $output == "No ESLint found" ]]; then
-	eslint_d restart
-	eslint_d $@
+  eslint_d restart
+  eslint_d $@
 else
-	printf '%s' "$output"
+  printf '%s' "$output"
 fi

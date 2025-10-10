@@ -3413,15 +3413,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint_d@npm:^14.1.1":
-  version: 14.1.1
-  resolution: "eslint_d@npm:14.1.1"
+"eslint_d@npm:14.3.0":
+  version: 14.3.0
+  resolution: "eslint_d@npm:14.3.0"
   dependencies:
+    debug: "npm:^4.3.7"
     eslint: "npm:^9.8.0"
-    supports-color: "npm:^9.4.0"
+    supports-color: "npm:^7.2.0"
   bin:
     eslint_d: bin/eslint_d.js
-  checksum: 10c0/b03a032631e236d9d4c0d5395d13cf535c77a483467e975e8ba83f5301e7edf44f3fcece40e3d0236ca5fb1343c1f3d0de547808498c37e37833c4c7cfd35047
+  checksum: 10c0/5e9e804425113d98f38f8de64641862ffb0a304042143db536b5243d81630a8a18c39717b51ab84720ba30d116408d1fc0067fa5753663400e222170e75f83af
   languageName: node
   linkType: hard
 
@@ -6182,7 +6183,7 @@ __metadata:
   resolution: "oroshi@workspace:."
   dependencies:
     aberlaas: "npm:2.16.0"
-    eslint_d: "npm:^14.1.1"
+    eslint_d: "npm:14.3.0"
     firost: "npm:5.2.1"
     golgoth: "npm:3.0.0"
     remark-frontmatter: "npm:^1.3.2"
@@ -8384,19 +8385,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"supports-color@npm:^7.0.0, supports-color@npm:^7.1.0":
+"supports-color@npm:^7.0.0, supports-color@npm:^7.1.0, supports-color@npm:^7.2.0":
   version: 7.2.0
   resolution: "supports-color@npm:7.2.0"
   dependencies:
     has-flag: "npm:^4.0.0"
   checksum: 10c0/afb4c88521b8b136b5f5f95160c98dee7243dc79d5432db7efc27efb219385bbc7d9427398e43dd6cc730a0f87d5085ce1652af7efbe391327bc0a7d0f7fc124
-  languageName: node
-  linkType: hard
-
-"supports-color@npm:^9.4.0":
-  version: 9.4.0
-  resolution: "supports-color@npm:9.4.0"
-  checksum: 10c0/6c24e6b2b64c6a60e5248490cfa50de5924da32cf09ae357ad8ebbf305cc5d2717ba705a9d4cb397d80bbf39417e8fdc8d7a0ce18bd0041bf7b5b456229164e4
   languageName: node
   linkType: hard
 

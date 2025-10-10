@@ -1,6 +1,0 @@
-# Hidden files (.babelrc.js, .huskyrc.js, etc) are ignored by default by ESLint
-# The following line will unignore them
-!.*
-
-# node_modules in subfolders are not ignored by default
-node_modules

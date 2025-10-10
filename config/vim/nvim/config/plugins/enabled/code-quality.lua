@@ -51,7 +51,7 @@ local config = {
     },
     javascript = {
       linters = { "eslint" },
-      formatters = { "prettier" },
+      formatters = { "eslint_d" },
       configureLinter = function(lint)
         lint.linters.eslint = require("lint.linters.eslint")
       end,

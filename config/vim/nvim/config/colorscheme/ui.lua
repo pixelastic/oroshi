@@ -221,7 +221,7 @@ O.colors.statusline = {
   -- Special
   healthcheck = { bg = "RED_LIGHT", fg = "WHITE" }, -- Healthcheck
   codecompanion = { bg = "AMBER_7", fg = "AMBER_1" }, -- CodeCompanion
-  kitty = { bg = "GRAY_7", fg = "YELLOW", bold = true }, -- Kitty pager
+  kitty = { bg = "BLUE", fg = "WHITE", bold = true }, -- Kitty pager
   -- Right side
   fileencoding = { bg = "RED_9", fg = "RED_2" }, -- Fileencoding
   macro = { fg = "RED", bg = "DARK_RED" }, -- Macro

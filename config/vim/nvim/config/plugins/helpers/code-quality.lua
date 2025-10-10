@@ -118,6 +118,7 @@ function M.configureFormatters(filetypesConfig)
     format_on_save = {
       timeout_ms = 500,
     },
+    log_level = vim.log.levels.DEBUG,
   })
 
   -- Run all configureFormatter functions
