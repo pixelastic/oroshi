@@ -18,9 +18,12 @@ return {
   end,
   -- closeTab: Close a specific tab or current tab
   closeTab = function(tabId)
+    -- Attempt to save buffer before closing
+    F.saveBuffer()
+
     -- If last tab, we instead close vim
     if F.tabCount() == 1 then
-      vim.cmd("qall")
+      vim.cmd("qall!")
       return
     end
 
