@@ -1,78 +1,11 @@
 #!/usr/bin/env zsh
 # mic2text: Transcribe what is being said into text
-# Greatly inspired by https://github.com/QuantiusBenignus/BlahST
+# Uses the model returned by mic2txt-model (default to openai whisper)
 # Usage:
-# $ mic2txt transcribe   # Starts recording then...
-#   mic2txt transcribe   # ...stops the recording and display the transcription
-#
-# $ mic2txt translate    # Translate the transcription in english
+# $ mic2txt # Starts recording then...
+#   mic2txt # ...stops the recording and display the transcription
 
-# Available methods:
-# transcribe: output text directly
-# translate:  output text, translated into english
-# slackify:   Translate to english and rewrite
-local method=${1:-transcribe}
+local mic2txtModel=$(mic2txt-model)
 
-local tmpFolder=/dev/shm/oroshi_speech-to-text
-local pidFile=${tmpFolder}/PID
-local recordFile=${tmpFolder}/record.wav
-
-# Check if a recording is already running (so we can stop it), or not (so we can
-# start it)
-mkdir -p $tmpFolder
-local isRecordingRunning=0
-[[ -f $pidFile ]] && isRecordingRunning=1
-
-# RECORD {{{
-# No recording running, starting one
-if [[ $isRecordingRunning == "0" ]]; then
-  rec \
-    --rate 16000 \
-    --channels 1 \
-    $recordFile &
-
-  # Save the pid
-  echo $! >$pidFile
-  exit 0
-fi
-# }}}
-
-# OUTPUT {{{
-# A recording is already started, we stop it after 2s (to catch the last words)
-sleep 2
-kill-pid "$(cat $pidFile)"
-
-function saveToHistory() {
-  local name=$1
-  local content=$2
-  local now="$(date '+%Y-%m-%d-%H-%M')"
-  local historyFolder=~/local/tmp/oroshi/mic2txt/history
-
-  mkdir -p $historyFolder
-  echo $content >"${historyFolder}/${now}-${name}.log"
-}
-
-# We transcribe to text (french or english)
-local transcription=""
-if [[ $method == 'transcribe' ]]; then
-  transcription="$(transcribe-api $recordFile)"
-  saveToHistory transcribe "$transcription"
-fi
-
-if [[ $method == 'translate' ]]; then
-  transcription="$(translate-api $recordFile)"
-  saveToHistory translate "$transcription"
-
-  transcription="$(slackify $transcription)"
-  saveToHistory slackify "$transcription"
-fi
-
-# Play a sound to indicate it's being pasted
-audio-play ~/.oroshi/config/audio/sounds/bg-stealth.wav &
-
-# Insert the transcription wherever I'm currently focused
-focus-insert "$transcription"
-
-# Cleanup the pid file
-rm $pidFile
-# }}}
+[[ $mic2txtModel = "openai" ]] && mic2txt-openai
+[[ $mic2txtModel = "deepgram" ]] && mic2txt-deepgram

@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+# Toggle the model used by mic2txt
+# Possible values are: openai, deepgram and will cycle through them
+
+local mic2txtDirectory=$OROSHI_TMP_FOLDER/mic2txt
+local modelFile="${mic2txtDirectory}/model"
+mkdir -p $mic2txtDirectory
+
+# Find next model
+local currentModel="$(mic2txt-model)"
+[[ $currentModel = "openai" ]] && nextModel="deepgram"
+[[ $currentModel = "deepgram" ]] && nextModel="openai"
+
+echo $nextModel >$modelFile
+
+# Update kitty statusbar
+kitty-refresh

@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# Display the current model used for mic2txt
+
+cat $OROSHI_TMP_FOLDER/mic2txt/model 2>/dev/null || echo "openai"

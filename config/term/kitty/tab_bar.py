@@ -25,6 +25,7 @@ KITTY_OPTIONS = get_options()
 # Note: use kitty-refresh script to force-refresh the display for debugging
 STATUSBAR_DEFINITION = [
     # "spotify:5",
+    "mic2txt-model:60",
     "sound-mode:60",
     "battery:60",
     "cpu:30",

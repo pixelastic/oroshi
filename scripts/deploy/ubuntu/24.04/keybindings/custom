@@ -7,22 +7,21 @@ local ROOT_KEY="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings
 # Define keybindings {{{
 local                  shortcuts=(
   # Name                 Binding           Command
-  "Calculator"           "Insert"          "gnome-calculator"
-  "Emote"                "<Super>E"        "flatpak run com.tomjwatson.Emote"
-  "Chrome"               "<Super>C"        "google-chrome"
-  "Firefox"              "<Super>F"        "firefox"
-  "Slack"                "<Super>S"        "slack"
-  "Kitty"                "<Super>T"        "/home/tim/.oroshi/scripts/bin/kitty/kitty-restore"
-  "Keepass"              "<Super>K"        "/home/tim/.oroshi/scripts/bin/better-keepass /home/tim/perso/Dropbox/tim/keys.kdbx"
+  "Calculator"              "Insert"          "gnome-calculator"
+  "Emote"                   "<Super>E"        "flatpak run com.tomjwatson.Emote"
+  "Chrome"                  "<Super>C"        "google-chrome"
+  "Firefox"                 "<Super>F"        "firefox"
+  "Slack"                   "<Super>S"        "slack"
+  "Kitty"                   "<Super>T"        "/home/tim/.oroshi/scripts/bin/kitty/kitty-restore"
+  "Keepass"                 "<Super>K"        "/home/tim/.oroshi/scripts/bin/better-keepass /home/tim/perso/Dropbox/tim/keys.kdbx"
 
-  "Spotify Pause"        "<Super>I"        "/home/tim/.oroshi/scripts/bin/spotify/spotify"
-  "Spotify Next"         "<Super>L"        "/home/tim/.oroshi/scripts/bin/spotify/spotify-next"
-  "Spotify Previous"     "<Super>H"        "/home/tim/.oroshi/scripts/bin/spotify/spotify-previous"
+  "Spotify Pause"           "<Super>I"        "/home/tim/.oroshi/scripts/bin/spotify/spotify"
+  "Spotify Next"            "<Super>L"        "/home/tim/.oroshi/scripts/bin/spotify/spotify-next"
+  "Spotify Previous"        "<Super>H"        "/home/tim/.oroshi/scripts/bin/spotify/spotify-previous"
 
-  "mic2text"             "<Ctrl>F14"       "/home/tim/.oroshi/scripts/bin/audio/mic2txt-stream/lib/mic2txt-stream"
-  # "mic2text (fr)"        "<Ctrl>F14"       "/home/tim/.oroshi/scripts/bin/audio/mic2txt transcribe"
-  # "mic2text (en)"        "<Shift>F14"      "/home/tim/.oroshi/scripts/bin/audio/mic2txt translate"
-  "Flameshot"            "<Super>F14"      'script --command "flameshot gui" /dev/null'
+  "Flameshot"               "<Super>F14"      'script --command "flameshot gui" /dev/null'
+  "mic2text"                "<Ctrl>F14"       "/home/tim/.oroshi/scripts/bin/audio/mic2txt"
+  "mic2text-model-toggle"   "<Shift>F14"      "/home/tim/.oroshi/scripts/bin/audio/mic2txt-model-toggle"
 )
 # }}}
 

@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+# JSON info about current model to use for mic2txt
+source $ZSH_CONFIG_PATH/theming/env/colors.zsh
+
+local mic2txtModel=$(mic2txt-model)
+
+# Do not display anything if openai
+if [[ $mic2txtModel = "openai" ]]; then
+  local icon="¤ "
+  local color=$COLOR_GRAY
+fi
+
+if [[ $mic2txtModel = "deepgram" ]]; then
+  local icon="ⅅ "
+  local color=$COLOR_GREEN
+fi
+
+jo text=$icon fg=$color | jo -a
