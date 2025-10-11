@@ -211,7 +211,6 @@ end
 nmap(";", addSemicolonAtEndOfLine, "Add a semicolon at end of line")
 
 -- Paste
-nmap("P", ":pu!", "Paste right before current line")
 vmap("p", '"_x:pu', "Paste in place of current selection")
 nmap("gp", "`[v`]", "Select what was just pasted")
 nmap("c", '"_c', "Change without copying it")
