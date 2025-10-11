@@ -21,6 +21,9 @@ projectRoot=$(yarn-root ${inputFile:h} --force 2>/dev/null)
 # Config file
 configFile=~/.oroshi/eslint.config.js
 if [[ $projectRoot != "" ]]; then
+  # Move to root, as this affects eslint resolution of plugins
+  cd "$projectRoot" || exit 1
+
   [[ -f "$projectRoot/.eslintrc.js" ]] && configFile="$projectRoot/.eslintrc.js"
   [[ -f "$projectRoot/eslint.config.js" ]] && configFile="$projectRoot/eslint.config.js"
 fi
@@ -31,7 +34,6 @@ if [[ $isJson -gt 0 ]]; then
   formatAsJson="--format json"
 fi
 
-# Run eslint_d
 eslint_d \
   --config "$configFile" \
   ${=formatAsJson} \
