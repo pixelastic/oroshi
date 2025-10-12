@@ -150,8 +150,9 @@ M.getErrorDetails = function(lineNumber)
 
   -- Craft the message; not all diagnostics have a code
   local content = message
-  if code and code ~= "" then
-    content = code .. " : " .. message
+  local codeStr = tostring(code)
+  if codeStr ~= "" then
+    content = codeStr .. " : " .. message
   end
 
   return {
