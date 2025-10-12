@@ -369,3 +369,9 @@ O_STATUSLINE = {
     return table.concat(statusline, "")
   end,
 }
+
+-- We make sure to clear the statuslineFileData whenever we rename the file,
+-- otherwise it will keep displaying the old name
+F.autocmd("BufFilePost", function()
+  vim.b.statuslineFileData = nil
+end)
