@@ -48,7 +48,6 @@ hl("Debug", "XXX") --		debugging statements
 hl("Define", "XXX") --		preprocessor #define
 hl("Ignore", "XXX") --		left blank, hidden  |hl-Ignore|
 hl("PreCondit", "XXX") --	preprocessor #if, #else, #endif, etc.
-hl("SpecialComment", "XXX") --	special things inside a comment
 hl("Typedef", "XXX") --		a typedef
 -- }}}
 

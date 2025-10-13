@@ -28,6 +28,21 @@ end
 
 -- Configure the diag line displayed at the bottom
 M.configureDiagLine = function()
+  local function updateDiagLine()
+    local data = M.getDiagData()
+    local currentLineNumber = F.lineNumber()
+
+    -- No error: We hide
+    local error = M.getErrorDetails(currentLineNumber)
+    if not error then
+      M.hide(data)
+      return
+    end
+
+    -- Update content of the diag line
+    M.update(data, error)
+  end
+
   -- Update it whenever the cursor moves
   autocmd("CursorMoved", function()
     local data = M.getDiagData()
@@ -39,16 +54,11 @@ M.configureDiagLine = function()
     end
     data.lineNumber = currentLineNumber -- Update current line
 
-    -- No error: We hide
-    local error = M.getErrorDetails(currentLineNumber)
-    if not error then
-      M.hide(data)
-      return
-    end
-
-    -- Update content of the diag line
-    M.update(data, error)
+    updateDiagLine()
   end)
+
+  -- Update when diagnostics change (e.g., after conform fixes)
+  autocmd("DiagnosticChanged", updateDiagLine)
 
   -- Replace it at the bottom whenever we resize
   autocmd({ "VimResized", "BufEnter" }, function()

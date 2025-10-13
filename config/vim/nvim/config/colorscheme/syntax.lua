@@ -3,6 +3,7 @@ local hl = F.hl
 -- Syntax groups {{{
 hl("Boolean", "BOOLEAN", { bold = true })
 hl("Comment", "COMMENT")
+hl("SpecialComment", "COMMENT", { underline = true })
 hl("Conditional", "STATEMENT") --	if, then, else, endif, switch, etc.
 hl("Constant", "CONSTANT", { bold = true })
 hl("Delimiter", "PUNCTUATION")
