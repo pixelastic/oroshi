@@ -67,8 +67,8 @@ local config = {
       configureFormatter = function(conform)
         conform.formatters.oroshi_js_fix = {
           command = "js-fix",
-          stdin = false,
-          args = { "--in-place", "$FILENAME" },
+          stdin = true,
+          args = { "--filepath", "$FILENAME" },
           exit_codes = { 0, 1 }, -- Do not fail on unfixable errors
         }
       end,
@@ -120,6 +120,10 @@ local config = {
           }),
         }
       end,
+    },
+    typescript = {
+      linters = { "oroshi_js_lint" },
+      formatters = { "oroshi_js_fix" },
     },
     zsh = {
       formatters = { "shfmt_zsh" },

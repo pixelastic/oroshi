@@ -1,44 +1,72 @@
 #!/usr/bin/env zsh
 # js-fix: Fix a JavaScript file
 # Usage:
-# $ js-fix ./path/to/file.js           # Output fixed code to stdout
-# $ js-fix --in-place ./path/to/file.js # Overwrite the file
+# $ js-fix ./path/to/file.js                       # Output fixed code to stdout
+# $ js-fix --in-place ./path/to/file.js            # Overwrite the file in place
+# $ echo "code" | js-fix                           # Bad code form stdin, good code to stdout
+# $ echo "code" | js-fix --filepath ./realpath.js  # We can be specific about where the code is located
 
 zparseopts -E -D \
-  -in-place=flagInPlace
+  -in-place=flagInPlace \
+  -filepath:=flagFilepath
 isInPlace=${#flagInPlace}
+overrideFilepath=${flagFilepath[2]}
 
-# Input file
-inputFile="${1:a}"
-if [[ ! -f "$inputFile" ]]; then
-  echo "Error: File '$inputFile' not found" >&2
-  exit 1
-fi
+# Check if input is being piped
+hasStdin=0
+[[ ! -t 0 ]] && hasStdin=1
 
-# Project root
-projectRoot=$(yarn-root ${inputFile:h} --force 2>/dev/null)
+# inputFilepath is the file to read
+# realFilepath is where the file is located (for eslint rule resolution)
+inputFilepath="${1:a}"
+realFilepath="$inputFilepath"
+[[ $overrideFilepath != "" ]] && realFilepath="$overrideFilepath"
+
+# Project root (based on the real file location)
+projectRoot=$(yarn-root ${realFilepath:h} --force 2>/dev/null)
 
 # Config file
 configFile=~/.oroshi/eslint.config.js
 if [[ $projectRoot != "" ]]; then
+  # Move to root, as this affects eslint resolution of plugins
+  cd "$projectRoot" || exit 1
+
   [[ -f "$projectRoot/.eslintrc.js" ]] && configFile="$projectRoot/.eslintrc.js"
   [[ -f "$projectRoot/eslint.config.js" ]] && configFile="$projectRoot/eslint.config.js"
 fi
 
-# Output to stdout
-if [[ $isInPlace = 0 ]]; then
-  # shellcheck disable=SC2094
-  eslint_d \
+# Input is stdin, output is stdout
+if [[ $hasStdin = 1 ]]; then
+  # Code being piped
+  stdinContent="$(cat)"
+
+  # Additional arguments
+  additionalArguments=()
+  if [[ $realFilepath != "" ]]; then
+    additionalArguments+=("--stdin-filename")
+    additionalArguments+=("${realFilepath:a}")
+  fi
+
+  printf '%s' "$stdinContent" | eslint_d \
     --config "$configFile" \
-    --fix-to-stdout \
     --stdin \
-    --stdin-filename "$inputFile" \
-    <"$inputFile"
-  return
+    ${=additionalArguments} \
+    --fix-to-stdout
+  exit $?
 fi
 
-# Update file in place
+# Input is a file, fix in place
+if [[ $isInPlace = 1 ]]; then
+  eslint_d \
+    --config "$configFile" \
+    --fix \
+    "$inputFilepath" 2>/dev/null
+  exit $?
+fi
+
+# Input is a file, output the stdout
 eslint_d \
-  --fix \
   --config "$configFile" \
-  "$inputFile" >&/dev/null
+  --stdin \
+  --fix-to-stdout \
+  <"$inputFilepath"
