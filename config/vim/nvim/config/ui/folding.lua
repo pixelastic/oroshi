@@ -159,7 +159,7 @@ end
 -- text: Text to display when folded
 O.folding.text = function()
   local prefixSymbol = ""
-  local firstLine = F.getLine(vim.v.foldstart)
+  local firstLine = F.line(vim.v.foldstart)
   local firstChar = firstLine:sub(1, 1)
 
   -- Just return the line if I don't have enough space to add the marker
