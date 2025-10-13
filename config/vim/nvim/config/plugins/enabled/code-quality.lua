@@ -28,6 +28,8 @@ local config = {
       "ini",
       "javascript",
       "jsdoc",
+      "typescript",
+      "tsx",
       "json",
       "markdown",
       "markdown_inline",

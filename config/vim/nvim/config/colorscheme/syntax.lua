@@ -201,6 +201,10 @@ hl("shVarAssign", "PUNCTUATION")
 -- Toml {{{
 hl("@property.toml", "none")
 --- }}}
+--- TypeScript {{{
+hl("@tag.delimiter.tsx", "PUNCTUATION")
+hl("@tag.builtin.tsx", "KEYWORD")
+--- }}}
 -- vim {{{
 hl("@label.vim", "STRING")
 hl("@keyword.vim", "TEAL")
