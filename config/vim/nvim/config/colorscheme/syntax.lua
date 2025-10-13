@@ -105,7 +105,6 @@ hl("@markup.heading.html", "PURPLE_4", { bold = true })
 -- }}}
 -- JavaScript {{{
 hl("@keyword.exception.javascript", "YELLOW", { bold = true })
-
 -- }}}
 -- json {{{
 hl("jsonQuote", "STRING")
