@@ -31,6 +31,7 @@ local config = {
       "typescript",
       "tsx",
       "json",
+      "jsonc",
       "markdown",
       "markdown_inline",
       "nginx",
