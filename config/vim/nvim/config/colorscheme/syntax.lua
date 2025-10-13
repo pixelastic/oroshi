@@ -105,6 +105,7 @@ hl("@markup.heading.html", "PURPLE_4", { bold = true })
 -- }}}
 -- JavaScript {{{
 hl("@keyword.exception.javascript", "YELLOW", { bold = true })
+hl("@keyword.import.javascript", "YELLOW_5", { bold = true })
 -- }}}
 -- json {{{
 hl("jsonQuote", "STRING")
@@ -203,6 +204,9 @@ hl("@property.toml", "none")
 --- TypeScript {{{
 hl("@tag.delimiter.tsx", "PUNCTUATION")
 hl("@tag.builtin.tsx", "KEYWORD")
+hl("typescriptDocTags", "none")
+hl("typescriptDocNotation", "none")
+hl("@keyword.import.typescript", "YELLOW_5", { bold = true })
 --- }}}
 -- vim {{{
 hl("@label.vim", "STRING")
