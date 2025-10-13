@@ -5,7 +5,6 @@
 # $ js-fix --in-place ./path/to/file.js            # Overwrite the file in place
 # $ echo "code" | js-fix                           # Bad code form stdin, good code to stdout
 # $ echo "code" | js-fix --filepath ./realpath.js  # We can be specific about where the code is located
-
 zparseopts -E -D \
   -in-place=flagInPlace \
   -filepath:=flagFilepath
@@ -13,6 +12,8 @@ isInPlace=${#flagInPlace}
 overrideFilepath=${flagFilepath[2]}
 
 # Check if input is being piped
+# Note: [[ -p /dev/stdin ]] doesn't seem to work with conform (nvim).
+# This seem the most reliable way
 hasStdin=0
 [[ ! -t 0 ]] && hasStdin=1
 
@@ -22,10 +23,8 @@ inputFilepath="${1:a}"
 realFilepath="$inputFilepath"
 [[ $overrideFilepath != "" ]] && realFilepath="$overrideFilepath"
 
-# Project root (based on the real file location)
+# Config file (in project, or fallback to root)
 projectRoot=$(yarn-root ${realFilepath:h} --force 2>/dev/null)
-
-# Config file
 configFile=~/.oroshi/eslint.config.js
 if [[ $projectRoot != "" ]]; then
   # Move to root, as this affects eslint resolution of plugins
@@ -36,9 +35,12 @@ if [[ $projectRoot != "" ]]; then
 fi
 
 # Input is stdin, output is stdout
+# $ cat file.js | js-fix
+# $ cat tmp.js | js-fix --filename ./realpath.js
 if [[ $hasStdin = 1 ]]; then
-  # Code being piped
-  stdinContent="$(cat)"
+  local stdinFile="${OROSHI_TMP_FOLDER}/js-fix/js-fix-$RANDOM"
+  mkdir -p "${OROSHI_TMP_FOLDER}/js-fix"
+  cat > $stdinFile
 
   # Additional arguments
   additionalArguments=()
@@ -47,15 +49,19 @@ if [[ $hasStdin = 1 ]]; then
     additionalArguments+=("${realFilepath:a}")
   fi
 
-  printf '%s' "$stdinContent" | eslint_d \
+  eslint_d \
     --config "$configFile" \
     --stdin \
+    --fix-to-stdout \
     ${=additionalArguments} \
-    --fix-to-stdout
-  exit $?
+    <$stdinFile
+  local exitCode=$?
+  rm -f "$stdinFile"
+  exit $exitCode
 fi
 
 # Input is a file, fix in place
+# $ js-fix --in-place file.js
 if [[ $isInPlace = 1 ]]; then
   eslint_d \
     --config "$configFile" \
@@ -65,8 +71,10 @@ if [[ $isInPlace = 1 ]]; then
 fi
 
 # Input is a file, output the stdout
+# $ js-fix file.js
 eslint_d \
   --config "$configFile" \
   --stdin \
   --fix-to-stdout \
-  <"$inputFilepath"
+  --stdin-filename "$inputFilepath" \
+  <$inputFilepath

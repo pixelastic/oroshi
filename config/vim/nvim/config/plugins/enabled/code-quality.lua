@@ -70,8 +70,17 @@ local config = {
           stdin = true,
           args = { "--filepath", "$FILENAME" },
           exit_codes = { 0, 1 }, -- Do not fail on unfixable errors
+          timeout_ms = 5000, -- JS/TS can be slow...
         }
       end,
+    },
+    typescript = {
+      linters = { "oroshi_js_lint" },
+      formatters = { "oroshi_js_fix" },
+    },
+    typescriptreact = {
+      linters = { "oroshi_js_lint" },
+      formatters = { "oroshi_js_fix" },
     },
     json = {
       formatters = { "prettier" },
@@ -120,10 +129,6 @@ local config = {
           }),
         }
       end,
-    },
-    typescript = {
-      linters = { "oroshi_js_lint" },
-      formatters = { "oroshi_js_fix" },
     },
     zsh = {
       formatters = { "shfmt_zsh" },
