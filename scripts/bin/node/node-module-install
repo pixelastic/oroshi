@@ -30,7 +30,13 @@ set -e
 # set, to be sure to be using the global version
 cd ~/local/tmp
 
-local moduleName=$1
+local fullModuleName=$1
+# If fullModuleName contains @ but doesn't start with @ (scoped package), extract the base name
+if [[ $fullModuleName == *"@"* ]] && [[ $fullModuleName != @* ]]; then
+  local baseModuleName="${fullModuleName%%@*}"
+else
+  local baseModuleName="$fullModuleName"
+fi
 local nodeVersion="$(node --version)"
 local installDirectory="${OROSHI_TMP_FOLDER}/node/${nodeVersion}"
 local nvmDirectory="${HOME}/.nvm/versions/node/${nodeVersion}"
@@ -45,10 +51,10 @@ if [[ ! -f package.json ]]; then
 fi
 
 # Add the module
-yarn add $moduleName
+yarn add $fullModuleName
 
 # Find all installed binaries
-local nodeModulesDirectory="${installDirectory}/node_modules/${moduleName}"
+local nodeModulesDirectory="${installDirectory}/node_modules/${baseModuleName}"
 local allBinaries="$(jq -r '
 if has("bin") | not then
   "ERROR"
@@ -60,11 +66,11 @@ end
 ' ${nodeModulesDirectory}/package.json)"
 
 if [[ $allBinaries = "ORIGINAL_MODULE_NAME" ]]; then
-  allBinaries=($moduleName)
+  allBinaries=($baseModuleName)
 fi
 
 if [[ $allBinaries = "ERROR" ]]; then
-  echo "✘ It seems that ${moduleName} has no binary linked."
+  echo "✘ It seems that ${baseModuleName} has no binary linked."
   echo "✘ Make sure you installed the right package."
   exit 1
 fi

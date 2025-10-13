@@ -1,10 +1,10 @@
 #!/usr/bin/env zsh
 # Serve a local directory through http
 # https://github.com/tapio/live-server
+# shellcheck disable=SC1017
 
-node-module-add live-server@1.2.1
+node-module-install live-server@1.2.1
 
 # Weirdly enough, seems like v1.2.2 uses windows line ending on its executable,
-# which breaks running it. It tries to use "node" instead of "node"
-# sudo apt-get install dos2unix
-# dos2unix --follow-symlink ~/.yarn/bin/live-server
+# which breaks running it. It tries to use "node\" instead of "node". So we
+# stick to 1.2.1
