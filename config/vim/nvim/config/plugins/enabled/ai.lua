@@ -14,7 +14,6 @@ local vmap = F.vmap
 --     vim.api.nvim_feedkeys(resolved_key, 'n', true)
 --   end
 -- end),
--- TODO: Copilot as ghost text and manual completion for completion?
 
 return {
   -- Copilot: Suggest code as I type
@@ -28,7 +27,13 @@ return {
       local copilot = require("copilot")
       local commands = require("copilot.command")
 
+      -- Find path to the global node version
+      -- Dynamically get the default Node version from NVM
+      local nodeVersion = F.readFile("~/.nvm/alias/default")
+      local nodePath = F.absolute("~/.nvm/versions/node/", "v" .. nodeVersion, "bin", "node")
+
       copilot.setup({
+        copilot_node_command = nodePath,
         panel = { enabled = false },
         suggestion = {
           enabled = true,

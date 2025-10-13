@@ -46,6 +46,8 @@ F = vim.tbl_extend(
   O_require("oroshi/functions/autocmd"),
   O_require("oroshi/functions/map"),
   O_require("oroshi/functions/highlight"),
+  -- Filesystem
+  O_require("oroshi/functions/file"),
   -- Debug
   O_require("oroshi/functions/debug"),
   O_require("oroshi/functions/hacks"),
