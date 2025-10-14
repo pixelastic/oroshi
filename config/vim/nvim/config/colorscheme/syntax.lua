@@ -30,7 +30,7 @@ hl("Tag", "VARIABLE_TYPE")
 hl("Todo", "ORANGE_3", { bg = "RED_7", bold = true })
 hl("Title", "HEADER") --		Titles for output from ":set all", ":autocmd" etc.
 hl("Type", "VARIABLE_TYPE")
-hl("Underlined", "none", { underline = true }) --	text that stands out, HTML links
+hl("Underlined", "none", { underline = true })
 -- }}}
 
 -- Diff / Git {{{
@@ -208,6 +208,7 @@ hl("@tag.builtin.tsx", "KEYWORD")
 hl("typescriptDocTags", "none")
 hl("typescriptDocNotation", "none")
 hl("@keyword.import.typescript", "YELLOW_5", { bold = true })
+hl("@markup.link.label.tsx", "none")
 --- }}}
 -- vim {{{
 hl("@label.vim", "STRING")
