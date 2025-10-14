@@ -1,0 +1,51 @@
+#!/usr/bin/env zsh
+# json-fix: Fix a JSON file with proper indentation and alphabetically sorted keys
+# Usage:
+# $ json-fix ./path/to/file.json                       # Output fixed JSON to stdout
+# $ json-fix --in-place ./path/to/file.json            # Overwrite the file in place
+# $ echo "json" | json-fix                             # JSON from stdin, fixed JSON to stdout
+
+zparseopts -E -D \
+  -in-place=flagInPlace
+isInPlace=${#flagInPlace}
+
+# Check if input is being piped
+hasStdin=0
+[[ ! -t 0 ]] && hasStdin=1
+
+# inputFilepath is the file to read
+inputFilepath="${1:a}"
+
+# Input is stdin, output is stdout
+# $ cat file.json | json-fix
+if [[ $hasStdin = 1 ]]; then
+  local stdinFile="${OROSHI_TMP_FOLDER}/json-fix/json-fix-$RANDOM"
+  mkdir -p "${OROSHI_TMP_FOLDER}/json-fix"
+  cat >$stdinFile
+
+  jq --sort-keys --indent 2 '.' "$stdinFile"
+  local exitCode=$?
+  rm -f "$stdinFile"
+  exit $exitCode
+fi
+
+# Input is a file, fix in place
+# $ json-fix --in-place file.json
+if [[ $isInPlace = 1 ]]; then
+  local tmpFile="${OROSHI_TMP_FOLDER}/json-fix/json-fix-$RANDOM"
+  mkdir -p "${OROSHI_TMP_FOLDER}/json-fix"
+
+  jq --sort-keys --indent 2 '.' "$inputFilepath" >"$tmpFile"
+  local exitCode=$?
+
+  if [[ $exitCode = 0 ]]; then
+    mv "$tmpFile" "$inputFilepath"
+  else
+    rm -f "$tmpFile"
+  fi
+  exit $exitCode
+fi
+
+# Input is a file, output to stdout
+# $ json-fix file.json
+jq --sort-keys --indent 2 '.' "$inputFilepath"
