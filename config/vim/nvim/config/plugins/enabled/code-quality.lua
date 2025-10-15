@@ -1,6 +1,8 @@
 local helperDiagline = O_require("oroshi/plugins/helpers/diagline")
 local helperStatusline = O_require("oroshi/plugins/helpers/statusline")
 local helper = O_require("oroshi/plugins/helpers/code-quality")
+local javascriptHelper = O_require("oroshi/plugins/helpers/filetypes/javascript")
+local jsonHelper = O_require("oroshi/plugins/helpers/filetypes/json")
 
 local config = {
   -- Dependencies to install globally
@@ -55,36 +57,25 @@ local config = {
     javascript = {
       linters = { "oroshi_js_lint" },
       formatters = { "oroshi_js_fix" },
-      configureLinter = function(lint)
-        local javascriptHelper = O_require("oroshi/plugins/helpers/filetypes/javascript")
-        lint.linters.oroshi_js_lint = {
-          cmd = "js-lint",
-          stdin = false,
-          args = { "--json" },
-          ignore_exitcode = true,
-          parser = javascriptHelper.lintParser,
-        }
-      end,
-      configureFormatter = function(conform)
-        conform.formatters.oroshi_js_fix = {
-          command = "js-fix",
-          stdin = true,
-          args = { "--filepath", "$FILENAME" },
-          exit_codes = { 0, 1 }, -- Do not fail on unfixable errors
-          timeout_ms = 5000, -- JS/TS can be slow...
-        }
-      end,
+      configureLinter = javascriptHelper.configureLinter,
+      configureFormatter = javascriptHelper.configureFormatter,
     },
     typescript = {
       linters = { "oroshi_js_lint" },
       formatters = { "oroshi_js_fix" },
+      configureLinter = javascriptHelper.configureLinter,
+      configureFormatter = javascriptHelper.configureFormatter,
     },
     typescriptreact = {
       linters = { "oroshi_js_lint" },
       formatters = { "oroshi_js_fix" },
+      configureLinter = javascriptHelper.configureLinter,
+      configureFormatter = javascriptHelper.configureFormatter,
     },
     json = {
+      linters = { "oroshi_json_lint" },
       formatters = { "prettier" },
+      configureLinter = jsonHelper.configureLinter,
     },
     lua = {
       lsp = { "lua_ls" },

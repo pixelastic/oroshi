@@ -1,5 +1,35 @@
 local M = {}
 
+-- Configure linter if not already configured
+M.configureLinter = function(lint)
+  if lint.linters.oroshi_js_lint then
+    return -- Already configured
+  end
+  
+  lint.linters.oroshi_js_lint = {
+    cmd = "js-lint",
+    stdin = false,
+    args = { "--json" },
+    ignore_exitcode = true,
+    parser = M.lintParser,
+  }
+end
+
+-- Configure formatter if not already configured
+M.configureFormatter = function(conform)
+  if conform.formatters.oroshi_js_fix then
+    return -- Already configured
+  end
+  
+  conform.formatters.oroshi_js_fix = {
+    command = "js-fix",
+    stdin = true,
+    args = { "--filepath", "$FILENAME" },
+    exit_codes = { 0, 1 }, -- Do not fail on unfixable errors
+    timeout_ms = 5000, -- JS/TS can be slow...
+  }
+end
+
 -- Parser to convert CLI output to diagnostics
 M.lintParser = function(output)
   local json = vim.json.decode(output)

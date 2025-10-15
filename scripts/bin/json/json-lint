@@ -1,0 +1,47 @@
+#!/usr/bin/env zsh
+# json-lint: Lint a JSON file for syntax errors
+# Usage:
+# $ json-lint ./path/to/file.json       # For CLI
+# $ json-lint --json ./path/to/file.json  # For Vim
+
+zparseopts -E -D \
+  -json=flagJson
+isJson=${#flagJson}
+
+# Input file
+inputFile="${1:a}"
+if [[ ! -f "$inputFile" ]]; then
+  echo "Error: File '$inputFile' not found" >&2
+  exit 1
+fi
+
+local tmpResult=$(jq '.' "$inputFile" 2>&1)
+
+# Stop if no parse error
+local isOk=1
+[[ $tmpResult != "jq: parse error:"* ]] && exit 0
+
+local errorMessage=$(echo "$tmpResult" | sed 's/jq: parse error: //g' | sed 's/ at line [0-9]*, column [0-9]*//g')
+local errorLine=$(echo "$tmpResult" | sed -n 's/.*line \([0-9]*\).*/\1/p')
+local errorColumn=$(echo "$tmpResult" | sed -n 's/.*column \([0-9]*\).*/\1/p')
+[[ $errorLine = "" ]] && errorLine=1
+[[ $errorColumn = "" ]] && errorColumn=1
+
+if [[ $isJson = 1 ]]; then
+  local messageObj=$(jo ruleId="json-syntax" \
+    severity=2 \
+    message="$errorMessage" \
+    line=$errorLine \
+    column=$errorColumn \
+    nodeType="JSONSyntaxError")
+  echo "[$(jo filePath="$inputFile" \
+    messages="[$messageObj]" \
+    errorCount=1 \
+    warningCount=0)]"
+  exit 1
+fi
+
+# Display errors in ESLint-like format
+echo "$inputFile"
+echo "  $errorLine:$errorColumn  error  $errorMessage"
+exit 1
