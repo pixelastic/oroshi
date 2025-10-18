@@ -36,6 +36,13 @@ source $NVM_DIR/nvm.sh
 nvm install $LATEST_NODE_LTS_VERSION --no-nvmrc
 nvm alias default $LATEST_NODE_LTS_VERSION
 
+# Create a symlink to the binaries, to add to the path
+# Note: We can't directly link to the directory, because nvm would otherwise
+# overwrite it in folders where nvm is used.
+ln \
+  -fs $NVM_DIR/versions/node/v$LATEST_NODE_LTS_VERSION/bin \
+  $OROSHI_TMP_FOLDER/node/bin
+
 # Enable corepack, needed for Yarn 2+ to work
 corepack enable
 
