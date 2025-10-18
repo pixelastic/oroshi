@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# Copilot from the CLI
+# https://github.com/github/copilot-cli
+set -e
+
+# Install claude-code globally
+node-module-install @github/copilot
