@@ -17,6 +17,7 @@ function git-branch-rename-master-to-main() {
     renameLocalBranch
     pushMainToRemote
     updateGitHubDefaultBranch "$fullRepo"
+    switchToMain
     deleteRemoteMaster
 
     # Update tools config files
@@ -106,7 +107,7 @@ function git-branch-rename-master-to-main() {
     fi
 
     # Push main to origin
-    git-branch-push main origin
+    git-branch-push main origin &>/dev/null
     successMessage "Pushed main to origin"
   }
 
@@ -126,7 +127,21 @@ function git-branch-rename-master-to-main() {
     successMessage "Set main as default branch on GitHub"
   }
 
-  # Step 4: Delete remote master branch
+  # Step 4: Switch to main branch
+  function switchToMain() {
+    # Already on main, nothing to do
+    local currentBranch=$(git-branch-current)
+    if [[ "$currentBranch" == "main" ]]; then
+      skipMessage "Already on main branch"
+      return 0
+    fi
+
+    # Switch to main
+    git-branch-switch main &>/dev/null
+    successMessage "Switched to main branch"
+  }
+
+  # Step 5: Delete remote master branch
   function deleteRemoteMaster() {
     # Remote master already deleted, nothing to do
     if ! git-branch-exists-remote master origin; then
