@@ -17,7 +17,9 @@
       "mcp__task-master__add_task",
       "mcp__task-master__set_task_status",
       "mcp__task-master__update_task",
-      "mcp__task-master__get_tasks"
+      "mcp__task-master__get_tasks",
+      "mcp__context7__resolve-library-id",
+      "WebFetch(domain:projects.pixelastic.com)"
     ],
     "deny": []
   },
