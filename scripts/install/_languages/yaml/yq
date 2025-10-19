@@ -1,4 +1,11 @@
 #!/usr/bin/env zsh
-# Parse YAML with a jq-like syntax
+# Parse YAML, and TOML with a jq-like syntax
 # https://github.com/mikefarah/yq
-pip install yq
+
+# Download the latest release binary
+local version="v4.44.3"
+local url="https://github.com/mikefarah/yq/releases/download/${version}/yq_linux_amd64"
+
+# Download and install
+curl -sL "$url" -o ~/local/bin/yq
+chmod +x ~/local/bin/yq

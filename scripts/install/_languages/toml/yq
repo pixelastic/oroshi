@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Parse TOML with a jq-like syntax
+# This is actually yq, which also supports TOML
+# See yaml/yq for the actual installation
+
+~/.oroshi/scripts/install/_languages/yaml/yq
