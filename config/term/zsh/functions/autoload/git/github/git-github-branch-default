@@ -1,0 +1,14 @@
+# Get the default branch name from the GitHub repository
+# Usage:
+# $ git-github-branch-default                    # Get default branch for current repo
+# $ git-github-branch-default owner/repo         # Get default branch for specific repo
+function git-github-branch-default() {
+  local repo="$1"
+
+  # If no repo specified, use current repo
+  if [[ -z "$repo" ]]; then
+    repo=$(git-github-remote-project)
+  fi
+
+  gh repo view "$repo" --json defaultBranchRef -q .defaultBranchRef.name
+}

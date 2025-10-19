@@ -1,0 +1,180 @@
+# Rename master branch to main for a GitHub repository
+# Updates local, remote, GitHub default branch, and config files
+#
+# Usage:
+# $ git-branch-rename-master-to-main                 # Use current repo
+# $ git-branch-rename-master-to-main firost          # pixelastic/firost
+# $ git-branch-rename-master-to-main owner/repo      # Custom owner
+function git-branch-rename-master-to-main() {
+  function main() {
+    # Main execution
+    local fullRepo=$(parseRepoArgument "$1") || return 1
+
+    # Check everything is available
+    preFlightChecks "$fullRepo" || return 1
+
+    # Update local and remote config
+    renameLocalBranch
+    pushMainToRemote
+    updateGitHubDefaultBranch "$fullRepo"
+    deleteRemoteMaster
+
+    # Update tools config files
+    updateNetlify
+    updateGitHub
+    updateRenovate
+
+    # Commit any config changes
+    # commitConfigChanges
+  }
+
+  # Display success message
+  function successMessage() {
+    echo "✔ $1"
+  }
+
+  # Display skip message
+  function skipMessage() {
+    echo "· $1"
+  }
+
+  # Display error message
+  function errorMessage() {
+    echo "✘ $1" >&2
+  }
+
+  # Parse repository argument
+  function parseRepoArgument() {
+    local arg="$1"
+
+    # Contains slash: owner/repo format
+    if [[ "$arg" == */* ]]; then
+      echo "$arg"
+      return 0
+    fi
+
+    # Just repo name: default to pixelastic
+    if [[ -n "$arg" ]]; then
+      echo "pixelastic/$arg"
+      return 0
+    fi
+
+    # No argument: use current directory
+    if ! git-directory-is-repository; then
+      errorMessage "Not in a git repository"
+      return 1
+    fi
+
+    git-github-remote-project
+  }
+
+  # Pre-flight checks
+  function preFlightChecks() {
+    local fullRepo="$1"
+
+    if ! command -v gh &>/dev/null; then
+      errorMessage "gh CLI is not installed"
+      return 1
+    fi
+
+    if ! gh repo view "$fullRepo" &>/dev/null; then
+      errorMessage "Repository $fullRepo not found or not accessible"
+      return 1
+    fi
+  }
+
+  # Step 1: Rename or create local main branch
+  function renameLocalBranch() {
+    # Already have main locally, nothing to do
+    if git-branch-exists main; then
+      skipMessage "Local main branch already exists"
+      return 0
+    fi
+
+    # No local master, nothing to do
+    if ! git-branch-exists master; then
+      skipMessage "No local master branch found"
+      return 0
+    fi
+
+    # Copy master to main
+    git-branch-copy master main
+    successMessage "Copied master → main"
+  }
+
+  # Step 2: Push main branch to remote
+  function pushMainToRemote() {
+    # Remote main already exists, nothing to do
+    if git-branch-exists-remote main origin; then
+      skipMessage "Remote main branch already exists"
+      return 0
+    fi
+
+    # Push main to origin
+    git-branch-push main origin
+    successMessage "Pushed main to origin"
+  }
+
+  # Step 3: Update default branch on GitHub
+  function updateGitHubDefaultBranch() {
+    local fullRepo="$1"
+    local currentDefault=$(git-github-branch-default "$fullRepo")
+
+    # Already set to main, nothing to do
+    if [[ "$currentDefault" == "main" ]]; then
+      skipMessage "Default branch already set to main on GitHub"
+      return 0
+    fi
+
+    # Update default branch
+    git-github-branch-default-update main "$fullRepo"
+    successMessage "Set main as default branch on GitHub"
+  }
+
+  # Step 4: Delete remote master branch
+  function deleteRemoteMaster() {
+    # Remote master already deleted, nothing to do
+    if ! git-branch-exists-remote master origin; then
+      skipMessage "Remote master branch already deleted"
+      return 0
+    fi
+
+    # Delete remote master
+    git-branch-remove-remote master &>/dev/null
+    successMessage "Deleted remote master branch"
+  }
+
+  # Placeholder functions for config updates
+  function updateNetlify() {
+    # TODO: Implement netlify.toml updates
+    :
+  }
+
+  function updateGitHub() {
+    # TODO: Implement .github/workflows/*.yml updates
+    :
+  }
+
+  function updateRenovate() {
+    # TODO: Implement renovate.json updates
+    :
+  }
+
+  # Commit config file changes
+  function commitConfigChanges() {
+    # No changes, nothing to commit
+    if [[ -z $(git status --porcelain) ]]; then
+      skipMessage "No config files to update"
+      return 0
+    fi
+
+    # Commit and push changes
+    git add -A
+    git commit -m "chore: update default branch from master to main" &>/dev/null
+    git push origin main &>/dev/null
+    successMessage "Config files updated and committed"
+  }
+
+  main "$@"
+
+}

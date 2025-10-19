@@ -1,0 +1,20 @@
+# Update the default branch for a GitHub repository
+# Usage:
+# $ git-github-branch-default-update main                 # Update default branch to main for current repo
+# $ git-github-branch-default-update main owner/repo      # Update default branch to main for specific repo
+function git-github-branch-default-update() {
+  local branchName="$1"
+  local repo="$2"
+
+  if [[ -z "$branchName" ]]; then
+    echo "Error: Branch name is required" >&2
+    return 1
+  fi
+
+  # If no repo specified, use current repo
+  if [[ -z "$repo" ]]; then
+    repo=$(git-github-remote-project)
+  fi
+
+  gh repo edit "$repo" --default-branch "$branchName" &>/dev/null
+}

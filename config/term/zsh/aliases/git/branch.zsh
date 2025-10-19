@@ -1,4 +1,5 @@
 # [b]ranch
+alias master2main='git-branch-rename-master-to-main'
 alias vbM='git-branch-merge'
 alias vbRr='git-branch-remove-remote'
 alias vbR='git-branch-remove'
