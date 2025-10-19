@@ -11,7 +11,12 @@
       "Bash(tail:*)",
       "Grep(*)",
       "Glob(*)",
-      "LS(*)"
+      "LS(*)",
+      "mcp__task-master__initialize_project",
+      "mcp__task-master__add_task",
+      "mcp__task-master__set_task_status",
+      "mcp__task-master__update_task",
+      "mcp__task-master__get_tasks"
     ],
     "deny": []
   },
