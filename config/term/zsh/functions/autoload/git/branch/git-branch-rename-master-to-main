@@ -20,12 +20,7 @@ function git-branch-rename-master-to-main() {
     deleteRemoteMaster
 
     # Update tools config files
-    updateNetlify
-    updateGitHub
-    updateRenovate
-
-    # Commit any config changes
-    # commitConfigChanges
+    updateNetlify "$fullRepo"
   }
 
   # Display success message
@@ -144,35 +139,23 @@ function git-branch-rename-master-to-main() {
     successMessage "Deleted remote master branch"
   }
 
-  # Placeholder functions for config updates
+  # Update Netlify configuration
   function updateNetlify() {
-    # TODO: Implement netlify.toml updates
-    :
-  }
+    local fullRepo="$1"
 
-  function updateGitHub() {
-    # TODO: Implement .github/workflows/*.yml updates
-    :
-  }
-
-  function updateRenovate() {
-    # TODO: Implement renovate.json updates
-    :
-  }
-
-  # Commit config file changes
-  function commitConfigChanges() {
-    # No changes, nothing to commit
-    if [[ -z $(git status --porcelain) ]]; then
-      skipMessage "No config files to update"
+    # Check if netlify.toml exists in remote repo
+    if ! gh api "repos/${fullRepo}/contents/netlify.toml" &>/dev/null; then
       return 0
     fi
 
-    # Commit and push changes
-    git add -A
-    git commit -m "chore: update default branch from master to main" &>/dev/null
-    git push origin main &>/dev/null
-    successMessage "Config files updated and committed"
+    # Display manual update instructions
+    local netlifyProject="${fullRepo//\//-}"
+    echo ""
+    echo "⚠ Manual update required for Netlify:"
+    echo "  1. Go to https://app.netlify.com/projects/${netlifyProject}/configuration/deploys#branches-and-deploy-contexts"
+    echo "  2. Click 'Configure' next to 'Production branch'"
+    echo "  3. Update from 'master' to 'main'"
+    echo ""
   }
 
   main "$@"
