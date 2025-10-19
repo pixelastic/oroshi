@@ -1,13 +1,13 @@
 # Slugify a string (ie. camelCase it)
 # Usage:
 # $ slugify "The Eternal Obelisk"    # theEternalObelisk
+# $ slugify "example.com/path"       # exampleComPath
 function slugify() {
 	local input="$1"
-  # Remove all non-alphanumeric characters
-  # and capitalize the first letter of each word
+  # Replace special chars (., /, -, etc) with spaces, then capitalize first letter of each word
   local capitalized="$(
     echo "$input" |
-     sed -r 's/[^a-zA-Z0-9]//g' |
+     sed -r 's/[^a-zA-Z0-9]+/ /g' |
      tr -s ' ' |
      sed -r 's/(^| )([a-zA-Z])/\U\2/g' |
      sed -r 's/ //g'

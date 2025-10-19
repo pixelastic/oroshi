@@ -1,0 +1,48 @@
+# Take a screenshot of a website and save it as a PNG file
+# Usage:
+# $ url2img https://example.com              # Saves to exampleCom.png
+# $ url2img https://example.com output.png   # Saves to output.png
+function url2img() {
+  local url=$1
+
+  # Generate default filename from URL slug if not provided
+  local defaultOutput
+  if [[ -z "$2" ]]; then
+    # Remove protocol using zsh pattern substitution
+    local urlWithoutProtocol=$url
+    urlWithoutProtocol=${url#http://}
+    urlWithoutProtocol=${urlWithoutProtocol#https://}
+
+    defaultOutput="$(slugify "$urlWithoutProtocol").png"
+  fi
+
+  local output=${2:-$defaultOutput}
+
+  # Check if API key is set
+  if [[ -z "$MICROLINK_API_KEY" ]]; then
+    echo "Error: MICROLINK_API_KEY environment variable is not set"
+    return 1
+  fi
+
+  # Check if URL is provided
+  if [[ -z "$url" ]]; then
+    echo "Usage: url2img <url> [output-file]"
+    return 1
+  fi
+
+  # URL-encode the URL parameter
+  local encodedUrl=$(echo "$url" | jq -sRr @uri)
+
+  # Build the API URL to get the screenshot image directly
+  local apiUrl="https://api.microlink.io/?"
+  apiUrl+="url=${encodedUrl}"
+  apiUrl+="&screenshot=true"
+  apiUrl+="&embed=screenshot.url"
+  apiUrl+="&viewport.width=1920"
+  apiUrl+="&viewport.height=1200"
+  apiUrl+="&viewport.deviceScaleFactor=1"
+  apiUrl+="&apiKey=${MICROLINK_API_KEY}"
+
+  # Download the screenshot directly
+  wget -q "$apiUrl" -O "$output"
+}
