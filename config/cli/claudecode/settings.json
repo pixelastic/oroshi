@@ -9,6 +9,7 @@
       "Bash(cat:*)",
       "Bash(head:*)",
       "Bash(tail:*)",
+      "Bash(git log:*)",
       "Grep(*)",
       "Glob(*)",
       "LS(*)",
