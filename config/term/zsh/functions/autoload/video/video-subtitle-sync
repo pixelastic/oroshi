@@ -1,0 +1,36 @@
+# Sync subtitle file with video
+# Usage:
+# $ video-subtitle-sync ./path/subtitle.srt
+function video-subtitle-sync() {
+  local subtitleFile="$1"
+
+  # Check if subtitle file exists
+  if [[ ! -f "$subtitleFile" ]]; then
+    echo "Error: Subtitle file not found: $subtitleFile" >&2
+    return 1
+  fi
+
+  # Check if it's an SRT file
+  if [[ "$subtitleFile" != *.srt ]]; then
+    echo "Error: File must be an SRT file: $subtitleFile" >&2
+    return 1
+  fi
+
+  # Look for video file with the same base name
+  local baseName="${subtitleFile:r}"
+  local dirName="${subtitleFile:h}"
+  local videoFile=""
+  [[ -f "${baseName}.avi" ]] && videoFile="${baseName}.avi"
+  [[ -f "${baseName}.mkv" ]] && videoFile="${baseName}.mkv"
+  [[ -f "${baseName}.mp4" ]] && videoFile="${baseName}.mp4"
+  if [[ -z "$videoFile" ]]; then
+    echo "Error: No video file found matching: ${baseName}.*" >&2
+    return 1
+  fi
+
+  # Run ffsubsync
+  local tmpFile="$HOME/local/tmp/video-subtitle-sync-${RANDOM}.srt"
+
+  ffs "$videoFile" -i "$subtitleFile" -o "$tmpFile"
+  mv "$tmpFile" "$subtitleFile"
+}

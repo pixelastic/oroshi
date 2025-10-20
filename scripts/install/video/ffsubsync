@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# FFsubsync: Automatically sync subtitles with video
+# https://github.com/smacke/ffsubsync
+set -e
+
+pipx install ffsubsync

@@ -1,0 +1,55 @@
+# Embed a subtitle file into an MKV, replacing all existing subtitles
+# Usage:
+# $ video-subtitle-embed ./video.mkv ./subtitle.srt
+function video-subtitle-embed() {
+  local videoFile="$1"
+  local subtitleFile="$2"
+
+  # Check if video file exists
+  if [[ ! -f "$videoFile" ]]; then
+    echo "Error: Video file not found: $videoFile" >&2
+    return 1
+  fi
+
+  # Check if it's an MKV file
+  if [[ "$videoFile" != *.mkv ]]; then
+    echo "Error: Video file must be MKV format: $videoFile" >&2
+    return 1
+  fi
+
+  # Check if subtitle file exists
+  if [[ ! -f "$subtitleFile" ]]; then
+    echo "Error: Subtitle file not found: $subtitleFile" >&2
+    return 1
+  fi
+
+  # Check if it's an SRT file
+  if [[ "$subtitleFile" != *.srt ]]; then
+    echo "Error: Subtitle file must be SRT format: $subtitleFile" >&2
+    return 1
+  fi
+
+  # Create temporary output file
+  local tmpFile="${videoFile:a:r}.tmp.${videoFile:e}"
+
+  # Use ffmpeg to:
+  # - Copy video streams (-map 0:v)
+  # - Copy audio streams (-map 0:a)
+  # - Skip all existing subtitle streams (no -map 0:s)
+  # - Add new subtitle file (-i for subtitle, -map 1:s)
+  # - Set new subtitle as default (-disposition:s:0 default)
+  # - Copy codecs without re-encoding (-codec copy)
+  ffmpeg \
+    -i "$videoFile" \
+    -i "$subtitleFile" \
+    -loglevel error \
+    -y \
+    -map 0:v \
+    -map 0:a \
+    -map 1:s \
+    -c copy \
+    -c:s srt \
+    -disposition:s:0 default \
+    "$tmpFile"
+  mv "$tmpFile" "$videoFile"
+}
