@@ -1,36 +1,57 @@
-# Sync subtitle file with video
+# Sync subtitle file(s) with video
 # Usage:
 # $ video-subtitle-sync ./path/subtitle.srt
+# $ video-subtitle-sync ./path/subtitle1.srt ./path/subtitle2.srt
+# $ video-subtitle-sync ./path/*.srt
 function video-subtitle-sync() {
-  local subtitleFile="$1"
-
-  # Check if subtitle file exists
-  if [[ ! -f "$subtitleFile" ]]; then
-    echo "Error: Subtitle file not found: $subtitleFile" >&2
+  # Check if any arguments provided
+  if [[ $# -eq 0 ]]; then
+    echo "Error: No subtitle files provided" >&2
+    echo "Usage: video-subtitle-sync <subtitle.srt> [subtitle2.srt ...]" >&2
     return 1
   fi
 
-  # Check if it's an SRT file
-  if [[ "$subtitleFile" != *.srt ]]; then
-    echo "Error: File must be an SRT file: $subtitleFile" >&2
-    return 1
-  fi
+  local exitCode=0
 
-  # Look for video file with the same base name
-  local baseName="${subtitleFile:r}"
-  local dirName="${subtitleFile:h}"
-  local videoFile=""
-  [[ -f "${baseName}.avi" ]] && videoFile="${baseName}.avi"
-  [[ -f "${baseName}.mkv" ]] && videoFile="${baseName}.mkv"
-  [[ -f "${baseName}.mp4" ]] && videoFile="${baseName}.mp4"
-  if [[ -z "$videoFile" ]]; then
-    echo "Error: No video file found matching: ${baseName}.*" >&2
-    return 1
-  fi
+  # Process each subtitle file
+  for subtitleFile in "$@"; do
+    # Check if subtitle file exists
+    if [[ ! -f "$subtitleFile" ]]; then
+      echo "Error: Subtitle file not found: $subtitleFile" >&2
+      exitCode=1
+      continue
+    fi
 
-  # Run ffsubsync
-  local tmpFile="$HOME/local/tmp/video-subtitle-sync-${RANDOM}.srt"
+    # Check if it's an SRT file
+    if [[ "$subtitleFile" != *.srt ]]; then
+      echo "Error: File must be an SRT file: $subtitleFile" >&2
+      exitCode=1
+      continue
+    fi
 
-  ffs "$videoFile" -i "$subtitleFile" -o "$tmpFile"
-  mv "$tmpFile" "$subtitleFile"
+    # Look for video file with the same base name
+    local baseName="${subtitleFile:r}"
+    local dirName="${subtitleFile:h}"
+    local videoFile=""
+    [[ -f "${baseName}.avi" ]] && videoFile="${baseName}.avi"
+    [[ -f "${baseName}.mkv" ]] && videoFile="${baseName}.mkv"
+    [[ -f "${baseName}.mp4" ]] && videoFile="${baseName}.mp4"
+    if [[ -z "$videoFile" ]]; then
+      echo "Error: No video file found matching: ${baseName}.*" >&2
+      exitCode=1
+      continue
+    fi
+
+    echo "Processing: $subtitleFile with $videoFile"
+
+    # Run ffsubsync
+    local tmpFile="$HOME/local/tmp/video-subtitle-sync-${RANDOM}.srt"
+
+    ffs "$videoFile" -i "$subtitleFile" -o "$tmpFile"
+    mv "$tmpFile" "$subtitleFile"
+
+    echo "Completed: $subtitleFile"
+  done
+
+  return $exitCode
 }

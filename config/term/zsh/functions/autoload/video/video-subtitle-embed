@@ -1,55 +1,79 @@
 # Embed a subtitle file into an MKV, replacing all existing subtitles
 # Usage:
-# $ video-subtitle-embed ./video.mkv ./subtitle.srt
+# $ video-subtitle-embed ./video.mkv   # finds matching .srt
+# $ video-subtitle-embed ./subtitle.srt # finds matching .mkv
+# $ video-subtitle-embed ./video1.mkv ./video2.mkv
+# $ video-subtitle-embed ./*.srt
 function video-subtitle-embed() {
-  local videoFile="$1"
-  local subtitleFile="$2"
-
-  # Check if video file exists
-  if [[ ! -f "$videoFile" ]]; then
-    echo "Error: Video file not found: $videoFile" >&2
+  if [[ $# -eq 0 ]]; then
+    echo "Error: No file provided" >&2
+    echo "Usage: video-subtitle-embed <video.mkv|subtitle.srt> [...]" >&2
     return 1
   fi
 
-  # Check if it's an MKV file
-  if [[ "$videoFile" != *.mkv ]]; then
-    echo "Error: Video file must be MKV format: $videoFile" >&2
-    return 1
-  fi
+  local exitCode=0
 
-  # Check if subtitle file exists
-  if [[ ! -f "$subtitleFile" ]]; then
-    echo "Error: Subtitle file not found: $subtitleFile" >&2
-    return 1
-  fi
+  # Process each input file
+  for inputFile in "$@"; do
+    # Check if input file exists
+    if [[ ! -f "$inputFile" ]]; then
+      echo "Error: File not found: $inputFile" >&2
+      exitCode=1
+      continue
+    fi
 
-  # Check if it's an SRT file
-  if [[ "$subtitleFile" != *.srt ]]; then
-    echo "Error: Subtitle file must be SRT format: $subtitleFile" >&2
-    return 1
-  fi
+    local videoFile=""
+    local subtitleFile=""
+    local baseName="${inputFile:r}"
 
-  # Create temporary output file
-  local tmpFile="${videoFile:a:r}.tmp.${videoFile:e}"
+    # Determine file type and find matching counterpart
+    if [[ "$inputFile" == *.mkv ]]; then
+      videoFile="$inputFile"
+      subtitleFile="${baseName}.srt"
+    elif [[ "$inputFile" == *.srt ]]; then
+      videoFile="${baseName}.mkv"
+      subtitleFile="$inputFile"
+    else
+      echo "Error: File must be either .mkv or .srt: $inputFile" >&2
+      exitCode=1
+      continue
+    fi
 
-  # Use ffmpeg to:
-  # - Copy video streams (-map 0:v)
-  # - Copy audio streams (-map 0:a)
-  # - Skip all existing subtitle streams (no -map 0:s)
-  # - Add new subtitle file (-i for subtitle, -map 1:s)
-  # - Set new subtitle as default (-disposition:s:0 default)
-  # - Copy codecs without re-encoding (-codec copy)
-  ffmpeg \
-    -i "$videoFile" \
-    -i "$subtitleFile" \
-    -loglevel error \
-    -y \
-    -map 0:v \
-    -map 0:a \
-    -map 1:s \
-    -c copy \
-    -c:s srt \
-    -disposition:s:0 default \
-    "$tmpFile"
-  mv "$tmpFile" "$videoFile"
+    if [[ ! -f "$videoFile" ]]; then
+      echo "Error: No video file found: ${videoFile}" >&2
+      exitCode=1
+      continue
+    fi
+    if [[ ! -f "$subtitleFile" ]]; then
+      echo "Error: No subtitle file found: ${subtitleFile}" >&2
+      exitCode=1
+      continue
+    fi
+
+    # Create temporary output file
+    local tmpFile="${videoFile:a:r}.tmp.${videoFile:e}"
+
+    # Use ffmpeg to:
+    # - Copy video streams (-map 0:v)
+    # - Copy audio streams (-map 0:a)
+    # - Skip all existing subtitle streams (no -map 0:s)
+    # - Add new subtitle file (-i for subtitle, -map 1:s)
+    # - Set new subtitle as default (-disposition:s:0 default)
+    # - Copy codecs without re-encoding (-codec copy)
+    ffmpeg \
+      -i "$videoFile" \
+      -i "$subtitleFile" \
+      -loglevel error \
+      -y \
+      -map 0:v \
+      -map 0:a \
+      -map 1:s \
+      -c copy \
+      -c:s srt \
+      -disposition:s:0 default \
+      "$tmpFile"
+    mv "$tmpFile" "$videoFile"
+  done
+
+  return $exitCode
 }
