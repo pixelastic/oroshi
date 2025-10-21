@@ -53,6 +53,8 @@ function video-subtitle-embed() {
     # Create temporary output file
     local tmpFile="${videoFile:a:r}.tmp.${videoFile:e}"
 
+    echo "Processing: $videoFile"
+
     # Use ffmpeg to:
     # - Copy video streams (-map 0:v)
     # - Copy audio streams (-map 0:a)

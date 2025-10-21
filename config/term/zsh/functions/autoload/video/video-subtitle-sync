@@ -42,15 +42,13 @@ function video-subtitle-sync() {
       continue
     fi
 
-    echo "Processing: $subtitleFile with $videoFile"
+    echo "Processing: $subtitleFile"
 
     # Run ffsubsync
     local tmpFile="$HOME/local/tmp/video-subtitle-sync-${RANDOM}.srt"
 
-    ffs "$videoFile" -i "$subtitleFile" -o "$tmpFile"
+    ffs "$videoFile" -i "$subtitleFile" -o "$tmpFile" > /dev/null 2>&1
     mv "$tmpFile" "$subtitleFile"
-
-    echo "Completed: $subtitleFile"
   done
 
   return $exitCode
