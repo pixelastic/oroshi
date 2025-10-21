@@ -25,7 +25,17 @@ claude mcp add \
 # Context7 {{{
 # Check up-to-date documentation
 claude mcp add \
-  --transport http \
   --scope user \
-  context7 https://mcp.context7.com/mcp
+  context7 \
+  --transport http \
+  https://mcp.context7.com/mcp
+# }}}
+
+# Make.com {{{
+# Interact with make.com
+claude mcp add \
+  --scope user \
+  make \
+  --transport http \
+  https://mcp.make.com/stream
 # }}}
