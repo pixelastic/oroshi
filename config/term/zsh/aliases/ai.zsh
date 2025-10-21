@@ -21,12 +21,10 @@ alias cursor="gui ~/local/etc/cursor/cursor.AppImage"
 # in each project using a different node version
 # Also running it in bash, so it doesn't inherit from my custom
 # better-{ls,grep,etc} functions that just confuses it
-function oroshi_alias_claude() {
+function claude() {
   local nodeBinaryDir=$OROSHI_TMP_FOLDER/node/bin
-  alias claude="bash -c '${nodeBinaryDir}/node ${nodeBinaryDir}/claude'"
-
+  bash \
+    -c "${nodeBinaryDir}/node ${nodeBinaryDir}/claude \"\$@\"" _ $@
 }
-oroshi_alias_claude
-unfunction oroshi_alias_claude
 
 alias c="claude"
