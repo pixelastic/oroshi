@@ -19,3 +19,10 @@ Keep a consistent coding style matching my preferences across my projects
 - Prefer camelCase for variables, functions, directories, files, etc (unless that specific language/project has a strong opinion against it)
 - Prefer to "return early" in functions if conditions are not met, rather than putting most of the code in a condition
 - Prefer a DX that makes simple things easy and complex things possible
+
+# Dependencies
+
+If you need to check how some dependencies are working, you can find there on
+disk:
+- aberlaas: /home/tim/local/www/projects/aberlaas
+- firost: /home/tim/local/www/projects/firost
