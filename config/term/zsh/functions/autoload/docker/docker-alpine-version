@@ -1,0 +1,41 @@
+# Returns the latest available version of a package in Alpine Linux
+# Usage:
+#   $ docker-alpine-version pipx           # Check pipx in alpine:latest
+#   $ docker-alpine-version pipx 3.21      # Check pipx in alpine:3.21
+function docker-alpine-version() {
+  local packageName="$1"
+  local alpineVersion="${2:-latest}"
+
+  # Validate package name
+  if [[ -z "$packageName" ]]; then
+    echo "Error: Package name is required"
+    echo "Usage: docker-alpine-version <package> [alpine-version]"
+    return 1
+  fi
+
+  # Define the command to run inside the container
+  local apkCmd="cat /etc/alpine-release && apk update &>/dev/null && apk search ${packageName}"
+
+  # Run the docker command and extract the version
+  local output=$(docker run --rm "alpine:${alpineVersion}" sh -c "${apkCmd}" 2>/dev/null)
+
+  # Extract the actual Alpine version from the output
+  local actualAlpineVersion=$(echo "$output" | head -1)
+
+  # Filter for exact package matches and versions (skip first line which is the Alpine version)
+  local result=$(echo "$output" | tail -n +2 | \grep "^${packageName}-[0-9]" | head -1)
+
+  # Check if package was found
+  if [[ -z "$result" ]]; then
+    echo "Package '${packageName}' not found in Alpine ${alpineVersion}"
+    return 1
+  fi
+
+  # Extract version number (remove package name and dash)
+  local packageVersion="${result//${packageName}-/}"
+
+  # Output in Dockerfile format
+  echo "FROM alpine:${actualAlpineVersion}"
+  echo ""
+  echo "${packageName}~=${packageVersion}"
+}
