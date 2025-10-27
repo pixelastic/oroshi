@@ -15,6 +15,7 @@
       "LS(*)",
       "WebFetch(domain:projects.pixelastic.com)",
       "mcp__context7__resolve-library-id",
+      "mcp__context7__get-library-docs",
       "mcp__make__organizations_list",
       "mcp__make__scenarios_list",
       "mcp__make__teams_list",
