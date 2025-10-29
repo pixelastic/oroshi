@@ -33,5 +33,6 @@ local function setupJsKeybindings()
 end
 
 F.ftplugin("javascript", setupJsKeybindings)
+F.ftplugin("javascriptreact", setupJsKeybindings)
 F.ftplugin("typescript", setupJsKeybindings)
 F.ftplugin("typescriptreact", setupJsKeybindings)

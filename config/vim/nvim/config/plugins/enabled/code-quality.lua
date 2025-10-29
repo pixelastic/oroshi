@@ -60,6 +60,12 @@ local config = {
       configureLinter = javascriptHelper.configureLinter,
       configureFormatter = javascriptHelper.configureFormatter,
     },
+    javascriptreact = {
+      linters = { "oroshi_js_lint" },
+      formatters = { "oroshi_js_fix" },
+      configureLinter = javascriptHelper.configureLinter,
+      configureFormatter = javascriptHelper.configureFormatter,
+    },
     typescript = {
       linters = { "oroshi_js_lint" },
       formatters = { "oroshi_js_fix" },
