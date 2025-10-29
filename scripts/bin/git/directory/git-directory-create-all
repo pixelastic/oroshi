@@ -3,16 +3,25 @@ set -e
 # Create a new repository locally, and on GitHub, and install all deps
 # Usage:
 # $ git-directory-create-all ./npcs    # Creates pixelastic/npcs and ./npcs
+# $ git-directory-create-all -a ./npcs # Creates algolia/npcs and ./npcs
 
-# Create a new repo
+# Parse args {{{
+local originalArgs=("$@")
+
+zparseopts -E -D a=flagAlgolia
+local isAlgolia=${#flagAlgolia}
+
 local repoName="${1:t}"
-git-directory-create $repoName
+# }}}
+
+# Create a new repo (pass all original arguments through)
+git-directory-create "${originalArgs[@]}"
 
 cd ./${repoName}
 
 # Load nvm if needed
 if [[ $OROSHI_NVM_LOADED == "0" ]]; then
-	source ~/.nvm/nvm.sh
+  source ~/.nvm/nvm.sh
 fi
 
 # Use right node version
@@ -27,10 +36,14 @@ yarn run aberlaas init
 
 # Commit and push
 git-commit-all "chore(init): Scaffolding"
+# Sync with remote in case GitHub added default files
+git-branch-rebase origin/main
 git-branch-push
 
-# Configure GitHub and CircleCi
-yarn run aberlaas setup
+# Configure GitHub and CircleCi (Optional)
+local additionalSetupArguments=""
+[[ $isAlgolia == "1" ]] && additionalSetupArguments="--circleci=false --renovate=false"
+yarn run aberlaas setup ${=additionalSetupArguments}
 
 # Mark it for future jump
 mark

@@ -5,36 +5,40 @@ set -e
 # $ git-directory-create ./npcs    # Creates pixelastic/npcs and ./npcs
 # $ git-directory-create -n ./npcs # Only creates locally
 # $ git-directory-create -p ./npcs # Creates it private on GitHub
+# $ git-directory-create -a ./npcs # Creates algolia/npcs and ./npcs
 
 zparseopts -E -D \
-	n=flagLocal \
-	p=flagPrivate
-
+  n=flagLocal \
+  p=flagPrivate \
+  a=flagAlgolia
 local isLocal=${#flagLocal}
 local isPrivate=${#flagPrivate}
+local isAlgolia=${#flagAlgolia}
 
 local repoName="${1:t}"
-local repoNameFull="pixelastic/${repoName}"
+local orgName="pixelastic"
+[[ $isAlgolia == "1" ]] && orgName="algolia"
+local repoNameFull="${orgName}/${repoName}"
 local repoPath="${repoName:a}"
 
 # Stop if no repo name given {{{
 if [[ $repoName == "" ]]; then
-	echo "You must pass the name of the new repo"
-	exit 1
+  echo "You must pass the name of the new repo"
+  exit 1
 fi
 # }}}
 # Stop if such a folder already exists {{{
 if [[ -d $repoPath ]]; then
-	echo "Local repository already exists."
-	exit 1
+  echo "Local repository already exists."
+  exit 1
 fi
 # }}}
 # Stop if remote repo already exists {{{
 if [[ $isLocal == "0" ]]; then
-	if git-github-repo-exists $repoNameFull; then
-		echo "Remote repository already exists: https://github.com/${repoNameFull}"
-		exit 1
-	fi
+  if git-github-repo-exists $repoNameFull; then
+    echo "Remote repository already exists: https://github.com/${repoNameFull}"
+    exit 1
+  fi
 fi
 # }}}
 
@@ -56,11 +60,11 @@ git-remote-create origin git@github.com:${repoNameFull}.git
 
 # Create remote repo {{{
 if [[ $isLocal == "0" ]]; then
-	# Create GitHub repo
-	local repoVisibilityArg="--public"
-	[[ $isPrivate == "1" ]] && repoVisibilityArg="--private"
-	gh repo create ${repoVisibilityArg} ${repoNameFull}
+  # Create GitHub repo
+  local repoVisibilityArg="--public"
+  [[ $isPrivate == "1" ]] && repoVisibilityArg="--private"
+  gh repo create ${repoVisibilityArg} ${repoNameFull}
 
-	# Push the branch
-	git-branch-push
+  # Push the branch
+  git-branch-push
 fi
