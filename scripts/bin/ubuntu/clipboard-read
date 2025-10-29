@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# Read text from the clipboard
+# Usage:
+# $ clipboard-read
+set -e
+
+wl-paste

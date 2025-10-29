@@ -16,4 +16,4 @@ fi
 # Output
 echo $output
 # Save to clipboard
-echo $output | xclip -selection clipboard
+clipboard-write "$output"

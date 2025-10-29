@@ -14,6 +14,7 @@ source $ZSH_CONFIG_PATH/keybindings/ctrl-e.zsh             # Edit line in vim
 source $ZSH_CONFIG_PATH/keybindings/ctrl-l.zsh             # List all files in directory
 source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-l.zsh       # Clear terminal
 source $ZSH_CONFIG_PATH/keybindings/ctrl-n.zsh             # Open current directory in Nautilus
+source $ZSH_CONFIG_PATH/keybindings/ctrl-y.zsh             # Copy current directory to clipboard
 source $ZSH_CONFIG_PATH/keybindings/ctrl-question-mark.zsh # Explain what the current command does
 source $ZSH_CONFIG_PATH/keybindings/ctrl-i.zsh             # Open an AI chat
 source $ZSH_CONFIG_PATH/keybindings/ctrl-p.zsh             # Fuzzy-find files in project

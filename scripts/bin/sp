@@ -163,8 +163,7 @@ function sp-url {
 function sp-clip {
   # Copies the HTTP url.
 
-  require xclip
-  sp-url | xclip
+  sp-url | clipboard-write
 }
 
 function sp-http {

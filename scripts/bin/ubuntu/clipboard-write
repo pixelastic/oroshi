@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+# Write text to the clipboard
+# Usage:
+# $ clipboard-write "some text"
+# $ echo "some text" | clipboard-write
+set -e
+
+local input="$1"
+
+# If no argument, read from stdin
+if [[ -z "$input" ]]; then
+  input="$(cat)"
+fi
+
+# Write to clipboard using wl-copy
+echo -n "$input" | wl-copy

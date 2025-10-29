@@ -6,17 +6,17 @@
 # Note: This will probably be triggered from a keybinding
 set -e
 
+local input=$1
+
 # Store the input in the mouse Middle-Click.
 # This will be useful in case the other methods fail
 echo $input | wl-copy -p
 
-local input=$1
-
 # We save the current clipboard
-local currentClipboard="$(wl-paste)"
+local currentClipboard="$(clipboard-read)"
 
 # Save the transcription in the Ctrl-C clipboard
-echo $input | wl-copy
+clipboard-write "$input"
 
 # Press Ctrl-Shift-V
 # 29: Ctrl
@@ -26,4 +26,4 @@ better-ydotool key 29:1 42:1 47:1 47:0 42:0 29:0
 
 # We revert the previous clipboard after a short pause
 sleep 1
-echo $currentClipboard | wl-copy
+clipboard-write "$currentClipboard"
