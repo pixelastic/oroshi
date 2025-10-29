@@ -10,19 +10,26 @@ local function setupJsKeybindings()
   F.imap("dsc", function()
     vim.api.nvim_put({ "describe('', () => {", "\t\t", "\t});" }, "c", false, true)
     vim.cmd("normal! 2k^10l")
-  end, "Insert describe() block", { buffer = bufferId })
+  end, "describe()", { buffer = bufferId })
 
   -- it('should do something', () => {
   -- });
   F.imap("iit", function()
     vim.api.nvim_put({ "it('', () => {", "\t\t", "\t});" }, "c", false, true)
     vim.cmd("normal! 2k^4l")
-  end, "Insert it() test case", { buffer = bufferId })
+  end, "it()", { buffer = bufferId })
+
+  -- vi.spyOn()
+  F.imap("vspo", function()
+    vim.api.nvim_put({ "vi.spyOn()" }, "c", false, true)
+    vim.cmd("normal! 1h")
+  end, "vi.spyOn()", { buffer = bufferId })
 
   -- Expects
   F.imap("thp", "toHaveProperty(", "toHaveProperty assertion", { buffer = bufferId })
   F.imap("tbt", "toBe(true)", "toBe(true) assertion", { buffer = bufferId })
   F.imap("tbf", "toBe(false)", "toBe(false) assertion", { buffer = bufferId })
+  F.imap("mrv", "mockReturnValue()", "mockReturnValue()", { buffer = bufferId })
 end
 
 F.ftplugin("javascript", setupJsKeybindings)
