@@ -108,6 +108,11 @@ hl("@markup.heading.html", "PURPLE_4", { bold = true })
 hl("@keyword.exception.javascript", "YELLOW", { bold = true })
 hl("@keyword.import.javascript", "YELLOW_5", { bold = true })
 -- }}}
+-- JSX {{{
+hl("@tag.delimiter.javascript", "PUNCTUATION")
+hl("@tag.builtin.javascript", "KEYWORD")
+hl("@tag.javascript", "FUNCTION")
+-- }}}
 -- json {{{
 hl("jsonQuote", "STRING")
 -- }}}
