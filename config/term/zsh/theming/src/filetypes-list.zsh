@@ -37,6 +37,7 @@ FILETYPE_GROUPS[script:patterns]="\
   jsonl \
   json \
   js \
+  jsx \
   kbd \
   lua \
   mjs \
