@@ -1,0 +1,56 @@
+#!/usr/bin/env zsh
+# html-fix: Fix an HTML file
+# Usage:
+# $ html-fix ./path/to/file.html                       # Output fixed code to stdout
+# $ html-fix --in-place ./path/to/file.html            # Overwrite the file in place
+# $ echo "html" | html-fix                             # HTML from stdin, fixed HTML to stdout
+# $ echo "html" | html-fix --filepath ./realpath.html  # Specify file location for config resolution
+
+zparseopts -E -D \
+  -in-place=flagInPlace \
+  -filepath:=flagFilepath
+isInPlace=${#flagInPlace}
+overrideFilepath=${flagFilepath[2]}
+
+# Check if input is being piped
+hasStdin=0
+[[ ! -t 0 ]] && hasStdin=1
+
+# inputFilepath is the file to read
+# realFilepath is where the file is located (for prettier config resolution)
+inputFilepath="${1:a}"
+realFilepath="$inputFilepath"
+[[ $overrideFilepath != "" ]] && realFilepath="$overrideFilepath"
+
+# Config file (in project, or fallback to root)
+projectRoot=$(yarn-root ${realFilepath:h} --force)
+configFile=~/.oroshi/prettier.config.js
+if [[ $projectRoot != "" ]]; then
+  [[ -f "$projectRoot/prettier.config.js" ]] && configFile="$projectRoot/prettier.config.js"
+  [[ -f "$projectRoot/.prettierrc.js" ]] && configFile="$projectRoot/.prettierrc.js"
+fi
+
+# Input is stdin, output is stdout
+# $ cat file.html | html-fix
+# $ cat tmp.html | html-fix --filepath ./realpath.html
+if [[ $hasStdin = 1 ]]; then
+  local stdinFile="${OROSHI_TMP_FOLDER}/html-fix/html-fix-$RANDOM"
+  mkdir -p "${OROSHI_TMP_FOLDER}/html-fix"
+  cat >$stdinFile
+
+  prettier --config "$configFile" --parser html "$stdinFile"
+  local exitCode=$?
+  rm -f "$stdinFile"
+  exit $exitCode
+fi
+
+# Input is a file, fix in place
+# $ html-fix --in-place file.html
+if [[ $isInPlace = 1 ]]; then
+  prettier --config "$configFile" --write "$inputFilepath" >/dev/null 2>&1
+  exit $?
+fi
+
+# Input is a file, output to stdout
+# $ html-fix file.html
+prettier --config "$configFile" "$inputFilepath"

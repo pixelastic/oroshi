@@ -6575,6 +6575,7 @@ __metadata:
     firost: "npm:5.2.1"
     golgoth: "npm:3.0.0"
     pietro: "npm:0.6.1"
+    prettier: "npm:3.6.2"
     remark-frontmatter: "npm:^1.3.2"
     remark-lint-no-trailing-spaces: "npm:^2.0.1"
     remark-preset-lint-consistent: "npm:^2.0.3"
@@ -7001,6 +7002,15 @@ __metadata:
   bin:
     prettier: bin/prettier.cjs
   checksum: 10c0/b85828b08e7505716324e4245549b9205c0cacb25342a030ba8885aba2039a115dbcf75a0b7ca3b37bc9d101ee61fab8113fc69ca3359f2a226f1ecc07ad2e26
+  languageName: node
+  linkType: hard
+
+"prettier@npm:3.6.2":
+  version: 3.6.2
+  resolution: "prettier@npm:3.6.2"
+  bin:
+    prettier: bin/prettier.cjs
+  checksum: 10c0/488cb2f2b99ec13da1e50074912870217c11edaddedeadc649b1244c749d15ba94e846423d062e2c4c9ae683e2d65f754de28889ba06e697ac4f988d44f45812
   languageName: node
   linkType: hard
 

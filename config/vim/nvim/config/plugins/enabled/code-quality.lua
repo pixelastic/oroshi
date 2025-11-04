@@ -54,6 +54,9 @@ local config = {
     bash = {
       formatters = { "shfmt" },
     },
+    html = {
+      formatters = { "prettier" },
+    },
     javascript = {
       linters = { "oroshi_js_lint" },
       formatters = { "oroshi_js_fix" },
@@ -61,18 +64,6 @@ local config = {
       configureFormatter = javascriptHelper.configureFormatter,
     },
     javascriptreact = {
-      linters = { "oroshi_js_lint" },
-      formatters = { "oroshi_js_fix" },
-      configureLinter = javascriptHelper.configureLinter,
-      configureFormatter = javascriptHelper.configureFormatter,
-    },
-    typescript = {
-      linters = { "oroshi_js_lint" },
-      formatters = { "oroshi_js_fix" },
-      configureLinter = javascriptHelper.configureLinter,
-      configureFormatter = javascriptHelper.configureFormatter,
-    },
-    typescriptreact = {
       linters = { "oroshi_js_lint" },
       formatters = { "oroshi_js_fix" },
       configureLinter = javascriptHelper.configureLinter,
@@ -127,6 +118,18 @@ local config = {
           }),
         }
       end,
+    },
+    typescript = {
+      linters = { "oroshi_js_lint" },
+      formatters = { "oroshi_js_fix" },
+      configureLinter = javascriptHelper.configureLinter,
+      configureFormatter = javascriptHelper.configureFormatter,
+    },
+    typescriptreact = {
+      linters = { "oroshi_js_lint" },
+      formatters = { "oroshi_js_fix" },
+      configureLinter = javascriptHelper.configureLinter,
+      configureFormatter = javascriptHelper.configureFormatter,
     },
     zsh = {
       formatters = { "shfmt_zsh" },
