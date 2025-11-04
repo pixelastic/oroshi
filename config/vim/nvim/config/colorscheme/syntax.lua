@@ -85,7 +85,10 @@ hl("@constant.bash", "VARIABLE")
 hl("@tag.css", "GREEN", { bold = true })
 hl("@attribute.css", "RED_4") -- pseudo-classes
 hl("@property.css", "RED_4")
-hl("cssUnitDecorators", "BLUE_4", { bold = true })
+hl("cssUnitDecorators", "WHITE")
+hl("cssAttrRegion", "KEYWORD")
+hl("@keyword.directive.css", "YELLOW")
+hl("@keyword.modifier.css", "RED_5", { bold = true })
 -- }}}
 -- Dockerfile {{{
 hl("dockerfileKeyword", "FUNCTION")
