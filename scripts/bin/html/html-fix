@@ -25,9 +25,12 @@ realFilepath="$inputFilepath"
 # Config file (in project, or fallback to root)
 projectRoot=$(yarn-root ${realFilepath:h} --force)
 configFile=~/.oroshi/prettier.config.js
+prettierBin="prettier"
 if [[ $projectRoot != "" ]]; then
   [[ -f "$projectRoot/prettier.config.js" ]] && configFile="$projectRoot/prettier.config.js"
   [[ -f "$projectRoot/.prettierrc.js" ]] && configFile="$projectRoot/.prettierrc.js"
+  # Use project's prettier if it exists
+  [[ -f "$projectRoot/node_modules/.bin/prettier" ]] && prettierBin="$projectRoot/node_modules/.bin/prettier"
 fi
 
 # Input is stdin, output is stdout
@@ -38,7 +41,7 @@ if [[ $hasStdin = 1 ]]; then
   mkdir -p "${OROSHI_TMP_FOLDER}/html-fix"
   cat >$stdinFile
 
-  prettier --config "$configFile" --parser html "$stdinFile"
+  $prettierBin --config "$configFile" --parser html "$stdinFile"
   local exitCode=$?
   rm -f "$stdinFile"
   exit $exitCode
@@ -47,10 +50,10 @@ fi
 # Input is a file, fix in place
 # $ html-fix --in-place file.html
 if [[ $isInPlace = 1 ]]; then
-  prettier --config "$configFile" --write "$inputFilepath" >/dev/null 2>&1
+  $prettierBin --config "$configFile" --write "$inputFilepath" >/dev/null 2>&1
   exit $?
 fi
 
 # Input is a file, output to stdout
 # $ html-fix file.html
-prettier --config "$configFile" "$inputFilepath"
+$prettierBin --config "$configFile" "$inputFilepath"
