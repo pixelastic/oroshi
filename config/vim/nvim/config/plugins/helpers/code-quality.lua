@@ -116,7 +116,7 @@ function M.configureFormatters(filetypesConfig)
   conform.setup({
     formatters_by_ft = formatters_by_ft,
     format_on_save = {
-      timeout_ms = 500,
+      timeout_ms = 3000,
     },
     log_level = vim.log.levels.DEBUG,
   })

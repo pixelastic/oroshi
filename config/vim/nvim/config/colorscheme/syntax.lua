@@ -101,6 +101,7 @@ hl("@label.vimdoc", "GREEN_7")
 hl("htmlHead", "none", { bg = "DARK_BLUE" })
 hl("@tag.delimiter.html", "PUNCTUATION")
 hl("@tag.html", "KEYWORD")
+hl("@constant.html", "YELLOW", { bold = true })
 hl("@tag.attribute.html", "VARIABLE_TYPE")
 hl("@markup.heading.html", "PURPLE_4", { bold = true })
 -- }}}
