@@ -1,0 +1,42 @@
+# Extract screenshot(s) from a video at specific timestamps
+# Usage:
+# $ video-screenshot ./video.mp4 2.5                  # Extract at 2.5s → video-2.5.png
+# $ video-screenshot ./video.mp4 2.5 2.6 2.7          # Extract multiple screenshots
+# $ video-screenshot ./video.mp4 --force/-f 2.5 2.6   # Force overwrite existing files
+function video-screenshot() {
+  zparseopts -E -D \
+    f=flagForce \
+    -force=flagForce
+  local isForce=${#flagForce}
+
+  local inputFile="${1:a}"
+  shift
+
+  # Stop if no input file or no timestamps
+  if [[ ! -f "$inputFile" ]] || [[ $# -eq 0 ]]; then
+    echo "Usage: video-screenshot <file> <time1> [time2] ... [-f|--force]"
+    return 1
+  fi
+
+  local timestamps=($@)
+  local baseName="${inputFile:t:r}"
+  local inputDir="${inputFile:h}"
+
+  for timestamp in $timestamps; do
+    local outputFile="${inputDir}/${baseName}-${timestamp}.png"
+
+    # Skip if output already exists (unless --force)
+    if [[ -f "$outputFile" ]] && [[ $isForce == "0" ]]; then
+      echo "✘ ${outputFile:t} already exists. Pass --force / -f to overwrite"
+      continue
+    fi
+
+    ffmpeg \
+      -ss "$timestamp" \
+      -i "$inputFile" \
+      -vframes 1 \
+      -y \
+      "$outputFile" \
+      -loglevel error
+  done
+}
