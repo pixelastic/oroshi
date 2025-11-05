@@ -60,11 +60,8 @@ M.configureDiagLine = function()
   -- Update when diagnostics change (e.g., after conform fixes)
   autocmd("DiagnosticChanged", updateDiagLine)
 
-  -- Replace it at the bottom whenever we resize
-  autocmd({ "VimResized", "BufEnter" }, function()
-    local data = M.getDiagData()
-    M.alignAtBottomOfScreen(data)
-  end)
+  -- Recalculate padding and realign when window is resized
+  autocmd({ "VimResized", "BufEnter" }, updateDiagLine)
 end
 
 -- Create a (hidden) diag line, as a window at the bottom of the screen
@@ -104,28 +101,29 @@ M.update = function(data, error)
     M.create(data)
   end
 
-  -- Update content
-  local content = F.split(error.content, "\n")
-  vim.api.nvim_buf_set_lines(
-    data.bufferId, -- bufferId
-    0,
-    -1, -- Range, from beginning to end
-    false, -- Do not error if adds more lines than previously
-    content -- Actual content
-  )
+  -- Build string to display
+  local width = F.width()
+  local message = error.message
+  local source = error.source or ""
 
-  -- Change highlight groups
+  -- Calculate padding to align [source] to the right
+  local padding = width - F.length(message) - F.length(source) - 1
+  if padding < 2 then
+    padding = 2
+  end
+
+  local content = message .. string.rep(" ", padding) .. source
+
+  F.updateBuffer({ content }, data.bufferId)
+
+  -- Change highlight groups based on severity (error = red, warning = yellow, etc.)
   local severityToHighlight = {
     [vim.diagnostic.severity.ERROR] = "DiagnosticDiagLineError",
     [vim.diagnostic.severity.WARN] = "DiagnosticDiagLineWarn",
     [vim.diagnostic.severity.INFO] = "DiagnosticDiagLineInfo",
     [vim.diagnostic.severity.HINT] = "DiagnosticDiagLineHint",
   }
-  vim.api.nvim_set_option_value(
-    "winhighlight",
-    "Normal:" .. severityToHighlight[error.severity],
-    { win = data.splitId }
-  )
+  F.updateSplitOption("winhighlight", "Normal:" .. severityToHighlight[error.severity], data.splitId)
 
   -- Show window
   M.alignAtBottomOfScreen(data)
@@ -146,7 +144,7 @@ M.alignAtBottomOfScreen = function(data)
   })
 end
 
--- Returns the .severity and .content of the current line
+-- Returns the .severity, .message and .source of the current line
 M.getErrorDetails = function(lineNumber)
   local diag = vim.diagnostic.get(0, { lnum = lineNumber - 1 })
 
@@ -156,18 +154,26 @@ M.getErrorDetails = function(lineNumber)
 
   local severity = diag[1].severity or vim.diagnostic.severity.ERROR
   local code = diag[1].code
-  local message = diag[1].message
+  local rawMessage = diag[1].message
+  local source = diag[1].source
 
-  -- Craft the message; not all diagnostics have a code
-  local content = message
+  -- Build the message with optional code at the beginning
+  local message = rawMessage
   local codeStr = tostring(code)
-  if codeStr ~= "" then
-    content = codeStr .. " : " .. message
+  if codeStr ~= "" and codeStr ~= "nil" then
+    message = codeStr .. ": " .. rawMessage
+  end
+
+  -- Format source with brackets if available
+  local sourceStr = ""
+  if source and source ~= "" then
+    sourceStr = "[" .. source .. "]"
   end
 
   return {
     severity = severity,
-    content = content,
+    message = message,
+    source = sourceStr,
   }
 end
 

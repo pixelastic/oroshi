@@ -5,7 +5,7 @@ M.configureLinter = function(lint)
   if lint.linters.oroshi_js_lint then
     return -- Already configured
   end
-  
+
   lint.linters.oroshi_js_lint = {
     cmd = "js-lint",
     stdin = false,
@@ -20,7 +20,7 @@ M.configureFormatter = function(conform)
   if conform.formatters.oroshi_js_fix then
     return -- Already configured
   end
-  
+
   conform.formatters.oroshi_js_fix = {
     command = "js-fix",
     stdin = true,

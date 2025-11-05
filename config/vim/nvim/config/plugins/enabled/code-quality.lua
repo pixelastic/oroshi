@@ -3,6 +3,9 @@ local helperStatusline = O_require("oroshi/plugins/helpers/statusline")
 local helper = O_require("oroshi/plugins/helpers/code-quality")
 local javascriptHelper = O_require("oroshi/plugins/helpers/filetypes/javascript")
 local jsonHelper = O_require("oroshi/plugins/helpers/filetypes/json")
+local luaHelper = O_require("oroshi/plugins/helpers/filetypes/lua")
+local tomlHelper = O_require("oroshi/plugins/helpers/filetypes/toml")
+local zshHelper = O_require("oroshi/plugins/helpers/filetypes/zsh")
 
 local config = {
   -- Dependencies to install globally
@@ -54,6 +57,9 @@ local config = {
     bash = {
       formatters = { "shfmt" },
     },
+    css = {
+      formatters = { "prettier" },
+    },
     html = {
       formatters = { "prettier" },
     },
@@ -76,28 +82,9 @@ local config = {
     },
     lua = {
       lsp = { "lua_ls" },
-      configureLsp = function()
-        helper.configureLspServer("lua_ls", {
-          on_init = function(client)
-            local config = {
-              runtime = { version = "LuaJIT" },
-              workspace = { checkThirdParty = false, library = { vim.env.VIMRUNTIME } },
-            }
-            client.config.settings.Lua = F.merge(client.config.settings.Lua or {}, config)
-          end,
-        })
-      end,
+      configureLsp = luaHelper.configureLsp,
       formatters = { "stylua" },
-      configureFormatter = function(conform)
-        conform.formatters.stylua = {
-          prepend_args = {
-            "--indent-type",
-            "Spaces",
-            "--indent-width",
-            vim.o.shiftwidth,
-          },
-        }
-      end,
+      configureFormatter = luaHelper.configureFormatter,
     },
     sh = {
       formatters = { "shfmt" },
@@ -105,19 +92,8 @@ local config = {
     toml = {
       lsp = { "taplo" },
       formatters = { "taplo" },
-      linters = { "flylint" },
-      configureLinter = function(lint)
-        -- Configure flylint for Fly.io specific errors
-        lint.linters.flylint = {
-          cmd = "flylint",
-          stdin = false, -- Reading from filepath
-          ignore_exitcode = true, -- Do not fail on exit 1
-          parser = require("lint.parser").from_errorformat("%f:%l:%c:%t%*[^:]:%m", {
-            warning = "warning",
-            error = "error",
-          }),
-        }
-      end,
+      linters = { "oroshi_fly_lint" },
+      configureLinter = tomlHelper.configureLinter,
     },
     typescript = {
       linters = { "oroshi_js_lint" },
@@ -134,22 +110,8 @@ local config = {
     zsh = {
       formatters = { "shfmt_zsh" },
       linters = { "zshlint" },
-      configureFormatter = function(conform)
-        conform.formatters.shfmt_zsh = {
-          command = "shfmt",
-          args = { "-i", vim.o.shiftwidth },
-          exit_codes = { 0, 1 }, -- Fail silently on zsh-specific syntax
-        }
-      end,
-      configureLinter = function(lint)
-        local zshHelper = O_require("oroshi/plugins/helpers/filetypes/zsh")
-        lint.linters.zshlint = {
-          cmd = "zshlint",
-          stdin = false,
-          ignore_exitcode = true,
-          parser = zshHelper.lintParser,
-        }
-      end,
+      configureFormatter = zshHelper.configureFormatter,
+      configureLinter = zshHelper.configureLinter,
     },
   },
 }

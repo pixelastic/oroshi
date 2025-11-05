@@ -1,5 +1,22 @@
 local M = {}
 
+M.configureFormatter = function(conform)
+  conform.formatters.shfmt_zsh = {
+    command = "shfmt",
+    args = { "-i", vim.o.shiftwidth },
+    exit_codes = { 0, 1 }, -- Fail silently on zsh-specific syntax
+  }
+end
+
+M.configureLinter = function(lint)
+  lint.linters.zshlint = {
+    cmd = "zshlint",
+    stdin = false,
+    ignore_exitcode = true,
+    parser = M.lintParser,
+  }
+end
+
 -- Parser to convert CLI output to diagnostics
 M.lintParser = function(output)
   if output == "" then

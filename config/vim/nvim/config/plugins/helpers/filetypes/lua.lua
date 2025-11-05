@@ -1,35 +1,28 @@
 local M = {}
 
--- Configure formatter
-M.configureFormatter = function()
-  -- local conform = require("conform")
-  --
-  -- -- Add custom formatter
-  -- conform.formatters_by_ft.lua = { "stylua" }
-  --
-  -- -- Configure stylua
-  -- conform.formatters.stylua = {
-  --   prepend_args = {
-  --     "--indent-type",
-  --     "Spaces",
-  --     "--indent-width",
-  --     vim.o.shiftwidth,
-  --   },
-  -- }
+local helper = O_require("oroshi/plugins/helpers/code-quality")
+
+M.configureLsp = function()
+  helper.configureLspServer("lua_ls", {
+    on_init = function(client)
+      local config = {
+        runtime = { version = "LuaJIT" },
+        workspace = { checkThirdParty = false, library = { vim.env.VIMRUNTIME } },
+      }
+      client.config.settings.Lua = F.merge(client.config.settings.Lua or {}, config)
+    end,
+  })
 end
 
--- Configure the Lua LSP server
-M.configureLsp = function()
-  -- require("lspconfig").lua_ls.setup({
-  --   on_init = function(client)
-  --     -- Make it aware of vim-specific globals
-  --     local config = {
-  --       runtime = { version = "LuaJIT" },
-  --       workspace = { checkThirdParty = false, library = { vim.env.VIMRUNTIME } },
-  --     }
-  --     client.config.settings.Lua = F.merge(client.config.settings.Lua, config)
-  --   end,
-  -- })
+M.configureFormatter = function(conform)
+  conform.formatters.stylua = {
+    prepend_args = {
+      "--indent-type",
+      "Spaces",
+      "--indent-width",
+      vim.o.shiftwidth,
+    },
+  }
 end
 
 return M
