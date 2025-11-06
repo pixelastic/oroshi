@@ -212,6 +212,8 @@ nmap(";", addSemicolonAtEndOfLine, "Add a semicolon at end of line")
 
 -- Paste
 vmap("p", '"_x:pu', "Paste in place of current selection")
+nmap("p", '"+p', "Paste from clipboard after cursor")
+nmap("P", 'g_a <C-r>+<Esc>', "Paste from clipboard at end of line with space")
 nmap("gp", "`[v`]", "Select what was just pasted")
 nmap("c", '"_c', "Change without copying it")
 nmap("x", '"_x', "Delete without copying it")
