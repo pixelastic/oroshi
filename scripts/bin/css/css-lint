@@ -1,0 +1,46 @@
+#!/usr/bin/env zsh
+# css-lint: Lint a CSS file
+# Usage:
+# $ css-lint ./path/to/file.css       # For CLI
+# $ css-lint --json ./path/to/file.css  # For Vim
+
+zparseopts -E -D \
+  -json=flagJson
+isJson=${#flagJson}
+
+# Input file
+inputFile="${1:a}"
+if [[ ! -f "$inputFile" ]]; then
+  echo "Error: File '$inputFile' not found" >&2
+  exit 1
+fi
+
+# Project root
+projectRoot=$(yarn-root ${inputFile:h} --force 2>/dev/null)
+
+# Determine which stylelint binary to use
+stylelintBin="$HOME/.oroshi/node_modules/.bin/stylelint"
+if [[ $projectRoot != "" ]] && [[ -f "$projectRoot/node_modules/.bin/stylelint" ]]; then
+  stylelintBin="$projectRoot/node_modules/.bin/stylelint"
+fi
+
+# Config file (optional, stylelint will find it automatically)
+configArg=""
+if [[ $projectRoot != "" ]]; then
+  # Move to root, as this affects stylelint resolution of plugins
+  cd "$projectRoot" || exit 1
+else
+  # Use global config if no project root
+  configArg="--config $HOME/.oroshi/stylelint.config.js"
+fi
+
+# Optional args
+formatAsJson=""
+if [[ $isJson -gt 0 ]]; then
+  formatAsJson="-f json"
+fi
+
+$stylelintBin \
+  ${=configArg} \
+  ${=formatAsJson} \
+  "$inputFile" 2>&1

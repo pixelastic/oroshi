@@ -1,6 +1,7 @@
 local helperDiagline = O_require("oroshi/plugins/helpers/diagline")
 local helperStatusline = O_require("oroshi/plugins/helpers/statusline")
 local helper = O_require("oroshi/plugins/helpers/code-quality")
+local cssHelper = O_require("oroshi/plugins/helpers/filetypes/css")
 local javascriptHelper = O_require("oroshi/plugins/helpers/filetypes/javascript")
 local jsonHelper = O_require("oroshi/plugins/helpers/filetypes/json")
 local luaHelper = O_require("oroshi/plugins/helpers/filetypes/lua")
@@ -58,7 +59,9 @@ local config = {
       formatters = { "shfmt" },
     },
     css = {
+      linters = { "oroshi_css_lint" },
       formatters = { "prettier" },
+      configureLinter = cssHelper.configureLinter,
     },
     html = {
       formatters = { "prettier" },
