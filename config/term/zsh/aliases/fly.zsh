@@ -1,21 +1,21 @@
 # Fly.io aliases
 
 # App
-alias fal='fly-app-list'
-alias fad='fly-app-deploy'
-alias falo='fly-app-logs'
-alias fan='fly-app-name'
-alias fao='fly-app-open'
-alias fas='fly-app-status'
+alias flal='fly-app-list'
+alias flad='fly-app-deploy'
+alias flalo='fly-app-logs'
+alias flan='fly-app-name'
+alias flao='fly-app-open'
+alias flas='fly-app-status'
 
 # Config
-alias fct='fly-config-test'
-alias fcp='fly-config-path'
+alias flct='fly-config-test'
+alias flcp='fly-config-path'
 
 # Directory
-alias fdr='fly-directory-root'
+alias fldr='fly-directory-root'
 
 # Secrets
-alias fsc='fly-secret-create'
-alias fsl='fly-secret-list'
-alias fsR='fly-secret-remove'
+alias flsc='fly-secret-create'
+alias flsl='fly-secret-list'
+alias flsR='fly-secret-remove'
