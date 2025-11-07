@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# posting: Like postman, but in the CLI
+# https://github.com/darrenburns/posting
+set -e
+
+pipx install posting
