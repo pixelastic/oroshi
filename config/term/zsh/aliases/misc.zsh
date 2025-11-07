@@ -11,6 +11,7 @@ alias mkdir="mkdir -p"
 alias n="nnn"
 alias p8='ping 8.8.8.8'
 alias ping="prettyping --nolegend"
+alias posting='better-posting'
 alias serve='live-server'
 alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test500.zip'
 alias sr='search-and-replace'

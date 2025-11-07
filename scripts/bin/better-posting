@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+# Wrapper for Posting that automatically loads .envrc if found
+# Usage:
+# $ posting              # Will use .envrc if found in current repo
+
+local additionalFlags=""
+
+# Find .envrc in current directory or parents
+local envrcPath="$(find-up .envrc)"
+if [[ -n "$envrcPath" ]]; then
+  additionalFlags="--env $envrcPath"
+fi
+
+posting ${=additionalFlags} "$@"
