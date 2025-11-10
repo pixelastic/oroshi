@@ -21,6 +21,9 @@ F.ftplugin("scrollback_pager", function()
   -- Define the ft, so we can set a custom statusline
   vim.opt_local.ft = "pager"
 
+  -- Set a dark blue background to make it more visible we're in pager mode
+  F.hl("Normal", "GRAY_3", { bg = "DARK_BLUE" })
+
   -- We wait until all initialization is done, then delete the original buffer
   -- If we don't wait we might mess some treesitter callback that expect the buffer
   -- to exist
