@@ -103,7 +103,7 @@ M.update = function(data, error)
 
   -- Build string to display
   local width = F.width()
-  local message = error.message
+  local message = F.replace(error.message, "\n", " ")
   local source = error.source or ""
 
   -- Calculate padding to align [source] to the right
