@@ -210,14 +210,29 @@ local function addSemicolonAtEndOfLine()
 end
 nmap(";", addSemicolonAtEndOfLine, "Add a semicolon at end of line")
 
--- Paste
+-- Paste {{{
+local function smartPaste()
+  local clipboard = vim.fn.getreg("+")
+
+  -- If content contains new lines, we do a regular paste on the next line
+  if F.includes(clipboard, "\n") then
+    vim.cmd('normal! "+p')
+    return
+  end
+
+  -- If only words, we paste at the exact cursor position
+  F.insertMode()
+  vim.cmd('normal! h"+pl')
+  F.normalMode()
+end
+nmap("p", smartPaste, "Paste below if multiline, at cursor if single line")
+nmap("P", '"+P', "Paste above cursor")
 vmap("p", '"_x:pu', "Paste in place of current selection")
-nmap("p", '"+p', "Paste from clipboard after cursor")
-nmap("P", 'g_a <C-r>+<Esc>', "Paste from clipboard at end of line with space")
 nmap("gp", "`[v`]", "Select what was just pasted")
 nmap("c", '"_c', "Change without copying it")
 nmap("x", '"_x', "Delete without copying it")
 vmap("x", '"_x', "Delete without copying it")
+-- }}}
 
 -- Marks and jump
 nmap("⒨", "`m", "Jump to mark set with mm") -- Ctrl-M jumps to m mark
