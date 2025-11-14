@@ -6,18 +6,25 @@ local findNode
 local M = {
   -- Get the treesitter node at cursor position
   node = function()
-    local parser = getParser()
-    if not parser then
-      return nil
+    local success, result = pcall(function()
+      local parser = getParser()
+      if not parser then
+        return nil
+      end
+
+      local lineNumber = F.lineNumber() - 1 -- Convert to 0-indexed
+      local col = 0
+
+      local root = parser:parse()[1]:root()
+      local rawNode = root:named_descendant_for_range(lineNumber, col, lineNumber, col)
+
+      return wrapNode(rawNode)
+    end)
+
+    if success then
+      return result
     end
-
-    local lineNumber = F.lineNumber() - 1 -- Convert to 0-indexed
-    local col = 0
-
-    local root = parser:parse()[1]:root()
-    local rawNode = root:named_descendant_for_range(lineNumber, col, lineNumber, col)
-
-    return wrapNode(rawNode)
+    return nil
   end,
 
   -- Find parent node matching types

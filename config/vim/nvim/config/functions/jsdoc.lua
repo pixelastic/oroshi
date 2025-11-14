@@ -1,21 +1,20 @@
 local M = {}
 
-local FUNCTION_TYPES = { "function_declaration", "arrow_function", "function", "method_definition" }
 local COMMENT_TYPES = { "comment" }
 local DEFINITION_LINE_TYPES = { "export_statement" }
+local FUNCTION_BODY_TYPES = { "statement_block" }
+local FUNCTION_TYPES = { "function_declaration" }
 
 -- Forward declarations
 local findFunctionNode
 local insertJsDoc
 
 M.updateJsDoc = function()
-  -- Stop if not in a function
   local node = findFunctionNode()
   if not node then
     return
   end
 
-  -- Generate a new JSDoc and update it in the code
   local prompt = "Generate a JSDoc comment for this JavaScript function. Return ONLY the JSDoc comment block (starting with /** and ending with */). No markdown code blocks, no additional text, no explanations.\n\nFunction:\n"
     .. node.text
   F.aiPrompt(prompt, function(jsdoc)
@@ -25,38 +24,31 @@ end
 
 -- Private functions
 
--- Returns the node containing the function. Should work when cursor is inside
--- the function, on the function defition line, or on the JSDoc comment above
--- the function
+-- Returns the node containing the function. Works when cursor is in the
+-- function body, on the export line, or in the JSDoc comment
 findFunctionNode = function(node)
   node = node or F.node()
-
   if not node then
     return nil
   end
 
-  -- Case 1: Already in a function
-  local functionNode = F.nodeParentOfType(FUNCTION_TYPES, node)
-  if functionNode then
-    return functionNode
-  end
-
-  -- Case 2: In a definition line (export_statement, etc.), find first child function
-  local definitionNode = F.nodeParentOfType(DEFINITION_LINE_TYPES, node)
-  if definitionNode then
-    return F.nodeChildOfType(FUNCTION_TYPES, definitionNode)
-  end
-
-  -- Case 3: In a function header comment, find function definition and recurse
-  local commentNode = F.nodeParentOfType(COMMENT_TYPES, node)
-  if commentNode then
-    local functionDefinitionNode = F.nodeNextOfType(DEFINITION_LINE_TYPES, commentNode)
-
-    if functionDefinitionNode then
-      return findFunctionNode(functionDefinitionNode)
+  -- Case 1: In comment - find next export_statement and recurse
+  if F.includes(COMMENT_TYPES, node.type) then
+    local exportNode = F.nodeNextOfType(DEFINITION_LINE_TYPES, node)
+    if exportNode then
+      return findFunctionNode(exportNode)
     end
-
     return nil
+  end
+
+  -- Case 2: On export line - get first child function
+  if F.includes(DEFINITION_LINE_TYPES, node.type) then
+    return F.nodeChildOfType(FUNCTION_TYPES, node)
+  end
+
+  -- Case 3: In function body (statement_block) - find parent function
+  if F.includes(FUNCTION_BODY_TYPES, node.type) then
+    return F.nodeParentOfType(FUNCTION_TYPES, node)
   end
 
   return nil
