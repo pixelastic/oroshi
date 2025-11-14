@@ -13,11 +13,22 @@ M.generateJsDoc = function()
     return
   end
 
-  -- Hardcoded JSDoc for testing
-  local jsdoc =
-    "/**\n * This is a test JSDoc comment\n * @param {string} param1 - First parameter\n * @returns {void}\n */"
+  local prompt = [[Generate a JSDoc comment for the following JavaScript/TypeScript function.
 
-  insertJsDocAboveNode(jsdoc, functionNode)
+Rules:
+- Return ONLY the JSDoc comment, no explanation
+- Start with /** and end with */
+- Include @param for each parameter with type and description
+- Include @returns with type and description
+- Keep descriptions concise and clear
+- Do not include any markdown code blocks or extra formatting
+
+Function code:
+]] .. functionNode.text
+
+  F.aiPrompt(prompt, function(jsdoc)
+    insertJsDocAboveNode(jsdoc, functionNode)
+  end)
 end
 
 -- Recursively finds a function node from the current position
