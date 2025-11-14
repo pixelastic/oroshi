@@ -70,6 +70,32 @@ local M = {
       return raw:next_sibling()
     end)
   end,
+
+  -- Find a node of given types on a specific line
+  nodeOfType = function(types, lineNumber)
+    local parser = getParser()
+    if not parser then
+      return nil
+    end
+
+    lineNumber = lineNumber or F.lineNumber()
+
+    local line0Indexed = lineNumber - 1
+    local root = parser:parse()[1]:root()
+
+    -- Iterate through columns to find all nodes on this line
+    local lineContent = F.line(lineNumber)
+    local lineLength = #lineContent
+
+    for col = 0, lineLength - 1 do
+      local rawNode = root:named_descendant_for_range(line0Indexed, col, line0Indexed, col)
+      if rawNode and F.includes(types, rawNode:type()) then
+        return wrapNode(rawNode)
+      end
+    end
+
+    return nil
+  end,
 }
 
 -- Private functions
