@@ -12,8 +12,16 @@ M.generateJsDoc = function()
     return
   end
 
-  -- Find function on current line or in parents
-  local functionNode = F.nodeOfType(FUNCTION_TYPES) or F.nodeParentOfType(FUNCTION_TYPES)
+  local functionNode
+
+  -- If we're in a comment, look for a function on the line after the comment
+  if F.includes(COMMENT_TYPES, node.type) then
+    functionNode = F.nodeOfType(FUNCTION_TYPES, node.range[3] + 2)
+  else
+    -- Find function on current line or in parents
+    functionNode = F.nodeOfType(FUNCTION_TYPES) or F.nodeParentOfType(FUNCTION_TYPES)
+  end
+
   if not functionNode then
     return
   end
