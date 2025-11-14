@@ -1,6 +1,74 @@
-local M = {}
+-- Private methods
+local getParser
+local wrapNode
+local findNode
 
-local function getParser()
+local M = {
+  -- Get the treesitter node at cursor position
+  node = function()
+    local parser = getParser()
+    if not parser then
+      return nil
+    end
+
+    local lineNumber = F.lineNumber() - 1 -- Convert to 0-indexed
+    local col = 0
+
+    local root = parser:parse()[1]:root()
+    local rawNode = root:named_descendant_for_range(lineNumber, col, lineNumber, col)
+
+    return wrapNode(rawNode)
+  end,
+
+  -- Find parent node matching types
+  nodeParentOfType = function(types, node)
+    return findNode(types, node, function(rawNode)
+      return rawNode:parent()
+    end)
+  end,
+
+  -- Find next sibling node matching types
+  nodeNextOfType = function(types, node)
+    return findNode(types, node, function(rawNode)
+      return rawNode:next_sibling()
+    end)
+  end,
+
+  -- Find previous sibling node matching types
+  nodePreviousOfType = function(types, node)
+    return findNode(types, node, function(rawNode)
+      return rawNode:prev_sibling()
+    end)
+  end,
+
+  -- Find first child node matching types
+  nodeChildOfType = function(types, node)
+    node = node or F.node()
+    if not node then
+      return nil
+    end
+
+    -- Check first child
+    local firstChild = wrapNode(node.__raw:child(0))
+    if not firstChild then
+      return nil
+    end
+
+    if F.includes(types, firstChild.type) then
+      return firstChild
+    end
+
+    -- Check all first child siblings
+    return findNode(types, firstChild, function(raw)
+      return raw:next_sibling()
+    end)
+  end,
+}
+
+-- Private functions
+
+-- Get the treesitter parser for the current buffer
+getParser = function()
   local bufferId = F.bufferId()
   local filetype = F.bufferOption("filetype", bufferId)
 
@@ -16,7 +84,8 @@ local function getParser()
   return parser
 end
 
-local function wrapNode(rawNode)
+-- Wrap a raw treesitter node into a custom node object with text, range, type, and __raw
+wrapNode = function(rawNode)
   if not rawNode then
     return nil
   end
@@ -30,129 +99,20 @@ local function wrapNode(rawNode)
   }
 end
 
--- Get the treesitter node at the current cursor position
--- @return table|nil - Custom node object with text, range, type, and __raw properties, or nil if not found
-M.node = function()
-  local parser = getParser()
-  if not parser then
-    return nil
-  end
-
-  local lineNumber = F.lineNumber() - 1 -- Convert to 0-indexed
-  local col = 0
-
-  local root = parser:parse()[1]:root()
-  local rawNode = root:named_descendant_for_range(lineNumber, col, lineNumber, col)
-
-  return wrapNode(rawNode)
-end
-
--- Find the closest parent node matching one of the specified types
--- @param types table - Array of node types to search for (e.g., {"function_declaration", "arrow_function"})
--- @param node table|nil - Custom node object to start from, defaults to current cursor node
--- @return table|nil - Custom node object of the closest matching parent, or nil if not found
-M.nodeClosest = function(types, node)
-  node = node or M.node()
+-- Generic node traversal function that finds the first node matching types using a custom getNext function
+findNode = function(types, node, getNext)
+  node = node or F.node()
   if not node then
     return nil
   end
 
-  local current = node.__raw
+  local current = getNext(node.__raw)
 
   while current do
     if F.includes(types, current:type()) then
       return wrapNode(current)
     end
-    current = current:parent()
-  end
-
-  return nil
-end
-
--- Find the next sibling node matching one of the specified types
--- @param types table - Array of node types to search for (e.g., {"function_declaration", "arrow_function"})
--- @param node table|nil - Custom node object to start from, defaults to current cursor node
--- @return table|nil - Custom node object of the next matching sibling, or nil if not found
-M.nodeNextOfType = function(types, node)
-  node = node or M.node()
-  if not node then
-    return nil
-  end
-
-  local current = node.__raw:next_sibling()
-
-  while current do
-    if F.includes(types, current:type()) then
-      return wrapNode(current)
-    end
-    current = current:next_sibling()
-  end
-
-  return nil
-end
-
--- Find the previous sibling node matching one of the specified types
--- @param types table - Array of node types to search for (e.g., {"comment"})
--- @param node table|nil - Custom node object to start from, defaults to current cursor node
--- @return table|nil - Custom node object of the previous matching sibling, or nil if not found
-M.nodePreviousOfType = function(types, node)
-  node = node or M.node()
-  if not node then
-    return nil
-  end
-
-  -- Get the raw node
-  local rawNode = node.__raw
-  if not rawNode then
-    return nil
-  end
-
-  local current = rawNode:prev_sibling()
-
-  while current do
-    if F.includes(types, current:type()) then
-      return wrapNode(current)
-    end
-    current = current:prev_sibling()
-  end
-
-  return nil
-end
-
--- Get all next sibling nodes
--- @param node table|nil - Custom node object to start from, defaults to current cursor node
--- @return table - Array of custom node objects for all following siblings
-M.nodeNextAll = function(node)
-  node = node or M.node()
-  if not node then
-    return {}
-  end
-
-  local result = {}
-  local current = node.__raw:next_sibling()
-
-  while current do
-    table.insert(result, wrapNode(current))
-    current = current:next_sibling()
-  end
-
-  return result
-end
-
--- Find the first child node matching one of the specified types
--- @param types table - Array of node types to search for (e.g., {"function_declaration", "arrow_function"})
--- @param node table|nil - Custom node object to start from, defaults to current cursor node
--- @return table|nil - Custom node object of the first matching child, or nil if not found
-M.nodeChildOfType = function(types, node)
-  node = node or M.node()
-  if not node then
-    return nil
-  end
-
-  for child in node.__raw:iter_children() do
-    if F.includes(types, child:type()) then
-      return wrapNode(child)
-    end
+    current = getNext(current)
   end
 
   return nil

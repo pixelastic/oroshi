@@ -36,19 +36,19 @@ findFunctionNode = function(node)
   end
 
   -- Case 1: Already in a function
-  local functionNode = F.nodeClosest(FUNCTION_TYPES, node)
+  local functionNode = F.nodeParentOfType(FUNCTION_TYPES, node)
   if functionNode then
     return functionNode
   end
 
   -- Case 2: In a definition line (export_statement, etc.), find first child function
-  local definitionNode = F.nodeClosest(DEFINITION_LINE_TYPES, node)
+  local definitionNode = F.nodeParentOfType(DEFINITION_LINE_TYPES, node)
   if definitionNode then
     return F.nodeChildOfType(FUNCTION_TYPES, definitionNode)
   end
 
   -- Case 3: In a function header comment, find function definition and recurse
-  local commentNode = F.nodeClosest(COMMENT_TYPES, node)
+  local commentNode = F.nodeParentOfType(COMMENT_TYPES, node)
   if commentNode then
     local functionDefinitionNode = F.nodeNextOfType(DEFINITION_LINE_TYPES, commentNode)
 
@@ -65,7 +65,7 @@ end
 -- Inserts the given JSDoc above the given function node. Will replace any
 -- existing JSDoc, if any.
 insertJsDoc = function(jsdoc, functionNode)
-  local declarationNode = F.nodeClosest(DEFINITION_LINE_TYPES, functionNode)
+  local declarationNode = F.nodeParentOfType(DEFINITION_LINE_TYPES, functionNode)
 
   local existingJsDoc = F.nodePreviousOfType(COMMENT_TYPES, declarationNode)
   local startLine, endLine
