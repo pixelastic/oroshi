@@ -16,6 +16,12 @@ return {
     bufferId = bufferId or F.bufferId()
     vim.api.nvim_buf_set_lines(bufferId, lineNumber - 1, lineNumber, false, { newContent })
   end,
+  -- updateLines: Update the content of a range of lines
+  updateLines = function(newContent, startLine, endLine, bufferId)
+    bufferId = bufferId or F.bufferId()
+    local lines = F.split(newContent, "\n")
+    vim.api.nvim_buf_set_lines(bufferId, startLine - 1, endLine, false, lines)
+  end,
   -- lineCount: Returns the number of lines in a buffer (defaults to current buffer)
   lineCount = function(bufferId)
     bufferId = bufferId or F.bufferId()

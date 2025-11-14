@@ -91,6 +91,34 @@ M.nodeNextOfType = function(types, node)
   return nil
 end
 
+-- Find the previous sibling node matching one of the specified types
+-- @param types table - Array of node types to search for (e.g., {"comment"})
+-- @param node table|nil - Custom node object to start from, defaults to current cursor node
+-- @return table|nil - Custom node object of the previous matching sibling, or nil if not found
+M.nodePreviousOfType = function(types, node)
+  node = node or M.node()
+  if not node then
+    return nil
+  end
+
+  -- Get the raw node
+  local rawNode = node.__raw
+  if not rawNode then
+    return nil
+  end
+
+  local current = rawNode:prev_sibling()
+
+  while current do
+    if F.includes(types, current:type()) then
+      return wrapNode(current)
+    end
+    current = current:prev_sibling()
+  end
+
+  return nil
+end
+
 -- Get all next sibling nodes
 -- @param node table|nil - Custom node object to start from, defaults to current cursor node
 -- @return table - Array of custom node objects for all following siblings

@@ -15,4 +15,9 @@ return {
     end
     return vim.fn.trim(table.concat(lines, "\n"))
   end,
+
+  -- deleteFile: Delete a file from the filesystem
+  deleteFile = function(path)
+    vim.fn.delete(path)
+  end,
 }

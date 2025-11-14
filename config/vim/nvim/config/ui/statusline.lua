@@ -86,6 +86,15 @@ O_STATUSLINE = {
       })
     end
 
+    -- AI thinking
+    local aiIsThinking = F.get(O, "statusline.ai.isThinking")
+    if aiIsThinking then
+      F.append(rightStatusbar, {
+        content = "󰟶 ",
+        hl = O.colors.statusline.ai,
+      })
+    end
+
     -- Filetype
     local filetype = vim.bo.filetype
     F.append(rightStatusbar, {
@@ -101,15 +110,6 @@ O_STATUSLINE = {
       content = " ",
       hl = lspColor,
     })
-
-    -- CodeCompanion thinking
-    local codeCompanionIsThinking = O.statusline.codecompanion.isThinking
-    if codeCompanionIsThinking then
-      F.append(rightStatusbar, {
-        content = "󰟶 ",
-        hl = O.colors.statusline.codecompanion,
-      })
-    end
 
     -- Copilot
     local isCopilotLoaded = O.statusline.copilotLoaded

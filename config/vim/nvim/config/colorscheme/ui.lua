@@ -220,7 +220,7 @@ O.colors.statusline = {
   nvimTreeSeparator = { fg = "GREEN_9" },
   -- Special
   healthcheck = { bg = "RED_LIGHT", fg = "WHITE" }, -- Healthcheck
-  codecompanion = { bg = "AMBER_7", fg = "AMBER_1" }, -- CodeCompanion
+  ai = { bg = "AMBER_7", fg = "AMBER_1" }, -- AI thinking (generic)
   kitty = { bg = "BLUE", fg = "WHITE", bold = true }, -- Kitty pager
   -- Right side
   fileencoding = { bg = "RED_9", fg = "RED_2" }, -- Fileencoding
