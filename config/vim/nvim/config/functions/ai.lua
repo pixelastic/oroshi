@@ -7,6 +7,11 @@ local ANTHROPIC_API_KEY = vim.fn.getenv("ANTHROPIC_API_KEY")
 
 local function setThinkingIndicator(isThinking)
   O.statusline.ai = { isThinking = isThinking }
+  if isThinking then
+    F.hl("Normal", "GRAY_3", { bg = "DARK_ORANGE" })
+  else
+    F.hl("Normal", "GRAY_3")
+  end
   vim.cmd("redrawstatus")
 end
 

@@ -6,7 +6,7 @@ local function setupJsKeybindings()
   F.imap("##", "${}<Left>", "Create interpolated variable", { buffer = bufferId })
 
   -- JSDoc generation
-  F.nmap("<C-g>", F.generateJsDoc, "Generate JSDoc for function under cursor", { buffer = bufferId })
+  F.nmap("<C-:>", F.generateJsDoc, "Generate JSDoc for function under cursor", { buffer = bufferId })
 
   -- describe('something', () => {
   -- });
