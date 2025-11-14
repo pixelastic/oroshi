@@ -5,6 +5,9 @@ local function setupJsKeybindings()
   F.imap("$ù", "console.log(", "Console log", { buffer = bufferId })
   F.imap("##", "${}<Left>", "Create interpolated variable", { buffer = bufferId })
 
+  -- JSDoc generation
+  F.nmap("<Leader>jd", F.generateJsDoc, "Generate JSDoc for function under cursor", { buffer = bufferId })
+
   -- describe('something', () => {
   -- });
   F.imap("dsc", function()

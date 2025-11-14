@@ -65,11 +65,17 @@ imap("<C-D>", saveAndQuit, "Save file and quit")
 nmap("<C-D>", saveAndQuit, "Save file and quit")
 vmap("<C-D>", saveAndQuit, "Save file and quit")
 
-local function ctrlfdebug() end
-nmap("<C-F>", ctrlfdebug, "debug")
-
 -- CTRL + N
 nmap("<C-N>", ":tabedit<Space>", "Create new file in directory", { silent = false })
+
+-- CTRL + Y
+local function copyFilepath()
+  local filepath = vim.fn.expand("%:p")
+  vim.fn.setreg("+", filepath)
+end
+nmap("<C-Y>", copyFilepath, "Copy filepath to clipboard")
+imap("<C-Y>", copyFilepath, "Copy filepath to clipboard")
+vmap("<C-Y>", copyFilepath, "Copy filepath to clipboard")
 
 -- CTRL-X: Change XXX into YYY and vice-versa
 local function togglePlaceholders()

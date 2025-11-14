@@ -33,12 +33,13 @@ F = vim.tbl_extend(
   -- LUA functions
   O_require("oroshi/functions/lodash"),
   O_require("oroshi/functions/collections"),
-  -- Tabs / Splits / Buffers / Lines / Options
+  -- Tabs / Splits / Buffers / Lines / Options / Nodes
   O_require("oroshi/functions/tabs"),
   O_require("oroshi/functions/splits"),
   O_require("oroshi/functions/buffers"),
   O_require("oroshi/functions/lines"),
   O_require("oroshi/functions/options"),
+  O_require("oroshi/functions/nodes"),
   -- Modes
   O_require("oroshi/functions/modes"),
   O_require("oroshi/functions/visual"),
@@ -46,6 +47,7 @@ F = vim.tbl_extend(
   O_require("oroshi/functions/autocmd"),
   O_require("oroshi/functions/map"),
   O_require("oroshi/functions/highlight"),
+  O_require("oroshi/functions/jsdoc"),
   -- Filesystem
   O_require("oroshi/functions/file"),
   -- Debug
