@@ -73,17 +73,19 @@ local M = {
 
   -- Find a node of given types on a specific line
   nodeOfType = function(types, lineNumber)
+    lineNumber = lineNumber or F.lineNumber()
+    if lineNumber < 1 then
+      return nil
+    end
+
     local parser = getParser()
     if not parser then
       return nil
     end
 
-    lineNumber = lineNumber or F.lineNumber()
-
     local line0Indexed = lineNumber - 1
     local root = parser:parse()[1]:root()
 
-    -- Iterate through columns to find all nodes on this line
     local lineContent = F.line(lineNumber)
     local lineLength = #lineContent
 

@@ -37,8 +37,8 @@ insertJsDocAboveNode = function(jsdoc, node)
   end)
   local indentedJsdoc = F.join(indentedLines, "\n")
 
-  -- Check if there's already a comment to replace
   local commentNode = F.nodeOfType(COMMENT_TYPES, nodeStartLine - 1)
+
   local startLine, endLine
   if commentNode then
     startLine = commentNode.range[1] + 1
