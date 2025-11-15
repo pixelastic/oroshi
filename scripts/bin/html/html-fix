@@ -41,7 +41,11 @@ if [[ $hasStdin = 1 ]]; then
   mkdir -p "${OROSHI_TMP_FOLDER}/html-fix"
   cat >$stdinFile
 
-  $prettierBin --config "$configFile" --parser html "$stdinFile"
+  $prettierBin \
+    --parser html \
+    --ignore-path= \
+    --config "$configFile" \
+    "$stdinFile"
   local exitCode=$?
   rm -f "$stdinFile"
   exit $exitCode
@@ -50,10 +54,18 @@ fi
 # Input is a file, fix in place
 # $ html-fix --in-place file.html
 if [[ $isInPlace = 1 ]]; then
-  $prettierBin --config "$configFile" --write "$inputFilepath" >/dev/null 2>&1
+  $prettierBin \
+    --parser html \
+    --ignore-path= \
+    --config "$configFile" \
+    >/dev/null 2>&1
   exit $?
 fi
 
 # Input is a file, output to stdout
 # $ html-fix file.html
-$prettierBin --config "$configFile" "$inputFilepath"
+$prettierBin \
+  --parser html \
+  --ignore-path= \
+  --config "$configFile" \
+  "$inputFilepath"
