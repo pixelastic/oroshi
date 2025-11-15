@@ -80,8 +80,9 @@ local config = {
     },
     json = {
       linters = { "oroshi_json_lint" },
-      formatters = { "prettier" },
+      formatters = { "oroshi_json_fix" },
       configureLinter = jsonHelper.configureLinter,
+      configureFormatter = jsonHelper.configureFormatter,
     },
     lua = {
       lsp = { "lua_ls" },

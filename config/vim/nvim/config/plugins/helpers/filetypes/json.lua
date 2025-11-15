@@ -10,6 +10,16 @@ M.configureLinter = function(lint)
   }
 end
 
+M.configureFormatter = function(conform)
+  conform.formatters.oroshi_json_fix = {
+    command = "json-fix",
+    stdin = true,
+    args = { "--filepath", "$FILENAME" },
+    exit_codes = { 0, 1 },
+    timeout_ms = 5000,
+  }
+end
+
 -- Parser to convert CLI output to diagnostics
 M.lintParser = function(output)
   local json = vim.json.decode(output)
