@@ -200,4 +200,7 @@ FILETYPES[MD:icon]=" "
 FILETYPES[MKD:icon]=" "
 FILETYPES[JS:icon]=" "
 FILETYPES[JS:color]="YELLOW"
+FILETYPES[VUE:icon]=" "
+FILETYPES[VUE:color]="GREEN_4"
+
 # }}}
