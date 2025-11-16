@@ -47,9 +47,10 @@ local config = {
       "robots",
       "ruby",
       "ssh_config",
-      -- "toml",
+      "vue",
       "xml",
       "yaml",
+      -- "toml",
     },
   },
 

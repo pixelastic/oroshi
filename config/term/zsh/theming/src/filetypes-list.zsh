@@ -57,6 +57,7 @@ FILETYPE_GROUPS[script:patterns]="\
   ts \
   ttf \
   vim \
+  vue \
   woff \
   xml \
   yaml \

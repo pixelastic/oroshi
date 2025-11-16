@@ -224,6 +224,11 @@ hl("@label.vim", "STRING")
 hl("@keyword.vim", "TEAL")
 hl("@function.macro.vim", "TEAL")
 -- }}}
+-- vue {{{
+hl("@tag.vue", "KEYWORD")
+hl("@tag.delimiter.vue", "PUNCTUATION")
+hl("@markup.raw.vue", "RED_8", { bg = "GRAY_8" })
+-- }}}
 -- yaml {{{
 hl("@property.yaml", "VARIABLE")
 -- }}}
