@@ -104,6 +104,7 @@ hl("@label.vimdoc", "GREEN_7")
 hl("htmlHead", "none", { bg = "DARK_BLUE" })
 hl("@tag.delimiter.html", "PUNCTUATION")
 hl("@tag.html", "KEYWORD")
+hl("htmlTag", "KEYWORD") -- Explicitly needed because we override it for Vue
 hl("@constant.html", "YELLOW", { bold = true })
 hl("@tag.attribute.html", "VARIABLE_TYPE")
 hl("@markup.heading.html", "PURPLE_4", { bold = true })
@@ -227,7 +228,11 @@ hl("@function.macro.vim", "TEAL")
 -- vue {{{
 hl("@tag.vue", "KEYWORD")
 hl("@tag.delimiter.vue", "PUNCTUATION")
+hl("@punctuation.special.vue", "STRING")
 hl("@markup.raw.vue", "RED_8", { bg = "GRAY_8" })
+hl("@function.method.vue", "ORANGE")
+hl("@variable.vue", "ORANGE")
+hl("htmlTag", "ORANGE", { filetype = "vue" })
 -- }}}
 -- yaml {{{
 hl("@property.yaml", "VARIABLE")

@@ -32,3 +32,6 @@ O.colors.env = getEnvColors()
 O_require("oroshi/colorscheme/ui") -- Tabline, statusline, split, etc
 O_require("oroshi/colorscheme/syntax") -- Syntax highlight
 O_require("oroshi/colorscheme/unused") -- List of known Highlight groups not yet used
+
+-- Initialize filetype-specific highlight system
+F.initFiletypeSpecificHighlights()
