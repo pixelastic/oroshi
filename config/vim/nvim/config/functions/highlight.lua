@@ -242,6 +242,10 @@ M.debugColors = function()
   F.defer(function()
     closeExistingSplit()
     require("noice").cmd("showDebugColors")
+
+    -- Somehow opening the split messes up custom filetype highlight, so we
+    -- reforce them
+    F.applyHighlightForFiletype(F.bufferOption("filetype"))
   end)
 end
 

@@ -231,6 +231,7 @@ hl("@tag.delimiter.vue", "PUNCTUATION")
 hl("@punctuation.special.vue", "STRING")
 hl("@markup.raw.vue", "RED_8", { bg = "GRAY_8" })
 hl("@function.method.vue", "ORANGE")
+hl("@variable.member.vue", "ORANGE")
 hl("@variable.vue", "ORANGE")
 hl("htmlTag", "ORANGE", { filetype = "vue" })
 -- }}}

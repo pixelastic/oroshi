@@ -102,6 +102,7 @@ nmap("<F1>", "K", "Show help of word under cursor")
 -- F2: Reload colorscheme
 local function reloadColorscheme()
   O_require("oroshi/colorscheme")
+  F.applyHighlightForFiletype(F.bufferOption("filetype"))
 end
 nmap("<F2>", reloadColorscheme, "Reload oroshi colorscheme")
 imap("<F2>", reloadColorscheme, "Reload oroshi colorscheme")
