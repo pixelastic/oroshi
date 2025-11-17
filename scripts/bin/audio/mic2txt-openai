@@ -13,7 +13,7 @@
 # slackify:   Translate to english and rewrite
 local method=${1:-transcribe}
 
-local tmpFolder=/dev/shm/oroshi_speech-to-text
+local tmpFolder=/dev/shm/oroshi/mic2txt/whisper
 local pidFile=${tmpFolder}/PID
 local recordFile=${tmpFolder}/record.wav
 
