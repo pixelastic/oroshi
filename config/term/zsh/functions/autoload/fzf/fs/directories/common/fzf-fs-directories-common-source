@@ -20,7 +20,7 @@ function fzf-fs-directories-common-source() {
       local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
       eval "displayPath=\${displayPath:s_${projectPath}_}"
 
-      local projectPrefix="$(colorize-project $projectKey)"
+      local projectPrefix="$(project-colorize $projectKey)"
 
       displayPath="${projectPrefix} ${displayPath}"
     fi

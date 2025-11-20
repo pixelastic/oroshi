@@ -1,0 +1,8 @@
+# Outputs specific options for searching Kitty tabs
+function fzf-kitty-tabs-options() {
+  echo "--prompt=  "
+
+  # Format: tab_id▮tab_name▮tab_display
+  echo "--delimiter=▮"
+  echo "--with-nth=3"
+}

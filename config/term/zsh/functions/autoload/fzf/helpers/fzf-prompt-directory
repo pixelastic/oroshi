@@ -12,7 +12,7 @@ function fzf-prompt-directory() {
   if [[ $projectKey != "" ]]; then
     local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
     eval "fzfPrompt=\${fzfPrompt:s_${projectPath}_}"
-    local projectPrefix="$(colorize-project $projectKey)"
+    local projectPrefix="$(project-colorize $projectKey)"
   fi
 
   # If we have a path to display, we make it pretty

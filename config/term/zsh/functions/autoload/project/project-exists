@@ -1,0 +1,24 @@
+# Check if a project exists by name
+# Usage:
+# $ project-exists "my-project" && echo "exists"
+# $ project-exists "aberlaas" && echo "exists"
+#
+# Returns:
+# - Exit code 0 if project exists
+# - Exit code 1 if project doesn't exist
+function project-exists() {
+  local projectName="$1"
+
+  # Normalize the project name: replace - with _, convert to uppercase
+  local normalizedName="${projectName:gs/-/_}"
+  normalizedName="${normalizedName:u}"
+
+  # Check if this key exists in PROJECTS_INDEX
+  for key in ${=PROJECTS_INDEX}; do
+    if [[ "$key" == "$normalizedName" ]]; then
+      return 0
+    fi
+  done
+
+  return 1
+}

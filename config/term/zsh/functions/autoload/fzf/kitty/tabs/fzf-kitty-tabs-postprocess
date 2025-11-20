@@ -1,0 +1,14 @@
+# Postprocess the selection and switch to the selected tab
+function fzf-kitty-tabs-postprocess() {
+  local rawSelection="$1"
+
+  # Stop early if no selection
+  [[ $rawSelection == "" ]] && exit
+
+  # Extract tab ID from the selection
+  local split=(${(@s/▮/)rawSelection})
+  local tabId="$split[1]"
+
+  # Switch to the selected tab
+  kitty @ focus-tab --match "id:$tabId"
+}

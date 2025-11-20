@@ -1,0 +1,7 @@
+# Search and switch to a Kitty tab using fzf
+function fzf-kitty-tabs() {
+  fzf-search \
+    --source "fzf-kitty-tabs-source" \
+    --options "fzf-kitty-tabs-options" \
+    --postprocess "fzf-kitty-tabs-postprocess"
+}

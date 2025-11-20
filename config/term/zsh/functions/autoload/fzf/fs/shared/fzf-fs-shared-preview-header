@@ -16,7 +16,7 @@ function fzf-fs-shared-preview-header() {
   local projectKey="$(project-by-path $fullPath)"
   if [[ $projectKey != "" ]]; then
     eval "displayedPath=\${displayedPath:s_${(P)${:-PROJECT_${projectKey}_PATH}}_}"
-    local projectPrefix=$(colorize-project $projectKey)
+    local projectPrefix=$(project-colorize $projectKey)
   fi
 
   local metadataArray=()

@@ -1,8 +1,10 @@
 # Returns a colorized string to represent a given project
 # Usage:
-# $ colorize-project oroshi   #
-function colorize-project () {
+# $ project-colorize oroshi
+function project-colorize() {
   local projectKey="$1"
+  projectKey="${projectKey:gs/-/_}"
+  projectKey="${projectKey:u}"
 
   # Read all linked variables
   local projectName=${(P)${:-PROJECT_${projectKey}_NAME}}
