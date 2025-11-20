@@ -33,6 +33,17 @@ local projectsIndex=()
 declare -gA projectsIndexByPath
 projectsIndexByPath=()
 
+function addToOutput() {
+  local key=$1
+  local value=$2
+  if [[ $value == '' ]]; then
+    return
+  fi
+
+  output+="export ${key}=\"${value}\"\n"
+}
+
+
 # Export PROJECT_{TYPE}_{KEY} environment variables:
 for key value in "${(@kv)PROJECTS}"; do
   [[ $key != *:icon ]] && continue
@@ -51,9 +62,11 @@ for key value in "${(@kv)PROJECTS}"; do
   # Background inactive colors (dark version)
   # Strip number suffix (GREEN_8 -> GREEN) and prepend DARK_
   local backgroundColorBase=${backgroundColorName%%_*}
-  local backgroundColorInactiveName="DARK_${backgroundColorBase}"
-  local backgroundColorInactiveTerm=${(P)${:-COLOR_${backgroundColorInactiveName}}}
-  local backgroundColorInactiveHexa=${(P)${:-COLOR_${backgroundColorInactiveName}_HEXA}}
+  if [[ $backgroundColorBase != "" ]]; then
+    local backgroundColorInactiveName="DARK_${backgroundColorBase}"
+    local backgroundColorInactiveTerm=${(P)${:-COLOR_${backgroundColorInactiveName}}}
+    local backgroundColorInactiveHexa=${(P)${:-COLOR_${backgroundColorInactiveName}_HEXA}}
+  fi
   # Foreground colors
   local foregroundColorName=$PROJECTS[${projectName}:foreground]
   local foregroundColorTerm=${(P)${:-COLOR_${foregroundColorName}}}
@@ -67,25 +80,19 @@ for key value in "${(@kv)PROJECTS}"; do
   [[ $hideNameInPrompt == "" ]] && hideNameInPrompt="0"
 
   # Creating PROJECT entries
-  output+="export PROJECT_${projectKey}_NAME=\"$projectName\"\n"
-  if [[ "$projectPath" != "" ]]; then
-    output+="export PROJECT_${projectKey}_PATH=\"${projectPath}\"\n"
-  fi
-  output+="export PROJECT_${projectKey}_ICON=\"$icon\"\n"
-  output+="export PROJECT_${projectKey}_BACKGROUND=\"$backgroundColorTerm\"\n"
-  output+="export PROJECT_${projectKey}_BACKGROUND_NAME=\"$backgroundColorName\"\n"
-  output+="export PROJECT_${projectKey}_BACKGROUND_HEXA=\"$backgroundColorHexa\"\n"
-  output+="export PROJECT_${projectKey}_BACKGROUND_INACTIVE=\"$backgroundColorInactiveTerm\"\n"
-  output+="export PROJECT_${projectKey}_BACKGROUND_INACTIVE_NAME=\"$backgroundColorInactiveName\"\n"
-  output+="export PROJECT_${projectKey}_BACKGROUND_INACTIVE_HEXA=\"$backgroundColorInactiveHexa\"\n"
-
-  if [[ "$foregroundColorTerm" != "" ]]; then
-    output+="export PROJECT_${projectKey}_FOREGROUND=\"$foregroundColorTerm\"\n"
-    output+="export PROJECT_${projectKey}_FOREGROUND_NAME=\"$foregroundColorName\"\n"
-    output+="export PROJECT_${projectKey}_FOREGROUND_HEXA=\"$foregroundColorHexa\"\n"
-  fi
-
-  output+="export PROJECT_${projectKey}_HIDE_NAME_IN_PROMPT=\"$hideNameInPrompt\"\n"
+  addToOutput "PROJECT_${projectKey}_NAME" "$projectName"
+  addToOutput "PROJECT_${projectKey}_PATH" "$projectPath"
+  addToOutput "PROJECT_${projectKey}_ICON" "$icon"
+  addToOutput "PROJECT_${projectKey}_BACKGROUND" "$backgroundColorTerm"
+  addToOutput "PROJECT_${projectKey}_BACKGROUND_NAME" "$backgroundColorName"
+  addToOutput "PROJECT_${projectKey}_BACKGROUND_HEXA" "$backgroundColorHexa"
+  addToOutput "PROJECT_${projectKey}_BACKGROUND_INACTIVE" "$backgroundColorInactiveTerm"
+  addToOutput "PROJECT_${projectKey}_BACKGROUND_INACTIVE_NAME" "$backgroundColorInactiveName"
+  addToOutput "PROJECT_${projectKey}_BACKGROUND_INACTIVE_HEXA" "$backgroundColorInactiveHexa"
+  addToOutput "PROJECT_${projectKey}_FOREGROUND" "$foregroundColorTerm"
+  addToOutput "PROJECT_${projectKey}_FOREGROUND_NAME" "$foregroundColorName"
+  addToOutput "PROJECT_${projectKey}_FOREGROUND_HEXA" "$foregroundColorHexa"
+  addToOutput "PROJECT_${projectKey}_HIDE_NAME_IN_PROMPT" "$hideNameInPrompt"
 
   # Building the indices
   projectsIndex+=($projectKey)
@@ -99,7 +106,7 @@ local PROJECTS_INDEX=""
 for projectKey in ${(o)projectsIndex}; do
   PROJECTS_INDEX+=" $projectKey"
 done
-output+="export PROJECTS_INDEX=\"${PROJECTS_INDEX:1}\"\n"
+addToOutput "PROJECTS_INDEX" "${PROJECTS_INDEX:1}"
 
 # List of all projects, ordered by path, from specific to generic
 local PROJECTS_INDEX_BY_PATH=""
@@ -107,7 +114,7 @@ for projectPath in ${(kO)projectsIndexByPath}; do
   local projectKey=$projectsIndexByPath[$projectPath]
   PROJECTS_INDEX_BY_PATH+=" $projectKey"
 done
-output+="export PROJECTS_INDEX_BY_PATH=\"${PROJECTS_INDEX_BY_PATH:1}\"\n"
+addToOutput "PROJECTS_INDEX_BY_PATH" "${PROJECTS_INDEX_BY_PATH:1}"
 
 # Generate the file
 echo $output > $outputFile
