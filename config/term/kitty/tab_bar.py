@@ -307,14 +307,20 @@ def _oroshi_tab_data(tab: TabBarData, draw_data: DrawData):  # {{{
         "isActive": tabIsActive,
     }
 
-    # Inactive tab, revert to default styles
-    if not tabIsActive:
-        tabData["fg"] = defaultInactiveFg
-        tabData["bg"] = projectData.get("bgInactive", defaultInactiveBg)
     # Active tab, use project colors if defined
-    else:
+    if tabIsActive:
         tabData["fg"] = projectData.get("fg", defaultActiveFg)
         tabData["bg"] = projectData.get("bg", defaultActiveBg)
+    else:
+        # Inactive tab are also colored, but with dimmer versions of the active tabs
+        tabData["bg"] = projectData.get("bgInactive", defaultInactiveBg)
+
+        # Foreground is the active background, or default if not defined
+        if "bg" in projectData:
+            tabData["fg"] = projectData["bg"]
+        else:
+            tabData["fg"] = defaultInactiveFg
+
 
     return tabData
 
