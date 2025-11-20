@@ -223,17 +223,38 @@ local function smartPaste()
 
   -- If content contains new lines, we do a regular paste on the next line
   if F.includes(clipboard, "\n") then
-    vim.cmd('normal! "+p')
+    vim.cmd("normal! p")
     return
   end
 
-  -- If only words, we paste at the exact cursor position
-  F.insertMode()
-  vim.cmd('normal! h"+pl')
-  F.normalMode()
+  -- Otherwise we paste before
+  vim.cmd("normal! P")
 end
+local function smartPasteAbove()
+  local clipboard = vim.fn.getreg("+")
+
+  -- If clipboard doesn't include a new line, we need to add a line above first
+  if not F.includes(clipboard, "\n") then
+    vim.cmd("normal! O")
+  end
+
+  -- Paste above
+  vim.cmd("normal! P")
+end
+local function smartPasteBelow()
+  local clipboard = vim.fn.getreg("+")
+
+  -- If clipboard doesn't include a new line, we need to add a line below first
+  if not F.includes(clipboard, "\n") then
+    vim.cmd("normal! o")
+  end
+
+  -- Paste below
+  vim.cmd("normal! p")
+end
+nmap("P", smartPasteAbove, "Paste above cursor")
 nmap("p", smartPaste, "Paste below if multiline, at cursor if single line")
-nmap("P", '"+P', "Paste above cursor")
+nmap("<M-p>", smartPasteBelow, "Paste below cursor")
 vmap("p", '"_x:pu', "Paste in place of current selection")
 nmap("gp", "`[v`]", "Select what was just pasted")
 nmap("c", '"_c', "Change without copying it")
