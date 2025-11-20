@@ -6,6 +6,9 @@ function fzf-kitty-tabs-source() {
     local tabId=$splitLine[1]
     local tabName=$splitLine[2]
 
+    # Skip the Tab Selector tab itself
+    [[ "$tabName" == "Tab Selector" ]] && continue
+
     # Check if this tab name matches a known project
     local tabDisplayName=""
     if project-exists "$tabName"; then
