@@ -4,6 +4,14 @@
 declare -A PROJECTS
 
 PROJECTS=()
+PROJECTS[bodwynn:background]="VIOLET_3"
+PROJECTS[bodwynn:foreground]="VIOLET_8"
+PROJECTS[bodwynn:icon]="󰇈 "
+PROJECTS[bodwynn:path]="~/local/www/algolia/bodwynn/"
+PROJECTS[bodwynn-data:background]="VIOLET_4"
+PROJECTS[bodwynn-data:foreground]="VIOLET_8"
+PROJECTS[bodwynn-data:icon]="󰇈  "
+PROJECTS[bodwynn-data:path]="~/local/www/algolia/bodwynn-data/"
 PROJECTS[Korvosa:background]="RED_9"
 PROJECTS[Korvosa:foreground]="RED_1"
 PROJECTS[Korvosa:icon]="🩸 "
