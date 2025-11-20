@@ -4,8 +4,13 @@
 # - PROJECT_ABERLAAS_PATH
 # - PROJECT_ABERLAAS_ICON
 # - PROJECT_ABERLAAS_BACKGROUND
+# - PROJECT_ABERLAAS_BACKGROUND_NAME
 # - PROJECT_ABERLAAS_BACKGROUND_HEXA
+# - PROJECT_ABERLAAS_BACKGROUND_INACTIVE (dark version for inactive tabs)
+# - PROJECT_ABERLAAS_BACKGROUND_INACTIVE_NAME
+# - PROJECT_ABERLAAS_BACKGROUND_INACTIVE_HEXA
 # - PROJECT_ABERLAAS_FOREGROUND
+# - PROJECT_ABERLAAS_FOREGROUND_NAME
 # - PROJECT_ABERLAAS_FOREGROUND_HEXA
 # - PROJECT_ABERLAAS_HIDE_NAME_IN_PROMPT
 local output=""
@@ -43,6 +48,12 @@ for key value in "${(@kv)PROJECTS}"; do
   local backgroundColorName=$PROJECTS[${projectName}:background]
   local backgroundColorTerm=${(P)${:-COLOR_${backgroundColorName}}}
   local backgroundColorHexa=${(P)${:-COLOR_${backgroundColorName}_HEXA}}
+  # Background inactive colors (dark version)
+  # Strip number suffix (GREEN_8 -> GREEN) and prepend DARK_
+  local backgroundColorBase=${backgroundColorName%%_*}
+  local backgroundColorInactiveName="DARK_${backgroundColorBase}"
+  local backgroundColorInactiveTerm=${(P)${:-COLOR_${backgroundColorInactiveName}}}
+  local backgroundColorInactiveHexa=${(P)${:-COLOR_${backgroundColorInactiveName}_HEXA}}
   # Foreground colors
   local foregroundColorName=$PROJECTS[${projectName}:foreground]
   local foregroundColorTerm=${(P)${:-COLOR_${foregroundColorName}}}
@@ -64,6 +75,9 @@ for key value in "${(@kv)PROJECTS}"; do
   output+="export PROJECT_${projectKey}_BACKGROUND=\"$backgroundColorTerm\"\n"
   output+="export PROJECT_${projectKey}_BACKGROUND_NAME=\"$backgroundColorName\"\n"
   output+="export PROJECT_${projectKey}_BACKGROUND_HEXA=\"$backgroundColorHexa\"\n"
+  output+="export PROJECT_${projectKey}_BACKGROUND_INACTIVE=\"$backgroundColorInactiveTerm\"\n"
+  output+="export PROJECT_${projectKey}_BACKGROUND_INACTIVE_NAME=\"$backgroundColorInactiveName\"\n"
+  output+="export PROJECT_${projectKey}_BACKGROUND_INACTIVE_HEXA=\"$backgroundColorInactiveHexa\"\n"
 
   if [[ "$foregroundColorTerm" != "" ]]; then
     output+="export PROJECT_${projectKey}_FOREGROUND=\"$foregroundColorTerm\"\n"
