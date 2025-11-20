@@ -99,6 +99,11 @@ def _oroshi_init_project_list():
         if projectBgRaw:
             projectData["bg"] = _oroshi_get_cursor_color(projectBgRaw)
 
+        # Background inactive
+        projectBgInactiveRaw = rawProjectData.get(f"{projectPrefix}_BACKGROUND_INACTIVE", None)
+        if projectBgInactiveRaw:
+            projectData["bgInactive"] = _oroshi_get_cursor_color(projectBgInactiveRaw)
+
         # Foreground
         projectFgRaw = rawProjectData.get(f"{projectPrefix}_FOREGROUND", None)
         if projectFgRaw:
@@ -305,7 +310,7 @@ def _oroshi_tab_data(tab: TabBarData, draw_data: DrawData):  # {{{
     # Inactive tab, revert to default styles
     if not tabIsActive:
         tabData["fg"] = defaultInactiveFg
-        tabData["bg"] = defaultInactiveBg
+        tabData["bg"] = projectData.get("bgInactive", defaultInactiveBg)
     # Active tab, use project colors if defined
     else:
         tabData["fg"] = projectData.get("fg", defaultActiveFg)
@@ -412,9 +417,19 @@ def _oroshi_check_for_forced_refresh(_=None):  # {{{
     if not os.path.exists(beaconPath):
         return
 
+    # Reload KITTY_OPTIONS to get updated colors from colors.conf
+    global KITTY_OPTIONS
+    KITTY_OPTIONS = get_options()
+
+    # Reload ALL_PROJECTS to get updated project colors
+    _oroshi_init_project_list()
+
     # We re-run all statusbar parts
     for itemName in STATUSBAR["order"]:
         _oroshi_statusbar_update(itemName)
+
+    # Explicitly mark tab bar as dirty to force redraw
+    _oroshi_refresh_statusbar()
 
     # We remove the beacon
     os.remove(beaconPath)
