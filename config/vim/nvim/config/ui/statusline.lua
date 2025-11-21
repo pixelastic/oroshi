@@ -341,7 +341,7 @@ O_STATUSLINE = {
         file = { content = "" },
         project = {
           content = "   AI CHAT ",
-          hl = O.colors.statusline.codecompanion,
+          hl = O.colors.statusline.ai,
         },
       }
     end
