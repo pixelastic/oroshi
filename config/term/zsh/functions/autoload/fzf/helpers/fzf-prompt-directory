@@ -8,11 +8,12 @@
 function fzf-prompt-directory() {
   local fzfPrompt="${${1:a}/#$HOME/~}/"
 
-  local projectKey="$(project-by-path $fzfPrompt)"
-  if [[ $projectKey != "" ]]; then
+  local projectName="$(project-by-path $fzfPrompt)"
+  if [[ $projectName != "" ]]; then
+    local projectKey=$(project-key "$projectName")
     local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
     eval "fzfPrompt=\${fzfPrompt:s_${projectPath}_}"
-    local projectPrefix="$(project-colorize $projectKey)"
+    local projectPrefix="$(project-colorize $projectName)"
   fi
 
   # If we have a path to display, we make it pretty

@@ -13,14 +13,15 @@ function fzf-fs-directories-common-source() {
   # We iterate on each path, to potentially color them using the project prefix
   for fullPath in ${(f)rawList}; do
     local displayPath="$fullPath/"
-    local projectKey="$(project-by-path ${displayPath})"
+    local projectName="$(project-by-path ${displayPath})"
 
     # Update display if known project
-    if [[ $projectKey != "" ]]; then
+    if [[ $projectName != "" ]]; then
+      local projectKey=$(project-key "$projectName")
       local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
       eval "displayPath=\${displayPath:s_${projectPath}_}"
 
-      local projectPrefix="$(project-colorize $projectKey)"
+      local projectPrefix="$(project-colorize $projectName)"
 
       displayPath="${projectPrefix} ${displayPath}"
     fi

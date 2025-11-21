@@ -16,7 +16,8 @@ function project-by-path () {
   for projectKey in ${=PROJECTS_INDEX_BY_PATH}; do
     local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
     [[ $pathToCheck != $projectPath* ]] && continue
-    echo $projectKey
+    local projectName=${(P)${:-PROJECT_${projectKey}_NAME}}
+    echo $projectName
     break
   done
 }

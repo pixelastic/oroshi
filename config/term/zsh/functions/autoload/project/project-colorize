@@ -2,12 +2,10 @@
 # Usage:
 # $ project-colorize oroshi
 function project-colorize() {
-  local projectKey="$1"
-  projectKey="${projectKey:gs/-/_}"
-  projectKey="${projectKey:u}"
+  local projectName=$1
+  local projectKey=$(project-key "$projectName")
 
   # Read all linked variables
-  local projectName=${(P)${:-PROJECT_${projectKey}_NAME}}
   local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
   local projectBackground=${(P)${:-PROJECT_${projectKey}_BACKGROUND}}
   local projectForeground=${(P)${:-PROJECT_${projectKey}_FOREGROUND}}

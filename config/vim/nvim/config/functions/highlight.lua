@@ -125,8 +125,8 @@ M.color = function(input, color)
 end
 
 -- getData: Get info about a specific project, lazyloaded and cached
-M.getProjectData = function(projectKey)
-  if not projectKey then
+M.getProjectData = function(projectName)
+  if not projectName then
     return {
       name = "",
       path = "",
@@ -137,9 +137,12 @@ M.getProjectData = function(projectKey)
   end
 
   -- Return cached version
-  if O.projects[projectKey] then
-    return O.projects[projectKey]
+  if O.projects[projectName] then
+    return O.projects[projectName]
   end
+
+  -- Get the project key for environment variable access
+  local projectKey = vim.fn.systemlist("project-key " .. projectName)[1]
 
   local function getAttribute(type)
     return F.env("PROJECT_" .. projectKey .. "_" .. type)
@@ -153,7 +156,7 @@ M.getProjectData = function(projectKey)
 
   -- Get relevant project data
   local projectData = {
-    name = projectKey:lower(),
+    name = projectName,
     path = vim.fn.expand(projectPath), -- Convert ~ to full path
     icon = getAttribute("ICON"),
     hl = {
@@ -162,7 +165,7 @@ M.getProjectData = function(projectKey)
     },
     hideNameInPrompt = getAttribute("HIDE_NAME_IN_PROMPT"),
   }
-  O.projects[projectKey] = projectData
+  O.projects[projectName] = projectData
 
   return projectData
 end

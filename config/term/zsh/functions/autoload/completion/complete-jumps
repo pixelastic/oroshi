@@ -3,7 +3,7 @@ function complete-jumps() {
   local suggestions=()
   for item in "$MARKPATH"/*; do
 
-    local projectKey=${item:t:u}
+    local projectKey=$(project-key "${item:t}")
     local projectIcon=${(P)${:-PROJECT_${projectKey}_ICON}}
     if [[ $projectIcon != "" ]]; then
       local description="${projectIcon}${projectKey}"

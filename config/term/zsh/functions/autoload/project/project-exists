@@ -8,14 +8,11 @@
 # - Exit code 1 if project doesn't exist
 function project-exists() {
   local projectName="$1"
-
-  # Normalize the project name: replace - with _, convert to uppercase
-  local normalizedName="${projectName:gs/-/_}"
-  normalizedName="${normalizedName:u}"
+  local projectKey=$(project-key "$projectName")
 
   # Check if this key exists in PROJECTS_INDEX
   for key in ${=PROJECTS_INDEX}; do
-    if [[ "$key" == "$normalizedName" ]]; then
+    if [[ "$key" == "$projectKey" ]]; then
       return 0
     fi
   done

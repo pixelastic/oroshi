@@ -13,10 +13,11 @@ function fzf-fs-shared-preview-header() {
   [[ -d $fullPath ]] && isDirectory=1
 
   # Simplifying the displayed path by removing the project prefix, if any
-  local projectKey="$(project-by-path $fullPath)"
-  if [[ $projectKey != "" ]]; then
+  local projectName="$(project-by-path $fullPath)"
+  if [[ $projectName != "" ]]; then
+    local projectKey=$(project-key "$projectName")
     eval "displayedPath=\${displayedPath:s_${(P)${:-PROJECT_${projectKey}_PATH}}_}"
-    local projectPrefix=$(project-colorize $projectKey)
+    local projectPrefix=$(project-colorize $projectName)
   fi
 
   local metadataArray=()

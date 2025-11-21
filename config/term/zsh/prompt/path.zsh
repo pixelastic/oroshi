@@ -9,9 +9,10 @@ function oroshi-prompt-populate:path() {
   local currentPath="${PWD/#$HOME/~}/"
 
   # Checking if part of a known project
-  local projectKey="$(project-by-path $currentPath)"
-  if [[ $projectKey != "" ]]; then
+  local projectName="$(project-by-path $currentPath)"
+  if [[ $projectName != "" ]]; then
     # Simplifying the displayed path by removing the prefix
+    local projectKey=$(project-key "$projectName")
     local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
     eval "currentPath=\${currentPath:s_${projectPath}_}"
   fi
@@ -27,8 +28,8 @@ function oroshi-prompt-populate:path() {
 
   # Prefix with a shortened colored version of the project if in an active
   # project
-  if [[ $projectKey != '' ]]; then
-    local projectPrefix="$(OROSHI_IS_PROMPT=1; project-colorize $projectKey)"
+  if [[ $projectName != '' ]]; then
+    local projectPrefix="$(OROSHI_IS_PROMPT=1; project-colorize $projectName)"
     OROSHI_PROMPT_PARTS[path]+=$projectPrefix
   fi
 

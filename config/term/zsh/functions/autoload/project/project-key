@@ -1,0 +1,16 @@
+# Convert a project name to its environment variable key
+# Replaces dashes with underscores and converts to uppercase
+# Usage:
+# $ project-key "my-project"
+# MY_PROJECT
+# $ project-key "meetups-badges"
+# MEETUPS_BADGES
+function project-key() {
+  local projectName="$1"
+
+  # Replace all - with _, then convert to uppercase
+  local key="${projectName:gs/-/_}"
+  key="${key:u}"
+
+  echo "$key"
+}

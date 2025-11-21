@@ -19,7 +19,7 @@ function oroshi-prompt-populate:yarn_link() {
     totalLinkCount=$(($totalLinkCount + 1));
 
     # Add the module icon to the string
-    local projectKey=${linkName:u}
+    local projectKey=$(project-key "$linkName")
     local projectIcon=${(P)${:-PROJECT_${projectKey}_ICON}}
     if [[ $projectIcon != '' ]]; then
       displayedString+="${projectIcon}"
