@@ -42,7 +42,7 @@ git-branch-push
 
 # Configure GitHub and CircleCi (Optional)
 local additionalSetupArguments=""
-[[ $isAlgolia == "1" ]] && additionalSetupArguments="--circleci=false --renovate=false"
+[[ $isAlgolia == "1" ]] && additionalSetupArguments="--circleci=0 --renovate=0"
 yarn run aberlaas setup ${=additionalSetupArguments}
 
 # Mark it for future jump
