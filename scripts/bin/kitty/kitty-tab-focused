@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# Check if a tab is currently focused
+# Usage:
+# $ kitty-tab-focused {tabId}       # Check if specified tab is focused
+# $ kitty-tab-focused               # Check if current tab is focused
+
+local targetTabId=$1
+local focusedTabId=$(kitty @ ls | jq '.[0].tabs[] | select(.is_focused==true) | .id')
+if [[ "$targetTabId" != "$focusedTabId" ]]; then
+  exit 1
+fi
+exit 0

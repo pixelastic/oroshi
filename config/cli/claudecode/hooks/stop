@@ -1,6 +1,8 @@
 #!/usr/bin/env zsh
 # Triggered whenever Claude finishes answering
 
+kitty-tab-attention-add
+
 if sound-mode-is-enabled; then
   jobsdone &
 fi

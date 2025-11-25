@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+# Remove tab from attention list
+# Usage:
+# $ kitty-tab-attention-remove {tabId}     # Remove {tabId} from attention list
+# $ kitty-tab-attention-remove             # Remove current tab from attention list
+local tabId=$1
+[[ $tabId == "" ]] && tabId="$(kitty-tab-id)"
+
+# Return early if file doesn't exist
+local attentionFile=$OROSHI_TMP_FOLDER/kitty/attention
+[[ ! -f "$attentionFile" ]] && exit 0
+
+# Remove tab ID and refresh
+sed -i "/^${tabId}$/d" "$attentionFile"
+kitty-refresh
