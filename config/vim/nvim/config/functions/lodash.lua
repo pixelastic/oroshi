@@ -56,6 +56,11 @@ return {
     return string.find(input, prefix, -#prefix, true) == #input - #prefix + 1
   end,
 
+  -- escapeRegExp: Escape special regex characters in a string
+  escapeRegExp = function(input)
+    return input:gsub("([%^%$%(%)%%%.%[%]%*%+%-%?])", "%%%1")
+  end,
+
   -- first: Returns the first element of a collection
   first = function(collection)
     return collection[1]

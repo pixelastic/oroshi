@@ -293,7 +293,7 @@ O_STATUSLINE = {
     }
 
     -- Filepath
-    local relativePath = rawFilepath:gsub("^" .. projectData.path, "")
+    local relativePath = rawFilepath:gsub("^" .. F.escapeRegExp(projectData.path), "")
     local simplifiedPath = vim.fn.systemlist(
       "simplify-path " .. vim.fn.shellescape(relativePath) .. " 3" -- Keep only three levels
     )[1]
