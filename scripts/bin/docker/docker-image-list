@@ -45,15 +45,15 @@ for rawImageLine in ${(f)rawImageList}; do
   # Tag {{{
   row+="$(docker-tag-colorize $imageTag --with-icon)▮"
   # }}}
-  
+
   # Hash {{{
   row+="$(docker-hash-colorize $imageHash --with-icon)▮"
   # }}}
-  
+
   # Date {{{
   row+="$(docker-date-colorize $imageDate --with-icon)▮"
   # }}}
-  
+
   # Size {{{
   row+="$(docker-size-colorize $imageSize)▮"
   # }}}
