@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Disable shred system-wide, attempt at protection against malware deleting
+# Reference: https://about.gitlab.com/blog/gitlab-discovers-widespread-npm-supply-chain-attack/
+set -e
+
+SHRED_PATH=$(which shred 2>/dev/null || echo "/usr/bin/shred")
+BACKUP_PATH="${SHRED_PATH}.disabled"
+
+# Stop if already protected
+if [[ -f "$BACKUP_PATH" ]]; then
+  exit 0
+fi
+
+# Backup original shred
+sudo mv "$SHRED_PATH" "$BACKUP_PATH"
+
+# Create protective wrapper
+sudo tee "$SHRED_PATH" >/dev/null <<'EOF'
+#!/usr/bin/env bash
+echo "⚠️  SECURITY: shred command has been disabled" >&2
+echo "Reference: https://about.gitlab.com/blog/gitlab-discovers-widespread-npm-supply-chain-attack/" >&2
+exit 1
+EOF
+
+sudo chmod 755 "$SHRED_PATH"
