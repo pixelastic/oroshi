@@ -50,8 +50,8 @@ if [[ ! -f package.json ]]; then
 	yarn init -y &>/dev/null
 fi
 
-# Add the module
-yarn add $fullModuleName
+# Add the module with exact version pinning
+yarn add --exact $fullModuleName
 
 # Find all installed binaries
 local nodeModulesDirectory="${installDirectory}/node_modules/${baseModuleName}"

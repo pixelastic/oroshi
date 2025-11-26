@@ -5,5 +5,5 @@ function yarn-dependency-add() {
 	# Init the project with the right yarn version if not set
 	yarn-is-initialized || yarn-init
 
-	yarn add -- $@
+	yarn add --exact -- $@
 }
