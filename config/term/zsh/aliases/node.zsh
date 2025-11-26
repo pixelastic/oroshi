@@ -16,3 +16,4 @@ alias nmlr='node-module-list-raw'
 
 # Old yarn-* syntax for muscle memory
 alias yag='node-module-install'
+alias yug='node-module-update'

@@ -1,0 +1,6 @@
+# Update a globally installed package
+# Usage:
+# $ node-module-update eslint_d    # Update eslint_d to latest version
+function node-module-update() {
+  node-module-install "$@"
+}

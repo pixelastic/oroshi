@@ -169,7 +169,8 @@ compdef '_files -g "*.{epub,mobi}"' \
 compdef _nvm-lazyload lazyloadNvm
 compdef _node-versions-installed node-version-switch
 compdef _node-modules \
-  node-module-remove
+  node-module-remove \
+  node-module-update
 # }}}
 # Yarn {{{
 compdef _yarn-runnables \
