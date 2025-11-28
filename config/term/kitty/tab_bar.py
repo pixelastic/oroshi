@@ -59,18 +59,6 @@ def _oroshi_refresh_statusbar():  # {{{
 # }}}
 
 
-# Read the list of tabs needing attention
-TABS_NEEDING_ATTENTION = set()
-def _oroshi_get_tabs_needing_attention():  # {{{
-    attentionFile = "/home/tim/local/tmp/oroshi/kitty/attention"
-    if not os.path.exists(attentionFile):
-        return set()
-
-    with open(attentionFile, 'r') as f:
-        return set(int(line) for line in f)
-# }}}
-
-
 # }}}
 
 
@@ -151,12 +139,7 @@ def _oroshi_tab_first_pass(
     tabBg = tabData["bg"]
 
     # Build the title with icon, name and potential full-screen icon
-    tabId = tab.id
-    tabTitle = f" {tabTitleIcon}{tabTitleName} [{tabId}]"
-    # Add attention icon if tab is in attention list
-    if tabId in TABS_NEEDING_ATTENTION:
-        tabTitle = f" {tabTitleIcon}{tabTitleName} [{tabId}]◆ "
-
+    tabTitle = f" {tabTitleIcon}{tabTitleName} "
     tabIsFullscreen = tabData["isFullscreen"]
     if tabIsFullscreen:
         tabTitle = f"{tabTitle} "
@@ -446,10 +429,6 @@ def _oroshi_check_for_forced_refresh(_=None):  # {{{
 
     # Reload ALL_PROJECTS to get updated project colors
     _oroshi_init_project_list()
-
-    # Reload attention list
-    global TABS_NEEDING_ATTENTION
-    TABS_NEEDING_ATTENTION = _oroshi_get_tabs_needing_attention()
 
     # We re-run all statusbar parts
     for itemName in STATUSBAR["order"]:
