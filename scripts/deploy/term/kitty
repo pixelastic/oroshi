@@ -11,10 +11,13 @@ mkdir -p $DEST_DIR
 
 # Base file
 ln -fs \
-	$CONFIG_DIR/kitty.conf \
-	$DEST_DIR
+  $CONFIG_DIR/kitty.conf \
+  $DEST_DIR
 
 # Custom tab bar
 ln -fs \
-	$CONFIG_DIR/tab_bar.py \
-	$DEST_DIR
+  $CONFIG_DIR/tab_bar.py \
+  $DEST_DIR
+ln -fs \
+  $CONFIG_DIR/tab_bar_modules \
+  $DEST_DIR

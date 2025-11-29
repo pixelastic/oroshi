@@ -8,6 +8,7 @@ dist/
 node_modules/
 tmp/
 .claude/
+__pycache__/
 
 # Files
 Thumbs.db
