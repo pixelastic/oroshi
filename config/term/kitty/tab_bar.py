@@ -29,21 +29,8 @@ from tab_bar_modules.statusbar import (
 )
 
 KITTY_OPTIONS = get_options()
+initStatusbar()
 
-# List of items to display in the status bar.
-# Order is important, and number is the refresh delay (in seconds)
-# Note: use kitty-refresh script to force-refresh the display for debugging
-# STATUSBAR_DEFINITION = [
-#     # "spotify:5",
-#     "sound-mode:60",
-#     "mic2txt-model:60",
-#     "battery:60",
-#     "cpu:30",
-#     "ram:30",
-#     # "ping:30",
-#     "clock:60",
-#     "dropbox:300",
-# ]
 
 
 # TABS {{{
@@ -164,8 +151,7 @@ def _oroshi_define_tabs_to_display(screen: Screen):
 
     # Gathering metrics about the layout
     screenWidth = screen.columns
-    statusBarWidth = 10
-    # getStatusbarWidth(STATUSBAR)
+    statusBarWidth = getStatusbarWidth()
     tabBarMaxWidth = screenWidth - statusBarWidth
     tabBarActualWidth = sum(_oroshi_tab_width(tab) for tab in ALL_TABS.values())
 
@@ -253,8 +239,8 @@ def _oroshi_tab_second_pass(
         screen.draw("")
 
     # If last tab, also draw the status bar
-    # if is_last:
-    #     drawStatusbar(screen, STATUSBAR)
+    if is_last:
+        drawStatusbar(screen)
 
     return screen.cursor.x
 
@@ -331,10 +317,7 @@ def _oroshi_get_active_tab_index():  # {{{
 
 
 # STATUSBAR {{{
-# # All statusbar methods moved to tab_bar/statusbar.py
-# STATUSBAR = initStatusbar(STATUSBAR_DEFINITION)
-#
-# # Check for the beacon every 5s
+# Check for the beacon every 5s
 # add_timer(lambda _=None: checkForForcedRefresh(STATUSBAR, _oroshi_init_project_list), 5, True)
 # }}}
 

@@ -13,6 +13,49 @@ from kitty.tab_bar import (
 )
 from tab_bar_modules.colors import getCursorColor
 
+# # List of items to display in the status bar.
+# # Order is important, and number is the refresh delay (in seconds)
+# # Note: use kitty-refresh script to force-refresh the display for debugging
+STATUSBAR_DEFINITION = [
+    # "spotify:5",
+    "sound-mode:60",
+    "mic2txt-model:60",
+    "battery:60",
+    "cpu:30",
+    "ram:30",
+    # "ping:30",
+    "clock:60",
+    "dropbox:300",
+]
+STATUSBAR = {}
+
+# Init the STATUSBAR object
+def initStatusbar():
+    global STATUSBAR
+    STATUSBAR = {"order": [], "items": {}}
+
+    for item in STATUSBAR_DEFINITION:
+        itemName, itemFrequency = item.split(":")
+        itemFrequency = int(itemFrequency)
+
+        # Add to the list
+        STATUSBAR["order"].append(itemName)
+
+        # Create an entry in items
+        STATUSBAR["items"][itemName] = {
+            "frequency": itemFrequency,
+            "chunks": [],
+        }
+
+        # Update this specific statusbar part right now
+        callback = lambda _=None, itemName=itemName: (  # noqa: E731
+            statusbarUpdate(itemName),
+        )
+        callback()
+
+        # And mark it to run again at a regular frequency
+        add_timer(callback, itemFrequency, True)
+
 
 # Mark the tab manager as dirty so Kitty will redraw it whenever it can
 def refreshStatusbar():
@@ -27,7 +70,7 @@ def refreshStatusbar():
 # I previously used tmux, and had each part of the statusbar being built from
 # a separate function. I converted those functions into statusbar-XXX scripts
 # that now output JSON, to be more easily parsed by this script.
-def statusbarUpdate(statusbarName: str, statusbar: dict):
+def statusbarUpdate(statusbarName: str):
     # Path to the executable
     binName = f"statusbar-{statusbarName}"
     binPath = f"/home/tim/.oroshi/scripts/bin/statusbar/{binName}"
@@ -44,40 +87,10 @@ def statusbarUpdate(statusbarName: str, statusbar: dict):
             chunk["bg"] = getCursorColor(int(chunk["bg"]))
 
     # Update the representation of this part of statusbar
-    statusbar["items"][statusbarName]["chunks"] = chunks
+    STATUSBAR["items"][statusbarName]["chunks"] = chunks
 
     # Refresh the whole statusbar
     refreshStatusbar()
-
-
-# Init the STATUSBAR object
-def initStatusbar(statusbarDefinition: list):
-    statusbar = {"order": [], "items": {}}
-
-    for item in statusbarDefinition:
-        itemName, itemFrequency = item.split(":")
-        itemFrequency = int(itemFrequency)
-
-        # Add to the list
-        statusbar["order"].append(itemName)
-
-        # Create an entry in items
-        statusbar["items"][itemName] = {
-            "frequency": itemFrequency,
-            "chunks": [],
-        }
-
-        # Update this specific statusbar part right now
-        callback = lambda _=None, itemName=itemName: (  # noqa: E731
-            statusbarUpdate(itemName, statusbar),
-        )
-        callback()
-
-        # And mark it to run again at a regular frequency
-        add_timer(callback, itemFrequency, True)
-
-    return statusbar
-
 
 # External tools can call kitty-refresh (which will create a beacon file)
 # We will periodically check for this beacon, and if present refresh the
@@ -108,16 +121,16 @@ def checkForForcedRefresh(statusbar: dict, initProjectListCallback):
 
 
 # Display the status bar
-def drawStatusbar(screen: Screen, statusbar: dict):
+def drawStatusbar(screen: Screen):
     # Position cursor at beginning of line
-    statusbarWidth = getStatusbarWidth(statusbar)
+    statusbarWidth = getStatusbarWidth()
     # Note: Putting a negative value here make kitty fail with a segfault, so we
     # keep it positive with max()
     screen.cursor.x = max(screen.cursor.x, screen.columns - statusbarWidth)
 
     # Write all statuses
-    for itemName in statusbar["order"]:
-        itemData = statusbar["items"][itemName]
+    for itemName in STATUSBAR["order"]:
+        itemData = STATUSBAR["items"][itemName]
 
         for itemChunk in itemData["chunks"]:
             chunkFg = itemChunk.get("fg", None)
@@ -138,10 +151,10 @@ def drawStatusbar(screen: Screen, statusbar: dict):
 
 
 # Get the statusbar width, to correctly position it
-def getStatusbarWidth(statusbar: dict):
+def getStatusbarWidth():
     statusbarWidth = 0
-    for itemName in statusbar["order"]:
-        itemData = statusbar["items"][itemName]
+    for itemName in STATUSBAR["order"]:
+        itemData = STATUSBAR["items"][itemName]
         for itemChunk in itemData["chunks"]:
             statusbarWidth += len(itemChunk["text"])
 
