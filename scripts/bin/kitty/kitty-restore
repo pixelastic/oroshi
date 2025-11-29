@@ -1,18 +1,16 @@
 #!/usr/bin/env zsh
 # Start kitty and restore to previous state
 
-local kittySocketFolder=/home/$USER/local/tmp/oroshi/kitty
-local kittySocketPath=$kittySocketFolder/kitty-socket
-mkdir -p $kittySocketFolder
+local uuid="$(uuidgen)"
 
-# We delete the socket file, just to be sure an old socket file wasn't left as
-# a leftover from a previous laptop crash
-rm -rf $kittySocketPath
+local kittySocketFolder=/home/$USER/local/tmp/oroshi/kitty
+mkdir -p $kittySocketFolder
+local kittySocketPath=$kittySocketFolder/socket-$uuid
 
 # Start kitty and make it listen to remote commands on this socket
 # This allow remote commands to be sent from outside of kitty itself
-kitty \
-	--listen-on unix:$kittySocketPath
+OROSHI_KITTY_UUID=$uuid kitty \
+  --listen-on unix:$kittySocketPath
 
 # We comment out auto-loading of last session as the script currently bugs, and
 # prevent kitty from creatin the socket altogether

@@ -1,3 +1,4 @@
 #!/usr/bin/env zsh
 # Get the current Kitty tab ID
-kitty @ ls | jq -r ".[0].tabs[] | select(.windows[].id==${KITTY_WINDOW_ID}) | .id"
+kitty @ ls \
+  | jq -r ".[0].tabs[] | select(.windows[].id==${KITTY_WINDOW_ID}) | .id"
