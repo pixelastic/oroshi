@@ -1,0 +1,48 @@
+#!/usr/bin/env zsh
+# python-fix: Fix a Python file
+# Usage:
+# $ python-fix ./path/to/file.py                       # Output fixed code to stdout
+# $ python-fix --in-place ./path/to/file.py            # Overwrite the file in place
+# $ echo "code" | python-fix                           # Bad code from stdin, good code to stdout
+# $ echo "code" | python-fix --filepath ./realpath.py  # Specify file location for config resolution
+
+zparseopts -E -D \
+  -in-place=flagInPlace \
+  -filepath:=flagFilepath
+isInPlace=${#flagInPlace}
+overrideFilepath=${flagFilepath[2]}
+
+# Check if input is being piped
+hasStdin=0
+[[ ! -t 0 ]] && hasStdin=1
+
+# inputFilepath is the file to read
+# realFilepath is where the file is located (for ruff config resolution)
+inputFilepath="${1:a}"
+realFilepath="$inputFilepath"
+[[ $overrideFilepath != "" ]] && realFilepath="$overrideFilepath"
+
+# Input is stdin, output is stdout
+# $ cat file.py | python-fix
+# $ cat tmp.py | python-fix --filepath ./realpath.py
+if [[ $hasStdin = 1 ]]; then
+  additionalArguments=()
+  if [[ $realFilepath != "" ]]; then
+    additionalArguments+=("--stdin-filename")
+    additionalArguments+=("${realFilepath:a}")
+  fi
+
+  ruff format ${=additionalArguments}
+  exit $?
+fi
+
+# Input is a file, fix in place
+# $ python-fix --in-place file.py
+if [[ $isInPlace = 1 ]]; then
+  ruff format "$inputFilepath"
+  exit $?
+fi
+
+# Input is a file, output to stdout
+# $ python-fix file.py
+ruff format --stdin-filename "$inputFilepath" <$inputFilepath

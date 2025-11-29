@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# Ruff: Fast linter and formatter for python
+# https://github.com/astral-sh/ruff
+pipx install ruff
