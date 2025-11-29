@@ -21,7 +21,10 @@ from kitty.tab_bar import (
 )
 
 from tab_bar_modules.colors import getCursorColor
-from tab_bar_modules.projects import initProjectList
+from tab_bar_modules.projects import (
+    initProjectList,
+    getProjectData
+)
 from tab_bar_modules.statusbar import (
     initStatusbar,
     checkForForcedRefresh,
@@ -31,14 +34,11 @@ from tab_bar_modules.statusbar import (
 
 KITTY_OPTIONS = get_options()
 initStatusbar()
+initProjectList()
 
 
 
 # TABS {{{
-# ALL_PROJECTS {{{
-# All project-related functions moved to tab_bar_modules/projects.py
-ALL_PROJECTS = initProjectList()
-# }}}
 
 
 # On the first pass, we don't draw anything but gather all layout information
@@ -205,8 +205,6 @@ def _oroshi_tab_second_pass(
 
 # Returns a hash of useful data for a given tab
 def _oroshi_tab_data(tab: TabBarData, draw_data: DrawData):  # {{{
-    global ALL_PROJECTS
-
     # Quick fail if no tab
     if not tab:
         return {}
@@ -223,7 +221,7 @@ def _oroshi_tab_data(tab: TabBarData, draw_data: DrawData):  # {{{
     tabIsActive = tab.is_active
 
     # Find info from the list of projects if one matches the same name
-    projectData = ALL_PROJECTS.get(tabTitle, {})
+    projectData = getProjectData(tabTitle)
     tabIcon = projectData.get("icon", "")
 
     tabData = {
