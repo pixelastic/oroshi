@@ -1,6 +1,8 @@
 import json
+
 # from tab_bar_modules.colors import getCursorColor
 ALL_PROJECTS = {}
+
 
 def getProjectData(projectName):
     return ALL_PROJECTS.get(projectName, {})
@@ -41,7 +43,9 @@ def initProjectList():
         #     projectData["bg"] = getCursorColor(projectBgRaw)
 
         # Background inactive
-        projectBgInactiveRaw = rawProjectData.get(f"{projectPrefix}_BACKGROUND_INACTIVE", None)
+        projectBgInactiveRaw = rawProjectData.get(
+            f"{projectPrefix}_BACKGROUND_INACTIVE", None
+        )
         # if projectBgInactiveRaw:
         #     projectData["bgInactive"] = getCursorColor(projectBgInactiveRaw)
 

@@ -29,6 +29,7 @@ STATUSBAR_DEFINITION = [
 ]
 STATUSBAR = {}
 
+
 # Init the STATUSBAR object
 def initStatusbar():
     global STATUSBAR
@@ -91,6 +92,7 @@ def statusbarUpdate(statusbarName: str):
 
     # Refresh the whole statusbar
     refreshStatusbar()
+
 
 # External tools can call kitty-refresh (which will create a beacon file)
 # We will periodically check for this beacon, and if present refresh the

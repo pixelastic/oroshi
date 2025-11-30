@@ -1,32 +1,20 @@
-import json
-import sys
 import os
-from pprint import pprint
-
-# Add the current directory to Python path so we can import tab_bar_modules
-_current_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, _current_dir)
-
+import sys
 from kitty.fast_data_types import (
     Screen,
-    add_timer,
     get_options,
 )
-from kitty.utils import color_as_int
 from kitty.tab_bar import (
     DrawData,
     ExtraData,
     TabBarData,
-    as_rgb,
 )
 
-from tab_bar_modules.colors import getCursorColor
-from tab_bar_modules.projects import initProjectList, getProjectData
+# Add the current directory to Python path so we can import tab_bar_modules
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from tab_bar_modules.projects import initProjectList
 from tab_bar_modules.statusbar import (
     initStatusbar,
-    checkForForcedRefresh,
-    drawStatusbar,
-    getStatusbarWidth,
 )
 from tab_bar_modules.tabs import oroshiDrawTab
 

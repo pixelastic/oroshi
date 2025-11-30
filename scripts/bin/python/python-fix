@@ -10,39 +10,68 @@ zparseopts -E -D \
   -in-place=flagInPlace \
   -filepath:=flagFilepath
 isInPlace=${#flagInPlace}
-overrideFilepath=${flagFilepath[2]}
+overridePath=${flagFilepath[2]}
 
-# Check if input is being piped
+# Work file and temp file
+workfileDir="${OROSHI_TMP_FOLDER}/python-fix"
+workfilePath="${workfileDir}/python-fix-$RANDOM.py"
+tmpPath="${workfilePath}.tmp"
+mkdir -p "$workfileDir"
+
+# Check for stdin
 hasStdin=0
 [[ ! -t 0 ]] && hasStdin=1
 
-# inputFilepath is the file to read
-# realFilepath is where the file is located (for ruff config resolution)
-inputFilepath="${1:a}"
-realFilepath="$inputFilepath"
-[[ $overrideFilepath != "" ]] && realFilepath="$overrideFilepath"
-
-# Input is stdin, output is stdout
-# $ cat file.py | python-fix
-# $ cat tmp.py | python-fix --filepath ./realpath.py
-if [[ $hasStdin = 1 ]]; then
-  additionalArguments=()
-  if [[ $realFilepath != "" ]]; then
-    additionalArguments+=("--stdin-filename")
-    additionalArguments+=("${realFilepath:a}")
-  fi
-
-  ruff format ${=additionalArguments}
-  exit $?
+# If a file is passed as an argument:
+# - inputPath is that file
+# - we copy it as workfilePath
+if [[ $hasStdin -eq 0 ]]; then
+  inputPath="${1:a}"
+  cp "$inputPath" "$workfilePath"
 fi
 
-# Input is a file, fix in place
-# $ python-fix --in-place file.py
+# If input is passed as stdin:
+# - inputPath is the workfilePath
+# - we output stdin into workfilePath
+if [[ $hasStdin -eq 1 ]]; then
+  inputPath="$workfilePath"
+  cat >"$workfilePath"
+fi
+
+# Default overridePath value
+[[ $overridePath = "" ]] && overridePath="$inputPath"
+# Create the tmp file
+cp "$workfilePath" "$tmpPath"
+
+# Notes:
+# ruff default to updating files in place, but as we need to output to stdout by
+# default, we need to operate on copies of files and output their updated
+# content.
+# Piping content to ruff works, but we need to use --stdin-filename for it to
+# resolve any relative filepaths.
+# Finally, we need to output the changes to a new file as reading and writing to
+# the same file doesn't work.
+
+# Fix linting errors
+ruff check \
+  --stdin-filename "$overridePath" \
+  --fix \
+  <"$workfilePath" \
+  >"$tmpPath" 2>/dev/null
+mv -f "$tmpPath" "$workfilePath"
+
+# Reformat
+ruff format \
+  --stdin-filename "$overridePath" \
+  <"$workfilePath" \
+  >"$tmpPath" 2>/dev/null
+mv -f "$tmpPath" "$workfilePath"
+
+# Update in place or output to stdout
 if [[ $isInPlace = 1 ]]; then
-  ruff format "$inputFilepath"
-  exit $?
+  cp -f "$workfilePath" "$inputPath"
+else
+  cat "$workfilePath"
 fi
 
-# Input is a file, output to stdout
-# $ python-fix file.py
-ruff format --stdin-filename "$inputFilepath" <$inputFilepath
+rm -f "$workfilePath"
