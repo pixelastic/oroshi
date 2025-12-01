@@ -23,8 +23,8 @@ def secondPass(
         tabTitle = tabData["title"]
         tabFg = tabData["fg"]
         tabBg = tabData["bg"]
-        nextBg = tabData["nextBg"]
-        nextFg = tabData["nextFg"]
+        separatorBg = tabData["separatorBg"]
+        separatorFg = tabData["separatorFg"]
 
         # Draw tab
         screen.cursor.fg = tabFg
@@ -32,8 +32,8 @@ def secondPass(
         screen.draw(tabTitle)
 
         # Draw separator
-        screen.cursor.bg = nextBg
-        screen.cursor.fg = nextFg
+        screen.cursor.bg = separatorBg
+        screen.cursor.fg = separatorFg
         screen.draw("")
 
     # If last tab, also draw the status bar

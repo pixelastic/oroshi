@@ -53,12 +53,12 @@ cp "$workfilePath" "$tmpPath"
 # the same file doesn't work.
 
 # Fix linting errors
-ruff check \
-  --stdin-filename "$overridePath" \
-  --fix \
-  <"$workfilePath" \
-  >"$tmpPath" 2>/dev/null
-mv -f "$tmpPath" "$workfilePath"
+# ruff check \
+#   --stdin-filename "$overridePath" \
+#   --fix \
+#   <"$workfilePath" \
+#   >"$tmpPath" 2>/dev/null
+# mv -f "$tmpPath" "$workfilePath"
 
 # Reformat
 ruff format \
