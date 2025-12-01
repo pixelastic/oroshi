@@ -1,48 +1,43 @@
 import os
 import json
 import subprocess
+from tab_bar_modules.projects import initProjectList
 from kitty.boss import get_boss
-from kitty.fast_data_types import (
-    Screen,
-    add_timer,
-)
-from kitty.tab_bar import (
-    Formatter,
-    draw_attributed_string,
-)
+from kitty.fast_data_types import Screen, add_timer
+from kitty.tab_bar import Formatter, draw_attributed_string
 from tab_bar_modules.colors import getCursorColor
 
-# List of items to display in the status bar.
-# Order is important, and number is the refresh delay (in seconds)
-# Note: use kitty-refresh script to force-refresh the display for debugging
-STATUSBAR_DEFINITION = [
-    # "spotify:5",
-    "sound-mode:60",
-    "mic2txt-model:60",
-    "battery:60",
-    "cpu:30",
-    "ram:30",
-    # "ping:30",
-    "clock:60",
-    "dropbox:300",
-]
-STATUSBAR = {}
+statusbarState = {
+    # List of items to display in the status bar.
+    # Order is important, and number is the refresh delay (in seconds)
+    # Note: use kitty-refresh script to force-refresh the display for debugging
+    "manifest": [
+        # "spotify:5",
+        "sound-mode:60",
+        "mic2txt-model:60",
+        "battery:60",
+        "cpu:30",
+        "ram:30",
+        # "ping:30",
+        "clock:60",
+        "dropbox:300",
+    ],
+    "order": [],
+    "items": {},
+}
 
 
 # Init the STATUSBAR object
 def initStatusbar():
-    global STATUSBAR
-    STATUSBAR = {"order": [], "items": {}}
-
-    for item in STATUSBAR_DEFINITION:
+    for item in statusbarState["manifest"]:
         itemName, itemFrequency = item.split(":")
         itemFrequency = int(itemFrequency)
 
         # Add to the list
-        STATUSBAR["order"].append(itemName)
+        statusbarState["order"].append(itemName)
 
         # Create an entry in items
-        STATUSBAR["items"][itemName] = {
+        statusbarState["items"][itemName] = {
             "frequency": itemFrequency,
             "chunks": [],
         }
@@ -56,6 +51,9 @@ def initStatusbar():
         # And mark it to run again at a regular frequency
         add_timer(callback, itemFrequency, True)
 
+    # Check for the kitty-refresh beacon every 5s
+    add_timer(lambda *_: checkForForcedRefresh(), 5, True)
+
 
 # Mark the tab manager as dirty so Kitty will redraw it whenever it can
 def refreshStatusbar():
@@ -66,10 +64,6 @@ def refreshStatusbar():
 
 # Update a specific statusbar part
 # Works by running an external command, and updating the internal representation
-#
-# I previously used tmux, and had each part of the statusbar being built from
-# a separate function. I converted those functions into statusbar-XXX scripts
-# that now output JSON, to be more easily parsed by this script.
 def statusbarUpdate(statusbarName: str):
     # Path to the executable
     binName = f"statusbar-{statusbarName}"
@@ -82,12 +76,12 @@ def statusbarUpdate(statusbarName: str):
     # Cast all fg/bg to expected format
     for chunk in chunks:
         if chunk.get("fg", None):
-            chunk["fg"] = getCursorColor(int(chunk["fg"]))
+            chunk["fg"] = getCursorColor(chunk["fg"])
         if chunk.get("bg", None):
-            chunk["bg"] = getCursorColor(int(chunk["bg"]))
+            chunk["bg"] = getCursorColor(chunk["bg"])
 
     # Update the representation of this part of statusbar
-    STATUSBAR["items"][statusbarName]["chunks"] = chunks
+    statusbarState["items"][statusbarName]["chunks"] = chunks
 
     # Refresh the whole statusbar
     refreshStatusbar()
@@ -96,7 +90,7 @@ def statusbarUpdate(statusbarName: str):
 # External tools can call kitty-refresh (which will create a beacon file)
 # We will periodically check for this beacon, and if present refresh the
 # statusbar
-def checkForForcedRefresh(statusbar: dict, initProjectListCallback):
+def checkForForcedRefresh():
     beaconPath = "/home/tim/local/tmp/oroshi/kitty-refresh"
 
     # Nothing to do
@@ -104,11 +98,11 @@ def checkForForcedRefresh(statusbar: dict, initProjectListCallback):
         return
 
     # Reload ALL_PROJECTS to get updated project colors
-    initProjectListCallback()
+    initProjectList()
 
     # We re-run all statusbar parts
-    for itemName in statusbar["order"]:
-        statusbarUpdate(itemName, statusbar)
+    for itemName in statusbarState["order"]:
+        statusbarUpdate(itemName)
 
     # Explicitly mark tab bar as dirty to force redraw
     refreshStatusbar()
@@ -126,8 +120,8 @@ def drawStatusbar(screen: Screen):
     screen.cursor.x = max(screen.cursor.x, screen.columns - statusbarWidth)
 
     # Write all statuses
-    for itemName in STATUSBAR["order"]:
-        itemData = STATUSBAR["items"][itemName]
+    for itemName in statusbarState["order"]:
+        itemData = statusbarState["items"][itemName]
 
         for itemChunk in itemData["chunks"]:
             chunkFg = itemChunk.get("fg", None)
@@ -150,8 +144,8 @@ def drawStatusbar(screen: Screen):
 # Get the statusbar width, to correctly position it
 def getStatusbarWidth():
     statusbarWidth = 0
-    for itemName in STATUSBAR["order"]:
-        itemData = STATUSBAR["items"][itemName]
+    for itemName in statusbarState["order"]:
+        itemData = statusbarState["items"][itemName]
         for itemChunk in itemData["chunks"]:
             statusbarWidth += len(itemChunk["text"])
 
