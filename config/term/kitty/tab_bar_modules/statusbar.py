@@ -5,7 +5,6 @@ from kitty.boss import get_boss
 from kitty.fast_data_types import (
     Screen,
     add_timer,
-    get_options,
 )
 from kitty.tab_bar import (
     Formatter,
@@ -13,9 +12,9 @@ from kitty.tab_bar import (
 )
 from tab_bar_modules.colors import getCursorColor
 
-# # List of items to display in the status bar.
-# # Order is important, and number is the refresh delay (in seconds)
-# # Note: use kitty-refresh script to force-refresh the display for debugging
+# List of items to display in the status bar.
+# Order is important, and number is the refresh delay (in seconds)
+# Note: use kitty-refresh script to force-refresh the display for debugging
 STATUSBAR_DEFINITION = [
     # "spotify:5",
     "sound-mode:60",
@@ -103,10 +102,6 @@ def checkForForcedRefresh(statusbar: dict, initProjectListCallback):
     # Nothing to do
     if not os.path.exists(beaconPath):
         return
-
-    # Reload KITTY_OPTIONS to get updated colors from colors.conf
-    global KITTY_OPTIONS
-    KITTY_OPTIONS = get_options()
 
     # Reload ALL_PROJECTS to get updated project colors
     initProjectListCallback()
