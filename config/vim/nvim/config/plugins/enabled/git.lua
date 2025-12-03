@@ -1,58 +1,95 @@
 return {
-  "lewis6991/gitsigns.nvim",
-  event = { "BufReadPre", "BufNewFile" },
-  opts = {
-    signs_staged_enable = false,
-    signcolumn = false,
-    numhl = true,
-    signs = {
-      add = { text = "█" },
-      change = { text = "▌" },
-      changedelete = { text = "▌" },
-      delete = { text = "▌" },
-      topdelete = { text = "▌" },
-      untracked = { text = "┆" },
+  -- Git signs in the gutter
+  {
+    "lewis6991/gitsigns.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    opts = {
+      signs_staged_enable = false,
+      signcolumn = false,
+      numhl = true,
+      signs = {
+        add = { text = "█" },
+        change = { text = "▌" },
+        changedelete = { text = "▌" },
+        delete = { text = "▌" },
+        topdelete = { text = "▌" },
+        untracked = { text = "┆" },
+      },
     },
-    on_attach = function(bufnr)
-      -- local gs = package.loaded.gitsigns
-      --
-      -- local function map(mode, l, r, desc)
-      --   vim.keymap.set(mode, l, r, { buffer = bufnr, desc = desc })
-      -- end
-      --
-      -- -- Navigation
-      -- map("n", "]h", gs.next_hunk, "Next Hunk")
-      -- map("n", "[h", gs.prev_hunk, "Prev Hunk")
-      --
-      -- -- Actions
-      -- map("n", "<leader>hs", gs.stage_hunk, "Stage hunk")
-      -- map("n", "<leader>hr", gs.reset_hunk, "Reset hunk")
-      -- map("v", "<leader>hs", function()
-      --   gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-      -- end, "Stage hunk")
-      -- map("v", "<leader>hr", function()
-      --   gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-      -- end, "Reset hunk")
-      --
-      -- map("n", "<leader>hS", gs.stage_buffer, "Stage buffer")
-      -- map("n", "<leader>hR", gs.reset_buffer, "Reset buffer")
-      --
-      -- map("n", "<leader>hu", gs.undo_stage_hunk, "Undo stage hunk")
-      --
-      -- map("n", "<leader>hp", gs.preview_hunk, "Preview hunk")
-      --
-      -- map("n", "<leader>hb", function()
-      --   gs.blame_line({ full = true })
-      -- end, "Blame line")
-      -- map("n", "<leader>hB", gs.toggle_current_line_blame, "Toggle line blame")
-      --
-      -- map("n", "<leader>hd", gs.diffthis, "Diff this")
-      -- map("n", "<leader>hD", function()
-      --   gs.diffthis("~")
-      -- end, "Diff this ~")
-      --
-      -- -- Text object
-      -- map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "Gitsigns select hunk")
-    end,
+  },
+
+  -- Neogit for git operations
+  {
+    "NeogitOrg/neogit",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    cmd = "Neogit",
+    opts = {
+      kind = "floating",
+      integrations = {
+        diffview = false,
+      },
+      mappings = {
+        popup = {
+          -- Disable advanced functions, so I can use regular mappings
+          ["r"] = false,
+          ["l"] = false,
+        },
+        status = {
+          ["j"] = "MoveDown",
+          ["k"] = "MoveUp",
+          ["{"] = "GoToPreviousHunkHeader",
+          ["}"] = "GoToNextHunkHeader",
+
+          ["<c-r>"] = "RefreshBuffer",
+          ["<c-o>"] = "OpenTree", -- Open GitHub
+
+          ["za"] = "Toggle",
+          ["f"] = "Stage",
+          ["F"] = "StageAll",
+          ["u"] = "Unstage",
+          ["U"] = "UnstageStaged",
+          ["R"] = "Discard",
+          ["q"] = "Close",
+
+          ["y"] = "ShowRefs", -- TODO: Need to style it
+          ["<cr>"] = function()
+            local neogitStatus = require("neogit").status
+            local instance = neogitStatus.instance()
+            local ui = instance.buffer.ui
+            local item = ui:get_item_under_cursor()
+            if not item then
+              return
+            end
+            local filepath = item.absolute_path
+
+            F.openTab(filepath, { focus = false })
+          end,
+
+          ["<tab>"] = F.noop,
+
+          ["I"] = F.noop,
+          ["1"] = F.noop,
+          ["2"] = F.noop,
+          ["3"] = F.noop,
+          ["4"] = F.noop,
+          ["Q"] = F.noop,
+          ["s"] = F.noop,
+          ["S"] = F.noop,
+          ["x"] = F.noop,
+          ["$"] = F.noop,
+          ["Y"] = F.noop,
+          ["<s-cr>"] = F.noop,
+          ["<c-v>"] = F.noop,
+          ["<c-x>"] = F.noop,
+          ["<c-t>"] = F.noop,
+          ["[c"] = F.noop,
+          ["]c"] = F.noop,
+          ["<c-k>"] = F.noop,
+          ["<c-j>"] = F.noop,
+        },
+      },
+    },
   },
 }

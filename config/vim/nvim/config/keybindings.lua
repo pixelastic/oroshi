@@ -156,6 +156,9 @@ ccmpmap("<Down>", "<C-n>", "Next suggestion")
 ccmpmap("<Up>", "<C-p>", "Previous suggestion")
 ccmpmap("<C-c>", "<C-e>", "Cancel suggestions")
 
+-- Git
+nmap("vcc", F.gitCommitCreate, "Git status & commit")
+
 -- Help
 nmap("?", ":help ", "Show help", { silent = false })
 

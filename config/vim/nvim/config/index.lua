@@ -55,6 +55,7 @@ F = vim.tbl_extend(
   O_require("oroshi/functions/jsdoc"),
   -- Filesystem
   O_require("oroshi/functions/file"),
+  O_require("oroshi/functions/git"),
   -- Debug
   O_require("oroshi/functions/debug"),
   O_require("oroshi/functions/hacks"),

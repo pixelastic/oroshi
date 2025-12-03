@@ -42,6 +42,12 @@ hl("NormalFloat", "GRAY_4", { bg = "GRAY_8" }) --	Normal text in floating window
 -- Noice input window
 hl("NoiceCmdlinePopupBorderInput", "GRAY_4")
 hl("NoiceCmdlinePrompt", "GRAY_4")
+hl("NoiceCmdlineIcon", "GRAY_4")
+-- Noice Yes/No confirm
+hl("NoiceConfirm", "CYAN", { bg = "DARK_GREEN" })
+hl("NoiceConfirmBorder", "GREEN", { bg = "DARK_GREEN" })
+hl("NoiceFormatConfirm", "GREEN")
+hl("NoiceFormatConfirmDefault", "RED", { bg = "DARK_RED" })
 -- }}}
 
 -- Line Number {{{
@@ -210,22 +216,22 @@ O.colors.statusline = {
   command = { bg = "TEAL", fg = "TEAL_1", bold = true },
   unknown = { bg = "CYAN" },
   -- Filepath
-  filepathDefault = { fg = "GREEN", bold = true },
+  filepathDefault = { fg = "GRAY_4" },
   filepathReadonly = { fg = "RED" },
-  filepathUnsavedChanges = { fg = "VIOLET_4" },
+  filepathUnsavedChanges = { fg = "GIT_MODIFIED" },
   filepathNoName = { fg = "COMMENT" },
   -- NvimTree
   nvimTreeIcon = { fg = "YELLOW", bg = "GREEN_9" },
   nvimTreeText = { fg = "WHITE", bg = "GREEN_9" },
   nvimTreeSeparator = { fg = "GREEN_9" },
   -- Special
-  healthcheck = { bg = "RED_LIGHT", fg = "WHITE" }, -- Healthcheck
-  ai = { bg = "AMBER_7", fg = "AMBER_1" }, -- AI thinking (generic)
-  kitty = { bg = "BLUE", fg = "WHITE", bold = true }, -- Kitty pager
+  healthcheck = { bg = "RED_LIGHT", fg = "WHITE" },
+  ai = { bg = "AMBER_7", fg = "AMBER_1" },
+  kitty = { bg = "BLUE", fg = "WHITE", bold = true },
   -- Right side
-  fileencoding = { bg = "RED_9", fg = "RED_2" }, -- Fileencoding
-  macro = { fg = "RED", bg = "DARK_RED" }, -- Macro
-  filetype = { bg = "GRAY_9", fg = "WHITE" }, -- Filetype
+  fileencoding = { bg = "RED_9", fg = "RED_2" },
+  macro = { fg = "RED", bg = "DARK_RED" },
+  filetype = { bg = "GRAY_9", fg = "WHITE" },
   -- LSP
   lsp = {
     off = { fg = "GRAY_8", bg = "DARK_BLUE" },
@@ -405,6 +411,77 @@ hl("AvanteConflictIncoming", "none", { bg = "GREEN_9" })
 hl("AvanteConflictCurrentLabel", "RED_5", { bg = "RED_9", bold = true })
 hl("AvanteConflictIncomingLabel", "GREEN_6", { bg = "GREEN_8", bold = true })
 hl("AvanteToBeDeletedWOStrikethrough", "none", { bg = "RED_9", strikethrough = true })
+-- }}}
+
+-- NeoGit {{{
+-- UI
+hl("NeogitFloatBorder", "GIT_COMMIT", { bg = "DARK_PURPLE" })
+hl("NeogitNormal", "GRAY_3", { bg = "DARK_PURPLE" })
+hl("NeogitPopupBold", "GRAY_3", { bold = true })
+hl("NeogitSignColumn", "none")
+hl("NeogitFold", "none")
+hl("NeogitPopupSectionTitle", "BLUE_4", { bold = true })
+hl("NeogitPopupActionDisabled", "none")
+-- Colors
+hl("NeogitGraphBlack", "BLACK")
+hl("NeogitGraphBoldBlack", "BLACK", { bold = true })
+hl("NeogitGraphBlue", "BLUE")
+hl("NeogitGraphBoldBlue", "BLUE", { bold = true })
+hl("NeogitGraphCyan", "CYAN")
+hl("NeogitGraphBoldCyan", "CYAN", { bold = true })
+hl("NeogitGraphGray", "GRAY")
+hl("NeogitGraphBoldGray", "GRAY", { bold = true })
+hl("NeogitGraphGreen", "GREEN")
+hl("NeogitGraphBoldGreen", "GREEN", { bold = true })
+hl("NeogitGraphOrange", "ORANGE")
+hl("NeogitGraphBoldOrange", "ORANGE", { bold = true })
+hl("NeogitGraphPurple", "PURPLE")
+hl("NeogitGraphBoldPurple", "PURPLE", { bold = true })
+hl("NeogitGraphRed", "RED")
+hl("NeogitGraphBoldRed", "RED", { bold = true })
+hl("NeogitGraphWhite", "WHITE")
+hl("NeogitGraphBoldWhite", "WHITE", { bold = true })
+hl("NeogitGraphYellow", "YELLOW")
+hl("NeogitGraphBoldYellow", "YELLOW", { bold = true })
+-- Keybindings
+hl("NeogitPopupActionKey", "FUNCTION")
+hl("NeogitPopupSwitchKey", "FLAG")
+hl("NeogitPopupOptionKey", "FLAG")
+hl("NeogitPopupSwitchEnabled", "GREEN_3", { bg = "DARK_GREEN" })
+hl("NeogitPopupOptionDisabled", "RED_3", { bg = "DARK_RED" })
+hl("NeogitPopupSwitchDisabled", "RED_3", { bg = "DARK_RED" })
+-- Misc
+hl("NeogitBranchHead", "GIT_BRANCH")
+hl("NeogitBranch", "GIT_BRANCH")
+hl("NeogitPopupBranchName", "GIT_BRANCH")
+hl("NeogitObjectId", "GIT_COMMIT")
+hl("NeogitRemote", "GIT_REMOTE")
+hl("NeogitStatusHEAD", "COMMENT")
+-- Sections
+hl("NeogitSectionHeaderCount", "NUMBER", { bold = true })
+hl("NeogitStagedchanges", "GIT_MODIFIED", { bold = true })
+hl("NeogitUnstagedchanges", "GIT_ADDED", { bold = true })
+hl("NeogitUntrackedfiles", "GIT_UNTRACKED", { bold = true })
+hl("NeogitUnmergedchanges", "GIT_REMOTE", { bold = true })
+-- Status
+hl("NeogitChangeModified", "GIT_MODIFIED")
+hl("NeogitChangeNewFile", "GIT_ADDED")
+-- Diff markers
+hl("NeogitHunkHeader", "YELLOW_9", { bg = "DARK_YELLOW" })
+hl("NeogitHunkHeaderHighlight", "YELLOW_9", { bg = "DARK_YELLOW" })
+hl("NeogitHunkHeaderCursor", "YELLOW_9", { bg = "DARK_YELLOW" })
+-- Diff add
+hl("NeogitDiffAdd", "GIT_ADDED", { bg = "DARK_GREEN" })
+hl("NeogitDiffAddHighlight", "GIT_ADDED", { bg = "DARK_GREEN" })
+hl("NeogitDiffAddCursor", "GIT_ADDED", { bg = "DARK_GREEN" })
+-- Diff deleted
+hl("NeogitDiffDelete", "RED_8", { bg = "DARK_RED" })
+hl("NeogitDiffDeleteHighlight", "RED_8", { bg = "DARK_RED" })
+hl("NeogitDiffDeleteCursor", "RED_8", { bg = "DARK_RED" })
+-- Dff unchanged
+hl("NeogitDiffContext", "GRAY_7", { bg = "GRAY_9" })
+hl("NeogitDiffContextHighlight", "GRAY_7", { bg = "GRAY_9" })
+hl("NeogitDiffContextCursor", "GRAY_6", { bg = "GRAY_9" })
 -- }}}
 
 -- Notify {{{
