@@ -13,10 +13,10 @@ def debug(variable):
     """
 
     # On first call, remove the file if it exists
-    if not debugState.initialized:
+    if not debugState["initialized"]:
         if os.path.exists(_debug_file_path):
             os.remove(_debug_file_path)
-        debugState.initialized = True
+        debugState["initialized"] = True
 
     # Pretty print the variable and append to file
     with open(_debug_file_path, "a") as f:
