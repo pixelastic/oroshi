@@ -1,48 +1,36 @@
 # Create a window and run the specified command in it
-new_tab one
+new_tab oroshi
 launch zsh
 
-new_tab two
+new_tab society
 launch zsh
 
-new_tab three
+new_tab firost
 launch zsh
 
-new_tab four
+new_tab aberlaas
 launch zsh
 
-new_tab five
+new_tab aoinan
 launch zsh
 
-new_tab six
+new_tab bodwynn
 launch zsh
 
-new_tab seven
+new_tab crsearch
 launch zsh
 
-new_tab eight
+new_tab bodwynn
 launch zsh
 
-new_tab nine
+new_tab pietro
 launch zsh
 
-new_tab ten
+new_tab Korvosa
 launch zsh
 
-new_tab eleven
+new_tab golgoth
 launch zsh
 
-new_tab twelve
-launch zsh
-
-new_tab thirteen
-launch zsh
-
-new_tab fourteen
-launch zsh
-
-new_tab fifteen
-launch zsh
-
-new_tab sixteen
+new_tab meetups-teasers-generator
 launch zsh
