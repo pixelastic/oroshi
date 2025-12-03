@@ -200,6 +200,11 @@ hl("DiagnosticVirtualTextHint", "VIOLET_5", { bg = "GRAY_8" }) -- Virtual text
 hl("DiagnosticDiagLineHint", "VIOLET_4", { bg = "GRAY_8" }) -- Diag line
 -- }}}
 
+-- Spellchecker {{{
+hl("SpellBad", "RED", { underline = true })
+hl("SpellCap", "RED", { underline = true })
+-- }}}
+
 -- Diff {{{
 hl("DiffAdd", "none", { bg = "DARK_GREEN", ctermfg = "WHITE" }) -- Added lines
 hl("DiffChange", "none", { bg = "DARK_GREEN" }) -- Changed lines
@@ -457,12 +462,17 @@ hl("NeogitPopupBranchName", "GIT_BRANCH")
 hl("NeogitObjectId", "GIT_COMMIT")
 hl("NeogitRemote", "GIT_REMOTE")
 hl("NeogitStatusHEAD", "COMMENT")
+hl("NeogitFilePath", "FILE")
 -- Sections
 hl("NeogitSectionHeaderCount", "NUMBER", { bold = true })
 hl("NeogitStagedchanges", "GIT_MODIFIED", { bold = true })
 hl("NeogitUnstagedchanges", "GIT_ADDED", { bold = true })
 hl("NeogitUntrackedfiles", "GIT_UNTRACKED", { bold = true })
 hl("NeogitUnmergedchanges", "GIT_REMOTE", { bold = true })
+hl("NeogitDiffHeader", "YELLOW_6", { bg = "DARK_YELLOW" })
+hl("NeogitDiffHeaderCursor", "YELLOW_6", { bg = "DARK_YELLOW" })
+hl("NeogitFloatHeader", "BLUE", { bold = true })
+hl("NeogitFloatHeaderHighlight", "BLUE", { bold = true })
 -- Status
 hl("NeogitChangeModified", "GIT_MODIFIED")
 hl("NeogitChangeNewFile", "GIT_ADDED")
@@ -474,11 +484,13 @@ hl("NeogitHunkHeaderCursor", "YELLOW_9", { bg = "DARK_YELLOW" })
 hl("NeogitDiffAdd", "GIT_ADDED", { bg = "DARK_GREEN" })
 hl("NeogitDiffAddHighlight", "GIT_ADDED", { bg = "DARK_GREEN" })
 hl("NeogitDiffAddCursor", "GIT_ADDED", { bg = "DARK_GREEN" })
+hl("NeogitDiffAdditions", "GIT_ADDED")
 -- Diff deleted
 hl("NeogitDiffDelete", "RED_8", { bg = "DARK_RED" })
 hl("NeogitDiffDeleteHighlight", "RED_8", { bg = "DARK_RED" })
 hl("NeogitDiffDeleteCursor", "RED_8", { bg = "DARK_RED" })
--- Dff unchanged
+hl("NeogitDiffDeletions", "RED_8")
+-- Diff unchanged
 hl("NeogitDiffContext", "GRAY_7", { bg = "GRAY_9" })
 hl("NeogitDiffContextHighlight", "GRAY_7", { bg = "GRAY_9" })
 hl("NeogitDiffContextCursor", "GRAY_6", { bg = "GRAY_9" })

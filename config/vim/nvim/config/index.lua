@@ -85,6 +85,7 @@ O_require("oroshi/disk")
 O_require("oroshi/filetypes/colors") -- Config files that should call colors-refresh
 O_require("oroshi/filetypes/scrollback_pager") -- When nvim is used as a pager in kitty
 O_require("oroshi/filetypes/config")
+O_require("oroshi/filetypes/gitcommit")
 O_require("oroshi/filetypes/help")
 O_require("oroshi/filetypes/javascript")
 O_require("oroshi/filetypes/markdown")

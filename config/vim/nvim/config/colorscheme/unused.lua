@@ -28,10 +28,10 @@ hl("ModeMsg", "XXX") --		'showmode' message (e.g., "-- INSERT --").
 hl("MsgSeparator", "XXX") --	Top bar separator of messsage
 hl("QuickFixLine", "XXX") --	Current |quickfix| item in the quickfix window. Combined with
 hl("SnippetTabstop", "XXX") --	Tabstops in snippets. |vim.snippet|
-hl("SpellBad", "XXX") --	Word that is not recognized by the spellchecker. |spell|
-hl("SpellCap", "XXX") --	Word that should start with a capital. |spell|
+
 hl("SpellLocal", "XXX") --	Word that is recognized by the spellchecker as one that is
 hl("SpellRare", "XXX") --	Word that is recognized by the spellchecker as one that is
+
 hl("StatusLineTermNC", "XXX") --
 hl("StatusLineTerm", "XXX") --	Status line of |terminal| window.
 hl("TabLineSelSeparator", "XXX") --	Tab pages line, active tab page label.
@@ -128,12 +128,7 @@ hl("NeogitCommandCodeNormal", "XXX")
 hl("NeogitCommandText", "XXX")
 hl("NeogitCommandTime", "XXX")
 hl("NeogitCommitViewHeader", "XXX")
-hl("NeogitDiffHeader", "XXX")
-hl("NeogitDiffHeaderCursor", "XXX")
 hl("NeogitDiffHeaderHighlight", "XXX")
-hl("NeogitFilePath", "XXX")
-hl("NeogitFloatHeaderHighlight", "XXX")
-hl("NeogitFloatHeader", "XXX")
 hl("NeogitFloat", "XXX")
 hl("NeogitFoldColumn", "XXX")
 hl("NeogitGraphAuthor", "XXX")

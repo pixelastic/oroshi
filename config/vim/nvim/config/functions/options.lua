@@ -14,7 +14,6 @@ return {
       F.updateSplitOption(name, value)
     end
   end,
-
   -- bufferOption: Returns the value of a buffer option (defaults to current buffer)
   bufferOption = function(name, bufferId)
     bufferId = bufferId or F.bufferId()

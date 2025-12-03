@@ -1,5 +1,5 @@
 -- Scrollback pager
--- When bvim is used by Kitty as a pager (Alt-C)
+-- When vim is used by Kitty as a pager (Alt-C)
 F.ftplugin("scrollback_pager", function()
   -- Remove the line number
   vim.o.number = false
