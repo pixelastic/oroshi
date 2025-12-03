@@ -35,16 +35,15 @@ return {
           -- Disable advanced functions, so I can use regular mappings
           ["r"] = false,
           ["l"] = false,
+          ["i"] = false,
         },
         status = {
           ["j"] = "MoveDown",
           ["k"] = "MoveUp",
           ["{"] = "GoToPreviousHunkHeader",
           ["}"] = "GoToNextHunkHeader",
-
           ["<c-r>"] = "RefreshBuffer",
           ["<c-o>"] = "OpenTree", -- Open GitHub
-
           ["za"] = "Toggle",
           ["f"] = "Stage",
           ["F"] = "StageAll",
@@ -52,9 +51,8 @@ return {
           ["U"] = "UnstageStaged",
           ["R"] = "Discard",
           ["q"] = "Close",
-
-          ["y"] = "ShowRefs", -- TODO: Need to style it
           ["<cr>"] = function()
+            -- Find file undercursor
             local neogitStatus = require("neogit").status
             local instance = neogitStatus.instance()
             local ui = instance.buffer.ui
@@ -64,30 +62,39 @@ return {
             end
             local filepath = item.absolute_path
 
+            -- Open it in new tab
             F.openTab(filepath, { focus = false })
           end,
 
-          ["<tab>"] = F.noop,
-
-          ["I"] = F.noop,
           ["1"] = F.noop,
           ["2"] = F.noop,
           ["3"] = F.noop,
           ["4"] = F.noop,
+          ["I"] = F.noop,
           ["Q"] = F.noop,
-          ["s"] = F.noop,
           ["S"] = F.noop,
+          ["Y"] = F.noop,
+          ["i"] = F.noop,
+          ["s"] = F.noop,
           ["x"] = F.noop,
           ["$"] = F.noop,
-          ["Y"] = F.noop,
-          ["<s-cr>"] = F.noop,
+          ["<c-j>"] = F.noop,
+          ["<c-k>"] = F.noop,
+          ["<c-t>"] = F.noop,
           ["<c-v>"] = F.noop,
           ["<c-x>"] = F.noop,
-          ["<c-t>"] = F.noop,
+          ["<s-cr>"] = F.noop,
+          ["<tab>"] = F.noop,
           ["[c"] = F.noop,
           ["]c"] = F.noop,
-          ["<c-k>"] = F.noop,
-          ["<c-j>"] = F.noop,
+        },
+        commit_editor = {
+          ["<c-s>"] = "Submit",
+          ["<c-d>"] = "Abort",
+        },
+        commit_editor_I = {
+          ["<c-s>"] = "Submit",
+          ["<c-d>"] = "Abort",
         },
       },
     },
