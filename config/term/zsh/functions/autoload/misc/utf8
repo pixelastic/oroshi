@@ -1,0 +1,16 @@
+# Convert a file to utf8 in place
+# Usage:
+#   $ utf8 subtitle.srt  # File is not in UTF-8
+function utf8() {
+  local input="$1"
+  local sourceEncoding="$(encoding $input)"
+  local tempFile="${input}.utf8.tmp"
+
+  iconv \
+    --from-code="$sourceEncoding" \
+    --to-code=UTF-8 \
+    "$input" \
+    --output="$tempFile"
+
+  mv -f "$tempFile" "$input"
+}

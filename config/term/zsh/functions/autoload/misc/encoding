@@ -1,0 +1,8 @@
+# Return the encoding of a file
+# Usage:
+#   $ encoding subtitle.srt  # windows-1252
+function encoding() {
+  local input="$1"
+
+  uchardet $input
+}
