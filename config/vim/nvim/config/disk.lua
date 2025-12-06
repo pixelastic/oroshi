@@ -97,3 +97,27 @@ local function updateWorkingDirectory()
 end
 autocmd("BufEnter", updateWorkingDirectory)
 -- }}}
+
+-- executable {{{
+-- Auto-chmod +x files that start with a shebang
+local function makeExecutable()
+  local firstLine = F.line(1)
+  if not F.startsWith(firstLine, "#!") then
+    return
+  end
+
+  local filepath = F.here()
+  if filepath == "" then
+    return
+  end
+
+  -- Check if already executable
+  local isExecutable = vim.fn.executable(filepath) == 1
+  if isExecutable then
+    return
+  end
+
+  vim.fn.system("chmod +x " .. F.shellEscape(filepath))
+end
+autocmd("BufWritePost", makeExecutable)
+-- }}}
