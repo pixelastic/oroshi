@@ -22,6 +22,24 @@ local function setupJsKeybindings()
     vim.cmd("normal! 2k^4l")
   end, "it()", { buffer = bufferId })
 
+  -- it.each([
+  --   ['input', 'expected']
+  -- ])('%s => %s', async () => {
+  -- });
+  F.imap("iite", function()
+    vim.api.nvim_put({
+      "it.each([",
+      "\t\t['input', 'expected'],",
+      "\t\t['input', 'expected']",
+      "\t])('%s => %s', async (input, expected) => {",
+      "\t\tconst actual = current(input);",
+      "\t\texpect(actual).toEqual(expected);",
+      "\t});",
+    }, "c", false, true)
+    vim.cmd("normal! 5k^2l")
+    F.normalMode()
+  end, "it.each()", { buffer = bufferId })
+
   -- vi.spyOn()
   F.imap("vspo", function()
     vim.api.nvim_put({ "vi.spyOn()" }, "c", false, true)
