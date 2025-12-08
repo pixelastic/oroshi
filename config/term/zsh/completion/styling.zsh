@@ -44,12 +44,12 @@ function oroshi-completion-styling() {
   local completion_LS_COLORS=${LS_COLORS//(#b):([^*])/:=${match[1]}}
   # We split the long string on :
   completion_LS_COLORS=${(s.:.)completion_LS_COLORS}
-  
+
   # Default coloring
   local listColorsDefault=(\
     # Default color
     "${(f)$(♣ "*" $COLOR_WHITE)}"
-    
+
     # File and directory colors
     ${completion_LS_COLORS}
   )
@@ -166,7 +166,7 @@ function oroshi-completion-styling() {
   zstyle ':completion:*:complete:git-branch-remove-remote:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-remove:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-switch:*:*' list-colors $listColorsGitBranch
-  
+
   # Tags
   zstyle ':completion:*:complete:git-tag-switch:*:*' list-colors $listColorsGitTag
   zstyle ':completion:*:complete:git-tag-remove:*:*' list-colors $listColorsGitTag
@@ -176,7 +176,7 @@ function oroshi-completion-styling() {
   zstyle ':completion:*:complete:git-remote-remove:*:*' list-colors $listColorsGitRemote
   zstyle ':completion:*:complete:git-remote-rename:*:*' list-colors $listColorsGitRemote
   zstyle ':completion:*:complete:git-remote-switch:*:*' list-colors $listColorsGitRemote
-  
+
   # Submodules
   zstyle ':completion:*:complete:git-submodule-remove:*:*' list-colors $listColorsGitSubmodule
   # }}}
