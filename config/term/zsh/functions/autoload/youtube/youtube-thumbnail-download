@@ -1,0 +1,19 @@
+# Download the video thumbnail of a give YouTube video
+# Usage:
+# $ youtube-thumbnail-download ${videoId/videoUrl}
+
+function youtube-thumbnail-download() {
+  local input="$1"
+
+  # Handle both URLs and IDs
+  if [[ $input != http* ]]; then
+    input="https://www.youtube.com/watch?v=${input}"
+  fi
+
+  yt-dlp \
+    --write-thumbnail \
+    --convert-thumbnails png \
+    --skip-download \
+    --output "%(title)s.%(ext)s" \
+    "$input"
+}

@@ -6,8 +6,11 @@ alias yt='youtube-video-download'
 alias ytv='youtube-video-download'
 alias ytvd='youtube-video-download'
 
+# Thumbnail
+alias ytt='youtube-thumbnail-download'
+alias yttd='youtube-thumbnail-download'
+
 # Audio
-alias ytx='youtube-audio-download'
 alias yta='youtube-audio-download'
 alias ytad='youtube-audio-download'
 
