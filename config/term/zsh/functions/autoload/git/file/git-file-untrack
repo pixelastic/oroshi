@@ -1,0 +1,7 @@
+# Stop tracking file(s) but keep them in working directory
+# Usage:
+# $ git-file-untrack ./path/to/file     # Untrack single file
+# $ git-file-untrack file1 file2        # Untrack multiple files
+function git-file-untrack() {
+  git rm --cached "${@}"
+}
