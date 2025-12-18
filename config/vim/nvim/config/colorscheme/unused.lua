@@ -87,8 +87,6 @@ hl("RenderMarkdownMath", "XXX") -- 	Latex lines
 hl("RenderMarkdownIndent", "XXX") -- 	Indent icon
 hl("RenderMarkdownHtmlComment", "XXX") -- 	HTML comment inline text
 hl("RenderMarkdownWikiLink", "XXX") -- 	WikiLink icon & text
-hl("RenderMarkdownUnchecked", "XXX") -- 	Unchecked checkbox
-hl("RenderMarkdownChecked", "XXX") -- 	Checked checkbox
 hl("RenderMarkdownTodo", "XXX") -- 	Todo custom checkbox
 hl("RenderMarkdownSuccess", "XXX") -- 	Success related callouts
 hl("RenderMarkdownInfo", "XXX") -- 	Info related callouts

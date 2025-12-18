@@ -165,6 +165,9 @@ hl("@markup.quote.markdown", "GRAY_4", { italic = true, bold = true }) -- Quote 
 -- lists
 hl("@markup.list.markdown", "PUNCTUATION") -- bullet points
 hl("RenderMarkdownBullet", "PUNCTUATION") -- 	List item bullet points
+-- checkboxes
+hl("RenderMarkdownUnchecked", "COMMENT") -- 	Unchecked checkbox
+hl("RenderMarkdownChecked", "GREEN_5") -- 	Checked checkbox
 -- <hr> separator
 hl("@punctuation.special.markdown", "PUNCTUATION")
 hl("RenderMarkdownDash", "PUNCTUATION") -- 	Thematic break line
