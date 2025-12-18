@@ -4,3 +4,7 @@ set -e
 CONFIG_DIR=~/.oroshi/config/cli/claudecode
 
 ln -fs $CONFIG_DIR/CLAUDE.md ~/CLAUDE.md
+
+ln -fs $CONFIG_DIR/skills ~/.claude/skills
+ln -fs $CONFIG_DIR/agents ~/.claude/agents
+ln -fs $CONFIG_DIR/settings.json ~/.claude/settings.json
