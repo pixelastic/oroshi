@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest the remote tags
+function _git-tags-remote() {
+  local suggestions=(${(f)"$(complete-git-tags-remote)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_GIT_REMOTE $COLOR_BLACK '  Remote tags ')" suggestions
+}

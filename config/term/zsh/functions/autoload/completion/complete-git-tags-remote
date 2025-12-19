@@ -1,11 +1,11 @@
-# List all local tags
-function complete-git-tags-local() {
-  local rawList="$(git-tag-list-raw)"
+# Suggest all remote git tags
+function complete-git-tags-remote() {
+  local rawList="$(git-tag-list-remote-raw)"
 
   for rawLine in ${(f)rawList}; do
     local split=(${(@s/▮/)rawLine})
     local tagName=$split[1]
-    local commitHash=$split[3]
+    local commitHash=$split[2]
     echo "${tagName}:${commitHash}"
   done
 }

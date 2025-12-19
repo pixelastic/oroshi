@@ -1,18 +1,12 @@
-# List all local branches
+# List all remote branches
 function complete-git-branches-remote() {
   local currentRemote="$(git-remote-current)"
-  local rawSuggestions="$(\
-    git branch \
-      --remote \
-      --format="%(refname:short):%(contents:subject)" \
-      | sed "s_${currentRemote}/__g"
-  )"
+  local rawList="$(git-branch-list-remote-raw)"
 
-  local suggestions=()
-  for line in ${(f)rawSuggestions}; do
-    # Skip HEAD
-    [[ $line == HEAD* ]] && continue
-
-    echo $line
+  for rawLine in ${(f)rawList}; do
+    local splitLine=("${(@ps/▮/)rawLine}")
+    local branchName=$splitLine[1]
+    local cleanBranchName=${branchName#*/}
+    echo "${cleanBranchName}:${splitLine[3]}"
   done
 }

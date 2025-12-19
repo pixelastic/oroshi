@@ -1,0 +1,17 @@
+# Display a raw list of all local branches
+# Usage:
+# $ git-branch-list-raw       # All local branches with name/commit/date/message
+function git-branch-list-raw() {
+  local gitBranchFormat=""
+  gitBranchFormat+="%(refname:short)▮"          # main
+  gitBranchFormat+="%(objectname:short)▮"       # abcdef
+  gitBranchFormat+="%(upstream:remotename)▮"    # origin
+  gitBranchFormat+="%(upstream:remoteref)▮"     # refs/heads/main
+  gitBranchFormat+="%(upstream:track)▮"         # [ahead 4]
+  gitBranchFormat+="%(committerdate:relative)▮" # 3 months ago
+  gitBranchFormat+="%(contents:subject)▮"       # fix typo
+
+  git branch \
+    --sort=-committerdate \
+    --format="$gitBranchFormat"
+}

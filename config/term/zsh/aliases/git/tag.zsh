@@ -1,5 +1,6 @@
 # [t]ags
 alias vtR='git-tag-remove'
+alias vtRr='git-tag-remove-remote'
 alias vtc='git-tag-create'
 alias vtlr='git-tag-list-remote'
 alias vtl='git-tag-list'

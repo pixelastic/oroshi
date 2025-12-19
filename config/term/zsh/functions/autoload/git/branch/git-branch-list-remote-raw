@@ -1,0 +1,17 @@
+# Display a raw list of all remote branches
+# Usage:
+# $ git-branch-list-remote-raw       # All remote branches with name/commit/date/message
+function git-branch-list-remote-raw() {
+  local gitBranchFormat=""
+  gitBranchFormat+="%(refname:short)▮"          # main
+  gitBranchFormat+="%(objectname:short)▮"       # abcdef
+  gitBranchFormat+="%(committerdate:relative)▮" # 3 months ago
+  gitBranchFormat+="%(contents:subject)▮"       # fix typo
+  local currentRemote="$(git-remote-current)"
+
+  git branch \
+    --remote \
+    --sort=-committerdate \
+    --format="${gitBranchFormat}" |
+    grep "^${currentRemote}/"
+}

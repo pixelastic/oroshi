@@ -35,6 +35,8 @@ compdef _git-tags-local \
   git-tag-switch \
   git-tag-remove \
   git-tag-status
+compdef _git-tags-remote \
+  git-tag-remove-remote
 compdef _git-files-dirty \
   git-file-add
 compdef _git-files-staged \

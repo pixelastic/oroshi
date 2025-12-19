@@ -3,14 +3,7 @@
 # $ git-tag-list-remote           # Display all tags of current remote
 # $ git-tag-list-remote upstream  # Display all tags of upstream
 function git-tag-list-remote() {
-  local rawList="$(
-    git \
-      ls-remote \
-      --tags \
-      --quiet \
-      --sort=-creatordate \
-      | grep -v '\^{}$'
-  )"
+  local rawList="$(git-tag-list-remote-raw)"
 
   # Stop if no tag
   if [[ "$rawList" == "" ]]; then
@@ -25,12 +18,15 @@ function git-tag-list-remote() {
     local row=""
 
     # Splitting the line into its various parts
-    local split=(${=rawLine})
-    local commitHash=${split[1]:0:7}
-    local tagName=${split[2]:10}
+    local split=(${(s:▮:)rawLine})
+    local tagName=${split[1]}
+    local commitHash=${split[2]}
 
     # Tag name
-    row+="$(git-tag-colorize $tagName --with-icon)▮"
+    # Note: git-tag-colorize works ok when it needs to chose the color of one
+    # tag, but quickly get slow when it needs to color a lot of them, so we take
+    # a shortcut and always use the same color
+    row+="$(colorize " $tagName" $COLOR_ALIAS_GIT_TAG)▮"
 
     # Hash
     row+="$(git-commit-colorize $commitHash --with-icon)▮"

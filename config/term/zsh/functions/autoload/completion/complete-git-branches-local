@@ -1,6 +1,9 @@
 # List all local branches
 function complete-git-branches-local() {
-	git branch \
-		--sort=-committerdate \
-		--format="%(refname:short):%(contents:subject)"
+	local rawList="$(git-branch-list-raw)"
+
+	for rawLine in ${(f)rawList}; do
+    local splitLine=("${(@ps/▮/)rawLine}")
+    echo "${splitLine[1]}:${splitLine[7]}"
+	done
 }

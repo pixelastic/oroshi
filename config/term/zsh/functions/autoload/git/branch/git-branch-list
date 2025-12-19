@@ -1,0 +1,84 @@
+# Display the list of local branches
+# Usage:
+# $ git-branch-list          # Display all local branches
+function git-branch-list() {
+  local rawGitBranches="$(git-branch-list-raw)"
+  local currentBranch="$(git-branch-current)"
+
+  # Loop through all the raw output, and format/color them before adding them to
+  # the output
+  local output=""
+  for rawGitBranch in ${(f)rawGitBranches}; do
+    # Splitting the line into its various parts {{{
+    local splitLine=("${(@ps/▮/)rawGitBranch}")
+
+    # Branch name {{{
+    local branchName="${splitLine[1]}"
+    # Detached head branches look like "(HEAD detached at d57afca)"
+    [[ "$branchName" =~ "^\(HEAD" ]] &&  branchName="HEAD"
+    # }}}
+
+    # Commit hash {{{
+    local commitHash="${splitLine[2]}"
+    # }}}
+
+    # Remote name {{{
+    local remoteName="${splitLine[3]}"
+    # Can be empty for branches that have never been pushed
+    # In that case, we check the branch remote locally
+    [[ $remoteName == "" ]] && remoteName="$(git-branch-remote "$branchName")"
+    # }}}
+
+    # Remote branch name {{{
+    local remoteBranchName="${splitLine[4]:11}"
+    # Can be empty for branches that have never been pushed, so we assume it's the
+    # same name as locally
+    [[ $remoteBranchName == "" ]] && remoteBranchName="$branchName"
+    # }}}
+
+    local remoteDistance="${splitLine[5]}"
+    local relativeTime="${splitLine[6]}"
+    local commitMessage="${splitLine[7]}"
+    # }}}
+
+    # Building the output row {{{
+    local row=""
+    #  to mark the current branch {{{
+    if [[ $branchName == "$currentBranch" ]]; then
+      row+="$(colorize  ALIAS_POINTER)▮"
+    else
+      row+="▮"
+    fi
+    # }}}
+    # Branch name {{{
+    row+="$(git-branch-colorize "$branchName" --with-icon)▮"
+    # }}}
+    # Ahead/behind {{{
+    row+="$(git-distance-colorize "$remoteDistance" --with-icon)▮"
+    # }}}
+    # Commit {{{
+    row+="$(git-commit-colorize "$commitHash" --with-icon)▮"
+    # }}}
+    # Remote {{{
+    # We display it only if it's different from origin/{branchName}
+    if [[ "$remoteName" != "origin" ]] || \
+      [[ "$remoteBranchName" != "$branchName" ]]; then
+      row+="$(git-remote-colorize "$remoteName/$remoteBranchName" --with-icon)▮"
+    else
+      row+="▮"
+    fi
+    # }}}
+    # Date {{{
+    row+="$(git-date-colorize "$relativeTime" --with-icon)▮"
+    # }}}
+    # Commit message {{{
+    row+="$(git-message-colorize "$commitMessage")▮"
+    # }}}
+    # }}}
+
+    output+="$row\n"
+  done
+
+  # Output as columns
+  table $output
+}

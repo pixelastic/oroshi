@@ -23,9 +23,10 @@ function git-tag-list() {
 
     local row=""
     # Tag name {{{
-    row+="${tagName}▮"
-    # TODO: Below line slows down listing in large repos considerably
-    # row+="$(git-tag-colorize $tagName --with-icon)▮"
+    # Note: git-tag-colorize works ok when it needs to chose the color of one
+    # tag, but quickly get slow when it needs to color a lot of them, so we take
+    # a shortcut and always use the same color
+    row+="$(colorize " $tagName" $COLOR_ALIAS_GIT_TAG)▮"
     # }}}
 
     # Commit {{{

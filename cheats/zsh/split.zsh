@@ -1,2 +1,3 @@
 # Split a string to an array
-local split=(${(@s/▮/)rawLine})
+# Keeps empty elements
+local split=("${(@ps/▮/)rawLine}")

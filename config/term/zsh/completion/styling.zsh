@@ -170,6 +170,7 @@ function oroshi-completion-styling() {
   # Tags
   zstyle ':completion:*:complete:git-tag-switch:*:*' list-colors $listColorsGitTag
   zstyle ':completion:*:complete:git-tag-remove:*:*' list-colors $listColorsGitTag
+  zstyle ':completion:*:complete:git-tag-remove-remote:*:*' list-colors $listColorsGitTag
   zstyle ':completion:*:complete:git-tag-status:*:*' list-colors $listColorsGitTag
 
   # Remotes

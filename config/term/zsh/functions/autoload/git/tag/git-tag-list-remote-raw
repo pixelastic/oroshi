@@ -1,0 +1,27 @@
+# Display a raw list of all remote tags
+# Usage:
+# $ git-tag-list-remote-raw       # All remote tags with name/commit
+function git-tag-list-remote-raw() {
+  local gitBranchFormat=""
+  gitBranchFormat+="%(refname:short)▮"          # main
+  gitBranchFormat+="%(objectname:short)▮"       # abcdef
+  gitBranchFormat+="%(upstream:remotename)▮"    # origin
+  gitBranchFormat+="%(upstream:remoteref)▮"     # refs/heads/main
+  gitBranchFormat+="%(upstream:track)▮"         # [ahead 4]
+  gitBranchFormat+="%(committerdate:relative)▮" # 3 months ago
+  gitBranchFormat+="%(contents:subject)▮"       # fix typo
+
+  # git branch \
+  #   --sort=-committerdate \
+  #   --format="$gitBranchFormat"
+  local rawTagList="$(
+    git ls-remote --tags --quiet --sort=-creatordate |
+      \grep -v '\^{}$'
+  )"
+  for rawTag in ${(f)rawTagList}; do
+    local splitLine=("${(@ps/\t/)rawTag}")
+    local tagName="${splitLine[2]:10}"
+    local shortHash="${splitLine[1]:0:7}"
+    echo "${tagName}▮${shortHash}"
+  done
+}
