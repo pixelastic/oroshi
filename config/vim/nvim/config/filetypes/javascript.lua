@@ -11,14 +11,30 @@ local function setupJsKeybindings()
   -- describe('something', () => {
   -- });
   F.imap("dsc", function()
-    vim.api.nvim_put({ "describe('', () => {", "\t\t", "\t});" }, "c", false, true)
+    vim.api.nvim_put({ "describe('', () => {", "    ", "  });" }, "c", false, true)
     vim.cmd("normal! 2k^10l")
   end, "describe()", { buffer = bufferId })
+
+  -- beforeAll(async () => {
+  -- });
+  F.imap("bfa", function()
+    vim.api.nvim_put({ "beforeAll(async () => {", "    ", "  });" }, "c", false, true)
+    vim.cmd("normal! k$")
+    F.insertModeAfter()
+  end, "beforeAll()", { buffer = bufferId })
+
+  -- beforeEach(async () => {
+  -- });
+  F.imap("bfe", function()
+    vim.api.nvim_put({ "beforeEach(async () => {", "    ", "  });" }, "c", false, true)
+    vim.cmd("normal! k$")
+    F.insertModeAfter()
+  end, "beforeEach()", { buffer = bufferId })
 
   -- it('should do something', () => {
   -- });
   F.imap("iit", function()
-    vim.api.nvim_put({ "it('', () => {", "\t\t", "\t});" }, "c", false, true)
+    vim.api.nvim_put({ "it('', () => {", "    ", "  });" }, "c", false, true)
     vim.cmd("normal! 2k^4l")
   end, "it()", { buffer = bufferId })
 
@@ -29,14 +45,14 @@ local function setupJsKeybindings()
   F.imap("iite", function()
     vim.api.nvim_put({
       "it.each([",
-      "\t\t['input', 'expected'],",
-      "\t\t['input', 'expected']",
-      "\t])('%s => %s', async (input, expected) => {",
-      "\t\tconst actual = current(input);",
-      "\t\texpect(actual).toEqual(expected);",
-      "\t});",
+      "    ['input', 'expected'],",
+      "    ['input', 'expected']",
+      "  ])('%s => %s', async (input, expected) => {",
+      "    const actual = current(input);",
+      "    expect(actual).toEqual(expected);",
+      "  });",
     }, "c", false, true)
-    vim.cmd("normal! 5k^2l")
+    vim.cmd("normal! 5k^3l")
     F.normalMode()
   end, "it.each()", { buffer = bufferId })
 
