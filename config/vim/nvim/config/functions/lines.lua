@@ -10,14 +10,20 @@ return {
     bufferId = bufferId or F.bufferId()
     return vim.api.nvim_buf_get_lines(bufferId, 0, -1, false)
   end,
-  -- updateLine: Update the content of a line (defaults to current line, current buffer)
-  updateLine = function(newContent, lineNumber, bufferId)
+  -- addLine: Add a new line (pushing the next ones down)
+  addLine = function(newContent, lineNumber, bufferId)
+    lineNumber = lineNumber or F.lineNumber()
+    bufferId = bufferId or F.bufferId()
+    vim.api.nvim_buf_set_lines(bufferId, lineNumber - 1, lineNumber - 1, false, { newContent })
+  end,
+  -- replaceLine: Replace a line
+  replaceLine = function(newContent, lineNumber, bufferId)
     lineNumber = lineNumber or F.lineNumber()
     bufferId = bufferId or F.bufferId()
     vim.api.nvim_buf_set_lines(bufferId, lineNumber - 1, lineNumber, false, { newContent })
   end,
-  -- updateLines: Update the content of a range of lines
-  updateLines = function(newContent, startLine, endLine, bufferId)
+  -- replaceLines: Replace several lines
+  replaceLines = function(newContent, startLine, endLine, bufferId)
     bufferId = bufferId or F.bufferId()
     local lines = F.split(newContent, "\n")
     vim.api.nvim_buf_set_lines(bufferId, startLine - 1, endLine, false, lines)

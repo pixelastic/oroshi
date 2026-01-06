@@ -121,7 +121,7 @@ return {
     return type(input) == "table"
   end,
 
-  -- empty: Check if the collection is empty
+  -- isEmpty: Check if the collection is empty
   isEmpty = function(collection)
     return #collection == 0
   end,

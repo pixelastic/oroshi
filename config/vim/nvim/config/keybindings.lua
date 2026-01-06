@@ -216,7 +216,7 @@ local function addSemicolonAtEndOfLine()
     return
   end
 
-  F.updateLine(currentLine .. ";")
+  F.replaceLine(currentLine .. ";")
 end
 nmap(";", addSemicolonAtEndOfLine, "Add a semicolon at end of line")
 

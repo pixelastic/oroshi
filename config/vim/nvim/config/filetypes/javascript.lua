@@ -1,3 +1,4 @@
+-- KEYBINDINGS {{{
 local function setupJsKeybindings()
   local bufferId = F.bufferId()
 
@@ -73,3 +74,118 @@ F.ftplugin("javascript", setupJsKeybindings)
 F.ftplugin("javascriptreact", setupJsKeybindings)
 F.ftplugin("typescript", setupJsKeybindings)
 F.ftplugin("typescriptreact", setupJsKeybindings)
+-- }}}
+
+-- AUTO IMPORT {{{
+local function setupJsAutoImport()
+  local IMPORT_MAP = {
+    _ = "golgoth",
+    absolute = "firost",
+    cache = "firost",
+    caller = "firost",
+    callstack = "firost",
+    captureOutput = "firost",
+    commonParentDirectory = "firost",
+    consoleError = "firost",
+    consoleInfo = "firost",
+    consoleSuccess = "firost",
+    consoleWarn = "firost",
+    copy = "firost",
+    dirname = "firost",
+    download = "firost",
+    emptyDir = "firost",
+    env = "firost",
+    exists = "firost",
+    exit = "firost",
+    firostError = "firost",
+    firostImport = "firost",
+    gitRoot = "firost",
+    glob = "firost",
+    hash = "firost",
+    here = "firost",
+    isDirectory = "firost",
+    isFile = "firost",
+    isSymlink = "firost",
+    isUrl = "firost",
+    mkdirp = "firost",
+    move = "firost",
+    newFile = "firost",
+    normalizeUrl = "firost",
+    packageRoot = "firost",
+    prompt = "firost",
+    pulse = "firost",
+    readJsonUrl = "firost",
+    readJson = "firost",
+    readUrl = "firost",
+    read = "firost",
+    remove = "firost",
+    run = "firost",
+    sleep = "firost",
+    spinner = "firost",
+    symlink = "firost",
+    tmpDirectory = "firost",
+    unwatchAll = "firost",
+    unwatch = "firost",
+    urlToFilepath = "firost",
+    uuid = "firost",
+    waitForWatchers = "firost",
+    watch = "firost",
+    which = "firost",
+    writeJson = "firost",
+    write = "firost",
+  }
+
+  -- After a file is saved, we check for diagnostics, to see if some variables
+  -- are missing and could be auto-imported
+  F.autocmd("BufWritePost", function()
+    -- Prevent infinite recursion
+    if vim.b.oroshi_auto_import_running then
+      vim.b.oroshi_auto_import_running = false
+      return
+    end
+
+    local bufferId = F.bufferId()
+    local rawErrors = vim.diagnostic.get(bufferId)
+
+    -- Get all missing variables
+    local variableList = F.uniq(F.compact(F.map(rawErrors, function(diag)
+      -- Keep only the missing variable errors
+      if diag.code ~= "no-undef" then
+        return false
+      end
+
+      -- Parse error message to get the variable name
+      local variableName = diag.message:match("'([^']+)'")
+
+      -- Unfixable variable
+      local moduleName = IMPORT_MAP[variableName]
+      if not moduleName then
+        return false
+      end
+      return variableName
+    end)))
+
+    -- Stop if nothing to update
+    if F.isEmpty(variableList) then
+      vim.b.oroshi_auto_import_running = false
+      return
+    end
+
+    -- If known variable we can auto-import
+    F.each(variableList, function(variableName)
+      local moduleName = IMPORT_MAP[variableName]
+
+      -- Add the line at the top
+      local newLine = "import { " .. variableName .. " } from '" .. moduleName .. "';"
+      F.addLine(newLine, 1, bufferId)
+    end)
+    vim.b.oroshi_auto_import_running = true
+    vim.cmd("write")
+  end)
+end
+
+F.ftplugin("javascript", setupJsAutoImport)
+F.ftplugin("javascriptreact", setupJsAutoImport)
+F.ftplugin("typescript", setupJsAutoImport)
+F.ftplugin("typescriptreact", setupJsAutoImport)
+-- }}}
