@@ -1,0 +1,36 @@
+#!/usr/bin/env zsh
+# Toggle Claude Code overlay window
+# Opens an overlay if none exists, closes it if one is open
+
+local kittySocketPath=$OROSHI_TMP_FOLDER/kitty/socket-$OROSHI_KITTY_UUID
+local unixSocket="--to unix:${kittySocketPath}"
+
+# Check if a Claude Code overlay window exists
+function hasClaudeOverlay() {
+	kitty @ ${=unixSocket} ls | jq -e '
+		.[].tabs[].windows[] |
+		select(.overlay_for != null and .title == "Claude Code")
+	' >/dev/null 2>&1
+}
+
+# Get the ID of the Claude Code overlay window
+function getClaudeOverlayId() {
+	kitty @ ${=unixSocket} ls | jq -r '
+		.[].tabs[].windows[] |
+		select(.overlay_for != null and .title == "Claude Code") |
+		.id
+	' | head -1
+}
+
+if hasClaudeOverlay; then
+	# Close the overlay
+	local overlayId="$(getClaudeOverlayId)"
+	kitty @ ${=unixSocket} close-window --match id:$overlayId
+else
+	# Open a new overlay
+	kitty @ ${=unixSocket} launch \
+		--type=overlay \
+		--title="Claude Code" \
+		--cwd=current \
+		claudecode
+fi
