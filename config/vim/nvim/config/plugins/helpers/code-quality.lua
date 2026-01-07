@@ -115,10 +115,20 @@ function M.configureFormatters(filetypesConfig)
 
   conform.setup({
     formatters_by_ft = formatters_by_ft,
-    format_on_save = {
-      timeout_ms = 3000,
-    },
     log_level = vim.log.levels.DEBUG,
+
+    -- We allow dynamically disabling the format_on_save per filetype from the config
+    -- Note: This is useful if we want to add other pre-processing transforms
+    -- manually before formatting (like for js)
+    format_on_save = function(bufnr)
+      local filetype = F.bufferOption("filetype")
+
+      if filetypesConfig[filetype].disableConformFormatOnSave then
+        return nil
+      end
+
+      return { timeout_ms = 3000 }
+    end,
   })
 
   -- Run all configureFormatter functions

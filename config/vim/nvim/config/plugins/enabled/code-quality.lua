@@ -73,12 +73,14 @@ local config = {
       formatters = { "oroshi_js_fix" },
       configureLinter = javascriptHelper.configureLinter,
       configureFormatter = javascriptHelper.configureFormatter,
+      disableConformFormatOnSave = true,
     },
     javascriptreact = {
       linters = { "oroshi_js_lint" },
       formatters = { "oroshi_js_fix" },
       configureLinter = javascriptHelper.configureLinter,
       configureFormatter = javascriptHelper.configureFormatter,
+      disableConformFormatOnSave = true,
     },
     json = {
       linters = { "oroshi_json_lint" },

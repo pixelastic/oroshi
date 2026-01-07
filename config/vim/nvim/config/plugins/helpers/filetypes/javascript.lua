@@ -6,13 +6,17 @@ M.configureLinter = function(lint)
     return -- Already configured
   end
 
-  lint.linters.oroshi_js_lint = {
-    cmd = "js-lint",
-    stdin = false,
-    args = { "--json" },
-    ignore_exitcode = true,
-    parser = M.lintParser,
-  }
+  -- Note: Defined as a function, so we can dynamically find the buffer name
+  lint.linters.oroshi_js_lint = function()
+    local filename = F.bufferName()
+    return {
+      cmd = "js-lint",
+      stdin = true,
+      args = { "--json", "--stdin", "--filepath", filename },
+      ignore_exitcode = true,
+      parser = M.lintParser,
+    }
+  end
 end
 
 -- Configure formatter if not already configured

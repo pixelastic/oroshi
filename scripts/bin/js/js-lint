@@ -3,16 +3,30 @@
 # Usage:
 # $ js-lint  ./path/to/file.js       # For CLI
 # $ js-lint -json ./path/to/file.js  # For Vim
+# $ cat file.js | js-lint --stdin --filepath ./path/to/file.js  # Via stdin
 
 zparseopts -E -D \
-  -json=flagJson
+  -json=flagJson \
+  -stdin=flagStdin \
+  -filepath:=flagFilepath
 isJson=${#flagJson}
+useStdin=${#flagStdin}
 
 # Input file
-inputFile="${1:a}"
-if [[ ! -f "$inputFile" ]]; then
-  echo "Error: File '$inputFile' not found" >&2
-  exit 1
+if [[ $useStdin == "1" ]]; then
+  # Read from stdin, but need filepath for context
+  inputFile="${flagFilepath[2]}"
+  if [[ -z "$inputFile" ]]; then
+    echo "Error: --stdin requires --filepath argument" >&2
+    exit 1
+  fi
+else
+  # Read from file argument
+  inputFile="${1:a}"
+  if [[ ! -f "$inputFile" ]]; then
+    echo "Error: File '$inputFile' not found" >&2
+    exit 1
+  fi
 fi
 
 # Project root
@@ -30,11 +44,17 @@ fi
 
 # Optional args
 formatAsJson=""
-if [[ $isJson -gt 0 ]]; then
+if [[ $isJson == "1" ]]; then
   formatAsJson="--format json"
+fi
+
+stdinArg=""
+if [[ $useStdin == "1" ]]; then
+  stdinArg="--stdin --stdin-filename"
 fi
 
 eslint_d \
   --config "$configFile" \
   ${=formatAsJson} \
+  ${=stdinArg} \
   "$inputFile"

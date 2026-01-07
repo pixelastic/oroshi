@@ -135,16 +135,13 @@ local function setupJsAutoImport()
     write = "firost",
   }
 
-  -- After a file is saved, we check for diagnostics, to see if some variables
-  -- are missing and could be auto-imported
-  F.autocmd("BufWritePost", function()
-    -- Prevent infinite recursion
-    if vim.b.oroshi_auto_import_running then
-      vim.b.oroshi_auto_import_running = false
-      return
-    end
-
+  -- Before a file is saved, we check for missing imports and auto-import them
+  -- if possible
+  F.autocmd("BufWritePre", function()
     local bufferId = F.bufferId()
+    -- Note: As getting diagnostics is asynchronous, the best we can do is rely
+    -- on the ones we already have, so they might be incomplete (saving a second
+    -- time usually fixes that).
     local rawErrors = vim.diagnostic.get(bufferId)
 
     -- Get all missing variables
@@ -165,12 +162,6 @@ local function setupJsAutoImport()
       return variableName
     end)))
 
-    -- Stop if nothing to update
-    if F.isEmpty(variableList) then
-      vim.b.oroshi_auto_import_running = false
-      return
-    end
-
     -- If known variable we can auto-import
     F.each(variableList, function(variableName)
       local moduleName = IMPORT_MAP[variableName]
@@ -179,8 +170,9 @@ local function setupJsAutoImport()
       local newLine = "import { " .. variableName .. " } from '" .. moduleName .. "';"
       F.addLine(newLine, 1, bufferId)
     end)
-    vim.b.oroshi_auto_import_running = true
-    vim.cmd("write")
+
+    -- Format the file
+    require("conform").format({ bufnr = bufferId })
   end)
 end
 

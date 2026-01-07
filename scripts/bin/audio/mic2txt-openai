@@ -68,7 +68,9 @@ if [[ $method == 'translate' ]]; then
 fi
 
 # Play a sound to indicate it's being pasted
-audio-play ~/.oroshi/config/audio/sounds/bg-stealth.wav &
+if sound-mode-is-enabled; then
+  audio-play ~/.oroshi/config/audio/sounds/bg-stealth.wav &
+fi
 
 # Insert the transcription wherever I'm currently focused
 focus-insert "$transcription"
