@@ -32,9 +32,10 @@ compdef _git-branches-remote \
   git-branch-pull \
   git-branch-remove-remote
 compdef _git-tags-local \
-  git-tag-switch \
+  git-tag-push \
   git-tag-remove \
-  git-tag-status
+  git-tag-status \
+  git-tag-switch
 compdef _git-tags-remote \
   git-tag-remove-remote
 compdef _git-files-dirty \

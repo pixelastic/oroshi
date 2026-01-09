@@ -1,0 +1,16 @@
+# Push a tag
+# Usage:
+# $ git-tag-push                  # Pushes current tag to current remote
+# $ git-tag-push v1.0.0           # Pushes tag v1.0.0
+function git-tag-push() {
+  local currentRemote="$(git-remote-current)"
+
+  # If no args, we push all tags
+  if [[ $# -eq 0 ]]; then
+    git push "$currentRemote" --tags
+    return 0
+  fi
+
+  # Otherwise we only push specified tags
+  git push "$currentRemote" "$@"
+}

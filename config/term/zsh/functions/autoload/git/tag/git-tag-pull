@@ -1,0 +1,7 @@
+# Pull all tags
+# Usage:
+# $ git-tag-pull                  # Pulls all remote tags
+function git-tag-pull() {
+  local currentRemote="$(git-remote-current)"
+  git fetch "${currentRemote}" 'refs/tags/*:refs/tags/*'
+}
