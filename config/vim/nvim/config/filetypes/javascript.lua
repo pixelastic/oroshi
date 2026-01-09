@@ -80,7 +80,20 @@ F.ftplugin("typescriptreact", setupJsKeybindings)
 local function setupJsAutoImport()
   local bufferId = F.bufferId()
   local IMPORT_MAP = {
+    -- golgoth
+    chalk = "golgoth",
+    dayjs = "golgoth",
+    got = "golgoth",
+    lodash = "golgoth",
+    pAll = "golgoth",
+    pMapSeries = "golgoth",
+    pMap = "golgoth",
+    pProps = "golgoth",
+    pify = "golgoth",
+    queryString = "golgoth",
+    timeSpan = "golgoth",
     _ = "golgoth",
+    -- firost
     absolute = "firost",
     cache = "firost",
     caller = "firost",
