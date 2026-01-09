@@ -78,6 +78,7 @@ F.ftplugin("typescriptreact", setupJsKeybindings)
 
 -- AUTO IMPORT {{{
 local function setupJsAutoImport()
+  local bufferId = F.bufferId()
   local IMPORT_MAP = {
     _ = "golgoth",
     absolute = "firost",
@@ -173,7 +174,7 @@ local function setupJsAutoImport()
 
     -- Format the file
     require("conform").format({ bufnr = bufferId })
-  end)
+  end, { buffer = bufferId })
 end
 
 F.ftplugin("javascript", setupJsAutoImport)

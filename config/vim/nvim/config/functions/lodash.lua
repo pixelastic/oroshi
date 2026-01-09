@@ -261,6 +261,28 @@ return {
     return vim.split(input, delimiter, { plain = true })
   end,
 
+  -- substring: Extract a portion of a string between two indices
+  substring = function(input, userStart, userEnd)
+    local maxLength = #input
+    local startIndex = userStart or 0
+    local endIndex = userEnd or maxLength
+
+    -- If negative index passed, we only take the last chars
+    if startIndex < 0 then
+      startIndex = maxLength + startIndex
+    end
+    if endIndex < 0 then
+      endIndex = maxLength + endIndex
+    end
+
+    -- Swap if end is before start
+    if startIndex > endIndex then
+      startIndex, endIndex = endIndex, startIndex
+    end
+
+    return string.sub(input, startIndex + 1, endIndex)
+  end,
+
   -- startsWith: Check if string starts with a specific substring
   startsWith = function(input, prefix)
     return string.find(input, prefix, 1, true) == 1
