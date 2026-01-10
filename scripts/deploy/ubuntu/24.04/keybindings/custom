@@ -15,6 +15,9 @@ local                  shortcuts=(
   "Kitty"                   "<Super>T"        "/home/tim/.oroshi/scripts/bin/kitty/kitty-restore"
   "Keepass"                 "<Super>K"        "/home/tim/.oroshi/scripts/bin/better-keepass /home/tim/perso/Dropbox/tim/keys.kdbx"
 
+  "current-date"            "<Super>D"        "/home/tim/.oroshi/scripts/bin/keybindings/insert-current-date"
+  "uuid"                    "<Super>U"        "/home/tim/.oroshi/scripts/bin/keybindings/insert-uuid"
+
   "Spotify Pause"           "<Super>I"        "/home/tim/.oroshi/scripts/bin/spotify/spotify"
   "Spotify Next"            "<Super>L"        "/home/tim/.oroshi/scripts/bin/spotify/spotify-next"
   "Spotify Previous"        "<Super>H"        "/home/tim/.oroshi/scripts/bin/spotify/spotify-previous"
