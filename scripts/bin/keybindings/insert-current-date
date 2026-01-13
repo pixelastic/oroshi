@@ -1,3 +1,4 @@
 #!/usr/bin/env zsh
 local currentDate=$(date +"%Y-%m-%d-%H-%M-%S")
 focus-insert "$currentDate"
+clipboard-write "$currentDate"

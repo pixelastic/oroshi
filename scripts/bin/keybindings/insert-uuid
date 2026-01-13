@@ -1,3 +1,4 @@
 #!/usr/bin/env zsh
 local uuid=$(uuidgen)
 focus-insert "$uuid"
+clipboard-write "$uuid"
