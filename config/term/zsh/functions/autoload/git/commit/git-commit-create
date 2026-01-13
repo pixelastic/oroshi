@@ -1,0 +1,10 @@
+# Commit all changes
+# Usage:
+# $ git-commit-create                      # Commit all changes, and ask for message
+# $ git-commit-create "Commit message"     # Commit all changes with message
+# $ git-commit-create -n "Commit message"  # Can pass arguments to git commit
+function git-commit-create() {
+  # Commit all files first
+  git add --all
+  git-commit-create-staged $@
+}

@@ -1,9 +1,9 @@
-# Commit all changes
+# Commit staged changes
 # Usage:
-# $ git-commit-all                      # Commit all changes, and ask for message
-# $ git-commit-all "Commit message"     # Commit all changes with message
-# $ git-commit-all -n "Commit message"  # Can pass arguments to git commit
-function git-commit-staged() {
+# $ git-commit-create-staged                      # Commit staged changes, and ask for message
+# $ git-commit-create-staged "Commit message"     # Commit staged changes with message
+# $ git-commit-create-staged -n "Commit message"  # Can pass arguments to git commit
+function git-commit-create-staged() {
   local args=($@)
 
   # Find the commit message as the first argument without a dash as prefix
