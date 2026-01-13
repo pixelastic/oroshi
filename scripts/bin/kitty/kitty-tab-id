@@ -1,4 +1,8 @@
 #!/usr/bin/env zsh
 # Get the current Kitty tab ID
-kitty @ ls \
-  | jq -r ".[0].tabs[] | select(.windows[].id==${KITTY_WINDOW_ID}) | .id"
+local kittySocketPath=$OROSHI_TMP_FOLDER/kitty/socket-$OROSHI_KITTY_UUID
+local unixSocket="--to unix:${kittySocketPath}"
+
+kitty @ ${=unixSocket} \
+  ls |
+  jq -r ".[0].tabs[] | select(.windows[].id==${KITTY_WINDOW_ID}) | .id"

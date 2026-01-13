@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# NOTE: This is a WIP and is not implemented properly
 # Remove tab from attention list
 # Usage:
 # $ kitty-tab-attention-remove {tabId}     # Remove {tabId} from attention list

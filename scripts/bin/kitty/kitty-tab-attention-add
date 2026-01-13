@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# NOTE: This is a WIP and is not implemented properly
 # Add tab to attention list
 # Usage:
 # $ kitty-tab-attention-add {tabId}     # Add {tabId} from attention list

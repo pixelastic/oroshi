@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# NOTE: This is a WIP and is not implemented properly
 # Toggle Claude Code overlay window
 # Opens an overlay if none exists, closes it if one is open
 
