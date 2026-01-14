@@ -23,7 +23,7 @@ F.ftplugin("gitcommit", function()
     F.defer(function()
       F.setThinkingIndicator(true)
       F.info(" Generating commit message...")
-    end, 100)
+    end, 500)
 
     F.run("git-commit-message-bin", {
       onSuccess = function(message)

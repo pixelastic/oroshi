@@ -20,7 +20,7 @@ M.aiPrompt = function(prompt, onSuccess)
     messages = { { role = "user", content = prompt } },
   })
 
-  M.setThinkingIndicator(true)
+  F.setThinkingIndicator(true)
 
   F.httpRequest(ANTHROPIC_URL, {
     method = "POST",
@@ -31,7 +31,7 @@ M.aiPrompt = function(prompt, onSuccess)
     },
     body = body,
     onSuccess = function(responseBody)
-      M.setThinkingIndicator(false)
+      F.setThinkingIndicator(false)
 
       local responseJson = vim.fn.json_decode(responseBody)
 
@@ -48,7 +48,7 @@ M.aiPrompt = function(prompt, onSuccess)
       onSuccess(responseJson.content[1].text)
     end,
     onError = function(error)
-      M.setThinkingIndicator(false)
+      F.setThinkingIndicator(false)
       F.error("API Error: " .. error)
     end,
   })

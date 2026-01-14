@@ -21,20 +21,27 @@ return {
     vim.api.nvim_buf_set_lines(bufferId, lineNumber - 1, lineNumber - 1, false, lines)
   end,
   -- replaceLines: Replace one or more lines
-  replaceLines = function(userLines, startLine, endLine, bufferId)
-    -- If endLine is not provided, replace single line
-    if type(endLine) == "number" then
-      bufferId = bufferId or F.bufferId()
-    else
-      bufferId = endLine or F.bufferId()
-      endLine = startLine
+  replaceLines = function(userLines, position, bufferId)
+    -- Default to current line
+    local currentLine = F.lineNumber()
+    if position == nil then
+      position = { currentLine, currentLine }
     end
-    startLine = startLine or F.lineNumber()
+    -- Accepte position as a single line
+    if F.isString(position) then
+      position = { position, position }
+    end
+    -- Make the end default to the start
+    if not position[2] then
+      position[2] = position[1]
+    end
+
+    bufferId = bufferId or F.bufferId()
 
     -- Convert single lines to array
     local lines = F.isString(userLines) and F.split(userLines, "\n") or userLines
 
-    vim.api.nvim_buf_set_lines(bufferId, startLine - 1, endLine, false, lines)
+    vim.api.nvim_buf_set_lines(bufferId, position[1] - 1, position[2], false, lines)
   end,
   -- lineCount: Returns the number of lines in a buffer (defaults to current buffer)
   lineCount = function(bufferId)

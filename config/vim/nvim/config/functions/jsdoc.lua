@@ -85,7 +85,7 @@ insertJsDocAboveNode = function(jsdoc, node)
     endLine = nodeStartLine - 1
   end
 
-  F.replaceLines(indentedJsdoc, startLine, endLine)
+  F.replaceLines(indentedJsdoc, { startLine, endLine })
 end
 
 return M
