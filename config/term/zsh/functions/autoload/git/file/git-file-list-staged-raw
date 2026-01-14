@@ -1,0 +1,21 @@
+# List all staged files
+# Output format: STATUS:FILEPATH
+# STATUS can be: M (Modified), A (Added), D (Deleted)
+function git-file-list-staged-raw() {
+  local gitRoot="$(git-directory-root)"
+  local dirtyFiles="$(git -C "${gitRoot}" status --porcelain --short)"
+
+  for line in ${(f)dirtyFiles}; do
+    local stagedStatus="${line[1]}"
+    local unstagedStatus="${line[2]}"
+    local filePath="${line:3}"
+
+    # Skip files that don't have a staged status
+    [[ "$stagedStatus" == "?" ]] && stagedStatus=" "
+    if [[ "$stagedStatus" == " " ]]; then
+      continue
+    fi
+
+    echo "${stagedStatus}:${filePath}"
+  done
+}

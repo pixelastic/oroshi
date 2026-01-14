@@ -1,0 +1,21 @@
+# List all unstaged files (that can be added to the staging area)
+# Output format: STATUS:FILEPATH
+# STATUS can be: M (Modified), A (Added), D (Deleted)
+function git-file-list-unstaged-raw() {
+  local gitRoot="$(git-directory-root)"
+  local dirtyFiles="$(git -C "${gitRoot}" status --porcelain --short)"
+
+  for line in ${(f)dirtyFiles}; do
+    local stagedStatus="${line[1]}"
+    local unstagedStatus="${line[2]}"
+    local filePath="${line:3}"
+
+    # Skip files that don't have an unstaged status
+    [[ "$unstagedStatus" == "?" ]] && unstagedStatus="A"
+    if [[ "$unstagedStatus" == " " ]]; then
+      continue
+    fi
+
+    echo "${unstagedStatus}:${filePath}"
+  done
+}

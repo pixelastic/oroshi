@@ -1,0 +1,6 @@
+# List all files available for commit
+# Usage:
+# $ git-directory-list  # List current directory status
+function git-directory-list() {
+  git status --short
+}

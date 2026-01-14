@@ -1,0 +1,17 @@
+# List all staged files
+function git-file-list-staged() {
+  local rawFiles="$(git-file-list-staged-raw)"
+
+  for rawLine in ${(f)rawFiles}; do
+    local splitLine=(${(@s/:/)rawLine})
+    local gitStatus=$splitLine[1]
+    local filepath=$splitLine[2]
+
+    local displayedLine=""
+    [[ $gitStatus == "D" ]] && displayedLine="$(colorize "$filepath" "ALIAS_GIT_REMOVED")"
+    [[ $gitStatus == "M" ]] && displayedLine="$(colorize "$filepath" "ALIAS_GIT_MODIFIED")"
+    [[ $gitStatus == "A" ]] && displayedLine="$(colorize "$filepath" "ALIAS_GIT_ADDED")"
+
+    echo "$displayedLine"
+  done
+}
