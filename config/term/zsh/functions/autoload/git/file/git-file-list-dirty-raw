@@ -7,15 +7,15 @@ function git-file-list-dirty-raw() {
 
   for line in ${(f)dirtyFiles}; do
     local stagedStatus="${line[1]}"
-    local unstagedStatus="${line[2]}"
+    local stageableStatus="${line[2]}"
     local filePath="${line:3}"
 
     # ?? means that the file is not staged
     [[ "$stagedStatus" == "?" ]] && stagedStatus=" "
-    [[ "$unstagedStatus" == "?" ]] && unstagedStatus="A"
+    [[ "$stageableStatus" == "?" ]] && stageableStatus="A"
 
-    # Prefer unstaged status (more recent)
-    local gitStatus="$unstagedStatus"
+    # Prefer stageable status (more recent)
+    local gitStatus="$stageableStatus"
     [[ "$gitStatus" == " " ]] && gitStatus="$stagedStatus"
 
     echo "${gitStatus}:${filePath}"

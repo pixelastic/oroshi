@@ -7,7 +7,6 @@ function git-file-list-staged-raw() {
 
   for line in ${(f)dirtyFiles}; do
     local stagedStatus="${line[1]}"
-    local unstagedStatus="${line[2]}"
     local filePath="${line:3}"
 
     # Skip files that don't have a staged status

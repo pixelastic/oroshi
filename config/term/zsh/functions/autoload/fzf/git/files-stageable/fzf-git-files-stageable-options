@@ -1,5 +1,5 @@
-# Outputs specific options for searching dirty git files
-function fzf-git-files-dirty-options() {
+# Outputs specific options for searching stageable git files
+function fzf-git-files-stageable-options() {
   # Prompt
   local promptPrefix="$(colorize "  " $COLOR_BLACK $COLOR_ALIAS_GIT_MODIFIED)"
   local promptSuffix="$(colorize "" $COLOR_ALIAS_GIT_MODIFIED)"
@@ -9,5 +9,5 @@ function fzf-git-files-dirty-options() {
   echo "--with-nth=2"
 
   # Preview
-  echo "--preview=fzf-git-files-dirty-preview {1}"
+  echo "--preview=fzf-git-files-stageable-preview {1}"
 }

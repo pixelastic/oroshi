@@ -7,15 +7,15 @@ function git-file-list-stageable-raw() {
 
   for line in ${(f)dirtyFiles}; do
     local stagedStatus="${line[1]}"
-    local unstagedStatus="${line[2]}"
+    local stageableStatus="${line[2]}"
     local filePath="${line:3}"
 
     # Skip files that are not stageable
-    [[ "$unstagedStatus" == "?" ]] && unstagedStatus="A"
-    if [[ "$unstagedStatus" == " " ]]; then
+    [[ "$stageableStatus" == "?" ]] && stageableStatus="A"
+    if [[ "$stageableStatus" == " " ]]; then
       continue
     fi
 
-    echo "${unstagedStatus}:${filePath}"
+    echo "${stageableStatus}:${filePath}"
   done
 }

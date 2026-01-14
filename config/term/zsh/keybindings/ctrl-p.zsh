@@ -14,7 +14,7 @@ oroshi-fzf-files-project-widget() {
   # Context-aware selection
   local selection=""
   if [[ "${LBUFFER}" =~ "vfa( )?$" ]]; then
-    selection="$(fzf-git-files-dirty)"
+    selection="$(fzf-git-files-stageable)"
   else
     selection="$(fzf-fs-files-project)"
   fi

@@ -1,0 +1,17 @@
+# Returns a list of stageable files (that can be added to staging area)
+function fzf-git-files-stageable-source() {
+  local rawFiles="$(git-file-list-stageable-raw)"
+
+  for rawLine in ${(f)rawFiles}; do
+    local splitLine=(${(@s/:/)rawLine})
+    local gitStatus=$splitLine[1]
+    local filepath=$splitLine[2]
+
+    local displayedLine=""
+    [[ $gitStatus == "D" ]] && displayedLine="$(colorize "$filepath" "ALIAS_GIT_REMOVED")"
+    [[ $gitStatus == "M" ]] && displayedLine="$(colorize "$filepath" "ALIAS_GIT_MODIFIED")"
+    [[ $gitStatus == "A" ]] && displayedLine="$(colorize "$filepath" "ALIAS_GIT_ADDED")"
+
+    echo "${filepath}▮${displayedLine}"
+  done
+}

@@ -1,4 +1,4 @@
-function fzf-git-files-dirty-postprocess() {
+function fzf-git-files-stageable-postprocess() {
   local rawSelection="$1"
 
   # Stop early

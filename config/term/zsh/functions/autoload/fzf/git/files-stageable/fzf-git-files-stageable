@@ -1,0 +1,7 @@
+# Search for stageable git files (that can be added to staging area)
+function fzf-git-files-stageable() {
+  fzf-search \
+    --source "fzf-git-files-stageable-source" \
+    --options "fzf-git-files-stageable-options" \
+    --postprocess "fzf-git-files-stageable-postprocess"
+}
