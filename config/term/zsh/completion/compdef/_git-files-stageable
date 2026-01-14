@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest the stageable files (that can be added to the staging area)
+function _git-files-stageable() {
+  local suggestions=(${(f)"$(complete-git-files-stageable)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_GIT_MODIFIED $COLOR_WHITE ' ﰖ Stageable files ')" suggestions
+}

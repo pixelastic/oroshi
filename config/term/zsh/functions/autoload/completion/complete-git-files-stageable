@@ -1,0 +1,34 @@
+# List all stageable files (that can be added to the staging area)
+function complete-git-files-stageable() {
+  local rawFiles="$(git-file-list-stageable-raw)"
+
+  # Build the initial list
+  local suggestions=()
+  local -A fileStatus
+  for rawLine in ${(f)rawFiles}; do
+    local splitLine=(${(@s/:/)rawLine})
+    local gitStatus=$splitLine[1]
+    local filePath=$splitLine[2]
+
+    suggestions+=($filePath)
+
+    # We keep the status of each file
+    fileStatus[$filePath]=$gitStatus
+  done
+
+  # Sort by putting closest files first
+  if [[ $#suggestions != "0" ]]; then
+    suggestions=($(sort-filepaths $suggestions))
+  fi
+
+  # We define a specific comment for each status
+  local -A statusString
+  statusString[D]="- Deleted"
+  statusString[M]="~ Modified"
+  statusString[A]="+ New file"
+
+  # We display each suggestion along with a comment of its status
+  for suggestion in $suggestions; do
+    echo "$suggestion:$statusString[$fileStatus[$suggestion]]"
+  done
+}

@@ -1,6 +1,6 @@
-# List all unstaged files (that can be added to the staging area)
-function git-file-list-unstaged() {
-  local rawFiles="$(git-file-list-unstaged-raw)"
+# List all stageable files (that can be added to the staging area)
+function git-file-list-stageable() {
+  local rawFiles="$(git-file-list-stageable-raw)"
 
   for rawLine in ${(f)rawFiles}; do
     local splitLine=(${(@s/:/)rawLine})

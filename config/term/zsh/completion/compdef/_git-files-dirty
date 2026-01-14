@@ -1,8 +1,0 @@
-#compdef
-
-# Suggest the dirty and unstaged files
-function _git-files-dirty() {
-  local suggestions=(${(f)"$(complete-git-files-dirty)"})
-
-  _describe -V "$(completion-header $COLOR_ALIAS_GIT_MODIFIED $COLOR_WHITE ' ﰖ Changed files ')" suggestions
-}
