@@ -35,7 +35,7 @@ yarn-dependency-add-dev aberlaas
 yarn run aberlaas init
 
 # Commit and push
-git-commit-all "chore(init): Scaffolding"
+git-commit-create "chore(init): Scaffolding"
 # Sync with remote in case GitHub added default files
 git-branch-rebase origin/main
 git-branch-push

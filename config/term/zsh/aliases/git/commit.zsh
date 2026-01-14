@@ -1,7 +1,7 @@
 # [c]ommit
 alias vcRa='git-commit-remove-all'
 alias vcR='git-commit-remove'
-alias vcaf='git-commit-all -n'
+alias vcaf='git-commit-create -n'
 alias vca='git-commit-create'
 alias vcc='git-commit-create-staged'
 alias vccl='git-commit-create-claude'

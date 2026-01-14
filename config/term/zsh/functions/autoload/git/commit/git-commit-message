@@ -1,11 +1,61 @@
-# Generate a potential commit message for the current changes
+# Generate commit message
 # Usage:
-# $ git-commit-message    # Generate a commit message
+# $ git-commit-message                    # Generate message for all dirty files
+# $ git-commit-message file1.js file2.js  # Generate message for specific files
 function git-commit-message() {
-	git diff |
-		sgpt \
-			--model gpt-4 \
-			--code 'Based on the changes above, create a short commit message following best practices' |
-		sed 's/^"\(.*\)"$/\1/'
+  local inputFiles=($@)
 
+  # If no files specified, get all dirty files
+  if [[ ${#inputFiles} -eq 0 ]]; then
+    local rawFiles="$(git-file-list-dirty-raw)"
+    inputFiles=()
+
+    # Extract just the file paths
+    for rawLine in ${(f)rawFiles}; do
+      local splitLine=(${(@s/:/)rawLine})
+      local filepath=$splitLine[2]
+      inputFiles+=($filepath)
+    done
+  fi
+
+  if [[ ${#inputFiles} -eq 0 ]]; then
+    return 1
+  fi
+
+  # Get diff for the specified files
+  local diffContent=$(git diff HEAD -- ${inputFiles[@]})
+
+  # Build the prompt
+  local claudePrompt="Generate a git commit message for these changes.
+
+Changes:
+\`\`\`diff
+${diffContent}
+\`\`\`
+
+CRITICAL INSTRUCTIONS:
+- Return ONLY the commit message text itself
+- NO explanations, NO analysis, NO commentary before or after
+- NO markdown code blocks, NO formatting markers
+- NO \"Let me analyze\", NO \"The diff shows\", NO introductory text
+- NO \"Generated with Claude Code\" or \"Co-Authored-By\" lines
+- Start directly with the commit type (feat:, fix:, chore:, etc.)
+
+Format requirements:
+- Conventional Commits format: type(scope): description
+- Subject line: 50-72 characters maximum
+- Body: 1-3 sentences explaining WHY (not what - git shows what)
+- Body lines: wrapped at 72 characters maximum
+- One blank line between subject and body
+- If multiple concerns: choose ONE most significant
+
+Example output format:
+feat(auth): add password reset functionality
+
+Users can now request password reset via email with time-limited
+tokens. Includes rate limiting to prevent abuse.
+
+YOUR OUTPUT MUST START IMMEDIATELY WITH THE COMMIT TYPE. NO OTHER TEXT."
+
+  claude --print --model sonnet <<< "$claudePrompt"
 }

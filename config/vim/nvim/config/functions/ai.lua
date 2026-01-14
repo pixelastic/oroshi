@@ -5,16 +5,6 @@ local ANTHROPIC_VERSION = "2023-06-01"
 local ANTHROPIC_URL = "https://api.anthropic.com/v1/messages"
 local ANTHROPIC_API_KEY = vim.fn.getenv("ANTHROPIC_API_KEY")
 
-local function setThinkingIndicator(isThinking)
-  O.statusline.ai = { isThinking = isThinking }
-  if isThinking then
-    F.hl("Normal", "GRAY_3", { bg = "DARK_ORANGE" })
-  else
-    F.hl("Normal", "GRAY_3")
-  end
-  vim.cmd("redrawstatus")
-end
-
 -- Call Anthropic API with a prompt and execute callback with the response
 -- @param prompt string - The prompt to send to the AI
 -- @param onSuccess function - Callback function called with the AI response text
@@ -30,7 +20,7 @@ M.aiPrompt = function(prompt, onSuccess)
     messages = { { role = "user", content = prompt } },
   })
 
-  setThinkingIndicator(true)
+  M.setThinkingIndicator(true)
 
   F.httpRequest(ANTHROPIC_URL, {
     method = "POST",
@@ -41,7 +31,7 @@ M.aiPrompt = function(prompt, onSuccess)
     },
     body = body,
     onSuccess = function(responseBody)
-      setThinkingIndicator(false)
+      M.setThinkingIndicator(false)
 
       local responseJson = vim.fn.json_decode(responseBody)
 
@@ -58,7 +48,7 @@ M.aiPrompt = function(prompt, onSuccess)
       onSuccess(responseJson.content[1].text)
     end,
     onError = function(error)
-      setThinkingIndicator(false)
+      M.setThinkingIndicator(false)
       F.error("API Error: " .. error)
     end,
   })

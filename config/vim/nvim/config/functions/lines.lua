@@ -10,22 +10,30 @@ return {
     bufferId = bufferId or F.bufferId()
     return vim.api.nvim_buf_get_lines(bufferId, 0, -1, false)
   end,
-  -- addLine: Add a new line (pushing the next ones down)
-  addLine = function(newContent, lineNumber, bufferId)
+  -- addLines: Add one or more lines (pushing the next ones down)
+  addLines = function(userLines, lineNumber, bufferId)
     lineNumber = lineNumber or F.lineNumber()
     bufferId = bufferId or F.bufferId()
-    vim.api.nvim_buf_set_lines(bufferId, lineNumber - 1, lineNumber - 1, false, { newContent })
+
+    -- Convert single lines to array
+    local lines = F.isString(userLines) and F.split(userLines, "\n") or userLines
+
+    vim.api.nvim_buf_set_lines(bufferId, lineNumber - 1, lineNumber - 1, false, lines)
   end,
-  -- replaceLine: Replace a line
-  replaceLine = function(newContent, lineNumber, bufferId)
-    lineNumber = lineNumber or F.lineNumber()
-    bufferId = bufferId or F.bufferId()
-    vim.api.nvim_buf_set_lines(bufferId, lineNumber - 1, lineNumber, false, { newContent })
-  end,
-  -- replaceLines: Replace several lines
-  replaceLines = function(newContent, startLine, endLine, bufferId)
-    bufferId = bufferId or F.bufferId()
-    local lines = F.split(newContent, "\n")
+  -- replaceLines: Replace one or more lines
+  replaceLines = function(userLines, startLine, endLine, bufferId)
+    -- If endLine is not provided, replace single line
+    if type(endLine) == "number" then
+      bufferId = bufferId or F.bufferId()
+    else
+      bufferId = endLine or F.bufferId()
+      endLine = startLine
+    end
+    startLine = startLine or F.lineNumber()
+
+    -- Convert single lines to array
+    local lines = F.isString(userLines) and F.split(userLines, "\n") or userLines
+
     vim.api.nvim_buf_set_lines(bufferId, startLine - 1, endLine, false, lines)
   end,
   -- lineCount: Returns the number of lines in a buffer (defaults to current buffer)

@@ -182,7 +182,7 @@ local function setupJsAutoImport()
 
       -- Add the line at the top
       local newLine = "import { " .. variableName .. " } from '" .. moduleName .. "';"
-      F.addLine(newLine, 1, bufferId)
+      F.addLines(newLine, 1, bufferId)
     end)
 
     -- Format the file
