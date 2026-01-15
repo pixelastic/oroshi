@@ -145,6 +145,7 @@ local function setupJsAutoImport()
     waitForWatchers = "firost",
     watch = "firost",
     which = "firost",
+    wrap = "firost",
     writeJson = "firost",
     write = "firost",
   }
