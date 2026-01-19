@@ -197,8 +197,8 @@ return {
   end,
 
   -- replace: Replace all occurrences of a string with another
-  replace = function(input, from, to)
-    return string.gsub(input, from, to)
+  replace = function(input, from, to, n)
+    return string.gsub(input, from, to, n)
   end,
 
   -- set: Set the value of a given key in a collection

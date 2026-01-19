@@ -68,6 +68,36 @@ local function setupJsKeybindings()
   F.imap("tbt", "toBe(true)", "toBe(true) assertion", { buffer = bufferId })
   F.imap("tbf", "toBe(false)", "toBe(false) assertion", { buffer = bufferId })
   F.imap("mrv", "mockReturnValue()", "mockReturnValue()", { buffer = bufferId })
+
+  -- Switch fdescribe/fit
+  local function switchFocus()
+    local rawCurrentLine = F.line()
+    local cleanCurrentLine = F.trim(rawCurrentLine)
+
+    local replacements = {
+      describe = "fdescribe",
+      fdescribe = "describe",
+      it = "fit",
+      fit = "it",
+    }
+    --
+    local isReplaced = false
+    F.each(replacements, function(key, value)
+      if isReplaced then
+        return
+      end
+
+      -- Ignore lines that do not start with the pattern
+      if not F.startsWith(cleanCurrentLine, key) then
+        return
+      end
+      local newLine = F.replace(rawCurrentLine, key, value, 1)
+
+      F.replaceLines(newLine)
+      isReplaced = true
+    end)
+  end
+  F.nmap("ff", switchFocus, "Switch fdescribe/fit", { buffer = bufferId })
 end
 
 F.ftplugin("javascript", setupJsKeybindings)
