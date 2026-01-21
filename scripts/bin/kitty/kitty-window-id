@@ -1,24 +1,33 @@
 #!/usr/bin/env zsh
-# Get the current Kitty window ID
+# Get a Kitty window ID
+# Usage: kitty-window-id               # Get current window ID
+#        kitty-window-id "windowName"  # Get window ID by oroshi_windowName
 
+local windowName="$1"
+
+# windowName provided: get window ID by oroshi_windowName
+if [[ "$windowName" != "" ]]; then
+  kitty@ ls | jq -r --arg name "$windowName" '
+    .[0].tabs[].windows[]
+    | select(.user_vars.oroshi_windowName == $name)
+    | .id
+  '
+  exit 0
+fi
+
+# No argument: get current window ID
 # KITTY_WINDOW_ID is set in interactive zsh sessions
-if [[ -n "$KITTY_WINDOW_ID" ]]; then
+if [[ "$KITTY_WINDOW_ID" != "" ]]; then
   echo "$KITTY_WINDOW_ID"
   exit 0
 fi
 
-
-# But when called from a Kitty keybinding, in the background, it is not set so
-# we need to find the only window currently active in the whole list
-local kittySocketPath=$OROSHI_TMP_FOLDER/kitty/socket-$OROSHI_KITTY_UUID
-local unixSocket="--to unix:${kittySocketPath}"
-
-kitty @ ${=unixSocket} \
-  ls \
-  | jq -r '
-    .[0].tabs[]
-    | select(.is_active == true)
-    | .windows[]
-    | select(.is_active == true)
-    | .id
-  '
+# But when called from a Kitty keybinding, in the background, it is not set
+# so we need to find the only window currently active in the whole list
+kitty@ ls | jq -r '
+  .[0].tabs[]
+  | select(.is_active == true)
+  | .windows[]
+  | select(.is_active == true)
+  | .id
+'

@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+# Check if a Kitty window with the given oroshi_windowName exists
+# Usage: kitty-window-exists "windowName"
+# Returns: 0 if exists, 1 if not
+
+local windowName="$1"
+if [[ "$windowName" == "" ]]; then
+  echo "Usage: kitty-window-exists <window-name>"
+  exit 2
+fi
+
+local windowId=$(kitty-window-id "$windowName")
+[[ "$windowId" == "" ]] && exit 1
+exit 0

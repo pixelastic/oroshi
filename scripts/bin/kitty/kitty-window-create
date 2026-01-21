@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+# Create a new Kitty window with a given oroshi_windowName
+# Usage: kitty-window-create "windowName" [--tab tabId]
+# Returns: the window ID
+
+zparseopts -E -D \
+  -tab:=flagTab
+local tabId=${flagTab[2]}
+
+local windowName="$1"
+if [[ "$windowName" == "" ]]; then
+  echo "Usage: kitty-window-create <window-name> [--tab <tab-id>]"
+  exit 2
+fi
+
+# Build launch command
+local launchArgs=(
+  --type window
+  --keep-focus
+  --var "oroshi_windowName=${windowName}"
+)
+
+# Add tab match if provided
+if [[ "$tabId" != "" ]]; then
+  launchArgs+=(--match "id:${tabId}")
+fi
+
+# Launch and return window ID
+kitty@ launch "${launchArgs[@]}" zsh
