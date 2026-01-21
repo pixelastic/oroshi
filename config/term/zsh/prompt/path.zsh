@@ -23,7 +23,7 @@ function oroshi-prompt-populate:path() {
   # Add marker if connected through SSH
   if [[ $SSH_CLIENT != '' ]]; then
     local hostname="$(hostname)"
-    OROSHI_PROMPT_PARTS[path]="%F{$COLOR_ORANGE}${USER} ${hostname}%f%k"
+    OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ORANGE}${USER} ${hostname}%f%k"
   fi
 
   # Prefix with a shortened colored version of the project if in an active

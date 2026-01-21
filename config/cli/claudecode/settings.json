@@ -21,12 +21,7 @@
       "mcp__context7__get-library-docs",
       "mcp__make__organizations_list",
       "mcp__make__scenarios_list",
-      "mcp__make__teams_list",
-      "mcp__task-master__add_task",
-      "mcp__task-master__get_tasks",
-      "mcp__task-master__initialize_project",
-      "mcp__task-master__set_task_status",
-      "mcp__task-master__update_task"
+      "mcp__make__teams_list"
     ],
     "deny": []
   },

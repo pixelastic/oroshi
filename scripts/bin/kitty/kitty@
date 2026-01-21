@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# Wrapper around 'kitty @' that automatically handles the Unix socket
+# Usage: kitty@ ls
+#        kitty@ launch --type tab
+#        kitty@ goto-layout stack
+
+local kittySocketPath=$OROSHI_TMP_FOLDER/kitty/socket-$OROSHI_KITTY_UUID
+local unixSocket="--to unix:${kittySocketPath}"
+
+kitty @ ${=unixSocket} "$@"
+

@@ -30,4 +30,3 @@ yarn-error.log
 # Vibe coding
 .claude/settings.local.json
 .cursor/
-.taskmaster/

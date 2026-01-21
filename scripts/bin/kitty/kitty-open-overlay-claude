@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# Toggle between current window and a dedicated Claude Code window
+# Each tab has its own Claude window stored in a "Claude" parking tab
+
+if ! kitty-tab-exists "claude"; then
+  kitty-tab-create "claude"
+fi
+
+local parkingTabId=$(kitty-tab-id "claude")
+echo "Parking tab ID: ${parkingTabId}"

@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+# Check if a Kitty tab with the given title exists
+# Usage: kitty-tab-exists "Tab Name"
+# Returns: 0 if exists, 1 if not
+
+local tabName="$1"
+if [[ "$tabName" == "" ]]; then
+  echo "Usage: kitty-tab-exists <tab-name>"
+  return 2
+fi
+
+local tabId=$(kitty@ ls | jq -r --arg name "$tabName" '.[0].tabs[] | select(.title==$name) | .id')
+[[ $tabId == "" ]] && exit 1
+exit 0
