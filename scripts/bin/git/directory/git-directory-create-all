@@ -8,7 +8,10 @@ set -e
 # Parse args {{{
 local originalArgs=("$@")
 
-zparseopts -E -D a=flagAlgolia
+zparseopts -E -D \
+  p=flagPrivate \
+  a=flagAlgolia
+local isPrivate=${#flagPrivate}
 local isAlgolia=${#flagAlgolia}
 
 local repoName="${1:t}"
