@@ -38,7 +38,8 @@ if ! kitty-window-exists "$claudeWindowName"; then
     "$claudeWindowName" \
     --tab "$claudeTabId" \
     --spacing padding=40 \
-    --color background=$COLOR_DARK_AMBER_HEXA
+    --color background=$COLOR_DARK_AMBER_HEXA \
+    --cmd "zsh -c claude"
 fi
 
 local claudeWindowId=$(kitty-window-id "$claudeWindowName")
