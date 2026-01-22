@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# Run claude in zsh, but stays in zsh once Claude is closed
+claude
+exec zsh

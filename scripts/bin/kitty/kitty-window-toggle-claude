@@ -26,7 +26,7 @@ local claudeWindowName="claude-${currentTabId}"
 
 # Create the claude tab if it doesn't yet exist
 if ! kitty-tab-exists "claude"; then
-  kitty-tab-create "claude"
+  kitty-tab-create "claude" --layout grid
 fi
 
 local claudeTabId=$(kitty-tab-id "claude")
@@ -39,7 +39,7 @@ if ! kitty-window-exists "$claudeWindowName"; then
     --tab "$claudeTabId" \
     --spacing padding=40 \
     --color background=$COLOR_DARK_AMBER_HEXA \
-    --cmd "zsh -c claude"
+    --cmd "kitty-run-claude"
 fi
 
 local claudeWindowId=$(kitty-window-id "$claudeWindowName")

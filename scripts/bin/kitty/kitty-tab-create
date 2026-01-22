@@ -1,11 +1,18 @@
 #!/usr/bin/env zsh
-# Create a new Kitty tab with the given title
-# Usage: kitty-tab-create "Tab Name"
-# Returns: the tab ID
+set -ex
+# Create a new Kitty tab with the given title and optional layout
+# Usage:
+# $ kitty-tab-create "Tab Name"               # Create new tab with default layout
+# $ kitty-tab-create "Tab Name" --layout grid # Create with grid layout
+
+zparseopts -E -D \
+  -layout:=flagLayout
 
 local tabName="$1"
+local layout=${flagLayout[2]}
+
 if [[ "$tabName" == "" ]]; then
-  echo "Usage: kitty-tab-create <tab-name>"
+  echo "Usage: kitty-tab-create <tab-name> [--layout <layout>]"
   return 2
 fi
 
@@ -16,3 +23,8 @@ kitty@ launch \
   --cwd current \
   zsh \
   1>/dev/null
+
+# Apply the layout to the newly created tab if specified
+if [[ "$layout" != "" ]]; then
+  kitty@ goto-layout --match "title:^${tabName}$" "$layout"
+fi
