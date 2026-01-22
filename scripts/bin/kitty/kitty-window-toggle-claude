@@ -1,13 +1,22 @@
 #!/usr/bin/env zsh
 # Toggle between current window and a dedicated Claude Code window
 # Each tab has its own Claude window stored in a "Claude" parking tab
-
 local currentWindowId=$(kitty-window-id)
 local originWindowId=$(kitty-window-get-var "$currentWindowId" "oroshi_claudeOriginWindowId")
 
 # If we're in a Claude window, get back to the calling window
 if [[ "$originWindowId" != "" ]]; then
+  local claudeTabId=$(kitty-tab-id "claude")
+  local originWasFullscreen=$(kitty-window-get-var "$currentWindowId" "oroshi_claudeOriginWasFullscreen")
+
+  # Move it back to the parking tab
+  if [[ "$originWasFullscreen" == "0" ]]; then
+    kitty-window-fullscreen-off "$originWindowId" &
+  fi
+  echo "move ${currentWindowId} to tab ${claudeTabId}, focus ${originWindowId}"
+  kitty-window-move "$currentWindowId" "$claudeTabId"
   kitty-window-focus "$originWindowId"
+
   exit 0
 fi
 
@@ -18,25 +27,25 @@ local claudeWindowName="claude-${currentTabId}"
 # Create the claude tab if it doesn't yet exist
 if ! kitty-tab-exists "claude"; then
   kitty-tab-create "claude"
-
-  # Set the default window created with the tab as the claude window
-  local newlyCreatedTabId=$(kitty-tab-id "claude")
-  local firstWindow=$(kitty-window-list-raw --tab "$newlyCreatedTabId")
-  local splitWindow=("${(@ps/▮/)firstWindow}")
-  local newlyCreatedWindowId="${splitWindow[1]}"
-  kitty-window-set-var "$newlyCreatedWindowId" "oroshi_windowName" "$claudeWindowName"
 fi
 
 local claudeTabId=$(kitty-tab-id "claude")
 
 # Create the Claude window if it doesn't yet exist
 if ! kitty-window-exists "$claudeWindowName"; then
-  kitty-window-create "$claudeWindowName" --tab "$claudeTabId"
+  source $ZSH_CONFIG_PATH/theming/env/colors.zsh
+  kitty-window-create \
+    "$claudeWindowName" \
+    --tab "$claudeTabId" \
+    --spacing padding=40 \
+    --color background=$COLOR_DARK_AMBER_HEXA
 fi
 
 local claudeWindowId=$(kitty-window-id "$claudeWindowName")
+local currentWindowIsFullscreen=$(kitty-window-is-fullscreen "$currentWindowId" && echo "1" || echo "0")
 
-# Focus the Claude window and make it fullscreen
-kitty-window-focus "$claudeWindowId"
-kitty-window-set-var "$claudeWindowId" "oroshi_claudeOriginWindowId" "$currentWindowId"
-kitty-window-fullscreen-on "$claudeWindowId"
+kitty-window-fullscreen-on "$currentTabId"
+kitty-window-move "$claudeWindowId" "$currentTabId"
+kitty-window-set-var "$claudeWindowId" \
+  "oroshi_claudeOriginWindowId=$currentWindowId" \
+  "oroshi_claudeOriginWasFullscreen=$currentWindowIsFullscreen"

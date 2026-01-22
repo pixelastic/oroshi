@@ -6,9 +6,9 @@
 local tabName="$1"
 if [[ "$tabName" == "" ]]; then
   echo "Usage: kitty-tab-exists <tab-name>"
-  return 2
+  exit 2
 fi
 
 local tabId=$(kitty@ ls | jq -r --arg name "$tabName" '.[0].tabs[] | select(.title==$name) | .id')
-[[ $tabId == "" ]] && exit 1
+[[ "$tabId" == "" ]] && exit 1
 exit 0

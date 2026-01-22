@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # List all windows in a parsable format
 # Usage: kitty-window-list-raw [--tab <tabId>]
-# Output format: windowId▮tabId▮userVars (one per line)
+# Output format: windowId▮tabId▮tabName▮userVars (one per line)
 # userVars format: key1=value1:key2=value2 (empty if no vars)
 
 zparseopts -E -D \
@@ -15,7 +15,7 @@ local allWindows=$(kitty@ ls | jq -r '
   | .windows[]
   | .user_vars as $vars
   | ($vars | to_entries | map("\(.key)=\(.value)") | join(":")) as $varsStr
-  | "\(.id)▮\($tab.id)▮\($varsStr)"
+  | "\(.id)▮\($tab.id)▮\($tab.title)▮\($varsStr)"
 ')
 
 # If no specific filter on a tab
@@ -26,7 +26,6 @@ fi
 
 # Filter by tab if specified
 for rawLine in ${(f)allWindows}; do
-  # Splitting the line into its various parts {{{
   local splitLine=("${(@ps/▮/)rawLine}")
   local windowTabId="${splitLine[2]}"
   [[ "$windowTabId" != "$tabId" ]] && continue
