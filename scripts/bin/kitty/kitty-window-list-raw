@@ -1,0 +1,31 @@
+#!/usr/bin/env zsh
+# List all windows in a parsable format
+# Usage: kitty-window-list-raw [--tab <tabId>]
+# Output format: windowId▮tabId (one per line)
+
+zparseopts -E -D \
+  -tab:=flagTab
+local tabId=${flagTab[2]}
+
+# Get all windows from all tabs
+local allWindows=$(kitty@ ls | jq -r '
+  .[0].tabs[]
+  | . as $tab
+  | .windows[]
+  | "\(.id)▮\($tab.id)"
+')
+
+# If no specific filter on a tab
+if [[ "$tabId" == "" ]]; then
+  echo "$allWindows"
+  exit 0
+fi
+
+# Filter by tab if specified
+for rawLine in ${(f)allWindows}; do
+  # Splitting the line into its various parts {{{
+  local splitLine=("${(@ps/▮/)rawLine}")
+  local windowTabId="${splitLine[2]}"
+  [[ "$windowTabId" != "$tabId" ]] && continue
+  echo $rawLine
+done

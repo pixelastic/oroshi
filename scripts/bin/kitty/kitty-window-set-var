@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+# Set a user variable on a specific window
+# Usage: kitty-window-set-var <windowId> <varName> <varValue>
+
+local windowId="$1"
+local varName="$2"
+local varValue="$3"
+
+if [[ "$windowId" == "" || "$varName" == "" || "$varValue" == "" ]]; then
+  echo "Usage: kitty-window-set-var <window-id> <var-name> <var-value>"
+  exit 2
+fi
+
+kitty@ set-user-vars --match "id:${windowId}" "${varName}=${varValue}"

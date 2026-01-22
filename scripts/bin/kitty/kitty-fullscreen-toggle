@@ -2,27 +2,31 @@
 # Toggle fullscreen in the current kitty tab
 # This should have no effect if there is only one split
 
-local kittySocketPath=$OROSHI_TMP_FOLDER/kitty/socket-$OROSHI_KITTY_UUID
-local unixSocket="--to unix:${kittySocketPath}"
+# Get current window ID
+local currentWindowId="$(kitty-window-id)"
 
-# We extract the current layout and number of splits in one jq pass
-# as something like 3:splits
-function getCurrentTabJSON() {
-	kitty @ ${=unixSocket} \
-		ls \
-		--match-tab state:focused |
-		jq -r '.[0].tabs[0] | "\(.groups | length):\(.layout)"'
-}
+# Single kitty@ ls call to get all info we need
+local kittyData=$(kitty@ ls)
 
-local tabInfo="$(getCurrentTabJSON)"
-local tabInfoSplit=(${(@s/:/)tabInfo})
-local splitCount=$tabInfoSplit[1]
-local currentLayout=$tabInfoSplit[2]
+# Extract tab info for current window
+local tabInfo=$(echo "$kittyData" | jq -r --arg winId "$currentWindowId" '
+  .[0].tabs[]
+  | select(.windows[].id == ($winId|tonumber))
+  | {id: .id, layout: .layout, windowCount: (.windows | length)}
+  | @json
+')
+local tabId=$(echo "$tabInfo" | jq -r '.id')
+local currentLayout=$(echo "$tabInfo" | jq -r '.layout')
+local windowCount=$(echo "$tabInfo" | jq -r '.windowCount')
 
-# Stop if only one split
-[[ $splitCount == "1" ]] && exit 0
+# Stop if only one window
+if [[ "$windowCount" == "1" ]]; then
+  exit 0
+fi
 
-# Now switch between splits and stack
-[[ $currentLayout == "splits" ]] && nextLayout="stack"
-[[ $currentLayout == "stack" ]] && nextLayout="splits"
-kitty @ ${=unixSocket} goto-layout $nextLayout
+# Toggle layout
+local nextLayout
+[[ "$currentLayout" == "stack" ]] && nextLayout="splits"
+[[ "$currentLayout" == "splits" ]] && nextLayout="stack"
+
+kitty@ goto-layout --match "id:${tabId}" "$nextLayout"

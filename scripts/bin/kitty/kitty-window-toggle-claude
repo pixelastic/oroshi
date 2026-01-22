@@ -2,27 +2,36 @@
 # Toggle between current window and a dedicated Claude Code window
 # Each tab has its own Claude window stored in a "Claude" parking tab
 
-# Find or create the Claude parking tab
+local currentTabId=$(kitty-tab-id)
+local claudeWindowName="claude-${currentTabId}"
+
+# Create the claude tab if it doesn't yet exist
 if ! kitty-tab-exists "claude"; then
   kitty-tab-create "claude"
+
+  # Set the default window created with the tab as the claude window
+  local newlyCreatedTabId=$(kitty-tab-id "claude")
+  local firstWindow=$(kitty-window-list-raw --tab "$newlyCreatedTabId")
+  local splitWindow=("${(@ps/▮/)firstWindow}")
+  local newlyCreatedWindowId="${splitWindow[1]}"
+  kitty-window-set-var "$newlyCreatedWindowId" "oroshi_windowName" "$claudeWindowName"
 fi
-local parkingTabId=$(kitty-tab-id "claude")
 
-# Find or create the Claude window in parking tab
-local currentTabId=$(kitty-tab-id)
-local windowName="claude-${currentTabId}"
-if ! kitty-window-exists "$windowName"; then
-  kitty-window-create "$windowName" --tab "$parkingTabId"
+local claudeTabId=$(kitty-tab-id "claude")
+
+# Create the Claude window if it doesn't yet exist
+if ! kitty-window-exists "$claudeWindowName"; then
+  kitty-window-create "$claudeWindowName" --tab "$claudeTabId"
 fi
 
-local claudeWindowId=$(kitty-window-id "$windowName")
+local claudeWindowId=$(kitty-window-id "$claudeWindowName")
 
-# 1. Focuser la fenêtre Claude et la mettre en plein écran
-#    - kitty@ focus-window --match "id:${claudeWindowId}"
-#    - kitty@ goto-layout stack
-#
-# 2. Détecter si on est dans une fenêtre Claude (pour le retour)
-#    - Ajouter une user_var oroshi_claude_callingWindowId lors de la création
-#    - Vérifier si la fenêtre courante a cette variable
-#    - Si oui, récupérer callingWindowId et focuser cette fenêtre
-#    - Cela permet le toggle : origine → Claude → origine → Claude
+# Focus the Claude window and make it fullscreen
+kitty-window-fullscreen-on "$claudeWindowId"
+kitty-window-focus "$claudeWindowId"
+
+# TODO: Gérer le retour depuis la fenêtre Claude
+# Ajouter une user_var oroshi_claude_callingWindowId lors de la création
+# Vérifier si la fenêtre courante a cette variable
+# Si oui, récupérer callingWindowId et focuser cette fenêtre
+# Cela permet le toggle : origine → Claude → origine → Claude

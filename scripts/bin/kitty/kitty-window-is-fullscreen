@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+# Check if a window is in fullscreen
+# Usage: kitty-window-is-fullscreen <windowId>
+# Returns: 0 if fullscreen, 1 if not
+
+local windowId="$1"
+if [[ "$windowId" == "" ]]; then
+  echo "Usage: kitty-window-is-fullscreen <window-id>"
+  exit 2
+fi
+
+local layout=$(kitty@ ls | jq -r --arg winId "$windowId" '
+  .[0].tabs[]
+  | select(.windows[].id == ($winId|tonumber))
+  | .layout
+')
+
+[[ "$layout" == "stack" ]] && exit 0
+exit 1

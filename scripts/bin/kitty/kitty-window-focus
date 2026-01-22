@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# Focus a specific Kitty window by ID
+# Usage: kitty-window-focus <windowId>
+
+local windowId="$1"
+if [[ "$windowId" == "" ]]; then
+  echo "Usage: kitty-window-focus <window-id>"
+  exit 2
+fi
+
+kitty@ focus-window --match "id:${windowId}"

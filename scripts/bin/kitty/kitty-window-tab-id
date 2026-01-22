@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+# Get the tab ID of a specific window
+# Usage: kitty-window-tab-id <windowId>
+# Returns: the tab ID containing this window
+
+local windowId="$1"
+if [[ "$windowId" == "" ]]; then
+  echo "Usage: kitty-window-tab-id <window-id>"
+  exit 2
+fi
+
+kitty@ ls | jq -r --arg winId "$windowId" '
+  .[0].tabs[]
+  | select(.windows[].id == ($winId|tonumber))
+  | .id
+'

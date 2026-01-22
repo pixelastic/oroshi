@@ -13,4 +13,5 @@ kitty@ launch \
   --type tab \
   --tab-title "$tabName" \
   --keep-focus \
+  --cwd current \
   zsh

@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+# Set a window to fullscreen
+# Does nothing if already in fullscreen
+# Usage:
+# $ kitty-window-fullscreen-on           # Set current window to fullscren
+# $ kitty-window-fullscreen-on 12        # Set Window #12 to fullscreen
+
+local windowId="$1"
+if [[ "$windowId" == "" ]]; then
+  windowId=$(kitty-window-id)
+fi
+
+local tabId=$(kitty-window-tab-id "$windowId")
+
+# Stop if only one window in tab (no need to change layout)
+local windowCount=$(kitty-tab-window-count "$tabId")
+if [[ "$windowCount" == "1" ]]; then
+  exit 0
+fi
+
+# Stop if already fullscreen
+if kitty-window-is-fullscreen "$windowId"; then
+  exit 0
+fi
+
+kitty@ goto-layout --match "id:${tabId}" stack

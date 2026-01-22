@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+# Get the number of windows in a specific tab
+# Usage: kitty-tab-window-count <tabId>
+# Returns: the number of windows in the tab
+
+local tabId="$1"
+if [[ "$tabId" == "" ]]; then
+  echo "Usage: kitty-tab-window-count <tab-id>"
+  exit 2
+fi
+
+kitty@ ls | jq -r --arg tabId "$tabId" '
+  .[0].tabs[]
+  | select(.id == ($tabId|tonumber))
+  | .windows
+  | length
+'
