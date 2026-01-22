@@ -17,6 +17,7 @@ fi
 local launchArgs=(
   --type window
   --keep-focus
+  --cwd current
   --var "oroshi_windowName=${windowName}"
 )
 

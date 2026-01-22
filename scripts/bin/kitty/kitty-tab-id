@@ -8,7 +8,7 @@ local kittyLs=$(kitty@ ls)
 
 # No argument: get current tab ID
 if [[ "$tabName" == "" ]]; then
-  echo "$kittyLs" | jq -r ".[0].tabs[] | select(.windows[].id==${KITTY_WINDOW_ID}) | .id"
+  echo "$kittyLs" | jq -r '.[0].tabs[] | select(.is_focused == true) | .id'
   exit 0
 fi
 

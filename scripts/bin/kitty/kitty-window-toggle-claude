@@ -2,6 +2,16 @@
 # Toggle between current window and a dedicated Claude Code window
 # Each tab has its own Claude window stored in a "Claude" parking tab
 
+local currentWindowId=$(kitty-window-id)
+local originWindowId=$(kitty-window-get-var "$currentWindowId" "oroshi_claudeOriginWindowId")
+
+# If we're in a Claude window, get back to the calling window
+if [[ "$originWindowId" != "" ]]; then
+  kitty-window-focus "$originWindowId"
+  exit 0
+fi
+
+# From here, we assume we're in a normal window and want to go to Claude
 local currentTabId=$(kitty-tab-id)
 local claudeWindowName="claude-${currentTabId}"
 
@@ -27,11 +37,6 @@ fi
 local claudeWindowId=$(kitty-window-id "$claudeWindowName")
 
 # Focus the Claude window and make it fullscreen
-kitty-window-fullscreen-on "$claudeWindowId"
 kitty-window-focus "$claudeWindowId"
-
-# TODO: Gérer le retour depuis la fenêtre Claude
-# Ajouter une user_var oroshi_claude_callingWindowId lors de la création
-# Vérifier si la fenêtre courante a cette variable
-# Si oui, récupérer callingWindowId et focuser cette fenêtre
-# Cela permet le toggle : origine → Claude → origine → Claude
+kitty-window-set-var "$claudeWindowId" "oroshi_claudeOriginWindowId" "$currentWindowId"
+kitty-window-fullscreen-on "$claudeWindowId"

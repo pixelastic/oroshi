@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+# Get a user variable from a specific window
+# Usage: kitty-window-get-var <windowId> <varName>
+# Returns: the variable value or empty string if not set
+
+local windowId="$1"
+local varName="$2"
+
+if [[ "$windowId" == "" || "$varName" == "" ]]; then
+  echo "Usage: kitty-window-get-var <window-id> <var-name>"
+  exit 2
+fi
+
+kitty@ ls | jq -r --arg winId "$windowId" --arg varName "$varName" '
+  .[0].tabs[].windows[]
+  | select(.id == ($winId|tonumber))
+  | .user_vars[$varName] // ""
+'
