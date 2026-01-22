@@ -28,7 +28,7 @@ return {
       position = { currentLine, currentLine }
     end
     -- Accepte position as a single line
-    if F.isString(position) then
+    if F.isString(position) or F.isNumber(position) then
       position = { position, position }
     end
     -- Make the end default to the start
@@ -73,5 +73,11 @@ return {
   -- columnNumber: Returns the column number of cursor (defaults to current split)
   columnNumber = function(splitId)
     return F.position(splitId).column
+  end,
+  -- moveTo: Move cursor to specified line and column (defaults to current split)
+  moveTo = function(lineNumber, columnNumber, splitId)
+    splitId = splitId or F.splitId()
+    columnNumber = columnNumber or 1
+    vim.api.nvim_win_set_cursor(splitId, { lineNumber, columnNumber - 1 })
   end,
 }

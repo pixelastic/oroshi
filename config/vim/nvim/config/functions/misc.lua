@@ -13,7 +13,7 @@ return {
   setThinkingIndicator = function(isThinking)
     O.statusline.ai = { isThinking = isThinking }
     if isThinking then
-      F.hl("Normal", "GRAY_3", { bg = "DARK_ORANGE" })
+      F.hl("Normal", "GRAY_3", { bg = "DARK_AMBER" })
     else
       F.hl("Normal", "GRAY_3")
     end

@@ -20,18 +20,17 @@ F.ftplugin("gitcommit", function()
   -- Set a generated message if none if set
   local firstLine = F.line(1)
   if F.isEmpty(firstLine) then
-    F.defer(function()
-      F.setThinkingIndicator(true)
-      F.info(" Generating commit message...")
-    end, 500)
+    F.setThinkingIndicator(true)
+    F.replaceLines("Generating commit message, please wait...", 1)
+    F.moveTo(1)
 
     F.run("git-commit-message-bin", {
       onSuccess = function(message)
-        F.addLines(message.stdout, 1)
+        F.replaceLines(message.stdout, 1)
         F.setThinkingIndicator(false)
       end,
       onError = function(error)
-        F.error("Failed to generate commit message: " .. error)
+        F.replaceLines("Failed to generate commit message: " .. error, 1)
         F.setThinkingIndicator(false)
       end,
     })

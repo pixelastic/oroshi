@@ -136,6 +136,11 @@ return {
     return type(input) == "string"
   end,
 
+  -- isNumber: Check if variable is a number
+  isNumber = function(input)
+    return type(input) == "number"
+  end,
+
   -- join: Join a collection with a delimiter
   join = function(collection, delimiter)
     return table.concat(collection, delimiter or ", ")

@@ -44,7 +44,7 @@ fi
 local claudeWindowId=$(kitty-window-id "$claudeWindowName")
 local currentWindowIsFullscreen=$(kitty-window-is-fullscreen "$currentWindowId" && echo "1" || echo "0")
 
-kitty-window-fullscreen-on "$currentTabId"
+kitty-window-fullscreen-on "$currentWindowId"
 kitty-window-move "$claudeWindowId" "$currentTabId"
 kitty-window-set-var "$claudeWindowId" \
   "oroshi_claudeOriginWindowId=$currentWindowId" \
