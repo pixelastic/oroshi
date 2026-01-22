@@ -26,5 +26,6 @@ kitty@ launch \
 
 # Apply the layout to the newly created tab if specified
 if [[ "$layout" != "" ]]; then
-  kitty@ goto-layout --match "title:^${tabName}$" "$layout"
+  local tabId=$(kitty-tab-id "$tabName")
+  kitty-tab-layout-switch "$tabId" "$layout"
 fi

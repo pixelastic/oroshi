@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+# Get the layout of a specific tab or the current tab
+# Usage:
+# $ kitty-tab-layout       # Get layout of current tab
+# $ kitty-tab-layout 123   # Get layout of tab with ID 123
+
+local tabId="$1"
+
+# If no ID provided, get current tab ID
+if [[ "$tabId" == "" ]]; then
+  tabId=$(kitty-tab-id)
+fi
+
+kitty@ ls | jq -r --arg tid "$tabId" '.[] | .tabs[] | select(.id == ($tid | tonumber)) | .layout'

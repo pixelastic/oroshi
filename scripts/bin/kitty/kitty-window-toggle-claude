@@ -4,23 +4,23 @@
 local currentWindowId=$(kitty-window-id)
 local originWindowId=$(kitty-window-get-var "$currentWindowId" "oroshi_claudeOriginWindowId")
 
-# If we're in a Claude window, get back to the calling window
+# [CALLED FROM A CLAUDE WINDOW]
 if [[ "$originWindowId" != "" ]]; then
   local claudeTabId=$(kitty-tab-id "claude")
-  local originWasFullscreen=$(kitty-window-get-var "$currentWindowId" "oroshi_claudeOriginWasFullscreen")
+  local originTabLayout=$(kitty-window-get-var "$currentWindowId" "oroshi_claudeOriginTabLayout")
 
-  # Move it back to the parking tab
-  if [[ "$originWasFullscreen" == "0" ]]; then
-    kitty-window-fullscreen-off "$originWindowId" &
+  # Revert previous layout if not stack
+  if [[ "$originTabLayout" != "stack" ]]; then
+    local originTabId=$(kitty-window-get-var "$currentWindowId" "oroshi_claudeOriginTabId")
+    kitty-tab-layout-switch "$originTabId" "${originTabLayout}"
   fi
-  echo "move ${currentWindowId} to tab ${claudeTabId}, focus ${originWindowId}"
   kitty-window-move "$currentWindowId" "$claudeTabId"
   kitty-window-focus "$originWindowId"
 
   exit 0
 fi
 
-# From here, we assume we're in a normal window and want to go to Claude
+# [CALLED FROM A NORMAL WINDOW]
 local currentTabId=$(kitty-tab-id)
 local claudeWindowName="claude-${currentTabId}"
 
@@ -28,7 +28,6 @@ local claudeWindowName="claude-${currentTabId}"
 if ! kitty-tab-exists "claude"; then
   kitty-tab-create "claude" --layout grid
 fi
-
 local claudeTabId=$(kitty-tab-id "claude")
 
 # Create the Claude window if it doesn't yet exist
@@ -41,12 +40,16 @@ if ! kitty-window-exists "$claudeWindowName"; then
     --color background=$COLOR_DARK_AMBER_HEXA \
     --cmd "kitty-run-claude"
 fi
-
 local claudeWindowId=$(kitty-window-id "$claudeWindowName")
-local currentWindowIsFullscreen=$(kitty-window-is-fullscreen "$currentWindowId" && echo "1" || echo "0")
 
-kitty-window-fullscreen-on "$currentWindowId"
+local currentTabLayout=$(kitty-tab-layout "$currentTabId")
+
+# Set the current layout as stack (so we only see one window)
+kitty-tab-layout-switch "$currentTabId" "stack"
+# Move the Claude window here, so it's full screen
 kitty-window-move "$claudeWindowId" "$currentTabId"
+# Save data about the origin window, so we can go back
 kitty-window-set-var "$claudeWindowId" \
   "oroshi_claudeOriginWindowId=$currentWindowId" \
-  "oroshi_claudeOriginWasFullscreen=$currentWindowIsFullscreen"
+  "oroshi_claudeOriginTabId=$currentTabId" \
+  "oroshi_claudeOriginTabLayout=$currentTabLayout"

@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+# Switch the layout of a specific tab
+# Usage:
+# $ kitty-tab-layout-switch 123 grid  # Switch tab 123 to grid layout
+# $ kitty-tab-layout-switch 456 tall  # Switch tab 456 to tall layout
+
+local tabId="$1"
+local layout="$2"
+
+if [[ "$tabId" == "" ]] || [[ "$layout" == "" ]]; then
+  echo "Usage: kitty-tab-layout-switch <tab-id> <layout>"
+  echo "Available layouts: grid, tall, fat, vertical, horizontal, splits, stack"
+  return 2
+fi
+
+kitty@ goto-layout --match "id:${tabId}" "$layout"
