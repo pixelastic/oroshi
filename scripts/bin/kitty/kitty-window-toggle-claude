@@ -14,7 +14,10 @@ if [[ "$originWindowId" != "" ]]; then
     local originTabId=$(kitty-window-get-var "$currentWindowId" "oroshi_claudeOriginTabId")
     kitty-tab-layout-switch "$originTabId" "${originTabLayout}"
   fi
+
+  # Move the Claude window back to its specific tab
   kitty-window-move "$currentWindowId" "$claudeTabId"
+  # Focus on the origin window
   kitty-window-focus "$originWindowId"
 
   exit 0
