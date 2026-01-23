@@ -22,11 +22,11 @@ F.ftplugin("gitcommit", function()
   if F.isEmpty(firstLine) then
     F.setThinkingIndicator(true)
     F.replaceLines("Generating commit message, please wait...", 1)
-    F.moveTo(1)
 
     F.run("git-commit-message-bin", {
       onSuccess = function(message)
         F.replaceLines(message.stdout, 1)
+        F.moveTo(1)
         F.setThinkingIndicator(false)
       end,
       onError = function(error)
