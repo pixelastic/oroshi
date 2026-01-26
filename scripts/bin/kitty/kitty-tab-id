@@ -4,13 +4,12 @@
 #        kitty-tab-id "TabName"  # Get tab ID by name
 
 local tabName="$1"
-local kittyLs=$(kitty@ ls)
 
 # No argument: get current tab ID
 if [[ "$tabName" == "" ]]; then
-  echo "$kittyLs" | jq -r '.[0].tabs[] | select(.is_focused == true) | .id'
+  kitty@ ls | jq -r '.[0].tabs[] | select(.is_focused == true) | .id'
   exit 0
 fi
 
 # Argument provided: get tab ID by name
-echo "$kittyLs" | jq -r --arg name "$tabName" '.[0].tabs[] | select(.title==$name) | .id'
+kitty@ ls | jq -r --arg name "$tabName" '.[0].tabs[] | select(.title==$name) | .id'

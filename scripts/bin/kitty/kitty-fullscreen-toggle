@@ -5,11 +5,8 @@
 # Get current window ID
 local currentWindowId="$(kitty-window-id)"
 
-# Single kitty@ ls call to get all info we need
-local kittyData=$(kitty@ ls)
-
 # Extract tab info for current window
-local tabInfo=$(echo "$kittyData" | jq -r --arg winId "$currentWindowId" '
+local tabInfo=$(kitty@ ls | jq -r --arg winId "$currentWindowId" '
   .[0].tabs[]
   | select(.windows[].id == ($winId|tonumber))
   | {id: .id, layout: .layout, windowCount: (.windows | length)}
