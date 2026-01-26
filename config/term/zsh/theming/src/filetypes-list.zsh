@@ -83,11 +83,12 @@ FILETYPE_GROUPS[config:patterns]="\
   rmp \
   service \
   [.envrc] \
-  [.fdignore] \
   [.eslintignore] \
+  [.fdignore] \
   [.gitattributes] \
   [.gitignore] \
   [.gitmodules] \
+  [.npmrc] \
   [.nvmrc] \
   [.prettierignore] \
   [.stylelintignore] \
