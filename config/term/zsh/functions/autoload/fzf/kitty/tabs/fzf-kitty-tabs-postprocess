@@ -3,7 +3,7 @@ function fzf-kitty-tabs-postprocess() {
   local rawSelection="$1"
 
   # Stop early if no selection
-  [[ $rawSelection == "" ]] && exit
+  [[ $rawSelection == "" ]] && return
 
   # Extract tab ID from the selection
   local split=(${(@s/▮/)rawSelection})

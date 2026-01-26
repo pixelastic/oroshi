@@ -1,0 +1,11 @@
+# Get the path of a project by name
+# Usage:
+# $ project-path aberlaas            #  ~/local/www/projects/aberlaas/
+# $ project-path missing-project     # exit 1
+function project-path() {
+  local projectKey=$(project-key "$1")
+
+  local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
+
+  echo "$projectPath"
+}

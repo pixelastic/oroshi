@@ -1,31 +1,31 @@
 #!/usr/bin/env zsh
-set -ex
-# Create a new Kitty tab with the given title and optional layout
+# Create a new Kitty tab with the given title
 # Usage:
-# $ kitty-tab-create "Tab Name"               # Create new tab with default layout
-# $ kitty-tab-create "Tab Name" --layout grid # Create with grid layout
+# $ kitty-tab-create "Tab Name"                    # Create new tab without focus
+# $ kitty-tab-create "Tab Name" --focus            # Create and switch to new tab
+# $ kitty-tab-create "Tab Name" --cwd /some/path   # Create in specific directory
 
 zparseopts -E -D \
-  -layout:=flagLayout
+  -focus=flagFocus \
+  -cwd:=flagCwd
 
 local tabName="$1"
-local layout=${flagLayout[2]}
+local cwd=${flagCwd[2]:-current}
 
 if [[ "$tabName" == "" ]]; then
-  echo "Usage: kitty-tab-create <tab-name> [--layout <layout>]"
+  echo "Usage: kitty-tab-create <tab-name> [--focus] [--cwd <path>]"
   return 2
 fi
+
+# By default, keep focus on current tab, unless --focus is passed
+local focusFlag="--keep-focus"
+[[ -n "$flagFocus" ]] && focusFlag=""
 
 kitty@ launch \
   --type tab \
   --tab-title "$tabName" \
-  --keep-focus \
-  --cwd current \
+  --location=after \
+  $focusFlag \
+  --cwd "$cwd" \
   zsh \
   1>/dev/null
-
-# Apply the layout to the newly created tab if specified
-if [[ "$layout" != "" ]]; then
-  local tabId=$(kitty-tab-id "$tabName")
-  kitty-tab-layout-switch "$tabId" "$layout"
-fi

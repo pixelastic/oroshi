@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+# Interactively select a project using fzf and create a kitty tab
+# Usage:
+# $ kitty-tab-create-interactive            # Opens fzf to select project
+
+echo -n "Tab name: "
+read projectName
+
+# Exit if no selection
+if [[ "$projectName" == "" ]]; then
+  exit 1
+fi
+
+# Get the project path
+local projectPath=$(project-path "$projectName")
+
+# Expand ~ to actual home directory if path exists
+local kittyCwd=""
+if [[ -n "$projectPath" ]]; then
+  kittyCwd="${projectPath/#\~/$HOME}"
+fi
+
+kitty-tab-create "$projectName" --cwd "$kittyCwd" --focus
