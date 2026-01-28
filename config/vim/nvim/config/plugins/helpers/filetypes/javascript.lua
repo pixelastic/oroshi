@@ -30,7 +30,7 @@ M.configureFormatter = function(conform)
     stdin = true,
     args = { "--filepath", "$FILENAME" },
     exit_codes = { 0, 1 }, -- Do not fail on unfixable errors
-    timeout_ms = 5000, -- JS/TS can be slow...
+    timeout_ms = 10000, -- JS/TS can be slow...
   }
 end
 

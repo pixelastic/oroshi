@@ -172,7 +172,7 @@ vmap("k", "gk", "Move to the char up")
 nmap("H", "^", "Start of line")
 vmap("H", "^", "Start of line")
 nmap("L", "g_", "End of line")
-vmap("H", "g_", "Start of line")
+vmap("L", "g_", "End of line")
 
 -- Scroll half a page at a time
 nmap("U", "22k", "Scroll up one half page")
