@@ -47,6 +47,7 @@ Format requirements:
 - Body: 1-3 sentences explaining WHY (not what - git shows what)
 - Body lines: wrapped at 72 characters maximum
 - One blank line between subject and body
+- Ignore anything related to alwaysThinkingEnabled toggling
 - If multiple concerns: choose ONE most significant
 
 Example output format:
