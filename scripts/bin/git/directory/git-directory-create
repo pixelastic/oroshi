@@ -68,3 +68,5 @@ if [[ $isLocal == "0" ]]; then
   # Push the branch
   git-branch-push
 fi
+
+cd $repoPath
