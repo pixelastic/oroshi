@@ -48,6 +48,7 @@ Format requirements:
 - Body lines: wrapped at 72 characters maximum
 - One blank line between subject and body
 - Ignore anything related to alwaysThinkingEnabled toggling
+- If chore of updating deps, don't include a body
 - If multiple concerns: choose ONE most significant
 
 Example output format:
