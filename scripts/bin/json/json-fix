@@ -5,6 +5,11 @@
 # $ json-fix --in-place ./path/to/file.json            # Overwrite the file in place
 # $ echo "json" | json-fix                             # json from stdin, fixed json to stdout
 # $ echo "json" | json-fix --filepath ./realpath.json  # Specify file location for config resolution
+#
+# Note: Prettier has a special handling of some files, like package.json. For
+# those files, it doesn't use its json formatter, but use a simple json
+# stringify. This is why in this script we **do not** use the --parser=json, but
+# let prettier pick the best one based on the filename.
 
 zparseopts -E -D \
   -in-place=flagInPlace \
@@ -37,17 +42,18 @@ fi
 # $ cat file.json | json-fix
 # $ cat tmp.json | json-fix --filepath ./realpath.json
 if [[ $hasStdin = 1 ]]; then
-  local stdinFile="${OROSHI_TMP_FOLDER}/json-fix/json-fix-$RANDOM"
-  mkdir -p "${OROSHI_TMP_FOLDER}/json-fix"
+  local stdinDir="${OROSHI_TMP_FOLDER}/json-fix/json-fix-$RANDOM"
+  mkdir -p "${stdinDir}"
+
+  local stdinFile="${stdinDir}/${realFilepath:t}"
   cat >$stdinFile
 
   $prettierBin \
-    --parser json \
     --ignore-path= \
     --config "$configFile" \
     "$stdinFile"
   local exitCode=$?
-  rm -f "$stdinFile"
+  rm -rf "$stdinDir"
   exit $exitCode
 fi
 
@@ -55,9 +61,9 @@ fi
 # $ json-fix --in-place file.json
 if [[ $isInPlace = 1 ]]; then
   $prettierBin \
-    --parser json \
     --ignore-path= \
     --config "$configFile" \
+    "$inputFilepath" \
     >/dev/null 2>&1
   exit $?
 fi
@@ -65,7 +71,6 @@ fi
 # Input is a file, output to stdout
 # $ json-fix file.json
 $prettierBin \
-  --parser json \
   --ignore-path= \
   --config "$configFile" \
   "$inputFilepath"
