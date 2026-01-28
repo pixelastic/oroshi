@@ -3,7 +3,7 @@
 # https://github.com/sharkdp/hyperfine
 set -ex
 
-DOWNLOAD_URL="https://github.com/sharkdp/hyperfine/releases/download/v1.15.0/hyperfine-musl_1.15.0_amd64.deb"
+DOWNLOAD_URL="https://github.com/sharkdp/hyperfine/releases/download/v1.20.0/hyperfine-musl_1.20.0_amd64.deb"
 
 cd ~/local/tmp
 wget "$DOWNLOAD_URL" -O hyperfine.deb
