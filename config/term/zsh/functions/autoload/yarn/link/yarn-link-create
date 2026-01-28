@@ -35,6 +35,7 @@ function yarn-link-create() {
 	local moduleBinaries="$(yarn-package-binaries "$modulePath")"
 	[[ $moduleBinaries == "" ]] && return
 
+  mkdir -p ${nodeModulesFolder}/.bin
 	for rawLine in ${(f)moduleBinaries}; do
 		local split=(${(@s/▮/)rawLine})
 		local binaryName=$split[1]
