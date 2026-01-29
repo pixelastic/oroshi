@@ -27,8 +27,11 @@ O_TABLINE = {
     -- filepath
     local fullPath = O_TABLINE.getFullpath(index)
     -- content
-    local basename = vim.fn.fnamemodify(fullPath, ":t")
-    local content = " " .. basename .. " "
+    local tabName = F.basename(fullPath)
+    if tabName == "" then
+      tabName = "./" .. F.basename(F.dirname(fullPath)) .. "/"
+    end
+    local content = " " .. tabName .. " "
     -- width
     local separatorWidth = 1
     local width = vim.fn.strdisplaywidth(content) + separatorWidth

@@ -37,4 +37,28 @@ return {
     end
     return vim.fn.trim(table.concat(lines, "\n"))
   end,
+
+  -- basename: Get filename with extension
+  -- Ex: '/path/to/file.lua' -> 'file.lua'
+  basename = function(path)
+    return vim.fn.fnamemodify(path, ":t")
+  end,
+
+  -- dirname: Get absolute directory path
+  -- Ex: '/path/to/file.lua' -> '/path/to'
+  dirname = function(path)
+    return vim.fn.fnamemodify(path, ":p:h")
+  end,
+
+  -- filename: Get filename without extension
+  -- Ex: '/path/to/file.lua' -> 'file'
+  filename = function(path)
+    return vim.fn.fnamemodify(path, ":t:r")
+  end,
+
+  -- extension: Get file extension without dot
+  -- Ex: '/path/to/file.lua' -> 'lua'
+  extension = function(path)
+    return vim.fn.fnamemodify(path, ":e")
+  end,
 }
