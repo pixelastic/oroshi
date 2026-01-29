@@ -25,6 +25,11 @@
     ],
     "deny": []
   },
+  "statusLine": {
+    "type": "command",
+    "command": "/home/tim/.oroshi/config/cli/claudecode/claude-statusbar",
+    "padding": 0
+  },
   "hooks": {
     "SessionStart": [
       {
@@ -63,5 +68,5 @@
   "enabledPlugins": {
     "superpowers@superpowers-marketplace": true
   },
-  "alwaysThinkingEnabled": true
+  "alwaysThinkingEnabled": false
 }

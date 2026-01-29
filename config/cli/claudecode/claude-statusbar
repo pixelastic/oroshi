@@ -1,0 +1,28 @@
+#!/usr/bin/env zsh
+# Claude Code Status bar
+source $ZSH_CONFIG_PATH/theming/env/colors.zsh
+
+local data=$(cat)
+
+local costUSD=$(echo "$data" | jq -r '.cost.total_cost_usd' | xargs printf "%.2f")
+echo "\$${costUSD}"
+
+# # Project
+# local projectRoot=$(echo "$data" | jq -r '.workspace.project_dir')
+# local project=$(project-by-path "${projectRoot}")
+# local projectKey=$(project-key "$project")
+# local projectBackground=${(P)${:-PROJECT_${projectKey}_BACKGROUND}}
+# local projectForeground=${(P)${:-PROJECT_${projectKey}_FOREGROUND}}
+# local projectIcon=${(P)${:-PROJECT_${projectKey}_ICON}}
+# colorize "" $projectBackground $COLOR_DARK_AMBER
+# colorize " ${projectIcon}$project " $projectForeground $projectBackground
+# colorize "" $projectBackground $COLOR_DARK_AMBER
+#
+# # Model
+# local modelName=$(echo "$data" | jq -r '.model.display_name')
+# local above200kTokens=$(echo "$data" | jq -r '.exceeds_200k_tokens')
+# local additionalWarning=""
+# [[ $above200kTokens == "true" ]] && additionalWarning="⚠️ "
+#
+# colorize " ${modelName} (\$${costUSD}) ${additionalWarning}" $PROJECT_CLAUDE_BACKGROUND $COLOR_DARK_AMBER
+# colorize  $COLOR_DARK_AMBER
