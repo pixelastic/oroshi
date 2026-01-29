@@ -190,12 +190,17 @@ O_TABLINE = {
 
   -- getFullpath: Return the path to the file being edited in a given tab
   getFullpath = function(tabIndex)
-    local bufferId = vim.fn.tabpagebuflist(tabIndex)[1]
+    local bufferList = vim.fn.tabpagebuflist(tabIndex)
+    local bufferId = bufferList[1]
 
-    -- If the first buffer is NvimTree, grab the next one
+    if not bufferId then
+      return "[UNKNOWN]"
+    end
+
+    -- If the first buffer is NvimTree, use the current directory path
     local filetype = vim.bo[bufferId].filetype
     if filetype == "NvimTree" then
-      bufferId = vim.fn.tabpagebuflist(tabIndex)[2]
+      return "./" .. O.nvimtree.currentDirectory .. "/"
     end
 
     local fullPath = vim.fn.expand("#" .. bufferId .. ":p")
