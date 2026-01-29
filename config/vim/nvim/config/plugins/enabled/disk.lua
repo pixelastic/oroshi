@@ -29,36 +29,33 @@ return {
         -- close vim. In another case, we keep working as usual
 
         -- More than one tab opened? We keep working
-        local totalTabs = vim.fn.tabpagenr("$")
-        if totalTabs ~= 1 then
+        if F.tabCount() ~= 1 then
           return
         end
 
         -- Finding the currently opened buffer
-        local allBuffers = vim.api.nvim_list_bufs()
-        local listedBuffers = vim.tbl_filter(vim.api.nvim_buf_is_loaded, allBuffers)
-        local currentBuffer = listedBuffers[1]
+        local currentBuffer = F.first(F.buffers())
 
         -- The last buffer has a name? We keep working
-        local bufferName = vim.api.nvim_buf_get_name(currentBuffer)
+        local bufferName = F.bufferName(currentBuffer)
         if bufferName ~= "" then
           return
         end
 
         -- The last buffer has a type? We keep working
-        local bufferType = vim.api.nvim_buf_get_option(currentBuffer, "buftype")
+        local bufferType = F.bufferOption("buftype", currentBuffer)
         if bufferType ~= "" then
           return
         end
 
         -- The last buffer has more than one line? We keep working
-        local bufferLineCount = vim.api.nvim_buf_line_count(currentBuffer)
+        local bufferLineCount = F.lineCount(currentBuffer)
         if bufferLineCount > 1 then
           return
         end
 
         -- The only line has content? We keep working
-        local bufferFirstLine = F.currentLine()
+        local bufferFirstLine = F.line(1, currentBuffer)
         if bufferFirstLine ~= "" then
           return
         end

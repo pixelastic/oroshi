@@ -14,6 +14,10 @@ return {
     end)
     return bufferIds
   end,
+  -- allBuffers: Returns all buffer IDs from all tabs
+  allBuffers = function()
+    return vim.api.nvim_list_bufs()
+  end,
   -- bufferExists: Check if a buffer exists
   bufferExists = function(bufferId)
     return vim.api.nvim_buf_is_valid(bufferId)
@@ -38,12 +42,6 @@ return {
       callback(bufferId)
     end)
   end,
-
-  -- globalBuffers: Returns all buffer IDs from all tabs
-  globalBuffers = function()
-    return vim.api.nvim_list_bufs()
-  end,
-
   -- bufferName: Returns the name/path of a buffer (defaults to current buffer)
   bufferName = function(bufferId)
     bufferId = bufferId or F.bufferId()
