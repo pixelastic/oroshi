@@ -28,5 +28,7 @@ source $ZSH_CONFIG_PATH/keybindings/ctrl-j.zsh             # Fuzzy-find common d
 source $ZSH_CONFIG_PATH/keybindings/ctrl-h.zsh             # Fuzzy-find all git commits hashes
 source $ZSH_CONFIG_PATH/keybindings/ctrl-r.zsh             # Fuzzy-find history commands
 source $ZSH_CONFIG_PATH/keybindings/ctrl-b.zsh             # Fuzzy-find binaries in $PATH
+source $ZSH_CONFIG_PATH/keybindings/shift-enter.zsh        # Add new line
+# }}}
 
 source $ZSH_CONFIG_PATH/keybindings/clean.zsh

@@ -69,7 +69,7 @@ return {
       unimpaired.setup({
         default_keymaps = false,
         keymaps = {
-          blank_above = { mapping = "<S-CR>" }, -- Add line above
+          blank_above = { mapping = "⏎" }, -- Add line above
           blank_below = { mapping = "<CR>" }, -- Add line below
 
           exchange_above = { mapping = "-" }, -- Move current line up
