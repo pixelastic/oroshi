@@ -1,32 +1,25 @@
-# Hidden files
-.DS_Store
+# Important files that should not be committed
+.npmrc
 .envrc
 
-# Directories
+# Build directories
 build/
 dist/
-node_modules/
 tmp/
 
-# Files
+# Junk files
+.DS_Store
 Thumbs.db
 lerna-debug.log
 npm-debug.log
 yarn-error.log
 *~
 
-# Yarn
-# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
-
-# Netlify
-.netlify
-
-# Vibe coding
-.claude/settings.local.json
+# Tool directories
+.claude/
 .cursor/
+.netlify/
+.taskmaster/
+.turbo/
+.yarn/
+node_modules/
