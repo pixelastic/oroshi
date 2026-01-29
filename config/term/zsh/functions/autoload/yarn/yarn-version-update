@@ -1,0 +1,13 @@
+# Update the currently used version of yarn for this project
+# Will update the .packageManager key of the main package.json
+#
+function yarn-version-update() {
+  local yarnRoot="$(yarn-root)"
+  [[ $yarnRoot == "" ]] && return 1
+
+  local latestTagName=$(curl -sL https://api.github.com/repos/yarnpkg/berry/releases/latest | jq -r '.tag_name')
+  local latestVersion="${latestTagName//@yarnpkg\/cli\//}"
+
+  jq ".packageManager = \"yarn@$latestVersion\"" package.json >package.json.tmp &&
+    mv package.json.tmp package.json
+}
