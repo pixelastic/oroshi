@@ -1,17 +1,8 @@
 #!/usr/bin/env zsh
 # mic2text: Transcribe what is being said into text
-# Greatly inspired by https://github.com/QuantiusBenignus/BlahST
 # Usage:
-# $ mic2txt transcribe   # Starts recording then...
-#   mic2txt transcribe   # ...stops the recording and display the transcription
-#
-# $ mic2txt translate    # Translate the transcription in english
-
-# Available methods:
-# transcribe: output text directly
-# translate:  output text, translated into english
-# slackify:   Translate to english and rewrite
-local method=${1:-transcribe}
+# $ mic2txt # Starts recording then...
+#   mic2txt # ...stops the recording and display the transcription
 
 local tmpFolder=/dev/shm/oroshi/mic2txt/whisper
 local pidFile=${tmpFolder}/PID
@@ -43,29 +34,17 @@ sleep 2
 kill-pid "$(cat $pidFile)"
 
 function saveToHistory() {
-  local name=$1
-  local content=$2
+  local content=$1
   local now="$(date '+%Y-%m-%d-%H-%M')"
   local historyFolder=~/local/tmp/oroshi/mic2txt/history
 
   mkdir -p $historyFolder
-  echo $content >"${historyFolder}/${now}-${name}.log"
+  echo $content >"${historyFolder}/${now}.log"
 }
 
 # We transcribe to text (french or english)
-local transcription=""
-if [[ $method == 'transcribe' ]]; then
-  transcription="$(transcribe-api $recordFile)"
-  saveToHistory transcribe "$transcription"
-fi
-
-if [[ $method == 'translate' ]]; then
-  transcription="$(translate-api $recordFile)"
-  saveToHistory translate "$transcription"
-
-  transcription="$(slackify $transcription)"
-  saveToHistory slackify "$transcription"
-fi
+local transcription="$(transcribe-api $recordFile)"
+saveToHistory "$transcription"
 
 # Play a sound to indicate it's being pasted
 if sound-mode-is-enabled; then
