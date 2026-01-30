@@ -1,13 +1,13 @@
 # Generate commit message
 # Usage:
-# $ git-commit-message                    # Generate message for all dirty files
+# $ git-commit-message                    # Generate message for all staged files
 # $ git-commit-message file1.js file2.js  # Generate message for specific files
 function git-commit-message() {
   local inputFiles=($@)
 
-  # If no files specified, get all dirty files
+  # If no files specified, get all staged files
   if [[ ${#inputFiles} -eq 0 ]]; then
-    local rawFiles="$(git-file-list-dirty-raw)"
+    local rawFiles="$(git-file-list-staged-raw)"
     inputFiles=()
 
     # Extract just the file paths
