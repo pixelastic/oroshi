@@ -3,5 +3,9 @@
 # $ git-file-add ./relative/path/to/file  # Adds the file
 # $ git-file-add /absolute/path/to/file   # Adds the file
 function git-file-add() {
-  git add --all "${@}"
+  local gitRoot="$(git-directory-root)"
+  git \
+    -C "${gitRoot}" \
+    add --all \
+    "${@}"
 }
