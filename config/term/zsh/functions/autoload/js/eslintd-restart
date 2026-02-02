@@ -1,0 +1,20 @@
+# Restart eslint_d
+# Usage:
+# $ eslintd-restart
+#
+# Whenever I edit the eslint.js config file in aberlaas, eslint_d isn't aware it
+# has changed, so I need to manually run "eslint_d restart" for my linting to
+# work inside of vim.
+# This script is a wrapper to restart eslint_d correctly
+function eslintd-restart() {
+  local currentDirectory="$(pwd)"
+  local gitRoot="$(git-directory-root)"
+
+  # Restart eslint_d in the current working directory
+  eslint_d restart
+
+  if [[ "$currentDirectory" != "$gitRoot" ]]; then
+    cd $gitRoot || return
+    eslint_d restart
+  fi
+}
