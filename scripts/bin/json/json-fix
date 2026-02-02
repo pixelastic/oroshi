@@ -3,8 +3,9 @@
 # Usage:
 # $ json-fix ./path/to/file.json                       # Output fixed code to stdout
 # $ json-fix --in-place ./path/to/file.json            # Overwrite the file in place
-# $ echo '{"name":"json"}' | json-fix                             # json from stdin, fixed json to stdout
-# $ echo '{"name":"json"}' | json-fix --filepath ./realpath.json  # Specify file location for config resolution
+# $ echo 'var a = 42;' | json-fix                             # json from stdin, fixed json to stdout
+# $ echo 'var a = 42;' | json-fix --filepath ./realpath.json  # Specify file location for config resolution
 
 # Delegate to prettier-fix with json parser
 prettier-fix --parser json "$@"
+# TODO: Also run esliint-fix

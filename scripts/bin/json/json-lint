@@ -1,60 +1,9 @@
 #!/usr/bin/env zsh
 # json-lint: Lint a JSON file
 # Usage:
-# $ json-lint ./path/to/file.json       # For CLI
-# $ json-lint --json ./path/to/file.json  # For Vim
-# $ cat file.json | json-lint --stdin --filepath ./path/to/file.json  # Via stdin
+# $ json-lint ./path/to/file.json                                # Lint file
+# $ json-lint --json ./path/to/file.json                         # Lint file, JSON output for vim
+# $ echo '{"name":"json", "name": "json" }' | json-lint                             # Lint stdin
+# $ echo '{"name":"json", "name": "json" }' | json-lint --filepath ./realpath.json  # Lint from stdin, with real location on disk
 
-zparseopts -E -D \
-  -json=flagJson \
-  -stdin=flagStdin \
-  -filepath:=flagFilepath
-isJson=${#flagJson}
-useStdin=${#flagStdin}
-
-# Input file
-if [[ $useStdin == "1" ]]; then
-  # Read from stdin, but need filepath for context
-  inputFile="${flagFilepath[2]}"
-  if [[ -z "$inputFile" ]]; then
-    echo "Error: --stdin requires --filepath argument" >&2
-    exit 1
-  fi
-else
-  # Read from file argument
-  inputFile="${1:a}"
-  if [[ ! -f "$inputFile" ]]; then
-    echo "Error: File '$inputFile' not found" >&2
-    exit 1
-  fi
-fi
-
-# Project root
-projectRoot=$(yarn-root ${inputFile:h} --force 2>/dev/null)
-
-# Config file
-configFile=~/.oroshi/eslint.config.js
-if [[ $projectRoot != "" ]]; then
-  # Move to root, as this affects eslint resolution of plugins
-  cd "$projectRoot" || exit 1
-
-  [[ -f "$projectRoot/.eslintrc.js" ]] && configFile="$projectRoot/.eslintrc.js"
-  [[ -f "$projectRoot/eslint.config.js" ]] && configFile="$projectRoot/eslint.config.js"
-fi
-
-# Optional args
-formatAsJson=""
-if [[ $isJson == "1" ]]; then
-  formatAsJson="--format json"
-fi
-
-stdinArg=""
-if [[ $useStdin == "1" ]]; then
-  stdinArg="--stdin --stdin-filename"
-fi
-
-eslint_d \
-  --config "$configFile" \
-  ${=formatAsJson} \
-  ${=stdinArg} \
-  "$inputFile"
+eslint-lint --parser json "$@"
