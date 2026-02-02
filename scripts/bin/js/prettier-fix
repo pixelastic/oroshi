@@ -84,7 +84,7 @@ prettierArgs+=(--ignore-path=)
 # ============================================================================
 
 # Input is stdin, output is stdout
-if [[ $hasStdin = 1 ]]; then
+if [[ $hasStdin == 1 ]]; then
   local stdinDir="${OROSHI_TMP_FOLDER}/prettier-fix/prettier-fix-$RANDOM"
   mkdir -p "${stdinDir}"
 
@@ -100,7 +100,7 @@ if [[ $hasStdin = 1 ]]; then
 fi
 
 # Input is a file, fix in place
-if [[ $isInPlace = 1 ]]; then
+if [[ $isInPlace == 1 ]]; then
   $prettierBin \
     ${prettierArgs[@]} \
     --write \
