@@ -14,7 +14,7 @@ M.configureFormatter = function(conform)
   conform.formatters.oroshi_json_fix = {
     command = "json-fix",
     stdin = true,
-    args = { "--filepath", "$FILENAME" },
+    args = { "--piped", "--filepath", "$FILENAME" },
     exit_codes = { 0, 1 },
     timeout_ms = 5000,
   }

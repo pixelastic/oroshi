@@ -12,21 +12,29 @@
 zparseopts -E -D \
   -in-place=flagInPlace \
   -filepath:=flagFilepath \
-  -parser:=flagParser
+  -parser:=flagParser \
+  -piped=flagPiped
 
 isInPlace=${#flagInPlace}
 overrideFilepath=${flagFilepath[2]}
 parser=${flagParser[2]}
+isContentPiped=${#flagPiped}
+
+prettierArgs=()
+
+# ============================================================================
+# Detect if content is piped
+# ============================================================================
+# cat file | prettier-fix
+[[ -p /dev/stdin ]] && isContentPiped=1
+# prettier-fix < file
+[[ -f /dev/stdin ]] && isContentPiped=1
 
 # ============================================================================
 # Determine input mode and file paths
 # ============================================================================
-# Check if input is being piped
-hasStdin=0
-[[ ! -t 0 ]] && hasStdin=1
-
 # When piping content, we need either --parser or --filepath
-if [[ $hasStdin == 1 ]]; then
+if [[ $isContentPiped == 1 ]]; then
   # Stop if missing arguments
   if [[ $overrideFilepath == "" && $parser == "" ]]; then
     echo "When piping content to prettier-fix, you must specify either --filepath or --parser." >&2
@@ -37,7 +45,6 @@ if [[ $hasStdin == 1 ]]; then
   if [[ $overrideFilepath == "" ]]; then
     overrideFilepath="${parser}.${parser}"
   fi
-
 fi
 
 # Resolve file paths
@@ -59,7 +66,6 @@ prettierBin="prettier"
 if [[ $projectRoot != "" && -f "$projectRoot/node_modules/.bin/prettier" ]]; then
   prettierBin="$projectRoot/node_modules/.bin/prettier"
 fi
-prettierArgs=()
 
 # ============================================================================
 # Resolve prettier config file
@@ -84,7 +90,7 @@ prettierArgs+=(--ignore-path=)
 # ============================================================================
 
 # Input is stdin, output is stdout
-if [[ $hasStdin == 1 ]]; then
+if [[ $isContentPiped == 1 ]]; then
   local stdinDir="${OROSHI_TMP_FOLDER}/prettier-fix/prettier-fix-$RANDOM"
   mkdir -p "${stdinDir}"
 
