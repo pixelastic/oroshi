@@ -1,6 +1,7 @@
 # Show the diff of a file between the previous revision and the current state
 function fzf-git-files-stageable-preview() {
-  local filepath="${PWD}/$1"
+  local gitRoot="$(git-directory-root)"
+  local filepath="${gitRoot}/$1"
 
   local diff="$(git diff HEAD --color=always -- $filepath)"
 
