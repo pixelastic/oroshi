@@ -63,6 +63,13 @@ local function setupJsKeybindings()
     vim.cmd("normal! 1h")
   end, "vi.spyOn()", { buffer = bufferId })
 
+  -- let actual = null; try { } catch (err) { actual = err; }
+  F.imap("ttry", function()
+    vim.api.nvim_put({ "let actual = null;", "try {", "} catch (err) {", "actual = err;", "}" }, "c", false, true)
+    vim.cmd("normal! k$")
+    F.insertModeAfter()
+  end, "beforeEach()", { buffer = bufferId })
+
   -- Expects
   F.imap("thp", "toHaveProperty(", "toHaveProperty assertion", { buffer = bufferId })
   F.imap("tbt", "toBe(true)", "toBe(true) assertion", { buffer = bufferId })
