@@ -26,6 +26,21 @@ parser=${flagParser[2]}
 hasStdin=0
 [[ ! -t 0 ]] && hasStdin=1
 
+# When piping content, we need either --parser or --filepath
+if [[ $hasStdin == 1 ]]; then
+  # Stop if missing arguments
+  if [[ $overrideFilepath == "" && $parser == "" ]]; then
+    echo "When piping content to prettier-fix, you must specify either --filepath or --parser." >&2
+    exit 1
+  fi
+
+  # Define a default filepath if only parser is given
+  if [[ $overrideFilepath == "" ]]; then
+    overrideFilepath="${parser}.${parser}"
+  fi
+
+fi
+
 # Resolve file paths
 # inputFilepath: the file to read (if not stdin)
 # realFilepath: where the file is really located (for config resolution)
