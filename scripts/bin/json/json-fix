@@ -1,77 +1,10 @@
 #!/usr/bin/env zsh
-# json-fix: Fix an json file
+# json-fix: Fix a JSON file
 # Usage:
 # $ json-fix ./path/to/file.json                       # Output fixed code to stdout
 # $ json-fix --in-place ./path/to/file.json            # Overwrite the file in place
-# $ echo "json" | json-fix                             # json from stdin, fixed json to stdout
-# $ echo "json" | json-fix --filepath ./realpath.json  # Specify file location for config resolution
-#
-# Note: Prettier has a special handling of some files, like package.json. For
-# those files, it doesn't use its json formatter, but use a simple json
-# stringify. This is why in this script we **do not** use the --parser=json, but
-# let prettier pick the best one based on the filename.
+# $ echo '{"name":"json"}' | json-fix                             # json from stdin, fixed json to stdout
+# $ echo '{"name":"json"}' | json-fix --filepath ./realpath.json  # Specify file location for config resolution
 
-zparseopts -E -D \
-  -in-place=flagInPlace \
-  -filepath:=flagFilepath
-isInPlace=${#flagInPlace}
-overrideFilepath=${flagFilepath[2]}
-
-# Check if input is being piped
-hasStdin=0
-[[ ! -t 0 ]] && hasStdin=1
-
-# inputFilepath is the file to read
-# realFilepath is where the file is located (for prettier config resolution)
-inputFilepath="${1:a}"
-realFilepath="$inputFilepath"
-[[ $overrideFilepath != "" ]] && realFilepath="$overrideFilepath"
-
-# Config file (in project, or fallback to root)
-projectRoot=$(yarn-root ${realFilepath:h} --force)
-configFile=~/.oroshi/prettier.config.js
-prettierBin="prettier"
-if [[ $projectRoot != "" ]]; then
-  [[ -f "$projectRoot/prettier.config.js" ]] && configFile="$projectRoot/prettier.config.js"
-  [[ -f "$projectRoot/.prettierrc.js" ]] && configFile="$projectRoot/.prettierrc.js"
-  # Use project's prettier if it exists
-  [[ -f "$projectRoot/node_modules/.bin/prettier" ]] && prettierBin="$projectRoot/node_modules/.bin/prettier"
-fi
-
-# Input is stdin, output is stdout
-# $ cat file.json | json-fix
-# $ cat tmp.json | json-fix --filepath ./realpath.json
-if [[ $hasStdin = 1 ]]; then
-  local stdinDir="${OROSHI_TMP_FOLDER}/json-fix/json-fix-$RANDOM"
-  mkdir -p "${stdinDir}"
-
-  local stdinFile="${stdinDir}/${realFilepath:t}"
-  cat >$stdinFile
-
-  $prettierBin \
-    --ignore-path= \
-    --config "$configFile" \
-    "$stdinFile"
-  local exitCode=$?
-  rm -rf "$stdinDir"
-  exit $exitCode
-fi
-
-# Input is a file, fix in place
-# $ json-fix --in-place file.json
-if [[ $isInPlace = 1 ]]; then
-  $prettierBin \
-    --ignore-path= \
-    --config "$configFile" \
-    --write \
-    "$inputFilepath" \
-    >/dev/null 2>&1
-  exit $?
-fi
-
-# Input is a file, output to stdout
-# $ json-fix file.json
-$prettierBin \
-  --ignore-path= \
-  --config "$configFile" \
-  "$inputFilepath"
+# Delegate to prettier-fix with json parser
+prettier-fix --parser json "$@"
