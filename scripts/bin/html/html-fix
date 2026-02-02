@@ -58,6 +58,8 @@ if [[ $isInPlace = 1 ]]; then
     --parser html \
     --ignore-path= \
     --config "$configFile" \
+    --write \
+    "$inputFilepath" \
     >/dev/null 2>&1
   exit $?
 fi
