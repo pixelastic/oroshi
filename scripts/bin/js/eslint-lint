@@ -20,12 +20,12 @@ eslintArgs=()
 # ============================================================================
 # Determine input mode and file paths
 # ============================================================================
-# Check if input is being piped
-hasStdin=0
-[[ ! -t 0 ]] && hasStdin=1
+# Check if content is being piped to stdin
+isPiped=0
+[[ -p /dev/stdin ]] && isPiped=1
 
 # When piping content, we need --filepath for context
-if [[ $hasStdin == 1 ]]; then
+if [[ $isPiped == 1 ]]; then
   # Stop if missing arguments
   if [[ $overrideFilepath == "" ]]; then
     echo "When piping content to eslint-lint, you must specify --filepath." >&2
@@ -72,7 +72,7 @@ eslintArgs+=(--config "$configFile")
 # Execute eslint
 # ============================================================================
 # Input is stdin, output is stdout
-if [[ $hasStdin = 1 ]]; then
+if [[ $isPiped = 1 ]]; then
   eslint_d ${eslintArgs[@]}
   exit $?
 fi
