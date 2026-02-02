@@ -72,7 +72,7 @@ eslintArgs+=(--config "$configFile")
 # Execute eslint
 # ============================================================================
 # Input is stdin, output is stdout
-if [[ $isPiped = 1 ]]; then
+if [[ $isPiped == 1 ]]; then
   eslint_d ${eslintArgs[@]}
   exit $?
 fi
