@@ -6,4 +6,4 @@
 # $ echo "var a = 42;" | js-lint                             # Lint stdin
 # $ echo "var a = 42;" | js-lint --filepath ./realpath.html  # Lint from stdin, with real location on disk
 
-eslint-lint --parser js "$@"
+eslint-lint "$@"

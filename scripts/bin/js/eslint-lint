@@ -22,9 +22,9 @@ eslintArgs=()
 # ============================================================================
 # Detect if content is piped
 # ============================================================================
-# cat file | prettier-fix
+# cat file | eslint-lint
 [[ -p /dev/stdin ]] && isContentPiped=1
-# prettier-fix < file
+# eslint-lint < file
 [[ -f /dev/stdin ]] && isContentPiped=1
 
 # ============================================================================

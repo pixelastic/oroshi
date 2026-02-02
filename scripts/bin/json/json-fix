@@ -8,4 +8,4 @@
 
 # Delegate to prettier-fix with json parser
 prettier-fix --parser json "$@"
-# TODO: Also run esliint-fix
+# TODO: Also run eslint-fix

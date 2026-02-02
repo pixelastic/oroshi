@@ -7,4 +7,5 @@
 # $ echo 'var a = "test";' | js-fix --filepath ./realpath.js  # Specify file location for config resolution
 
 # Delegate to eslint-fix with js parser
-eslint-fix --parser js "$@"
+# TODO: Implement eslint-fix
+eslint-fix "$@"
