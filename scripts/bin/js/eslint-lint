@@ -1,0 +1,85 @@
+#!/usr/bin/env zsh
+# eslint-lint: Lint a file using ESLint
+# Usage:
+# $ eslint-lint ./path/to/file.js                       # Lint file
+# $ eslint-lint --json ./path/to/file.js            # Lint file, JSON output for vim
+# $ echo "<code />" | eslint-lint --parser html               # Code from stdin, with specific parser
+# $ echo "<code />" | eslint-lint --filepath ./realpath.html  # Code from stdin, with real location on disk
+
+# ============================================================================
+# Parse command-line arguments
+# ============================================================================
+zparseopts -E -D \
+  -json=flagJson \
+  -filepath:=flagFilepath \
+  -parser:=flagParser
+
+isJson=${#flagJson}
+overrideFilepath=${flagFilepath[2]}
+parser=${flagParser[2]}
+
+eslintArgs=()
+
+# ============================================================================
+# Determine input mode and file paths
+# ============================================================================
+# Check if input is being piped
+hasStdin=0
+[[ ! -t 0 ]] && hasStdin=1
+
+# When piping content, we need --filepath for context
+if [[ $hasStdin == 1 ]]; then
+  # Stop if missing arguments
+  if [[ $overrideFilepath == "" && $parser == "" ]]; then
+    echo "When piping content to eslint-lint, you must specify either --filepath or --parser." >&2
+    exit 1
+  fi
+
+  # Define a default filepath if only parser is given
+  if [[ $overrideFilepath == "" ]]; then
+    overrideFilepath="${parser}.${parser}"
+  fi
+
+  eslintArgs+=(--stdin)
+  eslintArgs+=(--stdin-filename "${overrideFilepath}")
+fi
+
+# Resolve file paths
+# inputFile: the file to lint
+inputFile="${1:a}"
+[[ $overrideFilepath != "" ]] && inputFile="$overrideFilepath"
+
+# Validate that we have a file path
+if [[ "$inputFile" == "" ]]; then
+  echo "Error: no file specified" >&2
+  exit 1
+fi
+
+# ============================================================================
+# Resolve eslint config file
+# ============================================================================
+configFile=~/.oroshi/eslint.config.js
+
+projectRoot="$(yarn-root ${inputFile:h} --force)"
+if [[ $projectRoot != "" ]]; then
+  # Move to root, as this affects eslint resolution of plugins
+  cd "$projectRoot" || exit 1
+
+  [[ -f "$projectRoot/.eslintrc.js" ]] && configFile="$projectRoot/.eslintrc.js"
+  [[ -f "$projectRoot/eslint.config.js" ]] && configFile="$projectRoot/eslint.config.js"
+fi
+eslintArgs+=(--config "$configFile")
+
+# ============================================================================
+# Build eslint arguments
+# ============================================================================
+# Add JSON format if specified
+[[ $isJson == "1" ]] && eslintArgs+=(--format json)
+
+# ============================================================================
+# Execute eslint
+# ============================================================================
+
+eslint_d \
+  ${eslintArgs[@]} \
+  "$inputFile"

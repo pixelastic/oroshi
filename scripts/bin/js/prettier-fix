@@ -3,9 +3,8 @@
 # Usage:
 # $ prettier-fix ./path/to/file.js                       # Output fixed code to stdout
 # $ prettier-fix --in-place ./path/to/file.js            # Overwrite the file in place
-# $ echo "code" | prettier-fix                           # Code from stdin, fixed code to stdout
-# $ echo "code" | prettier-fix --filepath ./realpath.js  # Specify file location for config resolution
-# $ prettier-fix --parser json ./file.json               # Force a specific parser
+# $ echo "<code />" | prettier-fix --parser html               # Code from stdin, with specific parser
+# $ echo "<code />" | prettier-fix --filepath ./realpath.html  # Code from stdin, with real location on disk
 
 # ============================================================================
 # Parse command-line arguments
@@ -85,8 +84,6 @@ prettierArgs+=(--ignore-path=)
 # ============================================================================
 
 # Input is stdin, output is stdout
-# $ cat file.js | prettier-fix
-# $ cat tmp.js | prettier-fix --filepath ./realpath.js
 if [[ $hasStdin = 1 ]]; then
   local stdinDir="${OROSHI_TMP_FOLDER}/prettier-fix/prettier-fix-$RANDOM"
   mkdir -p "${stdinDir}"
@@ -103,7 +100,6 @@ if [[ $hasStdin = 1 ]]; then
 fi
 
 # Input is a file, fix in place
-# $ prettier-fix --in-place file.js
 if [[ $isInPlace = 1 ]]; then
   $prettierBin \
     ${prettierArgs[@]} \
@@ -114,7 +110,6 @@ if [[ $isInPlace = 1 ]]; then
 fi
 
 # Input is a file, output to stdout
-# $ prettier-fix file.js
 $prettierBin \
   ${prettierArgs[@]} \
   "$inputFilepath"
