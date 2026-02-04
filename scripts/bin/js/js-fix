@@ -6,6 +6,4 @@
 # $ echo 'var a = "test";' | js-fix                           # js from stdin, fixed js to stdout
 # $ echo 'var a = "test";' | js-fix --filepath ./realpath.js  # Specify file location for config resolution
 
-# Delegate to eslint-fix with js parser
-# TODO: Implement eslint-fix
 eslint-fix "$@"

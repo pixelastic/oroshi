@@ -4,13 +4,6 @@ I want to have working code examples and up-to-date information
 
 - **ALWAYS use Context7 MCP FIRST** when dealing with code examples, setup, configuration and library/API documentation
 
-# Task Master
-
-I want to use Task Master to organize my big projects into a list of small tasks
-
-- Use Task Master AI MCP server when dealing with a list of things to do
-- Do not add zsh aliases, nor init a git repository when setting up Task Master
-
 # Coding Style
 
 Keep a consistent coding style matching my preferences across my projects
@@ -26,3 +19,9 @@ If you need to check how some dependencies are working, you can find there on
 disk:
 - aberlaas: /home/tim/local/www/projects/aberlaas
 - firost: /home/tim/local/www/projects/firost
+
+# Debug
+
+If you need to create scripts for debugging:
+- Create them in /home/tim/local/tmp/claude
+- Create one subdirectory per conversation

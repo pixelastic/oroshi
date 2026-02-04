@@ -28,7 +28,7 @@ M.configureFormatter = function(conform)
   conform.formatters.oroshi_js_fix = {
     command = "js-fix",
     stdin = true,
-    args = { "--filepath", "$FILENAME" },
+    args = { "--piped", "--filepath", "$FILENAME" },
     exit_codes = { 0, 1 }, -- Do not fail on unfixable errors
     timeout_ms = 10000, -- JS/TS can be slow...
   }
