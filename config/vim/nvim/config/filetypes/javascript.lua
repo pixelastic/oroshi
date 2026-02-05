@@ -46,9 +46,9 @@ local function setupJsKeybindings()
   F.imap("iite", function()
     vim.api.nvim_put({
       "it.each([",
-      "    ['input', 'expected'],",
-      "    ['input', 'expected']",
-      "  ])('%s => %s', async (input, expected) => {",
+      "    [{ title: 'aaa', input: 'input', expected: 'expected' }],",
+      "    [{ title: 'aaa', input: 'input', expected: 'expected' }],",
+      "  ])('$title', async ({ input, expected }) => {",
       "    const actual = current(input);",
       "    expect(actual).toEqual(expected);",
       "  });",
@@ -190,7 +190,6 @@ local function setupJsAutoImport()
   -- Before a file is saved, we check for missing imports and auto-import them
   -- if possible
   F.autocmd("BufWritePre", function()
-    local bufferId = F.bufferId()
     -- Note: As getting diagnostics is asynchronous, the best we can do is rely
     -- on the ones we already have, so they might be incomplete (saving a second
     -- time usually fixes that).
