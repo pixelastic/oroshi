@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+set -e
 # json-fix: Fix a JSON file
 # Usage:
 # $ json-fix ./path/to/file.json                       # Output fixed code to stdout
@@ -6,6 +7,26 @@
 # $ echo 'var a = 42;' | json-fix                             # json from stdin, fixed json to stdout
 # $ echo 'var a = 42;' | json-fix --filepath ./realpath.json  # Specify file location for config resolution
 
-# Delegate to prettier-fix with json parser
-prettier-fix --parser json "$@"
-# TODO: Also run eslint-fix
+# ============================================================================
+# Parse command-line arguments
+# ============================================================================
+zparseopts -E -D \
+  -filepath:=flagFilepath
+
+overrideFilepath=${flagFilepath[2]}
+
+# ============================================================================
+# Determine file paths
+# ============================================================================
+# inputFilepath: the file to read (if not stdin)
+# realFilepath: where the file is really located (for config resolution)
+inputFilepath="${1:a}"
+realFilepath="$inputFilepath"
+[[ $overrideFilepath != "" ]] && realFilepath="$overrideFilepath"
+
+# First, prettier the JSON to fix any trailing comma.
+# Then, lint it through ESLint
+# Finally, go again through prettier to fix any formatting issues introduced by ESLint
+prettier-fix --filepath "${realFilepath}" "$@" |
+  eslint-fix --piped --filepath "${realFilepath}" |
+  prettier-fix --filepath "${realFilepath}" "$@"

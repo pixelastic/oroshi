@@ -16,5 +16,6 @@ function eslintd-restart() {
   if [[ "$currentDirectory" != "$gitRoot" ]]; then
     cd $gitRoot || return
     eslint_d restart
+    cd $currentDirectory || return
   fi
 }
