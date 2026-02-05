@@ -30,7 +30,7 @@ F.ftplugin("gitcommit", function()
         F.setThinkingIndicator(false)
       end,
       onError = function(error)
-        F.replaceLines("Failed to generate commit message: " .. error, 1)
+        F.replaceLines("Failed to generate commit message: " .. error.stdout, 1)
         F.setThinkingIndicator(false)
       end,
     })

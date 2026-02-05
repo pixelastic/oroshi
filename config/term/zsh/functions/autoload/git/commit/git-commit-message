@@ -18,12 +18,19 @@ function git-commit-message() {
     done
   fi
 
-  if [[ ${#inputFiles} -eq 0 ]]; then
+  # Filter out excluded files
+  local filteredFiles=()
+  for file in ${inputFiles[@]}; do
+    [[ $file == "yarn.lock" ]] && continue
+    filteredFiles+=($file)
+  done
+
+  if [[ ${#filteredFiles} -eq 0 ]]; then
     return 1
   fi
 
-  # Get diff for the specified files
-  local diffContent=$(git diff HEAD -- ${inputFiles[@]})
+  # Get diff for the filtered files
+  local diffContent=$(git diff HEAD -- ${filteredFiles[@]})
 
   # Build the prompt
   local claudePrompt="Generate a git commit message for these changes.
