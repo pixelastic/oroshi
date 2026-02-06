@@ -204,7 +204,7 @@ nmap("<S-Tab>", "<<hh", "Dedent line")
 vmap("<S-Tab>", "<gv", "Dedent selection")
 
 -- Increment / Decrement numbers
-nmap("<C-J>", "<C-X>", "Increment number under cursor")
+nmap("⒥", "<C-X>", "Increment number under cursor")
 nmap("<C-K>", "<C-A>", "Decrement number under cursor")
 
 -- Add semicolon
