@@ -1,4 +1,5 @@
 # Important files that should not be committed
+.env
 .envrc
 
 # Build directories
@@ -13,6 +14,8 @@ lerna-debug.log
 npm-debug.log
 yarn-error.log
 *~
+**/__pycache__/
+**/__pycache__/*
 
 # Tool directories
 .claude/

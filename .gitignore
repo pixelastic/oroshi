@@ -1,32 +1,27 @@
-# Hidden files
-.DS_Store
+# Important files that should not be committed
+.env
 .envrc
 
-# Directories
+# Build directories
 build/
 dist/
-node_modules/
 tmp/
-.claude/
-__pycache__/
 
-# Files
+# Junk files
+.DS_Store
 Thumbs.db
 lerna-debug.log
 npm-debug.log
 yarn-error.log
 *~
-scripts/bin/kitty/kitty-layout-load-*.mjs
+**/__pycache__/
+**/__pycache__/*
 
-# Yarn
-# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
-
-
-# Netlify
-.netlify
+# Tool directories
+.claude/
+.cursor/
+.netlify/
+.taskmaster/
+.turbo/
+.yarn/
+node_modules/
