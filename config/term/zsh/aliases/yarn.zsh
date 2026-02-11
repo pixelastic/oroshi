@@ -39,6 +39,7 @@ alias ylc-='yarn-link-classic-disable'
 # Scripts
 alias yrbp='yr build:prod'
 alias yrbw='yr build:watch'
+alias yrbe='yr bench'
 alias yrb='yr build'
 alias yrc='yr consolidate'
 alias yrdbp='yr docs:build:prod'

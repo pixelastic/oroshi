@@ -32,6 +32,14 @@ local function setupJsKeybindings()
     F.insertModeAfter()
   end, "beforeEach()", { buffer = bufferId })
 
+  -- afterEach(async () => {
+  -- });
+  F.imap("afee", function()
+    vim.api.nvim_put({ "afterEach(async () => {", "    ", "  });" }, "c", false, true)
+    vim.cmd("normal! k$")
+    F.insertModeAfter()
+  end, "afterEach()", { buffer = bufferId })
+
   -- it('should do something', () => {
   -- });
   F.imap("iit", function()
@@ -68,7 +76,7 @@ local function setupJsKeybindings()
     vim.api.nvim_put({ "let actual = null;", "try {", "} catch (err) {", "actual = err;", "}" }, "c", false, true)
     vim.cmd("normal! k$")
     F.insertModeAfter()
-  end, "beforeEach()", { buffer = bufferId })
+  end, "try { } catch (err) { actual = err }", { buffer = bufferId })
 
   -- Expects
   F.imap("thp", "toHaveProperty(", "toHaveProperty assertion", { buffer = bufferId })
