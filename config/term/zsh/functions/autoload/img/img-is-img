@@ -1,0 +1,23 @@
+# Check if the given file is a valid image file
+# Usage:
+# $ img-is-img ./unknownfile    # Exit 0 if valid image, 1 if not
+function img-is-img() {
+  local input="$1"
+
+  if [[ $input == "" ]]; then
+    echo "You need to pass the path of the file"
+    return 1
+  fi
+
+  # Check if identifies as an image
+  if ! file $input | grep -qE '(image data|image text)'; then
+    return 1
+  fi
+
+  # Check if can get dimensions
+  if ! magick identify -format "%wx%h\n" $input &>/dev/null; then
+    return 1
+  fi
+
+  return 0
+}

@@ -38,9 +38,10 @@ function fzf-fs-shared-preview() {
 
   # Document preview (pdf, epub, mobi)
   if [[ $filetypeGroup == "document" || $filetypeGroup == "ebook" ]]; then
-    local previewCacheFolder="${OROSHI_TMP_FOLDER}/fzf/previews/"
+    local previewCacheFolder="${OROSHI_TMP_FOLDER}/fzf/previews"
     local previewCacheHash=$(file-hash $fullPath);
     local previewCachePath="${previewCacheFolder}/${previewCacheHash}.png"
+
 
     # Create the cover in tmp if none exist
     if [[ ! -f $previewCachePath ]]; then
@@ -57,6 +58,13 @@ function fzf-fs-shared-preview() {
     fi
 
     img-display --no-metadata --fzf-preview $previewCachePath
+    local imgDisplayExitCode=$?
+
+    # If the cache doesn't contain an image (it can happen if image is
+    # corrupted), we delete it so it can be regenerated
+    if [[ $imgDisplayExitCode == 1 ]]; then
+      rm -f $previewCachePath
+    fi
     return 0
   fi
 
