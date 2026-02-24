@@ -18,38 +18,11 @@
 # - rm -f ~/.zcompdump
 # - reload the shell
 
-compdef _jumps unmark j
-
-# Git {{{
-compdef _git-branches-local \
-  git-branch-copy \
-  git-branch-merge \
-  git-branch-rebase \
-  git-branch-remove \
-  git-branch-rename \
-  git-branch-switch
-compdef _git-branches-remote \
-  git-branch-pull \
-  git-branch-remove-remote
-compdef _git-tags-local \
-  git-tag-push \
-  git-tag-remove \
-  git-tag-status \
-  git-tag-switch
-compdef _git-tags-remote \
-  git-tag-remove-remote
-compdef _git-files-stageable \
-  git-file-add
-compdef _git-files-staged \
-  git-file-unstage
-compdef _git-submodules \
-  git-submodule-remove
-compdef _git-remotes \
-  git-remote-switch \
-  git-remote-remove \
-  git-remote-rename
+# 📦️ Archives {{{
+compdef '_files -g "*.{7z,Z,bz2,cbr,cbz,deb,gz,htmlz,rar,tar,tar.bz2,tar.gz,tar.lzma,tar.xz,tbz2,tgz,txz,xz,zip,ZIP}"' \
+  extract
 # }}}
-# Docker {{{
+# 🐋 Docker {{{
 compdef _docker-images-remote \
   docker-image-pull
 compdef _docker-images-local-ids \
@@ -82,7 +55,50 @@ compdef _docker-containers-running \
 compdef _docker-containers-ids \
   docker-container-name
 # }}}
-# Images {{{
+# 📖 Ebooks {{{
+compdef '_files -g "*.epub"' \
+  better-ebook-viewer \
+  epub2mobi
+compdef '_files -g "*.mobi"' \
+  mobi2epub
+compdef '_files -g "*.{epub,mobi}"' \
+  ebook-cover-current \
+  ebook-cover-remove \
+  ebook-cover-update \
+  ebook-meta \
+  ebook-metadata-update
+# }}}
+# 🔄 Git {{{
+compdef _git-branches-local \
+  git-branch-copy \
+  git-branch-merge \
+  git-branch-rebase \
+  git-branch-remove \
+  git-branch-rename \
+  git-branch-switch
+compdef _git-branches-remote \
+  git-branch-pull \
+  git-branch-remove-remote
+compdef _git-tags-local \
+  git-tag-push \
+  git-tag-remove \
+  git-tag-status \
+  git-tag-switch
+compdef _git-tags-remote \
+  git-tag-remove-remote
+compdef _git-files-stageable \
+  git-file-add
+compdef _git-files-staged \
+  git-file-unstage
+compdef _git-submodules \
+  git-submodule-remove
+compdef _git-remotes \
+  git-remote-switch \
+  git-remote-remove \
+  git-remote-rename
+# }}}
+# 🖼️ Images {{{
+compdef _image-resize img-resize
 compdef '_files -g "*.{avif,bmp,gif,jpg,jpeg,png,svg,tiff,webp}"' \
   img2json \
   img-color-count \
@@ -122,9 +138,26 @@ compdef '_files -g "*.svg"' \
   svg2png
 compdef '_files -g "*.avif"' \
   avif2png
-compdef _image-resize img-resize
 # }}}
-# Videos {{{
+# 📌 Jumps {{{
+compdef _jumps unmark j
+# }}}
+# 🟢 Node {{{
+compdef _nvm-lazyload lazyloadNvm
+compdef _node-versions-installed node-version-switch
+compdef _node-modules \
+  node-module-remove \
+  node-module-update
+# }}}
+# 🐍 Python {{{
+compdef _pyenv-lazyload lazyloadPyenv
+compdef _pip-packages \
+  pip-update
+# }}}
+# ▶️ Videos {{{
+compdef _video-streams-audio \
+  video-stream-audio-switch \
+  video-stream-audio-remove
 compdef '_files -g "*.{avi,mkv,mp4,mpg}"' \
   better-vlc \
   video-dimensions \
@@ -139,43 +172,11 @@ compdef '_files -g "*.{avi,mkv,mp4,mpg}"' \
   video-stream-list \
   video-stream-remove \
   video-upload-youtube
-compdef _video-streams-audio \
-  video-stream-audio-switch \
-  video-stream-audio-remove
 # }}}
-# Images + Videos {{{
-compdef '_files -g "*.{bmp,gif,jpg,jpeg,png,svg,tiff,webp,avi,mkv,mp4,mpg,webm}"' \
-  dimensions
+# 🧑‍💻 SSH {{{
+compdef _ssh-known-hosts ssh
 # }}}
-# PDF {{{
-compdef '_files -g "*.pdf"' \
-  pdf2txt \
-  pdf2img \
-  pdf-open \
-  pdf-page-count \
-  pdf-split
-# }}}
-# Ebooks {{{
-compdef '_files -g "*.epub"' \
-  better-ebook-viewer \
-  epub2mobi
-compdef '_files -g "*.mobi"' \
-  mobi2epub
-compdef '_files -g "*.{epub,mobi}"' \
-  ebook-cover-current \
-  ebook-cover-remove \
-  ebook-cover-update \
-  ebook-meta \
-  ebook-metadata-update
-# }}}
-# Node {{{
-compdef _nvm-lazyload lazyloadNvm
-compdef _node-versions-installed node-version-switch
-compdef _node-modules \
-  node-module-remove \
-  node-module-update
-# }}}
-# Yarn {{{
+# 🧶 Yarn {{{
 compdef _yarn-runnables \
   yarn-run
 compdef _yarn-dependencies \
@@ -202,28 +203,38 @@ compdef _yarn-link-universal \
   yarn-link
 compdef _yarn-link-universal-enabled \
   yarn-link-remove
+# }}}
+# 📏 Images + Videos {{{
+compdef '_files -g "*.{bmp,gif,jpg,jpeg,png,svg,tiff,webp,avi,mkv,mp4,mpg,webm}"' \
+  dimensions
+# }}}
 
+# PDF {{{
+compdef '_files -g "*.pdf"' \
+  pdf2txt \
+  pdf2img \
+  pdf-open \
+  pdf-page-count \
+  pdf-split
+# }}}
+# JS {{{
+compdef '_files -g "*.json"' \
+  js-fix \
+  js-lint
 # }}}
 # JSON {{{
 compdef '_files -g "*.json"' \
+  json2csv \
   json-filter \
-  json-head
+  json-fix \
+  json-get \
+  json-head \
+  json-lint
 compdef '_files -g "*.jsonl"' \
   jsonl2json
 # }}}
-# Python {{{
-compdef _pyenv-lazyload lazyloadPyenv
-compdef _pip-packages \
-  pip-update
-# }}}
-# SSH {{{
-compdef _ssh-known-hosts ssh
-# }}}
-# Archives {{{
-compdef '_files -g "*.{7z,Z,bz2,cbr,cbz,deb,gz,htmlz,rar,tar,tar.bz2,tar.gz,tar.lzma,tar.xz,tbz2,tgz,txz,xz,zip,ZIP}"' \
-  extract
-# }}}
-# Watch and reload {{{
-# TODO: Ideally watch-and-reload should complete to files in the current
-# directory or any defined command/alias/function
+# TOML {{{
+compdef '_files -g "*.toml"' \
+  toml-lint \
+  toml2json
 # }}}
