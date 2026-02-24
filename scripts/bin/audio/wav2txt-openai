@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+# wav2txt-openai: Convert a wav file into text using OpenAI
+# Usage:
+# $ wav2txt-openai ./path/to/file.wav     # Echo the transcript
+
+local input=$1
+
+source ~/.oroshi/private/config/term/zsh/local/${HOSTNAME}/open_ai.zsh
+curl \
+  --silent \
+  -X POST \
+  https://api.openai.com/v1/audio/transcriptions \
+  -H "Authorization: Bearer $OPENAI_WHISPER_API_KEY" \
+  -H "Content-Type: multipart/form-data" \
+  -F file="@${input}" \
+  -F model="whisper-1" \
+  -F language="fr" \
+  -F response_format="text"

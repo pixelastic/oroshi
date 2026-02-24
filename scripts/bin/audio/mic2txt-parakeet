@@ -1,10 +1,10 @@
 #!/usr/bin/env zsh
-# mic2text-openai: Transcribe what is being said into text
+# mic2text-parakeet: Transcribe what is being said into text
 # Usage:
-# $ mic2txt-openai # Starts recording then...
-#   mic2txt-openai # ...stops the recording and display the transcription
+# $ mic2txt-parakeet # Starts recording then...
+#   mic2txt-parakeet # ...stops the recording and display the transcription
 
-local tmpFolder=/dev/shm/oroshi/mic2txt/openai
+local tmpFolder=/dev/shm/oroshi/mic2txt/parakeet
 local pidFile=${tmpFolder}/PID
 local recordFile=${tmpFolder}/record.wav
 
@@ -34,7 +34,7 @@ sleep 2
 kill-pid "$(cat $pidFile)"
 
 # We transcribe to text
-local transcription="$(wav2txt-openai $recordFile)"
+local transcription="$(wav2txt-parakeet $recordFile)"
 
 # Play a sound to indicate it's being pasted
 if sound-mode-is-enabled; then

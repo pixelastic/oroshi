@@ -1,0 +1,16 @@
+[package]
+name = "wav2txt-parakeet"
+version = "0.0.1"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0"
+clap = { version = "4.5", features = ["derive"] }
+hound = "3.5"
+parakeet-rs = "0.3"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+strip = true
