@@ -66,5 +66,5 @@ tokens. Includes rate limiting to prevent abuse.
 
 YOUR OUTPUT MUST START IMMEDIATELY WITH THE COMMIT TYPE. NO OTHER TEXT."
 
-  claude --print --model sonnet <<< "$claudePrompt"
+  claude-print "$claudePrompt"
 }

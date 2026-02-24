@@ -31,10 +31,12 @@ CRITICAL INSTRUCTIONS:
 YOUR OUTPUT MUST BE THE MESSAGE ITSELF, NOTHING ELSE."
 
 # Call Claude API with error handling
-local result
-if result=$(claude --print --model haiku 2>/dev/null <<<"$claudePrompt"); then
-  echo "$result"
-else
-  # Fallback: return original text if API fails
+local result="$(claude-print "$claudePrompt")"
+
+# If result is empty, return the original input
+if [[ $result = "" ]]; then
   echo "$inputText"
+  exit 0
 fi
+
+echo $result
