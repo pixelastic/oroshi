@@ -2,7 +2,6 @@
 # Usage:
 # $ claude-print "Tell me a joke, in french"
 function claude-print() {
-  set -x
   local input="$1"
   local sessionId="eeeeeeee-0000-0000-0000-eeeeeeeeeeee"
   local projectFolder="${PWD//(\/|\.|_)/-}"

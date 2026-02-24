@@ -7,7 +7,7 @@
 local inputText="${1:-$(cat)}"
 
 # If input is empty, return empty
-[[ -z "$inputText" ]] && return 1
+[[ -z "$inputText" ]] && exit 1
 
 # Build the Claude prompt
 local claudePrompt="Transform this voice transcription into a natural Slack message.

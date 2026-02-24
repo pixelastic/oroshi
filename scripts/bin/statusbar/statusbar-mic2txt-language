@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+# JSON info about current language to use for mic2txt
+source $ZSH_CONFIG_PATH/theming/env/colors.zsh
+
+local mic2txtLanguage=$(mic2txt-language)
+
+local text="$mic2txtLanguage "
+if [[ $mic2txtLanguage = "fr" ]]; then
+  local color=$COLOR_ALIAS_COMMENT
+fi
+
+if [[ $mic2txtLanguage = "en" ]]; then
+  local color=$COLOR_ALIAS_SUCCESS
+fi
+
+jo text=$text fg=$color | jo -a

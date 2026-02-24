@@ -1,0 +1,34 @@
+#!/usr/bin/env zsh
+# translate: Translate text to another language
+# Usage:
+# $ translate "texte français"
+# $ translate --language spanish "texte français"
+# $ echo "texte" | translate
+# $ echo "texte" | translate --language german
+
+zparseopts -E -D \
+  -language:=flagLanguage
+
+local targetLanguage=${flagLanguage[2]:-"english"}
+local inputText="${1:-$(cat)}"
+
+# If input is empty, return empty
+[[ -z "$inputText" ]] && exit 1
+
+# Build the Claude prompt
+local claudePrompt="Translate this text into ${targetLanguage}.
+
+Text to translate:
+${inputText}
+
+CRITICAL INSTRUCTIONS:
+- Return ONLY the translated text
+- NO explanations, NO analysis, NO commentary
+- NO markdown code blocks, NO formatting markers
+- Keep the tone and style of the original
+- Maintain proper punctuation and grammar in the target language
+- Start directly with the translated content
+
+YOUR OUTPUT MUST BE THE TRANSLATION ITSELF, NOTHING ELSE."
+
+claude-print "$claudePrompt"

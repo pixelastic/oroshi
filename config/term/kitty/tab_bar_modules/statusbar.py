@@ -15,6 +15,7 @@ statusbarState = {
         # "spotify:5",
         "sound-mode:60",
         "mic2txt-slack-mode:60",
+        "mic2txt-language:60",
         "mic2txt-model:60",
         # "battery:60",
         "cpu:30",

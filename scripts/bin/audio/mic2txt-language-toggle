@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+# Toggle the language used by mic2txt
+
+local mic2txtDirectory=$OROSHI_TMP_FOLDER/mic2txt
+local languageFile="${mic2txtDirectory}/language"
+mkdir -p $mic2txtDirectory
+
+# Find next model
+local currentLanguage="$(mic2txt-language)"
+[[ $currentLanguage = "fr" ]] && nextLanguage="en"
+[[ $currentLanguage = "en" ]] && nextLanguage="fr"
+
+echo $nextLanguage >$languageFile
+
+# Update kitty statusbar
+kitty-refresh

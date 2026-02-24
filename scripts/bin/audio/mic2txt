@@ -7,5 +7,5 @@
 
 local mic2txtModel=$(mic2txt-model)
 
-[[ $mic2txtModel = "parakeet" ]] && mic2txt-parakeet
-[[ $mic2txtModel = "openai" ]] && mic2txt-openai
+mic2txt-raw \
+  --wav2txt "wav2txt-${mic2txtModel}"

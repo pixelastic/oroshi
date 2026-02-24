@@ -27,6 +27,7 @@ local                  shortcuts=(
 
   "sound-mode-toggle"             "<Ctrl><Super>F4"     "/home/tim/.oroshi/scripts/bin/audio/sound-mode-toggle"
   "mic2text-slack-mode-toggle"    "<Ctrl><Super>F10"    "/home/tim/.oroshi/scripts/bin/audio/mic2txt-slack-mode-toggle"
+  "mic2text-language-toggle"      "<Ctrl><Super>F11"    "/home/tim/.oroshi/scripts/bin/audio/mic2txt-language-toggle"
   "mic2text-model-toggle"         "<Ctrl><Super>F12"    "/home/tim/.oroshi/scripts/bin/audio/mic2txt-model-toggle"
 )
 # }}}

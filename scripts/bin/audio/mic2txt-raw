@@ -1,0 +1,78 @@
+#!/usr/bin/env zsh
+# mic2text-raw: Start a microphone, and paste the content as text
+# Usage:
+# $ mic2txt-raw # Starts recording then...
+#   mic2txt-raw # ...stops the recording and display the transcription
+
+# Parsing args {{{
+zparseopts -E -D \
+  -wav2txt:=flagWav2Txt
+
+local wav2TxtBinary=${flagWav2Txt[2]}
+# }}}
+
+# Default values {{{
+local tmpFolder=/dev/shm/oroshi/mic2txt
+local pidFile=${tmpFolder}/PID
+local recordFile=${tmpFolder}/record.wav
+mkdir -p $tmpFolder
+# }}}
+
+# Start a recording
+function startRecording {
+  rec \
+    --rate 16000 \
+    --channels 1 \
+    $recordFile \
+    gain 40 &
+
+  # Save the pid
+  echo $! >$pidFile
+}
+
+# Stop the current recording
+function stopRecording {
+  sleep 2
+
+  kill-pid "$(cat $pidFile)"
+  rm $pidFile
+
+  # Improve sound quality
+  ffmpeg \
+    -i $recordFile \
+    -af "silenceremove=start_periods=1:start_silence=0.1:start_threshold=-50dB,volume=15dB" \
+    ${recordFile}.tmp.wav \
+    -y
+  mv ${recordFile}.tmp.wav $recordFile
+
+  # We transcribe to text
+  local transcription="$(${wav2TxtBinary} $recordFile)"
+
+  # Translate to english
+  local language="$(mic2txt-language)"
+  if [[ $language != "fr" ]]; then
+    transcription="$(translate "$transcription" --language ${language})"
+  fi
+
+  # Rewrite as a slack message
+  if mic2txt-slack-mode-is-enabled; then
+    transcription="$(txt2slack "$transcription")"
+  fi
+
+  # Play a sound to indicate it's being pasted
+  if sound-mode-is-enabled; then
+    audio-play ~/.oroshi/config/audio/sounds/bg-stealth.wav &
+  fi
+
+  # Insert the transcription wherever I'm currently focused
+  focus-insert "$transcription"
+}
+
+# If a recording is not already in progress, we start a new one
+if [[ ! -f $pidFile ]]; then
+  startRecording
+  exit 0
+fi
+
+# Otherwise, we stop the current recording
+stopRecording
