@@ -4,15 +4,14 @@ source $ZSH_CONFIG_PATH/theming/env/colors.zsh
 
 local mic2txtModel=$(mic2txt-model)
 
-# Do not display anything if openai
 if [[ $mic2txtModel = "openai" ]]; then
-  local icon="¤ "
+  local icon="OpenAI "
   local color=$COLOR_GRAY
 fi
 
-if [[ $mic2txtModel = "deepgram" ]]; then
-  local icon="ⅅ "
-  local color=$COLOR_GREEN
+if [[ $mic2txtModel = "parakeet" ]]; then
+  local icon="Parakeet "
+  local color=$COLOR_ORANGE
 fi
 
 jo text=$icon fg=$color | jo -a
