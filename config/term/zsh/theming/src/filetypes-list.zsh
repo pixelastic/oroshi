@@ -46,6 +46,7 @@ FILETYPE_GROUPS[script:patterns]="\
   py \
   rb \
   ru \
+  rs \
   sass \
   scss \
   sh \

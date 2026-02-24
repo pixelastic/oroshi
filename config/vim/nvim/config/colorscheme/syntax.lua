@@ -3,7 +3,7 @@ local hl = F.hl
 -- Syntax groups {{{
 hl("Boolean", "BOOLEAN", { bold = true })
 hl("Comment", "COMMENT")
-hl("SpecialComment", "COMMENT", { underline = true })
+hl("SpecialComment", "COMMENT", { bold = true })
 hl("Conditional", "STATEMENT") --	if, then, else, endif, switch, etc.
 hl("Constant", "CONSTANT", { bold = true })
 hl("Delimiter", "PUNCTUATION")
@@ -62,7 +62,7 @@ hl("@variable", "VARIABLE")
 hl("@variable.member", "KEY")
 hl("@property", "KEY")
 -- Keywords
-hl("@keyword.import", "IMPORT")
+hl("@keyword.import", "YELLOW_5", { bold = true })
 hl("@keyword.directive", "ORANGE")
 -- Headers
 hl("@markup.heading.1", "PURPLE_4", { bold = true })
@@ -111,7 +111,6 @@ hl("@markup.heading.html", "PURPLE_4", { bold = true })
 -- }}}
 -- JavaScript {{{
 hl("@keyword.exception.javascript", "YELLOW", { bold = true })
-hl("@keyword.import.javascript", "YELLOW_5", { bold = true })
 -- }}}
 -- JSX {{{
 hl("@tag.delimiter.javascript", "PUNCTUATION")
@@ -208,6 +207,10 @@ hl("@keyword.import.python", "YELLOW")
 hl("@function.method.call.python", "GREEN")
 hl("@keyword.exception.python", "ORANGE", { bold = true })
 -- }}}
+-- rust {{{
+hl("@keyword.type.rust", "VARIABLE_TYPE")
+hl("@keyword.modifier.rust", "VARIABLE_TYPE")
+-- }}}
 -- sh {{{
 hl("shOption", "SYMBOL")
 hl("shVarAssign", "PUNCTUATION")
@@ -220,7 +223,6 @@ hl("@tag.delimiter.tsx", "PUNCTUATION")
 hl("@tag.builtin.tsx", "KEYWORD")
 hl("typescriptDocTags", "none")
 hl("typescriptDocNotation", "none")
-hl("@keyword.import.typescript", "YELLOW_5", { bold = true })
 hl("@markup.link.label.tsx", "none")
 --- }}}
 -- vim {{{
