@@ -1,0 +1,40 @@
+#!/usr/bin/env zsh
+# txt2slack: Transform transcribed text into a Slack message
+# Usage:
+# $ txt2slack "raw transcription text"
+# $ echo "text" | txt2slack
+
+local inputText="${1:-$(cat)}"
+
+# If input is empty, return empty
+[[ -z "$inputText" ]] && return 1
+
+# Build the Claude prompt
+local claudePrompt="Transform this voice transcription into a natural Slack message.
+
+Transcription:
+${inputText}
+
+CRITICAL INSTRUCTIONS:
+- Return ONLY the reformatted message text
+- NO explanations, NO analysis, NO commentary
+- NO markdown code blocks, NO formatting markers
+- ABSOLUTELY MANDATORY: Keep the EXACT SAME LANGUAGE as the input - DO NOT TRANSLATE (if input is French, output MUST be French; if input is English, output MUST be English)
+- Keep the tone casual and conversational (team communication)
+- Use short sentences and paragraphs
+- Do not use the — character
+- Fix grammar and add proper punctuation
+- Make it clear and easy to understand
+- Keep all the important information
+- Start directly with the message content
+
+YOUR OUTPUT MUST BE THE MESSAGE ITSELF, NOTHING ELSE."
+
+# Call Claude API with error handling
+local result
+if result=$(claude --print --model haiku 2>/dev/null <<<"$claudePrompt"); then
+  echo "$result"
+else
+  # Fallback: return original text if API fails
+  echo "$inputText"
+fi

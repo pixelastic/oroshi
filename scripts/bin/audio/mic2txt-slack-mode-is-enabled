@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# Check if "Slack Mode" is enabled
+local storeFile=$OROSHI_TMP_FOLDER/mic2txt/slack-mode
+
+if [[ -f $storeFile ]]; then
+  exit 0
+else
+  exit 1
+fi

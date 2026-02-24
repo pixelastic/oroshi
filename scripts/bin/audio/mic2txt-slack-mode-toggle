@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+# Toggle a global "Slack Mode"
+# If enabled, mic2txt messages will be formatted as Slack messages
+
+local storeDirectory=$OROSHI_TMP_FOLDER/mic2txt
+local storeFile="${storeDirectory}/slack-mode"
+mkdir -p $storeDirectory
+
+# Toggle the presence of the file
+if [[ -f $storeFile ]]; then
+  rm $storeFile
+else
+  touch $storeFile
+fi
+
+# Update kitty statusbar
+kitty-refresh

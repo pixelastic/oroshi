@@ -6,25 +6,28 @@ local ROOT_KEY="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings
 
 # Define keybindings {{{
 local                  shortcuts=(
-  # Name                 Binding           Command
-  "Calculator"              "Insert"              "gnome-calculator"
-  "Emote"                   "<Super>E"            "flatpak run com.tomjwatson.Emote"
-  "Chrome"                  "<Super>C"            "google-chrome"
-  "Firefox"                 "<Super>F"            "firefox"
-  "Slack"                   "<Super>S"            "slack"
-  "Kitty"                   "<Super>T"            "/home/tim/.oroshi/scripts/bin/kitty/kitty-restore"
-  "Keepass"                 "<Super>K"            "/home/tim/.oroshi/scripts/bin/better-keepass /home/tim/perso/Dropbox/tim/keys.kdbx"
+  # Name                          Binding               Command
+  "Calculator"                    "Insert"              "gnome-calculator"
+  "Emote"                         "<Super>E"            "flatpak run com.tomjwatson.Emote"
+  "Chrome"                        "<Super>C"            "google-chrome"
+  "Firefox"                       "<Super>F"            "firefox"
+  "Slack"                         "<Super>S"            "slack"
+  "Kitty"                         "<Super>T"            "/home/tim/.oroshi/scripts/bin/kitty/kitty-restore"
+  "Keepass"                       "<Super>K"            "/home/tim/.oroshi/scripts/bin/better-keepass /home/tim/perso/Dropbox/tim/keys.kdbx"
 
-  "current-date"            "<Super>D"            "/home/tim/.oroshi/scripts/bin/keybindings/insert-current-date"
-  "uuid"                    "<Super>U"            "/home/tim/.oroshi/scripts/bin/keybindings/insert-uuid"
+  "current-date"                  "<Super>D"            "/home/tim/.oroshi/scripts/bin/keybindings/insert-current-date"
+  "uuid"                          "<Super>U"            "/home/tim/.oroshi/scripts/bin/keybindings/insert-uuid"
 
-  "Spotify Pause"           "<Super>I"            "/home/tim/.oroshi/scripts/bin/spotify/spotify"
-  "Spotify Next"            "<Super>L"            "/home/tim/.oroshi/scripts/bin/spotify/spotify-next"
-  "Spotify Previous"        "<Super>H"            "/home/tim/.oroshi/scripts/bin/spotify/spotify-previous"
+  "Spotify Pause"                 "<Super>I"            "/home/tim/.oroshi/scripts/bin/spotify/spotify"
+  "Spotify Next"                  "<Super>L"            "/home/tim/.oroshi/scripts/bin/spotify/spotify-next"
+  "Spotify Previous"              "<Super>H"            "/home/tim/.oroshi/scripts/bin/spotify/spotify-previous"
 
-  "Flameshot"               "<Super>F14"          'script --command "flameshot gui" /dev/null'
-  "mic2text"                "<Ctrl>F14"           "/home/tim/.oroshi/scripts/bin/audio/mic2txt"
-  "mic2text-model-toggle"   "<Ctrl><Super>F12"    "/home/tim/.oroshi/scripts/bin/audio/mic2txt-model-toggle"
+  "Flameshot"                     "<Super>F14"          'script --command "flameshot gui" /dev/null'
+  "mic2text"                      "<Ctrl>F14"           "/home/tim/.oroshi/scripts/bin/audio/mic2txt"
+
+  "sound-mode-toggle"             "<Ctrl><Super>F4"     "/home/tim/.oroshi/scripts/bin/audio/sound-mode-toggle"
+  "mic2text-slack-mode-toggle"    "<Ctrl><Super>F10"    "/home/tim/.oroshi/scripts/bin/audio/mic2txt-slack-mode-toggle"
+  "mic2text-model-toggle"         "<Ctrl><Super>F12"    "/home/tim/.oroshi/scripts/bin/audio/mic2txt-model-toggle"
 )
 # }}}
 

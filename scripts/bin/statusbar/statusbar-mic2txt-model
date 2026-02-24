@@ -4,14 +4,13 @@ source $ZSH_CONFIG_PATH/theming/env/colors.zsh
 
 local mic2txtModel=$(mic2txt-model)
 
+local icon="󰔊  "
 if [[ $mic2txtModel = "openai" ]]; then
-  local icon="󰔊  "
-  local color=$COLOR_AMBER
+  local color=$COLOR_ALIAS_AI_ENABLED
 fi
 
 if [[ $mic2txtModel = "parakeet" ]]; then
-  local icon="󰔊  "
-  local color=$COLOR_GREEN
+  local color=$COLOR_ALIAS_COMMENT
 fi
 
 jo text=$icon fg=$color | jo -a

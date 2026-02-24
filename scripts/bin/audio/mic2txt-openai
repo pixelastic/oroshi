@@ -36,6 +36,11 @@ kill-pid "$(cat $pidFile)"
 # We transcribe to text
 local transcription="$(wav2txt-openai $recordFile)"
 
+# Rewrite as a slack message
+if mic2txt-slack-mode-is-enabled; then
+  transcription="$(txt2slack "$transcription")"
+fi
+
 # Play a sound to indicate it's being pasted
 if sound-mode-is-enabled; then
   audio-play ~/.oroshi/config/audio/sounds/bg-stealth.wav &

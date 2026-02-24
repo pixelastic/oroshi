@@ -1,14 +1,14 @@
 #!/usr/bin/env zsh
-# JSON info about if sound mode is enabled
+# JSON info about if Slack mode is enabled
 source $ZSH_CONFIG_PATH/theming/env/colors.zsh
 
-local storeFile=$OROSHI_TMP_FOLDER/sound-mode/on
+local storeFile=$OROSHI_TMP_FOLDER/mic2txt/slack-mode
+local icon="  "
 
-local icon="  "
 if [[ ! -f ${storeFile} ]]; then
   local color=$COLOR_ALIAS_COMMENT
 else
-  local color=$COLOR_GREEN
+  local color=$COLOR_ALIAS_SUCCESS
 fi
 
 jo text=$icon fg=$color | jo -a
