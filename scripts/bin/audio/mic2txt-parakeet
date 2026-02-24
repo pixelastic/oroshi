@@ -20,7 +20,8 @@ if [[ $isRecordingRunning == "0" ]]; then
   rec \
     --rate 16000 \
     --channels 1 \
-    $recordFile &
+    $recordFile \
+    gain 40 &
 
   # Save the pid
   echo $! >$pidFile
@@ -32,6 +33,11 @@ fi
 # A recording is already started, we stop it after 2s (to catch the last words)
 sleep 2
 kill-pid "$(cat $pidFile)"
+
+# Preprocess the audio to improve Parakeet recognition
+# Remove silence at start and boost volume
+ffmpeg -i $recordFile -af "silenceremove=start_periods=1:start_silence=0.1:start_threshold=-50dB,volume=15dB" ${recordFile}.tmp.wav -y 2>/dev/null
+mv ${recordFile}.tmp.wav $recordFile
 
 # We transcribe to text
 local transcription="$(wav2txt-parakeet $recordFile)"

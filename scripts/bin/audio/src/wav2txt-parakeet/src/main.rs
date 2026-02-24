@@ -72,6 +72,7 @@ fn main() -> Result<()> {
     let args = Cli::parse();
 
     let samples = read_samples(&args.file)?;
+
     let mut parakeet = load_parakeet()?;
 
     let result = parakeet
