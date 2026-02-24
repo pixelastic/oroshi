@@ -1,11 +1,11 @@
 #!/usr/bin/env zsh
 # mic2text: Transcribe what is being said into text
-# Uses the model returned by mic2txt-model (default to openai whisper)
+# Uses the model returned by mic2txt-model
 # Usage:
 # $ mic2txt # Starts recording then...
 #   mic2txt # ...stops the recording and display the transcription
 
 local mic2txtModel=$(mic2txt-model)
 
+[[ $mic2txtModel = "parakeet" ]] && mic2txt-parakeet
 [[ $mic2txtModel = "openai" ]] && mic2txt-openai
-[[ $mic2txtModel = "deepgram" ]] && mic2txt-deepgram
