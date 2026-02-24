@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+# Taplo: TOML linter
+# https://github.com/tamasfe/taplo
+set -e
+
+local DOWNLOAD_URL="https://github.com/tamasfe/taplo/releases/download/0.10.0/taplo-linux-x86_64.gz"
+local DOWNLOAD_NAME="taplo.gz"
+local INSTALL_PATH=~/local/etc/taplo
+local BINARY_NAME="taplo"
+
+mkdir -p $INSTALL_PATH
+cd $INSTALL_PATH
+rm -f $DOWNLOAD_NAME $BINARY_NAME
+
+wget $DOWNLOAD_URL -O $DOWNLOAD_NAME
+gunzip $DOWNLOAD_NAME
+chmod +x $BINARY_NAME
+
+cd ~/local/bin
+ln -fs ${INSTALL_PATH}/$BINARY_NAME

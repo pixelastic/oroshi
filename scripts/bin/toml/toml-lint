@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+# toml-lint: Lint a TOML file
+# Usage:
+# $ toml-lint ./path/to/file.toml
+set -e
+
+# Input file
+inputFile="${1:a}"
+if [[ ! -f "$inputFile" ]]; then
+  echo "Error: File '$inputFile' not found" >&2
+  exit 1
+fi
+
+taplo lint \
+  --default-schema-catalogs \
+  "$inputFile" 2>&1
+
+fly-lint "$inputFile" 2>&1

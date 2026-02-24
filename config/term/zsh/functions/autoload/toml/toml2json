@@ -1,0 +1,5 @@
+# Convert TOML to JSON
+function toml2json() {
+  local input=$1
+  taplo get -f "$input" -o json
+}

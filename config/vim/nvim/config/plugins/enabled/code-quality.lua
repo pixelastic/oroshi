@@ -104,6 +104,13 @@ local config = {
       formatters = { "shfmt" },
     },
     toml = {
+      -- Note 1: Taplo as an LSP server identifies itself as "Even Better TOML".
+
+      -- Note 2: We have a toml-lint binary outside of nvim that produces an
+      -- output similar to what the LSP server + linter does here, in mostly
+      -- human-readable format. This script could be improved to provide a
+      -- machine-readable JSON output so we could use it in nvim, but this
+      -- isn't done yet.
       lsp = { "taplo" },
       formatters = { "taplo" },
       linters = { "oroshi_fly_lint" },
