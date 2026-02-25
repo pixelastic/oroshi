@@ -9,8 +9,10 @@ local inputText="${1:-$(cat)}"
 # If input is empty, return empty
 [[ -z "$inputText" ]] && exit 1
 
+local language="$(mic2txt-language)"
+
 # Build the Claude prompt
-local claudePrompt="Transform this voice transcription into a natural Slack message.
+local claudePrompt="Transform this voice transcription into a natural Slack message in language ${language}.
 
 Transcription:
 ${inputText}
@@ -19,7 +21,6 @@ CRITICAL INSTRUCTIONS:
 - Return ONLY the reformatted message text
 - NO explanations, NO analysis, NO commentary
 - NO markdown code blocks, NO formatting markers
-- ABSOLUTELY MANDATORY: Keep the EXACT SAME LANGUAGE as the input - DO NOT TRANSLATE (if input is French, output MUST be French; if input is English, output MUST be English)
 - Keep the tone casual and conversational (team communication)
 - Use short sentences and paragraphs
 - Do not use the — character
@@ -39,4 +40,4 @@ if [[ $result = "" ]]; then
   exit 0
 fi
 
-echo $result
+echo "$result"
