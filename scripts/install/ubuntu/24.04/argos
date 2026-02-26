@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+# argos: Create Gnome statusbar extensions from shell script outputs
+# https://github.com/p-e-w/argos
+set -e
+
+local REPO_URL="git@github.com:p-e-w/argos.git"
+local DOWNLOAD_PATH=~/local/src
+local DOWNLOAD_DIRECTORY="argos"
+
+cd $DOWNLOAD_PATH
+if [ ! -d "$DOWNLOAD_DIRECTORY" ]; then
+  git clone "$REPO_URL" "$DOWNLOAD_DIRECTORY"
+fi
+
+ln \
+  -fs "${DOWNLOAD_PATH}/${DOWNLOAD_DIRECTORY}/argos@pew.worldwidemann.com" \
+  ~/.local/share/gnome-shell/extensions
+
+echo "You now need to log out and log in again"
