@@ -6,4 +6,4 @@ local image=$(cat $iconPath | base64 -w 0)
 
 echo "| image='$image' imageWidth=20"
 echo "---"
-echo "Language: ${languageName} (Click to toggle) | bash='/home/tim/.oroshi/scripts/bin/audio/mic2txt-model-language' terminal=false"
+echo "Language: ${languageName} (Click to toggle) | bash='/home/tim/.oroshi/scripts/bin/audio/mic2txt-language-toggle' terminal=false"
