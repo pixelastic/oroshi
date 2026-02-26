@@ -11,6 +11,3 @@ local currentLanguage="$(mic2txt-language)"
 [[ $currentLanguage = "en" ]] && nextLanguage="fr"
 
 echo $nextLanguage >$languageFile
-
-# Update kitty statusbar
-kitty-refresh

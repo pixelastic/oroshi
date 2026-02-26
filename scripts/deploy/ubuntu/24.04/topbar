@@ -55,7 +55,15 @@ if command -v gext >/dev/null; then
   # From right to left...
   stackExtension just-perfection-desktop@just-perfection # Just Perfection
   stackExtension ubuntu-appindicators@ubuntu.com         # App Indicators
+  stackExtension argos@pew.worldwidemann.com             # Argos
   stackExtension sp-tray@sp-tray.esenliyim.github.com    # spotify-tray
 fi
 
+# Symlinking all scripts to argos directory
+local argosConfigDir=~/.config/argos
+mkdir -p $argosConfigDir
+rm $argosConfigDir/*
+ln \
+  -fs ~/.oroshi/config/ubuntu/24.04/argos/*.zsh \
+  $argosConfigDir
 # }}}

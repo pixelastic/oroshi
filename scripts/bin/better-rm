@@ -12,7 +12,7 @@ local regularFiles=()
 local mountedFiles=()
 
 for arg in "$@"; do
-  filepath="${arg:A}"
+  filepath="${arg:a}"
   local isMountedFile=0
 
   # Check if file is a remote mount

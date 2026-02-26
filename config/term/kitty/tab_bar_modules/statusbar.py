@@ -13,10 +13,7 @@ statusbarState = {
     # Note: use kitty-refresh script to force-refresh the display for debugging
     "manifest": [
         # "spotify:5",
-        "sound-mode:60",
-        "mic2txt-slack-mode:60",
-        "mic2txt-language:60",
-        "mic2txt-model:60",
+        # "sound-mode:60",
         # "battery:60",
         "cpu:30",
         "ram:30",

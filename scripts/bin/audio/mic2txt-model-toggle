@@ -11,6 +11,3 @@ local currentModel="$(mic2txt-model)"
 [[ $currentModel = "parakeet" ]] && nextModel="openai"
 
 echo $nextModel >$modelFile
-
-# Update kitty statusbar
-kitty-refresh

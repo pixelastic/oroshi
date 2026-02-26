@@ -13,6 +13,3 @@ if [[ -f $storeFile ]]; then
 else
   touch $storeFile
 fi
-
-# Update kitty statusbar
-kitty-refresh
