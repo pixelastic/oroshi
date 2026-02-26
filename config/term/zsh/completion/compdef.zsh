@@ -211,8 +211,9 @@ compdef '_files -g "*.{bmp,gif,jpg,jpeg,png,svg,tiff,webp,avi,mkv,mp4,mpg,webm}"
 
 # PDF {{{
 compdef '_files -g "*.pdf"' \
-  pdf2txt \
+  algolia-paycheck \
   pdf2img \
+  pdf2txt \
   pdf-open \
   pdf-page-count \
   pdf-split
