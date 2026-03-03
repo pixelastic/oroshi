@@ -134,7 +134,6 @@ local config = {
       formatters = { "oroshi_js_fix" },
       configureLinter = javascriptHelper.configureLinter,
       configureFormatter = javascriptHelper.configureFormatter,
-      disableConformFormatOnSave = true,
     },
     zsh = {
       formatters = { "shfmt_zsh" },

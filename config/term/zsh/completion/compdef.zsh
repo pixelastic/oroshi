@@ -219,7 +219,7 @@ compdef '_files -g "*.pdf"' \
   pdf-split
 # }}}
 # JS {{{
-compdef '_files -g "*.json"' \
+compdef '_files -g "*.js"' \
   js-fix \
   js-lint
 # }}}
@@ -238,4 +238,9 @@ compdef '_files -g "*.jsonl"' \
 compdef '_files -g "*.toml"' \
   toml-lint \
   toml2json
+# }}}
+# Vue {{{
+compdef '_files -g "*.vue"' \
+  js-fix \
+  js-lint
 # }}}
