@@ -129,6 +129,13 @@ local config = {
       configureLinter = javascriptHelper.configureLinter,
       configureFormatter = javascriptHelper.configureFormatter,
     },
+    vue = {
+      linters = { "oroshi_js_lint" },
+      formatters = { "oroshi_js_fix" },
+      configureLinter = javascriptHelper.configureLinter,
+      configureFormatter = javascriptHelper.configureFormatter,
+      disableConformFormatOnSave = true,
+    },
     zsh = {
       formatters = { "shfmt_zsh" },
       linters = { "zshlint" },
