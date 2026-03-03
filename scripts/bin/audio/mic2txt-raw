@@ -37,13 +37,13 @@ function stopRecording {
   kill-pid "$(cat $pidFile)"
   rm $pidFile
 
-  # Improve sound quality
-  ffmpeg \
-    -i $recordFile \
-    -af "silenceremove=start_periods=1:start_silence=0.1:start_threshold=-50dB,volume=15dB" \
-    ${recordFile}.tmp.wav \
-    -y
-  mv ${recordFile}.tmp.wav $recordFile
+  # # Improve sound quality
+  # ffmpeg \
+  #   -i $recordFile \
+  #   -af "silenceremove=start_periods=1:start_silence=0.1:start_threshold=-50dB,volume=15dB" \
+  #   ${recordFile}.tmp.wav \
+  #   -y
+  # mv ${recordFile}.tmp.wav $recordFile
 
   # We transcribe to text
   local transcription="$(${wav2TxtBinary} $recordFile)"
