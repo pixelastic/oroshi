@@ -244,6 +244,37 @@ return {
     return result
   end,
 
+  -- slice: Return part of a collection
+  -- Note: 0-indexed, userFinish excluding, accepts negative indices
+  slice = function(collection, userStart, userFinish)
+    local length = #collection
+    local start = userStart or 0
+    local finish = userFinish or length
+
+    -- Handle negative indices (count from end)
+    if start < 0 then
+      start = length + start
+    end
+    if finish < 0 then
+      finish = length + finish
+    end
+
+    -- Clamp to array bounds
+    start = math.max(0, math.min(start, length))
+    finish = math.max(0, math.min(finish, length))
+
+    -- If start >= finish, return empty array
+    if start >= finish then
+      return {}
+    end
+
+    local result = {}
+    for i = start + 1, finish do
+      F.append(result, collection[i])
+    end
+    return result
+  end,
+
   -- sortBy: Sort a collection by a specific key or callback
   sortBy = function(collection, callback)
     -- If a string, return the key by that name

@@ -1,6 +1,9 @@
--- Scrollback pager
--- When vim is used by Kitty as a pager (Alt-C)
-F.ftplugin("scrollback_pager", function()
+local M = {}
+
+M.onFiletype = function()
+  -- Scrollback pager
+  -- When vim is used by Kitty as a pager (Alt-C)
+
   -- Remove the line number
   vim.o.number = false
 
@@ -21,8 +24,8 @@ F.ftplugin("scrollback_pager", function()
   -- Define the ft, so we can set a custom statusline
   vim.opt_local.ft = "pager"
 
-  -- Set a dark blue background to make it more visible we're in pager mode
-  F.hl("Normal", "GRAY_3", { bg = "DARK_BLUE" })
+  F.hl("Normal", "GRAY_3", { bg = "DARK_BLUE" }) -- Background
+  F.hl("CursorLine", "none", { bg = "BLUE_9" }) -- Current line
 
   -- We wait until all initialization is done, then delete the original buffer
   -- If we don't wait we might mess some treesitter callback that expect the buffer
@@ -30,4 +33,6 @@ F.ftplugin("scrollback_pager", function()
   F.defer(function()
     F.closeBuffer(rawBufferId)
   end)
-end)
+end
+
+return M

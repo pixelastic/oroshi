@@ -1,4 +1,26 @@
--- lua
-F.ftplugin("lua", function()
-  F.imap("$ù", "F.warn()<Left>", "Debug window", { buffer = F.bufferId() })
-end)
+local M = {}
+
+M.onFiletype = function()
+  local bufferId = F.bufferId()
+  F.imap("$ù", "F.warn()<Left>", "Debug window", { buffer = bufferId })
+end
+
+M.configureLsp = function()
+  local helper = O_require("oroshi/plugins/helpers/code-quality")
+  -- Check .luarc.json for details of the exact config. This applies only to
+  -- .lua files used to configure Neovim.
+  helper.configureLspServer("lua_ls", {})
+end
+
+M.configureFormatter = function(conform)
+  conform.formatters.stylua = {
+    prepend_args = {
+      "--indent-type",
+      "Spaces",
+      "--indent-width",
+      vim.o.shiftwidth,
+    },
+  }
+end
+
+return M

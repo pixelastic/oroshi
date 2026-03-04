@@ -93,7 +93,9 @@ ftplugin("fzf", disableView)
 -- Set it as the directory of the currently edited file
 local function updateWorkingDirectory()
   local workingDirectory = vim.fn.expand("%:p:h")
-  vim.cmd("lcd " .. vim.fn.fnameescape(workingDirectory))
+  if F.exists(workingDirectory) then
+    vim.cmd("lcd " .. vim.fn.fnameescape(workingDirectory))
+  end
 end
 autocmd("BufEnter", updateWorkingDirectory)
 -- }}}

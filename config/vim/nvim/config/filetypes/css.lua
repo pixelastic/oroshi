@@ -31,7 +31,7 @@ M.lintParser = function(output)
     return {
       lnum = line - 1,
       col = warning.column - 1,
-      severity = M.convertSeverity(warning.severity),
+      severity = M.__.convertSeverity(warning.severity),
       message = warning.text,
       source = "stylelint",
       code = warning.rule,
@@ -40,8 +40,10 @@ M.lintParser = function(output)
 end
 
 -- Convert stylelint severity ("error", "warning") to vim.diagnostic severity
-M.convertSeverity = function(severityString)
-  return severityString == "warning" and vim.diagnostic.severity.WARN or vim.diagnostic.severity.ERROR
-end
+M.__ = {
+  convertSeverity = function(severityString)
+    return severityString == "warning" and vim.diagnostic.severity.WARN or vim.diagnostic.severity.ERROR
+  end,
+}
 
 return M

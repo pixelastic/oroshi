@@ -3,11 +3,12 @@ local M = {}
 -- Run a shell command asynchronously
 -- @param command string - Command to execute
 -- @param options table - { onSuccess = function(), onError = function() }
-M.run = function(command, userOptions)
+M.run = function(userCommand, userOptions)
   local defaults = {
     onSuccess = F.noop,
     onError = F.noop,
   }
+  local command = F.absolute(userCommand)
   local options = F.merge(defaults, userOptions)
 
   vim.system({ command }, {}, function(result)

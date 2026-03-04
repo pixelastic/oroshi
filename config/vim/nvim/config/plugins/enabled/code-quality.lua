@@ -1,13 +1,13 @@
 local helperDiagline = O_require("oroshi/plugins/helpers/diagline")
 local helperStatusline = O_require("oroshi/plugins/helpers/statusline")
 local helper = O_require("oroshi/plugins/helpers/code-quality")
-local cssHelper = O_require("oroshi/plugins/helpers/filetypes/css")
-local javascriptHelper = O_require("oroshi/plugins/helpers/filetypes/javascript")
-local jsonHelper = O_require("oroshi/plugins/helpers/filetypes/json")
-local luaHelper = O_require("oroshi/plugins/helpers/filetypes/lua")
-local pythonHelper = O_require("oroshi/plugins/helpers/filetypes/python")
-local tomlHelper = O_require("oroshi/plugins/helpers/filetypes/toml")
-local zshHelper = O_require("oroshi/plugins/helpers/filetypes/zsh")
+local cssHelper = O_require("oroshi/filetypes/css")
+local javascriptHelper = O_require("oroshi/filetypes/javascript")
+local jsonHelper = O_require("oroshi/filetypes/json")
+local luaHelper = O_require("oroshi/filetypes/lua")
+local pythonHelper = O_require("oroshi/filetypes/python")
+local tomlHelper = O_require("oroshi/filetypes/toml")
+local zshHelper = O_require("oroshi/filetypes/zsh")
 
 local config = {
   -- Dependencies to install globally

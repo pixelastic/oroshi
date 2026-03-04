@@ -82,18 +82,30 @@ O_require("oroshi/ui/tabline")
 O_require("oroshi/display")
 O_require("oroshi/disk")
 
--- Filetype specific
-O_require("oroshi/filetypes/colors") -- Config files that should call colors-refresh
-O_require("oroshi/filetypes/scrollback_pager") -- When nvim is used as a pager in kitty
-O_require("oroshi/filetypes/config")
-O_require("oroshi/filetypes/gitcommit")
-O_require("oroshi/filetypes/help")
-O_require("oroshi/filetypes/javascript")
-O_require("oroshi/filetypes/lua")
-O_require("oroshi/filetypes/markdown")
-O_require("oroshi/filetypes/sh")
-O_require("oroshi/filetypes/xkb")
-O_require("oroshi/filetypes/zsh")
+-- Filetypes
+local vimConfigFolder = F.dirname(debug.getinfo(1, "S").short_src)
+local filetypePaths = F.glob("./filetypes/*.lua", {
+  cwd = vimConfigFolder,
+})
+F.each(filetypePaths, function(filetypePath)
+  local filetype = F.filename(filetypePath)
+  local module = O_require("oroshi.filetypes." .. filetype)
+
+  -- Always fired
+  if module.onInit then
+    module.onInit()
+  end
+
+  -- Fired only when the specific filetype is loaded
+  if module.onFiletype then
+    F.ftplugin(filetype, module.onFiletype)
+
+    -- if .filetypeAliases is defined, apply the same onFiletype to the aliases
+    F.each(module.filetypeAliases or {}, function(aliasName)
+      F.ftplugin(aliasName, module.onFiletype)
+    end)
+  end
+end)
 
 -- Plugins
 -- Any config stored in plugins will NOT be reloaded when pressing <F2>, you

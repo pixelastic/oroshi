@@ -1,4 +1,8 @@
--- sh
-F.ftplugin("sh", function()
-  F.imap("##", "${}<Left>", "Create interpolated variable", { buffer = F.bufferId() })
-end)
+local M = {}
+
+M.onFiletype = function()
+  local bufferId = F.bufferId()
+  F.imap("##", "${}<Left>", "Create interpolated variable", { buffer = bufferId })
+end
+
+return M

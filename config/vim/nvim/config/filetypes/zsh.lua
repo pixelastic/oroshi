@@ -1,5 +1,91 @@
--- zsh
-F.ftset("*config/term/zsh/functions/autoload/*", "zsh")
-F.ftplugin("zsh", function()
-  F.imap("##", "${}<Left>", "Create interpolated variable", { buffer = F.bufferId() })
-end)
+local M = {}
+
+M.onInit = function()
+  -- Set filetype for zsh autoload functions
+  F.ftset("*config/term/zsh/functions/autoload/*", "zsh")
+end
+
+M.onFiletype = function()
+  local bufferId = F.bufferId()
+  F.imap("##", "${}<Left>", "Create interpolated variable", { buffer = bufferId })
+end
+
+M.configureFormatter = function(conform)
+  conform.formatters.shfmt_zsh = {
+    command = "shfmt",
+    args = { "-i", vim.o.shiftwidth },
+    exit_codes = { 0, 1 }, -- Fail silently on zsh-specific syntax
+  }
+end
+
+M.configureLinter = function(lint)
+  lint.linters.zshlint = {
+    cmd = "zshlint",
+    stdin = false,
+    ignore_exitcode = true,
+    parser = M.lintParser,
+  }
+end
+
+-- Parser to convert CLI output to diagnostics
+M.lintParser = function(output)
+  if output == "" then
+    return {}
+  end
+  local decoded = vim.json.decode(output)
+  local diagnostics = {}
+  for _, item in ipairs(decoded or {}) do
+    local code = item.code
+    local message = item.message
+
+    -- [SC2154]
+    -- This is a rule that flags unused variables. It cannot understand the
+    -- zparseopts syntax to define variables from args passed to the
+    -- commandline, so it flags some false positives. We will ignore it
+    -- on purpose when the variable starts with flag*, which is the pattern I use
+    if code == 2154 and F.startsWith(message, "flag") then
+      goto continue
+    end
+
+    F.append(diagnostics, {
+      source = "zshlint",
+      code = "SC" .. item.code,
+      message = item.message,
+      severity = M.__.severityStringToInt(item.level),
+
+      lnum = item.line - 1,
+      end_lnum = item.endLine - 1,
+      col = item.column - 1,
+      end_col = item.endColumn - 1,
+      user_data = {
+        lsp = {
+          code = item.code,
+        },
+      },
+    })
+
+    ::continue::
+  end
+  return diagnostics
+end
+
+M.__ = {
+  severityStringToInt = function(severityString)
+    local severities = {
+      error = vim.diagnostic.severity.ERROR,
+
+      warning = vim.diagnostic.severity.WARN,
+      warn = vim.diagnostic.severity.WARN,
+
+      info = vim.diagnostic.severity.INFO,
+
+      style = vim.diagnostic.severity.HINT,
+      hint = vim.diagnostic.severity.HINT,
+
+      success = 5,
+    }
+    return severities[severityString]
+  end,
+}
+
+return M
