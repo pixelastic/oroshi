@@ -1,6 +1,7 @@
 {
   "runtime.version": "LuaJIT",
   "diagnostics.globals": ["vim"],
+  "diagnostics.disable": ["duplicate-set-field"],
   "workspace.library": [
     "$VIMRUNTIME"
   ],
