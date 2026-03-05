@@ -1,5 +1,10 @@
 local M = {}
 
+M.onFiletype = function()
+  -- Split words on dashes
+  vim.opt_local.iskeyword:remove("-")
+end
+
 -- Configure linter if not already configured
 M.configureLinter = function(lint)
   lint.linters.oroshi_css_lint = {
