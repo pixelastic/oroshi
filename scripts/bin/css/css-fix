@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# css-fix: Fix a CSS file
+# Usage:
+# $ css-fix ./path/to/file.css                       # Output fixed code to stdout
+# $ css-fix --in-place ./path/to/file.css            # Overwrite the file in place
+# $ echo "#css {}" | css-fix                             # json from stdin, fixed json to stdout
+# $ echo "#css {}" | css-fix --filepath ./realpath.css  # Specify file location for config resolution
+
+# Delegate to prettier-fix with css parser
+prettier-fix --parser css "$@"

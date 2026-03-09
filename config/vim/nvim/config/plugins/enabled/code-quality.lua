@@ -1,7 +1,8 @@
+local cssHelper = O_require("oroshi/filetypes/css")
 local helperDiagline = O_require("oroshi/plugins/helpers/diagline")
 local helperStatusline = O_require("oroshi/plugins/helpers/statusline")
 local helper = O_require("oroshi/plugins/helpers/code-quality")
-local cssHelper = O_require("oroshi/filetypes/css")
+local htmlHelper = O_require("oroshi/filetypes/html")
 local javascriptHelper = O_require("oroshi/filetypes/javascript")
 local jsonHelper = O_require("oroshi/filetypes/json")
 local luaHelper = O_require("oroshi/filetypes/lua")
@@ -63,25 +64,25 @@ local config = {
     },
     css = {
       linters = { "oroshi_css_lint" },
-      formatters = { "prettier" },
+      formatters = { "oroshi_css_fix" },
       configureLinter = cssHelper.configureLinter,
+      configureFormatter = cssHelper.configureFormatter,
     },
     html = {
-      formatters = { "prettier" },
+      formatters = { "oroshi_html_fix" },
+      configureFormatter = htmlHelper.configureFormatter,
     },
     javascript = {
       linters = { "oroshi_js_lint" },
       formatters = { "oroshi_js_fix" },
       configureLinter = javascriptHelper.configureLinter,
       configureFormatter = javascriptHelper.configureFormatter,
-      disableConformFormatOnSave = true,
     },
     javascriptreact = {
       linters = { "oroshi_js_lint" },
       formatters = { "oroshi_js_fix" },
       configureLinter = javascriptHelper.configureLinter,
       configureFormatter = javascriptHelper.configureFormatter,
-      disableConformFormatOnSave = true,
     },
     json = {
       linters = { "oroshi_json_lint" },

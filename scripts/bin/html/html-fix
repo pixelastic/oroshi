@@ -4,7 +4,7 @@
 # $ html-fix ./path/to/file.html                       # Output fixed code to stdout
 # $ html-fix --in-place ./path/to/file.html            # Overwrite the file in place
 # $ echo "<html>" | html-fix                             # json from stdin, fixed json to stdout
-# $ echo "<html>" | html-fix --filepath ./realpath.json  # Specify file location for config resolution
+# $ echo "<html>" | html-fix --filepath ./realpath.html  # Specify file location for config resolution
 
 # Delegate to prettier-fix with HTML parser
 prettier-fix --parser html "$@"
