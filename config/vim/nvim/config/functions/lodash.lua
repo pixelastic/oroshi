@@ -1,4 +1,11 @@
 return {
+  -- castCollection: Cast a value to a collection if not already one
+  castCollection = function(input)
+    if F.isCollection(input) then
+      return input
+    end
+    return { input }
+  end,
   -- concat: Concatenate multiple tables together
   concat = function(...)
     local ret = {}
@@ -9,7 +16,6 @@ return {
     end
     return ret
   end,
-
   -- clone: Copy the collection to a new one
   clone = function(collection)
     return vim.deepcopy(collection)
@@ -152,6 +158,7 @@ return {
   end,
 
   -- length: Returns the length of the string or collection
+  -- Note: {"a", "b", "c"} has length 4 (index of last element)
   length = function(input)
     if F.isString(input) then
       return #input

@@ -1,6 +1,19 @@
 -- -- Filetypes
 -- -- Specific tweaks and syntax for specific filetypes
 return {
+  -- HTML
+  -- Emmet
+  -- https://github.com/mattn/emmet-vim
+  -- Expand HTML/CSS abbreviations
+  {
+    "mattn/emmet-vim",
+    ft = { "html", "vue" },
+    init = function()
+      vim.g.user_emmet_install_global = 0 -- Only load it on selected filetypes
+      vim.g.user_emmet_leader_key = "<nop>" -- We'll define out own keybinding
+    end,
+  },
+
   -- Kitty
   -- https://github.com/fladson/vim-kitty
   -- Syntax highlighting for kitty files
