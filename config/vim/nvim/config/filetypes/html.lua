@@ -1,7 +1,7 @@
 local M = {}
 
 M.onFiletype = function()
-  F.imap("<C-E>", M.__.expandEmmet, "Expand Emmet abbreviation")
+  F.imap("<C-E>", M.expandEmmet, "Expand Emmet abbreviation")
 end
 
 M.configureFormatter = function(conform)
@@ -14,41 +14,39 @@ M.configureFormatter = function(conform)
   }
 end
 
-M.__ = {
-  expandEmmet = function()
-    -- Note: This currently considers the last word as the abbrev, and replaces
-    -- the whole line
+M.expandEmmet = function()
+  -- Note: This currently considers the last word as the abbrev, and replaces
+  -- the whole line
 
-    -- Getting the abbreviation
-    local currentLine = F.line()
-    local splits = F.split(currentLine, " ")
-    local abbr = F.last(splits)
-    if not abbr then
-      return
-    end
+  -- Getting the abbreviation
+  local currentLine = F.line()
+  local splits = F.split(currentLine, " ")
+  local abbr = F.last(splits)
+  if not abbr then
+    return
+  end
 
-    -- Getting the snippet
-    local filetype = F.option("filetype")
-    local snippet = vim.fn["emmet#expandWord"](abbr, filetype, 0)
-    if not snippet then
-      return
-    end
+  -- Getting the snippet
+  local filetype = F.option("filetype")
+  local snippet = vim.fn["emmet#expandWord"](abbr, filetype, 0)
+  if not snippet then
+    return
+  end
 
-    -- Replace the current line with the indented snippet
-    F.replaceLines(snippet)
+  -- Replace the current line with the indented snippet
+  F.replaceLines(snippet)
 
-    -- Indent newly added snippet
-    local startLineNumber = F.lineNumber()
-    local snippetLines = F.split(snippet, "\n")
-    local endLineNumber = startLineNumber + F.length(snippetLines) - 1
-    F.indent(startLineNumber, endLineNumber)
+  -- Indent newly added snippet
+  local startLineNumber = F.lineNumber()
+  local snippetLines = F.split(snippet, "\n")
+  local endLineNumber = startLineNumber + F.length(snippetLines) - 1
+  F.indent(startLineNumber, endLineNumber)
 
-    -- Move cursor back to first line
-    local startLineContent = F.line(startLineNumber)
-    local startColumnNumber = F.length(startLineContent)
-    F.normalMode()
-    F.moveTo(startLineNumber, startColumnNumber + 1)
-  end,
-}
+  -- Move cursor back to first line
+  local startLineContent = F.line(startLineNumber)
+  local startColumnNumber = F.length(startLineContent)
+  F.normalMode()
+  F.moveTo(startLineNumber, startColumnNumber + 1)
+end
 
 return M
