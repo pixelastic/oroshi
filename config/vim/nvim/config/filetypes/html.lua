@@ -2,6 +2,7 @@ local M = {}
 
 M.onFiletype = function()
   F.imap("<C-E>", M.expandEmmet, "Expand Emmet abbreviation")
+  F.imap("<C-:>", "</<C-X><C-O>", "Close current HTML tag")
 end
 
 M.configureFormatter = function(conform)

@@ -17,7 +17,6 @@ hl("PmenuExtraSel", "XXX") --	Popup menu: Selected item "extra text".
 hl("PmenuExtra", "XXX") --	Popup menu: Normal item "extra text".
 hl("PmenuKindSel", "XXX") --	Popup menu: Selected item "kind".
 hl("PmenuKind", "XXX") --	Popup menu: Normal item "kind".
-hl("ComplMatchIns", "XXX") --	Matched text of the currently inserted completion.
 hl("CursorColumn", "XXX") --	Screen-column at the cursor, when 'cursorcolumn' is set.
 hl("CursorIM", "XXX") --	Like Cursor, but used when in IME mode. *CursorIM*
 hl("Cursor", "XXX") --		Character under the cursor.

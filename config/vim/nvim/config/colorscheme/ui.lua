@@ -128,6 +128,7 @@ hl("NoiceCmdlineIconSearch", "ORANGE_7", { bg = "none" })
 
 -- Completion (Ghost Text) {{{
 hl("CmpGhostText", "COMMENT") -- Ghost text
+hl("ComplMatchIns", "none") --	Text that just got completed
 -- }}}
 
 -- Completion {{{
