@@ -57,6 +57,7 @@ return {
                 { find = "lines <ed" },
                 { find = "lines >ed" },
                 { find = "and press <Enter> to exit Nvim" },
+                { find = 'Error in decoration provider "line" (ns=nvim.treesitter.highlighter):' }, -- Treesitter parsing error
                 { find = "^:!" }, -- The command typed (eg :!pwd)
               },
             },
@@ -93,7 +94,6 @@ return {
           },
           { filter = { event = "notify", kind = "warn" }, view = "O_warn" },
           { filter = { event = "notify", kind = "error", find = "Formatter failed." }, view = "O_warn" },
-
           -- Error
           -- { filter = { event = "notify", kind = "error" }, view = "messages", },
           -- { filter = { event = "notify", kind = "debug", max_height = 10 }, view = "O_debug", }, -- F.debug()
