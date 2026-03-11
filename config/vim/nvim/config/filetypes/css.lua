@@ -2,7 +2,7 @@ local M = {}
 
 M.onFiletype = function()
   -- Split words on dashes
-  vim.opt_local.iskeyword:remove("-")
+  F.updateBufferOption("iskeyword", "@,48-57,_,192-255")
 end
 
 -- Configure linter if not already configured
