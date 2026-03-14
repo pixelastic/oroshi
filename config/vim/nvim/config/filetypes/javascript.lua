@@ -130,7 +130,7 @@ M.__ = {
     F.imap("##", "${}<Left>", "Create interpolated variable", { buffer = bufferId })
 
     -- JSDoc generation
-    F.nmap("<C-:>", F.generateJsDoc, "Generate JSDoc for function under cursor", { buffer = bufferId })
+    F.nmap("⁇", F.generateJsDoc, "Generate JSDoc for function under cursor", { buffer = bufferId })
 
     M.__.configureKeybindingsForTests()
   end,
