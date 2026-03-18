@@ -171,6 +171,9 @@ return {
     version = "0.25.4",
     event = { "BufReadPre", "BufNewFile" },
     build = ":TSUpdate",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter-textobjects", -- Allow vit / vat
+    },
     config = function()
       local treesitterConfig = require("nvim-treesitter.configs")
 
@@ -187,13 +190,13 @@ return {
         indent = {
           enable = true,
         },
-        -- Select node with vv (then expand with CTRL-J / CTRL-K)
+        -- Select node with vv (then expand with CTRL-K / shrink with CTRL-J)
         incremental_selection = {
           enable = true,
           keymaps = {
             init_selection = "vv", -- Select node
-            node_incremental = "<C-K>", -- Select parent node
-            node_decremental = "<C-J>", -- Deselect parent node
+            node_incremental = "<C-K>", -- Expand to parent node
+            node_decremental = "⒥", -- Shrink to child node
             scope_incremental = false,
           },
         },

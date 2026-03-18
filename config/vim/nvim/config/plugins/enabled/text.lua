@@ -98,14 +98,14 @@ return {
   -- Mini.align
   -- https://github.com/echasnovski/mini.align
   -- Align selection on specific delimiters
-  -- Use: Select text, then press "a," and it will be aligned on ,
+  -- Use: Select text, then press "ga," and it will be aligned on ,
   {
     "echasnovski/mini.align",
     version = "*",
     config = function()
       require("mini.align").setup({
         mappings = {
-          start = "a",
+          start = "ga",
         },
       })
     end,
