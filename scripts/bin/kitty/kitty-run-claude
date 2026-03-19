@@ -1,4 +1,12 @@
 #!/usr/bin/env zsh
 # Run claude in zsh, but stays in zsh once Claude is closed
+set -e
+
+# Start from the git root.
+# It makes resuming sessions easier
+local projectRoot="$(git-directory-root)"
+cd "$projectRoot"
+
 claude
+# Go back to zsh once claude is closed
 exec zsh
