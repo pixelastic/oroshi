@@ -8,6 +8,7 @@
       "Bash(echo:*)",
       "Bash(find:*)",
       "Bash(git log:*)",
+      "Bash(mkdir:*)",
       "Bash(grep:*)",
       "Bash(head:*)",
       "Bash(ls:*)",
