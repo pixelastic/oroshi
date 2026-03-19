@@ -127,7 +127,9 @@ function M.configureFormatters(filetypesConfig)
         return nil
       end
 
-      return { timeout_ms = 3000 }
+      local timeout = filetypesConfig[filetype].formatterTimeout or 3000
+
+      return { timeout_ms = timeout }
     end,
   })
 

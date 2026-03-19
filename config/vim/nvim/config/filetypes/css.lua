@@ -22,7 +22,6 @@ M.configureFormatter = function(conform)
     stdin = true,
     args = { "--piped", "--filepath", "$FILENAME" },
     exit_codes = { 0, 1 },
-    timeout_ms = 10000,
   }
 end
 
