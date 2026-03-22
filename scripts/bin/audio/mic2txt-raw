@@ -61,7 +61,7 @@ function stopRecording {
 
   # Play a sound to indicate it's being pasted
   if sound-mode-is-enabled; then
-    audio-play ~/.oroshi/config/audio/sounds/bg-stealth.wav &
+    audio-play ~/.oroshi/config/audio/sounds/mic2txt.mp3 &
   fi
 
   # Insert the transcription wherever I'm currently focused
