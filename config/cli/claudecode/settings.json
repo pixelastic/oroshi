@@ -8,10 +8,12 @@
       "Bash(echo:*)",
       "Bash(find:*)",
       "Bash(git log:*)",
-      "Bash(mkdir:*)",
       "Bash(grep:*)",
       "Bash(head:*)",
+      "Bash(jq:*)",
       "Bash(ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(readlink:*)",
       "Bash(rg:*)",
       "Bash(tail:*)",
       "Glob(*)",
@@ -19,7 +21,6 @@
       "LS(*)",
       "Read(*)",
       "Fetch(*)",
-      "WebSearch(*)",
       "WebFetch(domain:projects.pixelastic.com)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:docs.github.com)",
@@ -57,11 +58,21 @@
     ],
     "Stop": [
       {
-        "matcher": "",
         "hooks": [
           {
             "type": "command",
             "command": "/home/tim/.oroshi/config/cli/claudecode/hooks/stop"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "WebSearch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/tim/.oroshi/config/cli/claudecode/hooks/preToolUse"
           }
         ]
       }

@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# Auto-approve WebSearch tool usage
+
+if [[ "$TOOL_NAME" == "WebSearch" ]]; then
+  echo "approve"
+  exit 0
+fi
+
+# Let other tools go through normal permission flow
+exit 0
