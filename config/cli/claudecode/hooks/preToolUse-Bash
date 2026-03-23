@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # Check if the bash command can be safely executed, or ask the user otherwise
 #
-# This hook parses bash commands into subcommands (splitting on |, &&, ||)
+# This hook parses bash commands into subcommands (splitting on |, &&, ||, ;)
 # and checks each subcommand against an allowlist.
 #
 # TEST CASES - This hook must handle:
@@ -12,6 +12,7 @@
 # - echo hello | grep hello              -> accept (both allowed)
 # - echo hello | rm file                 -> ask (rm not allowed)
 # - echo a | grep a && echo b || echo c  -> accept (all subcommands allowed)
+# - echo ok; wget something              -> ask (wget not allowed)
 # - echo "rm -rf /"                      -> accept (rm is a string, not a command)
 #
 local stdinData=$(cat)
@@ -44,7 +45,7 @@ local allowlist=(
 # Returns an array of all the subcommands of a given command
 function parseCommandIntoSubcommands() {
   local input=$1
-  local separators=("&&" "||" "|")
+  local separators=("&&" "||" ";" "|")
 
   # Split the command into words
   # Using the (z) modifier handles escape sequences and strings properly
