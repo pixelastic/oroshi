@@ -66,5 +66,5 @@ tokens. Includes rate limiting to prevent abuse.
 
 YOUR OUTPUT MUST START IMMEDIATELY WITH THE COMMIT TYPE. NO OTHER TEXT."
 
-  claude-print "$claudePrompt"
+  claude-print "$claudePrompt" --sound git-commit-message.mp3
 }
