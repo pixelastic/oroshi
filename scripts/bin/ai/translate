@@ -31,4 +31,4 @@ CRITICAL INSTRUCTIONS:
 
 YOUR OUTPUT MUST BE THE TRANSLATION ITSELF, NOTHING ELSE."
 
-claude-print "$claudePrompt" --sound translate.mp3
+claude-print "$claudePrompt" --sound-before translate-before.mp3 --sound translate.mp3

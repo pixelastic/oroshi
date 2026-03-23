@@ -18,6 +18,11 @@ local recordFile=${tmpFolder}/record.wav
 mkdir -p $tmpFolder
 # }}}
 
+function playSound() {
+  local soundFile=$1
+  sound-mode-is-enabled && audio-play ~/.oroshi/config/audio/sounds/$soundFile &
+}
+
 # Start a recording
 function startRecording {
   rec \
@@ -46,6 +51,7 @@ function stopRecording {
   # mv ${recordFile}.tmp.wav $recordFile
 
   # We transcribe to text
+  playSound mic2txt-before.mp3
   local transcription="$(${wav2TxtBinary} $recordFile)"
 
   # Translate to english
@@ -60,9 +66,7 @@ function stopRecording {
   fi
 
   # Play a sound to indicate it's being pasted
-  if sound-mode-is-enabled; then
-    audio-play ~/.oroshi/config/audio/sounds/mic2txt.mp3 &
-  fi
+  playSound mic2txt.mp3
 
   # Insert the transcription wherever I'm currently focused
   focus-insert "$transcription"

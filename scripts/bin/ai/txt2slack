@@ -32,7 +32,7 @@ CRITICAL INSTRUCTIONS:
 YOUR OUTPUT MUST BE THE MESSAGE ITSELF, NOTHING ELSE."
 
 # Call Claude API with error handling
-local result="$(claude-print "$claudePrompt" --sound txt2slack.mp3)"
+local result="$(claude-print "$claudePrompt" --sound-before txt2slack-before.mp3 --sound txt2slack.mp3)"
 
 # If result is empty, return the original input
 if [[ $result = "" ]]; then
