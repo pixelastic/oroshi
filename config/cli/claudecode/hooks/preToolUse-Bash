@@ -27,58 +27,6 @@ local allowlist=(
   "git status"
 )
 
-function debug() {
-  local logFile="/home/tim/local/tmp/claude/preToolUse-Bash.log"
-  local input=$1
-  echo "$1" >>"$logFile"
-}
-
-function acceptTool() {
-  jo -d. \
-    hookSpecificOutput.hookEventName="PreToolUse" \
-    hookSpecificOutput.permissionDecision="allow"
-  exit 0
-}
-
-# function askUser() {
-#   jo -d. \
-#     hookSpecificOutput.hookEventName="PreToolUse" \
-#     hookSpecificOutput.permissionDecision="ask"
-#   exit 0
-# }
-
-function letClaudeAsk() {
-  # No opinion - let Claude Code's normal permission system handle it
-  # Return empty JSON for debugging purposes (functionally equivalent to exit 0)
-  jo -d. hookSpecificOutput.hookEventName="PreToolUse"
-  exit 0
-}
-
-# function denyTool() {
-#   local reason=$1
-#   jo -d. \
-#     hookSpecificOutput.hookEventName="PreToolUse" \
-#     hookSpecificOutput.permissionDecision="deny" \
-#     hookSpecificOutput.permissionDecisionReason="$reason"
-#   exit 0
-# }
-
-function isCommandAllowed() {
-  local cmd=$1
-
-  # Clean the command
-  cmd=$(echo "$cmd" | xargs)                                                             # Trim spaces
-  cmd=$(echo "$cmd" | sed -E 's/^([A-Za-z_][A-Za-z0-9_]*=[^[:space:]]+[[:space:]]+)+//') # Remove env vars
-
-  # Check against allowlist
-  for allowedCmd in "${allowlist[@]}"; do
-    if [[ "$cmd" == "$allowedCmd "* ]]; then
-      return 0 # allowed
-    fi
-  done
-  return 1 # not allowed
-}
-
 # Returns an array of all the subcommands of a given command
 function parseCommandIntoSubcommands() {
   local input=$1
@@ -114,6 +62,58 @@ function parseCommandIntoSubcommands() {
     printf '%s\n' "$trimmedCommand"
   done
 }
+
+function isCommandAllowed() {
+  local cmd=$1
+
+  # Clean the command
+  cmd=$(echo "$cmd" | xargs)                                                             # Trim spaces
+  cmd=$(echo "$cmd" | sed -E 's/^([A-Za-z_][A-Za-z0-9_]*=[^[:space:]]+[[:space:]]+)+//') # Remove env vars
+
+  # Check against allowlist
+  for allowedCmd in "${allowlist[@]}"; do
+    if [[ "$cmd" == "$allowedCmd "* ]]; then
+      return 0 # allowed
+    fi
+  done
+  return 1 # not allowed
+}
+
+function debug() {
+  local logFile="/home/tim/local/tmp/claude/preToolUse-Bash.log"
+  local input=$1
+  echo "$1" >>"$logFile"
+}
+
+function acceptTool() {
+  jo -d. \
+    hookSpecificOutput.hookEventName="PreToolUse" \
+    hookSpecificOutput.permissionDecision="allow"
+  exit 0
+}
+
+function letClaudeAsk() {
+  # No opinion - let Claude Code's normal permission system handle it
+  # Return empty JSON for debugging purposes (functionally equivalent to exit 0)
+  jo -d. hookSpecificOutput.hookEventName="PreToolUse"
+  exit 0
+}
+
+# function askUser() {
+#   jo -d. \
+#     hookSpecificOutput.hookEventName="PreToolUse" \
+#     hookSpecificOutput.permissionDecision="ask"
+#   exit 0
+# }
+
+# function denyTool() {
+#   local reason=$1
+#   jo -d. \
+#     hookSpecificOutput.hookEventName="PreToolUse" \
+#     hookSpecificOutput.permissionDecision="deny" \
+#     hookSpecificOutput.permissionDecisionReason="$reason"
+#   exit 0
+# }
 
 # Parse the command into subcommands
 local -a commandSegments=("${(@f)$(parseCommandIntoSubcommands "$toolCommand")}")
