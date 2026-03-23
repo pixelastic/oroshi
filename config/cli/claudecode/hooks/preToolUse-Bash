@@ -6,6 +6,7 @@ toolCommand=$(echo "$stdinData" | jq -r '.tool_input.command')
 # allowlist of allowed commands
 local allowlist=(
   cat
+  test
   date
   echo
   find
@@ -48,6 +49,8 @@ function acceptTool() {
 
 function letClaudeAsk() {
   # No opinion - let Claude Code's normal permission system handle it
+  # Return empty JSON for debugging purposes (functionally equivalent to exit 0)
+  jo -d. hookSpecificOutput.hookEventName="PreToolUse"
   exit 0
 }
 
@@ -76,30 +79,23 @@ function isCommandAllowed() {
   return 1 # not allowed
 }
 
-# Split command by pipes and check each segment
-local commandSegments=("${(@s:|:)toolCommand}")
-local decision="ask"
-local allAllowed=true
-
-for segment in "${commandSegments[@]}"; do
-  if ! isCommandAllowed "$segment"; then
-    allAllowed=false
-    break
-  fi
-done
-
-if [[ "$allAllowed" == "true" ]]; then
-  decision="allow"
-fi
+# Split command by pipes, &&, and || to check each segment
+# First replace && and || with | to have a single delimiter
+local normalizedCommand=$(echo "$toolCommand" | sed -E 's/(\|\||&&)/|/g')
+local commandSegments=("${(@s:|:)normalizedCommand}")
 
 debug "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 debug "Input command: $toolCommand"
 debug "Segments: ${#commandSegments[@]}"
-debug "Decision: $decision"
 
-if [[ "$decision" == "allow" ]]; then
-  acceptTool
-fi
+# Check each segment - if any is not allowed, let Claude ask immediately
+for segment in "${commandSegments[@]}"; do
+  if ! isCommandAllowed "$segment"; then
+    debug "Decision: let Claude ask"
+    letClaudeAsk
+  fi
+done
 
-# Default: let Claude Code decide (enables auto-approval options)
-letClaudeAsk
+# All segments are allowed
+debug "Decision: accept"
+acceptTool
