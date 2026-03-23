@@ -79,14 +79,51 @@ function isCommandAllowed() {
   return 1 # not allowed
 }
 
-# Split command by pipes, &&, and || to check each segment
-# First replace && and || with | to have a single delimiter
-local normalizedCommand=$(echo "$toolCommand" | sed -E 's/(\|\||&&)/|/g')
-local commandSegments=("${(@s:|:)normalizedCommand}")
+# Returns an array of all the subcommands of a given command
+function parseCommandIntoSubcommands() {
+  local input=$1
+  local separators=("&&" "||" "|")
+
+  # Split the command into words
+  # Using the (z) modifier handles escape sequences and strings properly
+  local words=("${(z)input}")
+
+  local allCommands=()
+  local currentCommand=""
+
+  for word in "${words[@]}"; do
+    # We check if the word is part of the separators...
+    if [[ ${separators[(ie)$word]} -le ${#separators} ]]; then
+      # ...and save all we have so far as one command if it is
+      allCommands+=("$currentCommand")
+      currentCommand=""
+      continue
+    fi
+
+    # Append word to current command
+    currentCommand="$currentCommand $word"
+  done
+
+  # Add the last command
+  allCommands+=("$currentCommand")
+
+  # Output only non-empty trimmed commands
+  for command in "${allCommands[@]}"; do
+    local trimmedCommand=$(echo "$command" | xargs)
+    [[ "$trimmedCommand" == "" ]] && continue
+    printf '%s\n' "$trimmedCommand"
+  done
+}
+
+# Parse the command into subcommands
+local -a commandSegments=("${(@f)$(parseCommandIntoSubcommands "$toolCommand")}")
 
 debug "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 debug "Input command: $toolCommand"
 debug "Segments: ${#commandSegments[@]}"
+for i in {1..${#commandSegments[@]}}; do
+  debug "  [$i] ${commandSegments[$i]}"
+done
 
 # Check each segment - if any is not allowed, let Claude ask immediately
 for segment in "${commandSegments[@]}"; do
