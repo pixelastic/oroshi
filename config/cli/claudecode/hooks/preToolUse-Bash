@@ -49,26 +49,36 @@ function askUser() {
 #   exit 0
 # }
 
-# Extract first command (trim spaces and get first word)
-local firstCommand=$(echo "$toolCommand" | xargs | cut -d' ' -f1)
+# TODO: ls ./* | grep test
+# TODO: git log
+
+# Clean the command
+local cleanCommand="$toolCommand"
+# Trim leading/trailing spaces first
+cleanCommand=$(echo "$cleanCommand" | xargs)
+# Remove environment variable prefixes (e.g., "VAR=value cmd" -> "cmd")
+cleanCommand=$(echo "$cleanCommand" | sed -E 's/^([A-Za-z_][A-Za-z0-9_]*=[^[:space:]]+[[:space:]]+)+//')
+
+# Extract first word (the actual command to execute)
+local firstCommand=$(echo "$cleanCommand" | cut -d' ' -f1)
 
 # Check if command is in allowlist
-local status="ask"
+local decision="ask"
 for cmd in "${allowlist[@]}"; do
   if [[ "$firstCommand" == "$cmd" ]]; then
-    status="allow"
+    decision="allow"
     break
   fi
 done
 
 debug "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 debug "Input command: $toolCommand"
+debug "Clean command: $cleanCommand"
+debug "Decision: $decision"
 
-if [[ "$status" == "allow" ]]; then
-  debug "✓ ALLOWED"
+if [[ "$decision" == "allow" ]]; then
   acceptTool
 fi
 
 # Default is to ask user
-debug "? ASK USER"
 askUser
