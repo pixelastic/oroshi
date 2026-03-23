@@ -8,6 +8,9 @@ local allowlist=(
   cat
   echo
   find
+  "git log"
+  "git status"
+  "git diff"
   grep
   head
   jq
@@ -50,7 +53,6 @@ function askUser() {
 # }
 
 # TODO: ls ./* | grep test
-# TODO: git log
 
 # Clean the command
 local cleanCommand="$toolCommand"
@@ -65,7 +67,7 @@ local firstCommand=$(echo "$cleanCommand" | cut -d' ' -f1)
 # Check if command is in allowlist
 local decision="ask"
 for cmd in "${allowlist[@]}"; do
-  if [[ "$firstCommand" == "$cmd" ]]; then
+  if [[ "$cleanCommand" == "$cmd "* ]]; then
     decision="allow"
     break
   fi
