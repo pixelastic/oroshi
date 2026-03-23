@@ -4,18 +4,6 @@
   },
   "permissions": {
     "allow": [
-      "Bash(cat:*)",
-      "Bash(echo:*)",
-      "Bash(find:*)",
-      "Bash(git log:*)",
-      "Bash(grep:*)",
-      "Bash(head:*)",
-      "Bash(jq:*)",
-      "Bash(ls:*)",
-      "Bash(mkdir:*)",
-      "Bash(readlink:*)",
-      "Bash(rg:*)",
-      "Bash(tail:*)",
       "Glob(*)",
       "Grep(*)",
       "LS(*)",
@@ -68,7 +56,7 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "WebSearch",
+        "matcher": "*",
         "hooks": [
           {
             "type": "command",

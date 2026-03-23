@@ -1,0 +1,74 @@
+#!/usr/bin/env zsh
+# Check if the bash command can be safely executed, or ask the user otherwise
+local stdinData=$(cat)
+toolCommand=$(echo "$stdinData" | jq -r '.tool_input.command')
+
+# allowlist of allowed commands
+local allowlist=(
+  cat
+  echo
+  find
+  grep
+  head
+  jq
+  ls
+  mkdir
+  readlink
+  rg
+  tail
+  tac
+  date
+)
+
+function debug() {
+  local logFile="/home/tim/local/tmp/claude/preToolUse-Bash.log"
+  local input=$1
+  echo "$1" >>"$logFile"
+}
+
+function acceptTool() {
+  jo -d. \
+    hookSpecificOutput.hookEventName="PreToolUse" \
+    hookSpecificOutput.permissionDecision="allow"
+  exit 0
+}
+
+function askUser() {
+  jo -d. \
+    hookSpecificOutput.hookEventName="PreToolUse" \
+    hookSpecificOutput.permissionDecision="ask"
+  exit 0
+}
+
+# function denyTool() {
+#   local reason=$1
+#   jo -d. \
+#     hookSpecificOutput.hookEventName="PreToolUse" \
+#     hookSpecificOutput.permissionDecision="deny" \
+#     hookSpecificOutput.permissionDecisionReason="$reason"
+#   exit 0
+# }
+
+# Extract first command (trim spaces and get first word)
+local firstCommand=$(echo "$toolCommand" | xargs | cut -d' ' -f1)
+
+# Check if command is in allowlist
+local status="ask"
+for cmd in "${allowlist[@]}"; do
+  if [[ "$firstCommand" == "$cmd" ]]; then
+    status="allow"
+    break
+  fi
+done
+
+debug "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+debug "Input command: $toolCommand"
+
+if [[ "$status" == "allow" ]]; then
+  debug "✓ ALLOWED"
+  acceptTool
+fi
+
+# Default is to ask user
+debug "? ASK USER"
+askUser

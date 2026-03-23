@@ -1,10 +1,24 @@
 #!/usr/bin/env zsh
-# Auto-approve WebSearch tool usage
+# Called by Claude right before calling a tool, with stdin similar to:
+# {
+#   "session_id": "9d57a195-8bbb-4e31-8e0a-650b94e4717b",
+#   "transcript_path": "/home/tim/.claude/projects/-home-tim--oroshi/9d57a195-8bbb-4e31-8e0a-650b94e4717b.jsonl",
+#   "cwd": "/home/tim/.oroshi",
+#   "permission_mode": "default",
+#   "hook_event_name": "PreToolUse",
+#   "tool_name": "Bash",
+#   "tool_input": {
+#     "command": "ls -la ~/.config/ | grep claude",
+#     "description": "List Claude config directories"
+#   },
+#   "tool_use_id": "toolu_01PQpPRb3zHrTsqG2LMoRWNn"
+# }
+local stdinData=$(cat)
+toolName=$(echo "$stdinData" | jq -r '.tool_name')
 
-if [[ "$TOOL_NAME" == "WebSearch" ]]; then
-  echo "approve"
-  exit 0
-fi
+# Check if we have a dedicated handler for this tool
+local hookDir=/home/tim/.oroshi/config/cli/claudecode/hooks
+local specificToolHandler="${hookDir}/preToolUse-${toolName}"
 
-# Let other tools go through normal permission flow
-exit 0
+[[ ! -f "$specificToolHandler" ]] && exit 0
+echo "$stdinData" | "$specificToolHandler"
