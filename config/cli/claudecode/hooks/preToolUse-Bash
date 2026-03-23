@@ -44,6 +44,11 @@ function askUser() {
   exit 0
 }
 
+function letClaudeAsk() {
+  # No opinion - let Claude Code's normal permission system handle it
+  exit 0
+}
+
 # function denyTool() {
 #   local reason=$1
 #   jo -d. \
@@ -94,5 +99,5 @@ if [[ "$decision" == "allow" ]]; then
   acceptTool
 fi
 
-# Default is to ask user
-askUser
+# Default: let Claude Code decide (enables auto-approval options)
+letClaudeAsk
