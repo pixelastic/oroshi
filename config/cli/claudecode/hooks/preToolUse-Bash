@@ -19,6 +19,8 @@ local allowlist=(
   rg
   tac
   tail
+  "yarn run algolia:teach"
+  "yarn run algolia:ask"
   "git diff"
   "git log"
   "git status"
@@ -37,12 +39,12 @@ function acceptTool() {
   exit 0
 }
 
-function askUser() {
-  jo -d. \
-    hookSpecificOutput.hookEventName="PreToolUse" \
-    hookSpecificOutput.permissionDecision="ask"
-  exit 0
-}
+# function askUser() {
+#   jo -d. \
+#     hookSpecificOutput.hookEventName="PreToolUse" \
+#     hookSpecificOutput.permissionDecision="ask"
+#   exit 0
+# }
 
 function letClaudeAsk() {
   # No opinion - let Claude Code's normal permission system handle it
