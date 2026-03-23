@@ -1,5 +1,19 @@
 #!/usr/bin/env zsh
 # Check if the bash command can be safely executed, or ask the user otherwise
+#
+# This hook parses bash commands into subcommands (splitting on |, &&, ||)
+# and checks each subcommand against an allowlist.
+#
+# TEST CASES - This hook must handle:
+# - echo hello                           -> accept (allowlisted)
+# - rm -rf file                          -> ask (not allowlisted)
+# - git log --oneline                    -> accept (multi-word allowlisted command)
+# - FOO=bar echo hello                   -> accept (env vars stripped)
+# - echo hello | grep hello              -> accept (both allowed)
+# - echo hello | rm file                 -> ask (rm not allowed)
+# - echo a | grep a && echo b || echo c  -> accept (all subcommands allowed)
+# - echo "rm -rf /"                      -> accept (rm is a string, not a command)
+#
 local stdinData=$(cat)
 toolCommand=$(echo "$stdinData" | jq -r '.tool_input.command')
 
@@ -65,18 +79,21 @@ function parseCommandIntoSubcommands() {
 
 function isCommandAllowed() {
   local cmd=$1
+  local words=("${(z)cmd}")
 
-  # Clean the command
-  cmd=$(echo "$cmd" | xargs)                                                             # Trim spaces
-  cmd=$(echo "$cmd" | sed -E 's/^([A-Za-z_][A-Za-z0-9_]*=[^[:space:]]+[[:space:]]+)+//') # Remove env vars
-
-  # Check against allowlist
-  for allowedCmd in "${allowlist[@]}"; do
-    if [[ "$cmd" == "$allowedCmd "* ]]; then
-      return 0 # allowed
-    fi
+  # Remove environment variable definitions (VAR=value)
+  local cleanedCommand=""
+  for word in "${words[@]}"; do
+    [[ "$word" =~ ^[A-Za-z_][A-Za-z0-9_]*=.*$ ]] && continue
+    [[ -n "$cleanedCommand" ]] && cleanedCommand="${cleanedCommand} "
+    cleanedCommand="${cleanedCommand}$word"
   done
-  return 1 # not allowed
+
+  # Check if is allowed
+  for allowedCmd in "${allowlist[@]}"; do
+    [[ "$cleanedCommand " == "$allowedCmd "* ]] && return 0
+  done
+  return 1
 }
 
 function debug() {
@@ -116,19 +133,15 @@ function letClaudeAsk() {
 # }
 
 # Parse the command into subcommands
-local -a commandSegments=("${(@f)$(parseCommandIntoSubcommands "$toolCommand")}")
+local -a allCommands=("${(@f)$(parseCommandIntoSubcommands "$toolCommand")}")
 
 debug "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 debug "Input command: $toolCommand"
-debug "Segments: ${#commandSegments[@]}"
-for i in {1..${#commandSegments[@]}}; do
-  debug "  [$i] ${commandSegments[$i]}"
-done
 
-# Check each segment - if any is not allowed, let Claude ask immediately
-for segment in "${commandSegments[@]}"; do
-  if ! isCommandAllowed "$segment"; then
-    debug "Decision: let Claude ask"
+# Check each subcommand - if any is not allowed, let Claude ask immediately
+for subcommand in "${allCommands[@]}"; do
+  if ! isCommandAllowed "$subcommand"; then
+    debug "[$subcommand]: let Claude ask"
     letClaudeAsk
   fi
 done
