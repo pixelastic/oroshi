@@ -6,21 +6,22 @@ toolCommand=$(echo "$stdinData" | jq -r '.tool_input.command')
 # allowlist of allowed commands
 local allowlist=(
   cat
+  date
   echo
   find
-  "git log"
-  "git status"
-  "git diff"
   grep
   head
   jq
   ls
   mkdir
+  print
   readlink
   rg
-  tail
   tac
-  date
+  tail
+  "git diff"
+  "git log"
+  "git status"
 )
 
 function debug() {
@@ -52,30 +53,41 @@ function askUser() {
 #   exit 0
 # }
 
-# TODO: ls ./* | grep test
+function isCommandAllowed() {
+  local cmd=$1
 
-# Clean the command
-local cleanCommand="$toolCommand"
-# Trim leading/trailing spaces first
-cleanCommand=$(echo "$cleanCommand" | xargs)
-# Remove environment variable prefixes (e.g., "VAR=value cmd" -> "cmd")
-cleanCommand=$(echo "$cleanCommand" | sed -E 's/^([A-Za-z_][A-Za-z0-9_]*=[^[:space:]]+[[:space:]]+)+//')
+  # Clean the command
+  cmd=$(echo "$cmd" | xargs)                                                             # Trim spaces
+  cmd=$(echo "$cmd" | sed -E 's/^([A-Za-z_][A-Za-z0-9_]*=[^[:space:]]+[[:space:]]+)+//') # Remove env vars
 
-# Extract first word (the actual command to execute)
-local firstCommand=$(echo "$cleanCommand" | cut -d' ' -f1)
+  # Check against allowlist
+  for allowedCmd in "${allowlist[@]}"; do
+    if [[ "$cmd" == "$allowedCmd "* ]]; then
+      return 0 # allowed
+    fi
+  done
+  return 1 # not allowed
+}
 
-# Check if command is in allowlist
+# Split command by pipes and check each segment
+local commandSegments=("${(@s:|:)toolCommand}")
 local decision="ask"
-for cmd in "${allowlist[@]}"; do
-  if [[ "$cleanCommand" == "$cmd "* ]]; then
-    decision="allow"
+local allAllowed=true
+
+for segment in "${commandSegments[@]}"; do
+  if ! isCommandAllowed "$segment"; then
+    allAllowed=false
     break
   fi
 done
 
+if [[ "$allAllowed" == "true" ]]; then
+  decision="allow"
+fi
+
 debug "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 debug "Input command: $toolCommand"
-debug "Clean command: $cleanCommand"
+debug "Segments: ${#commandSegments[@]}"
 debug "Decision: $decision"
 
 if [[ "$decision" == "allow" ]]; then
