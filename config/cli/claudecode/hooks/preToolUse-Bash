@@ -23,12 +23,14 @@ toolCommand=$(echo "$stdinData" | jq -r '.tool_input.command')
 local allowlist=(
   cat
   date
+  dmesg
   echo
   find
   grep
   head
   jq
   ls
+  ping
   mkdir
   print
   readlink
