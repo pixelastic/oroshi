@@ -21,6 +21,7 @@ toolCommand=$(echo "$stdinData" | jq -r '.tool_input.command')
 
 # allowlist of allowed commands
 local allowlist=(
+  cd
   cat
   date
   dmesg
