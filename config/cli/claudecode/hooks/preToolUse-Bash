@@ -26,6 +26,7 @@ local debugOutput=""
 local allowlist=(
   cat
   cd
+  command
   date
   diff
   dmesg
@@ -44,10 +45,12 @@ local allowlist=(
   tac
   tail
   test
+  which
+  whoami
   "git diff"
   "git log"
-  "git status"
   "git show"
+  "git status"
   "yarn run algolia:ask"
   "yarn run algolia:teach"
 )

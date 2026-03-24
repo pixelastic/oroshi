@@ -32,6 +32,7 @@ source $ZSH_CONFIG_PATH/prompt/node.zsh
 source $ZSH_CONFIG_PATH/prompt/yarn.zsh
 source $ZSH_CONFIG_PATH/prompt/path.zsh
 source $ZSH_CONFIG_PATH/prompt/ruby.zsh
+source $ZSH_CONFIG_PATH/prompt/slow.zsh
 # }}}
 
 # Overview {{{

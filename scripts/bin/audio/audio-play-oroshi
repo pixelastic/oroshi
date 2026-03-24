@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+# Play a sound from the oroshi sounds directory
+# Respects the sound mode setting (only plays if sound is enabled)
+# Note: This is a binary and not a zsh function because I might need tools (like
+# kitty, or keybindings) to use it without having the whole zsh stuff loaded
+#
+# Usage:
+# $ audio-play-oroshi slow.mp3
+# $ audio-play-oroshi warcraft/jobsdone.mp3
+
+# Return early if sound is disabled
+sound-mode-is-enabled || return
+
+local soundsDir=~/.oroshi/config/audio/sounds
+audio-play "${soundsDir}/$1"

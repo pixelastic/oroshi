@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
 # Triggered when Claude needs my input to run a tool
 
-if sound-mode-is-enabled; then
-  audio-play ~/.oroshi/config/audio/sounds/claude-notification.mp3 &
-  exit 2
-fi
+audio-play-oroshi claude-notification.mp3
+exit 2

@@ -1,9 +1,5 @@
 #!/usr/bin/env zsh
 # Triggered whenever Claude finishes answering
 
-if sound-mode-is-enabled; then
-  local soundsDir=~/.oroshi/config/audio/sounds
-  local soundFile=${OROSHI_CLAUDECODE_STOP_SOUND:-claude-stop.mp3}
-
-  audio-play "${soundsDir}/${soundFile}" &
-fi
+local soundFile=${OROSHI_CLAUDECODE_STOP_SOUND:-claude-stop.mp3}
+audio-play-oroshi "${soundFile}"

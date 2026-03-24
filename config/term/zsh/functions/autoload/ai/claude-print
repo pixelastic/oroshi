@@ -17,7 +17,7 @@ function claude-print() {
 
   # Play start sound if --sound-before is set
   if [[ "$soundBefore" != "" ]]; then
-    sound-mode-is-enabled && audio-play ~/.oroshi/config/audio/sounds/${soundBefore} &
+    audio-play-oroshi "${soundBefore}"
   fi
 
   if [[ "$soundAfter" != "" ]]; then
