@@ -22,7 +22,7 @@ toolCommand=$(echo "$stdinData" | jq -r '.tool_input.command')
 # Debug output buffer
 local debugOutput=""
 
-# allowlist of allowed commands
+# List of commands that can be executed without asking for permission
 local allowlist=(
   cat
   cd
@@ -31,12 +31,13 @@ local allowlist=(
   dmesg
   echo
   find
+  for
   grep
   head
   jq
   ls
-  ping
   mkdir
+  ping
   print
   readlink
   rg
@@ -50,10 +51,15 @@ local allowlist=(
   "yarn run algolia:teach"
 )
 
+# Separators that split a command into subcommands
+local separators=("&&" "||" ";" "|")
+
+# Prefixes that are ignored when found at the beginning of a command
+local prefixes=("time" "while")
+
 # Returns an array of all the subcommands of a given command
 function parseCommandIntoSubcommands() {
   local input=$1
-  local separators=("&&" "||" ";" "|")
 
   # Split the command into words
   # Using the (z) modifier handles escape sequences and strings properly
@@ -90,14 +96,14 @@ function isCommandAllowed() {
   local cmd=$1
   local words=("${(z)cmd}")
 
-  # Remove environment variable definitions (VAR=value) and 'time' prefix
+  # Remove environment variable definitions (VAR=value) and prefix keywords
   local cleanedCommand=""
   local wordIndex=0
   for word in "${words[@]}"; do
     # Skip ENV_XXX=YYY
     [[ "$word" =~ ^[A-Za-z_][A-Za-z0-9_]*=.*$ ]] && continue
     # Skip timing prefix
-    [[ $wordIndex -eq 0 && "$word" == "time" ]] && continue
+    [[ $wordIndex -eq 0 && ${prefixes[(ie)$word]} -le ${#prefixes} ]] && continue
 
     ((wordIndex++))
 
