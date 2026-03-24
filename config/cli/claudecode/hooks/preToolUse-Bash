@@ -45,6 +45,7 @@ local allowlist=(
   tac
   tail
   test
+  wc
   which
   whoami
   "git diff"
