@@ -22,6 +22,7 @@ add-zsh-hook preexec oroshiSlowCommandPreexec
 
 # Precmd: After command is executed
 function oroshiSlowCommandPrecmd() {
+  local exitStatus="$?"
   local threshold=300 # in seconds
 
   # Stop if command was blocked
@@ -32,6 +33,11 @@ function oroshiSlowCommandPrecmd() {
   # Stop if not long enough
   [[ $commandDuration -lt $threshold ]] && return
 
-  audio-play-oroshi slow.mp3
+  # Play different sound based on success/failure
+  if [[ $exitStatus -eq 0 ]]; then
+    audio-play-oroshi slow-success.mp3
+  else
+    audio-play-oroshi slow-failure.mp3
+  fi
 }
 add-zsh-hook precmd oroshiSlowCommandPrecmd
