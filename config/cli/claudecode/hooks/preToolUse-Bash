@@ -47,6 +47,7 @@ local allowlist=(
   "git diff"
   "git log"
   "git status"
+  "git show"
   "yarn run algolia:ask"
   "yarn run algolia:teach"
 )
