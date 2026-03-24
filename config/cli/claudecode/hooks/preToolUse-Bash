@@ -19,11 +19,15 @@
 local stdinData=$(cat)
 toolCommand=$(echo "$stdinData" | jq -r '.tool_input.command')
 
+# Debug output buffer
+local debugOutput=""
+
 # allowlist of allowed commands
 local allowlist=(
-  cd
   cat
+  cd
   date
+  diff
   dmesg
   echo
   find
@@ -113,19 +117,23 @@ function debug() {
   local logFile="/home/tim/local/tmp/claude/preToolUse-Bash.log"
   local input=$1
   echo "$1" >>"$logFile"
+  debugOutput="${debugOutput}${1}\n"
 }
 
 function acceptTool() {
   jo -d. \
     hookSpecificOutput.hookEventName="PreToolUse" \
-    hookSpecificOutput.permissionDecision="allow"
+    hookSpecificOutput.permissionDecision="allow" \
+    hookSpecificOutput.oroshiDebug="$debugOutput"
   exit 0
 }
 
 function letClaudeAsk() {
   # No opinion - let Claude Code's normal permission system handle it
   # Return empty JSON for debugging purposes (functionally equivalent to exit 0)
-  jo -d. hookSpecificOutput.hookEventName="PreToolUse"
+  jo -d. \
+    hookSpecificOutput.hookEventName="PreToolUse" \
+    hookSpecificOutput.oroshiDebug="$debugOutput"
   exit 0
 }
 
