@@ -6,12 +6,13 @@ oroshiSlowCommandStartTime=0
 
 # Preexec: Before command is executed
 function oroshiSlowCommandPreexec() {
-  local blockList=(vim nvim nano man less ssh tmux claude top htop)
+  # Commands that should not trigger slow command notification
+  # These are typically interactive tools or commands that open editors
+  local allowList=(vim nvim nano man less ssh tmux claude top htop "git commit")
   local expandedCommand="$2"
-  local firstWord="${expandedCommand[(w)1]}"
 
-  # Return early if command is blocked
-  if (( ${blockList[(Ie)$firstWord]} )); then
+  # Return early if command matches one of the allowed patterns
+  if command-in-list "$expandedCommand" -- "${allowList[@]}"; then
     oroshiSlowCommandStartTime=-1
     return
   fi

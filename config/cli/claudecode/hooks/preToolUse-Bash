@@ -63,66 +63,28 @@ local separators=("&&" "||" ";" "|")
 # Prefixes that are ignored when found at the beginning of a command
 local prefixes=("time" "while")
 
-# Returns an array of all the subcommands of a given command
-function parseCommandIntoSubcommands() {
-  local input=$1
-
-  # Split the command into words
-  # Using the (z) modifier handles escape sequences and strings properly
-  local words=("${(z)input}")
-
-  local allCommands=()
-  local currentCommand=""
-
-  for word in "${words[@]}"; do
-    # We check if the word is part of the separators...
-    if [[ ${separators[(ie)$word]} -le ${#separators} ]]; then
-      # ...and save all we have so far as one command if it is
-      allCommands+=("$currentCommand")
-      currentCommand=""
-      continue
-    fi
-
-    # Append word to current command
-    currentCommand="$currentCommand $word"
-  done
-
-  # Add the last command
-  allCommands+=("$currentCommand")
-
-  # Output only non-empty trimmed commands
-  for command in "${allCommands[@]}"; do
-    local trimmedCommand=$(echo "$command" | xargs)
-    [[ "$trimmedCommand" == "" ]] && continue
-    printf '%s\n' "$trimmedCommand"
-  done
-}
-
-function isCommandAllowed() {
+# Recursively expand aliases to their final command
+function expandAliasRecursive() {
   local cmd=$1
-  local words=("${(z)cmd}")
+  local maxDepth=10
+  local depth=0
 
-  # Remove environment variable definitions (VAR=value) and prefix keywords
-  local cleanedCommand=""
-  local wordIndex=0
-  for word in "${words[@]}"; do
-    # Skip ENV_XXX=YYY
-    [[ "$word" =~ ^[A-Za-z_][A-Za-z0-9_]*=.*$ ]] && continue
-    # Skip timing prefix
-    [[ $wordIndex -eq 0 && ${prefixes[(ie)$word]} -le ${#prefixes} ]] && continue
+  while [[ $depth -lt $maxDepth ]]; do
+    local words=("${(z)cmd}")
+    local first="${words[1]}"
 
-    ((wordIndex++))
+    # Try to expand the first word as an alias
+    local expandedAlias=$(alias "$first" 2>/dev/null | sed "s/^[^=]*=//;s/^'//;s/'$//")
 
-    # Add a space between words, but only after the first word
-    [[ -n "$cleanedCommand" ]] && cleanedCommand="${cleanedCommand} "
-    cleanedCommand="${cleanedCommand}$word"
+    # If no alias found, return current command
+    [[ -z "$expandedAlias" ]] && { echo "$cmd"; return; }
+
+    # Replace first word with expansion and continue
+    cmd="$expandedAlias ${words[@]:1}"
+    ((depth++))
   done
 
-  # Check if is allowed
-  for allowedCmd in "${allowlist[@]}"; do
-    [[ "$cleanedCommand " == "$allowedCmd "* ]] && return 0
-  done
-  return 1
+  echo "$cmd"
 }
 
 function debug() {
@@ -165,20 +127,18 @@ function letClaudeAsk() {
 #   exit 0
 # }
 
-# Parse the command into subcommands
-local -a allCommands=("${(@f)$(parseCommandIntoSubcommands "$toolCommand")}")
+# Expand aliases in the command
+local expandedCommand=$(expandAliasRecursive "$toolCommand")
 
 debug "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 debug "Input command: $toolCommand"
+debug "Expanded command: $expandedCommand"
 
-# Check each subcommand - if any is not allowed, let Claude ask immediately
-for subcommand in "${allCommands[@]}"; do
-  if ! isCommandAllowed "$subcommand"; then
-    debug "[$subcommand]: let Claude ask"
-    letClaudeAsk
-  fi
-done
-
-# All segments are allowed
-debug "Decision: accept"
-acceptTool
+# Use command-in-list to validate the command
+if command-in-list "$expandedCommand" -- "${allowlist[@]}"; then
+  debug "Decision: accept"
+  acceptTool
+else
+  debug "Decision: let Claude ask"
+  letClaudeAsk
+fi

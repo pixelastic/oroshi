@@ -1,0 +1,128 @@
+#!/usr/bin/env zsh
+# Check if a command matches any pattern in a list
+#
+# Usage: command-in-list <command> -- <pattern1> [<pattern2> ...]
+#
+# Returns:
+#   0 - All subcommands in <command> match at least one pattern
+#   1 - At least one subcommand doesn't match any pattern
+#
+# Examples:
+#   command-in-list "git commit -m 'test'" -- "git commit" "echo"    # Returns 0
+#   command-in-list "git commit && git push" -- "git commit" "echo"  # Returns 1
+#   command-in-list "echo hello | grep world" -- "echo" "grep"       # Returns 0
+
+# Parse arguments: command is before --, patterns are after --
+local command=""
+local -a patterns=()
+local foundSeparator=0
+
+for arg in "$@"; do
+  if [[ "$arg" == "--" ]]; then
+    foundSeparator=1
+    continue
+  fi
+
+  if [[ $foundSeparator -eq 0 ]]; then
+    command="$arg"
+  else
+    patterns+=("$arg")
+  fi
+done
+
+# Validate inputs
+if [[ -z "$command" ]]; then
+  echo "Error: No command provided" >&2
+  echo "Usage: command-in-list <command> -- <pattern1> [<pattern2> ...]" >&2
+  exit 2
+fi
+
+if [[ ${#patterns[@]} -eq 0 ]]; then
+  echo "Error: No patterns provided after --" >&2
+  echo "Usage: command-in-list <command> -- <pattern1> [<pattern2> ...]" >&2
+  exit 2
+fi
+
+# Separators that split a command into subcommands
+local separators=("&&" "||" ";" "|")
+
+# Prefixes that are ignored when found at the beginning of a command
+local prefixes=("time" "while")
+
+# Parse a command into subcommands (split on separators)
+function parseCommandIntoSubcommands() {
+  local input=$1
+
+  # Split the command into words
+  # Using the (z) modifier handles escape sequences and strings properly
+  local words=("${(z)input}")
+
+  local allCommands=()
+  local currentCommand=""
+
+  for word in "${words[@]}"; do
+    # Check if the word is a separator
+    if [[ ${separators[(ie)$word]} -le ${#separators} ]]; then
+      # Save current command if not empty
+      [[ -n "$currentCommand" ]] && allCommands+=("$currentCommand")
+      currentCommand=""
+      continue
+    fi
+
+    # Append word to current command
+    currentCommand="$currentCommand $word"
+  done
+
+  # Add the last command
+  [[ -n "$currentCommand" ]] && allCommands+=("$currentCommand")
+
+  # Output only non-empty trimmed commands
+  for cmd in "${allCommands[@]}"; do
+    local trimmedCommand=$(echo "$cmd" | xargs)
+    [[ -n "$trimmedCommand" ]] && printf '%s\n' "$trimmedCommand"
+  done
+}
+
+# Check if a command matches any pattern in the list
+function isCommandInList() {
+  local cmd=$1
+  shift
+  local -a allowedPatterns=("$@")
+
+  local words=("${(z)cmd}")
+
+  # Remove environment variable definitions (VAR=value) and prefix keywords
+  local cleanedCommand=""
+  local wordIndex=0
+  for word in "${words[@]}"; do
+    # Skip ENV_XXX=YYY
+    [[ "$word" =~ ^[A-Za-z_][A-Za-z0-9_]*=.*$ ]] && continue
+    # Skip timing/looping prefixes
+    [[ $wordIndex -eq 0 && ${prefixes[(ie)$word]} -le ${#prefixes} ]] && continue
+
+    ((wordIndex++))
+
+    # Add a space between words, but only after the first word
+    [[ -n "$cleanedCommand" ]] && cleanedCommand="${cleanedCommand} "
+    cleanedCommand="${cleanedCommand}$word"
+  done
+
+  # Check if cleaned command matches any pattern (prefix matching)
+  for pattern in "${allowedPatterns[@]}"; do
+    [[ "$cleanedCommand " == "$pattern "* ]] && return 0
+  done
+  return 1
+}
+
+# Parse the command into subcommands
+local -a allCommands=("${(@f)$(parseCommandIntoSubcommands "$command")}")
+
+# Check each subcommand - if any doesn't match, exit with failure
+for subcommand in "${allCommands[@]}"; do
+  if ! isCommandInList "$subcommand" "${patterns[@]}"; then
+    exit 1
+  fi
+done
+
+# All subcommands matched at least one pattern
+exit 0
