@@ -10,6 +10,9 @@ function oroshiSlowCommandPreexec() {
   # These are typically interactive tools or commands that open editors
   local allowList=(
     claude
+    git-commit-create
+    git-commit-create-staged
+    git-commit-list
     htop
     less
     man
@@ -20,8 +23,6 @@ function oroshiSlowCommandPreexec() {
     top
     vim
     "git commit"
-    "git-commit-create"
-    "git-commit-create-staged"
   )
   local expandedCommand="$2"
 
