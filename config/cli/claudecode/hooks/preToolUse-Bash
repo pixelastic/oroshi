@@ -63,30 +63,6 @@ local separators=("&&" "||" ";" "|")
 # Prefixes that are ignored when found at the beginning of a command
 local prefixes=("time" "while")
 
-# Recursively expand aliases to their final command
-function expandAliasRecursive() {
-  local cmd=$1
-  local maxDepth=10
-  local depth=0
-
-  while [[ $depth -lt $maxDepth ]]; do
-    local words=("${(z)cmd}")
-    local first="${words[1]}"
-
-    # Try to expand the first word as an alias
-    local expandedAlias=$(alias "$first" 2>/dev/null | sed "s/^[^=]*=//;s/^'//;s/'$//")
-
-    # If no alias found, return current command
-    [[ -z "$expandedAlias" ]] && { echo "$cmd"; return; }
-
-    # Replace first word with expansion and continue
-    cmd="$expandedAlias ${words[@]:1}"
-    ((depth++))
-  done
-
-  echo "$cmd"
-}
-
 function debug() {
   local logFile="/home/tim/local/tmp/claude/preToolUse-Bash.log"
   local input=$1
@@ -127,15 +103,11 @@ function letClaudeAsk() {
 #   exit 0
 # }
 
-# Expand aliases in the command
-local expandedCommand=$(expandAliasRecursive "$toolCommand")
-
 debug "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 debug "Input command: $toolCommand"
-debug "Expanded command: $expandedCommand"
 
 # Use command-in-list to validate the command
-if command-in-list "$expandedCommand" -- "${allowlist[@]}"; then
+if command-in-list "$toolCommand" -- "${allowlist[@]}"; then
   debug "Decision: accept"
   acceptTool
 else
