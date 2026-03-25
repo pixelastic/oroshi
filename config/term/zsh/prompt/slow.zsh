@@ -8,7 +8,21 @@ oroshiSlowCommandStartTime=0
 function oroshiSlowCommandPreexec() {
   # Commands that should not trigger slow command notification
   # These are typically interactive tools or commands that open editors
-  local allowList=(vim nvim nano man less ssh tmux claude top htop "git commit")
+  local allowList=(
+    claude
+    htop
+    less
+    man
+    nano
+    nvim
+    ssh
+    tmux
+    top
+    vim
+    "git commit"
+    "git-commit-create"
+    "git-commit-create-staged"
+  )
   local expandedCommand="$2"
 
   # Return early if command matches one of the allowed patterns
