@@ -39,21 +39,24 @@ add-zsh-hook preexec oroshiSlowCommandPreexec
 # Precmd: After command is executed
 function oroshiSlowCommandPrecmd() {
   local exitStatus="$?"
+  local commandDuration=$((SECONDS - oroshiSlowCommandStartTime))
   local threshold=300 # in seconds
 
-  # Stop if command was blocked
+  # Reset start time
+  oroshiSlowCommandStartTime=0
+
+  # Stop if allowed command
   [[ $oroshiSlowCommandStartTime -eq -1 ]] && return
-
-  local commandDuration=$((SECONDS - oroshiSlowCommandStartTime))
-
+  # Stop if killed by CTRL-C (exit code 130)
+  [[ $exitStatus -eq 130 ]] && return
   # Stop if not long enough
   [[ $commandDuration -lt $threshold ]] && return
 
   # Play different sound based on success/failure
   if [[ $exitStatus -eq 0 ]]; then
     audio-play-oroshi slow-success.mp3
-  else
-    audio-play-oroshi slow-failure.mp3
+    return
   fi
+  audio-play-oroshi slow-failure.mp3
 }
 add-zsh-hook precmd oroshiSlowCommandPrecmd
