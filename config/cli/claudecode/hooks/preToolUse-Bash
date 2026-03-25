@@ -30,6 +30,7 @@ local allowlist=(
   date
   diff
   dmesg
+  "done"
   echo
   find
   for
