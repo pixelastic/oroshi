@@ -39,14 +39,15 @@ add-zsh-hook preexec oroshiSlowCommandPreexec
 # Precmd: After command is executed
 function oroshiSlowCommandPrecmd() {
   local exitStatus="$?"
-  local commandDuration=$((SECONDS - oroshiSlowCommandStartTime))
+  local startTime=$oroshiSlowCommandStartTime
+  local commandDuration=$((SECONDS - startTime))
   local threshold=300 # in seconds
 
   # Reset start time
   oroshiSlowCommandStartTime=0
 
   # Stop if allowed command
-  [[ $oroshiSlowCommandStartTime -eq -1 ]] && return
+  [[ $startTime -eq -1 ]] && return
   # Stop if killed by CTRL-C (exit code 130)
   [[ $exitStatus -eq 130 ]] && return
   # Stop if not long enough
