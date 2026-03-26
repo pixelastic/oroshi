@@ -13,3 +13,10 @@ function ok() {
 }
 
 alias loial=~/local/www/projects/loial/local/display
+
+function dumptmp() {
+  rsync -Pharz \
+    $1 \
+    pixelastic:./local/www/tmp.pixelastic.com/share
+  echo "Available on http://tmp.pixelastic.com/share/${1:t}"
+}

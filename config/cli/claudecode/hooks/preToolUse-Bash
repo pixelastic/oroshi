@@ -30,8 +30,9 @@ local allowlist=(
   date
   diff
   dmesg
-  "done"
   echo
+  ffmpeg
+  ffprobe
   find
   for
   grep
@@ -39,6 +40,7 @@ local allowlist=(
   jq
   ls
   mkdir
+  "done"
   ping
   print
   readlink
