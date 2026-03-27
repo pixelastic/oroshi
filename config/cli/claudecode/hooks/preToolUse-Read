@@ -3,7 +3,6 @@
 
 source /home/tim/.oroshi/config/cli/claudecode/hooks/lib/hookLib.zsh
 
-readStdin
 filePath=$(getToolInput "file_path")
 
 # Allowlist of directories where reads are always allowed
@@ -13,22 +12,15 @@ local allowedDirs=(
   "/home/tim/.oroshi/"
 )
 
+debug "File path: $filePath"
+
 # Check if file path starts with an allowed directory
-local decision="ask"
 for allowedDir in "${allowedDirs[@]}"; do
   if [[ "$filePath" == "$allowedDir"* ]]; then
-    decision="allow"
-    break
+    debug "Decision: allow"
+    acceptTool
   fi
 done
 
-debugSeparator
-debug "File path: $filePath"
-debug "Decision: $decision"
-
-if [[ "$decision" == "allow" ]]; then
-  acceptTool "$(getDebugOutput)"
-fi
-
-# Default: let Claude decide
-letClaudeAsk "$(getDebugOutput)"
+debug "Decision: let Claude ask"
+letClaudeAsk

@@ -16,8 +16,16 @@
 local stdinData=$(cat)
 toolName=$(echo "$stdinData" | jq -r '.tool_name')
 
-# Check if we have a dedicated handler for this tool
 local hookDir=/home/tim/.oroshi/config/cli/claudecode/hooks
+
+# Handling MCP servers
+if [[ "$toolName" == mcp__* ]]; then
+  local mcpToolName="${toolName#mcp__}"
+  ${hookDir}/preToolUse-mcp "$mcpToolName"
+  exit $?
+fi
+
+# Check if we have a dedicated handler for this specific tool
 local specificToolHandler="${hookDir}/preToolUse-${toolName}"
 
 [[ ! -f "$specificToolHandler" ]] && exit 0

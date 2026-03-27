@@ -1,9 +1,6 @@
 #!/usr/bin/env zsh
 # Check if the bash command can be safely executed, or ask the user otherwise
 #
-# This hook parses bash commands into subcommands (splitting on |, &&, ||, ;)
-# and checks each subcommand against an allowlist.
-#
 # TEST CASES - This hook must handle:
 # - echo hello                           -> accept (allowlisted)
 # - rm -rf file                          -> ask (not allowlisted)
@@ -19,7 +16,6 @@
 
 source /home/tim/.oroshi/config/cli/claudecode/hooks/lib/hookLib.zsh
 
-readStdin
 toolCommand=$(getToolInput "command")
 
 # List of commands that can be executed without asking for permission
@@ -52,6 +48,7 @@ local allowlist=(
   which
   whoami
   "claude mcp list"
+  "claude mcp logs"
   "git diff"
   "git log"
   "git show"
@@ -60,20 +57,14 @@ local allowlist=(
   "yarn run algolia:teach"
 )
 
-# Separators that split a command into subcommands
-local separators=("&&" "||" ";" "|")
-
-# Prefixes that are ignored when found at the beginning of a command
-local prefixes=("time" "while")
-
-debugSeparator
 debug "Input command: $toolCommand"
 
-# Use command-in-list to validate the command
+# If the command is allowed, we accept right away
 if command-in-list "$toolCommand" -- "${allowlist[@]}"; then
   debug "Decision: accept"
-  acceptTool "$(getDebugOutput)"
-else
-  debug "Decision: let Claude ask"
-  letClaudeAsk "$(getDebugOutput)"
+  acceptTool
 fi
+
+# Otherwise, we ask the user
+debug "Decision: let Claude ask"
+letClaudeAsk

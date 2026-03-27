@@ -1,9 +1,11 @@
 #!/usr/bin/env zsh
 # Auto-approve all WebSearch operations
 
-local stdinData=$(cat)
+source /home/tim/.oroshi/config/cli/claudecode/hooks/lib/hookLib.zsh
 
-# Always allow WebSearch
-jo -d. \
-  hookSpecificOutput.hookEventName="PreToolUse" \
-  hookSpecificOutput.permissionDecision="allow"
+query=$(getToolInput "query")
+
+debug "Search query: $query"
+debug "Decision: allow"
+
+acceptTool

@@ -1,0 +1,31 @@
+#!/usr/bin/env zsh
+# Check if MCP operations should be auto-approved based on allowlist
+#
+# This hook receives the MCP tool name as first argument (without the "mcp__" prefix)
+# Example: for "mcp__google-slides__get_presentation", receives "google-slides__get_presentation"
+#
+# Allowlist patterns:
+# - "google-slides" → accepts all google-slides methods
+# - "google-slides__get_presentation" → accepts only this specific method
+
+source /home/tim/.oroshi/config/cli/claudecode/hooks/lib/hookLib.zsh
+
+local toolName=$1
+
+# Allowlist of MCP tools/methods that can be executed without asking for permission
+local allowedTools=(
+  "google-slides"
+)
+
+debug "Tool name: $toolName"
+
+for allowedTool in "${allowedTools[@]}"; do
+  # Match pattern followed by "__" (e.g., "google-slides" matches "google-slides__get_presentation")
+  if [[ "$toolName" == "$allowedTool__"* ]]; then
+    debug "Decision: allow (matched: $allowedTool)"
+    acceptTool
+  fi
+done
+
+debug "Decision: let Claude ask"
+letClaudeAsk

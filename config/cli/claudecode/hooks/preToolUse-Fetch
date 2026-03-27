@@ -1,42 +1,11 @@
 #!/usr/bin/env zsh
-# Check if Fetch operations should be auto-approved based on domain allowlist
+# Auto-approve all Fetch operations
 
 source /home/tim/.oroshi/config/cli/claudecode/hooks/lib/hookLib.zsh
 
-readStdin
 url=$(getToolInput "url")
 
-# Extract domain from URL (handles http://, https://, and plain domains)
-domain=$(echo "$url" | sed -E 's|^https?://||' | sed -E 's|/.*$||')
-
-# Allowlist of domains where fetch is always allowed
-local allowedDomains=(
-  "painting.pixelastic.com"
-  "pixelastic.com"
-  "github.com"
-  "docs.github.com"
-  "docs.cloud.google"
-  "raw.githubusercontent.com"
-)
-
-# Check if domain is in allowlist
-local decision="ask"
-for allowedDomain in "${allowedDomains[@]}"; do
-  # Match exact domain or subdomains (e.g., "foo.pixelastic.com" matches "pixelastic.com")
-  if [[ "$domain" == "$allowedDomain" ]] || [[ "$domain" == *".$allowedDomain" ]]; then
-    decision="allow"
-    break
-  fi
-done
-
-debugSeparator
 debug "URL: $url"
-debug "Domain: $domain"
-debug "Decision: $decision"
+debug "Decision: allow"
 
-if [[ "$decision" == "allow" ]]; then
-  acceptTool "$(getDebugOutput)"
-fi
-
-# Default: let Claude decide
-letClaudeAsk "$(getDebugOutput)"
+acceptTool

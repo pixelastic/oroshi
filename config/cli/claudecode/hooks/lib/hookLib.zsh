@@ -17,9 +17,9 @@ function getToolInput() {
 # Decision Functions
 # ============================================================================
 
-# Accept the tool with optional debug output
+# Accept the tool (automatically includes debug output if enabled)
 function acceptTool() {
-  local debugOutput=$1
+  local debugOutput=$(getDebugOutput)
   if [[ -n "$debugOutput" ]]; then
     jo -d. \
       hookSpecificOutput.hookEventName="PreToolUse" \
@@ -33,9 +33,9 @@ function acceptTool() {
   exit 0
 }
 
-# Let Claude Code's normal permission system handle it
+# Let Claude Code's normal permission system handle it (automatically includes debug output if enabled)
 function letClaudeAsk() {
-  local debugOutput=$1
+  local debugOutput=$(getDebugOutput)
   if [[ -n "$debugOutput" ]]; then
     jo -d. \
       hookSpecificOutput.hookEventName="PreToolUse" \
@@ -74,11 +74,6 @@ DEBUG_OUTPUT=""
 function debug() {
   [[ -z "$CLAUDE_HOOK_DEBUG" ]] && return
   DEBUG_OUTPUT="${DEBUG_OUTPUT}${1}\n"
-}
-
-# Common debug separator
-function debugSeparator() {
-  debug "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 }
 
 # Get buffered debug output (for passing to acceptTool/letClaudeAsk)
