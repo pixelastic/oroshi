@@ -1,8 +1,10 @@
 #!/usr/bin/env zsh
 # Check if Read operations should be auto-approved
 
-local stdinData=$(cat)
-filePath=$(echo "$stdinData" | jq -r '.tool_input.file_path')
+source /home/tim/.oroshi/config/cli/claudecode/hooks/lib/hookLib.zsh
+
+readStdin
+filePath=$(getToolInput "file_path")
 
 # Allowlist of directories where reads are always allowed
 local allowedDirs=(
@@ -10,24 +12,6 @@ local allowedDirs=(
   "/home/tim/local/www/"
   "/home/tim/.oroshi/"
 )
-
-function debug() {
-  local logFile="/home/tim/local/tmp/claude/preToolUse-Read.log"
-  local input=$1
-  echo "$1" >>"$logFile"
-}
-
-function acceptTool() {
-  jo -d. \
-    hookSpecificOutput.hookEventName="PreToolUse" \
-    hookSpecificOutput.permissionDecision="allow"
-  exit 0
-}
-
-function letClaudeAsk() {
-  # No opinion - let Claude Code's normal permission system handle it
-  exit 0
-}
 
 # Check if file path starts with an allowed directory
 local decision="ask"
@@ -38,13 +22,13 @@ for allowedDir in "${allowedDirs[@]}"; do
   fi
 done
 
-debug "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+debugSeparator
 debug "File path: $filePath"
 debug "Decision: $decision"
 
 if [[ "$decision" == "allow" ]]; then
-  acceptTool
+  acceptTool "$(getDebugOutput)"
 fi
 
 # Default: let Claude decide
-letClaudeAsk
+letClaudeAsk "$(getDebugOutput)"

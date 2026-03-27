@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# Auto-approve all WebSearch operations
+
+local stdinData=$(cat)
+
+# Always allow WebSearch
+jo -d. \
+  hookSpecificOutput.hookEventName="PreToolUse" \
+  hookSpecificOutput.permissionDecision="allow"

@@ -1,8 +1,10 @@
 #!/usr/bin/env zsh
 # Check if Fetch operations should be auto-approved based on domain allowlist
 
-local stdinData=$(cat)
-url=$(echo "$stdinData" | jq -r '.tool_input.url')
+source /home/tim/.oroshi/config/cli/claudecode/hooks/lib/hookLib.zsh
+
+readStdin
+url=$(getToolInput "url")
 
 # Extract domain from URL (handles http://, https://, and plain domains)
 domain=$(echo "$url" | sed -E 's|^https?://||' | sed -E 's|/.*$||')
@@ -13,25 +15,9 @@ local allowedDomains=(
   "pixelastic.com"
   "github.com"
   "docs.github.com"
+  "docs.cloud.google"
   "raw.githubusercontent.com"
 )
-
-function debug() {
-  local logFile="/home/tim/local/tmp/claude/preToolUse-Fetch.log"
-  echo "$1" >>"$logFile"
-}
-
-function acceptTool() {
-  jo -d. \
-    hookSpecificOutput.hookEventName="PreToolUse" \
-    hookSpecificOutput.permissionDecision="allow"
-  exit 0
-}
-
-function letClaudeAsk() {
-  # No opinion - let Claude Code's normal permission system handle it
-  exit 0
-}
 
 # Check if domain is in allowlist
 local decision="ask"
@@ -43,14 +29,14 @@ for allowedDomain in "${allowedDomains[@]}"; do
   fi
 done
 
-debug "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+debugSeparator
 debug "URL: $url"
 debug "Domain: $domain"
 debug "Decision: $decision"
 
 if [[ "$decision" == "allow" ]]; then
-  acceptTool
+  acceptTool "$(getDebugOutput)"
 fi
 
 # Default: let Claude decide
-letClaudeAsk
+letClaudeAsk "$(getDebugOutput)"

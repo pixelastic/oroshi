@@ -9,8 +9,8 @@ sudo apt-get install \
   ca-certificates gnupg
 
 # Add the Google Cloud public key
-curl https://packages.cloud.google.com/apt/doc/apt-key.gpg |
-  sudo tee /usr/share/keyrings/cloud.google.gpg
+curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg |
+  sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
 
 # Add the gcloud CLI distribution URI
 echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" |

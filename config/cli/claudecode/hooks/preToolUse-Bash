@@ -16,11 +16,11 @@
 # - echo "rm -rf /"                      -> accept (rm is a string, not a command)
 # - time echo "test"                     -> accept (time is ignored)
 #
-local stdinData=$(cat)
-toolCommand=$(echo "$stdinData" | jq -r '.tool_input.command')
 
-# Debug output buffer
-local debugOutput=""
+source /home/tim/.oroshi/config/cli/claudecode/hooks/lib/hookLib.zsh
+
+readStdin
+toolCommand=$(getToolInput "command")
 
 # List of commands that can be executed without asking for permission
 local allowlist=(
@@ -51,6 +51,7 @@ local allowlist=(
   wc
   which
   whoami
+  "claude mcp list"
   "git diff"
   "git log"
   "git show"
@@ -65,54 +66,14 @@ local separators=("&&" "||" ";" "|")
 # Prefixes that are ignored when found at the beginning of a command
 local prefixes=("time" "while")
 
-function debug() {
-  local logFile="/home/tim/local/tmp/claude/preToolUse-Bash.log"
-  local input=$1
-  echo "$1" >>"$logFile"
-  debugOutput="${debugOutput}${1}\n"
-}
-
-function acceptTool() {
-  jo -d. \
-    hookSpecificOutput.hookEventName="PreToolUse" \
-    hookSpecificOutput.permissionDecision="allow" \
-    hookSpecificOutput.oroshiDebug="$debugOutput"
-  exit 0
-}
-
-function letClaudeAsk() {
-  # No opinion - let Claude Code's normal permission system handle it
-  # Return empty JSON for debugging purposes (functionally equivalent to exit 0)
-  jo -d. \
-    hookSpecificOutput.hookEventName="PreToolUse" \
-    hookSpecificOutput.oroshiDebug="$debugOutput"
-  exit 0
-}
-
-# function askUser() {
-#   jo -d. \
-#     hookSpecificOutput.hookEventName="PreToolUse" \
-#     hookSpecificOutput.permissionDecision="ask"
-#   exit 0
-# }
-
-# function denyTool() {
-#   local reason=$1
-#   jo -d. \
-#     hookSpecificOutput.hookEventName="PreToolUse" \
-#     hookSpecificOutput.permissionDecision="deny" \
-#     hookSpecificOutput.permissionDecisionReason="$reason"
-#   exit 0
-# }
-
-debug "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+debugSeparator
 debug "Input command: $toolCommand"
 
 # Use command-in-list to validate the command
 if command-in-list "$toolCommand" -- "${allowlist[@]}"; then
   debug "Decision: accept"
-  acceptTool
+  acceptTool "$(getDebugOutput)"
 else
   debug "Decision: let Claude ask"
-  letClaudeAsk
+  letClaudeAsk "$(getDebugOutput)"
 fi
