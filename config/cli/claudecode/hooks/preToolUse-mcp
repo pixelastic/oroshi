@@ -20,8 +20,7 @@ local allowedTools=(
 debug "Tool name: $toolName"
 
 for allowedTool in "${allowedTools[@]}"; do
-  # Match pattern followed by "__" (e.g., "google-slides" matches "google-slides__get_presentation")
-  if [[ "$toolName" == "$allowedTool__"* ]]; then
+  if [[ "$toolName" == "$allowedTool"* ]]; then
     debug "Decision: allow (matched: $allowedTool)"
     acceptTool
   fi

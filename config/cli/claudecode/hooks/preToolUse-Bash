@@ -30,17 +30,16 @@ local allowlist=(
   ffmpeg
   ffprobe
   find
-  for
   grep
   head
   jq
   ls
   mkdir
-  "done"
   ping
   print
   readlink
   rg
+  sed
   tac
   tail
   test
@@ -49,6 +48,9 @@ local allowlist=(
   whoami
   "claude mcp list"
   "claude mcp logs"
+  "done"
+  "do"
+  "for"
   "git diff"
   "git log"
   "git show"

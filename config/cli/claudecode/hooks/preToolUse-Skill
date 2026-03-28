@@ -1,0 +1,24 @@
+#!/usr/bin/env zsh
+# Check if skills should be auto-approved based on allowlist
+
+source /home/tim/.oroshi/config/cli/claudecode/hooks/lib/hookLib.zsh
+
+skillName=$(getToolInput "skill")
+
+# Allowlist of skills
+local allowedSkills=(
+  "superpowers:brainstorming"
+)
+
+debug "Skill name: $skillName"
+
+# Check if the skill is in the allowlist
+for allowedSkill in "${allowedSkills[@]}"; do
+  if [[ "$skillName" == "$allowedSkill" ]]; then
+    debug "Decision: allow (matched: $allowedSkill)"
+    acceptTool
+  fi
+done
+
+debug "Decision: let Claude ask"
+letClaudeAsk

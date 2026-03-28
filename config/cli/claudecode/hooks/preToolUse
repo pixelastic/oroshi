@@ -13,20 +13,46 @@
 #   },
 #   "tool_use_id": "toolu_01PQpPRb3zHrTsqG2LMoRWNn"
 # }
+
 local stdinData=$(cat)
-toolName=$(echo "$stdinData" | jq -r '.tool_name')
-
 local hookDir=/home/tim/.oroshi/config/cli/claudecode/hooks
+source ${hookDir}/lib/hookLib.zsh
 
-# Handling MCP servers
+toolName=$(echo "$stdinData" | jq -r '.tool_name')
+debug "Tool name: $toolName"
+
+# List of tools that are always auto-approved
+local autoApprovedTools=(
+  "Glob"
+  "Grep"
+  "LS"
+  "Read"
+  "Fetch"
+  "WebFetch"
+)
+
+# Auto-approved tool
+for approvedTool in "${autoApprovedTools[@]}"; do
+  if [[ "$toolName" == "$approvedTool" ]]; then
+    debug "Decision: auto-approve (tool in allowlist)"
+    acceptTool
+  fi
+done
+
+# MCP Servers
 if [[ "$toolName" == mcp__* ]]; then
   local mcpToolName="${toolName#mcp__}"
   ${hookDir}/preToolUse-mcp "$mcpToolName"
   exit $?
 fi
 
-# Check if we have a dedicated handler for this specific tool
+# Dedicated handlers
 local specificToolHandler="${hookDir}/preToolUse-${toolName}"
+if [[ -f "$specificToolHandler" ]]; then
+  echo "$stdinData" | "$specificToolHandler"
+  exit $?
+fi
 
-[[ ! -f "$specificToolHandler" ]] && exit 0
-echo "$stdinData" | "$specificToolHandler"
+# Default to ask the user
+debug "Decision: let Claude ask"
+letClaudeAsk

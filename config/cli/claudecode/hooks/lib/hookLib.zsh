@@ -17,30 +17,20 @@ function getToolInput() {
 # Decision Functions
 # ============================================================================
 
-# Accept the tool (automatically includes debug output if enabled)
+# Accept the tool
 function acceptTool() {
-  local debugOutput=$(getDebugOutput)
-  if [[ -n "$debugOutput" ]]; then
-    jo -d. \
-      hookSpecificOutput.hookEventName="PreToolUse" \
-      hookSpecificOutput.permissionDecision="allow" \
-      hookSpecificOutput.oroshiDebug="$debugOutput"
-  else
-    jo -d. \
-      hookSpecificOutput.hookEventName="PreToolUse" \
-      hookSpecificOutput.permissionDecision="allow"
-  fi
+  jo -d. \
+    hookSpecificOutput.hookEventName="PreToolUse" \
+    hookSpecificOutput.permissionDecision="allow" \
+    hookSpecificOutput.oroshiDebug="$DEBUG_OUTPUT"
   exit 0
 }
 
-# Let Claude Code's normal permission system handle it (automatically includes debug output if enabled)
+# Let Claude Code's normal permission system handle it
 function letClaudeAsk() {
-  local debugOutput=$(getDebugOutput)
-  if [[ -n "$debugOutput" ]]; then
-    jo -d. \
-      hookSpecificOutput.hookEventName="PreToolUse" \
-      hookSpecificOutput.oroshiDebug="$debugOutput"
-  fi
+  jo -d. \
+    hookSpecificOutput.hookEventName="PreToolUse" \
+    hookSpecificOutput.oroshiDebug="$DEBUG_OUTPUT"
   exit 0
 }
 
@@ -48,7 +38,8 @@ function letClaudeAsk() {
 function askUser() {
   jo -d. \
     hookSpecificOutput.hookEventName="PreToolUse" \
-    hookSpecificOutput.permissionDecision="ask"
+    hookSpecificOutput.permissionDecision="ask" \
+    hookSpecificOutput.oroshiDebug="$DEBUG_OUTPUT"
   exit 0
 }
 
@@ -58,7 +49,8 @@ function denyTool() {
   jo -d. \
     hookSpecificOutput.hookEventName="PreToolUse" \
     hookSpecificOutput.permissionDecision="deny" \
-    hookSpecificOutput.permissionDecisionReason="$reason"
+    hookSpecificOutput.permissionDecisionReason="$reason" \
+    hookSpecificOutput.oroshiDebug="$DEBUG_OUTPUT"
   exit 0
 }
 
@@ -69,16 +61,8 @@ function denyTool() {
 # Global variable for debug output buffer
 DEBUG_OUTPUT=""
 
-# Add debug message to output buffer (only if CLAUDE_HOOK_DEBUG is set)
+# Add debug message to output buffer
 # Usage: debug "message"
 function debug() {
-  [[ -z "$CLAUDE_HOOK_DEBUG" ]] && return
   DEBUG_OUTPUT="${DEBUG_OUTPUT}${1}\n"
-}
-
-# Get buffered debug output (for passing to acceptTool/letClaudeAsk)
-# Returns empty string if debug is disabled
-function getDebugOutput() {
-  [[ -z "$CLAUDE_HOOK_DEBUG" ]] && return
-  echo "$DEBUG_OUTPUT"
 }
