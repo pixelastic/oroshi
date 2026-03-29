@@ -14,6 +14,7 @@ local toolName=$1
 
 # Allowlist of MCP tools/methods that can be executed without asking for permission
 local allowedTools=(
+  "context7"
   "google-slides"
 )
 
