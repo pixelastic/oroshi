@@ -1,0 +1,28 @@
+function claude-session-data() {
+  local uuid=$1
+  local sessionFile=$(fd --type f --max-results 1 "${uuid}.jsonl" ~/.claude/projects)
+
+  # Check if file exists
+  [[ ! -f "$sessionFile" ]] && return 1
+
+  # Cwd
+  local cwd=$(jq -r 'select(has("cwd")) | .cwd' "$sessionFile" | head -1)
+
+  # Truncate to 5000 chars max (jo will escape newlines automatically)
+  local firstMessage=$(jq -r 'select(.type=="user") | .message.content' "$sessionFile" | head -1 | cut -c1-5000)
+
+  # createdAt / updatedAt
+  local createdAtTimestamp=$(stat -c %W "$sessionFile")
+  local createdAt=$(date -d "@$createdAtTimestamp" '+%Y-%m-%d %H:%M')
+  local updatedAtTimestamp=$(stat -c %Y "$sessionFile" 2>/dev/null)
+  local updatedAt=$(date -d "@$updatedAtTimestamp" '+%Y-%m-%d %H:%M')
+
+  # Return JSON using jo (handles special characters safely)
+  jo -p \
+    uuid="$uuid" \
+    cwd="$cwd" \
+    firstMessage="$firstMessage" \
+    filePath="$sessionFile" \
+    createdAt="$createdAt" \
+    updatedAt="$updatedAt"
+}

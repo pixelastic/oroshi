@@ -1,0 +1,25 @@
+function fzf-claude-sessions-preview() {
+  local uuid="$1"
+
+  local sessionData=$(claude-session-data $uuid)
+
+  # CWD or project name
+  local cwd=$(echo $sessionData | jq -r '.cwd')
+  local projectName="$(project-by-path $cwd)"
+  if [[ -n "$projectName" ]]; then
+    project-colorize $projectName
+  else
+    colorize $cwd $COLOR_GREEN
+  fi
+
+  # Date
+  local updatedAt=$(echo $sessionData | jq -r '.updatedAt')
+  colorize $updatedAt $COLOR_ALIAS_DATE
+
+  # Empty line
+  echo ""
+
+  # Content (preserve original formatting)
+  local firstMessage=$(echo $sessionData | jq -r '.firstMessage')
+  colorize "$firstMessage" $COLOR_ALIAS_COMMENT
+}

@@ -1,0 +1,17 @@
+function fzf-claude-sessions-postprocess() {
+  local rawSelection="$1"
+  [[ -z "$rawSelection" ]] && return 1
+
+  local split=(${(@s/▮/)rawSelection})
+  local uuid="$split[1]"
+
+  # Find the session file to get cwd
+  local sessionFile=$(find ~/.claude/projects -name "${uuid}.jsonl" 2>/dev/null | head -1)
+  [[ -z "$sessionFile" ]] && return 1
+
+  local cwd=$(head -1 "$sessionFile" 2>/dev/null | jq -r '.cwd' 2>/dev/null)
+  [[ -z "$cwd" ]] && return 1
+
+  # Return format for widget: uuid▮cwd
+  echo "${uuid}▮${cwd}"
+}

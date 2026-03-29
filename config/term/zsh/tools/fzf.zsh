@@ -44,6 +44,7 @@ function oroshi_tools_fzf() {
     --reverse \
     --cycle \
     --keep-right \
+    --no-hscroll \
     --bind 'tab:down' \
     --bind 'shift-up:half-page-up' \
     --bind 'shift-down:half-page-down' \
@@ -58,5 +59,3 @@ function oroshi_tools_fzf() {
 }
 oroshi_tools_fzf
 unfunction oroshi_tools_fzf
-
-

@@ -34,11 +34,13 @@ local allowlist=(
   find
   grep
   head
+  jo
   jq
   ls
   mkdir
   ping
   print
+  printf
   readlink
   rg
   sed

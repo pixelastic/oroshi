@@ -13,7 +13,12 @@ oroshi-fzf-files-project-widget() {
 
   # Context-aware selection
   local selection=""
-  if [[ "${LBUFFER}" =~ "vfa( )?$" ]]; then
+  local isClaudeResume=false
+
+  if [[ "${LBUFFER}" =~ "claude( )?$" ]]; then
+    selection="$(fzf-claude-sessions)"
+    isClaudeResume=true
+  elif [[ "${LBUFFER}" =~ "vfa( )?$" ]]; then
     selection="$(fzf-git-files-stageable)"
   else
     selection="$(fzf-fs-files-project)"
@@ -26,6 +31,22 @@ oroshi-fzf-files-project-widget() {
   # Stop if no selection is made
   if [[ "$selection" == "" ]]; then
     return 1
+  fi
+
+  # Special handling for Claude session resume
+  if [[ $isClaudeResume == true ]]; then
+    local parts=(${(@s/▮/)selection})
+    local uuid="$parts[1]"
+    local cwd="$parts[2]"
+
+    # Clear the buffer and execute resume command
+    LBUFFER=""
+    RBUFFER=""
+    zle reset-prompt
+
+    # Execute the resume command in original directory
+    eval "cd '$cwd' && claude --resume '$uuid'"
+    return 0
   fi
 
   LBUFFER="${LBUFFER}${selection} "

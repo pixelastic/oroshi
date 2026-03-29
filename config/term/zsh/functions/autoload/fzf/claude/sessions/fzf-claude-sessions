@@ -1,0 +1,6 @@
+function fzf-claude-sessions() {
+  fzf-search \
+    --source "fzf-claude-sessions-source-no-query" \
+    --options "fzf-claude-sessions-options" \
+    --postprocess "fzf-claude-sessions-postprocess"
+}

@@ -1,0 +1,24 @@
+function claude-session-list-raw() {
+  local historyFile="$HOME/.claude/history.jsonl"
+
+  jq -r 'select(has("sessionId")) |
+    {
+      sessionId: .sessionId,
+      project: .project,
+      timestamp: .timestamp,
+      display: (.display | gsub("\n"; " "))
+    }' "$historyFile" |
+    jq -s 'group_by(.sessionId) |
+    map({
+      uuid: .[0].sessionId,
+      cwd: .[0].project,
+      title: .[0].display,
+      timestamp: (.[0].timestamp / 1000 | floor),
+      messageCount: length
+    }) |
+    sort_by(.timestamp) |
+    reverse |
+    .[] |
+    [.uuid, .cwd, (.timestamp | tostring), (.messageCount | tostring), .title] |
+    join("▮")' -r
+}

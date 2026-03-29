@@ -1,0 +1,20 @@
+function fzf-claude-sessions-source-no-query() {
+  # Get all sessions from history.jsonl (already sorted newest first)
+  local allSessions=$(claude-session-list-raw 2>/dev/null)
+
+  for session in ${(f)allSessions}; do
+    local splitLine=(${(@s/▮/)session})
+    local uuid=${splitLine[1]}
+    local cwd=${splitLine[2]}
+    local title=${splitLine[5]}
+
+    # project prefix
+    local projectDisplay=""
+    local projectName="$(project-by-path $cwd)"
+    if [[ -n "$projectName" ]]; then
+      projectDisplay="$(project-colorize $projectName)"
+    fi
+
+    echo "${uuid}▮${projectDisplay} ${title}"
+  done
+}
