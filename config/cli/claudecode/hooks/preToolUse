@@ -23,11 +23,12 @@ debug "Tool name: $toolName"
 
 # List of tools that are always auto-approved
 local autoApprovedTools=(
+  "Fetch"
   "Glob"
   "Grep"
   "LS"
   "Read"
-  "Fetch"
+  "Search"
   "WebFetch"
 )
 

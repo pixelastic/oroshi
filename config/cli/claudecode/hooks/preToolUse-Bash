@@ -27,8 +27,10 @@ local allowlist=(
   diff
   dmesg
   echo
+  fd
   ffmpeg
   ffprobe
+  file
   find
   grep
   head
