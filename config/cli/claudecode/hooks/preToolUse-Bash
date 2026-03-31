@@ -44,6 +44,7 @@ local allowlist=(
   readlink
   rg
   sed
+  sort
   tac
   tail
   test
