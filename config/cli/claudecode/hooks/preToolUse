@@ -15,6 +15,13 @@
 # }
 
 local stdinData=$(cat)
+
+# Complex commands might produce invalid JSON, so we try to properly escape the
+# \.
+if [[ "$stdinData" == *'\;'* ]]; then
+  stdinData=$(printf '%s' "$stdinData" | sed 's/\\;/\\\\;/g')
+fi
+
 local hookDir=/home/tim/.oroshi/config/cli/claudecode/hooks
 source ${hookDir}/lib/hookLib.zsh
 

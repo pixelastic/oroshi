@@ -22,6 +22,7 @@ toolCommand=$(getToolInput "command")
 local allowlist=(
   cat
   cd
+  chmod
   command
   date
   diff
