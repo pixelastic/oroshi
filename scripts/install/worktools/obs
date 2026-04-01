@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# OBS Studio: Screen recording with webcam overlay
+set -e
+
+sudo apt-get install obs-studio
