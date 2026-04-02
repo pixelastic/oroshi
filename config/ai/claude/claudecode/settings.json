@@ -10,7 +10,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/tim/.oroshi/config/cli/claudecode/hooks/sessionStart"
+            "command": "/home/tim/.oroshi/config/ai/claude/claudecode/hooks/sessionStart"
           }
         ]
       }
@@ -21,7 +21,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/tim/.oroshi/config/cli/claudecode/hooks/notification"
+            "command": "/home/tim/.oroshi/config/ai/claude/claudecode/hooks/notification"
           }
         ]
       }
@@ -31,7 +31,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/tim/.oroshi/config/cli/claudecode/hooks/stop"
+            "command": "/home/tim/.oroshi/config/ai/claude/claudecode/hooks/stop"
           }
         ]
       }
@@ -42,7 +42,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/tim/.oroshi/config/cli/claudecode/hooks/preToolUse"
+            "command": "/home/tim/.oroshi/config/ai/claude/claudecode/hooks/preToolUse"
           }
         ]
       }

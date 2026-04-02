@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 # Common functions for Claude Code preToolUse hooks
-# Source this file in your hooks: source /home/tim/.oroshi/config/cli/claudecode/hooks/lib/hookLib.zsh
+# Source this file in your hooks: source /home/tim/.oroshi/config/ai/claude/claudecode/hooks/lib/hookLib.zsh
 
 # Parse the stdin data from Claude Code and extract a field value
 #

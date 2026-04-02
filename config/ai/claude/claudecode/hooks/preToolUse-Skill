@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # Check if skills should be auto-approved based on allowlist
 
-source /home/tim/.oroshi/config/cli/claudecode/hooks/lib/hookLib.zsh
+source /home/tim/.oroshi/config/ai/claude/claudecode/hooks/lib/hookLib.zsh
 
 skillName=$(getToolInput "skill")
 

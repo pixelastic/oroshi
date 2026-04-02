@@ -14,7 +14,7 @@
 # - time echo "test"                     -> accept (time is ignored)
 #
 
-source /home/tim/.oroshi/config/cli/claudecode/hooks/lib/hookLib.zsh
+source /home/tim/.oroshi/config/ai/claude/claudecode/hooks/lib/hookLib.zsh
 
 stdinData=$(cat)
 toolCommand=$(getToolInput "command" <<<"$stdinData")

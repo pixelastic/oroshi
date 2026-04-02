@@ -16,7 +16,7 @@
 
 local stdinData=$(cat)
 
-local hookDir=/home/tim/.oroshi/config/cli/claudecode/hooks
+local hookDir=/home/tim/.oroshi/config/ai/claude/claudecode/hooks
 source ${hookDir}/lib/hookLib.zsh
 
 # Extract tool_name (handles invalid JSON with unescaped newlines)

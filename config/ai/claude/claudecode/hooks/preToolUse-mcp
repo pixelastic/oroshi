@@ -8,7 +8,7 @@
 # - "google-slides" → accepts all google-slides methods
 # - "google-slides__get_presentation" → accepts only this specific method
 
-source /home/tim/.oroshi/config/cli/claudecode/hooks/lib/hookLib.zsh
+source /home/tim/.oroshi/config/ai/claude/claudecode/hooks/lib/hookLib.zsh
 
 local toolName=$1
 
