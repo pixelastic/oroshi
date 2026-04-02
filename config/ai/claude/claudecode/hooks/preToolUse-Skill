@@ -3,9 +3,8 @@
 
 source /home/tim/.oroshi/config/ai/claude/claudecode/hooks/lib/hookLib.zsh
 
-# The input file path is passed as first argument
 local inputFile=$1
-skillName=$(getToolInput "skill" "$inputFile")
+skillName=$(jq -r "tool_input.skill" "$inputFile")
 
 # Allowlist of skills
 local allowedSkills=(

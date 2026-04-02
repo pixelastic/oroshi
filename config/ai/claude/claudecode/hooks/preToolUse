@@ -21,8 +21,7 @@ source ${hookDir}/lib/hookLib.zsh
 local inputFile=$(saveInputAsJson)
 
 # Extract tool_name
-toolName=$(getField "tool_name" "$inputFile")
-
+toolName=$(jq -r ".tool_name" "$inputFile")
 debug "Tool name: $toolName"
 
 # List of tools that are always auto-approved
