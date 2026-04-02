@@ -7,6 +7,7 @@
 # Handles:
 # - Valid JSON: {"tool_name":"WebFetch"}
 # - Invalid JSON with newlines: {"prompt":"Line 1\nLine 2"}
+# - Invalid escape sequences: {"command":"echo ok\; done"}
 # - Escaped chars: {"command":"echo \"hello\""}
 # - Nested fields: {"tool_input":{"command":"ls"}}
 #
@@ -17,24 +18,14 @@ function getField() {
   local field=$1
   local stdinData=$(cat)
 
-  # Try standard jq parsing first (works for valid JSON)
-  local value=$(printf '%s' "$stdinData" | jq -r ".${field}" 2>/dev/null)
-
-  # If jq worked and returned a non-empty value, use it
-  if [[ -n "$value" && "$value" != "null" ]]; then
-    printf '%s' "$value"
-    return 0
-  fi
-
-  # Fallback: use perl regex (handles invalid JSON with newlines)
-  # For nested fields like "tool_input.command", extract just the last part
-  local fieldName="${field##*.}"
-
-  # This extracts "fieldName":"value" or "fieldName": "value" patterns
-  # It captures everything between the quotes, including newlines
-  value=$(printf '%s' "$stdinData" | perl -0777 -ne "print \$1 if /\"${fieldName}\"\\s*:\\s*\"((?:[^\"]|\\\\\")*)\"/" | perl -pe 's/\\n/\n/g; s/\\"/"/g')
-
-  printf '%s' "$value"
+  # Claude Code sometimes sends invalid JSON:
+  # - Literal newlines in strings → escape them as \n
+  # - Invalid escape sequences like \; → double the backslash
+  printf '%s' "$stdinData" \
+    | sed 's/\\;/\\\\;/g' \
+    | sed -z 's/\n/\\n/g' \
+    | sed 's/\\n$//' \
+    | jq -r ".${field} // empty"
 }
 
 # Get a specific value from tool_input
