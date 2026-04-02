@@ -25,6 +25,7 @@ local allowlist=(
   cd
   chmod
   command
+  claude-bin
   cp
   date
   diff
@@ -51,6 +52,7 @@ local allowlist=(
   sort
   tac
   tail
+  tee
   test
   typora
   wc
