@@ -20,7 +20,7 @@ local hookDir=/home/tim/.oroshi/config/cli/claudecode/hooks
 source ${hookDir}/lib/hookLib.zsh
 
 # Extract tool_name (handles invalid JSON with unescaped newlines)
-toolName=$(getField "tool_name" <<< "$stdinData")
+toolName=$(getField "tool_name" <<<"$stdinData")
 
 debug "Tool name: $toolName"
 
@@ -32,6 +32,7 @@ local autoApprovedTools=(
   "LS"
   "Read"
   "Search"
+  "TodoWrite"
   "WebFetch"
 )
 

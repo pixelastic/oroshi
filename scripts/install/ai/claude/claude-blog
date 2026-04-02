@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+# Blog content engine for Claude Code
+# https://github.com/AgriciDaniel/claude-blog
+set -e
+
+local REPO_URL="git@github.com:AgriciDaniel/claude-blog.git"
+local DOWNLOAD_PATH=~/local/src
+local DOWNLOAD_DIRECTORY="claude-blog"
+
+# Clone or update repository
+cd $DOWNLOAD_PATH
+git-directory-sync "$REPO_URL" "$DOWNLOAD_DIRECTORY"
+
+# Run installation script
+cd "${DOWNLOAD_PATH}/${DOWNLOAD_DIRECTORY}"
+./install.sh

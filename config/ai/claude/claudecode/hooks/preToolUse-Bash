@@ -17,7 +17,7 @@
 source /home/tim/.oroshi/config/cli/claudecode/hooks/lib/hookLib.zsh
 
 stdinData=$(cat)
-toolCommand=$(getToolInput "command" <<< "$stdinData")
+toolCommand=$(getToolInput "command" <<<"$stdinData")
 
 # List of commands that can be executed without asking for permission
 local allowlist=(
@@ -25,6 +25,7 @@ local allowlist=(
   cd
   chmod
   command
+  cp
   date
   diff
   dmesg
@@ -40,6 +41,7 @@ local allowlist=(
   jq
   ls
   mkdir
+  mv
   ping
   print
   printf
@@ -59,8 +61,11 @@ local allowlist=(
   "done"
   "do"
   "for"
+  "git add"
+  "git clone"
   "git diff"
   "git log"
+  "git mv"
   "git show"
   "git status"
   "yarn run algolia:ask"
