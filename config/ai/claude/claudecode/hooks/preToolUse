@@ -37,6 +37,7 @@ local autoApprovedTools=(
   "Task"
   "TodoWrite"
   "WebFetch"
+  "WebSearch"
 )
 
 # Auto-approved tool
