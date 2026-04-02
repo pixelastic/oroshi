@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# Make it use the global node version, circumventing the need to re-install it
+# in each project using a different node version
+# Also running it in bash, so it doesn't inherit from my custom
+# better-{ls,grep,etc} functions that just confuses it
+local nodeBinaryDir=$OROSHI_TMP_FOLDER/node/bin
+bash \
+  -c "${nodeBinaryDir}/node ${nodeBinaryDir}/claude \"\$@\"" _ $@

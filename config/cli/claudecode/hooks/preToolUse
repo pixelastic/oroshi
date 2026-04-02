@@ -16,16 +16,12 @@
 
 local stdinData=$(cat)
 
-# Complex commands might produce invalid JSON, so we try to properly escape the
-# \.
-if [[ "$stdinData" == *'\;'* ]]; then
-  stdinData=$(printf '%s' "$stdinData" | sed 's/\\;/\\\\;/g')
-fi
-
 local hookDir=/home/tim/.oroshi/config/cli/claudecode/hooks
 source ${hookDir}/lib/hookLib.zsh
 
-toolName=$(echo "$stdinData" | jq -r '.tool_name')
+# Extract tool_name (handles invalid JSON with unescaped newlines)
+toolName=$(getField "tool_name" <<< "$stdinData")
+
 debug "Tool name: $toolName"
 
 # List of tools that are always auto-approved
@@ -63,4 +59,4 @@ fi
 
 # Default to ask the user
 debug "Decision: let Claude ask"
-letClaudeAsk
+letClaudeAsk $toolName

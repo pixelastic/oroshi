@@ -16,7 +16,8 @@
 
 source /home/tim/.oroshi/config/cli/claudecode/hooks/lib/hookLib.zsh
 
-toolCommand=$(getToolInput "command")
+stdinData=$(cat)
+toolCommand=$(getToolInput "command" <<< "$stdinData")
 
 # List of commands that can be executed without asking for permission
 local allowlist=(
@@ -49,6 +50,7 @@ local allowlist=(
   tac
   tail
   test
+  typora
   wc
   which
   whoami
