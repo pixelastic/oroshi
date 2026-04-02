@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# Check if autosubmit mode is enabled
+# Returns 0 if enabled, 1 if disabled
+
+local storeDirectory=$OROSHI_TMP_FOLDER/mic2txt
+local storeFile="${storeDirectory}/autosubmit-mode"
+
+if [[ -f $storeFile ]]; then
+  exit 0
+else
+  exit 1
+fi

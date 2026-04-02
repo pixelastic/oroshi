@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+# Toggle a global "Autosubmit Mode"
+# If enabled, mic2txt will automatically press Enter after pasting text
+
+local storeDirectory=$OROSHI_TMP_FOLDER/mic2txt
+local storeFile="${storeDirectory}/autosubmit-mode"
+mkdir -p $storeDirectory
+
+# Toggle the presence of the file
+if [[ -f $storeFile ]]; then
+  rm $storeFile
+else
+  touch $storeFile
+fi

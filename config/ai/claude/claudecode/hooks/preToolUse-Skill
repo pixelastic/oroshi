@@ -8,6 +8,8 @@ skillName=$(getToolInput "skill")
 # Allowlist of skills
 local allowedSkills=(
   "superpowers:brainstorming"
+  "superpowers:requesting-code-review"
+  "superpowers:code-reviewer"
 )
 
 debug "Skill name: $skillName"
