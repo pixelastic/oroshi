@@ -1,17 +1,17 @@
 #!/usr/bin/env zsh
 # Common functions for Claude Code preToolUse hooks
 
+# Log directory configuration
+CLAUDE_HOOKS_LOG_DIR="/tmp/oroshi/claude/hooks"
+
 # Save stdin data to a temporary JSON file and return the file path
 #
 # Tries to save valid JSON as-is, or attempts to fix invalid JSON with literal newlines
 function saveInputAsJson() {
   local stdinData=$(cat)
 
-  local tmpDir=/tmp/oroshi/claude/hooks
-  mkdir -p "$tmpDir"
-
   # Generate unique filename using process ID
-  local filePath="${tmpDir}/input-$$.json"
+  local filePath="${CLAUDE_HOOKS_LOG_DIR}/input-$$.json"
 
   # Try to parse as-is first (Claude usually sends valid JSON)
   if printf '%s' "$stdinData" | jq empty 2>/dev/null; then

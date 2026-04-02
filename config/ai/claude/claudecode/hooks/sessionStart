@@ -1,2 +1,13 @@
 #!/usr/bin/env zsh
 # Triggered when a new session is started
+
+# Source the hook library to get CLAUDE_HOOKS_LOG_DIR
+source /home/tim/.oroshi/config/ai/claude/claudecode/hooks/lib/hookLib.zsh
+
+# Ensure log directory exists
+mkdir -p "$CLAUDE_HOOKS_LOG_DIR"
+
+# Clean up old log files (>15 days)
+fd -t f 'input-.*\.json' "$CLAUDE_HOOKS_LOG_DIR" \
+  --changed-before 15days \
+  --exec /bin/rm
