@@ -17,7 +17,7 @@
 source /home/tim/.oroshi/config/ai/claude/claudecode/hooks/lib/hookLib.zsh
 
 local inputFile=$1
-toolCommand=$(jq -r "tool_input.command" "$inputFile")
+toolCommand=$(jq -r ".tool_input.command" "$inputFile")
 
 # List of commands that can be executed without asking for permission
 local allowlist=(

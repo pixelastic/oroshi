@@ -4,7 +4,7 @@
 source /home/tim/.oroshi/config/ai/claude/claudecode/hooks/lib/hookLib.zsh
 
 local inputFile=$1
-skillName=$(jq -r "tool_input.skill" "$inputFile")
+skillName=$(jq -r ".tool_input.skill" "$inputFile")
 
 # Allowlist of skills
 local allowedSkills=(

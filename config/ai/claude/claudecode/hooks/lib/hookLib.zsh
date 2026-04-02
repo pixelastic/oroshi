@@ -2,6 +2,8 @@
 # Common functions for Claude Code preToolUse hooks
 
 # Save stdin data to a temporary JSON file and return the file path
+#
+# Tries to save valid JSON as-is, or attempts to fix invalid JSON with literal newlines
 function saveInputAsJson() {
   local stdinData=$(cat)
 
@@ -11,13 +13,14 @@ function saveInputAsJson() {
   # Generate unique filename using process ID
   local filePath="${tmpDir}/input-$$.json"
 
-  # Fix invalid JSON and save to file
-  # Handles:
-  # - Valid JSON: {"tool_name":"WebFetch"}
-  # - Invalid JSON with newlines: {"prompt":"Line 1\nLine 2"}
-  # - Invalid escape sequences: {"command":"echo ok\; done"}
-  # - Escaped chars: {"command":"echo \"hello\""}
-  # - Nested fields: {"tool_input":{"command":"ls"}}
+  # Try to parse as-is first (Claude usually sends valid JSON)
+  if printf '%s' "$stdinData" | jq empty 2>/dev/null; then
+    printf '%s' "$stdinData" > "$filePath"
+    echo "$filePath"
+    return 0
+  fi
+
+  # Invalid JSON - try to fix literal newlines and escape sequences
   printf '%s' "$stdinData" |
     sed 's/\\;/\\\\;/g' |
     sed -z 's/\n/\\n/g' |

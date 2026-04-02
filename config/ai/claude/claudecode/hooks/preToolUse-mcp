@@ -2,8 +2,7 @@
 # Check if MCP operations should be auto-approved based on allowlist
 #
 # This hook receives:
-#   $1: Path to the JSON input file
-#   $2: MCP tool name (without the "mcp__" prefix)
+#   $1: MCP tool name (without the "mcp__" prefix)
 # Example: for "mcp__google-slides__get_presentation", receives "google-slides__get_presentation"
 #
 # Allowlist patterns:
@@ -12,8 +11,7 @@
 
 source /home/tim/.oroshi/config/ai/claude/claudecode/hooks/lib/hookLib.zsh
 
-local inputFile=$1
-local toolName=$2
+local toolName=$1
 
 # Allowlist of MCP tools/methods that can be executed without asking for permission
 local allowedTools=(

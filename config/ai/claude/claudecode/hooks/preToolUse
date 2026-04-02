@@ -47,7 +47,7 @@ done
 # MCP Servers
 if [[ "$toolName" == mcp__* ]]; then
   local mcpToolName="${toolName#mcp__}"
-  ${hookDir}/preToolUse-mcp "$inputFile" "$mcpToolName"
+  ${hookDir}/preToolUse-mcp "$mcpToolName"
   exit $?
 fi
 
