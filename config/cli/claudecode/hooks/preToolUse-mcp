@@ -16,6 +16,7 @@ local toolName=$1
 local allowedTools=(
   "context7"
   "google-slides"
+  "make__scenarios_list"
 )
 
 debug "Tool name: $toolName"
@@ -28,4 +29,5 @@ for allowedTool in "${allowedTools[@]}"; do
 done
 
 debug "Decision: let Claude ask"
-letClaudeAsk
+
+letClaudeAsk $toolName
