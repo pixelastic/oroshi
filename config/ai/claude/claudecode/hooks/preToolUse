@@ -14,13 +14,14 @@
 #   "tool_use_id": "toolu_01PQpPRb3zHrTsqG2LMoRWNn"
 # }
 
-local stdinData=$(cat)
-
 local hookDir=/home/tim/.oroshi/config/ai/claude/claudecode/hooks
 source ${hookDir}/lib/hookLib.zsh
 
-# Extract tool_name (handles invalid JSON with unescaped newlines)
-toolName=$(getField "tool_name" <<<"$stdinData")
+# Save stdin to a temporary JSON file
+local inputFile=$(saveInputAsJson)
+
+# Extract tool_name
+toolName=$(getField "tool_name" "$inputFile")
 
 debug "Tool name: $toolName"
 
@@ -47,14 +48,14 @@ done
 # MCP Servers
 if [[ "$toolName" == mcp__* ]]; then
   local mcpToolName="${toolName#mcp__}"
-  ${hookDir}/preToolUse-mcp "$mcpToolName"
+  ${hookDir}/preToolUse-mcp "$inputFile" "$mcpToolName"
   exit $?
 fi
 
 # Dedicated handlers
 local specificToolHandler="${hookDir}/preToolUse-${toolName}"
 if [[ -f "$specificToolHandler" ]]; then
-  echo "$stdinData" | "$specificToolHandler"
+  "$specificToolHandler" "$inputFile"
   exit $?
 fi
 

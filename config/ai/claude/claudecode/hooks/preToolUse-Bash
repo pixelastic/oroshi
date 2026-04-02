@@ -16,8 +16,9 @@
 
 source /home/tim/.oroshi/config/ai/claude/claudecode/hooks/lib/hookLib.zsh
 
-stdinData=$(cat)
-toolCommand=$(getToolInput "command" <<<"$stdinData")
+# The input file path is passed as first argument
+local inputFile=$1
+toolCommand=$(getToolInput "command" "$inputFile")
 
 # List of commands that can be executed without asking for permission
 local allowlist=(
