@@ -51,6 +51,7 @@ local allowlist=(
   rg
   sed
   sort
+  systemctl
   tac
   tail
   tee

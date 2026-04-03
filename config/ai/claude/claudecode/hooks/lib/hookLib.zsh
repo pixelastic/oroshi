@@ -42,7 +42,7 @@ function acceptTool() {
 # Let Claude Code's default permission system decide
 # Usage: letClaudeDecide [hint_message]
 function letClaudeDecide() {
-  local hint=$1
+  local hint="${1:-No reason given}"
   jo -d. \
     hookSpecificOutput.hookEventName="PreToolUse" \
     hookSpecificOutput.permissionDecisionReason="$hint" \
