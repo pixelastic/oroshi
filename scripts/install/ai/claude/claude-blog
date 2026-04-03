@@ -14,3 +14,8 @@ git-directory-sync "$REPO_URL" "$DOWNLOAD_DIRECTORY"
 # Run installation script
 cd "${DOWNLOAD_PATH}/${DOWNLOAD_DIRECTORY}"
 ./install.sh
+
+# Install deps
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
