@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-# Dunst: Lightweight and customizable notification daemon
-# https://github.com/dunst-project/dunst
-set -e
-
-sudo apt-get install dunst
