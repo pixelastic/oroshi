@@ -59,6 +59,7 @@ local allowlist=(
   wc
   which
   whoami
+  "apt-cache search"
   "claude mcp list"
   "claude mcp logs"
   "done"

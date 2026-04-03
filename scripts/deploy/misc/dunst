@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+set -e
+
+# Deploy dunst configuration
+local configDir=~/.oroshi/config/misc/dunst
+local destDir=~/.config/dunst
+
+mkdir -p $destDir
+ln -fs $configDir/dunstrc $destDir/dunstrc
+
+# Override GNOME notification service with dunst
+local dbusServicesDir=~/.local/share/dbus-1/services
+
+mkdir -p $dbusServicesDir
+ln -sfT "/usr/share/dbus-1/services/org.knopwob.dunst.service" \
+  "$dbusServicesDir/org.freedesktop.Notifications.service"
+
+echo "⚠  You need to log out and log back in for dunst to replace GNOME notifications"
