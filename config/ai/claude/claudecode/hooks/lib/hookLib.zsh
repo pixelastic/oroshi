@@ -15,7 +15,7 @@ function saveInputAsJson() {
 
   # Try to parse as-is first (Claude usually sends valid JSON)
   if printf '%s' "$stdinData" | jq empty 2>/dev/null; then
-    printf '%s' "$stdinData" > "$filePath"
+    printf '%s' "$stdinData" >"$filePath"
     echo "$filePath"
     return 0
   fi
@@ -39,14 +39,12 @@ function acceptTool() {
   exit 0
 }
 
-# Let Claude Code's normal permission system handle it
-# Usage: letClaudeAsk [hint_message]
-# If hint_message is provided, it will be shown to the user in the permission dialog
-function letClaudeAsk() {
+# Let Claude Code's default permission system decide
+# Usage: letClaudeDecide [hint_message]
+function letClaudeDecide() {
   local hint=$1
   jo -d. \
     hookSpecificOutput.hookEventName="PreToolUse" \
-    hookSpecificOutput.permissionDecision="ask" \
     hookSpecificOutput.permissionDecisionReason="$hint" \
     hookSpecificOutput.oroshiDebug="$DEBUG_OUTPUT"
   exit 0

@@ -24,13 +24,14 @@ local allowlist=(
   cat
   cd
   chmod
-  command
   claude-bin
+  command
   cp
   date
   diff
   dmesg
   echo
+  exa
   fd
   ffmpeg
   ffprobe
@@ -82,6 +83,6 @@ if command-in-list "$toolCommand" -- "${allowlist[@]}"; then
   acceptTool
 fi
 
-# Otherwise, we ask the user
-debug "Decision: let Claude ask"
-letClaudeAsk
+# Otherwise, let Claude's permission system decide
+debug "Decision: let Claude decide"
+letClaudeDecide

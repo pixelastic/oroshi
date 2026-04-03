@@ -34,6 +34,7 @@ local autoApprovedTools=(
   "LS"
   "Read"
   "Search"
+  "SlashCommand"
   "Task"
   "TodoWrite"
   "WebFetch"
@@ -62,6 +63,6 @@ if [[ -f "$specificToolHandler" ]]; then
   exit $?
 fi
 
-# Default to ask the user
-debug "Decision: let Claude ask"
-letClaudeAsk $toolName
+# Default: let Claude's permission system decide
+debug "Decision: let Claude decide"
+letClaudeDecide $toolName

@@ -29,6 +29,6 @@ for allowedTool in "${allowedTools[@]}"; do
   fi
 done
 
-debug "Decision: let Claude ask"
+debug "Decision: let Claude decide"
 
-letClaudeAsk $toolName
+letClaudeDecide $toolName
