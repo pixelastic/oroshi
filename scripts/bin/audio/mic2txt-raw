@@ -68,7 +68,7 @@ function stopRecording {
 
   # If autosubmit mode is enabled, automatically press Enter
   if mic2txt-autosubmit-mode-is-enabled; then
-    sleep 0.5
+    sleep 0.25
     better-ydotool key 28:1 28:0
   fi
 }
