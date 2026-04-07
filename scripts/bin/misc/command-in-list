@@ -11,6 +11,9 @@
 #   command-in-list "git commit -m 'test'" -- "git commit" "echo"    # Returns 0
 #   command-in-list "git commit && git push" -- "git commit" "echo"  # Returns 1
 #   command-in-list "echo hello | grep world" -- "echo" "grep"       # Returns 0
+#   command-in-list "find . | xargs grep foo" -- "find" "grep"       # Returns 0 (xargs extracts grep)
+#   command-in-list "xargs -n 10 cat" -- "cat" "echo"                # Returns 0 (xargs with flags)
+#   command-in-list "xargs wget" -- "cat" "echo"                     # Returns 1 (wget not allowed)
 
 # Parse arguments: command is before --, patterns are after --
 local command=""
@@ -83,6 +86,44 @@ function parseCommandIntoSubcommands() {
   done
 }
 
+# Extract the actual command being executed by xargs
+function extractXargsCommand() {
+  local cmd=$1
+  local words=("${(z)cmd}")
+
+  # Flags that take an argument (skip both flag and the next word)
+  local flagsWithArg=("-n" "-L" "-s" "-P" "-I" "-E")
+  local skipNext=false
+
+  for i in {2..${#words}}; do
+    local word="${words[$i]}"
+
+    # Skip if this was the value of a flag
+    if [[ "$skipNext" == "true" ]]; then
+      skipNext=false
+      continue
+    fi
+
+    # Flag that takes an argument: skip this flag AND the next word
+    if [[ ${flagsWithArg[(ie)$word]} -le ${#flagsWithArg} ]]; then
+      skipNext=true
+      continue
+    fi
+
+    # Skip other flags
+    if [[ "$word" =~ ^- ]]; then
+      continue
+    fi
+
+    # If we go that far, this is the beginning of the real command
+    echo "${words[$i,-1]}"
+    return
+  done
+
+  # No command found
+  echo ""
+}
+
 # Check if a command matches any pattern in the list
 function isCommandInList() {
   local cmd=$1
@@ -90,6 +131,18 @@ function isCommandInList() {
   local -a allowedPatterns=("$@")
 
   local words=("${(z)cmd}")
+
+  # Special handling for xargs - validate the wrapped command, not xargs itself
+  if [[ "${words[1]}" == "xargs" ]]; then
+    local actualCommand=$(extractXargsCommand "$cmd")
+
+    # no argument, this is safe
+    [[ -z "$actualCommand" ]] && return 0
+
+    # Recursively validate the actual command being executed by xargs
+    isCommandInList "$actualCommand" "${allowedPatterns[@]}"
+    return $?
+  fi
 
   # Remove environment variable definitions (VAR=value) and prefix keywords
   local cleanedCommand=""

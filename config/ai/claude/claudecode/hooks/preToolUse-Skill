@@ -8,10 +8,11 @@ skillName=$(jq -r ".tool_input.skill" "$inputFile")
 
 # Allowlist of skills
 local allowedSkills=(
-  "superpowers:brainstorming"
-  "superpowers:requesting-code-review"
-  "superpowers:code-reviewer"
   "blog-rewrite"
+  "humanizer"
+  "superpowers:brainstorming"
+  "superpowers:code-reviewer"
+  "superpowers:requesting-code-review"
 )
 
 debug "Skill name: $skillName"
