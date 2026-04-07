@@ -50,6 +50,7 @@ local allowlist=(
   readlink
   rg
   sed
+  shuf
   sort
   systemctl
   tac
