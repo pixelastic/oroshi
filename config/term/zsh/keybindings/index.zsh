@@ -17,7 +17,8 @@ source $ZSH_CONFIG_PATH/keybindings/ctrl-r.zsh       # Fuzzy-find history comman
 source $ZSH_CONFIG_PATH/keybindings/ctrl-t.zsh       # Fuzzy-find files in subdirectories (same as Ctrl-Shift-p)
 source $ZSH_CONFIG_PATH/keybindings/ctrl-y.zsh       # Copy current directory to clipboard
 source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-y.zsh # Copy last command + output to clipboard
-source $ZSH_CONFIG_PATH/keybindings/ctrl-i.zsh       # Open an AI chat
+source $ZSH_CONFIG_PATH/keybindings/ctrl-i.zsh       # Open Claude Code
+source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-i.zsh # Fuzzy-find Claude sessions
 source $ZSH_CONFIG_PATH/keybindings/ctrl-o.zsh       # Fuzzy-find directories in project
 source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-o.zsh # Fuzzy-find directories in subdir
 source $ZSH_CONFIG_PATH/keybindings/ctrl-p.zsh       # Fuzzy-find files in project

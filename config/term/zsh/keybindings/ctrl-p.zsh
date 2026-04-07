@@ -1,5 +1,5 @@
-# Ctrl-P: Search for a specific file, in the whole project or context-aware completion
-oroshi-fzf-files-project-widget() {
+# Ctrl-P: Search for something specific (usually a file), based on typed command
+oroshi-fzf-command-specific-widget() {
   # Stop if not available
   if ! command -v fzf >/dev/null; then
     echo "fzf is not installed"
@@ -7,50 +7,39 @@ oroshi-fzf-files-project-widget() {
     return
   fi
 
-  # Common setup
+  # Save LBUFFER in a variable
+  # Used by fzf-fs-shared-zsh-filters to adapt its filters
   fzf-var-write ZSH_LBUFFER "${LBUFFER}"
+
+  # Command-specific
+  local commandName="default"
+  [[ "${LBUFFER}" =~ "vfa( )?$" ]] && commandName="vfa"
+
+  # Suggest selection
   export PROMPT_PREVENT_REFRESH="1"
-
-  # Context-aware selection
-  local selection=""
-  local isClaudeResume=false
-
-  if [[ "${LBUFFER}" =~ "claude( )?$" ]]; then
-    selection="$(fzf-claude-sessions)"
-    isClaudeResume=true
-  elif [[ "${LBUFFER}" =~ "vfa( )?$" ]]; then
-    selection="$(fzf-git-files-stageable)"
-  else
-    selection="$(fzf-fs-files-project)"
-  fi
-
-  # Common cleanup
+  selection="$(oroshi-fzf-command-specific-${commandName}-selection)"
   export PROMPT_PREVENT_REFRESH="0"
+
+  # Cleanup
   fzf-var-write ZSH_LBUFFER ""
 
   # Stop if no selection is made
-  if [[ "$selection" == "" ]]; then
-    return 1
-  fi
+  [[ "$selection" == "" ]] && return 1
 
-  # Special handling for Claude session resume
-  if [[ $isClaudeResume == true ]]; then
-    local parts=(${(@s/▮/)selection})
-    local uuid="$parts[1]"
-    local cwd="$parts[2]"
-
-    # Clear the buffer and execute resume command
-    LBUFFER=""
-    RBUFFER=""
-    zle reset-prompt
-
-    # Execute the resume command in original directory
-    eval "cd '$cwd' && claude --resume '$uuid'"
-    return 0
-  fi
-
+  # What to do with the selection
   LBUFFER="${LBUFFER}${selection} "
+
   return 0
 }
-zle -N oroshi-fzf-files-project-widget
-bindkey '^P' oroshi-fzf-files-project-widget
+zle -N oroshi-fzf-command-specific-widget
+bindkey '^P' oroshi-fzf-command-specific-widget
+
+# Default
+function oroshi-fzf-command-specific-default-selection {
+  fzf-fs-files-project
+}
+
+# git add / vfa
+function oroshi-fzf-command-specific-vfa-selection {
+  fzf-git-files-stageable
+}
