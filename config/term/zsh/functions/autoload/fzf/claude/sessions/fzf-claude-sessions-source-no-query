@@ -6,6 +6,7 @@ function fzf-claude-sessions-source-no-query() {
     local splitLine=(${(@s/▮/)session})
     local uuid=${splitLine[1]}
     local cwd=${splitLine[2]}
+    local messageCount=${splitLine[4]}
     local title=${splitLine[5]}
 
     # project prefix
@@ -15,6 +16,9 @@ function fzf-claude-sessions-source-no-query() {
       projectDisplay="$(project-colorize $projectName)"
     fi
 
-    echo "${uuid}▮${projectDisplay} ${title}"
+    local paddedCount=$(printf "%3d" $messageCount)
+    local countDisplay="$(colorize "$paddedCount msgs" $COLOR_ALIAS_COMMENT)"
+
+    echo "${uuid}▮${countDisplay} ${projectDisplay} ${title}"
   done
 }
