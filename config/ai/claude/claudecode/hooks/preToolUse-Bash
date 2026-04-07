@@ -64,6 +64,7 @@ local allowlist=(
   "apt-cache search"
   "claude mcp list"
   "claude mcp logs"
+  "claude skills list"
   "done"
   "do"
   "for"
