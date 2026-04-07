@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# Humanizer: Skill to detect/rewrite AI-generated text
+# https://github.com/blader/humanizer
+set -e
+
+local repoUrl="git@github.com:blader/humanizer.git"
+local repoDirectory=~/local/src/humanizer
+local skillPath=~/.claude/skills/humanizer
+
+git-directory-sync "$repoUrl" "$repoDirectory"
+
+ln -fs "${repoDirectory}" "${skillPath}"
