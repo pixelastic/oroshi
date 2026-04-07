@@ -9,6 +9,7 @@
 # Target should be under 150ms
 
 source $ZSH_CONFIG_PATH/env.zsh           # Global environment variables
+source $ZSH_CONFIG_PATH/init.zsh          # Shell initialization
 source $ZSH_CONFIG_PATH/theming/index.zsh # Colors
 
 source $ZSH_CONFIG_PATH/history.zsh           # History of commands
