@@ -21,6 +21,7 @@ toolCommand=$(jq -r ".tool_input.command" "$inputFile")
 
 # List of commands that can be executed without asking for permission
 local allowlist=(
+  basename
   cat
   cd
   chmod
@@ -33,6 +34,7 @@ local allowlist=(
   echo
   env
   exa
+  exiftool
   fd
   ffmpeg
   ffprobe
@@ -40,6 +42,7 @@ local allowlist=(
   find
   grep
   head
+  imgmin
   jo
   jq
   ls
@@ -48,6 +51,7 @@ local allowlist=(
   ping
   print
   printf
+  read
   readlink
   rg
   sed

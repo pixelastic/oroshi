@@ -25,7 +25,7 @@ function oroshiSlowCommandPreexec() {
     top
     vim
     "git commit"
-    "yarn run writing-buddy"
+    "yr writing-buddy"
   )
   local expandedCommand="$2"
 
