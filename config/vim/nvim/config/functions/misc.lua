@@ -12,6 +12,7 @@ return {
   -- Visually mark Neovim as "thinking"
   setThinkingIndicator = function(isThinking)
     O.statusline.ai = { isThinking = isThinking }
+
     if isThinking then
       F.hl("Normal", "GRAY_3", { bg = "DARK_AMBER" })
     else

@@ -48,6 +48,7 @@ hl("gitcommitDiff", "COMMENT")
 hl("gitcommitHeader", "COMMENT")
 hl("gitcommitSelectedFile", "FILE")
 hl("gitcommitSummary", "TEXT")
+hl("gitcommitOverflow", "TEXT")
 -- }}}
 
 -- Treesitter groups {{{

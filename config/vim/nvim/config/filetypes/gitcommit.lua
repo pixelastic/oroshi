@@ -14,6 +14,11 @@ M.onFiletype = function()
         F.replaceLines(message.stdout, 1)
         F.moveTo(1)
         F.setThinkingIndicator(false)
+
+        -- Visuall mark the window as ready
+        F.hl("Normal", "GIT_COMMIT", { bg = "DARK_PURPLE" })
+        F.hl("gitCommitSummary", "GIT_COMMIT", { bg = "DARK_PURPLE" })
+        F.hl("gitCommitOverflow", "GIT_COMMIT", { bg = "DARK_PURPLE" })
       end,
       onError = function(error)
         F.replaceLines("Failed to generate commit message: " .. error.stdout, 1)
