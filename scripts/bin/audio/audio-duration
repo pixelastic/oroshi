@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+# audio-duration: Get the duration of an audio/video file in seconds
+# Usage:
+# $ audio-duration input.wav  # Returns duration in seconds (e.g., 831.488000)
+
+local input=$1
+
+if [[ ! -f $input ]]; then
+  echo "Error: Input file '$input' not found" >&2
+  exit 1
+fi
+
+ffprobe -i "$input" -show_entries format=duration -v quiet -of csv="p=0"

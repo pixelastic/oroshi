@@ -1,0 +1,58 @@
+#!/usr/bin/env zsh
+# wav2txt-openai: Convert a wav file into text using OpenAI
+# Usage:
+# $ wav2txt-openai ./path/to/file.wav     # Echo the transcript
+
+local input=$1
+
+source ~/.oroshi/private/config/term/zsh/local/${HOSTNAME}/open_ai.zsh
+
+# Check if file exceeds OpenAI limit
+function isFileTooBig {
+  local file=$1
+  local maxFileSize=26214400 # 25 MB - OpenAI Whisper API limit
+  local fileSize=$(stat -c%s "$file")
+  [[ $fileSize -ge $maxFileSize ]]
+}
+
+# Transcribe a single file with OpenAI
+function transcribeFile {
+  local fileToTranscribe=$1
+  curl \
+    --silent \
+    -X POST \
+    https://api.openai.com/v1/audio/transcriptions \
+    -H "Authorization: Bearer $OPENAI_WHISPER_API_KEY" \
+    -H "Content-Type: multipart/form-data" \
+    -F file="@${fileToTranscribe}" \
+    -F model="whisper-1" \
+    -F language="fr" \
+    -F response_format="text"
+}
+
+# Split large file and transcribe both parts
+function splitAndTranscribe {
+  local file=$1
+  local basename="${file:r}"
+  local extension="${file:e}"
+  local part1="${basename}-part1.${extension}"
+  local part2="${basename}-part2.${extension}"
+
+  # Split the file in two at a silence near the middle
+  audio-split "$file"
+
+  # Transcribe both parts
+  local transcription1=$(transcribeFile "$part1")
+  local transcription2=$(transcribeFile "$part2")
+
+  # Cleanup temporary files
+  rm -f "$part1" "$part2"
+
+  # Return concatenated transcription
+  echo "${transcription1} ${transcription2}"
+}
+
+# Main logic
+isFileTooBig "$input" &&
+  splitAndTranscribe "$input" ||
+  transcribeFile "$input"

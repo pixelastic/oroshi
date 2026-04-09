@@ -1,0 +1,39 @@
+#!/usr/bin/env zsh
+# audio-split: Split an audio file in two parts at a silence near the middle
+# Creates <basename>-part1.<ext> and <basename>-part2.<ext>
+# Usage:
+# $ audio-split input.wav  # Creates input-part1.wav and input-part2.wav
+
+local input=$1
+
+if [[ ! -f $input ]]; then
+  echo "Error: Input file '$input' not found" >&2
+  exit 1
+fi
+
+# Generate output filenames
+local basename="${input:r}"
+local extension="${input:e}"
+local output1="${basename}-part1.${extension}"
+local output2="${basename}-part2.${extension}"
+
+# Get duration and calculate midpoint
+local duration=$(audio-duration "$input")
+local midpoint=$(echo "$duration / 2" | bc -l)
+
+# Detect all silences in the file
+local silences=$(ffmpeg -i "$input" -af silencedetect=noise=-20dB:d=0.2 -f null - 2>&1 |
+  rg "silence_start: ([0-9.]+)" -or '$1')
+
+# Find the first silence after the midpoint
+local splitPoint="$midpoint"
+for silence in ${(f)silences}; do
+  if (($(echo "$silence >= $midpoint" | bc -l))); then
+    splitPoint=$silence
+    break
+  fi
+done
+
+# Split the file at the split point
+ffmpeg -i "$input" -t "$splitPoint" -c copy "$output1" -y 2>/dev/null
+ffmpeg -i "$input" -ss "$splitPoint" -c copy "$output2" -y 2>/dev/null

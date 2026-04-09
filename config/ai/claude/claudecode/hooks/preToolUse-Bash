@@ -83,6 +83,7 @@ local allowlist=(
   "git status"
   "yarn run algolia:ask"
   "yarn run algolia:teach"
+  "yarn run agent:delete-orphaned-images"
 )
 
 debug "Input command: $toolCommand"

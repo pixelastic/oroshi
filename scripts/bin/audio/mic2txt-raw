@@ -23,8 +23,7 @@ function startRecording {
   rec \
     --rate 16000 \
     --channels 1 \
-    $recordFile \
-    gain 40 &
+    $recordFile &
 
   # Save the pid
   echo $! >$pidFile
