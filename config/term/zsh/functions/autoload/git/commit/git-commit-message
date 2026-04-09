@@ -51,18 +51,29 @@ CRITICAL INSTRUCTIONS:
 Format requirements:
 - Conventional Commits format: type(scope): description
 - Subject line: 50-72 characters maximum
-- Body: 1-3 sentences explaining WHY (not what - git shows what)
+- Body: ONLY if concrete impact exists
 - Body lines: wrapped at 72 characters maximum
 - One blank line between subject and body
 - Ignore anything related to alwaysThinkingEnabled toggling
 - If chore of updating deps, don't include a body
 - If multiple concerns: choose ONE most significant
 
-Example output format:
+Body guidelines:
+- State CONCRETE impact: what problem solved, what now possible, what prevented
+- Generic quality claims (maintainability/readability) need specific context
+- No body if you can't identify measurable impact
+
+✓ Prevents GUI errors from polluting terminal
+✓ Fixes path to blogging directory
+✓ Reduces package.json merge conflicts by isolating scripts
+✗ Better maintainability and readability
+✗ Improves code organization
+
+Example:
 feat(auth): add password reset functionality
 
-Users can now request password reset via email with time-limited
-tokens. Includes rate limiting to prevent abuse.
+Allows users to regain access without admin intervention.
+Includes rate limiting to prevent abuse.
 
 YOUR OUTPUT MUST START IMMEDIATELY WITH THE COMMIT TYPE. NO OTHER TEXT."
 
