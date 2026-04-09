@@ -38,6 +38,7 @@ local config = {
       "jsdoc",
       "jsonc",
       "json",
+      "make",
       "markdown",
       "markdown_inline",
       "nginx",

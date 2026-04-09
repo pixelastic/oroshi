@@ -1,0 +1,72 @@
+# Organize files into subdirectories based on their modification date (YYYY-MM format)
+# Usage:
+# $ rename-by-month                    # Use current directory (dry-run)
+# $ rename-by-month /path/to/dir       # Use specified directory (dry-run)
+# $ rename-by-month --force            # Actually move files in current directory
+# $ rename-by-month --force /path/dir  # Actually move files in specified directory
+function rename-by-month() {
+  zparseopts -E -D \
+    -force=flagForce
+
+  local isForce=${#flagForce}
+  local targetDir="${1:-.}"
+  targetDir="${targetDir:a}"
+
+  # Check if directory exists
+  if [[ ! -d "$targetDir" ]]; then
+    echo "Error: Directory does not exist: $targetDir" >&2
+    return 1
+  fi
+
+  # Get all files (not directories) in the target directory
+  local files=("${targetDir}"/*(N.))
+
+  if [[ ${#files[@]} -eq 0 ]]; then
+    echo "No files found in: $targetDir"
+    return 0
+  fi
+
+  # Build a map of directories to files
+  typeset -A dirMap
+  local moveCount=0
+
+  for file in "${files[@]}"; do
+    local monthDir=$(date -r "$file" +%Y-%m)
+    local fileName="${file:t}"
+
+    if [[ -z ${dirMap[$monthDir]} ]]; then
+      dirMap[$monthDir]="$fileName"
+    else
+      dirMap[$monthDir]="${dirMap[$monthDir]}"$'\n'"$fileName"
+    fi
+
+    ((moveCount++))
+  done
+
+  # Display results
+  if [[ $isForce -eq 1 ]]; then
+    # Force mode: move files and show progress
+    for monthDir in ${(k)dirMap}; do
+      local targetSubdir="${targetDir}/${monthDir}"
+
+      mkdir -p "$targetSubdir"
+      for fileName in ${(f)dirMap[$monthDir]}; do
+        local sourcePath="${targetDir}/${fileName}"
+        local targetPath="${targetSubdir}/${fileName}"
+        mv "$sourcePath" "$targetPath"
+      done
+    done
+    return
+  fi
+
+  # Dry-run mode: show tree structure
+  for monthDir in ${(ko)dirMap}; do
+    echo "${monthDir}/"
+
+    for fileName in ${(f)dirMap[$monthDir]}; do
+      echo "  ${fileName}"
+    done
+  done
+
+  echo "Would move ${moveCount} file(s) (use --force to execute)"
+}
