@@ -13,6 +13,7 @@ local allowedSkills=(
   "superpowers:brainstorming"
   "superpowers:code-reviewer"
   "superpowers:requesting-code-review"
+  "superpowers:writing-skills"
 )
 
 debug "Skill name: $skillName"
