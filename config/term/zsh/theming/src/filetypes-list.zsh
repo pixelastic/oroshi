@@ -33,6 +33,7 @@ FILETYPE_GROUPS[script:patterns]="\
   css \
   eot \
   gemspec \
+  go \
   html \
   jsonl \
   json \
@@ -41,6 +42,7 @@ FILETYPE_GROUPS[script:patterns]="\
   kbd \
   lua \
   mjs \
+  mod \
   ps1 \
   pug \
   py \
@@ -184,6 +186,7 @@ FILETYPE_GROUPS[minor:patterns]="\
   part \
   pid \
   session \
+  sum \
   [_algolia_api_key] \
 "
 
@@ -204,5 +207,7 @@ FILETYPES[JS:icon]=" "
 FILETYPES[JS:color]="YELLOW"
 FILETYPES[VUE:icon]=" "
 FILETYPES[VUE:color]="GREEN_4"
-
+FILETYPES[GO:icon]="󰟓 "
+FILETYPES[GO:color]="SKY_5"
+FILETYPES[MOD:color]="SKY_6"
 # }}}
