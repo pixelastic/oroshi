@@ -28,6 +28,7 @@ local allowlist=(
   claude-bin
   command
   cp
+  cut
   date
   diff
   dmesg
