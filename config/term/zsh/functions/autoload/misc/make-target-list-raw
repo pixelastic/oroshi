@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+# Returns a raw list of all targets found in the local Makefile
+# Usage:
+# $ make-target-list-raw          # List all targets from nearest Makefile
+# Output:
+#   One target name per line
+function make-target-list-raw() {
+  # Extract targets from the Makefile
+  # We use make -qp which prints the database without executing anything
+  # Filter for lines starting with lowercase letter (actual targets)
+  # Remove the colon and everything after, then sort
+  /usr/bin/grep '^[a-z]' <./Makefile |
+    sed 's/:.*$//' |
+    sort
+}

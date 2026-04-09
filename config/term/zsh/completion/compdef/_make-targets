@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest list of all targets from the local Makefile
+function _make-targets() {
+  local suggestions=(${(f)"$(complete-make-targets)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_LANGUAGE_JAVASCRIPT $COLOR_BLACK ' Make ')" suggestions
+}

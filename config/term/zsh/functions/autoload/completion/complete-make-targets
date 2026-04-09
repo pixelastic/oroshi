@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# Format make targets for completion
+# Returns targets in format "target:description" for use with _describe
+function complete-make-targets() {
+  local rawList="$(make-target-list-raw)"
+  [[ $rawList == "" ]] && return 0
+
+  for target in ${(f)rawList}; do
+    echo $target
+  done
+}

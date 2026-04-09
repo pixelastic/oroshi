@@ -97,6 +97,10 @@ compdef _git-remotes \
   git-remote-remove \
   git-remote-rename
 # }}}
+# 🔨 Build Tools {{{
+compdef _make-targets \
+  make
+# }}}
 # 🖼️ Images {{{
 compdef _image-resize img-resize
 compdef '_files -g "*.{avif,bmp,gif,jpg,jpeg,png,svg,tiff,webp}"' \
