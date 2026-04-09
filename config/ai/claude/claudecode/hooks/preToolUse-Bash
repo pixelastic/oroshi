@@ -58,6 +58,7 @@ local allowlist=(
   sed
   shuf
   sort
+  stat
   systemctl
   tac
   tail
