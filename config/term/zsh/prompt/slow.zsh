@@ -25,9 +25,12 @@ function oroshiSlowCommandPreexec() {
     top
     vim
     "git commit"
-    "yr writing-buddy"
+    "yarn-run writing-buddy"
   )
   local expandedCommand="$2"
+
+  # Store the expanded command in an environment variable for inspection
+  export OROSHI_LAST_COMMAND="$expandedCommand"
 
   # Return early if command matches one of the allowed patterns
   if command-in-list "$expandedCommand" -- "${allowList[@]}"; then
