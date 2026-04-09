@@ -11,11 +11,12 @@ function fzf-fs-files-shared-postprocess() {
     local split=(${(@s/   /)line})
 
     local filepath="$split[1]"
-    filepath=${filepath:q}
+    # Expand tilde
     filepath=${~filepath}
 
     files+=($filepath)
   done
 
-  echo $files
+  # Quote each file properly
+  echo ${(q)files}
 }

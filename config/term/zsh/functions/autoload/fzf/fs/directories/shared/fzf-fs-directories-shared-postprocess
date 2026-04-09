@@ -11,11 +11,12 @@ function fzf-fs-directories-shared-postprocess() {
     local split=(${(@s/   /)line})
 
     local directory="$split[1]"
-    directory=${directory:gs/ /\\ /}
+    # Expand tilde but preserve special characters
     directory=${~directory}
 
     directories+=($directory)
   done
 
-  echo $directories
+  # Quote each directory properly for output
+  echo ${(q)directories}
 }

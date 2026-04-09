@@ -13,5 +13,6 @@ function fzf-git-files-stageable-postprocess() {
     selections+=($selection)
   done
 
-  echo ${=selections}
+  # Quote each selection properly for output
+  echo ${(q)selections}
 }
