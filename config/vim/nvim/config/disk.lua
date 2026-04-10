@@ -2,7 +2,11 @@ local autocmd = F.autocmd
 local ftplugin = F.ftplugin
 
 -- auto-read {{{
--- Update files, even if changed from outside
+-- Check for changes on focus
+autocmd("FocusGained", function()
+  vim.cmd("checktime")
+end)
+-- Don't ask what to do if file changed from outside of nvim
 vim.opt.autoread = true
 -- }}}
 
