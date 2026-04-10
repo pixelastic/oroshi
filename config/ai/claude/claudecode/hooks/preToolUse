@@ -26,7 +26,6 @@ debug "Tool name: $toolName"
 
 # List of tools that are always auto-approved
 local autoApprovedTools=(
-  "ExitPlanMode"
   "Fetch"
   "BashOutput"
   "Glob"
@@ -35,7 +34,6 @@ local autoApprovedTools=(
   "Read"
   "Search"
   "SlashCommand"
-  "Task"
   "TodoWrite"
   "WebFetch"
   "WebSearch"
