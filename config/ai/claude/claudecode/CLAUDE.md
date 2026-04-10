@@ -38,6 +38,8 @@ When you genuinely need bash (complex pipelines, chaining commands, advanced scr
 - **Use `trash`** (NOT `rm`) - Safe deletion at `/usr/bin/trash-put`
   - Or use `/bin/rm` if you need the real rm
   - Example: `trash old-file.txt`
+- **Use `/usr/bin/cat`** (NOT `cat`) - Real cat command
+  - Example: `/usr/bin/cat file.txt | grep pattern`
 
 Why not standard names? My interactive shell has aliases (find→fd, grep→rg, ls→exa, rm→trash) but your bash environment doesn't inherit these. Using standard names will call the old Unix tools, not my preferred modern alternatives.
 

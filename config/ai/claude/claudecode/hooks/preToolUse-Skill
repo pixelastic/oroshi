@@ -15,6 +15,7 @@ local allowedSkills=(
   "superpowers:requesting-code-review"
   "superpowers:writing-skills"
   "superpowers:writing-plans"
+  "superpowers:test-driven-development"
 )
 
 debug "Skill name: $skillName"

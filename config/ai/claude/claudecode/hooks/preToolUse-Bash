@@ -50,6 +50,7 @@ local allowlist=(
   ls
   mkdir
   mv
+  pdfinfo
   ping
   print
   printf
