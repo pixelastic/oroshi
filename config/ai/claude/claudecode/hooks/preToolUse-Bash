@@ -37,6 +37,7 @@ local allowlist=(
   env
   exa
   exiftool
+  false
   fd
   ffmpeg
   ffprobe
@@ -66,6 +67,7 @@ local allowlist=(
   tail
   tee
   test
+  true
   typora
   wc
   which

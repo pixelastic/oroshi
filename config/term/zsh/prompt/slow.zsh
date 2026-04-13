@@ -23,6 +23,7 @@ function oroshiSlowCommandPreexec() {
     ssh
     tmux
     top
+    typora
     vim
     "git commit"
     "yarn-run writing-buddy"
