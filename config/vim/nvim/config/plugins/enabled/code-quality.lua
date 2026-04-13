@@ -32,6 +32,8 @@ local config = {
       "editorconfig",
       "gitignore",
       "git_config",
+      "go",
+      "gotmpl",
       "html",
       "ini",
       "javascript",

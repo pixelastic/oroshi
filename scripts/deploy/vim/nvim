@@ -13,6 +13,9 @@ ln \
 mkdir -p $DEST_DIR/lua
 ln -fns $CONFIG_DIR/config $DEST_DIR/lua/oroshi
 
+# Create after directory for treesitter queries
+ln -fns $CONFIG_DIR/after $DEST_DIR/after
+
 # Create runtime directories
 mkdir -p $DEST_DIR/swap
 mkdir -p $DEST_DIR/undo
