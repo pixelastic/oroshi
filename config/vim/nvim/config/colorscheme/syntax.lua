@@ -97,6 +97,17 @@ hl("dockerfileFrom", "SYMBOL")
 hl("dockerfileShell", "GREEN")
 hl("dockerfileValue", "VARIABLE")
 -- }}}
+-- Go {{{
+hl("@comment.gotmpl", "COMMENT", { bg = "DARK_SKY" })
+hl("@function.gotmpl", "FUNCTION", { bg = "DARK_SKY" })
+hl("@variable.member.gotmpl", "VARIABLE", { bg = "DARK_SKY" })
+hl("@keyword.conditional.gotmpl", "ORANGE", { bg = "DARK_SKY" })
+hl("@keyword.directive.gotmpl", "YELLOW", { bg = "DARK_SKY" })
+hl("@punctuation.bracket.gotmpl", "PUNCTUATION", { bg = "DARK_SKY" })
+hl("@punctuation.delimiter.gotmpl", "PUNCTUATION", { bg = "DARK_SKY" })
+hl("@operator.gotmpl", "PUNCTUATION", { bg = "DARK_SKY" })
+hl("@string.gotmpl", "STRING", { bg = "DARK_SKY" })
+-- }}}
 -- help {{{
 hl("@markup.heading.1.vimdoc", "BLUE_4")
 hl("@label.vimdoc", "GREEN_7")
