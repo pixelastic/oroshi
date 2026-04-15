@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# gotmpl-lint: Lint a Go template HTML file
+# Note: Wrapper around html-lint with --gotmpl flag
+# Usage:
+# $ gotmpl-lint ./path/to/file.gohtml                                # Lint file
+# $ gotmpl-lint --nvim ./path/to/file.gohtml                         # Lint file, optimized output for NeoVim
+# $ echo '<div>{{ .Title }}</div>' | gotmpl-lint --filepath ./realpath.gohtml  # Lint from stdin, with real location on disk
+
+# Delegate to html-lint with --gotmpl flag
+html-lint --gotmpl "$@"

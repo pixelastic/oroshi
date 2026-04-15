@@ -74,7 +74,9 @@ local config = {
       formatterTimeout = 10000,
     },
     gotmpl = {
+      linters = { "oroshi_gotmpl_lint" },
       formatters = { "oroshi_gotmpl_fix" },
+      configureLinter = gotmplHelper.configureLinter,
       configureFormatter = gotmplHelper.configureFormatter,
     },
     html = {

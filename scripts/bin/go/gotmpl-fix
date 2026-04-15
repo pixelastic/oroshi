@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # gotmpl-fix: Fix a Go template HTML file
+# Note: Uses djlint and rustywind internally
 # Usage:
 # $ gotmpl-fix ./path/to/file.gohtml                       # Output fixed code to stdout
 # $ gotmpl-fix --in-place ./path/to/file.gohtml            # Overwrite the file in place
@@ -37,7 +38,7 @@ realFilepath="$inputFilepath"
 [[ $overrideFilepath != "" ]] && realFilepath="$overrideFilepath"
 
 # ============================================================================
-# Execute gotmplfmt + rustywind
+# Execute djlint + rustywind
 # ============================================================================
 
 # Input is stdin, output is stdout
@@ -51,8 +52,8 @@ if [[ $isContentPiped == 1 ]]; then
 
   cat >$tmpFile
 
-  # Apply gotmplfmt
-  gotmplfmt -w "$tmpFile" 2>/dev/null
+  # Apply djlint with golang profile
+  djlint --reformat --profile golang --quiet "$tmpFile" 2>/dev/null
 
   # Apply rustywind
   rustywind --write "$tmpFile" >/dev/null 2>&1
@@ -66,8 +67,8 @@ fi
 
 # Input is a file, fix in place
 if [[ $isInPlace == 1 ]]; then
-  # Apply gotmplfmt
-  gotmplfmt -w "$inputFilepath" 2>/dev/null
+  # Apply djlint with golang profile
+  djlint --reformat --profile golang --quiet "$inputFilepath" 2>/dev/null
 
   # Apply rustywind
   rustywind --write "$inputFilepath" >/dev/null 2>&1
@@ -82,8 +83,8 @@ local tmpFile="${tmpDir}/${inputFilepath:t}"
 # Copy file to temp
 cp "$inputFilepath" "$tmpFile"
 
-# Apply gotmplfmt
-gotmplfmt -w "$tmpFile" 2>/dev/null
+# Apply djlint with golang profile
+djlint --reformat --profile golang --quiet "$tmpFile" 2>/dev/null
 
 # Apply rustywind
 rustywind --write "$tmpFile" >/dev/null 2>&1

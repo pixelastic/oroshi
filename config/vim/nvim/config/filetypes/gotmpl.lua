@@ -1,4 +1,5 @@
 local M = {}
+local htmlHelper = O_require("oroshi/filetypes/html")
 
 -- Detect Hugo template files as gotmpl
 function M.onInit()
@@ -8,6 +9,16 @@ function M.onInit()
       ['.*/archetypes/.*%.md'] = 'gotmpl',
     }
   })
+end
+
+M.configureLinter = function(lint)
+  lint.linters.oroshi_gotmpl_lint = {
+    cmd = "gotmpl-lint",
+    stdin = false,
+    args = { "--nvim" },
+    ignore_exitcode = true,
+    parser = htmlHelper.lintParser,
+  }
 end
 
 M.configureFormatter = function(conform)

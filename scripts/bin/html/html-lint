@@ -1,8 +1,10 @@
 #!/usr/bin/env zsh
 # html-lint: Lint an HTML file
+# Note: Uses djlint internally
 # Usage:
 # $ html-lint ./path/to/file.html                                # Lint file
 # $ html-lint --gotmpl ./path/to/file.html                       # Lint Go template file
+# $ html-lint --nvim ./path/to/file.html                         # Lint file, optimized output for NeoVim
 # $ html-lint --json ./path/to/file.html                         # Lint file, JSON output for vim (not supported by djlint, returns normal output)
 # $ echo '<div>Hello</div>' | html-lint --filepath ./realpath.html  # Lint from stdin, with real location on disk
 
@@ -12,11 +14,13 @@
 zparseopts -E -D \
   -json=flagJson \
   -filepath:=flagFilepath \
-  -gotmpl=flagGotmpl
+  -gotmpl=flagGotmpl \
+  -nvim=flagNvim
 
 isJson=${#flagJson}
 overrideFilepath=${flagFilepath[2]}
 isGotmpl=${#flagGotmpl}
+isNvim=${#flagNvim}
 isContentPiped=0
 
 djlintArgs=()
@@ -69,6 +73,11 @@ if [[ $isGotmpl == "1" ]]; then
   djlintArgs+=(--profile golang)
 else
   djlintArgs+=(--profile html)
+fi
+
+# NeoVim format: pipe-delimited output for easier parsing
+if [[ $isNvim == "1" ]]; then
+  djlintArgs+=(--linter-output-format "{line}|{code}|{message}")
 fi
 
 # ============================================================================

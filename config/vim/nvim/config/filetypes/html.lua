@@ -9,7 +9,7 @@ M.configureLinter = function(lint)
   lint.linters.oroshi_html_lint = {
     cmd = "html-lint",
     stdin = false,
-    args = {},
+    args = { "--nvim" },
     ignore_exitcode = true,
     parser = M.lintParser,
   }
@@ -25,25 +25,34 @@ M.configureFormatter = function(conform)
 end
 
 -- Parser to convert djlint CLI output to diagnostics
--- djlint format:
--- H025 1:18 Tag seems to be an orphan. <p>
+-- djlint format with --nvim flag:
+-- 1:18|H025|Tag seems to be an orphan.
 M.lintParser = function(output)
   local diagnostics = {}
   local lines = vim.split(output, "\n")
 
   for _, line in ipairs(lines) do
-    -- Match pattern: CODE LINE:COLUMN MESSAGE
-    local code, row, col, message = line:match("^(%S+)%s+(%d+):(%d+)%s+(.+)$")
-    if code and row and col and message then
-      table.insert(diagnostics, {
-        lnum = tonumber(row) - 1,
-        col = tonumber(col) - 1,
-        severity = vim.diagnostic.severity.ERROR,
-        message = message,
-        source = "djlint",
-        code = code,
-      })
+    -- Match pattern: LINE:COL|CODE|MESSAGE
+    local lineCol, code, message = line:match("^(%d+:%d+)|(%S+)|(.+)$")
+    if not lineCol or not code or not message then
+      goto continue
     end
+
+    local row, col = lineCol:match("(%d+):(%d+)")
+    if not row or not col then
+      goto continue
+    end
+
+    table.insert(diagnostics, {
+      lnum = tonumber(row) - 1,
+      col = tonumber(col) - 1,
+      severity = vim.diagnostic.severity.ERROR,
+      message = message,
+      source = "djlint",
+      code = code,
+    })
+
+    ::continue::
   end
 
   return diagnostics
