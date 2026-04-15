@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# rustywind: A CLI to lint tailwind classes in HTML
+# https://github.com/avencera/rustywind
+set -e
+
+node-module-install rustywind

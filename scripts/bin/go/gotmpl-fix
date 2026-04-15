@@ -1,0 +1,95 @@
+#!/usr/bin/env zsh
+# gotmpl-fix: Fix a Go template HTML file
+# Usage:
+# $ gotmpl-fix ./path/to/file.gohtml                       # Output fixed code to stdout
+# $ gotmpl-fix --in-place ./path/to/file.gohtml            # Overwrite the file in place
+# $ echo "<html>{{ .Title }}</html>" | gotmpl-fix                             # Go template from stdin, fixed to stdout
+# $ echo "<html>{{ .Title }}</html>" | gotmpl-fix --filepath ./realpath.gohtml  # Specify file location for context
+
+# ============================================================================
+# Parse command-line arguments
+# ============================================================================
+zparseopts -E -D \
+  -in-place=flagInPlace \
+  -filepath:=flagFilepath \
+  -piped=flagPiped
+
+isInPlace=${#flagInPlace}
+overrideFilepath=${flagFilepath[2]}
+isContentPiped=${#flagPiped}
+
+# ============================================================================
+# Detect if content is piped
+# ============================================================================
+# cat file | gotmpl-fix
+[[ -p /dev/stdin ]] && isContentPiped=1
+# gotmpl-fix < file
+[[ -f /dev/stdin ]] && isContentPiped=1
+
+# ============================================================================
+# Determine input mode and file paths
+# ============================================================================
+# Resolve file paths
+# inputFilepath: the file to read (if not stdin)
+# realFilepath: where the file is really located (for context)
+inputFilepath="${1:a}"
+realFilepath="$inputFilepath"
+[[ $overrideFilepath != "" ]] && realFilepath="$overrideFilepath"
+
+# ============================================================================
+# Execute gotmplfmt + rustywind
+# ============================================================================
+
+# Input is stdin, output is stdout
+if [[ $isContentPiped == 1 ]]; then
+  local tmpDir="${OROSHI_TMP_FOLDER}/gotmpl-fix/gotmpl-fix-$RANDOM"
+  mkdir -p "${tmpDir}"
+
+  # Use the real filepath name if provided, otherwise default name
+  local tmpFile="${tmpDir}/${realFilepath:t}"
+  [[ $realFilepath == "" ]] && tmpFile="${tmpDir}/template.gohtml"
+
+  cat >$tmpFile
+
+  # Apply gotmplfmt
+  gotmplfmt -w "$tmpFile" 2>/dev/null
+
+  # Apply rustywind
+  rustywind --write "$tmpFile" >/dev/null 2>&1
+
+  # Output result
+  /usr/bin/cat "$tmpFile"
+  local exitCode=$?
+  rm -rf "$tmpDir"
+  exit $exitCode
+fi
+
+# Input is a file, fix in place
+if [[ $isInPlace == 1 ]]; then
+  # Apply gotmplfmt
+  gotmplfmt -w "$inputFilepath" 2>/dev/null
+
+  # Apply rustywind
+  rustywind --write "$inputFilepath" >/dev/null 2>&1
+  exit $?
+fi
+
+# Input is a file, output to stdout
+local tmpDir="${OROSHI_TMP_FOLDER}/gotmpl-fix/gotmpl-fix-$RANDOM"
+mkdir -p "${tmpDir}"
+local tmpFile="${tmpDir}/${inputFilepath:t}"
+
+# Copy file to temp
+cp "$inputFilepath" "$tmpFile"
+
+# Apply gotmplfmt
+gotmplfmt -w "$tmpFile" 2>/dev/null
+
+# Apply rustywind
+rustywind --write "$tmpFile" >/dev/null 2>&1
+
+# Output result
+/usr/bin/cat "$tmpFile"
+local exitCode=$?
+rm -rf "$tmpDir"
+exit $exitCode

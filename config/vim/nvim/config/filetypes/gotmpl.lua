@@ -10,4 +10,13 @@ function M.onInit()
   })
 end
 
+M.configureFormatter = function(conform)
+  conform.formatters.oroshi_gotmpl_fix = {
+    command = "gotmpl-fix",
+    stdin = true,
+    args = { "--piped", "--filepath", "$FILENAME" },
+    exit_codes = { 0, 1 },
+  }
+end
+
 return M

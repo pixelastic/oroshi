@@ -5,6 +5,16 @@ M.onFiletype = function()
   F.imap("<C-:>", "</<C-X><C-O>", "Close current HTML tag")
 end
 
+M.configureLinter = function(lint)
+  lint.linters.oroshi_html_lint = {
+    cmd = "html-lint",
+    stdin = false,
+    args = {},
+    ignore_exitcode = true,
+    parser = M.lintParser,
+  }
+end
+
 M.configureFormatter = function(conform)
   conform.formatters.oroshi_html_fix = {
     command = "html-fix",
@@ -12,6 +22,31 @@ M.configureFormatter = function(conform)
     args = { "--piped", "--filepath", "$FILENAME" },
     exit_codes = { 0, 1 },
   }
+end
+
+-- Parser to convert djlint CLI output to diagnostics
+-- djlint format:
+-- H025 1:18 Tag seems to be an orphan. <p>
+M.lintParser = function(output)
+  local diagnostics = {}
+  local lines = vim.split(output, "\n")
+
+  for _, line in ipairs(lines) do
+    -- Match pattern: CODE LINE:COLUMN MESSAGE
+    local code, row, col, message = line:match("^(%S+)%s+(%d+):(%d+)%s+(.+)$")
+    if code and row and col and message then
+      table.insert(diagnostics, {
+        lnum = tonumber(row) - 1,
+        col = tonumber(col) - 1,
+        severity = vim.diagnostic.severity.ERROR,
+        message = message,
+        source = "djlint",
+        code = code,
+      })
+    end
+  end
+
+  return diagnostics
 end
 
 M.expandEmmet = function()

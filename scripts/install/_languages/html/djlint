@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# djlint: Lint & Format HTML Templates
+# https://github.com/djlint/djlint
+pipx install djlint

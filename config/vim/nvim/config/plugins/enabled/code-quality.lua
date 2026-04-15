@@ -2,6 +2,7 @@ local cssHelper = O_require("oroshi/filetypes/css")
 local helperDiagline = O_require("oroshi/plugins/helpers/diagline")
 local helperStatusline = O_require("oroshi/plugins/helpers/statusline")
 local helper = O_require("oroshi/plugins/helpers/code-quality")
+local gotmplHelper = O_require("oroshi/filetypes/gotmpl")
 local htmlHelper = O_require("oroshi/filetypes/html")
 local javascriptHelper = O_require("oroshi/filetypes/javascript")
 local jsonHelper = O_require("oroshi/filetypes/json")
@@ -72,8 +73,14 @@ local config = {
       configureFormatter = cssHelper.configureFormatter,
       formatterTimeout = 10000,
     },
+    gotmpl = {
+      formatters = { "oroshi_gotmpl_fix" },
+      configureFormatter = gotmplHelper.configureFormatter,
+    },
     html = {
+      linters = { "oroshi_html_lint" },
       formatters = { "oroshi_html_fix" },
+      configureLinter = htmlHelper.configureLinter,
       configureFormatter = htmlHelper.configureFormatter,
       formatterTimeout = 10000,
     },

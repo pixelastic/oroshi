@@ -3,4 +3,4 @@
 # https://github.com/kangax/html-minifier
 set -e
 
-node-module-add html-minifier
+node-module-install html-minifier
