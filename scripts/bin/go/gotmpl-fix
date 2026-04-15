@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 # gotmpl-fix: Fix a Go template HTML file
-# Note: Uses djlint and rustywind internally
+# Note: Prettier chokes on gotmpl {{ syntax }}, so instead we use a mix of
+# djlint and rustywind as a good-enough fallback
 # Usage:
 # $ gotmpl-fix ./path/to/file.gohtml                       # Output fixed code to stdout
 # $ gotmpl-fix --in-place ./path/to/file.gohtml            # Overwrite the file in place
