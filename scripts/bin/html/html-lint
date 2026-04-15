@@ -75,6 +75,9 @@ else
   djlintArgs+=(--profile html)
 fi
 
+# Ignore specific linter rules
+djlintArgs+=(--ignore H014)
+
 # NeoVim format: pipe-delimited output for easier parsing
 if [[ $isNvim == "1" ]]; then
   djlintArgs+=(--linter-output-format "{line}|{code}|{message}")

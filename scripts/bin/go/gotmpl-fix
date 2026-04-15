@@ -21,6 +21,26 @@ overrideFilepath=${flagFilepath[2]}
 isContentPiped=${#flagPiped}
 
 # ============================================================================
+# Function to apply formatters on a file
+# ============================================================================
+applyFormatters() {
+  local targetFile="$1"
+
+  # Apply djlint
+  djlint \
+    --quiet \
+    --reformat \
+    --profile golang \
+    --indent 2 \
+    --preserve-leading-space \
+    --preserve-blank-lines \
+    "$targetFile" 2>/dev/null
+
+  # Apply rustywind
+  rustywind --write "$targetFile" >/dev/null 2>&1
+}
+
+# ============================================================================
 # Detect if content is piped
 # ============================================================================
 # cat file | gotmpl-fix
@@ -53,11 +73,8 @@ if [[ $isContentPiped == 1 ]]; then
 
   cat >$tmpFile
 
-  # Apply djlint with golang profile
-  djlint --reformat --profile golang --quiet "$tmpFile" 2>/dev/null
-
-  # Apply rustywind
-  rustywind --write "$tmpFile" >/dev/null 2>&1
+  # Apply formatters
+  applyFormatters "$tmpFile"
 
   # Output result
   /usr/bin/cat "$tmpFile"
@@ -68,11 +85,7 @@ fi
 
 # Input is a file, fix in place
 if [[ $isInPlace == 1 ]]; then
-  # Apply djlint with golang profile
-  djlint --reformat --profile golang --quiet "$inputFilepath" 2>/dev/null
-
-  # Apply rustywind
-  rustywind --write "$inputFilepath" >/dev/null 2>&1
+  applyFormatters "$inputFilepath"
   exit $?
 fi
 
@@ -84,11 +97,8 @@ local tmpFile="${tmpDir}/${inputFilepath:t}"
 # Copy file to temp
 cp "$inputFilepath" "$tmpFile"
 
-# Apply djlint with golang profile
-djlint --reformat --profile golang --quiet "$tmpFile" 2>/dev/null
-
-# Apply rustywind
-rustywind --write "$tmpFile" >/dev/null 2>&1
+# Apply formatters
+applyFormatters "$tmpFile"
 
 # Output result
 /usr/bin/cat "$tmpFile"
