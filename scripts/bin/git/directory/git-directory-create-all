@@ -9,8 +9,10 @@ set -e
 local originalArgs=("$@")
 
 zparseopts -E -D \
+  n=flagLocal \
   p=flagPrivate \
   a=flagAlgolia
+local isLocal=${#flagLocal}
 local isPrivate=${#flagPrivate}
 local isAlgolia=${#flagAlgolia}
 
@@ -39,14 +41,16 @@ yarn run aberlaas init
 
 # Commit and push
 git-commit-create "chore(init): Scaffolding"
-# Sync with remote in case GitHub added default files
-git-branch-rebase origin/main
-git-branch-push
+if [[ $isLocal == "0" ]]; then
+  # Sync with remote in case GitHub added default files
+  git-branch-rebase origin/main
+  git-branch-push
 
-# Configure GitHub and CircleCi (Optional)
-local additionalSetupArguments=""
-[[ $isAlgolia == "1" ]] && additionalSetupArguments="--circleci=0 --renovate=0"
-yarn run aberlaas setup ${=additionalSetupArguments}
+  # Configure GitHub and CircleCi (Optional)
+  local additionalSetupArguments=""
+  [[ $isAlgolia == "1" ]] && additionalSetupArguments="--circleci=0 --renovate=0"
+  yarn run aberlaas setup ${=additionalSetupArguments}
+fi
 
 # Mark it for future jump
 mark

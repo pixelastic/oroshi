@@ -14,4 +14,6 @@ fi
 
 # Write to clipboard using wl-copy, detached from terminal to avoid
 # interfering with terminal control characters like Ctrl-D
-echo -n "$input" | wl-copy </dev/null >/dev/null 2>&1 &!
+# We use a subshell with redirections to detach from terminal, but we wait
+# for it to complete to ensure the clipboard is updated before returning
+(echo -n "$input" | wl-copy) </dev/null >/dev/null 2>&1

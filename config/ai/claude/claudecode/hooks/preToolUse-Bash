@@ -21,7 +21,6 @@ toolCommand=$(jq -r ".tool_input.command" "$inputFile")
 
 # List of commands that can be executed without asking for permission
 local allowlist=(
-  "/bin/grep"
   awk
   basename
   cat
@@ -30,8 +29,8 @@ local allowlist=(
   claude-bin
   command
   cp
-  cut
   curl
+  cut
   date
   diff
   dmesg
@@ -88,9 +87,12 @@ local allowlist=(
   "git mv"
   "git show"
   "git status"
+  "yarn run agent:delete-orphaned-images"
   "yarn run algolia:ask"
   "yarn run algolia:teach"
-  "yarn run agent:delete-orphaned-images"
+  "/bin/grep"
+  "/usr/bin/cat"
+  "/usr/bin/grep"
 )
 
 debug "Input command: $toolCommand"
