@@ -62,7 +62,7 @@ fi
 # Symlinking all scripts to argos directory
 local argosConfigDir=~/.config/argos
 mkdir -p $argosConfigDir
-rm $argosConfigDir/*
+rm -rf $argosConfigDir/*(D)  # (D) includes hidden files/directories
 ln \
   -fs ~/.oroshi/config/ubuntu/24.04/argos/*.zsh \
   $argosConfigDir
