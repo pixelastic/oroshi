@@ -12,5 +12,6 @@ if [[ -z "$input" ]]; then
   input="$(cat)"
 fi
 
-# Write to clipboard using wl-copy
-echo -n "$input" | wl-copy
+# Write to clipboard using wl-copy, detached from terminal to avoid
+# interfering with terminal control characters like Ctrl-D
+echo -n "$input" | wl-copy </dev/null >/dev/null 2>&1 &!
