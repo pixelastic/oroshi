@@ -92,6 +92,7 @@ local allowlist=(
   "yarn run algolia:teach"
   "/bin/grep"
   "/usr/bin/cat"
+  "/usr/bin/find"
   "/usr/bin/grep"
 )
 
