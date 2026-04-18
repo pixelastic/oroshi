@@ -85,6 +85,7 @@ local allowlist=(
   "git diff"
   "git log"
   "git mv"
+  "git rev-parse"
   "git show"
   "git status"
   "yarn run agent:delete-orphaned-images"
@@ -92,6 +93,7 @@ local allowlist=(
   "yarn run algolia:teach"
   "/bin/grep"
   "/usr/bin/cat"
+  "/usr/bin/exa"
   "/usr/bin/find"
   "/usr/bin/grep"
 )

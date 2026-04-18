@@ -51,5 +51,5 @@
   "enabledPlugins": {
     "superpowers@superpowers-marketplace": true
   },
-  "alwaysThinkingEnabled": true
+  "alwaysThinkingEnabled": false
 }
