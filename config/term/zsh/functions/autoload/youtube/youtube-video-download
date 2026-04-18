@@ -3,15 +3,17 @@
 # $ youtube-video-download ${videoId/videoUrl}
 
 function youtube-video-download() {
-	local args=($@)
+  local args=($@)
 
-	for videoId in $args; do
-		yt-dlp \
-			--cookies-from-browser firefox \
-			--format 'bestvideo[height<=720]+bestaudio/best[height<=720]' \
-			--merge-output-format mp4 \
-			--output "%(title)s.%(ext)s" \
-			-- \
-			$videoId
-	done
+  for videoId in $args; do
+    local ytdlpArgs=(
+      --cookies-from-browser firefox
+      --js-runtimes "node:$HOME/.nvm/versions/node/v22.18.0/bin/node"
+      --format 'bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/bestvideo[height<=720]+bestaudio/best[height<=720]/best'
+      --merge-output-format mp4
+      --output "%(title)s.%(ext)s"
+    )
+
+    yt-dlp "${ytdlpArgs[@]}" -- "$videoId"
+  done
 }
