@@ -45,25 +45,26 @@ dconf write /org/gnome/shell/extensions/just-perfection/quick-settings-airplane-
 # Notifications below quick settings
 dconf write /org/gnome/shell/extensions/just-perfection/notification-banner-position 2
 
-# The extensions are displayed in the order they are enabled, from right to
-# left. To ensure a consistent placement, we will enable them in turn.
-if command -v gext >/dev/null; then
-  function stackExtension() {
-    gext disable $1 &>/dev/null
-    gext enable $1 &>/dev/null
-  }
-  # From right to left...
-  stackExtension just-perfection-desktop@just-perfection # Just Perfection
-  stackExtension ubuntu-appindicators@ubuntu.com         # App Indicators
-  stackExtension argos@pew.worldwidemann.com             # Argos
-  stackExtension sp-tray@sp-tray.esenliyim.github.com    # spotify-tray
-fi
-
 # Symlinking all scripts to argos directory
 local argosConfigDir=~/.config/argos
 mkdir -p $argosConfigDir
-rm -rf $argosConfigDir/*(D)  # (D) includes hidden files/directories
+rm -rf ${argosConfigDir:?}/*(D) # (D) includes hidden files/directories
 ln \
   -fs ~/.oroshi/config/ubuntu/24.04/argos/*.zsh \
   $argosConfigDir
+
+# The extensions are displayed in the order they are enabled, from right to
+# left. To ensure a consistent placement, we will enable them in turn.
+
+function stackExtension() {
+  gext disable $1 &>/dev/null
+  sleep 1
+  gext enable $1 &>/dev/null
+}
+
+# From right to left...
+stackExtension just-perfection-desktop@just-perfection # Just Perfection
+stackExtension ubuntu-appindicators@ubuntu.com         # App Indicators
+stackExtension sp-tray@sp-tray.esenliyim.github.com    # spotify-tray
+stackExtension argos@pew.worldwidemann.com             # Argos
 # }}}
