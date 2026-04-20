@@ -48,6 +48,7 @@ local allowlist=(
   head
   imgmin
   jo
+  journalctl
   jq
   ls
   mkdir
@@ -90,6 +91,8 @@ local allowlist=(
   "git rev-parse"
   "git show"
   "git status"
+  "snap info"
+  "snap list"
   "yarn run agent:delete-orphaned-images"
   "yarn run algolia:ask"
   "yarn run algolia:teach"
