@@ -51,8 +51,10 @@ local allowlist=(
   journalctl
   jq
   ls
+  md5sum
   mkdir
   mv
+  nautilus
   pdfimages
   pdfinfo
   pdftotext
@@ -64,22 +66,30 @@ local allowlist=(
   rg
   sed
   shuf
+  sleep
   sort
   stat
+  strace
+  strings
   systemctl
   tac
   tail
   tee
   test
+  touch
   true
   typora
   wc
   which
   whoami
+  zcat
   "apt-cache search"
+  "apt-cache show"
+  "apt-file list"
   "claude mcp list"
   "claude mcp logs"
   "claude skills list"
+  "dconf dump"
   "done"
   "do"
   "dpkg -l"
@@ -93,12 +103,15 @@ local allowlist=(
   "git show"
   "git status"
   "gsettings get"
+  "gsettings list-recursively"
+  "gsettings list-schemas"
   "snap info"
   "snap list"
   "yarn run agent:delete-orphaned-images"
   "yarn run algolia:ask"
   "yarn run algolia:teach"
   "/bin/grep"
+  "/bin/ls"
   "/usr/bin/cat"
   "/usr/bin/exa"
   "/usr/bin/find"
