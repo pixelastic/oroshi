@@ -52,7 +52,9 @@ local allowlist=(
   ls
   mkdir
   mv
+  pdfimages
   pdfinfo
+  pdftotext
   ping
   print
   printf
