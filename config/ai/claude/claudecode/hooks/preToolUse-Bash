@@ -92,6 +92,7 @@ local allowlist=(
   "git rev-parse"
   "git show"
   "git status"
+  "gsettings get"
   "snap info"
   "snap list"
   "yarn run agent:delete-orphaned-images"
@@ -102,6 +103,7 @@ local allowlist=(
   "/usr/bin/exa"
   "/usr/bin/find"
   "/usr/bin/grep"
+  "/usr/bin/rg"
 )
 
 debug "Input command: $toolCommand"
