@@ -25,8 +25,10 @@ function lazyloadGvm {
     return
   fi
 
-  # Unregister all the aliases so commands refer to real binaries now
-  unalias $OROSHI_GVM_LAZYLOAD_ALIASES
+  # Unregister all the aliases, so the commands refer to the real commands now
+  for cmd in "${OROSHI_GVM_LAZYLOAD_ALIASES[@]}"; do
+    unalias "$cmd" 2>/dev/null
+  done
 
   # Source gvm for real
   source $gvmPath
