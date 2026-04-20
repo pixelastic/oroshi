@@ -82,6 +82,7 @@ local allowlist=(
   "claude skills list"
   "done"
   "do"
+  "dpkg -l"
   "for"
   "git add"
   "git clone"

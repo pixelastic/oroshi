@@ -2,4 +2,10 @@
 # Slack: Online chat
 set -e
 
-sudo snap install slack
+local DOWNLOAD_URL="https://downloads.slack-edge.com/desktop-releases/linux/x64/4.47.69/slack-desktop-4.47.69-amd64.deb"
+
+cd ~/local/tmp
+wget $DOWNLOAD_URL -O slack.deb
+
+install-deb ./slack.deb
+rm ./slack.deb
