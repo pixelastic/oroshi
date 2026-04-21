@@ -1,8 +1,20 @@
 local M = {}
+local hasGoTemplateSyntax = O_require("oroshi/filetypes/gotmpl/hasGoTemplateSyntax")
 
 M.onFiletype = function()
-  F.imap("<C-E>", M.expandEmmet, "Expand Emmet abbreviation")
-  F.imap("<C-:>", "</<C-X><C-O>", "Close current HTML tag")
+  local bufferId = F.bufferId()
+
+  -- Auto-detect if is a GoTemplate
+  local function checkGoTemplate()
+    if hasGoTemplateSyntax() then
+      F.updateBufferOption("filetype", "gotmpl", bufferId)
+    end
+  end
+
+  F.autocmd({ "BufReadPost", "BufEnter", "BufWritePost" }, checkGoTemplate, { buffer = bufferId })
+
+  F.imap("<C-E>", M.expandEmmet, "Expand Emmet abbreviation", { buffer = bufferId })
+  F.imap("<C-:>", "</<C-X><C-O>", "Close current HTML tag", { buffer = bufferId })
 end
 
 M.configureLinter = function(lint)

@@ -1,4 +1,18 @@
 local M = {}
+local hasGoTemplateSyntax = O_require("oroshi/filetypes/gotmpl/hasGoTemplateSyntax")
+
+M.onFiletype = function()
+  local bufferId = F.bufferId()
+
+  -- Auto-detect if is a GoTemplate
+  local function checkGoTemplate()
+    if hasGoTemplateSyntax() then
+      F.updateBufferOption("filetype", "gotmpl", bufferId)
+    end
+  end
+
+  F.autocmd({ "BufReadPost", "BufEnter", "BufWritePost" }, checkGoTemplate, { buffer = bufferId })
+end
 
 M.configureLinter = function(lint)
   lint.linters.oroshi_json_lint = {

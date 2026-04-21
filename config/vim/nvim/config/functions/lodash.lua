@@ -250,6 +250,12 @@ return {
     current[F.last(keys)] = value
   end,
 
+  -- some: Check if predicate returns truthy for any element of collection
+  -- Iteration stops once predicate returns truthy
+  some = function(collection, callback)
+    return F.find(collection, callback) ~= nil
+  end,
+
   -- sort: Return a sorted version of a collection
   sort = function(collection)
     local result = F.clone(collection)
