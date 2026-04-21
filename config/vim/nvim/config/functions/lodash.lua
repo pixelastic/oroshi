@@ -53,7 +53,11 @@ return {
   -- each: Run callback on each element of the collection
   each = function(collection, callback)
     for key, value in pairs(collection) do
-      callback(value, key, collection)
+      local result = callback(value, key, collection)
+      -- Stop if explicitly returned false, for early exit
+      if result == false then
+        break
+      end
     end
   end,
 
@@ -81,6 +85,22 @@ return {
       end
     end)
     return filteredList
+  end,
+
+  -- find: Returns the first element that matches the callback predicate
+  find = function(collection, callback)
+    local result = nil
+    F.each(collection, function(value, key)
+      local check = callback(value, key, collection)
+      -- Continue if not found
+      if not check then
+        return
+      end
+
+      result = value
+      return false
+    end)
+    return result
   end,
 
   -- flatten: Flatten one level deep (like lodash flatten)
