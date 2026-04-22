@@ -115,6 +115,7 @@ local allowlist=(
   "/usr/bin/cat"
   "/usr/bin/exa"
   "/usr/bin/find"
+  "/usr/bin/fd"
   "/usr/bin/grep"
   "/usr/bin/rg"
 )
