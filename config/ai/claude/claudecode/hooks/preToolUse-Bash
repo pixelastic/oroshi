@@ -118,6 +118,7 @@ local allowlist=(
   "/usr/bin/fd"
   "/usr/bin/grep"
   "/usr/bin/rg"
+  "npx skills find"
 )
 
 debug "Input command: $toolCommand"

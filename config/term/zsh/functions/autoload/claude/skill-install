@@ -1,0 +1,12 @@
+function skill-install() {
+  local skillName="$1"
+
+  if [[ -z "$skillName" ]]; then
+    echo "Usage: skill-install <skill-name>"
+    return 1
+  fi
+
+  npx skills add "$skillName" \
+    --global \
+    --yes
+}

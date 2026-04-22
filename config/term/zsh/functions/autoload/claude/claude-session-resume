@@ -1,21 +1,19 @@
-#!/usr/bin/env zsh
-# Resume a Claude session in its original directory
-# Usage: claude-session-resume <uuid>
+function claude-session-resume() {
+  local uuid="$1"
 
-local uuid="$1"
+  if [[ -z "$uuid" ]]; then
+    echo "Usage: claude-session-resume <uuid>"
+    return 1
+  fi
 
-if [[ -z "$uuid" ]]; then
-  echo "Usage: claude-session-resume <uuid>"
-  return 1
-fi
+  local cwd=$(claude-session-data $uuid | jq -r '.cwd')
+  if [[ -z "$cwd" ]]; then
+    echo "❌ No working directory found for this session"
+    return 1
+  fi
 
-local cwd=$(claude-session-data $uuid | jq -r '.cwd')
-if [[ -z "$cwd" ]]; then
-  echo "❌ No working directory found for this session"
-  return 1
-fi
+  cd "$cwd" || exit 0
 
-cd "$cwd" || exit 0
-
-echo "⏳ Resuming Claude session..."
-claude --resume "$uuid"
+  echo "⏳ Resuming Claude session..."
+  claude --resume "$uuid"
+}
