@@ -1,6 +1,6 @@
 # Display list of all globally installed skills with descriptions
 function complete-skills() {
-  local rawList="$(skill-list-raw)"
+  local rawList="$(skills-list-raw)"
 
   for rawLine in ${(f)rawList}; do
     local split=(${(@s/▮/)rawLine})

@@ -1,7 +1,7 @@
 # Extract the description from a skill's SKILL.md file
 # Usage:
-# $ skill-description blog-writing-guide
-function skill-description() {
+# $ skills-description blog-writing-guide
+function skills-description() {
   local skillName="$1"
   local skillFile="$HOME/.agents/skills/${skillName}/SKILL.md"
   local description=""

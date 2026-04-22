@@ -1,12 +1,12 @@
-function skill-install() {
+function skills-remove() {
   local skillName="$1"
 
   if [[ -z "$skillName" ]]; then
-    echo "Usage: skill-install <skill-name>"
+    echo "Usage: skills-remove <skill-name>"
     return 1
   fi
 
-  skills add "$skillName" \
+  skills remove "$skillName" \
     --global \
     --yes
 }
