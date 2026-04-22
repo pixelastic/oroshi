@@ -5,7 +5,7 @@
 function trim() {
   local input="$1"
   # Read from pipe
-  [[ -p /dev/stdin ]] && input="$(\cat -)"
+  [[ -p /dev/stdin ]] && input="$(/usr/bin/cat -)"
 
   # Trim whitespace (space, tab, newline, carriage return) at beginning and end
   local output=$input

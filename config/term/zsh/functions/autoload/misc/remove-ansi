@@ -5,7 +5,7 @@
 function remove-ansi() {
   local input="$1"
   # Read from pipe
-  [[ -p /dev/stdin ]] && input="$(\cat -)"
+  [[ -p /dev/stdin ]] && input="$(/usr/bin/cat -)"
 
   # Remove ANSI escape sequences
   # shellcheck disable=SC2001 ZSH patterns are tricky here, sed is better

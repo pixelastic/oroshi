@@ -1,0 +1,324 @@
+---
+name: zsh-writer
+description: Use when writing or modifying ZSH functions in the .oroshi repository, especially when creating scripts with argument parsing, line-by-line iteration, or structured data output
+---
+
+# ZSH Writer
+
+## Overview
+
+Write ZSH functions following established patterns for the .oroshi dotfiles repository. These patterns emphasize ZSH-specific idioms over bash compatibility, explicit variable scoping, and consistent data formatting.
+
+## When to Use
+
+- Writing new ZSH functions in `config/term/zsh/functions/autoload/`
+- Modifying existing ZSH scripts
+- Creating utilities that parse arguments, iterate over data, or format output
+
+**When NOT to use:**
+- FZF-related functions (they have their own nomenclature)
+- One-off shell commands (not functions)
+- Bash scripts (different conventions)
+
+## File Organization
+
+```
+config/term/zsh/functions/autoload/
+├── domain/                    # Simple domains (no subdomain needed)
+│   └── domain-action
+└── domain/                    # Complex domains with subdomains
+    └── subdomain/
+        └── domain-subdomain-action
+```
+
+**Naming convention:** `{domain}-{subdomain?}-{action}`
+
+Examples:
+- `git-branch-list` (domain: git, subdomain: branch, action: list)
+- `docker-image-colorize` (domain: docker, subdomain: image, action: colorize)
+- `trim` (simple utility, no domain prefix needed)
+
+**Directory structure:**
+- No subdomain needed → files directly in `domain/`
+- Subdomain needed → create `domain/subdomain/` folder
+
+## Variable Declaration
+
+**Always use `local` for all variables in functions:**
+
+```zsh
+# ✅ CORRECT
+function my-function() {
+  local inputFile="$1"
+  local outputDir="$2"
+  local result=""
+
+  # ... code ...
+}
+
+# ❌ WRONG
+function my-function() {
+  inputFile="$1"        # Missing local
+  result=""             # Missing local
+}
+```
+
+**Naming conventions:**
+- `camelCase` for local variables
+- `UPPER_CASE` for globals and constants (e.g., `$COLOR_ALIAS_*`)
+
+**Initialize with empty string when setting later:**
+
+```zsh
+local description=""
+
+if [[ condition ]]; then
+  description="value1"
+else
+  description="value2"
+fi
+```
+
+## Argument Parsing
+
+**Use `zparseopts` for all argument parsing:**
+
+```zsh
+function docker-image-colorize() {
+  zparseopts -E -D \
+    -with-icon=flagWithIcon \
+    -remote=flagRemote
+
+  local isWithIcon=${#flagWithIcon}
+  local isRemote=${#flagRemote}
+
+  local imageName="$1"
+  # ... rest of function
+}
+```
+
+**Patterns:**
+
+| Type | Declaration | Usage | Example |
+|------|-------------|-------|---------|
+| Boolean flag | `-flag=flagName` | `${#flagName}` gives 0 or 1 | `--force` |
+| Long flag | `--long-flag=flagName` | `${#flagName}` | `--with-icon` |
+| Short arg | `s:=flagName` | `${flagName[2]}` | `-s value` |
+| Long arg | `--separator:=flagName` | `${flagName[2]}` | `--separator ▮` |
+
+**Complete example with arguments:**
+
+```zsh
+zparseopts -E -D \
+  f=flagForce \
+  -force=flagForce \
+  s:=flagSeparator \
+  -separator:=flagSeparator
+
+local isForce=${#flagForce}
+local separator=${flagSeparator[2]}
+```
+
+**After `zparseopts -E -D`, positional arguments remain in `$1`, `$2`, etc.**
+
+```zsh
+local skillName="$1"
+local targetDir="$2"
+```
+
+## Line-by-Line Iteration
+
+**Always use `for item in ${(f)variable}` — NEVER `while read`:**
+
+```zsh
+# ✅ CORRECT - ZSH pattern
+local rawOutput=$(some-command)
+for rawLine in ${(f)rawOutput}; do
+  # Process each line
+done
+
+# ❌ WRONG - bash pattern
+echo "$rawOutput" | while IFS= read -r line; do
+  # Don't use this
+done
+```
+
+**Why:** `while read` creates a subshell and doesn't preserve variable assignments. The `${(f)}` flag is a ZSH builtin that's more efficient.
+
+## String Splitting and Structured Data
+
+**Use `▮` (vertical bar) as the universal separator:**
+
+```zsh
+# Creating structured output
+echo "${uuid}▮${title}▮${count}"
+
+# Splitting on ▮
+local splitLine=(${(@ps/▮/)rawLine})
+local field1=${splitLine[1]}
+local field2=${splitLine[2]}
+local field3=${splitLine[3]}
+```
+
+**The `(@ps/▮/)` flags:**
+- `@` - preserve empty elements
+- `p` - use parameter expansion
+- `s/▮/` - split on ▮ character
+
+**Alternative for simple splits (no empty elements):**
+
+```zsh
+local splitLine=(${(@s/▮/)rawLine})
+```
+
+## Function Naming Patterns
+
+**`-raw` suffix for machine-readable output:**
+
+Functions ending in `-raw` output structured data with `▮` separators for use by other scripts:
+
+```zsh
+# Machine-readable (required if human-readable version exists)
+function git-branch-list-raw() {
+  # Output: branchName▮commitHash▮remoteName▮...
+}
+
+# Human-readable (optional, uses -raw internally)
+function git-branch-list() {
+  local rawBranches="$(git-branch-list-raw)"
+  for rawBranch in ${(f)rawBranches}; do
+    local splitLine=(${(@ps/▮/)rawBranch})
+    # Colorize and format for display
+  done
+}
+```
+
+**Not all `-raw` functions need a human-readable version**, but if you create a human-readable version, it should consume the `-raw` output.
+
+## Reading from stdin
+
+**Pattern for utilities that accept both arguments and piped input:**
+
+```zsh
+function trim() {
+  local input="$1"
+  # Read from pipe if available
+  [[ -p /dev/stdin ]] && input="$(/usr/bin/cat -)"
+
+  # Process input
+  echo -n "$output"
+}
+```
+
+**Use `/usr/bin/cat` not `\cat`** - explicit path is clearer than escaping aliases.
+
+## Control Flow
+
+**Return early to avoid nesting:**
+
+```zsh
+# ✅ CORRECT - return early
+function skill-description() {
+  local skillName="$1"
+  local skillFile="$HOME/.agents/skills/${skillName}/SKILL.md"
+
+  # Check and exit early
+  if [[ ! -f "$skillFile" ]]; then
+    return
+  fi
+
+  # Main logic not nested
+  local description=$(extract-from "$skillFile")
+  echo "$description"
+}
+
+# ❌ WRONG - nested logic
+function skill-description() {
+  local skillFile="$HOME/.agents/skills/${1}/SKILL.md"
+
+  if [[ -f "$skillFile" ]]; then
+    # Everything indented one level
+    local description=$(extract-from "$skillFile")
+    echo "$description"
+  fi
+}
+```
+
+**For functions that output values:**
+- Just `return` (no output, no error message)
+- Don't write to stderr
+
+**For predicates/checks (like `-exists` functions):**
+- Return exit codes: `return 0` for success, `return 1` for failure
+
+## Function Header Comments
+
+**Include usage examples in comments:**
+
+```zsh
+# Extract the description from a skill's SKILL.md file
+# Usage:
+# $ skill-description blog-writing-guide
+function skill-description() {
+  # ...
+}
+```
+
+## Common Mistakes
+
+| Mistake | Fix |
+|---------|-----|
+| `while read` loops | Use `for item in ${(f)variable}` |
+| No `local` declarations | Always prefix with `local` |
+| `\|` or `:` as separator | Use `▮` character |
+| Manual arg parsing with `while/case` | Use `zparseopts` |
+| `container_name` (snake_case) | Use `containerName` (camelCase) |
+| String boolean checks `[[ "$flag" == true ]]` | Use `${#flagName}` for 0 or 1 |
+| External tools (`sed`, `awk`, `cut`) | Prefer ZSH parameter expansion when possible |
+
+## Quick Reference
+
+```zsh
+# Declare variables
+local varName="value"
+local emptyVar=""
+
+# Parse arguments
+zparseopts -E -D \
+  -flag=flagName \
+  -option:=flagOption
+
+local isFlag=${#flagName}
+local optionValue=${flagOption[2]}
+local positional="$1"
+
+# Iterate lines
+for line in ${(f)output}; do
+  echo "$line"
+done
+
+# Split on ▮
+local parts=(${(@ps/▮/)line})
+local first=${parts[1]}
+
+# Check stdin
+[[ -p /dev/stdin ]] && input="$(/usr/bin/cat -)"
+
+# Return early
+if [[ ! -f "$file" ]]; then
+  return
+fi
+```
+
+## Real-World Examples
+
+See existing functions in the codebase:
+- `config/term/zsh/functions/autoload/claude/skill-description` - Simple function with early return
+- `config/term/zsh/functions/autoload/docker/image/docker-image-colorize` - zparseopts usage
+- `config/term/zsh/functions/autoload/fzf/claude/sessions/fzf-claude-sessions-source-no-query` - Line iteration and splitting
+- `config/term/zsh/functions/autoload/git/branch/git-branch-list` - Complex example with -raw pattern
+
+For more ZSH patterns, see `cheats/zsh/` directory:
+- `parse-args.zsh` - zparseopts examples
+- `line-by-line.zsh` - Iteration patterns
+- `split.zsh` - String splitting

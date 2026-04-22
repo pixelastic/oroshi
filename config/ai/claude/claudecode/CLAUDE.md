@@ -13,6 +13,20 @@ Keep a consistent coding style matching my preferences across my projects
 - Prefer to "return early" in functions if conditions are not met, rather than putting most of the code in a condition
 - Prefer a DX that makes simple things easy and complex things possible
 
+## ZSH Functions
+
+**IMPORTANT**: When writing or modifying ZSH functions in this repository, use the `zsh-writer` skill.
+
+The skill documents all ZSH-specific patterns including:
+- Argument parsing with `zparseopts`
+- Line-by-line iteration with `${(f)}` (never `while read`)
+- String splitting with `▮` separator
+- Variable declaration patterns with `local`
+- The `-raw` suffix convention for structured data
+- Return early patterns
+
+See: `config/ai/claude/claudecode/skills/zsh-writer/SKILL.md`
+
 # Shell Commands
 
 My shell environment has custom aliases that override standard commands, but you run in a clean bash environment that doesn't inherit these aliases.
