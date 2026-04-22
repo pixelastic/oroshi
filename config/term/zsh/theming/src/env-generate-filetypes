@@ -83,6 +83,3 @@ output+="export FILETYPES_INDEX=\"${FILETYPES_INDEX:1}\"\n"
 
 # Generate the file
 echo $output > $outputFile
-
-# Convert the output to json
-zsh2json $outputFile

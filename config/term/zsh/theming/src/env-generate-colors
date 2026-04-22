@@ -168,7 +168,7 @@ aliasColors[PACKAGE_VERSION_MISMATCH]="VIOLET"
 
 # Tool-specific
 # AI {{{
-aliasColors[AI_ENABLED]="AMBER_7"
+aliasColors[AI]="AMBER_7"
 # }}}
 # Docker {{{
 aliasColors[DOCKER_CONTAINER]="YELLOW"
@@ -324,5 +324,3 @@ output+="export COLORS_INDEX=\"${COLORS_INDEX:1}\"\n"
 
 # Generate the file
 echo $output > $outputFile
-
-# Convert the output to json

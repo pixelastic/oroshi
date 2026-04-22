@@ -101,6 +101,10 @@ compdef _git-remotes \
 compdef _make-targets \
   make
 # }}}
+# 🤖 AI {{{
+compdef _skills \
+  skill-remove
+# }}}
 # 🖼️ Images {{{
 compdef _image-resize img-resize
 compdef '_files -g "*.{avif,bmp,gif,jpg,jpeg,png,svg,tiff,webp}"' \

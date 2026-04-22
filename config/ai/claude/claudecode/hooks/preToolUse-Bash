@@ -118,7 +118,10 @@ local allowlist=(
   "/usr/bin/fd"
   "/usr/bin/grep"
   "/usr/bin/rg"
-  "npx skills find"
+  "skills find"
+  "skills list"
+  "skills search"
+  "skills --help"
 )
 
 debug "Input command: $toolCommand"

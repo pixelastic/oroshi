@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest all globally installed skills
+function _skills() {
+  local suggestions=(${(f)"$(complete-skills)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_AI $COLOR_GRAY_2 ' Skills ')" suggestions
+}

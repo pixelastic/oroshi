@@ -1,7 +1,7 @@
 function fzf-claude-sessions-options() {
   # Prompt styled like Claude project (white on amber background)
-  local promptPrefix="$(colorize " ● Claude " $COLOR_GRAY_2 $COLOR_AMBER_7)"
-  local promptSuffix="$(colorize "" $COLOR_AMBER_7)"
+  local promptPrefix="$(colorize " ● Claude " $COLOR_GRAY_2 $COLOR_ALIAS_AI)"
+  local promptSuffix="$(colorize "" $COLOR_ALIAS_AI)"
   echo "--prompt=${promptPrefix}${promptSuffix} "
 
   echo "--delimiter=▮"
