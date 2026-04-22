@@ -27,6 +27,7 @@ FILETYPE_GROUPS[text:patterns]="\
 FILETYPE_GROUPS[script:color]="VIOLET"
 FILETYPE_GROUPS[script:icon]=" "
 FILETYPE_GROUPS[script:patterns]="\
+  c \
   au3 \
   bats \
   cjs \
@@ -37,18 +38,19 @@ FILETYPE_GROUPS[script:patterns]="\
   html \
   jsonl \
   json \
-  js \
   jsx \
+  js \
   kbd \
   lua \
   mjs \
+  mk \
   mod \
   ps1 \
   pug \
   py \
   rb \
-  ru \
   rs \
+  ru \
   sass \
   scss \
   sh \

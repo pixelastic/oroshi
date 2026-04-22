@@ -98,6 +98,7 @@ local allowlist=(
   "git clone"
   "git diff"
   "git log"
+  "git ls-files"
   "git mv"
   "git rev-parse"
   "git show"
