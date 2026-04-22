@@ -11,6 +11,7 @@ local allowedSkills=(
   "blog-rewrite"
   "humanizer"
   "find-skills"
+  "grill-me"
   "superpowers:brainstorming"
   "superpowers:code-reviewer"
   "superpowers:requesting-code-review"

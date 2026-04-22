@@ -1,0 +1,46 @@
+# Extract the description from a skill's SKILL.md file
+# Usage:
+# $ skill-description blog-writing-guide
+function skill-description() {
+  local skillName="$1"
+  local skillFile="$HOME/.agents/skills/${skillName}/SKILL.md"
+  local description=""
+
+  # Check if SKILL.md exists
+  if [[ ! -f "$skillFile" ]]; then
+    echo ""
+    return
+  fi
+
+  # Find the description line in the first 10 lines
+  local grepResult=$(head -10 "$skillFile" | /usr/bin/grep -n '^description:' | head -1)
+
+  if [[ -z "$grepResult" ]]; then
+    echo ""
+    return
+  fi
+
+  local lineNum="${grepResult%%:*}" # Everything before first ':'
+  local content="${grepResult#*:}"  # Everything after first ':'
+
+  # Check if description is multi-line (ends with '>')
+  if [[ "$content" =~ '>$' ]]; then
+    # Read the next line
+    local nextLine=$((lineNum + 1))
+    description=$(sed -n "${nextLine}p" "$skillFile")
+  else
+    # Single-line description: remove 'description: ' prefix
+    description="${content#description: }"
+  fi
+
+  description="${description##[[:space:]]##}" # Remove leading whitespace
+  description="${description%%[[:space:]]##}" # Remove trailing whitespace
+
+  # Truncate to 50 characters if needed
+  local maxWidth=70
+  if [[ ${#description} -gt $maxWidth ]]; then
+    description="${description:0:$maxWidth}..."
+  fi
+
+  echo "$description"
+}

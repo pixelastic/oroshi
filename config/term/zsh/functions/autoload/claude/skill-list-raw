@@ -1,0 +1,11 @@
+# Display the raw list of all globally installed skills with descriptions
+# Usage:
+# $ skill-list-raw
+function skill-list-raw() {
+  local skillNames=$(skills list -g --json | jq -r '.[].name')
+
+  for name in ${(f)skillNames}; do
+    local description=$(skill-description "$name")
+    echo "${name}▮${description}"
+  done
+}
