@@ -61,6 +61,7 @@ typeset -A ZSH_HIGHLIGHT_STYLES=(
 
   # Errors
   'unknown-token' "fg=$COLOR_ALIAS_ERROR"
+  'arg0' "fg=$COLOR_ALIAS_ERROR" # typing the name of a +x file in the current dir
 
   # sudo
   'precommand' "fg=$COLOR_ALIAS_WARNING,bold"
@@ -69,7 +70,6 @@ typeset -A ZSH_HIGHLIGHT_STYLES=(
   'redirection' "fg=$COLOR_ALIAS_SYMBOL"
 
   # ???
-  'arg0' "bg=$COLOR_ALIAS_UNKNOWN"
   'arithmetic-expansion' "bg=$COLOR_ALIAS_UNKNOWN"
   'back-dollar-quoted-argument' "bg=$COLOR_ALIAS_UNKNOWN"
   'bracket-error' "bg=$COLOR_ALIAS_UNKNOWN"
