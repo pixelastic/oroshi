@@ -1,0 +1,7 @@
+# Build YMDK YMD09 custom keymap firmware
+#
+# Usage:
+#   $ ymdk-build    # Compile firmware
+function ymdk-build() {
+  ~/.oroshi/scripts/deploy/keybindings/ymdk-build
+}

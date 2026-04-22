@@ -1,0 +1,34 @@
+#!/usr/bin/env zsh
+# Flash YMDK YMD09 firmware to keyboard
+# Usage: ymdk
+# Note: Run ymdk-build first to compile the firmware
+
+set -e
+
+# Configuration
+local qmkDir="${HOME}/local/src/qmk_firmware"
+local firmwareFile="${qmkDir}/.build/ymdk_ymd09_custom.hex"
+
+# Check QMK is installed
+if ! command -v qmk &>/dev/null; then
+  echo "Error: QMK CLI not found. Run: ~/.oroshi/scripts/install/keybindings/ymdk"
+  exit 1
+fi
+
+# Check if firmware exists
+if [[ ! -f "${firmwareFile}" ]]; then
+  echo "Error: Firmware not found. Run ymdk-build first to compile."
+  exit 1
+fi
+
+# Flash firmware
+echo "==> Flashing firmware to keyboard..."
+echo "Put keyboard in bootloader mode:"
+echo "  - Hold top-left key while plugging USB, OR"
+echo "  - Press reset button on back of keyboard"
+echo ""
+
+qmk flash -kb ymdk/ymd09 -km custom
+
+echo ""
+echo "✓ Firmware flashed successfully!"

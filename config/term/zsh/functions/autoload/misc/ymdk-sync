@@ -1,0 +1,7 @@
+# Flash YMDK YMD09 firmware to keyboard
+#
+# Usage:
+#   $ ymdk-sync    # Flash pre-compiled firmware
+function ymdk-sync() {
+  ~/.oroshi/scripts/deploy/keybindings/ymdk
+}

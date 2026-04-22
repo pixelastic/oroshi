@@ -1,0 +1,24 @@
+#!/usr/bin/env zsh
+# ymdk 3x3 keyboard
+# Install QMK firmware tools
+# https://docs.qmk.fm/
+
+set -e
+
+local qmkDir="${HOME}/local/src/qmk_firmware"
+
+pipx install qmk
+
+if [[ ! -d "${qmkDir}" ]]; then
+  qmk setup -y -H "${qmkDir}"
+fi
+
+# Install system dependencies
+sudo "${qmkDir}/util/qmk_install.sh"
+sudo apt-get install -y dos2unix
+
+# Install udev rules
+sudo "${qmkDir}/util/install_udev.sh"
+
+# Verify installation
+qmk doctor

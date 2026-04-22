@@ -1,0 +1,38 @@
+#!/usr/bin/env zsh
+# Build YMDK YMD09 custom keymap firmware
+# Usage: ymdk-build
+
+set -e
+
+# Configuration
+local configDir="${HOME}/.oroshi/config/keybindings/ymdk"
+local qmkDir="${HOME}/local/src/qmk_firmware"
+local keymapDir="${qmkDir}/keyboards/ymdk/ymd09/keymaps/custom"
+
+# Check QMK is installed
+if ! command -v qmk &>/dev/null; then
+  echo "Error: QMK CLI not found. Run: ~/.oroshi/scripts/install/keybindings/ymdk"
+  exit 1
+fi
+
+# Check config files exist
+if [[ ! -f "${configDir}/keymap.c" ]]; then
+  echo "Error: keymap.c not found in ${configDir}"
+  exit 1
+fi
+
+# Create custom keymap directory
+mkdir -p "${keymapDir}"
+
+# Copy configuration files
+echo "==> Copying keymap files..."
+cp "${configDir}/keymap.c" "${keymapDir}/keymap.c"
+cp "${configDir}/rules.mk" "${keymapDir}/rules.mk"
+
+# Compile firmware
+echo "==> Compiling firmware..."
+qmk compile -kb ymdk/ymd09 -km custom
+
+echo ""
+echo "✓ Compilation successful!"
+echo "Firmware: ${qmkDir}/.build/ymdk_ymd09_custom.hex"
