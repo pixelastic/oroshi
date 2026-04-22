@@ -3,7 +3,7 @@
 # $ skills-description blog-writing-guide
 function skills-description() {
   local skillName="$1"
-  local skillFile="$HOME/.agents/skills/${skillName}/SKILL.md"
+  local skillFile="$HOME/.claude/skills/${skillName}/SKILL.md"
   local description=""
 
   # Check if SKILL.md exists
@@ -36,8 +36,8 @@ function skills-description() {
   description="${description##[[:space:]]##}" # Remove leading whitespace
   description="${description%%[[:space:]]##}" # Remove trailing whitespace
 
-  # Truncate to 50 characters if needed
-  local maxWidth=70
+  # Truncate characters if needed
+  local maxWidth=80
   if [[ ${#description} -gt $maxWidth ]]; then
     description="${description:0:$maxWidth}..."
   fi

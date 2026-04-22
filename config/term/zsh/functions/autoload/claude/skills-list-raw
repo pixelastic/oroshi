@@ -2,9 +2,10 @@
 # Usage:
 # $ skills-list-raw
 function skills-list-raw() {
-  local skillNames=$(skills list -g --json | jq -r '.[].name')
+  local skillsDir=~/.claude/skills
 
-  for name in ${(f)skillNames}; do
+  for skillPath in "$skillsDir"/*; do
+    local name=$(basename "$skillPath")
     local description=$(skills-description "$name")
     echo "${name}▮${description}"
   done

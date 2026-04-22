@@ -110,6 +110,7 @@ local allowlist=(
   "yarn run agent:delete-orphaned-images"
   "yarn run algolia:ask"
   "yarn run algolia:teach"
+  "$HOME/local/bin/exa"
   "/bin/grep"
   "/bin/ls"
   "/usr/bin/cat"

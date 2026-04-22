@@ -1,4 +1,5 @@
 function skills-install() {
+  set -e
   local skillName="$1"
 
   if [[ -z "$skillName" ]]; then
@@ -8,5 +9,7 @@ function skills-install() {
 
   skills add "$skillName" \
     --global \
-    --yes
+    --agent claude-code \
+    --yes >/dev/null
+  echo "Skill ${skillName} installed"
 }

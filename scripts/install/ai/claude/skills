@@ -1,0 +1,25 @@
+#!/usr/bin/env zsh
+# Install Claude Code skills
+# Target: ~/.claude/skills/
+
+echo "Installing Claude Code skills..."
+
+# Install skills from external sources
+skills-install getsentry/skills@blog-writing-guide
+skills-install mattpocock/skills@caveman
+skills-install vercel-labs/skills@find-skills
+skills-install mattpocock/skills@grill-me
+skills-install mattpocock/skills@to-issues
+skills-install mattpocock/skills@to-prd
+skills-install obra/superpowers@brainstorming
+skills-install obra/superpowers@requesting-code-review
+skills-install obra/superpowers@systematic-debugging
+skills-install obra/superpowers@test-driven-development
+skills-install obra/superpowers@writing-plans
+skills-install obra/superpowers@writing-skills
+
+# Symlink all custom skills from .oroshi to ~/.claude/skills/
+for skillPath in ~/.oroshi/config/ai/claude/claudecode/skills/*; do
+  local skillName=$(basename "$skillPath")
+  ln -fs "$skillPath" ~/.claude/skills/${skillName}
+done
