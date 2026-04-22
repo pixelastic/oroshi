@@ -20,6 +20,90 @@ Write ZSH functions following established patterns for the .oroshi dotfiles repo
 - One-off shell commands (not functions)
 - Bash scripts (different conventions)
 
+## Code Style: Echo and Comments
+
+### Echo Statements
+
+**Default: ZERO echo statements.**
+
+**Allowed ONLY for:**
+1. **Display functions** (name ends in `-list`, `-colorize`, `-format`, `-display`) - echo IS the functionality
+2. **Error messages** - Usage errors to stderr: `echo "Error: ..." >&2`
+
+**FORBIDDEN:**
+- Progress messages (`"Processing..."`, `"Starting..."`)
+- Status/summary (`"Found X items"`, `"Total: ..."`)
+- Empty lines (`echo ""`)
+- Decorative headers (`"Summary:"`, `"======"`)
+
+```zsh
+# ✅ Display function - echo IS the purpose
+function git-branch-list() {
+  echo "$branchName"
+}
+
+# ✅ Error message with usage
+if [[ -z "$arg" ]]; then
+  echo "Error: Argument required" >&2
+  echo "Usage: func <arg>" >&2
+  return 1
+fi
+
+# ❌ Analysis function - NO narration
+function count-errors() {
+  local count=$(rg --count "ERROR" "$file")
+  # NO echo of results/progress/summary
+  return 0
+}
+```
+
+**If unsure whether to add echo: DON'T.**
+
+### Comments
+
+**Default: Function header ONLY.**
+
+**Allowed:**
+1. **Function header** - description + usage (always required)
+2. **Section comments** - ONE comment for 3+ grouped operations
+3. **Data meaning** - Explains what data represents (not what code does)
+
+**FORBIDDEN:**
+- Comments explaining what code does
+- One comment per operation
+- Loop comments (`# Process each X`)
+- Validation comments (unless ONE for 3+ validations)
+- Variable initialization comments
+
+```zsh
+# ✅ Function header
+# List all git branches
+# Usage:
+# $ git-branch-list
+function git-branch-list() {
+
+# ✅ ONE section comment for grouped validations
+# Validate arguments and repository state
+if [[ -z "$arg1" ]]; then return 1; fi
+if [[ -z "$arg2" ]]; then return 1; fi
+if [[ -z "$arg3" ]]; then return 1; fi
+
+# ✅ Data meaning
+# First line is the header
+if [[ $lineNumber -eq 1 ]]; then
+
+# ❌ FORBIDDEN - Explains what code does
+# Check if file exists
+if [[ ! -f "$file" ]]; then
+
+# ❌ FORBIDDEN - Loop comment
+# Process each log file
+for logFile in ${(f)logFiles}; do
+```
+
+**When editing existing code: Never remove existing comments.**
+
+**If unsure whether to add comment: DON'T.**
 ## File Organization
 
 ```

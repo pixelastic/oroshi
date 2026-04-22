@@ -17,6 +17,7 @@ local allowedSkills=(
   "test-driven-development"
   "writing-plans"
   "writing-skills"
+  "zsh-writer"
 )
 
 debug "Skill name: $skillName"

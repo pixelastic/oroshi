@@ -1,5 +1,27 @@
 // Custom keymap for YMDK YMD09
 // Source of truth for keyboard configuration
+//
+// Kitty
+// Next/Previous Tab
+// Toggle Fullscreen
+// Up, Right, Down, Left in windows
+// Toggle AI
+//
+// Claude
+// Up/Down
+// Ok (Enter)
+// Cancel (Ctrl-C)
+// Enable/Disable thinking
+// Switch mode (auto-accept, normal, plan)
+//
+// Speech to text
+// Start/Stop
+// Toggle Slack
+// Toggle English
+// Toggle Autosend
+//
+// Misc
+// Toggle sound mode
 
 #include QMK_KEYBOARD_H
 
