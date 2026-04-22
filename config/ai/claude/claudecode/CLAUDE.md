@@ -9,21 +9,11 @@ I want to have working code examples and up-to-date information
 Keep a consistent coding style matching my preferences across my projects
 
 - Don't suggest scripts in python. Prefer scripts in zsh or in JavaScript
-- Prefer camelCase for variables, functions, directories, files, etc (unless that specific language/project has a strong opinion against it)
-- Prefer to "return early" in functions if conditions are not met, rather than putting most of the code in a condition
 - Prefer a DX that makes simple things easy and complex things possible
 
 ## ZSH Functions
 
 **IMPORTANT**: When writing or modifying ZSH functions in this repository, use the `zsh-writer` skill.
-
-The skill documents all ZSH-specific patterns including:
-- Argument parsing with `zparseopts`
-- Line-by-line iteration with `${(f)}` (never `while read`)
-- String splitting with `▮` separator
-- Variable declaration patterns with `local`
-- The `-raw` suffix convention for structured data
-- Return early patterns
 
 See: `config/ai/claude/claudecode/skills/zsh-writer/SKILL.md`
 

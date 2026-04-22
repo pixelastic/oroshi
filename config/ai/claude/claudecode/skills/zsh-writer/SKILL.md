@@ -126,6 +126,97 @@ local skillName="$1"
 local targetDir="$2"
 ```
 
+## Command-Line Argument Formatting
+
+**Always prefer long-form arguments for readability:**
+
+```zsh
+# ✅ CORRECT - long-form arguments
+fd --type file --glob "*.md" /path
+
+# ❌ WRONG - short-form arguments
+fd -t f -g "*.md" /path
+```
+
+**Multi-line formatting for commands with multiple arguments:**
+
+```zsh
+# ✅ CORRECT - each argument on its own line
+yt-dlp \
+  --cookies-from-browser firefox \
+  --format 'bestvideo[height<=720]' \
+  --output "%(title)s.%(ext)s" \
+  "$videoId"
+
+# ❌ WRONG - all on one line
+yt-dlp --cookies-from-browser firefox --format 'bestvideo[height<=720]' --output "%(title)s.%(ext)s" "$videoId"
+```
+
+**Exception - command substitutions can remain one-line:**
+
+```zsh
+# ✅ ACCEPTABLE - in substitution, even with multiple args
+local sessionFile=$(fd --type file --max-results 1 "*.jsonl" ~/.claude)
+
+# ✅ ALSO ACCEPTABLE - split if very long
+local sessionFile=$(fd \
+  --type file \
+  --max-results 1 \
+  "*.jsonl" \
+  ~/.claude/projects)
+```
+
+**Conditional arguments - use arrays:**
+
+```zsh
+# ✅ CORRECT - build array conditionally
+local ytdlpArgs=(
+  --cookies-from-browser firefox
+  --format 'bestvideo[height<=720]'
+  --output "%(title)s.%(ext)s"
+)
+
+if [[ $isVerbose -eq 1 ]]; then
+  ytdlpArgs+=(--verbose)
+fi
+
+yt-dlp "${ytdlpArgs[@]}" "$videoId"
+
+# ❌ WRONG - inline conditionals
+yt-dlp --cookies-from-browser firefox $([ $isVerbose -eq 1 ] && echo "--verbose") "$videoId"
+```
+
+**Short-form exceptions (ONLY in command substitutions):**
+
+These common idioms can use short forms when inside `$(...)`:
+
+```zsh
+# ✅ ACCEPTABLE - common idioms in substitutions
+local firstLine=$(head -1 file.txt)
+local lastLine=$(tail -1 file.txt)
+local chars=$(cut -c 1-10 file.txt)
+local raw=$(jq -r '.field' file.json)
+
+# ⚠️ PREFER LONG FORM outside substitutions
+head --lines=1 file.txt
+tail --lines=1 file.txt
+cut --characters=1-10 file.txt
+jq --raw-output '.field' file.json
+```
+
+**Accepted short-form idioms (in substitutions only):**
+- `head -N` / `tail -N` (any number)
+- `cut -c`
+- `jq -r`
+
+**Rules summary:**
+1. Default: always use long-form arguments (`--verbose` not `-v`)
+2. Multiple arguments: one per line (unless in substitution)
+3. Argument value: on same line as the argument
+4. Conditional args: build array, add conditionally
+5. Command substitutions: can be one-line
+6. Short-form idioms: only in substitutions, only from accepted list
+
 ## Line-by-Line Iteration
 
 **Always use `for item in ${(f)variable}` — NEVER `while read`:**
@@ -275,6 +366,9 @@ function skill-description() {
 | `container_name` (snake_case) | Use `containerName` (camelCase) |
 | String boolean checks `[[ "$flag" == true ]]` | Use `${#flagName}` for 0 or 1 |
 | External tools (`sed`, `awk`, `cut`) | Prefer ZSH parameter expansion when possible |
+| Short-form args (`-t`, `-v`) | Use long-form (`--type`, `--verbose`) |
+| All args on one line | One argument per line for multi-arg commands |
+| `fd -t f -g pattern` | `fd --type file --glob pattern` (or multi-line) |
 
 ## Quick Reference
 
