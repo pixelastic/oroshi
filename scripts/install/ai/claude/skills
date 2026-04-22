@@ -2,8 +2,6 @@
 # Install Claude Code skills
 # Target: ~/.claude/skills/
 
-echo "Installing Claude Code skills..."
-
 # Install skills from external sources
 skills-install getsentry/skills@blog-writing-guide
 skills-install mattpocock/skills@caveman
@@ -19,7 +17,11 @@ skills-install obra/superpowers@writing-plans
 skills-install obra/superpowers@writing-skills
 
 # Symlink all custom skills from .oroshi to ~/.claude/skills/
-for skillPath in ~/.oroshi/config/ai/claude/claudecode/skills/*; do
-  local skillName=$(basename "$skillPath")
-  ln -fs "$skillPath" ~/.claude/skills/${skillName}
+for oroshiPath in ~/.oroshi/config/ai/claude/claudecode/skills/*; do
+  local skillName=$(basename "$oroshiPath")
+  local claudePath=~/.claude/skills/${skillName}
+  if [ -d "$claudePath" ]; then
+    rm $claudePath
+  fi
+  ln -s "${oroshiPath}" "${claudePath}"
 done
