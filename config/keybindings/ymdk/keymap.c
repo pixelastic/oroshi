@@ -68,7 +68,7 @@ enum layers {
 #define AI_CHAT_BOTTOM KC_END /* Go to end of conversation */
 #define AI_CHOICE_NEXT KC_DOWN /* Next choice in list */
 #define AI_OK KC_ENT /* Validate choice*/
-#define AI_CANCEL KC_ESC /* Cancel / go back */
+#define AI_CANCEL C(KC_C) /* Cancel / go back */
 #define AI_MODE_NEXT S(KC_TAB) /* Normal -> Auto-Accept -> Plan */
 
 #define CONFIG_SOUND_MODE C(G(KC_F8)) /* Toggle sound mode */
