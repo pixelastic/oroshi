@@ -27,14 +27,31 @@
 
 #include QMK_KEYBOARD_H
 
+// Note: The keyboard mapping of F keys above 13 is clunky. Below is a set of
+// clearer names and documentation
+#define KC_XF86LAUNCH5     KC_F14
+#define KC_XF86LAUNCH6     KC_F15
+#define KC_XF86LAUNCH7     KC_F16
+#define KC_XF86LAUNCH8     KC_F17
+#define KC_XF86LAUNCH9     KC_F18
+// KC_F13 → Opens Help in Ubuntu
+// KC_F19 → NoSymbol (keycode 197)
+// KC_F20 → XF86AudioMicMute
+// KC_F21 → XF86TouchpadToggle
+// KC_F22 → XF86TouchpadOn
+// KC_F23 → XF86TouchpadOff
+// KC_F24 → NoSymbol (keycode 202)
+// ========================================================================
+
 // Layer 0 - Blue / Kitty
+// Gnome binding: <Ctrl>XF86Launch5 → mic2txt
 #define LAYER0_KEYS \
-    TO(_LAYER1), KC_NO, KC_NO, \
-    KC_NO,       KC_NO, KC_NO, \
-    KC_NO,       KC_NO, KC_NO
+    TO(_LAYER1), C(KC_XF86LAUNCH5), LALT(KC_ENT), \
+    LALT(KC_H),  C(S(KC_RIGHT)),    LALT(KC_L), \
+    C(KC_Y),     C(S(KC_Y)),        C(S(KC_V))
 
 #define LAYER0_COLORS \
-    ORANGE, BLUE,   BLUE, \
+    ORANGE, YELLOW, BLUE, \
     BLUE,   BLUE,   BLUE, \
     BLUE,   BLUE,   BLUE
 
@@ -52,13 +69,13 @@
 // Layer 2 - Green / Config
 #define LAYER2_KEYS \
     KC_NO, KC_NO, TO(_LAYER1), \
-    KC_NO,       KC_NO, KC_NO, \
-    KC_NO,       KC_NO, KC_NO
+    KC_NO, KC_NO, KC_NO, \
+    KC_NO, KC_NO, TO(_LAYER0)
 
 #define LAYER2_COLORS \
     GREEN, GREEN, ORANGE, \
-    GREEN,  GREEN, GREEN, \
-    GREEN,  GREEN, GREEN
+    GREEN, GREEN, GREEN, \
+    GREEN, GREEN, BLUE
 
 // Layer 3 - Placeholder
 #define LAYER3_KEYS \
@@ -81,6 +98,7 @@ typedef struct {
 #define BLUE   ((Color){0, 0, 255})
 #define ORANGE ((Color){255, 50, 0})
 #define GREEN  ((Color){0, 255, 0})
+#define YELLOW ((Color){255, 255, 0})
 
 // Layer definitions
 enum layers {
