@@ -23,7 +23,7 @@ wmctrl -s 4
 
 # We also listens to DBus events, and calls it again when we get back from sleep
 lastEventTime=0
-timeBetweenEvents=5
+timeBetweenEvents=15
 function processLogLine() {
   local input="$1"
   local currentTime=$(date +%s)
