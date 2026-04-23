@@ -1,124 +1,166 @@
 // Custom keymap for YMDK YMD09
 // Source of truth for keyboard configuration
 //
-// Kitty
-// Next/Previous Tab
-// Toggle Fullscreen
-// Up, Right, Down, Left in windows
-// Toggle AI
+// Deux modes, comme vim
 //
-// Claude
-// Up/Down
-// Ok (Enter)
-// Cancel (Ctrl-C)
-// Enable/Disable thinking
-// Switch mode (auto-accept, normal, plan)
+// Move (Blue)
+// Blue/Orange PrevTab NextTab
+// ToggleFullscreen UpWindow ToggleAi
+// LeftWindow BottomWindow RightWindow
 //
-// Speech to text
-// Start/Stop
-// Toggle Slack
-// Toggle English
-// Toggle Autosend
+// AI (orange) pour Claude
+// Blue/Orange SpeechToText Orange/Green
+// Cancel Up Ok
+// ToggleMode Down ToggleThink
 //
-// Misc
-// Toggle sound mode
+// Config (green)
+// ToggleSound ToggleSend Orange/Green
+// ToggleEnglish ToggleSlack ToggleModel
+// CopyPath CopyOutput Paste
+//
+//
+// - Ctrl-Y to copy path?
+// - Ctrl-Maj-Y to copy output?
+// Maybe ToggleMode and ToggleThink are in Green?
+// And in Orange bottom row I have copy path or copy error?
+//
 
 #include QMK_KEYBOARD_H
 
+// Layer 0 - Blue / Kitty
+#define LAYER0_KEYS \
+    TO(_LAYER1), KC_NO, KC_NO, \
+    KC_NO,       KC_NO, KC_NO, \
+    KC_NO,       KC_NO, KC_NO
+
+#define LAYER0_COLORS \
+    ORANGE, BLUE,   BLUE, \
+    BLUE,   BLUE,   BLUE, \
+    BLUE,   BLUE,   BLUE
+
+// Layer 1 - Orange / Claude
+#define LAYER1_KEYS \
+    TO(_LAYER0), KC_NO, TO(_LAYER2), \
+    KC_NO,       KC_NO, KC_NO, \
+    KC_NO,       KC_NO, KC_NO
+
+#define LAYER1_COLORS \
+    BLUE,   ORANGE, GREEN, \
+    ORANGE, ORANGE, ORANGE, \
+    ORANGE, ORANGE, ORANGE
+
+// Layer 2 - Green / Config
+#define LAYER2_KEYS \
+    KC_NO, KC_NO, TO(_LAYER1), \
+    KC_NO,       KC_NO, KC_NO, \
+    KC_NO,       KC_NO, KC_NO
+
+#define LAYER2_COLORS \
+    GREEN, GREEN, ORANGE, \
+    GREEN,  GREEN, GREEN, \
+    GREEN,  GREEN, GREEN
+
+// Layer 3 - Placeholder
+#define LAYER3_KEYS \
+    KC_NO, KC_NO, KC_NO, \
+    KC_NO, KC_NO, KC_NO, \
+    KC_NO, KC_NO, KC_NO
+
+#define LAYER3_COLORS \
+    BLUE, BLUE, BLUE, \
+    BLUE, BLUE, BLUE, \
+    BLUE, BLUE, BLUE
+
+// Color definitions
+typedef struct {
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+} Color;
+
+#define BLUE   ((Color){0, 0, 255})
+#define ORANGE ((Color){255, 50, 0})
+#define GREEN  ((Color){0, 255, 0})
+
 // Layer definitions
 enum layers {
-    _BASE = 0,  // Layer 0: Numbers 1-9 with rainbow colors
-    _LAYER1,    // Layer 1: All A keys with red color
-    _LAYER2,    // Layer 2: All B keys with green color
-    _LAYER3     // Layer 3: All C keys with blue color
+    _LAYER0 = 0,  // Layer 0: Blue (Move mode)
+    _LAYER1,      // Layer 1: Orange (AI mode)
+    _LAYER2,      // Layer 2: Green (Config mode) - placeholder
+    _LAYER3       // Layer 3: Placeholder
 };
 
-// Keymap configuration
+
+// Helper macro to force expansion of defines before passing to LAYOUT
+#define LAYOUT_WRAPPER(...) LAYOUT(__VA_ARGS__)
+
+// Visual layout macro - maps visual positions to array
+// Allows defining colors in the same visual order as keymaps
+#define VISUAL_LAYOUT( \
+    k00, k01, k02, \
+    k10, k11, k12, \
+    k20, k21, k22  \
+) { k00, k01, k02, k10, k11, k12, k20, k21, k22 }
+
+// Keymap configuration - Built from configuration defines above
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    /* Layer 0 - BASE
-     * ┌───┬───┬───┐
-     * │TO1│ 8 │ 9 │  <- TO1 = Go to layer 1
-     * ├───┼───┼───┤
-     * │ 4 │ 5 │ 6 │
-     * ├───┼───┼───┤
-     * │ 1 │ 2 │ 3 │
-     * └───┴───┴───┘
-     */
-    [_BASE] = LAYOUT(
-        TO(_LAYER1), KC_8,  KC_9,
-        KC_4,        KC_5,  KC_6,
-        KC_1,        KC_2,  KC_3
-    ),
-
-    /* Layer 1 - All A, Red
-     * TO2 = Go to layer 2
-     */
-    [_LAYER1] = LAYOUT(
-        TO(_LAYER2), KC_A,  KC_A,
-        KC_A,        KC_A,  KC_A,
-        KC_A,        KC_A,  KC_A
-    ),
-
-    /* Layer 2 - All B, Green
-     * TO3 = Go to layer 3
-     */
-    [_LAYER2] = LAYOUT(
-        TO(_LAYER3), KC_B,  KC_B,
-        KC_B,        KC_B,  KC_B,
-        KC_B,        KC_B,  KC_B
-    ),
-
-    /* Layer 3 - All C, Blue
-     * TO0 = Go back to layer 0
-     */
-    [_LAYER3] = LAYOUT(
-        TO(_BASE),   KC_C,  KC_C,
-        KC_C,        KC_C,  KC_C,
-        KC_C,        KC_C,  KC_C
-    )
+    [_LAYER0] = LAYOUT_WRAPPER(LAYER0_KEYS),
+    [_LAYER1] = LAYOUT_WRAPPER(LAYER1_KEYS),
+    [_LAYER2] = LAYOUT_WRAPPER(LAYER2_KEYS),
+    [_LAYER3] = LAYOUT_WRAPPER(LAYER3_KEYS)
 };
 
 // RGB Matrix: Set individual colors per key and per layer
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     uint8_t layer = get_highest_layer(layer_state);
 
+    // Mapping from visual position (0-8) to LED index
+    // Visual order: top-left, top-center, top-right, mid-left, mid-center, mid-right, bot-left, bot-center, bot-right
+    // LED order: each row is reversed (right-to-left)
+    const uint8_t visual_to_led[9] = {2, 1, 0, 5, 4, 3, 8, 7, 6};
+
+    // Color layout for current layer (defined in visual keyboard order)
+    Color layout[9];
+
+    // Load colors from configuration defines
     switch(layer) {
-        case _BASE:
-            // Layer 0: Rainbow colors (each key different)
-            // LED mapping: [0]=top-right, [1]=top-center, [2]=top-left
-            //              [3]=mid-right, [4]=mid-center, [5]=mid-left
-            //              [6]=bot-right, [7]=bot-center, [8]=bot-left
-            rgb_matrix_set_color(0, 255, 0, 0);     // 9: Red
-            rgb_matrix_set_color(1, 255, 127, 0);   // 8: Orange
-            rgb_matrix_set_color(2, 255, 255, 0);   // TO: Yellow
-            rgb_matrix_set_color(3, 0, 255, 0);     // 6: Green
-            rgb_matrix_set_color(4, 0, 255, 255);   // 5: Cyan
-            rgb_matrix_set_color(5, 0, 0, 255);     // 4: Blue
-            rgb_matrix_set_color(6, 127, 0, 255);   // 3: Purple
-            rgb_matrix_set_color(7, 255, 0, 255);   // 2: Magenta
-            rgb_matrix_set_color(8, 255, 255, 255); // 1: White
+        case _LAYER0:
+            {
+                Color colors[] = {LAYER0_COLORS};
+                for (uint8_t i = 0; i < 9; i++) {
+                    layout[i] = colors[i];
+                }
+            }
             break;
-
         case _LAYER1:
-            // Layer 1: All red
-            for (uint8_t i = led_min; i < led_max; i++) {
-                rgb_matrix_set_color(i, 255, 0, 0);
+            {
+                Color colors[] = {LAYER1_COLORS};
+                for (uint8_t i = 0; i < 9; i++) {
+                    layout[i] = colors[i];
+                }
             }
             break;
-
         case _LAYER2:
-            // Layer 2: All green
-            for (uint8_t i = led_min; i < led_max; i++) {
-                rgb_matrix_set_color(i, 0, 255, 0);
+            {
+                Color colors[] = {LAYER2_COLORS};
+                for (uint8_t i = 0; i < 9; i++) {
+                    layout[i] = colors[i];
+                }
             }
             break;
-
         case _LAYER3:
-            // Layer 3: All blue
-            for (uint8_t i = led_min; i < led_max; i++) {
-                rgb_matrix_set_color(i, 0, 0, 255);
+            {
+                Color colors[] = {LAYER3_COLORS};
+                for (uint8_t i = 0; i < 9; i++) {
+                    layout[i] = colors[i];
+                }
             }
             break;
+    }
+
+    // Apply colors from visual layout to actual LED positions
+    for (uint8_t i = 0; i < 9; i++) {
+        rgb_matrix_set_color(visual_to_led[i], layout[i].r, layout[i].g, layout[i].b);
     }
 
     return false;

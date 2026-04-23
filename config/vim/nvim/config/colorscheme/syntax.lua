@@ -82,6 +82,10 @@ hl("@keyword.directive.bash", "YELLOW")
 hl("@function.builtin.bash", "GREEN")
 hl("@constant.bash", "VARIABLE")
 -- }}}
+-- C {{{
+hl("@keyword.directive.define.c", "YELLOW")
+hl("@keyword.type.c", "VARIABLE_TYPE")
+-- }}}
 -- CSS {{{
 hl("@tag.css", "GREEN", { bold = true })
 hl("@attribute.css", "RED_4") -- pseudo-classes
