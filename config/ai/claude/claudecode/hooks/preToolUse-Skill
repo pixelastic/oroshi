@@ -18,6 +18,7 @@ local allowedSkills=(
   "writing-plans"
   "writing-skills"
   "zsh-writer"
+  "code-writer"
 )
 
 debug "Skill name: $skillName"

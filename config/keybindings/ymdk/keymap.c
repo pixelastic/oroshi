@@ -3,9 +3,15 @@
 
 #include QMK_KEYBOARD_H
 
-// ========================================================================
-// QMK KEYCODE ALIASES
-// ========================================================================
+// LAYER ENUM
+enum layers {
+    _LAYER_NORMAL = 0,
+    _LAYER_INSERT,
+    _LAYER_CONFIG,
+    _LAYER3
+};
+
+// QMK KEYCODE ALIASES {{{
 // The keyboard mapping of F keys above 13 is clunky
 // Below are clearer names and documentation
 #define KC_XF86LAUNCH5  KC_F14  // → XF86Launch5
@@ -20,124 +26,137 @@
 // KC_F22 → XF86TouchpadOn (system intercepts)
 // KC_F23 → XF86TouchpadOff (system intercepts)
 // KC_F24 → NoSymbol (keycode 202)
+// }}}
 
-// ========================================================================
-// COLOR DEFINITIONS
-// ========================================================================
+// COLOR DEFINITIONS {{{
 typedef struct {
     uint8_t r;
     uint8_t g;
     uint8_t b;
 } Color;
 
-#define BLUE   ((Color){0, 0, 255})
-#define ORANGE ((Color){255, 50, 0})
-#define GREEN  ((Color){0, 255, 0})
-#define YELLOW ((Color){255, 255, 0})
-#define BLACK  ((Color){0, 0, 0})  // Off/disabled
+// Blue-Green
+#define BLUE  ((Color){0, 60, 200})
+#define SKY   ((Color){0, 140, 200})
+#define CYAN  ((Color){0, 180, 180})
+#define MINT  ((Color){0, 200, 100})
+#define GREEN ((Color){0, 180, 0})
 
-// ========================================================================
-// LAYER ENUM
-// ========================================================================
-enum layers {
-    _LAYER0 = 0,
-    _LAYER1,
-    _LAYER2,
-    _LAYER3
-};
+// Red-Yellow
+#define RED    ((Color){200, 0, 0})
+#define CORAL  ((Color){200, 40, 0})
+#define ORANGE ((Color){200, 70, 0})
+#define AMBER  ((Color){200, 150, 0})
+#define YELLOW ((Color){200, 200, 0})
 
-// ========================================================================
-// ACTION DEFINITIONS
-// ========================================================================
-#define LAYER_KITTY    TO(_LAYER0)
-#define LAYER_AI       TO(_LAYER1)
-#define LAYER_CONFIG   TO(_LAYER2)
+// Violet-Pink
+#define VIOLET  ((Color){50, 0, 200})
+#define PURPLE  ((Color){110, 0, 180})
+#define MAGENTA ((Color){180, 0, 180})
+#define FUCHSIA ((Color){200, 0, 120})
+#define PINK    ((Color){200, 0, 100})
+
+// Black-White
+#define BLACK     ((Color){12, 15, 21})
+#define GRAY      ((Color){107, 114, 128})
+#define WHITE     ((Color){255, 255, 255})
+#define NEUTRAL   ((Color){82, 82, 82})
+#define COLOR_OFF ((Color){0, 0, 0})
+// }}}
+
+// KEY CODE DEFINITIONS {{{
+#define MODE_NORMAL    TO(_LAYER_NORMAL)
+#define MODE_INSERT    TO(_LAYER_INSERT)
+#define MODE_CONFIG    TO(_LAYER_CONFIG)
 
 #define SPEECH_TO_TEXT      C(KC_XF86LAUNCH5)
 #define EMPTY_KEY           KC_NO
 
-#define KITTY_COPY_OUTPUT   C(S(KC_Y))
-#define KITTY_COPY_PATH     C(KC_Y)
-#define KITTY_FULLSCREEN    LALT(KC_ENT)
-#define KITTY_PASTE         C(S(KC_V))
-#define KITTY_TAB_NEXT      LALT(KC_L)
-#define KITTY_TAB_PREV      LALT(KC_H)
-#define KITTY_WINDOW_NEXT   C(S(KC_RIGHT))
+#define COPY_OUTPUT   C(S(KC_Y))
+#define COPY_PATH     C(KC_Y)
+#define FULLSCREEN    LALT(KC_ENT)
+#define PASTE         C(S(KC_V))
+#define TAB_NEXT      LALT(KC_L)
+#define TAB_PREV      LALT(KC_H)
+#define WINDOW_NEXT   C(S(KC_RIGHT))
 
-#define AI_MESSAGE_START LALT(KC_K) /* Go to start of message */
-#define AI_CHAT_BOTTOM KC_END /* Go to end of conversation */
-#define AI_CHOICE_NEXT KC_DOWN /* Next choice in list */
-#define AI_OK KC_ENT /* Validate choice*/
-#define AI_CANCEL C(KC_C) /* Cancel / go back */
-#define AI_MODE_NEXT S(KC_TAB) /* Normal -> Auto-Accept -> Plan */
+#define MESSAGE_START LALT(KC_K) /* Go to start of message */
+#define CHAT_BOTTOM KC_END /* Go to end of conversation */
+#define CHOICE_NEXT KC_DOWN /* Next choice in list */
+#define OK KC_ENT /* Validate choice*/
+#define CANCEL C(KC_C) /* Cancel / go back */
+#define MODE_NEXT S(KC_TAB) /* Normal -> Auto-Accept -> Plan */
 
 #define CONFIG_SOUND_MODE C(G(KC_F8)) /* Toggle sound mode */
 #define CONFIG_AUTOSEND C(G(KC_F9)) /* Toggle autosend */
 #define CONFIG_TRANSLATE C(G(KC_F10)) /* Toggle translate */
 #define CONFIG_SLACK C(G(KC_F11)) /* Toggle slack rewrite */
 #define CONFIG_MODEL C(G(KC_F12)) /* Toggle whisper/parakeet */
+// }}}
 
+// VISUAL GRID {{{
+#define LAYER_NORMAL_KEYS \
+    MODE_INSERT,      TAB_PREV, TAB_NEXT, \
+    MESSAGE_START, SPEECH_TO_TEXT, CHOICE_NEXT, \
+    CHAT_BOTTOM,   CANCEL,      OK
 
-// Visual 3x3 grid matches the physical keyboard layout
-// Layer 0 - Blue / Kitty Navigation
-#define LAYER0_KEYS \
-    LAYER_AI,          KITTY_TAB_PREV,    KITTY_TAB_NEXT, \
-    KITTY_FULLSCREEN,  SPEECH_TO_TEXT,    KITTY_WINDOW_NEXT, \
-    KITTY_COPY_PATH,   KITTY_COPY_OUTPUT, KITTY_PASTE
+#define LAYER_INSERT_KEYS \
+    MODE_NORMAL,     FULLSCREEN, MODE_CONFIG,    \
+    COPY_OUTPUT,    SPEECH_TO_TEXT,    WINDOW_NEXT, \
+    COPY_PATH, MODE_NEXT, PASTE
 
-// Layer 1 - Orange / AI (Claude)
-#define LAYER1_KEYS \
-    LAYER_KITTY,      AI_CANCEL,      LAYER_CONFIG, \
-    AI_MESSAGE_START, SPEECH_TO_TEXT, AI_CHOICE_NEXT, \
-    AI_CHAT_BOTTOM,   AI_MODE_NEXT ,  AI_OK
-
-// Layer 2 - Green / Config
-#define LAYER2_KEYS \
-    CONFIG_SOUND_MODE, CONFIG_AUTOSEND, LAYER_AI, \
+#define LAYER_CONFIG_KEYS \
+    CONFIG_SOUND_MODE, CONFIG_AUTOSEND, MODE_INSERT, \
     CONFIG_TRANSLATE,  CONFIG_SLACK,    CONFIG_MODEL, \
-    EMPTY_KEY,         EMPTY_KEY,       EMPTY_KEY
+    EMPTY_KEY, EMPTY_KEY, EMPTY_KEY
 
 // Layer 3 - Placeholder
 #define LAYER3_KEYS \
     EMPTY_KEY, EMPTY_KEY, EMPTY_KEY, \
     EMPTY_KEY, EMPTY_KEY, EMPTY_KEY, \
     EMPTY_KEY, EMPTY_KEY, EMPTY_KEY
+// }}}
 
-// ========================================================================
-// COLOR MAPPING
-// ========================================================================
+// COLOR MAPPING {{{
 Color get_color_for_key(uint16_t keycode, uint8_t layer) {
-    if (keycode == LAYER_AI) return ORANGE;
-    if (keycode == LAYER_KITTY) return BLUE;
-    if (keycode == LAYER_CONFIG) return GREEN;
+    // Normal
+    if (keycode == MODE_INSERT) return WHITE;
+    if (keycode == TAB_PREV) return BLUE;
+    if (keycode == TAB_NEXT) return BLUE;
 
+    if (keycode == MESSAGE_START) return BLUE;
     if (keycode == SPEECH_TO_TEXT) return YELLOW;
+    if (keycode == CHOICE_NEXT) return MINT;
 
-    if (keycode == KITTY_FULLSCREEN) return BLUE;
-    if (keycode == KITTY_TAB_PREV) return BLUE;
-    if (keycode == KITTY_WINDOW_NEXT) return BLUE;
-    if (keycode == KITTY_TAB_NEXT) return BLUE;
-    if (keycode == KITTY_COPY_PATH) return BLUE;
-    if (keycode == KITTY_COPY_OUTPUT) return BLUE;
-    if (keycode == KITTY_PASTE) return BLUE;
+    if (keycode == CHAT_BOTTOM) return BLUE;
+    if (keycode == CANCEL) return RED;
+    if (keycode == OK) return GREEN;
 
-    if (keycode == AI_MESSAGE_START) return ORANGE;
-    if (keycode == AI_CHOICE_NEXT) return ORANGE;
-    if (keycode == AI_CHAT_BOTTOM) return ORANGE;
-    if (keycode == AI_CANCEL) return ORANGE;
-    if (keycode == AI_OK) return ORANGE;
-    if (keycode == AI_MODE_NEXT) return ORANGE;
+    // Insert
+    if (keycode == MODE_NORMAL) return WHITE;
+    if (keycode == FULLSCREEN) return CORAL;
+    if (keycode == MODE_CONFIG) return WHITE;
 
-    if (keycode == CONFIG_SOUND_MODE) return GREEN;
-    if (keycode == CONFIG_AUTOSEND) return GREEN;
-    if (keycode == CONFIG_TRANSLATE ) return GREEN;
-    if (keycode == CONFIG_SLACK) return GREEN;
-    if (keycode == CONFIG_MODEL) return GREEN;
+    if (keycode == COPY_OUTPUT) return ORANGE;
+    if (keycode == SPEECH_TO_TEXT) return YELLOW;
+    if (keycode == WINDOW_NEXT) return MINT;
 
-    if (keycode == EMPTY_KEY) return BLACK;
+    if (keycode == COPY_PATH) return ORANGE;
+    if (keycode == MODE_NEXT) return MAGENTA;
+    if (keycode == PASTE) return GREEN;
 
-    return BLACK;
+    // Config
+    if (keycode == CONFIG_SOUND_MODE) return PURPLE;
+    if (keycode == CONFIG_AUTOSEND) return PURPLE;
+    if (keycode == MODE_INSERT) return WHITE;
+
+    if (keycode == CONFIG_TRANSLATE) return MAGENTA;
+    if (keycode == CONFIG_SLACK) return MAGENTA;
+    if (keycode == CONFIG_MODEL) return MAGENTA;
+
+    return COLOR_OFF;
 }
+// }}}
 
 // ========================================================================
 // QMK INFRASTRUCTURE - DO NOT EDIT BELOW THIS LINE
@@ -155,9 +174,9 @@ Color get_color_for_key(uint16_t keycode, uint8_t layer) {
 
 // Keymap configuration - Built from configuration defines above
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [_LAYER0] = LAYOUT_WRAPPER(LAYER0_KEYS),
-    [_LAYER1] = LAYOUT_WRAPPER(LAYER1_KEYS),
-    [_LAYER2] = LAYOUT_WRAPPER(LAYER2_KEYS),
+    [_LAYER_NORMAL] = LAYOUT_WRAPPER(LAYER_NORMAL_KEYS),
+    [_LAYER_INSERT] = LAYOUT_WRAPPER(LAYER_INSERT_KEYS),
+    [_LAYER_CONFIG] = LAYOUT_WRAPPER(LAYER_CONFIG_KEYS),
     [_LAYER3] = LAYOUT_WRAPPER(LAYER3_KEYS)
 };
 
