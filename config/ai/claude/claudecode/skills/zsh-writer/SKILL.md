@@ -9,6 +9,10 @@ description: Use when writing or modifying ZSH functions in the .oroshi reposito
 
 Write ZSH functions following established patterns for the .oroshi dotfiles repository. These patterns emphasize ZSH-specific idioms over bash compatibility, explicit variable scoping, and consistent data formatting.
 
+## Core Coding Guidelines
+
+**Related skill:** `code-writer` - Defines core guidelines for comments and output statements that apply across all programming languages. This `zsh-writer` skill extends those general principles with ZSH-specific patterns and conventions.
+
 ## When to Use
 
 - Writing new ZSH functions in `config/term/zsh/functions/autoload/`
