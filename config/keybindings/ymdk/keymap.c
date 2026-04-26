@@ -8,7 +8,7 @@ enum layers {
     _LAYER_NORMAL = 0,
     _LAYER_INSERT,
     _LAYER_CONFIG,
-    _LAYER3
+    _LAYER_SOUND
 };
 
 // QMK KEYCODE ALIASES {{{
@@ -58,7 +58,7 @@ typedef struct {
 
 // Black-White
 #define BLACK     ((Color){12, 15, 21})
-#define GRAY      ((Color){107, 114, 128})
+#define GREY      ((Color){107, 114, 128})
 #define WHITE     ((Color){255, 255, 255})
 #define NEUTRAL   ((Color){82, 82, 82})
 #define COLOR_OFF ((Color){0, 0, 0})
@@ -68,6 +68,7 @@ typedef struct {
 #define MODE_NORMAL    TO(_LAYER_NORMAL)
 #define MODE_INSERT    TO(_LAYER_INSERT)
 #define MODE_CONFIG    TO(_LAYER_CONFIG)
+#define MODE_SOUND    TO(_LAYER_SOUND)
 
 #define SPEECH_TO_TEXT      C(KC_XF86LAUNCH5)
 #define EMPTY_KEY           KC_NO
@@ -87,11 +88,18 @@ typedef struct {
 #define CANCEL C(KC_C) /* Cancel / go back */
 #define MODE_NEXT S(KC_TAB) /* Normal -> Auto-Accept -> Plan */
 
-#define CONFIG_SOUND_MODE C(G(KC_F8)) /* Toggle sound mode */
-#define CONFIG_AUTOSEND C(G(KC_F9)) /* Toggle autosend */
-#define CONFIG_TRANSLATE C(G(KC_F10)) /* Toggle translate */
-#define CONFIG_SLACK C(G(KC_F11)) /* Toggle slack rewrite */
-#define CONFIG_MODEL C(G(KC_F12)) /* Toggle whisper/parakeet */
+#define CONFIG_SOUND_MODE C(G(KC_F8))
+#define CONFIG_AUTOSEND C(G(KC_F9))
+#define CONFIG_TRANSLATE C(G(KC_F10))
+#define CONFIG_SLACK C(G(KC_F11))
+#define CONFIG_MODEL C(G(KC_F12))
+
+#define RP_GREEN A(G(KC_F2))
+#define RP_YELLOW A(G(KC_F3))
+#define RP_RED A(G(KC_F4))
+#define RP_BLUE A(G(KC_F5))
+#define RP_GREY A(G(KC_F6))
+#define RP_PURPLE A(G(KC_F7))
 // }}}
 
 // VISUAL GRID {{{
@@ -108,13 +116,13 @@ typedef struct {
 #define LAYER_CONFIG_KEYS \
     CONFIG_SOUND_MODE, CONFIG_AUTOSEND, MODE_INSERT, \
     CONFIG_TRANSLATE,  CONFIG_SLACK,    CONFIG_MODEL, \
-    EMPTY_KEY, EMPTY_KEY, EMPTY_KEY
+    EMPTY_KEY, EMPTY_KEY, MODE_SOUND
 
 // Layer 3 - Placeholder
-#define LAYER3_KEYS \
-    EMPTY_KEY, EMPTY_KEY, EMPTY_KEY, \
-    EMPTY_KEY, EMPTY_KEY, EMPTY_KEY, \
-    EMPTY_KEY, EMPTY_KEY, EMPTY_KEY
+#define LAYER_SOUND_KEYS \
+    RP_GREEN, RP_YELLOW, RP_RED, \
+    RP_PURPLE, RP_BLUE, RP_GREY, \
+    EMPTY_KEY, EMPTY_KEY, MODE_CONFIG
 // }}}
 
 // COLOR MAPPING {{{
@@ -154,6 +162,16 @@ Color get_color_for_key(uint16_t keycode, uint8_t layer) {
     if (keycode == CONFIG_SLACK) return MAGENTA;
     if (keycode == CONFIG_MODEL) return MAGENTA;
 
+    if (keycode == MODE_SOUND) return WHITE;
+
+    // Sound
+    if (keycode == RP_GREEN) return GREEN;
+    if (keycode == RP_YELLOW) return YELLOW;
+    if (keycode == RP_RED) return RED;
+    if (keycode == RP_PURPLE) return PURPLE;
+    if (keycode == RP_GREY) return GREY;
+    if (keycode == RP_BLUE) return BLUE;
+
     return COLOR_OFF;
 }
 // }}}
@@ -177,7 +195,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_LAYER_NORMAL] = LAYOUT_WRAPPER(LAYER_NORMAL_KEYS),
     [_LAYER_INSERT] = LAYOUT_WRAPPER(LAYER_INSERT_KEYS),
     [_LAYER_CONFIG] = LAYOUT_WRAPPER(LAYER_CONFIG_KEYS),
-    [_LAYER3] = LAYOUT_WRAPPER(LAYER3_KEYS)
+    [_LAYER_SOUND] = LAYOUT_WRAPPER(LAYER_SOUND_KEYS)
 };
 
 // RGB Matrix: Set individual colors per key and per layer

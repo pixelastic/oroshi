@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Launch a Spotify playlist by its ID
+# Usage: spotify-playlist-play <playlist-id>
+# Example: spotify-playlist-play 37i9dQZF1DXcBWIGoYBM5M
+
+if [[ -z "$1" ]]; then
+  echo "Error: playlist ID required"
+  echo "Usage: spotify-playlist-play <playlist-id>"
+  exit 1
+fi
+
+sp open "spotify:playlist:$1"

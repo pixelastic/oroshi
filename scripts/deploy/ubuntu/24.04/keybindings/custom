@@ -22,7 +22,7 @@ local shortcuts=(
   "Spotify Next" "<Super>L" "/home/tim/.oroshi/scripts/bin/spotify/spotify-next"
   "Spotify Previous" "<Super>H" "/home/tim/.oroshi/scripts/bin/spotify/spotify-previous"
 
-  "Flameshot" "<Super>F14" 'script --command "flameshot gui" /dev/null'
+  "Flameshot" "<Super>XF86Launch5" 'script --command "flameshot gui" /dev/null'
   "mic2text" "<Ctrl>XF86Launch5" "/home/tim/.oroshi/scripts/bin/audio/mic2txt"
 
   "sound-mode-toggle" "<Ctrl><Super>F8" "/home/tim/.oroshi/scripts/bin/audio/sound-mode-toggle"
@@ -30,6 +30,13 @@ local shortcuts=(
   "mic2text-language-toggle" "<Ctrl><Super>F10" "/home/tim/.oroshi/scripts/bin/audio/mic2txt-language-toggle"
   "mic2text-slack-mode-toggle" "<Ctrl><Super>F11" "/home/tim/.oroshi/scripts/bin/audio/mic2txt-slack-mode-toggle"
   "mic2text-model-toggle" "<Ctrl><Super>F12" "/home/tim/.oroshi/scripts/bin/audio/mic2txt-model-toggle"
+
+  "RP Green" "<Alt><Super>F2" "spotify-playlist-play 38PlgpAWtas5mPEXmFDNtw"
+  "RP Yellow" "<Alt><Super>F3" "spotify-playlist-play 6M9nIWHVYgj2QCmAWpZQXd"
+  "RP Red" "<Alt><Super>F4" "spotify-playlist-play 0c0nLQ04COLRbhTOqX6X4M"
+  "RP Blue" "<Alt><Super>F5" "spotify-playlist-play 6HSjJTsOL4ZRYQlH8rOLem"
+  "RP Grey" "<Alt><Super>F6" "spotify-playlist-play 2bf9y0CCeuzSYn7hJKky1o"
+  "RP Purple" "<Alt><Super>F7" "spotify-playlist-play 1tWNIMvp7pF0toZRDgRNMy"
 )
 # }}}
 
