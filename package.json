@@ -8,6 +8,7 @@
   "packageManager": "yarn@4.5.0",
   "devDependencies": {
     "aberlaas": "2.17.0",
+    "bats": "1.13.0",
     "eslint_d": "14.3.0",
     "firost": "5.2.1",
     "golgoth": "3.0.0",

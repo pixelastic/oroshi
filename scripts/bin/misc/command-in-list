@@ -17,7 +17,7 @@
 #   command-in-list "sh -c 'echo hello; tail file'" -- "echo" "tail" # Returns 0 (sh -c validates each subcommand)
 #   command-in-list "sh -c 'wget evil'" -- "echo" "tail"             # Returns 1 (wget not allowed)
 #   command-in-list "xargs -I {} sh -c 'echo {}'" -- "echo"          # Returns 0 (nested validation)
-#   command-in-list "bash -c 'echo test'" -- "echo"                  # Returns 1 (only sh is supported, not bash)
+#   command-in-list "sh -c 'echo test'" -- "echo"                    # Returns 0 (passed in sh -c)
 
 # Parse arguments: command is before --, patterns are after --
 local command=""

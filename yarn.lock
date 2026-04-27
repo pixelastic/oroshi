@@ -1900,6 +1900,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bats@npm:1.13.0":
+  version: 1.13.0
+  resolution: "bats@npm:1.13.0"
+  bin:
+    bats: bin/bats
+  checksum: 10c0/7f697d6305d80d328d620bd58c658f7830fbed57e28a43f18771d89fb6f941a131b440ab18d951fd15fdd23f3c687687d607d7fc03ac4c99f4725e64d2432832
+  languageName: node
+  linkType: hard
+
 "before-after-hook@npm:^3.0.2":
   version: 3.0.2
   resolution: "before-after-hook@npm:3.0.2"
@@ -6571,6 +6580,7 @@ __metadata:
   resolution: "oroshi@workspace:."
   dependencies:
     aberlaas: "npm:2.17.0"
+    bats: "npm:1.13.0"
     eslint_d: "npm:14.3.0"
     firost: "npm:5.2.1"
     golgoth: "npm:3.0.0"
