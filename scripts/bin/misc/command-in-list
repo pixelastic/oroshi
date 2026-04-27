@@ -14,6 +14,10 @@
 #   command-in-list "find . | xargs grep foo" -- "find" "grep"       # Returns 0 (xargs extracts grep)
 #   command-in-list "xargs -n 10 cat" -- "cat" "echo"                # Returns 0 (xargs with flags)
 #   command-in-list "xargs wget" -- "cat" "echo"                     # Returns 1 (wget not allowed)
+#   command-in-list "sh -c 'echo hello; tail file'" -- "echo" "tail" # Returns 0 (sh -c validates each subcommand)
+#   command-in-list "sh -c 'wget evil'" -- "echo" "tail"             # Returns 1 (wget not allowed)
+#   command-in-list "xargs -I {} sh -c 'echo {}'" -- "echo"          # Returns 0 (nested validation)
+#   command-in-list "bash -c 'echo test'" -- "echo"                  # Returns 1 (only sh is supported, not bash)
 
 # Parse arguments: command is before --, patterns are after --
 local command=""
@@ -140,6 +144,13 @@ function isCommandInList() {
     [[ -z "$actualCommand" ]] && return 0
 
     # Recursively validate the actual command being executed by xargs
+    isCommandInList "$actualCommand" "${allowedPatterns[@]}"
+    return $?
+  fi
+
+  # Special handling for sh -c
+  if [[ "${words[1]}" == "sh" && "${words[2]}" == "-c" ]]; then
+    local actualCommand="${(Q)words[3]}"
     isCommandInList "$actualCommand" "${allowedPatterns[@]}"
     return $?
   fi
