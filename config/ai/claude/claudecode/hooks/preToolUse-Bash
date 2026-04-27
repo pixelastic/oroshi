@@ -89,6 +89,7 @@ local allowlist=(
   "claude mcp list"
   "claude mcp logs"
   "claude skills list"
+  "claude-history chat"
   "dconf dump"
   "done"
   "do"
