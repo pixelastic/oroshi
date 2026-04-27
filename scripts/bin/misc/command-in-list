@@ -90,6 +90,65 @@ function parseCommandIntoSubcommands() {
   done
 }
 
+# Remove variable definitions from the beginning of a command
+function removeVariableDefinitions() {
+  local cmd=$1
+  local words=("${(z)cmd}")
+
+  for i in {1..${#words}}; do
+    [[ "${words[$i]}" =~ ^[A-Za-z_][A-Za-z0-9_]*=.*$ ]] && continue
+    echo "${words[$i,-1]}"
+    return
+  done
+
+  # All words were variable definitions
+  echo ""
+}
+
+# Check if a command matches any pattern in the list
+function isCommandInList() {
+  local cmd=$1
+  shift
+  local -a allowedPatterns=("$@")
+
+  # Remove variable definitions first
+  local cleanedCmd=$(removeVariableDefinitions "$cmd")
+  local words=("${(z)cleanedCmd}")
+
+  # xargs
+  if [[ "${words[1]}" == "xargs" ]]; then
+    local actualCommand=$(extractXargsCommand "$cmd")
+
+    # no argument, this is safe
+    [[ -z "$actualCommand" ]] && return 0
+
+    isCommandInList "$actualCommand" "${allowedPatterns[@]}"
+    return $?
+  fi
+
+  # sh -c
+  if [[ "${words[1]}" == "sh" && "${words[2]}" == "-c" ]]; then
+    local actualCommand="${(Q)words[3]}"
+    isCommandInList "$actualCommand" "${allowedPatterns[@]}"
+    return $?
+  fi
+
+  # Skip timing/looping prefixes (time, while)
+  local prefixes=("time" "while")
+  if [[ ${prefixes[(ie)${words[1]}]} -le ${#prefixes} ]]; then
+    # Remove prefix and recursively check the rest
+    local withoutPrefix="${words[2,-1]}"
+    isCommandInList "$withoutPrefix" "${allowedPatterns[@]}"
+    return $?
+  fi
+
+  # Check if command matches any pattern (prefix matching)
+  for pattern in "${allowedPatterns[@]}"; do
+    [[ "$cleanedCmd " == "$pattern "* ]] && return 0
+  done
+  return 1
+}
+
 # Extract the actual command being executed by xargs
 function extractXargsCommand() {
   local cmd=$1
@@ -126,56 +185,6 @@ function extractXargsCommand() {
 
   # No command found
   echo ""
-}
-
-# Check if a command matches any pattern in the list
-function isCommandInList() {
-  local cmd=$1
-  shift
-  local -a allowedPatterns=("$@")
-
-  local words=("${(z)cmd}")
-
-  # Special handling for xargs - validate the wrapped command, not xargs itself
-  if [[ "${words[1]}" == "xargs" ]]; then
-    local actualCommand=$(extractXargsCommand "$cmd")
-
-    # no argument, this is safe
-    [[ -z "$actualCommand" ]] && return 0
-
-    # Recursively validate the actual command being executed by xargs
-    isCommandInList "$actualCommand" "${allowedPatterns[@]}"
-    return $?
-  fi
-
-  # Special handling for sh -c
-  if [[ "${words[1]}" == "sh" && "${words[2]}" == "-c" ]]; then
-    local actualCommand="${(Q)words[3]}"
-    isCommandInList "$actualCommand" "${allowedPatterns[@]}"
-    return $?
-  fi
-
-  # Remove environment variable definitions (VAR=value) and prefix keywords
-  local cleanedCommand=""
-  local wordIndex=0
-  for word in "${words[@]}"; do
-    # Skip ENV_XXX=YYY
-    [[ "$word" =~ ^[A-Za-z_][A-Za-z0-9_]*=.*$ ]] && continue
-    # Skip timing/looping prefixes
-    [[ $wordIndex -eq 0 && ${prefixes[(ie)$word]} -le ${#prefixes} ]] && continue
-
-    ((wordIndex++))
-
-    # Add a space between words, but only after the first word
-    [[ -n "$cleanedCommand" ]] && cleanedCommand="${cleanedCommand} "
-    cleanedCommand="${cleanedCommand}$word"
-  done
-
-  # Check if cleaned command matches any pattern (prefix matching)
-  for pattern in "${allowedPatterns[@]}"; do
-    [[ "$cleanedCommand " == "$pattern "* ]] && return 0
-  done
-  return 1
 }
 
 # Parse the command into subcommands
