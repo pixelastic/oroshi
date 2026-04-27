@@ -9,6 +9,16 @@ description: Use when writing or modifying ZSH functions in the .oroshi reposito
 
 Write ZSH functions following established patterns for the .oroshi dotfiles repository. These patterns emphasize ZSH-specific idioms over bash compatibility, explicit variable scoping, and consistent data formatting.
 
+## Philosophy
+
+Write ZSH code that is:
+- **Minimal** - Only what's necessary
+- **Readable** - Code should be self-documenting
+- **Simple** - Straightforward logic, let `set -e` handle errors
+- **Pragmatic** - Use what works
+
+**When in doubt, leave it out.** This applies to comments, defensive checks, and abstractions.
+
 ## Core Coding Guidelines
 
 **Related skill:** `code-writer` - Defines core guidelines for comments and output statements that apply across all programming languages. This `zsh-writer` skill extends those general principles with ZSH-specific patterns and conventions.
@@ -38,7 +48,7 @@ Write ZSH functions following established patterns for the .oroshi dotfiles repo
 - Progress messages (`"Processing..."`, `"Starting..."`)
 - Status/summary (`"Found X items"`, `"Total: ..."`)
 - Empty lines (`echo ""`)
-- Decorative headers (`"Summary:"`, `"======"`)
+- Decorative headers in echo (`"Summary:"`, `"======"`)
 
 ```zsh
 # ✅ Display function - echo IS the purpose
@@ -78,6 +88,7 @@ function count-errors() {
 - Loop comments (`# Process each X`)
 - Validation comments (unless ONE for 3+ validations)
 - Variable initialization comments
+- **Decorative borders** (`# ====`, `# ----`, `# ~~~`)
 
 ```zsh
 # ✅ Function header
@@ -130,6 +141,19 @@ Examples:
 - No subdomain needed → files directly in `domain/`
 - Subdomain needed → create `domain/subdomain/` folder
 
+## Script Structure
+
+**Always include `set -e` after the shebang:**
+
+```zsh
+#!/usr/bin/env zsh
+set -e
+
+# Script content here
+```
+
+This ensures the script exits immediately on any error, eliminating the need for defensive checks throughout.
+
 ## Variable Declaration
 
 **Always use `local` for all variables in functions:**
@@ -152,8 +176,11 @@ function my-function() {
 ```
 
 **Naming conventions:**
-- `camelCase` for local variables
-- `UPPER_CASE` for globals and constants (e.g., `$COLOR_ALIAS_*`)
+- `camelCase` for local variables in functions
+- `UPPER_CASE` for script-level constants (without `local`)
+- `UPPER_CASE` for globals (e.g., `$COLOR_ALIAS_*`)
+
+**IMPORTANT:** Configuration constants at script level must NOT use `local` - they are script constants, not function-local variables.
 
 **Initialize with empty string when setting later:**
 
@@ -165,6 +192,56 @@ if [[ condition ]]; then
 else
   description="value2"
 fi
+```
+
+## Variables vs. Literals
+
+**Use variables for:**
+- Empirical values that might need tuning (thresholds, timeouts, retry counts)
+- Values used multiple times
+
+**Use literals for everything else.**
+
+**Configuration constants in scripts:**
+
+For tunable values (thresholds, timeouts, retry counts), define as UPPER_CASE constants at the top of the script.
+
+**CRITICAL: Do NOT use `local` for script-level constants.**
+
+```zsh
+#!/usr/bin/env zsh
+# Triggered whenever Claude finishes answering
+
+# ✅ CORRECT - Script constant in UPPER_CASE, no local
+THRESHOLD=5
+MAX_RETRIES=3
+
+# ... rest of script ...
+if ((durationSeconds < THRESHOLD)); then
+  audio-play-oroshi "claude-stop-fast.mp3"
+  exit 0
+fi
+
+# ❌ WRONG - Don't use local for script constants
+local threshold=5  # This makes it function-local, not a script constant
+local THRESHOLD=5  # Still wrong - local means function scope
+```
+
+**In functions, use `local` with camelCase:**
+
+```zsh
+function my-function() {
+  local threshold=5  # Function-local variable
+  local result=""
+  # ...
+}
+```
+
+**Literals for fixed values used once:**
+
+```zsh
+# ✅ Literal - fixed value used once
+audio-play-oroshi "claude-stop-fast.mp3"
 ```
 
 ## Argument Parsing
@@ -430,6 +507,33 @@ function skill-description() {
 **For predicates/checks (like `-exists` functions):**
 - Return exit codes: `return 0` for success, `return 1` for failure
 
+## Error Handling
+
+**Rely on `set -e` to stop on errors. Validate arguments early, then trust the data.**
+
+```zsh
+#!/usr/bin/env zsh
+set -e
+
+# Validate required arguments/state at the top
+if [[ -n "${CUSTOM_OVERRIDE}" ]]; then
+  handle-override
+  exit 0
+fi
+
+# Rest of script assumes valid state - no defensive checks
+local result=$(process-data)
+```
+
+**When to add validation:**
+- User-facing errors with helpful messages at script start
+- Critical preconditions before processing
+
+**When to skip checks:**
+- Mid-script validations (let `set -e` handle failures)
+- Internal calculations (failures will exit via `set -e`)
+- Edge cases that don't require user feedback
+
 ## Function Header Comments
 
 **Include usage examples in comments:**
@@ -457,11 +561,21 @@ function skill-description() {
 | Short-form args (`-t`, `-v`) | Use long-form (`--type`, `--verbose`) |
 | All args on one line | One argument per line for multi-arg commands |
 | `fd -t f -g pattern` | `fd --type file --glob pattern` (or multi-line) |
+| Decorative borders (`# ====`) | Remove - no visual separators in comments |
+| Variables for fixed values used once | Use literals - variables only for empirical/tuning values |
+| `local threshold=5` at script level | Use `THRESHOLD=5` (UPPER_CASE, no local) for script constants |
+| Environment variable defaults (`${VAR:-default}`) | Don't over-engineer - use simple variables |
+| Multiple defensive checks mid-script | Validate early, then trust `set -e` |
+| Verbose function headers (>3 lines) | Keep concise - describe what triggers the script |
 
 ## Quick Reference
 
 ```zsh
-# Declare variables
+# Script-level constants (NO local!)
+THRESHOLD=5
+MAX_RETRIES=3
+
+# Function variables (WITH local)
 local varName="value"
 local emptyVar=""
 
@@ -494,10 +608,51 @@ fi
 
 ## Real-World Examples
 
-See existing functions in the codebase:
+**Reference example** showing minimal, pragmatic style:
+
+```zsh
+#!/usr/bin/env zsh
+# Triggered whenever Claude finishes answering
+
+# If a custom sound is explicitly set, it takes precedence
+if [[ -n "${OROSHI_CLAUDECODE_STOP_SOUND}" ]]; then
+  audio-play-oroshi "${OROSHI_CLAUDECODE_STOP_SOUND}"
+  exit 0
+fi
+
+THRESHOLD=5
+
+# Read JSON input from stdin
+local stdinData=$(cat)
+local transcriptPath=$(echo "$stdinData" | jq -r '.transcript_path // empty')
+
+# Calculate duration
+local nowEpoch=$(date +%s)
+local lastUserTime=$(/usr/bin/grep '"type":"user"' "$transcriptPath" |
+  tail -1 |
+  jq -r '.timestamp // empty' 2>/dev/null)
+local userEpoch=$(date -d "$lastUserTime" +%s 2>/dev/null)
+local durationSeconds=$((nowEpoch - userEpoch))
+
+# Play different sound if fast or not
+if ((durationSeconds < THRESHOLD)); then
+  audio-play-oroshi "claude-stop-fast.mp3"
+  exit 0
+fi
+
+audio-play-oroshi "claude-stop.mp3"
+```
+
+**Key patterns demonstrated:**
+- Minimal header comment (one line)
+- Section comments without decorative borders (optional)
+- Configuration constant in UPPER_CASE at top (THRESHOLD), literals for fixed values (sound files)
+- No defensive checks - lets calculations fail naturally
+- Direct execution - no intermediate variables
+
+**Additional examples in codebase:**
 - `config/term/zsh/functions/autoload/claude/skill-description` - Simple function with early return
 - `config/term/zsh/functions/autoload/docker/image/docker-image-colorize` - zparseopts usage
-- `config/term/zsh/functions/autoload/fzf/claude/sessions/fzf-claude-sessions-source-no-query` - Line iteration and splitting
 - `config/term/zsh/functions/autoload/git/branch/git-branch-list` - Complex example with -raw pattern
 
 For more ZSH patterns, see `cheats/zsh/` directory:
