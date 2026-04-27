@@ -37,6 +37,12 @@ local shortcuts=(
   "RP Blue" "<Alt><Super>F5" "spotify-playlist-play 6HSjJTsOL4ZRYQlH8rOLem"
   "RP Grey" "<Alt><Super>F6" "spotify-playlist-play 2bf9y0CCeuzSYn7hJKky1o"
   "RP Purple" "<Alt><Super>F7" "spotify-playlist-play 1tWNIMvp7pF0toZRDgRNMy"
+
+  "Playlist Work" "<Alt><Super>F8" "spotify-playlist-play 4stxnkHlVgBowV8rOWDFsK"
+  "Playlist Focus" "<Alt><Super>F9" "spotify-playlist-play 6nIIXpDrRmAl3cFswnGLYL"
+  "Playlist Slow Living" "<Alt><Super>F10" "spotify-playlist-play 37i9dQZF1DXc8kgYqQLMfH"
+  "Playlist Peaceful Piano" "<Alt><Super>F11" "spotify-playlist-play 37i9dQZF1DX4sWSpwq3LiO"
+  "Playlist All Nighter" "<Alt><Super>F12" "spotify-playlist-play 37i9dQZF1DX692WcMwL2yW"
 )
 # }}}
 

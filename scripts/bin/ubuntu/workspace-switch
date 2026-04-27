@@ -4,7 +4,7 @@
 # $ workspace-switch 1   # Switch to first workspace
 # $ workspace-switch 5   # Switch to center workspace
 
-# workspaces ar 0-indexed
+# workspaces are 0-indexed
 local workspaceIndex=$(echo "$1 - 1" | bc)
 
 wmctrl -s $workspaceIndex

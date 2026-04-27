@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Launch a Spotify playlist by its ID
+# Launch a Spotify playlist by its ID without focusing the Spotify window
 # Usage: spotify-playlist-play <playlist-id>
 # Example: spotify-playlist-play 37i9dQZF1DXcBWIGoYBM5M
 
@@ -9,4 +9,11 @@ if [[ -z "$1" ]]; then
   exit 1
 fi
 
+# Save current workspace
+current_workspace=$(workspace-current)
+
+# Open the playlist (this will focus Spotify window)
 sp open "spotify:playlist:$1"
+
+# Return to the original workspace
+workspace-switch "$current_workspace"

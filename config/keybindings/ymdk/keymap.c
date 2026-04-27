@@ -8,7 +8,8 @@ enum layers {
     _LAYER_NORMAL = 0,
     _LAYER_INSERT,
     _LAYER_CONFIG,
-    _LAYER_SOUND
+    _LAYER_SPOTIFY,
+    _LAYER_RP,
 };
 
 // QMK KEYCODE ALIASES {{{
@@ -68,7 +69,8 @@ typedef struct {
 #define MODE_NORMAL    TO(_LAYER_NORMAL)
 #define MODE_INSERT    TO(_LAYER_INSERT)
 #define MODE_CONFIG    TO(_LAYER_CONFIG)
-#define MODE_SOUND    TO(_LAYER_SOUND)
+#define MODE_RP        TO(_LAYER_RP)
+#define MODE_SPOTIFY   TO(_LAYER_SPOTIFY)
 
 #define SPEECH_TO_TEXT      C(KC_XF86LAUNCH5)
 #define EMPTY_KEY           KC_NO
@@ -94,12 +96,24 @@ typedef struct {
 #define CONFIG_SLACK C(G(KC_F11))
 #define CONFIG_MODEL C(G(KC_F12))
 
+#define VOLUME_UP KC_VOLU
+#define VOLUME_DOWN KC_VOLD
+#define SPOTIFY_PLAY_PAUSE G(KC_I)
+#define SPOTIFY_NEXT G(KC_L)
+
+#define SPOTIFY_WORK A(G(KC_F8))
+#define SPOTIFY_FOCUS A(G(KC_F9))
+#define SPOTIFY_SLOW_LIVING A(G(KC_F10))
+#define SPOTIFY_PIANO A(G(KC_F11))
+#define SPOTIFY_ALL_NIGHTER A(G(KC_F12))
+
 #define RP_GREEN A(G(KC_F2))
 #define RP_YELLOW A(G(KC_F3))
 #define RP_RED A(G(KC_F4))
 #define RP_BLUE A(G(KC_F5))
 #define RP_GREY A(G(KC_F6))
 #define RP_PURPLE A(G(KC_F7))
+
 // }}}
 
 // VISUAL GRID {{{
@@ -114,15 +128,20 @@ typedef struct {
     COPY_PATH, MODE_NEXT, PASTE
 
 #define LAYER_CONFIG_KEYS \
-    CONFIG_SOUND_MODE, CONFIG_AUTOSEND, MODE_INSERT, \
+    CONFIG_SOUND_MODE, CONFIG_AUTOSEND, MODE_SPOTIFY, \
     CONFIG_TRANSLATE,  CONFIG_SLACK,    CONFIG_MODEL, \
-    EMPTY_KEY, EMPTY_KEY, MODE_SOUND
+    MODE_NORMAL, EMPTY_KEY, EMPTY_KEY
 
-// Layer 3 - Placeholder
-#define LAYER_SOUND_KEYS \
-    RP_GREEN, RP_YELLOW, RP_RED, \
-    RP_PURPLE, RP_BLUE, RP_GREY, \
-    EMPTY_KEY, EMPTY_KEY, MODE_CONFIG
+#define LAYER_SPOTIFY_KEYS \
+    SPOTIFY_PLAY_PAUSE, SPOTIFY_NEXT, MODE_RP, \
+    VOLUME_UP, SPOTIFY_WORK, SPOTIFY_FOCUS, \
+    VOLUME_DOWN, SPOTIFY_PIANO, SPOTIFY_SLOW_LIVING
+
+#define LAYER_RP_KEYS \
+    SPOTIFY_PLAY_PAUSE, SPOTIFY_NEXT, MODE_CONFIG, \
+    VOLUME_UP, RP_GREEN, RP_RED, \
+    VOLUME_DOWN, RP_YELLOW, RP_PURPLE
+
 // }}}
 
 // COLOR MAPPING {{{
@@ -156,21 +175,30 @@ Color get_color_for_key(uint16_t keycode, uint8_t layer) {
     // Config
     if (keycode == CONFIG_SOUND_MODE) return PURPLE;
     if (keycode == CONFIG_AUTOSEND) return PURPLE;
-    if (keycode == MODE_INSERT) return WHITE;
+    if (keycode == MODE_SPOTIFY) return WHITE;
 
     if (keycode == CONFIG_TRANSLATE) return MAGENTA;
     if (keycode == CONFIG_SLACK) return MAGENTA;
     if (keycode == CONFIG_MODEL) return MAGENTA;
 
-    if (keycode == MODE_SOUND) return WHITE;
+    // Spotify
+    if (keycode == SPOTIFY_PLAY_PAUSE) return MINT;
+    if (keycode == SPOTIFY_NEXT) return MINT;
+    if (keycode == MODE_RP) return WHITE;
 
-    // Sound
+    if (keycode == VOLUME_UP) return GREEN;
+    if (keycode == SPOTIFY_WORK) return ORANGE;
+    if (keycode == SPOTIFY_FOCUS) return BLUE;
+
+    if (keycode == VOLUME_DOWN) return GREEN;
+    if (keycode == SPOTIFY_PIANO) return YELLOW;
+    if (keycode == SPOTIFY_SLOW_LIVING) return GREEN;
+
+    // RP
     if (keycode == RP_GREEN) return GREEN;
-    if (keycode == RP_YELLOW) return YELLOW;
     if (keycode == RP_RED) return RED;
+    if (keycode == RP_YELLOW) return YELLOW;
     if (keycode == RP_PURPLE) return PURPLE;
-    if (keycode == RP_GREY) return GREY;
-    if (keycode == RP_BLUE) return BLUE;
 
     return COLOR_OFF;
 }
@@ -195,7 +223,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_LAYER_NORMAL] = LAYOUT_WRAPPER(LAYER_NORMAL_KEYS),
     [_LAYER_INSERT] = LAYOUT_WRAPPER(LAYER_INSERT_KEYS),
     [_LAYER_CONFIG] = LAYOUT_WRAPPER(LAYER_CONFIG_KEYS),
-    [_LAYER_SOUND] = LAYOUT_WRAPPER(LAYER_SOUND_KEYS)
+    [_LAYER_SPOTIFY] = LAYOUT_WRAPPER(LAYER_SPOTIFY_KEYS),
+    [_LAYER_RP] = LAYOUT_WRAPPER(LAYER_RP_KEYS),
 };
 
 // RGB Matrix: Set individual colors per key and per layer
