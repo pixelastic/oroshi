@@ -77,6 +77,18 @@ nmap("<C-Y>", copyFilepath, "Copy filepath to clipboard")
 imap("<C-Y>", copyFilepath, "Copy filepath to clipboard")
 vmap("<C-Y>", copyFilepath, "Copy filepath to clipboard")
 
+-- CTRL + SHIFT + Y
+local function showAndCopyFilepath()
+  copyFilepath()
+
+  local filepath = vim.fn.expand("%:p")
+  local width = #filepath
+  F.createFloatingSplit(filepath, { height = 1, width = width })
+end
+nmap("Ⓨ", showAndCopyFilepath, "Show and copy filepath")
+imap("Ⓨ", showAndCopyFilepath, "Show and copy filepath")
+vmap("Ⓨ", showAndCopyFilepath, "Show and copy filepath")
+
 -- CTRL-X: Change XXX into YYY and vice-versa
 local function togglePlaceholders()
   local selection = F.getSelection()
@@ -203,7 +215,6 @@ imap("<S-Tab>", "<Esc><<hi", "Dedent line")
 nmap("<S-Tab>", "<<hh", "Dedent line")
 vmap("<S-Tab>", "<gv", "Dedent selection")
 
-
 -- Increment / Decrement numbers
 nmap("⒥", "<C-X>", "Increment number under cursor")
 nmap("<C-K>", "<C-A>", "Decrement number under cursor")
@@ -277,4 +288,3 @@ vmap("S", ":!sort --version-sort --reverse<CR><CR>", "Sort", { silent = false })
 vmap("u", ":sort u<CR>", "Remove duplicates")
 vmap("n", ":!cat -n<CR><CR>", "Number lines")
 vmap("L", ":!sort-by-length<CR><CR>", "Sort by length")
-
