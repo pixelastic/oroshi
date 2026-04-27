@@ -1,5 +1,33 @@
 #!/usr/bin/env zsh
 # Triggered whenever Claude finishes answering
 
-local soundFile=${OROSHI_CLAUDECODE_STOP_SOUND:-claude-stop.mp3}
-audio-play-oroshi "${soundFile}"
+# If a custom sound is explicitly set, it takes precedence
+if [[ -n "${OROSHI_CLAUDECODE_STOP_SOUND}" ]]; then
+  audio-play-oroshi "${OROSHI_CLAUDECODE_STOP_SOUND}"
+  exit 0
+fi
+
+# CONFIGURATION
+local fastSound="claude-stop-fast.mp3"
+local slowSound="claude-stop.mp3"
+local threshold=5
+
+# Read JSON input from stdin
+local stdinData=$(cat)
+local transcriptPath=$(echo "$stdinData" | jq -r '.transcript_path // empty')
+
+# Calculate duration
+local nowEpoch=$(date +%s)
+local lastUserTime=$(/usr/bin/grep '"type":"user"' "$transcriptPath" |
+  tail -1 |
+  jq -r '.timestamp // empty' 2>/dev/null)
+local userEpoch=$(date -d "$lastUserTime" +%s 2>/dev/null)
+local durationSeconds=$((nowEpoch - userEpoch))
+
+# Play different sound if fast or not
+if ((durationSeconds < threshold)); then
+  audio-play-oroshi "claude-stop-fast.mp3"
+  exit 0
+fi
+
+audio-play-oroshi "claude-stop.mp3"
