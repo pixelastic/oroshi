@@ -1,5 +1,23 @@
 #!/usr/bin/env zsh
+set -e
+
 # Run tests for one of my binaries
 
 local binaryName="$1"
-bats ~/.oroshi/scripts/bin/__tests__/${binaryName}.bats
+local testPrefix=~/.oroshi/scripts/bin/__tests__/${binaryName}
+local testDirectory=$testPrefix
+local testFile="${testPrefix}.bats"
+echo $testPrefix
+
+# Tests are saved as a directory, we run them all
+if [[ -d $testPrefix ]]; then
+  for testFile in $testPrefix/*; do
+    bats ${testFile:a}
+  done
+  exit 0
+fi
+
+# If it's a file, we run it
+if [[ -f $testFile ]]; then
+  bats $testFile
+fi

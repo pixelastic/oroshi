@@ -4,20 +4,8 @@
 # Usage: command-in-list <command> -- <pattern1> [<pattern2> ...]
 #
 # Returns:
-#   0 - All subcommands in <command> match at least one pattern
-#   1 - At least one subcommand doesn't match any pattern
-#
-# Examples:
-#   command-in-list "git commit -m 'test'" -- "git commit" "echo"    # Returns 0
-#   command-in-list "git commit && git push" -- "git commit" "echo"  # Returns 1
-#   command-in-list "echo hello | grep world" -- "echo" "grep"       # Returns 0
-#   command-in-list "find . | xargs grep foo" -- "find" "grep"       # Returns 0 (xargs extracts grep)
-#   command-in-list "xargs -n 10 cat" -- "cat" "echo"                # Returns 0 (xargs with flags)
-#   command-in-list "xargs wget" -- "cat" "echo"                     # Returns 1 (wget not allowed)
-#   command-in-list "sh -c 'echo hello; tail file'" -- "echo" "tail" # Returns 0 (sh -c validates each subcommand)
-#   command-in-list "sh -c 'wget evil'" -- "echo" "tail"             # Returns 1 (wget not allowed)
-#   command-in-list "xargs -I {} sh -c 'echo {}'" -- "echo"          # Returns 0 (nested validation)
-#   command-in-list "sh -c 'echo test'" -- "echo"                    # Returns 0 (passed in sh -c)
+#   1 if any subcommand is not allowed
+#   0 if all subcommands are allowed
 
 # Parse arguments: command is before --, patterns are after --
 local command=""
@@ -36,6 +24,8 @@ for arg in "$@"; do
     patterns+=("$arg")
   fi
 done
+echo "command: $command"
+echo "patterns: ${patterns[*]}"
 
 # Validate inputs
 if [[ -z "$command" ]]; then
@@ -192,6 +182,7 @@ local -a allCommands=("${(@f)$(parseCommandIntoSubcommands "$command")}")
 
 # Check each subcommand - if any doesn't match, exit with failure
 for subcommand in "${allCommands[@]}"; do
+  echo "==> ${subcommand}"
   if ! isCommandInList "$subcommand" "${patterns[@]}"; then
     exit 1
   fi

@@ -34,11 +34,11 @@ function oroshiSlowCommandPreexec() {
   # Store the expanded command in an environment variable for inspection
   export OROSHI_LAST_COMMAND="$expandedCommand"
 
-  # Return early if command matches one of the allowed patterns
-  if command-in-list "$expandedCommand" -- "${allowList[@]}"; then
-    oroshiSlowCommandStartTime=-1
-    return
-  fi
+  # # Return early if command matches one of the allowed patterns
+  # if command-in-list "$expandedCommand" -- "${allowList[@]}"; then
+  #   oroshiSlowCommandStartTime=-1
+  #   return
+  # fi
 
   oroshiSlowCommandStartTime=$SECONDS
 }
