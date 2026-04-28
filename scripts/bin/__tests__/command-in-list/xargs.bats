@@ -31,4 +31,8 @@
   run command-in-list "find . | xargs grep foo | xargs wget evil" -- "find" "grep"
   [ $status -eq 1 ]
 }
+@test "xargs used for splitting (no command) should be allowed" {
+  run command-in-list "echo 'one two three' | xargs" -- "echo"
+  [ $status -eq 0 ]
+}
 # }}}
