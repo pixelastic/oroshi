@@ -24,8 +24,6 @@ for arg in "$@"; do
     patterns+=("$arg")
   fi
 done
-echo "command: $command"
-echo "patterns: ${patterns[*]}"
 
 # Validate inputs
 if [[ -z "$command" ]]; then
@@ -44,40 +42,48 @@ fi
 local separators=("&&" "||" ";" "|")
 
 # Prefixes that are ignored when found at the beginning of a command
-local prefixes=("time" "while")
+local prefixes=("time")
 
-# Parse a command into subcommands (split on separators)
+# Parse a command into leaf subcommands
+# Orchestrator that cleans, then applies transformations recursively
 function parseCommandIntoSubcommands() {
-  local input=$1
+  local cmd=$1
 
-  # Split the command into words
-  # Using the (z) modifier handles escape sequences and strings properly
-  local words=("${(z)input}")
+  # Clean prefixes
+  cmd=$(removeVariableDefinitions "$cmd")
+  cmd=$(removePrefix "$cmd")
 
-  local allCommands=()
-  local currentCommand=""
+  # Convert to array
+  local -a commands=("$cmd")
 
-  for word in "${words[@]}"; do
-    # Check if the word is a separator
-    if [[ ${separators[(ie)$word]} -le ${#separators} ]]; then
-      # Save current command if not empty
-      [[ -n "$currentCommand" ]] && allCommands+=("$currentCommand")
-      currentCommand=""
-      continue
-    fi
+  # Apply transformations (each recurses internally)
+  commands=("${(@f)$(splitOnSeparators "${commands[@]}")}")
+  commands=("${(@f)$(extractXargsCommand "${commands[@]}")}")
+  commands=("${(@f)$(extractShCommand "${commands[@]}")}")
 
-    # Append word to current command
-    currentCommand="$currentCommand $word"
+  # Output results
+  printf '%s\n' "${commands[@]}"
+}
+
+# Trim leading and trailing whitespace from a string
+function trim() {
+  local value=$1
+  value="${value#"${value%%[![:space:]]*}"}"
+  value="${value%"${value##*[![:space:]]}"}"
+  echo "$value"
+}
+
+# Check if a command matches any pattern in the list
+function isCommandInList() {
+  local cmd=$1
+  shift
+  local -a allowedPatterns=("$@")
+
+  # Check if command matches any pattern (prefix matching)
+  for pattern in "${allowedPatterns[@]}"; do
+    [[ "$cmd " == "$pattern "* ]] && return 0
   done
-
-  # Add the last command
-  [[ -n "$currentCommand" ]] && allCommands+=("$currentCommand")
-
-  # Output only non-empty trimmed commands
-  for cmd in "${allCommands[@]}"; do
-    local trimmedCommand=$(echo "$cmd" | xargs)
-    [[ -n "$trimmedCommand" ]] && printf '%s\n' "$trimmedCommand"
-  done
+  return 1
 }
 
 # Remove variable definitions from the beginning of a command
@@ -95,86 +101,157 @@ function removeVariableDefinitions() {
   echo ""
 }
 
-# Check if a command matches any pattern in the list
-function isCommandInList() {
-  local cmd=$1
-  shift
-  local -a allowedPatterns=("$@")
-
-  # Remove variable definitions first
-  local cleanedCmd=$(removeVariableDefinitions "$cmd")
-  local words=("${(z)cleanedCmd}")
-
-  # xargs
-  if [[ "${words[1]}" == "xargs" ]]; then
-    local actualCommand=$(extractXargsCommand "$cmd")
-
-    # no argument, this is safe
-    [[ -z "$actualCommand" ]] && return 0
-
-    isCommandInList "$actualCommand" "${allowedPatterns[@]}"
-    return $?
-  fi
-
-  # sh -c
-  if [[ "${words[1]}" == "sh" && "${words[2]}" == "-c" ]]; then
-    local actualCommand="${(Q)words[3]}"
-    isCommandInList "$actualCommand" "${allowedPatterns[@]}"
-    return $?
-  fi
-
-  # Skip timing/looping prefixes (time, while)
-  local prefixes=("time" "while")
-  if [[ ${prefixes[(ie)${words[1]}]} -le ${#prefixes} ]]; then
-    # Remove prefix and recursively check the rest
-    local withoutPrefix="${words[2,-1]}"
-    isCommandInList "$withoutPrefix" "${allowedPatterns[@]}"
-    return $?
-  fi
-
-  # Check if command matches any pattern (prefix matching)
-  for pattern in "${allowedPatterns[@]}"; do
-    [[ "$cleanedCmd " == "$pattern "* ]] && return 0
-  done
-  return 1
-}
-
-# Extract the actual command being executed by xargs
-function extractXargsCommand() {
+# Remove prefix (time) from the beginning of a command
+function removePrefix() {
   local cmd=$1
   local words=("${(z)cmd}")
+  local prefixes=("time")
 
-  # Flags that take an argument (skip both flag and the next word)
-  local flagsWithArg=("-n" "-L" "-s" "-P" "-I" "-E")
-  local skipNext=false
-
-  for i in {2..${#words}}; do
-    local word="${words[$i]}"
-
-    # Skip if this was the value of a flag
-    if [[ "$skipNext" == "true" ]]; then
-      skipNext=false
-      continue
-    fi
-
-    # Flag that takes an argument: skip this flag AND the next word
-    if [[ ${flagsWithArg[(ie)$word]} -le ${#flagsWithArg} ]]; then
-      skipNext=true
-      continue
-    fi
-
-    # Skip other flags
-    if [[ "$word" =~ ^- ]]; then
-      continue
-    fi
-
-    # If we go that far, this is the beginning of the real command
-    echo "${words[$i,-1]}"
+  # Check if first word is a prefix
+  if [[ ${prefixes[(ie)${words[1]}]} -le ${#prefixes} ]]; then
+    echo "${words[2,-1]}"
     return
-  done
+  fi
 
-  # No command found
-  echo ""
+  echo "$cmd"
+}
+
+# Split a command on separators and recursively parse each part
+# Takes an array of commands, outputs leaf commands
+function splitOnSeparators() {
+  local -a input=("$@")
+  local separators=("&&" "||" ";" "|")
+
+  for cmd in "${input[@]}"; do
+    local words=("${(z)cmd}")
+    local -a parts=()
+    local currentCommand=""
+
+    # Check if command has separators
+    local hasSeparator=0
+    for word in "${words[@]}"; do
+      if [[ ${separators[(ie)$word]} -le ${#separators} ]]; then
+        hasSeparator=1
+        break
+      fi
+    done
+
+    # No separator - output as-is
+    if [[ $hasSeparator -eq 0 ]]; then
+      printf '%s\n' "$cmd"
+      continue
+    fi
+
+    # Has separators - split and recurse
+    for word in "${words[@]}"; do
+      if [[ ${separators[(ie)$word]} -le ${#separators} ]]; then
+        [[ -n "$currentCommand" ]] && parts+=("$currentCommand")
+        currentCommand=""
+        continue
+      fi
+
+      currentCommand="$currentCommand $word"
+    done
+
+    [[ -n "$currentCommand" ]] && parts+=("$currentCommand")
+
+    # Recurse on each part
+    for part in "${parts[@]}"; do
+      local trimmedPart=$(trim "$part")
+      [[ -n "$trimmedPart" ]] && parseCommandIntoSubcommands "$trimmedPart"
+    done
+  done
+}
+
+
+# Extract commands from xargs and recursively parse them
+# Takes an array of commands, outputs leaf commands
+function extractXargsCommand() {
+  local -a input=("$@")
+  local flagsWithArg=("-n" "-L" "-s" "-P" "-I" "-E")
+
+  for cmd in "${input[@]}"; do
+    local words=("${(z)cmd}")
+
+    # Not xargs - output as-is
+    if [[ "${words[1]}" != "xargs" ]]; then
+      printf '%s\n' "$cmd"
+      continue
+    fi
+
+    # Extract command after xargs flags
+    local skipNext=false
+    local extractedCommand=""
+
+    for i in {2..${#words}}; do
+      local word="${words[$i]}"
+
+      if [[ "$skipNext" == "true" ]]; then
+        skipNext=false
+        continue
+      fi
+
+      if [[ ${flagsWithArg[(ie)$word]} -le ${#flagsWithArg} ]]; then
+        skipNext=true
+        continue
+      fi
+
+      if [[ "$word" =~ ^- ]]; then
+        continue
+      fi
+
+      extractedCommand="${words[$i,-1]}"
+      break
+    done
+
+    # No command found - xargs without arguments is safe
+    if [[ -z "$extractedCommand" ]]; then
+      continue
+    fi
+
+    # Unquote if single-quoted
+    local unquoted="${(Q)extractedCommand}"
+
+    # Recurse on extracted command
+    parseCommandIntoSubcommands "$unquoted"
+  done
+}
+
+# Extract commands from sh -c and recursively parse them
+# Takes an array of commands, outputs leaf commands
+function extractShCommand() {
+  local -a input=("$@")
+
+  for cmd in "${input[@]}"; do
+    local words=("${(z)cmd}")
+
+    # Not sh - output as-is
+    if [[ "${words[1]}" != "sh" ]]; then
+      printf '%s\n' "$cmd"
+      continue
+    fi
+
+    # Find -c flag
+    local foundC=0
+    local extractedCommand=""
+
+    for i in {2..${#words}}; do
+      if [[ "${words[$i]}" == "-c" ]]; then
+        foundC=1
+        extractedCommand="${(Q)words[$((i + 1))]}"
+        break
+      fi
+    done
+
+    # No -c found - output as-is
+    if [[ $foundC -eq 0 ]]; then
+      printf '%s\n' "$cmd"
+      continue
+    fi
+
+    # Recurse on extracted command
+    parseCommandIntoSubcommands "$extractedCommand"
+  done
 }
 
 # Parse the command into subcommands
@@ -182,7 +259,6 @@ local -a allCommands=("${(@f)$(parseCommandIntoSubcommands "$command")}")
 
 # Check each subcommand - if any doesn't match, exit with failure
 for subcommand in "${allCommands[@]}"; do
-  echo "==> ${subcommand}"
   if ! isCommandInList "$subcommand" "${patterns[@]}"; then
     exit 1
   fi
