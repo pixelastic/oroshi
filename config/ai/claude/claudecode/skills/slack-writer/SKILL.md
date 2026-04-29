@@ -1,5 +1,5 @@
 ---
-name: slack-message-writer
+name: slack-writer
 description: Use when user needs to write Slack announcement messages but struggles with tone, length, or call-to-action. Triggers include 'help me write a Slack message', sharing personal projects, announcing meetups/events, or posting article links.
 ---
 
@@ -64,7 +64,7 @@ Based on their dump, ask 1-4 clarifying questions:
 Write ONE message following this EXACT structure with blank lines:
 
 ```
-[Emoji] [One-line hook describing what it is]
+[One-line hook describing what it is]
 
 [1-2 sentences context: why you made it/why it matters]
 
@@ -82,10 +82,36 @@ Write ONE message following this EXACT structure with blank lines:
 - **Economy of words:** Every word must earn its place
 - **Clear CTA:** Make it obvious what action to take
 
-**Emoji Selection (MANDATORY):**
-- ALWAYS suggest an emoji based on topic (🎨 creative, 📝 article, 🎉 event, 🛠️ tool)
-- One emoji maximum at start of message
-- Tell user they can change or remove it
+## Writing Style
+
+**Conversational Flow (CRITICAL):**
+- ❌ Short, punchy sentences that sound written ("Migrated it to Hugo. New design. All updated.")
+- ✅ Longer, flowing sentences that sound like spoken English transcribed
+- ❌ Phrases that feel like marketing copy or formal writing
+- ✅ Phrases that sound like someone naturally talking and you wrote it down
+
+**Punctuation for Natural Flow:**
+- ❌ Space-dash-space separators (e.g., "been doing it as a hobby - it's fun")
+- ✅ Commas, semicolons, or parentheses for natural, conversational flow
+- ✅ Integrate clauses smoothly like in speech
+
+**Emoji Usage:**
+- ❌ Emoji isolated on its own line or at the very start (feels too formal/staged)
+- ✅ Either skip the emoji entirely, or integrate it naturally if it fits
+- Default: Skip emoji unless it feels genuinely natural to the content
+
+**Context Recognition:**
+- ✅ When appropriate, acknowledge shared context with "As some of you may know..." or similar
+- This works well when the topic is a known hobby or interest
+
+**Information Grouping:**
+- ❌ Mention same info twice (hook mentions "3 years backlog", then details re-mention backlog)
+- ✅ Group related information together in one place
+- ✅ This is a Slack message, not a blog post with intro/body structure
+
+**Tone Principle:**
+- Think: "If I was speaking this out loud and someone transcribed it, would it sound like this?"
+- If no → rewrite to sound more natural and conversational
 
 **Link Formatting Logic:**
 
