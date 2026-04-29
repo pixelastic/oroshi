@@ -25,5 +25,7 @@ clipboard-write "$input"
 better-ydotool key 29:1 42:1 47:1 47:0 42:0 29:0
 
 # We revert the previous clipboard after a short pause
-sleep 1
-clipboard-write "$currentClipboard"
+(
+  sleep 1
+  clipboard-write "$currentClipboard"
+) &

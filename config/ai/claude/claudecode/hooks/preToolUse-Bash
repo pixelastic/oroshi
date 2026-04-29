@@ -73,6 +73,9 @@ local allowlist=(
   "gnome-shell --version"
   "gh issue list"
   "gh issue view"
+  "yarn run test"
+  "yarn run lint"
+  "yarn run lint:fix"
   "gh pr list"
   "gh pr view"
   strings
