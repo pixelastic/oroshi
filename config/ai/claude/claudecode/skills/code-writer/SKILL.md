@@ -13,7 +13,12 @@ Code should communicate intent clearly. Excessive comments and output statements
 
 ## Language-Specific Skills
 
-These guidelines apply to all programming languages. For language-specific patterns and conventions, check if a `{language}-writer` skill exists (e.g., `zsh-writer`, `python-writer`). Language-specific skills extend these core guidelines with syntax and idioms specific to that language.
+These guidelines apply to all programming languages. For language-specific patterns and conventions, use the appropriate language-specific skill:
+
+- **JavaScript**: Use `js-writer` skill for JavaScript/Node.js code
+- **ZSH**: Use `zsh-writer` skill for ZSH functions in .oroshi repository
+
+Language-specific skills extend these core guidelines with syntax and idioms specific to that language.
 
 ## When to Use
 

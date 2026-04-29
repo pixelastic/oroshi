@@ -9,6 +9,10 @@ description: Use when writing or modifying JavaScript code. Apply when adding fu
 
 Write JavaScript code following established patterns for projects using Aberlaas, Firost, and Golgoth. These libraries provide testing infrastructure, file I/O utilities, and data transformation tools that should be used consistently across all JavaScript projects.
 
+## Core Coding Guidelines
+
+**Related skill:** `code-writer` - Defines core guidelines for comments and output statements that apply across all programming languages. This `js-writer` skill extends those general principles with JavaScript-specific patterns and conventions.
+
 ## When to Use
 
 - Writing new JavaScript functions or modules
@@ -102,6 +106,18 @@ All JavaScript projects assume these libraries are available:
 ## Code Style
 
 ### Imports and Exports
+
+**Always use ES6 modules (`import`/`export`), not CommonJS (`require`/`module.exports`):**
+
+```javascript
+// ✅ GOOD - ES6 modules
+import { _ } from 'golgoth';
+export function myFunction() {}
+
+// ❌ WRONG - CommonJS
+const _ = require('lodash');
+module.exports = myFunction;
+```
 
 **Always use named exports:**
 
@@ -258,6 +274,74 @@ const values = _.chain(items)
   .map(item => item.value)
   .value();
 ```
+
+**Prefer clarity over brevity with lodash methods:**
+
+```javascript
+// ❌ UNCLEAR - What does flatMap do?
+const commands = _.flatMap(statements, (statement) => {
+  return _.map(statement.items, item => item.value);
+});
+
+// ✅ CLEARER - Explicit chain shows the transformation
+const commands = _.chain(statements)
+  .map(statement => statement.items)
+  .flatten()
+  .map(item => item.value)
+  .value();
+```
+
+### Code Clarity and Duplication
+
+**Extract repeated property accesses into variables:**
+
+```javascript
+// ❌ BAD - Repeated access to command.type
+if (command.type === 'AndOr' || command.type === 'Pipeline') {
+  // ...
+}
+if (command.type === 'Command') {
+  // ...
+}
+
+// ✅ GOOD - Extract once
+const type = command.type;
+if (type === 'AndOr' || type === 'Pipeline') {
+  // ...
+}
+if (type === 'Command') {
+  // ...
+}
+```
+
+**Create helper functions for repeated patterns:**
+
+```javascript
+// ❌ BAD - Repeated substring pattern
+const results = _.map(commands, (cmd) => {
+  if (cmd.type === 'Simple') {
+    return commandLine.substring(cmd.pos, cmd.end);
+  }
+  return commandLine.substring(cmd.pos, cmd.end);
+});
+
+// ✅ GOOD - Extract helper function
+function extractText(node) {
+  return commandLine.substring(node.pos, node.end);
+}
+
+const results = _.map(commands, (cmd) => {
+  if (cmd.type === 'Simple') {
+    return extractText(cmd);
+  }
+  return extractText(cmd);
+});
+```
+
+**Helper functions can be:**
+- Local functions inside the main function (when only used there)
+- Private methods in `__` object (when used in multiple places or need testing)
+- Separate exported functions (when reusable across files)
 
 ## Testing
 
@@ -421,7 +505,7 @@ yarn run lint:fix
 
 ## JSDoc Documentation
 
-**JSDoc is optional but recommended for exported functions:**
+**JSDoc is required for ALL functions - exported and private:**
 
 ```javascript
 /**
@@ -432,9 +516,25 @@ yarn run lint:fix
 export async function read(filepath) {
   // ...
 }
+
+// Private methods in __ also need JSDoc
+__ = {
+  /**
+   * Apply green color to text
+   * @param {string} text - Text to colorize
+   * @returns {string} Green colored text
+   */
+  greenify(text) {
+    return colors.green(text);
+  },
+};
 ```
 
-Private methods (in `__`) don't need JSDoc.
+**JSDoc format:**
+- One-line description of what the function does
+- `@param {type} name - Description` for each parameter
+- `@returns {type} Description` for return value
+- Use `@async` is implied by `async function`, no need to document it
 
 ## Quick Reference
 
@@ -477,8 +577,14 @@ import { helper } from './helper.js';  // Include .js
 | Using `jest.fn()` | Use `vi.fn()` and `vi.spyOn()` from Vitest, not Jest |
 | Using `.then()` chains | Use `async/await` instead |
 | Default exports | Use named exports |
+| Using `require()` | Use ES6 `import` not CommonJS `require()` |
+| Using `module.exports` | Use ES6 `export` not CommonJS `module.exports` |
 | Missing `.js` in imports | Always include: `'./file.js'` |
+| Missing JSDoc | Add JSDoc to ALL functions (exported and private in `__`) |
 | Chain for single operation | Use `_.chain()` only for 2+ operations |
+| Using `_.flatMap()` | Prefer explicit `_.chain().map().flatten()` for clarity |
+| Repeated property access | Extract `const type = obj.type` instead of checking `obj.type` multiple times |
+| Repeated code patterns | Create helper functions for duplicated `substring()`, `map()`, etc. |
 | Unnecessary try/catch | Only catch if you need to act before propagating |
 | snake_case naming | Use camelCase for everything |
 | Linting every file | Lint once after completing a set of changes |

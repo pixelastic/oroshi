@@ -15,13 +15,3 @@ skills-install obra/superpowers@systematic-debugging
 skills-install obra/superpowers@test-driven-development
 skills-install obra/superpowers@writing-plans
 skills-install obra/superpowers@writing-skills
-
-# Symlink all custom skills from .oroshi to ~/.claude/skills/
-for oroshiPath in ~/.oroshi/config/ai/claude/claudecode/skills/*; do
-  local skillName=$(basename "$oroshiPath")
-  local claudePath=~/.claude/skills/${skillName}
-  if [ -d "$claudePath" ]; then
-    rm $claudePath
-  fi
-  ln -s "${oroshiPath}" "${claudePath}"
-done

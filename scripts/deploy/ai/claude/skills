@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+# Symlink Claude Code skills
+# Target: ~/.claude/skills/
+
+# Symlink all custom skills from .oroshi to ~/.claude/skills/
+for oroshiPath in ~/.oroshi/config/ai/claude/claudecode/skills/*; do
+  local skillName=$(basename "$oroshiPath")
+  local claudePath=~/.claude/skills/${skillName}
+  if [ -d "$claudePath" ]; then
+    rm $claudePath
+  fi
+  ln -s "${oroshiPath}" "${claudePath}"
+done
