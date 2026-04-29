@@ -491,17 +491,32 @@ export { exists } from './exists.js';
 // ... export all public functions
 ```
 
-## Linting
+## Project Commands
 
-**Run `yarn run lint:fix` after completing a set of related modifications:**
+**Always use `yarn run` commands, not `npm`:**
+
+### Running Tests
 
 ```bash
+yarn run test
+```
+
+### Linting
+
+```bash
+# Check for lint errors
+yarn run lint
+
+# Auto-fix lint errors
 yarn run lint:fix
 ```
 
+**When to lint:**
 - Don't lint after every single file change
 - Lint once after completing a coherent group of changes
 - The linter auto-fixes style issues (semicolons, formatting, etc.)
+
+**Never use `npm test` or `npm run` - always use `yarn run`.**
 
 ## JSDoc Documentation
 
@@ -587,5 +602,6 @@ import { helper } from './helper.js';  // Include .js
 | Repeated code patterns | Create helper functions for duplicated `substring()`, `map()`, etc. |
 | Unnecessary try/catch | Only catch if you need to act before propagating |
 | snake_case naming | Use camelCase for everything |
+| Using `npm test` or `npm run` | Always use `yarn run test` and `yarn run lint:fix` |
 | Linting every file | Lint once after completing a set of changes |
 | Manual mock cleanup | Mocks auto-clean between tests |
