@@ -18,10 +18,13 @@ export OROSHI_NVM_LOADED="0"
 # define dummy node, npm, yarn and nvm function that don't do much. They load
 # nvm for real, destroy themselves, and run the real command
 
-# Add aliases for all command that would need node, so nvm loads it on first
-# invocation
-export OROSHI_NVM_LAZYLOAD_ALIASES=(
+# Exported as string (not array) so it gets captured in Claude Code snapshots
+export OROSHI_NVM_LAZYLOAD_ALIASES="
 	node
+	node-module-add
+	node-module-list
+	node-module-list-raw
+	node-module-remove
 	npm
 	nvm
 	yarn
@@ -29,17 +32,14 @@ export OROSHI_NVM_LAZYLOAD_ALIASES=(
 	yarn-dependency-add-dev
 	yarn-dependency-add-root
 	yarn-dependency-add-root-dev
-  yarn-dependency-update
+	yarn-dependency-update
 	yarn-link-remove
 	yarn-link-remove-all
 	yarn-run
 	yarn-update
-	node-module-add
-	node-module-remove
-	node-module-list
-	node-module-list-raw
-)
-for command in $OROSHI_NVM_LAZYLOAD_ALIASES; do
+"
+
+for command in ${=OROSHI_NVM_LAZYLOAD_ALIASES}; do
 	alias $command="lazyloadNvm $command"
 done
 
@@ -54,10 +54,10 @@ function lazyloadNvm {
 		return
 	fi
 
-	# Unregister all the aliases that point to lazyloadNvm
-	# Using pattern matching instead of looping over OROSHI_NVM_LAZYLOAD_ALIASES
-	# because the array variable might not be captured in Claude Code snapshots
-	unalias -m '*lazyloadNvm*' 2>/dev/null
+	# Convert string to array and unalias each command
+	for cmd in ${=OROSHI_NVM_LAZYLOAD_ALIASES}; do
+		unalias "$cmd" 2>/dev/null
+	done
 
 	# Source nvm
 	source ~/.nvm/nvm.sh --no-use
