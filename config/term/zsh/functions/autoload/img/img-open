@@ -5,5 +5,5 @@
 # $ img-open ./file.png           # Display file
 
 function img-open() {
-	gui eog $@
+	process-detach eog $@
 }

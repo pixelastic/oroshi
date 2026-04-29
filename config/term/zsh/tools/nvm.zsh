@@ -54,10 +54,10 @@ function lazyloadNvm {
 		return
 	fi
 
-	# Unregister all the aliases, so the commands refer to the real commands now
-	for cmd in "${OROSHI_NVM_LAZYLOAD_ALIASES[@]}"; do
-		unalias "$cmd" 2>/dev/null
-	done
+	# Unregister all the aliases that point to lazyloadNvm
+	# Using pattern matching instead of looping over OROSHI_NVM_LAZYLOAD_ALIASES
+	# because the array variable might not be captured in Claude Code snapshots
+	unalias -m '*lazyloadNvm*' 2>/dev/null
 
 	# Source nvm
 	source ~/.nvm/nvm.sh --no-use

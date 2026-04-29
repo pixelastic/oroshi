@@ -1,8 +1,0 @@
-#!/usr/bin/env zsh
-# Launch a GUI app without blocking the terminal
-
-if ! which $1 &>/dev/null; then
-  exit 1
-fi
-
-nohup $@ &>/dev/null &

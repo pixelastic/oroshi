@@ -1,6 +1,6 @@
 # Images
 alias eog='img-open'
-alias pinta='gui pinta'
+alias pinta='process-detach pinta'
 alias resize="img-resize"
 
 # ImageMagick 7 aliases
