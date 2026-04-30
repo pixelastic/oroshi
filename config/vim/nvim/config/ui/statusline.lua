@@ -57,14 +57,8 @@ O_STATUSLINE = {
     -- display it in order, with the right overlapping
     local rightStatusbar = {}
 
-    -- Treesitter node type at cursor (for debugging)
-    local node = F.node()
-    if node then
-      add(statusline, "[" .. node.type .. "] ")
-    end
-
-    -- Percentage in file
-    add(statusline, "%2p%% ")
+    -- Percentage in file + current line / total lines
+    add(statusline, "%l/%L %3p%% ")
 
     -- Number of lines selected
     local selectedLinesCount = O_STATUSLINE.countSelectedLines()
