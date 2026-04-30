@@ -10,6 +10,7 @@ function oroshiSlowCommandPreexec() {
   # These are typically interactive tools or commands that open editors
   local allowList=(
     claude-bin
+    "git commit"
     git-commit-create
     git-commit-create-staged
     git-commit-list
@@ -25,20 +26,19 @@ function oroshiSlowCommandPreexec() {
     top
     typora
     vim
-    "git commit"
-    "yarn-run writing-buddy"
     "yarn-run serve"
+    "yarn-run writing-buddy"
   )
   local expandedCommand="$2"
 
   # Store the expanded command in an environment variable for inspection
   export OROSHI_LAST_COMMAND="$expandedCommand"
 
-  # # Return early if command matches one of the allowed patterns
-  # if command-in-list "$expandedCommand" -- "${allowList[@]}"; then
-  #   oroshiSlowCommandStartTime=-1
-  #   return
-  # fi
+  # Return early if command matches one of the allowed patterns
+  if solkan --allow-list "${(j:,:)allowList}" "$expandedCommand"; then
+    oroshiSlowCommandStartTime=-1
+    return
+  fi
 
   oroshiSlowCommandStartTime=$SECONDS
 }
