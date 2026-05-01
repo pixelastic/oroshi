@@ -47,7 +47,6 @@ hl("Debug", "XXX") --		debugging statements
 hl("Define", "XXX") --		preprocessor #define
 hl("Ignore", "XXX") --		left blank, hidden  |hl-Ignore|
 hl("PreCondit", "XXX") --	preprocessor #if, #else, #endif, etc.
-hl("Typedef", "XXX") --		a typedef
 -- }}}
 
 -- Cursors {{{
@@ -81,7 +80,6 @@ hl("RenderMarkdownQuote3", "XXX") -- 	Level 3 block quote marker
 hl("RenderMarkdownQuote4", "XXX") -- 	Level 4 block quote marker
 hl("RenderMarkdownQuote5", "XXX") -- 	Level 5 block quote marker
 hl("RenderMarkdownQuote6", "XXX") -- 	Level 6 block quote marker
-hl("RenderMarkdownInlineHighlight", "XXX") -- 	Inline highlights contents
 hl("RenderMarkdownMath", "XXX") -- 	Latex lines
 hl("RenderMarkdownIndent", "XXX") -- 	Indent icon
 hl("RenderMarkdownHtmlComment", "XXX") -- 	HTML comment inline text

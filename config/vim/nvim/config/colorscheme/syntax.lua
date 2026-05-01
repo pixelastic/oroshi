@@ -12,6 +12,7 @@ hl("Exception", "YELLOW", { bold = true }) --	try, catch, throw
 hl("Function", "FUNCTION")
 hl("Float", "BLUE")
 hl("Identifier", "VARIABLE")
+hl("Typedef", "VARIABLE_TYPE")
 hl("Include", "IMPORT")
 hl("Keyword", "KEYWORD")
 hl("Macro", "RED_4")
@@ -218,6 +219,10 @@ hl("@markup.heading.5.markdown", "ORANGE_7", { bold = true })
 hl("RenderMarkdownH6", "RED_7")
 hl("RenderMarkdownH6Bg", "RED_7", { bg = "DARK_RED" })
 hl("@markup.heading.6.markdown", "RED_7", { bold = true })
+-- highlight
+hl("RenderMarkdownInlineHighlight", "BLACK", { bg = "YELLOW" })
+-- footnotes
+hl("markdownIdDeclaration", "VARIABLE_TYPE")
 -- }}}
 -- python {{{
 hl("@keyword.directive.python", "YELLOW")
