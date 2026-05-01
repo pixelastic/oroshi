@@ -15,3 +15,9 @@ skills-install obra/superpowers@systematic-debugging
 skills-install obra/superpowers@test-driven-development
 skills-install obra/superpowers@writing-plans
 skills-install obra/superpowers@writing-skills
+
+skills add "https://github.com/addyosmani/agent-skills" \
+  --skill spec-driven-development \
+  --global \
+  --agent claude-code \
+  --yes >/dev/null

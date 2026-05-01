@@ -10,7 +10,6 @@ function git-commit-message() {
     local rawFiles="$(git-file-list-staged-raw)"
     inputFiles=()
 
-    # Extract just the file paths
     for rawLine in ${(f)rawFiles}; do
       local splitLine=(${(@s/:/)rawLine})
       local filepath=$splitLine[2]
@@ -32,50 +31,12 @@ function git-commit-message() {
   # Get diff for the filtered files
   local diffContent=$(git diff HEAD -- ${filteredFiles[@]})
 
-  # Build the prompt
-  local claudePrompt="Generate a git commit message for these changes.
+  local claudePrompt="Use your commit-writer skill to generate a git commit message for these changes.
 
 Changes:
 \`\`\`diff
 ${diffContent}
-\`\`\`
-
-CRITICAL INSTRUCTIONS:
-- Return ONLY the commit message text itself
-- NO explanations, NO analysis, NO commentary before or after
-- NO markdown code blocks, NO formatting markers
-- NO \"Let me analyze\", NO \"The diff shows\", NO introductory text
-- NO \"Generated with Claude Code\" or \"Co-Authored-By\" lines
-- Start directly with the commit type (feat:, fix:, chore:, etc.)
-
-Format requirements:
-- Conventional Commits format: type(scope): description
-- Subject line: 50-72 characters maximum
-- Body: ONLY if concrete impact exists
-- Body lines: wrapped at 72 characters maximum
-- One blank line between subject and body
-- Ignore anything related to alwaysThinkingEnabled toggling
-- If chore of updating deps, don't include a body
-- If multiple concerns: choose ONE most significant
-
-Body guidelines:
-- State CONCRETE impact: what problem solved, what now possible, what prevented
-- Generic quality claims (maintainability/readability) need specific context
-- No body if you can't identify measurable impact
-
-✓ Prevents GUI errors from polluting terminal
-✓ Fixes path to blogging directory
-✓ Reduces package.json merge conflicts by isolating scripts
-✗ Better maintainability and readability
-✗ Improves code organization
-
-Example:
-feat(auth): add password reset functionality
-
-Allows users to regain access without admin intervention.
-Includes rate limiting to prevent abuse.
-
-YOUR OUTPUT MUST START IMMEDIATELY WITH THE COMMIT TYPE. NO OTHER TEXT."
+\`\`\`"
 
   claude-print "$claudePrompt" --sound git-commit-message.mp3
 }
