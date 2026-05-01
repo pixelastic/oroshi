@@ -13,6 +13,21 @@ Write JavaScript code following established patterns for projects using Aberlaas
 
 **Related skill:** `code-writer` - Defines core guidelines for comments and output statements that apply across all programming languages. This `js-writer` skill extends those general principles with JavaScript-specific patterns and conventions.
 
+## Preserving Existing Comments
+
+**CRITICAL: When editing existing code, NEVER remove existing comments.**
+
+When modifying code that already has comments (JSDoc or inline):
+- ✅ Keep all existing comments unchanged
+- ✅ Add new comments if adding new functions or complex logic
+- ✅ Update a comment ONLY if the code it describes has fundamentally changed
+- ❌ NEVER remove comments just to "clean up" or reduce "clutter"
+- ❌ NEVER remove comments because they seem "obvious" to you
+
+**Rationale:** Existing comments were written by the developer for a reason. They provide context, explain non-obvious behavior, or document decisions. Removing them removes valuable project knowledge.
+
+**Even under pressure to "clean up code" or "remove clutter" - preserve all existing comments.**
+
 ## When to Use
 
 - Writing new JavaScript functions or modules
@@ -588,6 +603,7 @@ import { helper } from './helper.js';  // Include .js
 
 | Mistake | Fix |
 |---------|-----|
+| Removing existing comments | NEVER remove existing comments when editing code - preserve all of them |
 | Importing test globals | Don't import `describe`, `it`, `expect` - they're global |
 | Using `jest.fn()` | Use `vi.fn()` and `vi.spyOn()` from Vitest, not Jest |
 | Using `.then()` chains | Use `async/await` instead |
