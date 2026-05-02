@@ -35,6 +35,7 @@ excludedRules+=(SC2124) # warning: Assigning an array to a string! Assign as arr
 excludedRules+=(SC2125) # warning: Brace expansions and globs are literal in assignments. Quote it or use an array.
 excludedRules+=(SC2128) # warning: Expanding an array without an index only gives the first element.
 excludedRules+=(SC2139) # warning: This expands when defined, not when used. Consider escaping.
+excludedRules+=(SC2154) # warning: match is referenced but not assigned.
 excludedRules+=(SC2155) # warning: Declare and assign separately to avoid masking return values.
 excludedRules+=(SC2157) # error: Argument to implicit -n is always true due to literal strings.
 excludedRules+=(SC2168) # error: 'local' is only valid in functions.
