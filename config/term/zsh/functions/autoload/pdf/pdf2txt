@@ -64,6 +64,11 @@ function pdf2txt() {
       outputFilepath="${dirpath}/${filepathBasename}_${pages}.txt"
     fi
 
+    # Skip if output already exists
+    if [[ -f "$outputFilepath" ]]; then
+      continue
+    fi
+
     local knownErrorsPattern='Syntax Warning: Invalid Font Weight'
 
     local pdftextArgs=()
