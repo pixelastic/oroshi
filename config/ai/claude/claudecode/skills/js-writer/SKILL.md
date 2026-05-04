@@ -478,6 +478,39 @@ describe('spinner', () => {
 - Call the public method - it will use the mocked private method
 - Assert with `expect(__.methodName).toHaveBeenCalledWith(...)`
 
+### Testing Thrown Errors
+
+**This pattern allows to capture the error as a variable and make assertions on it. It's more flexible than `expect().toThrow()`.**
+
+```javascript
+describe('emptyDir', () => {
+  it('should throw an error if not a string', async () => {
+    let actual = null;
+    try {
+      await emptyDir(function () {});
+    } catch (error) {
+      actual = error;
+    }
+
+    expect(actual).toHaveProperty('code', 'FIROST_EMPTY_DIR_TARGET_MUST_BE_STRING');
+    expect(actual.message).toContain('must be a string');
+  });
+});
+```
+
+**Pattern:**
+- Declare `let actual = null` before the try/catch
+- Always name the catch parameter `error` (not `err`)
+- Assign the error to `actual` in the catch block
+- Use standard `expect()` assertions on `actual` like any other variable
+- Multiple assertions are possible (code, message, custom properties)
+
+**Always use this pattern, even when:**
+- ❌ "Vitest docs recommend `expect().rejects.toThrow()`" → This codebase uses try/catch pattern for consistency
+- ❌ "It's just a simple error test" → Use the pattern anyway
+- ❌ "Only checking one property" → Consistency matters, use the pattern
+- ❌ "Time is tight, need quick test" → The pattern is quick and standardized
+
 ## File Organization
 
 ### Directory Structure
