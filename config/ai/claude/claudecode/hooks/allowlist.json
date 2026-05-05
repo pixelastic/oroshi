@@ -104,6 +104,7 @@
   "yarn run algolia:teach",
   "yarn run lint",
   "yarn run lint:fix",
+  "yarn run proofreading",
   "yarn run test",
   "zcat",
   "/bin/grep",
