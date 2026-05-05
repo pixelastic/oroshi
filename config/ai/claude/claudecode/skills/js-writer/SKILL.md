@@ -478,6 +478,59 @@ describe('spinner', () => {
 - Call the public method - it will use the mocked private method
 - Assert with `expect(__.methodName).toHaveBeenCalledWith(...)`
 
+### Mocking Function Spies - Always Use mockReturnValue
+
+**CRITICAL: For ALL function spies (sync or async), ALWAYS use `mockReturnValue()` with the direct value, NEVER use `mockResolvedValue()` or `mockRejectedValue()`.**
+
+This applies to ALL functions, including private methods in `__`.
+
+**✅ CORRECT - Use mockReturnValue with direct values:**
+
+```javascript
+describe('fetchUserData', () => {
+  it('should fetch and parse data', async () => {
+    // Async function returning an object - return the value directly
+    vi.spyOn(__, 'makeRequest')
+      .mockReturnValue({ status: 200, data: 'result' });
+
+    // Async function returning void - return undefined
+    vi.spyOn(__, 'saveToCache')
+      .mockReturnValue();
+
+    // Async function returning a number
+    vi.spyOn(__, 'calculateTotal')
+      .mockReturnValue(42);
+
+    const result = await fetchUserData('123');
+    expect(result).toEqual('result');
+  });
+});
+```
+
+**❌ WRONG - Don't use mockResolvedValue, mockRejectedValue, or Promise.resolve():**
+
+```javascript
+// ❌ NEVER DO THIS
+vi.spyOn(__, 'makeRequest').mockResolvedValue({ data: 'result' });
+vi.spyOn(__, 'makeRequest').mockReturnValue(Promise.resolve({ data: 'result' }));
+vi.spyOn(__, 'validateInput').mockRejectedValue(new Error('Invalid'));
+vi.spyOn(__, 'validateInput').mockReturnValue(Promise.reject(new Error('Invalid')));
+```
+
+**Why always use mockReturnValue with direct values:**
+- **Consistency**: Same pattern for sync and async functions - abstract away synchronicity completely
+- **Simplicity**: Return the actual value, not wrapped in Promise
+- **Codebase standard**: This is the established pattern across all projects
+
+**Rationalizations to ignore:**
+- ❌ "mockResolvedValue is more idiomatic Vitest" → Use mockReturnValue for consistency
+- ❌ "mockResolvedValue is cleaner/simpler" → mockReturnValue with direct values is simpler
+- ❌ "Vitest docs recommend mockResolvedValue" → This codebase uses mockReturnValue
+- ❌ "Async functions return Promises, so I need Promise.resolve()" → Abstract away synchronicity, return the value directly
+- ❌ "It's just a convenience wrapper" → We prefer mockReturnValue only
+
+**Always use `mockReturnValue(value)` directly for ALL functions, regardless of sync/async.**
+
 ### Testing Thrown Errors
 
 **This pattern allows to capture the error as a variable and make assertions on it. It's more flexible than `expect().toThrow()`.**
@@ -639,6 +692,7 @@ import { helper } from './helper.js';  // Include .js
 | Removing existing comments | NEVER remove existing comments when editing code - preserve all of them |
 | Importing test globals | Don't import `describe`, `it`, `expect` - they're global |
 | Using `jest.fn()` | Use `vi.fn()` and `vi.spyOn()` from Vitest, not Jest |
+| Using `mockResolvedValue()` or `mockRejectedValue()` | ALWAYS use `mockReturnValue(value)` with the direct value for ALL spies (sync and async) |
 | Using `.then()` chains | Use `async/await` instead |
 | Default exports | Use named exports |
 | Using `require()` | Use ES6 `import` not CommonJS `require()` |
