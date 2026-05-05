@@ -25,6 +25,7 @@ function git-commit-message() {
   done
 
   if [[ ${#filteredFiles} -eq 0 ]]; then
+    echo "✘ No staged files to commit" >&2
     return 1
   fi
 
