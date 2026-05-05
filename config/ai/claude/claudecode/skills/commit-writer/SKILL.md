@@ -147,19 +147,71 @@ Create a Conventional Commit message following this structure:
 - **CRITICAL: Wrap ALL body lines at 72 characters maximum** (insert line breaks)
 - One blank line between subject and body
 
-**Body guidelines - State concrete impact**:
-- What problem does this solve?
-- What is now possible?
-- What does this prevent?
+**Body guidelines - State CONCRETE impact**:
 
-Good examples:
+**CRITICAL: Explain the motivation, not just the change**
+- Don't describe what changed - explain why the old approach was problematic
+- Don't list new features - explain what problem they solve
+- Don't say "adds X" - say "adds X to prevent/enable Y"
+
+**Use concrete action verbs:**
+
+Choose positive or negative framing based on what fits naturally:
+
+**Negative framing (solving problems):**
+- Prevents [specific problem]
+- Fixes [specific issue]
+- Reduces [specific pain point]
+- Eliminates [specific confusion/error]
+- Stops [specific bad behavior]
+
+**Positive framing (adding capabilities):**
+- Enables [specific capability]
+- Makes [specific task] easier/faster
+- Allows [specific new action]
+- Saves [specific resource: time/memory/effort]
+- Helps [specific user action]
+
+Both are valid if concrete. Don't force one or the other.
+
+**Answer these questions:**
+- What CONCRETE problem did the old approach have?
+- What can I now do that I couldn't before?
+- What problem will I not hit anymore?
+
+**CRITICAL: Generic words need immediate concrete context**
+
+When you use abstract benefit words, IMMEDIATELY follow with specifics:
+
+| Abstract word | Bad (vague) | Good (concrete) |
+|---------------|-------------|-----------------|
+| "consistency" | "maintains consistency" | "ensures all commits get formatted messages following repository conventions" |
+| "maintainability" | "improves maintainability" | "makes debugging faster by isolating error handling" |
+| "organization" | "better organization" | "prevents confusion about which service handles authentication" |
+| "workflow" | "improves workflow" | "saves 30 seconds per commit by automating message generation" |
+
+**Good examples (specific and measurable):**
 - ✓ Prevents GUI errors from polluting terminal
 - ✓ Fixes path to blogging directory
 - ✓ Reduces package.json merge conflicts by isolating scripts
+- ✓ Makes navigation easier by showing absolute line position
+- ✓ Saves debugging time by showing full error context
+- ✓ Prevents silent failures by clearly indicating why operation failed
 
-Bad examples (too generic):
+**Bad examples (too generic without context):**
 - ✗ Better maintainability and readability
 - ✗ Improves code organization
+- ✗ Maintains consistency (without explaining what consistency)
+- ✗ Cleaner workflow (without explaining what becomes easier)
+- ✗ Follows conventions (without saying which conventions or why they matter)
+- ✗ Ensures standards (without saying what standards or what they prevent)
+
+**Red flags - abstract words that need immediate specifics:**
+- "conventions" → which conventions? what do they prevent/enable?
+- "standards" → which standards? what problem do they solve?
+- "consistency" → consistency of what? what does inconsistency cause?
+- "maintainability" → maintain what more easily? what's currently hard?
+- "quality" → what quality metric? what improves?
 
 ### 3. Special Rules
 
