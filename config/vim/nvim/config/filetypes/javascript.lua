@@ -209,6 +209,7 @@ M.__ = {
     F.imap("thp", "toHaveProperty(", "toHaveProperty assertion", { buffer = bufferId })
     F.imap("tbt", "toBe(true)", "toBe(true) assertion", { buffer = bufferId })
     F.imap("tbf", "toBe(false)", "toBe(false) assertion", { buffer = bufferId })
+    F.imap("thbc", "toHaveBeenCalled(", "toHaveBeenCalled() assertion", { buffer = bufferId })
     F.imap("mrv", "mockReturnValue()", "mockReturnValue()", { buffer = bufferId })
 
     -- Switch fdescribe/fit
