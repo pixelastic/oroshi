@@ -63,4 +63,5 @@ fi
 
 # Default: let Claude's permission system decide
 debug "Decision: let Claude decide"
-letClaudeDecide $toolName
+local permissionMode=$(jq -r ".permission_mode // empty" "$inputFile")
+letClaudeDecide "$permissionMode" "$toolName"

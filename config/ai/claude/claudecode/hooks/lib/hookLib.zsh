@@ -40,11 +40,14 @@ function acceptTool() {
 }
 
 # Let Claude Code's default permission system decide
-# Usage: letClaudeDecide [hint_message]
+# Usage: letClaudeDecide [permission_mode] [hint_message]
 function letClaudeDecide() {
-  local hint="${1:-No reason given}"
+  local permissionMode="${1:-default}"
+  local hint="${2:-No reason given}"
+
   jo -d. \
     hookSpecificOutput.hookEventName="PreToolUse" \
+    hookSpecificOutput.permissionMode="$permissionMode" \
     hookSpecificOutput.permissionDecisionReason="$hint" \
     hookSpecificOutput.oroshiDebug="$DEBUG_OUTPUT"
   exit 0
