@@ -1,61 +1,53 @@
-# Documentation and code examples
+# CLAUDE.md
 
-I want to have working code examples and up-to-date information
+The way I work is different from how other people use Claude Code. I have
+preferences, aliases and common patterns I want Claude Code to be using.
 
-- **ALWAYS use Context7 MCP FIRST** when dealing with code examples, setup, configuration and library/API documentation
+## Main rules
 
-# Coding Style
-
-Keep a consistent coding style matching my preferences across my projects
-
-- Don't suggest scripts in python. Prefer scripts in zsh or in JavaScript
+**DO**:
+- Fetch up-to-date documentation before writing code using Context7 MCP
+- Create your scripts in a dedicated folder in /home/tim/local/tmp/claude
 - Prefer a DX that makes simple things easy and complex things possible
+- Apply the "return early" pattern in code
+- Use dedicated skill per language if they exist (`zsh-writer`, `js-writer`, etc)
 
-## ZSH Functions
+**DON'T**:
+- Never suggest to write a script in python. Prefer zsh or JavaScript
+- Never use directly `ls`, `cat` or `grep`. Use either `/usr/bin/ls` or my favored alternative like `exa`.
 
-**IMPORTANT**: When writing or modifying ZSH functions in this repository, use the `zsh-writer` skill.
+### Up-to-date documentation
 
-See: `config/ai/claude/claudecode/skills/zsh-writer/SKILL.md`
+I want to have working code examples, not outdated or hallucinated APIs.
 
-# Shell Commands
+- Always use Context7 MCP first when dealing with code examples, setup, configuration or library/API documentation
 
-My shell environment has custom aliases that override standard commands, but you run in a clean bash environment that doesn't inherit these aliases.
+### Temporary script
 
-## For simple operations: Use built-in tools (NOT bash)
+If you need to write a script for processing or debugging, write it in
+/home/tim/local/tmp/claude, with a specific subfolder per conversation
 
-- **Use Glob tool** instead of `find` or `fd` for finding files
-- **Use Grep tool** instead of `grep` or `rg` for searching in files
-- **Use Read tool** instead of `cat` or `bat` for reading files
+### Coding style
 
-These tools are optimized, have better output formatting, automatic pagination, and avoid spawning unnecessary shell processes.
+I like clear and concise code, that makes the happy path obvious, but allow for
+configuration if needed.
 
-## For complex bash pipelines: Use real commands (NOT standard Unix names)
+- Prefer a DX that makes simple things easy and complex things possible
+- Prefer a "return early" style of coding, rather than having nested if/else
+- I hate python, do not suggest to write scripts in python
+- I have dedicated skills per language that you should load when writing in `zsh` or `js`
 
-When you genuinely need bash (complex pipelines, chaining commands, advanced scripting), use these modern alternatives:
+### Aliases
 
-- **Use `fd`** (NOT `find`) - Modern file finder at `/usr/bin/fd`
-  - Example: `fd -e zsh -x du -h | sort -h`
-- **Use `rg`** (NOT `grep`) - Ripgrep at `/usr/bin/rg`
-  - Example: `rg -c "pattern" | sort -t: -k2 -n`
-- **Use `exa`** (NOT `ls`) - Modern ls at `/home/tim/local/bin/exa`
-  - Example: `exa -la --sort=modified`
-- **Use `trash`** (NOT `rm`) - Safe deletion at `/usr/bin/trash-put`
-  - Or use `/bin/rm` if you need the real rm
-  - Example: `trash old-file.txt`
-- **Use `/usr/bin/cat`** (NOT `cat`) - Real cat command
-  - Example: `/usr/bin/cat file.txt | grep pattern`
+I have aliased common CLI tools to better versions (`ls` => `exa`, `grep` => `rg`, etc).
 
-Why not standard names? My interactive shell has aliases (find→fd, grep→rg, ls→exa, rm→trash) but your bash environment doesn't inherit these. Using standard names will call the old Unix tools, not my preferred modern alternatives.
+When using those tools in complex commands, make sure you either:
+- Use the better alternative (`fd` in place of `find`, etc)
+- Use the real version with its full page (`/usr/bin/ls` instead of `ls`);
 
-# Dependencies
-
-If you need to check how some dependencies are working, you can find there on
-disk:
-- aberlaas: /home/tim/local/www/projects/aberlaas
-- firost: /home/tim/local/www/projects/firost
-
-# Debug
-
-If you need to create scripts for debugging:
-- Create them in /home/tim/local/tmp/claude
-- Create one subdirectory per conversation
+Aliases commands:
+- `cat` => `bat`
+- `find` => `fd`
+- `grep` => `rg`
+- `ls` => `exa`
+- `rm` => `trash`

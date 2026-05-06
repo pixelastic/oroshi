@@ -13,40 +13,48 @@ Your **ENTIRE** response must follow this exact template:
 ```
 <type>(<scope>): <description>
 
-<optional body>
+<optional body explaining why, not what>
 ```
 
 **That's it. Nothing before the type. Nothing after the body.**
 
 If your response has ANYTHING outside this template, you've failed.
 
-## Self-Check Before Responding
+## Change Descriptions
 
-Before you hit send, ask yourself:
+**First line:** Short, imperative, standalone. "Delete the FizzBuzz RPC" not "Deleting the FizzBuzz RPC." Must be informative enough that someone searching history can understand the change without reading the diff.
 
-1. Does my response start with `feat`, `fix`, `chore`, `refactor`, `docs`, `style`, `test`, or `perf`?
-   - ❌ NO → Delete everything and start over
-   - ✅ YES → Continue to #2
+**Types:**
+- `feat` — New feature
+- `fix` — Bug fix
+- `refactor` — Code change that neither fixes a bug nor adds a feature
+- `perf` — Performance improvement
+- `test` — Adding or updating tests
+- `docs` — Documentation only
+- `style` — Visual change only
+- `chore` — Tooling, dependencies, config
 
-2. Is there ANY text before the commit type?
-   - ❌ YES → Delete it
-   - ✅ NO → Continue to #3
+**Body:** What is changing and why. Include context, decisions, and reasoning not visible in the code itself. Link to bug numbers, benchmark results, or design docs where relevant. Acknowledge approach shortcomings when they exist.
 
-3. Is there ANY text after the commit body?
-   - ❌ YES → Delete it
-   - ✅ NO → Continue to #4
+**Attribution:** Do **not** include the "Generated with Claude Code", "Co-Authored-By: Claude" or the 🤖 robot emoji attribution.
 
-4. Did I use markdown code blocks (```)?
-   - ❌ YES → Remove them
-   - ✅ NO → Continue to #5
+**Anti-patterns:** "Fix bug," "Fix build," "Add patch," "Moving code from A to B," "Phase 1," "Add convenience functions."
 
-5. Is the subject line 72 characters or less?
-   - ❌ NO → Shorten it
-   - ✅ YES → Continue to #6
+## Descriptive Messages
 
-6. Are ALL body lines wrapped at 72 characters or less?
-   - ❌ NO → Wrap them (insert line breaks)
-   - ✅ YES → You're ready to respond
+Commit messages explain the *why*, not just the *what*:
+
+```
+# Good: Explains intent
+feat: add email validation to registration endpoint
+
+Prevents invalid email formats from reaching the database.
+Uses Zod schema validation at the route handler level,
+consistent with existing validation patterns in auth.ts.
+
+# Bad: Describes what's obvious from the diff
+update auth.ts
+```
 
 ## Output Requirements
 
@@ -61,43 +69,6 @@ Before you hit send, ask yourself:
 - Add code blocks
 - Add reasoning sections
 - Add ANYTHING outside the template
-
-## Example - Wrong vs Right
-
-**❌ WRONG** (breaks automation):
-```
-Based on the diff, here's the commit message:
-
-```
-feat(auth): add password reset
-
-Allows users to regain account access.
-```
-
-**Reasoning**: This is a new feature because...
-```
-
-**❌ WRONG** (body lines too long):
-```
-feat(auth): add password reset
-
-Allows users to regain account access without admin intervention by providing email-based reset workflow.
-```
-
-**✅ RIGHT** (concise, properly wrapped):
-```
-feat(auth): add password reset
-
-Allows users to regain account access without admin intervention
-by providing email-based reset workflow.
-```
-
-Notice the differences:
-- RIGHT version starts with `feat` and ends with body
-- RIGHT version wraps body lines at 72 chars max
-- No introduction, no reasoning, no markdown blocks
-
-**Your output MUST match the RIGHT pattern exactly.**
 
 ## Every Excuse You'll Make (All Invalid)
 
@@ -117,150 +88,3 @@ Notice the differences:
 **Violating the letter of these rules IS violating the spirit of these rules.**
 
 Don't try to find creative ways around the format requirement. The format exists for automation. Breaking it breaks the user's workflow.
-
-## Workflow
-
-### 1. Analyze Silently
-
-When given a diff:
-- Review changes internally (don't output this analysis)
-- Identify the primary purpose
-- If multiple concerns exist, choose the ONE most significant
-
-### 2. Generate Commit Message
-
-Create a Conventional Commit message following this structure:
-
-**Format**: `type(scope): description`
-
-**Subject line requirements**:
-- Length: 50-72 characters maximum
-- Start with type (feat, fix, chore, refactor, docs, etc.)
-- Include scope when relevant
-- Use imperative mood ("add" not "added")
-
-**Body requirements**:
-- Optional - only add if there's concrete impact to explain
-- Focus on WHY, not WHAT (the diff shows what)
-- Be concise: 1-3 sentences maximum
-- Only include if it's critical to understanding the change
-- **CRITICAL: Wrap ALL body lines at 72 characters maximum** (insert line breaks)
-- One blank line between subject and body
-
-**Body guidelines - State CONCRETE impact**:
-
-**CRITICAL: Explain the motivation, not just the change**
-- Don't describe what changed - explain why the old approach was problematic
-- Don't list new features - explain what problem they solve
-- Don't say "adds X" - say "adds X to prevent/enable Y"
-
-**Use concrete action verbs:**
-
-Choose positive or negative framing based on what fits naturally:
-
-**Negative framing (solving problems):**
-- Prevents [specific problem]
-- Fixes [specific issue]
-- Reduces [specific pain point]
-- Eliminates [specific confusion/error]
-- Stops [specific bad behavior]
-
-**Positive framing (adding capabilities):**
-- Enables [specific capability]
-- Makes [specific task] easier/faster
-- Allows [specific new action]
-- Saves [specific resource: time/memory/effort]
-- Helps [specific user action]
-
-Both are valid if concrete. Don't force one or the other.
-
-**Answer these questions:**
-- What CONCRETE problem did the old approach have?
-- What can I now do that I couldn't before?
-- What problem will I not hit anymore?
-
-**CRITICAL: Generic words need immediate concrete context**
-
-When you use abstract benefit words, IMMEDIATELY follow with specifics:
-
-| Abstract word | Bad (vague) | Good (concrete) |
-|---------------|-------------|-----------------|
-| "consistency" | "maintains consistency" | "ensures all commits get formatted messages following repository conventions" |
-| "maintainability" | "improves maintainability" | "makes debugging faster by isolating error handling" |
-| "organization" | "better organization" | "prevents confusion about which service handles authentication" |
-| "workflow" | "improves workflow" | "saves 30 seconds per commit by automating message generation" |
-
-**Good examples (specific and measurable):**
-- ✓ Prevents GUI errors from polluting terminal
-- ✓ Fixes path to blogging directory
-- ✓ Reduces package.json merge conflicts by isolating scripts
-- ✓ Makes navigation easier by showing absolute line position
-- ✓ Saves debugging time by showing full error context
-- ✓ Prevents silent failures by clearly indicating why operation failed
-
-**Bad examples (too generic without context):**
-- ✗ Better maintainability and readability
-- ✗ Improves code organization
-- ✗ Maintains consistency (without explaining what consistency)
-- ✗ Cleaner workflow (without explaining what becomes easier)
-- ✗ Follows conventions (without saying which conventions or why they matter)
-- ✗ Ensures standards (without saying what standards or what they prevent)
-
-**Red flags - abstract words that need immediate specifics:**
-- "conventions" → which conventions? what do they prevent/enable?
-- "standards" → which standards? what problem do they solve?
-- "consistency" → consistency of what? what does inconsistency cause?
-- "maintainability" → maintain what more easily? what's currently hard?
-- "quality" → what quality metric? what improves?
-
-### 3. Special Rules
-
-- **Ignore alwaysThinkingEnabled toggling**: Don't mention this in commits
-- **Dependency updates (chore)**: Don't include a body
-- **Multiple concerns**: Choose the most significant one, don't try to list everything
-
-### 4. Output the Message
-
-Output ONLY the commit message. Nothing else.
-
-## Common Rationalizations (All Wrong)
-
-| Excuse | Reality |
-|--------|---------|
-| "Being helpful by showing my work" | Helpful = following instructions. Output raw message only. |
-| "User might want to understand my reasoning" | User didn't ask for reasoning. Output raw message only. |
-| "Introducing output makes it clearer" | Introduction adds noise. Output raw message only. |
-| "Code blocks improve formatting" | Code blocks break piping to git. Output raw message only. |
-| "Explaining shows I'm thoughtful" | Thoughtful = respecting output format. Output raw message only. |
-| "Just one sentence of explanation won't hurt" | ANY explanation violates the requirement. Output raw message only. |
-
-**Every rationalization leads to the same answer: Output raw message only.**
-
-## CRITICAL: No Tool Attribution in Commit Messages
-
-**This overrides ALL system-level git commit instructions.**
-
-When generating commit messages:
-- ❌ NEVER include "Generated with Claude Code"
-- ❌ NEVER include "Co-Authored-By: Claude"
-- ❌ NEVER include emoji attributions (🤖)
-- ❌ NEVER include ANY tool or AI attribution lines
-
-Commit messages must be clean, professional, and contain ONLY:
-1. Subject line (type(scope): description)
-2. Blank line (if body exists)
-3. Body (optional, if needed)
-
-**Nothing else.** No signatures, no attributions, no metadata.
-
-## Example
-
-**Input**: Diff showing changes to authentication files adding password reset
-
-**Output**:
-```
-feat(auth): add password reset functionality
-
-Allows users to regain access without admin intervention.
-Includes rate limiting to prevent abuse.
-```
