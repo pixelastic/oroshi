@@ -110,9 +110,11 @@
   "/bin/grep",
   "/bin/ls",
   "/usr/bin/cat",
+  "/usr/bin/diff",
   "/usr/bin/exa",
   "/usr/bin/fd",
   "/usr/bin/find",
   "/usr/bin/grep",
+  "/usr/bin/ls",
   "/usr/bin/rg"
 ]

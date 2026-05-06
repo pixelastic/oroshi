@@ -14,7 +14,7 @@ preferences, aliases and common patterns I want Claude Code to be using.
 
 **DON'T**:
 - Never suggest to write a script in python. Prefer zsh or JavaScript
-- Never use directly `ls`, `cat` or `grep`. Use either `/usr/bin/ls` or my favored alternative like `exa`.
+- Never use directly `ls`, `cat` or `grep`. Use either my favored alternative like `exa` or `/usr/bin/ls` for the default command.
 
 ### Up-to-date documentation
 
