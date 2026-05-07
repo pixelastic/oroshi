@@ -1,6 +1,6 @@
 {
   "name": "oroshi",
-  "base": "dark",
+  "base": "dark-ansi",
   "overrides": {
     "autoAccept": "rgb(175,135,255)",
     "background": "rgb(0,204,204)",
@@ -38,7 +38,7 @@
     "pink_FOR_SUBAGENTS_ONLY": "rgb(219,39,119)",
     "planMode": "rgb(72,150,140)",
     "professionalBlue": "rgb(106,155,204)",
-    "promptBorder": "rgb(136,136,136)",
+    "promptBorder": "rgb(255,100,0)",
     "promptBorderShimmer": "rgb(166,166,166)",
     "purple_FOR_SUBAGENTS_ONLY": "rgb(147,51,234)",
     "rainbow_blue": "rgb(130,170,220)",
