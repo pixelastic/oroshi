@@ -4,6 +4,7 @@
   "apt-file list",
   "awk",
   "basename",
+  "bat",
   "cat",
   "cd",
   "chmod",

@@ -4,6 +4,7 @@
     "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "75"
   },
   "permissions": {},
+  "model": "sonnet",
   "hooks": {
     "SessionStart": [
       {
@@ -50,5 +51,5 @@
     ]
   },
   "alwaysThinkingEnabled": false,
-  "model": "sonnet"
+  "effortLevel": "high"
 }
