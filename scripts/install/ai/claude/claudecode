@@ -3,9 +3,6 @@
 # https://www.anthropic.com/claude-code
 set -e
 
-# Install claude-code globally
-node-module-install @anthropic-ai/claude-code
-
 # Context7 {{{
 # Check up-to-date documentation
 claude mcp add \
