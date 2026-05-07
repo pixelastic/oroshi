@@ -1,0 +1,28 @@
+# Add a command to the Claude Code skills allowlist
+# Usage:
+# $ skills-allowlist-add "Skill(git-commit-writer)"
+function skills-allowlist-add() {
+  local allowedCommand="$1"
+  local allowlistFile=~/.oroshi/config/ai/claude/claudecode/hooks/allowlist.json
+
+  if [[ -z "$allowedCommand" ]]; then
+    echo "Error: Command required" >&2
+    echo "Usage: skills-allowlist-add <command>" >&2
+    return 1
+  fi
+
+  local tmpFile=$(mktemp)
+
+  # Add new command, sort list, save in tmp file, then overwrite initial file
+  jq \
+    --arg newCommand "$allowedCommand" \
+    '. + [$newCommand] | unique' \
+    "$allowlistFile" |
+    jq --raw-output '.[]' |
+    sort --version-sort |
+    jq --raw-input . |
+    jq --slurp . >"$tmpFile"
+
+  /usr/bin/cat "$tmpFile" >"$allowlistFile"
+  rm "$tmpFile"
+}
