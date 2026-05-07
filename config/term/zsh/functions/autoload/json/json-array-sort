@@ -34,6 +34,15 @@ function json-array-sort() {
   fi
 
   echo "["
-  echo "$input" | jq '.' | sed '1d;$d' | sort --version-sort
+  # Pretty-print the JSON, strip the wrapping [],
+  # add a trailing comma to the last line so all lines are uniform,
+  # sort with --version-sort (just like in nvim),
+  # then remove the trailing comma from the new last line to be valid JSON
+  echo "$input" |
+    jq '.' |
+    sed '1d;$d' |
+    sed '$s/$/,/' |
+    sort --version-sort |
+    sed '$s/,$//'
   echo "]"
 }
