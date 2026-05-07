@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+set -e
+
+CONFIG_DIR=~/.oroshi/config/ai/claude/claudecode
+
+ln -fs $CONFIG_DIR/CLAUDE.md ~/CLAUDE.md
+ln -fs $CONFIG_DIR/settings.json ~/.claude/settings.json
+
+# Skills {{{
+mkdir -p ~/.claude/skills
+# Symlink all custom skills from .oroshi to ~/.claude/skills/
+for oroshiPath in ~/.oroshi/config/ai/claude/claudecode/skills/*; do
+  local skillName=$(basename "$oroshiPath")
+  local claudePath=~/.claude/skills/${skillName}
+  if [ -d "$claudePath" ]; then
+    rm $claudePath
+  fi
+  ln -s "${oroshiPath}" "${claudePath}"
+done
+# }}}
+
+# Themes {{{
+mkdir -p ~/.claude/themes
+# Copy themes instead of symlinking (Claude Code's file watcher doesn't follow symlinks)
+for oroshiPath in ~/.oroshi/config/ai/claude/claudecode/themes/*; do
+  local themeName=$(basename "$oroshiPath")
+  cp -f "${oroshiPath}" ~/.claude/themes/${themeName}
+done
+# }}}
