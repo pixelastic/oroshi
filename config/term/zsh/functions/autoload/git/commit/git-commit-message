@@ -1,3 +1,4 @@
+
 # Generate commit message
 # Usage:
 # $ git-commit-message                    # Generate message for all staged files
@@ -39,5 +40,9 @@ Changes:
 ${diffContent}
 \`\`\`"
 
-  claude-print "$claudePrompt" --sound git-commit-message.mp3
+  local rawMessage=$(claude-print "$claudePrompt" --sound git-commit-message.mp3)
+  # Wrap message at 72 chars
+  local wrappedMessage=$(echo "$rawMessage" | fold -s -w "72")
+
+  echo "$wrappedMessage"
 }
