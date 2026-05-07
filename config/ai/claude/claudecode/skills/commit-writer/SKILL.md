@@ -34,7 +34,7 @@ If your response has ANYTHING outside this template, you've failed.
 - `style` — Visual change only
 - `chore` — Tooling, dependencies, config
 
-**Body:** What is changing and why. Include context, decisions, and reasoning not visible in the code itself. Link to bug numbers, benchmark results, or design docs where relevant. Acknowledge approach shortcomings when they exist.
+**Body:** Why this change matters. Include context, decisions, and reasoning not visible in the code itself. The "what" is already in the diff—explain the "why" instead. Link to bug numbers, benchmark results, or design docs where relevant. Acknowledge approach shortcomings when they exist. If the header is self-explanatory, omit the body entirely.
 
 **Attribution:** Do **not** include the "Generated with Claude Code", "Co-Authored-By: Claude" or the 🤖 robot emoji attribution.
 
@@ -45,12 +45,28 @@ If your response has ANYTHING outside this template, you've failed.
 Commit messages explain the *why*, not just the *what*:
 
 ```
-# Good: Explains intent
+# Good: Explains why, not what
 feat: add email validation to registration endpoint
 
 Prevents invalid email formats from reaching the database.
 Uses Zod schema validation at the route handler level,
 consistent with existing validation patterns in auth.ts.
+
+# Good: Header is self-explanatory, no body needed
+chore(deps): update eslint from 8.2.0 to 8.3.0
+
+# Bad: Body describes implementation details visible in the diff
+refactor(git): wrap commit messages at 72 characters
+
+Stores the output from claude-print in a variable, then wraps it
+at 72 characters using fold -s (preserving word boundaries) before
+displaying.
+
+# Good: Same change, but body explains why
+refactor(git): wrap commit messages at 72 characters
+
+Ensures generated commit messages follow the standard
+line length convention for better readability in git logs.
 
 # Bad: Describes what's obvious from the diff
 update auth.ts
