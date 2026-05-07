@@ -33,8 +33,7 @@ function json-array-sort() {
     input="$(/usr/bin/cat "$1")"
   fi
 
-  # Extract array content (lines between brackets), sort, and rebuild
   echo "["
-  echo "$input" | sed '1d;$d' | sort --version-sort
+  echo "$input" | jq '.' | sed '1d;$d' | sort --version-sort
   echo "]"
 }
