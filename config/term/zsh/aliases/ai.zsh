@@ -16,3 +16,9 @@ alias tm="task-master"
 alias claude="claude-bin"
 alias c="claude"
 alias cr="claude --resume"
+
+# Skills
+alias skl="skills-list"
+alias ska="skills-install"
+alias skR="skills-remove"
+alias skala="skills-allowlist-add"

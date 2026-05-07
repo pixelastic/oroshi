@@ -1,0 +1,31 @@
+# Display the list of all globally installed skills with formatting
+# Usage:
+# $ skills-list
+function skills-list() {
+  local rawSkills="$(skills-list-raw)"
+  local output=""
+
+  for rawSkill in ${(f)rawSkills}; do
+    local split=(${(s/▮/)rawSkill})
+    local skillName=$split[1]
+    local skillDescription=$split[2]
+    local skillType=$split[3]
+
+    local row=""
+
+    # Color
+    local skillColor=$PROJECT_OROSHI_BACKGROUND
+    [[ $skillType == "community" ]] && skillColor=$COLOR_BLUE
+
+    # Name
+    row+="$(colorize "${skillName}" $skillColor)▮"
+
+    # Description column
+    row+="$(colorize "$skillDescription[1,39]..." $COLOR_ALIAS_COMMENT)▮"
+
+    output+="$row\n"
+  done
+
+  # Output as columns
+  table $output
+}

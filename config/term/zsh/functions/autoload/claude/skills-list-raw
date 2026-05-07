@@ -1,12 +1,20 @@
-# Display the raw list of all globally installed skills with descriptions
+# Display the raw list of all globally installed skills with descriptions and type
 # Usage:
 # $ skills-list-raw
+# Output format: name▮description▮type
 function skills-list-raw() {
   local skillsDir=~/.claude/skills
 
   for skillPath in "$skillsDir"/*; do
     local name=$(basename "$skillPath")
     local description=$(skills-description "$name")
-    echo "${name}▮${description}"
+
+    # Determine type: custom if symlink, community otherwise
+    local type="community"
+    if [[ -L "$skillPath" ]]; then
+      type="custom"
+    fi
+
+    echo "${name}▮${description}▮${type}"
   done
 }
