@@ -11,17 +11,14 @@ function skills-allowlist-add() {
     return 1
   fi
 
+  # Add new command and sort using json-array-sort (matching Neovim behavior)
   local tmpFile=$(mktemp)
 
-  # Add new command, sort list, save in tmp file, then overwrite initial file
   jq \
     --arg newCommand "$allowedCommand" \
     '. + [$newCommand] | unique' \
     "$allowlistFile" |
-    jq --raw-output '.[]' |
-    sort --version-sort |
-    jq --raw-input . |
-    jq --slurp . >"$tmpFile"
+    json-array-sort >"$tmpFile"
 
   /usr/bin/cat "$tmpFile" >"$allowlistFile"
   rm "$tmpFile"
