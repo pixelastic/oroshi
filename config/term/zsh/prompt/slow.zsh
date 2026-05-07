@@ -9,7 +9,6 @@ function oroshiSlowCommandPreexec() {
   # Commands that should not trigger slow command notification
   # These are typically interactive tools or commands that open editors
   local allowList=(
-    claude-bin
     "git commit"
     git-commit-create
     git-commit-create-staged

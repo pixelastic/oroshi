@@ -13,7 +13,6 @@ alias _="ai-code"
 alias mj="ai-mj"
 alias tm="task-master"
 
-alias claude="claude-bin"
 alias c="claude"
 alias cr="claude --resume"
 

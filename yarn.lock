@@ -12,6 +12,97 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@anthropic-ai/claude-code-darwin-arm64@npm:2.1.132":
+  version: 2.1.132
+  resolution: "@anthropic-ai/claude-code-darwin-arm64@npm:2.1.132"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@anthropic-ai/claude-code-darwin-x64@npm:2.1.132":
+  version: 2.1.132
+  resolution: "@anthropic-ai/claude-code-darwin-x64@npm:2.1.132"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@anthropic-ai/claude-code-linux-arm64-musl@npm:2.1.132":
+  version: 2.1.132
+  resolution: "@anthropic-ai/claude-code-linux-arm64-musl@npm:2.1.132"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@anthropic-ai/claude-code-linux-arm64@npm:2.1.132":
+  version: 2.1.132
+  resolution: "@anthropic-ai/claude-code-linux-arm64@npm:2.1.132"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@anthropic-ai/claude-code-linux-x64-musl@npm:2.1.132":
+  version: 2.1.132
+  resolution: "@anthropic-ai/claude-code-linux-x64-musl@npm:2.1.132"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@anthropic-ai/claude-code-linux-x64@npm:2.1.132":
+  version: 2.1.132
+  resolution: "@anthropic-ai/claude-code-linux-x64@npm:2.1.132"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@anthropic-ai/claude-code-win32-arm64@npm:2.1.132":
+  version: 2.1.132
+  resolution: "@anthropic-ai/claude-code-win32-arm64@npm:2.1.132"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@anthropic-ai/claude-code-win32-x64@npm:2.1.132":
+  version: 2.1.132
+  resolution: "@anthropic-ai/claude-code-win32-x64@npm:2.1.132"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@anthropic-ai/claude-code@npm:2.1.132":
+  version: 2.1.132
+  resolution: "@anthropic-ai/claude-code@npm:2.1.132"
+  dependencies:
+    "@anthropic-ai/claude-code-darwin-arm64": "npm:2.1.132"
+    "@anthropic-ai/claude-code-darwin-x64": "npm:2.1.132"
+    "@anthropic-ai/claude-code-linux-arm64": "npm:2.1.132"
+    "@anthropic-ai/claude-code-linux-arm64-musl": "npm:2.1.132"
+    "@anthropic-ai/claude-code-linux-x64": "npm:2.1.132"
+    "@anthropic-ai/claude-code-linux-x64-musl": "npm:2.1.132"
+    "@anthropic-ai/claude-code-win32-arm64": "npm:2.1.132"
+    "@anthropic-ai/claude-code-win32-x64": "npm:2.1.132"
+  dependenciesMeta:
+    "@anthropic-ai/claude-code-darwin-arm64":
+      optional: true
+    "@anthropic-ai/claude-code-darwin-x64":
+      optional: true
+    "@anthropic-ai/claude-code-linux-arm64":
+      optional: true
+    "@anthropic-ai/claude-code-linux-arm64-musl":
+      optional: true
+    "@anthropic-ai/claude-code-linux-x64":
+      optional: true
+    "@anthropic-ai/claude-code-linux-x64-musl":
+      optional: true
+    "@anthropic-ai/claude-code-win32-arm64":
+      optional: true
+    "@anthropic-ai/claude-code-win32-x64":
+      optional: true
+  bin:
+    claude: bin/claude.exe
+  checksum: 10c0/779857d1f9cd5edd7f086a1e955c2981c13c581eb8dc5d93ff34ccfba7b72c9564c96bdd23368a9949d8d6f3729d25c5fb6f858f6c27aa0cf4ceb408fb55f771
+  languageName: node
+  linkType: hard
+
 "@babel/code-frame@npm:^7.0.0":
   version: 7.22.13
   resolution: "@babel/code-frame@npm:7.22.13"
@@ -8263,6 +8354,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "oroshi@workspace:."
   dependencies:
+    "@anthropic-ai/claude-code": "npm:2.1.132"
     aberlaas: "npm:2.27.4"
     eslint_d: "npm:14.3.0"
     firost: "npm:5.8.0"

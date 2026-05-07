@@ -49,5 +49,6 @@
       }
     ]
   },
-  "alwaysThinkingEnabled": false
+  "alwaysThinkingEnabled": false,
+  "model": "sonnet"
 }
