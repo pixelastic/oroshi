@@ -24,6 +24,22 @@ If your response has ANYTHING outside this template, you've failed.
 
 **First line:** Short, imperative, standalone. "Delete the FizzBuzz RPC" not "Deleting the FizzBuzz RPC." Must be informative enough that someone searching history can understand the change without reading the diff.
 
+**HARD LIMIT: First line MUST be ≤72 characters. Count them. No exceptions.**
+
+If your first line is over 72 characters:
+- Move scope detail to the body
+- Abbreviate — be ruthless
+- Split the change into multiple commits if needed
+- DO NOT exceed 72 chars "just this once"
+
+```
+# ❌ Too long (82 chars):
+feat(auth): add email validation to registration and password reset endpoints
+
+# ✅ Fixed (54 chars) — detail moved to body:
+feat(auth): add email validation to auth endpoints
+```
+
 **Types:**
 - `feat` — New feature
 - `fix` — Bug fix
@@ -96,6 +112,7 @@ update auth.ts
 | "Explaining my choice shows quality work" | Quality = correct format. Just output the message. |
 | "The user might be confused without explanation" | User knows what they asked for. Just output the message. |
 | "But I'm being conversational and friendly" | Friendly = respecting requirements. Just output the message. |
+| "This commit is complex and needs a long first line" | Move detail to the body. The limit exists for git log readability. |
 
 **EVERY rationalization has the same answer: Just output the message.**
 
