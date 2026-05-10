@@ -24,22 +24,30 @@ bindkey -M vicmd "[57376u" vi-insert
 # As well as the classic Esc and i
 bindkey -M viins "" vi-cmd-mode
 bindkey -M vicmd "i" vi-insert
+# CTRL-C: Clear line and go to insert mode
+function _zsh-ctrl-c() {
+  zle vi-kill-line
+  zle vi-insert
+}
+zle -N _zsh-ctrl-c
+bindkey -M viins "" _zsh-ctrl-c
+bindkey -M vicmd "" _zsh-ctrl-c
 
 # Vim cursor {{{
 function zle-line-finish {
-	_cursor-ins
+  _cursor-ins
 }
 zle -N zle-line-finish
 function zle-keymap-select() {
-	if [[ $KEYMAP = 'vicmd' ]]; then
-		_cursor-cmd
-	else
-		_cursor-ins
-	fi
+  if [[ $KEYMAP = 'vicmd' ]]; then
+    _cursor-cmd
+  else
+    _cursor-ins
+  fi
 }
 zle -N zle-keymap-select
 zle-line-init() {
-	zle vi-insert
-	_cursor-ins
+  zle vi-insert
+  _cursor-ins
 }
 zle -N zle-line-init
