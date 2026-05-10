@@ -1,1 +1,9 @@
-../../../node_modules/.bin/claude
+#!/usr/bin/zsh
+# Wrapper around claude
+
+~/.oroshi/node_modules/.bin/claude "$@"
+
+# Claude v2.1.84 seem to leave the terminal in corrupted state.
+# The following esoteric invocation fixes it
+# Source: https://github.com/anthropics/claude-code/issues/38761
+printf '\e[<u'
