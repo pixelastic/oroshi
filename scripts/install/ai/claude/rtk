@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+# rtk: CLI proxy that reduces token usage of Bash commands
+# https://github.com/algolia/rtk
+set -e
+
+# Clone repo
+cd ~/local/src
+git-directory-sync git@github.com:algolia/rtk.git ./rtk
+cd ./rtk
+
+# Install rtk
+sh <./install.sh
+
+# Configure rtk
+rtk init --global --no-patch

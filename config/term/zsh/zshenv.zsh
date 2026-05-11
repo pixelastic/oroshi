@@ -29,3 +29,4 @@ done
 
 # Autoload all other functions saved in ./functions/autoload/**/*
 oroshi-reload-functions
+

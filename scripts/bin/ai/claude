@@ -7,3 +7,4 @@
 # The following esoteric invocation fixes it
 # Source: https://github.com/anthropics/claude-code/issues/38761
 printf '\e[<u'
+printf '\e[=0u'

@@ -14,7 +14,6 @@ preferences, aliases and common patterns I want Claude Code to be using.
 
 **DON'T**:
 - Never suggest to write a script in python. Prefer zsh or JavaScript
-- Never use directly `ls`, `cat` or `grep`. Use either my favored alternative like `exa` or `/usr/bin/ls` for the default command.
 
 ### Up-to-date documentation
 
@@ -37,17 +36,4 @@ configuration if needed.
 - I hate python, do not suggest to write scripts in python
 - I have dedicated skills per language that you should load when writing in `zsh` or `js`
 
-### Aliases
-
-I have aliased common CLI tools to better versions (`ls` => `exa`, `grep` => `rg`, etc).
-
-When using those tools in complex commands, make sure you either:
-- Use the better alternative (`fd` in place of `find`, etc)
-- Use the real version with its full page (`/usr/bin/ls` instead of `ls`);
-
-Aliases commands:
-- `cat` => `bat`
-- `find` => `fd`
-- `grep` => `rg`
-- `ls` => `exa`
-- `rm` => `trash`
+@RTK.md

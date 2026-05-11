@@ -3,6 +3,17 @@
 unsetopt NOMATCH
 
 for item in "$ZSH_CONFIG_PATH"/aliases/**/*.zsh; do
-	[[ ${item:t} == "index.zsh" ]] && continue
-	source ${item}
+  [[ ${item:t} == "index.zsh" ]] && continue
+  source ${item}
 done
+
+# Inside of Claude, we disable some non-default aliases
+if [[ "$CLAUDECODE" == "1" ]]; then
+  unalias 'cat'
+  unalias 'cp'
+  unalias 'diff'
+  unalias 'find'
+  unalias 'grep'
+  unalias 'ls'
+  unalias 'mv'
+fi

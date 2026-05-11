@@ -48,6 +48,15 @@
             "command": "/home/tim/.oroshi/config/ai/claude/claudecode/hooks/preToolUse"
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/tim/.claude/hooks/rtk-rewrite.sh"
+          }
+        ]
       }
     ]
   },
