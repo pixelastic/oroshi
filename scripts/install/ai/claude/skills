@@ -3,9 +3,7 @@
 # Target: ~/.claude/skills/
 
 # Install skills from external sources
-skills-install mattpocock/skills@caveman
 skills-install vercel-labs/skills@find-skills
-skills-install mattpocock/skills@grill-me
 skills-install obra/superpowers@brainstorming
 skills-install obra/superpowers@systematic-debugging
 skills-install obra/superpowers@test-driven-development
