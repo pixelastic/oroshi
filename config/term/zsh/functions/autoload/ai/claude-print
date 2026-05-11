@@ -24,7 +24,7 @@ function claude-print() {
     export OROSHI_CLAUDECODE_STOP_SOUND="${soundAfter}"
   fi
 
-  claude \
+  CLAUDE_DO_NOT_FIX_TERMINAL_ISSUE_38761=1 claude \
     --print \
     --model sonnet \
     --session-id "$sessionId" \

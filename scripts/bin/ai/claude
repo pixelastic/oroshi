@@ -6,5 +6,7 @@
 # Claude v2.1.84 seem to leave the terminal in corrupted state.
 # The following esoteric invocation fixes it
 # Source: https://github.com/anthropics/claude-code/issues/38761
-printf '\e[<u'
-printf '\e[=0u'
+if [[ "$CLAUDE_DO_NOT_FIX_TERMINAL_ISSUE_38761" == "" ]]; then
+  printf '\e[<u'
+  printf '\e[=0u'
+fi
