@@ -15,6 +15,7 @@ alias tm="task-master"
 
 alias c="claude"
 alias cr="claude --resume"
+alias cc="claude --continue"
 
 # Skills
 alias skl="skills-list"
