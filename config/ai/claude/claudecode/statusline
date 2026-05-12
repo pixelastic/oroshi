@@ -1,33 +1,70 @@
 #!/usr/bin/env zsh
 set -e
 
-stdinData=$(cat)
+# Load project color definitions
+source $ZSH_CONFIG_PATH/theming/env/colors.zsh
+source $ZSH_CONFIG_PATH/theming/env/projects.zsh
 
-sessionId=$(echo "$stdinData" | jq -r '.session_id // empty')
-transcriptPath=$(echo "$stdinData" | jq -r '.transcript_path // empty')
-cwd=$(echo "$stdinData" | jq -r '.cwd // empty')
-currentDir=$(echo "$stdinData" | jq -r '.workspace.current_dir // empty')
+# Fake values for debugging
+local modelName="Sonnet 4.6"
+local currentDir=~/.oroshi/
+local totalCost=0
 
-modelName=$(echo "$stdinData" | jq -r '.model.display_name // empty')
-version=$(echo "$stdinData" | jq -r '.version // empty')
-totalCost=$(echo "$stdinData" | jq -r '.cost.total_cost_usd // 0 | . * 10000 | round / 10000')
-inputTokens=$(echo "$stdinData" | jq -r '.context_window.total_input_tokens // 0')
-outputTokens=$(echo "$stdinData" | jq -r '.context_window.total_output_tokens // 0')
-totalTokens=$(( inputTokens + outputTokens ))
-usedPct=$(( totalTokens * 100 / 1000000 ))
-totalTokensK=$(echo "$totalTokens" | awk '{printf "%.1fK", $1/1000}')
-costFmt=$(echo "$totalCost" | awk '{if ($1 >= 1) printf "$%.2f", $1; else printf "%d¢", int($1 * 100 + 0.5)}')
+local stdinData=$(cat)
+if [[ -n "$stdinData" ]]; then
+  currentDir=$(echo "$stdinData" | jq -r '.workspace.current_dir')
+  modelName=$(echo "$stdinData" | jq -r '.model.display_name')
+  totalCost=$(echo "$stdinData" | jq -r '.cost.total_cost_usd // 0 | . * 10000 | round / 10000')
+fi
 
-barFilled=$(( usedPct * 10 / 100 ))
-bar=""
-i=0
-while (( i < 10 )); do
-  if (( i < barFilled )); then
-    bar="${bar}█"
-  else
-    bar="${bar}░"
-  fi
-  i=$(( i + 1 ))
-done
+# Left side {{{
+local leftSide=()
 
-echo "${modelName} v${version} | ${bar} ${usedPct}% (${totalTokensK}/1M) | ${costFmt}"
+# Project
+local projectName="$(project-by-path "$currentDir")"
+local displayProject="$(project-colorize ${projectName})"
+leftSide+=($displayProject)
+# }}}
+
+# Right side {{{
+local rightSide=()
+
+# Model
+local displayModel="$(colorize "${modelName}" $COLOR_ALIAS_COMMENT)"
+rightSide+=("$displayModel ")
+
+# Cost
+local isInCents=$(( totalCost < 1 ))
+if (( isInCents )); then
+  local roundedCents=$(( totalCost * 100 + 0.5 ))
+  local displayCost="$(colorize "${roundedCents%.*}¢" $COLOR_ALIAS_PUNCTUATION)"
+else
+  local roundedDollars=$(printf "$%.2f" "$totalCost")
+  local displayCost="$(colorize "${roundedDollars}" $COLOR_YELLOW)"
+fi
+rightSide+=("$displayCost ")
+
+# Branch
+local branchName="$(git-branch-current "${currentDir}")"
+local displayBranch="$(git-branch-colorize "${branchName}")"
+rightSide+=($displayBranch)
+# }}}
+
+# Display {{{
+function visible-width() {
+  local stripped=$(remove-ansi "$1" </dev/null)
+  echo ${#stripped}
+}
+
+# Calculate spacing
+local windowWidth="$(kitty-window-width)"
+local leftStr="${(j::)leftSide}"
+local rightStr="${(j::)rightSide}"
+local leftWidth=$(visible-width "$leftStr")
+local rightWidth=$(visible-width "$rightStr")
+local spacing=$(( windowWidth - leftWidth - rightWidth - 4 ))
+
+print -rn -- "${(j::)leftSide}"
+print -rn -- "${(l:$spacing:: :)}"
+print -rn -- "${(j::)rightSide}"
+# }}}
