@@ -9,7 +9,7 @@ function oroshiSlowCommandPreexec() {
   # Commands that should not trigger slow command notification
   # These are typically interactive tools or commands that open editors
   local allowList=(
-    "git commit"
+    claude
     git-commit-create
     git-commit-create-staged
     git-commit-list
@@ -25,6 +25,7 @@ function oroshiSlowCommandPreexec() {
     top
     typora
     vim
+    "git commit"
     "yarn-run serve"
     "yarn-run writing-buddy"
   )
