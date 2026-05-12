@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-
-pip install shell-gpt==0.9.4
