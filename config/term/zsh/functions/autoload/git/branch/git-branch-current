@@ -1,29 +1,31 @@
 # Display name of current branch
 # Usage:
-# $ git-branch-current     # main
-# $ git-branch-current     # If in an empty repo, still returns main
-# $ git-branch-current     # Returns 1 if not in a git repo
+# $ git-branch-current           # main
+# $ git-branch-current /path/repo  # branch of repo at path
+# $ git-branch-current           # Returns 1 if not in a git repo
 function git-branch-current() {
-	local branchName="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
+  local repoDir="${1:-.}"
+  cd "$repoDir" || return
+  local branchName="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
 
-	# No result? Then we might not be in a git repo
-	if [[ $branchName == "" ]]; then
-		return 1
-	fi
+  # No result? Then we might not be in a git repo
+  if [[ $branchName == "" ]]; then
+    return 1
+  fi
 
-	# If it returns HEAD, it's because we are either:
-	# - rebasing
-	# - on a detached HEAD state
-	if [[ $branchName == "HEAD" ]]; then
-		if git-rebase-in-progress; then
-			local gitRoot="$(git-directory-root)"
-			local rebaseRoot="${gitRoot}/.git/rebase-merge"
-			local headName="$(cat ${rebaseRoot}/head-name)"
-			branchName=$headName[12,-1]
-		else
-			branchName="HEAD"
-		fi
-	fi
+  # If it returns HEAD, it's because we are either:
+  # - rebasing
+  # - on a detached HEAD state
+  if [[ $branchName == "HEAD" ]]; then
+    if git-rebase-in-progress; then
+      local gitRoot="$(git-directory-root)"
+      local rebaseRoot="${gitRoot}/.git/rebase-merge"
+      local headName="$(cat ${rebaseRoot}/head-name)"
+      branchName=$headName[12,-1]
+    else
+      branchName="HEAD"
+    fi
+  fi
 
-	echo $branchName
+  echo $branchName
 }
