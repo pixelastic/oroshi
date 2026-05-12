@@ -4,29 +4,46 @@ set -e
 # Load project color definitions
 source $ZSH_CONFIG_PATH/theming/env/colors.zsh
 source $ZSH_CONFIG_PATH/theming/env/projects.zsh
-local settingsFile=~/.claude/settings.json
+local CONTEXT_LIMIT=1000000
 
 # Fake values for debuging, or values coming from stdin
 if [[ "$1" == "--dry-run" ]]; then
   local modelName="Sonnet 4.6"
   local currentDir=~/.oroshi/
   local totalCost=0
+  local inputTokens=234000
+  local outputTokens=12000
 else
   local stdinData=$(cat)
-  currentDir=$(echo "$stdinData" | jq -r '.workspace.current_dir')
-  modelName=$(echo "$stdinData" | jq -r '.model.display_name')
-  totalCost=$(echo "$stdinData" | jq -r '.cost.total_cost_usd // 0 | . * 10000 | round / 10000')
+  local currentDir=$(echo "$stdinData" | jq -r '.workspace.current_dir')
+  local modelName=$(echo "$stdinData" | jq -r '.model.display_name')
+  local totalCost=$(echo "$stdinData" | jq -r '.cost.total_cost_usd // 0 | . * 10000 | round / 10000')
+  local inputTokens=$(echo "$stdinData" | jq -r '.context_window.total_input_tokens // 0')
+  local outputTokens=$(echo "$stdinData" | jq -r '.context_window.total_output_tokens // 0')
 fi
-
-# Settings
 
 # Left side {{{
 local leftSide=()
 
-# Project
-local projectName="$(project-by-path "$currentDir")"
-local displayProject="$(project-colorize ${projectName})"
-leftSide+=("$displayProject ")
+# Model (effort)
+local settingsFile=~/.claude/settings.json
+local effortLevel=$(jq -r '.effortLevel // "medium"' "$settingsFile")
+local displayModel="$(colorize "${modelName} (${effortLevel})" $COLOR_ALIAS_COMMENT)"
+leftSide+=("$displayModel ")
+
+# Context budget
+local totalTokens=$(( inputTokens + outputTokens ))
+local tokensKRaw=$(printf "%.1f" $(( totalTokens / 1000.0 )))
+local tokensK="${tokensKRaw%\.0}k"
+# Context percentage
+local contextPercentage=$(( totalTokens * 100 / CONTEXT_LIMIT ))
+# Context color
+local contextColor=$COLOR_RED
+(( contextPercentage < 80 )) && contextColor=$COLOR_YELLOW
+(( contextPercentage < 60 )) && contextColor=$COLOR_GREEN
+(( contextPercentage < 20 )) && contextColor=$COLOR_GRAY
+local displayContext="$(colorize "${tokensK}" $contextColor)"
+leftSide+=("$displayContext ")
 
 # Cost
 local isInCents=$(( totalCost < 1 ))
@@ -37,31 +54,27 @@ else
   local roundedDollars=$(printf "$%.2f" "$totalCost")
   local displayCost="$(colorize "${roundedDollars}" $COLOR_YELLOW)"
 fi
-leftSide+=("$displayCost ")
+# leftSide+=("$displayCost ")
 # }}}
 
 # Right side {{{
 local rightSide=()
 
-# Model
-local displayModel="$(colorize "${modelName}" $COLOR_ALIAS_COMMENT)"
-rightSide+=("$displayModel ")
-
-# Thinking
-# TODO: Display a colored thinking icon if on, grey if off
-local thinking=$(jq -r '.alwaysThinkingEnabled // false' "$settingsFile")
-rightSide+=("$thinking ")
-
-# Effort
-# TODO: Display the effort level
-local effortLevel=$(jq -r '.effortLevel // "medium"' "$settingsFile")
-rightSide+=("$effort ")
-
-
 # Branch
 local branchName="$(git-branch-current "${currentDir}")"
 local displayBranch="$(git-branch-colorize "${branchName}")"
-rightSide+=($displayBranch)
+rightSide+=("$displayBranch ")
+
+# Project
+local projectName="$(project-by-path "$currentDir")"
+local projectKey=$(project-key "$projectName")
+local projectBackground=${(P)${:-PROJECT_${projectKey}_BACKGROUND}}
+local projectForeground=${(P)${:-PROJECT_${projectKey}_FOREGROUND}}
+local projectIcon=${(P)${:-PROJECT_${projectKey}_ICON}}
+local displayProject=""
+displayProject+="$(colorize "" $projectBackground)"
+displayProject+="$(colorize " ${projectIcon}${projectName} " $projectForeground $projectBackground)"
+rightSide+=($displayProject)
 # }}}
 
 # Display {{{
@@ -82,5 +95,4 @@ local spacing=$(( windowWidth - leftWidth - rightWidth - 4 ))
 print -rn -- "${(j::)leftSide}"
 print -rn -- "${(l:$spacing:: :)}"
 print -rn -- "${(j::)rightSide}"
-print ""
 # }}}

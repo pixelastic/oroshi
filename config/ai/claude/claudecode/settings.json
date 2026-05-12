@@ -64,7 +64,6 @@
     "type": "command",
     "command": "/home/tim/.oroshi/config/ai/claude/claudecode/statusline"
   },
-  "alwaysThinkingEnabled": false,
   "effortLevel": "high",
   "theme": "dark"
 }
