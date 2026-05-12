@@ -1,0 +1,14 @@
+# Merge two or more JSON objects together (shallow, left-to-right).
+# Works like { ...obj1, ...obj2, ... } in JavaScript.
+# Arguments on the right overwrite arguments on the left.
+# Usage:
+# $ json-merge file1.json file2.json [file3.json ...]
+function json-merge() {
+  if [[ $# -lt 2 ]]; then
+    echo "Error: at least two files required" >&2
+    echo "Usage: json-merge file1.json file2.json [file3.json ...]" >&2
+    return 1
+  fi
+
+  jq --null-input 'reduce inputs as $f ({}; . + $f)' "$@"
+}
