@@ -6,6 +6,14 @@ CONFIG_DIR=~/.oroshi/config/ai/claude/claudecode
 ln -fs $CONFIG_DIR/CLAUDE.md ~/CLAUDE.md
 ln -fs $CONFIG_DIR/settings.json ~/.claude/settings.json
 
+# ~/.claude.json {{{
+# Merge custom config on top of ~/.claude.json
+local claudeJson=~/.claude.json
+local sourceJson=$CONFIG_DIR/claude.json
+json-merge ~/.claude.json $CONFIG_DIR/claude.json >/tmp/claude.tmp.json
+mv --force /tmp/claude.tmp.json ~/.claude.json
+# }}}
+
 # Skills {{{
 mkdir -p ~/.claude/skills
 # Symlink all custom skills from .oroshi to ~/.claude/skills/
