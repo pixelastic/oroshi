@@ -1,0 +1,33 @@
+#!/usr/bin/env zsh
+set -e
+
+stdinData=$(cat)
+
+sessionId=$(echo "$stdinData" | jq -r '.session_id // empty')
+transcriptPath=$(echo "$stdinData" | jq -r '.transcript_path // empty')
+cwd=$(echo "$stdinData" | jq -r '.cwd // empty')
+currentDir=$(echo "$stdinData" | jq -r '.workspace.current_dir // empty')
+
+modelName=$(echo "$stdinData" | jq -r '.model.display_name // empty')
+version=$(echo "$stdinData" | jq -r '.version // empty')
+totalCost=$(echo "$stdinData" | jq -r '.cost.total_cost_usd // 0 | . * 10000 | round / 10000')
+inputTokens=$(echo "$stdinData" | jq -r '.context_window.total_input_tokens // 0')
+outputTokens=$(echo "$stdinData" | jq -r '.context_window.total_output_tokens // 0')
+totalTokens=$(( inputTokens + outputTokens ))
+usedPct=$(( totalTokens * 100 / 1000000 ))
+totalTokensK=$(echo "$totalTokens" | awk '{printf "%.1fK", $1/1000}')
+costFmt=$(echo "$totalCost" | awk '{if ($1 >= 1) printf "$%.2f", $1; else printf "%d¢", int($1 * 100 + 0.5)}')
+
+barFilled=$(( usedPct * 10 / 100 ))
+bar=""
+i=0
+while (( i < 10 )); do
+  if (( i < barFilled )); then
+    bar="${bar}█"
+  else
+    bar="${bar}░"
+  fi
+  i=$(( i + 1 ))
+done
+
+echo "${modelName} v${version} | ${bar} ${usedPct}% (${totalTokensK}/1M) | ${costFmt}"
