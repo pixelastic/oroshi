@@ -9,16 +9,16 @@ function json-get() {
   if [[ -p /dev/stdin ]]; then
     local jsonInput="$(cat -)"
     local jsonKey="$1"
-  else 
+  else
     local jsonInput="$(cat $1)"
     local jsonKey="$2"
   fi
 
-  echo $jsonInput \
-    | jq \
+  echo $jsonInput |
+    jq \
       --raw-output \
       ".${jsonKey} \
         | if type == \"array\" \
           then join(\", \") \
-          else tostring end" 
+          else tostring end"
 }
