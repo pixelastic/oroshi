@@ -4,18 +4,21 @@ set -e
 # Load project color definitions
 source $ZSH_CONFIG_PATH/theming/env/colors.zsh
 source $ZSH_CONFIG_PATH/theming/env/projects.zsh
+local settingsFile=~/.claude/settings.json
 
-# Fake values for debugging
-local modelName="Sonnet 4.6"
-local currentDir=~/.oroshi/
-local totalCost=0
-
-local stdinData=$(cat)
-if [[ -n "$stdinData" ]]; then
+# Fake values for debuging, or values coming from stdin
+if [[ "$1" == "--dry-run" ]]; then
+  local modelName="Sonnet 4.6"
+  local currentDir=~/.oroshi/
+  local totalCost=0
+else
+  local stdinData=$(cat)
   currentDir=$(echo "$stdinData" | jq -r '.workspace.current_dir')
   modelName=$(echo "$stdinData" | jq -r '.model.display_name')
   totalCost=$(echo "$stdinData" | jq -r '.cost.total_cost_usd // 0 | . * 10000 | round / 10000')
 fi
+
+# Settings
 
 # Left side {{{
 local leftSide=()
@@ -23,15 +26,7 @@ local leftSide=()
 # Project
 local projectName="$(project-by-path "$currentDir")"
 local displayProject="$(project-colorize ${projectName})"
-leftSide+=($displayProject)
-# }}}
-
-# Right side {{{
-local rightSide=()
-
-# Model
-local displayModel="$(colorize "${modelName}" $COLOR_ALIAS_COMMENT)"
-rightSide+=("$displayModel ")
+leftSide+=("$displayProject ")
 
 # Cost
 local isInCents=$(( totalCost < 1 ))
@@ -42,7 +37,26 @@ else
   local roundedDollars=$(printf "$%.2f" "$totalCost")
   local displayCost="$(colorize "${roundedDollars}" $COLOR_YELLOW)"
 fi
-rightSide+=("$displayCost ")
+leftSide+=("$displayCost ")
+# }}}
+
+# Right side {{{
+local rightSide=()
+
+# Model
+local displayModel="$(colorize "${modelName}" $COLOR_ALIAS_COMMENT)"
+rightSide+=("$displayModel ")
+
+# Thinking
+# TODO: Display a colored thinking icon if on, grey if off
+local thinking=$(jq -r '.alwaysThinkingEnabled // false' "$settingsFile")
+rightSide+=("$thinking ")
+
+# Effort
+# TODO: Display the effort level
+local effortLevel=$(jq -r '.effortLevel // "medium"' "$settingsFile")
+rightSide+=("$effort ")
+
 
 # Branch
 local branchName="$(git-branch-current "${currentDir}")"
@@ -52,7 +66,7 @@ rightSide+=($displayBranch)
 
 # Display {{{
 function visible-width() {
-  local stripped=$(remove-ansi "$1" </dev/null)
+  local stripped=$(remove-ansi "$1")
   echo ${#stripped}
 }
 
@@ -62,9 +76,11 @@ local leftStr="${(j::)leftSide}"
 local rightStr="${(j::)rightSide}"
 local leftWidth=$(visible-width "$leftStr")
 local rightWidth=$(visible-width "$rightStr")
+# -4 is because of hard-coded padding of 2 on each side by claude code
 local spacing=$(( windowWidth - leftWidth - rightWidth - 4 ))
 
 print -rn -- "${(j::)leftSide}"
 print -rn -- "${(l:$spacing:: :)}"
 print -rn -- "${(j::)rightSide}"
+print ""
 # }}}
