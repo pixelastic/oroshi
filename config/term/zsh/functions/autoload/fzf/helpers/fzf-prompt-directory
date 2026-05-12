@@ -25,9 +25,6 @@ function fzf-prompt-directory() {
   fzfPrompt="$(colorize "$fzfPrompt ❯" $COLOR_ALIAS_DIRECTORY)"
   # prefix the project
   fzfPrompt="${projectPrefix}${fzfPrompt}"
-  # fzf in vim fails to parse the prompt if there is ​ in it
-  fzfPrompt=${fzfPrompt:gs/​//}
 
   echo $fzfPrompt
 }
-

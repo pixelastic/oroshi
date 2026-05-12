@@ -90,8 +90,6 @@ function fzf-fs-shared-preview-header() {
 
   # Project
   if [[ $projectPrefix != "" ]]; then
-    # fzf in vim fails to parse colors if there is ​ in it
-    projectPrefix=${projectPrefix:gs/​//}
     displayedHeaderArray+=("$projectPrefix ")
   fi
 
