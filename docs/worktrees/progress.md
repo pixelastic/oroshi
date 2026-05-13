@@ -43,6 +43,7 @@ Test status tracker: docs/worktrees/prd.json (only update the "passes" field)
 ## Log (append below when an issue is completed)
 
 2026-05-13 — 0001-git-directory-is-worktree — DONE (4/4 tests pass)
+2026-05-13 — 0002-git-worktree-main — DONE (3/3 tests pass)
 
 ## Session notes — 2026-05-13
 
@@ -72,6 +73,21 @@ Test status tracker: docs/worktrees/prd.json (only update the "passes" field)
   @test "..." { run_zsh_fn my-autoload-fn [args]; [ "$status" -eq 0 ]; }
 
 ### Up next (unblocked)
-- 0002-git-worktree-main (no blockers — ready to start)
-- After 0002: 0003-git-worktree-list-raw (needs 0001 + 0002)
+- 0003-git-worktree-list-raw (needs 0001 + 0002 — both done, now unblocked)
 - After 0003: 0004, 0005, 0006, 0007, 0008 all unblock
+
+## Session notes — 2026-05-13 (continued)
+
+### Completed
+- 0002-git-worktree-main (3/3 bats tests pass)
+  - config/term/zsh/functions/autoload/git/worktree/git-worktree-main
+  - scripts/bin/__tests__/git-worktree-main.bats
+
+### Implementation notes
+- `git rev-parse --git-common-dir` returns the shared `.git` dir (absolute from
+  linked worktrees, relative "." from main repo)
+- Resolved to absolute, then took parent with zsh `${var:h}` modifier
+- Extra test added beyond prd.json spec: "returns 1 outside any git repo"
+
+### Up next (unblocked)
+- 0003-git-worktree-list-raw (both 0001 + 0002 now done)
