@@ -7,9 +7,22 @@ function slugify() {
   # Replace non-alphanumeric chars with spaces (collapses multiples), then word-split
   local words=(${=input//[^a-zA-Z0-9]/ })
   local result=""
-  # Capitalize first letter of each word and concatenate
+  local isAllLower=0 isAllUpper=0 isMixedCase=0
+  local lowerWord="" upperWord=""
   for word in $words; do
-    result+="${(U)word[1]}${word[2,-1]}"
+    lowerWord="${(L)word}"
+    upperWord="${(U)word}"
+    [[ "$word" == "$lowerWord" ]] && isAllLower=1 || isAllLower=0
+    [[ "$word" == "$upperWord" ]] && isAllUpper=1 || isAllUpper=0
+    [[ "$isAllLower" == "0" && "$isAllUpper" == "0" ]] && isMixedCase=1 || isMixedCase=0
+
+    # Already mixedCase? only uppercase the first letter
+    if [[ "$isMixedCase" == "1" ]]; then
+      result+="${upperWord[1]}${word[2,-1]}"
+      continue
+    fi
+    # Otherwise, force to lower case, except for the first letter
+    result+="${upperWord[1]}${lowerWord[2,-1]}"
   done
   # Lowercase the very first letter
   echo "${(L)result[1]}${result[2,-1]}"

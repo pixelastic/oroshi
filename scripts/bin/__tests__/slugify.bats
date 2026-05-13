@@ -70,6 +70,13 @@ load 'test_helper/zsh'
   [ "$output" = "fooBar" ]
 }
 
+# --- ALL CAPS ---
+
+@test "all caps words are lowercased" {
+  run_zsh_fn slugify "FOO BAR"
+  [ "$output" = "fooBar" ]
+}
+
 # --- Edge cases ---
 
 @test "empty string returns empty" {
