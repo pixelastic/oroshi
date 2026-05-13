@@ -62,6 +62,7 @@
   "ls",
   "md5sum",
   "mkdir",
+  "mktemp",
   "mv",
   "nautilus",
   "pdfimages",
