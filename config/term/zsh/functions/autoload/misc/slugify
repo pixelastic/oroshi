@@ -3,20 +3,14 @@
 # $ slugify "The Eternal Obelisk"    # theEternalObelisk
 # $ slugify "example.com/path"       # exampleComPath
 function slugify() {
-	local input="$1"
-  # Replace special chars (., /, -, etc) with spaces, then capitalize first letter of each word
-  local capitalized="$(
-    echo "$input" |
-     sed -r 's/[^a-zA-Z0-9]+/ /g' |
-     tr -s ' ' |
-     sed -r 's/(^| )([a-zA-Z])/\U\2/g' |
-     sed -r 's/ //g'
-  )"
-  # Uncapitalize the first letter
-  local firstLetter=$capitalized[1]
-  capitalized[1]=${(L)firstLetter}
-
-  echo $capitalized
-
-
+  local input="$1"
+  # Replace non-alphanumeric chars with spaces (collapses multiples), then word-split
+  local words=(${=input//[^a-zA-Z0-9]/ })
+  local result=""
+  # Capitalize first letter of each word and concatenate
+  for word in $words; do
+    result+="${(U)word[1]}${word[2,-1]}"
+  done
+  # Lowercase the very first letter
+  echo "${(L)result[1]}${result[2,-1]}"
 }
