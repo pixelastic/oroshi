@@ -5,7 +5,7 @@
     "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "75"
   },
   "permissions": {},
-  "model": "sonnet",
+  "model": "sonnet[1m]",
   "hooks": {
     "SessionStart": [
       {
