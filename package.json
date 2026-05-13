@@ -9,6 +9,7 @@
   "devDependencies": {
     "@anthropic-ai/claude-code": "2.1.84",
     "aberlaas": "2.27.4",
+    "bats": "1.13.0",
     "eslint_d": "14.3.0",
     "firost": "5.8.0",
     "golgoth": "3.1.0",

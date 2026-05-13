@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-# BATS is a CLI testing framework
-node-module-install bats
