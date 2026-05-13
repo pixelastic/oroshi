@@ -10,6 +10,24 @@ set -e
 
 # We then iterate 10 (or --iterations) times
 # Each time, we tell claude:
+#
+local claudePrompt="
+Check @docs/worktrees/prd.json and @docs/worktrees/progress.md.
+Find the highest priority issue to work on and work on only that one.
+You decide which one is the highest priority, it doesn't have to be the first
+one.
+
+Details of issues are in ./docs/worktrees/issue-*.md files.
+You must follow tdd principles while developing the issue: start with a failing
+test.
+
+Only work on one issue.
+
+Once done, update progress.md with what you accomplished this session, which
+tests you completed, any issues discovered or fixed and what should be worked on
+next.
+"
+
 # - @plans/progress.txt
 # - @plans/prd.json
 # - Find the highest priority feature to work on and work on only that feature.
