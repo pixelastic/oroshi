@@ -29,6 +29,7 @@ FILETYPE_GROUPS[script:icon]=" "
 FILETYPE_GROUPS[script:patterns]="\
   c \
   au3 \
+  bash \
   bats \
   cjs \
   css \
