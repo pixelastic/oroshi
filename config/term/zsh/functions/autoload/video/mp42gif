@@ -2,34 +2,32 @@
 # Usage:
 # $ img-convert ./*.mp4        # Convert all mp4 files to gif
 # $ img-convert -f ./*.mp4     # Overwrites existing destinations
-function mp42gif() {
-	zparseopts -E -D \
-		f=flagForce \
-		-force=flagForce
+zparseopts -E -D \
+	f=flagForce \
+	-force=flagForce
 
-	local isForce=${#flagForce}
+local isForce=${#flagForce}
 
-	local inputs=($@)
+local inputs=($@)
 
-	for input in $inputs; do
-		echo $input
-		local inputPath=${input:a}
+for input in $inputs; do
+	echo $input
+	local inputPath=${input:a}
 
-		# Skip missing files
-		[[ ! -f $inputPath ]] && continue
+	# Skip missing files
+	[[ ! -f $inputPath ]] && continue
 
-		local outputPath="${inputPath:r}.gif"
+	local outputPath="${inputPath:r}.gif"
 
-		# Skip if output already exists (unless --force)
-		if [[ -r $outputPath ]] && [[ $isForce == "0" ]]; then
-			echo "✘ $outputPath already exists. Pass --force / -f to overwrite"
-			continue
-		fi
+	# Skip if output already exists (unless --force)
+	if [[ -r $outputPath ]] && [[ $isForce == "0" ]]; then
+		echo "✘ $outputPath already exists. Pass --force / -f to overwrite"
+		continue
+	fi
 
-		ffmpeg \
-			-i $inputPath \
-			-y \
-			-vf "fps=15,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" \
-			$outputPath
-	done
-}
+	ffmpeg \
+		-i $inputPath \
+		-y \
+		-vf "fps=15,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" \
+		$outputPath
+done

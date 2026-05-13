@@ -1,22 +1,20 @@
-function fzf-fs-directories-shared-postprocess() {
-  # Parses the return of a fzf multi-selection
-  local rawSelection="$1"
+# Parses the return of a fzf multi-selection
+local rawSelection="$1"
 
-  # Stop early
-  [[ $rawSelection == "" ]] && return
+# Stop early
+[[ $rawSelection == "" ]] && return
 
-  # Sanitize selection
-  local directories=()
-  for line in ${(f)rawSelection}; do
-    local split=(${(@s/   /)line})
+# Sanitize selection
+local directories=()
+for line in ${(f)rawSelection}; do
+  local split=(${(@s/   /)line})
 
-    local directory="$split[1]"
-    # Expand tilde but preserve special characters
-    directory=${~directory}
+  local directory="$split[1]"
+  # Expand tilde but preserve special characters
+  directory=${~directory}
 
-    directories+=($directory)
-  done
+  directories+=($directory)
+done
 
-  # Quote each directory properly for output
-  echo ${(q)directories}
-}
+# Quote each directory properly for output
+echo ${(q)directories}

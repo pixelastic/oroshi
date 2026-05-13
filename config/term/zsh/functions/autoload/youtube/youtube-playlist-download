@@ -2,14 +2,12 @@
 # Usage:
 # $ youtube-playlist-download ${playlistId/playlistUrl}
 
-function youtube-playlist-download() {
-	local args=($@)
+local args=($@)
 
-	yt-dlp \
-		--no-warnings \
-		--format 'bestvideo[height<=720]+bestaudio/best[height<=720]' \
-		--merge-output-format mp4 \
-		--output "%(upload_date)s - %(title)s.%(ext)s" \
-		-- \
-		$args
-}
+yt-dlp \
+	--no-warnings \
+	--format 'bestvideo[height<=720]+bestaudio/best[height<=720]' \
+	--merge-output-format mp4 \
+	--output "%(upload_date)s - %(title)s.%(ext)s" \
+	-- \
+	$args

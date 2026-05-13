@@ -1,6 +1,4 @@
 # Convert gif files to jpg
 # Usage:
 # $ gif2jpg ./*.gif
-function gif2jpg() {
-	img-convert $1 jpg
-}
+img-convert $1 jpg

@@ -1,6 +1,4 @@
 # Remove a dependency from the current workspace
 # Usage:
 # $ yarn-dependency-remove firost golgoth  # Remove firost and golgoth
-function yarn-dependency-remove() {
-	yarn remove -- $@
-}
+yarn remove -- $@

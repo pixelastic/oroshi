@@ -6,49 +6,47 @@
 # $ simplify-path /path/to/somewhere
 # $ simplify-path path/to/somewhere
 # $ simplify-path path/to/somewhere 6   # Simplify if more than 6 level deep
-function simplify-path() {
-  local input="$1"
-  local maxDepth=$2
-  [[ $maxDepth == "" ]] && maxDepth=4
+local input="$1"
+local maxDepth=$2
+[[ $maxDepth == "" ]] && maxDepth=4
 
-  # We convert /home/{user} with ~
-  local fullPath=${input}
-  fullPath=${fullPath/#$HOME/\~}
+# We convert /home/{user} with ~
+local fullPath=${input}
+fullPath=${fullPath/#$HOME/\~}
 
-  # Split the path as an array
-  local inputPathArray=(${(s:/:)fullPath})
-  local isTooDeep=0
-  [[ ${#inputPathArray[*]} -gt ${maxDepth} ]] && isTooDeep=1
+# Split the path as an array
+local inputPathArray=(${(s:/:)fullPath})
+local isTooDeep=0
+[[ ${#inputPathArray[*]} -gt ${maxDepth} ]] && isTooDeep=1
 
-  # Remember if starts/end with slashes
-  local startsWithSlash=0
-  [[ $fullPath[1] == "/" ]] && startsWithSlash=1
-  local endsWithSlash=0
-  [[ $fullPath[-1] == "/" ]] && endsWithSlash=1
+# Remember if starts/end with slashes
+local startsWithSlash=0
+[[ $fullPath[1] == "/" ]] && startsWithSlash=1
+local endsWithSlash=0
+[[ $fullPath[-1] == "/" ]] && endsWithSlash=1
 
-  # Build the output
-  local outputPathArray=()
+# Build the output
+local outputPathArray=()
 
 
-  # If not at the maximum directory depth, we keep the same path
-  if [[ $isTooDeep == 0 ]]; then
-    outputPathArray+=($inputPathArray)
-  fi
+# If not at the maximum directory depth, we keep the same path
+if [[ $isTooDeep == 0 ]]; then
+  outputPathArray+=($inputPathArray)
+fi
 
-  # If past the maximum depth, we remove the mid directories
-  if [[ $isTooDeep == 1 ]]; then
-    outputPathArray+=(${inputPathArray[1]})
-    outputPathArray+=("…")
-    outputPathArray+=(${inputPathArray[-2]})
-    outputPathArray+=(${inputPathArray[-1]})
-  fi
+# If past the maximum depth, we remove the mid directories
+if [[ $isTooDeep == 1 ]]; then
+  outputPathArray+=(${inputPathArray[1]})
+  outputPathArray+=("…")
+  outputPathArray+=(${inputPathArray[-2]})
+  outputPathArray+=(${inputPathArray[-1]})
+fi
 
-  # We add a starting slash only if the input had one
-  [[ $startsWithSlash == 1 ]] && outputPathArray[1]="/${outputPathArray[1]}"
-  # We add a trailing slash only if the input had one
-  [[ $endsWithSlash == 1 ]] && outputPathArray[-1]="${outputPathArray[-1]}/"
+# We add a starting slash only if the input had one
+[[ $startsWithSlash == 1 ]] && outputPathArray[1]="/${outputPathArray[1]}"
+# We add a trailing slash only if the input had one
+[[ $endsWithSlash == 1 ]] && outputPathArray[-1]="${outputPathArray[-1]}/"
 
-  # We join all the elements with /
-  local outputPath=${(j_/_)outputPathArray}
-  echo $outputPath
-}
+# We join all the elements with /
+local outputPath=${(j_/_)outputPathArray}
+echo $outputPath

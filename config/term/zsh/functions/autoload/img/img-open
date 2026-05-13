@@ -4,6 +4,4 @@
 # Usage:
 # $ img-open ./file.png           # Display file
 
-function img-open() {
-	process-detach eog $@
-}
+process-detach eog $@

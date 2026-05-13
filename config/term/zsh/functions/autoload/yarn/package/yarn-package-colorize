@@ -4,33 +4,31 @@
 # $ yarn-package-colorize --with-icon                #  firost
 # $ yarn-package-colorize --with-icon --link-local   #  firost
 # $ yarn-package-colorize --with-icon --link-global  #  firost
-function yarn-package-colorize() {
-	zparseopts -E -D \
-		-link-local=flagLinkLocal \
-		-link-global=flagLinkGlobal \
-		-with-icon=flagWithIcon
-	local isWithIcon=${#flagWithIcon}
-	local isLinkLocal=${#flagLinkLocal}
-	local isLinkGlobal=${#flagLinkGlobal}
+zparseopts -E -D \
+	-link-local=flagLinkLocal \
+	-link-global=flagLinkGlobal \
+	-with-icon=flagWithIcon
+local isWithIcon=${#flagWithIcon}
+local isLinkLocal=${#flagLinkLocal}
+local isLinkGlobal=${#flagLinkGlobal}
 
-	# Package name
-	local packageName="$1"
+# Package name
+local packageName="$1"
 
-	# Color
-	local packageColor="$COLOR_ALIAS_YARN_PACKAGE"
-	[[ $isLinkLocal == "1" ]] && packageColor=$COLOR_ALIAS_YARN_LINK_LOCAL
-	[[ $isLinkGlobal == "1" ]] && packageColor=$COLOR_ALIAS_YARN_LINK_GLOBAL
+# Color
+local packageColor="$COLOR_ALIAS_YARN_PACKAGE"
+[[ $isLinkLocal == "1" ]] && packageColor=$COLOR_ALIAS_YARN_LINK_LOCAL
+[[ $isLinkGlobal == "1" ]] && packageColor=$COLOR_ALIAS_YARN_LINK_GLOBAL
 
-	# Icon
-	local packageIcon=" "
-	[[ $isLinkLocal == "1" ]] && packageIcon=" "
-	[[ $isLinkGlobal == "1" ]] && packageIcon=" "
+# Icon
+local packageIcon=" "
+[[ $isLinkLocal == "1" ]] && packageIcon=" "
+[[ $isLinkGlobal == "1" ]] && packageIcon=" "
 
-	# If --with-icon is not passed, we simply display the colored branch
-	if [[ "$isWithIcon" != 1 ]]; then
-		colorize "$packageName" $packageColor
-		return
-	fi
+# If --with-icon is not passed, we simply display the colored branch
+if [[ "$isWithIcon" != 1 ]]; then
+	colorize "$packageName" $packageColor
+	return
+fi
 
-	colorize "${packageIcon} ${packageName}" $packageColor
-}
+colorize "${packageIcon} ${packageName}" $packageColor

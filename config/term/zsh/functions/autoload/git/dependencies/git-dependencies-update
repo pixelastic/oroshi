@@ -3,13 +3,11 @@
 #
 # Usage:
 # $ git-dependencies-update d34db33f
-function git-dependencies-update() {
-  local originCommit=$1
+local originCommit=$1
 
-  git submodule update
+git submodule update
 
-  git-dependencies-update-node $originCommit
-  git-dependencies-update-ruby $originCommit
+git-dependencies-update-node $originCommit
+git-dependencies-update-ruby $originCommit
 
-  return 0
-}
+return 0

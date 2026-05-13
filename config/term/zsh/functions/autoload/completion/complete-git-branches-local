@@ -1,9 +1,7 @@
 # List all local branches
-function complete-git-branches-local() {
-	local rawList="$(git-branch-list-raw)"
+local rawList="$(git-branch-list-raw)"
 
-	for rawLine in ${(f)rawList}; do
-    local splitLine=("${(@ps/▮/)rawLine}")
-    echo "${splitLine[1]}:${splitLine[7]}"
-	done
-}
+for rawLine in ${(f)rawList}; do
+  local splitLine=("${(@ps/▮/)rawLine}")
+  echo "${splitLine[1]}:${splitLine[7]}"
+done

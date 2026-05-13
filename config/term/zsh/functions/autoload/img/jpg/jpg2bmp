@@ -1,6 +1,4 @@
 # Convert jpg files to bmp
 # Usage:
 # $ jpg2bmp ./*.jpg
-function jpg2bmp() {
-	img-convert $1 bmp
-}
+img-convert $1 bmp

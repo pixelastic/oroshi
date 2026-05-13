@@ -1,9 +1,7 @@
 # Add dependencies to the current workspace
 # Usage:
 # $ yarn-dependency-add firost golgoth  # Add firost and golgoth
-function yarn-dependency-add() {
-	# Init the project with the right yarn version if not set
-	yarn-is-initialized || yarn-init
+# Init the project with the right yarn version if not set
+yarn-is-initialized || yarn-init
 
-	yarn add --exact -- $@
-}
+yarn add --exact -- $@

@@ -2,19 +2,17 @@
 # Usage:
 # $ git-pr-open            # Opens PR page
 # $ git-pr-open 42         # Opens PR 42
-function git-github-open-pullrequests() {
-	# Stop if not in a GitHub repo
-	git-directory-is-github || return 1
+# Stop if not in a GitHub repo
+git-directory-is-github || return 1
 
-	local prNumber=$1
-	local openedUrl="$(git-directory-url)"
+local prNumber=$1
+local openedUrl="$(git-directory-url)"
 
-	# Open a specific PR or the full list
-	if [[ $prNumber != "" ]]; then
-		openedUrl="${openedUrl}/pull/${prNumber}"
-	else
-		openedUrl="${openedUrl}/pulls"
-	fi
+# Open a specific PR or the full list
+if [[ $prNumber != "" ]]; then
+	openedUrl="${openedUrl}/pull/${prNumber}"
+else
+	openedUrl="${openedUrl}/pulls"
+fi
 
-	process-detach $BROWSER $openedUrl
-}
+process-detach $BROWSER $openedUrl

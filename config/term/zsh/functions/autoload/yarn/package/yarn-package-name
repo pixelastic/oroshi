@@ -1,9 +1,7 @@
 # Display the name of a given package
 # Usage:
 # $ yarn-package-name /path/to/firost  # Firost description
-function yarn-package-name() {
-	local inputPath=${1:a}
-	local packageRoot="$(yarn-root "$inputPath")"
+local inputPath=${1:a}
+local packageRoot="$(yarn-root "$inputPath")"
 
-	jq -r ".name" ${packageRoot}/package.json
-}
+jq -r ".name" ${packageRoot}/package.json

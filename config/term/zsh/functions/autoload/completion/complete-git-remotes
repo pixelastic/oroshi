@@ -1,12 +1,10 @@
 # Suggest all git remotes
-function complete-git-remotes() {
-  local rawList="$(git-remote-list-raw)"
+local rawList="$(git-remote-list-raw)"
 
-  for rawLine in ${(f)rawList}; do
-    local split=(${(@s/▮/)rawLine})
-    local remoteName=$split[1]
-    local remoteUrl=$split[2]
-    echo "${remoteName}:${remoteUrl}"
-  done
-}
+for rawLine in ${(f)rawList}; do
+  local split=(${(@s/▮/)rawLine})
+  local remoteName=$split[1]
+  local remoteUrl=$split[2]
+  echo "${remoteName}:${remoteUrl}"
+done
 

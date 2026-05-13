@@ -1,27 +1,25 @@
 # Open the CI web UI of the current branch
 # Usage:
 # $ git-ci-open       # Open the CI web UI
-function git-ci-open() {
-	local ciType="$(git-ci-type)"
-	local ciBaseUrl="$(git-ci-url)"
-	local branchName="$(git-branch-current)"
+local ciType="$(git-ci-type)"
+local ciBaseUrl="$(git-ci-url)"
+local branchName="$(git-branch-current)"
 
-	# Unknown CI
-	if [[ $ciType == "unknown" ]]; then
-		return 1
-	fi
+# Unknown CI
+if [[ $ciType == "unknown" ]]; then
+	return 1
+fi
 
-	# CircleCi
-	if [[ $ciType == "circleci" ]]; then
-		local openedUrl="${ciBaseUrl}?branch=${branchName}"
-	fi
+# CircleCi
+if [[ $ciType == "circleci" ]]; then
+	local openedUrl="${ciBaseUrl}?branch=${branchName}"
+fi
 
-	# GitHub Actions
-	if [[ $ciType == "actions" ]]; then
-		local openedUrl="${ciBaseUrl}?query=branch%3A${branchName}"
-	fi
+# GitHub Actions
+if [[ $ciType == "actions" ]]; then
+	local openedUrl="${ciBaseUrl}?query=branch%3A${branchName}"
+fi
 
-	$BROWSER $openedUrl &>/dev/null
+$BROWSER $openedUrl &>/dev/null
 
-	return 0
-}
+return 0

@@ -5,12 +5,10 @@
 # MY_PROJECT
 # $ project-key "meetups-badges"
 # MEETUPS_BADGES
-function project-key() {
-  local projectName="$1"
+local projectName="$1"
 
-  # Replace all - with _, then convert to uppercase
-  local key="${projectName:gs/-/_}"
-  key="${key:u}"
+# Replace all - with _, then convert to uppercase
+local key="${projectName:gs/-/_}"
+key="${key:u}"
 
-  echo "$key"
-}
+echo "$key"

@@ -2,21 +2,19 @@
 # Usage:
 # $ png-trim ./path/to/file.png                   # Trims the file in place
 # $ png-trim ./path/to/file.png ./other-file.png  # Trims several files
-function png-trim() {
-	local input=($@)
+local input=($@)
 
-	for inputPath in ${input}; do
-		local outputPath="${inputPath:a:r}.png"
+for inputPath in ${input}; do
+	local outputPath="${inputPath:a:r}.png"
 
-		# Skip if not a valid png
-		if [[ $inputPath != *.png ]]; then
-			echo "✘ $inputPath is not a png file. Skipping."
-			continue
-		fi
+	# Skip if not a valid png
+	if [[ $inputPath != *.png ]]; then
+		echo "✘ $inputPath is not a png file. Skipping."
+		continue
+	fi
 
-		magick \
-			$inputPath \
-			-trim \
-			PNG32:$inputPath
-	done
-}
+	magick \
+		$inputPath \
+		-trim \
+		PNG32:$inputPath
+done

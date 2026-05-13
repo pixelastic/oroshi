@@ -1,6 +1,4 @@
 # Convert webp files to png
 # Usage:
 # $ webp2png ./*.webp
-function webp2png() {
-	img-convert $1 png
-}
+img-convert $1 png

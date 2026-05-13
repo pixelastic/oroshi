@@ -1,15 +1,13 @@
 # Display list of all projects with icon and name
-function fzf-projects-source() {
-  # Iterate through all projects in PROJECTS_INDEX
-  for projectKey in ${=PROJECTS_INDEX}; do
-    local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
-    local projectName=${(P)${:-PROJECT_${projectKey}_NAME}}
-    local projectIcon=${(P)${:-PROJECT_${projectKey}_ICON}}
+# Iterate through all projects in PROJECTS_INDEX
+for projectKey in ${=PROJECTS_INDEX}; do
+  local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
+  local projectName=${(P)${:-PROJECT_${projectKey}_NAME}}
+  local projectIcon=${(P)${:-PROJECT_${projectKey}_ICON}}
 
-    [[ $projectPath == ""  ]] && continue
+  [[ $projectPath == ""  ]] && continue
 
-    local projectDisplayName="$(project-colorize $projectName)"
+  local projectDisplayName="$(project-colorize $projectName)"
 
-    echo "${projectName}▮${projectDisplayName}"
-  done
-}
+  echo "${projectName}▮${projectDisplayName}"
+done

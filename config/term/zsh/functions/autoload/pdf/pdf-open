@@ -4,6 +4,4 @@
 # Usage:
 # $ pdf-open ./file.pdf        # Display file
 
-function pdf-open() {
-	process-detach evince $@
-}
+process-detach evince $@

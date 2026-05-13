@@ -4,38 +4,36 @@
 # $ claude-print "Translate this" --sound bg-stealth.wav
 # $ claude-print "Translate this" --sound-before start.mp3 --sound end.mp3
 # $ claude-print "Translate this" --effort low
-function claude-print() {
-  # Parse arguments
-  zparseopts -E -D \
-    -sound:=flagSound \
-    -sound-before:=flagSoundBefore \
-    -effort:=flagEffort
+# Parse arguments
+zparseopts -E -D \
+  -sound:=flagSound \
+  -sound-before:=flagSoundBefore \
+  -effort:=flagEffort
 
-  local input="$1"
-  local sessionId="eeeeeeee-0000-0000-0000-eeeeeeeeeeee"
-  local projectFolder="${PWD//(\/|\.|_)/-}"
-  local soundAfter=$flagSound[2]
-  local soundBefore=$flagSoundBefore[2]
-  local effort=${flagEffort[2]}
+local input="$1"
+local sessionId="eeeeeeee-0000-0000-0000-eeeeeeeeeeee"
+local projectFolder="${PWD//(\/|\.|_)/-}"
+local soundAfter=$flagSound[2]
+local soundBefore=$flagSoundBefore[2]
+local effort=${flagEffort[2]}
 
-  # Play start sound if --sound-before is set
-  if [[ "$soundBefore" != "" ]]; then
-    audio-play-oroshi "${soundBefore}"
-  fi
+# Play start sound if --sound-before is set
+if [[ "$soundBefore" != "" ]]; then
+  audio-play-oroshi "${soundBefore}"
+fi
 
-  if [[ "$soundAfter" != "" ]]; then
-    export OROSHI_CLAUDECODE_STOP_SOUND="${soundAfter}"
-  fi
+if [[ "$soundAfter" != "" ]]; then
+  export OROSHI_CLAUDECODE_STOP_SOUND="${soundAfter}"
+fi
 
-  # Pass --effort is specified
-  local claudeArgs=(--print --model sonnet --session-id "$sessionId")
-  if [[ "$effort" != "" ]]; then
-    claudeArgs+=(--effort "$effort")
-  fi
+# Pass --effort is specified
+local claudeArgs=(--print --model sonnet --session-id "$sessionId")
+if [[ "$effort" != "" ]]; then
+  claudeArgs+=(--effort "$effort")
+fi
 
-  CLAUDE_DO_NOT_FIX_TERMINAL_ISSUE_38761=1 claude "${claudeArgs[@]}" <<<"$input"
+CLAUDE_DO_NOT_FIX_TERMINAL_ISSUE_38761=1 claude "${claudeArgs[@]}" <<<"$input"
 
-  # Clean up
-  rm -rf ~/.claude/projects/${projectFolder}/${sessionId}.jsonl
-  unset OROSHI_CLAUDECODE_STOP_SOUND
-}
+# Clean up
+rm -rf ~/.claude/projects/${projectFolder}/${sessionId}.jsonl
+unset OROSHI_CLAUDECODE_STOP_SOUND

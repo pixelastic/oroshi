@@ -1,22 +1,20 @@
 # Check if currently in a yarn monorepo
-function yarn-is-monorepo() {
-  # No yarn
-  [[ ! $commands[yarn] ]] && return 1
+# No yarn
+[[ ! $commands[yarn] ]] && return 1
 
-  local gitRoot="$(git-directory-root)"
-  local packageJsonPath="${gitRoot}/package.json"
+local gitRoot="$(git-directory-root)"
+local packageJsonPath="${gitRoot}/package.json"
 
-  # Not in git repo
-  [[ $gitRoot == "" ]] && return 1
+# Not in git repo
+[[ $gitRoot == "" ]] && return 1
 
-  # No package.json
-  [[ ! -r $packageJsonPath ]] && return 1
+# No package.json
+[[ ! -r $packageJsonPath ]] && return 1
 
-  # We simply check if the root package.json contains the string "workspaces":
-  # This is fast, but not 100% reliable (false positive, package.json not at the
-  # git root, etc)
-  grep \
-    --quiet \
-    '"workspaces":' \
-    $packageJsonPath &>/dev/null
-}
+# We simply check if the root package.json contains the string "workspaces":
+# This is fast, but not 100% reliable (false positive, package.json not at the
+# git root, etc)
+grep \
+  --quiet \
+  '"workspaces":' \
+  $packageJsonPath &>/dev/null

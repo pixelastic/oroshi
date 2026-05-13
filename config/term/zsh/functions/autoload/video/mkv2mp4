@@ -2,39 +2,37 @@
 # Usage:
 # mkv2mp4 path.mkv            # Convert one file
 # mkv2mp4 file1.mkv file2.mkv # Convert several files
-function mkv2mp4() {
-	zparseopts -E -D \
-		f=flagForce \
-		-force=flagForce
+zparseopts -E -D \
+	f=flagForce \
+	-force=flagForce
 
-	local isForce=${#flagForce}
+local isForce=${#flagForce}
 
-	local inputs=($@)
-	for rawInput in $inputs; do
-		local input=${rawInput:a}
+local inputs=($@)
+for rawInput in $inputs; do
+	local input=${rawInput:a}
 
-		# Skip if does not exist
-		[[ ! -f $input ]] && continue
+	# Skip if does not exist
+	[[ ! -f $input ]] && continue
 
-		# Skip if not an mkv file
-		local extension=${input:e}
-		[[ $extension != 'mkv' ]] && continue
+	# Skip if not an mkv file
+	local extension=${input:e}
+	[[ $extension != 'mkv' ]] && continue
 
-		local output=${input:a:r}.mp4
-		if [[ -f $output ]]; then
-			# Skip if output already exists
-			if [[ $isForce == "0" ]]; then
-				echo "$output already exists. Pass --force to overwrite"
-				continue
-			else
-				# Unless --force is passed, in which case we remove it first
-				rm $output
-			fi
+	local output=${input:a:r}.mp4
+	if [[ -f $output ]]; then
+		# Skip if output already exists
+		if [[ $isForce == "0" ]]; then
+			echo "$output already exists. Pass --force to overwrite"
+			continue
+		else
+			# Unless --force is passed, in which case we remove it first
+			rm $output
 		fi
+	fi
 
-		ffmpeg \
-			-i "$input" \
-			-codec copy \
-			"$output"
-	done
-}
+	ffmpeg \
+		-i "$input" \
+		-codec copy \
+		"$output"
+done

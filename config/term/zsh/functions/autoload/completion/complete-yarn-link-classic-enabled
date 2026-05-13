@@ -1,14 +1,12 @@
 # List links enabled in the current repo, using Yarn Classic (v1)
-function complete-yarn-link-classic-enabled() {
-  local linkListRaw="$(yarn-link-list-raw --with-descriptions)"
-  for rawLine in ${(f)linkListRaw}; do
-    local split=(${(s/▮/)rawLine})
-    local linkName=$split[1]
-    local linkType=$split[2]
-    local linkDescription=$split[3]
+local linkListRaw="$(yarn-link-list-raw --with-descriptions)"
+for rawLine in ${(f)linkListRaw}; do
+  local split=(${(s/▮/)rawLine})
+  local linkName=$split[1]
+  local linkType=$split[2]
+  local linkDescription=$split[3]
 
-    [[ $linkType != "classic" ]] && continue
+  [[ $linkType != "classic" ]] && continue
 
-    echo "${linkName}:${linkDescription}"
-  done
-}
+  echo "${linkName}:${linkDescription}"
+done

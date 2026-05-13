@@ -5,26 +5,24 @@
 # Usage:
 # $ fzf-prompt-directory   # Colored prompt for current directory
 # $ fzf-prompt-directory ~/.oroshi/  # Colored prompt for ~/.oroshi
-function fzf-prompt-directory() {
-  local fzfPrompt="${${1:a}/#$HOME/~}/"
+local fzfPrompt="${${1:a}/#$HOME/~}/"
 
-  local projectName="$(project-by-path $fzfPrompt)"
-  if [[ $projectName != "" ]]; then
-    local projectKey=$(project-key "$projectName")
-    local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
-    eval "fzfPrompt=\${fzfPrompt:s_${projectPath}_}"
-    local projectPrefix="$(project-colorize $projectName)"
-  fi
+local projectName="$(project-by-path $fzfPrompt)"
+if [[ $projectName != "" ]]; then
+  local projectKey=$(project-key "$projectName")
+  local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
+  eval "fzfPrompt=\${fzfPrompt:s_${projectPath}_}"
+  local projectPrefix="$(project-colorize $projectName)"
+fi
 
-  # If we have a path to display, we make it pretty
-  if [[ $fzfPrompt != "" ]]; then
-    # shorten paths with too many levels
-    fzfPrompt=" $(simplify-path "$fzfPrompt")";
-  fi
-  # colorize it in green
-  fzfPrompt="$(colorize "$fzfPrompt ❯" $COLOR_ALIAS_DIRECTORY)"
-  # prefix the project
-  fzfPrompt="${projectPrefix}${fzfPrompt}"
+# If we have a path to display, we make it pretty
+if [[ $fzfPrompt != "" ]]; then
+  # shorten paths with too many levels
+  fzfPrompt=" $(simplify-path "$fzfPrompt")";
+fi
+# colorize it in green
+fzfPrompt="$(colorize "$fzfPrompt ❯" $COLOR_ALIAS_DIRECTORY)"
+# prefix the project
+fzfPrompt="${projectPrefix}${fzfPrompt}"
 
-  echo $fzfPrompt
-}
+echo $fzfPrompt

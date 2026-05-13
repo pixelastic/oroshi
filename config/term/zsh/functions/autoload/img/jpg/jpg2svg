@@ -1,6 +1,4 @@
 # Convert jpg files to svg
 # Usage:
 # $ jpg2svg ./*.jpg
-function jpg2svg() {
-	img-convert $1 svg
-}
+img-convert $1 svg

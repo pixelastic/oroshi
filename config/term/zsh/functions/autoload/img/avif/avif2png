@@ -1,6 +1,4 @@
 # Convert avif files to png
 # Usage:
 # $ avif2png ./*.avif
-function avif2png() {
-  img-convert $1 png
-}
+img-convert $1 png

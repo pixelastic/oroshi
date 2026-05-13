@@ -1,9 +1,7 @@
 # Add devDependency to the root, and not the current workspace
 # Usage:
 # $ yarn-dependency-add-dev-root aberlaas   # Add aberlaas to root
-function yarn-dependency-add-dev-root() {
-	# Init the project with the right yarn version if not set
-	yarn-is-initialized || yarn-init
+# Init the project with the right yarn version if not set
+yarn-is-initialized || yarn-init
 
-	yarn add --exact --dev -W -- $@
-}
+yarn add --exact --dev -W -- $@

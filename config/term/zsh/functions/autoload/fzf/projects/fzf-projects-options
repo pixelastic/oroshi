@@ -1,6 +1,4 @@
-function fzf-projects-options() {
-  echo "--prompt= "
+echo "--prompt= "
 
-  echo "--delimiter=▮"
-  echo "--with-nth=2"
-}
+echo "--delimiter=▮"
+echo "--with-nth=2"

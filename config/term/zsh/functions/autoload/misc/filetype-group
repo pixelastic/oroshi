@@ -4,10 +4,8 @@
 # Usage:
 # $ filetype-group ./path/to/file.png    # image
 
-function filetype-group() {
-	local filepath=${1:a}
-	local extension=${filepath:e:u}
-	local group=${(P)${:-FILETYPE_${extension}_GROUP}}
+local filepath=${1:a}
+local extension=${filepath:e:u}
+local group=${(P)${:-FILETYPE_${extension}_GROUP}}
 
-	echo $group
-}
+echo $group

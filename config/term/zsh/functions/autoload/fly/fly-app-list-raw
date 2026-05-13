@@ -1,7 +1,5 @@
 # View list of all apps
 # Usage:
 # $ fly-app-list-raw   # View list of all apps
-function fly-app-list-raw() {
-  fly apps list --json |
-    jq -r '.[] | "\(.Name)▮\(.Status)▮\(.Hostname)"'
-}
+fly apps list --json |
+  jq -r '.[] | "\(.Name)▮\(.Status)▮\(.Hostname)"'

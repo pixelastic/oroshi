@@ -1,6 +1,4 @@
 # Convert gif files to png
 # Usage:
 # $ gif2png ./*.gif
-function gif2png() {
-	img-convert $1 png
-}
+img-convert $1 png

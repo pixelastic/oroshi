@@ -4,83 +4,81 @@
 # $ pdf2txt --keepLayout ./path/to/file.pdf
 # $ pdf2txt --pages 12 ./path/to/file.pdf
 # $ pdf2txt --pages 5-10 ./path/to/file.pdf
-function pdf2txt() {
-  zparseopts -E -D \
-    -keepLayout=flagKeepLayout \
-    -pages:=flagPages
+zparseopts -E -D \
+  -keepLayout=flagKeepLayout \
+  -pages:=flagPages
 
-  local isKeepLayout=${#flagKeepLayout}
-  local pages=${flagPages[2]}
-  local files=("$@")
+local isKeepLayout=${#flagKeepLayout}
+local pages=${flagPages[2]}
+local files=("$@")
 
-  # Get first/last pages to extract {{{
-  local pageStart=""
-  local pageEnd=""
-  if [[ "$pages" != "" ]]; then
-    pageStart="$pages"
-    pageEnd="$pages"
+# Get first/last pages to extract {{{
+local pageStart=""
+local pageEnd=""
+if [[ "$pages" != "" ]]; then
+  pageStart="$pages"
+  pageEnd="$pages"
+fi
+if [[ "$pages" =~ ^([0-9]+)-([0-9]+)$ ]]; then
+  pageStart="${match[1]}"
+  pageEnd="${match[2]}"
+fi
+# }}}
+
+for inputFilepath in $files; do
+  local inputFilepath=${inputFilepath:a}
+
+  if ! is-pdf "$inputFilepath"; then
+    continue
   fi
-  if [[ "$pages" =~ ^([0-9]+)-([0-9]+)$ ]]; then
-    pageStart="${match[1]}"
-    pageEnd="${match[2]}"
+
+  local dirpath=${inputFilepath:h}
+  local filepathBasename=${inputFilepath:t:r}
+  local pageCount=$(pdf-page-count "$inputFilepath")
+
+  local resolvedPageStart="$pageStart"
+  local resolvedPageEnd="$pageEnd"
+
+  # Check pages are within bounds {{{
+  if [[ -n "$pages" ]]; then
+    if [[ "$pageStart" == "last" ]]; then
+      resolvedPageStart="$pageCount"
+      resolvedPageEnd="$pageCount"
+    fi
+
+    if [[ $resolvedPageStart -gt $pageCount ]]; then
+      echo "Error: Page $resolvedPageStart not found. ${inputFilepath:t} has $pageCount pages." >&2
+      continue
+    fi
+
+    if [[ $resolvedPageEnd -gt $pageCount ]]; then
+      echo "Error: Page $resolvedPageEnd not found. ${inputFilepath:t} has $pageCount pages." >&2
+      continue
+    fi
   fi
   # }}}
 
-  for inputFilepath in $files; do
-    local inputFilepath=${inputFilepath:a}
+  local outputFilepath="${dirpath}/${filepathBasename}.txt"
+  if [[ -n "$pages" ]]; then
+    outputFilepath="${dirpath}/${filepathBasename}_${pages}.txt"
+  fi
 
-    if ! is-pdf "$inputFilepath"; then
-      continue
-    fi
+  # Skip if output already exists
+  if [[ -f "$outputFilepath" ]]; then
+    continue
+  fi
 
-    local dirpath=${inputFilepath:h}
-    local filepathBasename=${inputFilepath:t:r}
-    local pageCount=$(pdf-page-count "$inputFilepath")
+  local knownErrorsPattern='Syntax Warning: Invalid Font Weight'
 
-    local resolvedPageStart="$pageStart"
-    local resolvedPageEnd="$pageEnd"
+  local pdftextArgs=()
+  [[ $isKeepLayout == "1" ]] && pdftextArgs+=('-layout')
+  [[ -n "$resolvedPageStart" ]] && pdftextArgs+=('-f' "$resolvedPageStart")
+  [[ -n "$resolvedPageEnd" ]] && pdftextArgs+=('-l' "$resolvedPageEnd")
 
-    # Check pages are within bounds {{{
-    if [[ -n "$pages" ]]; then
-      if [[ "$pageStart" == "last" ]]; then
-        resolvedPageStart="$pageCount"
-        resolvedPageEnd="$pageCount"
-      fi
-
-      if [[ $resolvedPageStart -gt $pageCount ]]; then
-        echo "Error: Page $resolvedPageStart not found. ${inputFilepath:t} has $pageCount pages." >&2
-        continue
-      fi
-
-      if [[ $resolvedPageEnd -gt $pageCount ]]; then
-        echo "Error: Page $resolvedPageEnd not found. ${inputFilepath:t} has $pageCount pages." >&2
-        continue
-      fi
-    fi
-    # }}}
-
-    local outputFilepath="${dirpath}/${filepathBasename}.txt"
-    if [[ -n "$pages" ]]; then
-      outputFilepath="${dirpath}/${filepathBasename}_${pages}.txt"
-    fi
-
-    # Skip if output already exists
-    if [[ -f "$outputFilepath" ]]; then
-      continue
-    fi
-
-    local knownErrorsPattern='Syntax Warning: Invalid Font Weight'
-
-    local pdftextArgs=()
-    [[ $isKeepLayout == "1" ]] && pdftextArgs+=('-layout')
-    [[ -n "$resolvedPageStart" ]] && pdftextArgs+=('-f' "$resolvedPageStart")
-    [[ -n "$resolvedPageEnd" ]] && pdftextArgs+=('-l' "$resolvedPageEnd")
-
-    pdftotext \
-      $pdftextArgs \
-      "$inputFilepath" \
-      - \
-      2> >(\grep -v "${knownErrorsPattern}" >&2) \
-      >"$outputFilepath"
-  done
-}
+  pdftotext \
+    $pdftextArgs \
+    "$inputFilepath" \
+    - \
+    2> >(\grep -v "${knownErrorsPattern}" >&2) \
+    >"$outputFilepath"
+done

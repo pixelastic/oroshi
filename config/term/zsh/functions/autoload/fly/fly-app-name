@@ -1,9 +1,7 @@
 # Get the name of the current Fly.io application
 # Usage:
 # $ fly-app-name   # Returns the app name for current directory
-function fly-app-name() {
-  local flyConfig="$(fly-config-path)"
-  [[ -z $flyConfig ]] && return 1
+local flyConfig="$(fly-config-path)"
+[[ -z $flyConfig ]] && return 1
 
-  fly status --json --config ${flyConfig} | jq -r '.Name'
-}
+fly status --json --config ${flyConfig} | jq -r '.Name'

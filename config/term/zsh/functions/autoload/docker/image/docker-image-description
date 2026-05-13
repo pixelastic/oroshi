@@ -1,14 +1,12 @@
 # Display the description of an official Docker image
 # Usage:
 # $ docker-image-description ubuntu    # Ubuntu is a Debian-based Linux...
-function docker-image-description() {
-  local imageName="$1"
+local imageName="$1"
 
-  # Find the right line in the whole list
-  local cacheFile=~/.oroshi/config/docker/cache/src/images-remote.txt
-  local rawLine="$(cat $cacheFile | \grep "^${imageName}   ")"
+# Find the right line in the whole list
+local cacheFile=~/.oroshi/config/docker/cache/src/images-remote.txt
+local rawLine="$(cat $cacheFile | \grep "^${imageName}   ")"
 
-  # Display only the description
-  local splitLine=(${(@s/   /)rawLine})
-  echo $splitLine[2]
-}
+# Display only the description
+local splitLine=(${(@s/   /)rawLine})
+echo $splitLine[2]

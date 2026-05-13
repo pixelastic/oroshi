@@ -4,43 +4,41 @@
 # $ yarn-dependency-update firost aberlass # Update the firost and aberlaas dependencies
 # $ yarn-dependency-update                 # Stops and display a warning
 # $ yarn-dependency-update --force firost  # Allows updating a dependency in the workspace root
-function yarn-dependency-update() {
-  zparseopts -E -D \
-    -force=flagForce
+zparseopts -E -D \
+  -force=flagForce
 
-  local isForce=${#flagForce}
+local isForce=${#flagForce}
 
-  local dependencies=$@
+local dependencies=$@
 
-  # Stop if no dependency passed
-  if [[ $dependencies == "" ]]; then
-    echo "✘ You must pass at least one dependency to update"
-    return 1
-  fi
+# Stop if no dependency passed
+if [[ $dependencies == "" ]]; then
+  echo "✘ You must pass at least one dependency to update"
+  return 1
+fi
 
-  # By default, we prevent updating dependencies in a monorepo root
-  if yarn-is-workspace-root && [ "$flagForce" == "0" ]; then
-    echo "Are you sure you want to update dependencies at the root of the monorepo?"
-    echo "- If so, use the --force flag"
-    echo "- Or maybe you want to run this in ./lib or ./docs?"
-    return 1
-  fi
+# By default, we prevent updating dependencies in a monorepo root
+if yarn-is-workspace-root && [ "$flagForce" == "0" ]; then
+  echo "Are you sure you want to update dependencies at the root of the monorepo?"
+  echo "- If so, use the --force flag"
+  echo "- Or maybe you want to run this in ./lib or ./docs?"
+  return 1
+fi
 
-  # The underlying method to call is different in yarn classic (v1) and yarn
-  # berry (2+)
-  if yarn-version-is-berry; then
-    yarn up --exact ${=dependencies}
-  else
-    # yarn classic requires @latest to be added
-    local dependencyList=()
-    for dependencyName in ${=dependencies}; do
-      dependencyList+=(${dependencyName}@latest)
-    done
-    yarn upgrade ${=dependencyList}
+# The underlying method to call is different in yarn classic (v1) and yarn
+# berry (2+)
+if yarn-version-is-berry; then
+  yarn up --exact ${=dependencies}
+else
+  # yarn classic requires @latest to be added
+  local dependencyList=()
+  for dependencyName in ${=dependencies}; do
+    dependencyList+=(${dependencyName}@latest)
+  done
+  yarn upgrade ${=dependencyList}
 
-    # Upgrading with yarn upgrade only updates the version number in package
-    # .json, it doesn't seem to actually install the packages in node_modules
-    yarn install
-  fi
+  # Upgrading with yarn upgrade only updates the version number in package
+  # .json, it doesn't seem to actually install the packages in node_modules
+  yarn install
+fi
 
-}

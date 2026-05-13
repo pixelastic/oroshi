@@ -3,42 +3,40 @@
 # $ yarn-dependency-list         # Only regular dependencies
 # $ yarn-dependency-list --dev   # Only dev dependencies
 # $ yarn-dependency-list --all   # All dependencies
-function yarn-dependency-list() {
-  local rawList="$(yarn-dependency-list-raw --with-descriptions $@)"
-  [[ $rawList == "" ]] && return 0
+local rawList="$(yarn-dependency-list-raw --with-descriptions $@)"
+[[ $rawList == "" ]] && return 0
 
-  local output=""
-  for rawLine in ${(f)rawList}; do
-    local row=""
-    local split=(${(s/▮/)rawLine})
-    local dependencyName=$split[1]
-    local dependencyVersion=$split[2]
-    local dependencyType=$split[3]
-    local dependencyLinkType=$split[4]
-    local dependencyDescription=$split[5]
+local output=""
+for rawLine in ${(f)rawList}; do
+  local row=""
+  local split=(${(s/▮/)rawLine})
+  local dependencyName=$split[1]
+  local dependencyVersion=$split[2]
+  local dependencyType=$split[3]
+  local dependencyLinkType=$split[4]
+  local dependencyDescription=$split[5]
 
-    # Name
-    local additionalPackageColorizeOption=""
-    [[ $dependencyLinkType == "link-local" ]] && additionalPackageColorizeOption="--link-local"
-    [[ $dependencyLinkType == "link-global" ]] && additionalPackageColorizeOption="--link-global"
-    row+="$(yarn-package-colorize $dependencyName --with-icon $additionalPackageColorizeOption)▮"
+  # Name
+  local additionalPackageColorizeOption=""
+  [[ $dependencyLinkType == "link-local" ]] && additionalPackageColorizeOption="--link-local"
+  [[ $dependencyLinkType == "link-global" ]] && additionalPackageColorizeOption="--link-global"
+  row+="$(yarn-package-colorize $dependencyName --with-icon $additionalPackageColorizeOption)▮"
 
-    # Key
-    if [[ $dependencyType == "devDependencies" ]]; then
-      row+="$(colorize "dev" $COLOR_ALIAS_COMMENT)▮"
-    else
-      row+="▮"
-    fi
+  # Key
+  if [[ $dependencyType == "devDependencies" ]]; then
+    row+="$(colorize "dev" $COLOR_ALIAS_COMMENT)▮"
+  else
+    row+="▮"
+  fi
 
-    # Version
-    row+="$(colorize "$dependencyVersion" $COLOR_ALIAS_YARN_PACKAGE_VERSION)▮"
+  # Version
+  row+="$(colorize "$dependencyVersion" $COLOR_ALIAS_YARN_PACKAGE_VERSION)▮"
 
 
-    # Description
-    row+="$(colorize "$dependencyDescription" $COLOR_ALIAS_YARN_PACKAGE_DESCRIPTION)▮"
+  # Description
+  row+="$(colorize "$dependencyDescription" $COLOR_ALIAS_YARN_PACKAGE_DESCRIPTION)▮"
 
-    output+="$row\n"
-  done
+  output+="$row\n"
+done
 
-  table $output
-}
+table $output

@@ -1,5 +1,3 @@
-function fzf-projects-postprocess() {
-  local rawSelection="$1"
-  local split=(${(@s/▮/)rawSelection})
-  echo $split[1]
-}
+local rawSelection="$1"
+local split=(${(@s/▮/)rawSelection})
+echo $split[1]

@@ -4,32 +4,30 @@
 # $ echo "here\n../far\n../../even-further" | sort-filepath
 # $ sort-filepath "here\n../far" "../../even-further"
 
-function sort-filepaths() {
-  # Get input from stdin, or as arguments
-  if [[ -p /dev/stdin ]]; then
-    local stdin=$(cat -)
-    local unsortedFilepaths=(${(f)stdin})
-  else
-    local unsortedFilepaths=()
-    for arg in $@; do
-      unsortedFilepaths+=(${(@s/\n/)arg})
-    done
-  fi
-
-  local weightedFilepaths=()
-
-  # We sort first files in the current directory, then those downward and
-  # finally those upward
-  for filepath in $unsortedFilepaths; do
-    local slashCount=${#${filepath//[^\/]}}
-    local weightedFilepath="2|$filepath"
-    [[ $slashCount == "0" || $filepath == ./* ]] && weightedFilepath="1|$filepath"
-    [[ $filepath == ../* ]] && weightedFilepath="3|$filepath"
-
-    weightedFilepaths+=($weightedFilepath)
+# Get input from stdin, or as arguments
+if [[ -p /dev/stdin ]]; then
+  local stdin=$(cat -)
+  local unsortedFilepaths=(${(f)stdin})
+else
+  local unsortedFilepaths=()
+  for arg in $@; do
+    unsortedFilepaths+=(${(@s/\n/)arg})
   done
+fi
 
-  echo ${(F)weightedFilepaths} \
-    | sort \
-    | awk -F '|' '{print $2}'
-}
+local weightedFilepaths=()
+
+# We sort first files in the current directory, then those downward and
+# finally those upward
+for filepath in $unsortedFilepaths; do
+  local slashCount=${#${filepath//[^\/]}}
+  local weightedFilepath="2|$filepath"
+  [[ $slashCount == "0" || $filepath == ./* ]] && weightedFilepath="1|$filepath"
+  [[ $filepath == ../* ]] && weightedFilepath="3|$filepath"
+
+  weightedFilepaths+=($weightedFilepath)
+done
+
+echo ${(F)weightedFilepaths} \
+  | sort \
+  | awk -F '|' '{print $2}'

@@ -1,12 +1,10 @@
 # Display list of all scripts commands
-function complete-yarn-scripts() {
-	local rawList="$(yarn-script-list-raw)"
-	[[ $rawList == "" ]] && return 0
+local rawList="$(yarn-script-list-raw)"
+[[ $rawList == "" ]] && return 0
 
-  for rawLine in ${(f)rawList}; do
-    local split=(${(s/▮/)rawLine})
-		local scriptName="${split[1]//:/\:}"
-		local scriptCommand=$split[2];
-		echo "${scriptName}:${scriptCommand}"
-	done
-}
+for rawLine in ${(f)rawList}; do
+  local split=(${(s/▮/)rawLine})
+	local scriptName="${split[1]//:/\:}"
+	local scriptCommand=$split[2];
+	echo "${scriptName}:${scriptCommand}"
+done

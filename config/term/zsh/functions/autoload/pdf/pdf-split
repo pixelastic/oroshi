@@ -4,50 +4,48 @@
 # $ pdf-split ./path/to/file.pdf 1-4           # Extract from page 1 to 4
 # $ pdf-split ./path/to/file.pdf last          # Extract last page
 # $ pdf-split ./path/to/file.pdf 1 output.pdf  # Extract page 1 into output.pdf
-function pdf-split() {
-	local input=$1
-	local rawRange=$2
-	local output=$3
+local input=$1
+local rawRange=$2
+local output=$3
 
-	# Stop if no input given
-	if [[ $input == "" ]]; then
-		echo "Usage:"
-		echo "$ pdf-split ./path/to/file.pdf 3"
-		echo "$ pdf-split ./path/to/file.pdf 3-5"
-		echo "$ pdf-split ./path/to/file.pdf last"
-		echo "$ pdf-split ./path/to/file.pdf 3 output.pdf"
-		return 0
-	fi
+# Stop if no input given
+if [[ $input == "" ]]; then
+	echo "Usage:"
+	echo "$ pdf-split ./path/to/file.pdf 3"
+	echo "$ pdf-split ./path/to/file.pdf 3-5"
+	echo "$ pdf-split ./path/to/file.pdf last"
+	echo "$ pdf-split ./path/to/file.pdf 3 output.pdf"
+	return 0
+fi
 
-	# Stop if not a pdf
-	is-pdf $input || return 0
+# Stop if not a pdf
+is-pdf $input || return 0
 
-	# Read page start and page end
-	local rangeSplit=(${(@s/-/)rawRange})
-	local rangeStart=$rangeSplit[1]
-	local rangeEnd=$rangeSplit[2]
-	
-	# Stop if no range given
-	if [[ $rangeStart == "" ]]; then
-		echo "You need to pass either a page number (like 3) or a range (like 3-5)"
-		return 0
-	fi
+# Read page start and page end
+local rangeSplit=(${(@s/-/)rawRange})
+local rangeStart=$rangeSplit[1]
+local rangeEnd=$rangeSplit[2]
 
-	# Force range in the actual number of pages
-	local pageCount="$(pdf-page-count $input)"
-	[[ $rangeStart == "last" ]] && rangeStart=$pageCount
-	[[ $rangeEnd == "" ]] && rangeEnd=$rangeStart
-	[[ $rangeStart -gt $pageCount ]] && rangeStart=$pageCount
-	[[ $rangeEnd -gt $pageCount ]] && rangeEnd=$pageCount
+# Stop if no range given
+if [[ $rangeStart == "" ]]; then
+	echo "You need to pass either a page number (like 3) or a range (like 3-5)"
+	return 0
+fi
 
-	# Build the final range
-	local range="${rangeStart}-${rangeEnd}"
-	[[ $rangeStart == "$rangeEnd" ]] && range=$rangeStart
+# Force range in the actual number of pages
+local pageCount="$(pdf-page-count $input)"
+[[ $rangeStart == "last" ]] && rangeStart=$pageCount
+[[ $rangeEnd == "" ]] && rangeEnd=$rangeStart
+[[ $rangeStart -gt $pageCount ]] && rangeStart=$pageCount
+[[ $rangeEnd -gt $pageCount ]] && rangeEnd=$pageCount
 
-	# Generate the output filename
-	[[ $output == "" ]] && output="${input//\.pdf/_${range}.pdf}"
-	
-	pdftk $input \
-		cat $range \
-		output $output
-}
+# Build the final range
+local range="${rangeStart}-${rangeEnd}"
+[[ $rangeStart == "$rangeEnd" ]] && range=$rangeStart
+
+# Generate the output filename
+[[ $output == "" ]] && output="${input//\.pdf/_${range}.pdf}"
+
+pdftk $input \
+	cat $range \
+	output $output

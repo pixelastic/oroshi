@@ -1,5 +1,3 @@
 # Opens the current repo setting page on GitHub
-function git-github-open-settings() {
-	local settingsUrl="$(git-directory-url)/settings"
-	$BROWSER $settingsUrl &>/dev/null
-}
+local settingsUrl="$(git-directory-url)/settings"
+$BROWSER $settingsUrl &>/dev/null

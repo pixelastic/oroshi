@@ -1,12 +1,10 @@
 # List all remote branches
-function complete-git-branches-remote() {
-  local currentRemote="$(git-remote-current)"
-  local rawList="$(git-branch-list-remote-raw)"
+local currentRemote="$(git-remote-current)"
+local rawList="$(git-branch-list-remote-raw)"
 
-  for rawLine in ${(f)rawList}; do
-    local splitLine=("${(@ps/▮/)rawLine}")
-    local branchName=$splitLine[1]
-    local cleanBranchName=${branchName#*/}
-    echo "${cleanBranchName}:${splitLine[3]}"
-  done
-}
+for rawLine in ${(f)rawList}; do
+  local splitLine=("${(@ps/▮/)rawLine}")
+  local branchName=$splitLine[1]
+  local cleanBranchName=${branchName#*/}
+  echo "${cleanBranchName}:${splitLine[3]}"
+done

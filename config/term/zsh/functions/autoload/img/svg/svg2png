@@ -1,6 +1,4 @@
 # Convert svg files to png
 # Usage:
 # $ svg2png ./*.svg
-function svg2png() {
-	img-convert $1 png
-}
+img-convert $1 png

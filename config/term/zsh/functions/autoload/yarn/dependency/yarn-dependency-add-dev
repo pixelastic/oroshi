@@ -1,9 +1,7 @@
 # Add devDependencies to the current workspace
 # Usage:
 # $ yarn-dependency-add-dev vitest # Add vitest
-function yarn-dependency-add-dev() {
-	# Init the project with the right yarn version if not set
-	yarn-is-initialized || yarn-init
+# Init the project with the right yarn version if not set
+yarn-is-initialized || yarn-init
 
-	yarn add --exact --dev -- $@
-}
+yarn add --exact --dev -- $@

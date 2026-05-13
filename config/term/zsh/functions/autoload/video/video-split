@@ -3,30 +3,28 @@
 # $ video-split ./path/to/file.mp4 5-30                     # Extract from 5s to 30s
 # $ video-split ./path/to/file.mp4 00:00:05-00:00:30        # Extract from 5s to 30s
 # $ video-split ./path/to/file.mp4 5-30 output.mp4          # Extract into specific file
-function video-split() {
-  local inputFile="${1:a}"
-  local range="$2"
-  local outputFile="$3"
+local inputFile="${1:a}"
+local range="$2"
+local outputFile="$3"
 
-  if [[ $outputFile == "" ]]; then
-    local extension="${inputFile:e}"
-    local baseName="${inputFile:t:r}"
-    local formattedRange="${range//:/-}"
-    outputFile="${baseName}_${formattedRange}.${extension}"
-  fi
+if [[ $outputFile == "" ]]; then
+  local extension="${inputFile:e}"
+  local baseName="${inputFile:t:r}"
+  local formattedRange="${range//:/-}"
+  outputFile="${baseName}_${formattedRange}.${extension}"
+fi
 
-  # Split range
-  local rangeSplit=(${(@s/-/)range})
-  local rangeStart=$rangeSplit[1]
-  local rangeEnd=$rangeSplit[2]
-
+# Split range
+local rangeSplit=(${(@s/-/)range})
+local rangeStart=$rangeSplit[1]
+local rangeEnd=$rangeSplit[2]
 
 
-  local codecOptions=(-c:v libx264 -crf 23 -c:a copy)
-  ffmpeg \
-    -i "$inputFile" \
-    -ss "$rangeStart" \
-    -to "$rangeEnd" \
-    $codecOptions \
-    "$outputFile"
-}
+
+local codecOptions=(-c:v libx264 -crf 23 -c:a copy)
+ffmpeg \
+  -i "$inputFile" \
+  -ss "$rangeStart" \
+  -to "$rangeEnd" \
+  $codecOptions \
+  "$outputFile"

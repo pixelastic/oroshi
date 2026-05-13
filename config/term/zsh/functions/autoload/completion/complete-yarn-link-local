@@ -1,11 +1,9 @@
 # List locally linked modules
-function complete-yarn-link-local() {
-  local rawList="$(yarn-link-list-raw --with-descriptions)"
-  for rawLine in ${(f)rawList}; do
-    local split=(${(s/▮/)rawLine})
-    local moduleName=$split[1]
-    local moduleDescription=$split[3]
+local rawList="$(yarn-link-list-raw --with-descriptions)"
+for rawLine in ${(f)rawList}; do
+  local split=(${(s/▮/)rawLine})
+  local moduleName=$split[1]
+  local moduleDescription=$split[3]
 
-    echo "${moduleName}:${moduleDescription}"
-  done
-}
+  echo "${moduleName}:${moduleDescription}"
+done

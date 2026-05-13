@@ -1,16 +1,14 @@
 # Returns the PID of the topmost terminal window running the current script
 # Usage:
 # $ prompt-pid
-function prompt-pid() {
-  # Get the tree of all processes down to the current script
-  local pidTree="$(pstree -psa $$)"
+# Get the tree of all processes down to the current script
+local pidTree="$(pstree -psa $$)"
 
-  for line in ${(f)pidTree}; do
-    line=${line// *\`-/}
-    [[ $line != zsh* ]] && continue
-    local firstSplit=(${(@s/,/)line})
-    local secondSplit=(${(@s/ /)firstSplit[2]})
-    echo $secondSplit[1]
-    return
-  done
-}
+for line in ${(f)pidTree}; do
+  line=${line// *\`-/}
+  [[ $line != zsh* ]] && continue
+  local firstSplit=(${(@s/,/)line})
+  local secondSplit=(${(@s/ /)firstSplit[2]})
+  echo $secondSplit[1]
+  return
+done

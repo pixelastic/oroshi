@@ -1,11 +1,9 @@
 # List all local tags
-function complete-git-tags-local() {
-  local rawList="$(git-tag-list-raw)"
+local rawList="$(git-tag-list-raw)"
 
-  for rawLine in ${(f)rawList}; do
-    local split=(${(@s/▮/)rawLine})
-    local tagName=$split[1]
-    local commitHash=$split[3]
-    echo "${tagName}:${commitHash}"
-  done
-}
+for rawLine in ${(f)rawList}; do
+  local split=(${(@s/▮/)rawLine})
+  local tagName=$split[1]
+  local commitHash=$split[3]
+  echo "${tagName}:${commitHash}"
+done

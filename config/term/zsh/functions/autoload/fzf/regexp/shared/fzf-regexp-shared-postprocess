@@ -6,34 +6,32 @@
 #
 # Usage:
 # $ fzf-regexp-shared-postprocess {multiLineSelection}
-function fzf-regexp-shared-postprocess() {
 
-  local rawSelection="$1"
+local rawSelection="$1"
 
-  # Stop early
-  [[ $rawSelection == "" ]] && return
+# Stop early
+[[ $rawSelection == "" ]] && return
 
-  # Deduplicate selection and store first selected line
-  declare -A files
-  local files=()
-  for line in ${(f)rawSelection}; do
-    local split=(${(@s/   /)line})
+# Deduplicate selection and store first selected line
+declare -A files
+local files=()
+for line in ${(f)rawSelection}; do
+  local split=(${(@s/   /)line})
 
-    # Skip empty/UI lines
-    [[ ${#split[@]} != 3 ]] && continue
+  # Skip empty/UI lines
+  [[ ${#split[@]} != 3 ]] && continue
 
-    local filepath="$split[1]"
-    local lineNumber="$split[2]"
+  local filepath="$split[1]"
+  local lineNumber="$split[2]"
 
-    [[ $files[$filepath] != "" ]] && continue
-    files[$filepath]=$lineNumber
-  done
+  [[ $files[$filepath] != "" ]] && continue
+  files[$filepath]=$lineNumber
+done
 
-  # Display each filepath with its lineNumber
-  local selection=()
-  for filepath in ${(k)files}; do
-    local lineNumber=$files[$filepath]
-    selection+=("${filepath}:${lineNumber}")
-  done
-  echo $selection
-}
+# Display each filepath with its lineNumber
+local selection=()
+for filepath in ${(k)files}; do
+  local lineNumber=$files[$filepath]
+  selection+=("${filepath}:${lineNumber}")
+done
+echo $selection

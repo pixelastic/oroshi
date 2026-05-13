@@ -2,7 +2,5 @@
 # Check why a specific dependency is in a repo
 # Usage:
 # $ yarn-why eslint-plugin-jsdoc
-function yarn-dependency-why() {
-	local dependencyName=$1
-	yarn why $dependencyName
-}
+local dependencyName=$1
+yarn why $dependencyName

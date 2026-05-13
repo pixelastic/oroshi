@@ -1,30 +1,28 @@
 # List all local Docker images (including their tags)
-function complete-docker-images-local-with-tags() {
-  local suggestions="$(\
-    docker images \
-    --format '{{.Repository}}|{{.Tag}}|{{.ID}}|{{.CreatedSince}}|{{.Size}}' \
-    | sort \
-      --field-separator '|' \
-      --key 1,1d \
-      --key 2,2r
-  )"
+local suggestions="$(\
+  docker images \
+  --format '{{.Repository}}|{{.Tag}}|{{.ID}}|{{.CreatedSince}}|{{.Size}}' \
+  | sort \
+    --field-separator '|' \
+    --key 1,1d \
+    --key 2,2r
+)"
 
-  for line in ${(f)suggestions}; do
-    local splitLine=(${(@s/|/)line})
+for line in ${(f)suggestions}; do
+  local splitLine=(${(@s/|/)line})
 
-    local imageName=$splitLine[1]
-    local imageTag=$splitLine[2]
-    local imageId=$splitLine[3]
-    local imageDate=$splitLine[4]
-    local imageSize=$splitLine[5]
+  local imageName=$splitLine[1]
+  local imageTag=$splitLine[2]
+  local imageId=$splitLine[3]
+  local imageDate=$splitLine[4]
+  local imageSize=$splitLine[5]
 
-    # Selection is either image:tag, or the ID
-    local suggestion="${imageName}\:${imageTag}"
-    [[ $imageName == "<none>" ]] && suggestion="$imageId"
+  # Selection is either image:tag, or the ID
+  local suggestion="${imageName}\:${imageTag}"
+  [[ $imageName == "<none>" ]] && suggestion="$imageId"
 
-    # Description
-    local description="${imageDate} (${imageSize})"
+  # Description
+  local description="${imageDate} (${imageSize})"
 
-    echo "${suggestion}:${description}"
-  done
-}
+  echo "${suggestion}:${description}"
+done

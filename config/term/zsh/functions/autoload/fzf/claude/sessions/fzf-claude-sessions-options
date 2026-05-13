@@ -1,12 +1,10 @@
-function fzf-claude-sessions-options() {
-  # Prompt styled like Claude project (white on amber background)
-  local promptPrefix="$(colorize " ● Claude " $COLOR_GRAY_2 $COLOR_ALIAS_AI)"
-  local promptSuffix="$(colorize "" $COLOR_ALIAS_AI)"
-  echo "--prompt=${promptPrefix}${promptSuffix} "
+# Prompt styled like Claude project (white on amber background)
+local promptPrefix="$(colorize " ● Claude " $COLOR_GRAY_2 $COLOR_ALIAS_AI)"
+local promptSuffix="$(colorize "" $COLOR_ALIAS_AI)"
+echo "--prompt=${promptPrefix}${promptSuffix} "
 
-  echo "--delimiter=▮"
-  echo "--with-nth=2"
-  echo "--preview=fzf-claude-sessions-preview {1}"
-  echo "--preview-window=wrap"
+echo "--delimiter=▮"
+echo "--with-nth=2"
+echo "--preview=fzf-claude-sessions-preview {1}"
+echo "--preview-window=wrap"
 
-}
