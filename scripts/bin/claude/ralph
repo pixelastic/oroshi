@@ -1,0 +1,38 @@
+#!/usr/bin/env zsh
+# Iterate through a PRD and implement all issues while AFK
+set -e
+
+# TODO: We should define the number of iterations as 10, or be able to pass with
+# --iterations
+# We should stop if not in a git repo
+# We assume that there is a plans/prd.json file containing all the issues
+# We also assume there is a plans/progress.txt file, append-only, where agents add their updates
+
+# We then iterate 10 (or --iterations) times
+# Each time, we tell claude:
+# - @plans/progress.txt
+# - @plans/prd.json
+# - Find the highest priority feature to work on and work on only that feature.
+# - You decide which is the highest priority, not necesarily the first one
+# - Write tests that proves the feature doesn't work
+# - Ensure tests are RED
+# - Implement the feature
+# - Ensure tests are GREEN
+# - Update prd.json and progress.txt
+# - Commit your changes
+# - Ask a reviewer to review
+# - Implemente their feedback if relevent
+# - Ensure tests are still GREEN
+# - Update prd.json and progress.txt
+# - Commit again
+# - If you notice the PRD is done, echo <promise>PRD COMPLETE</promise>
+#
+# We echo the result.
+# If the result contains <promise>PRD COMPLETE</promise> we stop before the end
+# of the loop
+# Otherwise we keep iterating
+#
+#
+# I might need a way to run claude in complete isolation
+# In a worktree of the main repo
+# With --permission-mode acceptEdits
