@@ -2,6 +2,4 @@
 # Usage:
 # $ git-file-unstage ./relative/path/to/file  # Unstage the file
 # $ git-file-unstage /absolute/path/to/file   # Unstage the file
-function git-file-unstage() {
-	git reset HEAD $@
-}
+git reset HEAD $@

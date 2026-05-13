@@ -1,49 +1,47 @@
 # Display a list of all tags
 # Usage:
 # $ git-tag-list        # All tags
-function git-tag-list() {
-  local rawGitTags="$(git-tag-list-raw)"
+local rawGitTags="$(git-tag-list-raw)"
 
-  # Stop if no tag
-  if [[ "$rawGitTags" == "" ]]; then
-    echo "✘ No tags found"
-    return
-  fi
+# Stop if no tag
+if [[ "$rawGitTags" == "" ]]; then
+  echo "✘ No tags found"
+  return
+fi
 
-  # Loop through all the raw output, and format/color them before adding them to
-  # the output
-  local output=""
-  for rawGitTag in ${(f)rawGitTags}; do
-    # Splitting the line into its various parts
-    local splitLine=(${(@s/▮/)rawGitTag})
-    local tagName="$splitLine[1]"
-    local commitHash="$splitLine[2]"
-    local relativeTime="$splitLine[3]"
-    local commitMessage="$splitLine[4]"
+# Loop through all the raw output, and format/color them before adding them to
+# the output
+local output=""
+for rawGitTag in ${(f)rawGitTags}; do
+  # Splitting the line into its various parts
+  local splitLine=(${(@s/▮/)rawGitTag})
+  local tagName="$splitLine[1]"
+  local commitHash="$splitLine[2]"
+  local relativeTime="$splitLine[3]"
+  local commitMessage="$splitLine[4]"
 
-    local row=""
-    # Tag name {{{
-    # Note: git-tag-colorize works ok when it needs to chose the color of one
-    # tag, but quickly get slow when it needs to color a lot of them, so we take
-    # a shortcut and always use the same color
-    row+="$(colorize " $tagName" $COLOR_ALIAS_GIT_TAG)▮"
-    # }}}
+  local row=""
+  # Tag name {{{
+  # Note: git-tag-colorize works ok when it needs to chose the color of one
+  # tag, but quickly get slow when it needs to color a lot of them, so we take
+  # a shortcut and always use the same color
+  row+="$(colorize " $tagName" $COLOR_ALIAS_GIT_TAG)▮"
+  # }}}
 
-    # Commit {{{
-    row+="$(git-commit-colorize "$commitHash" --with-icon)▮"
-    # }}}
+  # Commit {{{
+  row+="$(git-commit-colorize "$commitHash" --with-icon)▮"
+  # }}}
 
-    # Date {{{
-    relativeTime=${relativeTime/ ago/}
-    row+="$(git-date-colorize "$relativeTime" --with-icon)▮"
-    # }}}
+  # Date {{{
+  relativeTime=${relativeTime/ ago/}
+  row+="$(git-date-colorize "$relativeTime" --with-icon)▮"
+  # }}}
 
-    # Commit message {{{
-    row+="$(git-message-colorize "$commitMessage")▮"
-    # }}}
+  # Commit message {{{
+  row+="$(git-message-colorize "$commitMessage")▮"
+  # }}}
 
-    output+="$row\n"
-  done
+  output+="$row\n"
+done
 
-  table $output
-}
+table $output

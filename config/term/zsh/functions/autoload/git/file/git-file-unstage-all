@@ -1,6 +1,4 @@
 # Remove all files from the staging area
 # Usage:
 # $ git-file-unstage-all
-function git-file-unstage-all() {
-	git reset
-}
+git reset

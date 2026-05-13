@@ -6,8 +6,6 @@
 #
 # This will output the CSV
 # Works on single objects and array of objects
-function json2csv() {
-	local inputFilepath=$1
+local inputFilepath=$1
 
-	cat $inputFilepath | jq --raw-output '(.[0] | keys_unsorted | @csv), (.[] | [.[]] | @csv)'
-}
+cat $inputFilepath | jq --raw-output '(.[0] | keys_unsorted | @csv), (.[] | [.[]] | @csv)'

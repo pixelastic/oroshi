@@ -4,36 +4,34 @@
 # $ yarn-link-colorize norska classic                   # As a classic (Yarn v1) link
 # $ yarn-link-colorize norska --with-icon               # 煮norska
 # $ yarn-link-colorize norska-cms workspace --with-icon #  norska-cms
-function yarn-link-colorize() {
-	zparseopts -E -D \
-		-with-icon=flagWithIcon
-	local isWithIcon=${#flagWithIcon}
+zparseopts -E -D \
+	-with-icon=flagWithIcon
+local isWithIcon=${#flagWithIcon}
 
-	local linkName="$1"
-	local linkType="${2}"
+local linkName="$1"
+local linkType="${2}"
 
-	local linkColor=$COLOR_ALIAS_ERROR
-	local linkIcon="?"
+local linkColor=$COLOR_ALIAS_ERROR
+local linkIcon="?"
 
-	if [[ $linkType == "classic" ]]; then
-		linkColor=$COLOR_ALIAS_YARN_LINK_CLASSIC
-		linkIcon=" "
-	fi
-	if [[ $linkType == "workspace" ]]; then
-		linkColor=$COLOR_ALIAS_YARN_LINK_WORKSPACE
-		linkIcon=" "
-	fi
-	if [[ $linkType == "external" ]]; then
-		linkColor=$COLOR_ALIAS_YARN_LINK_EXTERNAL
-		linkIcon=" "
-	fi
+if [[ $linkType == "classic" ]]; then
+	linkColor=$COLOR_ALIAS_YARN_LINK_CLASSIC
+	linkIcon=" "
+fi
+if [[ $linkType == "workspace" ]]; then
+	linkColor=$COLOR_ALIAS_YARN_LINK_WORKSPACE
+	linkIcon=" "
+fi
+if [[ $linkType == "external" ]]; then
+	linkColor=$COLOR_ALIAS_YARN_LINK_EXTERNAL
+	linkIcon=" "
+fi
 
-	# Add the icon
-	if [[ "$isWithIcon" == 1 ]]; then
-		linkName="${linkIcon} ${linkName}"
-	fi
+# Add the icon
+if [[ "$isWithIcon" == 1 ]]; then
+	linkName="${linkIcon} ${linkName}"
+fi
 
-	colorize "${linkName}" $linkColor
+colorize "${linkName}" $linkColor
 
-	return
-}
+return

@@ -2,13 +2,11 @@
 # Usage:
 # $ git-remote-list
 
-function git-remote-list-raw() {
-  local rawList="$(git remote)"
+local rawList="$(git remote)"
 
-  for remoteName in ${(f)rawList}; do
-    local remoteUrl="$(git-remote-url $remoteName)"
-    echo "${remoteName}▮${remoteUrl}"
-  done
+for remoteName in ${(f)rawList}; do
+  local remoteUrl="$(git-remote-url $remoteName)"
+  echo "${remoteName}▮${remoteUrl}"
+done
 
-}
 

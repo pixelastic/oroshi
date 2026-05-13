@@ -3,26 +3,24 @@
 # $ docker-container-remove alpine_latest              # Removes one
 # $ docker-container-remove alpine_latest nice_jepsen  # Removes several
 # $ docker-container-remove nope                       # Do nothing as nope doesn't exist
-function docker-container-remove() {
 
-  local containers="$@"
+local containers="$@"
 
-  for containerName in ${=containers}; do
-    local displaycontainerName="$(docker-container-colorize $containerName --with-icon)"
+for containerName in ${=containers}; do
+  local displaycontainerName="$(docker-container-colorize $containerName --with-icon)"
 
-    # Warn about container not existing
-    if ! docker-container-exists "$containerName"; then
-      echo "✘ container $displaycontainerName does not exist"
-      continue
-    fi
+  # Warn about container not existing
+  if ! docker-container-exists "$containerName"; then
+    echo "✘ container $displaycontainerName does not exist"
+    continue
+  fi
 
-    # Force stop the container if running
-    if docker-container-is-running $containerName; then
-      docker kill $containerName > /dev/null
-    fi
+  # Force stop the container if running
+  if docker-container-is-running $containerName; then
+    docker kill $containerName > /dev/null
+  fi
 
-    # Remove the container
-    docker container rm $containerName 2> /dev/null
-    echo "✔ container $displaycontainerName deleted"
-  done
-}
+  # Remove the container
+  docker container rm $containerName 2> /dev/null
+  echo "✔ container $displaycontainerName deleted"
+done

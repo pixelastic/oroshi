@@ -2,48 +2,46 @@
 # Usage:
 # $ notion-icon-auto {pageUrl}           # Set the icon as the preview
 # $ notion-icon-auto --force {pageUrl}   # Set the icon as the preview, even if already has one
-function notion-icon-auto() {
-	zparseopts -E -D \
-		-force=flagForce
+zparseopts -E -D \
+	-force=flagForce
 
-	local isForce=${#flagForce}
+local isForce=${#flagForce}
 
-	local pageUrl="$1"
-	local pageId="$(notion-page-id $1)"
+local pageUrl="$1"
+local pageId="$(notion-page-id $1)"
 
-	# If already has an icon, we skip (unless --force)
-	local pageIcon="$(notion-icon $pageId)"
-	if [[ $pageIcon != "" && $isForce == "0" ]]; then
-		echo "Already has an icon, skipping. Use --force to overwrite"
-		return 0
-	fi
+# If already has an icon, we skip (unless --force)
+local pageIcon="$(notion-icon $pageId)"
+if [[ $pageIcon != "" && $isForce == "0" ]]; then
+	echo "Already has an icon, skipping. Use --force to overwrite"
+	return 0
+fi
 
-	# Find the preview image
-	local previewUrl="$(notion-preview $pageUrl)"
-	if [[ $previewUrl == "" ]]; then
-		echo "No preview found"
-		return
-	fi
+# Find the preview image
+local previewUrl="$(notion-preview $pageUrl)"
+if [[ $previewUrl == "" ]]; then
+	echo "No preview found"
+	return
+fi
 
-	# Download the preview image
-	local previewFilepath=${OROSHI_TMP_FOLDER}/notion/${pageId}.png
-	wget --quiet "$previewUrl" -O "$previewFilepath"
+# Download the preview image
+local previewFilepath=${OROSHI_TMP_FOLDER}/notion/${pageId}.png
+wget --quiet "$previewUrl" -O "$previewFilepath"
 
-	# Resize it so it takes less space
-	img-resize $previewFilepath 250
+# Resize it so it takes less space
+img-resize $previewFilepath 250
 
-	# Rename it to include a hash of its content
-	local imageHash=$(file-hash $previewFilepath)
-	local hashedPreviewFilepath="${previewFilepath:r}-${imageHash}.png"
-	mv $previewFilepath $hashedPreviewFilepath
+# Rename it to include a hash of its content
+local imageHash=$(file-hash $previewFilepath)
+local hashedPreviewFilepath="${previewFilepath:r}-${imageHash}.png"
+mv $previewFilepath $hashedPreviewFilepath
 
-	# Upload it to my server
-	rsync -az \
-		$hashedPreviewFilepath \
-		pixelastic:./local/www/assets.pixelastic.com/notion
-	local iconUrl="https://assets.pixelastic.com/notion/${hashedPreviewFilepath:t}"
+# Upload it to my server
+rsync -az \
+	$hashedPreviewFilepath \
+	pixelastic:./local/www/assets.pixelastic.com/notion
+local iconUrl="https://assets.pixelastic.com/notion/${hashedPreviewFilepath:t}"
 
-	# Update the icon of the page
-	notion-icon-update $pageUrl $iconUrl
-	echo "Icon updated to ${iconUrl}"
-}
+# Update the icon of the page
+notion-icon-update $pageUrl $iconUrl
+echo "Icon updated to ${iconUrl}"

@@ -5,33 +5,31 @@
 # $ git-file-diff package.json                     # Diff of package.json against last commit
 # $ git-file-diff package.json abcdef              # Diff of package.json against commit abcdef
 # $ git-file-diff package.json v1.24.3 v1.24.4     # Diff of package.json between two commit
-function git-file-diff() {
-	zparseopts -E -D \
-		-staged=flagStaged
+zparseopts -E -D \
+	-staged=flagStaged
 
-	local isStaged=${#flagStaged}
+local isStaged=${#flagStaged}
 
-	local gitDiffArguments=()
-	gitDiffArguments+=("--ignore-all-space")
-	gitDiffArguments+=("--color-words")
+local gitDiffArguments=()
+gitDiffArguments+=("--ignore-all-space")
+gitDiffArguments+=("--color-words")
 
-	# No argument, we compare the whole directory
-	if [[ $# == "0" ]]; then
-		# --staged is passed,
-		[[ $isStaged == "1" ]] && gitDiffArguments+=("--staged")
+# No argument, we compare the whole directory
+if [[ $# == "0" ]]; then
+	# --staged is passed,
+	[[ $isStaged == "1" ]] && gitDiffArguments+=("--staged")
 
-		git diff ${gitDiffArguments}
-		return
-	fi
+	git diff ${gitDiffArguments}
+	return
+fi
 
-	# If a file is passed, we compare that specific file against potential commits
-	local filepath=$1
-	local fromCommit=$2
-	local toCommit=$3
+# If a file is passed, we compare that specific file against potential commits
+local filepath=$1
+local fromCommit=$2
+local toCommit=$3
 
-	git diff \
-		${gitDiffArguments} \
-		${filepath} \
-		${fromCommit} \
-		${toCommit}
-}
+git diff \
+	${gitDiffArguments} \
+	${filepath} \
+	${fromCommit} \
+	${toCommit}

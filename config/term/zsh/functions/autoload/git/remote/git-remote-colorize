@@ -5,33 +5,31 @@
 # $ git-remote-colorize upstream/main      # upstream/main
 # $ git-remote-colorize --with-icon        #  upstream
 
-function git-remote-colorize() {
-  zparseopts -E -D \
-    -with-icon=flagWithIcon
-  local isWithIcon=${#flagWithIcon}
+zparseopts -E -D \
+  -with-icon=flagWithIcon
+local isWithIcon=${#flagWithIcon}
 
-  # Remote name
-  local remoteName="$1"
-  if [[ $remoteName == '' ]]; then
-    remoteName="$(git-remote-current)"
-  fi
+# Remote name
+local remoteName="$1"
+if [[ $remoteName == '' ]]; then
+  remoteName="$(git-remote-current)"
+fi
 
-  # If the remote contains the name of the branch, we color based on the remote,
-  # but display the full version
-  local displayRemoteName="$remoteName"
-  if [[ "$remoteName" =~ "/" ]]; then
-    local remoteSplit=(${(@s:/:)remoteName})
-    remoteName="$remoteSplit[1]"
-  fi
+# If the remote contains the name of the branch, we color based on the remote,
+# but display the full version
+local displayRemoteName="$remoteName"
+if [[ "$remoteName" =~ "/" ]]; then
+  local remoteSplit=(${(@s:/:)remoteName})
+  remoteName="$remoteSplit[1]"
+fi
 
-  local remoteColor="$(git-remote-color $remoteName)"
+local remoteColor="$(git-remote-color $remoteName)"
 
-  # If --with-icon is not passed, we simply display the colored commit
-  if [[ "$isWithIcon" != 1 ]]; then
-    colorize "$displayRemoteName" "$remoteColor"
-    return
-  fi
-
-  colorize " $displayRemoteName" "$remoteColor"
+# If --with-icon is not passed, we simply display the colored commit
+if [[ "$isWithIcon" != 1 ]]; then
+  colorize "$displayRemoteName" "$remoteColor"
   return
-}
+fi
+
+colorize " $displayRemoteName" "$remoteColor"
+return

@@ -2,13 +2,11 @@
 # Usage:
 # $ docker-container-name 8a0cb8cc03eb   # infallible_leakey
 # $ docker-container-name nope           # Exits with 1
-function docker-container-name() {
-  local containerId="$1"
+local containerId="$1"
 
-  local result="$(
-    docker container inspect ${containerId} \
-    --format '{{.Name}}'
-  )"
+local result="$(
+  docker container inspect ${containerId} \
+  --format '{{.Name}}'
+)"
 
-  echo ${result:1}
-}
+echo ${result:1}

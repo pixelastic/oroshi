@@ -1,13 +1,11 @@
 # Outputs the comment (commit message) associated with an image
 # Usage:
 # $ docker-image-comment oroshi:0.0.5         # Installing bat
-function docker-image-comment() {
-  local imageName="$1"
+local imageName="$1"
 
-  local result="$(docker image inspect \
-      --format '{{.Comment}}' \
-      $imageName
-  )"
+local result="$(docker image inspect \
+    --format '{{.Comment}}' \
+    $imageName
+)"
 
-  echo $result
-}
+echo $result

@@ -4,21 +4,19 @@
 # $ docker-image-name nope           # Exits with 1
 #
 # Note: Will prefer the highest version tag over :latest in case of several matches
-function docker-image-name() {
-  local imageId="$1"
+local imageId="$1"
 
-  local result="$(docker images \
-    --format '{{.ID}}|{{.Repository}}:{{.Tag}}' \
-    | sort \
-    | \grep "^${imageId}"
-  )"
+local result="$(docker images \
+  --format '{{.ID}}|{{.Repository}}:{{.Tag}}' \
+  | sort \
+  | \grep "^${imageId}"
+)"
 
-  # Exits with error code 1 if not found
-  [[ $result = "" ]] && return 1
+# Exits with error code 1 if not found
+[[ $result = "" ]] && return 1
 
-  # Keep only the first one
-  local allImageNames=(${(f)result})
-  local imageName=$allImageNames[1]
-  local splitResult=(${(@s/|/)imageName})
-  echo $splitResult[2]
-}
+# Keep only the first one
+local allImageNames=(${(f)result})
+local imageName=$allImageNames[1]
+local splitResult=(${(@s/|/)imageName})
+echo $splitResult[2]

@@ -23,26 +23,24 @@
 #     "print",
 #     "printf"
 #   ]
-function json-array-sort() {
-  local input
+local input
 
-  # Read either from pipe or from file
-  if [[ -p /dev/stdin ]]; then
-    input="$(/usr/bin/cat -)"
-  else
-    input="$(/usr/bin/cat "$1")"
-  fi
+# Read either from pipe or from file
+if [[ -p /dev/stdin ]]; then
+  input="$(/usr/bin/cat -)"
+else
+  input="$(/usr/bin/cat "$1")"
+fi
 
-  echo "["
-  # Pretty-print the JSON, strip the wrapping [],
-  # add a trailing comma to the last line so all lines are uniform,
-  # sort with --version-sort (just like in nvim),
-  # then remove the trailing comma from the new last line to be valid JSON
-  echo "$input" |
-    jq '.' |
-    sed '1d;$d' |
-    sed '$s/$/,/' |
-    sort --version-sort |
-    sed '$s/,$//'
-  echo "]"
-}
+echo "["
+# Pretty-print the JSON, strip the wrapping [],
+# add a trailing comma to the last line so all lines are uniform,
+# sort with --version-sort (just like in nvim),
+# then remove the trailing comma from the new last line to be valid JSON
+echo "$input" |
+  jq '.' |
+  sed '1d;$d' |
+  sed '$s/$/,/' |
+  sort --version-sort |
+  sed '$s/,$//'
+echo "]"

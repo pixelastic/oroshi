@@ -1,23 +1,21 @@
 # Returns a list of Kitty tabs with their IDs and titles
-function fzf-kitty-tabs-source() {
-  local rawTabs="$(kitty-tabs-list-raw)"
-  for rawLine in ${(f)rawTabs}; do
-    local splitLine=(${(@s/▮/)rawLine})
-    local tabId=$splitLine[1]
-    local tabName=$splitLine[2]
+local rawTabs="$(kitty-tabs-list-raw)"
+for rawLine in ${(f)rawTabs}; do
+  local splitLine=(${(@s/▮/)rawLine})
+  local tabId=$splitLine[1]
+  local tabName=$splitLine[2]
 
-    # Skip the Tab Selector tab itself
-    [[ "$tabName" == "Tab Selector" ]] && continue
+  # Skip the Tab Selector tab itself
+  [[ "$tabName" == "Tab Selector" ]] && continue
 
-    # Check if this tab name matches a known project
-    local tabDisplayName=""
-    if project-exists "$tabName"; then
-      tabDisplayName="$(project-colorize $tabName)"
-    else
-      # Use default tab styling for non-project tabs
-      tabDisplayName="$(colorize " ${tabName} " $COLOR_YELLOW $COLOR_GRAY_8)$(colorize "" $COLOR_GRAY_8)"
-    fi
+  # Check if this tab name matches a known project
+  local tabDisplayName=""
+  if project-exists "$tabName"; then
+    tabDisplayName="$(project-colorize $tabName)"
+  else
+    # Use default tab styling for non-project tabs
+    tabDisplayName="$(colorize " ${tabName} " $COLOR_YELLOW $COLOR_GRAY_8)$(colorize "" $COLOR_GRAY_8)"
+  fi
 
-    echo "${tabId}▮${tabName}▮${tabDisplayName}"
-  done
-}
+  echo "${tabId}▮${tabName}▮${tabDisplayName}"
+done

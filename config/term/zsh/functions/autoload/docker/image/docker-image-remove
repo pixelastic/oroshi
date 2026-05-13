@@ -3,34 +3,32 @@
 # $ docker-image-remove ubuntu         # Removes ubuntu
 # $ docker-image-remove ubuntu alpine  # Removes ubuntu and alpine
 # $ docker-image-remove nope           # Do nothing as nope doesn't exist
-function docker-image-remove() {
 
-  local images="$@"
+local images="$@"
 
-  for imageName in ${=images}; do
-    local displayImageName="$(docker-image-colorize $imageName --with-icon)"
+for imageName in ${=images}; do
+  local displayImageName="$(docker-image-colorize $imageName --with-icon)"
 
-    # Warn about image not existing
-    if ! docker-image-exists "$imageName"; then
-      echo "✘ Image $displayImageName does not exist"
-      continue
-    fi
+  # Warn about image not existing
+  if ! docker-image-exists "$imageName"; then
+    echo "✘ Image $displayImageName does not exist"
+    continue
+  fi
 
-    # Warn about container using that image running
-    if docker-image-is-running "$imageName"; then
-      echo "✘ Image $displayImageName can't be removed because it is used by a running container"
-      continue
-    fi
+  # Warn about container using that image running
+  if docker-image-is-running "$imageName"; then
+    echo "✘ Image $displayImageName can't be removed because it is used by a running container"
+    continue
+  fi
 
-    # If several matches, stop and ask to be more explicit
-    local imageCount=$(docker-image-count $imageName)
-    if [[ $imageCount -gt 1 ]]; then
-      echo "✘ There are multiple images named $displayImageName:"
-      docker-image-list $imageName
-      continue
-    fi
+  # If several matches, stop and ask to be more explicit
+  local imageCount=$(docker-image-count $imageName)
+  if [[ $imageCount -gt 1 ]]; then
+    echo "✘ There are multiple images named $displayImageName:"
+    docker-image-list $imageName
+    continue
+  fi
 
-    docker image rm $imageName > /dev/null
-    echo "✔ Image $displayImageName deleted"
-  done
-}
+  docker image rm $imageName > /dev/null
+  echo "✔ Image $displayImageName deleted"
+done

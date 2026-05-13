@@ -1,16 +1,14 @@
 # Open in vim all files that have conflicts
-function git-file-fix-conflicts() {
-  local conflictedFiles="$(git diff --name-only --diff-filter=U)"
+local conflictedFiles="$(git diff --name-only --diff-filter=U)"
 
-  # No conflict
-  [[ $conflictedFiles == "" ]] && return 0
+# No conflict
+[[ $conflictedFiles == "" ]] && return 0
 
-  local fileList=()
-  local gitRoot="$(git-directory-root)"
-  for conflictedFile in ${=conflictedFiles}; do
-    fileList+=("${gitRoot}/${conflictedFile}")
-  done
+local fileList=()
+local gitRoot="$(git-directory-root)"
+for conflictedFile in ${=conflictedFiles}; do
+  fileList+=("${gitRoot}/${conflictedFile}")
+done
 
-  nvim -p $fileList
+nvim -p $fileList
 
-}

@@ -1,6 +1,4 @@
 # Open AnythingLLM in its own GUI window
 # Note: Having it as its own function and not an alias allows to use custom
 # completion definitions on it
-function anything-llm() {
-	process-detach ~/local/etc/anything-llm/start
-}
+process-detach ~/local/etc/anything-llm/start

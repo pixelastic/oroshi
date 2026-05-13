@@ -5,56 +5,54 @@
 # $ docker-image-colorize alpine --with-icon                    #  alpine
 # $ docker-image-colorize alpine --with-icon --remote           #  alpine
 # $ docker-image-colorize ghcr.io/pixelastic/alpine --with-icon #  alpine
-function docker-image-colorize() {
-  zparseopts -E -D \
-    -with-icon=flagWithIcon \
-    -remote=flagRemote
+zparseopts -E -D \
+  -with-icon=flagWithIcon \
+  -remote=flagRemote
 
-  local isWithIcon=${#flagWithIcon}
-  local isRemote=${#flagRemote}
+local isWithIcon=${#flagWithIcon}
+local isRemote=${#flagRemote}
 
-  # Split image name and its tag
-  local inputSplit=(${(@s/:/)1})
-  local imageName=$inputSplit[1]
-  local tagName=$inputSplit[2]
+# Split image name and its tag
+local inputSplit=(${(@s/:/)1})
+local imageName=$inputSplit[1]
+local tagName=$inputSplit[2]
 
-  local isGitHub="0"
-  [[ $imageName == ghcr.io/* ]] && isGitHub="1"
+local isGitHub="0"
+[[ $imageName == ghcr.io/* ]] && isGitHub="1"
 
-  local isOroshi="0"
-  [[ $imageName == "oroshi" ]] && isOroshi="1"
+local isOroshi="0"
+[[ $imageName == "oroshi" ]] && isOroshi="1"
 
-  local isOrphan="0"
-  docker-image-exists "${imageName}" || isOrphan="1"
+local isOrphan="0"
+docker-image-exists "${imageName}" || isOrphan="1"
 
-  # Image color {{{
-  local imageColor=$COLOR_ALIAS_DOCKER_IMAGE
-  [[ "$isRemote" == "1" ]] && imageColor=$COLOR_ALIAS_DOCKER_IMAGE_REMOTE
-  [[ "$isGitHub" == "1" ]] && imageColor=$COLOR_ALIAS_DOCKER_IMAGE_GITHUB
-  [[ "$isOroshi" == "1" ]] && imageColor=$COLOR_ALIAS_DOCKER_IMAGE_OROSHI
-  [[ "$isOrphan" == "1" ]] && imageColor=$COLOR_ALIAS_DOCKER_IMAGE_ORPHAN
-  # }}}
+# Image color {{{
+local imageColor=$COLOR_ALIAS_DOCKER_IMAGE
+[[ "$isRemote" == "1" ]] && imageColor=$COLOR_ALIAS_DOCKER_IMAGE_REMOTE
+[[ "$isGitHub" == "1" ]] && imageColor=$COLOR_ALIAS_DOCKER_IMAGE_GITHUB
+[[ "$isOroshi" == "1" ]] && imageColor=$COLOR_ALIAS_DOCKER_IMAGE_OROSHI
+[[ "$isOrphan" == "1" ]] && imageColor=$COLOR_ALIAS_DOCKER_IMAGE_ORPHAN
+# }}}
 
-  # Tag color {{{
-  local tagSuffix=""
-  if [[ "$tagName" != "" ]]; then
-    tagSuffix=":$(docker-tag-colorize $tagName)"
-  fi
-  # }}}
+# Tag color {{{
+local tagSuffix=""
+if [[ "$tagName" != "" ]]; then
+  tagSuffix=":$(docker-tag-colorize $tagName)"
+fi
+# }}}
 
-  # If --with-icon is not passed, we simply display the colored image
-  if [[ "$isWithIcon" != 1 ]]; then
-    echo "$(colorize "${imageName}" $imageColor)${tagSuffix}"
-    return
-  fi
+# If --with-icon is not passed, we simply display the colored image
+if [[ "$isWithIcon" != 1 ]]; then
+  echo "$(colorize "${imageName}" $imageColor)${tagSuffix}"
+  return
+fi
 
-  # If --with-icon is passed, we display a different icon based on if the image
-  # is local or remote
-  local imageIcon=" "
-  [[ $isRemote == "1" ]] && imageIcon=" "
-  [[ $isGitHub == "1" ]] && imageIcon=" "
-  [[ $isOroshi == "1" ]] && imageIcon=" "
-  [[ $isOrphan == "1" ]] && imageIcon=" "
+# If --with-icon is passed, we display a different icon based on if the image
+# is local or remote
+local imageIcon=" "
+[[ $isRemote == "1" ]] && imageIcon=" "
+[[ $isGitHub == "1" ]] && imageIcon=" "
+[[ $isOroshi == "1" ]] && imageIcon=" "
+[[ $isOrphan == "1" ]] && imageIcon=" "
 
-  echo "$(colorize "${imageIcon}${imageName}" $imageColor)${tagSuffix}"
-}
+echo "$(colorize "${imageIcon}${imageName}" $imageColor)${tagSuffix}"

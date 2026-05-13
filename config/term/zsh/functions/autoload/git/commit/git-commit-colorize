@@ -3,24 +3,22 @@
 # $ git-commit-colorize                    # {currentCommit}
 # $ git-commit-colorize upstream           # abcdef
 # $ git-commit-colorize --with-icon        #  abcdef
-function git-commit-colorize() {
-	zparseopts -E -D \
-		-with-icon=flagWithIcon
+zparseopts -E -D \
+	-with-icon=flagWithIcon
 
-	local isWithIcon=${#flagWithIcon}
+local isWithIcon=${#flagWithIcon}
 
-	# Commit hash
-	local commitHash="$1"
-	if [[ $commitHash == '' ]]; then
-		commitHash="$(git-commit-current)"
-	fi
+# Commit hash
+local commitHash="$1"
+if [[ $commitHash == '' ]]; then
+	commitHash="$(git-commit-current)"
+fi
 
-	# If --with-icon is passed, we add an icon
-	if [[ "$isWithIcon" == 1 ]]; then
-		colorize " $commitHash" ALIAS_GIT_COMMIT
-		return
-	fi
-
-	colorize "$commitHash" ALIAS_GIT_COMMIT
+# If --with-icon is passed, we add an icon
+if [[ "$isWithIcon" == 1 ]]; then
+	colorize " $commitHash" ALIAS_GIT_COMMIT
 	return
-}
+fi
+
+colorize "$commitHash" ALIAS_GIT_COMMIT
+return

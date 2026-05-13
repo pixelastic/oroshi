@@ -1,5 +1,3 @@
 # Output JSON information about an image
-function img2json() {
-	local input=$1
-	exiftool $input -json | jq '.[0]'
-}
+local input=$1
+exiftool $input -json | jq '.[0]'

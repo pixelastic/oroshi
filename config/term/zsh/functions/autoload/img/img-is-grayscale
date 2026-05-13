@@ -5,15 +5,13 @@
 # Note: By testing the average saturation of the image we can guess if it's
 # grayscale (then the saturation is 0)
 # Source: http://www.imagemagick.org/discourse-server/viewtopic.php?t=19580
-function img-is-grayscale() {
-	local input="$1"
-	local saturation="$(magick \
-		$input \
-		-colorspace HCL \
-		-channel g \
-		-separate +channel \
-		-format "%[fx:mean]" info:)"
+local input="$1"
+local saturation="$(magick \
+	$input \
+	-colorspace HCL \
+	-channel g \
+	-separate +channel \
+	-format "%[fx:mean]" info:)"
 
-	[[ $saturation == "0" ]] && return 0
-	return 1
-}
+[[ $saturation == "0" ]] && return 0
+return 1

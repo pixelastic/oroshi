@@ -1,11 +1,9 @@
 # Count how many open issues the current repo has
 # Usage:
 # $ git-issue-count
-function git-issue-count() {
-	# Stop if not in a GitHub repo
-	git-directory-is-github || return 1
+# Stop if not in a GitHub repo
+git-directory-is-github || return 1
 
-	(gh issue list --limit=1000 --json=number 2>/dev/null || echo "0") |
-		cat '-' |
-		jq length
-}
+(gh issue list --limit=1000 --json=number 2>/dev/null || echo "0") |
+	cat '-' |
+	jq length

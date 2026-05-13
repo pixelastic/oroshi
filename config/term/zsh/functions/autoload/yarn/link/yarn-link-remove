@@ -2,30 +2,28 @@
 # Usage:
 # $ yarn-link-remove reddinx        # Removes reddinx from links
 # $ yarn-link-remove reddinx firost # Removes reddinx and firost
-function yarn-link-remove() {
-	local inputNames=($@)
+local inputNames=($@)
 
-	# Yarn Classic (v1)
-	if yarn-version-is-classic; then
-		yarn-link-classic-remove ${inputNames}
-		return
-	fi
+# Yarn Classic (v1)
+if yarn-version-is-classic; then
+	yarn-link-classic-remove ${inputNames}
+	return
+fi
 
-	# Yarn Berry (v2+)
-	local linkNames=()
-	for inputName in $inputNames; do
-		# Keep only those that are actual links
-		yarn-link-exists ${inputName} && linkNames+=($inputName)
-	done
+# Yarn Berry (v2+)
+local linkNames=()
+for inputName in $inputNames; do
+	# Keep only those that are actual links
+	yarn-link-exists ${inputName} && linkNames+=($inputName)
+done
 
-	# Stop if nothing to remove
-	[[ $linkNames == "" ]] && return
+# Stop if nothing to remove
+[[ $linkNames == "" ]] && return
 
-	local hostRoot="$(yarn-root)"
-	for linkName in $linkNames; do
-		rm -rf ${hostRoot}/node_modules/$linkName
-		echo "✔ $linkName unlinked"
-	done
+local hostRoot="$(yarn-root)"
+for linkName in $linkNames; do
+	rm -rf ${hostRoot}/node_modules/$linkName
+	echo "✔ $linkName unlinked"
+done
 
-	yarn install
-}
+yarn install

@@ -3,34 +3,32 @@
 # $ img-convert ./*.jpg ./*.svg png    # Convert all jpg and svg files to png
 # $ img-convert -f ./*.svg png         # Overwrites existing destinations
 
-function img-convert() {
-  zparseopts -E -D \
-    f=flagForce \
-    -force=flagForce
+zparseopts -E -D \
+  f=flagForce \
+  -force=flagForce
 
-  local isForce=${#flagForce}
+local isForce=${#flagForce}
 
-  # Inputs are all the arguments, except the last one which is the new type
-  local inputs=(${@[@]:1:-1})
-  local newExtension=${@[-1]}
+# Inputs are all the arguments, except the last one which is the new type
+local inputs=(${@[@]:1:-1})
+local newExtension=${@[-1]}
 
-  for input in $inputs; do
-    local inputPath=${input:a}
+for input in $inputs; do
+  local inputPath=${input:a}
 
-    # Skip missing files
-    [[ ! -f $inputPath ]] && continue
+  # Skip missing files
+  [[ ! -f $inputPath ]] && continue
 
-    local outputPath="${inputPath:r}.${newExtension}"
+  local outputPath="${inputPath:r}.${newExtension}"
 
-    # Skip if output already exists (unless --force)
-    if [[ -r $outputPath ]] && [[ $isForce == "0" ]]; then
-      echo "✘ $outputPath already exists. Pass --force / -f to overwrite"
-      continue
-    fi
+  # Skip if output already exists (unless --force)
+  if [[ -r $outputPath ]] && [[ $isForce == "0" ]]; then
+    echo "✘ $outputPath already exists. Pass --force / -f to overwrite"
+    continue
+  fi
 
-    magick \
-      -background none \
-      $inputPath \
-      $outputPath
-  done
-}
+  magick \
+    -background none \
+    $inputPath \
+    $outputPath
+done

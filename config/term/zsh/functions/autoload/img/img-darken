@@ -1,6 +1,4 @@
 # Darken images
 # Usage:
 # $ img-darken ./path/to/images        # Darken all specified images
-function img-lighten() {
-	img-luminosity $@ 75
-}
+img-luminosity $@ 75

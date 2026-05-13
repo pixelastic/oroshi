@@ -2,11 +2,9 @@
 # Usage:
 # $ docker-image-count ubuntu         # 2 if :latest and :22.04
 # $ docker-image-count nope           # 0
-function docker-image-count() {
-  local imageName="$@"
+local imageName="$@"
 
-  local allTags="$(docker images --format '{{.Tag}}' $imageName)"
-  allTags=(${(f)allTags})
-  echo ${#allTags}
+local allTags="$(docker images --format '{{.Tag}}' $imageName)"
+allTags=(${(f)allTags})
+echo ${#allTags}
 
-}

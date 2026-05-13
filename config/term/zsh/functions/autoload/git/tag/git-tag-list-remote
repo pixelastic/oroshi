@@ -2,37 +2,35 @@
 # Usage:
 # $ git-tag-list-remote           # Display all tags of current remote
 # $ git-tag-list-remote upstream  # Display all tags of upstream
-function git-tag-list-remote() {
-  local rawList="$(git-tag-list-remote-raw)"
+local rawList="$(git-tag-list-remote-raw)"
 
-  # Stop if no tag
-  if [[ "$rawList" == "" ]]; then
-    echo "✘ No tags found"
-    return
-  fi
+# Stop if no tag
+if [[ "$rawList" == "" ]]; then
+  echo "✘ No tags found"
+  return
+fi
 
-  # Loop through them all
-  local output=""
-  local currentTag="$(git-tag-current)"
-  for rawLine in ${(f)rawList}; do
-    local row=""
+# Loop through them all
+local output=""
+local currentTag="$(git-tag-current)"
+for rawLine in ${(f)rawList}; do
+  local row=""
 
-    # Splitting the line into its various parts
-    local split=(${(s:▮:)rawLine})
-    local tagName=${split[1]}
-    local commitHash=${split[2]}
+  # Splitting the line into its various parts
+  local split=(${(s:▮:)rawLine})
+  local tagName=${split[1]}
+  local commitHash=${split[2]}
 
-    # Tag name
-    # Note: git-tag-colorize works ok when it needs to chose the color of one
-    # tag, but quickly get slow when it needs to color a lot of them, so we take
-    # a shortcut and always use the same color
-    row+="$(colorize " $tagName" $COLOR_ALIAS_GIT_TAG)▮"
+  # Tag name
+  # Note: git-tag-colorize works ok when it needs to chose the color of one
+  # tag, but quickly get slow when it needs to color a lot of them, so we take
+  # a shortcut and always use the same color
+  row+="$(colorize " $tagName" $COLOR_ALIAS_GIT_TAG)▮"
 
-    # Hash
-    row+="$(git-commit-colorize $commitHash --with-icon)▮"
+  # Hash
+  row+="$(git-commit-colorize $commitHash --with-icon)▮"
 
-    output+="$row\n"
-  done
+  output+="$row\n"
+done
 
-  table $output
-}
+table $output

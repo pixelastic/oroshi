@@ -1,4 +1,2 @@
 # Display the current git version
-function git-git-version() {
-  git --version | awk '{print $3}'
-}
+git --version | awk '{print $3}'

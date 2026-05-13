@@ -1,6 +1,4 @@
 # This is wrapper around "yarn run lint"
 #
 # Using a custom function allows for specifying custom autocompletion
-function yarn-run-lint() {
-	yarn run lint $@
-}
+yarn run lint $@

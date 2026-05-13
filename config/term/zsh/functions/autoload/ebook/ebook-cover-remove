@@ -1,19 +1,17 @@
 # Remove the cover of an ebook
 # Usage:
 # $ ebook-cover-remove ./path/to/file.epub  # Remove the cover
-function ebook-cover-remove() {
-	local input="$1"
+local input="$1"
 
-	[[ $input == "" ]] && return 1
+[[ $input == "" ]] && return 1
 
-	# Create the smallest possible cover and add it
-	# I couldn't find a way to actually "remove" the cover
-	local coverPath=/tmp/oroshi/ebook/cover.jpg
-	mkdir -p ${coverPath:a:h}
-	img-jpg-create $coverPath
+# Create the smallest possible cover and add it
+# I couldn't find a way to actually "remove" the cover
+local coverPath=/tmp/oroshi/ebook/cover.jpg
+mkdir -p ${coverPath:a:h}
+img-jpg-create $coverPath
 
-	ebook-meta \
-		$input \
-		--cover="${coverPath}" \
-		&>/dev/null
-}
+ebook-meta \
+	$input \
+	--cover="${coverPath}" \
+	&>/dev/null

@@ -1,7 +1,5 @@
 # View list of all kitty tabs
 # Usage:
 # $ kitty-tabs-list-raw   # View list of all tabs
-function kitty-tabs-list-raw() {
-  kitty @ ls |
-    jq -r '.[0].tabs[] | [.id, .title] | join("▮")'
-}
+kitty @ ls |
+  jq -r '.[0].tabs[] | [.id, .title] | join("▮")'

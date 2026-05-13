@@ -2,14 +2,12 @@
 # Usage:
 # $ trim "Hello World!  "         # "Hello World!"
 # $ echo "Hello World!  " | trim  # "Hello World!"
-function trim() {
-  local input="$1"
-  # Read from pipe
-  [[ -p /dev/stdin ]] && input="$(/usr/bin/cat -)"
+local input="$1"
+# Read from pipe
+[[ -p /dev/stdin ]] && input="$(/usr/bin/cat -)"
 
-  # Trim whitespace (space, tab, newline, carriage return) at beginning and end
-  local output=$input
-  output="${output#"${output%%[!$' \t\n\r']*}"}"
-  output="${output%"${output##*[!$' \t\n\r']}"}"
-  echo -n "$output"
-}
+# Trim whitespace (space, tab, newline, carriage return) at beginning and end
+local output=$input
+output="${output#"${output%%[!$' \t\n\r']*}"}"
+output="${output%"${output##*[!$' \t\n\r']}"}"
+echo -n "$output"

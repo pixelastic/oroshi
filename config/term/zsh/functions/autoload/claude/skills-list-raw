@@ -2,19 +2,17 @@
 # Usage:
 # $ skills-list-raw
 # Output format: name▮description▮type
-function skills-list-raw() {
-  local skillsDir=~/.claude/skills
+local skillsDir=~/.claude/skills
 
-  for skillPath in "$skillsDir"/*; do
-    local name=$(basename "$skillPath")
-    local description=$(skills-description "$name")
+for skillPath in "$skillsDir"/*; do
+  local name=$(basename "$skillPath")
+  local description=$(skills-description "$name")
 
-    # Determine type: custom if symlink, community otherwise
-    local type="community"
-    if [[ -L "$skillPath" ]]; then
-      type="custom"
-    fi
+  # Determine type: custom if symlink, community otherwise
+  local type="community"
+  if [[ -L "$skillPath" ]]; then
+    type="custom"
+  fi
 
-    echo "${name}▮${description}▮${type}"
-  done
-}
+  echo "${name}▮${description}▮${type}"
+done

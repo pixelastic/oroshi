@@ -2,36 +2,34 @@
 # Usage:
 # $ yarn-link-list            # Display list of all locally linked yarn
 # modules
-function yarn-link-list() {
-  # Stop if yarn isn't installed
-  [[ ! $commands[yarn] ]] && return 1
+# Stop if yarn isn't installed
+[[ ! $commands[yarn] ]] && return 1
 
-  local rawList="$(yarn-link-list-raw --with-descriptions)"
+local rawList="$(yarn-link-list-raw --with-descriptions)"
 
-  # Build the output
-  local output=""
-  for rawLine in ${(f)rawList}; do
-    local row=""
+# Build the output
+local output=""
+for rawLine in ${(f)rawList}; do
+  local row=""
 
-    local split=(${(s/▮/)rawLine})
-    local linkName=$split[1]
-    local linkType=$split[2]
-    local linkDescription=$split[3]
+  local split=(${(s/▮/)rawLine})
+  local linkName=$split[1]
+  local linkType=$split[2]
+  local linkDescription=$split[3]
 
-    # Name
-    row+="$(yarn-link-colorize $linkName $linkType --with-icon)▮"
+  # Name
+  row+="$(yarn-link-colorize $linkName $linkType --with-icon)▮"
 
-    # Description
-    row+="$(colorize "$linkDescription" $COLOR_ALIAS_YARN_PACKAGE_DESCRIPTION)▮"
+  # Description
+  row+="$(colorize "$linkDescription" $COLOR_ALIAS_YARN_PACKAGE_DESCRIPTION)▮"
 
-    output+="$row\n"
-  done
+  output+="$row\n"
+done
 
-  # Output as columns
-  echo $output | column \
-    --separator "▮" \
-    --table \
-    --table-noheadings
+# Output as columns
+echo $output | column \
+  --separator "▮" \
+  --table \
+  --table-noheadings
 
-}
 

@@ -3,14 +3,12 @@
 # dimensions function
 # Usage:
 # $ video-dimensions ./path/video.mkv    # 1888x1080
-function video-dimensions() {
 
-	local input="$1"
+local input="$1"
 
-	exiftool $input |
-		grep 'Image Size' |
-		cut \
-			--delimiter ":" \
-			--fields 2 |
-		xargs echo
-}
+exiftool $input |
+	grep 'Image Size' |
+	cut \
+		--delimiter ":" \
+		--fields 2 |
+	xargs echo

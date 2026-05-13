@@ -3,43 +3,41 @@
 # $ fzf-fs-shared-source /path/to/directory     # Find in specified dir
 # $ fzf-fs-shared-source                        # Find in last visited dir
 # $ fzf-fs-shared-source --directories          # Find only directories
-function fzf-fs-shared-source() {
-  zmodload zsh/zutil
-  zparseopts -E -D \
-    -directories=flagDirectories
+zmodload zsh/zutil
+zparseopts -E -D \
+  -directories=flagDirectories
 
-  local isDirectories=${#flagDirectories}
+local isDirectories=${#flagDirectories}
 
-  # We find in specified directory, and if not specified in the last saved one
-  local searchPath="$1"
+# We find in specified directory, and if not specified in the last saved one
+local searchPath="$1"
 
-  # Find additional arguments based on what is typed on the zsh commandline
-  local additionalArguments=($(fzf-fs-shared-zsh-filters))
+# Find additional arguments based on what is typed on the zsh commandline
+local additionalArguments=($(fzf-fs-shared-zsh-filters))
 
-  # Only searching for directories
-  if [[ $isDirectories == "1" ]]; then
-    additionalArguments+=(--type directory)
-  else
-    additionalArguments+=(--type file)
-  fi
+# Only searching for directories
+if [[ $isDirectories == "1" ]]; then
+  additionalArguments+=(--type directory)
+else
+  additionalArguments+=(--type file)
+fi
 
-  # Find all elements in that directory
-  local items="$(fd \
-    --hidden \
-    --follow \
-    --color always \
-    $additionalArguments \
-    --base-directory "$searchPath" \
-    .
-  )"
+# Find all elements in that directory
+local items="$(fd \
+  --hidden \
+  --follow \
+  --color always \
+  $additionalArguments \
+  --base-directory "$searchPath" \
+  .
+)"
 
-  # Display it as two columns: full path (for selection) and relative path (for
-  # display)
-  for item in ${(f)items}; do
-    # Remove starting ./ from filepaths
-    item=${item//.\//}
+# Display it as two columns: full path (for selection) and relative path (for
+# display)
+for item in ${(f)items}; do
+  # Remove starting ./ from filepaths
+  item=${item//.\//}
 
-    echo "${searchPath}/${item}   ${item}"
-  done
+  echo "${searchPath}/${item}   ${item}"
+done
 
-}

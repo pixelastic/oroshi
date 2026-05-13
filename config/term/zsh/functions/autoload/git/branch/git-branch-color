@@ -2,28 +2,26 @@
 # Usage:
 # $ git-branch-color             # (current branch)
 # $ git-branch-color main        # main branch color
-function git-branch-color() {
 
-  # Branch name
-  local branchName="$1"
-  if [[ $branchName == '' ]]; then
-    branchName="$(git-branch-current)"
-  fi
+# Branch name
+local branchName="$1"
+if [[ $branchName == '' ]]; then
+  branchName="$(git-branch-current)"
+fi
 
-  declare -A BRANCH_COLORS
-  BRANCH_COLORS=()
-  BRANCH_COLORS[HEAD]=$COLOR_ALIAS_GIT_BRANCH_HEAD
-  BRANCH_COLORS[develop]=$COLOR_ALIAS_GIT_BRANCH_DEVELOP
-  BRANCH_COLORS[master]=$COLOR_ALIAS_GIT_BRANCH_MASTER
-  BRANCH_COLORS[main]=$COLOR_ALIAS_GIT_BRANCH_MAIN
+declare -A BRANCH_COLORS
+BRANCH_COLORS=()
+BRANCH_COLORS[HEAD]=$COLOR_ALIAS_GIT_BRANCH_HEAD
+BRANCH_COLORS[develop]=$COLOR_ALIAS_GIT_BRANCH_DEVELOP
+BRANCH_COLORS[master]=$COLOR_ALIAS_GIT_BRANCH_MASTER
+BRANCH_COLORS[main]=$COLOR_ALIAS_GIT_BRANCH_MAIN
 
-  # Known branch
-  local knownColor=$BRANCH_COLORS[$branchName]
-  if [[ $knownColor != '' ]]; then
-    echo $knownColor
-    return
-  fi
+# Known branch
+local knownColor=$BRANCH_COLORS[$branchName]
+if [[ $knownColor != '' ]]; then
+  echo $knownColor
+  return
+fi
 
-  # Default branch
-  echo $COLOR_ALIAS_GIT_BRANCH
-}
+# Default branch
+echo $COLOR_ALIAS_GIT_BRANCH

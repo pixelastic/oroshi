@@ -6,16 +6,14 @@
 # has changed, so I need to manually run "eslint_d restart" for my linting to
 # work inside of vim.
 # This script is a wrapper to restart eslint_d correctly
-function eslintd-restart() {
-  local currentDirectory="$(pwd)"
-  local gitRoot="$(git-directory-root)"
+local currentDirectory="$(pwd)"
+local gitRoot="$(git-directory-root)"
 
-  # Restart eslint_d in the current working directory
+# Restart eslint_d in the current working directory
+eslint_d restart
+
+if [[ "$currentDirectory" != "$gitRoot" ]]; then
+  cd $gitRoot || return
   eslint_d restart
-
-  if [[ "$currentDirectory" != "$gitRoot" ]]; then
-    cd $gitRoot || return
-    eslint_d restart
-    cd $currentDirectory || return
-  fi
-}
+  cd $currentDirectory || return
+fi

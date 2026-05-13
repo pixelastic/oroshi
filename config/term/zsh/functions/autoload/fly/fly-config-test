@@ -2,17 +2,15 @@
 # Usage:
 # $ fly-config-test              # Test fly.toml in current directory
 # $ fly-config-test path/to/fly.toml   # Test specific config file
-function fly-config-test() {
-  local configFile="$1"
+local configFile="$1"
 
-  if [[ -z "$configFile" ]]; then
-    configFile="$(fly-config-path)"
-  fi
+if [[ -z "$configFile" ]]; then
+  configFile="$(fly-config-path)"
+fi
 
-  if [[ ! -f "$configFile" ]]; then
-    echo "✘ Configuration file not found: $configFile"
-    return 1
-  fi
+if [[ ! -f "$configFile" ]]; then
+  echo "✘ Configuration file not found: $configFile"
+  return 1
+fi
 
-  flylint "$configFile"
-}
+flylint "$configFile"

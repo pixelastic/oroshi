@@ -5,174 +5,172 @@
 # $ git-branch-rename-master-to-main                 # Use current repo
 # $ git-branch-rename-master-to-main firost          # pixelastic/firost
 # $ git-branch-rename-master-to-main owner/repo      # Custom owner
-function git-branch-rename-master-to-main() {
-  function main() {
-    # Main execution
-    local fullRepo=$(parseRepoArgument "$1") || return 1
+function main() {
+  # Main execution
+  local fullRepo=$(parseRepoArgument "$1") || return 1
 
-    # Check everything is available
-    preFlightChecks "$fullRepo" || return 1
+  # Check everything is available
+  preFlightChecks "$fullRepo" || return 1
 
-    # Update local and remote config
-    renameLocalBranch
-    pushMainToRemote
-    updateGitHubDefaultBranch "$fullRepo"
-    switchToMain
-    deleteRemoteMaster
+  # Update local and remote config
+  renameLocalBranch
+  pushMainToRemote
+  updateGitHubDefaultBranch "$fullRepo"
+  switchToMain
+  deleteRemoteMaster
 
-    # Update tools config files
-    updateNetlify "$fullRepo"
-  }
-
-  # Display success message
-  function successMessage() {
-    echo "✔ $1"
-  }
-
-  # Display skip message
-  function skipMessage() {
-    echo "· $1"
-  }
-
-  # Display error message
-  function errorMessage() {
-    echo "✘ $1" >&2
-  }
-
-  # Parse repository argument
-  function parseRepoArgument() {
-    local arg="$1"
-
-    # Contains slash: owner/repo format
-    if [[ "$arg" == */* ]]; then
-      echo "$arg"
-      return 0
-    fi
-
-    # Just repo name: default to pixelastic
-    if [[ -n "$arg" ]]; then
-      echo "pixelastic/$arg"
-      return 0
-    fi
-
-    # No argument: use current directory
-    if ! git-directory-is-repository; then
-      errorMessage "Not in a git repository"
-      return 1
-    fi
-
-    git-github-remote-project
-  }
-
-  # Pre-flight checks
-  function preFlightChecks() {
-    local fullRepo="$1"
-
-    if ! command -v gh &>/dev/null; then
-      errorMessage "gh CLI is not installed"
-      return 1
-    fi
-
-    if ! gh repo view "$fullRepo" &>/dev/null; then
-      errorMessage "Repository $fullRepo not found or not accessible"
-      return 1
-    fi
-  }
-
-  # Step 1: Rename or create local main branch
-  function renameLocalBranch() {
-    # Already have main locally, nothing to do
-    if git-branch-exists main; then
-      skipMessage "Local main branch already exists"
-      return 0
-    fi
-
-    # No local master, nothing to do
-    if ! git-branch-exists master; then
-      skipMessage "No local master branch found"
-      return 0
-    fi
-
-    # Copy master to main
-    git-branch-copy master main
-    successMessage "Copied master → main"
-  }
-
-  # Step 2: Push main branch to remote
-  function pushMainToRemote() {
-    # Remote main already exists, nothing to do
-    if git-branch-exists-remote main origin; then
-      skipMessage "Remote main branch already exists"
-      return 0
-    fi
-
-    # Push main to origin
-    git-branch-push main origin &>/dev/null
-    successMessage "Pushed main to origin"
-  }
-
-  # Step 3: Update default branch on GitHub
-  function updateGitHubDefaultBranch() {
-    local fullRepo="$1"
-    local currentDefault=$(git-github-branch-default "$fullRepo")
-
-    # Already set to main, nothing to do
-    if [[ "$currentDefault" == "main" ]]; then
-      skipMessage "Default branch already set to main on GitHub"
-      return 0
-    fi
-
-    # Update default branch
-    git-github-branch-default-update main "$fullRepo"
-    successMessage "Set main as default branch on GitHub"
-  }
-
-  # Step 4: Switch to main branch
-  function switchToMain() {
-    # Already on main, nothing to do
-    local currentBranch=$(git-branch-current)
-    if [[ "$currentBranch" == "main" ]]; then
-      skipMessage "Already on main branch"
-      return 0
-    fi
-
-    # Switch to main
-    git-branch-switch main &>/dev/null
-    successMessage "Switched to main branch"
-  }
-
-  # Step 5: Delete remote master branch
-  function deleteRemoteMaster() {
-    # Remote master already deleted, nothing to do
-    if ! git-branch-exists-remote master origin; then
-      skipMessage "Remote master branch already deleted"
-      return 0
-    fi
-
-    # Delete remote master
-    git-branch-remove-remote master &>/dev/null
-    successMessage "Deleted remote master branch"
-  }
-
-  # Update Netlify configuration
-  function updateNetlify() {
-    local fullRepo="$1"
-
-    # Check if netlify.toml exists in remote repo
-    if ! gh api "repos/${fullRepo}/contents/netlify.toml" &>/dev/null; then
-      return 0
-    fi
-
-    # Display manual update instructions
-    local netlifyProject="${fullRepo//\//-}"
-    echo ""
-    echo "⚠ Manual update required for Netlify:"
-    echo "  1. Go to https://app.netlify.com/projects/${netlifyProject}/configuration/deploys#branches-and-deploy-contexts"
-    echo "  2. Click 'Configure' next to 'Production branch'"
-    echo "  3. Update from 'master' to 'main'"
-    echo ""
-  }
-
-  main "$@"
-
+  # Update tools config files
+  updateNetlify "$fullRepo"
 }
+
+# Display success message
+function successMessage() {
+  echo "✔ $1"
+}
+
+# Display skip message
+function skipMessage() {
+  echo "· $1"
+}
+
+# Display error message
+function errorMessage() {
+  echo "✘ $1" >&2
+}
+
+# Parse repository argument
+function parseRepoArgument() {
+  local arg="$1"
+
+  # Contains slash: owner/repo format
+  if [[ "$arg" == */* ]]; then
+    echo "$arg"
+    return 0
+  fi
+
+  # Just repo name: default to pixelastic
+  if [[ -n "$arg" ]]; then
+    echo "pixelastic/$arg"
+    return 0
+  fi
+
+  # No argument: use current directory
+  if ! git-directory-is-repository; then
+    errorMessage "Not in a git repository"
+    return 1
+  fi
+
+  git-github-remote-project
+}
+
+# Pre-flight checks
+function preFlightChecks() {
+  local fullRepo="$1"
+
+  if ! command -v gh &>/dev/null; then
+    errorMessage "gh CLI is not installed"
+    return 1
+  fi
+
+  if ! gh repo view "$fullRepo" &>/dev/null; then
+    errorMessage "Repository $fullRepo not found or not accessible"
+    return 1
+  fi
+}
+
+# Step 1: Rename or create local main branch
+function renameLocalBranch() {
+  # Already have main locally, nothing to do
+  if git-branch-exists main; then
+    skipMessage "Local main branch already exists"
+    return 0
+  fi
+
+  # No local master, nothing to do
+  if ! git-branch-exists master; then
+    skipMessage "No local master branch found"
+    return 0
+  fi
+
+  # Copy master to main
+  git-branch-copy master main
+  successMessage "Copied master → main"
+}
+
+# Step 2: Push main branch to remote
+function pushMainToRemote() {
+  # Remote main already exists, nothing to do
+  if git-branch-exists-remote main origin; then
+    skipMessage "Remote main branch already exists"
+    return 0
+  fi
+
+  # Push main to origin
+  git-branch-push main origin &>/dev/null
+  successMessage "Pushed main to origin"
+}
+
+# Step 3: Update default branch on GitHub
+function updateGitHubDefaultBranch() {
+  local fullRepo="$1"
+  local currentDefault=$(git-github-branch-default "$fullRepo")
+
+  # Already set to main, nothing to do
+  if [[ "$currentDefault" == "main" ]]; then
+    skipMessage "Default branch already set to main on GitHub"
+    return 0
+  fi
+
+  # Update default branch
+  git-github-branch-default-update main "$fullRepo"
+  successMessage "Set main as default branch on GitHub"
+}
+
+# Step 4: Switch to main branch
+function switchToMain() {
+  # Already on main, nothing to do
+  local currentBranch=$(git-branch-current)
+  if [[ "$currentBranch" == "main" ]]; then
+    skipMessage "Already on main branch"
+    return 0
+  fi
+
+  # Switch to main
+  git-branch-switch main &>/dev/null
+  successMessage "Switched to main branch"
+}
+
+# Step 5: Delete remote master branch
+function deleteRemoteMaster() {
+  # Remote master already deleted, nothing to do
+  if ! git-branch-exists-remote master origin; then
+    skipMessage "Remote master branch already deleted"
+    return 0
+  fi
+
+  # Delete remote master
+  git-branch-remove-remote master &>/dev/null
+  successMessage "Deleted remote master branch"
+}
+
+# Update Netlify configuration
+function updateNetlify() {
+  local fullRepo="$1"
+
+  # Check if netlify.toml exists in remote repo
+  if ! gh api "repos/${fullRepo}/contents/netlify.toml" &>/dev/null; then
+    return 0
+  fi
+
+  # Display manual update instructions
+  local netlifyProject="${fullRepo//\//-}"
+  echo ""
+  echo "⚠ Manual update required for Netlify:"
+  echo "  1. Go to https://app.netlify.com/projects/${netlifyProject}/configuration/deploys#branches-and-deploy-contexts"
+  echo "  2. Click 'Configure' next to 'Production branch'"
+  echo "  3. Update from 'master' to 'main'"
+  echo ""
+}
+
+main "$@"
+

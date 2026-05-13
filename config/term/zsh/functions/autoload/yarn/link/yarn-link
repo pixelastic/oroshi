@@ -15,27 +15,25 @@
 # Usage:
 # $ yarn-link ../path/to/aberlaas-monorepo/lib   # Uses local version of aberlaas instead of dependency
 # $ yarn-link ../path/to/one ../path/to/two      # Link several modules at once
-function yarn-link() {
-	local inputPaths=($@)
-	local yarnIsBerry="1"
-	yarn-version-is-classic && yarnIsBerry="0"
+local inputPaths=($@)
+local yarnIsBerry="1"
+yarn-version-is-classic && yarnIsBerry="0"
 
-	for modulePath in $inputPaths; do
-		modulePath="${modulePath:a}"
+for modulePath in $inputPaths; do
+	modulePath="${modulePath:a}"
 
-		# If we're using Yarn Classic (v1), it has it's own flow
-		# 1. Register the destination in the list of linkable modules
-		# 2. Actually link the source to the destination
-		if [[ $yarnIsBerry == "0" ]]; then
-			local moduleName="$(yarn-package-name "$modulePath")"
+	# If we're using Yarn Classic (v1), it has it's own flow
+	# 1. Register the destination in the list of linkable modules
+	# 2. Actually link the source to the destination
+	if [[ $yarnIsBerry == "0" ]]; then
+		local moduleName="$(yarn-package-name "$modulePath")"
 
-			yarn-link-classic-create $modulePath
-			yarn-link-classic-enable $moduleName
-			continue
-		fi
+		yarn-link-classic-create $modulePath
+		yarn-link-classic-enable $moduleName
+		continue
+	fi
 
-		# If using Yarn Berry (v2+), we only need to pass the path to the linked
-		# module. We will create all the required symlinks
-		yarn-link-create $modulePath
-	done
-}
+	# If using Yarn Berry (v2+), we only need to pass the path to the linked
+	# module. We will create all the required symlinks
+	yarn-link-create $modulePath
+done

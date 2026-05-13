@@ -2,10 +2,8 @@
 # Usage:
 # $ docker-container-state alpine_latest         # running / stopped / etc
 # $ docker-container-state ksjkdjskjd            # return 1 if does not exist
-function docker-container-state() {
-  local containerName="$1"
+local containerName="$1"
 
-  local state="$(docker container inspect --format '{{.State.Status}}' $containerName 2>/dev/null)"
-  [[ $state == "" ]] && return 1
-  echo $state
-}
+local state="$(docker container inspect --format '{{.State.Status}}' $containerName 2>/dev/null)"
+[[ $state == "" ]] && return 1
+echo $state
