@@ -7,10 +7,22 @@ set -e
 # We should stop if not in a git repo
 # We assume that there is a plans/prd.json file containing all the issues
 # We also assume there is a plans/progress.txt file, append-only, where agents add their updates
+#
+# I will probably a "ralph" skill, so I can say "ralph this".
+# This means:
+# - Setup: Read prd.json and progress.md
+# - Pick: Find the highest priority issue to work on
+# - Implement: Follow TDD, start with RED, end with GREEN
+# - Document: Update prd.json and progress.md
+# - Commit: Commit changes, as well as doc
+# - Review: Run a subagent to review
+# - Correct: If review is relevant: Implement, Document and Commit as above
+# - Finish: If all prd is done, output <promise>PRD COMPLETE</promise>
+# STOP
 
 # We then iterate 10 (or --iterations) times
 # Each time, we tell claude:
-#
+# IMPLEMENT
 local claudePrompt="
 Check @docs/worktrees/prd.json and @docs/worktrees/progress.md.
 Find the highest priority issue to work on and work on only that one.
@@ -28,22 +40,18 @@ tests you completed, any issues discovered or fixed and what should be worked on
 next.
 "
 
-# - @plans/progress.txt
-# - @plans/prd.json
-# - Find the highest priority feature to work on and work on only that feature.
-# - You decide which is the highest priority, not necesarily the first one
-# - Write tests that proves the feature doesn't work
-# - Ensure tests are RED
-# - Implement the feature
-# - Ensure tests are GREEN
-# - Update prd.json and progress.txt
-# - Commit your changes
-# - Ask a reviewer to review
-# - Implemente their feedback if relevent
-# - Ensure tests are still GREEN
-# - Update prd.json and progress.txt
-# - Commit again
-# - If you notice the PRD is done, echo <promise>PRD COMPLETE</promise>
+# Commit
+#
+# REVIEW
+# Ask another agent "/review {previousCommit}"
+# Pass it back to initial agent. Probably wrapped in a "Here is some feedback
+# from review, that might be relevant. See what is actionable."
+# Ensure tests still pass
+# Update progress.md and prd.json
+# Commit if any changes
+#
+# # FINISH
+# If you notice the PRD is done, echo <promise>PRD COMPLETE</promise>
 #
 # We echo the result.
 # If the result contains <promise>PRD COMPLETE</promise> we stop before the end
