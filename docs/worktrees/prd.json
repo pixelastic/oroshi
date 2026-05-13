@@ -9,7 +9,7 @@
       "Run git-directory-is-worktree",
       "Verify exit code is 0"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "unit",
@@ -20,7 +20,7 @@
       "Run git-directory-is-worktree",
       "Verify exit code is 1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "unit",
@@ -30,7 +30,7 @@
       "Run git-directory-is-worktree",
       "Verify exit code is 1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "unit",

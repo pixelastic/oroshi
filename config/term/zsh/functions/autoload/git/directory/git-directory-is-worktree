@@ -1,0 +1,10 @@
+# Boolean: is the current (or given) path a linked git worktree?
+# Usage:
+# $ git-directory-is-worktree [path]
+
+local targetPath="${1:-$PWD}"
+local gitDir="$(git -C "$targetPath" rev-parse --git-dir 2>/dev/null)"
+
+[[ -z "$gitDir" ]] && return 1
+[[ "$gitDir" == *".git/worktrees/"* ]] && return 0
+return 1
