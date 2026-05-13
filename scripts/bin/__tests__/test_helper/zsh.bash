@@ -16,7 +16,7 @@ bats_tmp() {
 
   # Get the slug of the test name
   local slug
-  slug="$(zsh -c "slugify '${BATS_TEST_NAME}'")"
+  slug="$(zsh -c 'slugify "$1"' -- "${BATS_TEST_NAME}")"
 
   # Create the tmp dir
   local dir="/tmp/oroshi/bats/${file}/${slug}"

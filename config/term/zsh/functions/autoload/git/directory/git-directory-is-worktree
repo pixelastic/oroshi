@@ -5,6 +5,8 @@
 local targetPath="${1:-$PWD}"
 local gitDir="$(git -C "$targetPath" rev-parse --git-dir 2>/dev/null)"
 
+# If not a git directory, can't be a worktree
 [[ -z "$gitDir" ]] && return 1
+# If the git directory is inside a .git/worktrees/ path, it's a linked worktree
 [[ "$gitDir" == *".git/worktrees/"* ]] && return 0
 return 1
