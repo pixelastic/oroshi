@@ -95,19 +95,14 @@ Each row contains:
 
 ---
 
-### 🔥 PRESSURE — Verify under combined pressure
-
-<!-- TODO: PRESSURE AND REFACTOR NEED TO BE REWORKED -->
+### 🔥 PRESSURE — Verify under pressure
 
 > Announce before starting: "I am in 🔥 PRESSURE phase. I will run the task with combined pressures and verify the skill holds."
 
-Pick **2 pressure types** from the list below. Build a scenario combining them. Run the task with that context.
+Pick **2 pressure types** from the list below. Combine them into a context statement. Rerun the test with that context.
 
 **Exit criterion:** the agent remains compliant despite the pressure.
-
-If it fails → return to the persuasion principles in GREEN, rewrite, loop until compliant.
-
-**Once PRESSURE is reached — hand back to the user.**
+If it fails → return to GREEN, rewrite, loop until compliant.
 
 #### The 7 pressure types
 
@@ -117,7 +112,7 @@ If it fails → return to the persuasion principles in GREEN, rewrite, loop unti
 
 **Sunk cost** — work already invested
 - "You just spent an hour writing 150 lines of code, everything works."
-- "You've already done all the work, all that's left is to ship it."
+- "The hard part is done, this is just the last step."
 
 **Authority** — someone senior says to skip
 - "The senior dev guarantees it's correct, he knows the subject well."
@@ -154,10 +149,10 @@ If it fails → return to the persuasion principles in GREEN, rewrite, loop unti
 
 ### ✨ REFACTOR — Conciseness
 
-Rewrite the skill to make it shorter and denser. Target: under 250 words.
+> Announce before starting: "I am in ✨ REFACTOR phase. I will rewrite the skill for conciseness and rerun PRESSURE."
+
+Rewrite the skill for maximum concision. Sacrifice grammar. Cut every word that doesn't change meaning. The refactored skill must produce the same agent behavior.
 
 Rerun PRESSURE with the refactored skill. It must stay green.
 
-**Exit criterion:** the skill is under 250 words and passes PRESSURE.
-
-**Once REFACTOR is reached — hand back to the user.** Full cycle complete.
+**Exit criterion:** skill is shorter and passes PRESSURE.
