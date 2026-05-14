@@ -157,7 +157,7 @@
       "From the repo root, run git-worktree-switch fix/bug",
       "Verify current directory is the worktree path"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -168,7 +168,7 @@
       "Run git-worktree-switch main",
       "Verify current directory is the Git Repo Main path"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

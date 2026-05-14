@@ -146,6 +146,26 @@ Test status tracker: docs/worktrees/prd.json (only update the "passes" field)
 
 ### Up next
 - 0005-git-worktree-list
-- 0006-git-worktree-switch
 - 0007-git-worktree-delete
 - 0008-complete-git-worktrees
+
+---
+
+## Session notes — 2026-05-14 (continued)
+
+### Completed
+- 0006-git-worktree-switch (3/3 bats tests pass)
+  - config/term/zsh/functions/autoload/git/worktree/git-worktree-switch
+  - scripts/bin/__tests__/git-worktree-switch.bats
+
+### Implementation notes
+- Parses `git-worktree-list-raw` output (`<branch> <path>`) with `${line%% *}` / `${line#* }`
+- Guards: `[[ -n "$line" ]] || continue` and `[[ "${line%% *}" == "$branch" ]] || continue` safe with `errexit`
+- `main` shortcut calls `git-worktree-main` directly without touching list-raw
+- cd tests use `run zsh -c '... && echo "$PWD"'` pattern (same as git-worktree-create)
+
+### Up next
+- 0005-git-worktree-list
+- 0007-git-worktree-delete
+- 0008-complete-git-worktrees
+- 0009-config-env-aliases (unblocks after 0005+0007+0008 done)

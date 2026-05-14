@@ -1,0 +1,30 @@
+# cd into a Worktree by branch name, or into the Git Repo Main when given 'main'
+# Usage:
+# $ git-worktree-switch main      # → Git Repo Main
+# $ git-worktree-switch fix/bug   # → worktree for fix/bug
+
+setopt local_options errexit
+
+local branch="$1"
+
+# Navigate to Git Repo Main
+if [[ "$branch" == "main" ]]; then
+  cd "$(git-worktree-main)"
+  return
+fi
+
+# Find matching worktree path in raw list
+local raw="$(git-worktree-list-raw)"
+local worktreePath=""
+
+for line in "${(@f)raw}"; do
+  [[ -n "$line" ]] || continue
+  [[ "${line%% *}" == "$branch" ]] || continue
+  worktreePath="${line#* }"
+  break
+done
+
+# No worktree found for this branch
+[[ "$worktreePath" == "" ]] && return 1
+
+cd "$worktreePath"
