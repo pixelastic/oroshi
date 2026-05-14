@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# Run claude /review on a specific commit
+# Usage:
+# $ claude-review        # Review HEAD
+# $ claude-review <sha>  # Review specific commit
+set -e
+
+local commit=${1:-HEAD}
+
+claude-print "/review commit $commit"
