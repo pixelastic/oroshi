@@ -4,95 +4,68 @@ set -e
 # Load project color definitions
 source $ZSH_CONFIG_PATH/theming/env/colors.zsh
 source $ZSH_CONFIG_PATH/theming/env/projects.zsh
-local CONTEXT_LIMIT=1000000
 
 # Fake values for debuging, or values coming from stdin
 if [[ "$1" == "--dry-run" ]]; then
   local modelName="Sonnet 4.6"
   local currentDir=~/.oroshi/
   local totalCost=0
-  local inputTokens=234000
-  local outputTokens=12000
+  local totalTokens=51000
+  local contextPercentage=24
+  local sessionId="deadbeef"
 else
   local stdinData=$(cat)
   local currentDir=$(echo "$stdinData" | jq -r '.workspace.current_dir')
   local modelName=$(echo "$stdinData" | jq -r '.model.display_name')
   local totalCost=$(echo "$stdinData" | jq -r '.cost.total_cost_usd // 0 | . * 10000 | round / 10000')
-  local inputTokens=$(echo "$stdinData" | jq -r '.context_window.total_input_tokens // 0')
-  local outputTokens=$(echo "$stdinData" | jq -r '.context_window.total_output_tokens // 0')
+  local totalTokens=$(echo "$stdinData" | jq -r '.context_window.current_usage | (.input_tokens + .output_tokens + .cache_creation_input_tokens + .cache_read_input_tokens)')
+  local contextPercentage=$(echo "$stdinData" | jq -r '.context_window.used_percentage // 0')
+  local sessionId=$(echo "$stdinData" | jq -r '.session_id // "" | .[0:8]')
 fi
 
-# Left side {{{
-local leftSide=()
+local statusline=()
 
+# Unused info {{{
 # Model (effort)
-local settingsFile=~/.claude/settings.json
-local effortLevel=$(jq -r '.effortLevel // "medium"' "$settingsFile")
-local displayModel="$(colorize "${modelName} (${effortLevel})" $COLOR_ALIAS_COMMENT)"
-leftSide+=("$displayModel ")
-
-# Context budget
-local totalTokens=$(( inputTokens + outputTokens ))
-local tokensKRaw=$(printf "%.1f" $(( totalTokens / 1000.0 )))
-local tokensK="${tokensKRaw%\.0}k"
-# Context percentage
-local contextPercentage=$(( totalTokens * 100 / CONTEXT_LIMIT ))
-# Context color
-local contextColor=$COLOR_RED
-(( contextPercentage < 80 )) && contextColor=$COLOR_YELLOW
-(( contextPercentage < 60 )) && contextColor=$COLOR_GREEN
-(( contextPercentage < 20 )) && contextColor=$COLOR_GRAY
-local displayContext="$(colorize "${tokensK}" $contextColor)"
-leftSide+=("$displayContext ")
+# local settingsFile=~/.claude/settings.json
+# local effortLevel=$(jq -r '.effortLevel // "medium"' "$settingsFile")
+# local displayModel="$(colorize "${modelName} (${effortLevel})" $COLOR_ALIAS_COMMENT)"
+# statusline+=("$displayModel ")
 
 # Cost
-local isInCents=$(( totalCost < 1 ))
-if (( isInCents )); then
-  local roundedCents=$(( totalCost * 100 + 0.5 ))
-  local displayCost="$(colorize "${roundedCents%.*}¢" $COLOR_ALIAS_PUNCTUATION)"
-else
-  local roundedDollars=$(printf "$%.2f" "$totalCost")
-  local displayCost="$(colorize "${roundedDollars}" $COLOR_YELLOW)"
-fi
-# leftSide+=("$displayCost ")
+# local isInCents=$((totalCost < 1))
+# if ((isInCents)); then
+#   local roundedCents=$((totalCost * 100 + 0.5))
+#   local displayCost="$(colorize "${roundedCents%.*}¢" $COLOR_ALIAS_PUNCTUATION)"
+# else
+#   local roundedDollars=$(printf "$%.2f" "$totalCost")
+#   local displayCost="$(colorize "${roundedDollars}" $COLOR_YELLOW)"
+# fi
+# statusline+=("$displayCost ")
 # }}}
 
-# Right side {{{
-local rightSide=()
+# Project
+local projectName="$(project-by-path "$currentDir")"
+displayProject="$(project-colorize ${projectName})"
+statusline+=("$displayProject ")
 
 # Branch
 local branchName="$(git-branch-current "${currentDir}")"
 local displayBranch="$(git-branch-colorize "${branchName}")"
-rightSide+=("$displayBranch ")
+statusline+=("$displayBranch ")
 
-# Project
-local projectName="$(project-by-path "$currentDir")"
-local projectKey=$(project-key "$projectName")
-local projectBackground=${(P)${:-PROJECT_${projectKey}_BACKGROUND}}
-local projectForeground=${(P)${:-PROJECT_${projectKey}_FOREGROUND}}
-local projectIcon=${(P)${:-PROJECT_${projectKey}_ICON}}
-local displayProject=""
-displayProject+="$(colorize "" $projectBackground)"
-displayProject+="$(colorize " ${projectIcon}${projectName} " $projectForeground $projectBackground)"
-rightSide+=($displayProject)
-# }}}
+# Session ID
+local displaySession="$(colorize "[${sessionId}]" $COLOR_NEUTRAL)"
+statusline+=("$displaySession ")
 
-# Display {{{
-function visible-width() {
-  local stripped=$(remove-ansi "$1")
-  echo ${#stripped}
-}
+# Context budget
+local tokensKRaw=$(printf "%.1f" $((totalTokens / 1000.0)))
+local tokensK="${tokensKRaw%\.0}k"
+local contextColor=$COLOR_RED
+((contextPercentage < 80)) && contextColor=$COLOR_YELLOW
+((contextPercentage < 60)) && contextColor=$COLOR_GREEN
+((contextPercentage < 20)) && contextColor=$COLOR_GRAY
+local displayContext="$(colorize "${tokensK}" $contextColor)"
+statusline+=("$displayContext ")
 
-# Calculate spacing
-local windowWidth="$(kitty-window-width)"
-local leftStr="${(j::)leftSide}"
-local rightStr="${(j::)rightSide}"
-local leftWidth=$(visible-width "$leftStr")
-local rightWidth=$(visible-width "$rightStr")
-# -4 is because of hard-coded padding of 2 on each side by claude code
-local spacing=$(( windowWidth - leftWidth - rightWidth - 4 ))
-
-print -rn -- "${(j::)leftSide}"
-print -rn -- "${(l:$spacing:: :)}"
-print -rn -- "${(j::)rightSide}"
-# }}}
+print "${(j::)statusline}"
