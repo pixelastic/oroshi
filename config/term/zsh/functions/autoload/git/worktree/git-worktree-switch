@@ -2,7 +2,6 @@
 # Usage:
 # $ git-worktree-switch main      # → Git Repo Main
 # $ git-worktree-switch fix/bug   # → worktree for fix/bug
-
 setopt local_options errexit
 
 local branch="$1"
@@ -13,18 +12,7 @@ if [[ "$branch" == "main" ]]; then
   return
 fi
 
-# Find matching worktree path in raw list
-local raw="$(git-worktree-list-raw)"
-local worktreePath=""
-
-for line in "${(@f)raw}"; do
-  [[ -n "$line" ]] || continue
-  [[ "${line%% *}" == "$branch" ]] || continue
-  worktreePath="${line#* }"
-  break
-done
-
-# No worktree found for this branch
+local worktreePath="$(git-worktree-path "$branch")"
 [[ "$worktreePath" == "" ]] && return 1
 
 cd "$worktreePath"

@@ -4,12 +4,16 @@
 - Use the return early pattern (put guard clauses at top)
 - Add comments explaining what clause is being guarded
 - Use one-liners for state machines (`[[ cond ]] && var=$val` is ok)
+- DO NOT use `[[ -n "$myVar ]]`, use `[[ "$myVar" != "" ]]` instead
 
 ## Example
 
 ```zsh
 # Return early if sound is disabled
 sound-mode-is-enabled || exit 0
+
+# Return early if var is empty
+[[ "$worktreePath" == "" ]] && return 1
 
 # State machine
 local color=$COLOR_DEFAULT

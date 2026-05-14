@@ -1,0 +1,15 @@
+# Remove a Worktree directory without deleting its branch
+# If called from inside the Worktree being deleted, cds to Git Repo Main first
+# Usage:
+# $ git-worktree-delete fix/bug
+setopt local_options errexit
+
+local branch="$1"
+
+local worktreePath="$(git-worktree-path "$branch")"
+[[ "$worktreePath" == "" ]] && return 1
+
+# If currently inside the worktree being deleted, move to Git Repo Main first
+[[ "$PWD" == "$worktreePath"* ]] && cd "$(git-worktree-main)"
+
+git worktree remove --force "$worktreePath"

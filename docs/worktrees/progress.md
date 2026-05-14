@@ -166,6 +166,26 @@ Test status tracker: docs/worktrees/prd.json (only update the "passes" field)
 
 ### Up next
 - 0005-git-worktree-list
-- 0007-git-worktree-delete
+- 0008-complete-git-worktrees
+- 0009-config-env-aliases (unblocks after 0005+0007+0008 done)
+
+---
+
+## Session notes — 2026-05-14 (continued)
+
+### Completed
+- 0007-git-worktree-delete (4/4 bats tests pass)
+  - config/term/zsh/functions/autoload/git/worktree/git-worktree-delete
+  - scripts/bin/__tests__/git-worktree-delete.bats
+
+### Implementation notes
+- Parses `git-worktree-list-raw` output to find worktree path for the given branch
+- Guards inside-worktree cd: `[[ "$PWD" == "$worktreePath"* ]]` before `git-worktree-main`
+- Uses `git worktree remove --force` (not `rm -rf`) so git cleans up its own metadata
+- Does NOT delete the branch (per ADR 0002)
+- Extra test added beyond prd.json spec: "returns 1 if worktree does not exist" (4th test)
+
+### Up next
+- 0005-git-worktree-list
 - 0008-complete-git-worktrees
 - 0009-config-env-aliases (unblocks after 0005+0007+0008 done)

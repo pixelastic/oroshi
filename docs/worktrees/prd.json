@@ -178,7 +178,7 @@
       "Run git-worktree-delete fix/bug",
       "Verify the worktree directory no longer exists"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -188,7 +188,7 @@
       "Run git-worktree-delete fix/bug",
       "Verify the branch fix/bug still exists in the repo"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -199,7 +199,7 @@
       "Run git-worktree-delete with the current branch",
       "Verify current directory has changed to the Git Repo Main"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "unit",

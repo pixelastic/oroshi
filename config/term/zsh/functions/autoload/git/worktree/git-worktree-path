@@ -1,0 +1,17 @@
+# Print the filesystem path of a Worktree given its branch name
+# Exits 1 if no matching Worktree exists
+# Usage:
+# $ git-worktree-path fix/bug   # → /path/to/worktrees/my-repo--fix_bug
+setopt local_options errexit
+
+local branch="$1"
+local raw="$(git-worktree-list-raw)"
+
+for line in "${(@f)raw}"; do
+  [[ "$line" == "" ]] && continue
+  [[ "${line%% *}" != "$branch" ]] && continue
+  echo "${line#* }"
+  return
+done
+
+return 1
