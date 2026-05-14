@@ -118,7 +118,33 @@ Test status tracker: docs/worktrees/prd.json (only update the "passes" field)
 - `local path=""` is a zsh footgun — `$path` is a special tied array for `$PATH`
 
 ### Up next (all unblocked by 0003)
-- 0004-git-worktree-create
+- 0004-git-worktree-create ✓
+- 0005-git-worktree-list
+- 0006-git-worktree-switch
+- 0007-git-worktree-delete
+- 0008-complete-git-worktrees
+
+---
+
+## Session notes — 2026-05-14 (continued)
+
+### Completed
+- 0004-git-worktree-create (5/5 bats tests pass)
+  - config/term/zsh/functions/autoload/git/worktree/git-worktree-create
+  - scripts/bin/__tests__/git-worktree-create.bats
+
+### Implementation notes
+- Uses `git-branch-exists` helper (not raw `git show-ref`) to check branch existence
+- Uses `git-worktree-main` to derive repo name via `:t` modifier
+- Branch slug derived with `${branch//\//_}` (zsh substitution, no subprocess)
+- Idempotency: `[[ -d "$worktreeDir" ]]` guard before `git worktree add`
+- `cd` at end is safe — `setopt local_options errexit` covers failure
+
+### Zshlint fix
+- Added SC2164 to excluded rules in `scripts/bin/zsh/zshlint`
+- SC2164 ("use cd || exit") is a false positive when `setopt errexit` is active
+
+### Up next
 - 0005-git-worktree-list
 - 0006-git-worktree-switch
 - 0007-git-worktree-delete

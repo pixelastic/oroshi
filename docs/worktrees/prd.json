@@ -95,7 +95,7 @@
       "Run git-worktree-create fix/my-bug",
       "Verify directory $OROSHI_WORKTREES_DIR/<repo>--fix_my-bug exists"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -105,7 +105,7 @@
       "Run git-worktree-create fix/new-branch",
       "Verify the branch fix/new-branch now exists in the repo"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -116,7 +116,7 @@
       "Run git-worktree-create fix/bug again",
       "Verify exit code is 0 on second run"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -126,7 +126,7 @@
       "Run git-worktree-create fix/bug",
       "Verify current directory is $OROSHI_WORKTREES_DIR/<repo>--fix_bug"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -136,7 +136,7 @@
       "Run git-worktree-create feat/some/deep-branch",
       "Verify directory name contains underscores instead of slashes"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

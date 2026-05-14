@@ -1,0 +1,28 @@
+# Create a Worktree for a branch (new or existing) and cd into it
+# Usage:
+# $ git-worktree-create fix/my-bug   # Creates worktree and cds into it
+setopt local_options errexit
+
+local branch="$1"
+
+# Branch name required
+[[ -n "$branch" ]] || return 1
+
+# Stop if not in a git repository
+local repoMain="$(git-worktree-main)"
+[[ "$repoMain" == "" ]] && return 1
+
+local repoName="${repoMain:t}"
+
+# Branch Slug: replace / with _
+local branchSlug="${branch//\//_}"
+
+local worktreeDir="${OROSHI_WORKTREES_DIR}/${repoName}--${branchSlug}"
+
+# Create branch if it does not exist
+git-branch-exists "$branch" || git branch "$branch"
+
+# Skip worktree creation if it already exists
+[[ -d "$worktreeDir" ]] || git worktree add "$worktreeDir" "$branch" &> /dev/null
+
+cd "$worktreeDir"
