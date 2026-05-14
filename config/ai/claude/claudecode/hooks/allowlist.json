@@ -118,5 +118,6 @@
   "yarn run proofreading",
   "yarn run test",
   "zcat",
-  "zshlint"
+  "zshlint",
+  "./node_modules/.bin/bats"
 ]
