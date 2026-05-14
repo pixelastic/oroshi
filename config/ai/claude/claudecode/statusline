@@ -20,7 +20,7 @@ else
   local totalCost=$(echo "$stdinData" | jq -r '.cost.total_cost_usd // 0 | . * 10000 | round / 10000')
   local totalTokens=$(echo "$stdinData" | jq -r '.context_window.current_usage | (.input_tokens + .output_tokens + .cache_creation_input_tokens + .cache_read_input_tokens)')
   local contextPercentage=$(echo "$stdinData" | jq -r '.context_window.used_percentage // 0')
-  local sessionId=$(echo "$stdinData" | jq -r '.session_id // "" | .[0:8]')
+  local sessionId=$(echo "$stdinData" | jq -r '.session_id // ""')
 fi
 
 local statusline=()
@@ -54,10 +54,6 @@ local branchName="$(git-branch-current "${currentDir}")"
 local displayBranch="$(git-branch-colorize "${branchName}")"
 statusline+=("$displayBranch ")
 
-# Session ID
-local displaySession="$(colorize "[${sessionId}]" $COLOR_NEUTRAL)"
-statusline+=("$displaySession ")
-
 # Context budget
 local tokensKRaw=$(printf "%.1f" $((totalTokens / 1000.0)))
 local tokensK="${tokensKRaw%\.0}k"
@@ -67,5 +63,9 @@ local contextColor=$COLOR_RED
 ((contextPercentage < 20)) && contextColor=$COLOR_GRAY
 local displayContext="$(colorize "${tokensK}" $contextColor)"
 statusline+=("$displayContext ")
+
+# Session ID
+local displaySession="$(colorize "[${sessionId}]" $COLOR_NEUTRAL)"
+statusline+=("$displaySession ")
 
 print "${(j::)statusline}"
