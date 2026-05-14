@@ -65,7 +65,7 @@ Write the tests that cover the acceptance criteria of the issue — at least one
 1. Write the simplest code that makes the tests pass. No more.
 2. Refactor: remove duplication, improve names, extract helpers. Don't add behavior.
 3. Run the linter on all modified files. Fix any errors.
-4. Run the full test suite. All tests must pass.
+4. Run tests for all modified files. All tests must pass.
 
 ---
 
@@ -80,7 +80,7 @@ Write the tests that cover the acceptance criteria of the issue — at least one
    - **Actionable and in scope** → fix it
    - **Out of scope or not relevant** → note it in progress.md under `Skipped feedback:`
 3. Run the linter on all modified files. Fix any errors.
-4. Run the full test suite. All tests must pass.
+4. Run tests for all modified files. All tests must pass.
 
 ---
 
@@ -133,10 +133,10 @@ Print the session entry that was written to progress.md — verbatim.
 - [ ] RED: wrote failing tests, ran them, confirmed they fail
 - [ ] IMPLEMENT: minimal code, all behaviors covered
 - [ ] Linter clean on modified files
-- [ ] Full test suite green
+- [ ] Tests green for modified files
 - [ ] review subagent ran, output captured
 - [ ] Actionable feedback fixed or explicitly dismissed
-- [ ] Linter + tests green after review fixes
+- [ ] Linter + tests green for modified files after review fixes
 - [ ] progress.md updated with session entry
 - [ ] prd.json updated
 - [ ] **Stopped — waiting for user to commit**
