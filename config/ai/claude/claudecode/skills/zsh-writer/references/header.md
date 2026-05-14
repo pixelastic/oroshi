@@ -12,7 +12,6 @@ It also contains a protection against error (set -e or similar)
 # Usage:
 # $ function-name arg        # What this does
 # $ function-name arg --flag # With flag
-
 setopt local_options errexit
 ```
 
@@ -24,6 +23,5 @@ setopt local_options errexit
 # Usage:
 # $ function-name arg        # What this does
 # $ function-name arg --flag # With flag
-
 set -e
 ```

@@ -40,15 +40,15 @@ Write code that follows the following patterns:
 | [Splitting](./references/splitting.md) | Use `▮` as separator and `${(@ps/▮/)line}` to split |
 | [Loops](./references/loops.md) | Use `for rawLine in ${(f)rawOutput}` instead of `while read` and `IFS` |
 | [Conditions](./references/conditions.md) | `[[ simpleCondition ]] && state=value`. No nested if/else, return early |
-| [Calling Commands](./references/calling-commands.md) | Prefer `--long-form` over `-l`. One flag per line for readability. |
+| [Calling Commands](./references/calling-commands.md) | Use existing helpers (`git-branch-current`), not raw calls. Use `--long-form`, not `-l`. |
 
 
 ```zsh
-# List files changed since last commit
+# Show changed files with syntax-aware coloring
 # Usage:
-# $ git-diff-list            # Unstaged changes
-# $ git-diff-list --staged   # Staged only
-# $ git-diff-list --ext ts   # Filter by extension
+# $ git-diff-colorize            # Unstaged changes
+# $ git-diff-colorize --staged   # Staged only
+# $ git-diff-colorize --ext ts   # Filter by extension
 
 setopt local_options errexit
 
@@ -64,33 +64,30 @@ zparseopts -E -D \
 local isStaged=${#flagStaged}
 local extFilter=${flagExt[2]}
 
-local gitArgs=(
-  --name-only
-  --diff-filter=ACMR
-)
-[[ $isStaged == 1 ]] && gitArgs+=(--staged)
+local helperArgs=()
+[[ $isStaged == 1 ]] && helperArgs+=(--staged)
+[[ -n "$extFilter" ]] && helperArgs+=(--ext "$extFilter")
 
 local rawFiles
-rawFiles=$(git diff "${gitArgs[@]}")
+rawFiles=$(git-diff-list-raw "${helperArgs[@]}")
 
 # Nothing to display if working tree is clean
 [[ -z "$rawFiles" ]] && return 0
 
-local fileLines=(${(f)rawFiles})
 local output=""
-for filepath in ${fileLines[1,$MAX_RESULTS]}; do
-  local name="${filepath:t}"
-  local ext="${filepath:e}"
-  local dir="${filepath:h}"
+for rawLine in ${(f)rawFiles}; do
+  local fields=(${(@ps/▮/)rawLine})
+  local name=$fields[1]
+  local dir=$fields[2]
+  local ext=$fields[3]
 
-  # Skip files not matching the extension filter
-  [[ -n "$extFilter" && "$ext" != "$extFilter" ]] && continue
+  local parentDir="${dir:t}"  # zsh modifier: last path component
 
   local color=$COLOR_DEFAULT
   [[ "$ext" == "ts" ]] && color=$COLOR_FILE_TS
   [[ "$ext" == "zsh" ]] && color=$COLOR_FILE_ZSH
 
-  output+="$(colorize "$name" $color)▮$dir▮.$ext\n"
+  output+="$(colorize "$name" $color)▮$parentDir▮$ext\n"
 done
 
 table $output
@@ -116,3 +113,4 @@ Run `zshlint` on the file and fix any actionable violation.
 - [ ] All function vars `local`; script constants UPPER_CASE without `local`
 - [ ] No `while read` — only `${(f)var}` or `"${(@f)var}"`
 - [ ] External commands use long-form args, one per line
+- [ ] Use existing helpers over porcelain (e.g. `git-branch-list-raw` not `git branch`)
