@@ -115,5 +115,6 @@
   "yarn run lint:fix",
   "yarn run proofreading",
   "yarn run test",
-  "zcat"
+  "zcat",
+  "zshlint"
 ]
