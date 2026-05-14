@@ -3,9 +3,9 @@
 # Usage:
 # $ git-worktree-list-raw
 
+setopt local_options errexit
 local worktreePath="" branch="" isFirst=true
-local porcelain
-porcelain="$(git worktree list --porcelain 2>/dev/null)" || return 1
+local porcelain="$(git worktree list --porcelain 2>/dev/null)" || return 1
 
 # Output looks like:
 # worktree /home/tim/.oroshi
