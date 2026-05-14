@@ -17,12 +17,8 @@ dconf write /org/gnome/shell/extensions/just-perfection/activities-button false
 # Window buttons (down, window, maximize)
 dconf write /org/gnome/shell/extensions/unite/show-window-buttons "'never'"
 
-# Spotify
-dconf write /org/gnome/shell/extensions/sp-tray/display-mode 0
-dconf write /org/gnome/shell/extensions/sp-tray/logo-position 0
-dconf write /org/gnome/shell/extensions/sp-tray/title-max-length 50
-dconf write /org/gnome/shell/extensions/sp-tray/metadata-when-pause false
-dconf write /org/gnome/shell/extensions/sp-tray/paused "''"
+# Spotify Controls + Track Info
+# TODO: configure dconf settings once extension is installed and settings are known
 
 # Clock
 dconf write /org/gnome/shell/extensions/just-perfection/clock-menu-position 1
@@ -65,6 +61,6 @@ function stackExtension() {
 # From right to left...
 stackExtension just-perfection-desktop@just-perfection # Just Perfection
 stackExtension ubuntu-appindicators@ubuntu.com         # App Indicators
-stackExtension sp-tray@sp-tray.esenliyim.github.com    # spotify-tray
+stackExtension spotify-controls@Sonath21               # Spotify Controls + Track Info
 stackExtension argos@pew.worldwidemann.com             # Argos
 # }}}

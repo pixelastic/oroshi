@@ -10,6 +10,6 @@ fi
 # Installing extensions
 gext install advanced-alt-tab@G-dH.github.com        # AATWS (Advanced Alt-Tab Window Switcher)
 gext install just-perfection-desktop@just-perfection # Just Perfection
-gext install sp-tray@sp-tray.esenliyim.github.com    # spotify-tray
+gext install spotify-controls@Sonath21               # Spotify Controls + Track Info
 gext install unite@hardpixel.eu                      # Unite
 gext install wsmatrix@martin.zurowietz.de            # Workspace Matrix
