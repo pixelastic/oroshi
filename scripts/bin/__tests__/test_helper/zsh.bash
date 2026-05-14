@@ -4,7 +4,13 @@
 run_zsh_fn() {
   local func="${1}"
   shift
-  run zsh -c "${func} \"\$@\"" -- "$@"
+  run zsh -c "unset GIT_DIR GIT_INDEX_FILE GIT_OBJECT_DIRECTORY GIT_WORK_TREE; ${func} \"\$@\"" -- "$@"
+}
+
+# Unset git env vars injected by the pre-commit hook so tests can create
+# their own git repos without GIT_DIR/GIT_INDEX_FILE interference
+git_env_clean() {
+  unset GIT_DIR GIT_INDEX_FILE GIT_OBJECT_DIRECTORY GIT_WORK_TREE
 }
 
 # Create and return a predictable tmp dir for the current bats test

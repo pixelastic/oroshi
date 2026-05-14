@@ -1,6 +1,7 @@
 load 'test_helper/zsh'
 
 setup() {
+  git_env_clean
   export TMP_DIRECTORY="$(bats_tmp)"
   export OROSHI_WORKTREES_DIR="$TMP_DIRECTORY/worktrees"
   mkdir -p "$OROSHI_WORKTREES_DIR"

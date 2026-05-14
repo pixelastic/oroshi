@@ -1,6 +1,7 @@
 load 'test_helper/zsh'
 
 setup() {
+  git_env_clean
   export TMP_DIRECTORY="$(bats_tmp)"
 
   git init "$TMP_DIRECTORY/repo"

@@ -1,12 +1,14 @@
 load 'test_helper/zsh'
 
 setup() {
+  git_env_clean
   export TMP_DIRECTORY="$(bats_tmp)"
   export OROSHI_WORKTREES_DIR="$TMP_DIRECTORY/worktrees"
   mkdir -p "$OROSHI_WORKTREES_DIR"
   git init "$TMP_DIRECTORY/my-repo"
-  git -C "$TMP_DIRECTORY/my-repo" commit --allow-empty -m "init"
-  git -C "$TMP_DIRECTORY/my-repo" worktree add "$OROSHI_WORKTREES_DIR/my-repo--fix_bug" -b fix/bug
+  cd "$TMP_DIRECTORY/my-repo"
+  git commit --allow-empty -m "init"
+  git worktree add "$OROSHI_WORKTREES_DIR/my-repo--fix_bug" -b fix/bug
 }
 
 teardown() {

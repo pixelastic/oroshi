@@ -187,6 +187,22 @@ Test status tracker: docs/worktrees/prd.json (only update the "passes" field)
 - Passes branch name to `git-branch-colorize` for coloring
 - Returns 0 with empty output when no worktrees exist (early return on empty rawOutput)
 - Extra test: "returns empty output when no worktrees exist" (3rd test, beyond prd.json spec)
+- Post-commit fix: `[[ -n "$branch" ]] || continue` → `[[ "$branch" == "" ]] && continue` (style: explicit empty check + &&, not -n/||)
+- Post-commit fix: added `[ "$status" -eq 0 ]` to "returns empty output" test
+
+### Bug discovered and fixed: pre-commit hook GIT_DIR breaks git worktree add in bats tests
+Root cause: hook sets `GIT_DIR=.git` (relative). `git worktree add` internally chdirs into the
+new worktree dir, where `.git` is a FILE — so `GIT_DIR=.git` resolves to that file and any
+path under it (e.g. `.git/index`) fails with "Not a directory".
+
+Fix (two parts):
+1. `git_env_clean` helper added to test_helper/zsh.bash — unsets GIT_DIR, GIT_INDEX_FILE,
+   GIT_OBJECT_DIRECTORY, GIT_WORK_TREE
+2. `run_zsh_fn` updated to unset those vars before invoking the function (covers functions
+   that call git worktree add internally, like git-worktree-create)
+
+`git_env_clean` called at start of setup() in all 7 affected bats files.
+All 31 tests pass with `GIT_DIR=.git GIT_INDEX_FILE=.git/index` to simulate hook environment.
 
 ### Up next
 - 0008-complete-git-worktrees (only remaining blocker for 0009)

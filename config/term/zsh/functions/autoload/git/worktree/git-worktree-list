@@ -8,7 +8,9 @@ local rawOutput="$(git-worktree-list-raw)"
 # No worktrees — exit cleanly
 [[ "$rawOutput" == "" ]] && return 0
 
+local branch
 for rawLine in ${(f)rawOutput}; do
-  local branch="${rawLine%% *}"
+  branch="${rawLine%% *}"
+  [[ "$branch" == "" ]] && continue
   git-branch-colorize "$branch"
 done
