@@ -3,6 +3,14 @@
 # Usage:
 # $ better-rm ./path/to/file.txt   # Delete one file
 # $ better-rm ./path/to/*.txt      # Delete all *.txt
+# $ better-rm -rf ./path/to/dir    # rm-compatible flags are silently ignored
+
+# Strip rm-compatible flags (-f, -r, -rf, etc.) — no-ops for trash-put
+local flagDiscard=()
+zmodload zsh/zutil
+zparseopts -E -D \
+  f=flagDiscard \
+  r=flagDiscard
 
 local mountDirs=(
   "/home/$USER/local/mount/s3"
