@@ -1,68 +1,13 @@
 #!/usr/bin/env zsh
-# Iterate through a PRD and implement all issues while AFK
+# Run the Ralph skill on a PRD directory
+# Usage:
+# $ ralph              # Run on current directory
+# $ ralph <dir>        # Run on specific directory
+# $ ralph <dir> <msg>  # Run with extra context
 set -e
 
-# TODO: We should define the number of iterations as 10, or be able to pass with
-# --iterations
-# We should stop if not in a git repo
-# We assume that there is a plans/prd.json file containing all the issues
-# We also assume there is a plans/progress.txt file, append-only, where agents add their updates
-#
-# I will probably a "ralph" skill, so I can say "ralph this".
-# This means:
-# - Setup: Read prd.json and progress.md
-# - Pick: Find the highest priority issue to work on
-# - Implement: Follow TDD, start with RED, end with GREEN
-# - Document: Update prd.json and progress.md
-# - Commit: Commit changes, as well as doc
-# - Review: Run a subagent to review
-# - Correct: If review is relevant: Implement, Document and Commit as above
-# - Finish: If all prd is done, output <promise>PRD COMPLETE</promise>
-# STOP
+local dir=${1:-.}
+local extra=""
+[[ $# -gt 1 ]] && extra=" ${@:2}"
 
-# We then iterate 10 (or --iterations) times
-# Each time, we tell claude:
-# IMPLEMENT
-local claudePrompt="
-Check @docs/worktrees/prd.json and @docs/worktrees/progress.md.
-Find the highest priority issue to work on and work on only that one.
-You decide which one is the highest priority, it doesn't have to be the first
-one.
-
-Details of issues are in ./docs/worktrees/issue-*.md files.
-You must follow tdd principles while developing the issue: start with a failing
-test.
-
-Only work on one issue.
-
-Once done, update progress.md with what you accomplished this session, which
-tests you completed, any issues discovered or fixed and what should be worked on
-next.
-
-Let the user review and commit.
-
-Then run review in a subagent, fix an actionable feedback and commit those fixes.
-"
-
-# Commit
-#
-# REVIEW
-# Ask another agent "/review {previousCommit}"
-# Pass it back to initial agent. Probably wrapped in a "Here is some feedback
-# from review, that might be relevant. See what is actionable."
-# Ensure tests still pass
-# Update progress.md and prd.json
-# Commit if any changes
-#
-# # FINISH
-# If you notice the PRD is done, echo <promise>PRD COMPLETE</promise>
-#
-# We echo the result.
-# If the result contains <promise>PRD COMPLETE</promise> we stop before the end
-# of the loop
-# Otherwise we keep iterating
-#
-#
-# I might need a way to run claude in complete isolation
-# In a worktree of the main repo
-# With --permission-mode acceptEdits
+claude "/ralph ${dir}${extra}"
