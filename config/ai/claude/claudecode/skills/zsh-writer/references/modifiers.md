@@ -15,5 +15,4 @@ local parts=(a b c d)
 local joined="${(j:/:)parts}"    # a/b/c/d
 local tail="${parts[2,-1]}"      # (b c d)
 local last="${parts[-1]}"        # d
-
 ```
