@@ -2,8 +2,9 @@
 
 - Use `local` for all variables, even if not in a function.
 - Use `isSomething` or `hasSomething` for booleans
-- Assign default value and overwrite later
 - Use `UPPER_CASE` for constants.
+- Use `local myVar="$(my-command)"`, not `local myVar; myVar="$(my-command)"`
+- Assign default value and overwrite later
 
 ## Example
 

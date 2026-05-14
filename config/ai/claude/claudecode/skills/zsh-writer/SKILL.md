@@ -68,11 +68,10 @@ local helperArgs=()
 [[ $isStaged == 1 ]] && helperArgs+=(--staged)
 [[ -n "$extFilter" ]] && helperArgs+=(--ext "$extFilter")
 
-local rawFiles
-rawFiles=$(git-diff-list-raw "${helperArgs[@]}")
+local rawFiles="$(git-diff-list-raw "${helperArgs[@]}")"
 
 # Nothing to display if working tree is clean
-[[ -z "$rawFiles" ]] && return 0
+[[ "$rawFiles" == "" ]] && return 0
 
 local output=""
 for rawLine in ${(f)rawFiles}; do
