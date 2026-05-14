@@ -1,0 +1,51 @@
+# List all linked worktrees: one line per worktree "<branch> <path>"
+# Excludes the Git Repo Main
+# Usage:
+# $ git-worktree-list-raw
+
+local worktreePath="" branch="" isFirst=true
+local porcelain
+porcelain="$(git worktree list --porcelain 2>/dev/null)" || return 1
+
+# Output looks like:
+# worktree /home/tim/.oroshi
+# HEAD 5eb240ede3ae9cd68a7a6853872711612e76b2dd
+# branch refs/heads/main
+#
+# worktree /home/tim/local/tmp/oroshi-commit-writer
+# HEAD 58afeccca2add80e7bc7a4377ece575adc7d4cf7
+# branch refs/heads/oroshi-commit-writer
+for line in "${(@f)porcelain}"; do
+  # New worktree block
+  if [[ "$line" == worktree\ * ]]; then
+    worktreePath="${line#worktree }"
+    branch=""
+    continue
+  fi
+
+  # Branch name of current block
+  if [[ "$line" == branch\ * ]]; then
+    branch="${line#branch refs/heads/}"
+    continue
+  fi
+
+  # Non-empty line that's not worktree/branch (e.g. HEAD) — skip
+  [[ -z "$line" ]] || continue
+
+  # Blank line = end of block; skip the Git Repo Main (first block)
+  if [[ "$isFirst" == true ]]; then
+    isFirst=false
+    branch=""
+    continue
+  fi
+
+  # Skip detached HEAD worktrees (no branch line)
+  [[ -n "$branch" ]] || continue
+  echo "$branch $worktreePath"
+  branch=""
+done
+
+# Flush last block (no trailing blank line after $() strips newlines)
+if [[ "$isFirst" == false && -n "$branch" ]]; then
+  echo "$branch $worktreePath"
+fi

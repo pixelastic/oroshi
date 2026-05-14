@@ -64,7 +64,7 @@
       "Run git-worktree-list-raw",
       "Verify each line has format '<branch> <absolute-path>'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "unit",
@@ -74,7 +74,7 @@
       "Run git-worktree-list-raw from the repo root",
       "Verify the main repo path does not appear in output"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "unit",
@@ -85,7 +85,7 @@
       "Run git-worktree-list-raw",
       "Verify both worktrees appear in output"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

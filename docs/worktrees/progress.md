@@ -91,3 +91,35 @@ Test status tracker: docs/worktrees/prd.json (only update the "passes" field)
 
 ### Up next (unblocked)
 - 0003-git-worktree-list-raw (both 0001 + 0002 now done)
+
+---
+
+## Session notes — 2026-05-14
+
+### Completed
+- 0003-git-worktree-list-raw (4/4 bats tests pass)
+  - config/term/zsh/functions/autoload/git/worktree/git-worktree-list-raw
+  - scripts/bin/__tests__/git-worktree-list-raw.bats
+
+### Implementation notes
+- Parses `git worktree list --porcelain` output: blank-line-separated blocks
+- Skips the first block (Git Repo Main); outputs `<branch> <path>` for linked worktrees
+- Uses `"${(@f)var}"` (with `@` flag) to preserve empty strings when splitting on newlines;
+  plain `${(f)var}` silently drops empty strings, breaking the blank-line detection
+- **Critical bug found and fixed:** `local path=""` in zsh clobbers `$path` (zsh's
+  tied array for `$PATH`), clearing PATH and making git unfindable. Renamed to `worktreePath`.
+- Post-loop flush needed: `$()` strips trailing newlines so the last worktree block
+  has no terminating blank line; added `if [[ "$isFirst" == false && -n "$branch" ]]` after loop
+- Git lists linked worktrees alphabetically by path, not creation order; test updated to
+  match (`feat_dark-mode` < `fix_bug` alphabetically)
+
+### Issues discovered and fixed
+- `${(f)var}` vs `"${(@f)var}"`: must use the `@` flag to preserve empty strings
+- `local path=""` is a zsh footgun — `$path` is a special tied array for `$PATH`
+
+### Up next (all unblocked by 0003)
+- 0004-git-worktree-create
+- 0005-git-worktree-list
+- 0006-git-worktree-switch
+- 0007-git-worktree-delete
+- 0008-complete-git-worktrees
