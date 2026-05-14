@@ -4,6 +4,7 @@
 - Use `isSomething` or `hasSomething` for booleans
 - Use `UPPER_CASE` for constants.
 - Use `local myVar="$(my-command)"`, not `local myVar; myVar="$(my-command)"`
+- DO NOT do `local raw line worktreePath=""`, define each variable on its own line
 - Assign default value and overwrite later
 
 ## Example
