@@ -8,14 +8,10 @@
 local input=$1
 [[ -p /dev/stdin ]] && input="$(cat -)"
 
-
-# Change default delimiter from spaces to new lines
-IFS=$'\n';
-
 # Build the final output, encoding each line
 local output=()
-for line in `echo $input`; do
-  output+=${(qq)line}
+for line in ${(f)"$(print -- "$input")"}; do
+  output+="${(q)line}"
 done
 echo $output
 
