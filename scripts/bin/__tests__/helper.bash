@@ -1,16 +1,13 @@
+# Unset hook-injected git env vars — runs on load, affects all tests in the file
+unset GIT_DIR
+
 # Run a zsh autoloaded function
 # Note: As bats is bash, and doesn't support zsh by default, we need to wrap the
 # call to zsh autoloaded functions in a zsh -c
 run_zsh_fn() {
   local func="${1}"
   shift
-  run zsh -c "unset GIT_DIR GIT_INDEX_FILE GIT_OBJECT_DIRECTORY GIT_WORK_TREE; ${func} \"\$@\"" -- "$@"
-}
-
-# Unset git env vars injected by the pre-commit hook so tests can create
-# their own git repos without GIT_DIR/GIT_INDEX_FILE interference
-git_env_clean() {
-  unset GIT_DIR GIT_INDEX_FILE GIT_OBJECT_DIRECTORY GIT_WORK_TREE
+  run zsh -c "${func} \"\$@\"" -- "$@"
 }
 
 # Create and return a predictable tmp dir for the current bats test

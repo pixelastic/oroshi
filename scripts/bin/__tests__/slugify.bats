@@ -1,4 +1,4 @@
-load 'test_helper/zsh'
+load 'helper'
 
 # --- Basic ---
 

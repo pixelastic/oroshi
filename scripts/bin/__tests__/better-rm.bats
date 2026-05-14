@@ -1,4 +1,4 @@
-load 'test_helper/zsh'
+load 'helper'
 
 setup() {
   export TMP_DIRECTORY="$(bats_tmp)"
