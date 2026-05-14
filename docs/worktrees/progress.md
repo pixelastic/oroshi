@@ -246,5 +246,15 @@ All 31 tests pass with `GIT_DIR=.git GIT_INDEX_FILE=.git/index` to simulate hook
 - `_git-worktrees` compdef uses `-V` + `completion-header` with `$COLOR_ALIAS_GIT_BRANCH` (no worktree-specific color constant)
 
 ### Up next
-- 0009-config-env-aliases (all blockers done)
 - 0010-prompt-git-is-worktree (only needs 0001, which is done)
+
+---
+
+## Session 2026-05-14 — 0009: config: env var, aliases, compdef
+
+- Completed: `OROSHI_WORKTREES_DIR` exported in zshenv.zsh; `vwtc/vwtl/vwts/vwtR` aliases in aliases/git/worktree.zsh; `git-worktree-create` added to `_git-branches-local` block in compdef.zsh
+- Tests added: scripts/bin/__tests__/git-worktree-config.bats (5 tests)
+- Discovered: `OROSHI_WORKTREES_DIR` must use `${:-$HOME/...}` guard (not bare `export`) so tests can override it; `$HOME` required inside `${}` — `~/` doesn't expand there
+- Fixed: none (GIT_WORKTREE color and `_git-worktrees` compdef were already present from earlier sessions)
+- Skipped feedback: reviewer suggested `~/` over `$HOME` — not applicable inside `${:-}` expansion; `zsh -i` fragility — per issue spec; remote branch completion — out of scope
+- Next: 0010-prompt-git-is-worktree

@@ -4,6 +4,9 @@
 
 # Reference to the zsh config folder, so our `source` calls are easier to write
 export ZSH_CONFIG_PATH=~/.oroshi/config/term/zsh
+# Reference to where we store git worktrees
+# Note: This can be overwritten in tests
+export OROSHI_WORKTREES_DIR="${OROSHI_WORKTREES_DIR:-$HOME/local/www/worktrees}"
 # Reference to the path used to store runtime config
 export OROSHI_TMP_FOLDER=~/local/tmp/oroshi
 
@@ -29,4 +32,3 @@ done
 
 # Autoload all other functions saved in ./functions/autoload/**/*
 oroshi-reload-functions
-

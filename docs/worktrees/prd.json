@@ -239,7 +239,7 @@
       "Echo $OROSHI_WORKTREES_DIR",
       "Verify the variable is non-empty"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "config",
@@ -249,7 +249,7 @@
       "Run which vwtc, vwtl, vwts, vwtR",
       "Verify each alias resolves to its corresponding git-worktree-* function"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "prompt",
