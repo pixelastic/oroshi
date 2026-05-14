@@ -154,7 +154,7 @@ Test status tracker: docs/worktrees/prd.json (only update the "passes" field)
 ## Session notes — 2026-05-14 (continued)
 
 ### Completed
-- 0006-git-worktree-switch (3/3 bats tests pass)
+- 0006-git-worktree-switch (4/4 bats tests pass)
   - config/term/zsh/functions/autoload/git/worktree/git-worktree-switch
   - scripts/bin/__tests__/git-worktree-switch.bats
 

@@ -32,3 +32,9 @@ teardown() {
   run_zsh_fn git-worktree-switch nonexistent/branch
   [ "$status" -eq 1 ]
 }
+
+@test "returns 1 if called with no arguments" {
+  cd "$TMP_DIRECTORY/my-repo"
+  run_zsh_fn git-worktree-switch
+  [ "$status" -eq 1 ]
+}
