@@ -1,0 +1,15 @@
+# List completion entries for git worktrees of the current repo
+# Always includes 'main'; excludes worktrees from other repos
+# Usage:
+# $ complete-git-worktrees
+
+local rawList="$(git-worktree-list-raw)"
+
+echo "main"
+
+[[ "$rawList" == "" ]] && return 0
+
+for rawLine in ${(f)rawList}; do
+  [[ "$rawLine" == "" ]] && continue
+  echo "${rawLine%% *}"
+done

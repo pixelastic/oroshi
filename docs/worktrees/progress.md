@@ -49,6 +49,7 @@ Test status tracker: docs/worktrees/prd.json (only update the "passes" field)
 2026-05-14 — 0006-git-worktree-switch — DONE (4/4 tests pass)
 2026-05-14 — 0007-git-worktree-delete — DONE (4/4 tests pass)
 2026-05-14 — 0005-git-worktree-list — DONE (3/3 tests pass)
+2026-05-14 — 0008-complete-git-worktrees — DONE (5/5 tests pass)
 
 ## Session notes — 2026-05-13
 
@@ -169,9 +170,9 @@ Test status tracker: docs/worktrees/prd.json (only update the "passes" field)
 - cd tests use `run zsh -c '... && echo "$PWD"'` pattern (same as git-worktree-create)
 
 ### Up next
-- 0005-git-worktree-list
-- 0008-complete-git-worktrees
-- 0009-config-env-aliases (unblocks after 0005+0007+0008 done)
+- 0005-git-worktree-list ✓
+- 0008-complete-git-worktrees ✓
+- 0009-config-env-aliases (now unblocked)
 
 ---
 
@@ -224,6 +225,26 @@ All 31 tests pass with `GIT_DIR=.git GIT_INDEX_FILE=.git/index` to simulate hook
 - Extra test added beyond prd.json spec: "returns 1 if worktree does not exist" (4th test)
 
 ### Up next
-- 0005-git-worktree-list
-- 0008-complete-git-worktrees
-- 0009-config-env-aliases (unblocks after 0005+0007+0008 done)
+- 0008-complete-git-worktrees ✓
+- 0009-config-env-aliases (now unblocked)
+
+---
+
+## Session notes — 2026-05-14 (continued)
+
+### Completed
+- 0008-complete-git-worktrees (5/5 bats tests pass)
+  - config/term/zsh/functions/autoload/completion/complete-git-worktrees
+  - config/term/zsh/completion/compdef/_git-worktrees
+  - config/term/zsh/completion/compdef.zsh — wired _git-worktrees to git-worktree-switch + git-worktree-delete
+  - scripts/bin/__tests__/complete-git-worktrees.bats
+
+### Implementation notes
+- Wraps `git-worktree-list-raw`; always prepends `main` before iterating branches
+- `return 0` on `git-worktree-list-raw` failure (outside git repo) → outputs just `main` (safe default for completion)
+- 2 extra tests beyond prd.json spec: "no worktrees → only main" and "outside git repo → only main"
+- `_git-worktrees` compdef uses `-V` + `completion-header` with `$COLOR_ALIAS_GIT_BRANCH` (no worktree-specific color constant)
+
+### Up next
+- 0009-config-env-aliases (all blockers done)
+- 0010-prompt-git-is-worktree (only needs 0001, which is done)

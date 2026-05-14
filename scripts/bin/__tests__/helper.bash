@@ -1,5 +1,5 @@
 # Unset hook-injected git env vars — runs on load, affects all tests in the file
-unset GIT_DIR
+unset GIT_DIR GIT_INDEX_FILE GIT_OBJECT_DIRECTORY GIT_WORK_TREE
 
 # Run a zsh autoloaded function
 # Note: As bats is bash, and doesn't support zsh by default, we need to wrap the

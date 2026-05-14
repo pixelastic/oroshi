@@ -209,7 +209,7 @@
       "Run complete-git-worktrees from the repo",
       "Verify fix/bug appears in output"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "unit",
@@ -219,7 +219,7 @@
       "Run complete-git-worktrees",
       "Verify 'main' appears in output regardless of existing worktrees"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "unit",
@@ -229,7 +229,7 @@
       "Run complete-git-worktrees from repo A",
       "Verify only repo A's worktrees appear, not repo B's"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "config",
