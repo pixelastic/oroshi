@@ -258,3 +258,13 @@ All 31 tests pass with `GIT_DIR=.git GIT_INDEX_FILE=.git/index` to simulate hook
 - Fixed: none (GIT_WORKTREE color and `_git-worktrees` compdef were already present from earlier sessions)
 - Skipped feedback: reviewer suggested `~/` over `$HOME` — not applicable inside `${:-}` expansion; `zsh -i` fragility — per issue spec; remote branch completion — out of scope
 - Next: 0010-prompt-git-is-worktree
+
+---
+
+## Session 2026-05-15 — 0010: prompt: git_is_worktree
+- Completed: `oroshi-prompt-populate:git_is_worktree` added to git.zsh; `git_is_worktree` added to `OROSHI_SYNCHRONOUS_PROMPT_PARTS` and `oroshi-prompt-left` in index.zsh
+- Tests added: scripts/bin/__tests__/oroshi-prompt-git-is-worktree.bats (2 tests)
+- Discovered: none
+- Fixed: none
+- Skipped feedback: none
+- Next: all prd.json issues complete

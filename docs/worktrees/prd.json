@@ -260,7 +260,7 @@
       "Call oroshi-prompt-populate:git_is_worktree",
       "Verify OROSHI_PROMPT_PARTS[git_is_worktree] is non-empty"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "prompt",
@@ -271,6 +271,6 @@
       "Call oroshi-prompt-populate:git_is_worktree",
       "Verify OROSHI_PROMPT_PARTS[git_is_worktree] is empty"
     ],
-    "passes": false
+    "passes": true
   }
 ]
