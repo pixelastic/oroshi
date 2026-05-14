@@ -65,7 +65,7 @@ local extFilter=${flagExt[2]}
 
 local helperArgs=()
 [[ $isStaged == 1 ]] && helperArgs+=(--staged)
-[[ -n "$extFilter" ]] && helperArgs+=(--ext "$extFilter")
+[[ "$extFilter" != "" ]] && helperArgs+=(--ext "$extFilter")
 
 local rawFiles="$(git-diff-list-raw "${helperArgs[@]}")"
 
