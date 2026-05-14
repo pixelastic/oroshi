@@ -147,7 +147,7 @@
       "Verify output contains branch names",
       "Verify output does not contain any file paths"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

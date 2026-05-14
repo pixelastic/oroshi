@@ -39,7 +39,9 @@ Once done, update progress.md with what you accomplished this session, which
 tests you completed, any issues discovered or fixed and what should be worked on
 next.
 
-Let the user commit, then run review in a subagent and fix an actionable feedback
+Let the user review and commit.
+
+Then run review in a subagent, fix an actionable feedback and commit those fixes.
 "
 
 # Commit

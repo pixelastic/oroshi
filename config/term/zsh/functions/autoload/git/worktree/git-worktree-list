@@ -1,0 +1,14 @@
+# List linked worktrees for the current repo (branch names only, colorized)
+# Usage:
+# $ git-worktree-list
+setopt local_options errexit
+
+local rawOutput="$(git-worktree-list-raw)"
+
+# No worktrees — exit cleanly
+[[ "$rawOutput" == "" ]] && return 0
+
+for rawLine in ${(f)rawOutput}; do
+  local branch="${rawLine%% *}"
+  git-branch-colorize "$branch"
+done

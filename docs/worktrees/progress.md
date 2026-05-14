@@ -44,6 +44,11 @@ Test status tracker: docs/worktrees/prd.json (only update the "passes" field)
 
 2026-05-13 — 0001-git-directory-is-worktree — DONE (4/4 tests pass)
 2026-05-13 — 0002-git-worktree-main — DONE (3/3 tests pass)
+2026-05-14 — 0003-git-worktree-list-raw — DONE (4/4 tests pass)
+2026-05-14 — 0004-git-worktree-create — DONE (5/5 tests pass)
+2026-05-14 — 0006-git-worktree-switch — DONE (4/4 tests pass)
+2026-05-14 — 0007-git-worktree-delete — DONE (4/4 tests pass)
+2026-05-14 — 0005-git-worktree-list — DONE (3/3 tests pass)
 
 ## Session notes — 2026-05-13
 
@@ -167,6 +172,24 @@ Test status tracker: docs/worktrees/prd.json (only update the "passes" field)
 - 0005-git-worktree-list
 - 0008-complete-git-worktrees
 - 0009-config-env-aliases (unblocks after 0005+0007+0008 done)
+
+---
+
+## Session notes — 2026-05-14 (continued)
+
+### Completed
+- 0005-git-worktree-list (3/3 bats tests pass)
+  - config/term/zsh/functions/autoload/git/worktree/git-worktree-list
+  - scripts/bin/__tests__/git-worktree-list.bats
+
+### Implementation notes
+- Wraps `git-worktree-list-raw`, extracts branch name with `${rawLine%% *}`
+- Passes branch name to `git-branch-colorize` for coloring
+- Returns 0 with empty output when no worktrees exist (early return on empty rawOutput)
+- Extra test: "returns empty output when no worktrees exist" (3rd test, beyond prd.json spec)
+
+### Up next
+- 0008-complete-git-worktrees (only remaining blocker for 0009)
 
 ---
 
