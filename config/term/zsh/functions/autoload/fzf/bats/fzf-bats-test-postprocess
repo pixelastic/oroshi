@@ -1,0 +1,6 @@
+# Extract the full path from the fzf selection
+local rawSelection="$1"
+[[ $rawSelection == "" ]] && exit
+
+local fields=(${(@s/▮/)rawSelection})
+echo $fields[1]

@@ -14,6 +14,7 @@ oroshi-fzf-command-specific-widget() {
   # Command-specific
   local commandName="default"
   [[ "${LBUFFER}" =~ "vfa( )?$" ]] && commandName="vfa"
+  [[ "${LBUFFER}" =~ "bats( )?$" ]] && commandName="bats"
 
   # Suggest selection
   export PROMPT_PREVENT_REFRESH="1"
@@ -37,6 +38,11 @@ bindkey '^P' oroshi-fzf-command-specific-widget
 # Default
 function oroshi-fzf-command-specific-default-selection {
   fzf-fs-files-project
+}
+
+# bats
+function oroshi-fzf-command-specific-bats-selection {
+  fzf-bats-test
 }
 
 # git add / vfa

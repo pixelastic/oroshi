@@ -1,0 +1,8 @@
+# List bats test names for completion
+local rawList="$(bats-test-list-raw)"
+[[ -z $rawList ]] && return 0
+
+for rawLine in ${(f)rawList}; do
+  local fields=(${(@ps/▮/)rawLine})
+  echo $fields[1]
+done

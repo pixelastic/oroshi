@@ -252,3 +252,7 @@ compdef '_files -g "*.vue"' \
   js-fix \
   js-lint
 # }}}
+# ZSH {{{
+compdef _bats-test \
+  bats-test
+# }}}

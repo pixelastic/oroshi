@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest bats test names from __tests__
+function _bats-test() {
+  local suggestions=(${(f)"$(complete-bats-test-files)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_LANGUAGE_BATS $COLOR_BLACK ' 󰭟  Bats Tests ')" suggestions
+}

@@ -225,6 +225,16 @@ function oroshi-completion-styling() {
   # SSH Host
   zstyle ':completion:*:complete:ssh:*:*' list-colors $listColorsKnownHost
 
+  # Bats tests {{{
+  # Note: Using =*=38;5; directly as bats suggestions do not have a description,
+  # so ♣ won't work
+  local listColorsBatsTest=(\
+    "=*=38;5;${COLOR_ALIAS_FUNCTION}" \
+    $listColorsDefault \
+  )
+  zstyle ':completion:*:complete:bats-test:*:*' list-colors $listColorsBatsTest
+  # }}}
+
   # Running processes
   zstyle ':completion:*:processes-names' format "$(completion-header $COLOR_ALIAS_PROCESS $COLOR_BLACK '  Running processes ')"
 

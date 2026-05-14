@@ -1,0 +1,5 @@
+# Fuzzy pick a bats test file
+fzf-search \
+  --source "fzf-bats-test-source" \
+  --options "fzf-bats-test-options" \
+  --postprocess "fzf-bats-test-postprocess"

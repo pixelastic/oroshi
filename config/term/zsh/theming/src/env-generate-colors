@@ -156,6 +156,7 @@ aliasColors[LANGUAGE_JAVASCRIPT]="YELLOW"
 aliasColors[LANGUAGE_NODE]="GREEN"
 aliasColors[LANGUAGE_PYTHON]="GREEN"
 aliasColors[LANGUAGE_RUBY]="ORANGE"
+aliasColors[LANGUAGE_BATS]="BLUE"
 # }}}
 # Packages {{{
 aliasColors[PACKAGE]="YELLOW"

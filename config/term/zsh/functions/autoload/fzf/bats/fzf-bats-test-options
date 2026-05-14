@@ -1,0 +1,8 @@
+# Options for the bats test fzf picker
+local promptPrefix="$(colorize " 󰭟  Bats Tests " $COLOR_BLACK $COLOR_ALIAS_LANGUAGE_BATS)"
+local promptSuffix="$(colorize "" $COLOR_ALIAS_LANGUAGE_BATS)"
+echo "--prompt=${promptPrefix}${promptSuffix} "
+
+echo "--delimiter=▮"
+echo "--with-nth=2"
+echo "--preview=fzf-fs-shared-preview {1}"
