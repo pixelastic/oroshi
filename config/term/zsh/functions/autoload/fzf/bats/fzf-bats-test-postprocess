@@ -1,6 +1,14 @@
-# Extract the full path from the fzf selection
-local rawSelection="$1"
-[[ $rawSelection == "" ]] && exit
+# Extract file paths from fzf multi-selection, space-separated
+# Usage: fzf-bats-test-postprocess <newline-separated selections>
+local rawInput="$1"
+[[ "$rawInput" == "" ]] && return 0
 
-local fields=(${(@s/▮/)rawSelection})
-echo $fields[1]
+local results=()
+for rawSelection in ${(f)rawInput}; do
+  [[ "$rawSelection" == "" ]] && continue
+  local fields=(${(@s/▮/)rawSelection})
+  results+=($fields[1])
+done
+
+[[ ${#results} == 0 ]] && return 0
+echo ${(j: :)results}
