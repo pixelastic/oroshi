@@ -78,7 +78,6 @@
   "readlink",
   "read",
   "rg",
-  "rtk",
   "sed",
   "setopt",
   "sha256sum",

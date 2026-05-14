@@ -14,3 +14,15 @@ Quand on est dans un worktree, le prompt affiche le nom/type du projet courant �
 Il faudrait que le prompt détecte qu'on est dans un worktree et affiche le projet parent (ex: "oroshi" avec la bonne couleur/icône) plutôt que le sous-dossier du worktree.
 
 Lié à `oroshi-prompt-populate:git_is_worktree` (issue 0010) et probablement aux parts qui affichent le nom de projet.
+
+---
+
+- Autocomplete of vwtR shouldn't suggest main
+- Maybe display the worktree icon IN teh prohect prefix?
+    - Might be had, as will need to be replicated in caude statusline as well
+- /home/tim/local/www/worktrees/..--ralph is the worktree created from /home/tim/.oroshi/docs/worktrees. ‽
+- Maybe make vwl instead ow vwtl (w rather than wt)
+- maybe later having vwl show before/after difference with main
+- vwts colorize the brnahces/wt like vbs, with latest commit as comment
+- vwtsm to get back to main
+- maybe overwrite the vbs / vbc methodes to create workspaces?
