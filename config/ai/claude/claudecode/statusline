@@ -12,7 +12,7 @@ if [[ "$1" == "--dry-run" ]]; then
   local totalCost=0
   local totalTokens=51000
   local contextPercentage=24
-  local sessionId="deadbeef"
+  local sessionId="deadbeef-0000-ffff-cccc-1234567890ab"
 else
   local stdinData=$(cat)
   local currentDir=$(echo "$stdinData" | jq -r '.workspace.current_dir')
@@ -65,7 +65,7 @@ local displayContext="$(colorize "${tokensK}" $contextColor)"
 statusline+=("$displayContext ")
 
 # Session ID
-local displaySession="$(colorize "[${sessionId}]" $COLOR_NEUTRAL)"
+local displaySession="$(colorize "[${sessionId}]" $COLOR_AMBER_9)"
 statusline+=("$displaySession ")
 
 print "${(j::)statusline}"
