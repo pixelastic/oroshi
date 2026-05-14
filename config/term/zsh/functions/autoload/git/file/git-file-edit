@@ -1,0 +1,25 @@
+# Open all modified files in nvim
+# Usage:
+# $ git-file-edit-modified
+
+local gitRoot="$(git-directory-root)"
+local rawFiles="$(git-file-list-dirty-raw)"
+
+# Nothing to open if working tree is clean
+[[ "$rawFiles" == "" ]] && return 0
+
+local fileList=()
+for rawLine in ${(f)rawFiles}; do
+  local splitLine=(${(@s/:/)rawLine})
+  local gitStatus=$splitLine[1]
+  local filePath=$splitLine[2]
+
+  # Skip deleted files (can't open them)
+  [[ "$gitStatus" == "D" ]] && continue
+
+  fileList+=("${gitRoot}/${filePath}")
+done
+
+[[ ${#fileList} -eq 0 ]] && return 0
+
+nvim -p $fileList
