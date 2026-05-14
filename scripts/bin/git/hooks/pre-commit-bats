@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+# Run BATS tests for any staged script or autoloaded zsh function that has one
+# Called by lint-staged with staged file paths as arguments
+# Usage:
+# $ pre-commit-bats /abs/path/to/file1 /abs/path/to/file2
+set -e
+
+# No staged files to check
+[[ $# = 0 ]] && exit 0
+
+local testPaths=()
+for filePath in "$@"; do
+  local testPath="$(bats-test-path "$filePath")"
+  [[ "$testPath" != "" ]] && testPaths+=("$testPath")
+done
+
+# No tests found for any of the staged files
+[[ "${#testPaths[@]}" == 0 ]] && exit 0
+
+local uniquePaths=("${(@u)testPaths}")
+bats "${uniquePaths[@]}"

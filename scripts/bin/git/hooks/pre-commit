@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+set -e
+
+./node_modules/.bin/aberlaas precommit
