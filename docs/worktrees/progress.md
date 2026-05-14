@@ -146,7 +146,6 @@ Test status tracker: docs/worktrees/prd.json (only update the "passes" field)
 
 ### Up next
 - 0005-git-worktree-list
-- 0007-git-worktree-delete
 - 0008-complete-git-worktrees
 
 ---

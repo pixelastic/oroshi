@@ -28,6 +28,7 @@ teardown() {
 }
 
 @test "cds to Git Repo Main when called from inside the deleted worktree" {
+  # Uses subshell + echo "$PWD" — only way bats can observe a cd side-effect
   cd "$OROSHI_WORKTREES_DIR/my-repo--fix_bug"
   run zsh -c 'git-worktree-delete fix/bug && echo "$PWD"'
   [ "$status" -eq 0 ]
