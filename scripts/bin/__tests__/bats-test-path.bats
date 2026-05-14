@@ -10,6 +10,12 @@
   [ "$output" = "$HOME/.oroshi/scripts/bin/__tests__/slugify.bats" ]
 }
 
+@test "returns the bats file path when given a .bats file" {
+  run bats-test-path "$HOME/.oroshi/scripts/bin/__tests__/slugify.bats"
+  [ "$status" -eq 0 ]
+  [ "$output" = "$HOME/.oroshi/scripts/bin/__tests__/slugify.bats" ]
+}
+
 @test "returns 1 if no test file exists" {
   run bats-test-path "$HOME/.oroshi/scripts/bin/bats/bats-test"
   [ "$status" -eq 1 ]

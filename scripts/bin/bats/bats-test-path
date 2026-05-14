@@ -11,6 +11,13 @@ TESTS_DIR=~/.oroshi/scripts/bin/__tests__
 # No argument provided
 [[ "$filePath" == "" ]] && exit 1
 
+# If the file is itself a .bats test, return it directly
+if [[ "$filePath" == *.bats ]]; then
+  [[ ! -f "$filePath" ]] && exit 1
+  echo "$filePath"
+  return
+fi
+
 local testFile="${TESTS_DIR}/${filePath:t}.bats"
 
 # No matching test file
