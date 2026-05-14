@@ -93,7 +93,13 @@ table $output
 
 ### Step 3 — Lint the file
 
-Run `zshlint` on the file and fix any actionable violation.
+Run `zshlint <file>` on the file and fix any actionable violation.
+
+### Step 4 — Run the tests
+
+If a `.bats` test file exists for this script, run `bats <test-file>`. All tests must pass.
+
+> `zshlint` and `bats` are both in PATH — call them directly, no full path needed.
 
 ## Common Rationalizations
 
