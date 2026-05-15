@@ -354,3 +354,13 @@ User-driven improvements after the ralph session, no new issue IDs:
 - Fixed: none
 - Skipped feedback: all review items are about prior sessions' changes (git-worktree-list-raw, issue 0006) — out of scope for 0011
 - Next: 0007-git-directory-is-worktree-cache and 0008-git-worktree-project remain open
+
+---
+
+## Session 2026-05-16 — 0007: GIT_DIRECTORY_IS_WORKTREE env cache
+- Completed: `oroshi-git-env-store` now sets `GIT_DIRECTORY_IS_WORKTREE` alongside `GIT_DIRECTORY_IS_REPOSITORY`; `oroshi-prompt-populate:git_is_worktree` updated to read `(($GIT_DIRECTORY_IS_WORKTREE))` instead of calling `git-directory-is-worktree` directly
+- Tests added: `scripts/bin/__tests__/oroshi-git-env-store.bats` (2 tests: worktree=1, main=0); `oroshi-prompt-git-is-worktree.bats` updated (added `GIT_DIRECTORY_IS_WORKTREE=1` to worktree test)
+- Discovered: none
+- Fixed: test file used `mktemp -d` + `TEST_TMP` — corrected to `bats_tmp` + `TMP_DIRECTORY` per repo convention
+- Skipped feedback: "outside any git repo" 3rd test case — out of scope
+- Next: 0008-git-worktree-project (no blockers)

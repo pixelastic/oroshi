@@ -62,8 +62,7 @@ function oroshi-prompt-populate:git_remote() {
 function oroshi-prompt-populate:git_is_worktree() {
 	OROSHI_PROMPT_PARTS[git_is_worktree]=""
 	(($GIT_DIRECTORY_IS_REPOSITORY)) || return
-
-	git-directory-is-worktree || return
+	(($GIT_DIRECTORY_IS_WORKTREE)) || return
 
 	OROSHI_PROMPT_PARTS[git_is_worktree]="%F{$COLOR_ALIAS_GIT_WORKTREE}󰙅%f"
 }

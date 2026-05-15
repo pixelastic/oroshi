@@ -209,7 +209,7 @@
       "Simulate precmd by calling oroshi-git-env-store",
       "Verify GIT_DIRECTORY_IS_WORKTREE equals 1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0007",
@@ -221,7 +221,7 @@
       "Simulate precmd by calling oroshi-git-env-store",
       "Verify GIT_DIRECTORY_IS_WORKTREE equals 0"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0008",

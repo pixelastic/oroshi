@@ -20,6 +20,7 @@ teardown() {
     source ~/.oroshi/config/term/zsh/zshenv.zsh
     source ~/.oroshi/config/term/zsh/prompt/git.zsh
     GIT_DIRECTORY_IS_REPOSITORY=1
+    GIT_DIRECTORY_IS_WORKTREE=1
     declare -Ag OROSHI_PROMPT_PARTS
     oroshi-prompt-populate:git_is_worktree
     echo "${OROSHI_PROMPT_PARTS[git_is_worktree]}"
