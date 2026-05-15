@@ -62,10 +62,11 @@ Write the tests that cover the acceptance criteria of the issue — at least one
 
 **Exit criterion:** Linter clean, all tests green.
 
-1. Write the simplest code that makes the tests pass. No more.
-2. Refactor: remove duplication, improve names, extract helpers. Don't add behavior.
-3. Run the linter on all modified files. Fix any errors.
-4. Run tests for all modified files. All tests must pass.
+1. If a dedicated skill for your language exists, load it (`zsh-writer`, `js-writer`, etc)
+2. Write the simplest code that makes the tests pass. No more.
+3. Refactor: remove duplication, improve names, extract helpers. Don't add behavior.
+4. Run the linter on all modified files. Fix any errors.
+5. Run tests for all modified files. All tests must pass.
 
 ---
 
