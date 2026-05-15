@@ -49,7 +49,7 @@ Iterate until the user approves the breakdown.
 
 ### 5. Store the issues
 
-For each approved slice, create a `issue-XXX-slug.md` file.
+For each approved slice, create a `issue-XXX-slug.md` file in the same directory as the PRD.
 Replace `XXX` with the issue number, and `slug` with a suitable slug from the issue title.
 For content, use the issue body template below.
 Number issues in dependency order (blockers first) so you can reference real issue identifiers in the "Blocked by" field.
