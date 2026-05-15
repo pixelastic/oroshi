@@ -11,10 +11,9 @@ git-directory-is-repository || return 1
 # Branch name required
 [[ "$branch" == "" ]] && return 1
 
-# Repo name
+# Repo name: prefer GitHub project name, fall back to folder name (strip leading dots)
 local repoName="$(git-github-project-name)"
 if [[ "$repoName" == "" ]]; then
-  # If no GitHub project, default to name of the folder of the repo
   local repoMain="$(git-worktree-main)"
   repoName="${${repoMain:t}##.#}"
 fi
@@ -24,8 +23,8 @@ local branchSlug="${branch//\//_}"
 
 local worktreeDir="${OROSHI_WORKTREES_DIR}/${repoName}--${branchSlug}"
 
-# Stop if worktree already exists
-[[ -d "$worktreeDir" ]] && return 0
+# If worktree already exists, cd into it (idempotent)
+[[ -d "$worktreeDir" ]] && cd "$worktreeDir" && return 0
 
 # Create branch if it does not exist
 git-branch-exists "$branch" || git branch "$branch"

@@ -67,7 +67,7 @@
       "Verify vwR → git-worktree-delete",
       "Verify vwsm expands to 'vws main' or git-worktree-switch main"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0004",

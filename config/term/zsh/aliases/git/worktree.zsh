@@ -1,5 +1,6 @@
-# [wt]orktree
-alias vwtc='git-worktree-create'
-alias vwtl='git-worktree-list'
-alias vwts='git-worktree-switch'
-alias vwtR='git-worktree-delete'
+# [w]orktree
+alias vwc='git-worktree-create'
+alias vwl='git-worktree-list'
+alias vws='git-worktree-switch'
+alias vwR='git-worktree-delete'
+alias vwsm='vws main'

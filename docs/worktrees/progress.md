@@ -290,3 +290,14 @@ All 31 tests pass with `GIT_DIR=.git GIT_INDEX_FILE=.git/index` to simulate hook
 - Fixed: user refactored file using `git-branch-create` which exits 1 when branch exists — reverted to `git-branch-exists "$branch" || git branch "$branch"`
 - Skipped feedback: reviewer flagged function name mismatch — intentional per user; other flags were about prior session's files
 - Next: 0003-alias-rename-vwsm (no blockers)
+
+---
+
+## Session 2026-05-15 — 0003: alias rename vwc/vwl/vws/vwR + vwsm
+- Completed: renamed `vwtc/vwtl/vwts/vwtR` → `vwc/vwl/vws/vwR`; added `vwsm='vws main'` in `config/term/zsh/aliases/git/worktree.zsh`
+- Tests added: none (user confirmed no tests needed for aliases)
+- Discovered: none
+- Fixed: none
+- Fixed (post-review): `local repoMain=""` moved to top level; `return 0` on existing worktree now cds first
+- Skipped feedback: raw `git worktree add` (no helper exists); raw `git branch` (intentional); if-block style flag (if body with errexit semantics is safer than && chain here); scope-creep items (already committed from 0002); `##.#` vs `##.*` reviewer suggestion (incorrect — `##.*` would strip entire string)
+- Next: 0004-complete-git-worktrees-linked (no blockers)
