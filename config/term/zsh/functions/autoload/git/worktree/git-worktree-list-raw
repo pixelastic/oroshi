@@ -1,29 +1,21 @@
-# List all linked worktrees: one line per worktree "<branch> <path>"
+# List all linked worktrees: branch▮path▮distance▮relativeDate▮message
 # Excludes the Git Repo Main
 # Usage:
-# $ git-worktree-list-raw
+# $ git-worktree-list-raw   # fix/bug▮/path▮ahead 2, behind 0▮3mn▮fix typo
 
 setopt local_options errexit
-local worktreePath="" branch="" isFirst=true
 local porcelain="$(git worktree list --porcelain 2>/dev/null)" || return 1
 
-# Output looks like:
-# worktree /home/tim/.oroshi
-# HEAD 5eb240ede3ae9cd68a7a6853872711612e76b2dd
-# branch refs/heads/main
-#
-# worktree /home/tim/local/tmp/oroshi-commit-writer
-# HEAD 58afeccca2add80e7bc7a4377ece575adc7d4cf7
-# branch refs/heads/oroshi-commit-writer
+# First pass: collect branch▮path pairs from porcelain output
+local worktreeData=()
+local worktreePath="" branch="" isFirst=true
 for line in "${(@f)porcelain}"; do
-  # New worktree block
   if [[ "$line" == worktree\ * ]]; then
     worktreePath="${line#worktree }"
     branch=""
     continue
   fi
 
-  # Branch name of current block
   if [[ "$line" == branch\ * ]]; then
     branch="${line#branch refs/heads/}"
     continue
@@ -41,11 +33,27 @@ for line in "${(@f)porcelain}"; do
 
   # Skip detached HEAD worktrees (no branch line)
   [[ -n "$branch" ]] || continue
-  echo "$branch $worktreePath"
+  worktreeData+=("$branch▮$worktreePath")
   branch=""
 done
 
 # Flush last block (no trailing blank line after $() strips newlines)
-if [[ "$isFirst" == false && -n "$branch" ]]; then
-  echo "$branch $worktreePath"
-fi
+[[ "$isFirst" == false && -n "$branch" ]] && worktreeData+=("$branch▮$worktreePath")
+
+# Second pass: enrich each entry with distance, date, message
+for entry in "${worktreeData[@]}"; do
+  local entryBranch="${entry%%▮*}"
+  local entryPath="${entry#*▮}"
+
+  # Ahead/behind vs main
+  local rawDistance="$(git rev-list --left-right --count "${entryBranch}...main" 2>/dev/null)"
+  local distance=""
+  [[ -n "$rawDistance" ]] && distance="ahead ${rawDistance%%$'\t'*}, behind ${rawDistance##*$'\t'}"
+
+  # Relative date and commit message
+  local logInfo="$(git log -1 --format="%ar▮%s" "$entryBranch" 2>/dev/null)"
+  local relativeDate="${logInfo%%▮*}"
+  local message="${logInfo#*▮}"
+
+  echo "$entryBranch▮$entryPath▮$distance▮$relativeDate▮$message"
+done

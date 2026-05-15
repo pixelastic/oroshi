@@ -9,8 +9,9 @@ local raw="$(git-worktree-list-raw)"
 
 for line in "${(@f)raw}"; do
   [[ "$line" == "" ]] && continue
-  [[ "${line%% *}" != "$branch" ]] && continue
-  echo "${line#* }"
+  local splitLine=("${(@ps/▮/)line}")
+  [[ "${splitLine[1]}" != "$branch" ]] && continue
+  echo "${splitLine[2]}"
   return
 done
 

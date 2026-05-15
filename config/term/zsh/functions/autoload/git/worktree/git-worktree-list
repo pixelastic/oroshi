@@ -1,4 +1,4 @@
-# List linked worktrees for the current repo (branch names only, colorized)
+# List linked worktrees with branch, distance vs main, date, and last commit message
 # Usage:
 # $ git-worktree-list
 setopt local_options errexit
@@ -8,9 +8,25 @@ local rawOutput="$(git-worktree-list-raw)"
 # No worktrees — exit cleanly
 [[ "$rawOutput" == "" ]] && return 0
 
-local branch
+local output=""
 for rawLine in ${(f)rawOutput}; do
-  branch="${rawLine%% *}"
-  [[ "$branch" == "" ]] && continue
-  git-branch-colorize "$branch"
+  local splitLine=("${(@ps/▮/)rawLine}")
+  local branch="${splitLine[1]}"
+  local worktreePath="${splitLine[2]}"
+  local distance="${splitLine[3]}"
+  local relativeDate="${splitLine[4]}"
+  local message="${splitLine[5]}"
+
+  # Current worktree pointer marker
+  local marker=" "
+  [[ "$PWD" == "$worktreePath" ]] && marker="$(colorize "" ALIAS_POINTER)"
+
+  local branchDisplay="$(git-branch-colorize "$branch")"
+  local distanceDisplay="$(git-distance-colorize "$distance")"
+  local dateDisplay="$(git-date-colorize "$relativeDate")"
+  local messageDisplay="$(git-message-colorize "$message")"
+
+  output+="${marker}▮${branchDisplay}▮${distanceDisplay}▮${dateDisplay}▮${messageDisplay}▮\n"
 done
+
+table $output

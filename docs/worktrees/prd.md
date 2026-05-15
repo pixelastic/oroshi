@@ -17,6 +17,9 @@ The worktree toolbox (v1) has several rough edges that make daily use friction-f
    filesystem path instead of the parent project prefix, and doesn't communicate
    the worktree's relation to `main`.
 6. **No `vwsm` shortcut**: returning to the Git Repo Main requires typing `vws main`.
+7. **New worktrees have no `node_modules`**: `git worktree add` copies tracked files
+   only — `node_modules/` is gitignored and absent, so pre-commit hooks and dev
+   scripts fail immediately after creation.
 
 ## Solution
 
@@ -31,6 +34,8 @@ Seven targeted improvements to functions, aliases, completion, and prompt:
 6. New `git-worktree-project` helper maps a worktree back to its parent project.
 7. Prompt left side: worktree leaf icon + branch name after project prefix; right
    side: branch hidden when already shown on the left.
+8. `git-worktree-create` runs `yarn install` automatically when `yarn.lock` is
+   present, so the worktree is ready to use immediately after creation.
 
 ## User Stories
 
@@ -64,6 +69,9 @@ Seven targeted improvements to functions, aliases, completion, and prompt:
     not a volatile git state.
 14. As a developer, I want the branch name hidden from the right prompt when I am
     in a worktree, so that it is not shown twice.
+15. As a developer, I want `vwc fix/bug` to automatically run `yarn install` if
+    the repo uses yarn, so that `node_modules/` is ready and pre-commit hooks work
+    the moment I land in the new worktree.
 
 ## Implementation Decisions
 
@@ -156,6 +164,23 @@ Replace the `project-by-path` call with branching logic:
 Path display after the prefix: relative to the worktree root (same behaviour as
 relative-to-project-root today). No branch name in the path segment.
 
+### Module 11 — `git-worktree-create` — auto yarn install
+
+After the final `cd "$worktreeDir"`, add:
+
+```zsh
+[[ -f "yarn.lock" ]] && yarn install || true
+```
+
+Detection via `yarn.lock` (not `package.json`) ensures the install only runs for
+yarn projects where dependencies have already been resolved. The `|| true` prevents
+a failing install from surfacing as a worktree creation error. Yarn's global cache
+(`enableGlobalCache: true`) + hardlinks (`nmMode: hardlinks-local`) make the
+install quasi-instantaneous in practice.
+
+The idempotent early-return path (`[[ -d "$worktreeDir" ]] && return 0`) is
+unchanged — re-entering an existing worktree does not re-trigger the install.
+
 ### Module 10 — Worktree branch prompt part (new: `git_worktree_branch`)
 
 New **asynchronous** prompt part `git_worktree_branch`. Replaces
@@ -205,6 +230,8 @@ Modules with bats tests:
   equals 1 inside linked worktree, equals 0 in Git Repo Main.
 - **`git-worktree-project`** — 2 tests: returns project name for known project,
   returns empty for unknown project.
+- **`git-worktree-create`** (yarn install) — 2 tests: `node_modules/` created when
+  `yarn.lock` present; no install when `yarn.lock` absent.
 
 Prompt parts (`oroshi-prompt-populate:path`, `git_worktree_branch`) are not unit
 tested — their behaviour is covered indirectly by the helper tests above.
@@ -221,6 +248,7 @@ pattern in `git-worktree-config.bats`.
 - `vwl` showing a diff summary vs `main` (listed as "maybe later" in the todo).
 - Choosing the exact leaf glyph for the worktree icon (user decision at
   implementation time).
+- Auto-install for npm (`package-lock.json`) and pnpm (`pnpm-lock.yaml`) — yarn only.
 
 ## Further Notes
 
@@ -237,3 +265,4 @@ pattern in `git-worktree-config.bats`.
   - 0008 `git-worktree-project` — no blockers
   - 0009 `oroshi-prompt-populate:path` update — needs 0007 + 0008
   - 0010 `git_worktree_branch` prompt part — needs 0005 + 0007
+  - 0011 `git-worktree-create` yarn install — no blockers

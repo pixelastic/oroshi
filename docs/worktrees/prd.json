@@ -150,7 +150,7 @@
       "Run git-worktree-list",
       "Verify the current worktree line contains the pointer marker"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0006",
@@ -162,7 +162,7 @@
       "Run git-worktree-list from the repo",
       "Verify the output contains '2' in the ahead/behind column"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0006",
@@ -174,7 +174,7 @@
       "Run git-worktree-list",
       "Verify the output contains '3' in the behind column for that worktree"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0006",
@@ -185,7 +185,7 @@
       "Run git-worktree-list",
       "Verify the output contains a relative time string (e.g. 'seconds ago')"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0006",
@@ -197,7 +197,7 @@
       "Run git-worktree-list",
       "Verify 'my test commit' appears in the output"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0007",
@@ -246,6 +246,28 @@
       "cd into the worktree",
       "Run git-worktree-project",
       "Verify output is empty"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0011",
+    "category": "functional",
+    "description": "git-worktree-create runs yarn install when yarn.lock is present",
+    "steps": [
+      "Create a temp git repo with a minimal package.json and a yarn.lock",
+      "Run git-worktree-create fix/yarn",
+      "Verify node_modules/ exists in the new worktree"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0011",
+    "category": "functional",
+    "description": "git-worktree-create does not run yarn install when yarn.lock is absent",
+    "steps": [
+      "Create a temp git repo with no yarn.lock",
+      "Run git-worktree-create fix/no-yarn",
+      "Verify node_modules/ does not exist in the new worktree"
     ],
     "passes": false
   }

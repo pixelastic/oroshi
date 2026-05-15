@@ -5,11 +5,12 @@
 0003-alias-rename-vwsm           → no blockers
 0004-complete-git-worktrees-linked → no blockers
 0005-git-worktree-distance       → no blockers
-0006-git-worktree-list-enriched  → needs 0005
+0006-git-worktree-list-enriched  → done (needs 0005)
 0007-git-directory-is-worktree-cache → no blockers
 0008-git-worktree-project        → no blockers
 0009-prompt-path-worktree        → needs 0007 + 0008
 0010-prompt-git-worktree-branch  → needs 0005 + 0007
+0011-git-worktree-yarn-install   → no blockers
 
 ## Guidance
 
@@ -314,6 +315,14 @@ All 31 tests pass with `GIT_DIR=.git GIT_INDEX_FILE=.git/index` to simulate hook
 
 ---
 
+## Session 2026-05-15 — 0006: git-worktree-list enriched
+- Completed: `git-worktree-list` rewritten with columnar output — pointer marker, branch, ahead/behind vs main, relative date, last commit message; all via existing colorize helpers and `table`
+- Tests added: 5 new tests in `git-worktree-list.bats` (pointer marker, ahead count, behind count, relative date, commit message); 8/8 pass
+- Discovered: "behind count" test was a false positive with the old impl (ANSI code `[38;5;...` always contains "3"); fixed by stripping ANSI codes via `sed "s/\x1b\[[0-9;]*m//g"` before asserting
+- Fixed: none
+- Skipped feedback: reviewer mistakenly cited `read -r ahead behind` pattern — implementation uses `${rawDistance%%$'\t'*}` zsh modifiers, not `read`; reviewer also confused issue 0005 with 0006 — no blocker
+- Next: 0007-git-directory-is-worktree-cache (no blockers)
+
 ## Session 2026-05-15 — 0004: complete-git-worktrees-linked
 - Completed: `complete-git-worktrees-linked` autoload function; `_git-worktrees-linked` compdef wrapper; `compdef.zsh` updated — `git-worktree-delete` now uses `_git-worktrees-linked`, `git-worktree-switch` keeps `_git-worktrees`
 - Tests added: scripts/bin/__tests__/complete-git-worktrees-linked.bats (3 tests: no main, includes branches, empty when no worktrees)
@@ -321,3 +330,17 @@ All 31 tests pass with `GIT_DIR=.git GIT_INDEX_FILE=.git/index` to simulate hook
 - Fixed: none
 - Skipped feedback: reviewer flagged `git-worktree-create` comment removal + guard style — out of scope (previous session, already committed); `compdef.zsh` confusion in review — change is correct per spec
 - Next: 0005-git-worktree-distance (no blockers)
+
+---
+
+## Post-session refactors — 2026-05-15 (0006 follow-up)
+
+User-driven improvements after the ralph session, no new issue IDs:
+
+- **Pointer icon + color**: replaced raw `▶` with Nerd Font U+F432 + `ALIAS_POINTER` (green), matching `git-branch-list` convention
+- **Behind color**: `git-distance-colorize` changed from `RED` → `ORANGE` (less aggressive; global, also affects `git-branch-list`)
+- **`git-worktree-list-raw` separator**: output format changed from `branch path` (space) to `branch▮path`; all callers updated (`git-worktree-path`, `complete-git-worktrees`, `complete-git-worktrees-linked`, `git-worktree-list`, bats tests)
+- **`splitLine` pattern**: `git-worktree-list` now uses `local splitLine=("${(@ps/▮/)rawLine}")` for index-based field access, per `git-branch-list` convention
+- **Data in raw**: all enrichment (distance, relative date, message) moved into `git-worktree-list-raw`; two-pass architecture (collect branch▮path first, then enrich); output is now `branch▮path▮distance▮relativeDate▮message`; `git-worktree-list` only parses + colorizes
+- **`git log` over `git for-each-ref`**: `git for-each-ref %(committerdate:relative)` returned empty in bats environment; reverted to `git log -1 --format="%ar▮%s"` which was proven reliable
+- **Dead code removed**: `[[ "$rawLine" == "" ]] && continue` and `[[ "$branch" == "" ]] && continue` in `git-worktree-list` — impossible given `git-worktree-list-raw` contract

@@ -20,8 +20,8 @@ teardown() {
   cd "$TMP_DIRECTORY/my-repo"
   run_zsh_fn git-worktree-list-raw
   [ "$status" -eq 0 ]
-  [ "${lines[0]}" = "feat/dark-mode $OROSHI_WORKTREES_DIR/my-repo--feat_dark-mode" ]
-  [ "${lines[1]}" = "fix/bug $OROSHI_WORKTREES_DIR/my-repo--fix_bug" ]
+  [[ "${lines[0]}" == "feat/dark-mode▮$OROSHI_WORKTREES_DIR/my-repo--feat_dark-mode▮"* ]]
+  [[ "${lines[1]}" == "fix/bug▮$OROSHI_WORKTREES_DIR/my-repo--fix_bug▮"* ]]
 }
 
 @test "excludes the Git Repo Main from output" {

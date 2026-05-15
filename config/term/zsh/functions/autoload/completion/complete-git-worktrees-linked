@@ -8,5 +8,5 @@ local rawList="$(git-worktree-list-raw)"
 
 for rawLine in ${(f)rawList}; do
   [[ "$rawLine" == "" ]] && continue
-  echo "${rawLine%% *}"
+  echo "${rawLine%%▮*}"
 done
