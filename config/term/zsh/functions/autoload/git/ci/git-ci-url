@@ -5,7 +5,7 @@
 local input="$1"
 local ciType="$(git-ci-type)"
 
-local githubProject="$(git-github-remote-project)"
+local githubProject="$(git-github-project)"
 
 # CircleCi
 if [[ $ciType == "circleci" ]]; then

@@ -138,7 +138,7 @@ function oroshi-prompt-populate:git_issues() {
 		return
 	fi
 
-	local projectName="$(git-github-remote-project)"
+	local projectName="$(git-github-project)"
 	local cacheFolderPath="${OROSHI_TMP_FOLDER}/github/${projectName}"
 	mkdir -p $cacheFolderPath
 
@@ -168,7 +168,7 @@ function oroshi-prompt-populate:git_pullrequests() {
 		return
 	fi
 
-	local projectName="$(git-github-remote-project)"
+	local projectName="$(git-github-project)"
 	local cacheFolderPath="${OROSHI_TMP_FOLDER}/github/${projectName}"
 	mkdir -p $cacheFolderPath
 

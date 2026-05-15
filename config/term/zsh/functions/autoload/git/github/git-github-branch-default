@@ -6,7 +6,7 @@ local repo="$1"
 
 # If no repo specified, use current repo
 if [[ -z "$repo" ]]; then
-  repo=$(git-github-remote-project)
+  repo=$(git-github-project)
 fi
 
 gh repo view "$repo" --json defaultBranchRef -q .defaultBranchRef.name

@@ -23,7 +23,7 @@ for arg in ${=args}; do
 done
 
 # If no image name passed, we default to the repository name
-[[ $imageName == "" ]] && imageName="$(git-github-remote-project)"
+[[ $imageName == "" ]] && imageName="$(git-github-project)"
 
 # If a stage is defined, we add it to the name
 if [[ $stageName != "" ]]; then

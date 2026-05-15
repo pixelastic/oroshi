@@ -1,16 +1,3 @@
-## Execution order (v1 — completed)
-
-0001-git-directory-is-worktree   → DONE
-0002-git-worktree-main           → DONE
-0003-git-worktree-list-raw       → DONE
-0004-git-worktree-create         → DONE
-0005-git-worktree-list           → DONE
-0006-git-worktree-switch         → DONE
-0007-git-worktree-delete         → DONE
-0008-complete-git-worktrees      → DONE
-0009-config-env-aliases          → DONE
-0010-prompt-git-is-worktree      → DONE
-
 ## Execution order (v2 — current cycle)
 
 0001-git-github-remote-name      → start here, no blockers
@@ -29,6 +16,8 @@
 All issues follow TDD: write the failing BATS test first (it's already written
 in each issue file), run it to confirm it's red, then implement until it passes.
 Do not skip the red step.
+
+`bats` and `zshlint` are in your $PATH
 
 Tests live in scripts/bin/__tests__/. Each test file is named after the function
 it tests (e.g. git-directory-is-worktree.bats).
@@ -281,3 +270,13 @@ All 31 tests pass with `GIT_DIR=.git GIT_INDEX_FILE=.git/index` to simulate hook
 - Fixed: none
 - Skipped feedback: none
 - Next: all prd.json issues complete
+
+---
+
+## Session 2026-05-15 — 0001: git-github-remote-name
+- Completed: `git-github-remote-name` in `config/term/zsh/functions/autoload/git/github/`; parses SSH + HTTPS GitHub remote URLs; falls back to Git Repo Main folder name stripping leading dots
+- Tests added: `scripts/bin/__tests__/git-github-remote-name.bats` (6 tests: SSH URL, HTTPS URL, fallback no-remote, single dot, multiple dots, returns 1 outside git repo)
+- Discovered: none
+- Fixed: none
+- Skipped feedback: `git_env_clean` in setup() — already handled by `unset` at load time in helper.bash
+- Next: 0002-git-worktree-create-naming (now unblocked by 0001)

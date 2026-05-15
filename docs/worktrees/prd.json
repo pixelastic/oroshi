@@ -8,7 +8,7 @@
       "Run git-github-remote-name",
       "Verify output is 'testrepo'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -19,7 +19,7 @@
       "Run git-github-remote-name",
       "Verify output is 'testrepo'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -30,7 +30,7 @@
       "Run git-github-remote-name",
       "Verify output is 'myrepo'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -41,7 +41,7 @@
       "Run git-github-remote-name",
       "Verify output is 'myrepo' (no leading dot)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",

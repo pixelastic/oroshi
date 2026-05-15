@@ -1,15 +1,16 @@
-# Gets the name of the project name of the given remote
+# Returns owner/name from the GitHub remote URL.
+# Supports both SSH and HTTPS remote URLs.
 # Usage:
-# $ git-github-remote-owner               # pixelastic/oroshi
-# $ git-github-remote-owner {remote}
+# $ git-github-project              # pixelastic/oroshi
+# $ git-github-project upstream     # someorg/oroshi
 
-local remoteName=$1
-[[ $remoteName == '' ]] && remoteName=$(git-remote-current)
+local remoteName="$1"
+[[ "$remoteName" == "" ]] && remoteName="$(git-remote-current)"
+local remoteUrl="$(git-remote-url "$remoteName" 2>/dev/null)"
 
-local remoteUrl=$(git-remote-url $remoteName)
+[[ "$remoteUrl" == "" ]] && return 1
 
-# shellcheck disable=SC2016
-echo $remoteUrl |
-	sed \
-		--regexp-extended \
-		's_.git$__; s_^git@github.com:(.*)/(.*)_\1/\2_'
+# shellcheck disable=SC2016 # sed pattern is intentionally literal; no variable expansion needed
+echo "$remoteUrl" |
+	sed --regexp-extended \
+		's_^git@github\.com:__; s_^https://github\.com/__; s_\.git$__'

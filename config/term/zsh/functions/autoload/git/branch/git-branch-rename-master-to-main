@@ -60,7 +60,7 @@ function parseRepoArgument() {
     return 1
   fi
 
-  git-github-remote-project
+  git-github-project
 }
 
 # Pre-flight checks
