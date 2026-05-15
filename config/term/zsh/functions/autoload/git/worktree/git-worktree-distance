@@ -1,0 +1,20 @@
+# Ahead/behind commit count between current worktree branch and main
+# Usage:
+# $ git-worktree-distance    # ahead 2, behind 0
+setopt local_options errexit
+
+local branch="$(git-branch-current)"
+
+# Not in a git repo or detached HEAD
+[[ "$branch" == "" || "$branch" == "HEAD" ]] && return 1
+
+local rawDistance
+rawDistance="$(git rev-list --left-right --count "${branch}...main" 2>/dev/null)"
+
+# Failed (e.g. main doesn't exist)
+[[ "$rawDistance" == "" ]] && return 1
+
+local ahead behind
+read -r ahead behind <<< "$rawDistance"
+
+echo "ahead ${ahead:-0}, behind ${behind:-0}"

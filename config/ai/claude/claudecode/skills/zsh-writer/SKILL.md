@@ -35,7 +35,7 @@ Write code that follows the following patterns:
 |---|---|
 | [Headers](./references/header.md) | Top of the file: what the script does, how to call it and error protection |
 | [Args Parsing](./references/args-parsing.md) | Use `zmodload zsh/zutil` + `zparseopts -E -D` to parse args |
-| [Variables](./references/variables.md) | `local camelCase`, `UPPER_CASE_CONSTANTS` |
+| [Variables](./references/variables.md) | `local myVar="$(myCommand)"` on one line |
 | [Modifiers](./references/modifiers.md) | Prefer zsh modifiers (`${filepath:t}`) over commands (`$(basename "$filepath")`) |
 | [Splitting](./references/splitting.md) | Use `▮` as separator and `${(@ps/▮/)line}` to split |
 | [Loops](./references/loops.md) | Use `for rawLine in ${(f)rawOutput}` instead of `while read` and `IFS` |
@@ -105,6 +105,7 @@ If a `.bats` test file exists for this script, run `bats <test-file>`. All tests
 
 | Rationalization | Reality |
 |---|---|
+| "`local` exits 0, I need it on its own line | No, I want `local myVar="$(myCommand)"` even if `myCommand` could fail |
 | "`while read` is fine for simple cases" | Never. `${(f)var}` always. |
 | "It's only two levels of if/else, it's ok." | No it's not. Return early, always. |
 
