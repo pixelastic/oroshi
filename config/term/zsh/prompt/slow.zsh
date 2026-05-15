@@ -20,6 +20,8 @@ function oroshiSlowCommandPreexec() {
     man
     nano
     nvim
+    ralph
+    review
     ssh
     tmux
     top
