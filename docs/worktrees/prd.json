@@ -258,7 +258,7 @@
       "Run git-worktree-create fix/yarn",
       "Verify node_modules/ exists in the new worktree"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0011",
@@ -269,6 +269,6 @@
       "Run git-worktree-create fix/no-yarn",
       "Verify node_modules/ does not exist in the new worktree"
     ],
-    "passes": false
+    "passes": true
   }
 ]

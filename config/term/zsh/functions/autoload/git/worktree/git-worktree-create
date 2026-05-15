@@ -33,3 +33,8 @@ git-branch-exists "$branch" || git branch "$branch"
 git worktree add "$worktreeDir" "$branch" &> /dev/null
 
 cd "$worktreeDir"
+
+# Run yarn install if yarn.lock is present (failure is non-fatal)
+if [[ -f "yarn.lock" ]]; then
+  yarn install || true
+fi

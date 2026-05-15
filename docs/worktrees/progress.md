@@ -344,3 +344,13 @@ User-driven improvements after the ralph session, no new issue IDs:
 - **Data in raw**: all enrichment (distance, relative date, message) moved into `git-worktree-list-raw`; two-pass architecture (collect branch▮path first, then enrich); output is now `branch▮path▮distance▮relativeDate▮message`; `git-worktree-list` only parses + colorizes
 - **`git log` over `git for-each-ref`**: `git for-each-ref %(committerdate:relative)` returned empty in bats environment; reverted to `git log -1 --format="%ar▮%s"` which was proven reliable
 - **Dead code removed**: `[[ "$rawLine" == "" ]] && continue` and `[[ "$branch" == "" ]] && continue` in `git-worktree-list` — impossible given `git-worktree-list-raw` contract
+
+---
+
+## Session 2026-05-15 — 0011: git-worktree-create — auto yarn install
+- Completed: `git-worktree-create` now runs `yarn install` after `cd` into new worktree when `yarn.lock` is present; failure is non-fatal via `|| true` in an `if` block
+- Tests added: 4 tests in `git-worktree-create.bats` — runs yarn when yarn.lock present, skips when absent, swallows yarn failure, idempotent re-enter skips yarn (12/12 total pass)
+- Discovered: SC2015 linter flags `[[ ]] && cmd || true` as anti-pattern; replaced with `if [[ ]]; then cmd || true; fi`
+- Fixed: none
+- Skipped feedback: all review items are about prior sessions' changes (git-worktree-list-raw, issue 0006) — out of scope for 0011
+- Next: 0007-git-directory-is-worktree-cache and 0008-git-worktree-project remain open
