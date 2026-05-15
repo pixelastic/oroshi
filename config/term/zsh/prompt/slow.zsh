@@ -14,6 +14,7 @@ function oroshiSlowCommandPreexec() {
     git-commit-create-staged
     git-commit-list
     git-file-diff
+    git-file-edit
     gws
     htop
     less
