@@ -364,3 +364,13 @@ User-driven improvements after the ralph session, no new issue IDs:
 - Fixed: test file used `mktemp -d` + `TEST_TMP` — corrected to `bats_tmp` + `TMP_DIRECTORY` per repo convention
 - Skipped feedback: "outside any git repo" 3rd test case — out of scope
 - Next: 0008-git-worktree-project (no blockers)
+
+---
+
+## Session 2026-05-16 — 0008: git-worktree-project
+- Completed: `git-worktree-project` autoload function; calls `git-worktree-main` then delegates to `project-by-path`
+- Tests added: `scripts/bin/__tests__/git-worktree-project.bats` (2 tests: registered project returns name, unregistered returns empty)
+- Discovered: `PROJECTS_INDEX_BY_PATH` is always re-exported by `.zshenv` from `projects.zsh`; `run_zsh_fn` cannot override it. Must use raw `run zsh -c "VAR=val; fn"` inline assignment to set vars after `.zshenv` runs.
+- Fixed: none
+- Skipped feedback: raw `run zsh -c` instead of `run_zsh_fn` — necessary, `.zshenv` always overrides the exported var; `$TMP_DIRECTORY` expansion in zsh -c string — safe (bats_tmp slugifies); no "outside git repo" test — out of scope; no "from main worktree" test — out of scope
+- Next: all prd.json issues complete

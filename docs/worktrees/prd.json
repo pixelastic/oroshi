@@ -234,7 +234,7 @@
       "Run git-worktree-project",
       "Verify output matches the project name"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0008",
@@ -247,7 +247,7 @@
       "Run git-worktree-project",
       "Verify output is empty"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0011",

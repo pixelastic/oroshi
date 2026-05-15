@@ -1,0 +1,136 @@
+[
+  {
+    "id": "0001",
+    "category": "unit",
+    "description": "preToolUse-Bash-solkan exits 0 for an allowlisted command",
+    "steps": [
+      "Call preToolUse-Bash-solkan with 'git status'",
+      "Verify exit code is 0"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0001",
+    "category": "unit",
+    "description": "preToolUse-Bash-solkan exits 1 for a non-allowlisted command",
+    "steps": [
+      "Call preToolUse-Bash-solkan with 'wget evil.com'",
+      "Verify exit code is 1"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0001",
+    "category": "unit",
+    "description": "preToolUse-Bash-solkan exits 0 for a compound command where all subcommands are allowlisted",
+    "steps": [
+      "Call preToolUse-Bash-solkan with 'git status && git log --oneline'",
+      "Verify exit code is 0"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0001",
+    "category": "unit",
+    "description": "preToolUse-Bash-solkan exits 1 for a compound command with one non-allowlisted subcommand",
+    "steps": [
+      "Call preToolUse-Bash-solkan with 'git status && wget evil.com'",
+      "Verify exit code is 1"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "category": "unit",
+    "description": "preToolUse-Bash-rtk prints the original command when RTK has no equivalent",
+    "steps": [
+      "Call preToolUse-Bash-rtk with 'echo hello'",
+      "Verify stdout equals 'echo hello'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "category": "unit",
+    "description": "preToolUse-Bash-rtk prints the rewritten command when RTK rewrites",
+    "steps": [
+      "Call preToolUse-Bash-rtk with 'git status'",
+      "Verify stdout equals 'rtk git status'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "category": "unit",
+    "description": "preToolUse-Bash-rtk is idempotent when command already uses RTK",
+    "steps": [
+      "Call preToolUse-Bash-rtk with 'rtk git status'",
+      "Verify stdout equals 'rtk git status'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0003",
+    "category": "integration",
+    "description": "preToolUse-Bash outputs allow with no updatedInput when solkan accepts and RTK does not rewrite",
+    "steps": [
+      "Set PRETOOLUSE_SOLKAN_SCRIPT to a mock that exits 0",
+      "Set PRETOOLUSE_RTK_SCRIPT to a mock that prints the input unchanged",
+      "Call preToolUse-Bash with a JSON input containing command 'echo hello'",
+      "Verify output JSON has hookSpecificOutput.permissionDecision == 'allow'",
+      "Verify output JSON has no hookSpecificOutput.updatedInput"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0003",
+    "category": "integration",
+    "description": "preToolUse-Bash outputs allow with updatedInput when solkan accepts and RTK rewrites",
+    "steps": [
+      "Set PRETOOLUSE_SOLKAN_SCRIPT to a mock that exits 0",
+      "Set PRETOOLUSE_RTK_SCRIPT to a mock that prints 'rtk git status'",
+      "Call preToolUse-Bash with a JSON input containing command 'git status'",
+      "Verify output JSON has hookSpecificOutput.permissionDecision == 'allow'",
+      "Verify output JSON has hookSpecificOutput.updatedInput.command == 'rtk git status'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0003",
+    "category": "integration",
+    "description": "preToolUse-Bash outputs no permissionDecision and no updatedInput when solkan refuses and RTK does not rewrite",
+    "steps": [
+      "Set PRETOOLUSE_SOLKAN_SCRIPT to a mock that exits 1",
+      "Set PRETOOLUSE_RTK_SCRIPT to a mock that prints the input unchanged",
+      "Call preToolUse-Bash with a JSON input containing command 'wget evil.com'",
+      "Verify output JSON has no hookSpecificOutput.permissionDecision",
+      "Verify output JSON has no hookSpecificOutput.updatedInput"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0003",
+    "category": "integration",
+    "description": "preToolUse-Bash outputs updatedInput but no permissionDecision when solkan refuses and RTK rewrites",
+    "steps": [
+      "Set PRETOOLUSE_SOLKAN_SCRIPT to a mock that exits 1",
+      "Set PRETOOLUSE_RTK_SCRIPT to a mock that prints 'rtk git status'",
+      "Call preToolUse-Bash with a JSON input containing command 'git status'",
+      "Verify output JSON has no hookSpecificOutput.permissionDecision",
+      "Verify output JSON has hookSpecificOutput.updatedInput.command == 'rtk git status'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0003",
+    "category": "integration",
+    "description": "preToolUse-Bash preserves original tool_input fields (description) in updatedInput",
+    "steps": [
+      "Set PRETOOLUSE_SOLKAN_SCRIPT to a mock that exits 0",
+      "Set PRETOOLUSE_RTK_SCRIPT to a mock that prints 'rtk git status'",
+      "Call preToolUse-Bash with JSON containing command 'git status' and description 'Show repo status'",
+      "Verify output JSON has hookSpecificOutput.updatedInput.description == 'Show repo status'"
+    ],
+    "passes": false
+  }
+]
