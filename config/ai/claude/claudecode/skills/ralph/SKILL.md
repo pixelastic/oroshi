@@ -121,6 +121,7 @@ Print the session entry that was written to progress.md — verbatim.
 
 | Rationalization | Reality |
 |---|---|
+| "I don't need a specific skill, I know that language" | You don't know my style. Follow the standards of the skill. |
 | "I'll write the test after to go faster" | Tests-after prove nothing. Delete the code. Start with RED. |
 | "I'll do one more issue while I'm at it" | One issue. Full stop. |
 | "Review feedback is minor, not worth it" | Minor feedback ignored = minor bugs shipped. Fix it. |
@@ -133,6 +134,7 @@ Print the session entry that was written to progress.md — verbatim.
 - [ ] Picked one issue, read its detail file
 - [ ] RED: wrote failing tests, ran them, confirmed they fail
 - [ ] IMPLEMENT: minimal code, all behaviors covered
+- [ ] Code written following the standards of the language skill (`zsh-writer`, `js-writer`, etc)
 - [ ] Linter clean on modified files
 - [ ] Tests green for modified files
 - [ ] review subagent ran, output captured
