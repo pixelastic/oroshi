@@ -301,3 +301,13 @@ All 31 tests pass with `GIT_DIR=.git GIT_INDEX_FILE=.git/index` to simulate hook
 - Fixed (post-review): `local repoMain=""` moved to top level; `return 0` on existing worktree now cds first
 - Skipped feedback: raw `git worktree add` (no helper exists); raw `git branch` (intentional); if-block style flag (if body with errexit semantics is safer than && chain here); scope-creep items (already committed from 0002); `##.#` vs `##.*` reviewer suggestion (incorrect — `##.*` would strip entire string)
 - Next: 0004-complete-git-worktrees-linked (no blockers)
+
+---
+
+## Session 2026-05-15 — 0004: complete-git-worktrees-linked
+- Completed: `complete-git-worktrees-linked` autoload function; `_git-worktrees-linked` compdef wrapper; `compdef.zsh` updated — `git-worktree-delete` now uses `_git-worktrees-linked`, `git-worktree-switch` keeps `_git-worktrees`
+- Tests added: scripts/bin/__tests__/complete-git-worktrees-linked.bats (3 tests: no main, includes branches, empty when no worktrees)
+- Discovered: none
+- Fixed: none
+- Skipped feedback: reviewer flagged `git-worktree-create` comment removal + guard style — out of scope (previous session, already committed); `compdef.zsh` confusion in review — change is correct per spec
+- Next: 0005-git-worktree-distance (no blockers)

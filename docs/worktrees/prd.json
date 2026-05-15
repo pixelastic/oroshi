@@ -78,7 +78,7 @@
       "Run complete-git-worktrees-linked",
       "Verify 'main' does not appear in output"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0004",
@@ -89,7 +89,7 @@
       "Run complete-git-worktrees-linked",
       "Verify fix/bug and feat/thing appear in output"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0004",
@@ -100,7 +100,7 @@
       "Run complete-git-worktrees-linked",
       "Verify output is empty"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",

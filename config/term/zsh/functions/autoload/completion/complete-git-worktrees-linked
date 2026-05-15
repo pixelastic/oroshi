@@ -1,0 +1,12 @@
+# List completion entries for linked git worktrees only — excludes 'main'
+# Usage:
+# $ complete-git-worktrees-linked
+
+local rawList="$(git-worktree-list-raw)"
+
+[[ "$rawList" == "" ]] && return 0
+
+for rawLine in ${(f)rawList}; do
+  [[ "$rawLine" == "" ]] && continue
+  echo "${rawLine%% *}"
+done
