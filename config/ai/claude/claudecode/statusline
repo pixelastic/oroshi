@@ -32,16 +32,6 @@ local statusline=()
 # local displayModel="$(colorize "${modelName} (${effortLevel})" $COLOR_ALIAS_COMMENT)"
 # statusline+=("$displayModel ")
 
-# Cost
-# local isInCents=$((totalCost < 1))
-# if ((isInCents)); then
-#   local roundedCents=$((totalCost * 100 + 0.5))
-#   local displayCost="$(colorize "${roundedCents%.*}¢" $COLOR_ALIAS_PUNCTUATION)"
-# else
-#   local roundedDollars=$(printf "$%.2f" "$totalCost")
-#   local displayCost="$(colorize "${roundedDollars}" $COLOR_YELLOW)"
-# fi
-# statusline+=("$displayCost ")
 # }}}
 
 # Project
@@ -63,6 +53,17 @@ local contextColor=$COLOR_RED
 ((contextPercentage < 20)) && contextColor=$COLOR_GRAY
 local displayContext="$(colorize "${tokensK}" $contextColor)"
 statusline+=("$displayContext ")
+
+# Cost
+local isInCents=$((totalCost < 1))
+if ((isInCents)); then
+  local roundedCents=$((totalCost * 100 + 0.5))
+  local displayCost="$(colorize "${roundedCents%.*}¢" $COLOR_ALIAS_PUNCTUATION)"
+else
+  local roundedDollars=$(printf "$%.2f" "$totalCost")
+  local displayCost="$(colorize "${roundedDollars}" $COLOR_YELLOW)"
+fi
+statusline+=("$displayCost ")
 
 # Session ID
 local displaySession="$(colorize "[${sessionId}]" $COLOR_AMBER_9)"
