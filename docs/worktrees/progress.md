@@ -1,15 +1,28 @@
-## Execution order
+## Execution order (v1 — completed)
 
-0001-git-directory-is-worktree   → start here, no blockers
-0002-git-worktree-main           → start here, no blockers (parallel with 0001)
-0003-git-worktree-list-raw       → needs 0001 + 0002
-0008-complete-git-worktrees      → needs 0003
-0004-git-worktree-create         → needs 0003
-0005-git-worktree-list           → needs 0003
-0006-git-worktree-switch         → needs 0002 + 0003
-0007-git-worktree-delete         → needs 0001 + 0002 + 0003
-0009-config-env-aliases          → needs 0004 + 0005 + 0006 + 0007 + 0008
-0010-prompt-git-is-worktree      → needs 0001
+0001-git-directory-is-worktree   → DONE
+0002-git-worktree-main           → DONE
+0003-git-worktree-list-raw       → DONE
+0004-git-worktree-create         → DONE
+0005-git-worktree-list           → DONE
+0006-git-worktree-switch         → DONE
+0007-git-worktree-delete         → DONE
+0008-complete-git-worktrees      → DONE
+0009-config-env-aliases          → DONE
+0010-prompt-git-is-worktree      → DONE
+
+## Execution order (v2 — current cycle)
+
+0001-git-github-remote-name      → start here, no blockers
+0002-git-worktree-create-naming  → needs 0001
+0003-alias-rename-vwsm           → no blockers
+0004-complete-git-worktrees-linked → no blockers
+0005-git-worktree-distance       → no blockers
+0006-git-worktree-list-enriched  → needs 0005
+0007-git-directory-is-worktree-cache → no blockers
+0008-git-worktree-project        → no blockers
+0009-prompt-path-worktree        → needs 0007 + 0008
+0010-prompt-git-worktree-branch  → needs 0005 + 0007
 
 ## Guidance
 

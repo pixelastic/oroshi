@@ -25,6 +25,10 @@ _Example_: `firost--fix_login-bug`
 The single directory on disk where all worktrees live, regardless of which repo they belong to. Defined as an environment variable.
 _Avoid_: worktrees folder, worktrees root
 
+**Repo Name**:
+The human-readable name of a git repository, used as the prefix in Worktree Directory Names. Derived from the GitHub remote URL when available (e.g. `git@github.com:pixelastic/oroshi.git` → `oroshi`); falls back to the folder name with leading dots stripped (e.g. `.oroshi` → `oroshi`).
+_Avoid_: directory name, folder name
+
 ## Relationships
 
 - A **Worktree** belongs to exactly one **Git Repo Main**

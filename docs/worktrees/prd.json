@@ -1,276 +1,252 @@
 [
   {
+    "id": "0001",
     "category": "unit",
-    "description": "git-directory-is-worktree returns 0 inside a linked worktree",
+    "description": "git-github-remote-name returns repo name from SSH GitHub URL",
     "steps": [
-      "Create a temp git repo with an initial commit",
-      "Add a linked worktree via git worktree add",
-      "cd into the linked worktree directory",
-      "Run git-directory-is-worktree",
-      "Verify exit code is 0"
+      "Create a temp git repo with remote set to git@github.com:pixelastic/testrepo.git",
+      "Run git-github-remote-name",
+      "Verify output is 'testrepo'"
     ],
-    "passes": true
+    "passes": false
   },
   {
+    "id": "0001",
     "category": "unit",
-    "description": "git-directory-is-worktree returns 1 in the Git Repo Main",
+    "description": "git-github-remote-name returns repo name from HTTPS GitHub URL",
     "steps": [
-      "Create a temp git repo with an initial commit",
-      "cd into the repo root",
-      "Run git-directory-is-worktree",
-      "Verify exit code is 1"
+      "Create a temp git repo with remote set to https://github.com/pixelastic/testrepo.git",
+      "Run git-github-remote-name",
+      "Verify output is 'testrepo'"
     ],
-    "passes": true
+    "passes": false
   },
   {
+    "id": "0001",
     "category": "unit",
-    "description": "git-directory-is-worktree returns 1 outside any git repo",
+    "description": "git-github-remote-name falls back to folder name when no remote",
     "steps": [
-      "cd into a directory that is not a git repo",
-      "Run git-directory-is-worktree",
-      "Verify exit code is 1"
+      "Create a temp git repo named 'myrepo' with no remote",
+      "Run git-github-remote-name",
+      "Verify output is 'myrepo'"
     ],
-    "passes": true
+    "passes": false
   },
   {
+    "id": "0001",
     "category": "unit",
-    "description": "git-worktree-main returns Git Repo Main path from inside a linked worktree",
+    "description": "git-github-remote-name strips leading dots from fallback folder name",
     "steps": [
-      "Create a temp git repo with an initial commit",
-      "Add a linked worktree",
-      "cd into the linked worktree",
-      "Run git-worktree-main",
-      "Verify output is the absolute path of the original repo"
+      "Create a temp git repo in a folder named '.myrepo' with no remote",
+      "Run git-github-remote-name",
+      "Verify output is 'myrepo' (no leading dot)"
     ],
-    "passes": true
+    "passes": false
   },
   {
-    "category": "unit",
-    "description": "git-worktree-main returns own path when called from the Git Repo Main",
+    "id": "0002",
+    "category": "functional",
+    "description": "git-worktree-create uses repo name without leading dot for directory prefix",
     "steps": [
-      "Create a temp git repo with an initial commit",
-      "cd into the repo root",
-      "Run git-worktree-main",
-      "Verify output is the repo root path"
+      "Create a temp git repo in a dot-prefixed folder (e.g. '.myrepo')",
+      "Run git-worktree-create fix/bug",
+      "Verify the worktree directory name starts with 'myrepo--' not '.myrepo--'"
     ],
-    "passes": true
+    "passes": false
   },
   {
-    "category": "unit",
-    "description": "git-worktree-list-raw outputs branch and path for each worktree",
+    "id": "0003",
+    "category": "config",
+    "description": "vwc, vwl, vws, vwR, vwsm aliases exist and point to correct functions",
     "steps": [
-      "Create a temp git repo with two linked worktrees",
-      "cd into the repo",
-      "Run git-worktree-list-raw",
-      "Verify each line has format '<branch> <absolute-path>'"
+      "Start a zsh interactive session",
+      "Run which vwc, vwl, vws, vwR, vwsm",
+      "Verify vwc → git-worktree-create",
+      "Verify vwl → git-worktree-list",
+      "Verify vws → git-worktree-switch",
+      "Verify vwR → git-worktree-delete",
+      "Verify vwsm expands to 'vws main' or git-worktree-switch main"
     ],
-    "passes": true
+    "passes": false
   },
   {
+    "id": "0004",
     "category": "unit",
-    "description": "git-worktree-list-raw excludes the Git Repo Main from output",
+    "description": "complete-git-worktrees-linked does not include 'main'",
     "steps": [
-      "Create a temp git repo with one linked worktree",
-      "Run git-worktree-list-raw from the repo root",
-      "Verify the main repo path does not appear in output"
+      "Create a temp git repo with a linked worktree on fix/bug",
+      "Run complete-git-worktrees-linked",
+      "Verify 'main' does not appear in output"
     ],
-    "passes": true
+    "passes": false
   },
   {
+    "id": "0004",
     "category": "unit",
-    "description": "git-worktree-list-raw works from inside a linked worktree",
+    "description": "complete-git-worktrees-linked includes linked worktree branch names",
+    "steps": [
+      "Create a temp git repo with worktrees on fix/bug and feat/thing",
+      "Run complete-git-worktrees-linked",
+      "Verify fix/bug and feat/thing appear in output"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0004",
+    "category": "unit",
+    "description": "complete-git-worktrees-linked returns empty when no worktrees exist",
+    "steps": [
+      "Create a temp git repo with no linked worktrees",
+      "Run complete-git-worktrees-linked",
+      "Verify output is empty"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0005",
+    "category": "unit",
+    "description": "git-worktree-distance returns ahead count vs main",
+    "steps": [
+      "Create a temp git repo with a linked worktree",
+      "Add 2 commits in the worktree branch",
+      "cd into the worktree",
+      "Run git-worktree-distance",
+      "Verify output contains 'ahead 2'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0005",
+    "category": "unit",
+    "description": "git-worktree-distance returns behind count vs main",
+    "steps": [
+      "Create a temp git repo with a linked worktree",
+      "Add 3 commits to main after the worktree was branched",
+      "cd into the worktree",
+      "Run git-worktree-distance",
+      "Verify output contains 'behind 3'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0005",
+    "category": "unit",
+    "description": "git-worktree-distance returns ahead 0 behind 0 for a fresh worktree",
+    "steps": [
+      "Create a temp git repo with a linked worktree on a new branch (no commits)",
+      "cd into the worktree",
+      "Run git-worktree-distance",
+      "Verify output contains 'ahead 0' and 'behind 0'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0006",
+    "category": "functional",
+    "description": "git-worktree-list marks the current worktree",
     "steps": [
       "Create a temp git repo with two linked worktrees",
       "cd into one of the worktrees",
-      "Run git-worktree-list-raw",
-      "Verify both worktrees appear in output"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "git-worktree-create creates a worktree directory with the correct name",
-    "steps": [
-      "Create a temp git repo",
-      "Run git-worktree-create fix/my-bug",
-      "Verify directory $OROSHI_WORKTREES_DIR/<repo>--fix_my-bug exists"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "git-worktree-create creates the branch if it does not exist",
-    "steps": [
-      "Create a temp git repo with no branches other than main",
-      "Run git-worktree-create fix/new-branch",
-      "Verify the branch fix/new-branch now exists in the repo"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "git-worktree-create is idempotent when worktree already exists",
-    "steps": [
-      "Create a temp git repo",
-      "Run git-worktree-create fix/bug once",
-      "Run git-worktree-create fix/bug again",
-      "Verify exit code is 0 on second run"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "git-worktree-create cds into the created worktree",
-    "steps": [
-      "Create a temp git repo",
-      "Run git-worktree-create fix/bug",
-      "Verify current directory is $OROSHI_WORKTREES_DIR/<repo>--fix_bug"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "git-worktree-create converts branch name slashes to underscores in directory name",
-    "steps": [
-      "Create a temp git repo",
-      "Run git-worktree-create feat/some/deep-branch",
-      "Verify directory name contains underscores instead of slashes"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "git-worktree-list displays branch names without file paths",
-    "steps": [
-      "Create a temp git repo with two worktrees",
       "Run git-worktree-list",
-      "Verify output contains branch names",
-      "Verify output does not contain any file paths"
+      "Verify the current worktree line contains the pointer marker"
     ],
-    "passes": true
+    "passes": false
   },
   {
+    "id": "0006",
     "category": "functional",
-    "description": "git-worktree-switch cds into a worktree by branch name",
-    "steps": [
-      "Create a temp git repo with a linked worktree on fix/bug",
-      "From the repo root, run git-worktree-switch fix/bug",
-      "Verify current directory is the worktree path"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "git-worktree-switch cds to the Git Repo Main when argument is 'main'",
+    "description": "git-worktree-list shows ahead count vs main",
     "steps": [
       "Create a temp git repo with a linked worktree",
-      "cd into the worktree",
-      "Run git-worktree-switch main",
-      "Verify current directory is the Git Repo Main path"
+      "Add 2 commits in the worktree",
+      "Run git-worktree-list from the repo",
+      "Verify the output contains '2' in the ahead/behind column"
     ],
-    "passes": true
+    "passes": false
   },
   {
+    "id": "0006",
     "category": "functional",
-    "description": "git-worktree-delete removes the worktree directory",
-    "steps": [
-      "Create a temp git repo with a linked worktree on fix/bug",
-      "Run git-worktree-delete fix/bug",
-      "Verify the worktree directory no longer exists"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "git-worktree-delete does not delete the branch",
-    "steps": [
-      "Create a temp git repo with a linked worktree on fix/bug",
-      "Run git-worktree-delete fix/bug",
-      "Verify the branch fix/bug still exists in the repo"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
-    "description": "git-worktree-delete cds to Git Repo Main when called from inside the deleted worktree",
+    "description": "git-worktree-list shows behind count vs main",
     "steps": [
       "Create a temp git repo with a linked worktree",
-      "cd into the worktree",
-      "Run git-worktree-delete with the current branch",
-      "Verify current directory has changed to the Git Repo Main"
+      "Add 3 commits to main after the worktree was created",
+      "Run git-worktree-list",
+      "Verify the output contains '3' in the behind column for that worktree"
     ],
-    "passes": true
+    "passes": false
   },
   {
-    "category": "unit",
-    "description": "complete-git-worktrees includes worktrees of the current repo",
+    "id": "0006",
+    "category": "functional",
+    "description": "git-worktree-list shows relative date of last commit",
     "steps": [
-      "Create a temp git repo with a worktree on fix/bug",
-      "Run complete-git-worktrees from the repo",
-      "Verify fix/bug appears in output"
+      "Create a temp git repo with a linked worktree that has a commit",
+      "Run git-worktree-list",
+      "Verify the output contains a relative time string (e.g. 'seconds ago')"
     ],
-    "passes": true
+    "passes": false
   },
   {
-    "category": "unit",
-    "description": "complete-git-worktrees always includes 'main'",
-    "steps": [
-      "Create a temp git repo with a worktree",
-      "Run complete-git-worktrees",
-      "Verify 'main' appears in output regardless of existing worktrees"
-    ],
-    "passes": true
-  },
-  {
-    "category": "unit",
-    "description": "complete-git-worktrees excludes worktrees from other repos",
-    "steps": [
-      "Create two separate git repos each with a worktree",
-      "Run complete-git-worktrees from repo A",
-      "Verify only repo A's worktrees appear, not repo B's"
-    ],
-    "passes": true
-  },
-  {
-    "category": "config",
-    "description": "OROSHI_WORKTREES_DIR environment variable is exported",
-    "steps": [
-      "Source zshenv.zsh",
-      "Echo $OROSHI_WORKTREES_DIR",
-      "Verify the variable is non-empty"
-    ],
-    "passes": true
-  },
-  {
-    "category": "config",
-    "description": "vwtc, vwtl, vwts, vwtR aliases exist and point to correct functions",
-    "steps": [
-      "Start a zsh interactive session",
-      "Run which vwtc, vwtl, vwts, vwtR",
-      "Verify each alias resolves to its corresponding git-worktree-* function"
-    ],
-    "passes": true
-  },
-  {
-    "category": "prompt",
-    "description": "git_is_worktree prompt part is non-empty inside a linked worktree",
+    "id": "0006",
+    "category": "functional",
+    "description": "git-worktree-list shows last commit message",
     "steps": [
       "Create a temp git repo with a linked worktree",
-      "cd into the worktree",
-      "Call oroshi-prompt-populate:git_is_worktree",
-      "Verify OROSHI_PROMPT_PARTS[git_is_worktree] is non-empty"
+      "Make a commit with message 'my test commit'",
+      "Run git-worktree-list",
+      "Verify 'my test commit' appears in the output"
     ],
-    "passes": true
+    "passes": false
   },
   {
-    "category": "prompt",
-    "description": "git_is_worktree prompt part is empty in the Git Repo Main",
+    "id": "0007",
+    "category": "unit",
+    "description": "GIT_DIRECTORY_IS_WORKTREE is 1 inside a linked worktree",
+    "steps": [
+      "Create a temp git repo with a linked worktree",
+      "cd into the linked worktree",
+      "Simulate precmd by calling oroshi-git-env-store",
+      "Verify GIT_DIRECTORY_IS_WORKTREE equals 1"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0007",
+    "category": "unit",
+    "description": "GIT_DIRECTORY_IS_WORKTREE is 0 in the Git Repo Main",
     "steps": [
       "Create a temp git repo",
       "cd into the repo root",
-      "Call oroshi-prompt-populate:git_is_worktree",
-      "Verify OROSHI_PROMPT_PARTS[git_is_worktree] is empty"
+      "Simulate precmd by calling oroshi-git-env-store",
+      "Verify GIT_DIRECTORY_IS_WORKTREE equals 0"
     ],
-    "passes": true
+    "passes": false
+  },
+  {
+    "id": "0008",
+    "category": "unit",
+    "description": "git-worktree-project returns the project name when in a worktree of a known project",
+    "steps": [
+      "Set up a known project entry in PROJECTS_INDEX_BY_PATH pointing to a temp git repo",
+      "Add a linked worktree from that repo",
+      "cd into the worktree",
+      "Run git-worktree-project",
+      "Verify output matches the project name"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0008",
+    "category": "unit",
+    "description": "git-worktree-project returns empty string when project is not registered",
+    "steps": [
+      "Create a temp git repo not registered in PROJECTS_INDEX_BY_PATH",
+      "Add a linked worktree",
+      "cd into the worktree",
+      "Run git-worktree-project",
+      "Verify output is empty"
+    ],
+    "passes": false
   }
 ]
