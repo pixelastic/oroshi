@@ -53,3 +53,18 @@ teardown() {
   run_zsh_fn git-worktree-create feat/some/deep-branch
   [ -d "$OROSHI_WORKTREES_DIR/my-repo--feat_some_deep-branch" ]
 }
+
+@test "returns 1 outside any git repo" {
+  cd "$TMP_DIRECTORY"
+  run_zsh_fn git-worktree-create fix/bug
+  [ "$status" -eq 1 ]
+}
+
+@test "strips leading dot from repo name in dot-prefixed repo folder" {
+  git init "$TMP_DIRECTORY/.dot-repo"
+  git -C "$TMP_DIRECTORY/.dot-repo" commit --allow-empty -m "init"
+  cd "$TMP_DIRECTORY/.dot-repo"
+  run_zsh_fn git-worktree-create fix/bug
+  [ "$status" -eq 0 ]
+  [ -d "$OROSHI_WORKTREES_DIR/dot-repo--fix_bug" ]
+}

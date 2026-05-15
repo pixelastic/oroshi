@@ -2,10 +2,10 @@
   {
     "id": "0001",
     "category": "unit",
-    "description": "git-github-remote-name returns repo name from SSH GitHub URL",
+    "description": "git-github-project-name returns repo name from SSH GitHub URL",
     "steps": [
       "Create a temp git repo with remote set to git@github.com:pixelastic/testrepo.git",
-      "Run git-github-remote-name",
+      "Run git-github-project-name",
       "Verify output is 'testrepo'"
     ],
     "passes": true
@@ -13,10 +13,10 @@
   {
     "id": "0001",
     "category": "unit",
-    "description": "git-github-remote-name returns repo name from HTTPS GitHub URL",
+    "description": "git-github-project-name returns repo name from HTTPS GitHub URL",
     "steps": [
       "Create a temp git repo with remote set to https://github.com/pixelastic/testrepo.git",
-      "Run git-github-remote-name",
+      "Run git-github-project-name",
       "Verify output is 'testrepo'"
     ],
     "passes": true
@@ -24,10 +24,10 @@
   {
     "id": "0001",
     "category": "unit",
-    "description": "git-github-remote-name falls back to folder name when no remote",
+    "description": "git-worktree-create falls back to folder name when no remote",
     "steps": [
       "Create a temp git repo named 'myrepo' with no remote",
-      "Run git-github-remote-name",
+      "Run git-worktree-create fix/bug",
       "Verify output is 'myrepo'"
     ],
     "passes": true
@@ -35,11 +35,11 @@
   {
     "id": "0001",
     "category": "unit",
-    "description": "git-github-remote-name strips leading dots from fallback folder name",
+    "description": "git-worktree-create strips leading dots from fallback folder name",
     "steps": [
       "Create a temp git repo in a folder named '.myrepo' with no remote",
-      "Run git-github-remote-name",
-      "Verify output is 'myrepo' (no leading dot)"
+      "Run git-worktree-create fix/bug",
+      "Verify worktree dir starts with 'myrepo--' (no leading dot)"
     ],
     "passes": true
   },
@@ -52,7 +52,7 @@
       "Run git-worktree-create fix/bug",
       "Verify the worktree directory name starts with 'myrepo--' not '.myrepo--'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",

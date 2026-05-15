@@ -22,8 +22,8 @@ The worktree toolbox (v1) has several rough edges that make daily use friction-f
 
 Seven targeted improvements to functions, aliases, completion, and prompt:
 
-1. A new `git-github-remote-name` helper provides the canonical repo name (from
-   remote URL, falling back to folder name with dots stripped).
+1. `git-github-project-name` (existing) provides the canonical repo name from
+   remote URL; `git-worktree-create` falls back to folder name with dots stripped.
 2. Aliases shortened to `vwc/vwl/vws/vwR` + new `vwsm`.
 3. Separate completion sets: with `main` (for switch) and without (for delete).
 4. `vwl` enriched with ahead/behind vs `main`, relative date, and last commit message.
@@ -67,24 +67,16 @@ Seven targeted improvements to functions, aliases, completion, and prompt:
 
 ## Implementation Decisions
 
-### Module 1 — `git-github-remote-name` (new, `git/github/` family)
+### Module 1 — `git-github-project-name` (existing, `git/github/` family)
 
-Returns the repository name as a single word.
-
-- Primary source: parse the GitHub remote URL of the current remote
-  (`git remote get-url <remote>`), extracting the last path component and
-  stripping the `.git` suffix. Works for both SSH (`git@github.com:owner/repo.git`)
-  and HTTPS (`https://github.com/owner/repo.git`) forms.
-- Fallback (no remote or non-GitHub remote): take the folder name of the Git Repo
-  Main and strip all leading dots (e.g. `.oroshi` → `oroshi`).
-- Sits alongside `git-github-remote-owner` (owner) and `git-github-remote-project`
-  (slug) to complete the trio — matching Gilmore's `githubRepoName / githubRepoOwner
-  / githubRepoSlug` naming convention.
+Returns the repository name as a single word from the GitHub remote URL.
+Already implemented alongside `git-github-project-owner` and `git-github-project`.
 
 ### Module 2 — `git-worktree-create` update
 
-Replace `${repoMain:t}` with a call to `git-github-remote-name`. No other logic
-changes. Depends on Module 1.
+Replace `${repoMain:t}` with a call to `git-github-project-name`; if no remote,
+fall back to the Git Repo Main folder name stripping all leading dots inline.
+No other logic changes.
 
 ### Module 3 — Alias rename + `vwsm`
 
@@ -202,10 +194,9 @@ and `run_zsh_fn`. Temp repos built with `bats_tmp`.
 
 Modules with bats tests:
 
-- **`git-github-remote-name`** — 4 tests: SSH URL, HTTPS URL, no-remote fallback,
-  dot-prefix stripping.
-- **`git-worktree-create`** (naming regression) — 1 test: creates directory without
-  leading dot when repo folder is dot-prefixed.
+- **`git-github-project-name`** — 2 tests: SSH URL, HTTPS URL (existing function).
+- **`git-worktree-create`** (naming regression) — 2 tests: no-remote fallback,
+  dot-prefix stripping (inline fallback in git-worktree-create).
 - **`complete-git-worktrees-linked`** — 3 tests: excludes `main`, includes linked
   branches, empty when no worktrees.
 - **`git-worktree-list`** (enriched) — 5 tests: current marker, ahead count, behind
@@ -236,8 +227,8 @@ pattern in `git-worktree-config.bats`.
 - Domain glossary: `docs/worktrees/CONTEXT.md`
 - ADRs in scope: `adr/0001` (global store), `adr/0002` (delete decoupled from branch)
 - Execution order for issues:
-  - 0001 `git-github-remote-name` — no blockers
-  - 0002 `git-worktree-create` naming fix — needs 0001
+  - 0001 `git-github-project-name` — already existed (done)
+  - 0002 `git-worktree-create` naming fix — no blockers (done)
   - 0003 alias rename + `vwsm` — no blockers
   - 0004 `complete-git-worktrees-linked` — no blockers
   - 0005 `git-worktree-distance` — no blockers

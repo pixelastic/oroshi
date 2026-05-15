@@ -3,9 +3,9 @@
 ## What to build
 
 Replace the `${repoMain:t}` expression in `git-worktree-create` with a call to
-`git-github-remote-name`. This fixes Worktree Directory Names for repos whose
-folder has a leading dot (e.g. `.oroshi` → `oroshi--fix_bug` instead of
-`.oroshi--fix_bug`).
+`git-github-project-name`; if no remote, fall back inline to the Git Repo Main
+folder name stripping all leading dots. This fixes Worktree Directory Names for
+repos whose folder has a leading dot (e.g. `.oroshi` → `oroshi--fix_bug`).
 
 No other logic in `git-worktree-create` changes.
 
@@ -17,4 +17,4 @@ No other logic in `git-worktree-create` changes.
 
 ## Blocked by
 
-- issue-0001 (`git-github-remote-name` must exist first)
+- issue-0001 (`git-github-project-name` must exist — already done)

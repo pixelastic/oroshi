@@ -1,7 +1,7 @@
 ## Execution order (v2 — current cycle)
 
-0001-git-github-remote-name      → start here, no blockers
-0002-git-worktree-create-naming  → needs 0001
+0001-git-github-project-name     → done (existing function, no new code)
+0002-git-worktree-create-naming  → done (needs 0001)
 0003-alias-rename-vwsm           → no blockers
 0004-complete-git-worktrees-linked → no blockers
 0005-git-worktree-distance       → no blockers
@@ -273,10 +273,20 @@ All 31 tests pass with `GIT_DIR=.git GIT_INDEX_FILE=.git/index` to simulate hook
 
 ---
 
-## Session 2026-05-15 — 0001: git-github-remote-name
-- Completed: `git-github-remote-name` in `config/term/zsh/functions/autoload/git/github/`; parses SSH + HTTPS GitHub remote URLs; falls back to Git Repo Main folder name stripping leading dots
-- Tests added: `scripts/bin/__tests__/git-github-remote-name.bats` (6 tests: SSH URL, HTTPS URL, fallback no-remote, single dot, multiple dots, returns 1 outside git repo)
-- Discovered: none
+## Session 2026-05-15 — 0001: git-github-project-name (was: git-github-remote-name)
+- Completed: no new code — `git-github-project-name` already existed (renamed from `git-github-remote-project-name` via commit `73a53ae6`). SSH + HTTPS URL parsing covered by existing function + tests in `git-github-project-name.bats`. Fallback (no remote, dot-stripping) deferred to issue 0002 inline.
+- Tests added: none (existing `git-github-project-name.bats` covers SSH + HTTPS cases)
+- Discovered: previous session recorded this as a new function `git-github-remote-name` — incorrect; the function was already present under the renamed naming convention
 - Fixed: none
 - Skipped feedback: `git_env_clean` in setup() — already handled by `unset` at load time in helper.bash
 - Next: 0002-git-worktree-create-naming (now unblocked by 0001)
+
+---
+
+## Session 2026-05-15 — 0002: git-worktree-create — fix repo name
+- Completed: `git-worktree-create` calls `git-github-project-name` for repo name; falls back to `${${repoMain:t}##.#}` (extendedglob, strips leading dots in one expression); guard replaced with `git-directory-is-repository || return 1`; `-n` condition replaced with `== ""`
+- Tests added: test 7 "strips leading dot from repo name in dot-prefixed repo folder"; test 8 "returns 1 outside any git repo"
+- Discovered: previous session incorrectly named the function `git-github-remote-name`; actual function is `git-github-project-name` (renamed via commit `73a53ae6`). No new function needed.
+- Fixed: user refactored file using `git-branch-create` which exits 1 when branch exists — reverted to `git-branch-exists "$branch" || git branch "$branch"`
+- Skipped feedback: reviewer flagged function name mismatch — intentional per user; other flags were about prior session's files
+- Next: 0003-alias-rename-vwsm (no blockers)
