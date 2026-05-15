@@ -15,4 +15,6 @@ local gitRoot="$(git-directory-root)"
 # Ensure Claude runs from git root so it has full repo access
 [[ "$PWD" != "$gitRoot" ]] && cd "$gitRoot"
 
-claude "/ralph ${dir}${extra}"
+claude \
+  --permission-mode acceptEdits \
+  "/ralph ${dir}${extra}"

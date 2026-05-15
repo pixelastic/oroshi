@@ -32,8 +32,12 @@ if [[ "$effort" != "" ]]; then
   claudeArgs+=(--effort "$effort")
 fi
 
+# Clean up stale session before and after running
+# This ensure no corruped leftover sessions
+rm -f ~/.claude/projects/${projectFolder}/${sessionId}.jsonl
+
+# CLAUDE_DO_NOT_FIX_TERMINAL_ISSUE_38761 is a workaround to prevent displaying control chars in print mode
 CLAUDE_DO_NOT_FIX_TERMINAL_ISSUE_38761=1 claude "${claudeArgs[@]}" <<<"$input"
 
-# Clean up
-rm -rf ~/.claude/projects/${projectFolder}/${sessionId}.jsonl
+rm -f ~/.claude/projects/${projectFolder}/${sessionId}.jsonl
 unset OROSHI_CLAUDECODE_STOP_SOUND
