@@ -20,6 +20,8 @@ Lié à `oroshi-prompt-populate:git_is_worktree` (issue 0010) et probablement au
 - Autocomplete of vwtR shouldn't suggest main
 - Maybe display the worktree icon IN teh prohect prefix?
     - Might be had, as will need to be replicated in caude statusline as well
+- Instead, add a second bar next to the project, with the name of the branch and
+  the worktre icon?
 - /home/tim/local/www/worktrees/..--ralph is the worktree created from /home/tim/.oroshi/docs/worktrees. ‽
 - Maybe make vwl instead ow vwtl (w rather than wt)
 - maybe later having vwl show before/after difference with main
