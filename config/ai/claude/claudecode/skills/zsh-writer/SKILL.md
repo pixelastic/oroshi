@@ -39,7 +39,7 @@ Write code that follows the following patterns:
 | [Modifiers](./references/modifiers.md) | Prefer zsh modifiers (`${filepath:t}`) over commands (`$(basename "$filepath")`) |
 | [Splitting](./references/splitting.md) | Use `▮` as separator and `${(@ps/▮/)line}` to split |
 | [Loops](./references/loops.md) | Use `for rawLine in ${(f)rawOutput}` instead of `while read` and `IFS` |
-| [Conditions](./references/conditions.md) | `[[ simpleCondition ]] && state=value`. No nested if/else, return early |
+| [Conditions](./references/conditions.md) | `[[ simpleCondition ]] && state=value`. No nested if/else, return early, no `-z`/`-n` |
 | [Calling Commands](./references/calling-commands.md) | Use existing helpers (`git-branch-current`), not raw calls. Use `--long-form`, not `-l`. |
 
 
