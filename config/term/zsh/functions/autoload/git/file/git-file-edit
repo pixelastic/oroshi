@@ -17,6 +17,10 @@ for rawLine in ${(f)rawFiles}; do
   # Skip deleted files (can't open them)
   [[ "$gitStatus" == "D" ]] && continue
 
+  # Skip ralph-managed files
+  local fileName="${filePath:t}"
+  [[ "$fileName" == "progress.md" || "$fileName" == "prd.json" ]] && continue
+
   fileList+=("${gitRoot}/${filePath}")
 done
 
