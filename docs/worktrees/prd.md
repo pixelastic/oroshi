@@ -180,7 +180,7 @@ When `GIT_DIRECTORY_IS_WORKTREE == 1`, outputs:
   Ahead count: `git rev-list --count main..HEAD`.
 - Branch name: colorized via `git-branch-colorize` (no icon — the leaf icon
   already carries the worktree signal).
-- Icon choice: to be decided by the user (a leaf glyph from the Nerd Fonts set).
+- Icon: `` (\uf06c) — Nerd Fonts leaf glyph.
 
 When not in a worktree, outputs empty string.
 
