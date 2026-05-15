@@ -113,7 +113,7 @@
       "Run git-worktree-distance",
       "Verify output contains 'ahead 2'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",
@@ -126,7 +126,7 @@
       "Run git-worktree-distance",
       "Verify output contains 'behind 3'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",
@@ -138,7 +138,7 @@
       "Run git-worktree-distance",
       "Verify output contains 'ahead 0' and 'behind 0'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0006",

@@ -8,13 +8,13 @@ local branch="$(git-branch-current)"
 # Not in a git repo or detached HEAD
 [[ "$branch" == "" || "$branch" == "HEAD" ]] && return 1
 
-local rawDistance
-rawDistance="$(git rev-list --left-right --count "${branch}...main" 2>/dev/null)"
+local rawDistance="$(git rev-list --left-right --count "${branch}...main" 2>/dev/null)"
 
 # Failed (e.g. main doesn't exist)
 [[ "$rawDistance" == "" ]] && return 1
 
-local ahead behind
-read -r ahead behind <<< "$rawDistance"
+local ahead=""
+local behind=""
+read -r ahead behind <<<"$rawDistance"
 
 echo "ahead ${ahead:-0}, behind ${behind:-0}"

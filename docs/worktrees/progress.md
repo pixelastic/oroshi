@@ -304,6 +304,16 @@ All 31 tests pass with `GIT_DIR=.git GIT_INDEX_FILE=.git/index` to simulate hook
 
 ---
 
+## Session 2026-05-15 — 0005: git-worktree-distance
+- Completed: `git-worktree-distance` autoload function in `config/term/zsh/functions/autoload/git/worktree/`
+- Tests added: `scripts/bin/__tests__/git-worktree-distance.bats` (3 tests: ahead count, behind count, fresh worktree 0/0)
+- Discovered: `git rev-list --left-right --count` outputs tab-separated values; `read -r ahead behind` handles correctly vs the reference function (`git-branch-distance`) which has a latent 1-index bug using zsh arrays
+- Fixed: tests assert both halves of output (not just one side); removed dead `OROSHI_WORKTREES_DIR` export from test setup
+- Skipped feedback: `setopt local_options errexit` removal — user prefers to keep it; `local rawDistance` split — user prefers combined `local rawDistance="$(…)"` on one line; guard for `branch == main` (out of scope); git user config in tests (pre-existing pattern); extra edge-case tests (return 1 outside repo, detached HEAD) — out of scope; `read -r` vs zsh array idiom — `read` is more correct here
+- Next: 0006-git-worktree-list-enriched (unblocked by 0005)
+
+---
+
 ## Session 2026-05-15 — 0004: complete-git-worktrees-linked
 - Completed: `complete-git-worktrees-linked` autoload function; `_git-worktrees-linked` compdef wrapper; `compdef.zsh` updated — `git-worktree-delete` now uses `_git-worktrees-linked`, `git-worktree-switch` keeps `_git-worktrees`
 - Tests added: scripts/bin/__tests__/complete-git-worktrees-linked.bats (3 tests: no main, includes branches, empty when no worktrees)
