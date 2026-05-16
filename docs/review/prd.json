@@ -1,0 +1,90 @@
+[
+  {
+    "id": "0001",
+    "description": "0-arg, clean tree: exits 0, empty output",
+    "steps": [
+      "Create a temp git repo with one committed file",
+      "Run review-diff with no arguments",
+      "Assert exit code is 0 and stdout is empty"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0001",
+    "description": "0-arg, modified tracked file: stdout contains the diff hunk",
+    "steps": [
+      "Create a temp git repo with one committed file",
+      "Modify the tracked file without staging",
+      "Run review-diff with no arguments",
+      "Assert stdout contains a diff --git line and the modified hunk"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0001",
+    "description": "0-arg, untracked file: stdout contains a new-file diff block",
+    "steps": [
+      "Create a temp git repo with one committed file",
+      "Create a new untracked file",
+      "Run review-diff with no arguments",
+      "Assert stdout contains 'new file mode' and a diff --git line for the untracked file"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0001",
+    "description": "0-arg, staged file: stdout contains the staged hunk",
+    "steps": [
+      "Create a temp git repo with one committed file",
+      "Modify and stage a file via git add",
+      "Run review-diff with no arguments",
+      "Assert stdout contains a diff --git line and the staged hunk"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "1-arg branch, self-review: stdout contains the feature commit and a diff --git line",
+    "steps": [
+      "Create a temp git repo on main with one commit",
+      "Create a feature branch, add a commit with a file change",
+      "Run review-diff <feature-branch> from the feature branch",
+      "Assert stdout contains the feature commit message and a diff --git line"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "1-arg branch, external review: stdout contains the feature commit; main-only commits absent",
+    "steps": [
+      "Create a temp git repo on main with one commit",
+      "Create a feature branch, add a commit with a file change",
+      "Switch back to main, add a main-only commit",
+      "Run review-diff <feature-branch> from main",
+      "Assert stdout contains the feature commit and a diff --git line; assert main-only commit message is absent"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0003",
+    "description": "1-arg commit SHA: stdout contains the commit message and a diff --git line",
+    "steps": [
+      "Create a temp git repo with two commits",
+      "Capture the SHA of the first commit",
+      "Run review-diff <sha>",
+      "Assert stdout contains the commit message for that SHA and a diff --git line"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0004",
+    "description": "2-arg range: stdout contains commits and a diff --git line scoped to the range",
+    "steps": [
+      "Create a temp git repo on main with two commits (A, B)",
+      "Create a feature branch off A, add commit C",
+      "Run review-diff <sha-of-A> <feature-branch>",
+      "Assert stdout contains commit C and a diff --git line; assert commit B is absent"
+    ],
+    "passes": false
+  }
+]
