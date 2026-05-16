@@ -60,6 +60,7 @@
   "journalctl",
   "jo",
   "jq",
+  "js-lint",
   "ls",
   "md5sum",
   "mkdir",
