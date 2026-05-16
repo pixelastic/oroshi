@@ -26,10 +26,9 @@ A deep module (as opposed to a shallow module) is one which encapsulates a lot o
 Check with the user that these modules match their expectations.
 Check with the user which modules they want tests written for.
 
-### Step 3 — Write the artifact documents
+### Step 3 — Write the PRD.md
 
-Write [PRD.md](./references/prd-md.md), [prd.json](./references/prd-json.md) and [progress.md](./references/progress-md.md) following the given templates.
-These files will help future agent pick up work where a previous agent left off.
+Write [PRD.md](./references/prd-md.md) following the template.
 
 ## Common Rationalizations
 
@@ -45,5 +44,3 @@ These files will help future agent pick up work where a previous agent left off.
 - [ ] User confirmed module list matches intent
 - [ ] User confirmed which modules get tests
 - [ ] PRD.md written — all 6 sections present (Problem, Solution, User Stories, Implementation Decisions, Testing Decisions, Out of Scope)
-- [ ] prd.json written — one entry per test case, all `passes: false`
-- [ ] progress.md written — execution order + guidance sections present

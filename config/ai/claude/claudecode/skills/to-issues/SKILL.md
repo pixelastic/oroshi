@@ -5,19 +5,22 @@ description: Break a plan, spec, or PRD into independently-grabbable issues usin
 
 # To Issues
 
+## Overview
+
 Break a plan into independently-grabbable issues using vertical slices (tracer bullets).
 
-## Process
+## Core Workflow
 
-### 1. Gather context
+### Step 1 - Gather context
 
-Work from whatever is already in the conversation context.
+Work from whatever is already in the conversation context, as well as any
+relevant `PRD.md` file.
 
-### 2. Explore the codebase (optional)
+### Step 2 — Explore the codebase (optional)
 
 If you have not already explored the codebase, do so to understand the current state of the code. Issue titles and descriptions should use the project's domain glossary vocabulary, and respect ADRs in the area you're touching.
 
-### 3. Draft vertical slices
+### Step 3 - Draft vertical slices
 
 Break the plan into **tracer bullet** issues. Each issue is a thin vertical slice that cuts through ALL integration layers end-to-end, NOT a horizontal slice of one layer.
 
@@ -29,7 +32,7 @@ Slices may be 'HITL' or 'AFK'. HITL slices require human interaction, such as an
 - Prefer many thin slices over few thick ones
 </vertical-slice-rules>
 
-### 4. Quiz the user
+### Step 4 - Quiz the user
 
 Present the proposed breakdown as a numbered list. For each slice, show:
 
@@ -47,36 +50,28 @@ Ask the user:
 
 Iterate until the user approves the breakdown.
 
-### 5. Store the issues
+### Step 5 - Store the issues
 
-For each approved slice, create a `issue-XXX-slug.md` file in the same directory as the PRD.
-Replace `XXX` with the issue number, and `slug` with a suitable slug from the issue title.
-For content, use the issue body template below.
-Number issues in dependency order (blockers first) so you can reference real issue identifiers in the "Blocked by" field.
+For each approved slice, create a [issue-XXX-slug.md](./references/issue-XXX-slug.md) file in the same directory as the PRD.
 
-<issue-template>
-## PRD
+Write a [prd.json](./references/prd-json.md) and [progress.md](./references/progress-md.md) following the given templates.
+These files will help future agent pick up work where a previous agent left off.
 
-A reference to the parent PRD (if given, otherwise omit this section)
+---
 
-## What to build
+## Common Rationalizations
 
-A concise description of this vertical slice. Describe the end-to-end behavior, not layer-by-layer implementation.
+| Rationalization | Reality |
+|---|---|
+| "These features belong together, I'll do them all at once" | We need tracer bullets end-to-end. Thin verticals, not fat horizontal slices |
 
-Avoid specific file paths or code snippets — they go stale fast. Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it here and note briefly that it came from a prototype. Trim to the decision-rich parts — not a working demo, just the important bits.
+## Checklist
 
-## Acceptance criteria
-
-- [ ] Criterion 1
-- [ ] Criterion 2
-- [ ] Criterion 3
-
-## Blocked by
-
-- A reference to the blocking ticket (if any)
-
-Or "None - can start immediately" if no blockers.
-
-</issue-template>
-
-Do NOT close or modify any parent issue.
+- [ ] Context gathered — PRD or plan source identified
+- [ ] Codebase explored — domain glossary and ADRs identified
+- [ ] Vertical slices drafted — each is a tracer bullet through all layers
+- [ ] User confirmed: granularity feels right (not too coarse / too fine)
+- [ ] User confirmed: dependency order is correct
+- [ ] issue-XXX-slug.md written for each approved slice (numbered in dependency order)
+- [ ] prd.json written — one entry per test case, all `passes: false`
+- [ ] progress.md written — execution order + guidance sections present
