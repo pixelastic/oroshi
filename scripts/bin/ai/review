@@ -7,4 +7,4 @@ set -e
 
 local commit=${1:-HEAD}
 
-claude-print "/review commit $commit"
+claude-print "/review $commit"
