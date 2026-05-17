@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+# Generate a full diff for review: tracked changes + untracked files as new-file diffs
+# Usage:
+# $ review-diff    # Working-tree diff (staged + unstaged + untracked)
+setopt local_options errexit
+
+# List of changed/added/deleted files
+local statusRaw="$(git status --porcelain)"
+# Diff of changed files
+local trackedDiff="$(rtk proxy git diff HEAD)"
+
+# Clean tree: nothing to show
+[[ "$trackedDiff" == "" ]] && [[ "$statusRaw" == "" ]] && return 0
+
+# Output tracked changes (staged + unstaged)
+[[ "$trackedDiff" != "" ]] && echo "$trackedDiff"
+
+# Output untracked files as new-file diffs
+local repoRoot="$(git-directory-root)"
+for rawLine in ${(f)statusRaw}; do
+  [[ "$rawLine" != '?? '* ]] && continue
+  local rawFile="${rawLine:3}"
+  # Paths from git status --porcelain are relative to repo root, not cwd
+  rtk proxy \
+    git diff \
+    --no-index \
+    /dev/null \
+    "$repoRoot/$rawFile" || true
+done

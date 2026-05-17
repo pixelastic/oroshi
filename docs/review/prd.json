@@ -7,7 +7,7 @@
       "Run review-diff with no arguments",
       "Assert exit code is 0 and stdout is empty"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -18,7 +18,7 @@
       "Run review-diff with no arguments",
       "Assert stdout contains a diff --git line and the modified hunk"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -29,7 +29,7 @@
       "Run review-diff with no arguments",
       "Assert stdout contains 'new file mode' and a diff --git line for the untracked file"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -40,7 +40,7 @@
       "Run review-diff with no arguments",
       "Assert stdout contains a diff --git line and the staged hunk"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",

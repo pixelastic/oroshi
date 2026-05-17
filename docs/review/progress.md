@@ -21,3 +21,11 @@ issue-006 → needs issue-001 + issue-002 + issue-003 + issue-004 + issue-005
 
 ---
 ## Log (append below when an issue is completed)
+
+## Session 2026-05-16 — issue-001: review-diff 0-arg case
+- Completed: created `scripts/bin/ai/review-diff` (executable zsh script) + `scripts/bin/__tests__/review-diff.bats` with 4 passing tests
+- Tests added: clean tree exits 0, modified tracked file, untracked file new-file block, staged file hunk
+- Discovered: `rtk git diff` reformats output and strips `diff --git` headers — used `rtk proxy git diff` instead to preserve raw format while still routing through rtk
+- Fixed: post-session refactor — `git rev-parse --show-toplevel` → `git-directory-root` helper; `repoRoot` moved after early return; multi-line format for `rtk proxy` call; inline comments added
+- Skipped feedback: (1) staged-new-file 5th test — reviewer reconsidered; `git diff HEAD` handles it correctly, no bug exists; (2) untracked directory edge case — out of scope for issue-001
+- Next: issue-002 (1-arg branch: self-review and external review)
