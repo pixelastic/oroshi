@@ -325,5 +325,63 @@
       "Verify OROSHI_PROMPT_PARTS[path] contains project name"
     ],
     "passes": true
+  },
+  {
+    "id": "0010",
+    "category": "functional",
+    "description": "git_worktree_branch shows leaf icon inside a worktree",
+    "steps": [
+      "cd into a linked worktree",
+      "Set GIT_DIRECTORY_IS_REPOSITORY=1 GIT_DIRECTORY_IS_WORKTREE=1",
+      "Run oroshi-prompt-populate:git_worktree_branch",
+      "Verify OROSHI_PROMPT_PARTS[git_worktree_branch] is non-empty"
+    ],
+    "passes": true
+  },
+  {
+    "id": "0010",
+    "category": "functional",
+    "description": "git_worktree_branch icon uses WORKTREE color when 0 commits ahead",
+    "steps": [
+      "cd into a fresh linked worktree (0 commits ahead of main)",
+      "Run oroshi-prompt-populate:git_worktree_branch",
+      "Verify output contains %F{COLOR_ALIAS_GIT_WORKTREE}"
+    ],
+    "passes": true
+  },
+  {
+    "id": "0010",
+    "category": "functional",
+    "description": "git_worktree_branch icon uses TRACKED color when worktree has commits ahead",
+    "steps": [
+      "cd into a worktree, add 1 commit",
+      "Run oroshi-prompt-populate:git_worktree_branch",
+      "Verify output contains %F{COLOR_ALIAS_GIT_TRACKED}"
+    ],
+    "passes": true
+  },
+  {
+    "id": "0010",
+    "category": "functional",
+    "description": "git_branch prompt part is empty when inside a worktree",
+    "steps": [
+      "cd into a linked worktree",
+      "Set GIT_DIRECTORY_IS_WORKTREE=1",
+      "Run oroshi-prompt-populate:git_branch",
+      "Verify OROSHI_PROMPT_PARTS[git_branch] is empty"
+    ],
+    "passes": true
+  },
+  {
+    "id": "0010",
+    "category": "functional",
+    "description": "git_worktree_branch is empty outside a worktree",
+    "steps": [
+      "cd into the Git Repo Main",
+      "Set GIT_DIRECTORY_IS_WORKTREE=0",
+      "Run oroshi-prompt-populate:git_worktree_branch",
+      "Verify OROSHI_PROMPT_PARTS[git_worktree_branch] is empty"
+    ],
+    "passes": true
   }
 ]

@@ -384,3 +384,24 @@ User-driven improvements after the ralph session, no new issue IDs:
 - Fixed: user refactored to use `git-directory-root` (instead of `git rev-parse --show-toplevel` + `PROJECT_*_PATH`); intermediate version had stripping outside the `projectName != ""` guard, breaking non-git dirs and unregistered worktrees; fixed by restoring the guard
 - Skipped feedback: `setopt local_options errexit` — no prompt populate function uses it
 - Next: 0010-prompt-git-worktree-branch (no blockers)
+
+---
+
+## Session 2026-05-17 — 0010: prompt: git_worktree_branch
+- Completed: `oroshi-prompt-populate:git_worktree_branch` added to git.zsh; `git_branch` suppressed with `(($GIT_DIRECTORY_IS_WORKTREE)) && return`; `git_is_worktree` removed from git.zsh + SYNCHRONOUS_PROMPT_PARTS + oroshi-prompt-left; `git_worktree_branch` added to ASYNCHRONOUS_PROMPT_PARTS + oroshi-prompt-left
+- Tests added: `scripts/bin/__tests__/oroshi-prompt-git-worktree-branch.bats` (5 tests: leaf icon present, WORKTREE color when 0 ahead, TRACKED color when ≥1 ahead, git_branch empty in worktree, git_worktree_branch empty outside worktree)
+- Discovered: `oroshi-prompt-git-is-worktree.bats` tested a retired function — deleted
+- Fixed: test color assertions use dynamic `$COLOR_ALIAS_GIT_WORKTREE`/`$COLOR_ALIAS_GIT_TRACKED` (sourced from colors.zsh in setup) rather than hardcoded numbers
+- Skipped feedback: none
+- Next: all prd.json issues complete
+
+---
+
+## Post-session 2026-05-17 — 0010 follow-up refinements
+
+- `OROSHI_IS_PROMPT=1` added to `git-branch-colorize` call in `git_worktree_branch` — missing flag caused raw ANSI codes in left prompt, misaligning RPROMPT
+- `git_worktree_branch` simplified: always `COLOR_ALIAS_GIT_BRANCH`, no ahead/behind logic, uses `git-branch-current` directly (no colorize)
+- `oroshi-prompt-populate:git_worktree_distance` added to git.zsh — shows ahead (green) / behind (red) counts in right prompt; wired into ASYNCHRONOUS_PROMPT_PARTS and oroshi-prompt-right
+- `git_worktree_distance` result-building refactored: early return when both 0, individual checks use `!= "0"` string comparison instead of `(( > 0 ))` arithmetic
+- `COLOR_ALIAS_BRANCH` typo fixed → `COLOR_ALIAS_GIT_BRANCH`
+- Tests updated: `oroshi-prompt-git-worktree-branch.bats` simplified (4 tests); `oroshi-prompt-git-worktree-distance.bats` added (5 tests); icon-specific assertions removed (user replaced UTF-8 arrows with Nerd Font glyphs)
