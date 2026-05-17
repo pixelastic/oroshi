@@ -8,15 +8,20 @@ function oroshi-prompt-populate:path() {
   OROSHI_PROMPT_PARTS[path]=""
   local currentPath="${PWD/#$HOME/~}/"
 
+  local projectName=""
   # Checking if part of a known project
-  local projectName="$(project-by-path $currentPath)"
-  if [[ $projectName != "" ]]; then
-    # Simplifying the displayed path by removing the prefix
-    local projectKey=$(project-key "$projectName")
-    local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
-    eval "currentPath=\${currentPath:s_${projectPath}_}"
+  if (( GIT_DIRECTORY_IS_WORKTREE )); then
+    # Inside a worktree: resolve project via main repo, strip worktree root
+    projectName="$(git-worktree-project)"
+  else
+    projectName="$(project-by-path $currentPath)"
   fi
 
+  # Simplifying the displayed path by removing the prefix
+  if [[ $projectName != '' ]]; then
+    local repoRoot="${$(git-directory-root)/#$HOME/~}/"
+    eval "currentPath=\${currentPath:s_${repoRoot}_}"
+  fi
   # Simplify string path if too long
   currentPath="$(simplify-path "$currentPath")"
 

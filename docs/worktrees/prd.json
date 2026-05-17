@@ -270,5 +270,60 @@
       "Verify node_modules/ does not exist in the new worktree"
     ],
     "passes": true
+  },
+  {
+    "id": "0009",
+    "category": "functional",
+    "description": "oroshi-prompt-populate:path shows project prefix when in worktree of registered project",
+    "steps": [
+      "Create a temp git repo registered in PROJECTS_INDEX_BY_PATH",
+      "Add a linked worktree",
+      "cd into the worktree",
+      "Set GIT_DIRECTORY_IS_WORKTREE=1",
+      "Run oroshi-prompt-populate:path",
+      "Verify OROSHI_PROMPT_PARTS[path] contains project name"
+    ],
+    "passes": true
+  },
+  {
+    "id": "0009",
+    "category": "functional",
+    "description": "oroshi-prompt-populate:path shows plain path in worktree of unregistered project",
+    "steps": [
+      "Create a temp git repo not registered in PROJECTS_INDEX_BY_PATH",
+      "Add a linked worktree",
+      "cd into the worktree",
+      "Set GIT_DIRECTORY_IS_WORKTREE=1",
+      "Run oroshi-prompt-populate:path",
+      "Verify OROSHI_PROMPT_PARTS[path] contains worktree directory name"
+    ],
+    "passes": true
+  },
+  {
+    "id": "0009",
+    "category": "functional",
+    "description": "oroshi-prompt-populate:path shows path relative to worktree root after prefix",
+    "steps": [
+      "Create a temp git repo registered in PROJECTS_INDEX_BY_PATH",
+      "Add a linked worktree with a src/ subdirectory",
+      "cd into the worktree/src",
+      "Set GIT_DIRECTORY_IS_WORKTREE=1",
+      "Run oroshi-prompt-populate:path",
+      "Verify output contains 'src' but not the worktree directory name"
+    ],
+    "passes": true
+  },
+  {
+    "id": "0009",
+    "category": "functional",
+    "description": "oroshi-prompt-populate:path behaviour unchanged outside worktrees",
+    "steps": [
+      "Create a temp git repo registered in PROJECTS_INDEX_BY_PATH",
+      "cd into the main repo",
+      "Set GIT_DIRECTORY_IS_WORKTREE=0",
+      "Run oroshi-prompt-populate:path",
+      "Verify OROSHI_PROMPT_PARTS[path] contains project name"
+    ],
+    "passes": true
   }
 ]

@@ -374,3 +374,13 @@ User-driven improvements after the ralph session, no new issue IDs:
 - Fixed: none
 - Skipped feedback: raw `run zsh -c` instead of `run_zsh_fn` — necessary, `.zshenv` always overrides the exported var; `$TMP_DIRECTORY` expansion in zsh -c string — safe (bats_tmp slugifies); no "outside git repo" test — out of scope; no "from main worktree" test — out of scope
 - Next: all prd.json issues complete
+
+---
+
+## Session 2026-05-16 — 0009: prompt path worktree detection
+- Completed: `oroshi-prompt-populate:path` branches on `GIT_DIRECTORY_IS_WORKTREE`; calls `git-worktree-project` for registered project name, strips via `git-directory-root` when project found
+- Tests added: `scripts/bin/__tests__/oroshi-prompt-path-worktree.bats` (4 tests: registered prefix, unregistered plain path, path relative to worktree root, outside-worktree unchanged); 4/4 pass
+- Discovered: none
+- Fixed: user refactored to use `git-directory-root` (instead of `git rev-parse --show-toplevel` + `PROJECT_*_PATH`); intermediate version had stripping outside the `projectName != ""` guard, breaking non-git dirs and unregistered worktrees; fixed by restoring the guard
+- Skipped feedback: `setopt local_options errexit` — no prompt populate function uses it
+- Next: 0010-prompt-git-worktree-branch (no blockers)
