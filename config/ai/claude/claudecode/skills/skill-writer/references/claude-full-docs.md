@@ -493,7 +493,7 @@ Skill
 ```text theme={null}
 # Allow only specific skills
 Skill(commit)
-Skill(review-pr *)
+Skill(review *)
 
 # Deny specific skills
 Skill(deploy *)
