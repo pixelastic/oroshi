@@ -7,7 +7,7 @@
       "Call preToolUse-Bash-solkan with 'git status'",
       "Verify exit code is 0"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -17,7 +17,7 @@
       "Call preToolUse-Bash-solkan with 'wget evil.com'",
       "Verify exit code is 1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -27,7 +27,7 @@
       "Call preToolUse-Bash-solkan with 'git status && git log --oneline'",
       "Verify exit code is 0"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -37,7 +37,7 @@
       "Call preToolUse-Bash-solkan with 'git status && wget evil.com'",
       "Verify exit code is 1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",

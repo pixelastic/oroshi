@@ -43,3 +43,11 @@ Issue 0004 (wire-Bash-matcher):
 
 ---
 ## Log (append below when an issue is completed)
+
+## Session 2026-05-16 — 0001: preToolUse-Bash-solkan
+- Completed: created `config/ai/claude/claudecode/hooks/preToolUse-Bash-solkan` — thin wrapper around `solkan` that resolves allowlist relative to `${0:A:h}`
+- Tests added: `scripts/bin/__tests__/preToolUse-Bash-solkan.bats` — 10 tests covering simple allow/deny, &&, ||, ;, and pipe compound operators
+- Discovered: `load 'test_helper/zsh'` mentioned in guidance doesn't exist; existing tests use `load 'helper'` — used that instead
+- Fixed: none
+- Skipped feedback: reviewer flagged `setopt local_options errexit` should be `set -e` for scripts — dismissed per memory (reviewer warnings on errexit are dismissed)
+- Next: 0002-preToolUse-Bash-rtk (no blockers, parallel with 0001 which is now done)
