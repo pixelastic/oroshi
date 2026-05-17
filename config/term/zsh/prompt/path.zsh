@@ -20,7 +20,7 @@ function oroshi-prompt-populate:path() {
   # Simplifying the displayed path by removing the prefix
   if [[ $projectName != '' ]]; then
     local repoRoot="${$(git-directory-root)/#$HOME/~}/"
-    eval "currentPath=\${currentPath:s_${repoRoot}_}"
+    currentPath="${currentPath#${repoRoot}}"
   fi
   # Simplify string path if too long
   currentPath="$(simplify-path "$currentPath")"
