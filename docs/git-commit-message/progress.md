@@ -45,3 +45,11 @@ Sound: `child_process.spawn('audio-play-oroshi', ['git-commit-message.mp3'],
 - Fixed: Hardcoded PROJECT_ROOT in bats test → replaced with `$BATS_TEST_DIRNAME/../../..`
 - Skipped feedback: `js-lint` vs `yarn lint` in test — bats tests call CLI tools directly, which is standard in this repo
 - Next: 0002-format-message (vitest setup + formatMessage implementation)
+
+## Session 2026-05-18 — 0002: format-message
+- Completed: `formatMessage` named export; subject = all lines before first blank line joined into one; body = lines after first blank line wrapped at 72 chars; symlink git-commit-message → git-commit-message.js; lintstaged.config.js (no imports, hardcoded, single scripts/bin/**/*.js rule for lint+test); core.hookspath → scripts/yarn/hooks; vite.config.js already existed so no vitest.config.js needed; wrapLine uses lodash (_.reduce/_.last/_.initial); formatMessage uses _.chain().map().flatten()
+- Tests added: scripts/bin/git/commit/__tests__/git-commit-message.js (5 tests, it.each with title/input/output, dedent for multiline strings)
+- Discovered: script needs .js extension for lint-staged → symlink pattern; vim.system() calls binary directly so zsh autoloads are not an option; subject can span multiple lines if agent wrapped it incorrectly
+- Fixed: no-use-before-define — moved `export let __` before formatMessage; various prettier line-length issues
+- Skipped feedback: none
+- Next: 0003-script-core

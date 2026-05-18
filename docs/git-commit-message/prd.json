@@ -17,7 +17,7 @@
       "Verify the subject line is returned on a single line, unmodified",
       "Verify no newline is inserted within the subject"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",
@@ -27,7 +27,7 @@
       "Verify no output line after the subject exceeds 72 characters",
       "Verify wrapping occurs at a word boundary, not mid-word"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",
@@ -37,7 +37,7 @@
       "Verify the second line of output is empty",
       "Verify the body starts on the third line"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",
@@ -46,6 +46,6 @@
       "Call formatMessage with a body whose lines are all under 72 characters",
       "Verify the output body is identical to the input body"
     ],
-    "passes": false
+    "passes": true
   }
 ]

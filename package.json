@@ -23,5 +23,10 @@
     "remark-reference-links": "4.0.4",
     "skills": "1.5.1",
     "solkan": "0.4.0"
+  },
+  "scripts": {
+    "lint": "./scripts/yarn/lint",
+    "lint:fix": "./scripts/yarn/lint-fix",
+    "test": "./scripts/yarn/test"
   }
 }
