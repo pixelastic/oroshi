@@ -1,0 +1,6 @@
+# Push current worktree into main
+# Usage:
+# $ git-worktree-push
+setopt local_options errexit
+
+git fetch . "HEAD:main"

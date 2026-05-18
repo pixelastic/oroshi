@@ -7,6 +7,7 @@ setup() {
   git init "$TMP_DIRECTORY/my-repo"
   cd "$TMP_DIRECTORY/my-repo"
   git -C "$TMP_DIRECTORY/my-repo" commit --allow-empty -m "init"
+  git -C "$TMP_DIRECTORY/my-repo" branch -M main
 }
 
 teardown() {
@@ -60,9 +61,18 @@ teardown() {
   [ "$status" -eq 1 ]
 }
 
+@test "returns 1 if not on main" {
+  cd "$TMP_DIRECTORY/my-repo"
+  git -C "$TMP_DIRECTORY/my-repo" checkout -b fix/bug
+  run_zsh_fn git-worktree-create fix/other
+  [ "$status" -eq 1 ]
+  [ "$output" = "You must be on main to create a worktree" ]
+}
+
 @test "strips leading dot from repo name in dot-prefixed repo folder" {
   git init "$TMP_DIRECTORY/.dot-repo"
   git -C "$TMP_DIRECTORY/.dot-repo" commit --allow-empty -m "init"
+  git -C "$TMP_DIRECTORY/.dot-repo" branch -M main
   cd "$TMP_DIRECTORY/.dot-repo"
   run_zsh_fn git-worktree-create fix/bug
   [ "$status" -eq 0 ]

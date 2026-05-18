@@ -1,0 +1,6 @@
+# Pull main into current worktree
+# Usage:
+# $ git-worktree-pull
+setopt local_options errexit
+
+git rebase main
