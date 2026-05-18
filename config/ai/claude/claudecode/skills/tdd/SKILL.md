@@ -82,6 +82,7 @@ Rules:
 - Only enough code to pass current test
 - Don't anticipate future tests
 - Keep tests focused on observable behavior
+- Use dedicated skill (`zsh-writer`, `js-writer`, etc.) if it exists
 
 ### 4. Refactor
 
@@ -102,5 +103,6 @@ After all tests pass, look for [refactor candidates](refactoring.md):
 [ ] Test uses public interface only
 [ ] Test would survive internal refactor
 [ ] Code is minimal for this test
+[ ] Code uses dedicated language skill if it exists (`zsh-writer`, `js-writer`, etc)
 [ ] No speculative features added
 ```
