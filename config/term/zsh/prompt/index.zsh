@@ -61,6 +61,7 @@ source $ZSH_CONFIG_PATH/prompt/slow.zsh
 # be fetched synchronously or asynchronously.
 OROSHI_SYNCHRONOUS_PROMPT_PARTS=(
   path
+  path_worktree_dir
   git_status
   git_is_submodule
   exit_code
@@ -118,6 +119,7 @@ function oroshi-prompt-left() {
     $OROSHI_PROMPT_PARTS[yarn_install_in_progress]
     $OROSHI_PROMPT_PARTS[bundle_install_in_progress]
     $OROSHI_PROMPT_PARTS[git_worktree_branch]
+    $OROSHI_PROMPT_PARTS[path_worktree_dir]
     $OROSHI_PROMPT_PARTS[git_is_submodule]
     $OROSHI_PROMPT_PARTS[git_has_stash]
     $OROSHI_PROMPT_PARTS[git_rebase_in_progress]

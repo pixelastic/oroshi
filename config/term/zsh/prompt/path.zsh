@@ -17,6 +17,21 @@ function oroshi-prompt-populate:path() {
     projectName="$(project-by-path $currentPath)"
   fi
 
+  # Add marker if connected through SSH
+  if [[ $SSH_CLIENT != '' ]]; then
+    local hostname="$(hostname)"
+    OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ORANGE}${USER} ${hostname}%f%k"
+  fi
+
+  # Prefix with a shortened colored version of the project if in an active project
+  if [[ $projectName != '' ]]; then
+    local projectPrefix="$(OROSHI_IS_PROMPT=1; project-colorize $projectName)"
+    OROSHI_PROMPT_PARTS[path]+=$projectPrefix
+  fi
+
+  # In worktrees: path only shows the project icon; filepath is in path_worktree_dir
+  (( GIT_DIRECTORY_IS_WORKTREE )) && return
+
   # Simplifying the displayed path by removing the prefix
   if [[ $projectName != '' ]]; then
     local repoRoot="$(project-path "$projectName")"
@@ -25,34 +40,20 @@ function oroshi-prompt-populate:path() {
   # Simplify string path if too long
   currentPath="$(simplify-path "$currentPath")"
 
-  # Add marker if connected through SSH
-  if [[ $SSH_CLIENT != '' ]]; then
-    local hostname="$(hostname)"
-    OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ORANGE}${USER} ${hostname}%f%k"
-  fi
-
-  # Prefix with a shortened colored version of the project if in an active
-  # project
-  if [[ $projectName != '' ]]; then
-    local projectPrefix="$(OROSHI_IS_PROMPT=1; project-colorize $projectName)"
-    OROSHI_PROMPT_PARTS[path]+=$projectPrefix
-  fi
-
   # Stop if no more path
   [[ $currentPath == '' ]] && return
 
   # In .git
   if git-directory-is-dot-git; then
-    OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ORANGE}  "
+    OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ORANGE}  "
     currentPath=${currentPath:s_.git/__}
     [[ $currentPath != "" ]] && OROSHI_PROMPT_PARTS[path]+=" $currentPath%f"
     return
   fi
 
-
   # Deleted path
   if [[ ! -r $PWD ]]; then
-    OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ALIAS_COMMENT} ${currentPath}%f"
+    OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ALIAS_COMMENT} ${currentPath}%f"
     return
   fi
 
@@ -63,4 +64,19 @@ function oroshi-prompt-populate:path() {
   fi
 
   [[ $currentPath != "" ]] && OROSHI_PROMPT_PARTS[path]+=" %F{$COLOR_ALIAS_DIRECTORY}${currentPath}%f"
+}
+
+# Filepath relative to worktree root (only shown in worktrees, after the branch name)
+function oroshi-prompt-populate:path_worktree_dir() {
+  OROSHI_PROMPT_PARTS[path_worktree_dir]=""
+  (( GIT_DIRECTORY_IS_WORKTREE )) || return
+
+  local worktreeRoot="${$(git-directory-root)/#$HOME/~}/"
+  local currentPath="${PWD/#$HOME/~}/"
+  local subPath="${currentPath#"${worktreeRoot}"}"
+
+  subPath="$(simplify-path "$subPath")"
+  [[ "$subPath" == "" ]] && return
+
+  OROSHI_PROMPT_PARTS[path_worktree_dir]=" %F{$COLOR_ALIAS_DIRECTORY}${subPath}%f"
 }
