@@ -36,6 +36,9 @@
   smudge = git-lfs smudge -- %f
   required = true
 
+[log]
+  graphColors = $COLOR_ALIAS_PUNCTUATION # Graph lines (|, /)
+
 # Colors {{{
 [color]
   ui = true

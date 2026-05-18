@@ -20,11 +20,11 @@ local prettyFormat=(\
   # Author name
   "[38;5;${COLOR_ALIAS_GIT_AUTHOR}m %an[00m" \
   # Branches and tags, but only if non-empty
-  # Color of %C(auto) are defined in gitconfig
-  # The %+D adds a new line before the line, only if not empty
   "%C(auto)%+D%Creset" \
-  # Commit message, spaced out
-  "%n[38;5;${COLOR_ALIAS_GIT_MESSAGE}m%s[00m%n" \
+  # Subject
+  "%n%s" \
+  # Body
+  "%n%+b" \
 )
 
 local additionalFlags=()
@@ -32,6 +32,10 @@ local additionalFlags=()
 [[ $isMore == "1" ]] && additionalFlags+=(--stat)
 # --patch: Display full diff
 [[ $isAll == "1" ]] && additionalFlags+=(--patch)
+
+# Tell Kitty to overwrite default foreground color with color of git messages
+printf '\e]10;%s\a' "${COLOR_ALIAS_GIT_MESSAGE_HEXA}"
+trap 'printf "\e]110\a"' EXIT INT TERM
 
 git log \
   --graph \

@@ -6,6 +6,7 @@ CONFIG_DIR=~/.oroshi/config/git/git
 # Generate the final config from a template
 $CONFIG_DIR/generate-config
 
-ln -fs \
-	$CONFIG_DIR/dist/gitconfig \
-	~/.gitconfig
+rm ~/.gitconfig
+ln -s \
+  $CONFIG_DIR/dist/gitconfig \
+  ~/.gitconfig
