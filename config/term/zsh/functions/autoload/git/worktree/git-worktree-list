@@ -22,11 +22,21 @@ for rawLine in ${(f)rawOutput}; do
   [[ "$PWD" == "$worktreePath" ]] && marker="$(colorize "" ALIAS_POINTER)"
 
   local branchDisplay="$(git-branch-colorize "$branch")"
-  local distanceDisplay="$(git-distance-colorize "$distance")"
   local dateDisplay="$(git-date-colorize "$relativeDate")"
   local messageDisplay="$(git-message-colorize "$message")"
 
-  output+="${marker}▮${branchDisplay}▮${distanceDisplay}▮${dateDisplay}▮${messageDisplay}▮\n"
+  # Split into separate ahead/behind columns so they align independently
+  local aheadDisplay=""
+  local iconAhead=""
+  local countAhead="${${distance#ahead }%%,*}"
+  [[ "$countAhead" != "0" ]] && aheadDisplay="$(colorize "${countAhead}${iconAhead}" ALIAS_GIT_AHEAD)"
+
+  local behindDisplay=""
+  local iconBehind=""
+  local countBehind="${distance##*, behind }"
+  [[ "$countBehind" != "0" ]] && behindDisplay="$(colorize "${countBehind}${iconBehind}" ALIAS_GIT_BEHIND)"
+
+  output+="${marker}▮${branchDisplay}▮${aheadDisplay}▮${behindDisplay}▮${dateDisplay}▮${messageDisplay}▮\n"
 done
 
 table $output
