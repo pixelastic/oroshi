@@ -54,7 +54,9 @@ Iterate until the user approves the breakdown.
 
 For each approved slice, create a [issue-XXX-slug.md](./references/issue-XXX-slug.md) file in the same directory as the PRD.
 
-Write a [prd.json](./references/prd-json.md) and [progress.md](./references/progress-md.md) following the given templates.
+Write a [prd.json](./references/prd-json.md) and
+[progress.md](./references/progress-md.md) following the given templates, as
+siblings of the `PRD.md` file.
 These files will help future agent pick up work where a previous agent left off.
 
 ---
