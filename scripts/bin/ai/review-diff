@@ -1,8 +1,9 @@
 #!/usr/bin/env zsh
-# Generate a full diff for review: working-tree or branch comparison
+# Generate a full diff for review: working-tree, branch, or commit comparison
 # Usage:
 # $ review-diff                # Working-tree diff (staged + unstaged + untracked)
 # $ review-diff <branch>       # Self-review (arg == current branch) or external review (arg != current branch)
+# $ review-diff <sha>          # Single-commit review
 set -e
 
 # 1-arg branch case
@@ -19,6 +20,13 @@ if [[ $# -eq 1 ]] && git-branch-exists "$1" 2>/dev/null; then
     rtk proxy git log "HEAD..$1"
     rtk proxy git diff HEAD "$1"
   fi
+  return 0
+fi
+
+# 1-arg SHA case
+if [[ $# -eq 1 ]]; then
+  rtk proxy git log -1 "$1"
+  rtk proxy git diff "$1^" "$1"
   return 0
 fi
 

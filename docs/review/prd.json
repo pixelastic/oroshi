@@ -74,7 +74,7 @@
       "Run review-diff <sha>",
       "Assert stdout contains the commit message for that SHA and a diff --git line"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0004",

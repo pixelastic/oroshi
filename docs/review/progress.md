@@ -37,3 +37,11 @@ issue-006 → needs issue-001 + issue-002 + issue-003 + issue-004 + issue-005
 - Fixed: post-review — `setopt local_options errexit` → `set -e` (shebang scripts use set -e per convention); removed `local` from all script-level variable declarations (no-op outside functions)
 - Skipped feedback: (1) missing `git_env_clean` in setup() — not applicable; helper.bash already unsets GIT_DIR etc. at load time, matching all other bats files in the project; (2) raw `git` calls (items 4–5) — pre-existing issue-001 code, already accepted
 - Next: issue-003 (1-arg commit SHA)
+
+## Session 2026-05-19 — issue-003: review-diff 1-arg SHA case
+- Completed: added 1-arg SHA handling to `scripts/bin/ai/review-diff`; one new bats test in `review-diff.bats`
+- Tests added: 1-arg SHA: stdout contains the commit message and a diff --git line
+- Discovered: none
+- Fixed: post-review — split `local mainBranch` in external-review test (issue-002 carryover) merged into single-line assignment
+- Skipped feedback: (1) `return 0` vs `exit 0` at top-level — pre-existing pattern, accepted in prior sessions; (2) partial diff cleanliness check in external-review test — out of scope for issue-003; (3) prd.json items 0003/0004 flagged as unimplemented — reviewer read pre-implementation state; 0003 is now done
+- Next: issue-004 (2-arg range)

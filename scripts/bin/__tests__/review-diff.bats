@@ -64,10 +64,23 @@ teardown() {
   [[ "$output" == *"diff --git"* ]]
 }
 
+@test "1-arg SHA: stdout contains the commit message and a diff --git line" {
+  cd "$TMP_DIRECTORY/my-repo"
+  echo "sha content" > sha-file.txt
+  git add sha-file.txt
+  git commit --message "feat: add sha-file.txt"
+  local sha
+  sha="$(git rev-parse HEAD)"
+
+  run review-diff "$sha"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"feat: add sha-file.txt"* ]]
+  [[ "$output" == *"diff --git"* ]]
+}
+
 @test "1-arg branch, external review: stdout contains feature commit; main-only commits absent" {
   cd "$TMP_DIRECTORY/my-repo"
-  local mainBranch
-  mainBranch="$(git branch --show-current)"
+  local mainBranch="$(git branch --show-current)"
   git checkout -b feature-branch
   echo "feature content" > feature.txt
   git add feature.txt
