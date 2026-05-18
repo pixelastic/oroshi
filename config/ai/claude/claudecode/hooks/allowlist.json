@@ -113,6 +113,8 @@
   "which",
   "whoami",
   "xdg-open",
+  "yarn lint",
+  "yarn runt lint",
   "yarn run agent:delete-orphaned-images",
   "yarn run algolia:ask",
   "yarn run algolia:teach",
@@ -120,6 +122,7 @@
   "yarn run lint:fix",
   "yarn run proofreading",
   "yarn run test",
+  "yarn test",
   "zcat",
   "zshlint",
   "./node_modules/.bin/bats"
