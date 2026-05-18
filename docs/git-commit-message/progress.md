@@ -37,3 +37,11 @@ Sound: `child_process.spawn('audio-play-oroshi', ['git-commit-message.mp3'],
 
 ---
 ## Log (append below when an issue is completed)
+
+## Session 2026-05-17 — 0001: eslint-shebang
+- Completed: Added `n/hashbang: off` override for `scripts/bin/**` in eslint.config.js
+- Tests added: scripts/bin/__tests__/eslint-shebang.bats
+- Discovered: Parser itself handles shebangs fine once the `\` in printf was removed (user fix)
+- Fixed: Hardcoded PROJECT_ROOT in bats test → replaced with `$BATS_TEST_DIRNAME/../../..`
+- Skipped feedback: `js-lint` vs `yarn lint` in test — bats tests call CLI tools directly, which is standard in this repo
+- Next: 0002-format-message (vitest setup + formatMessage implementation)

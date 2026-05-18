@@ -1,5 +1,15 @@
 [
   {
+    "id": "0001",
+    "description": "eslint.config.js has n/hashbang: off override for scripts/bin/**",
+    "passes": true
+  },
+  {
+    "id": "0001",
+    "description": "yarn lint passes on a file with #!/usr/bin/env node in scripts/bin/",
+    "passes": true
+  },
+  {
     "id": "0002",
     "description": "formatMessage keeps the subject line intact regardless of length",
     "steps": [
