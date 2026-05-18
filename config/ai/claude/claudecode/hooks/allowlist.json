@@ -48,6 +48,7 @@
   "git rev-parse",
   "git show",
   "git status",
+  "git --version",
   "gnome-shell --version",
   "grep",
   "gsettings get",
