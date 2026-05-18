@@ -2,11 +2,14 @@ load 'helper'
 
 setup() {
   export TMP_DIRECTORY="$(bats_tmp)"
+  export OROSHI_WORKTREES_DIR="$TMP_DIRECTORY/worktrees"
+  mkdir -p "$OROSHI_WORKTREES_DIR"
   git init "$TMP_DIRECTORY/my-repo"
   cd "$TMP_DIRECTORY/my-repo"
   git commit --allow-empty -m "init"
   git branch -M main
-  git checkout -b fix/bug
+  git worktree add "$OROSHI_WORKTREES_DIR/my-repo--fix_bug" -b fix/bug
+  cd "$OROSHI_WORKTREES_DIR/my-repo--fix_bug"
   git commit --allow-empty -m "fix work"
 }
 
@@ -15,25 +18,18 @@ teardown() {
 }
 
 @test "fast-forwards main to current HEAD" {
-  cd "$TMP_DIRECTORY/my-repo"
+  cd "$OROSHI_WORKTREES_DIR/my-repo--fix_bug"
   local fixHead="$(git rev-parse HEAD)"
   run_zsh_fn git-worktree-push
   [ "$status" -eq 0 ]
-  run git rev-parse main
+  run git -C "$TMP_DIRECTORY/my-repo" rev-parse main
   [ "$output" = "$fixHead" ]
 }
 
 @test "returns 1 if history has diverged" {
-  git init "$TMP_DIRECTORY/diverged-repo"
-  cd "$TMP_DIRECTORY/diverged-repo"
-  git commit --allow-empty -m "init"
-  git branch -M main
-  git checkout -b fix/bug
-  git commit --allow-empty -m "fix work"
-  git checkout main
+  cd "$TMP_DIRECTORY/my-repo"
   git commit --allow-empty -m "main work"
-  git checkout fix/bug
+  cd "$OROSHI_WORKTREES_DIR/my-repo--fix_bug"
   run_zsh_fn git-worktree-push
   [ "$status" -ne 0 ]
 }
-

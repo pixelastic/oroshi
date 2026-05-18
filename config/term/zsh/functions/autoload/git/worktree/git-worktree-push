@@ -3,4 +3,7 @@
 # $ git-worktree-push
 setopt local_options errexit
 
-git fetch . "HEAD:main"
+local currentBranch="$(git-branch-current)"
+local mainPath="$(git-worktree-main)"
+
+git -C "$mainPath" merge --ff-only "$currentBranch"
