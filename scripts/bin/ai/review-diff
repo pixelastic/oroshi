@@ -1,13 +1,32 @@
 #!/usr/bin/env zsh
-# Generate a full diff for review: tracked changes + untracked files as new-file diffs
+# Generate a full diff for review: working-tree or branch comparison
 # Usage:
-# $ review-diff    # Working-tree diff (staged + unstaged + untracked)
-setopt local_options errexit
+# $ review-diff                # Working-tree diff (staged + unstaged + untracked)
+# $ review-diff <branch>       # Self-review (arg == current branch) or external review (arg != current branch)
+set -e
 
+# 1-arg branch case
+if [[ $# -eq 1 ]] && git-branch-exists "$1" 2>/dev/null; then
+  currentBranch="$(git rev-parse --abbrev-ref HEAD)"
+
+  if [[ "$1" == "$currentBranch" ]]; then
+    # Self-review: diff from parent branch to HEAD
+    parentBranch="$(git-branch-parent)"
+    rtk proxy git log "$parentBranch..HEAD"
+    rtk proxy git diff "$parentBranch" HEAD
+  else
+    # External review: diff from HEAD to given branch
+    rtk proxy git log "HEAD..$1"
+    rtk proxy git diff HEAD "$1"
+  fi
+  return 0
+fi
+
+# 0-arg case: working-tree diff
 # List of changed/added/deleted files
-local statusRaw="$(git status --porcelain)"
+statusRaw="$(git status --porcelain)"
 # Diff of changed files
-local trackedDiff="$(rtk proxy git diff HEAD)"
+trackedDiff="$(rtk proxy git diff HEAD)"
 
 # Clean tree: nothing to show
 [[ "$trackedDiff" == "" ]] && [[ "$statusRaw" == "" ]] && return 0
@@ -16,10 +35,10 @@ local trackedDiff="$(rtk proxy git diff HEAD)"
 [[ "$trackedDiff" != "" ]] && echo "$trackedDiff"
 
 # Output untracked files as new-file diffs
-local repoRoot="$(git-directory-root)"
+repoRoot="$(git-directory-root)"
 for rawLine in ${(f)statusRaw}; do
   [[ "$rawLine" != '?? '* ]] && continue
-  local rawFile="${rawLine:3}"
+  rawFile="${rawLine:3}"
   # Paths from git status --porcelain are relative to repo root, not cwd
   rtk proxy \
     git diff \

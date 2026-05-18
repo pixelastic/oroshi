@@ -51,7 +51,7 @@
       "Run review-diff <feature-branch> from the feature branch",
       "Assert stdout contains the feature commit message and a diff --git line"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",
@@ -63,7 +63,7 @@
       "Run review-diff <feature-branch> from main",
       "Assert stdout contains the feature commit and a diff --git line; assert main-only commit message is absent"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",
