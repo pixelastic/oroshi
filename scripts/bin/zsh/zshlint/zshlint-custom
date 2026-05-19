@@ -1,0 +1,47 @@
+#!/usr/bin/env zsh
+# Run custom rules on zsh files, output JSON array
+# Usage:
+# $ zshlint-custom file.zsh [file2.zsh ...]
+set -e
+
+# Source all Lib Files (comment a line to disable a rule)
+local dir="${0:A:h}"
+source "$dir/__rules/rule-no-manual-arg-parsing.zsh"
+
+# Ordered list of custom rule functions to run
+local -a _RULES=(zshlintRule_noManualArgParsing)
+
+# Separator used in Rule Output lines; export so subshells see it
+export _SEP=$'\u25ae'
+
+# Exclude directories from the inputs
+local -a input=()
+for item in $@; do
+  [[ -d $item ]] && continue
+  input+=($item)
+done
+
+[[ ${#input} -eq 0 ]] && printf '[]\n' && exit 0
+
+# Collect Rule Output lines from all custom rules
+local -a ruleLines=()
+local file rule out
+for file in "${input[@]}"; do
+  for rule in $_RULES; do
+    out="$($rule "$file")"
+    [[ -n "$out" ]] && ruleLines+=("$out")
+  done
+done
+
+# Convert Rule Output lines to JSON objects
+local -a customObjects=()
+local line
+for line in $ruleLines; do
+  local obj
+  obj="$(printf '%s' "$line" | jq -Rc 'split("\u25ae") | {file:.[0],code:(.[1]|tonumber),level:.[2],line:(.[3]|tonumber),endLine:(.[3]|tonumber),column:1,endColumn:1,message:.[4]}')"
+  customObjects+=("$obj")
+done
+
+printf '[%s]\n' "${(j:,:)customObjects}"
+[[ ${#ruleLines} -gt 0 ]] && exit 1
+exit 0

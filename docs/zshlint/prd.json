@@ -58,7 +58,7 @@
       "Parse the JSON output",
       "Assert the array contains an entry with code 90005"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",
@@ -69,7 +69,7 @@
       "Assert output is '[]'",
       "Assert exit code is 0"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",
@@ -79,7 +79,7 @@
       "Run zshlint on the fixture file",
       "Assert exit code is 1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",

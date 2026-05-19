@@ -32,3 +32,11 @@
 - Fixed: none
 - Skipped feedback: review noted files are untracked — ralph does not commit, that is the user's job
 - Next: 0002 — Orchestrator scaffold (refactor zshlint script to source Lib Files, merge custom + shellcheck JSON output)
+
+## Session 2026-05-19 — 0002: Orchestrator scaffold
+- Completed: Refactored `zshlint` from a pure shellcheck wrapper into a full Orchestrator. Sources `rule-no-manual-arg-parsing.zsh` at startup, calls `zshlintRule_noManualArgParsing` for each input file, converts Rule Output lines to JSON via `jq -Rc 'split("\u25ae")'`, merges with shellcheck JSON via `jq -cs 'add // []'`. Added `set -e` + `|| true` guard on shellcheck. Added integration test file `zshlint.bats`.
+- Tests added: merges custom rule into single array; clean file → `[]` exit 0; custom violation → exit 1
+- Discovered: `jq` requires `-R` flag (raw input) to parse non-JSON Rule Output lines; `$()` subshells inherit the exported `_SEP` variable
+- Fixed: PRD.md line 93 — stale `zshlintRule_noShift` entry updated to `zshlintRule_noManualArgParsing` (review finding)
+- Skipped feedback: bare `local line`/`local pattern` in `rule-no-manual-arg-parsing.zsh` and missing Lib File header comment — issue 0001 files, out of scope for this session
+- Next: 0003 — Rule: noGroupedLocals

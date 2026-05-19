@@ -90,7 +90,7 @@ Fields not in Rule Output are defaulted in the JSON: `column=1`, `endLine=line`,
 | 90002 | `zshlintRule_localOrReturn`      | error   | No `\|\|` chained on a `local` line |
 | 90003 | `zshlintRule_noExternalBasename` | style   | Prefer `:t`/`:h`/`:a` over `$(basename/dirname/realpath)` |
 | 90004 | `zshlintRule_noWhileRead`        | warning | No `while read` loops |
-| 90005 | `zshlintRule_noShift`            | warning | No `shift` for argument parsing |
+| 90005 | `zshlintRule_noManualArgParsing` | warning | No `case "$1"` or `while getopts` — use `zparseopts` |
 | 90006 | `zshlintRule_singleEqualsInTest` | style   | Use `==` not `=` inside `[[ ]]` |
 | 90007 | `zshlintRule_elseSmell`          | warning | `else` blocks suggest a missing return-early |
 
