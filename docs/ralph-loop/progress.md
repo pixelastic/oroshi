@@ -43,3 +43,11 @@
 - Fixed: git -C pattern in tests 1, 2, and 3
 - Skipped feedback: review findings all concern ralph-end (out of scope); zsh allows local/return at script level; ralph-end.bats PATH prepend is for the script itself (not a stub)
 - Next: issue 0003 — inactivity monitor
+
+## Session 2026-05-19 — 0003: inactivity monitor
+- Completed: Added background inactivity monitor to ralph `--max` loop; calls `audio-play-oroshi ralph-timeout.mp3` once per idle period; resets on filesystem activity; killed alongside sentinel watcher when Claude exits; not started in single-run mode
+- Tests added: `scripts/bin/claude/ralph/__tests__/ralph.bats` — 3 new tests: timeout fires once, activity resets and re-fires, no monitor in single-run mode
+- Discovered: signal synchronization needed — used `audio_played` sentinel file so claude stub waits until monitor fires before exiting, avoiding race between monitor and claude exit
+- Fixed: none
+- Skipped feedback: all review findings were pre-existing from 0002 migration commit (git-commit-message env-var, deleted comments, test location, setup pattern) — not introduced by 0003
+- Next: all PRD issues complete

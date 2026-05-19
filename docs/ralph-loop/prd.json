@@ -98,7 +98,8 @@
       "Run ralph --max 1 <dir>",
       "Verify the capture file contains exactly one entry: 'ralph-timeout.mp3'"
     ],
-    "passes": false
+    "passes": true,
+    "status": "complete"
   },
   {
     "id": "0003",
@@ -110,6 +111,7 @@
       "Run ralph --max 1 <dir>",
       "Verify the capture file contains exactly one entry (alert fired after the second cycle, not the first)"
     ],
-    "passes": false
+    "passes": true,
+    "status": "complete"
   }
 ]

@@ -61,13 +61,40 @@ while [[ $i -lt $maxLoops ]]; do
   } &
   local watcherPid=$!
 
+  # Inactivity monitor: play sound if no filesystem activity for N seconds
+  {
+    local alerted=false
+    while true; do
+      local inoCode=0
+      inotifywait --recursive \
+        --event modify,create,delete,move \
+        --timeout "${RALPH_MONITOR_TIMEOUT:-600}" \
+        "$gitRoot" >/dev/null 2>&1 || inoCode=$?
+
+      # Activity detected: reset alert
+      if [[ $inoCode -eq 0 ]]; then
+        alerted=false
+        continue
+      fi
+
+      # Timeout: play alert once per idle period
+      if [[ $alerted == false ]]; then
+        audio-play-oroshi ralph-timeout.mp3
+        alerted=true
+      fi
+    done
+  } &
+  local monitorPid=$!
+
   # Wait for claude; capture exit code
   local claudeExitCode=0
   wait $claudePid 2>/dev/null || claudeExitCode=$?
 
-  # Kill watcher and wait for cleanup
+  # Kill watcher and monitor, wait for cleanup
   kill $watcherPid 2>/dev/null || true
   wait $watcherPid 2>/dev/null || true
+  kill $monitorPid 2>/dev/null || true
+  wait $monitorPid 2>/dev/null || true
 
   # Ctrl+C: stop loop cleanly, no commit
   if [[ $claudeExitCode -eq 130 ]]; then

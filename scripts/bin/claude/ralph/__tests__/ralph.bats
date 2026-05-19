@@ -73,3 +73,78 @@ teardown() {
   commits="$(git log --oneline | wc -l)"
   [ "$commits" -eq 1 ]
 }
+
+@test "inactivity monitor plays sound once when inotifywait times out" {
+  echo '[{"id":"1","status":"open"}]' > "$PRD_DIR/prd.json"
+
+  inotifywait() { return 2; }
+  audio-play-oroshi() {
+    echo "$1" >> "$TMP_DIRECTORY/audio.txt"
+    touch "$TMP_DIRECTORY/audio_played"
+  }
+  claude() {
+    local i=0
+    while [[ ! -f "$TMP_DIRECTORY/audio_played" ]] && [[ $i -lt 100 ]]; do
+      sleep 0.01
+      i=$((i + 1))
+    done
+    echo "change" >> "$GIT_REPO/output.txt"
+  }
+  git-commit-message() { echo "test commit"; }
+  mock inotifywait audio-play-oroshi claude git-commit-message
+
+  cd "$GIT_REPO"
+  run_zsh_script "$RALPH_SCRIPT" --max 1 "$PRD_DIR"
+  [ "$status" -eq 0 ]
+  [ -f "$TMP_DIRECTORY/audio.txt" ]
+  [ "$(wc -l < "$TMP_DIRECTORY/audio.txt")" -eq 1 ]
+  [ "$(cat "$TMP_DIRECTORY/audio.txt")" = "ralph-timeout.mp3" ]
+}
+
+@test "inactivity monitor resets after activity and fires again on next timeout" {
+  echo '[{"id":"1","status":"open"}]' > "$PRD_DIR/prd.json"
+
+  inotifywait() {
+    local n
+    n=$(cat "$TMP_DIRECTORY/ino_count" 2>/dev/null || echo 0)
+    n=$((n + 1))
+    echo "$n" > "$TMP_DIRECTORY/ino_count"
+    [[ $n -eq 1 ]] && return 0
+    return 2
+  }
+  audio-play-oroshi() {
+    echo "$1" >> "$TMP_DIRECTORY/audio.txt"
+    touch "$TMP_DIRECTORY/audio_played"
+  }
+  claude() {
+    local i=0
+    while [[ ! -f "$TMP_DIRECTORY/audio_played" ]] && [[ $i -lt 100 ]]; do
+      sleep 0.01
+      i=$((i + 1))
+    done
+    echo "change" >> "$GIT_REPO/output.txt"
+  }
+  git-commit-message() { echo "test commit"; }
+  mock inotifywait audio-play-oroshi claude git-commit-message
+
+  cd "$GIT_REPO"
+  run_zsh_script "$RALPH_SCRIPT" --max 1 "$PRD_DIR"
+  [ "$status" -eq 0 ]
+  [ -f "$TMP_DIRECTORY/audio.txt" ]
+  [ "$(wc -l < "$TMP_DIRECTORY/audio.txt")" -eq 1 ]
+  [ "$(cat "$TMP_DIRECTORY/audio.txt")" = "ralph-timeout.mp3" ]
+}
+
+@test "no inactivity monitor started in single-run mode" {
+  echo '[{"id":"1","status":"open"}]' > "$PRD_DIR/prd.json"
+
+  inotifywait() { echo "called" >> "$TMP_DIRECTORY/ino_calls.txt"; return 2; }
+  audio-play-oroshi() { echo "$1" >> "$TMP_DIRECTORY/audio.txt"; }
+  claude() { echo "change" >> "$GIT_REPO/output.txt"; }
+  mock inotifywait audio-play-oroshi claude
+
+  cd "$GIT_REPO"
+  run_zsh_script "$RALPH_SCRIPT" "$PRD_DIR"
+  [ "$status" -eq 0 ]
+  [ ! -f "$TMP_DIRECTORY/ino_calls.txt" ]
+}
