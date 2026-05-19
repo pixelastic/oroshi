@@ -4,6 +4,7 @@
 # $ review-diff                # Working-tree diff (staged + unstaged + untracked)
 # $ review-diff <branch>       # Self-review (arg == current branch) or external review (arg != current branch)
 # $ review-diff <sha>          # Single-commit review
+# $ review-diff <from> <to>   # Diff between two refs
 set -e
 
 local arg1="$1"
@@ -12,7 +13,7 @@ local arg2="$2"
 # 0-arg case: working-tree diff
 if [[ "$arg1" == "" ]] && [[ "$arg2" == "" ]]; then
   local statusRaw="$(git status --porcelain)"
-  local trackedDiff="$(rtk proxy git diff HEAD)"
+  local trackedDiff="$(rtk proxy git diff --stat -p HEAD)"
 
   # Clean tree: nothing to show
   [[ "$trackedDiff" == "" ]] && [[ "$statusRaw" == "" ]] && return 0
@@ -33,7 +34,7 @@ if [[ "$arg1" == "" ]] && [[ "$arg2" == "" ]]; then
       /dev/null \
       "$repoRoot/$rawFile" || true
   done
-  return 0
+  exit 0
 fi
 
 # 1-arg case: branch or SHA
@@ -43,8 +44,8 @@ if [[ "$arg1" != "" ]] && [[ "$arg2" == "" ]]; then
   # Not a branch: SHA review
   if ! git-branch-exists "$ref"; then
     rtk proxy git log --max-count=1 "$ref"
-    rtk proxy git diff "$ref^" "$ref"
-    return 0
+    rtk proxy git diff --stat -p "$ref^" "$ref"
+    exit 0
   fi
 
   # Branch: build range, apply to log and diff
@@ -57,13 +58,17 @@ if [[ "$arg1" != "" ]] && [[ "$arg2" == "" ]]; then
   fi
 
   rtk proxy git log "$range"
-  rtk proxy git diff "$range"
-  return 0
+  rtk proxy git diff --stat -p "$range"
+  exit 0
 fi
 
 # 2-arg range case: diff directly between two named refs
 if [[ "$arg1" != "" ]] && [[ "$arg2" != "" ]]; then
   rtk proxy git log "$arg1..$arg2"
-  rtk proxy git diff "$arg1" "$arg2"
-  return 0
+  rtk proxy git diff --stat -p "$arg1" "$arg2"
+  exit 0
 fi
+
+# More than 2 args
+echo "Usage: review-diff [<branch>|<sha>] [<from> <to>]"
+exit 1

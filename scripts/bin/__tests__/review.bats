@@ -44,16 +44,14 @@ teardown() {
 
   # claude-print was called with "/review <filepath>"
   [ -f "$CLAUDE_PRINT_CAPTURE" ]
-  local capturedArg
-  capturedArg="$(cat "$CLAUDE_PRINT_CAPTURE")"
+  local capturedArg="$(cat "$CLAUDE_PRINT_CAPTURE")"
   [[ "$capturedArg" == "/review /tmp/review-diff-"* ]]
   [[ "$capturedArg" == *".md" ]]
 
   # the diff file was created and contains the diff output
   local filepath="${capturedArg#/review }"
   [ -f "$filepath" ]
-  local content
-  content="$(cat "$filepath")"
+  local content="$(cat "$filepath")"
   [[ "$content" == *"diff --git"* ]]
   [[ "$content" == *"modified content"* ]]
 }
@@ -69,20 +67,17 @@ teardown() {
   [ "$status" -eq 0 ]
 
   [ -f "$CLAUDE_PRINT_CAPTURE" ]
-  local capturedArg
-  capturedArg="$(cat "$CLAUDE_PRINT_CAPTURE")"
+  local capturedArg="$(cat "$CLAUDE_PRINT_CAPTURE")"
   local filepath="${capturedArg#/review }"
   [ -f "$filepath" ]
-  local content
-  content="$(cat "$filepath")"
+  local content="$(cat "$filepath")"
   [[ "$content" == *"feat: add feature.txt"* ]]
   [[ "$content" == *"diff --git"* ]]
 }
 
 @test "2-arg range: passes both args through to review-diff; diff file contains range commits" {
   cd "$TMP_DIRECTORY/my-repo"
-  local shaA
-  shaA="$(git rev-parse HEAD)"
+  local shaA="$(git rev-parse HEAD)"
   git checkout -b feature-branch
   echo "feature content" > feature.txt
   git add feature.txt
@@ -92,12 +87,10 @@ teardown() {
   [ "$status" -eq 0 ]
 
   [ -f "$CLAUDE_PRINT_CAPTURE" ]
-  local capturedArg
-  capturedArg="$(cat "$CLAUDE_PRINT_CAPTURE")"
+  local capturedArg="$(cat "$CLAUDE_PRINT_CAPTURE")"
   local filepath="${capturedArg#/review }"
   [ -f "$filepath" ]
-  local content
-  content="$(cat "$filepath")"
+  local content="$(cat "$filepath")"
   [[ "$content" == *"feat: add feature.txt"* ]]
   [[ "$content" == *"diff --git"* ]]
 }
@@ -107,13 +100,11 @@ teardown() {
 
   echo "first change" >> tracked.txt
   run review
-  local arg1
-  arg1="$(cat "$CLAUDE_PRINT_CAPTURE")"
+  local arg1="$(cat "$CLAUDE_PRINT_CAPTURE")"
 
   echo "second change" >> tracked.txt
   run review
-  local arg2
-  arg2="$(cat "$CLAUDE_PRINT_CAPTURE")"
+  local arg2="$(cat "$CLAUDE_PRINT_CAPTURE")"
 
   [ "$arg1" != "$arg2" ]
 }
