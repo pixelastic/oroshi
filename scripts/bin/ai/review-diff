@@ -25,7 +25,7 @@ fi
 
 # 1-arg SHA case
 if [[ $# -eq 1 ]]; then
-  rtk proxy git log -1 "$1"
+  rtk proxy git log --max-count=1 "$1"
   rtk proxy git diff "$1^" "$1"
   return 0
 fi

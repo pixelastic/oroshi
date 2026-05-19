@@ -79,8 +79,7 @@ teardown() {
 
 @test "2-arg range: stdout contains range commits and diff --git line; out-of-range commits absent" {
   cd "$TMP_DIRECTORY/my-repo"
-  local shaA
-  shaA="$(git rev-parse HEAD)"
+  local shaA="$(git rev-parse HEAD)"
   echo "main content" > main-only.txt
   git add main-only.txt
   git commit --message "main: commit B"

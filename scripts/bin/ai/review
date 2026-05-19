@@ -1,10 +1,15 @@
 #!/usr/bin/env zsh
-# Run claude /review on a specific commit
+# Run claude /review on working-tree, branch, or commit range
 # Usage:
-# $ claude-review        # Review HEAD
-# $ claude-review <sha>  # Review specific commit
+# $ review              # Review working tree (staged + unstaged + untracked)
+# $ review <branch>     # Review branch vs its parent (or from HEAD)
+# $ review <sha>        # Review a specific commit
+# $ review <ref> <ref>  # Review a commit range
 set -e
 
-local commit=${1:-HEAD}
+uuid="$(uuidgen | tr '[:upper:]' '[:lower:]')"
+diffFile="/tmp/review-diff-${uuid}.md"
 
-claude-print "/review $commit"
+"${0:A:h}/review-diff" "$@" > "$diffFile"
+
+claude-print "/review $diffFile"

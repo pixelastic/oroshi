@@ -86,5 +86,46 @@
       "Assert stdout contains commit C and a diff --git line; assert commit B is absent"
     ],
     "passes": true
+  },
+  {
+    "id": "0006",
+    "description": "review 0-arg: creates /tmp/review-diff-<uuid>.md containing the diff and invokes claude-print with filepath",
+    "steps": [
+      "Create a temp git repo with one committed file",
+      "Modify the tracked file",
+      "Run review with no arguments",
+      "Assert claude-print was called with '/review /tmp/review-diff-*.md'",
+      "Assert the diff file exists and contains a diff --git line"
+    ],
+    "passes": true
+  },
+  {
+    "id": "0006",
+    "description": "review 1-arg branch: passes arg through to review-diff; diff file contains branch commits",
+    "steps": [
+      "Create a temp git repo, create feature branch with a commit",
+      "Run review <feature-branch>",
+      "Assert diff file contains the feature commit message and a diff --git line"
+    ],
+    "passes": true
+  },
+  {
+    "id": "0006",
+    "description": "review 2-arg range: passes both args through to review-diff; diff file contains range commits",
+    "steps": [
+      "Create a temp git repo, create feature branch with a commit",
+      "Run review <sha-of-A> <feature-branch>",
+      "Assert diff file contains the feature commit message and a diff --git line"
+    ],
+    "passes": true
+  },
+  {
+    "id": "0006",
+    "description": "review uuid is unique per invocation",
+    "steps": [
+      "Run review twice on a modified repo",
+      "Assert the two captured claude-print args differ"
+    ],
+    "passes": true
   }
 ]

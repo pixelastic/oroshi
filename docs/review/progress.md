@@ -61,3 +61,11 @@ issue-006 → needs issue-001 + issue-002 + issue-003 + issue-004 + issue-005
 - Fixed: none
 - Skipped feedback: n/a — no review subagent run (HITL issue; no code to test)
 - Next: Tim approves wording → mark issue-005 complete → issue-006 (review shell script)
+
+## Session 2026-05-19 — issue-006: review shell script
+- Completed: rewrote `scripts/bin/ai/review` — generates UUID diff file, calls `review-diff "$@"` via `${0:A:h}` sibling path, invokes `claude-print "/review <file>"`; added `scripts/bin/__tests__/review.bats` (4 tests)
+- Tests added: 0-arg creates diff file + claude-print call with filepath; 1-arg branch passes through; 2-arg range passes through; uuid unique per invocation
+- Discovered: `~/.zshenv` resets PATH on zsh startup, so `review-diff` not findable by PATH inside the review zsh process — fixed by calling `"${0:A:h}/review-diff"` (sibling path); `claude-print` is a zsh autoloaded fn (not a PATH binary), so mocking requires ZDOTDIR override to shadow the autoload
+- Fixed: `git log -1` → `git log --max-count=1` in review-diff (long-form standard); split `local shaA` in review-diff.bats 2-arg test (memory rule violation)
+- Skipped feedback: (1) script-level vars not `local` — pre-existing accepted pattern for shebang scripts; (2) `git rev-parse --abbrev-ref HEAD` vs helper — pre-existing, accepted in prior sessions; (3) `zparseopts` not used — no flags, positional-only interface; (4) prd.json duplicate "0001" IDs — pre-existing data issue, all test cases pass
+- Next: all issues complete — deploy review + review-diff to ~/.oroshi/scripts/bin/ai/
