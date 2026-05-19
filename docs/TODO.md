@@ -26,3 +26,6 @@ right away (maybe if less than n lines or code, or only touch one file?)
 I need to move all tests close to their scripts/functions, in a `__tests`
 subdir. I will also need to cleanup the shared bats helper taht allow testing
 and mocking both scripts and binaries.
+
+I will need to improve the ctrl-p when prefixed with bats to 1/ filter in the
+current worktree, not the default main and 2/ only suggest .bats files
