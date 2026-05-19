@@ -41,3 +41,13 @@ teardown() {
   [[ "$output" == *"ahead 0"* ]]
   [[ "$output" == *"behind 0"* ]]
 }
+
+@test "accepts a path argument and returns distance for that worktree" {
+  cd "$TMP_DIRECTORY/my-repo--fix_bug"
+  git commit --allow-empty -m "commit in worktree"
+  cd "$TMP_DIRECTORY/my-repo"
+  run_zsh_fn git-worktree-distance "$TMP_DIRECTORY/my-repo--fix_bug"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"ahead 1"* ]]
+  [[ "$output" == *"behind 0"* ]]
+}

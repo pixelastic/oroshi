@@ -1,0 +1,10 @@
+# Returns 0 if the worktree branch is behind main, 1 otherwise
+# Accepts an optional path argument to override $PWD
+# Usage:
+# $ git-worktree-is-behind                    # current worktree
+# $ git-worktree-is-behind /path/to/worktree
+setopt local_options errexit
+
+local distanceOutput="$(git-worktree-distance "${1:-$PWD}")"
+[[ "$distanceOutput" =~ "behind ([0-9]+)" ]] || return 1
+[[ "${match[1]}" -gt 0 ]]

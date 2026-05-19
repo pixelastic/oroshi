@@ -1,14 +1,18 @@
 # Ahead/behind commit count between current worktree branch and main
+# Accepts an optional path argument to override $PWD
 # Usage:
-# $ git-worktree-distance    # ahead 2, behind 0
+# $ git-worktree-distance           # ahead 2, behind 0
+# $ git-worktree-distance /path/to/worktree
 setopt local_options errexit
 
-local branch="$(git-branch-current)"
+local worktreePath="${1:-$PWD}"
+
+local branch="$(git -C "$worktreePath" symbolic-ref --short HEAD 2>/dev/null)"
 
 # Not in a git repo or detached HEAD
 [[ "$branch" == "" || "$branch" == "HEAD" ]] && return 1
 
-local rawDistance="$(git rev-list --left-right --count "${branch}...main" 2>/dev/null)"
+local rawDistance="$(git -C "$worktreePath" rev-list --left-right --count "${branch}...main" 2>/dev/null)"
 
 # Failed (e.g. main doesn't exist)
 [[ "$rawDistance" == "" ]] && return 1

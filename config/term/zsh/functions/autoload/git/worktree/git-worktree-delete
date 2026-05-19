@@ -1,15 +1,32 @@
-# Remove a Worktree directory without deleting its branch
+# Remove a Worktree directory and its branch
 # If called from inside the Worktree being deleted, cds to Git Repo Main first
+# Blocks if branch has unmerged commits ahead of main (bypass with --force/-f)
+# Defaults to current branch when called with no argument
 # Usage:
 # $ git-worktree-delete fix/bug
+# $ git-worktree-delete           # from inside a worktree
+# $ git-worktree-delete --force
 setopt local_options errexit
 
-local branch="$1"
+zmodload zsh/zutil
+zparseopts -E -D \
+  f=flagForce \
+  -force=flagForce
+
+local force=${#flagForce}
+local branch="${1:-$(git-branch-current)}"
 
 local worktreePath="$(git-worktree-path "$branch")"
 [[ "$worktreePath" == "" ]] && return 1
+
+# Block deletion if branch has unmerged commits ahead of main
+if [[ "$force" -eq 0 ]] && git-worktree-is-ahead "$worktreePath"; then
+  echo "✘ Cannot delete worktree: $branch has unmerged commit(s) ahead of main. Use --force to override."
+  return 1
+fi
 
 # If currently inside the worktree being deleted, move to Git Repo Main first
 [[ "$PWD" == "$worktreePath"* ]] && cd "$(git-worktree-main)"
 
 git worktree remove --force "$worktreePath"
+git-branch-remove "$branch"

@@ -52,7 +52,7 @@ Iterate until the user approves the breakdown.
 
 ### Step 5 - Store the issues
 
-For each approved slice, create a [issue-XXX-slug.md](./references/issue-XXX-slug.md) file in the same directory as the PRD.
+For each approved slice, create a [issue-XXX-slug.md](./references/issue-XXX-slug.md) file in the same directory as the PRD, following the given template.
 
 Write a [prd.json](./references/prd-json.md) and
 [progress.md](./references/progress-md.md) following the given templates, as
@@ -75,5 +75,6 @@ These files will help future agent pick up work where a previous agent left off.
 - [ ] User confirmed: granularity feels right (not too coarse / too fine)
 - [ ] User confirmed: dependency order is correct
 - [ ] issue-XXX-slug.md written for each approved slice (numbered in dependency order)
+- [ ] each issue file contains a "What to build" blurb and "Acceptance criteria" list
 - [ ] prd.json written — one entry per test case, all `passes: false`
 - [ ] progress.md written — execution order + guidance sections present
