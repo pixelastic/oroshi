@@ -48,7 +48,7 @@ if [[ "$arg1" != "" ]] && [[ "$arg2" == "" ]]; then
   fi
 
   # Branch: build range, apply to log and diff
-  local currentBranch="$(git rev-parse --abbrev-ref HEAD)"
+  local currentBranch="$(git-branch-current)"
   local range="HEAD..$ref"
   # Self-review: parent branch to HEAD
   if [[ "$ref" == "$currentBranch" ]]; then

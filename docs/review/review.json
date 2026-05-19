@@ -49,7 +49,7 @@
     "rule": "SKILL.md checklist — Use existing helpers over porcelain",
     "description": "`currentBranch=\"$(git rev-parse --abbrev-ref HEAD)\"` uses raw porcelain. A `git-branch-current` helper exists and should be used instead.",
     "action": "Replace `git rev-parse --abbrev-ref HEAD` with the `git-branch-current` helper in `review-diff`.",
-    "completed": false
+    "completed": true
   },
   {
     "id": "R006",
