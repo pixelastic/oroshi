@@ -22,3 +22,7 @@ in implementation right away. More often than not, after a grilling session I
 might want a PRD + Issues in a given worktree. I want it to ask me if I want a
 PRD or implement right away and probably have it estimate if it could implement
 right away (maybe if less than n lines or code, or only touch one file?)
+
+I need to move all tests close to their scripts/functions, in a `__tests`
+subdir. I will also need to cleanup the shared bats helper taht allow testing
+and mocking both scripts and binaries.
