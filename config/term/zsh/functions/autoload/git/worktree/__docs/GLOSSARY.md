@@ -29,6 +29,14 @@ _Avoid_: worktrees folder, worktrees root
 The human-readable name of a git repository, used as the prefix in Worktree Directory Names. Derived from the GitHub remote URL when available (e.g. `git@github.com:pixelastic/oroshi.git` → `oroshi`); falls back to the folder name with leading dots stripped (e.g. `.oroshi` → `oroshi`).
 _Avoid_: directory name, folder name
 
+**Dirty**:
+A Worktree is dirty when it contains at least one file that is modified, added, deleted, or untracked — i.e. when `git status --porcelain` returns at least one line. A clean Worktree returns zero lines.
+_Avoid_: modified, changed, has changes
+
+**Dirty Count**:
+The number of files contributing to a Worktree's dirty state — the line count of `git status --porcelain`. Displayed as a column in `vwl` with the `±` icon in violet (`COLOR_ALIAS_GIT_WORKTREE_DIRTY`). Hidden when zero.
+_Avoid_: modified count, changed files count
+
 ## Relationships
 
 - A **Worktree** belongs to exactly one **Git Repo Main**
