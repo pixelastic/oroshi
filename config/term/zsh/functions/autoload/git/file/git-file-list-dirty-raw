@@ -1,8 +1,13 @@
 # List all dirty files (modified, added, or deleted since last commit)
 # Output format: STATUS:FILEPATH
 # STATUS can be: M (Modified), A (Added), D (Deleted)
-local gitRoot="$(git-directory-root)"
-local dirtyFiles="$(git -C "${gitRoot}" status --porcelain --short)"
+# Usage:
+# $ git-file-list-dirty-raw           # current directory
+# $ git-file-list-dirty-raw /path     # from given path
+setopt local_options errexit
+
+local targetPath="${1:-$(git-directory-root)}"
+local dirtyFiles="$(git -C "${targetPath}" status --porcelain --short)"
 
 for line in ${(f)dirtyFiles}; do
   local stagedStatus="${line[1]}"

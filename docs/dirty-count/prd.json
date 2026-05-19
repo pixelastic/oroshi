@@ -8,7 +8,7 @@
       "Run git-file-list-dirty-raw",
       "Verify output contains 'M:<filename>'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0012",
@@ -19,7 +19,7 @@
       "Run git-file-list-dirty-raw",
       "Verify output contains 'A:<filename>'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0012",
@@ -30,7 +30,7 @@
       "Run git-file-list-dirty-raw",
       "Verify output contains 'D:<filename>'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0012",
@@ -40,7 +40,7 @@
       "Run git-file-list-dirty-raw",
       "Verify output is empty"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0012",
@@ -52,7 +52,7 @@
       "Run git-file-list-dirty-raw from the main repo with the worktree path as argument",
       "Verify output contains the modified file"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0013",
