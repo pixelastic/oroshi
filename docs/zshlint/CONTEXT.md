@@ -80,7 +80,7 @@ JSON defaults for unused fields: `column=1`, `endLine=line`, `endColumn=1`.
 | 90002 | `zshlintRule_localOrReturn`     | No `\|\|` chained on `local` line |
 | 90003 | `zshlintRule_noExternalBasename`| Prefer `:t`/`:h`/`:a` over `$(basename/dirname/realpath)` |
 | 90004 | `zshlintRule_noWhileRead`       | No `while read` loops |
-| 90005 | `zshlintRule_noShift`           | No `shift` for arg parsing |
+| 90005 | `zshlintRule_noManualArgParsing`| No `case "$1"` or `while getopts` — use `zparseopts` |
 | 90006 | `zshlintRule_singleEqualsInTest`| Use `==` not `=` in `[[ ]]` |
 | 90007 | `zshlintRule_elseSmell`         | `else` blocks suggest missing return-early |
 

@@ -7,7 +7,7 @@
 Implement Custom Rule 90006: detect `=` used instead of `==` for string comparison
 inside `[[ ]]` blocks. Both are valid ZSH but `==` is the project convention.
 
-**Before writing any code**, run a `grill-with-docs` session with the user to
+**Before writing any code**, run a `/grill-me` session with the user to
 confirm the regex handles edge cases: `!=`, `<=`, `>=`, `=~` must not be flagged;
 variable assignments after `]]` on the same line must not be flagged.
 

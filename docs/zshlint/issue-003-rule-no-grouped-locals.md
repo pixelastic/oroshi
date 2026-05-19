@@ -7,7 +7,7 @@
 Implement Custom Rule 90001: detect `local` declarations that define multiple
 variables on one line (e.g. `local a b c` or `local raw="" line="" path=""`).
 
-**Before writing any code**, run a `grill-with-docs` session with the user to
+**Before writing any code**, run a `/grill-me` session with the user to
 confirm exactly which `local` forms should and should not trigger the rule,
 including edge cases such as `local -a arr`, `local -r VAR=...`, and array
 literals with spaces inside parentheses.

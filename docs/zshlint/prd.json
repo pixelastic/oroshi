@@ -1,47 +1,53 @@
 [
   {
     "id": "0001",
-    "description": "zshlintRule_noShift flags a file containing a standalone shift call",
+    "description": "zshlintRule_noManualArgParsing flags case \"$1\" pattern",
     "steps": [
-      "Create a fixture file containing a line with just 'shift'",
-      "Source the rule-no-shift.zsh Lib File in a zsh subprocess",
-      "Call zshlintRule_noShift with the fixture file path",
+      "Create a fixture file containing 'case \"$1\" in'",
+      "Source rule-no-manual-arg-parsing.zsh and call zshlintRule_noManualArgParsing",
       "Assert output contains '90005'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
-    "description": "zshlintRule_noShift produces no output for a file with no shift usage",
+    "description": "zshlintRule_noManualArgParsing flags while getopts pattern",
     "steps": [
-      "Create a fixture file with no shift keyword",
-      "Source the rule-no-shift.zsh Lib File in a zsh subprocess",
-      "Call zshlintRule_noShift with the fixture file path",
-      "Assert output is empty"
+      "Create a fixture file containing 'while getopts \"f:v\" opt; do'",
+      "Source rule-no-manual-arg-parsing.zsh and call zshlintRule_noManualArgParsing",
+      "Assert output contains '90005'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
-    "description": "zshlintRule_noShift does not flag shift inside a variable name",
+    "description": "zshlintRule_noManualArgParsing produces no output for zparseopts usage",
     "steps": [
-      "Create a fixture file containing a variable named 'shiftKey' or 'leftShift'",
-      "Source the rule-no-shift.zsh Lib File in a zsh subprocess",
-      "Call zshlintRule_noShift with the fixture file path",
+      "Create a fixture file using zparseopts",
+      "Source rule-no-manual-arg-parsing.zsh and call zshlintRule_noManualArgParsing",
       "Assert output is empty"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
-    "description": "zshlintRule_noShift does not flag shift in a comment",
+    "description": "zshlintRule_noManualArgParsing does not flag patterns in comments",
     "steps": [
-      "Create a fixture file with '# shift' as a comment line",
-      "Source the rule-no-shift.zsh Lib File in a zsh subprocess",
-      "Call zshlintRule_noShift with the fixture file path",
+      "Create a fixture file with '# case \"$1\" is the old way'",
+      "Source rule-no-manual-arg-parsing.zsh and call zshlintRule_noManualArgParsing",
       "Assert output is empty"
     ],
-    "passes": false
+    "passes": true
+  },
+  {
+    "id": "0001",
+    "description": "zshlintRule_noManualArgParsing does not flag case \"$2\"",
+    "steps": [
+      "Create a fixture file containing 'case \"$2\" in'",
+      "Source rule-no-manual-arg-parsing.zsh and call zshlintRule_noManualArgParsing",
+      "Assert output is empty"
+    ],
+    "passes": true
   },
   {
     "id": "0002",

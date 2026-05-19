@@ -8,7 +8,7 @@ Implement Custom Rule 90003: detect use of `$(basename ...)`, `$(dirname ...)`,
 or `$(realpath ...)` as subshell calls. ZSH modifiers (`:t`, `:h`, `:a`) are
 the preferred alternative.
 
-**Before writing any code**, run a `grill-with-docs` session with the user to
+**Before writing any code**, run a `/grill-me` session with the user to
 confirm edge cases, particularly these commands appearing in comments or in
 `echo` strings for documentation purposes.
 

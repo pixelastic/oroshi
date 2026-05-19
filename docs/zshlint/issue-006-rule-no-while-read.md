@@ -7,7 +7,7 @@
 Implement Custom Rule 90004: detect `while read` loops. ZSH-native `${(f)var}`
 iteration is the required alternative.
 
-**Before writing any code**, run a `grill-with-docs` session with the user to
+**Before writing any code**, run a `/grill-me` session with the user to
 confirm edge cases: `while true` loops that happen to contain `read` on a later
 line, and `readlink` / `readline` which should not match.
 

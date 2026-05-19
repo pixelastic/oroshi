@@ -8,7 +8,7 @@ Implement Custom Rule 90002: detect `||` chained on a `local` declaration line
 (e.g. `local foo="$(cmd)" || return 1`). This is an error because `local` always
 returns 0 regardless of the subshell result, making the guard silently ineffective.
 
-**Before writing any code**, run a `grill-with-docs` session with the user to
+**Before writing any code**, run a `/grill-me` session with the user to
 confirm edge cases, particularly `||` appearing inside the value string itself
 (e.g. `local msg="yes || no"`).
 

@@ -8,7 +8,7 @@ Implement Custom Rule 90007: detect `else` blocks as a prompt to consider the
 return-early pattern. This rule has a higher false positive rate than others
 and is intentionally at `warning` level.
 
-**Before writing any code**, run a `grill-with-docs` session with the user to
+**Before writing any code**, run a `/grill-me` session with the user to
 agree on exactly what constitutes a flaggable `else` (standalone `else` on its
 own line), confirm the acceptable false positive rate, and decide whether
 `elif` should also be flagged.

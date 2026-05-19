@@ -24,3 +24,11 @@
 ---
 
 ## Log (append below when an issue is completed)
+
+## Session 2026-05-19 — 0001: Rule: no manual arg parsing
+- Completed: Created directory scaffold (`zshlint/` dir, `__rules/`, `__tests__/`), moved orchestrator file inside. After grill-with-docs session, rule redesigned from `noShift` to `noManualArgParsing`: detects `case "$1"` and `while getopts` patterns instead. Created `rule-no-manual-arg-parsing.zsh`, `rule-no-manual-arg-parsing.bats`, and `__tests__/helper.bash` (shared DSL helpers for all rule tests).
+- Tests added: flags `case "$1"`; flags `while getopts`; clean zparseopts file; no false-positive on comment; no false-positive on `case "$2"`
+- Discovered: `zshlint` was a flat file — converted to directory as prerequisite. SC2016 is a systematic false positive in rule files using regex patterns with `$` — disable at file header level. New test helper DSL (`run_rule` / `expect_violation` / `expect_clean`) required by user for readability.
+- Fixed: none
+- Skipped feedback: review noted files are untracked — ralph does not commit, that is the user's job
+- Next: 0002 — Orchestrator scaffold (refactor zshlint script to source Lib Files, merge custom + shellcheck JSON output)
