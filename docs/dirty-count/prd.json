@@ -62,7 +62,7 @@
       "Run git-directory-dirty-count",
       "Verify output is '0'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0013",
@@ -73,7 +73,7 @@
       "Run git-directory-dirty-count",
       "Verify output is '2'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0013",
@@ -84,7 +84,7 @@
       "Run git-directory-dirty-count",
       "Verify output is '1'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0013",
@@ -95,7 +95,7 @@
       "Run git-directory-dirty-count",
       "Verify output is '1'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0013",
@@ -107,7 +107,7 @@
       "Run git-directory-dirty-count from the main repo with the worktree path as argument",
       "Verify output is '1'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0014",

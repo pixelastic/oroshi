@@ -1,0 +1,13 @@
+# Count dirty files (modified, staged, untracked) in a directory
+# Returns 0 for a clean directory. Always exits 0.
+# Usage:
+# $ git-directory-dirty-count           # current directory
+# $ git-directory-dirty-count /path     # from given path
+setopt local_options errexit
+
+local rawFiles="$(git-file-list-dirty-raw "$@" || true)"
+
+[[ "$rawFiles" == "" ]] && echo 0 && return 0
+
+local -a fileLines=(${(@f)rawFiles})
+echo ${#fileLines}

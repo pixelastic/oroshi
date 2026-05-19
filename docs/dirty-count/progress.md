@@ -31,3 +31,11 @@
 - Fixed: none
 - Skipped feedback: review findings were about pre-existing docs (broken PRD links, duplicate prd.json IDs, wrong glossary path) — not introduced by this issue
 - Next: 0013 (git-directory-dirty-count)
+
+## Session 2026-05-19 — 0013: git-directory-dirty-count
+- Completed: new autoload fn `git/directory/git-directory-dirty-count`; delegates to `git-file-list-dirty-raw "$@" || true`, counts lines via local array
+- Tests added: `scripts/bin/__tests__/git-directory-dirty-count.bats` — 5 tests (clean, modified x2, staged, untracked, path arg)
+- Discovered: `${#${(@f)var}}` gives string length, not element count — must assign to `local -a` first; `&&/||` if-else pattern for conditional arg forwarding violates standards, replaced with `"$@"` forwarding + `|| true`
+- Fixed: `|| true` added to uphold "always exits 0" spec when called from non-git dir
+- Skipped feedback: bats setup `cd` violations — both files already `cd` before git ops; `git init PATH` is valid; `git-file-list-dirty-raw.bats` is pre-existing; issue doc H1 titles not introduced by this issue
+- Next: 0014 (git-worktree-list-raw new format)
