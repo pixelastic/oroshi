@@ -8,7 +8,8 @@
       "Verify <tempdir>/.ralph-done exists",
       "Verify <tempdir>/.ralph-prd-done does NOT exist"
     ],
-    "passes": false
+    "passes": true,
+    "status": "complete"
   },
   {
     "id": "0001",
@@ -19,7 +20,8 @@
       "Verify <tempdir>/.ralph-done exists",
       "Verify <tempdir>/.ralph-prd-done exists"
     ],
-    "passes": false
+    "passes": true,
+    "status": "complete"
   },
   {
     "id": "0001",
@@ -31,7 +33,8 @@
       "Verify <tempdir>/.ralph-done exists",
       "Verify <tempdir>/.ralph-prd-done does NOT exist"
     ],
-    "passes": false
+    "passes": true,
+    "status": "complete"
   },
   {
     "id": "0001",
@@ -43,7 +46,8 @@
       "Verify <tempdir>/.ralph-done exists",
       "Verify <tempdir>/.ralph-prd-done does NOT exist"
     ],
-    "passes": false
+    "passes": true,
+    "status": "complete"
   },
   {
     "id": "0002",

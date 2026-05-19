@@ -111,7 +111,10 @@ Update `$ARGUMENTS/prd.json`: mark issue as complete, update any relevant status
 
 **Goal:** Hand off to user.
 
-Print the session entry that was written to progress.md — verbatim.
+**Exit criterion:** `ralph-end` called, session recap displayed.
+
+- Run `ralph-end $ARGUMENTS` first
+- Print the session entry that was written to progress.md
 
 **Stop here. Do not commit. Do not start the next issue. Wait for the user.**
 

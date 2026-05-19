@@ -19,3 +19,11 @@
 
 ---
 ## Log (append below when an issue is completed)
+
+## Session 2026-05-19 — 0001: ralph-end script
+- Completed: Created `scripts/bin/claude/ralph-end` script; updated ralph SKILL.md Step 7 to call it
+- Tests added: `scripts/bin/__tests__/ralph-end.bats` — 4 tests covering open/complete/absent/malformed prd.json
+- Discovered: bats tests need `PATH` prepend in setup to find worktree bin scripts (not yet in ~/.oroshi)
+- Fixed: `set -e` exit bug — `[[ cond ]] && cmd` returns 1 when cond is false; fixed with return-early pattern
+- Skipped feedback: review ran on prior docs commits; findings were duplicate `"id":"0001"` in prd.json (pre-existing, structural, out of scope), missing 0002/0003 test cases (wrong issue), commit verbosity (no commit yet)
+- Next: issue 0002 — ralph --max loop core

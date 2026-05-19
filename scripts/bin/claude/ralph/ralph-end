@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+# Signal end of ralph session: write sentinel files in <dir>
+# Usage:
+# $ ralph-end <dir>
+set -e
+
+local dir="$1"
+if [[ "$dir" == "" ]]; then
+  print "ralph-end: <dir> required"
+  return 1
+fi
+
+# Signal this ralph iteration is done
+touch "$dir/.ralph-done"
+
+# Count open issues
+local openCount="$(jq '[.[] | select(.status != "complete")] | length' "$dir/prd.json")"
+
+# Mark prd as done if all issues are done
+if [[ "$openCount" == "0" ]]; then
+  touch "$dir/.ralph-prd-done"
+fi
