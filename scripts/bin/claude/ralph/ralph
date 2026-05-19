@@ -36,15 +36,12 @@ while [[ $i -lt $maxLoops ]]; do
     return 0
   fi
 
-  # REVIEW: It is not very elegant to have the code be that opinionated about
-  # the tests, we need to rethink that in a more transparent way
-  # Start claude in background (RALPH_CLAUDE_CMD lets tests inject a stub)
-  if [[ "$RALPH_CLAUDE_CMD" != "" ]]; then
-    "$RALPH_CLAUDE_CMD" &
+  # Start claude in background; connect to terminal when available for TUI
+  # REVIEW: Explain to me what -t is, and why we need it?
+  if [[ -t 0 ]]; then
+    claude --permission-mode acceptEdits "/ralph ${dir}" </dev/tty &
   else
-    claude \
-      --permission-mode acceptEdits \
-      "/ralph ${dir}" </dev/tty &
+    claude --permission-mode acceptEdits "/ralph ${dir}" &
   fi
   local claudePid=$!
 
@@ -81,8 +78,7 @@ while [[ $i -lt $maxLoops ]]; do
   # Commit if there are changes
   if [[ -n "$(git status --porcelain)" ]]; then
     git add --all
-    local commitMsgCmd="${RALPH_GIT_COMMIT_MESSAGE:-git-commit-message}"
-    local msg="$($commitMsgCmd)"
+    local msg="$(git-commit-message)"
     git commit -m "$msg"
   fi
 done
