@@ -59,7 +59,8 @@
       "Run ralph --max 3 <dir>",
       "Verify git log shows exactly 3 commits"
     ],
-    "passes": false
+    "passes": true,
+    "status": "complete"
   },
   {
     "id": "0002",
@@ -71,7 +72,8 @@
       "Run ralph --max 10 <dir>",
       "Verify git log shows exactly 1 commit (early exit after first iteration)"
     ],
-    "passes": false
+    "passes": true,
+    "status": "complete"
   },
   {
     "id": "0002",
@@ -83,7 +85,8 @@
       "Verify git log shows no commits",
       "Verify no background processes remain from the loop"
     ],
-    "passes": false
+    "passes": true,
+    "status": "complete"
   },
   {
     "id": "0003",

@@ -3,18 +3,88 @@
 # Usage:
 # $ ralph              # Run on current directory
 # $ ralph <dir>        # Run on specific directory
-# $ ralph <dir> <msg>  # Run with extra context
+# $ ralph --max N <dir>  # Run in loop for up to N iterations
 set -e
 
-local dir="${${1:-.}:a}" # absolute path of target dir
-local extra=""
-[[ $# -gt 1 ]] && extra=" ${@:2}"
+zmodload zsh/zutil
+zparseopts -E -D \
+  -max:=flagMax
 
+local dir="${${1:-.}:a}"
+local maxLoops="${flagMax[2]}"
+
+# Move to repo root first, so claude has access to the whole repo
 local gitRoot="$(git-directory-root)"
-
-# Ensure Claude runs from git root so it has full repo access
 [[ "$PWD" != "$gitRoot" ]] && cd "$gitRoot"
 
-claude \
-  --permission-mode acceptEdits \
-  "/ralph ${dir}${extra}"
+# Single-shot mode
+if [[ "$maxLoops" == "" ]]; then
+  claude \
+    --permission-mode acceptEdits \
+    "/ralph ${dir}"
+  return
+fi
+
+# Loop mode: run up to N iterations
+local i=0
+while [[ $i -lt $maxLoops ]]; do
+  i=$((i + 1))
+
+  # PRD complete: exit loop early
+  if [[ -f "$dir/.ralph-prd-done" ]]; then
+    print "ralph: PRD complete — all issues done"
+    return 0
+  fi
+
+  # REVIEW: It is not very elegant to have the code be that opinionated about
+  # the tests, we need to rethink that in a more transparent way
+  # Start claude in background (RALPH_CLAUDE_CMD lets tests inject a stub)
+  if [[ "$RALPH_CLAUDE_CMD" != "" ]]; then
+    "$RALPH_CLAUDE_CMD" &
+  else
+    claude \
+      --permission-mode acceptEdits \
+      "/ralph ${dir}" </dev/tty &
+  fi
+  local claudePid=$!
+
+  # Sentinel watcher: kills claude when .ralph-done appears
+  {
+    local waitInterval="${RALPH_WATCHER_INTERVAL:-5}"
+    while true; do
+      sleep $waitInterval
+      # Wait until the file appears
+      [[ -f "$dir/.ralph-done" ]] || continue
+
+      # Remove the sentinel, and kill Claude
+      rm -f "$dir/.ralph-done"
+      kill -TERM $claudePid 2>/dev/null || true
+      break
+    done
+  } &
+  local watcherPid=$!
+
+  # Wait for claude; capture exit code
+  local claudeExitCode=0
+  wait $claudePid 2>/dev/null || claudeExitCode=$?
+
+  # Kill watcher and wait for cleanup
+  kill $watcherPid 2>/dev/null || true
+  wait $watcherPid 2>/dev/null || true
+
+  # Ctrl+C: stop loop cleanly, no commit
+  if [[ $claudeExitCode -eq 130 ]]; then
+    print "ralph: stopped (Ctrl+C)"
+    return 0
+  fi
+
+  # Commit if there are changes
+  if [[ -n "$(git status --porcelain)" ]]; then
+    git add --all
+    local commitMsgCmd="${RALPH_GIT_COMMIT_MESSAGE:-git-commit-message}"
+    local msg="$($commitMsgCmd)"
+    git commit -m "$msg"
+  fi
+done
+
+print "ralph: done ($maxLoops iterations)"

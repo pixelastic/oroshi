@@ -27,3 +27,19 @@
 - Fixed: `set -e` exit bug — `[[ cond ]] && cmd` returns 1 when cond is false; fixed with return-early pattern
 - Skipped feedback: review ran on prior docs commits; findings were duplicate `"id":"0001"` in prd.json (pre-existing, structural, out of scope), missing 0002/0003 test cases (wrong issue), commit verbosity (no commit yet)
 - Next: issue 0002 — ralph --max loop core
+
+## Session 2026-05-19 — 0002: ralph --max loop core
+- Completed: Added `--max N` flag to `scripts/bin/claude/ralph/ralph`; sentinel watcher in background; commit-per-iteration; prd-done early exit; Ctrl+C detection
+- Tests added: `scripts/bin/__tests__/ralph-loop.bats` — 3 tests (3-iteration count, early exit on prd-done, Ctrl+C no-commit)
+- Discovered: `.zshenv` rebuilds PATH entirely — PATH-based stubs don't survive zsh script invocation; used `RALPH_CLAUDE_CMD` and `RALPH_GIT_COMMIT_MESSAGE` env vars instead; wrote sentinel files directly in stub (ralph-end not in rebuilt PATH)
+- Fixed: `zparseopts` spec uses `-max:=flagMax` (double-dash) not `max:=flagMax` for `--max` flag
+- Skipped feedback: review findings 1-4 are pre-existing ralph-end issues from issue 0001 (local/return at top-level, missing zparseopts, jq on missing file) — out of scope for this issue; scope-creep findings are pre-existing from previous session
+- Next: issue 0003 — inactivity monitor
+
+## Session 2026-05-19b — 0002: fix ralph-loop.bats assertions
+- Completed: Fixed 3 `git -C "$GIT_REPO" log` assertions in `ralph-loop.bats` → `git log` (cd already in place; git -C breaks with env GIT_DIR=.git)
+- Tests added: none (fixed pre-existing assertions)
+- Discovered: tests were pre-written but assertions broke due to git -C / GIT_DIR env interaction
+- Fixed: git -C pattern in tests 1, 2, and 3
+- Skipped feedback: review findings all concern ralph-end (out of scope); zsh allows local/return at script level; ralph-end.bats PATH prepend is for the script itself (not a stub)
+- Next: issue 0003 — inactivity monitor
