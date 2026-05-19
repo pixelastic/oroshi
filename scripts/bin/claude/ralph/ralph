@@ -13,6 +13,49 @@ zparseopts -E -D \
 local dir="${${1:-.}:a}"
 local maxLoops="${flagMax[2]}"
 
+WATCHER_INTERVAL="${RALPH_WATCHER_INTERVAL:-5}"
+MONITOR_TIMEOUT="${RALPH_MONITOR_TIMEOUT:-600}"
+
+# Kill claude when .ralph-done appears in <dir>
+_sentinel_watcher() {
+  local dir="$1" claudePid="$2"
+  while true; do
+    sleep $WATCHER_INTERVAL
+    # Wait until the file appears
+    [[ -f "$dir/.ralph-done" ]] || continue
+
+    # Remove the sentinel, and kill Claude
+    rm -f "$dir/.ralph-done"
+    kill -TERM $claudePid 2>/dev/null || true
+    break
+  done
+}
+
+# Play a sound when no filesystem activity occurs for N seconds
+_inactivity_monitor() {
+  local gitRoot="$1"
+  local alerted=false
+  while true; do
+    local inoCode=0
+    inotifywait --recursive \
+      --event modify,create,delete,move \
+      --timeout "$MONITOR_TIMEOUT" \
+      "$gitRoot" >/dev/null 2>&1 || inoCode=$?
+
+    # Activity detected: reset alert
+    if [[ $inoCode -eq 0 ]]; then
+      alerted=false
+      continue
+    fi
+
+    # Timeout: play alert once per idle period
+    if [[ $alerted == false ]]; then
+      audio-play-oroshi ralph-timeout.mp3
+      alerted=true
+    fi
+  done
+}
+
 # Move to repo root first, so claude has access to the whole repo
 local gitRoot="$(git-directory-root)"
 [[ "$PWD" != "$gitRoot" ]] && cd "$gitRoot"
@@ -37,53 +80,13 @@ while [[ $i -lt $maxLoops ]]; do
   fi
 
   # Start claude in background; connect to terminal when available for TUI
-  # REVIEW: Explain to me what -t is, and why we need it?
-  if [[ -t 0 ]]; then
-    claude --permission-mode acceptEdits "/ralph ${dir}" </dev/tty &
-  else
-    claude --permission-mode acceptEdits "/ralph ${dir}" &
-  fi
+  claude --permission-mode acceptEdits "/ralph ${dir}" </dev/tty &
   local claudePid=$!
 
-  # Sentinel watcher: kills claude when .ralph-done appears
-  {
-    local waitInterval="${RALPH_WATCHER_INTERVAL:-5}"
-    while true; do
-      sleep $waitInterval
-      # Wait until the file appears
-      [[ -f "$dir/.ralph-done" ]] || continue
-
-      # Remove the sentinel, and kill Claude
-      rm -f "$dir/.ralph-done"
-      kill -TERM $claudePid 2>/dev/null || true
-      break
-    done
-  } &
+  _sentinel_watcher "$dir" $claudePid &
   local watcherPid=$!
 
-  # Inactivity monitor: play sound if no filesystem activity for N seconds
-  {
-    local alerted=false
-    while true; do
-      local inoCode=0
-      inotifywait --recursive \
-        --event modify,create,delete,move \
-        --timeout "${RALPH_MONITOR_TIMEOUT:-600}" \
-        "$gitRoot" >/dev/null 2>&1 || inoCode=$?
-
-      # Activity detected: reset alert
-      if [[ $inoCode -eq 0 ]]; then
-        alerted=false
-        continue
-      fi
-
-      # Timeout: play alert once per idle period
-      if [[ $alerted == false ]]; then
-        audio-play-oroshi ralph-timeout.mp3
-        alerted=true
-      fi
-    done
-  } &
+  _inactivity_monitor "$gitRoot" &
   local monitorPid=$!
 
   # Wait for claude; capture exit code
