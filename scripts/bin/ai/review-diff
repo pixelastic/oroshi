@@ -30,6 +30,13 @@ if [[ $# -eq 1 ]]; then
   return 0
 fi
 
+# 2-arg range case: diff directly between two named refs (two-dot, no merge-base)
+if [[ $# -eq 2 ]]; then
+  rtk proxy git log "$1..$2"
+  rtk proxy git diff "$1" "$2"
+  return 0
+fi
+
 # 0-arg case: working-tree diff
 # List of changed/added/deleted files
 statusRaw="$(git status --porcelain)"

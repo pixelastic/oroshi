@@ -69,13 +69,31 @@ teardown() {
   echo "sha content" > sha-file.txt
   git add sha-file.txt
   git commit --message "feat: add sha-file.txt"
-  local sha
-  sha="$(git rev-parse HEAD)"
+  local sha="$(git rev-parse HEAD)"
 
   run review-diff "$sha"
   [ "$status" -eq 0 ]
   [[ "$output" == *"feat: add sha-file.txt"* ]]
   [[ "$output" == *"diff --git"* ]]
+}
+
+@test "2-arg range: stdout contains range commits and diff --git line; out-of-range commits absent" {
+  cd "$TMP_DIRECTORY/my-repo"
+  local shaA
+  shaA="$(git rev-parse HEAD)"
+  echo "main content" > main-only.txt
+  git add main-only.txt
+  git commit --message "main: commit B"
+  git checkout -b feature-branch "$shaA"
+  echo "feature content" > feature.txt
+  git add feature.txt
+  git commit --message "feat: commit C"
+
+  run review-diff "$shaA" feature-branch
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"feat: commit C"* ]]
+  [[ "$output" == *"diff --git"* ]]
+  [[ "$output" != *"main: commit B"* ]]
 }
 
 @test "1-arg branch, external review: stdout contains feature commit; main-only commits absent" {

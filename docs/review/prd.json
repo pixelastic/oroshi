@@ -85,6 +85,6 @@
       "Run review-diff <sha-of-A> <feature-branch>",
       "Assert stdout contains commit C and a diff --git line; assert commit B is absent"
     ],
-    "passes": false
+    "passes": true
   }
 ]

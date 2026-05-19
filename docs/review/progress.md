@@ -45,3 +45,11 @@ issue-006 → needs issue-001 + issue-002 + issue-003 + issue-004 + issue-005
 - Fixed: post-review — split `local mainBranch` in external-review test (issue-002 carryover) merged into single-line assignment
 - Skipped feedback: (1) `return 0` vs `exit 0` at top-level — pre-existing pattern, accepted in prior sessions; (2) partial diff cleanliness check in external-review test — out of scope for issue-003; (3) prd.json items 0003/0004 flagged as unimplemented — reviewer read pre-implementation state; 0003 is now done
 - Next: issue-004 (2-arg range)
+
+## Session 2026-05-19 — issue-004: review-diff 2-arg range case
+- Completed: added 2-arg range handling to `scripts/bin/ai/review-diff`; one new bats test in `review-diff.bats`
+- Tests added: 2-arg range: stdout contains range commits and diff --git line; out-of-range commits absent
+- Discovered: none
+- Fixed: split `local sha` in 1-arg SHA test (issue-003 carryover flagged by reviewer)
+- Skipped feedback: (1) `git_env_clean` in setup() — pre-existing, already skipped in prior sessions; (2) SHA test captures newest not oldest commit — issue-003 fidelity gap, out of scope; (3) `<sha>^` latent fragility on root commits — no guard required by spec
+- Next: issue-005 (SKILL.md update — HITL, Tim must approve wording before issue-006)
