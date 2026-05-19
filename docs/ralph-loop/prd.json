@@ -1,0 +1,108 @@
+[
+  {
+    "id": "0001",
+    "description": "ralph-end with open issues writes only .ralph-done",
+    "steps": [
+      "Create a temp dir with a prd.json containing one issue with status 'open'",
+      "Run ralph-end <tempdir>",
+      "Verify <tempdir>/.ralph-done exists",
+      "Verify <tempdir>/.ralph-prd-done does NOT exist"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0001",
+    "description": "ralph-end with all issues complete writes both sentinels",
+    "steps": [
+      "Create a temp dir with a prd.json where all issues have status 'complete'",
+      "Run ralph-end <tempdir>",
+      "Verify <tempdir>/.ralph-done exists",
+      "Verify <tempdir>/.ralph-prd-done exists"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0001",
+    "description": "ralph-end with no prd.json writes only .ralph-done without error",
+    "steps": [
+      "Create a temp dir with no prd.json",
+      "Run ralph-end <tempdir>",
+      "Verify exit code is 0",
+      "Verify <tempdir>/.ralph-done exists",
+      "Verify <tempdir>/.ralph-prd-done does NOT exist"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0001",
+    "description": "ralph-end with malformed prd.json writes only .ralph-done without error",
+    "steps": [
+      "Create a temp dir with a prd.json containing invalid JSON",
+      "Run ralph-end <tempdir>",
+      "Verify exit code is 0",
+      "Verify <tempdir>/.ralph-done exists",
+      "Verify <tempdir>/.ralph-prd-done does NOT exist"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "ralph --max 3 runs exactly 3 iterations and creates 3 commits",
+    "steps": [
+      "Create a temp git repo with a prd.json containing 5 open issues",
+      "Stub claude as a function that calls ralph-end <dir> and exits 0, making a file change each time",
+      "Stub git-commit-message to output 'test commit'",
+      "Run ralph --max 3 <dir>",
+      "Verify git log shows exactly 3 commits"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "ralph --max 10 exits early when prd.json has all issues complete",
+    "steps": [
+      "Create a temp git repo with a prd.json where all issues have status 'complete'",
+      "Stub claude as a function that calls ralph-end <dir>, makes a file change, and exits 0",
+      "Stub git-commit-message to output 'test commit'",
+      "Run ralph --max 10 <dir>",
+      "Verify git log shows exactly 1 commit (early exit after first iteration)"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "ralph --max loop stops cleanly on Ctrl+C with no commit",
+    "steps": [
+      "Create a temp git repo with a prd.json containing open issues",
+      "Stub claude as a function that makes a file change and exits 130 (SIGINT)",
+      "Run ralph --max 5 <dir>",
+      "Verify git log shows no commits",
+      "Verify no background processes remain from the loop"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0003",
+    "description": "inactivity monitor plays sound once when inotifywait times out",
+    "steps": [
+      "Stub inotifywait to exit immediately with code 2 (timeout)",
+      "Stub audio-play-oroshi to append its argument to a capture file",
+      "Stub claude to call ralph-end <dir> and exit 0 after a short delay",
+      "Run ralph --max 1 <dir>",
+      "Verify the capture file contains exactly one entry: 'ralph-timeout.mp3'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0003",
+    "description": "inactivity monitor resets after activity and can fire again",
+    "steps": [
+      "Stub inotifywait to alternate: first call exits 0 (activity), second call exits 2 (timeout)",
+      "Stub audio-play-oroshi to append its argument to a capture file",
+      "Stub claude to call ralph-end <dir> and exit 0 after monitor has cycled twice",
+      "Run ralph --max 1 <dir>",
+      "Verify the capture file contains exactly one entry (alert fired after the second cycle, not the first)"
+    ],
+    "passes": false
+  }
+]
