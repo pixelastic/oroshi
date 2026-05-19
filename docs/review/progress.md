@@ -53,3 +53,11 @@ issue-006 → needs issue-001 + issue-002 + issue-003 + issue-004 + issue-005
 - Fixed: split `local sha` in 1-arg SHA test (issue-003 carryover flagged by reviewer)
 - Skipped feedback: (1) `git_env_clean` in setup() — pre-existing, already skipped in prior sessions; (2) SHA test captures newest not oldest commit — issue-003 fidelity gap, out of scope; (3) `<sha>^` latent fragility on root commits — no guard required by spec
 - Next: issue-005 (SKILL.md update — HITL, Tim must approve wording before issue-006)
+
+## Session 2026-05-19 — issue-005: SKILL.md update (HITL — awaiting approval)
+- Completed: updated `config/ai/claude/claudecode/skills/review/SKILL.md` step 1 — replaced git-command table with two entry points: filepath path (`review-diff-<uuid>.md` → Read directly) and natural language path (translate intent → `review-diff` args → Bash)
+- Tests added: none (doc-only change)
+- Discovered: none
+- Fixed: none
+- Skipped feedback: n/a — no review subagent run (HITL issue; no code to test)
+- Next: Tim approves wording → mark issue-005 complete → issue-006 (review shell script)

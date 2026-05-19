@@ -14,15 +14,21 @@ Both axes run as **parallel sub-agents** so they don't pollute each other's cont
 
 ## Process
 
-### 1. Pin the fixed point and build the diff command
+### 1. Get the diff
 
-Choose the diff command based on what the user supplied:
+Two entry points — pick whichever applies:
 
-| User supplied | Diff command | Commit log |
-|---|---|---|
-| Nothing | `git status --short; git diff HEAD` (all uncommitted changes — staged + unstaged) | none (no commits to list) |
-| Single commit / branch / tag | `git diff <fixed-point>...HEAD` (three-dot, merge-base comparison) | `git log <fixed-point>..HEAD --oneline` |
-| Commit range `a..b` or `a...b` | `git diff <a>..<b>` (pass through as-is) | `git log <a>..<b> --oneline` |
+**Filepath path** — if the argument matches the pattern `review-diff-<uuid>.md`, read that file directly with the `Read` tool. Do not call `review-diff`. The file contents are the diff context; continue to step 2.
+
+**Natural language path** — interpret the user's intent and translate to `review-diff` args, then run `scripts/bin/ai/review-diff` via the `Bash` tool. Use its stdout as the diff context.
+
+| User says | `review-diff` call |
+|---|---|
+| Nothing / "review this" / "review WIP" | `review-diff` (0 args) |
+| "review this branch" / "review \<branch\>" | `review-diff <branch>` |
+| "review since main" / "review main" | `review-diff main` |
+| "review commit abc123" | `review-diff abc123` |
+| "review main..feature" / "review main feature" | `review-diff main feature` |
 
 
 ### 2. Identify the spec source
