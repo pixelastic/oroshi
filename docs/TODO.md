@@ -29,3 +29,6 @@ and mocking both scripts and binaries.
 
 I will need to improve the ctrl-p when prefixed with bats to 1/ filter in the
 current worktree, not the default main and 2/ only suggest .bats files
+
+Is errexit in the autoloaded function a good idea? It's gonna do exit, while I
+actually only want return, to quit the function, not kill the terminal.
