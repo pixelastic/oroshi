@@ -16,3 +16,9 @@ repo root. Probably also a few DECISIONS.md to replace the ADR, to document
 decisions. With a pattern of using `__docs` to store those infos. I also have a
 `docs` folder at the root with temporary PRD/issues for each worktree. I wonder
 if this is the right naming (docs? specs? agents?)
+
+I should update grill me (or CLAUDE.md?) to prevent Claude from wanting to jump
+in implementation right away. More often than not, after a grilling session I
+might want a PRD + Issues in a given worktree. I want it to ask me if I want a
+PRD or implement right away and probably have it estimate if it could implement
+right away (maybe if less than n lines or code, or only touch one file?)
