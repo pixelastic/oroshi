@@ -2,7 +2,7 @@
 # Usage:
 # $ skills-allowlist-add "Skill(git-commit-writer)"
 local allowedCommand="$1"
-local allowlistFile=~/.oroshi/config/ai/claude/claudecode/hooks/allowlist.json
+local allowlistFile=~/.oroshi/config/ai/claude/hooks/allowlist.json
 
 if [[ -z "$allowedCommand" ]]; then
   echo "Error: Command required" >&2

@@ -14,7 +14,7 @@
 #   "tool_use_id": "toolu_01PQpPRb3zHrTsqG2LMoRWNn"
 # }
 
-local hookDir=/home/tim/.oroshi/config/ai/claude/claudecode/hooks
+local hookDir=/home/tim/.oroshi/config/ai/claude/hooks
 source ${hookDir}/lib/hookLib.zsh
 
 # Save stdin to a temporary JSON file

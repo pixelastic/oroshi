@@ -2,7 +2,7 @@
 
 ## Default location
 
-`~/.oroshi/config/ai/claude/claudecode/skills/<skill-name>/SKILL.md`
+`~/.oroshi/config/ai/claude/skills/<skill-name>/SKILL.md`
 
 ## Template
 
