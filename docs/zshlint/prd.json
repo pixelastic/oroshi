@@ -1,0 +1,208 @@
+[
+  {
+    "id": "0001",
+    "description": "zshlintRule_noShift flags a file containing a standalone shift call",
+    "steps": [
+      "Create a fixture file containing a line with just 'shift'",
+      "Source the rule-no-shift.zsh Lib File in a zsh subprocess",
+      "Call zshlintRule_noShift with the fixture file path",
+      "Assert output contains '90005'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0001",
+    "description": "zshlintRule_noShift produces no output for a file with no shift usage",
+    "steps": [
+      "Create a fixture file with no shift keyword",
+      "Source the rule-no-shift.zsh Lib File in a zsh subprocess",
+      "Call zshlintRule_noShift with the fixture file path",
+      "Assert output is empty"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0001",
+    "description": "zshlintRule_noShift does not flag shift inside a variable name",
+    "steps": [
+      "Create a fixture file containing a variable named 'shiftKey' or 'leftShift'",
+      "Source the rule-no-shift.zsh Lib File in a zsh subprocess",
+      "Call zshlintRule_noShift with the fixture file path",
+      "Assert output is empty"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0001",
+    "description": "zshlintRule_noShift does not flag shift in a comment",
+    "steps": [
+      "Create a fixture file with '# shift' as a comment line",
+      "Source the rule-no-shift.zsh Lib File in a zsh subprocess",
+      "Call zshlintRule_noShift with the fixture file path",
+      "Assert output is empty"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "Orchestrator merges custom rule output with shellcheck JSON into a single array",
+    "steps": [
+      "Create a fixture file containing a standalone shift call",
+      "Run zshlint on the fixture file",
+      "Parse the JSON output",
+      "Assert the array contains an entry with code 90005"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "Orchestrator returns empty array and exit 0 for a clean file",
+    "steps": [
+      "Create a fixture file with no violations",
+      "Run zshlint on the fixture file",
+      "Assert output is '[]'",
+      "Assert exit code is 0"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "Orchestrator returns exit 1 when custom rule finds a violation",
+    "steps": [
+      "Create a fixture file containing a standalone shift call",
+      "Run zshlint on the fixture file",
+      "Assert exit code is 1"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0003",
+    "description": "zshlintRule_noGroupedLocals flags 'local a b c' declarations",
+    "steps": [
+      "Create a fixture file containing 'local a b c'",
+      "Source the Lib File and call the function",
+      "Assert output contains '90001'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0003",
+    "description": "zshlintRule_noGroupedLocals does not flag single-variable local with flags",
+    "steps": [
+      "Create a fixture file containing 'local -a myArray'",
+      "Source the Lib File and call the function",
+      "Assert output is empty"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0004",
+    "description": "zshlintRule_localOrReturn flags local assignment chained with ||",
+    "steps": [
+      "Create a fixture file containing 'local foo=\"$(cmd)\" || return 1'",
+      "Source the Lib File and call the function",
+      "Assert output contains '90002'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0004",
+    "description": "zshlintRule_localOrReturn does not flag || inside the quoted value",
+    "steps": [
+      "Create a fixture file containing 'local msg=\"yes || no\"'",
+      "Source the Lib File and call the function",
+      "Assert output is empty"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0005",
+    "description": "zshlintRule_noExternalBasename flags $(basename ...) usage",
+    "steps": [
+      "Create a fixture file containing 'local name=\"$(basename \"$path\")\"'",
+      "Source the Lib File and call the function",
+      "Assert output contains '90003'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0005",
+    "description": "zshlintRule_noExternalBasename does not flag basename in a comment",
+    "steps": [
+      "Create a fixture file containing '# use basename or :t modifier'",
+      "Source the Lib File and call the function",
+      "Assert output is empty"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0006",
+    "description": "zshlintRule_noWhileRead flags 'while IFS= read -r line' loops",
+    "steps": [
+      "Create a fixture file containing 'while IFS= read -r line; do'",
+      "Source the Lib File and call the function",
+      "Assert output contains '90004'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0006",
+    "description": "zshlintRule_noWhileRead does not flag 'while true' without read on same line",
+    "steps": [
+      "Create a fixture file containing 'while true; do'",
+      "Source the Lib File and call the function",
+      "Assert output is empty"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0006",
+    "description": "zshlintRule_noWhileRead does not flag readlink",
+    "steps": [
+      "Create a fixture file containing 'local target=\"$(readlink -f \"$path\")\"'",
+      "Source the Lib File and call the function",
+      "Assert output is empty"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0007",
+    "description": "zshlintRule_singleEqualsInTest flags [[ \"$foo\" = \"bar\" ]]",
+    "steps": [
+      "Create a fixture file containing '[[ \"$foo\" = \"bar\" ]]'",
+      "Source the Lib File and call the function",
+      "Assert output contains '90006'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0007",
+    "description": "zshlintRule_singleEqualsInTest does not flag != <= >= =~",
+    "steps": [
+      "Create a fixture file containing '[[ \"$foo\" != \"bar\" ]] && [[ $x =~ pattern ]]'",
+      "Source the Lib File and call the function",
+      "Assert output is empty"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0008",
+    "description": "zshlintRule_elseSmell flags standalone else on its own line",
+    "steps": [
+      "Create a fixture file containing an if/else/fi block",
+      "Source the Lib File and call the function",
+      "Assert output contains '90007'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0008",
+    "description": "zshlintRule_elseSmell does not flag else in a comment",
+    "steps": [
+      "Create a fixture file containing '# else use return early'",
+      "Source the Lib File and call the function",
+      "Assert output is empty"
+    ],
+    "passes": false
+  }
+]
