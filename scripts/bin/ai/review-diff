@@ -6,58 +6,64 @@
 # $ review-diff <sha>          # Single-commit review
 set -e
 
-# 1-arg branch case
-if [[ $# -eq 1 ]] && git-branch-exists "$1" 2>/dev/null; then
-  currentBranch="$(git rev-parse --abbrev-ref HEAD)"
-
-  if [[ "$1" == "$currentBranch" ]]; then
-    # Self-review: diff from parent branch to HEAD
-    parentBranch="$(git-branch-parent)"
-    rtk proxy git log "$parentBranch..HEAD"
-    rtk proxy git diff "$parentBranch" HEAD
-  else
-    # External review: diff from HEAD to given branch
-    rtk proxy git log "HEAD..$1"
-    rtk proxy git diff HEAD "$1"
-  fi
-  return 0
-fi
-
-# 1-arg SHA case
-if [[ $# -eq 1 ]]; then
-  rtk proxy git log --max-count=1 "$1"
-  rtk proxy git diff "$1^" "$1"
-  return 0
-fi
-
-# 2-arg range case: diff directly between two named refs (two-dot, no merge-base)
-if [[ $# -eq 2 ]]; then
-  rtk proxy git log "$1..$2"
-  rtk proxy git diff "$1" "$2"
-  return 0
-fi
+local arg1="$1"
+local arg2="$2"
 
 # 0-arg case: working-tree diff
-# List of changed/added/deleted files
-statusRaw="$(git status --porcelain)"
-# Diff of changed files
-trackedDiff="$(rtk proxy git diff HEAD)"
+if [[ "$arg1" == "" ]] && [[ "$arg2" == "" ]]; then
+  local statusRaw="$(git status --porcelain)"
+  local trackedDiff="$(rtk proxy git diff HEAD)"
 
-# Clean tree: nothing to show
-[[ "$trackedDiff" == "" ]] && [[ "$statusRaw" == "" ]] && return 0
+  # Clean tree: nothing to show
+  [[ "$trackedDiff" == "" ]] && [[ "$statusRaw" == "" ]] && return 0
 
-# Output tracked changes (staged + unstaged)
-[[ "$trackedDiff" != "" ]] && echo "$trackedDiff"
+  # Output tracked changes (staged + unstaged)
+  [[ "$trackedDiff" != "" ]] && echo "$trackedDiff"
 
-# Output untracked files as new-file diffs
-repoRoot="$(git-directory-root)"
-for rawLine in ${(f)statusRaw}; do
-  [[ "$rawLine" != '?? '* ]] && continue
-  rawFile="${rawLine:3}"
-  # Paths from git status --porcelain are relative to repo root, not cwd
-  rtk proxy \
-    git diff \
-    --no-index \
-    /dev/null \
-    "$repoRoot/$rawFile" || true
-done
+  # Output untracked files as new-file diffs
+  local repoRoot="$(git-directory-root)"
+  local rawLine
+  for rawLine in ${(f)statusRaw}; do
+    [[ "$rawLine" != '?? '* ]] && continue
+    local rawFile="${rawLine:3}"
+    # Paths from git status --porcelain are relative to repo root, not cwd
+    rtk proxy \
+      git diff \
+      --no-index \
+      /dev/null \
+      "$repoRoot/$rawFile" || true
+  done
+  return 0
+fi
+
+# 1-arg case: branch or SHA
+if [[ "$arg1" != "" ]] && [[ "$arg2" == "" ]]; then
+  local ref="$arg1"
+
+  # Not a branch: SHA review
+  if ! git-branch-exists "$ref"; then
+    rtk proxy git log --max-count=1 "$ref"
+    rtk proxy git diff "$ref^" "$ref"
+    return 0
+  fi
+
+  # Branch: build range, apply to log and diff
+  local currentBranch="$(git rev-parse --abbrev-ref HEAD)"
+  local range="HEAD..$ref"
+  # Self-review: parent branch to HEAD
+  if [[ "$ref" == "$currentBranch" ]]; then
+    local parentBranch="$(git-branch-parent)"
+    range="$parentBranch..HEAD"
+  fi
+
+  rtk proxy git log "$range"
+  rtk proxy git diff "$range"
+  return 0
+fi
+
+# 2-arg range case: diff directly between two named refs
+if [[ "$arg1" != "" ]] && [[ "$arg2" != "" ]]; then
+  rtk proxy git log "$arg1..$arg2"
+  rtk proxy git diff "$arg1" "$arg2"
+  return 0
+fi

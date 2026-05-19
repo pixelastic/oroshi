@@ -7,8 +7,8 @@
 # $ review <ref> <ref>  # Review a commit range
 set -e
 
-uuid="$(uuidgen | tr '[:upper:]' '[:lower:]')"
-diffFile="/tmp/review-diff-${uuid}.md"
+local uuid="$(uuidgen | tr '[:upper:]' '[:lower:]')"
+local diffFile="/tmp/review-diff-${uuid}.md"
 
 "${0:A:h}/review-diff" "$@" > "$diffFile"
 
