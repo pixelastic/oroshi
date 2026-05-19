@@ -18,6 +18,9 @@ function oroshi-reload-functions() {
       continue
     fi
 
+    # Skip files with an extension (docs, configs, etc.)
+    [[ -n ${item:e} ]] && continue
+
     # If it's a file, we autoload it.
     local functionName="${item:t}"
 
