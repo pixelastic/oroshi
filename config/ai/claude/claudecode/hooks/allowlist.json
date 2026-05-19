@@ -104,6 +104,7 @@
   "tail",
   "tee",
   "test",
+  "timeout",
   "touch",
   "true",
   "tr",
