@@ -1,0 +1,8 @@
+# Search for a docs subdirectory (used by ralph command)
+local rootDirectory="$(git-directory-root -f)"
+local docsDirectory="${rootDirectory}/docs"
+fzf-var-write pwd "$docsDirectory"
+
+fzf-fs-directories \
+  --source fzf-fs-directories-ralph-source \
+  --options fzf-fs-directories-ralph-options
