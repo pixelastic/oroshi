@@ -8,7 +8,7 @@
       "Assert $BATS_TMP_DIR is set and the directory exists",
       "Assert the path matches /tmp/oroshi/bats/<file>/<slug>"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -19,7 +19,7 @@
       "Assert git -C $BATS_GIT_DIR branch --show-current outputs 'main'",
       "Assert git -C $BATS_GIT_DIR log --oneline outputs one commit with message 'init'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -29,7 +29,7 @@
       "Assert the returned path ends with /upstream",
       "Assert the directory exists and is a git repo"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -40,7 +40,7 @@
       "Assert $BATS_TMP_DIR is set (auto-created)",
       "Assert $BATS_GIT_DIR is set inside $BATS_TMP_DIR"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -51,7 +51,7 @@
       "Assert $BATS_GIT_WORKTREES equals $BATS_TMP_DIR/worktrees/",
       "Assert $OROSHI_WORKTREES_DIR equals $BATS_GIT_WORKTREES"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -62,7 +62,7 @@
       "Assert $BATS_TMP_DIR/mock.zsh contains the function definition",
       "Assert calling my_dep directly in the test fails (function unset)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -73,7 +73,7 @@
       "Assert the mock output appears in $output, not the real function output",
       "Repeat with bats_run_script"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -83,7 +83,7 @@
       "Assert the output contains no escape sequences",
       "Assert the plain text content is preserved"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -93,7 +93,7 @@
       "Call bats_cleanup",
       "Assert the directory no longer exists"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -102,7 +102,7 @@
       "Run bats on all text-*.bats, slugify.bats, bats-test-path.bats",
       "Assert all tests pass with no failures"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",

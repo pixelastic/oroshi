@@ -19,3 +19,11 @@ issue-005 → needs issue-004
 
 ---
 ## Log (append below when an issue is completed)
+
+## Session 2026-05-20 — issue-001: Rewrite bats helper
+- Completed: Rewrote `config/term/bats/helper` with new `bats_` / `BATS_` API; 8 functions, clean break from old names. Updated `slugify.bats` to use `bats_run_function`.
+- Tests added: `config/term/bats/__tests__/helper.bats` — 24 tests covering all 8 functions
+- Discovered: `slugify.bats` (Tier 0) used `run_zsh_fn` which needed updating as part of issue-001 acceptance criteria; teardown guard must use `if`/`fi` not `&&` to avoid exit-1 when BATS_TMP_DIR unset
+- Fixed: none
+- Skipped feedback: `bats_strip_ansi` regex flagged as broken — false positive; `\x1b` IS in the file (hexdump confirmed), test passes. Optional repo arg for `bats_git_worktree` — not in issue-001 spec (`<branch>` only). Applied: `[[ -z ]]` → `[[ == "" ]]`, trimmed header comment, added `$branch` guard, improved `bats_cleanup` usage, removed out-of-scope `helper.bats`
+- Next: issue-002 — migrate Tier 1 tests (better-rm.bats, ralph-end.bats) to new API

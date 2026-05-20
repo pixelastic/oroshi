@@ -1,48 +1,118 @@
-# Unset hook-injected git env vars — runs on load, affects all tests in the file
-unset GIT_DIR GIT_INDEX_FILE GIT_OBJECT_DIRECTORY GIT_WORK_TREE
+# vim: set ft=bash:
 
-# Run a zsh autoloaded function
-# Note: As bats is bash, and doesn't support zsh by default, we need to wrap the
-# call to zsh autoloaded functions in a zsh -c
-run_zsh_fn() {
-  local func="${1}"
-  shift
-  run zsh -c "${func} \"\$@\"" -- "$@"
-}
+# When ran through a pre-commit git hook, those variables are set, which then
+# leaks inside of test. We clear them to start with a clean state.
+unset \
+  GIT_DIR \
+  GIT_INDEX_FILE \
+  GIT_OBJECT_DIRECTORY \
+  GIT_WORK_TREE
 
-# Run a zsh shebang script, injecting per-test mocks from $TMP_DIRECTORY/mock.zsh
-# Sourcing the script avoids a new zsh process (and .zshenv PATH rebuild)
-# Mocks defined as bash functions via mock() shadow both PATH binaries and autoloaded functions
-run_zsh_script() {
-  local script="$1"
-  shift
-  local mock_file="$TMP_DIRECTORY/mock.zsh"
-  local cmd="[[ -f '${mock_file}' ]] && source '${mock_file}'; source '${script}'"
-  run zsh -c "$cmd" -- "$@"
-}
-
-# Serialize bash function definitions into $TMP_DIRECTORY/mock.zsh for injection
-# Usage: mock funcname1 funcname2 ...
-mock() {
-  declare -f "$@" >> "$TMP_DIRECTORY/mock.zsh"
-}
-
-# Create and return a predictable tmp dir for the current bats test
-# Path: /tmp/oroshi/bats/<test-file>/<slugified-test-name>
-bats_tmp() {
-  # Get the test file name
+# bats_tmp_dir
+# Creates an isolated sandbox for the current test, sets BATS_TMP_DIR.
+# Path: /tmp/oroshi/bats/<test-file>/<slug>
+# Usage: bats_tmp_dir
+bats_tmp_dir() {
   local file="${BATS_TEST_FILENAME##*/}"
   file="${file%.bats}"
 
-  # Get the slug of the test name
-  local slug
-  slug="$(zsh -c 'slugify "$1"' -- "${BATS_TEST_NAME}")"
+  local slug="${BATS_TEST_NAME,,}"
+  slug="${slug//[^a-z0-9]/-}"
+  slug="${slug#-}"
+  slug="${slug%-}"
 
-  # Create the tmp dir
   local dir="/tmp/oroshi/bats/${file}/${slug}"
   rm -rf "$dir"
   mkdir -p "$dir"
 
-  # Return it
+  export BATS_TMP_DIR="$dir"
+}
+
+# bats_git_dir [name]
+# Creates a git repo inside $BATS_TMP_DIR/<name>/ (default: git) on branch main
+# with an initial "init" commit and test user config. Auto-creates sandbox if needed.
+# Sets BATS_GIT_DIR; returns the path.
+# Usage: local path; path="$(bats_git_dir)" or bats_git_dir 'upstream'
+bats_git_dir() {
+  local name="${1:-git}"
+
+  [[ "$BATS_TMP_DIR" == "" ]] && bats_tmp_dir
+
+  local dir="$BATS_TMP_DIR/$name"
+  git init --initial-branch=main --quiet "$dir"
+  git -C "$dir" config user.email "bats@oroshi"
+  git -C "$dir" config user.name "Bats"
+  git -C "$dir" commit --allow-empty --quiet --message="init"
+
+  export BATS_GIT_DIR="$dir"
   echo "$dir"
+}
+
+# bats_git_worktree <branch>
+# Creates a linked worktree in $BATS_TMP_DIR/worktrees/<branch>/.
+# Sets BATS_GIT_WORKTREES for tests
+# Sets OROSHI_WORKTREES_DIR for scripts
+# Returns the worktree path.
+# Requires bats_git_dir to have been called first.
+# Usage: local wt; wt="$(bats_git_worktree 'feature')"
+bats_git_worktree() {
+  local branch="$1"
+  [[ "$branch" == "" ]] && return 1
+  local worktrees_dir="$BATS_TMP_DIR/worktrees"
+  local wt_path="$worktrees_dir/$branch"
+
+  mkdir -p "$worktrees_dir"
+  git -C "$BATS_GIT_DIR" worktree add --quiet --new-branch="$branch" "$wt_path"
+
+  export BATS_GIT_WORKTREES="$worktrees_dir/"
+  export OROSHI_WORKTREES_DIR="$BATS_GIT_WORKTREES"
+
+  echo "$wt_path"
+}
+
+# bats_mock <fn1> [fn2 ...]
+# Serializes bash function definitions to $BATS_TMP_DIR/mock.zsh using declare -f,
+# then unsets them from the current shell scope.
+# Usage: my_fn() { echo 'real'; }; bats_mock my_fn
+bats_mock() {
+  declare -f "$@" >>"$BATS_TMP_DIR/mock.zsh"
+  unset -f "$@"
+}
+
+# bats_run_function <name> [args]
+# Runs a zsh autoloaded function via zsh -c, injecting mocks from
+# $BATS_TMP_DIR/mock.zsh before the call.
+# Usage: bats_run_function slugify "hello world"
+bats_run_function() {
+  local func="$1"
+  shift
+  local mock_file="$BATS_TMP_DIR/mock.zsh"
+  local cmd="[[ -f '${mock_file}' ]] && source '${mock_file}'; ${func} \"\$@\""
+  run zsh -c "$cmd" -- "$@"
+}
+
+# bats_run_script <path> [args]
+# Sources a zsh script via zsh -c, injecting mocks from $BATS_TMP_DIR/mock.zsh
+# before sourcing. Avoids a new PATH rebuild from .zshenv.
+# Usage: bats_run_script "$BATS_TMP_DIR/script.zsh"
+bats_run_script() {
+  local script="$1"
+  shift
+  local mock_file="$BATS_TMP_DIR/mock.zsh"
+  local cmd="[[ -f '${mock_file}' ]] && source '${mock_file}'; source '${script}'"
+  run zsh -c "$cmd" -- "$@"
+}
+
+# bats_cleanup
+# Removes $BATS_TMP_DIR. Intended for use in teardown().
+# Usage: teardown() { bats_cleanup; }
+bats_cleanup() {
+  rm -rf "$BATS_TMP_DIR"
+}
+
+# bats_strip_ansi <str>
+# Returns the string with all ANSI escape sequences removed.
+# Usage: local clean; clean="$(bats_strip_ansi "$colored_output")"
+bats_strip_ansi() {
+  printf '%s' "$1" | sed 's/\x1b\[[0-9;]*[mGKHFJK]//g'
 }
