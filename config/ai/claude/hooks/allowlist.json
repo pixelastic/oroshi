@@ -85,6 +85,7 @@
   "review-diff",
   "rg",
   "rtk",
+  "scripts/bin/term/bats/bats",
   "sed",
   "setopt",
   "sha256sum",
