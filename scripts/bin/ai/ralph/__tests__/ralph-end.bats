@@ -3,8 +3,6 @@ bats_load_library 'helper'
 setup() {
   bats_tmp_dir
   mkdir -p "$BATS_TMP_DIR/prd-dir"
-  # Prepend worktree bin so local ralph-end is found before any installed version
-  export PATH="$BATS_TEST_DIRNAME/../claude/ralph:$PATH"
 }
 
 teardown() {

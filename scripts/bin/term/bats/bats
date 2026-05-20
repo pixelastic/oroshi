@@ -8,6 +8,9 @@ local oroshiRoot=~/.oroshi
 local project="$(git-github-project-name)"
 if [[ "$project" == "pixelastic/oroshi" ]] && git-directory-is-worktree; then
   oroshiRoot="$(git-directory-root)"
+  # Rebuild PATH so bash bats process resolves scripts to the worktree
+  export OROSHI_ROOT="$oroshiRoot"
+  source "$oroshiRoot/config/term/zsh/path.zsh"
 fi
 
 export BATS_LIB_PATH="${oroshiRoot}/config/term/bats"

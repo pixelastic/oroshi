@@ -4,7 +4,7 @@ function oroshi_path() {
 
   # Build the list of subdirs in ./scripts/bin
   local localBinariesPath=()
-  for directory in ~/.oroshi/scripts/bin/**/; do
+  for directory in $OROSHI_ROOT/scripts/bin/**/; do
     # Skip all directories starting with __
     [[ $directory == */__* ]] && continue
     # As well as node_modules added by zx
@@ -31,10 +31,10 @@ function oroshi_path() {
 
   path=(
     # Local binaries
-    ~/.oroshi/private/scripts/bin/local/$hostname
+    $OROSHI_ROOT/private/scripts/bin/local/$hostname
 
     # Private binaries
-    ~/.oroshi/private/scripts/bin
+    $OROSHI_ROOT/private/scripts/bin
 
     # Custom binaries
     $localBinariesPath

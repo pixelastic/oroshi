@@ -2,8 +2,10 @@
 # - Interactive shells (just like zshrc)
 # - zsh scripts
 
+# Root of the oroshi repo — overridable so tests in worktrees resolve scripts locally
+export OROSHI_ROOT="${OROSHI_ROOT:-$HOME/.oroshi}"
 # Reference to the zsh config folder, so our `source` calls are easier to write
-export ZSH_CONFIG_PATH=~/.oroshi/config/term/zsh
+export ZSH_CONFIG_PATH="$OROSHI_ROOT/config/term/zsh"
 # Reference to where we store git worktrees
 # Note: This can be overwritten in tests
 export OROSHI_WORKTREES_DIR="${OROSHI_WORKTREES_DIR:-$HOME/local/www/worktrees}"
