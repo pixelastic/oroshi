@@ -47,9 +47,6 @@ worktree main name should be promoted to project?
 
 ## Bats
 
-Prompt test files should better follow the naming of the file they test, so they
-can get picked up.
-
 I will need to cleanup the bats helper to have clear rules on how to write
 tests, probably having extensive examples in the file to explain how to use it.
 This should include guidance about temporary directories per test, how to mock
