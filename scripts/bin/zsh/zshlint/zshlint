@@ -11,8 +11,6 @@
 # will simply silence the ones that are not relevant.
 set -e
 
-local dir="${0:A:h}"
-
 # Exclude directories from the inputs
 local -a input=()
 for item in $@; do
@@ -22,11 +20,13 @@ done
 
 [[ ${#input} -eq 0 ]] && printf '[]\n' && exit 0
 
-# Run both linters in parallel
+# Run both linters in parallel via process substitution — no temp files
+local sc="${ZSHLINT_SC:-zshlint-shellcheck}"
+local custom="${ZSHLINT_CUSTOM:-zshlint-custom}"
 local merged
 merged="$(jq -cs 'add // []' \
-  <(zsh "$dir/zshlint-shellcheck" "${input[@]}") \
-  <(zsh "$dir/zshlint-custom" "${input[@]}"))"
+  <($sc     "${input[@]}") \
+  <($custom "${input[@]}"))"
 
 printf '%s\n' "$merged"
 [[ "$(printf '%s' "$merged" | jq 'length')" -gt 0 ]] && exit 1

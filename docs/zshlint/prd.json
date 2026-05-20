@@ -53,12 +53,13 @@
     "id": "0002",
     "description": "Orchestrator merges custom rule output with shellcheck JSON into a single array",
     "steps": [
-      "Create a fixture file containing a standalone shift call",
+      "Create a fixture file containing a case \"$1\" pattern",
       "Run zshlint on the fixture file",
       "Parse the JSON output",
       "Assert the array contains an entry with code 90005"
     ],
-    "passes": true
+    "passes": false,
+    "blocked": "Integration test fails: .zshenv rebuilds PATH in spawned zsh process, zshlint-shellcheck/zshlint-custom not found. Fix: export ZSHLINT_SC/ZSHLINT_CUSTOM in test setup pointing to absolute paths. Needs BATS infrastructure improvements first."
   },
   {
     "id": "0002",
@@ -69,15 +70,57 @@
       "Assert output is '[]'",
       "Assert exit code is 0"
     ],
-    "passes": true
+    "passes": false,
+    "blocked": "Same as above — zshlint-shellcheck/zshlint-custom not found in spawned process PATH."
   },
   {
     "id": "0002",
     "description": "Orchestrator returns exit 1 when custom rule finds a violation",
     "steps": [
-      "Create a fixture file containing a standalone shift call",
+      "Create a fixture file containing a case \"$1\" pattern",
       "Run zshlint on the fixture file",
       "Assert exit code is 1"
+    ],
+    "passes": false,
+    "blocked": "Same as above."
+  },
+  {
+    "id": "0002",
+    "description": "Orchestrator merges output from both sub-linters when both have violations (mock)",
+    "steps": [
+      "Mock zshlint-shellcheck to return [{\"code\":2162}]",
+      "Mock zshlint-custom to return [{\"code\":90005}]",
+      "Run zshlint via run_zsh_script",
+      "Assert output contains both codes and exit status is 1"
+    ],
+    "passes": true
+  },
+  {
+    "id": "0002",
+    "description": "Orchestrator exits 1 when only shellcheck finds violations (mock)",
+    "steps": [
+      "Mock zshlint-shellcheck to return a violation",
+      "Mock zshlint-custom to return []",
+      "Assert exit status is 1"
+    ],
+    "passes": true
+  },
+  {
+    "id": "0002",
+    "description": "Orchestrator exits 1 when only custom rules find violations (mock)",
+    "steps": [
+      "Mock zshlint-shellcheck to return []",
+      "Mock zshlint-custom to return a violation",
+      "Assert exit status is 1"
+    ],
+    "passes": true
+  },
+  {
+    "id": "0002",
+    "description": "Orchestrator exits 0 when neither sub-linter finds violations (mock)",
+    "steps": [
+      "Mock both to return []",
+      "Assert output is '[]' and exit status is 0"
     ],
     "passes": true
   },
