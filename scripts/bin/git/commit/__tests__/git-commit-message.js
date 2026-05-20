@@ -1,4 +1,9 @@
-import { formatMessage } from '../git-commit-message.js';
+import {
+  __,
+  formatMessage,
+  getDiff,
+  getStagedFiles,
+} from '../git-commit-message.js';
 
 describe('formatMessage', () => {
   it.each([
@@ -57,5 +62,32 @@ describe('formatMessage', () => {
   ])('$title', ({ input, output }) => {
     const actual = formatMessage(input);
     expect(actual).toEqual(output);
+  });
+});
+
+describe('getStagedFiles', () => {
+  it.each([
+    {
+      title: 'filters out yarn.lock from staged files',
+      statusOutput: 'M  src/index.js\nM  yarn.lock\nA  lib/helper.js\n',
+      expected: ['src/index.js', 'lib/helper.js'],
+    },
+    {
+      title: 'returns empty array when nothing staged',
+      statusOutput: '',
+      expected: [],
+    },
+  ])('$title', async ({ statusOutput, expected }) => {
+    __.gitStatus = vi.fn().mockReturnValue(statusOutput);
+    const actual = await getStagedFiles();
+    expect(actual).toEqual(expected);
+  });
+});
+
+describe('getDiff', () => {
+  it('returns diff output for given files', async () => {
+    __.gitDiff = vi.fn().mockReturnValue('diff content');
+    const actual = await getDiff(['src/index.js']);
+    expect(actual).toEqual('diff content');
   });
 });
