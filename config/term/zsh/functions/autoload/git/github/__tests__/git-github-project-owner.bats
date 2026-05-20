@@ -1,33 +1,31 @@
 bats_load_library 'helper'
 
 setup() {
-  export TMP_DIRECTORY="$(bats_tmp)"
-  git init "$TMP_DIRECTORY/testrepo"
-  git -C "$TMP_DIRECTORY/testrepo" commit --allow-empty -m "init"
+  bats_git_dir 'testrepo'
 }
 
 teardown() {
-  rm -rf "$TMP_DIRECTORY"
+  bats_cleanup
 }
 
 @test "returns owner from SSH GitHub URL" {
-  git -C "$TMP_DIRECTORY/testrepo" remote add origin git@github.com:pixelastic/testrepo.git
-  cd "$TMP_DIRECTORY/testrepo"
-  run_zsh_fn git-github-project-owner
+  bats_git remote add origin git@github.com:pixelastic/testrepo.git
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-github-project-owner
   [ "$status" -eq 0 ]
   [ "$output" = "pixelastic" ]
 }
 
 @test "returns owner from HTTPS GitHub URL" {
-  git -C "$TMP_DIRECTORY/testrepo" remote add origin https://github.com/pixelastic/testrepo.git
-  cd "$TMP_DIRECTORY/testrepo"
-  run_zsh_fn git-github-project-owner
+  bats_git remote add origin https://github.com/pixelastic/testrepo.git
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-github-project-owner
   [ "$status" -eq 0 ]
   [ "$output" = "pixelastic" ]
 }
 
 @test "returns 1 when no remote" {
-  cd "$TMP_DIRECTORY/testrepo"
-  run_zsh_fn git-github-project-owner
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-github-project-owner
   [ "$status" -eq 1 ]
 }

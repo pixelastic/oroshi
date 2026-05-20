@@ -35,3 +35,11 @@ issue-005 → needs issue-004
 - Fixed: none
 - Skipped feedback: PATH stub in `ralph-end.bats:7` — prepend points to non-existent dir, is already a no-op, tests pass without it; fixing out of scope for this migration issue
 - Next: issue-003 — migrate Tier 2 tests (git repo and worktree tests)
+
+## Session 2026-05-20 — issue-003: Migrate Tier 2 tests
+- Completed: Migrated all 21 Tier 2 test files to new helper API; fixed two bugs in `bats_git_worktree`
+- Tests added: none (migrated existing tests)
+- Discovered: `bats_git_worktree` had two bugs: (1) `mkdir -p "$worktrees_dir"` didn't create parent dirs for slash-branches like `fix/bug`; fixed to `mkdir -p "${wt_path:h}"`. (2) `--new-branch=<branch>` flag doesn't exist in git 2.43 — only `-b` works; fixed accordingly
+- Fixed: `config/term/bats/helper` — `bats_git_worktree` slash-branch support + git flag
+- Skipped feedback: `git-worktree-push.bats` missing guard after `local fixHead="$(git rev-parse HEAD)"` — `variables.md` guard rule is for zsh functions, not bats (bash) tests; test assertion catches failure anyway. `git-worktree-pull.bats` manual `git init` boilerplate in "no-main" test — unavoidable, `bats_git_dir` always creates `main` branch. Scope creep noted (`allowlist.json` path fix, helper bug fixes) — helper fixes were required to make migration work at all.
+- Next: issue-004 — migrate Tier 3 tests (ralph.bats, review.bats, git-worktree-create.bats)

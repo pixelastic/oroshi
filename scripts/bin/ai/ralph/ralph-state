@@ -19,7 +19,7 @@ local cmd="$1"
 case "$cmd" in
   init)
     local mode="${2:-single}"
-    printf '{"mode":"%s","done":false,"prd_done":false}\n' "$mode" > "$RALPH_STATE_FILE"
+    jq -n --arg mode "$mode" '{"mode":$mode,"done":false,"prd_done":false}' > "$RALPH_STATE_FILE"
     ;;
   get)
     local key="$2"

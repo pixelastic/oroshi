@@ -1,82 +1,78 @@
 bats_load_library 'helper'
 
 setup() {
-  export TMP_DIRECTORY="$(bats_tmp)"
-  git init "$TMP_DIRECTORY/my-repo"
-  cd "$TMP_DIRECTORY/my-repo"
-  git config user.email "test@test.com"
-  git config user.name "Test"
-  echo "hello" > tracked.txt
-  git add tracked.txt
-  git commit -m "init"
+  bats_git_dir 'my-repo'
+  echo "hello" > "$BATS_GIT_DIR/tracked.txt"
+  bats_git add tracked.txt
+  bats_git commit --quiet -m "add tracked"
 }
 
 teardown() {
-  rm -rf "$TMP_DIRECTORY"
+  bats_cleanup
 }
 
 @test "returns empty output for a clean repo" {
-  cd "$TMP_DIRECTORY/my-repo"
-  run_zsh_fn git-file-list-dirty-raw
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-file-list-dirty-raw
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
 
 @test "lists untracked files as A" {
-  cd "$TMP_DIRECTORY/my-repo"
+  cd "$BATS_GIT_DIR"
   echo "new" > untracked.txt
-  run_zsh_fn git-file-list-dirty-raw
+  bats_run_function git-file-list-dirty-raw
   [ "$status" -eq 0 ]
   [ "$output" = "A:untracked.txt" ]
 }
 
 @test "lists unstaged modified files as M" {
-  cd "$TMP_DIRECTORY/my-repo"
+  cd "$BATS_GIT_DIR"
   echo "modified" > tracked.txt
-  run_zsh_fn git-file-list-dirty-raw
+  bats_run_function git-file-list-dirty-raw
   [ "$status" -eq 0 ]
   [ "$output" = "M:tracked.txt" ]
 }
 
 @test "lists unstaged deleted files as D" {
-  cd "$TMP_DIRECTORY/my-repo"
+  cd "$BATS_GIT_DIR"
   rm tracked.txt
-  run_zsh_fn git-file-list-dirty-raw
+  bats_run_function git-file-list-dirty-raw
   [ "$status" -eq 0 ]
   [ "$output" = "D:tracked.txt" ]
 }
 
 @test "lists staged new files as A" {
-  cd "$TMP_DIRECTORY/my-repo"
+  cd "$BATS_GIT_DIR"
   echo "new" > staged.txt
   git add staged.txt
-  run_zsh_fn git-file-list-dirty-raw
+  bats_run_function git-file-list-dirty-raw
   [ "$status" -eq 0 ]
   [ "$output" = "A:staged.txt" ]
 }
 
 @test "lists staged modifications as M" {
-  cd "$TMP_DIRECTORY/my-repo"
+  cd "$BATS_GIT_DIR"
   echo "modified" > tracked.txt
   git add tracked.txt
-  run_zsh_fn git-file-list-dirty-raw
+  bats_run_function git-file-list-dirty-raw
   [ "$status" -eq 0 ]
   [ "$output" = "M:tracked.txt" ]
 }
 
 @test "lists staged deletions as D" {
-  cd "$TMP_DIRECTORY/my-repo"
+  cd "$BATS_GIT_DIR"
   git rm tracked.txt
-  run_zsh_fn git-file-list-dirty-raw
+  bats_run_function git-file-list-dirty-raw
   [ "$status" -eq 0 ]
   [ "$output" = "D:tracked.txt" ]
 }
 
 @test "lists multiple dirty files" {
-  cd "$TMP_DIRECTORY/my-repo"
+  cd "$BATS_GIT_DIR"
   echo "modified" > tracked.txt
   echo "new" > untracked.txt
-  run_zsh_fn git-file-list-dirty-raw
+  bats_run_function git-file-list-dirty-raw
   [ "$status" -eq 0 ]
   [ "${#lines[@]}" -eq 2 ]
 }

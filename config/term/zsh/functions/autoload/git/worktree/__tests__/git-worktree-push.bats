@@ -1,35 +1,29 @@
 bats_load_library 'helper'
 
 setup() {
-  export TMP_DIRECTORY="$(bats_tmp)"
-  export OROSHI_WORKTREES_DIR="$TMP_DIRECTORY/worktrees"
-  mkdir -p "$OROSHI_WORKTREES_DIR"
-  git init "$TMP_DIRECTORY/my-repo"
-  cd "$TMP_DIRECTORY/my-repo"
-  git commit --allow-empty -m "init"
-  git branch -M main
-  git worktree add "$OROSHI_WORKTREES_DIR/my-repo--fix_bug" -b fix/bug
-  cd "$OROSHI_WORKTREES_DIR/my-repo--fix_bug"
-  git commit --allow-empty -m "fix work"
+  bats_git_dir 'my-repo'
+  bats_git_worktree 'fix/bug'
+  cd "${BATS_GIT_WORKTREES}fix-bug"
+  git commit --allow-empty --quiet -m "fix work"
 }
 
 teardown() {
-  rm -rf "$TMP_DIRECTORY"
+  bats_cleanup
 }
 
 @test "fast-forwards main to current HEAD" {
-  cd "$OROSHI_WORKTREES_DIR/my-repo--fix_bug"
+  cd "${BATS_GIT_WORKTREES}fix-bug"
   local fixHead="$(git rev-parse HEAD)"
-  run_zsh_fn git-worktree-push
+  bats_run_function git-worktree-push
   [ "$status" -eq 0 ]
-  run git -C "$TMP_DIRECTORY/my-repo" rev-parse main
+  run bats_git rev-parse main
   [ "$output" = "$fixHead" ]
 }
 
 @test "returns 1 if history has diverged" {
-  cd "$TMP_DIRECTORY/my-repo"
+  cd "$BATS_GIT_DIR"
   git commit --allow-empty -m "main work"
-  cd "$OROSHI_WORKTREES_DIR/my-repo--fix_bug"
-  run_zsh_fn git-worktree-push
+  cd "${BATS_GIT_WORKTREES}fix-bug"
+  bats_run_function git-worktree-push
   [ "$status" -ne 0 ]
 }

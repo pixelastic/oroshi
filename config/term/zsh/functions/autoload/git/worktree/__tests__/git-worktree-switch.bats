@@ -1,41 +1,36 @@
 bats_load_library 'helper'
 
 setup() {
-  export TMP_DIRECTORY="$(bats_tmp)"
-  export OROSHI_WORKTREES_DIR="$TMP_DIRECTORY/worktrees"
-  mkdir -p "$OROSHI_WORKTREES_DIR"
-  git init "$TMP_DIRECTORY/my-repo"
-  cd "$TMP_DIRECTORY/my-repo"
-  git commit --allow-empty -m "init"
-  git worktree add "$OROSHI_WORKTREES_DIR/my-repo--fix_bug" -b fix/bug
+  bats_git_dir 'my-repo'
+  bats_git_worktree 'fix/bug'
 }
 
 teardown() {
-  rm -rf "$TMP_DIRECTORY"
+  bats_cleanup
 }
 
 @test "cds into the worktree directory" {
-  cd "$TMP_DIRECTORY/my-repo"
+  cd "$BATS_GIT_DIR"
   run zsh -c 'git-worktree-switch fix/bug && echo "$PWD"'
   [ "$status" -eq 0 ]
-  [ "$output" = "$OROSHI_WORKTREES_DIR/my-repo--fix_bug" ]
+  [ "$output" = "${BATS_GIT_WORKTREES}fix-bug" ]
 }
 
 @test "cds to Git Repo Main when argument is 'main'" {
-  cd "$OROSHI_WORKTREES_DIR/my-repo--fix_bug"
+  cd "${BATS_GIT_WORKTREES}fix-bug"
   run zsh -c 'git-worktree-switch main && echo "$PWD"'
   [ "$status" -eq 0 ]
-  [ "$output" = "$TMP_DIRECTORY/my-repo" ]
+  [ "$output" = "$BATS_GIT_DIR" ]
 }
 
 @test "returns 1 if worktree does not exist" {
-  cd "$TMP_DIRECTORY/my-repo"
-  run_zsh_fn git-worktree-switch nonexistent/branch
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-worktree-switch nonexistent/branch
   [ "$status" -eq 1 ]
 }
 
 @test "returns 1 if called with no arguments" {
-  cd "$TMP_DIRECTORY/my-repo"
-  run_zsh_fn git-worktree-switch
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-worktree-switch
   [ "$status" -eq 1 ]
 }

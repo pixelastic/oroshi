@@ -1,30 +1,26 @@
 bats_load_library 'helper'
 
 setup() {
-  export TMP_DIRECTORY="$(bats_tmp)"
   export PATH="${BATS_TEST_DIRNAME}/../ai:$PATH"
-  git init "$TMP_DIRECTORY/my-repo"
-  cd "$TMP_DIRECTORY/my-repo"
-  git config user.email "test@test.com"
-  git config user.name "Test User"
-  echo "initial content" > tracked.txt
-  git add tracked.txt
-  git commit --message "init"
+  bats_git_dir 'my-repo'
+  echo "initial content" > "$BATS_GIT_DIR/tracked.txt"
+  bats_git add tracked.txt
+  bats_git commit --quiet --message "add tracked"
 }
 
 teardown() {
-  rm -rf "$TMP_DIRECTORY"
+  bats_cleanup
 }
 
 @test "0-arg, clean tree: exits 0 with empty output" {
-  cd "$TMP_DIRECTORY/my-repo"
+  cd "$BATS_GIT_DIR"
   run review-diff
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
 
 @test "0-arg, modified tracked file: stdout contains diff hunk" {
-  cd "$TMP_DIRECTORY/my-repo"
+  cd "$BATS_GIT_DIR"
   echo "modified content" >> tracked.txt
   run review-diff
   [ "$status" -eq 0 ]
@@ -33,7 +29,7 @@ teardown() {
 }
 
 @test "0-arg, untracked file: stdout contains new-file diff block" {
-  cd "$TMP_DIRECTORY/my-repo"
+  cd "$BATS_GIT_DIR"
   echo "new file content" > new-file.txt
   run review-diff
   [ "$status" -eq 0 ]
@@ -42,7 +38,7 @@ teardown() {
 }
 
 @test "0-arg, staged file: stdout contains staged hunk" {
-  cd "$TMP_DIRECTORY/my-repo"
+  cd "$BATS_GIT_DIR"
   echo "staged content" >> tracked.txt
   git add tracked.txt
   run review-diff
@@ -52,7 +48,7 @@ teardown() {
 }
 
 @test "1-arg branch, self-review: stdout contains feature commit and diff --git line" {
-  cd "$TMP_DIRECTORY/my-repo"
+  cd "$BATS_GIT_DIR"
   git checkout -b feature-branch
   echo "feature content" > feature.txt
   git add feature.txt
@@ -65,7 +61,7 @@ teardown() {
 }
 
 @test "1-arg SHA: stdout contains the commit message and a diff --git line" {
-  cd "$TMP_DIRECTORY/my-repo"
+  cd "$BATS_GIT_DIR"
   echo "sha content" > sha-file.txt
   git add sha-file.txt
   git commit --message "feat: add sha-file.txt"
@@ -78,7 +74,7 @@ teardown() {
 }
 
 @test "2-arg range: stdout contains range commits and diff --git line; out-of-range commits absent" {
-  cd "$TMP_DIRECTORY/my-repo"
+  cd "$BATS_GIT_DIR"
   local shaA="$(git rev-parse HEAD)"
   echo "main content" > main-only.txt
   git add main-only.txt
@@ -96,7 +92,7 @@ teardown() {
 }
 
 @test "1-arg branch, external review: stdout contains feature commit; main-only commits absent" {
-  cd "$TMP_DIRECTORY/my-repo"
+  cd "$BATS_GIT_DIR"
   local mainBranch="$(git branch --show-current)"
   git checkout -b feature-branch
   echo "feature content" > feature.txt

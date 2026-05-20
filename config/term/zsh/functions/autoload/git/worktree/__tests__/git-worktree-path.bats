@@ -1,35 +1,30 @@
 bats_load_library 'helper'
 
 setup() {
-  export TMP_DIRECTORY="$(bats_tmp)"
-  export OROSHI_WORKTREES_DIR="$TMP_DIRECTORY/worktrees"
-  mkdir -p "$OROSHI_WORKTREES_DIR"
-  git init "$TMP_DIRECTORY/my-repo"
-  cd "$TMP_DIRECTORY/my-repo"
-  git commit --allow-empty -m "init"
-  git worktree add "$OROSHI_WORKTREES_DIR/my-repo--fix_bug" -b fix/bug
+  bats_git_dir 'my-repo'
+  bats_git_worktree 'fix/bug'
 }
 
 teardown() {
-  rm -rf "$TMP_DIRECTORY"
+  bats_cleanup
 }
 
 @test "prints the worktree path for a given branch" {
-  cd "$TMP_DIRECTORY/my-repo"
-  run_zsh_fn git-worktree-path fix/bug
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-worktree-path fix/bug
   [ "$status" -eq 0 ]
-  [ "$output" = "$OROSHI_WORKTREES_DIR/my-repo--fix_bug" ]
+  [ "$output" = "${BATS_GIT_WORKTREES}fix-bug" ]
 }
 
 @test "returns 1 if branch has no worktree" {
-  cd "$TMP_DIRECTORY/my-repo"
-  run_zsh_fn git-worktree-path nonexistent/branch
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-worktree-path nonexistent/branch
   [ "$status" -eq 1 ]
 }
 
 @test "works from inside a linked worktree" {
-  cd "$OROSHI_WORKTREES_DIR/my-repo--fix_bug"
-  run_zsh_fn git-worktree-path fix/bug
+  cd "${BATS_GIT_WORKTREES}fix-bug"
+  bats_run_function git-worktree-path fix/bug
   [ "$status" -eq 0 ]
-  [ "$output" = "$OROSHI_WORKTREES_DIR/my-repo--fix_bug" ]
+  [ "$output" = "${BATS_GIT_WORKTREES}fix-bug" ]
 }

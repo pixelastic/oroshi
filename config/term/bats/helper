@@ -20,10 +20,7 @@ bats_tmp_dir() {
   local file="${BATS_TEST_FILENAME##*/}"
   file="${file%.bats}"
 
-  local slug="${BATS_TEST_NAME,,}"
-  slug="${slug//[^a-z0-9]/-}"
-  slug="${slug#-}"
-  slug="${slug%-}"
+  local slug="$(bats_slugify "$BATS_TEST_NAME")"
 
   local dir="/tmp/oroshi/bats/${file}/${slug}"
   rm -rf "$dir"
@@ -53,25 +50,36 @@ bats_git_dir() {
 }
 
 # bats_git_worktree <branch>
-# Creates a linked worktree in $BATS_TMP_DIR/worktrees/<branch>/.
+# Creates a linked worktree in $BATS_TMP_DIR/worktrees/<slug>/.
+# <slug> is the branch name with non-alphanumeric chars replaced by dashes.
 # Sets BATS_GIT_WORKTREES for tests
 # Sets OROSHI_WORKTREES_DIR for scripts
 # Returns the worktree path.
 # Requires bats_git_dir to have been called first.
-# Usage: local wt; wt="$(bats_git_worktree 'feature')"
+# Usage: local wt; wt="$(bats_git_worktree 'fix/bug')"
 bats_git_worktree() {
   local branch="$1"
   [[ "$branch" == "" ]] && return 1
+
+  local slug="$(bats_slugify "$branch")"
+
   local worktrees_dir="$BATS_TMP_DIR/worktrees"
-  local wt_path="$worktrees_dir/$branch"
+  local wt_path="$worktrees_dir/$slug"
 
   mkdir -p "$worktrees_dir"
-  git -C "$BATS_GIT_DIR" worktree add --quiet --new-branch="$branch" "$wt_path"
+  git -C "$BATS_GIT_DIR" worktree add --quiet -b "$branch" "$wt_path"
 
   export BATS_GIT_WORKTREES="$worktrees_dir/"
   export OROSHI_WORKTREES_DIR="$BATS_GIT_WORKTREES"
 
   echo "$wt_path"
+}
+
+# bats_git <git-args...>
+# Runs git against $BATS_GIT_DIR without needing -C each time.
+# Usage: bats_git commit --quiet -m "message"
+bats_git() {
+  git -C "$BATS_GIT_DIR" "$@"
 }
 
 # bats_mock <fn1> [fn2 ...]
@@ -119,4 +127,15 @@ bats_cleanup() {
 # Usage: local clean; clean="$(bats_strip_ansi "$colored_output")"
 bats_strip_ansi() {
   printf '%s' "$1" | sed 's/\x1b\[[0-9;]*[mGKHFJK]//g'
+}
+
+# bats_slugify <str>
+# Returns str lowercased with non-alphanumeric chars replaced by dashes.
+# Usage: local slug="$(bats_slugify "$BATS_TEST_NAME")"
+bats_slugify() {
+  local slug="${1,,}"
+  slug="${slug//[^a-z0-9]/-}"
+  slug="${slug#-}"
+  slug="${slug%-}"
+  echo "$slug"
 }
