@@ -45,12 +45,6 @@ Ctrl-p after `ralph` should open only my ./docs/ subfolders
 I think when I run a review subagent it still says "Job's done" at the end; I
 should make it quiet.
 
-The .ralph-done file is still here even after cleaning it in the ralph script
-
-Maybe write json with jo/jq in bats test of ralph to be more readable?
-
-Use a ralph-state.json file
-
 ## Review
 
 ```
@@ -81,9 +75,5 @@ worktree main name should be promoted to project?
 
 ## Bats
 
-I will need to cleanup the bats helper to have clear rules on how to write
-tests, probably having extensive examples in the file to explain how to use it.
-This should include guidance about temporary directories per test, how to mock
-undelrying methods, how to test scripts and zsh functions, etc
-
-I will need to update all existing tests to that standard and fix broken tests
+I should update zsh-writer to give a testing example that follows the best
+practices of the test helper
