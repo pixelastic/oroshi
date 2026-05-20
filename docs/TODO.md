@@ -23,12 +23,22 @@ might want a PRD + Issues in a given worktree. I want it to ask me if I want a
 PRD or implement right away and probably have it estimate if it could implement
 right away (maybe if less than n lines or code, or only touch one file?)
 
-I need to move all tests close to their scripts/functions, in a `__tests`
-subdir. I will also need to cleanup the shared bats helper taht allow testing
-and mocking both scripts and binaries.
+I will need to cleanup my scripts. Delete the ones I don't use anymore. Define
+if it should be a script, a zsh autoloaded function, or a plain zsh helper
+function. Group them in clear domains/subdomains, and make it consistent between
+scripts and config (and install if needed).
+
+Is errexit in the autoloaded function a good idea? It's gonna do exit, while I
+actually only want return, to quit the function, not kill the terminal.
+
+## Bats
 
 I will need to improve the ctrl-p when prefixed with bats to 1/ filter in the
 current worktree, not the default main and 2/ only suggest .bats files
 
-Is errexit in the autoloaded function a good idea? It's gonna do exit, while I
-actually only want return, to quit the function, not kill the terminal.
+I need to move all tests close to their scripts/functions, in a `__tests`
+subdir. I will also need to cleanup the shared bats helper taht allow testing
+and mocking both scripts and binaries.
+
+I need to update the pre-commit to correctly find the tests for the changed
+files and run them.
