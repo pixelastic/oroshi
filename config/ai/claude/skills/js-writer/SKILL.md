@@ -77,9 +77,9 @@ it.each([
 
 ### Step 3 — Write the code
 
-**Goal:** Code follows all patterns.
+**Goal:** Working code, following coding style.
 
-**Exit criterion:** Checklist passes.
+**Exit criterion:** Test passes.
 
 Write code that follows the following patterns:
 

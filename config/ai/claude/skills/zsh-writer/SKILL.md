@@ -22,11 +22,48 @@ Write ZSH code that is consistent with my conventions.
 - Name: `{domain}-{subdomain?}-{action}` — e.g. `git-branch-list`, `json-lint`
 - `-raw` suffix → machine-readable `▮`-separated output, consumed by other scripts
 
-### Step 2 — Write the code
+### Step 2 — TDD: Write a failing test
 
-**Goal:** Code follows all patterns.
+**Goal:** Ensure the bug/feature has a failing test first
 
-**Exit criterion:** Checklist passes.
+**Exit criterion:** Test fails.
+
+Write a failing test for the bug or missing feature you want to implement.
+
+- Run `bats <test_filepath>` to run the tests
+- See [Testing](./references/testing.md) for full examples and best practices
+
+```bash
+bats_load_library 'helper'
+
+setup() {
+  bats_tmp_dir
+}
+
+teardown() {
+  bats_cleanup
+}
+
+@test "converts space-separated words to camelCase" {
+  bats_run_function my-new-function "hello world"
+  [ "$status" -eq 0 ]
+  [ "$output" = "helloWorld" ]
+}
+
+@test "passes result to clipboard" {
+  pbcopy() { echo "$1" > "$BATS_TMP_DIR/clipboard.txt"; }
+  bats_mock pbcopy
+
+  bats_run_function my-new-function "hello world"
+  [ "$(cat "$BATS_TMP_DIR/clipboard.txt")" = "helloWorld" ]
+}
+```
+
+### Step 3 — Write the code
+
+**Goal:** Working code, following coding style.
+
+**Exit criterion:** Test passes.
 
 Write code that follows the following patterns:
 
@@ -91,15 +128,11 @@ done
 table $output
 ```
 
-### Step 3 — Lint the file
+### Step 4 — Lint the file
 
 Run `zshlint <file>` on the file and fix any actionable violation.
 
-### Step 4 — Run the tests
-
-If a `.bats` test file exists for this script, run `bats <test-file>`. All tests must pass.
-
-> `zshlint` and `bats` are both in PATH — call them directly, no full path needed.
+---
 
 ## Common Rationalizations
 
@@ -119,3 +152,4 @@ If a `.bats` test file exists for this script, run `bats <test-file>`. All tests
 - [ ] No `while read` — only `${(f)var}` or `"${(@f)var}"`
 - [ ] External commands use long-form args, one per line
 - [ ] Use existing helpers over porcelain (e.g. `git-branch-list-raw` not `git branch`)
+- [ ] Tests use the dedicated helpers
