@@ -55,6 +55,7 @@
   "gsettings get",
   "gsettings list-recursively",
   "gsettings list-schemas",
+  "handoff-end",
   "head",
   "hexdump",
   "imgmin",

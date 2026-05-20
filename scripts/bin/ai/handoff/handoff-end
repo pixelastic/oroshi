@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+# Called by the /handoff skill at the end
+# Copy in the clipboard the exact command to run to start a new Claude session
+# with the handoff
+# Usage:
+# $ handoff-end /tmp/handoff-XXXXXX.md
+set -e
+
+local file="$1"
+[[ -z "$file" ]] && {
+  print "handoff-end: file path required" >&2
+  exit 1
+}
+[[ ! -f "$file" ]] && {
+  print "handoff-end: file not found: $file" >&2
+  exit 1
+}
+
+local cmd="claude \"\$(cat $file)\""
+print "$cmd" | clipboard-write
