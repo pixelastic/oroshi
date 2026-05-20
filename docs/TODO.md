@@ -46,3 +46,9 @@ and mocking both scripts and binaries.
 
 I need to update the pre-commit to correctly find the tests for the changed
 files and run them.
+
+I will need a vft script that manually launches all the soon-to-be-comitted
+tests, so I can see what the precommit will do
+
+Prompt test files should better follow the naming of the file they test, so they
+can get picked up.

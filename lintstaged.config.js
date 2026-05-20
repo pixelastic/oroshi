@@ -1,5 +1,5 @@
 export default {
-  '{scripts/bin,config/term/zsh/functions/autoload}/**/*':
+  '{scripts/bin,config/term/zsh}/**/*':
     './scripts/yarn/test-bats',
   'scripts/bin/**/*.js': [
     'yarn run lint:fix --js',
