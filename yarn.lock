@@ -8462,6 +8462,7 @@ __metadata:
     bats: "npm:1.13.0"
     eslint_d: "npm:14.3.0"
     firost: "npm:5.8.0"
+    gilmore: "npm:1.2.0"
     golgoth: "npm:3.1.0"
     pietro: "npm:0.6.1"
     prettier: "npm:3.6.2"

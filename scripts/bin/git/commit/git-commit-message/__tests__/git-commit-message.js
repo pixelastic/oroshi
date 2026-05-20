@@ -1,9 +1,4 @@
-import {
-  __,
-  formatMessage,
-  getDiff,
-  getStagedFiles,
-} from '../git-commit-message.js';
+import { formatMessage, wrapLines } from '../format.js';
 
 describe('formatMessage', () => {
   it.each([
@@ -45,7 +40,7 @@ describe('formatMessage', () => {
       `,
     },
     {
-      title: 'body lines already under 72 chars are not modified',
+      title: 'short body lines are reflowed into one line if they fit',
       input: dedent`
         fix: short subject
 
@@ -55,8 +50,7 @@ describe('formatMessage', () => {
       output: dedent`
         fix: short subject
 
-        Short body line one
-        Short body line two
+        Short body line one Short body line two
       `,
     },
   ])('$title', ({ input, output }) => {
@@ -65,29 +59,41 @@ describe('formatMessage', () => {
   });
 });
 
-describe('getStagedFiles', () => {
+describe('wrapLines', () => {
   it.each([
     {
-      title: 'filters out yarn.lock from staged files',
-      statusOutput: 'M  src/index.js\nM  yarn.lock\nA  lib/helper.js\n',
-      expected: ['src/index.js', 'lib/helper.js'],
+      title: 'short lines are reflowed into one if they fit',
+      input: ['Short line one', 'Short line two'],
+      output: ['Short line one Short line two'],
     },
     {
-      title: 'returns empty array when nothing staged',
-      statusOutput: '',
-      expected: [],
+      title: 'long line is wrapped at word boundary',
+      input: [
+        'This is a long body line that definitely exceeds seventy-two characters and must be wrapped',
+      ],
+      output: [
+        'This is a long body line that definitely exceeds seventy-two characters',
+        'and must be wrapped',
+      ],
     },
-  ])('$title', async ({ statusOutput, expected }) => {
-    __.gitStatus = vi.fn().mockReturnValue(statusOutput);
-    const actual = await getStagedFiles();
-    expect(actual).toEqual(expected);
-  });
-});
-
-describe('getDiff', () => {
-  it('returns diff output for given files', async () => {
-    __.gitDiff = vi.fn().mockReturnValue('diff content');
-    const actual = await getDiff(['src/index.js']);
-    expect(actual).toEqual('diff content');
+    {
+      title: 'two short lines are reflowed into one if they fit',
+      input: ['Short line', 'that fits together'],
+      output: ['Short line that fits together'],
+    },
+    {
+      title: 'empty line paragraph break is preserved',
+      input: ['First paragraph.', '', 'Second paragraph.'],
+      output: ['First paragraph.', '', 'Second paragraph.'],
+    },
+    {
+      title: 'custom maxLength is respected',
+      input: ['one two three four five'],
+      maxLength: 10,
+      output: ['one two', 'three four', 'five'],
+    },
+  ])('$title', ({ input, output, maxLength }) => {
+    const actual = wrapLines(input, maxLength);
+    expect(actual).toEqual(output);
   });
 });
