@@ -1,23 +1,18 @@
 bats_load_library 'helper'
 
 setup() {
-	export TMP_DIRECTORY="$(bats_tmp)"
-	git init "$TMP_DIRECTORY/my-repo"
-	cd "$TMP_DIRECTORY/my-repo"
-	git config user.email "test@test.com"
-	git config user.name "Test"
-	git commit --allow-empty -m "init"
-	git worktree add "$TMP_DIRECTORY/my-repo--fix_bug" -b fix/bug
+	bats_git_dir 'my-repo'
+	bats_git_worktree 'fix/bug'
 }
 
 teardown() {
-	rm -rf "$TMP_DIRECTORY"
+	bats_cleanup
 }
 
 # git_worktree_branch
 
 @test "shows branch name inside a worktree" {
-	cd "$TMP_DIRECTORY/my-repo--fix_bug"
+	cd "${BATS_GIT_WORKTREES}fix-bug"
 	run zsh -c '
 		source ~/.oroshi/config/term/zsh/zshenv.zsh
 		source ~/.oroshi/config/term/zsh/prompt/git.zsh
@@ -31,7 +26,7 @@ teardown() {
 }
 
 @test "uses branch color regardless of ahead count" {
-	cd "$TMP_DIRECTORY/my-repo--fix_bug"
+	cd "${BATS_GIT_WORKTREES}fix-bug"
 	git commit --allow-empty -m "worktree commit"
 	run zsh -c '
 		source ~/.oroshi/config/term/zsh/zshenv.zsh
@@ -48,7 +43,7 @@ teardown() {
 }
 
 @test "git_branch is empty when inside a worktree" {
-	cd "$TMP_DIRECTORY/my-repo--fix_bug"
+	cd "${BATS_GIT_WORKTREES}fix-bug"
 	run zsh -c '
 		source ~/.oroshi/config/term/zsh/zshenv.zsh
 		source ~/.oroshi/config/term/zsh/prompt/git.zsh
@@ -63,7 +58,7 @@ teardown() {
 }
 
 @test "git_worktree_branch is empty outside a worktree" {
-	cd "$TMP_DIRECTORY/my-repo"
+	cd "$BATS_GIT_DIR"
 	run zsh -c '
 		source ~/.oroshi/config/term/zsh/zshenv.zsh
 		source ~/.oroshi/config/term/zsh/prompt/git.zsh
@@ -80,7 +75,7 @@ teardown() {
 # git_worktree_distance
 
 @test "shows ahead color and count when ahead" {
-	cd "$TMP_DIRECTORY/my-repo--fix_bug"
+	cd "${BATS_GIT_WORKTREES}fix-bug"
 	git commit --allow-empty -m "commit 1"
 	git commit --allow-empty -m "commit 2"
 	run zsh -c '
@@ -98,11 +93,10 @@ teardown() {
 }
 
 @test "shows behind color and count when behind" {
-	cd "$TMP_DIRECTORY/my-repo"
-	git commit --allow-empty -m "main commit 1"
-	git commit --allow-empty -m "main commit 2"
-	git commit --allow-empty -m "main commit 3"
-	cd "$TMP_DIRECTORY/my-repo--fix_bug"
+	bats_git commit --allow-empty -m "main commit 1"
+	bats_git commit --allow-empty -m "main commit 2"
+	bats_git commit --allow-empty -m "main commit 3"
+	cd "${BATS_GIT_WORKTREES}fix-bug"
 	run zsh -c '
 		source ~/.oroshi/config/term/zsh/zshenv.zsh
 		source ~/.oroshi/config/term/zsh/theming/env/colors.zsh
@@ -118,9 +112,8 @@ teardown() {
 }
 
 @test "shows both colors when ahead and behind" {
-	cd "$TMP_DIRECTORY/my-repo"
-	git commit --allow-empty -m "main commit"
-	cd "$TMP_DIRECTORY/my-repo--fix_bug"
+	bats_git commit --allow-empty -m "main commit"
+	cd "${BATS_GIT_WORKTREES}fix-bug"
 	git commit --allow-empty -m "worktree commit"
 	run zsh -c '
 		source ~/.oroshi/config/term/zsh/zshenv.zsh
@@ -137,7 +130,7 @@ teardown() {
 }
 
 @test "git_worktree_distance is empty when in sync with main" {
-	cd "$TMP_DIRECTORY/my-repo--fix_bug"
+	cd "${BATS_GIT_WORKTREES}fix-bug"
 	run zsh -c '
 		source ~/.oroshi/config/term/zsh/zshenv.zsh
 		source ~/.oroshi/config/term/zsh/prompt/git.zsh
@@ -151,7 +144,7 @@ teardown() {
 }
 
 @test "git_worktree_distance is empty outside a worktree" {
-	cd "$TMP_DIRECTORY/my-repo"
+	cd "$BATS_GIT_DIR"
 	run zsh -c '
 		source ~/.oroshi/config/term/zsh/zshenv.zsh
 		source ~/.oroshi/config/term/zsh/prompt/git.zsh

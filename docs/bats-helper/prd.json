@@ -143,6 +143,6 @@
       "Assert all tests pass",
       "Assert no file references old helper names"
     ],
-    "passes": false
+    "passes": true
   }
 ]

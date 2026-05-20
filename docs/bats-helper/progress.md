@@ -51,3 +51,11 @@ issue-005 → needs issue-004
 - Fixed: `.dot-repo` test replaced manual git init boilerplate with `bats_git_dir '.dot-repo'`
 - Skipped feedback: `REVIEW_SCRIPT` at file scope (ralph.bats uses same pattern; it's established practice); `ralph.bats` review flagged as "not migrated" — false positive, file already used new API
 - Next: issue-005 — migrate Tier 4 tests (prompt/git.zsh.bats, prompt/path.zsh.bats)
+
+## Session 2026-05-20 — issue-005: Migrate Tier 4 tests
+- Completed: Migrated `prompt/git.zsh.bats` and `prompt/path.zsh.bats` to new helper API; all 11 tests pass
+- Tests added: none (migrated existing tests)
+- Discovered: `path.zsh.bats` uses double-quoted `run zsh -c "..."` strings — `$BATS_GIT_DIR` expands correctly in bash scope before being passed to zsh, same as old `$TMP_DIRECTORY` pattern; `bats_git` works for main-repo commits in worktree-distance tests
+- Fixed: none
+- Skipped feedback: indentation inconsistency (`path.zsh.bats` uses 2-space vs tabs in `git.zsh.bats`) — pre-existing, out of scope; `config/ai/claude/skills/review/SKILL.md` path fix in diff — pre-existing working-tree change, valid but not part of this issue
+- Next: all issues complete — bats helper migration done

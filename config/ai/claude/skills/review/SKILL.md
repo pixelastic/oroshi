@@ -20,7 +20,7 @@ Two entry points — pick whichever applies:
 
 **Filepath path** — if the argument matches the pattern `review-diff-<uuid>.md`, read that file directly with the `Read` tool. Do not call `review-diff`. The file contents are the diff context; continue to step 2.
 
-**Natural language path** — interpret the user's intent and translate to `review-diff` args, then run `scripts/bin/ai/review-diff` via the `Bash` tool. Use its stdout as the diff context.
+**Natural language path** — interpret the user's intent and translate to `review-diff` args, then run `review-diff` via the `Bash` tool. Use its stdout as the diff context.
 
 | User says | `review-diff` call |
 |---|---|
