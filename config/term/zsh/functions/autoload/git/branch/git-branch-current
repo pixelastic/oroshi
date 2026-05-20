@@ -17,10 +17,9 @@ fi
 # - on a detached HEAD state
 if [[ $branchName == "HEAD" ]]; then
   if git-rebase-in-progress; then
-    local gitRoot="$(git-directory-root)"
-    local rebaseRoot="${gitRoot}/.git/rebase-merge"
-    local headName="$(cat ${rebaseRoot}/head-name)"
-    branchName=$headName[12,-1]
+    local rawInfo="$(git-rebase-info-raw)"
+    local headName="${${(@s/▮/)rawInfo}[3]}"
+    branchName=${headName:11}
   else
     branchName="HEAD"
   fi
