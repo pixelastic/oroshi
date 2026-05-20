@@ -1,1 +1,14 @@
-../../../node_modules/.bin/bats
+#!/usr/bin/env zsh
+# Runs bats tests
+# Usage:
+# $ bats ./path/to/file.bats
+
+# In oroshi worktrees, use the worktree config
+local oroshiRoot=~/.oroshi
+local project="$(git-github-project-name)"
+if [[ "$project" == "pixelastic/oroshi" ]] && git-directory-is-worktree; then
+  oroshiRoot="$(git-directory-root)"
+fi
+
+export BATS_LIB_PATH="${oroshiRoot}/config/term/bats"
+exec "${oroshiRoot}/node_modules/.bin/bats" "$@"
