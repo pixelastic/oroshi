@@ -112,7 +112,7 @@
       "Assert all tests pass",
       "Assert neither file references bats_tmp, TMP_DIRECTORY, or run_zsh_script"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",

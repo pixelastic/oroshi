@@ -27,3 +27,11 @@ issue-005 → needs issue-004
 - Fixed: none
 - Skipped feedback: `bats_strip_ansi` regex flagged as broken — false positive; `\x1b` IS in the file (hexdump confirmed), test passes. Optional repo arg for `bats_git_worktree` — not in issue-001 spec (`<branch>` only). Applied: `[[ -z ]]` → `[[ == "" ]]`, trimmed header comment, added `$branch` guard, improved `bats_cleanup` usage, removed out-of-scope `helper.bats`
 - Next: issue-002 — migrate Tier 1 tests (better-rm.bats, ralph-end.bats) to new API
+
+## Session 2026-05-20 — issue-002: Migrate Tier 1 tests
+- Completed: Migrated `better-rm.bats` and `ralph-end.bats` to new helper API
+- Tests added: none (migrated existing tests)
+- Discovered: `ralph-end.bats` setup had PATH prepend to `../claude/ralph` — non-existent directory, dead code pre-existing
+- Fixed: none
+- Skipped feedback: PATH stub in `ralph-end.bats:7` — prepend points to non-existent dir, is already a no-op, tests pass without it; fixing out of scope for this migration issue
+- Next: issue-003 — migrate Tier 2 tests (git repo and worktree tests)
