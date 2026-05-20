@@ -3,7 +3,7 @@
 # Usage:
 # $ git-worktree-is-ahead                    # current worktree
 # $ git-worktree-is-ahead /path/to/worktree
-setopt local_options errexit
+setopt local_options err_return
 
 local distanceOutput="$(git-worktree-distance "${1:-$PWD}")"
 [[ "$distanceOutput" =~ "ahead ([0-9]+)" ]] || return 1

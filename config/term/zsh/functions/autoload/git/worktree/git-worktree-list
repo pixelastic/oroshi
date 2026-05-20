@@ -1,7 +1,7 @@
 # List linked worktrees with branch, distance vs main, date, and last commit message
 # Usage:
 # $ git-worktree-list
-setopt local_options errexit
+setopt local_options err_return
 
 local rawOutput="$(git-worktree-list-raw)"
 

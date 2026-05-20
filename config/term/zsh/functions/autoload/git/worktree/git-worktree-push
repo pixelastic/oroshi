@@ -1,7 +1,7 @@
 # Push current worktree into main
 # Usage:
 # $ git-worktree-push
-setopt local_options errexit
+setopt local_options err_return
 
 local currentBranch="$(git-branch-current)"
 local mainPath="$(git-worktree-main)"

@@ -6,7 +6,7 @@
 # $ git-worktree-delete fix/bug
 # $ git-worktree-delete           # from inside a worktree
 # $ git-worktree-delete --force
-setopt local_options errexit
+setopt local_options err_return
 
 zmodload zsh/zutil
 zparseopts -E -D \

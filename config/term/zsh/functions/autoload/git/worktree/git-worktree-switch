@@ -2,7 +2,7 @@
 # Usage:
 # $ git-worktree-switch main      # → Git Repo Main
 # $ git-worktree-switch fix/bug   # → worktree for fix/bug
-setopt local_options errexit
+setopt local_options err_return
 
 local branch="$1"
 

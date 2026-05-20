@@ -1,7 +1,7 @@
 # Create a Worktree for a branch (new or existing) and cd into it
 # Usage:
 # $ git-worktree-create fix/my-bug   # Creates worktree and cds into it
-setopt local_options errexit extendedglob
+setopt local_options err_return extendedglob
 
 local branch="$1"
 

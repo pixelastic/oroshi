@@ -3,7 +3,7 @@
 # Usage:
 # $ git-worktree-list-raw   # fix/bug▮/path▮ahead 2, behind 0▮3mn▮fix typo
 
-setopt local_options errexit
+setopt local_options err_return
 local porcelain="$(git worktree list --porcelain 2>/dev/null)" || return 1
 
 # First pass: collect branch▮path pairs from porcelain output

@@ -2,7 +2,7 @@
 # Usage:
 # $ git-worktree-main          # from the main repo → prints its own path
 # $ git-worktree-main          # from a linked worktree → prints the main repo path
-setopt local_options errexit
+setopt local_options err_return
 
 local commonDir="$(git rev-parse --git-common-dir 2>/dev/null)"
 [[ "$commonDir" == "" ]] && return 1

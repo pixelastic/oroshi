@@ -1,7 +1,7 @@
 # Returns the registered project name for the current worktree
 # Usage:
 # $ git-worktree-project    # Returns project name, or empty if not registered
-setopt local_options errexit
+setopt local_options err_return
 
 local mainPath="$(git-worktree-main)" || return 1
 project-by-path "$mainPath"

@@ -2,7 +2,7 @@
 # Exits 1 if no matching Worktree exists
 # Usage:
 # $ git-worktree-path fix/bug   # → /path/to/worktrees/my-repo--fix_bug
-setopt local_options errexit
+setopt local_options err_return
 
 local branch="$1"
 local raw="$(git-worktree-list-raw)"

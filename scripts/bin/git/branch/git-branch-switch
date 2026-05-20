@@ -7,11 +7,11 @@
 # $ git-branch-switch 13cd455      # Go into detached HEAD at this commit
 # $ git-branch-switch main master  # Go to main or master
 
-# Not possible to change a worktree branch
-if git-directory-is-worktree; then
-  echo "✘ Cannot change branch in a worktree"
-  exit 1
-fi
+# # Not possible to change a worktree branch
+# if git-directory-is-worktree; then
+#   echo "✘ Cannot change branch in a worktree"
+#   exit 1
+# fi
 
 for commitRef in $@; do
   # Skip non-existing commits
