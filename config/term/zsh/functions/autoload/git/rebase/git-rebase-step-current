@@ -1,6 +1,0 @@
-# Returns the current step of the current rebase
-gitRoot="$(git-directory-root)"
-rebaseDir="${gitRoot}/.git/rebase-apply"
-currentStep="${rebaseDir}/next"
-
-cat "$currentStep"

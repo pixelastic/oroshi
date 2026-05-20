@@ -1,9 +1,9 @@
 # Check if current repo is currently rebasing
-local gitRoot="$(git-directory-root)"
+local gitDir="$(git-directory-gitdir)"
 
 # a folder rebase-apply is created during a rebase, and a rebase-merge during
 # an interactive one
 
-[[ -d ${gitRoot}/.git/rebase-apply ]] && return 0
-[[ -d ${gitRoot}/.git/rebase-merge ]] && return 0
+[[ -d ${gitDir}/rebase-apply ]] && return 0
+[[ -d ${gitDir}/rebase-merge ]] && return 0
 return 1

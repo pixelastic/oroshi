@@ -3,7 +3,7 @@
 # $ git-directory-is-worktree [path]
 
 local targetPath="${1:-$PWD}"
-local gitDir="$(git -C "$targetPath" rev-parse --git-dir 2>/dev/null)"
+local gitDir="$(git-directory-gitdir "$targetPath")"
 
 # If not a git directory, can't be a worktree
 [[ -z "$gitDir" ]] && return 1

@@ -1,0 +1,20 @@
+# Returns rebase state as ▮-separated fields
+# Output: stepCurrent▮stepMax▮headName▮onto
+# Returns 1 if no rebase is in progress
+# Usage:
+# $ git-rebase-info-raw              # Current directory
+# $ git-rebase-info-raw /path/to/dir # Given directory
+
+local targetPath="${1:-$PWD}"
+local gitDir="$(git-directory-gitdir "$targetPath")"
+local rebaseRoot="${gitDir}/rebase-merge"
+
+# Only interactive rebases (rebase-merge) have this structured data
+[[ -d "$rebaseRoot" ]] || return 1
+
+local stepCurrent="$(<${rebaseRoot}/msgnum)"
+local stepMax="$(<${rebaseRoot}/end)"
+local headName="$(<${rebaseRoot}/head-name)"
+local onto="$(<${rebaseRoot}/onto)"
+
+echo "${stepCurrent}▮${stepMax}▮${headName}▮${onto}"

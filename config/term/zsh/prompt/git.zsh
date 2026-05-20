@@ -135,25 +135,21 @@ function oroshi-prompt-populate:git_rebase_status() {
   (($GIT_DIRECTORY_IS_REPOSITORY)) || return
   git-rebase-in-progress || return
 
-  # Find how many steps and where we stand
-  local gitRoot="$(git-directory-root)"
-  if [[ ${gitRoot}/.git/rebase-merge ]]; then
-    local rebaseRoot="${gitRoot}/.git/rebase-merge"
-    local stepCurrent="$(cat ${rebaseRoot}/msgnum)"
-    local stepMax="$(cat ${rebaseRoot}/end)"
-  fi
+  local rawInfo="$(git-rebase-info-raw)"
+  [[ -z "$rawInfo" ]] && return
 
-  OROSHI_PROMPT_PARTS[git_rebase_status]+="%B%F{$COLOR_ALIAS_GIT_REBASE} ${stepCurrent}/${stepMax}%f%b"
+  local fields=(${(@ps/▮/)rawInfo})
+  local stepCurrent=$fields[1]
+  local stepMax=$fields[2]
+  local headName=$fields[3]
+  local onto=$fields[4]
 
-  local headName="$(cat ${rebaseRoot}/head-name)"
   headName=${headName:11}
-  local headNameColor="$(git-branch-color $headName)"
-  # [head: $headName][onto: $onto][origHead: $origHead]"
-
-  local onto="$(cat ${rebaseRoot}/onto)"
   onto=${onto:0:8}
 
-  OROSHI_PROMPT_PARTS[git_rebase_status]+=" %F{$headNameColor}${headName}%f:%F{$COLOR_ALIAS_GIT_COMMIT}${onto}%f"
+  local headNameColor="$(git-branch-color $headName)"
+
+  OROSHI_PROMPT_PARTS[git_rebase_status]="%B%F{$COLOR_ALIAS_GIT_REBASE} ${stepCurrent}/${stepMax}%f%b %F{$headNameColor}${headName}%f:%F{$COLOR_ALIAS_GIT_COMMIT}${onto}%f"
 }
 
 # Returns the number of currently opened issues

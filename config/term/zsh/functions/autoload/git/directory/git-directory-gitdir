@@ -1,0 +1,9 @@
+# Returns the git directory (GIT_DIR) for the current repo or worktree
+# In a regular repo: path to the .git folder
+# In a linked worktree: path to .git/worktrees/<name>/
+# Usage:
+# $ git-directory-gitdir              # Current directory
+# $ git-directory-gitdir /path/to/dir # Given directory
+
+local targetPath="${1:-$PWD}"
+git -C "$targetPath" rev-parse --git-dir 2>/dev/null
