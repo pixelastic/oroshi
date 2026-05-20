@@ -31,10 +31,14 @@ scripts and config (and install if needed).
 Is errexit in the autoloaded function a good idea? It's gonna do exit, while I
 actually only want return, to quit the function, not kill the terminal.
 
-## Bats
+I'd like to have .mp3 files and possibly less interesting dirs below in ctrl-p
+fzf, to have the mosy import files first.
 
-I will need to improve the ctrl-p when prefixed with bats to 1/ filter in the
-current worktree, not the default main and 2/ only suggest .bats files
+I still have a linter error in
+/home/tim/.oroshi/scripts/bin/git/commit/git-commit-message/git-commit-message
+in nvm because of the top shabag, while the local eslint should ignore it
+
+## Bats
 
 I need to move all tests close to their scripts/functions, in a `__tests`
 subdir. I will also need to cleanup the shared bats helper taht allow testing

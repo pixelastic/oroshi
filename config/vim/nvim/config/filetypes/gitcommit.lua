@@ -9,7 +9,7 @@ M.onFiletype = function()
     F.setThinkingIndicator(true)
     F.replaceLines("Generating commit message, please wait...", 1)
 
-    F.run("git-commit-message-bin", {
+    F.run("git-commit-message", {
       onSuccess = function(message)
         F.replaceLines(message.stdout, 1)
         F.moveTo(1)

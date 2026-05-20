@@ -4,8 +4,9 @@
 # $ bats-test-list-raw
 # Output:
 #   testName▮/full/path/to/test.bats
-TESTS_DIR=~/.oroshi/scripts/bin/__tests__
+local gitRoot="$(git-directory-root)"
+[[ -z "$gitRoot" ]] && return 1
 
-for testFile in $TESTS_DIR/*.bats(N); do
+for testFile in ${gitRoot}/**/*.bats(N); do
   echo "${testFile:t:r}▮${testFile:a}"
 done
