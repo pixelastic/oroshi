@@ -118,6 +118,7 @@
   "xdg-open",
   "xxd",
   "yarn lint",
+  "yarn lint:fix",
   "yarn run agent:delete-orphaned-images",
   "yarn run algolia:ask",
   "yarn run algolia:teach",
