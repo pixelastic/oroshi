@@ -76,7 +76,7 @@ Write the tests that cover the acceptance criteria of the issue — at least one
 
 **Exit criterion:** All actionable feedback addressed, linter clean, tests green.
 
-1. Spawn a subagent (via Agent tool). The subagent runs the `review` CLI tool on the current changes. Capture the output.
+1. Spawn a Bash subagent that runs `review` (no args). Capture the output.
 2. For each feedback item:
    - **Actionable and in scope** → fix it
    - **Out of scope or not relevant** → note it in progress.md under `Skipped feedback:`
@@ -140,7 +140,7 @@ Update `$ARGUMENTS/prd.json`: mark issue as complete, update any relevant status
 - [ ] Code written following the standards of the language skill (`zsh-writer`, `js-writer`, etc)
 - [ ] Linter clean on modified files
 - [ ] Tests green for modified files
-- [ ] review subagent ran, output captured
+- [ ] review subagent ran `review` (no args), output captured
 - [ ] Actionable feedback fixed or explicitly dismissed
 - [ ] Linter + tests green for modified files after review fixes
 - [ ] progress.md updated with session entry
