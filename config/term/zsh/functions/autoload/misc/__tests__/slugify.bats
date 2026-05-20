@@ -1,4 +1,4 @@
-load '../../../../../../../scripts/bin/__tests__/helper'
+load '../../../../../../../config/term/bats/helper'
 
 # --- Basic ---
 

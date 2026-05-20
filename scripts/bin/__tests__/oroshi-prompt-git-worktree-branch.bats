@@ -1,4 +1,4 @@
-load 'helper'
+load '../../../config/term/bats/helper'
 
 setup() {
 	export TMP_DIRECTORY="$(bats_tmp)"

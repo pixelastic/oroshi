@@ -1,4 +1,4 @@
-load '../../../__tests__/helper'
+load '../../../../../config/term/bats/helper'
 
 RALPH_SCRIPT="$BATS_TEST_DIRNAME/../ralph"
 
