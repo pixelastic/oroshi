@@ -1,0 +1,28 @@
+# Run bats tests for all dirty files that have an associated test
+# Usage:
+# $ git-file-test
+
+local gitRoot="$(git-directory-root)"
+local rawFiles="$(git-file-list-dirty-raw)"
+
+# Nothing to test if working tree is clean
+[[ "$rawFiles" == "" ]] && return 0
+
+local testPaths=()
+for rawLine in ${(f)rawFiles}; do
+  local splitLine=(${(@s/:/)rawLine})
+  local gitStatus=$splitLine[1]
+  local filePath=$splitLine[2]
+
+  # Skip deleted files
+  [[ "$gitStatus" == "D" ]] && continue
+
+  local testPath="$(bats-test-path "${gitRoot}/${filePath}")"
+  [[ -n "$testPath" ]] && testPaths+=("$testPath")
+done
+
+# No tests found for any dirty file
+[[ ${#testPaths[@]} -eq 0 ]] && return 0
+
+local uniquePaths=("${(@u)testPaths}")
+bats "${uniquePaths[@]}"

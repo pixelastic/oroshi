@@ -40,15 +40,15 @@ in nvm because of the top shabag, while the local eslint should ignore it
 
 ## Bats
 
-I need to move all tests close to their scripts/functions, in a `__tests`
-subdir. I will also need to cleanup the shared bats helper taht allow testing
-and mocking both scripts and binaries.
-
-I need to update the pre-commit to correctly find the tests for the changed
-files and run them.
-
 I will need a vft script that manually launches all the soon-to-be-comitted
 tests, so I can see what the precommit will do
 
 Prompt test files should better follow the naming of the file they test, so they
 can get picked up.
+
+I will need to cleanup the bats helper to have clear rules on how to write
+tests, probably having extensive examples in the file to explain how to use it.
+This should include guidance about temporary directories per test, how to mock
+undelrying methods, how to test scripts and zsh functions, etc
+
+I will need to update all existing tests to that standard and fix broken tests
