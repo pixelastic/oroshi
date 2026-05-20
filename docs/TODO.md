@@ -38,10 +38,14 @@ I still have a linter error in
 /home/tim/.oroshi/scripts/bin/git/commit/git-commit-message/git-commit-message
 in nvm because of the top shabag, while the local eslint should ignore it
 
-## Bats
+## Context-badge
 
-I will need a vft script that manually launches all the soon-to-be-comitted
-tests, so I can see what the precommit will do
+If I'm in a worktree of a cloned repo, but that repo is not part of my projects,
+how should the badge be displayed? My initial assumpation was that project >
+worktree > path, but in that case as there is no project, I think maybe the
+worktree main name should be promoted to project?
+
+## Bats
 
 Prompt test files should better follow the naming of the file they test, so they
 can get picked up.
