@@ -43,3 +43,11 @@ issue-005 → needs issue-004
 - Fixed: `config/term/bats/helper` — `bats_git_worktree` slash-branch support + git flag
 - Skipped feedback: `git-worktree-push.bats` missing guard after `local fixHead="$(git rev-parse HEAD)"` — `variables.md` guard rule is for zsh functions, not bats (bash) tests; test assertion catches failure anyway. `git-worktree-pull.bats` manual `git init` boilerplate in "no-main" test — unavoidable, `bats_git_dir` always creates `main` branch. Scope creep noted (`allowlist.json` path fix, helper bug fixes) — helper fixes were required to make migration work at all.
 - Next: issue-004 — migrate Tier 3 tests (ralph.bats, review.bats, git-worktree-create.bats)
+
+## Session 2026-05-20 — issue-004: Migrate Tier 3 tests
+- Completed: Migrated `review.bats` and `git-worktree-create.bats` to new helper API; confirmed `ralph.bats` already used new API (all 8 tests passing, no changes needed)
+- Tests added: none (migrated existing tests)
+- Discovered: `$0` inside a sourced script = sourced file path (not `-c` arg0), so `${0:A:h}` in `review` script resolves correctly without changes to `bats_run_script`; `bats_git_dir '.dot-repo'` can create a second repo in the same sandbox without clobbering the helper's git config setup
+- Fixed: `.dot-repo` test replaced manual git init boilerplate with `bats_git_dir '.dot-repo'`
+- Skipped feedback: `REVIEW_SCRIPT` at file scope (ralph.bats uses same pattern; it's established practice); `ralph.bats` review flagged as "not migrated" — false positive, file already used new API
+- Next: issue-005 — migrate Tier 4 tests (prompt/git.zsh.bats, prompt/path.zsh.bats)

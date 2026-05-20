@@ -133,7 +133,7 @@
       "Assert review.bats contains no ZDOTDIR manipulation",
       "Assert git-worktree-create.bats creates no executable mock files in PATH"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",
