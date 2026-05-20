@@ -22,6 +22,14 @@ might want a PRD + Issues in a given worktree. I want it to ask me if I want a
 PRD or implement right away and probably have it estimate if it could implement
 right away (maybe if less than n lines or code, or only touch one file?)
 
+## Glossary
+
+I will need to rename /grill-with-docs to /glossary. It should also ask a lot of
+question to get to a shared understanding, but define where/how to save the vocabulary.
+I'm not sure if I should name it /glossary actually. I feel it's an important
+part to document, but it might shadow the fact that it helps get to a common
+understaning.
+
 ## Lua
 
 I will need a lua-writer skill, similar to zsh-writer and js-writer. It will
@@ -71,8 +79,3 @@ If I'm in a worktree of a cloned repo, but that repo is not part of my projects,
 how should the badge be displayed? My initial assumpation was that project >
 worktree > path, but in that case as there is no project, I think maybe the
 worktree main name should be promoted to project?
-
-## Bats
-
-I should update zsh-writer to give a testing example that follows the best
-practices of the test helper
