@@ -38,6 +38,8 @@ I still have a linter error in
 /home/tim/.oroshi/scripts/bin/git/commit/git-commit-message/git-commit-message
 in nvm because of the top shabag, while the local eslint should ignore it
 
+Ctrl-p after `ralph` should open only my ./docs/ subfolders
+
 ## Context-badge
 
 If I'm in a worktree of a cloned repo, but that repo is not part of my projects,
