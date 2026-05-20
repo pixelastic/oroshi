@@ -40,8 +40,8 @@ teardown() {
   inotifywait() { return 0; }
   claude() {
     echo "change $$" >> "$GIT_REPO/output.txt"
-    touch "$PRD_DIR/.ralph-done"
-    touch "$PRD_DIR/.ralph-prd-done"
+    ralph-state set done true
+    ralph-state set prd_done true
   }
   git-commit-message() { echo "test commit"; }
   bats_mock inotifywait claude git-commit-message
@@ -145,4 +145,30 @@ teardown() {
   bats_run_script "$RALPH_SCRIPT" "$PRD_DIR"
   [ "$status" -eq 0 ]
   [ ! -f "$BATS_TMP_DIR/ino_calls.txt" ]
+}
+
+@test "single-shot mode clears state file after run" {
+  echo '[{"id":"1","status":"open"}]' > "$PRD_DIR/prd.json"
+
+  claude() { echo "change" >> "$GIT_REPO/output.txt"; }
+  bats_mock claude
+
+  cd "$GIT_REPO"
+  bats_run_script "$RALPH_SCRIPT" "$PRD_DIR"
+  [ "$status" -eq 0 ]
+  [ ! -f "$PRD_DIR/.ralph-state.json" ]
+}
+
+@test "loop mode clears state file after all iterations" {
+  echo '[{"id":"1","status":"open"},{"id":"2","status":"open"}]' > "$PRD_DIR/prd.json"
+
+  inotifywait() { return 0; }
+  claude() { echo "change $$" >> "$GIT_REPO/output.txt"; }
+  git-commit-message() { echo "test commit"; }
+  bats_mock inotifywait claude git-commit-message
+
+  cd "$GIT_REPO"
+  bats_run_script "$RALPH_SCRIPT" --max 2 "$PRD_DIR"
+  [ "$status" -eq 0 ]
+  [ ! -f "$PRD_DIR/.ralph-state.json" ]
 }

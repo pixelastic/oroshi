@@ -38,12 +38,18 @@ I still have a linter error in
 /home/tim/.oroshi/scripts/bin/git/commit/git-commit-message/git-commit-message
 in nvm because of the top shabag, while the local eslint should ignore it
 
+## Ralph
+
 Ctrl-p after `ralph` should open only my ./docs/ subfolders
 
 I think when I run a review subagent it still says "Job's done" at the end; I
 should make it quiet.
 
 The .ralph-done file is still here even after cleaning it in the ralph script
+
+Maybe write json with jo/jq in bats test of ralph to be more readable?
+
+Use a ralph-state.json file
 
 ## Review
 

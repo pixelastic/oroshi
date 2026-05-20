@@ -18,16 +18,14 @@ MONITOR_TIMEOUT="${RALPH_MONITOR_TIMEOUT:-600}"
 # In tests, set RALPH_TTY=/dev/null — /dev/tty requires a real terminal and will fail otherwise
 TTY_INPUT="${RALPH_TTY:-/dev/tty}"
 
-# Kill claude when .ralph-done appears in <dir>
+export RALPH_STATE_FILE="$dir/.ralph-state.json"
+
+# Kill claude when state.done becomes true
 _sentinel_watcher() {
-  local dir="$1" claudePid="$2"
+  local claudePid="$1"
   while true; do
     sleep $WATCHER_INTERVAL
-    # Wait until the file appears
-    [[ -f "$dir/.ralph-done" ]] || continue
-
-    # Remove the sentinel, and kill Claude
-    rm -f "$dir/.ralph-done"
+    [[ "$(ralph-state get 'done')" == "true" ]] || continue
     kill -TERM $claudePid 2>/dev/null || true
     break
   done
@@ -64,31 +62,36 @@ local gitRoot="$(git-directory-root)"
 
 # Single-shot mode
 if [[ "$maxLoops" == "" ]]; then
+  ralph-state init single
   claude \
     --permission-mode acceptEdits \
     "/ralph ${dir}"
-
-  # Remove the file created, we don't need it in single run
-  rm $dir/.ralph-done || true
+  ralph-state clear
   return
 fi
 
 # Loop mode: run up to N iterations
+ralph-state init loop
+
 local i=0
 while [[ $i -lt $maxLoops ]]; do
   i=$((i + 1))
 
   # PRD complete: exit loop early
-  if [[ -f "$dir/.ralph-prd-done" ]]; then
+  if [[ "$(ralph-state get prd_done)" == "true" ]]; then
     print "ralph: PRD complete — all issues done"
+    ralph-state clear
     return 0
   fi
+
+  # Reset done flag for this iteration
+  ralph-state set 'done' false
 
   # Start claude in background; connect to terminal when available for TUI
   claude --permission-mode acceptEdits "/ralph ${dir}" <"$TTY_INPUT" &
   local claudePid=$!
 
-  _sentinel_watcher "$dir" $claudePid &
+  _sentinel_watcher $claudePid &
   local watcherPid=$!
 
   _inactivity_monitor "$gitRoot" &
@@ -107,6 +110,7 @@ while [[ $i -lt $maxLoops ]]; do
   # Ctrl+C: stop loop cleanly, no commit
   if [[ $claudeExitCode -eq 130 ]]; then
     print "ralph: stopped (Ctrl+C)"
+    ralph-state clear
     return 0
   fi
 
@@ -118,4 +122,5 @@ while [[ $i -lt $maxLoops ]]; do
   fi
 done
 
+ralph-state clear
 print "ralph: done ($maxLoops iterations)"
