@@ -38,3 +38,11 @@ issue-006 → needs issue-002
 - Fixed: Replaced `|| return 1` after `local porcelain` with manual empty-string guard; split grouped `local worktreePath="" branch="" isFirst=true` into 3 separate locals
 - Skipped feedback: "Mock stub broken" — incorrect; bats_run_function sources $BATS_TMP_DIR/mock.zsh before the call, stub IS working (test failed with old code, passes with new code). "|| true redundant" — not redundant; without it, err_return aborts the loop when git-worktree-distance-raw fails. "Scope creep on local fixes" — required by ralph linter rule.
 - Next: issue-003 (refactor is-ahead/is-behind) or issue-004 (refactor prompt-git.zsh)
+
+## Session 2026-05-21 — issue-006: improve complete-git-worktrees
+- Completed: Rewrote `complete-git-worktrees` to output `name:description` format with dirty/ahead/behind counts (zero-suppressed) and last commit message
+- Tests added: `output is in name:description format`, `includes dirty count in description when non-zero`, `suppresses zero counts in description`, `outputs main with no description when outside a git repo`
+- Discovered: Existing test "outputs only 'main' when no linked worktrees exist" expected plain `main`; updated to `main:*` format. Review flagged `local mainDesc` split — fixed via subshell inline. Review flagged `git rev-parse --show-toplevel` — replaced with `git-worktree-main`. Review flagged `git log -1` without branch arg — fixed to `git log -1 --format="%s" main`.
+- Fixed: `local mainDesc` / `local desc` split-declarations inlined via subshell `$([[ ... ]] && echo ... || echo ...)`; `git-worktree-main` used instead of `git rev-parse`; `git log -1 main` targets correct branch
+- Skipped feedback: "variable bug $message vs $mainMessage" — false positive, code already uses `mainMessage` in main block, all tests pass; "US7/US10-13 missing" — separate issues (007, 003, 004, 005)
+- Next: issue-007 (worktree switch coloring, no blockers) or issue-003 (refactor is-ahead/is-behind)

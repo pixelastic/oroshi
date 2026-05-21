@@ -1,15 +1,44 @@
 # List completion entries for git worktrees of the current repo
+# Output format: name:description (for use with zsh _describe)
 # Always includes 'main'; excludes worktrees from other repos
 # Usage:
 # $ complete-git-worktrees
 
+setopt local_options err_return
+
+local iconDirty="~"
+local iconAhead="↑"
+local iconBehind="↓"
+
+local mainPath="$(git-worktree-main 2>/dev/null || true)"
+[[ "$mainPath" == "" ]] && echo "main" && return 0
+
+local mainDirtyCount="$(git-directory-dirty-count "$mainPath")"
+local mainMessage="$(git log -1 --format="%s" main 2>/dev/null || true)"
+
+local mainParts=()
+[[ $mainDirtyCount -gt 0 ]] && mainParts+=("${iconDirty}${mainDirtyCount}")
+local mainCounters="${(j: :)mainParts}"
+local mainDesc="$([[ -n "$mainCounters" ]] && echo "${mainCounters}  ${mainMessage}" || echo "${mainMessage}")"
+echo "main:${mainDesc}"
+
 local rawList="$(git-worktree-list-raw)"
-
-echo "main"
-
 [[ "$rawList" == "" ]] && return 0
 
 for rawLine in ${(f)rawList}; do
   [[ "$rawLine" == "" ]] && continue
-  echo "${rawLine%%▮*}"
+  local fields=(${(@ps/▮/)rawLine})
+  local branch="$fields[1]"
+  local dirtyCount="$fields[3]"
+  local ahead="$fields[4]"
+  local behind="$fields[5]"
+  local message="$fields[7]"
+
+  local parts=()
+  [[ $dirtyCount -gt 0 ]] && parts+=("${iconDirty}${dirtyCount}")
+  [[ $ahead -gt 0 ]] && parts+=("${iconAhead}${ahead}")
+  [[ $behind -gt 0 ]] && parts+=("${iconBehind}${behind}")
+  local counters="${(j: :)parts}"
+  local desc="$([[ -n "$counters" ]] && echo "${counters}  ${message}" || echo "${message}")"
+  echo "${branch}:${desc}"
 done

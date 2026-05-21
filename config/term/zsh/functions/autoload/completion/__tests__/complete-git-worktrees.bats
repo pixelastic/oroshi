@@ -34,15 +34,56 @@ teardown() {
   [[ "$output" != *"feat/x"* ]]
 }
 
-@test "outputs only 'main' when no linked worktrees exist" {
+@test "outputs only 'main' entry when no linked worktrees exist" {
   bats_git_dir 'clean-repo'
   cd "$BATS_GIT_DIR"
+  bats_run_function complete-git-worktrees
+  [ "$status" -eq 0 ]
+  [ "${#lines[@]}" -eq 1 ]
+  [[ "${lines[0]}" == "main:"* ]]
+}
+
+@test "returns 'main' and succeeds outside a git repo" {
+  cd "$BATS_TMP_DIR"
   bats_run_function complete-git-worktrees
   [ "$status" -eq 0 ]
   [ "$output" = "main" ]
 }
 
-@test "returns 'main' and succeeds outside a git repo" {
+@test "output is in name:description format" {
+  cd "$BATS_MY_REPO"
+  bats_run_function complete-git-worktrees
+  [ "$status" -eq 0 ]
+  [[ "${lines[1]}" == *":"* ]]
+}
+
+@test "includes dirty count in description when non-zero" {
+  touch "${BATS_GIT_WORKTREES}fix-bug/untracked.txt"
+  cd "$BATS_MY_REPO"
+  bats_run_function complete-git-worktrees
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"~1"* ]]
+}
+
+@test "suppresses zero counts in description" {
+  cd "$BATS_MY_REPO"
+  bats_run_function complete-git-worktrees
+  [ "$status" -eq 0 ]
+  local fixbug_line=""
+  for line in "${lines[@]}"; do
+    [[ "$line" == "fix/bug"* ]] && fixbug_line="$line" && break
+  done
+  [[ "$fixbug_line" == "fix/bug:"* ]]
+  [[ "$fixbug_line" != *"~"* ]]
+  [[ "$fixbug_line" != *"↑"* ]]
+  [[ "$fixbug_line" != *"↓"* ]]
+}
+
+@test "outputs main with no description when outside a git repo" {
+  cd "$BATS_MY_REPO"
+  bats_run_function complete-git-worktrees
+  [[ "${lines[0]}" == "main:"* ]]
+
   cd "$BATS_TMP_DIR"
   bats_run_function complete-git-worktrees
   [ "$status" -eq 0 ]

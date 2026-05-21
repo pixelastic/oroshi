@@ -77,7 +77,7 @@
       "Run complete-git-worktrees",
       "Assert output contains the worktree branch name followed by ':' and a dirty indicator"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0006",
@@ -89,7 +89,7 @@
       "Run complete-git-worktrees",
       "Assert the description for the worktree does not contain dirty/ahead/behind indicators"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0006",
@@ -100,7 +100,7 @@
       "Assert exit status is 0",
       "Assert output is exactly 'main'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0006",
@@ -112,6 +112,6 @@
       "Run complete-git-worktrees",
       "Assert each non-main line contains ':' separating name from description"
     ],
-    "passes": false
+    "passes": true
   }
 ]
