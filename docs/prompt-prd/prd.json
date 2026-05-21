@@ -1,0 +1,206 @@
+[
+  {
+    "id": "0001",
+    "description": "git-branch-slug converts branch names with slashes to underscore-separated slugs",
+    "steps": [
+      "Call git-branch-slug with feat/my-feature",
+      "Verify output is feat_my-feature",
+      "Call git-branch-slug with feat/scope/deep",
+      "Verify output is feat_scope_deep",
+      "Call git-branch-slug with main",
+      "Verify output is main unchanged"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0001",
+    "description": "git-worktree-create uses git-branch-slug for slug generation",
+    "steps": [
+      "Create a worktree with a branch name containing a slash",
+      "Verify the worktree directory name uses underscores instead of slashes"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "git-worktree-is-ralph exits 0 inside a ralph worktree",
+    "steps": [
+      "Create a temporary git worktree on branch feat/test-ralph",
+      "Create docs/feat_test-ralph/prd.json inside the worktree",
+      "Run git-worktree-is-ralph from inside the worktree",
+      "Verify exit code is 0"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "git-worktree-is-ralph exits 1 inside a worktree without prd.json",
+    "steps": [
+      "Create a temporary git worktree",
+      "Do not create any prd.json",
+      "Run git-worktree-is-ralph",
+      "Verify exit code is 1"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "git-worktree-is-ralph exits 1 outside any worktree",
+    "steps": [
+      "Run git-worktree-is-ralph from a non-worktree git repo",
+      "Verify exit code is 1"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "git-worktree-is-ralph accepts an explicit path argument",
+    "steps": [
+      "Create a temporary git worktree with docs/<slug>/prd.json",
+      "Run git-worktree-is-ralph with an explicit subpath inside the worktree",
+      "Verify exit code is 0"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0003",
+    "description": "ralph-directory returns an absolute path to the ralph prd dir",
+    "steps": [
+      "Create a temporary git worktree on branch feat/my-feat",
+      "Create docs/feat_my-feat/prd.json inside the worktree",
+      "Run ralph-directory from inside the worktree",
+      "Verify the output is an absolute path ending in docs/feat_my-feat/",
+      "Verify the path starts with /"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0003",
+    "description": "ralph-directory exits 1 when not in a ralph worktree",
+    "steps": [
+      "Run ralph-directory from a non-worktree git repo",
+      "Verify exit code is 1 and output is empty"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0003",
+    "description": "ralph-directory accepts an optional path argument",
+    "steps": [
+      "Create a temporary ralph worktree",
+      "Run ralph-directory with an explicit subpath inside the worktree",
+      "Verify the returned absolute path is correct"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0004",
+    "description": "ralph-progress outputs done▮total for a valid prd.json",
+    "steps": [
+      "Create a prd.json with 3 items: 1 with passes true, 2 with passes false",
+      "Run ralph-progress with that directory",
+      "Verify output is 1▮3"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0004",
+    "description": "ralph-progress counts only passes == true (boolean strict)",
+    "steps": [
+      "Create a prd.json with items having passes: true, passes: false, and passes: null",
+      "Run ralph-progress",
+      "Verify only the true entry is counted as done"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0004",
+    "description": "ralph-progress exits 1 for an empty array",
+    "steps": [
+      "Create a prd.json containing []",
+      "Run ralph-progress with that directory",
+      "Verify exit code is 1"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0004",
+    "description": "ralph-progress exits 1 for malformed JSON",
+    "steps": [
+      "Create a prd.json containing invalid JSON",
+      "Run ralph-progress with that directory",
+      "Verify exit code is 1"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0004",
+    "description": "ralph-progress deduces directory from worktree context when called with no argument",
+    "steps": [
+      "Create a temporary ralph worktree with a valid prd.json",
+      "Run ralph-progress with no arguments from inside the worktree",
+      "Verify it outputs the correct done▮total"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0004",
+    "description": "ralph-end uses ralph-progress and correctly detects PRD completion",
+    "steps": [
+      "Create a ralph worktree with a prd.json where all passes are true",
+      "Run ralph-end on that directory",
+      "Verify ralph-state prd_done is set to true"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0005",
+    "description": "git_issues_github shows nothing in a worktree context",
+    "steps": [
+      "Navigate to a git worktree",
+      "Trigger prompt refresh",
+      "Verify git_issues_github prompt part is empty"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0005",
+    "description": "git_issues_prd shows yellow progress in a ralph worktree with issues in progress",
+    "steps": [
+      "Navigate to a ralph worktree with prd.json containing mixed passes values",
+      "Trigger prompt refresh",
+      "Verify git_issues_prd prompt part shows done/total with COLOR_ALIAS_GIT_ISSUE color"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0005",
+    "description": "git_issues_prd shows green progress when all issues are complete",
+    "steps": [
+      "Navigate to a ralph worktree with prd.json where all passes are true",
+      "Trigger prompt refresh",
+      "Verify git_issues_prd prompt part shows done/total with COLOR_ALIAS_SUCCESS color"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0005",
+    "description": "git_issues_prd shows red error icon for malformed prd.json",
+    "steps": [
+      "Navigate to a ralph worktree with a malformed prd.json",
+      "Trigger prompt refresh",
+      "Verify git_issues_prd prompt part shows error icon with COLOR_ALIAS_ERROR color"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0005",
+    "description": "git_issues_prd shows nothing in a non-ralph worktree",
+    "steps": [
+      "Navigate to a worktree without prd.json",
+      "Trigger prompt refresh",
+      "Verify git_issues_prd prompt part is empty"
+    ],
+    "passes": false
+  }
+]
