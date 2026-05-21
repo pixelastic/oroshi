@@ -34,6 +34,7 @@
   "ffprobe",
   "file",
   "find",
+  "fzf",
   "gh issue list",
   "gh issue view",
   "gh pr list",

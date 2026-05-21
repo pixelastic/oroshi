@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # Called by the /handoff skill at the end
-# Copy in the clipboard the exact command to run to start a new Claude session
-# with the handoff
+# Copy in the clipboard what to paste to a new Claude session to continue after
+# the handoff
 # Usage:
 # $ handoff-end /tmp/handoff-XXXXXX.md
 set -e
@@ -16,5 +16,4 @@ local file="$1"
   exit 1
 }
 
-local cmd="claude \"\$(cat $file)\""
-print "$cmd" | clipboard-write
+print "@${file}" | clipboard-write
