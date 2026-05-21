@@ -55,3 +55,8 @@ scripts and config (and install if needed).
 ## Zsh
 
 I will need to add zshlint as a pre-commit hook for zsh scripts as well
+
+Add to the prompt, when in a worktree, the X/Y count of the number of issues to
+fix/total, rather than the number of GitHub issues, direcly read from the docs/
+folder, with a subditectory the same name as the worktree. That will let me know
+if I'm over the PRD or not.
