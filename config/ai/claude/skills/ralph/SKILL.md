@@ -76,9 +76,11 @@ Write the tests that cover the acceptance criteria of the issue — at least one
 
 **Exit criterion:** All actionable feedback addressed, linter clean, tests green.
 
-1. Run `review` (with no args) **synchronously** with a 10mn timeout.
-    - DO NOT use `run_in_background`.
-    - Use the bash tool with `timeout: 600000`
+1. Run `review` via the **Bash tool**:
+    - `review 2>&1`
+    - `timeout: 600000` (10 min)
+    - DO NOT use `run_in_background`
+    - DO NOT use the Skill tool
     - Wait for the command to finish before proceeding.
 2. For each feedback item:
    - **Actionable and in scope** → fix it
@@ -133,6 +135,7 @@ Update `$ARGUMENTS/prd.json`: mark issue as complete, update any relevant status
 | "Review feedback is minor, not worth it" | Minor feedback ignored = minor bugs shipped. Fix it. |
 | "I can infer priority without reading the detail file" | You can't. Read the file. |
 | "I should commit so the review has something to diff" | Do not commit. That's the user's job. |
+| "There is a /review skill, I should use that" | Use the **Bash tool** `review` command instead |
 
 ## Checklist
 
@@ -143,7 +146,7 @@ Update `$ARGUMENTS/prd.json`: mark issue as complete, update any relevant status
 - [ ] Code written following the standards of the language skill (`zsh-writer`, `js-writer`, etc)
 - [ ] Linter clean on modified files
 - [ ] Tests green for modified files
-- [ ] Ran `review` (no args) with output captured
+- [ ] Ran `review 2>&1` via Bash tool with output captured
 - [ ] Actionable feedback fixed or explicitly dismissed
 - [ ] Linter + tests green for modified files after review fixes
 - [ ] progress.md updated with session entry
