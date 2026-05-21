@@ -10,9 +10,10 @@ source "$dir/__rules/rule-no-manual-arg-parsing.zsh"
 source "$dir/__rules/rule-no-grouped-locals.zsh"
 source "$dir/__rules/rule-local-or-return.zsh"
 source "$dir/__rules/rule-no-external-basename.zsh"
+source "$dir/__rules/rule-no-while-read.zsh"
 
 # Ordered list of custom rule functions to run
-local -a _RULES=(zshlintRule_noManualArgParsing zshlintRule_noGroupedLocals zshlintRule_localOrReturn zshlintRule_noExternalBasename)
+local -a _RULES=(zshlintRule_noManualArgParsing zshlintRule_noGroupedLocals zshlintRule_localOrReturn zshlintRule_noExternalBasename zshlintRule_noWhileRead)
 
 # Separator used in Rule Output lines; export so subshells see it
 export _SEP=$'\u25ae'

@@ -69,3 +69,11 @@
 - Fixed: none
 - Skipped feedback: grill-with-docs session not run as separate step — edge cases were fully covered by test coverage (comment skip, bare-word false positive, subshell detection)
 - Next: 0006 — Rule: noWhileRead
+
+## Session 2026-05-21 — 0006: Rule: noWhileRead
+- Completed: Implemented `zshlintRule_noWhileRead` using ZSH `=~` regex `while.*[[:space:]]read([^[:alnum:]_]|$)` to detect `while ... read` loops on a single line without matching `readlink`/`readline`. Wired into `zshlint-custom`.
+- Tests added: flags `while IFS= read -r line`; flags `while read line`; clean `while true`; clean `readlink`; clean `readline`; clean comment; clean loop with no read
+- Discovered: `[^[:alnum:]_]` after `read` is sufficient to exclude `readlink`/`readline` (both have alpha char immediately after `d`)
+- Fixed: none
+- Skipped feedback: grill-me session not run — edge cases fully specified in issue doc (readlink, readline, while-true, comment) and verified by explicit test cases
+- Next: 0007 — Rule: singleEqualsInTest
