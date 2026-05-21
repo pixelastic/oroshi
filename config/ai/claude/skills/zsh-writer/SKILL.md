@@ -86,7 +86,7 @@ Write code that follows the following patterns:
 # $ git-diff-colorize            # Unstaged changes
 # $ git-diff-colorize --staged   # Staged only
 # $ git-diff-colorize --ext ts   # Filter by extension
-setopt local_options errexit
+setopt local_options err_return
 
 MAX_RESULTS=50
 
