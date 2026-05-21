@@ -76,7 +76,7 @@ Write the tests that cover the acceptance criteria of the issue — at least one
 
 **Exit criterion:** All actionable feedback addressed, linter clean, tests green.
 
-1. Spawn a Bash subagent that runs `review` (no args). Capture the output.
+1. Run `review` (with no args), and read its output. It can be long to run, be patient.
 2. For each feedback item:
    - **Actionable and in scope** → fix it
    - **Out of scope or not relevant** → note it in progress.md under `Skipped feedback:`
