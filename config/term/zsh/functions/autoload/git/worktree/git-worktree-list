@@ -2,6 +2,9 @@
 # Usage:
 # $ git-worktree-list
 
+local iconAhead=""
+local iconBehind=""
+
 local rawOutput="$(git-worktree-list-raw)"
 
 # No worktrees — exit cleanly
@@ -40,14 +43,14 @@ for rawLine in ${(f)rawOutput}; do
 
   # Ahead
   if [[ "$ahead" != "0" ]]; then
-    row+="$(colorize "${ahead}" ALIAS_GIT_AHEAD)▮"
+    row+="$(colorize "${ahead}${iconAhead}" ALIAS_GIT_AHEAD)▮"
   else
     row+="▮"
   fi
 
   # Behind
   if [[ "$behind" != "0" ]]; then
-    row+="$(colorize "${behind}" ALIAS_GIT_BEHIND)▮"
+    row+="$(colorize "${behind}${iconBehind}" ALIAS_GIT_BEHIND)▮"
   else
     row+="▮"
   fi
