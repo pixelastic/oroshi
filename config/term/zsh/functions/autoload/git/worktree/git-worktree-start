@@ -1,0 +1,19 @@
+# Hash of the commit just before this worktree's branch began (merge-base with main)
+# Usage:
+# $ git-worktree-start           # → a3c72604
+# $ git-worktree-start /path/to/worktree
+setopt local_options err_return
+
+local worktreePath="${1:-$PWD}"
+
+local branch="$(git-branch-current "$worktreePath")"
+
+# Not in a git repo or detached HEAD
+[[ "$branch" == "" || "$branch" == "HEAD" ]] && return 1
+
+local ahead="$(git -C "$worktreePath" rev-list --count "main..${branch}" 2>/dev/null)"
+
+# Failed or no commits ahead of main
+[[ "$ahead" == "" || "$ahead" == "0" ]] && return 1
+
+git -C "$worktreePath" rev-parse "HEAD~${ahead}"
