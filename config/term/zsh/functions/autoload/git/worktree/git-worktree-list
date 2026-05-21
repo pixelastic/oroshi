@@ -1,7 +1,6 @@
-# List linked worktrees with branch, distance vs main, date, and last commit message
+# List linked worktrees with branch, dirty count, distance vs main, date, and last commit message
 # Usage:
 # $ git-worktree-list
-setopt local_options err_return
 
 local rawOutput="$(git-worktree-list-raw)"
 
@@ -13,30 +12,53 @@ for rawLine in ${(f)rawOutput}; do
   local splitLine=("${(@ps/▮/)rawLine}")
   local branch="${splitLine[1]}"
   local worktreePath="${splitLine[2]}"
-  local distance="${splitLine[3]}"
-  local relativeDate="${splitLine[4]}"
-  local message="${splitLine[5]}"
+  local dirtyCount="${splitLine[3]}"
+  local ahead="${splitLine[4]}"
+  local behind="${splitLine[5]}"
+  local relativeDate="${splitLine[6]}"
+  local message="${splitLine[7]}"
+
+  # Building the output row
+  local row=""
 
   # Current worktree pointer marker
-  local marker=" "
-  [[ "$PWD" == "$worktreePath" ]] && marker="$(colorize "" ALIAS_POINTER)"
+  if [[ "$PWD" == "$worktreePath" ]]; then
+    row+="$(colorize "" ALIAS_POINTER)▮"
+  else
+    row+=" ▮"
+  fi
 
-  local branchDisplay="$(git-branch-colorize "$branch")"
-  local dateDisplay="$(git-date-colorize "$relativeDate")"
-  local messageDisplay="$(git-message-colorize "$message")"
+  # Branch
+  row+="$(git-branch-colorize "$branch")▮"
 
-  # Split into separate ahead/behind columns so they align independently
-  local aheadDisplay=""
-  local iconAhead=""
-  local countAhead="${${distance#ahead }%%,*}"
-  [[ "$countAhead" != "0" ]] && aheadDisplay="$(colorize "${countAhead}${iconAhead}" ALIAS_GIT_AHEAD)"
+  # Dirty count
+  if [[ "$dirtyCount" != "0" ]]; then
+    row+="$(colorize "±${dirtyCount}" ALIAS_GIT_WORKTREE_DIRTY)▮"
+  else
+    row+="▮"
+  fi
 
-  local behindDisplay=""
-  local iconBehind=""
-  local countBehind="${distance##*, behind }"
-  [[ "$countBehind" != "0" ]] && behindDisplay="$(colorize "${countBehind}${iconBehind}" ALIAS_GIT_BEHIND)"
+  # Ahead
+  if [[ "$ahead" != "0" ]]; then
+    row+="$(colorize "${ahead}" ALIAS_GIT_AHEAD)▮"
+  else
+    row+="▮"
+  fi
 
-  output+="${marker}▮${branchDisplay}▮${aheadDisplay}▮${behindDisplay}▮${dateDisplay}▮${messageDisplay}▮\n"
+  # Behind
+  if [[ "$behind" != "0" ]]; then
+    row+="$(colorize "${behind}" ALIAS_GIT_BEHIND)▮"
+  else
+    row+="▮"
+  fi
+
+  # Date
+  row+="$(git-date-colorize "$relativeDate")▮"
+
+  # Commit message
+  row+="$(git-message-colorize "$message")▮"
+
+  output+="$row\n"
 done
 
 table $output

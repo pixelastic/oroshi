@@ -173,7 +173,7 @@
       "Echo $COLOR_ALIAS_GIT_WORKTREE_DIRTY",
       "Verify output is '21'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0015",
@@ -185,7 +185,7 @@
       "Run git-worktree-list from the main repo",
       "Verify output contains '±' or the dirty count number"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0015",
@@ -196,7 +196,7 @@
       "Run git-worktree-list",
       "Verify output does not contain '±'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0016",

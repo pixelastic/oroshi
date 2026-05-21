@@ -77,3 +77,27 @@ teardown() {
   [ "$status" -eq 0 ]
   [[ "$output" == *"my test commit"* ]]
 }
+
+@test "COLOR_ALIAS_GIT_WORKTREE_DIRTY is defined with value 21" {
+  run zsh -c "source \"$OROSHI_ROOT/config/term/zsh/theming/env/colors.zsh\"; echo \"\$COLOR_ALIAS_GIT_WORKTREE_DIRTY\""
+  [ "$status" -eq 0 ]
+  [ "$output" = "21" ]
+}
+
+@test "shows dirty count with ± when worktree has uncommitted files" {
+  cd "${BATS_GIT_WORKTREES}fix-bug"
+  echo "dirty" > newfile.txt
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-worktree-list
+  [ "$status" -eq 0 ]
+  local stripped="$(bats_strip_ansi "$output")"
+  [[ "$stripped" == *"±"* ]]
+}
+
+@test "does not show ± when worktree is clean" {
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-worktree-list
+  [ "$status" -eq 0 ]
+  local stripped="$(bats_strip_ansi "$output")"
+  [[ "$stripped" != *"±"* ]]
+}

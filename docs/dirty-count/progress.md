@@ -47,3 +47,11 @@
 - Fixed: `|| true` added to uphold "always exits 0" spec when called from non-git dir
 - Skipped feedback: bats setup `cd` violations — both files already `cd` before git ops; `git init PATH` is valid; `git-file-list-dirty-raw.bats` is pre-existing; issue doc H1 titles not introduced by this issue
 - Next: 0014 (git-worktree-list-raw new format)
+
+## Session 2026-05-21 — 0015: worktree-list dirty column
+- Completed: added `COLOR_ALIAS_GIT_WORKTREE_DIRTY=21` to colors.zsh; rewrote `git-worktree-list` to parse 7-field format and display `±N` dirty column in violet, hidden when all worktrees are clean
+- Tests added: `git-worktree-list.bats` — 3 new tests (color token value, ± shown when dirty, ± absent when clean); fixed pre-existing test failures (7/8: date + message) by updating field indices
+- Discovered: canonical test location is `config/term/zsh/functions/autoload/git/worktree/__tests__/`, not `scripts/bin/__tests__/`; `bats_load_library 'helper'` (not `load 'helper'`) is required to resolve BATS_LIB_PATH
+- Fixed: missing space in COLORS_INDEX between ALIAS_GIT_WORKTREE_DIRTY and ALIAS_GLOB (introduced during index update); simplified double output+= branch to single line with conditional separator
+- Skipped feedback: guard after `local stripped=` in bats tests — existing tests in same file follow the same pattern (pre-existing convention for display assertions)
+- Next: 0016 (git-file-edit with no/path argument)

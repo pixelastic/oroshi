@@ -5,7 +5,7 @@
 
 # In oroshi worktrees, use the worktree config
 local oroshiRoot=~/.oroshi
-local project="$(git-github-project-name)"
+local project="$(git-github-project)"
 if [[ "$project" == "pixelastic/oroshi" ]] && git-directory-is-worktree; then
   oroshiRoot="$(git-directory-root)"
   # Rebuild PATH so bash bats process resolves scripts to the worktree
