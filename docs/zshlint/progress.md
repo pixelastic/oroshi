@@ -77,3 +77,11 @@
 - Fixed: none
 - Skipped feedback: grill-me session not run — edge cases fully specified in issue doc (readlink, readline, while-true, comment) and verified by explicit test cases
 - Next: 0007 — Rule: singleEqualsInTest
+
+## Session 2026-05-21 — 0007: Rule: singleEqualsInTest
+- Completed: Implemented `zshlintRule_singleEqualsInTest` using ZSH `=~` regex `\[\[.*[[:space:]]=[[:space:]]` to detect single `=` operator inside `[[ ]]`. The regex naturally excludes `==` (no space after first `=`), `!=`/`<=`/`>=` (non-space before `=`), and `=~` (non-space after `=`). Wired into `zshlint-custom`.
+- Tests added: flags `[[ "$foo" = "bar" ]]`; flags `[[ $x = $y ]]` (unquoted); clean `!=`; clean `=~`; clean `<=`; clean `>=`; clean `==`; clean comment line; clean var assignment after `]]`
+- Discovered: none
+- Fixed: none
+- Skipped feedback: grill-with-docs session not run — edge cases fully specified in issue doc (`!=`, `<=`, `>=`, `=~`, post-`]]` assignment, comment) and all verified by explicit test cases
+- Next: 0008 — Rule: elseSmell
