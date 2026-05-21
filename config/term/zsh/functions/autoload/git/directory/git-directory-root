@@ -32,7 +32,7 @@ function git-directory-root {
 
 	# If -f is passed, we try the superproject root
 	if [[ $isForce == "1" ]]; then
-		local gitRoot="$(git rev-parse --show-superproject-working-tree)"
+		local gitRoot="$(git -C "$targetPath" rev-parse --show-superproject-working-tree)"
 		if [[ $gitRoot != "" ]]; then
 			echo $gitRoot
 			return 0
@@ -40,6 +40,6 @@ function git-directory-root {
 	fi
 
 	# Otherwise, we fallback to the current root
-	local gitRoot="$(git rev-parse --show-toplevel)"
+	local gitRoot="$(git -C "$targetPath" rev-parse --show-toplevel)"
 	echo $gitRoot
 }
