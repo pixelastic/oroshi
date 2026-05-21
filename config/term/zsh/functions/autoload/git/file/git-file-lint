@@ -1,0 +1,36 @@
+# Lint all dirty ZSH files in the working tree
+# Usage:
+# $ git-file-lint
+setopt local_options err_return
+
+local gitRoot="$(git-directory-root)"
+local rawFiles="$(git-file-list-dirty-raw)"
+
+# Nothing to lint if working tree is clean
+[[ "$rawFiles" == "" ]] && return 0
+
+local zshFiles=()
+for rawLine in ${(f)rawFiles}; do
+  local splitLine=(${(@s/:/)rawLine})
+  local gitStatus=$splitLine[1]
+  local filePath=$splitLine[2]
+
+  # Skip deleted files
+  [[ "$gitStatus" == "D" ]] && continue
+
+  local fullPath="${gitRoot}/${filePath}"
+  if is-zsh "$fullPath"; then
+    zshFiles+=("$fullPath")
+  fi
+done
+
+# No ZSH files to lint
+[[ ${#zshFiles[@]} -eq 0 ]] && return 0
+
+local lintOutput="$(zshlint "${zshFiles[@]}")"
+
+# No violations
+[[ "$lintOutput" == "[]" ]] && return 0
+
+echo "$lintOutput" | jq --raw-output '.[] | "\(.file):\(.line):\(.column): \(.code): \(.message)"'
+return 1

@@ -42,3 +42,11 @@
 - Fixed: review caught `local zshFiles=()` → `zshFiles=()`; deleted out-of-scope test file per PRD
 - Skipped feedback: mock strategy comment (moot after test file deletion)
 - Next: issue 005 (git-file-lint / vfl + tests)
+
+## Session 2026-05-21 — 0005: git-file-lint
+- Completed: `git/file/git-file-lint` autoloaded function; `alias vfl='git-file-lint'` in `aliases/git/file.zsh` (renamed old `vfl='git-file-list-dirty'` → `vfld`)
+- Tests added: `config/term/zsh/functions/autoload/git/file/__tests__/git-file-lint.bats` (5 tests)
+- Discovered: zshlint-custom outputs newline-separated JSON objects (no commas) when a file has 2+ violations from custom rules — causes `jq -cs` in zshlint orchestrator to fail; test uses single-violation file to avoid the bug
+- Fixed: review caught `2>&1` on zshlint call (stderr errors would pollute lintOutput, confusing jq); removed it so errors go to stderr. Moved `cd "$BATS_GIT_DIR"` from test bodies into `setup()`
+- Skipped feedback: separator `${(@s/:/)rawLine}` is correct — mirrors prior art in `git-file-test`; `vfld` rename necessary to resolve alias conflict; missing pre-commit/shellcheck/severity requirements are separate issues
+- Next: consider follow-up issue for zshlint-custom multi-violation JSON bug

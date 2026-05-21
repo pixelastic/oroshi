@@ -104,7 +104,7 @@
       "Assert output contains a line matching `file:line:col: code: message` format",
       "Assert exit code is 1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",
@@ -116,7 +116,7 @@
       "Assert output is empty",
       "Assert exit code is 0"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",
@@ -127,7 +127,7 @@
       "Assert output is empty",
       "Assert exit code is 0"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",
@@ -137,7 +137,7 @@
       "Run `git-file-lint`",
       "Assert exit code is 0"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",
@@ -148,6 +148,6 @@
       "Run `git-file-lint`",
       "Assert exit code is 0 and no error output"
     ],
-    "passes": false
+    "passes": true
   }
 ]
