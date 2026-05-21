@@ -70,6 +70,31 @@
     "passes": true
   },
   {
+    "id": "0004",
+    "description": "lint-zsh exits 0 with no arguments",
+    "passes": true
+  },
+  {
+    "id": "0004",
+    "description": "lint-zsh exits 0 for only non-ZSH file paths",
+    "passes": true
+  },
+  {
+    "id": "0004",
+    "description": "lint-zsh exits 1 for a ZSH file with violations",
+    "passes": true
+  },
+  {
+    "id": "0004",
+    "description": "lint-zsh exits 0 for a ZSH file with no violations",
+    "passes": true
+  },
+  {
+    "id": "0004",
+    "description": "lintstaged.config.js glob entry is an array with test-bats and lint-zsh",
+    "passes": true
+  },
+  {
     "id": "0005",
     "description": "git-file-lint shows formatted violations for a dirty ZSH file",
     "steps": [

@@ -34,3 +34,11 @@
 - Fixed: review caught `errexit` → `err_return` (autoload functions must not call `exit`); added guard after `local firstLine="$(head -1 ...)"` per variables.md; added symlink check per spec
 - Skipped feedback: none
 - Next: issue 004 (lint-zsh pre-commit hook, depends on is-zsh)
+
+## Session 2026-05-21 — 0004: lint-zsh pre-commit
+- Completed: `scripts/yarn/lint-zsh` script; `lintstaged.config.js` updated to array with both `test-bats` and `lint-zsh`
+- Tests added: none (PRD explicitly marks lint-zsh tests out of scope)
+- Discovered: `local` at script top-level is invalid in zsh; use plain assignment
+- Fixed: review caught `local zshFiles=()` → `zshFiles=()`; deleted out-of-scope test file per PRD
+- Skipped feedback: mock strategy comment (moot after test file deletion)
+- Next: issue 005 (git-file-lint / vfl + tests)

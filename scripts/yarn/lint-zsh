@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+# Lint all ZSH files among the given paths using zshlint
+# Called by lint-staged with staged file paths as arguments
+# Usage:
+# $ lint-zsh /abs/path/to/file1 /abs/path/to/file2
+set -e
+
+# No staged files to lint
+[[ $# -eq 0 ]] && exit 0
+
+zshFiles=()
+for filePath in "$@"; do
+  if is-zsh "$filePath"; then
+    zshFiles+=("$filePath")
+  fi
+done
+
+# No ZSH files among the arguments
+[[ "${#zshFiles[@]}" -eq 0 ]] && exit 0
+
+zshlint "${zshFiles[@]}"
