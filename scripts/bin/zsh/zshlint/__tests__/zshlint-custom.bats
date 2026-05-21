@@ -42,3 +42,12 @@ teardown() {
   run bash -c "printf '%s' '$output' | jq 'type == \"array\"'"
   [[ "$output" == 'true' ]]
 }
+
+@test "outputs valid JSON when same rule fires on multiple lines" {
+  local file="$BATS_TMP_DIR/test.zsh"
+  printf 'local a b c\nlocal d e f\n' > "$file"
+  run zsh "$ZSHLINT_CUSTOM" "$file"
+  [[ "$status" -eq 1 ]]
+  run bash -c "jq 'length' <<< '$output'"
+  [[ "$output" == '2' ]]
+}

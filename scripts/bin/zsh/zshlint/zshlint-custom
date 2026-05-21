@@ -34,7 +34,7 @@ local out
 for file in "${input[@]}"; do
   for rule in $_RULES; do
     out="$($rule "$file")"
-    [[ -n "$out" ]] && ruleLines+=("$out")
+    [[ -n "$out" ]] && ruleLines+=("${(@f)out}")
   done
 done
 
