@@ -7,9 +7,11 @@ zshlintRule_noGroupedLocals() {
   local lineno=0
   local line
   local rest
+  local w
+  local count
   local -a words
 
-  for line in ${(f)content}; do
+  for line in "${(@f)content}"; do
     (( ++lineno ))
     [[ "$line" =~ ^[[:space:]]*'#' ]] && continue
     [[ "$line" =~ ^[[:space:]]*'local'[[:space:]]+(.*) ]] || continue
@@ -24,8 +26,13 @@ zshlintRule_noGroupedLocals() {
       words=("${(@)words[2,-1]}")
     done
 
-    (( ${#words} > 1 )) || continue
-    printf '%s%s90001%swarning%s%d%sDeclare each local variable on its own line\n' \
+    # Count only tokens starting with a valid var-name char; (z) can split 'var=()' into 'var=' + '()'
+    count=0
+    for w in "${words[@]}"; do
+      [[ "$w" =~ ^[a-zA-Z_] ]] && (( ++count ))
+    done
+    (( count > 1 )) || continue
+    printf '%s%s90001%swarning%s%d%snoGroupedLocals: Declare each local variable on its own line\n' \
       "$file" "$_SEP" "$_SEP" "$_SEP" "$lineno" "$_SEP"
   done
 }

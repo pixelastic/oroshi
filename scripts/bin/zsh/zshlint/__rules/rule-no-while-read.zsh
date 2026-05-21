@@ -8,7 +8,7 @@ zshlintRule_noWhileRead() {
   local lineno=0
   local line
 
-  for line in ${(f)content}; do
+  for line in "${(@f)content}"; do
     (( ++lineno ))
     [[ "$line" =~ ^[[:space:]]*'#' ]] && continue
     [[ "$line" =~ 'while.*[[:space:]]read([^[:alnum:]_]|$)' ]] || continue

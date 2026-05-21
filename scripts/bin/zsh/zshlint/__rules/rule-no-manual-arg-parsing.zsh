@@ -12,7 +12,7 @@ zshlintRule_noManualArgParsing() {
   local lineno=0
   local line
   local pattern
-  for line in ${(f)content}; do
+  for line in "${(@f)content}"; do
     (( ++lineno ))
     [[ "$line" =~ ^[[:space:]]*'#' ]] && continue
     for pattern in $patterns; do

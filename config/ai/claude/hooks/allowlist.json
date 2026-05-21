@@ -135,5 +135,7 @@
   "yarn test",
   "zcat",
   "zshlint",
+  "zshlint-custom",
+  "zshlint-shellcheck",
   "./node_modules/.bin/bats"
 ]

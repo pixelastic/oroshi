@@ -25,7 +25,7 @@ local sc="${ZSHLINT_SC:-zshlint-shellcheck}"
 local custom="${ZSHLINT_CUSTOM:-zshlint-custom}"
 local merged
 merged="$(jq -cs 'add // []' \
-  <($sc     "${input[@]}") \
+  <($sc "${input[@]}") \
   <($custom "${input[@]}"))"
 
 printf '%s\n' "$merged"

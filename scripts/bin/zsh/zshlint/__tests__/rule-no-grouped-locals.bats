@@ -59,3 +59,14 @@ RULE_FN="zshlintRule_noGroupedLocals"
   run_rule "${input[@]}"
   expect_clean
 }
+
+@test "clean — empty array assignment" {
+  local -a input=( 'local -a input=()' )
+  run_rule "${input[@]}"
+  expect_clean
+}
+
+@test "line number is correct when preceded by blank line" {
+  run_rule '' 'local a b'
+  expect_violation 90001 2
+}

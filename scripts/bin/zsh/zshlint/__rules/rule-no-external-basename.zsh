@@ -8,7 +8,7 @@ zshlintRule_noExternalBasename() {
   local lineno=0
   local line
 
-  for line in ${(f)content}; do
+  for line in "${(@f)content}"; do
     (( ++lineno ))
     [[ "$line" =~ ^[[:space:]]*'#' ]] && continue
     [[ "$line" =~ '\$\((basename|dirname|realpath)[[:space:](]' ]] || continue

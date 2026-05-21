@@ -8,7 +8,7 @@ zshlintRule_localOrReturn() {
   local line
   local -a words
 
-  for line in ${(f)content}; do
+  for line in "${(@f)content}"; do
     (( ++lineno ))
     [[ "$line" =~ ^[[:space:]]*'#' ]] && continue
     [[ "$line" =~ ^[[:space:]]*'local'[[:space:]] ]] || continue
