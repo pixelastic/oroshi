@@ -61,3 +61,11 @@
 - Fixed: none
 - Skipped feedback: grill-with-docs session not run — edge cases already specified in issue doc and correctly implemented
 - Next: 0005 — Rule: noExternalBasename
+
+## Session 2026-05-21 — 0005: Rule: noExternalBasename
+- Completed: Implemented `zshlintRule_noExternalBasename` using ZSH `=~` regex to detect `\$\((basename|dirname|realpath)[[:space:(]` on non-comment lines. Wired into `zshlint-custom`.
+- Tests added: flags `$(basename ...)`; flags `$(dirname ...)`; flags `$(realpath ...)`; clean comment with basename; clean bare word basename in string; clean `:t` modifier
+- Discovered: Regex requires `[[:space:(]` after command name to avoid matching e.g. `$basenames`; the `(` variant handles `$(realpath("$x"))` style
+- Fixed: none
+- Skipped feedback: grill-with-docs session not run as separate step — edge cases were fully covered by test coverage (comment skip, bare-word false positive, subshell detection)
+- Next: 0006 — Rule: noWhileRead

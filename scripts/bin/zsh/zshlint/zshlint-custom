@@ -9,9 +9,10 @@ local dir="${0:A:h}"
 source "$dir/__rules/rule-no-manual-arg-parsing.zsh"
 source "$dir/__rules/rule-no-grouped-locals.zsh"
 source "$dir/__rules/rule-local-or-return.zsh"
+source "$dir/__rules/rule-no-external-basename.zsh"
 
 # Ordered list of custom rule functions to run
-local -a _RULES=(zshlintRule_noManualArgParsing zshlintRule_noGroupedLocals zshlintRule_localOrReturn)
+local -a _RULES=(zshlintRule_noManualArgParsing zshlintRule_noGroupedLocals zshlintRule_localOrReturn zshlintRule_noExternalBasename)
 
 # Separator used in Rule Output lines; export so subshells see it
 export _SEP=$'\u25ae'
