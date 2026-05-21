@@ -3,8 +3,9 @@
 # Usage:
 # $ bats ./path/to/file.bats
 
-# In oroshi worktrees, use the worktree config
 local oroshiRoot=~/.oroshi
+
+# In oroshi worktrees, use the worktree config
 local project="$(git-github-project)"
 if [[ "$project" == "pixelastic/oroshi" ]] && git-directory-is-worktree; then
   oroshiRoot="$(git-directory-root)"
