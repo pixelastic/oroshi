@@ -56,7 +56,7 @@ M.lintParser = function(output)
 
     F.append(diagnostics, {
       source = "zshlint",
-      code = "SC" .. item.code,
+      code = item.code,
       message = item.message,
       severity = M.__.severityStringToInt(item.level),
 

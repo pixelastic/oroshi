@@ -9,13 +9,13 @@ RULE_FN="zshlintRule_localOrReturn"
 @test "flags local with || chained" {
   local -a input=( 'local foo="$(cmd)" || return 1' )
   run_rule "${input[@]}"
-  expect_violation 90002 1
+  expect_violation localOrReturn 1
 }
 
 @test "flags local with || chained — no value" {
   local -a input=( 'local foo || return 1' )
   run_rule "${input[@]}"
-  expect_violation 90002 1
+  expect_violation localOrReturn 1
 }
 
 @test "clean — || inside quoted value" {

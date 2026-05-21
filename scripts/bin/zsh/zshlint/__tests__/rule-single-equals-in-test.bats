@@ -9,13 +9,13 @@ RULE_FN="zshlintRule_singleEqualsInTest"
 @test "flags '[[ \"\$foo\" = \"bar\" ]]'" {
   local -a input=( '[[ "$foo" = "bar" ]]' )
   run_rule "${input[@]}"
-  expect_violation 90006 1
+  expect_violation singleEqualsInTest 1
 }
 
 @test "flags '[[ \$x = \$y ]]' without quotes" {
   local -a input=( '[[ $x = $y ]]' )
   run_rule "${input[@]}"
-  expect_violation 90006 1
+  expect_violation singleEqualsInTest 1
 }
 
 @test "clean — '!=' is not flagged" {

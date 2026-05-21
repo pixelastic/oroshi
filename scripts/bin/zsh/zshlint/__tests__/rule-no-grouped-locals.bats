@@ -9,25 +9,25 @@ RULE_FN="zshlintRule_noGroupedLocals"
 @test "flags local with multiple bare names" {
   local -a input=( 'local a b c' )
   run_rule "${input[@]}"
-  expect_violation 90001 1
+  expect_violation noGroupedLocals 1
 }
 
 @test "flags local with multiple assignments" {
   local -a input=( 'local raw="" line="" path=""' )
   run_rule "${input[@]}"
-  expect_violation 90001 1
+  expect_violation noGroupedLocals 1
 }
 
 @test "flags local with flag and multiple variables" {
   local -a input=( 'local -a arr1 arr2' )
   run_rule "${input[@]}"
-  expect_violation 90001 1
+  expect_violation noGroupedLocals 1
 }
 
 @test "flags local with flag and multiple assignments" {
   local -a input=( 'local -i count=0 limit=10' )
   run_rule "${input[@]}"
-  expect_violation 90001 1
+  expect_violation noGroupedLocals 1
 }
 
 @test "clean — single variable with flag" {
@@ -68,5 +68,5 @@ RULE_FN="zshlintRule_noGroupedLocals"
 
 @test "line number is correct when preceded by blank line" {
   run_rule '' 'local a b'
-  expect_violation 90001 2
+  expect_violation noGroupedLocals 2
 }

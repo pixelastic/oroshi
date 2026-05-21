@@ -21,11 +21,11 @@ teardown() {
   [[ "$output" == '[]' ]]
 }
 
-@test "outputs JSON with code 90005 for case \"\$1\" pattern" {
+@test "outputs JSON with code noManualArgParsing for case \"\$1\" pattern" {
   local file="$BATS_TMP_DIR/test.zsh"
   printf 'case "$1" in\n  --foo) foo=1 ;;\nesac\n' > "$file"
   run zsh "$ZSHLINT_CUSTOM" "$file"
-  [[ "$output" == *'"code":90005'* ]]
+  [[ "$output" == *'"code":"noManualArgParsing"'* ]]
 }
 
 @test "exits 1 when custom rule finds a violation" {

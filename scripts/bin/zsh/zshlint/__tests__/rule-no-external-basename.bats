@@ -9,19 +9,19 @@ RULE_FN="zshlintRule_noExternalBasename"
 @test "flags \$(basename ...)" {
   local -a input=( 'local name="$(basename "$path")"' )
   run_rule "${input[@]}"
-  expect_violation 90003 1
+  expect_violation noExternalBasename 1
 }
 
 @test "flags \$(dirname ...)" {
   local -a input=( 'local dir="$(dirname "$path")"' )
   run_rule "${input[@]}"
-  expect_violation 90003 1
+  expect_violation noExternalBasename 1
 }
 
 @test "flags \$(realpath ...)" {
   local -a input=( 'local real="$(realpath "$path")"' )
   run_rule "${input[@]}"
-  expect_violation 90003 1
+  expect_violation noExternalBasename 1
 }
 
 @test "clean — comment line with basename" {

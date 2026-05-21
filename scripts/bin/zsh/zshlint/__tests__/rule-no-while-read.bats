@@ -9,13 +9,13 @@ RULE_FN="zshlintRule_noWhileRead"
 @test "flags 'while IFS= read -r line'" {
   local -a input=( 'while IFS= read -r line; do' )
   run_rule "${input[@]}"
-  expect_violation 90004 1
+  expect_violation noWhileRead 1
 }
 
 @test "flags 'while read line'" {
   local -a input=( 'while read line; do' )
   run_rule "${input[@]}"
-  expect_violation 90004 1
+  expect_violation noWhileRead 1
 }
 
 @test "clean — 'while true' without read on same line" {

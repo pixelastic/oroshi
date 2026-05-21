@@ -17,7 +17,7 @@ teardown() {
   local file="$BATS_TMP_DIR/test.zsh"
   printf 'case "$1" in\n  --foo) foo=1 ;;\nesac\n' > "$file"
   run zsh "$ZSHLINT" "$file"
-  [[ "$output" == *'"code":90005'* ]]
+  [[ "$output" == *'"code":"noManualArgParsing"'* ]]
 }
 
 @test "returns empty array and exit 0 for clean file" {

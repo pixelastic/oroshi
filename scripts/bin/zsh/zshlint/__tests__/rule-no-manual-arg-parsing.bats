@@ -13,13 +13,13 @@ RULE_FN="zshlintRule_noManualArgParsing"
     'esac'
   )
   run_rule "${input[@]}"
-  expect_violation 90005 1
+  expect_violation noManualArgParsing 1
 }
 
 @test "flags while getopts pattern" {
   local -a input=( 'while getopts "f:v" opt; do' )
   run_rule "${input[@]}"
-  expect_violation 90005 1
+  expect_violation noManualArgParsing 1
 }
 
 @test "clean — zparseopts" {

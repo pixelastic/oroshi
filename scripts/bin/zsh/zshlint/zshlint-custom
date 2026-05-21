@@ -30,7 +30,7 @@ done
 
 # Collect Rule Output lines from all custom rules
 local -a ruleLines=()
-local file rule out
+local out
 for file in "${input[@]}"; do
   for rule in $_RULES; do
     out="$($rule "$file")"
@@ -43,7 +43,7 @@ local -a customObjects=()
 local line
 for line in $ruleLines; do
   local obj
-  obj="$(printf '%s' "$line" | jq -Rc 'split("\u25ae") | {file:.[0],code:(.[1]|tonumber),level:.[2],line:(.[3]|tonumber),endLine:(.[3]|tonumber),column:1,endColumn:1,message:.[4]}')"
+  obj="$(printf '%s' "$line" | jq -Rc 'split("\u25ae") | {file:.[0],code:.[1],level:.[2],line:(.[3]|tonumber),endLine:(.[3]|tonumber),column:1,endColumn:1,message:.[4]}')"
   customObjects+=("$obj")
 done
 
