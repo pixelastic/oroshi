@@ -140,7 +140,7 @@ Update `$ARGUMENTS/prd.json`: mark issue as complete, update any relevant status
 - [ ] Code written following the standards of the language skill (`zsh-writer`, `js-writer`, etc)
 - [ ] Linter clean on modified files
 - [ ] Tests green for modified files
-- [ ] review subagent ran `review` (no args), output captured
+- [ ] Ran `review` (no args) with output captured
 - [ ] Actionable feedback fixed or explicitly dismissed
 - [ ] Linter + tests green for modified files after review fixes
 - [ ] progress.md updated with session entry
