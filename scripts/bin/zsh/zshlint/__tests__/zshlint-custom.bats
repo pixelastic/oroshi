@@ -15,7 +15,7 @@ teardown() {
 
 @test "outputs [] and exits 0 for clean file" {
   local file="$BATS_TMP_DIR/test.zsh"
-  printf '# clean\n' > "$file"
+  printf '# clean\n' >"$file"
   run zsh "$ZSHLINT_CUSTOM" "$file"
   [[ "$status" -eq 0 ]]
   [[ "$output" == '[]' ]]
@@ -23,21 +23,21 @@ teardown() {
 
 @test "outputs JSON with code noManualArgParsing for case \"\$1\" pattern" {
   local file="$BATS_TMP_DIR/test.zsh"
-  printf 'case "$1" in\n  --foo) foo=1 ;;\nesac\n' > "$file"
+  printf 'case "$1" in\n  --foo) foo=1 ;;\nesac\n' >"$file"
   run zsh "$ZSHLINT_CUSTOM" "$file"
   [[ "$output" == *'"code":"noManualArgParsing"'* ]]
 }
 
 @test "exits 1 when custom rule finds a violation" {
   local file="$BATS_TMP_DIR/test.zsh"
-  printf 'case "$1" in\n  --foo) foo=1 ;;\nesac\n' > "$file"
+  printf 'case "$1" in\n  --foo) foo=1 ;;\nesac\n' >"$file"
   run zsh "$ZSHLINT_CUSTOM" "$file"
   [[ "$status" -eq 1 ]]
 }
 
 @test "outputs valid JSON array" {
   local file="$BATS_TMP_DIR/test.zsh"
-  printf '# clean\n' > "$file"
+  printf '# clean\n' >"$file"
   run zsh "$ZSHLINT_CUSTOM" "$file"
   run bash -c "printf '%s' '$output' | jq 'type == \"array\"'"
   [[ "$output" == 'true' ]]
@@ -45,9 +45,51 @@ teardown() {
 
 @test "outputs valid JSON when same rule fires on multiple lines" {
   local file="$BATS_TMP_DIR/test.zsh"
-  printf 'local a b c\nlocal d e f\n' > "$file"
+  printf 'local a b c\nlocal d e f\n' >"$file"
   run zsh "$ZSHLINT_CUSTOM" "$file"
   [[ "$status" -eq 1 ]]
   run bash -c "jq 'length' <<< '$output'"
   [[ "$output" == '2' ]]
+}
+
+@test "noWhileRead violation emits level error" {
+  local file="$BATS_TMP_DIR/test.zsh"
+  printf 'while IFS= read -r line; do\necho "$line"\ndone\n' >"$file"
+  run zsh "$ZSHLINT_CUSTOM" "$file"
+  [[ "$output" == *'"level":"error"'* ]]
+}
+
+@test "noManualArgParsing violation emits level error" {
+  local file="$BATS_TMP_DIR/test.zsh"
+  printf 'case "$1" in\n  --foo) foo=1 ;;\nesac\n' >"$file"
+  run zsh "$ZSHLINT_CUSTOM" "$file"
+  [[ "$output" == *'"level":"error"'* ]]
+}
+
+@test "noGroupedLocals violation emits level error" {
+  local file="$BATS_TMP_DIR/test.zsh"
+  printf 'local a b\n' >"$file"
+  run zsh "$ZSHLINT_CUSTOM" "$file"
+  [[ "$output" == *'"level":"error"'* ]]
+}
+
+@test "noExternalBasename violation emits level error" {
+  local file="$BATS_TMP_DIR/test.zsh"
+  printf 'name="$(basename "$path")"\n' >"$file"
+  run zsh "$ZSHLINT_CUSTOM" "$file"
+  [[ "$output" == *'"level":"error"'* ]]
+}
+
+@test "singleEqualsInTest violation emits level error" {
+  local file="$BATS_TMP_DIR/test.zsh"
+  printf '[[ "$a" = "$b" ]]\n' >"$file"
+  run zsh "$ZSHLINT_CUSTOM" "$file"
+  [[ "$output" == *'"level":"error"'* ]]
+}
+
+@test "localOrReturn violation emits level error" {
+  local file="$BATS_TMP_DIR/test.zsh"
+  printf 'local x="$(cmd)" || return 1\n' >"$file"
+  run zsh "$ZSHLINT_CUSTOM" "$file"
+  [[ "$output" == *'"level":"error"'* ]]
 }

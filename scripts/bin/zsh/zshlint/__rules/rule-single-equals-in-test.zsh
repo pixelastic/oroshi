@@ -1,8 +1,11 @@
 # Custom Rule: zshlintRule_singleEqualsInTest
 # Detects single = used for string comparison inside [[ ]]; prefer ==
-# Rule Output: file▮singleEqualsInTest▮style▮line▮message
+# Rule Output: file▮singleEqualsInTest▮error▮line▮message
 # shellcheck disable=SC2016
 zshlintRule_singleEqualsInTest() {
+  local code='singleEqualsInTest'
+  local msg='Prefer == over = for string comparison in [[ ]]'
+
   local file="$1"
   local content="$(<"$file")"
   local lineno=0
@@ -12,7 +15,7 @@ zshlintRule_singleEqualsInTest() {
     (( ++lineno ))
     [[ "$line" =~ ^[[:space:]]*'#' ]] && continue
     [[ "$line" =~ '\[\[.*[[:space:]]=[[:space:]]' ]] || continue
-    printf '%s%ssingleEqualsInTest%sstyle%s%d%sPrefer == over = for string comparison in [[ ]]\n' \
-      "$file" "$_SEP" "$_SEP" "$_SEP" "$lineno" "$_SEP"
+    printf '%s%s%s%serror%s%d%s%s\n' \
+      "$file" "$_SEP" "$code" "$_SEP" "$_SEP" "$lineno" "$_SEP" "$msg"
   done
 }

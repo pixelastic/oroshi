@@ -3,6 +3,8 @@
 # Rule Output: file▮localOrReturn▮error▮line▮message
 zshlintRule_localOrReturn() {
   local file="$1"
+  local code='localOrReturn'
+  local msg='local always returns 0; split into separate local and guard'
   local content="$(<"$file")"
   local lineno=0
   local line
@@ -16,7 +18,7 @@ zshlintRule_localOrReturn() {
     # Shell-aware word splitting respects quotes; || inside a quoted value won't appear as a standalone token
     words=(${(z)line})
     (( ${words[(ie)||]} <= ${#words} )) || continue
-    printf '%s%slocalOrReturn%serror%s%d%slocal always returns 0; split into separate local and guard\n' \
-      "$file" "$_SEP" "$_SEP" "$_SEP" "$lineno" "$_SEP"
+    printf '%s%s%s%serror%s%d%s%s\n' \
+      "$file" "$_SEP" "$code" "$_SEP" "$_SEP" "$lineno" "$_SEP" "$msg"
   done
 }

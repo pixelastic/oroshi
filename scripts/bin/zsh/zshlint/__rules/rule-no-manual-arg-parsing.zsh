@@ -1,7 +1,10 @@
 # Custom Rule: zshlintRule_noManualArgParsing
 # Detects manual argument parsing patterns; suggests zparseopts instead
-# Rule Output: file▮noManualArgParsing▮warning▮line▮message
+# Rule Output: file▮noManualArgParsing▮error▮line▮message
 zshlintRule_noManualArgParsing() {
+  local code='noManualArgParsing'
+  local msg='Use zparseopts for parsing arguments'
+
   local file="$1"
   # shellcheck disable=SC2016
   local -a patterns=(
@@ -18,8 +21,8 @@ zshlintRule_noManualArgParsing() {
     [[ "$line" =~ ^[[:space:]]*'#' ]] && continue
     for pattern in $patterns; do
       [[ "$line" =~ $pattern ]] || continue
-      printf '%s%snoManualArgParsing%swarning%s%d%sUse zparseopts for parsing arguments\n' \
-        "$file" "$_SEP" "$_SEP" "$_SEP" "$lineno" "$_SEP"
+      printf '%s%s%s%serror%s%d%s%s\n' \
+        "$file" "$_SEP" "$code" "$_SEP" "$_SEP" "$lineno" "$_SEP" "$msg"
       break
     done
   done

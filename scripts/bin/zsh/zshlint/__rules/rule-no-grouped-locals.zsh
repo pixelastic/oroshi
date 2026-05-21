@@ -1,7 +1,10 @@
 # Custom Rule: zshlintRule_noGroupedLocals
 # Detects local declarations that define multiple variables on one line
-# Rule Output: file▮noGroupedLocals▮warning▮line▮message
+# Rule Output: file▮noGroupedLocals▮error▮line▮message
 zshlintRule_noGroupedLocals() {
+  local code='noGroupedLocals'
+  local msg='Declare each local variable on its own line'
+
   local file="$1"
   local content="$(<"$file")"
   local lineno=0
@@ -32,7 +35,7 @@ zshlintRule_noGroupedLocals() {
       [[ "$w" =~ ^[a-zA-Z_] ]] && (( ++count ))
     done
     (( count > 1 )) || continue
-    printf '%s%snoGroupedLocals%swarning%s%d%sDeclare each local variable on its own line\n' \
-      "$file" "$_SEP" "$_SEP" "$_SEP" "$lineno" "$_SEP"
+    printf '%s%s%s%serror%s%d%s%s\n' \
+      "$file" "$_SEP" "$code" "$_SEP" "$_SEP" "$lineno" "$_SEP" "$msg"
   done
 }

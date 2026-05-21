@@ -50,3 +50,11 @@
 - Fixed: review caught `2>&1` on zshlint call (stderr errors would pollute lintOutput, confusing jq); removed it so errors go to stderr. Moved `cd "$BATS_GIT_DIR"` from test bodies into `setup()`
 - Skipped feedback: separator `${(@s/:/)rawLine}` is correct — mirrors prior art in `git-file-test`; `vfld` rename necessary to resolve alias conflict; missing pre-commit/shellcheck/severity requirements are separate issues
 - Next: consider follow-up issue for zshlint-custom multi-violation JSON bug
+
+## Session 2026-05-21 — 0002: promote custom rule levels
+- Completed: changed noWhileRead, noManualArgParsing, noGroupedLocals, noExternalBasename, singleEqualsInTest from warning/style to error in both comment header and printf output
+- Tests added: zshlint-custom.bats — 6 new tests (one per rule including localOrReturn regression)
+- Discovered: none
+- Fixed: review caught missing localOrReturn regression test; added
+- Skipped feedback: "five vs six rules" spec typo (only five named); tests call zshlint-custom not full zshlint binary (matches existing test infrastructure pattern)
+- Next: issue 001 (shellcheck config migration)

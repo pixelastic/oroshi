@@ -1,5 +1,35 @@
 [
   {
+    "id": "0002",
+    "description": "noWhileRead emits error level",
+    "passes": true
+  },
+  {
+    "id": "0002",
+    "description": "noManualArgParsing emits error level",
+    "passes": true
+  },
+  {
+    "id": "0002",
+    "description": "noGroupedLocals emits error level",
+    "passes": true
+  },
+  {
+    "id": "0002",
+    "description": "noExternalBasename emits error level",
+    "passes": true
+  },
+  {
+    "id": "0002",
+    "description": "singleEqualsInTest emits error level",
+    "passes": true
+  },
+  {
+    "id": "0002",
+    "description": "localOrReturn remains error level",
+    "passes": true
+  },
+  {
     "id": "0003",
     "description": "is-zsh exits 0 for a .zsh file",
     "steps": [
