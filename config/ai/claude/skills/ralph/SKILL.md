@@ -32,11 +32,13 @@ Read:
 
 **Goal:** Select exactly one issue to implement this session.
 
-**Exit criterion:** One issue selected, detail file read.
+**Exit criterion:** One issue selected, recap displayed.
 
 Evaluate all open issues. You decide priority — not necessarily the first listed. Weight: blockers, dependencies, impact, complexity.
 
 Glob for `$ARGUMENTS/issue-*.md`. Read the detail file for your chosen issue.
+
+Display a recap of the issue.
 
 **Pick one. Touch nothing else.**
 
