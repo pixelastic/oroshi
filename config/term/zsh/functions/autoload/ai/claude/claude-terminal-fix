@@ -1,0 +1,12 @@
+# Restore terminal state after Claude Code TUI exits uncleanly (e.g. killed by SIGTERM in ralph loop)
+# Claude v2.1.84 seem to leave the terminal in corrupted state.
+# Source: https://github.com/anthropics/claude-code/issues/38761
+# Usage:
+# $ claude-terminal-fix
+stty sane 2>/dev/null || true
+printf '\e[?1049l'                   # exit alternate screen
+printf '\e[?25h'                     # show cursor
+printf '\e[0m'                       # reset SGR attributes
+printf '\e[?1000l\e[?1003l\e[?1006l' # disable mouse tracking
+printf '\e[<u'                       # kitty: restore keyboard protocol stack
+printf '\e[=0u'                      # kitty: reset keyboard protocol
