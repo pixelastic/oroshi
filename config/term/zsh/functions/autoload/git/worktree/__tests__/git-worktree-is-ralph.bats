@@ -1,0 +1,39 @@
+bats_load_library 'helper'
+
+setup() {
+  bats_git_dir 'repo'
+}
+
+teardown() {
+  bats_cleanup
+}
+
+@test "exits 0 inside a ralph worktree" {
+  local wt_path="$(bats_git_worktree 'feat/test-ralph')"
+  mkdir -p "$wt_path/docs/feat_test-ralph"
+  echo '[]' > "$wt_path/docs/feat_test-ralph/prd.json"
+  cd "$wt_path"
+  bats_run_function git-worktree-is-ralph
+  [ "$status" -eq 0 ]
+}
+
+@test "exits 1 inside a worktree without prd.json" {
+  local wt_path="$(bats_git_worktree 'feat/no-prd')"
+  cd "$wt_path"
+  bats_run_function git-worktree-is-ralph
+  [ "$status" -eq 1 ]
+}
+
+@test "exits 1 outside any worktree" {
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-worktree-is-ralph
+  [ "$status" -eq 1 ]
+}
+
+@test "accepts an explicit path argument" {
+  local wt_path="$(bats_git_worktree 'feat/explicit')"
+  mkdir -p "$wt_path/docs/feat_explicit"
+  echo '[]' > "$wt_path/docs/feat_explicit/prd.json"
+  bats_run_function git-worktree-is-ralph "$wt_path"
+  [ "$status" -eq 0 ]
+}

@@ -30,7 +30,7 @@
       "Run git-worktree-is-ralph from inside the worktree",
       "Verify exit code is 0"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",
@@ -41,7 +41,7 @@
       "Run git-worktree-is-ralph",
       "Verify exit code is 1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",
@@ -50,7 +50,7 @@
       "Run git-worktree-is-ralph from a non-worktree git repo",
       "Verify exit code is 1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",
@@ -60,7 +60,7 @@
       "Run git-worktree-is-ralph with an explicit subpath inside the worktree",
       "Verify exit code is 0"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",

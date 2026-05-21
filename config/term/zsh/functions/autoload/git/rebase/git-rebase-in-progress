@@ -1,5 +1,6 @@
 # Check if current repo is currently rebasing
-local gitDir="$(git-directory-gitdir)"
+local targetPath="${1:-$PWD}"
+local gitDir="$(git-directory-gitdir "$targetPath")"
 
 # a folder rebase-apply is created during a rebase, and a rebase-merge during
 # an interactive one

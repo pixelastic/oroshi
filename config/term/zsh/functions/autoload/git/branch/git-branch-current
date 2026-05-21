@@ -3,9 +3,8 @@
 # $ git-branch-current           # main
 # $ git-branch-current /path/repo  # branch of repo at path
 # $ git-branch-current           # Returns 1 if not in a git repo
-local repoDir="${1:-.}"
-cd "$repoDir" || return
-local branchName="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
+local repoDir="${1:-$PWD}"
+local branchName="$(git -C "$repoDir" rev-parse --abbrev-ref HEAD 2>/dev/null)"
 
 # No result? Then we might not be in a git repo
 if [[ $branchName == "" ]]; then
@@ -16,8 +15,8 @@ fi
 # - rebasing
 # - on a detached HEAD state
 if [[ $branchName == "HEAD" ]]; then
-  if git-rebase-in-progress; then
-    local rawInfo="$(git-rebase-info-raw)"
+  if git-rebase-in-progress "$repoDir"; then
+    local rawInfo="$(git-rebase-info-raw "$repoDir")"
     local headName="${${(@s/▮/)rawInfo}[3]}"
     branchName=${headName:11}
   else
