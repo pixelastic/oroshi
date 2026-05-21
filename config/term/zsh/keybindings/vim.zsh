@@ -31,7 +31,7 @@ function zle-line-finish {
 }
 zle -N zle-line-finish
 function zle-keymap-select() {
-  if [[ $KEYMAP = 'vicmd' ]]; then
+  if [[ $KEYMAP == 'vicmd' ]]; then
     _cursor-cmd
   else
     _cursor-ins
