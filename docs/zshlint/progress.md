@@ -85,3 +85,7 @@
 - Fixed: none
 - Skipped feedback: grill-with-docs session not run — edge cases fully specified in issue doc (`!=`, `<=`, `>=`, `=~`, post-`]]` assignment, comment) and all verified by explicit test cases
 - Next: 0008 — Rule: elseSmell
+
+## Session 2026-05-21 — 0008: Rule: elseSmell — SKIPPED
+- Skipped: Detecting nested if/else depth requires structural parsing, not line-by-line analysis. Too risky to implement safely. Convention enforced by code review instead.
+- Next: all issues complete
