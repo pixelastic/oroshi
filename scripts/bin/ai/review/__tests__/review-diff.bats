@@ -91,6 +91,20 @@ teardown() {
   [[ "$output" != *"main: commit B"* ]]
 }
 
+@test "1-arg worktree: shows all commits and diff since worktree was created" {
+  bats_git_worktree 'fix/bug'
+  cd "${BATS_GIT_WORKTREES}fix-bug"
+  echo "feature content" > feature.txt
+  git add feature.txt
+  git commit --message "feat: add feature.txt"
+
+  run review-diff worktree
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"feat: add feature.txt"* ]]
+  [[ "$output" == *"diff --git"* ]]
+  [[ "$output" != *"add tracked"* ]]
+}
+
 @test "1-arg branch, external review: stdout contains feature commit; main-only commits absent" {
   cd "$BATS_GIT_DIR"
   local mainBranch="$(git branch --show-current)"

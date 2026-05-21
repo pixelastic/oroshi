@@ -51,3 +51,7 @@ I will need to cleanup my scripts. Delete the ones I don't use anymore. Define
 if it should be a script, a zsh autoloaded function, or a plain zsh helper
 function. Group them in clear domains/subdomains, and make it consistent between
 scripts and config (and install if needed).
+
+## Zsh
+
+I will need to add zshlint as a pre-commit hook for zsh scripts as well
