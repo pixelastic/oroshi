@@ -15,4 +15,4 @@ if [[ "$project" == "pixelastic/oroshi" ]] && git-directory-is-worktree; then
 fi
 
 export BATS_LIB_PATH="${oroshiRoot}/config/term/bats"
-exec "${oroshiRoot}/node_modules/.bin/bats" "$@"
+exec "${oroshiRoot}/node_modules/bats/bin/bats" "$@"
