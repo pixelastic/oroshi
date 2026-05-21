@@ -7,9 +7,10 @@ set -e
 # Source all Lib Files (comment a line to disable a rule)
 local dir="${0:A:h}"
 source "$dir/__rules/rule-no-manual-arg-parsing.zsh"
+source "$dir/__rules/rule-no-grouped-locals.zsh"
 
 # Ordered list of custom rule functions to run
-local -a _RULES=(zshlintRule_noManualArgParsing)
+local -a _RULES=(zshlintRule_noManualArgParsing zshlintRule_noGroupedLocals)
 
 # Separator used in Rule Output lines; export so subshells see it
 export _SEP=$'\u25ae'

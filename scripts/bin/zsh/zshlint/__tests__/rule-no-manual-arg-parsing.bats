@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-load '../../../__tests__/helper'
+bats_load_library 'helper'
 load './helper'
 
 RULE_FILE="${BATS_TEST_DIRNAME}/../__rules/rule-no-manual-arg-parsing.zsh"

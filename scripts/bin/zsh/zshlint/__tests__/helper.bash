@@ -4,7 +4,8 @@
 export _SEP=$'\u25ae'
 
 run_rule() {
-  local file="$(bats_tmp)/test.zsh"
+  [[ -z "$BATS_TMP_DIR" ]] && bats_tmp_dir
+  local file="$BATS_TMP_DIR/test.zsh"
   printf '%s\n' "$@" > "$file"
   run zsh -c "source '${RULE_FILE}'; ${RULE_FN} '${file}'"
 }
