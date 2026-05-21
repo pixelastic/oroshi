@@ -76,7 +76,10 @@ Write the tests that cover the acceptance criteria of the issue — at least one
 
 **Exit criterion:** All actionable feedback addressed, linter clean, tests green.
 
-1. Run `review` (with no args), and read its output. It can be long to run, be patient.
+1. Run `review` (with no args) **synchronously** with a 10mn timeout.
+    - DO NOT use `run_in_background`.
+    - Use the bash tool with `timeout: 600000`
+    - Wait for the command to finish before proceeding.
 2. For each feedback item:
    - **Actionable and in scope** → fix it
    - **Out of scope or not relevant** → note it in progress.md under `Skipped feedback:`
