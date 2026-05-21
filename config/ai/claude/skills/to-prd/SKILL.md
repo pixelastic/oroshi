@@ -28,7 +28,14 @@ Check with the user which modules they want tests written for.
 
 ### Step 3 — Write the PRD.md
 
-Write [PRD.md](./references/prd-md.md) following the template.
+- Ensure you are in worktree for all further commands (use `git-directory-is-worktree` to check)
+- If not, create a new worktree using `git-worktree-create <branchName>`
+- Write the PRD file to `docs/<branchName>/PRD.md`
+- Follow [the template](./references/prd-md.md).
+
+Example: if the branch is `prompt-prd`, write to `docs/prompt-prd/PRD.md`.
+
+---
 
 ## Common Rationalizations
 
@@ -36,6 +43,7 @@ Write [PRD.md](./references/prd-md.md) following the template.
 |---|---|
 | "I know this codebase, no need to explore" | Recent ADRs and domain terms may have changed. Explore first. |
 | "The modules are obvious, no need to check with the user" | Module scope and test scope are separate decisions. Confirm both. |
+| "I will write the PRD in the current repo" | Worktree allow parallel work, ensure you write in a worktree |
 
 ## Checklist
 
@@ -43,4 +51,5 @@ Write [PRD.md](./references/prd-md.md) following the template.
 - [ ] Deep modules identified — each has a simple, testable interface
 - [ ] User confirmed module list matches intent
 - [ ] User confirmed which modules get tests
-- [ ] PRD.md written — all 6 sections present (Problem, Solution, User Stories, Implementation Decisions, Testing Decisions, Out of Scope)
+- [ ] PRD.md written to `docs/<branchName>/PRD.md` in a worktree
+- [ ] PRD contains all 6 sections present (Problem, Solution, User Stories, Implementation Decisions, Testing Decisions, Out of Scope)
