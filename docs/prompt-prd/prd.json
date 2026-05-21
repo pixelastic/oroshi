@@ -101,7 +101,7 @@
       "Run ralph-progress with that directory",
       "Verify output is 1▮3"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0004",
@@ -111,7 +111,7 @@
       "Run ralph-progress",
       "Verify only the true entry is counted as done"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0004",
@@ -121,7 +121,7 @@
       "Run ralph-progress with that directory",
       "Verify exit code is 1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0004",
@@ -131,7 +131,7 @@
       "Run ralph-progress with that directory",
       "Verify exit code is 1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0004",
@@ -141,7 +141,7 @@
       "Run ralph-progress with no arguments from inside the worktree",
       "Verify it outputs the correct done▮total"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0004",
@@ -151,7 +151,7 @@
       "Run ralph-end on that directory",
       "Verify ralph-state prd_done is set to true"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",

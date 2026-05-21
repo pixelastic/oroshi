@@ -15,8 +15,10 @@ local mode="$(ralph-state "$dir" get mode)"
 
 ralph-state "$dir" set 'done' true
 
-# Count open issues
-local openCount="$(jq '[.[] | select(.status != "complete")] | length' "$dir/prd.json")"
-if [[ "$openCount" == "0" ]]; then
-  ralph-state "$dir" set prd_done true
-fi
+# Set prd_done if all issues complete
+local progress="$(ralph-progress "$dir")"
+[[ "$progress" == "" ]] && return 0
+
+local fields=(${(@s/▮/)progress})
+[[ "${fields[1]}" != "${fields[2]}" ]] && return 0
+ralph-state "$dir" set prd_done true

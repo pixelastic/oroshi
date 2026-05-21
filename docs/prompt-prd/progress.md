@@ -46,3 +46,11 @@ issue-005 → needs issue-002 + issue-004
 - Fixed: updated test 3 to assert empty output on failure; updated test 4 to pass a subpath inside worktree (not root) per spec
 - Skipped feedback: `local` at script top-level (same pattern used throughout existing scripts e.g. ralph-end; variables are scoped to the script process); missing git_env_clean in setup (helper already unsets GIT_* vars at top level; existing tests like git-worktree-is-ralph.bats use the same pattern without it); bats mocks for zsh autoload functions (functions loaded via FPATH in zsh subprocess, same approach as all other bats tests in this repo)
 - Next: issue-004 (ralph-progress) — depends on issue-003 which is now done
+
+## Session 2026-05-21 — 0004: ralph-progress
+- Completed: Created `ralph-progress` script; updated `ralph-end` to use it; updated ralph-end fixture to use `passes: true`
+- Tests added: `scripts/bin/ai/ralph/__tests__/ralph-progress.bats` (8 tests: mixed passes, all true, all false, strict boolean, empty array, malformed JSON, missing file, no-arg worktree deduction); `ralph-end.bats` updated (fixture change for "all complete" test)
+- Discovered: `[[ cond ]] && action` under `set -e` exits 1 when condition false — fixed with `[[ cond ]] || return 0` + action pattern
+- Fixed: used `|| return 0` early-return in ralph-end instead of `&&` to avoid set -e triggering on false condition
+- Skipped feedback: `local` at script top-level (same pattern used throughout existing scripts; explicitly skipped in session 0003 for same reason); `2>/dev/null` in ralph-end is intentional (preserves prior graceful-degradation behavior)
+- Next: issue-005 (prompt-integration) — depends on issue-002 + issue-004 which are now done
