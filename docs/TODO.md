@@ -1,34 +1,3 @@
-## FZF
-
-I'd like to have .mp3 files and possibly less interesting dirs below in ctrl-p
-fzf, to have the mosy import files first.
-
-## Ralph
-
-I think when I run a review subagent it still says "Job's done" at the end; I
-should make it quiet.
-
-## Review
-
-```
-● Voilà la chaîne complète :
-
-  1. Moi → Agent avec prompt "run the review CLI tool"
-  2. Mon subagent → lance scripts/bin/ai/review/review
-  3. review → appelle claude-print "/review $diffFile"
-  4. claude-print → lance claude --print → nouvelle instance Claude enfant
-  5. L'instance enfant exécute le skill /review, qui lance deux sous-agents en parallèle (Standards + Spec), dont un en background
-  (run_in_background: true)
-  6. Ce background task (br4swwqwz) se termine et envoie une notification... à moi (le Claude parent), pas à l'instance enfant
-
-  Donc les deux reviews viennent du même appel, mais à deux niveaux différents de la chaîne. C'est un bug de propagation des task
-  notifications : les notifications des background tasks du skill /review remontent au mauvais contexte (moi au lieu du Claude enfant qui
-  les a créés).
-
-  En pratique c'est sans conséquence — les deux reviews ont dit la même chose. Mais si tu voulais corriger ça, il faudrait soit que le
-  skill /review n'utilise pas de background tasks, soit que claude-print isole mieux son contexte de tasks.
-```
-
 ## Context-badge
 
 If I'm in a worktree of a cloned repo, but that repo is not part of my projects,
@@ -60,8 +29,6 @@ might want a PRD + Issues in a given worktree. I want it to ask me if I want a
 PRD or implement right away and probably have it estimate if it could implement
 right away (maybe if less than n lines or code, or only touch one file?)
 
-## Glossary
-
 I will need to rename /grill-with-docs to /glossary. It should also ask a lot of
 question to get to a shared understanding, but define where/how to save the vocabulary.
 I'm not sure if I should name it /glossary actually. I feel it's an important
@@ -72,10 +39,6 @@ understaning.
 
 I will need a lua-writer skill, similar to zsh-writer and js-writer. It will
 also need a dedicated linter to ensure coding standards automatically.
-
-## Claude
-
-Add a Ctrl-y inside of Claude that copies the current Claude session id
 
 ## Colors
 
