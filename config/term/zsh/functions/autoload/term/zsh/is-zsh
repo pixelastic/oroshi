@@ -1,0 +1,29 @@
+# Boolean: is the given file a ZSH file?
+# Usage:
+# $ is-zsh /path/to/file.zsh          # exit 0 (.zsh extension)
+# $ is-zsh /path/to/functions/autoload/git/file/my-func  # exit 0 (autoload path, no ext)
+# $ is-zsh /path/to/script            # exit 0 if shebang is #!/usr/bin/env zsh
+setopt local_options err_return
+
+local filepath="$1"
+
+# Symlinks and non-regular-files
+[[ -L "$filepath" ]] && return 1
+[[ ! -f "$filepath" ]] && return 1
+
+# .zsh extension
+[[ "$filepath" == *.zsh ]] && return 0
+
+# Has a non-zsh extension
+local ext="${filepath:e}"
+[[ "$ext" != "" ]] && return 1
+
+# No extension: inside functions/autoload/
+[[ "$filepath" == *functions/autoload/* ]] && return 0
+
+# No extension: check for zsh shebang
+local firstLine="$(head -1 "$filepath")"
+[[ "$firstLine" == "" ]] && return 1
+[[ "$firstLine" == "#!/usr/bin/env zsh" ]] && return 0
+
+return 1

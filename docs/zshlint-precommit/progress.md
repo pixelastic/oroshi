@@ -26,3 +26,11 @@
 
 ---
 ## Log (append below when an issue is completed)
+
+## Session 2026-05-21 — 0003: is-zsh
+- Completed: new autoloaded function `term/zsh/is-zsh` with 5-rule detection; bats test suite with 8 cases
+- Tests added: `config/term/zsh/functions/autoload/term/zsh/__tests__/is-zsh.bats` (8 tests)
+- Discovered: spec rule 1 covers symlinks but no acceptance criterion existed for it; added test for symlink → exit 1
+- Fixed: review caught `errexit` → `err_return` (autoload functions must not call `exit`); added guard after `local firstLine="$(head -1 ...)"` per variables.md; added symlink check per spec
+- Skipped feedback: none
+- Next: issue 004 (lint-zsh pre-commit hook, depends on is-zsh)

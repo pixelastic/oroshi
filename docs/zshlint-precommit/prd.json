@@ -7,7 +7,7 @@
       "Run `is-zsh /path/to/foo.zsh`",
       "Assert exit code is 0"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",
@@ -17,7 +17,7 @@
       "Run `is-zsh /tmp/functions/autoload/my-func`",
       "Assert exit code is 0"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",
@@ -27,7 +27,7 @@
       "Run `is-zsh /path/to/tempfile`",
       "Assert exit code is 0"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",
@@ -37,7 +37,7 @@
       "Run `is-zsh /path/to/tempfile`",
       "Assert exit code is 1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",
@@ -47,7 +47,7 @@
       "Run `is-zsh /path/to/tempfile`",
       "Assert exit code is 1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",
@@ -57,7 +57,7 @@
       "Run `is-zsh /path/to/that/directory`",
       "Assert exit code is 1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",
@@ -67,7 +67,7 @@
       "Run `is-zsh /path/to/file.bats`",
       "Assert exit code is 1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",
