@@ -16,6 +16,9 @@ local threshold=5
 local stdinData=$(cat)
 local transcriptPath=$(echo "$stdinData" | jq -r '.transcript_path // empty')
 
+# Do not play sound for subagents
+[[ "$transcriptPath" == */subagents/* ]] && exit 0
+
 # Calculate duration
 local nowEpoch=$(date +%s)
 local lastUserTime=$(/usr/bin/grep '"type":"user"' "$transcriptPath" |
@@ -26,8 +29,8 @@ local durationSeconds=$((nowEpoch - userEpoch))
 
 # Play different sound if fast or not
 if ((durationSeconds < threshold)); then
-  audio-play-oroshi "claude-stop-fast.mp3"
+  audio-play-oroshi "${fastSound}"
   exit 0
 fi
 
-audio-play-oroshi "claude-stop.mp3"
+audio-play-oroshi "${slowSound}"
