@@ -47,7 +47,7 @@
       "Call preToolUse-Bash-rtk with 'echo hello'",
       "Verify stdout equals 'echo hello'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",
@@ -57,7 +57,7 @@
       "Call preToolUse-Bash-rtk with 'git status'",
       "Verify stdout equals 'rtk git status'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",
@@ -67,7 +67,7 @@
       "Call preToolUse-Bash-rtk with 'rtk git status'",
       "Verify stdout equals 'rtk git status'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",

@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+# Rewrite a bash command to its RTK token-efficient equivalent
+# Usage:
+# $ preToolUse-Bash-rtk "git status"      # → rtk git status
+# $ preToolUse-Bash-rtk "echo hello"      # → echo hello
+# $ preToolUse-Bash-rtk "rtk git status"  # → rtk git status (idempotent)
+set -e
+
+local cmd="$1"
+local firstWord="${cmd%% *}"
+
+# Already rewritten — pass through unchanged
+if [[ "$firstWord" == "rtk" ]]; then
+  print "$cmd"
+  return 0
+fi
+
+# Get RTK subcommands (first column of Commands: section)
+local rtkSubcmds="$(rtk --help 2>&1 | awk '/^Commands:/{found=1; next} found && /^  [a-z]/{print $1} found && /^$/{exit}')"
+
+# Not an RTK subcommand — pass through unchanged
+if [[ "${rtkSubcmds[(r)$firstWord]}" == "" ]]; then
+  print "$cmd"
+  return 0
+fi
+
+print "rtk $cmd"

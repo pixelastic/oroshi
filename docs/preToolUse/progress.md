@@ -51,3 +51,11 @@ Issue 0004 (wire-Bash-matcher):
 - Fixed: none
 - Skipped feedback: reviewer flagged `setopt local_options errexit` should be `set -e` for scripts — dismissed per memory (reviewer warnings on errexit are dismissed)
 - Next: 0002-preToolUse-Bash-rtk (no blockers, parallel with 0001 which is now done)
+
+## Session 2026-05-17 — 0002: preToolUse-Bash-rtk
+- Completed: created `config/ai/claude/claudecode/hooks/preToolUse-Bash-rtk` — parses `rtk --help` to detect known subcommands, rewrites matching commands to `rtk <cmd>`, passes others unchanged, idempotent for already-prefixed commands
+- Tests added: `scripts/bin/__tests__/preToolUse-Bash-rtk.bats` — 3 tests covering pass-through, rewrite, and idempotency
+- Discovered: none
+- Fixed: none
+- Skipped feedback: reviewer flagged `local` at script top-level as invalid — dismissed: `zsh -c 'local x="hello"; print $x'` exits 0, zsh allows it; all other feedback targeted preToolUse-Bash-solkan (issue 0001, prior session)
+- Next: 0003-preToolUse-Bash (orchestrator, needs 0001 + 0002 — both now done)
