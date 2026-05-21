@@ -53,3 +53,11 @@
 - Fixed: all bats infrastructure across 4 test files (zshlint.bats, zshlint-custom.bats, zshlint-shellcheck.bats, rule-no-manual-arg-parsing.bats)
 - Skipped feedback: pre-existing grouped locals in `zshlint-custom` (`local file rule out`, `local -a ruleLines=()`) — out of scope for this issue
 - Next: 0004 — Rule: localOrReturn
+
+## Session 2026-05-21 — 0004: Rule: localOrReturn
+- Completed: Implemented `zshlintRule_localOrReturn` using `${(z)}` shell-aware word splitting + `(ie)` exact subscript to detect standalone `||` tokens outside quoted values. Wired into `zshlint-custom`.
+- Tests added: flags `local foo="$(cmd)" || return 1`; flags `local foo || return 1` (no value); clean `local msg="yes || no"` (|| in quoted value); clean comment line; clean no || at all
+- Discovered: `${words[(I)||]}` uses glob matching — `||` is interpreted as empty-pattern OR empty-pattern → always returns 0; must use `(ie)` for exact match with `<= ${#words}` guard
+- Fixed: none
+- Skipped feedback: grill-with-docs session not run — edge cases already specified in issue doc and correctly implemented
+- Next: 0005 — Rule: noExternalBasename

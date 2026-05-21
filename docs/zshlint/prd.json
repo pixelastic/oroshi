@@ -152,7 +152,7 @@
       "Source the Lib File and call the function",
       "Assert output contains '90002'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0004",
@@ -162,7 +162,7 @@
       "Source the Lib File and call the function",
       "Assert output is empty"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",
