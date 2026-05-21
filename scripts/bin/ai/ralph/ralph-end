@@ -10,13 +10,13 @@ if [[ "$dir" == "" ]]; then
   return 1
 fi
 
-local mode="$(ralph-state get mode)"
+local mode="$(ralph-state "$dir" get mode)"
 [[ "$mode" == "single" ]] && return 0
 
-ralph-state set 'done' true
+ralph-state "$dir" set 'done' true
 
 # Count open issues
 local openCount="$(jq '[.[] | select(.status != "complete")] | length' "$dir/prd.json")"
 if [[ "$openCount" == "0" ]]; then
-  ralph-state set prd_done true
+  ralph-state "$dir" set prd_done true
 fi

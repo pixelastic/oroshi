@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  export RALPH_STATE_FILE="$BATS_TMP_DIR/ralph-state.json"
+  export DIR="$BATS_TMP_DIR"
 }
 
 teardown() {
@@ -10,42 +10,41 @@ teardown() {
 }
 
 @test "init creates state file with given mode" {
-  run ralph-state init loop
+  run ralph-state "$DIR" init loop
   [ "$status" -eq 0 ]
-  [ "$(jq -r .mode "$RALPH_STATE_FILE")" = "loop" ]
-  [ "$(jq -r .done "$RALPH_STATE_FILE")" = "false" ]
-  [ "$(jq -r .prd_done "$RALPH_STATE_FILE")" = "false" ]
+  [ "$(jq -r .mode "$DIR/.ralph-state.json")" = "loop" ]
+  [ "$(jq -r .done "$DIR/.ralph-state.json")" = "false" ]
+  [ "$(jq -r .prd_done "$DIR/.ralph-state.json")" = "false" ]
 }
 
 @test "init defaults to single mode" {
-  run ralph-state init
+  run ralph-state "$DIR" init
   [ "$status" -eq 0 ]
-  [ "$(jq -r .mode "$RALPH_STATE_FILE")" = "single" ]
+  [ "$(jq -r .mode "$DIR/.ralph-state.json")" = "single" ]
 }
 
 @test "get returns value" {
-  ralph-state init loop
-  run ralph-state get mode
+  ralph-state "$DIR" init loop
+  run ralph-state "$DIR" get mode
   [ "$status" -eq 0 ]
   [ "$output" = "loop" ]
 }
 
 @test "set updates a boolean value" {
-  ralph-state init loop
-  run ralph-state set done true
+  ralph-state "$DIR" init loop
+  run ralph-state "$DIR" set done true
   [ "$status" -eq 0 ]
-  [ "$(jq -r .done "$RALPH_STATE_FILE")" = "true" ]
+  [ "$(jq -r .done "$DIR/.ralph-state.json")" = "true" ]
 }
 
 @test "clear removes state file" {
-  ralph-state init loop
-  run ralph-state clear
+  ralph-state "$DIR" init loop
+  run ralph-state "$DIR" clear
   [ "$status" -eq 0 ]
-  [ ! -f "$RALPH_STATE_FILE" ]
+  [ ! -f "$DIR/.ralph-state.json" ]
 }
 
-@test "fails when RALPH_STATE_FILE not set" {
-  unset RALPH_STATE_FILE
-  run ralph-state get mode
+@test "fails without dir argument" {
+  run ralph-state
   [ "$status" -ne 0 ]
 }

@@ -1,48 +1,49 @@
 #!/usr/bin/env zsh
-# Manage ralph session state ($RALPH_STATE_FILE)
+# Manage ralph session state
 # Usage:
-#   ralph-state init [mode]     # Create state (mode: loop|single, default: single)
-#   ralph-state get <key>       # Read a value (empty if not set)
-#   ralph-state set <key> <val> # Write a JSON-typed value (true, false, '"text"')
-#   ralph-state clear           # Remove state file
-# Env:
-#   RALPH_STATE_FILE — path to state file (required)
+#   ralph-state <dir> init [mode]     # Create state (mode: loop|single, default: single)
+#   ralph-state <dir> get <key>       # Read a value (empty if not set)
+#   ralph-state <dir> set <key> <val> # Write a JSON-typed value (true, false, '"text"')
+#   ralph-state <dir> clear           # Remove state file
 set -e
 
-if [[ -z "$RALPH_STATE_FILE" ]]; then
-  print "ralph-state: RALPH_STATE_FILE not set"
+local dir="$1"
+if [[ -z "$dir" ]]; then
+  print "ralph-state: <dir> required"
   return 1
 fi
 
-local cmd="$1"
+local stateFile="$dir/.ralph-state.json"
+local cmd="$2"
 
 case "$cmd" in
-  init)
-    local mode="${2:-single}"
-    jq -n --arg mode "$mode" '{"mode":$mode,"done":false,"prd_done":false}' > "$RALPH_STATE_FILE"
-    ;;
-  get)
-    local key="$2"
-    if [[ -z "$key" ]]; then
-      print "ralph-state get: <key> required"
-      return 1
-    fi
-    jq -r ".$key // empty" "$RALPH_STATE_FILE"
-    ;;
-  set)
-    local key="$2" value="$3"
-    if [[ -z "$key" || -z "$value" ]]; then
-      print "ralph-state set: <key> <value> required"
-      return 1
-    fi
-    local tmp="${RALPH_STATE_FILE}.tmp"
-    jq ".$key = $value" "$RALPH_STATE_FILE" > "$tmp" && mv "$tmp" "$RALPH_STATE_FILE"
-    ;;
-  clear)
-    rm -f "$RALPH_STATE_FILE"
-    ;;
-  *)
-    print "ralph-state: unknown command: $cmd"
+init)
+  local mode="${3:-single}"
+  jq -n --arg mode "$mode" '{"mode":$mode,"done":false,"prd_done":false}' >"$stateFile"
+  ;;
+get)
+  local key="$3"
+  if [[ -z "$key" ]]; then
+    print "ralph-state get: <key> required"
     return 1
-    ;;
+  fi
+  jq -r ".$key // empty" "$stateFile"
+  ;;
+set)
+  local key="$3"
+  local value="$4"
+  if [[ -z "$key" || -z "$value" ]]; then
+    print "ralph-state set: <key> <value> required"
+    return 1
+  fi
+  local tmp="${stateFile}.tmp"
+  jq ".$key = $value" "$stateFile" >"$tmp" && mv "$tmp" "$stateFile"
+  ;;
+clear)
+  rm -f "$stateFile"
+  ;;
+*)
+  print "ralph-state: unknown command: $cmd"
+  return 1
+  ;;
 esac

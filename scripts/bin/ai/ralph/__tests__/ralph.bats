@@ -38,8 +38,8 @@ teardown() {
 
   claude() {
     echo "change $$" >> "$GIT_REPO/output.txt"
-    ralph-state set done true
-    ralph-state set prd_done true
+    ralph-state "$PRD_DIR" set done true
+    ralph-state "$PRD_DIR" set prd_done true
   }
   git-commit-message() { echo "test commit"; }
   bats_mock claude git-commit-message
