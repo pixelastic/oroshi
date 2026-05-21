@@ -118,7 +118,7 @@
       "Run git-worktree-list-raw",
       "Verify each output line has exactly 6 ▮ separators (7 fields)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0014",
@@ -129,7 +129,7 @@
       "Run git-worktree-list-raw",
       "Verify the 3rd field (dirtyCount) is '0'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0014",
@@ -141,7 +141,7 @@
       "Run git-worktree-list-raw from the main repo",
       "Verify the 3rd field (dirtyCount) is '1'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0014",
@@ -152,7 +152,7 @@
       "Run git-worktree-list-raw",
       "Verify the 4th field (ahead) is '2' (not 'ahead 2')"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0014",
@@ -163,7 +163,7 @@
       "Run git-worktree-list-raw",
       "Verify the 5th field (behind) is '3' (not 'behind 3')"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0015",

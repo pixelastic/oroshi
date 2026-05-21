@@ -32,6 +32,14 @@
 - Skipped feedback: review findings were about pre-existing docs (broken PRD links, duplicate prd.json IDs, wrong glossary path) — not introduced by this issue
 - Next: 0013 (git-directory-dirty-count)
 
+## Session 2026-05-19 — 0014: git-worktree-list-raw new format
+- Completed: updated `git-worktree-list-raw` to 7-field format `branch▮path▮dirtyCount▮ahead▮behind▮relativeDate▮message`; `dirtyCount` via `git-directory-dirty-count`; split `distance` string into plain int `ahead`/`behind`
+- Tests added: `git-worktree-list-raw.bats` — 5 new tests (7-field count, dirtyCount=0, dirtyCount=1, ahead int, behind int); 4 existing tests preserved; added `run_zsh_fn` override with `*(.:t)` glob to autoload all worktree fns
+- Discovered: `git-directory-dirty-count` not in installed `.oroshi` (new fn); must `autoload -Uz dir/*(.:t)` all worktree dirs, not just the target fn
+- Fixed: none unplanned
+- Skipped feedback: split `local`/assignment in `git-directory-dirty-count.bats` — pre-existing from session 0013, out of scope
+- Next: 0015 (git-worktree-list dirty count column display)
+
 ## Session 2026-05-19 — 0013: git-directory-dirty-count
 - Completed: new autoload fn `git/directory/git-directory-dirty-count`; delegates to `git-file-list-dirty-raw "$@" || true`, counts lines via local array
 - Tests added: `scripts/bin/__tests__/git-directory-dirty-count.bats` — 5 tests (clean, modified x2, staged, untracked, path arg)

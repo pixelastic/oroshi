@@ -1,7 +1,7 @@
-# List all linked worktrees: branch▮path▮distance▮relativeDate▮message
+# List all linked worktrees: branch▮path▮dirtyCount▮ahead▮behind▮relativeDate▮message
 # Excludes the Git Repo Main
 # Usage:
-# $ git-worktree-list-raw   # fix/bug▮/path▮ahead 2, behind 0▮3mn▮fix typo
+# $ git-worktree-list-raw   # fix/bug▮/path▮0▮2▮0▮3mn▮fix typo
 
 setopt local_options err_return
 local porcelain="$(git worktree list --porcelain 2>/dev/null)" || return 1
@@ -55,15 +55,18 @@ for entry in "${worktreeData[@]}"; do
   local entryBranch="${entry%%▮*}"
   local entryPath="${entry#*▮}"
 
-  # Ahead/behind vs main
+  # Dirty file count for this worktree
+  local dirtyCount="$(git-directory-dirty-count "$entryPath")"
+
+  # Ahead/behind vs main as plain integers
   local rawDistance="$(git rev-list --left-right --count "${entryBranch}...main" 2>/dev/null)"
-  local distance=""
-  [[ -n "$rawDistance" ]] && distance="ahead ${rawDistance%%$'\t'*}, behind ${rawDistance##*$'\t'}"
+  local ahead=0 behind=0
+  [[ -n "$rawDistance" ]] && ahead="${rawDistance%%$'\t'*}" && behind="${rawDistance##*$'\t'}"
 
   # Relative date and commit message
   local logInfo="$(git log -1 --format="%ar▮%s" "$entryBranch" 2>/dev/null)"
   local relativeDate="${logInfo%%▮*}"
   local message="${logInfo#*▮}"
 
-  echo "$entryBranch▮$entryPath▮$distance▮$relativeDate▮$message"
+  echo "$entryBranch▮$entryPath▮$dirtyCount▮$ahead▮$behind▮$relativeDate▮$message"
 done
