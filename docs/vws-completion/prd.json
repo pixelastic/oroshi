@@ -1,0 +1,97 @@
+[
+  {
+    "id": "0001",
+    "description": "git-worktree-distance-raw outputs 0▮0 for a branch with no divergence from main",
+    "steps": [
+      "Create a temp git repo with bats_git_dir",
+      "Create a linked worktree with bats_git_worktree",
+      "cd into the worktree (no extra commits)",
+      "Run git-worktree-distance-raw <branch>",
+      "Assert output is '0▮0' and exit status is 0"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0001",
+    "description": "git-worktree-distance-raw outputs correct ahead count when branch has commits not in main",
+    "steps": [
+      "Create a temp git repo with bats_git_dir",
+      "Create a linked worktree with bats_git_worktree",
+      "cd into the worktree, make 2 empty commits",
+      "Run git-worktree-distance-raw <branch> from inside the repo",
+      "Assert first field (ahead) is '2' and second field (behind) is '0'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0001",
+    "description": "git-worktree-distance-raw outputs correct behind count when main has commits not in branch",
+    "steps": [
+      "Create a temp git repo with bats_git_dir",
+      "Create a linked worktree with bats_git_worktree",
+      "cd into main repo, make 3 empty commits",
+      "cd into the worktree",
+      "Run git-worktree-distance-raw <branch>",
+      "Assert first field (ahead) is '0' and second field (behind) is '3'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0001",
+    "description": "git-worktree-distance-raw exits 1 when called outside a git repo",
+    "steps": [
+      "cd into a non-git temp directory",
+      "Run git-worktree-distance-raw somebranch",
+      "Assert exit status is 1"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0006",
+    "description": "complete-git-worktrees includes dirty count in description when non-zero",
+    "steps": [
+      "Create a temp git repo with bats_git_dir",
+      "Create a linked worktree with bats_git_worktree",
+      "cd into the linked worktree, create an untracked file",
+      "cd back to the main repo",
+      "Run complete-git-worktrees",
+      "Assert output contains the worktree branch name followed by ':' and a dirty indicator"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0006",
+    "description": "complete-git-worktrees suppresses zero counts in description",
+    "steps": [
+      "Create a temp git repo with bats_git_dir",
+      "Create a linked worktree with bats_git_worktree (no extra commits, no dirty files)",
+      "cd into the main repo",
+      "Run complete-git-worktrees",
+      "Assert the description for the worktree does not contain dirty/ahead/behind indicators"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0006",
+    "description": "complete-git-worktrees outputs main as first entry with no description when outside a git repo",
+    "steps": [
+      "cd into a non-git temp directory",
+      "Run complete-git-worktrees",
+      "Assert exit status is 0",
+      "Assert output is exactly 'main'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0006",
+    "description": "complete-git-worktrees output is in name:description format",
+    "steps": [
+      "Create a temp git repo with bats_git_dir",
+      "Create a linked worktree with bats_git_worktree",
+      "cd into the main repo",
+      "Run complete-git-worktrees",
+      "Assert each non-main line contains ':' separating name from description"
+    ],
+    "passes": false
+  }
+]
