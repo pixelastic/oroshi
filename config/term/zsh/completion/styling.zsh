@@ -166,6 +166,7 @@ function oroshi-completion-styling() {
   zstyle ':completion:*:complete:git-branch-remove-remote:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-remove:*:*' list-colors $listColorsGitBranch
   zstyle ':completion:*:complete:git-branch-switch:*:*' list-colors $listColorsGitBranch
+  zstyle ':completion:*:complete:git-worktree-switch:*:*' list-colors $listColorsGitBranch
 
   # Tags
   zstyle ':completion:*:complete:git-tag-switch:*:*' list-colors $listColorsGitTag
