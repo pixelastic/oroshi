@@ -1,4 +1,5 @@
 # Highlighting as I type {{{
+# shellcheck source=/dev/null
 source $ZSH_CONFIG_PATH/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # Documentation:
 # https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters/main.md
