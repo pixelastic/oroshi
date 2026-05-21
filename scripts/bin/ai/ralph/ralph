@@ -14,7 +14,6 @@ local dir="${${1:-.}:a}"
 local maxLoops="${flagMax[2]}"
 
 WATCHER_INTERVAL="${RALPH_WATCHER_INTERVAL:-5}"
-MONITOR_TIMEOUT="${RALPH_MONITOR_TIMEOUT:-600}"
 # In tests, set RALPH_TTY=/dev/null — /dev/tty requires a real terminal and will fail otherwise
 TTY_INPUT="${RALPH_TTY:-/dev/tty}"
 
@@ -28,31 +27,6 @@ _sentinel_watcher() {
     [[ "$(ralph-state get 'done')" == "true" ]] || continue
     kill -TERM $claudePid 2>/dev/null || true
     break
-  done
-}
-
-# Play a sound when no filesystem activity occurs for N seconds
-_inactivity_monitor() {
-  local gitRoot="$1"
-  local alerted=false
-  while true; do
-    local inoCode=0
-    inotifywait --recursive \
-      --event modify,create,delete,move \
-      --timeout "$MONITOR_TIMEOUT" \
-      "$gitRoot" >/dev/null 2>&1 || inoCode=$?
-
-    # Activity detected: reset alert
-    if [[ $inoCode -eq 0 ]]; then
-      alerted=false
-      continue
-    fi
-
-    # Timeout: play alert once per idle period
-    if [[ $alerted == false ]]; then
-      audio-play-oroshi ralph-timeout.mp3
-      alerted=true
-    fi
   done
 }
 
@@ -94,18 +68,13 @@ while [[ $i -lt $maxLoops ]]; do
   _sentinel_watcher $claudePid &
   local watcherPid=$!
 
-  _inactivity_monitor "$gitRoot" &
-  local monitorPid=$!
-
   # Wait for claude; capture exit code
   local claudeExitCode=0
   wait $claudePid 2>/dev/null || claudeExitCode=$?
 
-  # Kill watcher and monitor, wait for cleanup
+  # Kill watcher, wait for cleanup
   kill $watcherPid 2>/dev/null || true
   wait $watcherPid 2>/dev/null || true
-  kill $monitorPid 2>/dev/null || true
-  wait $monitorPid 2>/dev/null || true
 
   # Ctrl+C: stop loop cleanly, no commit
   if [[ $claudeExitCode -eq 130 ]]; then
