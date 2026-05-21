@@ -72,7 +72,7 @@
       "Verify the output is an absolute path ending in docs/feat_my-feat/",
       "Verify the path starts with /"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",
@@ -81,7 +81,7 @@
       "Run ralph-directory from a non-worktree git repo",
       "Verify exit code is 1 and output is empty"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",
@@ -91,7 +91,7 @@
       "Run ralph-directory with an explicit subpath inside the worktree",
       "Verify the returned absolute path is correct"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0004",

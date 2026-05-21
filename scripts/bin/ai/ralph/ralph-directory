@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+# Return absolute path to the ralph prd directory for a given path.
+# Usage:
+# $ ralph-directory            # defaults to $PWD
+# $ ralph-directory /some/path # explicit path
+set -e
+
+local targetPath="${1:-$PWD}"
+
+git-worktree-is-ralph "$targetPath" || return 1
+
+local wtRoot="$(git-directory-root "$targetPath")"
+local branch="$(git-branch-current "$targetPath")"
+local slug="$(git-branch-slug "$branch")"
+
+print "$wtRoot/docs/$slug/"

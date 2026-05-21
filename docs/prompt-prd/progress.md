@@ -38,3 +38,11 @@ issue-005 → needs issue-002 + issue-004
 - Discovered: none
 - Fixed: added `[[ -n "$wtRoot" ]]` and `[[ -n "$slug" ]]` guards after subshell assignments
 - Next: issue-003 (ralph-directory) — depends on issue-001 + issue-002 which are now done
+
+## Session 2026-05-21 — 0003: ralph-directory
+- Completed: Created `ralph-directory` script in `scripts/bin/ai/ralph/`
+- Tests added: `scripts/bin/ai/ralph/__tests__/ralph-directory.bats` (4 tests: absolute path in ralph worktree, exit 1 not in worktree, exit 1 without prd.json, explicit subpath argument)
+- Discovered: none
+- Fixed: updated test 3 to assert empty output on failure; updated test 4 to pass a subpath inside worktree (not root) per spec
+- Skipped feedback: `local` at script top-level (same pattern used throughout existing scripts e.g. ralph-end; variables are scoped to the script process); missing git_env_clean in setup (helper already unsets GIT_* vars at top level; existing tests like git-worktree-is-ralph.bats use the same pattern without it); bats mocks for zsh autoload functions (functions loaded via FPATH in zsh subprocess, same approach as all other bats tests in this repo)
+- Next: issue-004 (ralph-progress) — depends on issue-003 which is now done
