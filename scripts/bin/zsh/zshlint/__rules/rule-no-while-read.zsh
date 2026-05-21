@@ -12,7 +12,7 @@ zshlintRule_noWhileRead() {
     (( ++lineno ))
     [[ "$line" =~ ^[[:space:]]*'#' ]] && continue
     [[ "$line" =~ 'while.*[[:space:]]read([^[:alnum:]_]|$)' ]] || continue
-    printf '%s%snoWhileRead%swarning%s%d%sPrefer ${(f)var} over while read loops\n' \
+    printf '%s%snoWhileRead%swarning%s%d%sUse ${(f)var} instead of while/read loops\n' \
       "$file" "$_SEP" "$_SEP" "$_SEP" "$lineno" "$_SEP"
   done
 }

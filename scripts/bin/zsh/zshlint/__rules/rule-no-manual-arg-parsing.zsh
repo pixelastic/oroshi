@@ -6,7 +6,8 @@ zshlintRule_noManualArgParsing() {
   # shellcheck disable=SC2016
   local -a patterns=(
     'case "\$1"'
-    'while getopts'
+    # Split in two strings to not match itself...
+    'while get''opts'
   )
   local content="$(<"$file")"
   local lineno=0
