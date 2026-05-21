@@ -54,3 +54,11 @@ issue-005 → needs issue-002 + issue-004
 - Fixed: used `|| return 0` early-return in ralph-end instead of `&&` to avoid set -e triggering on false condition
 - Skipped feedback: `local` at script top-level (same pattern used throughout existing scripts; explicitly skipped in session 0003 for same reason); `2>/dev/null` in ralph-end is intentional (preserves prior graceful-degradation behavior)
 - Next: issue-005 (prompt-integration) — depends on issue-002 + issue-004 which are now done
+
+## Session 2026-05-21 — 0005: prompt-integration
+- Completed: Renamed `git_issues` → `git_issues_github` (with worktree early-return); added `git_issues_prd` function; updated `index.zsh` async list and `oroshi-prompt-right`
+- Tests added: `prompt/__tests__/git.zsh.bats` (7 tests: github empty in worktree, prd empty cases, yellow/green progress, error icon); tests source from `$ZSH_CONFIG_PATH/prompt/git.zsh` to use worktree version
+- Discovered: tests must source `$ZSH_CONFIG_PATH/prompt/git.zsh` not `~/.oroshi/...` to pick up worktree changes
+- Fixed: double blank line before `git_issues_prd` function
+- Skipped feedback: `local var="$(cmd)"` anti-pattern (reviewer contradicts `feedback_zsh_local_assignment.md` memory — established project convention is to combine); exit code via empty-check (equivalent since ralph-progress never outputs on failure); github happy-path test (requires live GitHub API/token, impractical in bats); "tests too coupled to rendering lifecycle" (tests verify observable behavior, not internals)
+- Next: all issues complete — PRD done

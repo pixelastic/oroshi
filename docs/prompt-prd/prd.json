@@ -161,7 +161,7 @@
       "Trigger prompt refresh",
       "Verify git_issues_github prompt part is empty"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",
@@ -171,7 +171,7 @@
       "Trigger prompt refresh",
       "Verify git_issues_prd prompt part shows done/total with COLOR_ALIAS_GIT_ISSUE color"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",
@@ -181,7 +181,7 @@
       "Trigger prompt refresh",
       "Verify git_issues_prd prompt part shows done/total with COLOR_ALIAS_SUCCESS color"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",
@@ -191,7 +191,7 @@
       "Trigger prompt refresh",
       "Verify git_issues_prd prompt part shows error icon with COLOR_ALIAS_ERROR color"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",
@@ -201,6 +201,6 @@
       "Trigger prompt refresh",
       "Verify git_issues_prd prompt part is empty"
     ],
-    "passes": false
+    "passes": true
   }
 ]

@@ -156,3 +156,126 @@ teardown() {
 	'
 	[ "$status" -eq 0 ]
 }
+
+# git_issues_github
+
+@test "git_issues_github is empty inside a worktree" {
+	cd "${BATS_GIT_WORKTREES}fix-bug"
+	run zsh -c '
+		source ~/.oroshi/config/term/zsh/zshenv.zsh
+		source $ZSH_CONFIG_PATH/prompt/git.zsh
+		GIT_DIRECTORY_IS_REPOSITORY=1
+		GIT_DIRECTORY_IS_WORKTREE=1
+		declare -Ag OROSHI_PROMPT_PARTS
+		oroshi-prompt-populate:git_issues_github
+		echo "${OROSHI_PROMPT_PARTS[git_issues_github]}"
+	'
+	[ "$status" -eq 0 ]
+	[ "$output" = "" ]
+}
+
+# git_issues_prd
+
+@test "git_issues_prd is empty when not in a git repository" {
+	run zsh -c '
+		source ~/.oroshi/config/term/zsh/zshenv.zsh
+		source $ZSH_CONFIG_PATH/prompt/git.zsh
+		GIT_DIRECTORY_IS_REPOSITORY=0
+		GIT_DIRECTORY_IS_WORKTREE=0
+		declare -Ag OROSHI_PROMPT_PARTS
+		oroshi-prompt-populate:git_issues_prd
+		echo "${OROSHI_PROMPT_PARTS[git_issues_prd]}"
+	'
+	[ "$status" -eq 0 ]
+	[ "$output" = "" ]
+}
+
+@test "git_issues_prd is empty when not in a worktree" {
+	cd "$BATS_GIT_DIR"
+	run zsh -c '
+		source ~/.oroshi/config/term/zsh/zshenv.zsh
+		source $ZSH_CONFIG_PATH/prompt/git.zsh
+		GIT_DIRECTORY_IS_REPOSITORY=1
+		GIT_DIRECTORY_IS_WORKTREE=0
+		declare -Ag OROSHI_PROMPT_PARTS
+		oroshi-prompt-populate:git_issues_prd
+		echo "${OROSHI_PROMPT_PARTS[git_issues_prd]}"
+	'
+	[ "$status" -eq 0 ]
+	[ "$output" = "" ]
+}
+
+@test "git_issues_prd is empty in a worktree without prd.json" {
+	cd "${BATS_GIT_WORKTREES}fix-bug"
+	run zsh -c '
+		source ~/.oroshi/config/term/zsh/zshenv.zsh
+		source $ZSH_CONFIG_PATH/prompt/git.zsh
+		GIT_DIRECTORY_IS_REPOSITORY=1
+		GIT_DIRECTORY_IS_WORKTREE=1
+		declare -Ag OROSHI_PROMPT_PARTS
+		oroshi-prompt-populate:git_issues_prd
+		echo "${OROSHI_PROMPT_PARTS[git_issues_prd]}"
+	'
+	[ "$status" -eq 0 ]
+	[ "$output" = "" ]
+}
+
+@test "git_issues_prd shows yellow progress when issues in progress" {
+	local wt_path="$(bats_git_worktree 'feat/my-prd')"
+	mkdir -p "$wt_path/docs/feat_my-prd"
+	printf '[{"passes":true},{"passes":false}]' > "$wt_path/docs/feat_my-prd/prd.json"
+	cd "$wt_path"
+	run zsh -c '
+		source ~/.oroshi/config/term/zsh/zshenv.zsh
+		source $ZSH_CONFIG_PATH/theming/env/colors.zsh
+		source $ZSH_CONFIG_PATH/prompt/git.zsh
+		GIT_DIRECTORY_IS_REPOSITORY=1
+		GIT_DIRECTORY_IS_WORKTREE=1
+		declare -Ag OROSHI_PROMPT_PARTS
+		oroshi-prompt-populate:git_issues_prd
+		result="${OROSHI_PROMPT_PARTS[git_issues_prd]}"
+		[[ "$result" == *"%F{$COLOR_ALIAS_GIT_ISSUE}"* ]] && echo "ok"
+	'
+	[ "$status" -eq 0 ]
+	[ "$output" = "ok" ]
+}
+
+@test "git_issues_prd shows green progress when all issues complete" {
+	local wt_path="$(bats_git_worktree 'feat/all-done')"
+	mkdir -p "$wt_path/docs/feat_all-done"
+	printf '[{"passes":true},{"passes":true}]' > "$wt_path/docs/feat_all-done/prd.json"
+	cd "$wt_path"
+	run zsh -c '
+		source ~/.oroshi/config/term/zsh/zshenv.zsh
+		source $ZSH_CONFIG_PATH/theming/env/colors.zsh
+		source $ZSH_CONFIG_PATH/prompt/git.zsh
+		GIT_DIRECTORY_IS_REPOSITORY=1
+		GIT_DIRECTORY_IS_WORKTREE=1
+		declare -Ag OROSHI_PROMPT_PARTS
+		oroshi-prompt-populate:git_issues_prd
+		result="${OROSHI_PROMPT_PARTS[git_issues_prd]}"
+		[[ "$result" == *"%F{$COLOR_ALIAS_SUCCESS}"* ]] && echo "ok"
+	'
+	[ "$status" -eq 0 ]
+	[ "$output" = "ok" ]
+}
+
+@test "git_issues_prd shows error icon for malformed prd.json" {
+	local wt_path="$(bats_git_worktree 'feat/bad-json')"
+	mkdir -p "$wt_path/docs/feat_bad-json"
+	printf 'NOT VALID JSON' > "$wt_path/docs/feat_bad-json/prd.json"
+	cd "$wt_path"
+	run zsh -c '
+		source ~/.oroshi/config/term/zsh/zshenv.zsh
+		source $ZSH_CONFIG_PATH/theming/env/colors.zsh
+		source $ZSH_CONFIG_PATH/prompt/git.zsh
+		GIT_DIRECTORY_IS_REPOSITORY=1
+		GIT_DIRECTORY_IS_WORKTREE=1
+		declare -Ag OROSHI_PROMPT_PARTS
+		oroshi-prompt-populate:git_issues_prd
+		result="${OROSHI_PROMPT_PARTS[git_issues_prd]}"
+		[[ "$result" == *"%F{$COLOR_ALIAS_ERROR}"* ]] && echo "ok"
+	'
+	[ "$status" -eq 0 ]
+	[ "$output" = "ok" ]
+}

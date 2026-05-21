@@ -153,14 +153,15 @@ function oroshi-prompt-populate:git_rebase_status() {
 }
 
 # Returns the number of currently opened issues
-function oroshi-prompt-populate:git_issues() {
-  OROSHI_PROMPT_PARTS[git_issues]=""
+function oroshi-prompt-populate:git_issues_github() {
+  OROSHI_PROMPT_PARTS[git_issues_github]=""
   (($GIT_DIRECTORY_IS_REPOSITORY)) || return
+  (($GIT_DIRECTORY_IS_WORKTREE)) && return
   git-directory-is-github || return
 
   # No GITHUB_TOKEN
   if [[ $GITHUB_TOKEN_READONLY == "" ]]; then
-    OROSHI_PROMPT_PARTS[git_issues]="%F{$COLOR_ALIAS_ERROR} %f"
+    OROSHI_PROMPT_PARTS[git_issues_github]="%F{$COLOR_ALIAS_ERROR} %f"
     return
   fi
 
@@ -178,7 +179,7 @@ function oroshi-prompt-populate:git_issues() {
 
   local issueCount="$(<$issuesCacheFile)"
   if [[ ! $issueCount = 0 ]]; then
-    OROSHI_PROMPT_PARTS[git_issues]="%F{$COLOR_ALIAS_GIT_ISSUE} ${issueCount}%f"
+    OROSHI_PROMPT_PARTS[git_issues_github]="%F{$COLOR_ALIAS_GIT_ISSUE} ${issueCount}%f"
   fi
 }
 
@@ -212,4 +213,31 @@ function oroshi-prompt-populate:git_pullrequests() {
   fi
 }
 
+# Shows ralph PRD progress when inside a ralph worktree
+function oroshi-prompt-populate:git_issues_prd() {
+  OROSHI_PROMPT_PARTS[git_issues_prd]=""
+  (($GIT_DIRECTORY_IS_REPOSITORY)) || return
+  (($GIT_DIRECTORY_IS_WORKTREE)) || return
+
+  # Not a ralph worktree → nothing to show
+  git-worktree-is-ralph || return
+
+  local icon=" "
+
+  local progress="$(ralph-progress)"
+  # Empty output means ralph-progress failed (malformed JSON, empty array, etc.)
+  if [[ -z "$progress" ]]; then
+    OROSHI_PROMPT_PARTS[git_issues_prd]="%F{$COLOR_ALIAS_ERROR}${icon}%f"
+    return
+  fi
+
+  local fields=(${(@ps/▮/)progress})
+  local done=$fields[1]
+  local total=$fields[2]
+
+  local color="$COLOR_ALIAS_GIT_ISSUE"
+  [[ "$done" == "$total" ]] && color="$COLOR_ALIAS_SUCCESS"
+
+  OROSHI_PROMPT_PARTS[git_issues_prd]="%F{$color}${icon}${done}/${total}%f"
+}
 # }}}
