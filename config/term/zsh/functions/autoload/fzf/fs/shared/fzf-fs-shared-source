@@ -36,7 +36,7 @@ local items="$(fd \
 # display)
 for item in ${(f)items}; do
   # Remove starting ./ from filepaths
-  item=${item//.\//}
+  item=${item//.\/}
 
   echo "${searchPath}/${item}   ${item}"
 done

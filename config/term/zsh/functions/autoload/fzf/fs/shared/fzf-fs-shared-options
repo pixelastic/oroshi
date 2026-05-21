@@ -25,6 +25,8 @@ local fzfColor=${flagColor[2]}
 # Config
 echo "--delimiter=   "
 echo "--with-nth=2"
+echo "--scheme=path"
+echo "--tiebreak=pathname,chunk"
 echo "--preview=fzf-fs-shared-preview {1}"
 
 # Prompt
