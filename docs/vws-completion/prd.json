@@ -9,7 +9,7 @@
       "Run git-worktree-distance-raw <branch>",
       "Assert output is '0▮0' and exit status is 0"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -21,7 +21,7 @@
       "Run git-worktree-distance-raw <branch> from inside the repo",
       "Assert first field (ahead) is '2' and second field (behind) is '0'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -34,7 +34,7 @@
       "Run git-worktree-distance-raw <branch>",
       "Assert first field (ahead) is '0' and second field (behind) is '3'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -44,7 +44,17 @@
       "Run git-worktree-distance-raw somebranch",
       "Assert exit status is 1"
     ],
-    "passes": false
+    "passes": true
+  },
+  {
+    "id": "0001",
+    "description": "git-worktree-distance-raw exits 1 for an unknown branch",
+    "steps": [
+      "cd into a valid git repo",
+      "Run git-worktree-distance-raw no-such-branch",
+      "Assert exit status is 1"
+    ],
+    "passes": true
   },
   {
     "id": "0006",
