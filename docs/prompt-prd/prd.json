@@ -10,7 +10,7 @@
       "Call git-branch-slug with main",
       "Verify output is main unchanged"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -19,7 +19,7 @@
       "Create a worktree with a branch name containing a slash",
       "Verify the worktree directory name uses underscores instead of slashes"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",

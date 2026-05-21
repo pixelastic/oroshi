@@ -22,3 +22,11 @@ issue-005 → needs issue-002 + issue-004
 
 ---
 ## Log (append below when an issue is completed)
+
+## Session 2026-05-21 — 0001: git-branch-slug
+- Completed: Created `git-branch-slug` autoload function; updated `git-worktree-create` to call it
+- Tests added: `git/branch/__tests__/git-branch-slug.bats` (4 tests: single slash, multiple slashes, plain name, hyphens/underscores)
+- Discovered: none
+- Fixed: added `[[ -n "$branchSlug" ]] || return 1` guard in `git-worktree-create`; added empty-arg guard in `git-branch-slug`
+- Skipped feedback: file path anomaly in review (false positive — files are at correct locations); comment "deleted" (false positive — comment was preserved)
+- Next: issue-002 (git-worktree-is-ralph) — depends on issue-001 which is now done

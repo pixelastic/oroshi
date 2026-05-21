@@ -24,7 +24,8 @@ if [[ "$repoName" == "" ]]; then
 fi
 
 # Branch Slug: replace / with _
-local branchSlug="${branch//\//_}"
+local branchSlug="$(git-branch-slug "$branch")"
+[[ -n "$branchSlug" ]] || return 1
 
 local worktreeDir="${OROSHI_WORKTREES_DIR}/${repoName}--${branchSlug}"
 

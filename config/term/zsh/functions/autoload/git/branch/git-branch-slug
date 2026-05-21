@@ -1,0 +1,11 @@
+# Return filesystem-safe slug: every / replaced with _
+# Usage:
+# $ git-branch-slug feat/my-feature   # feat_my-feature
+# $ git-branch-slug feat/scope/deep   # feat_scope_deep
+# $ git-branch-slug main              # main
+setopt local_options err_return
+
+local branch="$1"
+[[ -n "$branch" ]] || return 1
+
+echo "${branch//\//_}"
