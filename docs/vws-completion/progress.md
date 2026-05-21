@@ -29,4 +29,12 @@ issue-006 → needs issue-002
 - Discovered: progress.md guidance incorrectly said `errexit`; memory confirms `err_return` for autoload — fixed the guidance note
 - Fixed: `errexit` → `err_return`; simplified test assertions to direct string comparison; added missing unknown-branch test (from review)
 - Skipped feedback: "IFS-dependent read split" (minor fragility note, not actionable); "possible silent failure via :-0 fallback" (rev-list --count always emits two fields or nothing, so fallback is unreachable)
-- Next: issue-002 (refactor git-worktree-list-raw) or issue-003 (refactor is-ahead/is-behind)
+- Next: issue-003 (refactor is-ahead/is-behind) or issue-004 (refactor prompt-git.zsh)
+
+## Session 2026-05-21 — issue-002: refactor git-worktree-list-raw
+- Completed: Replaced inline `git rev-list` block with `git-worktree-distance-raw "$entryBranch"` call; split `▮` result into ahead/behind with `|| true` fallback inside subshell
+- Tests added: `delegates ahead/behind to git-worktree-distance-raw` (stub-based RED test that failed before refactoring, passes after)
+- Discovered: Pre-existing linter violations at lines 7 and 11 (localOrReturn, noGroupedLocals) required fixing per ralph rules
+- Fixed: Replaced `|| return 1` after `local porcelain` with manual empty-string guard; split grouped `local worktreePath="" branch="" isFirst=true` into 3 separate locals
+- Skipped feedback: "Mock stub broken" — incorrect; bats_run_function sources $BATS_TMP_DIR/mock.zsh before the call, stub IS working (test failed with old code, passes with new code). "|| true redundant" — not redundant; without it, err_return aborts the loop when git-worktree-distance-raw fails. "Scope creep on local fixes" — required by ralph linter rule.
+- Next: issue-003 (refactor is-ahead/is-behind) or issue-004 (refactor prompt-git.zsh)

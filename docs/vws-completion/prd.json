@@ -57,6 +57,16 @@
     "passes": true
   },
   {
+    "id": "0002",
+    "description": "git-worktree-list-raw delegates ahead/behind to git-worktree-distance-raw",
+    "steps": [
+      "Stub git-worktree-distance-raw to return '7▮3' via mock.zsh",
+      "Run git-worktree-list-raw from BATS_GIT_DIR",
+      "Assert output line contains '▮0▮7▮3▮' (dirtyCount▮ahead▮behind)"
+    ],
+    "passes": true
+  },
+  {
     "id": "0006",
     "description": "complete-git-worktrees includes dirty count in description when non-zero",
     "steps": [

@@ -40,3 +40,15 @@ teardown() {
   [ "$status" -eq 0 ]
   [ "${#lines[@]}" -eq 2 ]
 }
+
+@test "delegates ahead/behind to git-worktree-distance-raw" {
+  bats_git_dir 'stub-repo'
+  bats_git_worktree 'feature'
+  cat > "$BATS_TMP_DIR/mock.zsh" <<'MOCK'
+git-worktree-distance-raw() { echo "7▮3"; }
+MOCK
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-worktree-list-raw
+  [ "$status" -eq 0 ]
+  [[ "${lines[0]}" == "feature▮"*"▮0▮7▮3▮"* ]]
+}

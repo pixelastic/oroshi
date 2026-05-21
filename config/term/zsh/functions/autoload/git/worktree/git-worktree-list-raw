@@ -4,11 +4,14 @@
 # $ git-worktree-list-raw   # fix/bug▮/path▮0▮2▮0▮3mn▮fix typo
 
 setopt local_options err_return
-local porcelain="$(git worktree list --porcelain 2>/dev/null)" || return 1
+local porcelain="$(git worktree list --porcelain 2>/dev/null)"
+[[ "$porcelain" == "" ]] && return 1
 
 # First pass: collect branch▮path pairs from porcelain output
 local worktreeData=()
-local worktreePath="" branch="" isFirst=true
+local worktreePath=""
+local branch=""
+local isFirst=true
 for line in "${(@f)porcelain}"; do
   if [[ "$line" == worktree\ * ]]; then
     worktreePath="${line#worktree }"
@@ -58,10 +61,12 @@ for entry in "${worktreeData[@]}"; do
   # Dirty file count for this worktree
   local dirtyCount="$(git-directory-dirty-count "$entryPath")"
 
-  # Ahead/behind vs main as plain integers
-  local rawDistance="$(git rev-list --left-right --count "${entryBranch}...main" 2>/dev/null)"
-  local ahead=0 behind=0
-  [[ -n "$rawDistance" ]] && ahead="${rawDistance%%$'\t'*}" && behind="${rawDistance##*$'\t'}"
+  # Ahead/behind vs main via git-worktree-distance-raw
+  local rawDistance="$(git-worktree-distance-raw "$entryBranch" 2>/dev/null || true)"
+  local ahead="${rawDistance%%▮*}"
+  local behind="${rawDistance##*▮}"
+  [[ "$ahead" == "" ]] && ahead=0
+  [[ "$behind" == "" ]] && behind=0
 
   # Relative date and commit message
   local logInfo="$(git log -1 --format="%ar▮%s" "$entryBranch" 2>/dev/null)"
