@@ -1,5 +1,5 @@
 DISPATCHER="$(dirname "$BATS_TEST_FILENAME")/../preToolUse"
-SETTINGS="$HOME/.claude/settings.json"
+SETTINGS="$(dirname "$BATS_TEST_FILENAME")/../../settings.json"
 RTK_HOOK="$HOME/.claude/hooks/rtk-rewrite.sh"
 
 @test "settings.json: Bash matcher points to preToolUse-Bash" {
