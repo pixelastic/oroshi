@@ -35,3 +35,11 @@ issue-007 → needs issue-002 (done last, in a separate worktree)
 - Fixed: reviewer flagged `-z` → `[[ == "" ]]`, missing subshell guards, integer comparison style, `echo -n` → `print -n`; all applied
 - Skipped feedback: `bats_run_function` suggestion — prior art (`context-project.bats`, `context-root.bats`) all use `run zsh -c` with inline env vars; `bats_run_function` has no env injection support; `--zsh` flag test — deferred to issue-003; trailing arrow background concern — reviewer misread, `\e[0m` after badge content already resets bg before trailing arrow; worktree path concat concern — `BATS_GIT_WORKTREES` has trailing slash per helper.bash, pattern matches prior art
 - Next: issue-003 (context-badge --zsh flag)
+
+## Session 2026-05-22 — issue-003: context-badge --zsh flag
+- Completed: added `--zsh` flag to `context-badge` via `zparseopts`; dual output path (zsh `%K{}`/`%F{}` vs raw ANSI)
+- Tests added: `--zsh flag output contains zsh prompt codes`, `--zsh flag output does not contain raw ANSI sequences`
+- Discovered: `%k` must come before trailing end-cap arrow (not after) — arrow needs default bg to be visible; reviewer was mistaken
+- Fixed: numeric comparison style `[[ $isZsh == 1 ]]` → `(( isZsh ))` for both isZsh and isWorktree
+- Skipped feedback: `$'\e['` test flagged as `$'['` — reviewer hallucinated; test is correct; `%k` placement flagged — current placement is correct, moving it after arrow would make arrow invisible (branchBg fg on branchBg bg)
+- Next: issue-004 (update-prompt)

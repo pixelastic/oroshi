@@ -53,3 +53,15 @@ project_env() {
   [ "$status" -eq 0 ]
   [[ "$output" != *"%K{"* ]]
 }
+
+@test "--zsh flag output contains zsh prompt codes" {
+  run zsh -c "$(project_env); context-badge ${BATS_GIT_DIR} --zsh"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"%K{"* ]]
+}
+
+@test "--zsh flag output does not contain raw ANSI sequences" {
+  run zsh -c "$(project_env); context-badge ${BATS_GIT_DIR} --zsh"
+  [ "$status" -eq 0 ]
+  [[ "$output" != *$'\e['* ]]
+}

@@ -115,7 +115,7 @@
       "Run: context-badge <any-registered-path> --zsh",
       "Assert output contains %K{"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",
@@ -124,6 +124,6 @@
       "Run: context-badge <any-registered-path>",
       "Assert output does not contain %K{"
     ],
-    "passes": false
+    "passes": true
   }
 ]
