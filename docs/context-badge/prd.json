@@ -7,7 +7,7 @@
       "Run: context-project <path-inside-project>",
       "Assert output equals the project name"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -16,7 +16,7 @@
       "Run: context-project /tmp/unregistered-dir",
       "Assert output is empty"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -26,7 +26,7 @@
       "Run: context-root <path-inside-worktree>",
       "Assert output equals the worktree root directory path"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -36,7 +36,7 @@
       "Run: context-root <path-inside-project>",
       "Assert output equals the project root directory path"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -45,7 +45,7 @@
       "Run: context-root /tmp/unregistered-dir",
       "Assert output is empty"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -55,7 +55,7 @@
       "Run: context-path /some/project/src/foo",
       "Assert output equals src/foo (no leading slash)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",

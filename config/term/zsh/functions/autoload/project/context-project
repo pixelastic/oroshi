@@ -1,0 +1,40 @@
+# Resolve a filesystem path to its registered project name
+# Returns empty string if the path belongs to no known project
+# Handles both direct project paths and linked worktree paths
+# Usage:
+# $ context-project /path/inside/project    # Returns project name
+# $ context-project                         # Uses $PWD
+setopt local_options err_return
+
+local targetPath="${1:-$PWD}"
+
+# Normalize for prefix matching: trailing slash + ~ for home
+[[ "${targetPath[-1]}" != "/" ]] && targetPath+="/"
+local normalPath="${targetPath/#$HOME/~}"
+
+# Direct prefix match against registered project paths
+for projectKey in ${=PROJECTS_INDEX_BY_PATH}; do
+  local projectPath="${(P)${:-PROJECT_${projectKey}_PATH}}"
+  [[ "$normalPath" != "$projectPath"* ]] && continue
+  echo "${(P)${:-PROJECT_${projectKey}_NAME}}"
+  return 0
+done
+
+# Linked worktrees live outside the project root — check the main repo path
+local rawPath="${targetPath%/}"
+git-directory-is-worktree "$rawPath" || return 0
+
+local commonDir="$(git -C "$rawPath" rev-parse --git-common-dir 2>/dev/null)"
+[[ "$commonDir" == "" ]] && return 0
+
+local absCommonDir
+[[ "$commonDir" == /* ]] && absCommonDir="$commonDir" || absCommonDir="${rawPath}/${commonDir}"
+local mainPath="${absCommonDir:h}/"
+local normalMainPath="${mainPath/#$HOME/~}"
+
+for projectKey in ${=PROJECTS_INDEX_BY_PATH}; do
+  local projectPath="${(P)${:-PROJECT_${projectKey}_PATH}}"
+  [[ "$normalMainPath" != "$projectPath"* ]] && continue
+  echo "${(P)${:-PROJECT_${projectKey}_NAME}}"
+  return 0
+done

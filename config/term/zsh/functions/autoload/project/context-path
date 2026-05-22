@@ -1,0 +1,15 @@
+# Return the path relative to the Context Root
+# No leading slash; empty string if at root or outside all known projects
+# Usage:
+# $ context-path /path/to/project/src/foo    # Returns src/foo
+# $ context-path /path/to/project            # Returns ""
+setopt local_options err_return
+
+local targetPath="${1:-$PWD}"
+
+local root="$(context-root "$targetPath")"
+# Outside known projects there is no Context Path
+[[ "$root" == "" ]] && return 0
+
+local rel="${targetPath#"$root"}"
+echo "${rel#/}"

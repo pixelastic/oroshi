@@ -19,3 +19,11 @@ issue-007 → needs issue-002 (done last, in a separate worktree)
 
 ---
 ## Log (append below when an issue is completed)
+
+## Session 2026-05-22 — issue-001: Foundation helpers (context-project, context-root, context-path)
+- Completed: created 3 autoloaded functions in `config/term/zsh/functions/autoload/project/`
+- Tests added: `context-project.bats` (3 tests), `context-root.bats` (3 tests), `context-path.bats` (3 tests) in `project/__tests__/`
+- Discovered: context-project must handle worktree paths (which live outside the registered project root) by detecting the worktree main repo via `git rev-parse --git-common-dir`
+- Fixed: none
+- Skipped feedback: reviewer flagged wrong test location (`scripts/bin/__tests__/`) — autoloaded function tests belong in `{domain}/__tests__/` per existing repo convention; reviewer flagged missing `setopt local_options errexit` — actually `err_return` per memory (fixed); reviewer said context-badge missing — that's issue-002, out of scope; reviewer said no independent tests needed per PRD — issue-001 acceptance criteria explicitly requires BATS tests
+- Next: issue-002 (context-badge core — ANSI output)

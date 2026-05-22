@@ -1,0 +1,32 @@
+# Return the Context Root for a path
+# Worktree root if inside a linked worktree; project root otherwise
+# Returns empty string if path belongs to no known project
+# Usage:
+# $ context-root /path/inside/worktree    # Returns worktree root
+# $ context-root /path/inside/project    # Returns project root
+setopt local_options err_return
+
+local targetPath="${1:-$PWD}"
+local rawPath="${targetPath%/}"
+
+# Outside known projects there is no Context Root
+local projectName="$(context-project "$targetPath")"
+[[ "$projectName" == "" ]] && return 0
+
+# Worktree: return the worktree root
+if git-directory-is-worktree "$rawPath"; then
+  git -C "$rawPath" rev-parse --show-toplevel
+  return 0
+fi
+
+# Not a worktree: return the project root path (expanded, no trailing slash)
+local normalPath="${rawPath}/"
+normalPath="${normalPath/#$HOME/~}"
+
+for projectKey in ${=PROJECTS_INDEX_BY_PATH}; do
+  local projectPath="${(P)${:-PROJECT_${projectKey}_PATH}}"
+  [[ "$normalPath" != "$projectPath"* ]] && continue
+  local root="${projectPath/#\~/$HOME}"
+  echo "${root%/}"
+  return 0
+done
