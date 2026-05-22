@@ -70,6 +70,8 @@ session, I think there is an arg that can be passed that can do that
 git-file-lint should display a relative path from the repo root, not the full
 path
 
+vwR should also use the vws list
+
 ## Lint
 
 zshlint seems to raise an error on "  local cacheDuration=1440 # In minutes "
