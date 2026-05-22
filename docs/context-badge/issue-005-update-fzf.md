@@ -10,7 +10,7 @@ Update all FZF surfaces to use `context-badge` (ANSI) and `context-root`/`contex
 
 **`fzf-fs-shared-preview-header`**: replace the `project-by-path` + `project-key` + `eval`-based stripping dance with `context-badge` for the badge and `context-root`/`context-path` for the relative path.
 
-**`fzf-claude-sessions-source`** and **`fzf-claude-sessions-preview`**: replace `project-by-path` + `project-colorize` with `context-badge`.
+**`fzf-claude-sessions-source-no-query`** and **`fzf-claude-sessions-preview`**: replace `project-by-path` + `project-colorize` with `context-badge`.
 
 **`fzf-projects-source`**: replace `project-colorize $projectName` with `context-badge $projectName` (project name input → Project Badge only, no Worktree Badge).
 

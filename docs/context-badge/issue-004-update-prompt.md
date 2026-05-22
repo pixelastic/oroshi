@@ -17,6 +17,7 @@ Update the shell prompt to use `context-badge`.
 - [ ] Prompt shows project name in a non-git registered project directory
 - [ ] Sub-path shown after the badge is relative to the Context Root (worktree root when in a worktree, project root otherwise)
 - [ ] No async `git_worktree_branch` prompt part remains
+- [ ] `git_worktree_branch` tests removed from `config/term/zsh/prompt/__tests__/git.zsh.bats`
 - [ ] Existing `oroshi-prompt-path-worktree` BATS tests still pass
 
 ## Blocked by
