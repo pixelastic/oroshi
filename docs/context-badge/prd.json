@@ -134,7 +134,7 @@
       "Assert prompt path part contains the project name",
       "Assert prompt path part does not contain a branch name"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0004",
@@ -144,7 +144,7 @@
       "Assert prompt path part contains the project name",
       "Assert prompt path part contains the branch name"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0004",
@@ -153,7 +153,7 @@
       "Enter a subdirectory inside a linked worktree",
       "Assert the sub-path displayed is relative to the worktree root, not the project root"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0004",
@@ -162,7 +162,7 @@
       "Assert git_worktree_branch is not referenced in the prompt configuration",
       "Assert git_worktree_branch tests are removed from git.zsh.bats"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",

@@ -73,7 +73,6 @@ OROSHI_ASYNCHRONOUS_PROMPT_PARTS=(
   git_has_stash
   git_rebase_in_progress
   git_rebase_status
-  git_worktree_branch
   git_worktree_distance
   git_branch
   git_tag
@@ -119,7 +118,6 @@ function oroshi-prompt-left() {
     $OROSHI_PROMPT_PARTS[yarn_link]
     $OROSHI_PROMPT_PARTS[yarn_install_in_progress]
     $OROSHI_PROMPT_PARTS[bundle_install_in_progress]
-    $OROSHI_PROMPT_PARTS[git_worktree_branch]
     $OROSHI_PROMPT_PARTS[path_worktree_dir]
     $OROSHI_PROMPT_PARTS[git_is_submodule]
     $OROSHI_PROMPT_PARTS[git_has_stash]

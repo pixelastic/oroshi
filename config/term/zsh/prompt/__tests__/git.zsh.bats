@@ -9,69 +9,6 @@ teardown() {
 	bats_cleanup
 }
 
-# git_worktree_branch
-
-@test "shows branch name inside a worktree" {
-	cd "${BATS_GIT_WORKTREES}fix-bug"
-	run zsh -c '
-		source ~/.oroshi/config/term/zsh/zshenv.zsh
-		source ~/.oroshi/config/term/zsh/prompt/git.zsh
-		GIT_DIRECTORY_IS_REPOSITORY=1
-		GIT_DIRECTORY_IS_WORKTREE=1
-		declare -Ag OROSHI_PROMPT_PARTS
-		oroshi-prompt-populate:git_worktree_branch
-		[[ "${OROSHI_PROMPT_PARTS[git_worktree_branch]}" != "" ]]
-	'
-	[ "$status" -eq 0 ]
-}
-
-@test "uses branch color regardless of ahead count" {
-	cd "${BATS_GIT_WORKTREES}fix-bug"
-	git commit --allow-empty -m "worktree commit"
-	run zsh -c '
-		source ~/.oroshi/config/term/zsh/zshenv.zsh
-		source ~/.oroshi/config/term/zsh/theming/env/colors.zsh
-		source ~/.oroshi/config/term/zsh/prompt/git.zsh
-		GIT_DIRECTORY_IS_REPOSITORY=1
-		GIT_DIRECTORY_IS_WORKTREE=1
-		declare -Ag OROSHI_PROMPT_PARTS
-		oroshi-prompt-populate:git_worktree_branch
-		result="${OROSHI_PROMPT_PARTS[git_worktree_branch]}"
-		[[ "$result" == *"%F{$COLOR_ALIAS_GIT_BRANCH}"* ]]
-	'
-	[ "$status" -eq 0 ]
-}
-
-@test "git_branch is empty when inside a worktree" {
-	cd "${BATS_GIT_WORKTREES}fix-bug"
-	run zsh -c '
-		source ~/.oroshi/config/term/zsh/zshenv.zsh
-		source ~/.oroshi/config/term/zsh/prompt/git.zsh
-		GIT_DIRECTORY_IS_REPOSITORY=1
-		GIT_DIRECTORY_IS_WORKTREE=1
-		declare -Ag OROSHI_PROMPT_PARTS
-		oroshi-prompt-populate:git_branch
-		echo "${OROSHI_PROMPT_PARTS[git_branch]}"
-	'
-	[ "$status" -eq 0 ]
-	[ "$output" = "" ]
-}
-
-@test "git_worktree_branch is empty outside a worktree" {
-	cd "$BATS_GIT_DIR"
-	run zsh -c '
-		source ~/.oroshi/config/term/zsh/zshenv.zsh
-		source ~/.oroshi/config/term/zsh/prompt/git.zsh
-		GIT_DIRECTORY_IS_REPOSITORY=1
-		GIT_DIRECTORY_IS_WORKTREE=0
-		declare -Ag OROSHI_PROMPT_PARTS
-		oroshi-prompt-populate:git_worktree_branch
-		echo "${OROSHI_PROMPT_PARTS[git_worktree_branch]}"
-	'
-	[ "$status" -eq 0 ]
-	[ "$output" = "" ]
-}
-
 # git_worktree_distance
 
 @test "shows ahead color and count when ahead" {

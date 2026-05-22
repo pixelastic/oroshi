@@ -36,6 +36,15 @@ issue-007 → needs issue-002 (done last, in a separate worktree)
 - Skipped feedback: `bats_run_function` suggestion — prior art (`context-project.bats`, `context-root.bats`) all use `run zsh -c` with inline env vars; `bats_run_function` has no env injection support; `--zsh` flag test — deferred to issue-003; trailing arrow background concern — reviewer misread, `\e[0m` after badge content already resets bg before trailing arrow; worktree path concat concern — `BATS_GIT_WORKTREES` has trailing slash per helper.bash, pattern matches prior art
 - Next: issue-003 (context-badge --zsh flag)
 
+## Session 2026-05-22 — issue-004: update-prompt
+
+- Completed: replaced `project-colorize`/`project-by-path`/`git-worktree-project` in `path.zsh` with `context-badge --zsh`; replaced manual worktree path-stripping in `path_worktree_dir` with `context-path`; removed `git_worktree_branch` from async parts and `oroshi-prompt-left()` in `index.zsh`; deleted `oroshi-prompt-populate:git_worktree_branch` from `git.zsh`; removed 4 `git_worktree_branch` tests from `git.zsh.bats`
+- Tests added: `path part contains branch name when inside a linked worktree`, `path_worktree_dir shows sub-path relative to worktree root` (in `path.zsh.bats`); `git_worktree_branch is not in OROSHI_ASYNCHRONOUS_PROMPT_PARTS` (in `index.zsh.bats`)
+- Discovered: `path.zsh.bats` was sourcing `~/.oroshi/...` (main branch) instead of worktree — tests for sourced (non-autoloaded) prompt files must use `source $OROSHI_ROOT/config/...` to test worktree changes
+- Fixed: pre-existing lint violations in `git.zsh` (`singleEqualsInTest` on `issueCount`/`pullrequestCount`, `noGroupedLocals` caused by inline `# In minutes` comment — moved to separate line)
+- Skipped feedback: none
+- Next: issue-005 (update-fzf)
+
 ## Session 2026-05-22 — issue-003: context-badge --zsh flag
 - Completed: added `--zsh` flag to `context-badge` via `zparseopts`; dual output path (zsh `%K{}`/`%F{}` vs raw ANSI)
 - Tests added: `--zsh flag output contains zsh prompt codes`, `--zsh flag output does not contain raw ANSI sequences`
