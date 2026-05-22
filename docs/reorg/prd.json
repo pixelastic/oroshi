@@ -37,7 +37,7 @@
       "Check tools/cli/rg/deploy uses $(dirname \"$0\")/config (not hardcoded path)",
       "Verify no files remain in scripts/install/cli/, scripts/deploy/cli/, config/cli/"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",

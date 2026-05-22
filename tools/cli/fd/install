@@ -11,3 +11,5 @@ wget \
 sudo dpkg -i fd.deb
 sudo apt-get -f install
 rm ~/local/tmp/fd.deb
+
+"$(dirname "$0")/deploy"

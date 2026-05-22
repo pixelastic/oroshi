@@ -3,4 +3,4 @@
 # place, like ~/.rgrc, so we manually tell it where to look
 #
 # https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md#configuration-file
-export RIPGREP_CONFIG_PATH=~/.oroshi/config/cli/rg/dist/rgrc.conf
+export RIPGREP_CONFIG_PATH=$OROSHI_ROOT/tools/cli/rg/config/dist/rgrc.conf

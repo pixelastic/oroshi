@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -ex
 
-CONFIG_DIR=~/.oroshi/config/cli/bat
+CONFIG_DIR=$(dirname "$0")/config
 DEST_DIR=~/.config/bat
 
 # Link the config file

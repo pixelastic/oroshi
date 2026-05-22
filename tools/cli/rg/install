@@ -11,3 +11,5 @@ wget \
 sudo dpkg -i ripgrep.deb
 sudo apt-get -f install
 rm ~/local/tmp/ripgrep.deb
+
+"$(dirname "$0")/deploy"

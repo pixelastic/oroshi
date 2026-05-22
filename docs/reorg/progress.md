@@ -63,6 +63,14 @@ issue-017 → needs issue-001 through issue-016 (cleanup — delete old director
 ---
 ## Log (append below when an issue is completed)
 
+## Session 2026-05-22 — 0004: cli domain fully migrated to tools/cli/
+
+- Completed: Moved 13 install scripts, 5 deploy scripts (bat, fd, nnn, rg, tldr), and 3 config dirs (bat, fd, rg) into tools/cli/. Updated deploy scripts to use $(dirname "$0")/config (bash) or ${0:h}/config (zsh). Added deploy call at end of install scripts for bat, fd, nnn, rg, tldr. Updated RIPGREP_CONFIG_PATH in config/term/zsh/tools/rg.zsh to use $OROSHI_ROOT/tools/cli/rg/config/. Removed empty scripts/install/cli/, scripts/deploy/cli/, config/cli/. Fixed local at script scope in nnn/deploy.
+- Discovered: No index file existed in scripts/install/cli/ (no install-all needed). No config/cli/tldr/ exists (tldr/deploy has stale ref to non-existent config — predates this migration).
+- Fixed: local at script scope removed from nnn/deploy.
+- Skipped feedback: ${0:h} vs $(dirname "$0") — bat/install, nnn/install, tldr/install all have #!/usr/bin/env zsh; same pattern as prior sessions. Missing tldr/config/ — never existed. Missing install-all — no index file to convert.
+- Next: issue-005 (docker domain migration)
+
 ## Session 2026-05-22 — 0003: basics domain fully migrated to tools/basics/
 
 - Completed: Moved 10 install scripts, 5 deploy scripts, and 7 config directories into tools/basics/. Updated deploy scripts to use ${0:h}/config (zsh) or $(dirname "$0")/config (bash). Removed empty scripts/install/basics/, scripts/deploy/basics/, config/basics/.

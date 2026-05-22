@@ -23,3 +23,5 @@ rm -rf ./nnn-${VERSION}
 
 # Install
 sudo make strip install PREFIX=/home/$USER/local
+
+"${0:h}/deploy"

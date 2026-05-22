@@ -3,3 +3,5 @@
 # https://github.com/tldr-pages/tldr
 
 # yarn global add tldr
+
+"${0:h}/deploy"

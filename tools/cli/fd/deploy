@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CONFIG_DIR=~/.oroshi/config/cli/fd
+CONFIG_DIR=$(dirname "$0")/config
 
 ln -fs \
 	$CONFIG_DIR/fdignore.conf \

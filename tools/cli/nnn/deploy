@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
-local CONFIG_DIR=~/.config/nnn
-local REPO_DIR=~/local/src/nnn
+CONFIG_DIR=~/.config/nnn
+REPO_DIR=~/local/src/nnn
 
 # Link plugins to repo plugins
 rm -rf ${CONFIG_DIR}/plugins

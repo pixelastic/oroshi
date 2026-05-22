@@ -24,3 +24,5 @@ ln -fs ~/local/etc/bat-extras/src/batman.sh ~/local/bin/batman
 ln -fs ~/local/etc/bat-extras/src/batpipe.sh ~/local/bin/batpipe
 ln -fs ~/local/etc/bat-extras/src/batwatch.sh ~/local/bin/batwatch
 ln -fs ~/local/etc/bat-extras/src/prettybat.sh ~/local/bin/prettybat
+
+"${0:h}/deploy"

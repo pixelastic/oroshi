@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Paths
-configDir=~/.oroshi/config/cli/tldr
+configDir=$(dirname "$0")/config
 configFile=${configDir}/tldrrc.json
 destFile=~/.tldrrc
 
