@@ -1,0 +1,171 @@
+[
+  {
+    "id": "0001",
+    "description": "ai domain fully migrated to tools/ai/",
+    "steps": [
+      "Check that tools/ai/claude/ contains install, deploy, and config/",
+      "Run tools/ai/claude/deploy and verify it completes without path errors",
+      "Verify no files remain in scripts/install/ai/, scripts/deploy/ai/, config/ai/"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "audio domain fully migrated to tools/audio/",
+    "steps": [
+      "Check that tools/audio/ contains one folder per tool",
+      "Check that tools/audio/install-all exists and calls each tool's install via relative path",
+      "Verify no files remain in scripts/install/audio/, config/audio/"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0003",
+    "description": "basics domain fully migrated to tools/basics/",
+    "steps": [
+      "Check that tools/basics/ contains one folder per tool",
+      "Pick one tool with both install and deploy, verify install calls deploy at the end",
+      "Verify no files remain in scripts/install/basics/, scripts/deploy/basics/, config/basics/"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0004",
+    "description": "cli domain fully migrated to tools/cli/",
+    "steps": [
+      "Check that tools/cli/bat/, tools/cli/rg/, tools/cli/fd/ each contain install, deploy, config/",
+      "Check tools/cli/rg/deploy uses $(dirname \"$0\")/config (not hardcoded path)",
+      "Verify no files remain in scripts/install/cli/, scripts/deploy/cli/, config/cli/"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0005",
+    "description": "docker domain fully migrated to tools/docker/",
+    "steps": [
+      "Check that tools/docker/ contains one folder per tool",
+      "Verify no files remain in scripts/install/docker/, config/docker/"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0006",
+    "description": "git domain fully migrated to tools/git/",
+    "steps": [
+      "Check tools/git/git/ contains install, deploy, config/",
+      "Verify tools/git/git/install calls $(dirname \"$0\")/deploy at end",
+      "Verify no files remain in scripts/install/git/, scripts/deploy/git/, config/git/"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0007",
+    "description": "image domain fully migrated to tools/image/",
+    "steps": [
+      "Check tools/image/flameshot/ and tools/image/imagemagick/ each have install, deploy, config/",
+      "Check tools/image/install-all exists and uses relative paths",
+      "Verify no files remain in scripts/install/image/, scripts/deploy/image/, config/image/"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0008",
+    "description": "infrastructure domain fully migrated to tools/infrastructure/",
+    "steps": [
+      "Check that tools/infrastructure/ contains one folder per tool",
+      "Verify no files remain in scripts/install/infrastructure/, config/infrastructure/"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0009",
+    "description": "keybindings domain fully migrated to tools/keybindings/",
+    "steps": [
+      "Check that tools/keybindings/ contains one folder per tool",
+      "Pick one tool with both install and deploy, verify install calls deploy at the end",
+      "Verify no files remain in scripts/install/keybindings/, scripts/deploy/keybindings/, config/keybindings/"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0010",
+    "description": "_languages domain fully migrated to tools/_languages/",
+    "steps": [
+      "Check that tools/_languages/ contains one folder per language tool",
+      "Pick one tool with both install and deploy, verify install calls deploy at the end",
+      "Verify no files remain in scripts/install/_languages/, scripts/deploy/_languages/, config/_languages/"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0011",
+    "description": "misc domain fully migrated to tools/misc/",
+    "steps": [
+      "Check that tools/misc/ contains one folder per tool",
+      "Verify no files remain in scripts/install/misc/, scripts/deploy/misc/, config/misc/"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0012",
+    "description": "ubuntu domain fully migrated to tools/ubuntu/",
+    "steps": [
+      "Check tools/ubuntu/24.04/ contains sub-feature folders (autostart, keybindings, etc.)",
+      "Pick one feature, verify its deploy uses $(dirname \"$0\")/config",
+      "Verify no files remain in scripts/install/ubuntu/, scripts/deploy/ubuntu/, config/ubuntu/"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0013",
+    "description": "vim domain fully migrated to tools/vim/",
+    "steps": [
+      "Check tools/vim/nvim/ and tools/vim/vint/ each have install, deploy, config/",
+      "Verify both installs call deploy at the end",
+      "Verify no files remain in scripts/install/vim/, scripts/deploy/vim/, config/vim/"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0014",
+    "description": "windows domain fully migrated to tools/windows/",
+    "steps": [
+      "Check that tools/windows/ contains one folder per tool",
+      "Verify no files remain in scripts/install/windows/, config/windows/"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0015",
+    "description": "worktools domain fully migrated to tools/worktools/",
+    "steps": [
+      "Check that tools/worktools/ contains one folder per tool",
+      "Verify no files remain in scripts/install/worktools/, scripts/deploy/worktools/, config/worktools/"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0016",
+    "description": "term domain fully migrated to tools/term/ with cross-tool refs updated",
+    "steps": [
+      "Check tools/term/zsh/config/ contains the full ZSH config tree",
+      "Grep for '~/.oroshi/config/' inside tools/term/zsh/config/ — should return no results",
+      "Grep for '~/.oroshi/scripts/deploy/' inside tools/term/zsh/config/ — should return no results",
+      "Verify no files remain in scripts/install/term/, scripts/deploy/term/, config/term/"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0017",
+    "description": "old directory trees deleted and no stale references remain",
+    "steps": [
+      "Verify scripts/install/, scripts/deploy/, config/ no longer exist",
+      "Verify config/__archive/ no longer exists",
+      "Verify scripts/bin/, scripts/etc/, scripts/yarn/ still exist and are untouched",
+      "Run: grep -r '\\.oroshi/config/' . --exclude-dir=docs --exclude-dir=.git -- should return no results",
+      "Run: grep -r '\\.oroshi/scripts/install/' . --exclude-dir=docs --exclude-dir=.git -- should return no results",
+      "Run: grep -r '\\.oroshi/scripts/deploy/' . --exclude-dir=docs --exclude-dir=.git -- should return no results"
+    ],
+    "passes": false
+  }
+]
