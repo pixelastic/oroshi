@@ -1,7 +1,10 @@
 #!/usr/bin/env zsh
+# Deploy rtk config to ~/.config/rtk
+# Usage:
+# $ tools/ai/rtk/deploy
 set -e
 
-CONFIG_DIR=~/.oroshi/config/ai/rtk
+CONFIG_DIR="${0:h}/config"
 DEST_DIR=~/.config/rtk
 
 mkdir -p $DEST_DIR

@@ -7,7 +7,7 @@
       "Run tools/ai/claude/deploy and verify it completes without path errors",
       "Verify no files remain in scripts/install/ai/, scripts/deploy/ai/, config/ai/"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",

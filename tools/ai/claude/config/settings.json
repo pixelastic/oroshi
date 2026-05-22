@@ -13,7 +13,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/tim/.oroshi/config/ai/claude/hooks/sessionStart"
+            "command": "/home/tim/.oroshi/tools/ai/claude/config/hooks/sessionStart"
           }
         ]
       }
@@ -24,7 +24,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/tim/.oroshi/config/ai/claude/hooks/notification"
+            "command": "/home/tim/.oroshi/tools/ai/claude/config/hooks/notification"
           }
         ]
       }
@@ -34,7 +34,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/tim/.oroshi/config/ai/claude/hooks/stop"
+            "command": "/home/tim/.oroshi/tools/ai/claude/config/hooks/stop"
           }
         ]
       }
@@ -45,7 +45,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/tim/.oroshi/config/ai/claude/hooks/preToolUse"
+            "command": "/home/tim/.oroshi/tools/ai/claude/config/hooks/preToolUse"
           }
         ]
       },
@@ -62,7 +62,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "/home/tim/.oroshi/config/ai/claude/statusline"
+    "command": "/home/tim/.oroshi/tools/ai/claude/config/statusline"
   },
   "effortLevel": "high",
   "theme": "dark",

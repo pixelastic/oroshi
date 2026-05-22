@@ -14,7 +14,7 @@
 # - time echo "test"                     -> accept (time is ignored)
 #
 
-source /home/tim/.oroshi/config/ai/claude/hooks/lib/hookLib.zsh
+source $OROSHI_ROOT/tools/ai/claude/config/hooks/lib/hookLib.zsh
 
 local inputFile=$1
 toolCommand=$(jq -r ".tool_input.command" "$inputFile")
@@ -22,7 +22,7 @@ toolCommand=$(jq -r ".tool_input.command" "$inputFile")
 debug "Input command: $toolCommand"
 
 # If the command is allowed, we accept right away
-local allowlistFile="$HOME/.oroshi/config/ai/claude/hooks/allowlist.json"
+local allowlistFile="$OROSHI_ROOT/tools/ai/claude/config/hooks/allowlist.json"
 if solkan --allow-list-file "$allowlistFile" "$toolCommand"; then
   debug "Decision: accept"
   acceptTool

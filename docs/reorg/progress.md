@@ -60,3 +60,11 @@ issue-017 → needs issue-001 through issue-016 (cleanup — delete old director
 
 ---
 ## Log (append below when an issue is completed)
+
+## Session 2026-05-22 — 0001: ai domain fully migrated to tools/ai/
+
+- Completed: Moved all ai domain files (claudecode→claude, claude-blog, humanizer, rtk, skills installs; claude+rtk deploys; claude+rtk configs) to tools/ai/. Updated deploy scripts to use ${0:h}/config. Added deploy calls at end of install scripts. Updated all cross-tool refs in hooks + settings.json.
+- Discovered: scripts/deploy/ai/rtk and config/ai/rtk existed (not listed in issue detail) — migrated both. Hook scripts and settings.json had hardcoded old paths that needed updating.
+- Fixed: local at script scope in deploy removed; missing headers added to deploy scripts; bats test hardcoded path replaced with git rev-parse; POSIX brackets in deploy replaced with [[]]
+- Skipped feedback: $(dirname "$0") vs ${0:h} — spec example used dirname but ${0:h} is cleaner zsh; kept ${0:h}
+- Next: issue-002 (audio domain migration)

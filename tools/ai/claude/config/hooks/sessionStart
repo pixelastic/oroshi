@@ -2,7 +2,7 @@
 # Triggered when a new session is started
 
 # Source the hook library to get CLAUDE_HOOKS_LOG_DIR
-source /home/tim/.oroshi/config/ai/claude/hooks/lib/hookLib.zsh
+source $OROSHI_ROOT/tools/ai/claude/config/hooks/lib/hookLib.zsh
 
 # Ensure log directory exists
 mkdir -p "$CLAUDE_HOOKS_LOG_DIR"

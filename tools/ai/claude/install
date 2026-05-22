@@ -20,3 +20,5 @@ claude mcp add \
   --transport http \
   https://mcp.make.com/stream
 # }}}
+
+"${0:h}/deploy"
