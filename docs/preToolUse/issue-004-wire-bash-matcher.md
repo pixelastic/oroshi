@@ -24,4 +24,6 @@ After this issue, RTK rewrites take effect for all Bash commands and the permiss
 
 ## Blocked by
 
-- [issue-003-pretooluse-bash-orchestrator.md](issue-003-pretooluse-bash-orchestrator.md)
+- [issue-003-pretooluse-bash-orchestrator.md](issue-003-pretooluse-bash-orchestrator.md) (done)
+- [issue-005-fix-rtk-rewrite-api.md](issue-005-fix-rtk-rewrite-api.md)
+- [issue-006-fix-sequential-execution.md](issue-006-fix-sequential-execution.md)

@@ -68,4 +68,11 @@ Issue 0004 (wire-Bash-matcher):
 - Discovered: `set -e` + `$rewritten` boolean (where `rewritten=false`) silently aborts script — `false` exits 1 and `set -e` treats it as fatal; fixed by using `[[ "$rewritten" == true ]]` throughout
 - Fixed: restored deleted TEST CASES comments from original preToolUse-Bash; split grouped locals (`local var="$(cmd)"` pattern)
 - Skipped feedback: bats `bats_load_library`/`run_zsh_script` pattern — guidance says "No load 'helper' needed, tests call scripts directly"; `rewritten` → `isRewritten` rename (judgment call, not a hard violation); solkan stdin contract (solkan reads positional arg `$1` per its source)
-- Next: 0004-wire-Bash-matcher
+- Next: 0005-fix-rtk-rewrite-api (then 0006-fix-sequential-execution, then 0004-wire-Bash-matcher)
+
+## Session 2026-05-22 — glossary + new issues 0005/0006
+- Completed: created `__docs__/glossary.md` — shared vocabulary for the hook system (allow/reject, rewrite/ignore, auto-approve/ask, the 4 cases, execution order)
+- Discovered: `rtk rewrite` is the canonical API for hooks ("single source of truth") — current `preToolUse-Bash-rtk` parsing `--help` is fragile → issue 0005
+- Discovered: intended execution order is sequential (Solkan then RTK) — current implementation is parallel → issue 0006
+- Fixed: prd.json last 0003 entry was still `"passes": false`
+- Next: 0005 (fix rtk rewrite API) → 0006 (fix sequential execution) → 0004 (wire Bash matcher)

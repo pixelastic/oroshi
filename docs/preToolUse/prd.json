@@ -131,6 +131,56 @@
       "Call preToolUse-Bash with JSON containing command 'git status' and description 'Show repo status'",
       "Verify output JSON has hookSpecificOutput.updatedInput.description == 'Show repo status'"
     ],
+    "passes": true
+  },
+  {
+    "id": "0005",
+    "category": "unit",
+    "description": "preToolUse-Bash-rtk prints the original command when rtk rewrite has no equivalent (exit 1)",
+    "steps": [
+      "Call preToolUse-Bash-rtk with 'echo hello'",
+      "Verify stdout equals 'echo hello'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0005",
+    "category": "unit",
+    "description": "preToolUse-Bash-rtk prints the rewritten command from rtk rewrite stdout",
+    "steps": [
+      "Call preToolUse-Bash-rtk with 'git status'",
+      "Verify stdout equals 'rtk git status'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0005",
+    "category": "unit",
+    "description": "preToolUse-Bash-rtk is idempotent when command already uses RTK",
+    "steps": [
+      "Call preToolUse-Bash-rtk with 'rtk git status'",
+      "Verify stdout equals 'rtk git status'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0006",
+    "category": "integration",
+    "description": "preToolUse-Bash runs solkan before RTK with no background jobs",
+    "steps": [
+      "Inspect preToolUse-Bash source — verify no '&' background operator is used",
+      "Verify solkan script call appears before RTK script call in the source"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0006",
+    "category": "integration",
+    "description": "preToolUse-Bash still produces correct output for all 4 cases after sequential refactor",
+    "steps": [
+      "Run all preToolUse-Bash.bats tests",
+      "Verify all 5 tests pass"
+    ],
     "passes": false
   }
 ]
