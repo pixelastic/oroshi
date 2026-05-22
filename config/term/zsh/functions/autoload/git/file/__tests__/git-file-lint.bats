@@ -51,6 +51,18 @@ teardown() {
   [ "$status" -eq 0 ]
 }
 
+@test "shows relative path, not absolute path" {
+  echo 'echo hello' > "$BATS_GIT_DIR/bad.zsh"
+  bats_git add bad.zsh
+  bats_git commit --quiet -m "add bad.zsh"
+  echo 'local a b c' >> "$BATS_GIT_DIR/bad.zsh"
+
+  bats_run_function git-file-lint
+  [ "$status" -eq 1 ]
+  [[ "$output" =~ "bad.zsh" ]]
+  [[ ! "$output" =~ "$BATS_GIT_DIR" ]]
+}
+
 @test "skips deleted ZSH files without error" {
   echo 'echo hello' > "$BATS_GIT_DIR/todelete.zsh"
   bats_git add todelete.zsh
