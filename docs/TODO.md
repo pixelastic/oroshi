@@ -57,6 +57,19 @@ Still terminal issue when running several ralphs
 I should also cleanup what is in private/, same pattern as what I do in core
 oroshi
 
+Add completion of files modified to git-file-reverte on ctrlp
+
+Pre-commit hook of editing js files should run the matching tests
+
+Editing config/ai/claude/hooks/stop doesn't run the matching test when
+committing, might need to check the shebang if +x more aggressively
+
+claude-print, we might need to find a better way of handling the 0000-0000
+session, I think there is an arg that can be passed that can do that
+
+git-file-lint should display a relative path from the repo root, not the full
+path
+
 ## Lint
 
 zshlint seems to raise an error on "  local cacheDuration=1440 # In minutes "

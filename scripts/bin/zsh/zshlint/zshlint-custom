@@ -13,7 +13,8 @@ source "$dir/__rules/rule-no-external-basename.zsh"
 source "$dir/__rules/rule-no-while-read.zsh"
 source "$dir/__rules/rule-single-equals-in-test.zsh"
 source "$dir/__rules/rule-no-split-local.zsh"
-source "$dir/__rules/rule-no-dash-flags.zsh"
+source "$dir/__rules/rule-no-dash-z.zsh"
+source "$dir/__rules/rule-no-dash-n.zsh"
 source "$dir/__rules/rule-no-or-guard.zsh"
 
 # Ordered list of custom rule functions to run
@@ -25,7 +26,8 @@ local -a _RULES=(
   zshlintRule_noWhileRead
   zshlintRule_singleEqualsInTest
   zshlintRule_noSplitLocal
-  zshlintRule_noDashFlags
+  zshlintRule_noDashZ
+  zshlintRule_noDashN
   zshlintRule_noOrGuard
 )
 
@@ -47,7 +49,7 @@ local out
 for file in "${input[@]}"; do
   for rule in $_RULES; do
     out="$($rule "$file")"
-    [[ -n "$out" ]] && ruleLines+=("${(@f)out}")
+    [[ "$out" != "" ]] && ruleLines+=("${(@f)out}")
   done
 done
 

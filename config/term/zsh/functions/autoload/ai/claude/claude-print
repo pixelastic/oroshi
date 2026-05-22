@@ -23,7 +23,9 @@ if [[ "$soundBefore" != "" ]]; then
 fi
 
 if [[ "$soundAfter" != "" ]]; then
-  export OROSHI_CLAUDECODE_STOP_SOUND="${soundAfter}"
+  export OROSHI_CLAUDE_STOP_SOUND="${soundAfter}"
+else
+  export OROSHI_CLAUDE_STOP_SOUND=""
 fi
 
 # Pass --effort is specified
@@ -40,4 +42,4 @@ rm -f ~/.claude/projects/${projectFolder}/${sessionId}.jsonl
 CLAUDE_DO_NOT_FIX_TERMINAL_ISSUE_38761=1 claude "${claudeArgs[@]}" <<<"$input"
 
 rm -f ~/.claude/projects/${projectFolder}/${sessionId}.jsonl
-unset OROSHI_CLAUDECODE_STOP_SOUND
+unset OROSHI_CLAUDE_STOP_SOUND

@@ -54,7 +54,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/tim/.claude/hooks/rtk-rewrite.sh"
+            "command": "/home/tim/.oroshi/config/ai/claude/hooks/preToolUse-Bash"
           }
         ]
       }

@@ -3,27 +3,22 @@
 bats_load_library 'helper'
 load './helper'
 
-RULE_FILE="${BATS_TEST_DIRNAME}/../__rules/rule-no-dash-flags.zsh"
-RULE_FN="zshlintRule_noDashFlags"
+RULE_FILE="${BATS_TEST_DIRNAME}/../__rules/rule-no-dash-z.zsh"
+RULE_FN="zshlintRule_noDashZ"
 
 @test "flags [[ -z var ]]" {
   run_rule '[[ -z "$foo" ]] && return'
-  expect_violation noDashFlags 1
-}
-
-@test "flags [[ -n var ]]" {
-  run_rule '[[ -n "$foo" ]] && return'
-  expect_violation noDashFlags 1
+  expect_violation noDashZ 1
 }
 
 @test "flags [[ ! -z var ]]" {
   run_rule '[[ ! -z "$foo" ]] && return'
-  expect_violation noDashFlags 1
+  expect_violation noDashZ 1
 }
 
 @test "flags -z after &&" {
   run_rule '[[ "$a" == "" && -z "$b" ]] && return'
-  expect_violation noDashFlags 1
+  expect_violation noDashZ 1
 }
 
 @test "clean — [[ var == \"\" ]]" {
@@ -33,6 +28,11 @@ RULE_FN="zshlintRule_noDashFlags"
 
 @test "clean — [[ var != \"\" ]]" {
   run_rule '[[ "$foo" != "" ]] && return'
+  expect_clean
+}
+
+@test "clean — -n is not flagged" {
+  run_rule '[[ -n "$foo" ]] && return'
   expect_clean
 }
 
@@ -48,5 +48,5 @@ RULE_FN="zshlintRule_noDashFlags"
 
 @test "line number is correct" {
   run_rule '' '[[ -z "$foo" ]]'
-  expect_violation noDashFlags 2
+  expect_violation noDashZ 2
 }

@@ -1,33 +1,34 @@
 #!/usr/bin/env zsh
 # Triggered whenever Claude finishes answering
 
-# If a custom sound is explicitly set, it takes precedence
-if [[ -n "${OROSHI_CLAUDECODE_STOP_SOUND}" ]]; then
-  audio-play-oroshi "${OROSHI_CLAUDECODE_STOP_SOUND}"
-  exit 0
-fi
+# No sound unless explicitly opted in (set by the claude wrapper for interactive sessions)
+[[ -z "${OROSHI_CLAUDE_STOP_SOUND}" ]] && exit 0
 
-# CONFIGURATION
-local fastSound="claude-stop-fast.mp3"
-local slowSound="claude-stop.mp3"
-local threshold=5
-
-# Read JSON input from stdin
-local stdinData=$(cat)
-local transcriptPath=$(echo "$stdinData" | jq -r '.transcript_path // empty')
+# Read stdin to get transcript path
+local stdinData="$(cat)"
+local transcriptPath="$(echo "$stdinData" | jq -r '.transcript_path // empty')"
 
 # Do not play sound for subagents
 [[ "$transcriptPath" == */subagents/* ]] && exit 0
 
-# Calculate duration
-local nowEpoch=$(date +%s)
-local lastUserTime=$(/usr/bin/grep '"type":"user"' "$transcriptPath" |
+# Custom sound: play it directly
+if [[ "${OROSHI_CLAUDE_STOP_SOUND}" != "auto" ]]; then
+  audio-play-oroshi "${OROSHI_CLAUDE_STOP_SOUND}"
+  exit 0
+fi
+
+# auto: play fast or slow sound based on duration
+local fastSound="claude-stop-fast.mp3"
+local slowSound="claude-stop.mp3"
+local threshold=5
+
+local nowEpoch="$(date +%s)"
+local lastUserTime="$(/usr/bin/grep '"type":"user"' "$transcriptPath" |
   tail -1 |
-  jq -r '.timestamp // empty' 2>/dev/null)
-local userEpoch=$(date -d "$lastUserTime" +%s 2>/dev/null)
+  jq -r '.timestamp // empty' 2>/dev/null)"
+local userEpoch="$(date -d "$lastUserTime" +%s 2>/dev/null)"
 local durationSeconds=$((nowEpoch - userEpoch))
 
-# Play different sound if fast or not
 if ((durationSeconds < threshold)); then
   audio-play-oroshi "${fastSound}"
   exit 0
