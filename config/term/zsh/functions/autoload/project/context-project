@@ -7,34 +7,42 @@
 setopt local_options err_return
 
 local targetPath="${1:-$PWD}"
+local rawPath="${targetPath%/}"
+
+# Match a normalized path against registered projects, returning the most
+# specific (longest-prefix) match to avoid catch-all projects shadowing others
+_context_project_best_match() {
+  local searchPath="$1"
+  local bestKey=""
+  local bestLen=0
+  for projectKey in ${=PROJECTS_INDEX_BY_PATH}; do
+    local projectPath="${(P)${:-PROJECT_${projectKey}_PATH}}"
+    [[ "$searchPath" != "$projectPath"* ]] && continue
+    (( ${#projectPath} > bestLen )) || continue
+    bestKey="$projectKey"
+    bestLen=${#projectPath}
+  done
+  [[ "$bestKey" == "" ]] && return 0
+  echo "${(P)${:-PROJECT_${bestKey}_NAME}}"
+}
+
+# Linked worktrees live outside the project root — resolve via main repo first
+# so a catch-all project doesn't shadow the specific project via prefix match
+if git-directory-is-worktree "$rawPath"; then
+  local commonDir="$(git -C "$rawPath" rev-parse --git-common-dir 2>/dev/null)"
+  [[ "$commonDir" == "" ]] && return 0
+
+  local absCommonDir
+  [[ "$commonDir" == /* ]] && absCommonDir="$commonDir" || absCommonDir="${rawPath}/${commonDir}"
+  local mainPath="${absCommonDir:h}/"
+  local normalMainPath="${mainPath/#$HOME/~}"
+
+  _context_project_best_match "$normalMainPath"
+  return 0
+fi
 
 # Normalize for prefix matching: trailing slash + ~ for home
 [[ "${targetPath[-1]}" != "/" ]] && targetPath+="/"
 local normalPath="${targetPath/#$HOME/~}"
 
-# Direct prefix match against registered project paths
-for projectKey in ${=PROJECTS_INDEX_BY_PATH}; do
-  local projectPath="${(P)${:-PROJECT_${projectKey}_PATH}}"
-  [[ "$normalPath" != "$projectPath"* ]] && continue
-  echo "${(P)${:-PROJECT_${projectKey}_NAME}}"
-  return 0
-done
-
-# Linked worktrees live outside the project root — check the main repo path
-local rawPath="${targetPath%/}"
-git-directory-is-worktree "$rawPath" || return 0
-
-local commonDir="$(git -C "$rawPath" rev-parse --git-common-dir 2>/dev/null)"
-[[ "$commonDir" == "" ]] && return 0
-
-local absCommonDir
-[[ "$commonDir" == /* ]] && absCommonDir="$commonDir" || absCommonDir="${rawPath}/${commonDir}"
-local mainPath="${absCommonDir:h}/"
-local normalMainPath="${mainPath/#$HOME/~}"
-
-for projectKey in ${=PROJECTS_INDEX_BY_PATH}; do
-  local projectPath="${(P)${:-PROJECT_${projectKey}_PATH}}"
-  [[ "$normalMainPath" != "$projectPath"* ]] && continue
-  echo "${(P)${:-PROJECT_${projectKey}_NAME}}"
-  return 0
-done
+_context_project_best_match "$normalPath"
