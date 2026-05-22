@@ -17,7 +17,7 @@
       "Check that tools/audio/install-all exists and calls each tool's install via relative path",
       "Verify no files remain in scripts/install/audio/, config/audio/"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",

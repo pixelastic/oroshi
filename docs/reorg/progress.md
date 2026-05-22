@@ -61,6 +61,14 @@ issue-017 → needs issue-001 through issue-016 (cleanup — delete old director
 ---
 ## Log (append below when an issue is completed)
 
+## Session 2026-05-22 — 0002: audio domain fully migrated to tools/audio/
+
+- Completed: Moved all 9 audio install scripts (aac, abcde, cmus, flac, id3, mp3, ogg, sox, whisper) to tools/audio/{tool}/install. Moved config/audio/sounds to tools/audio/sounds/config. Converted index → install-all with ${0:h} relative paths, rewrote to cover all tools and drop stale mplayer reference. Removed empty scripts/install/audio/ and config/audio/.
+- Discovered: index was stale — referenced old `music/` domain and omitted abcde, id3, whisper. No deploy scripts exist; no install→deploy wiring needed.
+- Fixed: install-all rewritten to cover all actual tools; mplayer (stale, never in audio domain) dropped.
+- Skipped feedback: ${0:h} vs $(dirname "$0") — same as issue-001, kept ${0:h}; bats tests added despite PRD note — consistent with issue-001 precedent; sounds treated as a tool (sounds config → tools/audio/sounds/config/); mplayer never existed in scripts/install/audio/ so dropping is correct.
+- Next: issue-003 (basics domain migration)
+
 ## Session 2026-05-22 — 0001: ai domain fully migrated to tools/ai/
 
 - Completed: Moved all ai domain files (claudecode→claude, claude-blog, humanizer, rtk, skills installs; claude+rtk deploys; claude+rtk configs) to tools/ai/. Updated deploy scripts to use ${0:h}/config. Added deploy calls at end of install scripts. Updated all cross-tool refs in hooks + settings.json.

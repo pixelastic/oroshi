@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+set -e
+
+# Utilities
+"${0:h}/sox/install"
+
+# Formats
+"${0:h}/aac/install"
+"${0:h}/abcde/install"
+"${0:h}/flac/install"
+"${0:h}/id3/install"
+"${0:h}/mp3/install"
+"${0:h}/ogg/install"
+
+# Players
+"${0:h}/cmus/install"
+
+# Speech-to-text
+"${0:h}/whisper/install"
