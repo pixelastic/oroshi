@@ -50,7 +50,12 @@ Display a recap of the issue.
 
 **Exit criterion:** Test runs and fails.
 
-Write the tests that cover the acceptance criteria of the issue — at least one per criterion. Run them. Read the failure output.
+**Skip if:** SKIP ONLY IF the acceptance criterion is satisfied purely by
+editing a declarative config file (settings.json, .eslintrc, YAML…) and involves
+no executable code path.
+
+Write the tests that cover the acceptance criteria of the issue — at least one
+per criterion. Run them. Read the failure output.
 
 **If tests passes immediately: tests are wrong. Rewrite them.**
 
@@ -121,6 +126,7 @@ Update `$ARGUMENTS/prd.json`: mark issue as complete, update any relevant status
 **Exit criterion:** `ralph-end` called, session recap displayed.
 
 - Run `ralph-end $ARGUMENTS` first
+
 - Print the session entry that was written to progress.md
 
 **Stop here. Do not commit. Do not start the next issue. Wait for the user.**
