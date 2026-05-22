@@ -45,6 +45,7 @@ Issue 0004 (wire-Bash-matcher):
 ---
 ## Log (append below when an issue is completed)
 
+
 ## Session 2026-05-16 — 0001: preToolUse-Bash-solkan
 - Completed: created `config/ai/claude/claudecode/hooks/preToolUse-Bash-solkan` — thin wrapper around `solkan` that resolves allowlist relative to `${0:A:h}`
 - Tests added: `scripts/bin/__tests__/preToolUse-Bash-solkan.bats` — 10 tests covering simple allow/deny, &&, ||, ;, and pipe compound operators
@@ -60,3 +61,11 @@ Issue 0004 (wire-Bash-matcher):
 - Fixed: none
 - Skipped feedback: reviewer flagged `local` at script top-level as invalid — dismissed: `zsh -c 'local x="hello"; print $x'` exits 0, zsh allows it; all other feedback targeted preToolUse-Bash-solkan (issue 0001, prior session)
 - Next: 0003-preToolUse-Bash (orchestrator, needs 0001 + 0002 — both now done)
+
+## Session 2026-05-22 — 0003: preToolUse-Bash orchestrator
+- Completed: rewrote `config/ai/claude/hooks/preToolUse-Bash` — reads hook JSON from stdin, runs solkan+rtk in parallel, emits `hookSpecificOutput` JSON for all 4 allow/ask × rewrite/pass combinations
+- Tests added: `config/ai/claude/hooks/__tests__/preToolUse-Bash.bats` — 5 tests covering all 4 output cases + description field preservation
+- Discovered: `set -e` + `$rewritten` boolean (where `rewritten=false`) silently aborts script — `false` exits 1 and `set -e` treats it as fatal; fixed by using `[[ "$rewritten" == true ]]` throughout
+- Fixed: restored deleted TEST CASES comments from original preToolUse-Bash; split grouped locals (`local var="$(cmd)"` pattern)
+- Skipped feedback: bats `bats_load_library`/`run_zsh_script` pattern — guidance says "No load 'helper' needed, tests call scripts directly"; `rewritten` → `isRewritten` rename (judgment call, not a hard violation); solkan stdin contract (solkan reads positional arg `$1` per its source)
+- Next: 0004-wire-Bash-matcher

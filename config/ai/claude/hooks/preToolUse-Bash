@@ -1,5 +1,10 @@
 #!/usr/bin/env zsh
-# Check if the bash command can be safely executed, or ask the user otherwise
+# Orchestrate Bash hook: run solkan (allow/ask) + rtk (rewrite) in parallel
+# Reads hook JSON from stdin, writes hookSpecificOutput JSON to stdout
+#
+# Env overrides for testing:
+#   PRETOOLUSE_SOLKAN_SCRIPT — defaults to preToolUse-Bash-solkan (sibling)
+#   PRETOOLUSE_RTK_SCRIPT    — defaults to preToolUse-Bash-rtk (sibling)
 #
 # TEST CASES - This hook must handle:
 # - echo hello                           -> accept (allowlisted)
@@ -12,22 +17,42 @@
 # - echo ok; wget something              -> ask (wget not allowed)
 # - echo "rm -rf /"                      -> accept (rm is a string, not a command)
 # - time echo "test"                     -> accept (time is ignored)
-#
+set -e
 
-source /home/tim/.oroshi/config/ai/claude/hooks/lib/hookLib.zsh
+local hookDir="${0:A:h}"
+local solkanScript="${PRETOOLUSE_SOLKAN_SCRIPT:-${hookDir}/preToolUse-Bash-solkan}"
+local rtkScript="${PRETOOLUSE_RTK_SCRIPT:-${hookDir}/preToolUse-Bash-rtk}"
 
-local inputFile=$1
-toolCommand=$(jq -r ".tool_input.command" "$inputFile")
+local inputJson="$(cat)"
+local cmd="$(print -r -- "$inputJson" | jq -r '.tool_input.command')"
 
-debug "Input command: $toolCommand"
+# Run solkan in background so rtk can run in parallel
+local solkanPid=""
+local solkanExit=0
+"$solkanScript" "$cmd" &>/dev/null &
+solkanPid=$!
 
-# If the command is allowed, we accept right away
-local allowlistFile="$HOME/.oroshi/config/ai/claude/hooks/allowlist.json"
-if solkan --allow-list-file "$allowlistFile" "$toolCommand"; then
-  debug "Decision: accept"
-  acceptTool
+local rtkOutput="$("$rtkScript" "$cmd")"
+
+wait "$solkanPid" || solkanExit=$?
+
+# Determine if RTK rewrote the command
+local rewritten=false
+[[ "$rtkOutput" != "$cmd" ]] && rewritten=true
+
+# Build updatedInput by merging original tool_input with new command
+local updatedInput=""
+if [[ "$rewritten" == true ]]; then
+  updatedInput="$(print -r -- "$inputJson" | jq --arg cmd "$rtkOutput" '.tool_input | .command = $cmd')"
 fi
 
-# Otherwise, let Claude's permission system decide
-debug "Decision: let Claude decide"
-letClaudeDecide
+# Emit hookSpecificOutput for each of the four cases
+if [[ $solkanExit -eq 0 ]] && [[ "$rewritten" == true ]]; then
+  jq -n --argjson u "$updatedInput" '{hookSpecificOutput:{permissionDecision:"allow",updatedInput:$u}}'
+elif [[ $solkanExit -eq 0 ]]; then
+  jq -n '{hookSpecificOutput:{permissionDecision:"allow"}}'
+elif [[ "$rewritten" == true ]]; then
+  jq -n --argjson u "$updatedInput" '{hookSpecificOutput:{updatedInput:$u}}'
+else
+  jq -n '{hookSpecificOutput:{}}'
+fi

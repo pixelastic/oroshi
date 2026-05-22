@@ -80,7 +80,7 @@
       "Verify output JSON has hookSpecificOutput.permissionDecision == 'allow'",
       "Verify output JSON has no hookSpecificOutput.updatedInput"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",
@@ -93,7 +93,7 @@
       "Verify output JSON has hookSpecificOutput.permissionDecision == 'allow'",
       "Verify output JSON has hookSpecificOutput.updatedInput.command == 'rtk git status'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",
@@ -106,7 +106,7 @@
       "Verify output JSON has no hookSpecificOutput.permissionDecision",
       "Verify output JSON has no hookSpecificOutput.updatedInput"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",
@@ -119,7 +119,7 @@
       "Verify output JSON has no hookSpecificOutput.permissionDecision",
       "Verify output JSON has hookSpecificOutput.updatedInput.command == 'rtk git status'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",
