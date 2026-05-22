@@ -85,6 +85,7 @@
   "ralph-end",
   "readlink",
   "read",
+  "realpath",
   "review",
   "review-diff",
   "rg",
