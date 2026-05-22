@@ -1,0 +1,65 @@
+# Render a Context Badge for a path or project name
+# Project Badge always; Worktree Badge appended when inside a linked worktree
+# Output: raw ANSI escape sequences (use --zsh for prompt codes — issue-003)
+# Usage:
+# $ context-badge /path/inside/project
+# $ context-badge my-project-name
+# $ context-badge /path/outside/all    # empty output
+setopt local_options err_return
+
+local arg="${1:-$PWD}"
+local esc=$'\e'
+local arrow=$'\ue0b0'
+
+# Resolve project name to its root path
+local targetPath
+if [[ "$arg" != /* ]]; then
+  local nameKey="$(project-key "$arg")"
+  local nameResolvedPath="${(P)${:-PROJECT_${nameKey}_PATH}}"
+  if [[ -n "$nameResolvedPath" ]]; then
+    targetPath="${nameResolvedPath/#\~/$HOME}"
+    targetPath="${targetPath%/}"
+  else
+    targetPath="$arg"
+  fi
+else
+  targetPath="$arg"
+fi
+
+# Unknown project -> empty output
+local projectName="$(context-project "$targetPath")"
+[[ "$projectName" == "" ]] && return 0
+
+# Project display vars
+local key="$(project-key "$projectName")"
+[[ "$key" == "" ]] && return 0
+local projectBg="${(P)${:-PROJECT_${key}_BACKGROUND}}"
+local projectFg="${(P)${:-PROJECT_${key}_FOREGROUND}}"
+local projectIcon="${(P)${:-PROJECT_${key}_ICON}}"
+local hideName="${(P)${:-PROJECT_${key}_HIDE_NAME_IN_PROMPT}}"
+local displayName="$projectName"
+[[ "$hideName" == "1" ]] && displayName=""
+
+# Worktree detection
+local isWorktree=0
+git-directory-is-worktree "$targetPath" && isWorktree=1
+
+local branchBg="$COLOR_ALIAS_GIT_BRANCH"
+
+# Project Badge
+local output="${esc}[38;5;${projectFg}m${esc}[48;5;${projectBg}m ${projectIcon}${displayName} ${esc}[0m"
+
+if [[ $isWorktree == "1" ]]; then
+  # Transition arrow: project bg as fg, branch bg as bg
+  output+="${esc}[38;5;${projectBg}m${esc}[48;5;${branchBg}m${arrow}${esc}[0m"
+  # Worktree Badge
+  local branch="$(git-branch-current "$targetPath")"
+  [[ "$branch" == "" ]] && return 0
+  output+="${esc}[38;5;255m${esc}[48;5;${branchBg}m ${branch} ${esc}[0m"
+  output+="${esc}[38;5;${branchBg}m${arrow}${esc}[0m"
+else
+  # Trailing arrow (no following badge)
+  output+="${esc}[38;5;${projectBg}m${arrow}${esc}[0m"
+fi
+
+print -n "$output"
