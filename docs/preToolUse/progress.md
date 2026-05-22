@@ -86,6 +86,14 @@ Issue 0004 (wire-Bash-matcher):
 - Skipped feedback: `local solkanExit=0` split — rule targets `local var="$(cmd)"` where `local` eats exit code; literal 0 + `|| update` is a different pattern; fragile `&&` regex claim — `[^&]&$` correctly rejects trailing `&&` (second `&` fails `[^&]` check)
 - Next: 0004-wire-Bash-matcher
 
+## Session 2026-05-22 — 0004: wire-Bash-matcher
+- Completed: updated `~/.claude/settings.json` — replaced `rtk-rewrite.sh` Bash entry with `preToolUse-Bash`; added early-return guard in `preToolUse` dispatcher (Bash falls through to `letClaudeDecide`); deleted `~/.claude/hooks/rtk-rewrite.sh`
+- Tests added: `config/ai/claude/hooks/__tests__/preToolUse-wiring.bats` — 4 tests: settings Bash matcher, no rtk-rewrite entry, rtk-rewrite.sh deleted, guard precedes generic handler
+- Discovered: none
+- Fixed: return-early pattern applied (reviewer judgment call); bats `local hasHandler` split fixed
+- Skipped feedback: `local` at script scope — pre-existing violation; spec "missing implementations" — reviewer can't see out-of-repo changes; stdin contract test — covered indirectly by preToolUse-Bash.bats
+- Next: all issues complete
+
 ## Session 2026-05-22 — glossary + new issues 0005/0006
 - Completed: created `__docs__/glossary.md` — shared vocabulary for the hook system (allow/reject, rewrite/ignore, auto-approve/ask, the 4 cases, execution order)
 - Discovered: `rtk rewrite` is the canonical API for hooks ("single source of truth") — current `preToolUse-Bash-rtk` parsing `--help` is fragile → issue 0005

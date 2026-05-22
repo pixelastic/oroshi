@@ -182,5 +182,44 @@
       "Verify all 5 tests pass"
     ],
     "passes": true
+  },
+  {
+    "id": "0004",
+    "category": "integration",
+    "description": "settings.json has a Bash matcher entry pointing to preToolUse-Bash",
+    "steps": [
+      "Inspect ~/.claude/settings.json",
+      "Verify .hooks.PreToolUse contains a matcher == 'Bash' entry pointing to preToolUse-Bash"
+    ],
+    "passes": true
+  },
+  {
+    "id": "0004",
+    "category": "integration",
+    "description": "settings.json has no rtk-rewrite.sh hook entry",
+    "steps": [
+      "Inspect ~/.claude/settings.json",
+      "Verify no hook command references rtk-rewrite.sh"
+    ],
+    "passes": true
+  },
+  {
+    "id": "0004",
+    "category": "integration",
+    "description": "rtk-rewrite.sh is deleted",
+    "steps": [
+      "Verify ~/.claude/hooks/rtk-rewrite.sh does not exist"
+    ],
+    "passes": true
+  },
+  {
+    "id": "0004",
+    "category": "integration",
+    "description": "preToolUse dispatcher has a Bash guard before the generic handler",
+    "steps": [
+      "Inspect preToolUse dispatcher source",
+      "Verify Bash guard (toolName == Bash) appears before specificToolHandler block"
+    ],
+    "passes": true
   }
 ]

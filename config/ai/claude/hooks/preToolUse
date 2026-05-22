@@ -54,6 +54,9 @@ if [[ "$toolName" == mcp__* ]]; then
   exit $?
 fi
 
+# Bash uses direct matcher in settings.json — skip generic dispatch
+[[ "$toolName" == "Bash" ]] && letClaudeDecide
+
 # Dedicated handlers
 local specificToolHandler="${hookDir}/preToolUse-${toolName}"
 if [[ -f "$specificToolHandler" ]]; then
