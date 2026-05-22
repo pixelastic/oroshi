@@ -1,7 +1,5 @@
-load 'helper'
-
 setup() {
-  SCRIPT="$(dirname "$BATS_TEST_FILENAME")/../../../config/ai/claude/claudecode/hooks/preToolUse-Bash-rtk"
+  SCRIPT="$(dirname "$BATS_TEST_FILENAME")/../preToolUse-Bash-rtk"
 }
 
 @test "prints original command when RTK has no equivalent" {

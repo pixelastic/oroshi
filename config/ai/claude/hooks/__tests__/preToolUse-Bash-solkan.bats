@@ -1,7 +1,5 @@
-load 'helper'
-
 setup() {
-  SCRIPT="$(dirname "$BATS_TEST_FILENAME")/../../../config/ai/claude/claudecode/hooks/preToolUse-Bash-solkan"
+  SCRIPT="$(dirname "$BATS_TEST_FILENAME")/../preToolUse-Bash-solkan"
 }
 
 @test "exits 0 for an allowlisted simple command" {

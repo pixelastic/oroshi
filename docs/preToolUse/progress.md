@@ -11,12 +11,13 @@ All issues follow TDD: write the failing BATS test first, run it to confirm it's
 
 `bats` and `zshlint` are in your $PATH.
 
-Tests live in `scripts/bin/__tests__/`. Each test file is named after the script it tests.
+Tests live in `config/ai/claude/hooks/__tests__/`. Each test file is named after the script it tests. No `load 'helper'` needed — tests call scripts directly.
 
-Use the shared helper — `load 'test_helper/zsh'` — for running zsh scripts. Use `bats_tmp` for temp dirs. Call scripts directly (not via `run_zsh_fn` — these are executable scripts, not autoload functions).
+Use `bats_tmp` for temp dirs. Call scripts directly (not via `run_zsh_fn` — these are executable scripts, not autoload functions).
 
 New scripts go in:
-  - config/ai/claude/claudecode/hooks/   ← preToolUse-Bash, preToolUse-Bash-solkan, preToolUse-Bash-rtk
+  - config/ai/claude/hooks/   ← preToolUse-Bash-solkan, preToolUse-Bash-rtk (done)
+  - preToolUse-Bash already exists there — issue 0003 replaces it entirely
 
 Dependency injection in preToolUse-Bash:
   - PRETOOLUSE_SOLKAN_SCRIPT — defaults to $hookDir/preToolUse-Bash-solkan
@@ -31,8 +32,8 @@ In tests for preToolUse-Bash, create tiny mock scripts in bats_tmp:
 Input to preToolUse-Bash is stdin JSON (Claude Code hook protocol — same as preToolUse dispatcher).
 Output is hookSpecificOutput JSON to stdout.
 
-Allowlist: config/ai/claude/claudecode/hooks/allowlist.json
-Domain: config/ai/claude/claudecode/hooks/lib/hookLib.zsh
+Allowlist: config/ai/claude/hooks/allowlist.json
+Domain: config/ai/claude/hooks/lib/hookLib.zsh
 
 Issue 0004 (wire-Bash-matcher):
   - Add Bash matcher entry in ~/.claude/settings.json pointing to preToolUse-Bash
