@@ -54,6 +54,9 @@ scripts and config (and install if needed).
 
 Still terminal issue when running several ralphs
 
+I should also cleanup what is in private/, same pattern as what I do in core
+oroshi
+
 ## Lint
 
 zshlint seems to raise an error on "  local cacheDuration=1440 # In minutes "
