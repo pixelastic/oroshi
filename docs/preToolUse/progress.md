@@ -70,6 +70,14 @@ Issue 0004 (wire-Bash-matcher):
 - Skipped feedback: bats `bats_load_library`/`run_zsh_script` pattern — guidance says "No load 'helper' needed, tests call scripts directly"; `rewritten` → `isRewritten` rename (judgment call, not a hard violation); solkan stdin contract (solkan reads positional arg `$1` per its source)
 - Next: 0005-fix-rtk-rewrite-api (then 0006-fix-sequential-execution, then 0004-wire-Bash-matcher)
 
+## Session 2026-05-22 — 0005: fix-rtk-rewrite-api
+- Completed: rewrote `config/ai/claude/hooks/preToolUse-Bash-rtk` — replaced fragile `rtk --help` parsing with `rtk rewrite` API; added `RTK_CMD` env var for test injection
+- Tests added: `config/ai/claude/hooks/__tests__/preToolUse-Bash-rtk.bats` — 3 tests using `RTK_CMD` mock injection (no-equiv, rewrite, idempotent)
+- Discovered: `local var="$(cmd)" || ...` is a bug — `local` always exits 0, so `||` never fires; guard must be a separate `[[ "$var" == "" ]]` line (already in memory)
+- Fixed: test 1 input changed from `"git status"` to `"echo hello"` after review to match prd.json spec
+- Skipped feedback: `local` at script top-level — dismissed, zsh allows it, prior session dismissed same violation; reviewer's "set-e + exit-1 logic bug" claim is incorrect — `local` eating the exit code IS the mechanism that makes empty-string guard work (tests prove it)
+- Next: 0006-fix-sequential-execution (then 0004-wire-Bash-matcher)
+
 ## Session 2026-05-22 — glossary + new issues 0005/0006
 - Completed: created `__docs__/glossary.md` — shared vocabulary for the hook system (allow/reject, rewrite/ignore, auto-approve/ask, the 4 cases, execution order)
 - Discovered: `rtk rewrite` is the canonical API for hooks ("single source of truth") — current `preToolUse-Bash-rtk` parsing `--help` is fragile → issue 0005

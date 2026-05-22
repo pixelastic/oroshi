@@ -7,21 +7,19 @@
 set -e
 
 local cmd="$1"
-local firstWord="${cmd%% *}"
+local rtkCmd="${RTK_CMD:-rtk}"
 
 # Already rewritten — pass through unchanged
-if [[ "$firstWord" == "rtk" ]]; then
-  print "$cmd"
-  return 0
+if [[ "${cmd%% *}" == "rtk" ]]; then
+  print -- "$cmd"
+  exit 0
 fi
 
-# Get RTK subcommands (first column of Commands: section)
-local rtkSubcmds="$(rtk --help 2>&1 | awk '/^Commands:/{found=1; next} found && /^  [a-z]/{print $1} found && /^$/{exit}')"
-
-# Not an RTK subcommand — pass through unchanged
-if [[ "${rtkSubcmds[(r)$firstWord]}" == "" ]]; then
-  print "$cmd"
-  return 0
+# rtk rewrite: exit 0 + stdout = rewritten command, exit 1 = no equivalent
+local rewritten="$("$rtkCmd" rewrite "$cmd")"
+if [[ "$rewritten" == "" ]]; then
+  print -- "$cmd"
+  exit 0
 fi
 
-print "rtk $cmd"
+print -- "$rewritten"
