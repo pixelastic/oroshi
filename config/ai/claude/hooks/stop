@@ -16,7 +16,6 @@ if [[ "${OROSHI_CLAUDE_STOP_SOUND}" != "auto" ]]; then
   audio-play-oroshi "${OROSHI_CLAUDE_STOP_SOUND}"
   exit 0
 fi
-
 # auto: play fast or slow sound based on duration
 local fastSound="claude-stop-fast.mp3"
 local slowSound="claude-stop.mp3"
