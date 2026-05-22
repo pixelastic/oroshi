@@ -1,0 +1,9 @@
+# RTK filters
+schema_version = 1
+
+[filters.bats]
+description = "bats TAP output — show failures only"
+match_command = "^bats\\b"
+strip_ansi = true
+strip_lines_matching = ["^ok \\d+"]
+on_empty = "All tests passed."
