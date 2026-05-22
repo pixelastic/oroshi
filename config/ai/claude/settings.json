@@ -4,7 +4,24 @@
     "DISABLE_INSTALLATION_CHECKS": "1",
     "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "75"
   },
-  "permissions": {},
+  "permissions": {
+    "allow": [
+      "Fetch",
+      "BashOutput",
+      "Glob",
+      "Grep",
+      "LS",
+      "Read",
+      "Search",
+      "SlashCommand",
+      "TodoWrite",
+      "WebFetch",
+      "WebSearch",
+      "mcp__context7",
+      "mcp__google-slides",
+      "mcp__make__scenarios_list"
+    ]
+  },
   "model": "sonnet[1m]",
   "hooks": {
     "SessionStart": [
@@ -41,20 +58,20 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/home/tim/.oroshi/config/ai/claude/hooks/preToolUse"
-          }
-        ]
-      },
-      {
         "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
             "command": "/home/tim/.oroshi/config/ai/claude/hooks/preToolUse-Bash"
+          }
+        ]
+      },
+      {
+        "matcher": "Skill",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/tim/.oroshi/config/ai/claude/hooks/preToolUse-Skill"
           }
         ]
       }

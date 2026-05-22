@@ -1,10 +1,12 @@
 #!/usr/bin/env zsh
 # Check if skills should be auto-approved based on allowlist
+# Reads hook JSON from stdin
+set -e
 
-source /home/tim/.oroshi/config/ai/claude/hooks/lib/hookLib.zsh
+source "${OROSHI_ROOT}/config/ai/claude/hooks/lib/hookLib.zsh"
 
-local inputFile=$1
-skillName=$(jq -r ".tool_input.skill" "$inputFile")
+local inputJson="$(cat)"
+local skillName="$(print -r -- "$inputJson" | jq -r '.tool_input.skill')"
 
 # Allowlist of skills
 local allowedSkills=(
