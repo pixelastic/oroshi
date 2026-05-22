@@ -78,6 +78,14 @@ Issue 0004 (wire-Bash-matcher):
 - Skipped feedback: `local` at script top-level — dismissed, zsh allows it, prior session dismissed same violation; reviewer's "set-e + exit-1 logic bug" claim is incorrect — `local` eating the exit code IS the mechanism that makes empty-string guard work (tests prove it)
 - Next: 0006-fix-sequential-execution (then 0004-wire-Bash-matcher)
 
+## Session 2026-05-22 — 0006: fix-sequential-execution
+- Completed: removed background `&` + `wait` from `preToolUse-Bash`; solkan now runs sequentially before RTK via `|| solkanExit=$?`
+- Tests added: `config/ai/claude/hooks/__tests__/preToolUse-Bash.bats` — "no background jobs in script" (source grep), "solkan completes before RTK starts" (runtime order via sleep + log)
+- Discovered: none
+- Fixed: none
+- Skipped feedback: `local solkanExit=0` split — rule targets `local var="$(cmd)"` where `local` eats exit code; literal 0 + `|| update` is a different pattern; fragile `&&` regex claim — `[^&]&$` correctly rejects trailing `&&` (second `&` fails `[^&]` check)
+- Next: 0004-wire-Bash-matcher
+
 ## Session 2026-05-22 — glossary + new issues 0005/0006
 - Completed: created `__docs__/glossary.md` — shared vocabulary for the hook system (allow/reject, rewrite/ignore, auto-approve/ask, the 4 cases, execution order)
 - Discovered: `rtk rewrite` is the canonical API for hooks ("single source of truth") — current `preToolUse-Bash-rtk` parsing `--help` is fragile → issue 0005

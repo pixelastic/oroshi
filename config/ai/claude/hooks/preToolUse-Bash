@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Orchestrate Bash hook: run solkan (allow/ask) + rtk (rewrite) in parallel
+# Orchestrate Bash hook: run solkan (allow/ask) then rtk (rewrite) sequentially
 # Reads hook JSON from stdin, writes hookSpecificOutput JSON to stdout
 #
 # Env overrides for testing:
@@ -26,15 +26,11 @@ local rtkScript="${PRETOOLUSE_RTK_SCRIPT:-${hookDir}/preToolUse-Bash-rtk}"
 local inputJson="$(cat)"
 local cmd="$(print -r -- "$inputJson" | jq -r '.tool_input.command')"
 
-# Run solkan in background so rtk can run in parallel
-local solkanPid=""
+# Run solkan first, capture exit code, then run RTK
 local solkanExit=0
-"$solkanScript" "$cmd" &>/dev/null &
-solkanPid=$!
+"$solkanScript" "$cmd" &>/dev/null || solkanExit=$?
 
 local rtkOutput="$("$rtkScript" "$cmd")"
-
-wait "$solkanPid" || solkanExit=$?
 
 # Determine if RTK rewrote the command
 local rewritten=false

@@ -65,3 +65,21 @@ _run_hook() {
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.updatedInput.description')" = "Show repo status" ]
 }
+
+@test "no background jobs in script" {
+  run grep -E '[^&]&[[:space:]]*$' "$SCRIPT"
+  [ "$status" -ne 0 ]
+}
+
+@test "solkan completes before RTK starts" {
+  local log="$BATS_TEST_TMPDIR/order.log"
+  printf '#!/usr/bin/env zsh\nsleep 0.05\nprint SOLKAN >> %s\n' "$log" > "$BATS_TEST_TMPDIR/mock-solkan-order"
+  printf '#!/usr/bin/env zsh\nprint RTK >> %s\nprint -- "$1"\n' "$log" > "$BATS_TEST_TMPDIR/mock-rtk-order"
+  chmod +x "$BATS_TEST_TMPDIR/mock-solkan-order" "$BATS_TEST_TMPDIR/mock-rtk-order"
+  _run_hook \
+    "$BATS_TEST_TMPDIR/mock-solkan-order" \
+    "$BATS_TEST_TMPDIR/mock-rtk-order" \
+    '{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
+  [ "$status" -eq 0 ]
+  [ "$(head -1 "$log")" = "SOLKAN" ]
+}

@@ -171,7 +171,7 @@
       "Inspect preToolUse-Bash source — verify no '&' background operator is used",
       "Verify solkan script call appears before RTK script call in the source"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0006",
@@ -181,6 +181,6 @@
       "Run all preToolUse-Bash.bats tests",
       "Verify all 5 tests pass"
     ],
-    "passes": false
+    "passes": true
   }
 ]
