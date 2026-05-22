@@ -12,9 +12,22 @@ source "$dir/__rules/rule-local-or-return.zsh"
 source "$dir/__rules/rule-no-external-basename.zsh"
 source "$dir/__rules/rule-no-while-read.zsh"
 source "$dir/__rules/rule-single-equals-in-test.zsh"
+source "$dir/__rules/rule-no-split-local.zsh"
+source "$dir/__rules/rule-no-dash-flags.zsh"
+source "$dir/__rules/rule-no-or-guard.zsh"
 
 # Ordered list of custom rule functions to run
-local -a _RULES=(zshlintRule_noManualArgParsing zshlintRule_noGroupedLocals zshlintRule_localOrReturn zshlintRule_noExternalBasename zshlintRule_noWhileRead zshlintRule_singleEqualsInTest)
+local -a _RULES=(
+  zshlintRule_noManualArgParsing
+  zshlintRule_noGroupedLocals
+  zshlintRule_localOrReturn
+  zshlintRule_noExternalBasename
+  zshlintRule_noWhileRead
+  zshlintRule_singleEqualsInTest
+  zshlintRule_noSplitLocal
+  zshlintRule_noDashFlags
+  zshlintRule_noOrGuard
+)
 
 # Separator used in Rule Output lines; export so subshells see it
 export _SEP=$'\u25ae'

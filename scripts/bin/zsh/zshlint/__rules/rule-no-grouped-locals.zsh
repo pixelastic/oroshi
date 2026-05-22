@@ -29,9 +29,13 @@ zshlintRule_noGroupedLocals() {
       words=("${(@)words[2,-1]}")
     done
 
-    # Count only tokens starting with a valid var-name char; (z) can split 'var=()' into 'var=' + '()'
+    # Count only tokens starting with a valid var-name char
+    # Stop at array literal: standalone ( or varname=( means we've entered array values
     count=0
     for w in "${words[@]}"; do
+      [[ "$w" == '#' ]] && break
+      [[ "$w" =~ '^\(' ]] && break
+      [[ "$w" =~ '^[a-zA-Z_][a-zA-Z0-9_]*=\(' ]] && { (( ++count )); break; }
       [[ "$w" =~ ^[a-zA-Z_] ]] && (( ++count ))
     done
     (( count > 1 )) || continue
