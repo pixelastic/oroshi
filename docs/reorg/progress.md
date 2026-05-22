@@ -63,6 +63,14 @@ issue-017 → needs issue-001 through issue-016 (cleanup — delete old director
 ---
 ## Log (append below when an issue is completed)
 
+## Session 2026-05-22 — 0005: docker domain fully migrated to tools/docker/
+
+- Completed: Moved 4 install scripts (docker, docker-compose, dry, hadolint) to tools/docker/{tool}/install. Moved config/docker/cache/ to tools/docker/docker/config/cache/ (under docker tool, not standalone). Moved config/docker/dockerfile_lint.yml to tools/docker/hadolint/config/. Updated images-remote outputFile ref to $(dirname "$0")/src/images-remote.txt. Removed empty scripts/install/docker/ and config/docker/.
+- Discovered: config/docker/cache/ is not a standalone tool — it's docker-image caching utility belonging under docker tool. dockerfile_lint.yml is projectatomic/dockerfile_lint config (not hadolint), but no dockerfile_lint install script exists; placed under hadolint/config/ as closest related tool.
+- Fixed: images-remote path ref updated from ~/.oroshi hardcode to intra-tool $(dirname "$0") pattern.
+- Skipped feedback: Commit atomicity note — not applicable (user controls commits).
+- Next: issue-006 (git domain migration)
+
 ## Session 2026-05-22 — 0004: cli domain fully migrated to tools/cli/
 
 - Completed: Moved 13 install scripts, 5 deploy scripts (bat, fd, nnn, rg, tldr), and 3 config dirs (bat, fd, rg) into tools/cli/. Updated deploy scripts to use $(dirname "$0")/config (bash) or ${0:h}/config (zsh). Added deploy call at end of install scripts for bat, fd, nnn, rg, tldr. Updated RIPGREP_CONFIG_PATH in config/term/zsh/tools/rg.zsh to use $OROSHI_ROOT/tools/cli/rg/config/. Removed empty scripts/install/cli/, scripts/deploy/cli/, config/cli/. Fixed local at script scope in nnn/deploy.

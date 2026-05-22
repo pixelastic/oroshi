@@ -10,7 +10,7 @@
 local cacheFolder=/tmp/oroshi/fzf/docker-images-remote
 mkdir -p ${cacheFolder}
 
-local outputFile=~/.oroshi/config/docker/cache/src/images-remote.txt
+local outputFile="$(dirname "$0")/src/images-remote.txt"
 
 # Get the list of all official from GitHub
 # For each, do a query with docker search and fill the values

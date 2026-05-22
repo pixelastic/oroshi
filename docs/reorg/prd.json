@@ -46,7 +46,7 @@
       "Check that tools/docker/ contains one folder per tool",
       "Verify no files remain in scripts/install/docker/, config/docker/"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0006",
