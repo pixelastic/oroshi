@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 sudo apt-get install msttcorefonts
 
-CONFIG_DIR=~/.oroshi/config/basics/fonts
+CONFIG_DIR=$(dirname "$0")/config
 
 mkdir -p ~/.fonts
 cp $CONFIG_DIR/DejaVuSansMono/*.ttf ~/.fonts

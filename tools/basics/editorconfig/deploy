@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 set -ex
 
-local CONFIG_DIR=~/.oroshi/config/basics/editorconfig
+CONFIG_DIR=${0:h}/config
 
 ln -fs \
 	$CONFIG_DIR/editorconfig.conf \

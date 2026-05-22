@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Copy wget config to ~/.wgetrc
 
-CONFIG_DIR=~/.oroshi/config/basics/wget
+CONFIG_DIR=$(dirname "$0")/config
 
 # Link the config file
 ln -fs $CONFIG_DIR/wgetrc ~/.wgetrc

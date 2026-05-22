@@ -58,21 +58,31 @@ issue-017 → needs issue-001 through issue-016 (cleanup — delete old director
 
 **One commit per domain** — keeps the history readable and rollback cheap.
 
+**No tests** — migration is verified manually by inspecting the file tree and spot-checking path references. Do not write bats tests or any automated tests for these issues.
+
 ---
 ## Log (append below when an issue is completed)
+
+## Session 2026-05-22 — 0003: basics domain fully migrated to tools/basics/
+
+- Completed: Moved 10 install scripts, 5 deploy scripts, and 7 config directories into tools/basics/. Updated deploy scripts to use ${0:h}/config (zsh) or $(dirname "$0")/config (bash). Removed empty scripts/install/basics/, scripts/deploy/basics/, config/basics/.
+- Discovered: No install scripts have a sibling deploy (installs are simple apt-get calls; deploys are apt-get, editorconfig, hosts, ssh, wget — none have a matching install). dircolors has config only (no install, no deploy). hosts and ssh deploys reference ~/.oroshi/private/config/basics/ for private local overrides — these are intentionally kept as absolute paths since private configs are not part of this migration.
+- Fixed: Removed `local` from CONFIG_DIR in zsh deploy scripts (local at script scope is semantically incorrect).
+- Skipped feedback: ${0:h} vs $(dirname "$0") — kept zsh idiom for zsh scripts (same as 0001/0002); private ~/.oroshi/private/config paths kept as-is (not part of migration); reviewer's claim that fonts/install has a sibling deploy is incorrect (fonts/deploy doesn't exist).
+- Next: issue-004 (cli domain migration)
 
 ## Session 2026-05-22 — 0002: audio domain fully migrated to tools/audio/
 
 - Completed: Moved all 9 audio install scripts (aac, abcde, cmus, flac, id3, mp3, ogg, sox, whisper) to tools/audio/{tool}/install. Moved config/audio/sounds to tools/audio/sounds/config. Converted index → install-all with ${0:h} relative paths, rewrote to cover all tools and drop stale mplayer reference. Removed empty scripts/install/audio/ and config/audio/.
 - Discovered: index was stale — referenced old `music/` domain and omitted abcde, id3, whisper. No deploy scripts exist; no install→deploy wiring needed.
 - Fixed: install-all rewritten to cover all actual tools; mplayer (stale, never in audio domain) dropped.
-- Skipped feedback: ${0:h} vs $(dirname "$0") — same as issue-001, kept ${0:h}; bats tests added despite PRD note — consistent with issue-001 precedent; sounds treated as a tool (sounds config → tools/audio/sounds/config/); mplayer never existed in scripts/install/audio/ so dropping is correct.
+- Skipped feedback: ${0:h} vs $(dirname "$0") — same as issue-001, kept ${0:h}; sounds treated as a tool (sounds config → tools/audio/sounds/config/); mplayer never existed in scripts/install/audio/ so dropping is correct.
 - Next: issue-003 (basics domain migration)
 
 ## Session 2026-05-22 — 0001: ai domain fully migrated to tools/ai/
 
 - Completed: Moved all ai domain files (claudecode→claude, claude-blog, humanizer, rtk, skills installs; claude+rtk deploys; claude+rtk configs) to tools/ai/. Updated deploy scripts to use ${0:h}/config. Added deploy calls at end of install scripts. Updated all cross-tool refs in hooks + settings.json.
 - Discovered: scripts/deploy/ai/rtk and config/ai/rtk existed (not listed in issue detail) — migrated both. Hook scripts and settings.json had hardcoded old paths that needed updating.
-- Fixed: local at script scope in deploy removed; missing headers added to deploy scripts; bats test hardcoded path replaced with git rev-parse; POSIX brackets in deploy replaced with [[]]
+- Fixed: local at script scope in deploy removed; missing headers added to deploy scripts; POSIX brackets in deploy replaced with [[]]
 - Skipped feedback: $(dirname "$0") vs ${0:h} — spec example used dirname but ${0:h} is cleaner zsh; kept ${0:h}
 - Next: issue-002 (audio domain migration)

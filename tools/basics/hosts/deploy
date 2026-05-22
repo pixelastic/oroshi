@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # Generate a custom /etc/hosts file
 
-local CONFIG_DIR=~/.oroshi/config/basics/hosts
+CONFIG_DIR=${0:h}/config
 local LOCAL_DIR=~/.oroshi/private/config/basics/hosts/local/$HOSTNAME
 
 # Default

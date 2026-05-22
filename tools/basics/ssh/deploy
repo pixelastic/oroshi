@@ -3,7 +3,7 @@
 # - files in ./private/config/ssh/local/{hostname}
 # - default values
 
-local CONFIG_DIR=~/.oroshi/config/basics/ssh
+CONFIG_DIR=${0:h}/config
 local LOCAL_FILES="~/.oroshi/private/config/basics/ssh/local/${HOSTNAME}/*"
 local DEST_DIR=~/.ssh
 local DEST_FILE=$DEST_DIR/config
