@@ -30,7 +30,7 @@ Write ZSH code that is consistent with my conventions.
 
 Write a failing test for the bug or missing feature you want to implement.
 
-- Run `bats <test_filepath>` to run the tests
+- Run `rtk bats <test_filepath>` to run the tests
 - See [Testing](./references/testing.md) for full examples and best practices
 
 ```bash
