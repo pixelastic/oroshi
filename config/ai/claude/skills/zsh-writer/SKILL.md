@@ -130,7 +130,7 @@ table $output
 
 ### Step 4 — Lint the file
 
-Run `zshlint <file>` on the file and fix any actionable violation.
+Run `zshlint <file>` on the file(s) and fix any actionable violation.
 
 ---
 

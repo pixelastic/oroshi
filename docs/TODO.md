@@ -52,6 +52,8 @@ if it should be a script, a zsh autoloaded function, or a plain zsh helper
 function. Group them in clear domains/subdomains, and make it consistent between
 scripts and config (and install if needed).
 
+Still terminal issue when running several ralphs
+
 ## Lint
 
 zshlint seems to raise an error on "  local cacheDuration=1440 # In minutes "
