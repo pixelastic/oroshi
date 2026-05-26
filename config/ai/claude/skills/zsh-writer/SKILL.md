@@ -73,7 +73,7 @@ Write code that follows the following patterns:
 | [Headers](./references/header.md) | Top of the file: what the script does, how to call it and error protection |
 | [Variables](./references/variables.md) | `local myVar="$(myCommand)"` on one line |
 | [Splitting](./references/splitting.md) | Use `▮` as separator and `${(@ps/▮/)line}` to split |
-| [Conditions](./references/conditions.md) | `[[ simpleCondition ]] && state=value`. No nested if/else, return early, no `-z`/`-n` |
+| [Conditions](./references/conditions.md) | `[[ simpleCondition ]] && state=value`. No nested if/else, return early |
 | [Calling Commands](./references/calling-commands.md) | Use existing helpers (`git-branch-current`), not raw calls. Use `--long-form`, not `-l`. |
 
 

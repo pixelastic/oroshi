@@ -10,6 +10,3 @@ cd ./rtk
 
 # Install rtk
 sh <./install.sh
-
-# Configure rtk
-rtk init --global --no-patch

@@ -17,38 +17,33 @@
 # - echo ok; wget something              -> ask (wget not allowed)
 # - echo "rm -rf /"                      -> accept (rm is a string, not a command)
 # - time echo "test"                     -> accept (time is ignored)
+
 set -e
 
 local hookDir="${0:A:h}"
 local solkanScript="${PRETOOLUSE_SOLKAN_SCRIPT:-${hookDir}/preToolUse-Bash-solkan}"
 local rtkScript="${PRETOOLUSE_RTK_SCRIPT:-${hookDir}/preToolUse-Bash-rtk}"
+source "${hookDir}/lib/hookLib.zsh"
 
+# Parse input command
 local inputJson="$(cat)"
-local cmd="$(print -r -- "$inputJson" | jq -r '.tool_input.command')"
+local inputCommand="$(print -r -- "$inputJson" | jq -r '.tool_input.command')"
 
-# Run solkan first, capture exit code, then run RTK
-local solkanExit=0
-"$solkanScript" "$cmd" &>/dev/null || solkanExit=$?
+# Save input for debugging
+mkdir -p "$CLAUDE_HOOKS_LOG_DIR"
+print -r -- "$inputJson" |
+  jq '.' >"${CLAUDE_HOOKS_LOG_DIR}/last-bash-input.json"
 
-local rtkOutput="$("$rtkScript" "$cmd")"
-
-# Determine if RTK rewrote the command
-local rewritten=false
-[[ "$rtkOutput" != "$cmd" ]] && rewritten=true
-
-# Build updatedInput by merging original tool_input with new command
-local updatedInput=""
-if [[ "$rewritten" == true ]]; then
-  updatedInput="$(print -r -- "$inputJson" | jq --arg cmd "$rtkOutput" '.tool_input | .command = $cmd')"
+# Solkan: is the command allowed?
+local isAllowed="0"
+if "$solkanScript" "$inputCommand"; then
+  isAllowed="1"
 fi
 
-# Emit hookSpecificOutput for each of the four cases
-if [[ $solkanExit -eq 0 ]] && [[ "$rewritten" == true ]]; then
-  jq -n --argjson u "$updatedInput" '{hookSpecificOutput:{permissionDecision:"allow",updatedInput:$u}}'
-elif [[ $solkanExit -eq 0 ]]; then
-  jq -n '{hookSpecificOutput:{permissionDecision:"allow"}}'
-elif [[ "$rewritten" == true ]]; then
-  jq -n --argjson u "$updatedInput" '{hookSpecificOutput:{updatedInput:$u}}'
-else
-  jq -n '{hookSpecificOutput:{}}'
+# RTK: Rewritten command
+local updatedInput="$("$rtkScript" "$inputCommand")"
+
+if [[ "$isAllowed" == "1" ]]; then
+  autoApprove --updatedInput "$updatedInput"
 fi
+askUser --updatedInput "$updatedInput"

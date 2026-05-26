@@ -3,10 +3,17 @@
 # Reads hook JSON from stdin
 set -e
 
-source "${OROSHI_ROOT}/config/ai/claude/hooks/lib/hookLib.zsh"
+local hookDir="${0:A:h}"
+source "${hookDir}/lib/hookLib.zsh"
 
+# Parse input skill
 local inputJson="$(cat)"
 local skillName="$(print -r -- "$inputJson" | jq -r '.tool_input.skill')"
+
+# Save input for debugging
+mkdir -p "$CLAUDE_HOOKS_LOG_DIR"
+print -r -- "$inputJson" |
+  jq '.' >"${CLAUDE_HOOKS_LOG_DIR}/last-skill-input.json"
 
 # Allowlist of skills
 local allowedSkills=(
@@ -34,15 +41,11 @@ local allowedSkills=(
   "code-quality-and-commits"
 )
 
-debug "Skill name: $skillName"
-
 # Check if the skill is in the allowlist
 for allowedSkill in "${allowedSkills[@]}"; do
   if [[ "$skillName" == "$allowedSkill" ]]; then
-    debug "Decision: allow (matched: $allowedSkill)"
-    acceptTool
+    autoApprove
   fi
 done
 
-debug "Decision: let Claude decide"
-letClaudeDecide
+askUser

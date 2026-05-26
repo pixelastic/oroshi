@@ -33,7 +33,7 @@ The hook interprets Solkan's decision and produces an output for Claude Code.
 | Term | Solkan response | Meaning |
 |------| --------------- | ---------|
 | **auto-approve** | **allow** | Command executes immediately, no user interaction |
-| **ask** | **reject** | Claude's permission dialog appears — the user decides yes or no |
+| **ask user** | **reject** | Claude's permission dialog appears — the user decides yes or no |
 
 The hook can say **yes** or **maybe**.
 

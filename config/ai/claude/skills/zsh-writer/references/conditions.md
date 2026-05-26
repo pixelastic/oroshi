@@ -4,7 +4,6 @@
 - Use the return early pattern (put guard clauses at top)
 - Add comments explaining what clause is being guarded
 - Use one-liners for state machines (`[[ cond ]] && var=$val` is ok)
-- Guard clauses use `[[ "$var" == "" ]] && return/continue`, not `-n`, `-z` not `||`.
 
 ## Example
 
