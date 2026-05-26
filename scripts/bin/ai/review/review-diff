@@ -64,8 +64,14 @@ if [[ "$arg1" != "" ]] && [[ "$arg2" == "" ]]; then
 
   # Branch: build range, apply to log and diff
   local currentBranch="$(git-branch-current)"
+
+  # Determine direction: if ref is ancestor of HEAD, it's the base; otherwise ref is the tip
   local from="HEAD"
   local to="$ref"
+  if git-commit-is-before "$ref" HEAD; then
+    from="$ref"
+    to="HEAD"
+  fi
   # Self-review: parent branch to HEAD
   if [[ "$ref" == "$currentBranch" ]]; then
     from="$(git-branch-parent)"

@@ -105,6 +105,21 @@ teardown() {
   [[ "$output" != *"add tracked"* ]]
 }
 
+@test "1-arg branch, external review from feature branch: feature content added (+), base-only commits absent" {
+  cd "$BATS_GIT_DIR"
+  local mainBranch="$(git branch --show-current)"
+  git checkout -b feature-branch
+  echo "feature content" > feature.txt
+  git add feature.txt
+  git commit --message "feat: add feature.txt"
+
+  run review-diff "$mainBranch"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"feat: add feature.txt"* ]]
+  [[ "$output" == *"+feature content"* ]]
+  [[ "$output" != *"-feature content"* ]]
+}
+
 @test "1-arg branch, external review: stdout contains feature commit; main-only commits absent" {
   cd "$BATS_GIT_DIR"
   local mainBranch="$(git branch --show-current)"
