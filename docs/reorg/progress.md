@@ -63,6 +63,15 @@ issue-017 → needs issue-001 through issue-016 (cleanup — delete old director
 ---
 ## Log (append below when an issue is completed)
 
+## Session 2026-05-26 — 0008: infrastructure domain fully migrated to tools/infrastructure/
+
+- Completed: Moved 5 install scripts (ansible, gcloud, kubernetes, nginx, s3) to tools/infrastructure/{tool}/install. Moved config/infrastructure/ansible/galactica (git submodule) to tools/infrastructure/ansible/config/galactica. Updated .gitmodules path and name. Removed empty config/infrastructure/ and scripts/install/infrastructure/.
+- Tests added: none (migration issue — no automated tests)
+- Discovered: galactica is a git submodule (pixelastic/ansible-galactica); git mv handled it cleanly with .gitmodules auto-updated. No cross-tool refs in any install script.
+- Fixed: submodule name in .gitmodules updated to match new path (cosmetic).
+- Skipped feedback: none
+- Next: issue-009 (keybindings domain migration)
+
 ## Session 2026-05-26 — 0007: image domain fully migrated to tools/image/
 
 - Completed: Moved 8 install scripts (dssim, flameshot, gifsicle, imagemagick, jpegoptim, peek, pngquant, webp) to tools/image/{tool}/install. Moved scripts/deploy/image/flameshot and imagemagick to tools/image/{tool}/deploy. Moved config/image/flameshot/ and imagemagick/ to tools/image/{tool}/config/. Updated deploy scripts to use $(dirname "$0")/config (quoted). Added deploy call at end of flameshot/install (bash: $(dirname "$0")/deploy) and imagemagick/install (zsh: $(dirname "$0")/deploy). Converted index → install-all (zsh, $(dirname "$0") pattern) covering all real tools. Removed empty scripts/install/image/, scripts/deploy/image/, config/image/.

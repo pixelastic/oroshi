@@ -2,8 +2,8 @@
   path = private
   url = git@github.com:pixelastic/oroshi-private.git
   branch = main
-[submodule "config/infrastructure/ansible/galactica"]
-	path = config/infrastructure/ansible/galactica
+[submodule "tools/infrastructure/ansible/config/galactica"]
+	path = tools/infrastructure/ansible/config/galactica
 	url = git@github.com:pixelastic/ansible-galactica.git
 [submodule "config/term/zsh/plugins/zsh-syntax-highlighting"]
 	path = config/term/zsh/plugins/zsh-syntax-highlighting

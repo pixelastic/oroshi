@@ -75,7 +75,7 @@
       "Check that tools/infrastructure/ contains one folder per tool",
       "Verify no files remain in scripts/install/infrastructure/, config/infrastructure/"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0009",
