@@ -102,3 +102,21 @@ teardown() {
   [ -d "${BATS_GIT_WORKTREES}fix-bug" ]
   [ -d "${BATS_GIT_WORKTREES}feat-thing" ]
 }
+
+@test "removes docs folder from main when ralph-directory returns a path" {
+  mkdir -p "$BATS_GIT_DIR/docs/fix_bug"
+  ralph-directory() { echo "${BATS_GIT_WORKTREES}fix-bug/docs/fix_bug/"; }
+  bats_mock ralph-directory
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-worktree-delete fix/bug
+  [ "$status" -eq 0 ]
+  [ ! -d "$BATS_GIT_DIR/docs/fix_bug" ]
+}
+
+@test "skips docs deletion when ralph-directory returns nothing" {
+  ralph-directory() { return 1; }
+  bats_mock ralph-directory
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-worktree-delete fix/bug
+  [ "$status" -eq 0 ]
+}
