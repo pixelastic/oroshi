@@ -1,0 +1,50 @@
+#!/usr/bin/env zsh
+# shellcheck disable=SC1090
+
+local LATEST_NODE_LTS_VERSION="22.18.0"
+
+local CONFIG_DIR=$OROSHI_ROOT/tools/_languages/javascript/nvm/config
+local DEST_DIR=~/.nvm
+
+echo "Installing NVM"
+
+# Installing nvm if not installed
+if [[ ! -d $DEST_DIR ]]; then
+  echo "Step 1 / 2"
+  git-directory-sync \
+    git@github.com:creationix/nvm.git \
+    $DEST_DIR
+
+  # Add a config file to tell nvm which packages to install on each new node
+  # version installation (basically, yarn)
+  ln -fs \
+    $CONFIG_DIR/default-packages \
+    $DEST_DIR
+
+  echo "===================="
+  echo "Now:"
+  echo "- Close this terminal window"
+  echo "- Open a new one"
+  echo "- Restart this script"
+  exit 0
+fi
+
+echo "Step 2 / 2"
+
+export NVM_DIR=$DEST_DIR
+source $NVM_DIR/nvm.sh
+nvm install $LATEST_NODE_LTS_VERSION --no-nvmrc
+nvm alias default $LATEST_NODE_LTS_VERSION
+
+# Create a symlink to the binaries, to add to the path
+# Note: We can't directly link to the directory, because nvm would otherwise
+# overwrite it in folders where nvm is used.
+ln \
+  -fs $NVM_DIR/versions/node/v$LATEST_NODE_LTS_VERSION/bin \
+  $OROSHI_TMP_FOLDER/node/bin
+
+# Enable corepack, needed for Yarn 2+ to work
+corepack enable
+
+# Use oroshi eslint config globally
+ln -sf ~/.oroshi/eslint.config.js ~/eslint.config.js

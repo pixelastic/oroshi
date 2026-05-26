@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+# Copy gem config to ~/.gemrc
+
+# Paths
+configFile="${0:h}/config/gemrc"
+destFile=~/.gemrc
+
+# Link the config file
+ln -fs "$configFile" "$destFile"

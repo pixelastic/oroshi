@@ -1,0 +1,2 @@
+#!/usr/bin/env zsh
+ln -fs "${0:h}/config/flake8.ini" ~/.flake8

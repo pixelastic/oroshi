@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-
-ln -s \
-  ~/.oroshi/config/import-js/importjs.js \
-  ~/.importjs.js

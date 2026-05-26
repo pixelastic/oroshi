@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+
+ln -fs "${0:h}/config/config.yml" ~/.rubocop.yml

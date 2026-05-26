@@ -63,6 +63,15 @@ issue-017 → needs issue-001 through issue-016 (cleanup — delete old director
 ---
 ## Log (append below when an issue is completed)
 
+## Session 2026-05-26 — 0010: _languages domain fully migrated to tools/_languages/
+
+- Completed: Domain was partially migrated (all files already git mv'd). Updated 12 deploy scripts: bash/sh→zsh shebang, ~/.oroshi/config/... paths → ${0:h}/config/.... Added deploy calls at end of html/tidy/install, python/flake8/install, yaml/yamllint/install. Updated javascript/node/install cross-tool ref (nvm config: ~/.oroshi/config/_languages/javascript/nvm → $OROSHI_ROOT/tools/_languages/javascript/nvm/config). Updated toml/yq/install delegate call (→ $OROSHI_ROOT/tools/_languages/yaml/yq/install). Removed empty source dirs. Fixed per review: ln -s → ln -fs in yamllint/deploy and import-js/deploy; quoted $configFile/$destFile in ruby/gem/deploy; quoted $OROSHI_ROOT path in toml/yq/install.
+- Tests added: none (migration issue — no automated tests)
+- Discovered: pylintrc.conf was an orphaned file at config/_languages/python/ level (not in a tool subdir) — placed at tools/_languages/python/pylint/config/pylintrc.conf. import-js/deploy references config that never existed in _languages domain; path updated to ${0:h}/config/ for consistency even though config is absent.
+- Fixed: ln -s → ln -fs (yamllint/deploy, import-js/deploy); unquoted vars in ruby/gem/deploy; unquoted $OROSHI_ROOT in toml/yq/install.
+- Skipped feedback: set -e in deploy scripts — not established pattern (xbindkeys/deploy, flameshot/deploy don't use it). import-js missing config — pre-existing broken state, not introduced by this migration. css/install-all internal calls — 100% commented out, nothing to update. javascript/node cross-tool ref (nvm/config) — correct, node/install intentionally uses nvm's config.
+- Next: issue-011 (misc domain migration)
+
 ## Session 2026-05-26 — 0009: keybindings domain fully migrated to tools/keybindings/
 
 - Completed: Domain was already migrated in a prior session (evtest, wev, xbindkeys, xkb, xmodmap, ymdk-build, ymdk all present with correct structure). Fixed pre-existing lint issues: replaced $(dirname "$0") with ${0:h} in all zsh scripts (xbindkeys/deploy, xkb/deploy, xbindkeys/install, xmodmap/deploy, ymdk/install, ymdk-build/deploy). Fixed xbindkeys/install shebang from sh→zsh. All source dirs already gone.

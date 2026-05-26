@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-ln -fs ~/.oroshi/config/tidy/tidyrc ~/.tidyrc
-ln -fs ~/.oroshi/config/tidy/tidycheckrc ~/.tidycheckrc

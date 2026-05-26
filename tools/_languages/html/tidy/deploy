@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+
+ln -fs "${0:h}/config/tidyrc" ~/.tidyrc
+ln -fs "${0:h}/config/tidycheckrc" ~/.tidycheckrc

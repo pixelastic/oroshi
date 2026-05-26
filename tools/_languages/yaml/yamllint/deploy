@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+mkdir -p ~/.config/yamllint
+
+ln -fs "${0:h}/config/config.yml" ~/.config/yamllint/config
