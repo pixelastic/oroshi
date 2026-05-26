@@ -23,3 +23,11 @@ issue-006 → needs issue-002
 
 ---
 ## Log (append below when an issue is completed)
+
+## Session 2026-05-26 — issue-001: migration script
+- Completed: wrote `src/projects-migrate` (standalone ZSH script) + 13 BATS tests in `src/__tests__/projects-migrate.bats`
+- Tests added: creates projects.json, all projects present, sorted alphabetically, background/foreground as color names, icon verbatim, path trailing-slash stripped, path without slash unchanged, tilde-only path, hideNameInPrompt true/absent/absent-when-0, icon-only project, partial fields
+- Discovered: `${PROJECTS[$var:field]}` fails silently in ZSH when var contains colon — must construct full key as variable first; `${(k)}` without `@` joins all keys; `${(o)}` without `@` same; `path` is a reserved ZSH special variable
+- Fixed: none unplanned
+- Skipped feedback: spec finding (a) tilde expansion — paths are quoted in source so tilde is never expanded, non-issue; spec finding (c) PUA icon test — cannot write fixture with Nerd Font codepoints via Write tool (corrupts silently), untestable at this layer; spec finding (d) ubuntu object — reviewer missed `ubuntu:icon="U"` in fixture
+- Next: issue-002 (projects-build) — needs src/projects.json to exist first; run `src/projects-migrate` against real `src/projects-list.zsh` before starting

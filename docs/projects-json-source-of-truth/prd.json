@@ -1,5 +1,54 @@
 [
   {
+    "id": "0001",
+    "description": "src/projects.json exists after running the migration script",
+    "steps": [
+      "Run src/projects-migrate",
+      "Assert src/projects.json exists"
+    ],
+    "passes": true
+  },
+  {
+    "id": "0001",
+    "description": "all projects from projects-list.zsh are present in src/projects.json with correct top-level keys sorted alphabetically",
+    "steps": [
+      "Run src/projects-migrate",
+      "Assert every project name from the PROJECTS associative array in src/projects-list.zsh appears as a top-level key in src/projects.json",
+      "Assert top-level keys are in alphabetical order"
+    ],
+    "passes": true
+  },
+  {
+    "id": "0001",
+    "description": "each project object contains background, foreground, icon fields matching projects-list.zsh source values",
+    "steps": [
+      "Run src/projects-migrate",
+      "Assert a project with background/foreground/icon in projects-list.zsh has those fields in src/projects.json as semantic color names (e.g. 'YELLOW_7')",
+      "Assert path uses tilde notation with no trailing slash"
+    ],
+    "passes": true
+  },
+  {
+    "id": "0001",
+    "description": "hideNameInPrompt is present and true only for projects with hideNameInPrompt:1 in source",
+    "steps": [
+      "Run src/projects-migrate",
+      "Assert projects with hideNameInPrompt=1 in projects-list.zsh have hideNameInPrompt:true in src/projects.json",
+      "Assert projects without hideNameInPrompt do not have the key in src/projects.json"
+    ],
+    "passes": true
+  },
+  {
+    "id": "0001",
+    "description": "projects with only an icon (no path, no colors) are included with just the icon key",
+    "steps": [
+      "Run src/projects-migrate",
+      "Find a project in projects-list.zsh that has only an icon set",
+      "Assert its entry in src/projects.json contains only the 'icon' key"
+    ],
+    "passes": true
+  },
+  {
     "id": "0002",
     "description": "minimal project with background, foreground, icon, path produces correct name/ansi/hex in dist JSON",
     "steps": [
@@ -73,6 +122,143 @@
       "Create src/projects.json with projects in non-alphabetical order (e.g. 'oroshi' before 'aberlaas')",
       "Run src/projects-build",
       "Assert src/projects.json now has 'aberlaas' before 'oroshi'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0003",
+    "description": "PROJECTS associative array is available in a new shell with correct values",
+    "steps": [
+      "Ensure dist/projects.zsh exists (run src/projects-build if needed)",
+      "Start a new shell (source theming/index.zsh)",
+      "Assert $PROJECTS[oroshi.background.ansi] returns a non-empty integer value",
+      "Assert $PROJECTS[aberlaas.path] returns a tilde path ending with '/'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0003",
+    "description": "missing dist/projects.zsh is regenerated automatically on shell startup",
+    "steps": [
+      "Delete dist/projects.zsh",
+      "Source theming/index.zsh",
+      "Assert dist/projects.zsh was recreated",
+      "Assert $PROJECTS is populated"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0003",
+    "description": "PROJECT_* flat env vars are no longer exported after sourcing theming/index.zsh",
+    "steps": [
+      "Source theming/index.zsh",
+      "Run: env | grep '^PROJECT_'",
+      "Assert output is empty (no PROJECT_* vars exported)"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0004",
+    "description": "F.readJson returns a Lua table for a valid JSON file and nil for a missing file",
+    "steps": [
+      "In NeoVim, call F.readJson('/path/to/valid.json') with a file containing {\"key\": \"val\"}",
+      "Assert the return value is a Lua table with result.key == 'val'",
+      "Call F.readJson('/nonexistent/path.json')",
+      "Assert the return value is nil"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0004",
+    "description": "NeoVim statusline shows correct project background color from dist/projects.json",
+    "steps": [
+      "Open a file inside a registered project directory in NeoVim",
+      "Assert the statusline background color matches the project's background.ansi value in dist/projects.json",
+      "Assert M.getProjectData() does not call 'project-key' or read PROJECT_* env vars"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0004",
+    "description": "per-project data is cached — F.readJson is not called on every statusline render",
+    "steps": [
+      "Open a file inside a registered project in NeoVim",
+      "Trigger multiple statusline renders",
+      "Assert F.readJson is called only once for the project (data cached in O.projects)"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0004",
+    "description": "saving src/projects.json in NeoVim triggers src/projects-build and reloads dist files",
+    "steps": [
+      "Open src/projects.json in NeoVim and save it",
+      "Assert src/projects-build ran asynchronously",
+      "Assert dist/projects.json is updated",
+      "Assert no manual reload prompt appeared (checktime ran automatically)"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0005",
+    "description": "committing with src/projects.json staged runs src/projects-build and includes dist files",
+    "steps": [
+      "Stage a change to src/projects.json",
+      "Run git commit",
+      "Assert src/projects-build was called by the pre-commit hook",
+      "Assert dist/projects.json and dist/projects.zsh are included in the commit"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0005",
+    "description": "committing without src/projects.json staged does not run src/projects-build",
+    "steps": [
+      "Stage a change to any file other than src/projects.json",
+      "Run git commit",
+      "Assert src/projects-build was NOT called"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0005",
+    "description": "if src/projects-build fails the commit is aborted",
+    "steps": [
+      "Stage a change to src/projects.json",
+      "Make src/projects-build exit with a non-zero status",
+      "Run git commit",
+      "Assert the commit was aborted"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0006",
+    "description": "Kitty tab bar shows correct background, inactive background, foreground color and icon from dist/projects.json",
+    "steps": [
+      "Ensure dist/projects.json exists with at least one project entry",
+      "Open a Kitty tab for a registered project",
+      "Assert the tab background color matches project.background.ansi",
+      "Assert an unfocused tab shows project.backgroundInactive.ansi",
+      "Assert the tab foreground and icon match the dist JSON values"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0006",
+    "description": "initProjectList reads from dist/projects.json and no PROJECT_* flat key parsing remains",
+    "steps": [
+      "Inspect projects.py — assert initProjectList() opens 'dist/projects.json'",
+      "Assert there are no references to keys ending in '_NAME', '_BACKGROUND', '_FOREGROUND', '_ICON' in projects.py",
+      "Assert color fields are accessed as project['background']['ansi'] style nested access"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0006",
+    "description": "Kitty refresh beacon mechanism reloads project data on demand",
+    "steps": [
+      "Trigger the Kitty refresh beacon (however it is invoked)",
+      "Assert initProjectList() is called again and picks up changes from dist/projects.json"
     ],
     "passes": false
   }
