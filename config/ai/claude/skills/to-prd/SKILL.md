@@ -28,12 +28,8 @@ Check with the user which modules they want tests written for.
 
 ### Step 3 — Write the PRD.md
 
-- Ensure you are in worktree for all further commands (use `git-directory-is-worktree` to check)
-- If not, create a new worktree using `git-worktree-create <branchName>`
-- Write the PRD file to `docs/<branchName>/PRD.md`
-- Follow [the template](./references/prd-md.md).
-
-Example: if the branch is `prompt-prd`, write to `docs/prompt-prd/PRD.md`.
+Run `prd-end <branchName>` via the **Bash tool**, and parse the JSON output.
+Write the PRD to `<prdPath>`, following [the template](./references/prd-md.md).
 
 ---
 
@@ -43,7 +39,8 @@ Example: if the branch is `prompt-prd`, write to `docs/prompt-prd/PRD.md`.
 |---|---|
 | "I know this codebase, no need to explore" | Recent ADRs and domain terms may have changed. Explore first. |
 | "The modules are obvious, no need to check with the user" | Module scope and test scope are separate decisions. Confirm both. |
-| "I will write the PRD in the current repo" | Worktree allow parallel work, ensure you write in a worktree |
+| "I will write the PRD in the current repo" | Always use `prd-end` — it handles worktree creation and dep install |
+| "I'll call git-worktree-create myself" | Always use `prd-end` — it handles worktree creation and dep install |
 
 ## Checklist
 
@@ -51,5 +48,6 @@ Example: if the branch is `prompt-prd`, write to `docs/prompt-prd/PRD.md`.
 - [ ] Deep modules identified — each has a simple, testable interface
 - [ ] User confirmed module list matches intent
 - [ ] User confirmed which modules get tests
-- [ ] PRD.md written to `docs/<branchName>/PRD.md` in a worktree
+- [ ] `prd-end <branchName>` called via Bash tool, JSON output parsed
+- [ ] PRD.md written to `<prdPath>`
 - [ ] PRD contains all 6 sections present (Problem, Solution, User Stories, Implementation Decisions, Testing Decisions, Out of Scope)
