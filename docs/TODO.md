@@ -98,6 +98,19 @@ I need to warn about "local desc="$([[ "$counters" != "" ]] && echo "${counters}
 ${message}" || echo "${message}")"" in zsh. The line is too long, I would rather
 have that on several lines with a proper if
 
+lua-writer should use F.run() rather than vim.fn.systemlist. Or actually, F.run
+is asynchronous by default (it has onSuccess, onError). Maybe I would need a
+better API for both sync and async? runSync maybe?
+
+JS: I don't like   return getCommandLineState(commandLine, allowList).isAllowed;
+I'd rather have a const { isAllowed } = getCommandLineState(aaa, bbb)
+/home/tim/local/www/worktrees/solkan--rich-output/lib/isCommandLineAllowed.js
+
+Sometimes, TDD creates tests that are irrelevant. For example, it updated  a.lua
+file, but wrote a bats file to ensure the file didn't contain a specific string.
+The good solution would have ben to have a a lua test, but I'm not equipped for
+that yet.
+
 
 
 ## Lint

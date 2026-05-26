@@ -75,6 +75,7 @@
   "mktemp",
   "mv",
   "nautilus",
+  "node_modules/.bin/aberlaas test",
   "pdfimages",
   "pdfinfo",
   "pdftotext",
