@@ -104,7 +104,7 @@
       "Check that tools/misc/ contains one folder per tool",
       "Verify no files remain in scripts/install/misc/, scripts/deploy/misc/, config/misc/"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0012",

@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# Deploy jrnl config — symlinks jrnl.yaml to ~/.config/jrnl/
+# Usage: ./deploy
+set -e
+
+CONFIG_DIR="${0:h}/config"
+DEST_DIR=~/.config/jrnl
+
+mkdir -p "$DEST_DIR"
+ln -fs "$CONFIG_DIR/jrnl.yaml" "$DEST_DIR"

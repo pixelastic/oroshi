@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 echo "Installing jrnl"
 pip install --user jrnl
+
+"$(dirname "$0")/deploy"

@@ -63,6 +63,15 @@ issue-017 → needs issue-001 through issue-016 (cleanup — delete old director
 ---
 ## Log (append below when an issue is completed)
 
+## Session 2026-05-26 — 0011: misc domain fully migrated to tools/misc/
+
+- Completed: Moved 5 install scripts (crc32, jrnl, petname, recode, uchardet) to tools/misc/{tool}/install. Moved scripts/deploy/misc/jrnl to tools/misc/jrnl/deploy. Moved config/misc/jrnl/ to tools/misc/jrnl/config/. Moved config/misc/tldr/ to tools/cli/tldr/config/ (tldr tool lives in cli domain; deploy already referenced $(dirname "$0")/config there). Updated jrnl/deploy: removed local, changed ~/.oroshi path to ${0:h}/config, added set -e + header. Added $(dirname "$0")/deploy call at end of jrnl/install. Removed empty scripts/install/misc/, scripts/deploy/misc/, config/misc/.
+- Tests added: none (migration issue — no automated tests)
+- Discovered: config/misc/tldr/ belonged to tools/cli/tldr/ not tools/misc/ — tldr install/deploy are in cli domain and deploy already expected $(dirname "$0")/config. No index file existed in scripts/install/misc/ so no install-all needed.
+- Fixed: missing set -e and header in jrnl/deploy (per review hard violations).
+- Skipped feedback: `local` for CONFIG_DIR/DEST_DIR — established pattern is no local at script scope. `${0:h}` vs `$(dirname)` finding — deploy already uses ${0:h}; install is bash so $(dirname) is correct. install-all — no index file existed.
+- Next: issue-012 (ubuntu domain migration)
+
 ## Session 2026-05-26 — 0010: _languages domain fully migrated to tools/_languages/
 
 - Completed: Domain was partially migrated (all files already git mv'd). Updated 12 deploy scripts: bash/sh→zsh shebang, ~/.oroshi/config/... paths → ${0:h}/config/.... Added deploy calls at end of html/tidy/install, python/flake8/install, yaml/yamllint/install. Updated javascript/node/install cross-tool ref (nvm config: ~/.oroshi/config/_languages/javascript/nvm → $OROSHI_ROOT/tools/_languages/javascript/nvm/config). Updated toml/yq/install delegate call (→ $OROSHI_ROOT/tools/_languages/yaml/yq/install). Removed empty source dirs. Fixed per review: ln -s → ln -fs in yamllint/deploy and import-js/deploy; quoted $configFile/$destFile in ruby/gem/deploy; quoted $OROSHI_ROOT path in toml/yq/install.

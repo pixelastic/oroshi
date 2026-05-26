@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-local CONFIG_DIR=~/.oroshi/config/misc/jrnl
-local DEST_DIR=~/.config/jrnl
-
-mkdir -p $DEST_DIR
-ln -fs $CONFIG_DIR/jrnl.yaml $DEST_DIR
