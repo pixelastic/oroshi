@@ -1,9 +1,9 @@
 #!/usr/bin/env zsh
 # Clear the current ~/.Xmodmap file, and create a new one by concatenating
 # (optional) local file and default xmodmap config.
-local CONFIG_DIR=~/.oroshi/config/keybindings/xmodmap
-local LOCAL_FILE=$CONFIG_DIR/local/${HOSTNAME}.xmodmap
-local DEST_FILE=~/.Xmodmap
+CONFIG_DIR="${0:h}/config"
+LOCAL_FILE=$CONFIG_DIR/local/${HOSTNAME}.xmodmap
+DEST_FILE=~/.Xmodmap
 
 # Starting with an empty file
 rm -f $DEST_FILE

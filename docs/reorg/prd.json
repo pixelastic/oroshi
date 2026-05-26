@@ -85,7 +85,7 @@
       "Pick one tool with both install and deploy, verify install calls deploy at the end",
       "Verify no files remain in scripts/install/keybindings/, scripts/deploy/keybindings/, config/keybindings/"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0010",

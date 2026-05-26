@@ -6,12 +6,12 @@
 set -e
 
 # Configuration
-local qmkDir="${HOME}/local/src/qmk_firmware"
-local firmwareFile="${qmkDir}/.build/ymdk_ymd09_custom.hex"
+qmkDir="${HOME}/local/src/qmk_firmware"
+firmwareFile="${qmkDir}/.build/ymdk_ymd09_custom.hex"
 
 # Check QMK is installed
 if ! command -v qmk &>/dev/null; then
-  echo "Error: QMK CLI not found. Run: ~/.oroshi/scripts/install/keybindings/ymdk"
+  echo "Error: QMK CLI not found. Run: $OROSHI_ROOT/tools/keybindings/ymdk/install"
   exit 1
 fi
 

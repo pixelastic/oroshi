@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
 # Configure a custom keyboard layout with my own mappings
 
-local CONFIG_DIR=~/.oroshi/config/keybindings/xkb
-local DEST_DIR=~/.config/xkb
+CONFIG_DIR="${0:h}/config"
+DEST_DIR=~/.config/xkb
 
 # Make symlinks to config files
 mkdir -p $DEST_DIR

@@ -5,13 +5,13 @@
 set -e
 
 # Configuration
-local configDir="${HOME}/.oroshi/config/keybindings/ymdk"
-local qmkDir="${HOME}/local/src/qmk_firmware"
-local keymapDir="${qmkDir}/keyboards/ymdk/ymd09/keymaps/custom"
+configDir="${0:h}/config"
+qmkDir="${HOME}/local/src/qmk_firmware"
+keymapDir="${qmkDir}/keyboards/ymdk/ymd09/keymaps/custom"
 
 # Check QMK is installed
 if ! command -v qmk &>/dev/null; then
-  echo "Error: QMK CLI not found. Run: ~/.oroshi/scripts/install/keybindings/ymdk"
+  echo "Error: QMK CLI not found. Run: $OROSHI_ROOT/tools/keybindings/ymdk/install"
   exit 1
 fi
 

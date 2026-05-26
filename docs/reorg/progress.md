@@ -63,6 +63,15 @@ issue-017 → needs issue-001 through issue-016 (cleanup — delete old director
 ---
 ## Log (append below when an issue is completed)
 
+## Session 2026-05-26 — 0009: keybindings domain fully migrated to tools/keybindings/
+
+- Completed: Domain was already migrated in a prior session (evtest, wev, xbindkeys, xkb, xmodmap, ymdk-build, ymdk all present with correct structure). Fixed pre-existing lint issues: replaced $(dirname "$0") with ${0:h} in all zsh scripts (xbindkeys/deploy, xkb/deploy, xbindkeys/install, xmodmap/deploy, ymdk/install, ymdk-build/deploy). Fixed xbindkeys/install shebang from sh→zsh. All source dirs already gone.
+- Tests added: none (migration issue — no automated tests)
+- Discovered: Domain was already complete; only lint fixes needed. xkb and xmodmap are deploy-only by design (stated in issue spec).
+- Fixed: $(dirname "$0") → ${0:h} across all 6 zsh scripts; xbindkeys/install shebang sh→zsh.
+- Skipped feedback: Missing xkb/xmodmap install scripts — explicitly deploy-only per issue spec. ymdk/deploy lacking CONFIG_DIR — deploy doesn't use config (firmware flash only).
+- Next: issue-010 (_languages domain migration)
+
 ## Session 2026-05-26 — 0008: infrastructure domain fully migrated to tools/infrastructure/
 
 - Completed: Moved 5 install scripts (ansible, gcloud, kubernetes, nginx, s3) to tools/infrastructure/{tool}/install. Moved config/infrastructure/ansible/galactica (git submodule) to tools/infrastructure/ansible/config/galactica. Updated .gitmodules path and name. Removed empty config/infrastructure/ and scripts/install/infrastructure/.

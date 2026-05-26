@@ -1,5 +1,7 @@
-#!/usr/bin/env sh
+#!/usr/bin/env zsh
 # Map keys to launch specific commands
 # https://www.nongnu.org/xbindkeys/
 
 sudo apt-get install xbindkeys
+
+"${0:h}/deploy"

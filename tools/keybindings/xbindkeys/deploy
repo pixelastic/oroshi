@@ -1,9 +1,9 @@
 #!/usr/bin/env zsh
 # Clear the current ~/.xbindkeysrc file, and create a new one by concatenating
 # (optional) local file and default xbindkeys config.
-local CONFIG_DIR=~/.oroshi/config/keybindings/xbindkeys
-local LOCAL_FILE=$CONFIG_DIR/local/${HOSTNAME}.conf
-local DEST_FILE=~/.xbindkeysrc
+CONFIG_DIR="${0:h}/config"
+LOCAL_FILE=$CONFIG_DIR/local/${HOSTNAME}.conf
+DEST_FILE=~/.xbindkeysrc
 
 # Kill previous bindings
 killall xbindkeys &>/dev/null
