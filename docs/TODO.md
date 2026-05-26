@@ -111,6 +111,10 @@ zshlint seems to raise an error on "  local cacheDuration=1440 # In minutes "
 
 json-lint errors when editing files outside of oroshi
 
+zshlint should warn about [[ ! "$branchSlug" != "" ]] && return 1 (double
+egation)
+
+
 
 ## Lua
 

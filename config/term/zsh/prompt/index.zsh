@@ -162,6 +162,25 @@ function oroshi-last-command-exit-store() {
 }
 add-zsh-hook precmd oroshi-last-command-exit-store
 
+# If current directory no longer exists (if deleted externally), go up to the
+# closest existing parent instead
+function oroshi-pwd-guard() {
+  [[ -d "$PWD" ]] && return
+
+  local parent="$PWD"
+  while [[ "$parent" != "/" ]]; do
+    parent="${parent:h}"
+    # Go to that parent if it exists
+    if [[ -d "$parent" ]]; then
+      cd "$parent"
+      return
+    fi
+  done
+  # Fallback to home if no parent found
+  cd "$HOME"
+}
+add-zsh-hook precmd oroshi-pwd-guard
+
 # Keep a reference to commonly used $GIT_ variables, so we don't compute them
 # too often
 function oroshi-git-env-store() {
@@ -210,4 +229,3 @@ add-zsh-hook precmd oroshi-prompt-asynchronous-populate
 function _cursor-cmd() { print -n "\e]12;${COLOR_EMERALD_HEXA}\a" }
 function _cursor-ins() { print -n "\e]12;${COLOR_YELLOW_HEXA}\a" }
 # }}}
-
