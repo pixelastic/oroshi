@@ -72,3 +72,33 @@ teardown() {
   bats_run_function git-worktree-delete nonexistent/branch
   [ "$status" -eq 1 ]
 }
+
+@test "removes multiple worktrees" {
+  bats_git_worktree 'feat/thing'
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-worktree-delete fix/bug feat/thing
+  [ "$status" -eq 0 ]
+  [ ! -d "${BATS_GIT_WORKTREES}fix-bug" ]
+  [ ! -d "${BATS_GIT_WORKTREES}feat-thing" ]
+}
+
+@test "deletes multiple branches" {
+  bats_git_worktree 'feat/thing'
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-worktree-delete fix/bug feat/thing
+  run bats_git branch --list fix/bug
+  [ "$output" = "" ]
+  run bats_git branch --list feat/thing
+  [ "$output" = "" ]
+}
+
+@test "stops at first failure when one branch has unmerged commits" {
+  bats_git_worktree 'feat/thing'
+  cd "${BATS_GIT_WORKTREES}fix-bug"
+  git commit --allow-empty -m "unmerged commit"
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-worktree-delete fix/bug feat/thing
+  [ "$status" -eq 1 ]
+  [ -d "${BATS_GIT_WORKTREES}fix-bug" ]
+  [ -d "${BATS_GIT_WORKTREES}feat-thing" ]
+}
