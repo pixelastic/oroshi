@@ -49,6 +49,7 @@
   "git mv",
   "git rev-parse",
   "git show",
+  "git stash",
   "git status",
   "git submodule status",
   "git worktree list",

@@ -23,7 +23,7 @@
     "remark-preset-lint-recommended": "3.0.3",
     "remark-reference-links": "4.0.4",
     "skills": "1.5.1",
-    "solkan": "0.6.0"
+    "solkan": "0.6.1"
   },
   "scripts": {
     "lint": "./scripts/yarn/lint",

@@ -66,13 +66,6 @@ session, I think there is an arg that can be passed that can do that
 git-file-lint should display a relative path from the repo root, not the full
 path
 
-vwR should also use the vws list
-
-Solkan should ouput the list of commands it doesn't know, so I can display it in
-the reason for rejecting
-
-Seems like no sound is playing when commit message is written
-
 Seems like bats output are not filtered through rtk? I think it's because rtk
 doesn't know it can rewrite it, so the hook doesn't prepend rtk to it, even if
 it should work. Should I configure rtk to know it can parse bats, or should I
@@ -99,9 +92,16 @@ JS: I don't like   return getCommandLineState(commandLine, allowList).isAllowed;
 I'd rather have a const { isAllowed } = getCommandLineState(aaa, bbb)
 /home/tim/local/www/worktrees/solkan--rich-output/lib/isCommandLineAllowed.js
 
-
 Add a CLAUDE.md at the root for aberlaas projects with aberlaas init, that
 displays the commands to use (yarn run lint, yarn run test, etc)
+
+## PRD
+
+I should update to-prd to run a prd-end or prd-start script that automatically
+check if inside a worktree, and create one if needed (accepts a branch name as
+argument, as passed by Claude). It should return some info for the agent, to
+know what to do. Currently mine has been trying to create worktree and switch to
+it manually, rather than use the commands I passed it.
 
 
 
