@@ -1,0 +1,79 @@
+[
+  {
+    "id": "0002",
+    "description": "minimal project with background, foreground, icon, path produces correct name/ansi/hex in dist JSON",
+    "steps": [
+      "Create a minimal src/projects.json with one project: background 'GREEN_8', foreground 'GRAY_9', icon and path set",
+      "Create a minimal colors mock that defines COLOR_GREEN_8, COLOR_GREEN_8_HEXA, COLOR_GRAY_9, COLOR_GRAY_9_HEXA, COLOR_DARK_GREEN, COLOR_DARK_GREEN_HEXA",
+      "Run src/projects-build",
+      "Assert dist/projects.json contains background.name='GREEN_8', background.ansi=correct integer, background.hex=correct hex string",
+      "Assert dist/projects.json contains foreground.name='GRAY_9', foreground.ansi and foreground.hex"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "background with numeric suffix derives backgroundInactive by stripping suffix and prepending DARK_",
+    "steps": [
+      "Create src/projects.json with a project whose background is 'GREEN_8'",
+      "Run src/projects-build",
+      "Assert dist/projects.json contains backgroundInactive.name='DARK_GREEN' with correct ansi and hex values"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "background without numeric suffix derives backgroundInactive by prepending DARK_",
+    "steps": [
+      "Create src/projects.json with a project whose background is 'GREEN' (no numeric suffix)",
+      "Run src/projects-build",
+      "Assert dist/projects.json contains backgroundInactive.name='DARK_GREEN' with correct ansi and hex values"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "hideNameInPrompt true in src produces true in dist; absent in src produces false in dist",
+    "steps": [
+      "Create src/projects.json with two projects: one with hideNameInPrompt:true, one without the key",
+      "Run src/projects-build",
+      "Assert dist/projects.json has hideNameInPrompt:true for the first project",
+      "Assert dist/projects.json has hideNameInPrompt:false for the second project"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "path without trailing slash in src is normalised with trailing slash in dist",
+    "steps": [
+      "Create src/projects.json with a project whose path has no trailing slash",
+      "Run src/projects-build",
+      "Assert dist/projects.json contains the path with a trailing slash"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "dist/projects.zsh contains typeset -gA PROJECTS and dot-notation keys mirroring JSON paths",
+    "steps": [
+      "Create a minimal src/projects.json with one project",
+      "Run src/projects-build",
+      "Assert dist/projects.zsh contains 'typeset -gA PROJECTS'",
+      "Assert dist/projects.zsh contains PROJECTS[projectname.background.name]",
+      "Assert dist/projects.zsh contains PROJECTS[projectname.background.ansi]",
+      "Assert dist/projects.zsh contains PROJECTS[projectname.background.hex]",
+      "Assert dist/projects.zsh contains PROJECTS[projectname.path]"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "src/projects.json is sorted alphabetically after the build runs",
+    "steps": [
+      "Create src/projects.json with projects in non-alphabetical order (e.g. 'oroshi' before 'aberlaas')",
+      "Run src/projects-build",
+      "Assert src/projects.json now has 'aberlaas' before 'oroshi'"
+    ],
+    "passes": false
+  }
+]
