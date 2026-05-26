@@ -89,7 +89,6 @@
   "review",
   "review-diff",
   "rg",
-  "rtk",
   "scripts/bin/ai/review/review-diff",
   "scripts/bin/term/bats/bats",
   "sed",
