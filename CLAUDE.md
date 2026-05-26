@@ -1,6 +1,6 @@
 ## Commands
 
-- **Testing zsh:** Run `rtk bats <filepath>`
+- **Testing zsh:** Run `bats <filepath>`
 - **Testing js:** Run `yarn run test <filepath>`
 
 - **Linting zsh:** Run `zshlint <filepath>`

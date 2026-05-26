@@ -11,13 +11,8 @@ displayedPath=${displayedPath/#$HOME/\~}
 local isDirectory=0
 [[ -d $fullPath ]] && isDirectory=1
 
-# Simplifying the displayed path by removing the project prefix, if any
-local projectName="$(project-by-path $fullPath)"
-if [[ $projectName != "" ]]; then
-  local projectKey=$(project-key "$projectName")
-  eval "displayedPath=\${displayedPath:s_${(P)${:-PROJECT_${projectKey}_PATH}}_}"
-  local projectPrefix=$(project-colorize $projectName)
-fi
+local projectPrefix="$(context-badge "$fullPath")"
+[[ "$projectPrefix" != "" ]] && displayedPath="$(context-path "$fullPath")"
 
 local metadataArray=()
 

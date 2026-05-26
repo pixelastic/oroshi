@@ -172,7 +172,7 @@
       "Assert prompt contains the Context Badge",
       "Assert sub-path shown is relative to the Context Root"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",
@@ -182,7 +182,7 @@
       "Assert preview header contains the Context Badge",
       "Assert file path shown is relative to the Context Root"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",
@@ -191,7 +191,7 @@
       "Open FZF Claude sessions list",
       "Assert each entry shows the Context Badge for its working directory"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",
@@ -200,7 +200,7 @@
       "Open FZF projects list",
       "Assert each entry shows the project badge (no branch suffix)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",
@@ -208,7 +208,7 @@
     "steps": [
       "Assert no FZF function references project-by-path"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0006",

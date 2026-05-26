@@ -52,3 +52,11 @@ issue-007 → needs issue-002 (done last, in a separate worktree)
 - Fixed: numeric comparison style `[[ $isZsh == 1 ]]` → `(( isZsh ))` for both isZsh and isWorktree
 - Skipped feedback: `$'\e['` test flagged as `$'['` — reviewer hallucinated; test is correct; `%k` placement flagged — current placement is correct, moving it after arrow would make arrow invisible (branchBg fg on branchBg bg)
 - Next: issue-004 (update-prompt)
+
+## Session 2026-05-26 — issue-005: update-fzf
+- Completed: replaced `project-by-path`/`project-colorize` with `context-badge`/`context-path` in `fzf-prompt-directory`, `fzf-fs-shared-preview-header`, `fzf-claude-sessions-source-no-query`, `fzf-claude-sessions-preview`, `fzf-projects-source`, `fzf-fs-directories-common-source`, `fzf-kitty-tabs-source`
+- Tests added: `fzf-prompt-directory.bats` (2), `fzf-fs-shared-preview-header.bats` (1), `fzf-claude-sessions-source-no-query.bats` (1), `fzf-claude-sessions-preview.bats` (1), `fzf-projects-source.bats` (1) — all assert branch name visible for worktree paths or static grep for no legacy calls
+- Discovered: `project-colorize` already outputs the powerline arrow (invisible U+E0B0 in Read output) — powerline arrow not a useful RED differentiator; used branch-in-worktree assertion instead; `fzf-fs-directories-common-source` and `fzf-kitty-tabs-source` also needed migration (not listed in issue spec)
+- Fixed: reviewer flagged `fzf-prompt-directory` fallback regression — paths outside any project produced empty prompt; fixed with explicit if/else fallback to tilde-prefixed absolute path
+- Skipped feedback: bats stub pattern (reviewer applied PATH-stub rule to function-definition stubs — different pattern); `project_env` rename to `context_env` (matches existing convention in context-badge.bats); one-liner condition (standard per zsh-writer); fzf-fs-shared-preview-header downstream concatenation concern (projectPrefix IS used at line 91, not in diff)
+- Next: issue-006 (update-neovim)

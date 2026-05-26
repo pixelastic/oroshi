@@ -9,9 +9,10 @@ for rawLine in ${(f)rawTabs}; do
   [[ "$tabName" == "Tab Selector" ]] && continue
 
   # Check if this tab name matches a known project
+  local badge="$(context-badge "$tabName")"
   local tabDisplayName=""
-  if project-exists "$tabName"; then
-    tabDisplayName="$(project-colorize $tabName)"
+  if [[ "$badge" != "" ]]; then
+    tabDisplayName="$badge"
   else
     # Use default tab styling for non-project tabs
     tabDisplayName="$(colorize " ${tabName} " $COLOR_YELLOW $COLOR_GRAY_8)$(colorize "" $COLOR_GRAY_8)"
