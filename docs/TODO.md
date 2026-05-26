@@ -35,10 +35,6 @@ I'm not sure if I should name it /glossary actually. I feel it's an important
 part to document, but it might shadow the fact that it helps get to a common
 understaning.
 
-## Lua
-
-I will need a lua-writer skill, similar to zsh-writer and js-writer. It will
-also need a dedicated linter to ensure coding standards automatically.
 
 ## Colors
 
@@ -98,21 +94,43 @@ I need to warn about "local desc="$([[ "$counters" != "" ]] && echo "${counters}
 ${message}" || echo "${message}")"" in zsh. The line is too long, I would rather
 have that on several lines with a proper if
 
-lua-writer should use F.run() rather than vim.fn.systemlist. Or actually, F.run
-is asynchronous by default (it has onSuccess, onError). Maybe I would need a
-better API for both sync and async? runSync maybe?
 
 JS: I don't like   return getCommandLineState(commandLine, allowList).isAllowed;
 I'd rather have a const { isAllowed } = getCommandLineState(aaa, bbb)
 /home/tim/local/www/worktrees/solkan--rich-output/lib/isCommandLineAllowed.js
 
-Sometimes, TDD creates tests that are irrelevant. For example, it updated  a.lua
-file, but wrote a bats file to ensure the file didn't contain a specific string.
-The good solution would have ben to have a a lua test, but I'm not equipped for
-that yet.
+
+Add a CLAUDE.md at the root for aberlaas projects with aberlaas init, that
+displays the commands to use (yarn run lint, yarn run test, etc)
 
 
 
 ## Lint
 
 zshlint seems to raise an error on "  local cacheDuration=1440 # In minutes "
+
+json-lint errors when editing files outside of oroshi
+
+
+## Lua
+
+I will need to add a LUA harness made of tests and lints.
+
+I will need a test framework for LUA, and write tests, that I don't have yet.
+
+I will also need  alinter. I currently have a LSP linter in nvim, but I will
+need to have something as a CLI that I can run outside of nvim, and that gives
+me the same results as in nvim. So i'll probably need to move to luacheck, and
+ditch the LSP version. I will also need to add custom rules to teach the agent
+how to code, like how to use my own methods.
+
+I will need a lua-writer skill to package all of that, similar to the others.
+
+Sometimes, TDD creates tests that are irrelevant. For example, it updated  a.lua
+file, but wrote a bats file to ensure the file didn't contain a specific string.
+The good solution would have ben to have a a lua test, but I'm not equipped for
+that yet.
+
+lua-writer should use F.run() rather than vim.fn.systemlist. Or actually, F.run
+is asynchronous by default (it has onSuccess, onError). Maybe I would need a
+better API for both sync and async? runSync maybe?

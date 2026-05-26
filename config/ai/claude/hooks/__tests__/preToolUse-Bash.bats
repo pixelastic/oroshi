@@ -1,8 +1,17 @@
 setup() {
   SCRIPT="$(dirname "$BATS_TEST_FILENAME")/../preToolUse-Bash"
 
-  printf '#!/usr/bin/env zsh\nexit 0\n' > "$BATS_TEST_TMPDIR/mock-solkan-allow"
-  printf '#!/usr/bin/env zsh\nexit 1\n' > "$BATS_TEST_TMPDIR/mock-solkan-ask"
+  echo '{"isAllowed":true,"commands":{"allowed":["echo"],"rejected":[]}}' > "$BATS_TEST_TMPDIR/solkan-allow.json"
+  echo '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget","curl"]}}' > "$BATS_TEST_TMPDIR/solkan-ask.json"
+  cat > "$BATS_TEST_TMPDIR/mock-solkan-allow" << SCRIPT
+#!/usr/bin/env zsh
+cat "$BATS_TEST_TMPDIR/solkan-allow.json"
+SCRIPT
+  cat > "$BATS_TEST_TMPDIR/mock-solkan-ask" << SCRIPT
+#!/usr/bin/env zsh
+cat "$BATS_TEST_TMPDIR/solkan-ask.json"
+exit 1
+SCRIPT
   printf '#!/usr/bin/env zsh\nprint -- "$1"\n' > "$BATS_TEST_TMPDIR/mock-rtk-pass"
   printf '#!/usr/bin/env zsh\nprint -- "rtk $1"\n' > "$BATS_TEST_TMPDIR/mock-rtk-rewrite"
   chmod +x "$BATS_TEST_TMPDIR"/mock-*
@@ -55,6 +64,15 @@ _run_hook() {
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "ask" ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.updatedInput.command')" = "rtk git status" ]
+}
+
+@test "permissionDecisionReason lists rejected commands when solkan refuses" {
+  _run_hook \
+    "$BATS_TEST_TMPDIR/mock-solkan-ask" \
+    "$BATS_TEST_TMPDIR/mock-rtk-pass" \
+    '{"tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
+  [ "$status" -eq 0 ]
+  [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecisionReason')" = "❌ Blocked: wget, curl" ]
 }
 
 @test "no background jobs in script" {

@@ -8484,7 +8484,7 @@ __metadata:
     remark-preset-lint-recommended: "npm:3.0.3"
     remark-reference-links: "npm:4.0.4"
     skills: "npm:1.5.1"
-    solkan: "npm:0.5.0"
+    solkan: "npm:0.6.0"
   languageName: unknown
   linkType: soft
 
@@ -10654,9 +10654,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"solkan@npm:0.5.0":
-  version: 0.5.0
-  resolution: "solkan@npm:0.5.0"
+"solkan@npm:0.6.0":
+  version: 0.6.0
+  resolution: "solkan@npm:0.6.0"
   dependencies:
     firost: "npm:5.8.0"
     golgoth: "npm:3.1.0"
@@ -10664,7 +10664,7 @@ __metadata:
     unbash: "npm:3.0.0"
   bin:
     solkan: ./bin/solkan
-  checksum: 10c0/9244ea5ef528948c9b07f57861b135342ba7667e1d470f6b82fac52c8a1871155d77097433d3f8154b1046d20365b4f721ec0a4a85547b40badad6a8e41a0f8f
+  checksum: 10c0/aad697a32de9ea6c413319898eb5f5d9404962b7a7459ea92914d41e67cef9c06a1b16bc54f4cc7e106e19b17920e45f076c6f4caaa718c82d2314e80fa850a0
   languageName: node
   linkType: hard
 

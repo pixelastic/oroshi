@@ -34,10 +34,11 @@ mkdir -p "$CLAUDE_HOOKS_LOG_DIR"
 print -r -- "$inputJson" |
   jq '.' >"${CLAUDE_HOOKS_LOG_DIR}/last-bash-input.json"
 
-# Solkan: is the command allowed?
-local isAllowed="0"
-if "$solkanScript" "$inputCommand"; then
-  isAllowed="1"
+# Solkan: is the command allowed? Capture JSON output alongside exit code
+local solkanJson=""
+local isAllowed=0
+if solkanJson="$("$solkanScript" "$inputCommand")"; then
+  isAllowed=1
 fi
 
 # RTK: Rewritten command
@@ -53,9 +54,10 @@ if [[ "$isAllowed" == "1" ]]; then
 fi
 
 # Ask user
+local rejectedList="$(print -r -- "$solkanJson" | jq -r '.commands.rejected | join(", ")')"
 jo -d. \
   hookSpecificOutput.hookEventName="PreToolUse" \
   hookSpecificOutput.permissionDecision="ask" \
-  hookSpecificOutput.permissionDecisionReason="❌ Not part of allowlist.json" \
+  hookSpecificOutput.permissionDecisionReason="❌ Blocked: ${rejectedList}" \
   hookSpecificOutput.updatedInput.command="${updatedInputCommand}"
 exit 0
