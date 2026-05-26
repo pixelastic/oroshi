@@ -58,6 +58,6 @@ local rejectedList="$(print -r -- "$solkanJson" | jq -r '.commands.rejected | jo
 jo -d. \
   hookSpecificOutput.hookEventName="PreToolUse" \
   hookSpecificOutput.permissionDecision="ask" \
-  hookSpecificOutput.permissionDecisionReason="❌ Blocked: ${rejectedList}" \
+  hookSpecificOutput.permissionDecisionReason="❌ ${rejectedList} ❌" \
   hookSpecificOutput.updatedInput.command="${updatedInputCommand}"
 exit 0

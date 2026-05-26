@@ -40,6 +40,7 @@
   "gh pr list",
   "gh pr view",
   "git add",
+  "git cat-file",
   "git clone",
   "git config",
   "git diff",
