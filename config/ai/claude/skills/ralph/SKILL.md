@@ -83,12 +83,9 @@ per criterion. Run them. Read the failure output.
 
 **Exit criterion:** All actionable feedback addressed, linter clean, tests green.
 
-1. Run `review` via the **Bash tool**:
-    - `review 2>&1`
-    - `timeout: 600000` (10 min)
-    - DO NOT use `run_in_background`
-    - DO NOT use the Skill tool
-    - Wait for the command to finish before proceeding.
+1. Run the **/review skill** using the **Skill tool** (skill name: `review`, no args):
+    - DO NOT use the Bash tool to run `review`
+    - Wait for the skill to finish before proceeding.
 2. For each feedback item:
    - **Actionable and in scope** → fix it
    - **Out of scope or not relevant** → note it in progress.md under `Skipped feedback:`
@@ -143,7 +140,7 @@ Update `$ARGUMENTS/prd.json`: mark issue as complete, update any relevant status
 | "Review feedback is minor, not worth it" | Minor feedback ignored = minor bugs shipped. Fix it. |
 | "I can infer priority without reading the detail file" | You can't. Read the file. |
 | "I should commit so the review has something to diff" | Do not commit. That's the user's job. |
-| "There is a /review skill, I should use that" | Use the **Bash tool** `review` command instead |
+| "I should run `review` via the Bash tool" | Use the `/review` skill instead, Bash will go to the background and we need to wait for the review. |
 
 ## Checklist
 
@@ -154,7 +151,7 @@ Update `$ARGUMENTS/prd.json`: mark issue as complete, update any relevant status
 - [ ] Code written following the standards of the language skill (`zsh-writer`, `js-writer`, etc)
 - [ ] Linter clean on modified files
 - [ ] Tests green for modified files
-- [ ] Ran `review 2>&1` via Bash tool with output captured
+- [ ] Ran `/review` via Skill tool and received output
 - [ ] Actionable feedback fixed or explicitly dismissed
 - [ ] Linter + tests green for modified files after review fixes
 - [ ] progress.md updated with session entry
