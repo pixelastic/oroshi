@@ -72,6 +72,30 @@ path
 
 vwR should also use the vws list
 
+Solkan should ouput the list of commands it doesn't know, so I can display it in
+the reason for rejecting
+
+Seems like no sound is playing when commit message is written
+
+Seems like bats output are not filtered through rtk? I think it's because rtk
+doesn't know it can rewrite it, so the hook doesn't prepend rtk to it, even if
+it should work. Should I configure rtk to know it can parse bats, or should I
+replace each instance of caling bats with rtk bats?
+
+See how to have yarn run test go through rtk as well
+
+If I vwR ina  worktree, while still hvang a claude session open in it, It seems
+to hang, I can't close the window and it gets to 100% CPU. Maybe investigate
+that;
+
+I will need to have vft and vfl work on js files (using yarn run test/yarn run
+lint on them)
+
+I should update my eslint rules to warn about using for of instead of lodash, so
+the agents know when/how to write
+
+
+
 ## Lint
 
 zshlint seems to raise an error on "  local cacheDuration=1440 # In minutes "
