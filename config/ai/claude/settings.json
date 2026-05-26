@@ -6,13 +6,14 @@
   },
   "permissions": {
     "allow": [
-      "Fetch",
       "BashOutput",
+      "Fetch",
       "Glob",
       "Grep",
       "LS",
       "Read",
       "Search",
+      "Skill",
       "SlashCommand",
       "TodoWrite",
       "WebFetch",
@@ -24,13 +25,13 @@
   },
   "model": "sonnet[1m]",
   "hooks": {
-    "SessionStart": [
+    "PreToolUse": [
       {
-        "matcher": "startup",
+        "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "/home/tim/.oroshi/config/ai/claude/hooks/sessionStart"
+            "command": "/home/tim/.oroshi/config/ai/claude/hooks/preToolUse-Bash"
           }
         ]
       }
@@ -52,26 +53,6 @@
           {
             "type": "command",
             "command": "/home/tim/.oroshi/config/ai/claude/hooks/stop"
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/home/tim/.oroshi/config/ai/claude/hooks/preToolUse-Bash"
-          }
-        ]
-      },
-      {
-        "matcher": "Skill",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/home/tim/.oroshi/config/ai/claude/hooks/preToolUse-Skill"
           }
         ]
       }

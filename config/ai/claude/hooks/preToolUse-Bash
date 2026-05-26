@@ -23,7 +23,7 @@ set -e
 local hookDir="${0:A:h}"
 local solkanScript="${PRETOOLUSE_SOLKAN_SCRIPT:-${hookDir}/preToolUse-Bash-solkan}"
 local rtkScript="${PRETOOLUSE_RTK_SCRIPT:-${hookDir}/preToolUse-Bash-rtk}"
-source "${hookDir}/lib/hookLib.zsh"
+CLAUDE_HOOKS_LOG_DIR="/tmp/oroshi/claude/hooks"
 
 # Parse input command
 local inputJson="$(cat)"
@@ -41,9 +41,21 @@ if "$solkanScript" "$inputCommand"; then
 fi
 
 # RTK: Rewritten command
-local updatedInput="$("$rtkScript" "$inputCommand")"
+local updatedInputCommand="$("$rtkScript" "$inputCommand")"
 
+# Auto-approve
 if [[ "$isAllowed" == "1" ]]; then
-  autoApprove --updatedInput "$updatedInput"
+  jo -d. \
+    hookSpecificOutput.hookEventName="PreToolUse" \
+    hookSpecificOutput.permissionDecision="allow" \
+    hookSpecificOutput.updatedInput.command="${updatedInputCommand}"
+  exit 0
 fi
-askUser --updatedInput "$updatedInput"
+
+# Ask user
+jo -d. \
+  hookSpecificOutput.hookEventName="PreToolUse" \
+  hookSpecificOutput.permissionDecision="ask" \
+  hookSpecificOutput.permissionDecisionReason="❌ Not part of allowlist.json" \
+  hookSpecificOutput.updatedInput.command="${updatedInputCommand}"
+exit 0
