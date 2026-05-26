@@ -94,6 +94,10 @@ lint on them)
 I should update my eslint rules to warn about using for of instead of lodash, so
 the agents know when/how to write
 
+I need to warn about "local desc="$([[ "$counters" != "" ]] && echo "${counters}
+${message}" || echo "${message}")"" in zsh. The line is too long, I would rather
+have that on several lines with a proper if
+
 
 
 ## Lint
