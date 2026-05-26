@@ -63,6 +63,15 @@ issue-017 → needs issue-001 through issue-016 (cleanup — delete old director
 ---
 ## Log (append below when an issue is completed)
 
+## Session 2026-05-26 — 0007: image domain fully migrated to tools/image/
+
+- Completed: Moved 8 install scripts (dssim, flameshot, gifsicle, imagemagick, jpegoptim, peek, pngquant, webp) to tools/image/{tool}/install. Moved scripts/deploy/image/flameshot and imagemagick to tools/image/{tool}/deploy. Moved config/image/flameshot/ and imagemagick/ to tools/image/{tool}/config/. Updated deploy scripts to use $(dirname "$0")/config (quoted). Added deploy call at end of flameshot/install (bash: $(dirname "$0")/deploy) and imagemagick/install (zsh: $(dirname "$0")/deploy). Converted index → install-all (zsh, $(dirname "$0") pattern) covering all real tools. Removed empty scripts/install/image/, scripts/deploy/image/, config/image/.
+- Tests added: none (migration issue — no automated tests)
+- Discovered: index omitted flameshot and peek — added flameshot to install-all (has real deploy); kept peek as install-only tool (mostly commented/deprecated, no deploy). No `img` domain refs found in any moved files.
+- Fixed: $(dirname "$0") used throughout per review (hard violation). CONFIG_DIR quoted per review.
+- Skipped feedback: imagemagick/install ln relative path — pre-existing symlink in ~/local/bin pointing outside oroshi repo, not a cross-tool reference; img→image unverifiable — confirmed no img refs in moved files.
+- Next: issue-008 (infrastructure domain migration)
+
 ## Session 2026-05-26 — 0006: git domain fully migrated to tools/git/
 
 - Completed: Moved 5 install scripts (act, diff-so-fancy, gh, git, git-lfs) to tools/git/{tool}/install. Moved scripts/deploy/git/git to tools/git/git/deploy. Moved config/git/git/ to tools/git/git/config/. Updated deploy to use $(dirname "$0")/config (quoted). Added deploy call at end of git/install. Updated cross-tool ref in gh/install (completion path). Updated commented hooksPath in gitconfig template. Removed empty scripts/install/git/, scripts/deploy/git/, config/git/.

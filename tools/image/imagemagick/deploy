@@ -4,7 +4,7 @@
 # making it fail when converting large files
 # We are using a custom policy that should fix it
 
-local CONFIG_DIR=~/.oroshi/config/image/imagemagick
+CONFIG_DIR="$(dirname "$0")/config"
 
 sudo cp \
 	$CONFIG_DIR/policy.xml \

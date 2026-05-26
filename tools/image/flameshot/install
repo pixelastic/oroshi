@@ -4,3 +4,5 @@
 set -e
 
 sudo apt-get install flameshot
+
+"$(dirname "$0")/deploy"

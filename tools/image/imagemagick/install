@@ -23,3 +23,5 @@ chmod +x ./magick
 # Create links
 cd ~/local/bin
 ln -fs ./../etc/magick/magick ./magick
+
+"$(dirname "$0")/deploy"

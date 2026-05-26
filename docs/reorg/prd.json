@@ -66,7 +66,7 @@
       "Check tools/image/install-all exists and uses relative paths",
       "Verify no files remain in scripts/install/image/, scripts/deploy/image/, config/image/"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0008",

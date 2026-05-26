@@ -1,0 +1,28 @@
+#!/usr/bin/env zsh
+# Image compression and conversion tools
+set -e
+
+# Basic image support
+sudo apt-get install \
+	libimage-exiftool-perl
+
+# Conversion
+"$(dirname "$0")/imagemagick/install"
+
+# Screenshots
+"$(dirname "$0")/flameshot/install"
+
+# DSSIM
+"$(dirname "$0")/dssim/install"
+
+# WEBP
+"$(dirname "$0")/webp/install"
+
+# JPG
+"$(dirname "$0")/jpegoptim/install"
+
+# PNG
+"$(dirname "$0")/pngquant/install"
+
+# GIF
+"$(dirname "$0")/gifsicle/install"
