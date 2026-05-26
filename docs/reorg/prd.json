@@ -56,7 +56,7 @@
       "Verify tools/git/git/install calls $(dirname \"$0\")/deploy at end",
       "Verify no files remain in scripts/install/git/, scripts/deploy/git/, config/git/"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0007",

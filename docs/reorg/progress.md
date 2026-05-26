@@ -63,6 +63,15 @@ issue-017 → needs issue-001 through issue-016 (cleanup — delete old director
 ---
 ## Log (append below when an issue is completed)
 
+## Session 2026-05-26 — 0006: git domain fully migrated to tools/git/
+
+- Completed: Moved 5 install scripts (act, diff-so-fancy, gh, git, git-lfs) to tools/git/{tool}/install. Moved scripts/deploy/git/git to tools/git/git/deploy. Moved config/git/git/ to tools/git/git/config/. Updated deploy to use $(dirname "$0")/config (quoted). Added deploy call at end of git/install. Updated cross-tool ref in gh/install (completion path). Updated commented hooksPath in gitconfig template. Removed empty scripts/install/git/, scripts/deploy/git/, config/git/.
+- Tests added: none (migration issue — no automated tests)
+- Discovered: gitconfig template hooksPath is commented out with `;` — git doesn't expand shell vars, but it was already non-functional before migration. Not a regression.
+- Fixed: Quoted $(dirname "$0") expansion in deploy per review (hard violation).
+- Skipped feedback: Speculative term path in gh/install — forward-looking ref consistent with prior sessions. deploy invocation relying on execute permission — matches pattern from 0001-0005.
+- Next: issue-007 (image domain migration)
+
 ## Session 2026-05-22 — 0005: docker domain fully migrated to tools/docker/
 
 - Completed: Moved 4 install scripts (docker, docker-compose, dry, hadolint) to tools/docker/{tool}/install. Moved config/docker/cache/ to tools/docker/docker/config/cache/ (under docker tool, not standalone). Moved config/docker/dockerfile_lint.yml to tools/docker/hadolint/config/. Updated images-remote outputFile ref to $(dirname "$0")/src/images-remote.txt. Removed empty scripts/install/docker/ and config/docker/.
