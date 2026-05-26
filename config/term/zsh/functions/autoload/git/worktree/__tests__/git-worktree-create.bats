@@ -52,11 +52,22 @@ teardown() {
   [ "$status" -eq 1 ]
 }
 
-@test "returns 1 if not on main" {
-  git checkout -b fix/bug
+@test "succeeds even when not on main" {
+  git checkout -b fix/current
   bats_run_function git-worktree-create fix/other
-  [ "$status" -eq 1 ]
-  [ "$output" = "You must be on main to create a worktree" ]
+  [ "$status" -eq 0 ]
+}
+
+@test "new branch is based on main, not current branch" {
+  git commit --quiet --allow-empty -m "main commit"
+  local mainSha
+  mainSha="$(git rev-parse main)"
+  git checkout -b fix/current
+  git commit --quiet --allow-empty -m "extra commit on current branch"
+  bats_run_function git-worktree-create fix/new
+  local newBranchSha
+  newBranchSha="$(git -C "$BATS_GIT_DIR" rev-parse fix/new)"
+  [ "$newBranchSha" = "$mainSha" ]
 }
 
 @test "strips leading dot from repo name in dot-prefixed repo folder" {
