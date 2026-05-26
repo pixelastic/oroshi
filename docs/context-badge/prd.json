@@ -235,7 +235,7 @@
       "Open Claude Code inside a linked worktree",
       "Assert statusline shows both project name and branch name as one badge"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0007",
@@ -244,7 +244,7 @@
       "Open Claude Code inside a plain git repo (non-worktree)",
       "Assert statusline shows project name without branch"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0007",
@@ -252,6 +252,6 @@
     "steps": [
       "Assert statusline configuration does not contain a separate git-branch-current or git-branch-colorize call"
     ],
-    "passes": false
+    "passes": true
   }
 ]

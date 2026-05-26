@@ -68,3 +68,11 @@ issue-007 → needs issue-002 (done last, in a separate worktree)
 - Fixed: none
 - Skipped feedback: wrong file path (hallucination — file works); wrong identifier type (incorrect — `getProjectData` takes a name not a key); "context-badge not integrated" and "branch not shown" (reviewer confused issue-006 with issue-007 scope)
 - Next: issue-007 (update Claude Code statusline, separate worktree)
+
+## Session 2026-05-26 — issue-007: update Claude Code statusline
+- Completed: replaced `project-by-path`/`project-colorize` + `git-branch-current`/`git-branch-colorize` with single `context-badge` call in `config/ai/claude/statusline`
+- Tests added: `config/ai/claude/__tests__/statusline.bats` (4 tests: no git-branch-current call, shows oroshi for worktree, shows branch for worktree, no branch for main repo)
+- Discovered: `project-by-path` was already missing from worktree autoloads (deleted in issue-006); `local var=$(cmd)` pattern masked the command-not-found error; functional tests use real oroshi/worktree paths because `projects.zsh` sets `PROJECTS_INDEX_BY_PATH` unconditionally (can't inject a fake project without overriding post-source)
+- Fixed: none
+- Skipped feedback: grep-as-test feedback (`feedback_no_lint_config_tests.md`) — that memory is for config files (settings.json, ESLint); statusline is executable code, not config; test 1 removed as redundant, test 2 kept (validates spec criterion "no separate branch call"); bats subprocess feedback — tests use real `context-badge` autoload, no PATH stubs involved; fragile no-branch test — `~/.oroshi/` is always on `main`, environment-specific by design; silent badge suppression — `context-badge` returns 0 + empty output for unknown paths, guard is correct
+- Next: merge to main (issue-007 done last per guidance)

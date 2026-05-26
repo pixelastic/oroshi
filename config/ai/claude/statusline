@@ -34,15 +34,9 @@ local statusline=()
 
 # }}}
 
-# Project
-local projectName="$(project-by-path "$currentDir")"
-displayProject="$(project-colorize ${projectName})"
-statusline+=("$displayProject ")
-
-# Branch
-local branchName="$(git-branch-current "${currentDir}")"
-local displayBranch="$(git-branch-colorize "${branchName}")"
-statusline+=("$displayBranch ")
+# Context Badge
+local displayBadge="$(context-badge "$currentDir")"
+[[ "$displayBadge" != "" ]] && statusline+=("$displayBadge ")
 
 # Context budget
 local tokensKRaw=$(printf "%.1f" $((totalTokens / 1000.0)))
