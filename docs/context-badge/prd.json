@@ -217,7 +217,7 @@
       "Assert statusline.lua references context-project",
       "Assert statusline.lua does not reference project-by-path"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0006",
@@ -226,7 +226,7 @@
       "Assert project-by-path autoload function file does not exist",
       "Assert no file in the codebase references project-by-path"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0007",

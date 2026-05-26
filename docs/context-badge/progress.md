@@ -60,3 +60,11 @@ issue-007 → needs issue-002 (done last, in a separate worktree)
 - Fixed: reviewer flagged `fzf-prompt-directory` fallback regression — paths outside any project produced empty prompt; fixed with explicit if/else fallback to tilde-prefixed absolute path
 - Skipped feedback: bats stub pattern (reviewer applied PATH-stub rule to function-definition stubs — different pattern); `project_env` rename to `context_env` (matches existing convention in context-badge.bats); one-liner condition (standard per zsh-writer); fzf-fs-shared-preview-header downstream concatenation concern (projectPrefix IS used at line 91, not in diff)
 - Next: issue-006 (update-neovim)
+
+## Session 2026-05-26 — issue-006: update-neovim
+- Completed: replaced `project-by-path` with `context-project` in `statusline.lua`; deleted `project-by-path` autoload; deleted orphaned `git-worktree-project` (called `project-by-path`, unused); deleted `git-worktree-project.bats`
+- Tests added: `project-by-path-migration.bats` (4 static grep checks: statusline has/lacks pattern, file deleted, no config refs)
+- Discovered: `git-worktree-project` was an orphaned wrapper around `project-by-path` with no callers; `config/ai/claude/statusline` also references `project-by-path` — excluded from test as issue-007 scope; variable renamed `projectKey→projectName` in statusline.lua (semantically correct: `getProjectData` takes a name, calls `project-key` internally)
+- Fixed: none
+- Skipped feedback: wrong file path (hallucination — file works); wrong identifier type (incorrect — `getProjectData` takes a name not a key); "context-badge not integrated" and "branch not shown" (reviewer confused issue-006 with issue-007 scope)
+- Next: issue-007 (update Claude Code statusline, separate worktree)
