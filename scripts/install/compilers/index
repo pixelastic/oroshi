@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-set -e
-
-~/.oroshi/scripts/install/compilers/default
-~/.oroshi/scripts/install/compilers/flatpack

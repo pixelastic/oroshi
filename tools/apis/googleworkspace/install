@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# Google Workspace CLI
+# https://github.com/googleworkspace/cli
+set -e
+
+# Install gcloud CLI first
+$OROSHI_ROOT/tools/infrastructure/gcloud/install
+
+# Install gws globally
+node-module-install @googleworkspace/cli

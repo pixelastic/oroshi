@@ -27,6 +27,6 @@ nohup \
 	kdocker \
 	-qol \
 	-d 15 \
-	-i /home/tim/.oroshi/config/spotify/spotify.svg \
+	-i /home/tim/.oroshi/tools/worktools/spotify/config/spotify.svg \
 	/snap/bin/spotify \
 	</dev/null >/dev/null 2>&1 &

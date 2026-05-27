@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+# Link sysctl.conf to ~/local/etc/sysctl.conf
+set -e
+# This is your job to manually link /etc/sysctl.conf to that file
+
+# Paths
+configDir="${0:h}/config"
+configFile="$configDir/sysctl.conf"
+
+
+# Generic git config
+ln -fs $configFile ~/local/etc/sysctl.conf
+
+

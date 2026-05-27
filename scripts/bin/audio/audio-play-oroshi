@@ -11,5 +11,5 @@
 # Return early if sound is disabled
 sound-mode-is-enabled || exit 0
 
-local soundsDir=~/.oroshi/config/audio/sounds
+local soundsDir=$OROSHI_ROOT/tools/audio/sounds/config
 audio-play "${soundsDir}/$1"

@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+# Calibre: An ebook reader and toolbox
+set -e
+# https://github.com/kovidgoyal/calibre
+# Also includes ebook-meta, ebook-viewer and ebook-convert
+
+DOWNLOAD_URL="https://download.calibre-ebook.com/linux-installer.sh"
+
+# Download install script
+tmpDirectory=~/local/tmp/calibre
+mkdir -p $tmpDirectory
+
+installScript="${tmpDirectory}/install.sh"
+wget $DOWNLOAD_URL -O "${installScript}"
+chmod +x ${installScript}
+
+# Install calibre, ebook-convert, ebook-meta and ebook-viewer
+${installScript} \
+	install_dir=/home/$USER/local/etc \
+	bin_dir=/home/$USER/local/bin

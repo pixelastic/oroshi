@@ -38,4 +38,4 @@ Calling porcelain bypasses that work and creates duplication.
 
 
 All helpers:
-!`tree ~/.oroshi/config/term/zsh/functions/autoload/`
+!`tree ~/.oroshi/tools/term/zsh/config/functions/autoload/`

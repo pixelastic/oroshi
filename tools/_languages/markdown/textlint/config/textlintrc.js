@@ -57,7 +57,7 @@ module.exports = {
     },
     terminology: {
       defaultTerms: false,
-      terms: `${os.homedir()}/.oroshi/config/textlint/terms.json`,
+      terms: `${os.homedir()}/.oroshi/tools/_languages/markdown/textlint/config/terms.json`,
     },
     'write-good': {
       passive: false,

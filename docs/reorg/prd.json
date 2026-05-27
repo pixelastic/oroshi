@@ -166,6 +166,6 @@
       "Run: grep -r '\\.oroshi/scripts/install/' . --exclude-dir=docs --exclude-dir=.git -- should return no results",
       "Run: grep -r '\\.oroshi/scripts/deploy/' . --exclude-dir=docs --exclude-dir=.git -- should return no results"
     ],
-    "passes": false
+    "passes": true
   }
 ]

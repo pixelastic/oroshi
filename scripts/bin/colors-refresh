@@ -17,6 +17,6 @@ source $ZSH_CONFIG_PATH/theming/env/projects.zsh
 source $ZSH_CONFIG_PATH/theming/env/filetypes.zsh
 
 # Rewrite the config files coming from ENV files
-~/.oroshi/config/cli/bat/generate-theme
-~/.oroshi/config/cli/rg/generate-config
-~/.oroshi/config/git/git/generate-config
+$OROSHI_ROOT/tools/cli/bat/config/generate-theme
+$OROSHI_ROOT/tools/cli/rg/config/generate-config
+$OROSHI_ROOT/tools/git/git/config/generate-config

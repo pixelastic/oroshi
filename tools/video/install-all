@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+set -e
+
+# Conversion
+"${0:h}/ffmpeg/install"
+
+# Players
+"${0:h}/vlc/install"
+
+# mkv
+"${0:h}/mkv/install"

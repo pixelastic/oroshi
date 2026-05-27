@@ -11,8 +11,8 @@ if [[ "$project" == "pixelastic/oroshi" ]] && git-directory-is-worktree; then
   oroshiRoot="$(git-directory-root)"
   # Rebuild PATH so bash bats process resolves scripts to the worktree
   export OROSHI_ROOT="$oroshiRoot"
-  source "$oroshiRoot/config/term/zsh/path.zsh"
+  source "$oroshiRoot/tools/term/zsh/config/path.zsh"
 fi
 
-export BATS_LIB_PATH="${oroshiRoot}/config/term/bats"
+export BATS_LIB_PATH="${oroshiRoot}/tools/term/bats/config"
 exec "${oroshiRoot}/node_modules/bats/bin/bats" "$@"

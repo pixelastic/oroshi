@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+set -e
+
+"${0:h}/default/install"
+"${0:h}/flatpak/install"

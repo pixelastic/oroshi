@@ -16,7 +16,7 @@ fi
 # defined
 if [[ $OROSHI_AUTOLOADED_FUNCTIONS[$commandToRun] == "1" ]]; then
   local functionDefinitionPath="$(find \
-    ~/.oroshi/config/zsh/functions/autoload \
+    $OROSHI_ROOT/tools/term/zsh/config/functions/autoload \
     -name $commandToRun \
     -type f \
     -print
@@ -29,5 +29,5 @@ fi
 # -s: Run command using the shell
 # Note: If the command to run takes too long, the script will hand until it
 # ended its execution.
-ls $filesToWatch \
+printf '%s\n' $filesToWatch \
   | entr -a -c -s "$commandToRun"
