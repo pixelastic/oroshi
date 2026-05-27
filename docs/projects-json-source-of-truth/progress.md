@@ -45,3 +45,9 @@ issue-006 → needs issue-002
 - Rationale: old PROJECT_* pipeline and new PROJECTS[] pipeline run in parallel; dist/projects.zsh is consumed directly by each new consumer (NeoVim, Kitty) without needing shell-level wiring; wiring PROJECTS[] into the shell is deferred to the ZSH functions PRD to avoid breaking context-badge/context-project/fzf-projects-source/etc.
 - Discovered: removing env/projects.zsh sourcing breaks ~8 consumers in config/term/zsh/functions/autoload/project/ and fzf/ — not safe until ZSH functions PRD
 - Next: issue-004 (NeoVim) or issue-005 (pre-commit hook)
+
+## Session 2026-05-27 — issue-005: lintstaged approach (corrected)
+- Completed: added entry to `lintstaged.config.js` — runs `projects-build` when `src/projects.json` or `src/projects-build` is staged; no BATS tests (config file = artifact, per project convention)
+- Previous approach (modifying `config/git/git/hooks/pre-commit` directly) was reverted — wrong integration point
+- Discovered: lintstaged is the correct hook mechanism; `projects-build` ignores arguments so no function-wrapper needed
+- Next: issue-004 (NeoVim)
