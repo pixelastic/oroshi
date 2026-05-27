@@ -1,6 +1,6 @@
 ---
 name: ralph
-description: Use when user says "ralph <dir>" or "ralph this". Implements the highest-priority issue from prd.json in the given directory using TDD, updates docs, runs review in a subagent, fixes actionable feedback, then stops for user to commit. Argument is the directory containing prd.json and progress.md.
+description: Use when user says "ralph <dir>" or "ralph this". Implements the highest-priority issue from issues.json in the given directory using TDD, updates docs, runs review in a subagent, fixes actionable feedback, then stops for user to commit. Argument is the directory containing issues.json and progress.md.
 argument-hint: [directory]
 effort: high
 ---
@@ -20,10 +20,10 @@ If `$ARGUMENTS` is empty, `"this"`, `"."`, or `"here"` → use current working d
 
 **Goal:** Load current PRD state and session history.
 
-**Exit criterion:** You've read prd.json, progress.md, and know which issues are open.
+**Exit criterion:** You've read issues.json, progress.md, and know which issues are open.
 
 Read:
-- `$ARGUMENTS/prd.json` — issues, statuses, metadata
+- `$ARGUMENTS/issues.json` — issues, statuses, metadata
 - `$ARGUMENTS/progress.md` — session history
 
 ---
@@ -98,7 +98,7 @@ per criterion. Run them. Read the failure output.
 
 **Goal:** Leave full context for the next session.
 
-**Exit criterion:** progress.md and prd.json both updated.
+**Exit criterion:** progress.md and issues.json both updated.
 
 Append to `$ARGUMENTS/progress.md`:
 
@@ -112,7 +112,7 @@ Append to `$ARGUMENTS/progress.md`:
 - Next: <recommended next issue or action>
 ```
 
-Update `$ARGUMENTS/prd.json`: mark issue as complete, update any relevant status fields.
+Update `$ARGUMENTS/issues.json`: mark issue as complete, update any relevant status fields.
 
 ---
 
@@ -144,7 +144,7 @@ Update `$ARGUMENTS/prd.json`: mark issue as complete, update any relevant status
 
 ## Checklist
 
-- [ ] Read prd.json + progress.md
+- [ ] Read issues.json + progress.md
 - [ ] Picked one issue, read its detail file
 - [ ] RED: wrote failing tests, ran them, confirmed they fail
 - [ ] IMPLEMENT: minimal code, all behaviors covered
@@ -155,5 +155,5 @@ Update `$ARGUMENTS/prd.json`: mark issue as complete, update any relevant status
 - [ ] Actionable feedback fixed or explicitly dismissed
 - [ ] Linter + tests green for modified files after review fixes
 - [ ] progress.md updated with session entry
-- [ ] prd.json updated
+- [ ] issues.json updated
 - [ ] **Stopped — waiting for user to commit**
