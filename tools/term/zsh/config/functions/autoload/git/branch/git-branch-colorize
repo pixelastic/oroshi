@@ -6,9 +6,13 @@
 # $ git-branch-colorize origin/develop --remote #  origin/remote
 zparseopts -E -D \
   -with-icon=flagWithIcon \
-  -remote=flagRemote
+  -remote=flagRemote \
+  -zsh=flagZsh
 local isWithIcon=${#flagWithIcon}
 local isRemote=${#flagRemote}
+local isZsh=${#flagZsh}
+local -a zshFlag=()
+(( isZsh )) && zshFlag=(--zsh)
 
 # Branch name {{{
 local branchName="$1"
@@ -28,7 +32,7 @@ fi
 
 # If --with-icon is not passed, we simply display the colored branch
 if [[ "$isWithIcon" != 1 ]]; then
-  colorize "$branchName" $branchColor
+  colorize "$branchName" $branchColor "${zshFlag[@]}"
   return
 fi
 
@@ -37,48 +41,48 @@ fi
 
 # For remote branches, color as a remote
 if [[ $isRemote == '1' ]]; then
-  colorize " $branchName" $branchColor
+  colorize " $branchName" $branchColor "${zshFlag[@]}"
   return
 fi
 
 local branchPushStatus="$(git-branch-push-status $branchName)"
 
-if [[ $branchPushStatus = 'never_pushed' ]]; then
-  colorize " $branchName" $branchColor
+if [[ $branchPushStatus == 'never_pushed' ]]; then
+  colorize " $branchName" $branchColor "${zshFlag[@]}"
   return
 fi
 
-if [[ $branchPushStatus = 'identical' ]]; then
-  colorize "$branchName" $branchColor
+if [[ $branchPushStatus == 'identical' ]]; then
+  colorize "$branchName" $branchColor "${zshFlag[@]}"
   return
 fi
 
-if [[ $branchPushStatus = 'ahead' ]]; then
-  colorize " $branchName" $branchColor
+if [[ $branchPushStatus == 'ahead' ]]; then
+  colorize " $branchName" $branchColor "${zshFlag[@]}"
   return
 fi
 
-if [[ $branchPushStatus = 'behind' ]]; then
-  colorize " $branchName" $branchColor
+if [[ $branchPushStatus == 'behind' ]]; then
+  colorize " $branchName" $branchColor "${zshFlag[@]}"
   return
 fi
 
-if [[ $branchPushStatus = 'gone' ]]; then
-  colorize " $branchName" $branchColor
+if [[ $branchPushStatus == 'gone' ]]; then
+  colorize " $branchName" $branchColor "${zshFlag[@]}"
   return
 fi
 
-if [[ $branchPushStatus = 'diverged' ]]; then
-  colorize " $branchName" $branchColor
+if [[ $branchPushStatus == 'diverged' ]]; then
+  colorize " $branchName" $branchColor "${zshFlag[@]}"
   return
 fi
 
-if [[ $branchPushStatus = 'detached' ]]; then
+if [[ $branchPushStatus == 'detached' ]]; then
   local currentCommit="$(git-commit-current)"
-  colorize " HEAD ($currentCommit)" $branchColor
+  colorize " HEAD ($currentCommit)" $branchColor "${zshFlag[@]}"
   return
 fi
 
 # Fallback on unknown status
-colorize " $branchName" $branchColor
+colorize " $branchName" $branchColor "${zshFlag[@]}"
 return

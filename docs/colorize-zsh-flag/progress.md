@@ -33,3 +33,11 @@ Note: issue-002, 003, 004, and 006 are all unblocked once issue-001 is done — 
 - Fixed: `%G{...}` → `%K{...}` (wrong bg code); `%f` → `%f%k` (missing bg reset); `\e[00m` → `\e[0m`; `echo` → `print -n`; added `setopt local_options err_return`
 - Skipped feedback: spec agent falsely reported missing tests (bats file is in diff); boolean integer style `(( isZsh ))` is consistent with progress.md guidance
 - Next: issue-002 (git-branch-colorize), issue-003 (git-tag-colorize), issue-004 (git-remote-colorize), issue-006 (context-badge) — all now unblocked
+
+## Session 2026-05-27 — 0002: git-branch-colorize --zsh flag
+- Completed: Added `--zsh` flag to `git-branch-colorize`; propagated to all 9 `colorize` calls
+- Tests added: `config/term/zsh/functions/autoload/git/branch/__tests__/git-branch-colorize.bats` (9 tests)
+- Discovered: File has Unicode icon glyphs — Edit tool couldn't match them; used sed + Python string replace to modify colorize calls
+- Fixed: Pre-existing `=` → `==` in all `[[ $branchPushStatus ... ]]` comparisons (zshlint violations)
+- Skipped feedback: mocks in setup() correct (all tests share same deps); spec agent's concern about bare `[[` is wrong (bats_run_function calls `run` internally); not testing all 8 push-status branches (not in acceptance criteria)
+- Next: issue-003 (git-tag-colorize) or issue-004 (git-remote-colorize) — same pattern, same complexity

@@ -51,7 +51,7 @@
       "Check output contains \\e[",
       "Check output contains 'main'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",
@@ -63,7 +63,7 @@
       "Check output contains 'main'",
       "Check output contains no \\e["
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",
@@ -75,7 +75,7 @@
       "Check output contains an icon character",
       "Check output contains no \\e["
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",
