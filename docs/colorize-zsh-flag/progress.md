@@ -16,7 +16,7 @@ Note: issue-002, 003, 004, and 006 are all unblocked once issue-001 is done — 
 - **zsh patterns**:
   - Use `local var="$(cmd)"` on one line (never split `local` from assignment)
   - Use `setopt local_options errexit` for autoload functions (not `set -e`)
-  - Use `local -a zshFlag=(); (( isZsh )) && zshFlag=(--zsh)` to propagate `--zsh`
+  - Use `local -a zshFlag=(); [[ $isZsh == "1" ]] && zshFlag=(--zsh)` to propagate `--zsh`
   - Use `print -n` not `echo` for output without trailing newline
 - **PROJECTS array**: project data lives in `config/term/zsh/theming/dist/projects.zsh` as a `typeset -gA PROJECTS` associative array. Keys: `name.background.ansi`, `name.foreground.ansi`, `name.icon`, `name.path`, `name.hideNameInPrompt`.
 - **Test injection pattern**: inject PROJECTS inline in `run zsh -c "..."` calls, same as `context-project.bats`: `typeset -gA PROJECTS; PROJECTS[my-project.path]=${BATS_GIT_DIR}/; PROJECTS[my-project.background.ansi]=100; ...`
@@ -41,3 +41,11 @@ Note: issue-002, 003, 004, and 006 are all unblocked once issue-001 is done — 
 - Fixed: Pre-existing `=` → `==` in all `[[ $branchPushStatus ... ]]` comparisons (zshlint violations)
 - Skipped feedback: mocks in setup() correct (all tests share same deps); spec agent's concern about bare `[[` is wrong (bats_run_function calls `run` internally); not testing all 8 push-status branches (not in acceptance criteria)
 - Next: issue-003 (git-tag-colorize) or issue-004 (git-remote-colorize) — same pattern, same complexity
+
+## Session 2026-05-27 — 0003: git-tag-colorize --zsh flag
+- Completed: Added `--zsh` flag to `git-tag-colorize`; propagated to all 6 `colorize` calls; added `--zsh` to header comment
+- Tests added: `config/term/zsh/functions/autoload/git/tag/__tests__/git-tag-colorize.bats` (9 tests)
+- Discovered: File has Unicode icon glyphs — Edit tool couldn't match; used mixed-quoting sed to append `"${zshFlag[@]}"` to colorize lines; fixed pre-existing `=` → `==` in `[[ ]]` comparisons (zshlint violations)
+- Fixed: Pre-existing `=` → `==` in all `[[ $tagStatus ... ]]` comparisons (zshlint violations)
+- Skipped feedback: `noArithFlagTest` for `(( isZsh ))` — pre-existing in git-branch-colorize, consistent with progress.md guidance; mock-in-setup pattern same as accepted git-branch-colorize tests; spec agent wrong about positional arg being ignored (function does use `$1`)
+- Next: issue-004 (git-remote-colorize) — same pattern

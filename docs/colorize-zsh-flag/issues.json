@@ -86,7 +86,7 @@
       "Check output contains \\e[",
       "Check output contains 'v1.0'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",
@@ -98,7 +98,7 @@
       "Check output contains 'v1.0'",
       "Check output contains no \\e["
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0004",

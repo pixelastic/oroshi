@@ -12,7 +12,7 @@ local isWithIcon=${#flagWithIcon}
 local isRemote=${#flagRemote}
 local isZsh=${#flagZsh}
 local -a zshFlag=()
-(( isZsh )) && zshFlag=(--zsh)
+[[ $isZsh == "1" ]] && zshFlag=(--zsh)
 
 # Branch name {{{
 local branchName="$1"

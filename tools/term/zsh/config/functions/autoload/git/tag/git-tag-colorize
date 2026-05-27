@@ -3,10 +3,15 @@
 # $ git-tag-colorize                    # {currentTag}
 # $ git-tag-colorize main               # v1.0
 # $ git-tag-colorize --with-icon        #  v1.0
+# $ git-tag-colorize --with-icon --zsh  # zsh prompt codes
 zparseopts -E -D \
-	-with-icon=flagWithIcon
+	-with-icon=flagWithIcon \
+	-zsh=flagZsh
 
 local isWithIcon=${#flagWithIcon}
+local isZsh=${#flagZsh}
+local -a zshFlag=()
+[[ $isZsh == "1" ]] && zshFlag=(--zsh)
 
 local currentTag="$(git-tag-current)"
 
@@ -23,36 +28,36 @@ fi
 
 # If --with-icon is not passed, we simply display the colored tag
 if [[ "$isWithIcon" != 1 ]]; then
-	colorize "$tagName" $COLOR_ALIAS_GIT_TAG
+	colorize "$tagName" $COLOR_ALIAS_GIT_TAG "${zshFlag[@]}"
 	return
 fi
 
 local tagStatus="$(git-tag-status "$tagName")"
 
 # Exact: The tag points specifically to the current commit
-if [[ "$tagStatus" = "exact" ]]; then
-	colorize " $tagName" $COLOR_ALIAS_GIT_TAG_EXACT
+if [[ "$tagStatus" == "exact" ]]; then
+	colorize " $tagName" $COLOR_ALIAS_GIT_TAG_EXACT "${zshFlag[@]}"
 	return
 fi
 
 # Closest: The tag is the closest in the branch
-if [[ "$tagStatus" = "closest" ]]; then
-	colorize " $tagName" $COLOR_ALIAS_GIT_TAG_CLOSEST
+if [[ "$tagStatus" == "closest" ]]; then
+	colorize " $tagName" $COLOR_ALIAS_GIT_TAG_CLOSEST "${zshFlag[@]}"
 	return
 fi
 
 # Parent: The tag is somewhere in the branch
-if [[ "$tagStatus" = "parent" ]]; then
-	colorize " $tagName" $COLOR_ALIAS_GIT_TAG_PARENT
+if [[ "$tagStatus" == "parent" ]]; then
+	colorize " $tagName" $COLOR_ALIAS_GIT_TAG_PARENT "${zshFlag[@]}"
 	return
 fi
 
 # Unrelated: The tag is not in the branch
-if [[ "$tagStatus" = "unrelated" ]]; then
-	colorize " $tagName" $COLOR_ALIAS_GIT_TAG_UNRELATED
+if [[ "$tagStatus" == "unrelated" ]]; then
+	colorize " $tagName" $COLOR_ALIAS_GIT_TAG_UNRELATED "${zshFlag[@]}"
 	return
 fi
 
 # Fallback on unknown status
-colorize " $tagName" $COLOR_ALIAS_ERROR
+colorize " $tagName" $COLOR_ALIAS_ERROR "${zshFlag[@]}"
 return
