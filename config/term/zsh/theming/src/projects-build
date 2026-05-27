@@ -126,7 +126,7 @@ function generateDistZsh() {
       else empty end),
 
       (if .path and (.path != "") then
-        "PROJECTS[\($projectName).path]=\"\(.path)\""
+        "PROJECTS[\($projectName).path]=\(.path)"
       else empty end),
 
       "PROJECTS[\($projectName).hideNameInPrompt]=\(.hideNameInPrompt)"

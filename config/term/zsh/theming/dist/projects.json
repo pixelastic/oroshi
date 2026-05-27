@@ -1,0 +1,2157 @@
+{
+  "aberlaas": {
+    "background": {
+      "ansi": 87,
+      "hex": "#a16207",
+      "name": "YELLOW_7"
+    },
+    "backgroundInactive": {
+      "ansi": 212,
+      "hex": "#1a1a0f",
+      "name": "DARK_YELLOW"
+    },
+    "foreground": {
+      "ansi": 139,
+      "hex": "#111827",
+      "name": "GRAY_9"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/aberlaas/"
+  },
+  "algolia": {
+    "background": {
+      "ansi": 97,
+      "hex": "#1d4ed8",
+      "name": "BLUE_7"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 132,
+      "hex": "#e5e7eb",
+      "name": "GRAY_2"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": ""
+  },
+  "algolia-indexing": {
+    "background": {
+      "ansi": 97,
+      "hex": "#1d4ed8",
+      "name": "BLUE_7"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 132,
+      "hex": "#e5e7eb",
+      "name": "GRAY_2"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/algolia-indexing/"
+  },
+  "alme": {
+    "foreground": {
+      "ansi": 133,
+      "hex": "#d1d5db",
+      "name": "GRAY_3"
+    },
+    "hideNameInPrompt": false,
+    "icon": "(.) ",
+    "path": "~/local/www/projects/alme/"
+  },
+  "aoinan": {
+    "background": {
+      "ansi": 148,
+      "hex": "#9a3412",
+      "name": "ORANGE_8"
+    },
+    "backgroundInactive": {
+      "ansi": 220,
+      "hex": "#1a120f",
+      "name": "DARK_ORANGE"
+    },
+    "foreground": {
+      "ansi": 133,
+      "hex": "#d1d5db",
+      "name": "GRAY_3"
+    },
+    "hideNameInPrompt": false,
+    "icon": "<> ",
+    "path": "~/local/www/projects/aoinan/"
+  },
+  "api-cloudflare": {
+    "background": {
+      "ansi": 17,
+      "hex": "#dd6b20",
+      "name": "ORANGE"
+    },
+    "backgroundInactive": {
+      "ansi": 220,
+      "hex": "#1a120f",
+      "name": "DARK_ORANGE"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/api.pixelastic.com/cloudflare/"
+  },
+  "api-fly": {
+    "background": {
+      "ansi": 5,
+      "hex": "#805ad5",
+      "name": "PURPLE"
+    },
+    "backgroundInactive": {
+      "ansi": 214,
+      "hex": "#201325",
+      "name": "DARK_PURPLE"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/api.pixelastic.com/fly/"
+  },
+  "api-netlify": {
+    "background": {
+      "ansi": 196,
+      "hex": "#0d9488",
+      "name": "TEAL_6"
+    },
+    "backgroundInactive": {
+      "ansi": 225,
+      "hex": "#0f1a18",
+      "name": "DARK_TEAL"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/api.pixelastic.com/netlify/"
+  },
+  "armory": {
+    "background": {
+      "ansi": 16,
+      "hex": "#6b7280",
+      "name": "GRAY"
+    },
+    "foreground": {
+      "ansi": 85,
+      "hex": "#eab308",
+      "name": "YELLOW_5"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/gamemaster/armory/"
+  },
+  "bg": {
+    "background": {
+      "ansi": 17,
+      "hex": "#dd6b20",
+      "name": "ORANGE"
+    },
+    "backgroundInactive": {
+      "ansi": 220,
+      "hex": "#1a120f",
+      "name": "DARK_ORANGE"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "󰀿 ",
+    "path": ""
+  },
+  "blog": {
+    "background": {
+      "ansi": 2,
+      "hex": "#38a169",
+      "name": "GREEN"
+    },
+    "backgroundInactive": {
+      "ansi": 211,
+      "hex": "#0f1a0f",
+      "name": "DARK_GREEN"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/blog.pixelastic.com/"
+  },
+  "bodwynn": {
+    "background": {
+      "ansi": 183,
+      "hex": "#c4b5fd",
+      "name": "VIOLET_3"
+    },
+    "backgroundInactive": {
+      "ansi": 224,
+      "hex": "#150f1a",
+      "name": "DARK_VIOLET"
+    },
+    "foreground": {
+      "ansi": 188,
+      "hex": "#5b21b6",
+      "name": "VIOLET_8"
+    },
+    "hideNameInPrompt": false,
+    "icon": "󰇈 ",
+    "path": "~/local/www/algolia/bodwynn/"
+  },
+  "bodwynn-data": {
+    "background": {
+      "ansi": 184,
+      "hex": "#a78bfa",
+      "name": "VIOLET_4"
+    },
+    "backgroundInactive": {
+      "ansi": 224,
+      "hex": "#150f1a",
+      "name": "DARK_VIOLET"
+    },
+    "foreground": {
+      "ansi": 188,
+      "hex": "#5b21b6",
+      "name": "VIOLET_8"
+    },
+    "hideNameInPrompt": false,
+    "icon": "󰇈  ",
+    "path": "~/local/www/algolia/bodwynn-data/"
+  },
+  "books": {
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": ""
+  },
+  "brefsearch": {
+    "background": {
+      "ansi": 138,
+      "hex": "#1f2937",
+      "name": "GRAY_8"
+    },
+    "foreground": {
+      "ansi": 133,
+      "hex": "#d1d5db",
+      "name": "GRAY_3"
+    },
+    "hideNameInPrompt": false,
+    "icon": "ⓑ ",
+    "path": "~/local/www/algolia/brefsearch/brefsearch/"
+  },
+  "brefsearch-data": {
+    "background": {
+      "ansi": 138,
+      "hex": "#1f2937",
+      "name": "GRAY_8"
+    },
+    "foreground": {
+      "ansi": 133,
+      "hex": "#d1d5db",
+      "name": "GRAY_3"
+    },
+    "hideNameInPrompt": false,
+    "icon": "ⓑ  ",
+    "path": "~/local/www/algolia/brefsearch/brefsearch-data/"
+  },
+  "brefsearch-media": {
+    "background": {
+      "ansi": 138,
+      "hex": "#1f2937",
+      "name": "GRAY_8"
+    },
+    "foreground": {
+      "ansi": 133,
+      "hex": "#d1d5db",
+      "name": "GRAY_3"
+    },
+    "hideNameInPrompt": false,
+    "icon": "ⓑ  ",
+    "path": "~/local/www/algolia/brefsearch/brefsearch-media/"
+  },
+  "callirhoe": {
+    "background": {
+      "ansi": 199,
+      "hex": "#134e4a",
+      "name": "TEAL_9"
+    },
+    "backgroundInactive": {
+      "ansi": 225,
+      "hex": "#0f1a18",
+      "name": "DARK_TEAL"
+    },
+    "foreground": {
+      "ansi": 132,
+      "hex": "#e5e7eb",
+      "name": "GRAY_2"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/callirhoe/"
+  },
+  "claude": {
+    "background": {
+      "ansi": 167,
+      "hex": "#b45309",
+      "name": "AMBER_7"
+    },
+    "backgroundInactive": {
+      "ansi": 222,
+      "hex": "#1a180f",
+      "name": "DARK_AMBER"
+    },
+    "foreground": {
+      "ansi": 132,
+      "hex": "#e5e7eb",
+      "name": "GRAY_2"
+    },
+    "hideNameInPrompt": false,
+    "icon": "● ",
+    "path": "~/local/tmp/oroshi/claude/"
+  },
+  "comics": {
+    "hideNameInPrompt": false,
+    "icon": "X",
+    "path": ""
+  },
+  "commitology": {
+    "background": {
+      "ansi": 96,
+      "hex": "#2563eb",
+      "name": "BLUE_6"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 90,
+      "hex": "#eff6ff",
+      "name": "BLUE_0"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/algolia/commitology/"
+  },
+  "commitology-data": {
+    "background": {
+      "ansi": 99,
+      "hex": "#1e3a8a",
+      "name": "BLUE_9"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 90,
+      "hex": "#eff6ff",
+      "name": "BLUE_0"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/algolia/commitology-data/"
+  },
+  "contentsquare": {
+    "background": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "foreground": {
+      "ansi": 98,
+      "hex": "#1e40af",
+      "name": "BLUE_8"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/contentsquare/"
+  },
+  "crafting": {
+    "background": {
+      "ansi": 89,
+      "hex": "#713f12",
+      "name": "YELLOW_9"
+    },
+    "backgroundInactive": {
+      "ansi": 212,
+      "hex": "#1a1a0f",
+      "name": "DARK_YELLOW"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": ""
+  },
+  "crsearch": {
+    "background": {
+      "ansi": 188,
+      "hex": "#5b21b6",
+      "name": "VIOLET_8"
+    },
+    "backgroundInactive": {
+      "ansi": 224,
+      "hex": "#150f1a",
+      "name": "DARK_VIOLET"
+    },
+    "foreground": {
+      "ansi": 181,
+      "hex": "#ede9fe",
+      "name": "VIOLET_1"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/algolia/crsearch/crsearch/"
+  },
+  "crsearch-data": {
+    "background": {
+      "ansi": 109,
+      "hex": "#581c87",
+      "name": "PURPLE_9"
+    },
+    "backgroundInactive": {
+      "ansi": 214,
+      "hex": "#201325",
+      "name": "DARK_PURPLE"
+    },
+    "foreground": {
+      "ansi": 101,
+      "hex": "#f3e8ff",
+      "name": "PURPLE_1"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/algolia/crsearch/crsearch-data/"
+  },
+  "crsearch-media": {
+    "background": {
+      "ansi": 108,
+      "hex": "#6b21a8",
+      "name": "PURPLE_8"
+    },
+    "backgroundInactive": {
+      "ansi": 214,
+      "hex": "#201325",
+      "name": "DARK_PURPLE"
+    },
+    "foreground": {
+      "ansi": 101,
+      "hex": "#f3e8ff",
+      "name": "PURPLE_1"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/algolia/crsearch/crsearch-media/"
+  },
+  "dashboards": {
+    "background": {
+      "ansi": 93,
+      "hex": "#93c5fd",
+      "name": "BLUE_3"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "",
+    "path": ""
+  },
+  "devrel": {
+    "background": {
+      "ansi": 196,
+      "hex": "#0d9488",
+      "name": "TEAL_6"
+    },
+    "backgroundInactive": {
+      "ansi": 225,
+      "hex": "#0f1a18",
+      "name": "DARK_TEAL"
+    },
+    "foreground": {
+      "ansi": 133,
+      "hex": "#d1d5db",
+      "name": "GRAY_3"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": ""
+  },
+  "dropbox": {
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": ""
+  },
+  "dungeons": {
+    "background": {
+      "ansi": 87,
+      "hex": "#a16207",
+      "name": "YELLOW_7"
+    },
+    "backgroundInactive": {
+      "ansi": 212,
+      "hex": "#1a1a0f",
+      "name": "DARK_YELLOW"
+    },
+    "foreground": {
+      "ansi": 0,
+      "hex": "#0c0f15",
+      "name": "BLACK"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/gamemaster/dungeons/dungeons/"
+  },
+  "dungeons-pages": {
+    "background": {
+      "ansi": 86,
+      "hex": "#ca8a04",
+      "name": "YELLOW_6"
+    },
+    "backgroundInactive": {
+      "ansi": 212,
+      "hex": "#1a1a0f",
+      "name": "DARK_YELLOW"
+    },
+    "foreground": {
+      "ansi": 0,
+      "hex": "#0c0f15",
+      "name": "BLACK"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/gamemaster/dungeons/dungeons-pages/"
+  },
+  "dungeons-pictures": {
+    "background": {
+      "ansi": 85,
+      "hex": "#eab308",
+      "name": "YELLOW_5"
+    },
+    "backgroundInactive": {
+      "ansi": 212,
+      "hex": "#1a1a0f",
+      "name": "DARK_YELLOW"
+    },
+    "foreground": {
+      "ansi": 0,
+      "hex": "#0c0f15",
+      "name": "BLACK"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/gamemaster/dungeons/dungeons-pictures/"
+  },
+  "ensureUrlTrailingSlash": {
+    "background": {
+      "ansi": 99,
+      "hex": "#1e3a8a",
+      "name": "BLUE_9"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 132,
+      "hex": "#e5e7eb",
+      "name": "GRAY_2"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/ensure-url-trailing-slash/"
+  },
+  "esmify": {
+    "background": {
+      "ansi": 3,
+      "hex": "#d69e2e",
+      "name": "YELLOW"
+    },
+    "backgroundInactive": {
+      "ansi": 212,
+      "hex": "#1a1a0f",
+      "name": "DARK_YELLOW"
+    },
+    "foreground": {
+      "ansi": 0,
+      "hex": "#0c0f15",
+      "name": "BLACK"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/esmify/"
+  },
+  "firost": {
+    "background": {
+      "ansi": 2,
+      "hex": "#38a169",
+      "name": "GREEN"
+    },
+    "backgroundInactive": {
+      "ansi": 211,
+      "hex": "#0f1a0f",
+      "name": "DARK_GREEN"
+    },
+    "foreground": {
+      "ansi": 132,
+      "hex": "#e5e7eb",
+      "name": "GRAY_2"
+    },
+    "hideNameInPrompt": false,
+    "icon": "❯ ",
+    "path": "~/local/www/projects/firost/"
+  },
+  "gamemaster": {
+    "background": {
+      "ansi": 108,
+      "hex": "#6b21a8",
+      "name": "PURPLE_8"
+    },
+    "backgroundInactive": {
+      "ansi": 214,
+      "hex": "#201325",
+      "name": "DARK_PURPLE"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/gamemaster/gamemaster.pixelastic.com/"
+  },
+  "gdrive": {
+    "background": {
+      "ansi": 3,
+      "hex": "#d69e2e",
+      "name": "YELLOW"
+    },
+    "backgroundInactive": {
+      "ansi": 212,
+      "hex": "#1a1a0f",
+      "name": "DARK_YELLOW"
+    },
+    "foreground": {
+      "ansi": 212,
+      "hex": "#1a1a0f",
+      "name": "DARK_YELLOW"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/mount/gdrive/"
+  },
+  "gilmore": {
+    "background": {
+      "ansi": 107,
+      "hex": "#7e22ce",
+      "name": "PURPLE_7"
+    },
+    "backgroundInactive": {
+      "ansi": 214,
+      "hex": "#201325",
+      "name": "DARK_PURPLE"
+    },
+    "foreground": {
+      "ansi": 81,
+      "hex": "#fef9c3",
+      "name": "YELLOW_1"
+    },
+    "hideNameInPrompt": false,
+    "icon": "✨ ",
+    "path": "~/local/www/projects/gilmore/"
+  },
+  "gitinx": {
+    "background": {
+      "ansi": 133,
+      "hex": "#d1d5db",
+      "name": "GRAY_3"
+    },
+    "foreground": {
+      "ansi": 4,
+      "hex": "#3182ce",
+      "name": "BLUE"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/gitinx/"
+  },
+  "golgoth": {
+    "background": {
+      "ansi": 17,
+      "hex": "#dd6b20",
+      "name": "ORANGE"
+    },
+    "backgroundInactive": {
+      "ansi": 220,
+      "hex": "#1a120f",
+      "name": "DARK_ORANGE"
+    },
+    "foreground": {
+      "ansi": 141,
+      "hex": "#ffedd5",
+      "name": "ORANGE_1"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/golgoth/"
+  },
+  "grimoire": {
+    "background": {
+      "ansi": 169,
+      "hex": "#78350f",
+      "name": "AMBER_9"
+    },
+    "backgroundInactive": {
+      "ansi": 222,
+      "hex": "#1a180f",
+      "name": "DARK_AMBER"
+    },
+    "foreground": {
+      "ansi": 164,
+      "hex": "#fbbf24",
+      "name": "AMBER_4"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/grimoire.pixelastic.com/"
+  },
+  "home": {
+    "background": {
+      "ansi": 2,
+      "hex": "#38a169",
+      "name": "GREEN"
+    },
+    "backgroundInactive": {
+      "ansi": 211,
+      "hex": "#0f1a0f",
+      "name": "DARK_GREEN"
+    },
+    "foreground": {
+      "ansi": 71,
+      "hex": "#dcfce7",
+      "name": "GREEN_1"
+    },
+    "hideNameInPrompt": true,
+    "icon": "",
+    "path": "~/"
+  },
+  "hylea": {
+    "background": {
+      "ansi": 79,
+      "hex": "#14532d",
+      "name": "GREEN_9"
+    },
+    "backgroundInactive": {
+      "ansi": 211,
+      "hex": "#0f1a0f",
+      "name": "DARK_GREEN"
+    },
+    "foreground": {
+      "ansi": 71,
+      "hex": "#dcfce7",
+      "name": "GREEN_1"
+    },
+    "hideNameInPrompt": false,
+    "icon": "📗 ",
+    "path": "~/local/mount/hylea/"
+  },
+  "imoen": {
+    "foreground": {
+      "ansi": 132,
+      "hex": "#e5e7eb",
+      "name": "GRAY_2"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/projects/imoen/"
+  },
+  "indexing": {
+    "background": {
+      "ansi": 93,
+      "hex": "#93c5fd",
+      "name": "BLUE_3"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": ""
+  },
+  "irori": {
+    "background": {
+      "ansi": 22,
+      "hex": "#0f766e",
+      "name": "TEAL"
+    },
+    "backgroundInactive": {
+      "ansi": 225,
+      "hex": "#0f1a18",
+      "name": "DARK_TEAL"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/irori/"
+  },
+  "items": {
+    "background": {
+      "ansi": 149,
+      "hex": "#7c2d12",
+      "name": "ORANGE_9"
+    },
+    "backgroundInactive": {
+      "ansi": 220,
+      "hex": "#1a120f",
+      "name": "DARK_ORANGE"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "ﰤ ",
+    "path": "~/local/www/pixelastic.com/gamemaster/items/items/"
+  },
+  "items-data": {
+    "background": {
+      "ansi": 148,
+      "hex": "#9a3412",
+      "name": "ORANGE_8"
+    },
+    "backgroundInactive": {
+      "ansi": 220,
+      "hex": "#1a120f",
+      "name": "DARK_ORANGE"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "ﰤ ",
+    "path": "~/local/www/pixelastic.com/gamemaster/items/items-data/"
+  },
+  "jekyll": {
+    "background": {
+      "ansi": 95,
+      "hex": "#3b82f6",
+      "name": "BLUE_5"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/algolia/jekyll-algolia/"
+  },
+  "keyleth": {
+    "background": {
+      "ansi": 169,
+      "hex": "#78350f",
+      "name": "AMBER_9"
+    },
+    "backgroundInactive": {
+      "ansi": 222,
+      "hex": "#1a180f",
+      "name": "DARK_AMBER"
+    },
+    "foreground": {
+      "ansi": 163,
+      "hex": "#fcd34d",
+      "name": "AMBER_3"
+    },
+    "hideNameInPrompt": false,
+    "icon": "󰌪 ",
+    "path": "~/local/www/projects/keyleth/"
+  },
+  "kindle": {
+    "background": {
+      "ansi": 99,
+      "hex": "#1e3a8a",
+      "name": "BLUE_9"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 92,
+      "hex": "#bfdbfe",
+      "name": "BLUE_2"
+    },
+    "hideNameInPrompt": false,
+    "icon": "   ",
+    "path": "/media/tim/Kindle/"
+  },
+  "korvosa": {
+    "background": {
+      "ansi": 69,
+      "hex": "#7f1d1d",
+      "name": "RED_9"
+    },
+    "backgroundInactive": {
+      "ansi": 210,
+      "hex": "#250f0f",
+      "name": "DARK_RED"
+    },
+    "foreground": {
+      "ansi": 61,
+      "hex": "#fee2e2",
+      "name": "RED_1"
+    },
+    "hideNameInPrompt": false,
+    "icon": "🩸 ",
+    "path": "~/local/www/rp/korvosa/"
+  },
+  "landscapes": {
+    "background": {
+      "ansi": 99,
+      "hex": "#1e3a8a",
+      "name": "BLUE_9"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/projects/landscapes/landscapes/"
+  },
+  "landscapes-data": {
+    "background": {
+      "ansi": 98,
+      "hex": "#1e40af",
+      "name": "BLUE_8"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/projects/landscapes/landscapes-data/"
+  },
+  "magic": {
+    "background": {
+      "ansi": 68,
+      "hex": "#991b1b",
+      "name": "RED_8"
+    },
+    "backgroundInactive": {
+      "ansi": 210,
+      "hex": "#250f0f",
+      "name": "DARK_RED"
+    },
+    "foreground": {
+      "ansi": 0,
+      "hex": "#0c0f15",
+      "name": "BLACK"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/projects/magic/"
+  },
+  "maps": {
+    "background": {
+      "ansi": 96,
+      "hex": "#2563eb",
+      "name": "BLUE_6"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 132,
+      "hex": "#e5e7eb",
+      "name": "GRAY_2"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/gamemaster/maps/maps/"
+  },
+  "maps-data": {
+    "background": {
+      "ansi": 99,
+      "hex": "#1e3a8a",
+      "name": "BLUE_9"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 132,
+      "hex": "#e5e7eb",
+      "name": "GRAY_2"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/gamemaster/maps/maps-data/"
+  },
+  "media": {
+    "background": {
+      "ansi": 16,
+      "hex": "#6b7280",
+      "name": "GRAY"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "/media/"
+  },
+  "meetups": {
+    "background": {
+      "ansi": 69,
+      "hex": "#7f1d1d",
+      "name": "RED_9"
+    },
+    "backgroundInactive": {
+      "ansi": 210,
+      "hex": "#250f0f",
+      "name": "DARK_RED"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/algolia/meetups/"
+  },
+  "meetups-algolia": {
+    "background": {
+      "ansi": 147,
+      "hex": "#c2410c",
+      "name": "ORANGE_7"
+    },
+    "backgroundInactive": {
+      "ansi": 220,
+      "hex": "#1a120f",
+      "name": "DARK_ORANGE"
+    },
+    "foreground": {
+      "ansi": 142,
+      "hex": "#fed7aa",
+      "name": "ORANGE_2"
+    },
+    "hideNameInPrompt": false,
+    "icon": "󰖟 ",
+    "path": "~/local/www/algolia/meetups/meetups-algolia/"
+  },
+  "meetups-calendar": {
+    "background": {
+      "ansi": 148,
+      "hex": "#9a3412",
+      "name": "ORANGE_8"
+    },
+    "backgroundInactive": {
+      "ansi": 220,
+      "hex": "#1a120f",
+      "name": "DARK_ORANGE"
+    },
+    "foreground": {
+      "ansi": 142,
+      "hex": "#fed7aa",
+      "name": "ORANGE_2"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/algolia/meetups/meetups-calendar/"
+  },
+  "meetups-calendar-sync": {
+    "background": {
+      "ansi": 178,
+      "hex": "#075985",
+      "name": "SKY_8"
+    },
+    "backgroundInactive": {
+      "ansi": 223,
+      "hex": "#1a2535",
+      "name": "DARK_SKY"
+    },
+    "foreground": {
+      "ansi": 171,
+      "hex": "#e0f2fe",
+      "name": "SKY_1"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/algolia/meetups/meetups-calendar-sync/"
+  },
+  "meetups-recordings-sync": {
+    "background": {
+      "ansi": 94,
+      "hex": "#60a5fa",
+      "name": "BLUE_4"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 98,
+      "hex": "#1e40af",
+      "name": "BLUE_8"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/algolia/meetups/meetups-recordings-sync/"
+  },
+  "meetups-teasers-generator": {
+    "background": {
+      "ansi": 93,
+      "hex": "#93c5fd",
+      "name": "BLUE_3"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 98,
+      "hex": "#1e40af",
+      "name": "BLUE_8"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/algolia/meetups/meetups-teasers-generator/"
+  },
+  "megadungeon": {
+    "background": {
+      "ansi": 88,
+      "hex": "#854d0e",
+      "name": "YELLOW_8"
+    },
+    "backgroundInactive": {
+      "ansi": 212,
+      "hex": "#1a1a0f",
+      "name": "DARK_YELLOW"
+    },
+    "foreground": {
+      "ansi": 131,
+      "hex": "#f3f4f6",
+      "name": "GRAY_1"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/gamemaster/megadungeon/"
+  },
+  "monorepoify": {
+    "background": {
+      "ansi": 16,
+      "hex": "#6b7280",
+      "name": "GRAY"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/projects/monorepoify/"
+  },
+  "monsters": {
+    "background": {
+      "ansi": 138,
+      "hex": "#1f2937",
+      "name": "GRAY_8"
+    },
+    "foreground": {
+      "ansi": 68,
+      "hex": "#991b1b",
+      "name": "RED_8"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/gamemaster/monsters/monsters/"
+  },
+  "monsters-pages": {
+    "background": {
+      "ansi": 3,
+      "hex": "#d69e2e",
+      "name": "YELLOW"
+    },
+    "backgroundInactive": {
+      "ansi": 212,
+      "hex": "#1a1a0f",
+      "name": "DARK_YELLOW"
+    },
+    "foreground": {
+      "ansi": 138,
+      "hex": "#1f2937",
+      "name": "GRAY_8"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/gamemaster/monsters/monsters-pages/"
+  },
+  "monsters-pictures": {
+    "background": {
+      "ansi": 138,
+      "hex": "#1f2937",
+      "name": "GRAY_8"
+    },
+    "foreground": {
+      "ansi": 2,
+      "hex": "#38a169",
+      "name": "GREEN"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/gamemaster/monsters/monsters-pictures/"
+  },
+  "movies": {
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": ""
+  },
+  "music": {
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": ""
+  },
+  "netlify-minutes": {
+    "background": {
+      "ansi": 78,
+      "hex": "#166534",
+      "name": "GREEN_8"
+    },
+    "backgroundInactive": {
+      "ansi": 211,
+      "hex": "#0f1a0f",
+      "name": "DARK_GREEN"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "神",
+    "path": "~/local/www/projects/netlify-minutes/"
+  },
+  "norska": {
+    "background": {
+      "ansi": 93,
+      "hex": "#93c5fd",
+      "name": "BLUE_3"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 138,
+      "hex": "#1f2937",
+      "name": "GRAY_8"
+    },
+    "hideNameInPrompt": false,
+    "icon": "煮",
+    "path": "~/local/www/projects/norska/norska/"
+  },
+  "npm-search": {
+    "background": {
+      "ansi": 176,
+      "hex": "#0284c7",
+      "name": "SKY_6"
+    },
+    "backgroundInactive": {
+      "ansi": 223,
+      "hex": "#1a2535",
+      "name": "DARK_SKY"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/algolia/npm-search/"
+  },
+  "on-circle": {
+    "background": {
+      "ansi": 63,
+      "hex": "#fca5a5",
+      "name": "RED_3"
+    },
+    "backgroundInactive": {
+      "ansi": 210,
+      "hex": "#250f0f",
+      "name": "DARK_RED"
+    },
+    "foreground": {
+      "ansi": 139,
+      "hex": "#111827",
+      "name": "GRAY_9"
+    },
+    "hideNameInPrompt": false,
+    "icon": "⬤ ",
+    "path": "~/local/www/projects/on-circle/"
+  },
+  "oroshi": {
+    "background": {
+      "ansi": 2,
+      "hex": "#38a169",
+      "name": "GREEN"
+    },
+    "backgroundInactive": {
+      "ansi": 211,
+      "hex": "#0f1a0f",
+      "name": "DARK_GREEN"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "x ",
+    "path": "~/.oroshi/"
+  },
+  "painting": {
+    "background": {
+      "ansi": 134,
+      "hex": "#9ca3af",
+      "name": "GRAY_4"
+    },
+    "foreground": {
+      "ansi": 0,
+      "hex": "#0c0f15",
+      "name": "BLACK"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/painting.pixelastic.com/"
+  },
+  "pantheon": {
+    "background": {
+      "ansi": 106,
+      "hex": "#9333ea",
+      "name": "PURPLE_6"
+    },
+    "backgroundInactive": {
+      "ansi": 214,
+      "hex": "#201325",
+      "name": "DARK_PURPLE"
+    },
+    "foreground": {
+      "ansi": 134,
+      "hex": "#9ca3af",
+      "name": "GRAY_4"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/gamemaster/pantheon/"
+  },
+  "pathfinder-books": {
+    "background": {
+      "ansi": 89,
+      "hex": "#713f12",
+      "name": "YELLOW_9"
+    },
+    "backgroundInactive": {
+      "ansi": 212,
+      "hex": "#1a1a0f",
+      "name": "DARK_YELLOW"
+    },
+    "foreground": {
+      "ansi": 81,
+      "hex": "#fef9c3",
+      "name": "YELLOW_1"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/rp/pathfinder-books/"
+  },
+  "perso": {
+    "background": {
+      "ansi": 5,
+      "hex": "#805ad5",
+      "name": "PURPLE"
+    },
+    "backgroundInactive": {
+      "ansi": 214,
+      "hex": "#201325",
+      "name": "DARK_PURPLE"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": ""
+  },
+  "pictures": {
+    "hideNameInPrompt": false,
+    "icon": "",
+    "path": ""
+  },
+  "pietro": {
+    "background": {
+      "ansi": 97,
+      "hex": "#1d4ed8",
+      "name": "BLUE_7"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 84,
+      "hex": "#facc15",
+      "name": "YELLOW_4"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/pietro/"
+  },
+  "projects": {
+    "background": {
+      "ansi": 2,
+      "hex": "#38a169",
+      "name": "GREEN"
+    },
+    "backgroundInactive": {
+      "ansi": 211,
+      "hex": "#0f1a0f",
+      "name": "DARK_GREEN"
+    },
+    "foreground": {
+      "ansi": 132,
+      "hex": "#e5e7eb",
+      "name": "GRAY_2"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": ""
+  },
+  "prst": {
+    "background": {
+      "ansi": 98,
+      "hex": "#1e40af",
+      "name": "BLUE_8"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 132,
+      "hex": "#e5e7eb",
+      "name": "GRAY_2"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/prst/"
+  },
+  "reddinx": {
+    "background": {
+      "ansi": 146,
+      "hex": "#ea580c",
+      "name": "ORANGE_6"
+    },
+    "backgroundInactive": {
+      "ansi": 220,
+      "hex": "#1a120f",
+      "name": "DARK_ORANGE"
+    },
+    "foreground": {
+      "ansi": 131,
+      "hex": "#f3f4f6",
+      "name": "GRAY_1"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/reddinx/"
+  },
+  "renovate": {
+    "background": {
+      "ansi": 94,
+      "hex": "#60a5fa",
+      "name": "BLUE_4"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 139,
+      "hex": "#111827",
+      "name": "GRAY_9"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/renovate-config-aberlaas/"
+  },
+  "roleplay": {
+    "background": {
+      "ansi": 79,
+      "hex": "#14532d",
+      "name": "GREEN_9"
+    },
+    "backgroundInactive": {
+      "ansi": 211,
+      "hex": "#0f1a0f",
+      "name": "DARK_GREEN"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/perso/Dropbox/backup/roleplay/"
+  },
+  "s3": {
+    "background": {
+      "ansi": 17,
+      "hex": "#dd6b20",
+      "name": "ORANGE"
+    },
+    "backgroundInactive": {
+      "ansi": 220,
+      "hex": "#1a120f",
+      "name": "DARK_ORANGE"
+    },
+    "foreground": {
+      "ansi": 220,
+      "hex": "#1a120f",
+      "name": "DARK_ORANGE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/mount/s3/"
+  },
+  "s3-pictures": {
+    "background": {
+      "ansi": 17,
+      "hex": "#dd6b20",
+      "name": "ORANGE"
+    },
+    "backgroundInactive": {
+      "ansi": 220,
+      "hex": "#1a120f",
+      "name": "DARK_ORANGE"
+    },
+    "foreground": {
+      "ansi": 220,
+      "hex": "#1a120f",
+      "name": "DARK_ORANGE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "   ",
+    "path": "~/local/mount/s3/pictures/"
+  },
+  "s3-recordings": {
+    "background": {
+      "ansi": 17,
+      "hex": "#dd6b20",
+      "name": "ORANGE"
+    },
+    "backgroundInactive": {
+      "ansi": 220,
+      "hex": "#1a120f",
+      "name": "DARK_ORANGE"
+    },
+    "foreground": {
+      "ansi": 220,
+      "hex": "#1a120f",
+      "name": "DARK_ORANGE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "   ",
+    "path": "~/local/mount/s3/recordings/"
+  },
+  "screen": {
+    "background": {
+      "ansi": 149,
+      "hex": "#7c2d12",
+      "name": "ORANGE_9"
+    },
+    "backgroundInactive": {
+      "ansi": 220,
+      "hex": "#1a120f",
+      "name": "DARK_ORANGE"
+    },
+    "foreground": {
+      "ansi": 141,
+      "hex": "#ffedd5",
+      "name": "ORANGE_1"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/rp/screen/"
+  },
+  "shar-teel": {
+    "background": {
+      "ansi": 109,
+      "hex": "#581c87",
+      "name": "PURPLE_9"
+    },
+    "backgroundInactive": {
+      "ansi": 214,
+      "hex": "#201325",
+      "name": "DARK_PURPLE"
+    },
+    "foreground": {
+      "ansi": 144,
+      "hex": "#fb923c",
+      "name": "ORANGE_4"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/shar-teel/"
+  },
+  "society": {
+    "background": {
+      "ansi": 69,
+      "hex": "#7f1d1d",
+      "name": "RED_9"
+    },
+    "backgroundInactive": {
+      "ansi": 210,
+      "hex": "#250f0f",
+      "name": "DARK_RED"
+    },
+    "foreground": {
+      "ansi": 85,
+      "hex": "#eab308",
+      "name": "YELLOW_5"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/gamemaster/society/society/"
+  },
+  "society-data": {
+    "background": {
+      "ansi": 69,
+      "hex": "#7f1d1d",
+      "name": "RED_9"
+    },
+    "backgroundInactive": {
+      "ansi": 210,
+      "hex": "#250f0f",
+      "name": "DARK_RED"
+    },
+    "foreground": {
+      "ansi": 85,
+      "hex": "#eab308",
+      "name": "YELLOW_5"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/gamemaster/society/society-data/"
+  },
+  "society-pdfs": {
+    "background": {
+      "ansi": 69,
+      "hex": "#7f1d1d",
+      "name": "RED_9"
+    },
+    "backgroundInactive": {
+      "ansi": 210,
+      "hex": "#250f0f",
+      "name": "DARK_RED"
+    },
+    "foreground": {
+      "ansi": 85,
+      "hex": "#eab308",
+      "name": "YELLOW_5"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/gamemaster/society/society-pdfs/"
+  },
+  "solkan": {
+    "background": {
+      "ansi": 69,
+      "hex": "#7f1d1d",
+      "name": "RED_9"
+    },
+    "backgroundInactive": {
+      "ansi": 210,
+      "hex": "#250f0f",
+      "name": "DARK_RED"
+    },
+    "foreground": {
+      "ansi": 61,
+      "hex": "#fee2e2",
+      "name": "RED_1"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/solkan/"
+  },
+  "sov": {
+    "hideNameInPrompt": false,
+    "icon": "蠟",
+    "path": ""
+  },
+  "speaker-program": {
+    "background": {
+      "ansi": 196,
+      "hex": "#0d9488",
+      "name": "TEAL_6"
+    },
+    "backgroundInactive": {
+      "ansi": 225,
+      "hex": "#0f1a18",
+      "name": "DARK_TEAL"
+    },
+    "foreground": {
+      "ansi": 133,
+      "hex": "#d1d5db",
+      "name": "GRAY_3"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/talks/speaker-program/"
+  },
+  "speech-to-blog": {
+    "background": {
+      "ansi": 86,
+      "hex": "#ca8a04",
+      "name": "YELLOW_6"
+    },
+    "backgroundInactive": {
+      "ansi": 212,
+      "hex": "#1a1a0f",
+      "name": "DARK_YELLOW"
+    },
+    "foreground": {
+      "ansi": 222,
+      "hex": "#1a180f",
+      "name": "DARK_AMBER"
+    },
+    "hideNameInPrompt": false,
+    "icon": "󰔊 ",
+    "path": "~/local/www/projects/speech-to-blog/"
+  },
+  "spells": {
+    "background": {
+      "ansi": 98,
+      "hex": "#1e40af",
+      "name": "BLUE_8"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/gamemaster/spells/spells/"
+  },
+  "talk-blog": {
+    "background": {
+      "ansi": 2,
+      "hex": "#38a169",
+      "name": "GREEN"
+    },
+    "backgroundInactive": {
+      "ansi": 211,
+      "hex": "#0f1a0f",
+      "name": "DARK_GREEN"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/talks/talk-blog/"
+  },
+  "talks": {
+    "background": {
+      "ansi": 78,
+      "hex": "#166534",
+      "name": "GREEN_8"
+    },
+    "backgroundInactive": {
+      "ansi": 211,
+      "hex": "#0f1a0f",
+      "name": "DARK_GREEN"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/talks.pixelastic.com/"
+  },
+  "terrainbuilding": {
+    "background": {
+      "ansi": 79,
+      "hex": "#14532d",
+      "name": "GREEN_9"
+    },
+    "backgroundInactive": {
+      "ansi": 211,
+      "hex": "#0f1a0f",
+      "name": "DARK_GREEN"
+    },
+    "foreground": {
+      "ansi": 85,
+      "hex": "#eab308",
+      "name": "YELLOW_5"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/gamemaster/terrainbuilding/terrainbuilding/"
+  },
+  "terrainbuilding-data": {
+    "background": {
+      "ansi": 78,
+      "hex": "#166534",
+      "name": "GREEN_8"
+    },
+    "backgroundInactive": {
+      "ansi": 211,
+      "hex": "#0f1a0f",
+      "name": "DARK_GREEN"
+    },
+    "foreground": {
+      "ansi": 86,
+      "hex": "#ca8a04",
+      "name": "YELLOW_6"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/gamemaster/terrainbuilding/terrainbuilding-data/"
+  },
+  "theme-docs": {
+    "background": {
+      "ansi": 93,
+      "hex": "#93c5fd",
+      "name": "BLUE_3"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 138,
+      "hex": "#1f2937",
+      "name": "GRAY_8"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/norska-theme-docs/"
+  },
+  "theme-search": {
+    "background": {
+      "ansi": 95,
+      "hex": "#3b82f6",
+      "name": "BLUE_5"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/norska-theme-search/"
+  },
+  "theme-search-infinite": {
+    "background": {
+      "ansi": 93,
+      "hex": "#93c5fd",
+      "name": "BLUE_3"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 138,
+      "hex": "#1f2937",
+      "name": "GRAY_8"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/norska-theme-search-infinite/"
+  },
+  "theme-slides": {
+    "background": {
+      "ansi": 78,
+      "hex": "#166534",
+      "name": "GREEN_8"
+    },
+    "backgroundInactive": {
+      "ansi": 211,
+      "hex": "#0f1a0f",
+      "name": "DARK_GREEN"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/norska-theme-slides/"
+  },
+  "tmp": {
+    "background": {
+      "ansi": 16,
+      "hex": "#6b7280",
+      "name": "GRAY"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": ""
+  },
+  "transparentify": {
+    "background": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "foreground": {
+      "ansi": 16,
+      "hex": "#6b7280",
+      "name": "GRAY"
+    },
+    "hideNameInPrompt": false,
+    "icon": "頋",
+    "path": "~/local/www/projects/transparentify/"
+  },
+  "twitter": {
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": ""
+  },
+  "ubuntu": {
+    "background": {
+      "ansi": 147,
+      "hex": "#c2410c",
+      "name": "ORANGE_7"
+    },
+    "backgroundInactive": {
+      "ansi": 220,
+      "hex": "#1a120f",
+      "name": "DARK_ORANGE"
+    },
+    "foreground": {
+      "ansi": 142,
+      "hex": "#fed7aa",
+      "name": "ORANGE_2"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": ""
+  },
+  "videogames": {
+    "background": {
+      "ansi": 98,
+      "hex": "#1e40af",
+      "name": "BLUE_8"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "foreground": {
+      "ansi": 132,
+      "hex": "#e5e7eb",
+      "name": "GRAY_2"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/videogames/videogames.pixelastic.com/"
+  },
+  "videogames-helper": {
+    "background": {
+      "ansi": 98,
+      "hex": "#1e40af",
+      "name": "BLUE_8"
+    },
+    "backgroundInactive": {
+      "ansi": 213,
+      "hex": "#0e1529",
+      "name": "DARK_BLUE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": ""
+  },
+  "videos": {
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": ""
+  },
+  "vim": {
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": ""
+  },
+  "websites": {
+    "background": {
+      "ansi": 3,
+      "hex": "#d69e2e",
+      "name": "YELLOW"
+    },
+    "backgroundInactive": {
+      "ansi": 212,
+      "hex": "#1a1a0f",
+      "name": "DARK_YELLOW"
+    },
+    "foreground": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": ""
+  },
+  "wikinx": {
+    "background": {
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
+    },
+    "foreground": {
+      "ansi": 0,
+      "hex": "#0c0f15",
+      "name": "BLACK"
+    },
+    "hideNameInPrompt": false,
+    "icon": "  ",
+    "path": "~/local/www/projects/wikinx/"
+  },
+  "www": {
+    "background": {
+      "ansi": 2,
+      "hex": "#38a169",
+      "name": "GREEN"
+    },
+    "backgroundInactive": {
+      "ansi": 211,
+      "hex": "#0f1a0f",
+      "name": "DARK_GREEN"
+    },
+    "foreground": {
+      "ansi": 132,
+      "hex": "#e5e7eb",
+      "name": "GRAY_2"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/www.pixelastic.com/"
+  },
+  "youtinx": {
+    "background": {
+      "ansi": 134,
+      "hex": "#9ca3af",
+      "name": "GRAY_4"
+    },
+    "foreground": {
+      "ansi": 68,
+      "hex": "#991b1b",
+      "name": "RED_8"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/youtinx/"
+  },
+  "zsh": {
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": ""
+  }
+}
