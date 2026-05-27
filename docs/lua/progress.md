@@ -36,6 +36,14 @@ issue-012 → needs issue-011
 ---
 ## Log (append below when an issue is completed)
 
+## Session 2026-05-27 — 0002: lua-lint-selene
+- Completed: `lua-lint-selene` script at `scripts/bin/vim/lua/` + 3 BATS tests
+- Tests added: exits 0 with no output for clean file; outputs violation line in file▮code▮level▮line▮message format; exits 1 when violation found
+- Discovered: selene `--config` accepts absolute path and finds companion `vim.yml` from same dir; `start_line` is 0-indexed so `+1` conversion is correct
+- Fixed: none
+- Skipped feedback: all review findings were false positives — `local` at script scope (known ZSH false positive, same as lua-test-path), "broken script" (reviewer received garbled diff), `bats_run_script` (project uses `run zsh`), start_line off-by-one (verified correct)
+- Next: issue-003 (lua-lint-custom) — no blockers, can run in parallel
+
 ## Session 2026-05-27 — 0010: lua-test-path
 - Completed: `lua-test-path` script + 5 BATS tests at `scripts/bin/vim/lua/`
 - Tests added: returns existing spec, exits 1 for missing spec file, resolves source to spec, exits 1 when no spec, exits 1 with no args

@@ -1,0 +1,30 @@
+#!/usr/bin/env zsh
+# Wrap selene linter, output violations in file▮code▮level▮line▮message format
+# Usage:
+# $ lua-lint-selene file.lua
+set -e
+
+local SELENE_CONFIG="$OROSHI_ROOT/config/_languages/lua/selene/selene.toml"
+
+local rawOutput="$(selene --display-style json --config "$SELENE_CONFIG" "$1" || true)"
+
+local -a violations=()
+local line
+for line in ${(f)rawOutput}; do
+  [[ "$line" != "{"* ]] && continue
+  local violation="$(printf '%s' "$line" | jq -r '[
+    .primary_label.filename,
+    .code,
+    (.severity|ascii_downcase),
+    (.primary_label.span.start_line+1|tostring),
+    .message
+  ] | join("\u25ae")')"
+  violations+=("$violation")
+done
+
+for v in "${violations[@]}"; do
+  printf '%s\n' "$v"
+done
+
+[[ ${#violations} -gt 0 ]] && exit 1
+exit 0

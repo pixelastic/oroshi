@@ -22,7 +22,7 @@
       "Assert output contains a line matching the ▮-separated format with the correct code",
       "Assert exit code is 1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "act": 1,
@@ -34,7 +34,7 @@
       "Assert output is empty",
       "Assert exit code is 0"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "act": 1,
