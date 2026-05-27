@@ -86,7 +86,7 @@
       "Assert output is the path to `foo_spec.lua`",
       "Assert exit code is 0"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0010",
@@ -96,7 +96,7 @@
       "Assert output is empty",
       "Assert exit code is 1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0010",
@@ -107,7 +107,7 @@
       "Assert output is `<dir>/__tests__/lodash_spec.lua`",
       "Assert exit code is 0"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0010",
@@ -118,7 +118,7 @@
       "Assert output is empty",
       "Assert exit code is 1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0011",

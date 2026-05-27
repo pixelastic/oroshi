@@ -35,3 +35,11 @@ issue-012 → needs issue-011
 
 ---
 ## Log (append below when an issue is completed)
+
+## Session 2026-05-27 — 0010: lua-test-path
+- Completed: `lua-test-path` script + 5 BATS tests at `scripts/bin/vim/lua/`
+- Tests added: returns existing spec, exits 1 for missing spec file, resolves source to spec, exits 1 when no spec, exits 1 with no args
+- Discovered: reviewer flagged `local`/`return` at script top-level as invalid ZSH — verified false positive, both work fine in ZSH scripts (same as bats-test-path reference)
+- Fixed: added missing "no arguments" test case (present in reference bats-test-path.bats)
+- Skipped feedback: `local` at script scope / `return` vs `exit` — not violations in ZSH
+- Next: issue-011 (lua-test + mini.test runner) — depends on this issue
