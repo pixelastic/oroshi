@@ -142,7 +142,7 @@
       "Check that tools/worktools/ contains one folder per tool",
       "Verify no files remain in scripts/install/worktools/, scripts/deploy/worktools/, config/worktools/"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0016",

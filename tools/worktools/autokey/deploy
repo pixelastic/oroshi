@@ -2,8 +2,8 @@
 # Add Autokey config
 set -e
 
-local CONFIG_DIR=~/.oroshi/private/config/worktools/autokey
-local DEST_DIR=~/.config/autokey
+CONFIG_DIR=~/.oroshi/private/config/worktools/autokey
+DEST_DIR=~/.config/autokey
 
 mkdir -p $DEST_DIR
 

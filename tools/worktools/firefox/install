@@ -10,7 +10,7 @@
 
 
 echo "Please install Vimium, and then copy the following mappings to its config:"
-local vimiumMappings=~/.oroshi/config/worktools/firefox/vimium-mappings.vim
+vimiumMappings=${0:h}/config/vimium-mappings.vim
 echo "Source: $vimiumMappings\n\n"
 echo "---"
 cat $vimiumMappings

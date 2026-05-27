@@ -4,3 +4,5 @@
 set -ex
 
 sudo apt-get install autokey-gtk
+
+"$(dirname "$0")/deploy"

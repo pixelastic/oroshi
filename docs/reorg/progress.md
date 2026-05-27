@@ -63,6 +63,15 @@ issue-017 → needs issue-001 through issue-016 (cleanup — delete old director
 ---
 ## Log (append below when an issue is completed)
 
+## Session 2026-05-27 — 0015: worktools domain fully migrated to tools/worktools/
+
+- Completed: Moved 13 install scripts (autokey, chrome, dropbox, emote, insomnia, keepassx, obs, slack, spotify, studio, teams, typora, zoom) + 2 firefox sub-scripts (firefox → tools/worktools/firefox/install, open-in-chrome → tools/worktools/open-in-chrome/install). Moved scripts/deploy/worktools/autokey → tools/worktools/autokey/deploy. Moved config/worktools/firefox/ → tools/worktools/firefox/config/, config/worktools/spotify/ → tools/worktools/spotify/config/. Removed local at script scope in autokey/deploy. Added deploy call at end of autokey/install. Updated firefox/install: ~/.oroshi/config/worktools/firefox/vimium-mappings.vim → ${0:h}/config/vimium-mappings.vim (intra-tool ref). Removed empty scripts/install/worktools/, scripts/deploy/worktools/, config/worktools/.
+- Tests added: none (migration issue — no automated tests)
+- Discovered: No index file in scripts/install/worktools/ → no install-all needed. autokey/deploy references ~/.oroshi/private/config/worktools/autokey — kept as-is (private config pattern, same as sessions 0003/0011). firefox was a subdirectory with two install scripts; open-in-chrome becomes its own tool.
+- Fixed: local at script scope in firefox/install (vimiumMappings — caught by review).
+- Skipped feedback: autokey/deploy private path — established pattern for private configs; install-all — no index file; ${0:h} idiom — established zsh convention.
+- Next: issue-016 (term domain migration)
+
 ## Session 2026-05-27 — 0014: windows domain fully migrated to tools/windows/
 
 - Completed: Moved mono/install and wine/install from scripts/install/windows/. Moved config/windows/wine/dll/ to tools/windows/wine/config/dll/. Removed empty scripts/install/windows/ and config/windows/.
