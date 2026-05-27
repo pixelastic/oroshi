@@ -3,7 +3,7 @@
 bats_load_library 'helper'
 load './helper'
 
-RULE_FILE="${BATS_TEST_DIRNAME}/../__rules/rule-no-dash-n.zsh"
+RULE_FILE="${BATS_TEST_DIRNAME}/../rule-no-dash-n.zsh"
 RULE_FN="zshlintRule_noDashN"
 
 @test "flags [[ -n var ]]" {

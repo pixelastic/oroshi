@@ -3,7 +3,7 @@
 bats_load_library 'helper'
 load './helper'
 
-RULE_FILE="${BATS_TEST_DIRNAME}/../__rules/rule-no-manual-arg-parsing.zsh"
+RULE_FILE="${BATS_TEST_DIRNAME}/../rule-no-manual-arg-parsing.zsh"
 RULE_FN="zshlintRule_noManualArgParsing"
 
 @test "flags case \"\$1\" pattern" {

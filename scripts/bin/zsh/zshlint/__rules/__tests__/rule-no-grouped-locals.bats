@@ -3,7 +3,7 @@
 bats_load_library 'helper'
 load './helper'
 
-RULE_FILE="${BATS_TEST_DIRNAME}/../__rules/rule-no-grouped-locals.zsh"
+RULE_FILE="${BATS_TEST_DIRNAME}/../rule-no-grouped-locals.zsh"
 RULE_FN="zshlintRule_noGroupedLocals"
 
 @test "flags local with multiple bare names" {

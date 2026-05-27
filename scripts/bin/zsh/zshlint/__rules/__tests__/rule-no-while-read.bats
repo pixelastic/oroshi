@@ -3,7 +3,7 @@
 bats_load_library 'helper'
 load './helper'
 
-RULE_FILE="${BATS_TEST_DIRNAME}/../__rules/rule-no-while-read.zsh"
+RULE_FILE="${BATS_TEST_DIRNAME}/../rule-no-while-read.zsh"
 RULE_FN="zshlintRule_noWhileRead"
 
 @test "flags 'while IFS= read -r line'" {
