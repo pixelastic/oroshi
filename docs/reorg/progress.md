@@ -63,6 +63,15 @@ issue-017 → needs issue-001 through issue-016 (cleanup — delete old director
 ---
 ## Log (append below when an issue is completed)
 
+## Session 2026-05-27 — 0014: windows domain fully migrated to tools/windows/
+
+- Completed: Moved mono/install and wine/install from scripts/install/windows/. Moved config/windows/wine/dll/ to tools/windows/wine/config/dll/. Removed empty scripts/install/windows/ and config/windows/.
+- Tests added: none (migration issue — no automated tests)
+- Discovered: No index file in scripts/install/windows/ → no install-all needed. Neither install file contains cross-tool refs. No stale config/windows/ refs elsewhere in codebase.
+- Fixed: none
+- Skipped feedback: "wine/install missing deploy call" — spec explicitly states "No install→deploy wiring needed (no deploy scripts exist)". "No install-all" — no index file existed to convert.
+- Next: issue-015 (worktools domain migration)
+
 ## Session 2026-05-27 — 0013: vim domain fully migrated to tools/vim/
 
 - Completed: Moved nvim and vint install, deploy, and config dirs to tools/vim/. Updated nvim/deploy and vint/deploy: removed local, changed ~/.oroshi/config/vim/{tool} to ${0:h}/config. Added "$(dirname "$0")/deploy" at end of nvim/install. Updated vint/install stale deploy call (was ~/.oroshi/scripts/deploy/vint) to "$(dirname "$0")/deploy". Updated 3 cross-tool refs in nvim/config/config/filetypes/colors.lua: ~/.oroshi/config/cli/bat/generate-theme → $OROSHI_ROOT/tools/cli/bat/config/generate-theme, rg → $OROSHI_ROOT/tools/cli/rg/config/generate-config, git → $OROSHI_ROOT/tools/git/git/config/generate-config. Removed empty scripts/install/vim/, scripts/deploy/vim/, config/vim/.
