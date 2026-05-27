@@ -1,0 +1,80 @@
+[
+  {
+    "id": "0007",
+    "category": "verification",
+    "description": "No conflict markers remain anywhere in the working tree",
+    "steps": [
+      "Run: git grep -r '<<<<<<' .",
+      "Verify the command returns no output"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0007",
+    "category": "verification",
+    "description": "settings.json has the permissions block and the PreToolUse/Bash matcher at tools/ path",
+    "steps": [
+      "Read tools/ai/claude/config/settings.json",
+      "Verify 'permissions.allow' array is present",
+      "Verify PreToolUse Bash matcher points to tools/ai/claude/config/hooks/preToolUse-Bash",
+      "Verify no SessionStart hook entry exists",
+      "Verify no catch-all PreToolUse matcher exists"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0007",
+    "category": "verification",
+    "description": "preToolUse dispatcher and its dependents are deleted",
+    "steps": [
+      "Verify tools/ai/claude/config/hooks/preToolUse does not exist",
+      "Verify tools/ai/claude/config/hooks/preToolUse-Skill does not exist",
+      "Verify tools/ai/claude/config/hooks/preToolUse-mcp does not exist",
+      "Verify tools/ai/claude/config/hooks/sessionStart does not exist"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0007",
+    "category": "verification",
+    "description": "preToolUse-Bash uses the orchestrator pattern from main",
+    "steps": [
+      "Read tools/ai/claude/config/hooks/preToolUse-Bash",
+      "Verify it contains PRETOOLUSE_SOLKAN_SCRIPT",
+      "Verify it contains PRETOOLUSE_RTK_SCRIPT",
+      "Verify it does NOT contain 'acceptTool' or 'letClaudeDecide'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0007",
+    "category": "verification",
+    "description": "Merge commit has two parents",
+    "steps": [
+      "Run: git log --oneline -1",
+      "Run: git cat-file -p HEAD | grep parent | wc -l",
+      "Verify count is 2"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0008",
+    "category": "verification",
+    "description": "No files remain at old config/ paths after orphan migration",
+    "steps": [
+      "Run: find config/ai/claude config/term/zsh -type f 2>/dev/null",
+      "Verify the command returns no output"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0008",
+    "category": "verification",
+    "description": "Migrated files have no hardcoded config/ path references",
+    "steps": [
+      "Run: grep -r '~/.oroshi/config/' tools/ai/claude/config/hooks/__tests__/ tools/term/zsh/config/theming/",
+      "Verify the command returns no output"
+    ],
+    "passes": false
+  }
+]
