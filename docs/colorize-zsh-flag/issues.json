@@ -109,7 +109,7 @@
       "Check output contains \\e[",
       "Check output contains 'origin'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0004",
@@ -121,7 +121,7 @@
       "Check output contains 'origin'",
       "Check output contains no \\e["
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",

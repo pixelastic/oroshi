@@ -49,3 +49,11 @@ Note: issue-002, 003, 004, and 006 are all unblocked once issue-001 is done — 
 - Fixed: Pre-existing `=` → `==` in all `[[ $tagStatus ... ]]` comparisons (zshlint violations)
 - Skipped feedback: `noArithFlagTest` for `(( isZsh ))` — pre-existing in git-branch-colorize, consistent with progress.md guidance; mock-in-setup pattern same as accepted git-branch-colorize tests; spec agent wrong about positional arg being ignored (function does use `$1`)
 - Next: issue-004 (git-remote-colorize) — same pattern
+
+## Session 2026-05-27 — 0004: git-remote-colorize --zsh flag
+- Completed: Added `--zsh` flag to `git-remote-colorize`; propagated to both `colorize` calls; fixed `isWithIcon != 1` → `!= "1"` (zshlint)
+- Tests added: `config/term/zsh/functions/autoload/git/remote/__tests__/git-remote-colorize.bats` (9 tests)
+- Discovered: Icon glyph is `ef 90 82` (U+F002); Edit tool can't match it — used sed + Python hex bytes for second `colorize` call
+- Fixed: Pre-existing `!= 1` → `!= "1"` in `isWithIcon` comparison (zshlint compliance)
+- Skipped feedback: `zmodload zsh/zutil` absent from all peer files (established pattern); icon test uses space not glyph (same accepted pattern as git-tag-colorize)
+- Next: issue-005 (remove OROSHI_IS_PROMPT from git.zsh and colorize) — needs 002+003+004 done ✓

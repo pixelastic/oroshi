@@ -5,9 +5,14 @@
 # $ git-remote-colorize upstream/main      # upstream/main
 # $ git-remote-colorize --with-icon        #  upstream
 
+# $ git-remote-colorize --with-icon --zsh  # zsh prompt codes
 zparseopts -E -D \
-  -with-icon=flagWithIcon
+  -with-icon=flagWithIcon \
+  -zsh=flagZsh
 local isWithIcon=${#flagWithIcon}
+local isZsh=${#flagZsh}
+local -a zshFlag=()
+[[ $isZsh == "1" ]] && zshFlag=(--zsh)
 
 # Remote name
 local remoteName="$1"
@@ -26,10 +31,10 @@ fi
 local remoteColor="$(git-remote-color $remoteName)"
 
 # If --with-icon is not passed, we simply display the colored commit
-if [[ "$isWithIcon" != 1 ]]; then
-  colorize "$displayRemoteName" "$remoteColor"
+if [[ "$isWithIcon" != "1" ]]; then
+  colorize "$displayRemoteName" "$remoteColor" "${zshFlag[@]}"
   return
 fi
 
-colorize " $displayRemoteName" "$remoteColor"
+colorize " $displayRemoteName" "$remoteColor" "${zshFlag[@]}"
 return
