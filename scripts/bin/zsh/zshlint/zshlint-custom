@@ -17,6 +17,7 @@ source "$dir/__rules/rule-no-dash-z.zsh"
 source "$dir/__rules/rule-no-dash-n.zsh"
 source "$dir/__rules/rule-no-or-guard.zsh"
 source "$dir/__rules/rule-no-double-negative.zsh"
+source "$dir/__rules/rule-no-arith-flag-test.zsh"
 
 # Ordered list of custom rule functions to run
 local -a _RULES=(
@@ -31,6 +32,7 @@ local -a _RULES=(
   zshlintRule_noDashN
   zshlintRule_noOrGuard
   zshlintRule_noDoubleNegative
+  zshlintRule_noArithFlagTest
 )
 
 # Separator used in Rule Output lines; export so subshells see it
