@@ -1,6 +1,6 @@
 ---
 name: ralph
-description: Use when user says "ralph <dir>" or "ralph this". Implements the highest-priority issue from prd.json in the given directory using TDD, updates docs, runs review in a subagent, fixes actionable feedback, then stops for user to commit. Argument is the directory containing prd.json and progress.md.
+description: Use when user says "ralph <dir>" or "ralph this". Implements the highest-priority issue from issues.json in the given directory using TDD, updates docs, runs review in a subagent, fixes actionable feedback, then stops for user to commit. Argument is the directory containing issues.json and progress.md.
 argument-hint: [directory]
 effort: high
 ---
@@ -20,10 +20,10 @@ If `$ARGUMENTS` is empty, `"this"`, `"."`, or `"here"` → use current working d
 
 **Goal:** Load current PRD state and session history.
 
-**Exit criterion:** You've read prd.json, progress.md, and know which issues are open.
+**Exit criterion:** You've read issues.json, progress.md, and know which issues are open.
 
 Read:
-- `$ARGUMENTS/prd.json` — issues, statuses, metadata
+- `$ARGUMENTS/issues.json` — issues, statuses, metadata
 - `$ARGUMENTS/progress.md` — session history
 
 ---
@@ -50,7 +50,12 @@ Display a recap of the issue.
 
 **Exit criterion:** Test runs and fails.
 
-Write the tests that cover the acceptance criteria of the issue — at least one per criterion. Run them. Read the failure output.
+**Skip if:** SKIP ONLY IF the acceptance criterion is satisfied purely by
+editing a declarative config file (settings.json, .eslintrc, YAML…) and involves
+no executable code path.
+
+Write the tests that cover the acceptance criteria of the issue — at least one
+per criterion. Run them. Read the failure output.
 
 **If tests passes immediately: tests are wrong. Rewrite them.**
 
@@ -78,12 +83,9 @@ Write the tests that cover the acceptance criteria of the issue — at least one
 
 **Exit criterion:** All actionable feedback addressed, linter clean, tests green.
 
-1. Run `review` via the **Bash tool**:
-    - `review 2>&1`
-    - `timeout: 600000` (10 min)
-    - DO NOT use `run_in_background`
-    - DO NOT use the Skill tool
-    - Wait for the command to finish before proceeding.
+1. Run the **/review skill** using the **Skill tool** (skill name: `review`, no args):
+    - DO NOT use the Bash tool to run `review`
+    - Wait for the skill to finish before proceeding.
 2. For each feedback item:
    - **Actionable and in scope** → fix it
    - **Out of scope or not relevant** → note it in progress.md under `Skipped feedback:`
@@ -96,7 +98,7 @@ Write the tests that cover the acceptance criteria of the issue — at least one
 
 **Goal:** Leave full context for the next session.
 
-**Exit criterion:** progress.md and prd.json both updated.
+**Exit criterion:** progress.md and issues.json both updated.
 
 Append to `$ARGUMENTS/progress.md`:
 
@@ -110,7 +112,7 @@ Append to `$ARGUMENTS/progress.md`:
 - Next: <recommended next issue or action>
 ```
 
-Update `$ARGUMENTS/prd.json`: mark issue as complete, update any relevant status fields.
+Update `$ARGUMENTS/issues.json`: mark issue as complete, update any relevant status fields.
 
 ---
 
@@ -121,6 +123,7 @@ Update `$ARGUMENTS/prd.json`: mark issue as complete, update any relevant status
 **Exit criterion:** `ralph-end` called, session recap displayed.
 
 - Run `ralph-end $ARGUMENTS` first
+
 - Print the session entry that was written to progress.md
 
 **Stop here. Do not commit. Do not start the next issue. Wait for the user.**
@@ -137,20 +140,20 @@ Update `$ARGUMENTS/prd.json`: mark issue as complete, update any relevant status
 | "Review feedback is minor, not worth it" | Minor feedback ignored = minor bugs shipped. Fix it. |
 | "I can infer priority without reading the detail file" | You can't. Read the file. |
 | "I should commit so the review has something to diff" | Do not commit. That's the user's job. |
-| "There is a /review skill, I should use that" | Use the **Bash tool** `review` command instead |
+| "I should run `review` via the Bash tool" | Use the `/review` skill instead, Bash will go to the background and we need to wait for the review. |
 
 ## Checklist
 
-- [ ] Read prd.json + progress.md
+- [ ] Read issues.json + progress.md
 - [ ] Picked one issue, read its detail file
 - [ ] RED: wrote failing tests, ran them, confirmed they fail
 - [ ] IMPLEMENT: minimal code, all behaviors covered
 - [ ] Code written following the standards of the language skill (`zsh-writer`, `js-writer`, etc)
 - [ ] Linter clean on modified files
 - [ ] Tests green for modified files
-- [ ] Ran `review 2>&1` via Bash tool with output captured
+- [ ] Ran `/review` via Skill tool and received output
 - [ ] Actionable feedback fixed or explicitly dismissed
 - [ ] Linter + tests green for modified files after review fixes
 - [ ] progress.md updated with session entry
-- [ ] prd.json updated
+- [ ] issues.json updated
 - [ ] **Stopped — waiting for user to commit**

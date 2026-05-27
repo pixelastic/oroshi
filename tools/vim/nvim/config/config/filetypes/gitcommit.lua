@@ -14,6 +14,7 @@ M.onFiletype = function()
         F.replaceLines(message.stdout, 1)
         F.moveTo(1)
         F.setThinkingIndicator(false)
+        F.run("audio-play-oroshi", { args = { "git-commit-message.mp3" } })
 
         -- Visuall mark the window as ready
         F.hl("Normal", "FILE", { bg = "DARK_PURPLE" })

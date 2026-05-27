@@ -6,43 +6,40 @@
 # $ context-project                         # Uses $PWD
 setopt local_options err_return
 
-local targetPath="${1:-$PWD}"
-local rawPath="${targetPath%/}"
+local reference="${1:-$PWD}"
 
-# Match a normalized path against registered projects, returning the most
-# specific (longest-prefix) match to avoid catch-all projects shadowing others
-_context_project_best_match() {
-  local searchPath="$1"
-  local bestKey=""
-  local bestLen=0
-  for projectKey in ${=PROJECTS_INDEX_BY_PATH}; do
-    local projectPath="${(P)${:-PROJECT_${projectKey}_PATH}}"
-    [[ "$searchPath" != "$projectPath"* ]] && continue
-    (( ${#projectPath} > bestLen )) || continue
-    bestKey="$projectKey"
-    bestLen=${#projectPath}
-  done
-  [[ "$bestKey" == "" ]] && return 0
-  echo "${(P)${:-PROJECT_${bestKey}_NAME}}"
-}
-
-# Linked worktrees live outside the project root — resolve via main repo first
-# so a catch-all project doesn't shadow the specific project via prefix match
-if git-directory-is-worktree "$rawPath"; then
-  local commonDir="$(git -C "$rawPath" rev-parse --git-common-dir 2>/dev/null)"
-  [[ "$commonDir" == "" ]] && return 0
-
-  local absCommonDir
-  [[ "$commonDir" == /* ]] && absCommonDir="$commonDir" || absCommonDir="${rawPath}/${commonDir}"
-  local mainPath="${absCommonDir:h}/"
-  local normalMainPath="${mainPath/#$HOME/~}"
-
-  _context_project_best_match "$normalMainPath"
-  return 0
+# If in a worktree, resolve to the main repo path
+if git-directory-is-worktree "$reference"; then
+  reference="$(git-worktree-main "$reference")"
 fi
 
-# Normalize for prefix matching: trailing slash + ~ for home
-[[ "${targetPath[-1]}" != "/" ]] && targetPath+="/"
-local normalPath="${targetPath/#$HOME/~}"
+# Load PROJECTS if not already populated (allows test injection)
+(( ${#PROJECTS} == 0 )) && source "$OROSHI_ROOT/config/term/zsh/theming/dist/projects.zsh"
 
-_context_project_best_match "$normalPath"
+# Collect all .path keys
+local -a pathKeys=( ${(M)${(k)PROJECTS}:#*.path} )
+
+# Sort by path value length, longest first
+local key=""
+local pathValue=""
+local -a prefixed=()
+for key in "${pathKeys[@]}"; do
+  pathValue="${PROJECTS[$key]}"
+  pathValue="${pathValue/#\~/$HOME}"
+  prefixed+=( "${#pathValue} $key" )
+done
+local -a sortedKeys=( ${${(On)prefixed}##* } )
+
+# Normalize reference with trailing slash for prefix matching
+local refWithSlash="${reference%/}/"
+
+# Return the project name of the first (most specific) matching path
+local key=""
+local pathValue=""
+for key in "${sortedKeys[@]}"; do
+  pathValue="${PROJECTS[$key]}"
+  pathValue="${pathValue/#\~/$HOME}"
+  [[ ! "$refWithSlash" == "${pathValue}"* ]] && continue
+  echo "${key%%.*}"
+  return 0
+done

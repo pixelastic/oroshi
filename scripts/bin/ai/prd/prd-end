@@ -1,0 +1,25 @@
+#!/usr/bin/env zsh
+# Called by /to-prd right before writing the PRD on disk
+# Ensure PRD is created in a worktree, in docs/<branchName>
+# Usage: prd-end [branchName]
+# Output: { "worktreePath": "...", "branch": "...", "prdPath": "/full/path/to/docs/<branch>/PRD.md" }
+set -e
+
+local branch="$1"
+
+if ! git-directory-is-worktree; then
+  if [[ "$branch" == "" ]]; then
+    print -u2 "prd-end: branch name required when not in a worktree"
+    exit 1
+  fi
+  git-worktree-create "$branch"
+fi
+
+local root="$(git-directory-root)"
+local currentBranch="$(git-branch-current)"
+local slug="$(git-branch-slug "$currentBranch")"
+
+jo \
+  worktreePath="$root" \
+  branch="$currentBranch" \
+  prdPath="$root/docs/$slug/PRD.md"

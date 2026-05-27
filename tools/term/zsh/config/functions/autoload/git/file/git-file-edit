@@ -17,6 +17,12 @@ for rawLine in ${(f)rawFiles}; do
   # Skip deleted files (can't open them)
   [[ "$gitStatus" == "D" ]] && continue
 
+  # For renames, git outputs "old-path -> new-path" — extract the new path
+  [[ "$gitStatus" == "R" ]] && filePath="${filePath##* -> }"
+
+  # Skip if file no longer exists on disk (safety net for unexpected statuses)
+  [[ ! -f "${gitRoot}/${filePath}" ]] && continue
+
   # Skip ralph-managed files
   local fileName="${filePath:t}"
   [[ "$fileName" == "progress.md" || "$fileName" == "prd.json" ]] && continue

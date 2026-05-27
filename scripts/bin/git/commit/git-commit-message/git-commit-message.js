@@ -4,7 +4,7 @@ import { absolute, consoleError, dirname, read } from 'firost';
 import Gilmore from 'gilmore';
 import { formatMessage } from './format.js';
 
-const EXCLUDED = ['yarn.lock', 'prd.json', 'progress.md'];
+const EXCLUDED = ['yarn.lock'];
 
 const key = process.env.ANTHROPIC_API_KEY;
 if (!key) {

@@ -89,6 +89,19 @@ return {
     return vim.fn.trim(table.concat(lines, "\n"))
   end,
 
+  -- readJson: Read and parse a JSON file, returns table or nil
+  readJson = function(path)
+    local content = F.readFile(path)
+    if not content then
+      return nil
+    end
+    local ok, result = pcall(vim.json.decode, content)
+    if not ok then
+      return nil
+    end
+    return result
+  end,
+
   -- shellEscape: Escape filepath for CLI
   -- Ex: 'path/with spaces.txt'
   shellEscape = function(path)

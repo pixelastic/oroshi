@@ -1,0 +1,25 @@
+#!/usr/bin/env zsh
+# Rewrite a bash command to its RTK token-efficient equivalent
+# Usage:
+# $ preToolUse-Bash-rtk "git status"      # → rtk git status
+# $ preToolUse-Bash-rtk "echo hello"      # → echo hello
+# $ preToolUse-Bash-rtk "rtk git status"  # → rtk git status (idempotent)
+set -e
+
+local cmd="$1"
+local rtkCmd="${RTK_CMD:-rtk}"
+
+# Already rewritten — pass through unchanged
+if [[ "${cmd%% *}" == "rtk" ]]; then
+  print -- "$cmd"
+  exit 0
+fi
+
+# rtk rewrite: exit 0 + stdout = rewritten command, exit 1 = no equivalent
+local rewritten="$("$rtkCmd" rewrite "$cmd")"
+if [[ "$rewritten" == "" ]]; then
+  print -- "$cmd"
+  exit 0
+fi
+
+print -- "$rewritten"

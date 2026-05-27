@@ -5,6 +5,7 @@
 # Build directories
 build/
 dist/
+!config/term/zsh/theming/dist/
 tmp/
 
 # Junk files

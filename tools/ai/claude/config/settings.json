@@ -4,12 +4,30 @@
     "DISABLE_INSTALLATION_CHECKS": "1",
     "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "75"
   },
-  "permissions": {},
+  "permissions": {
+    "allow": [
+      "BashOutput",
+      "Fetch",
+      "Glob",
+      "Grep",
+      "LS",
+      "Read",
+      "Search",
+      "Skill",
+      "SlashCommand",
+      "TodoWrite",
+      "WebFetch",
+      "WebSearch",
+      "mcp__context7",
+      "mcp__google-slides",
+      "mcp__make__scenarios_list"
+    ]
+  },
   "model": "sonnet[1m]",
   "hooks": {
-    "SessionStart": [
+    "PreToolUse": [
       {
-        "matcher": "startup",
+        "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
@@ -35,26 +53,6 @@
           {
             "type": "command",
             "command": "/home/tim/.oroshi/tools/ai/claude/config/hooks/stop"
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/home/tim/.oroshi/tools/ai/claude/config/hooks/preToolUse"
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/home/tim/.claude/hooks/rtk-rewrite.sh"
           }
         ]
       }

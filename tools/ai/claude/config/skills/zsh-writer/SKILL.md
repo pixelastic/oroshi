@@ -71,12 +71,10 @@ Write code that follows the following patterns:
 | Pattern | Rule |
 |---|---|
 | [Headers](./references/header.md) | Top of the file: what the script does, how to call it and error protection |
-| [Args Parsing](./references/args-parsing.md) | Use `zmodload zsh/zutil` + `zparseopts -E -D` to parse args |
+| [Args parsing](./references/args-parsing.md) | Use `zparseopts` to parse --named arguments |
 | [Variables](./references/variables.md) | `local myVar="$(myCommand)"` on one line |
-| [Modifiers](./references/modifiers.md) | Prefer zsh modifiers (`${filepath:t}`) over commands (`$(basename "$filepath")`) |
 | [Splitting](./references/splitting.md) | Use `▮` as separator and `${(@ps/▮/)line}` to split |
-| [Loops](./references/loops.md) | Use `for rawLine in ${(f)rawOutput}` instead of `while read` and `IFS` |
-| [Conditions](./references/conditions.md) | `[[ simpleCondition ]] && state=value`. No nested if/else, return early, no `-z`/`-n` |
+| [Conditions](./references/conditions.md) | `[[ simpleCondition ]] && state=value`. No nested if/else, return early |
 | [Calling Commands](./references/calling-commands.md) | Use existing helpers (`git-branch-current`), not raw calls. Use `--long-form`, not `-l`. |
 
 
@@ -138,18 +136,15 @@ Run `zshlint <file>` on the file(s) and fix any actionable violation.
 
 | Rationalization | Reality |
 |---|---|
-| "`local` exits 0, I need it on its own line | No, I want `local myVar="$(myCommand)"` even if `myCommand` could fail |
-| "`while read` is fine for simple cases" | Never. `${(f)var}` always. |
 | "It's only two levels of if/else, it's ok." | No it's not. Return early, always. |
 
 ## Checklist
 
 - [ ] Quick documentation and usage at top of script
-- [ ] `zparseopts` for all flag parsing
 - [ ] Return early — no avoidable nesting
 - [ ] Comments for each guard clause
 - [ ] All function vars `local`; script constants UPPER_CASE without `local`
-- [ ] No `while read` — only `${(f)var}` or `"${(@f)var}"`
 - [ ] External commands use long-form args, one per line
 - [ ] Use existing helpers over porcelain (e.g. `git-branch-list-raw` not `git branch`)
+- [ ] Use `zparseopts` for --named arguments
 - [ ] Tests use the dedicated helpers

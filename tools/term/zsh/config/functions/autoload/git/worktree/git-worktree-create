@@ -11,11 +11,6 @@ git-directory-is-repository || return 1
 # Branch name required
 [[ "$branch" == "" ]] && return 1
 
-if [[ "$(git-branch-current)" != "main" ]]; then
-  echo "You must be on main to create a worktree"
-  return 1
-fi
-
 # Repo name: prefer GitHub project name, fall back to folder name (strip leading dots)
 local repoName="$(git-github-project-name)"
 if [[ "$repoName" == "" ]]; then
@@ -25,15 +20,15 @@ fi
 
 # Branch Slug: replace / with _
 local branchSlug="$(git-branch-slug "$branch")"
-[[ -n "$branchSlug" ]] || return 1
+[[ "$branchSlug" == "" ]] && return 1
 
 local worktreeDir="${OROSHI_WORKTREES_DIR}/${repoName}--${branchSlug}"
 
 # If worktree already exists, cd into it (idempotent)
 [[ -d "$worktreeDir" ]] && cd "$worktreeDir" && return 0
 
-# Create branch if it does not exist
-git-branch-exists "$branch" || git branch "$branch"
+# Create branch from main if it does not exist
+git-branch-exists "$branch" || git branch "$branch" main
 
 # Create
 git worktree add "$worktreeDir" "$branch" &> /dev/null

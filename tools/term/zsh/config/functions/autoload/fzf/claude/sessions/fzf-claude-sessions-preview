@@ -4,9 +4,9 @@ local sessionData=$(claude-session-data $uuid)
 
 # CWD or project name
 local cwd=$(echo $sessionData | jq -r '.cwd')
-local projectName="$(project-by-path $cwd)"
-if [[ -n "$projectName" ]]; then
-  project-colorize $projectName
+local badge="$(context-badge "$cwd")"
+if [[ "$badge" != "" ]]; then
+  echo "$badge"
 else
   colorize $cwd $COLOR_GREEN
 fi

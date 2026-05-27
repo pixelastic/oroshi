@@ -5,14 +5,15 @@
 # Usage:
 # $ fzf-prompt-directory   # Colored prompt for current directory
 # $ fzf-prompt-directory ~/.oroshi/  # Colored prompt for ~/.oroshi
-local fzfPrompt="${${1:a}/#$HOME/~}/"
+local inputPath="${1:a}"
 
-local projectName="$(project-by-path $fzfPrompt)"
-if [[ $projectName != "" ]]; then
-  local projectKey=$(project-key "$projectName")
-  local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
-  eval "fzfPrompt=\${fzfPrompt:s_${projectPath}_}"
-  local projectPrefix="$(project-colorize $projectName)"
+local projectPrefix="$(context-badge "$inputPath")"
+
+local fzfPrompt
+if [[ "$projectPrefix" != "" ]]; then
+  fzfPrompt="$(context-path "$inputPath")"
+else
+  fzfPrompt="${inputPath/#$HOME/~}/"
 fi
 
 # If we have a path to display, we make it pretty

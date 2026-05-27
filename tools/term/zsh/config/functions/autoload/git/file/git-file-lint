@@ -32,5 +32,5 @@ local lintOutput="$(zshlint "${zshFiles[@]}")"
 # No violations
 [[ "$lintOutput" == "[]" ]] && return 0
 
-echo "$lintOutput" | jq --raw-output '.[] | "\(.file):\(.line):\(.column): \(.code): \(.message)"'
+echo "$lintOutput" | jq --raw-output --arg root "$gitRoot" '.[] | "\(.file | ltrimstr($root + "/")):\(.line):\(.column): \(.code): \(.message)"'
 return 1

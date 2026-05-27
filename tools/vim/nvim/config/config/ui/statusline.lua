@@ -274,11 +274,11 @@ O_STATUSLINE = {
     end
 
     -- Project info
-    local projectKey = vim.fn.systemlist("project-by-path " .. vim.fn.shellescape(rawFilepath))[1]
-    local projectData = F.getProjectData(projectKey)
+    local projectName = vim.fn.systemlist("context-project " .. vim.fn.shellescape(rawFilepath))[1]
+    local projectData = O_STATUSLINE.getProjectData(projectName)
     -- Icon with name string
     local projectContent = projectData.icon
-    if projectData.hideNameInPrompt == "0" then
+    if projectData.hideNameInPrompt == false then
       projectContent = projectContent .. projectData.name
     end
     local project = {
@@ -352,6 +352,55 @@ O_STATUSLINE = {
     end
 
     return nil
+  end,
+
+  -- getProjectData: Get info about a specific project, lazyloaded and cached
+  getProjectData = function(projectName)
+    if not projectName then
+      return {
+        name = "",
+        path = "",
+        icon = "",
+        hl = {},
+        hideNameInPrompt = false,
+      }
+    end
+
+    -- Return cached version
+    if O.projects[projectName] then
+      return O.projects[projectName]
+    end
+
+    -- Read from dist/projects.json
+    local distPath = vim.fn.expand("~/.oroshi/config/term/zsh/theming/dist/projects.json")
+    local projects = F.readJson(distPath)
+    local defaultData = { name = "", path = "", icon = "", hl = {}, hideNameInPrompt = false }
+
+    if not projects or not projects[projectName] then
+      return defaultData
+    end
+
+    local p = projects[projectName]
+
+    -- Stop if no path (not a filesystem project)
+    if not p.path then
+      return defaultData
+    end
+
+    -- Get relevant project data
+    local projectData = {
+      name = projectName,
+      path = vim.fn.expand(p.path), -- Convert ~ to full path
+      icon = p.icon or "",
+      hl = {
+        bg = p.background and p.background.name or "",
+        fg = p.foreground and p.foreground.name or "",
+      },
+      hideNameInPrompt = p.hideNameInPrompt or false,
+    }
+    O.projects[projectName] = projectData
+
+    return projectData
   end,
 
   -- isNvimTree: Check if in a nvim tree window

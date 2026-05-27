@@ -28,3 +28,22 @@ teardown() {
   bats_run_function git-worktree-main
   [ "$status" -eq 1 ]
 }
+
+@test "accepts a worktree path argument and returns Main path" {
+  cd "$BATS_TMP_DIR"
+  bats_run_function git-worktree-main "${BATS_GIT_WORKTREES}fix-bug"
+  [ "$status" -eq 0 ]
+  [ "$output" = "$BATS_GIT_DIR" ]
+}
+
+@test "accepts a main repo path argument and returns its own path" {
+  cd "$BATS_TMP_DIR"
+  bats_run_function git-worktree-main "$BATS_GIT_DIR"
+  [ "$status" -eq 0 ]
+  [ "$output" = "$BATS_GIT_DIR" ]
+}
+
+@test "returns 1 when argument path is outside any git repo" {
+  bats_run_function git-worktree-main "$BATS_TMP_DIR"
+  [ "$status" -eq 1 ]
+}

@@ -66,6 +66,18 @@ RULE_FN="zshlintRule_noGroupedLocals"
   expect_clean
 }
 
+@test "clean — array literal without -a flag" {
+  local -a input=( 'local claudeArgs=(--print --model sonnet --session-id "$sessionId")' )
+  run_rule "${input[@]}"
+  expect_clean
+}
+
+@test "clean — single assignment with inline comment" {
+  local -a input=( 'local cacheDuration=1440 # In minutes' )
+  run_rule "${input[@]}"
+  expect_clean
+}
+
 @test "line number is correct when preceded by blank line" {
   run_rule '' 'local a b'
   expect_violation noGroupedLocals 2

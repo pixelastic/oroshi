@@ -1,0 +1,25 @@
+#!/usr/bin/env zsh
+# Given a path to a Lua file, return the path to its spec file if one exists
+# Usage:
+# $ lua-test-path ./foo_spec.lua         # returns the spec path directly
+# $ lua-test-path ./src/lodash.lua       # returns __tests__/lodash_spec.lua if it exists
+set -e
+
+local filePath="$1"
+
+# No argument provided
+[[ "$filePath" == "" ]] && exit 1
+
+# If the file is itself a _spec.lua file, return it directly
+if [[ "$filePath" == *_spec.lua ]]; then
+  [[ ! -f "$filePath" ]] && exit 1
+  echo "$filePath"
+  return
+fi
+
+local specFile="${filePath:h}/__tests__/${filePath:t:r}_spec.lua"
+
+# No matching spec file
+[[ ! -f "$specFile" ]] && exit 1
+
+echo "$specFile"

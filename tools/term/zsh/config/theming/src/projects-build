@@ -1,0 +1,138 @@
+#!/usr/bin/env zsh
+# Build dist/projects.json and dist/projects.zsh from src/projects.json
+# Sources env/colors.zsh to resolve color names to ansi/hex values
+# Usage:
+#   $ projects-build
+#   $ THEMING_ROOT=/path/to/theming projects-build
+set -e
+
+local themingRoot="${THEMING_ROOT:-${0:A:h:h}}"
+local srcJson="$themingRoot/src/projects.json"
+local colorsFile="$themingRoot/env/colors.zsh"
+local distDir="$themingRoot/dist"
+local distJson="$distDir/projects.json"
+local distZsh="$distDir/projects.zsh"
+
+source "$colorsFile"
+
+# Sort src/projects.json in-place
+local sorted="$(jq --sort-keys '.' "$srcJson")"
+printf '%s\n' "$sorted" >"$srcJson"
+
+mkdir -p "$distDir"
+
+# Build a JSON color map from sourced COLOR_* vars
+# This read all zsh vars currently in memory
+# Output: {"GREEN_8": {"ansi": 78, "hex": "#166534"}, "DARK_GREEN": {"ansi": 211, ...}, ...}
+function buildColorMap() {
+  local colorEntries=""
+  for varname in ${(k)parameters}; do
+    # Skip non-COLOR_ variables
+    [[ "$varname" != COLOR_* ]] && continue
+    # Skip _HEXA variables
+    [[ "$varname" == COLOR_*_HEXA ]] && continue
+
+    local colorName="${varname#COLOR_}"
+    local ansi="${(P)varname}"
+    local hexVar="${varname}_HEXA"
+    local hex="${(P)hexVar}"
+    colorEntries+="\"${colorName}\":{\"ansi\":${ansi},\"hex\":\"${hex}\"},"
+  done
+  echo "{${colorEntries%,}}"
+}
+
+# Generate dist/projects.json
+function generateDistJson() {
+  local colorMap="$(buildColorMap)"
+  jq -n \
+    --argjson projects "$(jq '.' "$srcJson")" \
+    --argjson colors "$colorMap" \
+    '$projects | to_entries | map(
+      .key as $projectName | .value as $projectData |
+
+      ($projectData.path // "" | if (. != "" and (endswith("/") | not)) then . + "/" else . end) as $projectPath |
+
+      ($projectData.background | if . then $colors[.] else null end) as $bgColor |
+      ($projectData.foreground | if . then $colors[.] else null end) as $fgColor |
+
+      ($projectData.background | if . then (split("_")[0] | "DARK_" + .) else null end) as $bgInactiveName |
+      ($bgInactiveName    | if . then $colors[.] else null end) as $bgInactiveColor |
+
+      ($projectData.icon // "") as $projectIcon |
+      ($projectData.hideNameInPrompt // false) as $projectHideNameInPrompt |
+
+      {
+        key: $projectName,
+        value: (
+          {
+            icon: $projectIcon,
+            path: $projectPath,
+            hideNameInPrompt: $projectHideNameInPrompt
+          }
+          | if $bgColor then . + {
+            background: {
+              name: $projectData.background,
+              ansi: $bgColor.ansi,
+              hex: $bgColor.hex
+            }
+          }  else . end
+          | if $bgInactiveColor then . + {
+            backgroundInactive: {
+              name: $bgInactiveName,
+              ansi: $bgInactiveColor.ansi,
+              hex: $bgInactiveColor.hex
+            }
+          } else . end
+          | if $fgColor  then . + {
+            foreground: {
+              name: $projectData.foreground,
+              ansi: $fgColor.ansi,
+              hex: $fgColor.hex
+            }
+          }  else . end
+        )
+      }
+    ) | from_entries' |
+    jq --sort-keys '.' >"$distJson"
+}
+
+# Generate dist/projects.zsh from dist/projects.json
+function generateDistZsh() {
+  {
+    echo "typeset -gA PROJECTS"
+    jq -r '
+      to_entries[] | .key as $projectName | .value |
+
+      (if .background then
+        "PROJECTS[\($projectName).background.name]=\"\(.background.name)\"",
+        "PROJECTS[\($projectName).background.ansi]=\(.background.ansi)",
+        "PROJECTS[\($projectName).background.hex]=\"\(.background.hex)\""
+      else empty end),
+
+      (if .backgroundInactive then
+        "PROJECTS[\($projectName).backgroundInactive.name]=\"\(.backgroundInactive.name)\"",
+        "PROJECTS[\($projectName).backgroundInactive.ansi]=\(.backgroundInactive.ansi)",
+        "PROJECTS[\($projectName).backgroundInactive.hex]=\"\(.backgroundInactive.hex)\""
+      else empty end),
+
+      (if .foreground then
+        "PROJECTS[\($projectName).foreground.name]=\"\(.foreground.name)\"",
+        "PROJECTS[\($projectName).foreground.ansi]=\(.foreground.ansi)",
+        "PROJECTS[\($projectName).foreground.hex]=\"\(.foreground.hex)\""
+      else empty end),
+
+      (if .icon and (.icon != "") then
+        "PROJECTS[\($projectName).icon]=\"\(.icon)\""
+      else empty end),
+
+      (if .path and (.path != "") then
+        "PROJECTS[\($projectName).path]=\(.path)"
+      else empty end),
+
+      "PROJECTS[\($projectName).hideNameInPrompt]=\(.hideNameInPrompt)"
+    ' "$distJson"
+  } >"$distZsh"
+}
+
+generateDistJson
+generateDistZsh

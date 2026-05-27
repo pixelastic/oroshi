@@ -7,34 +7,45 @@ description: Break a plan, spec, or PRD into independently-grabbable issues usin
 
 ## Overview
 
-Break a plan into independently-grabbable issues using vertical slices (tracer bullets).
+Break a PRD into independently-grabbable issues using vertical slices (tracer bullets).
 
 ## Core Workflow
 
 ### Step 1 - Gather context
 
-Work from whatever is already in the conversation context, as well as any
-relevant `PRD.md` file.
+**Goal:** Know enough context to write detailed issues.
 
-### Step 2 — Explore the codebase (optional)
+**Exit criterion:** PRD, codebase and glossary explored.
 
-If you have not already explored the codebase, do so to understand the current state of the code. Issue titles and descriptions should use the project's domain glossary vocabulary, and respect ADRs in the area you're touching.
+- Work from whatever is already in the conversation context.
+- Read any relevant `PRD.md` file
+- Explore the codebase to understand the current state of the code.
+- Use project Glossary and Decisions.
 
-### Step 3 - Draft vertical slices
+### Step 2 - Draft vertical slices
 
-Break the plan into **tracer bullet** issues. Each issue is a thin vertical slice that cuts through ALL integration layers end-to-end, NOT a horizontal slice of one layer.
+**Goal:** Break plan into tracer bullet issues
 
-Slices may be 'HITL' or 'AFK'. HITL slices require human interaction, such as an architectural decision or a design review. AFK slices can be implemented and merged without human interaction. Prefer AFK over HITL where possible.
+Break the plan into **tracer bullet** issues. Each issue is a thin vertical
+slice that cuts through ALL integration layers end-to-end, NOT a horizontal
+slice of one layer.
 
-<vertical-slice-rules>
-- Each slice delivers a narrow but COMPLETE path through every layer (schema, API, UI, tests)
+Slices may be 'HITL' or 'AFK'. HITL slices require human interaction, such as an
+architectural decision or a design review. AFK slices can be implemented and
+merged without human interaction. Prefer AFK over HITL where possible.
+
+- Each slice delivers a narrow but COMPLETE path through every layer
 - A completed slice is demoable or verifiable on its own
 - Prefer many thin slices over few thick ones
-</vertical-slice-rules>
 
-### Step 4 - Quiz the user
+### Step 3 - Confirm with the user
 
-Present the proposed breakdown as a numbered list. For each slice, show:
+**Goal:** Confirm granularity and order with user
+
+**Exit criterion:** User confirms the breakdown.
+
+Present the proposed breakdown as a numbered list.
+For each slice, show:
 
 - **Title**: short descriptive name
 - **Type**: HITL / AFK
@@ -50,13 +61,17 @@ Ask the user:
 
 Iterate until the user approves the breakdown.
 
-### Step 5 - Store the issues
+### Step 4 - Write the issues
 
-For each approved slice, create a [issue-XXX-slug.md](./references/issue-XXX-slug.md) file in the same directory as the PRD, following the given template.
+**Goal:** Store issues and their relationships on disk
 
-Write a [prd.json](./references/prd-json.md) and
-[progress.md](./references/progress-md.md) following the given templates, as
-siblings of the `PRD.md` file.
+**Exit criterion:** All issues `.md` files, `issues.json` and `progress.md` created
+
+- Create all files in the same directory as the `PRD.md`
+- Create one [issue-XX-slug.md](./references/issue-XX-slug.md) file per issue
+- Create a [issues.json](./references/issues-json.md) containing all issues and their dependencies
+- Create a [progress.md](./references/progress-md.md) to guide subsequent agents
+
 These files will help future agent pick up work where a previous agent left off.
 
 ---
@@ -69,12 +84,13 @@ These files will help future agent pick up work where a previous agent left off.
 
 ## Checklist
 
-- [ ] Context gathered — PRD or plan source identified
-- [ ] Codebase explored — domain glossary and ADRs identified
+- [ ] Context gathered — PRD identified
+- [ ] Codebase explored — code, glossary and decisions identified
 - [ ] Vertical slices drafted — each is a tracer bullet through all layers
 - [ ] User confirmed: granularity feels right (not too coarse / too fine)
 - [ ] User confirmed: dependency order is correct
-- [ ] issue-XXX-slug.md written for each approved slice (numbered in dependency order)
+- [ ] issue-XX-slug.md written for each approved slice
 - [ ] each issue file contains a "What to build" blurb and "Acceptance criteria" list
-- [ ] prd.json written — one entry per test case, all `passes: false`
+- [ ] issues.json written and contains all issues and their dependencies
+- [ ] all issues in issues.json have `passes: false`
 - [ ] progress.md written — execution order + guidance sections present

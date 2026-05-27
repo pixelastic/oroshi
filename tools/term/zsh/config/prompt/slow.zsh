@@ -38,7 +38,7 @@ function oroshiSlowCommandPreexec() {
   export OROSHI_LAST_COMMAND="$expandedCommand"
 
   # Return early if command matches one of the allowed patterns
-  if solkan --allow-list "${(j:,:)allowList}" "$expandedCommand"; then
+  if solkan --allow-list "${(j:,:)allowList}" "$expandedCommand" &>/dev/null; then
     oroshiSlowCommandStartTime=-1
     return
   fi

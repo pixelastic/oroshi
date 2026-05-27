@@ -8,12 +8,7 @@ for session in ${(f)allSessions}; do
   local messageCount=${splitLine[4]}
   local title=${splitLine[5]}
 
-  # project prefix
-  local projectDisplay=""
-  local projectName="$(project-by-path $cwd)"
-  if [[ -n "$projectName" ]]; then
-    projectDisplay="$(project-colorize $projectName)"
-  fi
+  local projectDisplay="$(context-badge "$cwd")"
 
   local paddedCount=$(printf "%3d" $messageCount)
   local countDisplay="$(colorize "$paddedCount msgs" $COLOR_ALIAS_COMMENT)"

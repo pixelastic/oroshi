@@ -7,7 +7,7 @@ for projectKey in ${=PROJECTS_INDEX}; do
 
   [[ $projectPath == ""  ]] && continue
 
-  local projectDisplayName="$(project-colorize $projectName)"
+  local projectDisplayName="$(context-badge "$projectName")"
 
   echo "${projectName}▮${projectDisplayName}"
 done

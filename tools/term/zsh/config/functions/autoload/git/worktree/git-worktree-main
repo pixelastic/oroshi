@@ -1,19 +1,21 @@
 # Print the absolute path of the Git Repo Main from anywhere
 # Usage:
-# $ git-worktree-main          # from the main repo → prints its own path
-# $ git-worktree-main          # from a linked worktree → prints the main repo path
+# $ git-worktree-main                    # from the main repo or a linked worktree
+# $ git-worktree-main /path/to/worktree  # resolve from a given path
 setopt local_options err_return
 
-local commonDir="$(git rev-parse --git-common-dir 2>/dev/null)"
+local refDir="${1:-$PWD}"
+
+local commonDir="$(git -C "$refDir" rev-parse --git-common-dir 2>/dev/null)"
 [[ "$commonDir" == "" ]] && return 1
 
-# --git-common-dir returns a relative path from PWD (or "." in main repo)
+# --git-common-dir returns a relative path from refDir (or "." in main repo)
 # Resolve to absolute then take parent
 local absCommonDir
-if [[ "$commonDir" = /* ]]; then
+if [[ "$commonDir" == /* ]]; then
   absCommonDir="$commonDir"
 else
-  absCommonDir="$PWD/$commonDir"
+  absCommonDir="$refDir/$commonDir"
 fi
 
 echo "${absCommonDir:h}"

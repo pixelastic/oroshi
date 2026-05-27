@@ -60,16 +60,6 @@ function oroshi-prompt-populate:git_remote() {
   OROSHI_PROMPT_PARTS[git_remote]="$(OROSHI_IS_PROMPT=1 git-remote-colorize --with-icon)"
 }
 
-# Display branch name in worktree color (left prompt, synchronous)
-function oroshi-prompt-populate:git_worktree_branch() {
-  OROSHI_PROMPT_PARTS[git_worktree_branch]=""
-  (($GIT_DIRECTORY_IS_REPOSITORY)) || return
-  (($GIT_DIRECTORY_IS_WORKTREE)) || return
-
-  local branch="$(git-branch-current)"
-  OROSHI_PROMPT_PARTS[git_worktree_branch]="%F{$COLOR_ALIAS_GIT_BRANCH}${branch}%f"
-}
-
 # Display ahead/behind counts vs main (right prompt, asynchronous)
 function oroshi-prompt-populate:git_worktree_distance() {
   OROSHI_PROMPT_PARTS[git_worktree_distance]=""
@@ -92,7 +82,7 @@ function oroshi-prompt-populate:git_worktree_distance() {
 
   local result=""
   [[ "$ahead" != "0" ]] && result+="%F{$COLOR_ALIAS_GIT_AHEAD}${ahead}${iconAhead}%f"
-  [[ "$behind" != "0" ]] && [[ -n "$result" ]] && result+=" "
+  [[ "$behind" != "0" ]] && [[ "$result" != "" ]] && result+=" "
   [[ "$behind" != "0" ]] && result+="%F{$COLOR_ALIAS_GIT_BEHIND}${behind}${iconBehind}%f"
 
   OROSHI_PROMPT_PARTS[git_worktree_distance]="$result"
@@ -136,7 +126,7 @@ function oroshi-prompt-populate:git_rebase_status() {
   git-rebase-in-progress || return
 
   local rawInfo="$(git-rebase-info-raw)"
-  [[ -z "$rawInfo" ]] && return
+  [[ "$rawInfo" == "" ]] && return
 
   local fields=(${(@ps/▮/)rawInfo})
   local stepCurrent=$fields[1]
@@ -178,7 +168,7 @@ function oroshi-prompt-populate:git_issues_github() {
   fi
 
   local issueCount="$(<$issuesCacheFile)"
-  if [[ ! $issueCount = 0 ]]; then
+  if [[ $issueCount != "0" ]]; then
     OROSHI_PROMPT_PARTS[git_issues_github]="%F{$COLOR_ALIAS_GIT_ISSUE} ${issueCount}%f"
   fi
 }
@@ -208,7 +198,7 @@ function oroshi-prompt-populate:git_pullrequests() {
   fi
 
   local pullrequestCount="$(<$pullrequestsCacheFile)"
-  if [[ ! $pullrequestCount = 0 ]]; then
+  if [[ $pullrequestCount != "0" ]]; then
     OROSHI_PROMPT_PARTS[git_pullrequests]="%F{$COLOR_ALIAS_GIT_PULLREQUEST} ${pullrequestCount}%f"
   fi
 }
@@ -226,7 +216,7 @@ function oroshi-prompt-populate:git_issues_prd() {
 
   local progress="$(ralph-progress)"
   # Empty output means ralph-progress failed (malformed JSON, empty array, etc.)
-  if [[ -z "$progress" ]]; then
+  if [[ "$progress" == "" ]]; then
     OROSHI_PROMPT_PARTS[git_issues_prd]="%F{$COLOR_ALIAS_ERROR}${icon}%f"
     return
   fi

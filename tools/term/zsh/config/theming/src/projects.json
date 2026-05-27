@@ -1,0 +1,684 @@
+{
+  "aberlaas": {
+    "background": "YELLOW_7",
+    "foreground": "GRAY_9",
+    "icon": " ",
+    "path": "~/local/www/projects/aberlaas"
+  },
+  "algolia": {
+    "background": "BLUE_7",
+    "foreground": "GRAY_2",
+    "icon": " "
+  },
+  "algolia-indexing": {
+    "background": "BLUE_7",
+    "foreground": "GRAY_2",
+    "icon": " ",
+    "path": "~/local/www/projects/algolia-indexing"
+  },
+  "alme": {
+    "background": "PINK_8",
+    "foreground": "GRAY_3",
+    "icon": "(.) ",
+    "path": "~/local/www/projects/alme"
+  },
+  "aoinan": {
+    "background": "ORANGE_8",
+    "foreground": "GRAY_3",
+    "icon": "<> ",
+    "path": "~/local/www/projects/aoinan"
+  },
+  "api-cloudflare": {
+    "background": "ORANGE",
+    "foreground": "WHITE",
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/api.pixelastic.com/cloudflare"
+  },
+  "api-fly": {
+    "background": "PURPLE",
+    "foreground": "WHITE",
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/api.pixelastic.com/fly"
+  },
+  "api-netlify": {
+    "background": "TEAL_6",
+    "foreground": "WHITE",
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/api.pixelastic.com/netlify"
+  },
+  "armory": {
+    "background": "GRAY",
+    "foreground": "YELLOW_5",
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/gamemaster/armory"
+  },
+  "bg": {
+    "background": "ORANGE",
+    "foreground": "WHITE",
+    "icon": "󰀿 "
+  },
+  "blog": {
+    "background": "GREEN",
+    "foreground": "WHITE",
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/blog.pixelastic.com"
+  },
+  "bodwynn": {
+    "background": "VIOLET_3",
+    "foreground": "VIOLET_8",
+    "icon": "󰇈 ",
+    "path": "~/local/www/algolia/bodwynn"
+  },
+  "bodwynn-data": {
+    "background": "VIOLET_4",
+    "foreground": "VIOLET_8",
+    "icon": "󰇈  ",
+    "path": "~/local/www/algolia/bodwynn-data"
+  },
+  "books": {
+    "icon": " "
+  },
+  "brefsearch": {
+    "background": "GRAY_8",
+    "foreground": "GRAY_3",
+    "icon": "ⓑ ",
+    "path": "~/local/www/algolia/brefsearch/brefsearch"
+  },
+  "brefsearch-data": {
+    "background": "GRAY_8",
+    "foreground": "GRAY_3",
+    "icon": "ⓑ  ",
+    "path": "~/local/www/algolia/brefsearch/brefsearch-data"
+  },
+  "brefsearch-media": {
+    "background": "GRAY_8",
+    "foreground": "GRAY_3",
+    "icon": "ⓑ  ",
+    "path": "~/local/www/algolia/brefsearch/brefsearch-media"
+  },
+  "callirhoe": {
+    "background": "TEAL_9",
+    "foreground": "GRAY_2",
+    "icon": " ",
+    "path": "~/local/www/projects/callirhoe"
+  },
+  "claude": {
+    "background": "AMBER_7",
+    "foreground": "GRAY_2",
+    "icon": "● ",
+    "path": "~/local/tmp/oroshi/claude"
+  },
+  "comics": {
+    "icon": "X"
+  },
+  "commitology": {
+    "background": "BLUE_6",
+    "foreground": "BLUE_0",
+    "icon": " ",
+    "path": "~/local/www/algolia/commitology"
+  },
+  "commitology-data": {
+    "background": "BLUE_9",
+    "foreground": "BLUE_0",
+    "icon": " ",
+    "path": "~/local/www/algolia/commitology-data"
+  },
+  "contentsquare": {
+    "background": "WHITE",
+    "foreground": "BLUE_8",
+    "icon": " ",
+    "path": "~/local/www/contentsquare"
+  },
+  "crafting": {
+    "background": "YELLOW_9",
+    "icon": " "
+  },
+  "crsearch": {
+    "background": "VIOLET_8",
+    "foreground": "VIOLET_1",
+    "icon": " ",
+    "path": "~/local/www/algolia/crsearch/crsearch"
+  },
+  "crsearch-data": {
+    "background": "PURPLE_9",
+    "foreground": "PURPLE_1",
+    "icon": "  ",
+    "path": "~/local/www/algolia/crsearch/crsearch-data"
+  },
+  "crsearch-media": {
+    "background": "PURPLE_8",
+    "foreground": "PURPLE_1",
+    "icon": "  ",
+    "path": "~/local/www/algolia/crsearch/crsearch-media"
+  },
+  "dashboards": {
+    "background": "BLUE_3"
+  },
+  "devrel": {
+    "background": "TEAL_6",
+    "foreground": "GRAY_3",
+    "icon": " "
+  },
+  "dropbox": {
+    "icon": " "
+  },
+  "dungeons": {
+    "background": "YELLOW_7",
+    "foreground": "BLACK",
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/gamemaster/dungeons/dungeons"
+  },
+  "dungeons-pages": {
+    "background": "YELLOW_6",
+    "foreground": "BLACK",
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/gamemaster/dungeons/dungeons-pages"
+  },
+  "dungeons-pictures": {
+    "background": "YELLOW_5",
+    "foreground": "BLACK",
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/gamemaster/dungeons/dungeons-pictures"
+  },
+  "ensureUrlTrailingSlash": {
+    "background": "BLUE_9",
+    "foreground": "GRAY_2",
+    "icon": " ",
+    "path": "~/local/www/projects/ensure-url-trailing-slash"
+  },
+  "esmify": {
+    "background": "YELLOW",
+    "foreground": "BLACK",
+    "icon": " ",
+    "path": "~/local/www/projects/esmify"
+  },
+  "firost": {
+    "background": "GREEN",
+    "foreground": "GRAY_2",
+    "icon": "❯ ",
+    "path": "~/local/www/projects/firost"
+  },
+  "gamemaster": {
+    "background": "PURPLE_8",
+    "foreground": "WHITE",
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/gamemaster/gamemaster.pixelastic.com"
+  },
+  "gdrive": {
+    "background": "YELLOW",
+    "foreground": "DARK_YELLOW",
+    "icon": "  ",
+    "path": "~/local/mount/gdrive"
+  },
+  "gilmore": {
+    "background": "PURPLE_7",
+    "foreground": "YELLOW_1",
+    "icon": "✨ ",
+    "path": "~/local/www/projects/gilmore"
+  },
+  "gitinx": {
+    "background": "GRAY_3",
+    "foreground": "BLUE",
+    "icon": " ",
+    "path": "~/local/www/projects/gitinx"
+  },
+  "golgoth": {
+    "background": "ORANGE",
+    "foreground": "ORANGE_1",
+    "icon": " ",
+    "path": "~/local/www/projects/golgoth"
+  },
+  "grimoire": {
+    "background": "AMBER_9",
+    "foreground": "AMBER_4",
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/grimoire.pixelastic.com"
+  },
+  "home": {
+    "background": "GREEN",
+    "foreground": "GREEN_1",
+    "hideNameInPrompt": true,
+    "icon": "",
+    "path": "~"
+  },
+  "hylea": {
+    "background": "GREEN_9",
+    "foreground": "GREEN_1",
+    "icon": "📗 ",
+    "path": "~/local/mount/hylea"
+  },
+  "imoen": {
+    "background": "PINK_9",
+    "foreground": "GRAY_2",
+    "icon": "  ",
+    "path": "~/local/www/projects/imoen"
+  },
+  "indexing": {
+    "background": "BLUE_3",
+    "icon": " "
+  },
+  "irori": {
+    "background": "TEAL",
+    "foreground": "WHITE",
+    "icon": " ",
+    "path": "~/local/www/projects/irori"
+  },
+  "items": {
+    "background": "ORANGE_9",
+    "foreground": "WHITE",
+    "icon": "ﰤ ",
+    "path": "~/local/www/pixelastic.com/gamemaster/items/items"
+  },
+  "items-data": {
+    "background": "ORANGE_8",
+    "foreground": "WHITE",
+    "icon": "ﰤ ",
+    "path": "~/local/www/pixelastic.com/gamemaster/items/items-data"
+  },
+  "jekyll": {
+    "background": "BLUE_5",
+    "foreground": "WHITE",
+    "icon": " ",
+    "path": "~/local/www/algolia/jekyll-algolia"
+  },
+  "keyleth": {
+    "background": "AMBER_9",
+    "foreground": "AMBER_3",
+    "icon": "󰌪 ",
+    "path": "~/local/www/projects/keyleth"
+  },
+  "kindle": {
+    "background": "BLUE_9",
+    "foreground": "BLUE_2",
+    "icon": "   ",
+    "path": "/media/tim/Kindle"
+  },
+  "korvosa": {
+    "background": "RED_9",
+    "foreground": "RED_1",
+    "icon": "🩸 ",
+    "path": "~/local/www/rp/korvosa"
+  },
+  "landscapes": {
+    "background": "BLUE_9",
+    "foreground": "WHITE",
+    "icon": "  ",
+    "path": "~/local/www/projects/landscapes/landscapes"
+  },
+  "landscapes-data": {
+    "background": "BLUE_8",
+    "foreground": "WHITE",
+    "icon": "  ",
+    "path": "~/local/www/projects/landscapes/landscapes-data"
+  },
+  "magic": {
+    "background": "RED_8",
+    "foreground": "BLACK",
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/projects/magic"
+  },
+  "maps": {
+    "background": "BLUE_6",
+    "foreground": "GRAY_2",
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/gamemaster/maps/maps"
+  },
+  "maps-data": {
+    "background": "BLUE_9",
+    "foreground": "GRAY_2",
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/gamemaster/maps/maps-data"
+  },
+  "media": {
+    "background": "GRAY",
+    "foreground": "WHITE",
+    "icon": "  ",
+    "path": "/media"
+  },
+  "meetups": {
+    "background": "RED_9",
+    "foreground": "WHITE",
+    "icon": " ",
+    "path": "~/local/www/algolia/meetups"
+  },
+  "meetups-algolia": {
+    "background": "ORANGE_7",
+    "foreground": "ORANGE_2",
+    "icon": "󰖟 ",
+    "path": "~/local/www/algolia/meetups/meetups-algolia"
+  },
+  "meetups-calendar": {
+    "background": "ORANGE_8",
+    "foreground": "ORANGE_2",
+    "icon": " ",
+    "path": "~/local/www/algolia/meetups/meetups-calendar"
+  },
+  "meetups-calendar-sync": {
+    "background": "SKY_8",
+    "foreground": "SKY_1",
+    "icon": "  ",
+    "path": "~/local/www/algolia/meetups/meetups-calendar-sync"
+  },
+  "meetups-recordings-sync": {
+    "background": "BLUE_4",
+    "foreground": "BLUE_8",
+    "icon": " ",
+    "path": "~/local/www/algolia/meetups/meetups-recordings-sync"
+  },
+  "meetups-teasers-generator": {
+    "background": "BLUE_3",
+    "foreground": "BLUE_8",
+    "icon": " ",
+    "path": "~/local/www/algolia/meetups/meetups-teasers-generator"
+  },
+  "megadungeon": {
+    "background": "YELLOW_8",
+    "foreground": "GRAY_1",
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/gamemaster/megadungeon"
+  },
+  "monorepoify": {
+    "background": "GRAY",
+    "foreground": "WHITE",
+    "icon": "  ",
+    "path": "~/local/www/projects/monorepoify"
+  },
+  "monsters": {
+    "background": "GRAY_8",
+    "foreground": "RED_8",
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/gamemaster/monsters/monsters"
+  },
+  "monsters-pages": {
+    "background": "YELLOW",
+    "foreground": "GRAY_8",
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/gamemaster/monsters/monsters-pages"
+  },
+  "monsters-pictures": {
+    "background": "GRAY_8",
+    "foreground": "GREEN",
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/gamemaster/monsters/monsters-pictures"
+  },
+  "movies": {
+    "icon": " "
+  },
+  "music": {
+    "icon": " "
+  },
+  "netlify-minutes": {
+    "background": "GREEN_8",
+    "foreground": "WHITE",
+    "icon": "神",
+    "path": "~/local/www/projects/netlify-minutes"
+  },
+  "norska": {
+    "background": "BLUE_3",
+    "foreground": "GRAY_8",
+    "icon": "煮",
+    "path": "~/local/www/projects/norska/norska"
+  },
+  "npm-search": {
+    "background": "SKY_6",
+    "foreground": "WHITE",
+    "icon": "  ",
+    "path": "~/local/www/algolia/npm-search"
+  },
+  "on-circle": {
+    "background": "RED_3",
+    "foreground": "GRAY_9",
+    "icon": "⬤ ",
+    "path": "~/local/www/projects/on-circle"
+  },
+  "oroshi": {
+    "background": "GREEN",
+    "foreground": "WHITE",
+    "icon": "x ",
+    "path": "~/.oroshi"
+  },
+  "painting": {
+    "background": "GRAY_4",
+    "foreground": "BLACK",
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/painting.pixelastic.com"
+  },
+  "pantheon": {
+    "background": "PURPLE_6",
+    "foreground": "GRAY_4",
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/gamemaster/pantheon"
+  },
+  "pathfinder-books": {
+    "background": "YELLOW_9",
+    "foreground": "YELLOW_1",
+    "icon": " ",
+    "path": "~/local/www/rp/pathfinder-books"
+  },
+  "perso": {
+    "background": "PURPLE",
+    "foreground": "WHITE",
+    "icon": " "
+  },
+  "pictures": {
+    "icon": ""
+  },
+  "pietro": {
+    "background": "BLUE_7",
+    "foreground": "YELLOW_4",
+    "icon": " ",
+    "path": "~/local/www/projects/pietro"
+  },
+  "projects": {
+    "background": "GREEN",
+    "foreground": "GRAY_2",
+    "icon": " "
+  },
+  "prst": {
+    "background": "BLUE_8",
+    "foreground": "GRAY_2",
+    "icon": " ",
+    "path": "~/local/www/projects/prst"
+  },
+  "reddinx": {
+    "background": "ORANGE_6",
+    "foreground": "GRAY_1",
+    "icon": " ",
+    "path": "~/local/www/projects/reddinx"
+  },
+  "renovate": {
+    "background": "BLUE_4",
+    "foreground": "GRAY_9",
+    "icon": " ",
+    "path": "~/local/www/projects/renovate-config-aberlaas"
+  },
+  "roleplay": {
+    "background": "GREEN_9",
+    "foreground": "WHITE",
+    "icon": " ",
+    "path": "~/perso/Dropbox/backup/roleplay"
+  },
+  "s3": {
+    "background": "ORANGE",
+    "foreground": "DARK_ORANGE",
+    "icon": "  ",
+    "path": "~/local/mount/s3"
+  },
+  "s3-pictures": {
+    "background": "ORANGE",
+    "foreground": "DARK_ORANGE",
+    "icon": "   ",
+    "path": "~/local/mount/s3/pictures"
+  },
+  "s3-recordings": {
+    "background": "ORANGE",
+    "foreground": "DARK_ORANGE",
+    "icon": "   ",
+    "path": "~/local/mount/s3/recordings"
+  },
+  "screen": {
+    "background": "ORANGE_9",
+    "foreground": "ORANGE_1",
+    "icon": " ",
+    "path": "~/local/www/rp/screen"
+  },
+  "shar-teel": {
+    "background": "PURPLE_9",
+    "foreground": "ORANGE_4",
+    "icon": " ",
+    "path": "~/local/www/projects/shar-teel"
+  },
+  "society": {
+    "background": "RED_9",
+    "foreground": "YELLOW_5",
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/gamemaster/society/society"
+  },
+  "society-data": {
+    "background": "RED_9",
+    "foreground": "YELLOW_5",
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/gamemaster/society/society-data"
+  },
+  "society-pdfs": {
+    "background": "RED_9",
+    "foreground": "YELLOW_5",
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/gamemaster/society/society-pdfs"
+  },
+  "solkan": {
+    "background": "RED_9",
+    "foreground": "RED_1",
+    "icon": " ",
+    "path": "~/local/www/projects/solkan"
+  },
+  "sov": {
+    "icon": "蠟"
+  },
+  "speaker-program": {
+    "background": "TEAL_6",
+    "foreground": "GRAY_3",
+    "icon": " ",
+    "path": "~/local/www/talks/speaker-program"
+  },
+  "speech-to-blog": {
+    "background": "YELLOW_6",
+    "foreground": "DARK_AMBER",
+    "icon": "󰔊 ",
+    "path": "~/local/www/projects/speech-to-blog"
+  },
+  "spells": {
+    "background": "BLUE_8",
+    "foreground": "WHITE",
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/gamemaster/spells/spells"
+  },
+  "talk-blog": {
+    "background": "GREEN",
+    "foreground": "WHITE",
+    "icon": "  ",
+    "path": "~/local/www/talks/talk-blog"
+  },
+  "talks": {
+    "background": "GREEN_8",
+    "foreground": "WHITE",
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/talks.pixelastic.com"
+  },
+  "terrainbuilding": {
+    "background": "GREEN_9",
+    "foreground": "YELLOW_5",
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/gamemaster/terrainbuilding/terrainbuilding"
+  },
+  "terrainbuilding-data": {
+    "background": "GREEN_8",
+    "foreground": "YELLOW_6",
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/gamemaster/terrainbuilding/terrainbuilding-data"
+  },
+  "theme-docs": {
+    "background": "BLUE_3",
+    "foreground": "GRAY_8",
+    "icon": " ",
+    "path": "~/local/www/projects/norska-theme-docs"
+  },
+  "theme-search": {
+    "background": "BLUE_5",
+    "foreground": "WHITE",
+    "icon": " ",
+    "path": "~/local/www/projects/norska-theme-search"
+  },
+  "theme-search-infinite": {
+    "background": "BLUE_3",
+    "foreground": "GRAY_8",
+    "icon": " ",
+    "path": "~/local/www/projects/norska-theme-search-infinite"
+  },
+  "theme-slides": {
+    "background": "GREEN_8",
+    "foreground": "WHITE",
+    "icon": " ",
+    "path": "~/local/www/projects/norska-theme-slides"
+  },
+  "tmp": {
+    "background": "GRAY",
+    "icon": " "
+  },
+  "transparentify": {
+    "background": "WHITE",
+    "foreground": "GRAY",
+    "icon": "頋",
+    "path": "~/local/www/projects/transparentify"
+  },
+  "twitter": {
+    "icon": " "
+  },
+  "ubuntu": {
+    "background": "ORANGE_7",
+    "foreground": "ORANGE_2",
+    "icon": " "
+  },
+  "videogames": {
+    "background": "BLUE_8",
+    "foreground": "GRAY_2",
+    "icon": "  ",
+    "path": "~/local/www/pixelastic.com/videogames/videogames.pixelastic.com"
+  },
+  "videogames-helper": {
+    "background": "BLUE_8",
+    "icon": "  "
+  },
+  "videos": {
+    "icon": " "
+  },
+  "vim": {
+    "icon": " "
+  },
+  "websites": {
+    "background": "YELLOW",
+    "foreground": "WHITE",
+    "icon": "  "
+  },
+  "wikinx": {
+    "background": "WHITE",
+    "foreground": "BLACK",
+    "icon": "  ",
+    "path": "~/local/www/projects/wikinx"
+  },
+  "www": {
+    "background": "GREEN",
+    "foreground": "GRAY_2",
+    "icon": " ",
+    "path": "~/local/www/pixelastic.com/www.pixelastic.com"
+  },
+  "youtinx": {
+    "background": "GRAY_4",
+    "foreground": "RED_8",
+    "icon": " ",
+    "path": "~/local/www/projects/youtinx"
+  },
+  "zsh": {
+    "icon": " "
+  }
+}

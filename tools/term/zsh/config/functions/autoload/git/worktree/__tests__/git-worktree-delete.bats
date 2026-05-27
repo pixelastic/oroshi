@@ -72,3 +72,51 @@ teardown() {
   bats_run_function git-worktree-delete nonexistent/branch
   [ "$status" -eq 1 ]
 }
+
+@test "removes multiple worktrees" {
+  bats_git_worktree 'feat/thing'
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-worktree-delete fix/bug feat/thing
+  [ "$status" -eq 0 ]
+  [ ! -d "${BATS_GIT_WORKTREES}fix-bug" ]
+  [ ! -d "${BATS_GIT_WORKTREES}feat-thing" ]
+}
+
+@test "deletes multiple branches" {
+  bats_git_worktree 'feat/thing'
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-worktree-delete fix/bug feat/thing
+  run bats_git branch --list fix/bug
+  [ "$output" = "" ]
+  run bats_git branch --list feat/thing
+  [ "$output" = "" ]
+}
+
+@test "stops at first failure when one branch has unmerged commits" {
+  bats_git_worktree 'feat/thing'
+  cd "${BATS_GIT_WORKTREES}fix-bug"
+  git commit --allow-empty -m "unmerged commit"
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-worktree-delete fix/bug feat/thing
+  [ "$status" -eq 1 ]
+  [ -d "${BATS_GIT_WORKTREES}fix-bug" ]
+  [ -d "${BATS_GIT_WORKTREES}feat-thing" ]
+}
+
+@test "removes docs folder from main when ralph-directory returns a path" {
+  mkdir -p "$BATS_GIT_DIR/docs/fix_bug"
+  ralph-directory() { echo "${BATS_GIT_WORKTREES}fix-bug/docs/fix_bug/"; }
+  bats_mock ralph-directory
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-worktree-delete fix/bug
+  [ "$status" -eq 0 ]
+  [ ! -d "$BATS_GIT_DIR/docs/fix_bug" ]
+}
+
+@test "skips docs deletion when ralph-directory returns nothing" {
+  ralph-directory() { return 1; }
+  bats_mock ralph-directory
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-worktree-delete fix/bug
+  [ "$status" -eq 0 ]
+}

@@ -1,6 +1,8 @@
 #!/usr/bin/zsh
 # Wrapper around claude
 
+export OROSHI_CLAUDE_STOP_SOUND="${OROSHI_CLAUDE_STOP_SOUND-auto}"
+
 ~/.oroshi/node_modules/.bin/claude "$@"
 
 # Claude v2.1.84 seem to leave the terminal in corrupted state.
