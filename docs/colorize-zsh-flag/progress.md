@@ -25,3 +25,11 @@ Note: issue-002, 003, 004, and 006 are all unblocked once issue-001 is done — 
 
 ---
 ## Log (append below when an issue is completed)
+
+## Session 2026-05-27 — 0001: colorize fix and --zsh flag
+- Completed: Fixed all bugs in `colorize`; added `--zsh` flag; kept OROSHI_IS_PROMPT backward compat
+- Tests added: `config/term/zsh/functions/autoload/misc/__tests__/colorize.bats` (10 tests)
+- Discovered: `${@[(ie)pattern]}` returns `$#+1` when not found (truthy!) — must use `(Ie)` (uppercase I) which returns 0 when absent
+- Fixed: `%G{...}` → `%K{...}` (wrong bg code); `%f` → `%f%k` (missing bg reset); `\e[00m` → `\e[0m`; `echo` → `print -n`; added `setopt local_options err_return`
+- Skipped feedback: spec agent falsely reported missing tests (bats file is in diff); boolean integer style `(( isZsh ))` is consistent with progress.md guidance
+- Next: issue-002 (git-branch-colorize), issue-003 (git-tag-colorize), issue-004 (git-remote-colorize), issue-006 (context-badge) — all now unblocked

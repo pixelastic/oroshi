@@ -9,7 +9,7 @@
       "Check output ends with \\e[0m",
       "Check output contains no %F{ or %K{"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -21,7 +21,7 @@
       "Check output ends with %f%k",
       "Check output contains no \\e[ sequence"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -30,7 +30,7 @@
       "Call: colorize text 87",
       "Check output contains no %K{ and no \\e[48;"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0001",
@@ -40,7 +40,7 @@
       "Capture the combined stdout",
       "Check there is no \\n between the two colored segments"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",
