@@ -14,7 +14,7 @@ zshlintRule_noWhileRead() {
   for line in "${(@f)content}"; do
     (( ++lineno ))
     [[ "$line" =~ ^[[:space:]]*'#' ]] && continue
-    [[ "$line" =~ 'while.*[[:space:]]read([^[:alnum:]_]|$)' ]] || continue
+    [[ ! "$line" =~ 'while.*[[:space:]]read([^[:alnum:]_]|$)' ]] && continue
     printf '%s%s%s%serror%s%d%s%s\n' \
       "$file" "$_SEP" "$code" "$_SEP" "$_SEP" "$lineno" "$_SEP" "$msg"
   done

@@ -13,7 +13,7 @@ zshlintRule_localOrReturn() {
   for line in "${(@f)content}"; do
     (( ++lineno ))
     [[ "$line" =~ ^[[:space:]]*'#' ]] && continue
-    [[ "$line" =~ ^[[:space:]]*'local'[[:space:]] ]] || continue
+    [[ ! "$line" =~ ^[[:space:]]*'local'[[:space:]] ]] && continue
 
     # Shell-aware word splitting respects quotes; || inside a quoted value won't appear as a standalone token
     words=(${(z)line})

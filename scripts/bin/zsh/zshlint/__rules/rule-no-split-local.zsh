@@ -18,7 +18,7 @@ zshlintRule_noSplitLocal() {
     [[ "$line" =~ ^[[:space:]]*'#' ]] && continue
 
     # Flag if current line assigns to the var bare-declared on the previous line
-    if [[ -n "$prevVar" && "$line" =~ ^[[:space:]]*"${prevVar}"'[+]?=' ]]; then
+    if [[ "$prevVar" != "" && "$line" =~ ^[[:space:]]*"${prevVar}"'[+]?=' ]]; then
       printf '%s%s%s%serror%s%d%s%s\n' \
         "$file" "$_SEP" "$code" "$_SEP" "$_SEP" "$prevLineno" "$_SEP" "$msg"
     fi
@@ -26,7 +26,7 @@ zshlintRule_noSplitLocal() {
     # Reset — only keep tracking if this line is itself a bare local declaration
     prevVar=""
 
-    [[ "$line" =~ ^[[:space:]]*'local'[[:space:]] ]] || continue
+    [[ ! "$line" =~ ^[[:space:]]*'local'[[:space:]] ]] && continue
 
     # Parse words, strip 'local' and any option flags
     words=(${(z)line})
@@ -36,7 +36,7 @@ zshlintRule_noSplitLocal() {
     done
 
     # Bare declaration: exactly one word with no '=' sign
-    [[ ${#words} -eq 1 && "${words[1]}" != *'='* ]] || continue
+    [[ ${#words} -ne 1 || "${words[1]}" == *'='* ]] && continue
     prevVar="${words[1]}"
     prevLineno=$lineno
   done

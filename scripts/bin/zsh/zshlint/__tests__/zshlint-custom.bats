@@ -93,3 +93,25 @@ teardown() {
   run zsh "$ZSHLINT_CUSTOM" "$file"
   [[ "$output" == *'"level":"error"'* ]]
 }
+
+@test "zshlint-disable suppresses violation on next line" {
+  local file="$BATS_TMP_DIR/test.zsh"
+  printf '# zshlint-disable noGroupedLocals\nlocal a b\n' >"$file"
+  run zsh "$ZSHLINT_CUSTOM" "$file"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == '[]' ]]
+}
+
+@test "zshlint-disable only suppresses the named rule" {
+  local file="$BATS_TMP_DIR/test.zsh"
+  printf '# zshlint-disable noGroupedLocals\nlocal a b\nlocal c d\n' >"$file"
+  run zsh "$ZSHLINT_CUSTOM" "$file"
+  [[ "$output" == *'"code":"noGroupedLocals"'* ]]
+}
+
+@test "zshlint-disable with wrong code does not suppress" {
+  local file="$BATS_TMP_DIR/test.zsh"
+  printf '# zshlint-disable noDashZ\nlocal a b\n' >"$file"
+  run zsh "$ZSHLINT_CUSTOM" "$file"
+  [[ "$output" == *'"code":"noGroupedLocals"'* ]]
+}

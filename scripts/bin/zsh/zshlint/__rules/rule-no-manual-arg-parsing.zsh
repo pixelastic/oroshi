@@ -20,7 +20,7 @@ zshlintRule_noManualArgParsing() {
     (( ++lineno ))
     [[ "$line" =~ ^[[:space:]]*'#' ]] && continue
     for pattern in $patterns; do
-      [[ "$line" =~ $pattern ]] || continue
+      [[ ! "$line" =~ $pattern ]] && continue
       printf '%s%s%s%serror%s%d%s%s\n' \
         "$file" "$_SEP" "$code" "$_SEP" "$_SEP" "$lineno" "$_SEP" "$msg"
       break
