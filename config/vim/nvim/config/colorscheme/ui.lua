@@ -13,6 +13,7 @@ hl("Directory", "DIRECTORY") -- Directory names
 -- }}}
 
 -- Messages {{{
+hl("MsgSeparator", "none", { bg = "NEUTRAL" }) --	Top bar separator of messsage
 hl("DiagnosticInfo", "INFO")
 hl("ErrorMsg", "RED_8", { bold = false }) --	Error messages
 hl("Conceal", "NEUTRAL") --	Hidden text

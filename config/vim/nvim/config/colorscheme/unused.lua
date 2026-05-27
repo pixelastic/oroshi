@@ -24,7 +24,6 @@ hl("FloatFooter", "XXX") --	Footer of floating windows.
 hl("LineNrAbove", "XXX") --	Line number for when the 'relativenumber'
 hl("LineNrBelow", "XXX") --	Line number for when the 'relativenumber'
 hl("ModeMsg", "XXX") --		'showmode' message (e.g., "-- INSERT --").
-hl("MsgSeparator", "XXX") --	Top bar separator of messsage
 hl("QuickFixLine", "XXX") --	Current |quickfix| item in the quickfix window. Combined with
 hl("SnippetTabstop", "XXX") --	Tabstops in snippets. |vim.snippet|
 
