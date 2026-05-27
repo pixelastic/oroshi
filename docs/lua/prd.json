@@ -10,7 +10,7 @@
       "Run selene on a clean Lua file — assert exit 0",
       "Run selene on a file with a known violation — assert exit 1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "act": 1,
