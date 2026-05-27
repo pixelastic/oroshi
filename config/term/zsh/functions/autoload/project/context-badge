@@ -13,76 +13,69 @@ zparseopts -E -D \
   -zsh=flagZsh
 
 local isZsh=${#flagZsh}
-local arg="${1:-$PWD}"
+local reference="${1:-$PWD}"
+local esc=$'\e'
 local arrow=$'\ue0b0'
 
-# Resolve project name to its root path
-local targetPath
-if [[ "$arg" != /* ]]; then
-  local nameKey="$(project-key "$arg")"
-  local nameResolvedPath="${(P)${:-PROJECT_${nameKey}_PATH}}"
-  if [[ -n "$nameResolvedPath" ]]; then
-    targetPath="${nameResolvedPath/#\~/$HOME}"
-    targetPath="${targetPath%/}"
+# Colored segment: [arrow transition] + text on bg/fg
+# _badge bg fg text [prevBg]  — prevBg triggers transition arrow
+_badge() {
+  local bg="$1"
+  local fg="$2"
+  local text="$3"
+  local prevBg="${4:-}"
+  if (( isZsh )); then
+    local out="%K{$bg}"
+    [[ "$prevBg" != "" ]] && out+="%F{$prevBg}${arrow}"
+    out+="%F{$fg}${text}%f%k"
   else
-    targetPath="$arg"
+    local out="${esc}[48;5;${bg}m"
+    [[ "$prevBg" != "" ]] && out+="${esc}[38;5;${prevBg}m${arrow}"
+    out+="${esc}[38;5;${fg}m${text}${esc}[0m"
   fi
-else
-  targetPath="$arg"
+  print -n "$out"
+}
+
+# Final arrow after last badge (no background)
+_trailing_arrow() {
+  local fg="$1"
+  if (( isZsh )); then
+    print -n "%F{$fg}${arrow}%f"
+  else
+    print -n "${esc}[38;5;${fg}m${arrow}${esc}[0m"
+  fi
+}
+
+# Load PROJECTS if not already populated
+(( ${#PROJECTS} == 0 )) && source "$OROSHI_ROOT/config/term/zsh/theming/dist/projects.zsh"
+
+# Resolve project name argument to its path
+if [[ "$reference" != /* ]]; then
+  local resolvedPath="${PROJECTS[${reference}.path]}"
+  [[ "$resolvedPath" != "" ]] && reference="${${resolvedPath/#\~/$HOME}%/}"
 fi
 
-# Unknown project -> empty output
-local projectName="$(context-project "$targetPath")"
+# Unknown project → empty output
+local projectName="$(context-project "$reference")"
 [[ "$projectName" == "" ]] && return 0
 
 # Project display vars
-local key="$(project-key "$projectName")"
-[[ "$key" == "" ]] && return 0
-local projectBg="${(P)${:-PROJECT_${key}_BACKGROUND}}"
-local projectFg="${(P)${:-PROJECT_${key}_FOREGROUND}}"
-local projectIcon="${(P)${:-PROJECT_${key}_ICON}}"
-local hideName="${(P)${:-PROJECT_${key}_HIDE_NAME_IN_PROMPT}}"
+local projectBg="${PROJECTS[${projectName}.background.ansi]}"
+local projectFg="${PROJECTS[${projectName}.foreground.ansi]}"
+local projectIcon="${PROJECTS[${projectName}.icon]}"
+local hideNameInPrompt="${PROJECTS[${projectName}.hideNameInPrompt]}"
 local displayName="$projectName"
-[[ "$hideName" == "1" ]] && displayName=""
+[[ "$hideNameInPrompt" == "true" ]] && displayName=""
 
-# Worktree detection
-local isWorktree=0
-git-directory-is-worktree "$targetPath" && isWorktree=1
+# Worktree name (empty if not in a linked worktree)
+local worktreeName="$(git-worktree-name "$reference")"
 
-local branchBg="$COLOR_ALIAS_GIT_BRANCH"
-
-local output
-if (( isZsh )); then
-  # Project Badge (zsh prompt codes)
-  output="%K{${projectBg}}%F{${projectFg}} ${projectIcon}${displayName} %f"
-  if (( isWorktree )); then
-    # Transition arrow: project bg as fg, branch bg as bg
-    output+="%K{${branchBg}}%F{${projectBg}}${arrow}%f"
-    # Worktree Badge
-    local branch="$(git-branch-current "$targetPath")"
-    [[ "$branch" == "" ]] && return 0
-    output+="%F{255} ${branch} %f%k"
-    output+="%F{${branchBg}}${arrow}%f"
-  else
-    # Trailing arrow (no following badge)
-    output+="%k%F{${projectBg}}${arrow}%f"
-  fi
+if [[ "$worktreeName" == "" ]]; then
+  _badge "$projectBg" "$projectFg" " ${projectIcon}${displayName} "
+  _trailing_arrow "$projectBg"
 else
-  local esc=$'\e'
-  # Project Badge (raw ANSI)
-  output="${esc}[38;5;${projectFg}m${esc}[48;5;${projectBg}m ${projectIcon}${displayName} ${esc}[0m"
-  if (( isWorktree )); then
-    # Transition arrow: project bg as fg, branch bg as bg
-    output+="${esc}[38;5;${projectBg}m${esc}[48;5;${branchBg}m${arrow}${esc}[0m"
-    # Worktree Badge
-    local branch="$(git-branch-current "$targetPath")"
-    [[ "$branch" == "" ]] && return 0
-    output+="${esc}[38;5;255m${esc}[48;5;${branchBg}m ${branch} ${esc}[0m"
-    output+="${esc}[38;5;${branchBg}m${arrow}${esc}[0m"
-  else
-    # Trailing arrow (no following badge)
-    output+="${esc}[38;5;${projectBg}m${arrow}${esc}[0m"
-  fi
+  local branchBg="$COLOR_ALIAS_GIT_BRANCH"
+  _badge "$projectBg" "$projectFg" " ${projectIcon}${displayName} "
+  _badge "$branchBg" "255" " ${worktreeName} " "$projectBg"
+  _trailing_arrow "$branchBg"
 fi
-
-print -n "$output"
