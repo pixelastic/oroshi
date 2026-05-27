@@ -1,0 +1,207 @@
+[
+  {
+    "id": "0001",
+    "description": "colorize without --zsh produces correct ANSI sequences",
+    "steps": [
+      "Call: colorize text 87 100",
+      "Check output contains \\e[38;5;87m",
+      "Check output contains \\e[48;5;100m",
+      "Check output ends with \\e[0m",
+      "Check output contains no %F{ or %K{"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0001",
+    "description": "colorize with --zsh produces zsh prompt codes",
+    "steps": [
+      "Call: colorize text 87 100 --zsh",
+      "Check output contains %F{87}",
+      "Check output contains %K{100}",
+      "Check output ends with %f%k",
+      "Check output contains no \\e[ sequence"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0001",
+    "description": "colorize without bg produces no background code",
+    "steps": [
+      "Call: colorize text 87",
+      "Check output contains no %K{ and no \\e[48;"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0001",
+    "description": "two consecutive direct colorize calls concatenate without newlines",
+    "steps": [
+      "In a zsh function, call colorize twice without $() capture",
+      "Capture the combined stdout",
+      "Check there is no \\n between the two colored segments"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "git-branch-colorize without --zsh produces ANSI output with branch name",
+    "steps": [
+      "In a git repo on branch main",
+      "Call: git-branch-colorize main",
+      "Check output contains \\e[",
+      "Check output contains 'main'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "git-branch-colorize with --zsh produces zsh prompt output",
+    "steps": [
+      "In a git repo on branch main",
+      "Call: git-branch-colorize main --zsh",
+      "Check output contains %F{",
+      "Check output contains 'main'",
+      "Check output contains no \\e["
+    ],
+    "passes": false
+  },
+  {
+    "id": "0002",
+    "description": "git-branch-colorize --with-icon --zsh includes icon and zsh codes",
+    "steps": [
+      "In a git repo on branch main",
+      "Call: git-branch-colorize --with-icon --zsh",
+      "Check output contains %F{",
+      "Check output contains an icon character",
+      "Check output contains no \\e["
+    ],
+    "passes": false
+  },
+  {
+    "id": "0003",
+    "description": "git-tag-colorize without --zsh produces ANSI output with tag name",
+    "steps": [
+      "In a git repo with tag v1.0 on current commit",
+      "Call: git-tag-colorize v1.0",
+      "Check output contains \\e[",
+      "Check output contains 'v1.0'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0003",
+    "description": "git-tag-colorize with --zsh produces zsh prompt output",
+    "steps": [
+      "In a git repo with tag v1.0 on current commit",
+      "Call: git-tag-colorize v1.0 --zsh",
+      "Check output contains %F{",
+      "Check output contains 'v1.0'",
+      "Check output contains no \\e["
+    ],
+    "passes": false
+  },
+  {
+    "id": "0004",
+    "description": "git-remote-colorize without --zsh produces ANSI output with remote name",
+    "steps": [
+      "In a git repo with remote origin",
+      "Call: git-remote-colorize origin",
+      "Check output contains \\e[",
+      "Check output contains 'origin'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0004",
+    "description": "git-remote-colorize with --zsh produces zsh prompt output",
+    "steps": [
+      "In a git repo with remote origin",
+      "Call: git-remote-colorize origin --zsh",
+      "Check output contains %F{",
+      "Check output contains 'origin'",
+      "Check output contains no \\e["
+    ],
+    "passes": false
+  },
+  {
+    "id": "0005",
+    "description": "git.zsh contains no OROSHI_IS_PROMPT",
+    "steps": [
+      "Read config/term/zsh/prompt/git.zsh",
+      "Check the file contains no occurrence of OROSHI_IS_PROMPT"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0005",
+    "description": "colorize contains no OROSHI_IS_PROMPT",
+    "steps": [
+      "Read config/term/zsh/functions/autoload/misc/colorize",
+      "Check the file contains no occurrence of OROSHI_IS_PROMPT"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0006",
+    "description": "context-badge shows project name for a known path",
+    "steps": [
+      "Set up PROJECTS array with my-project.path pointing to a git repo",
+      "Call: context-badge /path/inside/project",
+      "Check output contains 'my-project'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0006",
+    "description": "context-badge shows worktree branch name for a path inside a linked worktree",
+    "steps": [
+      "Set up PROJECTS array and create a linked worktree",
+      "Call: context-badge /path/inside/worktree",
+      "Check output contains the worktree branch name"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0006",
+    "description": "context-badge with project name arg produces same output as root path arg",
+    "steps": [
+      "Set up PROJECTS array with my-project.path pointing to a git repo",
+      "Call: context-badge my-project, capture output",
+      "Call: context-badge /project/root/path, capture output",
+      "Check both outputs are identical"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0006",
+    "description": "context-badge returns empty output for unknown path",
+    "steps": [
+      "Set up empty PROJECTS array",
+      "Call: context-badge /tmp/unregistered-dir",
+      "Check output is empty"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0006",
+    "description": "context-badge without --zsh produces ANSI output",
+    "steps": [
+      "Set up PROJECTS array",
+      "Call: context-badge /path/inside/project",
+      "Check output contains \\e[",
+      "Check output contains no %K{"
+    ],
+    "passes": false
+  },
+  {
+    "id": "0006",
+    "description": "context-badge with --zsh produces zsh prompt output",
+    "steps": [
+      "Set up PROJECTS array",
+      "Call: context-badge /path/inside/project --zsh",
+      "Check output contains %K{",
+      "Check output contains no \\e["
+    ],
+    "passes": false
+  }
+]
