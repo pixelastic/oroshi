@@ -1,0 +1,43 @@
+#!/usr/bin/env bats
+
+bats_load_library 'helper'
+
+LUA_LINT_CUSTOM="${BATS_TEST_DIRNAME}/../lua-lint-custom"
+SEP=$'\u25ae'
+
+setup() {
+  bats_tmp_dir
+}
+
+teardown() {
+  bats_cleanup
+}
+
+@test "exits 0 with no output for a clean file" {
+  local file="$BATS_TMP_DIR/clean.lua"
+  printf '%s\n' '-- clean' >"$file"
+  run zsh "$LUA_LINT_CUSTOM" "$file"
+  [ "$status" -eq 0 ]
+  [ "$output" = "" ]
+}
+
+@test "outputs violation line for vim.deepcopy( call" {
+  local file="$BATS_TMP_DIR/bad.lua"
+  printf '%s\n' 'local x = vim.deepcopy(t)' >"$file"
+  run zsh "$LUA_LINT_CUSTOM" "$file"
+  [[ "$output" == "${file}${SEP}noVimDeepcopy${SEP}"* ]]
+}
+
+@test "violation line contains correct line number" {
+  local file="$BATS_TMP_DIR/bad.lua"
+  printf '%s\n' '-- comment' 'local x = vim.deepcopy(t)' >"$file"
+  run zsh "$LUA_LINT_CUSTOM" "$file"
+  [[ "$output" == *"${SEP}2${SEP}"* ]]
+}
+
+@test "exits 1 when violation found" {
+  local file="$BATS_TMP_DIR/bad.lua"
+  printf '%s\n' 'local x = vim.deepcopy(t)' >"$file"
+  run zsh "$LUA_LINT_CUSTOM" "$file"
+  [ "$status" -eq 1 ]
+}

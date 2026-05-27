@@ -1,0 +1,22 @@
+# vim: set ft=bash:
+# Helpers for testing lint rule functions in isolation.
+# Each test file must set RULE_FILE, RULE_FN, and RULE_FIXTURE (e.g. "test.zsh" or "test.lua").
+
+export _SEP=$'\u25ae'
+
+# run_rule <line1> [line2 ...]
+# Writes lines to a temp fixture file and runs the rule function against it.
+run_rule() {
+  [[ -z "$BATS_TMP_DIR" ]] && bats_tmp_dir
+  local file="$BATS_TMP_DIR/${RULE_FIXTURE}"
+  printf '%s\n' "$@" > "$file"
+  run zsh -c "source '${RULE_FILE}'; ${RULE_FN} '${file}'"
+}
+
+# expect_rule_violation <code> <line>
+# Asserts output contains a ▮-separated violation with the given code and line number.
+expect_rule_violation() {
+  local code="$1" line="$2"
+  [[ "$output" == *"${code}"* ]]
+  [[ "$output" == *"${_SEP}${line}${_SEP}"* ]]
+}
