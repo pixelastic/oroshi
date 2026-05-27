@@ -42,3 +42,9 @@ teardown_file() {
   run bats-test-path
   [ "$status" -eq 1 ]
 }
+
+@test "strips extension and adds .bats for a .zsh file" {
+  run bats-test-path "$HOME/.oroshi/scripts/bin/zsh/zshlint/__rules/rule-no-dash-n.zsh"
+  [ "$status" -eq 0 ]
+  [ "$output" = "$HOME/.oroshi/scripts/bin/zsh/zshlint/__rules/__tests__/rule-no-dash-n.bats" ]
+}

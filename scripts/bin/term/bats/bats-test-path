@@ -17,7 +17,7 @@ if [[ "$filePath" == *.bats ]]; then
   return
 fi
 
-local testFile="${filePath:h}/__tests__/${filePath:t}.bats"
+local testFile="${filePath:h}/__tests__/${filePath:t:r}.bats"
 
 # No matching test file
 [[ ! -f "$testFile" ]] && exit 1

@@ -57,12 +57,44 @@ for file in "${input[@]}"; do
   done
 done
 
+# Filter out violations suppressed by # zshlint-disable <code> on the previous line
+local -a filteredLines=()
+local -A fileContentCache=()
+local violationLine
+for violationLine in $ruleLines; do
+  local -a fields=(${(@ps/▮/)violationLine})
+  local sourceFile=$fields[1]
+  local ruleCode=$fields[2]
+  local lineNumber=$fields[4]
+
+  # Cache file content to avoid re-reading the same file for every violation
+  [[ "${fileContentCache[$sourceFile]}" == "" ]] && fileContentCache[$sourceFile]="$(<"$sourceFile")"
+  local -a sourceLines=("${(@f)fileContentCache[$sourceFile]}")
+
+  # Suppress if the line above the violation has the matching disable comment
+  local lineAbove=""
+  [[ $lineNumber -gt 1 ]] && lineAbove=$sourceLines[$((lineNumber - 1))]
+  [[ "$lineAbove" =~ "# zshlint-disable ${ruleCode}([[:space:]]|$)" ]] && continue
+
+  filteredLines+=("$violationLine")
+done
+ruleLines=("${filteredLines[@]}")
+
 # Convert Rule Output lines to JSON objects
 local -a customObjects=()
 local line
 local obj
 for line in $ruleLines; do
-  obj="$(printf '%s' "$line" | jq -Rc 'split("\u25ae") | {file:.[0],code:.[1],level:.[2],line:(.[3]|tonumber),endLine:(.[3]|tonumber),column:1,endColumn:1,message:.[4]}')"
+  obj="$(printf '%s' "$line" | jq -Rc 'split("\u25ae") | {
+    file:.[0],
+    code:.[1],
+    level:.[2],
+    line:(.[3]|tonumber),
+    endLine:(.[3]|tonumber),
+    column:1,
+    endColumn:1,
+    message:.[4]
+  }')"
   customObjects+=("$obj")
 done
 

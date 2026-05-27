@@ -17,7 +17,7 @@ zshlintRule_noGroupedLocals() {
   for line in "${(@f)content}"; do
     (( ++lineno ))
     [[ "$line" =~ ^[[:space:]]*'#' ]] && continue
-    [[ "$line" =~ ^[[:space:]]*'local'[[:space:]]+(.*) ]] || continue
+    [[ ! "$line" =~ ^[[:space:]]*'local'[[:space:]]+(.*) ]] && continue
 
     rest="${match[1]}"
 

@@ -14,7 +14,7 @@ zshlintRule_noExternalBasename() {
   for line in "${(@f)content}"; do
     (( ++lineno ))
     [[ "$line" =~ ^[[:space:]]*'#' ]] && continue
-    [[ "$line" =~ '\$\((basename|dirname|realpath)[[:space:](]' ]] || continue
+    [[ ! "$line" =~ '\$\((basename|dirname|realpath)[[:space:](]' ]] && continue
     printf '%s%s%s%serror%s%d%s%s\n' \
       "$file" "$_SEP" "$code" "$_SEP" "$_SEP" "$lineno" "$_SEP" "$msg"
   done
