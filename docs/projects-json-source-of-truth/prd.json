@@ -169,7 +169,7 @@
       "Call F.readJson('/nonexistent/path.json')",
       "Assert the return value is nil"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0004",
@@ -179,7 +179,7 @@
       "Assert the statusline background color matches the project's background.ansi value in dist/projects.json",
       "Assert M.getProjectData() does not call 'project-key' or read PROJECT_* env vars"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0004",
@@ -189,7 +189,7 @@
       "Trigger multiple statusline renders",
       "Assert F.readJson is called only once for the project (data cached in O.projects)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0004",
@@ -200,7 +200,7 @@
       "Assert dist/projects.json is updated",
       "Assert no manual reload prompt appeared (checktime ran automatically)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",

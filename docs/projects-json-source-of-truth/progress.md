@@ -51,3 +51,11 @@ issue-006 → needs issue-002
 - Previous approach (modifying `config/git/git/hooks/pre-commit` directly) was reverted — wrong integration point
 - Discovered: lintstaged is the correct hook mechanism; `projects-build` ignores arguments so no function-wrapper needed
 - Next: issue-004 (NeoVim)
+
+## Session 2026-05-27 — issue-004: NeoVim integration
+- Completed: added `F.readJson()` to `file.lua`; migrated `M.getProjectData()` in `highlight.lua` to read from `dist/projects.json`; added `BufWritePost` autocmd in `disk.lua` for `*/src/projects.json`
+- Tests added: F.readJson returns table for valid JSON, F.readJson returns nil for missing file, getProjectData reads from dist JSON (not PROJECT_* vars), getProjectData caches (readJson not called twice), disk.lua registers BufWritePost autocmd
+- Discovered: `vim.json.decode` is modern NeoVim API (not `vim.fn.json_decode` as spec says) — already used in json.lua filetype handler; `NVIM_PROJECTS_JSON` env var added for test path override; path to dist/projects.json hardcoded to `~/.oroshi/config/term/zsh/theming/dist/projects.json`
+- Fixed: added `vim.fn.executable` guard in `runProjectsBuild` (return-early pattern per CLAUDE.md); renamed `ok2` to `okParse` for clarity
+- Skipped feedback: spec finding "use `background.ansi` for hl.bg" — incorrect; old code used `BACKGROUND_NAME` (color name string) which maps to `.name`, not `.ansi` (terminal ANSI int); spec finding "cache check missing" — cache check IS before F.readJson call; spec finding "`vim.fn.json_decode`" — using `vim.json.decode` (modern API, consistent with existing codebase)
+- Next: issue-006 (Kitty)

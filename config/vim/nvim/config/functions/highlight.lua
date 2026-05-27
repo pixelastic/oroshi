@@ -141,29 +141,30 @@ M.getProjectData = function(projectName)
     return O.projects[projectName]
   end
 
-  -- Get the project key for environment variable access
-  local projectKey = vim.fn.systemlist("project-key " .. projectName)[1]
-
-  local function getAttribute(type)
-    return F.env("PROJECT_" .. projectKey .. "_" .. type)
+  -- Read from dist/projects.json
+  local distPath = vim.fn.expand("~/.oroshi/config/term/zsh/theming/dist/projects.json")
+  local projects = F.readJson(distPath)
+  if not projects or not projects[projectName] then
+    return false
   end
 
-  -- Stop if unknown project
-  local projectPath = getAttribute("PATH")
-  if not projectPath then
+  local p = projects[projectName]
+
+  -- Stop if no path (not a filesystem project)
+  if not p.path then
     return false
   end
 
   -- Get relevant project data
   local projectData = {
     name = projectName,
-    path = vim.fn.expand(projectPath), -- Convert ~ to full path
-    icon = getAttribute("ICON"),
+    path = vim.fn.expand(p.path), -- Convert ~ to full path
+    icon = p.icon or "",
     hl = {
-      bg = getAttribute("BACKGROUND_NAME"),
-      fg = getAttribute("FOREGROUND_NAME"),
+      bg = p.background and p.background.name or "",
+      fg = p.foreground and p.foreground.name or "",
     },
-    hideNameInPrompt = getAttribute("HIDE_NAME_IN_PROMPT"),
+    hideNameInPrompt = p.hideNameInPrompt or false,
   }
   O.projects[projectName] = projectData
 

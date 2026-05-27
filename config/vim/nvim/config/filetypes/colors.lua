@@ -21,6 +21,10 @@ M.onInit = function()
   F.onWrite("*config/git/git/src/gitconfig", executeCommand("~/.oroshi/config/git/git/generate-config")) -- Git
   F.onWrite("*config/term/kitty/colors.conf", executeCommand("colors-refresh")) -- Kitty
   F.onWrite("*config/term/zsh/theming/src/*", executeCommand("colors-refresh")) -- Zsh
+
+  -- Projects
+  F.onWrite("*config/term/zsh/theming/src/projects.json", executeCommand("projects-build"))
+  F.onWrite("*config/term/zsh/theming/src/projects-build", executeCommand("projects-build"))
 end
 
 return M
