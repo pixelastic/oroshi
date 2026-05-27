@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=/home/tim/.oroshi/tools/ubuntu/24.04/autostart/scripts/onstartup
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Oroshi (OnStartUp)
+Comment=Script triggered when the laptop starts up

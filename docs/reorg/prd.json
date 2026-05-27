@@ -114,7 +114,7 @@
       "Pick one feature, verify its deploy uses $(dirname \"$0\")/config",
       "Verify no files remain in scripts/install/ubuntu/, scripts/deploy/ubuntu/, config/ubuntu/"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0013",

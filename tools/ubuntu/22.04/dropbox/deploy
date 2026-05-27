@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+# Nautilus overlays are way too big.
+# We'll reduce them by using custom icons stored in ./icons instead
+
+# We need to have fd installed first
+if [[ ! -v commands[fd] ]]; then
+  echo "You need to install fd first"
+  exit 1
+fi
+
+iconPath="/usr/share/icons/Yaru"
+overwritePath="${0:h}/config"
+
+for newIcon in $overwritePath/*.png; do
+  iconBasename="${newIcon:t}"
+
+  # Find all icons with the same name and override them
+  existingIcons="$(\
+    fd \
+    --base-directory=${iconPath} \
+    --absolute-path \
+    --color=never \
+    ${iconBasename}\
+  )"
+
+  for oldIcon in ${(f)existingIcons}; do
+    sudo cp -f $newIcon $oldIcon
+  done
+done

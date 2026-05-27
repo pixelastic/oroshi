@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+
+"${0:h}/basic"
+"${0:h}/custom"
+"${0:h}/windows"
+"${0:h}/workspaces"

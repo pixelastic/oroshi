@@ -63,6 +63,15 @@ issue-017 → needs issue-001 through issue-016 (cleanup — delete old director
 ---
 ## Log (append below when an issue is completed)
 
+## Session 2026-05-27 — 0012: ubuntu domain fully migrated to tools/ubuntu/
+
+- Completed: Migrated 7 features into tools/ubuntu/22.04/ (dropbox, extensions, gtk, keybindings, screen, tweaks, watchers) and 11 features into tools/ubuntu/24.04/ (argos, autostart, extensions, gext, keybindings, printer, topbar, tweaks, wl-clipboard, wmctrl, ydotool). Moved all deploy scripts, install scripts, and config dirs. Updated path refs: dropbox/deploy, gtk/deploy, keybindings/deploy (22.04), autostart/deploy, printer/install, topbar/deploy, ydotool/install. Created new 24.04/keybindings/deploy orchestrator (no index existed). Updated 5 argos config files: ~/.oroshi/config/ubuntu/24.04/argos/icons/ → ~/.oroshi/tools/ubuntu/24.04/argos/config/icons/. Removed all empty source dirs (scripts/deploy/ubuntu/, scripts/install/ubuntu/, config/ubuntu/).
+- Tests added: none (migration issue — no automated tests)
+- Discovered: 24.04/keybindings had no index file — created minimal deploy orchestrator calling all 4 sub-scripts. Argos config .zsh files referenced old icon paths; fixed to new location. 22.04/keybindings sub-scripts are co-located with deploy (not a config/, they're executable sub-scripts). 24.04/autostart already had internal config/ and scripts/ dirs co-located with init.
+- Fixed: stale icon paths in 5 argos config files (per review).
+- Skipped feedback: "No install scripts (Ubuntu is pre-installed)" — pre-existing install scripts for argos, extensions, gext, printer, wl-clipboard, wmctrl, ydotool were migrated as-is; these existed before migration. topbar/deploy uses $OROSHI_ROOT cross-tool ref (correct per guidance).
+- Next: issue-013 (vim domain migration)
+
 ## Session 2026-05-26 — 0011: misc domain fully migrated to tools/misc/
 
 - Completed: Moved 5 install scripts (crc32, jrnl, petname, recode, uchardet) to tools/misc/{tool}/install. Moved scripts/deploy/misc/jrnl to tools/misc/jrnl/deploy. Moved config/misc/jrnl/ to tools/misc/jrnl/config/. Moved config/misc/tldr/ to tools/cli/tldr/config/ (tldr tool lives in cli domain; deploy already referenced $(dirname "$0")/config there). Updated jrnl/deploy: removed local, changed ~/.oroshi path to ${0:h}/config, added set -e + header. Added $(dirname "$0")/deploy call at end of jrnl/install. Removed empty scripts/install/misc/, scripts/deploy/misc/, config/misc/.

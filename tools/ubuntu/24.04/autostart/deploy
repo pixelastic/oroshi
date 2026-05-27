@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# Configure scripts and apps to load at startup
+
+CONFIG_DIR="${0:h}/config"
+DEST_DIR=~/.config/autostart
+
+rm -rf $DEST_DIR
+ln -fs $CONFIG_DIR $DEST_DIR
