@@ -1,17 +1,13 @@
-# prd.json
+# issues.json
 
-Format: a JSON array of objects, one per test case:
+Format: a JSON array of objects, one per issue case:
 
 ```json
 [
   {
     "id": "0001",
     "description": "one-sentence description of what is being tested",
-    "steps": [
-      "step 1",
-      "step 2",
-      "step 3"
-    ],
+    "steps": ["step 1", "step 2", "step 3"],
     "passes": false
   }
 ]

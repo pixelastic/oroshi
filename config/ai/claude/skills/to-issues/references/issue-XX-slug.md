@@ -1,6 +1,6 @@
-# issue-XXX-slug.md
+# issue-XX-slug.md
 
-Replace `XXX` with the issue number.
+Replace `XX` with the issue number.
 Number issues in dependency order (blockers first) so you can reference real issue identifiers in the "Blocked by" field.
 Generate `slug` from the issue title.
 
