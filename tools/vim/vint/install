@@ -7,4 +7,4 @@
 pyenv global 3
 pip install vim-vint
 
-~/.oroshi/scripts/deploy/vint
+"$(dirname "$0")/deploy"

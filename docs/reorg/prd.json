@@ -124,7 +124,7 @@
       "Verify both installs call deploy at the end",
       "Verify no files remain in scripts/install/vim/, scripts/deploy/vim/, config/vim/"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0014",

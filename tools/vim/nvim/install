@@ -25,3 +25,5 @@ mv ${DOWNLOAD_DIR}/nvim-linux-x86_64/ $INSTALL_DIR
 
 # Create a symlink
 ln -fs $INSTALL_DIR/bin/nvim ~/local/bin/nvim
+
+"$(dirname "$0")/deploy"

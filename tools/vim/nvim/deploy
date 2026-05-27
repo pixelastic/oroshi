@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
-local CONFIG_DIR=~/.oroshi/config/vim/nvim
-local DEST_DIR=~/.config/nvim
+CONFIG_DIR="${0:h}/config"
+DEST_DIR=~/.config/nvim
 
 # Create config file
 mkdir -p $DEST_DIR

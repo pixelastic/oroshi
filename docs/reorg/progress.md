@@ -63,6 +63,15 @@ issue-017 → needs issue-001 through issue-016 (cleanup — delete old director
 ---
 ## Log (append below when an issue is completed)
 
+## Session 2026-05-27 — 0013: vim domain fully migrated to tools/vim/
+
+- Completed: Moved nvim and vint install, deploy, and config dirs to tools/vim/. Updated nvim/deploy and vint/deploy: removed local, changed ~/.oroshi/config/vim/{tool} to ${0:h}/config. Added "$(dirname "$0")/deploy" at end of nvim/install. Updated vint/install stale deploy call (was ~/.oroshi/scripts/deploy/vint) to "$(dirname "$0")/deploy". Updated 3 cross-tool refs in nvim/config/config/filetypes/colors.lua: ~/.oroshi/config/cli/bat/generate-theme → $OROSHI_ROOT/tools/cli/bat/config/generate-theme, rg → $OROSHI_ROOT/tools/cli/rg/config/generate-config, git → $OROSHI_ROOT/tools/git/git/config/generate-config. Removed empty scripts/install/vim/, scripts/deploy/vim/, config/vim/.
+- Tests added: none (migration issue — no automated tests)
+- Discovered: vint/install had stale/wrong deploy path (~/.oroshi/scripts/deploy/vint without domain dir); corrected to intra-tool relative path. colors.lua held 3 cross-tool refs to old config paths.
+- Fixed: none beyond the migration itself
+- Skipped feedback: ${0:h} vs $(dirname "$0") in deploy scripts — zsh idiom established in sessions 0003/0009; spec text uses generic form but zsh convention is ${0:h}
+- Next: issue-014 (windows domain migration)
+
 ## Session 2026-05-27 — 0012: ubuntu domain fully migrated to tools/ubuntu/
 
 - Completed: Migrated 7 features into tools/ubuntu/22.04/ (dropbox, extensions, gtk, keybindings, screen, tweaks, watchers) and 11 features into tools/ubuntu/24.04/ (argos, autostart, extensions, gext, keybindings, printer, topbar, tweaks, wl-clipboard, wmctrl, ydotool). Moved all deploy scripts, install scripts, and config dirs. Updated path refs: dropbox/deploy, gtk/deploy, keybindings/deploy (22.04), autostart/deploy, printer/install, topbar/deploy, ydotool/install. Created new 24.04/keybindings/deploy orchestrator (no index existed). Updated 5 argos config files: ~/.oroshi/config/ubuntu/24.04/argos/icons/ → ~/.oroshi/tools/ubuntu/24.04/argos/config/icons/. Removed all empty source dirs (scripts/deploy/ubuntu/, scripts/install/ubuntu/, config/ubuntu/).
