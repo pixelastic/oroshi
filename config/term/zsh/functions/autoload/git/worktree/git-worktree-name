@@ -1,0 +1,14 @@
+# Print the branch name of the current linked worktree
+# Returns empty string if not in a linked worktree
+# Usage:
+# $ git-worktree-name              # current directory
+# $ git-worktree-name /path/to/wt  # explicit path
+
+local targetPath="${1:-$PWD}"
+
+# Not a linked worktree, nothing to print
+if ! git-directory-is-worktree "$targetPath"; then
+  return 0
+fi
+
+git-branch-current "$targetPath"
