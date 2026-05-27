@@ -58,7 +58,7 @@
       "Assert dist/projects.json contains background.name='GREEN_8', background.ansi=correct integer, background.hex=correct hex string",
       "Assert dist/projects.json contains foreground.name='GRAY_9', foreground.ansi and foreground.hex"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",
@@ -68,7 +68,7 @@
       "Run src/projects-build",
       "Assert dist/projects.json contains backgroundInactive.name='DARK_GREEN' with correct ansi and hex values"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",
@@ -78,7 +78,7 @@
       "Run src/projects-build",
       "Assert dist/projects.json contains backgroundInactive.name='DARK_GREEN' with correct ansi and hex values"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",
@@ -89,7 +89,7 @@
       "Assert dist/projects.json has hideNameInPrompt:true for the first project",
       "Assert dist/projects.json has hideNameInPrompt:false for the second project"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",
@@ -99,7 +99,7 @@
       "Run src/projects-build",
       "Assert dist/projects.json contains the path with a trailing slash"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",
@@ -113,7 +113,7 @@
       "Assert dist/projects.zsh contains PROJECTS[projectname.background.hex]",
       "Assert dist/projects.zsh contains PROJECTS[projectname.path]"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0002",
@@ -123,7 +123,7 @@
       "Run src/projects-build",
       "Assert src/projects.json now has 'aberlaas' before 'oroshi'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0003",

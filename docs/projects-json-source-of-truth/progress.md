@@ -31,3 +31,11 @@ issue-006 → needs issue-002
 - Fixed: none unplanned
 - Skipped feedback: spec finding (a) tilde expansion — paths are quoted in source so tilde is never expanded, non-issue; spec finding (c) PUA icon test — cannot write fixture with Nerd Font codepoints via Write tool (corrupts silently), untestable at this layer; spec finding (d) ubuntu object — reviewer missed `ubuntu:icon="U"` in fixture
 - Next: issue-002 (projects-build) — needs src/projects.json to exist first; run `src/projects-migrate` against real `src/projects-list.zsh` before starting
+
+## Session 2026-05-27 — issue-002: projects-build
+- Completed: wrote `src/projects-build` (standalone ZSH script) + 14 BATS tests in `src/__tests__/projects-build.bats`
+- Tests added: produces dist/projects.json, produces dist/projects.zsh, background object (name/ansi/hex), backgroundInactive from numeric suffix (GREEN_8→DARK_GREEN), backgroundInactive from no suffix (GREEN→DARK_GREEN), hideNameInPrompt true/false, path trailing slash, zsh starts with typeset -gA PROJECTS, zsh dot-notation keys (background/backgroundInactive/foreground/path/icon/hideNameInPrompt), src sorted alphabetically after build
+- Discovered: `jq -r` short flag is explicitly allowed inside `$()` per calling-commands.md; `local` at script scope works in ZSH (unlike bash); `%%_*` strips correctly for both `GREEN_8` and `GREEN` since `_*` requires an underscore
+- Fixed: none unplanned
+- Skipped feedback: `local` outside function — ZSH allows it, existing scripts use same pattern; missing guards after `$(cmd)` — `jq` uses `// ""` fallback + `set -e` makes explicit guards redundant; `DARK_*` background edge case — not in real data; sort test `keys_unsorted` is correct (verifies file order, not sorted order)
+- Next: issue-003 (theming/index.zsh integration) — source dist/projects.zsh on startup, auto-rebuild if missing
