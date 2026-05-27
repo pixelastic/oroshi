@@ -71,6 +71,7 @@ Write code that follows the following patterns:
 | Pattern | Rule |
 |---|---|
 | [Headers](./references/header.md) | Top of the file: what the script does, how to call it and error protection |
+| [Args parsing](./references/args-parsing.md) | Use `zparseopts` to parse --named arguments |
 | [Variables](./references/variables.md) | `local myVar="$(myCommand)"` on one line |
 | [Splitting](./references/splitting.md) | Use `▮` as separator and `${(@ps/▮/)line}` to split |
 | [Conditions](./references/conditions.md) | `[[ simpleCondition ]] && state=value`. No nested if/else, return early |
@@ -145,4 +146,5 @@ Run `zshlint <file>` on the file(s) and fix any actionable violation.
 - [ ] All function vars `local`; script constants UPPER_CASE without `local`
 - [ ] External commands use long-form args, one per line
 - [ ] Use existing helpers over porcelain (e.g. `git-branch-list-raw` not `git branch`)
+- [ ] Use `zparseopts` for --named arguments
 - [ ] Tests use the dedicated helpers
