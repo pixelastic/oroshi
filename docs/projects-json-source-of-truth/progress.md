@@ -39,3 +39,9 @@ issue-006 → needs issue-002
 - Fixed: none unplanned
 - Skipped feedback: `local` outside function — ZSH allows it, existing scripts use same pattern; missing guards after `$(cmd)` — `jq` uses `// ""` fallback + `set -e` makes explicit guards redundant; `DARK_*` background edge case — not in real data; sort test `keys_unsorted` is correct (verifies file order, not sorted order)
 - Next: issue-003 (theming/index.zsh integration) — source dist/projects.zsh on startup, auto-rebuild if missing
+
+## Session 2026-05-27 — issue-003: theming/index.zsh integration — SKIPPED
+- Completed: nothing — theming/index.zsh left unchanged
+- Rationale: old PROJECT_* pipeline and new PROJECTS[] pipeline run in parallel; dist/projects.zsh is consumed directly by each new consumer (NeoVim, Kitty) without needing shell-level wiring; wiring PROJECTS[] into the shell is deferred to the ZSH functions PRD to avoid breaking context-badge/context-project/fzf-projects-source/etc.
+- Discovered: removing env/projects.zsh sourcing breaks ~8 consumers in config/term/zsh/functions/autoload/project/ and fzf/ — not safe until ZSH functions PRD
+- Next: issue-004 (NeoVim) or issue-005 (pre-commit hook)
