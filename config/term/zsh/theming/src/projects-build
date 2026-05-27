@@ -17,105 +17,122 @@ source "$colorsFile"
 
 # Sort src/projects.json in-place
 local sorted="$(jq --sort-keys '.' "$srcJson")"
-printf '%s\n' "$sorted" > "$srcJson"
+printf '%s\n' "$sorted" >"$srcJson"
 
 mkdir -p "$distDir"
 
-# Build dist JSON one project at a time
-local distData="{}"
-local projectKeys=(${(f)"$(jq -r 'keys[]' "$srcJson")"})
+# Build a JSON color map from sourced COLOR_* vars
+# This read all zsh vars currently in memory
+# Output: {"GREEN_8": {"ansi": 78, "hex": "#166534"}, "DARK_GREEN": {"ansi": 211, ...}, ...}
+function buildColorMap() {
+  local colorEntries=""
+  for varname in ${(k)parameters}; do
+    # Skip non-COLOR_ variables
+    [[ "$varname" != COLOR_* ]] && continue
+    # Skip _HEXA variables
+    [[ "$varname" == COLOR_*_HEXA ]] && continue
 
-for projectName in $projectKeys; do
-  local background="$(jq -r --arg p "$projectName" '.[$p].background // ""' "$srcJson")"
-  local foreground="$(jq -r --arg p "$projectName" '.[$p].foreground // ""' "$srcJson")"
-  local icon="$(jq -r --arg p "$projectName" '.[$p].icon // ""' "$srcJson")"
-  local projectPath="$(jq -r --arg p "$projectName" '.[$p].path // ""' "$srcJson")"
-  local hideNameInPrompt="$(jq -r --arg p "$projectName" '.[$p].hideNameInPrompt // false' "$srcJson")"
+    local colorName="${varname#COLOR_}"
+    local ansi="${(P)varname}"
+    local hexVar="${varname}_HEXA"
+    local hex="${(P)hexVar}"
+    colorEntries+="\"${colorName}\":{\"ansi\":${ansi},\"hex\":\"${hex}\"},"
+  done
+  echo "{${colorEntries%,}}"
+}
 
-  # Normalize path: ensure trailing slash
-  [[ "$projectPath" != "" && "$projectPath" != */ ]] && projectPath="${projectPath}/"
+# Generate dist/projects.json
+function generateDistJson() {
+  local colorMap="$(buildColorMap)"
+  jq -n \
+    --argjson projects "$(jq '.' "$srcJson")" \
+    --argjson colors "$colorMap" \
+    '$projects | to_entries | map(
+      .key as $projectName | .value as $projectData |
 
-  local projectObj="$(jq -n \
-    --arg icon "$icon" \
-    --arg path "$projectPath" \
-    --argjson hide "$hideNameInPrompt" \
-    '{icon: $icon, path: $path, hideNameInPrompt: $hide}')"
+      ($projectData.path // "" | if (. != "" and (endswith("/") | not)) then . + "/" else . end) as $projectPath |
 
-  if [[ "$background" != "" ]]; then
-    local bgAnsiVar="COLOR_${background}"
-    local bgHexVar="COLOR_${background}_HEXA"
-    local bgAnsi="${(P)bgAnsiVar}"
-    local bgHex="${(P)bgHexVar}"
+      ($projectData.background | if . then $colors[.] else null end) as $bgColor |
+      ($projectData.foreground | if . then $colors[.] else null end) as $fgColor |
 
-    # backgroundInactive: strip numeric suffix (GREEN_8 -> GREEN), prepend DARK_
-    local bgBase="${background%%_*}"
-    local bgiName="DARK_${bgBase}"
-    local bgiAnsiVar="COLOR_${bgiName}"
-    local bgiHexVar="COLOR_${bgiName}_HEXA"
-    local bgiAnsi="${(P)bgiAnsiVar}"
-    local bgiHex="${(P)bgiHexVar}"
+      ($projectData.background | if . then (split("_")[0] | "DARK_" + .) else null end) as $bgInactiveName |
+      ($bgInactiveName    | if . then $colors[.] else null end) as $bgInactiveColor |
 
-    [[ "$bgAnsi" != "" ]] && projectObj="$(echo "$projectObj" | jq \
-      --arg bgName "$background" \
-      --argjson bgAnsi "$bgAnsi" \
-      --arg bgHex "$bgHex" \
-      '. + {background: {name: $bgName, ansi: $bgAnsi, hex: $bgHex}}')"
+      ($projectData.icon // "") as $projectIcon |
+      ($projectData.hideNameInPrompt // false) as $projectHideNameInPrompt |
 
-    [[ "$bgiAnsi" != "" ]] && projectObj="$(echo "$projectObj" | jq \
-      --arg bgiName "$bgiName" \
-      --argjson bgiAnsi "$bgiAnsi" \
-      --arg bgiHex "$bgiHex" \
-      '. + {backgroundInactive: {name: $bgiName, ansi: $bgiAnsi, hex: $bgiHex}}')"
-  fi
+      {
+        key: $projectName,
+        value: (
+          {
+            icon: $projectIcon,
+            path: $projectPath,
+            hideNameInPrompt: $projectHideNameInPrompt
+          }
+          | if $bgColor then . + {
+            background: {
+              name: $projectData.background,
+              ansi: $bgColor.ansi,
+              hex: $bgColor.hex
+            }
+          }  else . end
+          | if $bgInactiveColor then . + {
+            backgroundInactive: {
+              name: $bgInactiveName,
+              ansi: $bgInactiveColor.ansi,
+              hex: $bgInactiveColor.hex
+            }
+          } else . end
+          | if $fgColor  then . + {
+            foreground: {
+              name: $projectData.foreground,
+              ansi: $fgColor.ansi,
+              hex: $fgColor.hex
+            }
+          }  else . end
+        )
+      }
+    ) | from_entries' |
+    jq --sort-keys '.' >"$distJson"
+}
 
-  if [[ "$foreground" != "" ]]; then
-    local fgAnsiVar="COLOR_${foreground}"
-    local fgHexVar="COLOR_${foreground}_HEXA"
-    local fgAnsi="${(P)fgAnsiVar}"
-    local fgHex="${(P)fgHexVar}"
+# Generate dist/projects.zsh from dist/projects.json
+function generateDistZsh() {
+  {
+    echo "typeset -gA PROJECTS"
+    jq -r '
+      to_entries[] | .key as $projectName | .value |
 
-    [[ "$fgAnsi" != "" ]] && projectObj="$(echo "$projectObj" | jq \
-      --arg fgName "$foreground" \
-      --argjson fgAnsi "$fgAnsi" \
-      --arg fgHex "$fgHex" \
-      '. + {foreground: {name: $fgName, ansi: $fgAnsi, hex: $fgHex}}')"
-  fi
+      (if .background then
+        "PROJECTS[\($projectName).background.name]=\"\(.background.name)\"",
+        "PROJECTS[\($projectName).background.ansi]=\(.background.ansi)",
+        "PROJECTS[\($projectName).background.hex]=\"\(.background.hex)\""
+      else empty end),
 
-  distData="$(echo "$distData" | jq \
-    --arg name "$projectName" \
-    --argjson proj "$projectObj" \
-    '. + {($name): $proj}')"
-done
+      (if .backgroundInactive then
+        "PROJECTS[\($projectName).backgroundInactive.name]=\"\(.backgroundInactive.name)\"",
+        "PROJECTS[\($projectName).backgroundInactive.ansi]=\(.backgroundInactive.ansi)",
+        "PROJECTS[\($projectName).backgroundInactive.hex]=\"\(.backgroundInactive.hex)\""
+      else empty end),
 
-# Write dist/projects.json sorted
-echo "$distData" | jq --sort-keys '.' > "$distJson"
+      (if .foreground then
+        "PROJECTS[\($projectName).foreground.name]=\"\(.foreground.name)\"",
+        "PROJECTS[\($projectName).foreground.ansi]=\(.foreground.ansi)",
+        "PROJECTS[\($projectName).foreground.hex]=\"\(.foreground.hex)\""
+      else empty end),
 
-# Write dist/projects.zsh from the dist JSON
-{
-  echo "typeset -gA PROJECTS"
-  jq -r '
-    to_entries[] | .key as $k | .value |
-    (if .background then
-      "PROJECTS[\($k).background.name]=\"\(.background.name)\"",
-      "PROJECTS[\($k).background.ansi]=\(.background.ansi)",
-      "PROJECTS[\($k).background.hex]=\"\(.background.hex)\""
-    else empty end),
-    (if .backgroundInactive then
-      "PROJECTS[\($k).backgroundInactive.name]=\"\(.backgroundInactive.name)\"",
-      "PROJECTS[\($k).backgroundInactive.ansi]=\(.backgroundInactive.ansi)",
-      "PROJECTS[\($k).backgroundInactive.hex]=\"\(.backgroundInactive.hex)\""
-    else empty end),
-    (if .foreground then
-      "PROJECTS[\($k).foreground.name]=\"\(.foreground.name)\"",
-      "PROJECTS[\($k).foreground.ansi]=\(.foreground.ansi)",
-      "PROJECTS[\($k).foreground.hex]=\"\(.foreground.hex)\""
-    else empty end),
-    (if .icon and (.icon != "") then
-      "PROJECTS[\($k).icon]=\"\(.icon)\""
-    else empty end),
-    (if .path and (.path != "") then
-      "PROJECTS[\($k).path]=\"\(.path)\""
-    else empty end),
-    "PROJECTS[\($k).hideNameInPrompt]=\(.hideNameInPrompt)"
-  ' "$distJson"
-} > "$distZsh"
+      (if .icon and (.icon != "") then
+        "PROJECTS[\($projectName).icon]=\"\(.icon)\""
+      else empty end),
+
+      (if .path and (.path != "") then
+        "PROJECTS[\($projectName).path]=\"\(.path)\""
+      else empty end),
+
+      "PROJECTS[\($projectName).hideNameInPrompt]=\(.hideNameInPrompt)"
+    ' "$distJson"
+  } >"$distZsh"
+}
+
+generateDistJson
+generateDistZsh
