@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+set -e
+# Each kitty conf is made of:
+# - a global configuration file
+# - a custom tab_bar.py script
+
+CONFIG_DIR=${0:h}/config
+DEST_DIR=~/.config/kitty
+
+mkdir -p "$DEST_DIR"
+
+# Base file
+ln -fs \
+  "$CONFIG_DIR/kitty.conf" \
+  "$DEST_DIR"
+
+# Custom tab bar
+ln -fs \
+  "$CONFIG_DIR/tab_bar.py" \
+  "$DEST_DIR"
+ln -fs \
+  "$CONFIG_DIR/tab_bar_modules" \
+  "$DEST_DIR"

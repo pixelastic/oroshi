@@ -1,0 +1,37 @@
+# Create a window and run the specified command in it
+
+new_tab oroshi
+launch zsh
+
+new_tab society
+launch zsh
+
+new_tab firost
+launch zsh
+
+new_tab aberlaas
+launch zsh
+
+new_tab aoinan
+launch zsh
+
+new_tab bodwynn
+launch zsh
+
+new_tab crsearch
+launch zsh
+
+new_tab bodwynn
+launch zsh
+
+new_tab pietro
+launch zsh
+
+new_tab Korvosa
+launch zsh
+
+new_tab golgoth
+launch zsh
+
+new_tab meetups-teasers-generator
+launch zsh

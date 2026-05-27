@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+# Link zsh main config file to ~/.zshrc
+set -e
+
+CONFIG_DIR=${0:h}/config
+
+# Create link
+ln -fs \
+	"$CONFIG_DIR/zshrc.zsh" \
+	~/.zshrc
+ln -fs \
+	"$CONFIG_DIR/zshenv.zsh" \
+	~/.zshenv
+
+# Source file
+echo "You should now reload ~/.zshrc"

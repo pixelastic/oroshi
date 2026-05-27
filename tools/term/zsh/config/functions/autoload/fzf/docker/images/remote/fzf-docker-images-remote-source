@@ -1,0 +1,3 @@
+# Returns a list of all possible Docker images to pull
+local cacheFile=$OROSHI_ROOT/tools/docker/docker/config/cache/src/images-remote.txt
+cat $cacheFile
