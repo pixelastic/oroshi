@@ -3,7 +3,7 @@
 bats_load_library 'helper'
 load './helper'
 
-RULE_FILE="${BATS_TEST_DIRNAME}/../__rules/rule-no-split-local.zsh"
+RULE_FILE="${BATS_TEST_DIRNAME}/../rule-no-split-local.zsh"
 RULE_FN="zshlintRule_noSplitLocal"
 
 @test "flags bare local followed by assignment" {

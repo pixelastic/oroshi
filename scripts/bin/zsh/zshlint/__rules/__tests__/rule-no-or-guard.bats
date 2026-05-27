@@ -3,7 +3,7 @@
 bats_load_library 'helper'
 load './helper'
 
-RULE_FILE="${BATS_TEST_DIRNAME}/../__rules/rule-no-or-guard.zsh"
+RULE_FILE="${BATS_TEST_DIRNAME}/../rule-no-or-guard.zsh"
 RULE_FN="zshlintRule_noOrGuard"
 
 @test "flags [[ cond ]] || return" {

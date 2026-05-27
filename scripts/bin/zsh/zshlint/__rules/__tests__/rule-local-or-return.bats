@@ -3,7 +3,7 @@
 bats_load_library 'helper'
 load './helper'
 
-RULE_FILE="${BATS_TEST_DIRNAME}/../__rules/rule-local-or-return.zsh"
+RULE_FILE="${BATS_TEST_DIRNAME}/../rule-local-or-return.zsh"
 RULE_FN="zshlintRule_localOrReturn"
 
 @test "flags local with || chained" {

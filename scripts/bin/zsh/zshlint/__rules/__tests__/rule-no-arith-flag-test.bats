@@ -3,7 +3,7 @@
 bats_load_library 'helper'
 load './helper'
 
-RULE_FILE="${BATS_TEST_DIRNAME}/../__rules/rule-no-arith-flag-test.zsh"
+RULE_FILE="${BATS_TEST_DIRNAME}/../rule-no-arith-flag-test.zsh"
 RULE_FN="zshlintRule_noArithFlagTest"
 
 @test "flags (( isZsh ))" {

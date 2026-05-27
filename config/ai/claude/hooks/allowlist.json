@@ -111,6 +111,7 @@
   "scripts/bin/ai/review/review-diff",
   "scripts/bin/term/bats/bats",
   "sed",
+  "selene",
   "setopt",
   "set",
   "sha256sum",
