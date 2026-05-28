@@ -1,0 +1,77 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-selene-install.md",
+    "done": true,
+    "blocked_by": [],
+    "recap": "Install script at scripts/install/_languages/lua/selene; selene.toml + vim.yml at config/_languages/lua/selene/. selene 0.31 uses YAML for std library (vim.yml not vim.toml); std must be 'vim' with companion vim.yml, not 'lua54+vim'."
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-lua-lint-selene.md",
+    "done": true,
+    "blocked_by": ["01"],
+    "recap": "lua-lint-selene script at scripts/bin/vim/lua/ + 3 BATS tests. selene --config accepts absolute path; start_line is 0-indexed so +1 conversion is correct."
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-lua-lint-custom.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-lua-lint-orchestrator.md",
+    "done": false,
+    "blocked_by": ["02", "03"]
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-neovim-lua-lint-integration.md",
+    "done": false,
+    "blocked_by": ["04"]
+  },
+  {
+    "id": "06",
+    "issue": "issues/06-lint-staged-git-file-lint.md",
+    "done": false,
+    "blocked_by": ["04", "05"]
+  },
+  {
+    "id": "07",
+    "issue": "issues/07-stylua-install.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "08",
+    "issue": "issues/08-lua-fix.md",
+    "done": false,
+    "blocked_by": ["07"]
+  },
+  {
+    "id": "09",
+    "issue": "issues/09-fix-staged-claude-md.md",
+    "done": false,
+    "blocked_by": ["06", "08"]
+  },
+  {
+    "id": "10",
+    "issue": "issues/10-lua-test-path.md",
+    "done": true,
+    "blocked_by": [],
+    "recap": "lua-test-path script + 5 BATS tests at scripts/bin/vim/lua/. local/return at script top-level are false positives in ZSH scripts (verified against bats-test-path reference)."
+  },
+  {
+    "id": "11",
+    "issue": "issues/11-lua-test-minitest-first-spec.md",
+    "done": false,
+    "blocked_by": ["10"]
+  },
+  {
+    "id": "12",
+    "issue": "issues/12-test-staged-git-file-test.md",
+    "done": false,
+    "blocked_by": ["11"]
+  }
+]
