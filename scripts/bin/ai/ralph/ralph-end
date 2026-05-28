@@ -16,7 +16,7 @@ local mode="$(ralph-state "$dir" get mode)"
 ralph-state "$dir" set 'done' true
 
 # Set prd_done if all issues complete
-local progress="$(plans-progress "$dir")"
+local progress="$(plan-progress "$dir")"
 [[ "$progress" == "" ]] && return 0
 
 local fields=(${(@s/▮/)progress})

@@ -214,8 +214,8 @@ function oroshi-prompt-populate:git_plan_progress() {
 
   local icon=" "
 
-  local progress="$(plans-progress)"
-  # Empty output means plans-progress failed (malformed JSON, empty array, etc.)
+  local progress="$(plan-progress)"
+  # Empty output means plan-progress failed (malformed JSON, empty array, etc.)
   if [[ "$progress" == "" ]]; then
     OROSHI_PROMPT_PARTS[git_plan_progress]="%F{$COLOR_ALIAS_ERROR}${icon}%f"
     return

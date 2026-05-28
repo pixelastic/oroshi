@@ -1,11 +1,11 @@
 #!/usr/bin/env zsh
 # Output done▮total progress for a plan directory.
 # Usage:
-# $ plans-progress <dir>   # explicit plan dir containing state.json
-# $ plans-progress         # deduces dir from current worktree context
+# $ plan-progress <dir>   # explicit plan dir containing state.json
+# $ plan-progress         # deduces dir from current worktree context
 set -e
 
-local dir="${1:-$(plans-directory)}"
+local dir="${1:-$(plan-directory)}"
 # No plan dir resolved → nothing to report
 [[ "$dir" == "" ]] && return 1
 

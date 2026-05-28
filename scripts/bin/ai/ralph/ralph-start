@@ -1,10 +1,10 @@
 #!/usr/bin/env zsh
 # Pick next eligible issue from state.json and output JSON for ralph skill
 # Usage:
-# $ ralph-start [<dir>]   # dir defaults to plans-directory output
+# $ ralph-start [<dir>]   # dir defaults to plan-directory output
 set -e
 
-local dir="${1:-$(plans-directory)}"
+local dir="${1:-$(plan-directory)}"
 
 # No plan dir resolved
 [[ "$dir" == "" ]] && return 1
@@ -12,7 +12,7 @@ local dir="${1:-$(plans-directory)}"
 [[ ! -f "$dir/state.json" ]] && return 1
 
 # All issues finished
-local progress="$(plans-progress "$dir")"
+local progress="$(plan-progress "$dir")"
 local fields=(${(@s/▮/)progress})
 [[ "${fields[1]}" == "" ]] && return 1
 if [[ "${fields[1]}" == "${fields[2]}" ]]; then
