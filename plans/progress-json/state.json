@@ -1,0 +1,62 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-plans-directory.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-plans-progress.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-ralph-json.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-ralph-start.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-ralph-end.md",
+    "done": false,
+    "blocked_by": ["02", "03"]
+  },
+  {
+    "id": "06",
+    "issue": "issues/06-ralph-script.md",
+    "done": false,
+    "blocked_by": ["01", "03"]
+  },
+  {
+    "id": "07",
+    "issue": "issues/07-prd-end.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "08",
+    "issue": "issues/08-to-issues-skill.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "09",
+    "issue": "issues/09-ralph-skill.md",
+    "done": false,
+    "blocked_by": ["04", "05", "08"]
+  },
+  {
+    "id": "10",
+    "issue": "issues/10-prompt-cleanup.md",
+    "done": false,
+    "blocked_by": ["02"]
+  }
+]
