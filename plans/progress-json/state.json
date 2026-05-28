@@ -66,8 +66,9 @@
   {
     "id": "11",
     "issue": "issues/11-to-issues-skill-md.md",
-    "done": false,
-    "blocked_by": ["08", "09", "10"]
+    "done": true,
+    "blocked_by": ["08", "09", "10"],
+    "recap": "SKILL.md already referenced state.json, GUIDANCE.md, and issues/XX-slug.md with correct links; no progress.md/issues.json/prd.json references; checklist already updated — completed in a prior session"
   },
   {
     "id": "12",

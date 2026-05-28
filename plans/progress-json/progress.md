@@ -1,3 +1,11 @@
+## Session 2026-05-28 — 11: to-issues-skill-md
+- Completed: found SKILL.md already correct — state.json, GUIDANCE.md, issues/XX-slug.md all referenced with correct links; no old file names present; all reference files exist
+- Tests added: none (pure doc change, already complete)
+- Discovered: SKILL.md was silently updated in a prior session (likely session 09 review fixes) without state.json being marked done
+- Fixed: none
+- Skipped feedback: none
+- Next: issue 12 (ralph-skill) — now unblocked (04, 05, 11 all done); issue 13 (prompt-update) also already done in git.zsh
+
 ## Session 2026-05-28 — 10: issue-template-reference
 - Completed: updated `references/issues-XX-slug.md` — added TLDR line, removed `## PRD` and `## Blocked by` sections, updated title to `XX-slug.md`, documented `issues/XX-slug.md` path and state.json for blockers; deleted `references/prd-json.md`
 - Tests added: none (pure doc change)
