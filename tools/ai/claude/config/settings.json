@@ -31,7 +31,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/tim/.oroshi/tools/ai/claude/config/hooks/sessionStart"
+            "command": "/home/tim/.oroshi/tools/ai/claude/config/hooks/preToolUse-Bash"
           }
         ]
       }

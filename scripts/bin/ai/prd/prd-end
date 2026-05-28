@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
 # Called by /to-prd right before writing the PRD on disk
-# Ensure PRD is created in a worktree, in docs/<branchName>
+# Ensure PRD is created in a worktree, in ralph/<branchName>
 # Usage: prd-end [branchName]
-# Output: { "worktreePath": "...", "branch": "...", "prdPath": "/full/path/to/docs/<branch>/PRD.md" }
+# Output: { "worktreePath": "...", "branch": "...", "prdPath": "/full/path/to/ralph/<branch>/PRD.md" }
 set -e
 
 local branch="$1"
@@ -22,4 +22,4 @@ local slug="$(git-branch-slug "$currentBranch")"
 jo \
   worktreePath="$root" \
   branch="$currentBranch" \
-  prdPath="$root/docs/$slug/PRD.md"
+  prdPath="$root/ralph/$slug/PRD.md"

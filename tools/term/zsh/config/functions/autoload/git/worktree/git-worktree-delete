@@ -1,7 +1,6 @@
 # Remove one or more Worktree directories and their branches
 # If called from inside a Worktree being deleted, cds to Git Repo Main first
 # Blocks if branch has unmerged commits ahead of main (bypass with --force/-f)
-# Also removes docs/<branch> from the main repo if it exists
 # Defaults to current branch when called with no argument
 # Usage:
 # $ git-worktree-delete fix/bug
@@ -29,17 +28,9 @@ for branch in "${branches[@]}"; do
     return 1
   fi
 
-  # Capture ralph docs path before removal (prd.json must still exist in worktree)
-  local ralphDir="$(ralph-directory "$worktreePath")"
-
   # If currently inside the worktree being deleted, move to Git Repo Main first
   [[ "$PWD" == "$worktreePath"* ]] && cd "$mainPath"
 
   git worktree remove --force "$worktreePath"
   git-branch-remove "$branch"
-
-  # Remove docs artifacts from main repo if this was a ralph worktree
-  if [[ "$ralphDir" != "" ]]; then
-    rm -rf "${ralphDir/$worktreePath/$mainPath}"
-  fi
 done

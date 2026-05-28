@@ -18,7 +18,8 @@ yarn-error.log
 **/__pycache__/
 **/__pycache__/*
 
-# Ralph session state
+# Ralph
+ralph/
 .ralph-state.json
 
 # Tool directories

@@ -36,7 +36,7 @@ Two entry points — pick whichever applies:
 Look for the originating spec, in this order:
 
 1. A path the user passed as an argument.
-2. A PRD/spec file under `docs/<branchName>`.
+2. A PRD/spec file under `ralph/<branchName>`.
 3. If nothing is found, ask the user where the spec is. If they say there isn't one, the **Spec** sub-agent will skip and report "no spec available".
 
 ### 3. Identify the standards sources

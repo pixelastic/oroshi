@@ -1,6 +1,6 @@
 export default {
   // zsh tests + lint
-  '{scripts/bin,config/term/zsh}/**/*': [
+  '{scripts/bin,tools/term/zsh/config}/**/*': [
     './scripts/yarn/test-bats',
     './scripts/yarn/lint-zsh',
   ],

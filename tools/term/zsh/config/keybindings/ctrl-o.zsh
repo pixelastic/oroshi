@@ -30,7 +30,7 @@ function oroshi-fzf-directories-default-selection {
   fzf-fs-directories-project
 }
 
-# ralph: docs/ subdirectories only
+# ralph: ralph/ subdirectories only
 function oroshi-fzf-directories-ralph-selection {
   fzf-fs-directories-ralph
 }

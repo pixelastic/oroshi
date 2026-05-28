@@ -18,8 +18,6 @@
 # - echo "rm -rf /"                      -> accept (rm is a string, not a command)
 # - time echo "test"                     -> accept (time is ignored)
 
-source $OROSHI_ROOT/tools/ai/claude/config/hooks/lib/hookLib.zsh
-
 local hookDir="${0:A:h}"
 local solkanScript="${PRETOOLUSE_SOLKAN_SCRIPT:-${hookDir}/preToolUse-Bash-solkan}"
 local rtkScript="${PRETOOLUSE_RTK_SCRIPT:-${hookDir}/preToolUse-Bash-rtk}"
