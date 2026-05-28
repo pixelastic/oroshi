@@ -1,3 +1,5 @@
+## TLDR
+
 Update the `ralph` orchestrator script to use `plans-directory` instead of `ralph-directory`.
 
 ## What to build
@@ -15,8 +17,3 @@ Update bats tests if they reference the old directory or file names.
 - [ ] `ralph` script uses `plans-directory` to resolve the plan path
 - [ ] Single-shot and loop mode work with the new paths
 - [ ] Bats tests pass
-
-## Blocked by
-
-- 01 (needs `plans-directory`)
-- 03 (needs `ralph-state` with `ralph.json`)

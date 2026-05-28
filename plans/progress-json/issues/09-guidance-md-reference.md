@@ -1,3 +1,5 @@
+## TLDR
+
 Create the `guidance-md.md` reference doc that defines the format for agent guidance and accumulated discoveries.
 
 ## What to build
@@ -28,7 +30,3 @@ Remove the old `references/progress-md.md`.
 - [ ] Documents that `## Guidance` is static and `## Discoveries` is append-only
 - [ ] Shows the H3 per-issue format for discoveries
 - [ ] `references/progress-md.md` is removed
-
-## Blocked by
-
-None — can start immediately

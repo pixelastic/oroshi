@@ -1,3 +1,5 @@
+## TLDR
+
 Rewrite the ralph skill to use `ralph-start` for issue selection and update `state.json`, `GUIDANCE.md`, and `review-log.md` after implementation.
 
 ## What to build
@@ -26,9 +28,3 @@ Update the checklist, common rationalizations, and description to match.
 - [ ] Step 7 calls `ralph-end`
 - [ ] No reference to progress.md or issues.json anywhere in the skill
 - [ ] Checklist reflects new file names
-
-## Blocked by
-
-- 04 (needs `ralph-start`)
-- 05 (needs updated `ralph-end`)
-- 11 (needs to-issues SKILL.md for consistent file format references)

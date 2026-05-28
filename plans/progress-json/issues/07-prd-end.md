@@ -1,3 +1,5 @@
+## TLDR
+
 Update `prd-end` to output `plans/` instead of `ralph/` in the PRD path.
 
 ## What to build
@@ -12,7 +14,3 @@ No tests exist for prd-end (it creates worktrees, hard to test in isolation). Ve
 
 - [ ] `prd-end` outputs JSON with `prdPath` containing `plans/<slug>/PRD.md`
 - [ ] The `jo` command builds the correct absolute path
-
-## Blocked by
-
-None — can start immediately

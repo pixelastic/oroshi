@@ -1,3 +1,5 @@
+## TLDR
+
 Create the `state-json.md` reference doc that defines the new schema for plan state tracking.
 
 ## What to build
@@ -30,7 +32,3 @@ Remove the old `references/issues-json.md`.
 - [ ] `references/state-json.md` exists with the schema above
 - [ ] Documents all fields including `recap` (post-implementation only)
 - [ ] `references/issues-json.md` is removed
-
-## Blocked by
-
-None — can start immediately

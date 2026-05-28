@@ -1,3 +1,5 @@
+## TLDR
+
 Rename `.ralph-state.json` to `ralph.json` (visible, gitignored) in `ralph-state`.
 
 ## What to build
@@ -16,7 +18,3 @@ Update bats tests to verify the new filename.
 - [ ] `ralph.json` is in `.gitignore`
 - [ ] All `ralph-state` bats tests pass with the new filename
 - [ ] `init` creates `ralph.json` with `{ mode, done: false, prd_done: false }`
-
-## Blocked by
-
-None — can start immediately

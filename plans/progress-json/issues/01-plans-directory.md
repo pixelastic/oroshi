@@ -1,5 +1,6 @@
-Rename `ralph-directory` to `plans-directory` and update `git-worktree-is-ralph` to check the new path structure.
+## TLDR
 
+Rename `ralph-directory` to `plans-directory` and update `git-worktree-is-ralph` to check the new path structure.
 
 ## What to build
 
@@ -16,7 +17,3 @@ Update all bats tests for both scripts. The test for `git-worktree-is-ralph` cur
 - [ ] `git-worktree-is-ralph` checks `plans/<slug>/state.json` instead of `ralph/<slug>/issues.json`
 - [ ] Bats tests for `plans-directory` pass (renamed from ralph-directory tests)
 - [ ] Bats tests for `git-worktree-is-ralph` pass with the new path
-
-## Blocked by
-
-None — can start immediately

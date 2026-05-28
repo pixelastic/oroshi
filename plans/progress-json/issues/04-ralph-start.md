@@ -1,3 +1,5 @@
+## TLDR
+
 New script that deterministically picks the next issue and outputs everything the ralph skill needs to start working.
 
 ## What to build
@@ -42,7 +44,3 @@ Exit 1 with error message when issues remain but all are blocked (deadlock).
 - [ ] Outputs `{ "status": "done" }` when all issues have `done: true`
 - [ ] Exits 1 when remaining issues are all blocked
 - [ ] Exits 1 when state.json is missing
-
-## Blocked by
-
-- 01 (needs `plans-directory` for path resolution)

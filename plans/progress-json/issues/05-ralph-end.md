@@ -1,3 +1,5 @@
+## TLDR
+
 Update `ralph-end` to use `ralph.json` and `plans-progress` instead of the old file names.
 
 ## What to build
@@ -19,8 +21,3 @@ Update bats tests.
 - [ ] Does not touch state.json
 - [ ] Skips silently in single mode
 - [ ] Bats tests pass
-
-## Blocked by
-
-- 02 (needs `plans-progress`)
-- 03 (needs `ralph-state` with `ralph.json`)

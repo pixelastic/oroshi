@@ -1,3 +1,5 @@
+## TLDR
+
 Update the to-issues SKILL.md to reference the new file structure and templates.
 
 ## What to build
@@ -21,9 +23,3 @@ Update `tools/ai/claude/config/skills/to-issues/SKILL.md`:
 - [ ] All links point to the updated reference files
 - [ ] No mention of `progress.md`, `issues.json`, or `prd.json` anywhere
 - [ ] Checklist updated to match new file names
-
-## Blocked by
-
-- 08 (needs state-json reference)
-- 09 (needs guidance-md reference)
-- 10 (needs issue template reference)

@@ -1,3 +1,5 @@
+## TLDR
+
 Rename `ralph-progress` to `plans-progress` and read `done` from `state.json` instead of `passes` from `issues.json`.
 
 ## What to build
@@ -19,7 +21,3 @@ Update bats tests: rename the test file, update fixture JSON to use the new stat
 - [ ] Output is `done▮total` counting `.done == true` entries
 - [ ] Returns 1 if state.json is missing or malformed
 - [ ] Bats tests pass with new schema fixtures
-
-## Blocked by
-
-- 01 (needs `plans-directory` for path resolution)
