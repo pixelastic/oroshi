@@ -1,0 +1,8 @@
+# Load PROJECTS_V2 associative array into memory
+# No-op if already populated (allows test injection via mock)
+# Usage: projects-load-definitions
+
+# Stop if already loaded
+((${#PROJECTS_V2} > 0)) && return
+
+source "$OROSHI_ROOT/tools/term/zsh/config/theming/dist/projects.zsh"
