@@ -60,8 +60,9 @@ teardown() {
 @test "deduces directory from worktree context when called with no argument" {
   bats_git_dir 'repo'
   local wt_path="$(bats_git_worktree 'feat/no-arg')"
-  mkdir -p "$wt_path/ralph/feat_no-arg"
-  printf '[{"passes":true},{"passes":false}]' > "$wt_path/ralph/feat_no-arg/issues.json"
+  mkdir -p "$wt_path/plans/feat_no-arg"
+  echo '{}' > "$wt_path/plans/feat_no-arg/state.json"
+  printf '[{"passes":true},{"passes":false}]' > "$wt_path/plans/feat_no-arg/issues.json"
   cd "$wt_path"
   bats_run_script "$RALPH_PROGRESS"
   [ "$status" -eq 0 ]

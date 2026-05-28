@@ -5,7 +5,7 @@
 # $ ralph-progress         # deduces dir from current worktree context
 set -e
 
-local dir="${1:-$(ralph-directory)}"
+local dir="${1:-$(plans-directory)}"
 [[ "$dir" == "" ]] && return 1
 
 [[ ! -f "$dir/issues.json" ]] && return 1

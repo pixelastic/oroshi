@@ -10,8 +10,8 @@ teardown() {
 
 @test "exits 0 inside a ralph worktree" {
   local wt_path="$(bats_git_worktree 'feat/test-ralph')"
-  mkdir -p "$wt_path/ralph/feat_test-ralph"
-  echo '[]' > "$wt_path/ralph/feat_test-ralph/issues.json"
+  mkdir -p "$wt_path/plans/feat_test-ralph"
+  echo '{}' > "$wt_path/plans/feat_test-ralph/state.json"
   cd "$wt_path"
   bats_run_function git-worktree-is-ralph
   [ "$status" -eq 0 ]
@@ -32,8 +32,8 @@ teardown() {
 
 @test "accepts an explicit path argument" {
   local wt_path="$(bats_git_worktree 'feat/explicit')"
-  mkdir -p "$wt_path/ralph/feat_explicit"
-  echo '[]' > "$wt_path/ralph/feat_explicit/issues.json"
+  mkdir -p "$wt_path/plans/feat_explicit"
+  echo '{}' > "$wt_path/plans/feat_explicit/state.json"
   bats_run_function git-worktree-is-ralph "$wt_path"
   [ "$status" -eq 0 ]
 }

@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+# Return absolute path to the plans directory for a given path.
+# Usage:
+# $ plans-directory            # defaults to $PWD
+# $ plans-directory /some/path # explicit path
+set -e
+
+local targetPath="${1:-$PWD}"
+
+# Not a ralph worktree → nothing to return
+git-worktree-is-ralph "$targetPath" || return 1
+
+local wtRoot="$(git-directory-root "$targetPath")"
+[[ "$wtRoot" == "" ]] && return 1
+
+local branch="$(git-branch-current "$targetPath")"
+[[ "$branch" == "" ]] && return 1
+
+local slug="$(git-branch-slug "$branch")"
+[[ "$slug" == "" ]] && return 1
+
+print "$wtRoot/plans/$slug/"

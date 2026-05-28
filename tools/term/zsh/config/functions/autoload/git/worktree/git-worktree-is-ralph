@@ -1,5 +1,5 @@
 # Boolean: is the current (or given) path inside a ralph worktree?
-# A ralph worktree is a linked git worktree with ralph/<branch-slug>/issues.json at its root.
+# A ralph worktree is a linked git worktree with plans/<branch-slug>/state.json at its root.
 # Usage:
 # $ git-worktree-is-ralph            # checks $PWD
 # $ git-worktree-is-ralph /path/dir  # checks given path
@@ -21,4 +21,4 @@ local branch="$(git-branch-current "$targetPath")"
 local slug="$(git-branch-slug "$branch")"
 [[ "$slug" == "" ]] && return 1
 
-[[ -f "$wtRoot/ralph/$slug/issues.json" ]]
+[[ -f "$wtRoot/plans/$slug/state.json" ]]
