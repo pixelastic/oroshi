@@ -45,8 +45,9 @@
   {
     "id": "08",
     "issue": "issues/08-state-json-reference.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "created references/state-json.md with new schema (id/issue/done/blocked_by/recap fields, dual example); removed references/issues-json.md"
   },
   {
     "id": "09",

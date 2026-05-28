@@ -1,3 +1,11 @@
+## Session 2026-05-28 — 08: state-json-reference
+- Completed: created `references/state-json.md` with new schema (id, issue, done, blocked_by, recap); removed `references/issues-json.md`; example JSON shows both `done: true` (with recap) and `done: false` entries
+- Tests added: none (pure doc change, no executable code path)
+- Discovered: none
+- Fixed: added `done: true` + `recap` example to JSON block after review flagged it as missing
+- Skipped feedback: docs naming convention (`__docs/NAME.md`) — dismissed; `references/` is the established folder pattern for this skill
+- Next: issue 09 (guidance-md-reference) or issue 10 (issue-template-reference) — both unblock 11 → 12
+
 ## Session 2026-05-28 — 07: prd-end
 
 - Completed: updated `prd-end` — changed `prdPath` from `ralph/$slug/PRD.md` to `plans/$slug/PRD.md`; updated both inline comments (line 3 + `Output:` line) to match
