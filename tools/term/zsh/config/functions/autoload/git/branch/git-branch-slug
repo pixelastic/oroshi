@@ -1,11 +1,13 @@
-# Return filesystem-safe slug: every / replaced with _
+# Return filesystem-safe slug: / → _, . → -
 # Usage:
 # $ git-branch-slug feat/my-feature   # feat_my-feature
 # $ git-branch-slug feat/scope/deep   # feat_scope_deep
-# $ git-branch-slug main              # main
+# $ git-branch-slug progress.json     # progress-json
+# $ git-branch-slug                   # uses current branch
 setopt local_options err_return
 
-local branch="$1"
-[[ -n "$branch" ]] || return 1
+local branch="${1:-$(git-branch-current)}"
+[[ "$branch" == "" ]] && return 1
 
-echo "${branch//\//_}"
+local slug="${branch//\//_}"
+echo "${slug//./-}"
