@@ -87,7 +87,8 @@
   {
     "id": "14",
     "issue": "issues/14-delete-commit-writer.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "deleted commit-writer skill dir (SKILL.md + references/conventionalCommits.md); no remaining codebase references"
   }
 ]

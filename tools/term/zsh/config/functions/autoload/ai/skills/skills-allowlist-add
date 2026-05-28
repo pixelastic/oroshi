@@ -1,10 +1,10 @@
 # Add a command to the Claude Code skills allowlist
 # Usage:
-# $ skills-allowlist-add "Skill(git-commit-writer)"
+# $ skills-allowlist-add "tree"
 local allowedCommand="$1"
 local allowlistFile=$OROSHI_ROOT/tools/ai/claude/config/hooks/allowlist.json
 
-if [[ -z "$allowedCommand" ]]; then
+if [[ "$allowedCommand" == "" ]]; then
   echo "Error: Command required" >&2
   echo "Usage: skills-allowlist-add <command>" >&2
   return 1
