@@ -1,9 +1,20 @@
-# Get the path of a project by name
+# Return the filesystem path of a project by name
+# Defaults to current project if no argument given
 # Usage:
-# $ project-path aberlaas            #  ~/local/www/projects/aberlaas/
-# $ project-path missing-project     # exit 1
-local projectKey=$(project-key "$1")
+# $ project-path my-project    # Returns /path/to/project/
+# $ project-path               # Uses current project
+setopt local_options err_return
 
-local projectPath=${(P)${:-PROJECT_${projectKey}_PATH}}
+projects-load-definitions
 
-echo "$projectPath"
+# Use arg, or current project if none is passed
+local name="${1:-$(project-name)}"
+
+# Stop if project doesn't exist
+[[ "$name" == "" ]] && return 1
+
+local projectKey="${name}:path"
+local projectPath="${PROJECTS_V2[$projectKey]}"
+[[ "$projectPath" == "" ]] && return 1
+
+echo "${projectPath/#\~/$HOME}"
