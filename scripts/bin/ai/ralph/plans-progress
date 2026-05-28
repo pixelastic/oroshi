@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+# Output done▮total progress for a plan directory.
+# Usage:
+# $ plans-progress <dir>   # explicit plan dir containing state.json
+# $ plans-progress         # deduces dir from current worktree context
+set -e
+
+local dir="${1:-$(plans-directory)}"
+# No plan dir resolved → nothing to report
+[[ "$dir" == "" ]] && return 1
+
+# state.json absent → not a valid plan directory
+[[ ! -f "$dir/state.json" ]] && return 1
+
+local total="$(jq 'if type == "array" then length else error end' "$dir/state.json" 2>/dev/null)"
+# jq failed or non-array → malformed state.json
+[[ "$total" == "" ]] && return 1
+# Empty array → no issues to track
+[[ ! "$total" -gt 0 ]] && return 1
+
+local done="$(jq '[.[] | select(.done == true)] | length' "$dir/state.json")"
+
+print "${done}▮${total}"

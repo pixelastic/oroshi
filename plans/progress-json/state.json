@@ -8,7 +8,7 @@
   {
     "id": "02",
     "issue": "issues/02-plans-progress.md",
-    "done": false,
+    "done": true,
     "blocked_by": ["01"]
   },
   {

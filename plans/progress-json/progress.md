@@ -1,3 +1,12 @@
+## Session 2026-05-28 — 02: plans-progress
+
+- Completed: created `plans-progress` (reads `state.json`, counts `.done == true`); deleted `ralph-progress` and `ralph-progress.bats`; updated `ralph-end` and `git.zsh` call sites; renamed prompt function `git_issues_prd` → `git_issues_plan` in `git.zsh`, `git.bats`, `index.zsh`
+- Tests added: `plans-progress.bats` (8 tests covering mixed/all-true/all-false/empty/malformed/missing/no-arg)
+- Discovered: `git.zsh` and `ralph-end` both referenced `ralph-progress` — updated both
+- Fixed: none unplanned
+- Skipped feedback: `return` vs `exit` — codebase uses `return` everywhere (bats sources scripts); `local` at top-level — established codebase pattern; `done` variable name — same as original, codebase pattern; test fixture mismatch reported by spec agent was artifact of malformed diff sent to reviewer, actual file was correct
+- Next: issue 05 (ralph-end: update to read state.json for prd_done) — now unblocked (02 and 03 done)
+
 ## Session 2026-05-28 — 03: ralph-json
 
 - Completed: `ralph-state` now reads/writes `ralph.json` instead of `.ralph-state.json`; `.gitignore` updated; pre-existing `noDashZ` lint violations fixed

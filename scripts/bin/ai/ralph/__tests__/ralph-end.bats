@@ -30,7 +30,7 @@ teardown() {
 
 @test "sets done=true and prd_done=true in loop mode when all issues complete" {
   ralph-state "$PRD_DIR" init loop
-  echo '[{"id":"1","description":"foo","passes":true}]' > "$PRD_DIR/prd.json"
+  printf '[{"id":"1","issue":"foo.md","done":true,"blocked_by":[]}]' > "$PRD_DIR/state.json"
   run ralph-end "$PRD_DIR"
   [ "$status" -eq 0 ]
   [ "$(ralph-state "$PRD_DIR" get done)" = "true" ]

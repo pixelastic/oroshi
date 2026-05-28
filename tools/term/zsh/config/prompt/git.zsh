@@ -203,9 +203,9 @@ function oroshi-prompt-populate:git_pullrequests() {
   fi
 }
 
-# Shows ralph PRD progress when inside a ralph worktree
-function oroshi-prompt-populate:git_issues_prd() {
-  OROSHI_PROMPT_PARTS[git_issues_prd]=""
+# Shows plan progress when inside a plan worktree
+function oroshi-prompt-populate:git_plan_progress() {
+  OROSHI_PROMPT_PARTS[git_plan_progress]=""
   (($GIT_DIRECTORY_IS_REPOSITORY)) || return
   (($GIT_DIRECTORY_IS_WORKTREE)) || return
 
@@ -214,10 +214,10 @@ function oroshi-prompt-populate:git_issues_prd() {
 
   local icon=" "
 
-  local progress="$(ralph-progress)"
-  # Empty output means ralph-progress failed (malformed JSON, empty array, etc.)
+  local progress="$(plans-progress)"
+  # Empty output means plans-progress failed (malformed JSON, empty array, etc.)
   if [[ "$progress" == "" ]]; then
-    OROSHI_PROMPT_PARTS[git_issues_prd]="%F{$COLOR_ALIAS_ERROR}${icon}%f"
+    OROSHI_PROMPT_PARTS[git_plan_progress]="%F{$COLOR_ALIAS_ERROR}${icon}%f"
     return
   fi
 
@@ -228,6 +228,6 @@ function oroshi-prompt-populate:git_issues_prd() {
   local color="$COLOR_ALIAS_GIT_ISSUE"
   [[ "$done" == "$total" ]] && color="$COLOR_ALIAS_SUCCESS"
 
-  OROSHI_PROMPT_PARTS[git_issues_prd]="%F{$color}${icon}${done}/${total}%f"
+  OROSHI_PROMPT_PARTS[git_plan_progress]="%F{$color}${icon}${done}/${total}%f"
 }
 # }}}

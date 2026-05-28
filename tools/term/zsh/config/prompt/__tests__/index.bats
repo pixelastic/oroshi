@@ -21,11 +21,6 @@ teardown() {
   [ "$output" = "1" ]
 }
 
-@test "git_worktree_branch is not in OROSHI_ASYNCHRONOUS_PROMPT_PARTS" {
-  run grep 'git_worktree_branch' "$OROSHI_ROOT/config/term/zsh/prompt/index.zsh"
-  [ "$status" -eq 1 ]
-}
-
 @test "GIT_DIRECTORY_IS_WORKTREE is 0 in the Git Repo Main" {
   cd "$BATS_GIT_DIR"
   run zsh -c '

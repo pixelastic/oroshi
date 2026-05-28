@@ -78,7 +78,7 @@ OROSHI_ASYNCHRONOUS_PROMPT_PARTS=(
   git_tag
   git_remote
   git_issues_github
-  git_issues_prd
+  git_plan_progress
   git_pullrequests
   node_monorepo
   yarn_link
@@ -135,7 +135,7 @@ function oroshi-prompt-right() {
     $OROSHI_PROMPT_PARTS[ruby_version]
     $OROSHI_PROMPT_PARTS[node_version]
     $OROSHI_PROMPT_PARTS[git_issues_github]
-    $OROSHI_PROMPT_PARTS[git_issues_prd]
+    $OROSHI_PROMPT_PARTS[git_plan_progress]
     $OROSHI_PROMPT_PARTS[git_pullrequests]
     $OROSHI_PROMPT_PARTS[git_tag]
     $OROSHI_PROMPT_PARTS[git_remote]
