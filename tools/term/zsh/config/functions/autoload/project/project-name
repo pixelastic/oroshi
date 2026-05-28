@@ -1,0 +1,44 @@
+# Resolve a filesystem path to its registered project name
+# Returns empty string if the path belongs to no known project
+# Handles both direct project paths and linked worktree paths
+# Usage:
+# $ project-name /path/inside/project    # Returns project name
+# $ project-name                         # Uses $PWD
+setopt local_options err_return
+
+local reference="${1:-$PWD}"
+
+# If in a worktree, resolve to the main repo path
+if git-directory-is-worktree "$reference"; then
+  reference="$(git-worktree-main "$reference")"
+fi
+
+projects-load-definitions
+
+# Collect all :path keys
+local -a pathKeys=( ${(M)${(k)PROJECTS_V2}:#*:path} )
+
+# Sort by path value length, longest first
+local key=""
+local pathValue=""
+local -a prefixed=()
+for key in "${pathKeys[@]}"; do
+  pathValue="${PROJECTS_V2[$key]}"
+  pathValue="${pathValue/#\~/$HOME}"
+  prefixed+=( "${#pathValue} $key" )
+done
+local -a sortedKeys=( ${${(On)prefixed}##* } )
+
+# Normalize reference with trailing slash for prefix matching
+local refWithSlash="${reference%/}/"
+
+# Return the project name of the first (most specific) matching path
+local key=""
+local pathValue=""
+for key in "${sortedKeys[@]}"; do
+  pathValue="${PROJECTS_V2[$key]}"
+  pathValue="${pathValue/#\~/$HOME}"
+  [[ ! "$refWithSlash" == "${pathValue}"* ]] && continue
+  echo "${key%%:*}"
+  return 0
+done
