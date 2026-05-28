@@ -1,6 +1,5 @@
-## PRD
+Rename `ralph-directory` to `plans-directory` and update `git-worktree-is-ralph` to check the new path structure.
 
-plans/progress-json/PRD.md
 
 ## What to build
 

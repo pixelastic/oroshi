@@ -1,6 +1,4 @@
-## PRD
-
-plans/progress-json/PRD.md
+Rename `.ralph-state.json` to `ralph.json` (visible, gitignored) in `ralph-state`.
 
 ## What to build
 

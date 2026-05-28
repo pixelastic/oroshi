@@ -1,6 +1,4 @@
-## PRD
-
-plans/progress-json/PRD.md
+Update the zsh prompt to use `plans-progress` and delete the dead `commit-writer` skill.
 
 ## What to build
 

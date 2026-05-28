@@ -1,6 +1,4 @@
-## PRD
-
-plans/progress-json/PRD.md
+Update `prd-end` to output `plans/` instead of `ralph/` in the PRD path.
 
 ## What to build
 

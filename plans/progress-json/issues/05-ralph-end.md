@@ -1,6 +1,4 @@
-## PRD
-
-plans/progress-json/PRD.md
+Update `ralph-end` to use `ralph.json` and `plans-progress` instead of the old file names.
 
 ## What to build
 

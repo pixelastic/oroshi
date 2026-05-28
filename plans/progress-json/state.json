@@ -43,19 +43,37 @@
   },
   {
     "id": "08",
-    "issue": "issues/08-to-issues-skill.md",
+    "issue": "issues/08-state-json-reference.md",
     "done": false,
     "blocked_by": []
   },
   {
     "id": "09",
-    "issue": "issues/09-ralph-skill.md",
+    "issue": "issues/09-guidance-md-reference.md",
     "done": false,
-    "blocked_by": ["04", "05", "08"]
+    "blocked_by": []
   },
   {
     "id": "10",
-    "issue": "issues/10-prompt-cleanup.md",
+    "issue": "issues/10-issue-template-reference.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "11",
+    "issue": "issues/11-to-issues-skill-md.md",
+    "done": false,
+    "blocked_by": ["08", "09", "10"]
+  },
+  {
+    "id": "12",
+    "issue": "issues/12-ralph-skill.md",
+    "done": false,
+    "blocked_by": ["04", "05", "11"]
+  },
+  {
+    "id": "13",
+    "issue": "issues/13-prompt-cleanup.md",
     "done": false,
     "blocked_by": ["02"]
   }

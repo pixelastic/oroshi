@@ -1,6 +1,4 @@
-## PRD
-
-plans/progress-json/PRD.md
+New script that deterministically picks the next issue and outputs everything the ralph skill needs to start working.
 
 ## What to build
 

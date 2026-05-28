@@ -1,6 +1,4 @@
-## PRD
-
-plans/progress-json/PRD.md
+Rename `ralph-progress` to `plans-progress` and read `done` from `state.json` instead of `passes` from `issues.json`.
 
 ## What to build
 

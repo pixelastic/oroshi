@@ -1,6 +1,4 @@
-## PRD
-
-plans/progress-json/PRD.md
+Rewrite the ralph skill to use `ralph-start` for issue selection and update `state.json`, `GUIDANCE.md`, and `review-log.md` after implementation.
 
 ## What to build
 
@@ -33,4 +31,4 @@ Update the checklist, common rationalizations, and description to match.
 
 - 04 (needs `ralph-start`)
 - 05 (needs updated `ralph-end`)
-- 08 (needs to-issues skill for consistent file format references)
+- 11 (needs to-issues SKILL.md for consistent file format references)

@@ -1,6 +1,4 @@
-## PRD
-
-plans/progress-json/PRD.md
+Update the `ralph` orchestrator script to use `plans-directory` instead of `ralph-directory`.
 
 ## What to build
 
