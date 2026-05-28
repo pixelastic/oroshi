@@ -1,19 +1,19 @@
 #!/usr/bin/env zsh
-# Output done▮total progress for a ralph prd directory.
+# Output done▮total progress for a ralph directory.
 # Usage:
-# $ ralph-progress <dir>   # explicit prd dir containing prd.json
+# $ ralph-progress <dir>   # explicit ralph dir containing issues.json
 # $ ralph-progress         # deduces dir from current worktree context
 set -e
 
 local dir="${1:-$(ralph-directory)}"
-[[ -n "$dir" ]] || return 1
+[[ "$dir" == "" ]] && return 1
 
-[[ -f "$dir/prd.json" ]] || return 1
+[[ ! -f "$dir/issues.json" ]] && return 1
 
-local total="$(jq 'if type == "array" then length else error end' "$dir/prd.json" 2>/dev/null)"
-[[ -n "$total" ]] || return 1
-[[ "$total" -gt 0 ]] || return 1
+local total="$(jq 'if type == "array" then length else error end' "$dir/issues.json" 2>/dev/null)"
+[[ "$total" == "" ]] && return 1
+[[ ! "$total" -gt 0 ]] && return 1
 
-local done="$(jq '[.[] | select(.passes == true)] | length' "$dir/prd.json")"
+local done="$(jq '[.[] | select(.passes == true)] | length' "$dir/issues.json")"
 
 print "${done}▮${total}"

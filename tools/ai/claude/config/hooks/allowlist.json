@@ -63,6 +63,7 @@
   "git worktree list",
   "git --version",
   "git-branch-current",
+  "git-branch-slug",
   "git-directory-is-worktree",
   "git-github-project-name",
   "git-worktree-create",
