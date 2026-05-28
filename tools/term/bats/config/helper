@@ -129,6 +129,13 @@ bats_strip_ansi() {
   printf '%s' "$1" | sed 's/\x1b\[[0-9;]*[mGKHFJK]//g'
 }
 
+# expect_clean
+# Asserts that $output is empty.
+# Usage: expect_clean
+expect_clean() {
+  [[ -z "$output" ]]
+}
+
 # bats_slugify <str>
 # Returns str lowercased with non-alphanumeric chars replaced by dashes.
 # Usage: local slug="$(bats_slugify "$BATS_TEST_NAME")"

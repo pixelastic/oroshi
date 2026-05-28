@@ -1,10 +1,11 @@
 #!/usr/bin/env bats
 
 bats_load_library 'helper'
-load './helper'
+bats_load_library 'rules-helper'
 
 RULE_FILE="${BATS_TEST_DIRNAME}/../rule-no-manual-arg-parsing.zsh"
 RULE_FN="zshlintRule_noManualArgParsing"
+RULE_FIXTURE="test.zsh"
 
 @test "flags case \"\$1\" pattern" {
   local -a input=(
@@ -13,13 +14,13 @@ RULE_FN="zshlintRule_noManualArgParsing"
     'esac'
   )
   run_rule "${input[@]}"
-  expect_violation noManualArgParsing 1
+  expect_rule_violation noManualArgParsing 1
 }
 
 @test "flags while getopts pattern" {
   local -a input=( 'while getopts "f:v" opt; do' )
   run_rule "${input[@]}"
-  expect_violation noManualArgParsing 1
+  expect_rule_violation noManualArgParsing 1
 }
 
 @test "clean — zparseopts" {

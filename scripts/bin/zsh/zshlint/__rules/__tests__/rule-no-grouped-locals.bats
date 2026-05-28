@@ -1,33 +1,34 @@
 #!/usr/bin/env bats
 
 bats_load_library 'helper'
-load './helper'
+bats_load_library 'rules-helper'
 
 RULE_FILE="${BATS_TEST_DIRNAME}/../rule-no-grouped-locals.zsh"
 RULE_FN="zshlintRule_noGroupedLocals"
+RULE_FIXTURE="test.zsh"
 
 @test "flags local with multiple bare names" {
   local -a input=( 'local a b c' )
   run_rule "${input[@]}"
-  expect_violation noGroupedLocals 1
+  expect_rule_violation noGroupedLocals 1
 }
 
 @test "flags local with multiple assignments" {
   local -a input=( 'local raw="" line="" path=""' )
   run_rule "${input[@]}"
-  expect_violation noGroupedLocals 1
+  expect_rule_violation noGroupedLocals 1
 }
 
 @test "flags local with flag and multiple variables" {
   local -a input=( 'local -a arr1 arr2' )
   run_rule "${input[@]}"
-  expect_violation noGroupedLocals 1
+  expect_rule_violation noGroupedLocals 1
 }
 
 @test "flags local with flag and multiple assignments" {
   local -a input=( 'local -i count=0 limit=10' )
   run_rule "${input[@]}"
-  expect_violation noGroupedLocals 1
+  expect_rule_violation noGroupedLocals 1
 }
 
 @test "clean — single variable with flag" {
@@ -80,5 +81,5 @@ RULE_FN="zshlintRule_noGroupedLocals"
 
 @test "line number is correct when preceded by blank line" {
   run_rule '' 'local a b'
-  expect_violation noGroupedLocals 2
+  expect_rule_violation noGroupedLocals 2
 }

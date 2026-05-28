@@ -1,21 +1,22 @@
 #!/usr/bin/env bats
 
 bats_load_library 'helper'
-load './helper'
+bats_load_library 'rules-helper'
 
 RULE_FILE="${BATS_TEST_DIRNAME}/../rule-no-while-read.zsh"
 RULE_FN="zshlintRule_noWhileRead"
+RULE_FIXTURE="test.zsh"
 
 @test "flags 'while IFS= read -r line'" {
   local -a input=( 'while IFS= read -r line; do' )
   run_rule "${input[@]}"
-  expect_violation noWhileRead 1
+  expect_rule_violation noWhileRead 1
 }
 
 @test "flags 'while read line'" {
   local -a input=( 'while read line; do' )
   run_rule "${input[@]}"
-  expect_violation noWhileRead 1
+  expect_rule_violation noWhileRead 1
 }
 
 @test "clean — 'while true' without read on same line" {

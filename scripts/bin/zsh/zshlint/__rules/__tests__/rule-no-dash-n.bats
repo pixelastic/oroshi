@@ -1,24 +1,25 @@
 #!/usr/bin/env bats
 
 bats_load_library 'helper'
-load './helper'
+bats_load_library 'rules-helper'
 
 RULE_FILE="${BATS_TEST_DIRNAME}/../rule-no-dash-n.zsh"
 RULE_FN="zshlintRule_noDashN"
+RULE_FIXTURE="test.zsh"
 
 @test "flags [[ -n var ]]" {
   run_rule '[[ -n "$foo" ]] && return'
-  expect_violation noDashN 1
+  expect_rule_violation noDashN 1
 }
 
 @test "flags [[ ! -n var ]]" {
   run_rule '[[ ! -n "$foo" ]] && return'
-  expect_violation noDashN 1
+  expect_rule_violation noDashN 1
 }
 
 @test "flags -n after &&" {
   run_rule '[[ "$a" != "" && -n "$b" ]] && return'
-  expect_violation noDashN 1
+  expect_rule_violation noDashN 1
 }
 
 @test "clean — [[ var != \"\" ]]" {
@@ -48,5 +49,5 @@ RULE_FN="zshlintRule_noDashN"
 
 @test "line number is correct" {
   run_rule '' '[[ -n "$foo" ]]'
-  expect_violation noDashN 2
+  expect_rule_violation noDashN 2
 }

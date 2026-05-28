@@ -1,27 +1,28 @@
 #!/usr/bin/env bats
 
 bats_load_library 'helper'
-load './helper'
+bats_load_library 'rules-helper'
 
 RULE_FILE="${BATS_TEST_DIRNAME}/../rule-no-external-basename.zsh"
 RULE_FN="zshlintRule_noExternalBasename"
+RULE_FIXTURE="test.zsh"
 
 @test "flags \$(basename ...)" {
   local -a input=( 'local name="$(basename "$path")"' )
   run_rule "${input[@]}"
-  expect_violation noExternalBasename 1
+  expect_rule_violation noExternalBasename 1
 }
 
 @test "flags \$(dirname ...)" {
   local -a input=( 'local dir="$(dirname "$path")"' )
   run_rule "${input[@]}"
-  expect_violation noExternalBasename 1
+  expect_rule_violation noExternalBasename 1
 }
 
 @test "flags \$(realpath ...)" {
   local -a input=( 'local real="$(realpath "$path")"' )
   run_rule "${input[@]}"
-  expect_violation noExternalBasename 1
+  expect_rule_violation noExternalBasename 1
 }
 
 @test "clean — comment line with basename" {

@@ -1,21 +1,22 @@
 #!/usr/bin/env bats
 
 bats_load_library 'helper'
-load './helper'
+bats_load_library 'rules-helper'
 
 RULE_FILE="${BATS_TEST_DIRNAME}/../rule-single-equals-in-test.zsh"
 RULE_FN="zshlintRule_singleEqualsInTest"
+RULE_FIXTURE="test.zsh"
 
 @test "flags '[[ \"\$foo\" = \"bar\" ]]'" {
   local -a input=( '[[ "$foo" = "bar" ]]' )
   run_rule "${input[@]}"
-  expect_violation singleEqualsInTest 1
+  expect_rule_violation singleEqualsInTest 1
 }
 
 @test "flags '[[ \$x = \$y ]]' without quotes" {
   local -a input=( '[[ $x = $y ]]' )
   run_rule "${input[@]}"
-  expect_violation singleEqualsInTest 1
+  expect_rule_violation singleEqualsInTest 1
 }
 
 @test "clean — '!=' is not flagged" {

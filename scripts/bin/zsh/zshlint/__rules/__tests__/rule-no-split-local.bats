@@ -1,24 +1,25 @@
 #!/usr/bin/env bats
 
 bats_load_library 'helper'
-load './helper'
+bats_load_library 'rules-helper'
 
 RULE_FILE="${BATS_TEST_DIRNAME}/../rule-no-split-local.zsh"
 RULE_FN="zshlintRule_noSplitLocal"
+RULE_FIXTURE="test.zsh"
 
 @test "flags bare local followed by assignment" {
   run_rule 'local foo' 'foo="$(cmd)"'
-  expect_violation noSplitLocal 1
+  expect_rule_violation noSplitLocal 1
 }
 
 @test "flags bare local -a followed by array assignment" {
   run_rule 'local -a arr' 'arr=(a b c)'
-  expect_violation noSplitLocal 1
+  expect_rule_violation noSplitLocal 1
 }
 
 @test "flags bare local followed by += assignment" {
   run_rule 'local foo' 'foo+="extra"'
-  expect_violation noSplitLocal 1
+  expect_rule_violation noSplitLocal 1
 }
 
 @test "clean — local with assignment on same line" {
@@ -43,5 +44,5 @@ RULE_FN="zshlintRule_noSplitLocal"
 
 @test "line number points to local declaration" {
   run_rule '' 'local foo' 'foo="$(cmd)"'
-  expect_violation noSplitLocal 2
+  expect_rule_violation noSplitLocal 2
 }
