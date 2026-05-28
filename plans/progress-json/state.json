@@ -73,14 +73,16 @@
   {
     "id": "12",
     "issue": "issues/12-ralph-skill.md",
-    "done": false,
-    "blocked_by": ["04", "05", "11"]
+    "done": true,
+    "blocked_by": ["04", "05", "11"],
+    "recap": "rewrote SKILL.md: Step 1 uses ralph-start (handles finished/deadlocked/ready), Step 6 updates state.json+GUIDANCE.md+review-log.md, checklist + description + rationalization updated; no progress.md or issues.json references remain"
   },
   {
     "id": "13",
     "issue": "issues/13-prompt-update.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "already done in session 02 — git.zsh calls plans-progress, function renamed to git_issues_plan"
   },
   {
     "id": "14",

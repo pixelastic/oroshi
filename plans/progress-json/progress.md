@@ -1,3 +1,11 @@
+## Session 2026-05-28 — 12: ralph-skill
+- Completed: rewrote ralph SKILL.md — Step 1 uses ralph-start (handles finished/deadlocked/ready, reads guidance + issue paths); Step 6 updates state.json (done+recap), appends GUIDANCE.md discoveries, creates/appends review-log.md for skipped feedback; Step 7 unchanged; description, checklist, and rationalization updated; no progress.md or issues.json references remain; also marked issue 13 done (was silently completed in session 02)
+- Tests added: none (pure skill markdown rewrite — declarative file, no executable code path)
+- Discovered: spec says `status: "done"` but actual ralph-start script outputs `"finished"` — used actual script value; spec says `paths.guidance`/`paths.spec` but script uses top-level `guidance`/`issue` keys — used actual keys
+- Fixed: none unplanned
+- Skipped feedback: spec agent flagged status:"done" vs "finished" — dismissed, actual script is source of truth; spec agent flagged paths.* key names — dismissed, script uses flat keys; spec agent flagged review-log.md path source — dismissed, ralph-start does return review_log; step 2 redundancy — dismissed, keeping for clarity
+- Next: issue 14 (delete-commit-writer) — no blockers, last remaining issue
+
 ## Session 2026-05-28 — 11: to-issues-skill-md
 - Completed: found SKILL.md already correct — state.json, GUIDANCE.md, issues/XX-slug.md all referenced with correct links; no old file names present; all reference files exist
 - Tests added: none (pure doc change, already complete)

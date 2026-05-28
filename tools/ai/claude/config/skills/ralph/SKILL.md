@@ -1,6 +1,6 @@
 ---
 name: ralph
-description: Use when user says "ralph <dir>" or "ralph this". Implements the highest-priority issue from issues.json in the given directory using TDD, updates docs, runs review in a subagent, fixes actionable feedback, then stops for user to commit. Argument is the directory containing issues.json and progress.md.
+description: Use when user says "ralph <dir>" or "ralph this". Implements the highest-priority issue from state.json in the given directory using TDD, updates docs, runs review in a subagent, fixes actionable feedback, then stops for user to commit. Argument is the directory containing state.json and GUIDANCE.md.
 argument-hint: [directory]
 effort: high
 ---
@@ -18,35 +18,28 @@ If `$ARGUMENTS` is empty, `"this"`, `"."`, or `"here"` → use current working d
 
 ## Step 1 — SETUP
 
-**Goal:** Load current PRD state and session history.
+**Goal:** Select the next issue and load context.
 
-**Exit criterion:** You've read issues.json, progress.md, and know which issues are open.
+**Exit criterion:** Issue selected, guidance loaded, ready to implement.
 
-Read:
-- `$ARGUMENTS/issues.json` — issues, statuses, metadata
-- `$ARGUMENTS/progress.md` — session history
+Run `ralph-start $ARGUMENTS` and parse the JSON output:
 
----
+- `status: "finished"` → display "All issues complete." and stop.
+- `status: "deadlocked"` → display the `message` field and stop.
+- `status: "ready"` → continue.
 
-## Step 2 — PICK
+Read the file at the `guidance` path — accumulated knowledge from prior sessions.
 
-**Goal:** Select exactly one issue to implement this session.
+Read the file at the `issue` path — the spec for this session.
 
-**Exit criterion:** One issue selected, recap displayed.
-
-Evaluate all open issues. You decide priority — not necessarily the first listed. Weight: blockers, dependencies, impact, complexity.
-
-Glob for `$ARGUMENTS/issue-*.md`. Read the detail file for your chosen issue.
-
-Display a recap of the issue.
-
-**Pick one. Touch nothing else.**
+Display a one-line recap of the selected issue.
 
 ---
 
-## Step 3 — RED
+## Step 2 — RED
 
-**Goal:** Write tests that fail — either because the feature doesn't exist yet, or because they demonstrate a bug.
+**Goal:** Write tests that fail — either because the feature doesn't exist yet,
+or because they demonstrate a bug.
 
 **Exit criterion:** Test runs and fails.
 
@@ -63,7 +56,7 @@ per criterion. Run them. Read the failure output.
 
 ---
 
-## Step 4 — IMPLEMENT
+## Step 3 — IMPLEMENT
 
 **Goal:** Make the tests pass with minimal code, then verify the full suite.
 
@@ -77,7 +70,7 @@ per criterion. Run them. Read the failure output.
 
 ---
 
-## Step 5 — REVIEW & FIX
+## Step 4 — REVIEW & FIX
 
 **Goal:** Get external feedback, apply it, verify nothing broke.
 
@@ -88,35 +81,41 @@ per criterion. Run them. Read the failure output.
     - Wait for the skill to finish before proceeding.
 2. For each feedback item:
    - **Actionable and in scope** → fix it
-   - **Out of scope or not relevant** → note it in progress.md under `Skipped feedback:`
+   - **Out of scope or not relevant** → note it, will go in review-log.md (path from `ralph-start` output)
 3. Run the linter on all modified files. Fix any errors.
 4. Run tests for all modified files. All tests must pass.
 
 ---
 
-## Step 6 — DOCUMENT
+## Step 5 — DOCUMENT
 
 **Goal:** Leave full context for the next session.
 
-**Exit criterion:** progress.md and issues.json both updated.
+**Exit criterion:** `state.json`, `GUIDANCE.md` (optional) and `review-log.md` (optional) updated.
 
-Append to `$ARGUMENTS/progress.md`:
+1. **Update `state.json`** (path from `ralph-start` output): find the issue
+   entry by `id`, set `done: true`, add `recap` — a short one-sentence summary
+   of what was done.
 
-```
-## Session YYYY-MM-DD — <issue-id>: <title>
-- Completed: <what was done>
-- Tests added: <list>
-- Discovered: <unexpected issues found, or "none">
-- Fixed: <unplanned fixes made, or "none">
-- Skipped feedback: <review items not applied, or "none">
-- Next: <recommended next issue or action>
-```
+2. **Append to `GUIDANCE.md`** (path from `ralph-start` output) under `## Discoveries`:
+   ```
+   ### Issue XX — <title>
+   - <non-trivial finding>
+   ```
+   Skip this step if there are no non-trivial findings.
 
-Update `$ARGUMENTS/issues.json`: mark issue as complete, update any relevant status fields.
+3. **If review had skipped items**, create or append to `review-log.md` (path from `ralph-start` output):
+   ```
+   ## Issue XX — <title>
+   ### <feedback item>
+   ```code block of the flagged code```
+   **Problem:** <what the reviewer flagged>
+   **Reason skipped:** <why it was dismissed>
+   ```
 
 ---
 
-## Step 7 — STOP
+## Step 6 — STOP
 
 **Goal:** Hand off to user.
 
@@ -124,7 +123,7 @@ Update `$ARGUMENTS/issues.json`: mark issue as complete, update any relevant sta
 
 - Run `ralph-end $ARGUMENTS` first
 
-- Print the session entry that was written to progress.md
+- Print the issue id, recap, and any discoveries logged.
 
 **Stop here. Do not commit. Do not start the next issue. Wait for the user.**
 
@@ -138,14 +137,14 @@ Update `$ARGUMENTS/issues.json`: mark issue as complete, update any relevant sta
 | "I'll write the test after to go faster" | Tests-after prove nothing. Delete the code. Start with RED. |
 | "I'll do one more issue while I'm at it" | One issue. Full stop. |
 | "Review feedback is minor, not worth it" | Minor feedback ignored = minor bugs shipped. Fix it. |
-| "I can infer priority without reading the detail file" | You can't. Read the file. |
+| "I don't need to read the guidance and issue files, I can start implementing" | You can't. Read both — guidance has prior discoveries; the issue has the acceptance criteria. |
 | "I should commit so the review has something to diff" | Do not commit. That's the user's job. |
 | "I should run `review` via the Bash tool" | Use the `/review` skill instead, Bash will go to the background and we need to wait for the review. |
 
 ## Checklist
 
-- [ ] Read issues.json + progress.md
-- [ ] Picked one issue, read its detail file
+- [ ] Ran `ralph-start`, parsed output, handled finished/deadlocked
+- [ ] Read guidance file and issue spec
 - [ ] RED: wrote failing tests, ran them, confirmed they fail
 - [ ] IMPLEMENT: minimal code, all behaviors covered
 - [ ] Code written following the standards of the language skill (`zsh-writer`, `js-writer`, etc)
@@ -154,6 +153,7 @@ Update `$ARGUMENTS/issues.json`: mark issue as complete, update any relevant sta
 - [ ] Ran `/review` via Skill tool and received output
 - [ ] Actionable feedback fixed or explicitly dismissed
 - [ ] Linter + tests green for modified files after review fixes
-- [ ] progress.md updated with session entry
-- [ ] issues.json updated
+- [ ] state.json updated with `done: true` + `recap`
+- [ ] GUIDANCE.md discoveries appended (or skipped if none)
+- [ ] review-log.md updated if skipped feedback exists
 - [ ] **Stopped — waiting for user to commit**
