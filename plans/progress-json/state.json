@@ -20,7 +20,7 @@
   {
     "id": "04",
     "issue": "issues/04-ralph-start.md",
-    "done": false,
+    "done": true,
     "blocked_by": ["01"]
   },
   {

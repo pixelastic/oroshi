@@ -43,6 +43,9 @@ replace each instance of caling bats with rtk bats?
 I would like to have a visual indicator in my kitty tabs to tell me which tab
 currently has a "job's done"
 
+zshlint: [[ "$allDone" == "true" ]] && { print '{"status":"done"}'; return 0; }
+Should be a real if [[ ]]; then fi
+
 ---
 
 I will need to add a LUA harness made of tests and lints.

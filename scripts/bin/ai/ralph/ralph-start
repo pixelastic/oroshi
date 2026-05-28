@@ -1,0 +1,48 @@
+#!/usr/bin/env zsh
+# Pick next eligible issue from state.json and output JSON for ralph skill
+# Usage:
+# $ ralph-start [<dir>]   # dir defaults to plans-directory output
+set -e
+
+local dir="${1:-$(plans-directory)}"
+
+# No plan dir resolved
+[[ "$dir" == "" ]] && return 1
+# state.json must exist
+[[ ! -f "$dir/state.json" ]] && return 1
+
+# All issues finished
+local progress="$(plans-progress "$dir")"
+local fields=(${(@s/▮/)progress})
+[[ "${fields[1]}" == "" ]] && return 1
+if [[ "${fields[1]}" == "${fields[2]}" ]]; then
+  print '{"status":"finished"}'
+  return 0
+fi
+
+# Find first eligible issue: not done, all blockers done, sorted by id
+local issueJson="$(jq '
+  [.[] | select(.done == true) | .id] as $done |
+  [.[] | select(.done == false) | select(.blocked_by | all(. as $b | $done | index($b) != null))] |
+  sort_by(.id) |
+  .[0]
+' "$dir/state.json" 2>/dev/null)"
+
+# No eligible issue → deadlocked
+if [[ "$issueJson" == "null" || "$issueJson" == "" ]]; then
+  print '{"status":"deadlocked","message":"all remaining issues are blocked"}'
+  return 0
+fi
+
+local absDir="${dir:A}"
+jq -n \
+  --argjson issue "$issueJson" \
+  --arg dir "$absDir" \
+  '{
+    status: "ready",
+    id: $issue.id,
+    issue: ($dir+"/"+$issue.issue),
+    state: ($dir+"/state.json"),
+    guidance: ($dir+"/GUIDANCE.md"),
+    review_log: ($dir+"/review-log.md")
+  }'

@@ -1,3 +1,12 @@
+## Session 2026-05-28 — 04: ralph-start
+
+- Completed: created `ralph-start` script; reads `state.json`, finds first eligible issue (not done, all blockers done, sorted by id), outputs JSON with `status:"next"` + issue + absolute paths; outputs `{"status":"done"}` when all complete; exits 1 on deadlock or missing state.json
+- Tests added: `ralph-start.bats` — 10 tests covering next/done/deadlock/missing/malformed/out-of-order/path-resolution/absolute-paths
+- Discovered: spec says "by id" → `sort_by(.id)` required; spec says "error message" on deadlock → added print to stderr
+- Fixed: none unplanned
+- Skipped feedback: `local` at top-level flagged by standards agent — established codebase pattern (same in `plans-progress`, `ralph-end`); `return` vs `exit` — same; truncated diff artifact in spec agent — actual file correct; empty array edge case — out of spec scope
+- Next: issue 06 (ralph-script: update to use plans-directory) or issue 13 (prompt-update: call plans-progress)
+
 ## Session 2026-05-28 — 05: ralph-end
 
 - Completed: updated `ralph-end.bats` — replaced `prd.json` fixtures with `state.json` (new format); quoted `'done'` arg to suppress zshlint keyword warning; renamed tests 4 and 5 from "prd.json" to "state.json"; added test 6 "does not modify state.json"
