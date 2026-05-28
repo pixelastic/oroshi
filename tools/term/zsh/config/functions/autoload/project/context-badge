@@ -24,7 +24,7 @@ _badge() {
   local fg="$2"
   local text="$3"
   local prevBg="${4:-}"
-  if (( isZsh )); then
+  if [[ $isZsh == "1" ]]; then
     local out="%K{$bg}"
     [[ "$prevBg" != "" ]] && out+="%F{$prevBg}${arrow}"
     out+="%F{$fg}${text}%f%k"
@@ -39,7 +39,7 @@ _badge() {
 # Final arrow after last badge (no background)
 _trailing_arrow() {
   local fg="$1"
-  if (( isZsh )); then
+  if [[ $isZsh == "1" ]]; then
     print -n "%F{$fg}${arrow}%f"
   else
     print -n "${esc}[38;5;${fg}m${arrow}${esc}[0m"
@@ -47,7 +47,7 @@ _trailing_arrow() {
 }
 
 # Load PROJECTS if not already populated
-(( ${#PROJECTS} == 0 )) && source "$OROSHI_ROOT/config/term/zsh/theming/dist/projects.zsh"
+(( ${#PROJECTS} == 0 )) && source "$OROSHI_ROOT/tools/term/zsh/config/theming/dist/projects.zsh"
 
 # Resolve project name argument to its path
 if [[ "$reference" != /* ]]; then
