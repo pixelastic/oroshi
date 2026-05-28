@@ -10,7 +10,7 @@ teardown() {
 }
 
 project_env() {
-  echo "PROJECTS_INDEX_BY_PATH=MY_PROJECT; PROJECT_MY_PROJECT_PATH=${BATS_GIT_DIR}/; PROJECT_MY_PROJECT_NAME=my-project; PROJECT_MY_PROJECT_BACKGROUND=100; PROJECT_MY_PROJECT_FOREGROUND=255; PROJECT_MY_PROJECT_ICON=X; PROJECT_MY_PROJECT_HIDE_NAME_IN_PROMPT=0; COLOR_ALIAS_GIT_BRANCH=17; COLOR_ALIAS_DIRECTORY=2"
+  echo "typeset -gA PROJECTS; PROJECTS[my-project.path]=${BATS_GIT_DIR}/; PROJECTS[my-project.background.ansi]=100; PROJECTS[my-project.foreground.ansi]=255; PROJECTS[my-project.icon]=X; PROJECTS[my-project.hideNameInPrompt]=false; COLOR_ALIAS_GIT_BRANCH=17; COLOR_ALIAS_DIRECTORY=2"
 }
 
 @test "prompt badge contains branch name when inside linked worktree" {
@@ -20,7 +20,7 @@ project_env() {
 }
 
 @test "no remaining project-by-path calls in fzf functions" {
-  local fzfDir="${OROSHI_ROOT}/config/term/zsh/functions/autoload/fzf"
+  local fzfDir="${OROSHI_ROOT}/tools/term/zsh/config/functions/autoload/fzf"
   run grep -r --exclude-dir="__tests__" "project-by-path" "$fzfDir"
   [ "$status" -ne 0 ]
 }

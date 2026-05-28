@@ -9,7 +9,7 @@ teardown() {
 }
 
 @test "no remaining project-colorize calls in fzf functions" {
-  local fzfDir="${OROSHI_ROOT}/config/term/zsh/functions/autoload/fzf"
+  local fzfDir="${OROSHI_ROOT}/tools/term/zsh/config/functions/autoload/fzf"
   run grep -r --include="*" --exclude-dir="__tests__" "project-colorize" "$fzfDir"
   [ "$status" -ne 0 ]
 }

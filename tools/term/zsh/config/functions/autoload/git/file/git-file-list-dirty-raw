@@ -22,5 +22,8 @@ for line in ${(f)dirtyFiles}; do
   local gitStatus="$stageableStatus"
   [[ "$gitStatus" == " " ]] && gitStatus="$stagedStatus"
 
+  # For renames, git outputs "old -> new" — use the new path
+  [[ "$filePath" == *" -> "* ]] && filePath="${filePath##* -> }"
+
   echo "${gitStatus}:${filePath}"
 done
