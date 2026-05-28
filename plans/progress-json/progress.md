@@ -1,3 +1,12 @@
+## Session 2026-05-28 — 05: ralph-end
+
+- Completed: updated `ralph-end.bats` — replaced `prd.json` fixtures with `state.json` (new format); quoted `'done'` arg to suppress zshlint keyword warning; renamed tests 4 and 5 from "prd.json" to "state.json"; added test 6 "does not modify state.json"
+- Tests added: `does not modify state.json` (new); 5 existing tests updated
+- Discovered: implementation was already correct (done in session 02); only test fixtures needed updating
+- Fixed: pre-existing zshlint warning on `done` keyword — fixed by quoting `'done'`; noSplitLocal on new test — fixed by combining local+assignment
+- Skipped feedback: `local before="$(cat ...)"` flagged by both review agents — dismissed; `local var="$(cmd)"` is the established bats pattern in plans-directory.bats and plans-progress.bats
+- Next: issue 04 (ralph-start: update to use new file layout) or issue 06 (ralph-script: update to use plans-directory/state.json)
+
 ## Session 2026-05-28 — 02: plans-progress
 
 - Completed: created `plans-progress` (reads `state.json`, counts `.done == true`); deleted `ralph-progress` and `ralph-progress.bats`; updated `ralph-end` and `git.zsh` call sites; renamed prompt function `git_issues_prd` → `git_issues_plan` in `git.zsh`, `git.bats`, `index.zsh`

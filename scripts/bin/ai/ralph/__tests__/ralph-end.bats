@@ -12,19 +12,18 @@ teardown() {
 
 @test "does nothing in single-shot mode" {
   ralph-state "$PRD_DIR" init single
-  echo '[{"id":"1","description":"foo","status":"open"}]' > "$PRD_DIR/prd.json"
   run ralph-end "$PRD_DIR"
   [ "$status" -eq 0 ]
-  [ "$(ralph-state "$PRD_DIR" get done)" != "true" ]
+  [ "$(ralph-state "$PRD_DIR" get 'done')" != "true" ]
   [ "$(ralph-state "$PRD_DIR" get prd_done)" != "true" ]
 }
 
 @test "sets done=true in loop mode with open issues" {
   ralph-state "$PRD_DIR" init loop
-  echo '[{"id":"1","description":"foo","status":"open"}]' > "$PRD_DIR/prd.json"
+  printf '[{"id":"1","issue":"foo.md","done":false,"blocked_by":[]}]' > "$PRD_DIR/state.json"
   run ralph-end "$PRD_DIR"
   [ "$status" -eq 0 ]
-  [ "$(ralph-state "$PRD_DIR" get done)" = "true" ]
+  [ "$(ralph-state "$PRD_DIR" get 'done')" = "true" ]
   [ "$(ralph-state "$PRD_DIR" get prd_done)" != "true" ]
 }
 
@@ -33,24 +32,33 @@ teardown() {
   printf '[{"id":"1","issue":"foo.md","done":true,"blocked_by":[]}]' > "$PRD_DIR/state.json"
   run ralph-end "$PRD_DIR"
   [ "$status" -eq 0 ]
-  [ "$(ralph-state "$PRD_DIR" get done)" = "true" ]
+  [ "$(ralph-state "$PRD_DIR" get 'done')" = "true" ]
   [ "$(ralph-state "$PRD_DIR" get prd_done)" = "true" ]
 }
 
-@test "sets only done=true in loop mode when prd.json is absent" {
+@test "sets only done=true in loop mode when state.json is absent" {
   ralph-state "$PRD_DIR" init loop
   run ralph-end "$PRD_DIR"
   [ "$status" -eq 0 ]
-  [ "$(ralph-state "$PRD_DIR" get done)" = "true" ]
+  [ "$(ralph-state "$PRD_DIR" get 'done')" = "true" ]
   [ "$(ralph-state "$PRD_DIR" get prd_done)" != "true" ]
 }
 
-@test "sets only done=true in loop mode when prd.json is malformed" {
+@test "sets only done=true in loop mode when state.json is malformed" {
   ralph-state "$PRD_DIR" init loop
-  echo 'not valid json' > "$PRD_DIR/prd.json"
+  echo 'not valid json' > "$PRD_DIR/state.json"
   run ralph-end "$PRD_DIR"
   [ "$status" -eq 0 ]
-  [ "$(ralph-state "$PRD_DIR" get done)" = "true" ]
+  [ "$(ralph-state "$PRD_DIR" get 'done')" = "true" ]
   [ "$(ralph-state "$PRD_DIR" get prd_done)" != "true" ]
+}
+
+@test "does not modify state.json" {
+  ralph-state "$PRD_DIR" init loop
+  printf '[{"id":"1","issue":"foo.md","done":true,"blocked_by":[]}]' > "$PRD_DIR/state.json"
+  local before="$(cat "$PRD_DIR/state.json")"
+  run ralph-end "$PRD_DIR"
+  [ "$status" -eq 0 ]
+  [ "$(cat "$PRD_DIR/state.json")" = "$before" ]
 }
 

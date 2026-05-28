@@ -26,7 +26,7 @@
   {
     "id": "05",
     "issue": "issues/05-ralph-end.md",
-    "done": false,
+    "done": true,
     "blocked_by": ["02", "03"]
   },
   {
