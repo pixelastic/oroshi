@@ -20,7 +20,7 @@ yarn-error.log
 
 # Ralph
 /ralph/
-.ralph-state.json
+ralph.json
 
 # Tool directories
 .claude/

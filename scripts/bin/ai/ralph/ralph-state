@@ -8,12 +8,12 @@
 set -e
 
 local dir="$1"
-if [[ -z "$dir" ]]; then
+if [[ "$dir" == "" ]]; then
   print "ralph-state: <dir> required"
   return 1
 fi
 
-local stateFile="$dir/.ralph-state.json"
+local stateFile="$dir/ralph.json"
 local cmd="$2"
 
 case "$cmd" in
@@ -23,7 +23,7 @@ init)
   ;;
 get)
   local key="$3"
-  if [[ -z "$key" ]]; then
+  if [[ "$key" == "" ]]; then
     print "ralph-state get: <key> required"
     return 1
   fi
@@ -32,7 +32,7 @@ get)
 set)
   local key="$3"
   local value="$4"
-  if [[ -z "$key" || -z "$value" ]]; then
+  if [[ "$key" == "" || "$value" == "" ]]; then
     print "ralph-state set: <key> <value> required"
     return 1
   fi

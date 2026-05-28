@@ -14,7 +14,7 @@
   {
     "id": "03",
     "issue": "issues/03-ralph-json.md",
-    "done": false,
+    "done": true,
     "blocked_by": []
   },
   {
