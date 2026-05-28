@@ -372,7 +372,7 @@ O_STATUSLINE = {
     end
 
     -- Read from dist/projects.json
-    local distPath = vim.fn.expand("~/.oroshi/config/term/zsh/theming/dist/projects.json")
+    local distPath = vim.fn.expand("~/.oroshi/tools/term/zsh/config/theming/dist/projects.json")
     local projects = F.readJson(distPath)
     local defaultData = { name = "", path = "", icon = "", hl = {}, hideNameInPrompt = false }
 

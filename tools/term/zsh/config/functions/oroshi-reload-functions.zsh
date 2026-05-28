@@ -21,6 +21,9 @@ function oroshi-reload-functions() {
   for item in $configPath/functions/autoload/**/*; do
     # If it's a folder, we add it to fpath, so zsh knows where to look
     if [[ -d $item ]]; then
+      # Skip all directories starting with __
+      [[ $item == */__* ]] && continue
+
       fpath+=($item)
       continue
     fi

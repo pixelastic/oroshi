@@ -2,7 +2,7 @@ local M = {}
 
 M.onInit = function()
   -- Set filetype for zsh autoload functions
-  F.onRead("*config/term/zsh/functions/autoload/*", function()
+  F.onRead("*tools/term/zsh/config/functions/autoload/*", function()
     -- if file has an extension, we fallback to it
     if F.extension() ~= "" then
       return

@@ -10,7 +10,7 @@ export default {
     'yarn run test --fail-fast --related',
   ],
   // Regenerate projects.json and projects.zsh
-  'config/term/zsh/theming/src/{projects.json,projects-build}': [
-    './config/term/zsh/theming/src/projects-build',
+  'tools/term/zsh/config/theming/src/{projects.json,projects-build}': [
+    './tools/term/zsh/config/theming/src/projects-build',
   ],
 };
