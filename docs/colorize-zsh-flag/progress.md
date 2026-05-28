@@ -50,6 +50,14 @@ Note: issue-002, 003, 004, and 006 are all unblocked once issue-001 is done — 
 - Skipped feedback: `noArithFlagTest` for `(( isZsh ))` — pre-existing in git-branch-colorize, consistent with progress.md guidance; mock-in-setup pattern same as accepted git-branch-colorize tests; spec agent wrong about positional arg being ignored (function does use `$1`)
 - Next: issue-004 (git-remote-colorize) — same pattern
 
+## Session 2026-05-28 — 0005: remove OROSHI_IS_PROMPT
+- Completed: Removed backward-compat `OROSHI_IS_PROMPT` check from `colorize`; replaced 3 `OROSHI_IS_PROMPT=1 xxx-colorize` calls in `git.zsh` with `xxx-colorize --zsh`
+- Tests added: `colorize.bats` — OROSHI_IS_PROMPT=1 no longer triggers zsh output; `git.zsh.bats` — branch/tag/remote prompt functions call colorize helpers with --zsh
+- Discovered: `bats_run_function` supports env var injection via `export VAR=value` before call (inherited by subprocess); git.zsh prompt functions can't use `bats_run_function` because they're sourced not autoloaded — existing `run zsh -c '...'` pattern is correct for this file
+- Fixed: none unplanned
+- Skipped feedback: git.zsh.bats inline function mocks instead of bats_mock — `bats_run_function` doesn't apply to sourced functions, all 12 pre-existing tests in that file use the same inline pattern
+- Next: issue-006 (context-badge rewrite to use colorize directly)
+
 ## Session 2026-05-27 — 0004: git-remote-colorize --zsh flag
 - Completed: Added `--zsh` flag to `git-remote-colorize`; propagated to both `colorize` calls; fixed `isWithIcon != 1` → `!= "1"` (zshlint)
 - Tests added: `config/term/zsh/functions/autoload/git/remote/__tests__/git-remote-colorize.bats` (9 tests)

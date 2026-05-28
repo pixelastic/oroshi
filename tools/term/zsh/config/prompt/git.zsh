@@ -38,7 +38,7 @@ function oroshi-prompt-populate:git_branch() {
   # In worktrees, we display the branch on the left
   (($GIT_DIRECTORY_IS_WORKTREE)) && return
 
-  OROSHI_PROMPT_PARTS[git_branch]="$(OROSHI_IS_PROMPT=1 git-branch-colorize --with-icon)"
+  OROSHI_PROMPT_PARTS[git_branch]="$(git-branch-colorize --with-icon --zsh)"
 }
 
 # Display the most relevant git tag
@@ -46,7 +46,7 @@ function oroshi-prompt-populate:git_tag() {
   OROSHI_PROMPT_PARTS[git_tag]=""
   (($GIT_DIRECTORY_IS_REPOSITORY)) || return
 
-  OROSHI_PROMPT_PARTS[git_tag]="$(OROSHI_IS_PROMPT=1 git-tag-colorize --with-icon)"
+  OROSHI_PROMPT_PARTS[git_tag]="$(git-tag-colorize --with-icon --zsh)"
 }
 
 # Display the current remote
@@ -57,7 +57,7 @@ function oroshi-prompt-populate:git_remote() {
   local currentRemoteName="$(git-remote-current)"
   [[ $currentRemoteName == 'origin' ]] && return
 
-  OROSHI_PROMPT_PARTS[git_remote]="$(OROSHI_IS_PROMPT=1 git-remote-colorize --with-icon)"
+  OROSHI_PROMPT_PARTS[git_remote]="$(git-remote-colorize --with-icon --zsh)"
 }
 
 # Display ahead/behind counts vs main (right prompt, asynchronous)

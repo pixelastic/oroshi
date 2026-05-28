@@ -9,6 +9,55 @@ teardown() {
 	bats_cleanup
 }
 
+# git_branch / git_tag / git_remote — use --zsh flag not OROSHI_IS_PROMPT
+
+@test "git_branch calls git-branch-colorize with --zsh" {
+	cd "$BATS_GIT_DIR"
+	run zsh -c '
+		source ~/.oroshi/config/term/zsh/zshenv.zsh
+		source $ZSH_CONFIG_PATH/prompt/git.zsh
+		GIT_DIRECTORY_IS_REPOSITORY=1
+		GIT_DIRECTORY_IS_WORKTREE=0
+		declare -Ag OROSHI_PROMPT_PARTS
+		function git-branch-colorize() { echo "ARGS: $@" }
+		oroshi-prompt-populate:git_branch
+		[[ "${OROSHI_PROMPT_PARTS[git_branch]}" == *"--zsh"* ]] && echo "ok"
+	'
+	[ "$status" -eq 0 ]
+	[ "$output" = "ok" ]
+}
+
+@test "git_tag calls git-tag-colorize with --zsh" {
+	cd "$BATS_GIT_DIR"
+	run zsh -c '
+		source ~/.oroshi/config/term/zsh/zshenv.zsh
+		source $ZSH_CONFIG_PATH/prompt/git.zsh
+		GIT_DIRECTORY_IS_REPOSITORY=1
+		declare -Ag OROSHI_PROMPT_PARTS
+		function git-tag-colorize() { echo "ARGS: $@" }
+		oroshi-prompt-populate:git_tag
+		[[ "${OROSHI_PROMPT_PARTS[git_tag]}" == *"--zsh"* ]] && echo "ok"
+	'
+	[ "$status" -eq 0 ]
+	[ "$output" = "ok" ]
+}
+
+@test "git_remote calls git-remote-colorize with --zsh" {
+	cd "$BATS_GIT_DIR"
+	run zsh -c '
+		source ~/.oroshi/config/term/zsh/zshenv.zsh
+		source $ZSH_CONFIG_PATH/prompt/git.zsh
+		GIT_DIRECTORY_IS_REPOSITORY=1
+		declare -Ag OROSHI_PROMPT_PARTS
+		function git-remote-current() { echo "upstream" }
+		function git-remote-colorize() { echo "ARGS: $@" }
+		oroshi-prompt-populate:git_remote
+		[[ "${OROSHI_PROMPT_PARTS[git_remote]}" == *"--zsh"* ]] && echo "ok"
+	'
+	[ "$status" -eq 0 ]
+	[ "$output" = "ok" ]
+}
+
 # git_worktree_distance
 
 @test "shows ahead color and count when ahead" {

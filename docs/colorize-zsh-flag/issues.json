@@ -130,7 +130,7 @@
       "Read config/term/zsh/prompt/git.zsh",
       "Check the file contains no occurrence of OROSHI_IS_PROMPT"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0005",
@@ -139,7 +139,7 @@
       "Read config/term/zsh/functions/autoload/misc/colorize",
       "Check the file contains no occurrence of OROSHI_IS_PROMPT"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "0006",

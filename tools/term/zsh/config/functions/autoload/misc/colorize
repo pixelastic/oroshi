@@ -23,9 +23,6 @@ local knownBackgroundColor=${(P)${:-COLOR_${backgroundColor}}}
 # Use default colors
 [[ $foregroundColor == "" ]] && foregroundColor=$COLOR_ALIAS_TEXT
 
-# Backward compat: OROSHI_IS_PROMPT=1 implies zsh mode
-[[ "$OROSHI_IS_PROMPT" == "1" ]] && isZsh=1
-
 # Output different format if --zsh flag, or classical ANSI sequence
 local outputPrefix=""
 local outputSuffix=""

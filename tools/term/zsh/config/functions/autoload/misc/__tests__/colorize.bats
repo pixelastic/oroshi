@@ -51,6 +51,16 @@ bats_load_library 'helper'
   [[ "$output" != *$'\e['* ]]
 }
 
+# --- OROSHI_IS_PROMPT backward compat removed ---
+
+@test "OROSHI_IS_PROMPT=1 does not trigger zsh output" {
+  export OROSHI_IS_PROMPT=1
+  bats_run_function colorize text 87
+  unset OROSHI_IS_PROMPT
+  [[ "$output" != *'%F{'* ]]
+  [[ "$output" == *$'\e['* ]]
+}
+
 # --- Concatenation ---
 
 @test "two consecutive colorize calls concatenate without newlines" {
