@@ -6,6 +6,6 @@ DEST_DIR=~/.config/flameshot
 
 mkdir -p $DEST_DIR
 ln \
-	-fs \
-	$CONFIG_DIR/flameshot.ini \
-	$DEST_DIR/flameshot.ini
+  -fs \
+  $CONFIG_DIR/flameshot.ini \
+  $DEST_DIR/flameshot.ini

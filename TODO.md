@@ -100,3 +100,16 @@ scripts and config (and install if needed).
 
 I should also cleanup what is in private/, same pattern as what I do in core
 oroshi
+
+I might need to strengthen the .ralph-state.json and progress.md into a single
+file. Or make progress.md into progress.json, with entries appended on each
+ralph loop. Each entry would contains the same keys as what is curently in the
+progress.md, but in JSON format because it will be consumed by ralph, not a
+human.
+That way I could also exclude the ralph directories from git (as I find they are
+only valuable during implementation, not after). But removing them from git
+means I don't have a clean diff of progress that is very useful for the
+automated commit message. So having a progress.json instead of .md would allow
+me to tweak the git-commit-message script to check if we have a progress.json,
+find the entry related to the current commit, and include its learnings in the
+prompt.
