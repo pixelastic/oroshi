@@ -1,13 +1,13 @@
-# Boolean: is the current (or given) path inside a ralph worktree?
-# A ralph worktree is a linked git worktree with plans/<branch-slug>/state.json at its root.
+# Boolean: is the current (or given) path inside a worktree with an associated plan?
+# A worktree with an associated plan is a linked git worktree with plans/<branch-slug>/state.json at its root.
 # Usage:
-# $ git-worktree-is-ralph            # checks $PWD
-# $ git-worktree-is-ralph /path/dir  # checks given path
+# $ git-worktree-has-plan            # checks $PWD
+# $ git-worktree-has-plan /path/dir  # checks given path
 setopt local_options err_return
 
 local targetPath="${1:-$PWD}"
 
-# Not a linked worktree → not a ralph worktree
+# Not a linked worktree → not a worktree with an associated plan
 git-directory-is-worktree "$targetPath" || return 1
 
 local wtRoot="$(git-directory-root "$targetPath")"

@@ -209,8 +209,8 @@ function oroshi-prompt-populate:git_plan_progress() {
   (($GIT_DIRECTORY_IS_REPOSITORY)) || return
   (($GIT_DIRECTORY_IS_WORKTREE)) || return
 
-  # Not a ralph worktree → nothing to show
-  git-worktree-is-ralph || return
+  # No plan in this worktree → nothing to show
+  git-worktree-has-plan || return
 
   local icon=" "
 

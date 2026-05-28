@@ -7,8 +7,8 @@ set -e
 
 local targetPath="${1:-$PWD}"
 
-# Not a ralph worktree → nothing to return
-git-worktree-is-ralph "$targetPath" || return 1
+# No plan in this worktree → nothing to return
+git-worktree-has-plan "$targetPath" || return 1
 
 local wtRoot="$(git-directory-root "$targetPath")"
 [[ "$wtRoot" == "" ]] && return 1

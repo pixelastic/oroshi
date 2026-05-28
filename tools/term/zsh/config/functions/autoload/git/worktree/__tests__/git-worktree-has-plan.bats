@@ -8,25 +8,25 @@ teardown() {
   bats_cleanup
 }
 
-@test "exits 0 inside a ralph worktree" {
+@test "exits 0 inside a worktree with a plan" {
   local wt_path="$(bats_git_worktree 'feat/test-ralph')"
   mkdir -p "$wt_path/plans/feat_test-ralph"
   echo '{}' > "$wt_path/plans/feat_test-ralph/state.json"
   cd "$wt_path"
-  bats_run_function git-worktree-is-ralph
+  bats_run_function git-worktree-has-plan
   [ "$status" -eq 0 ]
 }
 
-@test "exits 1 inside a worktree without prd.json" {
+@test "exits 1 inside a worktree without a plan" {
   local wt_path="$(bats_git_worktree 'feat/no-prd')"
   cd "$wt_path"
-  bats_run_function git-worktree-is-ralph
+  bats_run_function git-worktree-has-plan
   [ "$status" -eq 1 ]
 }
 
 @test "exits 1 outside any worktree" {
   cd "$BATS_GIT_DIR"
-  bats_run_function git-worktree-is-ralph
+  bats_run_function git-worktree-has-plan
   [ "$status" -eq 1 ]
 }
 
@@ -34,6 +34,6 @@ teardown() {
   local wt_path="$(bats_git_worktree 'feat/explicit')"
   mkdir -p "$wt_path/plans/feat_explicit"
   echo '{}' > "$wt_path/plans/feat_explicit/state.json"
-  bats_run_function git-worktree-is-ralph "$wt_path"
+  bats_run_function git-worktree-has-plan "$wt_path"
   [ "$status" -eq 0 ]
 }
