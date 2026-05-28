@@ -38,8 +38,9 @@
   {
     "id": "07",
     "issue": "issues/07-prd-end.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "prd-end now outputs plans/<slug>/PRD.md instead of ralph/<slug>/PRD.md; Output: header comment updated to match; prd-end.bats added with 4 tests"
   },
   {
     "id": "08",

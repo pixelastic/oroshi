@@ -1,3 +1,12 @@
+## Session 2026-05-28 — 07: prd-end
+
+- Completed: updated `prd-end` — changed `prdPath` from `ralph/$slug/PRD.md` to `plans/$slug/PRD.md`; updated both inline comments (line 3 + `Output:` line) to match
+- Tests added: `prd-end.bats` — 4 tests (prdPath correct, no ralph/ ref, exit 1 on missing branch, worktreePath+branch fields)
+- Discovered: stale `Output:` comment on line 5 also referenced `ralph/` — fixed as part of same PR
+- Fixed: none unplanned
+- Skipped feedback: bats_mock pattern flagged by standards agent as PATH-stub violation — dismissed; bats_mock uses zsh function overriding, not PATH, and is the established codebase pattern (same as ralph.bats); duplicate comment in spec agent diff — artifact of malformed diff display, actual file is clean
+- Next: issue 08 (state-json-reference: create references/state-json.md in to-issues skill), issue 13 (prompt-update: call plans-progress)
+
 ## Session 2026-05-28 — 06: ralph-script
 
 - Completed: updated `ralph.bats` — replaced `prd.json` fixtures with `state.json`; replaced trivial `.ralph-state.json` absence checks with meaningful `ralph.json` create+clear assertions (claude mock verifies `ralph.json` exists during run); fixed 3 `noSplitLocal` violations; quoted `'done'` arg
