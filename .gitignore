@@ -20,6 +20,7 @@ yarn-error.log
 
 # Ralph session state
 .ralph-state.json
+ralph/
 
 # Tool directories
 .claude/
