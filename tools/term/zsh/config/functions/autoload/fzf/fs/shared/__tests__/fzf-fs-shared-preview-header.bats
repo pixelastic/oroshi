@@ -3,18 +3,28 @@ bats_load_library 'helper'
 setup() {
   bats_git_dir 'my-repo'
   bats_git_worktree 'fix/bug'
+
+  projects-load-definitions() {
+    typeset -gA PROJECTS_V2
+    PROJECTS_V2[my-project:path]="$BATS_GIT_DIR/"
+    PROJECTS_V2[my-project:background:ansi]=100
+    PROJECTS_V2[my-project:foreground:ansi]=255
+    PROJECTS_V2[my-project:icon]=X
+    PROJECTS_V2[my-project:hideNameInPrompt]=false
+  }
+  bats_mock projects-load-definitions
+
+  export COLOR_ALIAS_GIT_BRANCH=17
+  export COLOR_ALIAS_DIRECTORY=2
+  export COLOR_ALIAS_COMMENT=8
 }
 
 teardown() {
   bats_cleanup
 }
 
-project_env() {
-  echo "typeset -gA PROJECTS; PROJECTS[my-project.path]=${BATS_GIT_DIR}/; PROJECTS[my-project.background.ansi]=100; PROJECTS[my-project.foreground.ansi]=255; PROJECTS[my-project.icon]=X; PROJECTS[my-project.hideNameInPrompt]=false; COLOR_ALIAS_GIT_BRANCH=17; COLOR_ALIAS_DIRECTORY=2; COLOR_ALIAS_COMMENT=8"
-}
-
 @test "header badge contains branch name when directory is inside linked worktree" {
-  run zsh -c "$(project_env); fzf-fs-shared-preview-header ${BATS_GIT_WORKTREES}fix-bug"
+  bats_run_function fzf-fs-shared-preview-header "${BATS_GIT_WORKTREES}fix-bug"
   [ "$status" -eq 0 ]
   [[ "$output" == *"fix/bug"* ]]
 }
