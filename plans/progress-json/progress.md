@@ -1,3 +1,11 @@
+## Session 2026-05-28 — 10: issue-template-reference
+- Completed: updated `references/issues-XX-slug.md` — added TLDR line, removed `## PRD` and `## Blocked by` sections, updated title to `XX-slug.md`, documented `issues/XX-slug.md` path and state.json for blockers; deleted `references/prd-json.md`
+- Tests added: none (pure doc change)
+- Discovered: none
+- Fixed: none unplanned
+- Skipped feedback: `issue-XXX-slug.md` deletion not in diff — already done in prior session (shown as `D` in git status); reference file rename to bare `XX-slug.md` — spec refers to template content convention, not the reference file's own name
+- Next: issue 11 (to-issues-skill-md) — now unblocked (08, 09, 10 all done)
+
 ## Session 2026-05-28 — 09: guidance-md-reference
 - Completed: created `references/guidance-md.md` (Guidance + Discoveries sections); removed `references/progress-md.md`; updated SKILL.md (exit criterion, link, checklist) to fix dead references
 - Tests added: none (pure doc change)

@@ -59,8 +59,9 @@
   {
     "id": "10",
     "issue": "issues/10-issue-template-reference.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "updated issues-XX-slug.md: TLDR line added, ## PRD and ## Blocked by removed, title updated to XX-slug.md, issues/ path + state.json blockers documented; prd-json.md deleted"
   },
   {
     "id": "11",
