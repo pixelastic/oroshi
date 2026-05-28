@@ -274,7 +274,7 @@ O_STATUSLINE = {
     end
 
     -- Project info
-    local projectName = vim.fn.systemlist("context-project " .. vim.fn.shellescape(rawFilepath))[1]
+    local projectName = vim.fn.systemlist("project-name " .. vim.fn.shellescape(rawFilepath))[1]
     local projectData = O_STATUSLINE.getProjectData(projectName)
     -- Icon with name string
     local projectContent = projectData.icon
