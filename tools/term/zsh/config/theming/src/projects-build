@@ -8,12 +8,11 @@ set -e
 
 local themingRoot="${THEMING_ROOT:-${0:A:h:h}}"
 local srcJson="$themingRoot/src/projects.json"
-local colorsFile="$themingRoot/env/colors.zsh"
 local distDir="$themingRoot/dist"
 local distJson="$distDir/projects.json"
 local distZsh="$distDir/projects.zsh"
 
-source "$colorsFile"
+colors-load-definitions
 
 # Sort src/projects.json in-place
 local sorted="$(jq --sort-keys '.' "$srcJson")"
