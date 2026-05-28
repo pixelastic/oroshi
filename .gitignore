@@ -19,7 +19,7 @@ yarn-error.log
 **/__pycache__/*
 
 # Ralph
-ralph/
+/ralph/
 .ralph-state.json
 
 # Tool directories

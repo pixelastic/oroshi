@@ -10,14 +10,14 @@ teardown() {
   bats_cleanup
 }
 
-@test "returns absolute path to docs/<slug>/ in a ralph worktree" {
+@test "returns absolute path to ralph/<slug>/ in a ralph worktree" {
   local wt_path="$(bats_git_worktree 'feat/my-feat')"
-  mkdir -p "$wt_path/docs/feat_my-feat"
-  echo '[]' > "$wt_path/docs/feat_my-feat/prd.json"
+  mkdir -p "$wt_path/ralph/feat_my-feat"
+  echo '[]' >"$wt_path/ralph/feat_my-feat/issues.json"
   cd "$wt_path"
   bats_run_script "$RALPH_DIRECTORY"
   [ "$status" -eq 0 ]
-  [[ "$output" == *"/docs/feat_my-feat/"* ]]
+  [[ "$output" == *"/ralph/feat_my-feat/"* ]]
   [[ "$output" == /* ]]
 }
 
@@ -28,7 +28,7 @@ teardown() {
   [ -z "$output" ]
 }
 
-@test "exits 1 in a worktree without prd.json" {
+@test "exits 1 in a worktree without issues.json" {
   local wt_path="$(bats_git_worktree 'feat/no-prd')"
   cd "$wt_path"
   bats_run_script "$RALPH_DIRECTORY"
@@ -38,9 +38,9 @@ teardown() {
 
 @test "accepts an explicit subpath argument" {
   local wt_path="$(bats_git_worktree 'feat/explicit')"
-  mkdir -p "$wt_path/docs/feat_explicit"
-  echo '[]' > "$wt_path/docs/feat_explicit/prd.json"
-  bats_run_script "$RALPH_DIRECTORY" "$wt_path/docs/feat_explicit"
+  mkdir -p "$wt_path/ralph/feat_explicit"
+  echo '[]' >"$wt_path/ralph/feat_explicit/issues.json"
+  bats_run_script "$RALPH_DIRECTORY" "$wt_path/ralph/feat_explicit"
   [ "$status" -eq 0 ]
-  [[ "$output" == *"/docs/feat_explicit/"* ]]
+  [[ "$output" == *"/ralph/feat_explicit/"* ]]
 }

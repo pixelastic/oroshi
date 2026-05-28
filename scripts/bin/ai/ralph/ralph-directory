@@ -13,4 +13,4 @@ local wtRoot="$(git-directory-root "$targetPath")"
 local branch="$(git-branch-current "$targetPath")"
 local slug="$(git-branch-slug "$branch")"
 
-print "$wtRoot/docs/$slug/"
+print "$wtRoot/ralph/$slug/"

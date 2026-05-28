@@ -25,4 +25,5 @@ done
 
 local uniquePaths=("${(@u)testPaths}")
 local relativePaths=("${uniquePaths[@]#${gitRoot}/}")
+cd $gitRoot
 bats "${relativePaths[@]}"
