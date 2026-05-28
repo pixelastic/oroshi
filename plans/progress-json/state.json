@@ -73,8 +73,14 @@
   },
   {
     "id": "13",
-    "issue": "issues/13-prompt-cleanup.md",
+    "issue": "issues/13-prompt-update.md",
     "done": false,
     "blocked_by": ["02"]
+  },
+  {
+    "id": "14",
+    "issue": "issues/14-delete-commit-writer.md",
+    "done": false,
+    "blocked_by": []
   }
 ]

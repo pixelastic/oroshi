@@ -8,7 +8,7 @@ Update `prd-end` to output `plans/<slug>/PRD.md` instead of `ralph/<slug>/PRD.md
 
 Single line change: the `jo` call at the end uses `plans` instead of `ralph` in the path.
 
-No tests exist for prd-end (it creates worktrees, hard to test in isolation). Verify manually.
+No tests exist for prd-end, they would need to be added.
 
 ## Acceptance criteria
 
