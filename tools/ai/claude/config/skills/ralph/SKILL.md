@@ -65,8 +65,8 @@ per criterion. Run them. Read the failure output.
 1. If a dedicated skill for your language exists, load it (`zsh-writer`, `js-writer`, etc)
 2. Write the simplest code that makes the tests pass. No more.
 3. Refactor: remove duplication, improve names, extract helpers. Don't add behavior.
-4. Run the linter on all modified files. Fix any errors.
-5. Run tests for all modified files. All tests must pass.
+3. Lint all modified files with `git-file-lint` and fix any issues.
+4. Run tests for all modified files using `git-file-test`. All tests must pass.
 
 ---
 
@@ -82,8 +82,8 @@ per criterion. Run them. Read the failure output.
 2. For each feedback item:
    - **Actionable and in scope** → fix it
    - **Out of scope or not relevant** → note it, will go in review-log.md (path from `ralph-start` output)
-3. Run the linter on all modified files. Fix any errors.
-4. Run tests for all modified files. All tests must pass.
+3. Lint all modified files with `git-file-lint` and fix any issues.
+4. Run tests for all modified files using `git-file-test`. All tests must pass.
 
 ---
 
