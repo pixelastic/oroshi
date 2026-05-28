@@ -1,28 +1,59 @@
 bats_load_library 'helper'
 
 setup() {
-  bats_git_dir 'my-repo'
-  bats_git_worktree 'fix/bug'
+  bats_tmp_dir
+
+  projects-load-definitions() { true; }
+  bats_mock projects-load-definitions
+
+  project-path() { echo "project-path:$1"; }
+  bats_mock project-path
+
+  git-directory-root() { echo "git-directory-root:$1"; }
+  bats_mock git-directory-root
 }
 
 teardown() {
   bats_cleanup
 }
 
-@test "returns worktree root for path inside linked worktree" {
-  run zsh -c "PROJECTS_INDEX_BY_PATH=MYKEY; PROJECT_MYKEY_PATH=${BATS_GIT_DIR}/; PROJECT_MYKEY_NAME=my-project; context-root ${BATS_GIT_WORKTREES}fix-bug"
+@test "in project: passes arg through project-name then to project-path" {
+  project-name() { echo "project-name:$1"; }
+  bats_mock project-name
+  git-directory-is-worktree() { return 1; }
+  bats_mock git-directory-is-worktree
+  bats_run_function context-root /my/path
   [ "$status" -eq 0 ]
-  [ "$output" = "${BATS_GIT_WORKTREES}fix-bug" ]
+  [ "$output" = "project-path:project-name:/my/path" ]
 }
 
-@test "returns project root for path inside project not a worktree" {
-  run zsh -c "PROJECTS_INDEX_BY_PATH=MYKEY; PROJECT_MYKEY_PATH=${BATS_GIT_DIR}/; PROJECT_MYKEY_NAME=my-project; context-root ${BATS_GIT_DIR}"
+@test "in worktree: passes arg to git-directory-root" {
+  project-name() { echo "project-name:$1"; }
+  bats_mock project-name
+  git-directory-is-worktree() { return 0; }
+  bats_mock git-directory-is-worktree
+  bats_run_function context-root /my/path
   [ "$status" -eq 0 ]
-  [ "$output" = "${BATS_GIT_DIR}" ]
+  [ "$output" = "git-directory-root:/my/path" ]
 }
 
-@test "returns empty string for path outside all known projects" {
-  run zsh -c "PROJECTS_INDEX_BY_PATH=; context-root /tmp/unregistered-dir"
+@test "outside known project: returns empty" {
+  project-name() { echo ""; }
+  bats_mock project-name
+  git-directory-is-worktree() { return 1; }
+  bats_mock git-directory-is-worktree
+  bats_run_function context-root /my/path
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
+}
+
+@test "no arg: uses \$PWD" {
+  project-name() { echo "project-name:$1"; }
+  bats_mock project-name
+  git-directory-is-worktree() { return 1; }
+  bats_mock git-directory-is-worktree
+  cd "$BATS_TMP_DIR"
+  bats_run_function context-root
+  [ "$status" -eq 0 ]
+  [ "$output" = "project-path:project-name:$BATS_TMP_DIR" ]
 }
