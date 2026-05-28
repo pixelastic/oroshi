@@ -1,3 +1,11 @@
+## Session 2026-05-28 — 09: guidance-md-reference
+- Completed: created `references/guidance-md.md` (Guidance + Discoveries sections); removed `references/progress-md.md`; updated SKILL.md (exit criterion, link, checklist) to fix dead references
+- Tests added: none (pure doc change)
+- Discovered: SKILL.md had 3 stale references to `progress-md.md`/`progress.md` — fixed as part of review feedback
+- Fixed: SKILL.md dead link + exit criterion + checklist item
+- Skipped feedback: `issues.json`→`state.json` link in SKILL.md line 72 — pre-existing, scoped to issue 11
+- Next: issue 10 (issue-template-reference) — unblocks 11 → 12
+
 ## Session 2026-05-28 — 08: state-json-reference
 - Completed: created `references/state-json.md` with new schema (id, issue, done, blocked_by, recap); removed `references/issues-json.md`; example JSON shows both `done: true` (with recap) and `done: false` entries
 - Tests added: none (pure doc change, no executable code path)

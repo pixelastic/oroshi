@@ -52,8 +52,9 @@
   {
     "id": "09",
     "issue": "issues/09-guidance-md-reference.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "created references/guidance-md.md (Guidance/Discoveries sections); removed progress-md.md; fixed 3 stale SKILL.md references"
   },
   {
     "id": "10",

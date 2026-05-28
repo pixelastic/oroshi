@@ -65,12 +65,12 @@ Iterate until the user approves the breakdown.
 
 **Goal:** Store issues and their relationships on disk
 
-**Exit criterion:** All issues `.md` files, `issues.json` and `progress.md` created
+**Exit criterion:** All issues `issues/XX-slug.md` files, `state.json` and `GUIDANCE.md` created
 
 - Create all files in the same directory as the `PRD.md`
-- Create one [issue-XX-slug.md](./references/issue-XX-slug.md) file per issue
-- Create a [issues.json](./references/issues-json.md) containing all issues and their dependencies
-- Create a [progress.md](./references/progress-md.md) to guide subsequent agents
+- Create one [issues/XX-slug.md](./references/issues-XX-slug.md) file per issue
+- Create a [state.json](./references/state-json.md) containing all issues and their dependencies
+- Create a [GUIDANCE.md](./references/guidance-md.md) to guide subsequent agents
 
 These files will help future agent pick up work where a previous agent left off.
 
@@ -89,8 +89,8 @@ These files will help future agent pick up work where a previous agent left off.
 - [ ] Vertical slices drafted — each is a tracer bullet through all layers
 - [ ] User confirmed: granularity feels right (not too coarse / too fine)
 - [ ] User confirmed: dependency order is correct
-- [ ] issue-XX-slug.md written for each approved slice
+- [ ] issues/XX-slug.md written for each approved slice
 - [ ] each issue file contains a "What to build" blurb and "Acceptance criteria" list
-- [ ] issues.json written and contains all issues and their dependencies
-- [ ] all issues in issues.json have `passes: false`
-- [ ] progress.md written — execution order + guidance sections present
+- [ ] state.json written and contains all issues and their dependencies
+- [ ] all issues in state.json have `done: false`
+- [ ] GUIDANCE.md written — Guidance + Discoveries sections present
