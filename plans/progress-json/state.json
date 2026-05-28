@@ -32,7 +32,7 @@
   {
     "id": "06",
     "issue": "issues/06-ralph-script.md",
-    "done": false,
+    "done": true,
     "blocked_by": ["01", "03"]
   },
   {

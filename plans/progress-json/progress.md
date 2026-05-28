@@ -1,3 +1,12 @@
+## Session 2026-05-28 — 06: ralph-script
+
+- Completed: updated `ralph.bats` — replaced `prd.json` fixtures with `state.json`; replaced trivial `.ralph-state.json` absence checks with meaningful `ralph.json` create+clear assertions (claude mock verifies `ralph.json` exists during run); fixed 3 `noSplitLocal` violations; quoted `'done'` arg
+- Tests added: tests 4 and 5 renamed + strengthened (were "clears state file", now "creates ralph.json during run and clears it after"); inline claude mock assertions added
+- Discovered: `ralph` script never called `ralph-directory` — the spec assumption was wrong; no script changes needed
+- Fixed: none unplanned
+- Skipped feedback: spec agent flagged missing `plans-directory` call in `ralph` script — dismissed; script never called `ralph-directory`, the spec was stale; `prd.json`→`state.json` flagged as out-of-scope — dismissed, issue explicitly says "update bats tests if they reference old file names"
+- Next: issue 07 (prd-end: update output path from ralph/ to plans/) or issue 08 (state-json-reference: update references)
+
 ## Session 2026-05-28 — 04: ralph-start
 
 - Completed: created `ralph-start` script; reads `state.json`, finds first eligible issue (not done, all blockers done, sorted by id), outputs JSON with `status:"next"` + issue + absolute paths; outputs `{"status":"done"}` when all complete; exits 1 on deadlock or missing state.json
