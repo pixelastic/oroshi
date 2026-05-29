@@ -1,15 +1,31 @@
 # Display a raw list of all local branches
 # Usage:
-# $ git-branch-list-raw       # All local branches with name/commit/date/message
+# $ git-branch-list-raw       # branch▮hash▮remote▮ref▮ahead▮behind▮date▮message
+setopt local_options err_return
 local gitBranchFormat=""
 gitBranchFormat+="%(refname:short)▮"          # main
 gitBranchFormat+="%(objectname:short)▮"       # abcdef
 gitBranchFormat+="%(upstream:remotename)▮"    # origin
 gitBranchFormat+="%(upstream:remoteref)▮"     # refs/heads/main
-gitBranchFormat+="%(upstream:track)▮"         # [ahead 4]
+gitBranchFormat+="%(upstream:track)▮"         # [ahead 4, behind 1]
 gitBranchFormat+="%(committerdate:relative)▮" # 3 months ago
 gitBranchFormat+="%(contents:subject)▮"       # fix typo
 
-git branch \
-  --sort=-committerdate \
-  --format="$gitBranchFormat"
+local rawBranches="$(git branch --sort=-committerdate --format="$gitBranchFormat")"
+
+for rawLine in ${(f)rawBranches}; do
+  local fields=("${(@ps/▮/)rawLine}")
+  local branch="${fields[1]}"
+  local hash="${fields[2]}"
+  local remoteName="${fields[3]}"
+  local remoteRef="${fields[4]}"
+  local relativeDate="${fields[6]}"
+  local message="${fields[7]}"
+
+  # Parse ahead/behind from track string; default to 0
+  local distanceParsed="$(git-distance-parse "${fields[5]}")"
+  local aheadCount="${${distanceParsed:-0▮0}%%▮*}"
+  local behindCount="${${distanceParsed:-0▮0}##*▮}"
+
+  echo "$branch▮$hash▮$remoteName▮$remoteRef▮$aheadCount▮$behindCount▮$relativeDate▮$message▮"
+done

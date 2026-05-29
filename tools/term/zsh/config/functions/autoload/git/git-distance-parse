@@ -1,0 +1,15 @@
+# Parse a git upstream:track string into separate ahead▮behind counts
+# Usage:
+# $ git-distance-parse "[ahead 4, behind 1]"   # 4▮1
+# $ git-distance-parse "[ahead 4]"              # 4▮0
+# $ git-distance-parse "[behind 2]"             # 0▮2
+# $ git-distance-parse ""                       # (empty)
+local trackStr="$1"
+[[ "$trackStr" == "" ]] && return 0
+
+local ahead="${${trackStr##*ahead }%%[^0-9]*}"
+local behind="${${trackStr##*behind }%%[^0-9]*}"
+[[ "$ahead" == "" ]] && ahead="0"
+[[ "$behind" == "" ]] && behind="0"
+
+echo "${ahead}▮${behind}"

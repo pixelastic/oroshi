@@ -44,3 +44,7 @@ Same positions for all rows:
 Consistent with `git-worktree-list-raw` which also uses ahead before behind.
 
 ## Discoveries
+
+### Issue 02 — Split ahead/behind raw
+- `%(upstream:ahead)` and `%(upstream:behind)` are not valid format atoms in git 2.43 — use `%(upstream:track)` + sed parsing instead to extract numeric values.
+- `git-branch-list` needs `remoteDistance` reconstructed as `"ahead $aheadCount, behind $behindCount"` to stay compatible with `git-distance-colorize` until issues 03–05 refactor the display.

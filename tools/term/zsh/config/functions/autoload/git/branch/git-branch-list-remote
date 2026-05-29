@@ -11,6 +11,8 @@ local isAll=${#flagAll}
 
 # Init values {{{
 local output=""
+local iconAhead=""
+local iconBehind=""
 local currentRemote="$(git-remote-current)"
 local currentRemoteBranch="$currentRemote/$(git-remote-branch)"
 
@@ -37,8 +39,8 @@ gitLocalBranchFormat+="%(upstream:track)▮"          # [ahead 4]
 # Looping through all local branches to build a list of:
 # remoteBranchName <=> localBranchName
 # remoteBranchName <=> remoteDistance
-local -A localBranchesNames; localBranchesNames=()
-local -A remoteDistances; remoteDistances=()
+local -A localBranchesNames=()
+local -A remoteDistances=()
 local rawLocalBranches="$(git branch --format="$gitLocalBranchFormat")"
 for rawLocalBranch in ${(f)rawLocalBranches}; do
   # Extracting relevant data {{{
@@ -94,7 +96,19 @@ for remoteName in $remoteNames; do
     # }}}
     # Ahead/behind {{{
     local remoteDistance=$remoteDistances[$remoteBranchName]
-    row+="$(git-distance-colorize "$remoteDistance" --with-icon)▮"
+    local distanceParsed="$(git-distance-parse "$remoteDistance")"
+    local aheadCount="${distanceParsed%%▮*}"
+    local behindCount="${distanceParsed##*▮}"
+    if [[ "$aheadCount" != "0" ]]; then
+      row+="$(colorize "${aheadCount}${iconAhead}" ALIAS_GIT_AHEAD)▮"
+    else
+      row+="▮"
+    fi
+    if [[ "$behindCount" != "0" ]]; then
+      row+="$(colorize "${behindCount}${iconBehind}" ALIAS_GIT_BEHIND)▮"
+    else
+      row+="▮"
+    fi
     # }}}
     # Local branch name {{{
     local localBranchName=$localBranchesNames[$remoteBranchName]

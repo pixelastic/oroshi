@@ -1,7 +1,8 @@
 # List all local branches
+setopt local_options err_return
 local rawList="$(git-branch-list-raw)"
 
 for rawLine in ${(f)rawList}; do
   local splitLine=("${(@ps/▮/)rawLine}")
-  echo "${splitLine[1]}:${splitLine[7]}"
+  echo "${splitLine[1]}:${splitLine[8]}"
 done

@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-split-ahead-behind-raw.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced %(upstream:track) with in-function sed parsing to emit separate numeric ahead/behind fields; updated complete-git-branches-local and git-branch-list indices; added complete-git-branches-local.bats.",
     "blocked_by": ["01"]
   },
   {

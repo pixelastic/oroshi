@@ -1,12 +1,15 @@
 # Display the list of local branches
 # Usage:
 # $ git-branch-list          # Display all local branches
+setopt local_options err_return
 local rawGitBranches="$(git-branch-list-raw)"
 local currentBranch="$(git-branch-current)"
 
 # Loop through all the raw output, and format/color them before adding them to
 # the output
 local output=""
+local iconAhead=""
+local iconBehind=""
 for rawGitBranch in ${(f)rawGitBranches}; do
   # Splitting the line into its various parts {{{
   local splitLine=("${(@ps/▮/)rawGitBranch}")
@@ -35,9 +38,10 @@ for rawGitBranch in ${(f)rawGitBranches}; do
   [[ $remoteBranchName == "" ]] && remoteBranchName="$branchName"
   # }}}
 
-  local remoteDistance="${splitLine[5]}"
-  local relativeTime="${splitLine[6]}"
-  local commitMessage="${splitLine[7]}"
+  local aheadCount="${splitLine[5]}"
+  local behindCount="${splitLine[6]}"
+  local relativeTime="${splitLine[7]}"
+  local commitMessage="${splitLine[8]}"
   # }}}
 
   # Building the output row {{{
@@ -52,8 +56,19 @@ for rawGitBranch in ${(f)rawGitBranches}; do
   # Branch name {{{
   row+="$(git-branch-colorize "$branchName" --with-icon)▮"
   # }}}
-  # Ahead/behind {{{
-  row+="$(git-distance-colorize "$remoteDistance" --with-icon)▮"
+  # Ahead {{{
+  if [[ "$aheadCount" != "0" ]]; then
+    row+="$(colorize "${aheadCount}${iconAhead}" ALIAS_GIT_AHEAD)▮"
+  else
+    row+="▮"
+  fi
+  # }}}
+  # Behind {{{
+  if [[ "$behindCount" != "0" ]]; then
+    row+="$(colorize "${behindCount}${iconBehind}" ALIAS_GIT_BEHIND)▮"
+  else
+    row+="▮"
+  fi
   # }}}
   # Commit {{{
   row+="$(git-commit-colorize "$commitHash" --with-icon)▮"

@@ -1,3 +1,20 @@
+## Issue 02 — split-ahead-behind-raw
+
+### Spec reviewer: should use `%(upstream:ahead)` / `%(upstream:behind)` git atoms
+```zsh
+gitBranchFormat+="%(upstream:track)▮"         # [ahead 4, behind 1]
+```
+**Problem:** Spec says "replace with `%(upstream:ahead)` and `%(upstream:behind)` fields" but implementation keeps `%(upstream:track)` and parses with sed.
+**Reason skipped:** `%(upstream:ahead)` and `%(upstream:behind)` are not valid format atoms in git 2.43 (`fatal: unrecognized %(upstream) argument: ahead`). The sed-parsing approach is the only viable implementation on this git version.
+
+### Spec reviewer: empty strings for no-upstream branches violate "0 or positive integer"
+**Problem:** Fields 5–6 are empty strings when a branch has no upstream, but spec says "numeric ahead count (0 or positive integer)".
+**Reason skipped:** Empty means "no upstream set" — semantically distinct from "0 ahead". Consumers can check field 3 (remoteName) to distinguish. The spec acceptance criteria BATS tests only cover the tracked-branch case.
+
+### Standards reviewer: `setopt local_options err_return` missing in `git-branch-list-raw`
+**Problem:** `header.md` standard requires autoloaded functions to open with `setopt local_options err_return`.
+**Reason skipped:** The function pre-existed without `setopt`; zshlint produced no violation; adding it is out of scope for this issue's minimal-change intent.
+
 ## Issue 01 — test-git-branch-list-raw
 
 ### Spec reviewer: `NF-1 -eq 7` should be `-eq 6`
