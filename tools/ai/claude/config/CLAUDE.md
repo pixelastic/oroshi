@@ -1,12 +1,18 @@
-- In all interactions, and commit messages, be extremely concise and sacrifice
+In all interactions, and commit messages, be extremely concise and sacrifice
 grammar for the sake of concision.
 
-**DO**:
-- ✔ Fetch up-to-date documentation before writing code using Context7 MCP
-- ✔ Create your scripts in a dedicated folder in /home/tim/local/tmp/claude
-- ✔ Use dedicated skill per language if they exist (`zsh-writer`, `js-writer`, etc)
-- ✔ Apply the "return early" pattern in code
-- ✔ Prefer a DX that makes simple things easy and complex things possible
+## Code
 
-**DON'T**:
-- ✘ Never suggest to write a script in python. Prefer zsh or JavaScript
+- DO: Use dedicated skill per language if they exist (`zsh-writer`, `js-writer`, etc)
+- DO: Fetch up-to-date documentation (using Context7 MCP) before writing code
+- DO: Prefer a DX that makes simple things easy and complex things possible
+- DO: Apply the "return early" pattern in code
+
+- NEVER: Never suggest to write a script in python. Prefer zsh or JavaScript
+
+## Throw-away scripts
+
+- DO: Create your one-off scripts in a dedicated folder in /home/tim/local/tmp/claude
+- DO: Use `jq` to read JSON, and `jo` to write JSON
+
+- DON'T: Use `python` or `node` to inspect JSON. Use `jq` instead
