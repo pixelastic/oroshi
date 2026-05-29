@@ -22,7 +22,7 @@ if [[ $OROSHI_AUTOLOADED_FUNCTIONS[$commandToRun] == "1" ]]; then
     -print
   )"
   filesToWatch=($functionDefinitionPath)
-  commandToRun="oroshi-reload-functions && $commandToRun"
+  commandToRun="oroshi-reload-functions worktree && $commandToRun"
 fi
 
 # -c: Clear the screen
