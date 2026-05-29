@@ -1,3 +1,22 @@
+## Issue 04 — worktree-flag-branch-colorize
+
+### Spec reviewer: scaffold regression test is a weak check
+```bash
+@test "git-branch-colorize feat/x plain output unchanged by adding worktree flag to codebase" {
+  bats_run_function git-branch-colorize feat/x
+  local plain_output="$output"
+  [[ "$plain_output" == *'feat/x'* ]]
+  [[ "$plain_output" == *$'\e[38;5;87m'* ]]
+}
+```
+
+**Problem:** Does not assert exact equality before/after — only checks that branch name and a foreground code are present.
+**Reason skipped:** Exact-equality tests would be fragile and tightly coupled to internal colorize output. The existing tests verify no background code is introduced and the branch name survives — sufficient for a regression guard.
+
+### Standards reviewer: powerline char appears stripped in diff (shows `$''`)
+**Problem:** Reviewer flagged `local sep=$''` in diff as potentially stripped by Write tool.
+**Reason skipped:** File was edited with `Edit` (not `Write`) as required by guidance. The char is invisible in diff output but confirmed present — all tests involving the separator pass.
+
 ## Issue 03 — Integrate new columns branch list
 
 ### `--with-icon` removed from git-date-colorize / git-commit-colorize

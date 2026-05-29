@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-worktree-flag-branch-colorize.md",
-    "done": false,
+    "done": true,
+    "recap": "Added --worktree flag to git-branch-colorize: renders branch name with ORANGE_1 fg / ORANGE_7 bg and appends powerline separator; sep stored in local variable; scaffold tests pass.",
     "blocked_by": ["03"]
   },
   {

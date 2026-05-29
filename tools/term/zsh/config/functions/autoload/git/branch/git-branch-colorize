@@ -2,17 +2,22 @@
 # Usage:
 # $ git-branch-colorize                         # {currentBranch}
 # $ git-branch-colorize main                    # main
+# $ git-branch-colorize feat/x --worktree        # orange badge + powerline sep
 # $ git-branch-colorize --with-icon             #  main
 # $ git-branch-colorize origin/develop --remote #  origin/remote
 zparseopts -E -D \
   -with-icon=flagWithIcon \
   -remote=flagRemote \
+  -worktree=flagWorktree \
   -zsh=flagZsh
 local isWithIcon=${#flagWithIcon}
 local isRemote=${#flagRemote}
+local isWorktree=${#flagWorktree}
 local isZsh=${#flagZsh}
 local -a zshFlag=()
 [[ $isZsh == "1" ]] && zshFlag=(--zsh)
+
+local iconSeparator=""
 
 # Branch name {{{
 local branchName="$1"
@@ -22,6 +27,12 @@ if [[ "$branchName" == '' ]]; then
 fi
 branchName=${branchName:s#/dependabot/npm_and_yarn#/  }
 # }}}
+# Worktree flag: orange badge with powerline separator
+if [[ "$isWorktree" == "1" ]]; then
+  colorize " $branchName " ORANGE_1 ORANGE_7 "${zshFlag[@]}"
+  colorize "$iconSeparator" ORANGE_7 "${zshFlag[@]}"
+  return
+fi
 # Branch color {{{
 if [[ "$isRemote" == "1" ]]; then
   local branchColor=$COLOR_ALIAS_GIT_REMOTE
