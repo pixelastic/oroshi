@@ -1,4 +1,4 @@
-# Remove one or more Worktree directories and their branches
+# Remove one or more Worktree directories, branches, and associated plans/ folder
 # If called from inside a Worktree being deleted, cds to Git Repo Main first
 # Blocks if branch has unmerged commits ahead of main (bypass with --force/-f)
 # Defaults to current branch when called with no argument
@@ -33,4 +33,11 @@ for branch in "${branches[@]}"; do
 
   git worktree remove --force "$worktreePath"
   git-branch-remove "$branch"
+
+  # Remove plans artifacts from main repo if they exist
+  local branchSlug="$(git-branch-slug "$branch")"
+  local plansDir="$mainPath/plans/${branchSlug}"
+  if [[ -d "$plansDir" ]]; then
+    rm -rf "$plansDir"
+  fi
 done

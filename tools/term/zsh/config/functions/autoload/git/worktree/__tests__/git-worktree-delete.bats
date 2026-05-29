@@ -102,3 +102,17 @@ teardown() {
   [ -d "${BATS_GIT_WORKTREES}fix-bug" ]
   [ -d "${BATS_GIT_WORKTREES}feat-thing" ]
 }
+
+@test "removes associated plans/ directory from main repo" {
+  mkdir -p "$BATS_GIT_DIR/plans/fix_bug"
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-worktree-delete fix/bug
+  [ "$status" -eq 0 ]
+  [ ! -d "$BATS_GIT_DIR/plans/fix_bug" ]
+}
+
+@test "succeeds without plans/ directory" {
+  cd "$BATS_GIT_DIR"
+  bats_run_function git-worktree-delete fix/bug
+  [ "$status" -eq 0 ]
+}
