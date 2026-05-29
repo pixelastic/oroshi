@@ -1,5 +1,0 @@
-# Fuzzy finding in all defined projects
-fzf-search \
-  --source "fzf-projects-source" \
-  --options "fzf-projects-options" \
-  --postprocess "fzf-projects-postprocess"

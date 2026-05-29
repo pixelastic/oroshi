@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-delete-dead-code-fzf-projects-and-old-vim.md",
-    "done": false,
+    "done": true,
+    "recap": "Deleted fzf/projects/ autoload dir (4 functions + bats tests) and oroshi-old.vim — pure dead code, no remaining references.",
     "blocked_by": []
   },
   {

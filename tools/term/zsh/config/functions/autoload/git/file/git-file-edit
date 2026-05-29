@@ -23,9 +23,9 @@ for rawLine in ${(f)rawFiles}; do
   # Skip if file no longer exists on disk (safety net for unexpected statuses)
   [[ ! -f "${gitRoot}/${filePath}" ]] && continue
 
-  # Skip ralph-managed files
+  # Skip plan state files
   local fileName="${filePath:t}"
-  [[ "$fileName" == "progress.md" || "$fileName" == "prd.json" ]] && continue
+  [[ "$fileName" == "guidance.md" || "$fileName" == "state.json" ]] && continue
 
   fileList+=("${gitRoot}/${filePath}")
 done
