@@ -25,3 +25,6 @@
 The file `fzf-fs-directories-ralph-source.bats` was written on this branch as part of the `--max-depth` fix. It must be removed as part of issue 02 (the whole ralph directory is deleted). Replace with a `.scaffold.bats` in the new plans directory.
 
 ## Discoveries
+
+### Issue 02 — rename fzf-fs-directories-ralph to plans
+- Every autoloaded function needs its own `setopt local_options err_return`, even single-line delegators like `-options` and `-prompt` — `setopt` is not inherited from the caller.

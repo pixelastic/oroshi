@@ -1,3 +1,0 @@
-# Returns a list of direct subdirectories in the plans/ folder of the current project
-local docsDirectory="$(fzf-var-read pwd)"
-fzf-fs-shared-source --directories --max-depth 1 "${docsDirectory}"

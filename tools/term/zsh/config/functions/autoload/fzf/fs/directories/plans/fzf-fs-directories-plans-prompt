@@ -1,0 +1,5 @@
+# Displays the prompt for finding a plans subdirectory
+setopt local_options err_return
+
+local plansDirectory="$(fzf-var-read pwd)"
+echo "$(fzf-fs-directories-shared-prompt "${plansDirectory}") "

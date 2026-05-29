@@ -1,4 +1,0 @@
-# Outputs specific options for searching a docs subdirectory (ralph)
-fzf-fs-directories-shared-options \
-  --prompt fzf-fs-directories-ralph-prompt \
-  --source fzf-fs-directories-ralph-source

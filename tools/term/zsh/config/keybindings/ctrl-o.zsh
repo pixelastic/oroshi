@@ -8,12 +8,12 @@ oroshi-fzf-directories-project-widget() {
   fi
 
   # Command-specific
-  local commandName="default"
-  [[ "${LBUFFER}" =~ "ralph( )?$" ]] && commandName="ralph"
-  [[ "${LBUFFER}" =~ "raplh( )?$" ]] && commandName="ralph"
+  local completionType="default"
+  [[ "${LBUFFER}" =~ "ralph( )?$" ]] && completionType="plans"
+  [[ "${LBUFFER}" =~ "raplh( )?$" ]] && completionType="plans"
 
   export PROMPT_PREVENT_REFRESH="1"
-  local selection="$(oroshi-fzf-directories-${commandName}-selection)"
+  local selection="$(oroshi-fzf-directories-${completionType}-selection)"
   export PROMPT_PREVENT_REFRESH="0"
 
   # Stop if no selection is made
@@ -30,7 +30,7 @@ function oroshi-fzf-directories-default-selection {
   fzf-fs-directories-project
 }
 
-# ralph: ralph/ subdirectories only
-function oroshi-fzf-directories-ralph-selection {
-  fzf-fs-directories-ralph
+# plans: plans/ subdirectories only
+function oroshi-fzf-directories-plans-selection {
+  fzf-fs-directories-plans
 }

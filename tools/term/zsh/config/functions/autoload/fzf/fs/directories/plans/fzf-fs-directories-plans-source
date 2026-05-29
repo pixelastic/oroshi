@@ -1,0 +1,12 @@
+# Lists plan directories for FZF
+# Usage:
+# $ fzf-fs-directories-plans-source
+setopt local_options err_return
+
+local rawPlans="$(plan-list-raw)"
+[[ "$rawPlans" == "" ]] && return 0
+
+for line in ${(f)rawPlans}; do
+  local fields=(${(@ps/▮/)line})
+  echo "${fields[1]}   ${fields[2]}"
+done

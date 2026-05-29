@@ -1,0 +1,6 @@
+# Outputs FZF options for searching a plans subdirectory
+setopt local_options err_return
+
+fzf-fs-directories-shared-options \
+  --prompt fzf-fs-directories-plans-prompt \
+  --source fzf-fs-directories-plans-source

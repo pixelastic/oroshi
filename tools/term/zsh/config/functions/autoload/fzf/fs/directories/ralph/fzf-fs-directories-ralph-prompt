@@ -1,3 +1,0 @@
-# Display the prompt for finding a docs subdirectory (ralph)
-local docsDirectory="$(fzf-var-read pwd)"
-echo "$(fzf-fs-directories-shared-prompt "${docsDirectory}") "
