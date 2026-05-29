@@ -14,7 +14,7 @@ local name="${1:-$(project-name)}"
 [[ "$name" == "" ]] && return 1
 
 local projectKey="${name}:path"
-local projectPath="${PROJECTS_V2[$projectKey]}"
+local projectPath="${PROJECTS[$projectKey]}"
 [[ "$projectPath" == "" ]] && return 1
 
 echo "${projectPath/#\~/$HOME}"

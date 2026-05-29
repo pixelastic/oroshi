@@ -78,3 +78,25 @@ for projectName, project in rawProjectData.items():
 **Problem:** PEP 8 requires `snake_case` for variables. `projectName`, `bgInactive`, `rawProjectData`, `getCursorColor`, `initProjectList`, etc. all use camelCase.
 
 **Reason skipped:** camelCase is a pervasive pre-existing convention throughout this file (`getCursorColor`, `getProjectData`, `initProjectList`, `projectState`, `rawProjectData`). Fixing only the new variables would create inconsistency; fixing all would be an unrelated refactor out of scope for this issue.
+
+## Issue 10 — Rename PROJECTS_V2 to PROJECTS
+
+### CONTEXT.md wording omits `projects-load-definitions`
+
+```md
+Defined in `theming/src/projects.json`; loaded into the `PROJECTS` associative array via `theming/dist/projects.zsh`.
+```
+
+**Problem:** Reviewer suggested the text should also mention `projects-load-definitions` as the loading mechanism, since `dist/projects.zsh` is sourced *by* `projects-load-definitions`, not used directly.
+
+**Reason skipped:** Spec criterion says "references `dist/projects.zsh` and the `PROJECTS` associative array" — both present. `projects-load-definitions` is an implementation detail; the glossary entry describes the data model, not the load sequence.
+
+### `projects-build.bats` — pre-existing broken test path
+
+```bats
+PROJECTS_BUILD="$(realpath "${BATS_TEST_DIRNAME}/../projects-build")"
+```
+
+**Problem:** `BATS_TEST_DIRNAME` resolves to `theming/src/__tests__`; `../projects-build` = `theming/src/projects-build` (doesn't exist). Correct path should be `../../projects-build`. All 5 tests in this file fail with exit 127.
+
+**Reason skipped:** Pre-existing failure confirmed via stash test — broken before issue 10 changes. Out of scope for this rename issue.

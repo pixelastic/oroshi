@@ -9,8 +9,8 @@ setup() {
   touch "${BATS_GIT_WORKTREES}fix-bug/src/main.zsh"
 
   projects-load-definitions() {
-    typeset -gA PROJECTS_V2
-    PROJECTS_V2[my-project:path]="$BATS_GIT_DIR/"
+    typeset -gA PROJECTS
+    PROJECTS[my-project:path]="$BATS_GIT_DIR/"
   }
   bats_mock projects-load-definitions
 }
@@ -98,9 +98,9 @@ teardown() {
 
 @test "nested projects: direct path returns the most specific project" {
   projects-load-definitions() {
-    typeset -gA PROJECTS_V2
-    PROJECTS_V2[catch-all:path]="$BATS_TMP_DIR/"
-    PROJECTS_V2[my-project:path]="$BATS_GIT_DIR/"
+    typeset -gA PROJECTS
+    PROJECTS[catch-all:path]="$BATS_TMP_DIR/"
+    PROJECTS[my-project:path]="$BATS_GIT_DIR/"
   }
   bats_mock projects-load-definitions
   bats_run_function project-name "$BATS_GIT_DIR/src"
@@ -110,9 +110,9 @@ teardown() {
 
 @test "nested projects: worktree path returns the most specific project" {
   projects-load-definitions() {
-    typeset -gA PROJECTS_V2
-    PROJECTS_V2[catch-all:path]="$BATS_TMP_DIR/"
-    PROJECTS_V2[my-project:path]="$BATS_GIT_DIR/"
+    typeset -gA PROJECTS
+    PROJECTS[catch-all:path]="$BATS_TMP_DIR/"
+    PROJECTS[my-project:path]="$BATS_GIT_DIR/"
   }
   bats_mock projects-load-definitions
   bats_run_function project-name "${BATS_GIT_WORKTREES}fix-bug"

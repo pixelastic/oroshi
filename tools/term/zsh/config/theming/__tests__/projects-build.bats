@@ -92,7 +92,7 @@ teardown() {
     },
     "hideNameInPrompt": false,
     "icon": "X",
-    "path": "~/projects/full/"
+    "path": "~/projects/full"
   },
   "hidden": {
     "background": {
@@ -160,18 +160,18 @@ EXPECTED
   # zsh syntax if sourced here
   run zsh -c "
     source '${THEMING_ROOT}/dist/projects.zsh'
-    echo \${PROJECTS_V2[full:background:name]}
-    echo \${PROJECTS_V2[full:background:ansi]}
-    echo \${PROJECTS_V2[full:background:hex]}
-    echo \${PROJECTS_V2[full:backgroundInactive:name]}
-    echo \${PROJECTS_V2[full:backgroundInactive:ansi]}
-    echo \${PROJECTS_V2[full:backgroundInactive:hex]}
-    echo \${PROJECTS_V2[full:foreground:name]}
-    echo \${PROJECTS_V2[full:foreground:ansi]}
-    echo \${PROJECTS_V2[full:foreground:hex]}
-    echo \${PROJECTS_V2[full:icon]}
-    echo \${PROJECTS_V2[full:path]}
-    echo \${PROJECTS_V2[full:hideNameInPrompt]}
+    echo \${PROJECTS[full:background:name]}
+    echo \${PROJECTS[full:background:ansi]}
+    echo \${PROJECTS[full:background:hex]}
+    echo \${PROJECTS[full:backgroundInactive:name]}
+    echo \${PROJECTS[full:backgroundInactive:ansi]}
+    echo \${PROJECTS[full:backgroundInactive:hex]}
+    echo \${PROJECTS[full:foreground:name]}
+    echo \${PROJECTS[full:foreground:ansi]}
+    echo \${PROJECTS[full:foreground:hex]}
+    echo \${PROJECTS[full:icon]}
+    echo \${PROJECTS[full:path]}
+    echo \${PROJECTS[full:hideNameInPrompt]}
   "
   [ "${lines[0]}" = "GREEN_8" ]
   [ "${lines[1]}" = "78" ]
@@ -183,6 +183,6 @@ EXPECTED
   [ "${lines[7]}" = "139" ]
   [ "${lines[8]}" = "#111827" ]
   [ "${lines[9]}" = "X" ]
-  [ "${lines[10]}" = "$HOME/projects/full/" ]
+  [ "${lines[10]}" = "$HOME/projects/full" ]
   [ "${lines[11]}" = "0" ]
 }

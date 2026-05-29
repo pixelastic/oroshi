@@ -3,7 +3,7 @@ bats_load_library 'helper'
 setup() {
   bats_tmp_dir
 
-  projects-load-definitions() { typeset -gA PROJECTS_V2; }
+  projects-load-definitions() { typeset -gA PROJECTS; }
   bats_mock projects-load-definitions
 }
 
@@ -13,8 +13,8 @@ teardown() {
 
 @test "known project with icon: returns exit 0" {
   projects-load-definitions() {
-    typeset -gA PROJECTS_V2
-    PROJECTS_V2[aberlaas:icon]="  "
+    typeset -gA PROJECTS
+    PROJECTS[aberlaas:icon]="  "
   }
   bats_mock projects-load-definitions
   bats_run_function project-exists "aberlaas"

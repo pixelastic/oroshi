@@ -5,7 +5,7 @@ Functions that resolve and render a project's visual identity from a filesystem 
 ## Language
 
 **Project**:
-A registered codebase with a name, root path, icon, and color scheme. Defined in `theming/src/projects.json` and loaded via `projects-load-definitions` into the `PROJECTS_V2` associative array.
+A registered codebase with a name, root path, icon, and color scheme. Defined in `theming/src/projects.json`; loaded into the `PROJECTS` associative array via `projects-load-definitions`.
 _Avoid_: workspace, repo (too git-specific)
 
 **Context**:

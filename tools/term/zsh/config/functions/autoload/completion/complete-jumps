@@ -6,7 +6,7 @@ local description=""
 projects-load-definitions
 
 for item in "$MARKPATH"/*; do
-  projectIcon="${PROJECTS_V2[${item:t}:icon]}"
+  projectIcon="${PROJECTS[${item:t}:icon]}"
   description="${item:A:s_/home/tim/__}"
   [[ "$projectIcon" != "" ]] && description="${projectIcon}${item:t}"
 

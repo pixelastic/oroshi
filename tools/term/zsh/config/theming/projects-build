@@ -98,37 +98,37 @@ function generateDistJson() {
 # Generate dist/projects.zsh from dist/projects.json
 function generateDistZsh() {
   {
-    echo "typeset -gA PROJECTS_V2"
+    echo "typeset -gA PROJECTS"
     jq -r '
       to_entries[] | .key as $projectName | .value |
 
       (if .background then
-        "PROJECTS_V2[\($projectName):background:name]=\"\(.background.name)\"",
-        "PROJECTS_V2[\($projectName):background:ansi]=\(.background.ansi)",
-        "PROJECTS_V2[\($projectName):background:hex]=\"\(.background.hex)\""
+        "PROJECTS[\($projectName):background:name]=\"\(.background.name)\"",
+        "PROJECTS[\($projectName):background:ansi]=\(.background.ansi)",
+        "PROJECTS[\($projectName):background:hex]=\"\(.background.hex)\""
       else empty end),
 
       (if .backgroundInactive then
-        "PROJECTS_V2[\($projectName):backgroundInactive:name]=\"\(.backgroundInactive.name)\"",
-        "PROJECTS_V2[\($projectName):backgroundInactive:ansi]=\(.backgroundInactive.ansi)",
-        "PROJECTS_V2[\($projectName):backgroundInactive:hex]=\"\(.backgroundInactive.hex)\""
+        "PROJECTS[\($projectName):backgroundInactive:name]=\"\(.backgroundInactive.name)\"",
+        "PROJECTS[\($projectName):backgroundInactive:ansi]=\(.backgroundInactive.ansi)",
+        "PROJECTS[\($projectName):backgroundInactive:hex]=\"\(.backgroundInactive.hex)\""
       else empty end),
 
       (if .foreground then
-        "PROJECTS_V2[\($projectName):foreground:name]=\"\(.foreground.name)\"",
-        "PROJECTS_V2[\($projectName):foreground:ansi]=\(.foreground.ansi)",
-        "PROJECTS_V2[\($projectName):foreground:hex]=\"\(.foreground.hex)\""
+        "PROJECTS[\($projectName):foreground:name]=\"\(.foreground.name)\"",
+        "PROJECTS[\($projectName):foreground:ansi]=\(.foreground.ansi)",
+        "PROJECTS[\($projectName):foreground:hex]=\"\(.foreground.hex)\""
       else empty end),
 
       (if .icon and (.icon != "") then
-        "PROJECTS_V2[\($projectName):icon]=\"\(.icon)\""
+        "PROJECTS[\($projectName):icon]=\"\(.icon)\""
       else empty end),
 
       (if .path and (.path != "") then
-        "PROJECTS_V2[\($projectName):path]=\(.path)"
+        "PROJECTS[\($projectName):path]=\(.path)"
       else empty end),
 
-      "PROJECTS_V2[\($projectName):hideNameInPrompt]=\(.hideNameInPrompt | if . then 1 else 0 end)"
+      "PROJECTS[\($projectName):hideNameInPrompt]=\(.hideNameInPrompt | if . then 1 else 0 end)"
     ' "$distJson"
   } >"$distZsh"
 }

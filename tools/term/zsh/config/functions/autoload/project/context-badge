@@ -20,10 +20,10 @@ local reference="${1:-$PWD}"
 # project info
 local projectName="$(project-name "$reference")"
 [[ "$projectName" == "" ]] && return 0
-local projectIcon=$PROJECTS_V2[${projectName}:icon]
-local projectBackground=$PROJECTS_V2[${projectName}:background:ansi]
-local projectForeground=$PROJECTS_V2[${projectName}:foreground:ansi]
-local projectHideNameInPrompt=$PROJECTS_V2[${projectName}:hideNameInPrompt]
+local projectIcon=$PROJECTS[${projectName}:icon]
+local projectBackground=$PROJECTS[${projectName}:background:ansi]
+local projectForeground=$PROJECTS[${projectName}:foreground:ansi]
+local projectHideNameInPrompt=$PROJECTS[${projectName}:hideNameInPrompt]
 local projectDisplay=" ${projectIcon}"
 [[ "$projectHideNameInPrompt" == "1" ]] || projectDisplay+="${projectName}"
 

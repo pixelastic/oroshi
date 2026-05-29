@@ -7,4 +7,4 @@ local projectName="$1"
 projects-load-definitions
 
 # A project is real only if it has an icon
-[[ "${PROJECTS_V2[${projectName}:icon]}" != "" ]]
+[[ "${PROJECTS[${projectName}:icon]}" != "" ]]

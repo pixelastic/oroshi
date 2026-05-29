@@ -4,8 +4,8 @@ setup() {
   bats_git_dir 'my-repo'
 
   projects-load-definitions() {
-    typeset -gA PROJECTS_V2
-    PROJECTS_V2[my-project:path]="$BATS_GIT_DIR/"
+    typeset -gA PROJECTS
+    PROJECTS[my-project:path]="$BATS_GIT_DIR/"
   }
   bats_mock projects-load-definitions
 }

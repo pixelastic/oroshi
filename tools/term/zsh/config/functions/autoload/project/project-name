@@ -16,14 +16,14 @@ fi
 projects-load-definitions
 
 # Collect all :path keys
-local -a pathKeys=( ${(M)${(k)PROJECTS_V2}:#*:path} )
+local -a pathKeys=( ${(M)${(k)PROJECTS}:#*:path} )
 
 # Sort by path value length, longest first
 local key=""
 local pathValue=""
 local -a prefixed=()
 for key in "${pathKeys[@]}"; do
-  pathValue="${PROJECTS_V2[$key]}"
+  pathValue="${PROJECTS[$key]}"
   pathValue="${pathValue/#\~/$HOME}"
   prefixed+=( "${#pathValue} $key" )
 done
@@ -36,7 +36,7 @@ local refWithSlash="${reference%/}/"
 local key=""
 local pathValue=""
 for key in "${sortedKeys[@]}"; do
-  pathValue="${PROJECTS_V2[$key]}"
+  pathValue="${PROJECTS[$key]}"
   pathValue="${pathValue/#\~/$HOME}"
   [[ ! "$refWithSlash" == "${pathValue}"* ]] && continue
   echo "${key%%:*}"

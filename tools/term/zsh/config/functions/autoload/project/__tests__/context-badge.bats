@@ -10,11 +10,11 @@ setup() {
   bats_mock git-worktree-name
 
   projects-load-definitions() {
-    typeset -gA PROJECTS_V2
-    PROJECTS_V2[my-project:background:ansi]=100
-    PROJECTS_V2[my-project:foreground:ansi]=255
-    PROJECTS_V2[my-project:icon]="x "
-    PROJECTS_V2[my-project:hideNameInPrompt]=0
+    typeset -gA PROJECTS
+    PROJECTS[my-project:background:ansi]=100
+    PROJECTS[my-project:foreground:ansi]=255
+    PROJECTS[my-project:icon]="x "
+    PROJECTS[my-project:hideNameInPrompt]=0
   }
   bats_mock projects-load-definitions
 
@@ -68,11 +68,11 @@ teardown() {
 
 @test "hideNameInPrompt: project name absent from output" {
   projects-load-definitions() {
-    typeset -gA PROJECTS_V2
-    PROJECTS_V2[my-project:background:ansi]=100
-    PROJECTS_V2[my-project:foreground:ansi]=255
-    PROJECTS_V2[my-project:icon]=x
-    PROJECTS_V2[my-project:hideNameInPrompt]=1
+    typeset -gA PROJECTS
+    PROJECTS[my-project:background:ansi]=100
+    PROJECTS[my-project:foreground:ansi]=255
+    PROJECTS[my-project:icon]=x
+    PROJECTS[my-project:hideNameInPrompt]=1
   }
   bats_mock projects-load-definitions
 
