@@ -6,6 +6,11 @@
 # $ simplify-path /path/to/somewhere
 # $ simplify-path path/to/somewhere
 # $ simplify-path path/to/somewhere 6   # Simplify if more than 6 level deep
+# $ simplify-path --reply path/to/somewhere   # Write to $REPLY, no echo
+zmodload zsh/zutil
+zparseopts -E -D \
+  -reply=flagReply
+
 local input="$1"
 local maxDepth=$2
 [[ $maxDepth == "" ]] && maxDepth=4
@@ -49,4 +54,8 @@ fi
 
 # We join all the elements with /
 local outputPath=${(j_/_)outputPathArray}
-echo $outputPath
+if [[ ${#flagReply} == "1" ]]; then
+  REPLY=$outputPath
+else
+  echo $outputPath
+fi
