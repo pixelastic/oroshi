@@ -22,5 +22,3 @@ sudo "${qmkDir}/util/install_udev.sh"
 
 # Verify installation
 qmk doctor
-
-"${0:h}/deploy"

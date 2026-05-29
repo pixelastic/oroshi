@@ -6,10 +6,10 @@
 // LAYER ENUM
 enum layers {
     _LAYER_NORMAL = 0,
-    _LAYER_INSERT,
     _LAYER_CONFIG,
     _LAYER_SPOTIFY,
     _LAYER_RP,
+    _LAYER_UNUSED,
 };
 
 // QMK KEYCODE ALIASES {{{
@@ -67,7 +67,6 @@ typedef struct {
 
 // KEY CODE DEFINITIONS {{{
 #define MODE_NORMAL    TO(_LAYER_NORMAL)
-#define MODE_INSERT    TO(_LAYER_INSERT)
 #define MODE_CONFIG    TO(_LAYER_CONFIG)
 #define MODE_RP        TO(_LAYER_RP)
 #define MODE_SPOTIFY   TO(_LAYER_SPOTIFY)
@@ -75,21 +74,13 @@ typedef struct {
 #define SPEECH_TO_TEXT      C(KC_XF86LAUNCH5)
 #define EMPTY_KEY           KC_NO
 
-#define COPY_OUTPUT   C(S(KC_Y))
-#define COPY_PATH     C(KC_Y)
-#define FULLSCREEN    LALT(KC_ENT)
-#define PASTE         C(S(KC_V))
 #define TAB_NEXT      LALT(KC_L)
 #define TAB_PREV      LALT(KC_H)
-#define WINDOW_NEXT   C(S(KC_RIGHT))
-
 #define MESSAGE_START LALT(KC_K) /* Go to start of message */
 #define CHAT_BOTTOM KC_END /* Go to end of conversation */
 #define CHOICE_NEXT KC_DOWN /* Next choice in list */
 #define OK KC_ENT /* Validate choice*/
 #define CANCEL C(KC_C) /* Cancel / go back */
-#define MODE_NEXT S(KC_TAB) /* Normal -> Auto-Accept -> Plan */
-
 #define CONFIG_SOUND_MODE C(G(KC_F8))
 #define CONFIG_AUTOSEND C(G(KC_F9))
 #define CONFIG_TRANSLATE C(G(KC_F10))
@@ -118,14 +109,14 @@ typedef struct {
 
 // VISUAL GRID {{{
 #define LAYER_NORMAL_KEYS \
-    MODE_INSERT,      TAB_PREV, TAB_NEXT, \
+    MODE_CONFIG,      TAB_PREV, TAB_NEXT, \
     MESSAGE_START, SPEECH_TO_TEXT, CHOICE_NEXT, \
     CHAT_BOTTOM,   CANCEL,      OK
 
-#define LAYER_INSERT_KEYS \
-    MODE_NORMAL,     FULLSCREEN, MODE_CONFIG,    \
-    COPY_OUTPUT,    SPEECH_TO_TEXT,    WINDOW_NEXT, \
-    COPY_PATH, MODE_NEXT, PASTE
+#define LAYER_UNUSED_KEYS \
+    EMPTY_KEY, EMPTY_KEY, EMPTY_KEY, \
+    EMPTY_KEY, EMPTY_KEY, EMPTY_KEY, \
+    EMPTY_KEY, EMPTY_KEY, EMPTY_KEY
 
 #define LAYER_CONFIG_KEYS \
     CONFIG_SOUND_MODE, CONFIG_AUTOSEND, MODE_SPOTIFY, \
@@ -147,7 +138,7 @@ typedef struct {
 // COLOR MAPPING {{{
 Color get_color_for_key(uint16_t keycode, uint8_t layer) {
     // Normal
-    if (keycode == MODE_INSERT) return WHITE;
+    if (keycode == MODE_CONFIG) return WHITE;
     if (keycode == TAB_PREV) return BLUE;
     if (keycode == TAB_NEXT) return BLUE;
 
@@ -159,18 +150,7 @@ Color get_color_for_key(uint16_t keycode, uint8_t layer) {
     if (keycode == CANCEL) return RED;
     if (keycode == OK) return GREEN;
 
-    // Insert
     if (keycode == MODE_NORMAL) return WHITE;
-    if (keycode == FULLSCREEN) return CORAL;
-    if (keycode == MODE_CONFIG) return WHITE;
-
-    if (keycode == COPY_OUTPUT) return ORANGE;
-    if (keycode == SPEECH_TO_TEXT) return YELLOW;
-    if (keycode == WINDOW_NEXT) return MINT;
-
-    if (keycode == COPY_PATH) return ORANGE;
-    if (keycode == MODE_NEXT) return MAGENTA;
-    if (keycode == PASTE) return GREEN;
 
     // Config
     if (keycode == CONFIG_SOUND_MODE) return PURPLE;
@@ -221,10 +201,10 @@ Color get_color_for_key(uint16_t keycode, uint8_t layer) {
 // Keymap configuration - Built from configuration defines above
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_LAYER_NORMAL] = LAYOUT_WRAPPER(LAYER_NORMAL_KEYS),
-    [_LAYER_INSERT] = LAYOUT_WRAPPER(LAYER_INSERT_KEYS),
     [_LAYER_CONFIG] = LAYOUT_WRAPPER(LAYER_CONFIG_KEYS),
     [_LAYER_SPOTIFY] = LAYOUT_WRAPPER(LAYER_SPOTIFY_KEYS),
     [_LAYER_RP] = LAYOUT_WRAPPER(LAYER_RP_KEYS),
+    [_LAYER_UNUSED] = LAYOUT_WRAPPER(LAYER_UNUSED_KEYS),
 };
 
 // RGB Matrix: Set individual colors per key and per layer
