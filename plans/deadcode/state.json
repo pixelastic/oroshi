@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-docker-legacy-cleanup.md",
-    "done": false,
+    "done": true,
+    "recap": "Deleted all 23 scripts in docker/__legacy/; 16 were dead aliases, 7 full-name scripts either had active replacements or were confirmed unused via zsh history.",
     "blocked_by": []
   },
   {

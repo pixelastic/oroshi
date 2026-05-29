@@ -1,2 +1,0 @@
-#!/usr/bin/env sh
-docker ps -a --format "{{.Names}}" | sort
