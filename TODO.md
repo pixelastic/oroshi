@@ -1,9 +1,11 @@
 ## SMALL
 
-Add completion of files modified to git-file-reverte on ctrlp
+Seems like bats output are not filtered through rtk? I think it's because rtk
+doesn't know it can rewrite it, so the hook doesn't prepend rtk to it, even if
+it should work. Should I configure rtk to know it can parse bats, or should I
+replace each instance of caling bats with rtk bats?
 
-claude-print, we might need to find a better way of handling the 0000-0000
-session, I think there is an arg that can be passed that can do that
+Add completion of files modified to git-file-reverte on ctrlp
 
 I need to warn about "local desc="$([[ "$counters" != "" ]] && echo "${counters}
 ${message}" || echo "${message}")"" in zsh. The line is too long, I would rather
@@ -18,11 +20,6 @@ Pre-commit hook of editing js files should run the matching tests
 
 I will need to have vft and vfl work on js files (using yarn run test/yarn run
 lint on them)
-
-Seems like bats output are not filtered through rtk? I think it's because rtk
-doesn't know it can rewrite it, so the hook doesn't prepend rtk to it, even if
-it should work. Should I configure rtk to know it can parse bats, or should I
-replace each instance of caling bats with rtk bats?
 
 zshlint: [[ "$allDone" == "true" ]] && { print '{"status":"done"}'; return 0; }
 Should be a real if [[ ]]; then fi

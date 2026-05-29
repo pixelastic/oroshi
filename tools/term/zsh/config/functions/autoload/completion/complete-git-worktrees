@@ -6,9 +6,9 @@
 
 setopt local_options err_return
 
-local iconDirty="~"
-local iconAhead="↑"
-local iconBehind="↓"
+local iconDirty="±"
+local iconAhead=""
+local iconBehind=""
 
 local mainPath="$(git-worktree-main 2>/dev/null || true)"
 [[ "$mainPath" == "" ]] && echo "main" && return 0
@@ -19,7 +19,7 @@ local mainMessage="$(git log -1 --format="%s" main 2>/dev/null || true)"
 local mainParts=()
 [[ $mainDirtyCount -gt 0 ]] && mainParts+=("${iconDirty}${mainDirtyCount}")
 local mainCounters="${(j: :)mainParts}"
-local mainDesc="$([[ -n "$mainCounters" ]] && echo "${mainCounters}  ${mainMessage}" || echo "${mainMessage}")"
+local mainDesc="$([[ "$mainCounters" != "" ]] && echo "${mainCounters}  ${mainMessage}" || echo "${mainMessage}")"
 echo "main:${mainDesc}"
 
 local rawList="$(git-worktree-list-raw)"
@@ -35,10 +35,10 @@ for rawLine in ${(f)rawList}; do
   local message="$fields[7]"
 
   local parts=()
-  [[ $dirtyCount -gt 0 ]] && parts+=("${iconDirty}${dirtyCount}")
-  [[ $ahead -gt 0 ]] && parts+=("${iconAhead}${ahead}")
-  [[ $behind -gt 0 ]] && parts+=("${iconBehind}${behind}")
+  [[ $dirtyCount -gt 0 ]] && parts+=("${dirtyCount}${iconDirty}")
+  [[ $ahead -gt 0 ]] && parts+=("${ahead}${iconAhead}")
+  [[ $behind -gt 0 ]] && parts+=("${behind}${iconBehind}")
   local counters="${(j: :)parts}"
-  local desc="$([[ -n "$counters" ]] && echo "${counters}  ${message}" || echo "${message}")"
+  local desc="$([[ "$counters" != "" ]] && echo "${counters}  ${message}" || echo "${message}")"
   echo "${branch}:${desc}"
 done

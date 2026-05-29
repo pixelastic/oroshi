@@ -4,5 +4,5 @@
 function _git-worktrees-linked() {
   local suggestions=(${(f)"$(complete-git-worktrees-linked)"})
 
-  _describe -V "$(completion-header $COLOR_ALIAS_GIT_WORKTREE $COLOR_WHITE '  Worktrees ')" suggestions
+  _describe -V "$(completion-header $COLOR_ALIAS_GIT_WORKTREE $COLOR_WHITE '   Worktrees ')" suggestions
 }

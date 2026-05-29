@@ -4,6 +4,10 @@ setup() {
   bats_git_dir 'my-repo'
   bats_git_worktree 'fix/bug'
   bats_git_worktree 'feat/thing'
+
+  export iconDirty="±"
+  export iconAhead=""
+  export iconBehind=""
 }
 
 teardown() {
@@ -37,7 +41,7 @@ teardown() {
   cd "$BATS_GIT_DIR"
   bats_run_function complete-git-worktrees-linked
   [ "$status" -eq 0 ]
-  [[ "$output" == *"~1"* ]]
+  [[ "$output" == *"1${iconDirty}"* ]]
 }
 
 @test "suppresses zero counts in description" {
@@ -49,9 +53,9 @@ teardown() {
     [[ "$line" == "fix/bug"* ]] && fixbug_line="$line" && break
   done
   [[ "$fixbug_line" == "fix/bug:"* ]]
-  [[ "$fixbug_line" != *"~"* ]]
-  [[ "$fixbug_line" != *"↑"* ]]
-  [[ "$fixbug_line" != *"↓"* ]]
+  [[ "$fixbug_line" != *"${iconDirty}"* ]]
+  [[ "$fixbug_line" != *"${iconAhead}"* ]]
+  [[ "$fixbug_line" != *"${iconBehind}"* ]]
 }
 
 @test "returns empty output when no worktrees exist" {

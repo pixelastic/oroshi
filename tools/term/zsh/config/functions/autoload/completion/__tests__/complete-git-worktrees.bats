@@ -7,6 +7,10 @@ setup() {
 
   bats_git_dir 'other-repo'
   bats_git_worktree 'feat/x'
+
+  export iconDirty="±"
+  export iconAhead=""
+  export iconBehind=""
 }
 
 teardown() {
@@ -62,7 +66,7 @@ teardown() {
   cd "$BATS_MY_REPO"
   bats_run_function complete-git-worktrees
   [ "$status" -eq 0 ]
-  [[ "$output" == *"~1"* ]]
+  [[ "$output" == *"1${iconDirty}"* ]]
 }
 
 @test "suppresses zero counts in description" {
@@ -74,9 +78,9 @@ teardown() {
     [[ "$line" == "fix/bug"* ]] && fixbug_line="$line" && break
   done
   [[ "$fixbug_line" == "fix/bug:"* ]]
-  [[ "$fixbug_line" != *"~"* ]]
-  [[ "$fixbug_line" != *"↑"* ]]
-  [[ "$fixbug_line" != *"↓"* ]]
+  [[ "$fixbug_line" != *"${iconDirty}"* ]]
+  [[ "$fixbug_line" != *"${iconAhead}"* ]]
+  [[ "$fixbug_line" != *"${iconBehind}"* ]]
 }
 
 @test "outputs main with no description when outside a git repo" {
