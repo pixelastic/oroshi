@@ -35,8 +35,8 @@ teardown() {
   [ "${#lines[@]}" -eq 1 ]
 }
 
-@test "branch line: name▮hash▮remote▮ref▮ahead▮behind▮date▮message▮" {
+@test "branch line: name▮hash▮remote▮branch▮ahead▮behind▮date▮message▮" {
   bats_run_function git-branch-list-raw
   [ "$status" -eq 0 ]
-  [[ "${lines[0]}" == "main▮"?*"▮origin▮refs/heads/main▮1▮1▮"?*"▮local work▮" ]]
+  [[ "${lines[0]}" == "main▮"?*"▮origin▮main▮1▮1▮"?*"▮local work▮" ]]
 }

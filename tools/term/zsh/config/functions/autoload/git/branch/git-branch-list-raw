@@ -15,10 +15,27 @@ local rawBranches="$(git branch --sort=-committerdate --format="$gitBranchFormat
 
 for rawLine in ${(f)rawBranches}; do
   local fields=("${(@ps/▮/)rawLine}")
-  local branch="${fields[1]}"
-  local hash="${fields[2]}"
+
+  # Branch name
+  # Detached head branches look like "(HEAD detached at d57afca)"
+  local branchName="${fields[1]}"
+  [[ "$branchName" =~ "^\(HEAD" ]] && branchName="HEAD"
+
+  # Commit hash
+  local commitHash="${fields[2]}"
+
+  # Remote name
+  # Can be empty for branches that have never been pushed
+  # In that case, we check the branch remote locally
   local remoteName="${fields[3]}"
-  local remoteRef="${fields[4]}"
+  [[ $remoteName == "" ]] && remoteName="$(git-branch-remote "$branchName")"
+
+  # Remote branch name
+  local remoteBranchName="${fields[4]:11}"
+  # Can be empty for branches that have never been pushed, so we assume it's the
+  # same name as locally
+  [[ $remoteBranchName == "" ]] && remoteBranchName="$branchName"
+
   local relativeDate="${fields[6]}"
   local message="${fields[7]}"
 
@@ -27,5 +44,5 @@ for rawLine in ${(f)rawBranches}; do
   local aheadCount="${${distanceParsed:-0▮0}%%▮*}"
   local behindCount="${${distanceParsed:-0▮0}##*▮}"
 
-  echo "$branch▮$hash▮$remoteName▮$remoteRef▮$aheadCount▮$behindCount▮$relativeDate▮$message▮"
+  echo "$branchName▮$commitHash▮$remoteName▮$remoteBranchName▮$aheadCount▮$behindCount▮$relativeDate▮$message▮"
 done

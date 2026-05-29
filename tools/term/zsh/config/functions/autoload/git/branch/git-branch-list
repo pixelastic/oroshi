@@ -2,93 +2,105 @@
 # Usage:
 # $ git-branch-list          # Display all local branches
 setopt local_options err_return
+
+local iconDirty="±"
+local iconAhead=""
+local iconBehind=""
+
+# Get dirty/ahead/behind info of all worktrees {{{
+local rawWorktrees="$(git-worktree-list-raw)"
+local -A worktrees
+local -A worktreeDirty
+local -A worktreeAhead
+local -A worktreeBehind
+for rawWorktree in ${(f)rawWorktrees}; do
+  local split=("${(@ps/▮/)rawWorktree}")
+  local worktreeName=$split[1]
+  worktrees[$worktreeName]="1"
+  worktreeDirty[$worktreeName]=$split[3]
+  worktreeAhead[$worktreeName]=$split[4]
+  worktreeBehind[$worktreeName]=$split[5]
+done
+# }}}
 local rawGitBranches="$(git-branch-list-raw)"
 local currentBranch="$(git-branch-current)"
 
 # Loop through all the raw output, and format/color them before adding them to
 # the output
 local output=""
-local iconAhead=""
-local iconBehind=""
 for rawGitBranch in ${(f)rawGitBranches}; do
-  # Splitting the line into its various parts {{{
+  local row=""
   local splitLine=("${(@ps/▮/)rawGitBranch}")
 
-  # Branch name {{{
   local branchName="${splitLine[1]}"
-  # Detached head branches look like "(HEAD detached at d57afca)"
-  [[ "$branchName" =~ "^\(HEAD" ]] &&  branchName="HEAD"
-  # }}}
 
-  # Commit hash {{{
-  local commitHash="${splitLine[2]}"
-  # }}}
+  # Is Worktree ?
+  local isWorktree="0"
+  [[ ${worktrees[$branchName]} == "1" ]] && isWorktree="1"
 
-  # Remote name {{{
-  local remoteName="${splitLine[3]}"
-  # Can be empty for branches that have never been pushed
-  # In that case, we check the branch remote locally
-  [[ $remoteName == "" ]] && remoteName="$(git-branch-remote "$branchName")"
-  # }}}
+  #  to mark the current branch
+  local displayPointer=""
+  [[ $branchName == "$currentBranch" ]] && displayPointer="$(colorize  ALIAS_POINTER)"
+  row+="${displayPointer}▮"
 
-  # Remote branch name {{{
-  local remoteBranchName="${splitLine[4]:11}"
-  # Can be empty for branches that have never been pushed, so we assume it's the
-  # same name as locally
-  [[ $remoteBranchName == "" ]] && remoteBranchName="$branchName"
-  # }}}
+  # Branch name
+  local displayBranch="$(git-branch-colorize "$branchName" --with-icon)"
+  row+="${displayBranch}▮"
 
+  # Regular branch
+  if [[ $isWorktree == "0" ]]; then
+    # Remote
+    local remoteName="${splitLine[3]}"
+    local remoteBranchName="${splitLine[4]}"
+    local displayRemote=""
+    local fullRemoteName="${remoteName}/${remoteBranchName}"
+    if [[ "${fullRemoteName}" != "origin/${branchName}" ]]; then
+      # We only display the remote if it's not origin/{branchName}
+      displayRemote="$(git-remote-colorize "$fullRemoteName" --with-icon)"
+    fi
+    row+="${displayRemote}▮"
+  else
+    # Dirty
+    local displayDirty=""
+    local dirtyCount=$worktreeDirty[$branchName]
+    if [[ "$dirtyCount" != "0" ]]; then
+      displayDirty+="$(colorize "${dirtyCount}${iconDirty}" ALIAS_GIT_WORKTREE_DIRTY)"
+    fi
+    row+="${displayDirty}▮"
+  fi
+
+  # Ahead
   local aheadCount="${splitLine[5]}"
-  local behindCount="${splitLine[6]}"
-  local relativeTime="${splitLine[7]}"
-  local commitMessage="${splitLine[8]}"
-  # }}}
-
-  # Building the output row {{{
-  local row=""
-  #  to mark the current branch {{{
-  if [[ $branchName == "$currentBranch" ]]; then
-    row+="$(colorize  ALIAS_POINTER)▮"
-  else
-    row+="▮"
-  fi
-  # }}}
-  # Branch name {{{
-  row+="$(git-branch-colorize "$branchName" --with-icon)▮"
-  # }}}
-  # Ahead {{{
+  [[ $isWorktree == "1" ]] && aheadCount=$worktreeAhead[$branchName]
+  local displayAhead=""
   if [[ "$aheadCount" != "0" ]]; then
-    row+="$(colorize "${aheadCount}${iconAhead}" ALIAS_GIT_AHEAD)▮"
-  else
-    row+="▮"
+    displayAhead+="$(colorize "${aheadCount}${iconAhead}" ALIAS_GIT_AHEAD)"
   fi
-  # }}}
-  # Behind {{{
+  row+="${displayAhead}▮"
+
+  # Behind
+  local behindCount="${splitLine[6]}"
+  [[ $isWorktree == "1" ]] && behindCount=$worktreeBehind[$branchName]
+  local displayBehind=""
   if [[ "$behindCount" != "0" ]]; then
-    row+="$(colorize "${behindCount}${iconBehind}" ALIAS_GIT_BEHIND)▮"
-  else
-    row+="▮"
+    displayBehind+="$(colorize "${behindCount}${iconBehind}" ALIAS_GIT_BEHIND)"
   fi
-  # }}}
-  # Commit {{{
-  row+="$(git-commit-colorize "$commitHash" --with-icon)▮"
-  # }}}
-  # Remote {{{
-  # We display it only if it's different from origin/{branchName}
-  if [[ "$remoteName" != "origin" ]] || \
-    [[ "$remoteBranchName" != "$branchName" ]]; then
-    row+="$(git-remote-colorize "$remoteName/$remoteBranchName" --with-icon)▮"
-  else
-    row+="▮"
-  fi
-  # }}}
-  # Date {{{
-  row+="$(git-date-colorize "$relativeTime" --with-icon)▮"
-  # }}}
-  # Commit message {{{
-  row+="$(git-message-colorize "$commitMessage")▮"
-  # }}}
-  # }}}
+  row+="${displayBehind}▮"
+
+  # Date
+  local relativeTime="${splitLine[7]}"
+  local displayDate="$(git-date-colorize "$relativeTime")"
+  row+="${displayDate}▮"
+
+  # Commit
+  local commitHash="${splitLine[2]}"
+  local displayCommit="$(git-commit-colorize "$commitHash")"
+  row+="${displayCommit}▮"
+
+  # Message
+  local commitMessage="${splitLine[8]}"
+  local displayMessage="$(git-message-colorize "$commitMessage")"
+  row+="${displayMessage:0:30}▮"
 
   output+="$row\n"
 done

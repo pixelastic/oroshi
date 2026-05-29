@@ -1,3 +1,20 @@
+## Issue 03 — Integrate new columns branch list
+
+### `--with-icon` removed from git-date-colorize / git-commit-colorize
+```zsh
+local displayDate="$(git-date-colorize "$relativeTime")"
+local displayCommit="$(git-commit-colorize "$commitHash")"
+```
+**Problem:** Reviewer flagged as potential regression vs original `--with-icon` usage.
+**Reason skipped:** User intentionally simplified output format.
+
+### git-branch-list-raw.bats test 2 failure (pre-existing)
+```
+not ok 2 branch line: name▮hash▮remote▮ref▮ahead▮behind▮date▮message▮
+```
+**Problem:** Test expects trailing `▮` after message field; format changed in issue 02.
+**Reason skipped:** Pre-existing failure from issue 02, not in scope for issue 03.
+
 ## Issue 02 — split-ahead-behind-raw
 
 ### Spec reviewer: should use `%(upstream:ahead)` / `%(upstream:behind)` git atoms

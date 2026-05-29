@@ -39,11 +39,15 @@ Same positions for all rows:
 - Foreground: `COLOR_ORANGE_1` (#ffedd5)
 - Pattern from `context-badge`: `colorize " $name " ORANGE_1 ORANGE_7` + `colorize "$sep" ORANGE_7`
 
-### Field order in git-branch-list-raw (after issue 02)
-`branch▮hash▮remoteName▮remoteBranchRef▮ahead▮behind▮date▮message` (8 fields)
-Consistent with `git-worktree-list-raw` which also uses ahead before behind.
+### Field order in git-branch-list-raw (after issues 02–03)
+`branch▮hash▮remoteName▮remoteBranch▮ahead▮behind▮date▮message` (8 fields)
+Field 4 is the branch name only (e.g. `main`), not the full ref — `refs/heads/` prefix is stripped in the raw function.
 
 ## Discoveries
+
+### Issue 03 — Integrate new columns branch list
+- Storing `▮`-separated values as associative array values silently fails in zsh; use 4 separate arrays (`worktrees`, `worktreeDirty`, `worktreeAhead`, `worktreeBehind`) instead of one packed map.
+- `bats_mock` serializes bash functions via `declare -f`; the ▮ character survives the round-trip correctly when used directly (not via `\u25ae` escape in awk `-F`).
 
 ### Issue 02 — Split ahead/behind raw
 - `%(upstream:ahead)` and `%(upstream:behind)` are not valid format atoms in git 2.43 — use `%(upstream:track)` + sed parsing instead to extract numeric values.

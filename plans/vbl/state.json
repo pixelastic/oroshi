@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-integrate-new-columns-branch-list.md",
-    "done": false,
+    "done": true,
+    "recap": "Updated git-branch-list to load worktree data into 4 associative arrays and render worktree-aware columns 3–5; moved branch/remote parsing into git-branch-list-raw; added scaffold tests.",
     "blocked_by": ["02"]
   },
   {
