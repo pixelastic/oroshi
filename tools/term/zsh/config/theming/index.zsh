@@ -4,9 +4,6 @@ function oroshi_theming_index() {
   local colorsDefinitionPath=$ZSH_CONFIG_PATH/theming/env/colors.zsh
   local colorsGeneratePath=$ZSH_CONFIG_PATH/theming/src/env-generate-colors
 
-  local projectsDefinitionPath=$ZSH_CONFIG_PATH/theming/env/projects.zsh
-  local projectsGeneratePath=$ZSH_CONFIG_PATH/theming/src/env-generate-projects
-
   local filetypesDefinitionPath=$ZSH_CONFIG_PATH/theming/env/filetypes.zsh
   local filetypesGeneratePath=$ZSH_CONFIG_PATH/theming/src/env-generate-filetypes
 
@@ -18,12 +15,6 @@ function oroshi_theming_index() {
     source $colorsDefinitionPath
   }
   oroshi_theming_colors && unfunction oroshi_theming_colors
-
-  function oroshi_theming_projects() {
-    [[ ! -r $projectsDefinitionPath ]] && $projectsGeneratePath
-    source $projectsDefinitionPath
-  }
-  oroshi_theming_projects && unfunction oroshi_theming_projects
 
   function oroshi_theming_filetypes() {
     [[ ! -r $filetypesDefinitionPath ]] && $filetypesGeneratePath

@@ -3,7 +3,6 @@ set -e
 
 # Load project color definitions
 source $ZSH_CONFIG_PATH/theming/env/colors.zsh
-source $ZSH_CONFIG_PATH/theming/env/projects.zsh
 
 # Fake values for debuging, or values coming from stdin
 if [[ "$1" == "--dry-run" ]]; then
@@ -50,7 +49,7 @@ statusline+=("$displayContext ")
 
 # Cost
 local isInCents=$((totalCost < 1))
-if ((isInCents)); then
+if [[ $isInCents == "1" ]]; then
   local roundedCents=$((totalCost * 100 + 0.5))
   local displayCost="$(colorize "${roundedCents%.*}¢" $COLOR_ALIAS_PUNCTUATION)"
 else
@@ -61,6 +60,6 @@ statusline+=("$displayCost ")
 
 # Session ID
 local displaySession="$(colorize "[${sessionId}]" $COLOR_AMBER_9)"
-statusline+=("$displaySession ")
+statusline+=("$displaySession")
 
 print "${(j::)statusline}"

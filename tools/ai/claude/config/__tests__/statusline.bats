@@ -1,18 +1,18 @@
 bats_load_library 'helper'
 
 setup() {
-  bats_git_dir 'my-repo'
-  bats_git_worktree 'feat/my-feature'
+  bats_tmp_dir
 
   mkdir -p "${BATS_TMP_DIR}/theming/env"
-
   printf '%s\n' \
     'COLOR_RED=1; COLOR_YELLOW=3; COLOR_GREEN=2; COLOR_GRAY=8' \
     'COLOR_AMBER_9=214; COLOR_ALIAS_GIT_BRANCH=17; COLOR_ALIAS_PUNCTUATION=8' \
-    > "${BATS_TMP_DIR}/theming/env/colors.zsh"
+    >"${BATS_TMP_DIR}/theming/env/colors.zsh"
 
-  printf 'typeset -gA PROJECTS=(\n  [my-project.path]="%s/"\n  [my-project.background.ansi]="100"\n  [my-project.foreground.ansi]="255"\n  [my-project.icon]=""\n  [my-project.hideNameInPrompt]="false"\n)\n' \
-    "${BATS_GIT_DIR}" > "${BATS_TMP_DIR}/theming/env/projects.zsh"
+  export ZSH_CONFIG_PATH="${BATS_TMP_DIR}"
+
+  context-badge() { echo "BADGE"; }
+  bats_mock context-badge
 }
 
 teardown() {
@@ -20,37 +20,57 @@ teardown() {
 }
 
 statusline_json() {
-  local dir="$1"
-  printf '{"workspace":{"current_dir":"%s"},"model":{"display_name":"test"},"cost":{"total_cost_usd":0},"context_window":{"current_usage":{"input_tokens":0,"output_tokens":0,"cache_creation_input_tokens":0,"cache_read_input_tokens":0},"used_percentage":0},"session_id":"test"}' "$dir"
+  local dir="${1:-/some/dir}"
+  local tokens="${2:-0}"
+  local cost="${3:-0}"
+  local session="${4:-test-session}"
+  cat <<EOF
+{
+  "workspace": { "current_dir": "$dir" },
+  "model": { "display_name": "test" },
+  "cost": { "total_cost_usd": $cost },
+  "context_window": {
+    "current_usage": {
+      "input_tokens": $tokens,
+      "output_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0
+    },
+    "used_percentage": 0
+  },
+  "session_id": "$session"
+}
+EOF
 }
 
 statusline_run() {
-  local dir="$1"
-  local json_file="${BATS_TMP_DIR}/input.json"
-  statusline_json "$dir" > "$json_file"
-  run zsh -c "export ZSH_CONFIG_PATH='${BATS_TMP_DIR}'; source '${OROSHI_ROOT}/tools/ai/claude/config/statusline'" < "$json_file"
+  statusline_json "$@" >"${BATS_TMP_DIR}/input.json"
+  bats_run_script "${OROSHI_ROOT}/tools/ai/claude/config/statusline" <"${BATS_TMP_DIR}/input.json"
 }
 
-@test "no separate git-branch-current call remains" {
-  run grep "git-branch-current" "$OROSHI_ROOT/tools/ai/claude/config/statusline"
-  [ "$status" -ne 0 ]
-}
-
-@test "shows project name for worktree path" {
-  statusline_run "${BATS_GIT_WORKTREES}feat-my-feature"
+@test "renders badge, tokens, cost, and session" {
+  statusline_run "/some/dir" 51000 0.05 "abc-123"
   [ "$status" -eq 0 ]
-  [[ "$output" == *"my-project"* ]]
+  local clean
+  clean="$(bats_strip_ansi "$output")"
+  [[ "$clean" == "BADGE 51k 5¢ [abc-123]" ]]
 }
 
-@test "shows branch name for worktree path" {
-  statusline_run "${BATS_GIT_WORKTREES}feat-my-feature"
-  [ "$status" -eq 0 ]
-  [[ "$output" == *"feat/my-feature"* ]]
+@test "formats token count with k suffix" {
+  statusline_run "/some/dir" 1000 0 "x"
+  [[ "$(bats_strip_ansi "$output")" == *"1k"* ]]
+
+  statusline_run "/some/dir" 1500 0 "x"
+  [[ "$(bats_strip_ansi "$output")" == *"1.5k"* ]]
+
+  statusline_run "/some/dir" 51000 0 "x"
+  [[ "$(bats_strip_ansi "$output")" == *"51k"* ]]
 }
 
-@test "shows no branch for main repo path" {
-  statusline_run "${BATS_GIT_DIR}"
-  [ "$status" -eq 0 ]
-  [[ "$output" == *"my-project"* ]]
-  [[ "$output" != *"main"* ]]
+@test "formats cost in cents or dollars" {
+  statusline_run "/some/dir" 0 0.05 "x"
+  [[ "$(bats_strip_ansi "$output")" == *"5¢"* ]]
+
+  statusline_run "/some/dir" 0 1.50 "x"
+  [[ "$(bats_strip_ansi "$output")" == *'$1.50'* ]]
 }

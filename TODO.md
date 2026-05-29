@@ -53,6 +53,9 @@ all its functions and make sense of what it does, when it's called, etc, so we
 can have a proper set of tests, and refactor it correctly. The commands are so
 fragmented, it's becoming really hard to know what it does
 
+I will need to rewrite the way colors are loaded in zsh. They are in a huge env
+file, I will need to update that to follow the same pattern as the projects
+
 ---
 
 I will need to add a LUA harness made of tests and lints.
