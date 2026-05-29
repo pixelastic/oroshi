@@ -6,7 +6,7 @@
 # - The default variables will return the color number
 # - Adding _HEXA at the end will return the hexadecimal value
 local output=""
-local outputFile=$ZSH_CONFIG_PATH/theming/env/colors.zsh
+local outputFile="${0:A:h}/../env/colors.zsh"
 
 # The following ranges and color number should match what is defined in kitty/colors.conf
 # Named colors {{{
@@ -224,6 +224,7 @@ aliasColors[GIT_TAG_UNRELATED]="GRAY"
 aliasColors[GIT_TRACKED]="VIOLET"
 aliasColors[GIT_UNTRACKED]="RED"
 aliasColors[GIT_WORKTREE]="ORANGE_7"
+aliasColors[GIT_WORKTREE_DIRTY]="VIOLET"
 # }}}
 # Hosts {{{
 aliasColors[HOST_PIXELASTIC]="GREEN"
