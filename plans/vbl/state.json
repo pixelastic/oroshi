@@ -1,0 +1,32 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-test-git-branch-list-raw.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-split-ahead-behind-raw.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-integrate-new-columns-branch-list.md",
+    "done": false,
+    "blocked_by": ["02"]
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-worktree-flag-branch-colorize.md",
+    "done": false,
+    "blocked_by": ["03"]
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-wire-worktree-coloring-branch-list.md",
+    "done": false,
+    "blocked_by": ["04"]
+  }
+]
