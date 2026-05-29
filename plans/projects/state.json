@@ -30,7 +30,8 @@
   {
     "id": "05",
     "issue": "issues/05-delete-project-key.md",
-    "done": false,
+    "done": true,
+    "recap": "Deleted project-key autoload function — no tests existed, no production callers remain after issues 02–04.",
     "blocked_by": ["02", "03", "04"]
   },
   {
