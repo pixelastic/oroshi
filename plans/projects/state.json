@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-migrate-yarn-zsh.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced project-key + PROJECT_*_ICON lookup with projects-load-definitions + PROJECTS_V2[$linkName:icon] in oroshi-prompt-populate:yarn_link.",
     "blocked_by": []
   },
   {

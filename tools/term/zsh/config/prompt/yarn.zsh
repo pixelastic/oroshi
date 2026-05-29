@@ -9,6 +9,8 @@ function oroshi-prompt-populate:yarn_link() {
   local displayedLinkCount=0
   local displayedString=''
 
+  projects-load-definitions
+
   for rawLine in ${(f)linkListRaw}; do
     local split=(${(s/▮/)rawLine})
     local linkName=$split[1]
@@ -19,8 +21,7 @@ function oroshi-prompt-populate:yarn_link() {
     totalLinkCount=$(($totalLinkCount + 1));
 
     # Add the module icon to the string
-    local projectKey=$(project-key "$linkName")
-    local projectIcon=${(P)${:-PROJECT_${projectKey}_ICON}}
+    local projectIcon="${PROJECTS_V2[$linkName:icon]}"
     if [[ $projectIcon != '' ]]; then
       displayedString+="${projectIcon}"
       displayedLinkCount=$(($displayedLinkCount + 1));
