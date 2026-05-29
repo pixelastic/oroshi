@@ -48,3 +48,7 @@ Do not write bats wrappers for headless nvim. Skip the test phase entirely for L
 ## Discoveries
 
 _Append-only. Each completed issue adds a subsection here._
+
+### Issue 02 — Worktree Badge Colors
+
+- Key must be `worktreeBadge` (not bare `worktree`) — CONTEXT.md canonizes "Worktree Badge" as the term; bare "worktree" is ambiguous per the glossary.

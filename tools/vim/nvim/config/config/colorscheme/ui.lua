@@ -222,6 +222,8 @@ O.colors.statusline = {
   search = { bg = "ORANGE_7", fg = "ORANGE_2", bold = true },
   command = { bg = "TEAL", fg = "TEAL_1", bold = true },
   unknown = { bg = "CYAN" },
+  -- Context badge
+  worktreeBadge = { bg = "ORANGE_7", fg = "ORANGE_1" },
   -- Filepath
   filepathDefault = { fg = "GRAY_4" },
   filepathReadonly = { fg = "RED" },
