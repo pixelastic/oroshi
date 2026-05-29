@@ -2,7 +2,7 @@
 # Usage:
 # $ git-branch-colorize                         # {currentBranch}
 # $ git-branch-colorize main                    # main
-# $ git-branch-colorize feat/x --worktree        # orange badge + powerline sep
+# $ git-branch-colorize feat/x --worktree        # worktree icon + normal branch color
 # $ git-branch-colorize --with-icon             #  main
 # $ git-branch-colorize origin/develop --remote #  origin/remote
 zparseopts -E -D \
@@ -17,8 +17,6 @@ local isZsh=${#flagZsh}
 local -a zshFlag=()
 [[ $isZsh == "1" ]] && zshFlag=(--zsh)
 
-local iconSeparator=""
-
 # Branch name {{{
 local branchName="$1"
 # Default to current branch if none specified
@@ -27,12 +25,6 @@ if [[ "$branchName" == '' ]]; then
 fi
 branchName=${branchName:s#/dependabot/npm_and_yarn#/  }
 # }}}
-# Worktree flag: orange badge with powerline separator
-if [[ "$isWorktree" == "1" ]]; then
-  colorize " $branchName " ORANGE_1 ORANGE_7 "${zshFlag[@]}"
-  colorize "$iconSeparator" ORANGE_7 "${zshFlag[@]}"
-  return
-fi
 # Branch color {{{
 if [[ "$isRemote" == "1" ]]; then
   local branchColor=$COLOR_ALIAS_GIT_REMOTE
@@ -40,6 +32,12 @@ else
   local branchColor="$(git-branch-color $branchName)"
 fi
 # }}}
+
+# Worktree flag: normal branch color with worktree-specific icon
+if [[ "$isWorktree" == "1" ]]; then
+  colorize " $branchName" $branchColor "${zshFlag[@]}"
+  return
+fi
 
 # If --with-icon is not passed, we simply display the colored branch
 if [[ "$isWithIcon" != 1 ]]; then
@@ -49,6 +47,7 @@ fi
 
 # If --with-icon is passed, we need to add an icon and display a specific
 # color based on the local/remote relationship
+
 
 # For remote branches, color as a remote
 if [[ $isRemote == '1' ]]; then
