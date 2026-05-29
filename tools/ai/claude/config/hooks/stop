@@ -1,8 +1,10 @@
 #!/usr/bin/env zsh
 # Triggered whenever Claude finishes answering
 
-# No sound unless explicitly opted in (set by the claude wrapper for interactive sessions)
-[[ -z "${OROSHI_CLAUDE_STOP_SOUND}" ]] && exit 0
+# If sound specifically disabled, we stop
+[[ "${OROSHI_CLAUDE_STOP_SOUND}" == "no" ]] && exit 0
+# Same if set, but empty
+[[ "${OROSHI_CLAUDE_STOP_SOUND}" == "" ]] && exit 0
 
 # Read stdin to get transcript path
 local stdinData="$(cat)"

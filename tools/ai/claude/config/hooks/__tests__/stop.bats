@@ -27,6 +27,14 @@ make_transcript() {
   echo '{"type":"user","timestamp":"'"$ts"'"}' > "$path"
 }
 
+@test "silent when OROSHI_CLAUDE_STOP_SOUND is no" {
+  export OROSHI_CLAUDE_STOP_SOUND="no"
+  run_stop '{"transcript_path":"/some/path.jsonl"}'
+
+  [ "$status" -eq 0 ]
+  [ ! -f "$BATS_TMP_DIR/sound-played" ]
+}
+
 @test "silent when OROSHI_CLAUDE_STOP_SOUND is empty" {
   export OROSHI_CLAUDE_STOP_SOUND=""
   run_stop '{"transcript_path":"/some/path.jsonl"}'
