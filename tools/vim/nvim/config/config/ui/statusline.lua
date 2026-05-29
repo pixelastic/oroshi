@@ -292,7 +292,7 @@ O_STATUSLINE = {
     local contextRoot = vim.fn.systemlist("context-root " .. vim.fn.shellescape(rawDirpath))[1] or ""
 
     -- Filepath
-    local relativePath = rawFilepath:gsub("^" .. F.escapeRegExp(contextRoot), "")
+    local relativePath = rawFilepath:gsub("^" .. F.escapeRegExp(contextRoot), ""):gsub("^/", "")
     local simplifiedPath = vim.fn.systemlist(
       "simplify-path " .. vim.fn.shellescape(relativePath) .. " 3" -- Keep only three levels
     )[1]
