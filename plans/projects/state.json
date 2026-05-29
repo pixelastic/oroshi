@@ -37,7 +37,8 @@
   {
     "id": "06",
     "issue": "issues/06-rewrite-context-path-bats.md",
-    "done": false,
+    "done": true,
+    "recap": "Rewrote context-path.bats to use bats_run_function + bats_mock for context-root; removed all PROJECTS_INDEX_BY_PATH/PROJECT_* env var injection.",
     "blocked_by": []
   },
   {

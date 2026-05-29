@@ -43,6 +43,11 @@ Before deleting the env infrastructure, confirm these are all done:
 
 _Append-only. Add a new H3 block after each completed issue._
 
+### Issue 06 — Rewrite context-path.bats
+
+- `bats_mock` auto-initializes `$BATS_TMP_DIR` if not set (guard added to helper) — no need to call `bats_tmp_dir` in setup unless the test itself needs filesystem operations.
+- When mocking the direct dependency (e.g. `context-root`), populating `PROJECTS_V2` is unnecessary — the mock short-circuits the entire lookup chain.
+
 ### Issue 02 — Migrate project-exists
 
 - `typeset -gA PROJECTS_V2` must be inside the `projects-load-definitions()` mock body, not in the test body — ZSH associative arrays can't cross `bats_run_function`'s subshell boundary, so setting them before the call doesn't help.

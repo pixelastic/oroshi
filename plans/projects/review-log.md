@@ -33,3 +33,35 @@ for rawLine in ${(f)linkListRaw}; do
 **Problem:** Reviewer flagged missing guard — if `projects-load-definitions` fails, the loop runs with empty PROJECTS_V2 silently.
 
 **Reason skipped:** Prompt functions degrade silently by design. If definitions fail, the existing fallback (chain icon ` `) is shown via `displayedLinkCount != totalLinkCount` logic. Adding `|| return` would hide the segment entirely, which is worse. No other helper call in the function is guarded either.
+
+## Issue 06 — Rewrite context-path.bats
+
+### `bats_tmp_dir` called but seemingly unused
+~~**Problem:** Reviewer flagged `$BATS_TMP_DIR` as never referenced in the file.~~
+~~**Reason skipped:** `bats_mock` writes to `$BATS_TMP_DIR/mock.zsh` internally.~~
+**Resolved:** `bats_mock` now auto-initializes `$BATS_TMP_DIR` if unset (guard added to helper). The explicit `bats_tmp_dir` call was removed from `context-path.bats`.
+
+### Shared `context-root` mock should move to `setup`
+```bats
+@test "path inside project: ..." {
+  context-root() { echo "/my/root"; }
+  bats_mock context-root
+  ...
+}
+@test "path at project root: ..." {
+  context-root() { echo "/my/root"; }
+  bats_mock context-root
+  ...
+}
+@test "path outside all known projects: ..." {
+  context-root() { echo ""; }
+  bats_mock context-root
+  ...
+}
+```
+**Problem:** Reviewer flagged that two tests share the same mock body and should be moved to `setup`.
+**Reason skipped:** Mock body varies across tests (`/my/root` vs `""`). Per `context-root.bats` prior art, per-test-varying mocks belong in the test body.
+
+### `PROJECTS_V2` not populated in tests
+**Problem:** Spec mentions populating `PROJECTS_V2` inside each test.
+**Reason skipped:** `context-path` never reads `PROJECTS_V2` directly — it delegates to `context-root`, which is mocked. Population is irrelevant and would add noise.

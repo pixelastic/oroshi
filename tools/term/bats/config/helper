@@ -87,6 +87,7 @@ bats_git() {
 # then unsets them from the current shell scope.
 # Usage: my_fn() { echo 'real'; }; bats_mock my_fn
 bats_mock() {
+  [[ "$BATS_TMP_DIR" == "" ]] && bats_tmp_dir
   declare -f "$@" >>"$BATS_TMP_DIR/mock.zsh"
   unset -f "$@"
 }
