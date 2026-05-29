@@ -5,15 +5,17 @@
 # Usage:
 # $ simplify-path /path/to/somewhere
 # $ simplify-path path/to/somewhere
-# $ simplify-path path/to/somewhere 6   # Simplify if more than 6 level deep
+# $ simplify-path path/to/somewhere 6   # Show at most 6 segments
 # $ simplify-path --reply path/to/somewhere   # Write to $REPLY, no echo
 zmodload zsh/zutil
 zparseopts -E -D \
   -reply=flagReply
 
 local input="$1"
-local maxDepth=$2
-[[ $maxDepth == "" ]] && maxDepth=4
+local maxDisplay=$2
+[[ $maxDisplay == "" ]] && maxDisplay=4
+# Clamp: values below 4 are silently raised to 4
+[[ $maxDisplay -lt 4 ]] && maxDisplay=4
 
 # We convert /home/{user} with ~
 local fullPath=${input}
@@ -22,7 +24,7 @@ fullPath=${fullPath/#$HOME/\~}
 # Split the path as an array
 local inputPathArray=(${(s:/:)fullPath})
 local isTooDeep=0
-[[ ${#inputPathArray[*]} -gt ${maxDepth} ]] && isTooDeep=1
+[[ ${#inputPathArray[*]} -gt ${maxDisplay} ]] && isTooDeep=1
 
 # Remember if starts/end with slashes
 local startsWithSlash=0
@@ -33,18 +35,18 @@ local endsWithSlash=0
 # Build the output
 local outputPathArray=()
 
-
-# If not at the maximum directory depth, we keep the same path
+# If not at the maximum display depth, we keep the same path
 if [[ $isTooDeep == 0 ]]; then
   outputPathArray+=($inputPathArray)
 fi
 
-# If past the maximum depth, we remove the mid directories
+# If past the maximum depth, fill symmetrically from both ends around …
 if [[ $isTooDeep == 1 ]]; then
-  outputPathArray+=(${inputPathArray[1]})
+  local left=$(( (maxDisplay - 1) / 2 ))
+  local right=$(( maxDisplay - 1 - left ))
+  outputPathArray+=($inputPathArray[1,$left])
   outputPathArray+=("…")
-  outputPathArray+=(${inputPathArray[-2]})
-  outputPathArray+=(${inputPathArray[-1]})
+  outputPathArray+=($inputPathArray[-$right,-1])
 fi
 
 # We add a starting slash only if the input had one

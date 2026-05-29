@@ -1,20 +1,18 @@
 bats_load_library 'helper'
 
-# --- Truncation ---
+# --- Default truncation (maxDisplay=4) ---
 
-@test "long path truncated to first/…/n-1/last" {
+@test "path longer than maxDisplay truncated to first/…/penultimate/last" {
   bats_run_function simplify-path "a/b/c/d/e"
   [ "$output" = "a/…/d/e" ]
 }
 
-# --- No-op (at or under threshold) ---
-
-@test "path at max depth unchanged" {
+@test "path at maxDisplay unchanged" {
   bats_run_function simplify-path "a/b/c/d"
   [ "$output" = "a/b/c/d" ]
 }
 
-@test "short path unchanged" {
+@test "path shorter than maxDisplay unchanged" {
   bats_run_function simplify-path "a/b"
   [ "$output" = "a/b" ]
 }
@@ -22,6 +20,25 @@ bats_load_library 'helper'
 @test "single segment unchanged" {
   bats_run_function simplify-path "a"
   [ "$output" = "a" ]
+}
+
+# --- Custom maxDisplay ---
+
+@test "maxDisplay=5 on 6-segment path yields first second/…/penultimate/last" {
+  bats_run_function simplify-path "a/b/c/d/e/f" 5
+  [ "$output" = "a/b/…/e/f" ]
+}
+
+@test "maxDisplay=6 on 7-segment path yields first second/…/antepenultimate/penultimate/last" {
+  bats_run_function simplify-path "a/b/c/d/e/f/g" 6
+  [ "$output" = "a/b/…/e/f/g" ]
+}
+
+# --- Clamping (values < 4 silently become 4) ---
+
+@test "maxDisplay=3 silently falls back to 4" {
+  bats_run_function simplify-path "a/b/c/d/e" 3
+  [ "$output" = "a/…/d/e" ]
 }
 
 # --- Slashes ---
@@ -43,16 +60,9 @@ bats_load_library 'helper'
   [ "$output" = "~/a/b" ]
 }
 
-# --- Custom maxDepth ---
-
-@test "custom maxDepth=2 truncates 3-segment path" {
-  bats_run_function simplify-path "a/b/c" 2
-  [ "$output" = "a/…/b/c" ]
-}
-
-@test "custom maxDepth=2 keeps 2-segment path unchanged" {
-  bats_run_function simplify-path "a/b" 2
-  [ "$output" = "a/b" ]
+@test "home prefix replaced with tilde on truncated path" {
+  bats_run_function simplify-path "$HOME/a/b/c/d"
+  [ "$output" = "~/…/c/d" ]
 }
 
 # --- --reply flag ---

@@ -24,3 +24,7 @@
 - `setopt local_options errexit` for autoload functions (no `set -e`)
 
 ## Discoveries
+
+### Issue 01 — maxDisplay symmetric truncation
+- `$array[1,$n]` ZSH range syntax est la forme correcte pour slicer un array. zshlint avait un faux positif (code 2054) qui a été corrigé — utiliser cette syntaxe sans workaround.
+- Home-substitution test must use a long enough path to actually trigger truncation; `$HOME/a/b/c/d` (5 segments) truncates to `~/…/c/d` with default maxDisplay=4.

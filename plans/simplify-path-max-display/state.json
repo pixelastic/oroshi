@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-implement-max-display-symmetric-truncation.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Replaced maxDepth with maxDisplay symmetric truncation (left=⌊(n-1)/2⌋, right=n-1-left), added clamping for values <4, rewrote test suite with 14 tests covering all AC."
   }
 ]
