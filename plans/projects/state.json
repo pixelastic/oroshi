@@ -44,7 +44,8 @@
   {
     "id": "07",
     "issue": "issues/07-migrate-colors-refresh.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced env-generate-projects + source env/projects.zsh with projects-build + unset PROJECTS_V2 + projects-load-definitions.",
     "blocked_by": []
   },
   {
