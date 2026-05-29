@@ -1,0 +1,18 @@
+# List completion entries for plans in the current git repo
+# Output format: fullAbsolutePath:basename (for use with zsh _describe)
+# Usage:
+# $ complete-plans
+setopt local_options err_return
+
+local rawList="$(plan-list-raw)"
+
+# No plans — nothing to complete
+[[ "$rawList" == "" ]] && return 0
+
+for rawLine in ${(f)rawList}; do
+  [[ "$rawLine" == "" ]] && continue
+  local fields=(${(@ps/▮/)rawLine})
+  local fullPath="$fields[1]"
+  local baseName="$fields[2]"
+  echo "${fullPath}:${baseName}"
+done

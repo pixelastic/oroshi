@@ -1,0 +1,8 @@
+#compdef
+
+# Suggest plans in the current git repo
+function _plans() {
+  local suggestions=(${(f)"$(complete-plans)"})
+
+  _describe -V "$(completion-header $COLOR_ALIAS_AI $COLOR_GRAY_2 ' Plans ')" suggestions
+}

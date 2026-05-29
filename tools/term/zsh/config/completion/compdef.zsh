@@ -109,6 +109,8 @@ compdef _make-targets \
 # 🤖 AI {{{
 compdef _skills \
   skills-remove
+compdef _plans \
+  ralph
 # }}}
 # 🖼️ Images {{{
 compdef _image-resize img-resize

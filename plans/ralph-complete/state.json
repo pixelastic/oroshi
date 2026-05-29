@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-complete-plans-compdef.md",
-    "done": false,
+    "done": true,
+    "recap": "Added complete-plans autoload and _plans compdef; wired compdef _plans ralph in the AI section of compdef.zsh.",
     "blocked_by": ["01"]
   }
 ]
