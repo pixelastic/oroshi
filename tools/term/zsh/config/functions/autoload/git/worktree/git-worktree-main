@@ -5,6 +5,8 @@
 setopt local_options err_return
 
 local refDir="${1:-$PWD}"
+# git -C requires a directory; normalize file paths to their parent dir
+[[ -f "$refDir" ]] && refDir="${refDir:h}"
 
 local commonDir="$(git -C "$refDir" rev-parse --git-common-dir 2>/dev/null)"
 [[ "$commonDir" == "" ]] && return 1

@@ -47,3 +47,11 @@ teardown() {
   bats_run_function git-worktree-main "$BATS_TMP_DIR"
   [ "$status" -eq 1 ]
 }
+
+@test "accepts a file path inside a worktree and returns Main path" {
+  local testFile="${BATS_GIT_WORKTREES}fix-bug/somefile.txt"
+  touch "$testFile"
+  bats_run_function git-worktree-main "$testFile"
+  [ "$status" -eq 0 ]
+  [ "$output" = "$BATS_GIT_DIR" ]
+}
