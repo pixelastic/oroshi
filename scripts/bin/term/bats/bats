@@ -6,8 +6,7 @@
 local oroshiRoot=~/.oroshi
 
 # In oroshi worktrees, use the worktree config
-local project="$(git-github-project)"
-if [[ "$project" == "pixelastic/oroshi" ]] && git-directory-is-worktree; then
+if git-worktree-is-oroshi; then
   oroshiRoot="$(git-directory-root)"
   # Rebuild PATH so bash bats process resolves scripts to the worktree
   export OROSHI_ROOT="$oroshiRoot"

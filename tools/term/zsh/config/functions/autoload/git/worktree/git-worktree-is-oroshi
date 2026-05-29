@@ -1,0 +1,10 @@
+# Check if current repository is a worktree of oroshi
+
+# Stop if not worktree
+! git-directory-is-worktree && return 1
+
+# Stop if not oroshi
+local project="$(git-github-project)"
+[[ "$project" != "pixelastic/oroshi" ]] && return 1
+
+return 0
