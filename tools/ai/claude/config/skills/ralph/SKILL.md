@@ -104,7 +104,7 @@ per criterion. Run them. Read the failure output.
    ```
    Skip this step if there are no non-trivial findings.
 
-3. **If review had skipped items**, create or append to `review-log.md` (path from `ralph-start` output):
+3. **If review had skipped items**, create or append at the end of `review-log.md` (path from `ralph-start` output):
    ```
    ## Issue XX — <title>
    ### <feedback item>
