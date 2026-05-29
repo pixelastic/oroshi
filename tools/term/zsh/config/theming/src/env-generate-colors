@@ -223,7 +223,7 @@ aliasColors[GIT_TAG_PARENT]="CYAN_8"
 aliasColors[GIT_TAG_UNRELATED]="GRAY"
 aliasColors[GIT_TRACKED]="VIOLET"
 aliasColors[GIT_UNTRACKED]="RED"
-aliasColors[GIT_WORKTREE]="EMERALD"
+aliasColors[GIT_WORKTREE]="ORANGE_7"
 # }}}
 # Hosts {{{
 aliasColors[HOST_PIXELASTIC]="GREEN"
