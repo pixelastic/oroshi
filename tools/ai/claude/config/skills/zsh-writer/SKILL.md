@@ -128,7 +128,8 @@ table $output
 
 ### Step 4 — Lint the file
 
-Run `zshlint <file>` on the file(s) and fix any actionable violation.
+Run `zshlint <file>` on the file(s).
+Fix fix **every** violation, (including pre-existing ones not introduced by the current change).
 
 ---
 
