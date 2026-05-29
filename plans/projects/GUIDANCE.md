@@ -16,7 +16,7 @@ Use the vocabulary from `tools/term/zsh/config/functions/autoload/project/CONTEX
 
 - `projects-load-definitions` is the single entry point for loading `PROJECTS_V2` into memory. It is idempotent — always call it before accessing the array; never source `dist/projects.zsh` directly.
 - `:icon` is the canonical key for project existence. A project without an icon (e.g. `dashboards`) is a color-only definition and is not considered a real project.
-- `projects-load-definitions` is designed to be mocked in bats tests — define the function as a no-op and populate `PROJECTS_V2` directly.
+- `projects-load-definitions` is designed to be mocked in bats tests — define the function body to call `typeset -gA PROJECTS_V2` and populate the needed keys inside the mock. Do NOT set `PROJECTS_V2` before calling `bats_run_function`: ZSH associative arrays can't cross a subshell boundary.
 
 ### Testing
 
@@ -42,3 +42,7 @@ Before deleting the env infrastructure, confirm these are all done:
 ## Discoveries
 
 _Append-only. Add a new H3 block after each completed issue._
+
+### Issue 02 — Migrate project-exists
+
+- `typeset -gA PROJECTS_V2` must be inside the `projects-load-definitions()` mock body, not in the test body — ZSH associative arrays can't cross `bats_run_function`'s subshell boundary, so setting them before the call doesn't help.

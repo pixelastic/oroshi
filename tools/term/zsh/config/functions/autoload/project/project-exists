@@ -1,19 +1,10 @@
 # Check if a project exists by name
 # Usage:
-# $ project-exists "my-project" && echo "exists"
-# $ project-exists "aberlaas" && echo "exists"
-#
-# Returns:
-# - Exit code 0 if project exists
-# - Exit code 1 if project doesn't exist
+# $ project-exists "aberlaas" && echo "exists"   # exits 0 if project is registered
+setopt local_options err_return
 local projectName="$1"
-local projectKey=$(project-key "$projectName")
 
-# Check if this key exists in PROJECTS_INDEX
-for key in ${=PROJECTS_INDEX}; do
-  if [[ "$key" == "$projectKey" ]]; then
-    return 0
-  fi
-done
+projects-load-definitions
 
-return 1
+# A project is real only if it has an icon
+[[ "${PROJECTS_V2[${projectName}:icon]}" != "" ]]

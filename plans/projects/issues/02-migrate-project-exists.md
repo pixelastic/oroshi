@@ -9,7 +9,7 @@ Migrate `project-exists` from `PROJECTS_INDEX` env var loop to `PROJECTS_V2` ass
 1. Call `projects-load-definitions` to ensure `PROJECTS_V2` is loaded.
 2. Check whether the `:icon` key exists for the given project name in `PROJECTS_V2`. A project is considered registered if and only if its icon entry is present — color-only entries (like `dashboards`) have no icon and are not considered real projects.
 
-Write new bats tests following the `context-root.bats` pattern: mock `projects-load-definitions` as a no-op, populate `PROJECTS_V2` directly in each test, and assert exit codes.
+Write new bats tests following the `context-root.bats` pattern. Mock `projects-load-definitions` by defining it to call `typeset -gA PROJECTS_V2` and populate the array inside the mock body — ZSH associative arrays can't cross `bats_run_function`'s subshell boundary, so setting them before the call doesn't work. Override the mock per-test to populate the specific keys needed, then assert exit codes.
 
 ## Acceptance criteria
 

@@ -151,9 +151,6 @@
     "icon": "  ",
     "path": "~/local/www/algolia/crsearch/crsearch-media"
   },
-  "dashboards": {
-    "background": "BLUE_3"
-  },
   "devrel": {
     "background": "TEAL_6",
     "foreground": "GRAY_3",

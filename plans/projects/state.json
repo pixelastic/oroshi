@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-migrate-project-exists.md",
-    "done": false,
+    "done": true,
+    "recap": "Rewrote project-exists to call projects-load-definitions and check PROJECTS_V2[name:icon]; added bats tests covering icon, unknown, and color-only cases.",
     "blocked_by": []
   },
   {

@@ -469,21 +469,6 @@
     "icon": "  ",
     "path": "~/local/www/algolia/crsearch/crsearch-media"
   },
-  "dashboards": {
-    "background": {
-      "ansi": 93,
-      "hex": "#93c5fd",
-      "name": "BLUE_3"
-    },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#0e1529",
-      "name": "DARK_BLUE"
-    },
-    "hideNameInPrompt": false,
-    "icon": "",
-    "path": ""
-  },
   "devrel": {
     "background": {
       "ansi": 196,
