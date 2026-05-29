@@ -288,7 +288,8 @@ O_STATUSLINE = {
     local worktreeBadge = contextBadge.worktreeBadge
 
     -- Context root for filepath computation
-    local contextRoot = vim.fn.systemlist("context-root " .. vim.fn.shellescape(rawFilepath))[1] or ""
+    local rawDirpath = vim.fn.fnamemodify(rawFilepath, ":h")
+    local contextRoot = vim.fn.systemlist("context-root " .. vim.fn.shellescape(rawDirpath))[1] or ""
 
     -- Filepath
     local relativePath = rawFilepath:gsub("^" .. F.escapeRegExp(contextRoot), "")
@@ -327,7 +328,8 @@ O_STATUSLINE = {
     }
 
     -- Worktree badge
-    local worktreeName = vim.fn.systemlist("git-worktree-name " .. vim.fn.shellescape(filepath))[1]
+    local dirpath = vim.fn.fnamemodify(filepath, ":h")
+    local worktreeName = vim.fn.systemlist("git-worktree-name " .. vim.fn.shellescape(dirpath))[1]
     local worktreeBadge = nil
     if worktreeName and worktreeName ~= "" then
       worktreeBadge = {
