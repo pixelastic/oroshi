@@ -7,24 +7,32 @@
 # $ oroshi-reload-functions worktree    # All autoloaded functions of this oroshi worktree are reloaded
 declare -A OROSHI_AUTOLOADED_FUNCTIONS
 declare -A OROSHI_AUTOLOADED_FUNCTIONS_BACKUP
+declare -a OROSHI_AUTOLOADED_FPATH
 
 function oroshi-reload-functions() {
   local configPath="$ZSH_CONFIG_PATH"
   # If 'worktree' is passed, load from the current worktree root instead
   [[ "$1" == "worktree" ]] && configPath="$(git rev-parse --show-toplevel)/tools/term/zsh/config"
 
+  # Remove previously tracked fpath dirs to allow clean replacement
+  for dir in $OROSHI_AUTOLOADED_FPATH; do
+    fpath=(${fpath:#$dir})
+  done
+  OROSHI_AUTOLOADED_FPATH=()
+
   # Autoload functions {{{
   OROSHI_AUTOLOADED_FUNCTIONS_BACKUP=(${(kv)OROSHI_AUTOLOADED_FUNCTIONS})
   OROSHI_AUTOLOADED_FUNCTIONS=()
 
   # Lazy loading all functions saved in ./autoload
-  for item in $configPath/functions/autoload/**/*; do
+  for item in $configPath/functions/autoload/**/*(N); do
     # If it's a folder, we add it to fpath, so zsh knows where to look
     if [[ -d $item ]]; then
       # Skip all directories starting with __
       [[ $item == */__* ]] && continue
 
       fpath+=($item)
+      OROSHI_AUTOLOADED_FPATH+=($item)
       continue
     fi
 

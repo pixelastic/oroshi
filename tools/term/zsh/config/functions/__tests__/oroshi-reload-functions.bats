@@ -66,6 +66,42 @@ teardown() {
   [ "$output" = "" ]
 }
 
+# --- fpath cleanup ---
+
+@test "second call does not duplicate fpath entries" {
+  mkdir -p "$BATS_TMP_DIR/functions/autoload/mydir"
+  check() {
+    oroshi-reload-functions
+    oroshi-reload-functions
+    local count=0
+    for dir in $fpath; do [[ "$dir" == *mydir ]] && count=$((count + 1)); done
+    echo "$count"
+  }
+  bats_mock check
+  bats_run_function check
+  [ "$status" -eq 0 ]
+  [ "$output" = "1" ]
+}
+
+@test "switching to worktree removes main fpath dirs" {
+  bats_git_dir
+  mkdir -p "$BATS_TMP_DIR/functions/autoload/main-dir"
+  mkdir -p "$BATS_GIT_DIR/tools/term/zsh/config/functions/autoload/wt-dir"
+  check() {
+    oroshi-reload-functions
+    ZSH_CONFIG_PATH="/nonexistent"
+    cd "$BATS_GIT_DIR"
+    oroshi-reload-functions worktree
+    local found=0
+    for dir in $fpath; do [[ "$dir" == "$BATS_TMP_DIR/functions/autoload"* ]] && found=1; done
+    echo "$found"
+  }
+  bats_mock check
+  bats_run_function check
+  [ "$status" -eq 0 ]
+  [ "$output" = "0" ]
+}
+
 # --- Idempotency ---
 
 @test "second call exits 0" {
