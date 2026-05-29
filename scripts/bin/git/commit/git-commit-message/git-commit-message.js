@@ -25,7 +25,8 @@ if (files.length === 0) {
   process.exit(1);
 }
 
-const diff = await repo.run(`diff --cached -- ${files.join(' ')}`);
+const quotedFiles = files.map((f) => `"${f.replace(/"/g, '\\"')}"`);
+const diff = await repo.run(`diff --cached -- ${quotedFiles.join(' ')}`);
 
 const response = await fetch('https://api.anthropic.com/v1/messages', {
   method: 'POST',
