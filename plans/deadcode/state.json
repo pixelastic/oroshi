@@ -2,13 +2,15 @@
   {
     "id": "01",
     "issue": "issues/01-vim-cleanup.md",
-    "done": false,
+    "done": true,
+    "recap": "Deleted oroshi-old.vim (529-line VimScript colorscheme); already committed by user prior to session.",
     "blocked_by": []
   },
   {
     "id": "02",
     "issue": "issues/02-ruby-dead-cleanup.md",
-    "done": false,
+    "done": true,
+    "recap": "Deleted mp3.test.rb and music-metadata-update.test.rb; tests/ kept because tests/data/ fixture files exist.",
     "blocked_by": []
   },
   {

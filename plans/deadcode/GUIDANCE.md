@@ -24,3 +24,6 @@
 <!-- Append findings here after each issue, using: -->
 <!-- ### Issue XX — short title -->
 <!-- - finding -->
+
+### Issue 02 — ruby-dead-cleanup
+- `tests/` was NOT deleted: `tests/data/` contains 14 MP3 fixture files. The spec assumed the dir would be empty after deleting the two test files, but the data fixtures live there too. The condition "if empty" was never met, so the directory was correctly kept.
