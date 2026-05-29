@@ -32,7 +32,11 @@
     "issue": "issues/05-delete-project-key.md",
     "done": true,
     "recap": "Deleted project-key autoload function — no tests existed, no production callers remain after issues 02–04.",
-    "blocked_by": ["02", "03", "04"]
+    "blocked_by": [
+      "02",
+      "03",
+      "04"
+    ]
   },
   {
     "id": "06",
@@ -58,13 +62,20 @@
   {
     "id": "09",
     "issue": "issues/09-delete-env-infrastructure.md",
-    "done": false,
-    "blocked_by": ["05", "07", "08"]
+    "done": true,
+    "blocked_by": [
+      "05",
+      "07",
+      "08"
+    ],
+    "recap": "Deleted env-generate-projects, env/projects.zsh, env/projects.json; updated CONTEXT.md to reference new PROJECTS_V2 system."
   },
   {
     "id": "10",
     "issue": "issues/10-rename-projects-v2-to-projects.md",
     "done": false,
-    "blocked_by": ["09"]
+    "blocked_by": [
+      "09"
+    ]
   }
 ]
