@@ -1,0 +1,62 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-delete-dead-code-fzf-projects-and-old-vim.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-migrate-project-exists.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-migrate-yarn-zsh.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-migrate-complete-jumps.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-delete-project-key.md",
+    "done": false,
+    "blocked_by": ["02", "03", "04"]
+  },
+  {
+    "id": "06",
+    "issue": "issues/06-rewrite-context-path-bats.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "07",
+    "issue": "issues/07-migrate-colors-refresh.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "08",
+    "issue": "issues/08-migrate-kitty-python.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "09",
+    "issue": "issues/09-delete-env-infrastructure.md",
+    "done": false,
+    "blocked_by": ["05", "07", "08"]
+  },
+  {
+    "id": "10",
+    "issue": "issues/10-rename-projects-v2-to-projects.md",
+    "done": false,
+    "blocked_by": ["09"]
+  }
+]
