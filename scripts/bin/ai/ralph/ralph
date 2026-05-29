@@ -23,7 +23,7 @@ _sentinel_watcher() {
   local claudePid="$2"
   while true; do
     sleep $WATCHER_INTERVAL
-    [[ "$(ralph-state "$dir" get 'done')" == "true" ]] || continue
+    [[ ! "$(ralph-state "$dir" get 'done')" == "true" ]] && continue
     kill -TERM $claudePid 2>/dev/null || true
     break
   done
@@ -35,7 +35,6 @@ local gitRoot="$(git-directory-root)"
 
 # Single-shot mode
 if [[ "$maxLoops" == "" ]]; then
-  ralph-state "$dir" init single
   claude \
     --permission-mode acceptEdits \
     "/ralph ${dir}"
@@ -87,7 +86,7 @@ while [[ $i -lt $maxLoops ]]; do
   fi
 
   # Commit if there are changes
-  if [[ -n "$(git status --porcelain)" ]]; then
+  if [[ "$(git status --porcelain)" != "" ]]; then
     git add --all
     local msg="$(git-commit-message)"
     git commit -m "$msg"

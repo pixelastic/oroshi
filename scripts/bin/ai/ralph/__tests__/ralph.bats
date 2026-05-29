@@ -17,9 +17,9 @@ teardown() {
 }
 
 @test "ralph --max 3 runs exactly 3 iterations and creates 3 commits" {
-  echo '[{"id":"1","done":false,"blocked_by":[]}]' > "$PRD_DIR/state.json"
+  echo '[{"id":"1","done":false,"blocked_by":[]}]' >"$PRD_DIR/state.json"
 
-  claude() { echo "change $$" >> "$GIT_REPO/output.txt"; }
+  claude() { echo "change $$" >>"$GIT_REPO/output.txt"; }
   git-commit-message() { echo "test commit"; }
   bats_mock claude git-commit-message
 
@@ -32,10 +32,10 @@ teardown() {
 }
 
 @test "ralph --max 10 exits early when prd is complete after 1 iteration" {
-  echo '[{"id":"1","done":true,"blocked_by":[]}]' > "$PRD_DIR/state.json"
+  echo '[{"id":"1","done":true,"blocked_by":[]}]' >"$PRD_DIR/state.json"
 
   claude() {
-    echo "change $$" >> "$GIT_REPO/output.txt"
+    echo "change $$" >>"$GIT_REPO/output.txt"
     ralph-state "$PRD_DIR" set 'done' true
     ralph-state "$PRD_DIR" set prd_done true
   }
@@ -51,7 +51,7 @@ teardown() {
 }
 
 @test "ralph --max loop stops cleanly on Ctrl+C with no commit" {
-  echo '[{"id":"1","done":false,"blocked_by":[]}]' > "$PRD_DIR/state.json"
+  echo '[{"id":"1","done":false,"blocked_by":[]}]' >"$PRD_DIR/state.json"
 
   claude() { return 130; }
   git-commit-message() { echo "test commit"; }
@@ -65,29 +65,13 @@ teardown() {
   [ "$commits" -eq 1 ]
 }
 
-@test "single-shot mode creates ralph.json during run and clears it after" {
-  echo '[{"id":"1","done":false,"blocked_by":[]}]' > "$PRD_DIR/state.json"
-
-  # ralph.json must exist during the run (created by ralph-state init)
-  claude() {
-    [ -f "$PRD_DIR/ralph.json" ] || return 1
-    echo "change" >> "$GIT_REPO/output.txt"
-  }
-  bats_mock claude
-
-  cd "$GIT_REPO"
-  bats_run_script "$RALPH_SCRIPT" "$PRD_DIR"
-  [ "$status" -eq 0 ]
-  [ ! -f "$PRD_DIR/ralph.json" ]
-}
-
 @test "loop mode creates ralph.json during run and clears it after all iterations" {
-  echo '[{"id":"1","done":false,"blocked_by":[]},{"id":"2","done":false,"blocked_by":[]}]' > "$PRD_DIR/state.json"
+  echo '[{"id":"1","done":false,"blocked_by":[]},{"id":"2","done":false,"blocked_by":[]}]' >"$PRD_DIR/state.json"
 
   # ralph.json must exist during each iteration
   claude() {
     [ -f "$PRD_DIR/ralph.json" ] || return 1
-    echo "change $$" >> "$GIT_REPO/output.txt"
+    echo "change $$" >>"$GIT_REPO/output.txt"
   }
   git-commit-message() { echo "test commit"; }
   bats_mock claude git-commit-message
