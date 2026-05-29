@@ -23,7 +23,8 @@ function oroshi-prompt-populate:path() {
   [[ "$contextRoot" != "/" ]] && currentPath="${currentPath#"$contextRoot"}"
 
   # Simplify string path if too long
-  currentPath="$(simplify-path "$currentPath")"
+  simplify-path --reply "$currentPath"
+  currentPath=$REPLY
 
   # Stop if no more path
   [[ "$currentPath" == "" ]] && return
