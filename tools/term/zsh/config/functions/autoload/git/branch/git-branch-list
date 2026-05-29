@@ -44,7 +44,9 @@ for rawGitBranch in ${(f)rawGitBranches}; do
   row+="${displayPointer}▮"
 
   # Branch name
-  local displayBranch="$(git-branch-colorize "$branchName" --with-icon)"
+  local colorizeFlag="--with-icon"
+  [[ $isWorktree == "1" ]] && colorizeFlag="--worktree"
+  local displayBranch="$(git-branch-colorize "$branchName" $colorizeFlag)"
   row+="${displayBranch}▮"
 
   # Regular branch

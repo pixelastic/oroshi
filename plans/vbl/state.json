@@ -30,7 +30,8 @@
   {
     "id": "05",
     "issue": "issues/05-wire-worktree-coloring-branch-list.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced unconditional --with-icon call with a flag variable that selects --worktree for worktree branches; scaffold tests updated to assert on ANSI orange escape codes and pointer+worktree combo.",
     "blocked_by": ["04"]
   }
 ]
