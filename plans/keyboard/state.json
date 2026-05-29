@@ -1,9 +1,0 @@
-[
-  {
-    "id": "01",
-    "issue": "issues/01-remove-insert-layer.md",
-    "done": true,
-    "recap": "Renamed _LAYER_INSERT to _LAYER_UNUSED, removed 6 INSERT-only defines, remapped NORMAL top-left to MODE_CONFIG, replaced LAYER_INSERT_KEYS with all-empty LAYER_UNUSED_KEYS, pruned Insert color block.",
-    "blocked_by": []
-  }
-]
