@@ -21,6 +21,7 @@ excludedRules+=(SC2004) # note: $/${} is unnecessary on arithmetic variables.
 excludedRules+=(SC2034) # warning: {var} appears unused. Verify use (or export if used externally).
 excludedRules+=(SC2035) # note: Use ./*glob* or -- *glob* so names with dashes won't become options.
 excludedRules+=(SC2051) # warning: Bash doesn't support variables in brace range expansions. [SC2051]
+excludedRules+=(SC2054) # error: Use spaces, not commas, to separate array elements. (false positive: zsh array slice syntax $array[start,end])
 excludedRules+=(SC2066) # error: Since you double quoted this, it will not word split, and the loop will only run once
 excludedRules+=(SC2068) # error: Double quote array expansions to avoid re-splitting elements.
 excludedRules+=(SC2076) # warning: Remove quotes from right-hand side of =~ to match as a regex rather than literally. [SC2076]
@@ -57,14 +58,13 @@ done
 [[ ${#input} -eq 0 ]] && printf '[]\n' && exit 0
 
 # Run shellcheck (|| true so set -e doesn't abort on findings)
-local scOutput
-scOutput="$(shellcheck \
+local scOutput="$(shellcheck \
   --shell bash \
   --external-sources \
   --format json \
   --exclude ${(j:,:)excludedRules} \
   "${input[@]}" || true)"
-[[ -z "$scOutput" ]] && scOutput="[]"
+[[ "$scOutput" == "" ]] && scOutput="[]"
 
 printf '%s\n' "$scOutput"
 [[ "$(printf '%s' "$scOutput" | jq 'length')" -gt 0 ]] && exit 1
