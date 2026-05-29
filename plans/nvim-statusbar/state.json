@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-mode-badge-shrink.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced full-word mode labels (NORMAL, INSERT, etc.) with single-letter equivalents (N, I, V, S, C) in getMode().",
     "blocked_by": []
   },
   {

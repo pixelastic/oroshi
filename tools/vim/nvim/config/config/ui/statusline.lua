@@ -191,23 +191,23 @@ O_STATUSLINE = {
     -- All regular modes
     local modes = {
       n = {
-        content = " NORMAL ",
+        content = " N ",
         hl = O.colors.statusline.normal,
       },
       i = {
-        content = " INSERT ",
+        content = " I ",
         hl = O.colors.statusline.insert,
       },
       v = {
-        content = " VISUAL ",
+        content = " V ",
         hl = O.colors.statusline.visual,
       },
       s = {
-        content = " SEARCH ",
+        content = " S ",
         hl = O.colors.statusline.search,
       },
       c = {
-        content = " COMMAND ",
+        content = " C ",
         hl = O.colors.statusline.command,
       },
     }
