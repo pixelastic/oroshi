@@ -756,9 +756,9 @@
       "name": "DARK_GREEN"
     },
     "foreground": {
-      "ansi": 71,
-      "hex": "#dcfce7",
-      "name": "GREEN_1"
+      "ansi": 7,
+      "hex": "#ffffff",
+      "name": "WHITE"
     },
     "hideNameInPrompt": true,
     "icon": "",
@@ -1579,6 +1579,26 @@
     "icon": " ",
     "path": "~/perso/Dropbox/backup/roleplay"
   },
+  "root": {
+    "background": {
+      "ansi": 147,
+      "hex": "#c2410c",
+      "name": "ORANGE_7"
+    },
+    "backgroundInactive": {
+      "ansi": 220,
+      "hex": "#1a120f",
+      "name": "DARK_ORANGE"
+    },
+    "foreground": {
+      "ansi": 142,
+      "hex": "#fed7aa",
+      "name": "ORANGE_2"
+    },
+    "hideNameInPrompt": true,
+    "icon": " ",
+    "path": "/"
+  },
   "s3": {
     "background": {
       "ansi": 17,
@@ -2012,26 +2032,6 @@
   "twitter": {
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": ""
-  },
-  "ubuntu": {
-    "background": {
-      "ansi": 147,
-      "hex": "#c2410c",
-      "name": "ORANGE_7"
-    },
-    "backgroundInactive": {
-      "ansi": 220,
-      "hex": "#1a120f",
-      "name": "DARK_ORANGE"
-    },
-    "foreground": {
-      "ansi": 142,
-      "hex": "#fed7aa",
-      "name": "ORANGE_2"
-    },
-    "hideNameInPrompt": false,
-    "icon": " ",
     "path": ""
   },
   "videogames": {

@@ -15,8 +15,8 @@ local distZsh="$distDir/projects.zsh"
 colors-load-definitions
 
 # Sort src/projects.json in-place
-local sorted="$(jq --sort-keys '.' "$srcJson")"
-printf '%s\n' "$sorted" >"$srcJson"
+local tmpSrc="$(mktemp)"
+jq --sort-keys '.' "$srcJson" >"$tmpSrc" && mv "$tmpSrc" "$srcJson"
 
 mkdir -p "$distDir"
 

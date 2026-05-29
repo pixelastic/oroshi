@@ -7,6 +7,7 @@ M.onInit = function()
       F.run(command, {
         onSuccess = function()
           F.info("File regenerated")
+          vim.cmd("checktime")
         end,
         onError = function()
           F.warn(command)

@@ -236,7 +236,7 @@
   },
   "home": {
     "background": "GREEN",
-    "foreground": "GREEN_1",
+    "foreground": "WHITE",
     "hideNameInPrompt": true,
     "icon": "",
     "path": "~"
@@ -498,6 +498,13 @@
     "icon": " ",
     "path": "~/perso/Dropbox/backup/roleplay"
   },
+  "root": {
+    "background": "ORANGE_7",
+    "foreground": "ORANGE_2",
+    "hideNameInPrompt": true,
+    "icon": " ",
+    "path": "/"
+  },
   "s3": {
     "background": "ORANGE",
     "foreground": "DARK_ORANGE",
@@ -633,11 +640,6 @@
   },
   "twitter": {
     "icon": " "
-  },
-  "ubuntu": {
-    "background": "ORANGE_7",
-    "foreground": "ORANGE_2",
-    "icon": " "
   },
   "videogames": {
     "background": "BLUE_8",

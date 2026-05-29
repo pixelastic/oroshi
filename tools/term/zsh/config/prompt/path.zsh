@@ -6,7 +6,7 @@
 # - Color the path if not writable
 function oroshi-prompt-populate:path() {
   OROSHI_PROMPT_PARTS[path]=""
-  local currentPath="${PWD/#$HOME/~}/"
+  local currentPath="${PWD}/"
 
   # Add marker if connected through SSH
   if [[ $SSH_CLIENT != '' ]]; then
@@ -14,16 +14,13 @@ function oroshi-prompt-populate:path() {
     OROSHI_PROMPT_PARTS[path]+="%F{$COLOR_ORANGE}${USER} ${hostname}%f%k"
   fi
 
-  # Context badge: project name + branch (for worktrees)
+  # Context badge: project name + optional worktre branch
   local badge="$(context-badge --zsh "$PWD")"
   [[ "$badge" != "" ]] && OROSHI_PROMPT_PARTS[path]+="$badge"
 
-  # In worktrees: badge only; filepath is in path_worktree_dir
-  (( GIT_DIRECTORY_IS_WORKTREE )) && return
-
   # Strip context root prefix from current path
-  local contextRoot="$(context-root "$PWD")"
-  [[ "$contextRoot" != "" ]] && currentPath="${currentPath#"${contextRoot/#$HOME/~}/"}"
+  local contextRoot="$(context-root "$PWD")/"
+  [[ "$contextRoot" != "/" ]] && currentPath="${currentPath#"$contextRoot"}"
 
   # Simplify string path if too long
   currentPath="$(simplify-path "$currentPath")"
@@ -52,16 +49,4 @@ function oroshi-prompt-populate:path() {
   fi
 
   [[ "$currentPath" != "" ]] && OROSHI_PROMPT_PARTS[path]+=" %F{$COLOR_ALIAS_DIRECTORY}${currentPath}%f"
-}
-
-# Filepath relative to worktree root (only shown in worktrees, after the badge)
-function oroshi-prompt-populate:path_worktree_dir() {
-  OROSHI_PROMPT_PARTS[path_worktree_dir]=""
-  (( GIT_DIRECTORY_IS_WORKTREE )) || return
-
-  local subPath="$(context-path "$PWD")"
-  subPath="$(simplify-path "$subPath")"
-  [[ "$subPath" == "" ]] && return
-
-  OROSHI_PROMPT_PARTS[path_worktree_dir]=" %F{$COLOR_ALIAS_DIRECTORY}${subPath}%f"
 }
