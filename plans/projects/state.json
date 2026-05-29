@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-migrate-complete-jumps.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced project-key + PROJECT_*_ICON with projects-load-definitions + PROJECTS_V2[${item:t}:icon]; also fixed if/else → one-liner and moved locals before loop.",
     "blocked_by": []
   },
   {
