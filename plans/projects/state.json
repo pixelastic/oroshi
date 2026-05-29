@@ -51,7 +51,8 @@
   {
     "id": "08",
     "issue": "issues/08-migrate-kitty-python.md",
-    "done": false,
+    "done": true,
+    "recap": "Rewrote initProjectList() to iterate dist/projects.json directly; reads icon, background/backgroundInactive/foreground .ansi ints; removed _NAME-suffix heuristics and two-pass loop.",
     "blocked_by": []
   },
   {

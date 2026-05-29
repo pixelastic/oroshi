@@ -65,3 +65,16 @@ for rawLine in ${(f)linkListRaw}; do
 ### `PROJECTS_V2` not populated in tests
 **Problem:** Spec mentions populating `PROJECTS_V2` inside each test.
 **Reason skipped:** `context-path` never reads `PROJECTS_V2` directly — it delegates to `context-root`, which is mocked. Population is irrelevant and would add noise.
+
+## Issue 08 — Migrate Kitty Python
+
+### camelCase naming violates PEP 8
+
+```python
+for projectName, project in rawProjectData.items():
+    bgInactive = project.get("backgroundInactive", {}).get("ansi")
+```
+
+**Problem:** PEP 8 requires `snake_case` for variables. `projectName`, `bgInactive`, `rawProjectData`, `getCursorColor`, `initProjectList`, etc. all use camelCase.
+
+**Reason skipped:** camelCase is a pervasive pre-existing convention throughout this file (`getCursorColor`, `getProjectData`, `initProjectList`, `projectState`, `rawProjectData`). Fixing only the new variables would create inconsistency; fixing all would be an unrelated refactor out of scope for this issue.
