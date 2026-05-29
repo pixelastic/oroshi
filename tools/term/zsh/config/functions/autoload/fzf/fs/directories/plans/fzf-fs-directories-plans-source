@@ -8,5 +8,8 @@ local rawPlans="$(plan-list-raw)"
 
 for line in ${(f)rawPlans}; do
   local fields=(${(@ps/▮/)line})
-  echo "${fields[1]}   ${fields[2]}"
+
+  local fullPath="${fields[1]}"
+  local displayPath="$(colorize "${fields[2]}" $COLOR_ALIAS_DIRECTORY)"
+  echo "${fullPath}   ${displayPath}"
 done
