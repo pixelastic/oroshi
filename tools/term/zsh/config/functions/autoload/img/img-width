@@ -1,0 +1,10 @@
+# Outputs width of one image in pixels
+# Usage:
+# $ img-width image.jpg             # 1920
+setopt local_options err_return
+
+local input="$1"
+
+local dims="$(img-dimensions "$input")"
+[[ "$dims" == "" ]] && return 1
+echo "${dims%%x*}"

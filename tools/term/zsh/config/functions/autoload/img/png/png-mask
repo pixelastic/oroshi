@@ -1,0 +1,19 @@
+# Apply a mask on an image, like a cookie cutter
+# Usage:
+# $ png-mask ./image.png ./mask.png ./output.png
+setopt local_options err_return
+
+local image="$1"
+local mask="$2"
+local output="$3"
+
+local dims="$(img-dimensions "$image")"
+[[ "$dims" == "" ]] && return 1
+local tmpMask="$(mktemp /tmp/png-mask-XXXXXX.png)"
+[[ "$tmpMask" == "" ]] && return 1
+cp "$mask" "$tmpMask"
+
+magick "$tmpMask" -resize "${dims}!" "$tmpMask"
+magick "$image" "$tmpMask" -compose CopyOpacity -composite -trim "$output"
+
+rm -f "$tmpMask"

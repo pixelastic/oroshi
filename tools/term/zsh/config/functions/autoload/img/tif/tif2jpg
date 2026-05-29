@@ -1,0 +1,5 @@
+# Convert tif files to jpg
+# Usage:
+# $ tif2jpg ./file.tif
+setopt local_options err_return
+img-convert $1 jpg

@@ -27,3 +27,8 @@
 
 ### Issue 02 — ruby-dead-cleanup
 - `tests/` was NOT deleted: `tests/data/` contains 14 MP3 fixture files. The spec assumed the dir would be empty after deleting the two test files, but the data fixtures live there too. The condition "if empty" was never met, so the directory was correctly kept.
+
+### Issue 04 — img-legacy-cleanup
+- HITL sign-off expanded scope: 7 scripts were migrated to ZSH before deletion (gifmin → bin script using gifsicle; jpgmin → wrapper like pngmin; png-mask, png2ico, tif2jpg, img-height, img-width → autoload functions).
+- `review-diff` only shows tracked changes — untracked new files are invisible to it. The spec reviewer will falsely report migrations as missing. Ignore that false alarm.
+- `png2ico` and `tif2jpg` peers (png2jpg, webp2png, etc.) don't have `setopt local_options err_return`, but the standard requires it — added to new files for correctness.

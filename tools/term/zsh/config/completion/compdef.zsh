@@ -119,36 +119,45 @@ compdef '_files -g "*.{avif,bmp,gif,jpg,jpeg,png,svg,tiff,webp}"' \
   img-darken \
   img-dimensions \
   img-display \
+  img-height \
   img-is-grayscale \
   img-is-landscape \
   img-is-portrait \
   img-lighten \
   img-luminosity \
   img-open \
-  img-resize
+  img-resize \
+  img-width \
+  imgmin
 compdef '_files -g "*.png"' \
+  png2bmp \
   png2gif \
+  png2ico \
   png2jpg \
   png2svg \
-  png2bmp \
   pngmin \
+  png-mask \
   png-trim
 compdef '_files -g "*.{jpg,jpeg}"' \
+  jpg2bmp \
   jpg2gif \
   jpg2png \
-  jpg2bmp \
-  jpg2svg
+  jpg2svg \
+  jpgmin
 compdef '_files -g "*.gif"' \
+  gif2bmp \
   gif2jpg \
   gif2png \
   gif2svg \
-  gif2bmp \
+  gifmin \
   gif-is-animated \
   gif-is-looping
 compdef '_files -g "*.svg"' \
   svg2gif \
   svg2jpg \
   svg2png
+compdef '_files -g "*.{tif,tiff}"' \
+  tif2jpg
 compdef '_files -g "*.avif"' \
   avif2png
 # }}}

@@ -1,0 +1,5 @@
+# Convert png files to ico
+# Usage:
+# $ png2ico ./file.png
+setopt local_options err_return
+img-convert $1 ico

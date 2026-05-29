@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-img-legacy-cleanup.md",
-    "done": false,
+    "done": true,
+    "recap": "Migrated gifmin, jpgmin, png-mask, png2ico, tif2jpg, img-height, img-width to ZSH before deleting img/__legacy/ entirely.",
     "blocked_by": []
   }
 ]

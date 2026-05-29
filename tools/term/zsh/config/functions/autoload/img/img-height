@@ -1,0 +1,10 @@
+# Outputs height of one image in pixels
+# Usage:
+# $ img-height image.jpg             # 1024
+setopt local_options err_return
+
+local input="$1"
+
+local dims="$(img-dimensions "$input")"
+[[ "$dims" == "" ]] && return 1
+echo "${dims##*x}"

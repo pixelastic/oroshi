@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# Note this is a wrapper around the imgmin function
+set -e
+imgmin "$@"
