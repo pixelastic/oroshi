@@ -36,16 +36,25 @@ O_STATUSLINE = {
       fileHighlight = O.colors.statusline.filepathNoName
     end
 
-    -- Project
-    local project = fileData.project
+    -- Context badge
+    local projectBadge = fileData.projectBadge
+    local worktreeBadge = fileData.worktreeBadge
 
     -- Mode
     add(statusline, mode.content, mode.hl)
-    add(statusline, "", { fg = modeBg, bg = project.hl.bg })
+    add(statusline, "", { fg = modeBg, bg = projectBadge.hl.bg })
 
-    -- Project
-    add(statusline, project.content, project.hl)
-    add(statusline, "", { fg = project.hl.bg })
+    -- Project Badge
+    add(statusline, projectBadge.content, projectBadge.hl)
+
+    -- Worktree Badge (if present)
+    if worktreeBadge then
+      add(statusline, "", { fg = projectBadge.hl.bg, bg = worktreeBadge.hl.bg })
+      add(statusline, worktreeBadge.content, worktreeBadge.hl)
+      add(statusline, "", { fg = worktreeBadge.hl.bg })
+    else
+      add(statusline, "", { fg = projectBadge.hl.bg })
+    end
 
     -- Filepath
     add(statusline, file.content, fileHighlight)
@@ -273,21 +282,16 @@ O_STATUSLINE = {
       return vim.b.statuslineFileData
     end
 
-    -- Project info
-    local projectName = vim.fn.systemlist("project-name " .. vim.fn.shellescape(rawFilepath))[1]
-    local projectData = O_STATUSLINE.getProjectData(projectName)
-    -- Icon with name string
-    local projectContent = projectData.icon
-    if projectData.hideNameInPrompt == false then
-      projectContent = projectContent .. projectData.name
-    end
-    local project = {
-      content = " " .. projectContent .. " ",
-      hl = projectData.hl,
-    }
+    -- Context badge (project + optional worktree)
+    local contextBadge = O_STATUSLINE.getContextBadge(rawFilepath)
+    local projectBadge = contextBadge.projectBadge
+    local worktreeBadge = contextBadge.worktreeBadge
+
+    -- Context root for filepath computation
+    local contextRoot = vim.fn.systemlist("context-root " .. vim.fn.shellescape(rawFilepath))[1] or ""
 
     -- Filepath
-    local relativePath = rawFilepath:gsub("^" .. F.escapeRegExp(projectData.path), "")
+    local relativePath = rawFilepath:gsub("^" .. F.escapeRegExp(contextRoot), "")
     local simplifiedPath = vim.fn.systemlist(
       "simplify-path " .. vim.fn.shellescape(relativePath) .. " 3" -- Keep only three levels
     )[1]
@@ -298,11 +302,41 @@ O_STATUSLINE = {
 
     -- Save in cache
     local statuslineFileData = {
-      project = project,
+      projectBadge = projectBadge,
+      worktreeBadge = worktreeBadge,
+      contextRoot = contextRoot,
       file = file,
     }
     vim.b.statuslineFileData = statuslineFileData
     return statuslineFileData
+  end,
+
+  -- getContextBadge: Get project badge and optional worktree badge for a filepath
+  getContextBadge = function(filepath)
+    -- Project badge
+    local projectName = vim.fn.systemlist("project-name " .. vim.fn.shellescape(filepath))[1]
+    local projectData = O_STATUSLINE.getProjectData(projectName)
+    -- Icon with name string
+    local projectContent = projectData.icon
+    if projectData.hideNameInPrompt == false then
+      projectContent = projectContent .. projectData.name
+    end
+    local projectBadge = {
+      content = " " .. projectContent .. " ",
+      hl = projectData.hl,
+    }
+
+    -- Worktree badge
+    local worktreeName = vim.fn.systemlist("git-worktree-name " .. vim.fn.shellescape(filepath))[1]
+    local worktreeBadge = nil
+    if worktreeName and worktreeName ~= "" then
+      worktreeBadge = {
+        content = " " .. worktreeName .. " ",
+        hl = O.colors.statusline.worktreeBadge,
+      }
+    end
+
+    return { projectBadge = projectBadge, worktreeBadge = worktreeBadge }
   end,
 
   -- countSelectedLines: Count the number of lines currently selected
@@ -322,7 +356,7 @@ O_STATUSLINE = {
     if vim.bo.filetype == "checkhealth" then
       return {
         file = { content = "" },
-        project = {
+        projectBadge = {
           content = "   healthcheck ",
           hl = O.colors.statusline.healthcheck,
         },
@@ -333,7 +367,7 @@ O_STATUSLINE = {
     if vim.bo.filetype == "codecompanion" then
       return {
         file = { content = "" },
-        project = {
+        projectBadge = {
           content = "   AI CHAT ",
           hl = O.colors.statusline.ai,
         },
@@ -344,7 +378,7 @@ O_STATUSLINE = {
     if vim.bo.filetype == "pager" then
       return {
         file = { content = "" },
-        project = {
+        projectBadge = {
           content = " 󰄛  KITTY ",
           hl = O.colors.statusline.kitty,
         },

@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-context-badge-rendering.md",
-    "done": false,
+    "done": true,
+    "recap": "Extracted getContextBadge() from getFileData(); calls git-worktree-name and context-root; renders worktree badge with placeholder '>' arrows between project badge and filepath in main().",
     "blocked_by": ["02"]
   }
 ]

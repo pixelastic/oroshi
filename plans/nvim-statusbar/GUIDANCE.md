@@ -49,6 +49,12 @@ Do not write bats wrappers for headless nvim. Skip the test phase entirely for L
 
 _Append-only. Each completed issue adds a subsection here._
 
+### Issue 03 — Context Badge Rendering
+
+- Arrow glyph U+E0B0 is invisible in Read tool output and `Write` strips it silently — use `Edit` only, and avoid needing to match it in `old_string`. When adding new arrow calls, use a placeholder character and let the user replace it with the real glyph.
+- `O.colors.statusline.worktreeBadge` (not `.worktree`) — per Issue 02 Guidance discovery, confirmed as the correct color key.
+- `contextRoot` must be stored in `vim.b.statuslineFileData` alongside `projectBadge`, `worktreeBadge`, and `file` — spec L31 requires it even if nothing in the current rendering loop reads it back from cache.
+
 ### Issue 02 — Worktree Badge Colors
 
 - Key must be `worktreeBadge` (not bare `worktree`) — CONTEXT.md canonizes "Worktree Badge" as the term; bare "worktree" is ambiguous per the glossary.
