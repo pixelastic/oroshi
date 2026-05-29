@@ -5,9 +5,11 @@
 # $ fzf-fs-shared-source --directories          # Find only directories
 zmodload zsh/zutil
 zparseopts -E -D \
-  -directories=flagDirectories
+  -directories=flagDirectories \
+  -max-depth:=flagMaxDepth
 
 local isDirectories=${#flagDirectories}
+local maxDepth=${flagMaxDepth[2]}
 
 # We find in specified directory, and if not specified in the last saved one
 local searchPath="$1"
@@ -21,6 +23,9 @@ if [[ $isDirectories == "1" ]]; then
 else
   additionalArguments+=(--type file)
 fi
+
+# Limit depth if specified
+[[ "$maxDepth" != "" ]] && additionalArguments+=(--max-depth "$maxDepth")
 
 # Find all elements in that directory
 local items="$(fd \
