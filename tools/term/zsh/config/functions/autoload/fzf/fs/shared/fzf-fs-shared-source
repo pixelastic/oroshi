@@ -38,6 +38,10 @@ for item in ${(f)items}; do
   # Remove starting ./ from filepaths
   item=${item//.\/}
 
-  echo "${searchPath}/${item}   ${item}"
-done
+  local fullPath="${searchPath}/${item}"
 
+  simplify-path --reply "${item}"
+  local displayPath="$REPLY"
+
+  echo "${fullPath}   ${displayPath}"
+done

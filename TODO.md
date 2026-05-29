@@ -46,6 +46,13 @@ currently has a "job's done"
 zshlint: [[ "$allDone" == "true" ]] && { print '{"status":"done"}'; return 0; }
 Should be a real if [[ ]]; then fi
 
+fzf uses     as separator in many functions. Why? Why not use ▮ as all the other
+functions do?
+Overall I might need to have to ask an agent to look at the fzf diretcory and
+all its functions and make sense of what it does, when it's called, etc, so we
+can have a proper set of tests, and refactor it correctly. The commands are so
+fragmented, it's becoming really hard to know what it does
+
 ---
 
 I will need to add a LUA harness made of tests and lints.
