@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-test-git-branch-list-raw.md",
-    "done": false,
+    "done": true,
+    "recap": "Added git-branch-list-raw.bats with 7 regression tests locking down the 7-field ▮-delimited output format.",
     "blocked_by": []
   },
   {
