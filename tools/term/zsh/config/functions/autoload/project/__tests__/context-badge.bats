@@ -1,64 +1,84 @@
 bats_load_library 'helper'
 
 setup() {
-  bats_git_dir 'my-repo'
-  bats_git_worktree 'fix/bug'
-  PROJ="typeset -gA PROJECTS; PROJECTS[my-project.path]=${BATS_GIT_DIR}/; PROJECTS[my-project.background.ansi]=100; PROJECTS[my-project.foreground.ansi]=255; PROJECTS[my-project.icon]=X; PROJECTS[my-project.hideNameInPrompt]=false; COLOR_ALIAS_GIT_BRANCH=17"
+  bats_tmp_dir
+
+  project-name() { echo "my-project"; }
+  bats_mock project-name
+
+  git-worktree-name() { echo ""; }
+  bats_mock git-worktree-name
+
+  projects-load-definitions() {
+    typeset -gA PROJECTS_V2
+    PROJECTS_V2[my-project:background:ansi]=100
+    PROJECTS_V2[my-project:foreground:ansi]=255
+    PROJECTS_V2[my-project:icon]="x "
+    PROJECTS_V2[my-project:hideNameInPrompt]=0
+  }
+  bats_mock projects-load-definitions
+
+  export COLOR_ORANGE_1=208
+  export COLOR_ORANGE_7=130
+
+  export BATS_SEPARATOR=""
 }
 
 teardown() {
   bats_cleanup
 }
 
-@test "contains project name and no branch for path inside Git Repo Main" {
-  run zsh -c "${PROJ}; context-badge ${BATS_GIT_DIR}/src"
+# --- Simple project ---
+
+@test "simple project: output contains name" {
+  bats_run_function context-badge /some/path
+  local actual="$(bats_strip_ansi "$output")"
   [ "$status" -eq 0 ]
-  [[ "$output" == *"my-project"* ]]
-  [[ "$output" != *"main"* ]]
+  [[ "$actual" == " x my-project ${BATS_SEPARATOR}" ]]
 }
 
-@test "contains project name and branch name for path inside linked worktree" {
-  run zsh -c "${PROJ}; context-badge ${BATS_GIT_WORKTREES}fix-bug"
-  [ "$status" -eq 0 ]
-  [[ "$output" == *"my-project"* ]]
-  [[ "$output" == *"fix/bug"* ]]
-}
-
-@test "project name argument produces same output as project root path" {
-  run zsh -c "${PROJ}; context-badge my-project"
-  [ "$status" -eq 0 ]
-  local by_name="$output"
-  run zsh -c "${PROJ}; context-badge ${BATS_GIT_DIR}"
-  [ "$status" -eq 0 ]
-  [ "$by_name" = "$output" ]
-}
-
-@test "returns empty output for path outside all known projects" {
-  run zsh -c "${PROJ}; context-badge /tmp/unregistered-dir"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
-}
-
-@test "output contains ANSI escape sequences for registered path" {
-  run zsh -c "${PROJ}; context-badge ${BATS_GIT_DIR}"
+@test "simple project: output has ANSI sequences" {
+  bats_run_function context-badge /some/path
   [ "$status" -eq 0 ]
   [[ "$output" == *$'\e['* ]]
 }
 
-@test "output does not contain zsh prompt codes" {
-  run zsh -c "${PROJ}; context-badge ${BATS_GIT_DIR}"
-  [ "$status" -eq 0 ]
-  [[ "$output" != *"%K{"* ]]
-}
-
-@test "--zsh flag output contains zsh prompt codes" {
-  run zsh -c "${PROJ}; context-badge ${BATS_GIT_DIR} --zsh"
+@test "simple project: --zsh flag outputs zsh codes not ANSI" {
+  bats_run_function context-badge /some/path --zsh
   [ "$status" -eq 0 ]
   [[ "$output" == *"%K{"* ]]
+  [[ "$output" != *$'\e['* ]]
 }
 
-@test "--zsh flag output does not contain raw ANSI sequences" {
-  run zsh -c "${PROJ}; context-badge ${BATS_GIT_DIR} --zsh"
+# --- Worktree ---
+
+@test "worktree: output contains project name and branch" {
+  git-worktree-name() { echo "fix/bug"; }
+  bats_mock git-worktree-name
+
+  bats_run_function context-badge /some/path
+  local actual="$(bats_strip_ansi "$output")"
+  echo "[[$actual]]"
+
   [ "$status" -eq 0 ]
-  [[ "$output" != *$'\e['* ]]
+  [[ "$actual" == " x my-project ${BATS_SEPARATOR} fix/bug ${BATS_SEPARATOR}" ]]
+}
+
+# --- hideNameInPrompt ---
+
+@test "hideNameInPrompt: project name absent from output" {
+  projects-load-definitions() {
+    typeset -gA PROJECTS_V2
+    PROJECTS_V2[my-project:background:ansi]=100
+    PROJECTS_V2[my-project:foreground:ansi]=255
+    PROJECTS_V2[my-project:icon]=x
+    PROJECTS_V2[my-project:hideNameInPrompt]=1
+  }
+  bats_mock projects-load-definitions
+
+  bats_run_function context-badge /some/path
+  local actual="$(bats_strip_ansi "$output")"
+
+  [ "$status" -eq 0 ]
+  [[ "$actual" == " x ${BATS_SEPARATOR}" ]]
 }

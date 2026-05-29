@@ -8,74 +8,51 @@
 # $ context-badge /path/outside/all    # empty output
 setopt local_options err_return
 
+projects-load-definitions
+
 zmodload zsh/zutil
 zparseopts -E -D \
   -zsh=flagZsh
-
 local isZsh=${#flagZsh}
+
 local reference="${1:-$PWD}"
-local esc=$'\e'
-local arrow=$'\ue0b0'
 
-# Colored segment: [arrow transition] + text on bg/fg
-# _badge bg fg text [prevBg]  — prevBg triggers transition arrow
-_badge() {
-  local bg="$1"
-  local fg="$2"
-  local text="$3"
-  local prevBg="${4:-}"
-  if [[ $isZsh == "1" ]]; then
-    local out="%K{$bg}"
-    [[ "$prevBg" != "" ]] && out+="%F{$prevBg}${arrow}"
-    out+="%F{$fg}${text}%f%k"
-  else
-    local out="${esc}[48;5;${bg}m"
-    [[ "$prevBg" != "" ]] && out+="${esc}[38;5;${prevBg}m${arrow}"
-    out+="${esc}[38;5;${fg}m${text}${esc}[0m"
-  fi
-  print -n "$out"
-}
-
-# Final arrow after last badge (no background)
-_trailing_arrow() {
-  local fg="$1"
-  if [[ $isZsh == "1" ]]; then
-    print -n "%F{$fg}${arrow}%f"
-  else
-    print -n "${esc}[38;5;${fg}m${arrow}${esc}[0m"
-  fi
-}
-
-# Load PROJECTS if not already populated
-(( ${#PROJECTS} == 0 )) && source "$OROSHI_ROOT/tools/term/zsh/config/theming/dist/projects.zsh"
-
-# Resolve project name argument to its path
-if [[ "$reference" != /* ]]; then
-  local resolvedPath="${PROJECTS[${reference}.path]}"
-  [[ "$resolvedPath" != "" ]] && reference="${${resolvedPath/#\~/$HOME}%/}"
-fi
-
-# Unknown project → empty output
-local projectName="$(context-project "$reference")"
+# project info
+local projectName="$(project-name "$reference")"
 [[ "$projectName" == "" ]] && return 0
+local projectIcon=$PROJECTS_V2[${projectName}:icon]
+local projectBackground=$PROJECTS_V2[${projectName}:background:ansi]
+local projectForeground=$PROJECTS_V2[${projectName}:foreground:ansi]
+local projectHideNameInPrompt=$PROJECTS_V2[${projectName}:hideNameInPrompt]
+local projectDisplay=" ${projectIcon}"
+[[ "$projectHideNameInPrompt" == "1" ]] || projectDisplay+="${projectName}"
 
-# Project display vars
-local projectBg="${PROJECTS[${projectName}.background.ansi]}"
-local projectFg="${PROJECTS[${projectName}.foreground.ansi]}"
-local projectIcon="${PROJECTS[${projectName}.icon]}"
-local hideNameInPrompt="${PROJECTS[${projectName}.hideNameInPrompt]}"
-local displayName="$projectName"
-[[ "$hideNameInPrompt" == "true" ]] && displayName=""
+# separator info
+local separatorIcon=""
 
-# Worktree name (empty if not in a linked worktree)
+# worktreeinfo
 local worktreeName="$(git-worktree-name "$reference")"
+local worktreeForeground=$COLOR_ORANGE_1
+local worktreeBackground=$COLOR_ORANGE_7
 
-if [[ "$worktreeName" == "" ]]; then
-  _badge "$projectBg" "$projectFg" " ${projectIcon}${displayName} "
-  _trailing_arrow "$projectBg"
-else
-  local branchBg="$COLOR_ALIAS_GIT_BRANCH"
-  _badge "$projectBg" "$projectFg" " ${projectIcon}${displayName} "
-  _badge "$branchBg" "255" " ${worktreeName} " "$projectBg"
-  _trailing_arrow "$branchBg"
+# Colorize either in ANSI or %F{color} format depending on the --zsh flag
+function _colorize() {
+  local zshFlag=()
+  [[ $isZsh == "1" ]] && zshFlag=(--zsh)
+
+  colorize "${1}" ${2} ${3} ${zshFlag[@]}
+}
+
+# Project badge
+_colorize "${projectDisplay} " $projectForeground $projectBackground
+
+# Final separator if no worktree
+if [[ $worktreeName == "" ]]; then
+  _colorize "${separatorIcon}" $projectBackground
+  return 0
 fi
+
+# Worktree badge
+_colorize "${separatorIcon}" $projectBackground $worktreeBackground
+_colorize " ${worktreeName} " $worktreeForeground $worktreeBackground
+_colorize "${separatorIcon}" $worktreeBackground
