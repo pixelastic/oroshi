@@ -1,6 +1,6 @@
-# Search for a docs subdirectory (used by ralph command)
+# Search for a plans subdirectory (used by ralph command)
 local rootDirectory="$(git-directory-root -f)"
-local ralphDirectory="${rootDirectory}/ralph"
+local ralphDirectory="${rootDirectory}/plans"
 fzf-var-write pwd "$ralphDirectory"
 
 fzf-fs-directories \
