@@ -6,4 +6,6 @@
 # $ git-directory-gitdir /path/to/dir # Given directory
 
 local targetPath="${1:-$PWD}"
+# git -C requires a directory; normalize file paths to their parent dir
+[[ -f "$targetPath" ]] && targetPath="${targetPath:h}"
 git -C "$targetPath" rev-parse --git-dir 2>/dev/null
