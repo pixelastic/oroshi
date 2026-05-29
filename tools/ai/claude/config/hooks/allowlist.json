@@ -70,6 +70,7 @@
   "git-branch-current",
   "git-branch-list",
   "git-branch-slug",
+  "git-directory-gitdir",
   "git-directory-is-worktree",
   "git-file-lint",
   "git-file-test",

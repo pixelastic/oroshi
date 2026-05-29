@@ -126,4 +126,7 @@ lua-writer should use F.run() rather than vim.fn.systemlist. Or actually, F.run
 is asynchronous by default (it has onSuccess, onError). Maybe I would need a
 better API for both sync and async? runSync maybe?
 
+Add a F.removePrefix() that removes a given string from the beginning of
+another. Useful to get a relative path out of a known root
+
 ---
