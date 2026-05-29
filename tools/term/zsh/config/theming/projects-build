@@ -6,7 +6,7 @@
 #   $ THEMING_ROOT=/path/to/theming projects-build
 set -e
 
-local themingRoot="${THEMING_ROOT:-${0:A:h:h}}"
+local themingRoot="${THEMING_ROOT:-${0:A:h}}"
 local srcJson="$themingRoot/src/projects.json"
 local distDir="$themingRoot/dist"
 local distJson="$distDir/projects.json"
@@ -49,7 +49,7 @@ function generateDistJson() {
     '$projects | to_entries | map(
       .key as $projectName | .value as $projectData |
 
-      ($projectData.path // "" | if (. != "" and (endswith("/") | not)) then . + "/" else . end) as $projectPath |
+      ($projectData.path // "") as $projectPath |
 
       ($projectData.background | if . then $colors[.] else null end) as $bgColor |
       ($projectData.foreground | if . then $colors[.] else null end) as $fgColor |

@@ -17,7 +17,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/aberlaas/"
+    "path": "~/local/www/projects/aberlaas"
   },
   "algolia": {
     "background": {
@@ -57,7 +57,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/algolia-indexing/"
+    "path": "~/local/www/projects/algolia-indexing"
   },
   "alme": {
     "foreground": {
@@ -67,7 +67,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "(.) ",
-    "path": "~/local/www/projects/alme/"
+    "path": "~/local/www/projects/alme"
   },
   "aoinan": {
     "background": {
@@ -87,7 +87,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "<> ",
-    "path": "~/local/www/projects/aoinan/"
+    "path": "~/local/www/projects/aoinan"
   },
   "api-cloudflare": {
     "background": {
@@ -107,7 +107,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/pixelastic.com/api.pixelastic.com/cloudflare/"
+    "path": "~/local/www/pixelastic.com/api.pixelastic.com/cloudflare"
   },
   "api-fly": {
     "background": {
@@ -127,7 +127,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/pixelastic.com/api.pixelastic.com/fly/"
+    "path": "~/local/www/pixelastic.com/api.pixelastic.com/fly"
   },
   "api-netlify": {
     "background": {
@@ -147,7 +147,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/pixelastic.com/api.pixelastic.com/netlify/"
+    "path": "~/local/www/pixelastic.com/api.pixelastic.com/netlify"
   },
   "armory": {
     "background": {
@@ -162,7 +162,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/pixelastic.com/gamemaster/armory/"
+    "path": "~/local/www/pixelastic.com/gamemaster/armory"
   },
   "bg": {
     "background": {
@@ -202,7 +202,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/pixelastic.com/blog.pixelastic.com/"
+    "path": "~/local/www/pixelastic.com/blog.pixelastic.com"
   },
   "bodwynn": {
     "background": {
@@ -222,7 +222,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "󰇈 ",
-    "path": "~/local/www/algolia/bodwynn/"
+    "path": "~/local/www/algolia/bodwynn"
   },
   "bodwynn-data": {
     "background": {
@@ -242,7 +242,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "󰇈  ",
-    "path": "~/local/www/algolia/bodwynn-data/"
+    "path": "~/local/www/algolia/bodwynn-data"
   },
   "books": {
     "hideNameInPrompt": false,
@@ -262,7 +262,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "ⓑ ",
-    "path": "~/local/www/algolia/brefsearch/brefsearch/"
+    "path": "~/local/www/algolia/brefsearch/brefsearch"
   },
   "brefsearch-data": {
     "background": {
@@ -277,7 +277,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "ⓑ  ",
-    "path": "~/local/www/algolia/brefsearch/brefsearch-data/"
+    "path": "~/local/www/algolia/brefsearch/brefsearch-data"
   },
   "brefsearch-media": {
     "background": {
@@ -292,7 +292,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "ⓑ  ",
-    "path": "~/local/www/algolia/brefsearch/brefsearch-media/"
+    "path": "~/local/www/algolia/brefsearch/brefsearch-media"
   },
   "callirhoe": {
     "background": {
@@ -312,7 +312,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/callirhoe/"
+    "path": "~/local/www/projects/callirhoe"
   },
   "claude": {
     "background": {
@@ -332,7 +332,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "● ",
-    "path": "~/local/tmp/oroshi/claude/"
+    "path": "~/local/tmp/oroshi/claude"
   },
   "comics": {
     "hideNameInPrompt": false,
@@ -357,7 +357,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/algolia/commitology/"
+    "path": "~/local/www/algolia/commitology"
   },
   "commitology-data": {
     "background": {
@@ -377,7 +377,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/algolia/commitology-data/"
+    "path": "~/local/www/algolia/commitology-data"
   },
   "contentsquare": {
     "background": {
@@ -392,7 +392,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/contentsquare/"
+    "path": "~/local/www/contentsquare"
   },
   "crafting": {
     "background": {
@@ -427,7 +427,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/algolia/crsearch/crsearch/"
+    "path": "~/local/www/algolia/crsearch/crsearch"
   },
   "crsearch-data": {
     "background": {
@@ -447,7 +447,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/algolia/crsearch/crsearch-data/"
+    "path": "~/local/www/algolia/crsearch/crsearch-data"
   },
   "crsearch-media": {
     "background": {
@@ -467,7 +467,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/algolia/crsearch/crsearch-media/"
+    "path": "~/local/www/algolia/crsearch/crsearch-media"
   },
   "dashboards": {
     "background": {
@@ -527,7 +527,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/pixelastic.com/gamemaster/dungeons/dungeons/"
+    "path": "~/local/www/pixelastic.com/gamemaster/dungeons/dungeons"
   },
   "dungeons-pages": {
     "background": {
@@ -547,7 +547,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/pixelastic.com/gamemaster/dungeons/dungeons-pages/"
+    "path": "~/local/www/pixelastic.com/gamemaster/dungeons/dungeons-pages"
   },
   "dungeons-pictures": {
     "background": {
@@ -567,7 +567,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/pixelastic.com/gamemaster/dungeons/dungeons-pictures/"
+    "path": "~/local/www/pixelastic.com/gamemaster/dungeons/dungeons-pictures"
   },
   "ensureUrlTrailingSlash": {
     "background": {
@@ -587,7 +587,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/ensure-url-trailing-slash/"
+    "path": "~/local/www/projects/ensure-url-trailing-slash"
   },
   "esmify": {
     "background": {
@@ -607,7 +607,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/esmify/"
+    "path": "~/local/www/projects/esmify"
   },
   "firost": {
     "background": {
@@ -627,7 +627,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "❯ ",
-    "path": "~/local/www/projects/firost/"
+    "path": "~/local/www/projects/firost"
   },
   "gamemaster": {
     "background": {
@@ -647,7 +647,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/pixelastic.com/gamemaster/gamemaster.pixelastic.com/"
+    "path": "~/local/www/pixelastic.com/gamemaster/gamemaster.pixelastic.com"
   },
   "gdrive": {
     "background": {
@@ -667,7 +667,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/mount/gdrive/"
+    "path": "~/local/mount/gdrive"
   },
   "gilmore": {
     "background": {
@@ -687,7 +687,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "✨ ",
-    "path": "~/local/www/projects/gilmore/"
+    "path": "~/local/www/projects/gilmore"
   },
   "gitinx": {
     "background": {
@@ -702,7 +702,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/gitinx/"
+    "path": "~/local/www/projects/gitinx"
   },
   "golgoth": {
     "background": {
@@ -722,7 +722,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/golgoth/"
+    "path": "~/local/www/projects/golgoth"
   },
   "grimoire": {
     "background": {
@@ -742,7 +742,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/pixelastic.com/grimoire.pixelastic.com/"
+    "path": "~/local/www/pixelastic.com/grimoire.pixelastic.com"
   },
   "home": {
     "background": {
@@ -762,7 +762,7 @@
     },
     "hideNameInPrompt": true,
     "icon": "",
-    "path": "~/"
+    "path": "~"
   },
   "hylea": {
     "background": {
@@ -782,7 +782,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "📗 ",
-    "path": "~/local/mount/hylea/"
+    "path": "~/local/mount/hylea"
   },
   "imoen": {
     "foreground": {
@@ -792,7 +792,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/projects/imoen/"
+    "path": "~/local/www/projects/imoen"
   },
   "indexing": {
     "background": {
@@ -827,7 +827,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/irori/"
+    "path": "~/local/www/projects/irori"
   },
   "items": {
     "background": {
@@ -847,7 +847,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "ﰤ ",
-    "path": "~/local/www/pixelastic.com/gamemaster/items/items/"
+    "path": "~/local/www/pixelastic.com/gamemaster/items/items"
   },
   "items-data": {
     "background": {
@@ -867,7 +867,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "ﰤ ",
-    "path": "~/local/www/pixelastic.com/gamemaster/items/items-data/"
+    "path": "~/local/www/pixelastic.com/gamemaster/items/items-data"
   },
   "jekyll": {
     "background": {
@@ -887,7 +887,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/algolia/jekyll-algolia/"
+    "path": "~/local/www/algolia/jekyll-algolia"
   },
   "keyleth": {
     "background": {
@@ -907,7 +907,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "󰌪 ",
-    "path": "~/local/www/projects/keyleth/"
+    "path": "~/local/www/projects/keyleth"
   },
   "kindle": {
     "background": {
@@ -927,7 +927,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "   ",
-    "path": "/media/tim/Kindle/"
+    "path": "/media/tim/Kindle"
   },
   "korvosa": {
     "background": {
@@ -947,7 +947,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "🩸 ",
-    "path": "~/local/www/rp/korvosa/"
+    "path": "~/local/www/rp/korvosa"
   },
   "landscapes": {
     "background": {
@@ -967,7 +967,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/projects/landscapes/landscapes/"
+    "path": "~/local/www/projects/landscapes/landscapes"
   },
   "landscapes-data": {
     "background": {
@@ -987,7 +987,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/projects/landscapes/landscapes-data/"
+    "path": "~/local/www/projects/landscapes/landscapes-data"
   },
   "magic": {
     "background": {
@@ -1007,7 +1007,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/pixelastic.com/projects/magic/"
+    "path": "~/local/www/pixelastic.com/projects/magic"
   },
   "maps": {
     "background": {
@@ -1027,7 +1027,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/pixelastic.com/gamemaster/maps/maps/"
+    "path": "~/local/www/pixelastic.com/gamemaster/maps/maps"
   },
   "maps-data": {
     "background": {
@@ -1047,7 +1047,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/pixelastic.com/gamemaster/maps/maps-data/"
+    "path": "~/local/www/pixelastic.com/gamemaster/maps/maps-data"
   },
   "media": {
     "background": {
@@ -1062,7 +1062,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "/media/"
+    "path": "/media"
   },
   "meetups": {
     "background": {
@@ -1082,7 +1082,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/algolia/meetups/"
+    "path": "~/local/www/algolia/meetups"
   },
   "meetups-algolia": {
     "background": {
@@ -1102,7 +1102,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "󰖟 ",
-    "path": "~/local/www/algolia/meetups/meetups-algolia/"
+    "path": "~/local/www/algolia/meetups/meetups-algolia"
   },
   "meetups-calendar": {
     "background": {
@@ -1122,7 +1122,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/algolia/meetups/meetups-calendar/"
+    "path": "~/local/www/algolia/meetups/meetups-calendar"
   },
   "meetups-calendar-sync": {
     "background": {
@@ -1142,7 +1142,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/algolia/meetups/meetups-calendar-sync/"
+    "path": "~/local/www/algolia/meetups/meetups-calendar-sync"
   },
   "meetups-recordings-sync": {
     "background": {
@@ -1162,7 +1162,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/algolia/meetups/meetups-recordings-sync/"
+    "path": "~/local/www/algolia/meetups/meetups-recordings-sync"
   },
   "meetups-teasers-generator": {
     "background": {
@@ -1182,7 +1182,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/algolia/meetups/meetups-teasers-generator/"
+    "path": "~/local/www/algolia/meetups/meetups-teasers-generator"
   },
   "megadungeon": {
     "background": {
@@ -1202,7 +1202,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/pixelastic.com/gamemaster/megadungeon/"
+    "path": "~/local/www/pixelastic.com/gamemaster/megadungeon"
   },
   "monorepoify": {
     "background": {
@@ -1217,7 +1217,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/projects/monorepoify/"
+    "path": "~/local/www/projects/monorepoify"
   },
   "monsters": {
     "background": {
@@ -1232,7 +1232,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/pixelastic.com/gamemaster/monsters/monsters/"
+    "path": "~/local/www/pixelastic.com/gamemaster/monsters/monsters"
   },
   "monsters-pages": {
     "background": {
@@ -1252,7 +1252,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/pixelastic.com/gamemaster/monsters/monsters-pages/"
+    "path": "~/local/www/pixelastic.com/gamemaster/monsters/monsters-pages"
   },
   "monsters-pictures": {
     "background": {
@@ -1267,7 +1267,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/pixelastic.com/gamemaster/monsters/monsters-pictures/"
+    "path": "~/local/www/pixelastic.com/gamemaster/monsters/monsters-pictures"
   },
   "movies": {
     "hideNameInPrompt": false,
@@ -1297,7 +1297,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "神",
-    "path": "~/local/www/projects/netlify-minutes/"
+    "path": "~/local/www/projects/netlify-minutes"
   },
   "norska": {
     "background": {
@@ -1317,7 +1317,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "煮",
-    "path": "~/local/www/projects/norska/norska/"
+    "path": "~/local/www/projects/norska/norska"
   },
   "npm-search": {
     "background": {
@@ -1337,7 +1337,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/algolia/npm-search/"
+    "path": "~/local/www/algolia/npm-search"
   },
   "on-circle": {
     "background": {
@@ -1357,7 +1357,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "⬤ ",
-    "path": "~/local/www/projects/on-circle/"
+    "path": "~/local/www/projects/on-circle"
   },
   "oroshi": {
     "background": {
@@ -1377,7 +1377,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "x ",
-    "path": "~/.oroshi/"
+    "path": "~/.oroshi"
   },
   "painting": {
     "background": {
@@ -1392,7 +1392,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/pixelastic.com/painting.pixelastic.com/"
+    "path": "~/local/www/pixelastic.com/painting.pixelastic.com"
   },
   "pantheon": {
     "background": {
@@ -1412,7 +1412,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/pixelastic.com/gamemaster/pantheon/"
+    "path": "~/local/www/pixelastic.com/gamemaster/pantheon"
   },
   "pathfinder-books": {
     "background": {
@@ -1432,7 +1432,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/rp/pathfinder-books/"
+    "path": "~/local/www/rp/pathfinder-books"
   },
   "perso": {
     "background": {
@@ -1477,7 +1477,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/pietro/"
+    "path": "~/local/www/projects/pietro"
   },
   "projects": {
     "background": {
@@ -1517,7 +1517,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/prst/"
+    "path": "~/local/www/projects/prst"
   },
   "reddinx": {
     "background": {
@@ -1537,7 +1537,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/reddinx/"
+    "path": "~/local/www/projects/reddinx"
   },
   "renovate": {
     "background": {
@@ -1557,7 +1557,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/renovate-config-aberlaas/"
+    "path": "~/local/www/projects/renovate-config-aberlaas"
   },
   "roleplay": {
     "background": {
@@ -1577,7 +1577,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/perso/Dropbox/backup/roleplay/"
+    "path": "~/perso/Dropbox/backup/roleplay"
   },
   "s3": {
     "background": {
@@ -1597,7 +1597,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/mount/s3/"
+    "path": "~/local/mount/s3"
   },
   "s3-pictures": {
     "background": {
@@ -1617,7 +1617,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "   ",
-    "path": "~/local/mount/s3/pictures/"
+    "path": "~/local/mount/s3/pictures"
   },
   "s3-recordings": {
     "background": {
@@ -1637,7 +1637,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "   ",
-    "path": "~/local/mount/s3/recordings/"
+    "path": "~/local/mount/s3/recordings"
   },
   "screen": {
     "background": {
@@ -1657,7 +1657,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/rp/screen/"
+    "path": "~/local/www/rp/screen"
   },
   "shar-teel": {
     "background": {
@@ -1677,7 +1677,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/shar-teel/"
+    "path": "~/local/www/projects/shar-teel"
   },
   "society": {
     "background": {
@@ -1697,7 +1697,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/pixelastic.com/gamemaster/society/society/"
+    "path": "~/local/www/pixelastic.com/gamemaster/society/society"
   },
   "society-data": {
     "background": {
@@ -1717,7 +1717,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/pixelastic.com/gamemaster/society/society-data/"
+    "path": "~/local/www/pixelastic.com/gamemaster/society/society-data"
   },
   "society-pdfs": {
     "background": {
@@ -1737,7 +1737,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/pixelastic.com/gamemaster/society/society-pdfs/"
+    "path": "~/local/www/pixelastic.com/gamemaster/society/society-pdfs"
   },
   "solkan": {
     "background": {
@@ -1757,7 +1757,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/solkan/"
+    "path": "~/local/www/projects/solkan"
   },
   "sov": {
     "hideNameInPrompt": false,
@@ -1782,7 +1782,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/talks/speaker-program/"
+    "path": "~/local/www/talks/speaker-program"
   },
   "speech-to-blog": {
     "background": {
@@ -1802,7 +1802,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "󰔊 ",
-    "path": "~/local/www/projects/speech-to-blog/"
+    "path": "~/local/www/projects/speech-to-blog"
   },
   "spells": {
     "background": {
@@ -1822,7 +1822,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/pixelastic.com/gamemaster/spells/spells/"
+    "path": "~/local/www/pixelastic.com/gamemaster/spells/spells"
   },
   "talk-blog": {
     "background": {
@@ -1842,7 +1842,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/talks/talk-blog/"
+    "path": "~/local/www/talks/talk-blog"
   },
   "talks": {
     "background": {
@@ -1862,7 +1862,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/pixelastic.com/talks.pixelastic.com/"
+    "path": "~/local/www/pixelastic.com/talks.pixelastic.com"
   },
   "terrainbuilding": {
     "background": {
@@ -1882,7 +1882,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/pixelastic.com/gamemaster/terrainbuilding/terrainbuilding/"
+    "path": "~/local/www/pixelastic.com/gamemaster/terrainbuilding/terrainbuilding"
   },
   "terrainbuilding-data": {
     "background": {
@@ -1902,7 +1902,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/pixelastic.com/gamemaster/terrainbuilding/terrainbuilding-data/"
+    "path": "~/local/www/pixelastic.com/gamemaster/terrainbuilding/terrainbuilding-data"
   },
   "theme-docs": {
     "background": {
@@ -1922,7 +1922,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/norska-theme-docs/"
+    "path": "~/local/www/projects/norska-theme-docs"
   },
   "theme-search": {
     "background": {
@@ -1942,7 +1942,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/norska-theme-search/"
+    "path": "~/local/www/projects/norska-theme-search"
   },
   "theme-search-infinite": {
     "background": {
@@ -1962,7 +1962,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/norska-theme-search-infinite/"
+    "path": "~/local/www/projects/norska-theme-search-infinite"
   },
   "theme-slides": {
     "background": {
@@ -1982,7 +1982,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/norska-theme-slides/"
+    "path": "~/local/www/projects/norska-theme-slides"
   },
   "tmp": {
     "background": {
@@ -2007,7 +2007,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "頋",
-    "path": "~/local/www/projects/transparentify/"
+    "path": "~/local/www/projects/transparentify"
   },
   "twitter": {
     "hideNameInPrompt": false,
@@ -2052,7 +2052,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/pixelastic.com/videogames/videogames.pixelastic.com/"
+    "path": "~/local/www/pixelastic.com/videogames/videogames.pixelastic.com"
   },
   "videogames-helper": {
     "background": {
@@ -2112,7 +2112,7 @@
     },
     "hideNameInPrompt": false,
     "icon": "  ",
-    "path": "~/local/www/projects/wikinx/"
+    "path": "~/local/www/projects/wikinx"
   },
   "www": {
     "background": {
@@ -2132,7 +2132,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/pixelastic.com/www.pixelastic.com/"
+    "path": "~/local/www/pixelastic.com/www.pixelastic.com"
   },
   "youtinx": {
     "background": {
@@ -2147,7 +2147,7 @@
     },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": "~/local/www/projects/youtinx/"
+    "path": "~/local/www/projects/youtinx"
   },
   "zsh": {
     "hideNameInPrompt": false,

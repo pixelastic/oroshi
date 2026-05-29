@@ -23,8 +23,14 @@ M.onInit = function()
   F.onWrite("*tools/term/zsh/config/theming/src/*", executeCommand("colors-refresh")) -- Zsh
 
   -- Projects
-  F.onWrite("*tools/term/zsh/config/theming/src/projects.json", executeCommand("projects-build"))
-  F.onWrite("*tools/term/zsh/config/theming/src/projects-build", executeCommand("projects-build"))
+  F.onWrite(
+    "*tools/term/zsh/config/theming/src/projects.json",
+    executeCommand("$OROSHI_ROOT/tools/term/zsh/config/theming/projects-build")
+  )
+  F.onWrite(
+    "*tools/term/zsh/config/theming/projects-build",
+    executeCommand("$OROSHI_ROOT/tools/term/zsh/config/theming/projects-build")
+  )
 end
 
 return M
