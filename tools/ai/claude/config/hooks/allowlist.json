@@ -42,6 +42,7 @@
   "file",
   "find",
   "fzf",
+  "gh api",
   "gh issue list",
   "gh issue view",
   "gh pr list",

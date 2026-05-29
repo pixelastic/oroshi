@@ -23,8 +23,7 @@ done
 # Run both linters in parallel via process substitution — no temp files
 local sc="${ZSHLINT_SC:-zshlint-shellcheck}"
 local custom="${ZSHLINT_CUSTOM:-zshlint-custom}"
-local merged
-merged="$(jq -cs 'add // []' \
+local merged="$(jq -cs 'add // []' \
   <($sc "${input[@]}") \
   <($custom "${input[@]}"))"
 
