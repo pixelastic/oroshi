@@ -184,5 +184,5 @@ EXPECTED
   [ "${lines[8]}" = "#111827" ]
   [ "${lines[9]}" = "X" ]
   [ "${lines[10]}" = "$HOME/projects/full/" ]
-  [ "${lines[11]}" = "false" ]
+  [ "${lines[11]}" = "0" ]
 }
