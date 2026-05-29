@@ -3,6 +3,7 @@ bats_load_library 'helper'
 setup() {
   bats_tmp_dir
   mkdir -p "$BATS_TMP_DIR/functions/autoload"
+  printf "source '%s/tools/term/zsh/config/functions/oroshi-reload-functions.zsh'\nZSH_CONFIG_PATH='%s'\n" "$OROSHI_ROOT" "$BATS_TMP_DIR" > "$BATS_TMP_DIR/mock.zsh"
 }
 
 teardown() {
@@ -13,24 +14,18 @@ teardown() {
 
 @test "extension-less file is tracked in OROSHI_AUTOLOADED_FUNCTIONS" {
   touch "$BATS_TMP_DIR/functions/autoload/my-func"
-  run zsh -c '
-    source "$OROSHI_ROOT/config/term/zsh/functions/oroshi-reload-functions.zsh"
-    ZSH_CONFIG_PATH="$BATS_TMP_DIR"
-    oroshi-reload-functions
-    echo "${OROSHI_AUTOLOADED_FUNCTIONS[my-func]}"
-  '
+  check() { oroshi-reload-functions; echo "${OROSHI_AUTOLOADED_FUNCTIONS[$1]}"; }
+  bats_mock check
+  bats_run_function check my-func
   [ "$status" -eq 0 ]
   [ "$output" = "1" ]
 }
 
 @test "file with extension is not tracked" {
   touch "$BATS_TMP_DIR/functions/autoload/my-func.zsh"
-  run zsh -c '
-    source "$OROSHI_ROOT/config/term/zsh/functions/oroshi-reload-functions.zsh"
-    ZSH_CONFIG_PATH="$BATS_TMP_DIR"
-    oroshi-reload-functions
-    echo "${#OROSHI_AUTOLOADED_FUNCTIONS}"
-  '
+  check() { oroshi-reload-functions; echo "${#OROSHI_AUTOLOADED_FUNCTIONS}"; }
+  bats_mock check
+  bats_run_function check
   [ "$status" -eq 0 ]
   [ "$output" = "0" ]
 }
@@ -39,12 +34,9 @@ teardown() {
 
 @test "subdirectory is added to fpath" {
   mkdir -p "$BATS_TMP_DIR/functions/autoload/mydir"
-  run zsh -c '
-    source "$OROSHI_ROOT/config/term/zsh/functions/oroshi-reload-functions.zsh"
-    ZSH_CONFIG_PATH="$BATS_TMP_DIR"
-    oroshi-reload-functions
-    [[ "${fpath[(r)$BATS_TMP_DIR/functions/autoload/mydir]}" == "$BATS_TMP_DIR/functions/autoload/mydir" ]] && echo "yes"
-  '
+  check() { oroshi-reload-functions; [[ "${fpath[(r)$BATS_TMP_DIR/functions/autoload/mydir]}" == "$BATS_TMP_DIR/functions/autoload/mydir" ]] && echo "yes"; }
+  bats_mock check
+  bats_run_function check
   [ "$status" -eq 0 ]
   [ "$output" = "yes" ]
 }
@@ -53,31 +45,23 @@ teardown() {
 
 @test "worktree arg loads functions from current git root" {
   bats_git_dir
-  mkdir -p "$BATS_GIT_DIR/config/term/zsh/functions/autoload"
-  touch "$BATS_GIT_DIR/config/term/zsh/functions/autoload/my-wt-func"
-  run zsh -c '
-    source "$OROSHI_ROOT/config/term/zsh/functions/oroshi-reload-functions.zsh"
-    ZSH_CONFIG_PATH="/nonexistent"
-    cd "$BATS_GIT_DIR"
-    oroshi-reload-functions worktree
-    echo "${OROSHI_AUTOLOADED_FUNCTIONS[my-wt-func]}"
-  '
+  mkdir -p "$BATS_GIT_DIR/tools/term/zsh/config/functions/autoload"
+  touch "$BATS_GIT_DIR/tools/term/zsh/config/functions/autoload/my-wt-func"
+  check() { ZSH_CONFIG_PATH="/nonexistent"; cd "$BATS_GIT_DIR"; oroshi-reload-functions worktree; echo "${OROSHI_AUTOLOADED_FUNCTIONS[$1]}"; }
+  bats_mock check
+  bats_run_function check my-wt-func
   [ "$status" -eq 0 ]
   [ "$output" = "1" ]
 }
 
 @test "worktree arg ignores ZSH_CONFIG_PATH" {
   bats_git_dir
-  mkdir -p "$BATS_GIT_DIR/config/term/zsh/functions/autoload"
-  touch "$BATS_GIT_DIR/config/term/zsh/functions/autoload/wt-only-func"
+  mkdir -p "$BATS_GIT_DIR/tools/term/zsh/config/functions/autoload"
+  touch "$BATS_GIT_DIR/tools/term/zsh/config/functions/autoload/wt-only-func"
   touch "$BATS_TMP_DIR/functions/autoload/default-func"
-  run zsh -c '
-    source "$OROSHI_ROOT/config/term/zsh/functions/oroshi-reload-functions.zsh"
-    ZSH_CONFIG_PATH="$BATS_TMP_DIR"
-    cd "$BATS_GIT_DIR"
-    oroshi-reload-functions worktree
-    echo "${OROSHI_AUTOLOADED_FUNCTIONS[default-func]}"
-  '
+  check() { cd "$BATS_GIT_DIR"; oroshi-reload-functions worktree; echo "${OROSHI_AUTOLOADED_FUNCTIONS[$1]}"; }
+  bats_mock check
+  bats_run_function check default-func
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
@@ -86,24 +70,17 @@ teardown() {
 
 @test "second call exits 0" {
   touch "$BATS_TMP_DIR/functions/autoload/my-func"
-  run zsh -c '
-    source "$OROSHI_ROOT/config/term/zsh/functions/oroshi-reload-functions.zsh"
-    ZSH_CONFIG_PATH="$BATS_TMP_DIR"
-    oroshi-reload-functions
-    oroshi-reload-functions
-  '
+  check() { oroshi-reload-functions; oroshi-reload-functions; }
+  bats_mock check
+  bats_run_function check
   [ "$status" -eq 0 ]
 }
 
 @test "second call re-registers function" {
   touch "$BATS_TMP_DIR/functions/autoload/my-func"
-  run zsh -c '
-    source "$OROSHI_ROOT/config/term/zsh/functions/oroshi-reload-functions.zsh"
-    ZSH_CONFIG_PATH="$BATS_TMP_DIR"
-    oroshi-reload-functions
-    oroshi-reload-functions
-    echo "${OROSHI_AUTOLOADED_FUNCTIONS[my-func]}"
-  '
+  check() { oroshi-reload-functions; oroshi-reload-functions; echo "${OROSHI_AUTOLOADED_FUNCTIONS[$1]}"; }
+  bats_mock check
+  bats_run_function check my-func
   [ "$status" -eq 0 ]
   [ "$output" = "1" ]
 }

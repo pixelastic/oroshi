@@ -11,7 +11,7 @@ declare -A OROSHI_AUTOLOADED_FUNCTIONS_BACKUP
 function oroshi-reload-functions() {
   local configPath="$ZSH_CONFIG_PATH"
   # If 'worktree' is passed, load from the current worktree root instead
-  [[ "$1" == "worktree" ]] && configPath="$(git rev-parse --show-toplevel)/config/term/zsh"
+  [[ "$1" == "worktree" ]] && configPath="$(git rev-parse --show-toplevel)/tools/term/zsh/config"
 
   # Autoload functions {{{
   OROSHI_AUTOLOADED_FUNCTIONS_BACKUP=(${(kv)OROSHI_AUTOLOADED_FUNCTIONS})
@@ -29,7 +29,7 @@ function oroshi-reload-functions() {
     fi
 
     # Skip files with an extension (docs, configs, etc.)
-    [[ -n ${item:e} ]] && continue
+    [[ "${item:e}" != "" ]] && continue
 
     # If it's a file, we autoload it.
     local functionName="${item:t}"
