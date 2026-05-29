@@ -31,6 +31,11 @@ Check with the user which modules they want tests written for.
 Run `prd-end <branchName>` via the **Bash tool**, and parse the JSON output.
 Write the PRD to `<prdPath>`, following [the template](./references/prd-md.md).
 
+### Step 4 — Stop
+
+Ask the user if they're ready to move to /to-issues
+
+
 ---
 
 ## Common Rationalizations
