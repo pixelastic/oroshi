@@ -1,0 +1,15 @@
+# Lists direct subdirectories of plans/ at the git root as fullAbsolutePath▮basename
+# Usage:
+# $ plan-list-raw   # /abs/path/plans/my-feature▮my-feature
+setopt local_options err_return
+
+local gitRoot="$(git-directory-root)"
+[[ "$gitRoot" == "" ]] && return 1
+local plansDir="${gitRoot}/plans"
+
+# No plans directory — nothing to list
+[[ ! -d "$plansDir" ]] && return 0
+
+for planDir in "${plansDir}"/*(N/); do
+  echo "${planDir}▮${planDir:t}"
+done
