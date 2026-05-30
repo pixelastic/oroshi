@@ -47,7 +47,7 @@ local bookName=$split[2]
 if [[ $isSerie == 1 ]]; then
   local serieName=$split[2]
   local bookIndexString=$split[3]
-  local bookIndexNumeric=$((10#$bookIndexString))
+  local bookIndexNumeric=$(printf '%g' $bookIndexString)
 fi
 
 # We get the language of the file
@@ -200,4 +200,3 @@ ebook-meta $input \
   &>/dev/null
 
 ebook-meta $input
-
