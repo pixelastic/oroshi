@@ -199,4 +199,6 @@ ebook-meta $input \
   $ebookMetaArguments \
   &>/dev/null
 
+ebook-calibre-clean $input
+
 ebook-meta $input

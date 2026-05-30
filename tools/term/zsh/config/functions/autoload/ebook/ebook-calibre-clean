@@ -1,0 +1,38 @@
+# Remove all calibre custom columns from an epub's OPF metadata
+# Usage:
+# $ ebook-calibre-clean book.epub
+local input="$1"
+
+# Only applies to epubs
+[[ ${input:e} != 'epub' ]] && return 0
+
+local tmpDir=$(mktemp -d)
+
+# Find OPF path from container.xml
+local opfPath=$(unzip -p "$input" META-INF/container.xml 2>/dev/null \
+  | grep --only-matching 'full-path="[^"]*"' \
+  | sed 's/full-path="//;s/"//')
+[[ "$opfPath" == "" ]] && opfPath="content.opf"
+
+unzip -p "$input" "$opfPath" > "$tmpDir/opf" 2>/dev/null
+
+# Nothing to clean if no calibre custom metadata
+if ! grep --quiet 'calibre:user_metadata' "$tmpDir/opf"; then
+  rm -rf "$tmpDir"
+  return 0
+fi
+
+# Remove the calibre:user_metadata block
+# Use index() instead of regex for mawk compatibility
+awk '
+  /calibre:user_metadata/ { skip=1; next }
+  skip && index($0, "/opf:meta") > 0 { skip=0; next }
+  !skip { print }
+' "$tmpDir/opf" > "$tmpDir/opf_clean"
+
+local inputAbs="${input:a}"
+mkdir -p "$tmpDir/${opfPath:h}"
+cp "$tmpDir/opf_clean" "$tmpDir/$opfPath"
+(cd "$tmpDir" && zip --update "$inputAbs" "$opfPath" &>/dev/null)
+
+rm -rf "$tmpDir"
