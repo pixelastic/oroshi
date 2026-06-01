@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-tdd-scaffolding-doc.md",
-    "done": false,
+    "done": true,
+    "recap": "Created test-types.md defining permanent vs scaffolding tests with pivot question; updated SKILL.md Planning to read it and declare test type per behavior.",
     "blocked_by": []
   },
   {

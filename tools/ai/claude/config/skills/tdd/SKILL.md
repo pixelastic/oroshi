@@ -20,8 +20,7 @@ description: Test-driven development with red-green-refactor loop. Use when user
 This produces **crap tests**:
 
 - Tests written in bulk test _imagined_ behavior, not _actual_ behavior
-- You end up testing the _shape_ of things (data structures, function signatures) rather than user-facing behavior
-- Tests become insensitive to real changes - they pass when behavior breaks, fail when behavior is fine
+- You end up testing the _shape_ of things (data structures, function signatures) rather than user-facing behavior Tests become insensitive to real changes - they pass when behavior breaks, fail when behavior is fine
 - You outrun your headlights, committing to test structure before understanding the implementation
 
 **Correct approach**: Vertical slices via tracer bullets. One test → one implementation → repeat. Each test responds to what you learned from the previous cycle. Because you just wrote the code, you know exactly what behavior matters and how to verify it.
@@ -42,14 +41,16 @@ RIGHT (vertical):
 
 ### 1. Planning
 
-When exploring the codebase, use the project's domain glossary so that test names and interface vocabulary match the project's language, and respect ADRs in the area you're touching.
+When exploring the codebase, use the project's domain glossary so that test names and interface vocabulary match the project's language.
 
-Before writing any code:
+Before writing any code, read [test-types.md](test-types.md) and declare the test type for each behavior:
 
 - [ ] Confirm with user what interface changes are needed
 - [ ] Confirm with user which behaviors to test (prioritize)
 - [ ] Identify opportunities for [deep modules](deep-modules.md) (small interface, deep implementation)
 - [ ] List the behaviors to test (not implementation steps)
+- [ ] For each behavior: list permanent tests needed (public API, survives any rewrite)
+- [ ] For each behavior: list scaffolding tests needed (implementation detail, ephemeral)
 - [ ] Get user approval on the plan
 
 Ask: "What should the public interface look like? Which behaviors are most important to test?"
@@ -99,6 +100,7 @@ After all tests pass, look for [refactor candidates](refactoring.md):
 ## Checklist Per Cycle
 
 ```
+[ ] Declare test type (permanent / scaffolding) before writing this test
 [ ] Test describes behavior, not implementation
 [ ] Test uses public interface only
 [ ] Test would survive internal refactor
