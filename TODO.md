@@ -1,5 +1,10 @@
 ## SMALL
 
+
+
+
+
+
 Seems like bats output are not filtered through rtk? I think it's because rtk
 doesn't know it can rewrite it, so the hook doesn't prepend rtk to it, even if
 it should work. Should I configure rtk to know it can parse bats, or should I

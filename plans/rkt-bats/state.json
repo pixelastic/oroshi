@@ -1,0 +1,20 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-rtk-can-rewrite.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-pretooluse-bash-rtk-integration.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-docs-skills-glossary.md",
+    "done": false,
+    "blocked_by": ["02"]
+  }
+]
