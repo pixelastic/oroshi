@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-to-issues-test-fields.md",
-    "done": false,
+    "done": true,
+    "recap": "Added scaffolding-test/permanent-test optional fields to issue template and to-issues SKILL.md (step 2 reasoning, step 3 display, checklist).",
     "blocked_by": ["01"]
   },
   {

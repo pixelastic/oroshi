@@ -19,9 +19,23 @@ Describe the end-to-end behavior, not layer-by-layer implementation.
 Avoid specific file paths or code snippets — they go stale fast.
 Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it here and note briefly that it came from a prototype. Trim to the decision-rich parts — not a working demo, just the important bits.
 
+## Permanent Tests
+
+What observable behavior the permanent test must verify.
+
+**Skip if:** Issue is pure refactoring.
+
+## Scaffolding Tests
+
+What structural transformation the scaffolding test must verify.
+
+**Skip if:** Issue adds only new behavior.
+
 ## Acceptance criteria
 
 - [ ] Criterion 1
 - [ ] Criterion 2
 - [ ] Criterion 3
+
+
 ```
