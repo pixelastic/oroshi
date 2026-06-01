@@ -30,5 +30,11 @@
     "issue": "issues/05-delete-grill-with-docs.md",
     "done": false,
     "blocked_by": []
+  },
+  {
+    "id": "06",
+    "issue": "issues/06-reformat-hooks-glossary.md",
+    "done": false,
+    "blocked_by": ["02"]
   }
 ]
