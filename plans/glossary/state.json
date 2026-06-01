@@ -1,0 +1,32 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-glossary-skill.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-migrate-files.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-update-grill-me.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-update-review.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-delete-grill-with-docs.md",
+    "done": false,
+    "blocked_by": []
+  }
+]
