@@ -2,17 +2,17 @@
 
 ### Domain vocabulary
 
-Use these terms consistently (defined in `__docs/GLOSSARY.md`):
+Use these terms consistently (defined in `tools/ai/claude/config/hooks/GLOSSARY.md`):
 - **auto-approve** — solkan allows, command executes immediately (`permissionDecision: "allow"`)
-- **ask** — 2-option dialog shown with rejected binary name (`permissionDecision: "ask"`)
-- **escalate** — 3-option dialog including "allow for session" (`permissionDecision: "defer"`)
+- **ask user** — default reject case: 3-option dialog including "allow for session" (`permissionDecision: "defer"`), no reason shown
+- **ask user — first time** — exception reject case: 2-option dialog (Allow / Deny) with rejected binary name (`permissionDecision: "ask"`)
 
 ### Files
 
 - Hook: `tools/ai/claude/config/hooks/preToolUse-Bash`
 - Solkan checker: `tools/ai/claude/config/hooks/preToolUse-Bash-solkan`
 - Allowlist: `tools/ai/claude/config/hooks/allowlist.json`
-- Glossary: `tools/ai/claude/config/hooks/__docs/GLOSSARY.md`
+- Glossary: `tools/ai/claude/config/hooks/GLOSSARY.md`
 - Tests: `tools/ai/claude/config/hooks/__tests__/preToolUse-Bash.bats`
 
 ### Testing
@@ -26,7 +26,7 @@ Lint hook: `zshlint tools/ai/claude/config/hooks/preToolUse-Bash`
 - **No `set -e`** in the hook (removed previously due to unexpected exits in the decision matrix)
 - `permissionDecisionReason` must **not** be included with `permissionDecision: "defer"` — causes hook error in Claude Code v2.1.84
 - `systemMessage` top-level field was tested and causes hook errors — do not use
-- Session state is written **only on ask decisions**, not on escalate
+- Session state is written **only on `ask user — first time` decisions**, not on `ask user`
 - Mock names reflect what **solkan returns**: `mock-solkan-allow`, `mock-solkan-reject-single`, `mock-solkan-reject-multi`
 
 ### Session state

@@ -4,12 +4,12 @@ When the `preToolUse-Bash` hook rejects a command (not in the allowlist), it cur
 
 ## Solution
 
-Introduce a session state that tracks which binaries have already triggered an **ask** dialog in the current session. The hook uses this state to choose between two distinct user-facing behaviors:
+Introduce a session state that tracks which binaries have already triggered an **ask user — first time** dialog in the current session. The hook uses this state to choose between two distinct user-facing behaviors:
 
-- **ask** — 2-option dialog (Allow / Deny) with the rejected binary name shown. Used when the situation is new and the user needs to understand what is blocked.
-- **escalate** — 3-option dialog (Allow / Allow for session / Deny) without a reason. Used when the user has already been informed about this binary and may want to session-allow it.
+- **ask user — first time** — 2-option dialog (Allow / Deny) with the rejected binary name shown. The exception case: used when the binary has never been seen in this session and the user needs to understand what is blocked.
+- **ask user** — 3-option dialog (Allow / Allow for session / Deny) without a reason. The default case: used when the user has already been informed about this binary and may want to session-allow it.
 
-The rule is: multiple binaries rejected → always **ask**. Single binary rejected and never seen before → **ask**. Single binary rejected and already seen in this session → **escalate**.
+The rule is: multiple binaries rejected → always **ask user — first time**. Single binary rejected and never seen before → **ask user — first time**. Single binary rejected and already seen in this session → **ask user**.
 
 ## User Stories
 
@@ -24,15 +24,15 @@ The rule is: multiple binaries rejected → always **ask**. Single binary reject
 
 ### Glossary update (done first)
 
-The GLOSSARY.md is updated before any code changes. Layer 3 terminology becomes:
+The GLOSSARY.md is updated before any code changes. The existing `ask user` term is split into two:
 
 | Term | `permissionDecision` | Condition | User sees |
 |------|---------------------|-----------|-----------|
 | **auto-approve** | `allow` | Solkan allows | No dialog |
-| **ask** | `ask` | Solkan rejects: multiple binaries, OR single binary seen for the first time | 2-option dialog + rejected binary name |
-| **escalate** | `defer` | Solkan rejects: single binary already seen in this session | 3-option dialog (includes "allow for session") |
+| **ask user** | `defer` | Solkan rejects: single binary already seen in this session | 3-option dialog (includes "allow for session") — default case |
+| **ask user — first time** | `ask` | Solkan rejects: multiple binaries, OR single binary seen for the first time | 2-option dialog + rejected binary name — exception case |
 
-The 4-cases table (Solkan × RTK) is replaced by a 3-outcomes description with their conditions.
+The 4-cases table (Solkan × RTK) is updated to reflect the new outcomes. The GLOSSARY format follows the established vocabulary-entry style with `_Avoid:` annotations.
 
 ### Session state
 
@@ -40,7 +40,7 @@ The 4-cases table (Solkan × RTK) is replaced by a 3-outcomes description with t
 - `sessionId` comes from the `session_id` field of the hook's JSON input
 - Structure: `{ "preToolUse": { "Bash": { "askedCommands": ["wget", "python"] } } }`
 - Namespaced under `preToolUse.Bash` for extensibility (other hooks or fields can coexist)
-- Written only when the decision is **ask** (not for escalate)
+- Written only when the decision is **ask user — first time** (not for ask user)
 - All rejected binaries from a single invocation are written, even on multi-reject
 - If the file or its parent directory does not exist, it is created
 - If the file is unreadable or contains invalid JSON, the fallback is an empty state (treat all commands as first-time)
@@ -54,14 +54,14 @@ if solkan allows:
 rejected = solkan.commands.rejected
 
 if len(rejected) > 1:
-  → ask (reason: all rejected binaries listed)
+  → ask user — first time (reason: all rejected binaries listed)
   → write all rejected binaries to askedCommands
 
 // Single binary rejected:
 if rejected[0] in state.preToolUse.Bash.askedCommands:
-  → escalate (no permissionDecisionReason)
+  → ask user (no permissionDecisionReason)
 else:
-  → ask (reason: rejected[0])
+  → ask user — first time (reason: rejected[0])
   → write rejected[0] to askedCommands
 ```
 
@@ -69,7 +69,7 @@ else:
 
 **auto-approve**: unchanged from current implementation.
 
-**ask**:
+**ask user — first time**:
 ```json
 {
   "hookSpecificOutput": {
@@ -81,7 +81,7 @@ else:
 }
 ```
 
-**escalate**:
+**ask user**:
 ```json
 {
   "hookSpecificOutput": {
@@ -91,7 +91,7 @@ else:
   }
 }
 ```
-Note: `permissionDecisionReason` is intentionally absent for escalate. Including it with `defer` was tested and caused a hook error.
+Note: `permissionDecisionReason` is intentionally absent for ask user. Including it with `defer` was tested and caused a hook error in Claude Code v2.1.84.
 
 ### Environment variable overrides
 
@@ -108,18 +108,18 @@ Tests are BATS tests on the `preToolUse-Bash` hook. A good test calls `_run_hook
 - `mock-solkan-reject-single` — solkan rejects one binary: `wget` (exit 1)
 - `mock-solkan-reject-multi` — solkan rejects two binaries: `wget`, `curl` (exit 1)
 
-**`_run_hook` helper** passes `CLAUDE_SESSIONS_DIR=$BATS_TEST_TMPDIR` to isolate session files per test.
+**`_run_hook` helper** passes `CLAUDE_SESSIONS_DIR=$BATS_TEST_TMPDIR` and `CLAUDE_HOOKS_LOG_DIR=$BATS_TEST_TMPDIR` to isolate all file writes per test.
 
 **New tests to add:**
 
-1. `ask` when single binary rejected, no session state exists
-2. `ask` when single binary rejected, binary not yet in session state
-3. `escalate` (`defer`) when single binary rejected, binary already in session state
-4. `ask` when multiple binaries rejected, even if all are already in session state
-5. Session state file is created after an `ask` decision
-6. Session state contains the rejected binary after an `ask` decision
+1. `ask user — first time` when single binary rejected, no session state exists
+2. `ask user — first time` when single binary rejected, binary not yet in session state
+3. `ask user` (`defer`) when single binary rejected, binary already in session state
+4. `ask user — first time` when multiple binaries rejected, even if all are already in session state
+5. Session state file is created after an `ask user — first time` decision
+6. Session state contains the rejected binary after an `ask user — first time` decision
 7. All binaries from a multi-reject are written to session state
-8. `escalate` output does not contain `permissionDecisionReason`
+8. `ask user` output does not contain `permissionDecisionReason`
 
 **Prior art**: existing `preToolUse-Bash.bats` — same `_run_hook` pattern, same mock script structure.
 
@@ -128,7 +128,6 @@ Tests are BATS tests on the `preToolUse-Bash` hook. A good test calls `_run_hook
 - Session state cleanup (not needed — `/tmp` is cleared on system reboot)
 - SessionStart hook for cleanup
 - `systemMessage` field (tested during exploration, causes hook errors in current Claude Code version)
-- Adding `escalate` as a concept to the allowlist (allowlist remains a flat list of binaries)
 - Any changes to solkan, RTK, or the allowlist format
 
 ## Further Notes
