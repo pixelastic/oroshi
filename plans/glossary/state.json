@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-update-review.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced CONTEXT.md/CONTEXT-MAP.md and docs/adr/ entries in review/SKILL.md standards-sources list with GLOSSARY.md reference.",
     "blocked_by": []
   },
   {

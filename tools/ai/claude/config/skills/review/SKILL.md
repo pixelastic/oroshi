@@ -45,9 +45,8 @@ Anything in the repo that documents how code should be written. Common locations
 
 - `CLAUDE.md`
 - `CONTRIBUTING.md`
-- `CONTEXT.md`, `CONTEXT-MAP.md`, per-context `CONTEXT.md` files
+- `GLOSSARY.md`, root `GLOSSARY.md` index
 - Any `STYLE.md`, `STANDARDS.md`, `STYLEGUIDE.md`, or similar at the repo root or under `docs/`
-- `docs/adr/` (architectural decisions are standards)
 - Local or global `{language}-writer` skills
 - `.editorconfig`, `eslint.config.*`, `prettier.config.*` (machine-enforced standards — note them but don't re-check what tooling already checks)
 
