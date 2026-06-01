@@ -6,7 +6,7 @@ Remove `rtk` prefix from all skill and doc references to bats commands, and upda
 
 In every file that currently instructs to run `rtk bats <filepath>`, change it to `bats <filepath>`. The hook now handles the RTK rewrite transparently.
 
-Also update the GLOSSARY Layer 2 section: the "Determined via `rtk rewrite <cmd>`" line becomes "Determined via `rtk-can-rewrite <cmd>`".
+Also update the GLOSSARY Relationships section: the "Determined via `rtk rewrite <cmd>`" line becomes "Determined via `rtk-can-rewrite <cmd>`".
 
 Files to touch: project root CLAUDE.md, zsh-writer SKILL.md, zsh-writer testing reference, hooks GLOSSARY.
 
@@ -16,4 +16,4 @@ Files to touch: project root CLAUDE.md, zsh-writer SKILL.md, zsh-writer testing 
 - [ ] CLAUDE.md testing command reads `bats <filepath>`
 - [ ] zsh-writer SKILL.md step 2 reads `bats <test_filepath>`
 - [ ] zsh-writer testing reference updated accordingly
-- [ ] GLOSSARY Layer 2 references `rtk-can-rewrite` instead of `rtk rewrite`
+- [ ] GLOSSARY Relationships section references `rtk-can-rewrite` instead of `rtk rewrite`

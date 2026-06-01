@@ -8,7 +8,7 @@
 
 **Stale file:** `hooks/__tests__/rtk-can-rewrite.bats` was created as an early draft and must be deleted in issue 01 — the real tests live with the autoload function.
 
-**Domain vocabulary:** See `hooks/__docs/GLOSSARY.md`. RTK layer makes a binary **rewrite / ignore** decision. `rtk-can-rewrite` is the new mechanism for that decision (replaces direct `rtk rewrite` call).
+**Domain vocabulary:** See `tools/ai/claude/config/hooks/GLOSSARY.md`. RTK layer makes a binary **rewrite / ignore** decision. `rtk-can-rewrite` is the new mechanism for that decision (replaces direct `rtk rewrite` call).
 
 **Env var conventions:**
 - `RTK_CMD` — rtk binary override (used inside `rtk-can-rewrite`)
