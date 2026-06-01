@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-ralph-scaffold-routing.md",
-    "done": false,
+    "done": true,
+    "recap": "Updated ralph/SKILL.md Step 2 to read ## Permanent Tests / ## Scaffolding Tests sections, declare test strategy, allow overrides, and route scaffold tests to plans/<slug>/scaffold/<issue-filename>.bats; added two checklist items.",
     "blocked_by": ["01"]
   },
   {

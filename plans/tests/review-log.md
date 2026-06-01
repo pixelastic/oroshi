@@ -1,3 +1,18 @@
+## Issue 03 — ralph scaffold routing
+
+### Spec: scaffold filename uses full slug vs number-only
+
+```
+- Scaffolding tests → `plans/<slug>/scaffold/<issue-filename>.bats`
+  e.g. `03-foo.md` → `scaffold/03-foo.bats`
+```
+
+**Problem:** Spec line 15 says `03-foo.md` → `scaffold/03.bats` (number only). Implementation uses the full filename slug.
+
+**Reason skipped:** User explicitly corrected this: "ça doit porter le même nom que le nom de l'issue. Donc si l'issue, elle s'appelle 03-implement-routing.md, ça doit s'appeler 03-implement-routing.bats". User instruction overrides spec text.
+
+---
+
 ## Issue 02 — to-issues test fields
 
 ### Standards: label case inconsistency in Step 3

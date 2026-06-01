@@ -43,9 +43,9 @@ or because they demonstrate a bug.
 
 **Exit criterion:** Test runs and fails.
 
-**Skip if:** SKIP ONLY IF the acceptance criterion is satisfied purely by
-editing a declarative config file (settings.json, .eslintrc, YAML…) and involves
-no executable code path.
+Read the `## Permanent Tests` and `## Scaffolding Tests` sections from the issue.
+Permanent tests go to `__tests__/` as usual
+Scaffolding tests go to `plans/<slug>/scaffold/<issue-filename>.bats`
 
 Write the tests that cover the acceptance criteria of the issue — at least one
 per criterion. Run them. Read the failure output.
@@ -145,6 +145,8 @@ per criterion. Run them. Read the failure output.
 
 - [ ] Ran `ralph-start`, parsed output, handled finished/deadlocked
 - [ ] Read guidance file and issue spec
+- [ ] Declared test strategy before writing any test
+- [ ] Scaffolding tests written to plans/<slug>/scaffold/, not __tests__/
 - [ ] RED: wrote failing tests, ran them, confirmed they fail
 - [ ] IMPLEMENT: minimal code, all behaviors covered
 - [ ] Code written following the standards of the language skill (`zsh-writer`, `js-writer`, etc)
