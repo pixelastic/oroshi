@@ -29,6 +29,8 @@ how should the badge be displayed? My initial assumpation was that project >
 worktree > path, but in that case as there is no project, I think maybe the
 worktree main name should be promoted to project?
 
+Ctrl-Y in nvim should display the path using the context-badge like in statusbar
+
 ---
 ## MEDIUM
 
@@ -48,6 +50,11 @@ scripts and config (and install if needed).
 
 I should also cleanup what is in private/, same pattern as what I do in core
 oroshi
+
+See if I can remove some submodules dependencies (for zsh highlight for example,
+but not private/)
+
+Reorg the tools/ in private/
 
 ---
 ## LARGE
