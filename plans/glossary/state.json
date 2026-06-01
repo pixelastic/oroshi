@@ -37,7 +37,8 @@
   {
     "id": "06",
     "issue": "issues/06-reformat-hooks-glossary.md",
-    "done": false,
+    "done": true,
+    "recap": "Reformatted hooks/GLOSSARY.md from layer/table structure to canonical block format: added ## Language with 6 terms in block format + _Avoid_ lines, ## Relationships with cardinality + restored yes/no/maybe content, ## Flagged ambiguities.",
     "blocked_by": ["02"]
   }
 ]

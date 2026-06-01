@@ -1,47 +1,50 @@
-# Glossary — preToolUse Bash Hook
+# Claude Code Hooks
 
-## Decision layers
+Vocabulary for the `preToolUse-Bash` hook pipeline, which gates shell command execution through two sequential decision layers before producing a Claude Code response.
 
-There are 3 distinct decision layers. Each has its own vocabulary.
+## Language
 
-### Layer 1 — Solkan
+**Solkan**:
+The allowlist-based decision layer that classifies a command as **allow** or **reject**.
+_Avoid_: allowlist checker, permission layer, gatekeeper
 
-Solkan makes a **binary** decision about a command.
+**RTK**:
+The command-optimization layer that determines whether a command should be **rewrite**n into its `rtk` equivalent.
+_Avoid_: optimizer, command transformer, wrapper
 
-| Term | Meaning |
-|------|---------|
-| **allow** | Command is in the allowlist — safe to execute without user input |
-| **reject** | Command is not in the allowlist |
+**allow**:
+A command cleared by **Solkan** as safe — it can execute without user input.
+_Avoid_: permit, whitelist, pass
 
-Solkan can say **yes** or **no**. Never "maybe".
+**reject**:
+A command not cleared by **Solkan** — it must go through the user's permission dialog.
+_Avoid_: deny, block, blacklist
 
-### Layer 2 — RTK
+**rewrite**:
+**RTK** has an equivalent for the command and transforms it into its `rtk` form before execution.
+_Avoid_: transform, replace, substitute
 
-RTK makes a **binary** decision about whether to optimize a command.
+**ignore**:
+**RTK** has no equivalent for the command — it is left unchanged.
+_Avoid_: skip, pass, leave unchanged
 
-| Term | Meaning |
-|------|---------|
-| **rewrite** | RTK has an equivalent — transforms `git status` into `rtk git status` |
-| **ignore** | RTK has no equivalent — command is left unchanged |
+**auto-approve**:
+The hook output when Solkan **allow**s a command.
+_Avoid_: auto-allow, silent-approve, bypass
 
-Determined via `rtk rewrite <cmd>`: exit 0 = rewrite, exit 1 = ignore.
+**ask user**:
+The hook output when Solkan **reject**s a command.
+_Avoid_: prompt, defer, ask
 
-### Layer 3 — Hook (`preToolUse-Bash`)
+## Relationships
 
-The hook interprets Solkan's decision and produces an output for Claude Code.
-
-| Term | Solkan response | Meaning |
-|------| --------------- | ---------|
-| **auto-approve** | **allow** | Command executes immediately, no user interaction |
-| **ask user** | **reject** | Claude's permission dialog appears — the user decides yes or no |
-
-The hook can say **yes** or **maybe**.
-
-The human is the only actor who can say a final "no" — and only in the `ask` path.
-
-If RTK **rewrites**, the **updatedInput** JSON field is set he rewritten command.
-
----
+- **Solkan** is binary: **allow** or **reject**. Never a partial decision.
+- **Solkan** runs first; **RTK** runs second, regardless of **Solkan**'s decision.
+- Determined via `rtk rewrite <cmd>`: exit 0 = **rewrite**, exit 1 = **ignore**.
+- Each command receives exactly one **Solkan** decision and exactly one **RTK** decision.
+- Each **allow** produces exactly one **auto-approve**; each **reject** produces exactly one **ask user** (a maybe — the human decides).
+- A **rewrite** produces zero or one `updatedInput` JSON field; an **ignore** produces none.
+- The human is the only actor who can say a final "no" — and only in the **ask user** path.
 
 ### The 4 cases
 
@@ -49,12 +52,10 @@ If RTK **rewrites**, the **updatedInput** JSON field is set he rewritten command
 |--------|-----|-------------|
 | allow | rewrite | auto-approve + updatedInput |
 | allow | ignore | auto-approve (no updatedInput) |
-| reject | rewrite | ask + updatedInput |
-| reject | ignore | ask (no updatedInput) |
+| reject | rewrite | ask user + updatedInput |
+| reject | ignore | ask user (no updatedInput) |
 
----
+## Flagged ambiguities
 
-### Execution order
-
-Solkan runs **first**, RTK runs **second**.
-RTK runs regardless of Solkan's decision.
+- **allow** (Solkan decision) vs **auto-approve** (hook output): distinct layers — Solkan classifies the command; the hook translates that into a Claude Code response.
+- **reject** (Solkan decision) vs **ask user** (hook output): same distinction — **reject** does not mean "block", it means "escalate to the user".

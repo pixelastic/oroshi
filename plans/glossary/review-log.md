@@ -1,3 +1,25 @@
+## Issue 06 — Reformat hooks GLOSSARY
+
+### Solkan and RTK not defined as Language terms
+
+```md
+- **Solkan** runs first; **RTK** runs second...
+```
+
+**Problem:** Standards reviewer flagged that Solkan and RTK appear as named actors throughout but have no entries in `## Language` with `_Avoid_` lists.
+
+**Initially skipped:** Treated as proper nouns, not vocabulary terms.
+
+**Later reversed:** User confirmed they belong in `## Language` — their role in the pipeline is not self-evident from their names, and the glossary is the right place to explain it. Both added in a follow-up edit.
+
+### Missing `## Example dialogue` section
+
+**Problem:** The GLOSSARY-FORMAT.md template includes an `## Example dialogue` section.
+
+**Reason skipped:** The template does not state the section is mandatory. The hooks domain is a decision pipeline, not a conversational domain — an example dialogue would be forced and add no clarity.
+
+---
+
 ## Issue 03 — Update grill-me
 
 ### "Quick implementation" lacks a named skill reference
