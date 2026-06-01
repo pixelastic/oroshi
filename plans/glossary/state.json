@@ -30,7 +30,8 @@
   {
     "id": "05",
     "issue": "issues/05-delete-grill-with-docs.md",
-    "done": false,
+    "done": true,
+    "recap": "Deleted grill-with-docs/ skill folder and feedback_docs_naming.md memory file; removed its MEMORY.md entry.",
     "blocked_by": []
   },
   {
