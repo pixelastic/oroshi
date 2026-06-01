@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-update-grill-me.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced binary closing question with 3-option menu (glossary → PRD → quick impl) in grill-me/SKILL.md.",
     "blocked_by": ["01"]
   },
   {

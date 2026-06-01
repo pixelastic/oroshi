@@ -13,5 +13,8 @@ Ask the questions one at a time.
 If a question can be answered by exploring the codebase, explore the codebase
 instead.
 
-Once all questions are answered, ask if you should implement the solution right
-away or write a PRD.
+Once all questions are answered, present three options:
+
+1. Write a glossary (/glossary)
+2. Write a PRD (/to-prd)
+3. Quick implementation
