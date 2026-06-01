@@ -19,3 +19,8 @@ Should return no results.
 **Memory file location:** `~/.claude/projects/-home-tim--oroshi/memory/`
 
 ## Discoveries
+
+### Issue 02 — Migrate files
+
+- `hooks/GLOSSARY.md` does not match the canonical `GLOSSARY-FORMAT.md` template (no `## Language`, terms in tables, no `_Avoid_` lists). The issue spec said "content unchanged" so it was migrated as-is. A future issue should reformat it to the canonical structure.
+- Root `GLOSSARY.md` must use `## Modules` heading + bullet list (`- [Name](path) — desc`), not a markdown table — per `GLOSSARY-INDEX-FORMAT.md`.

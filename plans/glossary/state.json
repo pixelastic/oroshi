@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-migrate-files.md",
-    "done": false,
+    "done": true,
+    "recap": "Migrated hooks/__docs/GLOSSARY.md, git/worktree/__docs/GLOSSARY.md+DECISIONS.md, and project/CONTEXT.md to new sibling layout; deleted skill-writer/CONTEXT.md and both __docs/ folders; created root GLOSSARY.md index.",
     "blocked_by": ["01"]
   },
   {
