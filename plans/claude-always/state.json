@@ -14,10 +14,16 @@
     "blocked_by": ["01"]
   },
   {
+    "id": "02b",
+    "issue": "issues/02b-test-bats-mock-refactor.md",
+    "done": false,
+    "blocked_by": ["02"]
+  },
+  {
     "id": "03",
     "issue": "issues/03-hook-multi-reject-ask.md",
     "done": false,
-    "blocked_by": ["02"]
+    "blocked_by": ["02b"]
   },
   {
     "id": "04",
