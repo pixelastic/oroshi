@@ -1,6 +1,6 @@
 ## Guidance
 
-**Repo context:** All skills live in `/home/tim/.oroshi/tools/ai/claude/config/skills/` — each skill is a directory with a `SKILL.md` and optionally a `references/` subdirectory. The `~/.claude/skills/` entries are symlinks to these.
+**Repo context:** All skills live under `tools/ai/claude/config/skills/` (relative to the git root — resolve with `git rev-parse --show-toplevel`). Never use the absolute path `/home/tim/.oroshi/...`. Each skill is a directory with a `SKILL.md` and optionally a `references/` subdirectory. The `~/.claude/skills/` entries are symlinks to these.
 
 **Skills are siblings:** `ralph/`, `tdd/`, `to-issues/` are all siblings under the same parent. Cross-skill references use relative paths: `../tdd/references/behavioral-tests.md`.
 
