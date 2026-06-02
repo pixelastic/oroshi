@@ -124,7 +124,7 @@ per criterion. Run them. Read the failure output.
 
 - Run `ralph-end $ARGUMENTS` first
 
-- Print the issue id, recap, and any discoveries logged.
+- Print the issue id, tldr, recap, and any discoveries logged.
 
 **Stop here. Do not commit. Do not start the next issue. Wait for the user.**
 
