@@ -59,6 +59,13 @@ teardown() {
   [ "$output" = "$other_repo" ]
 }
 
+@test "arg is a file path: returns the repo root (not a garbled path)" {
+  touch "$BATS_GIT_DIR/some-file.lua"
+  bats_run_function git-directory-root "$BATS_GIT_DIR/some-file.lua"
+  [ "$status" -eq 0 ]
+  [ "$output" = "$BATS_GIT_DIR" ]
+}
+
 # --- flags ---
 
 @test "-f flag: returns repo root when no superproject" {

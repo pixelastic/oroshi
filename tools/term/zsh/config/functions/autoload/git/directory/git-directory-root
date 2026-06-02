@@ -21,7 +21,7 @@ function git-directory-root {
 	# Check from the given directory, or the current one if none specified
 	local targetPath="$1"
 	[[ $targetPath == "" ]] && targetPath="$PWD"
-	[[ ! -d "$targetPath" ]] && targetPath="${targetPath:r}"
+	[[ ! -d "$targetPath" ]] && targetPath="${targetPath:h}"
 	[[ $targetPath[-1] != "/" ]] && targetPath+="/"
 
 	# If path contains a .git/ folder, we remove anything after it
