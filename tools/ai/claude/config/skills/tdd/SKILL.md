@@ -1,29 +1,73 @@
 ---
 name: tdd
-description: Test-driven development with red-green-refactor loop. Use when user wants to build features or fix bugs using TDD, mentions "red-green-refactor", wants integration tests, or asks for test-first development.
+description: Used when user wants to build features or fix bugs using TDD or red-green-refactor loop.
 ---
 
 # Test-Driven Development
 
-## Philosophy
+## Overview
 
-**Core principle**: Tests should verify behavior through public interfaces, not implementation details. Code can change entirely; tests shouldn't.
+Build features and fix bugs using the red-green-refactor loop: write a failing test first, write minimal code to pass it, then refactor.
 
-**Good tests** are integration-style: they exercise real code paths through public APIs. They describe _what_ the system does, not _how_ it does it. A good test reads like a specification - "user can checkout with valid cart" tells you exactly what capability exists. These tests survive refactors because they don't care about internal structure.
+Use **Permanent** tests for behavioral testing, and **Scaffolding** tests for structural architecture.
 
-**Bad tests** are coupled to implementation. They mock internal collaborators, test private methods, or verify through external means (like querying a database directly instead of using the interface). The warning sign: your test breaks when you refactor, but behavior hasn't changed. If you rename an internal function and tests fail, those tests were testing implementation, not behavior.
+Apply the London School of TDD for mocking. Each unit is tested in isolation by mocking its immediate collaborators.
 
-## Anti-Pattern: Horizontal Slices
 
-**DO NOT write all tests first, then all implementation.** This is "horizontal slicing" - treating RED as "write all tests" and GREEN as "write all code."
+## Core Workflow
+
+### Step 1 — Plan
+
+**Goal:** Agree on interface, behaviors to test, and test strategy before writing any code.
+
+**Exit criterion:** User has approved the plan and test strategy is declared (scaffold/permanent and what to mock).
+
+When exploring the codebase, use the project's domain glossary so that test names and interface vocabulary match the project's language.
+
+Read [test-types.md](references/test-types.md) to know when to use **Permanent** or **Scaffolding** tests.
+Read [mocking.md](references/mocking.md) to know what to mock and what to test.
+
+Ask yourself "What should the public interface look like? Which behaviors are most important to test?"
+
+**You can't test everything.**
+Confirm with the user exactly which behaviors matter most.
+Focus testing effort on critical paths and complex logic, not every possible edge case.
+
+- [ ] Confirm with user what interface changes are needed
+- [ ] Confirm with user which behaviors to test (prioritize)
+- [ ] Confirm with user what to mock
+- [ ] Identify opportunities for [deep modules](references/deep-modules.md) (small interface, deep implementation)
+- [ ] List the behaviors to test (not implementation steps)
+- [ ] For each behavior: list permanent tests needed (public API, survives any rewrite)
+- [ ] For each behavior: list scaffolding tests needed (implementation detail, ephemeral)
+- [ ] Get user approval on the plan
+
+### Step 2 — Tracer Bullet
+
+**Goal:** Prove the test infrastructure works with one failing test and one minimal implementation.
+
+**Exit criterion:** One test is RED, then GREEN — the path works end-to-end.
+
+Write ONE test that confirms ONE thing about the system:
+
+```
+RED:   Write test for first behavior → test fails
+GREEN: Write minimal code to pass → test passes
+```
+
+This is your tracer bullet — proves the path works end-to-end.
+
+**DO NOT write all tests first, then all implementation.**
+This is "horizontal slicing" — treating RED as "write all tests" and GREEN as "write all code."
 
 This produces **crap tests**:
 
 - Tests written in bulk test _imagined_ behavior, not _actual_ behavior
-- You end up testing the _shape_ of things (data structures, function signatures) rather than user-facing behavior Tests become insensitive to real changes - they pass when behavior breaks, fail when behavior is fine
+- You end up testing the _shape_ of things (data structures, function signatures) rather than user-facing behavior
+- Tests become insensitive to real changes — they pass when behavior breaks, fail when behavior is fine
 - You outrun your headlights, committing to test structure before understanding the implementation
 
-**Correct approach**: Vertical slices via tracer bullets. One test → one implementation → repeat. Each test responds to what you learned from the previous cycle. Because you just wrote the code, you know exactly what behavior matters and how to verify it.
+**Correct approach**: Vertical slices via tracer bullets. One test → one implementation → repeat.
 
 ```
 WRONG (horizontal):
@@ -37,38 +81,11 @@ RIGHT (vertical):
   ...
 ```
 
-## Workflow
+### Step 3 — Incremental Loop
 
-### 1. Planning
+**Goal:** Cover all planned behaviors one test at a time.
 
-When exploring the codebase, use the project's domain glossary so that test names and interface vocabulary match the project's language.
-
-Before writing any code, read [test-types.md](test-types.md) and declare the test type for each behavior:
-
-- [ ] Confirm with user what interface changes are needed
-- [ ] Confirm with user which behaviors to test (prioritize)
-- [ ] Identify opportunities for [deep modules](deep-modules.md) (small interface, deep implementation)
-- [ ] List the behaviors to test (not implementation steps)
-- [ ] For each behavior: list permanent tests needed (public API, survives any rewrite)
-- [ ] For each behavior: list scaffolding tests needed (implementation detail, ephemeral)
-- [ ] Get user approval on the plan
-
-Ask: "What should the public interface look like? Which behaviors are most important to test?"
-
-**You can't test everything.** Confirm with the user exactly which behaviors matter most. Focus testing effort on critical paths and complex logic, not every possible edge case.
-
-### 2. Tracer Bullet
-
-Write ONE test that confirms ONE thing about the system:
-
-```
-RED:   Write test for first behavior → test fails
-GREEN: Write minimal code to pass → test passes
-```
-
-This is your tracer bullet - proves the path works end-to-end.
-
-### 3. Incremental Loop
+**Exit criterion:** All planned behaviors have a passing test, no speculative features added.
 
 For each remaining behavior:
 
@@ -82,12 +99,17 @@ Rules:
 - One test at a time
 - Only enough code to pass current test
 - Don't anticipate future tests
-- Keep tests focused on observable behavior
 - Use dedicated skill (`zsh-writer`, `js-writer`, etc.) if it exists
+- Test private helpers with complex logic
+- Mock those helpers in callers that delegate to those helpers
 
-### 4. Refactor
+### Step 4 — Refactor
 
-After all tests pass, look for [refactor candidates](refactoring.md):
+**Goal:** Improve the design without changing behavior.
+
+**Exit criterion:** No duplication, clean names, all tests still green.
+
+After all tests pass, look for [refactor candidates](references/refactoring.md):
 
 - [ ] Extract duplication
 - [ ] Deepen modules (move complexity behind simple interfaces)
@@ -97,14 +119,23 @@ After all tests pass, look for [refactor candidates](refactoring.md):
 
 **Never refactor while RED.** Get to GREEN first.
 
-## Checklist Per Cycle
+## Common Rationalizations
 
-```
-[ ] Declare test type (permanent / scaffolding) before writing this test
-[ ] Test describes behavior, not implementation
-[ ] Test uses public interface only
-[ ] Test would survive internal refactor
-[ ] Code is minimal for this test
-[ ] Code uses dedicated language skill if it exists (`zsh-writer`, `js-writer`, etc)
-[ ] No speculative features added
-```
+| Rationalization | Reality |
+|---|---|
+| "Private methods shouldn't be tested directly" | `private` controls API visibility, not testability. Complex logic deserves a test regardless of exposure. |
+| "Mocking internal collaborators couples tests to implementation" | Mocking *immediate* collaborators is isolation, not coupling. Coupling is reaching *inside* your collaborator. |
+| "Testing at the public interface is always enough" | No. Complex private helpers should also be tested.
+| "I'll write the test after to go faster" | Tests-after prove nothing. Delete the code. Start with RED. |
+| "I should write all tests first, then implement" | That's horizontal slicing. It produces tests of imagined behavior. Do vertical tracer bullets instead. |
+
+## Checklist
+
+- [ ] Test strategy declared: scaffold/permanent and what to mock
+- [ ] Private helpers with complex logic have direct unit tests
+- [ ] Callers mock their immediate collaborators, not two levels down
+- [ ] Test describes behavior, not implementation
+- [ ] Test would survive internal refactor
+- [ ] Code is minimal for this test
+- [ ] Code uses dedicated language skill if it exists (`zsh-writer`, `js-writer`, etc)
+- [ ] No speculative features added

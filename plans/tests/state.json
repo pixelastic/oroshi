@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-rewrite-tdd-skill.md",
-    "done": false,
+    "done": true,
+    "recap": "Rewrote tdd/SKILL.md to skill-writer format (Overview, Goal/Exit criterion per step, Common Rationalizations, Checklist); replaced Good/Bad tests philosophy with London School TDD (unit + integration levels, mock immediate collaborators rule).",
     "blocked_by": []
   }
 ]

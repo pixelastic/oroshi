@@ -63,10 +63,11 @@ per criterion. Run them. Read the failure output.
 **Exit criterion:** Linter clean, all tests green.
 
 1. If a dedicated skill for your language exists, load it (`zsh-writer`, `js-writer`, etc)
-2. Write the simplest code that makes the tests pass. No more.
-3. Refactor: remove duplication, improve names, extract helpers. Don't add behavior.
-3. Lint all modified files with `git-file-lint` and fix any issues.
-4. Run tests for all modified files using `git-file-test`. All tests must pass.
+2. Edit files inside the current git root (`git-directory-root`)
+3. Write the simplest code that makes the tests pass. No more.
+4. Refactor: remove duplication, improve names, extract helpers. Don't add behavior.
+5. Lint all modified files with `git-file-lint` and fix any issues.
+6. Run tests for all modified files using `git-file-test`. All tests must pass.
 
 ---
 

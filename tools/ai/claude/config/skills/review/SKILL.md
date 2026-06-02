@@ -1,86 +1,65 @@
 ---
 name: review
-description: Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes — Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/PRD asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to "review since X".
+description: Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to "review since X". Reviews changes along two axes — Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match the originating issue/PRD?). Runs both axes as parallel sub-agents and reports them side by side.
 ---
 
 # Review
 
-Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
+## Overview
 
-- **Standards** — does the code conform to this repo's documented coding standards?
-- **Spec** — does the code faithfully implement the originating issue / PRD / spec?
+Two-axis review of the diff between `HEAD` and a fixed point. Both axes run as parallel sub-agents so they don't pollute each other's context, then this skill aggregates their findings.
 
-Both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings.
+## Core Workflow
 
-## Process
+### Step 1 — Determine args
 
-### 1. Get the diff
+**Goal:** Translate the user's intent into `review-diff` args.
 
-Two entry points — pick whichever applies:
+**Exit criterion:** Args identified; any explicit spec path noted.
 
-**Filepath path** — if the argument matches the pattern `review-diff-<uuid>.md`, read that file directly with the `Read` tool. Do not call `review-diff`. The file contents are the diff context; continue to step 2.
-
-**Natural language path** — interpret the user's intent and translate to `review-diff` args, then run `review-diff` via the `Bash` tool. Use its stdout as the diff context.
-
-| User says | `review-diff` call |
+| User says | Pass to sub-agents |
 |---|---|
-| Nothing / "review this" / "review WIP" | `review-diff` (0 args) |
-| "review this branch" / "review \<branch\>" | `review-diff <branch>` |
-| "review since main" / "review main" | `review-diff main` |
-| "review commit abc123" | `review-diff abc123` |
-| "review main..feature" / "review main feature" | `review-diff main feature` |
+| Nothing / "review this" / "review WIP" | no args |
+| "review this branch" / "review \<branch\>" | `<branch>` |
+| "review since main" / "review main" | `main` |
+| "review commit abc123" | `abc123` |
+| "review main..feature" / "review main feature" | `main feature` |
+| "review worktree" | `worktree` |
 
+If the user explicitly passed a spec path, note it — pass it to the Spec sub-agent.
 
-### 2. Identify the spec source
+### Step 2 — Spawn sub-agents
 
-Look for the originating spec, in this order:
+**Goal:** Run Standards and Spec reviews in parallel without polluting each other's context.
 
-1. A path the user passed as an argument.
-2. A PRD/spec file under `ralph/<branchName>`.
-3. If nothing is found, ask the user where the spec is. If they say there isn't one, the **Spec** sub-agent will skip and report "no spec available".
-
-### 3. Identify the standards sources
-
-Anything in the repo that documents how code should be written. Common locations:
-
-- `CLAUDE.md`
-- `CONTRIBUTING.md`
-- `GLOSSARY.md`, root `GLOSSARY.md` index
-- Any `STYLE.md`, `STANDARDS.md`, `STYLEGUIDE.md`, or similar at the repo root or under `docs/`
-- Local or global `{language}-writer` skills
-- `.editorconfig`, `eslint.config.*`, `prettier.config.*` (machine-enforced standards — note them but don't re-check what tooling already checks)
-
-Collect the list of files. The **Standards** sub-agent will read them.
-
-### 4. Spawn both sub-agents in parallel
+**Exit criterion:** Both sub-agents have returned their reports.
 
 Send a single message with two `Agent` tool calls. Use the `general-purpose` subagent for both.
 
-**Standards sub-agent prompt** — include:
+- **Standards agent:** read `references/standards-agent.md` for the full brief; pass the `review-diff` args.
+- **Spec agent:** read `references/specs-agent.md` for the full brief; pass the `review-diff` args and the explicit spec path if provided.
 
-- The full diff command and commit list.
-- The list of standards-source files you found in step 3.
-- The brief: "Read the standards docs. Then read the diff. Report — per file/hunk where relevant — every place the diff violates a documented standard. Cite the standard (file + the rule). Distinguish hard violations from judgement calls. Skip anything tooling enforces. Under 400 words."
+### Step 3 — Aggregate
 
-**Spec sub-agent prompt** — include:
+**Goal:** Present both reports side by side without merging or reranking.
 
-- The diff command and commit list.
-- The path or fetched contents of the spec.
-- The brief: "Read the spec. Then read the diff. Report: (a) requirements the spec asked for that are missing or partial; (b) requirements that look implemented but where the implementation looks wrong. Quote the spec line for each finding. Under 400 words."
+**Exit criterion:** Both reports displayed; one-line summary given.
 
-If the spec is missing, skip the Spec sub-agent and note this in the final report.
-
-### 5. Aggregate
-
-Present the two reports under `## Standards` and `## Spec` headings, verbatim or lightly cleaned. Do **not** merge or rerank findings — the two axes are deliberately separate so the user can see them independently.
+Present the two reports under `## Standards` and `## Spec` headings, verbatim or lightly cleaned. Do **not** merge or rerank findings — the two axes are deliberately separate.
 
 End with a one-line summary: total findings per axis, and the worst single issue (if any) flagged.
 
-## Why two axes
+## Common Rationalizations
 
-A change can pass one axis and fail the other:
+| Rationalization | Reality |
+|---|---|
+| "The two findings overlap, I'll merge them into one report" | Merged reports hide which axis a finding belongs to. Keep them separate. |
+| "Spec findings are minor, not worth reporting" | Spec drift compounds. Report everything; let the user dismiss. |
 
-- Code that follows every standard but implements the wrong thing → **Standards pass, Spec fail.**
-- Code that does exactly what the issue asked but breaks the project's conventions → **Spec pass, Standards fail.**
+## Checklist
 
-Reporting them separately stops one axis from masking the other.
+- [ ] Args determined from user intent
+- [ ] Both sub-agents spawned in a single parallel message
+- [ ] Each sub-agent ran `review-diff` itself — no diff pasted inline
+- [ ] Reports presented under separate `## Standards` and `## Spec` headings
+- [ ] One-line summary at the end
