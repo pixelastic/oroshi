@@ -1,3 +1,16 @@
+## Issue 03 — hook multi-reject ask
+
+### Spec: hook implementation change absent from diff
+```zsh
+# preToolUse-Bash — reject path (unchanged)
+jo -d. \
+  hookSpecificOutput.permissionDecision="ask" \
+  hookSpecificOutput.permissionDecisionReason="❌ ${rejectedList} ❌" \
+  hookSpecificOutput.updatedInput.command="${updatedInputCommand}"
+```
+**Problem:** Spec reviewer noted the hook source was not changed in this diff.
+**Reason skipped:** The hook was already corrected during the 02b refactor. Issue 03 only required adding the missing `no systemMessage` test — no hook source change was needed.
+
 ## Issue 02b — bats-mock test refactor
 
 ### `setopt local_options err_return` missing in wrapper functions

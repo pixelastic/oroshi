@@ -23,7 +23,8 @@
   {
     "id": "03",
     "issue": "issues/03-hook-multi-reject-ask.md",
-    "done": false,
+    "done": true,
+    "recap": "Hook reject path was already correct from 02b refactor; added missing test for AC5 (no systemMessage in reject output).",
     "blocked_by": ["02b"]
   },
   {
