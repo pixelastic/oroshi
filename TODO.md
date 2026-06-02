@@ -31,6 +31,14 @@ worktree main name should be promoted to project?
 
 Ctrl-Y in nvim should display the path using the context-badge like in statusbar
 
+Doing a Ctrl-G to search in ebooks markdown files has a broken prompt, and badly
+parses the selected files.
+
+Closing a claude session in a directory that has been deleted (vwC) soft locks
+the terminal
+
+./scripts/etc seems to contain legacy code. See if needs removal.
+
 ---
 ## MEDIUM
 

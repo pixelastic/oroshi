@@ -72,6 +72,7 @@
   "git-branch-slug",
   "git-directory-gitdir",
   "git-directory-is-worktree",
+  "git-directory-root",
   "git-file-lint",
   "git-file-test",
   "git-github-project-name",
