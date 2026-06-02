@@ -1,7 +1,8 @@
 # Variables
 
 - Use `local` for all variables, even if not in a function.
-- Always `local var="$(cmd)"` on one line — never split (`local var; var=...`). `local` exits 0 regardless of the subshell, so guard on the next line: `[[ "$var" == "" ]] && return 1`.
+- Linter enforces `local var="$(cmd)"` on one line.
+- If empty var would be a silent failure downstream, guard explicitly: `[[ "$var" == "" ]] && return 1`
 - Use `isSomething` or `hasSomething` for booleans
 - Use `UPPER_CASE` for constants.
 
