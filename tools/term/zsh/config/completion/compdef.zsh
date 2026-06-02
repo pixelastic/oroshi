@@ -58,6 +58,7 @@ compdef _docker-containers-ids \
 # 📖 Ebooks {{{
 compdef '_files -g "*.epub"' \
   better-ebook-viewer \
+  epub2md \
   epub2mobi
 compdef '_files -g "*.mobi"' \
   mobi2epub

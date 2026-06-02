@@ -1,0 +1,12 @@
+# Convert an epub to markdown
+# Usage:
+# $ epub2md ./book.epub     # Convert to book.md
+setopt local_options err_return
+
+for input in $@; do
+  local epubFilepath="${input:a}"
+  local txtFilepath="${epubFilepath:r}.txt"
+  local mdFilepath="${epubFilepath:r}.md"
+  ebook-convert "$epubFilepath" "$txtFilepath"
+  mv "$txtFilepath" "$mdFilepath"
+done
