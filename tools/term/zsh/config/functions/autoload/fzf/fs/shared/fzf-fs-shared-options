@@ -29,6 +29,10 @@ echo "--scheme=path"
 echo "--tiebreak=pathname,chunk"
 echo "--preview=fzf-fs-shared-preview {1}"
 
+# 1: search in the full path
+# 2: also search in display path so we have visible highlight
+echo "--nth=1,2"
+
 # Prompt
 local prompt="$($fzfPromptPath)"
 echo "--prompt=${prompt}"
