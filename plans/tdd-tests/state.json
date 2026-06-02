@@ -1,0 +1,14 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-tdd-behavioral-scaffolding-references.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-ralph-to-issues-behavioral-terminology.md",
+    "done": false,
+    "blocked_by": ["01"]
+  }
+]
