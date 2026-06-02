@@ -3,9 +3,7 @@
 # Reads hook JSON from stdin, writes hookSpecificOutput JSON to stdout
 #
 # Env overrides for testing:
-#   PRETOOLUSE_SOLKAN_SCRIPT — defaults to preToolUse-Bash-solkan (sibling)
-#   PRETOOLUSE_RTK_SCRIPT    — defaults to preToolUse-Bash-rtk (sibling)
-#   CLAUDE_HOOKS_LOG_DIR     — defaults to /tmp/oroshi/claude/hooks
+#   CLAUDE_HOOKS_LOG_DIR — defaults to /tmp/oroshi/claude/hooks
 #
 # TEST CASES - This hook must handle:
 # - echo hello                           -> accept (allowlisted)
@@ -20,9 +18,10 @@
 # - time echo "test"                     -> accept (time is ignored)
 
 local hookDir="${0:A:h}"
-local solkanScript="${PRETOOLUSE_SOLKAN_SCRIPT:-${hookDir}/preToolUse-Bash-solkan}"
-local rtkScript="${PRETOOLUSE_RTK_SCRIPT:-${hookDir}/preToolUse-Bash-rtk}"
 local logDir="${CLAUDE_HOOKS_LOG_DIR:-/tmp/oroshi/claude/hooks}"
+
+source "${hookDir}/preToolUse-Bash-solkan.zsh"
+source "${hookDir}/preToolUse-Bash-rtk.zsh"
 
 # Parse input command
 local inputJson="$(cat)"
@@ -36,12 +35,12 @@ print -r -- "$inputJson" |
 # Solkan: is the command allowed? Capture JSON output alongside exit code
 local solkanJson=""
 local isAllowed=0
-if solkanJson="$("$solkanScript" "$inputCommand")"; then
+if solkanJson="$(preToolUse-Bash-solkan "$inputCommand")"; then
   isAllowed=1
 fi
 
 # RTK: Rewritten command
-local updatedInputCommand="$("$rtkScript" "$inputCommand")"
+local updatedInputCommand="$(preToolUse-Bash-rtk "$inputCommand")"
 
 # Auto-approve
 if [[ "$isAllowed" == "1" ]]; then

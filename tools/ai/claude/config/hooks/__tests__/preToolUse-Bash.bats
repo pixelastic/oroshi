@@ -1,105 +1,101 @@
+bats_load_library 'helper'
+
+SCRIPT="$BATS_TEST_DIRNAME/../preToolUse-Bash"
+
 setup() {
-  SCRIPT="$(dirname "$BATS_TEST_FILENAME")/../preToolUse-Bash"
-
-  echo '{"isAllowed":true,"commands":{"allowed":["echo"],"rejected":[]}}' > "$BATS_TEST_TMPDIR/solkan-allow.json"
-  echo '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget","curl"]}}' > "$BATS_TEST_TMPDIR/solkan-reject-multi.json"
-  echo '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget"]}}' > "$BATS_TEST_TMPDIR/solkan-reject-single.json"
-  cat > "$BATS_TEST_TMPDIR/mock-solkan-allow" << SCRIPT
-#!/usr/bin/env zsh
-cat "$BATS_TEST_TMPDIR/solkan-allow.json"
-SCRIPT
-  cat > "$BATS_TEST_TMPDIR/mock-solkan-reject-multi" << SCRIPT
-#!/usr/bin/env zsh
-cat "$BATS_TEST_TMPDIR/solkan-reject-multi.json"
-exit 1
-SCRIPT
-  cat > "$BATS_TEST_TMPDIR/mock-solkan-reject-single" << SCRIPT
-#!/usr/bin/env zsh
-cat "$BATS_TEST_TMPDIR/solkan-reject-single.json"
-exit 1
-SCRIPT
-  printf '#!/usr/bin/env zsh\nprint -- "$1"\n' > "$BATS_TEST_TMPDIR/mock-rtk-pass"
-  printf '#!/usr/bin/env zsh\nprint -- "rtk $1"\n' > "$BATS_TEST_TMPDIR/mock-rtk-rewrite"
-  chmod +x "$BATS_TEST_TMPDIR"/mock-*
+  bats_tmp_dir
+  export CLAUDE_HOOKS_LOG_DIR="$BATS_TMP_DIR"
+  export CLAUDE_SESSIONS_DIR="$BATS_TMP_DIR"
 }
 
-_run_hook() {
-  local solkan="$1" rtk="$2" json="$3"
-  printf '%s' "$json" > "$BATS_TEST_TMPDIR/input.json"
-  run env \
-    PRETOOLUSE_SOLKAN_SCRIPT="$solkan" \
-    PRETOOLUSE_RTK_SCRIPT="$rtk" \
-    CLAUDE_HOOKS_LOG_DIR="$BATS_TEST_TMPDIR" \
-    CLAUDE_SESSIONS_DIR="$BATS_TEST_TMPDIR" \
-    "$SCRIPT" < "$BATS_TEST_TMPDIR/input.json"
-}
+teardown() { bats_cleanup; }
 
-@test "allow with updatedInput (original command) when solkan allows and RTK does not rewrite" {
-  _run_hook \
-    "$BATS_TEST_TMPDIR/mock-solkan-allow" \
-    "$BATS_TEST_TMPDIR/mock-rtk-pass" \
-    '{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
+@test "allow with updatedInput when solkan allows and RTK does not rewrite" {
+  preToolUse-Bash-solkan() { print '{"isAllowed":true,"commands":{"allowed":["echo"],"rejected":[]}}'; }
+  bats_mock preToolUse-Bash-solkan
+
+  preToolUse-Bash-rtk() { print -- "$1"; }
+  bats_mock preToolUse-Bash-rtk
+
+  bats_run_script "$SCRIPT" <<< '{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "allow" ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.updatedInput.command')" = "echo hello" ]
 }
 
 @test "allow with updatedInput.command when solkan allows and RTK rewrites" {
-  _run_hook \
-    "$BATS_TEST_TMPDIR/mock-solkan-allow" \
-    "$BATS_TEST_TMPDIR/mock-rtk-rewrite" \
-    '{"tool_name":"Bash","tool_input":{"command":"git status"}}'
+  preToolUse-Bash-solkan() { print '{"isAllowed":true,"commands":{"allowed":["git"],"rejected":[]}}'; }
+  bats_mock preToolUse-Bash-solkan
+
+  preToolUse-Bash-rtk() { print -- "rtk $1"; }
+  bats_mock preToolUse-Bash-rtk
+
+  bats_run_script "$SCRIPT" <<< '{"tool_name":"Bash","tool_input":{"command":"git status"}}'
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "allow" ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.updatedInput.command')" = "rtk git status" ]
 }
 
-@test "ask permissionDecision with updatedInput (original command) when solkan refuses and RTK does not rewrite" {
-  _run_hook \
-    "$BATS_TEST_TMPDIR/mock-solkan-reject-multi" \
-    "$BATS_TEST_TMPDIR/mock-rtk-pass" \
-    '{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
+@test "ask permissionDecision with updatedInput when solkan refuses and RTK does not rewrite" {
+  preToolUse-Bash-solkan() { print '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget","curl"]}}'; return 1; }
+  bats_mock preToolUse-Bash-solkan
+
+  preToolUse-Bash-rtk() { print -- "$1"; }
+  bats_mock preToolUse-Bash-rtk
+
+  bats_run_script "$SCRIPT" <<< '{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "ask" ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.updatedInput.command')" = "wget evil.com" ]
 }
 
 @test "ask permissionDecision with updatedInput.command when solkan refuses and RTK rewrites" {
-  _run_hook \
-    "$BATS_TEST_TMPDIR/mock-solkan-reject-multi" \
-    "$BATS_TEST_TMPDIR/mock-rtk-rewrite" \
-    '{"tool_name":"Bash","tool_input":{"command":"git status"}}'
+  preToolUse-Bash-solkan() { print '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget","curl"]}}'; return 1; }
+  bats_mock preToolUse-Bash-solkan
+
+  preToolUse-Bash-rtk() { print -- "rtk $1"; }
+  bats_mock preToolUse-Bash-rtk
+
+  bats_run_script "$SCRIPT" <<< '{"tool_name":"Bash","tool_input":{"command":"git status"}}'
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "ask" ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.updatedInput.command')" = "rtk git status" ]
 }
 
 @test "permissionDecisionReason lists rejected commands when solkan refuses" {
-  _run_hook \
-    "$BATS_TEST_TMPDIR/mock-solkan-reject-multi" \
-    "$BATS_TEST_TMPDIR/mock-rtk-pass" \
-    '{"tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
+  preToolUse-Bash-solkan() { print '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget","curl"]}}'; return 1; }
+  bats_mock preToolUse-Bash-solkan
+
+  preToolUse-Bash-rtk() { print -- "$1"; }
+  bats_mock preToolUse-Bash-rtk
+
+  bats_run_script "$SCRIPT" <<< '{"tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecisionReason')" = "❌ wget, curl ❌" ]
 }
 
+@test "ask shows single rejected command" {
+  preToolUse-Bash-solkan() { print '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget"]}}'; return 1; }
+  bats_mock preToolUse-Bash-solkan
 
-@test "mock-solkan-reject-single rejects only wget" {
-  _run_hook \
-    "$BATS_TEST_TMPDIR/mock-solkan-reject-single" \
-    "$BATS_TEST_TMPDIR/mock-rtk-pass" \
-    '{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
+  preToolUse-Bash-rtk() { print -- "$1"; }
+  bats_mock preToolUse-Bash-rtk
+
+  bats_run_script "$SCRIPT" <<< '{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecisionReason')" = "❌ wget ❌" ]
 }
 
-@test "hook logs to CLAUDE_HOOKS_LOG_DIR env override" {
-  _run_hook \
-    "$BATS_TEST_TMPDIR/mock-solkan-allow" \
-    "$BATS_TEST_TMPDIR/mock-rtk-pass" \
-    '{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
+@test "hook logs to CLAUDE_HOOKS_LOG_DIR" {
+  preToolUse-Bash-solkan() { print '{"isAllowed":true,"commands":{"allowed":["echo"],"rejected":[]}}'; }
+  bats_mock preToolUse-Bash-solkan
+
+  preToolUse-Bash-rtk() { print -- "$1"; }
+  bats_mock preToolUse-Bash-rtk
+
+  bats_run_script "$SCRIPT" <<< '{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [ "$status" -eq 0 ]
-  [ -f "$BATS_TEST_TMPDIR/last-bash-input.json" ]
+  [ -f "$BATS_TMP_DIR/last-bash-input.json" ]
 }
 
 @test "no background jobs in script" {
@@ -108,14 +104,13 @@ _run_hook() {
 }
 
 @test "solkan completes before RTK starts" {
-  local log="$BATS_TEST_TMPDIR/order.log"
-  printf '#!/usr/bin/env zsh\nsleep 0.05\nprint SOLKAN >> %s\n' "$log" > "$BATS_TEST_TMPDIR/mock-solkan-order"
-  printf '#!/usr/bin/env zsh\nprint RTK >> %s\nprint -- "$1"\n' "$log" > "$BATS_TEST_TMPDIR/mock-rtk-order"
-  chmod +x "$BATS_TEST_TMPDIR/mock-solkan-order" "$BATS_TEST_TMPDIR/mock-rtk-order"
-  _run_hook \
-    "$BATS_TEST_TMPDIR/mock-solkan-order" \
-    "$BATS_TEST_TMPDIR/mock-rtk-order" \
-    '{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
+  preToolUse-Bash-solkan() { sleep 0.05; print SOLKAN >> "$BATS_TMP_DIR/order.log"; print '{"isAllowed":true}'; }
+  bats_mock preToolUse-Bash-solkan
+
+  preToolUse-Bash-rtk() { print RTK >> "$BATS_TMP_DIR/order.log"; print -- "$1"; }
+  bats_mock preToolUse-Bash-rtk
+
+  bats_run_script "$SCRIPT" <<< '{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [ "$status" -eq 0 ]
-  [ "$(head -1 "$log")" = "SOLKAN" ]
+  [ "$(head -1 "$BATS_TMP_DIR/order.log")" = "SOLKAN" ]
 }

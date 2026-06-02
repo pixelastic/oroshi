@@ -1,3 +1,32 @@
+## Issue 02b — bats-mock test refactor
+
+### `setopt local_options err_return` missing in wrapper functions
+```zsh
+preToolUse-Bash-solkan() {
+  solkan --allow-list-file "${hookDir}/allowlist.json" "$1"
+}
+```
+**Problem:** zsh-writer says autoloaded functions should carry `err_return`.
+**Reason skipped:** Not autoloaded functions — part of the hook mechanism. Guidance explicitly removed `set -e` from the hook; adding `err_return` here carries the same risk.
+
+### `local rewritten` guard in preToolUse-Bash-rtk()
+```zsh
+local rewritten="$(rtk rewrite "$cmd")"
+if [[ "$rewritten" == "" ]]; then
+  print -- "$cmd"
+  return 0
+fi
+```
+**Problem:** Reviewer suggested guarding subshell assignment per variables.md.
+**Reason skipped:** The empty-result case is already handled on the next line; no silent failure is possible.
+
+### Spec: mock.zsh setup called "dead code" in sibling test files
+```bash
+printf "source '%s'\n" "$SCRIPT" > "$BATS_TMP_DIR/mock.zsh"
+```
+**Problem:** Spec reviewer flagged as dead code since tests call `bats_run_function`.
+**Reason skipped:** Incorrect. `bats_run_function` sources `$BATS_TMP_DIR/mock.zsh` before calling the function — that's how the function definition reaches the ZSH subprocess.
+
 ## Issue 02 — Test infrastructure
 
 ### Missing `set -e` in hook

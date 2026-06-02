@@ -1,25 +1,34 @@
-setup() {
-  SCRIPT="$(dirname "$BATS_TEST_FILENAME")/../preToolUse-Bash-rtk"
+bats_load_library 'helper'
 
-  printf '#!/usr/bin/env zsh\nexit 1\n' > "$BATS_TEST_TMPDIR/mock-rtk-no-equiv"
-  printf '#!/usr/bin/env zsh\nprint -- "rtk $2"\n' > "$BATS_TEST_TMPDIR/mock-rtk-rewrite"
-  chmod +x "$BATS_TEST_TMPDIR"/mock-rtk-*
+SCRIPT="$BATS_TEST_DIRNAME/../preToolUse-Bash-rtk.zsh"
+
+setup() {
+  bats_tmp_dir
+  printf "source '%s'\n" "$SCRIPT" > "$BATS_TMP_DIR/mock.zsh"
 }
 
-@test "prints original command when rtk rewrite has no equivalent (exit 1)" {
-  run env RTK_CMD="$BATS_TEST_TMPDIR/mock-rtk-no-equiv" "$SCRIPT" "echo hello"
+teardown() { bats_cleanup; }
+
+@test "prints original command when rtk rewrite has no equivalent" {
+  rtk() { return 1; }
+  bats_mock rtk
+
+  bats_run_function preToolUse-Bash-rtk "echo hello"
   [ "$status" -eq 0 ]
   [ "$output" = "echo hello" ]
 }
 
 @test "prints rewritten command from rtk rewrite stdout" {
-  run env RTK_CMD="$BATS_TEST_TMPDIR/mock-rtk-rewrite" "$SCRIPT" "echo hello"
+  rtk() { print -- "rtk $2"; }
+  bats_mock rtk
+
+  bats_run_function preToolUse-Bash-rtk "echo hello"
   [ "$status" -eq 0 ]
   [ "$output" = "rtk echo hello" ]
 }
 
 @test "is idempotent when command already uses RTK" {
-  run "$SCRIPT" "rtk git status"
+  bats_run_function preToolUse-Bash-rtk "rtk git status"
   [ "$status" -eq 0 ]
   [ "$output" = "rtk git status" ]
 }

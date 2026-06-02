@@ -16,7 +16,8 @@
   {
     "id": "02b",
     "issue": "issues/02b-test-bats-mock-refactor.md",
-    "done": false,
+    "done": true,
+    "recap": "Sibling scripts (.zsh) define preToolUse-Bash-solkan() and preToolUse-Bash-rtk() with guard (whence); hook sources unconditionally; tests mock by full function name via bats_mock — no naming collision with binaries, no recursion risk.",
     "blocked_by": ["02"]
   },
   {
