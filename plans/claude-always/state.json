@@ -30,7 +30,8 @@
   {
     "id": "04",
     "issue": "issues/04-hook-session-state-ask-escalate.md",
-    "done": false,
+    "done": true,
+    "recap": "Added session state: single-reject uses permissionDecision=ask with reason on first encounter, defer with no reason on repeat; multi-reject always uses ask; state written to $CLAUDE_SESSIONS_DIR/{sessionId}/state.json.",
     "blocked_by": ["03"]
   }
 ]

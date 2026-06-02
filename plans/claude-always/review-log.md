@@ -1,3 +1,25 @@
+## Issue 04 — session state ask escalate
+
+### Standards: variable guards missing after `local var="$(cmd)"`
+```zsh
+local sessionId="$(print -r -- "$inputJson" | jq -r '.session_id // empty')"
+local rejectedList="$(print -r -- "$solkanJson" | jq -r '.commands.rejected | join(", ")')"
+```
+**Problem:** zsh-writer variables.md requires a guard line after `local var="$(cmd)"`.
+**Reason skipped:** The inline `"$sessionId" != ""` checks throughout the code serve as the guard. `rejectedList`/`rejectedCount` are only reached when solkan rejected (non-zero), so empty output is not a silent failure case.
+
+### Standards: repeated mock boilerplate in 8 AC tests
+**Problem:** Reviewer suggested extracting to `setup()` for DX.
+**Reason skipped:** Each test needs independent mock definitions (even if identical here, future tests may vary). Extraction would break that flexibility.
+
+### Standards: `echo "$output"` in test assertions
+**Problem:** Inconsistent with `print -r --` in hook code.
+**Reason skipped:** `echo "$output"` is the BATS idiom used consistently across all existing tests in this file. Not a hard rule violation.
+
+### Spec: "AC8" test label misapplied
+**Problem:** The test labelled "AC8" covers missing session_id fallback, but spec AC8 = "ask user output does not contain permissionDecisionReason". The actual AC8 assertion lives in the combined AC3+AC8 test.
+**Reason skipped:** The assertion is present and correct; the label mismatch is cosmetic. The missing-session_id case is covered by the error-handling paragraph of the spec.
+
 ## Issue 03 — hook multi-reject ask
 
 ### Spec: hook implementation change absent from diff

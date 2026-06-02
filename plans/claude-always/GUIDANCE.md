@@ -61,6 +61,11 @@ If the function already exists (because a test mocked it), sourcing is a no-op �
 
 ## Discoveries
 
+### Issue 04 — session state ask escalate
+- `jq -e --arg cmd "$cmd" '(.preToolUse.Bash.askedCommands // []) | index($cmd) != null'` is the correct pattern to check array membership — handles missing key via `// []` and uses `jq -e` exit code instead of parsing output
+- Multi-reject always triggers first-time by omission (condition checks `$rejectedCount -eq 1`), not by an explicit `> 1` branch — simpler and achieves the same spec intent
+- Return-early for the repeat/defer case lets the first-time (main) path be un-nested at the bottom, matching zsh-writer conventions
+
 ### Issue 02b — bats-mock test refactor
 - `bats_run_script "$SCRIPT" <<< json` does propagate stdin — no tmp-file fallback needed
 - Naming wrapper functions after their script (`preToolUse-Bash-solkan`) instead of the binary they wrap (`solkan`) eliminates all recursion risk and allows clean `bats_mock` at both the hook level and the wrapper level
