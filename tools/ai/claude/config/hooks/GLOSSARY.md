@@ -32,9 +32,13 @@ _Avoid_: skip, pass, leave unchanged
 The hook output when Solkan **allow**s a command.
 _Avoid_: auto-allow, silent-approve, bypass
 
+**ask user — first time**:
+The hook output when Solkan **reject**s a command that has never been seen in the current session, or when multiple binaries are rejected at once. The user sees a 2-option dialog (Allow / Deny) with the rejected binary name(s) displayed. Maps to `permissionDecision: "ask"`.
+_Avoid_: ask, first-ask, new-ask, warn-ask
+
 **ask user**:
-The hook output when Solkan **reject**s a command.
-_Avoid_: prompt, defer, ask
+The hook output when Solkan **reject**s a command that has already been seen in the current session. The user sees a 3-option dialog: Allow / Allow for session / Deny. No reason is shown — the user has already been informed. Maps to `permissionDecision: "defer"`.
+_Avoid_: escalate, defer, session-ask
 
 ## Relationships
 
@@ -42,7 +46,7 @@ _Avoid_: prompt, defer, ask
 - **Solkan** runs first; **RTK** runs second, regardless of **Solkan**'s decision.
 - Determined via `rtk rewrite <cmd>`: exit 0 = **rewrite**, exit 1 = **ignore**.
 - Each command receives exactly one **Solkan** decision and exactly one **RTK** decision.
-- Each **allow** produces exactly one **auto-approve**; each **reject** produces exactly one **ask user** (a maybe — the human decides).
+- Each **allow** produces exactly one **auto-approve**; each **reject** produces either **ask user** or **ask user — first time** depending on session state (a maybe — the human decides).
 - A **rewrite** produces zero or one `updatedInput` JSON field; an **ignore** produces none.
 - The human is the only actor who can say a final "no" — and only in the **ask user** path.
 
@@ -52,10 +56,24 @@ _Avoid_: prompt, defer, ask
 |--------|-----|-------------|
 | allow | rewrite | auto-approve + updatedInput |
 | allow | ignore | auto-approve (no updatedInput) |
-| reject | rewrite | ask user + updatedInput |
-| reject | ignore | ask user (no updatedInput) |
+| reject | rewrite | ask user / ask user — first time + updatedInput |
+| reject | ignore | ask user / ask user — first time (no updatedInput) |
+
+## Design decisions
+
+### Why `ask user` and `ask user — first time` are two distinct outputs
+
+The natural design would be a single reject path with a 3-option dialog (Allow / Allow for session / Deny) that always displays the rejected binary name — so the user knows why they are being asked, whether it is the first time or not.
+
+This is not possible. Claude Code only displays the binary name(s) when `permissionDecision` is `"ask"`. When `permissionDecision` is `"defer"`, the reason field is silently ignored and the binary name is not shown. The two `permissionDecision` values also map to different dialog types: `"ask"` produces a 2-option dialog (Allow / Deny); `"defer"` produces a 3-option dialog (Allow / Allow for session / Deny).
+
+As a result:
+- **First-time reject** uses `permissionDecision: "ask"` to surface the binary name, at the cost of losing the "Allow for session" option.
+- **Repeat reject** uses `permissionDecision: "defer"` to offer "Allow for session", accepting that the binary name is not shown (the user was already informed on the first ask).
+
+The split is a workaround for this Claude Code limitation, not an intentional UX design.
 
 ## Flagged ambiguities
 
 - **allow** (Solkan decision) vs **auto-approve** (hook output): distinct layers — Solkan classifies the command; the hook translates that into a Claude Code response.
-- **reject** (Solkan decision) vs **ask user** (hook output): same distinction — **reject** does not mean "block", it means "escalate to the user".
+- **reject** (Solkan decision) vs **ask user** / **ask user — first time** (hook output): same distinction — **reject** does not mean "block", it means "escalate to the user"; session state determines which dialog appears.
