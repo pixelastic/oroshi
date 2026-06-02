@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-test-infrastructure.md",
-    "done": false,
+    "done": true,
+    "recap": "Renamed mock-solkan-ask → mock-solkan-reject-multi, added mock-solkan-reject-single, updated _run_hook to pass CLAUDE_HOOKS_LOG_DIR/CLAUDE_SESSIONS_DIR, made hook log dir overridable via env var.",
     "blocked_by": ["01"]
   },
   {

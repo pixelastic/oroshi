@@ -5,6 +5,7 @@
 # Env overrides for testing:
 #   PRETOOLUSE_SOLKAN_SCRIPT — defaults to preToolUse-Bash-solkan (sibling)
 #   PRETOOLUSE_RTK_SCRIPT    — defaults to preToolUse-Bash-rtk (sibling)
+#   CLAUDE_HOOKS_LOG_DIR     — defaults to /tmp/oroshi/claude/hooks
 #
 # TEST CASES - This hook must handle:
 # - echo hello                           -> accept (allowlisted)
@@ -21,16 +22,16 @@
 local hookDir="${0:A:h}"
 local solkanScript="${PRETOOLUSE_SOLKAN_SCRIPT:-${hookDir}/preToolUse-Bash-solkan}"
 local rtkScript="${PRETOOLUSE_RTK_SCRIPT:-${hookDir}/preToolUse-Bash-rtk}"
-CLAUDE_HOOKS_LOG_DIR="/tmp/oroshi/claude/hooks"
+local logDir="${CLAUDE_HOOKS_LOG_DIR:-/tmp/oroshi/claude/hooks}"
 
 # Parse input command
 local inputJson="$(cat)"
 local inputCommand="$(print -r -- "$inputJson" | jq -r '.tool_input.command')"
 
 # Save input for debugging
-mkdir -p "$CLAUDE_HOOKS_LOG_DIR"
+mkdir -p "$logDir"
 print -r -- "$inputJson" |
-  jq '.' >"${CLAUDE_HOOKS_LOG_DIR}/last-bash-input.json"
+  jq '.' >"${logDir}/last-bash-input.json"
 
 # Solkan: is the command allowed? Capture JSON output alongside exit code
 local solkanJson=""
