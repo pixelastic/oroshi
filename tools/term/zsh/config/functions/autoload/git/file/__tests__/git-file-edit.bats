@@ -38,6 +38,20 @@ teardown() {
   [ ! -f "$BATS_TMP_DIR/nvim.log" ]
 }
 
+@test "does not open plan scaffold files" {
+  mkdir -p plans/my-plan/scaffold
+  echo "content" > plans/my-plan/scaffold/template.lua
+  bats_git add plans/my-plan/scaffold/template.lua
+  bats_git commit --quiet -m "add scaffold"
+  echo "modified" > plans/my-plan/scaffold/template.lua
+  nvim() { echo "$*" > "$BATS_TMP_DIR/nvim.log"; }
+  bats_mock nvim
+
+  bats_run_function git-file-edit
+  [ "$status" -eq 0 ]
+  [ ! -f "$BATS_TMP_DIR/nvim.log" ]
+}
+
 @test "does not open renamed source file (old path no longer exists)" {
   git mv file.txt renamed.txt
   nvim() { echo "$*" > "$BATS_TMP_DIR/nvim.log"; }

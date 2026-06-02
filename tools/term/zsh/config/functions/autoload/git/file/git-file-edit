@@ -23,9 +23,10 @@ for rawLine in ${(f)rawFiles}; do
   # Skip if file no longer exists on disk (safety net for unexpected statuses)
   [[ ! -f "${gitRoot}/${filePath}" ]] && continue
 
-  # Skip plan state files
+  # Skip plan state files and scaffold contents
   local fileName="${filePath:t}"
-  [[ "$fileName" == "state.json" ]] && continue
+  [[ "$filePath" == plans/*/scaffold/state.json ]] && continue
+  [[ "$filePath" == plans/*/scaffold/* ]] && continue
 
   fileList+=("${gitRoot}/${filePath}")
 done
