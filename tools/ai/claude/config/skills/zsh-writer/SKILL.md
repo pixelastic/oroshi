@@ -138,14 +138,12 @@ Fix fix **every** violation, (including pre-existing ones not introduced by the 
 | Rationalization | Reality |
 |---|---|
 | "It's only two levels of if/else, it's ok." | No it's not. Return early, always. |
-| "I rewrote the block so the old comments don't apply anymore." | Preserve every existing comment. Adapt its wording if needed, but never drop it silently. |
 
 ## Checklist
 
 - [ ] Quick documentation and usage at top of script
 - [ ] Return early — no avoidable nesting
 - [ ] Comments for each guard clause
-- [ ] All existing comments preserved (never silently removed, even during refactors)
 - [ ] All function vars `local`; script constants UPPER_CASE without `local`
 - [ ] External commands use long-form args, one per line
 - [ ] Use existing helpers over porcelain (e.g. `git-branch-list-raw` not `git branch`)

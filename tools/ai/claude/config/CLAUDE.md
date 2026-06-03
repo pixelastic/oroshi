@@ -7,6 +7,7 @@ grammar for the sake of concision.
 - DO: Fetch up-to-date documentation (using Context7 MCP) before writing code
 - DO: Prefer a DX that makes simple things easy and complex things possible
 - DO: Apply the "return early" pattern in code
+- DO: When editing code, preserve its comments. When deleting code, delete its comments with it.
 
 - NEVER: Never suggest to write a script in python. Prefer zsh or JavaScript
 
