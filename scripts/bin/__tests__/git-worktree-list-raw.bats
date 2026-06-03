@@ -1,4 +1,4 @@
-load 'helper'
+bats_load_library 'helper'
 
 # Override run_zsh_fn to load functions from the worktree, not .oroshi
 run_zsh_fn() {
@@ -11,7 +11,8 @@ run_zsh_fn() {
 }
 
 setup() {
-  export TMP_DIRECTORY="$(bats_tmp)"
+  bats_tmp_dir
+  export TMP_DIRECTORY="$BATS_TMP_DIR"
   export OROSHI_WORKTREES_DIR="$TMP_DIRECTORY/worktrees"
   mkdir -p "$OROSHI_WORKTREES_DIR"
 

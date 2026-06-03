@@ -20,7 +20,7 @@ bats_tmp_dir() {
   local file="${BATS_TEST_FILENAME##*/}"
   file="${file%.bats}"
 
-  local slug="$(bats_slugify "$BATS_TEST_NAME")"
+  local slug="$(bats_slugify "$BATS_TEST_DESCRIPTION")"
 
   local dir="/tmp/oroshi/bats/${file}/${slug}"
   rm -rf "$dir"
@@ -139,11 +139,12 @@ expect_clean() {
 }
 
 # bats_slugify <str>
-# Returns str lowercased with non-alphanumeric chars replaced by dashes.
-# Usage: local slug="$(bats_slugify "$BATS_TEST_NAME")"
+# Returns str lowercased, non-alphanumeric chars replaced by dashes, consecutive dashes collapsed.
+# Usage: local slug="$(bats_slugify "$BATS_TEST_DESCRIPTION")"
 bats_slugify() {
   local slug="${1,,}"
   slug="${slug//[^a-z0-9]/-}"
+  while [[ "$slug" == *--* ]]; do slug="${slug//--/-}"; done
   slug="${slug#-}"
   slug="${slug%-}"
   echo "$slug"
