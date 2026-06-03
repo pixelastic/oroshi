@@ -1,9 +1,0 @@
-[
-  {
-    "id": "01",
-    "issue": "issues/01-unified-reject-path.md",
-    "done": true,
-    "recap": "Removed multi-reject early-return; replaced single+multi paths with one unified path using zsh array subtraction to compute newRejected, then defer or ask based on whether any new commands remain.",
-    "blocked_by": []
-  }
-]
