@@ -6,6 +6,10 @@ Apply the pivot question before writing any test:
 
 **YES** → behavioral · **NO** → scaffolding
 
+**Exceptions**:
+- Global install scripts are scaffolding
+- Pre-commit hooks (`lintstaged.config.js`) are scaffolding
+
 ## Definition
 
 Verifies observable behavior, not implementation details.
