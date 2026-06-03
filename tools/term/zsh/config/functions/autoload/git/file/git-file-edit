@@ -25,7 +25,7 @@ for rawLine in ${(f)rawFiles}; do
 
   # Skip plan state files and scaffold contents
   local fileName="${filePath:t}"
-  [[ "$filePath" == plans/*/scaffold/state.json ]] && continue
+  [[ "$filePath" == plans/*/state.json ]] && continue
   [[ "$filePath" == plans/*/scaffold/* ]] && continue
 
   fileList+=("${gitRoot}/${filePath}")
