@@ -1,0 +1,20 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-whitelist-tmp-and-claude-md.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-rename-script-sidequest-end.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-rename-skill-sidequest.md",
+    "done": false,
+    "blocked_by": ["01", "02"]
+  }
+]
