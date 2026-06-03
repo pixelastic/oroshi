@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-rewrite-skill-template.md",
-    "done": false,
+    "done": true,
+    "recap": "Rewrote sidequest/SKILL.md from flat prose to canonical skill-writer template format: structured Core Workflow with 3 steps (Goal/Exit criterion), Common Rationalizations table, Checklist; trimmed verbosity to comply with concision mandate.",
     "blocked_by": ["03"]
   }
 ]

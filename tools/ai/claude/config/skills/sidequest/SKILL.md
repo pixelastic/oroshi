@@ -1,22 +1,50 @@
 ---
 name: sidequest
-description: Compact the current conversation into a sidequest document to launch a focused sub-conversation branched from the current one.
-argument-hint: "What is the sidequest focused on?"
+description: Use when user says "sidequest" or "handoff" — compact conversation context into a document for a fresh agent to pick up.
 ---
 
-Derive a 3–5 word kebab-case slug from the conversation content (or from the
-argument if provided). Write the sidequest document to
-`/tmp/oroshi/claude/sidequests/<slug>.md`, creating the directory with
-`mkdir -p` if needed (read the file before you write to it).
+# Sidequest
 
-Suggest the skills to be used, if any, by the next session.
+## Overview
 
-Do not duplicate content already captured in other artifacts (PRDs, plans, ADRs,
-issues, commits, diffs). Reference them by path or URL instead.
+Compact the current conversation into a sidequest document; copy the launch command to the clipboard.
 
-If the user passed arguments, treat them as a description of what the sidequest
-will focus on and tailor the doc accordingly.
+---
 
-Once the file is written, run `sidequest-end <path>` (passing the actual file
-path). This copies the launch command to the clipboard so the user can paste it
-into a terminal to start a fresh Claude session with the sidequest as context.
+## Core Workflow
+
+### Step 1 — Derive slug
+
+Derive a 3-5 word kebab-case slug from the conversation content
+
+### Step 2 — Write document
+
+
+- Compact and focus the conversation on the aspect the user wants to tackle.
+- Give enough context so a new agent can pick up from it
+- Reference existing artifacts (plans, GLOSSARY, commits, diffs) by path — don't duplicate.
+- Suggest skills the next session should use, if any.
+- Write file to `/tmp/oroshi/claude/sidequests/<slug>.md`.
+
+### Step 3 — Finalize
+
+Run `sidequest-end <filepath>`.
+
+---
+
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "I'll copy content from the PRD/plan, it's easier" | Don't duplicate — reference by path. Duplication goes stale. |
+| "I don't need to call sidequest-end, the file is enough" | Without `sidequest-end`, the launch command never reaches the clipboard. |
+
+---
+
+## Checklist
+
+- [ ] Slug derived (3-5 words, kebab-case)
+- [ ] File at `/tmp/oroshi/claude/sidequests/<slug>.md`
+- [ ] Artifacts referenced by path, not duplicated
+- [ ] Skills suggested for next session (if applicable)
+- [ ] `sidequest-end <filepath>` run — launch command on clipboard
