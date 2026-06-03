@@ -1,3 +1,12 @@
+## Issue 03 — Rename skill sidequest
+
+### SKILL.md does not follow skill-writer template structure
+```markdown
+# Missing: description: "Use when…", ## Overview, ## Core Workflow, ## Common Rationalizations, ## Checklist
+```
+**Problem:** Skill template requires full structured sections; `sidequest/SKILL.md` is flat prose.
+**Reason skipped:** Pre-existing deviation carried over verbatim from `handoff/SKILL.md`; issue scope is rename/rewrite, not template restructure.
+
 ## Issue 02 — Rename script sidequest-end
 
 ### `local` used at script top-level

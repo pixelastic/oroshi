@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-rename-skill-sidequest.md",
-    "done": false,
+    "done": true,
+    "recap": "Renamed skills/handoff/ to skills/sidequest/, updated name/description/path/end-command in SKILL.md to reflect sidequest mental model and /tmp/oroshi/claude/sidequests/ path.",
     "blocked_by": ["01", "02"]
   }
 ]
