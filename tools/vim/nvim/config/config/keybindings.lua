@@ -232,6 +232,21 @@ local function addSemicolonAtEndOfLine()
 end
 nmap(";", addSemicolonAtEndOfLine, "Add a semicolon at end of line")
 
+-- Add REVIEW: comment
+local function addReviewComment()
+  -- Build the line
+  local commentString = F.bufferOption("commentstring")
+  local reviewText = commentString .. " REVIEW: "
+
+  -- Add it
+  local lineNumber = F.lineNumber()
+  F.addLines(reviewText)
+  F.indent(lineNumber)
+  F.moveTo(lineNumber, 1)
+  F.insertModeAfter()
+end
+nmap("R", addReviewComment, "Add REVIEW comment above")
+
 -- Paste {{{
 local function smartPaste()
   local clipboard = vim.fn.getreg("+")
