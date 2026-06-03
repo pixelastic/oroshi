@@ -1,0 +1,57 @@
+# Write a single key into a JSON file in-place
+# Usage:
+# $ json-set --input file.json '.key' 'value'                              # string (default)
+# $ json-set --input file.json '.key' '42' --number                        # number
+# $ printf '%s\n' "${arr[@]}" | json-set --input file.json '.key' --array  # array from stdin
+setopt local_options err_return
+
+zmodload zsh/zutil
+zparseopts -E -D \
+  -input:=flagInput \
+  -number=flagNumber \
+  -array=flagArray
+
+local inputFile="${flagInput[2]}"
+local isNumber=${#flagNumber}
+local isArray=${#flagArray}
+
+local jsonKey="$1"
+local jsonValue="${2:-}"
+
+# --input is required
+[[ "$inputFile" == "" ]] && return 1
+
+# Read existing file into memory, or start with empty object if absent
+local baseJson="{}"
+[[ -f "$inputFile" ]] && baseJson="$(cat -- "$inputFile")"
+
+# Array
+# $ json-set --input file.json '.key' 'one\ntwo\nthree' --array
+# $ echo "one\ntwo\nthree" | json-set --input file.json '.key' --array
+if [[ $isArray == "1" ]]; then
+  # Read from stdin if arg is empty
+  [[ "$jsonValue" == "" ]] && jsonValue="$(jq --raw-input --null-input '[inputs | select(length > 0)]')"
+  local newJson="$(jq --argjson value "$jsonValue" "${jsonKey} = \$value" <<<"$baseJson")"
+
+  [[ "$newJson" == "" ]] && return 1
+  print -r -- "$newJson" >"$inputFile"
+  return
+fi
+
+# We read jsonValue from stdin if none is passed
+[[ "$jsonValue" == "" ]] && jsonValue="$(cat -)"
+
+# Number: write as JSON number
+if [[ $isNumber == "1" ]]; then
+  local newJson="$(jq --argjson value "$jsonValue" "${jsonKey} = \$value" <<<"$baseJson")"
+
+  [[ "$newJson" == "" ]] && return 1
+  print -r -- "$newJson" >"$inputFile"
+  return
+fi
+
+# String: write as JSON string
+local newJson="$(jq --arg value "$jsonValue" "${jsonKey} = \$value" <<<"$baseJson")"
+
+[[ "$newJson" == "" ]] && return 1
+print -r -- "$newJson" >"$inputFile"

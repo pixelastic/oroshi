@@ -43,6 +43,12 @@ printf '%s\n' "${arr[@]}" | json-set --input file.json '.key' --array  # array
 
 ## Discoveries
 
+### Issue 02 — json-set
+
+- `jq --raw-input --null-input '[inputs | select(length > 0)]'` converts newline-separated stdin to a JSON array and safely filters the empty trailing line produced by `<<<` herestrings
+- Dynamic `--arg`/`--argjson` type flag: store flag name in a variable (`local jqArgType="--arg"`), pass as `jq "$jqArgType" v "$jqValue"` — jq accepts this cleanly
+- The array-building jq and the file-writing jq don't conflict over stdin: the second jq reads from the positional `$inputFile` arg, not stdin
+
 ### Issue 01 — json-get update
 
 - `${var:--}` (default to `-`) lets `cat --` fall back to stdin cleanly — eliminates the if/else data-loading branch entirely
