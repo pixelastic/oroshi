@@ -28,13 +28,12 @@ source "${hookDir}/preToolUse-Bash-helper.zsh"
 
 # Parse input
 local inputJson="$(cat)"
-local inputCommand="$(print -r -- "$inputJson" | jq -r '.tool_input.command')"
-local sessionId="$(print -r -- "$inputJson" | jq -r '.session_id // empty')"
+local inputCommand="$(json-get '.tool_input.command' <<< "$inputJson")"
+local sessionId="$(json-get '.session_id' <<< "$inputJson")"
 
 # Save input for debugging
 mkdir -p "$logDir"
-print -r -- "$inputJson" |
-  jq '.' >"${logDir}/last-bash-input.json"
+jq '.' <<< "$inputJson" >"${logDir}/last-bash-input.json"
 
 # Solkan: is the command allowed? Capture JSON output alongside exit code
 local solkanJson=""
@@ -51,7 +50,7 @@ if [[ "$isAllowed" == "1" ]]; then
 fi
 
 # Rejected — determine decision from session state
-local -a rejected=(${(@f)$(print -r -- "$solkanJson" | jq -r '.commands.rejected[]')})
+local -a rejected=(${(@f)$(json-get '.commands.rejected' <<< "$solkanJson")})
 local rejectedList="${(j:, :)rejected}"
 local stateFile="${sessionsDir}/${sessionId}/state.json"
 
@@ -62,7 +61,8 @@ if [[ "${#rejected}" -gt 1 ]]; then
 fi
 
 # Single-reject: load session state, persist, then decide
-local -a askedCmds=(${(@f)$(jq -r '.preToolUse.Bash.askedCommands[]' "$stateFile" 2>/dev/null)})
+local -a askedCmds=()
+[[ -f "$stateFile" ]] && askedCmds=(${(@f)$(json-get --input "$stateFile" '.preToolUse.Bash.askedCommands')})
 
 local isKnown=0
 [[ ${askedCmds[(I)$rejected[1]]} -gt 0 ]] && isKnown=1

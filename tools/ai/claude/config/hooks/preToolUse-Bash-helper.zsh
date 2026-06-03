@@ -31,13 +31,12 @@ markAsAsked() {
 
   mkdir -p "${stateFile:h}"
   # Get existing askedCommands
-  local base="$(cat "$stateFile" 2>/dev/null)"
-  [[ "$base" == "" ]] && base="{}"
-  local -a askedCommands=(${(@f)$(print -r -- "$base" | jq -r '.preToolUse.Bash.askedCommands[]' 2>/dev/null)})
+  local -a askedCommands=()
+  [[ -f "$stateFile" ]] && askedCommands=(${(@f)$(json-get --input "$stateFile" '.preToolUse.Bash.askedCommands')})
   # Add the new ones
   askedCommands+=("$@")
   # Sort and uniq
   askedCommands=("${(@ou)askedCommands}")
   # Write it back
-  print -r -- "$base" | jq --args '.preToolUse.Bash.askedCommands = $ARGS.positional' "${askedCommands[@]}" >"$stateFile"
+  printf '%s\n' "${askedCommands[@]}" | json-set --input "$stateFile" '.preToolUse.Bash.askedCommands' --array
 }
