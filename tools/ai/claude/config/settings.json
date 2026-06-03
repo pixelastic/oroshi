@@ -18,7 +18,7 @@
       "TodoWrite",
       "WebFetch",
       "WebSearch",
-      "Write(/tmp/oroshi/claude/*)",
+      "Write(//tmp/oroshi/claude/**)",
       "mcp__context7",
       "mcp__google-slides",
       "mcp__make__scenarios_list"
