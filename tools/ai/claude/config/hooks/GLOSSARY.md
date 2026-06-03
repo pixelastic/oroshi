@@ -33,11 +33,11 @@ The hook output when Solkan **allow**s a command.
 _Avoid_: auto-allow, silent-approve, bypass
 
 **ask with reason**:
-The hook output when Solkan **reject**s a command that has never been seen in the current session, or when multiple binaries are rejected at once. The user sees a 2-option dialog (Allow / Deny) with the rejected binary name(s) displayed. Maps to `permissionDecision: "ask"`.
+The hook output when Solkan **reject**s one or more commands and at least one has never been seen in the current session. Only the new binary names are displayed. The user sees a 2-option dialog (Allow / Deny). Maps to `permissionDecision: "ask"`.
 _Avoid_: ask user — first time, first-ask, new-ask, warn-ask
 
 **ask with auto-accept**:
-The hook output when Solkan **reject**s a command that has already been seen in the current session. The user sees a 3-option dialog: Allow / Allow for session / Deny. No reason is shown — the user has already been informed. Maps to `permissionDecision: "defer"`.
+The hook output when Solkan **reject**s one or more commands and all have already been seen in the current session. The user sees a 3-option dialog: Allow / Allow for session / Deny. No reason is shown — the user has already been informed. Maps to `permissionDecision: "defer"`.
 _Avoid_: ask user, escalate, defer, session-ask
 
 ## Relationships
