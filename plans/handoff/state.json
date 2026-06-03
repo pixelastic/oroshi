@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-whitelist-tmp-and-claude-md.md",
-    "done": false,
+    "done": true,
+    "recap": "Added Write(/tmp/oroshi/claude/*) to settings.json permissions.allow and updated CLAUDE.md throw-away scripts path to /tmp/oroshi/claude/scripts.",
     "blocked_by": []
   },
   {
