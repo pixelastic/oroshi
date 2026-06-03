@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-tdd-behavioral-scaffolding-references.md",
-    "done": false,
+    "done": true,
+    "recap": "Split test-types.md into behavioral-tests.md and scaffolding-tests.md; deleted test-types.md; updated tdd/SKILL.md to link both new files and rename permanent→behavioral throughout.",
     "blocked_by": []
   },
   {
