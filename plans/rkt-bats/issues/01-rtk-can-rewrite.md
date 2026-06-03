@@ -12,6 +12,17 @@ Two env var overrides exist for the function's own test isolation: `RTK_CMD` (rt
 
 Note: a stale test file `hooks/__tests__/rtk-can-rewrite.bats` exists from an earlier draft — delete it and place the real tests alongside the function in the `ai/rtk` subdomain.
 
+## Behavioral Tests
+
+- exits 0 for a command RTK can natively rewrite
+- exits 0 for a command matching a TOML filter name
+- exits 1 for an unrecognized command
+- produces no stdout in any case
+
+## Scaffolding Tests
+
+None — adds only new behavior.
+
 ## Acceptance criteria
 
 - [ ] Function exists in the `ai/rtk` autoload subdomain

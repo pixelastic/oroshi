@@ -10,6 +10,14 @@ Also update the GLOSSARY Relationships section: the "Determined via `rtk rewrite
 
 Files to touch: project root CLAUDE.md, zsh-writer SKILL.md, zsh-writer testing reference, hooks GLOSSARY.
 
+## Behavioral Tests
+
+None — documentation-only change.
+
+## Scaffolding Tests
+
+None — documentation-only change.
+
 ## Acceptance criteria
 
 - [ ] No file in the repo instructs to run `rtk bats` explicitly

@@ -8,6 +8,16 @@ Replace the inline `rtk rewrite` call in `preToolUse-Bash-rtk` with a call to `r
 
 Update the existing bats tests to mock `RTK_CAN_REWRITE_CMD` (exit-0 mock and exit-1 mock) instead of the old `RTK_CMD`-based approach. Three cases: rewrite decision yes → `rtk $cmd`; rewrite decision no → `$cmd` unchanged; command already starts with `rtk` → pass through without calling `rtk-can-rewrite`.
 
+## Behavioral Tests
+
+- hook prepends `rtk` when rtk-can-rewrite exits 0
+- hook passes command unchanged when rtk-can-rewrite exits 1
+- hook passes through a command already prefixed with `rtk` without calling rtk-can-rewrite
+
+## Scaffolding Tests
+
+None — behavioral tests verify the refactored contract via `RTK_CAN_REWRITE_CMD` mock.
+
 ## Acceptance criteria
 
 - [ ] `preToolUse-Bash-rtk` calls `rtk-can-rewrite` instead of `rtk rewrite`
