@@ -38,12 +38,9 @@ merged without human interaction. Prefer AFK over HITL where possible.
 - A completed slice is demoable or verifiable on its own
 - Prefer many thin slices over few thick ones
 
-For each issue, reason about test type using the `test-types` taxonomy from the `/tdd` skill (probably at @../tdd/test-types.md).
-
-- **feature** → `Permanent Tests` (new observable behavior)
-- **refactoring** → `Scaffolding Test` (structural transformation, no new behavior)
-- **feature + refactoring** → both parts
-- **neither** → skip both parts
+For each issue, identify any
+[behavioral-tests.md](../tdd/references/behavioral-tests.md) or
+[scaffolding-tests.md](../tdd/references/scaffolding-tests.md)
 
 ### Step 3 - Confirm with the user
 
@@ -58,7 +55,7 @@ For each slice, show:
 - **Type**: HITL / AFK
 - **Blocked by**: which other slices (if any) must complete first
 - **User stories covered**: which user stories this addresses (if the source material has them)
-- **Permanent Tests**: what behavior should be tested (skip if empty)
+- **Behavioral Tests**: what behavior should be tested (skip if empty)
 - **Scaffolding Tests**: What structural transformation should be tested (skip
 if empty)
 
@@ -101,7 +98,7 @@ These files will help future agent pick up work where a previous agent left off.
 - [ ] User confirmed: dependency order is correct
 - [ ] issues/XX-slug.md written for each approved slice
 - [ ] each issue file contains a "What to build" blurb and "Acceptance criteria" list
-- [ ] each issue has considered its `Permanent Tests`
+- [ ] each issue has considered its `Behavioral Tests`
 - [ ] each issue has considered its `Scaffolding Tests`
 - [ ] state.json written and contains all issues and their dependencies
 - [ ] all issues in state.json have `done: false`

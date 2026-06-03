@@ -43,14 +43,15 @@ or because they demonstrate a bug.
 
 **Exit criterion:** Test runs and fails.
 
-Read the `## Permanent Tests` and `## Scaffolding Tests` sections from the issue.
-Permanent tests go to `__tests__/` as usual
-Scaffolding tests go to `plans/<slug>/scaffold/<issue-filename>.bats`
+If you have any `## Behavioral Tests` from the issue:
+- Read [behavioral-tests.md](../tdd/references/behavioral-tests.md)
+- Write tests in `__tests__` folder, next to the file being tested.
 
-Write the tests that cover the acceptance criteria of the issue — at least one
-per criterion. Run them. Read the failure output.
+If you have any `## Scaffolding Tests` from the issue:
+- Read [scaffolding-tests.md](../tdd/references/scaffolding-tests.md)
+- Write tests in `plans/<slug>/scaffold/<issue-filename>.bats`
 
-**If tests passes immediately: tests are wrong. Rewrite them.**
+**Run tests. If they passes immediately: tests are wrong. Rewrite them.**
 
 **Do not write any production code in this step.**
 
@@ -147,6 +148,7 @@ per criterion. Run them. Read the failure output.
 - [ ] Ran `ralph-start`, parsed output, handled finished/deadlocked
 - [ ] Read guidance file and issue spec
 - [ ] Declared test strategy before writing any test
+- [ ] Behavioral tests written to `__tests__/`
 - [ ] Scaffolding tests written to plans/<slug>/scaffold/, not __tests__/
 - [ ] RED: wrote failing tests, ran them, confirmed they fail
 - [ ] IMPLEMENT: minimal code, all behaviors covered
