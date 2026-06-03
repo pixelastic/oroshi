@@ -19,5 +19,11 @@
     "done": true,
     "recap": "Renamed skills/handoff/ to skills/sidequest/, updated name/description/path/end-command in SKILL.md to reflect sidequest mental model and /tmp/oroshi/claude/sidequests/ path.",
     "blocked_by": ["01", "02"]
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-rewrite-skill-template.md",
+    "done": false,
+    "blocked_by": ["03"]
   }
 ]
