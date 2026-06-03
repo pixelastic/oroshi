@@ -19,11 +19,8 @@ Derive a 3-5 word kebab-case slug from the conversation content
 
 ### Step 2 — Write document
 
-
-- Compact and focus the conversation on the aspect the user wants to tackle.
-- Give enough context so a new agent can pick up from it
-- Reference existing artifacts (plans, GLOSSARY, commits, diffs) by path — don't duplicate.
-- Suggest skills the next session should use, if any.
+- Follow `references/template.md`.
+- Copy **[VERBATIM]** sections word-for-word; fill in **[DYNAMIC]** sections from the conversation.
 - Write file to `/tmp/oroshi/claude/sidequests/<slug>.md`.
 
 ### Step 3 — Finalize
@@ -45,6 +42,7 @@ Run `sidequest-end <filepath>`.
 
 - [ ] Slug derived (3-5 words, kebab-case)
 - [ ] File at `/tmp/oroshi/claude/sidequests/<slug>.md`
+- [ ] `## Agent Instructions` section is verbatim and first in the document
 - [ ] Artifacts referenced by path, not duplicated
 - [ ] Skills suggested for next session (if applicable)
 - [ ] `sidequest-end <filepath>` run — launch command on clipboard
