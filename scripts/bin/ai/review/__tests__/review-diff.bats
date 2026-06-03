@@ -37,6 +37,16 @@ teardown() {
   [[ "$output" == *"new file mode"* ]]
 }
 
+@test "0-arg, untracked file: diff paths are relative to repo root, not absolute" {
+  cd "$BATS_GIT_DIR"
+  mkdir -p subdir
+  echo "new file content" > subdir/new-file.txt
+  run review-diff
+  [ "$status" -eq 0 ]
+  [[ "$output" != *"$BATS_GIT_DIR"* ]]
+  [[ "$output" == *"subdir/new-file.txt"* ]]
+}
+
 @test "0-arg, staged file: stdout contains staged hunk" {
   cd "$BATS_GIT_DIR"
   echo "staged content" >> tracked.txt

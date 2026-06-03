@@ -33,12 +33,15 @@ if [[ "$arg1" == "" ]] && [[ "$arg2" == "" ]]; then
   for rawLine in ${(f)statusRaw}; do
     [[ "$rawLine" != '?? '* ]] && continue
     local rawFile="${rawLine:3}"
-    # Paths from git status --porcelain are relative to repo root, not cwd
+
+    # diff filepaths are displayed as relative to the repoRoot
     rtk proxy \
-      git diff \
+      git \
+      -C "$repoRoot" \
+      diff \
       --no-index \
       /dev/null \
-      "$repoRoot/$rawFile" || true
+      "$rawFile" || true
   done
   exit 0
 fi
