@@ -10,7 +10,8 @@ export ZSH_CONFIG_PATH="$OROSHI_ROOT/tools/term/zsh/config"
 # Note: This can be overwritten in tests
 export OROSHI_WORKTREES_DIR="${OROSHI_WORKTREES_DIR:-$HOME/local/www/worktrees}"
 # Reference to the path used to store runtime config
-export OROSHI_TMP_FOLDER=~/local/tmp/oroshi
+# Note: This can be overwritten in tests
+export OROSHI_TMP_FOLDER="${OROSHI_TMP_FOLDER:-$HOME/local/tmp/oroshi}"
 
 # Also make the HOSTNAME globally available. Some tools (like Kitty) can use ENV
 # variables in their config, but can't call binaries, so having the HOSTNAME
