@@ -1,9 +1,0 @@
-[
-  {
-    "id": "01",
-    "issue": "issues/01-behavioral-test-exceptions.md",
-    "done": true,
-    "recap": "Added ## Exceptions section to behavioral-tests.md for installation scripts and pre-commit/lint-staged wiring.",
-    "blocked_by": []
-  }
-]
