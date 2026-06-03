@@ -14,7 +14,6 @@ source $ZSH_CONFIG_PATH/keybindings/tab.zsh         # Completion
 source $ZSH_CONFIG_PATH/keybindings/ctrl-a.zsh       # Accept all suggestions
 source $ZSH_CONFIG_PATH/keybindings/ctrl-e.zsh       # Edit line in vim
 source $ZSH_CONFIG_PATH/keybindings/ctrl-r.zsh       # Fuzzy-find history commands
-source $ZSH_CONFIG_PATH/keybindings/ctrl-t.zsh       # Fuzzy-find files in subdirectories (same as Ctrl-Shift-p)
 source $ZSH_CONFIG_PATH/keybindings/ctrl-y.zsh       # Copy current directory to clipboard
 source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-y.zsh # Copy last command + output to clipboard
 source $ZSH_CONFIG_PATH/keybindings/ctrl-i.zsh       # Open Claude Code
@@ -26,8 +25,6 @@ source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-p.zsh # Fuzzy-find files in subdi
 
 source $ZSH_CONFIG_PATH/keybindings/ctrl-g.zsh       # Regexp search in files in project
 source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-g.zsh # Regexp search in files in subdir
-source $ZSH_CONFIG_PATH/keybindings/ctrl-h.zsh       # Fuzzy-find all git commits hashes
-source $ZSH_CONFIG_PATH/keybindings/ctrl-j.zsh       # Fuzzy-find common directories
 source $ZSH_CONFIG_PATH/keybindings/ctrl-l.zsh       # List all files in directory
 source $ZSH_CONFIG_PATH/keybindings/ctrl-shift-l.zsh # Clear terminal
 

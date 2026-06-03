@@ -1,8 +1,0 @@
-# Outputs specific options for searching for a directory in the most common
-# directories
-fzf-fs-directories-shared-options \
-  --prompt fzf-fs-directories-common-prompt \
-  --source fzf-fs-directories-common-source
-
-# Keep the sort of z
-echo "--no-sort"

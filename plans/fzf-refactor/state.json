@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-immediate-cleanup.md",
-    "done": false,
+    "done": true,
+    "recap": "Deleted ctrl-t/h/j keybindings, vfh alias, vim-fzf-project-files, vim-fzf-git-file-history, and legacy fzf-git-commits + fzf-fs-directories-common autoloads.",
     "blocked_by": []
   },
   {
