@@ -14,7 +14,7 @@ This skill takes the current conversation context and codebase understanding and
 ### Step 1 — Understand the codebase
 
 Explore the repo to understand the current state of the codebase, if you haven't already.
-Use the project's domain glossary vocabulary throughout the PRD, and respect any ADRs in the area you're touching.
+Use the project's domain glossary vocabulary throughout the PRD.
 
 ### Step 2 — Sketch out
 
@@ -42,14 +42,14 @@ Ask the user if they're ready to move to /to-issues
 
 | Rationalization | Reality |
 |---|---|
-| "I know this codebase, no need to explore" | Recent ADRs and domain terms may have changed. Explore first. |
+| "I know this codebase, no need to explore" | Domain terms may have changed. Explore first. |
 | "The modules are obvious, no need to check with the user" | Module scope and test scope are separate decisions. Confirm both. |
 | "I will write the PRD in the current repo" | Always use `prd-end` — it handles worktree creation and dep install |
 | "I'll call git-worktree-create myself" | Always use `prd-end` — it handles worktree creation and dep install |
 
 ## Checklist
 
-- [ ] Codebase explored — domain glossary and ADRs identified
+- [ ] Codebase explored — domain glossary identified
 - [ ] Deep modules identified — each has a simple, testable interface
 - [ ] User confirmed module list matches intent
 - [ ] User confirmed which modules get tests
