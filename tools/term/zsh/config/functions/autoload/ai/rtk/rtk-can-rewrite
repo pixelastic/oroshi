@@ -1,0 +1,22 @@
+# Check whether RTK can handle a command (built-in rewrite or TOML filter)
+# Usage:
+# $ rtk-can-rewrite "git status"   # exits 0 (built-in)
+# $ rtk-can-rewrite "bats foo"     # exits 0 (TOML filter)
+# $ rtk-can-rewrite "echo hello"   # exits 1 (no match)
+setopt local_options err_return
+
+# No command provided
+local cmd="$1"
+[[ "$cmd" == "" ]] && return 1
+
+# Check if we have a built-in rewrite
+if rtk rewrite "$cmd" >/dev/null 2>&1; then
+  return 0
+fi
+
+# If not, check if we have a custom filter
+local filtersToml="$OROSHI_ROOT/tools/ai/rtk/config/filters.toml"
+[[ ! -f "$filtersToml" ]] && return 1
+
+local firstWord="${cmd%% *}"
+grep -qP "^\[filters\.${firstWord}\]" "$filtersToml"

@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-rtk-can-rewrite.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Created rtk-can-rewrite autoload function with built-in rewrite + TOML filter fallback; deleted stale hook test"
   },
   {
     "id": "02",
