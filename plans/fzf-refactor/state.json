@@ -1,0 +1,86 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-immediate-cleanup.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-ctrl-r.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-ctrl-b.md",
+    "done": false,
+    "blocked_by": ["02"]
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-apt-packages.md",
+    "done": false,
+    "blocked_by": ["02"]
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-docker-images.md",
+    "done": false,
+    "blocked_by": ["02"]
+  },
+  {
+    "id": "06",
+    "issue": "issues/06-ctrl-shift-p.md",
+    "done": false,
+    "blocked_by": ["02"]
+  },
+  {
+    "id": "07",
+    "issue": "issues/07-ctrl-shift-o.md",
+    "done": false,
+    "blocked_by": ["06"]
+  },
+  {
+    "id": "08",
+    "issue": "issues/08-ctrl-o.md",
+    "done": false,
+    "blocked_by": ["06"]
+  },
+  {
+    "id": "09",
+    "issue": "issues/09-git-file-history.md",
+    "done": false,
+    "blocked_by": ["08"]
+  },
+  {
+    "id": "10",
+    "issue": "issues/10-ctrl-p.md",
+    "done": false,
+    "blocked_by": ["08"]
+  },
+  {
+    "id": "11",
+    "issue": "issues/11-ctrl-g.md",
+    "done": false,
+    "blocked_by": ["10"]
+  },
+  {
+    "id": "12",
+    "issue": "issues/12-ctrl-shift-g.md",
+    "done": false,
+    "blocked_by": ["11"]
+  },
+  {
+    "id": "13",
+    "issue": "issues/13-neovim-integration.md",
+    "done": false,
+    "blocked_by": ["10", "12"]
+  },
+  {
+    "id": "14",
+    "issue": "issues/14-final-legacy-cleanup.md",
+    "done": false,
+    "blocked_by": ["04", "05", "09", "12", "13"]
+  }
+]
