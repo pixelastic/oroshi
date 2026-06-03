@@ -1,9 +1,19 @@
 # Get the md5 hash of a string
 # Usage:
-# $ md5 my-thing    # 09aba8b0082a20bb0f846317d0170462
+# $ md5 my-thing           # 09aba8b0082a20bb0f846317d0170462
+# $ md5 --short my-thing   # 09aba8b0
+setopt local_options err_return
+
+zmodload zsh/zutil
+zparseopts -E -D \
+  -short=flagShort
+
 local input="$1"
-echo -n "${input}" |
-	md5sum |
-	cut \
-		--delimiter ' ' \
-		--fields 1
+local hash="$(echo -n "${input}" |
+  md5sum |
+  cut --delimiter ' ' --fields 1)"
+
+# Truncate to 8 chars when --short is requested
+[[ ${#flagShort} -eq 1 ]] && hash="${hash[1,8]}"
+
+echo "$hash"
