@@ -30,3 +30,8 @@
 ## Discoveries
 
 _(append-only — agents add findings here after each issue)_
+
+### Issue 01 — Unified reject path
+
+- `${arr1:|arr2}` is the zsh array subtraction operator — gives elements in `arr1` not present in `arr2`. Used to compute `newRejected=(${rejected:|askedCmds})`.
+- `askWithAutoAccept` omits the `permissionDecisionReason` key entirely; `jq '.key'` on an absent key returns JSON `null`, so tests checking `== "null"` correctly validate key absence.
