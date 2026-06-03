@@ -2,6 +2,8 @@
 # Usage:
 # $ json-set --input file.json '.key' 'value'                              # string (default)
 # $ json-set --input file.json '.key' '42' --number                        # number
+# $ json-set --input file.json '.key' 'true' --bool                        # boolean
+# $ json-set --input file.json '.key' --null                               # null
 # $ printf '%s\n' "${arr[@]}" | json-set --input file.json '.key' --array  # array from stdin
 setopt local_options err_return
 
@@ -9,11 +11,15 @@ zmodload zsh/zutil
 zparseopts -E -D \
   -input:=flagInput \
   -number=flagNumber \
-  -array=flagArray
+  -bool=flagBool \
+  -array=flagArray \
+  -null=flagNull
 
 local inputFile="${flagInput[2]}"
 local isNumber=${#flagNumber}
+local isBool=${#flagBool}
 local isArray=${#flagArray}
+local isNull=${#flagNull}
 
 local jsonKey="$1"
 local jsonValue="${2:-}"
@@ -24,6 +30,25 @@ local jsonValue="${2:-}"
 # Read existing file into memory, or start with empty object if absent
 local baseJson="{}"
 [[ -f "$inputFile" ]] && baseJson="$(cat -- "$inputFile")"
+
+# Bool: write 'true' or 'false' as JSON boolean
+# $ json-set --input file.json '.enabled' 'true' --bool
+# $ json-set --input file.json '.enabled' 'false' --bool
+if [[ $isBool == "1" ]]; then
+  local newJson="$(jq --argjson value "$jsonValue" "${jsonKey} = \$value" <<<"$baseJson")"
+  [[ "$newJson" == "" ]] && return 1
+  print -r -- "$newJson" >"$inputFile"
+  return
+fi
+
+# Null: set key to JSON null, any value arg is discarded
+# $ json-set --input file.json '.key' --null
+if [[ $isNull == "1" ]]; then
+  local newJson="$(jq "${jsonKey} = null" <<<"$baseJson")"
+  [[ "$newJson" == "" ]] && return 1
+  print -r -- "$newJson" >"$inputFile"
+  return
+fi
 
 # Array
 # $ json-set --input file.json '.key' 'one\ntwo\nthree' --array
@@ -42,6 +67,7 @@ fi
 [[ "$jsonValue" == "" ]] && jsonValue="$(cat -)"
 
 # Number: write as JSON number
+# $ json-set --input file.json '.count' '42' --number
 if [[ $isNumber == "1" ]]; then
   local newJson="$(jq --argjson value "$jsonValue" "${jsonKey} = \$value" <<<"$baseJson")"
 
@@ -50,7 +76,8 @@ if [[ $isNumber == "1" ]]; then
   return
 fi
 
-# String: write as JSON string
+# String: write as JSON string (default)
+# $ json-set --input file.json '.name' 'tim'
 local newJson="$(jq --arg value "$jsonValue" "${jsonKey} = \$value" <<<"$baseJson")"
 
 [[ "$newJson" == "" ]] && return 1

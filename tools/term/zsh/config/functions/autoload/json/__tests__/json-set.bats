@@ -66,6 +66,42 @@ teardown() {
   [ "$(jq -r '.name' "$JSON_FILE")" = "created" ]
 }
 
+# --- --bool flag ---
+
+@test "--bool: 'true' stored as JSON boolean true, exits 0" {
+  echo '{"other":"keep"}' > "$JSON_FILE"
+  bats_run_function json-set --input "$JSON_FILE" '.enabled' 'true' --bool
+  [ "$status" -eq 0 ]
+  [ "$(jq '.enabled | type' "$JSON_FILE")" = '"boolean"' ]
+  [ "$(jq '.enabled' "$JSON_FILE")" = "true" ]
+  [ "$(jq -r '.other' "$JSON_FILE")" = "keep" ]
+}
+
+@test "--bool: 'false' stored as JSON boolean false, exits 0" {
+  echo '{}' > "$JSON_FILE"
+  bats_run_function json-set --input "$JSON_FILE" '.enabled' 'false' --bool
+  [ "$status" -eq 0 ]
+  [ "$(jq '.enabled | type' "$JSON_FILE")" = '"boolean"' ]
+  [ "$(jq '.enabled' "$JSON_FILE")" = "false" ]
+}
+
+# --- --null flag ---
+
+@test "--null: key is set to JSON null, exits 0" {
+  echo '{"name":"alice","other":"keep"}' > "$JSON_FILE"
+  bats_run_function json-set --input "$JSON_FILE" '.name' --null
+  [ "$status" -eq 0 ]
+  [ "$(jq '.name' "$JSON_FILE")" = "null" ]
+  [ "$(jq -r '.other' "$JSON_FILE")" = "keep" ]
+}
+
+@test "--null: any value arg is discarded" {
+  echo '{}' > "$JSON_FILE"
+  bats_run_function json-set --input "$JSON_FILE" '.key' 'ignored' --null
+  [ "$status" -eq 0 ]
+  [ "$(jq '.key' "$JSON_FILE")" = "null" ]
+}
+
 # --- nested path ---
 
 @test "nested path: intermediate keys created when absent" {
