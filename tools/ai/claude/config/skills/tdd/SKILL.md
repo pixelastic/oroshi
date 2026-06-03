@@ -9,7 +9,7 @@ description: Used when user wants to build features or fix bugs using TDD or red
 
 Build features and fix bugs using the red-green-refactor loop: write a failing test first, write minimal code to pass it, then refactor.
 
-Use **Permanent** tests for behavioral testing, and **Scaffolding** tests for structural architecture.
+Use **Behavioral** tests for behavioral testing, and **Scaffolding** tests for structural architecture.
 
 Apply the London School of TDD for mocking. Each unit is tested in isolation by mocking its immediate collaborators.
 
@@ -20,12 +20,15 @@ Apply the London School of TDD for mocking. Each unit is tested in isolation by 
 
 **Goal:** Agree on interface, behaviors to test, and test strategy before writing any code.
 
-**Exit criterion:** User has approved the plan and test strategy is declared (scaffold/permanent and what to mock).
+**Exit criterion:** User has approved the plan and test strategy is declared (scaffold/behavioral and what to mock).
 
 When exploring the codebase, use the project's domain glossary so that test names and interface vocabulary match the project's language.
 
-Read [test-types.md](references/test-types.md) to know when to use **Permanent** or **Scaffolding** tests.
-Read [mocking.md](references/mocking.md) to know what to mock and what to test.
+Apply the pivot question for each test:
+> "If I rewrote the internals from scratch while keeping the same public API, would this test still pass?"
+
+- **YES** → Use [behavioral-tests.md](references/behavioral-tests.md)
+- **NO** → Use [scaffolding-tests.md](references/scaffolding-tests.md)
 
 Ask yourself "What should the public interface look like? Which behaviors are most important to test?"
 
@@ -34,12 +37,11 @@ Confirm with the user exactly which behaviors matter most.
 Focus testing effort on critical paths and complex logic, not every possible edge case.
 
 - [ ] Confirm with user what interface changes are needed
-- [ ] Confirm with user which behaviors to test (prioritize)
+- [ ] List the behaviors to test (prioritize)
+- [ ] For each behavior: list behavioral tests needed (public API, survives any rewrite)
+- [ ] For each behavior: list scaffolding tests needed (implementation detail, ephemeral)
 - [ ] Confirm with user what to mock
 - [ ] Identify opportunities for [deep modules](references/deep-modules.md) (small interface, deep implementation)
-- [ ] List the behaviors to test (not implementation steps)
-- [ ] For each behavior: list permanent tests needed (public API, survives any rewrite)
-- [ ] For each behavior: list scaffolding tests needed (implementation detail, ephemeral)
 - [ ] Get user approval on the plan
 
 ### Step 2 — Tracer Bullet
@@ -131,7 +133,7 @@ After all tests pass, look for [refactor candidates](references/refactoring.md):
 
 ## Checklist
 
-- [ ] Test strategy declared: scaffold/permanent and what to mock
+- [ ] Test strategy declared: scaffold/behavioral and what to mock
 - [ ] Private helpers with complex logic have direct unit tests
 - [ ] Callers mock their immediate collaborators, not two levels down
 - [ ] Test describes behavior, not implementation
