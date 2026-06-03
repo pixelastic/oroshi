@@ -39,6 +39,9 @@ the terminal
 
 ./scripts/etc seems to contain legacy code. See if needs removal.
 
+My nvim keybidnings are sprawling over one big file. They probbaly need to be
+split into smaller files, per domain.
+
 ---
 ## MEDIUM
 
