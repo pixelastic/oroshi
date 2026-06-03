@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-rename-script-sidequest-end.md",
-    "done": false,
+    "done": true,
+    "recap": "Moved handoff-end to scripts/bin/ai/sidequest/sidequest-end, updated internal comment to reference /sidequest skill, deleted old handoff/ directory.",
     "blocked_by": []
   },
   {
