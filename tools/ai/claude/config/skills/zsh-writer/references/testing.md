@@ -40,7 +40,7 @@ teardown() {
 
 @test "fails when config missing" {
   unset MY_CONFIG
-  bats_run_function my-function
+  bats_run_function my-function <<< 'piped content'
   [ "$status" -ne 0 ]
 }
 ```

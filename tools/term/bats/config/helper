@@ -96,6 +96,7 @@ bats_mock() {
 # Runs a zsh autoloaded function via zsh -c, injecting mocks from
 # $BATS_TMP_DIR/mock.zsh before the call.
 # Usage: bats_run_function slugify "hello world"
+#        bats_run_function json-get '.key' <<< '{"key":"val"}'
 bats_run_function() {
   local func="$1"
   shift
