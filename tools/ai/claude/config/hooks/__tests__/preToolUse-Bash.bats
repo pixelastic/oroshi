@@ -184,7 +184,23 @@ teardown() { bats_cleanup; }
   [ "$(echo "$output" | jq '.hookSpecificOutput.permissionDecisionReason')" = "null" ]
 }
 
-@test "multi-reject: always ask with reason" {
+@test "multi-reject all new: ask with all rejected in reason" {
+  preToolUse-Bash-solkan() {
+    print '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget","curl"]}}'
+    return 1
+  }
+  bats_mock preToolUse-Bash-solkan
+
+  preToolUse-Bash-rtk() { print -- "$1"; }
+  bats_mock preToolUse-Bash-rtk
+
+  bats_run_script "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
+  [ "$status" -eq 0 ]
+  [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "ask" ]
+  [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecisionReason')" = "❌ wget, curl ❌" ]
+}
+
+@test "multi-reject all seen: defer with no reason" {
   preToolUse-Bash-solkan() {
     print '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget","curl"]}}'
     return 1
@@ -199,6 +215,25 @@ teardown() { bats_cleanup; }
 
   bats_run_script "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
   [ "$status" -eq 0 ]
+  [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "defer" ]
+  [ "$(echo "$output" | jq '.hookSpecificOutput.permissionDecisionReason')" = "null" ]
+}
+
+@test "multi-reject mixed: ask with only new rejected in reason" {
+  preToolUse-Bash-solkan() {
+    print '{"isAllowed":false,"commands":{"allowed":[],"rejected":["wget","curl"]}}'
+    return 1
+  }
+  bats_mock preToolUse-Bash-solkan
+
+  preToolUse-Bash-rtk() { print -- "$1"; }
+  bats_mock preToolUse-Bash-rtk
+
+  mkdir -p "$BATS_TMP_DIR/test"
+  echo '{"preToolUse":{"Bash":{"askedCommands":["wget"]}}}' >"$BATS_TMP_DIR/test/state.json"
+
+  bats_run_script "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
+  [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "ask" ]
-  [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecisionReason')" = "❌ wget, curl ❌" ]
+  [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecisionReason')" = "❌ curl ❌" ]
 }

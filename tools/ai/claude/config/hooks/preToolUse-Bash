@@ -28,12 +28,12 @@ source "${hookDir}/preToolUse-Bash-helper.zsh"
 
 # Parse input
 local inputJson="$(cat)"
-local inputCommand="$(json-get '.tool_input.command' <<< "$inputJson")"
-local sessionId="$(json-get '.session_id' <<< "$inputJson")"
+local inputCommand="$(json-get '.tool_input.command' <<<"$inputJson")"
+local sessionId="$(json-get '.session_id' <<<"$inputJson")"
 
 # Save input for debugging
 mkdir -p "$logDir"
-jq '.' <<< "$inputJson" >"${logDir}/last-bash-input.json"
+jq '.' <<<"$inputJson" >"${logDir}/last-bash-input.json"
 
 # Solkan: is the command allowed? Capture JSON output alongside exit code
 local solkanJson=""
@@ -49,27 +49,24 @@ if [[ "$isAllowed" == "1" ]]; then
   autoApprove "$updatedInputCommand"
 fi
 
-# Rejected — determine decision from session state
-local -a rejected=(${(@f)$(json-get '.commands.rejected' <<< "$solkanJson")})
-local rejectedList="${(j:, :)rejected}"
+# Commands rejected by solkan
+local -a rejectedCommands=(${(@f)$(json-get '.commands.rejected' <<<"$solkanJson")})
 local stateFile="${sessionsDir}/${sessionId}/state.json"
 
-# Multi-reject: always ask with reason
-if [[ "${#rejected}" -gt 1 ]]; then
-  [[ "$sessionId" != "" ]] && markAsAsked "$stateFile" "${rejected[@]}"
-  askWithReason "$rejectedList" "$updatedInputCommand"
-fi
+# Commands already asked in this session
+local -a askedCommands=()
+[[ -f "$stateFile" ]] && askedCommands=(${(@f)$(json-get --input "$stateFile" '.preToolUse.Bash.askedCommands')})
 
-# Single-reject: load session state, persist, then decide
-local -a askedCmds=()
-[[ -f "$stateFile" ]] && askedCmds=(${(@f)$(json-get --input "$stateFile" '.preToolUse.Bash.askedCommands')})
+# newRejected = rejected commands not yet asked
+local -a newRejected=(${rejectedCommands:|askedCommands})
 
-local isKnown=0
-[[ ${askedCmds[(I)$rejected[1]]} -gt 0 ]] && isKnown=1
+[[ "$sessionId" != "" ]] && markAsAsked "$stateFile" "${rejectedCommands[@]}"
 
-[[ "$sessionId" != "" ]] && markAsAsked "$stateFile" "$rejected[1]"
-
-if [[ "$isKnown" == "1" ]]; then
+# All rejected already seen? Suggest auto accept
+if [[ "${#newRejected}" -eq 0 ]]; then
   askWithAutoAccept "$updatedInputCommand"
 fi
-askWithReason "$rejectedList" "$updatedInputCommand"
+
+# Some commands are new? Display which ones
+local newRejectedList="${(j:, :)newRejected}"
+askWithReason "$newRejectedList" "$updatedInputCommand"
