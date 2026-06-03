@@ -1,0 +1,20 @@
+# Exit 0 if input is valid JSON, exit 1 otherwise
+# Usage:
+# $ json-is-valid --input file.json
+# $ print -r -- "$json" | json-is-valid
+setopt local_options err_return
+
+zmodload zsh/zutil
+zparseopts -E -D \
+  -input:=flagInput
+
+local inputFile="${flagInput[2]}"
+
+local jsonData=""
+if [[ "$inputFile" != "" ]]; then
+  jsonData="$(cat -- "$inputFile")"
+else
+  jsonData="$(cat -)"
+fi
+
+jq '.' <<<"$jsonData" >/dev/null 2>&1 || return 1

@@ -15,14 +15,14 @@ Add correct exit code semantics:
 
 Key path syntax stays unchanged: full jq path syntax (e.g. `.commands.rejected`, `.preToolUse.Bash.askedCommands`).
 
-## Permanent Tests
+## Behavioral Tests
 
-- Scalar read from file via `--input`: returns value, exit 0
-- Scalar read from stdin: returns value, exit 0
-- Array read: returns one element per line, exit 0
-- Absent key: empty output, exit 0
-- Null value: empty output, exit 0
-- Invalid JSON input: exit 1
+- read scalar from file: `--input` flag, returns value on stdout, exits 0
+- read scalar from stdin: piped JSON, returns same value, exits 0
+- read array: each element on its own line, exits 0
+- absent key: produces no output, exits 0
+- null value: produces no output, exits 0
+- invalid JSON: exits 1 with no stdout
 
 ## Acceptance criteria
 

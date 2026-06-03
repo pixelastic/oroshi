@@ -1,22 +1,28 @@
-# Return the content of a specific key in a json file or piped input
+# Read a single key from a JSON file or stdin
 # Usage:
-# $ cat file.json  | json-get '.name'  # Tim
-# $ json-get file.json '.name'         # Tim
-#
-# Note: Arrays will be returned as comma-separated lists
-# Read either from args or from pipe
-if [[ -p /dev/stdin ]]; then
-  local jsonInput="$(cat -)"
-  local jsonKey="$1"
+# $ json-get --input file.json '.key'      # from file
+# $ print -r -- "$json" | json-get '.key'  # from stdin
+setopt local_options err_return
+
+zmodload zsh/zutil
+zparseopts -E -D \
+  -input:=flagInput
+
+local inputFile="${flagInput[2]}"
+local jsonKey="$1"
+
+# Read file from --input, or fallback to stdin JSON
+local jsonData=""
+if [[ "$inputFile" != "" ]]; then
+  jsonData="$(cat -- "$inputFile")"
 else
-  local jsonInput="$(cat $1)"
-  local jsonKey="$2"
+  jsonData="$(cat -)"
 fi
 
-echo $jsonInput |
-  jq \
-    --raw-output \
-    ".${jsonKey} \
-      | if type == \"array\" \
-        then join(\", \") \
-        else tostring end"
+# Invalid JSON: exit 1
+! json-is-valid <<<"$jsonData" && return 1
+
+# Absent or null key: empty output; array: one element per line
+jq --raw-output \
+  "${jsonKey} | select(. != null) | if type == \"array\" then .[] else . end" \
+  <<<"$jsonData"

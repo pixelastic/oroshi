@@ -24,13 +24,13 @@ tags+=("new-tag")
 printf '%s\n' "${tags[@]}" | json-set --input file.json '.tags' --array
 ```
 
-## Permanent Tests
+## Behavioral Tests
 
-- Write a string value: key updated, other keys preserved, exit 0
-- Write a number value (`--number`): stored as JSON number (not string)
-- Write an array from stdin (`--array`): stored as JSON array, one element per stdin line
-- File does not exist: created with the key written into `{}`
-- Nested path created if missing intermediate keys
+- write string: target key holds the new string value, all other keys unchanged, exits 0
+- write number: `--number` flag, value stored as JSON number not string
+- write array from stdin: `--array` flag, each stdin line becomes one array element in JSON
+- file absent: target file is created and contains the written key in a valid JSON object
+- nested path: intermediate keys are created when the path does not yet exist
 
 ## Acceptance criteria
 

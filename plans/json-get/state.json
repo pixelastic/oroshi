@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-json-get-update.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced arity-based detection with --input flag, switched array output to newline-separated via select+.[], added invalid-JSON exit 1 guard.",
     "blocked_by": []
   },
   {

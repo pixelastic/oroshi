@@ -42,3 +42,9 @@ printf '%s\n' "${arr[@]}" | json-set --input file.json '.key' --array  # array
 ```
 
 ## Discoveries
+
+### Issue 01 — json-get update
+
+- `${var:--}` (default to `-`) lets `cat --` fall back to stdin cleanly — eliminates the if/else data-loading branch entirely
+- `select(. != null)` in jq produces no output for null/absent keys and exits 0 without `--exit-status`; safe with `err_return`
+- `bats_run_function fn args <<< "stdin"` — the `<<<` stdin passes through `run` to the zsh subprocess correctly
