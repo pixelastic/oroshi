@@ -23,6 +23,10 @@
 - Don't add env var overrides (RTK_CMD, RTK_FILTERS_TOML) to prod code for test isolation — use bats mock system
 - `grep -qP` for single-match TOML lookups instead of extracting all names + looping
 
+### Issue 04 — bats filter fix
+- `rtk` respects `XDG_CONFIG_HOME` — set it in `setup()` to a `$BATS_TMP_DIR` copy of the worktree's `filters.toml` to isolate integration tests from the deployed config
+- Integration tests for `rtk bats` belong in `tools/ai/rtk/__tests__/rtk.bats`, not next to individual commands
+
 ### Issue 02 — preToolUse-Bash-rtk integration
 - `bats_mock` works for `rtk-can-rewrite` even though it is autoloaded: the mock injects the definition directly into `mock.zsh` without relying on fpath — no env var override needed in prod code
 - All subdirectories under `functions/autoload/` are automatically added to fpath after merge → `rtk-can-rewrite` will be available in prod with no extra config

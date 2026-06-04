@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-bats-filter-fix.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "Added TAP plan line pattern to strip_lines_matching so on_empty fires correctly; added integration tests using XDG_CONFIG_HOME to isolate worktree config"
   }
 ]
