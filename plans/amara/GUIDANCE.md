@@ -25,3 +25,8 @@
 ## Discoveries
 
 <!-- Agents append findings here after each issue -->
+
+### Issue 01 — wav2txt-openai source-safe guard
+- `[[ condition ]] || return` is disallowed by `noOrGuard` zshlint rule; invert to `[[ ! condition ]] && return`
+- The `source` builtin mock must be a passthrough (call `builtin source "$@"` for non-private paths) so `bats_run_script`'s own `source '${script}'` call still loads the file
+- Scripts with shebangs need `set -e`; this was missing and must be added when touching such files

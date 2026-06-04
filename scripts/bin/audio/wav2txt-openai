@@ -2,16 +2,13 @@
 # wav2txt-openai: Convert a wav file into text using OpenAI
 # Usage:
 # $ wav2txt-openai ./path/to/file.wav     # Echo the transcript
-
-local input=$1
-
-source ~/.oroshi/private/config/term/zsh/local/${HOSTNAME}/open_ai.zsh
+set -e
 
 # Check if file exceeds OpenAI limit
 function isFileTooBig {
   local file=$1
   local maxFileSize=26214400 # 25 MB - OpenAI Whisper API limit
-  local fileSize=$(stat -c%s "$file")
+  local fileSize="$(stat --format=%s "$file")"
   [[ $fileSize -ge $maxFileSize ]]
 }
 
@@ -42,8 +39,8 @@ function splitAndTranscribe {
   audio-split "$file"
 
   # Transcribe both parts
-  local transcription1=$(transcribeFile "$part1")
-  local transcription2=$(transcribeFile "$part2")
+  local transcription1="$(transcribeFile "$part1")"
+  local transcription2="$(transcribeFile "$part2")"
 
   # Cleanup temporary files
   rm -f "$part1" "$part2"
@@ -52,7 +49,18 @@ function splitAndTranscribe {
   echo "${transcription1} ${transcription2}"
 }
 
+# Stop here if sources (vs called as a script)
+# This is useful when we just want to source the file functions, not execute it
+# (like in tests)
+[[ "$ZSH_EVAL_CONTEXT" != "toplevel" ]] && return 0
+
+local input=$1
+
+source $OROSHI_ROOT/private/config/term/zsh/local/${HOSTNAME}/open_ai.zsh
+
 # Main logic
-isFileTooBig "$input" &&
-  splitAndTranscribe "$input" ||
+if isFileTooBig "$input"; then
+  splitAndTranscribe "$input"
+else
   transcribeFile "$input"
+fi

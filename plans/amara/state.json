@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-wav2txt-openai-source-safe.md",
-    "done": false,
+    "done": true,
+    "recap": "Added ZSH_EVAL_CONTEXT source-safe guard; moved functions before guard; execution block (input, credentials, main logic) runs only when invoked directly.",
     "blocked_by": []
   },
   {
