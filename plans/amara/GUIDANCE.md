@@ -26,6 +26,11 @@
 
 <!-- Agents append findings here after each issue -->
 
+### Issue 02 — removeArtifacts
+- Guidance specified `sed` for exact phrase removal, but zshlint rule 2001 mandates `${var//search/replace}` — linter takes precedence
+- Split `local`/assignment is unavoidable when a conditional drives two different transcription functions; solution is to call `removeArtifacts` inline in each branch rather than capturing into a variable first
+- `bats_run_script` cannot test individual functions within a script (it only sources the script as a whole); a custom `runner.zsh` is correct when testing a named function inside a standalone script
+
 ### Issue 01 — wav2txt-openai source-safe guard
 - `[[ condition ]] || return` is disallowed by `noOrGuard` zshlint rule; invert to `[[ ! condition ]] && return`
 - The `source` builtin mock must be a passthrough (call `builtin source "$@"` for non-private paths) so `bats_run_script`'s own `source '${script}'` call still loads the file

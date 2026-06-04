@@ -49,6 +49,19 @@ function splitAndTranscribe {
   echo "${transcription1} ${transcription2}"
 }
 
+# Strip known Whisper hallucination phrases from transcription
+function removeArtifacts {
+  local artifacts=(
+    "Merci d'avoir regardé cette vidéo !"
+    "Sous-titres réalisés para la communauté d'Amara.org"
+  )
+  local text=$1
+  for artifact in "${artifacts[@]}"; do
+    text="${text//${artifact}/}"
+  done
+  echo "$text"
+}
+
 # Stop here if sources (vs called as a script)
 # This is useful when we just want to source the file functions, not execute it
 # (like in tests)
@@ -59,8 +72,10 @@ local input=$1
 source $OROSHI_ROOT/private/config/term/zsh/local/${HOSTNAME}/open_ai.zsh
 
 # Main logic
+local rawTranscription=""
 if isFileTooBig "$input"; then
-  splitAndTranscribe "$input"
+  rawTranscription="$(splitAndTranscribe "$input")"
 else
-  transcribeFile "$input"
+  rawTranscription="$(transcribeFile "$input")"
 fi
+removeArtifacts "$rawTranscription"

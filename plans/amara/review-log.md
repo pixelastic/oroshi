@@ -1,3 +1,27 @@
+## Issue 02 — removeArtifacts
+
+### `sed` vs `${var//search/replace}` (Spec)
+```zsh
+text="${text//${artifact}/}"
+```
+**Problem:** Spec mandates `sed` exact match; implementation uses zsh parameter expansion.
+**Reason skipped:** zshlint rule 2001 explicitly requires `${var//search/replace}` over `sed`; linter takes precedence over spec wording.
+
+### Custom runner instead of `bats_run_script` (Standards)
+```zsh
+runRemoveArtifacts() {
+  local runner="$BATS_TMP_DIR/runner.zsh"
+  cat > "$runner" <<'RUNNER'
+source "${BATS_TMP_DIR}/mock.zsh"
+source "${OROSHI_ROOT}/scripts/bin/audio/wav2txt-openai"
+removeArtifacts "$@"
+RUNNER
+  run zsh "$runner" "$@"
+}
+```
+**Problem:** Reviewer flagged should use `bats_run_script` per documented standards.
+**Reason skipped:** `bats_run_script` only sources the script (tests its execution path); it provides no way to call a specific function within the script afterward. The custom runner is the only viable approach for isolated function testing in a standalone script.
+
 ## Issue 01 — wav2txt-openai source-safe guard
 
 ### Wrong test location (Standards)
