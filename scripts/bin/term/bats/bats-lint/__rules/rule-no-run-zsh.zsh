@@ -4,7 +4,6 @@
 # Usage:
 #   source rule-no-run-zsh.zsh
 #   batsLintRule_noRunZsh <file.bats>
-# shellcheck disable=SC2016
 batsLintRule_noRunZsh() {
   local code='noRunZsh'
   local msg='Use bats_run_function instead of run zsh'
@@ -16,8 +15,8 @@ batsLintRule_noRunZsh() {
 
   for line in "${(@f)content}"; do
     (( ++lineno ))
-    # Skip lines without the pattern
-    [[ ! "$line" =~ 'run zsh' ]] && continue
+    # Skip lines where run zsh is not a command (strings, titles, comments)
+    [[ ! "$line" =~ '^[[:space:]]*run zsh' ]] && continue
     # Honour inline disable comment
     [[ "$line" =~ '# bats-lint-disable noRunZsh' ]] && continue
     printf '%s%s%s%serror%s%d%s%s\n' \

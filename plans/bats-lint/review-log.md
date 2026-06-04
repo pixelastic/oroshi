@@ -20,3 +20,23 @@ run bash -c "jq 'length' <<< '$output'"
 ### Output format corrected post-issue: aligned with zshlint
 
 Format updated from `file▮line▮col▮code▮message` to `file▮code▮error▮line▮message` to match zshlint exactly. The spec's `line▮col▮code▮message` was incorrect — zshlint-custom parses `fields[1..4]` and NeoVim expects that layout. All tests still pass.
+
+## Issue 03 — bats-lint-shellcheck
+
+### `run zsh` instead of `bats_run_script`
+
+```bats
+run zsh "$BATS_LINT_SC" "$file"
+```
+
+**Problem:** Standards reviewer flagged `bats_run_script` as the prescribed helper for standalone scripts.
+**Reason skipped:** Existing `bats-lint-custom.bats` uses `run zsh "$SCRIPT"` throughout (prior art). Diverging would create inconsistency with sibling tests in the same directory.
+
+### UPPER_CASE for `excludedRules`
+
+```zsh
+local -a excludedRules=()
+```
+
+**Problem:** Reviewer flagged as constant, should be `EXCLUDED_RULES`.
+**Reason skipped:** `excludedRules` is mutable (populated with `+=`), not a true constant. Prior art `zsh-lint-shellcheck` uses the same camelCase name. zshlint passes with no violation. SC2148 was also removed post-review — array is now empty since `--shell=bash` makes it unnecessary.

@@ -46,6 +46,12 @@ Build `bats-lint`: a linter for `.bats` test files that mirrors the architecture
 
 <!-- Agents: append non-trivial findings after each issue below -->
 
+### Issue 03 — bats-lint-shellcheck
+
+- ShellCheck messages can contain shell metacharacters (e.g. `$(..)` in SC1072: "Expected end of $(..) expression."). Using `<<< '$output'` in bats tests fails when `$output` contains such strings — bats expands `$output` inside the double-quoted `run bash -c "..."` argument. Use a violation with a safe message (e.g. SC2086 from `echo $HOME`) for format-checking tests; reserve syntax-error fixtures for "detects violation" tests only.
+- ShellCheck `--format=json` outputs `column` (not `col`) and `code` as an integer. Transform with `jq -c` (compact) and map `column→col`, `("SC" + (.code|tostring))→code`.
+- With `--shell=bash` explicit, SC2148 ("add a shebang") does NOT fire — `--shell` overrides shebang detection entirely. SC2148 is therefore never needed in `excludedRules`; the array starts empty and grows only when real false positives appear.
+
 ### Issue 01 — noRunZsh rule
 
 - Bats-lint rules use the **same output format as zshlint**: `file▮code▮error▮line▮message`. This matches what `zshlint-custom` parses (`fields[1..4]`) and what NeoVim receives. Do not deviate.

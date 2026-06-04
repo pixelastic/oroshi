@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-bats-lint-shellcheck.md",
-    "done": false,
+    "done": true,
+    "recap": "Implemented bats-lint-shellcheck: runs shellcheck --shell=bash, transforms column→col and code→SCxxxx, outputs compact JSON array; excludes only SC2148.",
     "blocked_by": ["02"]
   },
   {

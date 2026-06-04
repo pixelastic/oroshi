@@ -34,7 +34,17 @@ RULE_FIXTURE="test.bats"
   expect_rule_violation noRunZsh 2
 }
 
-@test "run zsh in comment is still flagged" {
+@test "run zsh in comment is not flagged" {
   run_rule '# run zsh -c "echo"'
-  expect_rule_violation noRunZsh 1
+  expect_clean
+}
+
+@test "run zsh in test title is not flagged" {
+  run_rule '@test "calls run zsh directly" {'
+  expect_clean
+}
+
+@test "run zsh in string literal is not flagged" {
+  run_rule "printf 'run zsh -c \"echo\"\n' >\"\$file\""
+  expect_clean
 }
