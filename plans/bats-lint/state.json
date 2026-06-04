@@ -50,5 +50,11 @@
     "issue": "issues/08-nvim-bats-filetype.md",
     "done": false,
     "blocked_by": ["04"]
+  },
+  {
+    "id": "09",
+    "issue": "issues/09-zsh-lint-helper-refactor.md",
+    "done": false,
+    "blocked_by": []
   }
 ]
