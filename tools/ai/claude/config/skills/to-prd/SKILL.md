@@ -55,4 +55,5 @@ Ask the user if they're ready to move to /to-issues
 - [ ] User confirmed which modules get tests
 - [ ] `prd-end <branchName>` called via Bash tool, JSON output parsed
 - [ ] PRD.md written to `<prdPath>`
+- [ ] PRD written in English
 - [ ] PRD contains all 6 sections present (Problem, Solution, User Stories, Implementation Decisions, Testing Decisions, Out of Scope)
