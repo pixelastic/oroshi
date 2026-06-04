@@ -1,0 +1,26 @@
+# Custom Rule: batsLintRule_noRunZsh
+# Detects `run zsh` in BATS files; use bats_run_function instead
+# Rule Output: file▮code▮error▮line▮message
+# Usage:
+#   source rule-no-run-zsh.zsh
+#   batsLintRule_noRunZsh <file.bats>
+# shellcheck disable=SC2016
+batsLintRule_noRunZsh() {
+  local code='noRunZsh'
+  local msg='Use bats_run_function instead of run zsh'
+
+  local file="$1"
+  local content="$(<"$file")"
+  local lineno=0
+  local line
+
+  for line in "${(@f)content}"; do
+    (( ++lineno ))
+    # Skip lines without the pattern
+    [[ ! "$line" =~ 'run zsh' ]] && continue
+    # Honour inline disable comment
+    [[ "$line" =~ '# bats-lint-disable noRunZsh' ]] && continue
+    printf '%s%s%s%serror%s%d%s%s\n' \
+      "$file" "$_SEP" "$code" "$_SEP" "$_SEP" "$lineno" "$_SEP" "$msg"
+  done
+}

@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-rule-no-run-zsh.md",
-    "done": false,
+    "done": true,
+    "recap": "Implemented batsLintRule_noRunZsh: flags run zsh lines, honours inline disable, outputs file▮line▮col▮code▮message format.",
     "blocked_by": []
   },
   {

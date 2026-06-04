@@ -45,3 +45,9 @@ Build `bats-lint`: a linter for `.bats` test files that mirrors the architecture
 ## Discoveries
 
 <!-- Agents: append non-trivial findings after each issue below -->
+
+### Issue 01 — noRunZsh rule
+
+- Bats-lint rules use the **same output format as zshlint**: `file▮code▮error▮line▮message`. This matches what `zshlint-custom` parses (`fields[1..4]`) and what NeoVim receives. Do not deviate.
+- The spec described `line▮col▮code▮message` (line first) — that would break `expect_rule_violation` which checks `▮N▮` (line surrounded by separators). The zshlint format puts `line` at field 4, always surrounded.
+- Bats-lint rule files follow the zshlint rule pattern exactly: `source` + function call, uses `$_SEP` from env, no `setopt` needed.
