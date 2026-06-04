@@ -127,6 +127,8 @@
   "review-diff",
   "rg",
   "rtk rewrite",
+  "rtk --help",
+  "rtk --version",
   "scripts/bin/ai/review/review-diff",
   "scripts/bin/term/bats/bats",
   "sed",
