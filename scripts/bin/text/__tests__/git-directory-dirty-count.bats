@@ -1,18 +1,19 @@
-load 'helper'
+bats_load_library 'helper'
 
 # Override run_zsh_fn to load functions from the worktree, not .oroshi
 run_zsh_fn() {
   local func="${1}"
   local worktreeFnDir
-  worktreeFnDir="$(realpath "${BATS_TEST_DIRNAME}/../../../config/term/zsh/functions/autoload/git/directory")"
+  worktreeFnDir="$(realpath "${BATS_TEST_DIRNAME}/../../../../tools/term/zsh/config/functions/autoload/git/directory")"
   local worktreeFileFnDir
-  worktreeFileFnDir="$(realpath "${BATS_TEST_DIRNAME}/../../../config/term/zsh/functions/autoload/git/file")"
+  worktreeFileFnDir="$(realpath "${BATS_TEST_DIRNAME}/../../../../tools/term/zsh/config/functions/autoload/git/file")"
   shift
   run zsh -c "fpath=(\"${worktreeFnDir}\" \"${worktreeFileFnDir}\" \${(s/:/)FPATH}); autoload -Uz ${func}; ${func} \"\$@\"" -- "$@"
 }
 
 setup() {
-  export TMP_DIRECTORY="$(bats_tmp)"
+  bats_tmp_dir
+  export TMP_DIRECTORY="$BATS_TMP_DIR"
   git init "$TMP_DIRECTORY/my-repo"
   cd "$TMP_DIRECTORY/my-repo"
   git config user.email "test@test.com"

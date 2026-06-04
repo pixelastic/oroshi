@@ -17,7 +17,7 @@ Write ZSH code that is consistent with my conventions.
 
 **Exit criterion:** File exists at correct path with correct name.
 
-- Autoloaded (preferred, called from zsh): `config/term/zsh/functions/autoload/{domain}/{subdomain?}/{name}`
+- Autoloaded (preferred, called from zsh): `tools/term/zsh/config/functions/autoload/{domain}/{subdomain?}/{name}`
 - Standalone (called externally like from keybindings): `scripts/bin/{domain}/{subdomain?}/{name}`
 - Name: `{domain}-{subdomain?}-{action}` — e.g. `git-branch-list`, `json-lint`
 - `-raw` suffix → machine-readable `▮`-separated output, consumed by other scripts

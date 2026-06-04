@@ -13,7 +13,7 @@
 - Use `bats_run_function` for zsh autoloaded functions
 - Use `bats_run_script` for standalone scripts
 - Use `bats_mock` to mock commands
-- Full helper code available at `config/term/bats/helper`
+- Full helper code available at `tools/term/bats/config/helper`
 
 ### `bats_tmp_dir`
 

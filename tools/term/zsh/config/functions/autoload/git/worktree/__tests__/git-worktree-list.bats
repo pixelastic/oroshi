@@ -79,7 +79,7 @@ teardown() {
 }
 
 @test "COLOR_ALIAS_GIT_WORKTREE_DIRTY is defined with value 21" {
-  run zsh -c "source \"$OROSHI_ROOT/config/term/zsh/theming/env/colors.zsh\"; echo \"\$COLOR_ALIAS_GIT_WORKTREE_DIRTY\""
+  run zsh -c "source \"$OROSHI_ROOT/tools/term/zsh/config/theming/env/colors.zsh\"; echo \"\$COLOR_ALIAS_GIT_WORKTREE_DIRTY\""
   [ "$status" -eq 0 ]
   [ "$output" = "21" ]
 }

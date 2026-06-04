@@ -34,7 +34,7 @@ Calling porcelain bypasses that work and creates duplication.
 | `docker-container-is-running web` | `docker inspect -f '{{.State.Running}}' web` |
 | `docker-container-stop web` | `docker stop $(docker ps -q --filter name=web)` |
 | `node-module-list-raw` | `npm list --global --depth=0` |
-| And more... | Check in `config/term/zsh/functions/autoload/` |
+| And more... | Check in `tools/term/zsh/config/functions/autoload/` |
 
 
 All helpers:
