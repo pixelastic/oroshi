@@ -12,7 +12,7 @@ vim.opt.autoread = true
 
 -- auto-save {{{
 -- Auto-save as often as possible
-local function saveBufferWhenLeavingTab()
+local function saveCurrentBuffer()
   if not vim.bo.modified then
     return
   end -- Stop if not modified
@@ -31,7 +31,10 @@ local function saveBufferWhenLeavingTab()
 
   vim.cmd("silent! write")
 end
-autocmd("TabLeave", saveBufferWhenLeavingTab)
+autocmd({
+  "TabLeave", -- When moving inside of nvim tabs
+  "FocusLost", -- When moving from one Kitty window to another
+}, saveCurrentBuffer)
 -- }}}
 
 -- backup {{{
