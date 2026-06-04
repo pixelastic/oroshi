@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-bats-lint-custom.md",
-    "done": false,
+    "done": true,
+    "recap": "Implemented bats-lint-custom: discovers and runs all __rules/ functions, filters prev-line disable comments, outputs merged JSON array; mirrors zshlint-custom architecture.",
     "blocked_by": ["01"]
   },
   {
