@@ -158,7 +158,7 @@ local config = {
     },
     zsh = {
       formatters = { "shfmt_zsh" },
-      linters = { "zshlint" },
+      linters = { "zsh-lint" },
       configureFormatter = zshHelper.configureFormatter,
       configureLinter = zshHelper.configureLinter,
     },

@@ -8,7 +8,7 @@ export default {
   ],
 
   // LINT: yarn run * scripts
-  'scripts/yarn/**/*': ['./scripts/yarn/lint-zsh'],
+  'scripts/yarn/**/*': ['./scripts/yarn/hooks/pre-commit-zsh-lint'],
 
   // LINT: Install/Deploy scripts
   'tools/**/*': ['./scripts/yarn/lint-zsh'],

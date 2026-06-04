@@ -185,8 +185,8 @@
   "yarn-root",
   "ymdk-build",
   "zcat",
-  "zshlint",
-  "zshlint-custom",
-  "zshlint-shellcheck",
+  "zsh-lint",
+  "zsh-lint-custom",
+  "zsh-lint-shellcheck",
   "./node_modules/.bin/bats"
 ]

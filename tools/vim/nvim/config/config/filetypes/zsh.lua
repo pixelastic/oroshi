@@ -26,8 +26,8 @@ M.configureFormatter = function(conform)
 end
 
 M.configureLinter = function(lint)
-  lint.linters.zshlint = {
-    cmd = "zshlint",
+  lint.linters["zsh-lint"] = {
+    cmd = "zsh-lint",
     stdin = false,
     ignore_exitcode = true,
     parser = M.lintParser,
@@ -55,7 +55,7 @@ M.lintParser = function(output)
     end
 
     F.append(diagnostics, {
-      source = "zshlint",
+      source = "zsh-lint",
       code = item.code,
       message = item.message,
       severity = M.__.severityStringToInt(item.level),

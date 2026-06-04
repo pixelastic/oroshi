@@ -27,7 +27,7 @@ done
 # No ZSH files to lint
 [[ ${#zshFiles[@]} -eq 0 ]] && return 0
 
-local lintOutput="$(zshlint "${zshFiles[@]}")"
+local lintOutput="$(zsh-lint "${zshFiles[@]}")"
 
 # No violations
 [[ "$lintOutput" == "[]" ]] && return 0

@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-update-callers.md",
-    "done": false,
+    "done": true,
+    "recap": "Updated all external callers (lint-zsh, git-file-lint, NeoVim filetypes/zsh.lua and code-quality.lua, allowlist.json, zsh-writer SKILL.md) from zshlint → zsh-lint.",
     "blocked_by": ["01"]
   }
 ]
