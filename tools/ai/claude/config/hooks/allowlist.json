@@ -118,6 +118,7 @@
   "pdftotext",
   "pgrep",
   "ping",
+  "pkill",
   "prd-end",
   "printenv",
   "printf",

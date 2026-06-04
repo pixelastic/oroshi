@@ -18,9 +18,7 @@
       "TodoWrite",
       "WebFetch",
       "WebSearch",
-      "mcp__context7",
-      "mcp__google-slides",
-      "mcp__make__scenarios_list"
+      "mcp__context7"
     ]
   },
   "model": "sonnet[1m]",
