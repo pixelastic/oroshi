@@ -7,6 +7,9 @@ export default {
     'yarn run test --fail-fast --related',
   ],
 
+  // LINT: BATS test files
+  '**/*.bats': ['yarn run lint:bats'],
+
   // LINT: yarn run * scripts
   'scripts/yarn/**/*': ['yarn run lint:zsh'],
 

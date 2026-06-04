@@ -27,6 +27,7 @@
   },
   "scripts": {
     "lint": "./scripts/yarn/lint",
+    "lint:bats": "./scripts/yarn/lint-bats",
     "lint:fix": "./scripts/yarn/lint-fix",
     "lint:zsh": "./scripts/yarn/lint-zsh",
     "test": "./scripts/yarn/test",

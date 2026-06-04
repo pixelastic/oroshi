@@ -1,0 +1,28 @@
+#!/usr/bin/env zsh
+# Orchestrator: merges bats-lint-shellcheck and bats-lint-custom into one JSON array
+# Usage:
+# $ bats-lint file.bats
+# $ bats-lint file.bats other.bats
+set -e
+
+local dir="${0:A:h}"
+local sc="${BATS_LINT_SC:-$dir/bats-lint-shellcheck}"
+local custom="${BATS_LINT_CUSTOM:-$dir/bats-lint-custom}"
+
+# Exclude directories from the inputs
+local -a input=()
+for item in "$@"; do
+  [[ -d $item ]] && continue
+  input+=("$item")
+done
+
+[[ ${#input} -eq 0 ]] && printf '[]\n' && exit 0
+
+# Run both linters via process substitution — no temp files
+local merged="$(jq -cs 'add // []' \
+  <($sc "${input[@]}") \
+  <($custom "${input[@]}"))"
+
+printf '%s\n' "$merged"
+[[ "$(printf '%s' "$merged" | jq 'length')" -gt 0 ]] && exit 1
+exit 0

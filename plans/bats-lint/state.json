@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-bats-lint-orchestrator.md",
-    "done": false,
+    "done": true,
+    "recap": "Implemented bats-lint orchestrator merging both sub-linters via process substitution, lint-bats wrapper filtering .bats files, and wired **/*.bats into lintstaged.config.js.",
     "blocked_by": ["02", "03"]
   },
   {

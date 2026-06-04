@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+# Lint all BATS files among the given paths using bats-lint
+# Called by lint-staged with staged file paths as arguments
+# Usage:
+# $ lint-bats /abs/path/to/file1 /abs/path/to/file2
+set -e
+
+# No staged files to lint
+[[ $# -eq 0 ]] && exit 0
+
+local -a batsFiles=()
+for filePath in "$@"; do
+  [[ "$filePath" == *.bats ]] && batsFiles+=("$filePath")
+done
+
+# No BATS files among the arguments
+[[ "${#batsFiles[@]}" -eq 0 ]] && exit 0
+
+bats-lint "${batsFiles[@]}"
