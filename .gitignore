@@ -7,6 +7,7 @@ build/
 dist/
 !tools/term/zsh/config/theming/dist/
 tmp/
+plans/*/scaffold
 
 # Junk files
 .DS_Store
