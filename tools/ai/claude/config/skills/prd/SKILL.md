@@ -33,7 +33,7 @@ Write the PRD to `<prdPath>`, following [the template](./references/prd-md.md).
 
 ### Step 4 — Stop
 
-Ask the user if they're ready to move to /to-issues
+Ask the user if they're ready to move to /issues
 
 
 ---

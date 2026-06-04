@@ -28,6 +28,8 @@
   "scripts": {
     "lint": "./scripts/yarn/lint",
     "lint:fix": "./scripts/yarn/lint-fix",
-    "test": "./scripts/yarn/test"
+    "lint:zsh": "./scripts/yarn/lint-zsh",
+    "test": "./scripts/yarn/test",
+    "test:bats": "./scripts/yarn/test-bats"
   }
 }

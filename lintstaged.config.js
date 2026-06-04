@@ -1,6 +1,6 @@
 export default {
   // TEST+LINT: Binary zsh scripts
-  'scripts/bin/**/*': ['./scripts/yarn/test-bats', './scripts/yarn/lint-zsh'],
+  'scripts/bin/**/*': ['yarn run test:bats', 'yarn run lint:zsh'],
   // TEST+LINT: Binary JS scripts
   'scripts/bin/**/*.js': [
     'yarn run lint:fix --js',
@@ -8,13 +8,13 @@ export default {
   ],
 
   // LINT: yarn run * scripts
-  'scripts/yarn/**/*': ['./scripts/yarn/hooks/pre-commit-zsh-lint'],
+  'scripts/yarn/**/*': ['yarn run lint:zsh'],
 
   // LINT: Install/Deploy scripts
-  'tools/**/*': ['./scripts/yarn/lint-zsh'],
+  'tools/**/*': ['yarn run lint:zsh'],
 
   // TEST: Zsh autoloaded functions
-  'tools/term/zsh/config/**/*': ['./scripts/yarn/test-bats'],
+  'tools/term/zsh/config/**/*': ['yarn run test:bats'],
 
   // BUILD: projects.json and projects.zsh
   'tools/term/zsh/config/theming/src/projects.json': [
