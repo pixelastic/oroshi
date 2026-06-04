@@ -43,5 +43,11 @@
     "issue": "issues/07-lint-custom-runner-shared.md",
     "done": false,
     "blocked_by": ["05", "06"]
+  },
+  {
+    "id": "08",
+    "issue": "issues/08-nvim-bats-filetype.md",
+    "done": false,
+    "blocked_by": ["04"]
   }
 ]
