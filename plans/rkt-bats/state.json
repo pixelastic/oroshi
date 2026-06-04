@@ -16,8 +16,9 @@
   {
     "id": "03",
     "issue": "issues/03-docs-skills-glossary.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "Replaced rtk bats with bats in CLAUDE.md, zsh-writer SKILL.md, and testing.md; updated GLOSSARY Relationships to reference rtk-can-rewrite instead of rtk rewrite"
   },
   {
     "id": "04",

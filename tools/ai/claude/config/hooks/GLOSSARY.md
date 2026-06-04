@@ -44,7 +44,7 @@ _Avoid_: ask user, escalate, defer, session-ask
 
 - **Solkan** is binary: **allow** or **reject**. Never a partial decision.
 - **Solkan** runs first; **RTK** runs second, regardless of **Solkan**'s decision.
-- Determined via `rtk rewrite <cmd>`: exit 0 = **rewrite**, exit 1 = **ignore**.
+- Possible rewrite determined via `rtk-can-rewrite <cmd>`: exit 0 = **rewrite**, exit 1 = **ignore**.
 - Each command receives exactly one **Solkan** decision and exactly one **RTK** decision.
 - Each **allow** produces exactly one **auto-approve**; each **reject** produces either **ask with reason** or **ask with auto-accept** depending on session state (a maybe — the human decides).
 - A **rewrite** produces zero or one `updatedInput` JSON field; an **ignore** produces none.

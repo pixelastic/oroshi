@@ -2,7 +2,7 @@
 
 - Tests in `__tests__/` sibling folder, named `<function-name>.bats`
 - If the `setup` is complex, add comments to explain what it does
-- Use `rtk bats <filepaths>` to run the tests
+- Use `bats <filepaths>` to run the tests
 
 ## Helper
 
