@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-rename-core-and-tests.md",
-    "done": false,
+    "done": true,
+    "recap": "Renamed zshlint/ → zsh-lint/, scripts, rule function prefix, suppression syntax, and all test files; added 'old syntax doesn't suppress' behavioral test.",
     "blocked_by": []
   },
   {

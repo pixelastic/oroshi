@@ -1,0 +1,32 @@
+#!/usr/bin/env zsh
+# Orchestrator: merges zsh-lint-shellcheck and zsh-lint-custom into one JSON array
+# Usage:
+# $ zsh-lint file.zsh                               # Outputs erros of file.zsh
+# $ zsh-lint file.zsh other-file.zsh                # Outputs errors of both file
+# $ zsh-lint --version                              # Display version of shellcheck
+# $ zsh-lint -s zsh-lint -x -f gcc - < /path/to/file # As used by ALE
+#
+# This is a wrapper around shellcheck. Shellcheck does not support zsh by
+# default, but many of the warning triggered on bash also apply on zsh, so we
+# will simply silence the ones that are not relevant.
+set -e
+
+# Exclude directories from the inputs
+local -a input=()
+for item in $@; do
+  [[ -d $item ]] && continue
+  input+=($item)
+done
+
+[[ ${#input} -eq 0 ]] && printf '[]\n' && exit 0
+
+# Run both linters in parallel via process substitution — no temp files
+local sc="${ZSH_LINT_SC:-zsh-lint-shellcheck}"
+local custom="${ZSH_LINT_CUSTOM:-zsh-lint-custom}"
+local merged="$(jq -cs 'add // []' \
+  <($sc "${input[@]}") \
+  <($custom "${input[@]}"))"
+
+printf '%s\n' "$merged"
+[[ "$(printf '%s' "$merged" | jq 'length')" -gt 0 ]] && exit 1
+exit 0

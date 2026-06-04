@@ -28,3 +28,8 @@ This PRD renames `zshlint` → `zsh-lint` (and sub-scripts) to align with the `{
 ## Discoveries
 
 <!-- Agents append findings here after each issue -->
+
+### Issue 01 — Rename core and tests
+- `git-file-lint` calls global `zshlint` (not yet updated); linting must use the worktree `zsh-lint` directly until issue 02 installs it globally. Run with `ZSH_LINT_SC=... ZSH_LINT_CUSTOM=... zsh scripts/bin/zsh/zsh-lint/zsh-lint <files>`.
+- `bats-test-path.bats` referenced in PRD doesn't exist in this repo — skip that acceptance criterion.
+- `rule-no-or-guard.zsh` and `rule-no-double-negative.zsh` use `# zsh-lint-disable` to suppress their own rule from firing on the `local msg=` line — these suppress comments must stay in sync with the suppression syntax.
