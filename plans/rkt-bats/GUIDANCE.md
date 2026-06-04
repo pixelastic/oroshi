@@ -22,3 +22,8 @@
 - Use `$OROSHI_ROOT` for oroshi paths, not hardcoded `~/.oroshi`
 - Don't add env var overrides (RTK_CMD, RTK_FILTERS_TOML) to prod code for test isolation — use bats mock system
 - `grep -qP` for single-match TOML lookups instead of extracting all names + looping
+
+### Issue 02 — preToolUse-Bash-rtk integration
+- `bats_mock` works for `rtk-can-rewrite` even though it is autoloaded: the mock injects the definition directly into `mock.zsh` without relying on fpath — no env var override needed in prod code
+- All subdirectories under `functions/autoload/` are automatically added to fpath after merge → `rtk-can-rewrite` will be available in prod with no extra config
+- Use a sentinel mock (`touch unexpected-call`) to assert that the idempotency guard actually skips the delegate call
