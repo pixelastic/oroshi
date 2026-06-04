@@ -10,6 +10,14 @@ local DOWNLOAD_DIRECTORY="argos"
 cd $DOWNLOAD_PATH
 if [ ! -d "$DOWNLOAD_DIRECTORY" ]; then
   git clone "$REPO_URL" "$DOWNLOAD_DIRECTORY"
+
+  # 2026-06-04: main calls child_set_property that is no longer available on
+  # Gnome 46, creating error logs each time. I have 6 argos scripts, regenerated
+  # every 5s, generating hundred of useless error lines in log and adding noise
+  # when trying to debug real issues.
+  # So, I'm cherry-picking a fix of that specific issue from an unmerged PR
+  git -C "$DOWNLOAD_DIRECTORY" fetch origin pull/151/head
+  git -C "$DOWNLOAD_DIRECTORY" cherry-pick FETCH_HEAD
 fi
 
 ln \
