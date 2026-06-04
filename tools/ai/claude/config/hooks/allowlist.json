@@ -1,6 +1,7 @@
 [
   "apt-cache search",
   "apt-cache show",
+  "apt-cache",
   "apt-file list",
   "autoload",
   "awk",
@@ -26,6 +27,7 @@
   "cut",
   "date",
   "dconf dump",
+  "df",
   "diff",
   "dirname",
   "dmesg",
@@ -129,6 +131,7 @@
   "rtk rewrite",
   "rtk --help",
   "rtk --version",
+  "sar",
   "scripts/bin/ai/review/review-diff",
   "scripts/bin/term/bats/bats",
   "sed",
