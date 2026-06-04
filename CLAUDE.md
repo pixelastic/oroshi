@@ -5,4 +5,5 @@
 - Both `.js` and `.bats` tests live in `__tests__` directories
 
 - **Linting zsh:** Run `zsh-lint <filepath>`
+- **Linting bats:** Run `bats-lint <filepath>`
 - **Linting js:** Run `yarn run lint:fix <filepath>`

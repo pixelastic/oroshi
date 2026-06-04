@@ -37,7 +37,8 @@
   {
     "id": "06",
     "issue": "issues/06-skills-docs.md",
-    "done": false,
+    "done": true,
+    "recap": "Added bats-lint to CLAUDE.md Commands and to zsh-writer/SKILL.md Step 4 lint instruction.",
     "blocked_by": ["04"]
   },
   {
