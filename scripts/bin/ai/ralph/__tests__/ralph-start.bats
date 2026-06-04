@@ -116,6 +116,15 @@ teardown() {
   [ "$(jq -r '.mode' "$PLAN_DIR/ralph.json")" = "single" ]
 }
 
+@test "fails when single-shot session already active" {
+  printf '[
+    {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]}
+  ]' >"$PLAN_DIR/state.json"
+  ralph-state "$PLAN_DIR" init single
+  bats_run_script "$RALPH_START" "$PLAN_DIR"
+  [ "$status" -eq 1 ]
+}
+
 @test "does not overwrite ralph.json when already present" {
   printf '[
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]}
