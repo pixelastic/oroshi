@@ -1,0 +1,89 @@
+# Defines bats-lint-custom() for use by bats-lint
+# Sourced by the orchestrator — not standalone, no shebang
+#
+# Usage (called by the orchestrator):
+# $ bats-lint-custom file.bats [file2.bats ...]
+
+
+# Guard: skip if already defined (e.g. mocked in tests)
+whence bats-lint-custom >/dev/null && return 0
+
+# Capture directory at source time ($0 is the file path when sourced, not inside a function)
+_batsLintRulesDir="${0:A:h}/__rules"
+
+bats-lint-custom() {
+  # Source all rule files (comment a line to disable a rule)
+  source "${_batsLintRulesDir}/rule-no-run-zsh.zsh"
+
+  # Ordered list of custom rule functions to run
+  local -a _RULES=(
+    batsLintRule_noRunZsh
+  )
+
+  # Separator used in Rule Output lines; export so subshells see it
+  export _SEP=$'\u25ae'
+
+  # Exclude directories from the inputs
+  local -a input=()
+  for item in "$@"; do
+    [[ -d $item ]] && continue
+    input+=($item)
+  done
+
+  [[ ${#input} -eq 0 ]] && printf '[]\n' && return 0
+
+  # Collect Rule Output lines from all custom rules
+  local -a ruleLines=()
+  local out
+  for file in "${input[@]}"; do
+    for rule in $_RULES; do
+      out="$($rule "$file")"
+      [[ "$out" != "" ]] && ruleLines+=("${(@f)out}")
+    done
+  done
+
+  # Filter out violations suppressed by # bats-lint-disable <code> on the previous line
+  local -a filteredLines=()
+  local -A fileContentCache=()
+  local violationLine
+  for violationLine in $ruleLines; do
+    local -a fields=(${(@ps/▮/)violationLine})
+    local sourceFile=$fields[1]
+    local ruleCode=$fields[2]
+    local lineNumber=$fields[4]
+
+    # Cache file content to avoid re-reading the same file for every violation
+    [[ "${fileContentCache[$sourceFile]}" == "" ]] && fileContentCache[$sourceFile]="$(<"$sourceFile")"
+    local -a sourceLines=("${(@f)fileContentCache[$sourceFile]}")
+
+    # Suppress if the line above the violation has the matching disable comment
+    local lineAbove=""
+    [[ $lineNumber -gt 1 ]] && lineAbove=$sourceLines[$((lineNumber - 1))]
+    [[ "$lineAbove" =~ "# bats-lint-disable ${ruleCode}([[:space:]]|$)" ]] && continue
+
+    filteredLines+=("$violationLine")
+  done
+  ruleLines=("${filteredLines[@]}")
+
+  # Convert Rule Output lines to JSON objects
+  local -a customObjects=()
+  local line
+  local obj
+  for line in $ruleLines; do
+    obj="$(printf '%s' "$line" | jq -Rc 'split("\u25ae") | {
+      file:.[0],
+      code:.[1],
+      level:.[2],
+      line:(.[3]|tonumber),
+      endLine:(.[3]|tonumber),
+      column:1,
+      endColumn:1,
+      message:.[4]
+    }')"
+    customObjects+=("$obj")
+  done
+
+  printf '[%s]\n' "${(j:,:)customObjects}"
+  [[ ${#ruleLines} -gt 0 ]] && return 1
+  return 0
+}

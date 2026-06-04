@@ -12,32 +12,52 @@ teardown() {
   bats_cleanup
 }
 
-@test "outputs [] and exits 0 for clean file" {
+@test "outputs [] and exits 0 when both linters return empty" {
+  bats-lint-shellcheck() { printf '[]\n'; }
+  bats_mock bats-lint-shellcheck
+  bats-lint-custom() { printf '[]\n'; }
+  bats_mock bats-lint-custom
+
   local file="$BATS_TMP_DIR/test.bats"
-  printf '@test "ok" { bats_run_function echo; }\n' >"$file"
+  printf 'placeholder\n' >"$file"
   bats_run_script "$BATS_LINT" "$file"
   [[ "$status" -eq 0 ]]
   [[ "$output" == '[]' ]]
 }
 
-@test "merges violations from both shellcheck and custom rules" {
+@test "merges violations from both linters" {
+  bats-lint-shellcheck() { printf '[{"file":"f","line":1,"col":1,"code":"SC2086","message":"m"}]\n'; }
+  bats_mock bats-lint-shellcheck
+  bats-lint-custom() { printf '[{"file":"f","line":2,"code":"noRunZsh","message":"m"}]\n'; }
+  bats_mock bats-lint-custom
+
   local file="$BATS_TMP_DIR/test.bats"
-  printf 'echo $HOME\nrun zsh -c "echo"\n' >"$file"
+  printf 'placeholder\n' >"$file"
   bats_run_script "$BATS_LINT" "$file"
   [[ "$output" == *'"code":"SC2086"'* ]]
   [[ "$output" == *'"code":"noRunZsh"'* ]]
 }
 
 @test "exits non-zero when violations found" {
+  bats-lint-shellcheck() { printf '[{"file":"f","line":1,"col":1,"code":"SC2086","message":"m"}]\n'; }
+  bats_mock bats-lint-shellcheck
+  bats-lint-custom() { printf '[]\n'; }
+  bats_mock bats-lint-custom
+
   local file="$BATS_TMP_DIR/test.bats"
-  printf 'run zsh -c "echo hello"\n' >"$file"
+  printf 'placeholder\n' >"$file"
   bats_run_script "$BATS_LINT" "$file"
   [[ "$status" -ne 0 ]]
 }
 
 @test "outputs valid JSON array" {
+  bats-lint-shellcheck() { printf '[]\n'; }
+  bats_mock bats-lint-shellcheck
+  bats-lint-custom() { printf '[]\n'; }
+  bats_mock bats-lint-custom
+
   local file="$BATS_TMP_DIR/test.bats"
-  printf '@test "ok" { bats_run_function echo; }\n' >"$file"
+  printf 'placeholder\n' >"$file"
   bats_run_script "$BATS_LINT" "$file"
   run bash -c "printf '%s' '$output' | jq 'type == \"array\"'"
   [[ "$output" == 'true' ]]

@@ -6,8 +6,9 @@
 set -e
 
 local dir="${0:A:h}"
-local sc="${BATS_LINT_SC:-$dir/bats-lint-shellcheck}"
-local custom="${BATS_LINT_CUSTOM:-$dir/bats-lint-custom}"
+
+source "${dir}/bats-lint-shellcheck.zsh"
+source "${dir}/bats-lint-custom.zsh"
 
 # Exclude directories from the inputs
 local -a input=()
@@ -20,8 +21,8 @@ done
 
 # Run both linters via process substitution — no temp files
 local merged="$(jq -cs 'add // []' \
-  <($sc "${input[@]}") \
-  <($custom "${input[@]}"))"
+  <(bats-lint-shellcheck "${input[@]}") \
+  <(bats-lint-custom "${input[@]}"))"
 
 printf '%s\n' "$merged"
 [[ "$(printf '%s' "$merged" | jq 'length')" -gt 0 ]] && exit 1
