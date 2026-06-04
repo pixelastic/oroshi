@@ -1,0 +1,38 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-rule-no-run-zsh.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-bats-lint-custom.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-bats-lint-shellcheck.md",
+    "done": false,
+    "blocked_by": ["02"]
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-bats-lint-orchestrator.md",
+    "done": false,
+    "blocked_by": ["02", "03"]
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-git-file-lint-refactor.md",
+    "done": false,
+    "blocked_by": ["04"]
+  },
+  {
+    "id": "06",
+    "issue": "issues/06-skills-docs.md",
+    "done": false,
+    "blocked_by": ["04"]
+  }
+]
