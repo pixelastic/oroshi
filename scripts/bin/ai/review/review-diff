@@ -1,10 +1,12 @@
 #!/usr/bin/env zsh
 # Generate a full diff for review: working-tree, branch, or commit comparison
 # Usage:
-# $ review-diff                # Working-tree diff (staged + unstaged + untracked)
-# $ review-diff <branch>       # Self-review (arg == current branch) or external review (arg != current branch)
-# $ review-diff <sha>          # Single-commit review
-# $ review-diff <from> <to>   # Diff between two refs
+# $ review-diff                  # Working-tree diff (staged + unstaged + untracked)
+# $ review-diff dirty            # Same as 0-arg (explicit keyword)
+# $ review-diff worktree         # All commits since worktree was created
+# $ review-diff <branch>         # Since branch start
+# $ review-diff <sha>            # Single-commit review
+# $ review-diff <from>..<to>     # Range diff
 set -e
 
 # Display diff between two points
@@ -13,11 +15,8 @@ display_diff_range() {
   rtk proxy git diff --stat -p "$1..$2"
 }
 
-local arg1="$1"
-local arg2="$2"
-
-# 0-arg case: working-tree diff {{{
-if [[ "$arg1" == "" ]] && [[ "$arg2" == "" ]]; then
+# Display working-tree diff (staged + unstaged + untracked)
+display_dirty_diff() {
   local statusRaw="$(git status --porcelain)"
   local trackedDiff="$(rtk proxy git diff --stat -p HEAD)"
 
@@ -43,55 +42,52 @@ if [[ "$arg1" == "" ]] && [[ "$arg2" == "" ]]; then
       /dev/null \
       "$rawFile" || true
   done
+}
+
+local ref="${1:-dirty}"
+
+# 0-arg / dirty: working-tree diff
+if [[ "$ref" == "dirty" ]]; then
+  display_dirty_diff
   exit 0
 fi
-# }}}
 
-# 1-arg case: branch, SHA, or "worktree" {{{
-if [[ "$arg1" != "" ]] && [[ "$arg2" == "" ]]; then
-  local ref="$arg1"
+# Worktree keyword: review all commits since worktree was created
+if [[ "$ref" == "worktree" ]]; then
+  local startCommit="$(git-worktree-start)"
+  display_diff_range "$startCommit" HEAD
+  exit 0
+fi
 
-  # Worktree keyword: review all commits since worktree was created
-  if [[ "$ref" == "worktree" ]]; then
-    local startCommit="$(git-worktree-start)"
-    display_diff_range "$startCommit" HEAD
-    exit 0
-  fi
-
-  # Not a branch: SHA review
-  if ! git-branch-exists "$ref"; then
-    rtk proxy git log --max-count=1 "$ref"
-    rtk proxy git diff --stat -p "$ref^" "$ref"
-    exit 0
-  fi
-
-  # Branch: build range, apply to log and diff
-  local currentBranch="$(git-branch-current)"
-
-  # Determine direction: if ref is ancestor of HEAD, it's the base; otherwise ref is the tip
-  local from="HEAD"
-  local to="$ref"
-  if git-commit-is-before "$ref" HEAD; then
-    from="$ref"
-    to="HEAD"
-  fi
-  # Self-review: parent branch to HEAD
-  if [[ "$ref" == "$currentBranch" ]]; then
-    from="$(git-branch-parent)"
-    to="HEAD"
-  fi
-
+# Range syntax: "from..to" split on ".."
+if [[ "$ref" == *".."* ]]; then
+  local from="${ref%%\.\.*}"
+  local to="${ref##*\.\.}"
   display_diff_range "$from" "$to"
   exit 0
 fi
-# }}}
 
-# 2-arg range case: diff directly between two named refs
-if [[ "$arg1" != "" ]] && [[ "$arg2" != "" ]]; then
-  display_diff_range "$arg1" "$arg2"
+# Not a branch: SHA review
+if ! git-branch-exists "$ref"; then
+  rtk proxy git log --max-count=1 "$ref"
+  rtk proxy git diff --stat -p "$ref^" "$ref"
   exit 0
 fi
 
-# More than 2 args
-echo "Usage: review-diff [<branch>|<sha>] [<from> <to>]"
-exit 1
+# Branch: build range, apply to log and diff
+local currentBranch="$(git-branch-current)"
+
+# Determine direction: if ref is ancestor of HEAD, it's the base; otherwise ref is the tip
+local from="HEAD"
+local to="$ref"
+if git-commit-is-before "$ref" HEAD; then
+  from="$ref"
+  to="HEAD"
+fi
+# Self-review: parent branch to HEAD
+if [[ "$ref" == "$currentBranch" ]]; then
+  from="$(git-branch-parent)"
+  to="HEAD"
+fi
+
+display_diff_range "$from" "$to"

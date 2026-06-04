@@ -5,7 +5,7 @@ Your job: report every place the diff violates documented coding standards.
 
 ## Step 1 — Get the diff
 
-Run `review-diff [args]` via Bash using the args passed to you.
+Run `review-diff <ref>` via Bash using the args passed to you.
 Read the full stdout — do not truncate or summarize it.
 
 ## Step 2 — Find standards sources

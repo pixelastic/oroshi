@@ -13,20 +13,29 @@ Two-axis review of the diff between `HEAD` and a fixed point. Both axes run as p
 
 ### Step 1 — Determine args
 
-**Goal:** Translate the user's intent into `review-diff` args.
+**Goal:** Resolve named params into `review-diff` args and spec path.
 
-**Exit criterion:** Args identified; any explicit spec path noted.
+**Exit criterion:** `ref:` and `spec:` resolved; ready to pass to sub-agents.
 
-| User says | Pass to sub-agents |
+
+| Param | Meaning |
 |---|---|
-| Nothing / "review this" / "review WIP" | no args |
-| "review this branch" / "review \<branch\>" | `<branch>` |
-| "review since main" / "review main" | `main` |
-| "review commit abc123" | `abc123` |
-| "review main..feature" / "review main feature" | `main feature` |
-| "review worktree" | `worktree` |
+| `ref:<ref>` | Diff base; passed to `review-diff` |
+| `spec:<path>` | Path to the spec file (issue or PRD); passed to the Spec agent |
 
-If the user explicitly passed a spec path, note it — pass it to the Spec sub-agent.
+
+**`ref:` values:**
+
+| Value | `review-diff` args |
+|---|---|
+| `ref:dirty` | All dirty files in repo |
+| `ref:worktree` | All changed files since start of worktree |
+| `ref:<branch>` | All changed files since start of `<branch>` |
+| `ref:<commit>` | All changed files in `<commit>` |
+| `ref:<start>..<end>` | All changed files between `<start>` and `<end>` |
+
+
+If `spec:` or `ref:` is absent and cannot be inferred from context, ask the user — do not silently infer.
 
 ### Step 2 — Spawn sub-agents
 
@@ -36,8 +45,8 @@ If the user explicitly passed a spec path, note it — pass it to the Spec sub-a
 
 Send a single message with two `Agent` tool calls. Use the `general-purpose` subagent for both.
 
-- **Standards agent:** read `references/standards-agent.md` for the full brief; pass the `review-diff` args.
-- **Spec agent:** read `references/specs-agent.md` for the full brief; pass the `review-diff` args and the explicit spec path if provided.
+- **Standards agent:** read `references/standards-agent.md` for the full brief;
+- **Spec agent:** read `references/specs-agent.md` for the full brief;
 
 ### Step 3 — Aggregate
 

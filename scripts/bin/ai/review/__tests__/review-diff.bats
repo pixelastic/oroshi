@@ -83,7 +83,7 @@ teardown() {
   [[ "$output" == *"diff --git"* ]]
 }
 
-@test "2-arg range: stdout contains range commits and diff --git line; out-of-range commits absent" {
+@test "1-arg dotdot range: stdout contains range commits and diff --git line; out-of-range commits absent" {
   cd "$BATS_GIT_DIR"
   local shaA="$(git rev-parse HEAD)"
   echo "main content" > main-only.txt
@@ -94,7 +94,7 @@ teardown() {
   git add feature.txt
   git commit --message "feat: commit C"
 
-  run review-diff "$shaA" feature-branch
+  run review-diff "$shaA..feature-branch"
   [ "$status" -eq 0 ]
   [[ "$output" == *"feat: commit C"* ]]
   [[ "$output" == *"diff --git"* ]]
@@ -128,6 +128,31 @@ teardown() {
   [[ "$output" == *"feat: add feature.txt"* ]]
   [[ "$output" == *"+feature content"* ]]
   [[ "$output" != *"-feature content"* ]]
+}
+
+@test "1-arg dirty, clean tree: exits 0 with empty output" {
+  cd "$BATS_GIT_DIR"
+  run review-diff dirty
+  [ "$status" -eq 0 ]
+  [ "$output" = "" ]
+}
+
+@test "1-arg dirty, modified tracked file: stdout contains diff hunk" {
+  cd "$BATS_GIT_DIR"
+  echo "modified content" >> tracked.txt
+  run review-diff dirty
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"diff --git"* ]]
+  [[ "$output" == *"modified content"* ]]
+}
+
+@test "1-arg dirty, untracked file: stdout contains new-file diff block" {
+  cd "$BATS_GIT_DIR"
+  echo "new file content" > new-file.txt
+  run review-diff dirty
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"diff --git"* ]]
+  [[ "$output" == *"new file mode"* ]]
 }
 
 @test "1-arg branch, external review: stdout contains feature commit; main-only commits absent" {

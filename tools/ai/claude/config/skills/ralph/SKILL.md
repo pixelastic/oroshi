@@ -78,9 +78,10 @@ If you have any `## Scaffolding Tests` from the issue:
 
 **Exit criterion:** All actionable feedback addressed, linter clean, tests green.
 
-1. Run the **/review skill** using the **Skill tool** (skill name: `review`, no args):
+1. Run the **/review skill** using the **Skill tool** (not Bash tool)
+    - Skill name: `review`
+    - Args: `ref:dirty` and `spec:<issue_path>`
     - DO NOT use the Bash tool to run `review`
-    - Wait for the skill to finish before proceeding.
 2. For each feedback item:
    - **Actionable and in scope** → fix it
    - **Out of scope or not relevant** → note it, will go in review-log.md (path from `ralph-start` output)
@@ -156,6 +157,7 @@ If you have any `## Scaffolding Tests` from the issue:
 - [ ] Linter clean on modified files
 - [ ] Tests green for modified files
 - [ ] Ran `/review` via Skill tool and received output
+- [ ] Pass `ref:dirty` and `spec:<path>` to the review skill
 - [ ] Actionable feedback fixed or explicitly dismissed
 - [ ] Linter + tests green for modified files after review fixes
 - [ ] state.json updated with `done: true` + `recap`
