@@ -136,6 +136,7 @@
   "setopt",
   "set",
   "sha256sum",
+  "shellcheck",
   "shuf",
   "sidequest-end",
   "skills find",
