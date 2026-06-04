@@ -30,7 +30,8 @@
   {
     "id": "05",
     "issue": "issues/05-git-file-lint-refactor.md",
-    "done": false,
+    "done": true,
+    "recap": "Refactored git-file-lint into a ZSH+BATS dispatcher: partitions dirty files by type, runs zsh-lint/bats-lint, prints grouped output under ── ZSH ──/── BATS ── headers, suppresses empty groups, exits non-zero on any violation.",
     "blocked_by": ["04"]
   },
   {

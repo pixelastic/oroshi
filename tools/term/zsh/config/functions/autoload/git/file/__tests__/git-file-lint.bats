@@ -73,3 +73,44 @@ teardown() {
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
+
+@test "surfaces bats violations for a dirty bats file" {
+  printf '#!/usr/bin/env bats\n@test "foo" { true; }\n' > "$BATS_GIT_DIR/bad.bats"
+  bats_git add bad.bats
+  bats_git commit --quiet -m "add bad.bats"
+  printf 'run zsh -c "echo hello"\n' >> "$BATS_GIT_DIR/bad.bats"
+
+  bats_run_function git-file-lint
+  [ "$status" -eq 1 ]
+  [[ "$output" =~ "── BATS ──" ]]
+  [[ "$output" =~ "bad.bats" ]]
+  [[ "$output" =~ "noRunZsh" ]]
+}
+
+@test "shows zsh section header for zsh violations" {
+  echo 'echo hello' > "$BATS_GIT_DIR/bad.zsh"
+  bats_git add bad.zsh
+  bats_git commit --quiet -m "add bad.zsh"
+  echo 'local a b c' >> "$BATS_GIT_DIR/bad.zsh"
+
+  bats_run_function git-file-lint
+  [ "$status" -eq 1 ]
+  [[ "$output" =~ "── ZSH ──" ]]
+}
+
+@test "shows only bats section when zsh is clean and bats violates" {
+  echo 'echo hello' > "$BATS_GIT_DIR/clean.zsh"
+  bats_git add clean.zsh
+  bats_git commit --quiet -m "add clean.zsh"
+  echo 'echo world' >> "$BATS_GIT_DIR/clean.zsh"
+
+  printf '#!/usr/bin/env bats\n@test "foo" { true; }\n' > "$BATS_GIT_DIR/bad.bats"
+  bats_git add bad.bats
+  bats_git commit --quiet -m "add bad.bats"
+  printf 'run zsh -c "echo hello"\n' >> "$BATS_GIT_DIR/bad.bats"
+
+  bats_run_function git-file-lint
+  [ "$status" -eq 1 ]
+  [[ "$output" =~ "── BATS ──" ]]
+  [[ ! "$output" =~ "── ZSH ──" ]]
+}

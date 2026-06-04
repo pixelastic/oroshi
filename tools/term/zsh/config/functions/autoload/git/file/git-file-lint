@@ -1,4 +1,4 @@
-# Lint all dirty ZSH files in the working tree
+# Lint all dirty ZSH and BATS files in the working tree, grouped by type
 # Usage:
 # $ git-file-lint
 setopt local_options err_return
@@ -9,28 +9,58 @@ local rawFiles="$(git-file-list-dirty-raw)"
 # Nothing to lint if working tree is clean
 [[ "$rawFiles" == "" ]] && return 0
 
-local zshFiles=()
+local -a zshFiles=()
+local hasZshFiles="0"
+local -a batsFiles=()
+local hasBatsFiles="0"
 for rawLine in ${(f)rawFiles}; do
   local splitLine=(${(@s/:/)rawLine})
   local gitStatus=$splitLine[1]
   local filePath=$splitLine[2]
+  local fullPath="${gitRoot}/${filePath}"
 
   # Skip deleted files
   [[ "$gitStatus" == "D" ]] && continue
 
-  local fullPath="${gitRoot}/${filePath}"
   if is-zsh "$fullPath"; then
+    hasZshFiles="1"
     zshFiles+=("$fullPath")
+    continue
+  fi
+
+  if [[ "$filePath" == *.bats ]]; then
+    hasBatsFiles="1"
+    batsFiles+=("$fullPath")
+    continue
   fi
 done
 
-# No ZSH files to lint
-[[ ${#zshFiles[@]} -eq 0 ]] && return 0
+# Display lint errors of a specific type, if any
+local hasViolations="0"
+displayLintErrors() {
+  local label="$1"
+  local results="$2"
 
-local lintOutput="$(zsh-lint "${zshFiles[@]}")"
+  [[ "$results" == "[]" ]] && return 0
 
-# No violations
-[[ "$lintOutput" == "[]" ]] && return 0
+  hasViolations="1"
+  echo "── ${label} ──"
+  printf '%s\n' "$results" |
+    jq \
+      --raw-output \
+      --arg root "$gitRoot" \
+      '.[] | "\(.file | ltrimstr($root + "/")):\(.line):\(.column): \(.code): \(.message)"'
+  return 1
+}
 
-echo "$lintOutput" | jq --raw-output --arg root "$gitRoot" '.[] | "\(.file | ltrimstr($root + "/")):\(.line):\(.column): \(.code): \(.message)"'
-return 1
+if [[ $hasZshFiles == "1" ]]; then
+  displayLintErrors "ZSH" "$(zsh-lint ${zshFiles[@]})"
+fi
+
+if [[ $hasBatsFiles == "1" ]]; then
+  displayLintErrors "BATS" "$(bats-lint ${batsFiles[@]})"
+fi
+
+# Exit non-zero if any group had violations
+[[ $hasViolations == "1" ]] && return 1
+return 0
