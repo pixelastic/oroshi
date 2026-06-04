@@ -150,3 +150,10 @@ Add a F.removePrefix() that removes a given string from the beginning of
 another. Useful to get a relative path out of a known root
 
 ---
+
+## Side projects
+
+- MTG Scrensaver: A website that randomly pulls illustrations from Magic The
+Gathering cards (using Scryfall API), and display them fullscreen. Fades to the
+next at regular interval. Inspired by redditp.com. Maybe index all cards with
+Algolia, so I can add filters (date, color, etc). Built using Lovable.
