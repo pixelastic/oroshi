@@ -18,7 +18,11 @@ dconf write /org/gnome/shell/extensions/just-perfection/activities-button false
 dconf write /org/gnome/shell/extensions/unite/show-window-buttons "'never'"
 
 # Spotify Controls + Track Info
-# TODO: configure dconf settings once extension is installed and settings are known
+# position: 'rightmost-left' (default) places it in the left panel box — use right panel instead
+dconf write /org/gnome/shell/extensions/spotify-controls/position "'leftmost-right'"
+# Show only the track title, no playback buttons or Spotify icon
+dconf write /org/gnome/shell/extensions/spotify-controls/show-playback-controls false
+dconf write /org/gnome/shell/extensions/spotify-controls/show-spotify-icon false
 
 # Clock
 dconf write /org/gnome/shell/extensions/just-perfection/clock-menu-position 1
