@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+# Link ydotoold systemd service and enable it
+set -e
+
+# Add the service file
+sudo ln \
+  --force \
+  --symbolic \
+  "${0:h}/config/ydotoold.service" \
+  /etc/systemd/system
+
+# Create the socket directory
+mkdir -p "$OROSHI_TMP_FOLDER/ydotool"
+
+# Enable and run the service
+sudo systemctl daemon-reload
+sudo systemctl enable --now ydotoold
+sudo systemctl status ydotoold
