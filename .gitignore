@@ -23,6 +23,7 @@ yarn-error.log
 # Ralph
 /ralph/
 ralph.json
+plans/*/COMMIT_HINT.md
 
 # Tool directories
 .claude/

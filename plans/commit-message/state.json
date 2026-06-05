@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-groundwork.md",
-    "done": false,
+    "done": true,
+    "recap": "Added plans/*/COMMIT_HINT to .gitignore and added COMMIT_HINT write sub-step to Ralph SKILL.md DOCUMENT phase.",
     "blocked_by": []
   },
   {

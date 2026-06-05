@@ -52,7 +52,8 @@ teardown() {
   [[ "$(echo "$output" | jq -r '.issue')" == /* ]]
   [[ "$(echo "$output" | jq -r '.state')" == /* ]]
   [[ "$(echo "$output" | jq -r '.guidance')" == /* ]]
-  [[ "$(echo "$output" | jq -r '.review_log')" == /* ]]
+  [[ "$(echo "$output" | jq -r '.reviewLog')" == /* ]]
+  [[ "$(echo "$output" | jq -r '.commitHint')" == /* ]]
 }
 
 @test "issue resolves relative path from plan dir" {

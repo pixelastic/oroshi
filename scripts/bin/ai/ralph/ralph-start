@@ -44,5 +44,6 @@ jq -n \
     issue: ($dir+"/"+$issue.issue),
     state: ($dir+"/state.json"),
     guidance: ($dir+"/GUIDANCE.md"),
-    review_log: ($dir+"/review-log.md")
+    commitHint: ($dir+"/COMMIT_HINT.md"),
+    reviewLog: ($dir+"/review-log.md")
   }'

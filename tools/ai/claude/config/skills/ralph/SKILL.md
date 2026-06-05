@@ -94,20 +94,31 @@ If you have any `## Scaffolding Tests` from the issue:
 
 **Goal:** Leave full context for the next session.
 
-**Exit criterion:** `state.json`, `GUIDANCE.md` (optional) and `review-log.md` (optional) updated.
+**Exit criterion:** `state.json`, `GUIDANCE.md` (optional), `COMMIT_HINT.md`, and `review-log.md` (optional) updated.
 
-1. **Update `state.json`** (path from `ralph-start` output): find the issue
+All paths of the following files are from `ralph-start` output.
+
+1. **Update `state.json`**: find the issue
    entry by `id`, set `done: true`, add `recap` — a short one-sentence summary
    of what was done.
 
-2. **Append to `GUIDANCE.md`** (path from `ralph-start` output) under `## Discoveries`:
+2. **Append to `GUIDANCE.md`** under `## Discoveries`:
    ```
    ### Issue XX — <title>
    - <non-trivial finding>
    ```
    Skip this step if there are no non-trivial findings.
 
-3. **If review had skipped items**, create or append at the end of `review-log.md` (path from `ralph-start` output):
+3. **Write `COMMIT_HINT.md`**
+   The file is free prose for the next commit message author. Cover:
+   - **Goal** — what the issue set out to do (one sentence)
+   - **Done** — what was actually implemented (what changed, what was skipped, any deviation)
+   - **Key files** — the most important file-level changes (path + one-line reason)
+   - **Suggested type(scope)** — e.g. `feat(git-commit-message)`, `chore(gitignore)`
+
+   Be specific enough that an agent can write a good commit message without re-reading the diff.
+
+4. **If review had skipped items**, create or append at the end of `review-log.md`:
    ```
    ## Issue XX — <title>
    ### <feedback item>
