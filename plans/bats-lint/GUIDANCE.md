@@ -62,3 +62,8 @@ Prior art: `rule-no-run-zsh.zsh`, `rule-no-inline-function.zsh`
 <!-- Agents: append findings after each completed issue using the format below -->
 <!-- ### Issue XX — short title -->
 <!-- - Non-trivial finding -->
+
+### Issue 01 — lint pass bats-lint (meta domain)
+
+- 3 `noInlineFunction` violations in `bats-lint.bats` (lines 29, 31, 42): inline JSON-producing stubs exceeded 90 chars. Decision: **fix** (split to multi-line). Short stubs in the same file (≤ 90 chars, single instruction) are compliant and stay inline — the rule deliberately allows those.
+- `bats-lint` exits 0 on missing files (outputs `[]`), which silently passes lint tests written with bad paths. Always guard with `[[ -f "$file" ]] || fail` before calling `bats-lint` in scaffold tests.
