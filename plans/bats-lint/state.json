@@ -2,8 +2,7 @@
   {
     "id": "01",
     "issue": "issues/01-lint-pass-bats-lint.md",
-    "done": true,
-    "recap": "All 5 files already passed bats-lint and bats with zero violations — no changes needed.",
+    "done": false,
     "blocked_by": []
   },
   {
@@ -23,7 +22,8 @@
   {
     "id": "04",
     "issue": "issues/04-lint-pass-json-utils.md",
-    "done": false,
+    "done": true,
+    "recap": "All 3 json bats files already passed bats-lint and bats — no changes needed.",
     "blocked_by": ["03"]
   },
   {
@@ -65,7 +65,8 @@
   {
     "id": "11",
     "issue": "issues/11-lint-pass-ai-functions.md",
-    "done": false,
+    "done": true,
+    "recap": "Both ai-functions bats files (claude-terminal-fix.bats, rtk-can-rewrite.bats) already clean — no violations.",
     "blocked_by": ["10"]
   },
   {
