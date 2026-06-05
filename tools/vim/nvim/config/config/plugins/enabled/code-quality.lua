@@ -1,3 +1,4 @@
+local batsHelper = O_require("oroshi/filetypes/bats")
 local cssHelper = O_require("oroshi/filetypes/css")
 local helperDiagline = O_require("oroshi/plugins/helpers/diagline")
 local helperStatusline = O_require("oroshi/plugins/helpers/statusline")
@@ -63,6 +64,10 @@ local config = {
 
   -- Per-filetype configuration
   filetypes = {
+    bats = {
+      linters = { "bats-lint" },
+      configureLinter = batsHelper.configureLinter,
+    },
     bash = {
       formatters = { "shfmt" },
     },
