@@ -48,6 +48,11 @@ This allows tests to pre-define mock functions before sourcing the file.
 
 ## Discoveries
 
+### Issue 03 — ralph-loop
+
+- `WATCHER_INTERVAL` and `TTY_INPUT` are file-level UPPERCASE constants (no `local`); `_sentinel_watcher` reads them at call time, so env vars set before sourcing take effect.
+- `local commits; commits="$(…)"` (2-line split) is required in bats tests to avoid SC2155; the memory rule "never split local/assignment" is ZSH-only, not bats/bash.
+
 ### Issue 02 — ralph-single
 
 - `jo` available here does not support `:=` for raw JSON — use plain `key=value`; it auto-detects `true`/`false` as booleans.

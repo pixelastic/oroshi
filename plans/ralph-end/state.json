@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-ralph-loop.md",
-    "done": false,
+    "done": true,
+    "recap": "Created __lib/ralph-loop.zsh with sentinel watcher and N-iteration loop; migrated all 4 passing loop tests from ralph.bats to ralph-loop.bats.",
     "blocked_by": []
   },
   {
