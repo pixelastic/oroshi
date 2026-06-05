@@ -9,13 +9,15 @@
   {
     "id": "02",
     "issue": "issues/02-lint-pass-bats-utils.md",
-    "done": false,
+    "done": true,
+    "recap": "bats-test-path.bats already passed bats-lint and bats with zero violations — no changes needed.",
     "blocked_by": ["01"]
   },
   {
     "id": "03",
     "issue": "issues/03-lint-pass-zsh-lint.md",
-    "done": false,
+    "done": true,
+    "recap": "All 15 zsh-lint bats files already passed bats-lint and bats with zero violations — no changes needed.",
     "blocked_by": ["02"]
   },
   {
