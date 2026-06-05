@@ -6,8 +6,8 @@ Build `bats-lint`: a linter for `.bats` test files that mirrors the architecture
 
 ### Commands
 
-- **Run a BATS test file:** `rtk bats <filepath>`
-- **Run ZSH lint:** `zshlint <filepath>`
+- **Run a BATS test file:** `bats <filepath>`
+- **Run ZSH lint:** `zsh-lint <filepath>`
 - **Run BATS lint (once built):** `bats-lint <filepath>`
 
 ### File locations
@@ -45,6 +45,12 @@ Build `bats-lint`: a linter for `.bats` test files that mirrors the architecture
 ## Discoveries
 
 <!-- Agents: append non-trivial findings after each issue below -->
+
+### Issue 09 — zsh-lint-helper-refactor
+
+- The spec contradicts itself on `_zshLintRulesDir` placement: "What to build" says **before** the guard; "Watch out" says **after**. The correct placement is **after** the guard — matches the bats-lint prior art (`bats-lint-custom.zsh` line 11) and prevents namespace pollution when the function is already mocked.
+- `local` at script scope in orchestrator scripts is correct and required — `zsh-writer/references/variables.md` explicitly says "Use `local` for all variables, even if not in a function."
+- `mock.zsh` created in `setup()` is NOT dead code — `bats_run_function` reads it automatically to source the function under test.
 
 ### Issue 03 — bats-lint-shellcheck
 
