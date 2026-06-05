@@ -2,6 +2,13 @@ local M = {}
 
 M.linters = { "bats-lint" }
 
+M.onInit = function()
+  -- Force bats as bats, not sh
+  F.onRead("*.bats", function()
+    F.updateBufferOption("filetype", "bats")
+  end)
+end
+
 M.configureLinter = function(lint)
   lint.linters["bats-lint"] = {
     cmd = "bats-lint",

@@ -5,8 +5,9 @@ setup_file() {
   local oroshi="${OROSHI_ROOT:-$HOME/.oroshi}"
   local zshenv="$oroshi/tools/term/zsh/config/zshenv.zsh"
   [[ -f "$zshenv" ]] || return 0
-  local tmpZdotdir; tmpZdotdir="$(mktemp -d)"
-  printf 'export OROSHI_ROOT="%s"\nsource "%s"\n' "$oroshi" "$zshenv" > "$tmpZdotdir/.zshenv"
+  local tmpZdotdir
+  tmpZdotdir="$(mktemp -d)"
+  printf 'export OROSHI_ROOT="%s"\nsource "%s"\n' "$oroshi" "$zshenv" >"$tmpZdotdir/.zshenv"
   export ZDOTDIR="$tmpZdotdir"
 }
 
@@ -44,7 +45,7 @@ teardown_file() {
 }
 
 @test "strips extension and adds .bats for a .zsh file" {
-  run bats-test-path "$HOME/.oroshi/scripts/bin/zsh/zshlint/__rules/rule-no-dash-n.zsh"
+  run bats-test-path "$OROSHI_ROOT/scripts/bin/zsh/zsh-lint/__rules/rule-no-dash-n.zsh"
   [ "$status" -eq 0 ]
-  [ "$output" = "$HOME/.oroshi/scripts/bin/zsh/zshlint/__rules/__tests__/rule-no-dash-n.bats" ]
+  [ "$output" = "$OROSHI_ROOT/scripts/bin/zsh/zsh-lint/__rules/__tests__/rule-no-dash-n.bats" ]
 }

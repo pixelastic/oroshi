@@ -6,7 +6,7 @@
 set -e
 
 # No staged files to check
-[[ $# = 0 ]] && exit 0
+[[ $# == 0 ]] && exit 0
 
 local testPaths=()
 for filePath in "$@"; do
@@ -18,4 +18,4 @@ done
 [[ "${#testPaths[@]}" == 0 ]] && exit 0
 
 local uniquePaths=("${(@u)testPaths}")
-bats "${uniquePaths[@]}"
+rtk bats "${uniquePaths[@]}"
