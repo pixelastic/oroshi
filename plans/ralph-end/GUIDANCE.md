@@ -47,3 +47,9 @@ This allows tests to pre-define mock functions before sourcing the file.
 `ralph-single` owns the full lifecycle: creates the lock, launches Claude, clears the lock. `ralph-start` has no knowledge of ralph.json.
 
 ## Discoveries
+
+### Issue 02 — ralph-single
+
+- `jo` available here does not support `:=` for raw JSON — use plain `key=value`; it auto-detects `true`/`false` as booleans.
+- `bats_run_function` is deprecated in this codebase; use `bats_run_zsh` with the caller.zsh + mock.zsh pattern from `preToolUse-Bash-rtk.bats`.
+- When mocking `ralph-state` in a test that pre-creates a `ralph.json` file, use a conditional mock (`[[ "$2" == "get" ]] && echo "<mode>"`) so the semaphore check sees the correct mode while init/clear are no-ops.
