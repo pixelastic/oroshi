@@ -10,7 +10,7 @@ setup() {
   git -C "$BATS_TMP_DIR/repo" commit --allow-empty --quiet --message="init commit"
 
   export BATS_GIT_DIR="$BATS_TMP_DIR/repo"
-  cd "$BATS_GIT_DIR"
+  cd "$BATS_GIT_DIR" || return
 }
 
 teardown() {

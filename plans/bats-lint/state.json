@@ -37,7 +37,8 @@
   {
     "id": "06",
     "issue": "issues/06-lint-pass-completion.md",
-    "done": false,
+    "done": true,
+    "recap": "Fixed 1 SC2164 violation in complete-git-branches-local.bats: added || return to bare cd call in setup(); other 2 files were already clean.",
     "blocked_by": ["05"]
   },
   {
