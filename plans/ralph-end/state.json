@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-ralph-dispatcher.md",
-    "done": false,
+    "done": true,
+    "recap": "Rewrote ralph as a thin dispatcher sourcing __lib/ralph-single.zsh and __lib/ralph-loop.zsh; replaced ralph.bats with 2 dispatcher-only tests.",
     "blocked_by": ["02", "03"]
   }
 ]

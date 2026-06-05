@@ -48,6 +48,11 @@ This allows tests to pre-define mock functions before sourcing the file.
 
 ## Discoveries
 
+### Issue 04 — ralph-dispatcher
+
+- Script-level variables (`dir`, `maxLoops`) need `local` even in thin dispatchers; easy to lose during rewrites.
+- `bats_mock` serializes the *current* function definition to `mock.zsh` — define your stub body BEFORE calling `bats_mock`, not after.
+
 ### Issue 03 — ralph-loop
 
 - `WATCHER_INTERVAL` and `TTY_INPUT` are file-level UPPERCASE constants (no `local`); `_sentinel_watcher` reads them at call time, so env vars set before sourcing take effect.

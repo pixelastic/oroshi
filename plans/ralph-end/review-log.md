@@ -1,3 +1,39 @@
+## Issue 04 — ralph-dispatcher
+
+### `return` used in script body (Standards)
+```zsh
+if [[ "$maxLoops" != "" ]]; then
+  ralph-loop "$dir" "$maxLoops"
+  return
+fi
+ralph-single "$dir"
+```
+**Problem:** reviewer flagged `return` outside a function in a `#!/usr/bin/env zsh` script.
+**Reason skipped:** established codebase pattern — `ralph-start`, `ralph-state` all use `return` at script scope. Scripts are sourced via `bats_run_zsh` and in production via the caller chain.
+
+### Test stub ordering (Spec)
+```bash
+ralph-single() { echo "SINGLE:$*"; }
+bats_mock ralph-single ralph-loop
+```
+**Problem:** reviewer thought `bats_mock` resets function definitions to no-ops, breaking output assertions.
+**Reason skipped:** `bats_mock` captures the current function body and writes it to `mock.zsh` before unsetting. Defining the stub BEFORE `bats_mock` is correct and required. Tests confirm the ordering works.
+
+### `bats_run_zsh` instead of `bats_run_script` (Standards)
+```bats
+bats_run_zsh "$RALPH" "$PRD_DIR"
+```
+**Problem:** `ralph` is a bin script (has shebang); reviewer flagged that `bats_run_script` is the mandated helper for standalone scripts.
+**Reason skipped:** `ralph-start.bats` and other bin-script tests in this repo use `bats_run_zsh`. The codebase pattern is `bats_run_zsh` for all scripts and functions.
+
+### End-to-end acceptance criterion (Spec)
+**Problem:** Spec criterion 5: "End-to-end: `ralph <dir>` runs a single issue; `ralph --max 1 <dir>` runs one loop iteration" — no automated test covers this.
+**Reason skipped:** End-to-end integration requires a live Claude session. This is manual verification scope; unit tests cover dispatch routing.
+
+### Directory default resolution untested (Spec)
+**Problem:** `local dir="${${1:-.}:a}"` resolves `.` → cwd when no argument given; this path is not exercised by `ralph.bats` (tests always pass an absolute `$PRD_DIR`).
+**Reason skipped:** The spec's behavioral tests only specify "calls `ralph-single` with the resolved directory" for an explicit `<dir>` argument. No-arg behavior is not a listed test case.
+
 ## Issue 03 — ralph-loop
 
 ### Spec: git-directory-root navigation is a "logic addition"
