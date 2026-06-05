@@ -10,10 +10,35 @@
 - Use `bats_tmp_dir` to create an isolated test sandbox dir
 - Use `bats_git_dir` to create an isolated test git repo dir
 - Use `bats_cleanup` to remove any isolated test dir
-- Use `bats_run_function` for zsh autoloaded functions
-- Use `bats_run_script` for standalone scripts
+- Use `bats_run_zsh "$CURRENT"` for standalone scripts tested via `CURRENT`
 - Use `bats_mock` to mock commands
 - Full helper code available at `tools/term/bats/config/helper`
+
+## Example
+
+```bash
+bats_load_library 'helper'
+
+setup() {
+  bats_tmp_dir
+  CURRENT="${BATS_TEST_DIRNAME}/../my-script"
+}
+
+teardown() {
+  bats_cleanup
+}
+
+@test "exits 0 on valid input" {
+  bats_run_zsh "$CURRENT" "some-arg"
+  [[ "$status" -eq 0 ]]
+}
+
+@test "prints error on stdin" {
+  bats_run_zsh "$CURRENT" <<<"input"
+  [[ "$status" -ne 0 ]]
+  [[ "$output" == *"Usage"* ]]
+}
+```
 
 ### `bats_tmp_dir`
 
@@ -21,29 +46,6 @@ Creates an isolated directory, specific to that test.
 
 - Path is then accessible as `$BATS_TMP_DIR`
 - Run `bats_cleanup` in `teardown` to remove it.
-
-
-```bash
-setup() {
-  bats_tmp_dir
-  export MY_CONFIG="$BATS_TMP_DIR/config.json"
-}
-
-teardown() {
-  bats_cleanup
-}
-
-@test "creates config file" {
-  bats_run_function my-function --init
-  [ -f "$BATS_TMP_DIR/config.json" ]
-}
-
-@test "fails when config missing" {
-  unset MY_CONFIG
-  bats_run_function my-function <<< 'piped content'
-  [ "$status" -ne 0 ]
-}
-```
 
 ## `bats_git_dir`
 
@@ -55,13 +57,14 @@ Creates an isolated git repo, specific to that test.
 
 ```bash
 setup() {
+  CURRENT="${BATS_TEST_DIRNAME}/../my-script"
   bats_git_dir 'my-repo'
   cd "$BATS_GIT_DIR"
 }
 
 @test "returns current branch" {
   git checkout -b fix/bug
-  bats_run_function git-branch-current
+  bats_run_zsh "$CURRENT" "some-arg"
   [ "$output" = "fix/bug" ]
 }
 ```
@@ -79,7 +82,7 @@ Overwrites existing commands with custom one, only for that test.
   pbcopy() { echo "$1" > "$BATS_TMP_DIR/clipboard.txt"; }
   bats_mock pbcopy
 
-  bats_run_function my-function "Hello World"
+  bats_run_zsh "$CURRENT" "Hello World"
   [ "$(cat "$BATS_TMP_DIR/clipboard.txt")" = "helloWorld" ]
 }
 ```
@@ -92,7 +95,7 @@ Strip ANSI color codes from strings:
 
 ```bash
 @test "shows behind count" {
-  bats_run_function git-worktree-list
+  bats_run_zsh "$CURRENT" "Hello World"
   local stripped="$(bats_strip_ansi "$output")"
   [[ "$stripped" == *"3"* ]]
 }
