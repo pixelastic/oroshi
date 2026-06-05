@@ -44,7 +44,8 @@
   {
     "id": "07",
     "issue": "issues/07-lint-custom-runner-shared.md",
-    "done": false,
+    "done": true,
+    "recap": "Extracted shared runner logic into lint-custom-run autoload function; bats-lint-custom and zsh-lint-custom each reduced to source-rules + one call; all existing tests pass unchanged.",
     "blocked_by": ["05", "06"]
   },
   {
