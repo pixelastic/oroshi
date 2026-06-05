@@ -1,0 +1,26 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-bats-run-zsh-helper.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-norunzsh-message.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-pilot-migration.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-full-migration.md",
+    "done": false,
+    "blocked_by": ["03"]
+  }
+]
