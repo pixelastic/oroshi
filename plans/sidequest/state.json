@@ -1,0 +1,38 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-kitty-helper-claude-start.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-kitty-tab-create-cmd.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-sidequest-end-baseline-tests.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-sidequest-script.md",
+    "done": false,
+    "blocked_by": ["01", "02"]
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-sidequest-end-update.md",
+    "done": false,
+    "blocked_by": ["03", "04"]
+  },
+  {
+    "id": "06",
+    "issue": "issues/06-skill-md-update.md",
+    "done": false,
+    "blocked_by": ["05"]
+  }
+]
