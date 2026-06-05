@@ -21,3 +21,17 @@ run zsh -c "[[ -f '${mock_file}' ]] && source '${mock_file}'; ${func} \"$@\"" --
 ```
 **Problem:** Reviewer flagged that `.zshenv` is not sourced in the cmd, so fpath is not configured and autoload functions won't resolve.
 **Reason skipped:** ZSH always sources `.zshenv` for non-interactive shells (`zsh -c` included). The exported `OROSHI_ROOT` causes `.zshenv` to pin fpath to the worktree — same mechanism `bats_run_function` relies on. No explicit source needed.
+
+## Issue 02 — noRunZsh message
+
+### Bare `[[` assertions always pass (Standards reviewer)
+```bash
+[[ "$output" == *"bats_run_zsh"* ]]
+[[ "$output" != *"bats_run_function"* ]]
+```
+**Problem:** Reviewer claimed bare `[[` is a no-op in BATS that silently passes.
+**Reason skipped:** `expect_rule_violation` in `rules-helper` (lines 22–23) uses identical bare `[[` assertions. This is the established pattern for this codebase. BATS propagates non-zero exits from `[[`, so a failed condition fails the test.
+
+### "Update existing test" vs "add new tests" (Spec reviewer)
+**Problem:** Reviewer flagged that the spec says "update the corresponding test" but the diff adds new tests instead of modifying existing ones.
+**Reason skipped:** No pre-existing test asserted message content — there was nothing to update. Adding new tests is the correct interpretation of "update the test file to assert the new message text."

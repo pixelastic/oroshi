@@ -1,12 +1,12 @@
 # Custom Rule: batsLintRule_noRunZsh
-# Detects `run zsh` in BATS files; use bats_run_function instead
+# Detects `run zsh` in BATS files; use bats_run_zsh instead
 # Rule Output: file▮code▮error▮line▮message
 # Usage:
 #   source rule-no-run-zsh.zsh
 #   batsLintRule_noRunZsh <file.bats>
 batsLintRule_noRunZsh() {
   local code='noRunZsh'
-  local msg='Use bats_run_function instead of run zsh'
+  local msg='Use bats_run_zsh instead of run zsh'
 
   local file="$1"
   local content="$(<"$file")"

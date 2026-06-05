@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-norunzsh-message.md",
-    "done": false,
+    "done": true,
+    "recap": "Updated noRunZsh rule msg and header comment from bats_run_function to bats_run_zsh; added two message-content tests.",
     "blocked_by": []
   },
   {
