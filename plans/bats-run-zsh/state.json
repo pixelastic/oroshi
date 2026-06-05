@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-pilot-migration.md",
-    "done": false,
+    "done": true,
+    "recap": "Migrated json-is-valid.bats from bats_run_function to bats_run_zsh with full OROSHI_ROOT-anchored paths; added scaffolding tests; all tests green, lint clean.",
     "blocked_by": ["01"]
   },
   {

@@ -35,3 +35,15 @@ run zsh -c "[[ -f '${mock_file}' ]] && source '${mock_file}'; ${func} \"$@\"" --
 ### "Update existing test" vs "add new tests" (Spec reviewer)
 **Problem:** Reviewer flagged that the spec says "update the corresponding test" but the diff adds new tests instead of modifying existing ones.
 **Reason skipped:** No pre-existing test asserted message content — there was nothing to update. Adding new tests is the correct interpretation of "update the test file to assert the new message text."
+
+## Issue 03 — Pilot migration
+
+### `[[ $isAutoloadedFunction == "0" ]]` tests negative flag (Standards reviewer)
+```zsh
+if [[ $isAutoloadedFunction == "0" ]]; then
+  run zsh -c "..." -- "$@"
+  return
+fi
+```
+**Problem:** Standard pattern is `== "1"` for the positive branch; restructure so the autoload branch checks `== "1"` and scripts fall through.
+**Reason skipped:** This code is in the `bats_run_zsh` helper committed in Issue 01 — outside the diff for this session. The current issue only migrated a test file. Flagging for potential cleanup in a future session.
