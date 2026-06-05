@@ -13,6 +13,7 @@ batsLintRule_noInlineFunction() {
   local content="$(<"$file")"
   local lineno=0
   local line
+  local part
 
   for line in "${(@f)content}"; do
     (( ++lineno ))
@@ -32,7 +33,6 @@ batsLintRule_noInlineFunction() {
     # Count non-empty instructions (split by ;)
     local -a parts=("${(@s:;:)body}")
     local count=0
-    local part
     for part in "${parts[@]}"; do
       [[ "${part//[[:space:]]/}" != "" ]] && (( ++count ))
     done
