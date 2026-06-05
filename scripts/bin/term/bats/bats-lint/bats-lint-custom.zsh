@@ -13,8 +13,10 @@ _batsLintRulesDir="${0:A:h}/__rules"
 bats-lint-custom() {
   # Source all rule files (comment a line to disable a rule)
   source "${_batsLintRulesDir}/rule-no-run-zsh.zsh"
+  source "${_batsLintRulesDir}/rule-no-inline-function.zsh"
   lint-custom-run \
     --disable-prefix 'bats-lint-disable' \
     batsLintRule_noRunZsh \
+    batsLintRule_noInlineFunction \
     -- "$@"
 }
