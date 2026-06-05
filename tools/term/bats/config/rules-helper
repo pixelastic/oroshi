@@ -7,10 +7,12 @@ export _SEP=$'\u25ae'
 # run_rule <line1> [line2 ...]
 # Writes lines to a temp fixture file and runs the rule function against it.
 run_rule() {
+  local rulePath="$1" ruleFn="$2" ruleFixture="$3"
+  shift 3
   [[ -z "$BATS_TMP_DIR" ]] && bats_tmp_dir
-  local file="$BATS_TMP_DIR/${RULE_FIXTURE}"
+  local file="$BATS_TMP_DIR/${ruleFixture}"
   printf '%s\n' "$@" > "$file"
-  run zsh -c "source '${RULE_FILE}'; ${RULE_FN} '${file}'"
+  run zsh -c "source '${rulePath}'; ${ruleFn} '${file}'"
 }
 
 # expect_rule_violation <code> <line>

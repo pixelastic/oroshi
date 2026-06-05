@@ -3,9 +3,7 @@
 bats_load_library 'helper'
 bats_load_library 'rules-helper'
 
-RULE_FILE="${BATS_TEST_DIRNAME}/../rule-no-manual-arg-parsing.zsh"
-RULE_FN="zshLintRule_noManualArgParsing"
-RULE_FIXTURE="test.zsh"
+run_this_rule() { run_rule "${BATS_TEST_DIRNAME}/../rule-no-manual-arg-parsing.zsh" "zshLintRule_noManualArgParsing" "test.zsh" "$@"; }
 
 @test "flags case \"\$1\" pattern" {
   local -a input=(
@@ -13,13 +11,13 @@ RULE_FIXTURE="test.zsh"
     '  --foo) foo=1 ;;'
     'esac'
   )
-  run_rule "${input[@]}"
+  run_this_rule "${input[@]}"
   expect_rule_violation noManualArgParsing 1
 }
 
 @test "flags while getopts pattern" {
   local -a input=( 'while getopts "f:v" opt; do' )
-  run_rule "${input[@]}"
+  run_this_rule "${input[@]}"
   expect_rule_violation noManualArgParsing 1
 }
 
@@ -28,18 +26,18 @@ RULE_FIXTURE="test.zsh"
     'zmodload zsh/zutil'
     'zparseopts -E -D f=flagFoo'
   )
-  run_rule "${input[@]}"
+  run_this_rule "${input[@]}"
   expect_clean
 }
 
 @test "no false positive on comment line" {
   local -a input=( '# case "$1" is the old way' )
-  run_rule "${input[@]}"
+  run_this_rule "${input[@]}"
   expect_clean
 }
 
 @test "no false positive on case \"\$2\"" {
   local -a input=( 'case "$2" in' )
-  run_rule "${input[@]}"
+  run_this_rule "${input[@]}"
   expect_clean
 }
