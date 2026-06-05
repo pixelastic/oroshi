@@ -15,8 +15,7 @@ teardown() {
 # Run the stop hook with a given env var value and stdin JSON
 run_stop() {
   local stdinJson="$1"
-  local mock_file="$BATS_TMP_DIR/mock.zsh"
-  run zsh -c "[[ -f '${mock_file}' ]] && source '${mock_file}'; source '${STOP_HOOK}'" <<< "$stdinJson"
+  bats_run_zsh "$STOP_HOOK" <<< "$stdinJson"
 }
 
 # Create a minimal transcript with a user message N seconds ago

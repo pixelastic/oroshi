@@ -2,6 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/file/git-file-edit"
   echo "hello" > "$BATS_GIT_DIR/file.txt"
   bats_git add file.txt
   bats_git commit --quiet -m "initial"
@@ -13,7 +14,7 @@ teardown() {
 }
 
 @test "does nothing when working tree is clean" {
-  bats_run_function git-file-edit
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
@@ -23,7 +24,7 @@ teardown() {
   nvim() { echo "$*" > "$BATS_TMP_DIR/nvim.log"; }
   bats_mock nvim
 
-  bats_run_function git-file-edit
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [[ "$(cat "$BATS_TMP_DIR/nvim.log")" == *"file.txt"* ]]
 }
@@ -33,7 +34,7 @@ teardown() {
   nvim() { echo "$*" > "$BATS_TMP_DIR/nvim.log"; }
   bats_mock nvim
 
-  bats_run_function git-file-edit
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ ! -f "$BATS_TMP_DIR/nvim.log" ]
 }
@@ -47,7 +48,7 @@ teardown() {
   nvim() { echo "$*" > "$BATS_TMP_DIR/nvim.log"; }
   bats_mock nvim
 
-  bats_run_function git-file-edit
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ ! -f "$BATS_TMP_DIR/nvim.log" ]
 }
@@ -57,7 +58,7 @@ teardown() {
   nvim() { echo "$*" > "$BATS_TMP_DIR/nvim.log"; }
   bats_mock nvim
 
-  bats_run_function git-file-edit
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [[ "$(cat "$BATS_TMP_DIR/nvim.log")" == *"renamed.txt"* ]]
   [[ "$(cat "$BATS_TMP_DIR/nvim.log")" != *"file.txt"* ]]

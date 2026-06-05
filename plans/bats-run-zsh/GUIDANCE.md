@@ -35,6 +35,14 @@ The bats helper exports `OROSHI_ROOT=$(git rev-parse --show-toplevel)`. `.zshenv
 
 _Append findings here after each issue is completed._
 
+### Issue 04 — Full migration
+
+- Three migration patterns emerged: (A) autoload functions → `CURRENT=$OROSHI_ROOT/tools/.../autoload/<subdir>/<name>` in setup; (B) `bats_run_script` → direct `bats_run_zsh` substitution; (C) library functions loaded via mock.zsh → add `caller.zsh` stub in `BATS_TMP_DIR` that calls `<funcname> "$@"`, then `bats_run_zsh "$CURRENT"`.
+- Files in `scripts/bin/` that used `run_zsh_fn` helpers (manual fpath override) can use `bats_run_zsh "$CURRENT"` directly — `$OROSHI_ROOT` pins fpath to the worktree via `.zshenv`.
+- `run zsh script_path` (not `run zsh -c`) → `run script_path` (removes redundant `zsh` invocation while avoiding source-mode issues for scripts using `${0:A:h}`).
+- Multi-call tests (`run zsh -c 'fn1; fn2'`) → create `$BATS_TMP_DIR/script.zsh` with the commands, then `bats_run_zsh "$script"`.
+- Files with no setup() need `bats_tmp_dir` + teardown added when using temp scripts.
+
 ### Issue 01 — bats_run_zsh helper
 
 - `zsh -c "..."` always sources `.zshenv` (ZSH non-interactive rule) — no explicit fpath setup needed in the cmd string; autoload functions resolve automatically via the worktree-scoped `OROSHI_ROOT`.

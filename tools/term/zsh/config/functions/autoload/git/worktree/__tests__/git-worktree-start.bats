@@ -2,6 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/worktree/git-worktree-start"
   bats_git_worktree 'fix/bug'
 }
 
@@ -14,7 +15,7 @@ teardown() {
   local baseCommit="$(git rev-parse HEAD)"
   git commit --allow-empty -m "commit 1"
   git commit --allow-empty -m "commit 2"
-  bats_run_function git-worktree-start
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "$baseCommit" ]
 }
@@ -24,13 +25,13 @@ teardown() {
   local baseCommit="$(git rev-parse HEAD)"
   git commit --allow-empty -m "commit in worktree"
   cd "$BATS_GIT_DIR"
-  bats_run_function git-worktree-start "${BATS_GIT_WORKTREES}fix-bug"
+  bats_run_zsh "$CURRENT" "${BATS_GIT_WORKTREES}fix-bug"
   [ "$status" -eq 0 ]
   [ "$output" = "$baseCommit" ]
 }
 
 @test "fails when worktree has no commits ahead of main" {
   cd "${BATS_GIT_WORKTREES}fix-bug"
-  bats_run_function git-worktree-start
+  bats_run_zsh "$CURRENT"
   [ "$status" -ne 0 ]
 }

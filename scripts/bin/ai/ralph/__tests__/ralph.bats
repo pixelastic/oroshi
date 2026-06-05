@@ -24,7 +24,7 @@ teardown() {
   bats_mock claude git-commit-message
 
   cd "$GIT_REPO"
-  bats_run_script "$RALPH_SCRIPT" --max 3 "$PRD_DIR"
+  bats_run_zsh "$RALPH_SCRIPT" --max 3 "$PRD_DIR"
   [ "$status" -eq 0 ]
 
   local commits="$(git log --oneline | wc -l)"
@@ -43,7 +43,7 @@ teardown() {
   bats_mock claude git-commit-message
 
   cd "$GIT_REPO"
-  bats_run_script "$RALPH_SCRIPT" --max 10 "$PRD_DIR"
+  bats_run_zsh "$RALPH_SCRIPT" --max 10 "$PRD_DIR"
   [ "$status" -eq 0 ]
 
   local commits="$(git log --oneline | wc -l)"
@@ -58,7 +58,7 @@ teardown() {
   bats_mock claude git-commit-message
 
   cd "$GIT_REPO"
-  bats_run_script "$RALPH_SCRIPT" --max 5 "$PRD_DIR"
+  bats_run_zsh "$RALPH_SCRIPT" --max 5 "$PRD_DIR"
   [ "$status" -eq 0 ]
 
   local commits="$(git log --oneline | wc -l)"
@@ -77,7 +77,7 @@ teardown() {
   bats_mock claude git-commit-message
 
   cd "$GIT_REPO"
-  bats_run_script "$RALPH_SCRIPT" --max 2 "$PRD_DIR"
+  bats_run_zsh "$RALPH_SCRIPT" --max 2 "$PRD_DIR"
   [ "$status" -eq 0 ]
   [ ! -f "$PRD_DIR/ralph.json" ]
 }

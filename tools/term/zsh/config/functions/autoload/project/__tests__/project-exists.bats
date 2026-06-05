@@ -2,6 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/project/project-exists"
 
   projects-load-definitions() { typeset -gA PROJECTS; }
   bats_mock projects-load-definitions
@@ -17,11 +18,11 @@ teardown() {
     PROJECTS[aberlaas:icon]="  "
   }
   bats_mock projects-load-definitions
-  bats_run_function project-exists "aberlaas"
+  bats_run_zsh "$CURRENT" "aberlaas"
   [ "$status" -eq 0 ]
 }
 
 @test "unknown project: returns exit 1" {
-  bats_run_function project-exists "unknown"
+  bats_run_zsh "$CURRENT" "unknown"
   [ "$status" -eq 1 ]
 }

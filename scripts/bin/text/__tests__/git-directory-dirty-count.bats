@@ -1,18 +1,8 @@
 bats_load_library 'helper'
 
-# Override run_zsh_fn to load functions from the worktree, not .oroshi
-run_zsh_fn() {
-  local func="${1}"
-  local worktreeFnDir
-  worktreeFnDir="$(realpath "${BATS_TEST_DIRNAME}/../../../../tools/term/zsh/config/functions/autoload/git/directory")"
-  local worktreeFileFnDir
-  worktreeFileFnDir="$(realpath "${BATS_TEST_DIRNAME}/../../../../tools/term/zsh/config/functions/autoload/git/file")"
-  shift
-  run zsh -c "fpath=(\"${worktreeFnDir}\" \"${worktreeFileFnDir}\" \${(s/:/)FPATH}); autoload -Uz ${func}; ${func} \"\$@\"" -- "$@"
-}
-
 setup() {
   bats_tmp_dir
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/directory/git-directory-dirty-count"
   export TMP_DIRECTORY="$BATS_TMP_DIR"
   git init "$TMP_DIRECTORY/my-repo"
   cd "$TMP_DIRECTORY/my-repo"
@@ -30,7 +20,7 @@ teardown() {
 
 @test "returns 0 for a clean worktree" {
   cd "$TMP_DIRECTORY/my-repo"
-  run_zsh_fn git-directory-dirty-count
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "0" ]
 }
@@ -39,7 +29,7 @@ teardown() {
   cd "$TMP_DIRECTORY/my-repo"
   echo "change" >> tracked.txt
   echo "change" >> tracked2.txt
-  run_zsh_fn git-directory-dirty-count
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "2" ]
 }
@@ -48,7 +38,7 @@ teardown() {
   cd "$TMP_DIRECTORY/my-repo"
   echo "staged" > staged.txt
   git add staged.txt
-  run_zsh_fn git-directory-dirty-count
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "1" ]
 }
@@ -56,7 +46,7 @@ teardown() {
 @test "counts untracked files" {
   cd "$TMP_DIRECTORY/my-repo"
   echo "untracked" > untracked.txt
-  run_zsh_fn git-directory-dirty-count
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "1" ]
 }
@@ -69,7 +59,7 @@ teardown() {
   cd "$OROSHI_WORKTREES_DIR/my-repo--fix_bug"
   echo "change" >> tracked.txt
   cd "$TMP_DIRECTORY/my-repo"
-  run_zsh_fn git-directory-dirty-count "$OROSHI_WORKTREES_DIR/my-repo--fix_bug"
+  bats_run_zsh "$CURRENT" "$OROSHI_WORKTREES_DIR/my-repo--fix_bug"
   [ "$status" -eq 0 ]
   [ "$output" = "1" ]
 }

@@ -2,6 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/project/context-root"
 
   projects-load-definitions() { true; }
   bats_mock projects-load-definitions
@@ -22,7 +23,7 @@ teardown() {
   bats_mock project-name
   git-directory-is-worktree() { return 1; }
   bats_mock git-directory-is-worktree
-  bats_run_function context-root /my/path
+  bats_run_zsh "$CURRENT" /my/path
   [ "$status" -eq 0 ]
   [ "$output" = "project-path:project-name:/my/path" ]
 }
@@ -32,7 +33,7 @@ teardown() {
   bats_mock project-name
   git-directory-is-worktree() { return 0; }
   bats_mock git-directory-is-worktree
-  bats_run_function context-root /my/path
+  bats_run_zsh "$CURRENT" /my/path
   [ "$status" -eq 0 ]
   [ "$output" = "git-directory-root:/my/path" ]
 }
@@ -42,7 +43,7 @@ teardown() {
   bats_mock project-name
   git-directory-is-worktree() { return 1; }
   bats_mock git-directory-is-worktree
-  bats_run_function context-root /my/path
+  bats_run_zsh "$CURRENT" /my/path
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
@@ -53,7 +54,7 @@ teardown() {
   git-directory-is-worktree() { return 1; }
   bats_mock git-directory-is-worktree
   cd "$BATS_TMP_DIR"
-  bats_run_function context-root
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "project-path:project-name:$BATS_TMP_DIR" ]
 }

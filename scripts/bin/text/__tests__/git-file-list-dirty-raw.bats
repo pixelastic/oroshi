@@ -1,16 +1,8 @@
 bats_load_library 'helper'
 
-# Override run_zsh_fn to load functions from the worktree, not .oroshi
-run_zsh_fn() {
-  local func="${1}"
-  local worktreeFnDir
-  worktreeFnDir="$(realpath "${BATS_TEST_DIRNAME}/../../../../tools/term/zsh/config/functions/autoload/git/file")"
-  shift
-  run zsh -c "fpath=(\"${worktreeFnDir}\" \${(s/:/)FPATH}); autoload -Uz ${func}; ${func} \"\$@\"" -- "$@"
-}
-
 setup() {
   bats_tmp_dir
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/file/git-file-list-dirty-raw"
   export TMP_DIRECTORY="$BATS_TMP_DIR"
   git init "$TMP_DIRECTORY/my-repo"
   cd "$TMP_DIRECTORY/my-repo"
@@ -28,7 +20,7 @@ teardown() {
 @test "returns M:filepath for a modified tracked file" {
   cd "$TMP_DIRECTORY/my-repo"
   echo "change" >> tracked.txt
-  run_zsh_fn git-file-list-dirty-raw
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [[ "$output" == *"M:tracked.txt"* ]]
 }
@@ -36,7 +28,7 @@ teardown() {
 @test "returns A:filepath for a new untracked file" {
   cd "$TMP_DIRECTORY/my-repo"
   echo "new" > untracked.txt
-  run_zsh_fn git-file-list-dirty-raw
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [[ "$output" == *"A:untracked.txt"* ]]
 }
@@ -44,14 +36,14 @@ teardown() {
 @test "returns D:filepath for a deleted tracked file" {
   cd "$TMP_DIRECTORY/my-repo"
   rm tracked.txt
-  run_zsh_fn git-file-list-dirty-raw
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [[ "$output" == *"D:tracked.txt"* ]]
 }
 
 @test "returns empty output for a clean directory" {
   cd "$TMP_DIRECTORY/my-repo"
-  run_zsh_fn git-file-list-dirty-raw
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
@@ -64,7 +56,7 @@ teardown() {
   cd "$OROSHI_WORKTREES_DIR/my-repo--fix_bug"
   echo "change" >> tracked.txt
   cd "$TMP_DIRECTORY/my-repo"
-  run_zsh_fn git-file-list-dirty-raw "$OROSHI_WORKTREES_DIR/my-repo--fix_bug"
+  bats_run_zsh "$CURRENT" "$OROSHI_WORKTREES_DIR/my-repo--fix_bug"
   [ "$status" -eq 0 ]
   [[ "$output" == *"M:tracked.txt"* ]]
 }
@@ -75,7 +67,7 @@ teardown() {
   cd "$TMP_DIRECTORY/my-repo"
   git worktree add "$OROSHI_WORKTREES_DIR/my-repo--fix_bug" -b fix/bug
   cd "$TMP_DIRECTORY/my-repo"
-  run_zsh_fn git-file-list-dirty-raw "$OROSHI_WORKTREES_DIR/my-repo--fix_bug"
+  bats_run_zsh "$CURRENT" "$OROSHI_WORKTREES_DIR/my-repo--fix_bug"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }

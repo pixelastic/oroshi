@@ -53,7 +53,7 @@ teardown() {
     mmm.icon=M \
     aaa.icon=A \
     >"$THEMING_ROOT/src/projects.json"
-  bats_run_script "$PROJECTS_BUILD"
+  bats_run_zsh "$PROJECTS_BUILD"
   run jq -r 'keys_unsorted[]' "$THEMING_ROOT/src/projects.json"
   [ "${lines[0]}" = "aaa" ]
   [ "${lines[1]}" = "mmm" ]
@@ -63,13 +63,13 @@ teardown() {
 # --- JSON ---
 
 @test "produces dist/projects.json" {
-  bats_run_script "$PROJECTS_BUILD"
+  bats_run_zsh "$PROJECTS_BUILD"
   [ "$status" -eq 0 ]
   [ -f "$THEMING_ROOT/dist/projects.json" ]
 }
 
 @test "dist/projects.json matches expected output" {
-  bats_run_script "$PROJECTS_BUILD"
+  bats_run_zsh "$PROJECTS_BUILD"
   local expected
   expected=$(
     cat <<'EXPECTED'
@@ -148,31 +148,31 @@ EXPECTED
 # --- ZSH ---
 
 @test "produces dist/projects.zsh" {
-  bats_run_script "$PROJECTS_BUILD"
+  bats_run_zsh "$PROJECTS_BUILD"
   [ "$status" -eq 0 ]
   [ -f "$THEMING_ROOT/dist/projects.zsh" ]
 }
 
 @test "dist/projects.zsh sets all values for a full project" {
-  bats_run_script "$PROJECTS_BUILD"
+  bats_run_zsh "$PROJECTS_BUILD"
 
-  # We need to run zsh, not source the file directly as bats won't understand
-  # zsh syntax if sourced here
-  run zsh -c "
-    source '${THEMING_ROOT}/dist/projects.zsh'
-    echo \${PROJECTS[full:background:name]}
-    echo \${PROJECTS[full:background:ansi]}
-    echo \${PROJECTS[full:background:hex]}
-    echo \${PROJECTS[full:backgroundInactive:name]}
-    echo \${PROJECTS[full:backgroundInactive:ansi]}
-    echo \${PROJECTS[full:backgroundInactive:hex]}
-    echo \${PROJECTS[full:foreground:name]}
-    echo \${PROJECTS[full:foreground:ansi]}
-    echo \${PROJECTS[full:foreground:hex]}
-    echo \${PROJECTS[full:icon]}
-    echo \${PROJECTS[full:path]}
-    echo \${PROJECTS[full:hideNameInPrompt]}
-  "
+  local script="$BATS_TMP_DIR/verify-zsh.zsh"
+  cat >"$script" <<SCRIPT
+source '${THEMING_ROOT}/dist/projects.zsh'
+echo \${PROJECTS[full:background:name]}
+echo \${PROJECTS[full:background:ansi]}
+echo \${PROJECTS[full:background:hex]}
+echo \${PROJECTS[full:backgroundInactive:name]}
+echo \${PROJECTS[full:backgroundInactive:ansi]}
+echo \${PROJECTS[full:backgroundInactive:hex]}
+echo \${PROJECTS[full:foreground:name]}
+echo \${PROJECTS[full:foreground:ansi]}
+echo \${PROJECTS[full:foreground:hex]}
+echo \${PROJECTS[full:icon]}
+echo \${PROJECTS[full:path]}
+echo \${PROJECTS[full:hideNameInPrompt]}
+SCRIPT
+  bats_run_zsh "$script"
   [ "${lines[0]}" = "GREEN_8" ]
   [ "${lines[1]}" = "78" ]
   [ "${lines[2]}" = "#166534" ]

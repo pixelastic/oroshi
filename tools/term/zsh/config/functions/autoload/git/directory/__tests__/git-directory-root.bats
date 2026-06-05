@@ -2,6 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'repo'
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/directory/git-directory-root"
 }
 
 teardown() {
@@ -12,7 +13,7 @@ teardown() {
 
 @test "no arg: returns repo root from repo root" {
   cd "$BATS_GIT_DIR"
-  bats_run_function git-directory-root
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "$BATS_GIT_DIR" ]
 }
@@ -20,14 +21,14 @@ teardown() {
 @test "no arg: returns repo root from a subdir" {
   mkdir -p "$BATS_GIT_DIR/sub/dir"
   cd "$BATS_GIT_DIR/sub/dir"
-  bats_run_function git-directory-root
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "$BATS_GIT_DIR" ]
 }
 
 @test "no arg: outside repo, returns PWD and exits 1" {
   cd "$BATS_TMP_DIR"
-  bats_run_function git-directory-root
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 1 ]
   [ "$output" = "$BATS_TMP_DIR" ]
 }
@@ -37,14 +38,14 @@ teardown() {
 @test "arg is a subdir of current repo: returns repo root" {
   mkdir -p "$BATS_GIT_DIR/sub/dir"
   cd "$BATS_GIT_DIR"
-  bats_run_function git-directory-root "$BATS_GIT_DIR/sub/dir"
+  bats_run_zsh "$CURRENT" "$BATS_GIT_DIR/sub/dir"
   [ "$status" -eq 0 ]
   [ "$output" = "$BATS_GIT_DIR" ]
 }
 
 @test "arg path contains .git/: returns repo root" {
   cd "$BATS_GIT_DIR"
-  bats_run_function git-directory-root "$BATS_GIT_DIR/.git/config"
+  bats_run_zsh "$CURRENT" "$BATS_GIT_DIR/.git/config"
   [ "$status" -eq 0 ]
   [ "$output" = "$BATS_GIT_DIR" ]
 }
@@ -54,14 +55,14 @@ teardown() {
   local other_repo
   other_repo="$(bats_git_dir 'other')"
   cd "$primary_repo"
-  bats_run_function git-directory-root "$other_repo"
+  bats_run_zsh "$CURRENT" "$other_repo"
   [ "$status" -eq 0 ]
   [ "$output" = "$other_repo" ]
 }
 
 @test "arg is a file path: returns the repo root (not a garbled path)" {
   touch "$BATS_GIT_DIR/some-file.lua"
-  bats_run_function git-directory-root "$BATS_GIT_DIR/some-file.lua"
+  bats_run_zsh "$CURRENT" "$BATS_GIT_DIR/some-file.lua"
   [ "$status" -eq 0 ]
   [ "$output" = "$BATS_GIT_DIR" ]
 }
@@ -70,14 +71,14 @@ teardown() {
 
 @test "-f flag: returns repo root when no superproject" {
   cd "$BATS_GIT_DIR"
-  bats_run_function git-directory-root -f
+  bats_run_zsh "$CURRENT" -f
   [ "$status" -eq 0 ]
   [ "$output" = "$BATS_GIT_DIR" ]
 }
 
 @test "--force flag: returns repo root when no superproject" {
   cd "$BATS_GIT_DIR"
-  bats_run_function git-directory-root --force
+  bats_run_zsh "$CURRENT" --force
   [ "$status" -eq 0 ]
   [ "$output" = "$BATS_GIT_DIR" ]
 }

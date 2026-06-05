@@ -2,6 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/fzf/helpers/fzf-prompt-directory"
   bats_git_worktree 'fix/bug'
 
   projects-load-definitions() {
@@ -23,7 +24,7 @@ teardown() {
 }
 
 @test "prompt badge contains branch name when inside linked worktree" {
-  bats_run_function fzf-prompt-directory "${BATS_GIT_WORKTREES}fix-bug"
+  bats_run_zsh "$CURRENT" "${BATS_GIT_WORKTREES}fix-bug"
   [ "$status" -eq 0 ]
   [[ "$output" == *"fix/bug"* ]]
 }

@@ -2,6 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'testrepo'
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/github/git-github-project-owner"
 }
 
 teardown() {
@@ -11,7 +12,7 @@ teardown() {
 @test "returns owner from SSH GitHub URL" {
   bats_git remote add origin git@github.com:pixelastic/testrepo.git
   cd "$BATS_GIT_DIR"
-  bats_run_function git-github-project-owner
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "pixelastic" ]
 }
@@ -19,13 +20,13 @@ teardown() {
 @test "returns owner from HTTPS GitHub URL" {
   bats_git remote add origin https://github.com/pixelastic/testrepo.git
   cd "$BATS_GIT_DIR"
-  bats_run_function git-github-project-owner
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "pixelastic" ]
 }
 
 @test "returns 1 when no remote" {
   cd "$BATS_GIT_DIR"
-  bats_run_function git-github-project-owner
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 1 ]
 }

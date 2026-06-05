@@ -1,17 +1,8 @@
 bats_load_library 'helper'
 
-# Override run_zsh_fn to load functions from the worktree, not .oroshi
-run_zsh_fn() {
-  local func="${1}"
-  local worktreeWorktreeFnDir="$(realpath "${BATS_TEST_DIRNAME}/../../../tools/term/zsh/config/functions/autoload/git/worktree")"
-  local worktreeDirFnDir="$(realpath "${BATS_TEST_DIRNAME}/../../../tools/term/zsh/config/functions/autoload/git/directory")"
-  local worktreeFileFnDir="$(realpath "${BATS_TEST_DIRNAME}/../../../tools/term/zsh/config/functions/autoload/git/file")"
-  shift
-  run zsh -c "fpath=(\"${worktreeWorktreeFnDir}\" \"${worktreeDirFnDir}\" \"${worktreeFileFnDir}\" \${(s/:/)FPATH}); autoload -Uz ${worktreeWorktreeFnDir}/*(.:t) ${worktreeDirFnDir}/*(.:t) ${worktreeFileFnDir}/*(.:t); ${func} \"\$@\"" -- "$@"
-}
-
 setup() {
   bats_tmp_dir
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/worktree/git-worktree-list-raw"
   export TMP_DIRECTORY="$BATS_TMP_DIR"
   export OROSHI_WORKTREES_DIR="$TMP_DIRECTORY/worktrees"
   mkdir -p "$OROSHI_WORKTREES_DIR"
@@ -29,7 +20,7 @@ teardown() {
 
 @test "lists worktrees with branch and path on each line" {
   cd "$TMP_DIRECTORY/my-repo"
-  run_zsh_fn git-worktree-list-raw
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [[ "${lines[0]}" == "feat/dark-mode▮$OROSHI_WORKTREES_DIR/my-repo--feat_dark-mode▮"* ]]
   [[ "${lines[1]}" == "fix/bug▮$OROSHI_WORKTREES_DIR/my-repo--fix_bug▮"* ]]
@@ -37,7 +28,7 @@ teardown() {
 
 @test "excludes the Git Repo Main from output" {
   cd "$TMP_DIRECTORY/my-repo"
-  run_zsh_fn git-worktree-list-raw
+  bats_run_zsh "$CURRENT"
   for line in "${lines[@]}"; do
     [[ "$line" != *"$TMP_DIRECTORY/my-repo "* ]]
   done
@@ -47,21 +38,21 @@ teardown() {
   git init "$TMP_DIRECTORY/clean-repo"
   cd "$TMP_DIRECTORY/clean-repo"
   git commit --allow-empty -m "init"
-  run_zsh_fn git-worktree-list-raw
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
 
 @test "works from inside a linked worktree" {
   cd "$OROSHI_WORKTREES_DIR/my-repo--fix_bug"
-  run_zsh_fn git-worktree-list-raw
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "${#lines[@]}" -eq 2 ]
 }
 
 @test "output has 7 fields per line" {
   cd "$TMP_DIRECTORY/my-repo"
-  run_zsh_fn git-worktree-list-raw
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   local fieldCount
   fieldCount=$(awk -F'▮' '{print NF}' <<< "${lines[0]}")
@@ -70,7 +61,7 @@ teardown() {
 
 @test "dirtyCount field is 0 for a clean worktree" {
   cd "$TMP_DIRECTORY/my-repo"
-  run_zsh_fn git-worktree-list-raw
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   local dirtyCount
   dirtyCount=$(awk -F'▮' '{print $3}' <<< "${lines[0]}")
@@ -81,7 +72,7 @@ teardown() {
   cd "$OROSHI_WORKTREES_DIR/my-repo--fix_bug"
   echo "dirty" > newfile.txt
   cd "$TMP_DIRECTORY/my-repo"
-  run_zsh_fn git-worktree-list-raw
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   local dirtyCount
   dirtyCount=$(awk -F'▮' '{print $3}' <<< "${lines[1]}")
@@ -90,7 +81,7 @@ teardown() {
 
 @test "ahead field is a plain integer" {
   cd "$TMP_DIRECTORY/my-repo"
-  run_zsh_fn git-worktree-list-raw
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   local ahead
   ahead=$(awk -F'▮' '{print $4}' <<< "${lines[0]}")
@@ -99,7 +90,7 @@ teardown() {
 
 @test "behind field is a plain integer" {
   cd "$TMP_DIRECTORY/my-repo"
-  run_zsh_fn git-worktree-list-raw
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   local behind
   behind=$(awk -F'▮' '{print $5}' <<< "${lines[0]}")

@@ -2,6 +2,8 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
+  CURRENT="$BATS_TMP_DIR/caller.zsh"
+  printf 'check "$@"\n' >"$CURRENT"
   mkdir -p "$BATS_TMP_DIR/functions/autoload"
   printf "source '%s/tools/term/zsh/config/functions/oroshi-reload-functions.zsh'\nZSH_CONFIG_PATH='%s'\n" "$OROSHI_ROOT" "$BATS_TMP_DIR" > "$BATS_TMP_DIR/mock.zsh"
 }
@@ -16,7 +18,7 @@ teardown() {
   touch "$BATS_TMP_DIR/functions/autoload/my-func"
   check() { oroshi-reload-functions; echo "${OROSHI_AUTOLOADED_FUNCTIONS[$1]}"; }
   bats_mock check
-  bats_run_function check my-func
+  bats_run_zsh "$CURRENT" my-func
   [ "$status" -eq 0 ]
   [ "$output" = "1" ]
 }
@@ -25,7 +27,7 @@ teardown() {
   touch "$BATS_TMP_DIR/functions/autoload/my-func.zsh"
   check() { oroshi-reload-functions; echo "${#OROSHI_AUTOLOADED_FUNCTIONS}"; }
   bats_mock check
-  bats_run_function check
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "0" ]
 }
@@ -36,7 +38,7 @@ teardown() {
   mkdir -p "$BATS_TMP_DIR/functions/autoload/mydir"
   check() { oroshi-reload-functions; [[ "${fpath[(r)$BATS_TMP_DIR/functions/autoload/mydir]}" == "$BATS_TMP_DIR/functions/autoload/mydir" ]] && echo "yes"; }
   bats_mock check
-  bats_run_function check
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "yes" ]
 }
@@ -49,7 +51,7 @@ teardown() {
   touch "$BATS_GIT_DIR/tools/term/zsh/config/functions/autoload/my-wt-func"
   check() { ZSH_CONFIG_PATH="/nonexistent"; cd "$BATS_GIT_DIR"; oroshi-reload-functions worktree; echo "${OROSHI_AUTOLOADED_FUNCTIONS[$1]}"; }
   bats_mock check
-  bats_run_function check my-wt-func
+  bats_run_zsh "$CURRENT" my-wt-func
   [ "$status" -eq 0 ]
   [ "$output" = "1" ]
 }
@@ -61,7 +63,7 @@ teardown() {
   touch "$BATS_TMP_DIR/functions/autoload/default-func"
   check() { cd "$BATS_GIT_DIR"; oroshi-reload-functions worktree; echo "${OROSHI_AUTOLOADED_FUNCTIONS[$1]}"; }
   bats_mock check
-  bats_run_function check default-func
+  bats_run_zsh "$CURRENT" default-func
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
@@ -78,7 +80,7 @@ teardown() {
     echo "$count"
   }
   bats_mock check
-  bats_run_function check
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "1" ]
 }
@@ -97,7 +99,7 @@ teardown() {
     echo "$found"
   }
   bats_mock check
-  bats_run_function check
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "0" ]
 }
@@ -108,7 +110,7 @@ teardown() {
   touch "$BATS_TMP_DIR/functions/autoload/my-func"
   check() { oroshi-reload-functions; oroshi-reload-functions; }
   bats_mock check
-  bats_run_function check
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
 }
 
@@ -116,7 +118,7 @@ teardown() {
   touch "$BATS_TMP_DIR/functions/autoload/my-func"
   check() { oroshi-reload-functions; oroshi-reload-functions; echo "${OROSHI_AUTOLOADED_FUNCTIONS[$1]}"; }
   bats_mock check
-  bats_run_function check my-func
+  bats_run_zsh "$CURRENT" my-func
   [ "$status" -eq 0 ]
   [ "$output" = "1" ]
 }

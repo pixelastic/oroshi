@@ -2,6 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/completion/complete-git-branches-local"
 
   git init --initial-branch=main --quiet "$BATS_TMP_DIR/repo"
   git -C "$BATS_TMP_DIR/repo" config user.email "bats@oroshi"
@@ -17,7 +18,7 @@ teardown() {
 }
 
 @test "returns branch:message for each branch" {
-  bats_run_function complete-git-branches-local
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = "main:init commit" ]
 }

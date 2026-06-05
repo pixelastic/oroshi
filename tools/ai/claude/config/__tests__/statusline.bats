@@ -45,7 +45,7 @@ EOF
 
 statusline_run() {
   statusline_json "$@" >"${BATS_TMP_DIR}/input.json"
-  bats_run_script "${OROSHI_ROOT}/tools/ai/claude/config/statusline" <"${BATS_TMP_DIR}/input.json"
+  bats_run_zsh "${OROSHI_ROOT}/tools/ai/claude/config/statusline" <"${BATS_TMP_DIR}/input.json"
 }
 
 @test "renders badge, tokens, cost, and session" {

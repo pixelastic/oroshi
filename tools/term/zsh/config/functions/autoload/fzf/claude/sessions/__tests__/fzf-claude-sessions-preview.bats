@@ -2,6 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/fzf/claude/sessions/fzf-claude-sessions-preview"
   bats_git_worktree 'fix/bug'
   printf '{"cwd":"%s","updatedAt":"2026-01-01","firstMessage":"hello"}\n' "${BATS_GIT_WORKTREES}fix-bug" > "${BATS_TMP_DIR}/session.json"
 
@@ -28,7 +29,7 @@ teardown() {
 }
 
 @test "preview contains branch name for worktree session" {
-  bats_run_function fzf-claude-sessions-preview abc123
+  bats_run_zsh "$CURRENT" abc123
   [ "$status" -eq 0 ]
   [[ "$output" == *"fix/bug"* ]]
 }

@@ -15,13 +15,13 @@ teardown() {
 @test "returns path when given an existing _spec.lua file" {
   local file="$BATS_TMP_DIR/foo_spec.lua"
   touch "$file"
-  run zsh "$LUA_TEST_PATH" "$file"
+  run "$LUA_TEST_PATH" "$file"
   [ "$status" -eq 0 ]
   [ "$output" = "$file" ]
 }
 
 @test "exits 1 when given a _spec.lua path that does not exist" {
-  run zsh "$LUA_TEST_PATH" "/nonexistent/foo_spec.lua"
+  run "$LUA_TEST_PATH" "/nonexistent/foo_spec.lua"
   [ "$status" -eq 1 ]
   [ "$output" = "" ]
 }
@@ -31,7 +31,7 @@ teardown() {
   mkdir -p "$dir/__tests__"
   touch "$dir/lodash.lua"
   touch "$dir/__tests__/lodash_spec.lua"
-  run zsh "$LUA_TEST_PATH" "$dir/lodash.lua"
+  run "$LUA_TEST_PATH" "$dir/lodash.lua"
   [ "$status" -eq 0 ]
   [ "$output" = "$dir/__tests__/lodash_spec.lua" ]
 }
@@ -39,13 +39,13 @@ teardown() {
 @test "exits 1 silently when no spec exists for a source file" {
   local dir="$BATS_TMP_DIR"
   touch "$dir/lodash.lua"
-  run zsh "$LUA_TEST_PATH" "$dir/lodash.lua"
+  run "$LUA_TEST_PATH" "$dir/lodash.lua"
   [ "$status" -eq 1 ]
   [ "$output" = "" ]
 }
 
 @test "exits 1 with no arguments" {
-  run zsh "$LUA_TEST_PATH"
+  run "$LUA_TEST_PATH"
   [ "$status" -eq 1 ]
   [ "$output" = "" ]
 }

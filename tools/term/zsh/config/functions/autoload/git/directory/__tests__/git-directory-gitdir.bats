@@ -2,6 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'repo'
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/directory/git-directory-gitdir"
   bats_git_worktree 'fix/bug'
 }
 
@@ -10,7 +11,7 @@ teardown() {
 }
 
 @test "returns git-dir for a directory inside a worktree" {
-  bats_run_function git-directory-gitdir "${BATS_GIT_WORKTREES}fix-bug"
+  bats_run_zsh "$CURRENT" "${BATS_GIT_WORKTREES}fix-bug"
   [ "$status" -eq 0 ]
   [[ "$output" == *".git/worktrees/"* ]]
 }
@@ -18,12 +19,12 @@ teardown() {
 @test "returns git-dir when given a file path inside a worktree" {
   local testFile="${BATS_GIT_WORKTREES}fix-bug/somefile.txt"
   touch "$testFile"
-  bats_run_function git-directory-gitdir "$testFile"
+  bats_run_zsh "$CURRENT" "$testFile"
   [ "$status" -eq 0 ]
   [[ "$output" == *".git/worktrees/"* ]]
 }
 
 @test "returns empty string outside any git repo" {
-  bats_run_function git-directory-gitdir "$BATS_TMP_DIR"
+  bats_run_zsh "$CURRENT" "$BATS_TMP_DIR"
   [ "$output" = "" ]
 }

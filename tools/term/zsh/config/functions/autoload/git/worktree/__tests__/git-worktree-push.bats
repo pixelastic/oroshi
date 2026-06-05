@@ -2,6 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/worktree/git-worktree-push"
   bats_git_worktree 'fix/bug'
   cd "${BATS_GIT_WORKTREES}fix-bug"
   git commit --allow-empty --quiet -m "fix work"
@@ -14,7 +15,7 @@ teardown() {
 @test "fast-forwards main to current HEAD" {
   cd "${BATS_GIT_WORKTREES}fix-bug"
   local fixHead="$(git rev-parse HEAD)"
-  bats_run_function git-worktree-push
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   run bats_git rev-parse main
   [ "$output" = "$fixHead" ]
@@ -24,6 +25,6 @@ teardown() {
   cd "$BATS_GIT_DIR"
   git commit --allow-empty -m "main work"
   cd "${BATS_GIT_WORKTREES}fix-bug"
-  bats_run_function git-worktree-push
+  bats_run_zsh "$CURRENT"
   [ "$status" -ne 0 ]
 }

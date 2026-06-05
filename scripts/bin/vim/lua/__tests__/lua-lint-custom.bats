@@ -16,7 +16,7 @@ teardown() {
 @test "exits 0 with no output for a clean file" {
   local file="$BATS_TMP_DIR/clean.lua"
   printf '%s\n' '-- clean' >"$file"
-  run zsh "$LUA_LINT_CUSTOM" "$file"
+  run "$LUA_LINT_CUSTOM" "$file"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
@@ -24,20 +24,20 @@ teardown() {
 @test "outputs violation line for vim.deepcopy( call" {
   local file="$BATS_TMP_DIR/bad.lua"
   printf '%s\n' 'local x = vim.deepcopy(t)' >"$file"
-  run zsh "$LUA_LINT_CUSTOM" "$file"
+  run "$LUA_LINT_CUSTOM" "$file"
   [[ "$output" == "${file}${SEP}noVimDeepcopy${SEP}"* ]]
 }
 
 @test "violation line contains correct line number" {
   local file="$BATS_TMP_DIR/bad.lua"
   printf '%s\n' '-- comment' 'local x = vim.deepcopy(t)' >"$file"
-  run zsh "$LUA_LINT_CUSTOM" "$file"
+  run "$LUA_LINT_CUSTOM" "$file"
   [[ "$output" == *"${SEP}2${SEP}"* ]]
 }
 
 @test "exits 1 when violation found" {
   local file="$BATS_TMP_DIR/bad.lua"
   printf '%s\n' 'local x = vim.deepcopy(t)' >"$file"
-  run zsh "$LUA_LINT_CUSTOM" "$file"
+  run "$LUA_LINT_CUSTOM" "$file"
   [ "$status" -eq 1 ]
 }

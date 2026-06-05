@@ -6,6 +6,8 @@ SCRIPT="${BATS_TEST_DIRNAME}/../bats-lint-shellcheck.zsh"
 
 setup() {
   bats_tmp_dir
+  CURRENT="$BATS_TMP_DIR/caller.zsh"
+  printf 'bats-lint-shellcheck "$@"\n' >"$CURRENT"
   printf "source '%s'\n" "$SCRIPT" >"$BATS_TMP_DIR/mock.zsh"
 }
 
@@ -16,7 +18,7 @@ teardown() {
 @test "outputs [] and exits 0 for clean file" {
   local file="$BATS_TMP_DIR/test.bats"
   printf '# clean bats file\n' >"$file"
-  bats_run_function bats-lint-shellcheck "$file"
+  bats_run_zsh "$CURRENT" "$file"
   [[ "$status" -eq 0 ]]
   [[ "$output" == '[]' ]]
 }
@@ -24,7 +26,7 @@ teardown() {
 @test "detects bash syntax error in bats file" {
   local file="$BATS_TMP_DIR/test.bats"
   printf 'echo $(\n' >"$file"
-  bats_run_function bats-lint-shellcheck "$file"
+  bats_run_zsh "$CURRENT" "$file"
   [[ "$status" -eq 1 ]]
   [[ "$output" != '[]' ]]
 }
@@ -32,7 +34,7 @@ teardown() {
 @test "violation has expected JSON shape" {
   local file="$BATS_TMP_DIR/test.bats"
   printf 'echo $HOME\n' >"$file"
-  bats_run_function bats-lint-shellcheck "$file"
+  bats_run_zsh "$CURRENT" "$file"
   run jq '.' <<<"$output"
   [[ "$output" == '[
   {

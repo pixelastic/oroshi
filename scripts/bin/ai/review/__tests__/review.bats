@@ -15,7 +15,7 @@ teardown() {
 }
 
 @test "0-arg: invokes claude-print with '/review'" {
-  bats_run_script "$REVIEW_SCRIPT"
+  bats_run_zsh "$REVIEW_SCRIPT"
   [ "$status" -eq 0 ]
   [ -f "$CLAUDE_PRINT_CAPTURE" ]
   local captured="$(cat "$CLAUDE_PRINT_CAPTURE")"
@@ -23,13 +23,13 @@ teardown() {
 }
 
 @test "1-arg: invokes claude-print with '/review <arg>'" {
-  bats_run_script "$REVIEW_SCRIPT" main
+  bats_run_zsh "$REVIEW_SCRIPT" main
   [ "$status" -eq 0 ]
   [ "$(cat "$CLAUDE_PRINT_CAPTURE")" = "/review main" ]
 }
 
 @test "2-arg: invokes claude-print with '/review <arg1> <arg2>'" {
-  bats_run_script "$REVIEW_SCRIPT" abc123 feature-branch
+  bats_run_zsh "$REVIEW_SCRIPT" abc123 feature-branch
   [ "$status" -eq 0 ]
   [ "$(cat "$CLAUDE_PRINT_CAPTURE")" = "/review abc123 feature-branch" ]
 }

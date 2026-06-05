@@ -2,6 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/file/git-file-list-dirty-raw"
   echo "hello" > "$BATS_GIT_DIR/tracked.txt"
   bats_git add tracked.txt
   bats_git commit --quiet -m "add tracked"
@@ -13,7 +14,7 @@ teardown() {
 
 @test "returns empty output for a clean repo" {
   cd "$BATS_GIT_DIR"
-  bats_run_function git-file-list-dirty-raw
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
@@ -21,7 +22,7 @@ teardown() {
 @test "lists untracked files as A" {
   cd "$BATS_GIT_DIR"
   echo "new" > untracked.txt
-  bats_run_function git-file-list-dirty-raw
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "A:untracked.txt" ]
 }
@@ -29,7 +30,7 @@ teardown() {
 @test "lists unstaged modified files as M" {
   cd "$BATS_GIT_DIR"
   echo "modified" > tracked.txt
-  bats_run_function git-file-list-dirty-raw
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "M:tracked.txt" ]
 }
@@ -37,7 +38,7 @@ teardown() {
 @test "lists unstaged deleted files as D" {
   cd "$BATS_GIT_DIR"
   rm tracked.txt
-  bats_run_function git-file-list-dirty-raw
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "D:tracked.txt" ]
 }
@@ -46,7 +47,7 @@ teardown() {
   cd "$BATS_GIT_DIR"
   echo "new" > staged.txt
   git add staged.txt
-  bats_run_function git-file-list-dirty-raw
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "A:staged.txt" ]
 }
@@ -55,7 +56,7 @@ teardown() {
   cd "$BATS_GIT_DIR"
   echo "modified" > tracked.txt
   git add tracked.txt
-  bats_run_function git-file-list-dirty-raw
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "M:tracked.txt" ]
 }
@@ -63,7 +64,7 @@ teardown() {
 @test "lists staged deletions as D" {
   cd "$BATS_GIT_DIR"
   git rm tracked.txt
-  bats_run_function git-file-list-dirty-raw
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "D:tracked.txt" ]
 }
@@ -72,7 +73,7 @@ teardown() {
   cd "$BATS_GIT_DIR"
   echo "modified" > tracked.txt
   echo "new" > untracked.txt
-  bats_run_function git-file-list-dirty-raw
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "${#lines[@]}" -eq 2 ]
 }

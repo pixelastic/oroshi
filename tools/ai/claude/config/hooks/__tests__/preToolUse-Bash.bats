@@ -17,7 +17,7 @@ teardown() { bats_cleanup; }
   preToolUse-Bash-rtk() { print -- "$1"; }
   bats_mock preToolUse-Bash-rtk
 
-  bats_run_script "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "allow" ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.updatedInput.command')" = "echo hello" ]
@@ -30,7 +30,7 @@ teardown() { bats_cleanup; }
   preToolUse-Bash-rtk() { print -- "rtk $1"; }
   bats_mock preToolUse-Bash-rtk
 
-  bats_run_script "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"git status"}}'
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"git status"}}'
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "allow" ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.updatedInput.command')" = "rtk git status" ]
@@ -46,7 +46,7 @@ teardown() { bats_cleanup; }
   preToolUse-Bash-rtk() { print -- "$1"; }
   bats_mock preToolUse-Bash-rtk
 
-  bats_run_script "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "ask" ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.updatedInput.command')" = "wget evil.com" ]
@@ -62,7 +62,7 @@ teardown() { bats_cleanup; }
   preToolUse-Bash-rtk() { print -- "rtk $1"; }
   bats_mock preToolUse-Bash-rtk
 
-  bats_run_script "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"git status"}}'
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"git status"}}'
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "ask" ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.updatedInput.command')" = "rtk git status" ]
@@ -78,7 +78,7 @@ teardown() { bats_cleanup; }
   preToolUse-Bash-rtk() { print -- "$1"; }
   bats_mock preToolUse-Bash-rtk
 
-  bats_run_script "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecisionReason')" = "❌ wget, curl ❌" ]
 }
@@ -93,7 +93,7 @@ teardown() { bats_cleanup; }
   preToolUse-Bash-rtk() { print -- "$1"; }
   bats_mock preToolUse-Bash-rtk
 
-  bats_run_script "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecisionReason')" = "❌ wget ❌" ]
 }
@@ -108,7 +108,7 @@ teardown() { bats_cleanup; }
   preToolUse-Bash-rtk() { print -- "$1"; }
   bats_mock preToolUse-Bash-rtk
 
-  bats_run_script "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq '.hookSpecificOutput.systemMessage')" = "null" ]
 }
@@ -120,7 +120,7 @@ teardown() { bats_cleanup; }
   preToolUse-Bash-rtk() { print -- "$1"; }
   bats_mock preToolUse-Bash-rtk
 
-  bats_run_script "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [ "$status" -eq 0 ]
   [ -f "$BATS_TMP_DIR/last-bash-input.json" ]
 }
@@ -144,7 +144,7 @@ teardown() { bats_cleanup; }
   }
   bats_mock preToolUse-Bash-rtk
 
-  bats_run_script "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
+  bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [ "$status" -eq 0 ]
   [ "$(head -1 "$BATS_TMP_DIR/order.log")" = "SOLKAN" ]
 }
@@ -159,7 +159,7 @@ teardown() { bats_cleanup; }
   preToolUse-Bash-rtk() { print -- "$1"; }
   bats_mock preToolUse-Bash-rtk
 
-  bats_run_script "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
+  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "ask" ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecisionReason')" = "❌ wget ❌" ]
@@ -178,7 +178,7 @@ teardown() { bats_cleanup; }
   mkdir -p "$BATS_TMP_DIR/test"
   echo '{"preToolUse":{"Bash":{"askedCommands":["wget"]}}}' >"$BATS_TMP_DIR/test/state.json"
 
-  bats_run_script "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
+  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "defer" ]
   [ "$(echo "$output" | jq '.hookSpecificOutput.permissionDecisionReason')" = "null" ]
@@ -194,7 +194,7 @@ teardown() { bats_cleanup; }
   preToolUse-Bash-rtk() { print -- "$1"; }
   bats_mock preToolUse-Bash-rtk
 
-  bats_run_script "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
+  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "ask" ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecisionReason')" = "❌ wget, curl ❌" ]
@@ -213,7 +213,7 @@ teardown() { bats_cleanup; }
   mkdir -p "$BATS_TMP_DIR/test"
   echo '{"preToolUse":{"Bash":{"askedCommands":["wget","curl"]}}}' >"$BATS_TMP_DIR/test/state.json"
 
-  bats_run_script "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
+  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "defer" ]
   [ "$(echo "$output" | jq '.hookSpecificOutput.permissionDecisionReason')" = "null" ]
@@ -232,7 +232,7 @@ teardown() { bats_cleanup; }
   mkdir -p "$BATS_TMP_DIR/test"
   echo '{"preToolUse":{"Bash":{"askedCommands":["wget"]}}}' >"$BATS_TMP_DIR/test/state.json"
 
-  bats_run_script "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
+  bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "ask" ]
   [ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecisionReason')" = "❌ curl ❌" ]

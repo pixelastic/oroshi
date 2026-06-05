@@ -2,6 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/fzf/claude/sessions/fzf-claude-sessions-source-no-query"
   bats_git_worktree 'fix/bug'
   local sep=$'\u25ae'
   printf '%s\n' "abc123${sep}${BATS_GIT_WORKTREES}fix-bug${sep}${sep}5${sep}My Session" > "${BATS_TMP_DIR}/sessions.txt"
@@ -28,7 +29,7 @@ teardown() {
 }
 
 @test "session output contains branch name for worktree cwd" {
-  bats_run_function fzf-claude-sessions-source-no-query
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [[ "$output" == *"fix/bug"* ]]
 }

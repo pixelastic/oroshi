@@ -2,6 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/file/git-file-lint"
   cd "$BATS_GIT_DIR"
 }
 
@@ -15,7 +16,7 @@ teardown() {
   bats_git commit --quiet -m "add bad.zsh"
   echo 'local a b c' >> "$BATS_GIT_DIR/bad.zsh"
 
-  bats_run_function git-file-lint
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 1 ]
   [[ "$output" =~ "bad.zsh" ]]
   [[ "$output" =~ ": noGroupedLocals: " ]]
@@ -30,7 +31,7 @@ teardown() {
   bats_git commit --quiet -m "add clean.zsh"
   echo 'echo world' >> "$BATS_GIT_DIR/clean.zsh"
 
-  bats_run_function git-file-lint
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
@@ -41,13 +42,13 @@ teardown() {
   bats_git commit --quiet -m "add app.js"
   echo 'console.log("world")' >> "$BATS_GIT_DIR/app.js"
 
-  bats_run_function git-file-lint
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
 
 @test "exits 0 on a clean working tree" {
-  bats_run_function git-file-lint
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
 }
 
@@ -57,7 +58,7 @@ teardown() {
   bats_git commit --quiet -m "add bad.zsh"
   echo 'local a b c' >> "$BATS_GIT_DIR/bad.zsh"
 
-  bats_run_function git-file-lint
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 1 ]
   [[ "$output" =~ "bad.zsh" ]]
   [[ ! "$output" =~ "$BATS_GIT_DIR" ]]
@@ -69,7 +70,7 @@ teardown() {
   bats_git commit --quiet -m "add todelete.zsh"
   rm "$BATS_GIT_DIR/todelete.zsh"
 
-  bats_run_function git-file-lint
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
@@ -80,7 +81,7 @@ teardown() {
   bats_git commit --quiet -m "add bad.bats"
   printf 'run zsh -c "echo hello"\n' >> "$BATS_GIT_DIR/bad.bats"
 
-  bats_run_function git-file-lint
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 1 ]
   [[ "$output" =~ "── BATS ──" ]]
   [[ "$output" =~ "bad.bats" ]]
@@ -93,7 +94,7 @@ teardown() {
   bats_git commit --quiet -m "add bad.zsh"
   echo 'local a b c' >> "$BATS_GIT_DIR/bad.zsh"
 
-  bats_run_function git-file-lint
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 1 ]
   [[ "$output" =~ "── ZSH ──" ]]
 }
@@ -109,7 +110,7 @@ teardown() {
   bats_git commit --quiet -m "add bad.bats"
   printf 'run zsh -c "echo hello"\n' >> "$BATS_GIT_DIR/bad.bats"
 
-  bats_run_function git-file-lint
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 1 ]
   [[ "$output" =~ "── BATS ──" ]]
   [[ ! "$output" =~ "── ZSH ──" ]]

@@ -2,6 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/worktree/git-worktree-distance"
   bats_git_worktree 'fix/bug'
 }
 
@@ -13,7 +14,7 @@ teardown() {
   cd "${BATS_GIT_WORKTREES}fix-bug"
   git commit --allow-empty -m "commit 1"
   git commit --allow-empty -m "commit 2"
-  bats_run_function git-worktree-distance
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [[ "$output" == *"ahead 2"* ]]
   [[ "$output" == *"behind 0"* ]]
@@ -25,7 +26,7 @@ teardown() {
   git commit --allow-empty -m "main commit 2"
   git commit --allow-empty -m "main commit 3"
   cd "${BATS_GIT_WORKTREES}fix-bug"
-  bats_run_function git-worktree-distance
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [[ "$output" == *"ahead 0"* ]]
   [[ "$output" == *"behind 3"* ]]
@@ -33,7 +34,7 @@ teardown() {
 
 @test "returns ahead 0 behind 0 for fresh worktree" {
   cd "${BATS_GIT_WORKTREES}fix-bug"
-  bats_run_function git-worktree-distance
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [[ "$output" == *"ahead 0"* ]]
   [[ "$output" == *"behind 0"* ]]
@@ -43,7 +44,7 @@ teardown() {
   cd "${BATS_GIT_WORKTREES}fix-bug"
   git commit --allow-empty -m "commit in worktree"
   cd "$BATS_GIT_DIR"
-  bats_run_function git-worktree-distance "${BATS_GIT_WORKTREES}fix-bug"
+  bats_run_zsh "$CURRENT" "${BATS_GIT_WORKTREES}fix-bug"
   [ "$status" -eq 0 ]
   [[ "$output" == *"ahead 1"* ]]
   [[ "$output" == *"behind 0"* ]]

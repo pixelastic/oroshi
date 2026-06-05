@@ -2,6 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/project/context-badge"
 
   project-name() { echo "my-project"; }
   bats_mock project-name
@@ -31,20 +32,20 @@ teardown() {
 # --- Simple project ---
 
 @test "simple project: output contains name" {
-  bats_run_function context-badge /some/path
+  bats_run_zsh "$CURRENT" /some/path
   local actual="$(bats_strip_ansi "$output")"
   [ "$status" -eq 0 ]
   [[ "$actual" == " x my-project ${BATS_SEPARATOR}" ]]
 }
 
 @test "simple project: output has ANSI sequences" {
-  bats_run_function context-badge /some/path
+  bats_run_zsh "$CURRENT" /some/path
   [ "$status" -eq 0 ]
   [[ "$output" == *$'\e['* ]]
 }
 
 @test "simple project: --zsh flag outputs zsh codes not ANSI" {
-  bats_run_function context-badge /some/path --zsh
+  bats_run_zsh "$CURRENT" /some/path --zsh
   [ "$status" -eq 0 ]
   [[ "$output" == *"%K{"* ]]
   [[ "$output" != *$'\e['* ]]
@@ -56,7 +57,7 @@ teardown() {
   git-worktree-name() { echo "fix/bug"; }
   bats_mock git-worktree-name
 
-  bats_run_function context-badge /some/path
+  bats_run_zsh "$CURRENT" /some/path
   local actual="$(bats_strip_ansi "$output")"
   echo "[[$actual]]"
 
@@ -76,7 +77,7 @@ teardown() {
   }
   bats_mock projects-load-definitions
 
-  bats_run_function context-badge /some/path
+  bats_run_zsh "$CURRENT" /some/path
   local actual="$(bats_strip_ansi "$output")"
 
   [ "$status" -eq 0 ]

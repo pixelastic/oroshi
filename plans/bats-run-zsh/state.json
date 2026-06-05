@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-full-migration.md",
-    "done": false,
+    "done": true,
+    "recap": "Migrated all 83 .bats files: autoload functions use CURRENT=$OROSHI_ROOT/path, library functions use caller.zsh stub, bats_run_script replaced with bats_run_zsh, run zsh converted via temp scripts; all noRunZsh violations cleared.",
     "blocked_by": ["03"]
   }
 ]

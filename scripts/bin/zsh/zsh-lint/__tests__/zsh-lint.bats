@@ -16,14 +16,14 @@ teardown() {
 @test "merges custom rule output with shellcheck JSON into single array" {
   local file="$BATS_TMP_DIR/test.zsh"
   printf 'case "$1" in\n  --foo) foo=1 ;;\nesac\n' > "$file"
-  bats_run_script "$ZSH_LINT" "$file"
+  bats_run_zsh "$ZSH_LINT" "$file"
   [[ "$output" == *'"code":"noManualArgParsing"'* ]]
 }
 
 @test "returns empty array and exit 0 for clean file" {
   local file="$BATS_TMP_DIR/test.zsh"
   printf '# clean zsh file\n' > "$file"
-  bats_run_script "$ZSH_LINT" "$file"
+  bats_run_zsh "$ZSH_LINT" "$file"
   [[ "$status" -eq 0 ]]
   [[ "$output" == '[]' ]]
 }
@@ -31,7 +31,7 @@ teardown() {
 @test "returns exit 1 when custom rule finds a violation" {
   local file="$BATS_TMP_DIR/test.zsh"
   printf 'case "$1" in\n  --foo) foo=1 ;;\nesac\n' > "$file"
-  bats_run_script "$ZSH_LINT" "$file"
+  bats_run_zsh "$ZSH_LINT" "$file"
   [[ "$status" -eq 1 ]]
 }
 
@@ -41,7 +41,7 @@ teardown() {
   zsh-lint-shellcheck() { printf '[{"code":2162}]\n'; }
   zsh-lint-custom()     { printf '[{"code":90005}]\n'; }
   bats_mock zsh-lint-shellcheck zsh-lint-custom
-  bats_run_script "$ZSH_LINT" "$file"
+  bats_run_zsh "$ZSH_LINT" "$file"
   [[ "$output" == *'"code":2162'* ]]
   [[ "$output" == *'"code":90005'* ]]
   [[ "$status" -eq 1 ]]
@@ -53,7 +53,7 @@ teardown() {
   zsh-lint-shellcheck() { printf '[{"code":2162}]\n'; }
   zsh-lint-custom()     { printf '[]\n'; }
   bats_mock zsh-lint-shellcheck zsh-lint-custom
-  bats_run_script "$ZSH_LINT" "$file"
+  bats_run_zsh "$ZSH_LINT" "$file"
   [[ "$status" -eq 1 ]]
 }
 
@@ -63,7 +63,7 @@ teardown() {
   zsh-lint-shellcheck() { printf '[]\n'; }
   zsh-lint-custom()     { printf '[{"code":90005}]\n'; }
   bats_mock zsh-lint-shellcheck zsh-lint-custom
-  bats_run_script "$ZSH_LINT" "$file"
+  bats_run_zsh "$ZSH_LINT" "$file"
   [[ "$status" -eq 1 ]]
 }
 
@@ -73,7 +73,7 @@ teardown() {
   zsh-lint-shellcheck() { printf '[]\n'; }
   zsh-lint-custom()     { printf '[]\n'; }
   bats_mock zsh-lint-shellcheck zsh-lint-custom
-  bats_run_script "$ZSH_LINT" "$file"
+  bats_run_zsh "$ZSH_LINT" "$file"
   [[ "$output" == '[]' ]]
   [[ "$status" -eq 0 ]]
 }

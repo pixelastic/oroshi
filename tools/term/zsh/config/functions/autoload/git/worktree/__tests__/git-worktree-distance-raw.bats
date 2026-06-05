@@ -2,6 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/worktree/git-worktree-distance-raw"
   bats_git_worktree 'fix/bug'
 }
 
@@ -11,7 +12,7 @@ teardown() {
 
 @test "outputs 0▮0 for branch with no divergence from main" {
   cd "${BATS_GIT_WORKTREES}fix-bug"
-  bats_run_function git-worktree-distance-raw "fix/bug"
+  bats_run_zsh "$CURRENT" "fix/bug"
   [ "$status" -eq 0 ]
   [ "$output" = "0▮0" ]
 }
@@ -20,7 +21,7 @@ teardown() {
   cd "${BATS_GIT_WORKTREES}fix-bug"
   git commit --allow-empty -m "commit 1"
   git commit --allow-empty -m "commit 2"
-  bats_run_function git-worktree-distance-raw "fix/bug"
+  bats_run_zsh "$CURRENT" "fix/bug"
   [ "$status" -eq 0 ]
   [ "$output" = "2▮0" ]
 }
@@ -31,19 +32,19 @@ teardown() {
   git commit --allow-empty -m "main commit 2"
   git commit --allow-empty -m "main commit 3"
   cd "${BATS_GIT_WORKTREES}fix-bug"
-  bats_run_function git-worktree-distance-raw "fix/bug"
+  bats_run_zsh "$CURRENT" "fix/bug"
   [ "$status" -eq 0 ]
   [ "$output" = "0▮3" ]
 }
 
 @test "exits 1 when called outside a git repo" {
   cd /tmp
-  bats_run_function git-worktree-distance-raw "fix/bug"
+  bats_run_zsh "$CURRENT" "fix/bug"
   [ "$status" -eq 1 ]
 }
 
 @test "exits 1 when branch is unknown" {
   cd "$BATS_GIT_DIR"
-  bats_run_function git-worktree-distance-raw "no-such-branch"
+  bats_run_zsh "$CURRENT" "no-such-branch"
   [ "$status" -eq 1 ]
 }
