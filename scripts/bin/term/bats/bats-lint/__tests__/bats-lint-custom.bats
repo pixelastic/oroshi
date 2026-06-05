@@ -2,11 +2,10 @@
 
 bats_load_library 'helper'
 
-SCRIPT="${BATS_TEST_DIRNAME}/../bats-lint-custom.zsh"
-
 setup() {
   bats_tmp_dir
-  printf "source '%s'\n" "$SCRIPT" >"$BATS_TMP_DIR/mock.zsh"
+  local script="${BATS_TEST_DIRNAME}/../bats-lint-custom.zsh"
+  printf "source '%s'\n" "$script" >"$BATS_TMP_DIR/mock.zsh"
   CURRENT="$BATS_TMP_DIR/caller.zsh"
   printf 'bats-lint-custom "$@"\n' >"$CURRENT"
 }

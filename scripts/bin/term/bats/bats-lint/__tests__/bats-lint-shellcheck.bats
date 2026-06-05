@@ -2,13 +2,12 @@
 
 bats_load_library 'helper'
 
-SCRIPT="${BATS_TEST_DIRNAME}/../bats-lint-shellcheck.zsh"
-
 setup() {
   bats_tmp_dir
+  local script="${BATS_TEST_DIRNAME}/../bats-lint-shellcheck.zsh"
   CURRENT="$BATS_TMP_DIR/caller.zsh"
   printf 'bats-lint-shellcheck "$@"\n' >"$CURRENT"
-  printf "source '%s'\n" "$SCRIPT" >"$BATS_TMP_DIR/mock.zsh"
+  printf "source '%s'\n" "$script" >"$BATS_TMP_DIR/mock.zsh"
 }
 
 teardown() {

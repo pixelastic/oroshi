@@ -2,10 +2,9 @@
 
 bats_load_library 'helper'
 
-BATS_LINT="${BATS_TEST_DIRNAME}/../bats-lint"
-
 setup() {
   bats_tmp_dir
+  CURRENT="${BATS_TEST_DIRNAME}/../bats-lint"
 }
 
 teardown() {
@@ -20,7 +19,7 @@ teardown() {
 
   local file="$BATS_TMP_DIR/test.bats"
   printf 'placeholder\n' >"$file"
-  bats_run_zsh "$BATS_LINT" "$file"
+  bats_run_zsh "$CURRENT" "$file"
   [[ "$status" -eq 0 ]]
   [[ "$output" == '[]' ]]
 }
@@ -37,7 +36,7 @@ teardown() {
 
   local file="$BATS_TMP_DIR/test.bats"
   printf 'placeholder\n' >"$file"
-  bats_run_zsh "$BATS_LINT" "$file"
+  bats_run_zsh "$CURRENT" "$file"
   [[ "$output" == *'"code":"SC2086"'* ]]
   [[ "$output" == *'"code":"noRunZsh"'* ]]
 }
@@ -52,7 +51,7 @@ teardown() {
 
   local file="$BATS_TMP_DIR/test.bats"
   printf 'placeholder\n' >"$file"
-  bats_run_zsh "$BATS_LINT" "$file"
+  bats_run_zsh "$CURRENT" "$file"
   [[ "$status" -ne 0 ]]
 }
 
@@ -64,7 +63,7 @@ teardown() {
 
   local file="$BATS_TMP_DIR/test.bats"
   printf 'placeholder\n' >"$file"
-  bats_run_zsh "$BATS_LINT" "$file"
+  bats_run_zsh "$CURRENT" "$file"
   run bash -c "printf '%s' '$output' | jq 'type == \"array\"'"
   [[ "$output" == 'true' ]]
 }
