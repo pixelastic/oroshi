@@ -10,16 +10,6 @@ local dir="${1:-$(plan-directory)}"
 [[ "$dir" == "" ]] && return 1
 # state.json must exist
 [[ ! -f "$dir/state.json" ]] && return 1
-# Refuse if single-shot session is already active
-if [[ -f "$dir/ralph.json" ]]; then
-  local activeMode="$(json-get --input "$dir/ralph.json" '.mode')"
-  if [[ "$activeMode" == "single" ]]; then
-    print "ralph-start: session already active in $dir"
-    return 1
-  fi
-else
-  ralph-state "$dir" init single
-fi
 
 # All issues finished
 local progress="$(plan-progress "$dir")"

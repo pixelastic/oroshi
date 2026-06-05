@@ -105,32 +105,3 @@ teardown() {
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.id')" = "01" ]
 }
-
-@test "creates ralph.json with mode=single when absent" {
-  printf '[
-    {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]}
-  ]' >"$PLAN_DIR/state.json"
-  bats_run_zsh "$RALPH_START" "$PLAN_DIR"
-  [ "$status" -eq 0 ]
-  [ -f "$PLAN_DIR/ralph.json" ]
-  [ "$(jq -r '.mode' "$PLAN_DIR/ralph.json")" = "single" ]
-}
-
-@test "fails when single-shot session already active" {
-  printf '[
-    {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]}
-  ]' >"$PLAN_DIR/state.json"
-  ralph-state "$PLAN_DIR" init single
-  bats_run_zsh "$RALPH_START" "$PLAN_DIR"
-  [ "$status" -eq 1 ]
-}
-
-@test "does not overwrite ralph.json when already present" {
-  printf '[
-    {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]}
-  ]' >"$PLAN_DIR/state.json"
-  ralph-state "$PLAN_DIR" init loop
-  bats_run_zsh "$RALPH_START" "$PLAN_DIR"
-  [ "$status" -eq 0 ]
-  [ "$(jq -r '.mode' "$PLAN_DIR/ralph.json")" = "loop" ]
-}

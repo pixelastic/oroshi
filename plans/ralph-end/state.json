@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-ralph-start-cleanup.md",
-    "done": false,
+    "done": true,
+    "recap": "Removed ralph.json lock check and ralph-state init call from ralph-start; deleted corresponding bats tests.",
     "blocked_by": []
   },
   {
