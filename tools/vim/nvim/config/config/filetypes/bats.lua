@@ -3,6 +3,8 @@ local M = {}
 M.linters = { "bats-lint" }
 
 M.onInit = function()
+  -- Use bash treesitter parser for syntax highlighting
+  vim.treesitter.language.register("bash", "bats")
   -- Force bats as bats, not sh
   F.onRead("*.bats", function()
     F.updateBufferOption("filetype", "bats")
