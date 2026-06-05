@@ -30,3 +30,9 @@
 
 ## Discoveries
 
+### Issue 02 — Commit hint wiring
+
+- `getCommitHint` and `buildSystemPrompt` were extracted to separate modules (`getCommitHint.js`, `buildSystemPrompt.js`) rather than kept inline in the main script. The main script runs top-level code at import time, making internal functions untestable otherwise.
+- `buildSystemPrompt` tests cover the spec's "main script" behavioral tests (prompt with/without hint instruction) — reviewers may flag this but it's intentional.
+- `firost.run('plan-directory', { stdout: false })` suppresses the subprocess stdout from piping to the terminal.
+

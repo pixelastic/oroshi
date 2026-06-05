@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-commit-hint-wiring.md",
-    "done": false,
+    "done": true,
+    "recap": "Added getCommitHint.js (calls plan-directory, reads COMMIT_HINT.md), buildSystemPrompt.js (replaces {{COMMIT_HINT}} placeholder), wired both into git-commit-message.js, and added {{COMMIT_HINT}} to prompt.md between Step 1 and Step 2.",
     "blocked_by": ["01"]
   },
   {

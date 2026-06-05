@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import { _ } from 'golgoth';
-import { absolute, consoleError, dirname, read } from 'firost';
+import { consoleError } from 'firost';
 import Gilmore from 'gilmore';
+import { buildSystemPrompt } from './buildSystemPrompt.js';
 import { formatMessage } from './format.js';
 
 const EXCLUDED = ['yarn.lock'];
@@ -12,7 +13,7 @@ if (!key) {
   process.exit(1);
 }
 
-const systemPrompt = await read(absolute(dirname(), 'prompt.md'));
+const systemPrompt = await buildSystemPrompt();
 const repo = Gilmore();
 
 const allFiles = await repo.stagedFiles();

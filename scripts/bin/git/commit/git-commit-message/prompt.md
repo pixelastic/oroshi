@@ -12,8 +12,7 @@ Goal: isolate the single most significant change in the diff.
 
 Read the diff. If it touches multiple unrelated areas, pick ONE most significant change. Ignore the rest.
 
-Changes in `plans/` are informative only.
-Real code lives outside of `plans/`.
+{{COMMIT_HINT}}
 
 ### Step 2 — Write the subject line
 
