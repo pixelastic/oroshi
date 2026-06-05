@@ -26,7 +26,7 @@ teardown() {
 }
 
 @test "merges violations from both linters" {
-  bats-lint-shellcheck() { printf '[{"file":"f","line":1,"col":1,"code":"SC2086","message":"m"}]\n'; }
+  bats-lint-shellcheck() { printf '[{"file":"f","line":1,"column":1,"code":"SC2086","message":"m"}]\n'; }
   bats_mock bats-lint-shellcheck
   bats-lint-custom() { printf '[{"file":"f","line":2,"code":"noRunZsh","message":"m"}]\n'; }
   bats_mock bats-lint-custom
@@ -39,7 +39,7 @@ teardown() {
 }
 
 @test "exits non-zero when violations found" {
-  bats-lint-shellcheck() { printf '[{"file":"f","line":1,"col":1,"code":"SC2086","message":"m"}]\n'; }
+  bats-lint-shellcheck() { printf '[{"file":"f","line":1,"column":1,"code":"SC2086","message":"m"}]\n'; }
   bats_mock bats-lint-shellcheck
   bats-lint-custom() { printf '[]\n'; }
   bats_mock bats-lint-custom

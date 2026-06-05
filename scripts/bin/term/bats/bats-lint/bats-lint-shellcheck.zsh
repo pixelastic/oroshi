@@ -21,23 +21,17 @@ bats-lint-shellcheck() {
 
   [[ ${#input} -eq 0 ]] && printf '[]\n' && return 0
 
-  # Run shellcheck with bash dialect (BATS files embed bash, not sh); || true so errexit doesn't abort on findings
+  # Run shellcheck
   local scOutput="$(shellcheck \
     --shell=bash \
     --external-sources \
     --format=json \
     --exclude="${(j:,:)excludedRules}" \
-    "${input[@]}" || true)"
+    "${input[@]}")"
   [[ "$scOutput" == "" ]] && scOutput="[]"
 
-  # Transform ShellCheck JSON to shared format: {file, line, col, code, message}
-  local transformed="$(printf '%s\n' "$scOutput" | jq -c '[.[] | {
-    file: .file,
-    line: .line,
-    col: .column,
-    code: ("SC" + (.code | tostring)),
-    message: .message
-  }]')"
+  # Transform ShellCheck JSON: add "SC" prefix to integer code, drop fix suggestions
+  local transformed="$(printf '%s\n' "$scOutput" | jq -c '[.[] | .code = "SC" + (.code | tostring) | del(.fix)]')"
 
   printf '%s\n' "$transformed"
   [[ "$(printf '%s' "$transformed" | jq 'length')" -gt 0 ]] && return 1

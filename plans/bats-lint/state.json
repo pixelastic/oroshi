@@ -51,7 +51,8 @@
   {
     "id": "08",
     "issue": "issues/08-nvim-bats-filetype.md",
-    "done": false,
+    "done": true,
+    "recap": "Created filetypes/bats.lua mirroring zsh.lua: registers bats-lint with stdin=false/ignore_exitcode=true, parses merged JSON handling col/column dual-shape and nil level fallback to WARN.",
     "blocked_by": ["04"]
   },
   {

@@ -29,41 +29,21 @@ teardown() {
   [[ "$output" != '[]' ]]
 }
 
-@test "violation has file field matching argument path" {
+@test "violation has expected JSON shape" {
   local file="$BATS_TMP_DIR/test.bats"
   printf 'echo $HOME\n' >"$file"
   bats_run_function bats-lint-shellcheck "$file"
-  [[ "$output" == *"\"file\":\"$file\""* ]]
-}
-
-@test "violation has line and col fields as numbers" {
-  local file="$BATS_TMP_DIR/test.bats"
-  printf 'echo $HOME\n' >"$file"
-  bats_run_function bats-lint-shellcheck "$file"
-  run bash -c "jq '.[0] | (.line | type) + \" \" + (.col | type)' <<< '$output'"
-  [[ "$output" == '"number number"' ]]
-}
-
-@test "violation code uses SC prefix" {
-  local file="$BATS_TMP_DIR/test.bats"
-  printf 'echo $HOME\n' >"$file"
-  bats_run_function bats-lint-shellcheck "$file"
-  run bash -c "jq -r '.[0].code' <<< '$output'"
-  [[ "$output" == SC* ]]
-}
-
-@test "violation has message field as string" {
-  local file="$BATS_TMP_DIR/test.bats"
-  printf 'echo $HOME\n' >"$file"
-  bats_run_function bats-lint-shellcheck "$file"
-  run bash -c "jq '.[0].message | type' <<< '$output'"
-  [[ "$output" == '"string"' ]]
-}
-
-@test "outputs valid JSON array" {
-  local file="$BATS_TMP_DIR/test.bats"
-  printf '# clean\n' >"$file"
-  bats_run_function bats-lint-shellcheck "$file"
-  run bash -c "printf '%s' '$output' | jq 'type == \"array\"'"
-  [[ "$output" == 'true' ]]
+  run jq '.' <<<"$output"
+  [[ "$output" == '[
+  {
+    "file": "'"$file"'",
+    "line": 1,
+    "endLine": 1,
+    "column": 6,
+    "endColumn": 11,
+    "level": "info",
+    "code": "SC2086",
+    "message": "Double quote to prevent globbing and word splitting."
+  }
+]' ]]
 }
