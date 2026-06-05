@@ -50,3 +50,19 @@ run_this_rule() { run_rule "${BATS_TEST_DIRNAME}/../rule-no-inline-function.zsh"
   expect_rule_violation noInlineFunction 1
   expect_rule_violation noInlineFunction 3
 }
+
+# Line-length threshold: > 90 chars triggers violation even with one instruction
+@test "detects single-instruction inline function over 90 characters" {
+  run_this_rule 'run_this_rule() { run_rule "${BATS_TEST_DIRNAME}/../rule-no-inline-function.zsh" "batsLintRule_noInlineFunction" "test.bats" "$@"; }'
+  expect_rule_violation noInlineFunction 1
+}
+
+@test "no violation for short single-instruction inline function" {
+  run_this_rule 'setup() { bats_tmp_dir; }'
+  expect_clean
+}
+
+@test "long line with inline disable skips violation" {
+  run_this_rule 'run_this_rule() { run_rule "${BATS_TEST_DIRNAME}/../rule-no-inline-function.zsh" "batsLintRule_noInlineFunction" "test.bats" "$@"; } # bats-lint-disable noInlineFunction'
+  expect_clean
+}
