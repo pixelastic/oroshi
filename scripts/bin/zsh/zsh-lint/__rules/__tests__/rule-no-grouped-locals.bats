@@ -3,7 +3,9 @@
 bats_load_library 'helper'
 bats_load_library 'rules-helper'
 
-run_this_rule() { run_rule "${BATS_TEST_DIRNAME}/../rule-no-grouped-locals.zsh" "zshLintRule_noGroupedLocals" "test.zsh" "$@"; }
+run_this_rule() {
+  run_rule "${BATS_TEST_DIRNAME}/../rule-no-grouped-locals.zsh" "zshLintRule_noGroupedLocals" "test.zsh" "$@"
+}
 
 @test "flags local with multiple bare names" {
   local -a input=( 'local a b c' )

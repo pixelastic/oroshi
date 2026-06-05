@@ -3,7 +3,9 @@
 bats_load_library 'helper'
 bats_load_library 'rules-helper'
 
-run_this_rule() { run_rule "${BATS_TEST_DIRNAME}/../rule-no-while-read.zsh" "zshLintRule_noWhileRead" "test.zsh" "$@"; }
+run_this_rule() {
+  run_rule "${BATS_TEST_DIRNAME}/../rule-no-while-read.zsh" "zshLintRule_noWhileRead" "test.zsh" "$@"
+}
 
 @test "flags 'while IFS= read -r line'" {
   local -a input=( 'while IFS= read -r line; do' )

@@ -3,7 +3,9 @@
 bats_load_library 'helper'
 bats_load_library 'rules-helper'
 
-run_this_rule() { run_rule "${BATS_TEST_DIRNAME}/../rule-no-double-negative.zsh" "zshLintRule_noDoubleNegative" "test.zsh" "$@"; }
+run_this_rule() {
+  run_rule "${BATS_TEST_DIRNAME}/../rule-no-double-negative.zsh" "zshLintRule_noDoubleNegative" "test.zsh" "$@"
+}
 
 @test "flags [[ ! var != \"\" ]]" {
   run_this_rule '[[ ! "$branchSlug" != "" ]] && return 1'

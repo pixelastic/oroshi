@@ -3,7 +3,9 @@
 bats_load_library 'helper'
 bats_load_library 'rules-helper'
 
-run_this_rule() { run_rule "${BATS_TEST_DIRNAME}/../rule-no-run-zsh.zsh" "batsLintRule_noRunZsh" "test.bats" "$@"; }
+run_this_rule() {
+  run_rule "${BATS_TEST_DIRNAME}/../rule-no-run-zsh.zsh" "batsLintRule_noRunZsh" "test.bats" "$@"
+}
 
 @test "detects run zsh" {
   run_this_rule 'run zsh -c "echo hello"'

@@ -3,7 +3,9 @@
 bats_load_library 'helper'
 bats_load_library 'rules-helper'
 
-run_this_rule() { run_rule "${BATS_TEST_DIRNAME}/../rule-no-arith-flag-test.zsh" "zshLintRule_noArithFlagTest" "test.zsh" "$@"; }
+run_this_rule() {
+  run_rule "${BATS_TEST_DIRNAME}/../rule-no-arith-flag-test.zsh" "zshLintRule_noArithFlagTest" "test.zsh" "$@"
+}
 
 @test "flags (( isZsh ))" {
   run_this_rule 'if (( isZsh )); then'

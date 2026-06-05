@@ -3,7 +3,9 @@
 bats_load_library 'helper'
 bats_load_library 'rules-helper'
 
-run_this_rule() { run_rule "${BATS_TEST_DIRNAME}/../rule-no-vim-deepcopy.zsh" "luaLintRule_noVimDeepcopy" "test.lua" "$@"; }
+run_this_rule() {
+  run_rule "${BATS_TEST_DIRNAME}/../rule-no-vim-deepcopy.zsh" "luaLintRule_noVimDeepcopy" "test.lua" "$@"
+}
 
 @test "flags vim.deepcopy( call" {
   local -a input=( 'local x = vim.deepcopy(t)' )

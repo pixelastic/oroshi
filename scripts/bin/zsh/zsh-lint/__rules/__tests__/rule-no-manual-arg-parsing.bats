@@ -3,7 +3,9 @@
 bats_load_library 'helper'
 bats_load_library 'rules-helper'
 
-run_this_rule() { run_rule "${BATS_TEST_DIRNAME}/../rule-no-manual-arg-parsing.zsh" "zshLintRule_noManualArgParsing" "test.zsh" "$@"; }
+run_this_rule() {
+  run_rule "${BATS_TEST_DIRNAME}/../rule-no-manual-arg-parsing.zsh" "zshLintRule_noManualArgParsing" "test.zsh" "$@"
+}
 
 @test "flags case \"\$1\" pattern" {
   local -a input=(

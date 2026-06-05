@@ -3,7 +3,9 @@
 bats_load_library 'helper'
 bats_load_library 'rules-helper'
 
-run_this_rule() { run_rule "${BATS_TEST_DIRNAME}/../rule-no-split-local.zsh" "zshLintRule_noSplitLocal" "test.zsh" "$@"; }
+run_this_rule() {
+  run_rule "${BATS_TEST_DIRNAME}/../rule-no-split-local.zsh" "zshLintRule_noSplitLocal" "test.zsh" "$@"
+}
 
 @test "flags bare local followed by assignment" {
   run_this_rule 'local foo' 'foo="$(cmd)"'

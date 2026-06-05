@@ -3,7 +3,9 @@
 bats_load_library 'helper'
 bats_load_library 'rules-helper'
 
-run_this_rule() { run_rule "${BATS_TEST_DIRNAME}/../rule-no-or-guard.zsh" "zshLintRule_noOrGuard" "test.zsh" "$@"; }
+run_this_rule() {
+  run_rule "${BATS_TEST_DIRNAME}/../rule-no-or-guard.zsh" "zshLintRule_noOrGuard" "test.zsh" "$@"
+}
 
 @test "flags [[ cond ]] || return" {
   run_this_rule '[[ "$foo" == "" ]] || return 1'

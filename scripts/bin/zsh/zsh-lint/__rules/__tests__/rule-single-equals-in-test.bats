@@ -3,7 +3,9 @@
 bats_load_library 'helper'
 bats_load_library 'rules-helper'
 
-run_this_rule() { run_rule "${BATS_TEST_DIRNAME}/../rule-single-equals-in-test.zsh" "zshLintRule_singleEqualsInTest" "test.zsh" "$@"; }
+run_this_rule() {
+  run_rule "${BATS_TEST_DIRNAME}/../rule-single-equals-in-test.zsh" "zshLintRule_singleEqualsInTest" "test.zsh" "$@"
+}
 
 @test "flags '[[ \"\$foo\" = \"bar\" ]]'" {
   local -a input=( '[[ "$foo" = "bar" ]]' )

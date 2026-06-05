@@ -3,7 +3,9 @@
 bats_load_library 'helper'
 bats_load_library 'rules-helper'
 
-run_this_rule() { run_rule "${BATS_TEST_DIRNAME}/../rule-no-dash-z.zsh" "zshLintRule_noDashZ" "test.zsh" "$@"; }
+run_this_rule() {
+  run_rule "${BATS_TEST_DIRNAME}/../rule-no-dash-z.zsh" "zshLintRule_noDashZ" "test.zsh" "$@"
+}
 
 @test "flags [[ -z var ]]" {
   run_this_rule '[[ -z "$foo" ]] && return'
