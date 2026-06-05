@@ -2,6 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
+  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/json/json-get"
   JSON_FILE="$BATS_TMP_DIR/test.json"
 }
 
@@ -13,14 +14,14 @@ teardown() {
 
 @test "--input: scalar read returns value, exit 0" {
   echo '{"name":"Alice"}' > "$JSON_FILE"
-  bats_run_function json-get --input "$JSON_FILE" '.name'
+  bats_run_zsh "$CURRENT" --input "$JSON_FILE" '.name'
   [ "$status" -eq 0 ]
   [ "$output" = "Alice" ]
 }
 
 @test "--input: nested key returns value, exit 0" {
   echo '{"a":{"b":"deep"}}' > "$JSON_FILE"
-  bats_run_function json-get --input "$JSON_FILE" '.a.b'
+  bats_run_zsh "$CURRENT" --input "$JSON_FILE" '.a.b'
   [ "$status" -eq 0 ]
   [ "$output" = "deep" ]
 }
@@ -29,7 +30,7 @@ teardown() {
 
 @test "stdin: scalar read returns value, exit 0" {
   local json='{"city":"Paris"}'
-  bats_run_function json-get '.city' <<< "$json"
+  bats_run_zsh "$CURRENT" '.city' <<< "$json"
   [ "$status" -eq 0 ]
   [ "$output" = "Paris" ]
 }
@@ -38,7 +39,7 @@ teardown() {
 
 @test "array: returns one element per line, exit 0" {
   echo '{"tags":["a","b","c"]}' > "$JSON_FILE"
-  bats_run_function json-get --input "$JSON_FILE" '.tags'
+  bats_run_zsh "$CURRENT" --input "$JSON_FILE" '.tags'
   [ "$status" -eq 0 ]
   [ "$output" = "$(printf 'a\nb\nc')" ]
 }
@@ -47,14 +48,14 @@ teardown() {
 
 @test "absent key: empty output, exit 0" {
   echo '{"name":"Alice"}' > "$JSON_FILE"
-  bats_run_function json-get --input "$JSON_FILE" '.missing'
+  bats_run_zsh "$CURRENT" --input "$JSON_FILE" '.missing'
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
 
 @test "null value: empty output, exit 0" {
   echo '{"key":null}' > "$JSON_FILE"
-  bats_run_function json-get --input "$JSON_FILE" '.key'
+  bats_run_zsh "$CURRENT" --input "$JSON_FILE" '.key'
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
@@ -63,6 +64,6 @@ teardown() {
 
 @test "invalid JSON: exit 1" {
   echo 'not-json' > "$JSON_FILE"
-  bats_run_function json-get --input "$JSON_FILE" '.key'
+  bats_run_zsh "$CURRENT" --input "$JSON_FILE" '.key'
   [ "$status" -eq 1 ]
 }
