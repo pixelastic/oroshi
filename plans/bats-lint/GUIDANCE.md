@@ -63,6 +63,12 @@ Prior art: `rule-no-run-zsh.zsh`, `rule-no-inline-function.zsh`
 <!-- ### Issue XX — short title -->
 <!-- - Non-trivial finding -->
 
+### Issue 05 — lint pass theming + prompt
+
+- SC2155 (`local var="$(cmd)"`) in BATS files: **do not split** — project convention (`feedback_zsh_local_assignment.md`) forbids `local var; var=...`. Added SC2155 to global `excludedRules` in `bats-lint-shellcheck.zsh` instead.
+- `noTopLevelVar` in BATS: move constants assigned at file top level into `setup()` — no `local` needed, they'll be accessible in `@test` blocks.
+- **bats-lint inside `bats` tests = worktree version** (helper pins `OROSHI_ROOT` → worktree `scripts/bin` lands first in PATH). Terminal `bats-lint` = system version. To lint from terminal with worktree rules: call `scripts/bin/term/bats/bats-lint/bats-lint` directly.
+
 ### Issue 01 — lint pass bats-lint (meta domain)
 
 - 3 `noInlineFunction` violations in `bats-lint.bats` (lines 29, 31, 42): inline JSON-producing stubs exceeded 90 chars. Decision: **fix** (split to multi-line). Short stubs in the same file (≤ 90 chars, single instruction) are compliant and stay inline — the rule deliberately allows those.

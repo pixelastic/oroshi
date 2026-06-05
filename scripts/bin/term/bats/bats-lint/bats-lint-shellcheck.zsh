@@ -11,6 +11,7 @@ bats-lint-shellcheck() {
   # Shellcheck rules excluded for all BATS files (grow incrementally as false positives are found)
   local -a excludedRules=()
   excludedRules+=(SC2016) # $var in single-quoted printf is intentional in bats fixtures
+  excludedRules+=(SC2155) # Allow local var="$(cmd)"
   excludedRules+=(SC2317) # Declaring unused functions for mock is ok
 
   # Exclude directories from the inputs

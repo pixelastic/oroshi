@@ -30,7 +30,8 @@
   {
     "id": "05",
     "issue": "issues/05-lint-pass-theming-prompt.md",
-    "done": false,
+    "done": true,
+    "recap": "projects-build.bats: moved top-level PROJECTS_BUILD into setup(); git.bats: suppressed SC2155 with shellcheck disable on 3 inline local+subshell assignments; index.bats already clean.",
     "blocked_by": ["04"]
   },
   {

@@ -1,8 +1,7 @@
 bats_load_library 'helper'
 
-PROJECTS_BUILD="$(realpath "${BATS_TEST_DIRNAME}/../projects-build")"
-
 setup() {
+  PROJECTS_BUILD="$(realpath "${BATS_TEST_DIRNAME}/../projects-build")"
   bats_tmp_dir
 
   export THEMING_ROOT="$BATS_TMP_DIR/theming"
