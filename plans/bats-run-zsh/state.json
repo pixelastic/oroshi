@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-bats-run-zsh-helper.md",
-    "done": false,
+    "done": true,
+    "recap": "Added bats_run_zsh with path-based autoload/script detection, realpath normalization, and mock injection; deprecated bats_run_function and bats_run_script.",
     "blocked_by": []
   },
   {

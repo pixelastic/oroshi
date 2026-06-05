@@ -93,6 +93,7 @@ bats_mock() {
 }
 
 # bats_run_function <name> [args]
+# DEPRECATED: use bats_run_zsh with the full path to the autoload function instead.
 # Runs a zsh autoloaded function via zsh -c, injecting mocks from
 # $BATS_TMP_DIR/mock.zsh before the call.
 # Usage: bats_run_function slugify "hello world"
@@ -100,21 +101,55 @@ bats_mock() {
 bats_run_function() {
   local func="$1"
   shift
-  local mock_file="$BATS_TMP_DIR/mock.zsh"
-  local cmd="[[ -f '${mock_file}' ]] && source '${mock_file}'; ${func} \"\$@\""
+  local mockFile="$BATS_TMP_DIR/mock.zsh"
+  local cmd="[[ -f '${mockFile}' ]] && source '${mockFile}'; ${func} \"\$@\""
   run zsh -c "$cmd" -- "$@"
 }
 
 # bats_run_script <path> [args]
+# DEPRECATED: use bats_run_zsh with the full path to the script instead.
 # Sources a zsh script via zsh -c, injecting mocks from $BATS_TMP_DIR/mock.zsh
 # before sourcing. Avoids a new PATH rebuild from .zshenv.
 # Usage: bats_run_script "$BATS_TMP_DIR/script.zsh"
 bats_run_script() {
   local script="$1"
   shift
-  local mock_file="$BATS_TMP_DIR/mock.zsh"
-  local cmd="[[ -f '${mock_file}' ]] && source '${mock_file}'; source '${script}'"
+  local mockFile="$BATS_TMP_DIR/mock.zsh"
+  local cmd="[[ -f '${mockFile}' ]] && source '${mockFile}'; source '${script}'"
   run zsh -c "$cmd" -- "$@"
+}
+
+# bats_run_zsh <path> [args]
+# Runs a zsh autoload function or script, detecting by path.
+# Paths under $OROSHI_ROOT/tools/term/zsh/config/functions/autoload/ are called by basename
+# (relying on fpath set up via .zshenv). All other paths are sourced directly.
+# Injects mocks from $BATS_TMP_DIR/mock.zsh before the call.
+# Relative paths are resolved to absolute before detection.
+# Usage: bats_run_zsh path/to/autoload-fn arg1 arg2
+#        bats_run_zsh path/to/script.zsh <<< "input"
+bats_run_zsh() {
+  local path="$1"
+  shift
+  # Stop if no path provided
+  [[ "$path" == "" ]] && return 1
+
+  # Stop if path does not exist
+  local absolutePath="$(realpath "$path")"
+  [[ ! -f "$absolutePath" ]] && return 1
+
+  local mockFile="$BATS_TMP_DIR/mock.zsh"
+  local isAutoloadedFunction="0"
+  [[ "$absolutePath" == "$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/"* ]] && isAutoloadedFunction="1"
+
+  # Script
+  if [[ $isAutoloadedFunction == "0" ]]; then
+    run zsh -c "[[ -f '${mockFile}' ]] && source '${mockFile}'; source '${absolutePath}' \"\$@\"" -- "$@"
+    return
+  fi
+
+  # Autoloaded function
+  local functionName="${absolutePath##*/}"
+  run zsh -c "[[ -f '${mockFile}' ]] && source '${mockFile}'; ${functionName} \"\$@\"" -- "$@"
 }
 
 # bats_cleanup

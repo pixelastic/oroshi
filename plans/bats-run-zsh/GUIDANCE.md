@@ -34,3 +34,9 @@ The bats helper exports `OROSHI_ROOT=$(git rev-parse --show-toplevel)`. `.zshenv
 ## Discoveries
 
 _Append findings here after each issue is completed._
+
+### Issue 01 — bats_run_zsh helper
+
+- `zsh -c "..."` always sources `.zshenv` (ZSH non-interactive rule) — no explicit fpath setup needed in the cmd string; autoload functions resolve automatically via the worktree-scoped `OROSHI_ROOT`.
+- Guard form must be `[[ "$var" == "" ]] && return 1`, not `[[ -n "$var" ]] || return 1` — zsh-writer standard enforces the `&&` idiom.
+- No if/else for branching cmd: use early-return for the autoload branch, fall-through for script.
