@@ -26,7 +26,7 @@ zsh-lint-custom() {
   source "${_zshLintRulesDir}/rule-no-arith-flag-test.zsh"
 
   lint-custom-run \
-    --disable-prefix 'zsh-lint-disable' \
+    --disable-prefix 'zsh-lint' \
     zshLintRule_noManualArgParsing \
     zshLintRule_noGroupedLocals \
     zshLintRule_localOrReturn \

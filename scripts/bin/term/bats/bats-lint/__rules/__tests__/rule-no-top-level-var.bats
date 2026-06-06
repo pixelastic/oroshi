@@ -37,11 +37,6 @@ run_this_rule() {
   expect_clean
 }
 
-@test "inline disable skips violation" {
-  run_this_rule 'SCRIPT="..." # bats-lint-disable noTopLevelVar'
-  expect_clean
-}
-
 @test "correct line number" {
   run_this_rule 'bats_load_library helper' 'bats_load_library rules-helper' 'BATS_LINT="${BATS_TEST_DIRNAME}/../bats-lint"'
   expect_rule_violation noTopLevelVar 3

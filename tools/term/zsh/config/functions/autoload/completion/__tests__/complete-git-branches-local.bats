@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/completion/complete-git-branches-local"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/completion/complete-git-branches-local"
 
   git init --initial-branch=main --quiet "$BATS_TMP_DIR/repo"
   git -C "$BATS_TMP_DIR/repo" config user.email "bats@oroshi"

@@ -19,8 +19,6 @@ batsLintRule_noInlineFunction() {
     (( ++lineno ))
     # Skip lines that are not single-line function definitions
     [[ ! "$line" =~ '^\s*[a-zA-Z_][a-zA-Z0-9_-]*\s*\(\)\s*\{.*\}\s*$' ]] && continue
-    # Honour inline disable comment
-    [[ "$line" =~ '# bats-lint-disable noInlineFunction' ]] && continue
     # Flag if the line exceeds 90 characters
     if (( ${#line} > 90 )); then
       printf '%s%s%s%serror%s%d%s%s\n' \

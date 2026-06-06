@@ -10,8 +10,11 @@ unset \
 
 # Pin OROSHI_ROOT to the current repo root so zsh subprocesses resolve all
 # script chains to this worktree, not the global ~/.oroshi install.
-OROSHI_ROOT="$(git rev-parse --show-toplevel)"
-export OROSHI_ROOT
+export OROSHI_ROOT="$(git rev-parse --show-toplevel)"
+# Re-derive ZSH_CONFIG_PATH and OROSHI_ZSH_AUTOLOAD from the pinned OROSHI_ROOT
+# so setup() assignments resolve to the worktree, not the system install.
+export ZSH_CONFIG_PATH="$OROSHI_ROOT/tools/term/zsh/config"
+export OROSHI_ZSH_AUTOLOAD="$ZSH_CONFIG_PATH/functions/autoload"
 
 # bats_tmp_dir
 # Creates an isolated sandbox for the current test, sets BATS_TMP_DIR.

@@ -3,13 +3,12 @@
 
 bats_load_library 'helper'
 
-SCRIPT="${BATS_TEST_DIRNAME}/../zsh-lint-custom.zsh"
-
 setup() {
   bats_tmp_dir
+  local script="${BATS_TEST_DIRNAME}/../zsh-lint-custom.zsh"
   CURRENT="$BATS_TMP_DIR/caller.zsh"
   printf 'zsh-lint-custom "$@"\n' >"$CURRENT"
-  printf "source '%s'\n" "$SCRIPT" >"$BATS_TMP_DIR/mock.zsh"
+  printf "source '%s'\n" "$script" >"$BATS_TMP_DIR/mock.zsh"
 }
 
 teardown() {
@@ -97,32 +96,32 @@ teardown() {
   [[ "$output" == *'"level":"error"'* ]]
 }
 
-@test "zsh-lint-disable suppresses violation on next line" {
+@test "zsh-lint disable=X suppresses violation on next line" {
   local file="$BATS_TMP_DIR/test.zsh"
-  printf '# zsh-lint-disable noGroupedLocals\nlocal a b\n' >"$file"
+  printf '# zsh-lint disable=noGroupedLocals\nlocal a b\n' >"$file"
   bats_run_zsh "$CURRENT" "$file"
   [[ "$status" -eq 0 ]]
   [[ "$output" == '[]' ]]
 }
 
-@test "zshlint-disable (old syntax) does not suppress violation" {
+@test "zsh-lint-disable (old syntax) does not suppress violation" {
   local file="$BATS_TMP_DIR/test.zsh"
-  printf '# zshlint-disable noGroupedLocals\nlocal a b\n' >"$file"
+  printf '# zsh-lint-disable noGroupedLocals\nlocal a b\n' >"$file"
   bats_run_zsh "$CURRENT" "$file"
   [[ "$status" -eq 1 ]]
   [[ "$output" == *'"code":"noGroupedLocals"'* ]]
 }
 
-@test "zsh-lint-disable only suppresses the named rule" {
+@test "zsh-lint disable=X only suppresses the named rule" {
   local file="$BATS_TMP_DIR/test.zsh"
-  printf '# zsh-lint-disable noGroupedLocals\nlocal a b\nlocal c d\n' >"$file"
+  printf '# zsh-lint disable=noGroupedLocals\nlocal a b\nlocal c d\n' >"$file"
   bats_run_zsh "$CURRENT" "$file"
   [[ "$output" == *'"code":"noGroupedLocals"'* ]]
 }
 
-@test "zsh-lint-disable with wrong code does not suppress" {
+@test "zsh-lint disable=X with wrong code does not suppress" {
   local file="$BATS_TMP_DIR/test.zsh"
-  printf '# zsh-lint-disable noDashZ\nlocal a b\n' >"$file"
+  printf '# zsh-lint disable=noDashZ\nlocal a b\n' >"$file"
   bats_run_zsh "$CURRENT" "$file"
   [[ "$output" == *'"code":"noGroupedLocals"'* ]]
 }

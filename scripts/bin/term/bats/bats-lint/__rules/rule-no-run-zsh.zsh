@@ -17,8 +17,6 @@ batsLintRule_noRunZsh() {
     (( ++lineno ))
     # Skip lines where run zsh is not a command (strings, titles, comments)
     [[ ! "$line" =~ '^[[:space:]]*run zsh' ]] && continue
-    # Honour inline disable comment
-    [[ "$line" =~ '# bats-lint-disable noRunZsh' ]] && continue
     printf '%s%s%s%serror%s%d%s%s\n' \
       "$file" "$_SEP" "$code" "$_SEP" "$_SEP" "$lineno" "$_SEP" "$msg"
   done

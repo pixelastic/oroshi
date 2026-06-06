@@ -4,7 +4,7 @@
 # shellcheck disable=SC2016
 zshLintRule_noDoubleNegative() {
   local code='noDoubleNegative'
-  # zsh-lint-disable noDoubleNegative
+  # zsh-lint disable=noDoubleNegative
   local msg='Double negative: prefer [[ "$var" == "" ]] over [[ ! "$var" != "" ]]'
 
   local file="$1"

@@ -17,11 +17,6 @@ run_this_rule() {
   expect_clean
 }
 
-@test "inline disable skips violation" {
-  run_this_rule 'run zsh -c "echo" # bats-lint-disable noRunZsh'
-  expect_clean
-}
-
 @test "three occurrences each on correct line" {
   run_this_rule 'run zsh -c "a"' 'bats_run_function fn' 'run zsh -c "b"' 'echo ok' 'run zsh -c "c"'
   expect_rule_violation noRunZsh 1

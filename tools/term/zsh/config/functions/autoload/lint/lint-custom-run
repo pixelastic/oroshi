@@ -57,7 +57,7 @@ for violationLine in $ruleLines; do
   # Suppress if the line above the violation has the matching disable comment
   local lineAbove=""
   [[ $lineNumber -gt 1 ]] && lineAbove=$sourceLines[$((lineNumber - 1))]
-  [[ "$lineAbove" =~ "# ${disablePrefix} ${ruleCode}([[:space:]]|$)" ]] && continue
+  [[ "$lineAbove" =~ "# ${disablePrefix} disable=${ruleCode}([[:space:]]|$)" ]] && continue
 
   filteredLines+=("$violationLine")
 done

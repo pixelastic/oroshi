@@ -60,17 +60,17 @@ teardown() {
   [[ "$output" == '2' ]]
 }
 
-@test "bats-lint-disable on previous line suppresses violation" {
+@test "bats-lint disable=X on previous line suppresses violation" {
   local file="$BATS_TMP_DIR/test.bats"
-  printf '# bats-lint-disable noRunZsh\nrun zsh -c "echo"\n' >"$file"
+  printf '# bats-lint disable=noRunZsh\nrun zsh -c "echo"\n' >"$file"
   bats_run_zsh "$CURRENT" "$file"
   [[ "$status" -eq 0 ]]
   [[ "$output" == '[]' ]]
 }
 
-@test "bats-lint-disable only suppresses the named rule" {
+@test "bats-lint disable=X only suppresses the named rule" {
   local file="$BATS_TMP_DIR/test.bats"
-  printf '# bats-lint-disable noRunZsh\nrun zsh -c "a"\nrun zsh -c "b"\n' >"$file"
+  printf '# bats-lint disable=noRunZsh\nrun zsh -c "a"\nrun zsh -c "b"\n' >"$file"
   bats_run_zsh "$CURRENT" "$file"
   [[ "$output" == *'"code":"noRunZsh"'* ]]
 }

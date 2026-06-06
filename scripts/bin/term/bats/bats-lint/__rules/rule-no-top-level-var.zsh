@@ -18,8 +18,6 @@ batsLintRule_noTopLevelVar() {
     (( ++lineno ))
     # Only flag uppercase variable assignments starting at column 0 (no indent)
     [[ ! "$line" =~ '^[A-Z_][A-Z0-9_]*=' ]] && continue
-    # Honour inline disable comment
-    [[ "$line" =~ '# bats-lint-disable noTopLevelVar' ]] && continue
     printf '%s%s%s%serror%s%d%s%s\n' \
       "$file" "$_SEP" "$code" "$_SEP" "$_SEP" "$lineno" "$_SEP" "$msg"
   done

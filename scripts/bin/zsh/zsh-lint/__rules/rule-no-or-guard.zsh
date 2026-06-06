@@ -4,7 +4,7 @@
 # shellcheck disable=SC2016
 zshLintRule_noOrGuard() {
   local code='noOrGuard'
-  # zsh-lint-disable noOrGuard
+  # zsh-lint disable=noOrGuard
   local msg='Prefer [[ ! condition ]] && return over [[ condition ]] || return'
 
   local file="$1"

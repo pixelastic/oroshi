@@ -37,11 +37,6 @@ run_this_rule() {
   expect_clean
 }
 
-@test "inline disable skips violation" {
-  run_this_rule 'foo() { cmd1; cmd2; } # bats-lint-disable noInlineFunction'
-  expect_clean
-}
-
 @test "correct line number" {
   run_this_rule 'setup() {' '  load helper' '}' 'foo() { cmd1; cmd2; }'
   expect_rule_violation noInlineFunction 4
@@ -64,7 +59,3 @@ run_this_rule() {
   expect_clean
 }
 
-@test "long line with inline disable skips violation" {
-  run_this_rule 'run_this_rule() { run_rule "${BATS_TEST_DIRNAME}/../rule-no-inline-function.zsh" "batsLintRule_noInlineFunction" "test.bats" "$@"; } # bats-lint-disable noInlineFunction'
-  expect_clean
-}
