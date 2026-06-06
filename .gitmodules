@@ -5,6 +5,3 @@
 [submodule "tools/infrastructure/ansible/config/galactica"]
 	path = tools/infrastructure/ansible/config/galactica
 	url = git@github.com:pixelastic/ansible-galactica.git
-[submodule "config/term/zsh/plugins/zsh-syntax-highlighting"]
-	path = tools/term/zsh/config/plugins/zsh-syntax-highlighting
-	url = git@github.com:zsh-users/zsh-syntax-highlighting.git
