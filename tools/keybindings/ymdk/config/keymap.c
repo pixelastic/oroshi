@@ -80,7 +80,7 @@ typedef struct {
 #define CHAT_BOTTOM KC_END /* Go to end of conversation */
 #define CHOICE_NEXT KC_DOWN /* Next choice in list */
 #define OK KC_ENT /* Validate choice*/
-#define CANCEL C(KC_C) /* Cancel / go back */
+#define ALT_TAB LALT(KC_TAB)  /* Switch window */
 #define CONFIG_SOUND_MODE C(G(KC_F8))
 #define CONFIG_AUTOSEND C(G(KC_F9))
 #define CONFIG_TRANSLATE C(G(KC_F10))
@@ -111,7 +111,7 @@ typedef struct {
 #define LAYER_NORMAL_KEYS \
     MODE_CONFIG, TAB_PREV, TAB_NEXT, \
     MESSAGE_START, SPEECH_TO_TEXT, CHOICE_NEXT, \
-    CHAT_BOTTOM,   CANCEL,      OK
+    CHAT_BOTTOM,   ALT_TAB,     OK
 
 #define LAYER_CONFIG_KEYS \
     MODE_NORMAL, CONFIG_SOUND_MODE, CONFIG_AUTOSEND, \
@@ -148,7 +148,7 @@ Color get_color_for_key(uint16_t keycode, uint8_t layer) {
     if (keycode == CHOICE_NEXT) return MINT;
 
     if (keycode == CHAT_BOTTOM) return BLUE;
-    if (keycode == CANCEL) return RED;
+    if (keycode == ALT_TAB) return ORANGE;
     if (keycode == OK) return GREEN;
 
     if (keycode == MODE_NORMAL) return WHITE;
