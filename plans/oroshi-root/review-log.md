@@ -1,3 +1,17 @@
+## Issue 03 — oroshi-reload-fpath
+
+### Missing `setopt local_options err_return`
+```zsh
+function oroshi-reload-fpath() {
+  local configPath="$ZSH_CONFIG_PATH"
+```
+**Problem:** Standards reviewer flagged absence of `setopt local_options err_return`.
+**Reason skipped:** This file is sourced directly from `.zshenv` (not autoloaded). The file has explicit WARNING comments: errors here affect ALL zsh processes. Adding `err_return` would abort `.zshenv` — and every zsh process — on any internal failure. Same reasoning applies as Issue 02 (see `feedback_zsh_errexit.md`).
+
+### Spec — scaffolding test "missing"
+**Problem:** Spec reviewer said the scaffolding test asserting `oroshi-reload-functions` is not defined was absent.
+**Reason skipped:** False positive — test exists at `plans/oroshi-root/scaffold/03-oroshi-reload-fpath.bats`. Reviewer did not search the scaffold directory.
+
 ## Issue 02 — oroshi-reload-path
 
 ### `setopt local_options err_return` missing in `oroshi-reload-path`

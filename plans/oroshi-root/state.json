@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-oroshi-reload-fpath.md",
-    "done": false,
+    "done": true,
+    "recap": "Renamed oroshi-reload-functions → oroshi-reload-fpath; replaced 'worktree' string hack with explicit [root] arg (derives configPath from root/tools/term/zsh/config); updated zshenv.zsh call site; deleted old file and tests; wrote new behavioral + scaffolding tests.",
     "blocked_by": ["02"]
   },
   {

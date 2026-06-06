@@ -41,4 +41,4 @@ for item in ${functionDirectory}/*.zsh; do
 done
 
 # Autoload all other functions saved in ./functions/autoload/**/*
-oroshi-reload-functions
+oroshi-reload-fpath

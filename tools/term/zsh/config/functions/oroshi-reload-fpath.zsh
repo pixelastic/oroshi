@@ -1,20 +1,21 @@
-# Reload all autoloaded functions
+# Rebuild $fpath and autoloaded functions from the given root's autoload dirs
 # WARNING: Make a copy of this file before editing it.
 # WARNING: As it is sourced by zshenv, ALL scripts will run it (including prompts).
 # Any error or output can have consequences.
 # Usage:
-# $ oroshi-reload-functions             # All ~/.oroshi/ autoloaded functions are reloaded
-# $ oroshi-reload-functions worktree    # All autoloaded functions of this oroshi worktree are reloaded
+# $ oroshi-reload-fpath            # Reload from current $ZSH_CONFIG_PATH
+# $ oroshi-reload-fpath [root]     # Reload from given root's tools/term/zsh/config/
 declare -A OROSHI_AUTOLOADED_FUNCTIONS
 declare -A OROSHI_AUTOLOADED_FUNCTIONS_BACKUP
 declare -a OROSHI_AUTOLOADED_FPATH
 
-function oroshi-reload-functions() {
+function oroshi-reload-fpath() {
   local configPath="$ZSH_CONFIG_PATH"
-  # If 'worktree' is passed, load from the current worktree root instead
-  [[ "$1" == "worktree" ]] && configPath="$(git rev-parse --show-toplevel)/tools/term/zsh/config"
+  # If a root is provided, derive configPath from it instead
+  [[ -n "$1" ]] && configPath="$1/tools/term/zsh/config"
 
   # Remove previously tracked fpath dirs to allow clean replacement
+  local dir
   for dir in $OROSHI_AUTOLOADED_FPATH; do
     fpath=(${fpath:#$dir})
   done
