@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-oroshi-reload-path.md",
-    "done": false,
+    "done": true,
+    "recap": "Renamed oroshi_path to oroshi-reload-path with optional [root] arg; removed auto-call+unfunction from path.zsh; added explicit call in zshenv.zsh; updated zshenv.bats stubs.",
     "blocked_by": ["01"]
   },
   {

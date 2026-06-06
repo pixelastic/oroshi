@@ -32,6 +32,7 @@ skip_global_compinit=1
 # See: https://comp.unix.shell.narkive.com/a2BHsUYm/zsh-s-typeset-u-path-wipes-out-path-path
 typeset -aU path fpath
 source $ZSH_CONFIG_PATH/path.zsh
+oroshi-reload-path
 
 # Manually loading all real functions saved in ./functions/*.zsh
 local functionDirectory=$ZSH_CONFIG_PATH/functions

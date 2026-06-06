@@ -1,10 +1,14 @@
-# Define a custom $PATH variable that look for all our binaries
-function oroshi_path() {
+# Rebuild $PATH from the given root's scripts/bin/ subdirectories
+# Usage:
+# $ oroshi-reload-path            # Uses $OROSHI_ROOT
+# $ oroshi-reload-path [root]     # Uses given root instead
+function oroshi-reload-path() {
+  local root="${1:-$OROSHI_ROOT}"
   local hostname="$(hostname)"
 
   # Build the list of subdirs in ./scripts/bin
   local localBinariesPath=()
-  for directory in $OROSHI_ROOT/scripts/bin/**/; do
+  for directory in $root/scripts/bin/**/; do
     # Skip all directories starting with __
     [[ $directory == */__* ]] && continue
     # As well as node_modules added by zx
@@ -31,10 +35,10 @@ function oroshi_path() {
 
   path=(
     # Local binaries
-    $OROSHI_ROOT/private/scripts/bin/local/$hostname
+    $root/private/scripts/bin/local/$hostname
 
     # Private binaries
-    $OROSHI_ROOT/private/scripts/bin
+    $root/private/scripts/bin
 
     # Custom binaries
     $localBinariesPath
@@ -65,5 +69,3 @@ function oroshi_path() {
     /snap/bin
   )
 }
-oroshi_path
-unfunction oroshi_path

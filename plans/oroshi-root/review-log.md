@@ -1,3 +1,17 @@
+## Issue 02 — oroshi-reload-path
+
+### `setopt local_options err_return` missing in `oroshi-reload-path`
+```zsh
+function oroshi-reload-path() {
+  local root="${1:-$OROSHI_ROOT}"
+```
+**Problem:** Reviewer flagged missing `setopt local_options err_return` per zsh-writer standard.
+**Reason skipped:** Rule applies to autoload functions only (per memory `feedback_zsh_errexit.md`). `oroshi-reload-path` is defined in a sourced config file, same pattern as `oroshi-reload-functions` which also has no setopt.
+
+### Spec — scaffolding test for `oroshi_path` not defined
+**Problem:** Reviewer said the scaffolding test asserting `oroshi_path` is undefined was missing.
+**Reason skipped:** Test exists at `plans/oroshi-root/scaffold/02-oroshi-reload-path.bats` — reviewer did not search the scaffold directory.
+
 ## Issue 01 — zshenv worktree detection
 
 ### `bats_mock` called in `setup()`

@@ -12,7 +12,7 @@ setup() {
 
   # Minimal fake structure so zshenv.zsh can source its deps safely
   mkdir -p "$WT_ROOT/tools/term/zsh/config/functions"
-  printf "" >"$WT_ROOT/tools/term/zsh/config/path.zsh"
+  printf "function oroshi-reload-path() { :; }\n" >"$WT_ROOT/tools/term/zsh/config/path.zsh"
   printf "# noop\n" >"$WT_ROOT/tools/term/zsh/config/functions/noop.zsh"
 
   # Mock oroshi-reload-functions as no-op so it does not rebuild fpath
@@ -54,7 +54,7 @@ teardown() {
 @test "OROSHI_ROOT defaults to HOME/.oroshi when unset and PWD is outside OROSHI_WORKTREES_DIR" {
   local fakeHome="$BATS_TMP_DIR/home"
   mkdir -p "$fakeHome/.oroshi/tools/term/zsh/config/functions"
-  printf "" >"$fakeHome/.oroshi/tools/term/zsh/config/path.zsh"
+  printf "function oroshi-reload-path() { :; }\n" >"$fakeHome/.oroshi/tools/term/zsh/config/path.zsh"
   printf "# noop\n" >"$fakeHome/.oroshi/tools/term/zsh/config/functions/noop.zsh"
   printf 'export HOME="%s"; unset OROSHI_ROOT; export OROSHI_WORKTREES_DIR="%s"; source "%s"; echo "$OROSHI_ROOT"\n' \
     "$fakeHome" "$WORKTREES_DIR" "$ZSHENV" >"$CURRENT"
