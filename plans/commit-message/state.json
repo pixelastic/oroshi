@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-post-commit-hook.md",
-    "done": false,
+    "done": true,
+    "recap": "Added scripts/yarn/hooks/post-commit: calls plan-directory, deletes COMMIT_HINT.md if present, always exits 0.",
     "blocked_by": ["01"]
   }
 ]

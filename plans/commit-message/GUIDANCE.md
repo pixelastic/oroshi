@@ -30,6 +30,12 @@
 
 ## Discoveries
 
+### Issue 03 — Post-commit hook
+
+- Git hooks live at `scripts/yarn/hooks/` (configured via `core.hooksPath=scripts/yarn/hooks`); no separate wiring step needed.
+- Shebang scripts that must always exit 0 should omit `set -e` — using it requires guarding every command, negating the benefit.
+- `local` is only valid inside functions in zsh; top-level script variables must be plain assignments (no `local`).
+
 ### Issue 02 — Commit hint wiring
 
 - `getCommitHint` and `buildSystemPrompt` were extracted to separate modules (`getCommitHint.js`, `buildSystemPrompt.js`) rather than kept inline in the main script. The main script runs top-level code at import time, making internal functions untestable otherwise.

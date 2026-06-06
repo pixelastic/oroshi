@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+# Delete COMMIT_HINT.md after a successful commit.
+# Never exits non-zero — must not block the user.
+# Usage:
+# $ post-commit   # called automatically by git
+
+planDir="$(plan-directory 2>/dev/null)"
+# Not in a ralph worktree, nothing to do
+[[ "$planDir" == "" ]] && exit 0
+
+hintPath="${planDir%/}/COMMIT_HINT.md"
+# Hint absent, nothing to do
+if [[ -f "$hintPath" ]]; then
+  rm "$hintPath"
+fi
+exit 0
