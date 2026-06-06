@@ -19,7 +19,7 @@ for rawSubmoduleLine in ${(f)rawList}; do
   submoduleName="$(path-relative ${submoduleName:a} $gitRoot)"
 
   local submoduleBranch=${splitLine[3]}
-  submoduleBranch=${submoduleBranch:1:-1}
+  submoduleBranch=${submoduleBranch[2,-2]}
 
   submoduleList[$submoduleName]="${submoduleHash}▮${submoduleBranch}"
 done
