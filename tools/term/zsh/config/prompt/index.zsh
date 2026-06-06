@@ -221,6 +221,29 @@ function oroshi-prompt-asynchronous-populate() {
 add-zsh-hook precmd oroshi-prompt-asynchronous-populate
 # }}}
 
+# chpwd {{{
+# Update OROSHI_ROOT when entering an oroshi worktree
+function oroshi-chpwd() {
+  local isInOroshiWorktree="0"
+  [[ "$PWD" == "$OROSHI_WORKTREES_DIR/"* ]] && isInOroshiWorktree="1"
+
+  # Return early if moving from regular dir to regular dir
+  [[ $isInOroshiWorktree == "0" && "$OROSHI_ROOT" == "$OROSHI_ROOT_DEFAULT" ]] && return 0
+  # Return early if moving inside an oroshi worktree
+  [[ "$PWD" == "$OROSHI_ROOT" || "$PWD" == "$OROSHI_ROOT/"* ]] && return 0
+
+  local newRoot="$OROSHI_ROOT_DEFAULT"
+  [[ "$isInOroshiWorktree" == "1" ]] && newRoot="$(git-directory-root)"
+
+  export OROSHI_ROOT="$newRoot"
+  export ZSH_CONFIG_PATH="$OROSHI_ROOT/tools/term/zsh/config"
+  export OROSHI_ZSH_AUTOLOAD="$ZSH_CONFIG_PATH/functions/autoload"
+  oroshi-reload-path "$OROSHI_ROOT"
+  oroshi-reload-fpath "$OROSHI_ROOT"
+}
+add-zsh-hook chpwd oroshi-chpwd
+# }}}
+
 # Cursors {{{
 function _cursor-cmd() { print -n "\e]12;${COLOR_EMERALD_HEXA}\a" }
 function _cursor-ins() { print -n "\e]12;${COLOR_YELLOW_HEXA}\a" }

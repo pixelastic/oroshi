@@ -1,3 +1,26 @@
+## Issue 04 — chpwd hook
+
+### Wrong file placement
+```zsh
+# tools/term/zsh/config/functions/oroshi-chpwd.zsh
+```
+**Problem:** Reviewer said autoloaded functions belong under `tools/term/zsh/config/functions/autoload/{domain}/`.
+**Reason skipped:** This is not an autoloaded function — it is sourced directly by `zshenv.zsh` (same tier as `oroshi-reload-fpath.zsh`). The `functions/*.zsh` placement is correct.
+
+### Missing `setopt local_options err_return`
+```zsh
+function oroshi-chpwd() {
+```
+**Problem:** Reviewer flagged missing `setopt local_options err_return`.
+**Reason skipped:** Rule applies to autoload functions only (memory `feedback_zsh_errexit.md`). This is a sourced function; `oroshi-reload-fpath.zsh` has no such line either.
+
+### Hardcoded `$HOME/.oroshi`
+```zsh
+newRoot="$HOME/.oroshi"
+```
+**Problem:** Memory `feedback_oroshi_root.md` says use `$OROSHI_ROOT`, not hardcoded `~/.oroshi`.
+**Reason skipped:** This is the fallback _definition_ of OROSHI_ROOT (what it should be when outside a worktree), identical to the pattern in `zshenv.zsh` line 13. The rule targets references to oroshi files, not the canonical default value computation.
+
 ## Issue 03 — oroshi-reload-fpath
 
 ### Missing `setopt local_options err_return`

@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-chpwd-hook.md",
-    "done": false,
+    "done": true,
+    "recap": "Added oroshi-chpwd.zsh in functions/ — detects new OROSHI_ROOT via string prefix check of $PWD, updates derived vars, calls oroshi-reload-path and oroshi-reload-fpath; registered in chpwd_functions.",
     "blocked_by": ["02", "03"]
   }
 ]
