@@ -15,9 +15,9 @@ setup() {
   printf "function oroshi-reload-path() { :; }\n" >"$WT_ROOT/tools/term/zsh/config/path.zsh"
   printf "# noop\n" >"$WT_ROOT/tools/term/zsh/config/functions/noop.zsh"
 
-  # Mock oroshi-reload-functions as no-op so it does not rebuild fpath
-  oroshi-reload-functions() { :; }
-  bats_mock oroshi-reload-functions
+  # Mock oroshi-reload-fpath as no-op so it does not rebuild fpath
+  oroshi-reload-fpath() { :; }
+  bats_mock oroshi-reload-fpath
 }
 
 teardown() {

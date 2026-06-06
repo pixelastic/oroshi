@@ -4,4 +4,4 @@
 local input=$1
 
 file $input |
-	grep --quiet ": PDF document"
+  grep --quiet ": PDF document"

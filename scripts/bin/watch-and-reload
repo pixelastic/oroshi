@@ -12,21 +12,16 @@ if [[ $# == 1 ]]; then
   filesToWatch=($@[1])
 fi
 
-# If the command is an autoloaded zsh function, we watch the file where it's
-# defined. If we know we're in a worktree, we use this worktree definition
+# If the command is an autoloaded zsh function, we reload it
 if [[ $OROSHI_AUTOLOADED_FUNCTIONS[$commandToRun] == "1" ]]; then
-  local oroshiRoot=$OROSHI_ROOT;
-  git-worktree-is-oroshi && oroshiRoot="$(git-directory-root)"
-
-  local autoloadedFunctionsFolder="${oroshiRoot}/tools/term/zsh/config/functions/autoload"
   local functionDefinitionPath="$(find \
-    ${autoloadedFunctionsFolder} \
+    ${OROSHI_ZSH_AUTOLOAD} \
     -name $commandToRun \
     -type f \
     -print
   )"
   filesToWatch=($functionDefinitionPath)
-  commandToRun="oroshi-reload-functions worktree && $commandToRun"
+  commandToRun="oroshi-reload-fpath && $commandToRun"
 fi
 
 
