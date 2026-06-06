@@ -1,0 +1,26 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-zshenv-worktree-detection.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-oroshi-reload-path.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-oroshi-reload-fpath.md",
+    "done": false,
+    "blocked_by": ["02"]
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-chpwd-hook.md",
+    "done": false,
+    "blocked_by": ["02", "03"]
+  }
+]
