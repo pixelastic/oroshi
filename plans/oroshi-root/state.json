@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-zshenv-worktree-detection.md",
-    "done": false,
+    "done": true,
+    "recap": "Added worktree detection block in zshenv.zsh (string prefix check of $PWD vs $OROSHI_WORKTREES_DIR) and new OROSHI_ZSH_AUTOLOAD derived var.",
     "blocked_by": []
   },
   {

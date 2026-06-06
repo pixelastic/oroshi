@@ -41,4 +41,8 @@ For issue 04: in a running session, `cd` into a worktree, run `echo $OROSHI_ROOT
 
 ## Discoveries
 
-_Append findings here after each issue._
+### Issue 01 — zshenv worktree detection
+
+- `OROSHI_ZSH_AUTOLOAD` was not pre-existing; it was added here as `$OROSHI_ROOT/tools/term/zsh/config/functions/autoload`.
+- Testing `zshenv.zsh` requires a minimal fake worktree structure (`path.zsh` + `functions/noop.zsh`) so sourcing the file doesn't fail when `OROSHI_ROOT` points to the fake root. Also requires mocking `oroshi-reload-functions` in setup() to prevent the real function (sourced from `functions/oroshi-reload-functions.zsh`) from overriding the mock.
+- The default-fallback test (OROSHI_ROOT → `$HOME/.oroshi`) must fake `$HOME` via the caller script to avoid hitting the real `~/.oroshi` install.
