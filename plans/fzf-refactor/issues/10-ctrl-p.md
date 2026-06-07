@@ -63,4 +63,4 @@ called via the registry, not directly from legacy autoloads).
 - [ ] Ctrl-P ZSH widget updated to call new script + registry
 - [ ] Neovim Ctrl-P updated to use Neovim API (`ctrl-p --source`, `ctrl-p --options`, `ctrl-p --postprocess`)
 - [ ] Legacy autoloads for `fs/files/project/`, `fs/files/shared/`, `git/files-stageable/`, `bats/` deleted
-- [ ] `zshlint` passes on all modified files
+- [ ] `zsh-lint` passes on all modified files

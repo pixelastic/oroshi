@@ -37,4 +37,4 @@ Delete legacy autoloads for the entire `packages/apt/` domain.
 - [ ] BATS tests for `fzf-source` and `fzf-postprocess` pass
 - [ ] `apt-install`, `apt-search`, `apt-uninstall` updated to call new script
 - [ ] Legacy autoloads in `packages/apt/` deleted
-- [ ] `zshlint` passes on all modified files
+- [ ] `zsh-lint` passes on all modified files

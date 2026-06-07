@@ -34,4 +34,4 @@ Delete legacy autoloads for `fs/directories/subdir/`.
 - [ ] BATS tests for `fzf-source` and `fzf-postprocess` pass
 - [ ] Ctrl-Shift-O ZSH widget updated to call new script
 - [ ] Legacy autoloads for `fs/directories/subdir/` deleted
-- [ ] `zshlint` passes on all modified files
+- [ ] `zsh-lint` passes on all modified files

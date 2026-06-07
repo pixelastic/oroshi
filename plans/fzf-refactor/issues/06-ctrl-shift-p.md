@@ -40,4 +40,4 @@ Delete legacy autoloads for `fs/files/subdir/` and shared fs helpers that have n
 - [ ] BATS tests for `fzf-source` and `fzf-postprocess` pass
 - [ ] Ctrl-Shift-P ZSH widget updated to call new script
 - [ ] Legacy autoloads for `fs/files/subdir/` deleted
-- [ ] `zshlint` passes on all modified files
+- [ ] `zsh-lint` passes on all modified files

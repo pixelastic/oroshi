@@ -1,0 +1,63 @@
+#!/usr/bin/env zsh
+# Search command history with fzf
+# Usage:
+# $ ctrl-r                    # Interactive history search
+# $ ctrl-r --source           # Print history entries (one per line)
+# $ ctrl-r --options          # Print FZF options (one per line)
+# $ ctrl-r --postprocess      # Read raw selection from stdin, print clean command
+set -e
+source "${0:h}/helpers/options.zsh"
+
+zmodload zsh/zutil
+zparseopts -D -E \
+  -source=flagSource \
+  -options=flagOptions \
+  -postprocess=flagPostprocess
+
+local isSource=${#flagSource}
+local isOptions=${#flagOptions}
+local isPostprocess=${#flagPostprocess}
+
+fzf-source() {
+  # Reverse history, strip ZSH extended history prefix (: timestamp:elapsed;), deduplicate, remove empty lines
+  tac "$HISTFILE" |
+    sed 's/^: [0-9]*:[0-9]*;//' |
+    awk '! seen[$0]++' |
+    grep -v '^[[:space:]]*$'
+}
+
+fzf-options() {
+  fzf-options-base
+  echo "--sort"
+  echo "--exact"
+  echo "--tiebreak=index"
+}
+
+fzf-postprocess() {
+  # Strip any ZSH extended history prefix (: timestamp:elapsed;) from selection
+  local input="$(cat)"
+  [[ "$input" == "" ]] && return 0
+  local line
+  for line in ${(f)input}; do
+    print -- "${line#*: [0-9]*:[0-9]*;}"
+  done
+}
+
+fzf-main() {
+  local opts=(${(f)"$(fzf-options)"})
+  fzf-source | fzf "${opts[@]}" | fzf-postprocess
+}
+
+if [[ $isSource == "1" ]]; then
+  fzf-source
+  return 0
+fi
+if [[ $isOptions == "1" ]]; then
+  fzf-options
+  return 0
+fi
+if [[ $isPostprocess == "1" ]]; then
+  fzf-postprocess
+  return 0
+fi
+fzf-main

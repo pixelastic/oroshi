@@ -34,4 +34,4 @@ since their only callers were the widgets being deleted.
 - [ ] `vim-fzf-git-file-history` script deleted
 - [ ] Legacy autoloads for git-commits deleted (no remaining callers)
 - [ ] Legacy autoloads for fs-directories-common deleted (no remaining callers)
-- [ ] `zshlint` passes on all modified files
+- [ ] `zsh-lint` passes on all modified files

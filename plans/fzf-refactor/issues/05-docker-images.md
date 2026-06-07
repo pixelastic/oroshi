@@ -32,4 +32,4 @@ Delete legacy autoloads for the entire `docker/images/remote/` domain.
 - [ ] BATS tests for `fzf-source` and `fzf-postprocess` pass
 - [ ] `docker-image-pull` updated to call new script
 - [ ] Legacy autoloads in `docker/images/remote/` deleted
-- [ ] `zshlint` passes on all modified files
+- [ ] `zsh-lint` passes on all modified files

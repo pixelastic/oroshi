@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-ctrl-r.md",
-    "done": false,
+    "done": true,
+    "recap": "Created scripts/bin/fzf/ctrl-r + helpers/options.zsh; updated ctrl-r.zsh keybinding to call the new script; deleted fzf-history, fzf-history-source, fzf-history-options legacy autoloads.",
     "blocked_by": ["01"]
   },
   {

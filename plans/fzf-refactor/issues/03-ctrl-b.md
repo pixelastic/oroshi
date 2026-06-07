@@ -31,4 +31,4 @@ Delete the legacy autoloads (`fzf-commands`, `fzf-commands-source`, `fzf-command
 - [ ] BATS tests for `fzf-source` and `fzf-postprocess` pass
 - [ ] Ctrl-B ZSH widget updated to call `scripts/bin/fzf/ctrl-b`
 - [ ] Legacy autoloads `fzf-commands`, `fzf-commands-source`, `fzf-commands-options` deleted
-- [ ] `zshlint` passes on all modified files
+- [ ] `zsh-lint` passes on all modified files

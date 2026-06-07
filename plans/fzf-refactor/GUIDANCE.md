@@ -52,7 +52,7 @@ end
 
 - ZSH: `rtk bats <filepath>`
 - JS: `yarn run test <filepath>`
-- Lint ZSH: `zshlint <filepath>`
+- Lint ZSH: `zsh-lint <filepath>`
 
 ### Test locations
 
@@ -86,8 +86,16 @@ See project memory: `feedback_no_lua_tests.md`.
 - Use `[[ $isXxx == "1" ]]` not `(( isXxx ))` for flag tests
 - Use `if/then/fi` for 2+ instructions; `&&` only for single-action one-liners
 - Use `local var="$(cmd)"` + manual guard for local assignments
-- Fix pre-existing zshlint violations in any file you touch
+- Fix pre-existing zsh-lint violations in any file you touch
 
 ## Discoveries
 
 _Append findings here after each issue. Format: `### Issue XX — short title` + bullet points._
+
+### Issue 02 — ctrl-r (first FZF Script)
+
+- `zsh-lint` flags `case "$1"` as `noManualArgParsing` — requires `zparseopts` + if/elif dispatch instead. This changes the pattern from what the issue spec prescribed; subsequent scripts must follow the zparseopts pattern, not `case "$1"`.
+- `${0:h}` is the correct ZSH idiom for `dirname $0` inside a shebang script (fixes `noExternalBasename`).
+- `fzf-options` output must be split into an array with `${(f)"$(fzf-options)"}` before passing to `fzf`, to avoid SC2046 word-splitting warning.
+- `fzf-postprocess` uses `${(f)input}` loop + `${line#*: [0-9]*:[0-9]*;}` glob-strip instead of `while read | sed` (fixes `noWhileRead` + SC2001).
+- BATS: script-under-test path must be assigned to `CURRENT` inside `setup()`, not at file top level — `bats-lint` enforces `currentScriptVar` + `noTopLevelVar`.

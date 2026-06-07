@@ -33,5 +33,5 @@ After cleanup, `tools/term/zsh/config/functions/autoload/fzf/` should be empty o
 - [ ] All remaining `fs/shared/` autoloads deleted
 - [ ] `autoload/fzf/` directory is empty and removed
 - [ ] Decision made on ctrl-shift-i: migrated (new issue created) or deleted
-- [ ] `zshlint` passes on all modified files
+- [ ] `zsh-lint` passes on all modified files
 - [ ] Full manual smoke test: all keybindings work as expected

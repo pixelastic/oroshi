@@ -27,4 +27,4 @@ Delete legacy autoloads for `regexp/subdir/` and all remaining `regexp/shared/` 
 - [ ] Ctrl-Shift-G ZSH widget updated to call new script
 - [ ] Neovim Ctrl-Shift-G updated to use Neovim API
 - [ ] Legacy autoloads for `regexp/subdir/` and `regexp/shared/` deleted
-- [ ] `zshlint` passes on all modified files
+- [ ] `zsh-lint` passes on all modified files

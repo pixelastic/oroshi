@@ -42,4 +42,4 @@ remaining callers after `ctrl-shift-g` is migrated in issue 12.
 - [ ] Ctrl-G ZSH widget updated to call new script
 - [ ] Neovim Ctrl-G updated to use Neovim API (`ctrl-g --source`, `ctrl-g --options`, `ctrl-g --postprocess`)
 - [ ] Legacy autoloads for `regexp/project/` deleted
-- [ ] `zshlint` passes on all modified files
+- [ ] `zsh-lint` passes on all modified files

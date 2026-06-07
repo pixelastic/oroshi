@@ -41,4 +41,4 @@ Delete legacy autoloads for `fs/directories/project/` and `fs/directories/plans/
 - [ ] BATS tests for `fzf-source` and `fzf-postprocess` pass
 - [ ] Ctrl-O ZSH widget updated to call new script
 - [ ] Legacy autoloads for `fs/directories/project/` and `fs/directories/plans/` deleted
-- [ ] `zshlint` passes on all modified files
+- [ ] `zsh-lint` passes on all modified files

@@ -37,4 +37,4 @@ Delete legacy autoloads for `git/file-history/`.
 - [ ] BATS tests for `fzf-source` and `fzf-postprocess` pass
 - [ ] Git alias/function updated to call new script
 - [ ] Legacy autoloads for `git/file-history/` deleted
-- [ ] `zshlint` passes on all modified files
+- [ ] `zsh-lint` passes on all modified files

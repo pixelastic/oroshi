@@ -48,4 +48,4 @@ After the script is working and tested, the ZSH Ctrl-R keybinding widget is upda
 - [ ] BATS tests for `fzf-source` and `fzf-postprocess` pass
 - [ ] Ctrl-R ZSH widget updated to call `scripts/bin/fzf/ctrl-r`
 - [ ] Legacy autoloads `fzf-history`, `fzf-history-source`, `fzf-history-options` deleted
-- [ ] `zshlint` passes on all modified files
+- [ ] `zsh-lint` passes on all modified files
