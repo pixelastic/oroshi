@@ -20,9 +20,8 @@ teardown() {
 
 @test "in project: passes arg through project-name then to project-path" {
   project-name() { echo "project-name:$1"; }
-  bats_mock project-name
   git-directory-is-worktree() { return 1; }
-  bats_mock git-directory-is-worktree
+  bats_mock project-name git-directory-is-worktree
   bats_run_zsh "$CURRENT" /my/path
   [ "$status" -eq 0 ]
   [ "$output" = "project-path:project-name:/my/path" ]
@@ -30,9 +29,8 @@ teardown() {
 
 @test "in worktree: passes arg to git-directory-root" {
   project-name() { echo "project-name:$1"; }
-  bats_mock project-name
   git-directory-is-worktree() { return 0; }
-  bats_mock git-directory-is-worktree
+  bats_mock project-name git-directory-is-worktree
   bats_run_zsh "$CURRENT" /my/path
   [ "$status" -eq 0 ]
   [ "$output" = "git-directory-root:/my/path" ]
@@ -40,9 +38,8 @@ teardown() {
 
 @test "outside known project: returns empty" {
   project-name() { echo ""; }
-  bats_mock project-name
   git-directory-is-worktree() { return 1; }
-  bats_mock git-directory-is-worktree
+  bats_mock project-name git-directory-is-worktree
   bats_run_zsh "$CURRENT" /my/path
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
@@ -50,9 +47,8 @@ teardown() {
 
 @test "no arg: uses \$PWD" {
   project-name() { echo "project-name:$1"; }
-  bats_mock project-name
   git-directory-is-worktree() { return 1; }
-  bats_mock git-directory-is-worktree
+  bats_mock project-name git-directory-is-worktree
   cd "$BATS_TMP_DIR"
   bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]

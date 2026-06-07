@@ -78,17 +78,15 @@ teardown() {
 
 @test "outputs notZsh violation for non-zsh file, exits 1" {
   is-zsh() { return 1; }
-  bats_mock is-zsh
   zsh-lint-shellcheck() {
     printf 'called\n' >"$BATS_TMP_DIR/shellcheck_called"
     printf '[]\n'
   }
-  bats_mock zsh-lint-shellcheck
   zsh-lint-custom() {
     printf 'called\n' >"$BATS_TMP_DIR/custom_called"
     printf '[]\n'
   }
-  bats_mock zsh-lint-custom
+  bats_mock is-zsh zsh-lint-shellcheck zsh-lint-custom
 
   local file="$BATS_TMP_DIR/test.bats"
   printf 'placeholder\n' >"$file"
@@ -105,14 +103,12 @@ teardown() {
     [[ "$1" == *.zsh ]] && return 0
     return 1
   }
-  bats_mock is-zsh
   zsh-lint-shellcheck() {
     printf '%s\n' "$@" >"$BATS_TMP_DIR/shellcheck_args"
     printf '[{"file":"%s","code":"SC2086","line":1,"column":1,"message":"m"}]\n' "$1"
   }
-  bats_mock zsh-lint-shellcheck
   zsh-lint-custom() { printf '[]\n'; }
-  bats_mock zsh-lint-custom
+  bats_mock is-zsh zsh-lint-shellcheck zsh-lint-custom
 
   local valid="$BATS_TMP_DIR/valid.zsh"
   local invalid="$BATS_TMP_DIR/other.bats"
