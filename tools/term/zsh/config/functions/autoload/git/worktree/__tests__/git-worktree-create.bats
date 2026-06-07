@@ -2,10 +2,10 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/worktree/git-worktree-create"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/worktree/git-worktree-create"
   export OROSHI_WORKTREES_DIR="$BATS_TMP_DIR/worktrees"
   mkdir -p "$OROSHI_WORKTREES_DIR"
-  cd "$BATS_GIT_DIR"
+  cd "$BATS_GIT_DIR" || return 1
 }
 
 teardown() {
@@ -110,7 +110,10 @@ teardown() {
 }
 
 @test "re-entering existing worktree does not re-run yarn install" {
-  yarn() { echo called >> "$BATS_TMP_DIR/yarn-calls"; mkdir -p node_modules; }
+  yarn() {
+    echo called >> "$BATS_TMP_DIR/yarn-calls"
+    mkdir -p node_modules
+  }
   bats_mock yarn
   touch yarn.lock
   git add .

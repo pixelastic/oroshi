@@ -112,7 +112,8 @@
   {
     "id": "15",
     "issue": "issues/15-lint-pass-git-worktree.md",
-    "done": false,
+    "done": true,
+    "recap": "Fixed preferZshAutoload (17 files), SC2164 unsafe-cd (4 files), noInlineFunction (1 file). Pre-existing test failure in scripts/bin/__tests__/git-worktree-list-raw.bats is unrelated to this issue.",
     "blocked_by": ["14"]
   },
   {
@@ -130,6 +131,12 @@
   {
     "id": "20",
     "issue": "issues/20-rule-prefer-batch-mock.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "21",
+    "issue": "issues/21-rule-current-script-var.md",
     "done": false,
     "blocked_by": []
   }

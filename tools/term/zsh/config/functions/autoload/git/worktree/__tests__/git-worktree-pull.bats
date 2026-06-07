@@ -2,8 +2,8 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/worktree/git-worktree-pull"
-  cd "$BATS_GIT_DIR"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/worktree/git-worktree-pull"
+  cd "$BATS_GIT_DIR" || return 1
   git checkout --quiet -b fix/bug
   git checkout --quiet main
   git commit --allow-empty --quiet -m "main work"

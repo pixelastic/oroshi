@@ -1,3 +1,15 @@
+## Issue 15 — lint pass git worktree
+
+### Pre-existing test failure in scripts/bin/__tests__/git-worktree-list-raw.bats
+
+```
+not ok 4 works from inside a linked worktree
+# BW01: `run`'s command `zsh -c ... git-worktree-list-raw "$@" --` exited with code 127
+```
+
+**Problem:** Spec reviewer flagged that `bats` does not pass on all files.
+**Reason skipped:** The failure pre-dates this session. Confirmed by stashing all changes and re-running the test — same failure with the original code. The `scripts/bin` version uses `bats_tmp_dir` (not `bats_git_dir`), so git-worktree-list-raw is not autoloaded in that subshell context. Out of scope for issue 15.
+
 ## Issue 12 — lint pass text utils
 
 ### 6 of 8 files have no diff
