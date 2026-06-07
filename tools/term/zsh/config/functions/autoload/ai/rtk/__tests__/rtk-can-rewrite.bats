@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/ai/rtk/rtk-can-rewrite"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/ai/rtk/rtk-can-rewrite"
 }
 
 teardown() { bats_cleanup; }

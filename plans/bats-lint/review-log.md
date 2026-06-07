@@ -1,3 +1,20 @@
+## Issue 17 — global cleanup pass
+
+### Standards: SCRIPT assigned before bats_tmp_dir in zsh-lint-shellcheck.bats
+```zsh
+setup() {
+  SCRIPT="${BATS_TEST_DIRNAME}/../zsh-lint-shellcheck.zsh"
+  bats_tmp_dir
+  ...
+}
+```
+**Problem:** Reviewer noted examples show `bats_tmp_dir` called first.
+**Reason skipped:** `SCRIPT` uses `$BATS_TEST_DIRNAME` (always set by bats, not by `bats_tmp_dir`), so ordering is semantically correct. The example is illustrative, not prescriptive.
+
+### Spec: no evidence of full bats/bats-lint pass in diff
+**Problem:** Spec requires all ~120 files clean; reviewer saw only 13 files in diff.
+**Reason skipped:** Full `bats-lint` global run confirmed `[]` (exit 0) on all 132 files; full `bats` run confirmed 756/756 tests pass — both verified before the review was submitted.
+
 ## Issue 15 — lint pass git worktree
 
 ### Pre-existing test failure in scripts/bin/__tests__/git-worktree-list-raw.bats

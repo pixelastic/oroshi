@@ -3,9 +3,8 @@
 
 bats_load_library 'helper'
 
-ZSH_LINT="${BATS_TEST_DIRNAME}/../zsh-lint"
-
 setup() {
+  ZSH_LINT="${BATS_TEST_DIRNAME}/../zsh-lint"
   bats_tmp_dir
 }
 

@@ -72,7 +72,10 @@ teardown() { bats_cleanup; }
 
 @test "clears ralph.json after Claude exits with non-zero status" {
   git-directory-root() { echo "$BATS_TMP_DIR"; }
-  claude() { touch "$BATS_TMP_DIR/claude-called"; return 1; }
+  claude() {
+    touch "$BATS_TMP_DIR/claude-called"
+    return 1
+  }
   bats_mock git-directory-root claude
 
   bats_run_zsh "$CURRENT" "$PRD_DIR"

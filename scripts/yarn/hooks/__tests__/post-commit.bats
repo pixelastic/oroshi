@@ -1,8 +1,7 @@
 bats_load_library 'helper'
 
-POST_COMMIT="$BATS_TEST_DIRNAME/../post-commit"
-
 setup() {
+  POST_COMMIT="$BATS_TEST_DIRNAME/../post-commit"
   bats_tmp_dir
 }
 

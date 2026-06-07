@@ -3,7 +3,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/term/bats/is-bats"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/term/bats/is-bats"
 }
 
 teardown() {

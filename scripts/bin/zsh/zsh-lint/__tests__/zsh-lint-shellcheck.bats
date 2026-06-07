@@ -3,9 +3,8 @@
 
 bats_load_library 'helper'
 
-SCRIPT="${BATS_TEST_DIRNAME}/../zsh-lint-shellcheck.zsh"
-
 setup() {
+  SCRIPT="${BATS_TEST_DIRNAME}/../zsh-lint-shellcheck.zsh"
   bats_tmp_dir
   CURRENT="$BATS_TMP_DIR/caller.zsh"
   printf 'zsh-lint-shellcheck "$@"\n' >"$CURRENT"

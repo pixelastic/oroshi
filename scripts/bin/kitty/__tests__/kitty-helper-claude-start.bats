@@ -1,9 +1,8 @@
 bats_load_library 'helper'
 
-SCRIPT="$BATS_TEST_DIRNAME/../kitty-helper-claude-start"
-
 setup() {
   bats_tmp_dir
+  SCRIPT="$BATS_TEST_DIRNAME/../kitty-helper-claude-start"
 }
 
 teardown() {

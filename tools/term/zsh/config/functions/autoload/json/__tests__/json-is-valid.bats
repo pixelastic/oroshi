@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/json/json-is-valid"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/json/json-is-valid"
   JSON_FILE="$BATS_TMP_DIR/test.json"
 }
 
