@@ -130,6 +130,41 @@ teardown() {
   [ "${lines[-1]}" = "1" ]
 }
 
+# --- completion/compdef ---
+
+@test "completion/compdef dir is added to fpath" {
+  altRoot="$BATS_TMP_DIR/alt-root"
+  mkdir -p "$altRoot/tools/term/zsh/config/completion/compdef"
+  check() {
+    local compdefDir="$1/tools/term/zsh/config/completion/compdef"
+    oroshi-reload-fpath "$1"
+    [[ "${fpath[(r)$compdefDir]}" == "$compdefDir" ]] && echo "yes"
+  }
+  bats_mock check
+  bats_run_zsh "$CURRENT" "$altRoot"
+  [ "$status" -eq 0 ]
+  [ "${lines[-1]}" = "yes" ]
+}
+
+@test "old completion/compdef is removed when switching roots" {
+  altRoot="$BATS_TMP_DIR/alt-root"
+  mkdir -p "$BATS_TMP_DIR/completion/compdef"
+  mkdir -p "$altRoot/tools/term/zsh/config/completion/compdef"
+  check() {
+    fpath+=("$BATS_TMP_DIR/completion/compdef")
+    OROSHI_AUTOLOADED_FPATH+=("$BATS_TMP_DIR/completion/compdef")
+    oroshi-reload-fpath "$1"
+    local found=0
+    # shellcheck disable=SC2128
+    for dir in $fpath; do [[ "$dir" == "$BATS_TMP_DIR/completion/compdef" ]] && found=1; done
+    echo "$found"
+  }
+  bats_mock check
+  bats_run_zsh "$CURRENT" "$altRoot"
+  [ "$status" -eq 0 ]
+  [ "${lines[-1]}" = "0" ]
+}
+
 # --- Idempotency ---
 
 @test "second call exits 0" {

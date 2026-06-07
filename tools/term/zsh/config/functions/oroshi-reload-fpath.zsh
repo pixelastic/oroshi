@@ -12,7 +12,7 @@ declare -a OROSHI_AUTOLOADED_FPATH
 function oroshi-reload-fpath() {
   local configPath="$ZSH_CONFIG_PATH"
   # If a root is provided, derive configPath from it instead
-  [[ -n "$1" ]] && configPath="$1/tools/term/zsh/config"
+  [[ "$1" != "" ]] && configPath="$1/tools/term/zsh/config"
 
   # Remove previously tracked fpath dirs to allow clean replacement
   local dir
@@ -52,4 +52,11 @@ function oroshi-reload-fpath() {
     autoload -Uz $functionName
     OROSHI_AUTOLOADED_FUNCTIONS[$functionName]="1"
   done
+
+  # Also add completion/compdef to fpath so completion functions survive worktree deletion
+  local compdefDir="$configPath/completion/compdef"
+  if [[ -d "$compdefDir" ]]; then
+    fpath+=("$compdefDir")
+    OROSHI_AUTOLOADED_FPATH+=("$compdefDir")
+  fi
 }

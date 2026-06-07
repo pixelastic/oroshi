@@ -1,11 +1,12 @@
-# Add custom completion functions fo fpath
+# Add custom completion functions to fpath and track for reload
 fpath+=($ZSH_CONFIG_PATH/completion/compdef)
+OROSHI_AUTOLOADED_FPATH+=($ZSH_CONFIG_PATH/completion/compdef)
 
 # Syntax is
 # :completion:<function>:<completer>:<command>:<argument>:<tag>
-# - <function> 
+# - <function>
 # 	is usually empty
-# - <completer> 
+# - <completer>
 # 	is the name of the completer (default is "complete") but more
 #   can be defined with zstyle (like "extensions" or "approximate"). See "Control
 #   Functions" in the doc
@@ -72,7 +73,7 @@ fpath+=($ZSH_CONFIG_PATH/completion/compdef)
 # I would also like to re-order them
 # And to potentially group several groups under a shared header
 #
-# TODO: 
+# TODO:
 # Not sure what the following line does, needs testing
 # zstyle ':completion:*' file-patterns '*(-/):directories'
 #
@@ -131,11 +132,11 @@ function oroshi_completion_compinit() {
 	# The relevant modifier is `mh+20`, which means "[m]odification more than [20] [h]ours ago".
 	# The `#qN.` is zsh gibberish to "make it work"
 	#
-	if [[ ! -n ~/.zcompdump(#qN.mh+20) ]]; then
+	if [[ ~/.zcompdump(#qN.mh+20) == "" ]]; then
 		# This branch triggers both if:
 		# - The file has never been generated
 		# - The file has been generated and is still warm
-		
+
 		# The -C flag will tell zsh to skip its internal freshness checks
 		# If the file doesn't exist, it will create it. If it does, it will use it
 		compinit -C
@@ -149,5 +150,3 @@ unfunction oroshi_completion_compinit
 
 # Custom compdef
 source $ZSH_CONFIG_PATH/completion/compdef.zsh
-
-
