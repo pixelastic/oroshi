@@ -1,0 +1,27 @@
+# Boolean: is the given file a BATS file?
+# Usage:
+# $ is-bats /path/to/test.bats         # exit 0 (.bats extension)
+# $ is-bats /path/to/helper            # exit 0 if ft=bats modeline on line 1
+setopt local_options err_return
+
+local filepath="$1"
+
+# Symlinks and non-regular-files
+[[ -L "$filepath" ]] && return 1
+[[ ! -f "$filepath" ]] && return 1
+
+# .bats extension
+[[ "$filepath" == *.bats ]] && return 0
+
+# Has a non-bats extension
+local ext="${filepath:e}"
+[[ "$ext" != "" ]] && return 1
+
+# No extension: check for ft=bats filetype marker on line 1
+local firstLine="$(head -1 "$filepath")"
+# Note: We split in two lines so nvim doesn't actually apply the modeline
+local vimModeline="# vim: set "
+vimModeline+="ft=bats:"
+[[ "$firstLine" == "$vimModeline" ]] && return 0
+
+return 1

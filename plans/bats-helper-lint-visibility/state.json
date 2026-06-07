@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-is-bats-and-modeline.md",
-    "done": false,
+    "done": true,
+    "recap": "Created is-bats predicate (ft=bats modeline + .bats extension detection), full test suite, and fixed modelines + noRunZsh disables in both helper files.",
     "blocked_by": []
   },
   {

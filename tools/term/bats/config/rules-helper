@@ -1,4 +1,4 @@
-# vim: set ft=bash:
+# vim: set ft=bats:
 # Helpers for testing lint rule functions in isolation.
 # Each test file must set RULE_FILE, RULE_FN, and RULE_FIXTURE (e.g. "test.zsh" or "test.lua").
 
@@ -12,6 +12,7 @@ run_rule() {
   [[ -z "$BATS_TMP_DIR" ]] && bats_tmp_dir
   local file="$BATS_TMP_DIR/${ruleFixture}"
   printf '%s\n' "$@" > "$file"
+  # bats-lint-disable noRunZsh
   run zsh -c "source '${rulePath}'; ${ruleFn} '${file}'"
 }
 
@@ -19,6 +20,7 @@ run_rule() {
 # Asserts output contains a ▮-separated violation with the given code and line number.
 expect_rule_violation() {
   local code="$1" line="$2"
+  # shellcheck disable=SC2154
   [[ "$output" == *"${code}"* ]]
   [[ "$output" == *"${_SEP}${line}${_SEP}"* ]]
 }

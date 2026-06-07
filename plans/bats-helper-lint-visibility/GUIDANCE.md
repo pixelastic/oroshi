@@ -38,3 +38,10 @@ Make `tools/term/bats/config/helper` and `tools/term/bats/config/rules-helper` v
 ## Discoveries
 
 _Append findings here after each issue, as `### Issue XX — short title` with bullet points._
+
+### Issue 01 — is-bats and modeline
+
+- The bats-lint disable comment format is `# bats-lint-disable noRunZsh` (hyphen before `disable`, space-separated rule code) — NOT `# bats-lint disable=noRunZsh` as written in the issue spec. The actual format is derived from `lint-custom-run --disable-prefix bats-lint-disable`, which produces the pattern `# bats-lint-disable <ruleCode>`.
+- `helper` is a bash/bats context file — SC2155 applies and requires splitting `local`/assignment. This contradicts the ZSH `local var="$(cmd)"` convention, which only applies to autoload functions.
+- `rules-helper` references BATS magic variable `output` in `expect_rule_violation()` — shellcheck flags SC2154 since it doesn't know about BATS-injected variables. Fixed with inline `# shellcheck disable=SC2154`.
+- ZSH autoload functions must not contain `vim: set ft=<something>:` as a literal substring in the last 5 lines — NeoVim reads these as modelines from the last-N-lines scan and applies them. `is-bats` had `[[ "$firstLine" == "# vim: set ft=bats:" ]]` in its last lines; fixed by splitting the string across two assignments so the literal `vim: set ft=bats:` never appears in the file.
