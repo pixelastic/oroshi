@@ -2,13 +2,13 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/worktree/git-worktree-list-raw"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/worktree/git-worktree-list-raw"
   export TMP_DIRECTORY="$BATS_TMP_DIR"
   export OROSHI_WORKTREES_DIR="$TMP_DIRECTORY/worktrees"
   mkdir -p "$OROSHI_WORKTREES_DIR"
 
   git init "$TMP_DIRECTORY/my-repo"
-  cd "$TMP_DIRECTORY/my-repo"
+  cd "$TMP_DIRECTORY/my-repo" || return 1
   git commit --allow-empty -m "init"
   git worktree add "$OROSHI_WORKTREES_DIR/my-repo--fix_bug" -b fix/bug
   git worktree add "$OROSHI_WORKTREES_DIR/my-repo--feat_dark-mode" -b feat/dark-mode
@@ -44,8 +44,9 @@ teardown() {
 }
 
 @test "works from inside a linked worktree" {
-  cd "$OROSHI_WORKTREES_DIR/my-repo--fix_bug"
-  bats_run_zsh "$CURRENT"
+  local script="$BATS_TMP_DIR/from-wt.zsh"
+  printf 'cd "%s"\ngit-worktree-list-raw\n' "$OROSHI_WORKTREES_DIR/my-repo--fix_bug" >"$script"
+  bats_run_zsh "$script"
   [ "$status" -eq 0 ]
   [ "${#lines[@]}" -eq 2 ]
 }
