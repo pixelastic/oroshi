@@ -77,6 +77,12 @@ Prior art: `rule-no-run-zsh.zsh`, `rule-no-inline-function.zsh`
 
 - SC2030/SC2031 (`export VAR=...` inside `@test` blocks): shellcheck flags these as local-to-subshell modifications. False positives in BATS context — added both to global `excludedRules` in `bats-lint-shellcheck.zsh`.
 
+### Issue 21 — currentScriptVar rule
+
+- Pattern `^[[:space:]]*([A-Z_][A-Z0-9_]*)=` already excludes `local` prefix: `local` starts with lowercase `l`, which fails the `[A-Z_]` class. No explicit `local` guard needed.
+- Single-quoted `'$VAR'` in ZSH regex strings triggers SC2016. Workaround: `local dollar='$'` + double-quoted interpolation `"\\${dollar}VARNAME"` avoids single-quoted `$` entirely.
+- Dynamic messages (containing `${varname}`) still belong in a `local msg=` variable inside the loop — consistent with all other rules that use `local msg=` at function top.
+
 ### Issue 01 — lint pass bats-lint (meta domain)
 
 - 3 `noInlineFunction` violations in `bats-lint.bats` (lines 29, 31, 42): inline JSON-producing stubs exceeded 90 chars. Decision: **fix** (split to multi-line). Short stubs in the same file (≤ 90 chars, single instruction) are compliant and stay inline — the rule deliberately allows those.

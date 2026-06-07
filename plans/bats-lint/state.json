@@ -142,7 +142,8 @@
   {
     "id": "21",
     "issue": "issues/21-rule-current-script-var.md",
-    "done": false,
+    "done": true,
+    "recap": "Added currentScriptVar rule: flags non-CURRENT variable names assigned $BATS_TEST_DIRNAME/../{basename}. Registered in bats-lint-custom.zsh; renamed SUT var to CURRENT in 6 bats files.",
     "blocked_by": []
   },
   {

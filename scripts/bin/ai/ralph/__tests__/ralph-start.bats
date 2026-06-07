@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  RALPH_START="$BATS_TEST_DIRNAME/../ralph-start"
+  CURRENT="$BATS_TEST_DIRNAME/../ralph-start"
   mkdir -p "$BATS_TMP_DIR/plan-dir/issues"
   export PLAN_DIR="$BATS_TMP_DIR/plan-dir"
 }
@@ -15,7 +15,7 @@ teardown() {
   printf '[
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]}
   ]' >"$PLAN_DIR/state.json"
-  bats_run_zsh "$RALPH_START" "$PLAN_DIR"
+  bats_run_zsh "$CURRENT" "$PLAN_DIR"
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.status')" = "ready" ]
   [ "$(echo "$output" | jq -r '.id')" = "01" ]
@@ -27,7 +27,7 @@ teardown() {
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":[]},
     {"id":"03","issue":"issues/03-baz.md","done":false,"blocked_by":[]}
   ]' >"$PLAN_DIR/state.json"
-  bats_run_zsh "$RALPH_START" "$PLAN_DIR"
+  bats_run_zsh "$CURRENT" "$PLAN_DIR"
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.id')" = "02" ]
 }
@@ -37,7 +37,7 @@ teardown() {
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]},
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":["01"]}
   ]' >"$PLAN_DIR/state.json"
-  bats_run_zsh "$RALPH_START" "$PLAN_DIR"
+  bats_run_zsh "$CURRENT" "$PLAN_DIR"
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.id')" = "01" ]
 }
@@ -46,7 +46,7 @@ teardown() {
   printf '[
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]}
   ]' >"$PLAN_DIR/state.json"
-  bats_run_zsh "$RALPH_START" "$PLAN_DIR"
+  bats_run_zsh "$CURRENT" "$PLAN_DIR"
   [ "$status" -eq 0 ]
   [[ "$(echo "$output" | jq -r '.issue')" == /* ]]
   [[ "$(echo "$output" | jq -r '.state')" == /* ]]
@@ -59,7 +59,7 @@ teardown() {
   printf '[
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]}
   ]' >"$PLAN_DIR/state.json"
-  bats_run_zsh "$RALPH_START" "$PLAN_DIR"
+  bats_run_zsh "$CURRENT" "$PLAN_DIR"
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.issue')" = "$PLAN_DIR/issues/01-foo.md" ]
 }
@@ -69,7 +69,7 @@ teardown() {
     {"id":"01","issue":"issues/01-foo.md","done":true,"blocked_by":[]},
     {"id":"02","issue":"issues/02-bar.md","done":true,"blocked_by":[]}
   ]' >"$PLAN_DIR/state.json"
-  bats_run_zsh "$RALPH_START" "$PLAN_DIR"
+  bats_run_zsh "$CURRENT" "$PLAN_DIR"
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.status')" = "finished" ]
 }
@@ -79,19 +79,19 @@ teardown() {
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":["02"]},
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":["01"]}
   ]' >"$PLAN_DIR/state.json"
-  bats_run_zsh "$RALPH_START" "$PLAN_DIR"
+  bats_run_zsh "$CURRENT" "$PLAN_DIR"
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.status')" = "deadlocked" ]
 }
 
 @test "exits 1 when state.json is missing" {
-  bats_run_zsh "$RALPH_START" "$PLAN_DIR"
+  bats_run_zsh "$CURRENT" "$PLAN_DIR"
   [ "$status" -eq 1 ]
 }
 
 @test "exits 1 when state.json is malformed" {
   printf 'not valid json' >"$PLAN_DIR/state.json"
-  bats_run_zsh "$RALPH_START" "$PLAN_DIR"
+  bats_run_zsh "$CURRENT" "$PLAN_DIR"
   [ "$status" -eq 1 ]
 }
 
@@ -101,7 +101,7 @@ teardown() {
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]},
     {"id":"02","issue":"issues/02-bar.md","done":false,"blocked_by":[]}
   ]' >"$PLAN_DIR/state.json"
-  bats_run_zsh "$RALPH_START" "$PLAN_DIR"
+  bats_run_zsh "$CURRENT" "$PLAN_DIR"
   [ "$status" -eq 0 ]
   [ "$(echo "$output" | jq -r '.id')" = "01" ]
 }
