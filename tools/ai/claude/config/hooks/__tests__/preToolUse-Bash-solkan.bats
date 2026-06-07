@@ -1,9 +1,8 @@
 bats_load_library 'helper'
 
-SCRIPT="$BATS_TEST_DIRNAME/../preToolUse-Bash-solkan.zsh"
-
 setup() {
   bats_tmp_dir
+  SCRIPT="$BATS_TEST_DIRNAME/../preToolUse-Bash-solkan.zsh"
   CURRENT="$BATS_TMP_DIR/caller.zsh"
   printf 'preToolUse-Bash-solkan "$@"\n' >"$CURRENT"
   local hooksDir

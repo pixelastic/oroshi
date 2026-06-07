@@ -1,9 +1,8 @@
 bats_load_library 'helper'
 
-SCRIPT="$BATS_TEST_DIRNAME/../preToolUse-Bash-rtk.zsh"
-
 setup() {
   bats_tmp_dir
+  SCRIPT="$BATS_TEST_DIRNAME/../preToolUse-Bash-rtk.zsh"
   CURRENT="$BATS_TMP_DIR/caller.zsh"
   printf 'preToolUse-Bash-rtk "$@"\n' >"$CURRENT"
   printf "source '%s'\n" "$SCRIPT" > "$BATS_TMP_DIR/mock.zsh"
@@ -30,7 +29,10 @@ teardown() { bats_cleanup; }
 }
 
 @test "is idempotent when command already uses RTK without calling rtk-can-rewrite" {
-  rtk-can-rewrite() { touch "$BATS_TMP_DIR/unexpected-call"; return 1; }
+  rtk-can-rewrite() {
+    touch "$BATS_TMP_DIR/unexpected-call"
+    return 1
+  }
   bats_mock rtk-can-rewrite
 
   bats_run_zsh "$CURRENT" "rtk git status"

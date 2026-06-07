@@ -1,9 +1,8 @@
 bats_load_library 'helper'
 
-SCRIPT="$BATS_TEST_DIRNAME/../preToolUse-Bash"
-
 setup() {
   bats_tmp_dir
+  SCRIPT="$BATS_TEST_DIRNAME/../preToolUse-Bash"
   export CLAUDE_HOOKS_LOG_DIR="$BATS_TMP_DIR"
   export CLAUDE_SESSIONS_DIR="$BATS_TMP_DIR"
 }
@@ -11,7 +10,9 @@ setup() {
 teardown() { bats_cleanup; }
 
 @test "allow with updatedInput when solkan allows and RTK does not rewrite" {
-  preToolUse-Bash-solkan() { print '{"isAllowed":true,"commands":{"allowed":["echo"],"rejected":[]}}'; }
+  preToolUse-Bash-solkan() {
+    print '{"isAllowed":true,"commands":{"allowed":["echo"],"rejected":[]}}'
+  }
   bats_mock preToolUse-Bash-solkan
 
   preToolUse-Bash-rtk() { print -- "$1"; }
@@ -24,7 +25,9 @@ teardown() { bats_cleanup; }
 }
 
 @test "allow with updatedInput.command when solkan allows and RTK rewrites" {
-  preToolUse-Bash-solkan() { print '{"isAllowed":true,"commands":{"allowed":["git"],"rejected":[]}}'; }
+  preToolUse-Bash-solkan() {
+    print '{"isAllowed":true,"commands":{"allowed":["git"],"rejected":[]}}'
+  }
   bats_mock preToolUse-Bash-solkan
 
   preToolUse-Bash-rtk() { print -- "rtk $1"; }
@@ -114,7 +117,9 @@ teardown() { bats_cleanup; }
 }
 
 @test "hook logs to CLAUDE_HOOKS_LOG_DIR" {
-  preToolUse-Bash-solkan() { print '{"isAllowed":true,"commands":{"allowed":["echo"],"rejected":[]}}'; }
+  preToolUse-Bash-solkan() {
+    print '{"isAllowed":true,"commands":{"allowed":["echo"],"rejected":[]}}'
+  }
   bats_mock preToolUse-Bash-solkan
 
   preToolUse-Bash-rtk() { print -- "$1"; }

@@ -73,6 +73,10 @@ Prior art: `rule-no-run-zsh.zsh`, `rule-no-inline-function.zsh`
 
 - SC2088 fires on `'~/...'` in single-quoted POSIX `[ ]` assertions — shellcheck flags tilde in any quoted context. Inline fix (`# shellcheck disable=SC2088`) must go on the **line before** the assertion; putting it at end-of-line causes SC1072 ("Unexpected shellcheck annotation") because shellcheck can't parse the bats `@test` block past the comment.
 
+### Issue 10 — lint pass tools/ai
+
+- SC2030/SC2031 (`export VAR=...` inside `@test` blocks): shellcheck flags these as local-to-subshell modifications. False positives in BATS context — added both to global `excludedRules` in `bats-lint-shellcheck.zsh`.
+
 ### Issue 01 — lint pass bats-lint (meta domain)
 
 - 3 `noInlineFunction` violations in `bats-lint.bats` (lines 29, 31, 42): inline JSON-producing stubs exceeded 90 chars. Decision: **fix** (split to multi-line). Short stubs in the same file (≤ 90 chars, single instruction) are compliant and stay inline — the rule deliberately allows those.

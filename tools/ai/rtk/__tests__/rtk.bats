@@ -1,9 +1,8 @@
 bats_load_library 'helper'
 
-FILTERS_TOML="$BATS_TEST_DIRNAME/../config/filters.toml"
-
 setup() {
   bats_tmp_dir
+  FILTERS_TOML="$BATS_TEST_DIRNAME/../config/filters.toml"
   mkdir -p "$BATS_TMP_DIR/rtk"
   cp "$FILTERS_TOML" "$BATS_TMP_DIR/rtk/filters.toml"
   # force rtk to use the local filters.toml instead of the global one

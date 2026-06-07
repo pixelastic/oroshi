@@ -65,7 +65,8 @@
   {
     "id": "10",
     "issue": "issues/10-lint-pass-tools-ai.md",
-    "done": false,
+    "done": true,
+    "recap": "Moved top-level SCRIPT/STOP_HOOK/FILTERS_TOML into setup() across 5 files; split 4 overlong inline functions to multi-line; added SC2030+SC2031 to shellcheck excludes (false positives from @test subshells). statusline.bats was pre-clean.",
     "blocked_by": ["09"]
   },
   {

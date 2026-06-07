@@ -1,9 +1,8 @@
 bats_load_library 'helper'
 
-STOP_HOOK="$BATS_TEST_DIRNAME/../stop"
-
 setup() {
   bats_tmp_dir
+  STOP_HOOK="$BATS_TEST_DIRNAME/../stop"
   audio-play-oroshi() { echo "$1" > "$BATS_TMP_DIR/sound-played"; }
   bats_mock audio-play-oroshi
 }

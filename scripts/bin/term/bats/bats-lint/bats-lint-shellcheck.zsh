@@ -13,6 +13,8 @@ bats-lint-shellcheck() {
   excludedRules+=(SC2016) # $var in single-quoted printf is intentional in bats fixtures
   excludedRules+=(SC2155) # Allow local var="$(cmd)"
   excludedRules+=(SC2317) # Declaring unused functions for mock is ok
+  excludedRules+=(SC2030) # Modification of var is local to subshell caused by @test
+  excludedRules+=(SC2031) # Var was modified in a subshell; change might be lost in @test
 
   # Exclude directories from the inputs
   local -a input=()
