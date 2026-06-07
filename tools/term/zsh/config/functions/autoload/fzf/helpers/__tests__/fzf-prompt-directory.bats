@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/fzf/helpers/fzf-prompt-directory"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/fzf/helpers/fzf-prompt-directory"
   bats_git_worktree 'fix/bug'
 
   projects-load-definitions() {
@@ -11,6 +11,7 @@ setup() {
     PROJECTS[my-project:background:ansi]=100
     PROJECTS[my-project:foreground:ansi]=255
     PROJECTS[my-project:icon]=X
+    # shellcheck disable=SC2034
     PROJECTS[my-project:hideNameInPrompt]=false
   }
   bats_mock projects-load-definitions
