@@ -22,8 +22,7 @@ fzf-source() {
   # Reverse history, strip ZSH extended history prefix (: timestamp:elapsed;), deduplicate, remove empty lines
   tac "$HISTFILE" |
     sed 's/^: [0-9]*:[0-9]*;//' |
-    awk '! seen[$0]++' |
-    grep -v '^[[:space:]]*$'
+    awk 'NF && ! seen[$0]++'
 }
 
 fzf-options() {
