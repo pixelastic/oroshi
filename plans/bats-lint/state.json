@@ -141,5 +141,11 @@
     "issue": "issues/21-rule-current-script-var.md",
     "done": false,
     "blocked_by": []
+  },
+  {
+    "id": "22",
+    "issue": "issues/22-cleanup-redundant-shellcheck-disables.md",
+    "done": false,
+    "blocked_by": ["17"]
   }
 ]
