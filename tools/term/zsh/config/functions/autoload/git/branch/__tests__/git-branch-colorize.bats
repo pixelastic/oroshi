@@ -2,8 +2,8 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'repo'
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/branch/git-branch-colorize"
-  cd "$BATS_GIT_DIR"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/branch/git-branch-colorize"
+  cd "$BATS_GIT_DIR" || return
   git-branch-color() { echo 87; }
   bats_mock git-branch-color
   git-branch-push-status() { echo 'never_pushed'; }

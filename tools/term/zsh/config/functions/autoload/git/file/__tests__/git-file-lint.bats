@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/file/git-file-lint"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/file/git-file-lint"
   cd "$BATS_GIT_DIR" || return
 }
 

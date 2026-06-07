@@ -2,11 +2,11 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/file/git-file-edit"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/file/git-file-edit"
   echo "hello" > "$BATS_GIT_DIR/file.txt"
   bats_git add file.txt
   bats_git commit --quiet -m "initial"
-  cd "$BATS_GIT_DIR"
+  cd "$BATS_GIT_DIR" || return
 }
 
 teardown() {

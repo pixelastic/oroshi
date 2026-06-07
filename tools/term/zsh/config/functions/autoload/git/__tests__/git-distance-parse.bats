@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/git-distance-parse"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/git-distance-parse"
 }
 
 teardown() {

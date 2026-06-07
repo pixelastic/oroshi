@@ -98,7 +98,8 @@
   {
     "id": "13",
     "issue": "issues/13-lint-pass-git-utils.md",
-    "done": false,
+    "done": true,
+    "recap": "Fixed preferZshAutoload in all 16 files (CURRENT path → $OROSHI_ZSH_AUTOLOAD/git/…); added || return to 5 bare cd calls in setup(); 96/96 bats pass.",
     "blocked_by": ["12"]
   },
   {

@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/file/git-file-list-dirty-raw"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/file/git-file-list-dirty-raw"
   echo "hello" > "$BATS_GIT_DIR/tracked.txt"
   bats_git add tracked.txt
   bats_git commit --quiet -m "add tracked"

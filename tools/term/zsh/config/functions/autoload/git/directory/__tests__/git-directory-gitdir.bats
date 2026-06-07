@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'repo'
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/directory/git-directory-gitdir"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/directory/git-directory-gitdir"
   bats_git_worktree 'fix/bug'
 }
 
