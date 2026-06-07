@@ -37,7 +37,8 @@
   {
     "id": "06",
     "issue": "issues/06-skill-md-update.md",
-    "done": false,
+    "done": true,
+    "recap": "Updated sidequest SKILL.md: slug reduced to at most 2 words, clipboard references removed, confirmation output 'Sidequest created in tab <slug>' added after sidequest-end.",
     "blocked_by": ["05"]
   }
 ]

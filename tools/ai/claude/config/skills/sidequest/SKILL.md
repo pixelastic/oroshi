@@ -7,7 +7,8 @@ description: Use when user says "sidequest" or "handoff" — compact conversatio
 
 ## Overview
 
-Compact the current conversation into a sidequest document; copy the launch command to the clipboard.
+Compact the current conversation into a sidequest document.
+This will create a new Worktree, Kitty tab, and Claude session.
 
 ---
 
@@ -15,7 +16,7 @@ Compact the current conversation into a sidequest document; copy the launch comm
 
 ### Step 1 — Derive slug
 
-Derive a 3-5 word kebab-case slug from the conversation content
+Derive a kebab-case slug of at most 2 words from the conversation content
 
 ### Step 2 — Write document
 
@@ -25,7 +26,7 @@ Derive a 3-5 word kebab-case slug from the conversation content
 
 ### Step 3 — Finalize
 
-Run `sidequest-end <filepath>`.
+Run `sidequest-end <filepath>`, then output: "Sidequest created in tab `<slug>`".
 
 ---
 
@@ -34,15 +35,16 @@ Run `sidequest-end <filepath>`.
 | Rationalization | Reality |
 |---|---|
 | "I'll copy content from the PRD/plan, it's easier" | Don't duplicate — reference by path. Duplication goes stale. |
-| "I don't need to call sidequest-end, the file is enough" | Without `sidequest-end`, the launch command never reaches the clipboard. |
+| "I don't need to call sidequest-end, the file is enough" | Without `sidequest-end`, no Worktree or Kitty tab is created. |
 
 ---
 
 ## Checklist
 
-- [ ] Slug derived (3-5 words, kebab-case)
+- [ ] Slug derived (at most 2 words, kebab-case)
 - [ ] File at `/tmp/oroshi/claude/sidequests/<slug>.md`
 - [ ] `## Agent Instructions` section is verbatim and first in the document
 - [ ] Artifacts referenced by path, not duplicated
 - [ ] Skills suggested for next session (if applicable)
-- [ ] `sidequest-end <filepath>` run — launch command on clipboard
+- [ ] `sidequest-end <filepath>` run — Worktree, Kitty tab, and Claude session created
+- [ ] Output "Sidequest created in tab `<slug>`"

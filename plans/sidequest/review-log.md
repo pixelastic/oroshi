@@ -80,3 +80,17 @@ plans/sidequest/scaffold/05-sidequest-end-update.bats
 ```
 **Problem:** Reviewer flagged `file` should be in `setup()` per memory rule.
 **Reason skipped:** The memory rule states "CURRENT and all test vars go inside setup(), not at file top level". The contrast is file-top-level vs setup(), not test-body vs setup(). Test-specific vars in the test body are consistent with all other tests in the project (sidequest.bats, etc.).
+
+## Issue 06 — skill-md-update
+
+### Standards: Steps missing Goal/Exit criterion fields
+
+**Problem:** Steps 1, 2, 3 lack `**Goal:**` and `**Exit criterion:**` fields required by `skill-writer/references/skill-template.md`.
+
+**Reason skipped:** Pre-existing issue, not introduced by this diff. Fixing it is out of scope for issue 06.
+
+### Spec: Target file path differs from spec
+
+**Problem:** Spec says to update `/home/tim/.claude/skills/sidequest/SKILL.md`; diff modifies `tools/ai/claude/config/skills/sidequest/SKILL.md`.
+
+**Reason skipped:** Intentional deviation — editing the worktree source is the correct approach (symlinked to `~/.claude`). The spec path was wrong; this was fixed as part of the meta-discussion that preceded issue 06.
