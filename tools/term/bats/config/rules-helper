@@ -20,7 +20,6 @@ run_rule() {
 # Asserts output contains a ▮-separated violation with the given code and line number.
 expect_rule_violation() {
   local code="$1" line="$2"
-  # shellcheck disable=SC2154
   [[ "$output" == *"${code}"* ]]
   [[ "$output" == *"${_SEP}${line}${_SEP}"* ]]
 }

@@ -31,6 +31,14 @@ bats-lint-shellcheck() {
     "${input[@]}")"
   [[ "$scOutput" == "" ]] && scOutput="[]"
 
+  # Filter SC2154 for BATS magic variables injected by `run` (output, status, lines, line).
+  # ShellCheck cannot see these assignments, so it always flags them as false positives.
+  # Message format: "<varname> is referenced but not assigned."
+  local batsRunVars='["output","status","lines","line"]'
+  scOutput="$(printf '%s' "$scOutput" | jq -c \
+    --argjson vars "$batsRunVars" \
+    '[.[] | select((.code == 2154 and ((.message | split(" ")[0]) as $v | $vars | contains([$v]))) | not)]')"
+
   # Transform ShellCheck JSON: add "SC" prefix to integer code, drop fix suggestions
   local transformed="$(printf '%s\n' "$scOutput" | jq -c '[.[] | .code = "SC" + (.code | tostring) | del(.fix)]')"
 
