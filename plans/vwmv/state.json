@@ -1,0 +1,14 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-migrate-git-branch-rename.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-implement-git-worktree-rename.md",
+    "done": false,
+    "blocked_by": ["01"]
+  }
+]
