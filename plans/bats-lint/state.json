@@ -91,7 +91,8 @@
   {
     "id": "12",
     "issue": "issues/12-lint-pass-text-utils.md",
-    "done": false,
+    "done": true,
+    "recap": "Fixed preferZshAutoload + SC2164 in git-directory-dirty-count.bats and git-file-list-dirty-raw.bats; other 6 text-* files were already clean.",
     "blocked_by": ["11"]
   },
   {

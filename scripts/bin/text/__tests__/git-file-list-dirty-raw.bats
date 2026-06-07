@@ -2,10 +2,10 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/file/git-file-list-dirty-raw"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/file/git-file-list-dirty-raw"
   export TMP_DIRECTORY="$BATS_TMP_DIR"
   git init "$TMP_DIRECTORY/my-repo"
-  cd "$TMP_DIRECTORY/my-repo"
+  cd "$TMP_DIRECTORY/my-repo" || return
   git config user.email "test@test.com"
   git config user.name "Test"
   echo "hello" > tracked.txt

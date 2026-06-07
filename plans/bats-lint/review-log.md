@@ -1,3 +1,14 @@
+## Issue 12 — lint pass text utils
+
+### 6 of 8 files have no diff
+
+```
+The diff only touches 2 of the 8 required files. The other 6 are entirely absent.
+```
+
+**Problem:** Spec reviewer flagged that 6 text-* files were not changed.
+**Reason skipped:** Those 6 files had zero bats-lint violations before this session. The scaffold test verifies all 8 pass `bats-lint`; all 8 do. No changes were needed for the clean files.
+
 ## Issue 10 — lint pass tools/ai
 
 ### statusline.bats has no diff
