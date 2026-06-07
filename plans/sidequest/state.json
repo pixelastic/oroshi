@@ -30,7 +30,8 @@
   {
     "id": "05",
     "issue": "issues/05-sidequest-end-update.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced clipboard-write logic with a call to sidequest <slug> --prompt @<filepath> --no-focus; slug extracted from basename.",
     "blocked_by": ["03", "04"]
   },
   {

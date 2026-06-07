@@ -1,7 +1,6 @@
 #!/usr/bin/env zsh
 # Called by the /sidequest skill at the end
-# Copy in the clipboard what to paste to a new Claude session to continue after
-# the sidequest
+# Launches a new sidequest session from the given handoff file
 # Usage:
 # $ sidequest-end /tmp/oroshi/claude/sidequests/XXXXXX.md
 set -e
@@ -18,4 +17,5 @@ local file="$1"
   exit 1
 }
 
-print "@${file}" | clipboard-write
+local slug="${file:t:r}"
+sidequest "$slug" --prompt "@${file}" --no-focus

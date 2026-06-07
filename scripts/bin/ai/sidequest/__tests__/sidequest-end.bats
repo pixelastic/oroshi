@@ -19,14 +19,14 @@ teardown() {
   [ "$status" -eq 1 ]
 }
 
-@test "valid file: calls clipboard-write with @<filepath>" {
-  file="$BATS_TMP_DIR/sidequest.md"
+@test "valid file: calls sidequest with slug, --prompt @<filepath>, --no-focus" {
+  file="$BATS_TMP_DIR/fix-ralph.md"
   touch "$file"
-  clipboard-write() { cat >"$BATS_TMP_DIR/clipboard-in"; }
-  bats_mock clipboard-write
+  sidequest() { echo "SIDEQUEST:$*"; }
+  bats_mock sidequest
 
   bats_run_zsh "$CURRENT" "$file"
 
   [ "$status" -eq 0 ]
-  [[ "$(cat "$BATS_TMP_DIR/clipboard-in")" == "@${file}" ]]
+  [[ "$output" == "SIDEQUEST:fix-ralph --prompt @${file} --no-focus" ]]
 }
