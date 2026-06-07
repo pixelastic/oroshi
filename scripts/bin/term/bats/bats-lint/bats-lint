@@ -10,20 +10,45 @@ local dir="${0:A:h}"
 source "${dir}/bats-lint-shellcheck.zsh"
 source "${dir}/bats-lint-custom.zsh"
 
-# Exclude directories from the inputs
-local -a input=()
+# Keep only valid bats files
+local -a valid=()
+local -a invalid=()
 for item in "$@"; do
+  # Skip directories
   [[ -d $item ]] && continue
-  input+=("$item")
+  # Keep track of non-bats files
+  if ! is-bats "$item"; then
+    invalid+=("$item")
+    continue
+  fi
+
+  valid+=("$item")
 done
 
-[[ ${#input} -eq 0 ]] && printf '[]\n' && exit 0
+# No files
+[[ ${#valid[@]} -eq 0 && ${#invalid[@]} -eq 0 ]] && printf '[]\n' && exit 0
 
-# Run both linters via process substitution — no temp files
-local merged="$(jq -cs 'add // []' \
-  <(bats-lint-shellcheck "${input[@]}") \
-  <(bats-lint-custom "${input[@]}"))"
+# Generate notBats violations for non-bats files
+local invalid_json='[]'
+if [[ ${#invalid[@]} -gt 0 ]]; then
+  invalid_json="$(
+    for file in "${invalid[@]}"; do
+      jq -n --arg f "$file" \
+        '{file:$f,code:"notBats",level:"error",line:1,endLine:1,column:1,endColumn:1,message:"Not a bats file"}'
+    done | jq -cs '.'
+  )"
+fi
 
+# Run sub-linters on valid bats files
+local valid_json='[]'
+if [[ ${#valid[@]} -gt 0 ]]; then
+  valid_json="$(jq -cs 'add // []' \
+    <(bats-lint-shellcheck "${valid[@]}") \
+    <(bats-lint-custom "${valid[@]}"))"
+fi
+
+# Merge and output
+local merged="$(jq -cs 'add // []' <(printf '%s' "$invalid_json") <(printf '%s' "$valid_json"))"
 printf '%s\n' "$merged"
 [[ "$(printf '%s' "$merged" | jq 'length')" -gt 0 ]] && exit 1
 exit 0

@@ -79,7 +79,8 @@
   {
     "id": "18",
     "issue": "issues/18-bats-lint-file-type-guard.md",
-    "done": false,
+    "done": true,
+    "recap": "Added is-bats partition in bats-lint: invalid files emit notBats violations, sub-linters only called on valid files. Added 2 new tests + is-bats mocks to all existing tests.",
     "blocked_by": []
   },
   {

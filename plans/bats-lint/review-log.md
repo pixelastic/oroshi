@@ -1,3 +1,29 @@
+## Issue 18 — bats-lint file-type guard
+
+### Standards: `local` at script scope (bats-lint)
+```zsh
+local invalid_json='[]'
+local valid_json='[]'
+local merged="$(jq ...)"
+```
+**Problem:** Reviewer flagged `local` outside a function as a violation.
+**Reason skipped:** Pre-existing pattern throughout `bats-lint`. `zsh-lint` runs clean — the linter does not flag this. Not introduced by this diff.
+
+### Standards: `local` vars inside `@test` blocks (bats-lint.bats)
+```bats
+local file="$BATS_TMP_DIR/test.zsh"
+```
+**Problem:** Reviewer cited `feedback_bats_setup_vars.md` — test vars should be in `setup()`.
+**Reason skipped:** That memory says "not at file top level", not "not inside @test". Locals inside `@test` are the pre-existing pattern across all tests in this file.
+
+### Spec: "sub-linters NOT called" — weak assertion
+**Problem:** Test verifies sub-linter output is absent, not that they were never invoked.
+**Reason skipped:** Behavioral output check is the standard bats approach. Invocation counting would require additional mock infrastructure. Output absence is sufficient proof.
+
+### Spec: Mix test doesn't assert bats-lint-custom was called with valid file only
+**Problem:** Test only checks SC2086 in output, not that custom wasn't called with invalid file.
+**Reason skipped:** The `notBats`+`SC2086` output check fully covers the spec's "merges both violation sets" acceptance criterion.
+
 ## Issue 17 — global cleanup pass
 
 ### Standards: SCRIPT assigned before bats_tmp_dir in zsh-lint-shellcheck.bats
