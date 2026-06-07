@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-kitty-helper-claude-start.md",
-    "done": false,
+    "done": true,
+    "recap": "Renamed kitty-run-claude to kitty-helper-claude-start, added optional prompt arg passed directly to claude, updated kitty-window-toggle-claude reference.",
     "blocked_by": []
   },
   {

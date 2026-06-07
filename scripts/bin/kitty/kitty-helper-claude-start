@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+# Helper: run Claude in a kitty window, with optional initial prompt
+# Usage:
+# $ kitty-helper-claude-start              # interactive Claude, falls back to zsh
+# $ kitty-helper-claude-start "@/file.md"  # Claude with initial prompt
+set -e
+
+# Start from the git root to make resuming sessions easier
+local projectRoot="$(git-directory-root)"
+cd "$projectRoot"
+
+local prompt="$1"
+
+# Start Claude with initial prompt if provided
+if [[ "$prompt" != "" ]]; then
+  claude "$prompt"
+  exit 0
+fi
+
+# Start Claude interactively, then fall back to zsh when closed
+claude
+exec zsh
