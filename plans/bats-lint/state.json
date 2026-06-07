@@ -135,7 +135,8 @@
   {
     "id": "20",
     "issue": "issues/20-rule-prefer-batch-mock.md",
-    "done": false,
+    "done": true,
+    "recap": "Added preferBatchMock rule: flags 2nd+ bats_mock calls within the same @test block. Rule file, 6 tests, and registration in bats-lint-custom.zsh all added.",
     "blocked_by": []
   },
   {

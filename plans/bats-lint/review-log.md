@@ -1,3 +1,21 @@
+## Issue 20 — preferBatchMock rule
+
+### Standards: missing `setopt local_options err_return`
+```zsh
+batsLintRule_preferBatchMock() {
+  local code='preferBatchMock'
+```
+**Problem:** Reviewer flagged missing `setopt` for error protection.
+**Reason skipped:** Rule files are sourced helpers, not autoloaded functions. Existing rule files (`rule-no-run-zsh.zsh`, etc.) have none. Consistent with prior art.
+
+### Standards: missing `setup()`/`teardown()` and `run_this_rule` at top level
+**Problem:** Reviewer flagged `run_this_rule` at top level and no `setup()`/`teardown()`.
+**Reason skipped:** All existing rule test files follow this exact same pattern. Consistent with the issue spec's prescribed code and every prior rule test.
+
+### Standards: `local line` without initial value
+**Problem:** Reviewer cited `feedback_zsh_local_assignment.md` against split `local`/assignment.
+**Reason skipped:** That memory applies to command-substitution patterns. `local line` as a loop variable has no initial value to assign; existing rules use the same form.
+
 ## Issue 18 — bats-lint file-type guard
 
 ### Standards: `local` at script scope (bats-lint)
