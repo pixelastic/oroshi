@@ -119,7 +119,8 @@
   {
     "id": "16",
     "issue": "issues/16-lint-pass-lua-misc.md",
-    "done": false,
+    "done": true,
+    "recap": "Moved top-level vars into setup() in 3 lua files; replaced $OROSHI_ROOT paths with $OROSHI_ZSH_AUTOLOAD in epub2md/plan-list-raw/is-zsh; expanded 8 inline multi-instruction check() functions in oroshi-reload-fpath.bats. 4 files (rule-no-vim-deepcopy, wav2txt-openai, git-commit-is-before, better-rm) were already clean.",
     "blocked_by": ["15"]
   },
   {

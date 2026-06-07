@@ -2,10 +2,9 @@
 
 bats_load_library 'helper'
 
-LUA_TEST_PATH="${BATS_TEST_DIRNAME}/../lua-test-path"
-
 setup() {
   bats_tmp_dir
+  LUA_TEST_PATH="${BATS_TEST_DIRNAME}/../lua-test-path"
 }
 
 teardown() {

@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/plan/plan-list-raw"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/plan/plan-list-raw"
   mkdir -p "$BATS_GIT_DIR/plans/plan-a/issues"
   mkdir -p "$BATS_GIT_DIR/plans/plan-b"
 

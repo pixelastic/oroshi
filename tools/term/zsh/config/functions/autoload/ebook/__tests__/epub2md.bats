@@ -1,10 +1,9 @@
 bats_load_library 'helper'
 
-FIXTURE="$BATS_TEST_DIRNAME/fixtures/simple.epub"
-
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/ebook/epub2md"
+  FIXTURE="$BATS_TEST_DIRNAME/fixtures/simple.epub"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/ebook/epub2md"
   cp "$FIXTURE" "$BATS_TMP_DIR/simple.epub"
 }
 

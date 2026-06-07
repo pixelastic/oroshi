@@ -2,11 +2,10 @@
 
 bats_load_library 'helper'
 
-LUA_LINT_CUSTOM="${BATS_TEST_DIRNAME}/../lua-lint-custom"
-SEP=$'\u25ae'
-
 setup() {
   bats_tmp_dir
+  LUA_LINT_CUSTOM="${BATS_TEST_DIRNAME}/../lua-lint-custom"
+  SEP=$'\u25ae'
 }
 
 teardown() {
