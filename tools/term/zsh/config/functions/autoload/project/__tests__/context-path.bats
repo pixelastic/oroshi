@@ -1,7 +1,7 @@
 bats_load_library 'helper'
 
 setup() {
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/project/context-path"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/project/context-path"
   projects-load-definitions() { true; }
   bats_mock projects-load-definitions
 }

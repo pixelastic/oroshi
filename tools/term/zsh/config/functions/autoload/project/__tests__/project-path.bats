@@ -2,10 +2,11 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/project/project-path"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/project/project-path"
 
   projects-load-definitions() {
     typeset -gA PROJECTS
+    # shellcheck disable=SC2034
     PROJECTS[my-project:path]="$BATS_GIT_DIR/"
   }
   bats_mock projects-load-definitions

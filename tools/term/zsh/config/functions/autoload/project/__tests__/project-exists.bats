@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/project/project-exists"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/project/project-exists"
 
   projects-load-definitions() { typeset -gA PROJECTS; }
   bats_mock projects-load-definitions
@@ -15,6 +15,7 @@ teardown() {
 @test "known project with icon: returns exit 0" {
   projects-load-definitions() {
     typeset -gA PROJECTS
+    # shellcheck disable=SC2034
     PROJECTS[aberlaas:icon]="  "
   }
   bats_mock projects-load-definitions

@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/project/project-name"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/project/project-name"
   bats_git_worktree 'fix/bug'
   mkdir -p "$BATS_GIT_DIR/src"
   touch "$BATS_GIT_DIR/src/main.zsh"
@@ -113,6 +113,7 @@ teardown() {
   projects-load-definitions() {
     typeset -gA PROJECTS
     PROJECTS[catch-all:path]="$BATS_TMP_DIR/"
+    # shellcheck disable=SC2034
     PROJECTS[my-project:path]="$BATS_GIT_DIR/"
   }
   bats_mock projects-load-definitions

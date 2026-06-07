@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/project/context-root"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/project/context-root"
 
   projects-load-definitions() { true; }
   bats_mock projects-load-definitions

@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/project/context-badge"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/project/context-badge"
 
   project-name() { echo "my-project"; }
   bats_mock project-name
@@ -73,6 +73,7 @@ teardown() {
     PROJECTS[my-project:background:ansi]=100
     PROJECTS[my-project:foreground:ansi]=255
     PROJECTS[my-project:icon]=x
+    # shellcheck disable=SC2034
     PROJECTS[my-project:hideNameInPrompt]=1
   }
   bats_mock projects-load-definitions

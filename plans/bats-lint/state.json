@@ -58,7 +58,8 @@
   {
     "id": "09",
     "issue": "issues/09-lint-pass-project.md",
-    "done": false,
+    "done": true,
+    "recap": "Fixed preferZshAutoload in all 6 files (CURRENT path → $OROSHI_ZSH_AUTOLOAD/project/…); suppressed SC2034 false positive on PROJECTS associative array with # shellcheck disable on the line before each last assignment.",
     "blocked_by": ["08"]
   },
   {
