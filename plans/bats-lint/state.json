@@ -149,7 +149,8 @@
   {
     "id": "22",
     "issue": "issues/22-cleanup-redundant-shellcheck-disables.md",
-    "done": false,
+    "done": true,
+    "recap": "Removed SC2016 inline disable from zsh-lint-custom.bats and zsh-lint-shellcheck.bats (only 2 redundant disables found across entire repo); added audit test to bats-lint-shellcheck.bats to prevent recurrence.",
     "blocked_by": ["17"]
   }
 ]

@@ -1,5 +1,4 @@
 #!/usr/bin/env bats
-# shellcheck disable=SC2016  # $1 in single-quoted printf is intentional
 
 bats_load_library 'helper'
 
