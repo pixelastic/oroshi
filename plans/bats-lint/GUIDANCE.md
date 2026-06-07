@@ -69,6 +69,10 @@ Prior art: `rule-no-run-zsh.zsh`, `rule-no-inline-function.zsh`
 - `noTopLevelVar` in BATS: move constants assigned at file top level into `setup()` — no `local` needed, they'll be accessible in `@test` blocks.
 - **bats-lint inside `bats` tests = worktree version** (helper pins `OROSHI_ROOT` → worktree `scripts/bin` lands first in PATH). Terminal `bats-lint` = system version. To lint from terminal with worktree rules: call `scripts/bin/term/bats/bats-lint/bats-lint` directly.
 
+### Issue 07 — lint pass misc utils
+
+- SC2088 fires on `'~/...'` in single-quoted POSIX `[ ]` assertions — shellcheck flags tilde in any quoted context. Inline fix (`# shellcheck disable=SC2088`) must go on the **line before** the assertion; putting it at end-of-line causes SC1072 ("Unexpected shellcheck annotation") because shellcheck can't parse the bats `@test` block past the comment.
+
 ### Issue 01 — lint pass bats-lint (meta domain)
 
 - 3 `noInlineFunction` violations in `bats-lint.bats` (lines 29, 31, 42): inline JSON-producing stubs exceeded 90 chars. Decision: **fix** (split to multi-line). Short stubs in the same file (≤ 90 chars, single instruction) are compliant and stay inline — the rule deliberately allows those.

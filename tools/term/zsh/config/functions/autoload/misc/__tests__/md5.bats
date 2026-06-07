@@ -3,7 +3,7 @@ bats_load_library 'helper'
 # --- Default (full hash) ---
 
 setup() {
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/misc/md5"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/misc/md5"
 }
 
 @test "returns 32-char md5 hash" {

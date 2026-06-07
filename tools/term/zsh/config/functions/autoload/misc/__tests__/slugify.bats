@@ -3,7 +3,7 @@ bats_load_library 'helper'
 # --- Basic ---
 
 setup() {
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/misc/slugify"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/misc/slugify"
 }
 
 @test "multi-word sentence" {

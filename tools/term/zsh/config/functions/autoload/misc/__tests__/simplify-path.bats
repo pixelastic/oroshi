@@ -4,7 +4,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/misc/simplify-path"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/misc/simplify-path"
 }
 
 teardown() {
@@ -66,12 +66,14 @@ teardown() {
 
 @test "home prefix replaced with tilde" {
   bats_run_zsh "$CURRENT" "$HOME/a/b"
-  [ "$output" = "~/a/b" ]
+  # shellcheck disable=SC2088
+  [ "$output" = '~/a/b' ]
 }
 
 @test "home prefix replaced with tilde on truncated path" {
   bats_run_zsh "$CURRENT" "$HOME/a/b/c/d"
-  [ "$output" = "~/…/c/d" ]
+  # shellcheck disable=SC2088
+  [ "$output" = '~/…/c/d' ]
 }
 
 # --- --reply flag ---

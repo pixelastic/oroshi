@@ -44,7 +44,8 @@
   {
     "id": "07",
     "issue": "issues/07-lint-pass-misc-utils.md",
-    "done": false,
+    "done": true,
+    "recap": "Fixed preferZshAutoload in all 4 files (CURRENT path → $OROSHI_ZSH_AUTOLOAD/misc/…); suppressed SC2088 in simplify-path.bats with # shellcheck disable on 2 tilde-comparison assertions.",
     "blocked_by": ["06"]
   },
   {
