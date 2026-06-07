@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-sidequest-script.md",
-    "done": false,
+    "done": true,
+    "recap": "Created sidequest orchestrator script: calls git-worktree-create, derives worktree path from OROSHI_WORKTREES_DIR + git-github-project-name, opens kitty tab with kitty-helper-claude-start (with optional prompt), focused by default.",
     "blocked_by": ["01", "02"]
   },
   {

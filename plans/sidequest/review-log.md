@@ -49,3 +49,17 @@ bats_mock clipboard-write
 **Problem:** Spec reviewer flagged combining an inline function definition with `bats_mock` as incorrect, claiming `bats_mock` would override the inline function and break the stdin capture logic.
 
 **Reason skipped:** This is the established project pattern — `kitty-tab-create.bats` uses the same approach (define stub function, then call `bats_mock`). Tests pass, confirming the mock correctly intercepts `clipboard-write` stdin.
+
+## Issue 04 — sidequest orchestrator script
+
+### Spec: --cmd value may be two separate words instead of one quoted string
+
+```zsh
+local cmd="kitty-helper-claude-start"
+[[ "$prompt" != "" ]] && cmd="$cmd $prompt"
+kitty-tab-create "$slug" --cwd "$worktreePath" --cmd "$cmd" $focusFlag
+```
+
+**Problem:** Reviewer noted the test echoes all args as a flat string via `$*`, so it doesn't prove that `kitty-tab-create` receives `--cmd` as a single compound value.
+
+**Reason skipped:** `"$cmd"` is quoted, so zsh passes it as one argument to `kitty-tab-create`. `zparseopts --cmd:=flagCmd` captures the next token (`flagCmd[2]`), which is the full string `"kitty-helper-claude-start @/tmp/fix-ralph.md"`. Then `${=kittyCommand}` in `kitty-tab-create` does word-splitting to run the command correctly. False positive.
