@@ -1,13 +1,16 @@
 ---
 name: skill-writer
-description: Use when creating or updating a discipline-enforcing skill.
+description: Use when creating or updating skills.
 ---
 
 # Skill Writer
 
 ## Overview
 
-Creates discipline-enforcing skills that make agents comply with a process under pressure. Follows a TDD cycle: see the agent fail first, write the skill, verify compliance.
+Creates discipline-enforcing skills that make agents comply with a process under pressure.
+Follows a TDD cycle: see the agent fail first, write the skill, verify compliance.
+
+Skills are tracked inside the git root at `tools/ai/claude/config/skills/<name>/SKILL.md`.
 
 ## Core Workflow
 
@@ -158,6 +161,7 @@ skill-writer clean --name <name>
 
 | Rationalization | Reality |
 |---|---|
+| "`~/.claude/skills/<name>/SKILL.md` is where the skill lives, I'll edit it there" | That path is a symlink to the main branch, not the current worktree. Edit inside the git root. |
 | "The skill is clear enough, no need to test" | Clear to you ≠ clear to an agent under pressure. Test it. |
 | "The user approved it, that's enough validation" | User validates the goal. TDD validates the behavior. |
 | "It's just a small update, no need to re-test" | Any edit can introduce a loophole. PRESSURE after every change. |
