@@ -1,31 +1,35 @@
 #!/usr/bin/env zsh
 # Create a new Kitty tab with the given title
 # Usage:
-# $ kitty-tab-create "Tab Name"                    # Create new tab without focus
-# $ kitty-tab-create "Tab Name" --focus            # Create and switch to new tab
-# $ kitty-tab-create "Tab Name" --cwd /some/path   # Create in specific directory
+# $ kitty-tab-create "Tab Name"                              # Create new tab without focus
+# $ kitty-tab-create "Tab Name" --focus                      # Create and switch to new tab
+# $ kitty-tab-create "Tab Name" --cwd /some/path             # Create in specific directory
+# $ kitty-tab-create "Tab Name" --cmd "kitty-helper-claude-start @/tmp/file.md"  # Custom command
+set -e
 
 zparseopts -E -D \
   -focus=flagFocus \
-  -cwd:=flagCwd
+  -cwd:=flagCwd \
+  -cmd:=flagCmd
 
 local tabName="$1"
 local cwd=${flagCwd[2]:-current}
+local kittyCommand=${flagCmd[2]:-zsh}
 
 if [[ "$tabName" == "" ]]; then
-  echo "Usage: kitty-tab-create <tab-name> [--focus] [--cwd <path>]"
+  echo "Usage: kitty-tab-create <tab-name> [--focus] [--cwd <path>] [--cmd <command>]"
   return 2
 fi
 
 # By default, keep focus on current tab, unless --focus is passed
 local focusFlag="--keep-focus"
-[[ -n "$flagFocus" ]] && focusFlag=""
+[[ "$flagFocus" != "" ]] && focusFlag=""
 
-kitty@ launch \
+kitty-remote launch \
   --type tab \
   --tab-title "$tabName" \
   --location=after \
   $focusFlag \
   --cwd "$cwd" \
-  zsh \
+  ${=kittyCommand} \
   1>/dev/null

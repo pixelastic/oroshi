@@ -7,9 +7,9 @@ local tabName="$1"
 
 # No argument: get current tab ID
 if [[ "$tabName" == "" ]]; then
-  kitty@ ls | jq -r '.[0].tabs[] | select(.is_focused == true) | .id'
+  kitty-remote ls | jq -r '.[0].tabs[] | select(.is_focused == true) | .id'
   exit 0
 fi
 
 # Argument provided: get tab ID by name
-kitty@ ls | jq -r --arg name "$tabName" '.[0].tabs[] | select(.title==$name) | .id'
+kitty-remote ls | jq -r --arg name "$tabName" '.[0].tabs[] | select(.title==$name) | .id'

@@ -12,4 +12,4 @@ if [[ "$windowId" == "" || "${#keyValuePairs[@]}" == "0" ]]; then
   exit 2
 fi
 
-kitty@ set-user-vars --match "id:${windowId}" "${keyValuePairs[@]}"
+kitty-remote set-user-vars --match "id:${windowId}" "${keyValuePairs[@]}"

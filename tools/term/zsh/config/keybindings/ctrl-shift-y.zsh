@@ -4,7 +4,7 @@ oroshi-copy-last-command-output-widget() {
   local lastCommand=$(fc -ln -1)
 
   # Get last command output from Kitty terminal buffer
-  local commandOutput=$(kitty@ get-text --extent last_cmd_output 2>/dev/null)
+  local commandOutput=$(kitty-remote get-text --extent last_cmd_output 2>/dev/null)
 
   local finalOutput="$PWD $ $lastCommand\n$commandOutput"
   clipboard-write "${finalOutput}"

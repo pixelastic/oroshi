@@ -13,4 +13,4 @@ if [[ "$tabId" == "" ]] || [[ "$layout" == "" ]]; then
   return 2
 fi
 
-kitty@ goto-layout --match "id:${tabId}" "$layout"
+kitty-remote goto-layout --match "id:${tabId}" "$layout"

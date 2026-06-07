@@ -9,7 +9,7 @@ zparseopts -E -D \
 local tabId=${flagTab[2]}
 
 # Get all windows from all tabs
-local allWindows=$(kitty@ ls | jq -r '
+local allWindows=$(kitty-remote ls | jq -r '
   .[0].tabs[]
   | . as $tab
   | .windows[]

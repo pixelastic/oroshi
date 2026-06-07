@@ -9,7 +9,7 @@ if [[ "$windowId" == "" ]]; then
   exit 2
 fi
 
-kitty@ ls | jq -r --arg winId "$windowId" '
+kitty-remote ls | jq -r --arg winId "$windowId" '
   .[0].tabs[]
   | select(.windows[].id == ($winId|tonumber))
   | .id

@@ -9,6 +9,6 @@ if [[ "$tabName" == "" ]]; then
   exit 2
 fi
 
-local tabId=$(kitty@ ls | jq -r --arg name "$tabName" '.[0].tabs[] | select(.title==$name) | .id')
+local tabId=$(kitty-remote ls | jq -r --arg name "$tabName" '.[0].tabs[] | select(.title==$name) | .id')
 [[ "$tabId" == "" ]] && exit 1
 exit 0

@@ -7,7 +7,7 @@ local windowName="$1"
 
 # windowName provided: get window ID by oroshi_windowName
 if [[ "$windowName" != "" ]]; then
-  kitty@ ls | jq -r --arg name "$windowName" '
+  kitty-remote ls | jq -r --arg name "$windowName" '
     .[0].tabs[].windows[]
     | select(.user_vars.oroshi_windowName == $name)
     | .id
@@ -24,7 +24,7 @@ fi
 
 # But when called from a Kitty keybinding, in the background, it is not set
 # so we need to find the only window currently active in the whole list
-kitty@ ls | jq -r '
+kitty-remote ls | jq -r '
   .[0].tabs[]
   | select(.is_active == true)
   | .windows[]

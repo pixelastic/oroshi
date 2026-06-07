@@ -8,4 +8,4 @@ if [[ "$windowId" == "" ]]; then
   exit 2
 fi
 
-kitty@ focus-window --match "id:${windowId}"
+kitty-remote focus-window --match "id:${windowId}"

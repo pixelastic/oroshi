@@ -11,7 +11,7 @@ if [[ "$windowId" == "" || "$varName" == "" ]]; then
   exit 2
 fi
 
-kitty@ ls | jq -r --arg winId "$windowId" --arg varName "$varName" '
+kitty-remote ls | jq -r --arg winId "$windowId" --arg varName "$varName" '
   .[0].tabs[].windows[]
   | select(.id == ($winId|tonumber))
   | .user_vars[$varName] // ""

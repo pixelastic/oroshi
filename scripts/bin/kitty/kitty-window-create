@@ -34,8 +34,8 @@ if [[ "$tabId" != "" ]]; then
   launchArgs+=(--match "id:${tabId}")
 fi
 
-# Add any additional arguments passed to kitty@ launch
+# Add any additional arguments passed to kitty-remote launch
 launchArgs+=("${kittyAdditionalArgs[@]}")
 
 # Launch and return window ID
-kitty@ launch "${launchArgs[@]}" ${=kittyCommand} 1>/dev/null
+kitty-remote launch "${launchArgs[@]}" ${=kittyCommand} 1>/dev/null

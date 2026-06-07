@@ -40,3 +40,7 @@ Automate the sidequest launch flow: when the `/sidequest` skill finishes, a Work
 ## Discoveries
 
 (append-only — agents add findings here after each issue)
+
+### Issue 02 — Add --cmd flag to kitty-tab-create
+
+- `kitty@` was renamed to `kitty-remote` during this issue to make it mockable with `bats_mock` (which uses `declare -f` and can't handle `@` in identifiers). All 16 callers in `scripts/bin/kitty/` and the keybinding were updated.

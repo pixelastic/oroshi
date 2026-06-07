@@ -11,4 +11,4 @@ if [[ "$tabId" == "" ]]; then
   tabId=$(kitty-tab-id)
 fi
 
-kitty@ ls | jq -r --arg tid "$tabId" '.[] | .tabs[] | select(.id == ($tid | tonumber)) | .layout'
+kitty-remote ls | jq -r --arg tid "$tabId" '.[] | .tabs[] | select(.id == ($tid | tonumber)) | .layout'

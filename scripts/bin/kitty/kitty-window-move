@@ -10,4 +10,4 @@ if [[ "$windowId" == "" || "$targetTabId" == "" ]]; then
   exit 2
 fi
 
-kitty@ detach-window --match "id:${windowId}" --target-tab "id:${targetTabId}"
+kitty-remote detach-window --match "id:${windowId}" --target-tab "id:${targetTabId}"

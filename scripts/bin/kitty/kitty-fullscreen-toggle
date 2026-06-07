@@ -6,7 +6,7 @@
 local currentWindowId="$(kitty-window-id)"
 
 # Extract tab info for current window
-local tabInfo=$(kitty@ ls | jq -r --arg winId "$currentWindowId" '
+local tabInfo=$(kitty-remote ls | jq -r --arg winId "$currentWindowId" '
   .[0].tabs[]
   | select(.windows[].id == ($winId|tonumber))
   | {id: .id, layout: .layout, windowCount: (.windows | length)}
@@ -26,4 +26,4 @@ local nextLayout
 [[ "$currentLayout" == "stack" ]] && nextLayout="splits"
 [[ "$currentLayout" == "splits" ]] && nextLayout="stack"
 
-kitty@ goto-layout --match "id:${tabId}" "$nextLayout"
+kitty-remote goto-layout --match "id:${tabId}" "$nextLayout"
