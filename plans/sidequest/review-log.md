@@ -28,6 +28,7 @@ bats_run_zsh "$CURRENT" "My Tab"
 
 ### "[ ] vs [[ ]] for status checks"
 
+
 ```bash
 [ "$status" -eq 0 ]
 ```
@@ -35,3 +36,16 @@ bats_run_zsh "$CURRENT" "My Tab"
 **Problem:** Reviewer flagged single-bracket form as inconsistent with zsh-writer style.
 
 **Reason skipped:** All existing bats tests in this project use `[ "$status" -eq 0 ]` (see `kitty-helper-claude-start.bats`, `ralph.bats`). Single bracket is the established project convention for numeric status checks.
+
+## Issue 03 — sidequest-end baseline tests
+
+### "Inline function + bats_mock is wrong mock strategy"
+
+```bash
+clipboard-write() { cat >"$BATS_TMP_DIR/clipboard-in"; }
+bats_mock clipboard-write
+```
+
+**Problem:** Spec reviewer flagged combining an inline function definition with `bats_mock` as incorrect, claiming `bats_mock` would override the inline function and break the stdin capture logic.
+
+**Reason skipped:** This is the established project pattern — `kitty-tab-create.bats` uses the same approach (define stub function, then call `bats_mock`). Tests pass, confirming the mock correctly intercepts `clipboard-write` stdin.

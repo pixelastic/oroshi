@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-sidequest-end-baseline-tests.md",
-    "done": false,
+    "done": true,
+    "recap": "Added baseline bats tests for sidequest-end covering no-arg error, missing-file error, and happy-path clipboard-write call.",
     "blocked_by": []
   },
   {
