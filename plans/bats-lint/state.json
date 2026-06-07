@@ -86,7 +86,8 @@
   {
     "id": "19",
     "issue": "issues/19-zsh-lint-file-type-guard.md",
-    "done": false,
+    "done": true,
+    "recap": "Added is-zsh partition in zsh-lint: invalid files emit notZsh violations, sub-linters only called on valid files. Added 2 new tests asserting sub-linters not called for invalid files and called with valid-only for mixed input.",
     "blocked_by": []
   },
   {

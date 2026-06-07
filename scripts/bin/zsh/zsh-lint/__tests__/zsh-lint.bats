@@ -1,5 +1,4 @@
 #!/usr/bin/env bats
-# shellcheck disable=SC2016  # $1 in single-quoted printf strings is intentional
 
 bats_load_library 'helper'
 
@@ -75,4 +74,54 @@ teardown() {
   bats_run_zsh "$ZSH_LINT" "$file"
   [[ "$output" == '[]' ]]
   [[ "$status" -eq 0 ]]
+}
+
+@test "outputs notZsh violation for non-zsh file, exits 1" {
+  is-zsh() { return 1; }
+  bats_mock is-zsh
+  zsh-lint-shellcheck() {
+    printf 'called\n' >"$BATS_TMP_DIR/shellcheck_called"
+    printf '[]\n'
+  }
+  bats_mock zsh-lint-shellcheck
+  zsh-lint-custom() {
+    printf 'called\n' >"$BATS_TMP_DIR/custom_called"
+    printf '[]\n'
+  }
+  bats_mock zsh-lint-custom
+
+  local file="$BATS_TMP_DIR/test.bats"
+  printf 'placeholder\n' >"$file"
+  bats_run_zsh "$ZSH_LINT" "$file"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" == *'"code":"notZsh"'* ]]
+  [[ "$(printf '%s' "$output" | jq 'length')" -eq 1 ]]
+  [[ ! -f "$BATS_TMP_DIR/shellcheck_called" ]]
+  [[ ! -f "$BATS_TMP_DIR/custom_called" ]]
+}
+
+@test "merges notZsh with sub-linter violations for mixed input" {
+  is-zsh() {
+    [[ "$1" == *.zsh ]] && return 0
+    return 1
+  }
+  bats_mock is-zsh
+  zsh-lint-shellcheck() {
+    printf '%s\n' "$@" >"$BATS_TMP_DIR/shellcheck_args"
+    printf '[{"file":"%s","code":"SC2086","line":1,"column":1,"message":"m"}]\n' "$1"
+  }
+  bats_mock zsh-lint-shellcheck
+  zsh-lint-custom() { printf '[]\n'; }
+  bats_mock zsh-lint-custom
+
+  local valid="$BATS_TMP_DIR/valid.zsh"
+  local invalid="$BATS_TMP_DIR/other.bats"
+  printf 'placeholder\n' >"$valid"
+  printf 'placeholder\n' >"$invalid"
+  bats_run_zsh "$ZSH_LINT" "$valid" "$invalid"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" == *'"code":"notZsh"'* ]]
+  [[ "$output" == *'"code":"SC2086"'* ]]
+  [[ "$(cat "$BATS_TMP_DIR/shellcheck_args")" == "$valid" ]]
+  [[ "$(cat "$BATS_TMP_DIR/shellcheck_args")" != *"$invalid"* ]]
 }
