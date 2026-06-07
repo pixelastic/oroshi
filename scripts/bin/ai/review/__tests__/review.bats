@@ -1,8 +1,7 @@
 bats_load_library 'helper'
 
-REVIEW_SCRIPT="$BATS_TEST_DIRNAME/../review"
-
 setup() {
+  REVIEW_SCRIPT="$BATS_TEST_DIRNAME/../review"
   bats_tmp_dir
   export CLAUDE_PRINT_CAPTURE="$BATS_TMP_DIR/claude-print-args"
 

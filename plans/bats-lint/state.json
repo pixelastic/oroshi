@@ -105,7 +105,8 @@
   {
     "id": "14",
     "issue": "issues/14-lint-pass-ai-scripts.md",
-    "done": false,
+    "done": true,
+    "recap": "Moved 5 top-level script-path vars (PRD_END_SCRIPT, PLAN_DIRECTORY, PLAN_PROGRESS, RALPH_START, REVIEW_SCRIPT) into setup(); quoted 'done' arg in ralph-state.bats to fix SC1010. 3 files were already clean.",
     "blocked_by": ["13"]
   },
   {
@@ -125,5 +126,11 @@
     "issue": "issues/17-global-cleanup-pass.md",
     "done": false,
     "blocked_by": ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16"]
+  },
+  {
+    "id": "20",
+    "issue": "issues/20-rule-prefer-batch-mock.md",
+    "done": false,
+    "blocked_by": []
   }
 ]

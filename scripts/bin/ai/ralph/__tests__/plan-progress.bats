@@ -1,9 +1,8 @@
 bats_load_library 'helper'
 
-PLAN_PROGRESS="$BATS_TEST_DIRNAME/../plan-progress"
-
 setup() {
   bats_tmp_dir
+  PLAN_PROGRESS="$BATS_TEST_DIRNAME/../plan-progress"
   mkdir -p "$BATS_TMP_DIR/plan-dir"
   export PLAN_DIR="$BATS_TMP_DIR/plan-dir"
 }

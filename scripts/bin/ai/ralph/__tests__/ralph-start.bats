@@ -1,9 +1,8 @@
 bats_load_library 'helper'
 
-RALPH_START="$BATS_TEST_DIRNAME/../ralph-start"
-
 setup() {
   bats_tmp_dir
+  RALPH_START="$BATS_TEST_DIRNAME/../ralph-start"
   mkdir -p "$BATS_TMP_DIR/plan-dir/issues"
   export PLAN_DIR="$BATS_TMP_DIR/plan-dir"
 }

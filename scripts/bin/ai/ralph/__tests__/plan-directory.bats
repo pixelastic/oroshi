@@ -1,9 +1,8 @@
 bats_load_library 'helper'
 
-PLAN_DIRECTORY="$BATS_TEST_DIRNAME/../plan-directory"
-
 setup() {
   bats_git_dir 'repo'
+  PLAN_DIRECTORY="$BATS_TEST_DIRNAME/../plan-directory"
 }
 
 teardown() {

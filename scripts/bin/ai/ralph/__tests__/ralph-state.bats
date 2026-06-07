@@ -33,7 +33,7 @@ teardown() {
 
 @test "set updates a boolean value" {
   ralph-state "$DIR" init loop
-  run ralph-state "$DIR" set done true
+  run ralph-state "$DIR" set 'done' true
   [ "$status" -eq 0 ]
   [ "$(jq -r .done "$DIR/ralph.json")" = "true" ]
 }

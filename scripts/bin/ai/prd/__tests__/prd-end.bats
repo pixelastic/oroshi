@@ -1,9 +1,8 @@
 bats_load_library 'helper'
 
-PRD_END_SCRIPT="$BATS_TEST_DIRNAME/../prd-end"
-
 setup() {
   bats_tmp_dir
+  PRD_END_SCRIPT="$BATS_TEST_DIRNAME/../prd-end"
 }
 
 teardown() {
