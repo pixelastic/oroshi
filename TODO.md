@@ -1,9 +1,7 @@
 ## SMALL
 
-
-
-
-
+Add a zsh-lint rule that prevents long method call on one line, but suggest
+splitting on several lines with \
 
 Seems like bats output are not filtered through rtk? I think it's because rtk
 doesn't know it can rewrite it, so the hook doesn't prepend rtk to it, even if
