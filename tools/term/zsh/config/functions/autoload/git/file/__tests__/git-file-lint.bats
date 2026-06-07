@@ -3,7 +3,7 @@ bats_load_library 'helper'
 setup() {
   bats_git_dir 'my-repo'
   CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/git/file/git-file-lint"
-  cd "$BATS_GIT_DIR"
+  cd "$BATS_GIT_DIR" || return
 }
 
 teardown() {
@@ -18,7 +18,7 @@ teardown() {
 
   bats_run_zsh "$CURRENT"
   [ "$status" -eq 1 ]
-  [[ "$output" =~ "bad.zsh" ]]
+  [[ "$output" =~ bad.zsh ]]
   [[ "$output" =~ ": noGroupedLocals: " ]]
   [[ ! "$output" =~ "\"level\"" ]]
   [[ ! "$output" =~ ": warning" ]]
@@ -60,8 +60,8 @@ teardown() {
 
   bats_run_zsh "$CURRENT"
   [ "$status" -eq 1 ]
-  [[ "$output" =~ "bad.zsh" ]]
-  [[ ! "$output" =~ "$BATS_GIT_DIR" ]]
+  [[ "$output" =~ bad.zsh ]]
+  [[ ! "$output" =~ $BATS_GIT_DIR ]]
 }
 
 @test "skips deleted ZSH files without error" {
@@ -84,7 +84,7 @@ teardown() {
   bats_run_zsh "$CURRENT"
   [ "$status" -eq 1 ]
   [[ "$output" =~ "── BATS ──" ]]
-  [[ "$output" =~ "bad.bats" ]]
+  [[ "$output" =~ bad.bats ]]
   [[ "$output" =~ "noRunZsh" ]]
 }
 
@@ -97,6 +97,36 @@ teardown() {
   bats_run_zsh "$CURRENT"
   [ "$status" -eq 1 ]
   [[ "$output" =~ "── ZSH ──" ]]
+}
+
+@test "surfaces bats violations for a dirty extensionless file when is-bats returns true for it" {
+  printf '#!/usr/bin/env bats\n@test "foo" { true; }\n' > "$BATS_GIT_DIR/helper"
+  bats_git add helper
+  bats_git commit --quiet -m "add helper"
+  printf 'run zsh -c "echo hello"\n' >> "$BATS_GIT_DIR/helper"
+
+  is-bats() { return 0; }
+  bats_mock is-bats
+
+  bats_run_zsh "$CURRENT"
+  [ "$status" -eq 1 ]
+  [[ "$output" =~ "── BATS ──" ]]
+  [[ "$output" =~ "helper" ]]
+  [[ "$output" =~ "noRunZsh" ]]
+}
+
+@test "does not lint a dirty bats file when is-bats rejects it" {
+  printf '#!/usr/bin/env bats\n@test "foo" { true; }\n' > "$BATS_GIT_DIR/bad.bats"
+  bats_git add bad.bats
+  bats_git commit --quiet -m "add bad.bats"
+  printf 'run zsh -c "echo hello"\n' >> "$BATS_GIT_DIR/bad.bats"
+
+  is-bats() { return 1; }
+  bats_mock is-bats
+
+  bats_run_zsh "$CURRENT"
+  [ "$status" -eq 0 ]
+  [ "$output" = "" ]
 }
 
 @test "shows only bats section when zsh is clean and bats violates" {

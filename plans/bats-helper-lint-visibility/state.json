@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-wire-lint-pipeline.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced *.bats glob routing in git-file-lint and lint-bats with is-bats calls; updated lintstaged.config.js glob to include extensionless helpers; added two regression tests (mocking is-bats) and fixed pre-existing SC2076/SC2164 violations in git-file-lint.bats.",
     "blocked_by": ["01"]
   }
 ]

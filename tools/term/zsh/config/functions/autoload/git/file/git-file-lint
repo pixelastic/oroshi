@@ -28,7 +28,7 @@ for rawLine in ${(f)rawFiles}; do
     continue
   fi
 
-  if [[ "$filePath" == *.bats ]]; then
+  if is-bats "$fullPath"; then
     hasBatsFiles="1"
     batsFiles+=("$fullPath")
     continue

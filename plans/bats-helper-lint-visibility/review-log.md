@@ -1,3 +1,17 @@
+## Issue 02 — wire lint pipeline
+
+### Standards agent reviewed committed Issue 01 files, not dirty diff
+
+**Problem:** Standards agent flagged `is-bats` (missing `# Usage:` label) and `is-bats.bats` (`$OROSHI_ROOT` path vs `$BATS_TEST_DIRNAME`) — both are committed Issue 01 files absent from the dirty diff.
+
+**Reason skipped:** Out of scope for this review pass. The `$OROSHI_ROOT` path form is also consistent with all existing tests in this repo (e.g. `git-file-lint.bats` itself).
+
+### Spec agent reported all changes as absent
+
+**Problem:** Spec agent claimed `git-file-lint`, `lint-bats`, and `lintstaged.config.js` were not updated.
+
+**Reason skipped:** Factually incorrect — `review-diff` output shows all four files changed. The agent failed to read the diff output.
+
 ## Issue 01 — is-bats and modeline
 
 ### Split local/assignment in `helper` (Standards)

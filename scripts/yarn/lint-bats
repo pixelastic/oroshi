@@ -10,7 +10,8 @@ set -e
 
 local -a batsFiles=()
 for filePath in "$@"; do
-  [[ "$filePath" == *.bats ]] && batsFiles+=("$filePath")
+  is-bats "$filePath" || continue
+  batsFiles+=("$filePath")
 done
 
 # No BATS files among the arguments
