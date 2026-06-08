@@ -30,15 +30,16 @@ ICONS[dependabot]=""
 ICONS[dropbox]=""
 
 # Git
+ICONS[git-branch]=""
+ICONS[git-commit]="ﰖ"
 ICONS[git-issue]=""
 ICONS[git-pr]=""
 ICONS[git-rebase]=""
+ICONS[git-remote]=""
 ICONS[git-stash]=""
 ICONS[git-submodule]=""
-ICONS[git-commit]="ﰖ"
-ICONS[git-branch]=""
 ICONS[git-tag]=""
-ICONS[git-remote]=""
+ICONS[git-worktree]="󰌪"
 
 # Separators
 ICONS[separator-arrow]=""
@@ -59,7 +60,6 @@ ICONS[branch-gone]=""
 ICONS[branch-diverged]=""
 ICONS[branch-detached]=""
 ICONS[branch-fallback]=""
-ICONS[branch-worktree]=""
 
 # Misc
 ICONS[clock]=""

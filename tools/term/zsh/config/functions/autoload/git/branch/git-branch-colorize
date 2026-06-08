@@ -38,7 +38,7 @@ fi
 
 # Worktree flag: normal branch color with worktree-specific icon
 if [[ "$isWorktree" == "1" ]]; then
-  colorize "$ICONS[branch-worktree] $branchName" $branchColor "${zshFlag[@]}"
+  colorize "$ICONS[git-worktree] $branchName" $branchColor "${zshFlag[@]}"
   return
 fi
 
