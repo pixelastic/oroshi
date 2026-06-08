@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-dynamic-runtimepath-bootstrap.md",
-    "done": false,
+    "done": true,
+    "recap": "Renamed config/config to config/lua/oroshi via git mv, added OROSHI_ROOT runtimepath prepend to init.lua, removed lua/oroshi and after symlinks from deploy script.",
     "blocked_by": []
   },
   {
