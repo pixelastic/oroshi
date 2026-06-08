@@ -1,6 +1,27 @@
 # Named icon definitions
 typeset -gA ICONS
 
+# TODO
+ICONS[separator-prompt]=""
+
+# Kitty
+ICONS[kitty-tab-separator]=""
+
+# Zsh
+ICONS[badge-separator]=""
+ICONS[completion-separator]=""
+
+# Nvim
+ICONS[nvim-notification-separator]=""
+ICONS[nvim-tab-separator]=""
+
+# Separators
+ICONS[separator-arrow]=""
+ICONS[separator-slant]=""
+ICONS[separator-slant-reverse]=""
+
+# ---
+
 # Misc
 ICONS[clock]=""
 ICONS[dependabot]=""
@@ -16,12 +37,6 @@ ICONS[warning]=""
 ICONS[refresh]=""
 ICONS[terminal]=""
 ICONS[font]=""
-
-# Separators
-ICONS[kitty-tab-separator]=""
-ICONS[badge-separator]=""
-ICONS[separator-slant]=""
-ICONS[separator-prompt]=""
 
 # Files
 ICONS[file]=""
