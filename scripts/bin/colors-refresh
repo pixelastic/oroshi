@@ -16,7 +16,7 @@ source $OROSHI_ROOT/tools/term/zsh/config/theming/env/colors.zsh
 source $OROSHI_ROOT/tools/term/zsh/config/theming/env/filetypes.zsh
 
 # Refresh project definitions
-projects-build
+$ZSH_CONFIG_PATH/theming/projects-build
 unset PROJECTS_V2
 projects-load-definitions
 
