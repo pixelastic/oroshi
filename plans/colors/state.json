@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-colors-load-definitions.md",
-    "done": false,
+    "done": true,
+    "recap": "Moved colors-load-definitions from autoload/project/ to new autoload/colors/ domain; updated guard to check colors array population and source path to dist/colors.zsh.",
     "blocked_by": ["01"]
   },
   {
