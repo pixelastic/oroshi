@@ -26,8 +26,7 @@ mkdir -p "${keymapDir}"
 
 # Copy configuration files
 echo "==> Copying keymap files..."
-cp "${configDir}/keymap.c" "${keymapDir}/keymap.c"
-cp "${configDir}/rules.mk" "${keymapDir}/rules.mk"
+cp "${configDir}/"* "${keymapDir}/"
 
 # Compile firmware
 echo "==> Compiling firmware..."

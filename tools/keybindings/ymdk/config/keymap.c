@@ -3,6 +3,10 @@
 
 #include QMK_KEYBOARD_H
 
+// LUMINOSITY 0-100 {{{
+#define LUMINOSITY 25
+// }}}
+
 // LAYER ENUM
 enum layers {
     _LAYER_NORMAL = 0,
@@ -28,6 +32,7 @@ enum layers {
 // KC_F23 → XF86TouchpadOff (system intercepts)
 // KC_F24 → NoSymbol (keycode 202)
 // }}}
+
 
 // COLOR DEFINITIONS {{{
 typedef struct {
@@ -221,7 +226,12 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     for (uint8_t i = 0; i < 9; i++) {
         uint16_t keycode = pgm_read_word(&keymaps[layer][i / MATRIX_COLS][i % MATRIX_COLS]);
         Color color = get_color_for_key(keycode, layer);
-        rgb_matrix_set_color(visual_to_led[i], color.r, color.g, color.b);
+        rgb_matrix_set_color(
+            visual_to_led[i],
+            (color.r * LUMINOSITY) / 100,
+            (color.g * LUMINOSITY) / 100,
+            (color.b * LUMINOSITY) / 100
+        );
     }
 
     return false;
