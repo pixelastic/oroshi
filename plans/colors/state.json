@@ -30,7 +30,8 @@
   {
     "id": "05",
     "issue": "issues/05-neovim-migration.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced getEnvColors() (COLORS_INDEX + COLOR_*_HEXA env vars) with getColors() that reads dist/colors.json via F.readJson(); added nil guard for missing file.",
     "blocked_by": ["01"]
   },
   {

@@ -12,22 +12,13 @@ if vim.g.syntax_on then
   vim.cmd("syntax reset")
 end
 
--- getEnvColors: Returns the list of all colors defines in env
-local function getEnvColors()
-  local colors = {}
-
-  local COLORS_INDEX = F.env("COLORS_INDEX")
-  local items = vim.split(COLORS_INDEX, " ", { trimempty = true })
-  for _, item in ipairs(items) do
-    local key = F.replace(item, "ALIAS_", "")
-    local value = F.env("COLOR_" .. item .. "_HEXA")
-    colors[key] = value
-  end
-  return colors
+-- Load all colors from dist/colors.json
+local distPath = vim.env.OROSHI_ROOT .. "/tools/term/zsh/config/theming/dist/colors.json"
+local colorsJson = F.readJson(distPath) or {}
+O.colors.env = {}
+for name, entry in pairs(colorsJson) do
+  O.colors.env[name] = entry.hex
 end
-
--- Save all color aliases from env
-O.colors.env = getEnvColors()
 
 O_require("oroshi/colorscheme/ui") -- Tabline, statusline, split, etc
 O_require("oroshi/colorscheme/syntax") -- Syntax highlight
