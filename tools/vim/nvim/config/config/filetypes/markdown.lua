@@ -5,6 +5,11 @@ M.onFiletype = function()
   local vmap = F.vmap
   local nmap = F.nmap
 
+  -- Auto-enable wrap for plans files (long-line docs)
+  if F.includes(F.here(), "/plans/") then
+    F.updateOption("wrap", true)
+  end
+
   -- Bold and code visual selection
   vmap("`", M.__.toggleWrapping("`"), "Code", { buffer = bufferId })
   vmap("`", M.__.toggleWrapping("`"), "Code", { buffer = bufferId })
