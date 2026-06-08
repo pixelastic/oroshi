@@ -24,6 +24,8 @@ zsh-lint-custom() {
   source "${_zshLintRulesDir}/rule-no-or-guard.zsh"
   source "${_zshLintRulesDir}/rule-no-double-negative.zsh"
   source "${_zshLintRulesDir}/rule-no-arith-flag-test.zsh"
+  source "${_zshLintRulesDir}/rule-missing-set-e.zsh"
+  source "${_zshLintRulesDir}/rule-missing-err-return.zsh"
 
   lint-custom-run \
     --disable-prefix 'zsh-lint' \
@@ -39,5 +41,7 @@ zsh-lint-custom() {
     zshLintRule_noOrGuard \
     zshLintRule_noDoubleNegative \
     zshLintRule_noArithFlagTest \
+    zshLintRule_missingSetE \
+    zshLintRule_missingErrReturn \
     -- "$@"
 }
