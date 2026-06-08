@@ -1,0 +1,14 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-dynamic-runtimepath-bootstrap.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-fix-statusline-hardcoded-path.md",
+    "done": false,
+    "blocked_by": []
+  }
+]
