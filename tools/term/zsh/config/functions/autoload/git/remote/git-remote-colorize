@@ -3,7 +3,7 @@
 # $ git-remote-colorize                    # {currentRemote}
 # $ git-remote-colorize upstream           # upstream
 # $ git-remote-colorize upstream/main      # upstream/main
-# $ git-remote-colorize --with-icon        # $ICONS[branch-remote] upstream
+# $ git-remote-colorize --with-icon        # $ICONS[git-branch] upstream
 setopt local_options err_return
 icons-load-definitions
 

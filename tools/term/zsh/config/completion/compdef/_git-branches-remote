@@ -2,7 +2,9 @@
 
 # Suggest the remote branches
 function _git-branches-remote() {
+  icons-load-definitions
+  icons-load-definitions
   local suggestions=(${(f)"$(complete-git-branches-remote)"})
 
-  _describe -V "$(completion-header $COLOR_ALIAS_GIT_REMOTE $COLOR_BLACK '  Remote branches ')" suggestions
+  _describe -V "$(completion-header $COLOR_ALIAS_GIT_REMOTE $COLOR_BLACK " $ICONS[git-branch] Remote branches ")" suggestions
 }

@@ -2,7 +2,9 @@
 
 # Suggest the remote tags
 function _git-tags-remote() {
+  icons-load-definitions
+  icons-load-definitions
   local suggestions=(${(f)"$(complete-git-tags-remote)"})
 
-  _describe -V "$(completion-header $COLOR_ALIAS_GIT_REMOTE $COLOR_BLACK '  Remote tags ')" suggestions
+  _describe -V "$(completion-header $COLOR_ALIAS_GIT_REMOTE $COLOR_BLACK " $ICONS[git-tag] Remote tags ")" suggestions
 }

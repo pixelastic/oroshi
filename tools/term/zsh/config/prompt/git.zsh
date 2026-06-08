@@ -17,18 +17,18 @@ function oroshi-prompt-populate:git_status() {
 
   # Staged files
   if git-directory-has-staged-files; then
-    OROSHI_PROMPT_PARTS[git_status]="%F{$COLOR_ALIAS_GIT_TRACKED}$ICONS[git-branch]%f"
+    OROSHI_PROMPT_PARTS[git_status]="%F{$COLOR_ALIAS_GIT_TRACKED}$ICONS[git-commit]%f"
     return
   fi
 
   # Dirty directory
   if git-directory-is-dirty; then
-    OROSHI_PROMPT_PARTS[git_status]="%F{$COLOR_ALIAS_GIT_UNTRACKED}$ICONS[git-branch]%f"
+    OROSHI_PROMPT_PARTS[git_status]="%F{$COLOR_ALIAS_GIT_UNTRACKED}$ICONS[git-commit]%f"
     return
   fi
 
   # Clean directory
-  OROSHI_PROMPT_PARTS[git_status]="%F{$COLOR_ALIAS_SUCCESS}$ICONS[git-branch]%f"
+  OROSHI_PROMPT_PARTS[git_status]="%F{$COLOR_ALIAS_SUCCESS}$ICONS[git-commit]%f"
 }
 
 # Display a colored branch, with icons

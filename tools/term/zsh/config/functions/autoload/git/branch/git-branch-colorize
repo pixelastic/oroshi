@@ -4,7 +4,7 @@
 # $ git-branch-colorize main                    # main
 # $ git-branch-colorize feat/x --worktree        # worktree icon + normal branch color
 # $ git-branch-colorize --with-icon             # $ICONS[branch-ahead] main
-# $ git-branch-colorize origin/develop --remote # $ICONS[branch-remote] origin/remote
+# $ git-branch-colorize origin/develop --remote # $ICONS[git-branch] origin/remote
 setopt local_options err_return
 icons-load-definitions
 zparseopts -E -D \
@@ -54,7 +54,7 @@ fi
 
 # For remote branches, color as a remote
 if [[ $isRemote == '1' ]]; then
-  colorize "$ICONS[branch-remote] $branchName" $branchColor "${zshFlag[@]}"
+  colorize "$ICONS[git-branch] $branchName" $branchColor "${zshFlag[@]}"
   return
 fi
 
