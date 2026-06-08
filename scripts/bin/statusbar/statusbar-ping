@@ -3,13 +3,14 @@
 set -e
 
 source $ZSH_CONFIG_PATH/theming/env/colors.zsh
+source $ZSH_CONFIG_PATH/theming/icons.zsh
 
 local STATUS_SAVE_PATH="/tmp/oroshi/statusbar"
 mkdir -p $STATUS_SAVE_PATH
 
 if ! is-online; then
   jq -n \
-    --arg text "offline " \
+    --arg text "$ICONS[network]offline " \
     --arg fg $COLOR_ALIAS_ERROR \
     --arg style "bold" \
     '$ARGS.named | [.]'
@@ -33,7 +34,7 @@ if [[ -f $pingRawPath ]]; then
   fi
 
   jq -n \
-    --arg text " ${ping} " \
+    --arg text "$ICONS[pulse] ${ping} " \
     --arg fg $fg \
     '$ARGS.named | [.]'
 else

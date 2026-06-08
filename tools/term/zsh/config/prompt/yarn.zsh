@@ -30,7 +30,7 @@ function oroshi-prompt-populate:yarn_link() {
 
   # If some linked modules don't have an icon, we add the default chain ico
   if [[ $displayedLinkCount != "$totalLinkCount" ]]; then
-    displayedString+=" "
+    displayedString+="$ICONS[link] "
   fi
 
   if [[ $displayedString != "" ]]; then
@@ -43,6 +43,6 @@ function oroshi-prompt-populate:yarn_install_in_progress() {
   OROSHI_PROMPT_PARTS[yarn_install_in_progress]=""
 
   if yarn-install-in-progress; then
-    OROSHI_PROMPT_PARTS[yarn_install_in_progress]="%F{$COLOR_GREEN_8} %f"
+    OROSHI_PROMPT_PARTS[yarn_install_in_progress]="%F{$COLOR_GREEN_8}$ICONS[refresh] %f"
   fi
 }

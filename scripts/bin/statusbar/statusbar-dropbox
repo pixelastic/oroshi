@@ -3,6 +3,7 @@
 set -e
 
 source $ZSH_CONFIG_PATH/theming/env/colors.zsh
+source $ZSH_CONFIG_PATH/theming/icons.zsh
 
 function dropbox-is-running() {
   [[ ! $commands[dropbox] ]] && return 1
@@ -17,4 +18,4 @@ function dropbox-is-running() {
 local fg=$COLOR_ALIAS_COMMENT
 dropbox-is-running || fg=$COLOR_ALIAS_ERROR
 
-jo text=" " fg=$fg | jo -a
+jo text="$ICONS[dropbox] " fg=$fg | jo -a

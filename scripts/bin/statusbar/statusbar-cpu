@@ -4,6 +4,7 @@
 set -e
 
 source $ZSH_CONFIG_PATH/theming/env/colors.zsh
+source $ZSH_CONFIG_PATH/theming/icons.zsh
 
 local cpuUsed="$(
   grep 'cpu ' /proc/stat |
@@ -12,12 +13,12 @@ local cpuUsed="$(
 )"
 
 if [[ $cpuUsed -gt 80 ]]; then
-  jo text=" ${cpuUsed}% " fg="$COLOR_ALIAS_ERROR" | jo -a
+  jo text="$ICONS[gauge] ${cpuUsed}% " fg="$COLOR_ALIAS_ERROR" | jo -a
   exit
 fi
 
 if [[ $cpuUsed -gt 50 ]]; then
-  jo text=" ${cpuUsed}% " fg="$COLOR_ALIAS_WARNING" | jo -a
+  jo text="$ICONS[wave] ${cpuUsed}% " fg="$COLOR_ALIAS_WARNING" | jo -a
   exit
 fi
 

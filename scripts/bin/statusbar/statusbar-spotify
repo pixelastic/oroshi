@@ -3,6 +3,7 @@
 set -e
 
 source $ZSH_CONFIG_PATH/theming/env/colors.zsh
+source $ZSH_CONFIG_PATH/theming/icons.zsh
 
 if sp current | grep --silent "Error: Spotify is not running"; then
   echo "[]"
@@ -14,4 +15,4 @@ eval "$(sp eval)"
 local currentTitle="$SPOTIFY_ARTIST - $SPOTIFY_TITLE"
 [[ "${#currentTitle}" -gt 40 ]] && currentTitle="${currentTitle:0:40}…"
 
-jo text=" ${currentTitle} " fg=$COLOR_ALIAS_SUCCESS | jo -a
+jo text="$ICONS[play] ${currentTitle} " fg=$COLOR_ALIAS_SUCCESS | jo -a

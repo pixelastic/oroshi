@@ -2,10 +2,11 @@
 # JSON info about if sound mode is enabled
 set -e
 source $ZSH_CONFIG_PATH/theming/env/colors.zsh
+source $ZSH_CONFIG_PATH/theming/icons.zsh
 
 local storeFile=$OROSHI_TMP_FOLDER/sound-mode/on
 
-local icon="  "
+local icon="$ICONS[bell]  "
 if [[ ! -f ${storeFile} ]]; then
   local color=$COLOR_ALIAS_COMMENT
 else

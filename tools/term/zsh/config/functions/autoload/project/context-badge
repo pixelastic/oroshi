@@ -9,6 +9,7 @@
 setopt local_options err_return
 
 projects-load-definitions
+icons-load-definitions
 
 zmodload zsh/zutil
 zparseopts -E -D \
@@ -28,7 +29,7 @@ local projectDisplay=" ${projectIcon}"
 [[ "$projectHideNameInPrompt" == "1" ]] || projectDisplay+="${projectName}"
 
 # separator info
-local separatorIcon=""
+local separatorIcon="$ICONS[badge-separator]"
 
 # worktreeinfo
 local worktreeName="$(git-worktree-name "$reference")"

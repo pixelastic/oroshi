@@ -4,6 +4,7 @@
 set -e
 
 source $ZSH_CONFIG_PATH/theming/env/colors.zsh
+source $ZSH_CONFIG_PATH/theming/icons.zsh
 
 local memoryUsed="$(
   free -m |
@@ -13,11 +14,11 @@ local memoryUsed="$(
 )"
 
 if [[ $memoryUsed -gt 80 ]]; then
-  jo text=" ${memoryUsed}% " fg="$COLOR_ALIAS_ERROR" | jo -a
+  jo text="$ICONS[gauge] ${memoryUsed}% " fg="$COLOR_ALIAS_ERROR" | jo -a
   exit
 fi
 if [[ $memoryUsed -gt 50 ]]; then
-  jo text=" ${memoryUsed}% " fg="$COLOR_ALIAS_WARNING" | jo -a
+  jo text="$ICONS[pie] ${memoryUsed}% " fg="$COLOR_ALIAS_WARNING" | jo -a
   exit
 fi
 

@@ -17,18 +17,18 @@ function oroshi-prompt-populate:git_status() {
 
   # Staged files
   if git-directory-has-staged-files; then
-    OROSHI_PROMPT_PARTS[git_status]="%F{$COLOR_ALIAS_GIT_TRACKED}ﰖ%f"
+    OROSHI_PROMPT_PARTS[git_status]="%F{$COLOR_ALIAS_GIT_TRACKED}$ICONS[git-branch]%f"
     return
   fi
 
   # Dirty directory
   if git-directory-is-dirty; then
-    OROSHI_PROMPT_PARTS[git_status]="%F{$COLOR_ALIAS_GIT_UNTRACKED}ﰖ%f"
+    OROSHI_PROMPT_PARTS[git_status]="%F{$COLOR_ALIAS_GIT_UNTRACKED}$ICONS[git-branch]%f"
     return
   fi
 
   # Clean directory
-  OROSHI_PROMPT_PARTS[git_status]="%F{$COLOR_ALIAS_SUCCESS}ﰖ%f"
+  OROSHI_PROMPT_PARTS[git_status]="%F{$COLOR_ALIAS_SUCCESS}$ICONS[git-branch]%f"
 }
 
 # Display a colored branch, with icons
@@ -66,8 +66,8 @@ function oroshi-prompt-populate:git_worktree_distance() {
   (($GIT_DIRECTORY_IS_REPOSITORY)) || return
   (($GIT_DIRECTORY_IS_WORKTREE)) || return
 
-  local iconAhead=""
-  local iconBehind=""
+  local iconAhead="$ICONS[git-ahead]"
+  local iconBehind="$ICONS[git-behind]"
 
   # Output format: "ahead N, behind M" — empty on failure
   local distanceOutput="$(git-worktree-distance)"
@@ -95,7 +95,7 @@ function oroshi-prompt-populate:git_is_submodule() {
 
   git-is-submodule || return
 
-  OROSHI_PROMPT_PARTS[git_is_submodule]="%F{$COLOR_ALIAS_GIT_SUBMODULE} %f"
+  OROSHI_PROMPT_PARTS[git_is_submodule]="%F{$COLOR_ALIAS_GIT_SUBMODULE}$ICONS[git-submodule] %f"
 }
 
 # Check if has stashes
@@ -105,7 +105,7 @@ function oroshi-prompt-populate:git_has_stash() {
 
   git-stash-exists || return
 
-  OROSHI_PROMPT_PARTS[git_has_stash]="%F{$COLOR_ALIAS_GIT_STASH} %f"
+  OROSHI_PROMPT_PARTS[git_has_stash]="%F{$COLOR_ALIAS_GIT_STASH}$ICONS[git-stash] %f"
 }
 
 # Check if rebase is in progress
@@ -114,7 +114,7 @@ function oroshi-prompt-populate:git_rebase_in_progress() {
 
   git-rebase-in-progress || return
 
-  OROSHI_PROMPT_PARTS[git_rebase_in_progress]="%F{$COLOR_ALIAS_GIT_REBASE} %f"
+  OROSHI_PROMPT_PARTS[git_rebase_in_progress]="%F{$COLOR_ALIAS_GIT_REBASE}$ICONS[git-rebase] %f"
 }
 
 # Display the current state of the rebase:
@@ -139,7 +139,7 @@ function oroshi-prompt-populate:git_rebase_status() {
 
   local headNameColor="$(git-branch-color $headName)"
 
-  OROSHI_PROMPT_PARTS[git_rebase_status]="%B%F{$COLOR_ALIAS_GIT_REBASE} ${stepCurrent}/${stepMax}%f%b %F{$headNameColor}${headName}%f:%F{$COLOR_ALIAS_GIT_COMMIT}${onto}%f"
+  OROSHI_PROMPT_PARTS[git_rebase_status]="%B%F{$COLOR_ALIAS_GIT_REBASE}$ICONS[git-rebase] ${stepCurrent}/${stepMax}%f%b %F{$headNameColor}${headName}%f:%F{$COLOR_ALIAS_GIT_COMMIT}${onto}%f"
 }
 
 # Returns the number of currently opened issues
@@ -151,7 +151,7 @@ function oroshi-prompt-populate:git_issues_github() {
 
   # No GITHUB_TOKEN
   if [[ $GITHUB_TOKEN_READONLY == "" ]]; then
-    OROSHI_PROMPT_PARTS[git_issues_github]="%F{$COLOR_ALIAS_ERROR} %f"
+    OROSHI_PROMPT_PARTS[git_issues_github]="%F{$COLOR_ALIAS_ERROR}$ICONS[git-issue] %f"
     return
   fi
 
@@ -169,7 +169,7 @@ function oroshi-prompt-populate:git_issues_github() {
 
   local issueCount="$(<$issuesCacheFile)"
   if [[ $issueCount != "0" ]]; then
-    OROSHI_PROMPT_PARTS[git_issues_github]="%F{$COLOR_ALIAS_GIT_ISSUE} ${issueCount}%f"
+    OROSHI_PROMPT_PARTS[git_issues_github]="%F{$COLOR_ALIAS_GIT_ISSUE}$ICONS[git-issue] ${issueCount}%f"
   fi
 }
 
@@ -181,7 +181,7 @@ function oroshi-prompt-populate:git_pullrequests() {
 
   # No GITHUB_TOKEN
   if [[ $GITHUB_TOKEN_READONLY == "" ]]; then
-    OROSHI_PROMPT_PARTS[git_pullrequests]="%F{$COLOR_ALIAS_ERROR} %f"
+    OROSHI_PROMPT_PARTS[git_pullrequests]="%F{$COLOR_ALIAS_ERROR}$ICONS[git-pr] %f"
     return
   fi
 
@@ -199,7 +199,7 @@ function oroshi-prompt-populate:git_pullrequests() {
 
   local pullrequestCount="$(<$pullrequestsCacheFile)"
   if [[ $pullrequestCount != "0" ]]; then
-    OROSHI_PROMPT_PARTS[git_pullrequests]="%F{$COLOR_ALIAS_GIT_PULLREQUEST} ${pullrequestCount}%f"
+    OROSHI_PROMPT_PARTS[git_pullrequests]="%F{$COLOR_ALIAS_GIT_PULLREQUEST}$ICONS[git-pr] ${pullrequestCount}%f"
   fi
 }
 
@@ -212,7 +212,7 @@ function oroshi-prompt-populate:git_plan_progress() {
   # No plan in this worktree → nothing to show
   git-worktree-has-plan || return
 
-  local icon=" "
+  local icon="$ICONS[git-issue] "
 
   local progress="$(plan-progress)"
   # Empty output means plan-progress failed (malformed JSON, empty array, etc.)

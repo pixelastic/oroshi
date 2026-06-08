@@ -2,7 +2,8 @@
 # JSON info about current date
 set -e
 source $ZSH_CONFIG_PATH/theming/env/colors.zsh
+source $ZSH_CONFIG_PATH/theming/icons.zsh
 
 local clock="$(date +'%d/%m %H:%M')"
 
-jo text=" $clock " fg=$COLOR_ALIAS_DATE style="bold" | jo -a
+jo text="$ICONS[clock] $clock " fg=$COLOR_ALIAS_DATE style="bold" | jo -a

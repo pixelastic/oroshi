@@ -3,7 +3,7 @@ function completion-header() {
   local colorBackground=$1
   local colorForeground=${2:-$COLOR_BLACK}
   local content=${3:-%d}
-  echo "%K{${colorBackground}}%F{${colorForeground}}${content}%f%F{${COLOR_ALIAS_TERMINAL}}%f%k"
+  echo "%K{${colorBackground}}%F{${colorForeground}}${content}%f%F{${COLOR_ALIAS_TERMINAL}}$ICONS[separator-slant]%f%k"
 }
 
 # Color specific values in a specific color
@@ -139,17 +139,17 @@ function oroshi-completion-styling() {
   zstyle ':completion:*:complete:*:*:*' list-colors $listColorsDefault
 
   # Files
-  zstyle ':completion:*:globbed-files' format "$(completion-header $COLOR_ALIAS_FILE $COLOR_WHITE '  Files ')"
+  zstyle ':completion:*:globbed-files' format "$(completion-header $COLOR_ALIAS_FILE $COLOR_WHITE ' $ICONS[file] Files ')"
 
   # Directories
-  zstyle ':completion:*:local-directories' format "$(completion-header $COLOR_ALIAS_DIRECTORY $COLOR_WHITE '  Directories ')"
-  zstyle ':completion:*:directories' format "$(completion-header $COLOR_ALIAS_DIRECTORY $COLOR_WHITE '  Directories ')"
+  zstyle ':completion:*:local-directories' format "$(completion-header $COLOR_ALIAS_DIRECTORY $COLOR_WHITE ' $ICONS[folder] Directories ')"
+  zstyle ':completion:*:directories' format "$(completion-header $COLOR_ALIAS_DIRECTORY $COLOR_WHITE ' $ICONS[folder] Directories ')"
 
   # Commands
-  zstyle ':completion:*:commands'  format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK '  Commands ')"
-  zstyle ':completion:*:aliases'  format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK '  Aliases ')";
+  zstyle ':completion:*:commands'  format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK ' $ICONS[terminal] Commands ')"
+  zstyle ':completion:*:aliases'  format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK ' $ICONS[font] Aliases ')";
   zstyle ':completion:*:functions' format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK ' {} Functions ')"
-  zstyle ':completion:*:builtins'  format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK '  Zsh Builtins ')"
+  zstyle ':completion:*:builtins'  format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK ' $ICONS[zsh-builtin] Zsh Builtins ')"
 
   # Flags
   zstyle ':completion:*:options' format "$(completion-header $COLOR_ALIAS_FLAG $COLOR_WHITE ' -- Flags ')"
@@ -238,7 +238,7 @@ function oroshi-completion-styling() {
   # }}}
 
   # Running processes
-  zstyle ':completion:*:processes-names' format "$(completion-header $COLOR_ALIAS_PROCESS $COLOR_BLACK '  Running processes ')"
+  zstyle ':completion:*:processes-names' format "$(completion-header $COLOR_ALIAS_PROCESS $COLOR_BLACK ' $ICONS[pulse] Running processes ')"
 
   # Original query if no match found
   zstyle ':completion:*:original' format "$(completion-header $COLOR_ALIAS_UI $COLOR_WHITE ' ✘ Original query ')"

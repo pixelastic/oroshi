@@ -2,7 +2,7 @@
 function oroshi_tools_fzf() {
   # Stop if fzf not installed
   local fzfPath=~/.fzf.zsh
-  [[ -r $fzfPath ]] || return
+  [[ ! -r $fzfPath ]] && return
   source $fzfPath
 
   # Colors
@@ -11,8 +11,8 @@ function oroshi_tools_fzf() {
   fzfColors+=("prompt:$COLOR_ALIAS_UI")                   # > before query
   fzfColors+=("bg+:$COLOR_ALIAS_SELECTED_BACKGROUND")     # selected result background
   fzfColors+=("fg+:$COLOR_ALIAS_SELECTED_FOREGROUND")     # selected result foreground
-  fzfColors+=("pointer:$COLOR_ALIAS_POINTER")             #  before current line
-  fzfColors+=("marker:$COLOR_ALIAS_MARKER")               #  before selected result
+  fzfColors+=("pointer:$COLOR_ALIAS_POINTER")             # $ICONS[fzf-pointer] before current line
+  fzfColors+=("marker:$COLOR_ALIAS_MARKER")               # $ICONS[fzf-marker] before selected result
   fzfColors+=("hl:reverse:$COLOR_ALIAS_MATCH")            # match
   fzfColors+=("hl+:reverse:$COLOR_ALIAS_MATCH")           # match in current line
   fzfColors+=("gutter:-1")                                # suggestion gutter
@@ -31,7 +31,7 @@ function oroshi_tools_fzf() {
   # Multi-select options
   local fzfOptionsMulti="\
     --multi \
-    --marker= \
+    --marker=$ICONS[fzf-marker] \
     --bind 'enter:accept' \
     --bind 'ctrl-space:toggle+down' \
     --bind 'ctrl-a:toggle-all' \
@@ -40,7 +40,7 @@ function oroshi_tools_fzf() {
   # Generic options
   local fzfOptionBase="\
     --ansi \
-    --pointer= \
+    --pointer=$ICONS[fzf-pointer] \
     --reverse \
     --cycle \
     --keep-right \

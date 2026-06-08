@@ -1,0 +1,9 @@
+# Load ICONS associative array into memory
+# No-op if already populated (allows test injection via mock)
+# Usage: icons-load-definitions
+setopt local_options err_return
+
+# Stop if already loaded
+((${#ICONS} > 0)) && return
+
+source "$OROSHI_ROOT/tools/term/zsh/config/theming/icons.zsh"

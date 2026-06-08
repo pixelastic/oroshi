@@ -3,7 +3,7 @@
 # $ git-remote-colorize                    # {currentRemote}
 # $ git-remote-colorize upstream           # upstream
 # $ git-remote-colorize upstream/main      # upstream/main
-# $ git-remote-colorize --with-icon        #  upstream
+# $ git-remote-colorize --with-icon        # $ICONS[branch-remote] upstream
 setopt local_options err_return
 
 # $ git-remote-colorize --with-icon --zsh  # zsh prompt codes
@@ -37,5 +37,5 @@ if [[ "$isWithIcon" != "1" ]]; then
   return
 fi
 
-colorize " $displayRemoteName" "$remoteColor" "${zshFlag[@]}"
+colorize "$ICONS[git-remote] $displayRemoteName" "$remoteColor" "${zshFlag[@]}"
 return

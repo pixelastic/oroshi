@@ -21,6 +21,13 @@ function oroshi_theming_index() {
     source $filetypesDefinitionPath
   }
   oroshi_theming_filetypes && unfunction oroshi_theming_filetypes
+
+  local iconsDefinitionPath=$ZSH_CONFIG_PATH/theming/icons.zsh
+
+  function oroshi_theming_icons() {
+    source $iconsDefinitionPath
+  }
+  oroshi_theming_icons && unfunction oroshi_theming_icons
 }
 oroshi_theming_index
 unfunction oroshi_theming_index

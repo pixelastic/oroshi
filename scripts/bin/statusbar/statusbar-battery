@@ -7,6 +7,7 @@
 set -e
 
 source $ZSH_CONFIG_PATH/theming/env/colors.zsh
+source $ZSH_CONFIG_PATH/theming/icons.zsh
 
 local batteryDevice="$(upower -e | grep BAT)"
 local batteryStatus="$(
@@ -32,17 +33,17 @@ if [[ $batteryPercent -gt 99 ]]; then
 fi
 
 if [[ $batteryStatus == 'charging' ]]; then
-  jo text=" ${batteryPercent}% " fg=$COLOR_ALIAS_SUCCESS | jo -a
+  jo text="$ICONS[battery-charging] ${batteryPercent}% " fg=$COLOR_ALIAS_SUCCESS | jo -a
   exit
 fi
 
 local batteryDisplay="${batteryPercent}% (${batteryDuration}h)"
 if [[ $batteryPercent -lt 100 && $batteryPercent -ge 50 ]]; then
-  jo text="  ${batteryDisplay} " fg=$COLOR_ALIAS_COMMENT | jo -a
+  jo text="$ICONS[battery-full]  ${batteryDisplay} " fg=$COLOR_ALIAS_COMMENT | jo -a
 fi
 if [[ $batteryPercent -lt 50 && $batteryPercent -ge 10 ]]; then
-  jo text="  ${batteryDisplay} " fg=$COLOR_ALIAS_WARNING | jo -a
+  jo text="$ICONS[battery-high]  ${batteryDisplay} " fg=$COLOR_ALIAS_WARNING | jo -a
 fi
 if [[ $batteryPercent -lt 10 ]]; then
-  jo text="  ${batteryDisplay} " fg=$COLOR_ALIAS_ERROR | jo -a
+  jo text="$ICONS[battery-low]  ${batteryDisplay} " fg=$COLOR_ALIAS_ERROR | jo -a
 fi
