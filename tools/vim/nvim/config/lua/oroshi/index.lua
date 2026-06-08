@@ -83,7 +83,7 @@ O_require("oroshi/display")
 O_require("oroshi/disk")
 
 -- Filetypes
-local vimConfigFolder = F.dirname(debug.getinfo(1, "S").short_src)
+local vimConfigFolder = vim.env.OROSHI_ROOT .. "/tools/vim/nvim/config/lua/oroshi"
 local filetypePaths = F.glob("./filetypes/*.lua", {
   cwd = vimConfigFolder,
 })

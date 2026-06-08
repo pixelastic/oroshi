@@ -22,5 +22,11 @@ require("lazy").setup({
     { import = "oroshi.plugins.enabled" },
   },
   checker = { enabled = true, notify = false }, -- Check for updates
-  change_detection = { notify = false },        -- Be silent about file changes
+  change_detection = { notify = false }, -- Be silent about file changes
+  performance = {
+    rtp = {
+      -- Enforce loading of functions from OROSHI_ROOT
+      paths = { vim.env.OROSHI_ROOT .. "/tools/vim/nvim/config" },
+    },
+  },
 })
