@@ -101,7 +101,8 @@ compdef _git-remotes \
 compdef _git-worktrees \
   git-worktree-switch
 compdef _git-worktrees-linked \
-  git-worktree-delete
+  git-worktree-delete \
+  git-worktree-rename
 # }}}
 # 🔨 Build Tools {{{
 compdef _make-targets \

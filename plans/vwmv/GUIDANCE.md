@@ -69,3 +69,8 @@ in `prompt/index.zsh` fires automatically on every `cd` and re-derives
 ## Discoveries
 
 _Append findings here after each issue. Format: `### Issue XX — short title` + bullet points._
+
+### Issue 02 — Implement git-worktree-rename
+
+- `[[ cond ]] && cmd` as the **last statement** in a function exits with 1 when the condition is false, even with `setopt local_options err_return`. Use `if/then/fi` for the final one or two operations so the function always exits 0 on the happy path.
+- No `git-worktree-repair` helper exists; `git -C "$mainPath" worktree repair "$newDir"` is the correct raw call (same pattern as `git worktree add` in `git-worktree-create`).
