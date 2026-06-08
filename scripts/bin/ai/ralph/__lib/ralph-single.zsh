@@ -14,7 +14,7 @@ ralph-single() {
   if [[ -f "$dir/ralph.json" ]]; then
     local existingMode="$(ralph-state "$dir" get mode)"
     if [[ "$existingMode" == "single" ]]; then
-      print "ralph-single: session already in progress"
+      print "ralph-single: ❌ session already in progress"
       return 1
     fi
   fi
