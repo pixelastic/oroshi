@@ -8,17 +8,12 @@ setup() {
   mkdir -p "$THEMING_ROOT/src"
   mkdir -p "$THEMING_ROOT/dist"
 
-  colors-load-definitions() {
-    export COLOR_GREEN_8="78"
-    export COLOR_GREEN_8_HEXA="#166534"
-    export COLOR_DARK_GREEN="211"
-    export COLOR_DARK_GREEN_HEXA="#0f1a0f"
-    export COLOR_GRAY_9="139"
-    export COLOR_GRAY_9_HEXA="#111827"
-    export COLOR_GREEN="2"
-    export COLOR_GREEN_HEXA="#38a169"
-  }
-  bats_mock colors-load-definitions
+  jq -n '{
+    "GREEN_8":   {"ansi": 78,  "hex": "#166534"},
+    "DARK_GREEN":{"ansi": 211, "hex": "#0f1a0f"},
+    "GRAY_9":    {"ansi": 139, "hex": "#111827"},
+    "GREEN":     {"ansi": 2,   "hex": "#38a169"}
+  }' >"$THEMING_ROOT/dist/colors.json"
 
   # full: all fields, path with trailing slash, backgroundInactive from numeric suffix
   # hidden: hideNameInPrompt=true, no path

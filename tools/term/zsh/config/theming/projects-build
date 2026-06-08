@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 # Build dist/projects.json and dist/projects.zsh from src/projects.json
-# Sources env/colors.zsh to resolve color names to ansi/hex values
+# Reads dist/colors.json to resolve color names to ansi/hex values
 # Usage:
 #   $ projects-build
 #   $ THEMING_ROOT=/path/to/theming projects-build
@@ -12,40 +12,17 @@ local distDir="$themingRoot/dist"
 local distJson="$distDir/projects.json"
 local distZsh="$distDir/projects.zsh"
 
-colors-load-definitions
-
 # Sort src/projects.json in-place
 local tmpSrc="$(mktemp)"
 jq --sort-keys '.' "$srcJson" >"$tmpSrc" && mv "$tmpSrc" "$srcJson"
 
 mkdir -p "$distDir"
 
-# Build a JSON color map from sourced COLOR_* vars
-# This read all zsh vars currently in memory
-# Output: {"GREEN_8": {"ansi": 78, "hex": "#166534"}, "DARK_GREEN": {"ansi": 211, ...}, ...}
-function buildColorMap() {
-  local colorEntries=""
-  for varname in ${(k)parameters}; do
-    # Skip non-COLOR_ variables
-    [[ "$varname" != COLOR_* ]] && continue
-    # Skip _HEXA variables
-    [[ "$varname" == COLOR_*_HEXA ]] && continue
-
-    local colorName="${varname#COLOR_}"
-    local ansi="${(P)varname}"
-    local hexVar="${varname}_HEXA"
-    local hex="${(P)hexVar}"
-    colorEntries+="\"${colorName}\":{\"ansi\":${ansi},\"hex\":\"${hex}\"},"
-  done
-  echo "{${colorEntries%,}}"
-}
-
 # Generate dist/projects.json
 function generateDistJson() {
-  local colorMap="$(buildColorMap)"
   jq -n \
     --argjson projects "$(jq '.' "$srcJson")" \
-    --argjson colors "$colorMap" \
+    --argjson colors "$(cat "$distDir/colors.json")" \
     '$projects | to_entries | map(
       .key as $projectName | .value as $projectData |
 

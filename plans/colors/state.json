@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-projects-build-simplification.md",
-    "done": false,
+    "done": true,
+    "recap": "Removed colors-load-definitions call and buildColorMap() from projects-build; now reads dist/colors.json directly via --argjson colors; updated bats fixture to write dist/colors.json instead of mocking COLOR_* env vars.",
     "blocked_by": ["01"]
   },
   {
