@@ -11,5 +11,5 @@ echo "--color=info:${COLOR_ALIAS_FUNCTION}"
 
 # Prompt
 local promptPrefix="$(colorize "  Commands " $COLOR_BLACK $COLOR_ALIAS_FUNCTION)"
-local promptSuffix="$(colorize "" $COLOR_ALIAS_HEADER)"
+local promptSuffix="$(colorize "$ICONS[fzf-separator]" $COLOR_ALIAS_TERMINAL $COLOR_ALIAS_HEADER)"
 echo "--prompt=${promptPrefix}${promptSuffix} "

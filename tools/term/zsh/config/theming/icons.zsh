@@ -11,6 +11,9 @@ ICONS[kitty-tab-separator]=""
 ICONS[badge-separator]=""
 ICONS[completion-separator]=""
 
+# Fzf
+ICONS[fzf-separator]=""
+
 # Nvim
 ICONS[nvim-notification-separator]=""
 ICONS[nvim-tab-separator]=""

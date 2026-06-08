@@ -5,5 +5,5 @@ echo "--preview=fzf-packages-apt-preview {1}"
 
 # Prompt
 local promptPrefix="$(colorize "   apt-get packages " $COLOR_BLACK $COLOR_ALIAS_PACKAGE)"
-local promptSuffix="$(colorize "" $COLOR_ALIAS_PACKAGE)"
+local promptSuffix="$(colorize "$ICONS[fzf-separator]" $COLOR_ALIAS_TERMINAL $COLOR_ALIAS_PACKAGE)"
 echo "--prompt=${promptPrefix}${promptSuffix} "
