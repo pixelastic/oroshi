@@ -10,3 +10,6 @@ NKRO_ENABLE = yes
 
 # Optimize firmware size
 LTO_ENABLE = yes
+
+# Cache compiler output to speed up subsequent builds
+USE_CCACHE = yes
