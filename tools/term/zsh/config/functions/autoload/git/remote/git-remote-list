@@ -2,6 +2,7 @@
 # Usage:
 # $ git-remote-list
 setopt local_options err_return
+icons-load-definitions
 
 local rawList="$(git-remote-list-raw)"
 local currentRemote="$(git-remote-current)"

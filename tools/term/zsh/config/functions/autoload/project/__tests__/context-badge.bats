@@ -23,7 +23,6 @@ setup() {
   export COLOR_ORANGE_7=130
 
   export BATS_SEPARATOR=""
-
   icons-load-definitions() {
     typeset -gA ICONS
     # shellcheck disable=SC2034

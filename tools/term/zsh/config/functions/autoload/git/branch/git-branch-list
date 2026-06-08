@@ -2,6 +2,7 @@
 # Usage:
 # $ git-branch-list          # Display all local branches
 setopt local_options err_return
+icons-load-definitions
 
 local iconDirty="±"
 local iconAhead=""

@@ -1,3 +1,5 @@
+setopt local_options err_return
+icons-load-definitions
 
 echo "--delimiter=▮"
 echo "--with-nth=2"
