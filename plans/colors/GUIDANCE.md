@@ -74,3 +74,8 @@ Add `colors-load-definitions` call before first color use if the file is a stand
 ## Discoveries
 
 _Agents append findings here after each issue._
+
+### Issue 01 — colors-build
+
+- `$varname:hex` inside double-quoted strings is parsed by zsh as `${varname:h}ex` (`:h` = path head modifier, returns `.` for names without slashes). Use `${varname}:hex` to prevent modifier interpretation.
+- `colorRangeValue` for single-digit ANSI numbers (0–9) becomes `""` via `${n:0:-1}` — the `== ""` guard skips them correctly (they're handled by `namedColors` instead).

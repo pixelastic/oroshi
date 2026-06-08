@@ -23,6 +23,12 @@ M.onInit = function()
   F.onWrite("*tools/term/kitty/config/colors.conf", executeCommand("colors-refresh")) -- Kitty
   F.onWrite("*tools/term/zsh/config/theming/src/*", executeCommand("colors-refresh")) -- Zsh
 
+  -- Colors
+  F.onWrite(
+    "*tools/term/zsh/config/theming/colors-build",
+    executeCommand("$OROSHI_ROOT/tools/term/zsh/config/theming/colors-build")
+  )
+
   -- Projects
   F.onWrite(
     "*tools/term/zsh/config/theming/src/projects.json",

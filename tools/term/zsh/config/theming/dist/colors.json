@@ -1,0 +1,1306 @@
+{
+  "AI": {
+    "ansi": 167,
+    "hex": "#b45309"
+  },
+  "AMBER": {
+    "ansi": 19,
+    "hex": "#d97706"
+  },
+  "AMBER_0": {
+    "ansi": 160,
+    "hex": "#fffbeb"
+  },
+  "AMBER_1": {
+    "ansi": 161,
+    "hex": "#fef3c7"
+  },
+  "AMBER_2": {
+    "ansi": 162,
+    "hex": "#fde68a"
+  },
+  "AMBER_3": {
+    "ansi": 163,
+    "hex": "#fcd34d"
+  },
+  "AMBER_4": {
+    "ansi": 164,
+    "hex": "#fbbf24"
+  },
+  "AMBER_5": {
+    "ansi": 165,
+    "hex": "#f59e0b"
+  },
+  "AMBER_6": {
+    "ansi": 166,
+    "hex": "#d97706"
+  },
+  "AMBER_7": {
+    "ansi": 167,
+    "hex": "#b45309"
+  },
+  "AMBER_8": {
+    "ansi": 168,
+    "hex": "#92400e"
+  },
+  "AMBER_9": {
+    "ansi": 169,
+    "hex": "#78350f"
+  },
+  "AMBER_LIGHT": {
+    "ansi": 27,
+    "hex": "#fcd34d"
+  },
+  "BLACK": {
+    "ansi": 0,
+    "hex": "#0c0f15"
+  },
+  "BLACK_LIGHT": {
+    "ansi": 8,
+    "hex": "#1f2937"
+  },
+  "BLUE": {
+    "ansi": 4,
+    "hex": "#3182ce"
+  },
+  "BLUE_0": {
+    "ansi": 90,
+    "hex": "#eff6ff"
+  },
+  "BLUE_1": {
+    "ansi": 91,
+    "hex": "#dbeafe"
+  },
+  "BLUE_2": {
+    "ansi": 92,
+    "hex": "#bfdbfe"
+  },
+  "BLUE_3": {
+    "ansi": 93,
+    "hex": "#93c5fd"
+  },
+  "BLUE_4": {
+    "ansi": 94,
+    "hex": "#60a5fa"
+  },
+  "BLUE_5": {
+    "ansi": 95,
+    "hex": "#3b82f6"
+  },
+  "BLUE_6": {
+    "ansi": 96,
+    "hex": "#2563eb"
+  },
+  "BLUE_7": {
+    "ansi": 97,
+    "hex": "#1d4ed8"
+  },
+  "BLUE_8": {
+    "ansi": 98,
+    "hex": "#1e40af"
+  },
+  "BLUE_9": {
+    "ansi": 99,
+    "hex": "#1e3a8a"
+  },
+  "BLUE_LIGHT": {
+    "ansi": 12,
+    "hex": "#63b3ed"
+  },
+  "BOOLEAN": {
+    "ansi": 165,
+    "hex": "#f59e0b"
+  },
+  "COMMENT": {
+    "ansi": 16,
+    "hex": "#6b7280"
+  },
+  "CONSTANT": {
+    "ansi": 17,
+    "hex": "#dd6b20"
+  },
+  "CYAN": {
+    "ansi": 6,
+    "hex": "#0891b2"
+  },
+  "CYAN_0": {
+    "ansi": 110,
+    "hex": "#ecfeff"
+  },
+  "CYAN_1": {
+    "ansi": 111,
+    "hex": "#cffafe"
+  },
+  "CYAN_2": {
+    "ansi": 112,
+    "hex": "#a5f3fc"
+  },
+  "CYAN_3": {
+    "ansi": 113,
+    "hex": "#67e8f9"
+  },
+  "CYAN_4": {
+    "ansi": 114,
+    "hex": "#22d3ee"
+  },
+  "CYAN_5": {
+    "ansi": 115,
+    "hex": "#06b6d4"
+  },
+  "CYAN_6": {
+    "ansi": 116,
+    "hex": "#0891b2"
+  },
+  "CYAN_7": {
+    "ansi": 117,
+    "hex": "#0e7490"
+  },
+  "CYAN_8": {
+    "ansi": 118,
+    "hex": "#155e75"
+  },
+  "CYAN_9": {
+    "ansi": 119,
+    "hex": "#164e63"
+  },
+  "CYAN_LIGHT": {
+    "ansi": 14,
+    "hex": "#67e8f9"
+  },
+  "DARK_AMBER": {
+    "ansi": 222,
+    "hex": "#1a180f"
+  },
+  "DARK_BLUE": {
+    "ansi": 213,
+    "hex": "#0e1529"
+  },
+  "DARK_CYAN": {
+    "ansi": 215,
+    "hex": "#0f1a1a"
+  },
+  "DARK_EMERALD": {
+    "ansi": 221,
+    "hex": "#0f1a15"
+  },
+  "DARK_GREEN": {
+    "ansi": 211,
+    "hex": "#0f1a0f"
+  },
+  "DARK_NEUTRAL": {
+    "ansi": 226,
+    "hex": "#151515"
+  },
+  "DARK_ORANGE": {
+    "ansi": 220,
+    "hex": "#1a120f"
+  },
+  "DARK_PURPLE": {
+    "ansi": 214,
+    "hex": "#201325"
+  },
+  "DARK_RED": {
+    "ansi": 210,
+    "hex": "#250f0f"
+  },
+  "DARK_SKY": {
+    "ansi": 223,
+    "hex": "#1a2535"
+  },
+  "DARK_TEAL": {
+    "ansi": 225,
+    "hex": "#0f1a18"
+  },
+  "DARK_VIOLET": {
+    "ansi": 224,
+    "hex": "#150f1a"
+  },
+  "DARK_YELLOW": {
+    "ansi": 212,
+    "hex": "#1a1a0f"
+  },
+  "DATE": {
+    "ansi": 177,
+    "hex": "#0369a1"
+  },
+  "DIRECTORY": {
+    "ansi": 2,
+    "hex": "#38a169"
+  },
+  "DOCKER_COMMENT": {
+    "ansi": 134,
+    "hex": "#9ca3af"
+  },
+  "DOCKER_CONTAINER": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "DOCKER_CONTAINER_RUNNING": {
+    "ansi": 2,
+    "hex": "#38a169"
+  },
+  "DOCKER_HASH": {
+    "ansi": 5,
+    "hex": "#805ad5"
+  },
+  "DOCKER_IMAGE": {
+    "ansi": 20,
+    "hex": "#0284c7"
+  },
+  "DOCKER_IMAGE_GITHUB": {
+    "ansi": 2,
+    "hex": "#38a169"
+  },
+  "DOCKER_IMAGE_OROSHI": {
+    "ansi": 2,
+    "hex": "#38a169"
+  },
+  "DOCKER_IMAGE_ORPHAN": {
+    "ansi": 1,
+    "hex": "#ef4444"
+  },
+  "DOCKER_IMAGE_REMOTE": {
+    "ansi": 4,
+    "hex": "#3182ce"
+  },
+  "DOCKER_STATUS": {
+    "ansi": 134,
+    "hex": "#9ca3af"
+  },
+  "DOCKER_TAG": {
+    "ansi": 146,
+    "hex": "#ea580c"
+  },
+  "DOCKER_TAG_LATEST": {
+    "ansi": 145,
+    "hex": "#f97316"
+  },
+  "EMERALD": {
+    "ansi": 18,
+    "hex": "#059669"
+  },
+  "EMERALD_0": {
+    "ansi": 150,
+    "hex": "#ecfdf5"
+  },
+  "EMERALD_1": {
+    "ansi": 151,
+    "hex": "#d1fae5"
+  },
+  "EMERALD_2": {
+    "ansi": 152,
+    "hex": "#a7f3d0"
+  },
+  "EMERALD_3": {
+    "ansi": 153,
+    "hex": "#6ee7b7"
+  },
+  "EMERALD_4": {
+    "ansi": 154,
+    "hex": "#34d399"
+  },
+  "EMERALD_5": {
+    "ansi": 155,
+    "hex": "#10b981"
+  },
+  "EMERALD_6": {
+    "ansi": 156,
+    "hex": "#059669"
+  },
+  "EMERALD_7": {
+    "ansi": 157,
+    "hex": "#047857"
+  },
+  "EMERALD_8": {
+    "ansi": 158,
+    "hex": "#065f46"
+  },
+  "EMERALD_9": {
+    "ansi": 159,
+    "hex": "#064e3b"
+  },
+  "EMERALD_LIGHT": {
+    "ansi": 26,
+    "hex": "#6ee7b7"
+  },
+  "ERROR": {
+    "ansi": 1,
+    "hex": "#ef4444"
+  },
+  "EVAL": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "EXCEPTION": {
+    "ansi": 1,
+    "hex": "#ef4444"
+  },
+  "EXECUTABLE": {
+    "ansi": 21,
+    "hex": "#a78bfa"
+  },
+  "FILE": {
+    "ansi": 21,
+    "hex": "#a78bfa"
+  },
+  "FLAG": {
+    "ansi": 19,
+    "hex": "#d97706"
+  },
+  "FLY_APP_RUNNING": {
+    "ansi": 2,
+    "hex": "#38a169"
+  },
+  "FLY_APP_SUSPENDED": {
+    "ansi": 16,
+    "hex": "#6b7280"
+  },
+  "FUNCTION": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "GIT_ADDED": {
+    "ansi": 2,
+    "hex": "#38a169"
+  },
+  "GIT_AHEAD": {
+    "ansi": 78,
+    "hex": "#166534"
+  },
+  "GIT_AUTHOR": {
+    "ansi": 23,
+    "hex": "#525252"
+  },
+  "GIT_BEHIND": {
+    "ansi": 68,
+    "hex": "#991b1b"
+  },
+  "GIT_BRANCH": {
+    "ansi": 17,
+    "hex": "#dd6b20"
+  },
+  "GIT_BRANCH_DEPENDABOT": {
+    "ansi": 6,
+    "hex": "#0891b2"
+  },
+  "GIT_BRANCH_DEVELOP": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "GIT_BRANCH_HEAD": {
+    "ansi": 1,
+    "hex": "#ef4444"
+  },
+  "GIT_BRANCH_MAIN": {
+    "ansi": 4,
+    "hex": "#3182ce"
+  },
+  "GIT_BRANCH_MASTER": {
+    "ansi": 1,
+    "hex": "#ef4444"
+  },
+  "GIT_COMMIT": {
+    "ansi": 5,
+    "hex": "#805ad5"
+  },
+  "GIT_DIRTY": {
+    "ansi": 1,
+    "hex": "#ef4444"
+  },
+  "GIT_ISSUE": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "GIT_MESSAGE": {
+    "ansi": 134,
+    "hex": "#9ca3af"
+  },
+  "GIT_MODIFIED": {
+    "ansi": 21,
+    "hex": "#a78bfa"
+  },
+  "GIT_PULLREQUEST": {
+    "ansi": 5,
+    "hex": "#805ad5"
+  },
+  "GIT_REBASE": {
+    "ansi": 1,
+    "hex": "#ef4444"
+  },
+  "GIT_REMOTE": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "GIT_REMOTE_ALGOLIA": {
+    "ansi": 94,
+    "hex": "#60a5fa"
+  },
+  "GIT_REMOTE_HEAD": {
+    "ansi": 1,
+    "hex": "#ef4444"
+  },
+  "GIT_REMOTE_ORIGIN": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "GIT_REMOTE_PIXELASTIC": {
+    "ansi": 2,
+    "hex": "#38a169"
+  },
+  "GIT_REMOTE_UPSTREAM": {
+    "ansi": 4,
+    "hex": "#3182ce"
+  },
+  "GIT_REMOVED": {
+    "ansi": 1,
+    "hex": "#ef4444"
+  },
+  "GIT_STASH": {
+    "ansi": 193,
+    "hex": "#5eead4"
+  },
+  "GIT_SUBMODULE": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "GIT_TAG": {
+    "ansi": 6,
+    "hex": "#0891b2"
+  },
+  "GIT_TAG_CLOSEST": {
+    "ansi": 6,
+    "hex": "#0891b2"
+  },
+  "GIT_TAG_EXACT": {
+    "ansi": 115,
+    "hex": "#06b6d4"
+  },
+  "GIT_TAG_PARENT": {
+    "ansi": 118,
+    "hex": "#155e75"
+  },
+  "GIT_TAG_UNRELATED": {
+    "ansi": 16,
+    "hex": "#6b7280"
+  },
+  "GIT_TRACKED": {
+    "ansi": 21,
+    "hex": "#a78bfa"
+  },
+  "GIT_UNTRACKED": {
+    "ansi": 1,
+    "hex": "#ef4444"
+  },
+  "GIT_WORKTREE": {
+    "ansi": 147,
+    "hex": "#c2410c"
+  },
+  "GIT_WORKTREE_DIRTY": {
+    "ansi": 21,
+    "hex": "#a78bfa"
+  },
+  "GLOB": {
+    "ansi": 10,
+    "hex": "#68d391"
+  },
+  "GRAY": {
+    "ansi": 16,
+    "hex": "#6b7280"
+  },
+  "GRAY_0": {
+    "ansi": 130,
+    "hex": "#f9fafb"
+  },
+  "GRAY_1": {
+    "ansi": 131,
+    "hex": "#f3f4f6"
+  },
+  "GRAY_2": {
+    "ansi": 132,
+    "hex": "#e5e7eb"
+  },
+  "GRAY_3": {
+    "ansi": 133,
+    "hex": "#d1d5db"
+  },
+  "GRAY_4": {
+    "ansi": 134,
+    "hex": "#9ca3af"
+  },
+  "GRAY_5": {
+    "ansi": 135,
+    "hex": "#6b7280"
+  },
+  "GRAY_6": {
+    "ansi": 136,
+    "hex": "#4b5563"
+  },
+  "GRAY_7": {
+    "ansi": 137,
+    "hex": "#374151"
+  },
+  "GRAY_8": {
+    "ansi": 138,
+    "hex": "#1f2937"
+  },
+  "GRAY_9": {
+    "ansi": 139,
+    "hex": "#111827"
+  },
+  "GRAY_LIGHT": {
+    "ansi": 24,
+    "hex": "#d1d5db"
+  },
+  "GREEN": {
+    "ansi": 2,
+    "hex": "#38a169"
+  },
+  "GREEN_0": {
+    "ansi": 70,
+    "hex": "#f0fdf4"
+  },
+  "GREEN_1": {
+    "ansi": 71,
+    "hex": "#dcfce7"
+  },
+  "GREEN_2": {
+    "ansi": 72,
+    "hex": "#bbf7d0"
+  },
+  "GREEN_3": {
+    "ansi": 73,
+    "hex": "#86efac"
+  },
+  "GREEN_4": {
+    "ansi": 74,
+    "hex": "#4ade80"
+  },
+  "GREEN_5": {
+    "ansi": 75,
+    "hex": "#22c55e"
+  },
+  "GREEN_6": {
+    "ansi": 76,
+    "hex": "#16a34a"
+  },
+  "GREEN_7": {
+    "ansi": 77,
+    "hex": "#15803d"
+  },
+  "GREEN_8": {
+    "ansi": 78,
+    "hex": "#166534"
+  },
+  "GREEN_9": {
+    "ansi": 79,
+    "hex": "#14532d"
+  },
+  "GREEN_LIGHT": {
+    "ansi": 10,
+    "hex": "#68d391"
+  },
+  "HEADER": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "HOST_GITHUB": {
+    "ansi": 4,
+    "hex": "#3182ce"
+  },
+  "HOST_PIXELASTIC": {
+    "ansi": 2,
+    "hex": "#38a169"
+  },
+  "IMPORT": {
+    "ansi": 11,
+    "hex": "#f6e05e"
+  },
+  "INFO": {
+    "ansi": 4,
+    "hex": "#3182ce"
+  },
+  "INTERPOLATION_STRING": {
+    "ansi": 4,
+    "hex": "#3182ce"
+  },
+  "INTERPOLATION_VARIABLE": {
+    "ansi": 21,
+    "hex": "#a78bfa"
+  },
+  "INTERPOLATION_WRAPPER": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "KEY": {
+    "ansi": 183,
+    "hex": "#c4b5fd"
+  },
+  "KEYWORD": {
+    "ansi": 2,
+    "hex": "#38a169"
+  },
+  "LANGUAGE_BATS": {
+    "ansi": 4,
+    "hex": "#3182ce"
+  },
+  "LANGUAGE_JAVASCRIPT": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "LANGUAGE_NODE": {
+    "ansi": 2,
+    "hex": "#38a169"
+  },
+  "LANGUAGE_PYTHON": {
+    "ansi": 2,
+    "hex": "#38a169"
+  },
+  "LANGUAGE_RUBY": {
+    "ansi": 17,
+    "hex": "#dd6b20"
+  },
+  "LINK": {
+    "ansi": 94,
+    "hex": "#60a5fa"
+  },
+  "LOCAL_DEPENDENCY": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "MARKER": {
+    "ansi": 6,
+    "hex": "#0891b2"
+  },
+  "MATCH": {
+    "ansi": 143,
+    "hex": "#fdba74"
+  },
+  "MODIFIER": {
+    "ansi": 25,
+    "hex": "#fdba74"
+  },
+  "NEUTRAL": {
+    "ansi": 23,
+    "hex": "#525252"
+  },
+  "NEUTRAL_0": {
+    "ansi": 200,
+    "hex": "#fafafa"
+  },
+  "NEUTRAL_1": {
+    "ansi": 201,
+    "hex": "#f5f5f5"
+  },
+  "NEUTRAL_2": {
+    "ansi": 202,
+    "hex": "#e5e5e5"
+  },
+  "NEUTRAL_3": {
+    "ansi": 203,
+    "hex": "#d4d4d4"
+  },
+  "NEUTRAL_4": {
+    "ansi": 204,
+    "hex": "#a3a3a3"
+  },
+  "NEUTRAL_5": {
+    "ansi": 205,
+    "hex": "#737373"
+  },
+  "NEUTRAL_6": {
+    "ansi": 206,
+    "hex": "#525252"
+  },
+  "NEUTRAL_7": {
+    "ansi": 207,
+    "hex": "#404040"
+  },
+  "NEUTRAL_8": {
+    "ansi": 208,
+    "hex": "#262626"
+  },
+  "NEUTRAL_9": {
+    "ansi": 209,
+    "hex": "#171717"
+  },
+  "NEUTRAL_LIGHT": {
+    "ansi": 31,
+    "hex": "#a3a3a3"
+  },
+  "NODE_VERSION_CURRENT": {
+    "ansi": 2,
+    "hex": "#38a169"
+  },
+  "NODE_VERSION_DEFAULT": {
+    "ansi": 4,
+    "hex": "#3182ce"
+  },
+  "NODE_VERSION_INSTALLED": {
+    "ansi": 134,
+    "hex": "#9ca3af"
+  },
+  "NODE_VERSION_UNINSTALLED": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "NOISE": {
+    "ansi": 197,
+    "hex": "#0f766e"
+  },
+  "NOTICE": {
+    "ansi": 21,
+    "hex": "#a78bfa"
+  },
+  "NUMBER": {
+    "ansi": 4,
+    "hex": "#3182ce"
+  },
+  "ORANGE": {
+    "ansi": 17,
+    "hex": "#dd6b20"
+  },
+  "ORANGE_0": {
+    "ansi": 140,
+    "hex": "#fff7ed"
+  },
+  "ORANGE_1": {
+    "ansi": 141,
+    "hex": "#ffedd5"
+  },
+  "ORANGE_2": {
+    "ansi": 142,
+    "hex": "#fed7aa"
+  },
+  "ORANGE_3": {
+    "ansi": 143,
+    "hex": "#fdba74"
+  },
+  "ORANGE_4": {
+    "ansi": 144,
+    "hex": "#fb923c"
+  },
+  "ORANGE_5": {
+    "ansi": 145,
+    "hex": "#f97316"
+  },
+  "ORANGE_6": {
+    "ansi": 146,
+    "hex": "#ea580c"
+  },
+  "ORANGE_7": {
+    "ansi": 147,
+    "hex": "#c2410c"
+  },
+  "ORANGE_8": {
+    "ansi": 148,
+    "hex": "#9a3412"
+  },
+  "ORANGE_9": {
+    "ansi": 149,
+    "hex": "#7c2d12"
+  },
+  "ORANGE_LIGHT": {
+    "ansi": 25,
+    "hex": "#fdba74"
+  },
+  "PACKAGE": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "PACKAGE_DESCRIPTION": {
+    "ansi": 134,
+    "hex": "#9ca3af"
+  },
+  "PACKAGE_INSTALLED": {
+    "ansi": 2,
+    "hex": "#38a169"
+  },
+  "PACKAGE_NOT_INSTALLED": {
+    "ansi": 16,
+    "hex": "#6b7280"
+  },
+  "PACKAGE_VERSION": {
+    "ansi": 6,
+    "hex": "#0891b2"
+  },
+  "PACKAGE_VERSION_MISMATCH": {
+    "ansi": 21,
+    "hex": "#a78bfa"
+  },
+  "POINTER": {
+    "ansi": 2,
+    "hex": "#38a169"
+  },
+  "PROCESS": {
+    "ansi": 6,
+    "hex": "#0891b2"
+  },
+  "PUNCTUATION": {
+    "ansi": 22,
+    "hex": "#0f766e"
+  },
+  "PURPLE": {
+    "ansi": 5,
+    "hex": "#805ad5"
+  },
+  "PURPLE_0": {
+    "ansi": 100,
+    "hex": "#faf5ff"
+  },
+  "PURPLE_1": {
+    "ansi": 101,
+    "hex": "#f3e8ff"
+  },
+  "PURPLE_2": {
+    "ansi": 102,
+    "hex": "#e9d5ff"
+  },
+  "PURPLE_3": {
+    "ansi": 103,
+    "hex": "#d8b4fe"
+  },
+  "PURPLE_4": {
+    "ansi": 104,
+    "hex": "#c084fc"
+  },
+  "PURPLE_5": {
+    "ansi": 105,
+    "hex": "#a855f7"
+  },
+  "PURPLE_6": {
+    "ansi": 106,
+    "hex": "#9333ea"
+  },
+  "PURPLE_7": {
+    "ansi": 107,
+    "hex": "#7e22ce"
+  },
+  "PURPLE_8": {
+    "ansi": 108,
+    "hex": "#6b21a8"
+  },
+  "PURPLE_9": {
+    "ansi": 109,
+    "hex": "#581c87"
+  },
+  "PURPLE_LIGHT": {
+    "ansi": 13,
+    "hex": "#b794f4"
+  },
+  "RED": {
+    "ansi": 1,
+    "hex": "#ef4444"
+  },
+  "RED_0": {
+    "ansi": 60,
+    "hex": "#fef2f2"
+  },
+  "RED_1": {
+    "ansi": 61,
+    "hex": "#fee2e2"
+  },
+  "RED_2": {
+    "ansi": 62,
+    "hex": "#fecaca"
+  },
+  "RED_3": {
+    "ansi": 63,
+    "hex": "#fca5a5"
+  },
+  "RED_4": {
+    "ansi": 64,
+    "hex": "#f87171"
+  },
+  "RED_5": {
+    "ansi": 65,
+    "hex": "#ef4444"
+  },
+  "RED_6": {
+    "ansi": 66,
+    "hex": "#dc2626"
+  },
+  "RED_7": {
+    "ansi": 67,
+    "hex": "#b91c1c"
+  },
+  "RED_8": {
+    "ansi": 68,
+    "hex": "#991b1b"
+  },
+  "RED_9": {
+    "ansi": 69,
+    "hex": "#7f1d1d"
+  },
+  "RED_LIGHT": {
+    "ansi": 9,
+    "hex": "#f87171"
+  },
+  "REGEXP": {
+    "ansi": 4,
+    "hex": "#3182ce"
+  },
+  "SELECTED_BACKGROUND": {
+    "ansi": 138,
+    "hex": "#1f2937"
+  },
+  "SELECTED_FOREGROUND": {
+    "ansi": 7,
+    "hex": "#ffffff"
+  },
+  "SIZE_UNIT": {
+    "ansi": 134,
+    "hex": "#9ca3af"
+  },
+  "SIZE_VALUE": {
+    "ansi": 16,
+    "hex": "#6b7280"
+  },
+  "SKY": {
+    "ansi": 20,
+    "hex": "#0284c7"
+  },
+  "SKY_0": {
+    "ansi": 170,
+    "hex": "#f0f9ff"
+  },
+  "SKY_1": {
+    "ansi": 171,
+    "hex": "#e0f2fe"
+  },
+  "SKY_2": {
+    "ansi": 172,
+    "hex": "#bae6fd"
+  },
+  "SKY_3": {
+    "ansi": 173,
+    "hex": "#7dd3fc"
+  },
+  "SKY_4": {
+    "ansi": 174,
+    "hex": "#38bdf8"
+  },
+  "SKY_5": {
+    "ansi": 175,
+    "hex": "#0ea5e9"
+  },
+  "SKY_6": {
+    "ansi": 176,
+    "hex": "#0284c7"
+  },
+  "SKY_7": {
+    "ansi": 177,
+    "hex": "#0369a1"
+  },
+  "SKY_8": {
+    "ansi": 178,
+    "hex": "#075985"
+  },
+  "SKY_9": {
+    "ansi": 179,
+    "hex": "#0c4a6e"
+  },
+  "SKY_LIGHT": {
+    "ansi": 28,
+    "hex": "#7dd3fc"
+  },
+  "SPECIAL_CHAR": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "STATEMENT": {
+    "ansi": 2,
+    "hex": "#38a169"
+  },
+  "STRING": {
+    "ansi": 4,
+    "hex": "#3182ce"
+  },
+  "SUCCESS": {
+    "ansi": 2,
+    "hex": "#38a169"
+  },
+  "SYMBOL": {
+    "ansi": 17,
+    "hex": "#dd6b20"
+  },
+  "TEAL": {
+    "ansi": 22,
+    "hex": "#0f766e"
+  },
+  "TEAL_0": {
+    "ansi": 190,
+    "hex": "#f0fdfa"
+  },
+  "TEAL_1": {
+    "ansi": 191,
+    "hex": "#ccfbf1"
+  },
+  "TEAL_2": {
+    "ansi": 192,
+    "hex": "#99f6e4"
+  },
+  "TEAL_3": {
+    "ansi": 193,
+    "hex": "#5eead4"
+  },
+  "TEAL_4": {
+    "ansi": 194,
+    "hex": "#2dd4bf"
+  },
+  "TEAL_5": {
+    "ansi": 195,
+    "hex": "#14b8a6"
+  },
+  "TEAL_6": {
+    "ansi": 196,
+    "hex": "#0d9488"
+  },
+  "TEAL_7": {
+    "ansi": 197,
+    "hex": "#0f766e"
+  },
+  "TEAL_8": {
+    "ansi": 198,
+    "hex": "#115e59"
+  },
+  "TEAL_9": {
+    "ansi": 199,
+    "hex": "#134e4a"
+  },
+  "TEAL_LIGHT": {
+    "ansi": 30,
+    "hex": "#4fd1c5"
+  },
+  "TERMINAL": {
+    "ansi": 0,
+    "hex": "#0c0f15"
+  },
+  "TEXT": {
+    "ansi": 24,
+    "hex": "#d1d5db"
+  },
+  "TODO": {
+    "ansi": 1,
+    "hex": "#ef4444"
+  },
+  "UI": {
+    "ansi": 23,
+    "hex": "#525252"
+  },
+  "UNKNOWN": {
+    "ansi": 114,
+    "hex": "#22d3ee"
+  },
+  "VARIABLE": {
+    "ansi": 21,
+    "hex": "#a78bfa"
+  },
+  "VARIABLE_DEFINITION": {
+    "ansi": 29,
+    "hex": "#c4b5fd"
+  },
+  "VARIABLE_TYPE": {
+    "ansi": 64,
+    "hex": "#f87171"
+  },
+  "VIDEO_STREAM_AUDIO": {
+    "ansi": 4,
+    "hex": "#3182ce"
+  },
+  "VIM_COMMAND_CURSOR": {
+    "ansi": 22,
+    "hex": "#0f766e"
+  },
+  "VIM_INSERT_CURSOR": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "VIM_NORMAL_CURSOR": {
+    "ansi": 1,
+    "hex": "#ef4444"
+  },
+  "VIM_SEARCH_BACKGROUND": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "VIM_SEARCH_FOREGROUND": {
+    "ansi": 0,
+    "hex": "#0c0f15"
+  },
+  "VIM_VISUAL_BACKGROUND": {
+    "ansi": 4,
+    "hex": "#3182ce"
+  },
+  "VIM_VISUAL_CURSOR": {
+    "ansi": 4,
+    "hex": "#3182ce"
+  },
+  "VIM_VISUAL_FOREGROUND": {
+    "ansi": 7,
+    "hex": "#ffffff"
+  },
+  "VIOLET": {
+    "ansi": 21,
+    "hex": "#a78bfa"
+  },
+  "VIOLET_0": {
+    "ansi": 180,
+    "hex": "#f5f3ff"
+  },
+  "VIOLET_1": {
+    "ansi": 181,
+    "hex": "#ede9fe"
+  },
+  "VIOLET_2": {
+    "ansi": 182,
+    "hex": "#ddd6fe"
+  },
+  "VIOLET_3": {
+    "ansi": 183,
+    "hex": "#c4b5fd"
+  },
+  "VIOLET_4": {
+    "ansi": 184,
+    "hex": "#a78bfa"
+  },
+  "VIOLET_5": {
+    "ansi": 185,
+    "hex": "#8b5cf6"
+  },
+  "VIOLET_6": {
+    "ansi": 186,
+    "hex": "#7c3aed"
+  },
+  "VIOLET_7": {
+    "ansi": 187,
+    "hex": "#6d28d9"
+  },
+  "VIOLET_8": {
+    "ansi": 188,
+    "hex": "#5b21b6"
+  },
+  "VIOLET_9": {
+    "ansi": 189,
+    "hex": "#4c1d95"
+  },
+  "VIOLET_LIGHT": {
+    "ansi": 29,
+    "hex": "#c4b5fd"
+  },
+  "WARNING": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "WHITE": {
+    "ansi": 7,
+    "hex": "#ffffff"
+  },
+  "WHITE_LIGHT": {
+    "ansi": 15,
+    "hex": "#d9d9d9"
+  },
+  "YARN_LINK_CLASSIC": {
+    "ansi": 116,
+    "hex": "#0891b2"
+  },
+  "YARN_LINK_EXTERNAL": {
+    "ansi": 4,
+    "hex": "#3182ce"
+  },
+  "YARN_LINK_WORKSPACE": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "YARN_PACKAGE": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "YARN_PACKAGE_DESCRIPTION": {
+    "ansi": 134,
+    "hex": "#9ca3af"
+  },
+  "YARN_PACKAGE_GLOBAL": {
+    "ansi": 4,
+    "hex": "#3182ce"
+  },
+  "YARN_PACKAGE_VERSION": {
+    "ansi": 6,
+    "hex": "#0891b2"
+  },
+  "YARN_SCRIPT_COMMAND": {
+    "ansi": 134,
+    "hex": "#9ca3af"
+  },
+  "YARN_SCRIPT_GLOBAL": {
+    "ansi": 4,
+    "hex": "#3182ce"
+  },
+  "YARN_SCRIPT_LOCAL": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "YELLOW": {
+    "ansi": 3,
+    "hex": "#d69e2e"
+  },
+  "YELLOW_0": {
+    "ansi": 80,
+    "hex": "#fefce8"
+  },
+  "YELLOW_1": {
+    "ansi": 81,
+    "hex": "#fef9c3"
+  },
+  "YELLOW_2": {
+    "ansi": 82,
+    "hex": "#fef08a"
+  },
+  "YELLOW_3": {
+    "ansi": 83,
+    "hex": "#fde047"
+  },
+  "YELLOW_4": {
+    "ansi": 84,
+    "hex": "#facc15"
+  },
+  "YELLOW_5": {
+    "ansi": 85,
+    "hex": "#eab308"
+  },
+  "YELLOW_6": {
+    "ansi": 86,
+    "hex": "#ca8a04"
+  },
+  "YELLOW_7": {
+    "ansi": 87,
+    "hex": "#a16207"
+  },
+  "YELLOW_8": {
+    "ansi": 88,
+    "hex": "#854d0e"
+  },
+  "YELLOW_9": {
+    "ansi": 89,
+    "hex": "#713f12"
+  },
+  "YELLOW_LIGHT": {
+    "ansi": 11,
+    "hex": "#f6e05e"
+  },
+  "YOUTUBE_VIDEO_DURATION": {
+    "ansi": 23,
+    "hex": "#525252"
+  },
+  "YOUTUBE_VIDEO_ID": {
+    "ansi": 17,
+    "hex": "#dd6b20"
+  },
+  "YOUTUBE_VIDEO_INDEX": {
+    "ansi": 20,
+    "hex": "#0284c7"
+  },
+  "YOUTUBE_VIDEO_TITLE": {
+    "ansi": 134,
+    "hex": "#9ca3af"
+  }
+}

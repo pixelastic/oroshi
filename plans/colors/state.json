@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-colors-build.md",
-    "done": false,
+    "done": true,
+    "recap": "Created colors-build script that parses kitty/config/colors.conf and writes dist/colors.zsh (typeset -gA colors) and dist/colors.json; added NeoVim trigger in colors.lua.",
     "blocked_by": []
   },
   {
