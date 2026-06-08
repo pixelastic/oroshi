@@ -75,6 +75,12 @@ Add `colors-load-definitions` call before first color use if the file is a stand
 
 _Agents append findings here after each issue._
 
+### Issue 03 — colors-template-render
+
+- Perl `s/pattern/{{$1:hex}}/g` fails silently if `{` in the replacement is misinterpreted; use `\x7b\x7b$1:hex\x7d\x7d` or `|` delimiters to avoid the issue.
+- Two aliases (`HEADING`, `REQUIRE`) used in `oroshi.xml` don't exist in `dist/colors.zsh`; they render as unknown placeholders (left unchanged), which is correct per spec but worth noting for future alias additions.
+- `local key` before a `for` loop is a forced split from assignment — zshlint accepts it without violation.
+
 ### Issue 01 — colors-build
 
 - `$varname:hex` inside double-quoted strings is parsed by zsh as `${varname:h}ex` (`:h` = path head modifier, returns `.` for names without slashes). Use `${varname}:hex` to prevent modifier interpretation.

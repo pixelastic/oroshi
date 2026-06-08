@@ -5,6 +5,6 @@ local currentDir=${0:a:h}
 
 mkdir -p $currentDir/dist
 
-envsubst \
-	<${currentDir}/src/gitconfig \
-	>${currentDir}/dist/gitconfig
+colors-template-render \
+  $currentDir/src/gitconfig \
+  >$currentDir/dist/gitconfig

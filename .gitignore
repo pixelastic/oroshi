@@ -6,6 +6,10 @@
 # Build directories
 build/
 dist/
+!tools/term/zsh/config/theming/dist/
+!tools/cli/bat/config/dist/
+!tools/cli/rg/config/dist/
+!tools/git/git/config/dist/
 tmp/
 plans/*/scaffold
 

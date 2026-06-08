@@ -1,0 +1,18 @@
+# Replace {{NAME}} and {{NAME:hex}} placeholders with values from colors[]
+# Unknown placeholders are left unchanged
+# Usage:
+# $ colors-template-render <filepath>
+setopt local_options err_return
+
+# Missing required filepath argument
+[[ "$1" == "" ]] && return 1
+
+colors-load-definitions
+
+local content="$(<$1)"
+
+for key in ${(k)colors}; do
+  content="${content//\{\{${key}\}\}/${colors[$key]}}"
+done
+
+print -r -- "$content"

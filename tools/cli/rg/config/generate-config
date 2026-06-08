@@ -2,12 +2,10 @@
 # Regenerate ./dist/rgrc.conf from ./src/rgrc.conf
 set -e
 
-source $OROSHI_ROOT/tools/term/zsh/config/theming/env/colors.zsh
-
 local currentDir=${0:a:h}
 
 mkdir -p $currentDir/dist
 
-envsubst \
-  <${currentDir}/src/rgrc.conf \
-  >${currentDir}/dist/rgrc.conf
+colors-template-render \
+  $currentDir/src/rgrc.conf \
+  >$currentDir/dist/rgrc.conf

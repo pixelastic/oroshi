@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-colors-template-render.md",
-    "done": false,
+    "done": true,
+    "recap": "Created colors-template-render autoload function that replaces {{NAME}} and {{NAME:hex}} placeholders using the colors[] array; migrated oroshi.xml, rgrc.conf, and gitconfig templates from $COLOR_* to {{}} syntax; updated three generate scripts to use colors-template-render instead of envsubst.",
     "blocked_by": ["02"]
   },
   {
