@@ -1,8 +1,9 @@
 # Displays a colorized version of a submodule name
 # Usage:
 # $ git-submodule-colorize private                 # private
-# $ git-submodule-colorize --with-icon             #  private
+# $ git-submodule-colorize --with-icon             # $ICONS[git-submodule] private
 setopt local_options err_return
+icons-load-definitions
 zparseopts -E -D \
 	-with-icon=flagWithIcon
 local isWithIcon=${#flagWithIcon}
@@ -17,5 +18,5 @@ if [[ "$isWithIcon" != 1 ]]; then
 fi
 
 # Fallback on unknown status
-colorize " $submoduleName" $COLOR_ALIAS_GIT_SUBMODULE
+colorize "$ICONS[git-submodule] $submoduleName" $COLOR_ALIAS_GIT_SUBMODULE
 return

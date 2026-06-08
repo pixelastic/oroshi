@@ -29,6 +29,9 @@ ICONS[nvim-tab-separator]=""
 ICONS[dependabot]=""
 ICONS[dropbox]=""
 
+# Git
+ICONS[git-submodule]=""
+
 # Separators
 ICONS[separator-arrow]=""
 ICONS[separator-slant]=""
@@ -40,7 +43,6 @@ ICONS[separator-slant-reverse]=""
 ICONS[git-branch]="ﰖ"
 ICONS[git-ahead]=""
 ICONS[git-behind]=""
-ICONS[git-submodule]=""
 ICONS[git-stash]=""
 ICONS[git-rebase]=""
 ICONS[git-issue]=""
