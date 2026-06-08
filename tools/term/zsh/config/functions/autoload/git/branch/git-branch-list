@@ -38,9 +38,9 @@ for rawGitBranch in ${(f)rawGitBranches}; do
   local isWorktree="0"
   [[ ${worktrees[$branchName]} == "1" ]] && isWorktree="1"
 
-  #  to mark the current branch
+  # $ICONS[current] to mark the current branch
   local displayPointer=""
-  [[ $branchName == "$currentBranch" ]] && displayPointer="$(colorize  ALIAS_POINTER)"
+  [[ $branchName == "$currentBranch" ]] && displayPointer="$(colorize $ICONS[current] ALIAS_POINTER)"
   row+="${displayPointer}▮"
 
   # Branch name

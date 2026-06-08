@@ -1,6 +1,9 @@
 # Named icon definitions
 typeset -gA ICONS
 
+# Common
+ICONS[current]=""
+
 # Kitty
 ICONS[kitty-tab-separator]=""
 
@@ -33,18 +36,6 @@ ICONS[separator-slant-reverse]=""
 
 # ---
 
-# Misc
-ICONS[clock]=""
-ICONS[gauge]=""
-ICONS[network]=""
-ICONS[pie]=""
-ICONS[pulse]=""
-ICONS[tag]=""
-ICONS[wave]=""
-ICONS[prompt]="❯"
-ICONS[warning]=""
-ICONS[refresh]=""
-
 # Git
 ICONS[git-branch]="ﰖ"
 ICONS[git-ahead]=""
@@ -68,6 +59,18 @@ ICONS[branch-detached]=""
 ICONS[branch-fallback]=""
 ICONS[branch-worktree]=""
 
+# Misc
+ICONS[clock]=""
+ICONS[gauge]=""
+ICONS[network]=""
+ICONS[pie]=""
+ICONS[pulse]=""
+ICONS[tag]=""
+ICONS[wave]=""
+ICONS[prompt]="❯"
+ICONS[warning]=""
+ICONS[refresh]=""
+
 # Node / Yarn
 ICONS[node]=""
 ICONS[monorepo]=""
@@ -75,7 +78,6 @@ ICONS[link]=""
 ICONS[npm]=""
 
 # fzf
-ICONS[fzf-pointer]=""
 ICONS[fzf-marker]=""
 
 # Languages

@@ -22,7 +22,7 @@ for rawLine in ${(f)rawList}; do
   [[ $isCurrentVersion == "1" ]] && versionColor=$COLOR_ALIAS_NODE_VERSION_CURRENT
 
   local row=""
-  [[ $isCurrentVersion == "1" ]] && row+="$(colorize  $versionColor)▮"
+  [[ $isCurrentVersion == "1" ]] && row+="$(colorize $ICONS[current] $versionColor)▮"
   [[ $isCurrentVersion == "0" ]] && row+="▮"
 
   # Name
