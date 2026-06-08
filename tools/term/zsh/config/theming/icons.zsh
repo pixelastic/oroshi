@@ -1,15 +1,19 @@
 # Named icon definitions
 typeset -gA ICONS
 
-# TODO
-ICONS[separator-prompt]=""
-
 # Kitty
 ICONS[kitty-tab-separator]=""
 
 # Zsh
 ICONS[badge-separator]=""
+
+# Completion
 ICONS[completion-separator]=""
+ICONS[completion-file]=""
+ICONS[completion-folder]=""
+ICONS[completion-commands]=""
+ICONS[completion-aliases]=""
+ICONS[completion-zsh-builtins]=""
 
 # Fzf
 ICONS[fzf-separator]=""
@@ -17,6 +21,10 @@ ICONS[fzf-separator]=""
 # Nvim
 ICONS[nvim-notification-separator]=""
 ICONS[nvim-tab-separator]=""
+
+# Tools
+ICONS[dependabot]=""
+ICONS[dropbox]=""
 
 # Separators
 ICONS[separator-arrow]=""
@@ -27,8 +35,6 @@ ICONS[separator-slant-reverse]=""
 
 # Misc
 ICONS[clock]=""
-ICONS[dependabot]=""
-ICONS[dropbox]=""
 ICONS[gauge]=""
 ICONS[network]=""
 ICONS[pie]=""
@@ -38,12 +44,6 @@ ICONS[wave]=""
 ICONS[prompt]="❯"
 ICONS[warning]=""
 ICONS[refresh]=""
-ICONS[terminal]=""
-ICONS[font]=""
-
-# Files
-ICONS[file]=""
-ICONS[folder]=""
 
 # Git
 ICONS[git-branch]="ﰖ"
@@ -81,7 +81,6 @@ ICONS[fzf-marker]=""
 # Languages
 ICONS[ruby]=""
 ICONS[python]=""
-ICONS[zsh-builtin]=""
 
 # Battery
 ICONS[battery-charging]=""
