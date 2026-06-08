@@ -1,0 +1,10 @@
+# Rename a git branch
+# Usage:
+# $ git-branch-rename <new>           # rename current branch to <new>
+# $ git-branch-rename <old> <new>     # rename branch <old> to <new>
+setopt local_options err_return
+
+# Require at least one argument
+[[ $# -eq 0 ]] && return 1
+
+git branch --move "$@"

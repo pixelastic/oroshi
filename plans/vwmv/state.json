@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-migrate-git-branch-rename.md",
-    "done": false,
+    "done": true,
+    "recap": "Deleted bin script, created autoloaded function with setopt/guard/git-branch-move, added 3-case BATS test file.",
     "blocked_by": []
   },
   {
