@@ -1,3 +1,4 @@
 #!/usr/bin/env zsh
 # Check if I'm on arm64 or amd64
+set -e
 dpkg --print-architecture

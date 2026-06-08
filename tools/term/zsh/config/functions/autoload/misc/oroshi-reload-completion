@@ -1,4 +1,5 @@
 # Reload all completion definitions
+setopt local_options err_return
 for item in $ZSH_CONFIG_PATH/completion/compdef/*; do
   local functionName=${item:t}
   if [[ $functions[$functionName] ]]; then

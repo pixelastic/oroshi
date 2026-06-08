@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
 # Apply last stash, and delete it
+set -e
 
 git stash apply && git stash drop

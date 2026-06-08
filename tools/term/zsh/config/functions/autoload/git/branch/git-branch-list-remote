@@ -3,6 +3,7 @@
 # $ git-branch-list-remote                 # List all current remote branches
 # $ git-branch-list-remote origin          # List all remote branches on origin
 # $ git-branch-list-remote --all / -a      # List all branches on all remotes
+setopt local_options err_return
 zparseopts -E -D \
   a=flagAll \
   -all=flagAll \

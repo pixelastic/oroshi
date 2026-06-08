@@ -1,4 +1,5 @@
 # Display list of all installed node versions
+setopt local_options err_return
 local rawList="$(node-version-list-raw)"
 
 for rawLine in ${(f)rawList}; do

@@ -2,6 +2,7 @@
 # Create a new local branch
 # Usage:
 # $ git-branch-create foo      # Create branch foo
+set -e
 
 local branchName="$1"
 

@@ -3,6 +3,7 @@
 # $ docker-image-id ubuntu:latest  # 08d22c0ceb15
 # $ docker-image-id ubuntu         # 08d22c0ceb15, id of ubuntu:latest
 # $ docker-image-id nope           # Exits with 1
+setopt local_options err_return
 local imageName="$1"
 
 local result="$(docker images $imageName --format '{{.ID}}')"

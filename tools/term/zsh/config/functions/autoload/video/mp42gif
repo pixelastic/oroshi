@@ -2,6 +2,7 @@
 # Usage:
 # $ img-convert ./*.mp4        # Convert all mp4 files to gif
 # $ img-convert -f ./*.mp4     # Overwrites existing destinations
+setopt local_options err_return
 zparseopts -E -D \
 	f=flagForce \
 	-force=flagForce

@@ -2,6 +2,7 @@
 # Usage:
 # $ git-github-branch-default                    # Get default branch for current repo
 # $ git-github-branch-default owner/repo         # Get default branch for specific repo
+setopt local_options err_return
 local repo="$1"
 
 # If no repo specified, use current repo

@@ -1,5 +1,6 @@
 # Check if a yarn install is currently running
 # The lockfile is set by vit
+setopt local_options err_return
 local lockfile="$(git-directory-root)/.git/oroshi_yarn_install_in_progress"
 
 [[ -r $lockfile ]] && return 0

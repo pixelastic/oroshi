@@ -2,6 +2,7 @@
 # Usage:
 # $ yarn-link-remove reddinx        # Removes reddinx from links
 # $ yarn-link-remove reddinx firost # Removes reddinx and firost
+setopt local_options err_return
 local inputNames=($@)
 
 # Yarn Classic (v1)

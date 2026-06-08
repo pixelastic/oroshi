@@ -2,6 +2,7 @@
 # Usage:
 # $ git-github-project-owner              # pixelastic
 # $ git-github-project-owner upstream     # someorg
+setopt local_options err_return
 
 local project="$(git-github-project "$@")"
 [[ "$project" == "" ]] && return 1

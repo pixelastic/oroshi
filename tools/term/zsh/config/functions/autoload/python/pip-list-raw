@@ -2,6 +2,7 @@
 # Usage:
 # $ pip-list-raw                     # All installed pip dependencies
 # Store information about each package in its own hash
+setopt local_options err_return
 local packageNames=()
 typeset -A packageVersions=()
 

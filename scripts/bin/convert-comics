@@ -10,6 +10,7 @@
 #
 # TODO : How can I define a var in zsh to hold a globbing pattern and use it in
 # tests afterwards ?
+set -e
 
 local archiveRegexp='./*.(cbr|cbz|rar|zip)'
 local tmpDir='./compress-tmp'

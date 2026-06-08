@@ -2,6 +2,7 @@
 # Get the column width of a Kitty window
 # Usage: kitty-window-width               # Get current window width
 #        kitty-window-width <windowId>    # Get width of specific window
+set -e
 
 local windowId="$1"
 

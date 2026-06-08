@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Display the various streams of the video
+set -e
 
 video-info $1 |
 	jq -r \

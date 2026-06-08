@@ -1,4 +1,5 @@
 # Update node dependencies if they changed since the specified commit
+setopt local_options err_return
 local originCommit="$1"
 
 local gitRoot="$(git-directory-root)"

@@ -2,6 +2,7 @@
 # Runs my oroshi image
 # Usage:
 # $ docker-oroshi-run
+set -e
 
 local oroshiTag="$(docker-oroshi-tag)"
 

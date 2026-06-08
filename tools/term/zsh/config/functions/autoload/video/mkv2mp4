@@ -2,6 +2,7 @@
 # Usage:
 # mkv2mp4 path.mkv            # Convert one file
 # mkv2mp4 file1.mkv file2.mkv # Convert several files
+setopt local_options err_return
 zparseopts -E -D \
 	f=flagForce \
 	-force=flagForce

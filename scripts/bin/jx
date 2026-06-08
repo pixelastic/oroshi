@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Extract specific keys of a JSON file
+set -e
 if [[ $# == '0' ]]; then
   echo 'Usage:'
   echo '  jx data.json {selector}'

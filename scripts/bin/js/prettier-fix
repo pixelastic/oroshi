@@ -5,6 +5,7 @@
 # $ prettier-fix --in-place ./path/to/file.js            # Overwrite the file in place
 # $ echo "<code />" | prettier-fix --parser html               # Code from stdin, with specific parser
 # $ echo "<code />" | prettier-fix --filepath ./realpath.html  # Code from stdin, with real location on disk
+set -e
 
 # ============================================================================
 # Parse command-line arguments

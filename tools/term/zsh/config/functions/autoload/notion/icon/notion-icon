@@ -1,6 +1,7 @@
 # Returns the page icon
 # Usage:
 # $ notion-icon {pageUrl}  # Either a URL to an image, or an emoji
+setopt local_options err_return
 local pageUrl="$1"
 
 local pageId="$(notion-page-id $pageUrl)"

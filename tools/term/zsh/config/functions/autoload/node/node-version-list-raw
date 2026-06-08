@@ -4,6 +4,7 @@
 # Gives an output like:
 #          v9.2.0 *
 # ->     v14.17.0 *
+setopt local_options err_return
 local rawList="$(nvm ls --no-colors --no-alias)"
 local defaultVersion="$(<~/.nvm/alias/default)"
 

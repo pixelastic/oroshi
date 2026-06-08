@@ -1,3 +1,4 @@
 # Display a prompt for searching a specific directory
+setopt local_options err_return
 local directory=$1
 fzf-prompt-directory $directory

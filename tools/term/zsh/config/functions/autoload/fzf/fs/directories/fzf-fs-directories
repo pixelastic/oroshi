@@ -4,6 +4,7 @@
 # --source         # Mandatory, list of suggestions
 # --options        # Binary to return the fzf options
 # --postprocess    # Binary to sanitize the selection
+setopt local_options err_return
 
 zmodload zsh/zutil
 zparseopts -E -D \

@@ -5,6 +5,7 @@
 # $ git-branch-push main             # Pushes branch main
 # $ git-branch-push main origin      # Pushes branch main to remote orin
 # $ git-branch-push --flag1          # Also pass in flags
+set -e
 
 # Filter positional arguments and flags
 local argsp=()

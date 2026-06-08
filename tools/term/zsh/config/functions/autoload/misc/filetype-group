@@ -1,5 +1,6 @@
 # Return the type of file based on its extension
 # Will use the FILETYPE_XXX_GROUP environment variables
+setopt local_options err_return
 
 # Usage:
 # $ filetype-group ./path/to/file.png    # image

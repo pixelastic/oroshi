@@ -1,6 +1,7 @@
 # Display the list of all packages installed by pip
 # Usage:
 # $ pip-list         # All installed packages
+setopt local_options err_return
 local rawList="$(pip-list-raw)"
 [[ $rawList == "" ]] && return 0
 

@@ -2,6 +2,7 @@
 # Usage:
 # $ git-remote-url               # Uses current remote
 # $ git-remote-url {remoteName}  # Uses {remoteName}
+setopt local_options err_return
 local remote=$1
 [[ $remote == '' ]] && remote="$(git-remote-current)"
 

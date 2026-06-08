@@ -1,6 +1,7 @@
 # Display the current commit hash
 # Usage
 # $ git-commit-current     # Current commit hash
+setopt local_options err_return
 git log \
   --format='%h' \
   --max-count 1

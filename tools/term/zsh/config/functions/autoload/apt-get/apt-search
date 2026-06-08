@@ -2,6 +2,7 @@
 # Usage:
 #   $ apt-search zsh   # Display any software that matches zsh
 #   $ apt-search       # Provides a searchable list of software to install
+setopt local_options err_return
 local query="$1"
 
 # If no query is passed, we open the fuzzy finder

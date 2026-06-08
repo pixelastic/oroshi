@@ -1,6 +1,7 @@
 # Check if given file is a pdf
 # Usage:
 # $ is-pdf ./path/to/file.pdf    # True if file is a pdf
+setopt local_options err_return
 local input=$1
 
 file $input |

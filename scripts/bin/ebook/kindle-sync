@@ -6,6 +6,7 @@
 # - Empty directories are cleaned in the Kindle
 # - Additional directory metadata added by Kindle are preserved, so I still have
 #   my bookmarks, highlights and reading progress
+set -e
 
 local libraryRoot="/home/$USER/perso/Dropbox/backup/books/"
 local kindleRoot="/media/$USER/Kindle/documents/books"

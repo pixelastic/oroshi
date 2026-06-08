@@ -1,6 +1,7 @@
 # List all stageable files (that can be added to the staging area)
 # Output format: STATUS:FILEPATH
 # STATUS can be: M (Modified), A (Added), D (Deleted)
+setopt local_options err_return
 local gitRoot="$(git-directory-root)"
 local dirtyFiles="$(git -C "${gitRoot}" status --porcelain --short)"
 

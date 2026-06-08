@@ -1,6 +1,7 @@
 # Add a command to the Claude Code skills allowlist
 # Usage:
 # $ skills-allowlist-add "tree"
+setopt local_options err_return
 local allowedCommand="$1"
 local allowlistFile=$OROSHI_ROOT/tools/ai/claude/config/hooks/allowlist.json
 

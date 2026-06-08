@@ -2,6 +2,7 @@
 # Rebase current branch up to specified commit, interactively
 # Usage:
 # $ git-branch-rebase-interactive d34b33f
+set -e
 
 local commitHash=$1
 if [[ $commitHash != '' ]]; then

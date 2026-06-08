@@ -1,5 +1,6 @@
 # View list of all apps
 # Usage:
 # $ fly-app-list-raw   # View list of all apps
+setopt local_options err_return
 fly apps list --json |
   jq -r '.[] | "\(.Name)▮\(.Status)▮\(.Hostname)"'

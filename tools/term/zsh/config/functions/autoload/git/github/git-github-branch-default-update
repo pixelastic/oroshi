@@ -2,6 +2,7 @@
 # Usage:
 # $ git-github-branch-default-update main                 # Update default branch to main for current repo
 # $ git-github-branch-default-update main owner/repo      # Update default branch to main for specific repo
+setopt local_options err_return
 local branchName="$1"
 local repo="$2"
 

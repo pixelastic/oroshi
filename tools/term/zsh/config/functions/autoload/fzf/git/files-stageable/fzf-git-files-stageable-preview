@@ -1,4 +1,5 @@
 # Show the diff of a file between the previous revision and the current state
+setopt local_options err_return
 local gitRoot="$(git-directory-root)"
 local filepath="${gitRoot}/$1"
 

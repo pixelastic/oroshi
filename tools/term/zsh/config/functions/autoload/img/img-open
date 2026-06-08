@@ -3,5 +3,6 @@
 # completion method to only suggest image files
 # Usage:
 # $ img-open ./file.png           # Display file
+setopt local_options err_return
 
 process-detach eog $@

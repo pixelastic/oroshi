@@ -1,6 +1,7 @@
 # Update the icon of a given page
 # Usage:
 # $ notion-icon-update {pageUrl} {iconUrl}
+setopt local_options err_return
 local pageUrl="$1"
 local iconUrl="$2"
 

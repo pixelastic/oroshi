@@ -1,4 +1,5 @@
 # Get all sessions from history.jsonl (already sorted newest first)
+setopt local_options err_return
 local allSessions=$(claude-session-list-raw 2>/dev/null)
 
 for session in ${(f)allSessions}; do

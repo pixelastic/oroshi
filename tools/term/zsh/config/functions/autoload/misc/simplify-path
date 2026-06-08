@@ -7,6 +7,7 @@
 # $ simplify-path path/to/somewhere
 # $ simplify-path path/to/somewhere 6   # Show at most 6 segments
 # $ simplify-path --reply path/to/somewhere   # Write to $REPLY, no echo
+setopt local_options err_return
 zmodload zsh/zutil
 zparseopts -E -D \
   -reply=flagReply

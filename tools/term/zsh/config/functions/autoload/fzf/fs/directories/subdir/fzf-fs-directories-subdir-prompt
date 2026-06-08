@@ -1,3 +1,4 @@
 # Display the prompt for finding a directory in a given directory
+setopt local_options err_return
 local currentDirectory="$(fzf-fs-shared-pwd-subdir)"
 echo "$(fzf-fs-directory-shared-prompt $currentDirectory) "

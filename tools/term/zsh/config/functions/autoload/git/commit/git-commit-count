@@ -2,6 +2,7 @@
 # Usage:
 # $ git-commit-count {sha} // Count between current commit and sha
 # $ git-commit-count {sha1} {sha2} // Count between sha1 and sha2
+setopt local_options err_return
 local sha1=$1
 local sha2=$2
 if [[ $sha1 == '' ]]; then

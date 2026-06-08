@@ -1,6 +1,7 @@
 # Check if at tag exists
 # Usage:
 # $ git-tag-exists v1.0   # Checks if specified tag exists
+setopt local_options err_return
 local tagName="$1"
 if [[ "$tagName" == '' ]]; then
   echo "✘ You must pass the name of a tag"

@@ -2,6 +2,7 @@
 # Usage:
 # $ docker-image-is-running oroshi:0.0.1  # 0 if running, 1 if not running
 # $ docker-image-is-running oroshi        # 0 if at least one container runs it
+setopt local_options err_return
 local imageName="$1"
 
 local result="$(

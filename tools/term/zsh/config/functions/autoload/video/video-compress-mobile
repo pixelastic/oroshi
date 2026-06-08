@@ -3,6 +3,7 @@
 # $ video-compress-mobile ./path/video.mkv                    # Creates ./mobile/video.mp4
 # $ video-compress-mobile --audio-stream 1 ./path/video.mkv   # Only keep second audio stream
 # $ video-compress-mobile -a 1 ./path/video.mkv               # Same, with a shorthand
+setopt local_options err_return
 set -x
 zmodload zsh/zutil
 zparseopts -E -D \

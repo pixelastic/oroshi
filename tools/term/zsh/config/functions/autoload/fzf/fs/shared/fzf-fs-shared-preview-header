@@ -2,6 +2,7 @@
 # Usage
 # $ fzf-fs-shared-preview-header ./path/to/file      # Display the file
 # $ fzf-fs-shared-preview-header ./path/to/folder    # Display the folder
+setopt local_options err_return
 local input=$1
 
 local fullPath=${input:a}

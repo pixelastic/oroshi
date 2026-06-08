@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Display help of a command, testing the various syntaxes for help in turn
+set -e
 local commandName="$1"
 
 batman "$commandName" 2>/dev/null \

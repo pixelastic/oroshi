@@ -2,6 +2,7 @@
 # Usage:
 # $ pdf-cover-extract ./file.pdf              # Saves as ./book.jpg
 # $ pdf-cover-extract ./file.pdf  ./file.jpg  # Saves as ./file.jpg
+setopt local_options err_return
 local input="$1"
 local output="$2"
 

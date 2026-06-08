@@ -1,6 +1,7 @@
 # List modules registered for linking in Yarn Classic (v1), but not yet enabled
 # in the current repository
 # First, we build a list of all the modules already linked
+setopt local_options err_return
 local existingLinks=()
 
 local linkListRaw="$(yarn-link-list-raw)"

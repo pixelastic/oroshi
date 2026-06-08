@@ -3,6 +3,7 @@
 # Usage:
 # $ git-commit-remove           # Removes last commit
 # $ git-commit-remove d34db33f  # Rewrites history to remove the commit
+set -e
 
 local commitHash=$1
 if [[ $commitHash = '' ]]; then

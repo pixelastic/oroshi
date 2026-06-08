@@ -1,6 +1,7 @@
 # Remove an audio stream
 # Usage:
 # $ video-stream-audio-remove ./path/video.mp4 4 5 # Remove stream 4 and 5
+setopt local_options err_return
 local fileInput=$1
 local streamsToRemove=(${@[@]:2})
 

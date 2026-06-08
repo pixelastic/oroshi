@@ -1,6 +1,7 @@
 # Return a channel ID from its name
 # Usage:
 # $ youtube-channel-id Miscast
+setopt local_options err_return
 local channelName=$1
 curl \
 	--silent \

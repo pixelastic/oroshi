@@ -1,4 +1,5 @@
 # Returns a list of Kitty tabs with their IDs and titles
+setopt local_options err_return
 local rawTabs="$(kitty-tabs-list-raw)"
 for rawLine in ${(f)rawTabs}; do
   local splitLine=(${(@s/▮/)rawLine})

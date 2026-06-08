@@ -4,6 +4,7 @@
 # $ yarn-link-colorize norska classic                   # As a classic (Yarn v1) link
 # $ yarn-link-colorize norska --with-icon               # 煮norska
 # $ yarn-link-colorize norska-cms workspace --with-icon #  norska-cms
+setopt local_options err_return
 zparseopts -E -D \
 	-with-icon=flagWithIcon
 local isWithIcon=${#flagWithIcon}

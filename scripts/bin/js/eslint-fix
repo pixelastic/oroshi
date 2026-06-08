@@ -4,6 +4,7 @@
 # $ eslint-fix ./path/to/file.js                       # Output fixed code to stdout
 # $ eslint-fix --in-place ./path/to/file.js            # Overwrite the file in place
 # $ echo "var a=42;" | eslint-fix --filepath ./realpath.js  # Code from stdin, with real location on disk
+set -e
 
 # ============================================================================
 # Parse command-line arguments

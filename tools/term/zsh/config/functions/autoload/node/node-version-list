@@ -1,6 +1,7 @@
 # Display the list of all node versions currently installed
 # Usage:
 # $ node-version-list         # All installed node versions
+setopt local_options err_return
 local rawList="$(node-version-list-raw)"
 [[ $rawList == "" ]] && return 0
 

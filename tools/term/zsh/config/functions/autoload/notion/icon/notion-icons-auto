@@ -1,6 +1,7 @@
 # Automatically set the icons of all subpages
 # Usage:
 # $ notion-icons-auto {pageUrl}
+setopt local_options err_return
 local pageUrl="$1"
 
 local subPages="$(notion-page-list-raw $pageUrl)"

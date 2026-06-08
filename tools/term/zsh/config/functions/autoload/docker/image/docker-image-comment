@@ -1,6 +1,7 @@
 # Outputs the comment (commit message) associated with an image
 # Usage:
 # $ docker-image-comment oroshi:0.0.5         # Installing bat
+setopt local_options err_return
 local imageName="$1"
 
 local result="$(docker image inspect \

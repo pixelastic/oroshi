@@ -1,5 +1,6 @@
 # View list of all kitty tabs
 # Usage:
 # $ kitty-tabs-list-raw   # View list of all tabs
+setopt local_options err_return
 kitty @ ls |
   jq -r '.[0].tabs[] | [.id, .title] | join("▮")'

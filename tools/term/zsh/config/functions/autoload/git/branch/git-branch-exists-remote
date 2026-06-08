@@ -4,6 +4,7 @@
 # $ git-branch-exists-remote develop          # Check on current remote
 # $ git-branch-exists-remote develop upstream # Check on specific remote
 # Branch name
+setopt local_options err_return
 local branchName="$1"
 if [[ "$branchName" == "" ]]; then
   branchName="$(git-branch-current)"

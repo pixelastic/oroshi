@@ -1,4 +1,5 @@
 # Outputs the options shared by all search for a specific file or directory
+setopt local_options err_return
 
 # This is called by:
 # - fzf-fs-directories-project-options

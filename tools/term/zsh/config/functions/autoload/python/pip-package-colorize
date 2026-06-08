@@ -2,6 +2,7 @@
 # Usage:
 # $ pip-package-colorize vim-vint                     # vim-vint
 # $ pip-package-colorize --with-icon                #  vim-vint
+setopt local_options err_return
 zparseopts -E -D \
 	-with-icon=flagWithIcon
 local isWithIcon=${#flagWithIcon}

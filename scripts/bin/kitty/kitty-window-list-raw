@@ -3,6 +3,7 @@
 # Usage: kitty-window-list-raw [--tab <tabId>]
 # Output format: windowId▮tabId▮tabName▮userVars (one per line)
 # userVars format: key1=value1:key2=value2 (empty if no vars)
+set -e
 
 zparseopts -E -D \
   -tab:=flagTab

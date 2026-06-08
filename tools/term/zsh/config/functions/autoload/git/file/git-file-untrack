@@ -2,4 +2,5 @@
 # Usage:
 # $ git-file-untrack ./path/to/file     # Untrack single file
 # $ git-file-untrack file1 file2        # Untrack multiple files
+setopt local_options err_return
 git rm --cached "${@}"

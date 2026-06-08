@@ -3,6 +3,7 @@
 # Usage:
 # $ git-pr-open            # Opens PR page
 # $ git-pr-open 42         # Opens PR 42
+set -e
 
 # Stop if not in a GitHub repo
 git-directory-is-github || exit 1

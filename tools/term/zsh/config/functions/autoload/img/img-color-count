@@ -1,6 +1,7 @@
 # Returns the number of different images in an image palette
 # Usage:
 # $ img-color-count ./path/to/image   # 564
+setopt local_options err_return
 local input=$1
 
 # Only display the first line of output (animated gif can have multiple lines)

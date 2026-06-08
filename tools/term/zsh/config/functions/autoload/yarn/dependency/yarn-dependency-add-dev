@@ -2,6 +2,7 @@
 # Usage:
 # $ yarn-dependency-add-dev vitest # Add vitest
 # Init the project with the right yarn version if not set
+setopt local_options err_return
 yarn-is-initialized || yarn-init
 
 yarn add --exact --dev -- $@

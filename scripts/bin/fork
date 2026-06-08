@@ -2,6 +2,7 @@
 # Run a command in the background, and write a lockfile while it executes
 # Usage:
 # $ fork "yarn install" /tmp/yarn-install-in-progress
+set -e
 
 local commandToRun="$1"
 local lockfilePath="$2"

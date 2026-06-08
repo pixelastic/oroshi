@@ -1,5 +1,6 @@
 # Writes on disk a list of all packages to populate the fzf search
 # This will help speed up the search, as the list takes ~5s to generate
+setopt local_options err_return
 
 local allPackages="$(apt-list)"
 

@@ -1,6 +1,7 @@
 # Display an interactive list of all previous versions of the file
 # Usage:
 # $ fzf-git-file-history ./path/to/file
+setopt local_options err_return
 
 local relativePath="$1"
 local absolutePath="${relativePath:a}"

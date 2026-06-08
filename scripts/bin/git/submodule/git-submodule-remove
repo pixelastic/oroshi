@@ -3,6 +3,7 @@
 # Usage:
 # $ git-submodule-remove ./path/to/submodule # Removes the submodule
 # $ git-submodule-remove ./one ./two         # Removes multiple submodules
+set -e
 
 cd "$(git-directory-root)" || exit 0
 

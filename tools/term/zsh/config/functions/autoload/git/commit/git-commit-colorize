@@ -3,6 +3,7 @@
 # $ git-commit-colorize                    # {currentCommit}
 # $ git-commit-colorize upstream           # abcdef
 # $ git-commit-colorize --with-icon        #  abcdef
+setopt local_options err_return
 zparseopts -E -D \
 	-with-icon=flagWithIcon
 

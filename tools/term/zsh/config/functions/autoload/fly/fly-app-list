@@ -1,6 +1,7 @@
 # View logs for a Fly.io application
 # Usage:
 # $ fly-app-list   # View list of all apps
+setopt local_options err_return
 local rawList="$(fly-app-list-raw)"
 
 # Build the output

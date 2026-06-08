@@ -3,6 +3,7 @@
 # Never exits non-zero — must not block the user.
 # Usage:
 # $ post-commit   # called automatically by git
+set -e
 
 planDir="$(plan-directory 2>/dev/null)"
 # Not in a ralph worktree, nothing to do

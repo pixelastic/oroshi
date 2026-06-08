@@ -3,6 +3,7 @@
 # Usage:
 # $ git-branch-prune        # Only displays branches to prune
 # $ git-branch-prune -f     # Actually do it
+set -e
 
 # Runs as dry-run by default, unless -f is passed
 local forceRun="0"

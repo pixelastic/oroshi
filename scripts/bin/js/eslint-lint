@@ -4,6 +4,7 @@
 # $ eslint-lint ./path/to/file.js                       # Lint file
 # $ eslint-lint --json ./path/to/file.js            # Lint file, JSON output for vim
 # $ echo "<code />" | eslint-lint --filepath ./realpath.html  # Code from stdin, with real location on disk
+set -e
 
 # ============================================================================
 # Parse command-line arguments

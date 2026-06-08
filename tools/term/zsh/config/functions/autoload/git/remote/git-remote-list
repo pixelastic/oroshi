@@ -1,6 +1,7 @@
 # Display the list of remotes
 # Usage:
 # $ git-remote-list
+setopt local_options err_return
 
 local rawList="$(git-remote-list-raw)"
 local currentRemote="$(git-remote-current)"

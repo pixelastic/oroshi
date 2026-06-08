@@ -6,6 +6,7 @@
 # has changed, so I need to manually run "eslint_d restart" for my linting to
 # work inside of vim.
 # This script is a wrapper to restart eslint_d correctly
+setopt local_options err_return
 local currentDirectory="$(pwd)"
 local gitRoot="$(git-directory-root)"
 

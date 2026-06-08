@@ -4,6 +4,7 @@
 # $ docker-image-pull ubuntu        # Pulls the image
 # $ docker-image-pull ubuntu alpine # Pulls multiple images
 # $ docker-image-pull               # Exposes a fuzzy finder of images
+set -e
 
 local images="$@"
 

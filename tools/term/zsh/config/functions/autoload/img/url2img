@@ -2,6 +2,7 @@
 # Usage:
 # $ url2img https://example.com              # Saves to exampleCom.png
 # $ url2img https://example.com output.png   # Saves to output.png
+setopt local_options err_return
 local url=$1
 
 # Generate default filename from URL slug if not provided

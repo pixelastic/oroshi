@@ -2,6 +2,7 @@
 # Usage:
 # $ git-ci-url                 # Returns CI url of current repo
 # $ git-ci-url ./path/to/repo  # Returns CI url of specified repo
+setopt local_options err_return
 local input="$1"
 local ciType="$(git-ci-type)"
 

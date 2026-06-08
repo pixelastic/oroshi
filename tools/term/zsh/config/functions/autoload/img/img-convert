@@ -2,6 +2,7 @@
 # Usage:
 # $ img-convert ./*.jpg ./*.svg png    # Convert all jpg and svg files to png
 # $ img-convert -f ./*.svg png         # Overwrites existing destinations
+setopt local_options err_return
 
 zparseopts -E -D \
   f=flagForce \

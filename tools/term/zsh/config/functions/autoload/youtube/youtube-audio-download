@@ -1,6 +1,7 @@
 # Download only the audio of a given YouTube video
 # Usage:
 # $ youtube-audio-download ${videoId/videoUrl}
+setopt local_options err_return
 
 local input="$1"
 

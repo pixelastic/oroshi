@@ -5,6 +5,7 @@
 # Note: By testing the average saturation of the image we can guess if it's
 # grayscale (then the saturation is 0)
 # Source: http://www.imagemagick.org/discourse-server/viewtopic.php?t=19580
+setopt local_options err_return
 local input="$1"
 local saturation="$(magick \
 	$input \

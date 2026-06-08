@@ -3,6 +3,7 @@
 # $ git-tag-status v1.0 abc123  # Status of the tag related to the commit
 # $ git-tag-status v1.0         # Status of the tag related to current commit
 # $ git-tag-status              # Status of the current related to current commit
+setopt local_options err_return
 
 # Possible status are:
 # - exact

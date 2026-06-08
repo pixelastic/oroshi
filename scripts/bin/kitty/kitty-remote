@@ -3,6 +3,7 @@
 # Usage: kitty-remote ls
 #        kitty-remote launch --type tab
 #        kitty-remote goto-layout stack
+set -e
 
 local kittySocketPath=$OROSHI_TMP_FOLDER/kitty/socket-$OROSHI_KITTY_UUID
 local unixSocket="--to unix:${kittySocketPath}"

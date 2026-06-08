@@ -6,6 +6,7 @@
 # $ git-branch-switch main         # Move to the main branch
 # $ git-branch-switch 13cd455      # Go into detached HEAD at this commit
 # $ git-branch-switch main master  # Go to main or master
+set -e
 
 # # Not possible to change a worktree branch
 # if git-directory-is-worktree; then

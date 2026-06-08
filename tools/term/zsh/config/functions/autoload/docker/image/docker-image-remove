@@ -3,6 +3,7 @@
 # $ docker-image-remove ubuntu         # Removes ubuntu
 # $ docker-image-remove ubuntu alpine  # Removes ubuntu and alpine
 # $ docker-image-remove nope           # Do nothing as nope doesn't exist
+setopt local_options err_return
 
 local images="$@"
 

@@ -4,6 +4,7 @@
 # Usage:
 # $ git-directory-gitdir              # Current directory
 # $ git-directory-gitdir /path/to/dir # Given directory
+setopt local_options err_return
 
 local targetPath="${1:-$PWD}"
 # git -C requires a directory; normalize file paths to their parent dir

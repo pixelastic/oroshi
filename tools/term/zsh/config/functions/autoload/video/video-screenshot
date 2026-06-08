@@ -3,6 +3,7 @@
 # $ video-screenshot ./video.mp4 2.5                  # Extract at 2.5s → video-2.5.png
 # $ video-screenshot ./video.mp4 2.5 2.6 2.7          # Extract multiple screenshots
 # $ video-screenshot ./video.mp4 --force/-f 2.5 2.6   # Force overwrite existing files
+setopt local_options err_return
 zparseopts -E -D \
   f=flagForce \
   -force=flagForce

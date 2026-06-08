@@ -2,6 +2,7 @@
 # Usage:
 # $ git-github-repo-exists pixelastic/oroshi   # Return 0
 # $ git-github-repo-exists kjdslkjd/kjsqlqj    # Return 1
+setopt local_options err_return
 local repoName=$1
 
 gh repo view --json id $repoName &>/dev/null \

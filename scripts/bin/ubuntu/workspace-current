@@ -2,6 +2,7 @@
 # Get the current workspace number
 # Usage:
 # $ workspace-current   # 5
+set -e
 
 # Note: wmctrl uses 0-indexed workspaces
 local currentIndex=$(wmctrl -d | grep '\*' | awk '{print $1}')

@@ -1,6 +1,7 @@
 # Load PROJECTS associative array into memory
 # No-op if already populated (allows test injection via mock)
 # Usage: projects-load-definitions
+setopt local_options err_return
 
 # Stop if already loaded
 ((${#PROJECTS} > 0)) && return

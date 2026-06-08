@@ -3,6 +3,7 @@
 # $ docker-image-exists ubuntu         # return 0
 # $ docker-image-exists ubuntu:latest  # Allow passing tags
 # $ docker-image-exists kjlkjkd        # return 1
+setopt local_options err_return
 local imageName="$1"
 
 if docker image inspect --format '{{.Id}}' $imageName &>/dev/null; then

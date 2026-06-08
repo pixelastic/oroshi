@@ -1,6 +1,7 @@
 # Display the list of all globally installed skills with formatting
 # Usage:
 # $ skills-list
+setopt local_options err_return
 local rawSkills="$(skills-list-raw)"
 local output=""
 

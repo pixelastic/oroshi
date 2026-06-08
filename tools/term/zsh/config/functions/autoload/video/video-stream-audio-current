@@ -1,6 +1,7 @@
 # Display the current default audio stream
 # Usage:
 # $ video-stream-audio-current ./path/video.mp4
+setopt local_options err_return
 local fileInput=$1
 
 # Output the first audio stream

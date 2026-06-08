@@ -2,6 +2,7 @@
 # Get a user variable from a specific window
 # Usage: kitty-window-get-var <windowId> <varName>
 # Returns: the variable value or empty string if not set
+set -e
 
 local windowId="$1"
 local varName="$2"

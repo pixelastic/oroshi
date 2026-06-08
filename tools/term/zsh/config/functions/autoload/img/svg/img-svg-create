@@ -1,6 +1,7 @@
 # Create a new SVG file, as small as possible
 # Usage:
 # $ img-svg-create ./path/to/file.svg
+setopt local_options err_return
 local input="$1"
 
 if [[ $input == "" ]]; then

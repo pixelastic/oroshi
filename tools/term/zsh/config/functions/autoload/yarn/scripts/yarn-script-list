@@ -2,6 +2,7 @@
 # Usage:
 # $ yarn-script-list       # Display list of yarn run scripts
 # Stop if yarn isn't installed
+setopt local_options err_return
 [[ ! $commands[yarn] ]] && return 1
 
 local rawList="$(yarn-script-list-raw)"

@@ -5,6 +5,7 @@
 #
 # Note: This needs to stay as a binary and not a function as it is used by
 # scripts called through keybindings
+set -e
 sp current |
 	\grep --silent "Error: Spotify is not running" &&
 	exit 1

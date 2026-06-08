@@ -1,5 +1,6 @@
 # Update a given package using pip
 # Usage:
 # $ pip-update sgpt   # Update sgpt to latest version
+setopt local_options err_return
 local packageName=$1
 pip install $packageName --upgrade

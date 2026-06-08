@@ -1,6 +1,7 @@
 # Extract the description from a skill's SKILL.md file
 # Usage:
 # $ skills-description blog-writing-guide
+setopt local_options err_return
 local skillName="$1"
 local skillFile="$HOME/.claude/skills/${skillName}/SKILL.md"
 local description=""

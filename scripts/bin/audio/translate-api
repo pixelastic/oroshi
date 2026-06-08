@@ -2,6 +2,7 @@
 # translate-api: Take a wav file as input, and output the content in english
 # Usage:
 # $ translate-api ./path/to/file.wav     # Echo the translated transcript
+set -e
 source ~/.oroshi/private/config/term/zsh/local/${HOSTNAME}/open_ai.zsh
 
 local input=$1

@@ -1,4 +1,5 @@
 # Postprocess the selection and switch to the selected tab
+setopt local_options err_return
 local rawSelection="$1"
 
 # Stop early if no selection

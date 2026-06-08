@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+set -e
 local input=$1
 local output="${input:a:r}.mp3"
 

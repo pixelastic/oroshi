@@ -2,6 +2,7 @@
 # Create a new issue
 # Usage:
 # $ git-issue-create
+set -e
 
 # Stop if not in a GitHub repo
 git-directory-is-github || exit 1

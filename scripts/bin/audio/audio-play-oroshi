@@ -7,6 +7,7 @@
 # Usage:
 # $ audio-play-oroshi slow.mp3
 # $ audio-play-oroshi warcraft/jobsdone.mp3
+set -e
 
 # Return early if sound is disabled
 sound-mode-is-enabled || exit 0

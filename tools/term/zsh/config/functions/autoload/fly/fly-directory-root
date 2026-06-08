@@ -1,6 +1,7 @@
 # Find the root directory containing fly.toml
 # Usage:
 # $ fly-directory-root   # Returns path to directory containing fly.toml
+setopt local_options err_return
 local configPath="$(fly-config-path)"
 
 if [[ -z "$configPath" ]]; then

@@ -2,6 +2,7 @@
 # better ydotool
 # As I sometimes call ydotool from keybindings, or outside of zsh, I'm adding
 # this wrapper to define the needed ENV variables
+set -e
 
 YDOTOOL_SOCKET=/home/tim/local/tmp/oroshi/ydotool/socket \
  ydotool $@

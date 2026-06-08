@@ -2,6 +2,7 @@
 # Usage:
 # $ git-remote-color             # (current remote) blue
 # $ git-remote-color upstream    # blue
+setopt local_options err_return
 
 # Remote name
 local remoteName="$1"

@@ -1,4 +1,5 @@
 # List modules registered for linking in Yarn Classic (v1)
+setopt local_options err_return
 
 local rawList="$(yarn-link-classic-list-raw --with-descriptions)"
 for rawLine in ${(f)rawList}; do

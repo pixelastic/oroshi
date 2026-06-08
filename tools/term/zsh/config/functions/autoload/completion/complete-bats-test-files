@@ -1,4 +1,5 @@
 # List bats test names for completion
+setopt local_options err_return
 local rawList="$(bats-test-list-raw)"
 [[ -z $rawList ]] && return 0
 

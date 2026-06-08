@@ -2,6 +2,7 @@
 #
 # Usage:
 # $ search-and-replace Tim Tom ./*.txt   # Replace all occurences of Tim by Tom in all .txt files
+setopt local_options err_return
 local query="$1"
 local replacement="$2"
 local files=("${@:3}")

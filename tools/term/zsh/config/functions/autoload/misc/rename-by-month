@@ -4,6 +4,7 @@
 # $ rename-by-month /path/to/dir       # Use specified directory (dry-run)
 # $ rename-by-month --force            # Actually move files in current directory
 # $ rename-by-month --force /path/dir  # Actually move files in specified directory
+setopt local_options err_return
 zparseopts -E -D \
   -force=flagForce
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Display all defined colors in the terminal, to see them in all their glory
+set -e
 
 local output=""
 

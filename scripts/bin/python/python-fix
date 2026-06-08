@@ -5,6 +5,7 @@
 # $ python-fix --in-place ./path/to/file.py            # Overwrite the file in place
 # $ echo "code" | python-fix                           # Bad code from stdin, good code to stdout
 # $ echo "code" | python-fix --filepath ./realpath.py  # Specify file location for config resolution
+set -e
 
 zparseopts -E -D \
   -in-place=flagInPlace \

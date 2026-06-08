@@ -2,6 +2,7 @@
 #
 # Usage:
 # $ is-online    # exit 0 is www.google.com is reachable
+setopt local_options err_return
 ping \
 	-c 1 \
 	-w 3 \

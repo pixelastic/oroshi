@@ -2,6 +2,7 @@
 # Usage:
 # $ docker-container-image-name oroshi_latest    # oroshi:latest
 # $ docker-container-image-name ksjkdjskjd       # return 1 if does not exist
+setopt local_options err_return
 local containerName="$1"
 
 local imageId="$(docker-container-image-id $containerName)"

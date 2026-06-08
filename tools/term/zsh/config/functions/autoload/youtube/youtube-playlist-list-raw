@@ -2,6 +2,7 @@
 # Usage:
 # $ youtube-playlist-list-raw ${playlistId}  # List of all videos from id
 # $ youtube-playlist-list-raw ${playlistUrl}  # List of all videos from url
+setopt local_options err_return
 local playlistUrl="$1"
 
 # Prefix the input with https:// if it isn't an url

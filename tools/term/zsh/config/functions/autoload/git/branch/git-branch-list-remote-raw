@@ -1,6 +1,7 @@
 # Display a raw list of all remote branches
 # Usage:
 # $ git-branch-list-remote-raw       # All remote branches with name/commit/date/message
+setopt local_options err_return
 local gitBranchFormat=""
 gitBranchFormat+="%(refname:short)▮"          # main
 gitBranchFormat+="%(objectname:short)▮"       # abcdef

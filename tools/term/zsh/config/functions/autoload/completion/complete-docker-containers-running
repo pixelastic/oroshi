@@ -1,4 +1,5 @@
 # List all running containers
+setopt local_options err_return
 
 # Find the unique image names
 local suggestions="$(docker ps --all --format '{{.Names}}:[{{.State}}]  {{.Image}}  {{.ID}}  {{.Status}}' | grep '[running]' | sort)"

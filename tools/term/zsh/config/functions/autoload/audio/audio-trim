@@ -2,6 +2,7 @@
 # Usage:
 # $ audio-trim ./path/to/audio.mp3                    # Trim silence and overwrite original
 # $ audio-trim ./path/to/audio.mp3 output.mp3         # Trim and save to output.mp3
+setopt local_options err_return
 
 local input=$1
 local output=$2

@@ -3,6 +3,7 @@
 # dimensions function
 # Usage:
 # $ video-dimensions ./path/video.mkv    # 1888x1080
+setopt local_options err_return
 
 local input="$1"
 

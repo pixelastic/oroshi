@@ -1,6 +1,7 @@
 # Update the currently used version of yarn for this project
 # Will update the .packageManager key of the main package.json
 #
+setopt local_options err_return
 local yarnRoot="$(yarn-root)"
 [[ $yarnRoot == "" ]] && return 1
 

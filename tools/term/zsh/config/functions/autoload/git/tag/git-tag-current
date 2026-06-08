@@ -2,6 +2,7 @@
 # Usage:
 # $ git-tag-current         # Display name of closest tag
 # Note: If several tags point to the same commit, git will return the first created
+setopt local_options err_return
 git describe --tags --abbrev=0 2>/dev/null
 
 # Will display the closest tag if one exists, or throw an error if not, so we

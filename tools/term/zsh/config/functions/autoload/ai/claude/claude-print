@@ -5,6 +5,7 @@
 # $ claude-print "Translate this" --sound-before start.mp3 --sound end.mp3
 # $ claude-print "Translate this" --effort low
 # Parse arguments
+setopt local_options err_return
 zparseopts -E -D \
   -sound:=flagSound \
   -sound-before:=flagSoundBefore \

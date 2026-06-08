@@ -1,6 +1,7 @@
 # Download all videos of a given playlist
 # Usage:
 # $ youtube-playlist-download ${playlistId/playlistUrl}
+setopt local_options err_return
 
 local args=($@)
 

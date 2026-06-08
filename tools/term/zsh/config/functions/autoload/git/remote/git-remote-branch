@@ -4,6 +4,7 @@
 # Usage:
 # $ git-remote-branch feat    # Name of the specified branch on the remote
 # $ git-remote-branch         # Name of the current branch on the remote
+setopt local_options err_return
 local branchName="$1"
 if [[ "$branchName" == "" ]]; then
   branchName="$(git-branch-current)"

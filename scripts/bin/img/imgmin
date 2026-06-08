@@ -8,6 +8,7 @@
 # Usage:
 # $ imgmin ./path/to/file.png               # Overwrites file
 # $ imgmin ./path/to/file.png ./other.jpg   # Overwrites files
+set -e
 local inputs=($@)
 
 # Configuration

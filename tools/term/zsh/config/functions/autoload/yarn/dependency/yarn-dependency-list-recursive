@@ -4,6 +4,7 @@
 # This list is consumed by the autocomplete of commands like "yarn why"
 # Usage:
 # $ yarn-dependency-all-list-raw              # Only regular dependencies
+setopt local_options err_return
 local yarnLockPath="$(find-up --root $PWD yarn.lock)"
 # Explanation:
 # - We read yarn.lock but only keep the header lines

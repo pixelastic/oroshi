@@ -1,6 +1,7 @@
 # Display the details of a Docker image
 # Usage
 # $ fzf-files-preview "ubuntu   {Description}  # Display the description
+setopt local_options err_return
 local splitInput=(${(@s/   /)@})
 local imageName=$splitInput[1]
 local imageDescription=$splitInput[2]

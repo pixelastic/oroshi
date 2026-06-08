@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 # [c]o[p]y [v]erbose
 # Same as cp, but with a % progress
+set -e
 
 cp $@ \
   & progress \

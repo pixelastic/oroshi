@@ -3,6 +3,7 @@
 # $ git-branch-current           # main
 # $ git-branch-current /path/repo  # branch of repo at path
 # $ git-branch-current           # Returns 1 if not in a git repo
+setopt local_options err_return
 local repoDir="${1:-$PWD}"
 local branchName="$(git -C "$repoDir" rev-parse --abbrev-ref HEAD 2>/dev/null)"
 

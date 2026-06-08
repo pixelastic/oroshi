@@ -1,6 +1,7 @@
 # Display a config value
 # Usage:
 # $ git-config-get branch.main.remote  # Display the value
+setopt local_options err_return
 local configName="$1"
 
 if [[ "$configName" == '' ]]; then

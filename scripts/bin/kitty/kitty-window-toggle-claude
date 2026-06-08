@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 # Toggle between current window and a dedicated Claude Code window
 # Each tab has its own Claude window stored in a "Claude" parking tab
+set -e
 local currentWindowId=$(kitty-window-id)
 local originWindowId=$(kitty-window-get-var "$currentWindowId" "oroshi_claudeOriginWindowId")
 

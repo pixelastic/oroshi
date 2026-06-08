@@ -3,6 +3,7 @@
 #   $ apt-uninstall zsh       # Uninstall zsh
 #   $ apt-uninstall zsh fish  # Uninstalls zsh and fish
 #   $ apt-uninstall           # Provides a searchable list of software to uninstall
+setopt local_options err_return
 local packages="$@"
 
 # If no input passed, we find them in a fuzzy search

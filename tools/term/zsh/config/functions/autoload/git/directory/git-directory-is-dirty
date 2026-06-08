@@ -1,5 +1,6 @@
 # Check if current directory is dirty, ie. contains at least one modified,
 # deleted or new file.
+setopt local_options err_return
 git status \
   --porcelain \
   --short \

@@ -1,4 +1,5 @@
 # Display list of jumps and their paths
+setopt local_options err_return
 local suggestions=()
 local projectIcon=""
 local description=""

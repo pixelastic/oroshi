@@ -1,6 +1,7 @@
 # Do a PATCH call to the notion API
 # Usage:
 # $ notion-api-patch pages/c01af08f-dd53-44ce-ab5b-958712e65fd2 '{}' # Patch with data
+setopt local_options err_return
 local input=$1
 local data=$2
 

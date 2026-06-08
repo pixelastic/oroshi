@@ -1,5 +1,6 @@
 # Source for fzf bats test picker
 # Outputs fullPath▮testName (field 1 = value, field 2 = display)
+setopt local_options err_return
 local rawList="$(bats-test-list-raw)"
 [[ -z $rawList ]] && return 0
 

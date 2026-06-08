@@ -1,6 +1,7 @@
 # Open all modified files in nvim
 # Usage:
 # $ git-file-edit-modified
+setopt local_options err_return
 
 local gitRoot="$(git-directory-root)"
 local rawFiles="$(git-file-list-dirty-raw)"

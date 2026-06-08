@@ -2,6 +2,7 @@
 # Usage:
 # $ skills-list-raw
 # Output format: name▮description▮type
+setopt local_options err_return
 local skillsDir=~/.claude/skills
 
 for skillPath in "$skillsDir"/*; do

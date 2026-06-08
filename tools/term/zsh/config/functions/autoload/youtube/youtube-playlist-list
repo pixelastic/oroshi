@@ -1,6 +1,7 @@
 # Display the list of videos in a given playlist
 # Usage:
 # $ youtube-playlist-list ${playlistId/playlistUrl}
+setopt local_options err_return
 
 local input="$1"
 local rawList="$(youtube-playlist-list-raw $1)"

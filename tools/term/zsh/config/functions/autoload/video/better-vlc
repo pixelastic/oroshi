@@ -1,4 +1,5 @@
 # Open VLC in its own GUI window
 # Note: Having it as its own function and not an alias allows to use custom
 # completion definitions on it
+setopt local_options err_return
 process-detach vlc $@

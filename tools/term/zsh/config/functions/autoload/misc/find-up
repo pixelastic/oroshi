@@ -4,6 +4,7 @@
 #   $ find-up .nvmrc                     # Returns path to closest .nvmrc
 #   $ find-up .nvmrc --root /other/path  # Change the working directory
 #   $ find-up .nvmrc --force             # Do not stop at first found, go to the highest
+setopt local_options err_return
 zparseopts -E -D \
 	-root:=flagRoot \
 	-force=flagForce

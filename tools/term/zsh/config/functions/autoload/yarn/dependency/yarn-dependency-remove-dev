@@ -1,4 +1,5 @@
 # Remove devDependencies from the current workspace
 # Usage:
 # $ yarn-dependency-remove-dev vitest # Remove vitest
+setopt local_options err_return
 yarn remove --dev -- $@

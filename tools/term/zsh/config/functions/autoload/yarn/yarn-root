@@ -5,6 +5,7 @@
 # 	$ yarn-root                    # Displays absolute path of first found package.json
 # 	$ yarn-root /path/to/directory # Allow passing a specific working directory
 # 	$ yarn-root --force            # Do not stop at first package.json found
+setopt local_options err_return
 zparseopts -E -D \
 	-force=flagForce
 

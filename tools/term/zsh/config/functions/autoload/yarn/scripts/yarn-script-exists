@@ -2,6 +2,7 @@
 # Usage:
 # $ yarn-script-exist g:lint      # Return 0 if g:lint can be called, 1 otherwise
 # Stop if yarn isn't installed
+setopt local_options err_return
 [[ ! $commands[yarn] ]] && return 1
 
 local input="$1"

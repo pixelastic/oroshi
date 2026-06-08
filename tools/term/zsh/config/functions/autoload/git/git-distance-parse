@@ -4,6 +4,7 @@
 # $ git-distance-parse "[ahead 4]"              # 4▮0
 # $ git-distance-parse "[behind 2]"             # 0▮2
 # $ git-distance-parse ""                       # (empty)
+setopt local_options err_return
 local trackStr="$1"
 [[ "$trackStr" == "" ]] && return 0
 

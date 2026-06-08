@@ -1,6 +1,7 @@
 # Download the video thumbnail of a give YouTube video
 # Usage:
 # $ youtube-thumbnail-download ${videoId/videoUrl}
+setopt local_options err_return
 
 local input="$1"
 

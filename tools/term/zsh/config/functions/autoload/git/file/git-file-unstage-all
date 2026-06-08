@@ -1,4 +1,5 @@
 # Remove all files from the staging area
 # Usage:
 # $ git-file-unstage-all
+setopt local_options err_return
 git reset

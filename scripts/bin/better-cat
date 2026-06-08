@@ -4,6 +4,7 @@
 # $ better-cat ./path/to/file.txt   # Output file.txt
 # $ better-cat ./path/to/*.txt      # Output all *.txt
 # $ better-cat ./path/to/file.png   # Display file.png in terminal
+set -e
 
 # Display each argument
 

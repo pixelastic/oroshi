@@ -2,6 +2,7 @@
 # Return the number of elements in JSON array file
 # Usage:
 # $ json-count file.json   # Number of elements
+set -e
 
 # Check if has input from pipe
 if [ -p /dev/stdin ]; then

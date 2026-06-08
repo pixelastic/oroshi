@@ -2,6 +2,7 @@
 # Usage:
 # $ fzf-fs-directories-shared-source /path/to/directory     # Find in specified dir
 # $ fzf-fs-directories-shared-source                        # Find in last visited dir
+setopt local_options err_return
 local searchPath=$1
 fzf-fs-shared-source \
   --directories \

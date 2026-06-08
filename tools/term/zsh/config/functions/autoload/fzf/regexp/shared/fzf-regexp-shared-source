@@ -5,6 +5,7 @@
 # $ fzf-regexp-shared-source
 # --query             # Mandatory, query to look for
 # --directory         # Mandatory, base directory to search
+setopt local_options err_return
 zmodload zsh/zutil
 zparseopts -E -D \
   -query:=flagQuery \

@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+set -e
 if [[ $1 == '-h' ]]; then
   echo "Usage:"
   echo "gif2png ./input.gif [./input2.gif]"

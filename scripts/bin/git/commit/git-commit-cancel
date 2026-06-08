@@ -2,5 +2,6 @@
 # Cancel last commit
 # Usage:
 # $ git-commit-cancel    # Removes last commit
+set -e
 
 git reset --soft HEAD~1

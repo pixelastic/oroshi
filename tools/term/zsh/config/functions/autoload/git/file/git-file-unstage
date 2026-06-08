@@ -2,4 +2,5 @@
 # Usage:
 # $ git-file-unstage ./relative/path/to/file  # Unstage the file
 # $ git-file-unstage /absolute/path/to/file   # Unstage the file
+setopt local_options err_return
 git reset HEAD $@

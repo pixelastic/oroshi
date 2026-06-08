@@ -1,4 +1,5 @@
 # Lighten images
 # Usage:
 # $ img-lighten ./path/to/images        # Lighten all specified images
+setopt local_options err_return
 img-luminosity $@ 125

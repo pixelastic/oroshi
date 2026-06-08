@@ -8,6 +8,7 @@
 # First line is how many commits ahead the main branch is
 # Second line is how many commits behind the main branch is
 # Main branch, default to the current branch
+setopt local_options err_return
 local branchSource="$1"
 if [[ "$branchSource" == "" ]]; then
   branchSource="$(git-branch-current)"

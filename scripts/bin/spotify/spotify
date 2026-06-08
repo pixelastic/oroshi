@@ -3,6 +3,7 @@
 # See
 # https://stackoverflow.com/questions/10408816/how-do-i-use-the-nohup-command-without-getting-nohup-out
 # for nohup syntax
+set -e
 if spotify-is-running; then
 	spotify-toggle-pause
 	exit

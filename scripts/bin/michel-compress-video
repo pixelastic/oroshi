@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+set -e
 
 for file in $@; do
   local fullname=${file:a}

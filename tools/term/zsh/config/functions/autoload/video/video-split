@@ -3,6 +3,7 @@
 # $ video-split ./path/to/file.mp4 5-30                     # Extract from 5s to 30s
 # $ video-split ./path/to/file.mp4 00:00:05-00:00:30        # Extract from 5s to 30s
 # $ video-split ./path/to/file.mp4 5-30 output.mp4          # Extract into specific file
+setopt local_options err_return
 local inputFile="${1:a}"
 local range="$2"
 local outputFile="$3"

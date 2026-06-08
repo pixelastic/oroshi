@@ -3,6 +3,7 @@
 # Usage:
 # $ echo "here\n../far\n../../even-further" | sort-filepath
 # $ sort-filepath "here\n../far" "../../even-further"
+setopt local_options err_return
 
 # Get input from stdin, or as arguments
 if [[ -p /dev/stdin ]]; then

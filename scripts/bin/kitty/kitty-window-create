@@ -5,6 +5,7 @@
 # $ kitty-window-create "myWindow" --tab 5                  # Create in specific tab
 # $ kitty-window-create "myWindow" --color "background=red" # With custom styling
 # $ kitty-window-create "myWindow" --cmd "claude"           # Launch with specific command
+set -e
 
 zparseopts -E -D \
   -tab:=flagTab \

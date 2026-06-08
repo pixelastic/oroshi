@@ -2,6 +2,7 @@
 # Get the tab ID of a specific window
 # Usage: kitty-window-tab-id <windowId>
 # Returns: the tab ID containing this window
+set -e
 
 local windowId="$1"
 if [[ "$windowId" == "" ]]; then

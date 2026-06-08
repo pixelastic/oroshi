@@ -2,6 +2,7 @@
 # Usage:
 # $ notion-icon-auto {pageUrl}           # Set the icon as the preview
 # $ notion-icon-auto --force {pageUrl}   # Set the icon as the preview, even if already has one
+setopt local_options err_return
 zparseopts -E -D \
 	-force=flagForce
 

@@ -1,6 +1,7 @@
 # Return the number of pages of a given PDF file
 # Usage:
 # $ pdf-page-count ./path/to/file.pdf    # 42
+setopt local_options err_return
 local input=$1
 pdfinfo $input |
 	grep '^Pages:' |

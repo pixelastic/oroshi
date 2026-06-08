@@ -5,6 +5,7 @@
 # $ translate --language spanish "texte français"
 # $ echo "texte" | translate
 # $ echo "texte" | translate --language german
+set -e
 
 zparseopts -E -D \
   -language:=flagLanguage

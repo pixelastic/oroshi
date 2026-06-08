@@ -3,6 +3,7 @@
 # Usage:
 # $ kitty-window-set-var 123 "foo=bar"                    # Set one variable
 # $ kitty-window-set-var 123 "foo=bar" "baz=qux"          # Set multiple variables
+set -e
 
 local windowId="$1"
 local keyValuePairs=("${@:2}")

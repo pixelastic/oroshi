@@ -6,6 +6,7 @@
 #
 # Usage:
 # $ fzf-regexp-shared-postprocess {multiLineSelection}
+setopt local_options err_return
 
 local rawSelection="$1"
 

@@ -5,6 +5,7 @@
 # manually here
 # Usage:
 # $ yarn-link-create ./path/to/module   # Link current project to module
+setopt local_options err_return
 local modulePath="${1:a}"
 
 # Stop if not a linkable directory

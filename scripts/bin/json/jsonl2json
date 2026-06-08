@@ -2,6 +2,7 @@
 # Convert a .jsonl file to .json
 # Usage:
 # jsonl2json masks.jsonl         # Creates a JSON array file
+set -e
 
 local inputFile="${1:a}"
 local outputFile="${inputFile:r}.json"

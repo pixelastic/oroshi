@@ -1,6 +1,7 @@
 # Create a new JPG file, as small as possible
 # Usage:
 # $ img-jpg-create ./path/to/file.jpg
+setopt local_options err_return
 local input="$1"
 
 if [[ $input == "" ]]; then

@@ -2,6 +2,7 @@
 # Usage:
 # $ ebook-metadata-update ./GAIMAN Neil - Good Omens.epub
 # Parse inputs {{{
+setopt local_options err_return
 zparseopts -E -D \
   -cover:=flagCover
 

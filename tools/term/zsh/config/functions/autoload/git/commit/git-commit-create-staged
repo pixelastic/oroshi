@@ -3,6 +3,7 @@
 # $ git-commit-create-staged                      # Commit staged changes, and ask for message
 # $ git-commit-create-staged "Commit message"     # Commit staged changes with message
 # $ git-commit-create-staged -n "Commit message"  # Can pass arguments to git commit
+setopt local_options err_return
 local args=($@)
 
 # Find the commit message as the first argument without a dash as prefix

@@ -2,6 +2,7 @@
 # Usage:
 # $ img-is-compressed raw.jpg   # Returns 1
 # $ img-is-compressed compressed.jpg   # Returns 0
+setopt local_options err_return
 local filepath=$1
 local exifComment="$(exiftool -Comment $filepath | awk '{print $3}')"
 if [[ $exifComment == "oroshi_compressed" ]]; then

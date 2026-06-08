@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # List open issues and PRs of my repos
+set -e
 
 local repos=()
 repos+=("/home/tim/local/www/projects/firost/")

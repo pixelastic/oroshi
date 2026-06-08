@@ -4,6 +4,7 @@
 # $ docker-image-build                           # Build local directory image
 # $ docker-image-build image-name                # Set the image name
 # $ docker-image-build image-name --stage=prod   # Specify the stage to build (... AS prod)
+set -e
 
 zparseopts -E -D \
   -stage:=flagStageName

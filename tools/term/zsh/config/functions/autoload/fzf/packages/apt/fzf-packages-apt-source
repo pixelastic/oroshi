@@ -1,4 +1,5 @@
 # Returns a list of all possible packages to install
+setopt local_options err_return
 
 local cacheDestination=${OROSHI_TMP_FOLDER}/fzf/packages-apt
 

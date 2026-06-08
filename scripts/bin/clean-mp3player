@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 # To be run in a directory containing audio files on a "mp3 player".
 # This will remove all unwanted files to only keep the audio files.
+set -e
 
 # Target dir
 local dir=$1

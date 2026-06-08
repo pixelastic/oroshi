@@ -2,6 +2,7 @@
 # Usage:
 # $ git-tag-commit v1.0
 # Tag name
+setopt local_options err_return
 local tagName="$1"
 if [[ $tagName == '' ]]; then
   tagName="$(git-tag-current)"

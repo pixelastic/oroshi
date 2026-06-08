@@ -1,4 +1,5 @@
 # List all local Docker images (including their tags)
+setopt local_options err_return
 local suggestions="$(\
   docker images \
   --format '{{.Repository}}|{{.Tag}}|{{.ID}}|{{.CreatedSince}}|{{.Size}}' \

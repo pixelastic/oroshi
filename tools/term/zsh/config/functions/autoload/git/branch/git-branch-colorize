@@ -5,6 +5,7 @@
 # $ git-branch-colorize feat/x --worktree        # worktree icon + normal branch color
 # $ git-branch-colorize --with-icon             #  main
 # $ git-branch-colorize origin/develop --remote #  origin/remote
+setopt local_options err_return
 zparseopts -E -D \
   -with-icon=flagWithIcon \
   -remote=flagRemote \

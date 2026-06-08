@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Copy files using rsync
+set -e
 rsync \
   -vrahP \
   --modify-window=1 \

@@ -5,6 +5,7 @@
 #
 # Usage:
 # $ audio-play ./path/to/file.mp3
+set -e
 local input="$1"
 
 process-detach ffplay \

@@ -9,6 +9,7 @@
 # highest version
 #
 # TODO: Need to pass a --minor or --major flag
+set -e
 
 local containerName="$(docker-oroshi-container)"
 local commitMessage="$1"

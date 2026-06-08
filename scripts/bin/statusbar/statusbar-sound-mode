@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # JSON info about if sound mode is enabled
+set -e
 source $ZSH_CONFIG_PATH/theming/env/colors.zsh
 
 local storeFile=$OROSHI_TMP_FOLDER/sound-mode/on

@@ -1,6 +1,7 @@
 # Change image luminosity
 # Usage:
 # $ img-luminosity ./path/to/images 150   # Modulate all specified images by 150
+setopt local_options err_return
 local files=($@[1,-2])
 local modulate=$@[-1]
 

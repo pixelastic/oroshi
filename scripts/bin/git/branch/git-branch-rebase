@@ -5,6 +5,7 @@
 # $ git-branch-rebase main master        # Rebase master if main does not exist
 # $ git-branch-rebase main --keep-local  # Prefer local updates over remote
 # $ git-branch-rebase main --keep-remote # Prefer remote updates over local
+set -e
 
 zparseopts -E -D \
 	-keep-remote=flagKeepRemote \

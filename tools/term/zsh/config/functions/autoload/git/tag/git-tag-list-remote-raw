@@ -1,6 +1,7 @@
 # Display a raw list of all remote tags
 # Usage:
 # $ git-tag-list-remote-raw       # All remote tags with name/commit
+setopt local_options err_return
 local gitBranchFormat=""
 gitBranchFormat+="%(refname:short)▮"          # main
 gitBranchFormat+="%(objectname:short)▮"       # abcdef

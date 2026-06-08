@@ -1,3 +1,4 @@
 #!/usr/bin/env zsh
+set -e
 
 echo $1 | base64

@@ -1,3 +1,4 @@
 # Output JSON information about an image
+setopt local_options err_return
 local input=$1
 exiftool $input -json | jq '.[0]'

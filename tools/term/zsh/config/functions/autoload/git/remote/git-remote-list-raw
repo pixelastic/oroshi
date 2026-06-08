@@ -1,6 +1,7 @@
 # Display the list of remotes in raw format, without columns not colors
 # Usage:
 # $ git-remote-list
+setopt local_options err_return
 
 local rawList="$(git remote)"
 

@@ -1,6 +1,7 @@
 # List all audio streams
 # Usage:
 # $ video-stream-audio-list ./path/video.mp4
+setopt local_options err_return
 local rawOutput=$(video-stream-audio-list-raw $1)
 
 local output="Index▮Codec▮Language\n"

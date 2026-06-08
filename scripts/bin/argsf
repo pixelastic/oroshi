@@ -2,6 +2,7 @@
 # Only return flag arguments passed, one by line
 # Can then be used in a script to only keep flag arguments with:
 # local argsf=(${(f)"$(argsf $@)"})
+set -e
 
 # Iterate through all arguments by index.
 # Using $@, as $* or $argv excludes single-hyphen flags

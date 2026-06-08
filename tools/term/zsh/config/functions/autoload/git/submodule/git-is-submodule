@@ -2,6 +2,7 @@
 # Usage:
 # $ git-is-submodule         # Checks if current directory is a submodule
 # $ git-is-submodule /path   # Checks if /path is a submodule
+setopt local_options err_return
 local pathToCheck="$1"
 
 # Note: git rev-parse seems to only work if we are in the actual repository,

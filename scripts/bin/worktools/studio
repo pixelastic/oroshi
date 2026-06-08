@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Opens the Studio web UI to transfer files to the Lunii box
+set -e
 
 local STUDIO_BIN=~/local/src/studio/studio-linux.sh
 local WEBUI_URL=http://localhost:8080/

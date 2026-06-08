@@ -3,6 +3,7 @@
 # Creates <basename>-part1.<ext> and <basename>-part2.<ext>
 # Usage:
 # $ audio-split input.wav  # Creates input-part1.wav and input-part2.wav
+set -e
 
 local input=$1
 

@@ -3,6 +3,7 @@
 # Usage:
 # $ txt2slack "raw transcription text"
 # $ echo "text" | txt2slack
+set -e
 
 local inputText="${1:-$(cat)}"
 

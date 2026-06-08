@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # List all commands bound to this shortcut
+set -e
 local shortcut="$1"
 (for schema in $(gsettings list-schemas); do 
   gsettings list-recursively $schema

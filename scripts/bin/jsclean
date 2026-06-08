@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+set -e
 
 local file=${1:a}
 local isOutput=$2

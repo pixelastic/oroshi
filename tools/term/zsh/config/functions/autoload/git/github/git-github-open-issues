@@ -2,6 +2,7 @@
 # Usage:
 # $ git-issue-open            # Opens issue page
 # $ git-issue-open 42         # Opens issue 42
+setopt local_options err_return
 
 # Stop if not in a GitHub repo
 git-directory-is-github || return 1

@@ -1,4 +1,5 @@
 # List all dirty files (modified, added, or deleted since last commit) with colors
+setopt local_options err_return
 local rawFiles="$(git-file-list-dirty-raw)"
 
 for rawLine in ${(f)rawFiles}; do

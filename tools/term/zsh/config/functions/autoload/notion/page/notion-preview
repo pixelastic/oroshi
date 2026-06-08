@@ -3,6 +3,7 @@
 # image in it
 # Usage:
 # $ notion-preview {pageUrl|pageId|blockId}
+setopt local_options err_return
 local parentBlockId="$1"
 
 # If input is a url, convert it to an id

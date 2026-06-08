@@ -1,6 +1,7 @@
 # Download a given YouTube video
 # Usage:
 # $ youtube-video-download ${videoId/videoUrl}
+setopt local_options err_return
 
 local args=($@)
 

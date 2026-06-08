@@ -1,6 +1,7 @@
 # Output the name of the container running the highest version of oroshi
 # Usage:
 # $ docker-oroshi-container   # oroshi_1.9.2
+setopt local_options err_return
 local result="$(
   docker ps \
     --format '{{.Image}}|{{.Names}}' \

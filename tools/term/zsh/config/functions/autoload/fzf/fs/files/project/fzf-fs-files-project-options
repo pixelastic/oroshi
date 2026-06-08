@@ -1,4 +1,5 @@
 # Outputs specific options for searching for a file in the current project
+setopt local_options err_return
 fzf-fs-files-shared-options \
   --prompt fzf-fs-files-project-prompt \
   --source fzf-fs-files-project-source

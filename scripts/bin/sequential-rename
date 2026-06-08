@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+set -e
 
 index=0
 for file in $@; do

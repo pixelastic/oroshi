@@ -1,6 +1,7 @@
 # Display the raw JSON output of a given page
 # Usage:
 # $ notion-page-raw {pageUrl}
+setopt local_options err_return
 local pageUrl="$1"
 
 local pageId="$(notion-page-id $pageUrl)"

@@ -2,6 +2,7 @@
 # Display the list of all local containers
 # Usage:
 # $ docker-container-list          # List all containers
+set -e
 
 local rawContainerList="$(\
   docker ps \

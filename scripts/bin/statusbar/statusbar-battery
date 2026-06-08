@@ -4,6 +4,7 @@
 # Do not display if full
 # Display in green if charging
 # Display in grey, yellow and red when level drops
+set -e
 
 source $ZSH_CONFIG_PATH/theming/env/colors.zsh
 

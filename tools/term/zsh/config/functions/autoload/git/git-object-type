@@ -9,6 +9,7 @@
 # If several types apply (technically branches and tags are commits, and
 # branches and tags can share the same name), then they will be returned in the
 # by order of importance as above
+setopt local_options err_return
 local commitRef="$1"
 
 # Is it a remote branch?

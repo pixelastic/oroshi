@@ -1,6 +1,7 @@
 # Create a new PNG file, as small as possible
 # Usage:
 # $ img-png-create ./path/to/file.png
+setopt local_options err_return
 local input="$1"
 
 if [[ $input == "" ]]; then

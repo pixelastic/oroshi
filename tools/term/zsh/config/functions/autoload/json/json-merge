@@ -3,6 +3,7 @@
 # Arguments on the right overwrite arguments on the left.
 # Usage:
 # $ json-merge file1.json file2.json [file3.json ...]
+setopt local_options err_return
 if [[ $# -lt 2 ]]; then
   echo "Error: at least two files required" >&2
   echo "Usage: json-merge file1.json file2.json [file3.json ...]" >&2

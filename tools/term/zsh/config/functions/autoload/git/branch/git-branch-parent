@@ -6,6 +6,7 @@
 # shellcheck disable=SC2178
 # We get the list of all "decorations", ie branchnames and tags, and then
 # massage it until we get the name of the second closest decoration
+setopt local_options err_return
 
 local result="$(git log --format=%d)" # We start with the full list
 result=(${(f)result})                 # We turn it into an array, with newlines as separators. This removes empty lines

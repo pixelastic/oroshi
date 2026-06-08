@@ -2,6 +2,7 @@
 # Install a .deb package from the command line.
 # This needs to be in a script because packages might need some dependencies
 # in order to work properly, and this script will attempt to download them.
+set -e
 
 # Extract the package, this will surely throw some dependencie errors
 sudo dpkg -i $1

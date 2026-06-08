@@ -2,6 +2,7 @@
 # Runs eslint on zx files
 # Uses eslint_d and a custom config that extends the base aberlaas one, but with
 # specific tweaks for zx
+set -e
 
 # Usage:
 # $ eslint-zx --version

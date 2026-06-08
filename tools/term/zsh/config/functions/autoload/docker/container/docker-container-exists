@@ -2,6 +2,7 @@
 # Usage:
 # $ docker-container-exist alpine_latest         # return 0
 # $ docker-container-exist ksjkdjskjd            # return 1
+setopt local_options err_return
 local containerName="$1"
 
 if docker container inspect --format '{{.Id}}' $containerName &>/dev/null; then

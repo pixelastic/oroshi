@@ -2,6 +2,7 @@
 # Usage:
 # $ trim "Hello World!  "         # "Hello World!"
 # $ echo "Hello World!  " | trim  # "Hello World!"
+setopt local_options err_return
 local input="$1"
 # Read from pipe
 [[ -p /dev/stdin ]] && input="$(/usr/bin/cat -)"

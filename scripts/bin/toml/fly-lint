@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # flylint: Lint fly.toml files
+set -e
 setopt extendedglob
 
 local filepath=$(realpath "$1")

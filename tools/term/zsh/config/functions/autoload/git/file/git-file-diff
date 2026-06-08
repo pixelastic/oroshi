@@ -5,6 +5,7 @@
 # $ git-file-diff package.json                     # Diff of package.json against last commit
 # $ git-file-diff package.json abcdef              # Diff of package.json against commit abcdef
 # $ git-file-diff package.json v1.24.3 v1.24.4     # Diff of package.json between two commit
+setopt local_options err_return
 zparseopts -E -D \
 	-staged=flagStaged
 

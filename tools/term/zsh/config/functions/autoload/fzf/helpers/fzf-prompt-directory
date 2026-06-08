@@ -5,6 +5,7 @@
 # Usage:
 # $ fzf-prompt-directory   # Colored prompt for current directory
 # $ fzf-prompt-directory ~/.oroshi/  # Colored prompt for ~/.oroshi
+setopt local_options err_return
 local inputPath="${1:a}"
 
 local projectPrefix="$(context-badge "$inputPath")"

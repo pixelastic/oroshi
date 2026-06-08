@@ -2,6 +2,7 @@
 # Usage:
 # $ git-file-add ./relative/path/to/file  # Adds the file
 # $ git-file-add /absolute/path/to/file   # Adds the file
+setopt local_options err_return
 local gitRoot="$(git-directory-root)"
 git \
   -C "${gitRoot}" \

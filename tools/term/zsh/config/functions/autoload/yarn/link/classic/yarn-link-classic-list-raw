@@ -1,5 +1,6 @@
 # List all "registered" global modules in a raw format
 # Note: This is only relevant when using Yarn v1
+setopt local_options err_return
 zparseopts -E -D \
   -with-descriptions=flagWithDescriptions
 

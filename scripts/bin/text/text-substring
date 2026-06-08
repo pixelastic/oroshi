@@ -5,6 +5,7 @@
 # $ text-substring "Hello" -3 => llo
 # $ text-substring "Hello" 1 3 => ell
 # $ echo "Hello" | text-substring 1 => ello
+set -e
 
 # Read from args
 local text=$1

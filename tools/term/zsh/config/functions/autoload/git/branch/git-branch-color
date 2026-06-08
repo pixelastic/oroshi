@@ -2,6 +2,7 @@
 # Usage:
 # $ git-branch-color             # (current branch)
 # $ git-branch-color main        # main branch color
+setopt local_options err_return
 
 # Branch name
 local branchName="$1"

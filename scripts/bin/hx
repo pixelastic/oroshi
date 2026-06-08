@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Extract content from an HTML file using CSS selectors
+set -e
 if [[ $# == '0' ]]; then
   echo 'Usage:'
   echo '  hx source.html {css_selector} [{json_path}]'

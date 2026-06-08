@@ -2,6 +2,7 @@
 # Check if a Kitty window with the given oroshi_windowName exists
 # Usage: kitty-window-exists "windowName"
 # Returns: 0 if exists, 1 if not
+set -e
 
 local windowName="$1"
 if [[ "$windowName" == "" ]]; then

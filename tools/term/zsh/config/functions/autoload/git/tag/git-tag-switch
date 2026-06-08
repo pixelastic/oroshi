@@ -1,6 +1,7 @@
 # Switch to specific tag
 # Usage:
 # $ git-tag-swicth v8.54.0         # Switch to tag v8.54.0
+setopt local_options err_return
 local tagName="$1"
 
 if ! git-tag-exists $tagName; then

@@ -1,6 +1,7 @@
 # List all local Docker images (including their tags), but excluding any image
 # that is coming from GitHub. This is used to suggestion images when copying
 # them by adding the ghcr.io namespace
+setopt local_options err_return
 local suggestions="$(\
   docker images \
   --format '{{.Repository}}\:{{.Tag}}:{{.CreatedSince}} ({{.Size}})' \

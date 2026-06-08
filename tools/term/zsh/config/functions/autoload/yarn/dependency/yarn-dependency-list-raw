@@ -5,6 +5,7 @@
 # $ yarn-dependency-list-raw --all               # All dependencies
 # $ yarn-dependency-list-raw --with-descriptions # Add a last description colum
 # $ yarn-dependency-list-raw ./path/to/project   # List dependencies of another project
+setopt local_options err_return
 zparseopts -E -D \
   -dev=flagDev \
   -all=flagAll \

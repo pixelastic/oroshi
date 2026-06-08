@@ -4,5 +4,6 @@
 # $ git-commit-create "Commit message"     # Commit all changes with message
 # $ git-commit-create -n "Commit message"  # Can pass arguments to git commit
 # Commit all files first
+setopt local_options err_return
 git add --all
 git-commit-create-staged $@

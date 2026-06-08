@@ -1,6 +1,7 @@
 # Check if a package has been installed
 # Usage:
 #   $ apt-exists zsh        # Exit with 0 if installed
+setopt local_options err_return
 local packageName="$1"
 
 local versionNumber="$(apt-version $packageName)"

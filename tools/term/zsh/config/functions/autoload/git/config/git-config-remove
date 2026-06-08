@@ -1,6 +1,7 @@
 # Remove a config value
 # Usage:
 # $ git-config-remove branch.main.remote  # Remove the value
+setopt local_options err_return
 local configName="$1"
 
 if [[ "$configName" == '' ]]; then

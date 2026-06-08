@@ -1,4 +1,5 @@
 # List all remote Docker images
+setopt local_options err_return
 
 local outputFile=$OROSHI_ROOT/tools/docker/docker/config/cache/src/images-remote.txt
 local suggestions="$(cat $outputFile)"

@@ -3,6 +3,7 @@
 # $ pdf2img ./path/to/file.pdf # Creates one png file for each page of the
 # $ pdf2img --jpg ./path/to/file.pdf # Creates one jpg file for each page of the
 # $ pdf2img ./path/to/file.pdf 12 # Creates only a png file for page 12
+setopt local_options err_return
 zparseopts -E -D \
 	-jpg=flagJpg
 

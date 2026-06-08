@@ -2,6 +2,7 @@
 # Usage:
 # $ fly-app-status         # View status for current app
 # $ fly-app-status myapp   # View status for specific app
+setopt local_options err_return
 local appName="$1"
 
 local commandFlag=""

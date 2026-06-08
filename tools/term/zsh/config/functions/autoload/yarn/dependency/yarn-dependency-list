@@ -3,6 +3,7 @@
 # $ yarn-dependency-list         # Only regular dependencies
 # $ yarn-dependency-list --dev   # Only dev dependencies
 # $ yarn-dependency-list --all   # All dependencies
+setopt local_options err_return
 local rawList="$(yarn-dependency-list-raw --with-descriptions $@)"
 [[ $rawList == "" ]] && return 0
 

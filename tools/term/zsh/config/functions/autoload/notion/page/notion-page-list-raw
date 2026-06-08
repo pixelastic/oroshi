@@ -1,6 +1,7 @@
 # List all pages in a given page
 # Usage:
 # $ notion-page-list-raw {pageUrl}
+setopt local_options err_return
 local pageId="$(notion-page-id $1)"
 
 # Find all blocks of the page, and only keep the one of type "child_page"

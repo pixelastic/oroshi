@@ -1,6 +1,7 @@
 # Display a raw list of all tags
 # Usage:
 # $ git-tag-list-raw       # All tags with name/commit/date/notes
+setopt local_options err_return
 git tag \
 	--sort=-creatordate \
 	--format="%(refname:short)▮%(objectname:short)▮%(creatordate:relative)▮%(contents:subject)"

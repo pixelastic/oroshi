@@ -1,4 +1,5 @@
 # Suggest all remote git tags
+setopt local_options err_return
 local rawList="$(git-tag-list-remote-raw)"
 
 for rawLine in ${(f)rawList}; do

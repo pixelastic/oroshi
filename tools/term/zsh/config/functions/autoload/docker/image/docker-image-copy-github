@@ -2,6 +2,7 @@
 # Usage:
 # $ docker-image-copy-github ubuntu             # ghcr.io/pixelastic/ubuntu:latest
 # $ docker-image-copy-github ubuntu:22.04       # ghcr.io/pixelastic/ubuntu:22.04
+setopt local_options err_return
 local input="$1"
 local inputSplit=(${(@s/:/)input})
 local imageName=$inputSplit[1]

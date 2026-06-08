@@ -2,6 +2,7 @@
 # Usage:
 # $ git-branch-gone           # Uses current branch
 # $ git-branch-gone develop   # Uses develop branch
+setopt local_options err_return
 local branchName="$1"
 if [[ $branchName = '' ]]; then
   branchName="$(git-branch-current)"

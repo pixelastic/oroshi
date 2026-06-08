@@ -3,6 +3,7 @@
 # Usage:
 # $ git-remote-remove pixelastic         # Removes the pixelastic remote
 # $ git-remote-remove hades superliminal # Removes both remotes
+set -e
 
 # A remote name is needed
 if [[ "$1" == "" ]]; then

@@ -2,6 +2,7 @@
 # Usage:
 # $ docker-comment-colorize "Install bat"       # fix stuff
 # Message {{{
+setopt local_options err_return
 local message="$1"
 # We need a message passed
 if [[ $message == '' ]]; then

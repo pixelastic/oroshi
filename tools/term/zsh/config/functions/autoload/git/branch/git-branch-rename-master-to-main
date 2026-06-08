@@ -5,6 +5,7 @@
 # $ git-branch-rename-master-to-main                 # Use current repo
 # $ git-branch-rename-master-to-main firost          # pixelastic/firost
 # $ git-branch-rename-master-to-main owner/repo      # Custom owner
+setopt local_options err_return
 function main() {
   # Main execution
   local fullRepo=$(parseRepoArgument "$1") || return 1

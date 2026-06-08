@@ -3,6 +3,7 @@
 # $ git-pr-open            # Opens PR page
 # $ git-pr-open 42         # Opens PR 42
 # Stop if not in a GitHub repo
+setopt local_options err_return
 git-directory-is-github || return 1
 
 local prNumber=$1

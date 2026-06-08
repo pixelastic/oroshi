@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Converts an html file to a simplified markdown version
+set -e
 
 if [[ `which readability` = '' ]]; then
 	echo "readability not found, error"

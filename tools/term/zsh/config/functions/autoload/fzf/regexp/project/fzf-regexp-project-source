@@ -1,4 +1,5 @@
 # Return a list of all matches inside of files, from the project root
+setopt local_options err_return
 local query="$1"
 local rootDirectory="$(fzf-var-read pwd)"
 

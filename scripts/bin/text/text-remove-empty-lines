@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Remove all empty lines from a multi-line text
+set -e
 
 # Read from arg or from pipe
 local input=$1

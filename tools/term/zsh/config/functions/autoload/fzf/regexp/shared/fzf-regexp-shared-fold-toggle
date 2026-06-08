@@ -1,4 +1,5 @@
 # Toggle the single/multi result mode
+setopt local_options err_return
 local key="regexp-fold-mode"
 
 local currentMode="$(fzf-var-read regexp-fold-mode multi)"

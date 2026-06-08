@@ -1,4 +1,5 @@
 # Convert webp files to png
 # Usage:
 # $ webp2png ./*.webp
+setopt local_options err_return
 img-convert $1 png

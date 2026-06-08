@@ -2,6 +2,7 @@
 # Usage:
 # $ git-issue-count
 # Stop if not in a GitHub repo
+setopt local_options err_return
 git-directory-is-github || return 1
 
 (gh issue list --limit=1000 --json=number 2>/dev/null || echo "0") |

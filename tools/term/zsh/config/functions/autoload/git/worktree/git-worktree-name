@@ -3,6 +3,7 @@
 # Usage:
 # $ git-worktree-name              # current directory
 # $ git-worktree-name /path/to/wt  # explicit path
+setopt local_options err_return
 
 local targetPath="${1:-$PWD}"
 

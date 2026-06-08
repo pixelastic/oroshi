@@ -2,6 +2,7 @@
 # Usage:
 # $ fly-app-deploy         # Deploy current app
 # $ fly-app-deploy myapp   # Deploy specific app
+setopt local_options err_return
 local appName="$1"
 
 local commandFlag=""

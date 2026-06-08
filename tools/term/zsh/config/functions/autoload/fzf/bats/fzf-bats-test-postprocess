@@ -1,5 +1,6 @@
 # Extract file paths from fzf multi-selection, space-separated
 # Usage: fzf-bats-test-postprocess <newline-separated selections>
+setopt local_options err_return
 local rawInput="$1"
 [[ "$rawInput" == "" ]] && return 0
 

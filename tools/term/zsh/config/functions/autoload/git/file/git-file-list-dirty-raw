@@ -4,6 +4,7 @@
 # Usage:
 # $ git-file-list-dirty-raw           # current directory
 # $ git-file-list-dirty-raw /path     # from given path
+setopt local_options err_return
 setopt local_options errexit
 
 local targetPath="${1:-$(git-directory-root)}"

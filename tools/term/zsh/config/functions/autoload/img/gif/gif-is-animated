@@ -2,6 +2,7 @@
 # Usage:
 # $ gif-is-animated static.gif      # 0
 # $ gif-is-animated animated.gif    # 1
+setopt local_options err_return
 local input=$1
 
 local rawOutput=($(magick identify -format "%n\n" $input))

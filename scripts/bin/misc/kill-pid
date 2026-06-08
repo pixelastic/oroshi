@@ -3,6 +3,7 @@
 # It asks process to stop, and wait until its really stopped
 # Usage:
 # $ kill-pid 24356
+set -e
 
 local pid=$1
 

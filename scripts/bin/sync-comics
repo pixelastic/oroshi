@@ -3,6 +3,7 @@
 # following rules :
 # - File on source but not on dest will be copied
 # - File on dest but not on source will be deleted
+set -e
 
 
 if [[ ! $# = 2 ]]; then

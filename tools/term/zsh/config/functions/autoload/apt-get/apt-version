@@ -1,6 +1,7 @@
 # Returns the current installed version of a package
 # Usage:
 #   $ apt-version zsh              # 5.8.1-1
+setopt local_options err_return
 local input="$1"
 
 local policyOutput="$(apt-cache policy $input | \grep 'Installed')"

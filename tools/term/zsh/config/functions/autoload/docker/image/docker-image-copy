@@ -1,6 +1,7 @@
 # Copy a Docker image onto a new name
 # Usage:
 # $ docker-image-copy ubuntu my-version   # Duplicates ubuntu under my-version
+setopt local_options err_return
 local originalName="$1"
 local newName="$2"
 

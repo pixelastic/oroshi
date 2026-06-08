@@ -3,6 +3,7 @@
 # Usage:
 # $ kitty-tab-layout       # Get layout of current tab
 # $ kitty-tab-layout 123   # Get layout of tab with ID 123
+set -e
 
 local tabId="$1"
 

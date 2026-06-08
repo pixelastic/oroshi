@@ -2,6 +2,7 @@
 # Usage:
 # $ ebook-collection-add ./path/to/file.epub  # Add the file to the collection
 # $ ebook-collection-add ./file.epub --author "GAIMAN Neil" --name "Good Omens"
+setopt local_options err_return
 zparseopts -E -D \
 	-name:=flagName \
 	-author:=flagAuthor

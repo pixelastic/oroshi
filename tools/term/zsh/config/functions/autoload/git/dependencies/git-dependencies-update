@@ -3,6 +3,7 @@
 #
 # Usage:
 # $ git-dependencies-update d34db33f
+setopt local_options err_return
 local originCommit=$1
 
 git submodule update

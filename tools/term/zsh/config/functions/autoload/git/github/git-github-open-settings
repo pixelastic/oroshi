@@ -1,3 +1,4 @@
 # Opens the current repo setting page on GitHub
+setopt local_options err_return
 local settingsUrl="$(git-directory-url)/settings"
 $BROWSER $settingsUrl &>/dev/null

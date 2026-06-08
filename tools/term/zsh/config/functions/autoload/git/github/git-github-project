@@ -3,6 +3,7 @@
 # Usage:
 # $ git-github-project              # pixelastic/oroshi
 # $ git-github-project upstream     # someorg/oroshi
+setopt local_options err_return
 
 local remoteName="$1"
 [[ "$remoteName" == "" ]] && remoteName="$(git-remote-current)"

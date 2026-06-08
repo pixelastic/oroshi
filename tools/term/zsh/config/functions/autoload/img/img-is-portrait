@@ -1,6 +1,7 @@
 # Check if an image is a portrait mode (height > width)
 # Usage:
 # $ img-is-portrait ./path/to/img.png     # Returns 0 if portrait
+setopt local_options err_return
 local input="$1"
 
 img-is-landscape $input && return 1

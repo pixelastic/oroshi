@@ -1,6 +1,7 @@
 # Do a POST call to the notion API
 # Usage:
 # $ notion-api-post databases/{dbId}/query '{}' # Post data
+setopt local_options err_return
 local input=$1
 local data=$2
 

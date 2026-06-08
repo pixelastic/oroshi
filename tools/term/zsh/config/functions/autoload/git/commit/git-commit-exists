@@ -3,6 +3,7 @@
 # $ git-commit-exists 13cd455   # Checks if commit exists
 # $ git-commit-exists mai  n    # Checks if branch exists
 # $ git-commit-exists alpha     # Checks if tag exists
+setopt local_options err_return
 local commitReference="$1"
 
 local inputType="$(git cat-file -t $commitReference 2>/dev/null)"

@@ -5,6 +5,7 @@
 # $ img-display ./file.png --fzf-preview    # Pass additional flags to display
 #                                               in fzf preview
 # $ img-display ./file.png --no-metadata    # Hide metadata
+setopt local_options err_return
 zparseopts -E -D \
   -fzf-preview=flagFzfPreview \
   -clear=flagClear \

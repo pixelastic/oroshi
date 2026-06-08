@@ -7,6 +7,7 @@
 # $ html-lint --nvim ./path/to/file.html                         # Lint file, optimized output for NeoVim
 # $ html-lint --json ./path/to/file.html                         # Lint file, JSON output for vim (not supported by djlint, returns normal output)
 # $ echo '<div>Hello</div>' | html-lint --filepath ./realpath.html  # Lint from stdin, with real location on disk
+set -e
 
 # ============================================================================
 # Parse command-line arguments

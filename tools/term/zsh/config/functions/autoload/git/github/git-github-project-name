@@ -2,6 +2,7 @@
 # Usage:
 # $ git-github-project-name              # oroshi
 # $ git-github-project-name upstream     # oroshi
+setopt local_options err_return
 
 local project="$(git-github-project "$@")"
 [[ "$project" == "" ]] && return 1

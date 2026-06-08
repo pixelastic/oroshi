@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+set -e
 cp \
   /media/tim/JVCCAM_SD/PRIVATE/AVCHD/BDMV/STREAM/*.MTS \
   /home/tim/local/tmp/camera

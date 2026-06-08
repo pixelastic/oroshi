@@ -4,6 +4,7 @@
 # $ say "Hello world"
 # $ echo "Hello world" | say
 # $ say --fr "Bonjour Monde"
+set -e
 
 # Allow specifying french
 zparseopts -E -D \

@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Mount an iso file in ~/local/mnt
+set -e
 
 local isoFile=${1:a}
 local isoBasename=${isoFile:t:r}

@@ -4,6 +4,7 @@
 # $ pdf2txt --keepLayout ./path/to/file.pdf
 # $ pdf2txt --pages 12 ./path/to/file.pdf
 # $ pdf2txt --pages 5-10 ./path/to/file.pdf
+setopt local_options err_return
 zparseopts -E -D \
   -keepLayout=flagKeepLayout \
   -pages:=flagPages

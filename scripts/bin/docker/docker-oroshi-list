@@ -2,5 +2,6 @@
 # Display the list of all oroshi images
 # Usage:
 # $ docker-oroshi-list
+set -e
 
 docker-image-list oroshi

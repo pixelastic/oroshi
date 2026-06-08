@@ -1,6 +1,7 @@
 # List linked worktrees with branch, dirty count, distance vs main, date, and last commit message
 # Usage:
 # $ git-worktree-list
+setopt local_options err_return
 
 local iconAhead=""
 local iconBehind=""

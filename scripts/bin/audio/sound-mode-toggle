@@ -2,6 +2,7 @@
 # Toggle a global "Sound Mode"
 # The current value will be displayed in Kitty's statusbar
 # It is used by my custom Claude Code config to play sounds
+set -e
 
 local storeDirectory=$OROSHI_TMP_FOLDER/sound-mode
 local storeFile="${storeDirectory}/on"

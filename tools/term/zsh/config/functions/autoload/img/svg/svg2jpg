@@ -1,4 +1,5 @@
 # Convert svg files to jpg
 # Usage:
 # $ svg2jpg ./*.svg
+setopt local_options err_return
 img-convert $1 jpg

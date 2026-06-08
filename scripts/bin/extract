@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 # shellcheck disable=SC1085
 # Will "extract" files from most of the archive file types.
+set -e
 
 if [[ $# = 0 ]]; then
   echo "Select at least one file to extract"

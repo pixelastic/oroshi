@@ -1,4 +1,5 @@
 # List all stageable files (that can be added to the staging area)
+setopt local_options err_return
 local rawFiles="$(git-file-list-stageable-raw)"
 
 # Build the initial list

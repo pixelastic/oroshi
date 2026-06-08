@@ -2,6 +2,7 @@
 # Usage:
 # $ git-tag-push                  # Pushes current tag to current remote
 # $ git-tag-push v1.0.0           # Pushes tag v1.0.0
+setopt local_options err_return
 local currentRemote="$(git-remote-current)"
 
 # If no args, we push all tags

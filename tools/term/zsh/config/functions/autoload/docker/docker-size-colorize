@@ -2,6 +2,7 @@
 # Usage:
 # $ docker-size-colorize 485MB    # Value and unit colored differently
 # Raw size
+setopt local_options err_return
 local rawSize="$1"
 
 # Split value and unit

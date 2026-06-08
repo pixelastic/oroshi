@@ -1,6 +1,7 @@
 # Run bats tests for all dirty files that have an associated test
 # Usage:
 # $ git-file-test
+setopt local_options err_return
 local gitRoot="$(git-directory-root)"
 local rawFiles="$(git-file-list-dirty-raw)"
 

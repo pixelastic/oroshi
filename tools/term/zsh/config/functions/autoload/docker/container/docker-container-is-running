@@ -3,6 +3,7 @@
 # $ docker-container-is-running alpine_latest         # return 0 if running
 # $ docker-container-is-running alpine_latest         # return 1 if not running
 # $ docker-container-is-running ksjkdjskjd            # return 0 if does not exist
+setopt local_options err_return
 local containerName="$1"
 local state="$(docker-container-state $containerName)"
 

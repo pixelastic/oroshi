@@ -4,6 +4,7 @@
 # $ docker-container-colorize alpine_latest --with-icon                 #  alpine
 # $ docker-container-colorize alpine_latest --with-icon --state stopped #  alpine
 # $ docker-container-colorize alpine_latest --with-icon --state running #  alpine
+setopt local_options err_return
 zparseopts -E -D \
 	-with-icon=flagWithIcon \
 	-state:=flagState

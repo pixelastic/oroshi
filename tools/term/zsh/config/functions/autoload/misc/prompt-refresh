@@ -6,6 +6,7 @@
 #                            # Useful when running background processes,
 #                            # detached from the prompt
 # tmux-echo "Prompt refreshed"
+setopt local_options err_return
 
 local promptPid="$1"
 if [[ $promptPid == '' ]]; then

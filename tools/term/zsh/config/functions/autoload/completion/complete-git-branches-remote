@@ -1,4 +1,5 @@
 # List all remote branches
+setopt local_options err_return
 local currentRemote="$(git-remote-current)"
 local rawList="$(git-branch-list-remote-raw)"
 

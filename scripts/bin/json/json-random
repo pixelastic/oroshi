@@ -2,6 +2,7 @@
 # Return a random element from the JSON array, and save it to clipboard
 # Usage:
 # $ json-random file.json   # Random item
+set -e
 
 local output=""
 

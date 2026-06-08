@@ -2,6 +2,7 @@
 # Usage:
 # $ git-date-colorize "3 months, 2 days ago"             # 3 m., 2d.
 # $ git-date-colorize "3 months, 2 days ago" --with-icon #  3m., 2d.
+setopt local_options err_return
 zparseopts -E -D \
 	-with-icon=flagWithIcon
 

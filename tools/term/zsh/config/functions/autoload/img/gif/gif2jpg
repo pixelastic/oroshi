@@ -1,4 +1,5 @@
 # Convert gif files to jpg
 # Usage:
 # $ gif2jpg ./*.gif
+setopt local_options err_return
 img-convert $1 jpg

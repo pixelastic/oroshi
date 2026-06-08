@@ -2,6 +2,7 @@
 # Get a Kitty window ID
 # Usage: kitty-window-id               # Get current window ID
 #        kitty-window-id "windowName"  # Get window ID by oroshi_windowName
+set -e
 
 local windowName="$1"
 

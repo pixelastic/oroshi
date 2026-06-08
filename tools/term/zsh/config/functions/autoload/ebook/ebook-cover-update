@@ -2,6 +2,7 @@
 # Usage:
 # $ ebook-cover-add ./book.epub                     # Update the cover with book.jpg
 # $ ebook-cover-add ./book.epub --cover=./cover.png  # Update the book cover with specified one
+setopt local_options err_return
 zparseopts -E -D \
 	-cover:=flagCover
 

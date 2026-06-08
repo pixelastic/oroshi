@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Add current files to stash
+set -e
 
 local message=$1
 

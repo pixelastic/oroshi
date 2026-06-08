@@ -2,6 +2,7 @@
 # Commit the content of a specific submodule with a simple chore() message
 # Usage:
 # $ git-commit-submodule  ./scripts/bin/img    # Commits the submodule
+set -e
 
 local submodulePath="$1"
 local submoduleName="${submodulePath:t}"

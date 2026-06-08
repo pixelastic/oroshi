@@ -3,6 +3,7 @@
 # Usage:
 # $ git-branch-pull           # Pull the current branch
 # $ git-branch-pull develop   # Pull a specific branch and switch to it
+set -e
 
 local currentBranch="$(git-branch-current)"
 local currentRemote="$(git-remote-current)"

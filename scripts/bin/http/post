@@ -2,6 +2,7 @@
 # Make a POST request with a json as body
 # Usage:
 # $ post https://url.com/ file.json      # POST file.json as body
+set -e
 
 local targetUrl="$1"
 local filePath="${2:a}"

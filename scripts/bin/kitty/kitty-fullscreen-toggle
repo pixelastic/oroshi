@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 # Toggle fullscreen in the current kitty tab
 # This should have no effect if there is only one split
+set -e
 
 # Get current window ID
 local currentWindowId="$(kitty-window-id)"

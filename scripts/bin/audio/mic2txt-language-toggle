@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Toggle the language used by mic2txt
+set -e
 
 local mic2txtDirectory=$OROSHI_TMP_FOLDER/mic2txt
 local languageFile="${mic2txtDirectory}/language"

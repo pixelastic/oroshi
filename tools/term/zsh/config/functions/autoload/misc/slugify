@@ -2,6 +2,7 @@
 # Usage:
 # $ slugify "The Eternal Obelisk"    # theEternalObelisk
 # $ slugify "example.com/path"       # exampleComPath
+setopt local_options err_return
 local input="$1"
 # Replace non-alphanumeric chars with spaces (collapses multiples), then word-split
 local words=(${=input//[^a-zA-Z0-9]/ })

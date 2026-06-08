@@ -1,4 +1,5 @@
 # Convert png files to svg
 # Usage:
 # $ png2svg ./*.png
+setopt local_options err_return
 img-convert $1 svg

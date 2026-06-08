@@ -1,4 +1,5 @@
 # Display list of all audio streams of the specified file
+setopt local_options err_return
 local inputFile=$1
 local rawList="$(video-stream-audio-list-raw "$inputFile")"
 

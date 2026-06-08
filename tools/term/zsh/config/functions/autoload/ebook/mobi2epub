@@ -1,6 +1,7 @@
 # Convert a mobi to epub
 # Usage:
 # $ mobi2epub ./book.mobi     # Convert to book.epub
+setopt local_options err_return
 for input in $@; do
 	local mobiFilepath=${input:a}
 	local epubFilepath="${epubFilepath:r}.epub"

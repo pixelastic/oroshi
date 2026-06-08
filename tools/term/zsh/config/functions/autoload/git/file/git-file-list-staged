@@ -1,4 +1,5 @@
 # List all staged files
+setopt local_options err_return
 local rawFiles="$(git-file-list-staged-raw)"
 
 for rawLine in ${(f)rawFiles}; do

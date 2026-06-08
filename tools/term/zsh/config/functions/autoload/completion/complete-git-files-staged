@@ -1,5 +1,6 @@
 # List all staged files files in the current git repo
 # Getting all changed files
+setopt local_options err_return
 local dirtyFiles="$(git status --short)"
 
 # Build the initial list, discarding the ones not in the stagin area

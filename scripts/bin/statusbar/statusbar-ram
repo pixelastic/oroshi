@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 # JSON info about RAM usage
 # Display in green / yellow / red based on % usage
+set -e
 
 source $ZSH_CONFIG_PATH/theming/env/colors.zsh
 

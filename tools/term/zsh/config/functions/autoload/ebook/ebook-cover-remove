@@ -1,6 +1,7 @@
 # Remove the cover of an ebook
 # Usage:
 # $ ebook-cover-remove ./path/to/file.epub  # Remove the cover
+setopt local_options err_return
 local input="$1"
 
 [[ $input == "" ]] && return 1

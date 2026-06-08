@@ -1,3 +1,4 @@
 # Display the prompt for finding a file in a given project
+setopt local_options err_return
 local rootDirectory="$(fzf-var-read pwd)"
 echo "$(fzf-fs-files-shared-prompt $rootDirectory) "

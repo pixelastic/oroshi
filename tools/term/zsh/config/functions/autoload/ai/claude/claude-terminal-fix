@@ -3,6 +3,7 @@
 # Source: https://github.com/anthropics/claude-code/issues/38761
 # Usage:
 # $ claude-terminal-fix
+setopt local_options err_return
 stty sane 2>/dev/null || true
 printf '\e[?1049l'                   # exit alternate screen
 printf '\e[?25h'                     # show cursor

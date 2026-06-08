@@ -2,6 +2,7 @@
 # Usage:
 # $ git-tag-remove-remote v0.0.1          # Remove a tag
 # $ git-tag-remove-remote v0.0.1 v6.0     # Remove several tags
+setopt local_options err_return
 local tags=($@)
 for tagName in $tags; do
   local displayTagName="$(git-tag-colorize "$tagName" --with-icon)"

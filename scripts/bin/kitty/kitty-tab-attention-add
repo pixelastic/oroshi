@@ -4,6 +4,7 @@
 # Usage:
 # $ kitty-tab-attention-add {tabId}     # Add {tabId} from attention list
 # $ kitty-tab-attention-add             # Add current tab from attention list
+set -e
 local tabId=$1
 [[ $tabId == "" ]] && tabId="$(kitty-tab-id)"
 

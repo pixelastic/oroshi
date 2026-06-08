@@ -3,6 +3,7 @@
 # Usage:
 # $ git-directory-dirty-count           # current directory
 # $ git-directory-dirty-count /path     # from given path
+setopt local_options err_return
 setopt local_options errexit
 
 local rawFiles="$(git-file-list-dirty-raw "$@" || true)"

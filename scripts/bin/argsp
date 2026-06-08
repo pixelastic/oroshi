@@ -2,6 +2,7 @@
 # Only return positional passed, one by line
 # Can then be used in a script to only keep positional arguments with:
 # local argsp=(${(f)"$(argsp $@)"})
+set -e
 
 for arg in $argv; do
   # Exclude any argument starting with - or --

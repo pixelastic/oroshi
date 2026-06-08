@@ -2,6 +2,7 @@
 # Usage:
 # $ docker-image-count ubuntu         # 2 if :latest and :22.04
 # $ docker-image-count nope           # 0
+setopt local_options err_return
 local imageName="$@"
 
 local allTags="$(docker images --format '{{.Tag}}' $imageName)"

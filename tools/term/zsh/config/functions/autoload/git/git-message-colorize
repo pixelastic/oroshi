@@ -2,6 +2,7 @@
 # Usage:
 # $ git-message-colorize "fix stuff"                  # fix stuff
 # $ git-message-colorize "fix stuff" --with-icon      #  fix stuff
+setopt local_options err_return
 zparseopts -E -D \
 	-with-icon=flagWithIcon
 

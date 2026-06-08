@@ -1,6 +1,7 @@
 # Download a PDF from scribd.com
 # Usage:
 # $ scribd-dl "https://www.scribd.com/ZZZ"
+setopt local_options err_return
 local url=$1
 local split=(${(@s_/_)url})
 local pdfName=$split[-1]

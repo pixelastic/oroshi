@@ -1,5 +1,6 @@
 # Clear cache on all ai-related functions
 # Disable the warning on "sure you want to delete ..."
+setopt local_options err_return
 setopt localoptions rmstarsilent
 rm -rf \
   ~/.config/shell_gpt/cache/* \

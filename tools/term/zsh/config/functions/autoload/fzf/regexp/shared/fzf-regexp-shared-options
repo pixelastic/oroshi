@@ -10,6 +10,7 @@
 # $ fzf-regexp-shared-options \
 # --source         # Mandatory, function that displays the list of suggestions
 # --prompt         # Mandatory, function that displays the prompt
+setopt local_options err_return
 zmodload zsh/zutil
 zparseopts -E -D \
   -source:=flagSource \

@@ -2,6 +2,7 @@
 # Check if a Kitty tab with the given title exists
 # Usage: kitty-tab-exists "Tab Name"
 # Returns: 0 if exists, 1 if not
+set -e
 
 local tabName="$1"
 if [[ "$tabName" == "" ]]; then

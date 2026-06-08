@@ -5,6 +5,7 @@
 # $ fzf-fs-shared-preview ./file --highlight-line 42      # Highlight the specified line
 # $ fzf-fs-shared-preview ./file --highlight-word "query" # Highlight the specified query
 # Parse arguments
+setopt local_options err_return
 zmodload zsh/zutil
 zparseopts -E -D \
   -highlight-line:=flagHighlightLine \

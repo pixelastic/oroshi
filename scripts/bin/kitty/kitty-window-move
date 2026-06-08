@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 # Move a window to a different tab
 # Usage: kitty-window-move <windowId> <targetTabId>
+set -e
 
 local windowId="$1"
 local targetTabId="$2"

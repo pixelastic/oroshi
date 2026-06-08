@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+set -e
 
 local switchRoot="/media/tim/JVCCAM_SD"
 local switchPath="${switchRoot}/Nintendo/Album"

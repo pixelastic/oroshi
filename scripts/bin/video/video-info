@@ -2,6 +2,7 @@
 # Return video info from a video file
 # Usage:
 # $ video-info ./path/video.mkv
+set -e
 
 ffprobe \
 	-v quiet \

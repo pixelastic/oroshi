@@ -2,6 +2,7 @@
 # Runs bats tests
 # Usage:
 # $ bats ./path/to/file.bats
+set -e
 
 local oroshiRoot=~/.oroshi
 

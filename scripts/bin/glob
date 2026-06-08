@@ -3,6 +3,7 @@
 # Usage:
 # $ glob "./*.js"
 # $ glob "./**/**"
+set -e
 
 # The below zsh patterns work as follow
 # - "~" expands any glob pattern

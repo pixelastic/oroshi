@@ -1,5 +1,6 @@
 # List all containers ids
 # Suggest container ids, but add info in description
+setopt local_options err_return
 local suggestions="$(docker ps --all --format '{{.ID}}:{{.Names}} [{{.State}}]  {{.Image}}' | sort)"
 
 echo ${suggestions}

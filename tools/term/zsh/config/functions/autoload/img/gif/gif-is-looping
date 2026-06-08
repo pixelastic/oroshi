@@ -2,6 +2,7 @@
 # Usage:
 # $ gif-is-looping once.gif      # 0
 # $ gif-is-looping loop.gif    # 1
+setopt local_options err_return
 local input=$1
 
 local rawOutput="$(exiftool $input | \grep 'Animation Iterations')"

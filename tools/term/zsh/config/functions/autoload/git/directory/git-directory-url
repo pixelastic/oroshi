@@ -2,6 +2,7 @@
 # Usage:
 # $ git-directory-url
 # Stop if not in a GitHub repo
+setopt local_options err_return
 git-directory-is-github || return 1
 
 gh repo view --json=url | jx 'url'

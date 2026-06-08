@@ -1,6 +1,7 @@
 # Get the name of the current Fly.io application
 # Usage:
 # $ fly-app-name   # Returns the app name for current directory
+setopt local_options err_return
 local flyConfig="$(fly-config-path)"
 [[ -z $flyConfig ]] && return 1
 

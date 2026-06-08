@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Will convert a .pdf file to an .epub file
+set -e
 
 
 # Check for dependencies

@@ -2,6 +2,7 @@
 # Usage:
 # $ docker-container-image-id oroshi_latest    # 0fb077bb968b
 # $ docker-container-image-id ksjkdjskjd       # return 1 if does not exist
+setopt local_options err_return
 local containerName="$1"
 
 local result="$(

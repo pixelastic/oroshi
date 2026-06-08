@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Copy pictures using rsync (only new one, not deleting)
+set -e
 local from=$1
 local to=$2
 

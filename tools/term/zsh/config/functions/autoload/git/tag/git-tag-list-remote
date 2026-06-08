@@ -2,6 +2,7 @@
 # Usage:
 # $ git-tag-list-remote           # Display all tags of current remote
 # $ git-tag-list-remote upstream  # Display all tags of upstream
+setopt local_options err_return
 local rawList="$(git-tag-list-remote-raw)"
 
 # Stop if no tag

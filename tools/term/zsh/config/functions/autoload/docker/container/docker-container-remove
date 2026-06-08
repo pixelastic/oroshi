@@ -3,6 +3,7 @@
 # $ docker-container-remove alpine_latest              # Removes one
 # $ docker-container-remove alpine_latest nice_jepsen  # Removes several
 # $ docker-container-remove nope                       # Do nothing as nope doesn't exist
+setopt local_options err_return
 
 local containers="$@"
 

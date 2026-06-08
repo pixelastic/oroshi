@@ -4,6 +4,7 @@
 # $ yarn-dependency-update firost aberlass # Update the firost and aberlaas dependencies
 # $ yarn-dependency-update                 # Stops and display a warning
 # $ yarn-dependency-update --force firost  # Allows updating a dependency in the workspace root
+setopt local_options err_return
 zparseopts -E -D \
   -force=flagForce
 

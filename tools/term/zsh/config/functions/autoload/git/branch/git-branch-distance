@@ -11,6 +11,7 @@
 # $ git-branch-distance main                       # Between main and its remote
 # $ git-branch-distance                            # Between current branch and its remote
 # Main branch, default to the current branch
+setopt local_options err_return
 local branchSource="$1"
 if [[ "$branchSource" == "" ]]; then
 	branchSource="$(git-branch-current)"

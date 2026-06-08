@@ -1,6 +1,7 @@
 # Returns the color of a given tag
 # Usage:
 # $ docker-tag-color latest
+setopt local_options err_return
 local tagName="$1"
 
 if [[ "$tagName" == "latest" ]]; then

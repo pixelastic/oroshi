@@ -1,6 +1,7 @@
 # Displays a colorized version of a status
 # Usage:
 # $ docker-status-colorize "Exited (0) 21 seconds ago"
+setopt local_options err_return
 local message="$1"
 # We need a message passed
 if [[ $message == '' ]]; then

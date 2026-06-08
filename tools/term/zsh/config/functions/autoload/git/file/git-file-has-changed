@@ -3,6 +3,7 @@
 # $ git-file-has-changed package.json  # Checks working dir against last commit
 # $ git-file-has-changed package.json abcdef # Checks working dir against specific commit
 # $ git-file-has-changed package.json abcdef d34db33f # Checks between two specific commits
+setopt local_options err_return
 
 local filepath=$1
 local commitStart=$2

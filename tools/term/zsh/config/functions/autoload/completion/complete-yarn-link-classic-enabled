@@ -1,4 +1,5 @@
 # List links enabled in the current repo, using Yarn Classic (v1)
+setopt local_options err_return
 local linkListRaw="$(yarn-link-list-raw --with-descriptions)"
 for rawLine in ${(f)linkListRaw}; do
   local split=(${(s/▮/)rawLine})

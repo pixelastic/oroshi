@@ -2,6 +2,7 @@
 # Usage:
 # $ fly-app-open         # Open current app dashboard
 # $ fly-app-open myapp   # Open specific app dashboard
+setopt local_options err_return
 local appName="$1"
 
 local commandFlag=""

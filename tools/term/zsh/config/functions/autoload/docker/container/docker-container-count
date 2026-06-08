@@ -2,6 +2,7 @@
 # Usage:
 # $ docker-container-count ubuntu:latest  # For a specific tag
 # $ docker-container-count ubuntu         # For all tags
+setopt local_options err_return
 local query="$1"
 
 # Stop if no query

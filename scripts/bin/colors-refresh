@@ -2,6 +2,7 @@
 # Refresh all colors by:
 # - Reloading kitty color config
 # - Redefining COLOR_*** env variables
+set -e
 
 # Reload kitty config
 kitty-refresh

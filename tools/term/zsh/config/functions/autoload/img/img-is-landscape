@@ -1,6 +1,7 @@
 # Check if an image is a landscape mode (width > height)
 # Usage:
 # $ img-is-landscape ./path/to/img.png     # Returns 0 if landscape
+setopt local_options err_return
 local input="$1"
 local dimensions="$(dimensions $input)"
 local split=(${(@s/x/)dimensions})

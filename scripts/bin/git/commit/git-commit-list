@@ -4,6 +4,7 @@
 # $ git-commit-list
 # $ git-commit-list --more
 # $ git-commit-list --all
+set -e
 
 zparseopts -E -D \
   -more=flagMore \

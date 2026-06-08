@@ -3,6 +3,7 @@
 # Usage:
 # $ text-split "one, two, three" ", "
 # $ echo "one, two, three" ", " | text-split ","
+set -e
 
 # Read from args
 local text=$1

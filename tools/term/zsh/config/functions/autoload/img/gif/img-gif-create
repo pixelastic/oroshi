@@ -1,6 +1,7 @@
 # Create a new GIF file, as small as possible
 # Usage:
 # $ img-gif-create ./path/to/file.gif
+setopt local_options err_return
 local input="$1"
 
 if [[ $input == "" ]]; then

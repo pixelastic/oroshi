@@ -1,4 +1,5 @@
 # Output the duration of a video, in human-readable format
+setopt local_options err_return
 local input="$1"
 
 local rawDuration="$(video-info "$input" | jq -r '.format.duration')"

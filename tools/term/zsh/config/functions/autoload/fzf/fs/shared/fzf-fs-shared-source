@@ -3,6 +3,7 @@
 # $ fzf-fs-shared-source /path/to/directory     # Find in specified dir
 # $ fzf-fs-shared-source                        # Find in last visited dir
 # $ fzf-fs-shared-source --directories          # Find only directories
+setopt local_options err_return
 zmodload zsh/zutil
 zparseopts -E -D \
   -directories=flagDirectories \

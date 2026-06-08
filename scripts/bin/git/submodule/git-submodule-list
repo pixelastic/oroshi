@@ -2,6 +2,7 @@
 # Display the list of submodules
 # Usage:
 # $ git-submodule-list          # Display all submodules
+set -e
 
 local rawList="$(git submodule status)"
 local gitRoot="$(git-directory-root)"

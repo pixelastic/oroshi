@@ -1,6 +1,7 @@
 # Remove all calibre custom columns from an epub's OPF metadata
 # Usage:
 # $ ebook-calibre-clean book.epub
+setopt local_options err_return
 local input="$1"
 
 # Only applies to epubs

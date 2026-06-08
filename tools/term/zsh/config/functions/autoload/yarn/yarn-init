@@ -1,6 +1,7 @@
 # Init a new Yarn project
 # This is a wrapper around yarn init, but that will force usin Yarn Berry with
 # the right config
+setopt local_options err_return
 local NODE_CONFIG_DIR=$OROSHI_ROOT/tools/_languages/javascript/node/config
 # Default .yarnrc.yml
 cp \

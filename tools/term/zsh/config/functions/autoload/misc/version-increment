@@ -4,6 +4,7 @@
 # $ version-increment 1.2.3 patch  # 1.2.4
 # $ version-increment 1.2.3 minor  # 1.3.0
 # $ version-increment 1.2.3 major  # 2.0.0
+setopt local_options err_return
 local version="$1"
 local increment="${2:-patch}"
 

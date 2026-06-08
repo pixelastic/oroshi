@@ -1,3 +1,4 @@
 #!/usr/bin/env zsh
+set -e
 gem uninstall $@
 rbenv rehash

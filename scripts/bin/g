@@ -2,6 +2,7 @@
 # Search in files for a specific query, and allow selecting one
 # Usage:
 # $ g query       # Display all files matching a specific query
+set -e
 
 rg \
   "$@"

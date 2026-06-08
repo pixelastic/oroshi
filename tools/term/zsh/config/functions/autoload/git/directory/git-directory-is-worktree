@@ -1,6 +1,7 @@
 # Boolean: is the current (or given) path a linked git worktree?
 # Usage:
 # $ git-directory-is-worktree [path]
+setopt local_options err_return
 
 local targetPath="${1:-$PWD}"
 local gitDir="$(git-directory-gitdir "$targetPath")"

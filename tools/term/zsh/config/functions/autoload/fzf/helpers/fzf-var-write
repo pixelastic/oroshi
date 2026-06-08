@@ -4,6 +4,7 @@
 #
 # Usage:
 # fzf-var-write {key} {value}  # Save {value} under the name {key}
+setopt local_options err_return
 local key=$1
 local value=$2
 

@@ -1,5 +1,6 @@
 # Check if the current directory is in a workspace root.
 # Never in a workspace root if not even in a monorepo setup
+setopt local_options err_return
 yarn-is-monorepo || return 1
 
 closestPackage="$(find-up package.json)"

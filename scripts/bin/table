@@ -4,6 +4,7 @@
 # $ echo "foo▮bar" | table         # foo  bar
 # $ table "foo▮bar"                # foo  bar
 # $ table "foo¤bar" --separator "¤" # foo  bar
+set -e
 
 # Parse arguments
 zmodload zsh/zutil

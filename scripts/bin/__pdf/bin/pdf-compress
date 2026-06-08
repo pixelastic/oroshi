@@ -5,6 +5,7 @@
 # It will decompose the original pdf into jpg files, compress and resize the
 # jpg files and then recreate the pdf. Thus, it should not be used on
 # "correctly crafted" pdf as this is will flatten any content.
+set -e
 
 # Dependencies# {{{
 if [[ `which pdfimages` = '' ]]; then

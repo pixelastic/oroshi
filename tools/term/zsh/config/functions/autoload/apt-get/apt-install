@@ -3,6 +3,7 @@
 #   $ apt-install zsh       # Installs zsh
 #   $ apt-install zsh fish  # Installs zsh and fish
 #   $ apt-install           # Provides a searchable list of software to install
+setopt local_options err_return
 local packages="$@"
 
 # If no input passed, we find them in a fuzzy search

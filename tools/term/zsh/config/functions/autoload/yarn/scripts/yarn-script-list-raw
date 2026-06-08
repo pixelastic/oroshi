@@ -2,6 +2,7 @@
 # Usage:
 # $ yarn-script-list-raw                      # List of all available scripts to use with yarn run
 # Parse options
+setopt local_options err_return
 zparseopts -E -D \
 	-with-descriptions=flagWithDescriptions
 

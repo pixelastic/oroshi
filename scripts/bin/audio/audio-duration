@@ -2,6 +2,7 @@
 # audio-duration: Get the duration of an audio/video file in seconds
 # Usage:
 # $ audio-duration input.wav  # Returns duration in seconds (e.g., 831.488000)
+set -e
 
 local input=$1
 

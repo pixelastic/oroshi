@@ -1,6 +1,7 @@
 # Do a GET call to the notion API
 # Usage:
 # $ notion-api blocks/c01af08f-dd53-44ce-ab5b-958712e65fd2 # Returns json
+setopt local_options err_return
 local input=$1
 
 curl \

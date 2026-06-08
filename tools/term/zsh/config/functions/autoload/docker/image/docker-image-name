@@ -4,6 +4,7 @@
 # $ docker-image-name nope           # Exits with 1
 #
 # Note: Will prefer the highest version tag over :latest in case of several matches
+setopt local_options err_return
 local imageId="$1"
 
 local result="$(docker images \

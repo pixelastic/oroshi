@@ -4,6 +4,7 @@
 # Usage:
 # $ kitty-tab-attention-remove {tabId}     # Remove {tabId} from attention list
 # $ kitty-tab-attention-remove             # Remove current tab from attention list
+set -e
 local tabId=$1
 [[ $tabId == "" ]] && tabId="$(kitty-tab-id)"
 

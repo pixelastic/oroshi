@@ -1,6 +1,7 @@
 # Display a list of all tags
 # Usage:
 # $ git-tag-list        # All tags
+setopt local_options err_return
 local rawGitTags="$(git-tag-list-raw)"
 
 # Stop if no tag

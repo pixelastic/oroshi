@@ -3,6 +3,7 @@
 # Usage:
 # $ watch-and-reload ./file1.txt ./file2.txt 'something && ls'
 # $ watch-and-reload yarn-link-list-raw   # Automatically watch the autoloaded file definition and reload function definition between each call
+set -e
 local commandToRun=$@[-1]
 local filesToWatch=(${(@)@[1,-2]})
 

@@ -2,6 +2,7 @@
 # Usage:
 #   $ docker-alpine-version pipx           # Check pipx in alpine:latest
 #   $ docker-alpine-version pipx 3.21      # Check pipx in alpine:3.21
+setopt local_options err_return
 local packageName="$1"
 local alpineVersion="${2:-latest}"
 

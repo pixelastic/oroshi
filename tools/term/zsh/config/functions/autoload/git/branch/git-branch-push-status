@@ -21,6 +21,7 @@
 #
 # - detached
 #   Currently on detached mode
+setopt local_options err_return
 
 local branchName=$1
 if [[ "$branchName" = '' ]]; then

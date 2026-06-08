@@ -1,6 +1,7 @@
 # Display the description of an official Docker image
 # Usage:
 # $ docker-image-description ubuntu    # Ubuntu is a Debian-based Linux...
+setopt local_options err_return
 local imageName="$1"
 
 # Find the right line in the whole list

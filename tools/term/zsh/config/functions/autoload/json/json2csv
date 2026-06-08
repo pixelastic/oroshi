@@ -1,4 +1,5 @@
 # Convert a JSON file into a CSV
+setopt local_options err_return
 
 # Usage:
 # $ cat file.json  | json2csv

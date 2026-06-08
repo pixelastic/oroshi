@@ -2,6 +2,7 @@
 # Usage:
 # $ html-pretty ./path/to/file.html
 # $ cat ./path/to/file.html | html-pretty
+setopt local_options err_return
 local filepath=$1
 
 # Filepath given

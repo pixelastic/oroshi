@@ -2,6 +2,7 @@
 # Usage:
 # $ docker-container-name 8a0cb8cc03eb   # infallible_leakey
 # $ docker-container-name nope           # Exits with 1
+setopt local_options err_return
 local containerId="$1"
 
 local result="$(

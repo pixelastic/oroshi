@@ -3,6 +3,7 @@
 # Usage:
 # $ json-filter file.json name         # Keep elements that have the name key
 # $ json-filter file.json era fantasy  # Keep elements where era = fantasy
+set -e
 
 local inputFile="${1:a}"
 local filterKey="$2"

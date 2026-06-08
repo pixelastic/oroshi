@@ -5,5 +5,6 @@
 # $ js-lint --json ./path/to/file.js                         # Lint file, JSON output for vim
 # $ echo "var a = 42;" | js-lint                             # Lint stdin
 # $ echo "var a = 42;" | js-lint --filepath ./realpath.html  # Lint from stdin, with real location on disk
+set -e
 
 eslint-lint "$@"

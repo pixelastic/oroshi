@@ -1,4 +1,5 @@
 # Display list of local yarn binaries
+setopt local_options err_return
 local packageRoot="$(yarn-root)"
 local binFolder="${packageRoot}/node_modules/.bin"
 find \

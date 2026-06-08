@@ -1,6 +1,7 @@
 # Check if current directory has at least one file staged.
 # --exit-code makes it return 1 if there are changes, and 0 if not
 # We need to swap this around
+setopt local_options err_return
 
 git diff \
   --cached \

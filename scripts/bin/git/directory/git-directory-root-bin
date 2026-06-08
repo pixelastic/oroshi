@@ -2,4 +2,5 @@
 # Note: This is a binary wrapper around the git-directory-root zsh function, so
 # it can be called from environments where the zsh functions are not availabe.
 # Example: from vim
+set -e
 git-directory-root $@

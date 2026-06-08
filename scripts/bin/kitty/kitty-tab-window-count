@@ -2,6 +2,7 @@
 # Get the number of windows in a specific tab
 # Usage: kitty-tab-window-count <tabId>
 # Returns: the number of windows in the tab
+set -e
 
 local tabId="$1"
 if [[ "$tabId" == "" ]]; then

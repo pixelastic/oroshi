@@ -4,6 +4,7 @@
 # nothing happens
 # Usage:
 # $ throttle 30 generate-output    # Calling generate-output again in the next 30s won't do anything
+set -e
 
 # Arguments
 local frequency="$1"

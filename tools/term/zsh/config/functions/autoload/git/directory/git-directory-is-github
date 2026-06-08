@@ -2,5 +2,6 @@
 # Usage:
 # $ git-directory-is-github
 # If the remote url contains github.com, we can assume it's pointing to GitHub
+setopt local_options err_return
 git-remote-url | grep -q "github.com"
 

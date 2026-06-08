@@ -3,6 +3,7 @@
 # $ docker-tag-colorize latest                      # latest
 # $ docker-tag-colorize latest --with-icon          #  latest
 # $ docker-tag-colorize 22.04 --with-icon           #  22.04
+setopt local_options err_return
 zparseopts -E -D \
 	-with-icon=flagWithIcon
 local isWithIcon=${#flagWithIcon}

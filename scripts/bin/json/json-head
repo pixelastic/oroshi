@@ -2,6 +2,7 @@
 # Returns the top elements of a json array file
 # Usage:
 # $ json-head file.json 10 # Output the first 10 elements of the file
+set -e
 
 local inputFile="${1:a}"
 local headLimit="$2"

@@ -2,6 +2,7 @@
 # Usage:
 # $ fly-config-test              # Test fly.toml in current directory
 # $ fly-config-test path/to/fly.toml   # Test specific config file
+setopt local_options err_return
 local configFile="$1"
 
 if [[ -z "$configFile" ]]; then

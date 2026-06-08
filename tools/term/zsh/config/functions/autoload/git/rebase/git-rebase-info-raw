@@ -4,6 +4,7 @@
 # Usage:
 # $ git-rebase-info-raw              # Current directory
 # $ git-rebase-info-raw /path/to/dir # Given directory
+setopt local_options err_return
 
 local targetPath="${1:-$PWD}"
 local gitDir="$(git-directory-gitdir "$targetPath")"

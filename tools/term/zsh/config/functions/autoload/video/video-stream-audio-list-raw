@@ -1,6 +1,7 @@
 # List all audio streams in raw form
 # Usage:
 # $ video-stream-audio-list-raw ./path/video.mp4
+setopt local_options err_return
 local inputFile=$1
 # First, we get the list of all audio streams, with their code and language
 local rawOutput=$(

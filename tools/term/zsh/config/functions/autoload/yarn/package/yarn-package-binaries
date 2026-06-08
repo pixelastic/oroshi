@@ -1,6 +1,7 @@
 # Return a list of all binaries defined for a given package
 # Usage:
 # $ yarn-package-binaries ./path/to/package    # binaryName▮binaryPath
+setopt local_options err_return
 local inputPath=${1:a}
 local packageRoot="$(yarn-root "$inputPath")"
 

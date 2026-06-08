@@ -3,6 +3,7 @@
 # $ dirsize                           # Size of current dir
 # $ dirsize /some/dir                 # Size of one dir
 # $ dirsize /some/dir /some/other/dir # List of sizes
+setopt local_options err_return
 local testOneDirectory=1
 [[ ${#@[@]} -gt 1 ]] && testOneDirectory=0
 

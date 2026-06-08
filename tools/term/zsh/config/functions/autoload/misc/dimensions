@@ -3,6 +3,7 @@
 # $ dimensions image.jpg             # 1024x1024
 # $ dimensions movie.mp4             # 1024x1024
 # $ dimensions image.jpg movie.mp4 # Returns a table of the dimensions
+setopt local_options err_return
 local args=($@)
 local argCount=${#args}
 local input=$args[1]

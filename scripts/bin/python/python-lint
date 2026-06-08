@@ -3,6 +3,7 @@
 # Usage:
 # $ python-lint  ./path/to/file.py       # For CLI
 # $ python-lint --json ./path/to/file.py  # For Vim
+set -e
 
 zparseopts -E -D \
   -json=flagJson

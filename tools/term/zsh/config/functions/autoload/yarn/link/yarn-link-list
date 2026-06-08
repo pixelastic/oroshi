@@ -3,6 +3,7 @@
 # $ yarn-link-list            # Display list of all locally linked yarn
 # modules
 # Stop if yarn isn't installed
+setopt local_options err_return
 [[ ! $commands[yarn] ]] && return 1
 
 local rawList="$(yarn-link-list-raw --with-descriptions)"

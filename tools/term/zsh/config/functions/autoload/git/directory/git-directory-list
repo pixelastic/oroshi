@@ -1,4 +1,5 @@
 # List all files available for commit
 # Usage:
 # $ git-directory-list  # List current directory status
+setopt local_options err_return
 git status --short

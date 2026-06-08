@@ -1,3 +1,4 @@
 # Returns a list of all possible Docker images to pull
+setopt local_options err_return
 local cacheFile=$OROSHI_ROOT/tools/docker/docker/config/cache/src/images-remote.txt
 cat $cacheFile

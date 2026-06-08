@@ -2,5 +2,6 @@
 # Cancel all changes made to a file since last commit
 # Usage:
 # $ git-file-revert ./path/to/file
+set -e
 
 git checkout -- $@

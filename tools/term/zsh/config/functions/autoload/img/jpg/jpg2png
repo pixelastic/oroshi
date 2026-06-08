@@ -1,4 +1,5 @@
 # Convert jpg files to png
 # Usage:
 # $ jpg2png ./*.jpg
+setopt local_options err_return
 img-convert $1 png

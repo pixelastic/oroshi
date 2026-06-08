@@ -1,5 +1,6 @@
 # List all local Docker images, by their tags
 # Find the unique image names
+setopt local_options err_return
 local suggestions="$(
   docker images \
     --format '{{.ID}}:{{.Repository}}\:{{.Tag}}' \

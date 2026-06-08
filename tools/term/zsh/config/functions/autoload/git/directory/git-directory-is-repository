@@ -1,4 +1,5 @@
 # Check if current directory is a git repository
+setopt local_options err_return
 
 # If in a .git folder, we assume we're in a git repository
 [[ "${PWD}/" == *.git/* ]] && return 0

@@ -6,6 +6,7 @@
 # $ algolia-download monsters --json            # Forces json format
 # $ algolia-download --app ABCDEF monsters      # Switch to different app
 # $ algolia-download --apiKey abcdef monsters   # Uses a different apiKey
+set -e
 
 local indexName="$1"
 local outputFile="${indexName}.jsonl"

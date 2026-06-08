@@ -8,6 +8,7 @@
 # $ img-resize image.jpg 50%                    # Shrink to 50% of the size
 # $ img-resize image.jpg 3000x5000 --upscale    # Force a resize to bigger image
 # $ img-resize image.jpg 200x250 --no-ratio     # Do not respect aspect ratio
+setopt local_options err_return
 zparseopts -E -D \
   -completion=flagCompletion \
   -no-ratio=flagNoRatio \

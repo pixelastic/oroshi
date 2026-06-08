@@ -1,6 +1,7 @@
 # Open the CI web UI of the current branch
 # Usage:
 # $ git-ci-open       # Open the CI web UI
+setopt local_options err_return
 local ciType="$(git-ci-type)"
 local ciBaseUrl="$(git-ci-url)"
 local branchName="$(git-branch-current)"

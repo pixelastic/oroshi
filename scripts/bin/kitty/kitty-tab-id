@@ -2,6 +2,7 @@
 # Get a Kitty tab ID
 # Usage: kitty-tab-id           # Get current tab ID
 #        kitty-tab-id "TabName"  # Get tab ID by name
+set -e
 
 local tabName="$1"
 

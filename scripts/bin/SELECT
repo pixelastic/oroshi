@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+set -e
 
 # SELECT from ./XXX
 if [[ "$1" == from* || "$1" == FROM* ]]; then

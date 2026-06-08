@@ -2,6 +2,7 @@
 # Usage:
 # git-ci-type                 # Returns CI type of the current repo
 # git-ci-type ./path/to/repo  # Returns CI type of the specified repo
+setopt local_options err_return
 local repoRoot=$1
 [[ $repoRoot == "" ]] && repoRoot="$(git-directory-root)"
 

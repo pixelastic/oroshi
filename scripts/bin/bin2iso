@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Will convert a bin file to an iso file
+set -e
 
 # Dependencies
 if [[ `which bchunk` = '' ]]; then

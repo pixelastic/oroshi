@@ -4,6 +4,7 @@
 # $ video-subtitle-sync ./path/subtitle1.srt ./path/subtitle2.srt
 # $ video-subtitle-sync ./path/*.srt
 # Check if any arguments provided
+setopt local_options err_return
 if [[ $# -eq 0 ]]; then
   echo "Error: No subtitle files provided" >&2
   echo "Usage: video-subtitle-sync <subtitle.srt> [subtitle2.srt ...]" >&2

@@ -4,6 +4,7 @@
 # $ yarn-link-list-raw --with-descriptions      # List of moduleName▮type▮descriptions
 # $ yarn-link-list-raw --include-workspace-root # Include links in the workspace root
 # Stop if yarn not available
+setopt local_options err_return
 [[ ! $commands[yarn] ]] && return 1
 
 zparseopts -E -D \

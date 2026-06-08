@@ -1,5 +1,6 @@
 # Check if the current directory has at least one stash
 # Usage:
 # $ git-stash-exists
+setopt local_options err_return
 git stash show &>/dev/null && return 0
 return 1

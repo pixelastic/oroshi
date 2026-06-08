@@ -1,4 +1,5 @@
 # Preview a file at a given revision in the fzf-git-file-history preview window
+setopt local_options err_return
 local selection="$1"
 local gitPath="$2"
 

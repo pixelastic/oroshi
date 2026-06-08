@@ -4,6 +4,7 @@
 # $ git-branch-exists feat/actions         # Check a local branch
 # $ git-branch-exists origin/main          # Check a remote branch
 # $ git-branch-exists origin/feat/actions  # Check a remote branch
+setopt local_options err_return
 local branchName="$1"
 if [[ "$branchName" == "" ]]; then
   echo "✘ You must pass the name of the branch"

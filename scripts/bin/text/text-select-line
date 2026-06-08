@@ -3,6 +3,7 @@
 # Usage:
 # $ text-select-line $myText $myLine
 # $ echo $myText | text-select-line $myLine
+set -e
 
 # Read from args
 local text=$1

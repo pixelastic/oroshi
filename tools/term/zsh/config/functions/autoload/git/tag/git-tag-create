@@ -2,6 +2,7 @@
 # Usage:
 # $ git-tag-create foo         # Add tag to current commit
 # $ git-tag-create foo abcdef  # Add tag to specified commit
+setopt local_options err_return
 local tagName="$1"
 
 # Tag Name {{{

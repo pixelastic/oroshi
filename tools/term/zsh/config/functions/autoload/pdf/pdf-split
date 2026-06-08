@@ -4,6 +4,7 @@
 # $ pdf-split ./path/to/file.pdf 1-4           # Extract from page 1 to 4
 # $ pdf-split ./path/to/file.pdf last          # Extract last page
 # $ pdf-split ./path/to/file.pdf 1 output.pdf  # Extract page 1 into output.pdf
+setopt local_options err_return
 local input=$1
 local rawRange=$2
 local output=$3

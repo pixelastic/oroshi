@@ -1,6 +1,7 @@
 # Preview a package inside of fzf
 # Usage
 # $ fzf-apt-package-preview zsh   # Display info about zsh
+setopt local_options err_return
 
 local packageName="$1"
 

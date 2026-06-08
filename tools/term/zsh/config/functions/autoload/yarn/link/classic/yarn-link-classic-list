@@ -1,6 +1,7 @@
 # List all "registered" global modules
 # Note: This is only relevant when using Yarn v1
 # Stop if yarn isn't installed
+setopt local_options err_return
 [[ ! $commands[yarn] ]] && return 1
 
 # Stop if not using yarn classic

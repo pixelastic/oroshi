@@ -4,6 +4,7 @@
 # $ git-directory-sync git@github.com:user/repo.git  # Clone the repo as it doesn't exist
 # $ git-directory-sync git@github.com:user/repo.git  # Update the repo as it now exists
 # $ git-directory-sync git@github.com:user/repo.git  ./here # Or specify where to clone/update it
+setopt local_options err_return
 local gitUrl=$1
 local repoName=$2
 [[ $repoName == "" ]] && repoName=$(basename $gitUrl ".git")

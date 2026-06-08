@@ -2,6 +2,7 @@
 # Usage:
 # $ git-submodule-colorize private                 # private
 # $ git-submodule-colorize --with-icon             #  private
+setopt local_options err_return
 zparseopts -E -D \
 	-with-icon=flagWithIcon
 local isWithIcon=${#flagWithIcon}

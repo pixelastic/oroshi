@@ -2,6 +2,7 @@
 # Wrapper for Posting that automatically loads .envrc if found
 # Usage:
 # $ posting              # Will use .envrc if found in current repo
+set -e
 
 local additionalFlags=""
 

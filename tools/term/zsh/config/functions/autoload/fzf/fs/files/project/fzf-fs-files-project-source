@@ -1,3 +1,4 @@
 # Returns a list of files, in the current project
+setopt local_options err_return
 local rootDirectory="$(fzf-var-read pwd)"
 fzf-fs-files-shared-source "${rootDirectory}"

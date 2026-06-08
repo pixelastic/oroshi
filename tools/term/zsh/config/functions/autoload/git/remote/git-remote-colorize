@@ -4,6 +4,7 @@
 # $ git-remote-colorize upstream           # upstream
 # $ git-remote-colorize upstream/main      # upstream/main
 # $ git-remote-colorize --with-icon        #  upstream
+setopt local_options err_return
 
 # $ git-remote-colorize --with-icon --zsh  # zsh prompt codes
 zparseopts -E -D \

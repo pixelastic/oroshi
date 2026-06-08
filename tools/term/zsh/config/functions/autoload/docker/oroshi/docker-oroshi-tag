@@ -1,6 +1,7 @@
 # Outputs the highest oroshi tag (excluding "latest")
 # Usage:
 # $ docker-oroshi-tag   # 1.0.2
+setopt local_options err_return
   docker images oroshi \
     --format='{{.Tag}}' \
     | sort -gr \

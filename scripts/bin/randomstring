@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+set -e
 local size=$1
 if [[ $size = '' ]]; then
 	size=32

@@ -3,6 +3,9 @@
 # Usage:
 # $ echo "hello world" | is-empty      # false
 # $ echo "" | is-empty                 # true
-read -r input
+setopt local_options err_return
+
+# read returns 1 on EOF (empty pipe) — || true prevents err_return from triggering
+read -r input || true
 [[ $input == "" ]] && return 0
 return 1

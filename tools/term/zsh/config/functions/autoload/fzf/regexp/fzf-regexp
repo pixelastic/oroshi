@@ -3,6 +3,7 @@
 # Usage:
 # $ fzf-regexp \
 # --options         # Mandatory, path to the file outputting the options
+setopt local_options err_return
 zmodload zsh/zutil
 zparseopts -E -D \
   -options:=flagOptions

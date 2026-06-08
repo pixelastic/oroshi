@@ -2,5 +2,6 @@
 # Adds updated file, and allow changing the commit message
 # Usage:
 # $ git-commit-edit    # Update files and messages
+setopt local_options err_return
 git add .
 git commit --amend $@

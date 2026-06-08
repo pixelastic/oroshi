@@ -2,6 +2,7 @@
 # Usage:
 # $ prompt-pid
 # Get the tree of all processes down to the current script
+setopt local_options err_return
 local pidTree="$(pstree -psa $$)"
 
 for line in ${(f)pidTree}; do

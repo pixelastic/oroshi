@@ -4,6 +4,7 @@
 # $ video-subtitle-embed ./subtitle.srt # finds matching .mkv
 # $ video-subtitle-embed ./video1.mkv ./video2.mkv
 # $ video-subtitle-embed ./*.srt
+setopt local_options err_return
 if [[ $# -eq 0 ]]; then
   echo "Error: No file provided" >&2
   echo "Usage: video-subtitle-embed <video.mkv|subtitle.srt> [...]" >&2

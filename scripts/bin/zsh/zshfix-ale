@@ -2,6 +2,7 @@
 # Wrapper of zshfix to be used by ALE in vim
 # Usage:
 # $ zshfix-ale -filename=file.zsh < tmpfile.zsh  # As called by ALE
+set -e
 
 # ALE passes the filepath as the -filename= argument, and the content through
 # stdin.

@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Search and switch to a Kitty tab using fzf
+set -e
 
 # Source zsh configuration to get access to autoloaded functions
 source ~/.zshrc

@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Restore a deleted file from a git repo
+set -e
 local filename=$1
 
 # We first find the commit where the file was deleted

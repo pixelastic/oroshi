@@ -5,6 +5,7 @@
 # $ docker-image-list                  # List all images
 # $ docker-image-list ubuntu           # List only ubuntu images images
 # $ docker-image-list --exclude oroshi # Exclude specific images
+set -e
 
 zparseopts -E -D \
   -exclude:=flagExclude

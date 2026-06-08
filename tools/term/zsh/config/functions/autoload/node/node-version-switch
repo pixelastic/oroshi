@@ -1,2 +1,3 @@
 # Switch to a given node version
+setopt local_options err_return
 nvm use $1

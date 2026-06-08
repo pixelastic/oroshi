@@ -2,6 +2,7 @@
 # Runs a specific image interactively
 # Usage:
 # $ docker-run-interactive ubuntu
+set -e
 
 local args=($@)
 

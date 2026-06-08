@@ -2,6 +2,7 @@
 # Usage:
 # $ docker-hash-colorize 9ed4aefc74f6                # 9ed4aefc74f6
 # $ docker-hash-colorize alpine --with-icon          #  9ed4aefc74f6
+setopt local_options err_return
 zparseopts -E -D \
 	-with-icon=flagWithIcon
 

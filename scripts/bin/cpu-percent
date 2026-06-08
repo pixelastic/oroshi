@@ -3,6 +3,7 @@
 # https://stackoverflow.com/questions/9229333/how-to-get-overall-cpu-usage-e-g-57-on-linux
 # Not sure what it's worth, but testing in my tmux statusbar as I seem to have
 # too many crashes lately and I want to see my CPU all the time
+set -e
 
 local cpuUsed="$(grep 'cpu ' /proc/stat)"
 

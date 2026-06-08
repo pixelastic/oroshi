@@ -1,5 +1,6 @@
 # Check if currently in a .git folder
 # In .git
+setopt local_options err_return
 [[ $PWD == *\.git ]] && return 0
 # In a subdirectory of .git
 [[ $PWD == *\.git/* ]] && return 0

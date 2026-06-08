@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
 # Play a Warcraft 3 "Job's done!" audio sound
+set -e
 
 audio-play-oroshi jobsdone.mp3

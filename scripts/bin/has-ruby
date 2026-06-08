@@ -1,2 +1,3 @@
 #!/usr/bin/env zsh
+set -e
 [ -v commands[zsh] ] && true || false

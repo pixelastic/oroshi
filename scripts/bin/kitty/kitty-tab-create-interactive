@@ -2,6 +2,7 @@
 # Interactively select a project using fzf and create a kitty tab
 # Usage:
 # $ kitty-tab-create-interactive            # Opens fzf to select project
+set -e
 
 echo -n "Tab name: "
 read -r projectName

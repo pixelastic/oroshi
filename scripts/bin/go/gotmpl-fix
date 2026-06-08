@@ -7,6 +7,7 @@
 # $ gotmpl-fix --in-place ./path/to/file.gohtml            # Overwrite the file in place
 # $ echo "<html>{{ .Title }}</html>" | gotmpl-fix                             # Go template from stdin, fixed to stdout
 # $ echo "<html>{{ .Title }}</html>" | gotmpl-fix --filepath ./realpath.gohtml  # Specify file location for context
+set -e
 
 # ============================================================================
 # Parse command-line arguments

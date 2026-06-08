@@ -4,6 +4,7 @@
 # $ git-tag-colorize main               # v1.0
 # $ git-tag-colorize --with-icon        #  v1.0
 # $ git-tag-colorize --with-icon --zsh  # zsh prompt codes
+setopt local_options err_return
 zparseopts -E -D \
 	-with-icon=flagWithIcon \
 	-zsh=flagZsh

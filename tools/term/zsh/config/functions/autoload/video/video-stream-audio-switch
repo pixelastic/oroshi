@@ -4,6 +4,7 @@
 # $ video-stream-audio-switch ./path/video.mp4 4
 # Set the first stream as default
 # $ video-stream-audio-switch ./path/video.mp4
+setopt local_options err_return
 local fileInput=$1
 local defaultStream=$2
 [[ $defaultStream == "" ]] && defaultStream="0"

@@ -2,6 +2,7 @@
 # further filter the list of elements
 # Usage:
 # $ fzf-fs-shared-zsh-filters
+setopt local_options err_return
 local input="$1"
 
 # We read the value of LBUFFER, that has been set in ctrl-p.zsh

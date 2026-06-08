@@ -4,6 +4,7 @@
 # $ yarn-link-classic-create ./path/to/reddinx   # Adds reddinx to the list of registered packages
 # $ yarn-link-classic-create                     # Adds current module to the list
 # Stop if not using yarn classic
+setopt local_options err_return
 if yarn-version-is-berry; then
 	echo "⚠ This function is not supported in yarn Berry"
 	echo "Yarn Berry (2+) does not have a concept of registered list of modules to link"

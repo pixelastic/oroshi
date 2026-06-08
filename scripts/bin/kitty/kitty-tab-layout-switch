@@ -3,6 +3,7 @@
 # Usage:
 # $ kitty-tab-layout-switch 123 grid  # Switch tab 123 to grid layout
 # $ kitty-tab-layout-switch 456 tall  # Switch tab 456 to tall layout
+set -e
 
 local tabId="$1"
 local layout="$2"

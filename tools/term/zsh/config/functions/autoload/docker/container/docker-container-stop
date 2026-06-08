@@ -2,6 +2,7 @@
 # Usage:
 # $ docker-container-stop alpine_latest              # Stops one container
 # $ docker-container-stop alpine_latest nice_jepsen  # Stop several
+setopt local_options err_return
 local containers="$@"
 
 for containerName in ${=containers}; do

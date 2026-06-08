@@ -1,6 +1,7 @@
 # Display the description(s) of given package(s) in a raw table
 # Usage:
 # $ yarn-package-description /path/to/package /other/one  # Outputs raw table
+setopt local_options err_return
 local packagePaths=($@)
 
 # Build the list of all package.json, to give it in bulk to jq

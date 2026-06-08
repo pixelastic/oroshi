@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+set -e
 
 # Build the binary
 cargo build --release

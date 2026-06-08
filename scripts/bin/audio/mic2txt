@@ -4,6 +4,7 @@
 # Usage:
 # $ mic2txt # Starts recording then...
 #   mic2txt # ...stops the recording and display the transcription
+set -e
 
 local mic2txtModel=$(mic2txt-model)
 

@@ -2,6 +2,7 @@
 # can be linked
 # Note: This only works with Yarn Classic (v1)
 # $ yarn-link-classic-exists reddinx      # True if reddinx is added to the list of registered packages
+setopt local_options err_return
 local moduleName="$1"
 
 local registerPath=${OROSHI_YARN_CLASSIC_LINK_FOLDER}/${moduleName}

@@ -5,6 +5,7 @@
 # $ docker-image-colorize alpine --with-icon                    #  alpine
 # $ docker-image-colorize alpine --with-icon --remote           #  alpine
 # $ docker-image-colorize ghcr.io/pixelastic/alpine --with-icon #  alpine
+setopt local_options err_return
 zparseopts -E -D \
   -with-icon=flagWithIcon \
   -remote=flagRemote

@@ -1,6 +1,7 @@
 # Download a file from a sharing website
 # Usage:
 # $ dl https://scribd.com/file.pdf        # Downloads form scribd
+setopt local_options err_return
 local url=$1
 local split=(${(@s_/_)url})
 local targetHost=$split[2]
