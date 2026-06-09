@@ -45,12 +45,18 @@
     "id": "07",
     "issue": "issues/07-zsh-consumers-statusbar-misc.md",
     "done": false,
-    "blocked_by": ["02"]
+    "blocked_by": ["09"]
   },
   {
     "id": "08",
     "issue": "issues/08-colors-refresh-cleanup.md",
     "done": false,
     "blocked_by": ["03", "04", "05", "06", "07"]
+  },
+  {
+    "id": "09",
+    "issue": "issues/09-colors-rename-convention.md",
+    "done": false,
+    "blocked_by": ["06"]
   }
 ]

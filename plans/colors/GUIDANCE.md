@@ -2,7 +2,7 @@
 
 ### Goal
 
-Replace 160+ `COLOR_*` exported shell variables with a single ZSH associative array `colors[]`, backed by two generated dist files. Zero color-related variables in the shell environment at the end.
+Replace 160+ `COLOR_*` exported shell variables with a single ZSH associative array `COLORS[]`, backed by two generated dist files. Zero color-related variables in the shell environment at the end.
 
 ### Key file locations
 
@@ -24,21 +24,21 @@ Replace 160+ `COLOR_*` exported shell variables with a single ZSH associative ar
 
 | Want | Use |
 |------|-----|
-| ANSI integer for raw color | `$colors[YELLOW_7]` |
-| Hex string for raw color | `$colors[YELLOW_7:hex]` |
-| ANSI integer for alias | `$colors[GIT_BRANCH]` |
-| Hex string for alias | `$colors[GIT_BRANCH:hex]` |
+| ANSI integer for raw color | `$COLORS[yellow-7]` |
+| Hex string for raw color | `$COLORS[yellow-7:hex]` |
+| ANSI integer for alias | `$COLORS[git-branch]` |
+| Hex string for alias | `$COLORS[git-branch:hex]` |
 
-Aliases have no `ALIAS_` prefix in array keys.
+Keys are kebab-case (all lowercase, underscores → hyphens). Aliases have no `alias-` prefix in array keys.
 
 ### Template placeholder syntax
 
-Config template files (`src/oroshi.xml`, `src/rgrc.conf`, `src/gitconfig`) use `{{NAME}}` and `{{NAME:hex}}`. The `colors-template-render` function reads a filepath and writes the rendered content to stdout.
+Config template files (`src/oroshi.xml`, `src/rgrc.conf`, `src/gitconfig`) use `{{kebab-name}}` and `{{kebab-name:hex}}`. The `colors-template-render` function reads a filepath and writes the rendered content to stdout.
 
 ### `dist/colors.json` shape
 
 ```json
-{ "YELLOW_7": { "ansi": 87, "hex": "#a16207" }, "GIT_BRANCH": { "ansi": 17, "hex": "#d69e2e" } }
+{ "yellow-7": { "ansi": 87, "hex": "#a16207" }, "git-branch": { "ansi": 17, "hex": "#d69e2e" } }
 ```
 
 Used by: NeoVim (`F.readJson()`), `projects-build` (`--argjson colors`).
@@ -63,11 +63,11 @@ Used by: NeoVim (`F.readJson()`), `projects-build` (`--argjson colors`).
 
 ### Migration pattern for ZSH consumers
 
-Find all `$COLOR_*` references, apply these substitutions:
-- `$COLOR_NAME` → `$colors[NAME]`
-- `$COLOR_NAME_HEXA` → `$colors[NAME:hex]`
-- `$COLOR_ALIAS_NAME` → `$colors[NAME]`
-- `$COLOR_ALIAS_NAME_HEXA` → `$colors[NAME:hex]`
+Find all `$COLOR_*` references, apply these substitutions (key = strip prefix, lowercase, `_` → `-`):
+- `$COLOR_RED` → `$COLORS[red]`
+- `$COLOR_RED_HEXA` → `$COLORS[red:hex]`
+- `$COLOR_ALIAS_GIT_BRANCH` → `$COLORS[git-branch]` (strip `ALIAS_`, no prefix in key)
+- `$COLOR_ALIAS_GIT_BRANCH_HEXA` → `$COLORS[git-branch:hex]`
 
 Add `colors-load-definitions` call before first color use if the file is a standalone script.
 
