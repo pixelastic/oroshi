@@ -1,6 +1,8 @@
 # Outputs the options shared by all search for a specific file or directory
 setopt local_options err_return
 
+colors-load-definitions
+
 # This is called by:
 # - fzf-fs-directories-project-options
 # - fzf-fs-directories-subdir-options
@@ -39,7 +41,7 @@ local prompt="$($fzfPromptPath)"
 echo "--prompt=${prompt}"
 
 # UI Coloring
-echo "--color=prompt:${COLOR_ALIAS_TEXT}:regular"
+echo "--color=prompt:${COLORS[text]}:regular"
 echo "--color=query:${fzfColor}:regular"
 echo "--color=separator:${fzfColor}"
 echo "--color=info:${fzfColor}"

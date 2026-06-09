@@ -6,6 +6,8 @@ source ~/local/src/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/highlighters/main/main-highlighter.zsh
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
 
+colors-load-definitions
+
 typeset -A ZSH_HIGHLIGHT_STYLES=(
   # Fallback color
   'default' "fg=$COLORS[text]"

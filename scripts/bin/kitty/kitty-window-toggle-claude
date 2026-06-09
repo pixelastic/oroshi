@@ -2,6 +2,7 @@
 # Toggle between current window and a dedicated Claude Code window
 # Each tab has its own Claude window stored in a "Claude" parking tab
 set -e
+colors-load-definitions
 local currentWindowId=$(kitty-window-id)
 local originWindowId=$(kitty-window-get-var "$currentWindowId" "oroshi_claudeOriginWindowId")
 
@@ -36,12 +37,11 @@ local claudeTabId=$(kitty-tab-id "claude")
 
 # Create the Claude window if it doesn't yet exist
 if ! kitty-window-exists "$claudeWindowName"; then
-  source $OROSHI_ROOT/tools/term/zsh/config/theming/env/colors.zsh
   kitty-window-create \
     "$claudeWindowName" \
     --tab "$claudeTabId" \
     --spacing padding=40 \
-    --color background=$COLOR_DARK_AMBER_HEXA \
+    --color background=$COLORS[dark-amber:hex] \
     --cmd "kitty-helper-claude-start"
 fi
 local claudeWindowId=$(kitty-window-id "$claudeWindowName")

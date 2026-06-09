@@ -8,8 +8,9 @@
 # $ context-badge /path/outside/all    # empty output
 setopt local_options err_return
 
-projects-load-definitions
+colors-load-definitions
 icons-load-definitions
+projects-load-definitions
 
 zmodload zsh/zutil
 zparseopts -E -D \
@@ -33,8 +34,8 @@ local separatorIcon="$ICONS[badge-separator]"
 
 # worktreeinfo
 local worktreeName="$(git-worktree-name "$reference")"
-local worktreeForeground=$COLOR_ORANGE_1
-local worktreeBackground=$COLOR_ORANGE_7
+local worktreeForeground=$COLORS[orange-1]
+local worktreeBackground=$COLORS[orange-7]
 
 # Colorize either in ANSI or %F{color} format depending on the --zsh flag
 function _colorize() {

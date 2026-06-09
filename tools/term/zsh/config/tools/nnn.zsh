@@ -24,6 +24,8 @@
 #
 # Colors {{{
 function oroshi_nnn_colors() {
+	colors-load-definitions
+
 	local NNN_BLOCK_DEVICE="00"
 	local NNN_CHAR_DEVICE="00"
 	local NNN_DIRECTORY="${(l:2::0:)COLORS[directory]}"

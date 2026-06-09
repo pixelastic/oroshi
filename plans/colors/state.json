@@ -51,7 +51,8 @@
   {
     "id": "08",
     "issue": "issues/08-colors-refresh-cleanup.md",
-    "done": false,
+    "done": true,
+    "recap": "Updated colors-refresh to call colors-build and source dist/colors.zsh; deleted legacy src/env-generate-colors and env/colors.zsh.",
     "blocked_by": ["03", "04", "05", "06", "07"]
   },
   {

@@ -54,6 +54,24 @@ EXA_COLORS="${EXA_COLORS}:fi=38;5;$COLORS[gray-white]" # Default file color
 
 ---
 
+## Issue 08 — colors-refresh cleanup
+
+### Standards: unquoted `$ZSH_CONFIG_PATH` in source call
+```zsh
+source $ZSH_CONFIG_PATH/theming/dist/colors.zsh
+```
+**Problem:** zsh-writer examples show quoted variable expansions; reviewer flagged as hard violation.
+**Reason skipped:** zshlint returned `[]` (linter does not enforce this). Every other path call in the same file uses the same unquoted pattern (pre-existing style throughout).
+
+### Spec: `source env/filetypes.zsh` vs `source dist/filetypes.zsh`
+```zsh
+source $ZSH_CONFIG_PATH/theming/env/filetypes.zsh
+```
+**Problem:** Spec's final orchestration order lists `source dist/filetypes.zsh` (step 4).
+**Reason skipped:** Acceptance criteria only cover colors. Filetypes migration is out of scope for this issue.
+
+---
+
 ### Spec: NeoVim trigger uses full `$OROSHI_ROOT` path
 ```lua
 executeCommand("$OROSHI_ROOT/tools/term/zsh/config/theming/colors-build")

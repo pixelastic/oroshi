@@ -33,6 +33,8 @@ function ♣() {
 }
 
 function oroshi-completion-styling() {
+  colors-load-definitions
+  icons-load-definitions
   setopt EXTENDED_GLOB
 
   # We'll use the mapping of extensions to color defined in LS_COLORS to

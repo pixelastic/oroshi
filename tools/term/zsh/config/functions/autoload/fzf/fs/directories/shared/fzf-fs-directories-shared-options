@@ -1,6 +1,8 @@
 # Outputs the options shared by all search for a specific directory
 setopt local_options err_return
 
+colors-load-definitions
+
 # This is called by:
 # - fzf-fs-directories-project-options
 # - fzf-fs-directories-subdir-options
@@ -21,4 +23,4 @@ local fzfSourcePath=${flagSource[2]}
 fzf-fs-shared-options \
   --prompt $fzfPromptPath \
   --source $fzfSourcePath \
-  --color ${COLOR_ALIAS_DIRECTORY}
+  --color $COLORS[directory]

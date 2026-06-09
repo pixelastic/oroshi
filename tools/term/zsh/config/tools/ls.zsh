@@ -4,6 +4,8 @@
 # directories
 
 function oroshi_tools_ls() {
+	colors-load-definitions
+
 	# We define two versions of LS_COLORS.
 	#
 	# The default one, LS_COLORS, is used by different tools, like exa and zsh

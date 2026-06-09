@@ -1,9 +1,0 @@
-# Load COLOR_* variables into memory
-# No-op if already populated (allows test injection via mock)
-# Usage: colors-load-definitions
-setopt local_options err_return
-
-# Stop if already loaded
-[[ "$COLORS_INDEX" != "" ]] && return
-
-source "$OROSHI_ROOT/tools/term/zsh/config/theming/env/colors.zsh"
