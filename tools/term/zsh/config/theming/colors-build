@@ -7,30 +7,35 @@ set -e
 
 local themingRoot="${THEMING_ROOT:-${0:A:h}}"
 local kittyConf="${OROSHI_ROOT}/tools/term/kitty/config/colors.conf"
-local srcJson="${themingRoot}/src/colors.json"
+local srcJsonc="${themingRoot}/src/colors.jsonc"
 local distDir="$themingRoot/dist"
 local distZsh="$distDir/colors.zsh"
 local distJson="$distDir/colors.json"
+local srcJson="$(jsonc2json "$srcJsonc")"
 
-# Named colors: ANSI index → color name (loaded from src/colors.json) {{{
+# Named colors: ANSI index → color name (loaded from src/colors.jsonc) {{{
 typeset -A namedColors
-for line in ${(f)"$(jq -r '.namedColors | to_entries[] | "\(.key)\t\(.value)"' "$srcJson")"}; do
+for line in ${(f)"$(jq -r '.namedColors | to_entries[] | "\(.key)\t\(.value)"' <<<"$srcJson")"}; do
   local key="${line%%	*}"
   local val="${line#*	}"
   namedColors[$key]="$val"
 done
 # }}}
-# Color palette ranges: first-digit(s) prefix → color name (loaded from src/colors.json) {{{
+# Color palette ranges: ANSI index → color family name (expanded from src/colors.jsonc ranges) {{{
 typeset -A colorRanges
-for line in ${(f)"$(jq -r '.colorRanges | to_entries[] | "\(.key)\t\(.value)"' "$srcJson")"}; do
-  local key="${line%%	*}"
-  local val="${line#*	}"
-  colorRanges[$key]="$val"
+for line in ${(f)"$(jq -r '.palettes | to_entries[] | "\(.key)\t\(.value)"' <<<"$srcJson")"}; do
+  local rangeSpec="${line%%	*}"
+  local colorName="${line#*	}"
+  local rangeStart="${rangeSpec%-*}"
+  local rangeEnd="${rangeSpec#*-}"
+  for (( i=rangeStart; i<=rangeEnd; i++ )); do
+    colorRanges[$i]="$colorName"
+  done
 done
 # }}}
-# Alias colors: alias name → raw color name (loaded from src/colors.json) {{{
+# Alias colors: alias name → raw color name (loaded from src/colors.jsonc) {{{
 typeset -A aliasColors
-for line in ${(f)"$(jq -r '.aliases | to_entries[] | "\(.key)\t\(.value)"' "$srcJson")"}; do
+for line in ${(f)"$(jq -r '.aliases | to_entries[] | "\(.key)\t\(.value)"' <<<"$srcJson")"}; do
   local key="${line%%	*}"
   local val="${line#*	}"
   aliasColors[$key]="$val"
@@ -48,9 +53,8 @@ for line in ${(f)kittyColors}; do
 
   local colorKey="${namedColors[$colorTermValue]}"
   if [[ "$colorKey" == "" ]]; then
-    local colorRangeValue="${colorTermValue:0:-1}"
-    [[ "$colorRangeValue" == "" || "${colorRanges[$colorRangeValue]}" == "" ]] && continue
-    colorKey="${colorRanges[$colorRangeValue]}-${colorTermValue[-1]}"
+    [[ "${colorRanges[$colorTermValue]}" == "" ]] && continue
+    colorKey="${colorRanges[$colorTermValue]}-${colorTermValue[-1]}"
   fi
 
   colorsByName[$colorKey]="$colorTermValue"

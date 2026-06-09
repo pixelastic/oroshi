@@ -10,15 +10,18 @@ setup() {
   mkdir -p "$THEMING_ROOT/dist"
   mkdir -p "$BATS_TMP_DIR/tools/term/kitty/config"
 
-  jq -n '{
-    "namedColors": { "17": "orange" },
-    "colorRanges": { "8": "yellow" },
-    "aliases":     { "git-branch": "orange" }
-  }' >"$THEMING_ROOT/src/colors.json"
+  cat >"$THEMING_ROOT/src/colors.jsonc" <<'JSONC'
+{
+  // fixture for colors-build tests
+  "namedColors": { "17": "orange" },
+  "palettes":    { "80-89": "yellow" },
+  "aliases":     { "git-branch": "orange" }
+}
+JSONC
 
   # Minimal colors.conf:
-  # color17 → orange (namedColors[17])   — aliased by git-branch
-  # color87 → yellow-7 (range 8=yellow, scale 7)
+  # color17 → orange (namedColors[17])        — aliased by git-branch
+  # color87 → yellow-7 (range 80-89=yellow, last digit 7)
   cat >"$BATS_TMP_DIR/tools/term/kitty/config/colors.conf" <<'CONF'
 color17  #dd6b20
 color87  #a16207

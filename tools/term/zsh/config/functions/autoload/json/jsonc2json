@@ -1,0 +1,8 @@
+# Parse a JSONC file to JSON by stripping // line comments
+# Usage:
+#   jsonc2json <filepath>
+#   jsonc2json src/colors.jsonc | jq '.aliases'
+setopt local_options err_return
+
+local file="$1"
+perl -ne 'print unless m|^\s*//|' "$file"
