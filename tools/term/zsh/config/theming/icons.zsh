@@ -39,6 +39,8 @@ ICONS[git-pr]=""
 ICONS[git-rebase]=""
 ICONS[git-remote]=""
 ICONS[git-remote-unpushed]=""
+ICONS[git-remote-need-push]=""
+ICONS[git-remote-need-pull]=""
 ICONS[git-stash]=""
 ICONS[git-submodule]=""
 ICONS[git-tag]=""
@@ -55,8 +57,6 @@ ICONS[separator-slant-reverse]=""
 # Git
 
 # Git branches
-ICONS[branch-ahead]=""
-ICONS[branch-behind]=""
 ICONS[branch-gone]=""
 ICONS[branch-diverged]=""
 ICONS[branch-detached]=""

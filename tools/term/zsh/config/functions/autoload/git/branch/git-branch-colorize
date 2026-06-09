@@ -3,7 +3,7 @@
 # $ git-branch-colorize                         # {currentBranch}
 # $ git-branch-colorize main                    # main
 # $ git-branch-colorize feat/x --worktree        # worktree icon + normal branch color
-# $ git-branch-colorize --with-icon             # $ICONS[branch-ahead] main
+# $ git-branch-colorize --with-icon             # $ICONS[git-remote-need-push] main
 # $ git-branch-colorize origin/develop --remote # $ICONS[git-branch] origin/remote
 setopt local_options err_return
 icons-load-definitions
@@ -71,12 +71,12 @@ if [[ $branchPushStatus == 'identical' ]]; then
 fi
 
 if [[ $branchPushStatus == 'ahead' ]]; then
-  colorize "$ICONS[branch-ahead] $branchName" $branchColor "${zshFlag[@]}"
+  colorize "$ICONS[git-remote-need-push] $branchName" $branchColor "${zshFlag[@]}"
   return
 fi
 
 if [[ $branchPushStatus == 'behind' ]]; then
-  colorize "$ICONS[branch-behind] $branchName" $branchColor "${zshFlag[@]}"
+  colorize "$ICONS[git-remote-need-pull] $branchName" $branchColor "${zshFlag[@]}"
   return
 fi
 
