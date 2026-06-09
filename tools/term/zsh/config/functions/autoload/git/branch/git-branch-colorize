@@ -61,7 +61,7 @@ fi
 local branchPushStatus="$(git-branch-push-status $branchName)"
 
 if [[ $branchPushStatus == 'never_pushed' ]]; then
-  colorize "$ICONS[branch-never-pushed] $branchName" $branchColor "${zshFlag[@]}"
+  colorize "$ICONS[git-remote-unpushed] $branchName" $branchColor "${zshFlag[@]}"
   return
 fi
 
