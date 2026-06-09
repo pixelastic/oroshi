@@ -16,9 +16,11 @@ setup() {
   }
   bats_mock projects-load-definitions
 
-  export COLOR_ALIAS_GIT_BRANCH=17
-  export COLOR_ALIAS_DIRECTORY=2
-  export COLOR_ALIAS_COMMENT=8
+  typeset -gA COLORS
+  # shellcheck disable=SC2034
+  COLORS[directory]=2
+  # shellcheck disable=SC2034
+  COLORS[comment]=8
 }
 
 teardown() {

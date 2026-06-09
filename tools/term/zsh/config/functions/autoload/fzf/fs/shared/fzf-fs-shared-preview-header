@@ -105,7 +105,7 @@ fi
 # Metadata
 if [[ $metadataArray != "" ]]; then
   displayedHeaderArray+=("\n")
-  displayedHeaderArray+=("$(colorize " ${(j/, /)metadataArray}" $COLOR_ALIAS_COMMENT)")
+  displayedHeaderArray+=("$(colorize " ${(j/, /)metadataArray}" $COLORS[comment])")
 fi
 
 
@@ -136,4 +136,3 @@ echo ""
 # filesize pour tout le monde
 # dimensions pour une image
 # nombre de pages pour un pdf, et
-
