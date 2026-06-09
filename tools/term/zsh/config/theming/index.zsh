@@ -7,13 +7,10 @@ function oroshi_theming_index() {
   local filetypesDefinitionPath=$OROSHI_ROOT/tools/term/zsh/config/theming/env/filetypes.zsh
   local filetypesGeneratePath=$OROSHI_ROOT/tools/term/zsh/config/theming/src/env-generate-filetypes
 
-  # Generate env vars if missing, and load them
-  # Note: We wrap this in functions that we immediably call to provide a more
-  # precise stacktrace when running zprof
   function oroshi_theming_colors() {
     [[ ! -r $colorsDefinitionPath ]] && $colorsGeneratePath
     source $colorsDefinitionPath
-    colors-load-definitions
+    colors-load-definitions || true
   }
   oroshi_theming_colors && unfunction oroshi_theming_colors
 
