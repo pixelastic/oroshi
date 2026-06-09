@@ -4,6 +4,7 @@
 function _git-branches-local() {
   icons-load-definitions
   icons-load-definitions
+  icons-load-definitions
   local suggestions=(${(f)"$(complete-git-branches-local)"})
 
   _describe -V "$(completion-header $COLOR_ALIAS_GIT_BRANCH $COLOR_WHITE " $ICONS[git-branch] Local branches ")" suggestions

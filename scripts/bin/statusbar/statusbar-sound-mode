@@ -6,7 +6,7 @@ source $ZSH_CONFIG_PATH/theming/icons.zsh
 
 local storeFile=$OROSHI_TMP_FOLDER/sound-mode/on
 
-local icon="$ICONS[bell]  "
+local icon="$ICONS[sound-mode]  "
 if [[ ! -f ${storeFile} ]]; then
   local color=$COLOR_ALIAS_COMMENT
 else

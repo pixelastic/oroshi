@@ -2,6 +2,7 @@
 # Usage:
 # $ fly-app-list   # View list of all apps
 setopt local_options err_return
+icons-load-definitions
 local rawList="$(fly-app-list-raw)"
 
 # Build the output
@@ -16,8 +17,8 @@ for rawLine in ${(f)rawList}; do
   local appLastUpdate=$split[4]
 
   # Icon
-  local appIcon=" "
-  [[ $appStatus == "deployed" ]] && appIcon=" "
+  local appIcon="$ICONS[docker-pause] "
+  [[ $appStatus == "deployed" ]] && appIcon="$ICONS[docker-run] "
 
   # Color
   local appColor=$COLOR_ALIAS_FLY_APP_SUSPENDED

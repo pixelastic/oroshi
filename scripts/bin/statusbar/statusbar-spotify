@@ -15,4 +15,4 @@ eval "$(sp eval)"
 local currentTitle="$SPOTIFY_ARTIST - $SPOTIFY_TITLE"
 [[ "${#currentTitle}" -gt 40 ]] && currentTitle="${currentTitle:0:40}…"
 
-jo text="$ICONS[play] ${currentTitle} " fg=$COLOR_ALIAS_SUCCESS | jo -a
+jo text="$ICONS[sound-play] ${currentTitle} " fg=$COLOR_ALIAS_SUCCESS | jo -a

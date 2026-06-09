@@ -2,7 +2,8 @@
 
 # Suggest all the containers ids
 function _docker-containers-ids() {
+  icons-load-definitions
   local suggestions=(${(f)"$(complete-docker-containers-ids)"})
 
-  _describe -V "$(completion-header $COLOR_ALIAS_DOCKER_CONTAINER $COLOR_BLACK '  Docker containers ')" suggestions
+  _describe -V "$(completion-header $COLOR_ALIAS_DOCKER_CONTAINER $COLOR_BLACK " $ICONS[docker-stop] Docker containers ")" suggestions
 }

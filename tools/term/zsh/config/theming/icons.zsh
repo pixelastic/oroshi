@@ -54,6 +54,15 @@ ICONS[git-tag-unrelated]=""
 ICONS[git-worktree]="󰌪"
 ICONS[git-changes]="±"
 
+# Docker
+ICONS[docker-run]=""
+ICONS[docker-stop]=""
+ICONS[docker-pause]=""
+
+# Sound
+ICONS[sound-play]=""
+ICONS[sound-mode]=""
+
 # Languages
 ICONS[ruby]=""
 ICONS[python]=""
@@ -71,12 +80,6 @@ ICONS[separator-slant]=""
 ICONS[separator-slant-reverse]=""
 
 # ---
-
-# Languages
-
-# Sound
-ICONS[bell]=""
-ICONS[play]=""
 
 # Misc
 ICONS[clock]=""
