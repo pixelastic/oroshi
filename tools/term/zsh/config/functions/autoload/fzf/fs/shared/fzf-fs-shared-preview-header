@@ -3,6 +3,9 @@
 # $ fzf-fs-shared-preview-header ./path/to/file      # Display the file
 # $ fzf-fs-shared-preview-header ./path/to/folder    # Display the folder
 setopt local_options err_return
+
+colors-load-definitions
+
 local input=$1
 
 local fullPath=${input:a}
@@ -90,7 +93,7 @@ fi
 
 # Directory
 if [[ $directoryPath != "" ]]; then
-  displayedHeaderArray+=("$(colorize "${directoryPath}/" $COLOR_ALIAS_DIRECTORY)")
+  displayedHeaderArray+=("$(colorize "${directoryPath}/" $COLORS[directory])")
 fi
 
 # File
