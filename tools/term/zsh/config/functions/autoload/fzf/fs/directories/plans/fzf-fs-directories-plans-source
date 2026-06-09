@@ -3,6 +3,8 @@
 # $ fzf-fs-directories-plans-source
 setopt local_options err_return
 
+colors-load-definitions
+
 local rawPlans="$(plan-list-raw)"
 [[ "$rawPlans" == "" ]] && return 0
 
@@ -10,6 +12,6 @@ for line in ${(f)rawPlans}; do
   local fields=(${(@ps/▮/)line})
 
   local fullPath="${fields[1]}"
-  local displayPath="$(colorize "${fields[2]}" $COLOR_ALIAS_DIRECTORY)"
+  local displayPath="$(colorize "${fields[2]}" $COLORS[directory])"
   echo "${fullPath}   ${displayPath}"
 done
