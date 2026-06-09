@@ -423,14 +423,19 @@ O_STATUSLINE = {
       return defaultData
     end
 
+    -- Convert kebab-case color name to UPPERCASE_SNAKE for O.colors.env lookup
+    local function toEnvKey(name)
+      return name:upper():gsub("-", "_")
+    end
+
     -- Get relevant project data
     local projectData = {
       name = projectName,
       path = vim.fn.expand(p.path), -- Convert ~ to full path
       icon = p.icon or "",
       hl = {
-        bg = p.background and p.background.name or "",
-        fg = p.foreground and p.foreground.name or "",
+        bg = p.background and toEnvKey(p.background.name) or "",
+        fg = p.foreground and toEnvKey(p.foreground.name) or "",
       },
       hideNameInPrompt = p.hideNameInPrompt or false,
     }
