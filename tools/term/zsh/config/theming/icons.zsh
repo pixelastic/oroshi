@@ -54,6 +54,10 @@ ICONS[git-tag-unrelated]=""
 ICONS[git-worktree]="󰌪"
 ICONS[git-changes]="±"
 
+# Languages
+ICONS[ruby]=""
+ICONS[python]=""
+
 # Node
 ICONS[node]=""
 ICONS[node-package]=""
@@ -68,11 +72,7 @@ ICONS[separator-slant-reverse]=""
 
 # ---
 
-# Node / Yarn
-
 # Languages
-ICONS[ruby]=""
-ICONS[python]=""
 
 # Sound
 ICONS[bell]=""
