@@ -5,9 +5,12 @@
 # $ yarn-link-colorize norska --with-icon               # 煮norska
 # $ yarn-link-colorize norska-cms workspace --with-icon #  norska-cms
 setopt local_options err_return
+
 zparseopts -E -D \
-	-with-icon=flagWithIcon
+  -with-icon=flagWithIcon
 local isWithIcon=${#flagWithIcon}
+
+icons-load-definitions
 
 local linkName="$1"
 local linkType="${2}"
@@ -16,21 +19,21 @@ local linkColor=$COLOR_ALIAS_ERROR
 local linkIcon="?"
 
 if [[ $linkType == "classic" ]]; then
-	linkColor=$COLOR_ALIAS_YARN_LINK_CLASSIC
-	linkIcon=" "
-fi
-if [[ $linkType == "workspace" ]]; then
-	linkColor=$COLOR_ALIAS_YARN_LINK_WORKSPACE
-	linkIcon=" "
+  linkColor=$COLOR_ALIAS_YARN_LINK_CLASSIC
+  linkIcon="$ICONS[node-link] "
 fi
 if [[ $linkType == "external" ]]; then
-	linkColor=$COLOR_ALIAS_YARN_LINK_EXTERNAL
-	linkIcon=" "
+  linkColor=$COLOR_ALIAS_YARN_LINK_EXTERNAL
+  linkIcon="$ICONS[node-link] "
+fi
+if [[ $linkType == "workspace" ]]; then
+  linkColor=$COLOR_ALIAS_YARN_LINK_WORKSPACE
+  linkIcon="$ICONS[node-monorepo] "
 fi
 
 # Add the icon
 if [[ "$isWithIcon" == 1 ]]; then
-	linkName="${linkIcon} ${linkName}"
+  linkName="${linkIcon} ${linkName}"
 fi
 
 colorize "${linkName}" $linkColor

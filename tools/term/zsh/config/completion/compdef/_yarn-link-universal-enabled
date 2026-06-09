@@ -7,6 +7,8 @@ function _yarn-link-universal-enabled() {
   # want to remove any "workspace" links)
 	# - Berry (v2+): We suggest all enabled links, they should all be "external"
 
+  icons-load-definitions
+
   # Yarn Classic (v1)
 	if yarn-version-is-classic; then
 		_yarn-link-classic-enabled
@@ -15,6 +17,6 @@ function _yarn-link-universal-enabled() {
 
   # Yarn Berry (v2+)
   local suggestions=(${(f)"$(complete-yarn-link-universal-enabled)"})
-  _describe -V "$(completion-header $COLOR_ALIAS_YARN_LINK_EXTERNAL $COLOR_WHITE '  Yarn links ')" suggestions
+  _describe -V "$(completion-header $COLOR_ALIAS_YARN_LINK_EXTERNAL $COLOR_WHITE " $ICONS[node-link] Yarn links ")" suggestions
   return
 }

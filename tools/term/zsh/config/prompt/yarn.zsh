@@ -30,7 +30,7 @@ function oroshi-prompt-populate:yarn_link() {
 
   # If some linked modules don't have an icon, we add the default chain ico
   if [[ $displayedLinkCount != "$totalLinkCount" ]]; then
-    displayedString+="$ICONS[link] "
+    displayedString+="$ICONS[node-link] "
   fi
 
   if [[ $displayedString != "" ]]; then

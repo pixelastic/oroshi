@@ -5,13 +5,16 @@
 # $ yarn-package-colorize --with-icon --link-local   #  firost
 # $ yarn-package-colorize --with-icon --link-global  #  firost
 setopt local_options err_return
+
 zparseopts -E -D \
-	-link-local=flagLinkLocal \
-	-link-global=flagLinkGlobal \
-	-with-icon=flagWithIcon
+  -link-local=flagLinkLocal \
+  -link-global=flagLinkGlobal \
+  -with-icon=flagWithIcon
 local isWithIcon=${#flagWithIcon}
 local isLinkLocal=${#flagLinkLocal}
 local isLinkGlobal=${#flagLinkGlobal}
+
+icons-load-definitions
 
 # Package name
 local packageName="$1"
@@ -22,14 +25,14 @@ local packageColor="$COLOR_ALIAS_YARN_PACKAGE"
 [[ $isLinkGlobal == "1" ]] && packageColor=$COLOR_ALIAS_YARN_LINK_GLOBAL
 
 # Icon
-local packageIcon=" "
-[[ $isLinkLocal == "1" ]] && packageIcon=" "
-[[ $isLinkGlobal == "1" ]] && packageIcon=" "
+local packageIcon="$ICONS[node-package] "
+[[ $isLinkLocal == "1" ]] && packageIcon="$ICONS[node-monorepo] "
+[[ $isLinkGlobal == "1" ]] && packageIcon="$ICONS[node-link] "
 
 # If --with-icon is not passed, we simply display the colored branch
 if [[ "$isWithIcon" != 1 ]]; then
-	colorize "$packageName" $packageColor
-	return
+  colorize "$packageName" $packageColor
+  return
 fi
 
 colorize "${packageIcon} ${packageName}" $packageColor

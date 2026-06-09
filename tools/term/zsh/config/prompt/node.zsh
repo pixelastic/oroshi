@@ -7,7 +7,7 @@ function oroshi-prompt-populate:node_monorepo() {
   (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
   yarn-is-monorepo || return
 
-  OROSHI_PROMPT_PARTS[node_monorepo]="%F{$COLOR_ALIAS_LOCAL_DEPENDENCY}$ICONS[monorepo] %f"
+  OROSHI_PROMPT_PARTS[node_monorepo]="%F{$COLOR_ALIAS_LOCAL_DEPENDENCY}$ICONS[node-monorepo] %f"
 }
 
 # Display project node version

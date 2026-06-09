@@ -28,11 +28,11 @@ ICONS[nvim-notification-separator]=""
 ICONS[nvim-tab-separator]=""
 
 # Tools
-ICONS[dependabot]=""
 ICONS[dropbox]=""
 
 # Git
 ICONS[git-branch]=""
+ICONS[git-branch-dependabot]=""
 ICONS[git-branch-ahead]=""
 ICONS[git-branch-behind]=""
 ICONS[git-commit]="ﰖ"
@@ -54,12 +54,29 @@ ICONS[git-tag-unrelated]=""
 ICONS[git-worktree]="󰌪"
 ICONS[git-changes]="±"
 
+# Node
+ICONS[node]=""
+ICONS[node-package]=""
+ICONS[node-monorepo]=""
+ICONS[node-link]=""
+ICONS[node-js]=""
+
 # Separators
 ICONS[separator-arrow]=""
 ICONS[separator-slant]=""
 ICONS[separator-slant-reverse]=""
 
 # ---
+
+# Node / Yarn
+
+# Languages
+ICONS[ruby]=""
+ICONS[python]=""
+
+# Sound
+ICONS[bell]=""
+ICONS[play]=""
 
 # Misc
 ICONS[clock]=""
@@ -72,24 +89,8 @@ ICONS[prompt]="❯"
 ICONS[warning]=""
 ICONS[refresh]=""
 
-# Node / Yarn
-ICONS[node]=""
-ICONS[monorepo]=""
-ICONS[link]=""
-ICONS[npm]=""
-
-# fzf
-
-# Languages
-ICONS[ruby]=""
-ICONS[python]=""
-
 # Battery
 ICONS[battery-charging]=""
 ICONS[battery-full]=""
 ICONS[battery-high]=""
 ICONS[battery-low]=""
-
-# Sound
-ICONS[bell]=""
-ICONS[play]=""
