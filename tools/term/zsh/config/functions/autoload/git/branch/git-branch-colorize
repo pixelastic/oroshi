@@ -97,5 +97,5 @@ if [[ $branchPushStatus == 'detached' ]]; then
 fi
 
 # Fallback on unknown status
-colorize "$ICONS[branch-fallback] $branchName" $branchColor "${zshFlag[@]}"
+colorize "$ICONS[unknown] $branchName" $branchColor "${zshFlag[@]}"
 return

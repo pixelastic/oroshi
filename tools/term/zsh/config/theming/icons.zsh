@@ -3,6 +3,7 @@ typeset -gA ICONS
 
 # Common
 ICONS[current]=""
+ICONS[unknown]=""
 
 # Kitty
 ICONS[kitty-tab-separator]=""
@@ -20,6 +21,7 @@ ICONS[completion-zsh-builtins]=""
 
 # Fzf
 ICONS[fzf-separator]=""
+ICONS[fzf-selected]=""
 
 # Nvim
 ICONS[nvim-notification-separator]=""
@@ -47,6 +49,8 @@ ICONS[git-remote-detached]=""
 ICONS[git-stash]=""
 ICONS[git-submodule]=""
 ICONS[git-tag]=""
+ICONS[git-tag-closest]="󱈤"
+ICONS[git-tag-unrelated]=""
 ICONS[git-worktree]="󰌪"
 ICONS[git-changes]="±"
 
@@ -57,18 +61,12 @@ ICONS[separator-slant-reverse]=""
 
 # ---
 
-# Git
-
-# Git branches
-ICONS[branch-fallback]=""
-
 # Misc
 ICONS[clock]=""
 ICONS[gauge]=""
 ICONS[network]=""
 ICONS[pie]=""
 ICONS[pulse]=""
-ICONS[tag]=""
 ICONS[wave]=""
 ICONS[prompt]="❯"
 ICONS[warning]=""
@@ -81,7 +79,6 @@ ICONS[link]=""
 ICONS[npm]=""
 
 # fzf
-ICONS[fzf-marker]=""
 
 # Languages
 ICONS[ruby]=""

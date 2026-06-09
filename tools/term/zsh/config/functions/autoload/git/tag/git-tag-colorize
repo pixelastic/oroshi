@@ -38,17 +38,17 @@ local tagStatus="$(git-tag-status "$tagName")"
 
 # Exact: The tag points specifically to the current commit
 if [[ "$tagStatus" == "exact" ]]; then
-	colorize "$ICONS[tag] $tagName" $COLOR_ALIAS_GIT_TAG_EXACT "${zshFlag[@]}"
+	colorize "$ICONS[git-tag-closest] $tagName" $COLOR_ALIAS_GIT_TAG_EXACT "${zshFlag[@]}"
 	return
 fi
 
-# Closest: The tag is the closest in the branch
+# Closest: The tag is the closest ancestor tag in the branch
 if [[ "$tagStatus" == "closest" ]]; then
-	colorize "$ICONS[tag] $tagName" $COLOR_ALIAS_GIT_TAG_CLOSEST "${zshFlag[@]}"
+	colorize "$ICONS[git-tag-closest] $tagName" $COLOR_ALIAS_GIT_TAG_CLOSEST "${zshFlag[@]}"
 	return
 fi
 
-# Parent: The tag is somewhere in the branch
+# Parent: The tag is somewhere in the branch ancestry
 if [[ "$tagStatus" == "parent" ]]; then
 	colorize "$ICONS[git-tag] $tagName" $COLOR_ALIAS_GIT_TAG_PARENT "${zshFlag[@]}"
 	return
@@ -56,10 +56,10 @@ fi
 
 # Unrelated: The tag is not in the branch
 if [[ "$tagStatus" == "unrelated" ]]; then
-	colorize "$ICONS[git-tag] $tagName" $COLOR_ALIAS_GIT_TAG_UNRELATED "${zshFlag[@]}"
+	colorize "$ICONS[git-tag-unrelated] $tagName" $COLOR_ALIAS_GIT_TAG_UNRELATED "${zshFlag[@]}"
 	return
 fi
 
 # Fallback on unknown status
-colorize "$ICONS[branch-fallback] $tagName" $COLOR_ALIAS_ERROR "${zshFlag[@]}"
+colorize "$ICONS[unknown] $tagName" $COLOR_ALIAS_ERROR "${zshFlag[@]}"
 return

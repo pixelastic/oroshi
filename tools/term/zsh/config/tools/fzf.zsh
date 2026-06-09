@@ -12,7 +12,7 @@ function oroshi_tools_fzf() {
   fzfColors+=("bg+:$COLOR_ALIAS_SELECTED_BACKGROUND")     # selected result background
   fzfColors+=("fg+:$COLOR_ALIAS_SELECTED_FOREGROUND")     # selected result foreground
   fzfColors+=("pointer:$COLOR_ALIAS_POINTER")             # $ICONS[current] before current line
-  fzfColors+=("marker:$COLOR_ALIAS_MARKER")               # $ICONS[fzf-marker] before selected result
+  fzfColors+=("marker:$COLOR_ALIAS_MARKER")               # $ICONS[fzf-selected] before selected result
   fzfColors+=("hl:reverse:$COLOR_ALIAS_MATCH")            # match
   fzfColors+=("hl+:reverse:$COLOR_ALIAS_MATCH")           # match in current line
   fzfColors+=("gutter:-1")                                # suggestion gutter
@@ -31,7 +31,7 @@ function oroshi_tools_fzf() {
   # Multi-select options
   local fzfOptionsMulti="\
     --multi \
-    --marker=$ICONS[fzf-marker] \
+    --marker=$ICONS[fzf-selected] \
     --bind 'enter:accept' \
     --bind 'ctrl-space:toggle+down' \
     --bind 'ctrl-a:toggle-all' \
