@@ -83,5 +83,11 @@
     "issue": "issues/13-zshlint-projects-load-definitions.md",
     "done": false,
     "blocked_by": []
+  },
+  {
+    "id": "14",
+    "issue": "issues/14-neovim-kebab-color-keys.md",
+    "done": false,
+    "blocked_by": ["09"]
   }
 ]
