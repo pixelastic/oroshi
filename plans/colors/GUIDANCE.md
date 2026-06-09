@@ -81,6 +81,12 @@ Add `colors-load-definitions` call before first color use if the file is a stand
 
 _Agents append findings here after each issue._
 
+### Issue 07 — zsh consumers: statusbar + misc
+
+- `$COLORS[${var:l}]` with an empty `var` expands to `$COLORS[]` — ZSH treats the empty subscript as a math expression and raises `bad math expression: empty string`. Guard with `${var:+$COLORS[${var:l}]}` so the lookup is skipped when `var` is empty.
+- 5 statusbar scripts listed in the issue (`statusbar-battery`, `statusbar-clock`, `statusbar-dropbox`, `statusbar-spotify`, `statusbar-sound-mode`) do not exist in the repo; only `statusbar-cpu`, `statusbar-ram`, and `statusbar-ping` were present and migrated.
+- `git-branch-color` bats tests referenced the old `$colors[GIT_BRANCH_*]` array (pre-issue-09); updated to `$COLORS[git-branch-*]` as part of this issue.
+
 ### Issue 09 — colors rename to COLORS + kebab keys
 
 - Use `|` as the outer delimiter in perl when the replacement contains `/` (e.g., `perl -pi -e 's|pattern|replacement|ge'`); using `/` as outer delimiter causes `\/` escape sequences to be silently consumed in the replacement, stripping `:hex` suffixes.

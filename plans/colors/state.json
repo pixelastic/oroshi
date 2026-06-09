@@ -44,7 +44,8 @@
   {
     "id": "07",
     "issue": "issues/07-zsh-consumers-statusbar-misc.md",
-    "done": false,
+    "done": true,
+    "recap": "Migrated $COLOR_* refs to $COLORS[kebab-name] in statusbar-cpu, statusbar-ram, statusbar-ping, colorize, git-branch-color, and statusline; replaced source of env/colors.zsh with colors-load-definitions in standalone scripts; updated git-branch-color tests to use $COLORS[kebab] keys.",
     "blocked_by": ["09"]
   },
   {
@@ -89,5 +90,11 @@
     "issue": "issues/14-neovim-kebab-color-keys.md",
     "done": false,
     "blocked_by": ["09"]
+  },
+  {
+    "id": "15",
+    "issue": "issues/15-icons-load-definitions-migrate-and-lint.md",
+    "done": false,
+    "blocked_by": []
   }
 ]

@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
 set -e
 
-# Load project color definitions
-source $OROSHI_ROOT/tools/term/zsh/config/theming/env/colors.zsh
+# Load color definitions
+colors-load-definitions
 
 # Fake values for debuging, or values coming from stdin
 if [[ "$1" == "--dry-run" ]]; then
@@ -28,7 +28,7 @@ local statusline=()
 # Model (effort)
 # local settingsFile=~/.claude/settings.json
 # local effortLevel=$(jq -r '.effortLevel // "medium"' "$settingsFile")
-# local displayModel="$(colorize "${modelName} (${effortLevel})" $COLOR_ALIAS_COMMENT)"
+# local displayModel="$(colorize "${modelName} (${effortLevel})" $COLORS[comment])"
 # statusline+=("$displayModel ")
 
 # }}}
@@ -40,10 +40,10 @@ local displayBadge="$(context-badge "$currentDir")"
 # Context budget
 local tokensKRaw=$(printf "%.1f" $((totalTokens / 1000.0)))
 local tokensK="${tokensKRaw%\.0}k"
-local contextColor=$COLOR_RED
-((contextPercentage < 80)) && contextColor=$COLOR_YELLOW
-((contextPercentage < 60)) && contextColor=$COLOR_GREEN
-((contextPercentage < 20)) && contextColor=$COLOR_GRAY
+local contextColor=$COLORS[red]
+((contextPercentage < 80)) && contextColor=$COLORS[yellow]
+((contextPercentage < 60)) && contextColor=$COLORS[green]
+((contextPercentage < 20)) && contextColor=$COLORS[gray]
 local displayContext="$(colorize "${tokensK}" $contextColor)"
 statusline+=("$displayContext ")
 
@@ -51,15 +51,15 @@ statusline+=("$displayContext ")
 local isInCents=$((totalCost < 1))
 if [[ $isInCents == "1" ]]; then
   local roundedCents=$((totalCost * 100 + 0.5))
-  local displayCost="$(colorize "${roundedCents%.*}¢" $COLOR_ALIAS_PUNCTUATION)"
+  local displayCost="$(colorize "${roundedCents%.*}¢" $COLORS[punctuation])"
 else
   local roundedDollars=$(printf "$%.2f" "$totalCost")
-  local displayCost="$(colorize "${roundedDollars}" $COLOR_YELLOW)"
+  local displayCost="$(colorize "${roundedDollars}" $COLORS[yellow])"
 fi
 statusline+=("$displayCost ")
 
 # Session ID
-local displaySession="$(colorize "[${sessionId}]" $COLOR_AMBER_9)"
+local displaySession="$(colorize "[${sessionId}]" $COLORS[amber-9])"
 statusline+=("$displaySession")
 
 print "${(j::)statusline}"

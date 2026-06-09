@@ -34,6 +34,12 @@ source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
 **Problem:** Memory rule says use `$OROSHI_ROOT`, not `~/.oroshi`.
 **Reason skipped:** This line is the bootstrap that *sets* `$OROSHI_ROOT` — `$OROSHI_ROOT` is unavailable before sourcing `zshenv.zsh`. Pre-existing pattern used identically across all test blocks in this file.
 
+## Issue 07 — zsh consumers: statusbar + misc
+
+### Spec: 5 statusbar scripts absent from repo
+**Problem:** Spec lists `statusbar-battery`, `statusbar-clock`, `statusbar-dropbox`, `statusbar-spotify`, `statusbar-sound-mode` as files to migrate.
+**Reason skipped:** These files do not exist in the repo. Nothing to migrate.
+
 ## Issue 09 — colors rename to COLORS + kebab keys
 
 ### $COLORS[gray-white] dangling key in exa.zsh

@@ -2,7 +2,7 @@
 # JSON info about current latency
 set -e
 
-source $OROSHI_ROOT/tools/term/zsh/config/theming/env/colors.zsh
+colors-load-definitions
 source $OROSHI_ROOT/tools/term/zsh/config/theming/icons.zsh
 
 local STATUS_SAVE_PATH="/tmp/oroshi/statusbar"
@@ -11,7 +11,7 @@ mkdir -p $STATUS_SAVE_PATH
 if ! is-online; then
   jq -n \
     --arg text "$ICONS[statusbar-ping-offline] offline " \
-    --arg fg $COLOR_ALIAS_ERROR \
+    --arg fg $COLORS[error] \
     --arg style "bold" \
     '$ARGS.named | [.]'
   exit
@@ -21,15 +21,15 @@ local pingRawPath="${STATUS_SAVE_PATH}/ping-raw"
 
 # We build the final display based on the raw ping value
 if [[ -f $pingRawPath ]]; then
-  local fg=$COLOR_ALIAS_TEXT
+  local fg=$COLORS[text]
   local ping="$(cat ${pingRawPath})"
 
   if [[ $ping == "" ]]; then
     ping="N/A"
   else
-    [[ $ping -lt 230 ]] && fg=${COLOR_ALIAS_ERROR}
-    [[ $ping -lt 160 ]] && fg=${COLOR_ALIAS_WARNING}
-    [[ $ping -lt 80 ]] && fg=${COLOR_ALIAS_NOTICE}
+    [[ $ping -lt 230 ]] && fg=$COLORS[error]
+    [[ $ping -lt 160 ]] && fg=$COLORS[warning]
+    [[ $ping -lt 80 ]] && fg=$COLORS[notice]
     ping="${ping}ms"
   fi
 

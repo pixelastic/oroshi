@@ -1,7 +1,7 @@
 # Colorize the given text in the given color
 # Usage:
-#   $ colorize main BLUE              # Displays "main" in blue
-#   $ colorize anything 145           # Displays "anything" in color 145
+#   $ colorize main blue              # Displays "main" in blue (COLORS key)
+#   $ colorize anything 145           # Displays "anything" in color 145 (ANSI int)
 #   $ colorize anything 145 42        # Foreground is 145 and background is 42
 #   $ colorize anything 145 42 --zsh  # Output in zsh prompt format
 setopt local_options err_return
@@ -15,13 +15,13 @@ local backgroundColor="$3"
 local isZsh=${#flagZsh}
 
 # Use named color if known
-local knownForegroundColor=${(P)${:-COLOR_${foregroundColor}}}
+local knownForegroundColor=${foregroundColor:+$COLORS[$foregroundColor]}
 [[ $knownForegroundColor != '' ]] && foregroundColor=$knownForegroundColor
-local knownBackgroundColor=${(P)${:-COLOR_${backgroundColor}}}
+local knownBackgroundColor=${backgroundColor:+$COLORS[$backgroundColor]}
 [[ $knownBackgroundColor != '' ]] && backgroundColor=$knownBackgroundColor
 
 # Use default colors
-[[ $foregroundColor == "" ]] && foregroundColor=$COLOR_ALIAS_TEXT
+[[ $foregroundColor == "" ]] && foregroundColor=$COLORS[text]
 
 # Output different format if --zsh flag, or classical ANSI sequence
 local outputPrefix=""

@@ -3,7 +3,7 @@
 # Display in green / yellow / red based on % usage
 set -e
 
-source $OROSHI_ROOT/tools/term/zsh/config/theming/env/colors.zsh
+colors-load-definitions
 source $OROSHI_ROOT/tools/term/zsh/config/theming/icons.zsh
 
 local memoryUsed="$(
@@ -14,11 +14,11 @@ local memoryUsed="$(
 )"
 
 if [[ $memoryUsed -gt 80 ]]; then
-  jo text="$ICONS[statusbar-ram-fire] ${memoryUsed}% " fg="$COLOR_ALIAS_ERROR" | jo -a
+  jo text="$ICONS[statusbar-ram-fire] ${memoryUsed}% " fg="$COLORS[error]" | jo -a
   exit
 fi
 if [[ $memoryUsed -gt 50 ]]; then
-  jo text="$ICONS[statusbar-ram] ${memoryUsed}% " fg="$COLOR_ALIAS_WARNING" | jo -a
+  jo text="$ICONS[statusbar-ram] ${memoryUsed}% " fg="$COLORS[warning]" | jo -a
   exit
 fi
 

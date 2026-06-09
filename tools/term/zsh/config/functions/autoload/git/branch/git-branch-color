@@ -12,10 +12,10 @@ fi
 
 declare -A BRANCH_COLORS
 BRANCH_COLORS=()
-BRANCH_COLORS[HEAD]=$COLOR_ALIAS_GIT_BRANCH_HEAD
-BRANCH_COLORS[develop]=$COLOR_ALIAS_GIT_BRANCH_DEVELOP
-BRANCH_COLORS[master]=$COLOR_ALIAS_GIT_BRANCH_MASTER
-BRANCH_COLORS[main]=$COLOR_ALIAS_GIT_BRANCH_MAIN
+BRANCH_COLORS[HEAD]=$COLORS[git-branch-head]
+BRANCH_COLORS[develop]=$COLORS[git-branch-develop]
+BRANCH_COLORS[master]=$COLORS[git-branch-master]
+BRANCH_COLORS[main]=$COLORS[git-branch-main]
 
 # Known branch
 local knownColor=$BRANCH_COLORS[$branchName]
@@ -25,4 +25,4 @@ if [[ $knownColor != '' ]]; then
 fi
 
 # Default branch
-echo $COLOR_ALIAS_GIT_BRANCH
+echo $COLORS[git-branch]
