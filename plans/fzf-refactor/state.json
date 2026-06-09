@@ -20,6 +20,13 @@
     "blocked_by": ["02"]
   },
   {
+    "id": "15",
+    "issue": "issues/15-ctrl-r-zsh-highlight.md",
+    "done": false,
+    "blocked_by": ["02"],
+    "notes": "Also requires color system refactor (COLOR_ALIAS_* → ZSH assoc array) to be merged into main first"
+  },
+  {
     "id": "04",
     "issue": "issues/04-apt-packages.md",
     "done": false,
