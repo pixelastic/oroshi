@@ -65,7 +65,8 @@
   {
     "id": "10",
     "issue": "issues/10-colors-build-src-json.md",
-    "done": false,
+    "done": true,
+    "recap": "Created src/colors.json with all namedColors, colorRanges, and aliases (kebab-case keys); updated colors-build to load from src/colors.json via jq and ${(f)} loops, removing all inline typeset blocks and kebab-conversion lines; added src/colors.json fixture to colors-build.bats setup.",
     "blocked_by": ["09"]
   },
   {

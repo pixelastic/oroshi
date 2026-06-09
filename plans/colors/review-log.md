@@ -72,6 +72,39 @@ source $ZSH_CONFIG_PATH/theming/env/filetypes.zsh
 
 ---
 
+## Issue 10 — colors-build src/colors.json extraction
+
+### Standards: `local srcJson` at script-constant scope
+```zsh
+local srcJson="${themingRoot}/src/colors.json"
+```
+**Problem:** zsh-writer: "script constants UPPER_CASE without `local`".
+**Reason skipped:** The entire file uses `local` for all top-level vars (pre-existing pattern, documented in review-log issue 01). Changing only `srcJson` would be inconsistent.
+
+### Standards: `local key` / `local val` inside for loops
+```zsh
+for line in ${(f)"$(jq ...)"}; do
+  local key="${line%%	*}"
+  local val="${line#*	}"
+  ...
+done
+```
+**Problem:** Loop temporaries at script scope should not use `local` per the constants rule.
+**Reason skipped:** These are loop temporaries, not constants; the UPPER_CASE rule targets constants. Pre-existing `local` pattern throughout the file applies.
+
+### Standards: `jq -n` instead of `jo` for JSON in bats setup
+```bash
+jq -n '{ "namedColors": { "17": "orange" }, ... }'
+```
+**Problem:** CLAUDE.md says "Use `jo` to write JSON."
+**Reason skipped:** `projects-build.bats` (prior art in same directory) uses the identical `jq -n '{...}'` pattern. Consistent with established codebase convention.
+
+### Spec: loading pattern differs from prescribed `while IFS=$'\t' read`
+**Problem:** Spec prescribes `while IFS=$'\t' read -r idx name; do ... done < <(jq ...)`. Implementation uses `${(f)$(jq ...)}` for-loops.
+**Reason skipped:** zshlint `noWhileRead` rejects `while/read` loops. The `${(f)}` for-loop is the linter-required equivalent; functionally identical.
+
+---
+
 ### Spec: NeoVim trigger uses full `$OROSHI_ROOT` path
 ```lua
 executeCommand("$OROSHI_ROOT/tools/term/zsh/config/theming/colors-build")

@@ -596,7 +596,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{REQUIRE:hex}}</string>
+				<string>{{require:hex}}</string>
 			</dict>
 		</dict>
 
@@ -991,7 +991,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{HEADING:hex}}</string>
+				<string>{{heading:hex}}</string>
 				<key>fontStyle</key>
 				<string>bold</string>
 			</dict>

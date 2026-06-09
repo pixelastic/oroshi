@@ -6,12 +6,19 @@ setup() {
 
   export OROSHI_ROOT="$BATS_TMP_DIR"
   export THEMING_ROOT="$BATS_TMP_DIR/tools/term/zsh/config/theming"
+  mkdir -p "$THEMING_ROOT/src"
   mkdir -p "$THEMING_ROOT/dist"
   mkdir -p "$BATS_TMP_DIR/tools/term/kitty/config"
 
+  jq -n '{
+    "namedColors": { "17": "orange" },
+    "colorRanges": { "8": "yellow" },
+    "aliases":     { "git-branch": "orange" }
+  }' >"$THEMING_ROOT/src/colors.json"
+
   # Minimal colors.conf:
-  # color17 → ORANGE (namedColors[17])   — aliased by GIT_BRANCH
-  # color87 → YELLOW_7 (range 8=YELLOW, scale 7)
+  # color17 → orange (namedColors[17])   — aliased by git-branch
+  # color87 → yellow-7 (range 8=yellow, scale 7)
   cat >"$BATS_TMP_DIR/tools/term/kitty/config/colors.conf" <<'CONF'
 color17  #dd6b20
 color87  #a16207
