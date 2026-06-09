@@ -5,6 +5,9 @@ function oroshi_tools_fzf() {
   [[ ! -r $fzfPath ]] && return
   source $fzfPath
 
+  colors-load-definitions
+  icons-load-definitions
+
   # Colors
   local fzfColors=()
   fzfColors+=("info:$COLORS[number]")                 # result count
@@ -31,7 +34,7 @@ function oroshi_tools_fzf() {
   # Multi-select options
   local fzfOptionsMulti="\
     --multi \
-    --marker=$ICONS[fzf-selected] \
+    --marker="$ICONS[fzf-selected]" \
     --bind 'enter:accept' \
     --bind 'ctrl-space:toggle+down' \
     --bind 'ctrl-a:toggle-all' \
