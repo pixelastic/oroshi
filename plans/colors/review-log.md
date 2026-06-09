@@ -25,6 +25,15 @@ local script="$BATS_TMP_DIR/verify.zsh"
 **Problem:** Reviewer flagged as violating "all test vars go inside setup()".
 **Reason skipped:** The memory note says "at file top level" — inline locals inside test bodies are fine. `projects-build.bats` does the same.
 
+## Issue 06 — zsh consumers: prompt + tools
+
+### `~/.oroshi` hardcoded bootstrap in `git.bats`
+```zsh
+source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
+```
+**Problem:** Memory rule says use `$OROSHI_ROOT`, not `~/.oroshi`.
+**Reason skipped:** This line is the bootstrap that *sets* `$OROSHI_ROOT` — `$OROSHI_ROOT` is unavailable before sourcing `zshenv.zsh`. Pre-existing pattern used identically across all test blocks in this file.
+
 ### Spec: NeoVim trigger uses full `$OROSHI_ROOT` path
 ```lua
 executeCommand("$OROSHI_ROOT/tools/term/zsh/config/theming/colors-build")

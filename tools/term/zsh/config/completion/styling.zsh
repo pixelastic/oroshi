@@ -1,9 +1,9 @@
 # Styling {{{
 function completion-header() {
   local colorBackground=$1
-  local colorForeground=${2:-$COLOR_BLACK}
+  local colorForeground=${2:-$colors[BLACK]}
   local content=${3:-%d}
-  echo "%K{${colorBackground}}%F{${colorForeground}}${content}%f%F{${COLOR_ALIAS_TERMINAL}}$ICONS[completion-separator]%f%k"
+  echo "%K{${colorBackground}}%F{${colorForeground}}${content}%f%F{${colors[TERMINAL]}}$ICONS[completion-separator]%f%k"
 }
 
 # Color specific values in a specific color
@@ -21,7 +21,7 @@ function ♣() {
   # ## is similar to ? in other regexp: allow a match, or nothing
   # The first matching group is whatever is before // and the second is // and
   # the description
-  echo "=(#b)(${pattern})(// *)##=38;5;$COLOR_WHITE=38;5;${color}=38;5;$COLOR_ALIAS_COMMENT"
+  echo "=(#b)(${pattern})(// *)##=38;5;$colors[WHITE]=38;5;${color}=38;5;$colors[COMMENT]"
 
   # Matches suggestions that are alone (when several suggestions share the same
   # description).
@@ -48,81 +48,81 @@ function oroshi-completion-styling() {
   # Default coloring
   local listColorsDefault=(\
     # Default color
-    "${(f)$(♣ "*" $COLOR_WHITE)}"
+    "${(f)$(♣ "*" $colors[WHITE])}"
 
     # File and directory colors
     ${completion_LS_COLORS}
   )
   # Color flags
   local listColorsFlag=(\
-    "${(f)$(♣ "*" $COLOR_ALIAS_FLAG)}" \
+    "${(f)$(♣ "*" $colors[FLAG])}" \
     $listColorsDefault \
   )
   # Git {{{
   # Color git branches
   local listColorsGitBranch=(\
-    "${(f)$(♣ "master*" $COLOR_ALIAS_GIT_BRANCH_MASTER)}" \
-    "${(f)$(♣ "main*" $COLOR_ALIAS_GIT_BRANCH_MAIN)}" \
-    "${(f)$(♣ "develop*" $COLOR_ALIAS_GIT_BRANCH_DEVELOP)}" \
-    "${(f)$(♣ "dependabot*" $COLOR_ALIAS_GIT_BRANCH_DEPENDABOT)}" \
-    "${(f)$(♣ "*" $COLOR_ALIAS_GIT_BRANCH)}" \
+    "${(f)$(♣ "master*" $colors[GIT_BRANCH_MASTER])}" \
+    "${(f)$(♣ "main*" $colors[GIT_BRANCH_MAIN])}" \
+    "${(f)$(♣ "develop*" $colors[GIT_BRANCH_DEVELOP])}" \
+    "${(f)$(♣ "dependabot*" $colors[GIT_BRANCH_DEPENDABOT])}" \
+    "${(f)$(♣ "*" $colors[GIT_BRANCH])}" \
     $listColorsDefault \
   )
   # Color git tags
   local listColorsGitTag=(\
-    "${(f)$(♣ "*" $COLOR_ALIAS_GIT_TAG)}" \
+    "${(f)$(♣ "*" $colors[GIT_TAG])}" \
     $listColorsDefault \
   )
   # Color git remotes
   local listColorsGitRemote=(\
-    "${(f)$(♣ "*" $COLOR_ALIAS_GIT_REMOTE)}" \
+    "${(f)$(♣ "*" $colors[GIT_REMOTE])}" \
     $listColorsDefault \
   )
   # Color git submodules
   local listColorsGitSubmodule=(\
-    "${(f)$(♣ "*" $COLOR_ALIAS_GIT_SUBMODULE)}" \
+    "${(f)$(♣ "*" $colors[GIT_SUBMODULE])}" \
     $listColorsDefault \
   )
   # }}}
   # SSH {{{
   # Color remote ssh
   local listColorsKnownHost=(\
-      "${(f)$(♣ "pixelastic*" $COLOR_ALIAS_HOST_PIXELASTIC)}" \
-      "${(f)$(♣ "github*" $COLOR_ALIAS_HOST_GITHUB)}" \
+      "${(f)$(♣ "pixelastic*" $colors[HOST_PIXELASTIC])}" \
+      "${(f)$(♣ "github*" $colors[HOST_GITHUB])}" \
       $listColorsDefault \
     )
   # }}}
   # Docker {{{
   # Remote images
   local listColorsDockerImageRemote=(\
-      "${(f)$(♣ "*" $COLOR_ALIAS_DOCKER_IMAGE_REMOTE)}" \
+      "${(f)$(♣ "*" $colors[DOCKER_IMAGE_REMOTE])}" \
       $listColorsDefault \
     )
   # Local images
   # Note: I still need to find a way to color hashes differently than image
   # names
-  # "${(f)$(♣ "*" $COLOR_ALIAS_DOCKER_IMAGE_ORPHAN)}" \
+  # "${(f)$(♣ "*" $colors[DOCKER_IMAGE_ORPHAN])}" \
     local listColorsDockerImage=(\
-      "${(f)$(♣ "ghcr.io/*" $COLOR_ALIAS_DOCKER_IMAGE_GITHUB)}" \
-      "${(f)$(♣ "oroshi:*" $COLOR_ALIAS_DOCKER_IMAGE_OROSHI)}" \
-      "${(f)$(♣ "[a-z]*" $COLOR_ALIAS_DOCKER_IMAGE)}" \
+      "${(f)$(♣ "ghcr.io/*" $colors[DOCKER_IMAGE_GITHUB])}" \
+      "${(f)$(♣ "oroshi:*" $colors[DOCKER_IMAGE_OROSHI])}" \
+      "${(f)$(♣ "[a-z]*" $colors[DOCKER_IMAGE])}" \
       $listColorsDefault \
     )
   # Containers
   local listColorsDockerContainer=(\
-      "${(f)$(♣ "[a-z]*" $COLOR_ALIAS_DOCKER_CONTAINER)}" \
+      "${(f)$(♣ "[a-z]*" $colors[DOCKER_CONTAINER])}" \
       $listColorsDefault \
     )
   # }}}
   # Yarn {{{
   # Locally linked modules
   local listColorsYarnLinkLocal=(\
-      "${(f)$(♣ "*" $COLOR_ALIAS_YARN_LINK_EXTERNAL)}" \
+      "${(f)$(♣ "*" $colors[YARN_LINK_EXTERNAL])}" \
       $listColorsDefault \
     )
   # Local dependencies
   local listColorsYarnDependency=(\
-      "${(f)$(♣ "*" $COLOR_ALIAS_YARN_PACKAGE)}" \
+      "${(f)$(♣ "*" $colors[YARN_PACKAGE])}" \
       $listColorsDefault \
     )
   # }}}
@@ -131,32 +131,32 @@ function oroshi-completion-styling() {
   # Note: Disabled because it seems to prevent coloring filetypes and other
   # styling
   # In case of ambiguity, coloring the first letter to type to fix the ambiguity
-  # zstyle ':completion:*' show-ambiguity "1;38;5;$COLOR_GREEN"
+  # zstyle ':completion:*' show-ambiguity "1;38;5;$colors[GREEN]"
 
 
   # Default
-  zstyle ':completion:*:descriptions' format "$(completion-header $COLOR_ALIAS_HEADER $COLOR_BLACK)"
+  zstyle ':completion:*:descriptions' format "$(completion-header $colors[HEADER] $colors[BLACK])"
   zstyle ':completion:*:complete:*:*:*' list-colors $listColorsDefault
 
   # Files
-  zstyle ':completion:*:globbed-files' format "$(completion-header $COLOR_ALIAS_FILE $COLOR_WHITE " $ICONS[completion-file] Files")"
+  zstyle ':completion:*:globbed-files' format "$(completion-header $colors[FILE] $colors[WHITE] " $ICONS[completion-file] Files")"
 
   # Directories
-  zstyle ':completion:*:local-directories' format "$(completion-header $COLOR_ALIAS_DIRECTORY $COLOR_WHITE " $ICONS[completion-folder] Directories ")"
-  zstyle ':completion:*:directories' format "$(completion-header $COLOR_ALIAS_DIRECTORY $COLOR_WHITE " $ICONS[completion-folder] Directories ")"
+  zstyle ':completion:*:local-directories' format "$(completion-header $colors[DIRECTORY] $colors[WHITE] " $ICONS[completion-folder] Directories ")"
+  zstyle ':completion:*:directories' format "$(completion-header $colors[DIRECTORY] $colors[WHITE] " $ICONS[completion-folder] Directories ")"
 
   # Commands
-  zstyle ':completion:*:commands'  format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK " $ICONS[completion-commands] Commands")"
-  zstyle ':completion:*:aliases'  format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK " $ICONS[completion-aliases] Aliases")";
-  zstyle ':completion:*:functions' format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK ' {} Functions ')"
-  zstyle ':completion:*:builtins'  format "$(completion-header $COLOR_ALIAS_FUNCTION $COLOR_BLACK " $ICONS[completion-zsh-builtins] Zsh Builtins")"
+  zstyle ':completion:*:commands'  format "$(completion-header $colors[FUNCTION] $colors[BLACK] " $ICONS[completion-commands] Commands")"
+  zstyle ':completion:*:aliases'  format "$(completion-header $colors[FUNCTION] $colors[BLACK] " $ICONS[completion-aliases] Aliases")";
+  zstyle ':completion:*:functions' format "$(completion-header $colors[FUNCTION] $colors[BLACK] ' {} Functions ')"
+  zstyle ':completion:*:builtins'  format "$(completion-header $colors[FUNCTION] $colors[BLACK] " $ICONS[completion-zsh-builtins] Zsh Builtins")"
 
   # Flags
-  zstyle ':completion:*:options' format "$(completion-header $COLOR_ALIAS_FLAG $COLOR_WHITE ' -- Flags ')"
+  zstyle ':completion:*:options' format "$(completion-header $colors[FLAG] $colors[WHITE] ' -- Flags ')"
   zstyle ':completion:*:complete:*:*:options' list-colors $listColorsFlag
 
   # Variables
-  zstyle ':completion:*:parameters' format "$(completion-header $COLOR_ALIAS_VARIABLE $COLOR_WHITE ' $ Variables ')"
+  zstyle ':completion:*:parameters' format "$(completion-header $colors[VARIABLE] $colors[WHITE] ' $ Variables ')"
 
   # Git {{{
   # Branches
@@ -231,23 +231,23 @@ function oroshi-completion-styling() {
   # Note: Using =*=38;5; directly as bats suggestions do not have a description,
   # so ♣ won't work
   local listColorsBatsTest=(\
-    "=*=38;5;${COLOR_ALIAS_FUNCTION}" \
+    "=*=38;5;${colors[FUNCTION]}" \
     $listColorsDefault \
   )
   zstyle ':completion:*:complete:bats-test:*:*' list-colors $listColorsBatsTest
   # }}}
 
   # Running processes
-  zstyle ':completion:*:processes-names' format "$(completion-header $COLOR_ALIAS_PROCESS $COLOR_BLACK ' $ICONS[completion-process] Running processes ')"
+  zstyle ':completion:*:processes-names' format "$(completion-header $colors[PROCESS] $colors[BLACK] ' $ICONS[completion-process] Running processes ')"
 
   # Original query if no match found
-  zstyle ':completion:*:original' format "$(completion-header $COLOR_ALIAS_UI $COLOR_WHITE ' ✘ Original query ')"
+  zstyle ':completion:*:original' format "$(completion-header $colors[UI] $colors[WHITE] ' ✘ Original query ')"
 
   # Fuzzy-find corrections
-  zstyle ':completion:*:corrections' format "$(completion-header $COLOR_ALIAS_MATCH $COLOR_BLACK ' ~ Fuzzyfind ')"
+  zstyle ':completion:*:corrections' format "$(completion-header $colors[MATCH] $colors[BLACK] ' ~ Fuzzyfind ')"
 
   # Error messages
-  zstyle ':completion:*:warnings' format "$(completion-header $COLOR_ALIAS_ERROR $COLOR_WHITE ' No match found ')"
+  zstyle ':completion:*:warnings' format "$(completion-header $colors[ERROR] $colors[WHITE] ' No match found ')"
   # }}}
 }
 oroshi-completion-styling
@@ -268,4 +268,4 @@ zstyle ':completion:*:path-directories' format "path-directories: %d"
 zstyle ':completion:*:suffixes' format "suffixes: %d"
 zstyle ':completion:*:urls' format "urls: %d"
 # Arbitrary values
-zstyle ':completion:*:values' format "$(completion-header $COLOR_ALIAS_UI $COLOR_WHITE)"
+zstyle ':completion:*:values' format "$(completion-header $colors[UI] $colors[WHITE])"

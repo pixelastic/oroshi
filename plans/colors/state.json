@@ -37,7 +37,8 @@
   {
     "id": "06",
     "issue": "issues/06-zsh-consumers-prompt-tools.md",
-    "done": false,
+    "done": true,
+    "recap": "Migrated all $COLOR_* references to $colors[] in 11 files: 6 prompt files, 5 tool/completion files; updated git.bats tests to source dist/colors.zsh and check $colors[KEY]; also updated commented-out examples in ls.zsh and styling.zsh.",
     "blocked_by": ["02"]
   },
   {

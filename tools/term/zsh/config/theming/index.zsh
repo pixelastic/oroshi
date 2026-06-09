@@ -13,6 +13,7 @@ function oroshi_theming_index() {
   function oroshi_theming_colors() {
     [[ ! -r $colorsDefinitionPath ]] && $colorsGeneratePath
     source $colorsDefinitionPath
+    colors-load-definitions
   }
   oroshi_theming_colors && unfunction oroshi_theming_colors
 

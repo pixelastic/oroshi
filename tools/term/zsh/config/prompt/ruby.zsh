@@ -12,13 +12,13 @@ function oroshi-prompt-populate:ruby_version() {
 
   # Not even a system-wide ruby installation
   if [[ ! -v commands[ruby] ]]; then
-    OROSHI_PROMPT_PARTS[ruby_version]="%F{$COLOR_ALIAS_ERROR}$ICONS[ruby] %f"
+    OROSHI_PROMPT_PARTS[ruby_version]="%F{$colors[ERROR]}$ICONS[ruby] %f"
     return
   fi
 
   # No Rbenv
   if [[ ! -v commands[rbenv] ]]; then
-    OROSHI_PROMPT_PARTS[ruby_version]="%F{$COLOR_ALIAS_WARNING}$ICONS[ruby] %f"
+    OROSHI_PROMPT_PARTS[ruby_version]="%F{$colors[WARNING]}$ICONS[ruby] %f"
     return
   fi
 
@@ -33,12 +33,12 @@ function oroshi-prompt-populate:ruby_version() {
 
   # Local version is in use
   if rbenv version-name &>/dev/null; then
-    OROSHI_PROMPT_PARTS[ruby_version]="%F{$COLOR_ALIAS_SUCCESS}$ICONS[ruby] $expectedVersion%f"
+    OROSHI_PROMPT_PARTS[ruby_version]="%F{$colors[SUCCESS]}$ICONS[ruby] $expectedVersion%f"
     return
   fi
 
   # Local version is not even installed
-  OROSHI_PROMPT_PARTS[ruby_version]="%F{$COLOR_ALIAS_ERROR}$ICONS[ruby] $expectedVersion%f"
+  OROSHI_PROMPT_PARTS[ruby_version]="%F{$colors[ERROR]}$ICONS[ruby] $expectedVersion%f"
 }
 
 # Check if a bundle install is in progress
@@ -46,6 +46,6 @@ function oroshi-prompt-populate:bundle_install_in_progress() {
   OROSHI_PROMPT_PARTS[bundle_install_in_progress]=""
 
   if bundle-install-in-progress; then
-    OROSHI_PROMPT_PARTS[bundle_install_in_progress]="%F{$COLORS_RED_8}$ICONS[ruby-install-in-progress] %f"
+    OROSHI_PROMPT_PARTS[bundle_install_in_progress]="%F{$colors[RED_8]}$ICONS[ruby-install-in-progress] %f"
   fi
 }

@@ -18,14 +18,14 @@ teardown() {
   local script="$BATS_TMP_DIR/git-prompt-1.zsh"
   cat >"$script" <<'ZSCRIPT'
 		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
-		source ~/.oroshi/tools/term/zsh/config/theming/env/colors.zsh
-		source ~/.oroshi/tools/term/zsh/config/prompt/git.zsh
+		source $ZSH_CONFIG_PATH/theming/dist/colors.zsh
+		source $ZSH_CONFIG_PATH/prompt/git.zsh
 		GIT_DIRECTORY_IS_REPOSITORY=1
 		GIT_DIRECTORY_IS_WORKTREE=1
 		declare -Ag OROSHI_PROMPT_PARTS
 		oroshi-prompt-populate:git_worktree_distance
 		result="${OROSHI_PROMPT_PARTS[git_worktree_distance]}"
-		[[ "$result" == *"%F{$COLOR_ALIAS_GIT_AHEAD}"* ]] && [[ "$result" == *"2"* ]]
+		[[ "$result" == *"%F{$colors[GIT_AHEAD]}"* ]] && [[ "$result" == *"2"* ]]
 ZSCRIPT
   bats_run_zsh "$script"
   [ "$status" -eq 0 ]
@@ -39,14 +39,14 @@ ZSCRIPT
   local script="$BATS_TMP_DIR/git-prompt-2.zsh"
   cat >"$script" <<'ZSCRIPT'
 		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
-		source ~/.oroshi/tools/term/zsh/config/theming/env/colors.zsh
-		source ~/.oroshi/tools/term/zsh/config/prompt/git.zsh
+		source $ZSH_CONFIG_PATH/theming/dist/colors.zsh
+		source $ZSH_CONFIG_PATH/prompt/git.zsh
 		GIT_DIRECTORY_IS_REPOSITORY=1
 		GIT_DIRECTORY_IS_WORKTREE=1
 		declare -Ag OROSHI_PROMPT_PARTS
 		oroshi-prompt-populate:git_worktree_distance
 		result="${OROSHI_PROMPT_PARTS[git_worktree_distance]}"
-		[[ "$result" == *"%F{$COLOR_ALIAS_GIT_BEHIND}"* ]] && [[ "$result" == *"3"* ]]
+		[[ "$result" == *"%F{$colors[GIT_BEHIND]}"* ]] && [[ "$result" == *"3"* ]]
 ZSCRIPT
   bats_run_zsh "$script"
   [ "$status" -eq 0 ]
@@ -59,14 +59,14 @@ ZSCRIPT
   local script="$BATS_TMP_DIR/git-prompt-3.zsh"
   cat >"$script" <<'ZSCRIPT'
 		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
-		source ~/.oroshi/tools/term/zsh/config/theming/env/colors.zsh
-		source ~/.oroshi/tools/term/zsh/config/prompt/git.zsh
+		source $ZSH_CONFIG_PATH/theming/dist/colors.zsh
+		source $ZSH_CONFIG_PATH/prompt/git.zsh
 		GIT_DIRECTORY_IS_REPOSITORY=1
 		GIT_DIRECTORY_IS_WORKTREE=1
 		declare -Ag OROSHI_PROMPT_PARTS
 		oroshi-prompt-populate:git_worktree_distance
 		result="${OROSHI_PROMPT_PARTS[git_worktree_distance]}"
-		[[ "$result" == *"%F{$COLOR_ALIAS_GIT_AHEAD}"* ]] && [[ "$result" == *"%F{$COLOR_ALIAS_GIT_BEHIND}"* ]]
+		[[ "$result" == *"%F{$colors[GIT_AHEAD]}"* ]] && [[ "$result" == *"%F{$colors[GIT_BEHIND]}"* ]]
 ZSCRIPT
   bats_run_zsh "$script"
   [ "$status" -eq 0 ]
@@ -190,7 +190,7 @@ ZSCRIPT
 		declare -Ag OROSHI_PROMPT_PARTS
 		oroshi-prompt-populate:git_plan_progress
 		result="${OROSHI_PROMPT_PARTS[git_plan_progress]}"
-		[[ "$result" == *"%F{$COLOR_ALIAS_GIT_ISSUE}"* ]] && echo "ok"
+		[[ "$result" == *"%F{$colors[GIT_ISSUE]}"* ]] && echo "ok"
 ZSCRIPT
   bats_run_zsh "$script"
   [ "$status" -eq 0 ]
@@ -212,7 +212,7 @@ ZSCRIPT
 		declare -Ag OROSHI_PROMPT_PARTS
 		oroshi-prompt-populate:git_plan_progress
 		result="${OROSHI_PROMPT_PARTS[git_plan_progress]}"
-		[[ "$result" == *"%F{$COLOR_ALIAS_SUCCESS}"* ]] && echo "ok"
+		[[ "$result" == *"%F{$colors[SUCCESS]}"* ]] && echo "ok"
 ZSCRIPT
   bats_run_zsh "$script"
   [ "$status" -eq 0 ]
@@ -234,7 +234,7 @@ ZSCRIPT
 		declare -Ag OROSHI_PROMPT_PARTS
 		oroshi-prompt-populate:git_plan_progress
 		result="${OROSHI_PROMPT_PARTS[git_plan_progress]}"
-		[[ "$result" == *"%F{$COLOR_ALIAS_ERROR}"* ]] && echo "ok"
+		[[ "$result" == *"%F{$colors[ERROR]}"* ]] && echo "ok"
 ZSCRIPT
   bats_run_zsh "$script"
   [ "$status" -eq 0 ]

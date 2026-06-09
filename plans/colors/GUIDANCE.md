@@ -75,6 +75,12 @@ Add `colors-load-definitions` call before first color use if the file is a stand
 
 _Agents append findings here after each issue._
 
+### Issue 06 — zsh consumers: prompt + tools
+
+- `nnn.zsh` uses `${(l:2::0:)colors[KEY]}` (ZSH padding modifier) — grep for `\$colors\[` won't match; use `colors\[` (without `$`) in structural tests.
+- `$COLORS_RED_8` in `ruby.zsh` was a pre-existing typo (extra `S`); migrated to `$colors[RED_8]`.
+- `colors-load-definitions` is NOT added to individual consumer files — the call chain (theming/index.zsh loading dist/colors.zsh) guarantees the array is populated before any of these files run.
+
 ### Issue 03 — colors-template-render
 
 - Perl `s/pattern/{{$1:hex}}/g` fails silently if `{` in the replacement is misinterpreted; use `\x7b\x7b$1:hex\x7d\x7d` or `|` delimiters to avoid the issue.
