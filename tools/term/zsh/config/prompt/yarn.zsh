@@ -43,6 +43,6 @@ function oroshi-prompt-populate:yarn_install_in_progress() {
   OROSHI_PROMPT_PARTS[yarn_install_in_progress]=""
 
   if yarn-install-in-progress; then
-    OROSHI_PROMPT_PARTS[yarn_install_in_progress]="%F{$COLOR_GREEN_8}$ICONS[refresh] %f"
+    OROSHI_PROMPT_PARTS[yarn_install_in_progress]="%F{$COLOR_GREEN_8}$ICONS[node-install-in-progress] %f"
   fi
 }

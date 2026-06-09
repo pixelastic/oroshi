@@ -25,7 +25,7 @@ for rawLine in ${(f)rawOutput}; do
 
   # Current worktree pointer marker
   if [[ "$PWD" == "$worktreePath" ]]; then
-    row+="$(colorize $ICONS[current] ALIAS_POINTER)▮"
+    row+="$(colorize $ICONS[git-worktree-current] ALIAS_POINTER)▮"
   else
     row+=" ▮"
   fi

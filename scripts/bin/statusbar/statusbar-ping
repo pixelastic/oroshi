@@ -10,7 +10,7 @@ mkdir -p $STATUS_SAVE_PATH
 
 if ! is-online; then
   jq -n \
-    --arg text "$ICONS[network]offline " \
+    --arg text "$ICONS[statusbar-ping-offline] offline " \
     --arg fg $COLOR_ALIAS_ERROR \
     --arg style "bold" \
     '$ARGS.named | [.]'
@@ -34,7 +34,7 @@ if [[ -f $pingRawPath ]]; then
   fi
 
   jq -n \
-    --arg text "$ICONS[pulse] ${ping} " \
+    --arg text "$ICONS[statusbar-ping] ${ping} " \
     --arg fg $fg \
     '$ARGS.named | [.]'
 else

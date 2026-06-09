@@ -238,7 +238,7 @@ function oroshi-completion-styling() {
   # }}}
 
   # Running processes
-  zstyle ':completion:*:processes-names' format "$(completion-header $COLOR_ALIAS_PROCESS $COLOR_BLACK ' $ICONS[pulse] Running processes ')"
+  zstyle ':completion:*:processes-names' format "$(completion-header $COLOR_ALIAS_PROCESS $COLOR_BLACK ' $ICONS[completion-process] Running processes ')"
 
   # Original query if no match found
   zstyle ':completion:*:original' format "$(completion-header $COLOR_ALIAS_UI $COLOR_WHITE ' ✘ Original query ')"

@@ -6,6 +6,7 @@
 # $ fzf-prompt-directory   # Colored prompt for current directory
 # $ fzf-prompt-directory ~/.oroshi/  # Colored prompt for ~/.oroshi
 setopt local_options err_return
+icons-load-definitions
 local inputPath="${1:a}"
 
 local projectPrefix="$(context-badge "$inputPath")"
@@ -20,10 +21,10 @@ fi
 # If we have a path to display, we make it pretty
 if [[ $fzfPrompt != "" ]]; then
   # shorten paths with too many levels
-  fzfPrompt=" $(simplify-path "$fzfPrompt")";
+  fzfPrompt=" $(simplify-path "$fzfPrompt")"
 fi
 # colorize it in green
-fzfPrompt="$(colorize "$fzfPrompt ❯" $COLOR_ALIAS_DIRECTORY)"
+fzfPrompt="$(colorize "$fzfPrompt" $COLOR_ALIAS_DIRECTORY)"
 # prefix the project
 fzfPrompt="${projectPrefix}${fzfPrompt}"
 

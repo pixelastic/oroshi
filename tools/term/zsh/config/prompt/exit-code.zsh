@@ -9,16 +9,16 @@ function oroshi-prompt-populate:exit_code() {
 
 	# Error
 	if [[ $OROSHI_LAST_COMMAND_EXIT == 1 ]]; then
-		OROSHI_PROMPT_PARTS[exit_code]="%F{$COLOR_ALIAS_ERROR}$ICONS[prompt] %f"
+		OROSHI_PROMPT_PARTS[exit_code]="%F{$COLOR_ALIAS_ERROR}$ICONS[zsh-prompt] %f"
 		return
 	fi
 
 	# Warning
 	if [[ $OROSHI_LAST_COMMAND_EXIT -gt 1 ]]; then
-		OROSHI_PROMPT_PARTS[exit_code]="%F{$COLOR_ALIAS_NOTICE}$ICONS[prompt] %f"
+		OROSHI_PROMPT_PARTS[exit_code]="%F{$COLOR_ALIAS_NOTICE}$ICONS[zsh-prompt] %f"
 		return
 	fi
 
-	OROSHI_PROMPT_PARTS[exit_code]="%F{$COLOR_ALIAS_SUCCESS}$ICONS[prompt] %f"
+	OROSHI_PROMPT_PARTS[exit_code]="%F{$COLOR_ALIAS_SUCCESS}$ICONS[zsh-prompt] %f"
 }
 # }}}

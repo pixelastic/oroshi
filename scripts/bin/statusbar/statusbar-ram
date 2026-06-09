@@ -14,11 +14,11 @@ local memoryUsed="$(
 )"
 
 if [[ $memoryUsed -gt 80 ]]; then
-  jo text="$ICONS[gauge] ${memoryUsed}% " fg="$COLOR_ALIAS_ERROR" | jo -a
+  jo text="$ICONS[statusbar-ram-fire] ${memoryUsed}% " fg="$COLOR_ALIAS_ERROR" | jo -a
   exit
 fi
 if [[ $memoryUsed -gt 50 ]]; then
-  jo text="$ICONS[pie] ${memoryUsed}% " fg="$COLOR_ALIAS_WARNING" | jo -a
+  jo text="$ICONS[statusbar-ram] ${memoryUsed}% " fg="$COLOR_ALIAS_WARNING" | jo -a
   exit
 fi
 

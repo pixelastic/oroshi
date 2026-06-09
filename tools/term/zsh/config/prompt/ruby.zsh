@@ -46,6 +46,6 @@ function oroshi-prompt-populate:bundle_install_in_progress() {
   OROSHI_PROMPT_PARTS[bundle_install_in_progress]=""
 
   if bundle-install-in-progress; then
-    OROSHI_PROMPT_PARTS[bundle_install_in_progress]="%F{$COLORS_RED_8}$ICONS[refresh] %f"
+    OROSHI_PROMPT_PARTS[bundle_install_in_progress]="%F{$COLORS_RED_8}$ICONS[ruby-install-in-progress] %f"
   fi
 }

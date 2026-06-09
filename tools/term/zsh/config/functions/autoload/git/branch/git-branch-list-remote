@@ -82,7 +82,7 @@ for remoteName in $remoteNames; do
     # Building the row display {{{
     # Currently tracked branch {{{
     if [[ "$remoteBranchName" == "$currentRemoteBranch" ]]; then
-      row+="$(colorize $ICONS[current] ALIAS_SUCCESS)▮"
+      row+="$(colorize $ICONS[git-branch-current] ALIAS_SUCCESS)▮"
     else
       row+="▮"
     fi

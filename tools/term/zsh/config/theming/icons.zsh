@@ -1,15 +1,12 @@
 # Named icon definitions
 typeset -gA ICONS
 
-# Common
-ICONS[current]=""
-ICONS[unknown]=""
-
 # Kitty
 ICONS[kitty-tab-separator]=""
 
 # Zsh
 ICONS[badge-separator]=""
+ICONS[zsh-prompt]="❯"
 
 # Completion
 ICONS[completion-separator]=""
@@ -18,20 +15,23 @@ ICONS[completion-folder]=""
 ICONS[completion-commands]=""
 ICONS[completion-aliases]=""
 ICONS[completion-zsh-builtins]=""
+ICONS[completion-process]=""
 
 # Fzf
 ICONS[fzf-separator]=""
+ICONS[fzf-current]=""
 ICONS[fzf-selected]=""
 
 # Nvim
-ICONS[nvim-notification-separator]=""
 ICONS[nvim-tab-separator]=""
+ICONS[nvim-notification-separator]=""
 
-# Tools
+# ----- Tools
 ICONS[dropbox]=""
 
 # Git
 ICONS[git-branch]=""
+ICONS[git-branch-current]=""
 ICONS[git-branch-dependabot]=""
 ICONS[git-branch-ahead]=""
 ICONS[git-branch-behind]=""
@@ -40,6 +40,7 @@ ICONS[git-issue]=""
 ICONS[git-pr]=""
 ICONS[git-rebase]=""
 ICONS[git-remote]=""
+ICONS[git-remote-current]=""
 ICONS[git-remote-unpushed]=""
 ICONS[git-remote-need-push]=""
 ICONS[git-remote-need-pull]=""
@@ -52,6 +53,7 @@ ICONS[git-tag]=""
 ICONS[git-tag-closest]="󱈤"
 ICONS[git-tag-unrelated]=""
 ICONS[git-worktree]="󰌪"
+ICONS[git-worktree-current]=""
 ICONS[git-changes]="±"
 
 # Docker
@@ -59,41 +61,36 @@ ICONS[docker-run]=""
 ICONS[docker-stop]=""
 ICONS[docker-pause]=""
 
-# Sound
-ICONS[sound-play]=""
-ICONS[sound-mode]=""
+# Statusbar
+ICONS[statusbar-ram]=""
+ICONS[statusbar-ram-fire]=""
+ICONS[statusbar-cpu]=""
+ICONS[statusbar-cpu-fire]=""
+ICONS[statusbar-ping]=""
+ICONS[statusbar-ping-offline]=""
 
-# Languages
-ICONS[ruby]=""
+# ----- Languages
 ICONS[python]=""
 
 # Node
 ICONS[node]=""
+ICONS[node-version-current]=""
+ICONS[node-install-in-progress]=""
 ICONS[node-package]=""
 ICONS[node-monorepo]=""
 ICONS[node-link]=""
 ICONS[node-js]=""
 
+# Ruby
+ICONS[ruby]=""
+ICONS[ruby-install-in-progress]=""
+
+# ----- Misc
+
+# Common
+ICONS[unknown]=""
+
 # Separators
 ICONS[separator-arrow]=""
 ICONS[separator-slant]=""
 ICONS[separator-slant-reverse]=""
-
-# ---
-
-# Misc
-ICONS[clock]=""
-ICONS[gauge]=""
-ICONS[network]=""
-ICONS[pie]=""
-ICONS[pulse]=""
-ICONS[wave]=""
-ICONS[prompt]="❯"
-ICONS[warning]=""
-ICONS[refresh]=""
-
-# Battery
-ICONS[battery-charging]=""
-ICONS[battery-full]=""
-ICONS[battery-high]=""
-ICONS[battery-low]=""

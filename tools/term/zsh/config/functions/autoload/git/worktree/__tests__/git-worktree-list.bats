@@ -17,7 +17,7 @@ setup() {
     # shellcheck disable=SC2034
     ICONS[git-branch-behind]="↓"
     # shellcheck disable=SC2034
-    ICONS[current]="$BATS_CURRENT"
+    ICONS[git-worktree-current]="$BATS_CURRENT"
   }
   bats_mock icons-load-definitions
 }

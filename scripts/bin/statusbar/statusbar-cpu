@@ -13,12 +13,12 @@ local cpuUsed="$(
 )"
 
 if [[ $cpuUsed -gt 80 ]]; then
-  jo text="$ICONS[gauge] ${cpuUsed}% " fg="$COLOR_ALIAS_ERROR" | jo -a
+  jo text="$ICONS[statusbar-cpu-fire] ${cpuUsed}% " fg="$COLOR_ALIAS_ERROR" | jo -a
   exit
 fi
 
 if [[ $cpuUsed -gt 50 ]]; then
-  jo text="$ICONS[wave] ${cpuUsed}% " fg="$COLOR_ALIAS_WARNING" | jo -a
+  jo text="$ICONS[statusbar-cpu] ${cpuUsed}% " fg="$COLOR_ALIAS_WARNING" | jo -a
   exit
 fi
 

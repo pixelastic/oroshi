@@ -17,7 +17,7 @@ for rawLine in ${(f)rawList}; do
 
   # Current remote
   if [[ "$remoteName" == "$currentRemote" ]]; then
-    row+="$(colorize "$ICONS[current]" GREEN)▮"
+    row+="$(colorize "$ICONS[git-remote-current]" GREEN)▮"
   else
     row+="▮"
   fi
