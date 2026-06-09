@@ -5,6 +5,21 @@ setup() {
   CURRENT="$OROSHI_ZSH_AUTOLOAD/git/worktree/git-worktree-list"
   bats_git_worktree 'fix/bug'
   bats_git_worktree 'feat/dark-mode'
+
+  export BATS_CURRENT=">"
+
+  icons-load-definitions() {
+    typeset -gA ICONS
+    # shellcheck disable=SC2034
+    ICONS[git-changes]="±"
+    # shellcheck disable=SC2034
+    ICONS[git-branch-ahead]="↑"
+    # shellcheck disable=SC2034
+    ICONS[git-branch-behind]="↓"
+    # shellcheck disable=SC2034
+    ICONS[current]="$BATS_CURRENT"
+  }
+  bats_mock icons-load-definitions
 }
 
 teardown() {
@@ -37,7 +52,7 @@ teardown() {
   cd "${BATS_GIT_WORKTREES}fix-bug"
   bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
-  [[ "$output" == *""* ]]
+  [[ "$output" == *"${BATS_CURRENT}"* ]]
 }
 
 @test "shows ahead count vs main" {

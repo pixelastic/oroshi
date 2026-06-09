@@ -66,8 +66,8 @@ function oroshi-prompt-populate:git_worktree_distance() {
   (($GIT_DIRECTORY_IS_REPOSITORY)) || return
   (($GIT_DIRECTORY_IS_WORKTREE)) || return
 
-  local iconAhead="$ICONS[git-ahead]"
-  local iconBehind="$ICONS[git-behind]"
+  local iconAhead="$ICONS[git-branch-ahead]"
+  local iconBehind="$ICONS[git-branch-behind]"
 
   # Output format: "ahead N, behind M" — empty on failure
   local distanceOutput="$(git-worktree-distance)"

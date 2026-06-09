@@ -9,6 +9,16 @@ setup() {
   export iconDirty="±"
   export iconAhead=""
   export iconBehind=""
+  icons-load-definitions() {
+    typeset -gA ICONS
+    # shellcheck disable=SC2034
+    ICONS[git-changes]="$iconDirty"
+    # shellcheck disable=SC2034
+    ICONS[git-branch-ahead]="$iconAhead"
+    # shellcheck disable=SC2034
+    ICONS[git-branch-behind]="$iconBehind"
+  }
+  bats_mock icons-load-definitions
 }
 
 teardown() {

@@ -5,10 +5,8 @@
 # $ complete-git-worktrees
 
 setopt local_options err_return
+icons-load-definitions
 
-local iconDirty="±"
-local iconAhead=""
-local iconBehind=""
 
 local mainPath="$(git-worktree-main 2>/dev/null || true)"
 [[ "$mainPath" == "" ]] && echo "main" && return 0
@@ -17,7 +15,7 @@ local mainDirtyCount="$(git-directory-dirty-count "$mainPath")"
 local mainMessage="$(git log -1 --format="%s" main 2>/dev/null || true)"
 
 local mainParts=()
-[[ $mainDirtyCount -gt 0 ]] && mainParts+=("${iconDirty}${mainDirtyCount}")
+[[ $mainDirtyCount -gt 0 ]] && mainParts+=("${ICONS[git-changes]}${mainDirtyCount}")
 local mainCounters="${(j: :)mainParts}"
 local mainDesc="$([[ "$mainCounters" != "" ]] && echo "${mainCounters}  ${mainMessage}" || echo "${mainMessage}")"
 echo "main:${mainDesc}"
@@ -35,9 +33,9 @@ for rawLine in ${(f)rawList}; do
   local message="$fields[7]"
 
   local parts=()
-  [[ $dirtyCount -gt 0 ]] && parts+=("${dirtyCount}${iconDirty}")
-  [[ $ahead -gt 0 ]] && parts+=("${ahead}${iconAhead}")
-  [[ $behind -gt 0 ]] && parts+=("${behind}${iconBehind}")
+  [[ $dirtyCount -gt 0 ]] && parts+=("${dirtyCount}${ICONS[git-changes]}")
+  [[ $ahead -gt 0 ]] && parts+=("${ahead}${ICONS[git-branch-ahead]}")
+  [[ $behind -gt 0 ]] && parts+=("${behind}${ICONS[git-branch-behind]}")
   local counters="${(j: :)parts}"
   local desc="$([[ "$counters" != "" ]] && echo "${counters}  ${message}" || echo "${message}")"
   echo "${branch}:${desc}"

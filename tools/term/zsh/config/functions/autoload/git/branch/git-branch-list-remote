@@ -13,8 +13,6 @@ local isAll=${#flagAll}
 
 # Init values {{{
 local output=""
-local iconAhead=""
-local iconBehind=""
 local currentRemote="$(git-remote-current)"
 local currentRemoteBranch="$currentRemote/$(git-remote-branch)"
 
@@ -102,12 +100,12 @@ for remoteName in $remoteNames; do
     local aheadCount="${distanceParsed%%▮*}"
     local behindCount="${distanceParsed##*▮}"
     if [[ "$aheadCount" != "0" ]]; then
-      row+="$(colorize "${aheadCount}${iconAhead}" ALIAS_GIT_AHEAD)▮"
+      row+="$(colorize "${aheadCount}${ICONS[git-branch-ahead]}" ALIAS_GIT_AHEAD)▮"
     else
       row+="▮"
     fi
     if [[ "$behindCount" != "0" ]]; then
-      row+="$(colorize "${behindCount}${iconBehind}" ALIAS_GIT_BEHIND)▮"
+      row+="$(colorize "${behindCount}${ICONS[git-branch-behind]}" ALIAS_GIT_BEHIND)▮"
     else
       row+="▮"
     fi

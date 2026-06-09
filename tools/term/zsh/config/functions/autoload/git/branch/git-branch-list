@@ -4,9 +4,6 @@
 setopt local_options err_return
 icons-load-definitions
 
-local iconDirty="±"
-local iconAhead=""
-local iconBehind=""
 
 # Get dirty/ahead/behind info of all worktrees {{{
 local rawWorktrees="$(git-worktree-list-raw)"
@@ -67,7 +64,7 @@ for rawGitBranch in ${(f)rawGitBranches}; do
     local displayDirty=""
     local dirtyCount=$worktreeDirty[$branchName]
     if [[ "$dirtyCount" != "0" ]]; then
-      displayDirty+="$(colorize "${dirtyCount}${iconDirty}" ALIAS_GIT_WORKTREE_DIRTY)"
+      displayDirty+="$(colorize "${dirtyCount}${ICONS[git-changes]}" ALIAS_GIT_WORKTREE_DIRTY)"
     fi
     row+="${displayDirty}▮"
   fi
@@ -77,7 +74,7 @@ for rawGitBranch in ${(f)rawGitBranches}; do
   [[ $isWorktree == "1" ]] && aheadCount=$worktreeAhead[$branchName]
   local displayAhead=""
   if [[ "$aheadCount" != "0" ]]; then
-    displayAhead+="$(colorize "${aheadCount}${iconAhead}" ALIAS_GIT_AHEAD)"
+    displayAhead+="$(colorize "${aheadCount}${ICONS[git-branch-ahead]}" ALIAS_GIT_AHEAD)"
   fi
   row+="${displayAhead}▮"
 
@@ -86,7 +83,7 @@ for rawGitBranch in ${(f)rawGitBranches}; do
   [[ $isWorktree == "1" ]] && behindCount=$worktreeBehind[$branchName]
   local displayBehind=""
   if [[ "$behindCount" != "0" ]]; then
-    displayBehind+="$(colorize "${behindCount}${iconBehind}" ALIAS_GIT_BEHIND)"
+    displayBehind+="$(colorize "${behindCount}${ICONS[git-branch-behind]}" ALIAS_GIT_BEHIND)"
   fi
   row+="${displayBehind}▮"
 

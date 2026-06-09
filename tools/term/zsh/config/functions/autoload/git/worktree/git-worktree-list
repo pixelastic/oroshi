@@ -2,9 +2,7 @@
 # Usage:
 # $ git-worktree-list
 setopt local_options err_return
-
-local iconAhead=""
-local iconBehind=""
+icons-load-definitions
 
 local rawOutput="$(git-worktree-list-raw)"
 
@@ -27,7 +25,7 @@ for rawLine in ${(f)rawOutput}; do
 
   # Current worktree pointer marker
   if [[ "$PWD" == "$worktreePath" ]]; then
-    row+="$(colorize "" ALIAS_POINTER)▮"
+    row+="$(colorize $ICONS[current] ALIAS_POINTER)▮"
   else
     row+=" ▮"
   fi
@@ -37,21 +35,21 @@ for rawLine in ${(f)rawOutput}; do
 
   # Dirty count
   if [[ "$dirtyCount" != "0" ]]; then
-    row+="$(colorize "±${dirtyCount}" ALIAS_GIT_WORKTREE_DIRTY)▮"
+    row+="$(colorize "$ICONS[git-changes]${dirtyCount}" ALIAS_GIT_WORKTREE_DIRTY)▮"
   else
     row+="▮"
   fi
 
   # Ahead
   if [[ "$ahead" != "0" ]]; then
-    row+="$(colorize "${ahead}${iconAhead}" ALIAS_GIT_AHEAD)▮"
+    row+="$(colorize "${ahead}${ICONS[git-branch-ahead]}" ALIAS_GIT_AHEAD)▮"
   else
     row+="▮"
   fi
 
   # Behind
   if [[ "$behind" != "0" ]]; then
-    row+="$(colorize "${behind}${iconBehind}" ALIAS_GIT_BEHIND)▮"
+    row+="$(colorize "${behind}${ICONS[git-branch-behind]}" ALIAS_GIT_BEHIND)▮"
   else
     row+="▮"
   fi

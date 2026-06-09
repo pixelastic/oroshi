@@ -31,6 +31,8 @@ ICONS[dropbox]=""
 
 # Git
 ICONS[git-branch]=""
+ICONS[git-branch-ahead]=""
+ICONS[git-branch-behind]=""
 ICONS[git-commit]="ﰖ"
 ICONS[git-issue]=""
 ICONS[git-pr]=""
@@ -40,6 +42,7 @@ ICONS[git-stash]=""
 ICONS[git-submodule]=""
 ICONS[git-tag]=""
 ICONS[git-worktree]="󰌪"
+ICONS[git-changes]="±"
 
 # Separators
 ICONS[separator-arrow]=""
@@ -49,8 +52,6 @@ ICONS[separator-slant-reverse]=""
 # ---
 
 # Git
-ICONS[git-ahead]=""
-ICONS[git-behind]=""
 
 # Git branches
 ICONS[branch-never-pushed]=""
