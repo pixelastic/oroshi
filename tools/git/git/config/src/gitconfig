@@ -36,97 +36,97 @@
   required = true
 
 [log]
-  graphColors = {{PUNCTUATION}} # Graph lines (|, /)
+  graphColors = {{punctuation}} # Graph lines (|, /)
 
 # Colors {{{
 [color]
   ui = true
 [color "advice"]
-  hint = {{WARNING}}
+  hint = {{warning}}
 [color "blame"]
-  highlightRecent = {{UNKNOWN}}
-  repeatedLines = {{UNKNOWN}}
+  highlightRecent = {{unknown}}
+  repeatedLines = {{unknown}}
 [color "branch"]
-  current = {{UNKNOWN}}
-  local = {{UNKNOWN}}
-  plain = {{UNKNOWN}}
-  remote = {{UNKNOWN}}
-  reset = {{UNKNOWN}}
-  upstream = {{UNKNOWN}}
-  worktree = {{UNKNOWN}}
+  current = {{unknown}}
+  local = {{unknown}}
+  plain = {{unknown}}
+  remote = {{unknown}}
+  reset = {{unknown}}
+  upstream = {{unknown}}
+  worktree = {{unknown}}
 [color "decorate"]
-  HEAD = {{GIT_BRANCH}} # HEAD ->
-  branch = {{GIT_BRANCH}} # Branch name
-  remoteBranch = {{GIT_REMOTE}} # Remote branches
-  stash = {{GIT_STASH}} # Stashes
-  tag = {{GIT_TAG}} # Tags
+  HEAD = {{git-branch}} # HEAD ->
+  branch = {{git-branch}} # Branch name
+  remoteBranch = {{git-remote}} # Remote branches
+  stash = {{git-stash}} # Stashes
+  tag = {{git-tag}} # Tags
 
-  grafted = {{UNKNOWN}}
+  grafted = {{unknown}}
 [color "diff"]
-  plain = {{COMMENT}}   # Default color
-  context = {{COMMENT}} # Lines untouched
-  frag = {{TERMINAL}}   # @@ -9,14 +9,15 @@
-  func = {{TERMINAL}}   # Name of function into which code is changed
-  meta = {{HEADER}}     # Diff header
-  new = {{GIT_ADDED}}   # Lines added
-  old = {{GIT_REMOVED}} # Lines deleted
-  whitespace = {{RED}} {{RED}}             # Any diff whitespace
-  commit = {{UI}} # Also used as the default color for decorate, to display punctuation
+  plain = {{comment}}   # Default color
+  context = {{comment}} # Lines untouched
+  frag = {{terminal}}   # @@ -9,14 +9,15 @@
+  func = {{terminal}}   # Name of function into which code is changed
+  meta = {{header}}     # Diff header
+  new = {{git-added}}   # Lines added
+  old = {{git-removed}} # Lines deleted
+  whitespace = {{red}} {{red}}             # Any diff whitespace
+  commit = {{ui}} # Also used as the default color for decorate, to display punctuation
 
-  contextBold = {{UNKNOWN}}
-  contextDimmed = {{UNKNOWN}}
-  newBold = {{UNKNOWN}}
-  newDimmed = {{UNKNOWN}}
-  newMoved = {{UNKNOWN}}
-  newMovedAlternative = {{UNKNOWN}}
-  newMovedAlternativeDimmed = {{UNKNOWN}}
-  newMovedDimmed = {{UNKNOWN}}
-  oldBold = {{UNKNOWN}}
-  oldDimmed = {{UNKNOWN}}
-  oldMoved = {{UNKNOWN}}
-  oldMovedAlternative = {{UNKNOWN}}
-  oldMovedAlternativeDimmed = {{UNKNOWN}}
-  oldMovedDimmed = {{UNKNOWN}}
+  contextBold = {{unknown}}
+  contextDimmed = {{unknown}}
+  newBold = {{unknown}}
+  newDimmed = {{unknown}}
+  newMoved = {{unknown}}
+  newMovedAlternative = {{unknown}}
+  newMovedAlternativeDimmed = {{unknown}}
+  newMovedDimmed = {{unknown}}
+  oldBold = {{unknown}}
+  oldDimmed = {{unknown}}
+  oldMoved = {{unknown}}
+  oldMovedAlternative = {{unknown}}
+  oldMovedAlternativeDimmed = {{unknown}}
+  oldMovedDimmed = {{unknown}}
 [color "diff-highlight"]
-	oldNormal = {{GIT_REMOVED}}
-	oldHighlight = {{GIT_REMOVED}} bold {{CYAN}}
-	newNormal = {{GIT_ADDED}}
-	newHighlight = {{GIT_ADDED}} bold {{CYAN}}
+	oldNormal = {{git-removed}}
+	oldHighlight = {{git-removed}} bold {{cyan}}
+	newNormal = {{git-added}}
+	newHighlight = {{git-added}} bold {{cyan}}
 [color "grep"]
-  column = {{UNKNOWN}}
-  context = {{UNKNOWN}}
-  filename = {{UNKNOWN}}
-  function = {{UNKNOWN}}
-  lineNumber = {{UNKNOWN}}
-  match = {{UNKNOWN}}
-  matchContext = {{UNKNOWN}}
-  matchSelected = {{UNKNOWN}}
-  selected = {{UNKNOWN}}
-  separator = {{UNKNOWN}}
+  column = {{unknown}}
+  context = {{unknown}}
+  filename = {{unknown}}
+  function = {{unknown}}
+  lineNumber = {{unknown}}
+  match = {{unknown}}
+  matchContext = {{unknown}}
+  matchSelected = {{unknown}}
+  selected = {{unknown}}
+  separator = {{unknown}}
 [color "interactive"]
-  error = {{UNKNOWN}}
-  header = {{UNKNOWN}}
-  help = {{UNKNOWN}}
-  plain = {{UNKNOWN}}
-  prompt = {{UNKNOWN}}
-  reset = {{UNKNOWN}}
+  error = {{unknown}}
+  header = {{unknown}}
+  help = {{unknown}}
+  plain = {{unknown}}
+  prompt = {{unknown}}
+  reset = {{unknown}}
 [color "push"]
-  error = {{ERROR}}
+  error = {{error}}
 [color "remote"]
-  error = {{UNKNOWN}}
-  hint = {{UNKNOWN}}
-  success = {{UNKNOWN}}
-  warning = {{UNKNOWN}}
+  error = {{unknown}}
+  hint = {{unknown}}
+  success = {{unknown}}
+  warning = {{unknown}}
 [color "status"]
-  header = {{COMMENT}}                # Default text
-  branch = {{GIT_BRANCH}}             # Current branch
-  added = {{GIT_ADDED}}               # File added to staging area
-  changed = {{GIT_MODIFIED}}          # Changed, but not staged
-  untracked = {{GIT_ADDED}}           # New file
-  unmerged = {{GIT_MODIFIED}}         # Both added and modified at the same time
-  noBranch = {{ERROR}}                # Rebase in progress
+  header = {{comment}}                # Default text
+  branch = {{git-branch}}             # Current branch
+  added = {{git-added}}               # File added to staging area
+  changed = {{git-modified}}          # Changed, but not staged
+  untracked = {{git-added}}           # New file
+  unmerged = {{git-modified}}         # Both added and modified at the same time
+  noBranch = {{error}}                # Rebase in progress
 
-  ; updated = {{UNKNOWN}}      # Should stay commented
-  ; localBranch = {{UNKNOWN}}
-  ; remoteBranch = {{UNKNOWN}}
+  ; updated = {{unknown}}      # Should stay commented
+  ; localBranch = {{unknown}}
+  ; remoteBranch = {{unknown}}
 # }}}

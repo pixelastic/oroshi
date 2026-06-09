@@ -1,4 +1,3 @@
-# shellcheck disable=SC2154
 # Add icons for each known yarn linked project
 function oroshi-prompt-populate:yarn_link() {
   OROSHI_PROMPT_PARTS[yarn_link]=""
@@ -34,7 +33,7 @@ function oroshi-prompt-populate:yarn_link() {
   fi
 
   if [[ $displayedString != "" ]]; then
-    OROSHI_PROMPT_PARTS[yarn_link]="%F{$colors[STRING]}${displayedString}%f"
+    OROSHI_PROMPT_PARTS[yarn_link]="%F{$COLORS[string]}${displayedString}%f"
   fi
 }
 
@@ -43,6 +42,6 @@ function oroshi-prompt-populate:yarn_install_in_progress() {
   OROSHI_PROMPT_PARTS[yarn_install_in_progress]=""
 
   if yarn-install-in-progress; then
-    OROSHI_PROMPT_PARTS[yarn_install_in_progress]="%F{$colors[GREEN_8]}$ICONS[node-install-in-progress] %f"
+    OROSHI_PROMPT_PARTS[yarn_install_in_progress]="%F{$COLORS[green-8]}$ICONS[node-install-in-progress] %f"
   fi
 }

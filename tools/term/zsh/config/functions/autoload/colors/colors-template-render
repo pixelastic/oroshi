@@ -1,4 +1,4 @@
-# Replace {{NAME}} and {{NAME:hex}} placeholders with values from colors[]
+# Replace {{name}} and {{name:hex}} placeholders with values from COLORS[]
 # Unknown placeholders are left unchanged
 # Usage:
 # $ colors-template-render <filepath>
@@ -11,8 +11,8 @@ colors-load-definitions
 
 local content="$(<$1)"
 
-for key in ${(k)colors}; do
-  content="${content//\{\{${key}\}\}/${colors[$key]}}"
+for key in ${(k)COLORS}; do
+  content="${content//\{\{${key}\}\}/${COLORS[$key]}}"
 done
 
 print -r -- "$content"

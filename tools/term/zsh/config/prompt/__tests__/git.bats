@@ -25,7 +25,7 @@ teardown() {
 		declare -Ag OROSHI_PROMPT_PARTS
 		oroshi-prompt-populate:git_worktree_distance
 		result="${OROSHI_PROMPT_PARTS[git_worktree_distance]}"
-		[[ "$result" == *"%F{$colors[GIT_AHEAD]}"* ]] && [[ "$result" == *"2"* ]]
+		[[ "$result" == *"%F{$COLORS[git-ahead]}"* ]] && [[ "$result" == *"2"* ]]
 ZSCRIPT
   bats_run_zsh "$script"
   [ "$status" -eq 0 ]
@@ -46,7 +46,7 @@ ZSCRIPT
 		declare -Ag OROSHI_PROMPT_PARTS
 		oroshi-prompt-populate:git_worktree_distance
 		result="${OROSHI_PROMPT_PARTS[git_worktree_distance]}"
-		[[ "$result" == *"%F{$colors[GIT_BEHIND]}"* ]] && [[ "$result" == *"3"* ]]
+		[[ "$result" == *"%F{$COLORS[git-behind]}"* ]] && [[ "$result" == *"3"* ]]
 ZSCRIPT
   bats_run_zsh "$script"
   [ "$status" -eq 0 ]
@@ -66,7 +66,7 @@ ZSCRIPT
 		declare -Ag OROSHI_PROMPT_PARTS
 		oroshi-prompt-populate:git_worktree_distance
 		result="${OROSHI_PROMPT_PARTS[git_worktree_distance]}"
-		[[ "$result" == *"%F{$colors[GIT_AHEAD]}"* ]] && [[ "$result" == *"%F{$colors[GIT_BEHIND]}"* ]]
+		[[ "$result" == *"%F{$COLORS[git-ahead]}"* ]] && [[ "$result" == *"%F{$COLORS[git-behind]}"* ]]
 ZSCRIPT
   bats_run_zsh "$script"
   [ "$status" -eq 0 ]
@@ -190,7 +190,7 @@ ZSCRIPT
 		declare -Ag OROSHI_PROMPT_PARTS
 		oroshi-prompt-populate:git_plan_progress
 		result="${OROSHI_PROMPT_PARTS[git_plan_progress]}"
-		[[ "$result" == *"%F{$colors[GIT_ISSUE]}"* ]] && echo "ok"
+		[[ "$result" == *"%F{$COLORS[git-issue]}"* ]] && echo "ok"
 ZSCRIPT
   bats_run_zsh "$script"
   [ "$status" -eq 0 ]
@@ -212,7 +212,7 @@ ZSCRIPT
 		declare -Ag OROSHI_PROMPT_PARTS
 		oroshi-prompt-populate:git_plan_progress
 		result="${OROSHI_PROMPT_PARTS[git_plan_progress]}"
-		[[ "$result" == *"%F{$colors[SUCCESS]}"* ]] && echo "ok"
+		[[ "$result" == *"%F{$COLORS[success]}"* ]] && echo "ok"
 ZSCRIPT
   bats_run_zsh "$script"
   [ "$status" -eq 0 ]
@@ -234,7 +234,7 @@ ZSCRIPT
 		declare -Ag OROSHI_PROMPT_PARTS
 		oroshi-prompt-populate:git_plan_progress
 		result="${OROSHI_PROMPT_PARTS[git_plan_progress]}"
-		[[ "$result" == *"%F{$colors[ERROR]}"* ]] && echo "ok"
+		[[ "$result" == *"%F{$COLORS[error]}"* ]] && echo "ok"
 ZSCRIPT
   bats_run_zsh "$script"
   [ "$status" -eq 0 ]

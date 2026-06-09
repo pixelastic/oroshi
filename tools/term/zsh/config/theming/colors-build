@@ -273,15 +273,18 @@ for line in ${(f)kittyColors}; do
     colorKey="${colorRanges[$colorRangeValue]}_${colorTermValue[-1]}"
   fi
 
-  colorsByName[$colorKey]="$colorTermValue"
-  colorsByNameHexa[$colorKey]="$colorHexValue"
+  local kebabKey="${${(L)colorKey}//_/-}"
+  colorsByName[$kebabKey]="$colorTermValue"
+  colorsByNameHexa[$kebabKey]="$colorHexValue"
 done
 
 # Expand aliases into colorsByName/colorsByNameHexa
 for aliasName rawName in "${(@kv)aliasColors}"; do
-  [[ "${colorsByName[$rawName]}" == "" ]] && continue
-  colorsByName[$aliasName]="${colorsByName[$rawName]}"
-  colorsByNameHexa[$aliasName]="${colorsByNameHexa[$rawName]}"
+  local kebabRawName="${${(L)rawName}//_/-}"
+  local kebabAliasName="${${(L)aliasName}//_/-}"
+  [[ "${colorsByName[$kebabRawName]}" == "" ]] && continue
+  colorsByName[$kebabAliasName]="${colorsByName[$kebabRawName]}"
+  colorsByNameHexa[$kebabAliasName]="${colorsByNameHexa[$kebabRawName]}"
 done
 # }}}
 
@@ -300,11 +303,11 @@ function generateDistJson() {
 # Generate dist/colors.zsh from dist/colors.json {{{
 function generateDistZsh() {
   {
-    echo "typeset -gA colors"
+    echo "typeset -gA COLORS"
     jq -r '
       to_entries[] |
-      "colors[\(.key)]=\(.value.ansi)",
-      "colors[\(.key):hex]=\"\(.value.hex)\""
+      "COLORS[\(.key)]=\(.value.ansi)",
+      "COLORS[\(.key):hex]=\"\(.value.hex)\""
     ' "$distJson"
   } >"$distZsh"
 }

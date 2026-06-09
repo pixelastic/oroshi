@@ -29,7 +29,7 @@ Replace 160+ `COLOR_*` exported shell variables with a single ZSH associative ar
 | ANSI integer for alias | `$COLORS[git-branch]` |
 | Hex string for alias | `$COLORS[git-branch:hex]` |
 
-Keys are kebab-case (all lowercase, underscores → hyphens). Aliases have no `alias-` prefix in array keys.
+Keys are kebab-case (all lowercase, underscores → hyphens). Aliases have no `alias-` prefix in array keys. Array name is `COLORS` (uppercase).
 
 ### Template placeholder syntax
 
@@ -40,6 +40,8 @@ Config template files (`src/oroshi.xml`, `src/rgrc.conf`, `src/gitconfig`) use `
 ```json
 { "yellow-7": { "ansi": 87, "hex": "#a16207" }, "git-branch": { "ansi": 17, "hex": "#d69e2e" } }
 ```
+
+Keys are kebab-case.
 
 Used by: NeoVim (`F.readJson()`), `projects-build` (`--argjson colors`).
 
@@ -69,11 +71,21 @@ Find all `$COLOR_*` references, apply these substitutions (key = strip prefix, l
 - `$COLOR_ALIAS_GIT_BRANCH` → `$COLORS[git-branch]` (strip `ALIAS_`, no prefix in key)
 - `$COLOR_ALIAS_GIT_BRANCH_HEXA` → `$COLORS[git-branch:hex]`
 
+Find all `$colors[UPPERCASE_SNAKE]` references, apply:
+- `$colors[GIT_BRANCH]` → `$COLORS[git-branch]`
+- `$colors[GIT_BRANCH:hex]` → `$COLORS[git-branch:hex]`
+
 Add `colors-load-definitions` call before first color use if the file is a standalone script.
 
 ## Discoveries
 
 _Agents append findings here after each issue._
+
+### Issue 09 — colors rename to COLORS + kebab keys
+
+- Use `|` as the outer delimiter in perl when the replacement contains `/` (e.g., `perl -pi -e 's|pattern|replacement|ge'`); using `/` as outer delimiter causes `\/` escape sequences to be silently consumed in the replacement, stripping `:hex` suffixes.
+- `projects-build` jq `bgInactiveName` logic uses `split("_")[0]` for uppercase; the kebab equivalent is `gsub("-[0-9]+$"; "") | "dark-" + .`; same semantic for base colors and numeric-suffix variants.
+- `GRAY_WHITE` was a pre-existing dangling key in `exa.zsh` (no such color in the palette); it became `gray-white` after the rename — still dangling, noted in review-log.
 
 ### Issue 06 — zsh consumers: prompt + tools
 

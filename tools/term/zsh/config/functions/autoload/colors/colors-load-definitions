@@ -1,8 +1,9 @@
 # Load colors associative array into memory
 # No-op if already populated (allows test injection via mock)
 # Usage: colors-load-definitions
+setopt local_options err_return
 
 # Stop if already loaded
-((${#colors} > 0)) && return
+((${#COLORS} > 0)) && return
 
 source "$OROSHI_ROOT/tools/term/zsh/config/theming/dist/colors.zsh"

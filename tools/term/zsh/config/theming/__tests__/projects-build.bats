@@ -9,28 +9,28 @@ setup() {
   mkdir -p "$THEMING_ROOT/dist"
 
   jq -n '{
-    "GREEN_8":   {"ansi": 78,  "hex": "#166534"},
-    "DARK_GREEN":{"ansi": 211, "hex": "#0f1a0f"},
-    "GRAY_9":    {"ansi": 139, "hex": "#111827"},
-    "GREEN":     {"ansi": 2,   "hex": "#38a169"}
+    "green-8":   {"ansi": 78,  "hex": "#166534"},
+    "dark-green":{"ansi": 211, "hex": "#0f1a0f"},
+    "gray-9":    {"ansi": 139, "hex": "#111827"},
+    "green":     {"ansi": 2,   "hex": "#38a169"}
   }' >"$THEMING_ROOT/dist/colors.json"
 
   # full: all fields, path with trailing slash, backgroundInactive from numeric suffix
   # hidden: hideNameInPrompt=true, no path
   # icononly: minimal, no background/foreground/path
-  # nosuffix: backgroundInactive from non-numeric suffix (GREEN -> DARK_GREEN)
+  # nosuffix: backgroundInactive from non-numeric suffix (green -> dark-green)
   jo -d. \
-    full.background=GREEN_8 \
-    full.foreground=GRAY_9 \
+    full.background=green-8 \
+    full.foreground=gray-9 \
     full.icon=X \
     "full.path=~/projects/full" \
-    hidden.background=GREEN_8 \
-    hidden.foreground=GRAY_9 \
+    hidden.background=green-8 \
+    hidden.foreground=gray-9 \
     hidden.icon=H \
     hidden.hideNameInPrompt=true \
     icononly.icon=I \
-    nosuffix.background=GREEN \
-    nosuffix.foreground=GRAY_9 \
+    nosuffix.background=green \
+    nosuffix.foreground=gray-9 \
     nosuffix.icon=G \
     >"$THEMING_ROOT/src/projects.json"
 }
@@ -72,17 +72,17 @@ teardown() {
     "background": {
       "ansi": 78,
       "hex": "#166534",
-      "name": "GREEN_8"
+      "name": "green-8"
     },
     "backgroundInactive": {
       "ansi": 211,
       "hex": "#0f1a0f",
-      "name": "DARK_GREEN"
+      "name": "dark-green"
     },
     "foreground": {
       "ansi": 139,
       "hex": "#111827",
-      "name": "GRAY_9"
+      "name": "gray-9"
     },
     "hideNameInPrompt": false,
     "icon": "X",
@@ -92,17 +92,17 @@ teardown() {
     "background": {
       "ansi": 78,
       "hex": "#166534",
-      "name": "GREEN_8"
+      "name": "green-8"
     },
     "backgroundInactive": {
       "ansi": 211,
       "hex": "#0f1a0f",
-      "name": "DARK_GREEN"
+      "name": "dark-green"
     },
     "foreground": {
       "ansi": 139,
       "hex": "#111827",
-      "name": "GRAY_9"
+      "name": "gray-9"
     },
     "hideNameInPrompt": true,
     "icon": "H",
@@ -117,17 +117,17 @@ teardown() {
     "background": {
       "ansi": 2,
       "hex": "#38a169",
-      "name": "GREEN"
+      "name": "green"
     },
     "backgroundInactive": {
       "ansi": 211,
       "hex": "#0f1a0f",
-      "name": "DARK_GREEN"
+      "name": "dark-green"
     },
     "foreground": {
       "ansi": 139,
       "hex": "#111827",
-      "name": "GRAY_9"
+      "name": "gray-9"
     },
     "hideNameInPrompt": false,
     "icon": "G",
@@ -167,13 +167,13 @@ echo \${PROJECTS[full:path]}
 echo \${PROJECTS[full:hideNameInPrompt]}
 SCRIPT
   bats_run_zsh "$script"
-  [ "${lines[0]}" = "GREEN_8" ]
+  [ "${lines[0]}" = "green-8" ]
   [ "${lines[1]}" = "78" ]
   [ "${lines[2]}" = "#166534" ]
-  [ "${lines[3]}" = "DARK_GREEN" ]
+  [ "${lines[3]}" = "dark-green" ]
   [ "${lines[4]}" = "211" ]
   [ "${lines[5]}" = "#0f1a0f" ]
-  [ "${lines[6]}" = "GRAY_9" ]
+  [ "${lines[6]}" = "gray-9" ]
   [ "${lines[7]}" = "139" ]
   [ "${lines[8]}" = "#111827" ]
   [ "${lines[9]}" = "X" ]

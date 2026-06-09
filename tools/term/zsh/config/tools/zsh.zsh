@@ -8,88 +8,88 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
 
 typeset -A ZSH_HIGHLIGHT_STYLES=(
   # Fallback color
-  'default' "fg=$colors[TEXT]"
+  'default' "fg=$COLORS[text]"
 
   # Methods
-  'alias' "fg=$colors[FUNCTION]"
-  'global-alias' "fg=$colors[FUNCTION]"
-  'builtin' "fg=$colors[FUNCTION]"
-  'command' "fg=$colors[FUNCTION]"
-  'function' "fg=$colors[FUNCTION]"
-  'reserved-word' "fg=$colors[FUNCTION]"
+  'alias' "fg=$COLORS[function]"
+  'global-alias' "fg=$COLORS[function]"
+  'builtin' "fg=$COLORS[function]"
+  'command' "fg=$COLORS[function]"
+  'function' "fg=$COLORS[function]"
+  'reserved-word' "fg=$COLORS[function]"
 
   # Arguments
-  'double-hyphen-option' "fg=$colors[FLAG]"
-  'single-hyphen-option' "fg=$colors[FLAG]"
+  'double-hyphen-option' "fg=$COLORS[flag]"
+  'single-hyphen-option' "fg=$COLORS[flag]"
 
   # Variables
-  'dollar-double-quoted-argument' "fg=$colors[INTERPOLATION_VARIABLE]"
-  'assign' "fg=$colors[INTERPOLATION_VARIABLE]"
-  'comment' "fg=$colors[INTERPOLATION_VARIABLE]" # $i in "for i in ./*; echo $i; done"
+  'dollar-double-quoted-argument' "fg=$COLORS[interpolation-variable]"
+  'assign' "fg=$COLORS[interpolation-variable]"
+  'comment' "fg=$COLORS[interpolation-variable]" # $i in "for i in ./*; echo $i; done"
 
   # $() interpolation
-  'command-substitution' "fg=$colors[INTERPOLATION_WRAPPER]"
-  'command-substitution-delimiter' "fg=$colors[INTERPOLATION_WRAPPER]"
+  'command-substitution' "fg=$COLORS[interpolation-wrapper]"
+  'command-substitution-delimiter' "fg=$COLORS[interpolation-wrapper]"
 
   # Punctuation
-  'back-double-quoted-argument' "fg=$colors[PUNCTUATION]"
-  'commandseparator' "fg=$colors[PUNCTUATION]"
+  'back-double-quoted-argument' "fg=$COLORS[punctuation]"
+  'commandseparator' "fg=$COLORS[punctuation]"
 
   # Path
-  'path' "fg=$colors[DIRECTORY]"                      # Existing path
-  'path_pathseparator' "fg=$colors[DIRECTORY]"        # / in existing path
-  'path_prefix' "fg=$colors[DIRECTORY]"               # Incomplete path
-  'path_prefix_pathseparator' "fg=$colors[DIRECTORY]" # / in incomplete path
-  'autodirectory' "fg=$colors[DIRECTORY]"
+  'path' "fg=$COLORS[directory]"                      # Existing path
+  'path_pathseparator' "fg=$COLORS[directory]"        # / in existing path
+  'path_prefix' "fg=$COLORS[directory]"               # Incomplete path
+  'path_prefix_pathseparator' "fg=$COLORS[directory]" # / in incomplete path
+  'autodirectory' "fg=$COLORS[directory]"
 
   # Glob
-  'globbing' "fg=$colors[GLOB]"
+  'globbing' "fg=$COLORS[glob]"
 
   # Strings (blue)
-  'back-quoted-argument' "fg=$colors[STRING]"
-  'back-quoted-argument-unclosed' "bg=$colors[STRING],fg=$colors[BLACK]"
-  'back-quoted-argument-delimiter' "fg=$colors[STRING]"
-  'double-quoted-argument' "fg=$colors[STRING]"
-  'double-quoted-argument-unclosed' "bg=$colors[STRING],fg=$colors[BLACK]"
-  'single-quoted-argument' "fg=$colors[STRING]"
-  'single-quoted-argument-unclosed' "bg=$colors[STRING],fg=$colors[BLACK]"
+  'back-quoted-argument' "fg=$COLORS[string]"
+  'back-quoted-argument-unclosed' "bg=$COLORS[string],fg=$COLORS[black]"
+  'back-quoted-argument-delimiter' "fg=$COLORS[string]"
+  'double-quoted-argument' "fg=$COLORS[string]"
+  'double-quoted-argument-unclosed' "bg=$COLORS[string],fg=$COLORS[black]"
+  'single-quoted-argument' "fg=$COLORS[string]"
+  'single-quoted-argument-unclosed' "bg=$COLORS[string],fg=$COLORS[black]"
 
   # Numbers (bold blue)
-  'arithmetic-expansion' "fg=$colors[NUMBER]"
+  'arithmetic-expansion' "fg=$COLORS[number]"
 
   # Repetition of last command using !
-  'history-expansion' "fg=$colors[NEUTRAL]"
+  'history-expansion' "fg=$COLORS[neutral]"
 
   # Errors
-  'unknown-token' "fg=$colors[ERROR]"
-  'arg0' "fg=$colors[ERROR]" # typing the name of a +x file in the current dir
+  'unknown-token' "fg=$COLORS[error]"
+  'arg0' "fg=$COLORS[error]" # typing the name of a +x file in the current dir
 
   # sudo
-  'precommand' "fg=$colors[WARNING],bold"
+  'precommand' "fg=$COLORS[warning],bold"
 
   # &>, 1>, 2> redirection
-  'redirection' "fg=$colors[SYMBOL]"
+  'redirection' "fg=$COLORS[symbol]"
 
   # ???
-  'arithmetic-expansion' "bg=$colors[UNKNOWN]"
-  'back-dollar-quoted-argument' "bg=$colors[UNKNOWN]"
-  'bracket-error' "bg=$colors[UNKNOWN]"
-  'bracket-level-1' "bg=$colors[UNKNOWN]"
-  'bracket-level-2' "bg=$colors[UNKNOWN]"
-  'bracket-level-3' "bg=$colors[UNKNOWN]"
-  'bracket-level-4' "bg=$colors[UNKNOWN]"
-  'bracket-level-5' "bg=$colors[UNKNOWN]"
-  'cursor' "bg=$colors[UNKNOWN]"
-  'cursor-matchingbracket' "bg=$colors[UNKNOWN]"
-  'dollar-quoted-argument' "bg=$colors[UNKNOWN]"
-  'hashed-command' "bg=$colors[UNKNOWN]"
-  'line' "bg=$colors[UNKNOWN]"
-  'named-fd' "bg=$colors[UNKNOWN]"
-  'numeric-fd' "bg=$colors[UNKNOWN]"
-  'path_approx' "bg=$colors[UNKNOWN]"
-  'process-substitution' "bg=$colors[UNKNOWN]"
-  'process-substitution-delimiter' "bg=$colors[UNKNOWN]"
-  'rc-quote' "bg=$colors[UNKNOWN]"
-  'root' "bg=$colors[UNKNOWN]"
-  'suffix-alias' "bg=$colors[UNKNOWN]"
+  'arithmetic-expansion' "bg=$COLORS[unknown]"
+  'back-dollar-quoted-argument' "bg=$COLORS[unknown]"
+  'bracket-error' "bg=$COLORS[unknown]"
+  'bracket-level-1' "bg=$COLORS[unknown]"
+  'bracket-level-2' "bg=$COLORS[unknown]"
+  'bracket-level-3' "bg=$COLORS[unknown]"
+  'bracket-level-4' "bg=$COLORS[unknown]"
+  'bracket-level-5' "bg=$COLORS[unknown]"
+  'cursor' "bg=$COLORS[unknown]"
+  'cursor-matchingbracket' "bg=$COLORS[unknown]"
+  'dollar-quoted-argument' "bg=$COLORS[unknown]"
+  'hashed-command' "bg=$COLORS[unknown]"
+  'line' "bg=$COLORS[unknown]"
+  'named-fd' "bg=$COLORS[unknown]"
+  'numeric-fd' "bg=$COLORS[unknown]"
+  'path_approx' "bg=$COLORS[unknown]"
+  'process-substitution' "bg=$COLORS[unknown]"
+  'process-substitution-delimiter' "bg=$COLORS[unknown]"
+  'rc-quote' "bg=$COLORS[unknown]"
+  'root' "bg=$COLORS[unknown]"
+  'suffix-alias' "bg=$COLORS[unknown]"
 )

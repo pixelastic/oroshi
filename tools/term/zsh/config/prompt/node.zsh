@@ -1,4 +1,3 @@
-# shellcheck disable=SC2154
 # Node
 
 # Add an icon if in a monorepo
@@ -7,7 +6,7 @@ function oroshi-prompt-populate:node_monorepo() {
   (( $GIT_DIRECTORY_IS_REPOSITORY )) || return
   yarn-is-monorepo || return
 
-  OROSHI_PROMPT_PARTS[node_monorepo]="%F{$colors[LOCAL_DEPENDENCY]}$ICONS[node-monorepo] %f"
+  OROSHI_PROMPT_PARTS[node_monorepo]="%F{$COLORS[local-dependency]}$ICONS[node-monorepo] %f"
 }
 
 # Display project node version
@@ -29,7 +28,7 @@ function oroshi-prompt-populate:node_version() {
 
   # Not even a global node installation
   if [[ ! -v commands[node] ]]; then
-    OROSHI_PROMPT_PARTS[node_version]+="%F{$colors[ERROR]}$ICONS[node] %f"
+    OROSHI_PROMPT_PARTS[node_version]+="%F{$COLORS[error]}$ICONS[node] %f"
     return
   fi
 
@@ -48,12 +47,12 @@ function oroshi-prompt-populate:node_version() {
 
     # Using default version
     if [[ $nvmDefaultVersion == "$nvmCurrentVersion" ]]; then
-      OROSHI_PROMPT_PARTS[node_version]+="%F{$colors[INFO]}$ICONS[node] %f"
+      OROSHI_PROMPT_PARTS[node_version]+="%F{$COLORS[info]}$ICONS[node] %f"
       return
     fi
 
     # Custom version
-    OROSHI_PROMPT_PARTS[node_version]+="%F{$colors[INFO]}$ICONS[node] $nvmCurrentVersion%f"
+    OROSHI_PROMPT_PARTS[node_version]+="%F{$COLORS[info]}$ICONS[node] $nvmCurrentVersion%f"
     return
 
 
@@ -63,13 +62,13 @@ function oroshi-prompt-populate:node_version() {
 
   # If nvm isn't loaded, we display in gray
   if [[ $OROSHI_NVM_LOADED == "0" ]]; then
-    OROSHI_PROMPT_PARTS[node_version]+="%F{$colors[COMMENT]}$ICONS[node] $expectedVersion%f"
+    OROSHI_PROMPT_PARTS[node_version]+="%F{$COLORS[comment]}$ICONS[node] $expectedVersion%f"
     return
   fi
 
   # Local version is not even installed
   if [[ ! -d ~/.nvm/versions/node/v${expectedVersion} ]]; then
-    OROSHI_PROMPT_PARTS[node_version]+="%F{$colors[ERROR]}$ICONS[node] $expectedVersion%f"
+    OROSHI_PROMPT_PARTS[node_version]+="%F{$COLORS[error]}$ICONS[node] $expectedVersion%f"
     return
   fi
 
@@ -77,11 +76,10 @@ function oroshi-prompt-populate:node_version() {
 
   # Local version is different than the current node version
   if [[ $currentVersion != "$expectedVersion" ]]; then
-    OROSHI_PROMPT_PARTS[node_version]+="%F{$colors[WARNING]}$ICONS[node] $expectedVersion%f"
+    OROSHI_PROMPT_PARTS[node_version]+="%F{$COLORS[warning]}$ICONS[node] $expectedVersion%f"
     return
   fi
 
   # Local version is the same as the one in use
-  OROSHI_PROMPT_PARTS[node_version]+="%F{$colors[SUCCESS]}$ICONS[node] $expectedVersion%f"
+  OROSHI_PROMPT_PARTS[node_version]+="%F{$COLORS[success]}$ICONS[node] $expectedVersion%f"
 }
-

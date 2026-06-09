@@ -31,7 +31,7 @@ function generateDistJson() {
       ($projectData.background | if . then $colors[.] else null end) as $bgColor |
       ($projectData.foreground | if . then $colors[.] else null end) as $fgColor |
 
-      ($projectData.background | if . then (split("_")[0] | "DARK_" + .) else null end) as $bgInactiveName |
+      ($projectData.background | if . then (gsub("-[0-9]+$"; "") | "dark-" + .) else null end) as $bgInactiveName |
       ($bgInactiveName    | if . then $colors[.] else null end) as $bgInactiveColor |
 
       ($projectData.icon // "") as $projectIcon |

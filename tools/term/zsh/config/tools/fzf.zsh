@@ -7,14 +7,14 @@ function oroshi_tools_fzf() {
 
   # Colors
   local fzfColors=()
-  fzfColors+=("info:$colors[NUMBER]")                 # result count
-  fzfColors+=("prompt:$colors[UI]")                   # > before query
-  fzfColors+=("bg+:$colors[SELECTED_BACKGROUND]")     # selected result background
-  fzfColors+=("fg+:$colors[SELECTED_FOREGROUND]")     # selected result foreground
-  fzfColors+=("pointer:$colors[POINTER]")             # $ICONS[fzf-current] before current line
-  fzfColors+=("marker:$colors[MARKER]")               # $ICONS[fzf-selected] before selected result
-  fzfColors+=("hl:reverse:$colors[MATCH]")            # match
-  fzfColors+=("hl+:reverse:$colors[MATCH]")           # match in current line
+  fzfColors+=("info:$COLORS[number]")                 # result count
+  fzfColors+=("prompt:$COLORS[ui]")                   # > before query
+  fzfColors+=("bg+:$COLORS[selected-background]")     # selected result background
+  fzfColors+=("fg+:$COLORS[selected-foreground]")     # selected result foreground
+  fzfColors+=("pointer:$COLORS[pointer]")             # $ICONS[fzf-current] before current line
+  fzfColors+=("marker:$COLORS[marker]")               # $ICONS[fzf-selected] before selected result
+  fzfColors+=("hl:reverse:$COLORS[match]")            # match
+  fzfColors+=("hl+:reverse:$COLORS[match]")           # match in current line
   fzfColors+=("gutter:-1")                                # suggestion gutter
   local fzfOptionColors="--color '${fzfColors:gs/ /,}'"
 

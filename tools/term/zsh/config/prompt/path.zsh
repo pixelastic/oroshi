@@ -1,4 +1,3 @@
-# shellcheck disable=SC2154
 # Path
 # Displays the current path in a shortened form:
 # - Use a colored prefix icon for known paths
@@ -11,7 +10,7 @@ function oroshi-prompt-populate:path() {
   # Add marker if connected through SSH
   if [[ $SSH_CLIENT != '' ]]; then
     local hostname="$(hostname)"
-    OROSHI_PROMPT_PARTS[path]+="%F{$colors[ORANGE]}${USER} ${hostname}%f%k"
+    OROSHI_PROMPT_PARTS[path]+="%F{$COLORS[orange]}${USER} ${hostname}%f%k"
   fi
 
   # Context badge: project name + optional worktre branch
@@ -31,7 +30,7 @@ function oroshi-prompt-populate:path() {
 
   # In .git
   if git-directory-is-dot-git; then
-    OROSHI_PROMPT_PARTS[path]+="%F{$colors[ORANGE]}  "
+    OROSHI_PROMPT_PARTS[path]+="%F{$COLORS[orange]}  "
     currentPath="${currentPath:s_.git/__}"
     [[ "$currentPath" != "" ]] && OROSHI_PROMPT_PARTS[path]+=" $currentPath%f"
     return
@@ -39,15 +38,15 @@ function oroshi-prompt-populate:path() {
 
   # Deleted path
   if [[ ! -r $PWD ]]; then
-    OROSHI_PROMPT_PARTS[path]+="%F{$colors[COMMENT]} ${currentPath}%f"
+    OROSHI_PROMPT_PARTS[path]+="%F{$COLORS[comment]} ${currentPath}%f"
     return
   fi
 
   # Path is not writable
   if [[ ! -w $PWD ]]; then
-    OROSHI_PROMPT_PARTS[path]+="%F{$colors[ERROR]} ${currentPath}%f"
+    OROSHI_PROMPT_PARTS[path]+="%F{$COLORS[error]} ${currentPath}%f"
     return
   fi
 
-  [[ "$currentPath" != "" ]] && OROSHI_PROMPT_PARTS[path]+=" %F{$colors[DIRECTORY]}${currentPath}%f"
+  [[ "$currentPath" != "" ]] && OROSHI_PROMPT_PARTS[path]+=" %F{$COLORS[directory]}${currentPath}%f"
 }

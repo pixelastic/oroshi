@@ -34,6 +34,20 @@ source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
 **Problem:** Memory rule says use `$OROSHI_ROOT`, not `~/.oroshi`.
 **Reason skipped:** This line is the bootstrap that *sets* `$OROSHI_ROOT` — `$OROSHI_ROOT` is unavailable before sourcing `zshenv.zsh`. Pre-existing pattern used identically across all test blocks in this file.
 
+## Issue 09 — colors rename to COLORS + kebab keys
+
+### $COLORS[gray-white] dangling key in exa.zsh
+
+```zsh
+EXA_COLORS="${EXA_COLORS}:fi=38;5;$COLORS[gray-white]" # Default file color
+```
+
+**Problem:** `gray-white` does not exist in the color palette. Key expands to empty string; originally `$colors[GRAY_WHITE]` which also didn't exist in the palette.
+
+**Reason skipped:** Pre-existing bug. Choosing a correct replacement color is out of scope for a mechanical rename issue.
+
+---
+
 ### Spec: NeoVim trigger uses full `$OROSHI_ROOT` path
 ```lua
 executeCommand("$OROSHI_ROOT/tools/term/zsh/config/theming/colors-build")

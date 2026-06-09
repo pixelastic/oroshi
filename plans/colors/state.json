@@ -56,7 +56,32 @@
   {
     "id": "09",
     "issue": "issues/09-colors-rename-convention.md",
-    "done": false,
+    "done": true,
+    "recap": "Renamed colors array to COLORS and converted all keys from UPPERCASE_SNAKE to kebab-case across colors-build, colors-load-definitions, colors-template-render, template source files, prompt/tool files, projects-list.zsh, src/projects.json, and projects-build jq logic; regenerated dist files.",
     "blocked_by": ["06"]
+  },
+  {
+    "id": "10",
+    "issue": "issues/10-colors-build-src-json.md",
+    "done": false,
+    "blocked_by": ["09"]
+  },
+  {
+    "id": "11",
+    "issue": "issues/11-zshlint-colors-load-definitions.md",
+    "done": false,
+    "blocked_by": ["09"]
+  },
+  {
+    "id": "12",
+    "issue": "issues/12-zshlint-icons-load-definitions.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "13",
+    "issue": "issues/13-zshlint-projects-load-definitions.md",
+    "done": false,
+    "blocked_by": []
   }
 ]

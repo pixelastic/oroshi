@@ -3,38 +3,38 @@
 # See https://the.exa.website/docs/colour-themes
 
 EXA_COLORS=""
-EXA_COLORS="${EXA_COLORS}:xx=38;5;$colors[UI]" # Punctuation
+EXA_COLORS="${EXA_COLORS}:xx=38;5;$COLORS[ui]" # Punctuation
 
-EXA_COLORS="${EXA_COLORS}:fi=38;5;$colors[GRAY_WHITE]" # Default file color
+EXA_COLORS="${EXA_COLORS}:fi=38;5;$COLORS[gray-white]" # Default file color
 
-EXA_COLORS="${EXA_COLORS}:ur=38;5;$colors[GRAY_7]"   # User read
-EXA_COLORS="${EXA_COLORS}:uw=38;5;$colors[GRAY_7]"   # User write
-EXA_COLORS="${EXA_COLORS}:ux=4;38;5;$colors[PURPLE]" # User execute
+EXA_COLORS="${EXA_COLORS}:ur=38;5;$COLORS[gray-7]"   # User read
+EXA_COLORS="${EXA_COLORS}:uw=38;5;$COLORS[gray-7]"   # User write
+EXA_COLORS="${EXA_COLORS}:ux=4;38;5;$COLORS[purple]" # User execute
 
-EXA_COLORS="${EXA_COLORS}:gr=38;5;$colors[GRAY_7]"   # Group read
-EXA_COLORS="${EXA_COLORS}:gw=38;5;$colors[GRAY_7]"   # Group write
-EXA_COLORS="${EXA_COLORS}:gx=4;38;5;$colors[PURPLE]" # Group execute
+EXA_COLORS="${EXA_COLORS}:gr=38;5;$COLORS[gray-7]"   # Group read
+EXA_COLORS="${EXA_COLORS}:gw=38;5;$COLORS[gray-7]"   # Group write
+EXA_COLORS="${EXA_COLORS}:gx=4;38;5;$COLORS[purple]" # Group execute
 
-EXA_COLORS="${EXA_COLORS}:tr=38;5;$colors[GRAY_7]"   # Other read
-EXA_COLORS="${EXA_COLORS}:tw=38;5;$colors[GRAY_7]"   # Other write
-EXA_COLORS="${EXA_COLORS}:tx=4;38;5;$colors[PURPLE]" # Other execute
+EXA_COLORS="${EXA_COLORS}:tr=38;5;$COLORS[gray-7]"   # Other read
+EXA_COLORS="${EXA_COLORS}:tw=38;5;$COLORS[gray-7]"   # Other write
+EXA_COLORS="${EXA_COLORS}:tx=4;38;5;$COLORS[purple]" # Other execute
 
-EXA_COLORS="${EXA_COLORS}:sn=38;5;$colors[NEUTRAL]"       # Size
-EXA_COLORS="${EXA_COLORS}:sb=38;5;$colors[NEUTRAL_LIGHT]" # Size unit
+EXA_COLORS="${EXA_COLORS}:sn=38;5;$COLORS[neutral]"       # Size
+EXA_COLORS="${EXA_COLORS}:sb=38;5;$COLORS[neutral-light]" # Size unit
 
-EXA_COLORS="${EXA_COLORS}:uu=38;5;$colors[BLACK]" # Me
-EXA_COLORS="${EXA_COLORS}:un=38;5;$colors[RED_5]" # Not me
+EXA_COLORS="${EXA_COLORS}:uu=38;5;$COLORS[black]" # Me
+EXA_COLORS="${EXA_COLORS}:un=38;5;$COLORS[red-5]" # Not me
 
-EXA_COLORS="${EXA_COLORS}:da=38;5;$colors[DATE]" # Date
+EXA_COLORS="${EXA_COLORS}:da=38;5;$COLORS[date]" # Date
 
-EXA_COLORS="${EXA_COLORS}:ga=38;5;$colors[GIT_ADDED]"     # File added
-EXA_COLORS="${EXA_COLORS}:gm=38;5;$colors[GIT_MODIFIED]"  # File modified
-EXA_COLORS="${EXA_COLORS}:gd=38;5;$colors[GIT_REMOVED]"   # File Deleted
-EXA_COLORS="${EXA_COLORS}:gv=38;5;$colors[GIT_MODIFIED]"  # File renamed
-EXA_COLORS="${EXA_COLORS}:gt=38;5;$colors[VARIABLE_TYPE]" # File type changed
+EXA_COLORS="${EXA_COLORS}:ga=38;5;$COLORS[git-added]"     # File added
+EXA_COLORS="${EXA_COLORS}:gm=38;5;$COLORS[git-modified]"  # File modified
+EXA_COLORS="${EXA_COLORS}:gd=38;5;$COLORS[git-removed]"   # File Deleted
+EXA_COLORS="${EXA_COLORS}:gv=38;5;$COLORS[git-modified]"  # File renamed
+EXA_COLORS="${EXA_COLORS}:gt=38;5;$COLORS[variable-type]" # File type changed
 
-EXA_COLORS="${EXA_COLORS}:di=38;5;$colors[GREEN]"      # Directories
-EXA_COLORS="${EXA_COLORS}:ex=4;38;5;$colors[VIOLET_4]" # Executable
+EXA_COLORS="${EXA_COLORS}:di=38;5;$COLORS[green]"      # Directories
+EXA_COLORS="${EXA_COLORS}:ex=4;38;5;$COLORS[violet-4]" # Executable
 
 # EXA_COLORS="${EXA_COLORS}:ln=38;5;69"  # Symlink source
 # EXA_COLORS="${EXA_COLORS}:lp=38;5;69"  # Symlink destination

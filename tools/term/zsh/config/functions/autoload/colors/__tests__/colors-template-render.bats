@@ -7,11 +7,11 @@ setup() {
   SCRIPT="$BATS_TMP_DIR/test.zsh"
 
   cat >"$SCRIPT" <<SCRIPT
-typeset -gA colors
-colors[YELLOW_7]=87
-colors[YELLOW_7:hex]="#a16207"
-colors[GIT_BRANCH]=17
-colors[GIT_BRANCH:hex]="#d69e2e"
+typeset -gA COLORS
+COLORS[yellow-7]=87
+COLORS[yellow-7:hex]="#a16207"
+COLORS[git-branch]=17
+COLORS[git-branch:hex]="#d69e2e"
 colors-load-definitions() { }
 colors-template-render() { source "${CURRENT}" }
 colors-template-render "${TEMPLATE}"
@@ -24,15 +24,15 @@ teardown() {
 
 # --- Basic substitution ---
 
-@test "{{NAME}} is replaced with ANSI integer" {
-  printf '{{YELLOW_7}}' >"$TEMPLATE"
+@test "{{name}} is replaced with ANSI integer" {
+  printf '{{yellow-7}}' >"$TEMPLATE"
   bats_run_zsh "$SCRIPT"
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = "87" ]
 }
 
-@test "{{NAME:hex}} is replaced with hex string" {
-  printf '{{YELLOW_7:hex}}' >"$TEMPLATE"
+@test "{{name:hex}} is replaced with hex string" {
+  printf '{{yellow-7:hex}}' >"$TEMPLATE"
   bats_run_zsh "$SCRIPT"
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = "#a16207" ]
@@ -40,8 +40,8 @@ teardown() {
 
 # --- Alias substitution ---
 
-@test "alias {{NAME:hex}} is resolved correctly" {
-  printf '{{GIT_BRANCH:hex}}' >"$TEMPLATE"
+@test "alias {{name:hex}} is resolved correctly" {
+  printf '{{git-branch:hex}}' >"$TEMPLATE"
   bats_run_zsh "$SCRIPT"
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = "#d69e2e" ]
@@ -50,16 +50,16 @@ teardown() {
 # --- Unknown placeholders ---
 
 @test "unknown placeholder is left unchanged" {
-  printf '{{UNKNOWN_COLOR}}' >"$TEMPLATE"
+  printf '{{unknown-color}}' >"$TEMPLATE"
   bats_run_zsh "$SCRIPT"
   [ "$status" -eq 0 ]
-  [ "${lines[0]}" = "{{UNKNOWN_COLOR}}" ]
+  [ "${lines[0]}" = "{{unknown-color}}" ]
 }
 
 # --- Output ---
 
 @test "rendered output goes to stdout" {
-  printf '{{YELLOW_7}}' >"$TEMPLATE"
+  printf '{{yellow-7}}' >"$TEMPLATE"
   bats_run_zsh "$SCRIPT"
   [ "$status" -eq 0 ]
   [ "${output}" = "87" ]
