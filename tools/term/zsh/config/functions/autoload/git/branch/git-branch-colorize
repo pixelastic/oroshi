@@ -81,18 +81,18 @@ if [[ $branchPushStatus == 'behind' ]]; then
 fi
 
 if [[ $branchPushStatus == 'gone' ]]; then
-  colorize "$ICONS[branch-gone] $branchName" $branchColor "${zshFlag[@]}"
+  colorize "$ICONS[git-remote-gone] $branchName" $branchColor "${zshFlag[@]}"
   return
 fi
 
 if [[ $branchPushStatus == 'diverged' ]]; then
-  colorize "$ICONS[branch-diverged] $branchName" $branchColor "${zshFlag[@]}"
+  colorize "$ICONS[git-remote-diverged] $branchName" $branchColor "${zshFlag[@]}"
   return
 fi
 
 if [[ $branchPushStatus == 'detached' ]]; then
   local currentCommit="$(git-commit-current)"
-  colorize "$ICONS[branch-detached] HEAD ($currentCommit)" $branchColor "${zshFlag[@]}"
+  colorize "$ICONS[git-remote-detached] HEAD ($currentCommit)" $branchColor "${zshFlag[@]}"
   return
 fi
 
