@@ -3,6 +3,35 @@
 Add a zsh-lint rule that prevents long method call on one line, but suggest
 splitting on several lines with \
 
+yarn-dependency-list doesn't display anything
+
+Also check the use of yarn-packager-colorize inside of pip-list. Probably not
+useful.
+
+icons-load-definitions and other ``*-load-definition` should be after the arg
+parsing. basically the header should look like:
+```zsh
+# Documentation, including Usage:
+setopt local_options err_return
+
+zparseopts -E -D \
+  -link-local=flagLinkLocal
+local isLinkLocal=${#flagLinkLocal}
+
+icons-load-definitions
+
+(...code...)
+```
+
+compdef code triggers zsh-lint erorrs
+
+Icons defined in nvim config are hardcoded and do not use our icons.zsh file.
+Should we make them use it? How could they read it? Should they parse a JSON
+version to get the icons?
+
+I should probably also migrate the filetypes definition like I did colors,
+projects and icons.
+
 Seems like bats output are not filtered through rtk? I think it's because rtk
 doesn't know it can rewrite it, so the hook doesn't prepend rtk to it, even if
 it should work. Should I configure rtk to know it can parse bats, or should I
