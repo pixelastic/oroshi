@@ -6,9 +6,13 @@ setup() {
   ZSHENV="$OROSHI_ROOT/tools/term/zsh/config/zshenv.zsh"
 
   # Real git repo for worktree tests
+  # NOTE: bats_git_worktree can't be used — bats_slugify collapses -- to -,
+  # but detection requires oroshi--* paths. Create worktree directly.
   bats_git_dir
-  WT_ROOT="$(bats_git_worktree "wt")"
   WORKTREES_DIR="$BATS_TMP_DIR/worktrees"
+  WT_ROOT="$WORKTREES_DIR/oroshi--myrepo"
+  mkdir -p "$WORKTREES_DIR"
+  git -C "$BATS_GIT_DIR" worktree add --quiet -b "oroshi--myrepo" "$WT_ROOT"
 
   # Minimal fake structure so zshenv.zsh can source its deps safely
   mkdir -p "$WT_ROOT/tools/term/zsh/config/functions"
@@ -41,6 +45,20 @@ teardown() {
   bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "$WT_ROOT" ]
+}
+
+@test "OROSHI_ROOT stays default when in a non-oroshi worktree" {
+  local otherWT
+  otherWT="$(bats_git_worktree 'other-project')"
+  local fakeHome="$BATS_TMP_DIR/home"
+  mkdir -p "$fakeHome/.oroshi/tools/term/zsh/config/functions"
+  printf "function oroshi-reload-path() { :; }\n" >"$fakeHome/.oroshi/tools/term/zsh/config/path.zsh"
+  printf "# noop\n" >"$fakeHome/.oroshi/tools/term/zsh/config/functions/noop.zsh"
+  printf 'export HOME="%s"; unset OROSHI_ROOT; export OROSHI_WORKTREES_DIR_MOCK="%s"; cd "%s"; source "%s"; echo "$OROSHI_ROOT"\n' \
+    "$fakeHome" "$WORKTREES_DIR" "$otherWT" "$ZSHENV" >"$CURRENT"
+  bats_run_zsh "$CURRENT"
+  [ "$status" -eq 0 ]
+  [ "$output" = "$fakeHome/.oroshi" ]
 }
 
 @test "OROSHI_ROOT defaults to HOME/.oroshi when PWD is outside OROSHI_WORKTREES_DIR" {

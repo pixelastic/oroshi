@@ -12,13 +12,9 @@ export OROSHI_WORKTREES_DIR="${OROSHI_WORKTREES_DIR_MOCK:-$HOME/local/www/worktr
 # When moving inside an oroshi worktree, we want to change the OROSHI_ROOT to
 # that worktree
 export OROSHI_ROOT_DEFAULT="$OROSHI_ROOT"
-if [[ "$PWD" == "$OROSHI_WORKTREES_DIR/"* ]]; then
+if [[ "$PWD" == "$OROSHI_WORKTREES_DIR/oroshi--"* ]]; then
   OROSHI_ROOT="$(git rev-parse --show-toplevel)"
 fi
-# Reference to the zsh config folder, so our `source` calls are easier to write
-export ZSH_CONFIG_PATH="$OROSHI_ROOT/tools/term/zsh/config"
-# Reference to the autoload functions folder
-export OROSHI_ZSH_AUTOLOAD="$ZSH_CONFIG_PATH/functions/autoload"
 
 # Also make the HOSTNAME globally available. Some tools (like Kitty) can use ENV
 # variables in their config, but can't call binaries, so having the HOSTNAME
@@ -27,6 +23,14 @@ export HOSTNAME="$(hostname)"
 
 # This will disable the automated loading of compinit in /etc/zsh/zshrc
 skip_global_compinit=1
+
+# Derives and exports ZSH_CONFIG_PATH and OROSHI_ZSH_AUTOLOAD from a given root
+oroshi-export-zsh-paths() {
+  local root="$1"
+  export ZSH_CONFIG_PATH="$root/tools/term/zsh/config"
+  export OROSHI_ZSH_AUTOLOAD="$ZSH_CONFIG_PATH/functions/autoload"
+}
+oroshi-export-zsh-paths "$OROSHI_ROOT"
 
 # Define the $PATH, with unique values
 # Note: the `typeset -aU path` line can't be included in a sourced function

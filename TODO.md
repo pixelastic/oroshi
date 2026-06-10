@@ -24,11 +24,6 @@ projects and icons.
 
 Add completion of files modified to git-file-reverte on ctrlp
 
-Editing config/ai/claude/hooks/stop doesn't run the matching test when
-committing, might need to check the shebang if +x more aggressively
-
-See how to have yarn run test go through rtk as well
-
 Pre-commit hook of editing js files should run the matching tests
 
 I will need to have vft and vfl work on js files (using yarn run test/yarn run
