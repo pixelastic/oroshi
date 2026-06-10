@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-fix-rtk-can-rewrite.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced TOML first-word lookup with hardcoded regex patterns (^bats\\b, ^yarn run test(\\b| |$)) and rewrote tests to cover yarn variants.",
     "blocked_by": []
   },
   {

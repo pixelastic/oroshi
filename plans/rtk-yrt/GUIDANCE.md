@@ -48,3 +48,7 @@ aberlaas/Vitest only picks up files matching `**/__tests__/**/*.js?(x)` and excl
 ## Discoveries
 
 <!-- Agents append findings here after each issue -->
+
+### Issue 01 — fix rtk-can-rewrite
+- ZSH uses POSIX ERE via glibc on Linux, which supports `\b` as a word boundary — use `\b` anchors in `=~` patterns directly (no PCRE module needed).
+- Sequential `[[ "$cmd" =~ pattern ]] && return 0` lines are preferred over a `for` loop over a patterns array — same behavior, no avoidable nesting.
