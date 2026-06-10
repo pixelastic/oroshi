@@ -1,0 +1,14 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-fix-rtk-can-rewrite.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-yarn-vitest-filter.md",
+    "done": false,
+    "blocked_by": ["01"]
+  }
+]
