@@ -15,7 +15,7 @@ hl("Identifier", "variable")
 hl("Typedef", "variable-type")
 hl("Include", "import")
 hl("Keyword", "keyword")
-hl("Macro", "red-4")
+hl("Macro", "red-3")
 hl("Number", "number", { bold = true })
 hl("Operator", "punctuation") --	"sizeof", "+", "*", etc.
 hl("PreProc", "header") --		generic Preprocessor
@@ -28,7 +28,7 @@ hl("StorageClass", "variable-type") --	static, register, volatile, etc.
 hl("String", "string")
 hl("Structure", "variable-type") --	struct, union, enum, etc.
 hl("Tag", "variable-type")
-hl("Todo", "orange-3", { bg = "red-7", bold = true })
+hl("Todo", "orange-2", { bg = "red-6", bold = true })
 hl("Title", "header") --		Titles for output from ":set all", ":autocmd" etc.
 hl("Type", "variable-type")
 hl("Underlined", "none", { underline = true })
@@ -64,15 +64,15 @@ hl("@variable", "variable")
 hl("@variable.member", "key")
 hl("@property", "key")
 -- Keywords
-hl("@keyword.import", "yellow-5", { bold = true })
+hl("@keyword.import", "yellow-4", { bold = true })
 hl("@keyword.directive", "orange")
 -- Headers
-hl("@markup.heading.1", "purple-4", { bold = true })
-hl("@markup.heading.2", "blue-4", { bold = true })
+hl("@markup.heading.1", "purple-3", { bold = true })
+hl("@markup.heading.2", "blue-3", { bold = true })
 hl("@markup.heading.3", "green-7", { bold = true })
-hl("@markup.heading.4", "yellow-6", { bold = true })
-hl("@markup.heading.5", "orange-7", { bold = true })
-hl("@markup.heading.6", "red-7", { bold = true })
+hl("@markup.heading.4", "yellow-5", { bold = true })
+hl("@markup.heading.5", "orange-6", { bold = true })
+hl("@markup.heading.6", "red-6", { bold = true })
 -- Links
 hl("@markup.link", "link", { underline = true })
 -- }}}
@@ -89,12 +89,12 @@ hl("@keyword.type.c", "variable-type")
 -- }}}
 -- CSS {{{
 hl("@tag.css", "green", { bold = true })
-hl("@attribute.css", "red-4") -- pseudo-classes
-hl("@property.css", "red-4")
+hl("@attribute.css", "red-3") -- pseudo-classes
+hl("@property.css", "red-3")
 hl("cssUnitDecorators", "white")
 hl("cssAttrRegion", "keyword")
 hl("@keyword.directive.css", "yellow")
-hl("@keyword.modifier.css", "red-5", { bold = true })
+hl("@keyword.modifier.css", "red-4", { bold = true })
 -- }}}
 -- Dockerfile {{{
 hl("dockerfileKeyword", "function")
@@ -116,7 +116,7 @@ hl("@operator.gotmpl", "punctuation", { bg = "sky-0" })
 hl("@string.gotmpl", "string", { bg = "sky-0" })
 -- }}}
 -- help {{{
-hl("@markup.heading.1.vimdoc", "blue-4")
+hl("@markup.heading.1.vimdoc", "blue-3")
 hl("@label.vimdoc", "green-7")
 -- }}}
 -- html {{{
@@ -126,7 +126,7 @@ hl("@tag.html", "keyword")
 hl("htmlTag", "keyword") -- Explicitly needed because we override it for Vue
 hl("@constant.html", "yellow", { bold = true })
 hl("@tag.attribute.html", "variable-type")
-hl("@markup.heading.html", "purple-4", { bold = true })
+hl("@markup.heading.html", "purple-3", { bold = true })
 -- }}}
 -- JavaScript {{{
 hl("@keyword.exception.javascript", "yellow", { bold = true })
@@ -154,7 +154,7 @@ hl("@keyword.directive.lua", "yellow")
 hl("@keyword.lua", "variable-type")
 hl("@keyword.repeat.lua", "keyword")
 hl("@keyword.return.lua", "keyword")
-hl("@label.lua", "yellow-light", { bold = true })
+hl("@label.lua", "yellow-3", { bold = true })
 hl("@lsp.type.comment.lua", "none")
 hl("@lsp.type.variable.lua", "none")
 hl("@lsp.type.property.lua", "none")
@@ -173,7 +173,7 @@ hl("@markup.raw.markdown_inline", "string") -- `code`
 hl("RenderMarkdownCode", "string", { bg = "gray-8" }) -- 	Code block background
 -- block code
 hl("@markup.raw.block.markdown", "string") -- ```multiline code```
-hl("@label.markdown", "blue-5")
+hl("@label.markdown", "blue-4")
 hl("RenderMarkdownCodeInline", "string") -- 	Inline code background
 hl("RenderMarkdownCodeBorder", "none", { bg = "gray-8" }) -- 	Code border background
 hl("RenderMarkdownCodeFallback", "XXX") -- 	Fallback for code language
@@ -196,29 +196,29 @@ hl("RenderMarkdownTableFill", "terminal") -- 	Pipe table inline padding
 -- Header gutter sign
 hl("RenderMarkdownSign", "none") -- 	Sign column background
 -- header 1
-hl("RenderMarkdownH1", "purple-4") -- Gutter icon
-hl("RenderMarkdownH1Bg", "purple-4", { bg = "purple-0" }) -- Normal mode (full width)
-hl("@markup.heading.1.markdown", "purple-4", { bold = true }) -- Insert mode
+hl("RenderMarkdownH1", "purple-3") -- Gutter icon
+hl("RenderMarkdownH1Bg", "purple-3", { bg = "purple-0" }) -- Normal mode (full width)
+hl("@markup.heading.1.markdown", "purple-3", { bold = true }) -- Insert mode
 -- header 2
-hl("RenderMarkdownH2", "blue-4")
-hl("RenderMarkdownH2Bg", "blue-4", { bg = "blue-0" })
-hl("@markup.heading.2.markdown", "blue-4", { bold = true })
+hl("RenderMarkdownH2", "blue-3")
+hl("RenderMarkdownH2Bg", "blue-3", { bg = "blue-0" })
+hl("@markup.heading.2.markdown", "blue-3", { bold = true })
 -- header 3
 hl("RenderMarkdownH3", "green-7")
 hl("RenderMarkdownH3Bg", "green-7", { bg = "green-0" })
 hl("@markup.heading.3.markdown", "green-7", { bold = true })
 -- header 4
-hl("RenderMarkdownH4", "yellow-6")
-hl("RenderMarkdownH4Bg", "yellow-6", { bg = "yellow-0" })
-hl("@markup.heading.4.markdown", "yellow-6", { bold = true })
+hl("RenderMarkdownH4", "yellow-5")
+hl("RenderMarkdownH4Bg", "yellow-5", { bg = "yellow-0" })
+hl("@markup.heading.4.markdown", "yellow-5", { bold = true })
 -- header 5
-hl("RenderMarkdownH5", "orange-7")
-hl("RenderMarkdownH5Bg", "orange-7", { bg = "orange-0" })
-hl("@markup.heading.5.markdown", "orange-7", { bold = true })
+hl("RenderMarkdownH5", "orange-6")
+hl("RenderMarkdownH5Bg", "orange-6", { bg = "orange-0" })
+hl("@markup.heading.5.markdown", "orange-6", { bold = true })
 -- header 6
-hl("RenderMarkdownH6", "red-7")
-hl("RenderMarkdownH6Bg", "red-7", { bg = "red-0" })
-hl("@markup.heading.6.markdown", "red-7", { bold = true })
+hl("RenderMarkdownH6", "red-6")
+hl("RenderMarkdownH6Bg", "red-6", { bg = "red-0" })
+hl("@markup.heading.6.markdown", "red-6", { bold = true })
 -- highlight
 hl("RenderMarkdownInlineHighlight", "black", { bg = "yellow" })
 -- footnotes
@@ -257,7 +257,7 @@ hl("@function.macro.vim", "teal")
 hl("@tag.vue", "keyword")
 hl("@tag.delimiter.vue", "punctuation")
 hl("@punctuation.special.vue", "string")
-hl("@markup.raw.vue", "red-8", { bg = "gray-8" })
+hl("@markup.raw.vue", "red-7", { bg = "gray-8" })
 hl("@function.method.vue", "orange")
 hl("@variable.member.vue", "orange")
 hl("@variable.vue", "orange")

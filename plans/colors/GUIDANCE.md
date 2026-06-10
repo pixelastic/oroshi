@@ -85,6 +85,8 @@ _Agents append findings here after each issue._
 
 - `ui/statusline.lua` had a second conversion shim (`toEnvKey`) that converted kebab→`UPPERCASE_SNAKE` for `O.colors.env` lookups in the project badge — not mentioned in the spec but needed removing alongside `init.lua`'s shim.
 - `DARK_*` color aliases (e.g. `DARK_GREEN`) become `family-0` in the new convention (e.g. `"green-0"`), not `"dark-green"`. The shade 0 slot is the darkest/background shade.
+- **Shade number shift (N→N-1):** The new palette dropped TW50 and TW100, shifted TW200 to slot 1. So OLD `AMBER_6` (#d97706 = TW600) = NEW `amber-5`. Apply N-1 to shades 2-9 for all Tailwind families **except `gray`** (shades 2-9 unchanged between old and new) and **`green`** (palette changed completely between TW v3 and TW v2 — no clean shift). Shade 0 and shade 1 stay as-is (0 = dark bg already correct; 1 = no TW100 equivalent, keep TW200 as approximation).
+- `red-light` and `yellow-light` never existed in any dist/colors.json — pre-existing nulls since issue 05. Map to `red-3` and `yellow-3` respectively.
 - `unused.lua` uses `"XXX"` and `"YYY"` as sentinels for unidentified groups — these are NOT color names and must stay uppercase. The sentinel checks in `highlight.lua` (`colorName == "XXX"`) also stay uppercase. Only real palette/alias color names get kebab-cased.
 - Several files listed in the spec (modes.lua, visual.lua, http.lua, keybindings.lua, etc.) had no actual color-name strings — only HTTP methods, vim mode chars, display text, or text-manipulation markers. The spec's grep over-included them.
 

@@ -25,7 +25,7 @@ M.onFiletype = function()
   vim.opt_local.ft = "pager"
 
   F.hl("Normal", "gray-3", { bg = "blue-0" }) -- Background
-  F.hl("CursorLine", "none", { bg = "blue-9" }) -- Current line
+  F.hl("CursorLine", "none", { bg = "blue-8" }) -- Current line
 
   -- We wait until all initialization is done, then delete the original buffer
   -- If we don't wait we might mess some treesitter callback that expect the buffer
