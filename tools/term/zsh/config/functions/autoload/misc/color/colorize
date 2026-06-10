@@ -13,6 +13,7 @@ local input="$1"
 local foregroundColor="$2"
 local backgroundColor="$3"
 local isZsh=${#flagZsh}
+colors-load-definitions
 
 # Use named color if known
 local knownForegroundColor=${foregroundColor:+$COLORS[$foregroundColor]}

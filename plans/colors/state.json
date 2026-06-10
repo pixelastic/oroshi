@@ -107,7 +107,8 @@
   {
     "id": "16",
     "issue": "issues/16-zshlint-rule-missing-colors-load.md",
-    "done": false,
+    "done": true,
+    "recap": "Created rule-missing-colors-load.zsh and registered in zsh-lint-custom.zsh; added colors-load-definitions to git-branch-color and colorize; replaced raw source in scripts/bin/colors with colors-load-definitions; added disable comment in colors-build jq block.",
     "blocked_by": ["11"]
   },
   {

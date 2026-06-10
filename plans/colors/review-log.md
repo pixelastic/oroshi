@@ -121,6 +121,42 @@ jq -n '{ "namedColors": { "17": "orange" }, ... }'
 
 ---
 
+---
+
+## Issue 16 — zshlint rule missingColorsLoad
+
+### Missing `setopt local_options err_return` in rule file
+
+```zsh
+zshLintRule_missingColorsLoad() {
+  local code='missingColorsLoad'
+```
+
+**Problem:** Reviewer flagged autoloaded functions should have `setopt local_options err_return`.
+**Reason skipped:** Rule file is sourced (not autoloaded). `rule-missing-icons-load.zsh` (prior art) has the same pattern. Consistent with all other rule files in `__rules/`.
+
+### No `# Usage:` header block
+
+```zsh
+# Custom Rule: zshLintRule_missingColorsLoad
+# Detects functions/scripts that access $COLORS[] without calling colors-load-definitions
+# Rule Output: file▮missingColorsLoad▮error▮line▮message
+```
+
+**Problem:** `zsh-writer` checklist requires a `# Usage:` block.
+**Reason skipped:** Rule files are sourced modules, not callable scripts. `rule-missing-icons-load.zsh` uses the same 3-line header without `# Usage:`. Consistent with all other rule files.
+
+### `mock.zsh` written in `setup()` but never used in tests
+
+```bats
+printf "source '%s'\n" "$script" >"$BATS_TMP_DIR/mock.zsh"
+```
+
+**Problem:** Creates an unused file per test run.
+**Reason skipped:** Copied verbatim from `rule-missing-icons-load.bats`. Out of scope to diverge from established test file structure.
+
+---
+
 ### Spec: NeoVim trigger uses full `$OROSHI_ROOT` path
 ```lua
 executeCommand("$OROSHI_ROOT/tools/term/zsh/config/theming/colors-build")

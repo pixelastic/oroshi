@@ -79,6 +79,10 @@ Add `colors-load-definitions` call before first color use if the file is a stand
 
 ## Discoveries
 
+### Issue 16 — zshlint rule missingColorsLoad
+
+- The trigger pattern must use `\$\{?COLORS\[` (requires `$`), not `COLORS\[` — bare `COLORS[` matches jq output strings (e.g. `"COLORS[\(.key)]=..."`) and produces false positives. The same fix applies to any future `missing*Load` rule.
+
 ### Issue 15 — icons-load-definitions migrate and lint
 
 - `(( lineNum++ ))` in a rule function causes `err_return` to trigger in `lint-custom-run` on the first iteration (post-increment evaluates to 0 = false). All other rules use `(( ++lineNum ))` (pre-increment). Always use pre-increment when iterating line numbers in rule functions.

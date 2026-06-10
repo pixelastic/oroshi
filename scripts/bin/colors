@@ -5,7 +5,7 @@
 set -e
 
 # Load the COLORS[] associative array
-source "$OROSHI_ROOT/tools/term/zsh/config/theming/dist/colors.zsh"
+colors-load-definitions
 
 RESET="\e[0m"
 
