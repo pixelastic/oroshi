@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-lint-rule-update.md",
-    "done": false,
+    "done": true,
+    "recap": "Renamed 'no violation when no run zsh' test to 'no violation when line contains bats_run_zsh' and swapped both bats_run_function references to bats_run_zsh in rule-no-run-zsh.bats.",
     "blocked_by": []
   },
   {

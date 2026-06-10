@@ -12,13 +12,13 @@ run_this_rule() {
   expect_rule_violation noRunZsh 1
 }
 
-@test "no violation when no run zsh" {
-  run_this_rule '@test "something" { bats_run_function echo; }'
+@test "no violation when line contains bats_run_zsh" {
+  run_this_rule '@test "something" { bats_run_zsh echo; }'
   expect_clean
 }
 
 @test "three occurrences each on correct line" {
-  run_this_rule 'run zsh -c "a"' 'bats_run_function fn' 'run zsh -c "b"' 'echo ok' 'run zsh -c "c"'
+  run_this_rule 'run zsh -c "a"' 'bats_run_zsh fn' 'run zsh -c "b"' 'echo ok' 'run zsh -c "c"'
   expect_rule_violation noRunZsh 1
   expect_rule_violation noRunZsh 3
   expect_rule_violation noRunZsh 5
