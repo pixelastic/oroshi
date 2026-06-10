@@ -3,8 +3,8 @@ bats_load_library 'helper'
 setup() {
   bats_git_dir 'my-repo'
   CURRENT="$OROSHI_ZSH_AUTOLOAD/git/worktree/git-worktree-create"
-  export OROSHI_WORKTREES_DIR="$BATS_TMP_DIR/worktrees"
-  mkdir -p "$OROSHI_WORKTREES_DIR"
+  export OROSHI_WORKTREES_DIR_MOCK="$BATS_TMP_DIR/worktrees"
+  mkdir -p "$OROSHI_WORKTREES_DIR_MOCK"
   cd "$BATS_GIT_DIR" || return 1
 }
 
@@ -15,7 +15,7 @@ teardown() {
 @test "creates worktree directory with correct name" {
   bats_run_zsh "$CURRENT" fix/bug
   [ "$status" -eq 0 ]
-  [ -d "$OROSHI_WORKTREES_DIR/my-repo--fix_bug" ]
+  [ -d "$OROSHI_WORKTREES_DIR_MOCK/my-repo--fix_bug" ]
 }
 
 @test "creates the branch if it does not exist" {
@@ -35,7 +35,7 @@ teardown() {
   printf 'git-worktree-create fix/bug && echo "$PWD"\n' >"$script"
   bats_run_zsh "$script"
   [ "$status" -eq 0 ]
-  [ "$output" = "$OROSHI_WORKTREES_DIR/my-repo--fix_bug" ]
+  [ "$output" = "$OROSHI_WORKTREES_DIR_MOCK/my-repo--fix_bug" ]
 }
 
 @test "is idempotent — does not fail if worktree already exists" {
@@ -46,7 +46,7 @@ teardown() {
 
 @test "converts slashes to underscores in directory name" {
   bats_run_zsh "$CURRENT" feat/some/deep-branch
-  [ -d "$OROSHI_WORKTREES_DIR/my-repo--feat_some_deep-branch" ]
+  [ -d "$OROSHI_WORKTREES_DIR_MOCK/my-repo--feat_some_deep-branch" ]
 }
 
 @test "returns 1 outside any git repo" {
@@ -78,7 +78,7 @@ teardown() {
   cd "$BATS_GIT_DIR"
   bats_run_zsh "$CURRENT" fix/bug
   [ "$status" -eq 0 ]
-  [ -d "$OROSHI_WORKTREES_DIR/dot-repo--fix_bug" ]
+  [ -d "$OROSHI_WORKTREES_DIR_MOCK/dot-repo--fix_bug" ]
 }
 
 @test "runs yarn install when yarn.lock is present" {
@@ -89,13 +89,13 @@ teardown() {
   git commit --quiet -m "add yarn.lock"
   bats_run_zsh "$CURRENT" fix/yarn
   [ "$status" -eq 0 ]
-  [ -d "$OROSHI_WORKTREES_DIR/my-repo--fix_yarn/node_modules" ]
+  [ -d "$OROSHI_WORKTREES_DIR_MOCK/my-repo--fix_yarn/node_modules" ]
 }
 
 @test "does not run yarn install when yarn.lock is absent" {
   bats_run_zsh "$CURRENT" fix/no-yarn
   [ "$status" -eq 0 ]
-  [ ! -d "$OROSHI_WORKTREES_DIR/my-repo--fix_no-yarn/node_modules" ]
+  [ ! -d "$OROSHI_WORKTREES_DIR_MOCK/my-repo--fix_no-yarn/node_modules" ]
 }
 
 @test "failing yarn install does not prevent worktree creation" {
@@ -106,7 +106,7 @@ teardown() {
   git commit --quiet -m "add yarn.lock"
   bats_run_zsh "$CURRENT" fix/yarn
   [ "$status" -eq 0 ]
-  [ -d "$OROSHI_WORKTREES_DIR/my-repo--fix_yarn" ]
+  [ -d "$OROSHI_WORKTREES_DIR_MOCK/my-repo--fix_yarn" ]
 }
 
 @test "re-entering existing worktree does not re-run yarn install" {

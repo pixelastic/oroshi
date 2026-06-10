@@ -50,7 +50,8 @@ bats_git_dir() {
 # Creates a linked worktree in $BATS_TMP_DIR/worktrees/<slug>/.
 # <slug> is the branch name with non-alphanumeric chars replaced by dashes.
 # Sets BATS_GIT_WORKTREES for tests
-# Sets OROSHI_WORKTREES_DIR for scripts
+# Sets OROSHI_WORKTREES_DIR (legacy — scripts read OROSHI_WORKTREES_DIR_MOCK)
+# To control where scripts create worktrees, export OROSHI_WORKTREES_DIR_MOCK in setup().
 # Returns the worktree path.
 # Requires bats_git_dir to have been called first.
 # Usage: local wt; wt="$(bats_git_worktree 'fix/bug')"

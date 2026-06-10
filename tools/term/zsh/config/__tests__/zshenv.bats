@@ -27,7 +27,7 @@ teardown() {
 # --- Worktree detection ---
 
 @test "OROSHI_ROOT is set to worktree root when PWD is at the worktree root" {
-  printf 'unset OROSHI_ROOT; export OROSHI_WORKTREES_DIR="%s"; cd "%s"; source "%s"; echo "$OROSHI_ROOT"\n' \
+  printf 'unset OROSHI_ROOT; export OROSHI_WORKTREES_DIR_MOCK="%s"; cd "%s"; source "%s"; echo "$OROSHI_ROOT"\n' \
     "$WORKTREES_DIR" "$WT_ROOT" "$ZSHENV" >"$CURRENT"
   bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
@@ -36,27 +36,19 @@ teardown() {
 
 @test "OROSHI_ROOT is set to worktree root when PWD is inside a worktree subdir" {
   mkdir -p "$WT_ROOT/some/subdir"
-  printf 'unset OROSHI_ROOT; export OROSHI_WORKTREES_DIR="%s"; cd "%s"; source "%s"; echo "$OROSHI_ROOT"\n' \
+  printf 'unset OROSHI_ROOT; export OROSHI_WORKTREES_DIR_MOCK="%s"; cd "%s"; source "%s"; echo "$OROSHI_ROOT"\n' \
     "$WORKTREES_DIR" "$WT_ROOT/some/subdir" "$ZSHENV" >"$CURRENT"
   bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ "$output" = "$WT_ROOT" ]
 }
 
-@test "OROSHI_ROOT is unchanged when PWD is outside OROSHI_WORKTREES_DIR" {
-  printf 'export OROSHI_ROOT="%s"; export OROSHI_WORKTREES_DIR="%s"; source "%s"; echo "$OROSHI_ROOT"\n' \
-    "$WT_ROOT" "$WORKTREES_DIR" "$ZSHENV" >"$CURRENT"
-  bats_run_zsh "$CURRENT"
-  [ "$status" -eq 0 ]
-  [ "$output" = "$WT_ROOT" ]
-}
-
-@test "OROSHI_ROOT defaults to HOME/.oroshi when unset and PWD is outside OROSHI_WORKTREES_DIR" {
+@test "OROSHI_ROOT defaults to HOME/.oroshi when PWD is outside OROSHI_WORKTREES_DIR" {
   local fakeHome="$BATS_TMP_DIR/home"
   mkdir -p "$fakeHome/.oroshi/tools/term/zsh/config/functions"
   printf "function oroshi-reload-path() { :; }\n" >"$fakeHome/.oroshi/tools/term/zsh/config/path.zsh"
   printf "# noop\n" >"$fakeHome/.oroshi/tools/term/zsh/config/functions/noop.zsh"
-  printf 'export HOME="%s"; unset OROSHI_ROOT; export OROSHI_WORKTREES_DIR="%s"; source "%s"; echo "$OROSHI_ROOT"\n' \
+  printf 'export HOME="%s"; unset OROSHI_ROOT; export OROSHI_WORKTREES_DIR_MOCK="%s"; source "%s"; echo "$OROSHI_ROOT"\n' \
     "$fakeHome" "$WORKTREES_DIR" "$ZSHENV" >"$CURRENT"
   bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
@@ -66,7 +58,7 @@ teardown() {
 # --- Derived variables ---
 
 @test "ZSH_CONFIG_PATH reflects detected OROSHI_ROOT" {
-  printf 'unset OROSHI_ROOT; export OROSHI_WORKTREES_DIR="%s"; cd "%s"; source "%s"; echo "$ZSH_CONFIG_PATH"\n' \
+  printf 'unset OROSHI_ROOT; export OROSHI_WORKTREES_DIR_MOCK="%s"; cd "%s"; source "%s"; echo "$ZSH_CONFIG_PATH"\n' \
     "$WORKTREES_DIR" "$WT_ROOT" "$ZSHENV" >"$CURRENT"
   bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
@@ -74,7 +66,7 @@ teardown() {
 }
 
 @test "OROSHI_ZSH_AUTOLOAD reflects detected OROSHI_ROOT" {
-  printf 'unset OROSHI_ROOT; export OROSHI_WORKTREES_DIR="%s"; cd "%s"; source "%s"; echo "$OROSHI_ZSH_AUTOLOAD"\n' \
+  printf 'unset OROSHI_ROOT; export OROSHI_WORKTREES_DIR_MOCK="%s"; cd "%s"; source "%s"; echo "$OROSHI_ZSH_AUTOLOAD"\n' \
     "$WORKTREES_DIR" "$WT_ROOT" "$ZSHENV" >"$CURRENT"
   bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]

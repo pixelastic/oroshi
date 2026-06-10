@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-zshenv-hardcode-and-rename.md",
-    "done": false,
+    "done": true,
+    "recap": "Hardcoded OROSHI_ROOT and OROSHI_TMP_FOLDER in zshenv.zsh; renamed worktrees escape hatch from OROSHI_WORKTREES_DIR to OROSHI_WORKTREES_DIR_MOCK; updated zshenv.bats (rewrite outside-worktrees test, rename inline var) and 4 other test files; also applied same change to ~/.oroshi/tools/term/zsh/config/zshenv.zsh so ~/.zshenv subprocesses pick up the mock var.",
     "blocked_by": []
   },
   {

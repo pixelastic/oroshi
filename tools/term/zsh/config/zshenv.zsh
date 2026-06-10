@@ -4,10 +4,10 @@
 
 # Root of the oroshi repo
 export OROSHI_ROOT="$HOME/.oroshi"
-# Root of the worktrees directories (OROSHI_WORKTREES_DIR_MOCK overrides for tests)
-export OROSHI_WORKTREES_DIR="${OROSHI_WORKTREES_DIR_MOCK:-$HOME/local/www/worktrees}"
 # Root of where we store runtime config
 export OROSHI_TMP_FOLDER="$HOME/local/tmp/oroshi"
+# Root of the worktrees directories (OROSHI_WORKTREES_DIR_MOCK overrides for tests)
+export OROSHI_WORKTREES_DIR="${OROSHI_WORKTREES_DIR_MOCK:-$HOME/local/www/worktrees}"
 
 # When moving inside an oroshi worktree, we want to change the OROSHI_ROOT to
 # that worktree

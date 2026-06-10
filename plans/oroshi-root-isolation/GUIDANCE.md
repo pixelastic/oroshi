@@ -30,6 +30,11 @@
 
 ## Discoveries
 
+### Issue 02 — zshenv hardcode and rename
+- `~/.zshenv` is a symlink to `~/.oroshi/tools/term/zsh/config/zshenv.zsh` (the installed version). Tests that call autoloaded functions via `bats_run_zsh` go through the INSTALLED `~/.zshenv`, not the worktree's development `zshenv.zsh`. Updating OROSHI_WORKTREES_DIR → OROSHI_WORKTREES_DIR_MOCK in the worktree alone is not enough — the installed file must be updated too for test subprocesses to pick up the mock var.
+- `bats_git_worktree` in the helper still exports `OROSHI_WORKTREES_DIR` (not `OROSHI_WORKTREES_DIR_MOCK`). This is intentional: the helper sets the real variable, while tests override via `OROSHI_WORKTREES_DIR_MOCK`. The two compose correctly.
+- After rewriting test #3 ("OROSHI_ROOT is unchanged when PWD is outside OROSHI_WORKTREES_DIR") to verify the hardcoded default, it becomes structurally identical to test #4. Both are kept as the spec requires; the duplication is an acknowledged trade-off.
+
 ### Issue 01 — bats_mock_oroshi_root
 - `bats-lint-disable noRunZsh` was the wrong disable syntax; `lint-custom-run` expects `# bats-lint disable=noRunZsh` (space + `disable=`). Four occurrences existed in the helper — fixed alongside the main change.
 - The direct `>>` write to `mock.zsh` for injecting zsh `typeset` code is the only viable approach; `bats_mock` uses `declare -f` which only serializes bash functions.

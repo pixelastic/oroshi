@@ -3,7 +3,7 @@ bats_load_library 'helper'
 setup() {
   bats_tmp_dir
   CURRENT="$BATS_TEST_DIRNAME/../sidequest"
-  export OROSHI_WORKTREES_DIR="$BATS_TMP_DIR/worktrees"
+  export OROSHI_WORKTREES_DIR_MOCK="$BATS_TMP_DIR/worktrees"
 }
 
 teardown() {
