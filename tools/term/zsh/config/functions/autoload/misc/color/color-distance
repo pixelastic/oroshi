@@ -1,0 +1,26 @@
+# Manhattan distance between two hex colors
+# Usage:
+# $ color-delta "#FF0000" "#00FF00"   # 510
+# $ color-delta "FF0000" "FF001E"     # 30 (# optional)
+setopt local_options err_return
+
+local colorA="${1#\#}"
+local colorB="${2#\#}"
+
+local rA=$(( 16#${colorA[1,2]} ))
+local gA=$(( 16#${colorA[3,4]} ))
+local bA=$(( 16#${colorA[5,6]} ))
+
+local rB=$(( 16#${colorB[1,2]} ))
+local gB=$(( 16#${colorB[3,4]} ))
+local bB=$(( 16#${colorB[5,6]} ))
+
+local dr=$(( rA - rB ))
+local dg=$(( gA - gB ))
+local db=$(( bA - bB ))
+
+[[ $dr -lt 0 ]] && dr=$(( -dr ))
+[[ $dg -lt 0 ]] && dg=$(( -dg ))
+[[ $db -lt 0 ]] && db=$(( -db ))
+
+echo $(( dr + dg + db ))

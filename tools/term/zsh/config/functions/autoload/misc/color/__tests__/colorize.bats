@@ -4,7 +4,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/misc/colorize"
+  CURRENT="$OROSHI_ZSH_AUTOLOAD/misc/color/colorize"
 }
 
 teardown() {
