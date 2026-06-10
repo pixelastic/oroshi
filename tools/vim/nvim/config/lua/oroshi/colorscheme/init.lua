@@ -13,13 +13,11 @@ if vim.g.syntax_on then
 end
 
 -- Load all colors from dist/colors.json
--- Keys in JSON are kebab-case; Lua colorscheme uses UPPERCASE_SNAKE
 local distPath = vim.env.OROSHI_ROOT .. "/tools/term/zsh/config/theming/dist/colors.json"
 local colorsJson = F.readJson(distPath) or {}
 O.colors.env = {}
 for name, entry in pairs(colorsJson) do
-  local luaKey = name:upper():gsub("-", "_")
-  O.colors.env[luaKey] = entry.hex
+  O.colors.env[name] = entry.hex
 end
 
 O_require("oroshi/colorscheme/ui") -- Tabline, statusline, split, etc

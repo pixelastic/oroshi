@@ -36,10 +36,10 @@ O_TABLINE = {
     local separatorWidth = 1
     local width = vim.fn.strdisplaywidth(content) + separatorWidth
     -- hl
-    local hl = { fg = "WHITE", bg = "GRAY_8" }
+    local hl = { fg = "white", bg = "gray-8" }
     -- separator
     if isCurrent then
-      hl = { fg = "YELLOW", bg = "BLACK" }
+      hl = { fg = "yellow", bg = "black" }
     end
 
     return {
@@ -54,7 +54,7 @@ O_TABLINE = {
   -- Add the tab to the displayed tabline
   display = function(tabline, tab, nextTab)
     if not nextTab then
-      nextTab = { hl = { bg = "GRAY_8" } }
+      nextTab = { hl = { bg = "gray-8" } }
     end
 
     -- Start of click area

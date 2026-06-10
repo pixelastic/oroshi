@@ -81,6 +81,13 @@ Add `colors-load-definitions` call before first color use if the file is a stand
 
 _Agents append findings here after each issue._
 
+### Issue 14 — NeoVim kebab color keys
+
+- `ui/statusline.lua` had a second conversion shim (`toEnvKey`) that converted kebab→`UPPERCASE_SNAKE` for `O.colors.env` lookups in the project badge — not mentioned in the spec but needed removing alongside `init.lua`'s shim.
+- `DARK_*` color aliases (e.g. `DARK_GREEN`) become `family-0` in the new convention (e.g. `"green-0"`), not `"dark-green"`. The shade 0 slot is the darkest/background shade.
+- `unused.lua` uses `"XXX"` and `"YYY"` as sentinels for unidentified groups — these are NOT color names and must stay uppercase. The sentinel checks in `highlight.lua` (`colorName == "XXX"`) also stay uppercase. Only real palette/alias color names get kebab-cased.
+- Several files listed in the spec (modes.lua, visual.lua, http.lua, keybindings.lua, etc.) had no actual color-name strings — only HTTP methods, vim mode chars, display text, or text-manipulation markers. The spec's grep over-included them.
+
 ### Issue 11 — zshlint colors-load-definitions (design)
 
 - `colors-build` has `COLORS[` inside a jq heredoc string (not ZSH array access) — will produce a false positive; needs `# zsh-lint disable=missingColorsLoad` above that line.

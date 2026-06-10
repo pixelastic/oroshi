@@ -51,10 +51,10 @@ M.hl = function(groupName, colorName, options)
 
   -- make XXX and YYY standout
   if colorName == "XXX" then
-    config = { fg = O.colors.env.WHITE, bg = O.colors.env.CYAN, bold = true }
+    config = { fg = O.colors.env["white"], bg = O.colors.env["cyan"], bold = true }
   end
   if colorName == "YYY" then
-    config = { fg = O.colors.env.WHITE, bg = O.colors.env.PURPLE }
+    config = { fg = O.colors.env["white"], bg = O.colors.env["purple"] }
   end
 
   -- Save this highlight definition

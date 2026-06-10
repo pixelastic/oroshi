@@ -93,7 +93,8 @@
   {
     "id": "14",
     "issue": "issues/14-neovim-kebab-color-keys.md",
-    "done": false,
+    "done": true,
+    "recap": "Removed UPPERCASE_SNAKE conversion shim in colorscheme/init.lua; updated all Lua color key strings from UPPERCASE_SNAKE to kebab-case across 10 files; fixed dot-notation O.colors.env accesses to bracket notation; removed toEnvKey conversion helper in statusline.lua.",
     "blocked_by": ["09"]
   },
   {

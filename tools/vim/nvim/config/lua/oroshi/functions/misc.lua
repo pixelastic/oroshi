@@ -14,9 +14,9 @@ return {
     O.statusline.ai = { isThinking = isThinking }
 
     if isThinking then
-      F.hl("Normal", "GRAY_3", { bg = "DARK_AMBER" })
+      F.hl("Normal", "gray-3", { bg = "amber-0" })
     else
-      F.hl("Normal", "GRAY_3")
+      F.hl("Normal", "gray-3")
     end
     vim.cmd("redrawstatus")
   end,

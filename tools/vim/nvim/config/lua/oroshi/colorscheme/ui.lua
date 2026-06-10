@@ -1,69 +1,69 @@
 local hl = F.hl
 
-hl("Normal", "GRAY_3") -- Normal text.
+hl("Normal", "gray-3") -- Normal text.
 hl("NormalNC", "none") -- Normal text in unfocused windows. Should not be set.
 
 -- Misc {{{
-hl("ColorColumn", "none", { bg = "GRAY_9" }) -- Max column
-hl("EndOfBuffer", "BLACK") -- Filler lines (~) after the end of the buffer.
-hl("NonText", "GRAY_8") -- End-Of-Line (↲) and wrapped lines (↪) chars
-hl("Whitespace", "YELLOW") -- "nbsp", "space", "tab", "multispace", "lead" and "trail"
-hl("MatchParen", "EMERALD", { bg = "EMERALD_9" }) -- Matching parenthesis
-hl("Directory", "DIRECTORY") -- Directory names
+hl("ColorColumn", "none", { bg = "gray-9" }) -- Max column
+hl("EndOfBuffer", "black") -- Filler lines (~) after the end of the buffer.
+hl("NonText", "gray-8") -- End-Of-Line (↲) and wrapped lines (↪) chars
+hl("Whitespace", "yellow") -- "nbsp", "space", "tab", "multispace", "lead" and "trail"
+hl("MatchParen", "emerald", { bg = "emerald-9" }) -- Matching parenthesis
+hl("Directory", "directory") -- Directory names
 -- }}}
 
 -- Messages {{{
-hl("MsgSeparator", "none", { bg = "NEUTRAL" }) --	Top bar separator of messsage
-hl("DiagnosticInfo", "INFO")
-hl("ErrorMsg", "RED_8", { bold = false }) --	Error messages
-hl("Conceal", "NEUTRAL") --	Hidden text
-hl("Question", "NEUTRAL") --	"Press ENTER or type command to continue"
-hl("WarningMsg", "WARNING") --	Warning messages.
+hl("MsgSeparator", "none", { bg = "neutral" }) --	Top bar separator of messsage
+hl("DiagnosticInfo", "info")
+hl("ErrorMsg", "red-8", { bold = false }) --	Error messages
+hl("Conceal", "neutral") --	Hidden text
+hl("Question", "neutral") --	"Press ENTER or type command to continue"
+hl("WarningMsg", "warning") --	Warning messages.
 -- }}}
 
 -- Tabs {{{
 O.colors.tabline = {
-  fg = "GRAY_4",
-  bg = "GRAY_8",
+  fg = "gray-4",
+  bg = "gray-8",
 }
-hl("TabLineFill", "GRAY_4", { bg = "GRAY_8" }) --	Tab pages line, where there are no labels.
+hl("TabLineFill", "gray-4", { bg = "gray-8" }) --	Tab pages line, where there are no labels.
 -- }}}
 
 -- Splits {{{
-hl("WinSeparator", "YELLOW_9", { bg = "BLACK", bold = true }) --	Separators between splits
-hl("StatusLineNC", "none", { bg = "GRAY_8" }) --	Status lines of not-current windows.
+hl("WinSeparator", "yellow-9", { bg = "black", bold = true }) --	Separators between splits
+hl("StatusLineNC", "none", { bg = "gray-8" }) --	Status lines of not-current windows.
 -- }}}
 
 -- Floating windows {{{
-hl("WinBar", "none", { bg = "GRAY_8" }) -- Window title
-hl("WinBarNC", "none", { bg = "GRAY_8" }) -- Window title, unfocuses
-hl("FloatBorder", "GRAY_6", { bg = "BLACK" })
-hl("FloatTitle", "YELLOW", { bg = "GRAY_6" }) --	Title of floating windows.
-hl("NormalFloat", "GRAY_4", { bg = "GRAY_8" }) --	Normal text in floating windows.
+hl("WinBar", "none", { bg = "gray-8" }) -- Window title
+hl("WinBarNC", "none", { bg = "gray-8" }) -- Window title, unfocuses
+hl("FloatBorder", "gray-6", { bg = "black" })
+hl("FloatTitle", "yellow", { bg = "gray-6" }) --	Title of floating windows.
+hl("NormalFloat", "gray-4", { bg = "gray-8" }) --	Normal text in floating windows.
 -- Noice input window
-hl("NoiceCmdlinePopupBorderInput", "GRAY_4")
-hl("NoiceCmdlinePrompt", "GRAY_4")
-hl("NoiceCmdlineIcon", "GRAY_4")
+hl("NoiceCmdlinePopupBorderInput", "gray-4")
+hl("NoiceCmdlinePrompt", "gray-4")
+hl("NoiceCmdlineIcon", "gray-4")
 -- Noice Yes/No confirm
-hl("NoiceConfirm", "CYAN", { bg = "DARK_GREEN" })
-hl("NoiceConfirmBorder", "GREEN", { bg = "DARK_GREEN" })
-hl("NoiceFormatConfirm", "GREEN")
-hl("NoiceFormatConfirmDefault", "RED", { bg = "DARK_RED" })
+hl("NoiceConfirm", "cyan", { bg = "green-0" })
+hl("NoiceConfirmBorder", "green", { bg = "green-0" })
+hl("NoiceFormatConfirm", "green")
+hl("NoiceFormatConfirmDefault", "red", { bg = "red-0" })
 -- }}}
 
 -- Line Number {{{
-hl("LineNr", "GRAY") --	Line number column
-hl("SignColumn", "GRAY") --	Sign column
+hl("LineNr", "gray") --	Line number column
+hl("SignColumn", "gray") --	Sign column
 -- Git coloring
-hl("GitSignsAddNr", "GREEN_9", { bg = "DARK_GREEN" })
-hl("GitSignsChangeNr", "PURPLE", { bg = "DARK_PURPLE" })
-hl("GitSignsChangedeleteNr", "PURPLE", { bg = "DARK_PURPLE" })
-hl("GitSignsTopdeleteNr", "RED_9", { bg = "DARK_RED" })
-hl("GitSignsDeleteNr", "RED_9", { bg = "DARK_RED" })
+hl("GitSignsAddNr", "green-9", { bg = "green-0" })
+hl("GitSignsChangeNr", "purple", { bg = "purple-0" })
+hl("GitSignsChangedeleteNr", "purple", { bg = "purple-0" })
+hl("GitSignsTopdeleteNr", "red-9", { bg = "red-0" })
+hl("GitSignsDeleteNr", "red-9", { bg = "red-0" })
 hl("GitSignsUntrackedNr", "XXX")
 -- Current line
-hl("CursorLineNr", "YELLOW", { bg = "GRAY_9", bold = true }) --	Current line number
-hl("CursorLineSign", "none", { bg = "GRAY_9" }) --	Current line sign
+hl("CursorLineNr", "yellow", { bg = "gray-9", bold = true }) --	Current line number
+hl("CursorLineSign", "none", { bg = "gray-9" }) --	Current line sign
 -- }}}
 
 -- Cursor {{{
@@ -81,13 +81,13 @@ F.setGuicursor("cr", "block", "CursorModeCommandReplace") -- UNUSED
 F.setGuicursor("sm", "block", "CursorModeShowMatch") -- UNUSED
 
 O.colors.cursor = {
-  insert = { bg = "YELLOW_3" },
-  normal = { bg = "EMERALD" },
-  visual = { bg = "BLUE_7" },
-  terminal = { bg = "YELLOW" }, -- In fzf search
-  command = { bg = "TEAL" },
-  search = { bg = "ORANGE" },
-  ai = { bg = "AMBER_7" },
+  insert = { bg = "yellow-3" },
+  normal = { bg = "emerald" },
+  visual = { bg = "blue-7" },
+  terminal = { bg = "yellow" }, -- In fzf search
+  command = { bg = "teal" },
+  search = { bg = "orange" },
+  ai = { bg = "amber-7" },
 }
 hl("CursorModeInsert", "none", O.colors.cursor.insert)
 hl("CursorModeNormal", "none", O.colors.cursor.normal)
@@ -97,48 +97,48 @@ hl("CursorModeCommandNormal", "none", O.colors.cursor.command)
 -- }}}
 
 -- Current line {{{
-hl("CursorLine", "none", { bg = "GRAY_9" }) --	Current line
+hl("CursorLine", "none", { bg = "gray-9" }) --	Current line
 -- }}}
 
 -- Folds {{{
-hl("Folded", "none", { bg = "GRAY_8" }) --	Closed fold
-hl("FoldColumn", "GRAY") -- Column for fold symbol
-hl("CursorLineFold", "none", { bg = "GRAY_9" }) -- Column for fold symbol on active line
-hl("FoldDebugMarker", "VIOLET_9", { bg = "DARK_VIOLET" }) -- Marker column in fold debug
-hl("FoldDebugLevel1", "PURPLE", { bg = "DARK_PURPLE" }) -- Level 1 in fold debug
-hl("FoldDebugLevel2", "BLUE", { bg = "DARK_BLUE" }) -- Level 2 in fold debug
-hl("FoldDebugLevel3", "GREEN", { bg = "DARK_GREEN" }) -- Level 3 in fold debug
-hl("FoldDebugLevel4", "YELLOW", { bg = "DARK_YELLOW" }) -- Level 4 in fold debug
-hl("FoldDebugLevel5", "ORANGE", { bg = "DARK_ORANGE" }) -- Level 5 in fold debug
-hl("FoldDebugLevel6", "RED", { bg = "DARK_RED" }) -- Level 6 in fold debug
+hl("Folded", "none", { bg = "gray-8" }) --	Closed fold
+hl("FoldColumn", "gray") -- Column for fold symbol
+hl("CursorLineFold", "none", { bg = "gray-9" }) -- Column for fold symbol on active line
+hl("FoldDebugMarker", "violet-9", { bg = "violet-0" }) -- Marker column in fold debug
+hl("FoldDebugLevel1", "purple", { bg = "purple-0" }) -- Level 1 in fold debug
+hl("FoldDebugLevel2", "blue", { bg = "blue-0" }) -- Level 2 in fold debug
+hl("FoldDebugLevel3", "green", { bg = "green-0" }) -- Level 3 in fold debug
+hl("FoldDebugLevel4", "yellow", { bg = "yellow-0" }) -- Level 4 in fold debug
+hl("FoldDebugLevel5", "orange", { bg = "orange-0" }) -- Level 5 in fold debug
+hl("FoldDebugLevel6", "red", { bg = "red-0" }) -- Level 6 in fold debug
 -- }}}
 
 -- Visual mode {{{
-hl("Visual", "WHITE", { bg = "BLUE", bold = true }) --		Visual mode selection.
+hl("Visual", "white", { bg = "blue", bold = true }) --		Visual mode selection.
 -- }}}
 
 -- Search mode {{{
-hl("IncSearch", "ORANGE_2", { bg = "ORANGE_7", bold = true }) -- Match as I type
-hl("CurSearch", "ORANGE_2", { bg = "ORANGE_7", bold = true }) -- Current selected match
-hl("Search", "ORANGE_9", { bg = "ORANGE_3", bold = true }) -- All results
-hl("Substitute", "ORANGE_9", { bg = "ORANGE_3", bold = true }) -- Replace as I type
+hl("IncSearch", "orange-2", { bg = "orange-7", bold = true }) -- Match as I type
+hl("CurSearch", "orange-2", { bg = "orange-7", bold = true }) -- Current selected match
+hl("Search", "orange-9", { bg = "orange-3", bold = true }) -- All results
+hl("Substitute", "orange-9", { bg = "orange-3", bold = true }) -- Replace as I type
 -- Noice
-hl("NoiceCmdlinePopupBorderSearch", "ORANGE_7")
-hl("NoiceCmdlineIconSearch", "ORANGE_7", { bg = "none" })
+hl("NoiceCmdlinePopupBorderSearch", "orange-7")
+hl("NoiceCmdlineIconSearch", "orange-7", { bg = "none" })
 -- }}}
 
 -- Completion (Ghost Text) {{{
-hl("CmpGhostText", "COMMENT") -- Ghost text
+hl("CmpGhostText", "comment") -- Ghost text
 hl("ComplMatchIns", "none") --	Text that just got completed
 -- }}}
 
 -- Completion {{{
 -- Noice completion, used when completing commandline
-hl("NoicePopupmenu", "NEUTRAL", { bg = "GRAY_8" }) -- Default, swapped when selected
-hl("NoicePopupmenuMatch", "VIOLET") -- Matching letters, swapped when selected
-hl("NoiceCompletionItemWord", "NEUTRAL") -- Words
-hl("NoiceScrollbar", "none", { bg = "GRAY_8" }) -- Scrollbar background
-hl("NoiceScrollbarThumb", "NEUTRAL", { bg = "none" }) -- Scrollbar thumb
+hl("NoicePopupmenu", "neutral", { bg = "gray-8" }) -- Default, swapped when selected
+hl("NoicePopupmenuMatch", "violet") -- Matching letters, swapped when selected
+hl("NoiceCompletionItemWord", "neutral") -- Words
+hl("NoiceScrollbar", "none", { bg = "gray-8" }) -- Scrollbar background
+hl("NoiceScrollbarThumb", "neutral", { bg = "none" }) -- Scrollbar thumb
 
 -- O.colors.completion = {
 --   -- Regular completion menu
@@ -167,119 +167,119 @@ hl("NoiceScrollbarThumb", "NEUTRAL", { bg = "none" }) -- Scrollbar thumb
 -- }}}
 
 -- Copilot {{{
-hl("CopilotSuggestion", "NEUTRAL", { bg = "GRAY_8", italic = true, bold = true })
+hl("CopilotSuggestion", "neutral", { bg = "gray-8", italic = true, bold = true })
 -- }}}
 
 -- Diagnostics {{{
 -- Errors
-hl("DiagnosticLineNrError", "RED_2", { bg = "RED_9" }) -- Line number
-hl("DiagnosticUnderlineError", "none", { undercurl = true, sp = "RED" }) -- Problematic code
-hl("DiagnosticError", "RED_2", { bg = "RED_9", bold = true }) -- Floating text
-hl("DiagnosticVirtualTextError", "RED_3", { bg = "RED_9" }) -- Virtual text
-hl("DiagnosticDiagLineError", "RED_2", { bg = "RED_9" }) -- Diag line
+hl("DiagnosticLineNrError", "red-2", { bg = "red-9" }) -- Line number
+hl("DiagnosticUnderlineError", "none", { undercurl = true, sp = "red" }) -- Problematic code
+hl("DiagnosticError", "red-2", { bg = "red-9", bold = true }) -- Floating text
+hl("DiagnosticVirtualTextError", "red-3", { bg = "red-9" }) -- Virtual text
+hl("DiagnosticDiagLineError", "red-2", { bg = "red-9" }) -- Diag line
 
 -- Warning
-hl("DiagnosticLineNrWarn", "YELLOW_5", { bg = "YELLOW_9", bold = true }) -- Line number
-hl("DiagnosticUnderlineWarn", "none", { undercurl = true, sp = "YELLOW_6" }) -- Problematic code
-hl("DiagnosticUnnecessary", "none", { undercurl = true, sp = "YELLOW_6" }) -- Problematic code
-hl("DiagnosticWarn", "YELLOW_5", { bg = "YELLOW_9" }) -- Floating text
-hl("DiagnosticVirtualTextWarn", "YELLOW_5", { bg = "YELLOW_9" }) -- Virtual text
-hl("DiagnosticDiagLineWarn", "YELLOW_5", { bg = "YELLOW_9" }) -- Diag line
-hl("DiagnosticDeprecated", "YELLOW_5", { bg = "DARK_YELLOW", undercurl = true }) -- Deprecated
+hl("DiagnosticLineNrWarn", "yellow-5", { bg = "yellow-9", bold = true }) -- Line number
+hl("DiagnosticUnderlineWarn", "none", { undercurl = true, sp = "yellow-6" }) -- Problematic code
+hl("DiagnosticUnnecessary", "none", { undercurl = true, sp = "yellow-6" }) -- Problematic code
+hl("DiagnosticWarn", "yellow-5", { bg = "yellow-9" }) -- Floating text
+hl("DiagnosticVirtualTextWarn", "yellow-5", { bg = "yellow-9" }) -- Virtual text
+hl("DiagnosticDiagLineWarn", "yellow-5", { bg = "yellow-9" }) -- Diag line
+hl("DiagnosticDeprecated", "yellow-5", { bg = "yellow-0", undercurl = true }) -- Deprecated
 
 -- Info
-hl("DiagnosticLineNrInfo", "BLUE_5", { bg = "BLUE_9" }) -- Line number
-hl("DiagnosticUnderlineInfo", "none", { undercurl = true, sp = "BLUE_9" }) -- Problematic code
-hl("DiagnosticInfo", "BLUE", { bg = "BLUE_9" }) -- Floating text
-hl("DiagnosticVirtualTextInfo", "BLUE_3", { bg = "BLUE_9" }) -- Virtual text
-hl("DiagnosticDiagLineInfo", "BLUE_3", { bg = "BLUE_9" }) -- Diag line
+hl("DiagnosticLineNrInfo", "blue-5", { bg = "blue-9" }) -- Line number
+hl("DiagnosticUnderlineInfo", "none", { undercurl = true, sp = "blue-9" }) -- Problematic code
+hl("DiagnosticInfo", "blue", { bg = "blue-9" }) -- Floating text
+hl("DiagnosticVirtualTextInfo", "blue-3", { bg = "blue-9" }) -- Virtual text
+hl("DiagnosticDiagLineInfo", "blue-3", { bg = "blue-9" }) -- Diag line
 
 -- Hints
-hl("DiagnosticLineNrHint", "VIOLET_5", { bg = "GRAY_7" }) -- Line number
-hl("DiagnosticUnderlineHint", "none", { undercurl = true, sp = "VIOLET_7" }) -- Problematic code
-hl("DiagnosticHint", "VIOLET_5", { bg = "GRAY_8" }) -- Floating text
-hl("DiagnosticVirtualTextHint", "VIOLET_5", { bg = "GRAY_8" }) -- Virtual text
-hl("DiagnosticDiagLineHint", "VIOLET_4", { bg = "GRAY_8" }) -- Diag line
+hl("DiagnosticLineNrHint", "violet-5", { bg = "gray-7" }) -- Line number
+hl("DiagnosticUnderlineHint", "none", { undercurl = true, sp = "violet-7" }) -- Problematic code
+hl("DiagnosticHint", "violet-5", { bg = "gray-8" }) -- Floating text
+hl("DiagnosticVirtualTextHint", "violet-5", { bg = "gray-8" }) -- Virtual text
+hl("DiagnosticDiagLineHint", "violet-4", { bg = "gray-8" }) -- Diag line
 -- }}}
 
 -- Spellchecker {{{
-hl("SpellBad", "RED", { underline = true })
-hl("SpellCap", "RED", { underline = true })
+hl("SpellBad", "red", { underline = true })
+hl("SpellCap", "red", { underline = true })
 -- }}}
 
 -- Diff {{{
-hl("DiffAdd", "none", { bg = "DARK_GREEN", ctermfg = "WHITE" }) -- Added lines
-hl("DiffChange", "none", { bg = "DARK_GREEN" }) -- Changed lines
-hl("DiffText", "none", { bg = "DARK_PURPLE" }) -- Changed text specifically
+hl("DiffAdd", "none", { bg = "green-0", ctermfg = "white" }) -- Added lines
+hl("DiffChange", "none", { bg = "green-0" }) -- Changed lines
+hl("DiffText", "none", { bg = "purple-0" }) -- Changed text specifically
 -- }}}
 
 -- Statusline {{{
-hl("StatusLine", "GRAY_4", { bg = "GRAY_8" }) --	Status line of current window.
+hl("StatusLine", "gray-4", { bg = "gray-8" }) --	Status line of current window.
 O.colors.statusline = {
-  normal = { bg = "EMERALD_9", fg = "EMERALD_2", bold = true },
-  insert = { bg = "YELLOW", fg = "BLACK", bold = true },
-  visual = { bg = "BLUE", fg = "WHITE", bold = true },
-  search = { bg = "ORANGE_7", fg = "ORANGE_2", bold = true },
-  command = { bg = "TEAL", fg = "TEAL_1", bold = true },
-  unknown = { bg = "CYAN" },
+  normal = { bg = "emerald-9", fg = "emerald-2", bold = true },
+  insert = { bg = "yellow", fg = "black", bold = true },
+  visual = { bg = "blue", fg = "white", bold = true },
+  search = { bg = "orange-7", fg = "orange-2", bold = true },
+  command = { bg = "teal", fg = "teal-1", bold = true },
+  unknown = { bg = "cyan" },
   -- Context badge
-  worktreeBadge = { bg = "ORANGE_7", fg = "ORANGE_1" },
+  worktreeBadge = { bg = "orange-7", fg = "orange-1" },
   -- Filepath
-  filepathDefault = { fg = "GRAY_4" },
-  filepathReadonly = { fg = "RED" },
-  filepathUnsavedChanges = { fg = "GIT_MODIFIED" },
-  filepathNoName = { fg = "COMMENT" },
+  filepathDefault = { fg = "gray-4" },
+  filepathReadonly = { fg = "red" },
+  filepathUnsavedChanges = { fg = "git-modified" },
+  filepathNoName = { fg = "comment" },
   -- NvimTree
-  nvimTreeIcon = { fg = "YELLOW", bg = "GREEN_9" },
-  nvimTreeText = { fg = "WHITE", bg = "GREEN_9" },
-  nvimTreeSeparator = { fg = "GREEN_9" },
+  nvimTreeIcon = { fg = "yellow", bg = "green-9" },
+  nvimTreeText = { fg = "white", bg = "green-9" },
+  nvimTreeSeparator = { fg = "green-9" },
   -- Special
-  healthcheck = { bg = "RED_LIGHT", fg = "WHITE" },
-  ai = { bg = "AMBER_7", fg = "AMBER_1" },
-  kitty = { bg = "BLUE", fg = "WHITE", bold = true },
+  healthcheck = { bg = "red-light", fg = "white" },
+  ai = { bg = "amber-7", fg = "amber-1" },
+  kitty = { bg = "blue", fg = "white", bold = true },
   -- Right side
-  fileencoding = { bg = "RED_9", fg = "RED_2" },
-  macro = { fg = "RED", bg = "DARK_RED" },
-  filetype = { bg = "GRAY_9", fg = "WHITE" },
+  fileencoding = { bg = "red-9", fg = "red-2" },
+  macro = { fg = "red", bg = "red-0" },
+  filetype = { bg = "gray-9", fg = "white" },
   -- LSP
   lsp = {
-    off = { fg = "GRAY_8", bg = "DARK_BLUE" },
-    loading = { fg = "BLUE_9", bg = "DARK_BLUE" },
+    off = { fg = "gray-8", bg = "blue-0" },
+    loading = { fg = "blue-9", bg = "blue-0" },
 
-    error = { fg = "RED_2", bg = "RED_9" },
-    warning = { fg = "YELLOW_5", bg = "YELLOW_9" },
-    info = { fg = "BLUE_3", bg = "BLUE_9" },
-    hint = { fg = "VIOLET_5", bg = "GRAY_7" },
-    success = { fg = "GREEN_2", bg = "GREEN_9" },
+    error = { fg = "red-2", bg = "red-9" },
+    warning = { fg = "yellow-5", bg = "yellow-9" },
+    info = { fg = "blue-3", bg = "blue-9" },
+    hint = { fg = "violet-5", bg = "gray-7" },
+    success = { fg = "green-2", bg = "green-9" },
   },
   -- Copilot
-  copilotNotLoaded = { fg = "GRAY_8", bg = "DARK_AMBER" },
-  copilotEnabled = { fg = "AMBER_1", bg = "AMBER_7" },
-  copilotDisabled = { fg = "AMBER_9", bg = "DARK_AMBER" },
+  copilotNotLoaded = { fg = "gray-8", bg = "amber-0" },
+  copilotEnabled = { fg = "amber-1", bg = "amber-7" },
+  copilotDisabled = { fg = "amber-9", bg = "amber-0" },
 }
 -- }}}
 
 -- Commandline {{{
 O.colors.commandline = {
-  hidden = { fg = "WHITE" }, -- Default highlight
-  visible = { fg = "TEXT", bg = "GRAY_8" }, -- When need to be more readable
+  hidden = { fg = "white" }, -- Default highlight
+  visible = { fg = "text", bg = "gray-8" }, -- When need to be more readable
 }
-hl("NoiceCmdlinePopup", "none", { bg = "GRAY_9" })
+hl("NoiceCmdlinePopup", "none", { bg = "gray-9" })
 -- Vim Cmdline {{{
-hl("NoiceCmdlinePopupBorderCmdline", "TEAL")
-hl("NoiceCmdlineIconCmdline", "TEAL", { bg = "none" })
+hl("NoiceCmdlinePopupBorderCmdline", "teal")
+hl("NoiceCmdlineIconCmdline", "teal", { bg = "none" })
 -- }}}
 -- Shell {{{
-hl("NoiceCmdlinePopupBorderFilter", "GREEN")
-hl("NoiceCmdlineIconFilter", "GREEN", { bg = "none" })
+hl("NoiceCmdlinePopupBorderFilter", "green")
+hl("NoiceCmdlineIconFilter", "green", { bg = "none" })
 -- }}}
 -- Lua {{{
-hl("NoiceCmdlinePopupBorderLua", "VIOLET")
-hl("NoiceCmdlineIconLua", "VIOLET", { bg = "none" }) -- Prefix
+hl("NoiceCmdlinePopupBorderLua", "violet")
+hl("NoiceCmdlineIconLua", "violet", { bg = "none" }) -- Prefix
 -- }}}
 -- Help {{{
-hl("NoiceCmdlinePopupBorderHelp", "BLUE")
-hl("NoiceCmdlineIconHelp", "BLUE", { bg = "none" })
+hl("NoiceCmdlinePopupBorderHelp", "blue")
+hl("NoiceCmdlineIconHelp", "blue", { bg = "none" })
 -- }}}
 
 -- }}}
@@ -287,246 +287,246 @@ hl("NoiceCmdlineIconHelp", "BLUE", { bg = "none" })
 -- Noice {{{
 hl("NoiceMini", "none")
 -- Error
-hl("NoiceFormatLevelError", "RED_2", { bg = "RED_9", bold = true })
-hl("NoiceOErrorErrorMsg", "RED_8")
+hl("NoiceFormatLevelError", "red-2", { bg = "red-9", bold = true })
+hl("NoiceOErrorErrorMsg", "red-8")
 -- Warn
-hl("NoiceOWarningMessage", "YELLOW")
-hl("NoiceOWarningIconSeparator", "YELLOW_9", { bg = "BLACK" })
-hl("NoiceOWarningIcon", "YELLOW_5", { bg = "YELLOW_9", bold = true })
+hl("NoiceOWarningMessage", "yellow")
+hl("NoiceOWarningIconSeparator", "yellow-9", { bg = "black" })
+hl("NoiceOWarningIcon", "yellow-5", { bg = "yellow-9", bold = true })
 -- Info
-hl("NoiceOInfoMessage", "BLUE")
-hl("NoiceOInfoIconSeparator", "BLUE_9", { bg = "BLACK" })
-hl("NoiceOInfoIcon", "BLUE_3", { bg = "BLUE_9", bold = true })
-hl("NoiceFormatLevelInfo", "BLUE")
+hl("NoiceOInfoMessage", "blue")
+hl("NoiceOInfoIconSeparator", "blue-9", { bg = "black" })
+hl("NoiceOInfoIcon", "blue-3", { bg = "blue-9", bold = true })
+hl("NoiceFormatLevelInfo", "blue")
 -- Debug
-hl("NoiceODebugMessage", "VIOLET")
+hl("NoiceODebugMessage", "violet")
 -- Messages
-hl("NoiceSplit", "none", { bg = "BLACK" })
-hl("MoreMsg", "COMMENT")
-hl("NoiceFormatDate", "DATE")
-hl("NoiceOMessageNormal", "NOTICE")
-hl("NoiceFormatEvent", "PURPLE_4")
-hl("NoiceFormatKind", "PURPLE_3")
+hl("NoiceSplit", "none", { bg = "black" })
+hl("MoreMsg", "comment")
+hl("NoiceFormatDate", "date")
+hl("NoiceOMessageNormal", "notice")
+hl("NoiceFormatEvent", "purple-4")
+hl("NoiceFormatKind", "purple-3")
 -- :Noice all
-hl("NoiceOMessageSeparator", "GRAY")
-hl("NoiceOMessageEvent", "PURPLE_4")
-hl("NoiceOMessageKind", "PURPLE_3")
-hl("NoiceOMessageCmdline", "TEAL")
-hl("NoiceOMessagePrefix", "GRAY")
-hl("NoiceOMessageMessage", "GRAY")
+hl("NoiceOMessageSeparator", "gray")
+hl("NoiceOMessageEvent", "purple-4")
+hl("NoiceOMessageKind", "purple-3")
+hl("NoiceOMessageCmdline", "teal")
+hl("NoiceOMessagePrefix", "gray")
+hl("NoiceOMessageMessage", "gray")
 -- }}}
 
 -- CodeCompanion {{{
 O.colors.codecompanion = {
   default = {
-    chatNormal = { fg = "none", bg = "GRAY_8" },
-    chatBorder = { fg = "DARK_AMBER", bg = "BLACK" },
+    chatNormal = { fg = "none", bg = "gray-8" },
+    chatBorder = { fg = "amber-0", bg = "black" },
   },
   thinking = {
-    chatNormal = { fg = "none", bg = "DARK_AMBER" },
-    chatBorder = { fg = "AMBER_7", bg = "BLACK" },
+    chatNormal = { fg = "none", bg = "amber-0" },
+    chatBorder = { fg = "amber-7", bg = "black" },
   },
 }
-hl("CodeCompanionChatTitle", "AMBER_1", { bg = "AMBER_7" })
-hl("CodeCompanionChatTitleDecoration", "AMBER_7")
+hl("CodeCompanionChatTitle", "amber-1", { bg = "amber-7" })
+hl("CodeCompanionChatTitleDecoration", "amber-7")
 hl("CodeCompanionChatBorder", "none", O.colors.codecompanion.default.chatBorder)
 hl("CodeCompanionChatNormal", "none", O.colors.codecompanion.default.chatNormal)
-hl("CodeCompanionChatInnerTitle", "AMBER_5", { bold = true }) -- ## Headers
-hl("CodeCompanionChatVariable", "VARIABLE", { bold = true })
-hl("CodeCompanionChatEndOfBuffer", "GRAY_8")
+hl("CodeCompanionChatInnerTitle", "amber-5", { bold = true }) -- ## Headers
+hl("CodeCompanionChatVariable", "variable", { bold = true })
+hl("CodeCompanionChatEndOfBuffer", "gray-8")
 
 -- }}}
 
 -- Lazy {{{
-hl("LazyButtonActive", "YELLOW", { bg = "BLACK", bold = true })
-hl("LazyButton", "none", { bg = "GRAY_9" })
-hl("LazyCommit", "GIT_COMMIT")
-hl("LazyProp", "ORANGE")
-hl("LazyReasonEvent", "ORANGE", { bold = false })
-hl("LazyReasonFt", "VIOLET")
-hl("LazyReasonPlugin", "YELLOW")
-hl("LazyReasonSource", "VIOLET")
-hl("LazyReasonStart", "GREEN")
-hl("LazySpecial", "PUNCTUATION")
+hl("LazyButtonActive", "yellow", { bg = "black", bold = true })
+hl("LazyButton", "none", { bg = "gray-9" })
+hl("LazyCommit", "git-commit")
+hl("LazyProp", "orange")
+hl("LazyReasonEvent", "orange", { bold = false })
+hl("LazyReasonFt", "violet")
+hl("LazyReasonPlugin", "yellow")
+hl("LazyReasonSource", "violet")
+hl("LazyReasonStart", "green")
+hl("LazySpecial", "punctuation")
 -- }}}
 
 -- Mason {{{
-hl("MasonWarning", "WARNING")
+hl("MasonWarning", "warning")
 -- }}}}
 
 -- Nvim Tree {{{
-hl("NvimTreeClosedFolderIcon", "YELLOW_6")
-hl("NvimTreeOpenedFolderIcon", "YELLOW_6")
-hl("NvimTreeFolderArrowClosed", "NEUTRAL")
-hl("NvimTreeFolderArrowOpen", "NEUTRAL")
-hl("NvimTreeGitDirtyIcon", "GIT_DIRTY")
-hl("NvimTreeRootFolder", "DIRECTORY")
-hl("NvimTreeImageFile", "YELLOW_6")
+hl("NvimTreeClosedFolderIcon", "yellow-6")
+hl("NvimTreeOpenedFolderIcon", "yellow-6")
+hl("NvimTreeFolderArrowClosed", "neutral")
+hl("NvimTreeFolderArrowOpen", "neutral")
+hl("NvimTreeGitDirtyIcon", "git-dirty")
+hl("NvimTreeRootFolder", "directory")
+hl("NvimTreeImageFile", "yellow-6")
 -- }}}
 
 -- Icons {{{
-hl("DevIconCss", "VIOLET")
-hl("DevIconEmbeddedOpenTypeFont", "VIOLET")
-hl("DevIconFavicon", "YELLOW_6")
-hl("DevIconJson", "VIOLET")
-hl("DevIconJs", "YELLOW")
-hl("DevIconPng", "YELLOW_6")
-hl("DevIconReadme", "AMBER")
-hl("DevIconSvg", "VIOLET")
-hl("DevIconTrueTypeFont", "VIOLET")
-hl("DevIconWebOpenFontFormat", "VIOLET")
-hl("DevIconYml", "VIOLET")
+hl("DevIconCss", "violet")
+hl("DevIconEmbeddedOpenTypeFont", "violet")
+hl("DevIconFavicon", "yellow-6")
+hl("DevIconJson", "violet")
+hl("DevIconJs", "yellow")
+hl("DevIconPng", "yellow-6")
+hl("DevIconReadme", "amber")
+hl("DevIconSvg", "violet")
+hl("DevIconTrueTypeFont", "violet")
+hl("DevIconWebOpenFontFormat", "violet")
+hl("DevIconYml", "violet")
 -- }}}
 
 -- GitSigns {{{
 -- Lines (:Gitsigns toggle_linehl)
-hl("GitSignsAddLn", "none", { bg = "GREEN_9" })
-hl("GitSignsChangeLn", "none", { bg = "PURPLE_9" })
-hl("GitSignsTopdeleteLn", "none", { bg = "RED_9" })
-hl("GitSignsDeleteLn", "none", { bg = "RED_9" })
+hl("GitSignsAddLn", "none", { bg = "green-9" })
+hl("GitSignsChangeLn", "none", { bg = "purple-9" })
+hl("GitSignsTopdeleteLn", "none", { bg = "red-9" })
+hl("GitSignsDeleteLn", "none", { bg = "red-9" })
 -- }}}
 
 -- Avante {{{
 -- UI
-hl("AvanteSidebarWinSeparator", "GRAY_8", { bg = "GRAY_8" }) -- Window seperators
+hl("AvanteSidebarWinSeparator", "gray-8", { bg = "gray-8" }) -- Window seperators
 -- Popups
-hl("AvanteButtonDefault", "WHITE", { bg = "GRAY_7" })
-hl("AvanteButtonDefaultHover", "AMBER_1", { bg = "AMBER_7", bold = true })
-hl("AvanteConfirmTitle", "AMBER_1", { bg = "AMBER_7", bold = true })
-hl("AvanteCommentFg", "NEUTRAL")
+hl("AvanteButtonDefault", "white", { bg = "gray-7" })
+hl("AvanteButtonDefaultHover", "amber-1", { bg = "amber-7", bold = true })
+hl("AvanteConfirmTitle", "amber-1", { bg = "amber-7", bold = true })
+hl("AvanteCommentFg", "neutral")
 -- Response
-hl("AvanteTitle", "GRAY_8", { bg = "GRAY_8" }) -- Avante title
-hl("AvanteReversedTitle", "GRAY_8") -- Avante title sides
-hl("AvanteSidebarNormal", "TEXT", { bg = "GRAY_8" }) -- Normal text
-hl("AvanteStateSpinnerToolCalling", "INFO") -- name of the tool
-hl("AvanteStateSpinnerGenerating", "AMBER_7") -- "generating"
-hl("AvanteStateSpinnerSucceeded", "GREEN_1", { bg = "SUCCESS", bold = true }) -- "succeeded"
-hl("AvanteStateSpinnerFailed", "RED_1", { bg = "RED_7", bold = true })
-hl("AvanteTaskCompleted", "SUCCESS", { bold = true }) -- completed tag
-hl("AvanteInlineHint", "NEUTRAL") -- Hint on output
+hl("AvanteTitle", "gray-8", { bg = "gray-8" }) -- Avante title
+hl("AvanteReversedTitle", "gray-8") -- Avante title sides
+hl("AvanteSidebarNormal", "text", { bg = "gray-8" }) -- Normal text
+hl("AvanteStateSpinnerToolCalling", "info") -- name of the tool
+hl("AvanteStateSpinnerGenerating", "amber-7") -- "generating"
+hl("AvanteStateSpinnerSucceeded", "green-1", { bg = "success", bold = true }) -- "succeeded"
+hl("AvanteStateSpinnerFailed", "red-1", { bg = "red-7", bold = true })
+hl("AvanteTaskCompleted", "success", { bold = true }) -- completed tag
+hl("AvanteInlineHint", "neutral") -- Hint on output
 -- Files
-hl("AvanteSubtitle", "AMBER_1", { bg = "AMBER_7" }) -- File title
-hl("AvanteReversedSubtitle", "AMBER_7")
+hl("AvanteSubtitle", "amber-1", { bg = "amber-7" }) -- File title
+hl("AvanteReversedSubtitle", "amber-7")
 -- Prompt
-hl("AvanteThirdTitle", "AMBER_7", { bg = "AMBER_7" }) -- Chat title
-hl("AvanteReversedThirdTitle", "AMBER_7")
-hl("AvanteSidebarWinHorizontalSeparator", "AMBER_7", { bg = "GRAY_8" }) -- Manual separator
-hl("AvantePromptInput", "TEXT")
-hl("AvantePromptInputBorder", "none", { bg = "GRAY_6" })
-hl("AvantePopupHint", "GRAY_8", { bg = "GRAY_8", blend = 100 }) -- Tokens: 3482, etc in chat window
+hl("AvanteThirdTitle", "amber-7", { bg = "amber-7" }) -- Chat title
+hl("AvanteReversedThirdTitle", "amber-7")
+hl("AvanteSidebarWinHorizontalSeparator", "amber-7", { bg = "gray-8" }) -- Manual separator
+hl("AvantePromptInput", "text")
+hl("AvantePromptInputBorder", "none", { bg = "gray-6" })
+hl("AvantePopupHint", "gray-8", { bg = "gray-8", blend = 100 }) -- Tokens: 3482, etc in chat window
 -- hl('Visual', 'WHITE', { bg = 'BLUE', bold = true }) -- Used for keycaps
 -- Code
-hl("AvanteConflictIncoming", "none", { bg = "GREEN_9" })
-hl("AvanteConflictCurrentLabel", "RED_5", { bg = "RED_9", bold = true })
-hl("AvanteConflictIncomingLabel", "GREEN_6", { bg = "GREEN_8", bold = true })
-hl("AvanteToBeDeletedWOStrikethrough", "none", { bg = "RED_9", strikethrough = true })
+hl("AvanteConflictIncoming", "none", { bg = "green-9" })
+hl("AvanteConflictCurrentLabel", "red-5", { bg = "red-9", bold = true })
+hl("AvanteConflictIncomingLabel", "green-6", { bg = "green-8", bold = true })
+hl("AvanteToBeDeletedWOStrikethrough", "none", { bg = "red-9", strikethrough = true })
 -- }}}
 
 -- NeoGit {{{
 -- UI
-hl("NeogitFloatBorder", "GIT_COMMIT", { bg = "DARK_PURPLE" })
-hl("NeogitNormal", "GRAY_3", { bg = "DARK_PURPLE" })
-hl("NeogitPopupBold", "GRAY_3", { bold = true })
+hl("NeogitFloatBorder", "git-commit", { bg = "purple-0" })
+hl("NeogitNormal", "gray-3", { bg = "purple-0" })
+hl("NeogitPopupBold", "gray-3", { bold = true })
 hl("NeogitSignColumn", "none")
 hl("NeogitFold", "none")
-hl("NeogitPopupSectionTitle", "BLUE_4", { bold = true })
+hl("NeogitPopupSectionTitle", "blue-4", { bold = true })
 hl("NeogitPopupActionDisabled", "none")
 -- Colors
-hl("NeogitGraphBlack", "BLACK")
-hl("NeogitGraphBoldBlack", "BLACK", { bold = true })
-hl("NeogitGraphBlue", "BLUE")
-hl("NeogitGraphBoldBlue", "BLUE", { bold = true })
-hl("NeogitGraphCyan", "CYAN")
-hl("NeogitGraphBoldCyan", "CYAN", { bold = true })
-hl("NeogitGraphGray", "GRAY")
-hl("NeogitGraphBoldGray", "GRAY", { bold = true })
-hl("NeogitGraphGreen", "GREEN")
-hl("NeogitGraphBoldGreen", "GREEN", { bold = true })
-hl("NeogitGraphOrange", "ORANGE")
-hl("NeogitGraphBoldOrange", "ORANGE", { bold = true })
-hl("NeogitGraphPurple", "PURPLE")
-hl("NeogitGraphBoldPurple", "PURPLE", { bold = true })
-hl("NeogitGraphRed", "RED")
-hl("NeogitGraphBoldRed", "RED", { bold = true })
-hl("NeogitGraphWhite", "WHITE")
-hl("NeogitGraphBoldWhite", "WHITE", { bold = true })
-hl("NeogitGraphYellow", "YELLOW")
-hl("NeogitGraphBoldYellow", "YELLOW", { bold = true })
+hl("NeogitGraphBlack", "black")
+hl("NeogitGraphBoldBlack", "black", { bold = true })
+hl("NeogitGraphBlue", "blue")
+hl("NeogitGraphBoldBlue", "blue", { bold = true })
+hl("NeogitGraphCyan", "cyan")
+hl("NeogitGraphBoldCyan", "cyan", { bold = true })
+hl("NeogitGraphGray", "gray")
+hl("NeogitGraphBoldGray", "gray", { bold = true })
+hl("NeogitGraphGreen", "green")
+hl("NeogitGraphBoldGreen", "green", { bold = true })
+hl("NeogitGraphOrange", "orange")
+hl("NeogitGraphBoldOrange", "orange", { bold = true })
+hl("NeogitGraphPurple", "purple")
+hl("NeogitGraphBoldPurple", "purple", { bold = true })
+hl("NeogitGraphRed", "red")
+hl("NeogitGraphBoldRed", "red", { bold = true })
+hl("NeogitGraphWhite", "white")
+hl("NeogitGraphBoldWhite", "white", { bold = true })
+hl("NeogitGraphYellow", "yellow")
+hl("NeogitGraphBoldYellow", "yellow", { bold = true })
 -- Keybindings
-hl("NeogitPopupActionKey", "FUNCTION")
-hl("NeogitPopupSwitchKey", "FLAG")
-hl("NeogitPopupOptionKey", "FLAG")
-hl("NeogitPopupSwitchEnabled", "GREEN_3", { bg = "DARK_GREEN" })
-hl("NeogitPopupOptionDisabled", "RED_3", { bg = "DARK_RED" })
-hl("NeogitPopupSwitchDisabled", "RED_3", { bg = "DARK_RED" })
+hl("NeogitPopupActionKey", "function")
+hl("NeogitPopupSwitchKey", "flag")
+hl("NeogitPopupOptionKey", "flag")
+hl("NeogitPopupSwitchEnabled", "green-3", { bg = "green-0" })
+hl("NeogitPopupOptionDisabled", "red-3", { bg = "red-0" })
+hl("NeogitPopupSwitchDisabled", "red-3", { bg = "red-0" })
 -- Misc
-hl("NeogitBranchHead", "GIT_BRANCH")
-hl("NeogitBranch", "GIT_BRANCH")
-hl("NeogitPopupBranchName", "GIT_BRANCH")
-hl("NeogitObjectId", "GIT_COMMIT")
-hl("NeogitRemote", "GIT_REMOTE")
-hl("NeogitStatusHEAD", "COMMENT")
-hl("NeogitFilePath", "FILE")
+hl("NeogitBranchHead", "git-branch")
+hl("NeogitBranch", "git-branch")
+hl("NeogitPopupBranchName", "git-branch")
+hl("NeogitObjectId", "git-commit")
+hl("NeogitRemote", "git-remote")
+hl("NeogitStatusHEAD", "comment")
+hl("NeogitFilePath", "file")
 -- Sections
-hl("NeogitSectionHeaderCount", "NUMBER", { bold = true })
-hl("NeogitStagedchanges", "GIT_MODIFIED", { bold = true })
-hl("NeogitUnstagedchanges", "GIT_ADDED", { bold = true })
-hl("NeogitUntrackedfiles", "GIT_UNTRACKED", { bold = true })
-hl("NeogitUnmergedchanges", "GIT_REMOTE", { bold = true })
-hl("NeogitDiffHeader", "YELLOW_6", { bg = "DARK_YELLOW" })
-hl("NeogitDiffHeaderCursor", "YELLOW_6", { bg = "DARK_YELLOW" })
-hl("NeogitFloatHeader", "BLUE", { bold = true })
-hl("NeogitFloatHeaderHighlight", "BLUE", { bold = true })
+hl("NeogitSectionHeaderCount", "number", { bold = true })
+hl("NeogitStagedchanges", "git-modified", { bold = true })
+hl("NeogitUnstagedchanges", "git-added", { bold = true })
+hl("NeogitUntrackedfiles", "git-untracked", { bold = true })
+hl("NeogitUnmergedchanges", "git-remote", { bold = true })
+hl("NeogitDiffHeader", "yellow-6", { bg = "yellow-0" })
+hl("NeogitDiffHeaderCursor", "yellow-6", { bg = "yellow-0" })
+hl("NeogitFloatHeader", "blue", { bold = true })
+hl("NeogitFloatHeaderHighlight", "blue", { bold = true })
 -- Status
-hl("NeogitChangeModified", "GIT_MODIFIED")
-hl("NeogitChangeNewFile", "GIT_ADDED")
+hl("NeogitChangeModified", "git-modified")
+hl("NeogitChangeNewFile", "git-added")
 -- Diff markers
-hl("NeogitHunkHeader", "YELLOW_9", { bg = "DARK_YELLOW" })
-hl("NeogitHunkHeaderHighlight", "YELLOW_9", { bg = "DARK_YELLOW" })
-hl("NeogitHunkHeaderCursor", "YELLOW_9", { bg = "DARK_YELLOW" })
+hl("NeogitHunkHeader", "yellow-9", { bg = "yellow-0" })
+hl("NeogitHunkHeaderHighlight", "yellow-9", { bg = "yellow-0" })
+hl("NeogitHunkHeaderCursor", "yellow-9", { bg = "yellow-0" })
 -- Diff add
-hl("NeogitDiffAdd", "GIT_ADDED", { bg = "DARK_GREEN" })
-hl("NeogitDiffAddHighlight", "GIT_ADDED", { bg = "DARK_GREEN" })
-hl("NeogitDiffAddCursor", "GIT_ADDED", { bg = "DARK_GREEN" })
-hl("NeogitDiffAdditions", "GIT_ADDED")
+hl("NeogitDiffAdd", "git-added", { bg = "green-0" })
+hl("NeogitDiffAddHighlight", "git-added", { bg = "green-0" })
+hl("NeogitDiffAddCursor", "git-added", { bg = "green-0" })
+hl("NeogitDiffAdditions", "git-added")
 -- Diff deleted
-hl("NeogitDiffDelete", "RED_8", { bg = "DARK_RED" })
-hl("NeogitDiffDeleteHighlight", "RED_8", { bg = "DARK_RED" })
-hl("NeogitDiffDeleteCursor", "RED_8", { bg = "DARK_RED" })
-hl("NeogitDiffDeletions", "RED_8")
+hl("NeogitDiffDelete", "red-8", { bg = "red-0" })
+hl("NeogitDiffDeleteHighlight", "red-8", { bg = "red-0" })
+hl("NeogitDiffDeleteCursor", "red-8", { bg = "red-0" })
+hl("NeogitDiffDeletions", "red-8")
 -- Diff unchanged
-hl("NeogitDiffContext", "GRAY_7", { bg = "GRAY_9" })
-hl("NeogitDiffContextHighlight", "GRAY_7", { bg = "GRAY_9" })
-hl("NeogitDiffContextCursor", "GRAY_6", { bg = "GRAY_9" })
+hl("NeogitDiffContext", "gray-7", { bg = "gray-9" })
+hl("NeogitDiffContextHighlight", "gray-7", { bg = "gray-9" })
+hl("NeogitDiffContextCursor", "gray-6", { bg = "gray-9" })
 -- }}}
 
 -- Notify {{{
-hl("NotifyBackground", "none", { bg = "BLACK" })
+hl("NotifyBackground", "none", { bg = "black" })
 
-hl("NotifyDEBUGBody", "NOTICE")
-hl("NotifyDEBUGBorder", "NOTICE")
-hl("NotifyDEBUGIcon", "NOTICE")
-hl("NotifyDEBUGTitle", "NOTICE")
-hl("NoiceFormatLevelDebug", "NOTICE")
-hl("NoiceODebugNormal", "NOTICE")
+hl("NotifyDEBUGBody", "notice")
+hl("NotifyDEBUGBorder", "notice")
+hl("NotifyDEBUGIcon", "notice")
+hl("NotifyDEBUGTitle", "notice")
+hl("NoiceFormatLevelDebug", "notice")
+hl("NoiceODebugNormal", "notice")
 
-hl("NotifyTRACEBody", "TEXT")
-hl("NotifyTRACEBorder", "TEXT")
-hl("NotifyTRACEIcon", "TEXT")
-hl("NotifyTRACETitle", "TEXT")
+hl("NotifyTRACEBody", "text")
+hl("NotifyTRACEBorder", "text")
+hl("NotifyTRACEIcon", "text")
+hl("NotifyTRACETitle", "text")
 
-hl("NotifyINFOIcon", "INFO")
-hl("NotifyINFOTitle", "INFO")
-hl("NotifyINFOBorder", "INFO")
-hl("NotifyINFOBody", "INFO")
+hl("NotifyINFOIcon", "info")
+hl("NotifyINFOTitle", "info")
+hl("NotifyINFOBorder", "info")
+hl("NotifyINFOBody", "info")
 
-hl("NotifyWARNBody", "WARNING")
-hl("NotifyWARNBorder", "WARNING")
-hl("NotifyWARNIcon", "WARNING")
-hl("NotifyWARNTitle", "WARNING")
+hl("NotifyWARNBody", "warning")
+hl("NotifyWARNBorder", "warning")
+hl("NotifyWARNIcon", "warning")
+hl("NotifyWARNTitle", "warning")
 
-hl("NotifyERRORBody", "ERROR")
-hl("NotifyERRORBorder", "ERROR")
-hl("NotifyERRORIcon", "ERROR")
-hl("NotifyERRORTitle", "ERROR")
+hl("NotifyERRORBody", "error")
+hl("NotifyERRORBorder", "error")
+hl("NotifyERRORIcon", "error")
+hl("NotifyERRORTitle", "error")
 -- }}}

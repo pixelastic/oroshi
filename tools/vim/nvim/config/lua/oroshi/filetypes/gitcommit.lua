@@ -17,9 +17,9 @@ M.onFiletype = function()
         F.run("audio-play-oroshi", { args = { "git-commit-message.mp3" } })
 
         -- Visuall mark the window as ready
-        F.hl("Normal", "FILE", { bg = "DARK_PURPLE" })
-        F.hl("gitCommitSummary", "FILE", { bg = "DARK_PURPLE" })
-        F.hl("gitCommitOverflow", "FILE", { bg = "DARK_PURPLE" })
+        F.hl("Normal", "file", { bg = "purple-0" })
+        F.hl("gitCommitSummary", "file", { bg = "purple-0" })
+        F.hl("gitCommitOverflow", "file", { bg = "purple-0" })
       end,
       onError = function(error)
         F.replaceLines("Failed to generate commit message: " .. error.stdout, 1)
