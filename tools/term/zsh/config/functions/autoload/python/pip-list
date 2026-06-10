@@ -13,7 +13,7 @@ for rawLine in ${(f)rawList}; do
   local packageVersion=$split[2]
 
   # Name
-  row+="$(yarn-package-colorize $packageName --with-icon)▮"
+  row+="$(pip-package-colorize $packageName --with-icon)▮"
 
   # Version
   row+="$(colorize "$packageVersion" $COLOR_ALIAS_PACKAGE_VERSION)▮"
