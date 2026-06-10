@@ -34,8 +34,10 @@ for rawLine in ${(f)rawList}; do
   row+="$(colorize "$dependencyVersion" $COLOR_ALIAS_YARN_PACKAGE_VERSION)▮"
 
 
-  # Description
-  row+="$(colorize "$dependencyDescription" $COLOR_ALIAS_YARN_PACKAGE_DESCRIPTION)▮"
+  # Description (truncated to 50 chars)
+  local truncatedDescription="${dependencyDescription[1,50]}"
+  [[ ${#dependencyDescription} -gt 50 ]] && truncatedDescription+="…"
+  row+="$(colorize "$truncatedDescription" $COLOR_ALIAS_YARN_PACKAGE_DESCRIPTION)▮"
 
   output+="$row\n"
 done
