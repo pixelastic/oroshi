@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-color-documentation-update.md",
-    "done": false,
+    "done": true,
+    "recap": "Updated color-documentation.html: slot 1 hex to #e53e3e, ALT_COLORED to include slots 8-15, NEUTRAL_TERMINAL reduced to slots 0 and 7, all French JS comments translated to English.",
     "blocked_by": ["01"]
   },
   {

@@ -139,7 +139,7 @@ function textClass(hex) {
   <div class="legend-item"><div class="legend-box new-family"></div> New family</div>
 </div>
 
-<h2>Standard terminal — slots 1–6 (base) / 9–14 (alt, canonical shade 5)</h2>
+<h2>Standard terminal — slots 0–7 (base) / 8–15 (alt, canonical shade 5)</h2>
 <div class="terminal-block">
   <div class="terminal-pair-row" id="row-colored-base"></div>
   <div class="terminal-pair-row" id="row-colored-alt"></div>
@@ -156,9 +156,9 @@ function textClass(hex) {
 <div id="families-neutral"></div>
 
 <script>
-// Colored base (1-6) and colored alts (9-14)
+// Colored base (1-6) and colored alts (8-15)
 const BASE_COLORED = [
-  { slot:1, hex:'#ef4444', label:'red' },
+  { slot:1, hex:'#e53e3e', label:'red' },
   { slot:2, hex:'#38a169', label:'green' },
   { slot:3, hex:'#d69e2e', label:'yellow' },
   { slot:4, hex:'#3182ce', label:'blue' },
@@ -166,19 +166,19 @@ const BASE_COLORED = [
   { slot:6, hex:'#0891b2', label:'cyan' },
 ];
 const ALT_COLORED = [
-  { slot:9,  hex:'#db2777', label:'pink',   alt:'alt.red' },
-  { slot:10, hex:'#65a30d', label:'lime',   alt:'alt.green' },
-  { slot:11, hex:'#ea580c', label:'orange', alt:'alt.yellow' },
+  { slot:8,  hex:'#4b5563', label:'gray',    alt:'alt.black' },
+  { slot:9,  hex:'#db2777', label:'pink',    alt:'alt.red' },
+  { slot:10, hex:'#65a30d', label:'lime',    alt:'alt.green' },
+  { slot:11, hex:'#ea580c', label:'orange',  alt:'alt.yellow' },
   { slot:12, hex:'#4f46e5', label:'indigo',  alt:'alt.blue' },
   { slot:13, hex:'#c026d3', label:'fuchsia', alt:'alt.purple' },
-  { slot:14, hex:'#0d9488', label:'teal',   alt:'alt.cyan' },
+  { slot:14, hex:'#0d9488', label:'teal',    alt:'alt.cyan' },
+  { slot:15, hex:'#57534e', label:'stone',   alt:'alt.white' },
 ];
 // Neutral terminal slots
 const NEUTRAL_TERMINAL = [
-  { slot:0,  hex:'#0c0f15', label:'black' },
-  { slot:7,  hex:'#ffffff', label:'white' },
-  { slot:8,  hex:'#4b5563', label:'gray',  alt:'dimmed' },
-  { slot:15, hex:'#78716c', label:'stone', alt:'emphasis' },
+  { slot:0, hex:'#0c0f15', label:'black' },
+  { slot:7, hex:'#ffffff', label:'white' },
 ];
 
 function makeNamed(data, container) {
@@ -200,38 +200,38 @@ makeNamed(NEUTRAL_TERMINAL, document.getElementById('row-neutral-terminal'));
 // shade 0 = dark/bg, shades 1-9 = TW200-950
 // group: 'primary' | 'secondary' | 'bonus'
 const FAMILIES = [
-  // ── Primaires : familles des couleurs de base terminal ──
+  // ── Primary — base terminal color families ──
   { name:'red',     start:20,  isNew:false, group:'primary',   shades:['#250f0f','#fecaca','#fca5a5','#f87171','#ef4444','#dc2626','#b91c1c','#991b1b','#7f1d1d','#450a0a'] },
   { name:'green',   start:30,  isNew:false, group:'primary',   shades:['#0f1a0f','#bbf7d0','#86efac','#4ade80','#22c55e','#16a34a','#15803d','#166534','#14532d','#052e16'] },
   { name:'yellow',  start:40,  isNew:false, group:'primary',   shades:['#1a1a0f','#fef08a','#fde047','#facc15','#eab308','#ca8a04','#a16207','#854d0e','#713f12','#422006'] },
   { name:'blue',    start:50, isNew:false, group:'primary',   shades:['#0e1529','#bfdbfe','#93c5fd','#60a5fa','#3b82f6','#2563eb','#1d4ed8','#1e40af','#1e3a8a','#172554'] },
   { name:'purple',  start:60, isNew:false, group:'primary',   shades:['#201325','#e9d5ff','#d8b4fe','#c084fc','#a855f7','#9333ea','#7e22ce','#6b21a8','#581c87','#3b0764'] },
   { name:'cyan',    start:70, isNew:false, group:'primary',   shades:['#0f1a1a','#a5f3fc','#67e8f9','#22d3ee','#06b6d4','#0891b2','#0e7490','#155e75','#164e63','#083344'] },
-  // ── Secondaires : alternatives des couleurs de base ──
+  // ── Secondary — base color alternatives ──
   { name:'pink',    start:80,  isNew:true,  group:'secondary', shades:['#200e17','#fbcfe8','#f9a8d4','#f472b6','#ec4899','#db2777','#be185d','#9d174d','#831843','#500724'] },
   { name:'lime',    start:90,  isNew:true,  group:'secondary', shades:['#1a200f','#d9f99d','#bef264','#a3e635','#84cc16','#65a30d','#4d7c0f','#3f6212','#365314','#1a2e05'] },
   { name:'orange',  start:100, isNew:false, group:'secondary', shades:['#1a120f','#fed7aa','#fdba74','#fb923c','#f97316','#ea580c','#c2410c','#9a3412','#7c2d12','#431407'] },
   { name:'indigo',  start:110, isNew:true,  group:'secondary', shades:['#0d0d21','#c7d2fe','#a5b4fc','#818cf8','#6366f1','#4f46e5','#4338ca','#3730a3','#312e81','#1e1b4b'] },
   { name:'fuchsia', start:120, isNew:true,  group:'secondary', shades:['#1d0e20','#f5d0fe','#f0abfc','#e879f9','#d946ef','#c026d3','#a21caf','#86198f','#701a75','#4a044e'] },
   { name:'teal',    start:130, isNew:false, group:'secondary', shades:['#0f1a18','#99f6e4','#5eead4','#2dd4bf','#14b8a6','#0d9488','#0f766e','#115e59','#134e4a','#042f2e'] },
-  // ── Bonus : ni primaire ni secondaire ──
+  // ── Bonus — neither primary nor secondary ──
   { name:'amber',   start:140, isNew:false, group:'bonus',     shades:['#1a180f','#fde68a','#fcd34d','#fbbf24','#f59e0b','#d97706','#b45309','#92400e','#78350f','#451a03'] },
   { name:'emerald', start:150, isNew:false, group:'bonus',     shades:['#0f1a15','#a7f3d0','#6ee7b7','#34d399','#10b981','#059669','#047857','#065f46','#064e3b','#022c22'] },
   { name:'sky',     start:160, isNew:false, group:'bonus',     shades:['#1a2535','#bae6fd','#7dd3fc','#38bdf8','#0ea5e9','#0284c7','#0369a1','#075985','#0c4a6e','#082f49'] },
   { name:'violet',  start:170, isNew:false, group:'bonus',     shades:['#150f1a','#ddd6fe','#c4b5fd','#a78bfa','#8b5cf6','#7c3aed','#6d28d9','#5b21b6','#4c1d95','#2e1065'] },
-  // ── Buffer libre (180-199) ──
+  // ── Free buffer (180-199) ──
   { name:'?', start:180, isNew:false, group:'unused-bonus', count:10 },
   { name:'?', start:190, isNew:false, group:'unused-bonus', count:10 },
-  // ── Neutres ──
+  // ── Neutral ──
   // gray: slot 8 canonical = shade 5 (#4b5563) — dimmed text
   { name:'gray',    start:200, isNew:false, group:'neutral', shades:['#111114','#e5e7eb','#d1d5db','#9ca3af','#6b7280','#4b5563','#374151','#1f2937','#111827','#030712'] },
   // slate: blue-gray — palette only
   { name:'slate',   start:210, isNew:true,  group:'neutral', shades:['#0d1117','#e2e8f0','#cbd5e1','#94a3b8','#64748b','#475569','#334155','#1e293b','#0f172a','#020617'] },
   // neutral: pure gray — palette only
   { name:'neutral', start:220, isNew:true,  group:'neutral', shades:['#0f0f0f','#e5e5e5','#d4d4d4','#a3a3a3','#737373','#525252','#404040','#262626','#171717','#0a0a0a'] },
-  // stone: slot 15 canonical = shade 5 (#78716c) — emphasis text
+  // stone: slot 15 canonical = shade 5 (#57534e) — emphasis text
   { name:'stone',   start:230, isNew:true,  group:'neutral', shades:['#11100f','#e7e5e4','#d6d3d1','#a8a29e','#78716c','#57534e','#44403c','#292524','#1c1917','#0c0a09'] },
-  // ── Buffer libre après neutres (240-255) ──
+  // ── Free tail after neutrals (240-255) ──
   { name:'?', start:240, isNew:false, group:'unused-neutral', count:10 },
   { name:'?', start:250, isNew:false, group:'unused-neutral', count:6  },
 ];
