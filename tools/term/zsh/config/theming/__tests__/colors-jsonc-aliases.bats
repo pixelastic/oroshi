@@ -117,3 +117,36 @@ SCRIPT
   bats_run_zsh "$script"
   [ "${lines[0]}" = "#63b3ed" ]
 }
+
+@test "nested: COLORS[docker-container:hex] = #d69e2e (yellow)" {
+  bats_run_zsh "$CURRENT"
+  local script="$BATS_TMP_DIR/verify.zsh"
+  cat >"$script" <<SCRIPT
+source '${REAL_THEMING_ROOT}/dist/colors.zsh'
+echo \${COLORS[docker-container:hex]}
+SCRIPT
+  bats_run_zsh "$script"
+  [ "${lines[0]}" = "#d69e2e" ]
+}
+
+@test "nested: COLORS[yarn-package:hex] = #d69e2e (yellow)" {
+  bats_run_zsh "$CURRENT"
+  local script="$BATS_TMP_DIR/verify.zsh"
+  cat >"$script" <<SCRIPT
+source '${REAL_THEMING_ROOT}/dist/colors.zsh'
+echo \${COLORS[yarn-package:hex]}
+SCRIPT
+  bats_run_zsh "$script"
+  [ "${lines[0]}" = "#d69e2e" ]
+}
+
+@test "nested: COLORS[vim-normal-cursor:hex] = #ef4444 (red-4)" {
+  bats_run_zsh "$CURRENT"
+  local script="$BATS_TMP_DIR/verify.zsh"
+  cat >"$script" <<SCRIPT
+source '${REAL_THEMING_ROOT}/dist/colors.zsh'
+echo \${COLORS[vim-normal-cursor:hex]}
+SCRIPT
+  bats_run_zsh "$script"
+  [ "${lines[0]}" = "#ef4444" ]
+}

@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-colors-jsonc-nested-aliases.md",
-    "done": false,
+    "done": true,
+    "recap": "Restructured colors.jsonc aliases into nested domain groups (git, docker, fly, host, language, node, vim, yarn, youtube, video); replaced flat jq extraction in colors-build with paths(type==\"string\")-based recursive flattening; package-* aliases kept flat due to JSON key conflict with top-level \"package\" alias.",
     "blocked_by": ["03", "08"]
   },
   {

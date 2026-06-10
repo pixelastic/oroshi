@@ -119,6 +119,13 @@ Replace the current 14-family irregular palette with a clean 21-family system us
 - `bats_mock_oroshi_root` appends to mock.zsh, so calling it twice in setup() + test body lets a test override the mock with the real path — but the clean pattern is a separate file where setup() sets the real paths directly.
 - When adding behavioral tests that depend on the real config files, use `bats_mock_oroshi_root "$REAL_OROSHI_ROOT"` in setup() (where REAL_OROSHI_ROOT is computed from `${CURRENT%/tools/term/zsh/config/theming/colors-build}`) alongside `export THEMING_ROOT="$REAL_THEMING_ROOT"`.
 
+### Issue 04 — colors-jsonc-nested-aliases
+
+- jq string interpolation `\(expr)` is broken in the Bash tool's PTY environment but works correctly in ZSH subprocess files. Trust interpolation in production code; use a ZSH script file to test jq behavior when debugging.
+- jq function arguments are **filter closures**, not values — `def f(p)` receives a closure re-evaluated each time. Use `def f($p)` to capture a value, or avoid the issue entirely with `paths(type == "string")` for recursive flattening.
+- `paths(type == "string") as $p | {key: ($p | join("-")), value: getpath($p)}` is the idiomatic jq for recursive key flattening with dash separator.
+- The `"package"` domain group cannot be nested (JSON key conflict with the top-level `"package": "yellow"` alias). Keep `package-*` aliases flat at top level when the parent key is already a semantic alias.
+
 ### Issue 01 — colors-conf-new-layout
 
 - `colors-build.bats` reads the REAL `colors.conf`, not its fixture: `.zshenv` overrides `OROSHI_ROOT` via `git rev-parse --show-toplevel` when `$PWD` is inside a worktree — fixture `OROSHI_ROOT` override in `setup()` has no effect on ZSH subprocesses. Keep test fixture values in sync with actual slot values in `colors.conf`.

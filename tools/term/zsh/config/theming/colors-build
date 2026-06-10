@@ -59,9 +59,14 @@ for familyStart family in "${(@kv)familyRanges}"; do
 done
 # }}}
 
-# Load semantic aliases from colors.jsonc (flat key→value pairs) {{{
+# Load semantic aliases from colors.jsonc, recursively flattening nested objects {{{
 typeset -A aliasColors
-for line in ${(f)"$(jq -r 'to_entries[] | select(.value | type == "string") | "\(.key)\t\(.value)"' <<<"$srcJson")"}; do
+local flatAliases="$(jq -r '
+  [ paths(type == "string") as $p
+  | { key: ($p | join("-")), value: getpath($p) }
+  ] | .[] | "\(.key)\t\(.value)"
+' <<<"$srcJson")"
+for line in ${(f)flatAliases}; do
   local key="${line%%	*}"
   local val="${line#*	}"
   aliasColors[$key]="$val"

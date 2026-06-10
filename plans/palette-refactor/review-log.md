@@ -55,6 +55,25 @@ color29  #742a2a
 
 ## Issue 08 — colors-jsonc-alias-migration
 
+## Issue 04 — colors-jsonc-nested-aliases
+
+### Standards: `local script` declared inside @test body
+```bats
+@test "nested: git.branch in colors.jsonc produces COLORS[git-branch]" {
+  ...
+  local script="$BATS_TMP_DIR/verify.zsh"
+```
+**Problem:** Reviewer cited `feedback_bats_setup_vars.md` ("all test vars go inside setup()") to flag `local script` in test body.
+**Reason skipped:** The memory note says "not at file top level" — it targets variables declared outside any function. `local script` is test-scoped (different path per test, only used in one test) and matches the established pattern used throughout the existing 22 tests in `colors-build.bats`. Moving it to `setup()` would add noise for a variable only one test uses.
+
+### Spec: `package` domain not nested
+```jsonc
+"package":             "yellow",
+"package-description": "gray-4",
+```
+**Problem:** Spec lists `"package": package manager aliases` as a suggested domain group; the diff keeps `package-*` flat.
+**Reason skipped:** The top-level `"package": "yellow"` alias is a semantic color alias that must remain. JSON does not allow a key to be both a string value and an object. Nesting `package-*` under a `"package"` key would silently drop the `"package": "yellow"` alias. Spec says "adapt to what makes sense for the full alias list" — this is a valid adaptation.
+
 ### Spec: "Written in `colors-build.bats`"
 ```
 ## Behavioral Tests

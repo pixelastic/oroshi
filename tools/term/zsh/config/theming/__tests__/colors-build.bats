@@ -222,6 +222,64 @@ SCRIPT
   [ "$output" = "200" ]
 }
 
+# --- Nested key flattening ---
+
+@test "nested: git.branch in colors.jsonc produces COLORS[git-branch]" {
+  cat >"$THEMING_ROOT/src/colors.jsonc" <<'JSONC'
+{
+  "git": {
+    "branch": "orange"
+  }
+}
+JSONC
+  bats_run_zsh "$CURRENT"
+  local script="$BATS_TMP_DIR/verify.zsh"
+  cat >"$script" <<SCRIPT
+source '${THEMING_ROOT}/dist/colors.zsh'
+echo \${COLORS[git-branch]}
+SCRIPT
+  bats_run_zsh "$script"
+  [ "${lines[0]}" = "105" ]
+}
+
+@test "nested: docker.container-running produces COLORS[docker-container-running]" {
+  cat >"$BATS_TMP_DIR/tools/term/kitty/config/colors.conf" <<'CONF'
+color30   #f0fff4
+color35   #38a169
+CONF
+  cat >"$THEMING_ROOT/src/colors.jsonc" <<'JSONC'
+{
+  "docker": {
+    "container-running": "green"
+  }
+}
+JSONC
+  bats_run_zsh "$CURRENT"
+  local script="$BATS_TMP_DIR/verify.zsh"
+  cat >"$script" <<SCRIPT
+source '${THEMING_ROOT}/dist/colors.zsh'
+echo \${COLORS[docker-container-running]}
+SCRIPT
+  bats_run_zsh "$script"
+  [ "${lines[0]}" = "35" ]
+}
+
+@test "nested: top-level comment key still produces COLORS[comment]" {
+  cat >"$THEMING_ROOT/src/colors.jsonc" <<'JSONC'
+{
+  "comment": "gray"
+}
+JSONC
+  bats_run_zsh "$CURRENT"
+  local script="$BATS_TMP_DIR/verify.zsh"
+  cat >"$script" <<SCRIPT
+source '${THEMING_ROOT}/dist/colors.zsh'
+echo \${COLORS[comment]}
+SCRIPT
+  bats_run_zsh "$script"
+  [ "${lines[0]}" = "205" ]
+}
+
 # --- Both outputs ---
 
 @test "both dist/colors.zsh and dist/colors.json written in single run" {
