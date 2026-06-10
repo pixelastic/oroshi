@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-colors-conf-new-layout.md",
-    "done": false,
+    "done": true,
+    "recap": "Rewrote colors.conf with 20-family decade-aligned palette (slots 20-239), updated slots 8-15 to secondary family canonicals, updated colors-build test fixture to match new slot layout.",
     "blocked_by": []
   },
   {

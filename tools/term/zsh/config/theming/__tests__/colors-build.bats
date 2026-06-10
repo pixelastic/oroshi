@@ -4,11 +4,19 @@ setup() {
   CURRENT="$(realpath "${BATS_TEST_DIRNAME}/../colors-build")"
   bats_tmp_dir
 
-  export OROSHI_ROOT="$BATS_TMP_DIR"
   export THEMING_ROOT="$BATS_TMP_DIR/tools/term/zsh/config/theming"
   mkdir -p "$THEMING_ROOT/src"
   mkdir -p "$THEMING_ROOT/dist"
-  mkdir -p "$BATS_TMP_DIR/tools/term/kitty/config"
+
+  export KITTY_CONF="$BATS_TMP_DIR/colors.conf"
+
+  # Minimal colors.conf:
+  # color17 → orange (namedColors[17])        — aliased by git-branch
+  # color87 → yellow-7 (range 80-89=yellow, last digit 7)
+  cat >"$KITTY_CONF" <<'CONF'
+color17  #dd6b20
+color87  #a16207
+CONF
 
   cat >"$THEMING_ROOT/src/colors.jsonc" <<'JSONC'
 {
@@ -18,14 +26,6 @@ setup() {
   "aliases":     { "git-branch": "orange" }
 }
 JSONC
-
-  # Minimal colors.conf:
-  # color17 → orange (namedColors[17])        — aliased by git-branch
-  # color87 → yellow-7 (range 80-89=yellow, last digit 7)
-  cat >"$BATS_TMP_DIR/tools/term/kitty/config/colors.conf" <<'CONF'
-color17  #dd6b20
-color87  #a16207
-CONF
 }
 
 teardown() {

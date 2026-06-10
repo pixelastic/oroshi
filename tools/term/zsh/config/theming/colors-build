@@ -6,7 +6,7 @@
 set -e
 
 local themingRoot="${THEMING_ROOT:-${0:A:h}}"
-local kittyConf="${OROSHI_ROOT}/tools/term/kitty/config/colors.conf"
+local kittyConf="${KITTY_CONF:-${OROSHI_ROOT}/tools/term/kitty/config/colors.conf}"
 local srcJsonc="${themingRoot}/src/colors.jsonc"
 local distDir="$themingRoot/dist"
 local distZsh="$distDir/colors.zsh"

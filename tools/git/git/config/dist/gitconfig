@@ -55,16 +55,16 @@
   upstream = 114
   worktree = 114
 [color "decorate"]
-  HEAD = 17 # HEAD ->
-  branch = 17 # Branch name
+  HEAD = {{git-branch}} # HEAD ->
+  branch = {{git-branch}} # Branch name
   remoteBranch = 3 # Remote branches
-  stash = 193 # Stashes
+  stash = {{git-stash}} # Stashes
   tag = 6 # Tags
 
   grafted = 114
 [color "diff"]
-  plain = 16   # Default color
-  context = 16 # Lines untouched
+  plain = {{comment}}   # Default color
+  context = {{comment}} # Lines untouched
   frag = 0   # @@ -9,14 +9,15 @@
   func = 0   # Name of function into which code is changed
   meta = 3     # Diff header
@@ -118,8 +118,8 @@
   success = 114
   warning = 114
 [color "status"]
-  header = 16                # Default text
-  branch = 17             # Current branch
+  header = {{comment}}                # Default text
+  branch = {{git-branch}}             # Current branch
   added = 2               # File added to staging area
   changed = 21          # Changed, but not staged
   untracked = 2           # New file

@@ -1,55 +1,51 @@
 {
   "ai": {
     "ansi": 167,
-    "hex": "#b45309"
-  },
-  "amber": {
-    "ansi": 19,
-    "hex": "#d97706"
+    "hex": "#075985"
   },
   "amber-0": {
     "ansi": 160,
-    "hex": "#fffbeb"
+    "hex": "#1a2535"
   },
   "amber-1": {
     "ansi": 161,
-    "hex": "#fef3c7"
+    "hex": "#bae6fd"
   },
   "amber-2": {
     "ansi": 162,
-    "hex": "#fde68a"
+    "hex": "#7dd3fc"
   },
   "amber-3": {
     "ansi": 163,
-    "hex": "#fcd34d"
+    "hex": "#38bdf8"
   },
   "amber-4": {
     "ansi": 164,
-    "hex": "#fbbf24"
+    "hex": "#0ea5e9"
   },
   "amber-5": {
     "ansi": 165,
-    "hex": "#f59e0b"
+    "hex": "#0284c7"
   },
   "amber-6": {
     "ansi": 166,
-    "hex": "#d97706"
+    "hex": "#0369a1"
   },
   "amber-7": {
     "ansi": 167,
-    "hex": "#b45309"
+    "hex": "#075985"
   },
   "amber-8": {
     "ansi": 168,
-    "hex": "#92400e"
+    "hex": "#0c4a6e"
   },
   "amber-9": {
     "ansi": 169,
-    "hex": "#78350f"
+    "hex": "#082f49"
   },
   "amber-light": {
     "ansi": 27,
-    "hex": "#fcd34d"
+    "hex": "#9b2c2c"
   },
   "black": {
     "ansi": 0,
@@ -57,7 +53,7 @@
   },
   "black-light": {
     "ansi": 8,
-    "hex": "#1f2937"
+    "hex": "#4b5563"
   },
   "blue": {
     "ansi": 4,
@@ -65,59 +61,51 @@
   },
   "blue-0": {
     "ansi": 90,
-    "hex": "#eff6ff"
+    "hex": "#141a0c"
   },
   "blue-1": {
     "ansi": 91,
-    "hex": "#dbeafe"
+    "hex": "#d9f99d"
   },
   "blue-2": {
     "ansi": 92,
-    "hex": "#bfdbfe"
+    "hex": "#bef264"
   },
   "blue-3": {
     "ansi": 93,
-    "hex": "#93c5fd"
+    "hex": "#a3e635"
   },
   "blue-4": {
     "ansi": 94,
-    "hex": "#60a5fa"
+    "hex": "#84cc16"
   },
   "blue-5": {
     "ansi": 95,
-    "hex": "#3b82f6"
+    "hex": "#65a30d"
   },
   "blue-6": {
     "ansi": 96,
-    "hex": "#2563eb"
+    "hex": "#4d7c0f"
   },
   "blue-7": {
     "ansi": 97,
-    "hex": "#1d4ed8"
+    "hex": "#3f6212"
   },
   "blue-8": {
     "ansi": 98,
-    "hex": "#1e40af"
+    "hex": "#365314"
   },
   "blue-9": {
     "ansi": 99,
-    "hex": "#1e3a8a"
+    "hex": "#1a2e05"
   },
   "blue-light": {
     "ansi": 12,
-    "hex": "#63b3ed"
+    "hex": "#4f46e5"
   },
   "boolean": {
     "ansi": 165,
-    "hex": "#f59e0b"
-  },
-  "comment": {
-    "ansi": 16,
-    "hex": "#6b7280"
-  },
-  "constant": {
-    "ansi": 17,
-    "hex": "#dd6b20"
+    "hex": "#0284c7"
   },
   "cyan": {
     "ansi": 6,
@@ -125,103 +113,103 @@
   },
   "cyan-0": {
     "ansi": 110,
-    "hex": "#ecfeff"
+    "hex": "#0f1228"
   },
   "cyan-1": {
     "ansi": 111,
-    "hex": "#cffafe"
+    "hex": "#c7d2fe"
   },
   "cyan-2": {
     "ansi": 112,
-    "hex": "#a5f3fc"
+    "hex": "#a5b4fc"
   },
   "cyan-3": {
     "ansi": 113,
-    "hex": "#67e8f9"
+    "hex": "#818cf8"
   },
   "cyan-4": {
     "ansi": 114,
-    "hex": "#22d3ee"
+    "hex": "#6366f1"
   },
   "cyan-5": {
     "ansi": 115,
-    "hex": "#06b6d4"
+    "hex": "#4f46e5"
   },
   "cyan-6": {
     "ansi": 116,
-    "hex": "#0891b2"
+    "hex": "#4338ca"
   },
   "cyan-7": {
     "ansi": 117,
-    "hex": "#0e7490"
+    "hex": "#3730a3"
   },
   "cyan-8": {
     "ansi": 118,
-    "hex": "#155e75"
+    "hex": "#312e81"
   },
   "cyan-9": {
     "ansi": 119,
-    "hex": "#164e63"
+    "hex": "#1e1b4b"
   },
   "cyan-light": {
     "ansi": 14,
-    "hex": "#67e8f9"
+    "hex": "#0d9488"
   },
   "dark-amber": {
     "ansi": 222,
-    "hex": "#1a180f"
+    "hex": "#d4d4d4"
   },
   "dark-blue": {
     "ansi": 213,
-    "hex": "#0e1529"
+    "hex": "#94a3b8"
   },
   "dark-cyan": {
     "ansi": 215,
-    "hex": "#0f1a1a"
+    "hex": "#475569"
   },
   "dark-emerald": {
     "ansi": 221,
-    "hex": "#0f1a15"
+    "hex": "#e5e5e5"
   },
   "dark-green": {
     "ansi": 211,
-    "hex": "#0f1a0f"
+    "hex": "#e2e8f0"
   },
   "dark-neutral": {
     "ansi": 226,
-    "hex": "#151515"
+    "hex": "#404040"
   },
   "dark-orange": {
     "ansi": 220,
-    "hex": "#1a120f"
+    "hex": "#151515"
   },
   "dark-purple": {
     "ansi": 214,
-    "hex": "#201325"
+    "hex": "#64748b"
   },
   "dark-red": {
     "ansi": 210,
-    "hex": "#250f0f"
+    "hex": "#0f141e"
   },
   "dark-sky": {
     "ansi": 223,
-    "hex": "#1a2535"
+    "hex": "#a3a3a3"
   },
   "dark-teal": {
     "ansi": 225,
-    "hex": "#0f1a18"
+    "hex": "#525252"
   },
   "dark-violet": {
     "ansi": 224,
-    "hex": "#150f1a"
+    "hex": "#737373"
   },
   "dark-yellow": {
     "ansi": 212,
-    "hex": "#1a1a0f"
+    "hex": "#cbd5e1"
   },
   "date": {
     "ansi": 177,
-    "hex": "#0369a1"
+    "hex": "#5b21b6"
   },
   "directory": {
     "ansi": 2,
@@ -229,7 +217,7 @@
   },
   "docker-comment": {
     "ansi": 134,
-    "hex": "#9ca3af"
+    "hex": "#14b8a6"
   },
   "docker-container": {
     "ansi": 3,
@@ -245,7 +233,7 @@
   },
   "docker-image": {
     "ansi": 20,
-    "hex": "#0284c7"
+    "hex": "#250f0f"
   },
   "docker-image-github": {
     "ansi": 2,
@@ -257,7 +245,7 @@
   },
   "docker-image-orphan": {
     "ansi": 1,
-    "hex": "#ef4444"
+    "hex": "#e53e3e"
   },
   "docker-image-remote": {
     "ansi": 4,
@@ -265,67 +253,63 @@
   },
   "docker-status": {
     "ansi": 134,
-    "hex": "#9ca3af"
+    "hex": "#14b8a6"
   },
   "docker-tag": {
     "ansi": 146,
-    "hex": "#ea580c"
+    "hex": "#b45309"
   },
   "docker-tag-latest": {
     "ansi": 145,
-    "hex": "#f97316"
-  },
-  "emerald": {
-    "ansi": 18,
-    "hex": "#059669"
+    "hex": "#d97706"
   },
   "emerald-0": {
     "ansi": 150,
-    "hex": "#ecfdf5"
+    "hex": "#0f1a15"
   },
   "emerald-1": {
     "ansi": 151,
-    "hex": "#d1fae5"
+    "hex": "#a7f3d0"
   },
   "emerald-2": {
     "ansi": 152,
-    "hex": "#a7f3d0"
+    "hex": "#6ee7b7"
   },
   "emerald-3": {
     "ansi": 153,
-    "hex": "#6ee7b7"
+    "hex": "#34d399"
   },
   "emerald-4": {
     "ansi": 154,
-    "hex": "#34d399"
+    "hex": "#10b981"
   },
   "emerald-5": {
     "ansi": 155,
-    "hex": "#10b981"
+    "hex": "#059669"
   },
   "emerald-6": {
     "ansi": 156,
-    "hex": "#059669"
+    "hex": "#047857"
   },
   "emerald-7": {
     "ansi": 157,
-    "hex": "#047857"
+    "hex": "#065f46"
   },
   "emerald-8": {
     "ansi": 158,
-    "hex": "#065f46"
+    "hex": "#064e3b"
   },
   "emerald-9": {
     "ansi": 159,
-    "hex": "#064e3b"
+    "hex": "#022c22"
   },
   "emerald-light": {
     "ansi": 26,
-    "hex": "#6ee7b7"
+    "hex": "#c53030"
   },
   "error": {
     "ansi": 1,
-    "hex": "#ef4444"
+    "hex": "#e53e3e"
   },
   "eval": {
     "ansi": 3,
@@ -333,27 +317,19 @@
   },
   "exception": {
     "ansi": 1,
-    "hex": "#ef4444"
+    "hex": "#e53e3e"
   },
   "executable": {
     "ansi": 21,
-    "hex": "#a78bfa"
+    "hex": "#fed7d7"
   },
   "file": {
     "ansi": 21,
-    "hex": "#a78bfa"
-  },
-  "flag": {
-    "ansi": 19,
-    "hex": "#d97706"
+    "hex": "#fed7d7"
   },
   "fly-app-running": {
     "ansi": 2,
     "hex": "#38a169"
-  },
-  "fly-app-suspended": {
-    "ansi": 16,
-    "hex": "#6b7280"
   },
   "function": {
     "ansi": 3,
@@ -365,19 +341,15 @@
   },
   "git-ahead": {
     "ansi": 78,
-    "hex": "#166534"
+    "hex": "#164e63"
   },
   "git-author": {
     "ansi": 23,
-    "hex": "#525252"
+    "hex": "#fc8181"
   },
   "git-behind": {
     "ansi": 68,
-    "hex": "#991b1b"
-  },
-  "git-branch": {
-    "ansi": 17,
-    "hex": "#dd6b20"
+    "hex": "#44337a"
   },
   "git-branch-dependabot": {
     "ansi": 6,
@@ -389,7 +361,7 @@
   },
   "git-branch-head": {
     "ansi": 1,
-    "hex": "#ef4444"
+    "hex": "#e53e3e"
   },
   "git-branch-main": {
     "ansi": 4,
@@ -397,7 +369,7 @@
   },
   "git-branch-master": {
     "ansi": 1,
-    "hex": "#ef4444"
+    "hex": "#e53e3e"
   },
   "git-commit": {
     "ansi": 5,
@@ -405,7 +377,7 @@
   },
   "git-dirty": {
     "ansi": 1,
-    "hex": "#ef4444"
+    "hex": "#e53e3e"
   },
   "git-issue": {
     "ansi": 3,
@@ -413,11 +385,11 @@
   },
   "git-message": {
     "ansi": 134,
-    "hex": "#9ca3af"
+    "hex": "#14b8a6"
   },
   "git-modified": {
     "ansi": 21,
-    "hex": "#a78bfa"
+    "hex": "#fed7d7"
   },
   "git-pullrequest": {
     "ansi": 5,
@@ -425,7 +397,7 @@
   },
   "git-rebase": {
     "ansi": 1,
-    "hex": "#ef4444"
+    "hex": "#e53e3e"
   },
   "git-remote": {
     "ansi": 3,
@@ -433,11 +405,11 @@
   },
   "git-remote-algolia": {
     "ansi": 94,
-    "hex": "#60a5fa"
+    "hex": "#84cc16"
   },
   "git-remote-head": {
     "ansi": 1,
-    "hex": "#ef4444"
+    "hex": "#e53e3e"
   },
   "git-remote-origin": {
     "ansi": 3,
@@ -453,11 +425,7 @@
   },
   "git-removed": {
     "ansi": 1,
-    "hex": "#ef4444"
-  },
-  "git-stash": {
-    "ansi": 193,
-    "hex": "#5eead4"
+    "hex": "#e53e3e"
   },
   "git-submodule": {
     "ansi": 3,
@@ -473,83 +441,75 @@
   },
   "git-tag-exact": {
     "ansi": 115,
-    "hex": "#06b6d4"
+    "hex": "#4f46e5"
   },
   "git-tag-parent": {
     "ansi": 118,
-    "hex": "#155e75"
-  },
-  "git-tag-unrelated": {
-    "ansi": 16,
-    "hex": "#6b7280"
+    "hex": "#312e81"
   },
   "git-tracked": {
     "ansi": 21,
-    "hex": "#a78bfa"
+    "hex": "#fed7d7"
   },
   "git-untracked": {
     "ansi": 1,
-    "hex": "#ef4444"
+    "hex": "#e53e3e"
   },
   "git-worktree": {
     "ansi": 147,
-    "hex": "#c2410c"
+    "hex": "#92400e"
   },
   "git-worktree-dirty": {
     "ansi": 21,
-    "hex": "#a78bfa"
+    "hex": "#fed7d7"
   },
   "glob": {
     "ansi": 10,
-    "hex": "#68d391"
-  },
-  "gray": {
-    "ansi": 16,
-    "hex": "#6b7280"
+    "hex": "#65a30d"
   },
   "gray-0": {
     "ansi": 130,
-    "hex": "#f9fafb"
+    "hex": "#0f1a18"
   },
   "gray-1": {
     "ansi": 131,
-    "hex": "#f3f4f6"
+    "hex": "#99f6e4"
   },
   "gray-2": {
     "ansi": 132,
-    "hex": "#e5e7eb"
+    "hex": "#5eead4"
   },
   "gray-3": {
     "ansi": 133,
-    "hex": "#d1d5db"
+    "hex": "#2dd4bf"
   },
   "gray-4": {
     "ansi": 134,
-    "hex": "#9ca3af"
+    "hex": "#14b8a6"
   },
   "gray-5": {
     "ansi": 135,
-    "hex": "#6b7280"
+    "hex": "#0d9488"
   },
   "gray-6": {
     "ansi": 136,
-    "hex": "#4b5563"
+    "hex": "#0f766e"
   },
   "gray-7": {
     "ansi": 137,
-    "hex": "#374151"
+    "hex": "#115e59"
   },
   "gray-8": {
     "ansi": 138,
-    "hex": "#1f2937"
+    "hex": "#134e4a"
   },
   "gray-9": {
     "ansi": 139,
-    "hex": "#111827"
+    "hex": "#042f2e"
   },
   "gray-light": {
     "ansi": 24,
-    "hex": "#d1d5db"
+    "hex": "#f56565"
   },
   "green": {
     "ansi": 2,
@@ -557,47 +517,47 @@
   },
   "green-0": {
     "ansi": 70,
-    "hex": "#f0fdf4"
+    "hex": "#0f1a1a"
   },
   "green-1": {
     "ansi": 71,
-    "hex": "#dcfce7"
+    "hex": "#a5f3fc"
   },
   "green-2": {
     "ansi": 72,
-    "hex": "#bbf7d0"
+    "hex": "#67e8f9"
   },
   "green-3": {
     "ansi": 73,
-    "hex": "#86efac"
+    "hex": "#22d3ee"
   },
   "green-4": {
     "ansi": 74,
-    "hex": "#4ade80"
+    "hex": "#06b6d4"
   },
   "green-5": {
     "ansi": 75,
-    "hex": "#22c55e"
+    "hex": "#0891b2"
   },
   "green-6": {
     "ansi": 76,
-    "hex": "#16a34a"
+    "hex": "#0e7490"
   },
   "green-7": {
     "ansi": 77,
-    "hex": "#15803d"
+    "hex": "#155e75"
   },
   "green-8": {
     "ansi": 78,
-    "hex": "#166534"
+    "hex": "#164e63"
   },
   "green-9": {
     "ansi": 79,
-    "hex": "#14532d"
+    "hex": "#083344"
   },
   "green-light": {
     "ansi": 10,
-    "hex": "#68d391"
+    "hex": "#65a30d"
   },
   "header": {
     "ansi": 3,
@@ -613,7 +573,7 @@
   },
   "import": {
     "ansi": 11,
-    "hex": "#f6e05e"
+    "hex": "#ea580c"
   },
   "info": {
     "ansi": 4,
@@ -625,15 +585,11 @@
   },
   "interpolation-variable": {
     "ansi": 21,
-    "hex": "#a78bfa"
+    "hex": "#fed7d7"
   },
   "interpolation-wrapper": {
     "ansi": 3,
     "hex": "#d69e2e"
-  },
-  "key": {
-    "ansi": 183,
-    "hex": "#c4b5fd"
   },
   "keyword": {
     "ansi": 2,
@@ -655,13 +611,9 @@
     "ansi": 2,
     "hex": "#38a169"
   },
-  "language-ruby": {
-    "ansi": 17,
-    "hex": "#dd6b20"
-  },
   "link": {
     "ansi": 94,
-    "hex": "#60a5fa"
+    "hex": "#84cc16"
   },
   "local-dependency": {
     "ansi": 3,
@@ -673,59 +625,59 @@
   },
   "match": {
     "ansi": 143,
-    "hex": "#fdba74"
+    "hex": "#fbbf24"
   },
   "modifier": {
     "ansi": 25,
-    "hex": "#fdba74"
+    "hex": "#e53e3e"
   },
   "neutral": {
     "ansi": 23,
-    "hex": "#525252"
+    "hex": "#fc8181"
   },
   "neutral-0": {
     "ansi": 200,
-    "hex": "#fafafa"
+    "hex": "#111318"
   },
   "neutral-1": {
     "ansi": 201,
-    "hex": "#f5f5f5"
+    "hex": "#e5e7eb"
   },
   "neutral-2": {
     "ansi": 202,
-    "hex": "#e5e5e5"
+    "hex": "#d1d5db"
   },
   "neutral-3": {
     "ansi": 203,
-    "hex": "#d4d4d4"
+    "hex": "#9ca3af"
   },
   "neutral-4": {
     "ansi": 204,
-    "hex": "#a3a3a3"
+    "hex": "#6b7280"
   },
   "neutral-5": {
     "ansi": 205,
-    "hex": "#737373"
+    "hex": "#4b5563"
   },
   "neutral-6": {
     "ansi": 206,
-    "hex": "#525252"
+    "hex": "#374151"
   },
   "neutral-7": {
     "ansi": 207,
-    "hex": "#404040"
+    "hex": "#1f2937"
   },
   "neutral-8": {
     "ansi": 208,
-    "hex": "#262626"
+    "hex": "#111827"
   },
   "neutral-9": {
     "ansi": 209,
-    "hex": "#171717"
+    "hex": "#030712"
   },
   "neutral-light": {
     "ansi": 31,
-    "hex": "#a3a3a3"
+    "hex": "#c6f6d5"
   },
   "node-version-current": {
     "ansi": 2,
@@ -737,71 +689,63 @@
   },
   "node-version-installed": {
     "ansi": 134,
-    "hex": "#9ca3af"
+    "hex": "#14b8a6"
   },
   "node-version-uninstalled": {
     "ansi": 3,
     "hex": "#d69e2e"
   },
-  "noise": {
-    "ansi": 197,
-    "hex": "#0f766e"
-  },
   "notice": {
     "ansi": 21,
-    "hex": "#a78bfa"
+    "hex": "#fed7d7"
   },
   "number": {
     "ansi": 4,
     "hex": "#3182ce"
   },
-  "orange": {
-    "ansi": 17,
-    "hex": "#dd6b20"
-  },
   "orange-0": {
     "ansi": 140,
-    "hex": "#fff7ed"
+    "hex": "#1a180f"
   },
   "orange-1": {
     "ansi": 141,
-    "hex": "#ffedd5"
+    "hex": "#fde68a"
   },
   "orange-2": {
     "ansi": 142,
-    "hex": "#fed7aa"
+    "hex": "#fcd34d"
   },
   "orange-3": {
     "ansi": 143,
-    "hex": "#fdba74"
+    "hex": "#fbbf24"
   },
   "orange-4": {
     "ansi": 144,
-    "hex": "#fb923c"
+    "hex": "#f59e0b"
   },
   "orange-5": {
     "ansi": 145,
-    "hex": "#f97316"
+    "hex": "#d97706"
   },
   "orange-6": {
     "ansi": 146,
-    "hex": "#ea580c"
+    "hex": "#b45309"
   },
   "orange-7": {
     "ansi": 147,
-    "hex": "#c2410c"
+    "hex": "#92400e"
   },
   "orange-8": {
     "ansi": 148,
-    "hex": "#9a3412"
+    "hex": "#78350f"
   },
   "orange-9": {
     "ansi": 149,
-    "hex": "#7c2d12"
+    "hex": "#451a03"
   },
   "orange-light": {
     "ansi": 25,
-    "hex": "#fdba74"
+    "hex": "#e53e3e"
   },
   "package": {
     "ansi": 3,
@@ -809,15 +753,11 @@
   },
   "package-description": {
     "ansi": 134,
-    "hex": "#9ca3af"
+    "hex": "#14b8a6"
   },
   "package-installed": {
     "ansi": 2,
     "hex": "#38a169"
-  },
-  "package-not-installed": {
-    "ansi": 16,
-    "hex": "#6b7280"
   },
   "package-version": {
     "ansi": 6,
@@ -825,7 +765,7 @@
   },
   "package-version-mismatch": {
     "ansi": 21,
-    "hex": "#a78bfa"
+    "hex": "#fed7d7"
   },
   "pointer": {
     "ansi": 2,
@@ -837,7 +777,7 @@
   },
   "punctuation": {
     "ansi": 22,
-    "hex": "#0f766e"
+    "hex": "#feb2b2"
   },
   "purple": {
     "ansi": 5,
@@ -845,95 +785,95 @@
   },
   "purple-0": {
     "ansi": 100,
-    "hex": "#faf5ff"
+    "hex": "#1a120f"
   },
   "purple-1": {
     "ansi": 101,
-    "hex": "#f3e8ff"
+    "hex": "#fed7aa"
   },
   "purple-2": {
     "ansi": 102,
-    "hex": "#e9d5ff"
+    "hex": "#fdba74"
   },
   "purple-3": {
     "ansi": 103,
-    "hex": "#d8b4fe"
+    "hex": "#fb923c"
   },
   "purple-4": {
     "ansi": 104,
-    "hex": "#c084fc"
+    "hex": "#f97316"
   },
   "purple-5": {
     "ansi": 105,
-    "hex": "#a855f7"
+    "hex": "#ea580c"
   },
   "purple-6": {
     "ansi": 106,
-    "hex": "#9333ea"
+    "hex": "#c2410c"
   },
   "purple-7": {
     "ansi": 107,
-    "hex": "#7e22ce"
+    "hex": "#9a3412"
   },
   "purple-8": {
     "ansi": 108,
-    "hex": "#6b21a8"
+    "hex": "#7c2d12"
   },
   "purple-9": {
     "ansi": 109,
-    "hex": "#581c87"
+    "hex": "#431407"
   },
   "purple-light": {
     "ansi": 13,
-    "hex": "#b794f4"
+    "hex": "#c026d3"
   },
   "red": {
     "ansi": 1,
-    "hex": "#ef4444"
+    "hex": "#e53e3e"
   },
   "red-0": {
     "ansi": 60,
-    "hex": "#fef2f2"
+    "hex": "#201325"
   },
   "red-1": {
     "ansi": 61,
-    "hex": "#fee2e2"
+    "hex": "#e9d8fd"
   },
   "red-2": {
     "ansi": 62,
-    "hex": "#fecaca"
+    "hex": "#d6bcfa"
   },
   "red-3": {
     "ansi": 63,
-    "hex": "#fca5a5"
+    "hex": "#b794f4"
   },
   "red-4": {
     "ansi": 64,
-    "hex": "#f87171"
+    "hex": "#9f7aea"
   },
   "red-5": {
     "ansi": 65,
-    "hex": "#ef4444"
+    "hex": "#805ad5"
   },
   "red-6": {
     "ansi": 66,
-    "hex": "#dc2626"
+    "hex": "#6b46c1"
   },
   "red-7": {
     "ansi": 67,
-    "hex": "#b91c1c"
+    "hex": "#553c9a"
   },
   "red-8": {
     "ansi": 68,
-    "hex": "#991b1b"
+    "hex": "#44337a"
   },
   "red-9": {
     "ansi": 69,
-    "hex": "#7f1d1d"
+    "hex": "#44337a"
   },
   "red-light": {
     "ansi": 9,
-    "hex": "#f87171"
+    "hex": "#db2777"
   },
   "regexp": {
     "ansi": 4,
@@ -941,7 +881,7 @@
   },
   "selected-background": {
     "ansi": 138,
-    "hex": "#1f2937"
+    "hex": "#134e4a"
   },
   "selected-foreground": {
     "ansi": 7,
@@ -949,59 +889,55 @@
   },
   "size-unit": {
     "ansi": 134,
-    "hex": "#9ca3af"
-  },
-  "size-value": {
-    "ansi": 16,
-    "hex": "#6b7280"
+    "hex": "#14b8a6"
   },
   "sky": {
     "ansi": 20,
-    "hex": "#0284c7"
+    "hex": "#250f0f"
   },
   "sky-0": {
     "ansi": 170,
-    "hex": "#f0f9ff"
+    "hex": "#150f1a"
   },
   "sky-1": {
     "ansi": 171,
-    "hex": "#e0f2fe"
+    "hex": "#ddd6fe"
   },
   "sky-2": {
     "ansi": 172,
-    "hex": "#bae6fd"
+    "hex": "#c4b5fd"
   },
   "sky-3": {
     "ansi": 173,
-    "hex": "#7dd3fc"
+    "hex": "#a78bfa"
   },
   "sky-4": {
     "ansi": 174,
-    "hex": "#38bdf8"
+    "hex": "#8b5cf6"
   },
   "sky-5": {
     "ansi": 175,
-    "hex": "#0ea5e9"
+    "hex": "#7c3aed"
   },
   "sky-6": {
     "ansi": 176,
-    "hex": "#0284c7"
+    "hex": "#6d28d9"
   },
   "sky-7": {
     "ansi": 177,
-    "hex": "#0369a1"
+    "hex": "#5b21b6"
   },
   "sky-8": {
     "ansi": 178,
-    "hex": "#075985"
+    "hex": "#4c1d95"
   },
   "sky-9": {
     "ansi": 179,
-    "hex": "#0c4a6e"
+    "hex": "#2e1065"
   },
   "sky-light": {
     "ansi": 28,
-    "hex": "#7dd3fc"
+    "hex": "#742a2a"
   },
   "special-char": {
     "ansi": 3,
@@ -1019,57 +955,13 @@
     "ansi": 2,
     "hex": "#38a169"
   },
-  "symbol": {
-    "ansi": 17,
-    "hex": "#dd6b20"
-  },
   "teal": {
     "ansi": 22,
-    "hex": "#0f766e"
-  },
-  "teal-0": {
-    "ansi": 190,
-    "hex": "#f0fdfa"
-  },
-  "teal-1": {
-    "ansi": 191,
-    "hex": "#ccfbf1"
-  },
-  "teal-2": {
-    "ansi": 192,
-    "hex": "#99f6e4"
-  },
-  "teal-3": {
-    "ansi": 193,
-    "hex": "#5eead4"
-  },
-  "teal-4": {
-    "ansi": 194,
-    "hex": "#2dd4bf"
-  },
-  "teal-5": {
-    "ansi": 195,
-    "hex": "#14b8a6"
-  },
-  "teal-6": {
-    "ansi": 196,
-    "hex": "#0d9488"
-  },
-  "teal-7": {
-    "ansi": 197,
-    "hex": "#0f766e"
-  },
-  "teal-8": {
-    "ansi": 198,
-    "hex": "#115e59"
-  },
-  "teal-9": {
-    "ansi": 199,
-    "hex": "#134e4a"
+    "hex": "#feb2b2"
   },
   "teal-light": {
     "ansi": 30,
-    "hex": "#4fd1c5"
+    "hex": "#0f1a0f"
   },
   "terminal": {
     "ansi": 0,
@@ -1077,31 +969,31 @@
   },
   "text": {
     "ansi": 24,
-    "hex": "#d1d5db"
+    "hex": "#f56565"
   },
   "todo": {
     "ansi": 1,
-    "hex": "#ef4444"
+    "hex": "#e53e3e"
   },
   "ui": {
     "ansi": 23,
-    "hex": "#525252"
+    "hex": "#fc8181"
   },
   "unknown": {
     "ansi": 114,
-    "hex": "#22d3ee"
+    "hex": "#6366f1"
   },
   "variable": {
     "ansi": 21,
-    "hex": "#a78bfa"
+    "hex": "#fed7d7"
   },
   "variable-definition": {
     "ansi": 29,
-    "hex": "#c4b5fd"
+    "hex": "#742a2a"
   },
   "variable-type": {
     "ansi": 64,
-    "hex": "#f87171"
+    "hex": "#9f7aea"
   },
   "video-stream-audio": {
     "ansi": 4,
@@ -1109,7 +1001,7 @@
   },
   "vim-command-cursor": {
     "ansi": 22,
-    "hex": "#0f766e"
+    "hex": "#feb2b2"
   },
   "vim-insert-cursor": {
     "ansi": 3,
@@ -1117,7 +1009,7 @@
   },
   "vim-normal-cursor": {
     "ansi": 1,
-    "hex": "#ef4444"
+    "hex": "#e53e3e"
   },
   "vim-search-background": {
     "ansi": 3,
@@ -1141,51 +1033,11 @@
   },
   "violet": {
     "ansi": 21,
-    "hex": "#a78bfa"
-  },
-  "violet-0": {
-    "ansi": 180,
-    "hex": "#f5f3ff"
-  },
-  "violet-1": {
-    "ansi": 181,
-    "hex": "#ede9fe"
-  },
-  "violet-2": {
-    "ansi": 182,
-    "hex": "#ddd6fe"
-  },
-  "violet-3": {
-    "ansi": 183,
-    "hex": "#c4b5fd"
-  },
-  "violet-4": {
-    "ansi": 184,
-    "hex": "#a78bfa"
-  },
-  "violet-5": {
-    "ansi": 185,
-    "hex": "#8b5cf6"
-  },
-  "violet-6": {
-    "ansi": 186,
-    "hex": "#7c3aed"
-  },
-  "violet-7": {
-    "ansi": 187,
-    "hex": "#6d28d9"
-  },
-  "violet-8": {
-    "ansi": 188,
-    "hex": "#5b21b6"
-  },
-  "violet-9": {
-    "ansi": 189,
-    "hex": "#4c1d95"
+    "hex": "#fed7d7"
   },
   "violet-light": {
     "ansi": 29,
-    "hex": "#c4b5fd"
+    "hex": "#742a2a"
   },
   "warning": {
     "ansi": 3,
@@ -1197,11 +1049,11 @@
   },
   "white-light": {
     "ansi": 15,
-    "hex": "#d9d9d9"
+    "hex": "#57534e"
   },
   "yarn-link-classic": {
     "ansi": 116,
-    "hex": "#0891b2"
+    "hex": "#4338ca"
   },
   "yarn-link-external": {
     "ansi": 4,
@@ -1217,7 +1069,7 @@
   },
   "yarn-package-description": {
     "ansi": 134,
-    "hex": "#9ca3af"
+    "hex": "#14b8a6"
   },
   "yarn-package-global": {
     "ansi": 4,
@@ -1229,7 +1081,7 @@
   },
   "yarn-script-command": {
     "ansi": 134,
-    "hex": "#9ca3af"
+    "hex": "#14b8a6"
   },
   "yarn-script-global": {
     "ansi": 4,
@@ -1245,62 +1097,58 @@
   },
   "yellow-0": {
     "ansi": 80,
-    "hex": "#fefce8"
+    "hex": "#1f0f16"
   },
   "yellow-1": {
     "ansi": 81,
-    "hex": "#fef9c3"
+    "hex": "#fbcfe8"
   },
   "yellow-2": {
     "ansi": 82,
-    "hex": "#fef08a"
+    "hex": "#f9a8d4"
   },
   "yellow-3": {
     "ansi": 83,
-    "hex": "#fde047"
+    "hex": "#f472b6"
   },
   "yellow-4": {
     "ansi": 84,
-    "hex": "#facc15"
+    "hex": "#ec4899"
   },
   "yellow-5": {
     "ansi": 85,
-    "hex": "#eab308"
+    "hex": "#db2777"
   },
   "yellow-6": {
     "ansi": 86,
-    "hex": "#ca8a04"
+    "hex": "#be185d"
   },
   "yellow-7": {
     "ansi": 87,
-    "hex": "#a16207"
+    "hex": "#9d174d"
   },
   "yellow-8": {
     "ansi": 88,
-    "hex": "#854d0e"
+    "hex": "#831843"
   },
   "yellow-9": {
     "ansi": 89,
-    "hex": "#713f12"
+    "hex": "#500724"
   },
   "yellow-light": {
     "ansi": 11,
-    "hex": "#f6e05e"
+    "hex": "#ea580c"
   },
   "youtube-video-duration": {
     "ansi": 23,
-    "hex": "#525252"
-  },
-  "youtube-video-id": {
-    "ansi": 17,
-    "hex": "#dd6b20"
+    "hex": "#fc8181"
   },
   "youtube-video-index": {
     "ansi": 20,
-    "hex": "#0284c7"
+    "hex": "#250f0f"
   },
   "youtube-video-title": {
     "ansi": 134,
-    "hex": "#9ca3af"
+    "hex": "#14b8a6"
   }
 }
