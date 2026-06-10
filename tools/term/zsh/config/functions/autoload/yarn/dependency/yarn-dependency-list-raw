@@ -47,7 +47,7 @@ function getRawDependencies() {
   local key=$1
   jq \
     --raw-output \
-    ".${key} | to_entries[] | [.key, .value, \"$key\"] | join(\"▮\")" \
+    "(.${key} // {}) | to_entries[] | [.key, .value, \"$key\"] | join(\"▮\")" \
     <$packageJsonPath \
     2>/dev/null
 }
