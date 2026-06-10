@@ -3,9 +3,20 @@
 bats_load_library 'helper'
 bats_load_library 'rules-helper'
 
-# Fixture must have no extension to simulate an autoloaded function
+# Fixture lives at the autoload subpath within the mocked OROSHI_ROOT
 run_this_rule() {
-  run_rule "${BATS_TEST_DIRNAME}/../rule-missing-err-return.zsh" "zshLintRule_missingErrReturn" "test" "$@"
+  bats_tmp_dir
+  bats_mock_oroshi_root "$BATS_TMP_DIR"
+  mkdir -p "$BATS_TMP_DIR/tools/term/zsh/config/functions/autoload"
+  run_rule "${BATS_TEST_DIRNAME}/../rule-missing-err-return.zsh" "zshLintRule_missingErrReturn" "tools/term/zsh/config/functions/autoload/test" "$@"
+}
+
+@test "clean — not in autoload dir (e.g. compdef)" {
+  bats_tmp_dir
+  bats_mock_oroshi_root "$BATS_TMP_DIR"
+  local -a input=( '#compdef' 'function _jumps() { echo hello; }' )
+  run_rule "${BATS_TEST_DIRNAME}/../rule-missing-err-return.zsh" "zshLintRule_missingErrReturn" "test" "${input[@]}"
+  expect_clean
 }
 
 @test "flags autoloaded function missing setopt err_return" {

@@ -1,5 +1,5 @@
 # Custom Rule: zshLintRule_missingErrReturn
-# Detects autoloaded functions (no shebang, no .zsh extension) that lack 'setopt local_options err_return'
+# Detects autoloaded functions (in $OROSHI_ROOT/tools/term/zsh/config/functions/autoload, no shebang, no .zsh extension) that lack 'setopt local_options err_return'
 # Rule Output: file▮missingErrReturn▮error▮1▮message
 zshLintRule_missingErrReturn() {
   local code='missingErrReturn'
@@ -11,6 +11,10 @@ zshLintRule_missingErrReturn() {
   # Only applies to autoloaded functions (no shebang)
   local firstLine="${content%%$'\n'*}"
   [[ "$firstLine" =~ '^#!' ]] && return 0
+
+  # Only applies to files inside the autoloaded functions directory
+  local autoloadDir="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload"
+  [[ "$file" != "$autoloadDir"/* ]] && return 0
 
   # Skip sourced utility files (.zsh extension)
   [[ "${file:e}" != "" ]] && return 0

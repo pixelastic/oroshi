@@ -62,6 +62,13 @@ teardown() {
   [ "$status" -eq 1 ]
 }
 
+@test "exits 0 for a compdef file with #compdef first line" {
+  local file="$BATS_TMP_DIR/_jumps"
+  printf '#compdef\nfunction _jumps() { echo hello; }\n' > "$file"
+  bats_run_zsh "$CURRENT" "$file"
+  [ "$status" -eq 0 ]
+}
+
 @test "exits 1 for a .bats file inside functions/autoload/" {
   local dir="$BATS_TMP_DIR/functions/autoload/misc/__tests__"
   mkdir -p "$dir"

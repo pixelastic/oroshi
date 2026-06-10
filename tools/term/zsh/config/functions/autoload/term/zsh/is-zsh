@@ -3,6 +3,7 @@
 # $ is-zsh /path/to/file.zsh          # exit 0 (.zsh extension)
 # $ is-zsh /path/to/functions/autoload/git/file/my-func  # exit 0 (autoload path, no ext)
 # $ is-zsh /path/to/script            # exit 0 if shebang is #!/usr/bin/env zsh
+# $ is-zsh /path/to/compdef/_jumps    # exit 0 if first line is #compdef
 setopt local_options err_return
 
 local filepath="$1"
@@ -21,9 +22,10 @@ local ext="${filepath:e}"
 # No extension: inside functions/autoload/
 [[ "$filepath" == *functions/autoload/* ]] && return 0
 
-# No extension: check for zsh shebang
+# No extension: check for zsh shebang or #compdef marker
 local firstLine="$(head -1 "$filepath")"
 [[ "$firstLine" == "" ]] && return 1
 [[ "$firstLine" == "#!/usr/bin/env zsh" ]] && return 0
+[[ "$firstLine" == "#compdef"* ]] && return 0
 
 return 1
