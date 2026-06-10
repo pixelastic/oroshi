@@ -100,6 +100,7 @@ bats_mock_oroshi_root() {
   [[ "$1" == "" ]] && return 1
   [[ "$BATS_TMP_DIR" == "" ]] && bats_tmp_dir
   echo "export OROSHI_ROOT=\"$1\"" >> "$BATS_TMP_DIR/mock.zsh"
+  echo "oroshi-export-zsh-paths \"$1\"" >> "$BATS_TMP_DIR/mock.zsh"
 }
 
 # bats_run_zsh <path> [args]
