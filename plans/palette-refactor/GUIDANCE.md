@@ -108,6 +108,11 @@ Replace the current 14-family irregular palette with a clean 21-family system us
 - `local var` (without assignment) in ZSH prints the current value if the variable is already set; always use `local var=""` to silently re-declare loop variables.
 - The spec says "21 families" but the slot table has 20 — confirmed typo; implementation and tests correctly use 20.
 
+### Issue 06 — color-documentation-palette-decisions
+
+- Gray's special `twShades`/`anchorShades` fields are handled in the FAMILIES.forEach rendering loop — the `TW` prefix is conditionally omitted for `term-*` labels to avoid rendering "TWterm-black".
+- `review-diff dirty` includes pre-existing dist file changes (projects.json/zsh) from prior issues — Spec reviewer may flag their stale hex values; these are out of scope until colors-build runs.
+
 ### Issue 01 — colors-conf-new-layout
 
 - `colors-build.bats` reads the REAL `colors.conf`, not its fixture: `.zshenv` overrides `OROSHI_ROOT` via `git rev-parse --show-toplevel` when `$PWD` is inside a worktree — fixture `OROSHI_ROOT` override in `setup()` has no effect on ZSH subprocesses. Keep test fixture values in sync with actual slot values in `colors.conf`.

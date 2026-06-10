@@ -36,7 +36,8 @@
   {
     "id": "06",
     "issue": "issues/06-color-documentation-palette-decisions.md",
-    "done": false,
+    "done": true,
+    "recap": "Updated color-documentation.html: red family to TW v3 shades, gray family to achromatic scale (shade-0=terminal-black, shade-1=terminal-white) with swatch-term-anchor marker, neutral families comment noting gray exception.",
     "blocked_by": ["02"]
   },
   {

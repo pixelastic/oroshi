@@ -5,6 +5,11 @@
       "hex": "#975a16",
       "name": "yellow-7"
     },
+    "backgroundInactive": {
+      "ansi": 40,
+      "hex": "#1a1a0f",
+      "name": "yellow-dark"
+    },
     "foreground": {
       "ansi": 209,
       "hex": "#030712",
@@ -19,6 +24,11 @@
       "ansi": 57,
       "hex": "#2c5282",
       "name": "blue-7"
+    },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
     },
     "foreground": {
       "ansi": 202,
@@ -35,6 +45,11 @@
       "hex": "#2c5282",
       "name": "blue-7"
     },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
+    },
     "foreground": {
       "ansi": 202,
       "hex": "#d1d5db",
@@ -49,6 +64,11 @@
       "ansi": 88,
       "hex": "#831843",
       "name": "pink-8"
+    },
+    "backgroundInactive": {
+      "ansi": 80,
+      "hex": "#1f0f16",
+      "name": "pink-dark"
     },
     "foreground": {
       "ansi": 203,
@@ -65,6 +85,11 @@
       "hex": "#7c2d12",
       "name": "orange-8"
     },
+    "backgroundInactive": {
+      "ansi": 100,
+      "hex": "#1a120f",
+      "name": "orange-dark"
+    },
     "foreground": {
       "ansi": 203,
       "hex": "#9ca3af",
@@ -80,6 +105,11 @@
       "hex": "#ea580c",
       "name": "orange"
     },
+    "backgroundInactive": {
+      "ansi": 100,
+      "hex": "#1a120f",
+      "name": "orange-dark"
+    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/api.pixelastic.com/cloudflare"
@@ -89,6 +119,11 @@
       "ansi": 65,
       "hex": "#805ad5",
       "name": "purple"
+    },
+    "backgroundInactive": {
+      "ansi": 60,
+      "hex": "#201325",
+      "name": "purple-dark"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
@@ -100,6 +135,11 @@
       "hex": "#0f766e",
       "name": "teal-6"
     },
+    "backgroundInactive": {
+      "ansi": 130,
+      "hex": "#0f1a18",
+      "name": "teal-dark"
+    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/api.pixelastic.com/netlify"
@@ -109,6 +149,11 @@
       "ansi": 205,
       "hex": "#4b5563",
       "name": "gray"
+    },
+    "backgroundInactive": {
+      "ansi": 200,
+      "hex": "#111318",
+      "name": "gray-dark"
     },
     "foreground": {
       "ansi": 45,
@@ -125,6 +170,11 @@
       "hex": "#ea580c",
       "name": "orange"
     },
+    "backgroundInactive": {
+      "ansi": 100,
+      "hex": "#1a120f",
+      "name": "orange-dark"
+    },
     "hideNameInPrompt": false,
     "icon": "󰀿 ",
     "path": ""
@@ -135,6 +185,11 @@
       "hex": "#38a169",
       "name": "green"
     },
+    "backgroundInactive": {
+      "ansi": 30,
+      "hex": "#0f1a0f",
+      "name": "green-dark"
+    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/blog.pixelastic.com"
@@ -144,6 +199,11 @@
       "ansi": 173,
       "hex": "#a78bfa",
       "name": "violet-3"
+    },
+    "backgroundInactive": {
+      "ansi": 170,
+      "hex": "#150f1a",
+      "name": "violet-dark"
     },
     "foreground": {
       "ansi": 178,
@@ -159,6 +219,11 @@
       "ansi": 174,
       "hex": "#8b5cf6",
       "name": "violet-4"
+    },
+    "backgroundInactive": {
+      "ansi": 170,
+      "hex": "#150f1a",
+      "name": "violet-dark"
     },
     "foreground": {
       "ansi": 178,
@@ -180,6 +245,11 @@
       "hex": "#111827",
       "name": "gray-8"
     },
+    "backgroundInactive": {
+      "ansi": 200,
+      "hex": "#111318",
+      "name": "gray-dark"
+    },
     "foreground": {
       "ansi": 203,
       "hex": "#9ca3af",
@@ -194,6 +264,11 @@
       "ansi": 208,
       "hex": "#111827",
       "name": "gray-8"
+    },
+    "backgroundInactive": {
+      "ansi": 200,
+      "hex": "#111318",
+      "name": "gray-dark"
     },
     "foreground": {
       "ansi": 203,
@@ -210,6 +285,11 @@
       "hex": "#111827",
       "name": "gray-8"
     },
+    "backgroundInactive": {
+      "ansi": 200,
+      "hex": "#111318",
+      "name": "gray-dark"
+    },
     "foreground": {
       "ansi": 203,
       "hex": "#9ca3af",
@@ -225,6 +305,11 @@
       "hex": "#042f2e",
       "name": "teal-9"
     },
+    "backgroundInactive": {
+      "ansi": 130,
+      "hex": "#0f1a18",
+      "name": "teal-dark"
+    },
     "foreground": {
       "ansi": 202,
       "hex": "#d1d5db",
@@ -239,6 +324,11 @@
       "ansi": 147,
       "hex": "#92400e",
       "name": "amber-7"
+    },
+    "backgroundInactive": {
+      "ansi": 140,
+      "hex": "#1a180f",
+      "name": "amber-dark"
     },
     "foreground": {
       "ansi": 202,
@@ -260,6 +350,11 @@
       "hex": "#2b6cb0",
       "name": "blue-6"
     },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
+    },
     "foreground": {
       "ansi": 50,
       "hex": "#0e1529",
@@ -274,6 +369,11 @@
       "ansi": 59,
       "hex": "#2a4365",
       "name": "blue-9"
+    },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
     },
     "foreground": {
       "ansi": 50,
@@ -300,6 +400,11 @@
       "hex": "#744210",
       "name": "yellow-9"
     },
+    "backgroundInactive": {
+      "ansi": 40,
+      "hex": "#1a1a0f",
+      "name": "yellow-dark"
+    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": ""
@@ -309,6 +414,11 @@
       "ansi": 178,
       "hex": "#4c1d95",
       "name": "violet-8"
+    },
+    "backgroundInactive": {
+      "ansi": 170,
+      "hex": "#150f1a",
+      "name": "violet-dark"
     },
     "foreground": {
       "ansi": 171,
@@ -325,6 +435,11 @@
       "hex": "#44337a",
       "name": "purple-9"
     },
+    "backgroundInactive": {
+      "ansi": 60,
+      "hex": "#201325",
+      "name": "purple-dark"
+    },
     "foreground": {
       "ansi": 61,
       "hex": "#e9d8fd",
@@ -340,6 +455,11 @@
       "hex": "#44337a",
       "name": "purple-8"
     },
+    "backgroundInactive": {
+      "ansi": 60,
+      "hex": "#201325",
+      "name": "purple-dark"
+    },
     "foreground": {
       "ansi": 61,
       "hex": "#e9d8fd",
@@ -354,6 +474,11 @@
       "ansi": 136,
       "hex": "#0f766e",
       "name": "teal-6"
+    },
+    "backgroundInactive": {
+      "ansi": 130,
+      "hex": "#0f1a18",
+      "name": "teal-dark"
     },
     "foreground": {
       "ansi": 203,
@@ -375,6 +500,11 @@
       "hex": "#975a16",
       "name": "yellow-7"
     },
+    "backgroundInactive": {
+      "ansi": 40,
+      "hex": "#1a1a0f",
+      "name": "yellow-dark"
+    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/pixelastic.com/gamemaster/dungeons/dungeons"
@@ -384,6 +514,11 @@
       "ansi": 46,
       "hex": "#b7791f",
       "name": "yellow-6"
+    },
+    "backgroundInactive": {
+      "ansi": 40,
+      "hex": "#1a1a0f",
+      "name": "yellow-dark"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
@@ -395,6 +530,11 @@
       "hex": "#d69e2e",
       "name": "yellow-5"
     },
+    "backgroundInactive": {
+      "ansi": 40,
+      "hex": "#1a1a0f",
+      "name": "yellow-dark"
+    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/gamemaster/dungeons/dungeons-pictures"
@@ -404,6 +544,11 @@
       "ansi": 59,
       "hex": "#2a4365",
       "name": "blue-9"
+    },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
     },
     "foreground": {
       "ansi": 202,
@@ -420,6 +565,11 @@
       "hex": "#d69e2e",
       "name": "yellow"
     },
+    "backgroundInactive": {
+      "ansi": 40,
+      "hex": "#1a1a0f",
+      "name": "yellow-dark"
+    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/esmify"
@@ -429,6 +579,11 @@
       "ansi": 35,
       "hex": "#38a169",
       "name": "green"
+    },
+    "backgroundInactive": {
+      "ansi": 30,
+      "hex": "#0f1a0f",
+      "name": "green-dark"
     },
     "foreground": {
       "ansi": 202,
@@ -445,6 +600,11 @@
       "hex": "#44337a",
       "name": "purple-8"
     },
+    "backgroundInactive": {
+      "ansi": 60,
+      "hex": "#201325",
+      "name": "purple-dark"
+    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/gamemaster/gamemaster.pixelastic.com"
@@ -455,6 +615,11 @@
       "hex": "#d69e2e",
       "name": "yellow"
     },
+    "backgroundInactive": {
+      "ansi": 40,
+      "hex": "#1a1a0f",
+      "name": "yellow-dark"
+    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/mount/gdrive"
@@ -464,6 +629,11 @@
       "ansi": 67,
       "hex": "#553c9a",
       "name": "purple-7"
+    },
+    "backgroundInactive": {
+      "ansi": 60,
+      "hex": "#201325",
+      "name": "purple-dark"
     },
     "foreground": {
       "ansi": 41,
@@ -480,6 +650,11 @@
       "hex": "#9ca3af",
       "name": "gray-3"
     },
+    "backgroundInactive": {
+      "ansi": 200,
+      "hex": "#111318",
+      "name": "gray-dark"
+    },
     "foreground": {
       "ansi": 55,
       "hex": "#3182ce",
@@ -494,6 +669,11 @@
       "ansi": 105,
       "hex": "#ea580c",
       "name": "orange"
+    },
+    "backgroundInactive": {
+      "ansi": 100,
+      "hex": "#1a120f",
+      "name": "orange-dark"
     },
     "foreground": {
       "ansi": 101,
@@ -510,6 +690,11 @@
       "hex": "#451a03",
       "name": "amber-9"
     },
+    "backgroundInactive": {
+      "ansi": 140,
+      "hex": "#1a180f",
+      "name": "amber-dark"
+    },
     "foreground": {
       "ansi": 144,
       "hex": "#f59e0b",
@@ -525,6 +710,11 @@
       "hex": "#38a169",
       "name": "green"
     },
+    "backgroundInactive": {
+      "ansi": 30,
+      "hex": "#0f1a0f",
+      "name": "green-dark"
+    },
     "hideNameInPrompt": true,
     "icon": "",
     "path": "~"
@@ -534,6 +724,11 @@
       "ansi": 39,
       "hex": "#22543d",
       "name": "green-9"
+    },
+    "backgroundInactive": {
+      "ansi": 30,
+      "hex": "#0f1a0f",
+      "name": "green-dark"
     },
     "foreground": {
       "ansi": 31,
@@ -550,6 +745,11 @@
       "hex": "#500724",
       "name": "pink-9"
     },
+    "backgroundInactive": {
+      "ansi": 80,
+      "hex": "#1f0f16",
+      "name": "pink-dark"
+    },
     "foreground": {
       "ansi": 202,
       "hex": "#d1d5db",
@@ -565,6 +765,11 @@
       "hex": "#63b3ed",
       "name": "blue-3"
     },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
+    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": ""
@@ -574,6 +779,11 @@
       "ansi": 135,
       "hex": "#0d9488",
       "name": "teal"
+    },
+    "backgroundInactive": {
+      "ansi": 130,
+      "hex": "#0f1a18",
+      "name": "teal-dark"
     },
     "hideNameInPrompt": false,
     "icon": " ",
@@ -585,6 +795,11 @@
       "hex": "#431407",
       "name": "orange-9"
     },
+    "backgroundInactive": {
+      "ansi": 100,
+      "hex": "#1a120f",
+      "name": "orange-dark"
+    },
     "hideNameInPrompt": false,
     "icon": "ﰤ ",
     "path": "~/local/www/pixelastic.com/gamemaster/items/items"
@@ -594,6 +809,11 @@
       "ansi": 108,
       "hex": "#7c2d12",
       "name": "orange-8"
+    },
+    "backgroundInactive": {
+      "ansi": 100,
+      "hex": "#1a120f",
+      "name": "orange-dark"
     },
     "hideNameInPrompt": false,
     "icon": "ﰤ ",
@@ -605,6 +825,11 @@
       "hex": "#3182ce",
       "name": "blue-5"
     },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
+    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/algolia/jekyll-algolia"
@@ -614,6 +839,11 @@
       "ansi": 149,
       "hex": "#451a03",
       "name": "amber-9"
+    },
+    "backgroundInactive": {
+      "ansi": 140,
+      "hex": "#1a180f",
+      "name": "amber-dark"
     },
     "foreground": {
       "ansi": 143,
@@ -630,6 +860,11 @@
       "hex": "#2a4365",
       "name": "blue-9"
     },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
+    },
     "foreground": {
       "ansi": 52,
       "hex": "#90cdf4",
@@ -644,6 +879,11 @@
       "ansi": 29,
       "hex": "#742a2a",
       "name": "red-9"
+    },
+    "backgroundInactive": {
+      "ansi": 20,
+      "hex": "#250f0f",
+      "name": "red-dark"
     },
     "foreground": {
       "ansi": 21,
@@ -660,6 +900,11 @@
       "hex": "#2a4365",
       "name": "blue-9"
     },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
+    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/projects/landscapes/landscapes"
@@ -669,6 +914,11 @@
       "ansi": 58,
       "hex": "#2a4365",
       "name": "blue-8"
+    },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
@@ -680,6 +930,11 @@
       "hex": "#742a2a",
       "name": "red-8"
     },
+    "backgroundInactive": {
+      "ansi": 20,
+      "hex": "#250f0f",
+      "name": "red-dark"
+    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/pixelastic.com/projects/magic"
@@ -689,6 +944,11 @@
       "ansi": 56,
       "hex": "#2b6cb0",
       "name": "blue-6"
+    },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
     },
     "foreground": {
       "ansi": 202,
@@ -705,6 +965,11 @@
       "hex": "#2a4365",
       "name": "blue-9"
     },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
+    },
     "foreground": {
       "ansi": 202,
       "hex": "#d1d5db",
@@ -720,6 +985,11 @@
       "hex": "#4b5563",
       "name": "gray"
     },
+    "backgroundInactive": {
+      "ansi": 200,
+      "hex": "#111318",
+      "name": "gray-dark"
+    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "/media"
@@ -730,6 +1000,11 @@
       "hex": "#742a2a",
       "name": "red-9"
     },
+    "backgroundInactive": {
+      "ansi": 20,
+      "hex": "#250f0f",
+      "name": "red-dark"
+    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/algolia/meetups"
@@ -739,6 +1014,11 @@
       "ansi": 107,
       "hex": "#9a3412",
       "name": "orange-7"
+    },
+    "backgroundInactive": {
+      "ansi": 100,
+      "hex": "#1a120f",
+      "name": "orange-dark"
     },
     "foreground": {
       "ansi": 102,
@@ -755,6 +1035,11 @@
       "hex": "#7c2d12",
       "name": "orange-8"
     },
+    "backgroundInactive": {
+      "ansi": 100,
+      "hex": "#1a120f",
+      "name": "orange-dark"
+    },
     "foreground": {
       "ansi": 102,
       "hex": "#fdba74",
@@ -769,6 +1054,11 @@
       "ansi": 168,
       "hex": "#0c4a6e",
       "name": "sky-8"
+    },
+    "backgroundInactive": {
+      "ansi": 160,
+      "hex": "#1a2535",
+      "name": "sky-dark"
     },
     "foreground": {
       "ansi": 161,
@@ -785,6 +1075,11 @@
       "hex": "#4299e1",
       "name": "blue-4"
     },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
+    },
     "foreground": {
       "ansi": 58,
       "hex": "#2a4365",
@@ -799,6 +1094,11 @@
       "ansi": 53,
       "hex": "#63b3ed",
       "name": "blue-3"
+    },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
     },
     "foreground": {
       "ansi": 58,
@@ -815,6 +1115,11 @@
       "hex": "#744210",
       "name": "yellow-8"
     },
+    "backgroundInactive": {
+      "ansi": 40,
+      "hex": "#1a1a0f",
+      "name": "yellow-dark"
+    },
     "foreground": {
       "ansi": 201,
       "hex": "#e5e7eb",
@@ -830,6 +1135,11 @@
       "hex": "#4b5563",
       "name": "gray"
     },
+    "backgroundInactive": {
+      "ansi": 200,
+      "hex": "#111318",
+      "name": "gray-dark"
+    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/projects/monorepoify"
@@ -839,6 +1149,11 @@
       "ansi": 208,
       "hex": "#111827",
       "name": "gray-8"
+    },
+    "backgroundInactive": {
+      "ansi": 200,
+      "hex": "#111318",
+      "name": "gray-dark"
     },
     "foreground": {
       "ansi": 28,
@@ -855,6 +1170,11 @@
       "hex": "#d69e2e",
       "name": "yellow"
     },
+    "backgroundInactive": {
+      "ansi": 40,
+      "hex": "#1a1a0f",
+      "name": "yellow-dark"
+    },
     "foreground": {
       "ansi": 208,
       "hex": "#111827",
@@ -869,6 +1189,11 @@
       "ansi": 208,
       "hex": "#111827",
       "name": "gray-8"
+    },
+    "backgroundInactive": {
+      "ansi": 200,
+      "hex": "#111318",
+      "name": "gray-dark"
     },
     "foreground": {
       "ansi": 35,
@@ -895,6 +1220,11 @@
       "hex": "#22543d",
       "name": "green-8"
     },
+    "backgroundInactive": {
+      "ansi": 30,
+      "hex": "#0f1a0f",
+      "name": "green-dark"
+    },
     "hideNameInPrompt": false,
     "icon": "神",
     "path": "~/local/www/projects/netlify-minutes"
@@ -904,6 +1234,11 @@
       "ansi": 53,
       "hex": "#63b3ed",
       "name": "blue-3"
+    },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
     },
     "foreground": {
       "ansi": 208,
@@ -920,6 +1255,11 @@
       "hex": "#0369a1",
       "name": "sky-6"
     },
+    "backgroundInactive": {
+      "ansi": 160,
+      "hex": "#1a2535",
+      "name": "sky-dark"
+    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/algolia/npm-search"
@@ -929,6 +1269,11 @@
       "ansi": 23,
       "hex": "#fc8181",
       "name": "red-3"
+    },
+    "backgroundInactive": {
+      "ansi": 20,
+      "hex": "#250f0f",
+      "name": "red-dark"
     },
     "foreground": {
       "ansi": 209,
@@ -945,6 +1290,11 @@
       "hex": "#38a169",
       "name": "green"
     },
+    "backgroundInactive": {
+      "ansi": 30,
+      "hex": "#0f1a0f",
+      "name": "green-dark"
+    },
     "hideNameInPrompt": false,
     "icon": "x ",
     "path": "~/.oroshi"
@@ -955,6 +1305,11 @@
       "hex": "#6b7280",
       "name": "gray-4"
     },
+    "backgroundInactive": {
+      "ansi": 200,
+      "hex": "#111318",
+      "name": "gray-dark"
+    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/pixelastic.com/painting.pixelastic.com"
@@ -964,6 +1319,11 @@
       "ansi": 66,
       "hex": "#6b46c1",
       "name": "purple-6"
+    },
+    "backgroundInactive": {
+      "ansi": 60,
+      "hex": "#201325",
+      "name": "purple-dark"
     },
     "foreground": {
       "ansi": 204,
@@ -980,6 +1340,11 @@
       "hex": "#744210",
       "name": "yellow-9"
     },
+    "backgroundInactive": {
+      "ansi": 40,
+      "hex": "#1a1a0f",
+      "name": "yellow-dark"
+    },
     "foreground": {
       "ansi": 41,
       "hex": "#fefcbf",
@@ -994,6 +1359,11 @@
       "ansi": 65,
       "hex": "#805ad5",
       "name": "purple"
+    },
+    "backgroundInactive": {
+      "ansi": 60,
+      "hex": "#201325",
+      "name": "purple-dark"
     },
     "hideNameInPrompt": false,
     "icon": " ",
@@ -1010,6 +1380,11 @@
       "hex": "#2c5282",
       "name": "blue-7"
     },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
+    },
     "foreground": {
       "ansi": 44,
       "hex": "#ecc94b",
@@ -1024,6 +1399,11 @@
       "ansi": 35,
       "hex": "#38a169",
       "name": "green"
+    },
+    "backgroundInactive": {
+      "ansi": 30,
+      "hex": "#0f1a0f",
+      "name": "green-dark"
     },
     "foreground": {
       "ansi": 202,
@@ -1040,6 +1420,11 @@
       "hex": "#2a4365",
       "name": "blue-8"
     },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
+    },
     "foreground": {
       "ansi": 202,
       "hex": "#d1d5db",
@@ -1054,6 +1439,11 @@
       "ansi": 106,
       "hex": "#c2410c",
       "name": "orange-6"
+    },
+    "backgroundInactive": {
+      "ansi": 100,
+      "hex": "#1a120f",
+      "name": "orange-dark"
     },
     "foreground": {
       "ansi": 201,
@@ -1070,6 +1460,11 @@
       "hex": "#4299e1",
       "name": "blue-4"
     },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
+    },
     "foreground": {
       "ansi": 209,
       "hex": "#030712",
@@ -1085,6 +1480,11 @@
       "hex": "#22543d",
       "name": "green-9"
     },
+    "backgroundInactive": {
+      "ansi": 30,
+      "hex": "#0f1a0f",
+      "name": "green-dark"
+    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/perso/Dropbox/backup/roleplay"
@@ -1094,6 +1494,11 @@
       "ansi": 107,
       "hex": "#9a3412",
       "name": "orange-7"
+    },
+    "backgroundInactive": {
+      "ansi": 100,
+      "hex": "#1a120f",
+      "name": "orange-dark"
     },
     "foreground": {
       "ansi": 102,
@@ -1110,6 +1515,11 @@
       "hex": "#ea580c",
       "name": "orange"
     },
+    "backgroundInactive": {
+      "ansi": 100,
+      "hex": "#1a120f",
+      "name": "orange-dark"
+    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/mount/s3"
@@ -1119,6 +1529,11 @@
       "ansi": 105,
       "hex": "#ea580c",
       "name": "orange"
+    },
+    "backgroundInactive": {
+      "ansi": 100,
+      "hex": "#1a120f",
+      "name": "orange-dark"
     },
     "hideNameInPrompt": false,
     "icon": "   ",
@@ -1130,6 +1545,11 @@
       "hex": "#ea580c",
       "name": "orange"
     },
+    "backgroundInactive": {
+      "ansi": 100,
+      "hex": "#1a120f",
+      "name": "orange-dark"
+    },
     "hideNameInPrompt": false,
     "icon": "   ",
     "path": "~/local/mount/s3/recordings"
@@ -1139,6 +1559,11 @@
       "ansi": 109,
       "hex": "#431407",
       "name": "orange-9"
+    },
+    "backgroundInactive": {
+      "ansi": 100,
+      "hex": "#1a120f",
+      "name": "orange-dark"
     },
     "foreground": {
       "ansi": 101,
@@ -1155,6 +1580,11 @@
       "hex": "#44337a",
       "name": "purple-9"
     },
+    "backgroundInactive": {
+      "ansi": 60,
+      "hex": "#201325",
+      "name": "purple-dark"
+    },
     "foreground": {
       "ansi": 104,
       "hex": "#f97316",
@@ -1169,6 +1599,11 @@
       "ansi": 29,
       "hex": "#742a2a",
       "name": "red-9"
+    },
+    "backgroundInactive": {
+      "ansi": 20,
+      "hex": "#250f0f",
+      "name": "red-dark"
     },
     "foreground": {
       "ansi": 45,
@@ -1185,6 +1620,11 @@
       "hex": "#742a2a",
       "name": "red-9"
     },
+    "backgroundInactive": {
+      "ansi": 20,
+      "hex": "#250f0f",
+      "name": "red-dark"
+    },
     "foreground": {
       "ansi": 45,
       "hex": "#d69e2e",
@@ -1200,6 +1640,11 @@
       "hex": "#742a2a",
       "name": "red-9"
     },
+    "backgroundInactive": {
+      "ansi": 20,
+      "hex": "#250f0f",
+      "name": "red-dark"
+    },
     "foreground": {
       "ansi": 45,
       "hex": "#d69e2e",
@@ -1214,6 +1659,11 @@
       "ansi": 29,
       "hex": "#742a2a",
       "name": "red-9"
+    },
+    "backgroundInactive": {
+      "ansi": 20,
+      "hex": "#250f0f",
+      "name": "red-dark"
     },
     "foreground": {
       "ansi": 21,
@@ -1235,6 +1685,11 @@
       "hex": "#0f766e",
       "name": "teal-6"
     },
+    "backgroundInactive": {
+      "ansi": 130,
+      "hex": "#0f1a18",
+      "name": "teal-dark"
+    },
     "foreground": {
       "ansi": 203,
       "hex": "#9ca3af",
@@ -1250,6 +1705,11 @@
       "hex": "#b7791f",
       "name": "yellow-6"
     },
+    "backgroundInactive": {
+      "ansi": 40,
+      "hex": "#1a1a0f",
+      "name": "yellow-dark"
+    },
     "hideNameInPrompt": false,
     "icon": "󰔊 ",
     "path": "~/local/www/projects/speech-to-blog"
@@ -1259,6 +1719,11 @@
       "ansi": 58,
       "hex": "#2a4365",
       "name": "blue-8"
+    },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
     },
     "hideNameInPrompt": false,
     "icon": " ",
@@ -1270,6 +1735,11 @@
       "hex": "#38a169",
       "name": "green"
     },
+    "backgroundInactive": {
+      "ansi": 30,
+      "hex": "#0f1a0f",
+      "name": "green-dark"
+    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/talks/talk-blog"
@@ -1280,6 +1750,11 @@
       "hex": "#22543d",
       "name": "green-8"
     },
+    "backgroundInactive": {
+      "ansi": 30,
+      "hex": "#0f1a0f",
+      "name": "green-dark"
+    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/talks.pixelastic.com"
@@ -1289,6 +1764,11 @@
       "ansi": 39,
       "hex": "#22543d",
       "name": "green-9"
+    },
+    "backgroundInactive": {
+      "ansi": 30,
+      "hex": "#0f1a0f",
+      "name": "green-dark"
     },
     "foreground": {
       "ansi": 45,
@@ -1305,6 +1785,11 @@
       "hex": "#22543d",
       "name": "green-8"
     },
+    "backgroundInactive": {
+      "ansi": 30,
+      "hex": "#0f1a0f",
+      "name": "green-dark"
+    },
     "foreground": {
       "ansi": 46,
       "hex": "#b7791f",
@@ -1319,6 +1804,11 @@
       "ansi": 53,
       "hex": "#63b3ed",
       "name": "blue-3"
+    },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
     },
     "foreground": {
       "ansi": 208,
@@ -1335,6 +1825,11 @@
       "hex": "#3182ce",
       "name": "blue-5"
     },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
+    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/norska-theme-search"
@@ -1344,6 +1839,11 @@
       "ansi": 53,
       "hex": "#63b3ed",
       "name": "blue-3"
+    },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
     },
     "foreground": {
       "ansi": 208,
@@ -1360,6 +1860,11 @@
       "hex": "#22543d",
       "name": "green-8"
     },
+    "backgroundInactive": {
+      "ansi": 30,
+      "hex": "#0f1a0f",
+      "name": "green-dark"
+    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/norska-theme-slides"
@@ -1369,6 +1874,11 @@
       "ansi": 205,
       "hex": "#4b5563",
       "name": "gray"
+    },
+    "backgroundInactive": {
+      "ansi": 200,
+      "hex": "#111318",
+      "name": "gray-dark"
     },
     "hideNameInPrompt": false,
     "icon": " ",
@@ -1395,6 +1905,11 @@
       "hex": "#2a4365",
       "name": "blue-8"
     },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
+    },
     "foreground": {
       "ansi": 202,
       "hex": "#d1d5db",
@@ -1409,6 +1924,11 @@
       "ansi": 58,
       "hex": "#2a4365",
       "name": "blue-8"
+    },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
@@ -1430,6 +1950,11 @@
       "hex": "#d69e2e",
       "name": "yellow"
     },
+    "backgroundInactive": {
+      "ansi": 40,
+      "hex": "#1a1a0f",
+      "name": "yellow-dark"
+    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": ""
@@ -1445,6 +1970,11 @@
       "hex": "#38a169",
       "name": "green"
     },
+    "backgroundInactive": {
+      "ansi": 30,
+      "hex": "#0f1a0f",
+      "name": "green-dark"
+    },
     "foreground": {
       "ansi": 202,
       "hex": "#d1d5db",
@@ -1459,6 +1989,11 @@
       "ansi": 204,
       "hex": "#6b7280",
       "name": "gray-4"
+    },
+    "backgroundInactive": {
+      "ansi": 200,
+      "hex": "#111318",
+      "name": "gray-dark"
     },
     "foreground": {
       "ansi": 28,

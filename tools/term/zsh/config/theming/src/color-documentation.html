@@ -96,6 +96,8 @@
   .swatch             { border: 2px solid rgba(255,255,255,0.2); }
   .border-unused      { border: 2px dashed rgba(255,255,255,0.12); }
   .swatch-unused      { opacity: 0.35; background: #1a1f2e !important; }
+  /* terminal anchor: shade-0 (black) and shade-1 (white) of gray family */
+  .swatch-term-anchor { border: 2px solid rgba(255,215,0,0.7) !important; }
 
   .dark { color: #111; }
   .light { color: #fff; }
@@ -174,7 +176,7 @@ makeNamed(NEUTRAL_TERMINAL, document.getElementById('row-neutral-terminal'));
 // group: 'primary' | 'secondary' | 'bonus'
 const FAMILIES = [
   // ── Primary — base terminal color families ──
-  { name:'red',     start:20,  group:'primary',   shades:['#250f0f','#fed7d7','#feb2b2','#fc8181','#f56565','#e53e3e','#c53030','#9b2c2c','#742a2a','#742a2a'] },
+  { name:'red',     start:20,  group:'primary',   shades:['#250f0f','#fecaca','#fca5a5','#f87171','#ef4444','#dc2626','#b91c1c','#991b1b','#7f1d1d','#450a0a'] },
   { name:'green',   start:30,  group:'primary',   shades:['#0f1a0f','#c6f6d5','#9ae6b4','#68d391','#48bb78','#38a169','#2f855a','#276749','#22543d','#22543d'] },
   { name:'yellow',  start:40,  group:'primary',   shades:['#1a1a0f','#fefcbf','#faf089','#f6e05e','#ecc94b','#d69e2e','#b7791f','#975a16','#744210','#744210'] },
   { name:'blue',    start:50,  group:'primary',   shades:['#0e1529','#bee3f8','#90cdf4','#63b3ed','#4299e1','#3182ce','#2b6cb0','#2c5282','#2a4365','#2a4365'] },
@@ -196,11 +198,14 @@ const FAMILIES = [
   { name:'?', start:180, group:'unused-bonus', count:10 },
   { name:'?', start:190, group:'unused-bonus', count:10 },
   // ── Neutral ──
-  // gray: slot 8 canonical = shade 5 (#4b5563) — dimmed text
-  { name:'gray',    start:200, group:'neutral', shades:['#111318','#e5e7eb','#d1d5db','#9ca3af','#6b7280','#4b5563','#374151','#1f2937','#111827','#030712'] },
-  // slate: blue-gray — palette only
+  // gray: achromatic axis — shade-0=terminal-black, shade-1=terminal-white, shades 2-9=TW-200→900, canonical=shade-5 (#6b7280)
+  { name:'gray',    start:200, group:'neutral',
+    shades:['#0c0f15','#ffffff','#e5e7eb','#d1d5db','#9ca3af','#6b7280','#4b5563','#374151','#1f2937','#111827'],
+    twShades:['term-black','term-white','200','300','400','500','600','700','800','900'],
+    anchorShades:[0, 1] },
+  // slate, neutral, stone: standard convention (shade-0=near-black bg, shades 1-9=TW-200→950). No white anchor.
+  // Note: gray is the exception — its shade-0/1 are terminal black/white anchors, not the standard convention.
   { name:'slate',   start:210, group:'neutral', shades:['#0f141e','#e2e8f0','#cbd5e1','#94a3b8','#64748b','#475569','#334155','#1e293b','#0f172a','#020617'] },
-  // neutral: pure gray — palette only
   { name:'neutral', start:220, group:'neutral', shades:['#151515','#e5e5e5','#d4d4d4','#a3a3a3','#737373','#525252','#404040','#262626','#171717','#0a0a0a'] },
   // stone: slot 15 canonical = shade 5 (#57534e) — emphasis text
   { name:'stone',   start:230, group:'neutral', shades:['#181614','#e7e5e4','#d6d3d1','#a8a29e','#78716c','#57534e','#44403c','#292524','#1c1917','#0c0a09'] },
@@ -220,7 +225,7 @@ const GROUP_LABELS = {
 const familiesEl        = document.getElementById('families');
 const familiesNeutralEl = document.getElementById('families-neutral');
 let currentGroup = null;
-FAMILIES.forEach(({ name, start, group, shades, count }) => {
+FAMILIES.forEach(({ name, start, group, shades, twShades: familyTwShades, anchorShades, count }) => {
   const isNeutral = group === 'neutral' || group === 'unused-neutral';
   const container = isNeutral ? familiesNeutralEl : familiesEl;
 
@@ -266,16 +271,19 @@ FAMILIES.forEach(({ name, start, group, shades, count }) => {
   lbl.textContent = name;
   row.appendChild(lbl);
 
+  const shadeLabels = familyTwShades || TW_SHADES;
   shades.forEach((hex, i) => {
-    const slot = start + i;
-    const tw   = TW_SHADES[i];
-    const cls  = textClass(hex);
+    const slot     = start + i;
+    const tw       = shadeLabels[i];
+    const cls      = textClass(hex);
+    const isAnchor = anchorShades && anchorShades.includes(i);
 
     const el = document.createElement('div');
-    el.className = `swatch ${cls}`;
+    el.className = `swatch ${cls}${isAnchor ? ' swatch-term-anchor' : ''}`;
     el.style.background = hex;
-    el.title = `color${slot}  ${hex}  (${name}-${i} / TW${tw})`;
-    el.innerHTML = `<span class="ansi">${slot}</span><span class="shade">s${i} / TW${tw}</span><span class="hex">${hex}</span>`;
+    const twLabel = tw.startsWith('term-') ? tw : `TW${tw}`;
+    el.title = `color${slot}  ${hex}  (${name}-${i} / ${twLabel})`;
+    el.innerHTML = `<span class="ansi">${slot}</span><span class="shade">s${i} / ${twLabel}</span><span class="hex">${hex}</span>`;
     row.appendChild(el);
   });
 
