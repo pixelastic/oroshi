@@ -2,37 +2,32 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  export CURRENT="$OROSHI_ZSH_AUTOLOAD/icons/icons-load-definitions"
+  export CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/icons/icons-load-definitions"
 }
 
 teardown() {
   bats_cleanup
 }
 
-@test "sources icons.zsh when ICONS is empty" {
-  local iconsFile="$BATS_TMP_DIR/icons.zsh"
-  echo 'typeset -gA ICONS; ICONS[prompt]=">"' > "$iconsFile"
-
-  export OROSHI_ROOT="$BATS_TMP_DIR"
+@test "sources config from mock root" {
   mkdir -p "$BATS_TMP_DIR/tools/term/zsh/config/theming"
-  cp "$iconsFile" "$BATS_TMP_DIR/tools/term/zsh/config/theming/icons.zsh"
+  echo 'typeset -gA ICONS; ICONS[test-key]="test-val"' > "$BATS_TMP_DIR/tools/term/zsh/config/theming/icons.zsh"
 
-  bats_run_function icons-load-definitions
+  bats_mock_oroshi_root "$BATS_TMP_DIR"
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
 }
 
 @test "no-op when ICONS is already populated" {
-  typeset -gA ICONS
-  ICONS[prompt]=">"
-
-  local iconsFile="$BATS_TMP_DIR/icons.zsh"
-  echo 'ICONS[prompt]="OVERWRITTEN"' > "$iconsFile"
-
-  export OROSHI_ROOT="$BATS_TMP_DIR"
   mkdir -p "$BATS_TMP_DIR/tools/term/zsh/config/theming"
-  cp "$iconsFile" "$BATS_TMP_DIR/tools/term/zsh/config/theming/icons.zsh"
+  local markerFile="$BATS_TMP_DIR/sourced"
+  printf 'touch "%s"\n' "$markerFile" > "$BATS_TMP_DIR/tools/term/zsh/config/theming/icons.zsh"
 
-  bats_run_function icons-load-definitions
+  # Pre-populate ICONS in the subprocess so the function exits early
+  echo 'typeset -gA ICONS; ICONS[prompt]=">"' >> "$BATS_TMP_DIR/mock.zsh"
+
+  bats_mock_oroshi_root "$BATS_TMP_DIR"
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
-  [[ "${ICONS[prompt]}" == ">" ]]
+  [[ ! -f "$markerFile" ]]
 }

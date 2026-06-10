@@ -29,3 +29,7 @@
 - `path.bats` — inline script pattern for infra tests (category A)
 
 ## Discoveries
+
+### Issue 01 — bats_mock_oroshi_root
+- `bats-lint-disable noRunZsh` was the wrong disable syntax; `lint-custom-run` expects `# bats-lint disable=noRunZsh` (space + `disable=`). Four occurrences existed in the helper — fixed alongside the main change.
+- The direct `>>` write to `mock.zsh` for injecting zsh `typeset` code is the only viable approach; `bats_mock` uses `declare -f` which only serializes bash functions.

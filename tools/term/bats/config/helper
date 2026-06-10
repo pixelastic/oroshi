@@ -8,14 +8,6 @@ unset \
   GIT_OBJECT_DIRECTORY \
   GIT_WORK_TREE
 
-# Pin OROSHI_ROOT to the current repo root so zsh subprocesses resolve all
-# script chains to this worktree, not the global ~/.oroshi install.
-export OROSHI_ROOT="$(git rev-parse --show-toplevel)"
-# Re-derive ZSH_CONFIG_PATH and OROSHI_ZSH_AUTOLOAD from the pinned OROSHI_ROOT
-# so setup() assignments resolve to the worktree, not the system install.
-export ZSH_CONFIG_PATH="$OROSHI_ROOT/tools/term/zsh/config"
-export OROSHI_ZSH_AUTOLOAD="$ZSH_CONFIG_PATH/functions/autoload"
-
 # bats_tmp_dir
 # Creates an isolated sandbox for the current test, sets BATS_TMP_DIR.
 # Path: /tmp/oroshi/bats/<test-file>/<slug>
@@ -98,6 +90,17 @@ bats_mock() {
   unset -f "$@"
 }
 
+# bats_mock_oroshi_root <path>
+# Appends an OROSHI_ROOT export to $BATS_TMP_DIR/mock.zsh so subprocesses
+# launched by bats_run_zsh pick it up. Composes with bats_mock.
+# Auto-creates sandbox if needed.
+# Usage: bats_mock_oroshi_root "$BATS_TMP_DIR"
+bats_mock_oroshi_root() {
+  [[ "$1" == "" ]] && return 1
+  [[ "$BATS_TMP_DIR" == "" ]] && bats_tmp_dir
+  echo "export OROSHI_ROOT=\"$1\"" >> "$BATS_TMP_DIR/mock.zsh"
+}
+
 # bats_run_function <name> [args]
 # DEPRECATED: use bats_run_zsh with the full path to the autoload function instead.
 # Runs a zsh autoloaded function via zsh -c, injecting mocks from
@@ -109,7 +112,7 @@ bats_run_function() {
   shift
   local mockFile="$BATS_TMP_DIR/mock.zsh"
   local cmd="[[ -f '${mockFile}' ]] && source '${mockFile}'; ${func} \"\$@\""
-  # bats-lint-disable noRunZsh
+  # bats-lint disable=noRunZsh
   run zsh -c "$cmd" -- "$@"
 }
 
@@ -123,7 +126,7 @@ bats_run_script() {
   shift
   local mockFile="$BATS_TMP_DIR/mock.zsh"
   local cmd="[[ -f '${mockFile}' ]] && source '${mockFile}'; source '${script}'"
-  # bats-lint-disable noRunZsh
+  # bats-lint disable=noRunZsh
   run zsh -c "$cmd" -- "$@"
 }
 
@@ -152,14 +155,14 @@ bats_run_zsh() {
 
   # Script
   if [[ $isAutoloadedFunction == "0" ]]; then
-    # bats-lint-disable noRunZsh
+    # bats-lint disable=noRunZsh
     run zsh -c "[[ -f '${mockFile}' ]] && source '${mockFile}'; source '${absolutePath}' \"\$@\"" -- "$@"
     return
   fi
 
   # Autoloaded function
   local functionName="${absolutePath##*/}"
-  # bats-lint-disable noRunZsh
+  # bats-lint disable=noRunZsh
   run zsh -c "[[ -f '${mockFile}' ]] && source '${mockFile}'; ${functionName} \"\$@\"" -- "$@"
 }
 

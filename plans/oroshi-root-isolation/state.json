@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-bats-mock-oroshi-root.md",
-    "done": false,
+    "done": true,
+    "recap": "Added bats_mock_oroshi_root to helper, removed OROSHI_ROOT pin block, migrated icons-load-definitions.bats to bats_run_zsh + bats_mock_oroshi_root; also fixed pre-existing bats-lint disable comment syntax in 4 places.",
     "blocked_by": []
   },
   {
