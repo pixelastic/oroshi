@@ -36,7 +36,7 @@
   required = true
 
 [log]
-  graphColors = 135 # Graph lines (|, /)
+  graphColors = 136 # Graph lines (|, /)
 
 # Colors {{{
 [color]
@@ -44,89 +44,89 @@
 [color "advice"]
   hint = 45
 [color "blame"]
-  highlightRecent = 74
-  repeatedLines = 74
+  highlightRecent = 73
+  repeatedLines = 73
 [color "branch"]
-  current = 74
-  local = 74
-  plain = 74
-  remote = 74
-  reset = 74
-  upstream = 74
-  worktree = 74
+  current = 73
+  local = 73
+  plain = 73
+  remote = 73
+  reset = 73
+  upstream = 73
+  worktree = 73
 [color "decorate"]
   HEAD = 105 # HEAD ->
   branch = 105 # Branch name
   remoteBranch = 45 # Remote branches
-  stash = 133 # Stashes
+  stash = 132 # Stashes
   tag = 75 # Tags
 
-  grafted = 74
+  grafted = 73
 [color "diff"]
   plain = 205   # Default color
   context = 205 # Lines untouched
-  frag = {{terminal}}   # @@ -9,14 +9,15 @@
-  func = {{terminal}}   # Name of function into which code is changed
+  frag = 200   # @@ -9,14 +9,15 @@
+  func = 200   # Name of function into which code is changed
   meta = 45     # Diff header
   new = 35   # Lines added
-  old = 25 # Lines deleted
+  old = 24 # Lines deleted
   whitespace = 25 25             # Any diff whitespace
   commit = 225 # Also used as the default color for decorate, to display punctuation
 
-  contextBold = 74
-  contextDimmed = 74
-  newBold = 74
-  newDimmed = 74
-  newMoved = 74
-  newMovedAlternative = 74
-  newMovedAlternativeDimmed = 74
-  newMovedDimmed = 74
-  oldBold = 74
-  oldDimmed = 74
-  oldMoved = 74
-  oldMovedAlternative = 74
-  oldMovedAlternativeDimmed = 74
-  oldMovedDimmed = 74
+  contextBold = 73
+  contextDimmed = 73
+  newBold = 73
+  newDimmed = 73
+  newMoved = 73
+  newMovedAlternative = 73
+  newMovedAlternativeDimmed = 73
+  newMovedDimmed = 73
+  oldBold = 73
+  oldDimmed = 73
+  oldMoved = 73
+  oldMovedAlternative = 73
+  oldMovedAlternativeDimmed = 73
+  oldMovedDimmed = 73
 [color "diff-highlight"]
-	oldNormal = 25
-	oldHighlight = 25 bold 75
+	oldNormal = 24
+	oldHighlight = 24 bold 75
 	newNormal = 35
 	newHighlight = 35 bold 75
 [color "grep"]
-  column = 74
-  context = 74
-  filename = 74
-  function = 74
-  lineNumber = 74
-  match = 74
-  matchContext = 74
-  matchSelected = 74
-  selected = 74
-  separator = 74
+  column = 73
+  context = 73
+  filename = 73
+  function = 73
+  lineNumber = 73
+  match = 73
+  matchContext = 73
+  matchSelected = 73
+  selected = 73
+  separator = 73
 [color "interactive"]
-  error = 74
-  header = 74
-  help = 74
-  plain = 74
-  prompt = 74
-  reset = 74
+  error = 73
+  header = 73
+  help = 73
+  plain = 73
+  prompt = 73
+  reset = 73
 [color "push"]
-  error = 25
+  error = 24
 [color "remote"]
-  error = 74
-  hint = 74
-  success = 74
-  warning = 74
+  error = 73
+  hint = 73
+  success = 73
+  warning = 73
 [color "status"]
   header = 205                # Default text
   branch = 105             # Current branch
   added = 35               # File added to staging area
-  changed = 175          # Changed, but not staged
+  changed = 173          # Changed, but not staged
   untracked = 35           # New file
-  unmerged = 175         # Both added and modified at the same time
-  noBranch = 25                # Rebase in progress
+  unmerged = 173         # Both added and modified at the same time
+  noBranch = 24                # Rebase in progress
 
-  ; updated = 74      # Should stay commented
-  ; localBranch = 74
-  ; remoteBranch = 74
+  ; updated = 73      # Should stay commented
+  ; localBranch = 73
+  ; remoteBranch = 73
 # }}}

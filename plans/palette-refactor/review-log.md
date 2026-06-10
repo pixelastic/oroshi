@@ -52,3 +52,14 @@ color29  #742a2a
 ### Spec: "21 families × 10 shades = 210 palette entries"
 **Problem:** Spec says 210 entries; implementation and test use 200 (20 families).
 **Reason skipped:** Pre-existing spec typo — the slot table in the same spec lists exactly 20 families. Implementation is consistent with the slot table, not the summary count.
+
+## Issue 08 — colors-jsonc-alias-migration
+
+### Spec: "Written in `colors-build.bats`"
+```
+## Behavioral Tests
+
+Written in `tools/term/zsh/config/theming/__tests__/colors-build.bats`.
+```
+**Problem:** Spec says to write tests in `colors-build.bats`; implementation put them in a separate `colors-jsonc-aliases.bats`.
+**Reason skipped:** The existing `colors-build.bats` `setup()` exports `THEMING_ROOT` to a mock tmp path. Tests that use the real `colors.jsonc`/`colors.conf` need a different setup (real THEMING_ROOT + real OROSHI_ROOT). Putting them in the same file would either break existing tests or require per-test overrides that violate `feedback_bats_setup_vars.md`. A separate file with its own `setup()` is the cleanest solution.

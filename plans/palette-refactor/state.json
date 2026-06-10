@@ -50,7 +50,8 @@
   {
     "id": "08",
     "issue": "issues/08-colors-jsonc-alias-migration.md",
-    "done": false,
+    "done": true,
+    "recap": "Updated all alias targets in colors.jsonc to preserve visual continuity after palette renumbering: red→red-4 (14 aliases), red-8→red-7 (git-behind), red-4→red-3 (variable-type), orange/cyan/teal/violet/sky/amber N→N-1 shifts, link/git-remote-algolia blue-4→blue-3, *-light names removed, black/white entries added pointing to gray-0/gray-1.",
     "blocked_by": ["03", "07"]
   }
 ]

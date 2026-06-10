@@ -113,6 +113,12 @@ Replace the current 14-family irregular palette with a clean 21-family system us
 - Gray's special `twShades`/`anchorShades` fields are handled in the FAMILIES.forEach rendering loop — the `TW` prefix is conditionally omitted for `term-*` labels to avoid rendering "TWterm-black".
 - `review-diff dirty` includes pre-existing dist file changes (projects.json/zsh) from prior issues — Spec reviewer may flag their stale hex values; these are out of scope until colors-build runs.
 
+### Issue 08 — colors-jsonc-alias-migration
+
+- Alias migration tests that use the real `colors.jsonc`/`colors.conf` need their own bats file with a separate `setup()`. The existing `colors-build.bats` setup() sets `THEMING_ROOT` to a mock tmp path, which conflicts with tests that need the real theming dir.
+- `bats_mock_oroshi_root` appends to mock.zsh, so calling it twice in setup() + test body lets a test override the mock with the real path — but the clean pattern is a separate file where setup() sets the real paths directly.
+- When adding behavioral tests that depend on the real config files, use `bats_mock_oroshi_root "$REAL_OROSHI_ROOT"` in setup() (where REAL_OROSHI_ROOT is computed from `${CURRENT%/tools/term/zsh/config/theming/colors-build}`) alongside `export THEMING_ROOT="$REAL_THEMING_ROOT"`.
+
 ### Issue 01 — colors-conf-new-layout
 
 - `colors-build.bats` reads the REAL `colors.conf`, not its fixture: `.zshenv` overrides `OROSHI_ROOT` via `git rev-parse --show-toplevel` when `$PWD` is inside a worktree — fixture `OROSHI_ROOT` override in `setup()` has no effect on ZSH subprocesses. Keep test fixture values in sync with actual slot values in `colors.conf`.
