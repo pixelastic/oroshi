@@ -3,7 +3,7 @@
 set -e
 
 colors-load-definitions
-source $OROSHI_ROOT/tools/term/zsh/config/theming/icons.zsh
+icons-load-definitions
 
 local STATUS_SAVE_PATH="/tmp/oroshi/statusbar"
 mkdir -p $STATUS_SAVE_PATH

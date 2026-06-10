@@ -27,6 +27,7 @@ zsh-lint-custom() {
   source "${_zshLintRulesDir}/rule-missing-set-e.zsh"
   source "${_zshLintRulesDir}/rule-missing-err-return.zsh"
   source "${_zshLintRulesDir}/rule-command-too-long.zsh"
+  source "${_zshLintRulesDir}/rule-missing-icons-load.zsh"
 
   lint-custom-run \
     --disable-prefix 'zsh-lint' \
@@ -45,5 +46,6 @@ zsh-lint-custom() {
     zshLintRule_missingSetE \
     zshLintRule_missingErrReturn \
     zshLintRule_commandTooLong \
+    zshLintRule_missingIconsLoad \
     -- "$@"
 }

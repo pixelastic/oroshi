@@ -79,6 +79,11 @@ Add `colors-load-definitions` call before first color use if the file is a stand
 
 ## Discoveries
 
+### Issue 15 — icons-load-definitions migrate and lint
+
+- `(( lineNum++ ))` in a rule function causes `err_return` to trigger in `lint-custom-run` on the first iteration (post-increment evaluates to 0 = false). All other rules use `(( ++lineNum ))` (pre-increment). Always use pre-increment when iterating line numbers in rule functions.
+- The three "exceptions" listed in issue 15 (`icons-load-definitions`, `theming/icons.zsh`, `theming/index.zsh`) require no hardcoded logic: `icons-load-definitions` contains the loader call string itself (skipped by the content check); `theming/icons.zsh` never subscripts the array; `theming/index.zsh` can use `# zsh-lint disable=missingIconsLoad` if needed. Matches issue 17's "no hardcoded exceptions" design.
+
 _Agents append findings here after each issue._
 
 ### Issue 14 — NeoVim kebab color keys

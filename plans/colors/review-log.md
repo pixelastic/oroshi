@@ -105,6 +105,22 @@ jq -n '{ "namedColors": { "17": "orange" }, ... }'
 
 ---
 
+## Issue 15 — icons-load-definitions migrate and lint
+
+### Spec: exceptions not hardcoded in rule
+**Problem:** Issue 15 spec lists `icons-load-definitions`, `theming/icons.zsh`, `theming/index.zsh` as hardcoded exceptions.
+**Reason skipped:** Issue 17's design (the canonical spec for this rule) uses no hardcoded exceptions. `icons-load-definitions` itself contains the loader string so the content check skips it; `theming/icons.zsh` never subscripts the array; `theming/index.zsh` uses `# zsh-lint disable=missingIconsLoad` if needed.
+
+### Spec: rule named missingIconsLoad vs noIconsAccessWithoutLoader
+**Problem:** Issue 15 spec names the rule `noIconsAccessWithoutLoader`; implementation uses `missingIconsLoad`.
+**Reason skipped:** Acceptance criteria says "(or equivalent)". `missingIconsLoad` follows issue 17's canonical naming convention and is consistent with the rest of the `missing*Load` naming pattern.
+
+### Spec: regex potentially matches ${ICONS} without subscript
+**Problem:** Pattern `'\$\{(\([^)]*\))?ICONS\}?'` could match `${ICONS}` (no subscript) in addition to `${(k)ICONS}`.
+**Reason skipped:** `${ICONS}` expands the associative array — it IS a valid usage indicator. Pattern requires `\$\{` prefix so bare `$ICONS` is not matched. Over-triggering risk is negligible.
+
+---
+
 ### Spec: NeoVim trigger uses full `$OROSHI_ROOT` path
 ```lua
 executeCommand("$OROSHI_ROOT/tools/term/zsh/config/theming/colors-build")

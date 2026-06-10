@@ -4,7 +4,7 @@
 set -e
 
 colors-load-definitions
-source $OROSHI_ROOT/tools/term/zsh/config/theming/icons.zsh
+icons-load-definitions
 
 local memoryUsed="$(
   free -m |

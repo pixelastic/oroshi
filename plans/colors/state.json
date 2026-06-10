@@ -100,7 +100,8 @@
   {
     "id": "15",
     "issue": "issues/15-icons-load-definitions-migrate-and-lint.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced source icons.zsh with icons-load-definitions in statusbar-cpu/ram/ping; added missingIconsLoad zshlint rule (rule-missing-icons-load.zsh) registered in zsh-lint-custom.zsh.",
     "blocked_by": []
   },
   {
