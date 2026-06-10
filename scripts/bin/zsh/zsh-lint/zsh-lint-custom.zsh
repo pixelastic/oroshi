@@ -26,6 +26,7 @@ zsh-lint-custom() {
   source "${_zshLintRulesDir}/rule-no-arith-flag-test.zsh"
   source "${_zshLintRulesDir}/rule-missing-set-e.zsh"
   source "${_zshLintRulesDir}/rule-missing-err-return.zsh"
+  source "${_zshLintRulesDir}/rule-command-too-long.zsh"
 
   lint-custom-run \
     --disable-prefix 'zsh-lint' \
@@ -43,5 +44,6 @@ zsh-lint-custom() {
     zshLintRule_noArithFlagTest \
     zshLintRule_missingSetE \
     zshLintRule_missingErrReturn \
+    zshLintRule_commandTooLong \
     -- "$@"
 }

@@ -38,5 +38,6 @@ markAsAsked() {
   # Sort and uniq
   askedCommands=("${(@ou)askedCommands}")
   # Write it back
-  printf '%s\n' "${askedCommands[@]}" | json-set --input "$stateFile" '.preToolUse.Bash.askedCommands' --array
+  printf '%s\n' "${askedCommands[@]}" \
+    | json-set --input "$stateFile" '.preToolUse.Bash.askedCommands' --array
 }

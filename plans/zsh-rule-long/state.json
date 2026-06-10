@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-command-too-long-rule.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added zshLintRule_commandTooLong rule that flags lines > 100 chars with 5 exclusion patterns, plus bats tests and registration in zsh-lint-custom.zsh."
   }
 ]
