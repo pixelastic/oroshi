@@ -9,6 +9,7 @@
   "basename",
   "bats",
   "bats-lint",
+  "bats_load_library",
   "bats_load_library_path",
   "bat",
   "cat",
