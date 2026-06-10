@@ -102,35 +102,6 @@ bats_mock_oroshi_root() {
   echo "export OROSHI_ROOT=\"$1\"" >> "$BATS_TMP_DIR/mock.zsh"
 }
 
-# bats_run_function <name> [args]
-# DEPRECATED: use bats_run_zsh with the full path to the autoload function instead.
-# Runs a zsh autoloaded function via zsh -c, injecting mocks from
-# $BATS_TMP_DIR/mock.zsh before the call.
-# Usage: bats_run_function slugify "hello world"
-#        bats_run_function json-get '.key' <<< '{"key":"val"}'
-bats_run_function() {
-  local func="$1"
-  shift
-  local mockFile="$BATS_TMP_DIR/mock.zsh"
-  local cmd="[[ -f '${mockFile}' ]] && source '${mockFile}'; ${func} \"\$@\""
-  # bats-lint disable=noRunZsh
-  run zsh -c "$cmd" -- "$@"
-}
-
-# bats_run_script <path> [args]
-# DEPRECATED: use bats_run_zsh with the full path to the script instead.
-# Sources a zsh script via zsh -c, injecting mocks from $BATS_TMP_DIR/mock.zsh
-# before sourcing. Avoids a new PATH rebuild from .zshenv.
-# Usage: bats_run_script "$BATS_TMP_DIR/script.zsh"
-bats_run_script() {
-  local script="$1"
-  shift
-  local mockFile="$BATS_TMP_DIR/mock.zsh"
-  local cmd="[[ -f '${mockFile}' ]] && source '${mockFile}'; source '${script}'"
-  # bats-lint disable=noRunZsh
-  run zsh -c "$cmd" -- "$@"
-}
-
 # bats_run_zsh <path> [args]
 # Runs a zsh autoload function or script, detecting by path.
 # Paths under $OROSHI_ROOT/tools/term/zsh/config/functions/autoload/ are called by basename

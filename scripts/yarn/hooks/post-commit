@@ -5,7 +5,7 @@
 # $ post-commit   # called automatically by git
 set -e
 
-planDir="$(plan-directory 2>/dev/null)"
+local planDir="$(plan-directory)"
 # Not in a ralph worktree, nothing to do
 [[ "$planDir" == "" ]] && exit 0
 

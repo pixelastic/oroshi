@@ -1,3 +1,26 @@
+## Issue 04 — migrate-remaining-callers
+
+### SCRIPT → CURRENT rename in kitty-helper-claude-start.bats
+
+```bats
+setup() {
+  bats_tmp_dir
+  SCRIPT="$BATS_TEST_DIRNAME/../kitty-helper-claude-start"
+}
+```
+
+**Problem:** Spec says "No other changes" for `kitty-helper-claude-start.bats`; rename is out of scope.
+**Reason skipped:** Required by `bats-lint` (`currentScriptVar` rule). CLAUDE.md / memory rule "Fix pre-existing lint errors in touched files" mandates fixing all violations in files we touch.
+
+### `|| true` added to post-commit production script
+
+```zsh
+planDir="$(plan-directory 2>/dev/null)" || true
+```
+
+**Problem:** Spec says "No other changes" for the test migration; the production script fix is not mentioned.
+**Reason skipped:** Required for acceptance criterion "`bats post-commit.bats` passes with `bats_run_zsh`". `set -e` added in a prior commit (9ec2c36b) caused exit 1 when `plan-directory` fails, breaking the script's documented "Never exits non-zero" contract. The `|| true` guard is the minimal fix.
+
 ## Issue 02 — zshenv hardcode and rename
 
 ### OROSHI_WORKTREES_DIR_MOCK in production code

@@ -13,7 +13,7 @@ teardown() {
   plan-directory() { return 1; }
   bats_mock plan-directory
 
-  bats_run_script "$CURRENT"
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
 }
 
@@ -24,7 +24,7 @@ teardown() {
   plan-directory() { echo "$MOCK_PLAN_DIR"; }
   bats_mock plan-directory
 
-  bats_run_script "$CURRENT"
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ ! -f "$MOCK_PLAN_DIR/COMMIT_HINT.md" ]
 }
@@ -37,7 +37,7 @@ teardown() {
   plan-directory() { echo "$MOCK_PLAN_DIR"; }
   bats_mock plan-directory
 
-  bats_run_script "$CURRENT"
+  bats_run_zsh "$CURRENT"
   [ "$status" -eq 0 ]
   [ ! -f "$MOCK_PLAN_DIR/COMMIT_HINT.md" ]
 }

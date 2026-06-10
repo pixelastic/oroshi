@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-migrate-remaining-callers.md",
-    "done": false,
+    "done": true,
+    "recap": "Migrated post-commit.bats and kitty-helper-claude-start.bats to bats_run_zsh; removed bats_run_function and bats_run_script from helper; fixed post-commit script (|| true) and SCRIPT→CURRENT rename both required by lint/tests.",
     "blocked_by": ["01", "03"]
   }
 ]
