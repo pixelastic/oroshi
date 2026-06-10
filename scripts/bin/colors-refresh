@@ -1,11 +1,11 @@
 #!/usr/bin/env zsh
 # Refresh all colors by:
-# - Reloading kitty color config
+# - Reloading kitty color config from OROSHI_ROOT (works in worktrees)
 # - Rebuilding COLORS[] array
 set -e
 
-# Reload kitty config
-kitty-refresh
+# Reload kitty colors from the current OROSHI_ROOT (supports worktrees)
+kitty @ set-colors --all "$OROSHI_ROOT/tools/term/kitty/config/colors.conf"
 
 # Rebuild dist files
 $OROSHI_ROOT/tools/term/zsh/config/theming/colors-build
