@@ -1,17 +1,25 @@
 #!/usr/bin/env zsh
 # Display all defined colors in the terminal, to see them in all their glory
+# Usage:
+# $ colors
 set -e
 
-local output=""
+# Load the COLORS[] associative array
+source "$OROSHI_ROOT/tools/term/zsh/config/theming/dist/colors.zsh"
 
-local RESET="\e[0m"
-for colorName in ${=COLORS_INDEX}; do
-  local colorValue=${(P)${:-COLOR_${colorName}}}
-  local colorValueHexa=${(P)${:-COLOR_${colorName}_HEXA}}
-  output+="\e[48;5;${colorValue}m          $RESET\e[38;5;${colorValue}m$RESET ▮"
-  output+="\e[38;5;${colorValue}m  ${colorName}$RESET ▮"
-  output+="\e[38;5;${colorValue}m  ${colorValueHexa} $RESET ▮"
-  output+="\e[38;5;${colorValue}m  ${colorValue} $RESET ▮"
+RESET="\e[0m"
+
+local output=""
+# Iterate sorted keys, skip :hex entries (looked up per color below)
+for colorName in ${(ko)COLORS}; do
+  [[ "$colorName" == *:hex ]] && continue
+  local colorValue="${COLORS[$colorName]}"
+  local hexKey="${colorName}:hex"
+  local colorValueHex="${COLORS[$hexKey]}"
+  output+="\e[48;5;${colorValue}m          $RESET\e[38;5;${colorValue}m$RESET ▮"
+  output+="\e[38;5;${colorValue}m  ${colorName}$RESET ▮"
+  output+="\e[38;5;${colorValue}m  ${colorValueHex} $RESET ▮"
+  output+="\e[38;5;${colorValue}m  ${colorValue} $RESET ▮"
   output+="\e[38;5;${colorValue}m Lorem ipsum $RESET ▮"
   output+="\n"
 done
