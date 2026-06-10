@@ -3,13 +3,13 @@ bats_load_library 'helper'
 setup() {
   bats_tmp_dir
 
-  mkdir -p "${BATS_TMP_DIR}/theming/env"
+  mkdir -p "${BATS_TMP_DIR}/tools/term/zsh/config/theming/env"
   printf '%s\n' \
     'COLOR_RED=1; COLOR_YELLOW=3; COLOR_GREEN=2; COLOR_GRAY=8' \
     'COLOR_AMBER_9=214; COLOR_ALIAS_GIT_BRANCH=17; COLOR_ALIAS_PUNCTUATION=8' \
-    >"${BATS_TMP_DIR}/theming/env/colors.zsh"
+    >"${BATS_TMP_DIR}/tools/term/zsh/config/theming/env/colors.zsh"
 
-  export ZSH_CONFIG_PATH="${BATS_TMP_DIR}"
+  bats_mock_oroshi_root "${BATS_TMP_DIR}"
 
   context-badge() { echo "BADGE"; }
   bats_mock context-badge

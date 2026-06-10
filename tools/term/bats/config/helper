@@ -92,9 +92,9 @@ bats_mock() {
 }
 
 # bats_mock_oroshi_root <path>
-# Appends an OROSHI_ROOT export to $BATS_TMP_DIR/mock.zsh so subprocesses
-# launched by bats_run_zsh pick it up. Composes with bats_mock.
-# Auto-creates sandbox if needed.
+# Appends OROSHI_ROOT + derived ZSH_CONFIG_PATH/OROSHI_ZSH_AUTOLOAD exports to
+# $BATS_TMP_DIR/mock.zsh so subprocesses launched by bats_run_zsh pick them up.
+# Composes with bats_mock. Auto-creates sandbox if needed.
 # Usage: bats_mock_oroshi_root "$BATS_TMP_DIR"
 bats_mock_oroshi_root() {
   [[ "$1" == "" ]] && return 1

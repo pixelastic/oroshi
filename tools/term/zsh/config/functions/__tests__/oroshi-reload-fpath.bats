@@ -3,9 +3,10 @@ bats_load_library 'helper'
 setup() {
   bats_tmp_dir
   CURRENT="$BATS_TMP_DIR/caller.zsh"
+  export AUTOLOAD="$BATS_TMP_DIR/tools/term/zsh/config/functions/autoload"
   printf 'check "$@"\n' >"$CURRENT"
-  mkdir -p "$BATS_TMP_DIR/functions/autoload"
-  printf "source '%s/tools/term/zsh/config/functions/oroshi-reload-fpath.zsh'\nZSH_CONFIG_PATH='%s'\n" "$OROSHI_ROOT" "$BATS_TMP_DIR" > "$BATS_TMP_DIR/mock.zsh"
+  mkdir -p "$AUTOLOAD"
+  bats_mock_oroshi_root "$BATS_TMP_DIR"
 }
 
 teardown() {
@@ -15,7 +16,7 @@ teardown() {
 # --- Tracking ---
 
 @test "extension-less file is tracked in OROSHI_AUTOLOADED_FUNCTIONS" {
-  touch "$BATS_TMP_DIR/functions/autoload/my-func"
+  touch "$AUTOLOAD/my-func"
   check() {
     oroshi-reload-fpath
     echo "${OROSHI_AUTOLOADED_FUNCTIONS[$1]}"
@@ -27,7 +28,7 @@ teardown() {
 }
 
 @test "file with extension is not tracked" {
-  touch "$BATS_TMP_DIR/functions/autoload/my-func.zsh"
+  touch "$AUTOLOAD/my-func.zsh"
   check() {
     oroshi-reload-fpath
     echo "${#OROSHI_AUTOLOADED_FUNCTIONS}"
@@ -41,11 +42,11 @@ teardown() {
 # --- fpath ---
 
 @test "subdirectory is added to fpath" {
-  mkdir -p "$BATS_TMP_DIR/functions/autoload/mydir"
+  mkdir -p "$AUTOLOAD/mydir"
   # shellcheck disable=SC2154
   check() {
     oroshi-reload-fpath
-    [[ "${fpath[(r)$BATS_TMP_DIR/functions/autoload/mydir]}" == "$BATS_TMP_DIR/functions/autoload/mydir" ]] && echo "yes"
+    [[ "${fpath[(r)$AUTOLOAD/mydir]}" == "$AUTOLOAD/mydir" ]] && echo "yes"
   }
   bats_mock check
   bats_run_zsh "$CURRENT"
@@ -84,13 +85,13 @@ teardown() {
 
 @test "root arg: previously loaded fpath dirs are removed" {
   altRoot="$BATS_TMP_DIR/alt-root"
-  mkdir -p "$BATS_TMP_DIR/functions/autoload/main-dir"
+  mkdir -p "$AUTOLOAD/main-dir"
   mkdir -p "$altRoot/tools/term/zsh/config/functions/autoload"
   check() {
     oroshi-reload-fpath
     oroshi-reload-fpath "$1"
     local found=0
-    for dir in $fpath; do [[ "$dir" == "$BATS_TMP_DIR/functions/autoload"* ]] && found=1; done
+    for dir in $fpath; do [[ "$dir" == "$AUTOLOAD"* ]] && found=1; done
     echo "$found"
   }
   bats_mock check
@@ -102,7 +103,7 @@ teardown() {
 # --- no arg ---
 
 @test "no arg uses ZSH_CONFIG_PATH" {
-  touch "$BATS_TMP_DIR/functions/autoload/default-func"
+  touch "$AUTOLOAD/default-func"
   check() {
     oroshi-reload-fpath
     echo "${OROSHI_AUTOLOADED_FUNCTIONS[$1]}"
@@ -116,7 +117,7 @@ teardown() {
 # --- fpath cleanup ---
 
 @test "second call does not duplicate fpath entries" {
-  mkdir -p "$BATS_TMP_DIR/functions/autoload/mydir"
+  mkdir -p "$AUTOLOAD/mydir"
   check() {
     oroshi-reload-fpath
     oroshi-reload-fpath
@@ -168,7 +169,7 @@ teardown() {
 # --- Idempotency ---
 
 @test "second call exits 0" {
-  touch "$BATS_TMP_DIR/functions/autoload/my-func"
+  touch "$AUTOLOAD/my-func"
   check() {
     oroshi-reload-fpath
     oroshi-reload-fpath
@@ -179,7 +180,7 @@ teardown() {
 }
 
 @test "second call re-registers function" {
-  touch "$BATS_TMP_DIR/functions/autoload/my-func"
+  touch "$AUTOLOAD/my-func"
   check() {
     oroshi-reload-fpath
     oroshi-reload-fpath
