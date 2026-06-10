@@ -1,10 +1,5 @@
 ## SMALL
 
-Add a zsh-lint rule that prevents long method call on one line, but suggest
-splitting on several lines with \
-
-yarn-dependency-list doesn't display anything
-
 Also check the use of yarn-packager-colorize inside of pip-list. Probably not
 useful.
 
