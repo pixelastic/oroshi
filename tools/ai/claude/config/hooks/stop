@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Triggered whenever Claude finishes answering
+set -e
 
 # If sound specifically disabled, we stop
 [[ "${OROSHI_CLAUDE_STOP_SOUND}" == "no" ]] && exit 0

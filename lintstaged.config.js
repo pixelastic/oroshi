@@ -1,23 +1,22 @@
 export default {
-  // TEST+LINT: Binary zsh scripts
+  // ZSH scripts
   'scripts/bin/**/*': ['yarn run test:bats', 'yarn run lint:zsh'],
-  // TEST+LINT: Binary JS scripts
+  'tools/ai/claude/config/hooks/**/*': [
+    'yarn run test:bats',
+    'yarn run lint:zsh',
+  ],
+  'tools/term/zsh/config/**/*': ['yarn run test:bats'],
+  'tools/**/*': ['yarn run lint:zsh'],
+
+  // Bats test files
+  '{**/*.bats,tools/term/bats/config/*}': ['yarn run lint:bats'],
+
+  // JS Scripts
   'scripts/bin/**/*.js': [
     'yarn run lint:fix --js',
     'yarn run test --fail-fast --related',
   ],
-
-  // LINT: BATS test files and helpers
-  '{**/*.bats,tools/term/bats/config/*}': ['yarn run lint:bats'],
-
-  // LINT: yarn run * scripts
   'scripts/yarn/**/*': ['yarn run lint:zsh'],
-
-  // LINT: Install/Deploy scripts
-  'tools/**/*': ['yarn run lint:zsh'],
-
-  // TEST: Zsh autoloaded functions
-  'tools/term/zsh/config/**/*': ['yarn run test:bats'],
 
   // BUILD: projects.json and projects.zsh
   'tools/term/zsh/config/theming/src/projects.json': [
