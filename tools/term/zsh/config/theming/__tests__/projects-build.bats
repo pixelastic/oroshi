@@ -10,7 +10,7 @@ setup() {
 
   jq -n '{
     "green-8":   {"ansi": 78,  "hex": "#166534"},
-    "dark-green":{"ansi": 211, "hex": "#0f1a0f"},
+    "green-dark":{"ansi": 211, "hex": "#0f1a0f"},
     "gray-9":    {"ansi": 139, "hex": "#111827"},
     "green":     {"ansi": 2,   "hex": "#38a169"}
   }' >"$THEMING_ROOT/dist/colors.json"
@@ -18,7 +18,7 @@ setup() {
   # full: all fields, path with trailing slash, backgroundInactive from numeric suffix
   # hidden: hideNameInPrompt=true, no path
   # icononly: minimal, no background/foreground/path
-  # nosuffix: backgroundInactive from non-numeric suffix (green -> dark-green)
+  # nosuffix: backgroundInactive from non-numeric suffix (green -> green-dark)
   jo -d. \
     full.background=green-8 \
     full.foreground=gray-9 \
@@ -77,7 +77,7 @@ teardown() {
     "backgroundInactive": {
       "ansi": 211,
       "hex": "#0f1a0f",
-      "name": "dark-green"
+      "name": "green-dark"
     },
     "foreground": {
       "ansi": 139,
@@ -97,7 +97,7 @@ teardown() {
     "backgroundInactive": {
       "ansi": 211,
       "hex": "#0f1a0f",
-      "name": "dark-green"
+      "name": "green-dark"
     },
     "foreground": {
       "ansi": 139,
@@ -122,7 +122,7 @@ teardown() {
     "backgroundInactive": {
       "ansi": 211,
       "hex": "#0f1a0f",
-      "name": "dark-green"
+      "name": "green-dark"
     },
     "foreground": {
       "ansi": 139,
@@ -137,6 +137,26 @@ teardown() {
 EXPECTED
   )
   [ "$(cat "$THEMING_ROOT/dist/projects.json")" = "$expected" ]
+}
+
+@test "backgroundInactive name uses familyname-dark format" {
+  bats_run_zsh "$PROJECTS_BUILD"
+  run jq -r '.full.backgroundInactive.name' "$THEMING_ROOT/dist/projects.json"
+  [ "$output" = "green-dark" ]
+}
+
+@test "backgroundInactive name for project with orange background uses orange-dark" {
+  jq -n '{
+    "orange-6": {"ansi": 101, "hex": "#ea580c"},
+    "orange-dark":{"ansi": 100, "hex": "#1a0a00"}
+  }' >"$THEMING_ROOT/dist/colors.json"
+  jo -d. \
+    myproject.background=orange-6 \
+    myproject.icon=O \
+    >"$THEMING_ROOT/src/projects.json"
+  bats_run_zsh "$PROJECTS_BUILD"
+  run jq -r '.myproject.backgroundInactive.name' "$THEMING_ROOT/dist/projects.json"
+  [ "$output" = "orange-dark" ]
 }
 
 # --- ZSH ---
@@ -170,7 +190,7 @@ SCRIPT
   [ "${lines[0]}" = "green-8" ]
   [ "${lines[1]}" = "78" ]
   [ "${lines[2]}" = "#166534" ]
-  [ "${lines[3]}" = "dark-green" ]
+  [ "${lines[3]}" = "green-dark" ]
   [ "${lines[4]}" = "211" ]
   [ "${lines[5]}" = "#0f1a0f" ]
   [ "${lines[6]}" = "gray-9" ]

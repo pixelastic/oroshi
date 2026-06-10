@@ -29,7 +29,8 @@
   {
     "id": "05",
     "issue": "issues/05-projects-build-background-inactive.md",
-    "done": false,
+    "done": true,
+    "recap": "Updated projects-build jq expression to derive backgroundInactive name as familyname-dark (e.g. blue-dark) instead of dark-familyname (e.g. dark-blue); updated test fixtures and added two new behavioral tests.",
     "blocked_by": ["03"]
   },
   {
