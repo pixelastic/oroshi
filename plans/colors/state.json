@@ -86,7 +86,8 @@
   {
     "id": "13",
     "issue": "issues/13-zshlint-projects-load-definitions.md",
-    "done": false,
+    "done": true,
+    "recap": "Ran grill-me on 5 design questions (all resolved by COLORS/ICONS precedent); wrote issue 18 with full acceptance criteria for the missingProjectsLoad zshlint rule.",
     "blocked_by": []
   },
   {
@@ -112,5 +113,11 @@
     "issue": "issues/17-zshlint-rule-missing-icons-load.md",
     "done": false,
     "blocked_by": ["12", "15"]
+  },
+  {
+    "id": "18",
+    "issue": "issues/18-zshlint-rule-missing-projects-load.md",
+    "done": false,
+    "blocked_by": ["13"]
   }
 ]
