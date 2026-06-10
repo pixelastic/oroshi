@@ -72,7 +72,8 @@
   {
     "id": "11",
     "issue": "issues/11-zshlint-colors-load-definitions.md",
-    "done": false,
+    "done": true,
+    "recap": "Ran grill-me on 5 design questions; wrote issue 16 with full acceptance criteria for the missingColorsLoad zshlint rule.",
     "blocked_by": ["09"]
   },
   {
@@ -98,5 +99,11 @@
     "issue": "issues/15-icons-load-definitions-migrate-and-lint.md",
     "done": false,
     "blocked_by": []
+  },
+  {
+    "id": "16",
+    "issue": "issues/16-zshlint-rule-missing-colors-load.md",
+    "done": false,
+    "blocked_by": ["11"]
   }
 ]

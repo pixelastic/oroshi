@@ -12,19 +12,26 @@ setup() {
   bats_mock_oroshi_root "$BATS_TMP_DIR"
 
   # Minimal colors.conf:
-  # color17 → orange (namedColors[17])        — aliased by git-branch
-  # color87 → yellow-7 (range 80-89=yellow, last digit 7)
+  # color47  → yellow-7  (range 40-49=yellow, shade 7)
+  # color100 → orange-0  (range 100-109=orange, shade 0) — for dark alias test
+  # color105 → orange-5  (range 100-109=orange, shade 5) — aliased by git-branch
+  # color50  → blue-0    (range 50-59=blue, shade 0) — for dark alias test
+  # color55  → blue-5    (range 50-59=blue, shade 5)
+  # color200 → gray-0    (range 200-209=gray, shade 0)
+  # color205 → gray-5    (range 200-209=gray, shade 5)
   cat >"$BATS_TMP_DIR/tools/term/kitty/config/colors.conf" <<'CONF'
-color17  #dd6b20
-color87  #a16207
+color47   #975a16
+color100  #1a120f
+color105  #ea580c
+color50   #0e1529
+color55   #3182ce
+color200  #111318
+color205  #4b5563
 CONF
 
   cat >"$THEMING_ROOT/src/colors.jsonc" <<'JSONC'
 {
-  // fixture for colors-build tests
-  "namedColors": { "17": "orange" },
-  "palettes":    { "80-89": "yellow" },
-  "aliases":     { "git-branch": "orange" }
+  "git-branch": "orange"
 }
 JSONC
 }
@@ -55,7 +62,7 @@ source '${THEMING_ROOT}/dist/colors.zsh'
 echo \${COLORS[yellow-7]}
 SCRIPT
   bats_run_zsh "$script"
-  [ "${lines[0]}" = "87" ]
+  [ "${lines[0]}" = "47" ]
 }
 
 @test "dist/colors.zsh sets yellow-7 hex string" {
@@ -66,7 +73,7 @@ source '${THEMING_ROOT}/dist/colors.zsh'
 echo \${COLORS[yellow-7:hex]}
 SCRIPT
   bats_run_zsh "$script"
-  [ "${lines[0]}" = "#a16207" ]
+  [ "${lines[0]}" = "#975a16" ]
 }
 
 # --- JSON output ---
@@ -80,13 +87,72 @@ SCRIPT
 @test "dist/colors.json has yellow-7 with correct ansi" {
   bats_run_zsh "$CURRENT"
   run jq -r '."yellow-7".ansi' "$THEMING_ROOT/dist/colors.json"
-  [ "$output" = "87" ]
+  [ "$output" = "47" ]
 }
 
 @test "dist/colors.json has yellow-7 with correct hex" {
   bats_run_zsh "$CURRENT"
   run jq -r '."yellow-7".hex' "$THEMING_ROOT/dist/colors.json"
-  [ "$output" = "#a16207" ]
+  [ "$output" = "#975a16" ]
+}
+
+# --- Canonical alias auto-generation ---
+
+@test "canonical: COLORS[orange] ansi equals COLORS[orange-5] ansi" {
+  bats_run_zsh "$CURRENT"
+  local script="$BATS_TMP_DIR/verify.zsh"
+  cat >"$script" <<SCRIPT
+source '${THEMING_ROOT}/dist/colors.zsh'
+echo \${COLORS[orange]}
+SCRIPT
+  bats_run_zsh "$script"
+  [ "${lines[0]}" = "105" ]
+}
+
+@test "canonical: COLORS[orange:hex] equals COLORS[orange-5:hex]" {
+  bats_run_zsh "$CURRENT"
+  local script="$BATS_TMP_DIR/verify.zsh"
+  cat >"$script" <<SCRIPT
+source '${THEMING_ROOT}/dist/colors.zsh'
+echo \${COLORS[orange:hex]}
+SCRIPT
+  bats_run_zsh "$script"
+  [ "${lines[0]}" = "#ea580c" ]
+}
+
+@test "canonical: COLORS[gray] ansi equals COLORS[gray-5] ansi" {
+  bats_run_zsh "$CURRENT"
+  local script="$BATS_TMP_DIR/verify.zsh"
+  cat >"$script" <<SCRIPT
+source '${THEMING_ROOT}/dist/colors.zsh'
+echo \${COLORS[gray]}
+SCRIPT
+  bats_run_zsh "$script"
+  [ "${lines[0]}" = "205" ]
+}
+
+# --- Dark alias auto-generation ---
+
+@test "dark alias: COLORS[orange-dark] ansi equals COLORS[orange-0] ansi" {
+  bats_run_zsh "$CURRENT"
+  local script="$BATS_TMP_DIR/verify.zsh"
+  cat >"$script" <<SCRIPT
+source '${THEMING_ROOT}/dist/colors.zsh'
+echo \${COLORS[orange-dark]}
+SCRIPT
+  bats_run_zsh "$script"
+  [ "${lines[0]}" = "100" ]
+}
+
+@test "dark alias: COLORS[blue-dark] ansi equals COLORS[blue-0] ansi" {
+  bats_run_zsh "$CURRENT"
+  local script="$BATS_TMP_DIR/verify.zsh"
+  cat >"$script" <<SCRIPT
+source '${THEMING_ROOT}/dist/colors.zsh'
+echo \${COLORS[blue-dark]}
+SCRIPT
+  bats_run_zsh "$script"
+  [ "${lines[0]}" = "50" ]
 }
 
 # --- Aliases ---
@@ -99,7 +165,7 @@ source '${THEMING_ROOT}/dist/colors.zsh'
 echo \${COLORS[git-branch]}
 SCRIPT
   bats_run_zsh "$script"
-  [ "${lines[0]}" = "17" ]
+  [ "${lines[0]}" = "105" ]
 }
 
 @test "aliases: COLORS[git-branch:hex] resolves to ORANGE hex" {
@@ -110,7 +176,7 @@ source '${THEMING_ROOT}/dist/colors.zsh'
 echo \${COLORS[git-branch:hex]}
 SCRIPT
   bats_run_zsh "$script"
-  [ "${lines[0]}" = "#dd6b20" ]
+  [ "${lines[0]}" = "#ea580c" ]
 }
 
 @test "aliases: no alias-git-branch key in dist/colors.zsh" {
@@ -123,6 +189,37 @@ SCRIPT
   bats_run_zsh "$CURRENT"
   run jq 'has("alias-git-branch")' "$THEMING_ROOT/dist/colors.json"
   [ "$output" = "false" ]
+}
+
+# --- No legacy keys in output ---
+
+@test "dist/colors.json contains no keys prefixed with dark-" {
+  bats_run_zsh "$CURRENT"
+  run jq '[keys[] | select(startswith("dark-"))] | length' "$THEMING_ROOT/dist/colors.json"
+  [ "$output" = "0" ]
+}
+
+@test "dist/colors.json contains no entries for gap slots 16-19" {
+  bats_run_zsh "$CURRENT"
+  run jq '[to_entries[] | select(.value.ansi >= 16 and .value.ansi <= 19)] | length' "$THEMING_ROOT/dist/colors.json"
+  [ "$output" = "0" ]
+}
+
+# --- Coverage ---
+
+@test "dist/colors.json has 200 palette entries (20 families x 10 shades)" {
+  # Extend fixture to include all 20 families, all 10 shades each
+  local conf="$BATS_TMP_DIR/tools/term/kitty/config/colors.conf"
+  local familyStart shade slot
+  for familyStart in 20 30 40 50 60 70 80 90 100 110 120 130 140 150 160 170 200 210 220 230; do
+    for shade in 0 1 2 3 4 5 6 7 8 9; do
+      slot=$(( familyStart + shade ))
+      printf "color%-4s  #%06x\n" "$slot" "$(( familyStart * 1000 + shade ))" >>"$conf"
+    done
+  done
+  bats_run_zsh "$CURRENT"
+  run jq '[keys[] | select(test("-[0-9]$"))] | length' "$THEMING_ROOT/dist/colors.json"
+  [ "$output" = "200" ]
 }
 
 # --- Both outputs ---

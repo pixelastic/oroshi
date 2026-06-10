@@ -13,55 +13,62 @@ local distZsh="$distDir/colors.zsh"
 local distJson="$distDir/colors.json"
 local srcJson="$(jsonc2json "$srcJsonc")"
 
-# Named colors: ANSI index → color name (loaded from src/colors.jsonc) {{{
-typeset -A namedColors
-for line in ${(f)"$(jq -r '.namedColors | to_entries[] | "\(.key)\t\(.value)"' <<<"$srcJson")"}; do
-  local key="${line%%	*}"
-  local val="${line#*	}"
-  namedColors[$key]="$val"
+# Slot→family mapping: decade start → family name {{{
+local -A familyRanges=(
+   20 red    30 green   40 yellow  50 blue   60 purple  70 cyan
+   80 pink   90 lime   100 orange 110 indigo 120 fuchsia 130 teal
+  140 amber 150 emerald 160 sky   170 violet
+  200 gray  210 slate  220 neutral 230 stone
+)
+# }}}
+
+# Parse colors.conf → populate colorsByName (family-shade → slot/hex) {{{
+typeset -A colorsByName colorsByNameHexa
+
+local kittyColors="$(grep '^color' "$kittyConf")"
+for line in ${(f)kittyColors}; do
+  local split=(${=line})
+  local slot="${split[1]:5}"  # strip "color" prefix
+  local hex="$split[2]"
+
+  local familyStart=$(( slot - slot % 10 ))
+  local family="${familyRanges[$familyStart]}"
+  # Skip slots not in the family table (terminal 0-15, gap 16-19, free buffers)
+  [[ "$family" == "" ]] && continue
+
+  local shade=$(( slot % 10 ))
+  colorsByName[${family}-${shade}]="$slot"
+  colorsByNameHexa[${family}-${shade}]="$hex"
 done
 # }}}
-# Color palette ranges: ANSI index → color family name (expanded from src/colors.jsonc ranges) {{{
-typeset -A colorRanges
-for line in ${(f)"$(jq -r '.palettes | to_entries[] | "\(.key)\t\(.value)"' <<<"$srcJson")"}; do
-  local rangeSpec="${line%%	*}"
-  local colorName="${line#*	}"
-  local rangeStart="${rangeSpec%-*}"
-  local rangeEnd="${rangeSpec#*-}"
-  for (( i=rangeStart; i<=rangeEnd; i++ )); do
-    colorRanges[$i]="$colorName"
-  done
+
+# Auto-generate canonical (F → F-5) and dark (F-dark → F-0) aliases {{{
+local familyStart=""
+local family=""
+for familyStart family in "${(@kv)familyRanges}"; do
+  # Canonical: F → F-5
+  if [[ "${colorsByName[${family}-5]}" != "" ]]; then
+    colorsByName[$family]="${colorsByName[${family}-5]}"
+    colorsByNameHexa[$family]="${colorsByNameHexa[${family}-5]}"
+  fi
+  # Dark: F-dark → F-0
+  if [[ "${colorsByName[${family}-0]}" != "" ]]; then
+    colorsByName[${family}-dark]="${colorsByName[${family}-0]}"
+    colorsByNameHexa[${family}-dark]="${colorsByNameHexa[${family}-0]}"
+  fi
 done
 # }}}
-# Alias colors: alias name → raw color name (loaded from src/colors.jsonc) {{{
+
+# Load semantic aliases from colors.jsonc (flat key→value pairs) {{{
 typeset -A aliasColors
-for line in ${(f)"$(jq -r '.aliases | to_entries[] | "\(.key)\t\(.value)"' <<<"$srcJson")"}; do
+for line in ${(f)"$(jq -r 'to_entries[] | select(.value | type == "string") | "\(.key)\t\(.value)"' <<<"$srcJson")"}; do
   local key="${line%%	*}"
   local val="${line#*	}"
   aliasColors[$key]="$val"
 done
 # }}}
 
-# Parse colors.conf into colorsByName / colorsByNameHexa {{{
-typeset -A colorsByName colorsByNameHexa
-
-local kittyColors="$(grep '^color' "$kittyConf")"
-for line in ${(f)kittyColors}; do
-  local split=(${=line})
-  local colorTermValue="${split[1]:5}"  # strip "color" prefix
-  local colorHexValue="$split[2]"
-
-  local colorKey="${namedColors[$colorTermValue]}"
-  if [[ "$colorKey" == "" ]]; then
-    [[ "${colorRanges[$colorTermValue]}" == "" ]] && continue
-    colorKey="${colorRanges[$colorTermValue]}-${colorTermValue[-1]}"
-  fi
-
-  colorsByName[$colorKey]="$colorTermValue"
-  colorsByNameHexa[$colorKey]="$colorHexValue"
-done
-
-# Expand aliases into colorsByName/colorsByNameHexa
+# Two-pass alias resolution: resolve semantic aliases against the populated map {{{
 for aliasName rawName in "${(@kv)aliasColors}"; do
   [[ "${colorsByName[$rawName]}" == "" ]] && continue
   colorsByName[$aliasName]="${colorsByName[$rawName]}"

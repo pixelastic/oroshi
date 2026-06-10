@@ -81,6 +81,13 @@ Add `colors-load-definitions` call before first color use if the file is a stand
 
 _Agents append findings here after each issue._
 
+### Issue 11 — zshlint colors-load-definitions (design)
+
+- `colors-build` has `COLORS[` inside a jq heredoc string (not ZSH array access) — will produce a false positive; needs `# zsh-lint disable=missingColorsLoad` above that line.
+- `git-branch-color` and `colorize` both use `$COLORS[...]` but never call `colors-load-definitions` — they are currently unguarded and rely on the shell environment having been set up.
+- The `lint-custom-run` disable mechanism fires on the line **above** the reported violation line — rules reporting at line 1 cannot be disabled. Always report at the first trigger line, not line 1.
+- The rule has no file-type filtering — it applies to all files zshlint processes (no extension or shebang exclusion), same as every other zsh-lint rule. Files that legitimately don't need the call use `# zsh-lint disable=missingColorsLoad`..
+
 ### Issue 07 — zsh consumers: statusbar + misc
 
 - `$COLORS[${var:l}]` with an empty `var` expands to `$COLORS[]` — ZSH treats the empty subscript as a math expression and raises `bad math expression: empty string`. Guard with `${var:+$COLORS[${var:l}]}` so the lookup is skipped when `var` is empty.

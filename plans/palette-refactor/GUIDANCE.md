@@ -92,6 +92,22 @@ Replace the current 14-family irregular palette with a clean 21-family system us
 
 ## Discoveries
 
+### Grill-me session — palette correction decisions
+
+- **Red family uses TW v3** (not v1). Reason: TW v3 red-400 `#f87171` (variable-type) and red-800 `#991b1b` (git-behind) are beloved values absent from TW v1. Shift rule: old `RED_N` → new `red-(N-1)`. Old `RED` canonical `#ef4444` lives at `red-4`; new canonical `red-5` = `#dc2626`.
+- **Gray family is the full achromatic axis**: shade-0 = `#0c0f15` (terminal black, matches `color0`), shade-1 = `#ffffff` (terminal white, matches `color7`), shades 2-9 = TW-200→900. Canonical (shade-5) = `#6b7280` = old GRAY value. Aliases `black → gray-0`, `white → gray-1` added to `colors.jsonc`.
+- **Neutral families (slate, neutral, stone) keep standard convention**: shade-0 = near-black bg, shades 1-9 = TW-200→950. No white anchor. Gray is the exception.
+- **Teal canonical was TW-700** (slot 22 = `#0f766e`), not TW-600. Aliases using `"teal"` → `"teal-6"`.
+- **Violet canonical was TW-400** (slot 21 = `#a78bfa`), not TW-600. Aliases using `"violet"` → `"violet-3"`.
+- **Blue stays TW v1**: canonical `#3182ce` is beloved and exact. Δ30 on `link`/`git-remote-algolia` (blue-3) is acceptable.
+- **color-documentation.html is the spec first**: issues 07 and 08 implement what 06 documents.
+
+### Issue 03 — colors-build-new-algorithm
+
+- ZSH associative array subscript `arr["${var}"]` includes the literal double-quotes in the key name; use `arr[${var}]` (no inner quotes) to avoid corrupted keys.
+- `local var` (without assignment) in ZSH prints the current value if the variable is already set; always use `local var=""` to silently re-declare loop variables.
+- The spec says "21 families" but the slot table has 20 — confirmed typo; implementation and tests correctly use 20.
+
 ### Issue 01 — colors-conf-new-layout
 
 - `colors-build.bats` reads the REAL `colors.conf`, not its fixture: `.zshenv` overrides `OROSHI_ROOT` via `git rev-parse --show-toplevel` when `$PWD` is inside a worktree — fixture `OROSHI_ROOT` override in `setup()` has no effect on ZSH subprocesses. Keep test fixture values in sync with actual slot values in `colors.conf`.

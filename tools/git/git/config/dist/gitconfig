@@ -36,97 +36,97 @@
   required = true
 
 [log]
-  graphColors = 22 # Graph lines (|, /)
+  graphColors = 135 # Graph lines (|, /)
 
 # Colors {{{
 [color]
   ui = true
 [color "advice"]
-  hint = 3
+  hint = 45
 [color "blame"]
-  highlightRecent = 114
-  repeatedLines = 114
+  highlightRecent = 74
+  repeatedLines = 74
 [color "branch"]
-  current = 114
-  local = 114
-  plain = 114
-  remote = 114
-  reset = 114
-  upstream = 114
-  worktree = 114
+  current = 74
+  local = 74
+  plain = 74
+  remote = 74
+  reset = 74
+  upstream = 74
+  worktree = 74
 [color "decorate"]
-  HEAD = {{git-branch}} # HEAD ->
-  branch = {{git-branch}} # Branch name
-  remoteBranch = 3 # Remote branches
-  stash = {{git-stash}} # Stashes
-  tag = 6 # Tags
+  HEAD = 105 # HEAD ->
+  branch = 105 # Branch name
+  remoteBranch = 45 # Remote branches
+  stash = 133 # Stashes
+  tag = 75 # Tags
 
-  grafted = 114
+  grafted = 74
 [color "diff"]
-  plain = {{comment}}   # Default color
-  context = {{comment}} # Lines untouched
-  frag = 0   # @@ -9,14 +9,15 @@
-  func = 0   # Name of function into which code is changed
-  meta = 3     # Diff header
-  new = 2   # Lines added
-  old = 1 # Lines deleted
-  whitespace = 1 1             # Any diff whitespace
-  commit = 23 # Also used as the default color for decorate, to display punctuation
+  plain = 205   # Default color
+  context = 205 # Lines untouched
+  frag = {{terminal}}   # @@ -9,14 +9,15 @@
+  func = {{terminal}}   # Name of function into which code is changed
+  meta = 45     # Diff header
+  new = 35   # Lines added
+  old = 25 # Lines deleted
+  whitespace = 25 25             # Any diff whitespace
+  commit = 225 # Also used as the default color for decorate, to display punctuation
 
-  contextBold = 114
-  contextDimmed = 114
-  newBold = 114
-  newDimmed = 114
-  newMoved = 114
-  newMovedAlternative = 114
-  newMovedAlternativeDimmed = 114
-  newMovedDimmed = 114
-  oldBold = 114
-  oldDimmed = 114
-  oldMoved = 114
-  oldMovedAlternative = 114
-  oldMovedAlternativeDimmed = 114
-  oldMovedDimmed = 114
+  contextBold = 74
+  contextDimmed = 74
+  newBold = 74
+  newDimmed = 74
+  newMoved = 74
+  newMovedAlternative = 74
+  newMovedAlternativeDimmed = 74
+  newMovedDimmed = 74
+  oldBold = 74
+  oldDimmed = 74
+  oldMoved = 74
+  oldMovedAlternative = 74
+  oldMovedAlternativeDimmed = 74
+  oldMovedDimmed = 74
 [color "diff-highlight"]
-	oldNormal = 1
-	oldHighlight = 1 bold 6
-	newNormal = 2
-	newHighlight = 2 bold 6
+	oldNormal = 25
+	oldHighlight = 25 bold 75
+	newNormal = 35
+	newHighlight = 35 bold 75
 [color "grep"]
-  column = 114
-  context = 114
-  filename = 114
-  function = 114
-  lineNumber = 114
-  match = 114
-  matchContext = 114
-  matchSelected = 114
-  selected = 114
-  separator = 114
+  column = 74
+  context = 74
+  filename = 74
+  function = 74
+  lineNumber = 74
+  match = 74
+  matchContext = 74
+  matchSelected = 74
+  selected = 74
+  separator = 74
 [color "interactive"]
-  error = 114
-  header = 114
-  help = 114
-  plain = 114
-  prompt = 114
-  reset = 114
+  error = 74
+  header = 74
+  help = 74
+  plain = 74
+  prompt = 74
+  reset = 74
 [color "push"]
-  error = 1
+  error = 25
 [color "remote"]
-  error = 114
-  hint = 114
-  success = 114
-  warning = 114
+  error = 74
+  hint = 74
+  success = 74
+  warning = 74
 [color "status"]
-  header = {{comment}}                # Default text
-  branch = {{git-branch}}             # Current branch
-  added = 2               # File added to staging area
-  changed = 21          # Changed, but not staged
-  untracked = 2           # New file
-  unmerged = 21         # Both added and modified at the same time
-  noBranch = 1                # Rebase in progress
+  header = 205                # Default text
+  branch = 105             # Current branch
+  added = 35               # File added to staging area
+  changed = 175          # Changed, but not staged
+  untracked = 35           # New file
+  unmerged = 175         # Both added and modified at the same time
+  noBranch = 25                # Rebase in progress
 
-  ; updated = 114      # Should stay commented
-  ; localBranch = 114
-  ; remoteBranch = 114
+  ; updated = 74      # Should stay commented
+  ; localBranch = 74
+  ; remoteBranch = 74
 # }}}

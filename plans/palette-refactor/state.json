@@ -16,19 +16,38 @@
   {
     "id": "03",
     "issue": "issues/03-colors-build-new-algorithm.md",
-    "done": false,
+    "done": true,
+    "recap": "Rewrote colors-build with hardcoded slot→family table, auto-generated canonical (F→F-5) and dark (F-dark→F-0) aliases, two-pass flat alias resolution; stripped namedColors/palettes/aliases wrapper from colors.jsonc.",
     "blocked_by": ["01"]
   },
   {
     "id": "04",
     "issue": "issues/04-colors-jsonc-nested-aliases.md",
     "done": false,
-    "blocked_by": ["03"]
+    "blocked_by": ["03", "08"]
   },
   {
     "id": "05",
     "issue": "issues/05-projects-build-background-inactive.md",
     "done": false,
     "blocked_by": ["03"]
+  },
+  {
+    "id": "06",
+    "issue": "issues/06-color-documentation-palette-decisions.md",
+    "done": false,
+    "blocked_by": ["02"]
+  },
+  {
+    "id": "07",
+    "issue": "issues/07-colors-conf-palette-corrections.md",
+    "done": false,
+    "blocked_by": ["06"]
+  },
+  {
+    "id": "08",
+    "issue": "issues/08-colors-jsonc-alias-migration.md",
+    "done": false,
+    "blocked_by": ["03", "07"]
   }
 ]

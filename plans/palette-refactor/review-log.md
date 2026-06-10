@@ -36,3 +36,19 @@ color29  #742a2a
 ### Spec: "All 21 palette families"
 **Problem:** Spec says 21 families; the HTML (and colors.conf) has 20 named families.
 **Reason skipped:** Pre-existing discrepancy in the spec wording. Actual slot layout has 20 families (6 primary + 6 secondary + 4 bonus + 4 neutral). The "21" appears to be a spec typo.
+
+## Issue 03 — colors-build-new-algorithm
+
+### Spec: "no key matching ANSI slots 16-31"
+```bats
+@test "dist/colors.json contains no entries for gap slots 16-19" {
+  run jq '[to_entries[] | select(.value.ansi >= 16 and .value.ansi <= 19)] | length' ...
+  [ "$output" = "0" ]
+}
+```
+**Problem:** Spec says "slots 16-31" but test only checks 16-19.
+**Reason skipped:** GUIDANCE Discovery #01 explicitly corrects the spec wording: "correct intent is slots 16-19 only — new red family starts at slot 20." Slots 20-31 are valid palette entries (red-0 through red-1).
+
+### Spec: "21 families × 10 shades = 210 palette entries"
+**Problem:** Spec says 210 entries; implementation and test use 200 (20 families).
+**Reason skipped:** Pre-existing spec typo — the slot table in the same spec lists exactly 20 families. Implementation is consistent with the slot table, not the summary count.

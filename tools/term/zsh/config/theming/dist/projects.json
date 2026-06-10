@@ -1,18 +1,13 @@
 {
   "aberlaas": {
     "background": {
-      "ansi": 87,
-      "hex": "#9d174d",
+      "ansi": 47,
+      "hex": "#975a16",
       "name": "yellow-7"
     },
-    "backgroundInactive": {
-      "ansi": 212,
-      "hex": "#cbd5e1",
-      "name": "dark-yellow"
-    },
     "foreground": {
-      "ansi": 139,
-      "hex": "#042f2e",
+      "ansi": 209,
+      "hex": "#030712",
       "name": "gray-9"
     },
     "hideNameInPrompt": false,
@@ -21,18 +16,13 @@
   },
   "algolia": {
     "background": {
-      "ansi": 97,
-      "hex": "#3f6212",
+      "ansi": 57,
+      "hex": "#2c5282",
       "name": "blue-7"
     },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
     "foreground": {
-      "ansi": 132,
-      "hex": "#5eead4",
+      "ansi": 202,
+      "hex": "#d1d5db",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -41,18 +31,13 @@
   },
   "algolia-indexing": {
     "background": {
-      "ansi": 97,
-      "hex": "#3f6212",
+      "ansi": 57,
+      "hex": "#2c5282",
       "name": "blue-7"
     },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
     "foreground": {
-      "ansi": 132,
-      "hex": "#5eead4",
+      "ansi": 202,
+      "hex": "#d1d5db",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -60,9 +45,14 @@
     "path": "~/local/www/projects/algolia-indexing"
   },
   "alme": {
+    "background": {
+      "ansi": 88,
+      "hex": "#831843",
+      "name": "pink-8"
+    },
     "foreground": {
-      "ansi": 133,
-      "hex": "#2dd4bf",
+      "ansi": 203,
+      "hex": "#9ca3af",
       "name": "gray-3"
     },
     "hideNameInPrompt": false,
@@ -71,18 +61,13 @@
   },
   "aoinan": {
     "background": {
-      "ansi": 148,
-      "hex": "#78350f",
+      "ansi": 108,
+      "hex": "#7c2d12",
       "name": "orange-8"
     },
-    "backgroundInactive": {
-      "ansi": 220,
-      "hex": "#151515",
-      "name": "dark-orange"
-    },
     "foreground": {
-      "ansi": 133,
-      "hex": "#2dd4bf",
+      "ansi": 203,
+      "hex": "#9ca3af",
       "name": "gray-3"
     },
     "hideNameInPrompt": false,
@@ -90,15 +75,10 @@
     "path": "~/local/www/projects/aoinan"
   },
   "api-cloudflare": {
-    "backgroundInactive": {
-      "ansi": 220,
-      "hex": "#151515",
-      "name": "dark-orange"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
+    "background": {
+      "ansi": 105,
+      "hex": "#ea580c",
+      "name": "orange"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
@@ -106,43 +86,33 @@
   },
   "api-fly": {
     "background": {
-      "ansi": 5,
+      "ansi": 65,
       "hex": "#805ad5",
       "name": "purple"
-    },
-    "backgroundInactive": {
-      "ansi": 214,
-      "hex": "#64748b",
-      "name": "dark-purple"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/api.pixelastic.com/fly"
   },
   "api-netlify": {
-    "backgroundInactive": {
-      "ansi": 225,
-      "hex": "#525252",
-      "name": "dark-teal"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
+    "background": {
+      "ansi": 136,
+      "hex": "#0f766e",
+      "name": "teal-6"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/api.pixelastic.com/netlify"
   },
   "armory": {
+    "background": {
+      "ansi": 205,
+      "hex": "#4b5563",
+      "name": "gray"
+    },
     "foreground": {
-      "ansi": 85,
-      "hex": "#db2777",
+      "ansi": 45,
+      "hex": "#d69e2e",
       "name": "yellow-5"
     },
     "hideNameInPrompt": false,
@@ -150,15 +120,10 @@
     "path": "~/local/www/pixelastic.com/gamemaster/armory"
   },
   "bg": {
-    "backgroundInactive": {
-      "ansi": 220,
-      "hex": "#151515",
-      "name": "dark-orange"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
+    "background": {
+      "ansi": 105,
+      "hex": "#ea580c",
+      "name": "orange"
     },
     "hideNameInPrompt": false,
     "icon": "󰀿 ",
@@ -166,39 +131,39 @@
   },
   "blog": {
     "background": {
-      "ansi": 2,
+      "ansi": 35,
       "hex": "#38a169",
       "name": "green"
-    },
-    "backgroundInactive": {
-      "ansi": 211,
-      "hex": "#e2e8f0",
-      "name": "dark-green"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/blog.pixelastic.com"
   },
   "bodwynn": {
-    "backgroundInactive": {
-      "ansi": 224,
-      "hex": "#737373",
-      "name": "dark-violet"
+    "background": {
+      "ansi": 173,
+      "hex": "#a78bfa",
+      "name": "violet-3"
+    },
+    "foreground": {
+      "ansi": 178,
+      "hex": "#4c1d95",
+      "name": "violet-8"
     },
     "hideNameInPrompt": false,
     "icon": "󰇈 ",
     "path": "~/local/www/algolia/bodwynn"
   },
   "bodwynn-data": {
-    "backgroundInactive": {
-      "ansi": 224,
-      "hex": "#737373",
-      "name": "dark-violet"
+    "background": {
+      "ansi": 174,
+      "hex": "#8b5cf6",
+      "name": "violet-4"
+    },
+    "foreground": {
+      "ansi": 178,
+      "hex": "#4c1d95",
+      "name": "violet-8"
     },
     "hideNameInPrompt": false,
     "icon": "󰇈  ",
@@ -211,13 +176,13 @@
   },
   "brefsearch": {
     "background": {
-      "ansi": 138,
-      "hex": "#134e4a",
+      "ansi": 208,
+      "hex": "#111827",
       "name": "gray-8"
     },
     "foreground": {
-      "ansi": 133,
-      "hex": "#2dd4bf",
+      "ansi": 203,
+      "hex": "#9ca3af",
       "name": "gray-3"
     },
     "hideNameInPrompt": false,
@@ -226,13 +191,13 @@
   },
   "brefsearch-data": {
     "background": {
-      "ansi": 138,
-      "hex": "#134e4a",
+      "ansi": 208,
+      "hex": "#111827",
       "name": "gray-8"
     },
     "foreground": {
-      "ansi": 133,
-      "hex": "#2dd4bf",
+      "ansi": 203,
+      "hex": "#9ca3af",
       "name": "gray-3"
     },
     "hideNameInPrompt": false,
@@ -241,13 +206,13 @@
   },
   "brefsearch-media": {
     "background": {
-      "ansi": 138,
-      "hex": "#134e4a",
+      "ansi": 208,
+      "hex": "#111827",
       "name": "gray-8"
     },
     "foreground": {
-      "ansi": 133,
-      "hex": "#2dd4bf",
+      "ansi": 203,
+      "hex": "#9ca3af",
       "name": "gray-3"
     },
     "hideNameInPrompt": false,
@@ -255,14 +220,14 @@
     "path": "~/local/www/algolia/brefsearch/brefsearch-media"
   },
   "callirhoe": {
-    "backgroundInactive": {
-      "ansi": 225,
-      "hex": "#525252",
-      "name": "dark-teal"
+    "background": {
+      "ansi": 139,
+      "hex": "#042f2e",
+      "name": "teal-9"
     },
     "foreground": {
-      "ansi": 132,
-      "hex": "#5eead4",
+      "ansi": 202,
+      "hex": "#d1d5db",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -271,18 +236,13 @@
   },
   "claude": {
     "background": {
-      "ansi": 167,
-      "hex": "#075985",
+      "ansi": 147,
+      "hex": "#92400e",
       "name": "amber-7"
     },
-    "backgroundInactive": {
-      "ansi": 222,
-      "hex": "#d4d4d4",
-      "name": "dark-amber"
-    },
     "foreground": {
-      "ansi": 132,
-      "hex": "#5eead4",
+      "ansi": 202,
+      "hex": "#d1d5db",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -296,18 +256,13 @@
   },
   "commitology": {
     "background": {
-      "ansi": 96,
-      "hex": "#4d7c0f",
+      "ansi": 56,
+      "hex": "#2b6cb0",
       "name": "blue-6"
     },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
     "foreground": {
-      "ansi": 90,
-      "hex": "#141a0c",
+      "ansi": 50,
+      "hex": "#0e1529",
       "name": "blue-0"
     },
     "hideNameInPrompt": false,
@@ -316,18 +271,13 @@
   },
   "commitology-data": {
     "background": {
-      "ansi": 99,
-      "hex": "#1a2e05",
+      "ansi": 59,
+      "hex": "#2a4365",
       "name": "blue-9"
     },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
     "foreground": {
-      "ansi": 90,
-      "hex": "#141a0c",
+      "ansi": 50,
+      "hex": "#0e1529",
       "name": "blue-0"
     },
     "hideNameInPrompt": false,
@@ -335,14 +285,9 @@
     "path": "~/local/www/algolia/commitology-data"
   },
   "contentsquare": {
-    "background": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "foreground": {
-      "ansi": 98,
-      "hex": "#365314",
+      "ansi": 58,
+      "hex": "#2a4365",
       "name": "blue-8"
     },
     "hideNameInPrompt": false,
@@ -351,24 +296,24 @@
   },
   "crafting": {
     "background": {
-      "ansi": 89,
-      "hex": "#500724",
+      "ansi": 49,
+      "hex": "#744210",
       "name": "yellow-9"
-    },
-    "backgroundInactive": {
-      "ansi": 212,
-      "hex": "#cbd5e1",
-      "name": "dark-yellow"
     },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": ""
   },
   "crsearch": {
-    "backgroundInactive": {
-      "ansi": 224,
-      "hex": "#737373",
-      "name": "dark-violet"
+    "background": {
+      "ansi": 178,
+      "hex": "#4c1d95",
+      "name": "violet-8"
+    },
+    "foreground": {
+      "ansi": 171,
+      "hex": "#ddd6fe",
+      "name": "violet-1"
     },
     "hideNameInPrompt": false,
     "icon": " ",
@@ -376,18 +321,13 @@
   },
   "crsearch-data": {
     "background": {
-      "ansi": 109,
-      "hex": "#431407",
+      "ansi": 69,
+      "hex": "#44337a",
       "name": "purple-9"
     },
-    "backgroundInactive": {
-      "ansi": 214,
-      "hex": "#64748b",
-      "name": "dark-purple"
-    },
     "foreground": {
-      "ansi": 101,
-      "hex": "#fed7aa",
+      "ansi": 61,
+      "hex": "#e9d8fd",
       "name": "purple-1"
     },
     "hideNameInPrompt": false,
@@ -396,18 +336,13 @@
   },
   "crsearch-media": {
     "background": {
-      "ansi": 108,
-      "hex": "#7c2d12",
+      "ansi": 68,
+      "hex": "#44337a",
       "name": "purple-8"
     },
-    "backgroundInactive": {
-      "ansi": 214,
-      "hex": "#64748b",
-      "name": "dark-purple"
-    },
     "foreground": {
-      "ansi": 101,
-      "hex": "#fed7aa",
+      "ansi": 61,
+      "hex": "#e9d8fd",
       "name": "purple-1"
     },
     "hideNameInPrompt": false,
@@ -415,14 +350,14 @@
     "path": "~/local/www/algolia/crsearch/crsearch-media"
   },
   "devrel": {
-    "backgroundInactive": {
-      "ansi": 225,
-      "hex": "#525252",
-      "name": "dark-teal"
+    "background": {
+      "ansi": 136,
+      "hex": "#0f766e",
+      "name": "teal-6"
     },
     "foreground": {
-      "ansi": 133,
-      "hex": "#2dd4bf",
+      "ansi": 203,
+      "hex": "#9ca3af",
       "name": "gray-3"
     },
     "hideNameInPrompt": false,
@@ -436,19 +371,9 @@
   },
   "dungeons": {
     "background": {
-      "ansi": 87,
-      "hex": "#9d174d",
+      "ansi": 47,
+      "hex": "#975a16",
       "name": "yellow-7"
-    },
-    "backgroundInactive": {
-      "ansi": 212,
-      "hex": "#cbd5e1",
-      "name": "dark-yellow"
-    },
-    "foreground": {
-      "ansi": 0,
-      "hex": "#0c0f15",
-      "name": "black"
     },
     "hideNameInPrompt": false,
     "icon": " ",
@@ -456,19 +381,9 @@
   },
   "dungeons-pages": {
     "background": {
-      "ansi": 86,
-      "hex": "#be185d",
+      "ansi": 46,
+      "hex": "#b7791f",
       "name": "yellow-6"
-    },
-    "backgroundInactive": {
-      "ansi": 212,
-      "hex": "#cbd5e1",
-      "name": "dark-yellow"
-    },
-    "foreground": {
-      "ansi": 0,
-      "hex": "#0c0f15",
-      "name": "black"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
@@ -476,19 +391,9 @@
   },
   "dungeons-pictures": {
     "background": {
-      "ansi": 85,
-      "hex": "#db2777",
+      "ansi": 45,
+      "hex": "#d69e2e",
       "name": "yellow-5"
-    },
-    "backgroundInactive": {
-      "ansi": 212,
-      "hex": "#cbd5e1",
-      "name": "dark-yellow"
-    },
-    "foreground": {
-      "ansi": 0,
-      "hex": "#0c0f15",
-      "name": "black"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
@@ -496,18 +401,13 @@
   },
   "ensureUrlTrailingSlash": {
     "background": {
-      "ansi": 99,
-      "hex": "#1a2e05",
+      "ansi": 59,
+      "hex": "#2a4365",
       "name": "blue-9"
     },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
     "foreground": {
-      "ansi": 132,
-      "hex": "#5eead4",
+      "ansi": 202,
+      "hex": "#d1d5db",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -516,19 +416,9 @@
   },
   "esmify": {
     "background": {
-      "ansi": 3,
+      "ansi": 45,
       "hex": "#d69e2e",
       "name": "yellow"
-    },
-    "backgroundInactive": {
-      "ansi": 212,
-      "hex": "#cbd5e1",
-      "name": "dark-yellow"
-    },
-    "foreground": {
-      "ansi": 0,
-      "hex": "#0c0f15",
-      "name": "black"
     },
     "hideNameInPrompt": false,
     "icon": " ",
@@ -536,18 +426,13 @@
   },
   "firost": {
     "background": {
-      "ansi": 2,
+      "ansi": 35,
       "hex": "#38a169",
       "name": "green"
     },
-    "backgroundInactive": {
-      "ansi": 211,
-      "hex": "#e2e8f0",
-      "name": "dark-green"
-    },
     "foreground": {
-      "ansi": 132,
-      "hex": "#5eead4",
+      "ansi": 202,
+      "hex": "#d1d5db",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -556,19 +441,9 @@
   },
   "gamemaster": {
     "background": {
-      "ansi": 108,
-      "hex": "#7c2d12",
+      "ansi": 68,
+      "hex": "#44337a",
       "name": "purple-8"
-    },
-    "backgroundInactive": {
-      "ansi": 214,
-      "hex": "#64748b",
-      "name": "dark-purple"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
@@ -576,19 +451,9 @@
   },
   "gdrive": {
     "background": {
-      "ansi": 3,
+      "ansi": 45,
       "hex": "#d69e2e",
       "name": "yellow"
-    },
-    "backgroundInactive": {
-      "ansi": 212,
-      "hex": "#cbd5e1",
-      "name": "dark-yellow"
-    },
-    "foreground": {
-      "ansi": 212,
-      "hex": "#cbd5e1",
-      "name": "dark-yellow"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
@@ -596,18 +461,13 @@
   },
   "gilmore": {
     "background": {
-      "ansi": 107,
-      "hex": "#9a3412",
+      "ansi": 67,
+      "hex": "#553c9a",
       "name": "purple-7"
     },
-    "backgroundInactive": {
-      "ansi": 214,
-      "hex": "#64748b",
-      "name": "dark-purple"
-    },
     "foreground": {
-      "ansi": 81,
-      "hex": "#fbcfe8",
+      "ansi": 41,
+      "hex": "#fefcbf",
       "name": "yellow-1"
     },
     "hideNameInPrompt": false,
@@ -616,12 +476,12 @@
   },
   "gitinx": {
     "background": {
-      "ansi": 133,
-      "hex": "#2dd4bf",
+      "ansi": 203,
+      "hex": "#9ca3af",
       "name": "gray-3"
     },
     "foreground": {
-      "ansi": 4,
+      "ansi": 55,
       "hex": "#3182ce",
       "name": "blue"
     },
@@ -630,14 +490,14 @@
     "path": "~/local/www/projects/gitinx"
   },
   "golgoth": {
-    "backgroundInactive": {
-      "ansi": 220,
-      "hex": "#151515",
-      "name": "dark-orange"
+    "background": {
+      "ansi": 105,
+      "hex": "#ea580c",
+      "name": "orange"
     },
     "foreground": {
-      "ansi": 141,
-      "hex": "#fde68a",
+      "ansi": 101,
+      "hex": "#fed7aa",
       "name": "orange-1"
     },
     "hideNameInPrompt": false,
@@ -646,18 +506,13 @@
   },
   "grimoire": {
     "background": {
-      "ansi": 169,
-      "hex": "#082f49",
+      "ansi": 149,
+      "hex": "#451a03",
       "name": "amber-9"
     },
-    "backgroundInactive": {
-      "ansi": 222,
-      "hex": "#d4d4d4",
-      "name": "dark-amber"
-    },
     "foreground": {
-      "ansi": 164,
-      "hex": "#0ea5e9",
+      "ansi": 144,
+      "hex": "#f59e0b",
       "name": "amber-4"
     },
     "hideNameInPrompt": false,
@@ -666,19 +521,9 @@
   },
   "home": {
     "background": {
-      "ansi": 2,
+      "ansi": 35,
       "hex": "#38a169",
       "name": "green"
-    },
-    "backgroundInactive": {
-      "ansi": 211,
-      "hex": "#e2e8f0",
-      "name": "dark-green"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": true,
     "icon": "",
@@ -686,18 +531,13 @@
   },
   "hylea": {
     "background": {
-      "ansi": 79,
-      "hex": "#083344",
+      "ansi": 39,
+      "hex": "#22543d",
       "name": "green-9"
     },
-    "backgroundInactive": {
-      "ansi": 211,
-      "hex": "#e2e8f0",
-      "name": "dark-green"
-    },
     "foreground": {
-      "ansi": 71,
-      "hex": "#a5f3fc",
+      "ansi": 31,
+      "hex": "#c6f6d5",
       "name": "green-1"
     },
     "hideNameInPrompt": false,
@@ -705,9 +545,14 @@
     "path": "~/local/mount/hylea"
   },
   "imoen": {
+    "background": {
+      "ansi": 89,
+      "hex": "#500724",
+      "name": "pink-9"
+    },
     "foreground": {
-      "ansi": 132,
-      "hex": "#5eead4",
+      "ansi": 202,
+      "hex": "#d1d5db",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -716,14 +561,9 @@
   },
   "indexing": {
     "background": {
-      "ansi": 93,
-      "hex": "#a3e635",
+      "ansi": 53,
+      "hex": "#63b3ed",
       "name": "blue-3"
-    },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
     },
     "hideNameInPrompt": false,
     "icon": " ",
@@ -731,19 +571,9 @@
   },
   "irori": {
     "background": {
-      "ansi": 22,
-      "hex": "#feb2b2",
+      "ansi": 135,
+      "hex": "#0d9488",
       "name": "teal"
-    },
-    "backgroundInactive": {
-      "ansi": 225,
-      "hex": "#525252",
-      "name": "dark-teal"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": " ",
@@ -751,19 +581,9 @@
   },
   "items": {
     "background": {
-      "ansi": 149,
-      "hex": "#451a03",
+      "ansi": 109,
+      "hex": "#431407",
       "name": "orange-9"
-    },
-    "backgroundInactive": {
-      "ansi": 220,
-      "hex": "#151515",
-      "name": "dark-orange"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": "ﰤ ",
@@ -771,19 +591,9 @@
   },
   "items-data": {
     "background": {
-      "ansi": 148,
-      "hex": "#78350f",
+      "ansi": 108,
+      "hex": "#7c2d12",
       "name": "orange-8"
-    },
-    "backgroundInactive": {
-      "ansi": 220,
-      "hex": "#151515",
-      "name": "dark-orange"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": "ﰤ ",
@@ -791,19 +601,9 @@
   },
   "jekyll": {
     "background": {
-      "ansi": 95,
-      "hex": "#65a30d",
+      "ansi": 55,
+      "hex": "#3182ce",
       "name": "blue-5"
-    },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": " ",
@@ -811,18 +611,13 @@
   },
   "keyleth": {
     "background": {
-      "ansi": 169,
-      "hex": "#082f49",
+      "ansi": 149,
+      "hex": "#451a03",
       "name": "amber-9"
     },
-    "backgroundInactive": {
-      "ansi": 222,
-      "hex": "#d4d4d4",
-      "name": "dark-amber"
-    },
     "foreground": {
-      "ansi": 163,
-      "hex": "#38bdf8",
+      "ansi": 143,
+      "hex": "#fbbf24",
       "name": "amber-3"
     },
     "hideNameInPrompt": false,
@@ -831,18 +626,13 @@
   },
   "kindle": {
     "background": {
-      "ansi": 99,
-      "hex": "#1a2e05",
+      "ansi": 59,
+      "hex": "#2a4365",
       "name": "blue-9"
     },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
     "foreground": {
-      "ansi": 92,
-      "hex": "#bef264",
+      "ansi": 52,
+      "hex": "#90cdf4",
       "name": "blue-2"
     },
     "hideNameInPrompt": false,
@@ -851,18 +641,13 @@
   },
   "korvosa": {
     "background": {
-      "ansi": 69,
-      "hex": "#44337a",
+      "ansi": 29,
+      "hex": "#742a2a",
       "name": "red-9"
     },
-    "backgroundInactive": {
-      "ansi": 210,
-      "hex": "#0f141e",
-      "name": "dark-red"
-    },
     "foreground": {
-      "ansi": 61,
-      "hex": "#e9d8fd",
+      "ansi": 21,
+      "hex": "#fed7d7",
       "name": "red-1"
     },
     "hideNameInPrompt": false,
@@ -871,19 +656,9 @@
   },
   "landscapes": {
     "background": {
-      "ansi": 99,
-      "hex": "#1a2e05",
+      "ansi": 59,
+      "hex": "#2a4365",
       "name": "blue-9"
-    },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
@@ -891,19 +666,9 @@
   },
   "landscapes-data": {
     "background": {
-      "ansi": 98,
-      "hex": "#365314",
+      "ansi": 58,
+      "hex": "#2a4365",
       "name": "blue-8"
-    },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
@@ -911,19 +676,9 @@
   },
   "magic": {
     "background": {
-      "ansi": 68,
-      "hex": "#44337a",
+      "ansi": 28,
+      "hex": "#742a2a",
       "name": "red-8"
-    },
-    "backgroundInactive": {
-      "ansi": 210,
-      "hex": "#0f141e",
-      "name": "dark-red"
-    },
-    "foreground": {
-      "ansi": 0,
-      "hex": "#0c0f15",
-      "name": "black"
     },
     "hideNameInPrompt": false,
     "icon": " ",
@@ -931,18 +686,13 @@
   },
   "maps": {
     "background": {
-      "ansi": 96,
-      "hex": "#4d7c0f",
+      "ansi": 56,
+      "hex": "#2b6cb0",
       "name": "blue-6"
     },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
     "foreground": {
-      "ansi": 132,
-      "hex": "#5eead4",
+      "ansi": 202,
+      "hex": "#d1d5db",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -951,18 +701,13 @@
   },
   "maps-data": {
     "background": {
-      "ansi": 99,
-      "hex": "#1a2e05",
+      "ansi": 59,
+      "hex": "#2a4365",
       "name": "blue-9"
     },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
     "foreground": {
-      "ansi": 132,
-      "hex": "#5eead4",
+      "ansi": 202,
+      "hex": "#d1d5db",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -970,10 +715,10 @@
     "path": "~/local/www/pixelastic.com/gamemaster/maps/maps-data"
   },
   "media": {
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
+    "background": {
+      "ansi": 205,
+      "hex": "#4b5563",
+      "name": "gray"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
@@ -981,19 +726,9 @@
   },
   "meetups": {
     "background": {
-      "ansi": 69,
-      "hex": "#44337a",
+      "ansi": 29,
+      "hex": "#742a2a",
       "name": "red-9"
-    },
-    "backgroundInactive": {
-      "ansi": 210,
-      "hex": "#0f141e",
-      "name": "dark-red"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": " ",
@@ -1001,18 +736,13 @@
   },
   "meetups-algolia": {
     "background": {
-      "ansi": 147,
-      "hex": "#92400e",
+      "ansi": 107,
+      "hex": "#9a3412",
       "name": "orange-7"
     },
-    "backgroundInactive": {
-      "ansi": 220,
-      "hex": "#151515",
-      "name": "dark-orange"
-    },
     "foreground": {
-      "ansi": 142,
-      "hex": "#fcd34d",
+      "ansi": 102,
+      "hex": "#fdba74",
       "name": "orange-2"
     },
     "hideNameInPrompt": false,
@@ -1021,18 +751,13 @@
   },
   "meetups-calendar": {
     "background": {
-      "ansi": 148,
-      "hex": "#78350f",
+      "ansi": 108,
+      "hex": "#7c2d12",
       "name": "orange-8"
     },
-    "backgroundInactive": {
-      "ansi": 220,
-      "hex": "#151515",
-      "name": "dark-orange"
-    },
     "foreground": {
-      "ansi": 142,
-      "hex": "#fcd34d",
+      "ansi": 102,
+      "hex": "#fdba74",
       "name": "orange-2"
     },
     "hideNameInPrompt": false,
@@ -1041,18 +766,13 @@
   },
   "meetups-calendar-sync": {
     "background": {
-      "ansi": 178,
-      "hex": "#4c1d95",
+      "ansi": 168,
+      "hex": "#0c4a6e",
       "name": "sky-8"
     },
-    "backgroundInactive": {
-      "ansi": 223,
-      "hex": "#a3a3a3",
-      "name": "dark-sky"
-    },
     "foreground": {
-      "ansi": 171,
-      "hex": "#ddd6fe",
+      "ansi": 161,
+      "hex": "#bae6fd",
       "name": "sky-1"
     },
     "hideNameInPrompt": false,
@@ -1061,18 +781,13 @@
   },
   "meetups-recordings-sync": {
     "background": {
-      "ansi": 94,
-      "hex": "#84cc16",
+      "ansi": 54,
+      "hex": "#4299e1",
       "name": "blue-4"
     },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
     "foreground": {
-      "ansi": 98,
-      "hex": "#365314",
+      "ansi": 58,
+      "hex": "#2a4365",
       "name": "blue-8"
     },
     "hideNameInPrompt": false,
@@ -1081,18 +796,13 @@
   },
   "meetups-teasers-generator": {
     "background": {
-      "ansi": 93,
-      "hex": "#a3e635",
+      "ansi": 53,
+      "hex": "#63b3ed",
       "name": "blue-3"
     },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
     "foreground": {
-      "ansi": 98,
-      "hex": "#365314",
+      "ansi": 58,
+      "hex": "#2a4365",
       "name": "blue-8"
     },
     "hideNameInPrompt": false,
@@ -1101,18 +811,13 @@
   },
   "megadungeon": {
     "background": {
-      "ansi": 88,
-      "hex": "#831843",
+      "ansi": 48,
+      "hex": "#744210",
       "name": "yellow-8"
     },
-    "backgroundInactive": {
-      "ansi": 212,
-      "hex": "#cbd5e1",
-      "name": "dark-yellow"
-    },
     "foreground": {
-      "ansi": 131,
-      "hex": "#99f6e4",
+      "ansi": 201,
+      "hex": "#e5e7eb",
       "name": "gray-1"
     },
     "hideNameInPrompt": false,
@@ -1120,10 +825,10 @@
     "path": "~/local/www/pixelastic.com/gamemaster/megadungeon"
   },
   "monorepoify": {
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
+    "background": {
+      "ansi": 205,
+      "hex": "#4b5563",
+      "name": "gray"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
@@ -1131,13 +836,13 @@
   },
   "monsters": {
     "background": {
-      "ansi": 138,
-      "hex": "#134e4a",
+      "ansi": 208,
+      "hex": "#111827",
       "name": "gray-8"
     },
     "foreground": {
-      "ansi": 68,
-      "hex": "#44337a",
+      "ansi": 28,
+      "hex": "#742a2a",
       "name": "red-8"
     },
     "hideNameInPrompt": false,
@@ -1146,18 +851,13 @@
   },
   "monsters-pages": {
     "background": {
-      "ansi": 3,
+      "ansi": 45,
       "hex": "#d69e2e",
       "name": "yellow"
     },
-    "backgroundInactive": {
-      "ansi": 212,
-      "hex": "#cbd5e1",
-      "name": "dark-yellow"
-    },
     "foreground": {
-      "ansi": 138,
-      "hex": "#134e4a",
+      "ansi": 208,
+      "hex": "#111827",
       "name": "gray-8"
     },
     "hideNameInPrompt": false,
@@ -1166,12 +866,12 @@
   },
   "monsters-pictures": {
     "background": {
-      "ansi": 138,
-      "hex": "#134e4a",
+      "ansi": 208,
+      "hex": "#111827",
       "name": "gray-8"
     },
     "foreground": {
-      "ansi": 2,
+      "ansi": 35,
       "hex": "#38a169",
       "name": "green"
     },
@@ -1191,19 +891,9 @@
   },
   "netlify-minutes": {
     "background": {
-      "ansi": 78,
-      "hex": "#164e63",
+      "ansi": 38,
+      "hex": "#22543d",
       "name": "green-8"
-    },
-    "backgroundInactive": {
-      "ansi": 211,
-      "hex": "#e2e8f0",
-      "name": "dark-green"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": "神",
@@ -1211,18 +901,13 @@
   },
   "norska": {
     "background": {
-      "ansi": 93,
-      "hex": "#a3e635",
+      "ansi": 53,
+      "hex": "#63b3ed",
       "name": "blue-3"
     },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
     "foreground": {
-      "ansi": 138,
-      "hex": "#134e4a",
+      "ansi": 208,
+      "hex": "#111827",
       "name": "gray-8"
     },
     "hideNameInPrompt": false,
@@ -1231,19 +916,9 @@
   },
   "npm-search": {
     "background": {
-      "ansi": 176,
-      "hex": "#6d28d9",
+      "ansi": 166,
+      "hex": "#0369a1",
       "name": "sky-6"
-    },
-    "backgroundInactive": {
-      "ansi": 223,
-      "hex": "#a3a3a3",
-      "name": "dark-sky"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
@@ -1251,18 +926,13 @@
   },
   "on-circle": {
     "background": {
-      "ansi": 63,
-      "hex": "#b794f4",
+      "ansi": 23,
+      "hex": "#fc8181",
       "name": "red-3"
     },
-    "backgroundInactive": {
-      "ansi": 210,
-      "hex": "#0f141e",
-      "name": "dark-red"
-    },
     "foreground": {
-      "ansi": 139,
-      "hex": "#042f2e",
+      "ansi": 209,
+      "hex": "#030712",
       "name": "gray-9"
     },
     "hideNameInPrompt": false,
@@ -1271,19 +941,9 @@
   },
   "oroshi": {
     "background": {
-      "ansi": 2,
+      "ansi": 35,
       "hex": "#38a169",
       "name": "green"
-    },
-    "backgroundInactive": {
-      "ansi": 211,
-      "hex": "#e2e8f0",
-      "name": "dark-green"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": "x ",
@@ -1291,14 +951,9 @@
   },
   "painting": {
     "background": {
-      "ansi": 134,
-      "hex": "#14b8a6",
+      "ansi": 204,
+      "hex": "#6b7280",
       "name": "gray-4"
-    },
-    "foreground": {
-      "ansi": 0,
-      "hex": "#0c0f15",
-      "name": "black"
     },
     "hideNameInPrompt": false,
     "icon": " ",
@@ -1306,18 +961,13 @@
   },
   "pantheon": {
     "background": {
-      "ansi": 106,
-      "hex": "#c2410c",
+      "ansi": 66,
+      "hex": "#6b46c1",
       "name": "purple-6"
     },
-    "backgroundInactive": {
-      "ansi": 214,
-      "hex": "#64748b",
-      "name": "dark-purple"
-    },
     "foreground": {
-      "ansi": 134,
-      "hex": "#14b8a6",
+      "ansi": 204,
+      "hex": "#6b7280",
       "name": "gray-4"
     },
     "hideNameInPrompt": false,
@@ -1326,18 +976,13 @@
   },
   "pathfinder-books": {
     "background": {
-      "ansi": 89,
-      "hex": "#500724",
+      "ansi": 49,
+      "hex": "#744210",
       "name": "yellow-9"
     },
-    "backgroundInactive": {
-      "ansi": 212,
-      "hex": "#cbd5e1",
-      "name": "dark-yellow"
-    },
     "foreground": {
-      "ansi": 81,
-      "hex": "#fbcfe8",
+      "ansi": 41,
+      "hex": "#fefcbf",
       "name": "yellow-1"
     },
     "hideNameInPrompt": false,
@@ -1346,19 +991,9 @@
   },
   "perso": {
     "background": {
-      "ansi": 5,
+      "ansi": 65,
       "hex": "#805ad5",
       "name": "purple"
-    },
-    "backgroundInactive": {
-      "ansi": 214,
-      "hex": "#64748b",
-      "name": "dark-purple"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": " ",
@@ -1371,18 +1006,13 @@
   },
   "pietro": {
     "background": {
-      "ansi": 97,
-      "hex": "#3f6212",
+      "ansi": 57,
+      "hex": "#2c5282",
       "name": "blue-7"
     },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
     "foreground": {
-      "ansi": 84,
-      "hex": "#ec4899",
+      "ansi": 44,
+      "hex": "#ecc94b",
       "name": "yellow-4"
     },
     "hideNameInPrompt": false,
@@ -1391,18 +1021,13 @@
   },
   "projects": {
     "background": {
-      "ansi": 2,
+      "ansi": 35,
       "hex": "#38a169",
       "name": "green"
     },
-    "backgroundInactive": {
-      "ansi": 211,
-      "hex": "#e2e8f0",
-      "name": "dark-green"
-    },
     "foreground": {
-      "ansi": 132,
-      "hex": "#5eead4",
+      "ansi": 202,
+      "hex": "#d1d5db",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -1411,18 +1036,13 @@
   },
   "prst": {
     "background": {
-      "ansi": 98,
-      "hex": "#365314",
+      "ansi": 58,
+      "hex": "#2a4365",
       "name": "blue-8"
     },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
     "foreground": {
-      "ansi": 132,
-      "hex": "#5eead4",
+      "ansi": 202,
+      "hex": "#d1d5db",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -1431,18 +1051,13 @@
   },
   "reddinx": {
     "background": {
-      "ansi": 146,
-      "hex": "#b45309",
+      "ansi": 106,
+      "hex": "#c2410c",
       "name": "orange-6"
     },
-    "backgroundInactive": {
-      "ansi": 220,
-      "hex": "#151515",
-      "name": "dark-orange"
-    },
     "foreground": {
-      "ansi": 131,
-      "hex": "#99f6e4",
+      "ansi": 201,
+      "hex": "#e5e7eb",
       "name": "gray-1"
     },
     "hideNameInPrompt": false,
@@ -1451,18 +1066,13 @@
   },
   "renovate": {
     "background": {
-      "ansi": 94,
-      "hex": "#84cc16",
+      "ansi": 54,
+      "hex": "#4299e1",
       "name": "blue-4"
     },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
     "foreground": {
-      "ansi": 139,
-      "hex": "#042f2e",
+      "ansi": 209,
+      "hex": "#030712",
       "name": "gray-9"
     },
     "hideNameInPrompt": false,
@@ -1471,19 +1081,9 @@
   },
   "roleplay": {
     "background": {
-      "ansi": 79,
-      "hex": "#083344",
+      "ansi": 39,
+      "hex": "#22543d",
       "name": "green-9"
-    },
-    "backgroundInactive": {
-      "ansi": 211,
-      "hex": "#e2e8f0",
-      "name": "dark-green"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": " ",
@@ -1491,18 +1091,13 @@
   },
   "root": {
     "background": {
-      "ansi": 147,
-      "hex": "#92400e",
+      "ansi": 107,
+      "hex": "#9a3412",
       "name": "orange-7"
     },
-    "backgroundInactive": {
-      "ansi": 220,
-      "hex": "#151515",
-      "name": "dark-orange"
-    },
     "foreground": {
-      "ansi": 142,
-      "hex": "#fcd34d",
+      "ansi": 102,
+      "hex": "#fdba74",
       "name": "orange-2"
     },
     "hideNameInPrompt": true,
@@ -1510,45 +1105,30 @@
     "path": "/"
   },
   "s3": {
-    "backgroundInactive": {
-      "ansi": 220,
-      "hex": "#151515",
-      "name": "dark-orange"
-    },
-    "foreground": {
-      "ansi": 220,
-      "hex": "#151515",
-      "name": "dark-orange"
+    "background": {
+      "ansi": 105,
+      "hex": "#ea580c",
+      "name": "orange"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/mount/s3"
   },
   "s3-pictures": {
-    "backgroundInactive": {
-      "ansi": 220,
-      "hex": "#151515",
-      "name": "dark-orange"
-    },
-    "foreground": {
-      "ansi": 220,
-      "hex": "#151515",
-      "name": "dark-orange"
+    "background": {
+      "ansi": 105,
+      "hex": "#ea580c",
+      "name": "orange"
     },
     "hideNameInPrompt": false,
     "icon": "   ",
     "path": "~/local/mount/s3/pictures"
   },
   "s3-recordings": {
-    "backgroundInactive": {
-      "ansi": 220,
-      "hex": "#151515",
-      "name": "dark-orange"
-    },
-    "foreground": {
-      "ansi": 220,
-      "hex": "#151515",
-      "name": "dark-orange"
+    "background": {
+      "ansi": 105,
+      "hex": "#ea580c",
+      "name": "orange"
     },
     "hideNameInPrompt": false,
     "icon": "   ",
@@ -1556,18 +1136,13 @@
   },
   "screen": {
     "background": {
-      "ansi": 149,
-      "hex": "#451a03",
+      "ansi": 109,
+      "hex": "#431407",
       "name": "orange-9"
     },
-    "backgroundInactive": {
-      "ansi": 220,
-      "hex": "#151515",
-      "name": "dark-orange"
-    },
     "foreground": {
-      "ansi": 141,
-      "hex": "#fde68a",
+      "ansi": 101,
+      "hex": "#fed7aa",
       "name": "orange-1"
     },
     "hideNameInPrompt": false,
@@ -1576,18 +1151,13 @@
   },
   "shar-teel": {
     "background": {
-      "ansi": 109,
-      "hex": "#431407",
+      "ansi": 69,
+      "hex": "#44337a",
       "name": "purple-9"
     },
-    "backgroundInactive": {
-      "ansi": 214,
-      "hex": "#64748b",
-      "name": "dark-purple"
-    },
     "foreground": {
-      "ansi": 144,
-      "hex": "#f59e0b",
+      "ansi": 104,
+      "hex": "#f97316",
       "name": "orange-4"
     },
     "hideNameInPrompt": false,
@@ -1596,18 +1166,13 @@
   },
   "society": {
     "background": {
-      "ansi": 69,
-      "hex": "#44337a",
+      "ansi": 29,
+      "hex": "#742a2a",
       "name": "red-9"
     },
-    "backgroundInactive": {
-      "ansi": 210,
-      "hex": "#0f141e",
-      "name": "dark-red"
-    },
     "foreground": {
-      "ansi": 85,
-      "hex": "#db2777",
+      "ansi": 45,
+      "hex": "#d69e2e",
       "name": "yellow-5"
     },
     "hideNameInPrompt": false,
@@ -1616,18 +1181,13 @@
   },
   "society-data": {
     "background": {
-      "ansi": 69,
-      "hex": "#44337a",
+      "ansi": 29,
+      "hex": "#742a2a",
       "name": "red-9"
     },
-    "backgroundInactive": {
-      "ansi": 210,
-      "hex": "#0f141e",
-      "name": "dark-red"
-    },
     "foreground": {
-      "ansi": 85,
-      "hex": "#db2777",
+      "ansi": 45,
+      "hex": "#d69e2e",
       "name": "yellow-5"
     },
     "hideNameInPrompt": false,
@@ -1636,18 +1196,13 @@
   },
   "society-pdfs": {
     "background": {
-      "ansi": 69,
-      "hex": "#44337a",
+      "ansi": 29,
+      "hex": "#742a2a",
       "name": "red-9"
     },
-    "backgroundInactive": {
-      "ansi": 210,
-      "hex": "#0f141e",
-      "name": "dark-red"
-    },
     "foreground": {
-      "ansi": 85,
-      "hex": "#db2777",
+      "ansi": 45,
+      "hex": "#d69e2e",
       "name": "yellow-5"
     },
     "hideNameInPrompt": false,
@@ -1656,18 +1211,13 @@
   },
   "solkan": {
     "background": {
-      "ansi": 69,
-      "hex": "#44337a",
+      "ansi": 29,
+      "hex": "#742a2a",
       "name": "red-9"
     },
-    "backgroundInactive": {
-      "ansi": 210,
-      "hex": "#0f141e",
-      "name": "dark-red"
-    },
     "foreground": {
-      "ansi": 61,
-      "hex": "#e9d8fd",
+      "ansi": 21,
+      "hex": "#fed7d7",
       "name": "red-1"
     },
     "hideNameInPrompt": false,
@@ -1680,14 +1230,14 @@
     "path": ""
   },
   "speaker-program": {
-    "backgroundInactive": {
-      "ansi": 225,
-      "hex": "#525252",
-      "name": "dark-teal"
+    "background": {
+      "ansi": 136,
+      "hex": "#0f766e",
+      "name": "teal-6"
     },
     "foreground": {
-      "ansi": 133,
-      "hex": "#2dd4bf",
+      "ansi": 203,
+      "hex": "#9ca3af",
       "name": "gray-3"
     },
     "hideNameInPrompt": false,
@@ -1696,19 +1246,9 @@
   },
   "speech-to-blog": {
     "background": {
-      "ansi": 86,
-      "hex": "#be185d",
+      "ansi": 46,
+      "hex": "#b7791f",
       "name": "yellow-6"
-    },
-    "backgroundInactive": {
-      "ansi": 212,
-      "hex": "#cbd5e1",
-      "name": "dark-yellow"
-    },
-    "foreground": {
-      "ansi": 222,
-      "hex": "#d4d4d4",
-      "name": "dark-amber"
     },
     "hideNameInPrompt": false,
     "icon": "󰔊 ",
@@ -1716,19 +1256,9 @@
   },
   "spells": {
     "background": {
-      "ansi": 98,
-      "hex": "#365314",
+      "ansi": 58,
+      "hex": "#2a4365",
       "name": "blue-8"
-    },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": " ",
@@ -1736,19 +1266,9 @@
   },
   "talk-blog": {
     "background": {
-      "ansi": 2,
+      "ansi": 35,
       "hex": "#38a169",
       "name": "green"
-    },
-    "backgroundInactive": {
-      "ansi": 211,
-      "hex": "#e2e8f0",
-      "name": "dark-green"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
@@ -1756,19 +1276,9 @@
   },
   "talks": {
     "background": {
-      "ansi": 78,
-      "hex": "#164e63",
+      "ansi": 38,
+      "hex": "#22543d",
       "name": "green-8"
-    },
-    "backgroundInactive": {
-      "ansi": 211,
-      "hex": "#e2e8f0",
-      "name": "dark-green"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
@@ -1776,18 +1286,13 @@
   },
   "terrainbuilding": {
     "background": {
-      "ansi": 79,
-      "hex": "#083344",
+      "ansi": 39,
+      "hex": "#22543d",
       "name": "green-9"
     },
-    "backgroundInactive": {
-      "ansi": 211,
-      "hex": "#e2e8f0",
-      "name": "dark-green"
-    },
     "foreground": {
-      "ansi": 85,
-      "hex": "#db2777",
+      "ansi": 45,
+      "hex": "#d69e2e",
       "name": "yellow-5"
     },
     "hideNameInPrompt": false,
@@ -1796,18 +1301,13 @@
   },
   "terrainbuilding-data": {
     "background": {
-      "ansi": 78,
-      "hex": "#164e63",
+      "ansi": 38,
+      "hex": "#22543d",
       "name": "green-8"
     },
-    "backgroundInactive": {
-      "ansi": 211,
-      "hex": "#e2e8f0",
-      "name": "dark-green"
-    },
     "foreground": {
-      "ansi": 86,
-      "hex": "#be185d",
+      "ansi": 46,
+      "hex": "#b7791f",
       "name": "yellow-6"
     },
     "hideNameInPrompt": false,
@@ -1816,18 +1316,13 @@
   },
   "theme-docs": {
     "background": {
-      "ansi": 93,
-      "hex": "#a3e635",
+      "ansi": 53,
+      "hex": "#63b3ed",
       "name": "blue-3"
     },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
     "foreground": {
-      "ansi": 138,
-      "hex": "#134e4a",
+      "ansi": 208,
+      "hex": "#111827",
       "name": "gray-8"
     },
     "hideNameInPrompt": false,
@@ -1836,19 +1331,9 @@
   },
   "theme-search": {
     "background": {
-      "ansi": 95,
-      "hex": "#65a30d",
+      "ansi": 55,
+      "hex": "#3182ce",
       "name": "blue-5"
-    },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": " ",
@@ -1856,18 +1341,13 @@
   },
   "theme-search-infinite": {
     "background": {
-      "ansi": 93,
-      "hex": "#a3e635",
+      "ansi": 53,
+      "hex": "#63b3ed",
       "name": "blue-3"
     },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
     "foreground": {
-      "ansi": 138,
-      "hex": "#134e4a",
+      "ansi": 208,
+      "hex": "#111827",
       "name": "gray-8"
     },
     "hideNameInPrompt": false,
@@ -1876,34 +1356,29 @@
   },
   "theme-slides": {
     "background": {
-      "ansi": 78,
-      "hex": "#164e63",
+      "ansi": 38,
+      "hex": "#22543d",
       "name": "green-8"
-    },
-    "backgroundInactive": {
-      "ansi": 211,
-      "hex": "#e2e8f0",
-      "name": "dark-green"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/norska-theme-slides"
   },
   "tmp": {
+    "background": {
+      "ansi": 205,
+      "hex": "#4b5563",
+      "name": "gray"
+    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": ""
   },
   "transparentify": {
-    "background": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
+    "foreground": {
+      "ansi": 205,
+      "hex": "#4b5563",
+      "name": "gray"
     },
     "hideNameInPrompt": false,
     "icon": "頋",
@@ -1916,18 +1391,13 @@
   },
   "videogames": {
     "background": {
-      "ansi": 98,
-      "hex": "#365314",
+      "ansi": 58,
+      "hex": "#2a4365",
       "name": "blue-8"
     },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
-    },
     "foreground": {
-      "ansi": 132,
-      "hex": "#5eead4",
+      "ansi": 202,
+      "hex": "#d1d5db",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -1936,14 +1406,9 @@
   },
   "videogames-helper": {
     "background": {
-      "ansi": 98,
-      "hex": "#365314",
+      "ansi": 58,
+      "hex": "#2a4365",
       "name": "blue-8"
-    },
-    "backgroundInactive": {
-      "ansi": 213,
-      "hex": "#94a3b8",
-      "name": "dark-blue"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
@@ -1961,53 +1426,28 @@
   },
   "websites": {
     "background": {
-      "ansi": 3,
+      "ansi": 45,
       "hex": "#d69e2e",
       "name": "yellow"
-    },
-    "backgroundInactive": {
-      "ansi": 212,
-      "hex": "#cbd5e1",
-      "name": "dark-yellow"
-    },
-    "foreground": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": ""
   },
   "wikinx": {
-    "background": {
-      "ansi": 7,
-      "hex": "#ffffff",
-      "name": "white"
-    },
-    "foreground": {
-      "ansi": 0,
-      "hex": "#0c0f15",
-      "name": "black"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/projects/wikinx"
   },
   "www": {
     "background": {
-      "ansi": 2,
+      "ansi": 35,
       "hex": "#38a169",
       "name": "green"
     },
-    "backgroundInactive": {
-      "ansi": 211,
-      "hex": "#e2e8f0",
-      "name": "dark-green"
-    },
     "foreground": {
-      "ansi": 132,
-      "hex": "#5eead4",
+      "ansi": 202,
+      "hex": "#d1d5db",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -2016,13 +1456,13 @@
   },
   "youtinx": {
     "background": {
-      "ansi": 134,
-      "hex": "#14b8a6",
+      "ansi": 204,
+      "hex": "#6b7280",
       "name": "gray-4"
     },
     "foreground": {
-      "ansi": 68,
-      "hex": "#44337a",
+      "ansi": 28,
+      "hex": "#742a2a",
       "name": "red-8"
     },
     "hideNameInPrompt": false,
