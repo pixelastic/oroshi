@@ -43,7 +43,8 @@
   {
     "id": "07",
     "issue": "issues/07-colors-conf-palette-corrections.md",
-    "done": false,
+    "done": true,
+    "recap": "Updated colors.conf: red family slots 21-29 switched from TW v1 to TW v3 values; gray family slots 200-209 redesigned as achromatic axis with terminal black/white anchors at shade-0/1 and TW gray-200→900 at shades 2-9.",
     "blocked_by": ["06"]
   },
   {

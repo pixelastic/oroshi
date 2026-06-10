@@ -12,7 +12,7 @@
     },
     "foreground": {
       "ansi": 209,
-      "hex": "#030712",
+      "hex": "#111827",
       "name": "gray-9"
     },
     "hideNameInPrompt": false,
@@ -32,7 +32,7 @@
     },
     "foreground": {
       "ansi": 202,
-      "hex": "#d1d5db",
+      "hex": "#e5e7eb",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -52,7 +52,7 @@
     },
     "foreground": {
       "ansi": 202,
-      "hex": "#d1d5db",
+      "hex": "#e5e7eb",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -72,7 +72,7 @@
     },
     "foreground": {
       "ansi": 203,
-      "hex": "#9ca3af",
+      "hex": "#d1d5db",
       "name": "gray-3"
     },
     "hideNameInPrompt": false,
@@ -92,7 +92,7 @@
     },
     "foreground": {
       "ansi": 203,
-      "hex": "#9ca3af",
+      "hex": "#d1d5db",
       "name": "gray-3"
     },
     "hideNameInPrompt": false,
@@ -147,12 +147,12 @@
   "armory": {
     "background": {
       "ansi": 205,
-      "hex": "#4b5563",
+      "hex": "#6b7280",
       "name": "gray"
     },
     "backgroundInactive": {
       "ansi": 200,
-      "hex": "#111318",
+      "hex": "#0c0f15",
       "name": "gray-dark"
     },
     "foreground": {
@@ -242,17 +242,17 @@
   "brefsearch": {
     "background": {
       "ansi": 208,
-      "hex": "#111827",
+      "hex": "#1f2937",
       "name": "gray-8"
     },
     "backgroundInactive": {
       "ansi": 200,
-      "hex": "#111318",
+      "hex": "#0c0f15",
       "name": "gray-dark"
     },
     "foreground": {
       "ansi": 203,
-      "hex": "#9ca3af",
+      "hex": "#d1d5db",
       "name": "gray-3"
     },
     "hideNameInPrompt": false,
@@ -262,17 +262,17 @@
   "brefsearch-data": {
     "background": {
       "ansi": 208,
-      "hex": "#111827",
+      "hex": "#1f2937",
       "name": "gray-8"
     },
     "backgroundInactive": {
       "ansi": 200,
-      "hex": "#111318",
+      "hex": "#0c0f15",
       "name": "gray-dark"
     },
     "foreground": {
       "ansi": 203,
-      "hex": "#9ca3af",
+      "hex": "#d1d5db",
       "name": "gray-3"
     },
     "hideNameInPrompt": false,
@@ -282,17 +282,17 @@
   "brefsearch-media": {
     "background": {
       "ansi": 208,
-      "hex": "#111827",
+      "hex": "#1f2937",
       "name": "gray-8"
     },
     "backgroundInactive": {
       "ansi": 200,
-      "hex": "#111318",
+      "hex": "#0c0f15",
       "name": "gray-dark"
     },
     "foreground": {
       "ansi": 203,
-      "hex": "#9ca3af",
+      "hex": "#d1d5db",
       "name": "gray-3"
     },
     "hideNameInPrompt": false,
@@ -312,7 +312,7 @@
     },
     "foreground": {
       "ansi": 202,
-      "hex": "#d1d5db",
+      "hex": "#e5e7eb",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -332,7 +332,7 @@
     },
     "foreground": {
       "ansi": 202,
-      "hex": "#d1d5db",
+      "hex": "#e5e7eb",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -482,7 +482,7 @@
     },
     "foreground": {
       "ansi": 203,
-      "hex": "#9ca3af",
+      "hex": "#d1d5db",
       "name": "gray-3"
     },
     "hideNameInPrompt": false,
@@ -552,7 +552,7 @@
     },
     "foreground": {
       "ansi": 202,
-      "hex": "#d1d5db",
+      "hex": "#e5e7eb",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -587,7 +587,7 @@
     },
     "foreground": {
       "ansi": 202,
-      "hex": "#d1d5db",
+      "hex": "#e5e7eb",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -647,12 +647,12 @@
   "gitinx": {
     "background": {
       "ansi": 203,
-      "hex": "#9ca3af",
+      "hex": "#d1d5db",
       "name": "gray-3"
     },
     "backgroundInactive": {
       "ansi": 200,
-      "hex": "#111318",
+      "hex": "#0c0f15",
       "name": "gray-dark"
     },
     "foreground": {
@@ -752,7 +752,7 @@
     },
     "foreground": {
       "ansi": 202,
-      "hex": "#d1d5db",
+      "hex": "#e5e7eb",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -877,7 +877,7 @@
   "korvosa": {
     "background": {
       "ansi": 29,
-      "hex": "#742a2a",
+      "hex": "#450a0a",
       "name": "red-9"
     },
     "backgroundInactive": {
@@ -887,7 +887,7 @@
     },
     "foreground": {
       "ansi": 21,
-      "hex": "#fed7d7",
+      "hex": "#fecaca",
       "name": "red-1"
     },
     "hideNameInPrompt": false,
@@ -927,7 +927,7 @@
   "magic": {
     "background": {
       "ansi": 28,
-      "hex": "#742a2a",
+      "hex": "#7f1d1d",
       "name": "red-8"
     },
     "backgroundInactive": {
@@ -952,7 +952,7 @@
     },
     "foreground": {
       "ansi": 202,
-      "hex": "#d1d5db",
+      "hex": "#e5e7eb",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -972,7 +972,7 @@
     },
     "foreground": {
       "ansi": 202,
-      "hex": "#d1d5db",
+      "hex": "#e5e7eb",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -982,12 +982,12 @@
   "media": {
     "background": {
       "ansi": 205,
-      "hex": "#4b5563",
+      "hex": "#6b7280",
       "name": "gray"
     },
     "backgroundInactive": {
       "ansi": 200,
-      "hex": "#111318",
+      "hex": "#0c0f15",
       "name": "gray-dark"
     },
     "hideNameInPrompt": false,
@@ -997,7 +997,7 @@
   "meetups": {
     "background": {
       "ansi": 29,
-      "hex": "#742a2a",
+      "hex": "#450a0a",
       "name": "red-9"
     },
     "backgroundInactive": {
@@ -1122,7 +1122,7 @@
     },
     "foreground": {
       "ansi": 201,
-      "hex": "#e5e7eb",
+      "hex": "#ffffff",
       "name": "gray-1"
     },
     "hideNameInPrompt": false,
@@ -1132,12 +1132,12 @@
   "monorepoify": {
     "background": {
       "ansi": 205,
-      "hex": "#4b5563",
+      "hex": "#6b7280",
       "name": "gray"
     },
     "backgroundInactive": {
       "ansi": 200,
-      "hex": "#111318",
+      "hex": "#0c0f15",
       "name": "gray-dark"
     },
     "hideNameInPrompt": false,
@@ -1147,17 +1147,17 @@
   "monsters": {
     "background": {
       "ansi": 208,
-      "hex": "#111827",
+      "hex": "#1f2937",
       "name": "gray-8"
     },
     "backgroundInactive": {
       "ansi": 200,
-      "hex": "#111318",
+      "hex": "#0c0f15",
       "name": "gray-dark"
     },
     "foreground": {
       "ansi": 28,
-      "hex": "#742a2a",
+      "hex": "#7f1d1d",
       "name": "red-8"
     },
     "hideNameInPrompt": false,
@@ -1177,7 +1177,7 @@
     },
     "foreground": {
       "ansi": 208,
-      "hex": "#111827",
+      "hex": "#1f2937",
       "name": "gray-8"
     },
     "hideNameInPrompt": false,
@@ -1187,12 +1187,12 @@
   "monsters-pictures": {
     "background": {
       "ansi": 208,
-      "hex": "#111827",
+      "hex": "#1f2937",
       "name": "gray-8"
     },
     "backgroundInactive": {
       "ansi": 200,
-      "hex": "#111318",
+      "hex": "#0c0f15",
       "name": "gray-dark"
     },
     "foreground": {
@@ -1242,7 +1242,7 @@
     },
     "foreground": {
       "ansi": 208,
-      "hex": "#111827",
+      "hex": "#1f2937",
       "name": "gray-8"
     },
     "hideNameInPrompt": false,
@@ -1267,7 +1267,7 @@
   "on-circle": {
     "background": {
       "ansi": 23,
-      "hex": "#fc8181",
+      "hex": "#f87171",
       "name": "red-3"
     },
     "backgroundInactive": {
@@ -1277,7 +1277,7 @@
     },
     "foreground": {
       "ansi": 209,
-      "hex": "#030712",
+      "hex": "#111827",
       "name": "gray-9"
     },
     "hideNameInPrompt": false,
@@ -1302,12 +1302,12 @@
   "painting": {
     "background": {
       "ansi": 204,
-      "hex": "#6b7280",
+      "hex": "#9ca3af",
       "name": "gray-4"
     },
     "backgroundInactive": {
       "ansi": 200,
-      "hex": "#111318",
+      "hex": "#0c0f15",
       "name": "gray-dark"
     },
     "hideNameInPrompt": false,
@@ -1327,7 +1327,7 @@
     },
     "foreground": {
       "ansi": 204,
-      "hex": "#6b7280",
+      "hex": "#9ca3af",
       "name": "gray-4"
     },
     "hideNameInPrompt": false,
@@ -1407,7 +1407,7 @@
     },
     "foreground": {
       "ansi": 202,
-      "hex": "#d1d5db",
+      "hex": "#e5e7eb",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -1427,7 +1427,7 @@
     },
     "foreground": {
       "ansi": 202,
-      "hex": "#d1d5db",
+      "hex": "#e5e7eb",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -1447,7 +1447,7 @@
     },
     "foreground": {
       "ansi": 201,
-      "hex": "#e5e7eb",
+      "hex": "#ffffff",
       "name": "gray-1"
     },
     "hideNameInPrompt": false,
@@ -1467,7 +1467,7 @@
     },
     "foreground": {
       "ansi": 209,
-      "hex": "#030712",
+      "hex": "#111827",
       "name": "gray-9"
     },
     "hideNameInPrompt": false,
@@ -1597,7 +1597,7 @@
   "society": {
     "background": {
       "ansi": 29,
-      "hex": "#742a2a",
+      "hex": "#450a0a",
       "name": "red-9"
     },
     "backgroundInactive": {
@@ -1617,7 +1617,7 @@
   "society-data": {
     "background": {
       "ansi": 29,
-      "hex": "#742a2a",
+      "hex": "#450a0a",
       "name": "red-9"
     },
     "backgroundInactive": {
@@ -1637,7 +1637,7 @@
   "society-pdfs": {
     "background": {
       "ansi": 29,
-      "hex": "#742a2a",
+      "hex": "#450a0a",
       "name": "red-9"
     },
     "backgroundInactive": {
@@ -1657,7 +1657,7 @@
   "solkan": {
     "background": {
       "ansi": 29,
-      "hex": "#742a2a",
+      "hex": "#450a0a",
       "name": "red-9"
     },
     "backgroundInactive": {
@@ -1667,7 +1667,7 @@
     },
     "foreground": {
       "ansi": 21,
-      "hex": "#fed7d7",
+      "hex": "#fecaca",
       "name": "red-1"
     },
     "hideNameInPrompt": false,
@@ -1692,7 +1692,7 @@
     },
     "foreground": {
       "ansi": 203,
-      "hex": "#9ca3af",
+      "hex": "#d1d5db",
       "name": "gray-3"
     },
     "hideNameInPrompt": false,
@@ -1812,7 +1812,7 @@
     },
     "foreground": {
       "ansi": 208,
-      "hex": "#111827",
+      "hex": "#1f2937",
       "name": "gray-8"
     },
     "hideNameInPrompt": false,
@@ -1847,7 +1847,7 @@
     },
     "foreground": {
       "ansi": 208,
-      "hex": "#111827",
+      "hex": "#1f2937",
       "name": "gray-8"
     },
     "hideNameInPrompt": false,
@@ -1872,12 +1872,12 @@
   "tmp": {
     "background": {
       "ansi": 205,
-      "hex": "#4b5563",
+      "hex": "#6b7280",
       "name": "gray"
     },
     "backgroundInactive": {
       "ansi": 200,
-      "hex": "#111318",
+      "hex": "#0c0f15",
       "name": "gray-dark"
     },
     "hideNameInPrompt": false,
@@ -1887,7 +1887,7 @@
   "transparentify": {
     "foreground": {
       "ansi": 205,
-      "hex": "#4b5563",
+      "hex": "#6b7280",
       "name": "gray"
     },
     "hideNameInPrompt": false,
@@ -1912,7 +1912,7 @@
     },
     "foreground": {
       "ansi": 202,
-      "hex": "#d1d5db",
+      "hex": "#e5e7eb",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -1977,7 +1977,7 @@
     },
     "foreground": {
       "ansi": 202,
-      "hex": "#d1d5db",
+      "hex": "#e5e7eb",
       "name": "gray-2"
     },
     "hideNameInPrompt": false,
@@ -1987,17 +1987,17 @@
   "youtinx": {
     "background": {
       "ansi": 204,
-      "hex": "#6b7280",
+      "hex": "#9ca3af",
       "name": "gray-4"
     },
     "backgroundInactive": {
       "ansi": 200,
-      "hex": "#111318",
+      "hex": "#0c0f15",
       "name": "gray-dark"
     },
     "foreground": {
       "ansi": 28,
-      "hex": "#742a2a",
+      "hex": "#7f1d1d",
       "name": "red-8"
     },
     "hideNameInPrompt": false,

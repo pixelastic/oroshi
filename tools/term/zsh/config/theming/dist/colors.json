@@ -105,7 +105,7 @@
   },
   "comment": {
     "ansi": 205,
-    "hex": "#4b5563"
+    "hex": "#6b7280"
   },
   "constant": {
     "ansi": 105,
@@ -169,7 +169,7 @@
   },
   "docker-comment": {
     "ansi": 204,
-    "hex": "#6b7280"
+    "hex": "#9ca3af"
   },
   "docker-container": {
     "ansi": 45,
@@ -197,7 +197,7 @@
   },
   "docker-image-orphan": {
     "ansi": 25,
-    "hex": "#e53e3e"
+    "hex": "#dc2626"
   },
   "docker-image-remote": {
     "ansi": 55,
@@ -205,7 +205,7 @@
   },
   "docker-status": {
     "ansi": 204,
-    "hex": "#6b7280"
+    "hex": "#9ca3af"
   },
   "docker-tag": {
     "ansi": 106,
@@ -265,7 +265,7 @@
   },
   "error": {
     "ansi": 25,
-    "hex": "#e53e3e"
+    "hex": "#dc2626"
   },
   "eval": {
     "ansi": 45,
@@ -273,7 +273,7 @@
   },
   "exception": {
     "ansi": 25,
-    "hex": "#e53e3e"
+    "hex": "#dc2626"
   },
   "executable": {
     "ansi": 175,
@@ -293,7 +293,7 @@
   },
   "fly-app-suspended": {
     "ansi": 205,
-    "hex": "#4b5563"
+    "hex": "#6b7280"
   },
   "fuchsia": {
     "ansi": 125,
@@ -361,7 +361,7 @@
   },
   "git-behind": {
     "ansi": 28,
-    "hex": "#742a2a"
+    "hex": "#7f1d1d"
   },
   "git-branch": {
     "ansi": 105,
@@ -377,7 +377,7 @@
   },
   "git-branch-head": {
     "ansi": 25,
-    "hex": "#e53e3e"
+    "hex": "#dc2626"
   },
   "git-branch-main": {
     "ansi": 55,
@@ -385,7 +385,7 @@
   },
   "git-branch-master": {
     "ansi": 25,
-    "hex": "#e53e3e"
+    "hex": "#dc2626"
   },
   "git-commit": {
     "ansi": 65,
@@ -393,7 +393,7 @@
   },
   "git-dirty": {
     "ansi": 25,
-    "hex": "#e53e3e"
+    "hex": "#dc2626"
   },
   "git-issue": {
     "ansi": 45,
@@ -401,7 +401,7 @@
   },
   "git-message": {
     "ansi": 204,
-    "hex": "#6b7280"
+    "hex": "#9ca3af"
   },
   "git-modified": {
     "ansi": 175,
@@ -413,7 +413,7 @@
   },
   "git-rebase": {
     "ansi": 25,
-    "hex": "#e53e3e"
+    "hex": "#dc2626"
   },
   "git-remote": {
     "ansi": 45,
@@ -425,7 +425,7 @@
   },
   "git-remote-head": {
     "ansi": 25,
-    "hex": "#e53e3e"
+    "hex": "#dc2626"
   },
   "git-remote-origin": {
     "ansi": 45,
@@ -441,7 +441,7 @@
   },
   "git-removed": {
     "ansi": 25,
-    "hex": "#e53e3e"
+    "hex": "#dc2626"
   },
   "git-stash": {
     "ansi": 133,
@@ -469,7 +469,7 @@
   },
   "git-tag-unrelated": {
     "ansi": 205,
-    "hex": "#4b5563"
+    "hex": "#6b7280"
   },
   "git-tracked": {
     "ansi": 175,
@@ -477,7 +477,7 @@
   },
   "git-untracked": {
     "ansi": 25,
-    "hex": "#e53e3e"
+    "hex": "#dc2626"
   },
   "git-worktree": {
     "ansi": 107,
@@ -489,51 +489,51 @@
   },
   "gray": {
     "ansi": 205,
-    "hex": "#4b5563"
+    "hex": "#6b7280"
   },
   "gray-0": {
     "ansi": 200,
-    "hex": "#111318"
+    "hex": "#0c0f15"
   },
   "gray-1": {
     "ansi": 201,
-    "hex": "#e5e7eb"
+    "hex": "#ffffff"
   },
   "gray-2": {
     "ansi": 202,
-    "hex": "#d1d5db"
+    "hex": "#e5e7eb"
   },
   "gray-3": {
     "ansi": 203,
-    "hex": "#9ca3af"
+    "hex": "#d1d5db"
   },
   "gray-4": {
     "ansi": 204,
-    "hex": "#6b7280"
+    "hex": "#9ca3af"
   },
   "gray-5": {
     "ansi": 205,
-    "hex": "#4b5563"
+    "hex": "#6b7280"
   },
   "gray-6": {
     "ansi": 206,
-    "hex": "#374151"
+    "hex": "#4b5563"
   },
   "gray-7": {
     "ansi": 207,
-    "hex": "#1f2937"
+    "hex": "#374151"
   },
   "gray-8": {
     "ansi": 208,
-    "hex": "#111827"
+    "hex": "#1f2937"
   },
   "gray-9": {
     "ansi": 209,
-    "hex": "#030712"
+    "hex": "#111827"
   },
   "gray-dark": {
     "ansi": 200,
-    "hex": "#111318"
+    "hex": "#0c0f15"
   },
   "green": {
     "ansi": 35,
@@ -809,7 +809,7 @@
   },
   "node-version-installed": {
     "ansi": 204,
-    "hex": "#6b7280"
+    "hex": "#9ca3af"
   },
   "node-version-uninstalled": {
     "ansi": 45,
@@ -881,7 +881,7 @@
   },
   "package-description": {
     "ansi": 204,
-    "hex": "#6b7280"
+    "hex": "#9ca3af"
   },
   "package-installed": {
     "ansi": 35,
@@ -889,7 +889,7 @@
   },
   "package-not-installed": {
     "ansi": 205,
-    "hex": "#4b5563"
+    "hex": "#6b7280"
   },
   "package-version": {
     "ansi": 75,
@@ -1009,7 +1009,7 @@
   },
   "red": {
     "ansi": 25,
-    "hex": "#e53e3e"
+    "hex": "#dc2626"
   },
   "red-0": {
     "ansi": 20,
@@ -1017,39 +1017,39 @@
   },
   "red-1": {
     "ansi": 21,
-    "hex": "#fed7d7"
+    "hex": "#fecaca"
   },
   "red-2": {
     "ansi": 22,
-    "hex": "#feb2b2"
+    "hex": "#fca5a5"
   },
   "red-3": {
     "ansi": 23,
-    "hex": "#fc8181"
+    "hex": "#f87171"
   },
   "red-4": {
     "ansi": 24,
-    "hex": "#f56565"
+    "hex": "#ef4444"
   },
   "red-5": {
     "ansi": 25,
-    "hex": "#e53e3e"
+    "hex": "#dc2626"
   },
   "red-6": {
     "ansi": 26,
-    "hex": "#c53030"
+    "hex": "#b91c1c"
   },
   "red-7": {
     "ansi": 27,
-    "hex": "#9b2c2c"
+    "hex": "#991b1b"
   },
   "red-8": {
     "ansi": 28,
-    "hex": "#742a2a"
+    "hex": "#7f1d1d"
   },
   "red-9": {
     "ansi": 29,
-    "hex": "#742a2a"
+    "hex": "#450a0a"
   },
   "red-dark": {
     "ansi": 20,
@@ -1061,15 +1061,15 @@
   },
   "selected-background": {
     "ansi": 208,
-    "hex": "#111827"
+    "hex": "#1f2937"
   },
   "size-unit": {
     "ansi": 204,
-    "hex": "#6b7280"
+    "hex": "#9ca3af"
   },
   "size-value": {
     "ansi": 205,
-    "hex": "#4b5563"
+    "hex": "#6b7280"
   },
   "sky": {
     "ansi": 165,
@@ -1285,7 +1285,7 @@
   },
   "todo": {
     "ansi": 25,
-    "hex": "#e53e3e"
+    "hex": "#dc2626"
   },
   "ui": {
     "ansi": 225,
@@ -1301,7 +1301,7 @@
   },
   "variable-type": {
     "ansi": 24,
-    "hex": "#f56565"
+    "hex": "#ef4444"
   },
   "video-stream-audio": {
     "ansi": 55,
@@ -1317,7 +1317,7 @@
   },
   "vim-normal-cursor": {
     "ansi": 25,
-    "hex": "#e53e3e"
+    "hex": "#dc2626"
   },
   "vim-search-background": {
     "ansi": 45,
@@ -1401,7 +1401,7 @@
   },
   "yarn-package-description": {
     "ansi": 204,
-    "hex": "#6b7280"
+    "hex": "#9ca3af"
   },
   "yarn-package-global": {
     "ansi": 55,
@@ -1413,7 +1413,7 @@
   },
   "yarn-script-command": {
     "ansi": 204,
-    "hex": "#6b7280"
+    "hex": "#9ca3af"
   },
   "yarn-script-global": {
     "ansi": 55,
@@ -1485,6 +1485,6 @@
   },
   "youtube-video-title": {
     "ansi": 204,
-    "hex": "#6b7280"
+    "hex": "#9ca3af"
   }
 }
