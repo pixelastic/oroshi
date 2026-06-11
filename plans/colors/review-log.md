@@ -163,3 +163,30 @@ executeCommand("$OROSHI_ROOT/tools/term/zsh/config/theming/colors-build")
 ```
 **Problem:** Reviewer flagged as potentially not matching "same pattern as `projects-build`".
 **Reason skipped:** This IS the same pattern — `projects-build` trigger uses `executeCommand("$OROSHI_ROOT/tools/term/zsh/config/theming/projects-build")`.
+
+## Issue 17 — zshlint rule missingIconsLoad
+
+### Spec: fzf.zsh missing disable comment
+
+```zsh
+# (no change in diff)
+```
+**Problem:** Reviewer flagged `tools/term/zsh/config/tools/fzf.zsh` as needing a disable comment per spec §3C.
+**Reason skipped:** `fzf.zsh` already calls `icons-load-definitions` on line 9 — no disable comment needed. The rule finds no violation. Reviewer was incorrectly reading the spec.
+
+### Spec: Category A autoloaded functions not in diff
+
+**Problem:** Reviewer noted ~14 autoloaded functions (git, docker, yarn, etc.) not in the dirty diff.
+**Reason skipped:** These were already fixed in prior commits (issue 15 added `icons-load-definitions` to these files). Confirmed: `zsh-lint` on all 21 files with `$ICONS[` access shows zero `missingIconsLoad` violations.
+
+### Standards: yarn.zsh disable comments on separate lines
+
+```zsh
+# zsh-lint disable=missingIconsLoad
+displayedString+="$ICONS[node-link] "
+...
+# zsh-lint disable=missingColorsLoad
+OROSHI_PROMPT_PARTS[yarn_link]="%F{$COLORS[string]}${displayedString}%f"
+```
+**Problem:** Two disables on separate lines, inconsistent with single-line combined format in other files.
+**Reason skipped:** The ICONS and COLORS triggers are on different lines in `yarn.zsh`, requiring separate disable comments above each trigger. The single-line combined format only applies when both triggers are on the same line.

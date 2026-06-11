@@ -1,5 +1,8 @@
 # Ruby
 
+colors-load-definitions
+icons-load-definitions
+
 # Display project ruby version
 # - $ICONS[ruby] (red) if no global ruby
 # - $ICONS[ruby] (orange) if no global rbenv
@@ -45,6 +48,7 @@ function oroshi-prompt-populate:bundle_install_in_progress() {
   OROSHI_PROMPT_PARTS[bundle_install_in_progress]=""
 
   if bundle-install-in-progress; then
-    OROSHI_PROMPT_PARTS[bundle_install_in_progress]="%F{$COLORS[red-8]}$ICONS[ruby-install-in-progress] %f"
+    local installing="%F{$COLORS[red-8]}$ICONS[ruby-install-in-progress] %f"
+    OROSHI_PROMPT_PARTS[bundle_install_in_progress]="$installing"
   fi
 }

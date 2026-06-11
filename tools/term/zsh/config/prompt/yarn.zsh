@@ -1,3 +1,6 @@
+colors-load-definitions
+icons-load-definitions
+
 # Add icons for each known yarn linked project
 function oroshi-prompt-populate:yarn_link() {
   OROSHI_PROMPT_PARTS[yarn_link]=""
@@ -42,6 +45,7 @@ function oroshi-prompt-populate:yarn_install_in_progress() {
   OROSHI_PROMPT_PARTS[yarn_install_in_progress]=""
 
   if yarn-install-in-progress; then
-    OROSHI_PROMPT_PARTS[yarn_install_in_progress]="%F{$COLORS[green-8]}$ICONS[node-install-in-progress] %f"
+    local installing="%F{$COLORS[green-8]}$ICONS[node-install-in-progress] %f"
+    OROSHI_PROMPT_PARTS[yarn_install_in_progress]="$installing"
   fi
 }

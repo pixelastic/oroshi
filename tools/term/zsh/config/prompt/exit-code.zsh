@@ -4,6 +4,9 @@
 # - Red if error
 # - Purple if any other error code
 function oroshi-prompt-populate:exit_code() {
+  colors-load-definitions
+  icons-load-definitions
+
   OROSHI_PROMPT_PARTS[exit_code]=""
 
   # Error

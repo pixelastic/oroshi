@@ -114,7 +114,8 @@
   {
     "id": "17",
     "issue": "issues/17-zshlint-rule-missing-icons-load.md",
-    "done": false,
+    "done": true,
+    "recap": "Rule and tests already existed from issue 15; added missingIconsLoad+missingColorsLoad disable comments to 5 sourced prompt config files; fixed commandTooLong violations in git.zsh, ruby.zsh, yarn.zsh.",
     "blocked_by": ["12", "15"]
   },
   {

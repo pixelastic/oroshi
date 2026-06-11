@@ -1,5 +1,8 @@
 # Node
 
+colors-load-definitions
+icons-load-definitions
+
 # Add an icon if in a monorepo
 function oroshi-prompt-populate:node_monorepo() {
   OROSHI_PROMPT_PARTS[node_monorepo]=""

@@ -1,6 +1,9 @@
 # Git
 # Display git-related information
 
+colors-load-definitions
+icons-load-definitions
+
 # Display a colored coded git symbol
 # - Green if no files were changed
 # - Red if any file has been added/deleted/modified
@@ -138,7 +141,9 @@ function oroshi-prompt-populate:git_rebase_status() {
 
   local headNameColor="$(git-branch-color $headName)"
 
-  OROSHI_PROMPT_PARTS[git_rebase_status]="%B%F{$COLORS[git-rebase]}$ICONS[git-rebase] ${stepCurrent}/${stepMax}%f%b %F{$headNameColor}${headName}%f:%F{$COLORS[git-commit]}${onto}%f"
+  local rebaseStatus="%B%F{$COLORS[git-rebase]}$ICONS[git-rebase] ${stepCurrent}/${stepMax}%f%b"
+  rebaseStatus+=" %F{$headNameColor}${headName}%f:%F{$COLORS[git-commit]}${onto}%f"
+  OROSHI_PROMPT_PARTS[git_rebase_status]="$rebaseStatus"
 }
 
 # Returns the number of currently opened issues
@@ -198,7 +203,8 @@ function oroshi-prompt-populate:git_pullrequests() {
 
   local pullrequestCount="$(<$pullrequestsCacheFile)"
   if [[ $pullrequestCount != "0" ]]; then
-    OROSHI_PROMPT_PARTS[git_pullrequests]="%F{$COLORS[git-pullrequest]}$ICONS[git-pr] ${pullrequestCount}%f"
+    local prStatus="%F{$COLORS[git-pullrequest]}$ICONS[git-pr] ${pullrequestCount}%f"
+    OROSHI_PROMPT_PARTS[git_pullrequests]="$prStatus"
   fi
 }
 
