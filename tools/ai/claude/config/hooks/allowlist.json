@@ -144,6 +144,7 @@
   "rtk rewrite",
   "rtk --help",
   "rtk --version",
+  "rtk-can-rewrite",
   "sar",
   "scripts/bin/ai/review/review-diff",
   "scripts/bin/term/bats/bats",
