@@ -54,10 +54,13 @@ for violationLine in $ruleLines; do
   [[ "${fileContentCache[$sourceFile]}" == "" ]] && fileContentCache[$sourceFile]="$(<"$sourceFile")"
   local -a sourceLines=("${(@f)fileContentCache[$sourceFile]}")
 
-  # Suppress if the line above the violation has the matching disable comment
+  # Suppress if the line above the violation has a disable comment listing this rule
   local lineAbove=""
   [[ $lineNumber -gt 1 ]] && lineAbove=$sourceLines[$((lineNumber - 1))]
-  [[ "$lineAbove" =~ "# ${disablePrefix} disable=${ruleCode}([[:space:]]|$)" ]] && continue
+  if [[ "$lineAbove" =~ "# ${disablePrefix} disable=([^[:space:]]+)" ]]; then
+    local -a disableCodes=("${(@s/,/)match[1]}")
+    [[ "${disableCodes[(Ie)$ruleCode]}" -gt 0 ]] && continue
+  fi
 
   filteredLines+=("$violationLine")
 done

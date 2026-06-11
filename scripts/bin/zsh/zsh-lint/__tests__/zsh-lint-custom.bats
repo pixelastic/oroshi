@@ -124,3 +124,20 @@ teardown() {
   bats_run_zsh "$CURRENT" "$file"
   [[ "$output" == *'"code":"noGroupedLocals"'* ]]
 }
+
+@test "zsh-lint disable=X,Y suppresses both violations on next line" {
+  local file="$BATS_TMP_DIR/test.zsh"
+  printf '# zsh-lint disable=noGroupedLocals,singleEqualsInTest\nlocal a b; [[ "$x" = "$y" ]]\n' >"$file"
+  bats_run_zsh "$CURRENT" "$file"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == '[]' ]]
+}
+
+@test "zsh-lint disable=X,Y does not suppress unlisted rule on same line" {
+  local file="$BATS_TMP_DIR/test.zsh"
+  printf '# zsh-lint disable=noGroupedLocals,singleEqualsInTest\nlocal a b; [[ "$x" = "$y" ]]; name=$(basename "$path")\n' >"$file"
+  bats_run_zsh "$CURRENT" "$file"
+  [[ "$output" == *'"code":"noExternalBasename"'* ]]
+  [[ "$output" != *'"code":"noGroupedLocals"'* ]]
+  [[ "$output" != *'"code":"singleEqualsInTest"'* ]]
+}

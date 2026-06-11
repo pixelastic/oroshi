@@ -27,3 +27,8 @@ bats scripts/bin/term/bats/bats-lint/__tests__/bats-lint-custom.bats
 - zsh local variable pattern: `local var="$(cmd)"` + manual guard; never split `local`/assignment
 
 ## Discoveries
+
+### Issue 01 — Multi-rule disable
+
+- `noRunZsh` and `noInlineFunction` cannot co-fire on the same line: `noRunZsh` requires `^run zsh` (command call), `noInlineFunction` requires `^funcname()` (function definition) — structurally exclusive. Use `noTopLevelVar,preferZshAutoload` for bats multi-rule tests (both fire on `CURRENT="$OROSHI_ROOT/.../autoload/..."`).
+- The single change point is `lint-custom-run` line ~60; zshlint and batslint both inherit the fix automatically via `lint-custom-run --disable-prefix`.
