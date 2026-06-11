@@ -7,3 +7,17 @@ match_command = "^bats\\b"
 strip_ansi = true
 strip_lines_matching = ["^ok \\d+", "^\\d+\\.\\.\\d+"]
 on_empty = "All tests passed."
+
+[filters.yarn]
+description = "yarn run test (Vitest) output — show failures only"
+match_command = "^yarn run test\\b"
+strip_ansi = true
+strip_lines_matching = [
+  "^\\s+RUN\\s",
+  "^\\s+✓",
+  "^\\s+Start at\\s",
+  "^\\s+Duration\\s",
+  "^✘ Tests are failing",
+  "^\\s*(Test Files|Tests)\\s+\\d+ passed",
+]
+on_empty = "All tests passed."

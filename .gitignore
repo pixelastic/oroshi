@@ -2,12 +2,19 @@
 .env
 .envrc
 
+
 # Build directories
 build/
 dist/
-!tools/term/zsh/config/theming/dist/
 tmp/
 plans/*/scaffold
+
+# Those dist we want to keep in the repo
+!tools/term/zsh/config/theming/dist/
+# Some bats tests can't use the usual $BATS_TMP_DIR because it's in /tmp/ and
+# some scripts (like aberlaas) exlude anything that is in /tmp/ by default.
+# So we use .bats-tmp instead
+.bats-tmp/
 
 # Junk files
 .DS_Store
