@@ -1,4 +1,3 @@
-# vim: set ft=bats:
 bats_load_library 'helper'
 
 setup() {
