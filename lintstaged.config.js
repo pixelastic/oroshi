@@ -12,10 +12,7 @@ export default {
   '{**/*.bats,tools/term/bats/config/*}': ['yarn run lint:bats'],
 
   // JS Scripts
-  'scripts/bin/**/*.js': [
-    'yarn run lint:fix --js',
-    'yarn run test --fail-fast --related',
-  ],
+  '**/*.js': ['yarn run lint:fix --js', 'yarn run test --fail-fast --related'],
   'scripts/yarn/**/*': ['yarn run lint:zsh'],
 
   // BUILD: projects.json and projects.zsh

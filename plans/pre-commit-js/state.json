@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-extend-lintstaged-js-rule.md",
-    "done": false,
+    "done": true,
+    "recap": "Widened lint-staged JS glob from scripts/bin/**/*.js to **/*.js, preserving both commands.",
     "blocked_by": []
   },
   {
