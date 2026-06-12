@@ -39,3 +39,9 @@ This PRD refactors the BATS helper system to formally enforce three principles d
 ## Discoveries
 
 _Append findings here after each issue is completed._
+
+### Issue 04 — Deep Mocking
+
+- Deep mocking was already fully implemented: `bats_mock` exports `MOCK_OVERRIDE`, and `zshenv-guest.zsh` sources it at the end of every zsh startup — making mocks visible in all spawned processes automatically.
+- `bats_run_zsh` had a redundant explicit `source mock.zsh` prefix; it was removed — `MOCK_OVERRIDE` is the single mechanism.
+- In zsh, a defined function takes precedence over a same-named PATH command — no wrapper scripts needed for mock priority.

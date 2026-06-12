@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-deep-mocking.md",
-    "done": false,
+    "done": true,
+    "recap": "Added 4 deep-mocking tests to helper.bats (same-process, subshell, script-chain, direct mock-wins); no helper changes needed — MOCK_OVERRIDE+zshenv-guest already handled propagation; removed redundant mock.zsh source prefix from bats_run_zsh.",
     "blocked_by": ["03"]
   },
   {
