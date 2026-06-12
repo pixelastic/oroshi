@@ -18,7 +18,7 @@ batsLintRule_preferBatchMock() {
   for line in "${(@f)content}"; do
     (( ++lineno ))
 
-    if [[ "$line" =~ '^@test' ]]; then
+    if [[ "$line" =~ '^@test' || "$line" =~ '^setup\(\)' ]]; then
       inTest=1
       mockCount=0
       continue

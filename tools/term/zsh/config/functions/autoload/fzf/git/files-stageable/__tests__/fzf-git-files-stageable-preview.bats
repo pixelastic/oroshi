@@ -5,17 +5,11 @@ setup() {
   CURRENT="$OROSHI_ZSH_AUTOLOAD/fzf/git/files-stageable/fzf-git-files-stageable-preview"
 
   git-directory-root() { echo "$BATS_TMP_DIR"; }
-  bats_mock git-directory-root
-
   # Simulates diff output for a deleted file (non-empty so we hit the diff branch)
   git() { printf -- '-deleted line\n'; }
-  bats_mock git
-
   img-display() { true; }
-  bats_mock img-display
-
   fzf-fs-shared-preview-header() { echo "HEADER_CALLED"; }
-  bats_mock fzf-fs-shared-preview-header
+  bats_mock git-directory-root git img-display fzf-fs-shared-preview-header
 }
 
 teardown() {

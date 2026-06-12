@@ -71,3 +71,23 @@ run_this_rule() {
     '}'
   expect_clean
 }
+
+@test "single bats_mock in setup() is clean" {
+  run_this_rule \
+    'setup() {' \
+    '  fn1() { :; }' \
+    '  bats_mock fn1' \
+    '}'
+  expect_clean
+}
+
+@test "two bats_mock in setup() flags second call" {
+  run_this_rule \
+    'setup() {' \
+    '  fn1() { :; }' \
+    '  bats_mock fn1' \
+    '  fn2() { :; }' \
+    '  bats_mock fn2' \
+    '}'
+  expect_rule_violation preferBatchMock 5
+}
