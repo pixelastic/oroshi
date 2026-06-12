@@ -50,7 +50,6 @@ displayLintErrors() {
       --raw-output \
       --arg root "$gitRoot" \
       '.[] | "\(.file | ltrimstr($root + "/")):\(.line):\(.column): \(.code): \(.message)"'
-  return 1
 }
 
 if [[ $hasZshFiles == "1" ]]; then

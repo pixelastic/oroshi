@@ -2,146 +2,182 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/file/git-file-lint"
-  cd "$BATS_GIT_DIR" || return
 }
 
 teardown() {
   bats_cleanup
 }
 
-@test "shows formatted violations for a dirty ZSH file" {
-  echo 'echo hello' > "$BATS_GIT_DIR/bad.zsh"
-  bats_git add bad.zsh
-  bats_git commit --quiet -m "add bad.zsh"
-  echo 'local a b c' >> "$BATS_GIT_DIR/bad.zsh"
+# ─── RETURN EARLY ─────────────────────────────────────────────────────────────
 
-  bats_run_zsh "$CURRENT"
-  [ "$status" -eq 1 ]
-  [[ "$output" =~ bad.zsh ]]
-  [[ "$output" =~ ": noGroupedLocals: " ]]
-  [[ ! "$output" =~ "\"level\"" ]]
-  [[ ! "$output" =~ ": warning" ]]
-  [[ ! "$output" =~ ": error" ]]
-}
-
-@test "exits silently for a dirty ZSH file with no violations" {
-  echo 'echo hello' > "$BATS_GIT_DIR/clean.zsh"
-  bats_git add clean.zsh
-  bats_git commit --quiet -m "add clean.zsh"
-  echo 'echo world' >> "$BATS_GIT_DIR/clean.zsh"
-
-  bats_run_zsh "$CURRENT"
+@test "exits 0 when working tree is clean" {
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
 
-@test "exits silently when only non-ZSH files are dirty" {
-  echo 'console.log("hello")' > "$BATS_GIT_DIR/app.js"
-  bats_git add app.js
-  bats_git commit --quiet -m "add app.js"
-  echo 'console.log("world")' >> "$BATS_GIT_DIR/app.js"
+@test "exits 0 when all dirty files are deleted" {
+  echo 'content' > "$BATS_GIT_DIR/script.zsh"
+  bats_git add script.zsh
+  bats_git commit --quiet -m "add script.zsh"
+  rm "$BATS_GIT_DIR/script.zsh"
 
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
 
-@test "exits 0 on a clean working tree" {
-  bats_run_zsh "$CURRENT"
+# ─── BATS ─────────────────────────────────────────────────────────────────────
+
+@test "exits 0 when is-bats true and bats-lint has no errors" {
+  echo 'content' > "$BATS_GIT_DIR/test.bats"
+  bats_git add test.bats
+  bats_git commit --quiet -m "add test.bats"
+  echo 'changed' >> "$BATS_GIT_DIR/test.bats"
+
+  is-zsh() { return 1; }
+  is-bats() { return 0; }
+  bats-lint() { printf '[]'; }
+  bats_mock is-zsh is-bats bats-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [ "$status" -eq 0 ]
+  [ "$output" = "" ]
 }
 
-@test "shows relative path, not absolute path" {
-  echo 'echo hello' > "$BATS_GIT_DIR/bad.zsh"
-  bats_git add bad.zsh
-  bats_git commit --quiet -m "add bad.zsh"
-  echo 'local a b c' >> "$BATS_GIT_DIR/bad.zsh"
+@test "shows BATS header, errors and relative paths when is-bats true and bats-lint has errors" {
+  echo 'content' > "$BATS_GIT_DIR/test.bats"
+  bats_git add test.bats
+  bats_git commit --quiet -m "add test.bats"
+  echo 'changed' >> "$BATS_GIT_DIR/test.bats"
 
-  bats_run_zsh "$CURRENT"
+  is-zsh() { return 1; }
+  is-bats() { return 0; }
+  bats-lint() {
+    printf '[{"file":"%s","line":1,"column":1,"code":"noRunZsh","message":"use bats_run_zsh"}]' \
+      "$1"
+  }
+  bats_mock is-zsh is-bats bats-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [ "$status" -eq 1 ]
-  [[ "$output" =~ bad.zsh ]]
+  [[ "$output" =~ "── BATS ──" ]]
+  [[ "$output" =~ test.bats:1:1:\ noRunZsh: ]]
   [[ ! "$output" =~ $BATS_GIT_DIR ]]
 }
 
-@test "skips deleted ZSH files without error" {
-  echo 'echo hello' > "$BATS_GIT_DIR/todelete.zsh"
-  bats_git add todelete.zsh
-  bats_git commit --quiet -m "add todelete.zsh"
-  rm "$BATS_GIT_DIR/todelete.zsh"
+@test "exits 0 when is-bats is false for all dirty files" {
+  echo 'content' > "$BATS_GIT_DIR/test.bats"
+  bats_git add test.bats
+  bats_git commit --quiet -m "add test.bats"
+  echo 'changed' >> "$BATS_GIT_DIR/test.bats"
 
-  bats_run_zsh "$CURRENT"
+  is-zsh() { return 1; }
+  is-bats() { return 1; }
+  bats_mock is-zsh is-bats
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
 
-@test "surfaces bats violations for a dirty bats file" {
-  printf '#!/usr/bin/env bats\n@test "foo" { true; }\n' > "$BATS_GIT_DIR/bad.bats"
-  bats_git add bad.bats
-  bats_git commit --quiet -m "add bad.bats"
-  printf 'run zsh -c "echo hello"\n' >> "$BATS_GIT_DIR/bad.bats"
+# ─── ZSH ──────────────────────────────────────────────────────────────────────
 
-  bats_run_zsh "$CURRENT"
-  [ "$status" -eq 1 ]
-  [[ "$output" =~ "── BATS ──" ]]
-  [[ "$output" =~ bad.bats ]]
-  [[ "$output" =~ "noRunZsh" ]]
+@test "exits 0 when is-zsh true and zsh-lint has no errors" {
+  echo 'content' > "$BATS_GIT_DIR/script.zsh"
+  bats_git add script.zsh
+  bats_git commit --quiet -m "add script.zsh"
+  echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
+
+  is-zsh() { return 0; }
+  is-bats() { return 1; }
+  zsh-lint() { printf '[]'; }
+  bats_mock is-zsh is-bats zsh-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [ "$status" -eq 0 ]
+  [ "$output" = "" ]
 }
 
-@test "shows zsh section header for zsh violations" {
-  echo 'echo hello' > "$BATS_GIT_DIR/bad.zsh"
-  bats_git add bad.zsh
-  bats_git commit --quiet -m "add bad.zsh"
-  echo 'local a b c' >> "$BATS_GIT_DIR/bad.zsh"
+@test "shows ZSH header, errors and relative paths when is-zsh true and zsh-lint has errors" {
+  echo 'content' > "$BATS_GIT_DIR/script.zsh"
+  bats_git add script.zsh
+  bats_git commit --quiet -m "add script.zsh"
+  echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
 
-  bats_run_zsh "$CURRENT"
+  is-zsh() { return 0; }
+  is-bats() { return 1; }
+  zsh-lint() {
+    printf '[{"file":"%s","line":2,"column":1,"code":"noGroupedLocals","message":"group locals"}]' \
+      "$1"
+  }
+  bats_mock is-zsh is-bats zsh-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [ "$status" -eq 1 ]
   [[ "$output" =~ "── ZSH ──" ]]
+  [[ "$output" =~ script.zsh:2:1:\ noGroupedLocals: ]]
+  [[ ! "$output" =~ $BATS_GIT_DIR ]]
 }
 
-@test "surfaces bats violations for a dirty extensionless file when is-bats returns true for it" {
-  printf '#!/usr/bin/env bats\n@test "foo" { true; }\n' > "$BATS_GIT_DIR/helper"
-  bats_git add helper
-  bats_git commit --quiet -m "add helper"
-  printf 'run zsh -c "echo hello"\n' >> "$BATS_GIT_DIR/helper"
+@test "exits 0 when is-zsh is false for all dirty files" {
+  echo 'content' > "$BATS_GIT_DIR/script.zsh"
+  bats_git add script.zsh
+  bats_git commit --quiet -m "add script.zsh"
+  echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
 
-  is-bats() { return 0; }
-  bats_mock is-bats
-
-  bats_run_zsh "$CURRENT"
-  [ "$status" -eq 1 ]
-  [[ "$output" =~ "── BATS ──" ]]
-  [[ "$output" =~ "helper" ]]
-  [[ "$output" =~ "noRunZsh" ]]
-}
-
-@test "does not lint a dirty bats file when is-bats rejects it" {
-  printf '#!/usr/bin/env bats\n@test "foo" { true; }\n' > "$BATS_GIT_DIR/bad.bats"
-  bats_git add bad.bats
-  bats_git commit --quiet -m "add bad.bats"
-  printf 'run zsh -c "echo hello"\n' >> "$BATS_GIT_DIR/bad.bats"
-
+  is-zsh() { return 1; }
   is-bats() { return 1; }
-  bats_mock is-bats
+  bats_mock is-zsh is-bats
 
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
 
-@test "shows only bats section when zsh is clean and bats violates" {
-  echo 'echo hello' > "$BATS_GIT_DIR/clean.zsh"
-  bats_git add clean.zsh
-  bats_git commit --quiet -m "add clean.zsh"
-  echo 'echo world' >> "$BATS_GIT_DIR/clean.zsh"
+# ─── ALL ──────────────────────────────────────────────────────────────────────
 
-  printf '#!/usr/bin/env bats\n@test "foo" { true; }\n' > "$BATS_GIT_DIR/bad.bats"
-  bats_git add bad.bats
-  bats_git commit --quiet -m "add bad.bats"
-  printf 'run zsh -c "echo hello"\n' >> "$BATS_GIT_DIR/bad.bats"
+@test "shows both headers when both zsh and bats have errors" {
+  echo 'content' > "$BATS_GIT_DIR/script.zsh"
+  echo 'content' > "$BATS_GIT_DIR/test.bats"
+  bats_git add script.zsh test.bats
+  bats_git commit --quiet -m "add files"
+  echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
+  echo 'changed' >> "$BATS_GIT_DIR/test.bats"
 
-  bats_run_zsh "$CURRENT"
+  is-zsh() { [[ "$1" == *.zsh ]]; }
+  is-bats() { [[ "$1" == *.bats ]]; }
+  zsh-lint() {
+    printf '[{"file":"%s","line":1,"column":1,"code":"noGroupedLocals","message":"group locals"}]' \
+      "$1"
+  }
+  bats-lint() {
+    printf '[{"file":"%s","line":1,"column":1,"code":"noRunZsh","message":"use bats_run_zsh"}]' \
+      "$1"
+  }
+  bats_mock is-zsh is-bats zsh-lint bats-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [ "$status" -eq 1 ]
+  [[ "$output" =~ "── ZSH ──" ]]
   [[ "$output" =~ "── BATS ──" ]]
-  [[ ! "$output" =~ "── ZSH ──" ]]
+}
+
+@test "exits 0 when both zsh and bats have no errors" {
+  echo 'content' > "$BATS_GIT_DIR/script.zsh"
+  echo 'content' > "$BATS_GIT_DIR/test.bats"
+  bats_git add script.zsh test.bats
+  bats_git commit --quiet -m "add files"
+  echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
+  echo 'changed' >> "$BATS_GIT_DIR/test.bats"
+
+  is-zsh() { [[ "$1" == *.zsh ]]; }
+  is-bats() { [[ "$1" == *.bats ]]; }
+  zsh-lint() { printf '[]'; }
+  bats-lint() { printf '[]'; }
+  bats_mock is-zsh is-bats zsh-lint bats-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [ "$status" -eq 0 ]
+  [ "$output" = "" ]
 }
