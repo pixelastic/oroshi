@@ -21,3 +21,41 @@ teardown() {
   [ "$status" -eq 0 ]
   [[ "$output" == "$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/term/bats/bats-fixture-function-baz" ]]
 }
+
+# --- Deep-mocking ---
+
+@test "mock baz - same process function chain" {
+  bats-fixture-function-baz() { echo "mocked"; }
+  bats_mock bats-fixture-function-baz
+
+  bats_run_zsh "bats-fixture-function-foo"
+  [ "$status" -eq 0 ]
+  [ "$output" = "mocked" ]
+}
+
+@test "mock baz - subshell" {
+  bats-fixture-function-baz() { echo "mocked"; }
+  bats_mock bats-fixture-function-baz
+
+  bats_run_zsh 'echo $(bats-fixture-function-foo)'
+  [ "$status" -eq 0 ]
+  [ "$output" = "mocked" ]
+}
+
+@test "mock baz - external PATH script chain" {
+  bats-fixture-script-baz() { echo "mocked"; }
+  bats_mock bats-fixture-script-baz
+
+  bats_run_zsh "bats-fixture-script-foo"
+  [ "$status" -eq 0 ]
+  [ "$output" = "mocked" ]
+}
+
+@test "mock wins over worktree binary" {
+  bats-fixture-script-baz() { echo "mocked"; }
+  bats_mock bats-fixture-script-baz
+
+  bats_run_zsh "bats-fixture-script-baz"
+  [ "$status" -eq 0 ]
+  [ "$output" = "mocked" ]
+}

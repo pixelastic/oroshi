@@ -119,13 +119,8 @@ bats_run_zsh() {
   # Stop if no command provided
   [[ "$zshCommand" == "" ]] && return 1
 
-  # Add optional mock file
-  local mockFile="$BATS_TMP_DIR/mock.zsh"
-  local zshCommandPrefix=""
-  [[ -f ${mockFile} ]] && zshCommandPrefix="source '${mockFile}';"
-
   # bats-lint disable=noRunZsh
-  run zsh -c "${zshCommandPrefix} $zshCommand"
+  run zsh -c "$zshCommand"
   return
 }
 
