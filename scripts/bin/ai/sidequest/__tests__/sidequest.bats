@@ -2,8 +2,6 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$BATS_TEST_DIRNAME/../sidequest"
-  export OROSHI_WORKTREES_DIR_MOCK="$BATS_TMP_DIR/worktrees"
 }
 
 teardown() {
@@ -16,7 +14,7 @@ teardown() {
   kitty-tab-create() { return 0; }
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "sidequest"
   [ "$status" -ne 0 ]
 }
 
@@ -26,7 +24,8 @@ teardown() {
   kitty-tab-create() { return 0; }
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
-  bats_run_zsh "$CURRENT" "my-slug"
+  bats_run_zsh "sidequest my-slug"
+  bats_debug "$output"
   [ "$status" -eq 0 ]
   [[ "$output" == "WORKTREE:my-slug" ]]
 }
@@ -37,7 +36,7 @@ teardown() {
   kitty-tab-create() { echo "TAB:$*"; }
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
-  bats_run_zsh "$CURRENT" "my-slug"
+  bats_run_zsh "sidequest my-slug"
   [ "$status" -eq 0 ]
   [[ "$output" == *"TAB:my-slug"* ]]
   [[ "$output" == *"--cwd $BATS_TMP_DIR/myrepo--my-slug"* ]]
@@ -49,7 +48,7 @@ teardown() {
   kitty-tab-create() { echo "TAB:$*"; }
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
-  bats_run_zsh "$CURRENT" "my-slug"
+  bats_run_zsh "sidequest my-slug"
   [ "$status" -eq 0 ]
   [[ "$output" == *"--cmd kitty-helper-claude-start"* ]]
 }
@@ -60,7 +59,7 @@ teardown() {
   kitty-tab-create() { echo "TAB:$*"; }
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
-  bats_run_zsh "$CURRENT" "my-slug" --prompt "@/tmp/fix-ralph.md"
+  bats_run_zsh "sidequest my-slug --prompt @/tmp/fix-ralph.md"
   [ "$status" -eq 0 ]
   [[ "$output" == *"--cmd kitty-helper-claude-start @/tmp/fix-ralph.md"* ]]
 }
@@ -71,7 +70,7 @@ teardown() {
   kitty-tab-create() { echo "TAB:$*"; }
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
-  bats_run_zsh "$CURRENT" "my-slug"
+  bats_run_zsh "sidequest my-slug"
   [ "$status" -eq 0 ]
   [[ "$output" == *"--focus"* ]]
 }
@@ -82,7 +81,7 @@ teardown() {
   kitty-tab-create() { echo "TAB:$*"; }
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
-  bats_run_zsh "$CURRENT" "my-slug" --no-focus
+  bats_run_zsh "sidequest my-slug --no-focus"
   [ "$status" -eq 0 ]
   [[ "$output" != *"--focus"* ]]
 }
