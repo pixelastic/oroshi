@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-worktree-aware.md",
-    "done": false,
+    "done": true,
+    "recap": "Verified that worktree-aware behavior was already fully implemented via CWD inheritance and zshenv-host/guest split; fixture chains (script + function foo→bar→baz) and helper.bats tests were already committed and passing.",
     "blocked_by": ["01", "02"]
   },
   {
