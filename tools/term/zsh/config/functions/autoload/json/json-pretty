@@ -14,11 +14,11 @@ local jsonArg="$1"
 
 local jsonData=""
 if [[ "$inputFile" != "" ]]; then
-  jsonData="$(cat -- "$inputFile")"
+  jsonData="$(\cat -- "$inputFile")"
 elif [[ "$jsonArg" != "" ]]; then
   jsonData="$jsonArg"
 else
-  jsonData="$(cat -)"
+  jsonData="$(\cat -)"
 fi
 
 ! json-is-valid <<<"$jsonData" && return 1
