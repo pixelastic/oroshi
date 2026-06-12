@@ -190,3 +190,17 @@ OROSHI_PROMPT_PARTS[yarn_link]="%F{$COLORS[string]}${displayedString}%f"
 ```
 **Problem:** Two disables on separate lines, inconsistent with single-line combined format in other files.
 **Reason skipped:** The ICONS and COLORS triggers are on different lines in `yarn.zsh`, requiring separate disable comments above each trigger. The single-line combined format only applies when both triggers are on the same line.
+
+## Issue 18 — missingProjectsLoad zshlint rule
+
+### Standards: test file doesn't use rules-helper
+```bats
+bats_load_library 'helper'
+# uses bats_run_zsh "$CURRENT" instead of run_rule/expect_rule_violation
+```
+**Problem:** Agent claimed test should use `rules-helper` + `run_rule` / `expect_rule_violation` from `__rules/__tests__/`.
+**Reason skipped:** Test is in `__tests__/` (not `__rules/__tests__/`), following the identical pattern as `rule-missing-colors-load.bats` and `rule-missing-icons-load.bats`. The `rules-helper` pattern lives in a different subdirectory for a different subset of rules.
+
+### Spec: disable comments not added to projects-build / dist/projects.zsh / projects-build.bats
+**Problem:** Spec §4 requires disable comments on three files where `PROJECTS[` appears in non-ZSH contexts.
+**Reason skipped:** Spec assumed bare `PROJECTS[` trigger. Implementation uses `${?PROJECTS[` (requires leading `$`) per guidance Issue 16. All three files use bare `PROJECTS[` without `$` (jq strings, array assignments, escaped heredoc refs that don't form `$PROJECTS[`), so no false positives occur. Verified by running `zsh-lint` on each file.

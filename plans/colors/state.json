@@ -121,7 +121,8 @@
   {
     "id": "18",
     "issue": "issues/18-zshlint-rule-missing-projects-load.md",
-    "done": false,
+    "done": true,
+    "recap": "Created rule-missing-projects-load.zsh with $-prefixed trigger pattern (per guidance Issue 16); registered in zsh-lint-custom.zsh; no disable comments needed on projects-build/dist/projects.zsh/projects-build.bats since bare PROJECTS[ lines (jq strings, assignments) don't match.",
     "blocked_by": ["13"]
   }
 ]
