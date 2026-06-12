@@ -17,6 +17,11 @@ Still terminal issue when running several ralphs
 I should update my eslint rules to warn about using for of instead of lodash, so
 the agents know when/how to write
 
+Check if we still need export OROSHI_ROOT_DEFAULT="$OROSHI_ROOT" and why
+
+Double check we no longer use ZSH_CONFIG_PATH
+nor OROSHI_ZSH_AUTOLOAD
+
 ---
 ## Cleanup
 
