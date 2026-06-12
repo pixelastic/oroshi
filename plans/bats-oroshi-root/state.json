@@ -30,7 +30,8 @@
   {
     "id": "05",
     "issue": "issues/05-root-override.md",
-    "done": false,
+    "done": true,
+    "recap": "Added 2 root-override tests to helper.bats: one verifying baz sees the overridden OROSHI_ROOT, one composability test verifying both override and binary resolution (via worktree PATH) work in the same setup; no helper changes needed.",
     "blocked_by": ["03"]
   }
 ]

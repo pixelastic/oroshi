@@ -45,3 +45,9 @@ _Append findings here after each issue is completed._
 - Deep mocking was already fully implemented: `bats_mock` exports `MOCK_OVERRIDE`, and `zshenv-guest.zsh` sources it at the end of every zsh startup — making mocks visible in all spawned processes automatically.
 - `bats_run_zsh` had a redundant explicit `source mock.zsh` prefix; it was removed — `MOCK_OVERRIDE` is the single mechanism.
 - In zsh, a defined function takes precedence over a same-named PATH command — no wrapper scripts needed for mock priority.
+
+### Issue 05 — Root Override
+
+- Root override was already correctly implemented: `bats_mock_oroshi_root` writes `export OROSHI_ROOT=…` to mock.zsh (sourced after PATH setup in zshenv-guest.zsh), so PATH stays anchored to the launcher's root while `$OROSHI_ROOT` is overridden.
+- The orthogonality guarantee holds because `oroshi-reload-path` is only called once (before mock sourcing) with the real root; the mock never calls it.
+- A single "composable" test proves both mechanisms simultaneously: mock baz + override root in the same setup, then assert both the overridden OROSHI_ROOT and the unaffected binary path.

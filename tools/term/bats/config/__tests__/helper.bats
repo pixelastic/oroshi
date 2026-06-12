@@ -59,3 +59,31 @@ teardown() {
   [ "$status" -eq 0 ]
   [ "$output" = "mocked" ]
 }
+
+# --- Root Override ---
+
+@test "root override: baz sees overridden OROSHI_ROOT" {
+  bats-fixture-script-baz() { echo "$OROSHI_ROOT"; }
+  bats_mock bats-fixture-script-baz
+
+  bats_mock_oroshi_root "/tmp/test-root"
+
+  bats_run_zsh "bats-fixture-script-foo"
+  [ "$status" -eq 0 ]
+  [ "$output" = "/tmp/test-root" ]
+}
+
+@test "root override: composable with worktree-aware" {
+  bats-fixture-script-baz() { echo "$OROSHI_ROOT"; }
+  bats_mock bats-fixture-script-baz
+
+  bats_mock_oroshi_root "/tmp/test-root"
+
+  bats_run_zsh "bats-fixture-script-foo"
+  [ "$status" -eq 0 ]
+  [ "$output" = "/tmp/test-root" ]
+
+  bats_run_zsh "which bats-fixture-script-bar"
+  [ "$status" -eq 0 ]
+  [[ "$output" == "$OROSHI_ROOT/scripts/bin/term/bats/bats-fixture-script-bar" ]]
+}

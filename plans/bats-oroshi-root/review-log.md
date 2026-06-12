@@ -21,3 +21,17 @@
 ### Standards: `oroshi-export-zsh-paths` call in helper (false alarm)
 **Problem:** Reviewer flagged the call at `helper:109` as calling a removed function.
 **Reason skipped:** `oroshi-export-zsh-paths` is still defined and called in `zshenv-guest.zsh` (lines 17–22). Not a violation.
+
+## Issue 05 — Root Override
+
+### Missing default test (`$OROSHI_ROOT` equals launcher root)
+**Problem:** Spec item 1 and Behavioral Test 1 require a test for default (no override) behavior.
+**Reason skipped:** User explicitly removed this test as redundant — the composable test's setup already implies it.
+
+### Missing standalone binary-resolution test
+**Problem:** Spec item 3 calls for a dedicated `which bar` test after override.
+**Reason skipped:** User explicitly removed this test — covered by the composable test.
+
+### Composable test uses sequential `bats_run_zsh` calls (not a single subprocess)
+**Problem:** Reviewer interpreted "both work simultaneously" as requiring a single subprocess invocation.
+**Reason skipped:** Two sequential calls in the same test context prove composability of the mock setup; `which` and the script chain are necessarily separate invocations.
