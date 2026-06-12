@@ -236,7 +236,6 @@ function oroshi-chpwd() {
   [[ "$isInOroshiWorktree" == "1" ]] && newRoot="$(git-directory-root)"
 
   export OROSHI_ROOT="$newRoot"
-  oroshi-export-zsh-paths "$OROSHI_ROOT"
   oroshi-reload-path "$OROSHI_ROOT"
   oroshi-reload-fpath "$OROSHI_ROOT"
 }

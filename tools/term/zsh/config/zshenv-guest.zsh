@@ -13,14 +13,6 @@ export OROSHI_TMP_FOLDER="$HOME/local/tmp/oroshi"
 # available allow me to define per-host config easily.
 export HOSTNAME="$(hostname)"
 
-# Derives and exports ZSH_CONFIG_PATH and OROSHI_ZSH_AUTOLOAD from a given root
-oroshi-export-zsh-paths() {
-  local root="$1"
-  export ZSH_CONFIG_PATH="$root/tools/term/zsh/config"
-  export OROSHI_ZSH_AUTOLOAD="$ZSH_CONFIG_PATH/functions/autoload"
-}
-oroshi-export-zsh-paths "$OROSHI_ROOT"
-
 # Define $PATH, adding all scripts of this worktree
 typeset -aU path
 source $OROSHI_ROOT/tools/term/zsh/config/path.zsh

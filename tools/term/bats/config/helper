@@ -99,8 +99,8 @@ bats_mock() {
 }
 
 # bats_mock_oroshi_root <path>
-# Appends OROSHI_ROOT + derived OROSHI_ZSH_AUTOLOAD export to
-# $BATS_TMP_DIR/mock.zsh so subprocesses launched by bats_run_zsh pick them up.
+# Appends an OROSHI_ROOT export to $BATS_TMP_DIR/mock.zsh so subprocesses
+# launched by bats_run_zsh pick it up.
 # Composes with bats_mock. Auto-creates sandbox if needed.
 # Usage: bats_mock_oroshi_root "$BATS_TMP_DIR"
 bats_mock_oroshi_root() {
@@ -110,7 +110,6 @@ bats_mock_oroshi_root() {
   # zshenv-guest.zsh will pick it up and source it in every zsh call
   export MOCK_OVERRIDE="$BATS_TMP_DIR/mock.zsh"
   echo "export OROSHI_ROOT=\"$1\"" >> "$BATS_TMP_DIR/mock.zsh"
-  echo "oroshi-export-zsh-paths \"$1\"" >> "$BATS_TMP_DIR/mock.zsh"
 }
 
 # bats_run_zsh <zsh-command>

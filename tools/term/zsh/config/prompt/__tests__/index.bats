@@ -1,38 +1,30 @@
 bats_load_library 'helper'
 
 setup() {
-  bats_git_dir 'my-repo'
-  bats_git_worktree 'fix/bug'
+  bats_tmp_dir
+  CURRENT="$BATS_TEST_DIRNAME/../index.zsh"
 }
 
 teardown() {
   bats_cleanup
 }
 
-@test "GIT_DIRECTORY_IS_WORKTREE is 1 inside a linked worktree" {
-  cd "${BATS_GIT_WORKTREES}fix-bug"
-  local script="$BATS_TMP_DIR/git-env-worktree.zsh"
-  cat >"$script" <<'ZSCRIPT'
-source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
-source ~/.oroshi/tools/term/zsh/config/prompt/index.zsh
-oroshi-git-env-store
-echo "$GIT_DIRECTORY_IS_WORKTREE"
-ZSCRIPT
-  bats_run_zsh "$script"
+@test "GIT_DIRECTORY_IS_WORKTREE is 1 when in a linked worktree" {
+  git-directory-is-worktree() { return 0; }
+  git-directory-is-repository() { return 0; }
+  bats_mock git-directory-is-worktree git-directory-is-repository
+
+  bats_run_zsh "source $CURRENT && oroshi-git-env-store && echo \$GIT_DIRECTORY_IS_WORKTREE"
   [ "$status" -eq 0 ]
   [ "$output" = "1" ]
 }
 
-@test "GIT_DIRECTORY_IS_WORKTREE is 0 in the Git Repo Main" {
-  cd "$BATS_GIT_DIR"
-  local script="$BATS_TMP_DIR/git-env-main.zsh"
-  cat >"$script" <<'ZSCRIPT'
-source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
-source ~/.oroshi/tools/term/zsh/config/prompt/index.zsh
-oroshi-git-env-store
-echo "$GIT_DIRECTORY_IS_WORKTREE"
-ZSCRIPT
-  bats_run_zsh "$script"
+@test "GIT_DIRECTORY_IS_WORKTREE is 0 when not in a linked worktree" {
+  git-directory-is-worktree() { return 1; }
+  git-directory-is-repository() { return 0; }
+  bats_mock git-directory-is-worktree git-directory-is-repository
+
+  bats_run_zsh "source $CURRENT && oroshi-git-env-store && echo \$GIT_DIRECTORY_IS_WORKTREE"
   [ "$status" -eq 0 ]
   [ "$output" = "0" ]
 }
