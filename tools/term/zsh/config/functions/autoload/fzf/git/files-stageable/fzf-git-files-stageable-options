@@ -11,3 +11,4 @@ echo "--with-nth=2"
 
 # Preview
 echo "--preview=fzf-git-files-stageable-preview {1}"
+echo "--preview-window=wrap"
