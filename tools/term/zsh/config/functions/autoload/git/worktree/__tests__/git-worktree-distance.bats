@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/worktree/git-worktree-distance"
+  CURRENT="$BATS_TEST_DIRNAME/../git-worktree-distance"
   bats_git_worktree 'fix/bug'
 }
 

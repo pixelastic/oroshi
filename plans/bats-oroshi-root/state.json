@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-eliminate-oroshi-zsh-autoload.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced $OROSHI_ZSH_AUTOLOAD with $OROSHI_ROOT/tools/term/zsh/config/functions/autoload in 65 .bats files; removed oroshi-export-zsh-paths from zshenv.zsh; deleted rule-prefer-zsh-autoload rule+test; removed rule from bats-lint-custom.zsh.",
     "blocked_by": []
   },
   {

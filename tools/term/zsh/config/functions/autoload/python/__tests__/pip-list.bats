@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/python/pip-list"
+  CURRENT="$BATS_TEST_DIRNAME/../pip-list"
 
   pip-list-raw() { echo "requests▮2.31.0"; }
   bats_mock pip-list-raw

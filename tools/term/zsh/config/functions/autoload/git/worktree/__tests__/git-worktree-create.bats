@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/worktree/git-worktree-create"
+  CURRENT="$BATS_TEST_DIRNAME/../git-worktree-create"
   export OROSHI_WORKTREES_DIR_MOCK="$BATS_TMP_DIR/worktrees"
   mkdir -p "$OROSHI_WORKTREES_DIR_MOCK"
   cd "$BATS_GIT_DIR" || return 1

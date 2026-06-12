@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/project/project-path"
+  CURRENT="$BATS_TEST_DIRNAME/../project-path"
 
   projects-load-definitions() {
     typeset -gA PROJECTS

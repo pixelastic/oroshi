@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/yarn/dependency/yarn-dependency-list-raw"
+  CURRENT="$BATS_TEST_DIRNAME/../yarn-dependency-list-raw"
   export MOCK_DIR="$BATS_TMP_DIR/project"
   mkdir -p "$MOCK_DIR"
 

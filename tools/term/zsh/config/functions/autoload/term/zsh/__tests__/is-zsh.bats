@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/term/zsh/is-zsh"
+  CURRENT="$BATS_TEST_DIRNAME/../is-zsh"
 }
 
 teardown() {

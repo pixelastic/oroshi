@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  export CURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/icons/icons-load-definitions"
+  export CURRENT="$BATS_TEST_DIRNAME/../icons-load-definitions"
 }
 
 teardown() {

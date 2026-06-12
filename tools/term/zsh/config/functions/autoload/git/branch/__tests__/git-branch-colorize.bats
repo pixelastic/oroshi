@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'repo'
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/branch/git-branch-colorize"
+  CURRENT="$BATS_TEST_DIRNAME/../git-branch-colorize"
   cd "$BATS_GIT_DIR" || return
   git-branch-color() { echo 87; }
   bats_mock git-branch-color

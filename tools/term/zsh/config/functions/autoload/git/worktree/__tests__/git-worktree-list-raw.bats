@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/worktree/git-worktree-list-raw"
+  CURRENT="$BATS_TEST_DIRNAME/../git-worktree-list-raw"
   bats_git_worktree 'fix/bug'
   bats_git_worktree 'feat/dark-mode'
 }

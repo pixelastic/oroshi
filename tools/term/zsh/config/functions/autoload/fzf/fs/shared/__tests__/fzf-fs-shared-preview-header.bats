@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/fzf/fs/shared/fzf-fs-shared-preview-header"
+  CURRENT="$BATS_TEST_DIRNAME/../fzf-fs-shared-preview-header"
   bats_git_worktree 'fix/bug'
 
   projects-load-definitions() {

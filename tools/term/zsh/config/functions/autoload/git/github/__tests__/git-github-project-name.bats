@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'testrepo'
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/github/git-github-project-name"
+  CURRENT="$BATS_TEST_DIRNAME/../git-github-project-name"
 }
 
 teardown() {

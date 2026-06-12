@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/fzf/claude/sessions/fzf-claude-sessions-preview"
+  CURRENT="$BATS_TEST_DIRNAME/../fzf-claude-sessions-preview"
   bats_git_worktree 'fix/bug'
   printf '{"cwd":"%s","updatedAt":"2026-01-01","firstMessage":"hello"}\n' "${BATS_GIT_WORKTREES}fix-bug" > "${BATS_TMP_DIR}/session.json"
 

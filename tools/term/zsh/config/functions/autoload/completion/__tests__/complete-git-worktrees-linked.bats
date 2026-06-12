@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/completion/complete-git-worktrees-linked"
+  CURRENT="$BATS_TEST_DIRNAME/../complete-git-worktrees-linked"
   bats_git_worktree 'fix/bug'
   bats_git_worktree 'feat/thing'
 

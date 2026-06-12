@@ -72,13 +72,3 @@ teardown() {
   [ "$status" -eq 0 ]
   [ "$output" = "$fakeHome/.oroshi" ]
 }
-
-# --- Derived variables ---
-
-@test "OROSHI_ZSH_AUTOLOAD reflects detected OROSHI_ROOT" {
-  printf 'unset OROSHI_ROOT; export OROSHI_WORKTREES_DIR_MOCK="%s"; cd "%s"; source "%s"; echo "$OROSHI_ZSH_AUTOLOAD"\n' \
-    "$WORKTREES_DIR" "$WT_ROOT" "$ZSHENV" >"$CURRENT"
-  bats_run_zsh "$CURRENT"
-  [ "$status" -eq 0 ]
-  [ "$output" = "$WT_ROOT/tools/term/zsh/config/functions/autoload" ]
-}

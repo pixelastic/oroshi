@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'repo'
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/remote/git-remote-colorize"
+  CURRENT="$BATS_TEST_DIRNAME/../git-remote-colorize"
   cd "$BATS_GIT_DIR" || return
   git-remote-current() { echo 'origin'; }
   bats_mock git-remote-current

@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/fzf/helpers/fzf-prompt-directory"
+  CURRENT="$BATS_TEST_DIRNAME/../fzf-prompt-directory"
   bats_git_worktree 'fix/bug'
 
   projects-load-definitions() {

@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/project/project-exists"
+  CURRENT="$BATS_TEST_DIRNAME/../project-exists"
 
   projects-load-definitions() { typeset -gA PROJECTS; }
   bats_mock projects-load-definitions

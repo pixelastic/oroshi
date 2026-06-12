@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'repo'
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/branch/git-branch-rename"
+  CURRENT="$BATS_TEST_DIRNAME/../git-branch-rename"
 }
 
 teardown() {

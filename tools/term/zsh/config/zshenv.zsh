@@ -24,13 +24,6 @@ export HOSTNAME="$(hostname)"
 # This will disable the automated loading of compinit in /etc/zsh/zshrc
 skip_global_compinit=1
 
-# Derives and exports OROSHI_ZSH_AUTOLOAD from a given root
-oroshi-export-zsh-paths() {
-  local root="$1"
-  export OROSHI_ZSH_AUTOLOAD="$root/tools/term/zsh/config/functions/autoload"
-}
-oroshi-export-zsh-paths "$OROSHI_ROOT"
-
 # Define the $PATH, with unique values
 # Note: the `typeset -aU path` line can't be included in a sourced function
 # See: https://comp.unix.shell.narkive.com/a2BHsUYm/zsh-s-typeset-u-path-wipes-out-path-path

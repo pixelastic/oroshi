@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/directory/git-directory-dirty-count"
+  CURRENT="$BATS_TEST_DIRNAME/../git-directory-dirty-count"
   cd "$BATS_GIT_DIR" || return
   echo "hello" > tracked.txt
   echo "world" > tracked2.txt

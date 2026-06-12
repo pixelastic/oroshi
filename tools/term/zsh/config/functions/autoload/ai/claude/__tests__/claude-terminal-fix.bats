@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/ai/claude/claude-terminal-fix"
+  CURRENT="$BATS_TEST_DIRNAME/../claude-terminal-fix"
 }
 
 teardown() {

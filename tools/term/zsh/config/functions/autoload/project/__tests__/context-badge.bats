@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/project/context-badge"
+  CURRENT="$BATS_TEST_DIRNAME/../context-badge"
 
   project-name() { echo "my-project"; }
   bats_mock project-name

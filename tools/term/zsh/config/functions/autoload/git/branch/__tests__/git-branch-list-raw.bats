@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/branch/git-branch-list-raw"
+  CURRENT="$BATS_TEST_DIRNAME/../git-branch-list-raw"
 
   # Remote repo: simulates origin with an initial commit
   git init --initial-branch=main --quiet "$BATS_TMP_DIR/remote"

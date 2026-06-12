@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'repo'
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/tag/git-tag-colorize"
+  CURRENT="$BATS_TEST_DIRNAME/../git-tag-colorize"
   cd "$BATS_GIT_DIR" || return
   git-tag-current() { echo 'v1.0'; }
   bats_mock git-tag-current
