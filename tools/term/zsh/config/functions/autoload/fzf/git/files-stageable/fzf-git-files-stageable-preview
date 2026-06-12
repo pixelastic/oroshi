@@ -13,5 +13,6 @@ fi
 
 # Display the diff
 img-display --clear
-fzf-fs-shared-preview-header "$filepath"
+# Skip header for deleted files — they no longer exist on disk
+[[ -e $filepath ]] && fzf-fs-shared-preview-header "$filepath"
 echo $diff
