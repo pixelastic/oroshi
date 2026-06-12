@@ -51,7 +51,7 @@ teardown() {
   [ "$output" = "mocked" ]
 }
 
-@test "mock wins over worktree binary" {
+@test "mock wins over worktree binary when called directly" {
   bats-fixture-script-baz() { echo "mocked"; }
   bats_mock bats-fixture-script-baz
 
