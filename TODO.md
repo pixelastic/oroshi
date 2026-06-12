@@ -20,8 +20,6 @@ the agents know when/how to write
 ---
 ## Cleanup
 
-./scripts/etc seems to contain legacy code. See if needs removal.
-
 I will need to cleanup my scripts. Delete the ones I don't use anymore. Define
 if it should be a script, a zsh autoloaded function, or a plain zsh helper
 function. Group them in clear domains/subdomains, and make it consistent between
