@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-git-file-test-js.md",
-    "done": false,
+    "done": true,
+    "recap": "Added JS branch to git-file-test: accumulates .js paths with is-js && pattern in loop, then runs yarn run test --fail-fast --related inside if/then/fi so test failures propagate through err_return.",
     "blocked_by": ["02"]
   }
 ]

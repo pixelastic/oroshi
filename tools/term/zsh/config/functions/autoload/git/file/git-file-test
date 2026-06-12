@@ -1,4 +1,4 @@
-# Run bats tests for all dirty files that have an associated test
+# Run BATS and Vitest tests for all dirty files that have an associated test
 # Usage:
 # $ git-file-test
 setopt local_options err_return
@@ -8,23 +8,32 @@ local rawFiles="$(git-file-list-dirty-raw)"
 # Nothing to test if working tree is clean
 [[ "$rawFiles" == "" ]] && return 0
 
-local testPaths=()
+local batsPaths=()
+local jsPaths=()
 for rawLine in ${(f)rawFiles}; do
   local splitLine=(${(@s/:/)rawLine})
   local gitStatus=$splitLine[1]
   local filePath=$splitLine[2]
+  local fullPath="${gitRoot}/${filePath}"
 
   # Skip deleted files
   [[ "$gitStatus" == "D" ]] && continue
 
-  local testPath="$(bats-test-path "${gitRoot}/${filePath}")"
-  [[ "$testPath" != "" ]] && testPaths+=("$testPath")
+  is-js "$fullPath" && jsPaths+=("$fullPath")
+
+  local batsPath="$(bats-test-path "$fullPath")"
+  [[ "$batsPath" != "" ]] && batsPaths+=("$batsPath")
 done
 
-# No tests found for any dirty file
-[[ ${#testPaths[@]} -eq 0 ]] && return 0
+# Run Vitest for dirty JS source files (exits 0 silently if no related tests exist)
+if [[ ${#jsPaths[@]} -gt 0 ]]; then
+  yarn run test --fail-fast --related "${jsPaths[@]}"
+fi
 
-local uniquePaths=("${(@u)testPaths}")
+# No bats tests found for any dirty file
+[[ ${#batsPaths[@]} -eq 0 ]] && return 0
+
+local uniquePaths=("${(@u)batsPaths}")
 local relativePaths=("${uniquePaths[@]#${gitRoot}/}")
 cd $gitRoot
 bats "${relativePaths[@]}"
