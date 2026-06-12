@@ -1,5 +1,5 @@
 # Local custom local config
-local localConfig=$OROSHI_ROOT/tools/term/zsh/config/local/${HOSTNAME}.zsh
+local localConfig=${0:A:h}/${HOSTNAME}.zsh
 
 [[ -r $localConfig ]] && source $localConfig
 

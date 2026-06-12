@@ -26,13 +26,13 @@ autoload -U promptinit
 promptinit
 
 # Dependencies {{{
-source $ZSH_CONFIG_PATH/prompt/exit-code.zsh
-source $ZSH_CONFIG_PATH/prompt/git.zsh
-source $ZSH_CONFIG_PATH/prompt/node.zsh
-source $ZSH_CONFIG_PATH/prompt/yarn.zsh
-source $ZSH_CONFIG_PATH/prompt/path.zsh
-source $ZSH_CONFIG_PATH/prompt/ruby.zsh
-source $ZSH_CONFIG_PATH/prompt/slow.zsh
+source ${0:A:h}/exit-code.zsh
+source ${0:A:h}/git.zsh
+source ${0:A:h}/node.zsh
+source ${0:A:h}/yarn.zsh
+source ${0:A:h}/path.zsh
+source ${0:A:h}/ruby.zsh
+source ${0:A:h}/slow.zsh
 # }}}
 
 # Overview {{{

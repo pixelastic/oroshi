@@ -1,6 +1,6 @@
 # Add custom completion functions to fpath and track for reload
-fpath+=($ZSH_CONFIG_PATH/completion/compdef)
-OROSHI_AUTOLOADED_FPATH+=($ZSH_CONFIG_PATH/completion/compdef)
+fpath+=(${0:A:h}/compdef)
+OROSHI_AUTOLOADED_FPATH+=(${0:A:h}/compdef)
 
 # Syntax is
 # :completion:<function>:<completer>:<command>:<argument>:<tag>
@@ -114,8 +114,8 @@ OROSHI_AUTOLOADED_FPATH+=($ZSH_CONFIG_PATH/completion/compdef)
 
 
 # Generic config
-source $ZSH_CONFIG_PATH/completion/misc.zsh
-source $ZSH_CONFIG_PATH/completion/styling.zsh
+source ${0:A:h}/misc.zsh
+source ${0:A:h}/styling.zsh
 
 # If the completion cache file is older than 20 hours, we regenerate it
 # Source: https://gist.github.com/ctechols/ca1035271ad134841284#gistcomment-2308206
@@ -149,4 +149,4 @@ oroshi_completion_compinit
 unfunction oroshi_completion_compinit
 
 # Custom compdef
-source $ZSH_CONFIG_PATH/completion/compdef.zsh
+source ${0:A:h}/compdef.zsh

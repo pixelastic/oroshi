@@ -102,7 +102,7 @@ teardown() {
 
 # --- no arg ---
 
-@test "no arg uses ZSH_CONFIG_PATH" {
+@test "no arg uses OROSHI_ROOT" {
   touch "$AUTOLOAD/default-func"
   check() {
     oroshi-reload-fpath
