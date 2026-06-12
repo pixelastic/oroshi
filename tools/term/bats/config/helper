@@ -8,6 +8,10 @@ unset \
   GIT_OBJECT_DIRECTORY \
   GIT_WORK_TREE
 
+bats_debug() {
+  echo "[[$1]]"
+}
+
 # bats_tmp_dir
 # Creates an isolated sandbox for the current test, sets BATS_TMP_DIR.
 # Path: /tmp/oroshi/bats/<test-file>/<slug>
@@ -87,7 +91,9 @@ bats_git() {
 # Usage: my_fn() { echo 'real'; }; bats_mock my_fn
 bats_mock() {
   [[ "$BATS_TMP_DIR" == "" ]] && bats_tmp_dir
-  declare -f "$@" >>"$BATS_TMP_DIR/mock.zsh"
+
+  export MOCK_OVERRIDE="$BATS_TMP_DIR/mock.zsh"
+  declare -f "$@" >>"$MOCK_OVERRIDE"
   unset -f "$@"
 }
 
