@@ -6,11 +6,11 @@ CONFIG_DIR=${0:h}/config
 
 # Create link
 ln -fs \
-	"$CONFIG_DIR/zshrc.zsh" \
-	~/.zshrc
+  "$CONFIG_DIR/zshrc.zsh" \
+  ~/.zshrc
 ln -fs \
-	"$CONFIG_DIR/zshenv.zsh" \
-	~/.zshenv
+  "$CONFIG_DIR/zshenv-host.zsh" \
+  ~/.zshenv
 
 # Source file
 echo "You should now reload ~/.zshrc"

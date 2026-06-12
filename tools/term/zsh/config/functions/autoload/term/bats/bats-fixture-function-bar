@@ -1,0 +1,4 @@
+# Fixture: middle of the foo→bar→baz function chain
+setopt looocal_options err_return
+
+bats-fixture-function-baz

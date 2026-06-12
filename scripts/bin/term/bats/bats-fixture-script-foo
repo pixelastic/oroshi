@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# Fixture: root of the foo→bar→baz script chain
+set -e
+bats-fixture-script-bar

@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# Fixture: leaf of the foo→bar→baz script chain
+# Echoes its own absolute path so tests can verify which OROSHI_ROOT was active
+set -e
+echo "$0:A"

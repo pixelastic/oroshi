@@ -2,19 +2,10 @@
 # - Interactive shells (just like zshrc)
 # - zsh scripts
 
-# Root of the oroshi repo
-export OROSHI_ROOT="$HOME/.oroshi"
 # Root of where we store runtime config
 export OROSHI_TMP_FOLDER="$HOME/local/tmp/oroshi"
 # Root of the worktrees directories (MOCK_OROSHI_WORKTREES_DIR overrides for tests)
 export OROSHI_WORKTREES_DIR="${MOCK_OROSHI_WORKTREES_DIR:-$HOME/local/www/worktrees}"
-
-# When moving inside an oroshi worktree, we want to change the OROSHI_ROOT to
-# that worktree
-export OROSHI_ROOT_DEFAULT="$OROSHI_ROOT"
-if [[ "$PWD" == "$OROSHI_WORKTREES_DIR/oroshi--"* ]]; then
-  export OROSHI_ROOT="$(git rev-parse --show-toplevel)"
-fi
 
 # Also make the HOSTNAME globally available. Some tools (like Kitty) can use ENV
 # variables in their config, but can't call binaries, so having the HOSTNAME
