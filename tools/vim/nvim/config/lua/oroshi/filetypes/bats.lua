@@ -2,6 +2,11 @@ local M = {}
 
 M.linters = { "bats-lint" }
 
+M.onFiletype = function()
+  F.updateBufferOption("comments", "b:#")
+  F.updateBufferOption("formatoptions", F.bufferOption("formatoptions") .. "r")
+end
+
 M.onInit = function()
   -- Use bash treesitter parser for syntax highlighting
   vim.treesitter.language.register("bash", "bats")
