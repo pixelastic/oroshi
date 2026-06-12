@@ -31,7 +31,7 @@ batsLintRule_preferBatchMock() {
     fi
 
     [[ $inTest != "1" ]] && continue
-    [[ ! "$line" =~ '^[[:space:]]+bats_mock' ]] && continue
+    [[ ! "$line" =~ '^[[:space:]]+bats_mock ' ]] && continue
 
     (( ++mockCount ))
     [[ $mockCount -le 1 ]] && continue
