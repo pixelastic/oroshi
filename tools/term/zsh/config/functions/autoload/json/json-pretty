@@ -1,0 +1,26 @@
+# Pretty-print a JSON string
+# Usage:
+# $ json-pretty '{"key":"value"}'         # as argument
+# $ print -r -- "$json" | json-pretty     # from stdin
+# $ json-pretty --input file.json         # from file
+setopt local_options err_return
+
+zmodload zsh/zutil
+zparseopts -E -D \
+  -input:=flagInput
+
+local inputFile="${flagInput[2]}"
+local jsonArg="$1"
+
+local jsonData=""
+if [[ "$inputFile" != "" ]]; then
+  jsonData="$(cat -- "$inputFile")"
+elif [[ "$jsonArg" != "" ]]; then
+  jsonData="$jsonArg"
+else
+  jsonData="$(cat -)"
+fi
+
+! json-is-valid <<<"$jsonData" && return 1
+
+jq '.' <<<"$jsonData"
