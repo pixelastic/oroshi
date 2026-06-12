@@ -13,7 +13,7 @@ export OROSHI_WORKTREES_DIR="${MOCK_OROSHI_WORKTREES_DIR:-$HOME/local/www/worktr
 # that worktree
 export OROSHI_ROOT_DEFAULT="$OROSHI_ROOT"
 if [[ "$PWD" == "$OROSHI_WORKTREES_DIR/oroshi--"* ]]; then
-  OROSHI_ROOT="$(git rev-parse --show-toplevel)"
+  export OROSHI_ROOT="$(git rev-parse --show-toplevel)"
 fi
 
 # Also make the HOSTNAME globally available. Some tools (like Kitty) can use ENV
@@ -24,18 +24,30 @@ export HOSTNAME="$(hostname)"
 # This will disable the automated loading of compinit in /etc/zsh/zshrc
 skip_global_compinit=1
 
+# Derives and exports ZSH_CONFIG_PATH and OROSHI_ZSH_AUTOLOAD from a given root
+oroshi-export-zsh-paths() {
+  local root="$1"
+  export ZSH_CONFIG_PATH="$root/tools/term/zsh/config"
+  export OROSHI_ZSH_AUTOLOAD="$ZSH_CONFIG_PATH/functions/autoload"
+}
+oroshi-export-zsh-paths "$OROSHI_ROOT"
+
 # Define the $PATH, with unique values
 # Note: the `typeset -aU path` line can't be included in a sourced function
 # See: https://comp.unix.shell.narkive.com/a2BHsUYm/zsh-s-typeset-u-path-wipes-out-path-path
 typeset -aU path fpath
-source $OROSHI_ROOT/tools/term/zsh/config/path.zsh
+source $ZSH_CONFIG_PATH/path.zsh
 oroshi-reload-path $OROSHI_ROOT
 
 # Manually loading all real functions saved in ./functions/*.zsh
-local functionDirectory=$OROSHI_ROOT/tools/term/zsh/config/functions
+local functionDirectory=$ZSH_CONFIG_PATH/functions
 for item in ${functionDirectory}/*.zsh; do
   source $item
 done
 
 # Autoload all other functions saved in ./functions/autoload/**/*
 oroshi-reload-fpath $OROSHI_ROOT
+
+if [[ $MOCK_OVERRIDE != "" ]]; then
+  source $MOCK_OVERRIDE
+fi
