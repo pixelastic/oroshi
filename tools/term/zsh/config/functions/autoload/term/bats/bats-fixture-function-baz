@@ -1,5 +1,5 @@
 # Fixture: leaf of the foo→bar→baz function chain
 # Echoes its own source file path so tests can verify which OROSHI_ROOT was active
-setopt looocal_options err_return
+setopt local_options err_return
 
 echo "$functions_source[bats-fixture-function-baz]"
