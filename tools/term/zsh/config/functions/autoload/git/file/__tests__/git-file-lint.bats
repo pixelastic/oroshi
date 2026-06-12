@@ -35,10 +35,9 @@ teardown() {
   bats_git commit --quiet -m "add test.bats"
   echo 'changed' >> "$BATS_GIT_DIR/test.bats"
 
-  is-zsh() { return 1; }
   is-bats() { return 0; }
   bats-lint() { printf '[]'; }
-  bats_mock is-zsh is-bats bats-lint
+  bats_mock is-bats bats-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [ "$status" -eq 0 ]
@@ -51,13 +50,12 @@ teardown() {
   bats_git commit --quiet -m "add test.bats"
   echo 'changed' >> "$BATS_GIT_DIR/test.bats"
 
-  is-zsh() { return 1; }
   is-bats() { return 0; }
   bats-lint() {
     printf '[{"file":"%s","line":1,"column":1,"code":"noRunZsh","message":"use bats_run_zsh"}]' \
       "$1"
   }
-  bats_mock is-zsh is-bats bats-lint
+  bats_mock is-bats bats-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [ "$status" -eq 1 ]
@@ -72,9 +70,8 @@ teardown() {
   bats_git commit --quiet -m "add test.bats"
   echo 'changed' >> "$BATS_GIT_DIR/test.bats"
 
-  is-zsh() { return 1; }
   is-bats() { return 1; }
-  bats_mock is-zsh is-bats
+  bats_mock is-bats
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [ "$status" -eq 0 ]
@@ -90,9 +87,8 @@ teardown() {
   echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
 
   is-zsh() { return 0; }
-  is-bats() { return 1; }
   zsh-lint() { printf '[]'; }
-  bats_mock is-zsh is-bats zsh-lint
+  bats_mock is-zsh zsh-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [ "$status" -eq 0 ]
@@ -106,12 +102,11 @@ teardown() {
   echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
 
   is-zsh() { return 0; }
-  is-bats() { return 1; }
   zsh-lint() {
     printf '[{"file":"%s","line":2,"column":1,"code":"noGroupedLocals","message":"group locals"}]' \
       "$1"
   }
-  bats_mock is-zsh is-bats zsh-lint
+  bats_mock is-zsh zsh-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [ "$status" -eq 1 ]
@@ -127,8 +122,57 @@ teardown() {
   echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
 
   is-zsh() { return 1; }
-  is-bats() { return 1; }
-  bats_mock is-zsh is-bats
+  bats_mock is-zsh
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [ "$status" -eq 0 ]
+  [ "$output" = "" ]
+}
+
+# ─── JS ───────────────────────────────────────────────────────────────────────
+
+@test "exits 0 when is-js true and lint:fix has no output" {
+  echo 'const x = 1' > "$BATS_GIT_DIR/script.js"
+  bats_git add script.js
+  bats_git commit --quiet -m "add script.js"
+  echo 'changed' >> "$BATS_GIT_DIR/script.js"
+
+  is-js() { return 0; }
+  yarn() { printf ''; }
+  bats_mock is-js yarn
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [ "$status" -eq 0 ]
+  [ "$output" = "" ]
+}
+
+@test "shows JS header and errors when is-js true and lint:fix has output" {
+  echo 'const x = 1' > "$BATS_GIT_DIR/script.js"
+  bats_git add script.js
+  bats_git commit --quiet -m "add script.js"
+  echo 'changed' >> "$BATS_GIT_DIR/script.js"
+
+  is-js() { return 0; }
+  yarn() {
+    printf 'script.js:1:1: no-unused-vars: x is defined but never used\n';
+    return 1;
+  }
+  bats_mock is-js yarn
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [ "$status" -eq 1 ]
+  [[ "$output" =~ "── JS ──" ]]
+  [[ "$output" =~ script.js ]]
+}
+
+@test "exits 0 when is-js is false for all dirty files" {
+  echo 'const x = 1' > "$BATS_GIT_DIR/script.js"
+  bats_git add script.js
+  bats_git commit --quiet -m "add script.js"
+  echo 'changed' >> "$BATS_GIT_DIR/script.js"
+
+  is-js() { return 1; }
+  bats_mock is-js
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [ "$status" -eq 0 ]

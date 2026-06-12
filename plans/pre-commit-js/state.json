@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-git-file-lint-js.md",
-    "done": false,
+    "done": true,
+    "recap": "Added JS branch to git-file-lint: accumulates .js files with is-js, runs yarn run lint:fix --js with 2>&1 capture, displays errors under ── JS ── header inline (displayLintErrors not used due to JSON/stderr mismatch).",
     "blocked_by": ["02"]
   },
   {

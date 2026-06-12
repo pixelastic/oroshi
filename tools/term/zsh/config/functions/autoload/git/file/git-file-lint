@@ -1,4 +1,4 @@
-# Lint all dirty ZSH and BATS files in the working tree, grouped by type
+# Lint all dirty ZSH, BATS and JS files in the working tree, grouped by type
 # Usage:
 # $ git-file-lint
 setopt local_options err_return
@@ -9,10 +9,7 @@ local rawFiles="$(git-file-list-dirty-raw)"
 # Nothing to lint if working tree is clean
 [[ "$rawFiles" == "" ]] && return 0
 
-local -a zshFiles=()
-local hasZshFiles="0"
-local -a batsFiles=()
-local hasBatsFiles="0"
+local -A results=(zsh-files "" bats-files "" js-files "")
 for rawLine in ${(f)rawFiles}; do
   local splitLine=(${(@s/:/)rawLine})
   local gitStatus=$splitLine[1]
@@ -23,41 +20,60 @@ for rawLine in ${(f)rawFiles}; do
   [[ "$gitStatus" == "D" ]] && continue
 
   if is-zsh "$fullPath"; then
-    hasZshFiles="1"
-    zshFiles+=("$fullPath")
+    results[zsh-files]+="${fullPath} "
     continue
   fi
 
   if is-bats "$fullPath"; then
-    hasBatsFiles="1"
-    batsFiles+=("$fullPath")
+    results[bats-files]+="${fullPath} "
+    continue
+  fi
+
+  if is-js "$fullPath"; then
+    results[js-files]+="${fullPath} "
     continue
   fi
 done
 
-# Display lint errors of a specific type, if any
 local hasViolations="0"
-displayLintErrors() {
-  local label="$1"
-  local results="$2"
 
-  [[ "$results" == "[]" ]] && return 0
+# Display ZSH/BATS lint errors — input is JSON from zsh-lint/bats-lint
+displayZshAndBatsLintErrors() {
+  local label="$1"
+  local output="$2"
+
+  [[ "$output" == "[]" ]] && return 0
 
   hasViolations="1"
   echo "── ${label} ──"
-  printf '%s\n' "$results" |
+  printf '%s\n' "$output" |
     jq \
       --raw-output \
       --arg root "$gitRoot" \
       '.[] | "\(.file | ltrimstr($root + "/")):\(.line):\(.column): \(.code): \(.message)"'
 }
 
-if [[ $hasZshFiles == "1" ]]; then
-  displayLintErrors "ZSH" "$(zsh-lint ${zshFiles[@]})"
+# Display JS lint errors — input is plain text from aberlaas
+displayJsLintErrors() {
+  local output="$1"
+
+  [[ "$output" == "" ]] && return 0
+
+  hasViolations="1"
+  echo "── JS ──"
+  printf '%s\n' "$output"
+}
+
+if [[ "$results[zsh-files]" != "" ]]; then
+  displayZshAndBatsLintErrors "ZSH" "$(zsh-lint ${=results[zsh-files]})"
 fi
 
-if [[ $hasBatsFiles == "1" ]]; then
-  displayLintErrors "BATS" "$(bats-lint ${batsFiles[@]})"
+if [[ "$results[bats-files]" != "" ]]; then
+  displayZshAndBatsLintErrors "BATS" "$(bats-lint ${=results[bats-files]})"
+fi
+
+if [[ "$results[js-files]" != "" ]]; then
+  displayJsLintErrors "$(yarn run lint:fix --js ${=results[js-files]})"
 fi
 
 # Exit non-zero if any group had violations
