@@ -1,5 +1,5 @@
 setup_file() {
-  # ~/.zshenv may use an old ZSH_CONFIG_PATH when OROSHI_ROOT points to a worktree
+  # ~/.zshenv may use an old OROSHI_ROOT when OROSHI_ROOT points to a worktree
   # that has moved the config tree. Override ZDOTDIR so subprocess zsh processes
   # source the correct zshenv instead.
   local oroshi="${OROSHI_ROOT:-$HOME/.oroshi}"

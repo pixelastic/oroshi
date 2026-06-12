@@ -1,7 +1,8 @@
 #!/usr/bin/env zsh
 # Regenerate ./dist/oroshi.tmTheme from ./src/oroshi.xml
+set -e
 
-source $ZSH_CONFIG_PATH/theming/env/colors.zsh
+source $OROSHI_ROOT/tools/term/zsh/config/theming/env/colors.zsh
 
 local currentDir=${0:a:h}
 

@@ -2,7 +2,7 @@
 set -e
 
 # Load project color definitions
-source $ZSH_CONFIG_PATH/theming/env/colors.zsh
+source $OROSHI_ROOT/tools/term/zsh/config/theming/env/colors.zsh
 
 # Fake values for debuging, or values coming from stdin
 if [[ "$1" == "--dry-run" ]]; then

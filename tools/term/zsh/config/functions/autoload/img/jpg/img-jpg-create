@@ -10,5 +10,5 @@ if [[ $input == "" ]]; then
 fi
 
 cp \
-	$ZSH_CONFIG_PATH/functions/autoload/img/jpg/default.jpg \
+	$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/img/jpg/default.jpg \
 	$1

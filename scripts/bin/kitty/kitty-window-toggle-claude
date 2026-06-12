@@ -36,7 +36,7 @@ local claudeTabId=$(kitty-tab-id "claude")
 
 # Create the Claude window if it doesn't yet exist
 if ! kitty-window-exists "$claudeWindowName"; then
-  source $ZSH_CONFIG_PATH/theming/env/colors.zsh
+  source $OROSHI_ROOT/tools/term/zsh/config/theming/env/colors.zsh
   kitty-window-create \
     "$claudeWindowName" \
     --tab "$claudeTabId" \

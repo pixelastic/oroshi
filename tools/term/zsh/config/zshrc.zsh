@@ -8,17 +8,17 @@
 # hyperfine --warmup 3 "zsh -i -c exit"
 # Target should be under 150ms
 
-source $ZSH_CONFIG_PATH/env.zsh           # Global environment variables
-source $ZSH_CONFIG_PATH/init.zsh          # Shell initialization
-source $ZSH_CONFIG_PATH/theming/index.zsh # Colors
+source $OROSHI_ROOT/tools/term/zsh/config/env.zsh           # Global environment variables
+source $OROSHI_ROOT/tools/term/zsh/config/init.zsh          # Shell initialization
+source $OROSHI_ROOT/tools/term/zsh/config/theming/index.zsh # Colors
 
-source $ZSH_CONFIG_PATH/history.zsh           # History of commands
-source $ZSH_CONFIG_PATH/aliases/index.zsh     # Aliases definitions
-source $ZSH_CONFIG_PATH/tools/index.zsh       # Tools (nvm, bat, rg, fzf, etc) configuration
-source $ZSH_CONFIG_PATH/keybindings/index.zsh # Ctrl-G, Ctrl-P, etc
-source $ZSH_CONFIG_PATH/completion/index.zsh  # Autocompletion
-source $ZSH_CONFIG_PATH/prompt/index.zsh      # Prompt display
+source $OROSHI_ROOT/tools/term/zsh/config/history.zsh           # History of commands
+source $OROSHI_ROOT/tools/term/zsh/config/aliases/index.zsh     # Aliases definitions
+source $OROSHI_ROOT/tools/term/zsh/config/tools/index.zsh       # Tools (nvm, bat, fzf, etc)
+source $OROSHI_ROOT/tools/term/zsh/config/keybindings/index.zsh # Ctrl-G, Ctrl-P, etc
+source $OROSHI_ROOT/tools/term/zsh/config/completion/index.zsh  # Autocompletion
+source $OROSHI_ROOT/tools/term/zsh/config/prompt/index.zsh      # Prompt display
 
-source $ZSH_CONFIG_PATH/local/index.zsh # Laptop-specific configuration
+source $OROSHI_ROOT/tools/term/zsh/config/local/index.zsh # Laptop-specific configuration
 
 # zprof

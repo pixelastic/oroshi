@@ -111,7 +111,7 @@ ZSCRIPT
   local script="$BATS_TMP_DIR/git-prompt-6.zsh"
   cat >"$script" <<'ZSCRIPT'
 		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
-		source $ZSH_CONFIG_PATH/prompt/git.zsh
+		source $OROSHI_ROOT/tools/term/zsh/config/prompt/git.zsh
 		GIT_DIRECTORY_IS_REPOSITORY=1
 		GIT_DIRECTORY_IS_WORKTREE=1
 		declare -Ag OROSHI_PROMPT_PARTS
@@ -129,7 +129,7 @@ ZSCRIPT
   local script="$BATS_TMP_DIR/git-prompt-7.zsh"
   cat >"$script" <<'ZSCRIPT'
 		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
-		source $ZSH_CONFIG_PATH/prompt/git.zsh
+		source $OROSHI_ROOT/tools/term/zsh/config/prompt/git.zsh
 		GIT_DIRECTORY_IS_REPOSITORY=0
 		GIT_DIRECTORY_IS_WORKTREE=0
 		declare -Ag OROSHI_PROMPT_PARTS
@@ -146,7 +146,7 @@ ZSCRIPT
   local script="$BATS_TMP_DIR/git-prompt-8.zsh"
   cat >"$script" <<'ZSCRIPT'
 		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
-		source $ZSH_CONFIG_PATH/prompt/git.zsh
+		source $OROSHI_ROOT/tools/term/zsh/config/prompt/git.zsh
 		GIT_DIRECTORY_IS_REPOSITORY=1
 		GIT_DIRECTORY_IS_WORKTREE=0
 		declare -Ag OROSHI_PROMPT_PARTS
@@ -163,7 +163,7 @@ ZSCRIPT
   local script="$BATS_TMP_DIR/git-prompt-9.zsh"
   cat >"$script" <<'ZSCRIPT'
 		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
-		source $ZSH_CONFIG_PATH/prompt/git.zsh
+		source $OROSHI_ROOT/tools/term/zsh/config/prompt/git.zsh
 		GIT_DIRECTORY_IS_REPOSITORY=1
 		GIT_DIRECTORY_IS_WORKTREE=1
 		declare -Ag OROSHI_PROMPT_PARTS
@@ -183,8 +183,8 @@ ZSCRIPT
   local script="$BATS_TMP_DIR/git-prompt-10.zsh"
   cat >"$script" <<'ZSCRIPT'
 		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
-		source $ZSH_CONFIG_PATH/theming/env/colors.zsh
-		source $ZSH_CONFIG_PATH/prompt/git.zsh
+		source $OROSHI_ROOT/tools/term/zsh/config/theming/env/colors.zsh
+		source $OROSHI_ROOT/tools/term/zsh/config/prompt/git.zsh
 		GIT_DIRECTORY_IS_REPOSITORY=1
 		GIT_DIRECTORY_IS_WORKTREE=1
 		declare -Ag OROSHI_PROMPT_PARTS
@@ -205,8 +205,8 @@ ZSCRIPT
   local script="$BATS_TMP_DIR/git-prompt-11.zsh"
   cat >"$script" <<'ZSCRIPT'
 		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
-		source $ZSH_CONFIG_PATH/theming/env/colors.zsh
-		source $ZSH_CONFIG_PATH/prompt/git.zsh
+		source $OROSHI_ROOT/tools/term/zsh/config/theming/env/colors.zsh
+		source $OROSHI_ROOT/tools/term/zsh/config/prompt/git.zsh
 		GIT_DIRECTORY_IS_REPOSITORY=1
 		GIT_DIRECTORY_IS_WORKTREE=1
 		declare -Ag OROSHI_PROMPT_PARTS
@@ -227,8 +227,8 @@ ZSCRIPT
   local script="$BATS_TMP_DIR/git-prompt-12.zsh"
   cat >"$script" <<'ZSCRIPT'
 		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
-		source $ZSH_CONFIG_PATH/theming/env/colors.zsh
-		source $ZSH_CONFIG_PATH/prompt/git.zsh
+		source $OROSHI_ROOT/tools/term/zsh/config/theming/env/colors.zsh
+		source $OROSHI_ROOT/tools/term/zsh/config/prompt/git.zsh
 		GIT_DIRECTORY_IS_REPOSITORY=1
 		GIT_DIRECTORY_IS_WORKTREE=1
 		declare -Ag OROSHI_PROMPT_PARTS

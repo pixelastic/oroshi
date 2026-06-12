@@ -2,8 +2,8 @@
 # JSON info about current latency
 set -e
 
-source $ZSH_CONFIG_PATH/theming/env/colors.zsh
-source $ZSH_CONFIG_PATH/theming/icons.zsh
+source $OROSHI_ROOT/tools/term/zsh/config/theming/env/colors.zsh
+source $OROSHI_ROOT/tools/term/zsh/config/theming/icons.zsh
 
 local STATUS_SAVE_PATH="/tmp/oroshi/statusbar"
 mkdir -p $STATUS_SAVE_PATH

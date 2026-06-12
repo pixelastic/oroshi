@@ -5,8 +5,10 @@
 # - FILETYPES_CSS_COLOR_HEXA
 # - FILETYPES_CSS_BOLD
 # - FILETYPES_CSS_ICON
+set -e
+
 local output=""
-local outputFile=$ZSH_CONFIG_PATH/theming/env/filetypes.zsh
+local outputFile=$OROSHI_ROOT/tools/term/zsh/config/theming/env/filetypes.zsh
 
 # This will load FILETYPE_GROUPS and FILETYPES definitions. For example:
 #
@@ -18,7 +20,7 @@ local outputFile=$ZSH_CONFIG_PATH/theming/env/filetypes.zsh
 # Custom overrides for specific patterns
 # - FILETYPE[js:icon] // 
 # - FILETYPE[js:bold] // 1
-source $ZSH_CONFIG_PATH/theming/src/filetypes-list.zsh
+source $OROSHI_ROOT/tools/term/zsh/config/theming/src/filetypes-list.zsh
 
 # Export FILETYPES_INDEX that contains the list of all the filetypes for which
 # we have an icon and color defined

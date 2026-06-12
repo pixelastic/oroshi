@@ -24,11 +24,10 @@ export HOSTNAME="$(hostname)"
 # This will disable the automated loading of compinit in /etc/zsh/zshrc
 skip_global_compinit=1
 
-# Derives and exports ZSH_CONFIG_PATH and OROSHI_ZSH_AUTOLOAD from a given root
+# Derives and exports OROSHI_ZSH_AUTOLOAD from a given root
 oroshi-export-zsh-paths() {
   local root="$1"
-  export ZSH_CONFIG_PATH="$root/tools/term/zsh/config"
-  export OROSHI_ZSH_AUTOLOAD="$ZSH_CONFIG_PATH/functions/autoload"
+  export OROSHI_ZSH_AUTOLOAD="$root/tools/term/zsh/config/functions/autoload"
 }
 oroshi-export-zsh-paths "$OROSHI_ROOT"
 
@@ -36,11 +35,11 @@ oroshi-export-zsh-paths "$OROSHI_ROOT"
 # Note: the `typeset -aU path` line can't be included in a sourced function
 # See: https://comp.unix.shell.narkive.com/a2BHsUYm/zsh-s-typeset-u-path-wipes-out-path-path
 typeset -aU path fpath
-source $ZSH_CONFIG_PATH/path.zsh
+source $OROSHI_ROOT/tools/term/zsh/config/path.zsh
 oroshi-reload-path $OROSHI_ROOT
 
 # Manually loading all real functions saved in ./functions/*.zsh
-local functionDirectory=$ZSH_CONFIG_PATH/functions
+local functionDirectory=$OROSHI_ROOT/tools/term/zsh/config/functions
 for item in ${functionDirectory}/*.zsh; do
   source $item
 done

@@ -3,14 +3,14 @@
 # WARNING: As it is sourced by zshenv, ALL scripts will run it (including prompts).
 # Any error or output can have consequences.
 # Usage:
-# $ oroshi-reload-fpath            # Reload from current $ZSH_CONFIG_PATH
+# $ oroshi-reload-fpath            # Reload from current $OROSHI_ROOT
 # $ oroshi-reload-fpath [root]     # Reload from given root's tools/term/zsh/config/
 declare -A OROSHI_AUTOLOADED_FUNCTIONS
 declare -A OROSHI_AUTOLOADED_FUNCTIONS_BACKUP
 declare -a OROSHI_AUTOLOADED_FPATH
 
 function oroshi-reload-fpath() {
-  local configPath="$ZSH_CONFIG_PATH"
+  local configPath="$OROSHI_ROOT/tools/term/zsh/config"
   # If a root is provided, derive configPath from it instead
   [[ "$1" != "" ]] && configPath="$1/tools/term/zsh/config"
 

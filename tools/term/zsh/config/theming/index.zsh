@@ -1,11 +1,11 @@
 # We'll load the COLORS_, PROJECTS_ and FILETYPES_ environment variables from
 # static files. If those files do not yet exist, we generate them.
 function oroshi_theming_index() {
-  local colorsDefinitionPath=$ZSH_CONFIG_PATH/theming/env/colors.zsh
-  local colorsGeneratePath=$ZSH_CONFIG_PATH/theming/src/env-generate-colors
+  local colorsDefinitionPath=$OROSHI_ROOT/tools/term/zsh/config/theming/env/colors.zsh
+  local colorsGeneratePath=$OROSHI_ROOT/tools/term/zsh/config/theming/src/env-generate-colors
 
-  local filetypesDefinitionPath=$ZSH_CONFIG_PATH/theming/env/filetypes.zsh
-  local filetypesGeneratePath=$ZSH_CONFIG_PATH/theming/src/env-generate-filetypes
+  local filetypesDefinitionPath=$OROSHI_ROOT/tools/term/zsh/config/theming/env/filetypes.zsh
+  local filetypesGeneratePath=$OROSHI_ROOT/tools/term/zsh/config/theming/src/env-generate-filetypes
 
   # Generate env vars if missing, and load them
   # Note: We wrap this in functions that we immediably call to provide a more
@@ -22,7 +22,7 @@ function oroshi_theming_index() {
   }
   oroshi_theming_filetypes && unfunction oroshi_theming_filetypes
 
-  local iconsDefinitionPath=$ZSH_CONFIG_PATH/theming/icons.zsh
+  local iconsDefinitionPath=$OROSHI_ROOT/tools/term/zsh/config/theming/icons.zsh
 
   function oroshi_theming_icons() {
     source $iconsDefinitionPath

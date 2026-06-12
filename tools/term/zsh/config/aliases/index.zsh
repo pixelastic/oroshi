@@ -2,7 +2,7 @@
 # markers
 unsetopt NOMATCH
 
-for item in "$ZSH_CONFIG_PATH"/aliases/**/*.zsh; do
+for item in "$OROSHI_ROOT/tools/term/zsh/config"/aliases/**/*.zsh; do
   [[ ${item:t} == "index.zsh" ]] && continue
   source ${item}
 done
