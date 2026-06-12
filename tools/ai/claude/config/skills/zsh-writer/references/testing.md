@@ -71,21 +71,21 @@ setup() {
 
 ## `bats_git_worktree`
 
-Creates a linked worktree inside the isolated git repo. Scripts read `$OROSHI_WORKTREES_DIR` at runtime — export `OROSHI_WORKTREES_DIR_MOCK` in `setup()` to control where worktrees land.
+Creates a linked worktree inside the isolated git repo. Scripts read `$OROSHI_WORKTREES_DIR` at runtime — export `MOCK_OROSHI_WORKTREES_DIR` in `setup()` to control where worktrees land.
 
 ```bash
 setup() {
   bats_git_dir 'my-repo'
   CURRENT="$OROSHI_ZSH_AUTOLOAD/git/worktree/my-function"
-  export OROSHI_WORKTREES_DIR_MOCK="$BATS_TMP_DIR/worktrees"
-  mkdir -p "$OROSHI_WORKTREES_DIR_MOCK"
+  export MOCK_OROSHI_WORKTREES_DIR="$BATS_TMP_DIR/worktrees"
+  mkdir -p "$MOCK_OROSHI_WORKTREES_DIR"
   cd "$BATS_GIT_DIR"
 }
 
 @test "creates a worktree directory" {
   bats_run_zsh "$CURRENT" fix/bug
   [ "$status" -eq 0 ]
-  [ -d "$OROSHI_WORKTREES_DIR_MOCK/my-repo--fix_bug" ]
+  [ -d "$MOCK_OROSHI_WORKTREES_DIR/my-repo--fix_bug" ]
 }
 ```
 

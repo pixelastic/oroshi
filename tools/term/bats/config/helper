@@ -50,8 +50,8 @@ bats_git_dir() {
 # Creates a linked worktree in $BATS_TMP_DIR/worktrees/<slug>/.
 # <slug> is the branch name with non-alphanumeric chars replaced by dashes.
 # Sets BATS_GIT_WORKTREES for tests
-# Sets OROSHI_WORKTREES_DIR (legacy — scripts read OROSHI_WORKTREES_DIR_MOCK)
-# To control where scripts create worktrees, export OROSHI_WORKTREES_DIR_MOCK in setup().
+# Sets OROSHI_WORKTREES_DIR (legacy — scripts read MOCK_OROSHI_WORKTREES_DIR)
+# To control where scripts create worktrees, export MOCK_OROSHI_WORKTREES_DIR in setup().
 # Returns the worktree path.
 # Requires bats_git_dir to have been called first.
 # Usage: local wt; wt="$(bats_git_worktree 'fix/bug')"
@@ -103,40 +103,24 @@ bats_mock_oroshi_root() {
   echo "oroshi-export-zsh-paths \"$1\"" >> "$BATS_TMP_DIR/mock.zsh"
 }
 
-# bats_run_zsh <path> [args]
-# Runs a zsh autoload function or script, detecting by path.
-# Paths under $OROSHI_ROOT/tools/term/zsh/config/functions/autoload/ are called by basename
-# (relying on fpath set up via .zshenv). All other paths are sourced directly.
-# Injects mocks from $BATS_TMP_DIR/mock.zsh before the call.
-# Relative paths are resolved to absolute before detection.
-# Usage: bats_run_zsh path/to/autoload-fn arg1 arg2
-#        bats_run_zsh path/to/script.zsh <<< "input"
+# bats_run_zsh <zsh-command>
+# Runs an arbitrary zsh command, injecting optional mocks added by bats_mock
+# Usage: bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+#        bats_run_zsh "cd $BATS_GIT_DIR && my-script arg1 arg2"
 bats_run_zsh() {
-  local path="$1"
-  shift
-  # Stop if no path provided
-  [[ "$path" == "" ]] && return 1
+  local zshCommand="$1"
 
-  # Stop if path does not exist
-  local absolutePath
-  absolutePath="$(realpath "$path")"
-  [[ ! -f "$absolutePath" ]] && return 1
+  # Stop if no command provided
+  [[ "$zshCommand" == "" ]] && return 1
 
+  # Add optional mock file
   local mockFile="$BATS_TMP_DIR/mock.zsh"
-  local isAutoloadedFunction="0"
-  [[ "$absolutePath" == "$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/"* ]] && isAutoloadedFunction="1"
+  local zshCommandPrefix=""
+  [[ -f ${mockFile} ]] && zshCommandPrefix="source '${mockFile}';"
 
-  # Script
-  if [[ $isAutoloadedFunction == "0" ]]; then
-    # bats-lint disable=noRunZsh
-    run zsh -c "[[ -f '${mockFile}' ]] && source '${mockFile}'; source '${absolutePath}' \"\$@\"" -- "$@"
-    return
-  fi
-
-  # Autoloaded function
-  local functionName="${absolutePath##*/}"
   # bats-lint disable=noRunZsh
-  run zsh -c "[[ -f '${mockFile}' ]] && source '${mockFile}'; ${functionName} \"\$@\"" -- "$@"
+  run zsh -c "${zshCommandPrefix} $zshCommand"
+  return
 }
 
 # bats_cleanup
