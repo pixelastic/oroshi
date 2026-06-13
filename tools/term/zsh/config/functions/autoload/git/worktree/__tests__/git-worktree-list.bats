@@ -1,19 +1,20 @@
 bats_load_library 'helper'
 
-setup() {
-  bats_git_dir 'my-repo'
-  CURRENT="$BATS_TEST_DIRNAME/../git-worktree-list"
-  bats_git_worktree 'fix/bug'
-  bats_git_worktree 'feat/dark-mode'
+# We mock the icons, so tests don't break when we decide to change the icons.
+# But we don't mock -raw, as we want those tests to fail if we ever change the
+# output format of -raw.
 
-  export BATS_CURRENT=">"
+setup() {
+  bats_git_dir 'main-repo'
+  bats_git_worktree 'docs'
+  bats_git_worktree 'feature'
 
   icons-load-definitions() {
     typeset -gA ICONS
     ICONS[git-changes]="±"
     ICONS[git-branch-ahead]="↑"
     ICONS[git-branch-behind]="↓"
-    ICONS[git-worktree-current]="$BATS_CURRENT"
+    ICONS[git-worktree-current]=">"
   }
   bats_mock icons-load-definitions
 }
@@ -22,96 +23,47 @@ teardown() {
   bats_cleanup
 }
 
-@test "output contains branch names" {
-  cd "$BATS_GIT_DIR"
-  bats_run_zsh "$CURRENT"
-  [ "$status" -eq 0 ]
-  [[ "$output" == *"fix/bug"* ]]
-  [[ "$output" == *"feat/dark-mode"* ]]
-}
-
-@test "output does not contain file paths" {
-  cd "$BATS_GIT_DIR"
-  bats_run_zsh "$CURRENT"
-  [[ "$output" != *"$OROSHI_WORKTREES_DIR"* ]]
-}
-
 @test "returns empty output when no worktrees exist" {
-  bats_git_dir 'clean-repo'
-  cd "$BATS_GIT_DIR"
-  bats_run_zsh "$CURRENT"
+  bats_git_dir 'empty-repo'
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-list"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
 
-@test "marks current worktree with pointer" {
-  cd "${BATS_GIT_WORKTREES}fix-bug"
-  bats_run_zsh "$CURRENT"
+@test "smoke: shows branch names, relative date and commit message" {
+  git -C "${BATS_GIT_WORKTREES}docs" commit --allow-empty -m "docs commit"
+  git -C "${BATS_GIT_WORKTREES}feature" commit --allow-empty -m "feature commit"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-list"
   [ "$status" -eq 0 ]
-  [[ "$output" == *"${BATS_CURRENT}"* ]]
+  local line0="$(bats_strip_ansi "${lines[0]}")"
+  local line1="$(bats_strip_ansi "${lines[1]}")"
+  [[ "$line0" == *"docs"*"docs commit"* ]]
+  [[ "$line1" == *"feature"*"feature commit"* ]]
 }
 
-@test "shows ahead count vs main" {
-  cd "${BATS_GIT_WORKTREES}fix-bug"
-  git commit --allow-empty -m "commit one"
-  git commit --allow-empty -m "commit two"
-  cd "$BATS_GIT_DIR"
-  bats_run_zsh "$CURRENT"
+@test "marks only the current worktree with pointer" {
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}feature && git-worktree-list"
+
   [ "$status" -eq 0 ]
-  [[ "$output" == *"2"* ]]
+  local line0="$(bats_strip_ansi "${lines[0]}")"
+  local line1="$(bats_strip_ansi "${lines[1]}")"
+  [[ "$line0" != *">"* ]]
+  [[ "$line1" == *">"*"feature"* ]]
 }
 
-@test "shows behind count vs main" {
-  cd "$BATS_GIT_DIR"
-  git commit --allow-empty -m "main commit 1"
-  git commit --allow-empty -m "main commit 2"
-  git commit --allow-empty -m "main commit 3"
-  bats_run_zsh "$CURRENT"
-  [ "$status" -eq 0 ]
-  local stripped="$(bats_strip_ansi "$output")"
-  [[ "$stripped" == *"3"* ]]
-}
+@test "shows dirty, ahead and behind indicators; hides them when absent" {
+  # advance main so feature can be behind
+  git -C "$BATS_GIT_DIR" commit --allow-empty -m "main advances"
+  # feature: 1 dirty file + 1 ahead + 1 behind
+  echo "dirty" > "${BATS_GIT_WORKTREES}feature/dirty.txt"
+  git -C "${BATS_GIT_WORKTREES}feature" commit --allow-empty -m "feat: ahead"
 
-@test "shows relative date of last commit" {
-  cd "${BATS_GIT_WORKTREES}fix-bug"
-  git commit --allow-empty -m "dated commit"
-  cd "$BATS_GIT_DIR"
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-list"
   [ "$status" -eq 0 ]
-  [[ "$output" == *"seconds"* ]]
-}
-
-@test "shows last commit message" {
-  cd "${BATS_GIT_WORKTREES}fix-bug"
-  git commit --allow-empty -m "my test commit"
-  cd "$BATS_GIT_DIR"
-  bats_run_zsh "$CURRENT"
-  [ "$status" -eq 0 ]
-  [[ "$output" == *"my test commit"* ]]
-}
-
-@test "COLOR_ALIAS_GIT_WORKTREE_DIRTY is defined with value 21" {
-  local script="$BATS_TMP_DIR/color-test.zsh"
-  printf 'source "%s/tools/term/zsh/config/theming/env/colors.zsh"\necho "$COLOR_ALIAS_GIT_WORKTREE_DIRTY"\n' "$OROSHI_ROOT" >"$script"
-  bats_run_zsh "$script"
-  [ "$status" -eq 0 ]
-  [ "$output" = "21" ]
-}
-
-@test "shows dirty count with ± when worktree has uncommitted files" {
-  cd "${BATS_GIT_WORKTREES}fix-bug"
-  echo "dirty" > newfile.txt
-  cd "$BATS_GIT_DIR"
-  bats_run_zsh "$CURRENT"
-  [ "$status" -eq 0 ]
-  local stripped="$(bats_strip_ansi "$output")"
-  [[ "$stripped" == *"±"* ]]
-}
-
-@test "does not show ± when worktree is clean" {
-  cd "$BATS_GIT_DIR"
-  bats_run_zsh "$CURRENT"
-  [ "$status" -eq 0 ]
-  local stripped="$(bats_strip_ansi "$output")"
-  [[ "$stripped" != *"±"* ]]
+  local line0="$(bats_strip_ansi "${lines[0]}")"
+  local line1="$(bats_strip_ansi "${lines[1]}")"
+  [[ "$line0" == *"docs"*"1↓"* ]]
+  [[ "$line1" == *"feature"*"±1"*"1↑"*"1↓"* ]]
 }

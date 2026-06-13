@@ -29,10 +29,10 @@ displayDate="${displayDate/ minutes/mn}"
 
 # If --with-icon is not passed, we simply display the colored date
 if [[ "$isWithIcon" != 1 ]]; then
-	colorize "$displayDate" ALIAS_DATE
+	colorize "$displayDate" date
 	return
 fi
 
 # Otherwise we add the icon
-colorize " $displayDate" ALIAS_DATE
+colorize " $displayDate" date
 return

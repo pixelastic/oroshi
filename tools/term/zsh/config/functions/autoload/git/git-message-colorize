@@ -18,10 +18,10 @@ fi
 
 # If --with-icon is not passed, we simply display the colored message
 if [[ "$isWithIcon" != 1 ]]; then
-	colorize "$message" ALIAS_GIT_MESSAGE
+	colorize "$message" git-message
 	return
 fi
 
 # Otherwise we add the icon
-colorize " $message" ALIAS_GIT_MESSAGE
+colorize " $message" git-message
 return

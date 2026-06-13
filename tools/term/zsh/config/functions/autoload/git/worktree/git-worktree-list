@@ -25,7 +25,7 @@ for rawLine in ${(f)rawOutput}; do
 
   # Current worktree pointer marker
   if [[ "$PWD" == "$worktreePath" ]]; then
-    row+="$(colorize $ICONS[git-worktree-current] ALIAS_POINTER)▮"
+    row+="$(colorize $ICONS[git-worktree-current] pointer)▮"
   else
     row+=" ▮"
   fi
@@ -35,21 +35,21 @@ for rawLine in ${(f)rawOutput}; do
 
   # Dirty count
   if [[ "$dirtyCount" != "0" ]]; then
-    row+="$(colorize "$ICONS[git-changes]${dirtyCount}" ALIAS_GIT_WORKTREE_DIRTY)▮"
+    row+="$(colorize "$ICONS[git-changes]${dirtyCount}" git-worktree-dirty)▮"
   else
     row+="▮"
   fi
 
   # Ahead
   if [[ "$ahead" != "0" ]]; then
-    row+="$(colorize "${ahead}${ICONS[git-branch-ahead]}" ALIAS_GIT_AHEAD)▮"
+    row+="$(colorize "${ahead}${ICONS[git-branch-ahead]}" git-ahead)▮"
   else
     row+="▮"
   fi
 
   # Behind
   if [[ "$behind" != "0" ]]; then
-    row+="$(colorize "${behind}${ICONS[git-branch-behind]}" ALIAS_GIT_BEHIND)▮"
+    row+="$(colorize "${behind}${ICONS[git-branch-behind]}" git-behind)▮"
   else
     row+="▮"
   fi
