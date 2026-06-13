@@ -10,7 +10,8 @@
 - Use `bats_tmp_dir` to create an isolated test sandbox dir
 - Use `bats_git_dir` to create an isolated test git repo dir
 - Use `bats_cleanup` to remove any isolated test dir
-- Use `bats_run_zsh "$CURRENT"` for standalone scripts tested via `CURRENT`
+- Use `bats_run_zsh "command-to-test"`
+    - If you need to `cd` inside a specific directory, make it as part of the command passed to `bats_run_zsh`
 - Use `bats_mock` to mock commands
 - Full helper code available at `tools/term/bats/config/helper`
 
@@ -21,7 +22,6 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="${BATS_TEST_DIRNAME}/../my-script"
 }
 
 teardown() {
@@ -29,12 +29,12 @@ teardown() {
 }
 
 @test "exits 0 on valid input" {
-  bats_run_zsh "$CURRENT" "some-arg"
+  bats_run_zsh "my-script some-arg"
   [[ "$status" -eq 0 ]]
 }
 
 @test "prints error on stdin" {
-  bats_run_zsh "$CURRENT" <<<"input"
+  bats_run_zsh "my-script" <<<"input"
   [[ "$status" -ne 0 ]]
   [[ "$output" == *"Usage"* ]]
 }
@@ -57,14 +57,12 @@ Creates an isolated git repo, specific to that test.
 
 ```bash
 setup() {
-  CURRENT="${BATS_TEST_DIRNAME}/../my-script"
   bats_git_dir 'my-repo'
-  cd "$BATS_GIT_DIR"
 }
 
 @test "returns current branch" {
-  git checkout -b fix/bug
-  bats_run_zsh "$CURRENT" "some-arg"
+  bats_git checkout -b fix/bug
+  bats_run_zsh "cd $BATS_GIT_DIR && my-script some-arg"
   [ "$output" = "fix/bug" ]
 }
 ```
@@ -76,14 +74,12 @@ Creates a linked worktree inside the isolated git repo. Scripts read `$OROSHI_WO
 ```bash
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/git/worktree/my-function"
   export MOCK_OROSHI_WORKTREES_DIR="$BATS_TMP_DIR/worktrees"
   mkdir -p "$MOCK_OROSHI_WORKTREES_DIR"
-  cd "$BATS_GIT_DIR"
 }
 
 @test "creates a worktree directory" {
-  bats_run_zsh "$CURRENT" fix/bug
+  bats_run_zsh "cd $BATS_GIT_DIR && my-function fix/bug"
   [ "$status" -eq 0 ]
   [ -d "$MOCK_OROSHI_WORKTREES_DIR/my-repo--fix_bug" ]
 }
@@ -102,7 +98,7 @@ Overwrites existing commands with custom one, only for that test.
   pbcopy() { echo "$1" > "$BATS_TMP_DIR/clipboard.txt"; }
   bats_mock pbcopy
 
-  bats_run_zsh "$CURRENT" "Hello World"
+  bats_run_zsh "my-script Hello World"
   [ "$(cat "$BATS_TMP_DIR/clipboard.txt")" = "helloWorld" ]
 }
 ```
@@ -115,7 +111,7 @@ Strip ANSI color codes from strings:
 
 ```bash
 @test "shows behind count" {
-  bats_run_zsh "$CURRENT" "Hello World"
+  bats_run_zsh "my-script Hello World"
   local stripped="$(bats_strip_ansi "$output")"
   [[ "$stripped" == *"3"* ]]
 }

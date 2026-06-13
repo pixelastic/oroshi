@@ -45,7 +45,7 @@ teardown() {
 }
 
 @test "converts space-separated words to camelCase" {
-  bats_run_function my-new-function "hello world"
+  bats_run_zsh "my-new-function hello world"
   [ "$status" -eq 0 ]
   [ "$output" = "helloWorld" ]
 }
@@ -54,7 +54,7 @@ teardown() {
   pbcopy() { echo "$1" > "$BATS_TMP_DIR/clipboard.txt"; }
   bats_mock pbcopy
 
-  bats_run_function my-new-function "hello world"
+  bats_run_zsh "my-new-function hello world"
   [ "$(cat "$BATS_TMP_DIR/clipboard.txt")" = "helloWorld" ]
 }
 ```
