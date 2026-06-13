@@ -5,6 +5,15 @@ json-lint errors when editing files outside of oroshi
 When doing a sidequest, quitting claude ends the whole kitty window, while it
 should fallback to zsh
 
+Colors of markdown headers are off
+
+Maybe I should remove the bats-lint custom rule aboutt using CURRENT if now the
+best practice is to call the binary by name
+
+Make sure no bats file contains a useless shebaang
+
+Colors or scripts in fzf are off
+
 I should probably also migrate the filetypes definition like I did colors,
 projects and icons.
 
