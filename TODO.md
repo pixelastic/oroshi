@@ -2,6 +2,9 @@
 
 json-lint errors when editing files outside of oroshi
 
+When doing a sidequest, quitting claude ends the whole kitty window, while it
+should fallback to zsh
+
 I should probably also migrate the filetypes definition like I did colors,
 projects and icons.
 
