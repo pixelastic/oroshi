@@ -2,7 +2,11 @@
 
 # Suggest the stageable files (that can be added to the staging area)
 function _git-files-stageable() {
-  local suggestions=(${(f)"$(complete-git-files-stageable)"})
+  colors-load-definitions
+  icons-load-definitions
 
-  _describe -V "$(completion-header $COLOR_ALIAS_GIT_MODIFIED $COLOR_WHITE ' ﰖ Stageable files ')" suggestions
+  local suggestions=(${(f)"$(complete-git-files-stageable)"})
+  local label=" $ICONS[git-commit] Stageable files "
+  local header="$(completion-header $COLORS[git-modified] $COLORS[white] "$label")"
+  _describe -V "$header" suggestions
 }

@@ -2,7 +2,11 @@
 
 # Suggest the local tags
 function _git-tags-local() {
-  local suggestions=(${(f)"$(complete-git-tags-local)"})
+  colors-load-definitions
+  icons-load-definitions
 
-  _describe -V "$(completion-header $COLOR_ALIAS_GIT_TAG $COLOR_WHITE '  Local tags ')" suggestions
+  local suggestions=(${(f)"$(complete-git-tags-local)"})
+  local label=" $ICONS[git-tag] Local tags "
+  local header="$(completion-header $COLORS[git-tag] $COLORS[white] "$label")"
+  _describe -V "$header" suggestions
 }

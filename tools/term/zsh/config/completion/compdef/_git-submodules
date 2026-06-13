@@ -2,8 +2,11 @@
 
 # Suggest the submodules
 function _git-submodules() {
+  colors-load-definitions
   icons-load-definitions
-  local suggestions=(${(f)"$(complete-git-submodules)"})
 
-  _describe -V "$(completion-header $COLOR_ALIAS_GIT_SUBMODULE $COLOR_BLACK " $ICONS[git-submodule] Git Submodules ")" suggestions
+  local suggestions=(${(f)"$(complete-git-submodules)"})
+  local label=" $ICONS[git-submodule] Git Submodules "
+  local header="$(completion-header $COLORS[git-submodule] $COLORS[black] "$label")"
+  _describe -V "$header" suggestions
 }

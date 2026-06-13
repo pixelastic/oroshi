@@ -1,6 +1,9 @@
 # Named icon definitions
 typeset -gA ICONS
 
+# List of icons:
+# https://www.nerdfonts.com/cheat-sheet
+
 # Kitty
 # zsh-lint disable=missingIconsLoad
 ICONS[kitty-tab-separator]=""
@@ -29,6 +32,7 @@ ICONS[nvim-notification-separator]=""
 
 # ----- Tools
 ICONS[dropbox]=""
+ICONS[ssh]="󰣀 "
 
 # Git
 ICONS[git-branch]=""
@@ -61,7 +65,7 @@ ICONS[git-changes]="±"
 ICONS[docker-run]=""
 ICONS[docker-stop]=""
 ICONS[docker-pause]=""
-ICONS[docker-image]="X"
+ICONS[docker-image]="G"
 
 # Statusbar
 ICONS[statusbar-ram]=""
@@ -73,8 +77,8 @@ ICONS[statusbar-ping-offline]=""
 
 # ----- Languages
 ICONS[python]=""
-ICONS[bats]="X"
-ICONS[make]="X"
+ICONS[bats]="󰭟 "
+ICONS[make]=" "
 
 # Node
 ICONS[node]=""
@@ -93,12 +97,11 @@ ICONS[ruby-install-in-progress]=""
 
 # Common
 ICONS[unknown]=""
-ICONS[flag]="X"
-ICONS[jump]="X"
-ICONS[plan]="X"
-ICONS[skill]="X"
-ICONS[ssh]="X"
-ICONS[video-stream-audio]="X"
+ICONS[flag]=""
+ICONS[jump]="󰐃"
+ICONS[plan]=" "
+ICONS[skill]=" "
+ICONS[video-stream-audio]=" "
 
 # Separators
 ICONS[separator-arrow]=""

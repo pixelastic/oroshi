@@ -2,8 +2,11 @@
 
 # Suggest the remotes
 function _git-remotes() {
+  colors-load-definitions
   icons-load-definitions
-  local suggestions=(${(f)"$(complete-git-remotes)"})
 
-  _describe -V "$(completion-header $COLOR_ALIAS_GIT_REMOTE $COLOR_BLACK " $ICONS[git-remote]  Remotes ")" suggestions
+  local suggestions=(${(f)"$(complete-git-remotes)"})
+  local label=" $ICONS[git-remote]  Remotes "
+  local header="$(completion-header $COLORS[git-remote] $COLORS[black] "$label")"
+  _describe -V "$header" suggestions
 }

@@ -2,10 +2,11 @@
 
 # Suggest the local branches
 function _git-branches-local() {
+  colors-load-definitions
   icons-load-definitions
-  icons-load-definitions
-  icons-load-definitions
-  local suggestions=(${(f)"$(complete-git-branches-local)"})
 
-  _describe -V "$(completion-header $COLOR_ALIAS_GIT_BRANCH $COLOR_WHITE " $ICONS[git-branch] Local branches ")" suggestions
+  local suggestions=(${(f)"$(complete-git-branches-local)"})
+  local label=" $ICONS[git-branch] Local branches "
+  local header="$(completion-header $COLORS[git-branch] $COLORS[white] "$label")"
+  _describe -V "$header" suggestions
 }

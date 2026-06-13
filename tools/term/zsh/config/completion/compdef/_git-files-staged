@@ -2,7 +2,11 @@
 
 # Suggest the staged files
 function _git-files-staged() {
-  local suggestions=(${(f)"$(complete-git-files-staged)"})
+  colors-load-definitions
+  icons-load-definitions
 
-  _describe -V "$(completion-header $COLOR_ALIAS_GIT_MODIFIED $COLOR_WHITE ' ﰖ Staged files ')" suggestions
+  local suggestions=(${(f)"$(complete-git-files-staged)"})
+  local label=" $ICONS[git-commit] Staged files "
+  local header="$(completion-header $COLORS[git-modified] $COLORS[white] "$label")"
+  _describe -V "$header" suggestions
 }

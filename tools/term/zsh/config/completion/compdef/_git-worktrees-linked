@@ -2,7 +2,11 @@
 
 # Suggest linked worktrees only (excludes 'main')
 function _git-worktrees-linked() {
-  local suggestions=(${(f)"$(complete-git-worktrees-linked)"})
+  colors-load-definitions
+  icons-load-definitions
 
-  _describe -V "$(completion-header $COLOR_ALIAS_GIT_WORKTREE $COLOR_WHITE '   Worktrees ')" suggestions
+  local suggestions=(${(f)"$(complete-git-worktrees-linked)"})
+  local label=" $ICONS[git-worktree] Worktrees "
+  local header="$(completion-header $COLORS[git-worktree] $COLORS[white] "$label")"
+  _describe -V "$header" suggestions
 }

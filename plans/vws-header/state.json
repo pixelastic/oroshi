@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-git-completions.md",
-    "done": false,
+    "done": true,
+    "recap": "Migrated all 10 git compdef functions to $COLORS[key]/$ICONS[key]; added colors-load-definitions+icons-load-definitions; replaced hardcoded glyphs with $ICONS[git-commit]; split long _describe lines into local label+header vars to satisfy 100-char lint limit.",
     "blocked_by": ["01"]
   },
   {
