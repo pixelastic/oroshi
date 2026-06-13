@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-yarn-node-completions.md",
-    "done": false,
+    "done": true,
+    "recap": "Migrated all 11 yarn/node compdef functions to $COLORS[key]/$ICONS[key]; added colors-load-definitions+icons-load-definitions; split long _describe lines into local label+header vars; fixed pre-existing tab/space mix in _yarn-link-global.",
     "blocked_by": ["01"]
   },
   {

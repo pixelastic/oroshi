@@ -2,7 +2,11 @@
 
 # Suggest the locally linked modules
 function _yarn-link-local() {
-  local suggestions=(${(f)"$(complete-yarn-link-local)"})
+  colors-load-definitions
+  icons-load-definitions
 
-  _describe -V "$(completion-header $COLOR_ALIAS_YARN_LINK_LOCAL $COLOR_BLACK '  locally linked modules ')" suggestions
+  local suggestions=(${(f)"$(complete-yarn-link-local)"})
+  local label=" $ICONS[node-link] locally linked modules "
+  local header="$(completion-header $COLORS[yarn-link-workspace] $COLORS[black] "$label")"
+  _describe -V "$header" suggestions
 }

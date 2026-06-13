@@ -2,11 +2,15 @@
 
 # Suggest modules for linking
 function _yarn-link-global() {
-  # In yarn Classic, they are stored in their own list
-	if ! yarn-version-is-berry; then
-    local suggestions=(${(f)"$(complete-yarn-link-global)"})
+  colors-load-definitions
+  icons-load-definitions
 
-    _describe -V "$(completion-header $COLOR_ALIAS_YARN_LINK_GLOBAL $COLOR_WHITE '  globally available modules ')" suggestions
+  # In yarn Classic, they are stored in their own list
+  if ! yarn-version-is-berry; then
+    local suggestions=(${(f)"$(complete-yarn-link-global)"})
+    local label=" $ICONS[node-link] globally available modules "
+    local header="$(completion-header $COLORS[yarn-package-global] $COLORS[white] "$label")"
+    _describe -V "$header" suggestions
     return
   fi
 

@@ -2,7 +2,11 @@
 
 # Suggest all globally installed node modules
 function _node-modules() {
-  local suggestions=(${(f)"$(complete-node-modules)"})
+  colors-load-definitions
+  icons-load-definitions
 
-  _describe -V "$(completion-header $COLOR_ALIAS_YARN_PACKAGE_GLOBAL $COLOR_WHITE '  global node modules ')" suggestions
+  local suggestions=(${(f)"$(complete-node-modules)"})
+  local label=" $ICONS[node] global node modules "
+  local header="$(completion-header $COLORS[yarn-package-global] $COLORS[white] "$label")"
+  _describe -V "$header" suggestions
 }

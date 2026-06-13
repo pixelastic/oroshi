@@ -2,9 +2,13 @@
 
 # Suggest all installed node versions
 function _node-versions-installed() {
+  colors-load-definitions
+  icons-load-definitions
+
   lazyloadNvm
 
   local suggestions=(${(f)"$(complete-node-versions-installed)"})
-
-  _describe -V "$(completion-header $COLOR_ALIAS_LANGUAGE_NODE $COLOR_WHITE '  node versions ')" suggestions
+  local label=" $ICONS[node] node versions "
+  local header="$(completion-header $COLORS[language-node] $COLORS[white] "$label")"
+  _describe -V "$header" suggestions
 }

@@ -2,7 +2,11 @@
 
 # Suggest all recursive subdependencies of current project
 function _yarn-dependencies-recursive() {
-  local suggestions=(${(f)"$(complete-yarn-dependencies-recursive)"})
+  colors-load-definitions
+  icons-load-definitions
 
-  _describe -V "$(completion-header $COLOR_ALIAS_LANGUAGE_JAVASCRIPT $COLOR_BLACK '  package.json subdependencies ')" suggestions
+  local suggestions=(${(f)"$(complete-yarn-dependencies-recursive)"})
+  local label=" $ICONS[node-package] package.json subdependencies "
+  local header="$(completion-header $COLORS[language-javascript] $COLORS[black] "$label")"
+  _describe -V "$header" suggestions
 }

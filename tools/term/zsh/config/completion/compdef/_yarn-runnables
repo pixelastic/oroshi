@@ -16,18 +16,25 @@
 # is why we stick with the higher level _describe here for the first group, and
 # the low-level compadd for the second one.
 function _yarn-runnables() {
+	colors-load-definitions
+	icons-load-definitions
+
 	# package.json scripts
 	local scriptSuggestions=(${(f)"$(complete-yarn-scripts)"})
 	if [[ $scriptSuggestions != "" ]]; then
-		_describe -V "$(completion-header $COLOR_ALIAS_LANGUAGE_JAVASCRIPT $COLOR_BLACK '  package.json scripts ')" scriptSuggestions
+		local scriptLabel=" $ICONS[node-package] package.json scripts "
+		local scriptHeader="$(completion-header $COLORS[language-javascript] $COLORS[black] "$scriptLabel")"
+		_describe -V "$scriptHeader" scriptSuggestions
 	fi
 
 	# local node_modules/.bin binaries
 	local binarySuggestions=(${(f)"$(complete-yarn-binaries)"})
 	if [[ $binarySuggestions != "" ]]; then
+		local binaryLabel=" $ICONS[node] node_modules binaries "
+		local binaryHeader="$(completion-header $COLORS[language-javascript] $COLORS[black] "$binaryLabel")"
 		compadd \
 			-J group2 \
-			-x "$(completion-header $COLOR_ALIAS_LANGUAGE_JAVASCRIPT $COLOR_BLACK '  node_modules binaries ')" \
+			-x "$binaryHeader" \
 			-a binarySuggestions
 	fi
 }

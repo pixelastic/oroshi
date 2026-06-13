@@ -2,8 +2,11 @@
 
 # Suggest Yarn Classic (v1) modules already enabled
 function _yarn-link-classic-enabled() {
-  local suggestions=(${(f)"$(complete-yarn-link-classic-enabled)"})
+  colors-load-definitions
+  icons-load-definitions
 
-  _describe -V "$(completion-header $COLOR_ALIAS_YARN_LINK_CLASSIC $COLOR_WHITE '  Yarn links ')" suggestions
-  return
+  local suggestions=(${(f)"$(complete-yarn-link-classic-enabled)"})
+  local label=" $ICONS[node-link] Yarn links "
+  local header="$(completion-header $COLORS[yarn-link-classic] $COLORS[white] "$label")"
+  _describe -V "$header" suggestions
 }

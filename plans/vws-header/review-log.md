@@ -1,3 +1,13 @@
+## Issue 04 — Yarn/node completions
+
+### Missing `setopt local_options err_return`
+
+**Problem:** Standards reviewer flagged all 11 files lack `setopt local_options err_return`, which zsh-writer requires for autoloaded functions.
+
+**Reason skipped:** `zsh-lint` does not flag this in `#compdef` files. Confirmed: `_git-branches-local` (migrated in issue 02, known-clean) has no `setopt` and passes lint. Compdef-style functions do not need `err_return`; the zsh-writer guideline applies to regular autoloaded functions, not completions.
+
+---
+
 ## Issue 03 — Docker completions
 
 ### icons.zsh — placeholder glyphs not `X`
