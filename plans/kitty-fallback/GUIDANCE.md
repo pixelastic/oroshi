@@ -23,4 +23,8 @@ This plan fixes `kitty-helper-claude-start` so both code paths fall back to zsh 
 
 ## Discoveries
 
-_Append findings here after each issue is implemented._
+### Issue 01 — kitty-helper-claude-start fallback
+
+- `bats_run_zsh` only takes `$1` as command string — extra positional args are silently ignored; pass script args inline: `bats_run_zsh "$CURRENT arg1 arg2"`.
+- `bats_mock zsh` works for plain `zsh` calls but NOT for `exec zsh` (exec bypasses function lookup); the refactor from `exec zsh` to plain `zsh` was required to make the mock work.
+- The original test 2 was already broken (arg not passed via `bats_run_zsh "$CURRENT" "arg"`) — fixed as part of this issue.

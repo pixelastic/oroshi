@@ -2,37 +2,49 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$BATS_TEST_DIRNAME/../kitty-helper-claude-start"
 }
 
 teardown() {
   bats_cleanup
 }
 
-@test "no argument: claude called without extra args" {
+@test "no argument: claude called without extra args and zsh called after" {
   git-directory-root() { echo "$BATS_TMP_DIR"; }
   claude() { echo "$*" >"$BATS_TMP_DIR/claude-args"; }
-  bats_mock git-directory-root claude
+  zsh() { touch "$BATS_TMP_DIR/zsh-called"; }
+  bats_mock git-directory-root claude zsh
 
-  # exec zsh is a binary call — mock it via PATH so it exits cleanly
-  mkdir -p "$BATS_TMP_DIR/bin"
-  printf '#!/bin/sh\nexit 0\n' > "$BATS_TMP_DIR/bin/zsh"
-  chmod +x "$BATS_TMP_DIR/bin/zsh"
-  echo "export PATH=\"$BATS_TMP_DIR/bin:\$PATH\"" >> "$BATS_TMP_DIR/mock.zsh"
+  bats_run_zsh "kitty-helper-claude-start"
 
-  bats_run_zsh "$CURRENT"
-
-  [ "$status" -eq 0 ]
-  [ "$(cat "$BATS_TMP_DIR/claude-args")" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/claude-args")" = "" ]]
+  [[ -f "$BATS_TMP_DIR/zsh-called" ]]
 }
 
-@test "with prompt argument: claude called with the prompt string" {
+@test "with prompt argument: claude called with the prompt string and zsh called after" {
   git-directory-root() { echo "$BATS_TMP_DIR"; }
   claude() { echo "$*" >"$BATS_TMP_DIR/claude-args"; }
-  bats_mock git-directory-root claude
+  zsh() { touch "$BATS_TMP_DIR/zsh-called"; }
+  bats_mock git-directory-root claude zsh
 
-  bats_run_zsh "$CURRENT" "@/path/to/file.md"
+  bats_run_zsh "kitty-helper-claude-start @/path/to/file.md"
 
-  [ "$status" -eq 0 ]
-  [ "$(cat "$BATS_TMP_DIR/claude-args")" = "@/path/to/file.md" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/claude-args")" = "@/path/to/file.md" ]]
+  [[ -f "$BATS_TMP_DIR/zsh-called" ]]
+}
+
+@test "with prompt argument: zsh still called when claude exits non-zero" {
+  git-directory-root() { echo "$BATS_TMP_DIR"; }
+  claude() {
+    echo "$*" >"$BATS_TMP_DIR/claude-args"
+    return 1
+  }
+  zsh() { touch "$BATS_TMP_DIR/zsh-called"; }
+  bats_mock git-directory-root claude zsh
+
+  bats_run_zsh "kitty-helper-claude-start @/path/to/file.md"
+
+  [[ "$status" -eq 0 ]]
+  [[ -f "$BATS_TMP_DIR/zsh-called" ]]
 }
