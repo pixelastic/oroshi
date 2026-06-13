@@ -2,7 +2,11 @@
 
 # Suggest all packages installed by pip
 function _pip-packages() {
-  local suggestions=(${(f)"$(complete-pip-packages)"})
+  colors-load-definitions
+  icons-load-definitions
 
-  _describe -V "$(completion-header $COLOR_ALIAS_LANGUAGE_PYTHON $COLOR_BLACK '  pip packages ')" suggestions
+  local suggestions=(${(f)"$(complete-pip-packages)"})
+  local label=" $ICONS[python] pip packages "
+  local header="$(completion-header $COLORS[language-python] $COLORS[black] "$label")"
+  _describe -V "$header" suggestions
 }

@@ -5,22 +5,25 @@ declare words
 # This is a complex one as the second and more arguments depends on the value of
 # the first argument
 function _video-streams-audio() {
+	colors-load-definitions
+	icons-load-definitions
+
 	# First argument, always ask for the video file
 	if [[ $CURRENT -eq 2 ]]; then
 		_files -g "*.{avi,mkv,mp4,mpg}"
+		return 0
 	fi
 
 	# Any other argument, suggest the list of audio streams from the file
 	# selected above
-	if [[ ! $CURRENT -eq 2 ]]; then
-		# Parse the previous word to get the selected video file as an absolute
-		# path, without escaping
-		local selectedVideo=$words[2]
-		selectedVideo=${selectedVideo:a}
-		selectedVideo=${selectedVideo//\\/}
+	# Parse the previous word to get the selected video file as an absolute
+	# path, without escaping
+	local selectedVideo=$words[2]
+	selectedVideo=${selectedVideo:a}
+	selectedVideo=${selectedVideo//\\/}
 
-		local suggestions=(${(f)"$(complete-video-streams-audio "${selectedVideo:a}")"})
-		_describe -V "$(completion-header $COLOR_ALIAS_VIDEO_STREAM_AUDIO $COLOR_BLACK '  Audio Streams ')" suggestions
-	fi
-
+	local suggestions=(${(f)"$(complete-video-streams-audio "${selectedVideo:a}")"})
+	local label=" $ICONS[video-stream-audio] Audio Streams "
+	local header="$(completion-header $COLORS[video-stream-audio] $COLORS[black] "$label")"
+	_describe -V "$header" suggestions
 }

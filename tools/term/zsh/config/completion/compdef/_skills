@@ -2,7 +2,11 @@
 
 # Suggest all globally installed skills
 function _skills() {
-  local suggestions=(${(f)"$(complete-skills)"})
+  colors-load-definitions
+  icons-load-definitions
 
-  _describe -V "$(completion-header $COLOR_ALIAS_AI $COLOR_GRAY_2 ' Skills ')" suggestions
+  local suggestions=(${(f)"$(complete-skills)"})
+  local label=" $ICONS[skill] Skills "
+  local header="$(completion-header $COLORS[ai] $COLORS[gray-2] "$label")"
+  _describe -V "$header" suggestions
 }

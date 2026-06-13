@@ -1,3 +1,17 @@
+## Issue 05 — misc completions
+
+### Spec: `_bats-test` uses `$ICONS[bats]` instead of spec's `$ICONS[language-bats]`
+
+```zsh
+local label=" $ICONS[bats] Bats Tests "
+```
+
+**Problem:** Spec issue 05 specifies `$ICONS[language-bats]`, but implementation uses `$ICONS[bats]`.
+
+**Reason skipped:** GUIDANCE.md (from issue 01) states: *"Icon key naming follows the shortest descriptive form: `bats` not `language-bats`."* `icons.zsh` defines `ICONS[bats]`; there is no `ICONS[language-bats]` key. The spec has a typo.
+
+---
+
 ## Issue 04 — Yarn/node completions
 
 ### Missing `setopt local_options err_return`

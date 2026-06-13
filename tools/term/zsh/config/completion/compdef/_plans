@@ -2,7 +2,11 @@
 
 # Suggest plans in the current git repo
 function _plans() {
-  local suggestions=(${(f)"$(complete-plans)"})
+  colors-load-definitions
+  icons-load-definitions
 
-  _describe -V "$(completion-header $COLOR_ALIAS_AI $COLOR_GRAY_2 ' Plans ')" suggestions
+  local suggestions=(${(f)"$(complete-plans)"})
+  local label=" $ICONS[plan] Plans "
+  local header="$(completion-header $COLORS[ai] $COLORS[gray-2] "$label")"
+  _describe -V "$header" suggestions
 }

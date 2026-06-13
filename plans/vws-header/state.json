@@ -30,7 +30,8 @@
   {
     "id": "05",
     "issue": "issues/05-misc-completions.md",
-    "done": false,
+    "done": true,
+    "recap": "Migrated all 9 misc compdef functions to $COLORS[key]/$ICONS[key]; added colors-load-definitions+icons-load-definitions; fixed pre-existing return-early violation in _video-streams-audio; used $ICONS[bats] (not language-bats) per GUIDANCE.",
     "blocked_by": ["01"]
   }
 ]

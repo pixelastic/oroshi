@@ -2,7 +2,11 @@
 
 # Suggest list of all targets from the local Makefile
 function _make-targets() {
-  local suggestions=(${(f)"$(complete-make-targets)"})
+  colors-load-definitions
+  icons-load-definitions
 
-  _describe -V "$(completion-header $COLOR_ALIAS_LANGUAGE_JAVASCRIPT $COLOR_BLACK ' Make ')" suggestions
+  local suggestions=(${(f)"$(complete-make-targets)"})
+  local label=" $ICONS[make] Make "
+  local header="$(completion-header $COLORS[language-javascript] $COLORS[black] "$label")"
+  _describe -V "$header" suggestions
 }

@@ -2,7 +2,11 @@
 
 # Suggest the defined ssh hosts
 function _ssh-known-hosts() {
-  local suggestions=(${(f)"$(complete-ssh-known-hosts)"})
+  colors-load-definitions
+  icons-load-definitions
 
-  _describe -V "$(completion-header $COLOR_ALIAS_DIRECTORY $COLOR_WHITE '  SSH hosts ')" suggestions
+  local suggestions=(${(f)"$(complete-ssh-known-hosts)"})
+  local label=" $ICONS[ssh] SSH hosts "
+  local header="$(completion-header $COLORS[directory] $COLORS[white] "$label")"
+  _describe -V "$header" suggestions
 }

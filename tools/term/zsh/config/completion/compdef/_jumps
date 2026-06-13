@@ -2,7 +2,11 @@
 
 # Suggest the marks
 function _jumps() {
-  local suggestions=(${(f)"$(complete-jumps)"})
+  colors-load-definitions
+  icons-load-definitions
 
-  _describe -V "$(completion-header $COLOR_ALIAS_DIRECTORY $COLOR_WHITE '  Jump to ')" suggestions
+  local suggestions=(${(f)"$(complete-jumps)"})
+  local label=" $ICONS[jump] Jump to "
+  local header="$(completion-header $COLORS[directory] $COLORS[white] "$label")"
+  _describe -V "$header" suggestions
 }

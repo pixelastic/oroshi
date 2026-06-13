@@ -2,7 +2,11 @@
 
 # Suggest bats test names from __tests__
 function _bats-test() {
-  local suggestions=(${(f)"$(complete-bats-test-files)"})
+  colors-load-definitions
+  icons-load-definitions
 
-  _describe -V "$(completion-header $COLOR_ALIAS_LANGUAGE_BATS $COLOR_BLACK ' 󰭟  Bats Tests ')" suggestions
+  local suggestions=(${(f)"$(complete-bats-test-files)"})
+  local label=" $ICONS[bats] Bats Tests "
+  local header="$(completion-header $COLORS[language-bats] $COLORS[black] "$label")"
+  _describe -V "$header" suggestions
 }
