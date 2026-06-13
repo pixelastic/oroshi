@@ -6,7 +6,6 @@ setup() {
 
   projects-load-definitions() {
     typeset -gA PROJECTS
-    # shellcheck disable=SC2034
     PROJECTS[my-project:path]="$BATS_GIT_DIR/"
   }
   bats_mock projects-load-definitions

@@ -11,7 +11,6 @@ setup() {
     PROJECTS[my-project:background:ansi]=100
     PROJECTS[my-project:foreground:ansi]=255
     PROJECTS[my-project:icon]=X
-    # shellcheck disable=SC2034
     PROJECTS[my-project:hideNameInPrompt]=false
   }
   bats_mock projects-load-definitions

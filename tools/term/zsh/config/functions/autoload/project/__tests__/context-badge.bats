@@ -5,10 +5,7 @@ setup() {
   CURRENT="$BATS_TEST_DIRNAME/../context-badge"
 
   project-name() { echo "my-project"; }
-  bats_mock project-name
-
   git-worktree-name() { echo ""; }
-  bats_mock git-worktree-name
 
   projects-load-definitions() {
     typeset -gA PROJECTS
@@ -17,18 +14,15 @@ setup() {
     PROJECTS[my-project:icon]="x "
     PROJECTS[my-project:hideNameInPrompt]=0
   }
-  bats_mock projects-load-definitions
-
   export COLOR_ORANGE_1=208
   export COLOR_ORANGE_7=130
 
   export BATS_SEPARATOR=""
   icons-load-definitions() {
     typeset -gA ICONS
-    # shellcheck disable=SC2034
     ICONS[badge-separator]="$BATS_SEPARATOR"
   }
-  bats_mock icons-load-definitions
+  bats_mock project-name git-worktree-name projects-load-definitions icons-load-definitions
 }
 
 teardown() {
@@ -79,7 +73,6 @@ teardown() {
     PROJECTS[my-project:background:ansi]=100
     PROJECTS[my-project:foreground:ansi]=255
     PROJECTS[my-project:icon]=x
-    # shellcheck disable=SC2034
     PROJECTS[my-project:hideNameInPrompt]=1
   }
   bats_mock projects-load-definitions

@@ -15,7 +15,6 @@ teardown() {
 @test "known project with icon: returns exit 0" {
   projects-load-definitions() {
     typeset -gA PROJECTS
-    # shellcheck disable=SC2034
     PROJECTS[aberlaas:icon]="  "
   }
   bats_mock projects-load-definitions

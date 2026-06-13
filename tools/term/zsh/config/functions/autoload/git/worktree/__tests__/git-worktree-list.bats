@@ -10,13 +10,9 @@ setup() {
 
   icons-load-definitions() {
     typeset -gA ICONS
-    # shellcheck disable=SC2034
     ICONS[git-changes]="±"
-    # shellcheck disable=SC2034
     ICONS[git-branch-ahead]="↑"
-    # shellcheck disable=SC2034
     ICONS[git-branch-behind]="↓"
-    # shellcheck disable=SC2034
     ICONS[git-worktree-current]="$BATS_CURRENT"
   }
   bats_mock icons-load-definitions

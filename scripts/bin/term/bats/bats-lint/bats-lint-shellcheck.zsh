@@ -12,7 +12,8 @@ bats-lint-shellcheck() {
   local -a excludedRules=()
   excludedRules+=(SC2016) # $var in single-quoted printf is intentional in bats fixtures
   excludedRules+=(SC2155) # Allow local var="$(cmd)"
-  excludedRules+=(SC2317) # Declaring unused functions for mock is ok
+  excludedRules+=(SC2317) # Allowing declaring unused functions (useful in mocks)
+  excludedRules+=(SC2034) # Allowing declaring unused vars (useful in mocks)
   excludedRules+=(SC2030) # Modification of var is local to subshell caused by @test
   excludedRules+=(SC2031) # Var was modified in a subshell; change might be lost in @test
 
@@ -40,7 +41,11 @@ bats-lint-shellcheck() {
   local batsRunVars='["output","status","lines","line"]'
   scOutput="$(printf '%s' "$scOutput" | jq -c \
     --argjson vars "$batsRunVars" \
-    '[.[] | select((.code == 2154 and ((.message | split(" ")[0]) as $v | $vars | contains([$v]))) | not)]')"
+    '[
+        .[] | select(
+          (.code == 2154 and ((.message | split(" ")[0]) as $v | $vars | contains([$v]))
+        )
+      | not)]')"
 
   # Transform ShellCheck JSON: add "SC" prefix to integer code, drop fix suggestions
   local transformed="$(printf '%s\n' "$scOutput" | jq -c '[.[] | .code = "SC" + (.code | tostring) | del(.fix)]')"
