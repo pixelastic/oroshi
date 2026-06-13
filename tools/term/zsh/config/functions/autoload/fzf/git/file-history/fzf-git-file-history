@@ -7,11 +7,13 @@ local relativePath="$1"
 local absolutePath="${relativePath:a}"
 local gitPath="$(git-file-path "$absolutePath")"
 
+colors-load-definitions
+
 # Build the display line
 local formatString=""
-formatString+="%C(${COLOR_ALIAS_GIT_COMMIT}) %h%Creset  "
-formatString+="%C(${COLOR_ALIAS_DATE}) %cd%Creset  "
-formatString+="%C(${COLOR_ALIAS_GIT_MESSAGE})%s%Creset"
+formatString+="%C(${COLORS[git-commit]}) %h%Creset  "
+formatString+="%C(${COLORS[date]}) %cd%Creset  "
+formatString+="%C(${COLORS[git-message]})%s%Creset"
 
 # Find all commits where this file was modified
 local gitHistory="$(
@@ -29,7 +31,7 @@ local selection="$(
   fzf \
     --ansi \
     --preview-window 'right,50%,border-left,<79(bottom,80%,border-top)' \
-    --preview "fzf-preview-git-file-history {} "$gitPath"" \
+    --preview "fzf-preview-git-file-history {} $gitPath" \
     <<<"$gitHistory"
 )"
 
@@ -44,4 +46,3 @@ local dirname="${absolutePath:r}"
 local extension="${absolutePath:e}"
 local newFilepath="${dirname}.${commitHash}.${extension}"
 git show $commitHash:"$gitPath" >$newFilepath
-

@@ -13,13 +13,15 @@ zparseopts -E -D \
 local isMore=${#flagMore}
 local isAll=${#flagAll}
 
+colors-load-definitions
+
 local prettyFormat=(\
   # Commit hash
-  "[38;5;${COLOR_ALIAS_GIT_COMMIT}m %<(10)%h[00m" \
+  "[38;5;${COLORS[git-commit]}m %<(10)%h[00m" \
   # Date
-  "[38;5;${COLOR_ALIAS_DATE}m %cd, %<(25)%ar[00m" \
+  "[38;5;${COLORS[date]}m %cd, %<(25)%ar[00m" \
   # Author name
-  "[38;5;${COLOR_ALIAS_GIT_AUTHOR}m %an[00m" \
+  "[38;5;${COLORS[git-author]}m %an[00m" \
   # Branches and tags, but only if non-empty
   "%C(auto)%+D%Creset" \
   # Subject
@@ -35,7 +37,7 @@ local additionalFlags=()
 [[ $isAll == "1" ]] && additionalFlags+=(--patch)
 
 # Tell Kitty to overwrite default foreground color with color of git messages
-printf '\e]10;%s\a' "${COLOR_ALIAS_GIT_MESSAGE_HEXA}"
+printf '\e]10;%s\a' "${COLORS[git-message:hex]}"
 trap 'printf "\e]110\a"' EXIT INT TERM
 
 git log \
