@@ -2,6 +2,7 @@
 typeset -gA ICONS
 
 # Kitty
+# zsh-lint disable=missingIconsLoad
 ICONS[kitty-tab-separator]=""
 
 # Zsh
@@ -60,6 +61,7 @@ ICONS[git-changes]="±"
 ICONS[docker-run]=""
 ICONS[docker-stop]=""
 ICONS[docker-pause]=""
+ICONS[docker-image]="X"
 
 # Statusbar
 ICONS[statusbar-ram]=""
@@ -71,6 +73,8 @@ ICONS[statusbar-ping-offline]=""
 
 # ----- Languages
 ICONS[python]=""
+ICONS[bats]="X"
+ICONS[make]="X"
 
 # Node
 ICONS[node]=""
@@ -89,6 +93,12 @@ ICONS[ruby-install-in-progress]=""
 
 # Common
 ICONS[unknown]=""
+ICONS[flag]="X"
+ICONS[jump]="X"
+ICONS[plan]="X"
+ICONS[skill]="X"
+ICONS[ssh]="X"
+ICONS[video-stream-audio]="X"
 
 # Separators
 ICONS[separator-arrow]=""

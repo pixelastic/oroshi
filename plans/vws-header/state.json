@@ -1,0 +1,33 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-icons-placeholders.md",
+    "done": true,
+    "recap": "Added 9 placeholder icon keys (value X) to icons.zsh; bats renamed from language-bats; pre-existing missingIconsLoad lint error suppressed via disable comment.",
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-git-completions.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-docker-completions.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-yarn-node-completions.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-misc-completions.md",
+    "done": false,
+    "blocked_by": ["01"]
+  }
+]
