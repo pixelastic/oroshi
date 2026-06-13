@@ -356,16 +356,16 @@
     "hex": "#38a169"
   },
   "git-ahead": {
-    "ansi": 38,
-    "hex": "#22543d"
+    "ansi": 35,
+    "hex": "#38a169"
   },
   "git-author": {
     "ansi": 225,
     "hex": "#525252"
   },
   "git-behind": {
-    "ansi": 27,
-    "hex": "#991b1b"
+    "ansi": 26,
+    "hex": "#b91c1c"
   },
   "git-branch": {
     "ansi": 105,

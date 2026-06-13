@@ -88,9 +88,9 @@
   // Git
   "git": {
     "added":           "green",
-    "ahead":           "green-8",
+    "ahead":           "green-5",
     "author":          "neutral",
-    "behind":          "red-7",
+    "behind":          "red-6",
     "branch":          "orange",
     "branch-dependabot": "cyan",
     "branch-develop":  "yellow",
