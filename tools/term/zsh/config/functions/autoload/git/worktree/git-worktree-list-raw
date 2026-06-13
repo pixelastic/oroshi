@@ -27,7 +27,7 @@ for line in "${(@f)porcelain}"; do
   # Detached HEAD: use branch from active rebase, or fall back to "HEAD"
   if [[ "$line" == "detached" ]]; then
     local rawInfo="$(git-rebase-info-raw "$worktreePath" 2>/dev/null)"
-    if [[ -n "$rawInfo" ]]; then
+    if [[ "$rawInfo" != "" ]]; then
       local headName="${${(@s/▮/)rawInfo}[3]}"
       branch="${headName:11}"
     else
@@ -37,7 +37,7 @@ for line in "${(@f)porcelain}"; do
   fi
 
   # Non-empty line that's not worktree/branch/detached (e.g. HEAD sha) — skip
-  [[ -z "$line" ]] || continue
+  [[ "$line" != "" ]] && continue
 
   # Blank line = end of block; skip the Git Repo Main (first block)
   if [[ "$isFirst" == true ]]; then
@@ -51,7 +51,7 @@ for line in "${(@f)porcelain}"; do
 done
 
 # Flush last block (no trailing blank line after $() strips newlines)
-[[ "$isFirst" == false && -n "$branch" ]] && worktreeData+=("$branch▮$worktreePath")
+[[ "$isFirst" == false && "$branch" != "" ]] && worktreeData+=("$branch▮$worktreePath")
 
 # Second pass: enrich each entry with distance, date, message
 for entry in "${worktreeData[@]}"; do
