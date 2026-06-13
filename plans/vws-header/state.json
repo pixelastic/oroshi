@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-docker-completions.md",
-    "done": false,
+    "done": true,
+    "recap": "Migrated all 8 docker compdef functions to $COLORS[key]/$ICONS[key]; added colors-load-definitions+icons-load-definitions; split long _describe lines into local label+header vars to satisfy 100-char lint limit.",
     "blocked_by": ["01"]
   },
   {

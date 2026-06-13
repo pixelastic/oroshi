@@ -2,7 +2,11 @@
 
 # Suggest the available Docker images on Docker Hub
 function _docker-images-remote() {
-  local suggestions=(${(f)"$(complete-docker-images-remote)"})
+  colors-load-definitions
+  icons-load-definitions
 
-  _describe -V "$(completion-header $COLOR_ALIAS_DOCKER_IMAGE_REMOTE $COLOR_WHITE '  Docker remote images ')" suggestions
+  local suggestions=(${(f)"$(complete-docker-images-remote)"})
+  local label=" $ICONS[docker-image] Docker remote images "
+  local header="$(completion-header $COLORS[docker-image-remote] $COLORS[white] "$label")"
+  _describe -V "$header" suggestions
 }

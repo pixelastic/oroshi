@@ -2,8 +2,11 @@
 
 # Suggest all the running containers
 function _docker-containers-running() {
+  colors-load-definitions
   icons-load-definitions
-  local suggestions=(${(f)"$(complete-docker-containers-running)"})
 
-  _describe -V "$(completion-header $COLOR_ALIAS_DOCKER_CONTAINER_RUNNING $COLOR_WHITE " $ICONS[docker-run] Docker containers running ")" suggestions
+  local suggestions=(${(f)"$(complete-docker-containers-running)"})
+  local label=" $ICONS[docker-run] Docker containers running "
+  local header="$(completion-header $COLORS[docker-container-running] $COLORS[white] "$label")"
+  _describe -V "$header" suggestions
 }
