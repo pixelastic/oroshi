@@ -1,9 +1,0 @@
-[
-  {
-    "id": "01",
-    "issue": "issues/01-kitty-helper-claude-start-fallback.md",
-    "done": true,
-    "recap": "Both branches merged into a single path using args array; claude absorbs non-zero exit with || true; plain zsh replaces exec zsh; tests migrated to bats_mock zsh.",
-    "blocked_by": []
-  }
-]
