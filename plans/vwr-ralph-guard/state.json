@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-refactor-ralph-single.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced inline mode=single guard in ralph-single with ralph-is-running; now blocks on any active session. Fixed ralph-single.bats: corrected bats_run_zsh pattern and updated loop test to expect blocking.",
     "blocked_by": ["01"]
   },
   {

@@ -55,6 +55,12 @@ bats-lint tools/term/zsh/config/functions/autoload/git/worktree/__tests__/git-wo
 <!-- - Finding 1 -->
 <!-- - Finding 2 -->
 
+### Issue 02 — refactor ralph-single
+
+- `bats_run_zsh "$CURRENT" "$PRD_DIR"` was the broken pattern — `bats_run_zsh` runs `zsh -c "$1"`, which tries to execute the file directly (requires execute bit + shebang); fix is `bats_run_zsh "ralph-single '$PRD_DIR'"` with the arg embedded in the command string
+- `setup()` must still write to `mock.zsh` (via `printf "source ..."`) even without a `$CURRENT` caller — `bats_mock` sets `MOCK_OVERRIDE` to that file, zshenv sources it, which is how `ralph-single.zsh` gets defined in the subprocess
+- In blocking tests, functions that are never reached (early return) should not be listed in `bats_mock` — they add misleading noise; only mock what the test path actually exercises
+
 ### Issue 01 — ralph-is-running
 
 - `bats_run_zsh "$CURRENT" "$arg"` silently ignores `$arg` — bats_run_zsh only takes `$1` as the full command string; use `run <script> <args>` for bin scripts that need real arguments, reserve `bats_run_zsh` for mock-injected calls

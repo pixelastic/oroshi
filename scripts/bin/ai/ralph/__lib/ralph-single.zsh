@@ -10,13 +10,10 @@ ralph-single() {
   setopt local_options err_return
   local dir="$1"
 
-  # Refuse if a single session is already running
-  if [[ -f "$dir/ralph.json" ]]; then
-    local existingMode="$(ralph-state "$dir" get mode)"
-    if [[ "$existingMode" == "single" ]]; then
-      print "ralph-single: ❌ session already in progress"
-      return 1
-    fi
+  # Refuse if any session is already running
+  if ralph-is-running "$dir"; then
+    print "ralph-single: ❌ session already in progress"
+    return 1
   fi
 
   # Initialize the lock
