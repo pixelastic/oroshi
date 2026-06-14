@@ -55,6 +55,13 @@ bats-lint tools/term/zsh/config/functions/autoload/git/worktree/__tests__/git-wo
 <!-- - Finding 1 -->
 <!-- - Finding 2 -->
 
+### Issue 03 — git-worktree-delete guard
+
+- Existing `git-worktree-delete.bats` tests used `bats_run_zsh "$CURRENT" fix/bug` — broken because: (1) `bats_run_zsh` ignores the second arg, and (2) autoload files have no execute bit so `zsh -c "$path"` fails; fix is `bats_run_zsh "git-worktree-delete fix/bug"` (function name by value)
+- `${BATS_GIT_WORKTREES}fix-bug` was wrong; `bats_git_worktree 'fix/bug'` creates the dir at `${BATS_GIT_WORKTREES}${BATS_GIT_REPO_NAME}--fix-bug` — always include the repo-name prefix
+- Plans cleanup path was `$mainPath/plans/...` (bug) — plans live in `$worktreePath/plans/...`; but since `git worktree remove --force` deletes the whole worktree dir, the explicit `rm -rf` is belt-and-suspenders
+- The `--force` guard test should assert `[[ "$output" == *"ralph"* ]]` just like the non-force variant — the spec requires the error message to clearly name ralph in all blocking cases
+
 ### Issue 02 — refactor ralph-single
 
 - `bats_run_zsh "$CURRENT" "$PRD_DIR"` was the broken pattern — `bats_run_zsh` runs `zsh -c "$1"`, which tries to execute the file directly (requires execute bit + shebang); fix is `bats_run_zsh "ralph-single '$PRD_DIR'"` with the arg embedded in the command string

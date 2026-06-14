@@ -1,6 +1,7 @@
 # Remove one or more Worktree directories, branches, and associated plans/ folder
 # If called from inside a Worktree being deleted, cds to Git Repo Main first
 # Blocks if branch has unmerged commits ahead of main (bypass with --force/-f)
+# Blocks if a ralph session is active in the branch worktree (not bypassed by --force)
 # Defaults to current branch when called with no argument
 # Usage:
 # $ git-worktree-delete fix/bug
@@ -22,9 +23,18 @@ for branch in "${branches[@]}"; do
   local worktreePath="$(git-worktree-path "$branch")"
   [[ "$worktreePath" == "" ]] && return 1
 
+  local branchSlug="$(git-branch-slug "$branch")"
+
   # Block deletion if branch has unmerged commits ahead of main
   if [[ "$force" -eq 0 ]] && git-worktree-is-ahead "$worktreePath"; then
-    echo "✘ Cannot delete worktree: $branch has unmerged commit(s) ahead of main. Use --force to override."
+    echo "✘ Cannot delete worktree: $branch has unmerged commit(s) ahead of main."
+    echo "  Use --force to override."
+    return 1
+  fi
+
+  # Block deletion if a ralph session is active (not bypassed by --force)
+  if ralph-is-running "$worktreePath/plans/$branchSlug"; then
+    echo "✘ Cannot delete worktree: ralph session is active in $branch. Stop the session first."
     return 1
   fi
 
@@ -34,9 +44,8 @@ for branch in "${branches[@]}"; do
   git worktree remove --force "$worktreePath"
   git-branch-remove "$branch"
 
-  # Remove plans artifacts from main repo if they exist
-  local branchSlug="$(git-branch-slug "$branch")"
-  local plansDir="$mainPath/plans/${branchSlug}"
+  # Remove plans artifacts from branch worktree if they exist
+  local plansDir="$worktreePath/plans/${branchSlug}"
   if [[ -d "$plansDir" ]]; then
     rm -rf "$plansDir"
   fi

@@ -1,3 +1,30 @@
+## Issue 03 — git-worktree-delete guard
+
+### Pre-existing porcelain calls (`git worktree remove`, `rm -rf`)
+
+```zsh
+git worktree remove --force "$worktreePath"
+...
+rm -rf "$plansDir"
+```
+
+**Problem:** Standards reviewer flagged as raw porcelain instead of helpers.
+**Reason skipped:** Pre-existing code not introduced by this issue. No `git-worktree-remove` helper exists. Lint passed.
+
+### Pre-existing `[[ "$force" -eq 0 ]]` integer comparison
+
+```zsh
+if [[ "$force" -eq 0 ]] && git-worktree-is-ahead "$worktreePath"; then
+```
+
+**Problem:** `feedback_zsh_flag_test.md` prefers `[[ $isXxx == "1" ]]`.
+**Reason skipped:** Pre-existing code. `zsh-lint` passed (rule targets `(( isXxx ))` form, not `-eq` in `[[ ]]`). Not introduced by this issue.
+
+### Missing dedicated "allows deletion when no ralph session is active" test
+
+**Problem:** Spec's Behavioral Tests lists this as a required test case.
+**Reason skipped:** Covered implicitly by "removes the worktree directory" test (no `ralph.json` → deletion succeeds with status 0).
+
 ## Issue 02 — refactor ralph-single
 
 ### Standards: "Dead mock.zsh construction in setup()"

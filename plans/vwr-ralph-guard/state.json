@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-git-worktree-delete-guard.md",
-    "done": false,
+    "done": true,
+    "recap": "Added ralph guard to git-worktree-delete (not bypassed by --force), moved branchSlug before destructive steps, fixed plans cleanup path from mainPath to worktreePath. Rewrote git-worktree-delete.bats: fixed BATS_GIT_WORKTREES path prefix, replaced bats_run_zsh '$CURRENT' pattern with function-name calls, put cd inside bats_run_zsh.",
     "blocked_by": ["01"]
   }
 ]
