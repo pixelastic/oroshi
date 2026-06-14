@@ -56,3 +56,7 @@ is already partially migrated and shows the correct pattern.
 - `ICONS[bats]` already has a trailing space in its value; when replacing the inline glyph, match glyph+one-space (`\xf3\xb0\xad\x9f\x20`) to avoid double-spacing.
 - For preview files with no `setopt local_options err_return`, add it before `colors-load-definitions` (lint `missingErrReturn` will fire otherwise).
 - Lint rule 2178 fires when an array variable is later reassigned a string; fix by introducing a new `local` variable for the string form.
+
+### Issue 03 — colorize-refactor-apt-source-generate
+
+- When a perl `s///` replacement string must contain `$COLORS[key]`, use a `q{}` variable: `my $r = q{$(colorize "..." $COLORS[key])}; s/pattern/$r/g`. Direct interpolation fails because perl parses `$COLORS[key]` as an array subscript, causing a version-format error.

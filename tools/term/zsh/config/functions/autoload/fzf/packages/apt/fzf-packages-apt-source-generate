@@ -2,6 +2,8 @@
 # This will help speed up the search, as the list takes ~5s to generate
 setopt local_options err_return
 
+colors-load-definitions
+
 local allPackages="$(apt-list)"
 
 # Make an inverted list out of the list of installed packages
@@ -36,8 +38,8 @@ for packageName in ${(f)allPackages}; do
 
   # Color the name if installed
   if [[ $packageVersion != "" ]]; then
-    packageDisplayName="[38;5;${COLOR_ALIAS_PACKAGE_INSTALLED}m${packageDisplayName}[00m"
-    packageDisplayVersion="[38;5;${COLOR_ALIAS_PACKAGE_INSTALLED}m${packageDisplayVersion}[00m"
+    packageDisplayName="$(colorize "$packageDisplayName" $COLORS[package-installed])"
+    packageDisplayVersion="$(colorize "$packageDisplayVersion" $COLORS[package-installed])"
   fi
 
   # First column will be selected

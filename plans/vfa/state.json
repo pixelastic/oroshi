@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-colorize-refactor-apt-source-generate.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced raw ANSI escape sequences with colorize calls, swapped COLOR_ALIAS_PACKAGE_INSTALLED for COLORS[package-installed], added colors-load-definitions.",
     "blocked_by": []
   }
 ]
