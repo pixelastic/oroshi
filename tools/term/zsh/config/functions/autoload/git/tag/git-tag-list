@@ -2,6 +2,10 @@
 # Usage:
 # $ git-tag-list        # All tags
 setopt local_options err_return
+
+colors-load-definitions
+icons-load-definitions
+
 local rawGitTags="$(git-tag-list-raw)"
 
 # Stop if no tag
@@ -26,7 +30,7 @@ for rawGitTag in ${(f)rawGitTags}; do
   # Note: git-tag-colorize works ok when it needs to chose the color of one
   # tag, but quickly get slow when it needs to color a lot of them, so we take
   # a shortcut and always use the same color
-  row+="$(colorize " $tagName" $COLOR_ALIAS_GIT_TAG)▮"
+  row+="$(colorize "$ICONS[git-tag] $tagName" $COLORS[git-tag])▮"
   # }}}
 
   # Commit {{{

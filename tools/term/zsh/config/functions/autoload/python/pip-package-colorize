@@ -3,23 +3,27 @@
 # $ pip-package-colorize vim-vint                     # vim-vint
 # $ pip-package-colorize --with-icon                #  vim-vint
 setopt local_options err_return
+
 zparseopts -E -D \
-	-with-icon=flagWithIcon
+  -with-icon=flagWithIcon
 local isWithIcon=${#flagWithIcon}
+
+colors-load-definitions
+icons-load-definitions
 
 # Package name
 local packageName="$1"
 
 # Color
-local packageColor="$COLOR_ALIAS_PACKAGE"
+local packageColor="$COLORS[package]"
 
 # Icon
-local packageIcon=" "
+local packageIcon=$ICONS[package]
 
 # If --with-icon is not passed, we simply display the colored branch
 if [[ "$isWithIcon" != 1 ]]; then
-	colorize "$packageName" $packageColor
-	return
+  colorize "$packageName" $packageColor
+  return
 fi
 
 colorize "${packageIcon} ${packageName}" $packageColor

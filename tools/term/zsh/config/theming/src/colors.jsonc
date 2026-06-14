@@ -68,7 +68,7 @@
   "docker": {
     "comment":           "gray-4",
     "container":         "yellow",
-    "container-running": "green",
+    "container-run":     "green",
     "hash":              "purple",
     "image":             "sky",
     "image-github":      "green",

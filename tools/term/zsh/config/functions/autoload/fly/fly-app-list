@@ -19,8 +19,8 @@ for rawLine in ${(f)rawList}; do
   local appLastUpdate=$split[4]
 
   # Icon
-  local appIcon="$ICONS[docker-pause] "
-  [[ $appStatus == "deployed" ]] && appIcon="$ICONS[docker-run] "
+  local appIcon="$ICONS[docker-container-pause] "
+  [[ $appStatus == "deployed" ]] && appIcon="$ICONS[docker-container-run] "
 
   # Color
   local appColor=$COLORS[fly-app-suspended]

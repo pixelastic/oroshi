@@ -3,6 +3,8 @@
 # $ docker-hash-colorize 9ed4aefc74f6                # 9ed4aefc74f6
 # $ docker-hash-colorize alpine --with-icon          #  9ed4aefc74f6
 setopt local_options err_return
+
+colors-load-definitions
 zparseopts -E -D \
 	-with-icon=flagWithIcon
 
@@ -12,7 +14,7 @@ local isWithIcon=${#flagWithIcon}
 local hashName="$1"
 # }}}
 # Hash color {{{
-local hashColor=$COLOR_ALIAS_DOCKER_HASH
+local hashColor=$COLORS[docker-hash]
 # }}}
 
 # If --with-icon is not passed, we simply display the colored hash

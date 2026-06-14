@@ -5,21 +5,25 @@
 # 2. An icon to define if the folding is single or multi
 # 3. The simplified path to the defined folder
 setopt local_options err_return
+
 local directory=$1
 
+colors-load-definitions
+icons-load-definitions
+
 # Regexp prefix
-local promptPrefix="$(colorize "  GREP " $COLOR_WHITE $COLOR_ALIAS_REGEXP)"
+local promptPrefix="$(colorize " $ICONS[regexp] GREP " $COLORS[white] $COLORS[regexp])"
 
 # Folding icon {{{
 local currentMode="$(fzf-var-read regexp-fold-mode multi)"
 
 if [[ $currentMode == "multi" ]]; then
-  local icon=" "
+  local icon=$ICONS[fzf-fold]
 elif [[ $currentMode == "single" ]]; then
-  local icon=" "
+  local icon=$ICONS[fzf-unfold]
 fi
 
-local promptFoldIcon="$(colorize "${icon}(f1)" $COLOR_WHITE $COLOR_ALIAS_REGEXP)"
+local promptFoldIcon="$(colorize "${icon}(f1)" $COLORS[white] $COLORS[regexp])"
 # }}}
 
 # Directory

@@ -25,15 +25,22 @@ ICONS[completion-process]=""
 ICONS[fzf-separator]=""
 ICONS[fzf-current]=""
 ICONS[fzf-selected]=""
+ICONS[fzf-fold]=""
+ICONS[fzf-unfold]=""
 
 # Nvim
 ICONS[nvim-tab-separator]=""
 ICONS[nvim-notification-separator]=""
 
-# ----- Tools
-ICONS[dropbox]=""
-ICONS[ssh]="󰣀 "
+# ----- Tools / Languages
+ICONS[bats]="󰭟"
 ICONS[claude]="●"
+ICONS[dropbox]=""
+ICONS[make]=""
+ICONS[python]=""
+ICONS[regexp]=""
+ICONS[skill]=" "
+ICONS[ssh]="󰣀 "
 
 # Git
 ICONS[git-branch-ahead]=""
@@ -65,10 +72,17 @@ ICONS[git-worktree]="󰌪"
 
 # Docker
 ICONS[docker-run]=""
-ICONS[docker-stop]=""
-ICONS[docker-pause]=""
+ICONS[docker-container]=""
+ICONS[docker-container-run]="󱉺"
+ICONS[docker-container-pause]=""
+ICONS[docker-stop]=""
 ICONS[docker-image]="G"
-ICONS[docker-image-remote]=" "
+ICONS[docker-hash]=""
+ICONS[docker-image]=""
+ICONS[docker-image-remote]=""
+ICONS[docker-image-github]=""
+ICONS[docker-image-oroshi]=""
+ICONS[docker-image-orphan]=""
 
 # Statusbar
 ICONS[statusbar-ram]=""
@@ -77,11 +91,6 @@ ICONS[statusbar-cpu]=""
 ICONS[statusbar-cpu-fire]=""
 ICONS[statusbar-ping]=""
 ICONS[statusbar-ping-offline]=""
-
-# ----- Languages
-ICONS[python]=""
-ICONS[bats]="󰭟 "
-ICONS[make]=" "
 
 # Node
 ICONS[node]=""
@@ -104,7 +113,6 @@ ICONS[package]=""
 ICONS[flag]=""
 ICONS[jump]="󰐃"
 ICONS[plan]=" "
-ICONS[skill]=" "
 ICONS[video-stream-audio]=" "
 
 # Separators

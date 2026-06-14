@@ -5,10 +5,12 @@
 # $ docker-container-colorize alpine_latest --with-icon --state stopped #  alpine
 # $ docker-container-colorize alpine_latest --with-icon --state running #  alpine
 setopt local_options err_return
+
+colors-load-definitions
 icons-load-definitions
 zparseopts -E -D \
-	-with-icon=flagWithIcon \
-	-state:=flagState
+  -with-icon=flagWithIcon \
+  -state:=flagState
 
 local isWithIcon=${#flagWithIcon}
 local state=${flagState[2]}
@@ -17,21 +19,21 @@ local state=${flagState[2]}
 local containerName=$1
 
 # Container color {{{
-local containerColor=$COLOR_ALIAS_DOCKER_CONTAINER
-[[ $state == "running" ]] && containerColor=$COLOR_ALIAS_DOCKER_CONTAINER_RUNNING
+local containerColor=$COLORS[docker-container]
+[[ $state == "running" ]] && containerColor=$COLORS[docker-container-run]
 [[ $state == "exited" ]] && containerColor=$COLOR_GRAY
 # }}}
 
 # If --with-icon is not passed, we simply display the colored container
 if [[ "$isWithIcon" != 1 ]]; then
-	colorize "${containerName}" $containerColor
-	return
+  colorize "${containerName}" $containerColor
+  return
 fi
 
 # If --with-icon is passed, we display a different icon based on if the container
 # is local or remote
-local containerIcon="$ICONS[docker-stop] "
-[[ $state == "running" ]] && containerIcon="$ICONS[docker-run] "
+local containerIcon="$ICONS[docker-container] "
+[[ $state == "running" ]] && containerIcon="$ICONS[docker-container-run] "
 [[ $state == "exited" ]] && containerIcon="$ICONS[docker-pause] "
 
 colorize "${containerIcon}${containerName}" $containerColor

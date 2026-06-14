@@ -183,7 +183,7 @@
     "ansi": 45,
     "hex": "#d69e2e"
   },
-  "docker-container-running": {
+  "docker-container-run": {
     "ansi": 35,
     "hex": "#38a169"
   },

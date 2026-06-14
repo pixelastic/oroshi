@@ -6,12 +6,16 @@
 # $ docker-image-colorize alpine --with-icon --remote           #  alpine
 # $ docker-image-colorize ghcr.io/pixelastic/alpine --with-icon #  alpine
 setopt local_options err_return
+
 zparseopts -E -D \
   -with-icon=flagWithIcon \
   -remote=flagRemote
 
 local isWithIcon=${#flagWithIcon}
 local isRemote=${#flagRemote}
+
+colors-load-definitions
+icons-load-definitions
 
 # Split image name and its tag
 local inputSplit=(${(@s/:/)1})
@@ -28,11 +32,11 @@ local isOrphan="0"
 docker-image-exists "${imageName}" || isOrphan="1"
 
 # Image color {{{
-local imageColor=$COLOR_ALIAS_DOCKER_IMAGE
-[[ "$isRemote" == "1" ]] && imageColor=$COLOR_ALIAS_DOCKER_IMAGE_REMOTE
-[[ "$isGitHub" == "1" ]] && imageColor=$COLOR_ALIAS_DOCKER_IMAGE_GITHUB
-[[ "$isOroshi" == "1" ]] && imageColor=$COLOR_ALIAS_DOCKER_IMAGE_OROSHI
-[[ "$isOrphan" == "1" ]] && imageColor=$COLOR_ALIAS_DOCKER_IMAGE_ORPHAN
+local imageColor=$COLORS[docker-image]
+[[ "$isRemote" == "1" ]] && imageColor=$COLORS[docker-image-remote]
+[[ "$isGitHub" == "1" ]] && imageColor=$COLORS[docker-image-github]
+[[ "$isOroshi" == "1" ]] && imageColor=$COLORS[docker-image-oroshi]
+[[ "$isOrphan" == "1" ]] && imageColor=$COLORS[docker-image-orphan]
 # }}}
 
 # Tag color {{{
@@ -50,10 +54,10 @@ fi
 
 # If --with-icon is passed, we display a different icon based on if the image
 # is local or remote
-local imageIcon=" "
-[[ $isRemote == "1" ]] && imageIcon=" "
-[[ $isGitHub == "1" ]] && imageIcon=" "
-[[ $isOroshi == "1" ]] && imageIcon=" "
-[[ $isOrphan == "1" ]] && imageIcon=" "
+local imageIcon=$ICONS[docker-imagee]
+[[ $isRemote == "1" ]] && imageIcon=$ICONS[docker-image-remote]
+[[ $isGitHub == "1" ]] && imageIcon=$ICONS[docker-image-github]
+[[ $isOroshi == "1" ]] && imageIcon=$ICONS[docker-image-oroshi]
+[[ $isOrphan == "1" ]] && imageIcon=$ICONS[docker-image-orphan]
 
 echo "$(colorize "${imageIcon}${imageName}" $imageColor)${tagSuffix}"
