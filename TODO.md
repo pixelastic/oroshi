@@ -37,6 +37,16 @@ Still terminal issue when running several ralphs
 I should update my eslint rules to warn about using for of instead of lodash, so
 the agents know when/how to write
 
+Make git-worktree-distance use git-worktree-distance-raw
+
+Update calls to bats_debug to not pass an argument, as $output is by default
+
+Re-evaluate
+/home/tim/local/www/worktrees/oroshi--vfa/tools/term/zsh/config/functions/autoload/git/branch/__tests__/git-branch-colorize.bats
+to see if we could right better tests. Tests that actually test non-trivial
+behavior. The --zsh flag thing basically test that the underlying colorize
+method correctly handles --zsh. Let's re-evaluate if we need to test that at the git-branch-colorize level, or if it's ok to assume it's tested in the colorize method.
+
 
 ---
 ## Cleanup
