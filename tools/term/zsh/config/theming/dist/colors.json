@@ -107,6 +107,10 @@
     "ansi": 144,
     "hex": "#f59e0b"
   },
+  "claude": {
+    "ansi": 146,
+    "hex": "#b45309"
+  },
   "comment": {
     "ansi": 205,
     "hex": "#6b7280"

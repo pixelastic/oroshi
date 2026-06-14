@@ -33,6 +33,7 @@ ICONS[nvim-notification-separator]=""
 # ----- Tools
 ICONS[dropbox]=""
 ICONS[ssh]="󰣀 "
+ICONS[claude]="●"
 
 # Git
 ICONS[git-branch-ahead]=""
@@ -67,6 +68,7 @@ ICONS[docker-run]=""
 ICONS[docker-stop]=""
 ICONS[docker-pause]=""
 ICONS[docker-image]="G"
+ICONS[docker-image-remote]=" "
 
 # Statusbar
 ICONS[statusbar-ram]=""
@@ -98,6 +100,7 @@ ICONS[ruby-install-in-progress]=""
 
 # Common
 ICONS[unknown]=""
+ICONS[package]=""
 ICONS[flag]=""
 ICONS[jump]="󰐃"
 ICONS[plan]=" "

@@ -48,3 +48,11 @@ is already partially migrated and shows the correct pattern.
 
 - Inline icon bytes (U+F440, `ef 91 80`) in fzf option files cannot be matched by the Edit tool — use `perl -0777 -i -pe` with `\xEF\x91\x80` hex escapes to replace them.
 - New icon keys added to `icons.zsh` without a real glyph get `"x"` as placeholder value by user convention; the actual glyph must be filled in manually.
+
+### Issue 02 — bulk-color-variable-substitution
+
+- `icons.zsh` also contains binary glyph bytes in values — Edit tool fails; use `perl -0777 -pi -e` with regex matching only the ASCII key name (e.g. `s/(ICONS\[fzf-selected\]="[^"]*"\n)/.../`).
+- In perl `-e` double-quoted strings, `"${COLORS[$k]}"` is interpreted as Perl array deref (→ empty string). Use string concatenation instead: `'${COLORS[' . $k . ']}'` and `'$COLORS[' . $k . ']'`.
+- `ICONS[bats]` already has a trailing space in its value; when replacing the inline glyph, match glyph+one-space (`\xf3\xb0\xad\x9f\x20`) to avoid double-spacing.
+- For preview files with no `setopt local_options err_return`, add it before `colors-load-definitions` (lint `missingErrReturn` will fire otherwise).
+- Lint rule 2178 fires when an array variable is later reassigned a string; fix by introducing a new `local` variable for the string form.

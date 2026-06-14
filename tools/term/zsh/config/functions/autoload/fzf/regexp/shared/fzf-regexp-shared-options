@@ -11,6 +11,7 @@
 # --source         # Mandatory, function that displays the list of suggestions
 # --prompt         # Mandatory, function that displays the prompt
 setopt local_options err_return
+
 zmodload zsh/zutil
 zparseopts -E -D \
   -source:=flagSource \
@@ -18,6 +19,8 @@ zparseopts -E -D \
 
 local fzfSourcePath=${flagSource[2]}
 local fzfPromptPath=${flagPrompt[2]}
+
+colors-load-definitions
 
 echo "--delimiter=   "
 echo "--with-nth=3"
@@ -39,7 +42,7 @@ echo "--bind=f1:+transform-prompt(${fzfPromptPath})"
 echo "--bind=f1:+first"
 
 # Color the UI in regexp color
-echo "--color=disabled:${COLOR_ALIAS_REGEXP}:regular"
-echo "--color=separator:${COLOR_ALIAS_REGEXP}"
-echo "--color=info:${COLOR_ALIAS_REGEXP}"
-echo "--color=prompt:${COLOR_ALIAS_DIRECTORY}:regular"
+echo "--color=disabled:${COLORS[regexp]}:regular"
+echo "--color=separator:${COLORS[regexp]}"
+echo "--color=info:${COLORS[regexp]}"
+echo "--color=prompt:${COLORS[directory]}:regular"

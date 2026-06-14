@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-bulk-color-variable-substitution.md",
-    "done": false,
+    "done": true,
+    "recap": "Migrated 10 fzf files from COLOR_ALIAS_*/COLOR_* to COLORS[], added colors-load-definitions, extracted 4 inline icon glyphs to ICONS[] entries with 'x' placeholder.",
     "blocked_by": []
   },
   {

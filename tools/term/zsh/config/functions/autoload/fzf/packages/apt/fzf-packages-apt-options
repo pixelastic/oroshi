@@ -1,11 +1,13 @@
 setopt local_options err_return
+
 icons-load-definitions
+colors-load-definitions
 
 echo "--delimiter=▮"
 echo "--with-nth=2"
 echo "--preview=fzf-packages-apt-preview {1}"
 
 # Prompt
-local promptPrefix="$(colorize "   apt-get packages " $COLOR_BLACK $COLOR_ALIAS_PACKAGE)"
-local promptSuffix="$(colorize "$ICONS[fzf-separator]" $COLOR_ALIAS_TERMINAL $COLOR_ALIAS_PACKAGE)"
+local promptPrefix="$(colorize " $ICONS[package]  apt-get packages " $COLORS[black] $COLORS[package])"
+local promptSuffix="$(colorize "$ICONS[fzf-separator]" $COLORS[terminal] $COLORS[package])"
 echo "--prompt=${promptPrefix}${promptSuffix} "

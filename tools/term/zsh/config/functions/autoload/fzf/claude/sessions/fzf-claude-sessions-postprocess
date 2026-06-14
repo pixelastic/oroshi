@@ -1,3 +1,0 @@
-local rawSelection="$1"
-local split=(${(@s/▮/)rawSelection})
-echo $split[1]

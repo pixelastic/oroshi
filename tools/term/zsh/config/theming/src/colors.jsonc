@@ -3,6 +3,7 @@
 
   // Semantic UI colors.
   "ai":           "amber-6",
+  "claude":       "amber-6",
   "black":        "gray-0",
   "boolean":      "amber-4",
   "comment":      "gray",

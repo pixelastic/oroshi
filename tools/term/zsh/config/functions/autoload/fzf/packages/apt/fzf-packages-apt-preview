@@ -3,6 +3,8 @@
 # $ fzf-apt-package-preview zsh   # Display info about zsh
 setopt local_options err_return
 
+colors-load-definitions
+
 local packageName="$1"
 
 local rawDetails="$(apt-cache show $packageName)"
@@ -42,13 +44,13 @@ for line in ${(f)rawDetails}; do
   fi
 done
 
-packageDescription="${(F)packageDescription}"
+local packageDescriptionText="${(F)packageDescription}"
 
-echo "$(colorize " $packageName" $COLOR_ALIAS_FUNCTION) v${packageVersion}"
+echo "$(colorize " $packageName" $COLORS[function]) v${packageVersion}"
 
 if apt-is-installed $packageName; then
-  colorize " ✔ Installed" $COLOR_ALIAS_SUCCESS
+  colorize " ✔ Installed" $COLORS[success]
 fi
 
 echo ""
-colorize "${packageDescription}" $COLOR_ALIAS_COMMENT
+colorize "${packageDescriptionText}" $COLORS[comment]

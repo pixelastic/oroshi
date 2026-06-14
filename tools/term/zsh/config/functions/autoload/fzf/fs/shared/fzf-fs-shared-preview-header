@@ -37,7 +37,7 @@ if [[ $isDirectory == 0 ]]; then
   # be found with the above method
   if [[ -x $fullPath ]]; then
     icon=""
-    color=$COLOR_ALIAS_EXECUTABLE
+    color=$COLORS[executable]
     filetypeGroup="script"
   fi
 
