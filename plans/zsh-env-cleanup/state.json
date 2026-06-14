@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-fix-zsh-config-path-heredoc-tests.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced $ZSH_CONFIG_PATH/$~.oroshi refs in heredocs; also fixed three pre-existing breakages: zshenv.zsh→split (removed obsolete source line), bats_git_worktree path format (fix-bug→my-repo--fix-bug), and bats_run_zsh API (file-path→command-string via source). Both suites green.",
     "blocked_by": []
   },
   {

@@ -61,7 +61,7 @@ bats_git_dir() {
 # To control where scripts create worktrees, export MOCK_OROSHI_WORKTREES_DIR in setup().
 # Returns the worktree path.
 # Requires bats_git_dir to have been called first.
-# Usage: local wt; wt="$(bats_git_worktree 'fix/bug')"
+# Usage: local wt; wt="$(bats_git_worktree 'feature')"
 bats_git_worktree() {
   local branch="$1"
   [[ "$branch" == "" ]] && return 1

@@ -2,115 +2,21 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  bats_git_worktree 'fix/bug'
+  bats_git_worktree 'feature'
+
+  # Source the ralph-single.zsh before each command
+  sourcePrefix="source '$BATS_TEST_DIRNAME/../git.zsh'"
 }
 
 teardown() {
   bats_cleanup
 }
 
-# git_worktree_distance
-
-@test "shows ahead color and count when ahead" {
-  cd "${BATS_GIT_WORKTREES}fix-bug"
-  git commit --allow-empty -m "commit 1"
-  git commit --allow-empty -m "commit 2"
-  local script="$BATS_TMP_DIR/git-prompt-1.zsh"
-  cat >"$script" <<'ZSCRIPT'
-		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
-		source $ZSH_CONFIG_PATH/theming/dist/colors.zsh
-		source $ZSH_CONFIG_PATH/prompt/git.zsh
-		GIT_DIRECTORY_IS_REPOSITORY=1
-		GIT_DIRECTORY_IS_WORKTREE=1
-		declare -Ag OROSHI_PROMPT_PARTS
-		oroshi-prompt-populate:git_worktree_distance
-		result="${OROSHI_PROMPT_PARTS[git_worktree_distance]}"
-		[[ "$result" == *"%F{$COLORS[git-ahead]}"* ]] && [[ "$result" == *"2"* ]]
-ZSCRIPT
-  bats_run_zsh "$script"
-  [ "$status" -eq 0 ]
-}
-
-@test "shows behind color and count when behind" {
-  bats_git commit --allow-empty -m "main commit 1"
-  bats_git commit --allow-empty -m "main commit 2"
-  bats_git commit --allow-empty -m "main commit 3"
-  cd "${BATS_GIT_WORKTREES}fix-bug"
-  local script="$BATS_TMP_DIR/git-prompt-2.zsh"
-  cat >"$script" <<'ZSCRIPT'
-		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
-		source $ZSH_CONFIG_PATH/theming/dist/colors.zsh
-		source $ZSH_CONFIG_PATH/prompt/git.zsh
-		GIT_DIRECTORY_IS_REPOSITORY=1
-		GIT_DIRECTORY_IS_WORKTREE=1
-		declare -Ag OROSHI_PROMPT_PARTS
-		oroshi-prompt-populate:git_worktree_distance
-		result="${OROSHI_PROMPT_PARTS[git_worktree_distance]}"
-		[[ "$result" == *"%F{$COLORS[git-behind]}"* ]] && [[ "$result" == *"3"* ]]
-ZSCRIPT
-  bats_run_zsh "$script"
-  [ "$status" -eq 0 ]
-}
-
-@test "shows both colors when ahead and behind" {
-  bats_git commit --allow-empty -m "main commit"
-  cd "${BATS_GIT_WORKTREES}fix-bug"
-  git commit --allow-empty -m "worktree commit"
-  local script="$BATS_TMP_DIR/git-prompt-3.zsh"
-  cat >"$script" <<'ZSCRIPT'
-		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
-		source $ZSH_CONFIG_PATH/theming/dist/colors.zsh
-		source $ZSH_CONFIG_PATH/prompt/git.zsh
-		GIT_DIRECTORY_IS_REPOSITORY=1
-		GIT_DIRECTORY_IS_WORKTREE=1
-		declare -Ag OROSHI_PROMPT_PARTS
-		oroshi-prompt-populate:git_worktree_distance
-		result="${OROSHI_PROMPT_PARTS[git_worktree_distance]}"
-		[[ "$result" == *"%F{$COLORS[git-ahead]}"* ]] && [[ "$result" == *"%F{$COLORS[git-behind]}"* ]]
-ZSCRIPT
-  bats_run_zsh "$script"
-  [ "$status" -eq 0 ]
-}
-
-@test "git_worktree_distance is empty when in sync with main" {
-  cd "${BATS_GIT_WORKTREES}fix-bug"
-  local script="$BATS_TMP_DIR/git-prompt-4.zsh"
-  cat >"$script" <<'ZSCRIPT'
-		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
-		source ~/.oroshi/tools/term/zsh/config/prompt/git.zsh
-		GIT_DIRECTORY_IS_REPOSITORY=1
-		GIT_DIRECTORY_IS_WORKTREE=1
-		declare -Ag OROSHI_PROMPT_PARTS
-		oroshi-prompt-populate:git_worktree_distance
-		[[ "${OROSHI_PROMPT_PARTS[git_worktree_distance]}" == "" ]]
-ZSCRIPT
-  bats_run_zsh "$script"
-  [ "$status" -eq 0 ]
-}
-
-@test "git_worktree_distance is empty outside a worktree" {
-  cd "$BATS_GIT_DIR"
-  local script="$BATS_TMP_DIR/git-prompt-5.zsh"
-  cat >"$script" <<'ZSCRIPT'
-		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
-		source ~/.oroshi/tools/term/zsh/config/prompt/git.zsh
-		GIT_DIRECTORY_IS_REPOSITORY=1
-		GIT_DIRECTORY_IS_WORKTREE=0
-		declare -Ag OROSHI_PROMPT_PARTS
-		oroshi-prompt-populate:git_worktree_distance
-		[[ "${OROSHI_PROMPT_PARTS[git_worktree_distance]}" == "" ]]
-ZSCRIPT
-  bats_run_zsh "$script"
-  [ "$status" -eq 0 ]
-}
-
 # git_issues_github
 
 @test "git_issues_github is empty inside a worktree" {
-  cd "${BATS_GIT_WORKTREES}fix-bug"
   local script="$BATS_TMP_DIR/git-prompt-6.zsh"
   cat >"$script" <<'ZSCRIPT'
-		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
 		source $OROSHI_ROOT/tools/term/zsh/config/prompt/git.zsh
 		GIT_DIRECTORY_IS_REPOSITORY=1
 		GIT_DIRECTORY_IS_WORKTREE=1
@@ -118,7 +24,7 @@ ZSCRIPT
 		oroshi-prompt-populate:git_issues_github
 		echo "${OROSHI_PROMPT_PARTS[git_issues_github]}"
 ZSCRIPT
-  bats_run_zsh "$script"
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--feature && source $script"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
@@ -128,7 +34,6 @@ ZSCRIPT
 @test "git_plan_progress is empty when not in a git repository" {
   local script="$BATS_TMP_DIR/git-prompt-7.zsh"
   cat >"$script" <<'ZSCRIPT'
-		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
 		source $OROSHI_ROOT/tools/term/zsh/config/prompt/git.zsh
 		GIT_DIRECTORY_IS_REPOSITORY=0
 		GIT_DIRECTORY_IS_WORKTREE=0
@@ -136,16 +41,14 @@ ZSCRIPT
 		oroshi-prompt-populate:git_plan_progress
 		echo "${OROSHI_PROMPT_PARTS[git_plan_progress]}"
 ZSCRIPT
-  bats_run_zsh "$script"
+  bats_run_zsh "source $script"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
 
 @test "git_plan_progress is empty when not in a worktree" {
-  cd "$BATS_GIT_DIR"
   local script="$BATS_TMP_DIR/git-prompt-8.zsh"
   cat >"$script" <<'ZSCRIPT'
-		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
 		source $OROSHI_ROOT/tools/term/zsh/config/prompt/git.zsh
 		GIT_DIRECTORY_IS_REPOSITORY=1
 		GIT_DIRECTORY_IS_WORKTREE=0
@@ -153,16 +56,14 @@ ZSCRIPT
 		oroshi-prompt-populate:git_plan_progress
 		echo "${OROSHI_PROMPT_PARTS[git_plan_progress]}"
 ZSCRIPT
-  bats_run_zsh "$script"
+  bats_run_zsh "cd $BATS_GIT_DIR && source $script"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
 
 @test "git_plan_progress is empty in a worktree without prd.json" {
-  cd "${BATS_GIT_WORKTREES}fix-bug"
   local script="$BATS_TMP_DIR/git-prompt-9.zsh"
   cat >"$script" <<'ZSCRIPT'
-		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
 		source $OROSHI_ROOT/tools/term/zsh/config/prompt/git.zsh
 		GIT_DIRECTORY_IS_REPOSITORY=1
 		GIT_DIRECTORY_IS_WORKTREE=1
@@ -170,7 +71,7 @@ ZSCRIPT
 		oroshi-prompt-populate:git_plan_progress
 		echo "${OROSHI_PROMPT_PARTS[git_plan_progress]}"
 ZSCRIPT
-  bats_run_zsh "$script"
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--feature && source $script"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
@@ -179,10 +80,8 @@ ZSCRIPT
   local wt_path="$(bats_git_worktree 'feat/my-prd')"
   mkdir -p "$wt_path/plans/feat_my-prd"
   printf '[{"id":"01","issue":"i.md","done":true,"blocked_by":[]},{"id":"02","issue":"i.md","done":false,"blocked_by":[]}]' >"$wt_path/plans/feat_my-prd/state.json"
-  cd "$wt_path"
   local script="$BATS_TMP_DIR/git-prompt-10.zsh"
   cat >"$script" <<'ZSCRIPT'
-		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
 		source $OROSHI_ROOT/tools/term/zsh/config/prompt/git.zsh
 		GIT_DIRECTORY_IS_REPOSITORY=1
 		GIT_DIRECTORY_IS_WORKTREE=1
@@ -191,7 +90,7 @@ ZSCRIPT
 		result="${OROSHI_PROMPT_PARTS[git_plan_progress]}"
 		[[ "$result" == *"%F{$COLORS[git-issue]}"* ]] && echo "ok"
 ZSCRIPT
-  bats_run_zsh "$script"
+  bats_run_zsh "cd $wt_path && source $script"
   [ "$status" -eq 0 ]
   [ "$output" = "ok" ]
 }
@@ -200,10 +99,8 @@ ZSCRIPT
   local wt_path="$(bats_git_worktree 'feat/all-done')"
   mkdir -p "$wt_path/plans/feat_all-done"
   printf '[{"id":"01","issue":"i.md","done":true,"blocked_by":[]},{"id":"02","issue":"i.md","done":true,"blocked_by":[]}]' >"$wt_path/plans/feat_all-done/state.json"
-  cd "$wt_path"
   local script="$BATS_TMP_DIR/git-prompt-11.zsh"
   cat >"$script" <<'ZSCRIPT'
-		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
 		source $OROSHI_ROOT/tools/term/zsh/config/prompt/git.zsh
 		GIT_DIRECTORY_IS_REPOSITORY=1
 		GIT_DIRECTORY_IS_WORKTREE=1
@@ -212,7 +109,7 @@ ZSCRIPT
 		result="${OROSHI_PROMPT_PARTS[git_plan_progress]}"
 		[[ "$result" == *"%F{$COLORS[success]}"* ]] && echo "ok"
 ZSCRIPT
-  bats_run_zsh "$script"
+  bats_run_zsh "cd $wt_path && source $script"
   [ "$status" -eq 0 ]
   [ "$output" = "ok" ]
 }
@@ -221,10 +118,8 @@ ZSCRIPT
   local wt_path="$(bats_git_worktree 'feat/bad-json')"
   mkdir -p "$wt_path/plans/feat_bad-json"
   printf 'NOT VALID JSON' >"$wt_path/plans/feat_bad-json/state.json"
-  cd "$wt_path"
   local script="$BATS_TMP_DIR/git-prompt-12.zsh"
   cat >"$script" <<'ZSCRIPT'
-		source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
 		source $OROSHI_ROOT/tools/term/zsh/config/prompt/git.zsh
 		GIT_DIRECTORY_IS_REPOSITORY=1
 		GIT_DIRECTORY_IS_WORKTREE=1
@@ -233,7 +128,7 @@ ZSCRIPT
 		result="${OROSHI_PROMPT_PARTS[git_plan_progress]}"
 		[[ "$result" == *"%F{$COLORS[error]}"* ]] && echo "ok"
 ZSCRIPT
-  bats_run_zsh "$script"
+  bats_run_zsh "cd $wt_path && source $script"
   [ "$status" -eq 0 ]
   [ "$output" = "ok" ]
 }

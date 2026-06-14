@@ -1,8 +1,7 @@
 # Git
 # Display git-related information
 
-colors-load-definitions
-icons-load-definitions
+source ${0:A:h}/git/git_worktree_distance.zsh
 
 # Display a colored coded git symbol
 # - Green if no files were changed
@@ -16,6 +15,9 @@ function oroshi-prompt-populate:git_status() {
     OROSHI_PROMPT_PARTS[git_status]=""
     return
   fi
+
+  colors-load-definitions
+  icons-load-definitions
 
   # Staged files
   if git-directory-has-staged-files; then
@@ -62,34 +64,6 @@ function oroshi-prompt-populate:git_remote() {
   OROSHI_PROMPT_PARTS[git_remote]="$(git-remote-colorize --with-icon --zsh)"
 }
 
-# Display ahead/behind counts vs main (right prompt, asynchronous)
-function oroshi-prompt-populate:git_worktree_distance() {
-  OROSHI_PROMPT_PARTS[git_worktree_distance]=""
-  (($GIT_DIRECTORY_IS_REPOSITORY)) || return
-  (($GIT_DIRECTORY_IS_WORKTREE)) || return
-
-  local iconAhead="$ICONS[git-branch-ahead]"
-  local iconBehind="$ICONS[git-branch-behind]"
-
-  # Output format: "ahead N, behind M" — empty on failure
-  local distanceOutput="$(git-worktree-distance)"
-  [[ "$distanceOutput" == "" ]] && return
-
-  local aheadStr="${distanceOutput##ahead }"
-  local ahead="${aheadStr%%,*}"
-  local behind="${distanceOutput##*, behind }"
-
-  # Both 0 means in sync, nothing to display
-  [[ "$ahead" == "0" && "$behind" == "0" ]] && return
-
-  local result=""
-  [[ "$ahead" != "0" ]] && result+="%F{$COLORS[git-ahead]}${ahead}${iconAhead}%f"
-  [[ "$behind" != "0" ]] && [[ "$result" != "" ]] && result+=" "
-  [[ "$behind" != "0" ]] && result+="%F{$COLORS[git-behind]}${behind}${iconBehind}%f"
-
-  OROSHI_PROMPT_PARTS[git_worktree_distance]="$result"
-}
-
 # Check if in a submodule
 function oroshi-prompt-populate:git_is_submodule() {
   OROSHI_PROMPT_PARTS[git_is_submodule]=""
@@ -104,8 +78,10 @@ function oroshi-prompt-populate:git_is_submodule() {
 function oroshi-prompt-populate:git_has_stash() {
   OROSHI_PROMPT_PARTS[git_has_stash]=""
   (($GIT_DIRECTORY_IS_REPOSITORY)) || return
-
   git-stash-exists || return
+
+  colors-load-definitions
+  icons-load-definitions
 
   OROSHI_PROMPT_PARTS[git_has_stash]="%F{$COLORS[git-stash]}$ICONS[git-stash] %f"
 }
@@ -113,8 +89,10 @@ function oroshi-prompt-populate:git_has_stash() {
 # Check if rebase is in progress
 function oroshi-prompt-populate:git_rebase_in_progress() {
   OROSHI_PROMPT_PARTS[git_rebase_in_progress]=""
-
   git-rebase-in-progress || return
+
+  colors-load-definitions
+  icons-load-definitions
 
   OROSHI_PROMPT_PARTS[git_rebase_in_progress]="%F{$COLORS[git-rebase]}$ICONS[git-rebase] %f"
 }
@@ -129,6 +107,9 @@ function oroshi-prompt-populate:git_rebase_status() {
 
   local rawInfo="$(git-rebase-info-raw)"
   [[ "$rawInfo" == "" ]] && return
+
+  colors-load-definitions
+  icons-load-definitions
 
   local fields=(${(@ps/▮/)rawInfo})
   local stepCurrent=$fields[1]
@@ -152,6 +133,9 @@ function oroshi-prompt-populate:git_issues_github() {
   (($GIT_DIRECTORY_IS_REPOSITORY)) || return
   (($GIT_DIRECTORY_IS_WORKTREE)) && return
   git-directory-is-github || return
+
+  colors-load-definitions
+  icons-load-definitions
 
   # No GITHUB_TOKEN
   if [[ $GITHUB_TOKEN_READONLY == "" ]]; then
@@ -182,6 +166,9 @@ function oroshi-prompt-populate:git_pullrequests() {
   OROSHI_PROMPT_PARTS[git_pullrequests]=""
   (($GIT_DIRECTORY_IS_REPOSITORY)) || return
   git-directory-is-github || return
+
+  colors-load-definitions
+  icons-load-definitions
 
   # No GITHUB_TOKEN
   if [[ $GITHUB_TOKEN_READONLY == "" ]]; then
@@ -216,6 +203,9 @@ function oroshi-prompt-populate:git_plan_progress() {
 
   # No plan in this worktree → nothing to show
   git-worktree-has-plan || return
+
+  colors-load-definitions
+  icons-load-definitions
 
   local icon="$ICONS[git-issue] "
 

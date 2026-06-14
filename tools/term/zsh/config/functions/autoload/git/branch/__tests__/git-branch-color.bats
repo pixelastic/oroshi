@@ -2,32 +2,42 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
+
+  # Mock colors-load-definitions to provide controlled color keys
+  colors-load-definitions() {
+    declare -gA COLORS
+    COLORS[git-branch-main]="color-main"
+    COLORS[git-branch-head]="color-head"
+    COLORS[git-branch]="color-default"
+  }
+  git-branch-current() { echo "main"; }
+  bats_mock colors-load-definitions git-branch-current
 }
 
 teardown() {
   bats_cleanup
 }
 
-@test "git-branch-color main returns GIT_BRANCH_MAIN color" {
-  cat >"$BATS_TMP_DIR/test-main.zsh" <<'ZSCRIPT'
-    source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
-    source "$ZSH_CONFIG_PATH/theming/dist/colors.zsh"
-    result="$(git-branch-color main)"
-    [[ "$result" == "$COLORS[git-branch-main]" ]] && echo "ok"
-ZSCRIPT
-  bats_run_zsh "$BATS_TMP_DIR/test-main.zsh"
+@test "returns branch-specific color for known branch" {
+  bats_run_zsh "git-branch-color main"
   [ "$status" -eq 0 ]
-  [ "$output" = "ok" ]
+  [ "$output" = "color-main" ]
 }
 
-@test "git-branch-color unknown branch returns GIT_BRANCH color" {
-  cat >"$BATS_TMP_DIR/test-unknown.zsh" <<'ZSCRIPT'
-    source ~/.oroshi/tools/term/zsh/config/zshenv.zsh
-    source "$ZSH_CONFIG_PATH/theming/dist/colors.zsh"
-    result="$(git-branch-color some-feature)"
-    [[ "$result" == "$COLORS[git-branch]" ]] && echo "ok"
-ZSCRIPT
-  bats_run_zsh "$BATS_TMP_DIR/test-unknown.zsh"
+@test "lowercases branch name before lookup" {
+  bats_run_zsh "git-branch-color HEAD"
   [ "$status" -eq 0 ]
-  [ "$output" = "ok" ]
+  [ "$output" = "color-head" ]
+}
+
+@test "returns default color for unknown branch" {
+  bats_run_zsh "git-branch-color some-feature"
+  [ "$status" -eq 0 ]
+  [ "$output" = "color-default" ]
+}
+
+@test "uses current branch when no arg given" {
+  bats_run_zsh "git-branch-color"
+  [ "$status" -eq 0 ]
+  [ "$output" = "color-main" ]
 }

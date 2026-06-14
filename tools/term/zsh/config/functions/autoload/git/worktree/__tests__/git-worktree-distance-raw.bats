@@ -11,17 +11,16 @@ teardown() {
 }
 
 @test "outputs 0▮0 for branch with no divergence from main" {
-  cd "${BATS_GIT_WORKTREES}fix-bug"
-  bats_run_zsh "$CURRENT" "fix/bug"
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && source $CURRENT fix/bug"
   [ "$status" -eq 0 ]
   [ "$output" = "0▮0" ]
 }
 
 @test "outputs correct ahead count when branch has commits not in main" {
-  cd "${BATS_GIT_WORKTREES}fix-bug"
+  cd "${BATS_GIT_WORKTREES}my-repo--fix-bug"
   git commit --allow-empty -m "commit 1"
   git commit --allow-empty -m "commit 2"
-  bats_run_zsh "$CURRENT" "fix/bug"
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && source $CURRENT fix/bug"
   [ "$status" -eq 0 ]
   [ "$output" = "2▮0" ]
 }
@@ -31,20 +30,28 @@ teardown() {
   git commit --allow-empty -m "main commit 1"
   git commit --allow-empty -m "main commit 2"
   git commit --allow-empty -m "main commit 3"
-  cd "${BATS_GIT_WORKTREES}fix-bug"
-  bats_run_zsh "$CURRENT" "fix/bug"
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && source $CURRENT fix/bug"
   [ "$status" -eq 0 ]
   [ "$output" = "0▮3" ]
 }
 
 @test "exits 1 when called outside a git repo" {
-  cd /tmp
-  bats_run_zsh "$CURRENT" "fix/bug"
+  bats_run_zsh "cd /tmp && source $CURRENT fix/bug"
   [ "$status" -eq 1 ]
 }
 
 @test "exits 1 when branch is unknown" {
-  cd "$BATS_GIT_DIR"
-  bats_run_zsh "$CURRENT" "no-such-branch"
+  bats_run_zsh "cd $BATS_GIT_DIR && source $CURRENT no-such-branch"
+  [ "$status" -eq 1 ]
+}
+
+@test "auto-detects branch when called without argument" {
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && source $CURRENT"
+  [ "$status" -eq 0 ]
+  [ "$output" = "0▮0" ]
+}
+
+@test "exits 1 when called without argument outside a git repo" {
+  bats_run_zsh "cd /tmp && source $CURRENT"
   [ "$status" -eq 1 ]
 }

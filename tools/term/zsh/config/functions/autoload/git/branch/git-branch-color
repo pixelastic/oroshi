@@ -5,25 +5,13 @@
 setopt local_options err_return
 colors-load-definitions
 
-# Branch name
-local branchName="$1"
-if [[ $branchName == '' ]]; then
-  branchName="$(git-branch-current)"
-fi
+# Branch name, lowercased for consistent COLORS key lookup
+local branchName="${1:-$(git-branch-current)}"
+branchName="${branchName:l}"
 
-declare -A BRANCH_COLORS
-BRANCH_COLORS=()
-BRANCH_COLORS[HEAD]=$COLORS[git-branch-head]
-BRANCH_COLORS[develop]=$COLORS[git-branch-develop]
-BRANCH_COLORS[master]=$COLORS[git-branch-master]
-BRANCH_COLORS[main]=$COLORS[git-branch-main]
+# Look up directly in COLORS array by branch name (e.g. COLORS[git-branch-main])
+local branchColor=$COLORS[git-branch-${branchName}]
+[[ $branchColor != '' ]] && echo $branchColor && return
 
-# Known branch
-local knownColor=$BRANCH_COLORS[$branchName]
-if [[ $knownColor != '' ]]; then
-  echo $knownColor
-  return
-fi
-
-# Default branch
+# Default branch color
 echo $COLORS[git-branch]

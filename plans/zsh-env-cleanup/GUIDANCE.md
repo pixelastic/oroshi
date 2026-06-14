@@ -24,3 +24,9 @@ This plan removes two deprecated zsh environment variables (`ZSH_CONFIG_PATH`, `
 - Cleanup: `TODO.md`
 
 ## Discoveries
+
+### Issue 02 — fix-zsh-config-path-heredoc-tests
+- `zshenv.zsh` was split into `zshenv-host.zsh` / `zshenv-guest.zsh` (commit `1bf38229`); `zshenv.zsh` no longer exists. Remove `source ~/.oroshi/.../zshenv.zsh` from heredocs entirely — `zsh -c` auto-sources `~/.zshenv` which sets up `$OROSHI_ROOT` and fpath.
+- `bats_git_worktree` now names worktrees `${repo}--${slug}` (commit `201a549b`); `${BATS_GIT_WORKTREES}fix-bug` → `${BATS_GIT_WORKTREES}my-repo--fix-bug`.
+- `bats_run_zsh` now takes a command string, not a file path (commit `a0037922`); `bats_run_zsh "$script"` → `bats_run_zsh "source $script"` or `bats_run_zsh "cd $dir && source $script"`.
+- These three commits left several test files unupdated — they will need the same fixes in future issues that touch those files.
