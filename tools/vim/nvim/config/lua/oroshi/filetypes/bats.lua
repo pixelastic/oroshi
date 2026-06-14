@@ -3,8 +3,12 @@ local M = {}
 M.linters = { "bats-lint" }
 
 M.onFiletype = function()
+  local bufferId = F.bufferId()
+
   F.updateBufferOption("comments", "b:#")
   F.updateBufferOption("formatoptions", F.bufferOption("formatoptions") .. "r")
+
+  F.imap("##", "${}<Left>", "Create interpolated variable", { buffer = bufferId })
 end
 
 M.onInit = function()
