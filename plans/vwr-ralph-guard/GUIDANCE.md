@@ -1,0 +1,56 @@
+## Guidance
+
+### Goal
+
+Add a `ralph-is-running` helper that detects an active ralph session in a plan directory, use it to hard-block `git-worktree-delete` from deleting a worktree mid-session, and refactor `ralph-single` to use the same helper.
+
+### File locations (relative to repo root)
+
+- Ralph bin scripts: `scripts/bin/ai/ralph/`
+- Ralph lib (sourced by ralph): `scripts/bin/ai/ralph/__lib/`
+- Ralph tests: `scripts/bin/ai/ralph/__tests__/`
+- `git-worktree-delete`: `tools/term/zsh/config/functions/autoload/git/worktree/git-worktree-delete`
+- `git-worktree-delete` tests: `tools/term/zsh/config/functions/autoload/git/worktree/__tests__/git-worktree-delete.bats`
+
+### Testing commands
+
+```
+bats scripts/bin/ai/ralph/__tests__/ralph-is-running.bats
+bats scripts/bin/ai/ralph/__tests__/ralph-single.bats
+bats tools/term/zsh/config/functions/autoload/git/worktree/__tests__/git-worktree-delete.bats
+```
+
+### Linting commands
+
+```
+zsh-lint scripts/bin/ai/ralph/ralph-is-running
+bats-lint scripts/bin/ai/ralph/__tests__/ralph-is-running.bats
+zsh-lint scripts/bin/ai/ralph/__lib/ralph-single.zsh
+bats-lint scripts/bin/ai/ralph/__tests__/ralph-single.bats
+bats-lint tools/term/zsh/config/functions/autoload/git/worktree/__tests__/git-worktree-delete.bats
+```
+
+### Conventions
+
+- `ralph-is-running` is a bin script with `#!/usr/bin/env zsh` shebang and `set -e` (not `setopt local_options err_return` — that's for autoload functions)
+- `git-worktree-delete` is a zsh autoload function: uses `setopt local_options err_return`
+- `ralph-single.zsh` is sourced (not executed): uses `setopt local_options err_return`
+- Use `local var="$(cmd)"` + manual guard for variable assignment (never split `local`/assignment)
+- Use `[[ $isXxx == "1" ]]` for flag boolean tests (not arithmetic)
+- Use `if/then/fi` for blocks with 2+ instructions; `&&` only for single-action one-liners
+- Plans live inside the branch worktree at `<worktreePath>/plans/<branchSlug>`
+- `ralph-is-running` is silent — no output, exit code only
+
+### Prior art
+
+- `ralph-state.bats` — pattern for ralph script tests using `bats_tmp_dir`
+- `ralph-single.bats` — pattern for tests that mock `git-directory-root` and `claude`
+- `git-worktree-delete.bats` — pattern for worktree tests using `bats_git_dir` / `bats_git_worktree`
+- Existing unmerged-commits guard in `git-worktree-delete` — model for the ralph guard pattern
+
+## Discoveries
+
+<!-- Agents: append findings after each issue using the format below -->
+<!-- ### Issue XX — short title -->
+<!-- - Finding 1 -->
+<!-- - Finding 2 -->
