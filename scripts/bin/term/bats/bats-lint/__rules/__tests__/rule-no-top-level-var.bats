@@ -1,5 +1,3 @@
-#!/usr/bin/env bats
-
 bats_load_library 'helper'
 bats_load_library 'rules-helper'
 
@@ -29,11 +27,6 @@ run_this_rule() {
 
 @test "no violation for bats_load_library" {
   run_this_rule "bats_load_library 'helper'"
-  expect_clean
-}
-
-@test "no violation for shebang" {
-  run_this_rule '#!/usr/bin/env bats'
   expect_clean
 }
 

@@ -1,5 +1,3 @@
-#!/usr/bin/env bats
-
 bats_load_library 'helper'
 bats_load_library 'rules-helper'
 
