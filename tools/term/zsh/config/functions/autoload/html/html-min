@@ -1,0 +1,12 @@
+# Minify an html file
+# Usage:
+# $ htmlmint ./path/to/file.html    # Lint file
+setopt local_options err_return
+
+
+html-minifier \
+  --remove-comments \
+  --collapse-whitespace \
+  --remove-attribute-quotes \
+  --remove-redundant-attributes \
+  --use-short-doctype"

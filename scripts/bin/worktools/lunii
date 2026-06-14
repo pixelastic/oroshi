@@ -2,9 +2,13 @@
 # Opens the Studio web UI to transfer files to the Lunii box
 set -e
 
-local STUDIO_BIN=~/local/src/studio/studio-linux.sh
+local STUDIO_BIN=~/local/etc/lunii-studio/studio-linux.sh
 local WEBUI_URL=http://localhost:8080/
-local AIRTABLE_URL="https://airtable.com/appPeKJE2w7yfGZyJ/shriXSXw9aGxZW8Kb/tblWJAQp2w3Ps4dvi"
+local AIRTABLE_URL="https://airtable.com/appcrH2tahim0U4wd/tblULmeDs7tIWkmmb/viw1kU1L7VJK7N3GK"
+
+# Note: Check
+# https://github.com/jersou/studio-pack-generator/
+# To create packs from RSS feeds
 
 firefox \
   --new-window "$WEBUI_URL" \
