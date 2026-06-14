@@ -43,3 +43,8 @@ is already partially migrated and shows the correct pattern.
 ## Discoveries
 
 <!-- Agents append findings here after each issue -->
+
+### Issue 01 — fix-vfa-git-stageable-options
+
+- Inline icon bytes (U+F440, `ef 91 80`) in fzf option files cannot be matched by the Edit tool — use `perl -0777 -i -pe` with `\xEF\x91\x80` hex escapes to replace them.
+- New icon keys added to `icons.zsh` without a real glyph get `"x"` as placeholder value by user convention; the actual glyph must be filled in manually.

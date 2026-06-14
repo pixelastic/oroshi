@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-fix-vfa-git-stageable-options.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced COLOR_BLACK/COLOR_ALIAS_GIT_MODIFIED/COLOR_ALIAS_TERMINAL with COLORS[] equivalents, added colors-load-definitions, extracted inline icon to ICONS[git-stageable].",
     "blocked_by": []
   },
   {
