@@ -10,7 +10,7 @@ unset \
 
 bats_debug() {
   echo "==== DEBUG ===="
-  echo "$1"
+  echo "$output"
   echo " ==== /DEBUG ===="
 }
 

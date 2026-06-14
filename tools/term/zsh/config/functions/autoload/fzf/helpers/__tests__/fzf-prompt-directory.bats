@@ -2,29 +2,22 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$BATS_TEST_DIRNAME/../fzf-prompt-directory"
-  bats_git_worktree 'fix/bug'
-
-  projects-load-definitions() {
-    typeset -gA PROJECTS
-    PROJECTS[my-project:path]="$BATS_GIT_DIR/"
-    PROJECTS[my-project:background:ansi]=100
-    PROJECTS[my-project:foreground:ansi]=255
-    PROJECTS[my-project:icon]=X
-    PROJECTS[my-project:hideNameInPrompt]=false
-  }
-  bats_mock projects-load-definitions
-
-  export COLOR_ALIAS_GIT_BRANCH=17
-  export COLOR_ALIAS_DIRECTORY=2
+  bats_git_worktree 'feature'
 }
 
 teardown() {
   bats_cleanup
 }
 
-@test "prompt badge contains branch name when inside linked worktree" {
-  bats_run_zsh "$CURRENT" "${BATS_GIT_WORKTREES}fix-bug"
-  [ "$status" -eq 0 ]
-  [[ "$output" == *"fix/bug"* ]]
+@test "prompt badge contains context badge and path" {
+  context-badge() { echo "my-repo/feature > "; }
+  context-path() { echo "my-repo/src"; }
+  simplify-path() { echo "simplify:$1"; }
+  colorize() { echo "colorize:$1"; }
+  bats_mock context-badge context-path simplify-path colorize
+
+  bats_run_zsh "fzf-prompt-directory ${BATS_GIT_WORKTREES}my-repo--feature-my-feature"
+  bats_debug
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "my-repo/feature > colorize: simplify:my-repo/src" ]]
 }
