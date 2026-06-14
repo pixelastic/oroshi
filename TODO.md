@@ -47,6 +47,11 @@ to see if we could right better tests. Tests that actually test non-trivial
 behavior. The --zsh flag thing basically test that the underlying colorize
 method correctly handles --zsh. Let's re-evaluate if we need to test that at the git-branch-colorize level, or if it's ok to assume it's tested in the colorize method.
 
+Refactor all the prompt/git.zsh funcctions so they eahc have thier own file
+rather than all being in the same file
+
+bats_mock_oroshi_root is useless. One can use bats_mock_env more easily. I should remove that method and update its calls
+
 
 ---
 ## Cleanup
