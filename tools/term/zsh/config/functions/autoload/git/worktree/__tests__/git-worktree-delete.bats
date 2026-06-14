@@ -88,11 +88,11 @@ teardown() {
   [ -d "${BATS_GIT_WORKTREES}my-repo--feat-thing" ]
 }
 
-@test "removes associated plans/ directory from branch worktree" {
-  mkdir -p "${BATS_GIT_WORKTREES}my-repo--feature/plans/fix_bug"
+@test "removes associated plans/ directory from main" {
+  mkdir -p "${BATS_GIT_DIR}/plans/feature"
   bats_run_zsh "cd '$BATS_GIT_DIR' && git-worktree-delete feature"
   [ "$status" -eq 0 ]
-  [ ! -d "${BATS_GIT_WORKTREES}my-repo--feature/plans/fix_bug" ]
+  [ ! -d "${BATS_GIT_DIR}/plans/feature" ]
 }
 
 @test "succeeds without plans/ directory" {
