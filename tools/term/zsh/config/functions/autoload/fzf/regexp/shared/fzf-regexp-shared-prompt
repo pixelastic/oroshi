@@ -23,7 +23,7 @@ elif [[ $currentMode == "single" ]]; then
   local icon=$ICONS[fzf-unfold]
 fi
 
-local promptFoldIcon="$(colorize "${icon}(f1)" $COLORS[white] $COLORS[regexp])"
+local promptFoldIcon="$(colorize "${icon} (f1)" $COLORS[white] $COLORS[regexp])"
 # }}}
 
 # Directory
