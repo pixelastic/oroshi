@@ -2,6 +2,8 @@
 # Usage:
 # $ skills-list
 setopt local_options err_return
+
+colors-load-definitions
 local rawSkills="$(skills-list-raw)"
 local output=""
 
@@ -21,7 +23,7 @@ for rawSkill in ${(f)rawSkills}; do
   row+="$(colorize "${skillName}" $skillColor)▮"
 
   # Description column
-  row+="$(colorize "$skillDescription[1,39]..." $COLOR_ALIAS_COMMENT)▮"
+  row+="$(colorize "$skillDescription[1,39]..." $COLORS[comment])▮"
 
   output+="$row\n"
 done
