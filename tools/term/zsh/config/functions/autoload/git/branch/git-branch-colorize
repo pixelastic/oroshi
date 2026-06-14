@@ -6,18 +6,22 @@
 # $ git-branch-colorize --with-icon             # $ICONS[git-remote-need-push] main
 # $ git-branch-colorize origin/develop --remote # $ICONS[git-branch] origin/remote
 setopt local_options err_return
-icons-load-definitions
+
 zparseopts -E -D \
   -with-icon=flagWithIcon \
   -remote=flagRemote \
   -worktree=flagWorktree \
   -zsh=flagZsh
+
 local isWithIcon=${#flagWithIcon}
 local isRemote=${#flagRemote}
 local isWorktree=${#flagWorktree}
 local isZsh=${#flagZsh}
 local -a zshFlag=()
 [[ $isZsh == "1" ]] && zshFlag=(--zsh)
+
+colors-load-definitions
+icons-load-definitions
 
 # Branch name {{{
 local branchName="$1"
@@ -30,7 +34,7 @@ branchName="${branchName/\/dependabot\/npm_and_yarn\//\/ ${depIcon} }"
 # }}}
 # Branch color {{{
 if [[ "$isRemote" == "1" ]]; then
-  local branchColor=$COLOR_ALIAS_GIT_REMOTE
+  local branchColor=$COLORS[git-remote]
 else
   local branchColor="$(git-branch-color $branchName)"
 fi
@@ -47,10 +51,6 @@ if [[ "$isWithIcon" != 1 ]]; then
   colorize "$branchName" $branchColor "${zshFlag[@]}"
   return
 fi
-
-# If --with-icon is passed, we need to add an icon and display a specific
-# color based on the local/remote relationship
-
 
 # For remote branches, color as a remote
 if [[ $isRemote == '1' ]]; then

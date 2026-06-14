@@ -1,75 +1,40 @@
 bats_load_library 'helper'
 
 setup() {
-  bats_git_dir 'repo'
-  CURRENT="$BATS_TEST_DIRNAME/../git-branch-colorize"
-  cd "$BATS_GIT_DIR" || return
-  git-branch-color() { echo 87; }
-  bats_mock git-branch-color
-  git-branch-push-status() { echo 'never_pushed'; }
-  bats_mock git-branch-push-status
+  bats_tmp_dir
 }
 
 teardown() {
   bats_cleanup
 }
 
-# --- ANSI mode (no --zsh) ---
+@test "colorizes branch name" {
+  git-branch-color() { echo 87; }
+  colorize() { echo "colorize:$*"; }
+  bats_mock git-branch-color colorize
 
-@test "git-branch-colorize main produces ANSI output" {
-  bats_run_zsh "$CURRENT" main
-  [ "$status" -eq 0 ]
-  [[ "$output" == *$'\e['* ]]
+  bats_run_zsh "git-branch-colorize main"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "colorize:main 87" ]]
 }
 
-@test "git-branch-colorize main ANSI output contains branch name" {
-  bats_run_zsh "$CURRENT" main
-  [ "$status" -eq 0 ]
-  [[ "$output" == *'main'* ]]
+@test "forwards --zsh flag to colorize" {
+  git-branch-color() { echo 87; }
+  colorize() { echo "colorize:$*"; }
+  bats_mock git-branch-color colorize
+
+  bats_run_zsh "git-branch-colorize main --zsh"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "colorize:main 87 --zsh" ]]
 }
 
-@test "git-branch-colorize main ANSI output contains no zsh codes" {
-  bats_run_zsh "$CURRENT" main
-  [ "$status" -eq 0 ]
-  [[ "$output" != *'%F{'* ]]
-}
+@test "--with-icon prepends push-status icon to branch name" {
+  git-branch-color() { echo 87; }
+  git-branch-push-status() { echo "never_pushed"; }
+  colorize() { echo "colorize:$*"; }
+  bats_mock git-branch-color git-branch-push-status colorize
 
-# --- Zsh mode (--zsh) ---
-
-@test "git-branch-colorize main --zsh produces zsh output" {
-  bats_run_zsh "$CURRENT" main --zsh
-  [ "$status" -eq 0 ]
-  [[ "$output" == *'%F{'* ]]
-}
-
-@test "git-branch-colorize main --zsh output contains branch name" {
-  bats_run_zsh "$CURRENT" main --zsh
-  [ "$status" -eq 0 ]
-  [[ "$output" == *'main'* ]]
-}
-
-@test "git-branch-colorize main --zsh output contains no ANSI sequence" {
-  bats_run_zsh "$CURRENT" main --zsh
-  [ "$status" -eq 0 ]
-  [[ "$output" != *$'\e['* ]]
-}
-
-# --- --with-icon --zsh ---
-
-@test "git-branch-colorize --with-icon --zsh produces zsh output" {
-  bats_run_zsh "$CURRENT" main --with-icon --zsh
-  [ "$status" -eq 0 ]
-  [[ "$output" == *'%F{'* ]]
-}
-
-@test "git-branch-colorize --with-icon --zsh output contains icon" {
-  bats_run_zsh "$CURRENT" main --with-icon --zsh
-  [ "$status" -eq 0 ]
-  [[ "$output" == *' main'* ]]
-}
-
-@test "git-branch-colorize --with-icon --zsh output contains no ANSI sequence" {
-  bats_run_zsh "$CURRENT" main --with-icon --zsh
-  [ "$status" -eq 0 ]
-  [[ "$output" != *$'\e['* ]]
+  bats_run_zsh "git-branch-colorize main --with-icon --zsh"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *" main 87 --zsh" ]]
 }
