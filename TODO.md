@@ -2,17 +2,22 @@
 
 json-lint errors when editing files outside of oroshi
 
-When doing a sidequest, quitting claude ends the whole kitty window, while it
-should fallback to zsh
+Check if we still need export OROSHI_ROOT_DEFAULT="$OROSHI_ROOT" and why in
+zshenv
 
-Colors of markdown headers are off
+Check for each binary in scripts if they couldn't have been made as a zsh
+autoloaded function. Define a clear glossary of why omething is a script raher
+than a function. Find a way to write ina  comment in each script WHY something
+is a script rather than a function. Find a plan to migrate them all from script
+to function if needed
+
+Colors of markdown headers are off in nvim
+Colors or scripts in fzf are off in fzf
 
 Maybe I should remove the bats-lint custom rule aboutt using CURRENT if now the
 best practice is to call the binary by name
 
 Make sure no bats file contains a useless shebaang
-
-Colors or scripts in fzf are off
 
 Can't I remoove the teardown from all tests, as it always does the same thing,
 can't I make it part of the helper once and for aaaall?
@@ -31,14 +36,6 @@ Still terminal issue when running several ralphs
 
 I should update my eslint rules to warn about using for of instead of lodash, so
 the agents know when/how to write
-
-Check if we still need export OROSHI_ROOT_DEFAULT="$OROSHI_ROOT" and why
-
-Double check we no longer use ZSH_CONFIG_PATH
-nor OROSHI_ZSH_AUTOLOAD
-
-Make a real htmlmin wrapper instead of the alias:
-alias htmlmin="html-minifier --remove-comments --collapse-whitespace --remove-attribute-quotes --remove-redundant-attributes --use-short-doctype"
 
 
 ---
