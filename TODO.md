@@ -14,6 +14,9 @@ Make sure no bats file contains a useless shebaang
 
 Colors or scripts in fzf are off
 
+Can't I remoove the teardown from all tests, as it always does the same thing,
+can't I make it part of the helper once and for aaaall?
+
 I should probably also migrate the filetypes definition like I did colors,
 projects and icons.
 
@@ -33,6 +36,10 @@ Check if we still need export OROSHI_ROOT_DEFAULT="$OROSHI_ROOT" and why
 
 Double check we no longer use ZSH_CONFIG_PATH
 nor OROSHI_ZSH_AUTOLOAD
+
+Make a real htmlmin wrapper instead of the alias:
+alias htmlmin="html-minifier --remove-comments --collapse-whitespace --remove-attribute-quotes --remove-redundant-attributes --use-short-doctype"
+
 
 ---
 ## Cleanup
