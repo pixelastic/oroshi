@@ -1,2 +1,2 @@
 # Load theming at shell startup
-source $ZSH_CONFIG_PATH/theming/env/filetypes.zsh
+source $OROSHI_ROOT/tools/term/zsh/config/theming/env/filetypes.zsh

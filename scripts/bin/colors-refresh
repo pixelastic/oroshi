@@ -10,7 +10,7 @@ kitty @ set-colors --all "$OROSHI_ROOT/tools/term/kitty/config/colors.conf"
 # Rebuild dist files
 $OROSHI_ROOT/tools/term/zsh/config/theming/colors-build
 $OROSHI_ROOT/tools/term/zsh/config/theming/src/env-generate-filetypes
-$ZSH_CONFIG_PATH/theming/projects-build
+$OROSHI_ROOT/tools/term/zsh/config/theming/projects-build
 
 # Rewrite the config files coming from ENV files
 $OROSHI_ROOT/tools/cli/bat/config/generate-theme

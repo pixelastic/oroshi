@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-fix-zsh-config-path-prod.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced $ZSH_CONFIG_PATH with $OROSHI_ROOT/tools/term/zsh/config in theming/index.zsh and scripts/bin/colors-refresh.",
     "blocked_by": []
   },
   {
