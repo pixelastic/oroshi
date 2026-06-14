@@ -1,0 +1,20 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-fix-vfa-git-stageable-options.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-bulk-color-variable-substitution.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-colorize-refactor-apt-source-generate.md",
+    "done": false,
+    "blocked_by": []
+  }
+]
