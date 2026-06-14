@@ -49,10 +49,12 @@ git-branch-rename "$oldBranch" "$newBranch"
 if [[ -d "$oldPlansDir" ]]; then
   mv "$oldPlansDir" "$newPlansDir"
 fi
-# Move directory
-mv "$oldDir" "$newDir"
-# Repair main repo
-git -C "$mainPath" worktree repair "$newDir"
+
+# Move directory and update all git tracking
+git -C "$mainPath" worktree move --force "$oldDir" "$newDir"
+mv "$mainPath/.git/worktrees/${oldDir:t}" "$mainPath/.git/worktrees/${newDir:t}"
+print "gitdir: $mainPath/.git/worktrees/${newDir:t}" > "$newDir/.git"
+git -C "$mainPath" worktree prune
 
 # Navigate to new directory if currently inside the old worktree
 if [[ "$PWD" == "$oldDir"* ]]; then
