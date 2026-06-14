@@ -35,3 +35,7 @@
 - `rule-no-top-level-var` regex `^[A-Z_][A-Z0-9_]*=` never matched shebangs; the "no violation for shebang" test was always testing an incidental non-match
 
 ## Discoveries
+
+### Issue 01 — noShebang rule
+- The rule test file intentionally has no shebang (it dogfoods the new rule); this looks inconsistent with siblings but the spec requires it — suppress the standards finding.
+- `bats-lint-custom.bats` integration tests were already failing before this issue (pre-existing); they are not caused by this change.
