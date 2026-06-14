@@ -1,0 +1,26 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-fix-zsh-config-path-prod.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-fix-zsh-config-path-heredoc-tests.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-fix-oroshi-zsh-autoload-current-tests.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-remove-stale-todo-entries.md",
+    "done": false,
+    "blocked_by": ["01", "02", "03"]
+  }
+]
