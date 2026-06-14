@@ -1,9 +1,6 @@
-#!/usr/bin/env bats
-
 bats_load_library 'helper'
 
 setup() {
-  ZSH_LINT="${BATS_TEST_DIRNAME}/../zsh-lint"
   bats_tmp_dir
 }
 
@@ -14,14 +11,14 @@ teardown() {
 @test "merges custom rule output with shellcheck JSON into single array" {
   local file="$BATS_TMP_DIR/test.zsh"
   printf 'case "$1" in\n  --foo) foo=1 ;;\nesac\n' > "$file"
-  bats_run_zsh "$ZSH_LINT" "$file"
+  bats_run_zsh "zsh-lint $file"
   [[ "$output" == *'"code":"noManualArgParsing"'* ]]
 }
 
 @test "returns empty array and exit 0 for clean file" {
   local file="$BATS_TMP_DIR/test.zsh"
   printf '# clean zsh file\n' > "$file"
-  bats_run_zsh "$ZSH_LINT" "$file"
+  bats_run_zsh "zsh-lint $file"
   [[ "$status" -eq 0 ]]
   [[ "$output" == '[]' ]]
 }
@@ -29,7 +26,7 @@ teardown() {
 @test "returns exit 1 when custom rule finds a violation" {
   local file="$BATS_TMP_DIR/test.zsh"
   printf 'case "$1" in\n  --foo) foo=1 ;;\nesac\n' > "$file"
-  bats_run_zsh "$ZSH_LINT" "$file"
+  bats_run_zsh "zsh-lint $file"
   [[ "$status" -eq 1 ]]
 }
 
@@ -39,7 +36,7 @@ teardown() {
   zsh-lint-shellcheck() { printf '[{"code":2162}]\n'; }
   zsh-lint-custom()     { printf '[{"code":90005}]\n'; }
   bats_mock zsh-lint-shellcheck zsh-lint-custom
-  bats_run_zsh "$ZSH_LINT" "$file"
+  bats_run_zsh "zsh-lint $file"
   [[ "$output" == *'"code":2162'* ]]
   [[ "$output" == *'"code":90005'* ]]
   [[ "$status" -eq 1 ]]
@@ -51,7 +48,7 @@ teardown() {
   zsh-lint-shellcheck() { printf '[{"code":2162}]\n'; }
   zsh-lint-custom()     { printf '[]\n'; }
   bats_mock zsh-lint-shellcheck zsh-lint-custom
-  bats_run_zsh "$ZSH_LINT" "$file"
+  bats_run_zsh "zsh-lint $file"
   [[ "$status" -eq 1 ]]
 }
 
@@ -61,7 +58,7 @@ teardown() {
   zsh-lint-shellcheck() { printf '[]\n'; }
   zsh-lint-custom()     { printf '[{"code":90005}]\n'; }
   bats_mock zsh-lint-shellcheck zsh-lint-custom
-  bats_run_zsh "$ZSH_LINT" "$file"
+  bats_run_zsh "zsh-lint $file"
   [[ "$status" -eq 1 ]]
 }
 
@@ -71,7 +68,7 @@ teardown() {
   zsh-lint-shellcheck() { printf '[]\n'; }
   zsh-lint-custom()     { printf '[]\n'; }
   bats_mock zsh-lint-shellcheck zsh-lint-custom
-  bats_run_zsh "$ZSH_LINT" "$file"
+  bats_run_zsh "zsh-lint $file"
   [[ "$output" == '[]' ]]
   [[ "$status" -eq 0 ]]
 }
@@ -90,7 +87,7 @@ teardown() {
 
   local file="$BATS_TMP_DIR/test.bats"
   printf 'placeholder\n' >"$file"
-  bats_run_zsh "$ZSH_LINT" "$file"
+  bats_run_zsh "zsh-lint $file"
   [[ "$status" -eq 1 ]]
   [[ "$output" == *'"code":"notZsh"'* ]]
   [[ "$(printf '%s' "$output" | jq 'length')" -eq 1 ]]
@@ -114,7 +111,7 @@ teardown() {
   local invalid="$BATS_TMP_DIR/other.bats"
   printf 'placeholder\n' >"$valid"
   printf 'placeholder\n' >"$invalid"
-  bats_run_zsh "$ZSH_LINT" "$valid" "$invalid"
+  bats_run_zsh "zsh-lint $valid $invalid"
   [[ "$status" -eq 1 ]]
   [[ "$output" == *'"code":"notZsh"'* ]]
   [[ "$output" == *'"code":"SC2086"'* ]]
