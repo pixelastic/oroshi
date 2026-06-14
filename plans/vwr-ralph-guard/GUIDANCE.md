@@ -54,3 +54,9 @@ bats-lint tools/term/zsh/config/functions/autoload/git/worktree/__tests__/git-wo
 <!-- ### Issue XX — short title -->
 <!-- - Finding 1 -->
 <!-- - Finding 2 -->
+
+### Issue 01 — ralph-is-running
+
+- `bats_run_zsh "$CURRENT" "$arg"` silently ignores `$arg` — bats_run_zsh only takes `$1` as the full command string; use `run <script> <args>` for bin scripts that need real arguments, reserve `bats_run_zsh` for mock-injected calls
+- `return` at top-level of a zsh shebang script is equivalent to `exit` and is the idiomatic style in this codebase (plan-directory, ralph-state all use `return`)
+- `plans/vwr-ralph-guard/ralph.json` exists during the session, so any test that calls `ralph-is-running` with no args in this worktree will find an active session — always pass explicit planDir or mock git helpers when testing the no-session path

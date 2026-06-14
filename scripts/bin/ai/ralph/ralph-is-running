@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+# Exit 0 if a ralph session is active for a plan directory, 1 if not.
+# Usage:
+#   ralph-is-running [planDir]   # planDir inferred from git root + branch slug if omitted
+# Silent — no output, exit code only.
+set -e
+
+local planDir="$1"
+
+# No arg: infer plan dir from current worktree root and branch slug
+if [[ "$planDir" == "" ]]; then
+  local worktreeRoot="$(git-directory-root)"
+  [[ "$worktreeRoot" == "" ]] && return 1
+
+  local slug="$(git-branch-slug)"
+  [[ "$slug" == "" ]] && return 1
+
+  planDir="$worktreeRoot/plans/$slug"
+fi
+
+# No state file means no active session
+[[ ! -f "$planDir/ralph.json" ]] && return 1
+return 0

@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-ralph-is-running.md",
-    "done": false,
+    "done": true,
+    "recap": "Created ralph-is-running bin script and tests; exits 0 when ralph.json has non-empty mode, 1 otherwise; infers plan dir from git root + branch slug when called with no arg.",
     "blocked_by": []
   },
   {
