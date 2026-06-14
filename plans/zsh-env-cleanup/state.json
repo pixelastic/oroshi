@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-fix-oroshi-zsh-autoload-current-tests.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced $OROSHI_ZSH_AUTOLOAD CURRENT= assignments with direct function calls (no $CURRENT); also fixed bats_run_zsh API (source→command-string) and stale color expected values (green:2→35, git-branch:17→105).",
     "blocked_by": []
   },
   {

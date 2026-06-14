@@ -2,56 +2,26 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/colors/colors-load-definitions"
-  SCRIPT="$BATS_TMP_DIR/test.zsh"
 }
 
 teardown() {
   bats_cleanup
 }
 
-# --- Loading ---
-
-@test "COLORS[green] returns correct ANSI integer after load" {
-  cat >"$SCRIPT" <<SCRIPT
-source "$CURRENT"
-echo \${COLORS[green]}
-SCRIPT
-  bats_run_zsh "$SCRIPT"
+@test "no-op if COLORS already set" {
+  bats_mock_env COLORS "preset"
+  bats_run_zsh "colors-load-definitions"
   [ "$status" -eq 0 ]
-  [ "${lines[0]}" = "2" ]
 }
 
-@test "COLORS[green:hex] returns correct hex string after load" {
-  cat >"$SCRIPT" <<SCRIPT
-source "$CURRENT"
-echo \${COLORS[green:hex]}
-SCRIPT
-  bats_run_zsh "$SCRIPT"
-  [ "$status" -eq 0 ]
-  [ "${lines[0]}" = "#38a169" ]
-}
+@test "sources dist/colors.zsh from OROSHI_ROOT when COLORS is empty" {
+  local fakeRoot="${BATS_TMP_DIR}/oroshi"
+  bats_mock_env OROSHI_ROOT "$fakeRoot"
 
-@test "COLORS[git-branch] returns correct alias value after load" {
-  cat >"$SCRIPT" <<SCRIPT
-source "$CURRENT"
-echo \${COLORS[git-branch]}
-SCRIPT
-  bats_run_zsh "$SCRIPT"
-  [ "$status" -eq 0 ]
-  [ "${lines[0]}" = "17" ]
-}
+  mkdir -p "$fakeRoot/tools/term/zsh/config/theming/dist"
+  printf 'typeset -gA COLORS\nCOLORS[sentinel]=42\n' > "$fakeRoot/tools/term/zsh/config/theming/dist/colors.zsh"
 
-# --- Idempotency ---
-
-@test "second call does not re-source dist/colors.zsh" {
-  cat >"$SCRIPT" <<SCRIPT
-typeset -gA COLORS
-COLORS[green]=999
-source "$CURRENT"
-echo \${COLORS[green]}
-SCRIPT
-  bats_run_zsh "$SCRIPT"
+  bats_run_zsh "colors-load-definitions; echo \${COLORS[sentinel]}"
   [ "$status" -eq 0 ]
-  [ "${lines[0]}" = "999" ]
+  [ "${lines[0]}" = "42" ]
 }

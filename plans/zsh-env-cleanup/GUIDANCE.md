@@ -30,3 +30,8 @@ This plan removes two deprecated zsh environment variables (`ZSH_CONFIG_PATH`, `
 - `bats_git_worktree` now names worktrees `${repo}--${slug}` (commit `201a549b`); `${BATS_GIT_WORKTREES}fix-bug` → `${BATS_GIT_WORKTREES}my-repo--fix-bug`.
 - `bats_run_zsh` now takes a command string, not a file path (commit `a0037922`); `bats_run_zsh "$script"` → `bats_run_zsh "source $script"` or `bats_run_zsh "cd $dir && source $script"`.
 - These three commits left several test files unupdated — they will need the same fixes in future issues that touch those files.
+
+### Issue 03 — fix-oroshi-zsh-autoload-current-tests
+- Drop `$CURRENT` entirely — call autoload functions by name (`bats_run_zsh "is-js $file"`); fpath is set up by `.zshenv` auto-sourced in every `zsh -c` call.
+- For multi-line setup (mocking COLORS, calling renderer), keep a `$SCRIPT` temp file sourced via `bats_run_zsh "source $SCRIPT"` — this is not a `$CURRENT` workaround, it's legitimate multi-line test setup.
+- Stale expected values in `colors-load-definitions.bats` (green=2→35, git-branch=17→105) were hidden by the undefined-variable failure; fix them when making suites pass.

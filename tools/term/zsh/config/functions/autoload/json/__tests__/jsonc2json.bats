@@ -2,7 +2,6 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$OROSHI_ZSH_AUTOLOAD/json/jsonc2json"
   JSONC_FILE="$BATS_TMP_DIR/test.jsonc"
 }
 
@@ -19,7 +18,7 @@ teardown() {
   "key": "value"
 }
 JSONC
-  bats_run_zsh "$CURRENT" "$JSONC_FILE"
+  bats_run_zsh "jsonc2json $JSONC_FILE"
   run jq -r '.key' <<<"$output"
   [ "$output" = "value" ]
 }
@@ -31,7 +30,7 @@ JSONC
   "key": "value"
 }
 JSONC
-  bats_run_zsh "$CURRENT" "$JSONC_FILE"
+  bats_run_zsh "jsonc2json $JSONC_FILE"
   run jq -r '.key' <<<"$output"
   [ "$output" = "value" ]
 }
@@ -42,7 +41,7 @@ JSONC
   "url": "https://example.com"
 }
 JSONC
-  bats_run_zsh "$CURRENT" "$JSONC_FILE"
+  bats_run_zsh "jsonc2json $JSONC_FILE"
   run jq -r '.url' <<<"$output"
   [ "$output" = "https://example.com" ]
 }
@@ -57,14 +56,14 @@ JSONC
   "b": "two"
 }
 JSONC
-  bats_run_zsh "$CURRENT" "$JSONC_FILE"
+  bats_run_zsh "jsonc2json $JSONC_FILE"
   run jq '.' <<<"$output"
   [ "$status" -eq 0 ]
 }
 
 @test "plain JSON file passes through unchanged" {
   echo '{"x":42}' >"$JSONC_FILE"
-  bats_run_zsh "$CURRENT" "$JSONC_FILE"
+  bats_run_zsh "jsonc2json $JSONC_FILE"
   run jq '.x' <<<"$output"
   [ "$output" = "42" ]
 }
