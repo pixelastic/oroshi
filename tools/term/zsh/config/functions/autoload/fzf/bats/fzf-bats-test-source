@@ -1,14 +1,16 @@
 # Source for fzf bats test picker
 # Outputs fullPath▮testName (field 1 = value, field 2 = display)
 setopt local_options err_return
+
+colors-load-definitions
 local rawList="$(bats-test-list-raw)"
-[[ -z $rawList ]] && return 0
+[[ "$rawList" == "" ]] && return 0
 
 for rawLine in ${(f)rawList}; do
   local fields=(${(@ps/▮/)rawLine})
   local testName=$fields[1]
   local fullPath=$fields[2]
 
-  local displayName="$(colorize "$testName" $COLOR_ALIAS_FUNCTION)"
+  local displayName="$(colorize "$testName" $COLORS[function])"
   echo "${fullPath}▮${displayName}"
 done

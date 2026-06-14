@@ -4,6 +4,8 @@
 # $ yarn-dependency-list --dev   # Only dev dependencies
 # $ yarn-dependency-list --all   # All dependencies
 setopt local_options err_return
+
+colors-load-definitions
 local rawList="$(yarn-dependency-list-raw --with-descriptions $@)"
 [[ $rawList == "" ]] && return 0
 
@@ -25,19 +27,19 @@ for rawLine in ${(f)rawList}; do
 
   # Key
   if [[ $dependencyType == "devDependencies" ]]; then
-    row+="$(colorize "dev" $COLOR_ALIAS_COMMENT)▮"
+    row+="$(colorize "dev" $COLORS[comment])▮"
   else
     row+="▮"
   fi
 
   # Version
-  row+="$(colorize "$dependencyVersion" $COLOR_ALIAS_YARN_PACKAGE_VERSION)▮"
+  row+="$(colorize "$dependencyVersion" $COLORS[yarn-package-version])▮"
 
 
   # Description (truncated to 50 chars)
   local truncatedDescription="${dependencyDescription[1,50]}"
   [[ ${#dependencyDescription} -gt 50 ]] && truncatedDescription+="…"
-  row+="$(colorize "$truncatedDescription" $COLOR_ALIAS_YARN_PACKAGE_DESCRIPTION)▮"
+  row+="$(colorize "$truncatedDescription" $COLORS[yarn-package-description])▮"
 
   output+="$row\n"
 done

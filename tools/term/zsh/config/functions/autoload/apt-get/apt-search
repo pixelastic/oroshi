@@ -3,6 +3,8 @@
 #   $ apt-search zsh   # Display any software that matches zsh
 #   $ apt-search       # Provides a searchable list of software to install
 setopt local_options err_return
+
+colors-load-definitions
 local query="$1"
 
 # If no query is passed, we open the fuzzy finder
@@ -41,15 +43,15 @@ for packageDetails in $allPackages;do
   # If the package is installed, we color it
   if [[ ${allPackages[(ie)${packageName}]} -le ${#allPackages} ]]; then
     local currentVersion="$(apt-version $packageName)"
-    packageName="$(colorize $packageName $COLOR_ALIAS_PACKAGE_INSTALLED)"
+    packageName="$(colorize $packageName $COLORS[package-installed])"
 
     if [[ $packageVersion == "$currentVersion" ]]; then
-      packageVersion="$(colorize $packageVersion $COLOR_ALIAS_PACKAGE_INSTALLED)"
+      packageVersion="$(colorize $packageVersion $COLORS[package-installed])"
     else
-      packageVersion="$(colorize $packageVersion $COLOR_ALIAS_VERSION_MISMATCH)"
+      packageVersion="$(colorize $packageVersion $COLORS[package-version-mismatch])"
     fi
   else
-    packageVersion="$(colorize $packageVersion $COLOR_ALIAS_PACKAGE_NOT_INSTALLED)"
+    packageVersion="$(colorize $packageVersion $COLORS[package-not-installed])"
   fi
 
 

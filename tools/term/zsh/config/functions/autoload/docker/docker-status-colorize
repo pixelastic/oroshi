@@ -2,6 +2,8 @@
 # Usage:
 # $ docker-status-colorize "Exited (0) 21 seconds ago"
 setopt local_options err_return
+
+colors-load-definitions
 local message="$1"
 # We need a message passed
 if [[ $message == '' ]]; then
@@ -9,4 +11,4 @@ if [[ $message == '' ]]; then
 fi
 # }}}
 
-colorize "$message" $COLOR_ALIAS_DOCKER_STATUS
+colorize "$message" $COLORS[docker-status]

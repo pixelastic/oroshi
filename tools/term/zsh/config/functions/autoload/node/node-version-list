@@ -2,6 +2,8 @@
 # Usage:
 # $ node-version-list         # All installed node versions
 setopt local_options err_return
+
+colors-load-definitions
 icons-load-definitions
 local rawList="$(node-version-list-raw)"
 [[ $rawList == "" ]] && return 0
@@ -18,9 +20,9 @@ for rawLine in ${(f)rawList}; do
   # Gray for all installed versions
   # Overwrite with blue if defined as default
   # Overwrite with green if currently used version
-  local versionColor=$COLOR_ALIAS_NODE_VERSION_INSTALLED
-  [[ $isDefaultVersion == "1" ]] && versionColor=$COLOR_ALIAS_NODE_VERSION_DEFAULT
-  [[ $isCurrentVersion == "1" ]] && versionColor=$COLOR_ALIAS_NODE_VERSION_CURRENT
+  local versionColor=$COLORS[node-version-installed]
+  [[ $isDefaultVersion == "1" ]] && versionColor=$COLORS[node-version-default]
+  [[ $isCurrentVersion == "1" ]] && versionColor=$COLORS[node-version-current]
 
   local row=""
   [[ $isCurrentVersion == "1" ]] && row+="$(colorize $ICONS[node-version-current] $versionColor)▮"

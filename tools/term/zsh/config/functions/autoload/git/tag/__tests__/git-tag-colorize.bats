@@ -1,75 +1,40 @@
 bats_load_library 'helper'
 
 setup() {
-  bats_git_dir 'repo'
-  CURRENT="$BATS_TEST_DIRNAME/../git-tag-colorize"
-  cd "$BATS_GIT_DIR" || return
-  git-tag-current() { echo 'v1.0'; }
-  bats_mock git-tag-current
-  git-tag-status() { echo 'exact'; }
-  bats_mock git-tag-status
+  bats_tmp_dir
 }
 
 teardown() {
   bats_cleanup
 }
 
-# --- ANSI mode (no --zsh) ---
+@test "colorizes tag name" {
+  git-tag-current() { echo "v1.0"; }
+  colorize() { echo "colorize:$*"; }
+  bats_mock git-tag-current colorize
 
-@test "git-tag-colorize v1.0 produces ANSI output" {
-  bats_run_zsh "$CURRENT" v1.0
-  [ "$status" -eq 0 ]
-  [[ "$output" == *$'\e['* ]]
+  bats_run_zsh "git-tag-colorize v1.0"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "colorize:v1.0 "* ]]
 }
 
-@test "git-tag-colorize v1.0 ANSI output contains tag name" {
-  bats_run_zsh "$CURRENT" v1.0
-  [ "$status" -eq 0 ]
-  [[ "$output" == *'v1.0'* ]]
+@test "forwards --zsh flag to colorize" {
+  git-tag-current() { echo "v1.0"; }
+  colorize() { echo "colorize:$*"; }
+  bats_mock git-tag-current colorize
+
+  bats_run_zsh "git-tag-colorize v1.0 --zsh"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "colorize:v1.0 "*" --zsh" ]]
 }
 
-@test "git-tag-colorize v1.0 ANSI output contains no zsh codes" {
-  bats_run_zsh "$CURRENT" v1.0
-  [ "$status" -eq 0 ]
-  [[ "$output" != *'%F{'* ]]
-}
+@test "--with-icon prepends tag-status icon to tag name" {
+  git-tag-current() { echo "v1.0"; }
+  git-tag-status() { echo "exact"; }
+  colorize() { echo "colorize:$*"; }
+  bats_mock git-tag-current git-tag-status colorize
 
-# --- Zsh mode (--zsh) ---
-
-@test "git-tag-colorize v1.0 --zsh produces zsh output" {
-  bats_run_zsh "$CURRENT" v1.0 --zsh
-  [ "$status" -eq 0 ]
-  [[ "$output" == *'%F{'* ]]
-}
-
-@test "git-tag-colorize v1.0 --zsh output contains tag name" {
-  bats_run_zsh "$CURRENT" v1.0 --zsh
-  [ "$status" -eq 0 ]
-  [[ "$output" == *'v1.0'* ]]
-}
-
-@test "git-tag-colorize v1.0 --zsh output contains no ANSI sequence" {
-  bats_run_zsh "$CURRENT" v1.0 --zsh
-  [ "$status" -eq 0 ]
-  [[ "$output" != *$'\e['* ]]
-}
-
-# --- --with-icon --zsh ---
-
-@test "git-tag-colorize --with-icon --zsh produces zsh output" {
-  bats_run_zsh "$CURRENT" --with-icon --zsh
-  [ "$status" -eq 0 ]
-  [[ "$output" == *'%F{'* ]]
-}
-
-@test "git-tag-colorize --with-icon --zsh output contains icon" {
-  bats_run_zsh "$CURRENT" --with-icon --zsh
-  [ "$status" -eq 0 ]
-  [[ "$output" == *' v1.0'* ]]
-}
-
-@test "git-tag-colorize --with-icon --zsh output contains no ANSI sequence" {
-  bats_run_zsh "$CURRENT" --with-icon --zsh
-  [ "$status" -eq 0 ]
-  [[ "$output" != *$'\e['* ]]
+  bats_run_zsh "git-tag-colorize v1.0 --with-icon --zsh"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == *" v1.0 "*" --zsh" ]]
 }

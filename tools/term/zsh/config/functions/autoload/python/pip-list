@@ -2,6 +2,8 @@
 # Usage:
 # $ pip-list         # All installed packages
 setopt local_options err_return
+
+colors-load-definitions
 local rawList="$(pip-list-raw)"
 [[ $rawList == "" ]] && return 0
 
@@ -16,7 +18,7 @@ for rawLine in ${(f)rawList}; do
   row+="$(pip-package-colorize $packageName --with-icon)▮"
 
   # Version
-  row+="$(colorize "$packageVersion" $COLOR_ALIAS_PACKAGE_VERSION)▮"
+  row+="$(colorize "$packageVersion" $COLORS[package-version])▮"
 
   output+="$row\n"
 done

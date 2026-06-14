@@ -3,6 +3,8 @@
 # $ git-submodule-colorize private                 # private
 # $ git-submodule-colorize --with-icon             # $ICONS[git-submodule] private
 setopt local_options err_return
+
+colors-load-definitions
 icons-load-definitions
 zparseopts -E -D \
 	-with-icon=flagWithIcon
@@ -13,10 +15,10 @@ local submoduleName="$1"
 
 # If --with-icon is not passed, we simply display the colored branch
 if [[ "$isWithIcon" != 1 ]]; then
-	colorize "$submoduleName" $COLOR_ALIAS_GIT_SUBMODULE
+	colorize "$submoduleName" $COLORS[git-submodule]
 	return
 fi
 
 # Fallback on unknown status
-colorize "$ICONS[git-submodule] $submoduleName" $COLOR_ALIAS_GIT_SUBMODULE
+colorize "$ICONS[git-submodule] $submoduleName" $COLORS[git-submodule]
 return

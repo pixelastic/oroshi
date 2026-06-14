@@ -3,6 +3,8 @@
 # $ yarn-script-list       # Display list of yarn run scripts
 # Stop if yarn isn't installed
 setopt local_options err_return
+
+colors-load-definitions
 [[ ! $commands[yarn] ]] && return 1
 
 local rawList="$(yarn-script-list-raw)"
@@ -18,14 +20,14 @@ for rawLine in ${(f)rawList}; do
   local scriptType=$split[3]
 
   # Coloe
-  local scriptColor=$COLOR_ALIAS_YARN_SCRIPT_LOCAL
-  [[ $scriptType == "global" ]] && scriptColor=$COLOR_ALIAS_YARN_SCRIPT_GLOBAL
+  local scriptColor=$COLORS[yarn-script-local]
+  [[ $scriptType == "global" ]] && scriptColor=$COLORS[yarn-script-global]
 
   # Name
   row+="$(colorize "$scriptName" $scriptColor)▮"
 
   # Command
-  row+="$(colorize "$scriptCommand" $COLOR_ALIAS_YARN_SCRIPT_COMMAND)▮"
+  row+="$(colorize "$scriptCommand" $COLORS[yarn-script-command])▮"
 
   output+="$row\n"
 done

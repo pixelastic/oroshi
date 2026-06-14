@@ -4,6 +4,8 @@
 # modules
 # Stop if yarn isn't installed
 setopt local_options err_return
+
+colors-load-definitions
 [[ ! $commands[yarn] ]] && return 1
 
 local rawList="$(yarn-link-list-raw --with-descriptions)"
@@ -22,7 +24,7 @@ for rawLine in ${(f)rawList}; do
   row+="$(yarn-link-colorize $linkName $linkType --with-icon)▮"
 
   # Description
-  row+="$(colorize "$linkDescription" $COLOR_ALIAS_YARN_PACKAGE_DESCRIPTION)▮"
+  row+="$(colorize "$linkDescription" $COLORS[yarn-package-description])▮"
 
   output+="$row\n"
 done

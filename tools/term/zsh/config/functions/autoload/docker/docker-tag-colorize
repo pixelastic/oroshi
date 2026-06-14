@@ -4,6 +4,8 @@
 # $ docker-tag-colorize latest --with-icon          #  latest
 # $ docker-tag-colorize 22.04 --with-icon           #  22.04
 setopt local_options err_return
+
+colors-load-definitions
 zparseopts -E -D \
 	-with-icon=flagWithIcon
 local isWithIcon=${#flagWithIcon}
@@ -11,9 +13,9 @@ local isWithIcon=${#flagWithIcon}
 local tagName="$1"
 
 if [[ "$tagName" == "latest" ]]; then
-	local tagColor=$COLOR_ALIAS_DOCKER_TAG_LATEST
+	local tagColor=$COLORS[docker-tag-latest]
 else
-	local tagColor=$COLOR_ALIAS_DOCKER_TAG
+	local tagColor=$COLORS[docker-tag]
 fi
 
 # If --with-icon is not passed, we simply display the colored tag

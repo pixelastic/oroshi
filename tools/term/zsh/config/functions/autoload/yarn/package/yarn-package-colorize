@@ -6,6 +6,8 @@
 # $ yarn-package-colorize --with-icon --link-global  #  firost
 setopt local_options err_return
 
+colors-load-definitions
+
 zparseopts -E -D \
   -link-local=flagLinkLocal \
   -link-global=flagLinkGlobal \
@@ -20,9 +22,9 @@ icons-load-definitions
 local packageName="$1"
 
 # Color
-local packageColor="$COLOR_ALIAS_YARN_PACKAGE"
-[[ $isLinkLocal == "1" ]] && packageColor=$COLOR_ALIAS_YARN_LINK_LOCAL
-[[ $isLinkGlobal == "1" ]] && packageColor=$COLOR_ALIAS_YARN_LINK_GLOBAL
+local packageColor="$COLORS[yarn-package]"
+[[ $isLinkLocal == "1" ]] && packageColor=$COLORS[local-dependency]
+[[ $isLinkGlobal == "1" ]] && packageColor=$COLORS[yarn-package-global]
 
 # Icon
 local packageIcon="$ICONS[node-package] "

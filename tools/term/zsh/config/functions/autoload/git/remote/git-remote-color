@@ -4,21 +4,23 @@
 # $ git-remote-color upstream    # blue
 setopt local_options err_return
 
+colors-load-definitions
+
 # Remote name
 local remoteName="$1"
 if [[ $remoteName == '' ]]; then
 	remoteName="$(git-remote-current)"
 fi
 
-local DEFAULT_REMOTE_COLOR=$COLOR_ALIAS_GIT_REMOTE
+local DEFAULT_REMOTE_COLOR=$COLORS[git-remote]
 
 declare -A REMOTE_COLORS
 REMOTE_COLORS=()
-REMOTE_COLORS[HEAD]=$COLOR_ALIAS_GIT_REMOTE_HEAD
-REMOTE_COLORS[algolia]=$COLOR_ALIAS_GIT_REMOTE_ALGOLIA
-REMOTE_COLORS[origin]=$COLOR_ALIAS_GIT_REMOTE_ORIGIN
-REMOTE_COLORS[pixelastic]=$COLOR_ALIAS_GIT_REMOTE_PIXELASTIC
-REMOTE_COLORS[upstream]=$COLOR_ALIAS_GIT_REMOTE_UPSTREAM
+REMOTE_COLORS[HEAD]=$COLORS[git-remote-head]
+REMOTE_COLORS[algolia]=$COLORS[git-remote-algolia]
+REMOTE_COLORS[origin]=$COLORS[git-remote-origin]
+REMOTE_COLORS[pixelastic]=$COLORS[git-remote-pixelastic]
+REMOTE_COLORS[upstream]=$COLORS[git-remote-upstream]
 
 # Remote doesn't exist
 if ! git-remote-exists "$remoteName"; then

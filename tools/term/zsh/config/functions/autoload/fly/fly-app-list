@@ -2,6 +2,8 @@
 # Usage:
 # $ fly-app-list   # View list of all apps
 setopt local_options err_return
+
+colors-load-definitions
 icons-load-definitions
 local rawList="$(fly-app-list-raw)"
 
@@ -21,8 +23,8 @@ for rawLine in ${(f)rawList}; do
   [[ $appStatus == "deployed" ]] && appIcon="$ICONS[docker-run] "
 
   # Color
-  local appColor=$COLOR_ALIAS_FLY_APP_SUSPENDED
-  [[ $appStatus == "deployed" ]] && appColor=$COLOR_ALIAS_FLY_APP_RUNNING
+  local appColor=$COLORS[fly-app-suspended]
+  [[ $appStatus == "deployed" ]] && appColor=$COLORS[fly-app-running]
 
   # Name
   row+="$(colorize "${appIcon} ${appName}" $appColor)▮"
@@ -31,7 +33,7 @@ for rawLine in ${(f)rawList}; do
   row+="$(colorize "${appStatus}" $appColor)▮"
 
   # Url
-  row+="$(colorize "https://${appUrl}" $COLOR_ALIAS_LINK)▮"
+  row+="$(colorize "https://${appUrl}" $COLORS[link])▮"
 
 
   output+="$row\n"

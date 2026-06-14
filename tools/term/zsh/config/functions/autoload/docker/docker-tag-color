@@ -2,11 +2,13 @@
 # Usage:
 # $ docker-tag-color latest
 setopt local_options err_return
+
+colors-load-definitions
 local tagName="$1"
 
 if [[ "$tagName" == "latest" ]]; then
-	echo $COLOR_ALIAS_DOCKER_TAG_LATEST
+	echo $COLORS[docker-tag-latest]
 	return
 fi
 
-echo $COLOR_ALIAS_DOCKER_TAG
+echo $COLORS[docker-tag]

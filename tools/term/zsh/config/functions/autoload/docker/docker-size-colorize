@@ -3,6 +3,8 @@
 # $ docker-size-colorize 485MB    # Value and unit colored differently
 # Raw size
 setopt local_options err_return
+
+colors-load-definitions
 local rawSize="$1"
 
 # Split value and unit
@@ -13,7 +15,7 @@ local value=${rawSize//${unit}/}
 value="${(l(4)( ))value}"
 
 local output=""
-output+="$(colorize $value $COLOR_ALIAS_SIZE_VALUE)"
-output+="$(colorize $unit $COLOR_ALIAS_SIZE_UNIT)"
+output+="$(colorize $value $COLORS[size-value])"
+output+="$(colorize $unit $COLORS[size-unit])"
 
 echo $output
