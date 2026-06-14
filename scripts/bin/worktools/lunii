@@ -16,5 +16,6 @@ firefox \
 
 echo "DO NOT FORGET TO PLUG THE LUNII AND TURN IT ON"
 
-# Open the server in the background
-$STUDIO_BIN
+# Run from /tmp/lunii so logs don't land in the repo
+mkdir -p /tmp/lunii
+(cd /tmp/lunii && $STUDIO_BIN)
