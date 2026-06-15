@@ -1,5 +1,0 @@
-# Fuzzy finding in all existing commands/aliases/functions
-setopt local_options err_return
-fzf-search \
-  --source "fzf-commands-source" \
-  --options "fzf-commands-options"

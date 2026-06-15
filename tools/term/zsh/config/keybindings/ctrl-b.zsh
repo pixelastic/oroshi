@@ -8,7 +8,7 @@ oroshi-fzf-commands-widget() {
 	fi
 
 	export PROMPT_PREVENT_REFRESH="1"
-	local selection="$(fzf-commands)"
+	local selection="$("$OROSHI_ROOT/scripts/bin/fzf/ctrl-b")"
 	export PROMPT_PREVENT_REFRESH="0"
 
 	# Stop if no selection is made

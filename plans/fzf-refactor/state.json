@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-ctrl-b.md",
-    "done": false,
+    "done": true,
+    "recap": "Created scripts/bin/fzf/ctrl-b; updated ctrl-b.zsh keybinding to use $OROSHI_ROOT path; deleted fzf-commands, fzf-commands-source, fzf-commands-options legacy autoloads.",
     "blocked_by": ["02"]
   },
   {

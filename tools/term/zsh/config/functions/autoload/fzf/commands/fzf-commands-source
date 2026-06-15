@@ -1,3 +1,0 @@
-# Display list of all past command history, in reverse order
-setopt local_options err_return
-echo ${(Fk)commands} ${(Fk)aliases} ${(Fk)functions} | sort
