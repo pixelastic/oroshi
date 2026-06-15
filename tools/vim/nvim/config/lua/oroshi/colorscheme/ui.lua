@@ -223,7 +223,7 @@ O.colors.statusline = {
   command = { bg = "teal", fg = "teal-1", bold = true },
   unknown = { bg = "cyan" },
   -- Context badge
-  worktreeBadge = { bg = "orange-6", fg = "orange-1" },
+  worktreeBadge = { bg = "git-worktree", fg = "git-worktree-foreground" },
   -- Filepath
   filepathDefault = { fg = "gray-4" },
   filepathReadonly = { fg = "red" },

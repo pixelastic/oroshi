@@ -121,8 +121,9 @@
     "tag-unrelated":   "gray",
     "tracked":         "violet-3",
     "untracked":       "red-4",
-    "worktree":        "orange-6",
-    "worktree-dirty":  "violet-3"
+    "worktree":            "orange-6",
+    "worktree-foreground": "orange-1",
+    "worktree-dirty":      "violet-3"
   },
 
   // Host

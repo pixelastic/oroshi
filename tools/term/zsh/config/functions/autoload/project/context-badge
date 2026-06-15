@@ -34,8 +34,8 @@ local separatorIcon="$ICONS[badge-separator]"
 
 # worktreeinfo
 local worktreeName="$(git-worktree-name "$reference")"
-local worktreeForeground=$COLORS[orange-1]
-local worktreeBackground=$COLORS[orange-7]
+local worktreeForeground=$COLORS[git-worktree-foreground]
+local worktreeBackground=$COLORS[git-worktree]
 
 # Colorize either in ANSI or %F{color} format depending on the --zsh flag
 function _colorize() {
