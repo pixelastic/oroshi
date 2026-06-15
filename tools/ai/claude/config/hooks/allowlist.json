@@ -208,6 +208,7 @@
   "yarn add",
   "yarn lint",
   "yarn lint:fix",
+  "yarn remove",
   "yarn run agent:delete-orphaned-images",
   "yarn run algolia:ask",
   "yarn run algolia:teach",

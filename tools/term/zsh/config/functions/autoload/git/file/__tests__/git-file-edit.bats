@@ -2,11 +2,9 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$BATS_TEST_DIRNAME/../git-file-edit"
   echo "hello" > "$BATS_GIT_DIR/file.txt"
   bats_git add file.txt
   bats_git commit --quiet -m "initial"
-  cd "$BATS_GIT_DIR" || return
 }
 
 teardown() {
@@ -14,52 +12,54 @@ teardown() {
 }
 
 @test "does nothing when working tree is clean" {
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
 
 @test "opens modified file in nvim" {
-  echo "modified" > file.txt
-  nvim() { echo "$*" > "$BATS_TMP_DIR/nvim.log"; }
+  echo "modified" > "$BATS_GIT_DIR/file.txt"
+  nvim() { echo "$*"; }
   bats_mock nvim
 
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
   [ "$status" -eq 0 ]
-  [[ "$(cat "$BATS_TMP_DIR/nvim.log")" == *"file.txt"* ]]
+  [[ "$output" == *"file.txt"* ]]
 }
 
 @test "does not open deleted files" {
-  rm file.txt
-  nvim() { echo "$*" > "$BATS_TMP_DIR/nvim.log"; }
+  rm "$BATS_GIT_DIR/file.txt"
+  nvim() { echo "$*"; }
   bats_mock nvim
 
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
   [ "$status" -eq 0 ]
-  [ ! -f "$BATS_TMP_DIR/nvim.log" ]
+  [ "$output" = "" ]
 }
 
-@test "does not open plan scaffold files" {
-  mkdir -p plans/my-plan/scaffold
-  echo "content" > plans/my-plan/scaffold/template.lua
-  bats_git add plans/my-plan/scaffold/template.lua
-  bats_git commit --quiet -m "add scaffold"
-  echo "modified" > plans/my-plan/scaffold/template.lua
-  nvim() { echo "$*" > "$BATS_TMP_DIR/nvim.log"; }
+@test "does not open useless files" {
+  echo "x" > "$BATS_GIT_DIR/yarn.lock"
+  echo "x" > "$BATS_GIT_DIR/font.woff2"
+  mkdir -p "$BATS_GIT_DIR/plans/my-plan/scaffold"
+  echo "x" > "$BATS_GIT_DIR/plans/my-plan/state.json"
+  echo "x" > "$BATS_GIT_DIR/plans/my-plan/scaffold/template.lua"
+  echo "x" > "$BATS_GIT_DIR/useful.txt"
+  bats_git add .
+  nvim() { echo "$*"; }
   bats_mock nvim
 
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
   [ "$status" -eq 0 ]
-  [ ! -f "$BATS_TMP_DIR/nvim.log" ]
+  [[ "$output" == "-p $BATS_GIT_DIR/useful.txt" ]]
 }
 
 @test "does not open renamed source file (old path no longer exists)" {
-  git mv file.txt renamed.txt
-  nvim() { echo "$*" > "$BATS_TMP_DIR/nvim.log"; }
+  git -C "$BATS_GIT_DIR" mv file.txt renamed.txt
+  nvim() { echo "$*"; }
   bats_mock nvim
 
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
   [ "$status" -eq 0 ]
-  [[ "$(cat "$BATS_TMP_DIR/nvim.log")" == *"renamed.txt"* ]]
-  [[ "$(cat "$BATS_TMP_DIR/nvim.log")" != *"file.txt"* ]]
+  [[ "$output" == *"renamed.txt"* ]]
+  [[ "$output" != *"file.txt"* ]]
 }

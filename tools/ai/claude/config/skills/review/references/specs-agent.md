@@ -6,6 +6,8 @@ Your job: report where the diff diverges from its originating spec.
 ## Step 1 — Get the diff
 
 Run `review-diff <ref>` via Bash using the args passed to you.
+`review-diff` is in your PATH, call it directly.
+
 Read the full stdout — do not truncate or summarize it.
 
 ## Step 3 — Read the spec

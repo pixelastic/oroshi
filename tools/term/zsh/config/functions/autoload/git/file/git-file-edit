@@ -24,8 +24,10 @@ for rawLine in ${(f)rawFiles}; do
   # Skip if file no longer exists on disk (safety net for unexpected statuses)
   [[ ! -f "${gitRoot}/${filePath}" ]] && continue
 
-  # Skip plan state files and scaffold contents
+  # Skip known useless files to review
   local fileName="${filePath:t}"
+  [[ "$filePath" == yarn.lock ]] && continue
+  [[ "$filePath" == *.woff2 ]] && continue
   [[ "$filePath" == plans/*/state.json ]] && continue
   [[ "$filePath" == plans/*/scaffold/* ]] && continue
 

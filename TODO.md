@@ -55,6 +55,11 @@ bats_mock_oroshi_root is useless. One can use bats_mock_env more easily. I shoul
 Update the preview of ralph selection in fzf, show not only the directory, but
 get the main PRD of the plan, and the detail of the next issue
 
+When I create a new worktree in a non-oroshi repo, it correctly create the
+worktree, install yarn then displays a bunch of errors. I wonder if it doesn't
+try to rloead the PATH/fpath from that worktree (it should not, as it's not an
+oroshi worktree)
+
 
 ---
 ## Cleanup
