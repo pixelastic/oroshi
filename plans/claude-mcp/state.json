@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-mcp-add-google-slides.md",
-    "done": false,
+    "done": true,
+    "recap": "Added claude-mcp-add-google-slides that sources .envrc for credentials then calls claude mcp add with all required flags.",
     "blocked_by": ["01"]
   }
 ]

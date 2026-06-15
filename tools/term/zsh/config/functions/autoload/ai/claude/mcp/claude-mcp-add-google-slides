@@ -1,0 +1,18 @@
+# Add the google-slides MCP server to the user Claude config
+# Credentials are sourced from the local .envrc at call time — never stored in oroshi
+# Usage:
+# $ claude-mcp-add-google-slides
+setopt local_options err_return
+
+source $OROSHI_ROOT/private/config/ai/claude/mcp/google-slides-mcp.zsh
+
+local installDir=~/local/src/google-slides-mcp
+
+claude mcp add \
+  --scope user \
+  --transport stdio \
+  google-slides \
+  -e GOOGLE_CLIENT_ID="$GOOGLE_CLIENT_ID" \
+  -e GOOGLE_CLIENT_SECRET="$GOOGLE_CLIENT_SECRET" \
+  -e GOOGLE_REFRESH_TOKEN="$GOOGLE_REFRESH_TOKEN" \
+  -- node ${installDir}/build/index.js

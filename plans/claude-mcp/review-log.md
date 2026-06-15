@@ -1,3 +1,18 @@
+## Issue 03 — claude-mcp-add-google-slides
+
+### Hardcoded absolute path `/home/tim/local/src/google-slides-mcp`
+```zsh
+local envrc="/home/tim/local/src/google-slides-mcp/.envrc"
+...
+  -- node /home/tim/local/src/google-slides-mcp/build/index.js
+```
+**Problem:** Standards agent flagged literal `/home/tim/` paths; `$OROSHI_ROOT` memory note discourages hardcoded oroshi paths.
+**Reason skipped:** The `$OROSHI_ROOT` rule covers oroshi-internal paths. This is an external project (`google-slides-mcp`) with no existing env var. GUIDANCE.md and the issue spec both specify this exact literal path as the source of truth.
+
+### No test file
+**Problem:** Standards agent flagged missing `__tests__` file as a process violation.
+**Reason skipped:** Issue 03 explicitly states "No tests — calling the real `claude` CLI would require live credentials and a network connection; testing would mirror the implementation with no independent signal."
+
 ## Issue 01 — MCP core functions
 
 ### `~` vs `$HOME` in claude-mcp-is-added
