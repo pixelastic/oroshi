@@ -1,4 +1,0 @@
-#!/usr/bin/env zsh
-
-ln -fs "${0:h}/config/stylelintrc.js" ~/.stylelintrc.js
-ln -fs "${0:h}/config/stylelintrc.scss.js" ~/.stylelintrc.scss.js
