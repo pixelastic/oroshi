@@ -60,6 +60,14 @@ worktree, install yarn then displays a bunch of errors. I wonder if it doesn't
 try to rloead the PATH/fpath from that worktree (it should not, as it's not an
 oroshi worktree)
 
+Make the zsh-lint rule of warning about long lines disabled for export
+statements, I want to be able to export a very long API key without warnings.
+
+git-commit-message should not be able to see my API keys. Maybe I should disable
+the commit message generation when in the private submodule.
+
+Update the claude statusline to display icons for each MCP server enabled.
+
 
 ---
 ## Cleanup
