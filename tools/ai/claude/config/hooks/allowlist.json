@@ -90,6 +90,7 @@
   "git-file-test",
   "git-github-project-name",
   "git-worktree-create",
+  "git-worktree-delete",
   "git-worktree-list",
   "git-worktree-main",
   "git-worktree-name",

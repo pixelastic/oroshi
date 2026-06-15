@@ -52,6 +52,9 @@ rather than all being in the same file
 
 bats_mock_oroshi_root is useless. One can use bats_mock_env more easily. I should remove that method and update its calls
 
+Update the preview of ralph selection in fzf, show not only the directory, but
+get the main PRD of the plan, and the detail of the next issue
+
 
 ---
 ## Cleanup

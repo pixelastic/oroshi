@@ -6,6 +6,7 @@
 build/
 dist/
 tmp/
+plans/*/scaffold
 
 # Junk files
 .DS_Store
@@ -18,8 +19,7 @@ yarn-error.log
 **/__pycache__/*
 
 # Ralph
-/ralph/
-.ralph-state.json
+plans/*/COMMIT_HINT.md
 
 # Tool directories
 .claude/

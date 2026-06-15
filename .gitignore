@@ -2,7 +2,6 @@
 .env
 .envrc
 
-
 # Build directories
 build/
 dist/
@@ -28,11 +27,8 @@ yarn-error.log
 *~
 **/__pycache__/
 **/__pycache__/*
-*.scaffold.bats
 
 # Ralph
-/ralph/
-ralph.json
 plans/*/COMMIT_HINT.md
 
 # Tool directories
