@@ -204,6 +204,7 @@
   "whoami",
   "xdg-open",
   "xxd",
+  "yarn add",
   "yarn lint",
   "yarn lint:fix",
   "yarn run agent:delete-orphaned-images",
