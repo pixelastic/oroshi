@@ -1,0 +1,15 @@
+# Toggle an MCP server on/off in the user Claude config
+# Usage:
+# $ claude-mcp-toggle google-slides
+setopt local_options err_return
+
+local name="$1"
+
+# Server is registered — remove it
+if claude-mcp-is-added "$name"; then
+  claude-mcp-remove "$name"
+  return 0
+fi
+
+# Server is not registered — add it
+claude-mcp-add "$name"

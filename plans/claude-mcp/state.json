@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-mcp-toggle.md",
-    "done": false,
+    "done": true,
+    "recap": "Added claude-mcp-toggle autoload function that delegates to remove/add based on is-added exit code, with 2 passing tests.",
     "blocked_by": ["01"]
   },
   {
