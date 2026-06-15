@@ -17,9 +17,9 @@ fi
 
 # If --with-icon is passed, we add an icon
 if [[ "$isWithIcon" == 1 ]]; then
-	colorize " $commitHash" ALIAS_GIT_COMMIT
+	colorize " $commitHash" git-commit
 	return
 fi
 
-colorize "$commitHash" ALIAS_GIT_COMMIT
+colorize "$commitHash" git-commit
 return

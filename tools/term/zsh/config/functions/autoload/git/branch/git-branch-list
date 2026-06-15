@@ -38,7 +38,7 @@ for rawGitBranch in ${(f)rawGitBranches}; do
 
   # $ICONS[git-branch-current] to mark the current branch
   local displayPointer=""
-  [[ $branchName == "$currentBranch" ]] && displayPointer="$(colorize $ICONS[git-branch-current] ALIAS_POINTER)"
+  [[ $branchName == "$currentBranch" ]] && displayPointer="$(colorize $ICONS[git-branch-current] pointer)"
   row+="${displayPointer}▮"
 
   # Branch name
@@ -64,7 +64,7 @@ for rawGitBranch in ${(f)rawGitBranches}; do
     local displayDirty=""
     local dirtyCount=$worktreeDirty[$branchName]
     if [[ "$dirtyCount" != "0" ]]; then
-      displayDirty+="$(colorize "${dirtyCount}${ICONS[git-changes]}" ALIAS_GIT_WORKTREE_DIRTY)"
+      displayDirty+="$(colorize "${dirtyCount}${ICONS[git-changes]}" git-worktree-dirty)"
     fi
     row+="${displayDirty}▮"
   fi
@@ -74,7 +74,7 @@ for rawGitBranch in ${(f)rawGitBranches}; do
   [[ $isWorktree == "1" ]] && aheadCount=$worktreeAhead[$branchName]
   local displayAhead=""
   if [[ "$aheadCount" != "0" ]]; then
-    displayAhead+="$(colorize "${aheadCount}${ICONS[git-branch-ahead]}" ALIAS_GIT_AHEAD)"
+    displayAhead+="$(colorize "${aheadCount}${ICONS[git-branch-ahead]}" git-ahead)"
   fi
   row+="${displayAhead}▮"
 
@@ -83,7 +83,7 @@ for rawGitBranch in ${(f)rawGitBranches}; do
   [[ $isWorktree == "1" ]] && behindCount=$worktreeBehind[$branchName]
   local displayBehind=""
   if [[ "$behindCount" != "0" ]]; then
-    displayBehind+="$(colorize "${behindCount}${ICONS[git-branch-behind]}" ALIAS_GIT_BEHIND)"
+    displayBehind+="$(colorize "${behindCount}${ICONS[git-branch-behind]}" git-behind)"
   fi
   row+="${displayBehind}▮"
 
@@ -92,15 +92,15 @@ for rawGitBranch in ${(f)rawGitBranches}; do
   local displayDate="$(git-date-colorize "$relativeTime")"
   row+="${displayDate}▮"
 
-  # Commit
-  local commitHash="${splitLine[2]}"
-  local displayCommit="$(git-commit-colorize "$commitHash")"
-  row+="${displayCommit}▮"
+  # # Commit
+  # local commitHash="${splitLine[2]}"
+  # local displayCommit="$(git-commit-colorize "$commitHash")"
+  # row+="${displayCommit}▮"
 
   # Message
   local commitMessage="${splitLine[8]}"
   local displayMessage="$(git-message-colorize "$commitMessage")"
-  row+="${displayMessage:0:30}▮"
+  row+="${displayMessage:0:35}▮"
 
   output+="$row\n"
 done
