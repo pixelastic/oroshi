@@ -6,7 +6,6 @@
 build/
 dist/
 tmp/
-plans/*/scaffold
 
 # Those dist we want to keep in the repo
 !tools/term/zsh/config/theming/dist/
@@ -28,7 +27,9 @@ yarn-error.log
 **/__pycache__/
 **/__pycache__/*
 
-# Ralph
+# Plans
+plans/*/ralph.json
+plans/*/scaffold
 plans/*/COMMIT_HINT.md
 
 # Tool directories

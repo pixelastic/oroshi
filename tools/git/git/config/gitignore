@@ -6,7 +6,6 @@
 build/
 dist/
 tmp/
-plans/*/scaffold
 
 # Junk files
 .DS_Store
@@ -18,7 +17,9 @@ yarn-error.log
 **/__pycache__/
 **/__pycache__/*
 
-# Ralph
+# Plans
+plans/*/ralph.json
+plans/*/scaffold
 plans/*/COMMIT_HINT.md
 
 # Tool directories
