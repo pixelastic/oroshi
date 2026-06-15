@@ -71,7 +71,7 @@ fi
 # ============================================================================
 # Resolve prettier config file
 # ============================================================================
-configFile=~/.oroshi/prettier.config.js
+configFile=$OROSHI_ROOT/prettier.config.js
 if [[ $projectRoot != "" ]]; then
   [[ -f "$projectRoot/prettier.config.js" ]] && configFile="$projectRoot/prettier.config.js"
   [[ -f "$projectRoot/.prettierrc.js" ]] && configFile="$projectRoot/.prettierrc.js"
