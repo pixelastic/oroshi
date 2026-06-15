@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-filetype-icons.md",
-    "done": false,
+    "done": true,
+    "recap": "Added # Filetypes section to icons.zsh with 11 group entries and 6 per-extension overrides, copying glyphs verbatim from filetypes-list.zsh.",
     "blocked_by": []
   },
   {
