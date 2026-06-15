@@ -1,0 +1,12 @@
+# Check if an MCP server is registered in ~/.claude.json
+# Usage:
+# $ claude-mcp-is-added google-slides   # exits 0 if registered, 1 otherwise
+setopt local_options err_return
+
+local name="$1"
+
+jq \
+  --exit-status \
+  ".mcpServers[\"$name\"]" \
+  ~/.claude.json \
+  >/dev/null

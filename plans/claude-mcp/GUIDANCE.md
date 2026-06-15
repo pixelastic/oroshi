@@ -52,3 +52,8 @@ when explicitly enabled, not in every Claude session.
 ### Issue XX — short title
 - Finding
 -->
+
+### Issue 01 — MCP core functions
+- Do NOT use `CURRENT="$BATS_TEST_DIRNAME/../fn"` + `bats_run_zsh "$CURRENT"` — autoload functions are already in fpath; call by name directly: `bats_run_zsh "function-name arg"`
+- `~` and `$HOME` are equivalent in ZSH subprocesses; `bats_mock_env HOME "$BATS_TMP_DIR"` correctly redirects `~/.claude.json` reads
+- `whence "cmd"` finds both shell functions (from bats_mock) and PATH binaries — correct way to check for sub-scripts in tests

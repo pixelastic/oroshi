@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-mcp-core-functions.md",
-    "done": false,
+    "done": true,
+    "recap": "Added claude-mcp-is-added, claude-mcp-add, claude-mcp-remove autoload functions with 7 passing tests.",
     "blocked_by": []
   },
   {

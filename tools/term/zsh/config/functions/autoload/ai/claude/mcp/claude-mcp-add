@@ -1,0 +1,23 @@
+# Add an MCP server to the user Claude config (dispatcher — delegates to claude-mcp-add-<name>)
+# Usage:
+# $ claude-mcp-add google-slides
+setopt local_options err_return
+
+local name="$1"
+
+# Already registered — no-op
+if claude-mcp-is-added "$name"; then
+  print "MCP server '$name' is already added"
+  return 0
+fi
+
+# No dedicated sub-script — error
+if ! whence "claude-mcp-add-$name" >/dev/null; then
+  print "Error: no sub-script 'claude-mcp-add-$name' found" >&2
+  return 1
+fi
+
+# Delegate to sub-script
+"claude-mcp-add-$name"
+
+print "MCP server '$name' added. Restart Claude to apply changes."

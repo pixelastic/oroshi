@@ -1,0 +1,15 @@
+# Remove an MCP server from the user Claude config
+# Usage:
+# $ claude-mcp-remove google-slides
+setopt local_options err_return
+
+local name="$1"
+
+# Not registered — no-op
+if ! claude-mcp-is-added "$name"; then
+  print "MCP server '$name' is not added"
+  return 0
+fi
+
+claude mcp remove --scope user "$name"
+print "MCP server '$name' removed. Restart Claude to apply changes."
