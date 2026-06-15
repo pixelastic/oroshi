@@ -1,0 +1,71 @@
+#!/usr/bin/env zsh
+# Fuzzy search apt packages
+# Usage:
+# $ apt-packages                          # Interactive package search (all packages)
+# $ apt-packages --installed              # Interactive search (installed only)
+# $ apt-packages --source                 # Print all packages (one per line)
+# $ apt-packages --source --installed     # Print installed packages (one per line)
+# $ apt-packages --options                # Print FZF options (one per line)
+# $ apt-packages --postprocess            # Read raw selection from stdin, print package name
+set -e
+source "${0:h}/helpers/options.zsh"
+
+zmodload zsh/zutil
+zparseopts -D -E \
+  -source=flagSource \
+  -options=flagOptions \
+  -postprocess=flagPostprocess \
+  -installed=flagInstalled
+
+local isSource=${#flagSource}
+local isOptions=${#flagOptions}
+local isPostprocess=${#flagPostprocess}
+local isInstalled=${#flagInstalled}
+
+fzf-source() {
+  local cacheFile="${OROSHI_TMP_FOLDER}/fzf/packages-apt"
+  [[ $isInstalled == "1" ]] && cacheFile="${OROSHI_TMP_FOLDER}/fzf/packages-apt-installed"
+
+  # Regenerate if missing, unreadable, or stale (older than 20 hours)
+  setopt local_options extended_glob
+  local staleFiles=(${cacheFile}(#qN.mh+20))
+  if [[ ! -r $cacheFile ]] || [[ ${#staleFiles[@]} -gt 0 ]]; then
+    apt-packages-cache-generate
+  fi
+
+  cat "$cacheFile"
+}
+
+fzf-options() {
+  fzf-options-base
+  echo "--delimiter=▮"
+  echo "--with-nth=2"
+}
+
+fzf-postprocess() {
+  local input="$(cat)"
+  [[ "$input" == "" ]] && return 0
+  local line
+  for line in ${(f)input}; do
+    print -- "${line%%▮*}"
+  done
+}
+
+fzf-main() {
+  local opts=(${(f)"$(fzf-options)"})
+  fzf-source | fzf "${opts[@]}" | fzf-postprocess
+}
+
+if [[ $isSource == "1" ]]; then
+  fzf-source
+  exit 0
+fi
+if [[ $isOptions == "1" ]]; then
+  fzf-options
+  exit 0
+fi
+if [[ $isPostprocess == "1" ]]; then
+  fzf-postprocess
+  exit 0
+fi
+fzf-main

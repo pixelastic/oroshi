@@ -98,4 +98,11 @@ _Append findings here after each issue. Format: `### Issue XX — short title` +
 - `${0:h}` is the correct ZSH idiom for `dirname $0` inside a shebang script (fixes `noExternalBasename`).
 - `fzf-options` output must be split into an array with `${(f)"$(fzf-options)"}` before passing to `fzf`, to avoid SC2046 word-splitting warning.
 - `fzf-postprocess` uses `${(f)input}` loop + `${line#*: [0-9]*:[0-9]*;}` glob-strip instead of `while read | sed` (fixes `noWhileRead` + SC2001).
-- BATS: script-under-test path must be assigned to `CURRENT` inside `setup()`, not at file top level — `bats-lint` enforces `currentScriptVar` + `noTopLevelVar`.
+- BATS: use `bats_run_zsh "script-name --flag"` — call the binary by name, no `CURRENT` path variable needed. Scripts are on PATH via `zshenv-guest.zsh`.
+
+### Issue 04 — apt-packages (domain FZF Script)
+
+- ZSH glob qualifiers `(#qN.mh+20)` do NOT work inside `[[ ]]` — even with `EXTENDED_GLOB`. Assign to an array first: `local staleFiles=(${cacheFile}(#qN.mh+20))`, then test `${#staleFiles[@]} -gt 0`.
+- `OROSHI_TMP_FOLDER` is overridden by `zshenv-guest.zsh` after `.zshenv` runs. Tests that need to control it must use `bats_mock_env "OROSHI_TMP_FOLDER" "$tmpFolder"`, NOT `export OROSHI_TMP_FOLDER=...`.
+- Legacy `fzf-packages-apt-source-generate` used `declare -A` followed by a shadowing `local` — the correct ZSH pattern for a local associative array is `local -A installedPackages`.
+- The `--installed` flag is parsed at the top level and accessed from within `fzf-source()` via ZSH dynamic scoping — no need to pass it as a parameter.

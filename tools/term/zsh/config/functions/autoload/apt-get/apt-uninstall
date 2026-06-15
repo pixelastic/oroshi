@@ -8,7 +8,7 @@ local packages="$@"
 
 # If no input passed, we find them in a fuzzy search
 if [[ $packages == "" ]]; then
-  packages="$(fzf-packages-apt-installed)"
+  packages="$(apt-packages --installed)"
 fi
 
 # Uninstall the specified packages
@@ -27,5 +27,5 @@ done
 
 # Once done, we update our cached fzf list in the background
 if [[ $hasInstalledPackages == "1" ]]; then
-  fzf-packages-apt-source-generate &!
+  apt-packages-cache-generate &!
 fi

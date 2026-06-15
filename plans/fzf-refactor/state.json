@@ -30,7 +30,8 @@
   {
     "id": "04",
     "issue": "issues/04-apt-packages.md",
-    "done": false,
+    "done": true,
+    "recap": "Created scripts/bin/fzf/apt-packages (--source/--installed/--postprocess/--options) and scripts/bin/apt-packages-cache-generate; updated apt-install, apt-search, apt-uninstall callers; deleted all packages/apt legacy autoloads.",
     "blocked_by": ["02"]
   },
   {

@@ -44,6 +44,31 @@ setup() {
 
 ---
 
+---
+
+## Issue 04 — apt-packages
+
+### Missing `--preview` in `fzf-options`
+```zsh
+fzf-options() {
+  fzf-options-base
+  echo "--delimiter=▮"
+  echo "--with-nth=2"
+}
+```
+**Problem:** Legacy `fzf-packages-apt-options` emitted `--preview=fzf-packages-apt-preview {1}`. New `fzf-options` drops preview entirely.
+**Reason skipped:** Preview depended on `fzf-packages-apt-preview` which is being deleted. Spec acceptance criteria do not include preview. Deferred.
+
+### Missing colored `--prompt` in `fzf-options`
+**Problem:** Legacy `fzf-packages-apt-options` built a colorized prompt with icons/colors. New `fzf-options` has no custom prompt.
+**Reason skipped:** Requires `icons-load-definitions`/`colors-load-definitions` autoloads not available in FZF Script context. Same deferral as issue 03.
+
+### Shebang `#!/usr/bin/env zsh` vs spec `#!/bin/zsh`
+**Problem:** Spec says "executable `#!/bin/zsh` script"; both new scripts use `#!/usr/bin/env zsh`.
+**Reason skipped:** `#!/usr/bin/env zsh` is the established pattern across all FZF Scripts (ctrl-r, ctrl-b). Consistency takes precedence.
+
+---
+
 ### `bat` syntax highlighting not carried over
 ```zsh
 # legacy fzf-history-source had:

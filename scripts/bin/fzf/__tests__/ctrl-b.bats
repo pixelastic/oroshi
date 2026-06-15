@@ -1,7 +1,7 @@
 bats_load_library 'helper'
 
 setup() {
-  CURRENT="$BATS_TEST_DIRNAME/../ctrl-b"
+  bats_tmp_dir
 }
 
 teardown() {
@@ -11,17 +11,17 @@ teardown() {
 # fzf-source
 
 @test "fzf-source: exits with status 0" {
-  run "$CURRENT" --source
+  bats_run_zsh "ctrl-b --source"
   [ "$status" -eq 0 ]
 }
 
 @test "fzf-source: outputs at least one command name" {
-  run "$CURRENT" --source
+  bats_run_zsh "ctrl-b --source"
   [ "${#lines[@]}" -gt 0 ]
 }
 
 @test "fzf-source: each line contains exactly one command name" {
-  run "$CURRENT" --source
+  bats_run_zsh "ctrl-b --source"
   local line
   for line in "${lines[@]}"; do
     [[ "$line" != *" "* ]]
@@ -31,13 +31,11 @@ teardown() {
 # fzf-postprocess
 
 @test "fzf-postprocess: outputs command name from stdin" {
-  local result
-  result="$(echo 'ls' | "$CURRENT" --postprocess)"
-  [ "$result" = "ls" ]
+  bats_run_zsh "echo 'ls' | ctrl-b --postprocess"
+  [ "$output" = "ls" ]
 }
 
 @test "fzf-postprocess: outputs nothing on empty stdin" {
-  local result
-  result="$(printf '' | "$CURRENT" --postprocess)"
-  [ "$result" = "" ]
+  bats_run_zsh "printf '' | ctrl-b --postprocess"
+  [ "$output" = "" ]
 }

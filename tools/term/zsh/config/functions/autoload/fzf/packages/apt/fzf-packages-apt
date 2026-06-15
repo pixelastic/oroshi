@@ -1,7 +1,0 @@
-# Fuzzy search in all apt packages
-setopt local_options err_return
-
-fzf-search \
-  --source "fzf-packages-apt-source" \
-  --options "fzf-packages-apt-options" \
-  --postprocess "fzf-packages-apt-postprocess"
