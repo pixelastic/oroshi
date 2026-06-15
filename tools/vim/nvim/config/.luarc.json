@@ -2,9 +2,7 @@
   "runtime.version": "LuaJIT",
   "diagnostics.globals": ["vim"],
   "diagnostics.disable": ["duplicate-set-field"],
-  "workspace.library": [
-    "$VIMRUNTIME"
-  ],
+  "workspace.library": ["$VIMRUNTIME"],
   "workspace.checkThirdParty": false,
   "telemetry.enable": false
 }

@@ -1,4 +1,7 @@
-const os = require('os');
+// eslint-disable-next-line no-undef
+const os = require('node:os');
+
+// eslint-disable-next-line no-undef
 module.exports = {
   rules: {
     alex: {
@@ -20,7 +23,7 @@ module.exports = {
         'dirty', // "Don't use dirty tactics"
         'failed',
         'failures', // "We all learn from our failures"
-        'failure',  // "Failure is a learning experience"
+        'failure', // "Failure is a learning experience"
         'fear',
         'firing',
         'he-she', // We should be able to use the right pronoun
@@ -42,7 +45,7 @@ module.exports = {
     },
     'common-misspellings': true,
     editorconfig: {
-      "charset": false // Charset detection is not reliable, so we disable it
+      charset: false, // Charset detection is not reliable, so we disable it
     },
     'en-capitalization': true,
     'stop-words': {

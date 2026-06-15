@@ -1,5 +1,3 @@
-/* eslint-disable import/no-commonjs */
-const os = require('os');
 /**
  * Linting config.
  * Check the following links for the list of all rules:
@@ -7,12 +5,13 @@ const os = require('os');
  * - https://github.com/remarkjs/remark-lint/tree/master/packages/remark-preset-lint-recommended
  * - https://github.com/remarkjs/remark-lint/tree/master/packages/remark-preset-lint-markdown-style-guide
  **/
+// eslint-disable-next-line no-undef
 module.exports = {
   plugins: [
-    `remark-frontmatter`,
-    `remark-preset-lint-consistent`,
-    `remark-preset-lint-recommended`,
-    `remark-preset-lint-markdown-style-guide`,
+    'remark-frontmatter',
+    'remark-preset-lint-consistent',
+    'remark-preset-lint-recommended',
+    'remark-preset-lint-markdown-style-guide',
 
     // Following rules are configured to fit what prettier does
     'lint-no-trailing-spaces', // No trailing spaces
