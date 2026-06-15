@@ -225,7 +225,7 @@ add-zsh-hook precmd oroshi-prompt-asynchronous-populate
 # Update OROSHI_ROOT when entering an oroshi worktree
 function oroshi-chpwd() {
   local isInOroshiWorktree="0"
-  [[ "$PWD" == "$OROSHI_WORKTREES_DIR/"* ]] && isInOroshiWorktree="1"
+  [[ "$PWD" == "$OROSHI_WORKTREES_DIR/oroshi--"* ]] && isInOroshiWorktree="1"
 
   # Return early if moving from regular dir to regular dir
   [[ $isInOroshiWorktree == "0" && "$OROSHI_ROOT" == "$OROSHI_ROOT_DEFAULT" ]] && return 0
