@@ -13,6 +13,7 @@ source ${0:A:h}/tab.zsh         # Completion
 
 source ${0:A:h}/ctrl-a.zsh       # Accept all suggestions
 source ${0:A:h}/ctrl-e.zsh       # Edit line in vim
+source ${0:A:h}/ctrl-shift-e.zsh # Copy current command line to clipboard
 source ${0:A:h}/ctrl-r.zsh       # Fuzzy-find history commands
 source ${0:A:h}/ctrl-y.zsh       # Copy current directory to clipboard
 source ${0:A:h}/ctrl-shift-y.zsh # Copy last command + output to clipboard
