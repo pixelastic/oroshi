@@ -1,54 +1,17 @@
-#!/usr/bin/env node
-import { _ } from 'golgoth';
-import { consoleError } from 'firost';
-import Gilmore from 'gilmore';
-import { buildSystemPrompt } from './buildSystemPrompt.js';
+import { callApi } from './callApi.js';
+import { commitWithHint } from './commitWithHint.js';
+import { commitWithoutHint } from './commitWithoutHint.js';
 import { formatMessage } from './format.js';
+import { getCommitHint } from './getCommitHint.js';
 
-const EXCLUDED = ['yarn.lock'];
+// Different prompt/diff if we have a COMMIT_HINT.md (from ralph) or not
+const commitHint = await getCommitHint();
+const strategy = commitHint ? commitWithHint : commitWithoutHint;
 
-const key = process.env.ANTHROPIC_API_KEY;
-if (!key) {
-  process.stderr.write('ANTHROPIC_API_KEY not set.\n');
-  process.exit(1);
-}
+// Call the API
+const prompt = await strategy.getPrompt();
+const diff = await strategy.getDiff();
+const response = await callApi({ prompt, diff });
 
-const systemPrompt = await buildSystemPrompt();
-const repo = Gilmore();
-
-const allFiles = await repo.stagedFiles();
-const files = _.reject(allFiles, (f) =>
-  EXCLUDED.includes(_.last(f.split('/'))),
-);
-
-if (files.length === 0) {
-  consoleError('Nothing staged.\n');
-  process.exit(1);
-}
-
-const quotedFiles = files.map((f) => `"${f.replace(/"/g, '\\"')}"`);
-const diff = await repo.run(`diff --cached -- ${quotedFiles.join(' ')}`);
-
-const response = await fetch('https://api.anthropic.com/v1/messages', {
-  method: 'POST',
-  headers: {
-    'x-api-key': key,
-    'anthropic-version': '2023-06-01',
-    'content-type': 'application/json',
-  },
-  body: JSON.stringify({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 1024,
-    system: systemPrompt,
-    messages: [{ role: 'user', content: diff }],
-  }),
-});
-
-if (!response.ok) {
-  consoleError(`API error: ${response.status} ${response.statusText}\n`);
-  process.exit(1);
-}
-
-const data = await response.json();
-const commitMessage = formatMessage(data.content[0].text);
+const commitMessage = formatMessage(response);
 console.log(commitMessage);

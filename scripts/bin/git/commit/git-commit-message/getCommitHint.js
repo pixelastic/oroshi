@@ -1,4 +1,5 @@
-import { absolute, exists, read, run } from 'firost';
+import { absolute, exists, read } from 'firost';
+import { getPlanDir } from './getPlanDir.js';
 
 export let __;
 
@@ -8,42 +9,11 @@ export let __;
  * @returns {Promise<string|null>} Hint content or null
  */
 export async function getCommitHint() {
-  const planDir = await __.getPlanDir();
-  if (!planDir) return null;
+  const planDir = await getPlanDir();
+  if (!planDir) return false;
 
-  const hintPath = absolute(planDir.trim(), 'COMMIT_HINT.md');
-  if (!(await __.hintExists(hintPath))) return null;
+  const hintPath = absolute(planDir, 'COMMIT_HINT.md');
+  if (!(await exists(hintPath))) return false;
 
-  return __.readHint(hintPath);
+  return read(hintPath);
 }
-
-__ = {
-  /**
-   * Returns the plan directory path by calling plan-directory subprocess.
-   * @returns {Promise<string|null>} Path or null if plan-directory fails
-   */
-  async getPlanDir() {
-    try {
-      const { stdout } = await run('plan-directory', { stdout: false });
-      return stdout;
-    } catch {
-      return null;
-    }
-  },
-  /**
-   * Checks if a hint exists at the specified path.
-   * @param {string} hintPath - The path to the hint to check for existence
-   * @returns {boolean} True if the hint exists, false otherwise
-   */
-  hintExists(hintPath) {
-    return exists(hintPath);
-  },
-  /**
-   * Reads a hint from the specified file path.
-   * @param {string} hintPath - The file path to the hint file to be read
-   * @returns {*} The content of the hint file
-   */
-  readHint(hintPath) {
-    return read(hintPath);
-  },
-};

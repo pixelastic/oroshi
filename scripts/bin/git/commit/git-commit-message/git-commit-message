@@ -1,1 +1,5 @@
-git-commit-message.js
+#!/usr/bin/env zsh
+# Node wrapper around git-commit-message.js to ensure that the script is run in a Node environment.
+set -e
+
+node ${0:A:h}/git-commit-message.js
