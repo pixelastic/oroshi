@@ -1,12 +1,12 @@
 # Return the type of file based on its extension
-# Will use the FILETYPE_XXX_GROUP environment variables
-setopt local_options err_return
-
+# Uses the FILETYPES[] assoc array (loaded via filetypes-load-definitions)
 # Usage:
 # $ filetype-group ./path/to/file.png    # image
+setopt local_options err_return
+
+filetypes-load-definitions
 
 local filepath=${1:a}
-local extension=${filepath:e:u}
-local group=${(P)${:-FILETYPE_${extension}_GROUP}}
+local group=$FILETYPES[${filepath:e:l}:group]
 
 echo $group

@@ -5,6 +5,7 @@
 
 function oroshi_tools_ls() {
 	colors-load-definitions
+	filetypes-load-definitions
 
 	# We define two versions of LS_COLORS.
 	#
@@ -15,7 +16,7 @@ function oroshi_tools_ls() {
 	# The simpler one, LS_COLORS_SIMPLE, only contains default definition, not the
 	# advanced filetype matching, and will be used on demand when we fallback to
 	# ls when exa fails.
-	
+
 	# Define the custom LS_COLORS
 	LS_COLORS_SIMPLE="di=38;5;$COLORS[directory]"      # Directory
 	LS_COLORS_SIMPLE+=":ow=38;5;$COLORS[directory]"    # Directory writable by others
@@ -39,23 +40,17 @@ function oroshi_tools_ls() {
 	# LS_COLORS_SIMPLE+=":cd=1;38;5;$COLORS[purple]"  # character (unbuffered) special file
 	# LS_COLORS_SIMPLE+=":mi=1;38;5;$COLORS[orange]"  # non-existent file pointed to by a symbolic link (visible when you type ls -l)
 	# LS_COLORS_SIMPLE+=":tw=1;38;5;$COLORS[amber]"   # sticky other-writable (o+w) file; and sticky other-writable directory
-	
 
-	# Enhance LS_COLORS by looping through all FILETYPES_***_color
+	# Enhance LS_COLORS by looping through all FILETYPES entries that have a :pattern key
 	# Note: It isn't possible to color all hidden files (.*) with LS_COLORS
-	# Instead, we have a known list of the most common files defined in
-	# filetypes-list.zsh
+	# Instead, we have a known list of the most common files defined in filetypes.json
 	LS_COLORS=$LS_COLORS_SIMPLE
-	for extension in ${=FILETYPES_INDEX}; do
-		# Those are nested zsh modifiers:
-		# - ${AAA:-BBB} reads AAA variables, and if empty sets BBB as the value
-		# - Here, we set AAA as empty, so it jumps rights to BBB
-		# - Which is converted into the string FILETYPES_XXX_YYY
-		# - ${(P}CCC} reads the value of CCC and uses it as the variable name
-		local pattern=${(P)${:-FILETYPE_${extension}_PATTERN}}
-		local color=${(P)${:-FILETYPE_${extension}_COLOR}}
-		local bold=${(P)${:-FILETYPE_${extension}_BOLD}}
-
+	for key in ${(k)FILETYPES}; do
+		[[ $key != *:pattern ]] && continue
+		local ext=${key%:pattern}
+		local pattern=$FILETYPES[$key]
+		local color=$FILETYPES[${ext}:color]
+		local bold=$FILETYPES[${ext}:bold]
 		LS_COLORS="${LS_COLORS}:${pattern}=${bold};38;5;$color"
 	done
 

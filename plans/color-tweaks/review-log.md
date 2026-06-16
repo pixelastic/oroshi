@@ -97,3 +97,32 @@ bats_run_zsh "filetypes-load-definitions"
 
 **Problem:** Reviewer flagged potential zsh expansion of `${(k)FILETYPES}` inside printf.
 **Reason skipped:** The printf argument uses single quotes — no expansion occurs. Same pattern as `rule-missing-icons-load.bats` which passes reliably.
+
+## Issue 05 — Consumer updates
+
+### Standards: Bare `local` declarations before loop in `ls.zsh`
+
+```zsh
+local key
+local ext
+local pattern
+local color
+local bold
+for key in ${(k)FILETYPES}; do
+```
+
+**Problem:** Reviewer flagged five bare `local` declarations (no assignment) as violating the "assign at point of use" rule.
+**Reason skipped:** GUIDANCE.md explicitly documents this as the correct pattern for loop-iteration variables: "Declare all loop-iteration locals once at the top of the function, then assign without `local` inside loops." The `noGroupedLocals` lint rule also enforces one-per-line, which we already satisfy.
+
+### Standards: Blank lines around `filetypes-load-definitions` in `img-display`
+
+```zsh
+setopt local_options err_return
+
+filetypes-load-definitions
+
+zparseopts -E -D \
+```
+
+**Problem:** Two surrounding blank lines (one before, one after) is inconsistent with `fzf-fs-shared-preview-header` where the two load calls have no blank line between them.
+**Reason skipped:** No hard rule on blank-line spacing between header, initialization, and arg-parsing blocks. The spacing here visually separates three distinct phases (config / lazy init / args) and is intentional.

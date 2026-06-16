@@ -10,8 +10,6 @@
 
 source $OROSHI_ROOT/tools/term/zsh/config/env.zsh           # Global environment variables
 source $OROSHI_ROOT/tools/term/zsh/config/init.zsh          # Shell initialization
-source $OROSHI_ROOT/tools/term/zsh/config/theming/index.zsh # Colors
-
 source $OROSHI_ROOT/tools/term/zsh/config/history.zsh           # History of commands
 source $OROSHI_ROOT/tools/term/zsh/config/aliases/index.zsh     # Aliases definitions
 source $OROSHI_ROOT/tools/term/zsh/config/tools/index.zsh       # Tools (nvm, bat, fzf, etc)

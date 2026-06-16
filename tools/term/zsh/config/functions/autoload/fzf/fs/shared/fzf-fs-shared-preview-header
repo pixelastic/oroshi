@@ -5,6 +5,7 @@
 setopt local_options err_return
 
 colors-load-definitions
+filetypes-load-definitions
 
 local input=$1
 
@@ -30,8 +31,8 @@ if [[ $isDirectory == 0 ]]; then
   local fileName=${displayedPath:t}
   local fileExtension=${fullPath:e}
   local filetypeGroup="$(filetype-group $fullPath)"
-  local color=${(P)${:-FILETYPE_${fileExtension:u}_COLOR}}
-  local icon=${(P)${:-FILETYPE_${fileExtension:u}_ICON}}
+  local color=$FILETYPES[${fileExtension:l}:color]
+  local icon=$FILETYPES[${fileExtension:l}:icon]
 
   # Special handling of executables. They do not have an extension, so can't
   # be found with the above method
@@ -111,28 +112,3 @@ fi
 
 echo ${(j//)displayedHeaderArray}
 echo ""
-
-
-# [icon] [simplified path]
-# 17.8kb, 800x600, transparent
-
-# Need to get
-# The fullpath
-# its icon
-# its short display path
-# a specific color?
-# some metadata, like the filesize at least
-# probbaly also more info for each type
-# - image: dimensions
-# - pdf: number of pages
-# - ebook: author and name?
-#
-# The header should contain
-# filename with the right icon and color?
-# 4.74kb, 1200x600, une liste de metadata en gris en dessous
-# Il me faut une methode qui fasse img-metadata, pdf-metadata, etc qui output
-# en table ou en JSON la data dont j'ai besoin (ou en version raw)
-# et que je l'utilise pour l'afficher dans la liste ici
-# filesize pour tout le monde
-# dimensions pour une image
-# nombre de pages pour un pdf, et

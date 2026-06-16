@@ -30,7 +30,8 @@
   {
     "id": "05",
     "issue": "issues/05-consumer-updates.md",
-    "done": false,
+    "done": true,
+    "recap": "Updated ls.zsh, filetype-group, img-display, and fzf-fs-shared-preview-header to call filetypes-load-definitions and use FILETYPES[] subscripts; removed eager source from theming/index.zsh; deleted src/filetypes-list.zsh, src/env-generate-filetypes, and env/filetypes.zsh.",
     "blocked_by": ["03", "04"]
   }
 ]
