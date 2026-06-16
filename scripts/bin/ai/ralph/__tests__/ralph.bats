@@ -2,7 +2,6 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$BATS_TEST_DIRNAME/../ralph"
   export PRD_DIR="$BATS_TMP_DIR/prd-dir"
   mkdir -p "$PRD_DIR"
 }
@@ -16,7 +15,7 @@ teardown() {
   ralph-loop() { return 0; }
   bats_mock ralph-single ralph-loop
 
-  bats_run_zsh "$CURRENT" "$PRD_DIR"
+  bats_run_zsh "ralph $PRD_DIR"
   [ "$status" -eq 0 ]
   [[ "$output" == "SINGLE:${PRD_DIR}" ]]
 }
@@ -26,7 +25,7 @@ teardown() {
   ralph-loop() { echo "LOOP:$*"; }
   bats_mock ralph-single ralph-loop
 
-  bats_run_zsh "$CURRENT" --max 3 "$PRD_DIR"
+  bats_run_zsh "ralph --max 3 $PRD_DIR"
   [ "$status" -eq 0 ]
   [[ "$output" == "LOOP:${PRD_DIR} 3" ]]
 }

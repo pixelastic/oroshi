@@ -2,7 +2,6 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  export CURRENT="$BATS_TEST_DIRNAME/../icons-load-definitions"
 }
 
 teardown() {
@@ -14,7 +13,7 @@ teardown() {
   echo 'typeset -gA ICONS; ICONS[test-key]="test-val"' > "$BATS_TMP_DIR/tools/term/zsh/config/theming/icons.zsh"
 
   bats_mock_oroshi_root "$BATS_TMP_DIR"
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "icons-load-definitions"
   [ "$status" -eq 0 ]
 }
 
@@ -27,7 +26,7 @@ teardown() {
   echo 'typeset -gA ICONS; ICONS[prompt]=">"' >> "$BATS_TMP_DIR/mock.zsh"
 
   bats_mock_oroshi_root "$BATS_TMP_DIR"
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "icons-load-definitions"
   [ "$status" -eq 0 ]
   [[ ! -f "$markerFile" ]]
 }

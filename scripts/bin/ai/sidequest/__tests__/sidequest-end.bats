@@ -2,7 +2,6 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$BATS_TEST_DIRNAME/../sidequest-end"
 }
 
 teardown() {
@@ -10,12 +9,12 @@ teardown() {
 }
 
 @test "no argument: exits with error" {
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "sidequest-end"
   [ "$status" -eq 1 ]
 }
 
 @test "file does not exist: exits with error" {
-  bats_run_zsh "$CURRENT" "$BATS_TMP_DIR/nonexistent.md"
+  bats_run_zsh "sidequest-end $BATS_TMP_DIR/nonexistent.md"
   [ "$status" -eq 1 ]
 }
 
@@ -25,7 +24,7 @@ teardown() {
   sidequest() { echo "SIDEQUEST:$*"; }
   bats_mock sidequest
 
-  bats_run_zsh "$CURRENT" "$file"
+  bats_run_zsh "sidequest-end $file"
 
   [ "$status" -eq 0 ]
   [[ "$output" == "SIDEQUEST:fix-ralph --prompt @${file} --no-focus" ]]

@@ -2,7 +2,6 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$BATS_TEST_DIRNAME/../git-submodule-list"
 }
 
 teardown() {
@@ -20,7 +19,7 @@ teardown() {
   table() { echo "$1"; }
   bats_mock git git-directory-root path-relative sort-filepaths git-submodule-colorize git-branch-colorize git-commit-colorize table
 
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "git-submodule-list"
 
   [ "$status" -eq 0 ]
   [[ "$output" != *"substring expression"* ]]

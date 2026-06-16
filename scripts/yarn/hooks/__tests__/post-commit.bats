@@ -1,7 +1,6 @@
 bats_load_library 'helper'
 
 setup() {
-  CURRENT="$BATS_TEST_DIRNAME/../post-commit"
   bats_tmp_dir
 }
 
@@ -13,7 +12,7 @@ teardown() {
   plan-directory() { return 1; }
   bats_mock plan-directory
 
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "$BATS_TEST_DIRNAME/../post-commit"
   [ "$status" -eq 0 ]
 }
 
@@ -24,7 +23,7 @@ teardown() {
   plan-directory() { echo "$MOCK_PLAN_DIR"; }
   bats_mock plan-directory
 
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "$BATS_TEST_DIRNAME/../post-commit"
   [ "$status" -eq 0 ]
   [ ! -f "$MOCK_PLAN_DIR/COMMIT_HINT.md" ]
 }
@@ -37,7 +36,7 @@ teardown() {
   plan-directory() { echo "$MOCK_PLAN_DIR"; }
   bats_mock plan-directory
 
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "$BATS_TEST_DIRNAME/../post-commit"
   [ "$status" -eq 0 ]
   [ ! -f "$MOCK_PLAN_DIR/COMMIT_HINT.md" ]
 }

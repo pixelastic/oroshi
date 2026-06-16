@@ -32,8 +32,8 @@ teardown() {
 }
 
 @test "smoke: shows branch names, relative date and commit message" {
-  git -C "${BATS_GIT_WORKTREES}docs" commit --allow-empty -m "docs commit"
-  git -C "${BATS_GIT_WORKTREES}feature" commit --allow-empty -m "feature commit"
+  git -C "${BATS_GIT_WORKTREES}main-repo--docs" commit --allow-empty -m "docs commit"
+  git -C "${BATS_GIT_WORKTREES}main-repo--feature" commit --allow-empty -m "feature commit"
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-list"
   [ "$status" -eq 0 ]
@@ -44,7 +44,7 @@ teardown() {
 }
 
 @test "marks only the current worktree with pointer" {
-  bats_run_zsh "cd ${BATS_GIT_WORKTREES}feature && git-worktree-list"
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}main-repo--feature && git-worktree-list"
 
   [ "$status" -eq 0 ]
   local line0="$(bats_strip_ansi "${lines[0]}")"
@@ -57,8 +57,8 @@ teardown() {
   # advance main so feature can be behind
   git -C "$BATS_GIT_DIR" commit --allow-empty -m "main advances"
   # feature: 1 dirty file + 1 ahead + 1 behind
-  echo "dirty" > "${BATS_GIT_WORKTREES}feature/dirty.txt"
-  git -C "${BATS_GIT_WORKTREES}feature" commit --allow-empty -m "feat: ahead"
+  echo "dirty" > "${BATS_GIT_WORKTREES}main-repo--feature/dirty.txt"
+  git -C "${BATS_GIT_WORKTREES}main-repo--feature" commit --allow-empty -m "feat: ahead"
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-list"
   [ "$status" -eq 0 ]

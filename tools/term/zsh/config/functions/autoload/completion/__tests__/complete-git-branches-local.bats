@@ -2,7 +2,6 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$BATS_TEST_DIRNAME/../complete-git-branches-local"
 
   git init --initial-branch=main --quiet "$BATS_TMP_DIR/repo"
   git -C "$BATS_TMP_DIR/repo" config user.email "bats@oroshi"
@@ -18,7 +17,7 @@ teardown() {
 }
 
 @test "returns branch:message for each branch" {
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "complete-git-branches-local"
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = "main:init commit" ]
 }

@@ -13,8 +13,8 @@ teardown() {
 @test "lists worktrees with branch and path on each line" {
   bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-list-raw"
   [ "$status" -eq 0 ]
-  [[ "${lines[0]}" == "feat/dark-mode▮${BATS_GIT_WORKTREES}feat-dark-mode▮"* ]]
-  [[ "${lines[1]}" == "fix/bug▮${BATS_GIT_WORKTREES}fix-bug▮"* ]]
+  [[ "${lines[0]}" == "feat/dark-mode▮${BATS_GIT_WORKTREES}my-repo--feat-dark-mode▮"* ]]
+  [[ "${lines[1]}" == "fix/bug▮${BATS_GIT_WORKTREES}my-repo--fix-bug▮"* ]]
 }
 
 @test "excludes the Git Repo Main from output" {
@@ -32,7 +32,7 @@ teardown() {
 }
 
 @test "works from inside a linked worktree" {
-  bats_run_zsh "cd ${BATS_GIT_WORKTREES}fix-bug && git-worktree-list-raw"
+  bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && git-worktree-list-raw"
   [ "$status" -eq 0 ]
   [ "${#lines[@]}" -eq 2 ]
 }

@@ -2,7 +2,6 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$BATS_TEST_DIRNAME/../git-branch-list-raw"
 
   # Remote repo: simulates origin with an initial commit
   git init --initial-branch=main --quiet "$BATS_TMP_DIR/remote"
@@ -31,13 +30,13 @@ teardown() {
 }
 
 @test "outputs one line per branch" {
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "git-branch-list-raw"
   [ "$status" -eq 0 ]
   [ "${#lines[@]}" -eq 1 ]
 }
 
 @test "branch line: name▮hash▮remote▮branch▮ahead▮behind▮date▮message▮" {
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "git-branch-list-raw"
   [ "$status" -eq 0 ]
   [[ "${lines[0]}" == "main▮"?*"▮origin▮main▮1▮1▮"?*"▮local work▮" ]]
 }

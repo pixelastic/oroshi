@@ -2,7 +2,6 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$BATS_TEST_DIRNAME/../git-worktree-pull"
   cd "$BATS_GIT_DIR" || return 1
   git checkout --quiet -b fix/bug
   git checkout --quiet main
@@ -16,13 +15,13 @@ teardown() {
 
 @test "rebases fix/bug on top of main" {
   cd "$BATS_GIT_DIR"
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "git-worktree-pull"
   [ "$status" -eq 0 ]
 }
 
 @test "fix/bug contains main commits after pull" {
   cd "$BATS_GIT_DIR"
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "git-worktree-pull"
   run git log --oneline
   [[ "$output" == *"main work"* ]]
 }
@@ -35,6 +34,6 @@ teardown() {
   git -C "$BATS_TMP_DIR/no-main" commit --allow-empty --quiet -m "init"
   git -C "$BATS_TMP_DIR/no-main" checkout --quiet -b fix/bug
   cd "$BATS_TMP_DIR/no-main"
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "git-worktree-pull"
   [ "$status" -ne 0 ]
 }

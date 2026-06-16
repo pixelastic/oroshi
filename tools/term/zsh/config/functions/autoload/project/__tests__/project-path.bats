@@ -2,7 +2,6 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'my-repo'
-  CURRENT="$BATS_TEST_DIRNAME/../project-path"
 
   projects-load-definitions() {
     typeset -gA PROJECTS
@@ -18,13 +17,13 @@ teardown() {
 # --- With argument ---
 
 @test "with arg: returns path of known project" {
-  bats_run_zsh "$CURRENT" my-project
+  bats_run_zsh "project-path my-project"
   [ "$status" -eq 0 ]
   [ "$output" = "$BATS_GIT_DIR/" ]
 }
 
 @test "with arg: exits 1 for unknown project" {
-  bats_run_zsh "$CURRENT" unknown-project
+  bats_run_zsh "project-path unknown-project"
   [ "$status" -eq 1 ]
 }
 
@@ -32,13 +31,13 @@ teardown() {
 
 @test "no arg: returns path of current project" {
   cd "$BATS_GIT_DIR"
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "project-path"
   [ "$status" -eq 0 ]
   [ "$output" = "$BATS_GIT_DIR/" ]
 }
 
 @test "no arg: exits 1 outside known project" {
   cd "$BATS_TMP_DIR"
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "project-path"
   [ "$status" -eq 1 ]
 }

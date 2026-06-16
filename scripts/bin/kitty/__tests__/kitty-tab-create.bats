@@ -2,7 +2,6 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$BATS_TEST_DIRNAME/../kitty-tab-create"
 }
 
 teardown() {
@@ -13,7 +12,7 @@ teardown() {
   kitty-remote() { echo "$*" >"$BATS_TMP_DIR/kitty-args"; }
   bats_mock kitty-remote
 
-  bats_run_zsh "$CURRENT" "My Tab"
+  bats_run_zsh "kitty-tab-create 'My Tab'"
 
   [ "$status" -eq 0 ]
   [[ "$(cat "$BATS_TMP_DIR/kitty-args")" == *" zsh" ]]
@@ -23,7 +22,7 @@ teardown() {
   kitty-remote() { echo "$*" >"$BATS_TMP_DIR/kitty-args"; }
   bats_mock kitty-remote
 
-  bats_run_zsh "$CURRENT" "My Tab" --cmd "kitty-helper-claude-start"
+  bats_run_zsh "kitty-tab-create 'My Tab' --cmd 'kitty-helper-claude-start'"
 
   [ "$status" -eq 0 ]
   [[ "$(cat "$BATS_TMP_DIR/kitty-args")" == *" kitty-helper-claude-start" ]]
@@ -33,7 +32,7 @@ teardown() {
   kitty-remote() { echo "$*" >"$BATS_TMP_DIR/kitty-args"; }
   bats_mock kitty-remote
 
-  bats_run_zsh "$CURRENT" "My Tab" --cmd "kitty-helper-claude-start @/tmp/file.md"
+  bats_run_zsh "kitty-tab-create 'My Tab' --cmd 'kitty-helper-claude-start @/tmp/file.md'"
 
   [ "$status" -eq 0 ]
   [[ "$(cat "$BATS_TMP_DIR/kitty-args")" == *" kitty-helper-claude-start @/tmp/file.md" ]]

@@ -2,7 +2,6 @@ bats_load_library 'helper'
 
 setup() {
   bats_git_dir 'repo'
-  CURRENT="$BATS_TEST_DIRNAME/../git-branch-current"
 }
 
 teardown() {
@@ -13,7 +12,7 @@ teardown() {
 
 @test "no arg: returns main on a fresh repo" {
   cd "$BATS_GIT_DIR"
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "git-branch-current"
   [ "$status" -eq 0 ]
   [ "$output" = "main" ]
 }
@@ -21,14 +20,14 @@ teardown() {
 @test "no arg: returns branch after checkout" {
   cd "$BATS_GIT_DIR"
   git checkout -b feat/hello
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "git-branch-current"
   [ "$status" -eq 0 ]
   [ "$output" = "feat/hello" ]
 }
 
 @test "no arg: fails outside a git repo" {
   cd "$BATS_TMP_DIR"
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "git-branch-current"
   [ "$status" -eq 1 ]
 }
 
@@ -36,7 +35,7 @@ teardown() {
   cd "$BATS_GIT_DIR"
   local commit="$(git rev-parse HEAD)"
   git checkout --detach "$commit"
-  bats_run_zsh "$CURRENT"
+  bats_run_zsh "git-branch-current"
   [ "$status" -eq 0 ]
   [ "$output" = "HEAD" ]
 }
@@ -49,20 +48,20 @@ teardown() {
   cd "$other_repo"
   git checkout -b fix/something
   cd "$BATS_GIT_DIR"
-  bats_run_zsh "$CURRENT" "$other_repo"
+  bats_run_zsh "git-branch-current $other_repo"
   [ "$status" -eq 0 ]
   [ "$output" = "fix/something" ]
 }
 
 @test "arg: returns main of given repo while cwd is outside any repo" {
   cd "$BATS_TMP_DIR"
-  bats_run_zsh "$CURRENT" "$BATS_GIT_DIR"
+  bats_run_zsh "git-branch-current $BATS_GIT_DIR"
   [ "$status" -eq 0 ]
   [ "$output" = "main" ]
 }
 
 @test "arg: fails when given path is not a git repo" {
   cd "$BATS_GIT_DIR"
-  bats_run_zsh "$CURRENT" "$BATS_TMP_DIR"
+  bats_run_zsh "git-branch-current $BATS_TMP_DIR"
   [ "$status" -eq 1 ]
 }

@@ -1,7 +1,6 @@
 bats_load_library 'helper'
 
 setup() {
-  CURRENT="$BATS_TEST_DIRNAME/../context-path"
   projects-load-definitions() { true; }
   bats_mock projects-load-definitions
 }
@@ -13,7 +12,7 @@ teardown() {
 @test "path inside project: returns sub-path without leading slash" {
   context-root() { echo "/my/root"; }
   bats_mock context-root
-  bats_run_zsh "$CURRENT" /my/root/src/foo
+  bats_run_zsh "context-path /my/root/src/foo"
   [ "$status" -eq 0 ]
   [ "$output" = "src/foo" ]
 }
@@ -21,7 +20,7 @@ teardown() {
 @test "path at project root: returns empty string" {
   context-root() { echo "/my/root"; }
   bats_mock context-root
-  bats_run_zsh "$CURRENT" /my/root
+  bats_run_zsh "context-path /my/root"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
@@ -29,7 +28,7 @@ teardown() {
 @test "path outside all known projects: returns empty string" {
   context-root() { echo ""; }
   bats_mock context-root
-  bats_run_zsh "$CURRENT" /tmp/unregistered
+  bats_run_zsh "context-path /tmp/unregistered"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }

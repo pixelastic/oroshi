@@ -103,7 +103,7 @@ teardown() {
 
 @test "1-arg worktree: shows all commits and diff since worktree was created" {
   bats_git_worktree 'fix/bug'
-  cd "${BATS_GIT_WORKTREES}fix-bug"
+  cd "${BATS_GIT_WORKTREES}my-repo--fix-bug"
   echo "feature content" > feature.txt
   git add feature.txt
   git commit --message "feat: add feature.txt"

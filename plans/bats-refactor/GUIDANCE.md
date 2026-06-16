@@ -53,4 +53,10 @@ This plan migrates all `.bats` test files from the retired `CURRENT` variable co
 
 ## Discoveries
 
-(Append findings here after each issue — non-trivial patterns, surprises, edge cases encountered.)
+### Issue 02 — migrate direct invocation
+
+- **56 of ~62 files** were in scope; the remainder use CURRENT for source-prefix, run_bare_zsh, or path extraction — those belong to issues 03/04.
+- **`export CURRENT=`** (vs bare `CURRENT=`) escaped the removal regex; one file (`icons-load-definitions.bats`) required a manual fix.
+- **`scripts/yarn/hooks/`** is NOT in `$PATH` (only `scripts/bin/**/` is). `post-commit` must be called as `$BATS_TEST_DIRNAME/../post-commit`, not by bare name.
+- **Double-quoted args** without `$` prefix get single-quoted inside the merged string (`"#FF0000"` → `'#FF0000'`); args starting with `$` stay bare (`"$JSON_FILE"` → `$JSON_FILE`).
+- **Empty setup() deletion** leaves a dangling blank line if a section comment precedes the block; fix by collapsing double blank lines.
