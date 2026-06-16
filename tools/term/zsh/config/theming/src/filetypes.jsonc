@@ -1,0 +1,209 @@
+{
+  // Text files
+  "text": {
+    "color": "amber",
+    "icon": "filetype-text",
+    "patterns": [
+      "txt",
+      "vtt",
+      {"extension": "md", "icon": "filetype-md"},
+      {"filename": "CODEOWNERS"},
+      {"filename": "LICENSE"},
+      {"filename": "MAINTAINERS"},
+      {"filename": "README"}
+    ]
+  },
+
+  // Source code and markup
+  "script": {
+    "color": "violet",
+    "icon": "filetype-script",
+    "patterns": [
+      "au3",
+      "bash",
+      "bats",
+      "c",
+      "cjs",
+      "css",
+      "eot",
+      "gemspec",
+      "html",
+      "json",
+      "jsonl",
+      "jsx",
+      "kbd",
+      "lua",
+      "mjs",
+      "mk",
+      "ps1",
+      "pug",
+      "py",
+      "rb",
+      "rs",
+      "ru",
+      "sass",
+      "scss",
+      "sh",
+      "svg",
+      "theme",
+      "tmTheme",
+      "toml",
+      "ts",
+      "tsx",
+      "ttf",
+      "woff",
+      "xml",
+      "yaml",
+      "yml",
+      "zsh",
+      {"extension": "go", "color": "sky-5", "icon": "filetype-go"},
+      {"extension": "js", "color": "yellow", "icon": "filetype-js"},
+      {"extension": "mod", "color": "sky-6"},
+      {"extension": "vim", "icon": "filetype-vim"},
+      {"extension": "vue", "color": "green-4", "icon": "filetype-vue"},
+      {"filename": "Dockerfile"},
+      {"filename": "Gemfile"},
+      {"filename": "Guardfile"},
+      {"filename": "Rakefile"},
+      {"filename": "Vagrantfile"}
+    ]
+  },
+
+  // Config and dotfiles
+  "config": {
+    "color": "yellow",
+    "icon": "filetype-config",
+    "patterns": [
+      "cfg",
+      "conf",
+      "csv",
+      "desktop",
+      "ini",
+      "opt",
+      "rmp",
+      "service",
+      {"filename": ".envrc"},
+      {"filename": ".eslintignore"},
+      {"filename": ".fdignore"},
+      {"filename": ".gitattributes"},
+      {"filename": ".gitignore"},
+      {"filename": ".gitmodules"},
+      {"filename": ".npmrc"},
+      {"filename": ".nvmrc"},
+      {"filename": ".prettierignore"},
+      {"filename": ".stylelintignore"},
+      {"filename": ".yarnrc"}
+    ]
+  },
+
+  // Images
+  "image": {
+    "color": "yellow-6",
+    "icon": "filetype-image",
+    "patterns": [
+      "avif",
+      "bmp",
+      "gif",
+      "ico",
+      "jpeg",
+      "jpg",
+      "png"
+    ]
+  },
+
+  // Audio
+  "audio": {
+    "bold": true,
+    "color": "blue-5",
+    "icon": "filetype-audio",
+    "patterns": [
+      "m4a",
+      "mp3",
+      "ogg",
+      "wav"
+    ]
+  },
+
+  // Video
+  "video": {
+    "bold": true,
+    "color": "blue",
+    "icon": "filetype-video",
+    "patterns": [
+      "avi",
+      "mkv",
+      "mp4",
+      "mpg"
+    ]
+  },
+
+  // Archives and compressed files
+  "archive": {
+    "bold": true,
+    "color": "green",
+    "icon": "filetype-archive",
+    "patterns": [
+      "7z",
+      "cbr",
+      "cbz",
+      "deb",
+      "gz",
+      "rar",
+      "tar.gz",
+      "tar.xz",
+      "tgz",
+      "txz",
+      "xz",
+      "zip"
+    ]
+  },
+
+  // Documents
+  "document": {
+    "bold": true,
+    "color": "yellow-6",
+    "icon": "filetype-document",
+    "patterns": [
+      "pdf"
+    ]
+  },
+
+  // Ebooks
+  "ebook": {
+    "bold": true,
+    "color": "yellow-7",
+    "icon": "filetype-ebook",
+    "patterns": [
+      "epub",
+      {"extension": "mobi", "bold": false}
+    ]
+  },
+
+  // Executables
+  "binary": {
+    "bold": true,
+    "color": "blue",
+    "icon": "filetype-binary",
+    "patterns": [
+      "exe"
+    ]
+  },
+
+  // Generated, lock, and log files
+  "minor": {
+    "color": "neutral",
+    "icon": "filetype-minor",
+    "patterns": [
+      "js.map",
+      "lock",
+      "log",
+      "min.css",
+      "min.js",
+      "part",
+      "pid",
+      "session",
+      "sum",
+      {"filename": "_algolia_api_key"}
+    ]
+  }
+}

@@ -1,0 +1,79 @@
+#!/usr/bin/env zsh
+# Build dist/filetypes.zsh from src/filetypes.jsonc
+# Resolves color/icon keys to values via colors-load-definitions and icons-load-definitions.
+# Usage:
+#   $ filetypes-build
+#   $ THEMING_ROOT=/path/to/theming filetypes-build
+set -e
+
+local themingRoot="${THEMING_ROOT:-${0:A:h}}"
+local srcJsonc="$themingRoot/src/filetypes.jsonc"
+local srcJson="$(jsonc2json "$srcJsonc")"
+local distDir="$themingRoot/dist"
+local distZsh="$distDir/filetypes.zsh"
+
+colors-load-definitions
+icons-load-definitions
+
+mkdir -p "$distDir"
+
+# One jq pass: flatten all groups and patterns into ▮-separated lines.
+#   type▮key▮pattern▮colorKey▮iconKey▮bold▮group
+local flatData="$(jq -r --arg sep $'\u25ae' '
+  to_entries[] |
+  .key as $name |
+  .value as $group |
+  ($group.color) as $color |
+  ($group.icon) as $icon |
+  (if $group.bold then "1" else "0" end) as $bold |
+  [
+    (["group", $name, "", $color, $icon, $bold, ""] | join($sep)),
+    ($group.patterns[] |
+      if type == "string" then
+        ["pattern",
+          (. | ascii_downcase | gsub("[.]";"_")),
+          "*." + ., $color, $icon, $bold, $name
+        ] | join($sep)
+      elif .filename then
+        ["pattern", (.filename | ascii_downcase | gsub("[.]";"_")), .filename,
+          (.color // $color), (.icon // $icon),
+          (if .bold == null then $bold elif .bold then "1" else "0" end), $name
+        ] | join($sep)
+      elif .extension then
+        ["pattern", (.extension | ascii_downcase | gsub("[.]";"_")), "*." + .extension,
+          (.color // $color), (.icon // $icon),
+          (if .bold == null then $bold elif .bold then "1" else "0" end), $name
+        ] | join($sep)
+      end
+    )
+  ][]
+' <<<"$srcJson")"
+
+local output="typeset -gA FILETYPES"
+
+for line in ${(f)flatData}; do
+  [[ "$line" == "" ]] && continue
+
+  # type▮key▮pattern▮colorKey▮iconKey▮bold▮group (uniform 7 fields)
+  local parts=("${(@ps/▮/)line}")
+  local type="$parts[1]"
+  local key="$parts[2]"
+  local pattern="$parts[3]"
+  local colorKey="$parts[4]"
+  local iconKey="$parts[5]"
+  local bold="$parts[6]"
+  local group="$parts[7]"
+
+  # zsh-lint disable=missingColorsLoad
+  output+=$'\n'"FILETYPES[${key}:color]=${COLORS[$colorKey]}"
+  # zsh-lint disable=missingIconsLoad
+  output+=$'\n'"FILETYPES[${key}:icon]=\"${ICONS[$iconKey]}\""
+  output+=$'\n'"FILETYPES[${key}:bold]=$bold"
+
+  if [[ "$type" == "pattern" ]]; then
+    output+=$'\n'"FILETYPES[${key}:pattern]=$pattern"
+    output+=$'\n'"FILETYPES[${key}:group]=$group"
+  fi
+done
+
+echo "$output" >"$distZsh"

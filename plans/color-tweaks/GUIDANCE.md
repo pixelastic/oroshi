@@ -67,4 +67,8 @@ zsh-lint tools/term/zsh/config/functions/autoload/fzf/fs/shared/fzf-fs-shared-pr
 
 ## Discoveries
 
-_Append findings here after each issue is completed._
+### Issue 02 — JSON source and build
+- ZSH modifier trap: `$var:color` applies the `:c` (canonical path) modifier, and `$var:group` applies `:gr` (global remove-extension). Always use `${var}:suffix` braces in echo strings to prevent this.
+- Re-declaring `local var` for a variable already declared in the same function scope prints the current value to stdout (ZSH typed-param behavior). Declare all loop-iteration locals once at the top of the function, then assign without `local` inside loops.
+- The `zsh-lint disable=rule` comment must be on the line **immediately preceding** the violation (not a block at file top) — `lint-custom-run` checks `$lineNumber - 1`.
+- `missingColorsLoad` and `missingIconsLoad` lint rules check for the literal string `colors-load-definitions` / `icons-load-definitions` anywhere in the file; they don't parse disable comments directly — the disable mechanism is in `lint-custom-run`.
