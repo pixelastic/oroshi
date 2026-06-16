@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-delete-lint-rule.md",
-    "done": false,
+    "done": true,
+    "recap": "Deleted rule-current-script-var.zsh, its unit tests, and removed both registrations from bats-lint-custom.zsh.",
     "blocked_by": []
   },
   {

@@ -16,7 +16,6 @@ bats-lint-custom() {
   source "${_batsLintRulesDir}/rule-no-inline-function.zsh"
   source "${_batsLintRulesDir}/rule-no-top-level-var.zsh"
   source "${_batsLintRulesDir}/rule-prefer-batch-mock.zsh"
-  source "${_batsLintRulesDir}/rule-current-script-var.zsh"
   source "${_batsLintRulesDir}/rule-no-shebang.zsh"
 
   lint-custom-run \
@@ -25,7 +24,6 @@ bats-lint-custom() {
     batsLintRule_noInlineFunction \
     batsLintRule_noTopLevelVar \
     batsLintRule_preferBatchMock \
-    batsLintRule_currentScriptVar \
     batsLintRule_noShebang \
     -- "$@"
 }
