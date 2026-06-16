@@ -29,8 +29,8 @@ The **Lifecycle Function** that assembles the full pipeline — invoked when the
 _Avoid_: main, run, execute
 
 **FZF Helpers**:
-`.zsh` files in `scripts/bin/fzf/helpers/` that are sourced (not executed) by **FZF Scripts** to share common functions across scripts.
-_Avoid_: shared library, lib, utils, _shared
+`.zsh` files in `scripts/bin/fzf/__lib/` that are sourced (not executed) by **FZF Scripts** to share common functions across scripts. Each file is named after the single function it exports (e.g. `fzf-options-base.zsh` exports `fzf-options-base`).
+_Avoid_: shared library, helpers, utils, _shared
 
 **Neovim API**:
 The `--source` / `--options` / `--postprocess` argument interface that allows Neovim to invoke individual **Lifecycle Functions** separately via `fzf#run()`.

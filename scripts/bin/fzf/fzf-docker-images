@@ -6,7 +6,7 @@
 # $ fzf-docker-images --options        # Print FZF options (one per line)
 # $ fzf-docker-images --postprocess    # Read raw selection from stdin, print image name
 set -e
-source "${0:h}/helpers/options.zsh"
+source "${0:h}/__lib/fzf-options-base.zsh"
 
 zmodload zsh/zutil
 zparseopts -D -E \

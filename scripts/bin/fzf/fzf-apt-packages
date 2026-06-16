@@ -8,7 +8,7 @@
 # $ fzf-apt-packages --options                # Print FZF options (one per line)
 # $ fzf-apt-packages --postprocess            # Read raw selection from stdin, print package name
 set -e
-source "${0:h}/helpers/options.zsh"
+source "${0:h}/__lib/fzf-options-base.zsh"
 
 zmodload zsh/zutil
 zparseopts -D -E \

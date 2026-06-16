@@ -1,9 +1,9 @@
-# Shared filesystem source helper for FZF Scripts
-# Source this: source "${0:h}/helpers/fs.zsh"
+# List files in a directory for FZF source output
+# Source this: source "${0:h}/__lib/fzf-source-files.zsh"
 
-# List files in a directory, outputting two-column lines: absolute_path   relative_path
-# Usage: fs-list-files /path/to/dir
-fs-list-files() {
+# Outputs two-column lines: absolute_path▮relative_path
+# Usage: fzf-source-files /path/to/dir
+fzf-source-files() {
   local searchPath="$1"
   local items="$(fd \
     --hidden \

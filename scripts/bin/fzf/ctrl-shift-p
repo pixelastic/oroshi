@@ -6,9 +6,9 @@
 # $ ctrl-shift-p --options        # Print FZF options (one per line)
 # $ ctrl-shift-p --postprocess    # Read raw selection from stdin, print absolute path
 set -e
-source "${0:h}/helpers/options.zsh"
-source "${0:h}/helpers/fs.zsh"
-source "${0:h}/helpers/prompt.zsh"
+source "${0:h}/__lib/fzf-options-base.zsh"
+source "${0:h}/__lib/fzf-source-files.zsh"
+source "${0:h}/__lib/fzf-options-prompt-directory.zsh"
 
 zmodload zsh/zutil
 zparseopts -D -E \
@@ -21,7 +21,7 @@ local isOptions=${#flagOptions}
 local isPostprocess=${#flagPostprocess}
 
 fzf-source() {
-  fs-list-files "$PWD"
+  fzf-source-files "$PWD"
 }
 
 fzf-options() {
@@ -32,7 +32,7 @@ fzf-options() {
   echo "--tiebreak=pathname,chunk"
   echo "--nth=1,2"
   echo "--preview=fzf-fs-shared-preview {1}"
-  local prompt="$(prompt-directory "$PWD")"
+  local prompt="$(fzf-options-prompt-directory "$PWD")"
   echo "--prompt=${prompt}"
 }
 
