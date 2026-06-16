@@ -1,5 +1,0 @@
-# Returns a list of files, in the current folder
-setopt local_options err_return
-local subdirPath="$(fzf-var-read pwd)"
-
-fzf-fs-files-shared-source "${subdirPath}"

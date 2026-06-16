@@ -107,6 +107,14 @@ _Append findings here after each issue. Format: `### Issue XX — short title` +
 - The spec says "image:tag format" but the cache has plain image names (no tags). `ubuntu` is valid for `docker pull` (defaults to `:latest`).
 - `--preview=echo {2..}` works with `--delimiter=   ` to show the description; no separate preview binary needed.
 
+### Issue 06 — ctrl-shift-p (filesystem FZF Script)
+
+- `fs-list-files` uses `fd --color=never` for the absolute-path column to avoid ANSI codes corrupting the `▮` delimiter split. Color can be added to the display column separately later.
+- Filesystem scripts use `▮` as column separator (same as all other FZF Scripts) — do NOT use 3-space delimiter from the legacy code.
+- `fd` only respects `.gitignore` in git repos (`.git` dir must exist). BATS tests that exercise gitignore behavior must `git init` the tmp dir.
+- `helpers/fs.zsh` and `helpers/prompt.zsh` have no `set -e` / `setopt` header; they inherit error handling from the sourcing script — same pattern as `helpers/options.zsh`.
+- `${line%%   *}` (3-space prefix strip) correctly extracts the absolute path from two-column output, including paths containing single spaces.
+
 ### Issue 04 — apt-packages (domain FZF Script)
 
 - ZSH glob qualifiers `(#qN.mh+20)` do NOT work inside `[[ ]]` — even with `EXTENDED_GLOB`. Assign to an array first: `local staleFiles=(${cacheFile}(#qN.mh+20))`, then test `${#staleFiles[@]} -gt 0`.

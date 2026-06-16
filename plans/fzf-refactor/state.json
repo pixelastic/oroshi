@@ -44,7 +44,8 @@
   {
     "id": "06",
     "issue": "issues/06-ctrl-shift-p.md",
-    "done": false,
+    "done": true,
+    "recap": "Created helpers/fs.zsh (fs-list-files), helpers/prompt.zsh (prompt-directory), and ctrl-shift-p script; updated ctrl-shift-p.zsh keybinding; deleted all fs/files/subdir/ legacy autoloads.",
     "blocked_by": ["02"]
   },
   {

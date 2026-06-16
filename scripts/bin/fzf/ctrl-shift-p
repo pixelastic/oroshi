@@ -1,0 +1,65 @@
+#!/usr/bin/env zsh
+# Search files in current directory with fzf
+# Usage:
+# $ ctrl-shift-p                  # Interactive file search
+# $ ctrl-shift-p --source         # Print files as: absolute_path   relative_path
+# $ ctrl-shift-p --options        # Print FZF options (one per line)
+# $ ctrl-shift-p --postprocess    # Read raw selection from stdin, print absolute path
+set -e
+source "${0:h}/helpers/options.zsh"
+source "${0:h}/helpers/fs.zsh"
+source "${0:h}/helpers/prompt.zsh"
+
+zmodload zsh/zutil
+zparseopts -D -E \
+  -source=flagSource \
+  -options=flagOptions \
+  -postprocess=flagPostprocess
+
+local isSource=${#flagSource}
+local isOptions=${#flagOptions}
+local isPostprocess=${#flagPostprocess}
+
+fzf-source() {
+  fs-list-files "$PWD"
+}
+
+fzf-options() {
+  fzf-options-base
+  echo "--delimiter=▮"
+  echo "--with-nth=2"
+  echo "--scheme=path"
+  echo "--tiebreak=pathname,chunk"
+  echo "--nth=1,2"
+  echo "--preview=fzf-fs-shared-preview {1}"
+  local prompt="$(prompt-directory "$PWD")"
+  echo "--prompt=${prompt}"
+}
+
+fzf-postprocess() {
+  local input="$(cat)"
+  [[ "$input" == "" ]] && return 0
+  local line
+  for line in ${(f)input}; do
+    print -- "${line%%▮*}"
+  done
+}
+
+fzf-main() {
+  local opts=(${(f)"$(fzf-options)"})
+  fzf-source | fzf "${opts[@]}" | fzf-postprocess
+}
+
+if [[ $isSource == "1" ]]; then
+  fzf-source
+  exit 0
+fi
+if [[ $isOptions == "1" ]]; then
+  fzf-options
+  exit 0
+fi
+if [[ $isPostprocess == "1" ]]; then
+  fzf-postprocess
+  exit 0
+fi
+fzf-main

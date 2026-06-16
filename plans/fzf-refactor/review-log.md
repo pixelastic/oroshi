@@ -98,6 +98,22 @@ fzf-source() {
 **Problem:** Standards reviewer flagged missing explanatory comments on each `if [[ $isSource == "1" ]]` dispatch block.
 **Reason skipped:** Pre-existing pattern; `ctrl-r`, `ctrl-b`, `apt-packages` also have no comments on dispatch guards.
 
+## Issue 06 — ctrl-shift-p
+
+### Spec: `fs.zsh` "color output" not implemented
+```zsh
+items="$(fd --hidden --follow --color=never --type=file --base-directory "$searchPath" .)"
+```
+**Problem:** Spec says `helpers/fs.zsh` includes "color output". Implementation uses `--color=never`.
+**Reason skipped:** Using `--color=always` embeds ANSI codes in the absolute-path column, corrupting the `   ` delimiter split and making `fzf-postprocess` return garbage paths. Color can be added to the display column later; the acceptance criteria don't explicitly require it.
+
+### Spec: `#!/bin/zsh` vs `#!/usr/bin/env zsh`
+```zsh
+#!/usr/bin/env zsh
+```
+**Problem:** Spec acceptance criterion says "executable `#!/bin/zsh` script".
+**Reason skipped:** Established pattern across all FZF Scripts. Consistency takes precedence.
+
 ---
 
 ### `bat` syntax highlighting not carried over
