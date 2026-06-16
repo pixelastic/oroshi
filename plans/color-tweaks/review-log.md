@@ -46,3 +46,29 @@ tar_gz:pattern=*.tar.gz
 ```
 **Problem:** Spec only documents dot→underscore for filename patterns, not extensions.
 **Reason skipped:** The old `env-generate-filetypes` applied `gs/\./_/` to all patterns. Multi-dot extensions like `tar.gz` need `tar_gz` as a key (colon is the FILETYPES separator). Correct and intentional.
+
+## Issue 03 — Load definitions
+
+### Standards: `((${#FILETYPES} > 0))` arithmetic test
+
+```zsh
+((${#FILETYPES} > 0)) && return
+```
+
+**Problem:** Reviewer flagged `(( ))` as violating `noArithFlagTest`.
+**Reason skipped:** `noArithFlagTest` targets `0/1` flag variables (`(( isFlag ))`), not arithmetic array-length expressions. Prior art `colors-load-definitions` uses the identical `((${#COLORS} > 0))` pattern and passes lint.
+
+### Spec: `bats_mock_env FILETYPES "preset"` scalar mock
+
+```bash
+bats_mock_env FILETYPES "preset"
+bats_run_zsh "filetypes-load-definitions"
+```
+
+**Problem:** Reviewer flagged that setting a scalar may not exercise the `${#FILETYPES}` array-count guard correctly.
+**Reason skipped:** This is the exact pattern used in `colors-load-definitions.bats` (`bats_mock_env COLORS "preset"`). The string length is > 0, so the guard fires. Consistent with prior art.
+
+### Spec: No-op test doesn't assert sourcing was skipped
+
+**Problem:** Test only checks `[ "$status" -eq 0 ]` — doesn't verify the dist file wasn't sourced.
+**Reason skipped:** Identical to the prior-art pattern in `colors-load-definitions.bats`.

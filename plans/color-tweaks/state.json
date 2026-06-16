@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-load-definitions.md",
-    "done": false,
+    "done": true,
+    "recap": "Created filetypes-load-definitions autoload with guard ((${#FILETYPES} > 0)) && return and bats tests for no-op and sourcing cases.",
     "blocked_by": ["02"]
   },
   {
