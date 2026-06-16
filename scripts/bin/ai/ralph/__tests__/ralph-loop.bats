@@ -7,11 +7,7 @@ setup() {
   export RALPH_WATCHER_INTERVAL=0.1
   export RALPH_TTY=/dev/null
 
-  local script="$BATS_TEST_DIRNAME/../__lib/ralph-loop.zsh"
-  printf "source '%s'\n" "$script" >"$BATS_TMP_DIR/mock.zsh"
-
-  CURRENT="$BATS_TMP_DIR/caller.zsh"
-  printf 'ralph-loop "$@"\n' >"$CURRENT"
+  sourcePrefix="source '${BATS_TEST_DIRNAME}/../__lib/ralph-loop.zsh'"
 
   mkdir -p "$PRD_DIR"
 }
@@ -29,7 +25,7 @@ teardown() {
   claude-terminal-fix() { true; }
   bats_mock git-directory-root claude git-commit-message claude-terminal-fix
 
-  bats_run_zsh "$CURRENT" "$PRD_DIR" 3
+  bats_run_zsh "${sourcePrefix}; ralph-loop $PRD_DIR 3"
   [ "$status" -eq 0 ]
 
   local commits
@@ -50,7 +46,7 @@ teardown() {
   claude-terminal-fix() { true; }
   bats_mock git-directory-root claude git-commit-message claude-terminal-fix
 
-  bats_run_zsh "$CURRENT" "$PRD_DIR" 10
+  bats_run_zsh "${sourcePrefix}; ralph-loop $PRD_DIR 10"
   [ "$status" -eq 0 ]
 
   local commits
@@ -67,7 +63,7 @@ teardown() {
   claude-terminal-fix() { true; }
   bats_mock git-directory-root claude git-commit-message claude-terminal-fix
 
-  bats_run_zsh "$CURRENT" "$PRD_DIR" 5
+  bats_run_zsh "${sourcePrefix}; ralph-loop $PRD_DIR 5"
   [ "$status" -eq 0 ]
 
   local commits
@@ -87,7 +83,7 @@ teardown() {
   claude-terminal-fix() { true; }
   bats_mock git-directory-root claude git-commit-message claude-terminal-fix
 
-  bats_run_zsh "$CURRENT" "$PRD_DIR" 2
+  bats_run_zsh "${sourcePrefix}; ralph-loop $PRD_DIR 2"
   [ "$status" -eq 0 ]
   [ ! -f "$PRD_DIR/ralph.json" ]
 }

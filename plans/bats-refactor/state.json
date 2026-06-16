@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-eliminate-temp-file-wrappers.md",
-    "done": false,
+    "done": true,
+    "recap": "Migrated all 6 temp-file-wrapper files: removed CURRENT= and caller.zsh printf from setup(), inlined function calls into bats_run_zsh single-string args; path.bats kept local script= per spec for complex multi-statement tests; solkan+wav2txt required adding export MOCK_OVERRIDE since they lack bats_mock calls.",
     "blocked_by": ["01"]
   }
 ]

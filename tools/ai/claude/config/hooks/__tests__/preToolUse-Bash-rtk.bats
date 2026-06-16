@@ -2,10 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  SCRIPT="$BATS_TEST_DIRNAME/../preToolUse-Bash-rtk.zsh"
-  CURRENT="$BATS_TMP_DIR/caller.zsh"
-  printf 'preToolUse-Bash-rtk "$@"\n' >"$CURRENT"
-  printf "source '%s'\n" "$SCRIPT" > "$BATS_TMP_DIR/mock.zsh"
+  sourcePrefix="source '${BATS_TEST_DIRNAME}/../preToolUse-Bash-rtk.zsh'"
 }
 
 teardown() { bats_cleanup; }
@@ -14,7 +11,7 @@ teardown() { bats_cleanup; }
   rtk-can-rewrite() { return 0; }
   bats_mock rtk-can-rewrite
 
-  bats_run_zsh "$CURRENT" "bats foo.bats"
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-rtk 'bats foo.bats'"
   [ "$status" -eq 0 ]
   [ "$output" = "rtk bats foo.bats" ]
 }
@@ -23,7 +20,7 @@ teardown() { bats_cleanup; }
   rtk-can-rewrite() { return 1; }
   bats_mock rtk-can-rewrite
 
-  bats_run_zsh "$CURRENT" "echo hello"
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-rtk 'echo hello'"
   [ "$status" -eq 0 ]
   [ "$output" = "echo hello" ]
 }
@@ -35,7 +32,7 @@ teardown() { bats_cleanup; }
   }
   bats_mock rtk-can-rewrite
 
-  bats_run_zsh "$CURRENT" "rtk git status"
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-rtk 'rtk git status'"
   [ "$status" -eq 0 ]
   [ "$output" = "rtk git status" ]
   [ ! -f "$BATS_TMP_DIR/unexpected-call" ]

@@ -28,3 +28,31 @@ bats_run_zsh "$BATS_TEST_DIRNAME/../post-commit"
 
 **Problem:** Spec reviewer flagged ~11 files as unaddressed.
 **Reason skipped:** Scope was correct at 4 files. The estimate was wrong, not the implementation.
+
+## Issue 04 — eliminate temp-file wrappers
+
+### `export MOCK_OVERRIDE` in setup() flagged as deprecated pattern
+
+```bats
+setup() {
+  bats_tmp_dir
+  export MOCK_OVERRIDE="$BATS_TMP_DIR/mock.zsh"
+  printf "hookDir='%s'\nsource '%s'\n" "$hooksDir" "$SCRIPT" > "$BATS_TMP_DIR/mock.zsh"
+}
+```
+
+**Problem:** Standards reviewer flagged `export MOCK_OVERRIDE` as the deprecated caller.zsh workaround pattern. Spec reviewer noted it was outside the spec's explicit instructions.
+
+**Reason skipped:** `bats_tmp_dir` never sets `MOCK_OVERRIDE`. Without it, the zshenv guard (`if [[ $MOCK_OVERRIDE != "" ]]`) skips mock.zsh entirely and the sourced function is not found (exit 127). These two tests have no `bats_mock` call that would set it automatically. Adding `export MOCK_OVERRIDE` directly is identical to what `bats_mock_oroshi_root` does internally — it's the correct minimal fix. The "deprecated pattern" refers to `caller.zsh` as a temp script, not to the `MOCK_OVERRIDE` env var itself.
+
+### `path.bats` — `local script=` in test body vs setup()
+
+**Problem:** `feedback_bats_setup_vars.md` says all test vars go in `setup()`. The three tests each declare `local script="$BATS_TMP_DIR/script.zsh"`.
+
+**Reason skipped:** The spec explicitly says "keep it as a `local script=` variable inside the test body" for complex temp scripts. Spec beats the general var-placement rule here.
+
+### `path.bats` — temp script file instead of `sourcePrefix` pattern
+
+**Problem:** Standards reviewer flagged that the sourcePrefix pattern is preferred for sourced functions.
+
+**Reason skipped:** The sourcePrefix pattern applies to sourcing a `.zsh` file then calling a single function. The `path.bats` scripts are multi-statement one-liners that set env vars, source path.zsh, call the function, and echo output — they cannot be reduced to `sourcePrefix && fn`. The spec explicitly authorizes `local script=` + `bats_run_zsh "source $script"` for this case.

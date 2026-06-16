@@ -53,6 +53,12 @@ This plan migrates all `.bats` test files from the retired `CURRENT` variable co
 
 ## Discoveries
 
+### Issue 04 — eliminate temp-file wrappers
+
+- **For sourced `.zsh` functions, use `sourcePrefix` — never write to mock.zsh manually.** `sourcePrefix="source 'path/to/file.zsh'"` in setup, then `bats_run_zsh "${sourcePrefix}; fn-name arg"` in tests. When the function also needs env vars set (e.g. `hookDir`), prepend them in the same string: `sourcePrefix="hookDir='...'; source '...'"`. This composes cleanly with `bats_mock` (which sets MOCK_OVERRIDE independently via append).
+- **`path.bats` is genuinely complex** — each test builds a different multi-statement script (env vars + source + call + echo). Used `local script="$BATS_TMP_DIR/script.zsh"` per-test + `bats_run_zsh "source $script"`. The spec note "in practice none of the 6 files fall into this category" was incorrect for this file.
+- **Scaffolding test must not check for any specific temp filename**: the initial test checked for `caller.zsh` in file content; path.bats still used it as a local variable value. Renamed to `script.zsh` in path.bats to satisfy the scaffold check.
+
 ### Issue 02 — migrate direct invocation
 
 - **56 of ~62 files** were in scope; the remainder use CURRENT for source-prefix, run_bare_zsh, or path extraction — those belong to issues 03/04.
