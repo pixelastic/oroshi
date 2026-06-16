@@ -3,7 +3,7 @@ bats_load_library 'helper'
 setup() {
   bats_tmp_dir
   MOCK_FILE="$BATS_TMP_DIR/mock.zsh"
-  CURRENT="$BATS_TEST_DIRNAME/../zshenv-host.zsh"
+  sourcePrefix="source '$BATS_TEST_DIRNAME/../zshenv-host.zsh'"
 }
 
 teardown() {
@@ -31,12 +31,12 @@ mock_env() {
 }
 
 @test "OROSHI_ROOT defaults to ~/.oroshi" {
-  run_bare_zsh "cd /tmp; source $CURRENT; echo \$OROSHI_ROOT"
+  run_bare_zsh "cd /tmp; $sourcePrefix && echo \$OROSHI_ROOT"
   [ "$output" = "$HOME/.oroshi" ]
 }
 
 @test "OROSHI_ROOT is default in oroshi main" {
-  run_bare_zsh "cd $HOME/.oroshi; source $CURRENT; echo \$OROSHI_ROOT"
+  run_bare_zsh "cd $HOME/.oroshi; $sourcePrefix && echo \$OROSHI_ROOT"
   [ "$output" = "$HOME/.oroshi" ]
 }
 
@@ -55,7 +55,7 @@ mock_env() {
   echo "echo guest" > "$zshenvConfigDir/zshenv-guest.zsh"
 
   mock_env "MOCK_OROSHI_WORKTREES_DIR" "$worktreeRoot"
-  run_bare_zsh "cd '$worktreeRoot/$worktreeDirName'; source '$CURRENT';"
+  run_bare_zsh "cd '$worktreeRoot/$worktreeDirName'; $sourcePrefix"
   [ "$status" -eq 0 ]
   [ "$output" = "guest" ]
 }
@@ -70,7 +70,7 @@ mock_env() {
   bats_git_dir "worktrees/$worktreeDirName"
 
   mock_env "MOCK_OROSHI_WORKTREES_DIR" "$worktreeRoot"
-  run_bare_zsh "cd '$worktreeRoot/$worktreeDirName'; source '$CURRENT'; echo \$OROSHI_ROOT"
+  run_bare_zsh "cd '$worktreeRoot/$worktreeDirName'; $sourcePrefix && echo \$OROSHI_ROOT"
   [ "$status" -eq 0 ]
   [ "$output" = "$HOME/.oroshi" ]
 }

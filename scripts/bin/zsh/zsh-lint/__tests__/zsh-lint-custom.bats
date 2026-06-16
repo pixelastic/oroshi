@@ -3,7 +3,7 @@ bats_load_library 'helper'
 setup() {
   bats_tmp_dir
   TEST_FILE="$BATS_TMP_DIR/test.zsh"
-  CURRENT="${BATS_TEST_DIRNAME}/../zsh-lint-custom.zsh"
+  sourcePrefix="source '${BATS_TEST_DIRNAME}/../zsh-lint-custom.zsh'"
 }
 
 teardown() {
@@ -13,7 +13,7 @@ teardown() {
 @test "clean file" {
   printf '# clean\n' >"$TEST_FILE"
 
-  bats_run_zsh "source $CURRENT; zsh-lint-custom $TEST_FILE"
+  bats_run_zsh "$sourcePrefix && zsh-lint-custom $TEST_FILE"
   [[ "$status" -eq 0 ]]
   [[ "$output" == '[]' ]]
 }
@@ -21,7 +21,7 @@ teardown() {
 @test "file with errors file" {
   printf 'local a b c\nlocal d e f\n' >"$TEST_FILE"
 
-  bats_run_zsh "source $CURRENT; zsh-lint-custom $TEST_FILE"
+  bats_run_zsh "$sourcePrefix && zsh-lint-custom $TEST_FILE"
   [[ "$status" -eq 1 ]]
   [[ "$output" == *'"code":"noGroupedLocals"'* ]]
   [[ "$output" == '['*']' ]]
@@ -33,7 +33,7 @@ local a b c
 local d e f'
   printf '%s\n' "$script" >"$TEST_FILE"
 
-  bats_run_zsh "source $CURRENT; zsh-lint-custom $TEST_FILE | json-pretty"
+  bats_run_zsh "$sourcePrefix && zsh-lint-custom $TEST_FILE | json-pretty"
 
   expected='[
   {
@@ -57,7 +57,7 @@ local y
 y="value"'
   printf '%s\n' "$script" >"$TEST_FILE"
 
-  bats_run_zsh "source $CURRENT; zsh-lint-custom $TEST_FILE | json-pretty"
+  bats_run_zsh "$sourcePrefix && zsh-lint-custom $TEST_FILE | json-pretty"
 
   expected='[
   {

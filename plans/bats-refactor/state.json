@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-migrate-source-prefix.md",
-    "done": false,
+    "done": true,
+    "recap": "Migrated 4 source-prefix files: renamed CURRENT to sourcePrefix with 'source ...' value, updated all call sites to use $sourcePrefix && or $sourcePrefix.",
     "blocked_by": ["01"]
   },
   {

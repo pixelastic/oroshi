@@ -60,3 +60,9 @@ This plan migrates all `.bats` test files from the retired `CURRENT` variable co
 - **`scripts/yarn/hooks/`** is NOT in `$PATH` (only `scripts/bin/**/` is). `post-commit` must be called as `$BATS_TEST_DIRNAME/../post-commit`, not by bare name.
 - **Double-quoted args** without `$` prefix get single-quoted inside the merged string (`"#FF0000"` → `'#FF0000'`); args starting with `$` stay bare (`"$JSON_FILE"` → `$JSON_FILE`).
 - **Empty setup() deletion** leaves a dangling blank line if a section comment precedes the block; fix by collapsing double blank lines.
+
+### Issue 03 — migrate source-prefix
+
+- **Only 4 files** had `CURRENT` pointing to a `.zsh` file — the "~15" estimate was wrong. All other CURRENT= assignments either use `$BATS_TMP_DIR/caller.zsh` (Issue 04 temp files) or no `.zsh` extension (Issue 02 binaries).
+- **`run_bare_zsh` call sites** use the same `$sourcePrefix &&` canonical form as `bats_run_zsh`; trailing lone `;` after the prefix is dropped.
+- **`bats-lint-custom.bats`** was already migrated before this session — check for pre-migrated files before counting scope.

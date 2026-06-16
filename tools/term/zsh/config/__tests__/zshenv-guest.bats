@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$BATS_TEST_DIRNAME/../zshenv-guest.zsh"
+  sourcePrefix="source '$BATS_TEST_DIRNAME/../zshenv-guest.zsh'"
   MOCK_FILE="$BATS_TMP_DIR/mock.zsh"
 
   mock_env "OROSHI_ROOT" "$BATS_TMP_DIR"
@@ -48,7 +48,7 @@ mock_command() {
 }
 
 @test "set PATH and fpath relative to OROSHI_ROOT" {
-  run_bare_zsh "source $CURRENT;"
+  run_bare_zsh "$sourcePrefix"
   [ "$status" -eq 0 ]
   [ "${lines[0]}" = "PATH:$BATS_TMP_DIR" ]
   [ "${lines[1]}" = "fpath:$BATS_TMP_DIR" ]
@@ -58,7 +58,7 @@ mock_command() {
   mock_env "MOCK_OVERRIDE" "$BATS_TMP_DIR/mock-override.zsh"
   echo "function override() { echo 'overriden'; }" > "$BATS_TMP_DIR/mock-override.zsh"
 
-  run_bare_zsh "source $CURRENT; override"
+  run_bare_zsh "$sourcePrefix && override"
   [ "$status" -eq 0 ]
   [ "${lines[2]}" = "overriden" ]
 }

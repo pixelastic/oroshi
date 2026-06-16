@@ -177,12 +177,7 @@ function oroshi-pwd-guard() {
 }
 add-zsh-hook precmd oroshi-pwd-guard
 
-# Keep a reference to commonly used $GIT_ variables, so we don't compute them
-# too often
-function oroshi-git-env-store() {
-  GIT_DIRECTORY_IS_REPOSITORY="$(git-directory-is-repository && echo 1 || echo 0)"
-  GIT_DIRECTORY_IS_WORKTREE="$(git-directory-is-worktree && echo 1 || echo 0)"
-}
+source ${0:A:h}/oroshi-git-env-store.zsh
 add-zsh-hook precmd oroshi-git-env-store
 
 # Synchronously populate prompt parts that are quick to generate

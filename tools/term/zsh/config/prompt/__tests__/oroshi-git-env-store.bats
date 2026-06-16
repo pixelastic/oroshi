@@ -2,7 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
-  CURRENT="$BATS_TEST_DIRNAME/../index.zsh"
+  sourcePrefix="source '$BATS_TEST_DIRNAME/../oroshi-git-env-store.zsh'"
 }
 
 teardown() {
@@ -14,7 +14,7 @@ teardown() {
   git-directory-is-repository() { return 0; }
   bats_mock git-directory-is-worktree git-directory-is-repository
 
-  bats_run_zsh "source $CURRENT && oroshi-git-env-store && echo \$GIT_DIRECTORY_IS_WORKTREE"
+  bats_run_zsh "$sourcePrefix && oroshi-git-env-store && echo \$GIT_DIRECTORY_IS_WORKTREE"
   [ "$status" -eq 0 ]
   [ "$output" = "1" ]
 }
@@ -24,7 +24,7 @@ teardown() {
   git-directory-is-repository() { return 0; }
   bats_mock git-directory-is-worktree git-directory-is-repository
 
-  bats_run_zsh "source $CURRENT && oroshi-git-env-store && echo \$GIT_DIRECTORY_IS_WORKTREE"
+  bats_run_zsh "$sourcePrefix && oroshi-git-env-store && echo \$GIT_DIRECTORY_IS_WORKTREE"
   [ "$status" -eq 0 ]
   [ "$output" = "0" ]
 }
