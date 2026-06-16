@@ -4,7 +4,7 @@ Migrate the apt package search to a FZF Script (domain script, no keybinding).
 
 ## What to build
 
-Create `scripts/bin/fzf/apt-packages` following the pattern from issue 02.
+Create `scripts/bin/fzf/fzf-apt-packages` following the pattern from issue 02.
 This is a domain FZF Script — it has no keybinding and is called directly by other scripts
 (`apt-install`, `apt-search`, `apt-uninstall`).
 
@@ -30,10 +30,10 @@ Delete legacy autoloads for the entire `packages/apt/` domain.
 
 ## Acceptance criteria
 
-- [ ] `scripts/bin/fzf/apt-packages` created as executable `#!/bin/zsh` script
-- [ ] `apt-packages --source` outputs available packages
-- [ ] `apt-packages --source --installed` (or equivalent) outputs only installed packages
-- [ ] `apt-packages --postprocess` (stdin) returns clean package name
+- [ ] `scripts/bin/fzf/fzf-apt-packages` created as executable `#!/bin/zsh` script
+- [ ] `fzf-apt-packages --source` outputs available packages
+- [ ] `fzf-apt-packages --source --installed` (or equivalent) outputs only installed packages
+- [ ] `fzf-apt-packages --postprocess` (stdin) returns clean package name
 - [ ] BATS tests for `fzf-source` and `fzf-postprocess` pass
 - [ ] `apt-install`, `apt-search`, `apt-uninstall` updated to call new script
 - [ ] Legacy autoloads in `packages/apt/` deleted

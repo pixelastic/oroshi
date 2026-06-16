@@ -8,7 +8,7 @@ local packages="$@"
 
 # If no input passed, we find them in a fuzzy search
 if [[ $packages == "" ]]; then
-  packages="$(apt-packages)"
+  packages="$(fzf-apt-packages)"
 fi
 
 # Install the specified packages

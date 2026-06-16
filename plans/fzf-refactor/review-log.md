@@ -69,6 +69,37 @@ fzf-options() {
 
 ---
 
+---
+
+## Issue 05 — docker-images
+
+### Shebang `#!/usr/bin/env zsh` vs spec `#!/bin/zsh`
+```zsh
+#!/usr/bin/env zsh
+```
+**Problem:** Spec acceptance criteria says "executable `#!/bin/zsh` script".
+**Reason skipped:** Established pattern across all FZF Scripts. Consistency takes precedence.
+
+### Static cache vs Docker Hub API
+```zsh
+fzf-source() {
+  local cacheFile="$OROSHI_ROOT/tools/docker/docker/config/data/src/images-remote.txt"
+  cat "$cacheFile"
+}
+```
+**Problem:** Spec says "queries the Docker Hub API for image results matching the user's query". Implementation reads a static cache file.
+**Reason skipped:** Legacy `fzf-docker-images-remote-source` also used the same static cache file. Spec wording is aspirational; acceptance criteria only requires "outputs Docker Hub candidates" which the cache satisfies.
+
+### `image:tag` format — no tag in output
+**Problem:** Spec says postprocess outputs `image:tag` format. Output is just the image name (e.g. `ubuntu`).
+**Reason skipped:** Cache file has no tags. `ubuntu` is valid for `docker pull` (defaults to `:latest`). The legacy postprocess also returned just the image name.
+
+### Guard dispatch blocks lack comments
+**Problem:** Standards reviewer flagged missing explanatory comments on each `if [[ $isSource == "1" ]]` dispatch block.
+**Reason skipped:** Pre-existing pattern; `ctrl-r`, `ctrl-b`, `apt-packages` also have no comments on dispatch guards.
+
+---
+
 ### `bat` syntax highlighting not carried over
 ```zsh
 # legacy fzf-history-source had:

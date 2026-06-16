@@ -4,7 +4,7 @@ Migrate git file history search to a FZF Script (domain script, no keybinding).
 
 ## What to build
 
-Create `scripts/bin/fzf/git-file-history` following the pattern from issue 02,
+Create `scripts/bin/fzf/fzf-git-file-history` following the pattern from issue 02,
 sourcing `helpers/git.zsh` from issue 08.
 
 This is a domain FZF Script — it has no keybinding. It is called by git-related aliases
@@ -30,7 +30,7 @@ Delete legacy autoloads for `git/file-history/`.
 
 ## Acceptance criteria
 
-- [ ] `scripts/bin/fzf/git-file-history` created as executable `#!/bin/zsh` script
+- [ ] `scripts/bin/fzf/fzf-git-file-history` created as executable `#!/bin/zsh` script
 - [ ] `git-file-history --source <file>` outputs commits that modified the file
 - [ ] `git-file-history --options` outputs valid FZF flags including preview
 - [ ] `git-file-history --postprocess` (stdin) returns commit hash

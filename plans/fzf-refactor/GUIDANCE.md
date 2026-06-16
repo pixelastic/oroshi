@@ -100,6 +100,13 @@ _Append findings here after each issue. Format: `### Issue XX — short title` +
 - `fzf-postprocess` uses `${(f)input}` loop + `${line#*: [0-9]*:[0-9]*;}` glob-strip instead of `while read | sed` (fixes `noWhileRead` + SC2001).
 - BATS: use `bats_run_zsh "script-name --flag"` — call the binary by name, no `CURRENT` path variable needed. Scripts are on PATH via `zshenv-guest.zsh`.
 
+### Issue 05 — fzf-docker-images (domain FZF Script)
+
+- **Naming convention**: domain scripts (no keybinding) must be prefixed `fzf-` (e.g. `fzf-docker-images`, `fzf-apt-packages`, `fzf-git-file-history`). Only keybinding scripts keep the `ctrl-` / `ctrl-shift-` prefix. This applies to all future domain scripts.
+- The spec says "queries the Docker Hub API" but the legacy source reads from a static cache file (`$OROSHI_ROOT/tools/docker/docker/config/data/src/images-remote.txt`). Keep the cache approach — the API wording is aspirational.
+- The spec says "image:tag format" but the cache has plain image names (no tags). `ubuntu` is valid for `docker pull` (defaults to `:latest`).
+- `--preview=echo {2..}` works with `--delimiter=   ` to show the description; no separate preview binary needed.
+
 ### Issue 04 — apt-packages (domain FZF Script)
 
 - ZSH glob qualifiers `(#qN.mh+20)` do NOT work inside `[[ ]]` — even with `EXTENDED_GLOB`. Assign to an array first: `local staleFiles=(${cacheFile}(#qN.mh+20))`, then test `${#staleFiles[@]} -gt 0`.

@@ -1,0 +1,59 @@
+#!/usr/bin/env zsh
+# Fuzzy search Docker Hub images
+# Usage:
+# $ fzf-docker-images                  # Interactive image search
+# $ fzf-docker-images --source         # Print all images (one per line)
+# $ fzf-docker-images --options        # Print FZF options (one per line)
+# $ fzf-docker-images --postprocess    # Read raw selection from stdin, print image name
+set -e
+source "${0:h}/helpers/options.zsh"
+
+zmodload zsh/zutil
+zparseopts -D -E \
+  -source=flagSource \
+  -options=flagOptions \
+  -postprocess=flagPostprocess
+
+local isSource=${#flagSource}
+local isOptions=${#flagOptions}
+local isPostprocess=${#flagPostprocess}
+
+fzf-source() {
+  local cacheFile="$OROSHI_ROOT/tools/docker/docker/config/data/src/images-remote.txt"
+  cat "$cacheFile"
+}
+
+fzf-options() {
+  fzf-options-base
+  echo "--delimiter=▮"
+  echo "--with-nth=1"
+  echo "--preview=echo {2..}"
+}
+
+fzf-postprocess() {
+  local input="$(cat)"
+  [[ "$input" == "" ]] && return 0
+  local line
+  for line in ${(f)input}; do
+    print -- "${line%%▮*}"
+  done
+}
+
+fzf-main() {
+  local opts=(${(f)"$(fzf-options)"})
+  fzf-source | fzf "${opts[@]}" | fzf-postprocess
+}
+
+if [[ $isSource == "1" ]]; then
+  fzf-source
+  exit 0
+fi
+if [[ $isOptions == "1" ]]; then
+  fzf-options
+  exit 0
+fi
+if [[ $isPostprocess == "1" ]]; then
+  fzf-postprocess
+  exit 0
+fi
+fzf-main

@@ -1,12 +1,12 @@
 #!/usr/bin/env zsh
 # Fuzzy search apt packages
 # Usage:
-# $ apt-packages                          # Interactive package search (all packages)
-# $ apt-packages --installed              # Interactive search (installed only)
-# $ apt-packages --source                 # Print all packages (one per line)
-# $ apt-packages --source --installed     # Print installed packages (one per line)
-# $ apt-packages --options                # Print FZF options (one per line)
-# $ apt-packages --postprocess            # Read raw selection from stdin, print package name
+# $ fzf-apt-packages                          # Interactive package search (all packages)
+# $ fzf-apt-packages --installed              # Interactive search (installed only)
+# $ fzf-apt-packages --source                 # Print all packages (one per line)
+# $ fzf-apt-packages --source --installed     # Print installed packages (one per line)
+# $ fzf-apt-packages --options                # Print FZF options (one per line)
+# $ fzf-apt-packages --postprocess            # Read raw selection from stdin, print package name
 set -e
 source "${0:h}/helpers/options.zsh"
 
@@ -30,7 +30,7 @@ fzf-source() {
   setopt local_options extended_glob
   local staleFiles=(${cacheFile}(#qN.mh+20))
   if [[ ! -r $cacheFile ]] || [[ ${#staleFiles[@]} -gt 0 ]]; then
-    apt-packages-cache-generate
+    fzf-apt-packages-cache-generate
   fi
 
   cat "$cacheFile"

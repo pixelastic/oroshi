@@ -9,7 +9,7 @@ local query="$1"
 
 # If no query is passed, we open the fuzzy finder
 if [[ $query == "" ]]; then
-  apt-packages
+  fzf-apt-packages
   return
 fi
 

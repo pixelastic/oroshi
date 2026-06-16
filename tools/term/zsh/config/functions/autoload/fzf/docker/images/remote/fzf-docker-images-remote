@@ -1,7 +1,0 @@
-# Fuzzy search in all existing Docker Hub images
-setopt local_options err_return
-
-fzf-search \
-  --source "fzf-docker-images-remote-source" \
-  --options "fzf-docker-images-remote-options" \
-  --postprocess "fzf-docker-images-remote-postprocess"

@@ -10,7 +10,7 @@ local images="$@"
 
 # If no input passed, we find them in a fuzzy search
 if [[ $images == "" ]]; then
-  images="$(fzf-docker-images-remote)"
+  images="$(fzf-docker-images)"
 fi
 
 # Pulls the specified images

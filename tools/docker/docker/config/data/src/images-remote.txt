@@ -1,0 +1,140 @@
+adminer▮Database management in a single PHP file.
+aerospike▮Aerospike – the reliable, high performance, distributed database optimized for flash and RAM.
+almalinux▮The official build of AlmaLinux OS.
+alpine▮A minimal Docker image based on Alpine Linux with a complete package index and only 5 MB in size!
+alt▮The official build of ALT Linux.
+amazoncorretto▮Corretto is a no-cost, production-ready distribution of the Open Java Development Kit (OpenJDK).
+amazonlinux▮Amazon Linux provides a stable, secure, and high-performance execution environment for applications.
+api-firewall▮A light-weighted API Firewall to protect your API endpoints with API Schema validation.
+arangodb▮ArangoDB - a scalable graph database system to drive value from connected data, faster.
+archlinux▮Arch Linux is a simple, lightweight Linux distribution aimed for flexibility.
+backdrop▮The comprehensive CMS for small to medium sized businesses and non-profits.
+bash▮Bash is the GNU Project's Bourne Again SHell
+bonita▮Bonita is an open-source business process management and workflow suite
+buildpack-deps▮A collection of common build dependencies used for installing various modules, e.g., gems.
+busybox▮Busybox base image.
+caddy▮Caddy 2 is a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go.
+cassandra▮Apache Cassandra is an open-source distributed storage system.
+chronograf▮Chronograf is a visualization tool for time series data in InfluxDB.
+cirros▮CirrOS is a Tiny OS that specializes in running on a cloud.
+clearlinux▮Official docker build of Clear Linux OS for Intel Architecture
+clefos▮The official build of ClefOS.
+clojure▮Clojure is a dialect of Lisp that runs on the JVM.
+composer▮Composer is a dependency manager written in and for PHP.
+consul▮Consul is a datacenter runtime that provides service discovery, configuration, and orchestration.
+convertigo▮Enterprise grade full-stack Open source Low Code & No Code Platform for web & mobile application
+couchbase▮Couchbase Server is a NoSQL document database with a distributed architecture.
+couchdb▮CouchDB is a database that uses JSON for documents, an HTTP API, & JavaScript/declarative indexing.
+crate▮CrateDB is an open-source, distributed SQL database empowering you to turn data into business value.
+dart▮Dart is a client-optimized language for fast apps on any platform.
+debian▮Debian is a Linux distribution that's composed entirely of free and open-source software.
+docker▮Docker in Docker!
+drupal▮Drupal is an open source content management platform powering millions of websites and applications.
+eclipse-mosquitto▮Eclipse Mosquitto is an open source message broker which implements MQTT version 5, 3.1.1 and 3.1
+eclipse-temurin▮Official Images for OpenJDK binaries built by Eclipse Temurin.
+eggdrop▮The official Docker image of Eggdrop- IRC's oldest actively-developed bot!
+elasticsearch▮Elasticsearch is a powerful open source search and analytics engine that makes data easy to explore.
+elixir▮Elixir is a dynamic, functional language for building scalable and maintainable applications.
+emqx▮The most scalable open-source MQTT broker for IoT, IIoT, connected vehicles, and more.
+erlang▮Erlang is a programming language used to build massively scalable systems with high availability.
+fedora▮Official Docker builds of Fedora
+flink▮Apache Flink® is a powerful open-source distributed stream and batch processing framework.
+fluentd▮Fluentd is an open source data collector for unified logging layer
+friendica▮Welcome to the free social web.
+gazebo▮Gazebo is an open source project for simulating robots, offering robust physics and rendering.
+gcc▮The GNU Compiler Collection is a compiling system that supports several languages.
+geonetwork▮GeoNetwork is a FOSS catalog for spatially referenced resources.
+ghost▮Ghost is a free and open source blogging platform written in JavaScript
+golang▮Go (golang) is a general purpose, higher-level, imperative programming language.
+gradle▮Gradle is a build tool with a focus on build automation and support for multi-language development.
+groovy▮Apache Groovy is a multi-faceted language for the Java platform.
+haproxy▮HAProxy - The Reliable, High Performance TCP/HTTP Load Balancer
+haskell▮Haskell is an advanced purely-functional programming language.
+haxe▮Haxe is a modern, high level, static typed programming language with multiple compilation targets.
+hello-world▮Hello World! (an example of minimal Dockerization)
+hitch▮Hitch is a libev-based high performance SSL/TLS proxy by Varnish Software.
+httpd▮The Apache HTTP Server Project
+hylang▮Hy is a Lisp dialect that translates expressions into Python's abstract syntax tree.
+ibm-semeru-runtimes▮IBM Semeru Runtimes Official Images for OpenJDK and Eclipse OpenJ9 binaries.
+ibmjava▮Official IBM® SDK, Java™ Technology Edition Docker Image.
+influxdb▮InfluxDB is an open source time series database for recording metrics, events, and analytics.
+irssi▮irssi - The IRC client of the future
+jetty▮Jetty provides a Web server and javax.servlet container.
+joomla▮Joomla! is an open source content management system.
+jruby▮JRuby (http://www.jruby.org) is an implementation of Ruby (http://www.ruby-lang.org) on the JVM.
+julia▮Julia is a high-level, high-performance dynamic programming language for technical computing.
+kapacitor▮Kapacitor is an open source framework for processing, monitoring, and alerting on time series data.
+kibana▮Kibana gives shape to any kind of data — structured and unstructured — indexed in Elasticsearch.
+kong▮The Cloud-Native API Gateway for APIs and Microservices
+lightstreamer▮Lightstreamer is a real-time messaging server optimized for the Internet.
+logstash▮Logstash is a tool for managing events and logs.
+mageia▮Official Mageia base image
+mariadb▮MariaDB Server is a high performing open source relational database, forked from MySQL.
+matomo▮Matomo is the leading open-source analytics platform that gives you more than powerful analytics.
+maven▮Apache Maven is a software project management and comprehension tool.
+mediawiki▮MediaWiki is a free software open source wiki package written in PHP.
+memcached▮Free & open source, high-performance, distributed memory object caching system.
+mongo-express▮Web-based MongoDB admin interface, written with Node.js and express
+mongo▮MongoDB document databases provide high availability and easy scalability.
+monica▮Monica – the Personal Relationship Manager.
+mono▮Mono is an open source implementation of Microsoft's .NET Framework
+mysql▮MySQL is a widely used, open-source relational database management system (RDBMS).
+nats▮NATS is an open-source, high-performance, cloud native messaging system.
+neo4j▮Neo4j is a highly scalable, robust native graph database.
+neurodebian▮NeuroDebian provides neuroscience research software for Debian, Ubuntu, and other derivatives.
+nextcloud▮A safe home for all your data
+nginx▮Official build of Nginx.
+node▮Node.js is a JavaScript-based platform for server-side and networking applications.
+notary▮Notary server and signer cooperatively handle signing and distribution of notary repositories.
+odoo▮Odoo (formerly known as OpenERP) is a suite of open-source business apps.
+open-liberty▮Open Liberty multi-architecture images based on Ubuntu 18.04
+openjdk▮Pre-release / non-production builds of OpenJDK
+oraclelinux▮Official Docker builds of Oracle Linux.
+orientdb▮OrientDB a Multi-Model Open Source NoSQL DBMS that combines graphs and documents.
+percona▮Percona Server is a fork of the MySQL relational database management system created by Percona.
+perl▮Perl is a high-level, general-purpose, interpreted, dynamic programming language.
+photon▮Photon OS is an open source minimal Linux container host.
+php-zendserver▮Zend Server - the integrated PHP application platform for mobile and web apps.
+phpmyadmin▮phpMyAdmin - A web interface for MySQL and MariaDB.
+php▮While designed for web development, the PHP scripting language also provides general-purpose use.
+plone▮Plone is a free and open source content management system built on top of Zope.
+postfixadmin▮Postfix Admin - web based administration interface for Postfix mail servers.
+postgres▮The PostgreSQL object-relational database system provides reliability and data integrity.
+pypy▮PyPy is a fast, compliant alternative implementation of the Python language.
+python▮Python is an interpreted, interactive, object-oriented, open-source programming language.
+r-base▮R is a system for statistical computation and graphics.
+rabbitmq▮RabbitMQ is an open source multi-protocol messaging broker.
+rakudo-star▮Rakudo is a compiler for the Raku programming language.
+redis▮Redis is an open source key-value store that functions as a data structure server.
+redmine▮Redmine is a flexible project management web application written using Ruby on Rails framework
+registry▮The Docker Registry 2.0 implementation for storing and distributing Docker images
+rethinkdb▮RethinkDB is an open-source, document database that makes it easy to build and scale realtime apps.
+rocket.chat▮The Complete Open Source Chat Solution
+rockylinux▮The official build of Rocky Linux.
+ros▮The Robot Operating System (ROS) is an open source project for building robot applications.
+ruby▮Ruby is a dynamic, reflective, object-oriented, general-purpose, open-source programming language.
+rust▮Rust is a systems programming language focused on safety, speed, and concurrency.
+sapmachine▮Official SapMachine Docker Image, SAP's build of OpenJDK.
+satosa▮SATOSA translates between authentication protocols such as SAML2, OpenID Connect, and OAuth2.
+silverpeas▮Silverpeas is a turnkey and open-source Collaborative and Social-Networking Portal.
+sl▮Official containers for Scientific Linux(SL)
+solr▮Apache Solr is the popular, blazing-fast, open source search platform built on Apache Lucene™.
+sonarqube▮SonarQube is an open source platform for continuous inspection of code quality.
+spiped▮Spiped is a utility for creating symmetrically encrypted and authenticated pipes between sockets.
+storm▮Apache Storm is a free and open source distributed realtime computation system.
+swift▮Swift is a high-performance system programming language, to learn more about Swift visit swift.org.
+swipl▮SWI-Prolog offers a comprehensive free Prolog environment.
+teamspeak▮TeamSpeak is software for quality voice communication via the Internet.
+telegraf▮Telegraf is an agent for collecting metrics and writing them to InfluxDB or other outputs.
+tomcat▮Apache Tomcat is an open source implementation of the Java Servlet and JavaServer Pages technologies
+tomee▮Apache TomEE is an all-Apache Java EE certified stack where Apache Tomcat is top dog.
+traefik▮Traefik, The Cloud Native Edge Router
+ubuntu▮Ubuntu is a Debian-based Linux operating system based on free software.
+varnish▮Varnish is an HTTP accelerator designed for content-heavy dynamic web sites as well as APIs.
+vault▮Vault is a tool for securely accessing secrets via a unified interface and tight access control.
+websphere-liberty▮WebSphere Liberty multi-architecture images based on Ubuntu 18.04
+wordpress▮The WordPress rich content management system can utilize plugins, widgets, and themes.
+xwiki▮XWiki: The Advanced Open Source Enterprise Wiki.
+yourls▮YOURLS is a set of PHP scripts that will allow you to run Your Own URL Shortener.
+znc▮ZNC - An advanced IRC bouncer
+zookeeper▮Apache ZooKeeper is an open-source server which enables highly reliable distributed coordination.

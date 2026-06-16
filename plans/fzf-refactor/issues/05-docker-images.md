@@ -4,7 +4,7 @@ Migrate the Docker Hub image search to a FZF Script (domain script, no keybindin
 
 ## What to build
 
-Create `scripts/bin/fzf/docker-images` following the pattern from issue 02.
+Create `scripts/bin/fzf/fzf-docker-images` following the pattern from issue 02.
 This is a domain FZF Script — it has no keybinding and is called directly by `docker-image-pull`.
 
 The script queries the Docker Hub API for image results matching the user's query,
@@ -26,7 +26,7 @@ Delete legacy autoloads for the entire `docker/images/remote/` domain.
 
 ## Acceptance criteria
 
-- [ ] `scripts/bin/fzf/docker-images` created as executable `#!/bin/zsh` script
+- [ ] `scripts/bin/fzf/fzf-docker-images` created as executable `#!/bin/zsh` script
 - [ ] `docker-images --source` outputs Docker Hub candidates
 - [ ] `docker-images --postprocess` (stdin) returns `image:tag` string
 - [ ] BATS tests for `fzf-source` and `fzf-postprocess` pass

@@ -6,11 +6,12 @@
 #
 # This is used by docker-images-list-remote to display the fuzzy list, as well
 # as by the autocomplete
+set -e
 
 local cacheFolder=/tmp/oroshi/fzf/docker-images-remote
 mkdir -p ${cacheFolder}
 
-local outputFile="$(dirname "$0")/src/images-remote.txt"
+local outputFile="$OROSHI_ROOT/tools/docker/docker/config/data/src/images-remote.txt"
 
 # Get the list of all official from GitHub
 # For each, do a query with docker search and fill the values
@@ -73,6 +74,6 @@ for imageName in ${(k)images}; do
   local description=$images[$imageName]
   # Skip images we couldn't get a description of (probably because deprecated)
   [[ $description == "1" ]] && continue
-  rawFileContent+=("$imageName   $images[$imageName]")
+  rawFileContent+=("$imageName▮$images[$imageName]")
 done
 echo ${(F)rawFileContent} | sort > ${outputFile}

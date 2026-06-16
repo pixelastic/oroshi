@@ -37,7 +37,8 @@
   {
     "id": "05",
     "issue": "issues/05-docker-images.md",
-    "done": false,
+    "done": true,
+    "recap": "Created scripts/bin/fzf/docker-images (--source/--postprocess/--options); updated docker-image-pull to call new script; deleted all fzf/docker/images/remote/ legacy autoloads.",
     "blocked_by": ["02"]
   },
   {
