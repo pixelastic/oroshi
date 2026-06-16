@@ -8,7 +8,7 @@ oroshi-ctrl-shift-o-widget() {
 	fi
 
 	export PROMPT_PREVENT_REFRESH="1"
-	local selection="$(fzf-fs-directories-subdir)"
+	local selection="$(ctrl-shift-o)"
 	export PROMPT_PREVENT_REFRESH="0"
 
 	# Stop if no selection is made

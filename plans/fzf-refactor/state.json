@@ -51,7 +51,8 @@
   {
     "id": "07",
     "issue": "issues/07-ctrl-shift-o.md",
-    "done": false,
+    "done": true,
+    "recap": "Created __lib/fzf-source-dirs.zsh helper and ctrl-shift-o script; updated ctrl-shift-o.zsh keybinding to call new script; deleted all fs/directories/subdir/ legacy autoloads.",
     "blocked_by": ["06"]
   },
   {

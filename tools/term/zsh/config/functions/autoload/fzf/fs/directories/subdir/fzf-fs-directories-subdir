@@ -1,5 +1,0 @@
-# Search for a specific directory in the current subdir
-setopt local_options err_return
-fzf-fs-directories \
-  --source fzf-fs-directories-subdir-source \
-  --options fzf-fs-directories-subdir-options

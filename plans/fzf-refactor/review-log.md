@@ -116,6 +116,40 @@ items="$(fd --hidden --follow --color=never --type=file --base-directory "$searc
 
 ---
 
+---
+
+## Issue 07 — ctrl-shift-o
+
+### `return 0` in `fzf-postprocess` function body
+
+```zsh
+fzf-postprocess() {
+  local input="$(cat)"
+  [[ "$input" == "" ]] && return 0
+  ...
+}
+```
+
+**Problem:** Reviewer flagged as violation of `feedback_zsh_errexit.md` (scripts should use `exit`, not `return`).
+**Reason skipped:** `fzf-postprocess` is a ZSH *function*, not top-level script code. `return` is correct in function bodies; `exit` would terminate the entire script process. The reference implementation `ctrl-shift-p` uses the same pattern. `feedback_zsh_errexit.md` applies to the script header protection mechanism, not function-internal early returns.
+
+### Spec references `helpers/fs.zsh` and `helpers/prompt.zsh`
+
+**Problem:** Spec says "sourcing helpers/fs.zsh and helpers/prompt.zsh established in issue 06"; implementation uses `__lib/fzf-source-dirs.zsh` and `__lib/fzf-options-prompt-directory.zsh`.
+**Reason skipped:** Spec was written before issue 06 settled on the `__lib/` naming convention. Actual established pattern from ctrl-shift-p uses `__lib/`. Implementation is correct.
+
+### No bats test for `--options`
+
+**Problem:** Spec acceptance criterion says "ctrl-shift-o --options outputs valid FZF flags".
+**Reason skipped:** GUIDANCE.md explicitly says "Do NOT test fzf-options (static flags, no meaningful assertions)". GUIDANCE overrides the spec acceptance criterion on this point.
+
+### Shebang `#!/usr/bin/env zsh` vs spec `#!/bin/zsh`
+
+**Problem:** Spec says `#!/bin/zsh`; script uses `#!/usr/bin/env zsh`.
+**Reason skipped:** `#!/usr/bin/env zsh` matches the established pattern from ctrl-shift-p and all other FZF Scripts. Consistency takes precedence.
+
+---
+
 ### `bat` syntax highlighting not carried over
 ```zsh
 # legacy fzf-history-source had:
