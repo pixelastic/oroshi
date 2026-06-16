@@ -68,6 +68,16 @@ the commit message generation when in the private submodule.
 
 Update the claude statusline to display icons for each MCP server enabled.
 
+When I delete a file, but it was still open in nvim, the nvim gutter is
+displayed in cyan. It means, there is a color definition for such a file
+(opened, but deleted since). I need to find which it is, and map that to some
+shade of red
+
+Refactor
+/home/tim/local/www/worktrees/oroshi--bats-refactor/tools/term/zsh/config/prompt/index.zsh
+t extract each function into its own file. It will make further testing easier,
+as each file can have its own test file.
+
 
 ---
 ## Cleanup
