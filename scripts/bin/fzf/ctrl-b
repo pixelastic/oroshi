@@ -6,17 +6,8 @@
 # $ ctrl-b --options          # Print FZF options (one per line)
 # $ ctrl-b --postprocess      # Read raw selection from stdin, print command name
 set -e
+source "${0:h}/__lib/init.zsh"
 source "${0:h}/__lib/fzf-options-base.zsh"
-
-zmodload zsh/zutil
-zparseopts -D -E \
-  -source=flagSource \
-  -options=flagOptions \
-  -postprocess=flagPostprocess
-
-local isSource=${#flagSource}
-local isOptions=${#flagOptions}
-local isPostprocess=${#flagPostprocess}
 
 fzf-source() {
   print -l -- ${(k)commands} ${(k)aliases} ${(k)functions} | sort --unique
@@ -32,21 +23,4 @@ fzf-postprocess() {
   print -- "$input"
 }
 
-fzf-main() {
-  local opts=(${(f)"$(fzf-options)"})
-  fzf-source | fzf "${opts[@]}" | fzf-postprocess
-}
-
-if [[ $isSource == "1" ]]; then
-  fzf-source
-  exit 0
-fi
-if [[ $isOptions == "1" ]]; then
-  fzf-options
-  exit 0
-fi
-if [[ $isPostprocess == "1" ]]; then
-  fzf-postprocess
-  exit 0
-fi
 fzf-main
