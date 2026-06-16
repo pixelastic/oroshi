@@ -1,5 +1,5 @@
 # Ctrl-O: Search for a specific directory, context-aware based on typed command
-oroshi-fzf-directories-project-widget() {
+oroshi-ctrl-o-widget() {
   # Stop if not available
   if ! command -v fzf >/dev/null; then
     echo "fzf is not installed"
@@ -22,8 +22,8 @@ oroshi-fzf-directories-project-widget() {
   LBUFFER="${LBUFFER}${selection} "
   return 0
 }
-zle -N oroshi-fzf-directories-project-widget
-bindkey '^O' oroshi-fzf-directories-project-widget
+zle -N oroshi-ctrl-o-widget
+bindkey '^O' oroshi-ctrl-o-widget
 
 # Default: all project directories
 function oroshi-fzf-directories-default-selection {

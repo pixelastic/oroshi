@@ -1,5 +1,5 @@
 # Ctrl-Shift-C copies last command + output to clipboard
-oroshi-copy-last-command-output-widget() {
+oroshi-ctrl-shift-y-widget() {
   # Get last command from history
   local lastCommand=$(fc -ln -1)
 
@@ -12,5 +12,5 @@ oroshi-copy-last-command-output-widget() {
   zle reset-prompt
   return 0
 }
-zle -N oroshi-copy-last-command-output-widget
-bindkey 'Ⓨ' oroshi-copy-last-command-output-widget
+zle -N oroshi-ctrl-shift-y-widget
+bindkey 'Ⓨ' oroshi-ctrl-shift-y-widget

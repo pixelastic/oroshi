@@ -1,5 +1,5 @@
 # Ctrl-B to search in all the available command/aliases/functions
-oroshi-fzf-commands-widget() {
+oroshi-ctrl-b-widget() {
 	# Stop if not available
 	if ! command -v fzf >/dev/null; then
 		echo "fzf is not installed"
@@ -19,6 +19,6 @@ oroshi-fzf-commands-widget() {
 	LBUFFER="${LBUFFER}${selection} "
 	return 0
 }
-zle -N oroshi-fzf-commands-widget
-bindkey '^B' oroshi-fzf-commands-widget
+zle -N oroshi-ctrl-b-widget
+bindkey '^B' oroshi-ctrl-b-widget
 # }}}

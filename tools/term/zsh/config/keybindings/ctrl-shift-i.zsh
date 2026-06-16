@@ -1,5 +1,5 @@
 # Ctrl-Shift-I: Search for past Claude sessions
-oroshi-fzf-claude-sessions-widget() {
+oroshi-ctrl-shift-i-widget() {
   # Stop if not available
   if ! command -v fzf >/dev/null; then
     echo "fzf is not installed"
@@ -19,5 +19,5 @@ oroshi-fzf-claude-sessions-widget() {
 
   return 0
 }
-zle -N oroshi-fzf-claude-sessions-widget
-bindkey 'Ⓘ' oroshi-fzf-claude-sessions-widget
+zle -N oroshi-ctrl-shift-i-widget
+bindkey 'Ⓘ' oroshi-ctrl-shift-i-widget

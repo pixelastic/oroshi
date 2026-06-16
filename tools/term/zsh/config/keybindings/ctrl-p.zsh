@@ -1,5 +1,5 @@
 # Ctrl-P: Search for something specific (usually a file), based on typed command
-oroshi-fzf-command-specific-widget() {
+oroshi-ctrl-p-widget() {
   # Stop if not available
   if ! command -v fzf >/dev/null; then
     echo "fzf is not installed"
@@ -32,8 +32,8 @@ oroshi-fzf-command-specific-widget() {
 
   return 0
 }
-zle -N oroshi-fzf-command-specific-widget
-bindkey '^P' oroshi-fzf-command-specific-widget
+zle -N oroshi-ctrl-p-widget
+bindkey '^P' oroshi-ctrl-p-widget
 
 # Default
 function oroshi-fzf-command-specific-default-selection {

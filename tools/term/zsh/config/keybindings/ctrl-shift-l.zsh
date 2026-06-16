@@ -1,7 +1,7 @@
 # Ctrl-Shift-L clears the terminal
-oroshi-clear-terminal-widget() {
+oroshi-ctrl-shift-l-widget() {
 	tput reset
 	zle redisplay
 }
-zle -N oroshi-clear-terminal-widget
-bindkey 'Ⓛ' oroshi-clear-terminal-widget
+zle -N oroshi-ctrl-shift-l-widget
+bindkey 'Ⓛ' oroshi-ctrl-shift-l-widget

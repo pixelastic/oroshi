@@ -1,5 +1,5 @@
 # Ctrl-F: Search inside of text files in the current directory
-oroshi-fzf-regexp-subdir-widget() {
+oroshi-ctrl-shift-g-widget() {
 	# Stop if not available
 	if ! command -v fzf >/dev/null; then
 		echo "fzf is not installed"
@@ -34,5 +34,5 @@ oroshi-fzf-regexp-subdir-widget() {
 
 	return 0
 }
-zle -N oroshi-fzf-regexp-subdir-widget
-bindkey 'Ⓖ' oroshi-fzf-regexp-subdir-widget
+zle -N oroshi-ctrl-shift-g-widget
+bindkey 'Ⓖ' oroshi-ctrl-shift-g-widget

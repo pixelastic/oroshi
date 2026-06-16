@@ -1,9 +1,9 @@
 # Ctrl-i opens an AI chat window
-oroshi-claude-widget() {
+oroshi-ctrl-i-widget() {
   LBUFFER="claude"
   zle accept-line
   return 0
 }
-zle -N oroshi-claude-widget
-bindkey '⒤' oroshi-claude-widget
+zle -N oroshi-ctrl-i-widget
+bindkey '⒤' oroshi-ctrl-i-widget
 # }}}

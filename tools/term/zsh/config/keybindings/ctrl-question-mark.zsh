@@ -1,5 +1,5 @@
 # Ctrl-? explains what the current command does
-oroshi-explain-command-widget() {
+oroshi-ctrl-question-mark-widget() {
 	# export PROMPT_PREVENT_REFRESH="1"
 
 	echo ""
@@ -12,6 +12,6 @@ oroshi-explain-command-widget() {
 	# LBUFFER="${LBUFFER}same command "
 	# return 0
 }
-zle -N oroshi-explain-command-widget
-bindkey '⁇' oroshi-explain-command-widget
+zle -N oroshi-ctrl-question-mark-widget
+bindkey '⁇' oroshi-ctrl-question-mark-widget
 # }}}

@@ -1,5 +1,5 @@
 # Ctrl-Shift-O: Search for a specific directory, in the current directory
-oroshi-fzf-directories-subdir-widget() {
+oroshi-ctrl-shift-o-widget() {
 	# Stop if not available
 	if ! command -v fzf >/dev/null; then
 		echo "fzf is not installed"
@@ -19,5 +19,5 @@ oroshi-fzf-directories-subdir-widget() {
 	LBUFFER="${LBUFFER}${selection} "
 	return 0
 }
-zle -N oroshi-fzf-directories-subdir-widget
-bindkey 'Ⓞ' oroshi-fzf-directories-subdir-widget
+zle -N oroshi-ctrl-shift-o-widget
+bindkey 'Ⓞ' oroshi-ctrl-shift-o-widget

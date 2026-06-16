@@ -1,5 +1,5 @@
 # Ctrl-Shift-P fuzzy find in directory files
-oroshi-fzf-files-subdir-widget() {
+oroshi-ctrl-shift-p-widget() {
   # Stop if not available
   if ! command -v fzf >/dev/null; then
     echo "fzf is not installed"
@@ -19,5 +19,5 @@ oroshi-fzf-files-subdir-widget() {
   LBUFFER="${LBUFFER}${selection} "
   return 0
 }
-zle -N oroshi-fzf-files-subdir-widget
-bindkey 'Ⓟ' oroshi-fzf-files-subdir-widget
+zle -N oroshi-ctrl-shift-p-widget
+bindkey 'Ⓟ' oroshi-ctrl-shift-p-widget

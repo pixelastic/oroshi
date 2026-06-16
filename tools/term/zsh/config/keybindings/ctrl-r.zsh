@@ -1,5 +1,5 @@
 # Ctrl-R to search in the history
-oroshi-fzf-history-widget() {
+oroshi-ctrl-r-widget() {
   # Stop if not available
   if ! command -v fzf >/dev/null; then
     echo "fzf is not installed"
@@ -19,6 +19,6 @@ oroshi-fzf-history-widget() {
   LBUFFER="${LBUFFER}${selection} "
   return 0
 }
-zle -N oroshi-fzf-history-widget
-bindkey '^R' oroshi-fzf-history-widget
+zle -N oroshi-ctrl-r-widget
+bindkey '^R' oroshi-ctrl-r-widget
 # }}}

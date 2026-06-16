@@ -1,5 +1,5 @@
 # Ctrl-G: Search inside of text files in the whole project
-oroshi-fzf-regexp-project-widget() {
+oroshi-ctrl-g-widget() {
 	# Stop if not available
 	if ! command -v fzf >/dev/null; then
 		echo "fzf is not installed"
@@ -26,5 +26,5 @@ oroshi-fzf-regexp-project-widget() {
 
   return 0
 }
-zle -N oroshi-fzf-regexp-project-widget
-bindkey '^G' oroshi-fzf-regexp-project-widget
+zle -N oroshi-ctrl-g-widget
+bindkey '^G' oroshi-ctrl-g-widget
