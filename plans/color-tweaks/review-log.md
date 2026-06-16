@@ -72,3 +72,28 @@ bats_run_zsh "filetypes-load-definitions"
 
 **Problem:** Test only checks `[ "$status" -eq 0 ]` — doesn't verify the dist file wasn't sourced.
 **Reason skipped:** Identical to the prior-art pattern in `colors-load-definitions.bats`.
+
+## Issue 04 — Lint rule
+
+### Standards: Missing header/usage block, `setopt local_options err_return`, `(( ++lineNum ))`, `[[ $firstTriggerLine -eq 0 ]]`, `sourcePrefix` not `local`
+
+```zsh
+# (all five flagged patterns are present verbatim in rule-missing-colors-load.zsh and rule-missing-icons-load.bats)
+```
+
+**Problem:** Reviewer flagged absence of usage header, missing error protection, arithmetic flag test style, numeric comparison style, and missing `local` in bats `setup()`.
+**Reason skipped:** The issue spec says to follow "the exact structure of `rule-missing-colors-load.zsh`". All five patterns are present in the prior-art file. Changing them here would diverge from the established pattern without a mandate to refactor the entire rules directory.
+
+### Spec: Regex second branch `\$\{(\([^)]*\))?FILETYPES\}?` broader than spec trigger list
+
+```zsh
+"$line" =~ '\$\{(\([^)]*\))?FILETYPES\}?'
+```
+
+**Problem:** Also matches `${FILETYPES}` bare (not in spec trigger list).
+**Reason skipped:** Identical to the colors/icons prior-art regex. Consistent with the established pattern across all three rules.
+
+### Spec: `${(k)FILETYPES}` expansion concern in printf
+
+**Problem:** Reviewer flagged potential zsh expansion of `${(k)FILETYPES}` inside printf.
+**Reason skipped:** The printf argument uses single quotes — no expansion occurs. Same pattern as `rule-missing-icons-load.bats` which passes reliably.

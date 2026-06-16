@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-lint-rule.md",
-    "done": false,
+    "done": true,
+    "recap": "Created rule-missing-filetypes-load.zsh (mirrors colors/icons rules) and registered it in zsh-lint-custom.zsh; 8 bats tests all pass.",
     "blocked_by": ["03"]
   },
   {

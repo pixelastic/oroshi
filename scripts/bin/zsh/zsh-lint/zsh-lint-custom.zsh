@@ -30,6 +30,7 @@ zsh-lint-custom() {
   source "${_zshLintRulesDir}/rule-missing-icons-load.zsh"
   source "${_zshLintRulesDir}/rule-missing-colors-load.zsh"
   source "${_zshLintRulesDir}/rule-missing-projects-load.zsh"
+  source "${_zshLintRulesDir}/rule-missing-filetypes-load.zsh"
 
   lint-custom-run \
     --disable-prefix 'zsh-lint' \
@@ -51,5 +52,6 @@ zsh-lint-custom() {
     zshLintRule_missingIconsLoad \
     zshLintRule_missingColorsLoad \
     zshLintRule_missingProjectsLoad \
+    zshLintRule_missingFiletypesLoad \
     -- "$@"
 }
