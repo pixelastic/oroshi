@@ -10,6 +10,7 @@ fzf-source-directories() {
     --follow \
     --color=never \
     --type=directory \
+    --exclude=.git \
     --base-directory "$searchPath" \
     .)"
   [[ "$items" == "" ]] && return 0

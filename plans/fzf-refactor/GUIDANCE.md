@@ -121,3 +121,9 @@ _Append findings here after each issue. Format: `### Issue XX — short title` +
 - `OROSHI_TMP_FOLDER` is overridden by `zshenv-guest.zsh` after `.zshenv` runs. Tests that need to control it must use `bats_mock_env "OROSHI_TMP_FOLDER" "$tmpFolder"`, NOT `export OROSHI_TMP_FOLDER=...`.
 - Legacy `fzf-packages-apt-source-generate` used `declare -A` followed by a shadowing `local` — the correct ZSH pattern for a local associative array is `local -A installedPackages`.
 - The `--installed` flag is parsed at the top level and accessed from within `fzf-source()` via ZSH dynamic scoping — no need to pass it as a parameter.
+
+### Issue 08 — ctrl-o (git-root directory search)
+
+- `fd --hidden --type=directory` DOES include `.git` in its output (even though it's a VCS dir). Added `--exclude=.git` to `__lib/fzf-source-directories.zsh` to fix this for all directory-listing scripts.
+- The plans context-aware behavior (`ralph` → plans picker) was dropped: the acceptance criteria deleted the plans autoloads, and no replacement FZF Script was in scope. The `ctrl-o.zsh` widget now simply calls `ctrl-o` directly.
+- `fzf-git-root` uses `git rev-parse --show-toplevel` (not `--show-superproject-working-tree`). The legacy used `-f` to go to the superproject root in submodules; the new script uses the current repo root only.

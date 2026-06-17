@@ -1,5 +1,0 @@
-# Outputs specific options for searching for a directory in the current project
-setopt local_options err_return
-fzf-fs-directories-shared-options \
-  --prompt fzf-fs-directories-project-prompt \
-  --source fzf-fs-directories-project-source

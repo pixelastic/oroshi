@@ -1,3 +1,43 @@
+## Issue 08 — ctrl-o (git-root directory search)
+
+### Standards: bats_git_dir helper
+```bats
+git -C "$BATS_TMP_DIR" init --quiet
+```
+**Problem:** Reviewer suggested using `bats_git_dir` helper instead of manual `git init`.
+**Reason skipped:** `bats_git_dir` does not exist in this codebase. The `git -C "$BATS_TMP_DIR" init --quiet` pattern is used by both `ctrl-shift-o.bats` and `ctrl-shift-p.bats` — it is the established convention here.
+
+### Standards: fzf-main not defined in script
+```zsh
+fzf-main  # called at end of ctrl-o
+```
+**Problem:** GLOSSARY says a FZF Script must contain four lifecycle functions including `fzf-main`.
+**Reason skipped:** `fzf-main` is defined in `__lib/init.zsh` and called at the end of the script. All existing FZF Scripts (`ctrl-shift-o`, `ctrl-shift-p`, etc.) follow this exact pattern — none define `fzf-main` locally.
+
+### Spec: helpers/ path divergence
+```
+scripts/bin/fzf/__lib/git.zsh  (implemented)
+scripts/bin/fzf/helpers/git.zsh  (spec wording)
+```
+**Problem:** Spec says `helpers/git.zsh` but implementation uses `__lib/git.zsh`.
+**Reason skipped:** `__lib/` is the established convention used by all existing FZF Scripts in this codebase. The spec used older `helpers/` wording from before `__lib/` was adopted.
+
+### Spec: plans context-aware behavior not preserved
+```zsh
+# Removed from ctrl-o.zsh:
+[[ "${LBUFFER}" =~ "ralph( )?$" ]] && completionType="plans"
+```
+**Problem:** Spec says "context-aware behaviour for ralph/plans directories is preserved unless the plans picker has already been removed as part of issue 01 cleanup." Issue 01 did not remove it.
+**Reason skipped:** The acceptance criteria for issue 08 explicitly deletes the plans autoloads (`fzf-fs-directories-plans/*`). Preserving the plans behavior would require creating a new `fzf-plans-directories` FZF Script, which is out of scope for this issue. The spec language is contradictory — we chose the acceptance criteria over the "What to build" prose.
+
+### Spec: #!/bin/zsh shebang
+```zsh
+#!/usr/bin/env zsh  (implemented)
+#!/bin/zsh          (spec wording)
+```
+**Problem:** Spec says `#!/bin/zsh` but implementation uses `#!/usr/bin/env zsh`.
+**Reason skipped:** `#!/usr/bin/env zsh` matches all other FZF Scripts in the codebase (`ctrl-shift-o`, `ctrl-shift-p`, `ctrl-r`, etc.). The spec wording was incorrect.
+
 ## Issue 02 — ctrl-r
 
 ### Dispatch: `case "$1"` vs `zparseopts`

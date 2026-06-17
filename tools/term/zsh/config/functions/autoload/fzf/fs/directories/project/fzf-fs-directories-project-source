@@ -1,4 +1,0 @@
-# Returns a list of directories, in the current project
-setopt local_options err_return
-local rootDirectory="$(fzf-var-read pwd)"
-fzf-fs-directories-shared-source "${rootDirectory}"
