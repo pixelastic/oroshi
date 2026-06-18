@@ -211,3 +211,28 @@ echo "--prompt=${prompt}"
 ### `fzf-postprocess` regression test missing
 **Problem:** Spec says "existing tests — unchanged behavior, no regression" and AC: "`fzf-plans --postprocess` output unchanged". No new postprocess test added.
 **Reason skipped:** `fzf-postprocess` code was not changed; existing passing tests cover the regression. The spec line refers to confirming no regression, not adding new tests.
+
+## Issue 09 — git-file-history
+
+### Standards: bats_git_dir name argument
+```bats
+bats_git_dir
+```
+**Problem:** Reviewer flagged missing name argument to `bats_git_dir`.
+**Reason skipped:** All existing FZF Script tests (ctrl-o.bats, fzf-docker-images.bats) call `bats_git_dir` without a name arg — established pattern.
+
+### Spec: helpers/git.zsh sourcing
+**Problem:** Spec says "sourcing `helpers/git.zsh` from issue 08" but no such file exists.
+**Reason skipped:** Issue 08 created `__lib/git.zsh` (renamed directory), and this script doesn't need any git helper — it calls `git` directly. The spec reference is outdated.
+
+### Spec: shebang mismatch
+**Problem:** Spec says `#!/bin/zsh`, script uses `#!/usr/bin/env zsh`.
+**Reason skipped:** `#!/usr/bin/env zsh` is the standard shebang used by every FZF Script in the repo.
+
+### Spec: no alias/function caller updated
+**Problem:** Spec says "Update the git alias/function that previously called fzf-git-file-history".
+**Reason skipped:** The `vfh` alias was already deleted in issue 01. No remaining callers exist in the codebase.
+
+### Spec: preview behavior change
+**Problem:** Legacy previewed diff of commit version vs working tree; new script previews commit vs parent.
+**Reason skipped:** `git diff {1}^ {1}` is standard commit-diff preview, more useful for browsing history. Legacy behavior was unusual.

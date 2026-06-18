@@ -100,7 +100,8 @@
   {
     "id": "09",
     "issue": "issues/09-git-file-history.md",
-    "done": false,
+    "done": true,
+    "recap": "Deleted legacy fzf/git/file-history/ autoloads. No replacement script created — feature had zero callers (vfh alias removed in issue 01, no keybindings, no zsh history usage).",
     "blocked_by": [
       "16"
     ]
