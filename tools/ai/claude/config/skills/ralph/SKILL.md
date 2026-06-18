@@ -90,11 +90,11 @@ If you have any `## Scaffolding Tests` from the issue:
 
 ---
 
-## Step 5 — DOCUMENT
+## Step 5 — UPDATE PLAN ARTIFACTS
 
-**Goal:** Leave full context for the next session.
+**Goal:** Persist session state for future sessions.
 
-**Exit criterion:** `state.json`, `GUIDANCE.md` (optional), `COMMIT_HINT.md`, and `review-log.md` (optional) updated.
+**Exit criterion:** `state.json`, `GUIDANCE.md` (optional), and `review-log.md` (optional) updated.
 
 All paths of the following files are from `ralph-start` output.
 
@@ -107,29 +107,26 @@ All paths of the following files are from `ralph-start` output.
    ### Issue XX — <title>
    - <non-trivial finding>
    ```
-   Skip this step if there are no non-trivial findings.
+   Skip if there are no non-trivial findings.
 
-3. **Write `COMMIT_HINT.md`**
-   The file is free prose for the next commit message author. Cover:
-   - **Goal** — what the issue set out to do (one sentence)
-   - **Done** — what was actually implemented (what changed, what was skipped, any deviation)
-   - **Key files** — the most important file-level changes (path + one-line reason)
-   - **Suggested type(scope)** — e.g. `feat(git-commit-message)`, `chore(gitignore)`
-
-   Be specific enough that an agent can write a good commit message without re-reading the diff.
-
-4. **If review had skipped items**, create or append at the end of `review-log.md`:
-   ```
-   ## Issue XX — <title>
-   ### <feedback item>
-   ```code block of the flagged code```
-   **Problem:** <what the reviewer flagged>
-   **Reason skipped:** <why it was dismissed>
-   ```
+3. **If review had skipped items**, create or append to `review-log.md`.
+   Load [review-log.md](references/review-log.md) for the review-log format (needed if review had skipped items).
 
 ---
 
-## Step 6 — STOP
+## Step 6 — WRITE COMMIT HINT
+
+**Goal:** Leave a hint so the commit message author understands what was built.
+
+**Exit criterion:** `COMMIT_HINT.md` written.
+
+Write `COMMIT_HINT.md` (path from `ralph-start` output).
+
+Load [commit-hint.md](references/commit-hint.md) for the format and rules.
+
+---
+
+## Step 7 — STOP
 
 **Goal:** Hand off to user.
 
@@ -154,6 +151,7 @@ All paths of the following files are from `ralph-start` output.
 | "I don't need to read the guidance and issue files, I can start implementing" | You can't. Read both — guidance has prior discoveries; the issue has the acceptance criteria. |
 | "I should commit so the review has something to diff" | Do not commit. That's the user's job. |
 | "I should run `review` via the Bash tool" | Use the `/review` skill instead, Bash will go to the background and we need to wait for the review. |
+| "I mentioned an issue COMMIT_HINT.md to be specific" | Issue are ephemeral and internal. Describe what was built, not which issue was closed. |
 
 ## Checklist
 
@@ -174,4 +172,5 @@ All paths of the following files are from `ralph-start` output.
 - [ ] state.json updated with `done: true` + `recap`
 - [ ] GUIDANCE.md discoveries appended (or skipped if none)
 - [ ] review-log.md updated if skipped feedback exists
+- [ ] COMMIT_HINT.md describes outcomes, not issue numbers or plan status
 - [ ] **Stopped — waiting for user to commit**

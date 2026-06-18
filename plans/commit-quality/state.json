@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-ralph-skill-commit-quality.md",
-    "done": false,
+    "done": true,
+    "recap": "Split ralph's DOCUMENT step into UPDATE PLAN ARTIFACTS + WRITE COMMIT HINT, added references/commit-hint.md and references/review-log.md, and registered `plan` as a valid commit type in both prompt files.",
     "blocked_by": []
   },
   {

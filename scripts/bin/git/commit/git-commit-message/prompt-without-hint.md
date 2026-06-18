@@ -21,7 +21,9 @@ Goal: produce a subject line that stands alone.
 
 Format: `type(scope): description`
 
-Types: `feat`, `fix`, `refactor`, `perf`, `test`, `docs`, `style`, `chore`
+Types: `feat`, `fix`, `refactor`, `perf`, `test`, `docs`, `style`, `chore`, `plan`
+
+- `plan` — creation or deletion of a ralph plan directory
 
 - Imperative mood, ≤72 characters
 - Must stand alone — someone reading `git log` should understand the change without the diff
