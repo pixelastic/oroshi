@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-plan-deletion-strategy.md",
-    "done": false,
+    "done": true,
+    "recap": "Added detectPlanDeletion.js (pure function) that returns plan(<slug>): delete completed artifacts when both PRD.md and state.json are staged as deleted for the same slug; wired into git-commit-message.js before API call; added first vitest test file in the repo.",
     "blocked_by": []
   }
 ]

@@ -1,6 +1,6 @@
 local M = {}
 
-local MODEL_NAME = "claude-sonnet-4-20250514"
+local MODEL_NAME = "claude-sonnet-4-6"
 local ANTHROPIC_VERSION = "2023-06-01"
 local ANTHROPIC_URL = "https://api.anthropic.com/v1/messages"
 local ANTHROPIC_API_KEY = vim.fn.getenv("ANTHROPIC_API_KEY")
