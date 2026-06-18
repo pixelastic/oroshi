@@ -19,3 +19,7 @@
 ## Discoveries
 
 _(append-only — updated by agents after each issue)_
+
+### Issue 01 — Harden helper
+- Default teardown test needs its own `.bats` file — can't test "no teardown defined" in a file that defines one
+- `rm -rf ""` returns 0 in bash (no stderr), so the guard is defensive, not fixing an observable failure on this system

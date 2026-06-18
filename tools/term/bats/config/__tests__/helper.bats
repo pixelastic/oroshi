@@ -1,5 +1,10 @@
 bats_load_library 'helper'
 
+# Fixture call chain: foo → bar → baz
+# Each exists as both a script (bats-fixture-script-*) and an autoload function
+# (bats-fixture-function-*). Tests use this chain to verify worktree-aware
+# resolution, deep-mocking at any link, and OROSHI_ROOT override propagation.
+
 setup() {
   bats_tmp_dir
 }
@@ -86,4 +91,25 @@ teardown() {
   bats_run_zsh "which bats-fixture-script-bar"
   [ "$status" -eq 0 ]
   [[ "$output" == "$OROSHI_ROOT/scripts/bin/term/bats/bats-fixture-script-bar" ]]
+}
+
+# --- bats_cleanup guard ---
+
+@test "bats_cleanup returns 0 when BATS_TMP_DIR is unset" {
+  unset BATS_TMP_DIR
+  run bats_cleanup
+  [ "$status" -eq 0 ]
+}
+
+@test "bats_cleanup returns 0 when BATS_TMP_DIR is empty string" {
+  BATS_TMP_DIR=""
+  run bats_cleanup
+  [ "$status" -eq 0 ]
+}
+
+@test "bats_cleanup removes directory when BATS_TMP_DIR is set" {
+  [ -d "$BATS_TMP_DIR" ]
+  run bats_cleanup
+  [ "$status" -eq 0 ]
+  [ ! -d "$BATS_TMP_DIR" ]
 }

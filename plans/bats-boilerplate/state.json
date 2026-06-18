@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-harden-helper.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added empty-guard to bats_cleanup and default teardown() to helper"
   },
   {
     "id": "02",

@@ -153,10 +153,17 @@ bats_run_zsh() {
 }
 
 # bats_cleanup
-# Removes $BATS_TMP_DIR. Intended for use in teardown().
-# Usage: teardown() { bats_cleanup; }
+# Removes $BATS_TMP_DIR. Called automatically by the default teardown().
+# No-op when BATS_TMP_DIR is unset or empty.
 bats_cleanup() {
+  [[ -z "$BATS_TMP_DIR" ]] && return 0
   rm -rf "$BATS_TMP_DIR"
+}
+
+# Default teardown — runs bats_cleanup after every test.
+# Test files can override this by defining their own teardown().
+teardown() {
+  bats_cleanup
 }
 
 # bats_strip_ansi <str>
