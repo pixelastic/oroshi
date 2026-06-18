@@ -16,7 +16,8 @@ oroshi-ctrl-o-widget() {
   )
 
   # Dispatch to context-aware picker based on last word in buffer
-  local lastWord="${LBUFFER##* }"
+  local bufferWords=(${(z)LBUFFER})
+  local lastWord="${bufferWords[-1]}"
   local picker="${specialPickers[$lastWord]}"
   [[ "$picker" == "" ]] && picker="ctrl-o"
 
