@@ -9,7 +9,7 @@ An executable `#!/bin/zsh` script in `scripts/bin/fzf/` that implements one FZF-
 _Avoid_: FZF function, FZF command, FZF entry
 
 **Lifecycle Functions**:
-The four functions defined inside every **FZF Script**: `fzf-source`, `fzf-options`, `fzf-postprocess`, and `fzf-main`.
+The five functions that can be defined inside a **FZF Script**: `fzf-source`, `fzf-options`, `fzf-preview`, `fzf-postprocess`, and `fzf-main`.
 _Avoid_: Pipeline functions, internal functions, hooks
 
 **fzf-source**:
@@ -20,13 +20,23 @@ _Avoid_: source, get-source, list
 The **Lifecycle Function** that outputs FZF CLI flags — one flag per line on stdout.
 _Avoid_: options, get-options, config
 
+**fzf-preview**:
+The **Lifecycle Function** that renders the preview pane for the currently highlighted candidate — receives the candidate as `$1`, outputs preview content on stdout.
+_Avoid_: preview script, preview helper, preview command
+
 **fzf-postprocess**:
 The **Lifecycle Function** that receives raw FZF selection on stdin and returns a clean, usable result on stdout.
 _Avoid_: postprocess, sink, sinklist, post-process
 
 **fzf-main**:
-The **Lifecycle Function** that assembles the full pipeline — invoked when the **FZF Script** is called with no arguments.
+The **Lifecycle Function** that assembles the full pipeline — invoked when the **FZF Script** is called with no arguments. `init.zsh` provides the default implementation; scripts can override it after sourcing.
 _Avoid_: main, run, execute
+
+**Prompt**:
+The string displayed top-left in the FZF window before user input.
+If the source lists files or directories: **context-badge** (+ simplified path if scope = cwd, badge only if scope = git root).
+If the source lists anything else: **icon + label** (`$ICONS[...]` + 1–2 word description).
+_Avoid_: header, title, prefix
 
 **FZF Helpers**:
 `.zsh` files in `scripts/bin/fzf/__lib/` that are sourced (not executed) by **FZF Scripts** to share common functions across scripts. Each file is named after the single function it exports (e.g. `fzf-options-base.zsh` exports `fzf-options-base`).
@@ -42,7 +52,7 @@ _Avoid_: old system, autoload FZF
 
 ## Relationships
 
-- A **FZF Script** contains exactly four **Lifecycle Functions**
+- A **FZF Script** contains up to five **Lifecycle Functions** (four required, **fzf-preview** optional)
 - A **FZF Script** may source zero or more **FZF Helpers**
 - **fzf-main** assembles the pipeline: `fzf-source | fzf $(fzf-options) | fzf-postprocess`
 - **fzf-postprocess** always receives its input via stdin (never via argument)
