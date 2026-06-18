@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+# Link NVMe udev rule to disable power-save wake latency
+set -e
+
+sudo ln \
+  --force \
+  --symbolic \
+  "${0:A:h}/config/60-nvme-power.rules" \
+  /etc/udev/rules.d
+
+# Reload udev rules and apply immediately
+sudo udevadm control --reload-rules
+sudo udevadm trigger --subsystem-match=nvme
+
+# Verify
+local current="$(cat /sys/block/nvme0n1/device/power/control)"
+echo "NVMe power/control is now: $current"
+[[ "$current" == "on" ]] && echo "OK" || echo "WARN: expected 'on', got '$current'"

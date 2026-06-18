@@ -1,0 +1,12 @@
+# Disable NVMe Autonomous Power State Transitions (APST)
+#
+# With power/control=auto, the NVMe enters low-power sleep after a few seconds
+# of idle. Waking takes 30-100ms, during which kernel writeback workqueues
+# (inode_switch_wbs_work_fn) can block the CPU handling keyboard IRQs.
+#
+# 2026-07-18: This probably causes key-up events to be delayed when a large I/O
+# activity is detected (like large Claude tests), and mutter's key repeat timer fires
+# 3-5 extra characters before the key-up arrives.
+#
+# Setting power/control=on keeps the NVMe awake. Cost: ~0.5-1W on battery.
+ACTION=="add|change", SUBSYSTEM=="nvme", TEST=="power/control", ATTR{power/control}="on"
