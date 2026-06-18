@@ -23,3 +23,7 @@ _(append-only — updated by agents after each issue)_
 ### Issue 01 — Harden helper
 - Default teardown test needs its own `.bats` file — can't test "no teardown defined" in a file that defines one
 - `rm -rf ""` returns 0 in bash (no stderr), so the guard is defensive, not fixing an observable failure on this system
+
+### Issue 02 — Lint rule noBoilerplateTeardown
+- Suppression (`# bats-lint disable=`) is handled by the orchestrator (`lint-custom-run`), not individual rules — suppression tests must go through `bats-lint-custom`
+- zsh-writer skill's Step 2 example still shows `teardown() { bats_cleanup }` — should be updated after migration (issue 03)

@@ -9,8 +9,9 @@
   {
     "id": "02",
     "issue": "issues/02-lint-rule-no-boilerplate-teardown.md",
-    "done": false,
-    "blocked_by": ["01"]
+    "done": true,
+    "blocked_by": ["01"],
+    "recap": "Added noBoilerplateTeardown lint rule detecting teardown() whose body is solely bats_cleanup"
   },
   {
     "id": "03",

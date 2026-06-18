@@ -17,6 +17,7 @@ bats-lint-custom() {
   source "${_batsLintRulesDir}/rule-no-top-level-var.zsh"
   source "${_batsLintRulesDir}/rule-prefer-batch-mock.zsh"
   source "${_batsLintRulesDir}/rule-no-shebang.zsh"
+  source "${_batsLintRulesDir}/rule-no-boilerplate-teardown.zsh"
 
   lint-custom-run \
     --disable-prefix 'bats-lint' \
@@ -25,5 +26,6 @@ bats-lint-custom() {
     batsLintRule_noTopLevelVar \
     batsLintRule_preferBatchMock \
     batsLintRule_noShebang \
+    batsLintRule_noBoilerplateTeardown \
     -- "$@"
 }

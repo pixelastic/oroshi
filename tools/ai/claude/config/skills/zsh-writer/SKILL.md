@@ -40,10 +40,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "converts space-separated words to camelCase" {
   bats_run_zsh "my-new-function hello world"
   [ "$status" -eq 0 ]
