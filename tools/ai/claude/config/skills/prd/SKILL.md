@@ -31,7 +31,14 @@ Check with the user which modules they want tests written for.
 Run `prd-end <branchName>` via the **Bash tool**, and parse the JSON output.
 Write the PRD to `<prdPath>`, following [the template](./references/prd-md.md).
 
-### Step 4 — Stop
+### Step 4 — Write COMMIT_HINT.md
+
+Write `COMMIT_HINT.md` to `<commitHintPath>`.
+Load [commit-hint.md](../ralph/references/commit-hint.md) for format and rules.
+Derive Goal from the PRD's Problem Statement.
+Suggested type is `plan(<slug>)` where slug is the plan directory name.
+
+### Step 5 — Stop
 
 Ask the user if they're ready to move to /issues
 
@@ -57,3 +64,4 @@ Ask the user if they're ready to move to /issues
 - [ ] PRD.md written to `<prdPath>`
 - [ ] PRD written in English
 - [ ] PRD contains all 6 sections present (Problem, Solution, User Stories, Implementation Decisions, Testing Decisions, Out of Scope)
+- [ ] COMMIT_HINT.md written in plan directory with `plan(<slug>)` type

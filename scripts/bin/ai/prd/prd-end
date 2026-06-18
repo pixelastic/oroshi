@@ -2,7 +2,7 @@
 # Called by /prd right before writing the PRD on disk
 # Ensure PRD is created in a worktree, in plans/<branchName>
 # Usage: prd-end [branchName]
-# Output: { "worktreePath": "...", "branch": "...", "prdPath": "/full/path/to/plans/<branch>/PRD.md" }
+# Output: { "worktreePath": "...", "branch": "...", "prdPath": "...", "commitHintPath": "/full/path/to/plans/<branch>/COMMIT_HINT.md" }
 set -e
 
 local branch="$1"
@@ -22,4 +22,5 @@ local slug="$(git-branch-slug "$currentBranch")"
 jo \
   worktreePath="$root" \
   branch="$currentBranch" \
-  prdPath="$root/plans/$slug/PRD.md"
+  prdPath="$root/plans/$slug/PRD.md" \
+  commitHintPath="$root/plans/$slug/COMMIT_HINT.md"
