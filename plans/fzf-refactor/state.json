@@ -89,6 +89,14 @@
     ]
   },
   {
+    "id": "08b",
+    "issue": "issues/08b-fzf-plans-polish.md",
+    "done": false,
+    "blocked_by": [
+      "16"
+    ]
+  },
+  {
     "id": "09",
     "issue": "issues/09-git-file-history.md",
     "done": false,
