@@ -1,0 +1,14 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-orchestrator-and-grouping.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-remaining-references.md",
+    "done": false,
+    "blocked_by": ["01"]
+  }
+]
