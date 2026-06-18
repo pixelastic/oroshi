@@ -8,7 +8,7 @@ setup() {
   mkdir -p "$THEMING_ROOT/dist"
   mkdir -p "$BATS_TMP_DIR/tools/term/kitty/config"
 
-  bats_mock_oroshi_root "$BATS_TMP_DIR"
+  bats_mock_env "OROSHI_ROOT" "$BATS_TMP_DIR"
 
   # Minimal colors.conf:
   # color47  → yellow-7  (range 40-49=yellow, shade 7)

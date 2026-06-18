@@ -6,7 +6,7 @@ setup() {
 
   bats_mock_env OROSHI_WORKTREES_DIR "$BATS_GIT_WORKTREES"
 
-  # bats_mock_oroshi_root "$OROSHI_ROOT"
+  # bats_mock_env "OROSHI_ROOT" "$OROSHI_ROOT"
   # echo "oroshi-reload-fpath \$OROSHI_ROOT" >> "$BATS_TMP_DIR/mock.zsh"
 }
 

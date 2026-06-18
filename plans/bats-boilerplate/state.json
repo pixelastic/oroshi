@@ -30,8 +30,9 @@
   {
     "id": "05",
     "issue": "issues/05-fix-statusline-tests.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Fixed statusline tests: mock colors-load-definitions instead of recreating filesystem, removed bats_mock_oroshi_root"
   },
   {
     "id": "06",

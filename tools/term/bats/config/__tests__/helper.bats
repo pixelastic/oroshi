@@ -67,7 +67,7 @@ setup() {
   bats-fixture-script-baz() { echo "$OROSHI_ROOT"; }
   bats_mock bats-fixture-script-baz
 
-  bats_mock_oroshi_root "/tmp/test-root"
+  bats_mock_env "OROSHI_ROOT" "/tmp/test-root"
 
   bats_run_zsh "bats-fixture-script-foo"
   [ "$status" -eq 0 ]
@@ -78,7 +78,7 @@ setup() {
   bats-fixture-script-baz() { echo "$OROSHI_ROOT"; }
   bats_mock bats-fixture-script-baz
 
-  bats_mock_oroshi_root "/tmp/test-root"
+  bats_mock_env "OROSHI_ROOT" "/tmp/test-root"
 
   bats_run_zsh "bats-fixture-script-foo"
   [ "$status" -eq 0 ]

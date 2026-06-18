@@ -8,7 +8,7 @@ setup() {
   mkdir -p "$BATS_TMP_DIR/tools/term/zsh/config/theming"
   echo 'typeset -gA ICONS; ICONS[test-key]="test-val"' > "$BATS_TMP_DIR/tools/term/zsh/config/theming/icons.zsh"
 
-  bats_mock_oroshi_root "$BATS_TMP_DIR"
+  bats_mock_env "OROSHI_ROOT" "$BATS_TMP_DIR"
   bats_run_zsh "icons-load-definitions"
   [ "$status" -eq 0 ]
 }
@@ -21,7 +21,7 @@ setup() {
   # Pre-populate ICONS in the subprocess so the function exits early
   echo 'typeset -gA ICONS; ICONS[prompt]=">"' >> "$BATS_TMP_DIR/mock.zsh"
 
-  bats_mock_oroshi_root "$BATS_TMP_DIR"
+  bats_mock_env "OROSHI_ROOT" "$BATS_TMP_DIR"
   bats_run_zsh "icons-load-definitions"
   [ "$status" -eq 0 ]
   [[ ! -f "$markerFile" ]]

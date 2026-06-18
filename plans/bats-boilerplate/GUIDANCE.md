@@ -33,3 +33,7 @@ _(append-only — updated by agents after each issue)_
 - `bats-test-path` has zero env dependencies — pure string manipulation via zsh parameter expansion, no OROSHI_ROOT mock needed
 - Tests that point at live repo paths are brittle — sandbox the file structure in BATS_TMP_DIR instead
 - Always use `bats_run_zsh` for zsh scripts even if they have a shebang — consistency + mock support
+
+### Issue 05 — Fix statusline tests
+- `bats_mock_oroshi_root` only affects zsh subprocesses (mock.zsh), not bash scope — `$OROSHI_ROOT` in bats test code still resolves to the real path
+- Mock `colors-load-definitions` directly instead of recreating `dist/colors.zsh` on the filesystem — follows "mock collaborators, not filesystem" principle

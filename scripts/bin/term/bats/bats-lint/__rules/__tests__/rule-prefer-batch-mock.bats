@@ -90,12 +90,12 @@ run_this_rule() {
   expect_rule_violation preferBatchMock 5
 }
 
-@test "does not warn for bats_mock_oroshi_root" {
+@test "does not warn for bats_mock_env" {
   run_this_rule \
     'setup() {' \
     '  fn1() { :; }' \
     '  bats_mock fn1' \
-    '  bats_mock_oroshi_root /tmp/test-root' \
+    '  bats_mock_env "OROSHI_ROOT" /tmp/test-root' \
     '}'
   expect_clean
 }

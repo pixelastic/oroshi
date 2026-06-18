@@ -11,7 +11,7 @@ setup() {
   REAL_THEMING_ROOT="${CURRENT%/*}"
   REAL_OROSHI_ROOT="${REAL_THEMING_ROOT%/tools/term/zsh/config/theming}"
 
-  bats_mock_oroshi_root "$REAL_OROSHI_ROOT"
+  bats_mock_env "OROSHI_ROOT" "$REAL_OROSHI_ROOT"
   export THEMING_ROOT="$REAL_THEMING_ROOT"
 }
 

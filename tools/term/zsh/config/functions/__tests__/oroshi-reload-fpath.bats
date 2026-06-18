@@ -4,7 +4,7 @@ setup() {
   bats_tmp_dir
   export AUTOLOAD="$BATS_TMP_DIR/tools/term/zsh/config/functions/autoload"
   mkdir -p "$AUTOLOAD"
-  bats_mock_oroshi_root "$BATS_TMP_DIR"
+  bats_mock_env "OROSHI_ROOT" "$BATS_TMP_DIR"
 }
 
 # --- Tracking ---

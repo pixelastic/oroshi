@@ -112,20 +112,6 @@ bats_mock_env() {
   echo "export $1=\"$2\"" >>"$MOCK_OVERRIDE"
 }
 
-# bats_mock_oroshi_root <path>
-# Appends an OROSHI_ROOT export to $BATS_TMP_DIR/mock.zsh so subprocesses
-# launched by bats_run_zsh pick it up.
-# Composes with bats_mock. Auto-creates sandbox if needed.
-# Usage: bats_mock_oroshi_root "$BATS_TMP_DIR"
-bats_mock_oroshi_root() {
-  [[ "$1" == "" ]] && return 1
-  [[ "$BATS_TMP_DIR" == "" ]] && bats_tmp_dir
-
-  # zshenv-guest.zsh will pick it up and source it in every zsh call
-  export MOCK_OVERRIDE="$BATS_TMP_DIR/mock.zsh"
-  echo "export OROSHI_ROOT=\"$1\"" >> "$BATS_TMP_DIR/mock.zsh"
-}
-
 # bats_disable_worktree_aware
 # Disables automatic OROSHI_ROOT re-detection and PATH/fpath reload in all zsh
 # subprocesses spawned during this test. Binaries resolve from the inherited
@@ -136,6 +122,7 @@ bats_mock_oroshi_root() {
 bats_disable_worktree_aware() {
   export OROSHI_DISABLE_WORKTREE_AWARE=1
 }
+
 
 # bats_run_zsh <zsh-command>
 # Runs an arbitrary zsh command, injecting optional mocks added by bats_mock
@@ -162,6 +149,7 @@ bats_cleanup() {
 
 # Default teardown — runs bats_cleanup after every test.
 # Test files can override this by defining their own teardown().
+# bats-lint disable=noBoilerplateTeardown
 teardown() {
   bats_cleanup
 }

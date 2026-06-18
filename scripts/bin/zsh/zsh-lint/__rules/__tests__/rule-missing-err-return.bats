@@ -4,14 +4,14 @@ bats_load_library 'rules-helper'
 # Fixture lives at the autoload subpath within the mocked OROSHI_ROOT
 run_this_rule() {
   bats_tmp_dir
-  bats_mock_oroshi_root "$BATS_TMP_DIR"
+  bats_mock_env "OROSHI_ROOT" "$BATS_TMP_DIR"
   mkdir -p "$BATS_TMP_DIR/tools/term/zsh/config/functions/autoload"
   run_rule "${BATS_TEST_DIRNAME}/../rule-missing-err-return.zsh" "zshLintRule_missingErrReturn" "tools/term/zsh/config/functions/autoload/test" "$@"
 }
 
 @test "clean — not in autoload dir (e.g. compdef)" {
   bats_tmp_dir
-  bats_mock_oroshi_root "$BATS_TMP_DIR"
+  bats_mock_env "OROSHI_ROOT" "$BATS_TMP_DIR"
   local -a input=( '#compdef' 'function _jumps() { echo hello; }' )
   run_rule "${BATS_TEST_DIRNAME}/../rule-missing-err-return.zsh" "zshLintRule_missingErrReturn" "test" "${input[@]}"
   expect_clean
