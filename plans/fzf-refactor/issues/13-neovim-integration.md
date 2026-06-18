@@ -12,7 +12,9 @@ For each binding (Ctrl-P, Ctrl-Shift-P, Ctrl-G, Ctrl-Shift-G):
 - `options` → `<script> --options`
 - `sinklist` callback calls `<script> --postprocess` then performs editor actions (tab drop / line jump)
 
-Also remove the Ctrl-T binding from Neovim (duplicate of Ctrl-Shift-P, already removed from ZSH in issue 01).
+Also remove the Ctrl-T binding from Neovim and rename `onCtrlT` → `onCtrlShiftP` for consistency
+with ZSH keybindings. Ctrl-Shift-P (`Ⓟ`) remains the only binding for subdir file search.
+No function or variable should reference "Ctrl-T" after this issue.
 
 This issue is HITL because Neovim Lua changes have no automated test coverage (see project memory:
 no Lua test framework). Manual verification is required for each keybinding.

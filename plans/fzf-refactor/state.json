@@ -117,6 +117,30 @@
     ]
   },
   {
+    "id": "10b",
+    "issue": "issues/10b-init-preview-override.md",
+    "done": false,
+    "blocked_by": [
+      "10"
+    ]
+  },
+  {
+    "id": "10c",
+    "issue": "issues/10c-rename-dirty-stageable.md",
+    "done": false,
+    "blocked_by": [
+      "10b"
+    ]
+  },
+  {
+    "id": "10d",
+    "issue": "issues/10d-prompt-convention.md",
+    "done": false,
+    "blocked_by": [
+      "10c"
+    ]
+  },
+  {
     "id": "11",
     "issue": "issues/11-ctrl-g.md",
     "done": false,
