@@ -44,15 +44,17 @@ Each agent prompt must include:
 
 ### Step 3 — Aggregate
 
-**Goal:** Present reports under separate headings without merging or reranking.
+**Goal:** Present reports concisely, suppressing noise.
 
 **Exit criterion:** All reports displayed; summary given.
 
 Present each report under its own heading: `## Grouping`, `## Readability`, `## Colors`, `## Spacing`.
 
+**Nitpick suppression:** Within each axis, if there are any `improvement` findings, hide all `nitpick` findings for that axis. Only show nitpicks when an axis has zero improvements.
+
 Do **not** merge or rerank findings — the axes are deliberately separate.
 
-End with a one-line summary: total findings per group + worst severity across all groups.
+End with a one-line summary: per-axis improvement counts + total. If nitpicks were suppressed, append "(N nitpicks hidden)".
 
 ## Common Rationalizations
 
