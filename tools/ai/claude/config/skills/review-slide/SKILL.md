@@ -37,10 +37,10 @@ Each agent prompt must include:
 
 | Agent | Reference file |
 |---|---|
-| Grouping | `references/grouping.md` |
-| Readability | `references/readability.md` |
-| Colors | `references/colors.md` |
 | Spacing | `references/spacing.md` |
+| Readability | `references/readability.md` |
+| Grouping | `references/grouping.md` |
+| Colors | `references/colors.md` |
 
 ### Step 3 — Aggregate
 
@@ -48,7 +48,7 @@ Each agent prompt must include:
 
 **Exit criterion:** All reports displayed; summary given.
 
-Present each report under its own heading: `## Grouping`, `## Readability`, `## Colors`, `## Spacing`.
+Present each report under its own heading, in this order: `## Spacing`, `## Readability`, `## Grouping`, `## Colors`.
 
 **Nitpick suppression:** Within each axis, if there are any `improvement` findings, hide all `nitpick` findings for that axis. Only show nitpicks when an axis has zero improvements.
 
