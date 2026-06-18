@@ -142,3 +142,10 @@ _Append findings here after each issue. Format: `### Issue XX — short title` +
 - `fd --hidden --type=directory` DOES include `.git` in its output (even though it's a VCS dir). Added `--exclude=.git` to `__lib/fzf-source-directories.zsh` to fix this for all directory-listing scripts.
 - The plans context-aware behavior (`ralph` → plans picker) was dropped: the acceptance criteria deleted the plans autoloads, and no replacement FZF Script was in scope. The `ctrl-o.zsh` widget now simply calls `ctrl-o` directly.
 - `fzf-git-root` uses `git rev-parse --show-toplevel` (not `--show-superproject-working-tree`). The legacy used `-f` to go to the superproject root in submodules; the new script uses the current repo root only.
+
+### Issue 10b — init.zsh --preview and fzf-main override
+
+- Putting flag dispatch inside `fzf-main` prevents scripts from overriding it. Split into `fzf-main` (default pipeline, overridable) and `fzf-dispatch` (dispatcher for standard flags). All scripts call `fzf-dispatch` at the bottom.
+- `fzf-preview` graceful fallback uses `(( $+functions[fzf-preview] ))` — ZSH built-in to check if a function exists without invoking it.
+- `initArgs` captures `$@` after zparseopts strips standard flags — these remaining positional args are passed to `fzf-preview` (e.g. `--preview test.txt` → `fzf-preview test.txt`).
+- The issue spec says `fzf-git-files-dirty-stageable` but the actual file is `fzf-git-files-stageable` — spec has a naming typo.

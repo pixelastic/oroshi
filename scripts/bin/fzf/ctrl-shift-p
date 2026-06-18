@@ -17,7 +17,6 @@ fzf-source() {
 
 fzf-options() {
   fzf-options-base
-  echo "--delimiter=▮"
   echo "--with-nth=2"
   echo "--scheme=path"
   echo "--tiebreak=pathname,chunk"
@@ -36,4 +35,4 @@ fzf-postprocess() {
   done
 }
 
-fzf-main
+fzf-dispatch

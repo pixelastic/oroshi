@@ -5,6 +5,7 @@
 # $ fzf-git-files-stageable --source         # Print stageable files
 # $ fzf-git-files-stageable --options        # Print FZF options (one per line)
 # $ fzf-git-files-stageable --postprocess    # Read selection from stdin, print filepath
+# $ fzf-git-files-stageable --preview <file> # Show diff or file content for preview pane
 set -e
 source "${0:h}/__lib/init.zsh"
 source "${0:h}/__lib/fzf-options-base.zsh"
@@ -30,6 +31,25 @@ fzf-source() {
   done
 }
 
+fzf-preview() {
+  local gitRoot="$(git-directory-root)"
+  local filepath="${gitRoot}/$1"
+
+  local diff="$(git diff HEAD --color=always -- "$filepath")"
+
+  # No diff means new file — show file content
+  if [[ "$diff" == "" ]]; then
+    fzf-fs-shared-preview "$filepath"
+    return 0
+  fi
+
+  # Show the diff
+  img-display --clear
+  # Skip header for deleted files — they no longer exist on disk
+  [[ -e "$filepath" ]] && fzf-fs-shared-preview-header "$filepath"
+  echo "$diff"
+}
+
 fzf-options() {
   fzf-options-base
 
@@ -40,9 +60,8 @@ fzf-options() {
   local promptSuffix="$(colorize "$ICONS[fzf-separator]" $COLORS[terminal] $COLORS[git-modified])"
   echo "--prompt=${promptPrefix}${promptSuffix} "
 
-  echo "--delimiter=▮"
   echo "--with-nth=2"
-  echo "--preview=fzf-git-files-stageable-preview {1}"
+  echo "--preview=fzf-git-files-stageable --preview {1}"
   echo "--preview-window=wrap"
 }
 
@@ -55,4 +74,4 @@ fzf-postprocess() {
   done
 }
 
-fzf-main
+fzf-dispatch

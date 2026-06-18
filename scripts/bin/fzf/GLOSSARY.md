@@ -42,6 +42,11 @@ _Avoid_: header, title, prefix
 `.zsh` files in `scripts/bin/fzf/__lib/` that are sourced (not executed) by **FZF Scripts** to share common functions across scripts. Each file is named after the single function it exports (e.g. `fzf-options-base.zsh` exports `fzf-options-base`).
 _Avoid_: shared library, helpers, utils, _shared
 
+**fzf-dispatch**:
+The dispatcher function defined by `init.zsh` — handles standard flags (`--source`, `--options`, `--postprocess`, `--preview`), then falls through to **fzf-main**.
+Every **FZF Script** calls `fzf-dispatch` at the bottom.
+_Avoid_: fzf-run, fzf-init
+
 **Neovim API**:
 The `--source` / `--options` / `--postprocess` argument interface that allows Neovim to invoke individual **Lifecycle Functions** separately via `fzf#run()`.
 _Avoid_: dispatch interface, lifecycle API, vim API
@@ -56,8 +61,8 @@ _Avoid_: old system, autoload FZF
 - A **FZF Script** may source zero or more **FZF Helpers**
 - **fzf-main** assembles the pipeline: `fzf-source | fzf $(fzf-options) | fzf-postprocess`
 - **fzf-postprocess** always receives its input via stdin (never via argument)
-- The **Neovim API** exposes **fzf-source**, **fzf-options**, and **fzf-postprocess** individually — never **fzf-main**
-- A ZSH keybinding widget calls a **FZF Script** with no arguments, triggering **fzf-main**
+- The **Neovim API** exposes **fzf-source**, **fzf-options**, **fzf-postprocess**, and **fzf-preview** individually — never **fzf-main**
+- A ZSH keybinding widget calls a **FZF Script** with no arguments — **fzf-dispatch** dispatches to **fzf-main**
 - **FZF Helpers** are sourced at the top of a **FZF Script** — their functions are available to all **Lifecycle Functions**
 
 ## Flagged ambiguities

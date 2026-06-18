@@ -40,3 +40,11 @@ teardown() {
   bats_run_zsh "printf '' | fzf-docker-images --postprocess"
   [ "$output" = "" ]
 }
+
+# fzf-preview
+
+@test "preview: exits gracefully without fzf-preview defined" {
+  bats_run_zsh "fzf-docker-images --preview"
+  [ "$status" -eq 0 ]
+  [ "$output" = "" ]
+}

@@ -119,7 +119,8 @@
   {
     "id": "10b",
     "issue": "issues/10b-init-preview-override.md",
-    "done": false,
+    "done": true,
+    "recap": "Added --preview flag to init.zsh; split init into fzf-main (overridable pipeline) and fzf-run (dispatcher); migrated fzf-docker-images and fzf-apt-packages to init.zsh; ctrl-p sources init.zsh with second zparseopts for custom flags; inlined fzf-preview into fzf-git-files-stageable, deleted standalone preview script.",
     "blocked_by": [
       "10"
     ]

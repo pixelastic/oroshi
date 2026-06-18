@@ -4,4 +4,5 @@
 fzf-options-base() {
   echo "--ansi"
   echo "--layout=reverse"
+  echo "--delimiter=▮"
 }

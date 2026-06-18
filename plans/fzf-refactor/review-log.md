@@ -268,3 +268,28 @@ bats_git_dir
 ### Spec: preview behavior change
 **Problem:** Legacy previewed diff of commit version vs working tree; new script previews commit vs parent.
 **Reason skipped:** `git diff {1}^ {1}` is standard commit-diff preview, more useful for browsing history. Legacy behavior was unusual.
+
+## Issue 10b — init.zsh --preview and fzf-main override
+
+### --format dispatch inside fzf-main
+```zsh
+fzf-main() {
+  if [[ $isFormat == "1" ]]; then fzf-format; return 0; fi
+```
+**Problem:** `--format` is dispatched inside `fzf-main` (pipeline assembler), mixing dispatch and pipeline roles per GLOSSARY definition.
+**Reason skipped:** `--format` is ctrl-p-specific, not a standard flag. It belongs in the overridden `fzf-main` since it's part of ctrl-p's custom pipeline logic — `fzf-dispatch` only dispatches the 4 standard flags.
+
+### fzf-dispatch not in spec
+```zsh
+fzf-dispatch() {
+  if [[ $isSource == "1" ]]; then fzf-source; return 0; fi
+```
+**Problem:** Spec says `fzf-main` remains the single entry point; `fzf-dispatch` is an architectural departure not mentioned in spec.
+**Reason skipped:** Necessary to support the spec's own requirement that "scripts can override fzf-main". If dispatch lives inside fzf-main, overriding it loses dispatch.
+
+### Spec file naming typo
+```
+fzf-git-files-dirty-stageable
+```
+**Problem:** Spec says `fzf-git-files-dirty-stageable` but actual file is `fzf-git-files-stageable`.
+**Reason skipped:** File was created as `fzf-git-files-stageable` in issue 10. Spec has a naming typo.

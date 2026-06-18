@@ -12,9 +12,7 @@ setup() {
   touch "$BATS_TMP_DIR/ignored.log"
   printf 'ignored.log\n' > "$BATS_TMP_DIR/.gitignore"
 
-  # cache dir for format stage tests
-  CACHE_DIR="$BATS_TMP_DIR/cache"
-  mkdir -p "$CACHE_DIR"
+  bats_mock_env "OROSHI_TMP_FOLDER" "$BATS_TMP_DIR"
 }
 
 teardown() {
@@ -27,8 +25,8 @@ teardown() {
   bats_run_zsh "cd $BATS_TMP_DIR && ctrl-p --source"
   [ "$status" -eq 0 ]
   [[ "$output" == *"README.md"* ]]
-  [[ "$output" == *"src/app.js"* ]]
-  [[ "$output" == *"src/deep/nested.js"* ]]
+  [[ "$output" == *"app.js"* ]]
+  [[ "$output" == *"nested.js"* ]]
 }
 
 @test "fzf-source: respects .gitignore exclusions" {
@@ -37,25 +35,23 @@ teardown() {
   [[ "$output" != *"ignored.log"* ]]
 }
 
-@test "fzf-source: writes a cache file" {
-  bats_run_zsh "cd $BATS_TMP_DIR && CTRL_P_CACHE_DIR=$CACHE_DIR ctrl-p --source"
-  [ "$status" -eq 0 ]
-  # Cache dir should contain a file
-  local cacheFiles=("$CACHE_DIR"/*)
-  [ -f "${cacheFiles[0]}" ]
-}
-
-@test "fzf-source: each line is a full relative path" {
+@test "fzf-source: outputs two-column lines with ▮ separator" {
   bats_run_zsh "cd $BATS_TMP_DIR && ctrl-p --source"
   [ "$status" -eq 0 ]
-  # Lines should be plain relative paths, not truncated
-  [[ "$output" == *"src/deep/nested.js"* ]]
+  [[ "${lines[0]}" == *"▮"* ]]
+}
+
+@test "fzf-source: first column is absolute path" {
+  bats_run_zsh "cd $BATS_TMP_DIR && ctrl-p --source"
+  [ "$status" -eq 0 ]
+  local firstCol="${lines[0]%%▮*}"
+  [[ "$firstCol" == "$BATS_TMP_DIR/"* ]]
 }
 
 # fzf-postprocess
 
-@test "fzf-postprocess: extracts absolute path from tab-separated selection" {
-  bats_run_zsh "printf '/tmp/project/src/app.js\tapp.js\n' | ctrl-p --postprocess"
+@test "fzf-postprocess: extracts absolute path from selection" {
+  bats_run_zsh "printf '/tmp/project/src/app.js▮app.js\n' | ctrl-p --postprocess"
   [ "$status" -eq 0 ]
   [ "$output" = "/tmp/project/src/app.js" ]
 }
@@ -67,41 +63,23 @@ teardown() {
 }
 
 @test "fzf-postprocess: handles paths with spaces" {
-  bats_run_zsh "printf '/tmp/my project/my file.js\tmy file.js\n' | ctrl-p --postprocess"
+  bats_run_zsh "printf '/tmp/my project/my file.js▮my file.js\n' | ctrl-p --postprocess"
   [ "$status" -eq 0 ]
   [ "$output" = "/tmp/my project/my file.js" ]
 }
 
-# format stage
+# reload
 
-@test "format: outputs two-column tab-separated lines from cache" {
-  printf 'src/app.js\nsrc/deep/nested.js\n' > "$CACHE_DIR/test-cache"
-  bats_run_zsh "CTRL_P_CACHE_DIR=$CACHE_DIR ctrl-p --format --cache-key test-cache --git-root $BATS_TMP_DIR --query ''"
-  [ "$status" -eq 0 ]
-  # Output should contain tab-separated absolute_path and display_path
-  [[ "${lines[0]}" == *$'\t'* ]]
-}
-
-@test "format: shows all files when query is empty" {
-  printf 'src/app.js\nsrc/deep/nested.js\n' > "$CACHE_DIR/test-cache"
-  bats_run_zsh "CTRL_P_CACHE_DIR=$CACHE_DIR ctrl-p --format --cache-key test-cache --git-root $BATS_TMP_DIR --query ''"
+@test "reload: shows all files when query is empty" {
+  bats_run_zsh "cd $BATS_TMP_DIR && ctrl-p --reload --reload-query ''"
   [ "$status" -eq 0 ]
   [[ "$output" == *"app.js"* ]]
   [[ "$output" == *"nested.js"* ]]
 }
 
-@test "format: filters files by query on full path" {
-  printf 'src/app.js\nsrc/deep/nested.js\nREADME.md\n' > "$CACHE_DIR/test-cache"
-  bats_run_zsh "CTRL_P_CACHE_DIR=$CACHE_DIR ctrl-p --format --cache-key test-cache --git-root $BATS_TMP_DIR --query deep"
+@test "reload: filters files by query" {
+  bats_run_zsh "cd $BATS_TMP_DIR && ctrl-p --reload --reload-query deep"
   [ "$status" -eq 0 ]
   [[ "$output" == *"nested.js"* ]]
   [[ "$output" != *"README.md"* ]]
-}
-
-@test "format: first column is absolute path" {
-  printf 'src/app.js\n' > "$CACHE_DIR/test-cache"
-  bats_run_zsh "CTRL_P_CACHE_DIR=$CACHE_DIR ctrl-p --format --cache-key test-cache --git-root $BATS_TMP_DIR --query ''"
-  [ "$status" -eq 0 ]
-  local firstCol="${lines[0]%%$'\t'*}"
-  [[ "$firstCol" == "$BATS_TMP_DIR/"* ]]
 }

@@ -33,4 +33,4 @@ fzf-postprocess() {
   done
 }
 
-fzf-main
+fzf-dispatch

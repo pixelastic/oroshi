@@ -22,7 +22,7 @@ fzf-options-prompt-directory() {
   fi
   # Colorize and prefix with project badge
   fzfPrompt="$(colorize "$fzfPrompt" $COLORS[directory])"
-  fzfPrompt="${projectPrefix}${fzfPrompt}"
+  fzfPrompt="${projectPrefix}${fzfPrompt} "
 
   echo $fzfPrompt
 }
