@@ -6,10 +6,6 @@ setup() {
   cp "$FIXTURE" "$BATS_TMP_DIR/simple.epub"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "converts to .md" {
   bats_run_zsh "epub2md $BATS_TMP_DIR/simple.epub"
   [ "$status" -eq 0 ]

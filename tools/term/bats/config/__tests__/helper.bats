@@ -9,10 +9,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # --- Worktree-aware ---
 
 @test "script chain: baz resolves from the current OROSHI_ROOT" {

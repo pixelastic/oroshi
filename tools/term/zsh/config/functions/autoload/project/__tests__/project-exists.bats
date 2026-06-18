@@ -7,10 +7,6 @@ setup() {
   bats_mock projects-load-definitions
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "known project with icon: returns exit 0" {
   projects-load-definitions() {
     typeset -gA PROJECTS

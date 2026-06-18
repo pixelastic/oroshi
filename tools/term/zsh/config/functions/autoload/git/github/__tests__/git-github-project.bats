@@ -4,10 +4,6 @@ setup() {
   bats_git_dir 'testrepo'
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "returns owner/name from SSH GitHub URL" {
   bats_git remote add origin git@github.com:pixelastic/testrepo.git
   cd "$BATS_GIT_DIR"

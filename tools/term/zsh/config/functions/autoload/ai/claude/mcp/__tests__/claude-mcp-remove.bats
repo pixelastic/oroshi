@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "does nothing when server is not added" {
   claude-mcp-is-added() { return 1; }
   claude() { echo "claude called"; }

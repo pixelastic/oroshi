@@ -8,10 +8,6 @@ setup() {
   bats_git commit --quiet --message "add tracked"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "0-arg, clean tree: exits 0 with empty output" {
   cd "$BATS_GIT_DIR"
   run review-diff

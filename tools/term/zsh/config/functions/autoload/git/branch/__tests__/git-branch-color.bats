@@ -14,10 +14,6 @@ setup() {
   bats_mock colors-load-definitions git-branch-current
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "returns branch-specific color for known branch" {
   bats_run_zsh "git-branch-color main"
   [ "$status" -eq 0 ]

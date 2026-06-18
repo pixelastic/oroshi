@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "merges custom rule output with shellcheck JSON into single array" {
   local file="$BATS_TMP_DIR/test.zsh"
   printf 'case "$1" in\n  --foo) foo=1 ;;\nesac\n' > "$file"

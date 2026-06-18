@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "colorizes each package with pip-package-colorize" {
   pip-list-raw() { echo "requests▮2.31.0"; }
   pip-package-colorize() { echo "PKG:$1"; }

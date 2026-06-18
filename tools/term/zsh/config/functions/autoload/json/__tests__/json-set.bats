@@ -5,10 +5,6 @@ setup() {
   JSON_FILE="$BATS_TMP_DIR/test.json"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # --- string (default) ---
 
 @test "write string: key holds new value, other keys unchanged, exits 0" {

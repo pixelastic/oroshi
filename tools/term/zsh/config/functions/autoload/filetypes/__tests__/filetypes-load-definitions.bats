@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "no-op if FILETYPES already set" {
   bats_mock_env FILETYPES "preset"
   bats_run_zsh "filetypes-load-definitions; echo \${FILETYPES}"

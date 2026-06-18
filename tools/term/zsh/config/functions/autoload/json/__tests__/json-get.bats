@@ -5,10 +5,6 @@ setup() {
   JSON_FILE="$BATS_TMP_DIR/test.json"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # --- --input flag ---
 
 @test "--input: scalar read returns value, exit 0" {

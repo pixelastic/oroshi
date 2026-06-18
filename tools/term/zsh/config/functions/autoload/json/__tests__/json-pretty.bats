@@ -5,10 +5,6 @@ setup() {
   JSON_FILE="$BATS_TMP_DIR/test.json"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # --- argument ---
 
 @test "argument: pretty-prints JSON, exit 0" {

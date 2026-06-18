@@ -10,10 +10,6 @@ setup() {
   bats_mock projects-load-definitions
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # --- With argument ---
 
 @test "with arg: returns path of known project" {

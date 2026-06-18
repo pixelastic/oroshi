@@ -5,10 +5,6 @@ setup() {
   bats_git_worktree 'fix/bug'
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "returns git-dir for a directory inside a worktree" {
   bats_run_zsh "git-directory-gitdir ${BATS_GIT_WORKTREES}repo--fix-bug"
   [ "$status" -eq 0 ]

@@ -13,10 +13,6 @@ setup() {
   bats_mock find-up yarn-link-list-raw
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "no flags: shows only dependencies, exit 0" {
   bats_run_zsh "yarn-dependency-list-raw"
   [ "$status" -eq 0 ]

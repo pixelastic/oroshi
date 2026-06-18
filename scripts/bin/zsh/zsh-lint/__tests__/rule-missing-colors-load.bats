@@ -5,10 +5,6 @@ setup() {
   sourcePrefix="source '${BATS_TEST_DIRNAME}/../zsh-lint-custom.zsh'"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # PASS cases {{{
 @test "no COLORS usage: no violation" {
   local file="$BATS_TMP_DIR/test.zsh"

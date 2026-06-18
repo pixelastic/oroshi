@@ -12,10 +12,6 @@ setup() {
   cd "$BATS_GIT_DIR" || return
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "returns branch:message for each branch" {
   bats_run_zsh "complete-git-branches-local"
   [ "$status" -eq 0 ]

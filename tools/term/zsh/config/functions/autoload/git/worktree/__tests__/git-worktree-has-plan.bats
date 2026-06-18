@@ -4,10 +4,6 @@ setup() {
   bats_git_dir 'repo'
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "exits 0 inside a worktree with a plan" {
   local wt_path="$(bats_git_worktree 'feat/test-ralph')"
   mkdir -p "$wt_path/plans/feat_test-ralph"

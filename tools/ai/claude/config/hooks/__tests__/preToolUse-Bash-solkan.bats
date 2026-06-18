@@ -5,8 +5,6 @@ setup() {
   sourcePrefix="hookDir='${BATS_TEST_DIRNAME}/..'; source '${BATS_TEST_DIRNAME}/../preToolUse-Bash-solkan.zsh'"
 }
 
-teardown() { bats_cleanup; }
-
 @test "exits 0 for an allowlisted simple command" {
   bats_run_zsh "${sourcePrefix}; preToolUse-Bash-solkan 'git status'"
   [ "$status" -eq 0 ]

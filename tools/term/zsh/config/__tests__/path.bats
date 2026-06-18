@@ -8,10 +8,6 @@ setup() {
   mkdir -p "$FAKE_ROOT_B/scripts/bin/gamma"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "given a root arg, PATH contains scripts/bin subdirs of that root" {
   bats_run_zsh "oroshi-reload-path $FAKE_ROOT_B; echo \$PATH"
   [ "$status" -eq 0 ]

@@ -8,10 +8,6 @@ setup() {
   bats_mock claude-print
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "0-arg: invokes claude-print with '/review'" {
   bats_run_zsh "review"
   [ "$status" -eq 0 ]

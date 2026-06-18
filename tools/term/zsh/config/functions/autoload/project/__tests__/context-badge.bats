@@ -24,10 +24,6 @@ setup() {
   bats_mock colors-load-definitions project-name git-worktree-name projects-load-definitions icons-load-definitions
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # --- Simple project ---
 
 @test "simple project: output contains name" {

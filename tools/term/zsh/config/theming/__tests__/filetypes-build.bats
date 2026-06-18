@@ -61,10 +61,6 @@ ICONS
   }' >"$THEMING_ROOT/src/filetypes.jsonc"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "produces dist/filetypes.zsh" {
   bats_run_zsh "$FILETYPES_BUILD"
   [ "$status" -eq 0 ]

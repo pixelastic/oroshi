@@ -5,10 +5,6 @@ setup() {
   bats_git_worktree 'fix/bug'
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "prints the worktree path for a given branch" {
   cd "$BATS_GIT_DIR"
   bats_run_zsh "git-worktree-path fix/bug"

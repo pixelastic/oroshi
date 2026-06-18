@@ -5,10 +5,6 @@ setup() {
   bats_mock_env HOME "$BATS_TMP_DIR"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "exits 0 when server key is present in ~/.claude.json" {
   echo '{"mcpServers":{"foo":{}}}' > "$BATS_TMP_DIR/.claude.json"
   bats_run_zsh "claude-mcp-is-added foo"

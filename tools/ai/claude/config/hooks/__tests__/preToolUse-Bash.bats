@@ -7,8 +7,6 @@ setup() {
   export CLAUDE_SESSIONS_DIR="$BATS_TMP_DIR"
 }
 
-teardown() { bats_cleanup; }
-
 @test "allow with updatedInput when solkan allows and RTK does not rewrite" {
   preToolUse-Bash-solkan() {
     print '{"isAllowed":true,"commands":{"allowed":["echo"],"rejected":[]}}'

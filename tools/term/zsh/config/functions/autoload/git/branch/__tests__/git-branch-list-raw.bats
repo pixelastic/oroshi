@@ -25,10 +25,6 @@ setup() {
   cd "$BATS_GIT_DIR" || return
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "outputs one line per branch" {
   bats_run_zsh "git-branch-list-raw"
   [ "$status" -eq 0 ]

@@ -35,10 +35,6 @@ setup() {
     >"$THEMING_ROOT/src/projects.json"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # --- Source ---
 
 @test "src/projects.json is sorted alphabetically in-place after build" {

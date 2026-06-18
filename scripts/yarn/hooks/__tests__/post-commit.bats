@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "exits 0 when plan-directory fails" {
   plan-directory() { return 1; }
   bats_mock plan-directory

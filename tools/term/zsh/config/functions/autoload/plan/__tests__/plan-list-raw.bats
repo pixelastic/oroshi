@@ -11,10 +11,6 @@ setup() {
   export BATS_SEPARATOR="▮"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "each line has format fullAbsolutePath▮basename" {
   bats_run_zsh "plan-list-raw"
   [ "$status" -eq 0 ]

@@ -6,10 +6,6 @@ setup() {
   bats_git_worktree 'fix/bug'
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "outputs 0▮0 for branch with no divergence from main" {
   bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--fix-bug && source $CURRENT fix/bug"
   [ "$status" -eq 0 ]

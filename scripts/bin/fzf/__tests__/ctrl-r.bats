@@ -7,10 +7,6 @@ setup() {
   export HISTFILE="$BATS_TMP_DIR/histfile"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # fzf-source
 
 @test "fzf-source: outputs one entry per line" {

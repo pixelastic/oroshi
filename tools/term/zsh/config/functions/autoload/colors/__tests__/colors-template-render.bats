@@ -16,10 +16,6 @@ colors-template-render "${TEMPLATE}"
 SCRIPT
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # --- Basic substitution ---
 
 @test "{{name}} is replaced with ANSI integer" {

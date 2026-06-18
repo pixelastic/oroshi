@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-migration.md",
-    "done": false,
-    "blocked_by": ["01", "02"]
+    "done": true,
+    "blocked_by": ["01", "02"],
+    "recap": "Removed boilerplate teardown() from 125 .bats files; rtk.bats non-trivial teardown preserved"
   }
 ]

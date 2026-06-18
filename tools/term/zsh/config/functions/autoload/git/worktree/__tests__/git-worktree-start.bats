@@ -5,10 +5,6 @@ setup() {
   bats_git_worktree 'fix/bug'
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "returns base commit hash when worktree has commits ahead of main" {
   cd "${BATS_GIT_WORKTREES}my-repo--fix-bug"
   local baseCommit="$(git rev-parse HEAD)"

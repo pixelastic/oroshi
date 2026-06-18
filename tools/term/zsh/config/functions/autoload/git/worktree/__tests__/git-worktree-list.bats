@@ -19,10 +19,6 @@ setup() {
   bats_mock icons-load-definitions
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "returns empty output when no worktrees exist" {
   bats_git_dir 'empty-repo'
 

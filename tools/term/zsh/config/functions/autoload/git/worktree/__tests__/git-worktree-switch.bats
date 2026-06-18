@@ -5,10 +5,6 @@ setup() {
   bats_git_worktree 'fix/bug'
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "cds into the worktree directory" {
   cd "$BATS_GIT_DIR"
   local script="$BATS_TMP_DIR/switch-test.zsh"

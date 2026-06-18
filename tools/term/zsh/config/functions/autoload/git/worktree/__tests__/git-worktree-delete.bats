@@ -5,10 +5,6 @@ setup() {
   bats_git_worktree 'feature'
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "removes the worktree directory" {
   bats_run_zsh "cd '$BATS_GIT_DIR' && git-worktree-delete feature"
   [ "$status" -eq 0 ]

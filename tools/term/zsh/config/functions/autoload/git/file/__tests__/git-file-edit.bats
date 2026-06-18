@@ -7,10 +7,6 @@ setup() {
   bats_git commit --quiet -m "initial"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "does nothing when working tree is clean" {
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
   [ "$status" -eq 0 ]

@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "prdPath contains plans/<slug>/PRD.md" {
   git-directory-is-worktree() { return 0; }
   git-directory-root() { echo "/repo"; }

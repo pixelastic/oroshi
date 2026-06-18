@@ -6,10 +6,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "path longer than maxDisplay truncated to first/…/penultimate/last" {
   bats_run_zsh "simplify-path 'a/b/c/d/e'"
   [ "$output" = "a/…/d/e" ]

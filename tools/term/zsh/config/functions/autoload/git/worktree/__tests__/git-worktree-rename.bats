@@ -10,10 +10,6 @@ setup() {
   # echo "oroshi-reload-fpath \$OROSHI_ROOT" >> "$BATS_TMP_DIR/mock.zsh"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # 1-argument form
 @test "1-arg: renames the current worktree" {
   bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--feature && git-worktree-rename refactor"

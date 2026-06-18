@@ -4,10 +4,6 @@ setup() {
   bats_git_dir 'repo'
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # --- no argument ---
 
 @test "no arg: returns main on a fresh repo" {

@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "exits 0 for a .js file" {
   local file="$BATS_TMP_DIR/foo.js"
   echo "console.log('hi')" > "$file"

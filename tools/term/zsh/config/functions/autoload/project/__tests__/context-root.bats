@@ -9,10 +9,6 @@ setup() {
   bats_mock projects-load-definitions project-path git-directory-root
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "in project: passes arg through project-name then to project-path" {
   project-name() { echo "project-name:$1"; }
   git-directory-is-worktree() { return 1; }

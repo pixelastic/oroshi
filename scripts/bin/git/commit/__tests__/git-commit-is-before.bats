@@ -13,10 +13,6 @@ setup() {
   export SHA_B="$(git -C "$BATS_GIT_DIR" rev-parse HEAD)"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "returns 0 when first commit is before second" {
   cd "$BATS_GIT_DIR"
   run git-commit-is-before "$SHA_A" "$SHA_B"

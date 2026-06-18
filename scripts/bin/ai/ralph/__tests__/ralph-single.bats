@@ -11,8 +11,6 @@ setup() {
   sourcePrefix="source '$BATS_TEST_DIRNAME/../__lib/ralph-single.zsh'"
 }
 
-teardown() { bats_cleanup; }
-
 @test "refuses to run when a session is already active" {
   ralph-is-running() { return 0; }
   bats_mock ralph-is-running

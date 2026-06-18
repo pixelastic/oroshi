@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "identical colors return 0" {
   bats_run_zsh "color-distance '#FF0000' '#FF0000'"
   [ "$output" = "0" ]

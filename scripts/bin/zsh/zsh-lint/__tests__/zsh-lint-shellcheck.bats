@@ -5,10 +5,6 @@ setup() {
   sourcePrefix="source '${BATS_TEST_DIRNAME}/../zsh-lint-shellcheck.zsh'"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "outputs [] and exits 0 for clean file" {
   local file="$BATS_TMP_DIR/test.zsh"
   printf '# clean\n' >"$file"

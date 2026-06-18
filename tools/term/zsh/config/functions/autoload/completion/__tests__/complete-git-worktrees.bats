@@ -20,10 +20,6 @@ setup() {
   bats_mock icons-load-definitions
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "includes worktrees of the current repo" {
   cd "$BATS_MY_REPO"
   bats_run_zsh "complete-git-worktrees"

@@ -6,10 +6,6 @@ setup() {
   bats_git_worktree 'feat/dark-mode'
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "lists worktrees with branch and path on each line" {
   bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-list-raw"
   [ "$status" -eq 0 ]

@@ -5,10 +5,6 @@ setup() {
   bats_mock projects-load-definitions
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "path inside project: returns sub-path without leading slash" {
   context-root() { echo "/my/root"; }
   bats_mock context-root

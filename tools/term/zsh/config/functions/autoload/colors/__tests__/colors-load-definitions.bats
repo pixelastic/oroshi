@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "no-op if COLORS already set" {
   bats_mock_env COLORS "preset"
   bats_run_zsh "colors-load-definitions"

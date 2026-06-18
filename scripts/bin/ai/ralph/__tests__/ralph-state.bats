@@ -5,10 +5,6 @@ setup() {
   export DIR="$BATS_TMP_DIR"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "init creates state file with given mode" {
   run ralph-state "$DIR" init loop
   [ "$status" -eq 0 ]

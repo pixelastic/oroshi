@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "handles submodule in detached HEAD (no branch in status)" {
   git() { echo " abc12345678 some/module"; }
   git-directory-root() { echo "/repo"; }

@@ -4,8 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() { bats_cleanup; }
-
 @test "exits 0 for a command RTK can natively rewrite" {
   bats_run_zsh "rtk-can-rewrite 'git status'"
   [ "$status" -eq 0 ]

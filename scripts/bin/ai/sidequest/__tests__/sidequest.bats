@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "no slug: exits with error" {
   git-worktree-create() { return 0; }
   git-worktree-path() { echo "$BATS_TMP_DIR/myrepo--my-slug"; }

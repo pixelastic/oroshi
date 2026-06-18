@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "no --cmd: kitty-remote called with zsh" {
   kitty-remote() { echo "$*" >"$BATS_TMP_DIR/kitty-args"; }
   bats_mock kitty-remote

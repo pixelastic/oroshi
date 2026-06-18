@@ -6,10 +6,6 @@ setup() {
   sourcePrefix="source '${BATS_TEST_DIRNAME}/../zsh-lint-custom.zsh'"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "clean file" {
   printf '# clean\n' >"$TEST_FILE"
 

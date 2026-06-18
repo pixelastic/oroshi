@@ -5,10 +5,6 @@ setup() {
   sourcePrefix="source '$BATS_TEST_DIRNAME/../oroshi-git-env-store.zsh'"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "GIT_DIRECTORY_IS_WORKTREE is 1 when in a linked worktree" {
   git-directory-is-worktree() { return 0; }
   git-directory-is-repository() { return 0; }

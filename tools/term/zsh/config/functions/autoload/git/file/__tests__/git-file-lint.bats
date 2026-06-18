@@ -4,10 +4,6 @@ setup() {
   bats_git_dir 'my-repo'
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # ─── RETURN EARLY ─────────────────────────────────────────────────────────────
 
 @test "exits 0 when working tree is clean" {

@@ -6,10 +6,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "colorize with fg and bg produces ANSI fg sequence" {
   bats_run_zsh "colorize 'text' 87 100"
   [[ "$output" == *$'\e[38;5;87m'* ]]

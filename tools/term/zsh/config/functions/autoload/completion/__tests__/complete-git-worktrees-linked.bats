@@ -17,10 +17,6 @@ setup() {
   bats_mock icons-load-definitions
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "does not include 'main'" {
   cd "$BATS_GIT_DIR"
   bats_run_zsh "complete-git-worktrees-linked"

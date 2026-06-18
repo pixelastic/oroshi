@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "colorizes branch name" {
   git-branch-color() { echo 87; }
   colorize() { echo "colorize:$*"; }

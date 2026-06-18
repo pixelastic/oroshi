@@ -8,10 +8,6 @@ setup() {
   bats_git commit --quiet -m "init"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "returns 0 for a clean worktree" {
   bats_run_zsh "cd $BATS_GIT_DIR && git-directory-dirty-count"
   [ "$status" -eq 0 ]

@@ -12,10 +12,6 @@ setup() {
   bats_mock git-directory-root git img-display fzf-fs-shared-preview-header
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "no error when previewing a deleted file" {
   bats_run_zsh "$CURRENT deleted.zsh"
   bats_debug "$output"

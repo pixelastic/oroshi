@@ -5,10 +5,6 @@ setup() {
   CURRENT="${BATS_TEST_DIRNAME}/../lua-test-path"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "returns path when given an existing _spec.lua file" {
   local file="$BATS_TMP_DIR/foo_spec.lua"
   touch "$file"

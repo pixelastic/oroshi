@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "outputs [] and exits 0 when both linters return empty" {
   is-bats() { return 0; }
   bats-lint-shellcheck() { printf '[]\n'; }

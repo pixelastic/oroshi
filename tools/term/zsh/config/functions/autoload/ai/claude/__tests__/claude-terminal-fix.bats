@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "exits successfully" {
   bats_run_zsh "claude-terminal-fix"
   [ "$status" -eq 0 ]

@@ -15,10 +15,6 @@ setup() {
   export THEMING_ROOT="$REAL_THEMING_ROOT"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "alias migration: COLORS[error:hex] = #ef4444 (red-4)" {
   bats_run_zsh "$CURRENT"
   local script="$BATS_TMP_DIR/verify.zsh"

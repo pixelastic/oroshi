@@ -15,10 +15,6 @@ setup() {
   bats_mock context-badge
 }
 
-teardown() {
-  bats_cleanup
-}
-
 statusline_json() {
   local dir="${1:-/some/dir}"
   local tokens="${2:-0}"

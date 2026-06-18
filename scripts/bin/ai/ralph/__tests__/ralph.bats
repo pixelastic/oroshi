@@ -6,10 +6,6 @@ setup() {
   mkdir -p "$PRD_DIR"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "without --max, calls ralph-single with the directory" {
   ralph-single() { echo "SINGLE:$*"; }
   ralph-loop() { return 0; }

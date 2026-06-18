@@ -8,10 +8,6 @@ setup() {
   bats_mock git-remote-current git-remote-color
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # --- ANSI mode (no --zsh) ---
 
 @test "git-remote-colorize origin produces ANSI output" {

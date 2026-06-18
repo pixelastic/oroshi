@@ -15,10 +15,6 @@ setup() {
   bats_mock projects-load-definitions
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # --- Without argument (uses $PWD) ---
 
 @test "no arg: at root of known project" {

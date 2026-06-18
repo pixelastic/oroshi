@@ -6,10 +6,6 @@ setup() {
   export PLAN_DIR="$BATS_TMP_DIR/plan-dir"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "outputs done▮total for mixed done values" {
   printf '[{"id":"01","issue":"i.md","done":true,"blocked_by":[]},{"id":"02","issue":"i.md","done":false,"blocked_by":[]},{"id":"03","issue":"i.md","done":false,"blocked_by":[]}]' > "$PLAN_DIR/state.json"
   bats_run_zsh "plan-progress $PLAN_DIR"

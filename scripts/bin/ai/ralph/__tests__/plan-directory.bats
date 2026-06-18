@@ -4,10 +4,6 @@ setup() {
   bats_git_dir 'repo'
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "returns absolute path to plans/<slug>/ in a ralph worktree" {
   local wt_path="$(bats_git_worktree 'feat/my-feat')"
   mkdir -p "$wt_path/plans/feat_my-feat"

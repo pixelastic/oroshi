@@ -7,10 +7,6 @@ setup() {
   git commit --allow-empty --quiet -m "fix work"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "fast-forwards main to current HEAD" {
   cd "${BATS_GIT_WORKTREES}my-repo--fix-bug"
   local fixHead="$(git rev-parse HEAD)"

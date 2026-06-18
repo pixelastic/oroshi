@@ -5,10 +5,6 @@ setup() {
   sourcePrefix="source '${BATS_TEST_DIRNAME}/../bats-lint-custom.zsh';"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "outputs [] and exits 0 for clean file" {
   local file="$BATS_TMP_DIR/test.bats"
   printf '@test "ok" { bats_run_function echo; }\n' >"$file"

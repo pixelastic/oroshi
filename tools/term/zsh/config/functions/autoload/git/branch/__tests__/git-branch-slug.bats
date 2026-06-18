@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "replaces single slash with underscore" {
   bats_run_zsh "git-branch-slug 'feat/my-feature'"
   [ "$status" -eq 0 ]

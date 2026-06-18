@@ -6,10 +6,6 @@ setup() {
   export PRD_DIR="$BATS_TMP_DIR/prd-dir"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "does nothing in single-shot mode" {
   ralph-state "$PRD_DIR" init single
   run ralph-end "$PRD_DIR"

@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "does nothing when server is already added" {
   claude-mcp-is-added() { return 0; }
   claude-mcp-add-foo() { echo "sub-script called"; }

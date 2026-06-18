@@ -5,10 +5,6 @@ setup() {
   bats_git_worktree 'fix/bug'
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "returns Git Repo Main path from inside a linked worktree" {
   cd "${BATS_GIT_WORKTREES}my-repo--fix-bug"
   bats_run_zsh "git-worktree-main"

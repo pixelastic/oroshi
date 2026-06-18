@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "parses ahead and behind from combined string" {
   bats_run_zsh "git-distance-parse '[ahead 4, behind 1]'"
   [ "$status" -eq 0 ]

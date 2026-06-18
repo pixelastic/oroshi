@@ -9,10 +9,6 @@ setup() {
   git checkout --quiet fix/bug
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "rebases fix/bug on top of main" {
   cd "$BATS_GIT_DIR"
   bats_run_zsh "git-worktree-pull"

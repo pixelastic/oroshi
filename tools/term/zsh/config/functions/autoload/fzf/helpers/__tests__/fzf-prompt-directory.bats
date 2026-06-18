@@ -5,10 +5,6 @@ setup() {
   bats_git_worktree 'feature'
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "prompt badge contains context badge and path" {
   context-badge() { echo "my-repo/feature > "; }
   context-path() { echo "my-repo/src"; }

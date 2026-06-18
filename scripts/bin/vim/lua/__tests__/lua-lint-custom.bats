@@ -6,10 +6,6 @@ setup() {
   SEP=$'\u25ae'
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "exits 0 with no output for a clean file" {
   local file="$BATS_TMP_DIR/clean.lua"
   printf '%s\n' '-- clean' >"$file"

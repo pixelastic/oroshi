@@ -7,10 +7,6 @@ setup() {
   bats_mock_oroshi_root "$BATS_TMP_DIR"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # --- Tracking ---
 
 @test "extension-less file is tracked in OROSHI_AUTOLOADED_FUNCTIONS" {

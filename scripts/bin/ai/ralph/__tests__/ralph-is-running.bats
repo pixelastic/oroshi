@@ -4,8 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() { bats_cleanup; }
-
 # ── No session ───────────────────────────────────────────────────────────────
 
 @test "exits 1 when plan directory does not exist" {

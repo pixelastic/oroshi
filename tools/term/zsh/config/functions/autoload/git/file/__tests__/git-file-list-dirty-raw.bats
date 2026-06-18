@@ -7,10 +7,6 @@ setup() {
   bats_git commit --quiet -m "add tracked"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "returns empty output for a clean repo" {
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-list-dirty-raw"
   [ "$status" -eq 0 ]

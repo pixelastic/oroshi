@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "no argument: claude called without extra args and zsh called after" {
   git-directory-root() { echo "$BATS_TMP_DIR"; }
   claude() { echo "$*" >"$BATS_TMP_DIR/claude-args"; }

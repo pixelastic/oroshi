@@ -18,10 +18,6 @@ setup() {
   mock_command "oroshi-reload-fpath" 'echo "fpath:$1";'
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # Run zsh without any config nor ENV variable (except mocked), so we can safely
 # source zshenv-host.zsh and test its behavior in isolation.
 run_bare_zsh() {

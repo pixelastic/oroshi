@@ -6,10 +6,6 @@ setup() {
   export PLAN_DIR="$BATS_TMP_DIR/plan-dir"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "outputs status:ready with first eligible issue" {
   printf '[
     {"id":"01","issue":"issues/01-foo.md","done":false,"blocked_by":[]}

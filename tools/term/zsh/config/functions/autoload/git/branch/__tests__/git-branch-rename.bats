@@ -4,10 +4,6 @@ setup() {
   bats_git_dir 'repo'
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # --- no arguments ---
 
 @test "no args: fails with non-zero exit code" {

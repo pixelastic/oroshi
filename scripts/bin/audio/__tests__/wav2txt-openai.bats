@@ -5,10 +5,6 @@ setup() {
   sourcePrefix="source '${OROSHI_ROOT}/scripts/bin/audio/wav2txt-openai'"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # --- Artifact removal ---
 
 @test "removeArtifacts strips known artifact phrase" {

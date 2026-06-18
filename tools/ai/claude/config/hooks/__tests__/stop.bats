@@ -7,10 +7,6 @@ setup() {
   bats_mock audio-play-oroshi
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # Run the stop hook with a given env var value and stdin JSON
 run_stop() {
   local stdinJson="$1"

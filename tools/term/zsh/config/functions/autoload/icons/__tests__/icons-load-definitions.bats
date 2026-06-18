@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "sources config from mock root" {
   mkdir -p "$BATS_TMP_DIR/tools/term/zsh/config/theming"
   echo 'typeset -gA ICONS; ICONS[test-key]="test-val"' > "$BATS_TMP_DIR/tools/term/zsh/config/theming/icons.zsh"

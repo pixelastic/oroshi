@@ -6,10 +6,6 @@ setup() {
   mkdir -p "$MOCK_OROSHI_WORKTREES_DIR"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "creates worktree directory with correct name" {
   bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-create fix/bug"
   [ "$status" -eq 0 ]

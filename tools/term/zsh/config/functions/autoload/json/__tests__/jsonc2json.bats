@@ -5,10 +5,6 @@ setup() {
   JSONC_FILE="$BATS_TMP_DIR/test.jsonc"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # --- comment stripping ---
 
 @test "strips full-line // comments" {

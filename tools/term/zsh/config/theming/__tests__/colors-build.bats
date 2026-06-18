@@ -35,10 +35,6 @@ CONF
 JSONC
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # --- ZSH output ---
 
 @test "produces dist/colors.zsh with typeset declaration" {

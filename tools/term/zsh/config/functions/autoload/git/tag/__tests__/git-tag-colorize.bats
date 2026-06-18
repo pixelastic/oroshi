@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "colorizes tag name" {
   git-tag-current() { echo "v1.0"; }
   colorize() { echo "colorize:$*"; }

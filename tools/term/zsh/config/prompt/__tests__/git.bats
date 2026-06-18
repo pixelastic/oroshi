@@ -8,10 +8,6 @@ setup() {
   sourcePrefix="source '$BATS_TEST_DIRNAME/../git.zsh'"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # git_issues_github
 
 @test "git_issues_github is empty inside a worktree" {

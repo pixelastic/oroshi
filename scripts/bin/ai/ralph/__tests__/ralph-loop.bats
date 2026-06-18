@@ -12,10 +12,6 @@ setup() {
   mkdir -p "$PRD_DIR"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "runs exactly N iterations when --max N is given" {
   echo '[{"id":"1","done":false,"blocked_by":[]}]' >"$PRD_DIR/state.json"
 

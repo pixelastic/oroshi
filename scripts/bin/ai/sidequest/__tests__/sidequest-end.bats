@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "no argument: exits with error" {
   bats_run_zsh "sidequest-end"
   [ "$status" -eq 1 ]

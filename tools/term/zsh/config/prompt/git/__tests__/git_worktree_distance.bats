@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "git_worktree_distance is empty when not in a git repository" {
   local script="$BATS_TMP_DIR/gwt-dist-1.zsh"
   cat >"$script" <<'ZSCRIPT'
