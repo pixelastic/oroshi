@@ -19,5 +19,29 @@
     "done": true,
     "blocked_by": ["01", "02"],
     "recap": "Removed boilerplate teardown() from 125 .bats files; rtk.bats non-trivial teardown preserved"
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-fix-bats-test-path-teardown.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-fix-statusline-tests.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "06",
+    "issue": "issues/06-fix-colors-jsonc-aliases-tests.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "07",
+    "issue": "issues/07-fix-projects-build-path-quoting.md",
+    "done": false,
+    "blocked_by": []
   }
 ]
