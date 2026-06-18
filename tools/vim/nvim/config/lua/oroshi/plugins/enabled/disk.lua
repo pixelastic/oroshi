@@ -148,17 +148,24 @@ return {
       -- CTRL-P: {{{
       -- Search in project
       local function onCtrlP()
-        -- Tell fzf what the root directory is
-        local rootDirectory = vim.fn.system("git-directory-root -f")
-        vim.fn.system("fzf-var-write pwd " .. vim.fn.shellescape(rootDirectory))
-
-        local source = vim.fn.systemlist("fzf-fs-files-project-source")
-        local options = vim.fn.systemlist("fzf-fs-files-project-options")
+        local source = vim.fn.systemlist("ctrl-p --source")
+        local options = vim.fn.systemlist("ctrl-p --options")
 
         vim.fn["fzf#run"]({
           source = source,
           options = options,
-          sinklist = openFilesInNewTabs,
+          sinklist = function(selection)
+            if not next(selection) then
+              return
+            end
+            for _, line in ipairs(selection) do
+              local result = vim.fn.system("echo " .. vim.fn.shellescape(line) .. " | ctrl-p --postprocess")
+              result = vim.fn.trim(result)
+              if result ~= "" then
+                vim.cmd("tab drop " .. result)
+              end
+            end
+          end,
         })
       end
       nmap("<C-P>", onCtrlP, "Search in project")

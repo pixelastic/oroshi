@@ -1,3 +1,35 @@
+## Issue 10 — ctrl-p
+
+### Shebang #!/bin/zsh vs #!/usr/bin/env zsh
+```zsh
+#!/usr/bin/env zsh
+```
+**Problem:** Spec says `#!/bin/zsh` but script uses `#!/usr/bin/env zsh`
+**Reason skipped:** All existing FZF Scripts use `#!/usr/bin/env zsh` (established in issue 02). Spec wording is aspirational; repo convention wins.
+
+### fzf-source uses fd instead of git ls-files
+```zsh
+local items="$(fd --hidden --follow --color=never --type=file --base-directory "$searchPath" .)"
+```
+**Problem:** Spec says "tracked and untracked (non-ignored)" implying `git ls-files`, but `fd` is used
+**Reason skipped:** `fd` respects `.gitignore` by default and is the pattern used by all other file-listing scripts (ctrl-shift-p, ctrl-o). Switching to `git ls-files` would diverge from established patterns.
+
+### helpers/ vs __lib/ sourcing
+```zsh
+source "${0:h}/__lib/fzf-options-base.zsh"
+source "${0:h}/__lib/fzf-options-prompt-directory.zsh"
+```
+**Problem:** Spec says "sources helpers/fs.zsh, helpers/git.zsh, and helpers/prompt.zsh" but script sources __lib/
+**Reason skipped:** The repo migrated from helpers/ to __lib/ during issue 06-08. Spec predates the rename. __lib/ is the current convention.
+
+### fzf-git-files-stageable-preview not a full FZF Script
+```zsh
+#!/usr/bin/env zsh
+# fzf-git-files-stageable-preview — standalone preview script
+```
+**Problem:** Lives in `scripts/bin/fzf/` but doesn't follow the four-lifecycle-function pattern from GLOSSARY.md
+**Reason skipped:** Preview helpers are external commands called by fzf's `--preview` flag. They're not FZF Scripts per the glossary — they're utility scripts that happen to live in the same directory.
+
 ## Issue 08 — ctrl-o (git-root directory search)
 
 ### Standards: bats_git_dir helper

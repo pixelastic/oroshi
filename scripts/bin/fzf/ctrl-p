@@ -1,0 +1,158 @@
+#!/usr/bin/env zsh
+#
+# Search files in current git project with simplified-path display
+# Uses a cache-and-filter pipeline: fzf-source writes a cache, --format reads
+# it on each keystroke and outputs two-column lines for display
+# Usage:
+# $ ctrl-p                                    # Interactive file search
+# $ ctrl-p --source                           # Print files and write cache
+# $ ctrl-p --options                          # Print FZF options (one per line)
+# $ ctrl-p --postprocess                      # Read selection from stdin, print absolute path
+# $ ctrl-p --format --cache-key=X --git-root=/path --query=Q  # Reload target
+set -e
+source "${0:h}/__lib/fzf-options-base.zsh"
+source "${0:h}/__lib/fzf-options-prompt-directory.zsh"
+
+CTRL_P_CACHE_DIR="${CTRL_P_CACHE_DIR:-${OROSHI_TMP_FOLDER}/fzf/ctrl-p}"
+
+zmodload zsh/zutil
+zparseopts -D -E \
+  -source=flagSource \
+  -options=flagOptions \
+  -postprocess=flagPostprocess \
+  -format=flagFormat \
+  -cache-key:=flagCacheKey \
+  -git-root:=flagGitRoot \
+  -query:=flagQuery
+
+local isSource=${#flagSource}
+local isOptions=${#flagOptions}
+local isPostprocess=${#flagPostprocess}
+local isFormat=${#flagFormat}
+local cacheKey=${flagCacheKey[2]}
+local gitRoot=${flagGitRoot[2]}
+local query=${flagQuery[2]}
+
+# Build a cache key from the git root path (replace / with %)
+ctrl-p-cache-key() {
+  local path="$1"
+  echo "${path//\//%}"
+}
+
+fzf-source() {
+  local searchPath="$(git-directory-root)"
+  # Fall back to cwd if not in a git repo
+  [[ "$searchPath" == "" ]] && searchPath="$PWD"
+
+  # Write cache for the format stage
+  mkdir -p "$CTRL_P_CACHE_DIR"
+  local key="$(ctrl-p-cache-key "$searchPath")"
+
+  local items="$(fd \
+    --hidden \
+    --follow \
+    --color=never \
+    --type=file \
+    --base-directory "$searchPath" \
+    .)"
+
+  # Write relative paths to cache
+  local cleaned=""
+  local item
+  for item in ${(f)items}; do
+    cleaned+="${item#./}\n"
+  done
+  printf '%b' "$cleaned" >"${CTRL_P_CACHE_DIR}/${key}"
+
+  # Output relative paths
+  printf '%b' "$cleaned"
+}
+
+fzf-format() {
+  local cacheFile="${CTRL_P_CACHE_DIR}/${cacheKey}"
+  [[ ! -r "$cacheFile" ]] && return 0
+
+  # Read cache and filter with fzf --filter (or show all if query is empty)
+  local filtered
+  if [[ "$query" == "" ]]; then
+    filtered="$(cat "$cacheFile")"
+  else
+    filtered="$(fzf --filter="$query" <"$cacheFile" || true)"
+  fi
+  [[ "$filtered" == "" ]] && return 0
+
+  # Output two-column: absolute_path<TAB>simplified_display_path
+  local line
+  for line in ${(f)filtered}; do
+    [[ "$line" == "" ]] && continue
+    local absPath="${gitRoot}/${line}"
+    simplify-path --reply "$line" 6
+    local displayPath="$REPLY"
+    printf '%s\t%s\n' "$absPath" "$displayPath"
+  done
+}
+
+fzf-options() {
+  fzf-options-base
+  printf '%s\n' "--delimiter=\t"
+  echo "--with-nth=2"
+  echo "--scheme=path"
+  echo "--tiebreak=pathname,chunk"
+  echo "--preview=fzf-fs-shared-preview {1}"
+  echo "--disabled"
+
+  local searchPath="$(git-directory-root)"
+  # Fall back to cwd if not in a git repo
+  [[ "$searchPath" == "" ]] && searchPath="$PWD"
+  local key="$(ctrl-p-cache-key "$searchPath")"
+  local reloadCmd="ctrl-p --format"
+  reloadCmd+=" --cache-key ${key}"
+  reloadCmd+=" --git-root ${searchPath}"
+  reloadCmd+=" --query {q}"
+  echo "--bind=change:reload:${reloadCmd}"
+
+  local prompt="$(fzf-options-prompt-directory "$searchPath")"
+  echo "--prompt=${prompt}"
+}
+
+fzf-postprocess() {
+  local input="$(cat)"
+  [[ "$input" == "" ]] && return 0
+  local line
+  for line in ${(f)input}; do
+    print -- "${line%%	*}"
+  done
+}
+
+fzf-main() {
+  # Run source first to populate the cache, then launch fzf with format as initial list
+  fzf-source >/dev/null
+
+  local searchPath="$(git-directory-root)"
+  # Fall back to cwd if not in a git repo
+  [[ "$searchPath" == "" ]] && searchPath="$PWD"
+  local key="$(ctrl-p-cache-key "$searchPath")"
+
+  local opts=(${(f)"$(fzf-options)"})
+  ctrl-p --format --cache-key "$key" --git-root "$searchPath" --query "" |
+    fzf "${opts[@]}" |
+    fzf-postprocess
+}
+
+if [[ $isSource == "1" ]]; then
+  fzf-source
+  exit 0
+fi
+if [[ $isOptions == "1" ]]; then
+  fzf-options
+  exit 0
+fi
+if [[ $isPostprocess == "1" ]]; then
+  fzf-postprocess
+  exit 0
+fi
+if [[ $isFormat == "1" ]]; then
+  fzf-format
+  exit 0
+fi
+fzf-main

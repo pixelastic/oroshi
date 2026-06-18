@@ -1,4 +1,6 @@
-# Ctrl-P: Search for something specific (usually a file), based on typed command
+# Ctrl-P: Search for a file in current git project
+# Dispatches to a context-aware picker based on the last word in LBUFFER
+
 oroshi-ctrl-p-widget() {
   # Stop if not available
   if ! command -v fzf >/dev/null; then
@@ -7,45 +9,26 @@ oroshi-ctrl-p-widget() {
     return
   fi
 
-  # Save LBUFFER in a variable
-  # Used by fzf-fs-shared-zsh-filters to adapt its filters
-  fzf-var-write ZSH_LBUFFER "${LBUFFER}"
+  local -A specialPickers=(
+    vfa fzf-git-files-stageable
+    bats fzf-bats-test
+  )
 
-  # Command-specific
-  local commandName="default"
-  [[ "${LBUFFER}" =~ "vfa( )?$" ]] && commandName="vfa"
-  [[ "${LBUFFER}" =~ "bats( )?$" ]] && commandName="bats"
+  # Dispatch to context-aware picker based on last word in buffer
+  local bufferWords=(${(z)LBUFFER})
+  local lastWord="${bufferWords[-1]}"
+  local picker="${specialPickers[$lastWord]}"
+  [[ "$picker" == "" ]] && picker="ctrl-p"
 
-  # Suggest selection
   export PROMPT_PREVENT_REFRESH="1"
-  selection="$(oroshi-fzf-command-specific-${commandName}-selection)"
+  local selection="$($picker)"
   export PROMPT_PREVENT_REFRESH="0"
-
-  # Cleanup
-  fzf-var-write ZSH_LBUFFER ""
 
   # Stop if no selection is made
   [[ "$selection" == "" ]] && return 1
 
-  # What to do with the selection
   LBUFFER="${LBUFFER}${selection} "
-
   return 0
 }
 zle -N oroshi-ctrl-p-widget
 bindkey '^P' oroshi-ctrl-p-widget
-
-# Default
-function oroshi-fzf-command-specific-default-selection {
-  fzf-fs-files-project
-}
-
-# bats
-function oroshi-fzf-command-specific-bats-selection {
-  fzf-bats-test
-}
-
-# git add / vfa
-function oroshi-fzf-command-specific-vfa-selection {
-  fzf-git-files-stageable
-}

@@ -1,0 +1,58 @@
+#!/usr/bin/env zsh
+# Search for stageable git files (modified, added, deleted)
+# Usage:
+# $ fzf-git-files-stageable                  # Interactive search
+# $ fzf-git-files-stageable --source         # Print stageable files
+# $ fzf-git-files-stageable --options        # Print FZF options (one per line)
+# $ fzf-git-files-stageable --postprocess    # Read selection from stdin, print filepath
+set -e
+source "${0:h}/__lib/init.zsh"
+source "${0:h}/__lib/fzf-options-base.zsh"
+
+fzf-source() {
+  colors-load-definitions
+
+  local rawFiles="$(git-file-list-stageable-raw)"
+  [[ "$rawFiles" == "" ]] && return 0
+
+  local rawLine
+  for rawLine in ${(f)rawFiles}; do
+    local splitLine=(${(@s/:/)rawLine})
+    local gitStatus=$splitLine[1]
+    local filepath=$splitLine[2]
+
+    local displayedLine=""
+    [[ $gitStatus == "D" ]] && displayedLine="$(colorize "$filepath" $COLORS[git-removed])"
+    [[ $gitStatus == "M" ]] && displayedLine="$(colorize "$filepath" $COLORS[git-modified])"
+    [[ $gitStatus == "A" ]] && displayedLine="$(colorize "$filepath" $COLORS[git-added])"
+
+    echo "${filepath}▮${displayedLine}"
+  done
+}
+
+fzf-options() {
+  fzf-options-base
+
+  icons-load-definitions
+  colors-load-definitions
+
+  local promptPrefix="$(colorize " $ICONS[git-file-dirty] " $COLORS[black] $COLORS[git-modified])"
+  local promptSuffix="$(colorize "$ICONS[fzf-separator]" $COLORS[terminal] $COLORS[git-modified])"
+  echo "--prompt=${promptPrefix}${promptSuffix} "
+
+  echo "--delimiter=▮"
+  echo "--with-nth=2"
+  echo "--preview=fzf-git-files-stageable-preview {1}"
+  echo "--preview-window=wrap"
+}
+
+fzf-postprocess() {
+  local input="$(cat)"
+  [[ "$input" == "" ]] && return 0
+  local line
+  for line in ${(f)input}; do
+    print -- "${line%%▮*}"
+  done
+}
+
+fzf-main

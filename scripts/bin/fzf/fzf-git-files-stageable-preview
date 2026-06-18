@@ -1,5 +1,9 @@
+#!/usr/bin/env zsh
 # Show the diff of a file between the previous revision and the current state
-setopt local_options err_return
+# Called by fzf --preview for the git-stageable picker
+# Usage:
+# $ fzf-git-files-stageable-preview <relative-filepath>
+set -e
 local gitRoot="$(git-directory-root)"
 local filepath="${gitRoot}/$1"
 
@@ -8,7 +12,7 @@ local diff="$(git diff HEAD --color=always -- $filepath)"
 # No diff, it's a new file
 if [[ "$diff" == "" ]]; then
   fzf-fs-shared-preview $filepath
-  return
+  exit 0
 fi
 
 # Display the diff

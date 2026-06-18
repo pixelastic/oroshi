@@ -1,6 +1,0 @@
-# Fuzzy pick a bats test file
-setopt local_options err_return
-fzf-search \
-  --source "fzf-bats-test-source" \
-  --options "fzf-bats-test-options" \
-  --postprocess "fzf-bats-test-postprocess"

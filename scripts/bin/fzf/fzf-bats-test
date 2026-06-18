@@ -1,0 +1,53 @@
+#!/usr/bin/env zsh
+# Fuzzy pick a bats test file
+# Usage:
+# $ fzf-bats-test                  # Interactive search
+# $ fzf-bats-test --source         # Print test files
+# $ fzf-bats-test --options        # Print FZF options (one per line)
+# $ fzf-bats-test --postprocess    # Read selection from stdin, print filepath
+set -e
+source "${0:h}/__lib/init.zsh"
+source "${0:h}/__lib/fzf-options-base.zsh"
+
+fzf-source() {
+  colors-load-definitions
+
+  local rawList="$(bats-test-list-raw)"
+  [[ "$rawList" == "" ]] && return 0
+
+  local rawLine
+  for rawLine in ${(f)rawList}; do
+    local fields=(${(@ps/▮/)rawLine})
+    local testName=$fields[1]
+    local fullPath=$fields[2]
+
+    local displayName="$(colorize "$testName" $COLORS[function])"
+    echo "${fullPath}▮${displayName}"
+  done
+}
+
+fzf-options() {
+  fzf-options-base
+
+  icons-load-definitions
+  colors-load-definitions
+
+  local promptPrefix="$(colorize " $ICONS[bats] Bats Tests " $COLORS[black] $COLORS[language-bats])"
+  local promptSuffix="$(colorize "$ICONS[fzf-separator]" $COLORS[terminal] $COLORS[language-bats])"
+  echo "--prompt=${promptPrefix}${promptSuffix} "
+
+  echo "--delimiter=▮"
+  echo "--with-nth=2"
+  echo "--preview=fzf-fs-shared-preview {1}"
+}
+
+fzf-postprocess() {
+  local input="$(cat)"
+  [[ "$input" == "" ]] && return 0
+  local line
+  for line in ${(f)input}; do
+    print -- "${line%%▮*}"
+  done
+}
+
+fzf-main

@@ -129,6 +129,14 @@ _Append findings here after each issue. Format: `### Issue XX — short title` +
 - `CTRL_O_PICKERS` is declared `typeset -gA` at file scope in `ctrl-o.zsh` (outside the widget function) — global associative array for ZSH keybinding config files is acceptable.
 - Last-word extraction from `$LBUFFER`: `${LBUFFER##* }` strips everything up to the last space, cleanly handles empty buffer (returns full buffer string, which won't match any picker).
 
+### Issue 10 — ctrl-p (files-in-project with simplified-path display)
+
+- Scripts with extra flags beyond `--source/--options/--postprocess` (e.g. `--format`, `--cache-key`, `--query`) cannot use `__lib/init.zsh` — they must hand-roll zparseopts and dispatch, following the `fzf-apt-packages` pattern.
+- `zparseopts` with `--flag:=arr` and `--flag=value` syntax puts `=value` in `arr[2]` (including the `=`). Always use space-separated args: `--flag value`.
+- `local -A` (not `typeset -gA`) for associative arrays inside widget functions — avoids leaking globals into the shell session.
+- `fzf-git-files-stageable-preview` is a standalone preview script, not a full FZF Script — it has no lifecycle functions. Preview helpers are an exception to the four-function GLOSSARY pattern.
+- Neovim `onCtrlT` already references deleted `fzf-fs-files-subdir-*` functions — the Ctrl-T handler needs a separate migration (presumably issue 13).
+
 ### Issue 08 — ctrl-o (git-root directory search)
 
 - `fd --hidden --type=directory` DOES include `.git` in its output (even though it's a VCS dir). Added `--exclude=.git` to `__lib/fzf-source-directories.zsh` to fix this for all directory-listing scripts.

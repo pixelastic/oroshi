@@ -109,7 +109,8 @@
   {
     "id": "10",
     "issue": "issues/10-ctrl-p.md",
-    "done": false,
+    "done": true,
+    "recap": "Created scripts/bin/fzf/ctrl-p with cache-and-filter pipeline (--source writes cache, --format reads it with fzf --filter on each keystroke); created fzf-git-files-stageable and fzf-bats-test as new FZF Scripts; added CTRL_P_PICKERS registry to ctrl-p.zsh; updated Neovim disk.lua to use Neovim API; deleted fs/files/project/, fs/files/shared/, git/files-stageable/, bats/ legacy autoloads.",
     "blocked_by": [
       "08",
       "16"
