@@ -2,21 +2,39 @@
 # Fuzzy search plan directories in current git project
 # Usage:
 # $ fzf-plans                  # Interactive plan search
-# $ fzf-plans --source         # Print plans as: absolute_path▮name
+# $ fzf-plans --source         # Print plans as: absolute_path▮colored_name/
 # $ fzf-plans --options        # Print FZF options (one per line)
 # $ fzf-plans --postprocess    # Read raw selection from stdin, print absolute path
 set -e
 source "${0:h}/__lib/init.zsh"
 source "${0:h}/__lib/fzf-options-base.zsh"
+source "${0:h}/__lib/fzf-options-prompt-directory.zsh"
 
 fzf-source() {
-  plan-list-raw
+  colors-load-definitions
+  local line
+  for line in ${(f)"$(plan-list-raw)"}; do
+    [[ "$line" == "" ]] && continue
+    local split=(${(@ps/▮/)line})
+
+    local absolutePath="$split[1]"
+    local name="$split[2]"
+    local displayName="$(colorize "${name}/" $COLORS[directory])"
+
+    echo "${absolutePath}▮${displayName}"
+  done
 }
 
 fzf-options() {
   fzf-options-base
   echo "--delimiter=▮"
   echo "--with-nth=2"
+  echo "--preview=fzf-fs-shared-preview {1}"
+
+  local gitRoot="$(git-directory-root)"
+  [[ "$gitRoot" == "" ]] && gitRoot="$PWD"
+  local prompt="$(fzf-options-prompt-directory "$gitRoot")"
+  echo "--prompt=${prompt}"
 }
 
 fzf-postprocess() {

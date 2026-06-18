@@ -91,7 +91,8 @@
   {
     "id": "08b",
     "issue": "issues/08b-fzf-plans-polish.md",
-    "done": false,
+    "done": true,
+    "recap": "Colorized fzf-source-directories display column with COLORS[directory] + trailing slash; updated fzf-plans to colorize source, add preview window, and add git-root context badge prompt.",
     "blocked_by": [
       "16"
     ]

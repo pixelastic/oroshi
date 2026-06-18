@@ -197,3 +197,17 @@ bat --language=sh --paging=never --decorations=never --color=always
 ```
 **Problem:** New `fzf-source` drops `bat` coloring silently — behavioral regression.
 **Reason skipped:** Issue spec says ctrl-r is "deliberately the simplest possible FZF Script — no preview". Omitting `bat` is intentional.
+
+## Issue 08b — fzf-plans polish
+
+### `local prompt` no empty guard in fzf-options()
+```zsh
+local prompt="$(fzf-options-prompt-directory "$gitRoot")"
+echo "--prompt=${prompt}"
+```
+**Problem:** Standards reviewer flagged missing guard per variables.md: if `fzf-options-prompt-directory` returns empty, silently produces `--prompt=`.
+**Reason skipped:** Identical to the existing pattern in `ctrl-o` (which this issue was matching). `fzf-options-prompt-directory` always returns a non-empty string (has a `$HOME`-relative fallback path). No regression introduced.
+
+### `fzf-postprocess` regression test missing
+**Problem:** Spec says "existing tests — unchanged behavior, no regression" and AC: "`fzf-plans --postprocess` output unchanged". No new postprocess test added.
+**Reason skipped:** `fzf-postprocess` code was not changed; existing passing tests cover the regression. The spec line refers to confirming no regression, not adding new tests.

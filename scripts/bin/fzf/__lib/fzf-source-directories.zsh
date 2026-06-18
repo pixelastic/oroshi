@@ -14,9 +14,11 @@ fzf-source-directories() {
     --base-directory "$searchPath" \
     .)"
   [[ "$items" == "" ]] && return 0
+  colors-load-definitions
   local item
   for item in ${(f)items}; do
     item="${item#./}"
-    echo "${searchPath}/${item%/}▮${item%/}"
+    local display="$(colorize "${item%/}/" $COLORS[directory])"
+    echo "${searchPath}/${item%/}▮${display}"
   done
 }

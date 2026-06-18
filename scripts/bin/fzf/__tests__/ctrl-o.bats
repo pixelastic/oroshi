@@ -23,6 +23,24 @@ teardown() {
   [[ "$output" == *"subdir"* ]]
 }
 
+@test "fzf-source: second field is ANSI-colored and ends with /" {
+  bats_run_zsh "cd $BATS_TMP_DIR && ctrl-o --source"
+  [ "$status" -eq 0 ]
+  local line="${lines[0]}"
+  local secondField="${line##*▮}"
+  [[ "$secondField" == *$'\e['* ]]
+  [[ "$secondField" == *"/"* ]]
+}
+
+@test "fzf-source: first field is a plain absolute path" {
+  bats_run_zsh "cd $BATS_TMP_DIR && ctrl-o --source"
+  [ "$status" -eq 0 ]
+  local line="${lines[0]}"
+  local firstField="${line%%▮*}"
+  [[ "$firstField" != *$'\e['* ]]
+  [[ "$firstField" == "/"* ]]
+}
+
 @test "fzf-source: does not include the .git directory" {
   bats_run_zsh "cd $BATS_TMP_DIR && ctrl-o --source"
   [ "$status" -eq 0 ]
