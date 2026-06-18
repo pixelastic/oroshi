@@ -27,3 +27,9 @@ _(append-only — updated by agents after each issue)_
 ### Issue 02 — Lint rule noBoilerplateTeardown
 - Suppression (`# bats-lint disable=`) is handled by the orchestrator (`lint-custom-run`), not individual rules — suppression tests must go through `bats-lint-custom`
 - zsh-writer skill's Step 2 example still shows `teardown() { bats_cleanup }` — should be updated after migration (issue 03)
+
+### Issue 04 — Fix bats-test-path teardown
+- The ZDOTDIR hack was already dead code — `setup_file` looked for `zshenv.zsh` (renamed to `zshenv-host.zsh`/`zshenv-guest.zsh`), so it always early-returned
+- `bats-test-path` has zero env dependencies — pure string manipulation via zsh parameter expansion, no OROSHI_ROOT mock needed
+- Tests that point at live repo paths are brittle — sandbox the file structure in BATS_TMP_DIR instead
+- Always use `bats_run_zsh` for zsh scripts even if they have a shebang — consistency + mock support

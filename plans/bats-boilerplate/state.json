@@ -23,8 +23,9 @@
   {
     "id": "04",
     "issue": "issues/04-fix-bats-test-path-teardown.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Rewrote bats-test-path tests: removed dead ZDOTDIR hack, switched to bats_run_zsh + sandboxed file structure in BATS_TMP_DIR instead of testing against live repo paths"
   },
   {
     "id": "05",
