@@ -78,6 +78,16 @@ Refactor
 t extract each function into its own file. It will make further testing easier,
 as each file can have its own test file.
 
+js-writer: should suggest that each file exports one named function. Avoid
+having files that export several functions. `__` would be an exception. Would
+also need to actually analyze existing codebases to see if the part is generic
+enough. I kinda see that's how I like it in the end, but sometimes I also like
+to have helper files that contain many different functions. So maybe anything in
+./helpers/ would be an exception?
+
+zsh-rules: `local firstField="${lines[0]%%▮*}"` agents tend to write that. I
+prefer using an intermediary split method. We should catch that in lint.
+
 
 ---
 ## Cleanup

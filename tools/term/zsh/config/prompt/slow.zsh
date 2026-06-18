@@ -31,6 +31,7 @@ function oroshiSlowCommandPreexec() {
     "git commit"
     "yarn-run serve"
     "yarn-run writing-buddy"
+    "yr serve"
   )
   local expandedCommand="$2"
 
