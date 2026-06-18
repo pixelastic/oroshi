@@ -122,6 +122,13 @@ _Append findings here after each issue. Format: `### Issue XX — short title` +
 - Legacy `fzf-packages-apt-source-generate` used `declare -A` followed by a shadowing `local` — the correct ZSH pattern for a local associative array is `local -A installedPackages`.
 - The `--installed` flag is parsed at the top level and accessed from within `fzf-source()` via ZSH dynamic scoping — no need to pass it as a parameter.
 
+### Issue 16 — ctrl-o pickers (fzf-plans + CTRL_O_PICKERS registry)
+
+- `plan-list-raw` already outputs `absolute_path▮name` format — `fzf-plans --source` is just a thin wrapper; no transformation needed.
+- `bats_git_dir` (not raw `git init`) is the correct helper for test repos; it creates `$BATS_GIT_DIR` at `$BATS_TMP_DIR/git` with an initial commit.
+- `CTRL_O_PICKERS` is declared `typeset -gA` at file scope in `ctrl-o.zsh` (outside the widget function) — global associative array for ZSH keybinding config files is acceptable.
+- Last-word extraction from `$LBUFFER`: `${LBUFFER##* }` strips everything up to the last space, cleanly handles empty buffer (returns full buffer string, which won't match any picker).
+
 ### Issue 08 — ctrl-o (git-root directory search)
 
 - `fd --hidden --type=directory` DOES include `.git` in its output (even though it's a VCS dir). Added `--exclude=.git` to `__lib/fzf-source-directories.zsh` to fix this for all directory-listing scripts.

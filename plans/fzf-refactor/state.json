@@ -29,7 +29,8 @@
     "issue": "issues/15-ctrl-r-zsh-highlight.md",
     "done": false,
     "blocked_by": [
-      "02"
+      "02",
+      "16"
     ],
     "notes": "Also requires color system refactor (COLOR_ALIAS_* → ZSH assoc array) to be merged into main first"
   },
@@ -81,7 +82,8 @@
   {
     "id": "16",
     "issue": "issues/16-ctrl-o-pickers.md",
-    "done": false,
+    "done": true,
+    "recap": "Created scripts/bin/fzf/fzf-plans (plan directory picker using plan-list-raw); added CTRL_O_PICKERS registry to ctrl-o.zsh with ralph/raplh → fzf-plans dispatch.",
     "blocked_by": [
       "08"
     ]
@@ -99,7 +101,8 @@
     "issue": "issues/10-ctrl-p.md",
     "done": false,
     "blocked_by": [
-      "08"
+      "08",
+      "16"
     ]
   },
   {
