@@ -27,7 +27,7 @@ Verify the file exists before proceeding.
 
 **Exit criterion:** All sub-agents have returned their reports.
 
-Send a single message with Agent tool calls. Use `general-purpose` subagent type for each.
+Send a single message with 4 Agent tool calls. Use `general-purpose` subagent type for each.
 
 Each agent prompt must include:
 1. Read the screenshot at `<image-path>` using the Read tool
@@ -38,8 +38,9 @@ Each agent prompt must include:
 | Agent | Reference file |
 |---|---|
 | Grouping | `references/grouping.md` |
-
-<!-- Future groups: Readability, Colors, Spacing — add rows + reference files -->
+| Readability | `references/readability.md` |
+| Colors | `references/colors.md` |
+| Spacing | `references/spacing.md` |
 
 ### Step 3 — Aggregate
 
@@ -47,7 +48,7 @@ Each agent prompt must include:
 
 **Exit criterion:** All reports displayed; summary given.
 
-Present each report under its own heading (e.g. `## Grouping`).
+Present each report under its own heading: `## Grouping`, `## Readability`, `## Colors`, `## Spacing`.
 
 Do **not** merge or rerank findings — the axes are deliberately separate.
 
@@ -67,4 +68,4 @@ End with a one-line summary: total findings per group + worst severity across al
 - [ ] Sub-agents spawned in a single parallel message
 - [ ] Each sub-agent read the screenshot via Read tool
 - [ ] Reports presented under separate headings
-- [ ] One-line summary at the end
+- [ ] One-line summary with per-group finding counts and worst severity
