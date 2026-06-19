@@ -88,6 +88,9 @@ to have helper files that contain many different functions. So maybe anything in
 zsh-rules: `local firstField="${lines[0]%%▮*}"` agents tend to write that. I
 prefer using an intermediary split method. We should catch that in lint.
 
+claude: statusbar doesn't correctly display the filepath when not in a git repo,
+like in Dropbox for example. I probably need a Dropbox project though.
+
 
 ---
 ## Cleanup
