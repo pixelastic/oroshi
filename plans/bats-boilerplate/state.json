@@ -47,5 +47,11 @@
     "done": true,
     "blocked_by": [],
     "recap": "Quoted path values in projects-build jq template, fixed bats_run_zsh source call, aligned test expectation to literal tilde"
+  },
+  {
+    "id": "08",
+    "issue": "issues/08-move-build-scripts-to-autoload.md",
+    "done": false,
+    "blocked_by": ["07"]
   }
 ]
