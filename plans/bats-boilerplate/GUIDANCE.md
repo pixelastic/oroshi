@@ -37,3 +37,7 @@ _(append-only — updated by agents after each issue)_
 ### Issue 05 — Fix statusline tests
 - `bats_mock_oroshi_root` only affects zsh subprocesses (mock.zsh), not bash scope — `$OROSHI_ROOT` in bats test code still resolves to the real path
 - Mock `colors-load-definitions` directly instead of recreating `dist/colors.zsh` on the filesystem — follows "mock collaborators, not filesystem" principle
+
+### Issue 07 — Fix projects-build path quoting
+- `bats_run_zsh "$filepath"` fails if the file lacks +x — use `bats_run_zsh "source '$filepath'"` for runtime-created scripts
+- Existing `projects-list.zsh` convention: path values are double-quoted with literal tilde (`PROJECTS[x:path]="~/..."`) — build script must match

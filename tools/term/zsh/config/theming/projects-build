@@ -32,7 +32,8 @@ function generateDistJson() {
       ($projectData.foreground | if . then $colors[.] else null end) as $fgColor |
 
       ($projectData.background |
-        if . then (gsub("-[0-9]+$"; "") + "-dark") else null end) as $bgInactiveName |
+        if . then (gsub("-[0-9]+$"; "") + "-dark")
+        else null end) as $bgInactiveName |
       ($bgInactiveName    | if . then $colors[.] else null end) as $bgInactiveColor |
 
       ($projectData.icon // "") as $projectIcon |
@@ -104,7 +105,7 @@ function generateDistZsh() {
       else empty end),
 
       (if .path and (.path != "") then
-        "PROJECTS[\($projectName):path]=\(.path)"
+        "PROJECTS[\($projectName):path]=\"\(.path)\""
       else empty end),
 
       "PROJECTS[\($projectName):hideNameInPrompt]=\(.hideNameInPrompt | if . then 1 else 0 end)"

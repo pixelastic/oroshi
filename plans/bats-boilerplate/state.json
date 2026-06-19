@@ -37,13 +37,15 @@
   {
     "id": "06",
     "issue": "issues/06-fix-colors-jsonc-aliases-tests.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "File already deleted in prior commit — scaffolding tests for completed palette renumbering, no dangling references"
   },
   {
     "id": "07",
     "issue": "issues/07-fix-projects-build-path-quoting.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Quoted path values in projects-build jq template, fixed bats_run_zsh source call, aligned test expectation to literal tilde"
   }
 ]

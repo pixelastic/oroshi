@@ -189,6 +189,7 @@ echo \${PROJECTS[full:hideNameInPrompt]}"
   [ "${lines[7]}" = "139" ]
   [ "${lines[8]}" = "#111827" ]
   [ "${lines[9]}" = "X" ]
-  [ "${lines[10]}" = "$HOME/projects/full" ]
+  # shellcheck disable=SC2088
+  [ "${lines[10]}" = '~/projects/full' ]
   [ "${lines[11]}" = "0" ]
 }
