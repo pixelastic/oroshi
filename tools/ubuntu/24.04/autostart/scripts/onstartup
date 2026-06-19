@@ -2,6 +2,7 @@
 # Called whenever the PC boots
 # Function to reload the Gnome topbar config, as Gnome extensions tend to lose
 # their settings when coming from sleep.
+set -e
 
 # Setup debug log
 DEBUG_LOG=/home/tim/local/tmp/autostart.log
@@ -43,9 +44,9 @@ function processLogLine() {
 #
 dbus-monitor \
   --session "type='signal',interface=org.gnome.ScreenSaver,member=WakeUpScreen" |
-  (while true; do
-    read logLine
+  # zsh-lint disable=noWhileRead
+  while IFS= read -r logLine; do
     processLogLine "$logLine"
-  done)
+  done
 
 debug "==== </onstartup> ===="
