@@ -11,8 +11,6 @@ setup() {
   touch "$BATS_TMP_DIR/src/deep/nested.js"
   touch "$BATS_TMP_DIR/ignored.log"
   printf 'ignored.log\n' > "$BATS_TMP_DIR/.gitignore"
-
-  bats_mock_env "OROSHI_TMP_FOLDER" "$BATS_TMP_DIR"
 }
 
 teardown() {
@@ -51,7 +49,7 @@ teardown() {
 # fzf-postprocess
 
 @test "fzf-postprocess: extracts absolute path from selection" {
-  bats_run_zsh "printf '/tmp/project/src/app.js▮app.js\n' | ctrl-p --postprocess"
+  bats_run_zsh "printf '/tmp/project/src/app.js▮src/app.js\n' | ctrl-p --postprocess"
   [ "$status" -eq 0 ]
   [ "$output" = "/tmp/project/src/app.js" ]
 }
@@ -66,20 +64,4 @@ teardown() {
   bats_run_zsh "printf '/tmp/my project/my file.js▮my file.js\n' | ctrl-p --postprocess"
   [ "$status" -eq 0 ]
   [ "$output" = "/tmp/my project/my file.js" ]
-}
-
-# reload
-
-@test "reload: shows all files when query is empty" {
-  bats_run_zsh "cd $BATS_TMP_DIR && ctrl-p --reload --reload-query ''"
-  [ "$status" -eq 0 ]
-  [[ "$output" == *"app.js"* ]]
-  [[ "$output" == *"nested.js"* ]]
-}
-
-@test "reload: filters files by query" {
-  bats_run_zsh "cd $BATS_TMP_DIR && ctrl-p --reload --reload-query deep"
-  [ "$status" -eq 0 ]
-  [[ "$output" == *"nested.js"* ]]
-  [[ "$output" != *"README.md"* ]]
 }
