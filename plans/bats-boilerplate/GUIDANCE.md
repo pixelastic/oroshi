@@ -41,3 +41,7 @@ _(append-only — updated by agents after each issue)_
 ### Issue 07 — Fix projects-build path quoting
 - `bats_run_zsh "$filepath"` fails if the file lacks +x — use `bats_run_zsh "source '$filepath'"` for runtime-created scripts
 - Existing `projects-list.zsh` convention: path values are double-quoted with literal tilde (`PROJECTS[x:path]="~/..."`) — build script must match
+
+### Issue 08 — Move build scripts to autoload
+- `typeset -A` in autoloaded functions must be `local -A`; `noGroupedLocals` lint rule also requires one variable per line
+- Test setup vars assigned without `local` in `setup()` are visible in test bodies (bash scope) — this is correct for bats, not a violation

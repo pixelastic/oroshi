@@ -1,12 +1,10 @@
-#!/usr/bin/env zsh
 # Build dist/projects.json and dist/projects.zsh from src/projects.json
 # Reads dist/colors.json to resolve color names to ansi/hex values
 # Usage:
 #   $ projects-build
-#   $ THEMING_ROOT=/path/to/theming projects-build
-set -e
+setopt local_options err_return
 
-local themingRoot="${THEMING_ROOT:-${0:A:h}}"
+local themingRoot="$OROSHI_ROOT/tools/term/zsh/config/theming"
 local srcJson="$themingRoot/src/projects.json"
 local distDir="$themingRoot/dist"
 local distJson="$distDir/projects.json"

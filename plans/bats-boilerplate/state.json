@@ -51,7 +51,8 @@
   {
     "id": "08",
     "issue": "issues/08-move-build-scripts-to-autoload.md",
-    "done": false,
-    "blocked_by": ["07"]
+    "done": true,
+    "blocked_by": ["07"],
+    "recap": "Converted colors-build, filetypes-build, projects-build from shebang scripts to autoloaded functions; replaced THEMING_ROOT with OROSHI_ROOT; moved tests to domain __tests__ folders"
   }
 ]

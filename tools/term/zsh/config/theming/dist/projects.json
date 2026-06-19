@@ -1,260 +1,65 @@
 {
   "aberlaas": {
-    "background": {
-      "ansi": 47,
-      "hex": "#975a16",
-      "name": "yellow-7"
-    },
-    "backgroundInactive": {
-      "ansi": 40,
-      "hex": "#1a1a0f",
-      "name": "yellow-dark"
-    },
-    "foreground": {
-      "ansi": 209,
-      "hex": "#111827",
-      "name": "gray-9"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/aberlaas"
   },
   "algolia": {
-    "background": {
-      "ansi": 57,
-      "hex": "#2c5282",
-      "name": "blue-7"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 202,
-      "hex": "#e5e7eb",
-      "name": "gray-2"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": ""
   },
   "algolia-indexing": {
-    "background": {
-      "ansi": 57,
-      "hex": "#2c5282",
-      "name": "blue-7"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 202,
-      "hex": "#e5e7eb",
-      "name": "gray-2"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/algolia-indexing"
   },
   "alme": {
-    "background": {
-      "ansi": 88,
-      "hex": "#831843",
-      "name": "pink-8"
-    },
-    "backgroundInactive": {
-      "ansi": 80,
-      "hex": "#1f0f16",
-      "name": "pink-dark"
-    },
-    "foreground": {
-      "ansi": 203,
-      "hex": "#d1d5db",
-      "name": "gray-3"
-    },
     "hideNameInPrompt": false,
     "icon": "(.) ",
     "path": "~/local/www/projects/alme"
   },
   "aoinan": {
-    "background": {
-      "ansi": 108,
-      "hex": "#7c2d12",
-      "name": "orange-8"
-    },
-    "backgroundInactive": {
-      "ansi": 100,
-      "hex": "#1a120f",
-      "name": "orange-dark"
-    },
-    "foreground": {
-      "ansi": 203,
-      "hex": "#d1d5db",
-      "name": "gray-3"
-    },
     "hideNameInPrompt": false,
     "icon": "<> ",
     "path": "~/local/www/projects/aoinan"
   },
   "api-cloudflare": {
-    "background": {
-      "ansi": 105,
-      "hex": "#ea580c",
-      "name": "orange"
-    },
-    "backgroundInactive": {
-      "ansi": 100,
-      "hex": "#1a120f",
-      "name": "orange-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/api.pixelastic.com/cloudflare"
   },
   "api-fly": {
-    "background": {
-      "ansi": 65,
-      "hex": "#805ad5",
-      "name": "purple"
-    },
-    "backgroundInactive": {
-      "ansi": 60,
-      "hex": "#201325",
-      "name": "purple-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/api.pixelastic.com/fly"
   },
   "api-netlify": {
-    "background": {
-      "ansi": 136,
-      "hex": "#0f766e",
-      "name": "teal-6"
-    },
-    "backgroundInactive": {
-      "ansi": 130,
-      "hex": "#0f1a18",
-      "name": "teal-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/api.pixelastic.com/netlify"
   },
   "armory": {
-    "background": {
-      "ansi": 205,
-      "hex": "#6b7280",
-      "name": "gray"
-    },
-    "backgroundInactive": {
-      "ansi": 200,
-      "hex": "#0c0f15",
-      "name": "gray-dark"
-    },
-    "foreground": {
-      "ansi": 45,
-      "hex": "#d69e2e",
-      "name": "yellow-5"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/pixelastic.com/gamemaster/armory"
   },
   "bg": {
-    "background": {
-      "ansi": 105,
-      "hex": "#ea580c",
-      "name": "orange"
-    },
-    "backgroundInactive": {
-      "ansi": 100,
-      "hex": "#1a120f",
-      "name": "orange-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": "󰀿 ",
     "path": ""
   },
   "blog": {
-    "background": {
-      "ansi": 35,
-      "hex": "#38a169",
-      "name": "green"
-    },
-    "backgroundInactive": {
-      "ansi": 30,
-      "hex": "#0f1a0f",
-      "name": "green-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/blog.pixelastic.com"
   },
   "bodwynn": {
-    "background": {
-      "ansi": 173,
-      "hex": "#a78bfa",
-      "name": "violet-3"
-    },
-    "backgroundInactive": {
-      "ansi": 170,
-      "hex": "#150f1a",
-      "name": "violet-dark"
-    },
-    "foreground": {
-      "ansi": 178,
-      "hex": "#4c1d95",
-      "name": "violet-8"
-    },
     "hideNameInPrompt": false,
     "icon": "󰇈 ",
     "path": "~/local/www/algolia/bodwynn"
   },
   "bodwynn-data": {
-    "background": {
-      "ansi": 174,
-      "hex": "#8b5cf6",
-      "name": "violet-4"
-    },
-    "backgroundInactive": {
-      "ansi": 170,
-      "hex": "#150f1a",
-      "name": "violet-dark"
-    },
-    "foreground": {
-      "ansi": 178,
-      "hex": "#4c1d95",
-      "name": "violet-8"
-    },
     "hideNameInPrompt": false,
     "icon": "󰇈  ",
     "path": "~/local/www/algolia/bodwynn-data"
@@ -265,101 +70,26 @@
     "path": ""
   },
   "brefsearch": {
-    "background": {
-      "ansi": 208,
-      "hex": "#1f2937",
-      "name": "gray-8"
-    },
-    "backgroundInactive": {
-      "ansi": 200,
-      "hex": "#0c0f15",
-      "name": "gray-dark"
-    },
-    "foreground": {
-      "ansi": 203,
-      "hex": "#d1d5db",
-      "name": "gray-3"
-    },
     "hideNameInPrompt": false,
     "icon": "ⓑ ",
     "path": "~/local/www/algolia/brefsearch/brefsearch"
   },
   "brefsearch-data": {
-    "background": {
-      "ansi": 208,
-      "hex": "#1f2937",
-      "name": "gray-8"
-    },
-    "backgroundInactive": {
-      "ansi": 200,
-      "hex": "#0c0f15",
-      "name": "gray-dark"
-    },
-    "foreground": {
-      "ansi": 203,
-      "hex": "#d1d5db",
-      "name": "gray-3"
-    },
     "hideNameInPrompt": false,
     "icon": "ⓑ  ",
     "path": "~/local/www/algolia/brefsearch/brefsearch-data"
   },
   "brefsearch-media": {
-    "background": {
-      "ansi": 208,
-      "hex": "#1f2937",
-      "name": "gray-8"
-    },
-    "backgroundInactive": {
-      "ansi": 200,
-      "hex": "#0c0f15",
-      "name": "gray-dark"
-    },
-    "foreground": {
-      "ansi": 203,
-      "hex": "#d1d5db",
-      "name": "gray-3"
-    },
     "hideNameInPrompt": false,
     "icon": "ⓑ  ",
     "path": "~/local/www/algolia/brefsearch/brefsearch-media"
   },
   "callirhoe": {
-    "background": {
-      "ansi": 139,
-      "hex": "#042f2e",
-      "name": "teal-9"
-    },
-    "backgroundInactive": {
-      "ansi": 130,
-      "hex": "#0f1a18",
-      "name": "teal-dark"
-    },
-    "foreground": {
-      "ansi": 202,
-      "hex": "#e5e7eb",
-      "name": "gray-2"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/callirhoe"
   },
   "claude": {
-    "background": {
-      "ansi": 147,
-      "hex": "#92400e",
-      "name": "amber-7"
-    },
-    "backgroundInactive": {
-      "ansi": 140,
-      "hex": "#1a180f",
-      "name": "amber-dark"
-    },
-    "foreground": {
-      "ansi": 202,
-      "hex": "#e5e7eb",
-      "name": "gray-2"
-    },
     "hideNameInPrompt": false,
     "icon": "● ",
     "path": "~/local/tmp/oroshi/claude"
@@ -370,151 +100,41 @@
     "path": ""
   },
   "commitology": {
-    "background": {
-      "ansi": 56,
-      "hex": "#2b6cb0",
-      "name": "blue-6"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-0"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/algolia/commitology"
   },
   "commitology-data": {
-    "background": {
-      "ansi": 59,
-      "hex": "#2a4365",
-      "name": "blue-9"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-0"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/algolia/commitology-data"
   },
   "contentsquare": {
-    "background": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
-    "foreground": {
-      "ansi": 58,
-      "hex": "#2a4365",
-      "name": "blue-8"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/contentsquare"
   },
   "crafting": {
-    "background": {
-      "ansi": 49,
-      "hex": "#744210",
-      "name": "yellow-9"
-    },
-    "backgroundInactive": {
-      "ansi": 40,
-      "hex": "#1a1a0f",
-      "name": "yellow-dark"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": ""
   },
   "crsearch": {
-    "background": {
-      "ansi": 178,
-      "hex": "#4c1d95",
-      "name": "violet-8"
-    },
-    "backgroundInactive": {
-      "ansi": 170,
-      "hex": "#150f1a",
-      "name": "violet-dark"
-    },
-    "foreground": {
-      "ansi": 171,
-      "hex": "#ddd6fe",
-      "name": "violet-1"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/algolia/crsearch/crsearch"
   },
   "crsearch-data": {
-    "background": {
-      "ansi": 69,
-      "hex": "#44337a",
-      "name": "purple-9"
-    },
-    "backgroundInactive": {
-      "ansi": 60,
-      "hex": "#201325",
-      "name": "purple-dark"
-    },
-    "foreground": {
-      "ansi": 61,
-      "hex": "#e9d8fd",
-      "name": "purple-1"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/algolia/crsearch/crsearch-data"
   },
   "crsearch-media": {
-    "background": {
-      "ansi": 68,
-      "hex": "#44337a",
-      "name": "purple-8"
-    },
-    "backgroundInactive": {
-      "ansi": 60,
-      "hex": "#201325",
-      "name": "purple-dark"
-    },
-    "foreground": {
-      "ansi": 61,
-      "hex": "#e9d8fd",
-      "name": "purple-1"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/algolia/crsearch/crsearch-media"
   },
   "devrel": {
-    "background": {
-      "ansi": 136,
-      "hex": "#0f766e",
-      "name": "teal-6"
-    },
-    "backgroundInactive": {
-      "ansi": 130,
-      "hex": "#0f1a18",
-      "name": "teal-dark"
-    },
-    "foreground": {
-      "ansi": 203,
-      "hex": "#d1d5db",
-      "name": "gray-3"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": ""
@@ -525,791 +145,201 @@
     "path": ""
   },
   "dungeons": {
-    "background": {
-      "ansi": 47,
-      "hex": "#975a16",
-      "name": "yellow-7"
-    },
-    "backgroundInactive": {
-      "ansi": 40,
-      "hex": "#1a1a0f",
-      "name": "yellow-dark"
-    },
-    "foreground": {
-      "ansi": 200,
-      "hex": "#0c0f15",
-      "name": "black"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/pixelastic.com/gamemaster/dungeons/dungeons"
   },
   "dungeons-pages": {
-    "background": {
-      "ansi": 46,
-      "hex": "#b7791f",
-      "name": "yellow-6"
-    },
-    "backgroundInactive": {
-      "ansi": 40,
-      "hex": "#1a1a0f",
-      "name": "yellow-dark"
-    },
-    "foreground": {
-      "ansi": 200,
-      "hex": "#0c0f15",
-      "name": "black"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/gamemaster/dungeons/dungeons-pages"
   },
   "dungeons-pictures": {
-    "background": {
-      "ansi": 45,
-      "hex": "#d69e2e",
-      "name": "yellow-5"
-    },
-    "backgroundInactive": {
-      "ansi": 40,
-      "hex": "#1a1a0f",
-      "name": "yellow-dark"
-    },
-    "foreground": {
-      "ansi": 200,
-      "hex": "#0c0f15",
-      "name": "black"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/gamemaster/dungeons/dungeons-pictures"
   },
   "ensureUrlTrailingSlash": {
-    "background": {
-      "ansi": 59,
-      "hex": "#2a4365",
-      "name": "blue-9"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 202,
-      "hex": "#e5e7eb",
-      "name": "gray-2"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/ensure-url-trailing-slash"
   },
   "esmify": {
-    "background": {
-      "ansi": 45,
-      "hex": "#d69e2e",
-      "name": "yellow"
-    },
-    "backgroundInactive": {
-      "ansi": 40,
-      "hex": "#1a1a0f",
-      "name": "yellow-dark"
-    },
-    "foreground": {
-      "ansi": 200,
-      "hex": "#0c0f15",
-      "name": "black"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/esmify"
   },
   "firost": {
-    "background": {
-      "ansi": 35,
-      "hex": "#38a169",
-      "name": "green"
-    },
-    "backgroundInactive": {
-      "ansi": 30,
-      "hex": "#0f1a0f",
-      "name": "green-dark"
-    },
-    "foreground": {
-      "ansi": 202,
-      "hex": "#e5e7eb",
-      "name": "gray-2"
-    },
     "hideNameInPrompt": false,
     "icon": "❯ ",
     "path": "~/local/www/projects/firost"
   },
   "gamemaster": {
-    "background": {
-      "ansi": 68,
-      "hex": "#44337a",
-      "name": "purple-8"
-    },
-    "backgroundInactive": {
-      "ansi": 60,
-      "hex": "#201325",
-      "name": "purple-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/gamemaster/gamemaster.pixelastic.com"
   },
   "gdrive": {
-    "background": {
-      "ansi": 45,
-      "hex": "#d69e2e",
-      "name": "yellow"
-    },
-    "backgroundInactive": {
-      "ansi": 40,
-      "hex": "#1a1a0f",
-      "name": "yellow-dark"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/mount/gdrive"
   },
   "gilmore": {
-    "background": {
-      "ansi": 67,
-      "hex": "#553c9a",
-      "name": "purple-7"
-    },
-    "backgroundInactive": {
-      "ansi": 60,
-      "hex": "#201325",
-      "name": "purple-dark"
-    },
-    "foreground": {
-      "ansi": 41,
-      "hex": "#fefcbf",
-      "name": "yellow-1"
-    },
     "hideNameInPrompt": false,
     "icon": "✨ ",
     "path": "~/local/www/projects/gilmore"
   },
   "gitinx": {
-    "background": {
-      "ansi": 203,
-      "hex": "#d1d5db",
-      "name": "gray-3"
-    },
-    "backgroundInactive": {
-      "ansi": 200,
-      "hex": "#0c0f15",
-      "name": "gray-dark"
-    },
-    "foreground": {
-      "ansi": 55,
-      "hex": "#3182ce",
-      "name": "blue"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/gitinx"
   },
   "golgoth": {
-    "background": {
-      "ansi": 105,
-      "hex": "#ea580c",
-      "name": "orange"
-    },
-    "backgroundInactive": {
-      "ansi": 100,
-      "hex": "#1a120f",
-      "name": "orange-dark"
-    },
-    "foreground": {
-      "ansi": 101,
-      "hex": "#fed7aa",
-      "name": "orange-1"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/golgoth"
   },
   "grimoire": {
-    "background": {
-      "ansi": 149,
-      "hex": "#451a03",
-      "name": "amber-9"
-    },
-    "backgroundInactive": {
-      "ansi": 140,
-      "hex": "#1a180f",
-      "name": "amber-dark"
-    },
-    "foreground": {
-      "ansi": 144,
-      "hex": "#f59e0b",
-      "name": "amber-4"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/grimoire.pixelastic.com"
   },
   "home": {
-    "background": {
-      "ansi": 35,
-      "hex": "#38a169",
-      "name": "green"
-    },
-    "backgroundInactive": {
-      "ansi": 30,
-      "hex": "#0f1a0f",
-      "name": "green-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": true,
     "icon": "",
     "path": "~"
   },
   "hylea": {
-    "background": {
-      "ansi": 39,
-      "hex": "#22543d",
-      "name": "green-9"
-    },
-    "backgroundInactive": {
-      "ansi": 30,
-      "hex": "#0f1a0f",
-      "name": "green-dark"
-    },
-    "foreground": {
-      "ansi": 31,
-      "hex": "#c6f6d5",
-      "name": "green-1"
-    },
     "hideNameInPrompt": false,
     "icon": "📗 ",
     "path": "~/local/mount/hylea"
   },
   "imoen": {
-    "background": {
-      "ansi": 89,
-      "hex": "#500724",
-      "name": "pink-9"
-    },
-    "backgroundInactive": {
-      "ansi": 80,
-      "hex": "#1f0f16",
-      "name": "pink-dark"
-    },
-    "foreground": {
-      "ansi": 202,
-      "hex": "#e5e7eb",
-      "name": "gray-2"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/projects/imoen"
   },
   "indexing": {
-    "background": {
-      "ansi": 53,
-      "hex": "#63b3ed",
-      "name": "blue-3"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": ""
   },
   "irori": {
-    "background": {
-      "ansi": 135,
-      "hex": "#0d9488",
-      "name": "teal"
-    },
-    "backgroundInactive": {
-      "ansi": 130,
-      "hex": "#0f1a18",
-      "name": "teal-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/irori"
   },
   "items": {
-    "background": {
-      "ansi": 109,
-      "hex": "#431407",
-      "name": "orange-9"
-    },
-    "backgroundInactive": {
-      "ansi": 100,
-      "hex": "#1a120f",
-      "name": "orange-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": "ﰤ ",
     "path": "~/local/www/pixelastic.com/gamemaster/items/items"
   },
   "items-data": {
-    "background": {
-      "ansi": 108,
-      "hex": "#7c2d12",
-      "name": "orange-8"
-    },
-    "backgroundInactive": {
-      "ansi": 100,
-      "hex": "#1a120f",
-      "name": "orange-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": "ﰤ ",
     "path": "~/local/www/pixelastic.com/gamemaster/items/items-data"
   },
   "jekyll": {
-    "background": {
-      "ansi": 55,
-      "hex": "#3182ce",
-      "name": "blue-5"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/algolia/jekyll-algolia"
   },
   "keyleth": {
-    "background": {
-      "ansi": 149,
-      "hex": "#451a03",
-      "name": "amber-9"
-    },
-    "backgroundInactive": {
-      "ansi": 140,
-      "hex": "#1a180f",
-      "name": "amber-dark"
-    },
-    "foreground": {
-      "ansi": 143,
-      "hex": "#fbbf24",
-      "name": "amber-3"
-    },
     "hideNameInPrompt": false,
     "icon": "󰌪 ",
     "path": "~/local/www/projects/keyleth"
   },
   "kindle": {
-    "background": {
-      "ansi": 59,
-      "hex": "#2a4365",
-      "name": "blue-9"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 52,
-      "hex": "#90cdf4",
-      "name": "blue-2"
-    },
     "hideNameInPrompt": false,
     "icon": "   ",
     "path": "/media/tim/Kindle"
   },
   "korvosa": {
-    "background": {
-      "ansi": 29,
-      "hex": "#450a0a",
-      "name": "red-9"
-    },
-    "backgroundInactive": {
-      "ansi": 20,
-      "hex": "#250f0f",
-      "name": "red-dark"
-    },
-    "foreground": {
-      "ansi": 21,
-      "hex": "#fecaca",
-      "name": "red-1"
-    },
     "hideNameInPrompt": false,
     "icon": "🩸 ",
     "path": "~/local/www/rp/korvosa"
   },
   "landscapes": {
-    "background": {
-      "ansi": 59,
-      "hex": "#2a4365",
-      "name": "blue-9"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/projects/landscapes/landscapes"
   },
   "landscapes-data": {
-    "background": {
-      "ansi": 58,
-      "hex": "#2a4365",
-      "name": "blue-8"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/projects/landscapes/landscapes-data"
   },
   "magic": {
-    "background": {
-      "ansi": 28,
-      "hex": "#7f1d1d",
-      "name": "red-8"
-    },
-    "backgroundInactive": {
-      "ansi": 20,
-      "hex": "#250f0f",
-      "name": "red-dark"
-    },
-    "foreground": {
-      "ansi": 200,
-      "hex": "#0c0f15",
-      "name": "black"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/pixelastic.com/projects/magic"
   },
   "maps": {
-    "background": {
-      "ansi": 56,
-      "hex": "#2b6cb0",
-      "name": "blue-6"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 202,
-      "hex": "#e5e7eb",
-      "name": "gray-2"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/gamemaster/maps/maps"
   },
   "maps-data": {
-    "background": {
-      "ansi": 59,
-      "hex": "#2a4365",
-      "name": "blue-9"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 202,
-      "hex": "#e5e7eb",
-      "name": "gray-2"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/gamemaster/maps/maps-data"
   },
   "media": {
-    "background": {
-      "ansi": 205,
-      "hex": "#6b7280",
-      "name": "gray"
-    },
-    "backgroundInactive": {
-      "ansi": 200,
-      "hex": "#0c0f15",
-      "name": "gray-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "/media"
   },
   "meetups": {
-    "background": {
-      "ansi": 29,
-      "hex": "#450a0a",
-      "name": "red-9"
-    },
-    "backgroundInactive": {
-      "ansi": 20,
-      "hex": "#250f0f",
-      "name": "red-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/algolia/meetups"
   },
   "meetups-algolia": {
-    "background": {
-      "ansi": 107,
-      "hex": "#9a3412",
-      "name": "orange-7"
-    },
-    "backgroundInactive": {
-      "ansi": 100,
-      "hex": "#1a120f",
-      "name": "orange-dark"
-    },
-    "foreground": {
-      "ansi": 102,
-      "hex": "#fdba74",
-      "name": "orange-2"
-    },
     "hideNameInPrompt": false,
     "icon": "󰖟 ",
     "path": "~/local/www/algolia/meetups/meetups-algolia"
   },
   "meetups-calendar": {
-    "background": {
-      "ansi": 108,
-      "hex": "#7c2d12",
-      "name": "orange-8"
-    },
-    "backgroundInactive": {
-      "ansi": 100,
-      "hex": "#1a120f",
-      "name": "orange-dark"
-    },
-    "foreground": {
-      "ansi": 102,
-      "hex": "#fdba74",
-      "name": "orange-2"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/algolia/meetups/meetups-calendar"
   },
   "meetups-calendar-sync": {
-    "background": {
-      "ansi": 168,
-      "hex": "#0c4a6e",
-      "name": "sky-8"
-    },
-    "backgroundInactive": {
-      "ansi": 160,
-      "hex": "#1a2535",
-      "name": "sky-dark"
-    },
-    "foreground": {
-      "ansi": 161,
-      "hex": "#bae6fd",
-      "name": "sky-1"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/algolia/meetups/meetups-calendar-sync"
   },
   "meetups-recordings-sync": {
-    "background": {
-      "ansi": 54,
-      "hex": "#4299e1",
-      "name": "blue-4"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 58,
-      "hex": "#2a4365",
-      "name": "blue-8"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/algolia/meetups/meetups-recordings-sync"
   },
   "meetups-teasers-generator": {
-    "background": {
-      "ansi": 53,
-      "hex": "#63b3ed",
-      "name": "blue-3"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 58,
-      "hex": "#2a4365",
-      "name": "blue-8"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/algolia/meetups/meetups-teasers-generator"
   },
   "megadungeon": {
-    "background": {
-      "ansi": 48,
-      "hex": "#744210",
-      "name": "yellow-8"
-    },
-    "backgroundInactive": {
-      "ansi": 40,
-      "hex": "#1a1a0f",
-      "name": "yellow-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "gray-1"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/pixelastic.com/gamemaster/megadungeon"
   },
   "monorepoify": {
-    "background": {
-      "ansi": 205,
-      "hex": "#6b7280",
-      "name": "gray"
-    },
-    "backgroundInactive": {
-      "ansi": 200,
-      "hex": "#0c0f15",
-      "name": "gray-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/projects/monorepoify"
   },
   "monsters": {
-    "background": {
-      "ansi": 208,
-      "hex": "#1f2937",
-      "name": "gray-8"
-    },
-    "backgroundInactive": {
-      "ansi": 200,
-      "hex": "#0c0f15",
-      "name": "gray-dark"
-    },
-    "foreground": {
-      "ansi": 28,
-      "hex": "#7f1d1d",
-      "name": "red-8"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/pixelastic.com/gamemaster/monsters/monsters"
   },
   "monsters-pages": {
-    "background": {
-      "ansi": 45,
-      "hex": "#d69e2e",
-      "name": "yellow"
-    },
-    "backgroundInactive": {
-      "ansi": 40,
-      "hex": "#1a1a0f",
-      "name": "yellow-dark"
-    },
-    "foreground": {
-      "ansi": 208,
-      "hex": "#1f2937",
-      "name": "gray-8"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/gamemaster/monsters/monsters-pages"
   },
   "monsters-pictures": {
-    "background": {
-      "ansi": 208,
-      "hex": "#1f2937",
-      "name": "gray-8"
-    },
-    "backgroundInactive": {
-      "ansi": 200,
-      "hex": "#0c0f15",
-      "name": "gray-dark"
-    },
-    "foreground": {
-      "ansi": 35,
-      "hex": "#38a169",
-      "name": "green"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/gamemaster/monsters/monsters-pictures"
@@ -1325,181 +355,46 @@
     "path": ""
   },
   "netlify-minutes": {
-    "background": {
-      "ansi": 38,
-      "hex": "#22543d",
-      "name": "green-8"
-    },
-    "backgroundInactive": {
-      "ansi": 30,
-      "hex": "#0f1a0f",
-      "name": "green-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": "神",
     "path": "~/local/www/projects/netlify-minutes"
   },
   "norska": {
-    "background": {
-      "ansi": 53,
-      "hex": "#63b3ed",
-      "name": "blue-3"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 208,
-      "hex": "#1f2937",
-      "name": "gray-8"
-    },
     "hideNameInPrompt": false,
     "icon": "煮",
     "path": "~/local/www/projects/norska/norska"
   },
   "npm-search": {
-    "background": {
-      "ansi": 166,
-      "hex": "#0369a1",
-      "name": "sky-6"
-    },
-    "backgroundInactive": {
-      "ansi": 160,
-      "hex": "#1a2535",
-      "name": "sky-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/algolia/npm-search"
   },
   "on-circle": {
-    "background": {
-      "ansi": 23,
-      "hex": "#f87171",
-      "name": "red-3"
-    },
-    "backgroundInactive": {
-      "ansi": 20,
-      "hex": "#250f0f",
-      "name": "red-dark"
-    },
-    "foreground": {
-      "ansi": 209,
-      "hex": "#111827",
-      "name": "gray-9"
-    },
     "hideNameInPrompt": false,
     "icon": "⬤ ",
     "path": "~/local/www/projects/on-circle"
   },
   "oroshi": {
-    "background": {
-      "ansi": 35,
-      "hex": "#38a169",
-      "name": "green"
-    },
-    "backgroundInactive": {
-      "ansi": 30,
-      "hex": "#0f1a0f",
-      "name": "green-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": "x ",
     "path": "~/.oroshi"
   },
   "painting": {
-    "background": {
-      "ansi": 204,
-      "hex": "#9ca3af",
-      "name": "gray-4"
-    },
-    "backgroundInactive": {
-      "ansi": 200,
-      "hex": "#0c0f15",
-      "name": "gray-dark"
-    },
-    "foreground": {
-      "ansi": 200,
-      "hex": "#0c0f15",
-      "name": "black"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/pixelastic.com/painting.pixelastic.com"
   },
   "pantheon": {
-    "background": {
-      "ansi": 66,
-      "hex": "#6b46c1",
-      "name": "purple-6"
-    },
-    "backgroundInactive": {
-      "ansi": 60,
-      "hex": "#201325",
-      "name": "purple-dark"
-    },
-    "foreground": {
-      "ansi": 204,
-      "hex": "#9ca3af",
-      "name": "gray-4"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/gamemaster/pantheon"
   },
   "pathfinder-books": {
-    "background": {
-      "ansi": 49,
-      "hex": "#744210",
-      "name": "yellow-9"
-    },
-    "backgroundInactive": {
-      "ansi": 40,
-      "hex": "#1a1a0f",
-      "name": "yellow-dark"
-    },
-    "foreground": {
-      "ansi": 41,
-      "hex": "#fefcbf",
-      "name": "yellow-1"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/rp/pathfinder-books"
   },
   "perso": {
-    "background": {
-      "ansi": 65,
-      "hex": "#805ad5",
-      "name": "purple"
-    },
-    "backgroundInactive": {
-      "ansi": 60,
-      "hex": "#201325",
-      "name": "purple-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": ""
@@ -1510,306 +405,81 @@
     "path": ""
   },
   "pietro": {
-    "background": {
-      "ansi": 57,
-      "hex": "#2c5282",
-      "name": "blue-7"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 44,
-      "hex": "#ecc94b",
-      "name": "yellow-4"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/pietro"
   },
   "projects": {
-    "background": {
-      "ansi": 35,
-      "hex": "#38a169",
-      "name": "green"
-    },
-    "backgroundInactive": {
-      "ansi": 30,
-      "hex": "#0f1a0f",
-      "name": "green-dark"
-    },
-    "foreground": {
-      "ansi": 202,
-      "hex": "#e5e7eb",
-      "name": "gray-2"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": ""
   },
   "prst": {
-    "background": {
-      "ansi": 58,
-      "hex": "#2a4365",
-      "name": "blue-8"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 202,
-      "hex": "#e5e7eb",
-      "name": "gray-2"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/prst"
   },
   "reddinx": {
-    "background": {
-      "ansi": 106,
-      "hex": "#c2410c",
-      "name": "orange-6"
-    },
-    "backgroundInactive": {
-      "ansi": 100,
-      "hex": "#1a120f",
-      "name": "orange-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "gray-1"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/reddinx"
   },
   "renovate": {
-    "background": {
-      "ansi": 54,
-      "hex": "#4299e1",
-      "name": "blue-4"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 209,
-      "hex": "#111827",
-      "name": "gray-9"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/renovate-config-aberlaas"
   },
   "roleplay": {
-    "background": {
-      "ansi": 39,
-      "hex": "#22543d",
-      "name": "green-9"
-    },
-    "backgroundInactive": {
-      "ansi": 30,
-      "hex": "#0f1a0f",
-      "name": "green-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/perso/Dropbox/backup/roleplay"
   },
   "root": {
-    "background": {
-      "ansi": 107,
-      "hex": "#9a3412",
-      "name": "orange-7"
-    },
-    "backgroundInactive": {
-      "ansi": 100,
-      "hex": "#1a120f",
-      "name": "orange-dark"
-    },
-    "foreground": {
-      "ansi": 102,
-      "hex": "#fdba74",
-      "name": "orange-2"
-    },
     "hideNameInPrompt": true,
     "icon": " ",
     "path": "/"
   },
   "s3": {
-    "background": {
-      "ansi": 105,
-      "hex": "#ea580c",
-      "name": "orange"
-    },
-    "backgroundInactive": {
-      "ansi": 100,
-      "hex": "#1a120f",
-      "name": "orange-dark"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/mount/s3"
   },
   "s3-pictures": {
-    "background": {
-      "ansi": 105,
-      "hex": "#ea580c",
-      "name": "orange"
-    },
-    "backgroundInactive": {
-      "ansi": 100,
-      "hex": "#1a120f",
-      "name": "orange-dark"
-    },
     "hideNameInPrompt": false,
     "icon": "   ",
     "path": "~/local/mount/s3/pictures"
   },
   "s3-recordings": {
-    "background": {
-      "ansi": 105,
-      "hex": "#ea580c",
-      "name": "orange"
-    },
-    "backgroundInactive": {
-      "ansi": 100,
-      "hex": "#1a120f",
-      "name": "orange-dark"
-    },
     "hideNameInPrompt": false,
     "icon": "   ",
     "path": "~/local/mount/s3/recordings"
   },
   "screen": {
-    "background": {
-      "ansi": 109,
-      "hex": "#431407",
-      "name": "orange-9"
-    },
-    "backgroundInactive": {
-      "ansi": 100,
-      "hex": "#1a120f",
-      "name": "orange-dark"
-    },
-    "foreground": {
-      "ansi": 101,
-      "hex": "#fed7aa",
-      "name": "orange-1"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/rp/screen"
   },
   "shar-teel": {
-    "background": {
-      "ansi": 69,
-      "hex": "#44337a",
-      "name": "purple-9"
-    },
-    "backgroundInactive": {
-      "ansi": 60,
-      "hex": "#201325",
-      "name": "purple-dark"
-    },
-    "foreground": {
-      "ansi": 104,
-      "hex": "#f97316",
-      "name": "orange-4"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/shar-teel"
   },
   "society": {
-    "background": {
-      "ansi": 29,
-      "hex": "#450a0a",
-      "name": "red-9"
-    },
-    "backgroundInactive": {
-      "ansi": 20,
-      "hex": "#250f0f",
-      "name": "red-dark"
-    },
-    "foreground": {
-      "ansi": 45,
-      "hex": "#d69e2e",
-      "name": "yellow-5"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/pixelastic.com/gamemaster/society/society"
   },
   "society-data": {
-    "background": {
-      "ansi": 29,
-      "hex": "#450a0a",
-      "name": "red-9"
-    },
-    "backgroundInactive": {
-      "ansi": 20,
-      "hex": "#250f0f",
-      "name": "red-dark"
-    },
-    "foreground": {
-      "ansi": 45,
-      "hex": "#d69e2e",
-      "name": "yellow-5"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/gamemaster/society/society-data"
   },
   "society-pdfs": {
-    "background": {
-      "ansi": 29,
-      "hex": "#450a0a",
-      "name": "red-9"
-    },
-    "backgroundInactive": {
-      "ansi": 20,
-      "hex": "#250f0f",
-      "name": "red-dark"
-    },
-    "foreground": {
-      "ansi": 45,
-      "hex": "#d69e2e",
-      "name": "yellow-5"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/gamemaster/society/society-pdfs"
   },
   "solkan": {
-    "background": {
-      "ansi": 29,
-      "hex": "#450a0a",
-      "name": "red-9"
-    },
-    "backgroundInactive": {
-      "ansi": 20,
-      "hex": "#250f0f",
-      "name": "red-dark"
-    },
-    "foreground": {
-      "ansi": 21,
-      "hex": "#fecaca",
-      "name": "red-1"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/solkan"
@@ -1820,246 +490,66 @@
     "path": ""
   },
   "speaker-program": {
-    "background": {
-      "ansi": 136,
-      "hex": "#0f766e",
-      "name": "teal-6"
-    },
-    "backgroundInactive": {
-      "ansi": 130,
-      "hex": "#0f1a18",
-      "name": "teal-dark"
-    },
-    "foreground": {
-      "ansi": 203,
-      "hex": "#d1d5db",
-      "name": "gray-3"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/talks/speaker-program"
   },
   "speech-to-blog": {
-    "background": {
-      "ansi": 46,
-      "hex": "#b7791f",
-      "name": "yellow-6"
-    },
-    "backgroundInactive": {
-      "ansi": 40,
-      "hex": "#1a1a0f",
-      "name": "yellow-dark"
-    },
     "hideNameInPrompt": false,
     "icon": "󰔊 ",
     "path": "~/local/www/projects/speech-to-blog"
   },
   "spells": {
-    "background": {
-      "ansi": 58,
-      "hex": "#2a4365",
-      "name": "blue-8"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/pixelastic.com/gamemaster/spells/spells"
   },
   "talk-blog": {
-    "background": {
-      "ansi": 35,
-      "hex": "#38a169",
-      "name": "green"
-    },
-    "backgroundInactive": {
-      "ansi": 30,
-      "hex": "#0f1a0f",
-      "name": "green-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/talks/talk-blog"
   },
   "talks": {
-    "background": {
-      "ansi": 38,
-      "hex": "#22543d",
-      "name": "green-8"
-    },
-    "backgroundInactive": {
-      "ansi": 30,
-      "hex": "#0f1a0f",
-      "name": "green-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/talks.pixelastic.com"
   },
   "terrainbuilding": {
-    "background": {
-      "ansi": 39,
-      "hex": "#22543d",
-      "name": "green-9"
-    },
-    "backgroundInactive": {
-      "ansi": 30,
-      "hex": "#0f1a0f",
-      "name": "green-dark"
-    },
-    "foreground": {
-      "ansi": 45,
-      "hex": "#d69e2e",
-      "name": "yellow-5"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/pixelastic.com/gamemaster/terrainbuilding/terrainbuilding"
   },
   "terrainbuilding-data": {
-    "background": {
-      "ansi": 38,
-      "hex": "#22543d",
-      "name": "green-8"
-    },
-    "backgroundInactive": {
-      "ansi": 30,
-      "hex": "#0f1a0f",
-      "name": "green-dark"
-    },
-    "foreground": {
-      "ansi": 46,
-      "hex": "#b7791f",
-      "name": "yellow-6"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/pixelastic.com/gamemaster/terrainbuilding/terrainbuilding-data"
   },
   "theme-docs": {
-    "background": {
-      "ansi": 53,
-      "hex": "#63b3ed",
-      "name": "blue-3"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 208,
-      "hex": "#1f2937",
-      "name": "gray-8"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/norska-theme-docs"
   },
   "theme-search": {
-    "background": {
-      "ansi": 55,
-      "hex": "#3182ce",
-      "name": "blue-5"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/norska-theme-search"
   },
   "theme-search-infinite": {
-    "background": {
-      "ansi": 53,
-      "hex": "#63b3ed",
-      "name": "blue-3"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 208,
-      "hex": "#1f2937",
-      "name": "gray-8"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/norska-theme-search-infinite"
   },
   "theme-slides": {
-    "background": {
-      "ansi": 38,
-      "hex": "#22543d",
-      "name": "green-8"
-    },
-    "backgroundInactive": {
-      "ansi": 30,
-      "hex": "#0f1a0f",
-      "name": "green-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/norska-theme-slides"
   },
   "tmp": {
-    "background": {
-      "ansi": 205,
-      "hex": "#6b7280",
-      "name": "gray"
-    },
-    "backgroundInactive": {
-      "ansi": 200,
-      "hex": "#0c0f15",
-      "name": "gray-dark"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": ""
   },
   "transparentify": {
-    "background": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
-    "foreground": {
-      "ansi": 205,
-      "hex": "#6b7280",
-      "name": "gray"
-    },
     "hideNameInPrompt": false,
     "icon": "頋",
     "path": "~/local/www/projects/transparentify"
@@ -2070,36 +560,11 @@
     "path": ""
   },
   "videogames": {
-    "background": {
-      "ansi": 58,
-      "hex": "#2a4365",
-      "name": "blue-8"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 202,
-      "hex": "#e5e7eb",
-      "name": "gray-2"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/videogames/videogames.pixelastic.com"
   },
   "videogames-helper": {
-    "background": {
-      "ansi": 58,
-      "hex": "#2a4365",
-      "name": "blue-8"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": ""
@@ -2115,76 +580,21 @@
     "path": ""
   },
   "websites": {
-    "background": {
-      "ansi": 45,
-      "hex": "#d69e2e",
-      "name": "yellow"
-    },
-    "backgroundInactive": {
-      "ansi": 40,
-      "hex": "#1a1a0f",
-      "name": "yellow-dark"
-    },
-    "foreground": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": ""
   },
   "wikinx": {
-    "background": {
-      "ansi": 201,
-      "hex": "#ffffff",
-      "name": "white"
-    },
-    "foreground": {
-      "ansi": 200,
-      "hex": "#0c0f15",
-      "name": "black"
-    },
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/projects/wikinx"
   },
   "www": {
-    "background": {
-      "ansi": 35,
-      "hex": "#38a169",
-      "name": "green"
-    },
-    "backgroundInactive": {
-      "ansi": 30,
-      "hex": "#0f1a0f",
-      "name": "green-dark"
-    },
-    "foreground": {
-      "ansi": 202,
-      "hex": "#e5e7eb",
-      "name": "gray-2"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/pixelastic.com/www.pixelastic.com"
   },
   "youtinx": {
-    "background": {
-      "ansi": 204,
-      "hex": "#9ca3af",
-      "name": "gray-4"
-    },
-    "backgroundInactive": {
-      "ansi": 200,
-      "hex": "#0c0f15",
-      "name": "gray-dark"
-    },
-    "foreground": {
-      "ansi": 28,
-      "hex": "#7f1d1d",
-      "name": "red-8"
-    },
     "hideNameInPrompt": false,
     "icon": " ",
     "path": "~/local/www/projects/youtinx"

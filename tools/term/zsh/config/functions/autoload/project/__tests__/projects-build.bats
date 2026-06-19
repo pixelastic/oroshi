@@ -1,19 +1,20 @@
 bats_load_library 'helper'
 
 setup() {
-  PROJECTS_BUILD="$(realpath "${BATS_TEST_DIRNAME}/../projects-build")"
   bats_tmp_dir
 
-  export THEMING_ROOT="$BATS_TMP_DIR/theming"
-  mkdir -p "$THEMING_ROOT/src"
-  mkdir -p "$THEMING_ROOT/dist"
+  THEMING_DIR="$BATS_TMP_DIR/tools/term/zsh/config/theming"
+  mkdir -p "$THEMING_DIR/src"
+  mkdir -p "$THEMING_DIR/dist"
+
+  bats_mock_env OROSHI_ROOT "$BATS_TMP_DIR"
 
   jq -n '{
     "green-8":   {"ansi": 78,  "hex": "#166534"},
     "green-dark":{"ansi": 211, "hex": "#0f1a0f"},
     "gray-9":    {"ansi": 139, "hex": "#111827"},
     "green":     {"ansi": 2,   "hex": "#38a169"}
-  }' >"$THEMING_ROOT/dist/colors.json"
+  }' >"$THEMING_DIR/dist/colors.json"
 
   # full: all fields, path with trailing slash, backgroundInactive from numeric suffix
   # hidden: hideNameInPrompt=true, no path
@@ -32,7 +33,7 @@ setup() {
     nosuffix.background=green \
     nosuffix.foreground=gray-9 \
     nosuffix.icon=G \
-    >"$THEMING_ROOT/src/projects.json"
+    >"$THEMING_DIR/src/projects.json"
 }
 
 # --- Source ---
@@ -42,9 +43,9 @@ setup() {
     zzz.icon=Z \
     mmm.icon=M \
     aaa.icon=A \
-    >"$THEMING_ROOT/src/projects.json"
-  bats_run_zsh "$PROJECTS_BUILD"
-  run jq -r 'keys_unsorted[]' "$THEMING_ROOT/src/projects.json"
+    >"$THEMING_DIR/src/projects.json"
+  bats_run_zsh "projects-build"
+  run jq -r 'keys_unsorted[]' "$THEMING_DIR/src/projects.json"
   [ "${lines[0]}" = "aaa" ]
   [ "${lines[1]}" = "mmm" ]
   [ "${lines[2]}" = "zzz" ]
@@ -53,13 +54,13 @@ setup() {
 # --- JSON ---
 
 @test "produces dist/projects.json" {
-  bats_run_zsh "$PROJECTS_BUILD"
+  bats_run_zsh "projects-build"
   [ "$status" -eq 0 ]
-  [ -f "$THEMING_ROOT/dist/projects.json" ]
+  [ -f "$THEMING_DIR/dist/projects.json" ]
 }
 
 @test "dist/projects.json matches expected output" {
-  bats_run_zsh "$PROJECTS_BUILD"
+  bats_run_zsh "projects-build"
   local expected
   expected=$(
     cat <<'EXPECTED'
@@ -132,12 +133,12 @@ setup() {
 }
 EXPECTED
   )
-  [ "$(cat "$THEMING_ROOT/dist/projects.json")" = "$expected" ]
+  [ "$(cat "$THEMING_DIR/dist/projects.json")" = "$expected" ]
 }
 
 @test "backgroundInactive name uses familyname-dark format" {
-  bats_run_zsh "$PROJECTS_BUILD"
-  run jq -r '.full.backgroundInactive.name' "$THEMING_ROOT/dist/projects.json"
+  bats_run_zsh "projects-build"
+  run jq -r '.full.backgroundInactive.name' "$THEMING_DIR/dist/projects.json"
   [ "$output" = "green-dark" ]
 }
 
@@ -145,28 +146,28 @@ EXPECTED
   jq -n '{
     "orange-6": {"ansi": 101, "hex": "#ea580c"},
     "orange-dark":{"ansi": 100, "hex": "#1a0a00"}
-  }' >"$THEMING_ROOT/dist/colors.json"
+  }' >"$THEMING_DIR/dist/colors.json"
   jo -d. \
     myproject.background=orange-6 \
     myproject.icon=O \
-    >"$THEMING_ROOT/src/projects.json"
-  bats_run_zsh "$PROJECTS_BUILD"
-  run jq -r '.myproject.backgroundInactive.name' "$THEMING_ROOT/dist/projects.json"
+    >"$THEMING_DIR/src/projects.json"
+  bats_run_zsh "projects-build"
+  run jq -r '.myproject.backgroundInactive.name' "$THEMING_DIR/dist/projects.json"
   [ "$output" = "orange-dark" ]
 }
 
 # --- ZSH ---
 
 @test "produces dist/projects.zsh" {
-  bats_run_zsh "$PROJECTS_BUILD"
+  bats_run_zsh "projects-build"
   [ "$status" -eq 0 ]
-  [ -f "$THEMING_ROOT/dist/projects.zsh" ]
+  [ -f "$THEMING_DIR/dist/projects.zsh" ]
 }
 
 @test "dist/projects.zsh sets all values for a full project" {
-  bats_run_zsh "$PROJECTS_BUILD"
+  bats_run_zsh "projects-build"
 
-  bats_run_zsh "source '${THEMING_ROOT}/dist/projects.zsh'
+  bats_run_zsh "source '${THEMING_DIR}/dist/projects.zsh'
 echo \${PROJECTS[full:background:name]}
 echo \${PROJECTS[full:background:ansi]}
 echo \${PROJECTS[full:background:hex]}

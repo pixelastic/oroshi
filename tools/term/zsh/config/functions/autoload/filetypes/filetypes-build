@@ -1,12 +1,10 @@
-#!/usr/bin/env zsh
 # Build dist/filetypes.zsh from src/filetypes.jsonc
 # Resolves color/icon keys to values via colors-load-definitions and icons-load-definitions.
 # Usage:
 #   $ filetypes-build
-#   $ THEMING_ROOT=/path/to/theming filetypes-build
-set -e
+setopt local_options err_return
 
-local themingRoot="${THEMING_ROOT:-${0:A:h}}"
+local themingRoot="$OROSHI_ROOT/tools/term/zsh/config/theming"
 local srcJsonc="$themingRoot/src/filetypes.jsonc"
 local srcJson="$(jsonc2json "$srcJsonc")"
 local distDir="$themingRoot/dist"

@@ -1,11 +1,12 @@
-#!/usr/bin/env zsh
 # Build dist/colors.zsh and dist/colors.json from kitty/config/colors.conf
 # Usage:
 #   $ colors-build
-#   $ THEMING_ROOT=/path/to/theming colors-build
-set -e
+# Output:
+#   dist/colors.zsh  — COLORS[name]=ansi, COLORS[name:hex]="#rrggbb"
+#   dist/colors.json — {"name":{"ansi":N,"hex":"#rrggbb"}}
+setopt local_options err_return
 
-local themingRoot="${THEMING_ROOT:-${0:A:h}}"
+local themingRoot="$OROSHI_ROOT/tools/term/zsh/config/theming"
 local kittyConf="${OROSHI_ROOT}/tools/term/kitty/config/colors.conf"
 local srcJsonc="${themingRoot}/src/colors.jsonc"
 local distDir="$themingRoot/dist"
@@ -23,13 +24,17 @@ local -A familyRanges=(
 # }}}
 
 # Parse colors.conf → populate colorsByName (family-shade → slot/hex) {{{
-typeset -A colorsByName colorsByNameHexa
+local -A colorsByName
+local -A colorsByNameHexa
 
 local kittyColors="$(grep '^color' "$kittyConf")"
 for line in ${(f)kittyColors}; do
   local split=(${=line})
   local slot="${split[1]:5}"  # strip "color" prefix
   local hex="$split[2]"
+
+  # Skip non-numeric slots (e.g. color_table, color_scheme directives)
+  [[ ! "$slot" =~ ^[0-9]+$ ]] && continue
 
   local familyStart=$(( slot - slot % 10 ))
   local family="${familyRanges[$familyStart]}"
@@ -60,7 +65,7 @@ done
 # }}}
 
 # Load semantic aliases from colors.jsonc, recursively flattening nested objects {{{
-typeset -A aliasColors
+local -A aliasColors
 local flatAliases="$(jq -r '
   [ paths(type == "string") as $p
   | { key: ($p | join("-")), value: getpath($p) }
