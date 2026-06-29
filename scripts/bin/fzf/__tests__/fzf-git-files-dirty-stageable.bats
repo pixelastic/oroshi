@@ -19,21 +19,17 @@ setup() {
   bats_mock img-display fzf-fs-shared-preview-header fzf-fs-shared-preview
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # fzf-preview
 
 @test "preview: shows diff for modified file" {
-  bats_run_zsh "cd $BATS_GIT_DIR && fzf-git-files-stageable --preview test.txt"
+  bats_run_zsh "cd $BATS_GIT_DIR && fzf-git-files-dirty-stageable --preview test.txt"
   [ "$status" -eq 0 ]
   [[ "$output" == *"modified"* ]]
 }
 
 @test "preview: shows file content for new untracked file" {
   echo "brand new content" > "$BATS_GIT_DIR/new.txt"
-  bats_run_zsh "cd $BATS_GIT_DIR && fzf-git-files-stageable --preview new.txt"
+  bats_run_zsh "cd $BATS_GIT_DIR && fzf-git-files-dirty-stageable --preview new.txt"
   [ "$status" -eq 0 ]
   [[ "$output" == *"brand new content"* ]]
 }

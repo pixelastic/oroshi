@@ -90,7 +90,7 @@ compdef _git-tags-local \
   git-tag-switch
 compdef _git-tags-remote \
   git-tag-remove-remote
-compdef _git-files-stageable \
+compdef _git-files-dirty-stageable \
   git-file-add
 compdef _git-files-staged \
   git-file-unstage
