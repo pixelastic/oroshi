@@ -13,3 +13,8 @@
 - **Prior art**: existing tests in zshenv-host.bats use `run_bare_zsh` (unit); new tests use `bats_run_zsh` (integration)
 
 ## Discoveries
+
+### Issue 03 — disable worktree-aware
+- `~/.zshenv` symlinks to `$HOME/.oroshi` (main repo) — the disable guard must be applied to the main repo's `zshenv-host.zsh` directly, not just the worktree's copy.
+- `autoload` marks are per-process, not inherited via env. Skipping fpath reload when disabled breaks functions (127). PATH inheritance works because PATH is a standard env var.
+- Planning comments referenced by issue 03 (lines 13-28 of helper.bats) don't exist in the current file — likely removed in a prior refactor.

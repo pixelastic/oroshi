@@ -76,18 +76,18 @@ mock_env() {
 }
 
 @test "inside a detected oroshi worktree, chains resolve from that worktree" {
+  # Make a real worktree of oroshi
   worktreeDir="$BATS_TMP_DIR/worktrees/oroshi--bats-test"
   git -C "$OROSHI_ROOT" worktree add --detach "$worktreeDir"
-
-  # Overwrite leaf fixtures to echo a custom string
-  echo '#!/usr/bin/env zsh
-echo "from-test-worktree"' > "$worktreeDir/scripts/bin/term/bats/bats-fixture-script-baz"
-
-  echo 'echo "from-test-worktree"' > "$worktreeDir/tools/term/zsh/config/functions/autoload/term/bats/bats-fixture-function-baz"
-
   export MOCK_OROSHI_WORKTREES_DIR="$BATS_TMP_DIR/worktrees"
   cd "$worktreeDir"
 
+  # Overwrite fixtures to echo a custom string
+  echo '#!/usr/bin/env zsh' > "$worktreeDir/scripts/bin/term/bats/bats-fixture-script-baz"
+  echo 'echo "from-test-worktree"' >> "$worktreeDir/scripts/bin/term/bats/bats-fixture-script-baz"
+  echo 'echo "from-test-worktree"' > "$worktreeDir/tools/term/zsh/config/functions/autoload/term/bats/bats-fixture-function-baz"
+
+  # It correctly uses the new fixtures
   bats_run_zsh "bats-fixture-script-foo"
   [ "$status" -eq 0 ]
   [ "$output" = "from-test-worktree" ]
@@ -95,6 +95,32 @@ echo "from-test-worktree"' > "$worktreeDir/scripts/bin/term/bats/bats-fixture-sc
   bats_run_zsh "bats-fixture-function-foo"
   [ "$status" -eq 0 ]
   [ "$output" = "from-test-worktree" ]
+}
+
+@test "with worktree-aware disabled, chains resolve from inherited OROSHI_ROOT" {
+  # Make a real worktree of oroshi
+  worktreeDir="$BATS_TMP_DIR/worktrees/oroshi--bats-test"
+  git -C "$OROSHI_ROOT" worktree add --detach "$worktreeDir"
+  export MOCK_OROSHI_WORKTREES_DIR="$BATS_TMP_DIR/worktrees"
+  cd "$worktreeDir"
+
+  # Overwrite fixtures to echo a custom string
+  echo '#!/usr/bin/env zsh' > "$worktreeDir/scripts/bin/term/bats/bats-fixture-script-baz"
+  echo 'echo "from-test-worktree"' >> "$worktreeDir/scripts/bin/term/bats/bats-fixture-script-baz"
+  echo 'echo "from-test-worktree"' > "$worktreeDir/tools/term/zsh/config/functions/autoload/term/bats/bats-fixture-function-baz"
+
+  # Disable worktree-aware behavior
+  bats_disable_worktree_aware
+
+  bats_run_zsh "bats-fixture-script-foo"
+  [ "$status" -eq 0 ]
+  [ "$output" != "from-test-worktree" ]
+  [[ "$output" == *"$OROSHI_ROOT"* ]]
+
+  bats_run_zsh "bats-fixture-function-foo"
+  [ "$status" -eq 0 ]
+  [ "$output" != "from-test-worktree" ]
+  [[ "$output" == *"$OROSHI_ROOT"* ]]
 }
 
 @test "OROSHI_ROOT is worktree in any other worktree" {

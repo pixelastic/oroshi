@@ -13,19 +13,15 @@ export OROSHI_TMP_FOLDER="$HOME/local/tmp/oroshi"
 # available allow me to define per-host config easily.
 export HOSTNAME="$(hostname)"
 
-# Skip reload if worktree-aware is disabled — PATH and fpath are inherited
-# from the parent process as-is, keeping binaries from the original worktree
-if [[ "$OROSHI_DISABLE_WORKTREE_AWARE" != "1" ]]; then
-  # Define $PATH, adding all scripts of this worktree
-  typeset -aU path
-  source $OROSHI_ROOT/tools/term/zsh/config/path.zsh
-  oroshi-reload-path $OROSHI_ROOT
+# Define $PATH, adding all scripts from OROSHI_ROOT
+typeset -aU path
+source $OROSHI_ROOT/tools/term/zsh/config/path.zsh
+oroshi-reload-path $OROSHI_ROOT
 
-  # Define $fpath, adding all autoloaded functions of this worktree
-  typeset -aU fpath
-  source $OROSHI_ROOT/tools/term/zsh/config/functions/oroshi-reload-fpath.zsh
-  oroshi-reload-fpath $OROSHI_ROOT
-fi
+# Define $fpath, adding all autoloaded functions from OROSHI_ROOT
+typeset -aU fpath
+source $OROSHI_ROOT/tools/term/zsh/config/functions/oroshi-reload-fpath.zsh
+oroshi-reload-fpath $OROSHI_ROOT
 
 # Allow tests to override anything done previously in this file through mock
 if [[ $MOCK_OVERRIDE != "" ]]; then
