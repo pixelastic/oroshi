@@ -4,6 +4,8 @@ json-lint errors when editing files outside of oroshi
 
 Add the model name in the Claude code statusbar
 
+Move all -build (color, project, filetype) in PATH
+
 Check if we still need export OROSHI_ROOT_DEFAULT="$OROSHI_ROOT" and why in
 zshenv
 
