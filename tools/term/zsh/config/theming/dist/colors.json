@@ -1,1 +1,1534 @@
-{}
+{
+  "ai": {
+    "ansi": 146,
+    "hex": "#b45309"
+  },
+  "amber": {
+    "ansi": 145,
+    "hex": "#d97706"
+  },
+  "amber-0": {
+    "ansi": 140,
+    "hex": "#1a180f"
+  },
+  "amber-1": {
+    "ansi": 141,
+    "hex": "#fde68a"
+  },
+  "amber-2": {
+    "ansi": 142,
+    "hex": "#fcd34d"
+  },
+  "amber-3": {
+    "ansi": 143,
+    "hex": "#fbbf24"
+  },
+  "amber-4": {
+    "ansi": 144,
+    "hex": "#f59e0b"
+  },
+  "amber-5": {
+    "ansi": 145,
+    "hex": "#d97706"
+  },
+  "amber-6": {
+    "ansi": 146,
+    "hex": "#b45309"
+  },
+  "amber-7": {
+    "ansi": 147,
+    "hex": "#92400e"
+  },
+  "amber-8": {
+    "ansi": 148,
+    "hex": "#78350f"
+  },
+  "amber-9": {
+    "ansi": 149,
+    "hex": "#451a03"
+  },
+  "amber-dark": {
+    "ansi": 140,
+    "hex": "#1a180f"
+  },
+  "black": {
+    "ansi": 200,
+    "hex": "#0c0f15"
+  },
+  "blue": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
+  "blue-0": {
+    "ansi": 50,
+    "hex": "#0e1529"
+  },
+  "blue-1": {
+    "ansi": 51,
+    "hex": "#bee3f8"
+  },
+  "blue-2": {
+    "ansi": 52,
+    "hex": "#90cdf4"
+  },
+  "blue-3": {
+    "ansi": 53,
+    "hex": "#63b3ed"
+  },
+  "blue-4": {
+    "ansi": 54,
+    "hex": "#4299e1"
+  },
+  "blue-5": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
+  "blue-6": {
+    "ansi": 56,
+    "hex": "#2b6cb0"
+  },
+  "blue-7": {
+    "ansi": 57,
+    "hex": "#2c5282"
+  },
+  "blue-8": {
+    "ansi": 58,
+    "hex": "#2a4365"
+  },
+  "blue-9": {
+    "ansi": 59,
+    "hex": "#2a4365"
+  },
+  "blue-dark": {
+    "ansi": 50,
+    "hex": "#0e1529"
+  },
+  "boolean": {
+    "ansi": 144,
+    "hex": "#f59e0b"
+  },
+  "claude": {
+    "ansi": 146,
+    "hex": "#b45309"
+  },
+  "comment": {
+    "ansi": 205,
+    "hex": "#6b7280"
+  },
+  "constant": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
+  "cyan": {
+    "ansi": 75,
+    "hex": "#0891b2"
+  },
+  "cyan-0": {
+    "ansi": 70,
+    "hex": "#0f1a1a"
+  },
+  "cyan-1": {
+    "ansi": 71,
+    "hex": "#a5f3fc"
+  },
+  "cyan-2": {
+    "ansi": 72,
+    "hex": "#67e8f9"
+  },
+  "cyan-3": {
+    "ansi": 73,
+    "hex": "#22d3ee"
+  },
+  "cyan-4": {
+    "ansi": 74,
+    "hex": "#06b6d4"
+  },
+  "cyan-5": {
+    "ansi": 75,
+    "hex": "#0891b2"
+  },
+  "cyan-6": {
+    "ansi": 76,
+    "hex": "#0e7490"
+  },
+  "cyan-7": {
+    "ansi": 77,
+    "hex": "#155e75"
+  },
+  "cyan-8": {
+    "ansi": 78,
+    "hex": "#164e63"
+  },
+  "cyan-9": {
+    "ansi": 79,
+    "hex": "#083344"
+  },
+  "cyan-dark": {
+    "ansi": 70,
+    "hex": "#0f1a1a"
+  },
+  "date": {
+    "ansi": 166,
+    "hex": "#0369a1"
+  },
+  "directory": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
+  "docker-comment": {
+    "ansi": 204,
+    "hex": "#9ca3af"
+  },
+  "docker-container": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "docker-container-run": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
+  "docker-hash": {
+    "ansi": 65,
+    "hex": "#805ad5"
+  },
+  "docker-image": {
+    "ansi": 165,
+    "hex": "#0284c7"
+  },
+  "docker-image-github": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
+  "docker-image-oroshi": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
+  "docker-image-orphan": {
+    "ansi": 24,
+    "hex": "#ef4444"
+  },
+  "docker-image-remote": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
+  "docker-status": {
+    "ansi": 204,
+    "hex": "#9ca3af"
+  },
+  "docker-tag": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
+  "docker-tag-latest": {
+    "ansi": 104,
+    "hex": "#f97316"
+  },
+  "emerald": {
+    "ansi": 155,
+    "hex": "#059669"
+  },
+  "emerald-0": {
+    "ansi": 150,
+    "hex": "#0f1a15"
+  },
+  "emerald-1": {
+    "ansi": 151,
+    "hex": "#a7f3d0"
+  },
+  "emerald-2": {
+    "ansi": 152,
+    "hex": "#6ee7b7"
+  },
+  "emerald-3": {
+    "ansi": 153,
+    "hex": "#34d399"
+  },
+  "emerald-4": {
+    "ansi": 154,
+    "hex": "#10b981"
+  },
+  "emerald-5": {
+    "ansi": 155,
+    "hex": "#059669"
+  },
+  "emerald-6": {
+    "ansi": 156,
+    "hex": "#047857"
+  },
+  "emerald-7": {
+    "ansi": 157,
+    "hex": "#065f46"
+  },
+  "emerald-8": {
+    "ansi": 158,
+    "hex": "#064e3b"
+  },
+  "emerald-9": {
+    "ansi": 159,
+    "hex": "#022c22"
+  },
+  "emerald-dark": {
+    "ansi": 150,
+    "hex": "#0f1a15"
+  },
+  "error": {
+    "ansi": 24,
+    "hex": "#ef4444"
+  },
+  "eval": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "exception": {
+    "ansi": 24,
+    "hex": "#ef4444"
+  },
+  "executable": {
+    "ansi": 173,
+    "hex": "#a78bfa"
+  },
+  "file": {
+    "ansi": 173,
+    "hex": "#a78bfa"
+  },
+  "flag": {
+    "ansi": 145,
+    "hex": "#d97706"
+  },
+  "fly-app-running": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
+  "fly-app-suspended": {
+    "ansi": 205,
+    "hex": "#6b7280"
+  },
+  "fuchsia": {
+    "ansi": 125,
+    "hex": "#c026d3"
+  },
+  "fuchsia-0": {
+    "ansi": 120,
+    "hex": "#1c0f20"
+  },
+  "fuchsia-1": {
+    "ansi": 121,
+    "hex": "#f5d0fe"
+  },
+  "fuchsia-2": {
+    "ansi": 122,
+    "hex": "#f0abfc"
+  },
+  "fuchsia-3": {
+    "ansi": 123,
+    "hex": "#e879f9"
+  },
+  "fuchsia-4": {
+    "ansi": 124,
+    "hex": "#d946ef"
+  },
+  "fuchsia-5": {
+    "ansi": 125,
+    "hex": "#c026d3"
+  },
+  "fuchsia-6": {
+    "ansi": 126,
+    "hex": "#a21caf"
+  },
+  "fuchsia-7": {
+    "ansi": 127,
+    "hex": "#86198f"
+  },
+  "fuchsia-8": {
+    "ansi": 128,
+    "hex": "#701a75"
+  },
+  "fuchsia-9": {
+    "ansi": 129,
+    "hex": "#4a044e"
+  },
+  "fuchsia-dark": {
+    "ansi": 120,
+    "hex": "#1c0f20"
+  },
+  "function": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "git-added": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
+  "git-ahead": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
+  "git-author": {
+    "ansi": 225,
+    "hex": "#525252"
+  },
+  "git-behind": {
+    "ansi": 26,
+    "hex": "#b91c1c"
+  },
+  "git-branch": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
+  "git-branch-dependabot": {
+    "ansi": 75,
+    "hex": "#0891b2"
+  },
+  "git-branch-develop": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "git-branch-head": {
+    "ansi": 24,
+    "hex": "#ef4444"
+  },
+  "git-branch-main": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
+  "git-branch-master": {
+    "ansi": 24,
+    "hex": "#ef4444"
+  },
+  "git-commit": {
+    "ansi": 65,
+    "hex": "#805ad5"
+  },
+  "git-dirty": {
+    "ansi": 24,
+    "hex": "#ef4444"
+  },
+  "git-issue": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "git-message": {
+    "ansi": 204,
+    "hex": "#9ca3af"
+  },
+  "git-modified": {
+    "ansi": 173,
+    "hex": "#a78bfa"
+  },
+  "git-pullrequest": {
+    "ansi": 65,
+    "hex": "#805ad5"
+  },
+  "git-rebase": {
+    "ansi": 24,
+    "hex": "#ef4444"
+  },
+  "git-remote": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "git-remote-algolia": {
+    "ansi": 53,
+    "hex": "#63b3ed"
+  },
+  "git-remote-head": {
+    "ansi": 24,
+    "hex": "#ef4444"
+  },
+  "git-remote-origin": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "git-remote-pixelastic": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
+  "git-remote-upstream": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
+  "git-removed": {
+    "ansi": 24,
+    "hex": "#ef4444"
+  },
+  "git-stash": {
+    "ansi": 132,
+    "hex": "#5eead4"
+  },
+  "git-submodule": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "git-tag": {
+    "ansi": 75,
+    "hex": "#0891b2"
+  },
+  "git-tag-closest": {
+    "ansi": 75,
+    "hex": "#0891b2"
+  },
+  "git-tag-exact": {
+    "ansi": 74,
+    "hex": "#06b6d4"
+  },
+  "git-tag-parent": {
+    "ansi": 77,
+    "hex": "#155e75"
+  },
+  "git-tag-unrelated": {
+    "ansi": 205,
+    "hex": "#6b7280"
+  },
+  "git-tracked": {
+    "ansi": 173,
+    "hex": "#a78bfa"
+  },
+  "git-untracked": {
+    "ansi": 24,
+    "hex": "#ef4444"
+  },
+  "git-worktree": {
+    "ansi": 106,
+    "hex": "#c2410c"
+  },
+  "git-worktree-dirty": {
+    "ansi": 173,
+    "hex": "#a78bfa"
+  },
+  "git-worktree-foreground": {
+    "ansi": 101,
+    "hex": "#fed7aa"
+  },
+  "glob": {
+    "ansi": 33,
+    "hex": "#68d391"
+  },
+  "gray": {
+    "ansi": 205,
+    "hex": "#6b7280"
+  },
+  "gray-0": {
+    "ansi": 200,
+    "hex": "#0c0f15"
+  },
+  "gray-1": {
+    "ansi": 201,
+    "hex": "#ffffff"
+  },
+  "gray-2": {
+    "ansi": 202,
+    "hex": "#e5e7eb"
+  },
+  "gray-3": {
+    "ansi": 203,
+    "hex": "#d1d5db"
+  },
+  "gray-4": {
+    "ansi": 204,
+    "hex": "#9ca3af"
+  },
+  "gray-5": {
+    "ansi": 205,
+    "hex": "#6b7280"
+  },
+  "gray-6": {
+    "ansi": 206,
+    "hex": "#4b5563"
+  },
+  "gray-7": {
+    "ansi": 207,
+    "hex": "#374151"
+  },
+  "gray-8": {
+    "ansi": 208,
+    "hex": "#1f2937"
+  },
+  "gray-9": {
+    "ansi": 209,
+    "hex": "#111827"
+  },
+  "gray-dark": {
+    "ansi": 200,
+    "hex": "#0c0f15"
+  },
+  "green": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
+  "green-0": {
+    "ansi": 30,
+    "hex": "#0f1a0f"
+  },
+  "green-1": {
+    "ansi": 31,
+    "hex": "#c6f6d5"
+  },
+  "green-2": {
+    "ansi": 32,
+    "hex": "#9ae6b4"
+  },
+  "green-3": {
+    "ansi": 33,
+    "hex": "#68d391"
+  },
+  "green-4": {
+    "ansi": 34,
+    "hex": "#48bb78"
+  },
+  "green-5": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
+  "green-6": {
+    "ansi": 36,
+    "hex": "#2f855a"
+  },
+  "green-7": {
+    "ansi": 37,
+    "hex": "#276749"
+  },
+  "green-8": {
+    "ansi": 38,
+    "hex": "#22543d"
+  },
+  "green-9": {
+    "ansi": 39,
+    "hex": "#22543d"
+  },
+  "green-dark": {
+    "ansi": 30,
+    "hex": "#0f1a0f"
+  },
+  "header": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "host-github": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
+  "host-pixelastic": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
+  "import": {
+    "ansi": 43,
+    "hex": "#f6e05e"
+  },
+  "indigo": {
+    "ansi": 115,
+    "hex": "#4f46e5"
+  },
+  "indigo-0": {
+    "ansi": 110,
+    "hex": "#0f1228"
+  },
+  "indigo-1": {
+    "ansi": 111,
+    "hex": "#c7d2fe"
+  },
+  "indigo-2": {
+    "ansi": 112,
+    "hex": "#a5b4fc"
+  },
+  "indigo-3": {
+    "ansi": 113,
+    "hex": "#818cf8"
+  },
+  "indigo-4": {
+    "ansi": 114,
+    "hex": "#6366f1"
+  },
+  "indigo-5": {
+    "ansi": 115,
+    "hex": "#4f46e5"
+  },
+  "indigo-6": {
+    "ansi": 116,
+    "hex": "#4338ca"
+  },
+  "indigo-7": {
+    "ansi": 117,
+    "hex": "#3730a3"
+  },
+  "indigo-8": {
+    "ansi": 118,
+    "hex": "#312e81"
+  },
+  "indigo-9": {
+    "ansi": 119,
+    "hex": "#1e1b4b"
+  },
+  "indigo-dark": {
+    "ansi": 110,
+    "hex": "#0f1228"
+  },
+  "info": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
+  "interpolation-string": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
+  "interpolation-variable": {
+    "ansi": 173,
+    "hex": "#a78bfa"
+  },
+  "interpolation-wrapper": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "key": {
+    "ansi": 172,
+    "hex": "#c4b5fd"
+  },
+  "keyword": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
+  "language-bats": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
+  "language-javascript": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "language-node": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
+  "language-python": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
+  "language-ruby": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
+  "lime": {
+    "ansi": 95,
+    "hex": "#65a30d"
+  },
+  "lime-0": {
+    "ansi": 90,
+    "hex": "#141a0c"
+  },
+  "lime-1": {
+    "ansi": 91,
+    "hex": "#d9f99d"
+  },
+  "lime-2": {
+    "ansi": 92,
+    "hex": "#bef264"
+  },
+  "lime-3": {
+    "ansi": 93,
+    "hex": "#a3e635"
+  },
+  "lime-4": {
+    "ansi": 94,
+    "hex": "#84cc16"
+  },
+  "lime-5": {
+    "ansi": 95,
+    "hex": "#65a30d"
+  },
+  "lime-6": {
+    "ansi": 96,
+    "hex": "#4d7c0f"
+  },
+  "lime-7": {
+    "ansi": 97,
+    "hex": "#3f6212"
+  },
+  "lime-8": {
+    "ansi": 98,
+    "hex": "#365314"
+  },
+  "lime-9": {
+    "ansi": 99,
+    "hex": "#1a2e05"
+  },
+  "lime-dark": {
+    "ansi": 90,
+    "hex": "#141a0c"
+  },
+  "link": {
+    "ansi": 53,
+    "hex": "#63b3ed"
+  },
+  "local-dependency": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "marker": {
+    "ansi": 75,
+    "hex": "#0891b2"
+  },
+  "match": {
+    "ansi": 102,
+    "hex": "#fdba74"
+  },
+  "modifier": {
+    "ansi": 102,
+    "hex": "#fdba74"
+  },
+  "neutral": {
+    "ansi": 225,
+    "hex": "#525252"
+  },
+  "neutral-0": {
+    "ansi": 220,
+    "hex": "#151515"
+  },
+  "neutral-1": {
+    "ansi": 221,
+    "hex": "#e5e5e5"
+  },
+  "neutral-2": {
+    "ansi": 222,
+    "hex": "#d4d4d4"
+  },
+  "neutral-3": {
+    "ansi": 223,
+    "hex": "#a3a3a3"
+  },
+  "neutral-4": {
+    "ansi": 224,
+    "hex": "#737373"
+  },
+  "neutral-5": {
+    "ansi": 225,
+    "hex": "#525252"
+  },
+  "neutral-6": {
+    "ansi": 226,
+    "hex": "#404040"
+  },
+  "neutral-7": {
+    "ansi": 227,
+    "hex": "#262626"
+  },
+  "neutral-8": {
+    "ansi": 228,
+    "hex": "#171717"
+  },
+  "neutral-9": {
+    "ansi": 229,
+    "hex": "#0a0a0a"
+  },
+  "neutral-dark": {
+    "ansi": 220,
+    "hex": "#151515"
+  },
+  "node-version-current": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
+  "node-version-default": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
+  "node-version-installed": {
+    "ansi": 204,
+    "hex": "#9ca3af"
+  },
+  "node-version-uninstalled": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "noise": {
+    "ansi": 136,
+    "hex": "#0f766e"
+  },
+  "notice": {
+    "ansi": 173,
+    "hex": "#a78bfa"
+  },
+  "number": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
+  "orange": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
+  "orange-0": {
+    "ansi": 100,
+    "hex": "#1a120f"
+  },
+  "orange-1": {
+    "ansi": 101,
+    "hex": "#fed7aa"
+  },
+  "orange-2": {
+    "ansi": 102,
+    "hex": "#fdba74"
+  },
+  "orange-3": {
+    "ansi": 103,
+    "hex": "#fb923c"
+  },
+  "orange-4": {
+    "ansi": 104,
+    "hex": "#f97316"
+  },
+  "orange-5": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
+  "orange-6": {
+    "ansi": 106,
+    "hex": "#c2410c"
+  },
+  "orange-7": {
+    "ansi": 107,
+    "hex": "#9a3412"
+  },
+  "orange-8": {
+    "ansi": 108,
+    "hex": "#7c2d12"
+  },
+  "orange-9": {
+    "ansi": 109,
+    "hex": "#431407"
+  },
+  "orange-dark": {
+    "ansi": 100,
+    "hex": "#1a120f"
+  },
+  "package": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "package-description": {
+    "ansi": 204,
+    "hex": "#9ca3af"
+  },
+  "package-installed": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
+  "package-not-installed": {
+    "ansi": 205,
+    "hex": "#6b7280"
+  },
+  "package-version": {
+    "ansi": 75,
+    "hex": "#0891b2"
+  },
+  "package-version-mismatch": {
+    "ansi": 173,
+    "hex": "#a78bfa"
+  },
+  "pink": {
+    "ansi": 85,
+    "hex": "#db2777"
+  },
+  "pink-0": {
+    "ansi": 80,
+    "hex": "#1f0f16"
+  },
+  "pink-1": {
+    "ansi": 81,
+    "hex": "#fbcfe8"
+  },
+  "pink-2": {
+    "ansi": 82,
+    "hex": "#f9a8d4"
+  },
+  "pink-3": {
+    "ansi": 83,
+    "hex": "#f472b6"
+  },
+  "pink-4": {
+    "ansi": 84,
+    "hex": "#ec4899"
+  },
+  "pink-5": {
+    "ansi": 85,
+    "hex": "#db2777"
+  },
+  "pink-6": {
+    "ansi": 86,
+    "hex": "#be185d"
+  },
+  "pink-7": {
+    "ansi": 87,
+    "hex": "#9d174d"
+  },
+  "pink-8": {
+    "ansi": 88,
+    "hex": "#831843"
+  },
+  "pink-9": {
+    "ansi": 89,
+    "hex": "#500724"
+  },
+  "pink-dark": {
+    "ansi": 80,
+    "hex": "#1f0f16"
+  },
+  "pointer": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
+  "process": {
+    "ansi": 75,
+    "hex": "#0891b2"
+  },
+  "punctuation": {
+    "ansi": 136,
+    "hex": "#0f766e"
+  },
+  "purple": {
+    "ansi": 65,
+    "hex": "#805ad5"
+  },
+  "purple-0": {
+    "ansi": 60,
+    "hex": "#201325"
+  },
+  "purple-1": {
+    "ansi": 61,
+    "hex": "#e9d8fd"
+  },
+  "purple-2": {
+    "ansi": 62,
+    "hex": "#d6bcfa"
+  },
+  "purple-3": {
+    "ansi": 63,
+    "hex": "#b794f4"
+  },
+  "purple-4": {
+    "ansi": 64,
+    "hex": "#9f7aea"
+  },
+  "purple-5": {
+    "ansi": 65,
+    "hex": "#805ad5"
+  },
+  "purple-6": {
+    "ansi": 66,
+    "hex": "#6b46c1"
+  },
+  "purple-7": {
+    "ansi": 67,
+    "hex": "#553c9a"
+  },
+  "purple-8": {
+    "ansi": 68,
+    "hex": "#44337a"
+  },
+  "purple-9": {
+    "ansi": 69,
+    "hex": "#44337a"
+  },
+  "purple-dark": {
+    "ansi": 60,
+    "hex": "#201325"
+  },
+  "red": {
+    "ansi": 25,
+    "hex": "#dc2626"
+  },
+  "red-0": {
+    "ansi": 20,
+    "hex": "#250f0f"
+  },
+  "red-1": {
+    "ansi": 21,
+    "hex": "#fecaca"
+  },
+  "red-2": {
+    "ansi": 22,
+    "hex": "#fca5a5"
+  },
+  "red-3": {
+    "ansi": 23,
+    "hex": "#f87171"
+  },
+  "red-4": {
+    "ansi": 24,
+    "hex": "#ef4444"
+  },
+  "red-5": {
+    "ansi": 25,
+    "hex": "#dc2626"
+  },
+  "red-6": {
+    "ansi": 26,
+    "hex": "#b91c1c"
+  },
+  "red-7": {
+    "ansi": 27,
+    "hex": "#991b1b"
+  },
+  "red-8": {
+    "ansi": 28,
+    "hex": "#7f1d1d"
+  },
+  "red-9": {
+    "ansi": 29,
+    "hex": "#450a0a"
+  },
+  "red-dark": {
+    "ansi": 20,
+    "hex": "#250f0f"
+  },
+  "regexp": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
+  "selected-background": {
+    "ansi": 208,
+    "hex": "#1f2937"
+  },
+  "size-unit": {
+    "ansi": 204,
+    "hex": "#9ca3af"
+  },
+  "size-value": {
+    "ansi": 205,
+    "hex": "#6b7280"
+  },
+  "sky": {
+    "ansi": 165,
+    "hex": "#0284c7"
+  },
+  "sky-0": {
+    "ansi": 160,
+    "hex": "#1a2535"
+  },
+  "sky-1": {
+    "ansi": 161,
+    "hex": "#bae6fd"
+  },
+  "sky-2": {
+    "ansi": 162,
+    "hex": "#7dd3fc"
+  },
+  "sky-3": {
+    "ansi": 163,
+    "hex": "#38bdf8"
+  },
+  "sky-4": {
+    "ansi": 164,
+    "hex": "#0ea5e9"
+  },
+  "sky-5": {
+    "ansi": 165,
+    "hex": "#0284c7"
+  },
+  "sky-6": {
+    "ansi": 166,
+    "hex": "#0369a1"
+  },
+  "sky-7": {
+    "ansi": 167,
+    "hex": "#075985"
+  },
+  "sky-8": {
+    "ansi": 168,
+    "hex": "#0c4a6e"
+  },
+  "sky-9": {
+    "ansi": 169,
+    "hex": "#082f49"
+  },
+  "sky-dark": {
+    "ansi": 160,
+    "hex": "#1a2535"
+  },
+  "slate": {
+    "ansi": 215,
+    "hex": "#475569"
+  },
+  "slate-0": {
+    "ansi": 210,
+    "hex": "#0f141e"
+  },
+  "slate-1": {
+    "ansi": 211,
+    "hex": "#e2e8f0"
+  },
+  "slate-2": {
+    "ansi": 212,
+    "hex": "#cbd5e1"
+  },
+  "slate-3": {
+    "ansi": 213,
+    "hex": "#94a3b8"
+  },
+  "slate-4": {
+    "ansi": 214,
+    "hex": "#64748b"
+  },
+  "slate-5": {
+    "ansi": 215,
+    "hex": "#475569"
+  },
+  "slate-6": {
+    "ansi": 216,
+    "hex": "#334155"
+  },
+  "slate-7": {
+    "ansi": 217,
+    "hex": "#1e293b"
+  },
+  "slate-8": {
+    "ansi": 218,
+    "hex": "#0f172a"
+  },
+  "slate-9": {
+    "ansi": 219,
+    "hex": "#020617"
+  },
+  "slate-dark": {
+    "ansi": 210,
+    "hex": "#0f141e"
+  },
+  "special-char": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "statement": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
+  "stone": {
+    "ansi": 235,
+    "hex": "#57534e"
+  },
+  "stone-0": {
+    "ansi": 230,
+    "hex": "#181614"
+  },
+  "stone-1": {
+    "ansi": 231,
+    "hex": "#e7e5e4"
+  },
+  "stone-2": {
+    "ansi": 232,
+    "hex": "#d6d3d1"
+  },
+  "stone-3": {
+    "ansi": 233,
+    "hex": "#a8a29e"
+  },
+  "stone-4": {
+    "ansi": 234,
+    "hex": "#78716c"
+  },
+  "stone-5": {
+    "ansi": 235,
+    "hex": "#57534e"
+  },
+  "stone-6": {
+    "ansi": 236,
+    "hex": "#44403c"
+  },
+  "stone-7": {
+    "ansi": 237,
+    "hex": "#292524"
+  },
+  "stone-8": {
+    "ansi": 238,
+    "hex": "#1c1917"
+  },
+  "stone-9": {
+    "ansi": 239,
+    "hex": "#0c0a09"
+  },
+  "stone-dark": {
+    "ansi": 230,
+    "hex": "#181614"
+  },
+  "string": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
+  "success": {
+    "ansi": 35,
+    "hex": "#38a169"
+  },
+  "symbol": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
+  "teal": {
+    "ansi": 135,
+    "hex": "#0d9488"
+  },
+  "teal-0": {
+    "ansi": 130,
+    "hex": "#0f1a18"
+  },
+  "teal-1": {
+    "ansi": 131,
+    "hex": "#99f6e4"
+  },
+  "teal-2": {
+    "ansi": 132,
+    "hex": "#5eead4"
+  },
+  "teal-3": {
+    "ansi": 133,
+    "hex": "#2dd4bf"
+  },
+  "teal-4": {
+    "ansi": 134,
+    "hex": "#14b8a6"
+  },
+  "teal-5": {
+    "ansi": 135,
+    "hex": "#0d9488"
+  },
+  "teal-6": {
+    "ansi": 136,
+    "hex": "#0f766e"
+  },
+  "teal-7": {
+    "ansi": 137,
+    "hex": "#115e59"
+  },
+  "teal-8": {
+    "ansi": 138,
+    "hex": "#134e4a"
+  },
+  "teal-9": {
+    "ansi": 139,
+    "hex": "#042f2e"
+  },
+  "teal-dark": {
+    "ansi": 130,
+    "hex": "#0f1a18"
+  },
+  "terminal": {
+    "ansi": 200,
+    "hex": "#0c0f15"
+  },
+  "text": {
+    "ansi": 203,
+    "hex": "#d1d5db"
+  },
+  "todo": {
+    "ansi": 24,
+    "hex": "#ef4444"
+  },
+  "ui": {
+    "ansi": 225,
+    "hex": "#525252"
+  },
+  "unknown": {
+    "ansi": 73,
+    "hex": "#22d3ee"
+  },
+  "variable": {
+    "ansi": 173,
+    "hex": "#a78bfa"
+  },
+  "variable-definition": {
+    "ansi": 172,
+    "hex": "#c4b5fd"
+  },
+  "variable-type": {
+    "ansi": 23,
+    "hex": "#f87171"
+  },
+  "video-stream-audio": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
+  "vim-command-cursor": {
+    "ansi": 136,
+    "hex": "#0f766e"
+  },
+  "vim-insert-cursor": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "vim-normal-cursor": {
+    "ansi": 24,
+    "hex": "#ef4444"
+  },
+  "vim-search-background": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "vim-search-foreground": {
+    "ansi": 200,
+    "hex": "#0c0f15"
+  },
+  "vim-visual-background": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
+  "vim-visual-cursor": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
+  "violet": {
+    "ansi": 175,
+    "hex": "#7c3aed"
+  },
+  "violet-0": {
+    "ansi": 170,
+    "hex": "#150f1a"
+  },
+  "violet-1": {
+    "ansi": 171,
+    "hex": "#ddd6fe"
+  },
+  "violet-2": {
+    "ansi": 172,
+    "hex": "#c4b5fd"
+  },
+  "violet-3": {
+    "ansi": 173,
+    "hex": "#a78bfa"
+  },
+  "violet-4": {
+    "ansi": 174,
+    "hex": "#8b5cf6"
+  },
+  "violet-5": {
+    "ansi": 175,
+    "hex": "#7c3aed"
+  },
+  "violet-6": {
+    "ansi": 176,
+    "hex": "#6d28d9"
+  },
+  "violet-7": {
+    "ansi": 177,
+    "hex": "#5b21b6"
+  },
+  "violet-8": {
+    "ansi": 178,
+    "hex": "#4c1d95"
+  },
+  "violet-9": {
+    "ansi": 179,
+    "hex": "#2e1065"
+  },
+  "violet-dark": {
+    "ansi": 170,
+    "hex": "#150f1a"
+  },
+  "warning": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "white": {
+    "ansi": 201,
+    "hex": "#ffffff"
+  },
+  "yarn-link-classic": {
+    "ansi": 75,
+    "hex": "#0891b2"
+  },
+  "yarn-link-external": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
+  "yarn-link-workspace": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "yarn-package": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "yarn-package-description": {
+    "ansi": 204,
+    "hex": "#9ca3af"
+  },
+  "yarn-package-global": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
+  "yarn-package-version": {
+    "ansi": 75,
+    "hex": "#0891b2"
+  },
+  "yarn-script-command": {
+    "ansi": 204,
+    "hex": "#9ca3af"
+  },
+  "yarn-script-global": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
+  "yarn-script-local": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "yellow": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "yellow-0": {
+    "ansi": 40,
+    "hex": "#1a1a0f"
+  },
+  "yellow-1": {
+    "ansi": 41,
+    "hex": "#fefcbf"
+  },
+  "yellow-2": {
+    "ansi": 42,
+    "hex": "#faf089"
+  },
+  "yellow-3": {
+    "ansi": 43,
+    "hex": "#f6e05e"
+  },
+  "yellow-4": {
+    "ansi": 44,
+    "hex": "#ecc94b"
+  },
+  "yellow-5": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "yellow-6": {
+    "ansi": 46,
+    "hex": "#b7791f"
+  },
+  "yellow-7": {
+    "ansi": 47,
+    "hex": "#975a16"
+  },
+  "yellow-8": {
+    "ansi": 48,
+    "hex": "#744210"
+  },
+  "yellow-9": {
+    "ansi": 49,
+    "hex": "#744210"
+  },
+  "yellow-dark": {
+    "ansi": 40,
+    "hex": "#1a1a0f"
+  },
+  "youtube-video-duration": {
+    "ansi": 225,
+    "hex": "#525252"
+  },
+  "youtube-video-id": {
+    "ansi": 105,
+    "hex": "#ea580c"
+  },
+  "youtube-video-index": {
+    "ansi": 165,
+    "hex": "#0284c7"
+  },
+  "youtube-video-title": {
+    "ansi": 204,
+    "hex": "#9ca3af"
+  }
+}
