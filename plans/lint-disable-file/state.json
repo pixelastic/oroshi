@@ -1,0 +1,14 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-disable-file-filter.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-build-scripts-emit-comment.md",
+    "done": false,
+    "blocked_by": ["01"]
+  }
+]
