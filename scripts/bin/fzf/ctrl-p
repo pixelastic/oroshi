@@ -78,6 +78,10 @@ fzf-options() {
 
   local prompt="$(fzf-options-prompt-directory "${SEARCH_PATH}")"
   echo "--prompt=${prompt}"
+
+  echo "--color=query:${COLORS[file]}:regular"
+  echo "--color=info:${COLORS[file]}"
+  echo "--color=separator:${COLORS[file]}"
 }
 
 fzf-postprocess() {
