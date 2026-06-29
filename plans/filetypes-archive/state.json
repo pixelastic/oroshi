@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-wire-archives-compdef.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced hardcoded archive extension list in compdef.zsh with a dynamic call to compdef-glob-from-group; sourced the helper at the top and unfunction'd at the bottom.",
     "blocked_by": ["01", "02"]
   }
 ]

@@ -18,8 +18,10 @@
 # - rm -f ~/.zcompdump
 # - reload the shell
 
+source ${0:A:h}/compdef-glob-from-group.zsh
+
 # 📦️ Archives {{{
-compdef '_files -g "*.{7z,Z,bz2,cbr,cbz,deb,gz,htmlz,rar,tar,tar.bz2,tar.gz,tar.lzma,tar.xz,tbz2,tgz,txz,xz,zip,ZIP}"' \
+compdef "_files -g '$(compdef-glob-from-group archive)'" \
   extract
 # }}}
 # 🐋 Docker {{{
@@ -56,13 +58,13 @@ compdef _docker-containers-ids \
   docker-container-name
 # }}}
 # 📖 Ebooks {{{
-compdef '_files -g "*.epub"' \
+compdef "_files -g '*.epub'" \
   better-ebook-viewer \
   epub2md \
   epub2mobi
-compdef '_files -g "*.mobi"' \
+compdef "_files -g '*.mobi'" \
   mobi2epub
-compdef '_files -g "*.{epub,mobi}"' \
+compdef "_files -g '*.{epub,mobi}'" \
   ebook-cover-current \
   ebook-cover-remove \
   ebook-cover-update \
@@ -116,7 +118,7 @@ compdef _plans \
 # }}}
 # 🖼️ Images {{{
 compdef _image-resize img-resize
-compdef '_files -g "*.{avif,bmp,gif,jpg,jpeg,png,svg,tiff,webp}"' \
+compdef "_files -g '*.{avif,bmp,gif,jpg,jpeg,png,svg,tiff,webp}'" \
   img2json \
   img-color-count \
   img-convert \
@@ -133,7 +135,7 @@ compdef '_files -g "*.{avif,bmp,gif,jpg,jpeg,png,svg,tiff,webp}"' \
   img-resize \
   img-width \
   imgmin
-compdef '_files -g "*.png"' \
+compdef "_files -g '*.png'" \
   png2bmp \
   png2gif \
   png2ico \
@@ -142,13 +144,13 @@ compdef '_files -g "*.png"' \
   pngmin \
   png-mask \
   png-trim
-compdef '_files -g "*.{jpg,jpeg}"' \
+compdef "_files -g '*.{jpg,jpeg}'" \
   jpg2bmp \
   jpg2gif \
   jpg2png \
   jpg2svg \
   jpgmin
-compdef '_files -g "*.gif"' \
+compdef "_files -g '*.gif'" \
   gif2bmp \
   gif2jpg \
   gif2png \
@@ -156,13 +158,13 @@ compdef '_files -g "*.gif"' \
   gifmin \
   gif-is-animated \
   gif-is-looping
-compdef '_files -g "*.svg"' \
+compdef "_files -g '*.svg'" \
   svg2gif \
   svg2jpg \
   svg2png
-compdef '_files -g "*.{tif,tiff}"' \
+compdef "_files -g '*.{tif,tiff}'" \
   tif2jpg
-compdef '_files -g "*.avif"' \
+compdef "_files -g '*.avif'" \
   avif2png
 # }}}
 # 📌 Jumps {{{
@@ -184,7 +186,7 @@ compdef _pip-packages \
 compdef _video-streams-audio \
   video-stream-audio-switch \
   video-stream-audio-remove
-compdef '_files -g "*.{avi,mkv,mp4,mpg}"' \
+compdef "_files -g '*.{avi,mkv,mp4,mpg}'" \
   better-vlc \
   video-dimensions \
   video-has-sound \
@@ -231,12 +233,12 @@ compdef _yarn-link-universal-enabled \
   yarn-link-remove
 # }}}
 # 📏 Images + Videos {{{
-compdef '_files -g "*.{bmp,gif,jpg,jpeg,png,svg,tiff,webp,avi,mkv,mp4,mpg,webm}"' \
+compdef "_files -g '*.{bmp,gif,jpg,jpeg,png,svg,tiff,webp,avi,mkv,mp4,mpg,webm}'" \
   dimensions
 # }}}
 
 # PDF {{{
-compdef '_files -g "*.pdf"' \
+compdef "_files -g '*.pdf'" \
   algolia-paycheck \
   pdf2img \
   pdf2txt \
@@ -245,28 +247,28 @@ compdef '_files -g "*.pdf"' \
   pdf-split
 # }}}
 # JS {{{
-compdef '_files -g "*.js"' \
+compdef "_files -g '*.js'" \
   js-fix \
   js-lint
 # }}}
 # JSON {{{
-compdef '_files -g "*.json"' \
+compdef "_files -g '*.json'" \
   json2csv \
   json-filter \
   json-fix \
   json-get \
   json-head \
   json-lint
-compdef '_files -g "*.jsonl"' \
+compdef "_files -g '*.jsonl'" \
   jsonl2json
 # }}}
 # TOML {{{
-compdef '_files -g "*.toml"' \
+compdef "_files -g '*.toml'" \
   toml-lint \
   toml2json
 # }}}
 # Vue {{{
-compdef '_files -g "*.vue"' \
+compdef "_files -g '*.vue'" \
   js-fix \
   js-lint
 # }}}
@@ -274,3 +276,5 @@ compdef '_files -g "*.vue"' \
 compdef _bats-test \
   bats-test
 # }}}
+
+unfunction compdef-glob-from-group
