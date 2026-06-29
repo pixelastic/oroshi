@@ -60,6 +60,20 @@ mock_env() {
   [ "$output" = "guest" ]
 }
 
+# --- Worktree-aware integration ---
+
+@test "outside any worktree, chains resolve from ~/.oroshi" {
+  cd "$BATS_TMP_DIR"
+
+  bats_run_zsh "bats-fixture-script-foo"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"$HOME/.oroshi"* ]]
+
+  bats_run_zsh "bats-fixture-function-foo"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"$HOME/.oroshi"* ]]
+}
+
 @test "OROSHI_ROOT is worktree in any other worktree" {
   # Create a worktrees/ folder
   worktreeRoot="$BATS_TMP_DIR/worktrees"
