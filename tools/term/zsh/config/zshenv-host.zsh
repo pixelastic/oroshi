@@ -5,13 +5,17 @@
 # Where are all worktrees located?
 export OROSHI_WORKTREES_DIR="${MOCK_OROSHI_WORKTREES_DIR:-$HOME/local/www/worktrees}"
 
-# Where is the oroshi repo currently used?
-export OROSHI_ROOT="$HOME/.oroshi"
-export OROSHI_ROOT_DEFAULT="$OROSHI_ROOT"
+# Skip detection if worktree-aware is disabled — OROSHI_ROOT and PATH/fpath
+# are inherited from the parent process as-is
+if [[ "$OROSHI_DISABLE_WORKTREE_AWARE" != "1" ]]; then
+  # Where is the oroshi repo currently used?
+  export OROSHI_ROOT="$HOME/.oroshi"
+  export OROSHI_ROOT_DEFAULT="$OROSHI_ROOT"
 
-# Switch to the worktree if we're in an oroshi worktree
-if [[ "$PWD" == "$OROSHI_WORKTREES_DIR/oroshi--"* ]]; then
-  export OROSHI_ROOT="$(git rev-parse --show-toplevel)"
+  # Switch to the worktree if we're in an oroshi worktree
+  if [[ "$PWD" == "$OROSHI_WORKTREES_DIR/oroshi--"* ]]; then
+    export OROSHI_ROOT="$(git rev-parse --show-toplevel)"
+  fi
 fi
 
 # Source other config from that root
