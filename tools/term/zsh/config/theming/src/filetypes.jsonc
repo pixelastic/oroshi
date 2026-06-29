@@ -144,16 +144,23 @@
     "icon": "filetype-archive",
     "patterns": [
       "7z",
+      "bz2",
       "cbr",
       "cbz",
       "deb",
       "gz",
+      "htmlz",
       "rar",
+      "tar",
+      "tar.bz2",
       "tar.gz",
+      "tar.lzma",
       "tar.xz",
+      "tbz2",
       "tgz",
       "txz",
       "xz",
+      "Z",
       "zip"
     ]
   },

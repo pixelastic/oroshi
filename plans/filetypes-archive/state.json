@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-extend-archive-filetypes.md",
-    "done": false,
+    "done": true,
+    "recap": "Added Z, bz2, htmlz, tar, tar.bz2, tar.lzma, tbz2 to archive group in filetypes.jsonc and rebuilt dist.",
     "blocked_by": []
   },
   {

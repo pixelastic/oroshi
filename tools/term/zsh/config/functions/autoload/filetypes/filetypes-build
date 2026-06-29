@@ -18,33 +18,35 @@ mkdir -p "$distDir"
 # One jq pass: flatten all groups and patterns into ▮-separated lines.
 #   type▮key▮pattern▮colorKey▮iconKey▮bold▮group
 local flatData="$(jq -r --arg sep $'\u25ae' '
-  to_entries[] |
-  .key as $name |
-  .value as $group |
-  ($group.color) as $color |
-  ($group.icon) as $icon |
-  (if $group.bold then "1" else "0" end) as $bold |
   [
-    (["group", $name, "", $color, $icon, $bold, ""] | join($sep)),
-    ($group.patterns[] |
-      if type == "string" then
-        ["pattern",
-          (. | ascii_downcase | gsub("[.]";"_")),
-          "*." + ., $color, $icon, $bold, $name
-        ] | join($sep)
-      elif .filename then
-        ["pattern", (.filename | ascii_downcase | gsub("[.]";"_")), .filename,
-          (.color // $color), (.icon // $icon),
-          (if .bold == null then $bold elif .bold then "1" else "0" end), $name
-        ] | join($sep)
-      elif .extension then
-        ["pattern", (.extension | ascii_downcase | gsub("[.]";"_")), "*." + .extension,
-          (.color // $color), (.icon // $icon),
-          (if .bold == null then $bold elif .bold then "1" else "0" end), $name
-        ] | join($sep)
-      end
-    )
-  ][]
+    to_entries[] |
+    .key as $name |
+    .value as $group |
+    ($group.color) as $color |
+    ($group.icon) as $icon |
+    (if $group.bold then "1" else "0" end) as $bold |
+    [
+      (["group", $name, "", $color, $icon, $bold, ""] | join($sep)),
+      ($group.patterns[] |
+        if type == "string" then
+          ["pattern",
+            (. | ascii_downcase | gsub("[.]";"_")),
+            "*." + ., $color, $icon, $bold, $name
+          ] | join($sep)
+        elif .filename then
+          ["pattern", (.filename | ascii_downcase | gsub("[.]";"_")), .filename,
+            (.color // $color), (.icon // $icon),
+            (if .bold == null then $bold elif .bold then "1" else "0" end), $name
+          ] | join($sep)
+        elif .extension then
+          ["pattern", (.extension | ascii_downcase | gsub("[.]";"_")), "*." + .extension,
+            (.color // $color), (.icon // $icon),
+            (if .bold == null then $bold elif .bold then "1" else "0" end), $name
+          ] | join($sep)
+        end
+      )
+    ][]
+  ] | sort_by(split($sep)[1]) | .[]
 ' <<<"$srcJson")"
 
 local output="# zsh-lint disable-file=commandTooLong
