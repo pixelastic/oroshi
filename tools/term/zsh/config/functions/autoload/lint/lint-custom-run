@@ -40,9 +40,10 @@ for file in "${input[@]}"; do
   done
 done
 
-# Filter out violations suppressed by # <disable-prefix> <code> on the previous line
+# Filter out violations suppressed by disable comments
 local -a filteredLines=()
 local -A fileContentCache=()
+local -A fileDisabledRules=()
 local violationLine
 for violationLine in $ruleLines; do
   local -a fields=(${(@ps/▮/)violationLine})
@@ -50,9 +51,24 @@ for violationLine in $ruleLines; do
   local ruleCode="$fields[2]"
   local lineNumber="$fields[4]"
 
-  # Cache file content to avoid re-reading the same file for every violation
-  [[ "${fileContentCache[$sourceFile]}" == "" ]] && fileContentCache[$sourceFile]="$(<"$sourceFile")"
+  # Cache file content and scan for file-level disable comments
+  if [[ "${fileContentCache[$sourceFile]}" == "" ]]; then
+    fileContentCache[$sourceFile]="$(<"$sourceFile")"
+    local fileLine=""
+    for fileLine in "${(@f)fileContentCache[$sourceFile]}"; do
+      # Skip lines that are not file-level disable comments
+      [[ ! "$fileLine" =~ "# ${disablePrefix} disable-file=([^[:space:]]+)" ]] && continue
+      local existing="${fileDisabledRules[$sourceFile]}"
+      fileDisabledRules[$sourceFile]="${existing:+${existing},}${match[1]}"
+    done
+  fi
   local -a sourceLines=("${(@f)fileContentCache[$sourceFile]}")
+
+  # Suppress if the file has a disable-file comment listing this rule
+  if [[ "${fileDisabledRules[$sourceFile]}" != "" ]]; then
+    local -a fileCodes=("${(@s/,/)fileDisabledRules[$sourceFile]}")
+    [[ "${fileCodes[(Ie)$ruleCode]}" -gt 0 ]] && continue
+  fi
 
   # Suppress if the line above the violation has a disable comment listing this rule
   local lineAbove=""

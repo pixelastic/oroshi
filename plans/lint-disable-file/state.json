@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-disable-file-filter.md",
-    "done": false,
+    "done": true,
+    "recap": "Added disable-file= scan and filter to lint-custom-run; 3 zsh-lint tests and 1 bats-lint test added covering single-rule, multi-rule, and additive comment scenarios.",
     "blocked_by": []
   },
   {

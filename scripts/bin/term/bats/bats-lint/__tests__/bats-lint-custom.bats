@@ -78,6 +78,20 @@ teardown() {
   [[ "$output" == '[]' ]]
 }
 
+@test "bats-lint disable-file suppresses all violations in the file" {
+  local file="$BATS_TMP_DIR/test.bats"
+  printf '%s\n' \
+    '# bats-lint disable-file=noRunZsh' \
+    '@test "first" { bats_run_function echo; }' \
+    '@test "second" { bats_run_function echo; }' \
+    '@test "third" { bats_run_function echo; }' \
+    'run zsh -c "echo hello"' \
+    >"$file"
+  bats_run_zsh "$sourcePrefix bats-lint-custom '$file'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == '[]' ]]
+}
+
 @test "bats-lint disable=X,Y does not suppress unlisted rule on same line" {
   local file="$BATS_TMP_DIR/test.bats"
   printf '# bats-lint disable=noTopLevelVar,preferZshAutoload\nCURRENT="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/fn"\nrun zsh -c "echo"\n' >"$file"

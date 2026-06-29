@@ -37,4 +37,8 @@ Add `# zsh-lint disable-file=ruleName` file-level lint suppression to `lint-cust
 
 ## Discoveries
 
-_Append findings here after each issue completes._
+### Issue 01 — disable-file filter
+
+- `fileDisabledRules` stores comma-joined rule strings per file; the `(@s/,/)` split on lookup handles both single-rule and multi-rule `disable-file=ruleA,ruleB` comments without needing per-entry splitting at insert time.
+- `local` declarations inside a for loop are idiomatic in this file — the reviewer flagged it but the existing code already uses this pattern throughout; don't hoist.
+- The `noOrGuard` zshlint rule fires on `[[ cond ]] || continue` — must use `[[ ! cond ]] && continue` instead.
