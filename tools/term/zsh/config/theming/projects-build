@@ -31,7 +31,8 @@ function generateDistJson() {
       ($projectData.background | if . then $colors[.] else null end) as $bgColor |
       ($projectData.foreground | if . then $colors[.] else null end) as $fgColor |
 
-      ($projectData.background | if . then (gsub("-[0-9]+$"; "") + "-dark") else null end) as $bgInactiveName |
+      ($projectData.background |
+        if . then (gsub("-[0-9]+$"; "") + "-dark") else null end) as $bgInactiveName |
       ($bgInactiveName    | if . then $colors[.] else null end) as $bgInactiveColor |
 
       ($projectData.icon // "") as $projectIcon |
@@ -75,6 +76,7 @@ function generateDistJson() {
 # Generate dist/projects.zsh from dist/projects.json
 function generateDistZsh() {
   {
+    echo "# zsh-lint disable-file=commandTooLong"
     echo "typeset -gA PROJECTS"
     jq -r '
       to_entries[] | .key as $projectName | .value |

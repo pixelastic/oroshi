@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-build-scripts-emit-comment.md",
-    "done": false,
+    "done": true,
+    "recap": "Added # zsh-lint disable-file=commandTooLong as first output line in generateDistZsh() of projects-build and colors-build, and prepended to the output string in filetypes-build; fixed pre-existing commandTooLong violation in projects-build by splitting long jq line.",
     "blocked_by": ["01"]
   }
 ]

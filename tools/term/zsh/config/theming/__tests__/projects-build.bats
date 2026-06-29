@@ -170,9 +170,7 @@ EXPECTED
 @test "dist/projects.zsh sets all values for a full project" {
   bats_run_zsh "$PROJECTS_BUILD"
 
-  local script="$BATS_TMP_DIR/verify-zsh.zsh"
-  cat >"$script" <<SCRIPT
-source '${THEMING_ROOT}/dist/projects.zsh'
+  bats_run_zsh "source '${THEMING_ROOT}/dist/projects.zsh'
 echo \${PROJECTS[full:background:name]}
 echo \${PROJECTS[full:background:ansi]}
 echo \${PROJECTS[full:background:hex]}
@@ -184,9 +182,7 @@ echo \${PROJECTS[full:foreground:ansi]}
 echo \${PROJECTS[full:foreground:hex]}
 echo \${PROJECTS[full:icon]}
 echo \${PROJECTS[full:path]}
-echo \${PROJECTS[full:hideNameInPrompt]}
-SCRIPT
-  bats_run_zsh "$script"
+echo \${PROJECTS[full:hideNameInPrompt]}"
   [ "${lines[0]}" = "green-8" ]
   [ "${lines[1]}" = "78" ]
   [ "${lines[2]}" = "#166534" ]

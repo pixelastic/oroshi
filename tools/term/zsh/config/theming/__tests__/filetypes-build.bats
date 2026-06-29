@@ -71,10 +71,10 @@ teardown() {
   [ -f "$THEMING_ROOT/dist/filetypes.zsh" ]
 }
 
-@test "dist/filetypes.zsh starts with typeset -gA FILETYPES" {
+@test "dist/filetypes.zsh contains disable-file comment" {
   bats_run_zsh "$FILETYPES_BUILD"
-  run head -1 "$THEMING_ROOT/dist/filetypes.zsh"
-  [ "$output" = "typeset -gA FILETYPES" ]
+  run grep "# zsh-lint disable-file=commandTooLong" "$THEMING_ROOT/dist/filetypes.zsh"
+  [ "$status" -eq 0 ]
 }
 
 @test "extension entry: FILETYPES[md:color] resolves to amber ANSI code" {

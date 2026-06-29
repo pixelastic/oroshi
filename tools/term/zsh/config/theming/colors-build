@@ -96,6 +96,7 @@ function generateDistJson() {
 # Generate dist/colors.zsh from dist/colors.json {{{
 function generateDistZsh() {
   {
+    echo "# zsh-lint disable-file=commandTooLong"
     echo "typeset -gA COLORS"
     jq -r '
       to_entries[] |

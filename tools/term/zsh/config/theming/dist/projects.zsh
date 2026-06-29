@@ -1,3 +1,4 @@
+# zsh-lint disable-file=commandTooLong
 typeset -gA PROJECTS
 PROJECTS[aberlaas:background:name]="yellow-7"
 PROJECTS[aberlaas:background:ansi]=47

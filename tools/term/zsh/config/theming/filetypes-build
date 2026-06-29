@@ -49,7 +49,8 @@ local flatData="$(jq -r --arg sep $'\u25ae' '
   ][]
 ' <<<"$srcJson")"
 
-local output="typeset -gA FILETYPES"
+local output="# zsh-lint disable-file=commandTooLong
+typeset -gA FILETYPES"
 
 for line in ${(f)flatData}; do
   [[ "$line" == "" ]] && continue

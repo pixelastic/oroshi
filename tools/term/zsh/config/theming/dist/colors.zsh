@@ -1,3 +1,4 @@
+# zsh-lint disable-file=commandTooLong
 typeset -gA COLORS
 COLORS[ai]=146
 COLORS[ai:hex]="#b45309"
