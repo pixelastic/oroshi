@@ -8,6 +8,7 @@ setup() {
 
 teardown() {
   bats_cleanup
+  git -C "$OROSHI_ROOT" worktree prune
 }
 
 # Run zsh without any config nor ENV variable (except mocked), so we can safely
@@ -72,6 +73,28 @@ mock_env() {
   bats_run_zsh "bats-fixture-function-foo"
   [ "$status" -eq 0 ]
   [[ "$output" == *"$HOME/.oroshi"* ]]
+}
+
+@test "inside a detected oroshi worktree, chains resolve from that worktree" {
+  worktreeDir="$BATS_TMP_DIR/worktrees/oroshi--bats-test"
+  git -C "$OROSHI_ROOT" worktree add --detach "$worktreeDir"
+
+  # Overwrite leaf fixtures to echo a custom string
+  echo '#!/usr/bin/env zsh
+echo "from-test-worktree"' > "$worktreeDir/scripts/bin/term/bats/bats-fixture-script-baz"
+
+  echo 'echo "from-test-worktree"' > "$worktreeDir/tools/term/zsh/config/functions/autoload/term/bats/bats-fixture-function-baz"
+
+  export MOCK_OROSHI_WORKTREES_DIR="$BATS_TMP_DIR/worktrees"
+  cd "$worktreeDir"
+
+  bats_run_zsh "bats-fixture-script-foo"
+  [ "$status" -eq 0 ]
+  [ "$output" = "from-test-worktree" ]
+
+  bats_run_zsh "bats-fixture-function-foo"
+  [ "$status" -eq 0 ]
+  [ "$output" = "from-test-worktree" ]
 }
 
 @test "OROSHI_ROOT is worktree in any other worktree" {

@@ -9,8 +9,9 @@
   {
     "id": "02",
     "issue": "issues/02-worktree-detected-resolves-worktree.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added integration test verifying script and function chains resolve from a detected oroshi worktree by creating a real worktree with overwritten leaf fixtures"
   },
   {
     "id": "03",
