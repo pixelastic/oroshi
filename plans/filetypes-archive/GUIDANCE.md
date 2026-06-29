@@ -38,3 +38,8 @@ This plan adds missing archive file extensions to the FILETYPES data and drives 
 ## Discoveries
 
 _Append findings here after each issue._
+
+### Issue 02 — compdef-glob-from-group
+
+- File lives in `completion/` (not autoload), so it needs a `.zsh` extension to pass `is-zsh` / `zsh-lint`; no shebang needed.
+- To inject a ZSH associative array in tests, mock the loader function itself with `bats_mock`: define it in `setup()` with `typeset -gA` assignments, then `bats_mock filetypes-load-definitions`. `bats_mock_env` only writes scalar exports and can't inject arrays.

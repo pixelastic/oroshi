@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-compdef-glob-from-group.md",
-    "done": false,
+    "done": true,
+    "recap": "Created compdef-glob-from-group.zsh that iterates FILETYPES to build *.{ext,...} glob for a given group; 3 bats tests cover inclusion, exclusion, and output format.",
     "blocked_by": []
   },
   {
