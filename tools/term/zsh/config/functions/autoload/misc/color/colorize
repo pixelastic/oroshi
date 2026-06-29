@@ -4,10 +4,12 @@
 #   $ colorize anything 145           # Displays "anything" in color 145 (ANSI int)
 #   $ colorize anything 145 42        # Foreground is 145 and background is 42
 #   $ colorize anything 145 42 --zsh  # Output in zsh prompt format
+#   $ colorize --reply main blue      # Write to $REPLY, no echo
 setopt local_options err_return
 zmodload zsh/zutil
 zparseopts -E -D \
-  -zsh=flagZsh
+  -zsh=flagZsh \
+  -reply=flagReply
 
 local input="$1"
 local foregroundColor="$2"
@@ -37,4 +39,8 @@ else
   outputSuffix=$'\e[0m'
 fi
 
+if [[ ${#flagReply} == "1" ]]; then
+  REPLY="${outputPrefix}${input}${outputSuffix}"
+  return
+fi
 print -n "${outputPrefix}${input}${outputSuffix}"

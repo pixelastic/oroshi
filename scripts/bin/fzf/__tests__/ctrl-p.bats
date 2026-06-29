@@ -2,6 +2,7 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
+  bats_disable_worktree_aware
 
   # git repo with tracked and untracked files
   git -C "$BATS_TMP_DIR" init --quiet

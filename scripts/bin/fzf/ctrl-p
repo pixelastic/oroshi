@@ -10,77 +10,62 @@ source "${0:h}/__lib/init.zsh"
 source "${0:h}/__lib/fzf-options-base.zsh"
 source "${0:h}/__lib/fzf-options-prompt-directory.zsh"
 
-DIR_COLOR="32"
-
-# Parse LS_COLORS into an associative array for fast extension→color lookup
-local -A EXT_COLORS
-local execColor=""
-local lsEntry
-for lsEntry in ${(s/:/)LS_COLORS}; do
-  if [[ "$lsEntry" == "ex="* ]]; then
-    execColor="${lsEntry#ex=}"
-    continue
-  fi
-  [[ "$lsEntry" != "*."*"="* ]] && continue
-  local ext="${lsEntry#\*.}"
-  EXT_COLORS[${ext%%=*}]="${lsEntry#*=}"
-done
+colors-load-definitions
+filetypes-load-definitions
 
 # Git root or cwd fallback
-ctrl-p-search-path() {
-  local searchPath="$(git-directory-root)"
-  [[ "$searchPath" == "" ]] && searchPath="$PWD"
-  echo "$searchPath"
-}
+SEARCH_PATH="$(git-directory-root)"
+[[ "$SEARCH_PATH" == "" ]] && SEARCH_PATH="$PWD"
 
-# Colorize a relative path: directories in green, filename by LS_COLORS
-# Falls back to executable color if no extension match and file is executable
+# Colorize directories and filenames
 # Result in $REPLY (no subprocess)
 ctrl-p-colorize() {
-  local relativePath="$1"
-  local absolutePath="$2"
-  local dirPart="${relativePath%/*}"
-  local filePart="${relativePath##*/}"
+  local inputPath="$1"
+  local dirname="${inputPath%/*}"
+  local filename="${inputPath##*/}"
 
-  # No slash means just a filename at root
-  if [[ "$dirPart" == "$relativePath" ]]; then
-    filePart="$relativePath"
-    dirPart=""
+  # Just a filename at the root
+  if [[ "$dirname" == "$inputPath" ]]; then
+    dirname=""
+    filename="$inputPath"
   fi
 
   # Colorize filename by extension, fall back to executable color
-  local ext="${filePart##*.}"
-  local fileColor="${EXT_COLORS[$ext]}"
-  if [[ "$fileColor" == "" && "$execColor" != "" && -x "$absolutePath" ]]; then
-    fileColor="$execColor"
-  fi
-  if [[ "$fileColor" != "" ]]; then
-    filePart=$'\e['"${fileColor}m${filePart}"$'\e[0m'
+  local ext="${filename##*.}"
+  local fileColor="${FILETYPES[${ext}:color]}"
+  # Unknown filetype
+  if [[ "$fileColor" == "" ]]; then
+    # Is executable?
+    local absolutePath="${SEARCH_PATH}/${inputPath}"
+    [[ -x "${absolutePath}" ]] && fileColor="$COLORS[executable]"
   fi
 
-  if [[ "$dirPart" != "" ]]; then
-    REPLY=$'\e['"${DIR_COLOR}m${dirPart}/"$'\e[0m'"${filePart}"
-  else
-    REPLY="$filePart"
+  if [[ "$fileColor" != "" ]]; then
+    colorize --reply "$filename" "$fileColor"
+    filename="$REPLY"
   fi
+  if [[ "$dirname" != "" ]]; then
+    colorize --reply "${dirname}/" directory
+    dirname="$REPLY"
+  fi
+
+  REPLY="${dirname}${filename}"
 }
 
 fzf-source() {
-  local searchPath="$(ctrl-p-search-path)"
-
   local items="$(fd \
     --hidden \
     --follow \
     --color=never \
     --type=file \
-    --base-directory "$searchPath")"
+    --base-directory "$SEARCH_PATH")"
 
   local line
   for line in ${(f)items}; do
     [[ "$line" == "" ]] && continue
-    local absolutePath="${searchPath}/${line}"
-    ctrl-p-colorize "$line" "$absolutePath"
-    echo "${absolutePath}▮${REPLY}"
+
+    ctrl-p-colorize "$line"
+    echo "${SEARCH_PATH}/${line}▮${REPLY}"
   done
 }
 
@@ -91,8 +76,7 @@ fzf-options() {
   echo "--tiebreak=pathname,chunk"
   echo "--preview=fzf-fs-shared-preview {1}"
 
-  local searchPath="$(ctrl-p-search-path)"
-  local prompt="$(fzf-options-prompt-directory "${searchPath}")"
+  local prompt="$(fzf-options-prompt-directory "${SEARCH_PATH}")"
   echo "--prompt=${prompt}"
 }
 
