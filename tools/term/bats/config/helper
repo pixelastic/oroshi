@@ -126,6 +126,17 @@ bats_mock_oroshi_root() {
   echo "export OROSHI_ROOT=\"$1\"" >> "$BATS_TMP_DIR/mock.zsh"
 }
 
+# bats_disable_worktree_aware
+# Disables automatic OROSHI_ROOT re-detection and PATH/fpath reload in all zsh
+# subprocesses spawned during this test. Binaries resolve from the inherited
+# OROSHI_ROOT — cd to a non-worktree directory will not change which binaries
+# are used.
+# Scoped to the current test — reverts automatically for the next test.
+# Usage: bats_disable_worktree_aware
+bats_disable_worktree_aware() {
+  export OROSHI_DISABLE_WORKTREE_AWARE=1
+}
+
 # bats_run_zsh <zsh-command>
 # Runs an arbitrary zsh command, injecting optional mocks added by bats_mock
 # Usage: bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
