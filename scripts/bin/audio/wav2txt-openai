@@ -53,6 +53,7 @@ function splitAndTranscribe {
 function removeArtifacts {
   local artifacts=(
     "Merci d'avoir regardé cette vidéo !"
+    "Merci d'avoir regardé cette vidéo."
     "Sous-titres réalisés para la communauté d'Amara.org"
   )
   local text=$1
