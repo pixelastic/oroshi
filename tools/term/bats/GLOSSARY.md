@@ -5,7 +5,7 @@ The BATS helper system (`tools/term/bats/config/helper`) provides test infrastru
 ## Language
 
 **Worktree-aware**:
-The property of the BATS helper ensuring that all binaries (PATH scripts and zsh autoloaded functions) resolved during a test run — at any call depth — come from the oroshi root from which `bats` was launched.
+The property of the BATS helper ensuring that all binaries (PATH scripts and zsh autoloaded functions) resolved during a test run — at any call depth — come from the oroshi root from which `bats` was launched. Can be disabled via `bats_disable_worktree_aware`, which locks OROSHI_ROOT and PATH/fpath to the values inherited from the parent process, preventing re-detection on directory changes.
 _Avoid_: root-scoped, oroshi-root-aware
 
 **Deep Mocking**:
