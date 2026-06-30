@@ -28,40 +28,42 @@ setup() {
   [[ "$output" == *"sample.txt"* ]]
 }
 
-@test "fzf-source: emits a file header line (empty first column) before matches" {
+@test "fzf-source: emits a file header line as filepath▮1▮display" {
   bats_run_zsh "cd $BATS_GIT_DIR && ctrl-g --source hello"
   [ "$status" -eq 0 ]
-  # Header line: ▮colored_filepath (column 1 is empty, column 2 is the filename)
-  [[ "${lines[0]}" == "▮"* ]]
+  # Header: filepath▮1▮<colored relpath>
+  [[ "${lines[0]}" == *"▮1▮"* ]]
+  [[ "${lines[0]}" == *"sample.txt"* ]]
 }
 
-@test "fzf-source: match lines have file:line:col before ▮" {
+@test "fzf-source: match lines have filepath▮line▮content format" {
   bats_run_zsh "cd $BATS_GIT_DIR && ctrl-g --source hello"
   [ "$status" -eq 0 ]
-  # Second line is the match — column 1 must be non-empty and contain ':'
-  [[ "${lines[1]}" == *":"*":"*"▮"* ]]
+  # Second line is the match — three ▮-separated fields
+  [[ "${lines[1]}" == *"▮"*"▮"* ]]
+  [[ "${lines[1]}" == *"hello"* ]]
 }
 
 # fzf-postprocess
 
-@test "fzf-postprocess: extracts file:line:col from match line" {
-  bats_run_zsh "printf '/tmp/project/app.js:42:1▮  content\n' | ctrl-g --postprocess"
+@test "fzf-postprocess: extracts file:line from match line" {
+  bats_run_zsh "printf '/tmp/project/app.js▮42▮  content\n' | ctrl-g --postprocess"
   [ "$status" -eq 0 ]
-  [ "$output" = "/tmp/project/app.js:42:1" ]
+  [ "$output" = "/tmp/project/app.js:42" ]
 }
 
-@test "fzf-postprocess: skips file header lines (empty first column)" {
-  bats_run_zsh "printf '▮/tmp/project/app.js\n/tmp/project/app.js:42:1▮  match\n' | ctrl-g --postprocess"
+@test "fzf-postprocess: header line navigates to file:1" {
+  bats_run_zsh "printf '/tmp/project/app.js▮1▮src/app.js\n' | ctrl-g --postprocess"
   [ "$status" -eq 0 ]
-  [ "$output" = "/tmp/project/app.js:42:1" ]
+  [ "$output" = "/tmp/project/app.js:1" ]
 }
 
-@test "fzf-postprocess: handles multiple match lines" {
-  bats_run_zsh "printf '/tmp/a.js:1:1▮  foo\n/tmp/b.js:2:3▮  bar\n' | ctrl-g --postprocess"
+@test "fzf-postprocess: handles multiple lines" {
+  bats_run_zsh "printf '/tmp/a.js▮1▮  foo\n/tmp/b.js▮2▮  bar\n' | ctrl-g --postprocess"
   [ "$status" -eq 0 ]
   [ "${#lines[@]}" -eq 2 ]
-  [ "${lines[0]}" = "/tmp/a.js:1:1" ]
-  [ "${lines[1]}" = "/tmp/b.js:2:3" ]
+  [ "${lines[0]}" = "/tmp/a.js:1" ]
+  [ "${lines[1]}" = "/tmp/b.js:2" ]
 }
 
 @test "fzf-postprocess: outputs nothing on empty stdin" {

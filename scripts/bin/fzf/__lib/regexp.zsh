@@ -13,8 +13,8 @@ regexp-run() {
     --with-filename \
     --line-number \
     --column \
-    --field-match-separator=: \
-    --field-context-separator=: \
+    --field-match-separator='⦙' \
+    --field-context-separator='⦙' \
     -- "$query" \
     "$directory" || true
 }

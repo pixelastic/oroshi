@@ -4,7 +4,7 @@
 # $ ctrl-g                       # Interactive regexp search
 # $ ctrl-g --source [query]      # Print matches for query (empty → no output)
 # $ ctrl-g --options             # Print FZF options (one per line)
-# $ ctrl-g --postprocess         # Read file:line:col▮display from stdin, print file:line:col
+# $ ctrl-g --postprocess         # Read file:line▮display from stdin, print file:line
 set -e
 source "${0:h}/__lib/init.zsh"
 source "${0:h}/__lib/fzf-options-base.zsh"
@@ -28,96 +28,40 @@ fzf-source() {
   local rawOutput="$(regexp-run "$query" "$SEARCH_DIR")"
   [[ "$rawOutput" == "" ]] && return 0
 
-  # Pre-match context buffer: lines that arrive before their match in the stream
-  local -a preBufCoords=()  # "filepath:lineNum" for postprocess
-  local -a preBufContent=() # display content (already stripped)
-
   local prevFile=""
-  local lastMatchLineNum=""
-  local line
   for line in ${(f)rawOutput}; do
     [[ "$line" == "" ]] && continue
 
     # Strip ANSI codes to parse fields
     local clean="${line//$'\e['[0-9;]#m/}"
-    local split=(${(@s/:/)clean})
-    local filepath="${split[1]}"
-    local lineNum="${split[2]}"
+    local parts=(${(@s/⦙/)clean})
 
-    # Context separator: reset match tracking so next context is buffered as pre-match
-    if [[ ! "$lineNum" == [0-9]## ]]; then
-      lastMatchLineNum=""
+    # Group separator from ripgrep (--): visual spacer opening file at line 1
+    if [[ ${#parts} -eq 1 ]]; then
+      echo "${prevFile}▮1▮"
       continue
     fi
 
-    # File change: flush orphaned pre-match buffer, emit header
+    local filepath="${parts[1]}"
+    local lineNumber="${parts[2]}"
+    local content="${line##*⦙}"
+
+    # Header when finding matches in a new file
     if [[ "$filepath" != "$prevFile" ]]; then
-      if [[ ${#preBufCoords[@]} -gt 0 ]]; then
-        local i
-        for i in {1..${#preBufCoords[@]}}; do
-          colorize --reply "${preBufContent[$i]}" gray-6
-          echo "${preBufCoords[$i]}▮${REPLY}"
-        done
-      fi
-      preBufCoords=()
-      preBufContent=()
-      lastMatchLineNum=""
-      [[ "$prevFile" != "" ]] && echo "▮"
       local relPath="${filepath#"${SEARCH_DIR}"/}"
       fzf-colorize-path "$relPath"
-      echo "▮${REPLY}"
+      echo "${filepath}▮1▮${REPLY}"
       prevFile="$filepath"
     fi
 
-    local colNum="${split[3]}"
-    if [[ "$colNum" == [0-9]## ]]; then
-      # Match line: flush pre-match buffer with distance from this match, then emit
-      if [[ ${#preBufCoords[@]} -gt 0 ]]; then
-        local i
-        for i in {1..${#preBufCoords[@]}}; do
-          local ctxLineNum="${preBufCoords[$i]##*:}"
-          local dist=$((lineNum - ctxLineNum))
-          local ctxColor="gray-6"
-          [[ "$dist" -le 1 ]] && ctxColor="gray-5"
-          colorize --reply "${preBufContent[$i]}" "$ctxColor"
-          echo "${preBufCoords[$i]}▮${REPLY}"
-        done
-      fi
-      preBufCoords=()
-      preBufContent=()
-      lastMatchLineNum="$lineNum"
-      echo "${filepath}:${lineNum}:${colNum}▮  ${line#*:*:*:}"
-    else
-      # Context line
-      if [[ "$lastMatchLineNum" != "" ]]; then
-        # Post-match: emit directly with distance-based color
-        local postDist=$((lineNum - lastMatchLineNum))
-        local ctxColor="gray-6"
-        [[ "$postDist" -le 1 ]] && ctxColor="gray-5"
-        colorize --reply "  ${line#*:*:}" "$ctxColor"
-        echo "${filepath}:${lineNum}▮${REPLY}"
-      else
-        # Pre-match: buffer until we see the match
-        preBufCoords+=("${filepath}:${lineNum}")
-        preBufContent+=("  ${line#*:*:}")
-      fi
-    fi
+    echo "${filepath}▮${lineNumber}▮${content}"
   done
-
-  # Flush any remaining pre-match buffer at end of output
-  if [[ ${#preBufCoords[@]} -gt 0 ]]; then
-    local i
-    for i in {1..${#preBufCoords[@]}}; do
-      colorize --reply "${preBufContent[$i]}" gray-6
-      echo "${preBufCoords[$i]}▮${REPLY}"
-    done
-  fi
 }
 
 fzf-options() {
   fzf-options-base
   echo "--disabled"
-  echo "--with-nth=2"
+  echo "--with-nth=3"
   echo "--bind=change:reload:ctrl-g --source {q} || true"
 
   local prompt="$(fzf-options-prompt-directory "$SEARCH_DIR")"
@@ -131,13 +75,11 @@ fzf-options() {
 fzf-postprocess() {
   local input="$(cat)"
   [[ "$input" == "" ]] && return 0
-  local line
+
   for line in ${(f)input}; do
     [[ "$line" == "" ]] && continue
-    local coords="${line%%▮*}"
-    # Skip header lines (empty column 1)
-    [[ "$coords" == "" ]] && continue
-    print -- "$coords"
+    local fields=(${(@s/▮/)line})
+    print -- "${fields[1]}:${fields[2]}"
   done
 }
 
