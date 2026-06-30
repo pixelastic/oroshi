@@ -28,6 +28,7 @@ function oroshiSlowCommandPreexec() {
     top
     typora
     vim
+    yrs
     "git commit"
     "yarn-run serve"
     "yarn-run writing-buddy"
