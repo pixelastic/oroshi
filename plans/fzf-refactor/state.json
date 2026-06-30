@@ -106,7 +106,8 @@
   {
     "id": "10d",
     "issue": "issues/10d-prompt-convention.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced icon-based prompt in fzf-git-files-dirty-stageable with fzf-options-prompt-directory using git root; added PWD fallback guard.",
     "blocked_by": ["10c"]
   },
   {

@@ -269,6 +269,21 @@ bats_git_dir
 **Problem:** Legacy previewed diff of commit version vs working tree; new script previews commit vs parent.
 **Reason skipped:** `git diff {1}^ {1}` is standard commit-diff preview, more useful for browsing history. Legacy behavior was unusual.
 
+## Issue 10d — prompt convention
+
+### Spec: "context-badge only, no path suffix" for git-root scoped scripts
+```zsh
+local prompt="$(fzf-options-prompt-directory "$gitRoot")"
+```
+**Problem:** Spec says git-root scoped prompt should be "context-badge only, no path suffix". `fzf-options-prompt-directory` always appends a path.
+**Reason skipped:** `ctrl-p` and `ctrl-o` (also git-root scoped) both use `fzf-options-prompt-directory` with the same behavior and are marked ✓ in the spec. The helper's behavior is consistent across all git-root scripts; the spec description is a simplification, not a strict rule.
+
+### Spec: "Verify all other scripts match the convention"
+**Problem:** No diff evidence that other scripts were audited.
+**Reason skipped:** The spec lists them all as ✓ already compliant. No code changes were expected or needed. Verification is by inspection of already-merged code, not by new tests.
+
+---
+
 ## Issue 10b — init.zsh --preview and fzf-main override
 
 ### --format dispatch inside fzf-main

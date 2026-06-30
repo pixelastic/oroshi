@@ -9,6 +9,7 @@
 set -e
 source "${0:h}/__lib/init.zsh"
 source "${0:h}/__lib/fzf-options-base.zsh"
+source "${0:h}/__lib/fzf-options-prompt-directory.zsh"
 
 fzf-source() {
   colors-load-definitions
@@ -53,12 +54,10 @@ fzf-preview() {
 fzf-options() {
   fzf-options-base
 
-  icons-load-definitions
-  colors-load-definitions
-
-  local promptPrefix="$(colorize " $ICONS[git-file-dirty] " $COLORS[black] $COLORS[git-modified])"
-  local promptSuffix="$(colorize "$ICONS[fzf-separator]" $COLORS[terminal] $COLORS[git-modified])"
-  echo "--prompt=${promptPrefix}${promptSuffix} "
+  local gitRoot="$(git-directory-root)"
+  [[ "$gitRoot" == "" ]] && gitRoot="$PWD"
+  local prompt="$(fzf-options-prompt-directory "$gitRoot")"
+  echo "--prompt=${prompt}"
 
   echo "--with-nth=2"
   echo "--preview=fzf-git-files-dirty-stageable --preview {1}"

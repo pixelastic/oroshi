@@ -5,4 +5,7 @@ fzf-options-base() {
   echo "--ansi"
   echo "--layout=reverse"
   echo "--delimiter=▮"
+
+  # Default prompt is bold, this reverts it to regular
+  echo "--color=prompt::regular"
 }
