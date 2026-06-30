@@ -1,5 +1,4 @@
-import { _, pMap } from 'golgoth';
-import { absolute, exists, gitRoot } from 'firost';
+import { _ } from 'golgoth';
 import Gilmore from 'gilmore';
 
 /**
@@ -8,17 +7,18 @@ import Gilmore from 'gilmore';
  */
 export async function getDeletedPlanName() {
   const repo = Gilmore();
-  const stagedPaths = await repo.stagedFiles();
-  const results = await pMap(stagedPaths, async (filepath) => {
-    if (!filepath.startsWith('plans/')) return null;
-    if (!filepath.endsWith('/PRD.md') && !filepath.endsWith('/state.json'))
-      return null;
-    const fileExists = await exists(absolute(gitRoot(), filepath));
-    return fileExists ? null : filepath;
+  const allStatus = await repo.status();
+  if (!allStatus) return null;
+
+  const deletedSentinels = _.filter(allStatus, ({ name, status }) => {
+    if (!name.startsWith('plans/')) return false;
+
+    const isSentinel = name.endsWith('/PRD.md') || name.endsWith('/state.json');
+    if (!isSentinel) return false;
+
+    return status === 'deleted';
   });
-  const deletedSentinels = _.compact(results);
-  if (!deletedSentinels.length) {
-    return null;
-  }
-  return deletedSentinels[0].split('/')[1];
+
+  if (!deletedSentinels.length) return null;
+  return deletedSentinels[0].name.split('/')[1];
 }

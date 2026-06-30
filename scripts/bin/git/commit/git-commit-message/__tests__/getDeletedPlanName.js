@@ -1,39 +1,45 @@
-import { exists } from 'firost';
 import Gilmore from 'gilmore';
 import { getDeletedPlanName } from '../getDeletedPlanName.js';
 
 vi.mock('gilmore', () => ({ default: vi.fn() }));
-vi.mock('firost', () => ({
-  absolute: (_base, filepath) => filepath,
-  exists: vi.fn(),
-  gitRoot: () => '',
-}));
 
 describe('getDeletedPlanName', () => {
   it.each([
     {
       title: 'Both sentinels deleted — returns slug',
-      stagedPaths: [
-        'plans/bats-shebang/PRD.md',
-        'plans/bats-shebang/state.json',
+      fileStatuses: [
+        { name: 'plans/bats-shebang/PRD.md', status: 'deleted' },
+        { name: 'plans/bats-shebang/state.json', status: 'deleted' },
       ],
       expected: 'bats-shebang',
     },
     {
       title: 'One sentinel deleted — still returns slug',
-      stagedPaths: ['plans/bats-shebang/PRD.md'],
+      fileStatuses: [{ name: 'plans/bats-shebang/PRD.md', status: 'deleted' }],
       expected: 'bats-shebang',
     },
     {
       title: 'No deleted sentinels',
-      stagedPaths: [],
+      fileStatuses: [],
       expected: null,
     },
-  ])('$title', async ({ stagedPaths, expected }) => {
+    {
+      title: 'Plan files added (A status) — returns null',
+      fileStatuses: [
+        { name: 'plans/parisRbAI/PRD.md', status: 'added' },
+        { name: 'plans/parisRbAI/state.json', status: 'added' },
+      ],
+      expected: null,
+    },
+    {
+      title: 'status() returns false (git error) — returns null',
+      fileStatuses: false,
+      expected: null,
+    },
+  ])('$title', async ({ fileStatuses, expected }) => {
     Gilmore.mockReturnValue({
-      stagedFiles: vi.fn().mockReturnValue(stagedPaths),
+      status: vi.fn().mockReturnValue(fileStatuses),
     });
-    exists.mockReturnValue(false);
     const actual = await getDeletedPlanName();
     expect(actual).toEqual(expected);
   });
