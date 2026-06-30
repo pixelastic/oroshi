@@ -27,7 +27,8 @@ oroshi-ctrl-p-widget() {
   # Stop if no selection is made
   [[ "$selection" == "" ]] && return 1
 
-  LBUFFER="${LBUFFER}${selection} "
+  local inlineSelection="${(j: :)${(f)selection}}"
+  LBUFFER="${LBUFFER}${inlineSelection} "
   return 0
 }
 zle -N oroshi-ctrl-p-widget

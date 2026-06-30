@@ -9,7 +9,7 @@
 # $ ctrl-g --prompt              # Print current prompt string (called by FZF transform-prompt)
 set -e
 source "${0:h}/__lib/init.zsh"
-source "${0:h}/__lib/regexp.zsh"
+source "${0:h}/__lib/fzf-regexp-common.zsh"
 
 SCRIPT_NAME="ctrl-g"
 
@@ -19,15 +19,15 @@ SEARCH_DIR="$(git-directory-root)"
 [[ "$SEARCH_DIR" == "" ]] && SEARCH_DIR="$PWD"
 
 fzf-source() {
-  regexp-fzf-source
+  fzf-regexp-source
 }
 
 fzf-options() {
-  regexp-fzf-options
+  fzf-regexp-options
 }
 
 fzf-postprocess() {
-  regexp-fzf-postprocess
+  fzf-regexp-postprocess
 }
 
-regexp-fzf-dispatch "$@"
+fzf-regexp-dispatch "$@"

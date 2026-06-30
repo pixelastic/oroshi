@@ -5,8 +5,8 @@ source "${0:h}/fzf-colorize-path.zsh"
 # Orchestrate raw rg output and transform into FZF candidates
 # Globals: SEARCH_DIR, ARGS (from init.zsh)
 # Sets: QUERY, EXTRA_RG_ARGS (inherited by pipe subshells)
-# Usage: regexp-fzf-source [extra-rg-args...]
-regexp-fzf-source() {
+# Usage: fzf-regexp-source [extra-rg-args...]
+fzf-regexp-source() {
   # Setting QUERY, read by other functions
   QUERY="${ARGS[*]}"
   [[ "$QUERY" == "" ]] && return 0
@@ -14,12 +14,12 @@ regexp-fzf-source() {
   # Setting EXTRA_RG_ARGS, similarly read by other functions
   EXTRA_RG_ARGS=("$@")
 
-  regexp-fzf-source-raw | regexp-fzf-source-transform
+  fzf-regexp-source-raw | fzf-regexp-source-transform
 }
 
 # Run ripgrep and output raw results
 # Globals: SEARCH_DIR, QUERY, EXTRA_RG_ARGS
-regexp-fzf-source-raw() {
+fzf-regexp-source-raw() {
   # Fold mode: single shows one match per file, multi shows all
   local foldMode="$(fzf-var-read regexp-fold-mode multi)"
   local -a foldArg=()
@@ -40,7 +40,7 @@ regexp-fzf-source-raw() {
 
 # Transform raw ripgrep output (stdin) into FZF-suitable ▮-delimited lines
 # Globals: SEARCH_DIR
-regexp-fzf-source-transform() {
+fzf-regexp-source-transform() {
   local rawOutput="$(cat)"
   [[ "$rawOutput" == "" ]] && return 0
 
@@ -83,14 +83,14 @@ regexp-fzf-source-transform() {
 
 # Shared fzf-options for regexp scripts
 # Globals: SEARCH_DIR, SCRIPT_NAME
-regexp-fzf-options() {
+fzf-regexp-options() {
   colors-load-definitions
 
   fzf-options-base
   echo "--disabled"
   echo "--with-nth=3"
 
-  regexp-fold-prompt
+  fzf-regexp-fold-prompt
   echo "--prompt=${REPLY}"
 
   local bindReload="reload(${SCRIPT_NAME} --source {q} || true)"
@@ -106,7 +106,7 @@ regexp-fzf-options() {
 }
 
 # Shared fzf-postprocess for regexp scripts
-regexp-fzf-postprocess() {
+fzf-regexp-postprocess() {
   local input="$(cat)"
   [[ "$input" == "" ]] && return 0
 
@@ -118,7 +118,7 @@ regexp-fzf-postprocess() {
 }
 
 # Handle --fold-toggle and --prompt, then fall through to fzf-dispatch
-regexp-fzf-dispatch() {
+fzf-regexp-dispatch() {
   zparseopts -D -E \
     -fold-toggle=flagFoldToggle \
     -prompt=flagPrompt
@@ -127,11 +127,11 @@ regexp-fzf-dispatch() {
   local isPrompt=${#flagPrompt}
 
   if [[ $isFoldToggle == "1" ]]; then
-    regexp-fold-toggle
+    fzf-regexp-fold-toggle
     exit 0
   fi
   if [[ $isPrompt == "1" ]]; then
-    regexp-fold-prompt
+    fzf-regexp-fold-prompt
     echo "$REPLY"
     exit 0
   fi
@@ -140,7 +140,7 @@ regexp-fzf-dispatch() {
 }
 
 # Toggle fold mode between multi (all matches) and single (one per file)
-regexp-fold-toggle() {
+fzf-regexp-fold-toggle() {
   local currentMode="$(fzf-var-read regexp-fold-mode multi)"
   if [[ "$currentMode" == "multi" ]]; then
     fzf-var-write regexp-fold-mode single
@@ -152,7 +152,7 @@ regexp-fold-toggle() {
 # Generate the FZF prompt badge with fold mode indicator
 # Globals: SEARCH_DIR
 # Result: $REPLY
-regexp-fold-prompt() {
+fzf-regexp-fold-prompt() {
   icons-load-definitions
   colors-load-definitions
 

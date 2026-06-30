@@ -9,7 +9,7 @@
 # $ ctrl-shift-g --prompt              # Print current prompt string (called by FZF transform-prompt)
 set -e
 source "${0:h}/__lib/init.zsh"
-source "${0:h}/__lib/regexp.zsh"
+source "${0:h}/__lib/fzf-regexp-common.zsh"
 
 SCRIPT_NAME="ctrl-shift-g"
 
@@ -17,15 +17,15 @@ SCRIPT_NAME="ctrl-shift-g"
 SEARCH_DIR="$PWD"
 
 fzf-source() {
-  regexp-fzf-source --no-ignore
+  fzf-regexp-source --no-ignore
 }
 
 fzf-options() {
-  regexp-fzf-options
+  fzf-regexp-options
 }
 
 fzf-postprocess() {
-  regexp-fzf-postprocess
+  fzf-regexp-postprocess
 }
 
-regexp-fzf-dispatch "$@"
+fzf-regexp-dispatch "$@"

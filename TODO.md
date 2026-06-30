@@ -1,10 +1,6 @@
 ## fzf
 
-fix vfa ctrl-p adding new lines
-
 make toggle i regex display only one by line
-
-rename the regexp- to follow the fzf- pattern
 
 ctrl-shift-g.zsh and ctrl-g.zsh share a lot of code in common
 ctlr-shift-p.zsh and ctrl-p.zsh probably as well
