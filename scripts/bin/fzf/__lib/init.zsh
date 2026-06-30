@@ -15,7 +15,7 @@ local isSource=${#flagSource}
 local isOptions=${#flagOptions}
 local isPostprocess=${#flagPostprocess}
 local isPreview=${#flagPreview}
-local -a initArgs=("$@")
+ARGS=("$@")
 
 # Default pipeline — scripts can override this after sourcing
 fzf-main() {
@@ -30,7 +30,7 @@ fzf-dispatch() {
   if [[ $isPostprocess == "1" ]]; then fzf-postprocess; return 0; fi
   if [[ $isPreview == "1" ]]; then
     # Gracefully skip if script has no fzf-preview
-    (( $+functions[fzf-preview] )) && fzf-preview "${initArgs[@]}"
+    (( $+functions[fzf-preview] )) && fzf-preview "${ARGS[@]}"
     return 0
   fi
   fzf-main

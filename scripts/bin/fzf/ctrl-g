@@ -5,82 +5,29 @@
 # $ ctrl-g --source [query]      # Print matches for query (empty → no output)
 # $ ctrl-g --options             # Print FZF options (one per line)
 # $ ctrl-g --postprocess         # Read file:line▮display from stdin, print file:line
+# $ ctrl-g --fold-toggle         # Toggle fold mode (called by FZF execute-silent)
+# $ ctrl-g --prompt              # Print current prompt string (called by FZF transform-prompt)
 set -e
 source "${0:h}/__lib/init.zsh"
-source "${0:h}/__lib/fzf-options-base.zsh"
-source "${0:h}/__lib/fzf-options-prompt-directory.zsh"
 source "${0:h}/__lib/regexp.zsh"
-source "${0:h}/__lib/fzf-colorize-path.zsh"
 
-colors-load-definitions
-filetypes-load-definitions
+SCRIPT_NAME="ctrl-g"
 
+# Search in the whole repo.
+# If no repo, search in the current directory.
 SEARCH_DIR="$(git-directory-root)"
 [[ "$SEARCH_DIR" == "" ]] && SEARCH_DIR="$PWD"
 
 fzf-source() {
-  # initArgs holds any positional args after standard flags (e.g. query from reload)
-  local query="${initArgs[*]}"
-  [[ "$query" == "" ]] && return 0
-
-  setopt local_options extended_glob
-
-  local rawOutput="$(regexp-run "$query" "$SEARCH_DIR")"
-  [[ "$rawOutput" == "" ]] && return 0
-
-  local prevFile=""
-  for line in ${(f)rawOutput}; do
-    [[ "$line" == "" ]] && continue
-
-    # Strip ANSI codes to parse fields
-    local clean="${line//$'\e['[0-9;]#m/}"
-    local parts=(${(@s/⦙/)clean})
-
-    # Group separator from ripgrep (--): visual spacer opening file at line 1
-    if [[ ${#parts} -eq 1 ]]; then
-      echo "${prevFile}▮1▮"
-      continue
-    fi
-
-    local filepath="${parts[1]}"
-    local lineNumber="${parts[2]}"
-    local content="${line##*⦙}"
-
-    # Header when finding matches in a new file
-    if [[ "$filepath" != "$prevFile" ]]; then
-      local relPath="${filepath#"${SEARCH_DIR}"/}"
-      fzf-colorize-path "$relPath"
-      echo "${filepath}▮1▮${REPLY}"
-      prevFile="$filepath"
-    fi
-
-    echo "${filepath}▮${lineNumber}▮${content}"
-  done
+  regexp-fzf-source
 }
 
 fzf-options() {
-  fzf-options-base
-  echo "--disabled"
-  echo "--with-nth=3"
-  echo "--bind=change:reload:ctrl-g --source {q} || true"
-
-  local prompt="$(fzf-options-prompt-directory "$SEARCH_DIR")"
-  echo "--prompt=${prompt}"
-
-  echo "--color=query:${COLORS[regexp]}:regular"
-  echo "--color=info:${COLORS[regexp]}"
-  echo "--color=separator:${COLORS[regexp]}"
+  regexp-fzf-options
 }
 
 fzf-postprocess() {
-  local input="$(cat)"
-  [[ "$input" == "" ]] && return 0
-
-  for line in ${(f)input}; do
-    [[ "$line" == "" ]] && continue
-    local fields=(${(@s/▮/)line})
-    print -- "${fields[1]}:${fields[2]}"
-  done
+  regexp-fzf-postprocess
 }
 
-fzf-dispatch
+regexp-fzf-dispatch "$@"

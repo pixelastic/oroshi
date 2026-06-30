@@ -1,0 +1,31 @@
+#!/usr/bin/env zsh
+# Search by regexp in current working directory (all files, ignoring .gitignore)
+# Usage:
+# $ ctrl-shift-g                       # Interactive regexp search
+# $ ctrl-shift-g --source [query]      # Print matches for query (empty → no output)
+# $ ctrl-shift-g --options             # Print FZF options (one per line)
+# $ ctrl-shift-g --postprocess         # Read file:line▮display from stdin, print file:line
+# $ ctrl-shift-g --fold-toggle         # Toggle fold mode (called by FZF execute-silent)
+# $ ctrl-shift-g --prompt              # Print current prompt string (called by FZF transform-prompt)
+set -e
+source "${0:h}/__lib/init.zsh"
+source "${0:h}/__lib/regexp.zsh"
+
+SCRIPT_NAME="ctrl-shift-g"
+
+# Search in the current directory
+SEARCH_DIR="$PWD"
+
+fzf-source() {
+  regexp-fzf-source --no-ignore
+}
+
+fzf-options() {
+  regexp-fzf-options
+}
+
+fzf-postprocess() {
+  regexp-fzf-postprocess
+}
+
+regexp-fzf-dispatch "$@"
