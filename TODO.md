@@ -6,6 +6,9 @@ Add the model name in the Claude code statusbar
 
 Move all -build (color, project, filetype) in PATH
 
+Move compdef-glob-from-type.zsh (or something like that) into its own `__lib`
+folder, to follow with conventions
+
 Check if we still need export OROSHI_ROOT_DEFAULT="$OROSHI_ROOT" and why in
 zshenv
 
