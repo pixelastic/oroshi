@@ -28,9 +28,6 @@ local statusline=()
 # Model (effort)
 # local settingsFile=~/.claude/settings.json
 # local effortLevel=$(jq -r '.effortLevel // "medium"' "$settingsFile")
-# local displayModel="$(colorize "${modelName} (${effortLevel})" $COLORS[comment])"
-# statusline+=("$displayModel ")
-
 # }}}
 
 # Context Badge
@@ -57,6 +54,10 @@ else
   local displayCost="$(colorize "${roundedDollars}" $COLORS[yellow])"
 fi
 statusline+=("$displayCost ")
+
+# Model
+local displayModel="$(colorize "${modelName}" $COLORS[comment])"
+statusline+=("$displayModel ")
 
 # Session ID
 local displaySession="$(colorize "[${sessionId}]" $COLORS[amber-9])"
