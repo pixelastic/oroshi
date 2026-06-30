@@ -1,38 +1,48 @@
-# Ctrl-F: Search inside of text files in the current directory
+# Ctrl-Shift-G: Search inside of text files in the current directory
 oroshi-ctrl-shift-g-widget() {
-	# Stop if not available
-	if ! command -v fzf >/dev/null; then
-		echo "fzf is not installed"
-		zle reset-prompt
-		return
-	fi
+  # Stop if not available
+  if ! command -v fzf >/dev/null; then
+    echo "fzf is not installed"
+    zle reset-prompt
+    return
+  fi
 
-	export PROMPT_PREVENT_REFRESH="1"
-	local selection="$(fzf-regexp-subdir)"
-	export PROMPT_PREVENT_REFRESH="0"
+  export PROMPT_PREVENT_REFRESH="1"
+  local selection="$(ctrl-shift-g)"
+  export PROMPT_PREVENT_REFRESH="0"
 
-	# Stop if no selection is made
-	if [[ "$selection" == "" ]]; then
-		return 1
-	fi
+  # Stop if no selection is made
+  [[ "$selection" == "" ]] && return 1
 
-	# nvim has no way to open multiple files, each at a different line.
-	# The trick is to write in a temporary script all the files we want to open,
-	# and then run that script on startup.
-	local tmpScriptPath=$OROSHI_TMP_FOLDER/fzf/nvim-startup-script.tmp
-	rm $tmpScriptPath
-	
-	for item in ${=selection}; do
+  # Parse each selected line: filepath:lineNum:col
+  local filesToOpen=()
+  local lineNumbers=()
+  for item in ${(f)selection}; do
+    [[ "$item" == "" ]] && continue
     local split=(${(@s/:/)item})
-		local filepath=$split[1]
-		local lineNumber=$split[2]
-		echo "tabedit ${filepath} | ${lineNumber}" >> $tmpScriptPath
-	done
-	echo "tabfirst | quit!" >> $tmpScriptPath
+    filesToOpen+=("${split[1]}")
+    lineNumbers+=("${split[2]}")
+  done
 
-	nvim -S $tmpScriptPath
+  local fileCount=${#filesToOpen[@]}
 
-	return 0
+  # No selection
+  [[ "$fileCount" -eq 0 ]] && return 1
+
+  # Only one selection
+  if [[ "$fileCount" -eq 1 ]]; then
+    nvim "+${lineNumbers[1]}" "${filesToOpen[1]}"
+    return 0
+  fi
+
+  # Multi-select: open each file in a tab, then jump to its matched line
+  local nvimCmds=()
+  for i in {1..$fileCount}; do
+    nvimCmds+=("-c" "execute 'normal! ${i}gt'|normal! ${lineNumbers[$i]}G")
+  done
+  nvimCmds+=("-c" "execute 'normal! 1gt'")
+  nvim -p "${filesToOpen[@]}" "${nvimCmds[@]}"
+  return 0
 }
 zle -N oroshi-ctrl-shift-g-widget
 bindkey 'Ⓖ' oroshi-ctrl-shift-g-widget

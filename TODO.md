@@ -1,3 +1,20 @@
+## fzf
+
+fix vfa ctrl-p adding new lines
+
+make toggle i regex display only one by line
+
+rename the regexp- to follow the fzf- pattern
+
+ctrl-shift-g.zsh and ctrl-g.zsh share a lot of code in common
+ctlr-shift-p.zsh and ctrl-p.zsh probably as well
+
+Legacy script, to open multiple nvim tabs was writing the code in a file, and
+load the file. I probably need to do the same, to avoid a too long list of args
+
+Once all ctrl-* are migrated, I'll need to check disk.lua, to ensure a
+consistent pattern for the sinklist
+
 ## Misc
 
 json-lint errors when editing files outside of oroshi

@@ -138,7 +138,7 @@ return {
           if result == "" then
             return
           end
-          local filepath, lineNum = result:match("^(.+):(%d+):%d+$")
+          local filepath, lineNum = result:match("^(.+):(%d+)$")
           if filepath then
             vim.cmd("tab drop " .. filepath)
             vim.cmd(lineNum)
@@ -218,29 +218,13 @@ return {
       -- CTRL-SHIFT-G: {{{
       -- Regex search inside of files in the current directory
       local function onCtrlShiftG()
-        -- Tell fzf what the base directory is
-        local subdirPath = vim.fn.expand("%:p:h")
-        vim.fn.system("fzf-var-write pwd " .. vim.fn.shellescape(subdirPath))
-
-        local source = {}
-        local options = vim.fn.systemlist("fzf-regexp-subdir-options")
+        local source = vim.fn.systemlist("ctrl-shift-g --source")
+        local options = vim.fn.systemlist("ctrl-shift-g --options")
 
         vim.fn["fzf#run"]({
           source = source,
           options = options,
-          -- Legacy sinklist: batch-postprocess via $1 (replaced in issue 12)
-          sinklist = function(selection)
-            if not next(selection) then return end
-            local cleanSelection = table.concat(selection, "\n")
-            cleanSelection = vim.fn.shellescape(cleanSelection)
-            cleanSelection = vim.fn.system("fzf-regexp-shared-postprocess " .. cleanSelection)
-            local items = vim.split(cleanSelection, " ", { trimempty = true })
-            for _, item in ipairs(items) do
-              local filepath, line = item:match("(.+):(.+)")
-              vim.cmd("tab drop " .. filepath)
-              vim.cmd(line)
-            end
-          end,
+          sinklist = function(selection) openLinesInNewTabs(selection, "ctrl-shift-g --postprocess") end,
         })
       end
       nmap("Ⓖ", onCtrlShiftG, "Regex search in files")
