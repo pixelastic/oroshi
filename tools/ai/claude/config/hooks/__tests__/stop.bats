@@ -77,3 +77,15 @@ make_transcript() {
   [ "$status" -eq 0 ]
   [ "$(cat "$BATS_TMP_DIR/sound-played")" = "claude-stop-fast.mp3" ]
 }
+
+@test "auto: plays fast sound when stdin has escaped newlines in last_assistant_message" {
+  local transcriptPath="$BATS_TMP_DIR/session.jsonl"
+  make_transcript "$transcriptPath" 1
+
+  export OROSHI_CLAUDE_STOP_SOUND="auto"
+  # \n in last_assistant_message (e.g. code blocks) must not corrupt JSON parsing
+  run_stop "{\"transcript_path\":\"$transcriptPath\",\"last_assistant_message\":\"line1\\nline2\"}"
+
+  [ "$status" -eq 0 ]
+  [ "$(cat "$BATS_TMP_DIR/sound-played")" = "claude-stop-fast.mp3" ]
+}

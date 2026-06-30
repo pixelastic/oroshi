@@ -9,7 +9,7 @@ set -e
 
 # Read stdin to get transcript path
 local stdinData="$(cat)"
-local transcriptPath="$(echo "$stdinData" | jq -r '.transcript_path // empty')"
+local transcriptPath="$(printf '%s\n' "$stdinData" | jq -r '.transcript_path // empty')"
 
 # Do not play sound for subagents
 [[ "$transcriptPath" == */subagents/* ]] && exit 0
