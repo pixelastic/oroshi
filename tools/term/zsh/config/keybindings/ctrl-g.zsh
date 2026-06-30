@@ -8,22 +8,40 @@ oroshi-ctrl-g-widget() {
 	fi
 
   export PROMPT_PREVENT_REFRESH="1"
-  local selection="$(fzf-regexp-project)"
+  local selection="$(ctrl-g)"
   export PROMPT_PREVENT_REFRESH="0"
 
   # Stop if no selection is made
-  if [[ "$selection" == "" ]]; then
-    return 1
-  fi
+  [[ "$selection" == "" ]] && return 1
 
+  # Parse each selected line: filepath:lineNum[:col]
   local filesToOpen=()
-  for item in ${=selection}; do
+  local lineNumbers=()
+  for item in ${(f)selection}; do
+    [[ "$item" == "" ]] && continue
     local split=(${(@s/:/)item})
-    filesToOpen+=($split[1])
+    filesToOpen+=("${split[1]}")
+    lineNumbers+=("${split[2]}")
   done
 
-  nvim -p ${=filesToOpen}
+  local fileCount=${#filesToOpen[@]}
 
+  # No selection
+  [[ "$fileCount" -eq 0 ]] && return 1
+
+  # Only one selection
+  if [[ "$fileCount" -eq 1 ]]; then
+    nvim "+${lineNumbers[1]}" "${filesToOpen[1]}"
+    return 0
+  fi
+
+  # Multi-select: open each file in a tab, then jump to its matched line
+  local nvimCmds=()
+  for i in {1..$fileCount}; do
+    nvimCmds+=("-c" "execute 'normal! ${i}gt'|normal! ${lineNumbers[$i]}G")
+  done
+  nvimCmds+=("-c" "execute 'normal! 1gt'")
+  nvim -p "${filesToOpen[@]}" "${nvimCmds[@]}"
   return 0
 }
 zle -N oroshi-ctrl-g-widget

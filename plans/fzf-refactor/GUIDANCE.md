@@ -143,6 +143,12 @@ _Append findings here after each issue. Format: `### Issue XX — short title` +
 - The plans context-aware behavior (`ralph` → plans picker) was dropped: the acceptance criteria deleted the plans autoloads, and no replacement FZF Script was in scope. The `ctrl-o.zsh` widget now simply calls `ctrl-o` directly.
 - `fzf-git-root` uses `git rev-parse --show-toplevel` (not `--show-superproject-working-tree`). The legacy used `-f` to go to the superproject root in submodules; the new script uses the current repo root only.
 
+### Issue 11 — ctrl-g (regexp-in-project FZF Script)
+
+- For live-reload scripts (`--disabled` + `change:reload`), `fzf-source` reads remaining positional args via `${initArgs[*]}` (joined with space) so multi-word queries from `ctrl-g --source {q}` work correctly.
+- Use `--color=never` in `regexp-run` so `fzf-postprocess` can cleanly split on `:` without ANSI codes in the field boundaries.
+- Fold-case toggle (F1 bind) was skipped intentionally — the spec mentions it for `regexp.zsh` reuse, but the acceptance criteria omit it; deferred to issue 12 when the helper is actually shared.
+
 ### Issue 10b — init.zsh --preview and fzf-main override
 
 - Putting flag dispatch inside `fzf-main` prevents scripts from overriding it. Split into `fzf-main` (default pipeline, overridable) and `fzf-dispatch` (dispatcher for standard flags). All scripts call `fzf-dispatch` at the bottom.

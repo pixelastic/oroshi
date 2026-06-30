@@ -9,6 +9,7 @@ set -e
 source "${0:h}/__lib/init.zsh"
 source "${0:h}/__lib/fzf-options-base.zsh"
 source "${0:h}/__lib/fzf-options-prompt-directory.zsh"
+source "${0:h}/__lib/fzf-colorize-path.zsh"
 
 colors-load-definitions
 filetypes-load-definitions
@@ -16,41 +17,6 @@ filetypes-load-definitions
 # Git root or cwd fallback
 SEARCH_PATH="$(git-directory-root)"
 [[ "$SEARCH_PATH" == "" ]] && SEARCH_PATH="$PWD"
-
-# Colorize directories and filenames
-# Result in $REPLY (no subprocess)
-ctrl-p-colorize() {
-  local inputPath="$1"
-  local dirname="${inputPath%/*}"
-  local filename="${inputPath##*/}"
-
-  # Just a filename at the root
-  if [[ "$dirname" == "$inputPath" ]]; then
-    dirname=""
-    filename="$inputPath"
-  fi
-
-  # Colorize filename by extension, fall back to executable color
-  local ext="${filename##*.}"
-  local fileColor="${FILETYPES[${ext}:color]}"
-  # Unknown filetype
-  if [[ "$fileColor" == "" ]]; then
-    # Is executable?
-    local absolutePath="${SEARCH_PATH}/${inputPath}"
-    [[ -x "${absolutePath}" ]] && fileColor="$COLORS[executable]"
-  fi
-
-  if [[ "$fileColor" != "" ]]; then
-    colorize --reply "$filename" "$fileColor"
-    filename="$REPLY"
-  fi
-  if [[ "$dirname" != "" ]]; then
-    colorize --reply "${dirname}/" directory
-    dirname="$REPLY"
-  fi
-
-  REPLY="${dirname}${filename}"
-}
 
 fzf-source() {
   local items="$(fd \
@@ -64,7 +30,7 @@ fzf-source() {
   for line in ${(f)items}; do
     [[ "$line" == "" ]] && continue
 
-    ctrl-p-colorize "$line"
+    fzf-colorize-path "$line"
     echo "${SEARCH_PATH}/${line}▮${REPLY}"
   done
 }

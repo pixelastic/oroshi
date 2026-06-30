@@ -124,23 +124,25 @@ return {
       -- }}}
 
       -- openLinesInNewTabs {{{
-      local function openLinesInNewTabs(selection)
+      -- Opens each regexp match in a new tab at the matched line.
+      -- Each selected line is piped through postprocessCmd → file:line:col
+      local function openLinesInNewTabs(selection, postprocessCmd)
         -- Stop if no selection
         if not next(selection) then
           return
         end
 
-        -- Clean up selection
-        local cleanSelection = table.concat(selection, "\n")
-        cleanSelection = vim.fn.shellescape(cleanSelection)
-        cleanSelection = vim.fn.system("fzf-regexp-shared-postprocess " .. cleanSelection)
-
-        -- Opening each filepath, one by one, and moving to the selected line
-        local items = vim.split(cleanSelection, " ", { trimempty = true })
-        for _, item in ipairs(items) do
-          local filepath, line = item:match("(.+):(.+)")
-          vim.cmd("tab drop " .. filepath)
-          vim.cmd(line)
+        for _, line in ipairs(selection) do
+          local result = vim.fn.system("echo " .. vim.fn.shellescape(line) .. " | " .. postprocessCmd)
+          result = vim.fn.trim(result)
+          if result == "" then
+            return
+          end
+          local filepath, lineNum = result:match("^(.+):(%d+):%d+$")
+          if filepath then
+            vim.cmd("tab drop " .. filepath)
+            vim.cmd(lineNum)
+          end
         end
       end
       -- }}}
@@ -200,17 +202,13 @@ return {
       -- CTRL-G: {{{
       -- Regex search inside of files
       local function onCtrlG()
-        -- Tell fzf what the root directory is
-        local rootDirectory = vim.fn.system("git-directory-root -f")
-        vim.fn.system("fzf-var-write pwd " .. vim.fn.shellescape(rootDirectory))
-
-        local source = {}
-        local options = vim.fn.systemlist("fzf-regexp-project-options")
+        local source = vim.fn.systemlist("ctrl-g --source")
+        local options = vim.fn.systemlist("ctrl-g --options")
 
         vim.fn["fzf#run"]({
           source = source,
           options = options,
-          sinklist = openLinesInNewTabs,
+          sinklist = function(selection) openLinesInNewTabs(selection, "ctrl-g --postprocess") end,
         })
       end
       nmap("<C-G>", onCtrlG, "Regex search in files")
@@ -230,7 +228,19 @@ return {
         vim.fn["fzf#run"]({
           source = source,
           options = options,
-          sinklist = openLinesInNewTabs,
+          -- Legacy sinklist: batch-postprocess via $1 (replaced in issue 12)
+          sinklist = function(selection)
+            if not next(selection) then return end
+            local cleanSelection = table.concat(selection, "\n")
+            cleanSelection = vim.fn.shellescape(cleanSelection)
+            cleanSelection = vim.fn.system("fzf-regexp-shared-postprocess " .. cleanSelection)
+            local items = vim.split(cleanSelection, " ", { trimempty = true })
+            for _, item in ipairs(items) do
+              local filepath, line = item:match("(.+):(.+)")
+              vim.cmd("tab drop " .. filepath)
+              vim.cmd(line)
+            end
+          end,
         })
       end
       nmap("Ⓖ", onCtrlShiftG, "Regex search in files")

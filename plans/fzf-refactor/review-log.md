@@ -308,3 +308,17 @@ fzf-git-files-dirty-stageable
 ```
 **Problem:** Spec says `fzf-git-files-dirty-stageable` but actual file is `fzf-git-files-stageable`.
 **Reason skipped:** File was created as `fzf-git-files-stageable` in issue 10. Spec has a naming typo.
+
+## Issue 11 — ctrl-g (regexp-in-project)
+
+### Spec: fold-case toggle behaviour not in regexp.zsh
+```zsh
+regexp-run() {
+  local query="$1"
+  local directory="$2"
+  [[ "$query" == "" ]] && return 0
+  rg --color=never --no-heading --with-filename --line-number --column -- "$query" "$directory" || true
+}
+```
+**Problem:** Spec says `helpers/regexp.zsh` provides "fold-case toggle behaviour reused by both ctrl-g and ctrl-shift-g". The `--bind=f1:...` toggle from legacy `fzf-regexp-shared-options` is not implemented.
+**Reason skipped:** The acceptance-criteria checklist does not list fold-case toggle as a required item. Implementing it now would require `fzf-var-read`/`fzf-var-write` infrastructure and is better done in issue 12 when the helper is actually shared with ctrl-shift-g.

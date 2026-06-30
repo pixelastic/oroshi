@@ -1,5 +1,0 @@
-# Output options required to search inside of text files, in the whole project
-setopt local_options err_return
-fzf-regexp-shared-options \
-  --prompt fzf-regexp-project-prompt \
-  --source fzf-regexp-project-source

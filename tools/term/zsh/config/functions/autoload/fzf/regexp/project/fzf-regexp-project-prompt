@@ -1,4 +1,0 @@
-# Display the prompt for a search in file, in whole project
-setopt local_options err_return
-local rootDirectory="$(fzf-var-read pwd)"
-echo "$(fzf-regexp-shared-prompt $rootDirectory) "

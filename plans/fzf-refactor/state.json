@@ -113,7 +113,8 @@
   {
     "id": "11",
     "issue": "issues/11-ctrl-g.md",
-    "done": false,
+    "done": true,
+    "recap": "Created __lib/regexp.zsh (regexp-run helper) and ctrl-g script (--disabled + change:reload live search, postprocess extracts file:line:col); updated ctrl-g.zsh widget to call new script; updated Neovim disk.lua onCtrlG to use Neovim API; deleted regexp/project/ legacy autoloads.",
     "blocked_by": ["10"]
   },
   {
