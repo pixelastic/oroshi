@@ -120,7 +120,8 @@
   {
     "id": "12",
     "issue": "issues/12-ctrl-shift-g.md",
-    "done": false,
+    "done": true,
+    "recap": "Created ctrl-shift-g (PWD-scoped regexp search, 4-field ▮ format with col); added regexp-fold-toggle binary + fold mode to regexp.zsh; wired F1 fold toggle into ctrl-g and ctrl-shift-g options; updated ctrl-shift-g.zsh widget and disk.lua onCtrlShiftG to use Neovim API; deleted regexp/subdir/ and regexp/shared/ legacy autoloads.",
     "blocked_by": ["11"]
   },
   {

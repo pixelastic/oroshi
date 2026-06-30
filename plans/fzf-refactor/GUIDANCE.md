@@ -149,6 +149,13 @@ _Append findings here after each issue. Format: `### Issue XX — short title` +
 - Use `--color=never` in `regexp-run` so `fzf-postprocess` can cleanly split on `:` without ANSI codes in the field boundaries.
 - Fold-case toggle (F1 bind) was skipped intentionally — the spec mentions it for `regexp.zsh` reuse, but the acceptance criteria omit it; deferred to issue 12 when the helper is actually shared.
 
+### Issue 12 — ctrl-shift-g (regexp-in-subdir + fold toggle)
+
+- `ctrl-shift-g --source` emits 4-field `filepath▮line▮col▮content` format (not 3-field like `ctrl-g`) so postprocess can output `file:line:col`; use `--with-nth=4` in options.
+- Fold toggle is a standalone `regexp-fold-toggle` binary that sources `__lib/regexp.zsh` and calls `regexp-fold-toggle()` — FZF's `execute-silent` needs a binary on PATH, not a sourced function.
+- `regexp-run` now accepts extra trailing args (`"${@:3}"`) for flags like `--no-ignore` — caller decides ignore rules.
+- All spec references to "Neovim API" mean the `--source/--options/--postprocess` FZF Script interface, not native Neovim APIs — `fzf#run` is the correct Neovim integration pattern for this codebase.
+
 ### Issue 10b — init.zsh --preview and fzf-main override
 
 - Putting flag dispatch inside `fzf-main` prevents scripts from overriding it. Split into `fzf-main` (default pipeline, overridable) and `fzf-dispatch` (dispatcher for standard flags). All scripts call `fzf-dispatch` at the bottom.
