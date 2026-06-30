@@ -25,8 +25,8 @@ ICONS[completion-process]=""
 ICONS[fzf-separator]=""
 ICONS[fzf-current]=""
 ICONS[fzf-selected]=""
-ICONS[fzf-fold]=""
-ICONS[fzf-unfold]=""
+ICONS[fzf-unfold]=""
+ICONS[fzf-fold]=""
 
 # Nvim
 ICONS[nvim-tab-separator]=""
