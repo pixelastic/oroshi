@@ -31,6 +31,7 @@
     "lint:fix": "./scripts/yarn/lint-fix",
     "lint:zsh": "./scripts/yarn/lint-zsh",
     "test": "./scripts/yarn/test",
-    "test:bats": "./scripts/yarn/test-bats"
+    "test:bats": "./scripts/yarn/test-bats",
+    "colors-refresh": "./scripts/bin/colors-refresh"
   }
 }

@@ -23,6 +23,15 @@ setup() {
   [ "$output" = "echo hello" ]
 }
 
+@test "preserves \xa0 as 4 literal characters through RTK ignore path" {
+  rtk-can-rewrite() { return 1; }
+  bats_mock rtk-can-rewrite
+
+  bats_run_zsh "${sourcePrefix}; preToolUse-Bash-rtk 'echo \xa0'"
+  [ "$status" -eq 0 ]
+  [ "$output" = 'echo \xa0' ]
+}
+
 @test "is idempotent when command already uses RTK without calling rtk-can-rewrite" {
   rtk-can-rewrite() {
     touch "$BATS_TMP_DIR/unexpected-call"

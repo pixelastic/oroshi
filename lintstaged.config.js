@@ -15,11 +15,7 @@ export default {
   '**/*.js': ['yarn run lint:fix --js', 'yarn run test --fail-fast --related'],
   'scripts/yarn/**/*': ['yarn run lint:zsh'],
 
-  // BUILD: projects.json and projects.zsh
-  'tools/term/zsh/config/theming/src/projects.json': [
-    './tools/term/zsh/config/theming/projects-build',
-  ],
-  'tools/term/zsh/config/theming/projects-build': [
-    './tools/term/zsh/config/theming/projects-build',
-  ],
+  // Colors reload
+  'tools/term/zsh/config/**/{colors.jsonc,colors-build,filetypes.jsonc,filetypes-build,projects.json,projects-build}':
+    'yarn run colors-refresh',
 };

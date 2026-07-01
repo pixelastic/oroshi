@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+
+# Rebuild dist/filetypes.zsh and dist/filetypes.json from filetypes.jsonc
+# Called by lint-staged (staged file args are ignored)
+set -e
+filetypes-build

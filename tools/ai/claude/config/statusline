@@ -37,10 +37,9 @@ local displayBadge="$(context-badge "$currentDir")"
 # Context budget
 local tokensKRaw=$(printf "%.1f" $((totalTokens / 1000.0)))
 local tokensK="${tokensKRaw%\.0}k"
-local contextColor=$COLORS[red]
-((contextPercentage < 80)) && contextColor=$COLORS[yellow]
-((contextPercentage < 60)) && contextColor=$COLORS[green]
-((contextPercentage < 20)) && contextColor=$COLORS[gray]
+local contextColor=$COLORS[claude-contextHigh]
+((contextPercentage < 60)) && contextColor=$COLORS[claude-contextMedium]
+((contextPercentage < 20)) && contextColor=$COLORS[claude-contextLow]
 local displayContext="$(colorize "${tokensK}" $contextColor)"
 statusline+=("$displayContext ")
 
@@ -48,19 +47,19 @@ statusline+=("$displayContext ")
 local isInCents=$((totalCost < 1))
 if [[ $isInCents == "1" ]]; then
   local roundedCents=$((totalCost * 100 + 0.5))
-  local displayCost="$(colorize "${roundedCents%.*}¢" $COLORS[punctuation])"
+  local displayCost="$(colorize "${roundedCents%.*}¢" $COLORS[claude-costLow])"
 else
   local roundedDollars=$(printf "$%.2f" "$totalCost")
-  local displayCost="$(colorize "${roundedDollars}" $COLORS[yellow])"
+  local displayCost="$(colorize "${roundedDollars}" $COLORS[claude-costHigh])"
 fi
 statusline+=("$displayCost ")
 
 # Model
-local displayModel="$(colorize "${modelName}" $COLORS[comment])"
+local displayModel="$(colorize "${modelName}" $COLORS[claude-model])"
 statusline+=("$displayModel ")
 
 # Session ID
-local displaySession="$(colorize "[${sessionId}]" $COLORS[amber-9])"
+local displaySession="$(colorize "[${sessionId}]" $COLORS[claude-sessionId])"
 statusline+=("$displaySession")
 
 print "${(j::)statusline}"

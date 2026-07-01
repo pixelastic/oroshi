@@ -13,15 +13,15 @@ preToolUse-Bash-rtk() {
 
   # Already rewritten — pass through unchanged
   if [[ $cmd == rtk\ * ]]; then
-    print -- "$cmd"
+    print -r -- "$cmd"
     return 0
   fi
 
   # Delegate rewrite decision to rtk-can-rewrite
   if ! rtk-can-rewrite "$cmd"; then
-    print -- "$cmd"
+    print -r -- "$cmd"
     return 0
   fi
 
-  print -- "rtk $cmd"
+  print -r -- "rtk $cmd"
 }

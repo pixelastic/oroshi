@@ -107,9 +107,37 @@
     "ansi": 144,
     "hex": "#f59e0b"
   },
-  "claude": {
+  "claude-contextHigh": {
+    "ansi": 25,
+    "hex": "#dc2626"
+  },
+  "claude-contextLow": {
+    "ansi": 205,
+    "hex": "#6b7280"
+  },
+  "claude-contextMedium": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "claude-costHigh": {
+    "ansi": 45,
+    "hex": "#d69e2e"
+  },
+  "claude-costLow": {
+    "ansi": 136,
+    "hex": "#0f766e"
+  },
+  "claude-default": {
     "ansi": 146,
     "hex": "#b45309"
+  },
+  "claude-model": {
+    "ansi": 146,
+    "hex": "#b45309"
+  },
+  "claude-sessionId": {
+    "ansi": 149,
+    "hex": "#451a03"
   },
   "comment": {
     "ansi": 205,

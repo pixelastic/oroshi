@@ -3,7 +3,6 @@
 
   // Semantic UI colors.
   "ai":           "amber-6",
-  "claude":       "amber-6",
   "black":        "gray-0",
   "boolean":      "amber-4",
   "comment":      "gray",
@@ -63,6 +62,18 @@
   "variable-type": "red-3",
   "warning":      "yellow",
   "white":        "gray-1",
+
+  // Claude AI
+  "claude": {
+    "default":        "amber-6",
+    "contextLow":     "gray",
+    "contextMedium":  "yellow",
+    "contextHigh":    "red",
+    "costLow":        "teal-6",
+    "costHigh":       "yellow",
+    "model":          "amber-6",
+    "sessionId":      "amber-9"
+  },
 
   // Docker
   "docker": {
