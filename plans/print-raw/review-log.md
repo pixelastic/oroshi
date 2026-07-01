@@ -1,0 +1,11 @@
+## Issue 01 — \xa0 regression test
+
+### Standards findings on pre-existing plan files
+
+**Problem:** Reviewer flagged absolute paths (`~/.oroshi/...`) in GUIDANCE.md and issue files, plus missing `## Scaffolding Tests` section in issue files.
+**Reason skipped:** All flagged files are pre-existing plan artifacts, not changed in this session. Path format in GUIDANCE.md is intentional — the test target lives in a separate repo (`~/.oroshi/`) and absolute paths are needed for clarity.
+
+### Spec review — empty diff
+
+**Problem:** Spec agent reported "nothing implemented" because `review-diff dirty` returned empty output.
+**Reason skipped:** Expected behavior — the test was added to `~/.oroshi/` (separate git repo), invisible to `review-diff` in this worktree. Spec compliance was verified manually.

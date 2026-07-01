@@ -25,3 +25,6 @@ bats ~/.oroshi/tools/ai/claude/config/hooks/__tests__/
 **Guard pattern:** `preToolUse-Bash-rtk.zsh` guards against re-definition (`whence preToolUse-Bash-rtk`) so bats tests can mock it by defining the function before sourcing.
 
 ## Discoveries
+
+### Issue 01 — \xa0 regression test
+- `review-diff dirty` sees an empty diff for `~/.oroshi/` changes — that repo is separate from this worktree. Spec review must be done manually for cross-repo changes.

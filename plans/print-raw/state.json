@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-xa0-regression-test.md",
-    "done": false,
+    "done": true,
+    "recap": "Added failing bats test asserting \\xa0 is preserved as 4 literal chars through the RTK ignore path.",
     "blocked_by": []
   },
   {
