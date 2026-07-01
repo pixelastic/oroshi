@@ -23,9 +23,9 @@
   {
     "id": "15",
     "issue": "issues/15-ctrl-r-zsh-highlight.md",
-    "done": false,
-    "blocked_by": ["02", "16"],
-    "notes": "Also requires color system refactor (COLOR_ALIAS_* → ZSH assoc array) to be merged into main first"
+    "done": true,
+    "recap": "Rewrote ctrl-r fzf-source to output raw▮colored format using _zsh_highlight(); added fzf-highlight-line internal function that converts region_highlight entries to ANSI codes; updated fzf-options with --with-nth=2 --nth=2; updated fzf-postprocess to return raw field via ${line%%▮*}.",
+    "blocked_by": ["02", "16"]
   },
   {
     "id": "04",

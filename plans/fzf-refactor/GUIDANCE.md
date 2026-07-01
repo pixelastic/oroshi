@@ -164,6 +164,13 @@ _Append findings here after each issue. Format: `### Issue XX — short title` +
 - `__lib/` sourced helpers do NOT use `setopt local_options err_return` inside their function bodies — the parent script's `set -e` covers them. (Confirmed by checking `fzf-options-prompt-directory.zsh` pattern.)
 - `local` is valid at top-level script scope in ZSH (preferred over `typeset`).
 
+### Issue 15 — ctrl-r zsh-syntax-highlighting
+
+- `region_highlight` entries have format `"start end spec [memo]"` (0-indexed byte offsets, exclusive end). Strip memo with `${spec%% *}` before comma-splitting.
+- ZSH array subscripts are already arithmetic contexts — use `opens[start+1]` not `opens[$((start+1))]` (SC2321).
+- `--delimiter=▮` is already emitted by `fzf-options-base`; scripts using it do not need to repeat it in their own `fzf-options`.
+- The `if [[ $isSource == "1" ]]` guard for sourcing `zsh.zsh` limits the ~200-500ms startup cost to `--source` invocations only — `--options` and `--postprocess` remain fast.
+
 ### Issue 10b — init.zsh --preview and fzf-main override
 
 - Putting flag dispatch inside `fzf-main` prevents scripts from overriding it. Split into `fzf-main` (default pipeline, overridable) and `fzf-dispatch` (dispatcher for standard flags). All scripts call `fzf-dispatch` at the bottom.
