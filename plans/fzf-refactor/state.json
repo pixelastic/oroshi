@@ -127,7 +127,8 @@
   {
     "id": "13",
     "issue": "issues/13-neovim-integration.md",
-    "done": false,
+    "done": true,
+    "recap": "Migrated onCtrlT → onCtrlShiftP using ctrl-shift-p --source/--options/--postprocess; removed openFilesInNewTabs helper and all <C-T> keybindings.",
     "blocked_by": ["10", "12"]
   },
   {

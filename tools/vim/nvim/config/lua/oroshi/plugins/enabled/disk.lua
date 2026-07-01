@@ -106,20 +106,20 @@ return {
       end)
 
       -- openFilesInNewTabs {{{
-      -- Used when selecting (multiple) filepaths
-      local function openFilesInNewTabs(selection)
+      -- Opens each selected file in a new tab.
+      local function openFilesInNewTabs(selection, postprocessCmd)
         -- Stop if no selection
-        if not next(selection) then
+        if F.isEmpty(selection) then
           return
         end
 
-        -- Clean up selection
-        local cleanSelection = table.concat(selection, "\n")
-        cleanSelection = vim.fn.shellescape(cleanSelection)
-        cleanSelection = vim.fn.system("fzf-fs-files-shared-postprocess " .. cleanSelection)
-
-        -- Opening them all, one in each tab, re-using existing tabs
-        vim.cmd("tab drop " .. cleanSelection)
+        F.each(selection, function(line)
+          local result = vim.fn.system(postprocessCmd, line)
+          result = F.trim(result)
+          if result ~= "" then
+            F.openTab(result)
+          end
+        end)
       end
       -- }}}
 
@@ -128,22 +128,25 @@ return {
       -- Each selected line is piped through postprocessCmd → file:line:col
       local function openLinesInNewTabs(selection, postprocessCmd)
         -- Stop if no selection
-        if not next(selection) then
+        if F.isEmpty(selection) then
           return
         end
 
-        for _, line in ipairs(selection) do
-          local result = vim.fn.system("echo " .. vim.fn.shellescape(line) .. " | " .. postprocessCmd)
-          result = vim.fn.trim(result)
+        F.each(selection, function(line)
+          local result = vim.fn.system(postprocessCmd, line)
+          result = F.trim(result)
           if result == "" then
-            return
+            return false
           end
-          local filepath, lineNum = result:match("^(.+):(%d+)$")
-          if filepath then
-            vim.cmd("tab drop " .. filepath)
-            vim.cmd(lineNum)
+
+          local parts = F.split(result, ":")
+          local filepath = parts[1]
+          local lineNum = tonumber(parts[2])
+          if filepath and lineNum then
+            F.openTab(filepath)
+            F.moveTo(lineNum)
           end
-        end
+        end)
       end
       -- }}}
 
@@ -157,16 +160,7 @@ return {
           source = source,
           options = options,
           sinklist = function(selection)
-            if not next(selection) then
-              return
-            end
-            for _, line in ipairs(selection) do
-              local result = vim.fn.system("echo " .. vim.fn.shellescape(line) .. " | ctrl-p --postprocess")
-              result = vim.fn.trim(result)
-              if result ~= "" then
-                vim.cmd("tab drop " .. result)
-              end
-            end
+            openFilesInNewTabs(selection, "ctrl-p --postprocess")
           end,
         })
       end
@@ -175,28 +169,23 @@ return {
       imap("<C-P>", onCtrlP, "Search in project")
       -- }}}
 
-      -- CTRL-T: {{{
+      -- CTRL-SHIFT-P: {{{
       -- Search in current directory
-      local function onCtrlT()
-        -- Tell fzf what the base directory is
-        local subdirPath = vim.fn.expand("%:p:h")
-        vim.fn.system("fzf-var-write pwd " .. vim.fn.shellescape(subdirPath))
-
-        local source = vim.fn.systemlist("fzf-fs-files-subdir-source")
-        local options = vim.fn.systemlist("fzf-fs-files-subdir-options")
+      local function onCtrlShiftP()
+        local source = vim.fn.systemlist("ctrl-shift-p --source")
+        local options = vim.fn.systemlist("ctrl-shift-p --options")
 
         vim.fn["fzf#run"]({
           source = source,
           options = options,
-          sinklist = openFilesInNewTabs,
+          sinklist = function(selection)
+            openFilesInNewTabs(selection, "ctrl-shift-p --postprocess")
+          end,
         })
       end
-      nmap("Ⓟ", onCtrlT, "Search in current directory")
-      imap("Ⓟ", onCtrlT, "Search in current directory")
-      vmap("Ⓟ", onCtrlT, "Search in current directory")
-      nmap("<C-T>", onCtrlT, "Search in current directory")
-      imap("<C-T>", onCtrlT, "Search in current directory")
-      vmap("<C-T>", onCtrlT, "Search in current directory")
+      nmap("Ⓟ", onCtrlShiftP, "Search in current directory")
+      imap("Ⓟ", onCtrlShiftP, "Search in current directory")
+      vmap("Ⓟ", onCtrlShiftP, "Search in current directory")
       -- }}}
 
       -- CTRL-G: {{{
@@ -208,11 +197,14 @@ return {
         vim.fn["fzf#run"]({
           source = source,
           options = options,
-          sinklist = function(selection) openLinesInNewTabs(selection, "ctrl-g --postprocess") end,
+          sinklist = function(selection)
+            openLinesInNewTabs(selection, "ctrl-g --postprocess")
+          end,
         })
       end
       nmap("<C-G>", onCtrlG, "Regex search in files")
-      imap("<C-G>", onCtrlG, "Search in current directory")
+      vmap("<C-G>", onCtrlG, "Regex search in files")
+      imap("<C-G>", onCtrlG, "Regex search in files")
       -- }}}
 
       -- CTRL-SHIFT-G: {{{
@@ -224,11 +216,14 @@ return {
         vim.fn["fzf#run"]({
           source = source,
           options = options,
-          sinklist = function(selection) openLinesInNewTabs(selection, "ctrl-shift-g --postprocess") end,
+          sinklist = function(selection)
+            openLinesInNewTabs(selection, "ctrl-shift-g --postprocess")
+          end,
         })
       end
       nmap("Ⓖ", onCtrlShiftG, "Regex search in files")
-      imap("Ⓖ", onCtrlShiftG, "Search in current directory")
+      vmap("Ⓖ", onCtrlShiftG, "Regex search in files")
+      imap("Ⓖ", onCtrlShiftG, "Regex search in files")
       -- }}}
     end,
   },
