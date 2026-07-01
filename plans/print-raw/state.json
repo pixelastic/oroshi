@@ -1,0 +1,14 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-xa0-regression-test.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-print-raw-fix.md",
+    "done": false,
+    "blocked_by": ["01"]
+  }
+]
