@@ -71,3 +71,43 @@ setup() {
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
 }
+
+# fzf-source (fold mode)
+
+@test "fzf-source: fold-mode=on shows no context lines" {
+  printf 'line1\nline2\nmatch\nline4\nline5\n' > "$BATS_GIT_DIR/ctx-sample.txt"
+  bats_mock_env "OROSHI_TMP_FOLDER" "$BATS_TMP_DIR"
+  bats_mock_env "KITTY_WINDOW_ID" "test-window"
+  mkdir -p "$BATS_TMP_DIR/fzf/var/test-window"
+  echo "on" > "$BATS_TMP_DIR/fzf/var/test-window/regexp-fold-mode"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && ctrl-g --source match"
+  [ "$status" -eq 0 ]
+  [ "${#lines[@]}" -eq 2 ]
+}
+
+@test "fzf-source: fold-mode=off shows 2 lines of context around matches" {
+  printf 'line1\nline2\nmatch\nline4\nline5\n' > "$BATS_GIT_DIR/ctx-sample.txt"
+  bats_mock_env "OROSHI_TMP_FOLDER" "$BATS_TMP_DIR"
+  bats_mock_env "KITTY_WINDOW_ID" "test-window"
+  mkdir -p "$BATS_TMP_DIR/fzf/var/test-window"
+  echo "off" > "$BATS_TMP_DIR/fzf/var/test-window/regexp-fold-mode"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && ctrl-g --source match"
+  [ "$status" -eq 0 ]
+  [ "${#lines[@]}" -eq 6 ]
+}
+
+@test "fzf-source: fold-mode=on inserts blank line between different files" {
+  printf 'match\n' > "$BATS_GIT_DIR/file-a.txt"
+  printf 'match\n' > "$BATS_GIT_DIR/file-b.txt"
+  bats_mock_env "OROSHI_TMP_FOLDER" "$BATS_TMP_DIR"
+  bats_mock_env "KITTY_WINDOW_ID" "test-window"
+  mkdir -p "$BATS_TMP_DIR/fzf/var/test-window"
+  echo "on" > "$BATS_TMP_DIR/fzf/var/test-window/regexp-fold-mode"
+
+  bats_run_zsh "cd $BATS_GIT_DIR && ctrl-g --source match"
+  [ "$status" -eq 0 ]
+  # header-A + match-A + blank + header-B + match-B = 5
+  [ "${#lines[@]}" -eq 5 ]
+}

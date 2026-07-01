@@ -1,7 +1,5 @@
 ## fzf
 
-make toggle i regex display only one by line
-
 ctrl-shift-g.zsh and ctrl-g.zsh share a lot of code in common
 ctlr-shift-p.zsh and ctrl-p.zsh probably as well
 

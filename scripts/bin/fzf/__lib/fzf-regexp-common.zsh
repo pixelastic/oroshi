@@ -20,10 +20,10 @@ fzf-regexp-source() {
 # Run ripgrep and output raw results
 # Globals: SEARCH_DIR, QUERY, EXTRA_RG_ARGS
 fzf-regexp-source-raw() {
-  # Fold mode: single shows one match per file, multi shows all
-  local foldMode="$(fzf-var-read regexp-fold-mode multi)"
+  # Fold mode On, do not display context around matches
+  local foldMode="$(fzf-var-read regexp-fold-mode on)"
   local -a foldArg=()
-  [[ "$foldMode" == "single" ]] && foldArg=(--max-count=1)
+  [[ "$foldMode" == "on" ]] && foldArg=(--context=0)
 
   rg \
     --color=always \
@@ -55,9 +55,10 @@ fzf-regexp-source-transform() {
     local clean="${line//$'\e['[0-9;]#m/}"
     local parts=(${(@s/⦙/)clean})
 
-    # Group separator from ripgrep (--): visual spacer opening file at line 1
+    # Group separator from ripgrep (--): visual spacer, reset file tracking
     if [[ ${#parts} -eq 1 ]]; then
       echo "${prevFile}▮1▮"
+      prevFile=""
       continue
     fi
 
@@ -67,6 +68,8 @@ fzf-regexp-source-transform() {
 
     # Header when finding matches in a new file
     if [[ "$filepath" != "$prevFile" ]]; then
+      # Blank spacer between files when rg emits no separator (e.g. fold-mode=on)
+      [[ "$prevFile" != "" ]] && echo "${filepath}▮1▮"
       local relPath="${filepath#"${SEARCH_DIR}"/}"
       fzf-colorize-path "$relPath"
       echo "${filepath}▮1▮${REPLY}"
@@ -139,14 +142,14 @@ fzf-regexp-dispatch() {
   fzf-dispatch
 }
 
-# Toggle fold mode between multi (all matches) and single (one per file)
+# Toggle fold mode between on (no context) and off (2 lines of context)
 fzf-regexp-fold-toggle() {
-  local currentMode="$(fzf-var-read regexp-fold-mode multi)"
-  if [[ "$currentMode" == "multi" ]]; then
-    fzf-var-write regexp-fold-mode single
+  local currentMode="$(fzf-var-read regexp-fold-mode on)"
+  if [[ "$currentMode" == "on" ]]; then
+    fzf-var-write regexp-fold-mode off
     return 0
   fi
-  fzf-var-write regexp-fold-mode multi
+  fzf-var-write regexp-fold-mode on
 }
 
 # Generate the FZF prompt badge with fold mode indicator
@@ -156,10 +159,10 @@ fzf-regexp-fold-prompt() {
   icons-load-definitions
   colors-load-definitions
 
-  # Pick icon based on mode
-  local currentMode="$(fzf-var-read regexp-fold-mode multi)"
-  local icon="$ICONS[fzf-fold]"
-  [[ "$currentMode" == "single" ]] && icon="$ICONS[fzf-unfold]"
+  # Pick icon based on mode: on=compact (can expand), off=context (can compact)
+  local currentMode="$(fzf-var-read regexp-fold-mode on)"
+  local icon="$ICONS[fzf-unfold]"
+  [[ "$currentMode" == "off" ]] && icon="$ICONS[fzf-fold]"
 
   colorize --reply " ${icon} f1 " $COLORS[white] $COLORS[regexp]
   local badge="$REPLY"
