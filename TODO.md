@@ -1,5 +1,14 @@
 ## fzf
 
+Ctrl-Shift-P in nvim doesn't colorize the results. Even outside of nvim
+
+Ctrl-P in nvim takes ~1s to load. That seems slow.
+Probably because it loads the whole list first, while in zsh it loads it
+iteratively
+
+Ctrl-Shift-P results should be files first, then going into directories. Closer
+files first then go deeper.
+
 ctrl-shift-g.zsh and ctrl-g.zsh share a lot of code in common
 ctlr-shift-p.zsh and ctrl-p.zsh probably as well
 
