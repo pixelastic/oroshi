@@ -322,3 +322,13 @@ regexp-run() {
 ```
 **Problem:** Spec says `helpers/regexp.zsh` provides "fold-case toggle behaviour reused by both ctrl-g and ctrl-shift-g". The `--bind=f1:...` toggle from legacy `fzf-regexp-shared-options` is not implemented.
 **Reason skipped:** The acceptance-criteria checklist does not list fold-case toggle as a required item. Implementing it now would require `fzf-var-read`/`fzf-var-write` infrastructure and is better done in issue 12 when the helper is actually shared with ctrl-shift-g.
+
+## Issue 14 — Final legacy cleanup
+
+### setopt local_options err_return missing from fzf-var.zsh functions
+**Problem:** Standards agent flagged that `fzf-var-write` and `fzf-var-read` function bodies lack `setopt local_options err_return`.
+**Reason skipped:** `fzf-var.zsh` is a `__lib/` sourced helper, not a standalone autoload. Other `__lib/` helpers (`fzf-options-prompt-directory.zsh`, `fzf-colorize-path.zsh`) follow the same pattern — no `setopt` inside function bodies. The parent script's `set -e` provides error protection.
+
+### New scripts created "beyond spec scope"
+**Problem:** Spec agent flagged `fzf-kitty-tabs`, `fzf-fs-shared-preview`, `fzf-fs-shared-preview-header` as unspecified additions.
+**Reason skipped:** These were necessary prerequisites to delete the legacy autoloads that called them. The spec says "replaced by FZF Helpers sourced directly" (line 11) and "Any autoloads not yet deleted" — creating replacements is implied. Without them, `autoload/fzf/` could not be fully removed.

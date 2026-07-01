@@ -10,6 +10,9 @@ source "${0:h}/__lib/init.zsh"
 source "${0:h}/__lib/fzf-options-base.zsh"
 source "${0:h}/__lib/fzf-source-directories.zsh"
 source "${0:h}/__lib/fzf-options-prompt-directory.zsh"
+source "${0:h}/__lib/fzf-fs-preview.zsh"
+
+SCRIPT_NAME="${0:t}"
 
 fzf-source() {
   fzf-source-directories "$PWD"
@@ -20,7 +23,7 @@ fzf-options() {
   echo "--with-nth=2"
   echo "--scheme=path"
   echo "--tiebreak=pathname,chunk"
-  echo "--preview=fzf-fs-shared-preview {1}"
+  echo "--preview=$SCRIPT_NAME --preview {1}"
   local prompt="$(fzf-options-prompt-directory "$PWD")"
   echo "--prompt=${prompt}"
 }

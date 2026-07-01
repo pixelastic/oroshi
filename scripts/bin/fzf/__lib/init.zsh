@@ -28,10 +28,6 @@ fzf-dispatch() {
   if [[ $isSource == "1" ]]; then fzf-source; return 0; fi
   if [[ $isOptions == "1" ]]; then fzf-options; return 0; fi
   if [[ $isPostprocess == "1" ]]; then fzf-postprocess; return 0; fi
-  if [[ $isPreview == "1" ]]; then
-    # Gracefully skip if script has no fzf-preview
-    (( $+functions[fzf-preview] )) && fzf-preview "${ARGS[@]}"
-    return 0
-  fi
+  if [[ $isPreview == "1" ]]; then fzf-preview "${ARGS[@]}"; return 0; fi
   fzf-main
 }

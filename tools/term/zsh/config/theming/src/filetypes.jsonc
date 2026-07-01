@@ -165,11 +165,11 @@
     ]
   },
 
-  // Documents
-  "document": {
+  // PDFs
+  "pdf": {
     "bold": true,
     "color": "yellow-6",
-    "icon": "filetype-document",
+    "icon": "filetype-pdf",
     "patterns": [
       "pdf"
     ]

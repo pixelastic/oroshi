@@ -1,6 +1,7 @@
 source "${0:h}/fzf-options-base.zsh"
 source "${0:h}/fzf-options-prompt-directory.zsh"
 source "${0:h}/fzf-colorize-path.zsh"
+source "${0:h}/fzf-var.zsh"
 
 # Orchestrate raw rg output and transform into FZF candidates
 # Globals: SEARCH_DIR, ARGS (from init.zsh)

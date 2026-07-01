@@ -134,7 +134,8 @@
   {
     "id": "14",
     "issue": "issues/14-final-legacy-cleanup.md",
-    "done": false,
+    "done": true,
+    "recap": "Deleted all remaining autoload/fzf/ files and directory; created __lib/fzf-var.zsh (fzf-var-read/write helpers), fzf-kitty-tabs FZF Script, fzf-fs-shared-preview and fzf-fs-shared-preview-header standalone binaries; updated kitty-tabs-switch to call fzf-kitty-tabs; removed ctrl-shift-i keybinding.",
     "blocked_by": ["04", "05", "09", "12", "13"]
   }
 ]

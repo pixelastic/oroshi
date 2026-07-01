@@ -1,8 +1,10 @@
 # Colorize a file path: directory in directory color, filename by filetype or executable
-# Usage: fzf-colorize-path <path>
+# Usage: fzf-colorize-path <display-path> [real-path]
+#   real-path: actual filesystem path used for -x executable check (defaults to display-path)
 # Result in $REPLY (no subprocess)
 fzf-colorize-path() {
   local inputPath="$1"
+  local realPath="${2:-$1}"
   local dirname="${inputPath%/*}"
   local filename="${inputPath##*/}"
 
@@ -20,7 +22,7 @@ fzf-colorize-path() {
   local ext="${filename##*.}"
   local fileColor="${FILETYPES[${ext}:color]}"
   if [[ "$fileColor" == "" ]]; then
-    [[ -x "$inputPath" ]] && fileColor="$COLORS[executable]"
+    [[ -x "$realPath" ]] && fileColor="$COLORS[executable]"
   fi
 
   if [[ "$fileColor" != "" ]]; then

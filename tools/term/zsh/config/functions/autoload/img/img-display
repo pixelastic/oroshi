@@ -65,7 +65,7 @@ fi
 local additionalFlags=()
 if [[ $isFzfPreview == "1" ]]; then
   additionalFlags+=("--stdin=no")
-  additionalFlags+=("--place=${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES}@0x0")
+  additionalFlags+=("--place=${FZF_PREVIEW_COLUMNS:-0}x${FZF_PREVIEW_LINES:-0}@0x0")
 fi
 
 kitty icat \

@@ -38,3 +38,11 @@ setup() {
   [ "$status" -eq 0 ]
   [[ "$output" == *$'\e[38;5;150m'"my-script"$'\e[0m'* ]]
 }
+
+@test "uses real-path for executable check when display-path differs" {
+  touch "$BATS_TMP_DIR/my-script"
+  chmod +x "$BATS_TMP_DIR/my-script"
+  bats_run_zsh "${sourcePrefix}; fzf-colorize-path 'proj/…/bin/my-script' '$BATS_TMP_DIR/my-script'; print -r -- \$REPLY"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *$'\e[38;5;150m'"my-script"$'\e[0m'* ]]
+}

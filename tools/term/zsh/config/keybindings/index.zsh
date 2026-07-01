@@ -18,7 +18,6 @@ source ${0:A:h}/ctrl-r.zsh       # Fuzzy-find history commands
 source ${0:A:h}/ctrl-y.zsh       # Copy current directory to clipboard
 source ${0:A:h}/ctrl-shift-y.zsh # Copy last command + output to clipboard
 source ${0:A:h}/ctrl-i.zsh       # Open Claude Code
-source ${0:A:h}/ctrl-shift-i.zsh # Fuzzy-find Claude sessions
 source ${0:A:h}/ctrl-o.zsh       # Fuzzy-find directories in project
 source ${0:A:h}/ctrl-shift-o.zsh # Fuzzy-find directories in subdir
 source ${0:A:h}/ctrl-p.zsh       # Fuzzy-find files in project

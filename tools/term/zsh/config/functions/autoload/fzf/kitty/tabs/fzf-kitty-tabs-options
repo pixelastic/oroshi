@@ -1,7 +1,0 @@
-# Outputs specific options for searching Kitty tabs
-setopt local_options err_return
-echo "--prompt=  "
-
-# Format: tab_id▮tab_name▮tab_display
-echo "--delimiter=▮"
-echo "--with-nth=3"

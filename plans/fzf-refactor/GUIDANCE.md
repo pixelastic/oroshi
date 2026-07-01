@@ -156,6 +156,14 @@ _Append findings here after each issue. Format: `### Issue XX — short title` +
 - `regexp-run` now accepts extra trailing args (`"${@:3}"`) for flags like `--no-ignore` — caller decides ignore rules.
 - All spec references to "Neovim API" mean the `--source/--options/--postprocess` FZF Script interface, not native Neovim APIs — `fzf#run` is the correct Neovim integration pattern for this codebase.
 
+### Issue 14 — Final legacy cleanup
+
+- `fzf-var-read`/`fzf-var-write` were still called from `__lib/fzf-regexp-common.zsh` (fold mode persistence) — the correct fix is a new `__lib/fzf-var.zsh` sourced helper, NOT functions in the autoload system.
+- `fzf-fs-shared-preview` and `fzf-fs-shared-preview-header` became standalone binaries (not FZF Scripts with lifecycle functions) — preview helpers are an exception to the four-function pattern.
+- `kitty-tabs-switch` still called `fzf-search` + `fzf-kitty-tabs-*` autoloads; migrating to `fzf-kitty-tabs` required creating the FZF Script first, then simplifying `kitty-tabs-switch` to a one-liner.
+- `__lib/` sourced helpers do NOT use `setopt local_options err_return` inside their function bodies — the parent script's `set -e` covers them. (Confirmed by checking `fzf-options-prompt-directory.zsh` pattern.)
+- `local` is valid at top-level script scope in ZSH (preferred over `typeset`).
+
 ### Issue 10b — init.zsh --preview and fzf-main override
 
 - Putting flag dispatch inside `fzf-main` prevents scripts from overriding it. Split into `fzf-main` (default pipeline, overridable) and `fzf-dispatch` (dispatcher for standard flags). All scripts call `fzf-dispatch` at the bottom.
