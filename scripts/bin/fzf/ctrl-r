@@ -67,13 +67,23 @@ fzf-colorize() {
   mkdir -p "${outputCacheFile:h}"
 
   # Atomic lock — prevent concurrent colorize processes (mkdir is atomic)
+  # If lock exists but owner PID is gone, it's stale — remove and take the lock
+  if [[ -d "$lockDir" ]]; then
+    local lockPid="$(cat "$lockDir/pid" 2>/dev/null || echo "")"
+    if [[ "$lockPid" == "" ]] || ! kill -0 "$lockPid" 2>/dev/null; then
+      rm -rf "$lockDir"
+    fi
+  fi
   mkdir "$lockDir" 2>/dev/null || return 0
+  print -- "$$" >"$lockDir/pid"
 
   local currentLines="$(wc -l <"$HISTFILE")"
   local lastLines="$(cat "$metaFile" 2>/dev/null || echo "")"
 
-  # Load syntax highlighting once (needed for both modes)
+  # Load syntax highlighting and aliases (needed for both modes)
+  # Aliases must be loaded so _zsh_highlight recognizes them as known commands (not unknown-token)
   source "$OROSHI_ROOT/tools/term/zsh/config/tools/zsh.zsh" 2>/dev/null || true
+  source "$OROSHI_ROOT/tools/term/zsh/config/aliases/index.zsh" 2>/dev/null || true
   local isHighlighting="0"
   if ((${+functions[_zsh_highlight]})); then
     isHighlighting="1"
@@ -184,6 +194,7 @@ fzf-source() {
   # Case 2: few new entries — colorize inline, serve everything colored now
   if [[ -f "$outputCacheFile" && $newLineCount -gt 0 && $newLineCount -le $INLINE_THRESHOLD ]]; then
     source "$OROSHI_ROOT/tools/term/zsh/config/tools/zsh.zsh" 2>/dev/null || true
+    source "$OROSHI_ROOT/tools/term/zsh/config/aliases/index.zsh" 2>/dev/null || true
     local isHighlighting="0"
     if ((${+functions[_zsh_highlight]})); then isHighlighting="1"; fi
 
@@ -229,10 +240,10 @@ fzf-source() {
     done
   fi
 
-  if [[ -f "$outputCacheFile" ]]; then
+  if [[ -s "$outputCacheFile" ]]; then
     cat "$outputCacheFile"
   else
-    # No cache yet — full raw output
+    # No cache yet (or empty cache) — full raw output
     local raw
     local -A seen
     for raw in "${(f)$(tac "$HISTFILE")}"; do
@@ -244,8 +255,10 @@ fzf-source() {
     done
   fi
 
-  mkdir -p "${outputCacheFile:h}"
-  (ctrl-r --colorize </dev/null >/dev/null 2>&1 &)
+  # Signal that a background colorize is needed; fzf-main will spawn it after fzf exits
+  local colorizeNeededFile="$OROSHI_TMP_FOLDER/fzf/ctrl-r-colorize-needed"
+  mkdir -p "${colorizeNeededFile:h}"
+  touch "$colorizeNeededFile"
 }
 
 fzf-options() {
@@ -264,6 +277,17 @@ fzf-postprocess() {
   for line in ${(f)input}; do
     print -- "${line%%▮*}"
   done
+}
+
+fzf-main() {
+  # Override default fzf-main: spawn background colorize after fzf exits if requested
+  local colorizeNeededFile="$OROSHI_TMP_FOLDER/fzf/ctrl-r-colorize-needed"
+  local opts=(${(f)"$(fzf-options)"})
+  fzf-source | fzf "${opts[@]}" | fzf-postprocess
+  if [[ -f "$colorizeNeededFile" ]]; then
+    rm -f "$colorizeNeededFile"
+    (ctrl-r --colorize </dev/null >/dev/null 2>&1 &)
+  fi
 }
 
 fzf-dispatch

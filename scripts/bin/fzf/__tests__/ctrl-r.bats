@@ -5,10 +5,10 @@ setup() {
   printf ': 1680000001:0;ls\n: 1680000002:0;echo hello\n: 1680000003:0;git status\n' > "$BATS_TMP_DIR/histfile"
   bats_mock_env "HISTFILE" "$BATS_TMP_DIR/histfile"
   bats_mock_env "OROSHI_TMP_FOLDER" "$BATS_TMP_DIR/oroshi-tmp"
-  # Pre-create a fresh output cache so --source always serves from cache (no background spawn)
+  # Pre-create a fresh output cache + matching meta so --source serves from cache (Case 1)
   mkdir -p "$BATS_TMP_DIR/oroshi-tmp/fzf"
   printf 'git status▮git status\necho hello▮echo hello\nls▮ls\n' > "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r.cache"
-  touch -d "+1 day" "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r.cache"
+  wc -l < "$BATS_TMP_DIR/histfile" > "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r.meta"
 }
 
 # fzf-source (served from output cache)
@@ -32,24 +32,17 @@ setup() {
   [[ "$field1" != *$'\e['* ]]
 }
 
-@test "fzf-source: serves from output cache when fresher than HISTFILE" {
+@test "fzf-source: serves from output cache when line count matches meta" {
   printf 'cached-cmd▮cached-cmd\n' > "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r.cache"
-  touch -d "+1 second" "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r.cache"
   bats_run_zsh "ctrl-r --source"
   [ "$status" -eq 0 ]
   [ "$output" = "cached-cmd▮cached-cmd" ]
 }
 
 # fzf-source (stale cache — raw path)
-# Mock ctrl-r to intercept background --colorize spawn
 
 @test "fzf-source: strips ZSH extended history timestamp prefix when cache is stale" {
   rm "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r.cache"
-  ctrl-r() {
-    [[ "$1" == "--colorize" ]] && return 0
-    command ctrl-r "$@"
-  }
-  bats_mock ctrl-r
   bats_run_zsh "ctrl-r --source"
   [ "$status" -eq 0 ]
   [[ "$output" == *"git status"* ]]
@@ -59,17 +52,25 @@ setup() {
 @test "fzf-source: does not output empty lines when cache is stale" {
   printf ': 1680000001:0;ls\n\n: 1680000002:0;echo hello\n' > "$BATS_TMP_DIR/histfile"
   rm "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r.cache"
-  ctrl-r() {
-    [[ "$1" == "--colorize" ]] && return 0
-    command ctrl-r "$@"
-  }
-  bats_mock ctrl-r
   bats_run_zsh "ctrl-r --source"
   [ "$status" -eq 0 ]
   local line
   for line in "${lines[@]}"; do
     [ -n "$line" ]
   done
+}
+
+@test "fzf-source: writes colorize-needed semaphore when cache is stale" {
+  rm "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r.cache"
+  bats_run_zsh "ctrl-r --source"
+  [ "$status" -eq 0 ]
+  [ -f "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r-colorize-needed" ]
+}
+
+@test "fzf-source: does not write colorize-needed semaphore when cache is fresh" {
+  bats_run_zsh "ctrl-r --source"
+  [ "$status" -eq 0 ]
+  [ ! -f "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r-colorize-needed" ]
 }
 
 # fzf-postprocess
