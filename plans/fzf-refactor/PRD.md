@@ -1,126 +1,109 @@
 ## Problem Statement
 
-The Legacy FZF system is spread across 119 autoloaded ZSH functions with 4-5 levels of indirection,
-making it hard to understand, maintain, and extend. Adding features (simplified path display for
-long paths, custom Ctrl-P pickers per command) requires modifying deeply fragmented code with no
-tests. Long file paths overflow the FZF display and truncated segments become unsearchable because
-display and search are coupled. The system has no consistent interface between ZSH and Neovim,
-forcing Neovim to call internal sub-functions rather than a stable public API.
+The ctrl-r FZF Script is functionally correct but hard to maintain: `fzf-source` and `fzf-colorize` are monolithic (~100 lines each), the history parsing loop is duplicated 5 times, cache paths are defined independently in two places, and the caching strategy (when to colorize inline vs defer to background) is buried in nested conditionals. A file-based semaphore is used to communicate between pipeline stages when a simpler variable-based approach is possible. There is no way to manually trigger a full cache rebuild.
 
 ## Solution
 
-Replace the Legacy FZF system with a set of FZF Scripts — executable `#!/bin/zsh` scripts in
-`scripts/bin/fzf/`, one per keybinding or domain. Each FZF Script contains the same four Lifecycle
-Functions (`fzf-source`, `fzf-options`, `fzf-postprocess`, `fzf-main`) and exposes a Neovim API
-(`--source`, `--options`, `--postprocess` flags) so Neovim can call individual stages without
-knowing the internal structure. Shared logic lives in FZF Helpers — `.zsh` files sourced at the
-top of each script. Migration follows the strangler fig pattern: new FZF Scripts are merged into
-main alongside the Legacy FZF system; once all scripts are migrated, legacy autoloads are removed.
+Refactor ctrl-r into small, single-concern functions following the **Eager**/**Lazy** colorization model. **Eager** colorizes new entries synchronously when the **History diff** is small (≤ threshold). **Lazy** serves raw entries and defers colorization to a background process when the **History diff** is large. A shared `fzf-history-update-cache` function eliminates duplication between the two paths. A `--refresh-cache` flag provides a manual full rebuild with a progress spinner. The file-based semaphore is eliminated — `fzf-main` computes the **History diff** directly to decide whether to launch background colorization.
+
+All terms follow `scripts/bin/fzf/GLOSSARY-ctrl-r.md`.
 
 ## User Stories
 
-1. As a developer, I want to open a file from my project by pressing Ctrl-P, so that I can navigate quickly without leaving the terminal.
-2. As a developer, I want to search on any segment of a long file path even if it is truncated in the display, so that deep paths remain discoverable.
-3. As a developer, I want to open a file from the current directory by pressing Ctrl-Shift-P, so that I can narrow the search scope when needed.
-4. As a developer, I want to grep across my project with Ctrl-G, so that I can find usages and definitions quickly.
-5. As a developer, I want to grep in the current directory with Ctrl-Shift-G, so that I can scope searches to a subdirectory.
-6. As a developer, I want to jump to a project directory with Ctrl-O, so that I can navigate my project structure without typing paths.
-7. As a developer, I want to jump to a subdirectory with Ctrl-Shift-O, so that I can navigate locally within my current context.
-8. As a developer, I want to search my shell history with Ctrl-R, so that I can reuse previous commands quickly.
-9. As a developer, I want to search available commands and binaries with Ctrl-B, so that I can discover and invoke tools without memorising their names.
-10. As a developer, I want to search apt packages when running `apt-install` without arguments, so that I can find package names without a separate search step.
-11. As a developer, I want to search Docker Hub images when running `docker-image-pull` without arguments, so that I can find image names interactively.
-12. As a developer, I want to browse a file's git history via the `vfh` workflow, so that I can inspect previous versions of a file.
-13. As a developer, I want Ctrl-P in Neovim to use the same source and options as Ctrl-P in ZSH, so that search behaviour is consistent between editor and terminal.
-14. As a developer, I want Ctrl-G in Neovim to use the same regexp source and options as Ctrl-G in ZSH, so that grep behaviour is consistent.
-15. As a developer, I want to open any FZF Script and immediately see its full implementation in one place, so that I do not have to trace through multiple indirection layers.
-16. As a developer, I want FZF Scripts to be callable from Kitty, Neovim, and ZSH without requiring ZSH autoload setup, so that integration is straightforward.
-17. As a developer, I want the Legacy FZF system to remain functional during migration, so that no existing workflow breaks while new scripts are being introduced.
-18. As a developer, I want unused FZF keybindings and dead code removed, so that the codebase does not accumulate maintenance burden from features nobody uses.
+1. As a developer, I want ctrl-r to open instantly when my **Cache** is fresh, so that I don't wait for unnecessary processing.
+2. As a developer, I want new history entries to appear syntax-highlighted when the **History diff** is small, so that I get colored output without delay.
+3. As a developer, I want new history entries to appear immediately (uncolored) when the **History diff** is large, so that I don't wait for a slow colorization pass.
+4. As a developer, I want the **Cache** to be rebuilt in the background after a **Lazy** ctrl-r session, so that the next session is fully colored.
+5. As a developer, I want to run `ctrl-r --refresh-cache` manually with a progress spinner, so that I can force a full rebuild and see its progress.
+6. As a developer, I want each function in ctrl-r to have a single concern, so that I can understand and modify the caching logic without reading 100-line functions.
+7. As a developer, I want the history parsing logic (strip timestamps, dedup) in one place, so that changes to the HISTFILE format only require one update.
+8. As a developer, I want cache files grouped in a `ctrl-r/` subdirectory, so that I can find and manage them easily.
 
 ## Implementation Decisions
 
-### Architecture
+### Colorization strategies: Eager and Lazy
 
-- Each FZF Script is a `#!/bin/zsh` executable in `scripts/bin/fzf/`, named after its keybinding (`ctrl-p`, `ctrl-g`, ...) or its domain (`apt-packages`, `docker-images`, `git-file-history`).
-- Every FZF Script defines exactly four Lifecycle Functions: `fzf-source`, `fzf-options`, `fzf-postprocess`, `fzf-main`.
-- `fzf-main` assembles the pipeline: `fzf-source | fzf $(fzf-options) | fzf-postprocess`
-- `fzf-postprocess` always receives input via stdin (never via argument), enabling clean piping.
-- A `case "$1"` dispatch at the bottom of each script routes `--source`, `--options`, `--postprocess` to the corresponding Lifecycle Function, and no-argument to `fzf-main`.
+Two variables are computed at script startup: `HISTORY_MODE` ("eager" or "lazy") and `HISTORY_DIFF` (count of new HISTFILE lines since last cache build). The threshold is `LAZY_THRESHOLD=100`, defined at the top-level for easy adjustment.
 
-### Neovim API
+- **Eager** (diff ≤ threshold): colorize new entries synchronously, update the **Cache**, serve the full colored output to fzf.
+- **Lazy** (diff > threshold): serve new entries as `raw▮raw` followed by the existing **Cache** (already colored), then `fzf-main` launches `ctrl-r --refresh-cache` in background after fzf exits.
 
-- Neovim calls FZF Scripts using the flag interface: `ctrl-p --source`, `ctrl-p --options`, `ctrl-p --postprocess`.
-- `disk.lua` is updated to call the new FZF Scripts instead of Legacy FZF autoloads.
-- Neovim's `sinklist` callback calls `ctrl-p --postprocess` to clean the selection, then performs editor-specific actions (tab drop, line jump). The sinklist is NOT the same as `fzf-postprocess` — it wraps it.
-- The Ctrl-T duplicate binding in Neovim is removed; only Ctrl-Shift-P remains.
+### Semaphore elimination
 
-### FZF Helpers
+The `colorize-needed` semaphore file is removed. `fzf-main` reads `HISTORY_MODE` directly (a top-level variable) to decide whether to launch background colorization. No inter-process communication needed.
 
-- Shared functions live in `scripts/bin/fzf/helpers/`, split by domain: `fs.zsh`, `git.zsh`, `prompt.zsh`, `options.zsh`.
-- Each file carries a `.zsh` extension to signal it is sourced, not executed.
-- FZF Scripts source only the helpers they need at the top of the file.
-- Helper functions are called directly (no subshell) to avoid subprocess overhead.
+### Unified cache rebuild via --refresh-cache
 
-### Migration Strategy (Strangler Fig)
+A single `--refresh-cache` flag replaces the old `--colorize` flag. It serves both manual (foreground with spinner) and automatic (background, stdout/stderr redirected to /dev/null) use cases. The spinner writes to stderr — invisible when backgrounded, visible when run manually. It uses two passes: first `fzf-history-entries | wc -l` for the total, then colorization with a `n/total` counter.
 
-- New FZF Scripts are developed in the `fzf-refactor` branch and merged into `main` one at a time.
-- Migration order starts with the simplest scripts (`ctrl-r`) and progresses to the most complex (`ctrl-p`, `ctrl-g`).
-- For `ctrl-p`: the simplified-path display logic from the `skills-reference` worktree is backported at migration time.
-- For completion/picker features: relevant parts of the `completion-ctrlp` worktree are backported after the new system is complete.
-- Both worktrees (`skills-reference`, `completion-ctrlp`) are completed but never merged to main; they serve as reference implementations only.
-- Legacy autoloads are deleted per-domain as each FZF Script is merged and verified.
+### Shared cache update function
 
-### Legacy Cleanup
+`fzf-history-update-cache` is the single place where new entries are colorized and prepended to the **Cache**. Called by both `fzf-history-source-eager` (synchronous) and `fzf-history-refresh-cache` (with **Mutex** and spinner).
 
-Two cleanup phases:
+### Color cache removal
 
-**Immediate deletions** (dead code, no replacement needed):
-- Ctrl-T ZSH keybinding widget (duplicate of Ctrl-Shift-P)
-- Ctrl-H ZSH keybinding widget (git commits, never used)
-- Ctrl-J ZSH keybinding widget (frequent directories, broken, never used)
-- `vfh` alias (git file history, replaced by `git-file-history` FZF Script)
-- `vim-fzf-project-files` script (superseded by Legacy FZF autoloads)
-- `vim-fzf-git-file-history` script (superseded by Legacy FZF autoloads)
+The separate `ctrl-r-colors.cache` file is removed. Full rebuilds re-colorize everything — the cost is acceptable since `--refresh-cache` provides a progress spinner for manual use.
 
-**Post-migration deletions**: Legacy FZF autoload functions are deleted domain by domain as their corresponding FZF Script is merged and verified.
+### Highlighting deps sourced at top-level
 
-**Deferred evaluation at cleanup end**: `ctrl-shift-i` (Claude sessions) remains in legacy until the end of migration; at that point it is either migrated or removed based on whether a good implementation can be found.
+`zsh.zsh` and `aliases/index.zsh` are sourced unconditionally at the top of the script, like `ctrl-p` sources `colors-load-definitions` and `filetypes-load-definitions`. No conditional check for `_zsh_highlight` — it is always available. No `|| true` fallbacks.
 
-### Glossary
+### Cache file organization
 
-All terms follow `scripts/bin/fzf/GLOSSARY.md`.
+All cache files move to `$OROSHI_TMP_FOLDER/fzf/ctrl-r/`:
+- `cache` — pre-formatted `raw▮colored` entries served to fzf
+- `last-history-line-count` — HISTFILE line count at last cache build (freshness heuristic)
+- `colorize.lock/` — **Mutex** directory (mkdir atomicity), contains `pid` file for stale lock detection
+
+### Function inventory (in file order)
+
+1. `fzf-source` — dispatcher: reads `HISTORY_MODE`, calls **Eager** or **Lazy**
+2. `fzf-options` — unchanged
+3. `fzf-postprocess` — unchanged
+4. `fzf-main` — standard pipeline; if `HISTORY_MODE` is lazy, launches background `--refresh-cache` after fzf exits
+5. `fzf-history-source-eager` — calls `fzf-history-update-cache`, then cats the **Cache**
+6. `fzf-history-source-lazy` — formats new entries as `raw▮raw`, cats existing **Cache**
+7. `fzf-history-update-cache` — colorizes new entries via `fzf-history-entries` + `fzf-history-format-line`, prepends to **Cache**, updates meta
+8. `fzf-history-refresh-cache` — acquires **Mutex**, calls `fzf-history-update-cache`, spinner on stderr, releases **Mutex**
+9. `fzf-history-entries [n]` — reads HISTFILE in reverse, strips timestamps, deduplicates, emits on stdout. No argument = all entries.
+10. `fzf-history-format-line` — takes a raw command, calls `fzf-history-highlight-line`, sets REPLY to `raw▮colored`
+11. `fzf-history-highlight-line` — converts zsh `region_highlight` entries to ANSI escape sequences, sets REPLY
+
+### Function ordering rationale
+
+Standard Lifecycle Functions first (source, options, postprocess, main) — same order as all other FZF Scripts. Then specialized functions from most general to most specific, ending with the ANSI conversion utility.
 
 ## Testing Decisions
 
-A good test exercises the external behaviour of a Lifecycle Function in isolation — given a specific filesystem state or input, it produces the expected output. Tests do not test implementation details (which commands are run internally) and do not require a running interactive FZF terminal.
+Tests exercise external behavior in isolation — given a known HISTFILE or input, the function produces the expected output. Tests do not verify implementation details.
 
-**Tested: `fzf-source` for each FZF Script**
-- Given a known directory structure, `--source` outputs the expected candidate list.
-- Prior art: existing BATS tests for `fzf-claude-sessions-source-no-query` and `fzf-prompt-directory` in `tools/term/zsh/config/functions/autoload/fzf/`.
+**Tested: `fzf-history-entries`**
+- Given a HISTFILE with timestamps and duplicates, outputs clean deduplicated commands in reverse chronological order.
+- Given a count argument, outputs only that many recent entries.
+- Handles empty lines, edge cases in timestamp format.
 
-**Tested: `fzf-postprocess` for each FZF Script**
-- Given a known raw FZF selection on stdin, `--postprocess` outputs the expected clean result.
-- Covers path extraction, file:line parsing, deduplication where applicable.
-- Prior art: same BATS test suite.
+**Tested: `fzf-history-highlight-line`**
+- Given a command string with zsh-syntax-highlighting loaded, produces ANSI-colored output.
+- Region highlight entries are correctly converted to escape sequences.
+- Output contains no unclosed ANSI sequences.
 
 **Not tested:**
-- `fzf-main` — requires interactive terminal with fzf; not testable in isolation.
-- `fzf-options` — returns static flag strings; no meaningful assertions beyond "it runs".
-- FZF Helpers — tested indirectly via the FZF Script tests that source them.
+- `fzf-history-update-cache` — tested indirectly via `fzf-source` (existing tests cover cache-fresh and cache-stale scenarios).
+- `fzf-history-format-line` — thin wrapper, tested indirectly.
+- `fzf-history-source-eager` / `fzf-history-source-lazy` — tested indirectly via existing `fzf-source` tests.
+- `fzf-history-refresh-cache` — involves lock management and background processes, not suitable for unit tests.
 
-Test files live in `__tests__/` subdirectories adjacent to the scripts they test, following existing project conventions.
+Prior art: `scripts/bin/fzf/__tests__/ctrl-r.bats` (existing tests for fzf-source and fzf-postprocess).
 
 ## Out of Scope
 
-- Switching from `fzf.vim` to `fzf-lua` in Neovim (separate decision, no architectural benefit for this refactor).
-- Improving the Claude sessions search (Ctrl-Shift-I) — deferred to post-migration evaluation.
-- Adding a project-jump picker to replace Ctrl-J — deferred to post-migration evaluation.
-- The `completion-ctrlp` features (compdef registrations, Shift-Tab via fzf-tab, custom Ctrl-P pickers per command) — backported after new system is complete, not part of this PRD.
-- The simplified-path display for `ctrl-p` (`skills-reference` work) — backported when `ctrl-p` is migrated, tracked within that migration issue.
+- Changing the `raw▮colored` format — it is the standard FZF Script format.
+- Changing the HISTFILE format or ZSH history configuration.
+- Making the highlighting engine pluggable (it is always zsh-syntax-highlighting).
+- Performance optimization of `fzf-history-highlight-line` itself — the function works, we just need to isolate it.
+- Modifying `init.zsh` or the FZF dispatch system.
 
 ## Further Notes
 
-- The `fzf-refactor` worktree is the development environment for this work. Each completed FZF Script is merged to `main` independently, maintaining a working system throughout.
-- The `_shared` naming was rejected in favour of the `helpers/` directory with `.zsh`-suffixed files.
-- The term "postprocess" is kept (not "sink" or "sinklist") — sinklist is a Neovim concept that wraps postprocess; they are distinct layers.
+- The existing `ctrl-r.bats` tests should continue to pass after the refactoring — they test the external interface (`--source`, `--postprocess`, `--options`) which does not change.
+- `HISTORY_MODE` and `HISTORY_DIFF` are computed even when `--refresh-cache` is used. This is harmless — the cost is one `wc -l` call.

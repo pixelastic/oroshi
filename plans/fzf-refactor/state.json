@@ -1,141 +1,14 @@
 [
   {
     "id": "01",
-    "issue": "issues/01-immediate-cleanup.md",
-    "done": true,
-    "recap": "Deleted ctrl-t/h/j keybindings, vfh alias, vim-fzf-project-files, vim-fzf-git-file-history, and legacy fzf-git-commits + fzf-fs-directories-common autoloads.",
+    "issue": "issues/01-no-dispatch-flag.md",
+    "done": false,
     "blocked_by": []
   },
   {
     "id": "02",
-    "issue": "issues/02-ctrl-r.md",
-    "done": true,
-    "recap": "Created scripts/bin/fzf/ctrl-r + helpers/options.zsh; updated ctrl-r.zsh keybinding to call the new script; deleted fzf-history, fzf-history-source, fzf-history-options legacy autoloads.",
+    "issue": "issues/02-ctrl-r-refactor.md",
+    "done": false,
     "blocked_by": ["01"]
-  },
-  {
-    "id": "03",
-    "issue": "issues/03-ctrl-b.md",
-    "done": true,
-    "recap": "Created scripts/bin/fzf/ctrl-b; updated ctrl-b.zsh keybinding to use $OROSHI_ROOT path; deleted fzf-commands, fzf-commands-source, fzf-commands-options legacy autoloads.",
-    "blocked_by": ["02"]
-  },
-  {
-    "id": "15",
-    "issue": "issues/15-ctrl-r-zsh-highlight.md",
-    "done": true,
-    "recap": "Rewrote ctrl-r fzf-source to output raw▮colored format using _zsh_highlight(); added fzf-highlight-line internal function that converts region_highlight entries to ANSI codes; updated fzf-options with --with-nth=2 --nth=2; updated fzf-postprocess to return raw field via ${line%%▮*}.",
-    "blocked_by": ["02", "16"]
-  },
-  {
-    "id": "04",
-    "issue": "issues/04-apt-packages.md",
-    "done": true,
-    "recap": "Created scripts/bin/fzf/apt-packages (--source/--installed/--postprocess/--options) and scripts/bin/apt-packages-cache-generate; updated apt-install, apt-search, apt-uninstall callers; deleted all packages/apt legacy autoloads.",
-    "blocked_by": ["02"]
-  },
-  {
-    "id": "05",
-    "issue": "issues/05-docker-images.md",
-    "done": true,
-    "recap": "Created scripts/bin/fzf/docker-images (--source/--postprocess/--options); updated docker-image-pull to call new script; deleted all fzf/docker/images/remote/ legacy autoloads.",
-    "blocked_by": ["02"]
-  },
-  {
-    "id": "06",
-    "issue": "issues/06-ctrl-shift-p.md",
-    "done": true,
-    "recap": "Created helpers/fs.zsh (fs-list-files), helpers/prompt.zsh (prompt-directory), and ctrl-shift-p script; updated ctrl-shift-p.zsh keybinding; deleted all fs/files/subdir/ legacy autoloads.",
-    "blocked_by": ["02"]
-  },
-  {
-    "id": "07",
-    "issue": "issues/07-ctrl-shift-o.md",
-    "done": true,
-    "recap": "Created __lib/fzf-source-dirs.zsh helper and ctrl-shift-o script; updated ctrl-shift-o.zsh keybinding to call new script; deleted all fs/directories/subdir/ legacy autoloads.",
-    "blocked_by": ["06"]
-  },
-  {
-    "id": "08",
-    "issue": "issues/08-ctrl-o.md",
-    "done": true,
-    "blocked_by": ["06"],
-    "recap": "Created scripts/bin/fzf/ctrl-o (git-root directory search) and __lib/git.zsh (fzf-git-root helper); fixed __lib/fzf-source-directories.zsh to exclude .git; updated ctrl-o.zsh keybinding; deleted fzf-fs-directories-project/* and fzf-fs-directories-plans/* legacy autoloads."
-  },
-  {
-    "id": "16",
-    "issue": "issues/16-ctrl-o-pickers.md",
-    "done": true,
-    "recap": "Created scripts/bin/fzf/fzf-plans (plan directory picker using plan-list-raw); added CTRL_O_PICKERS registry to ctrl-o.zsh with ralph/raplh → fzf-plans dispatch.",
-    "blocked_by": ["08"]
-  },
-  {
-    "id": "08b",
-    "issue": "issues/08b-fzf-plans-polish.md",
-    "done": true,
-    "recap": "Colorized fzf-source-directories display column with COLORS[directory] + trailing slash; updated fzf-plans to colorize source, add preview window, and add git-root context badge prompt.",
-    "blocked_by": ["16"]
-  },
-  {
-    "id": "09",
-    "issue": "issues/09-git-file-history.md",
-    "done": true,
-    "recap": "Deleted legacy fzf/git/file-history/ autoloads. No replacement script created — feature had zero callers (vfh alias removed in issue 01, no keybindings, no zsh history usage).",
-    "blocked_by": ["16"]
-  },
-  {
-    "id": "10",
-    "issue": "issues/10-ctrl-p.md",
-    "done": true,
-    "recap": "Created scripts/bin/fzf/ctrl-p with cache-and-filter pipeline (--source writes cache, --format reads it with fzf --filter on each keystroke); created fzf-git-files-stageable and fzf-bats-test as new FZF Scripts; added CTRL_P_PICKERS registry to ctrl-p.zsh; updated Neovim disk.lua to use Neovim API; deleted fs/files/project/, fs/files/shared/, git/files-stageable/, bats/ legacy autoloads.",
-    "blocked_by": ["08", "16"]
-  },
-  {
-    "id": "10b",
-    "issue": "issues/10b-init-preview-override.md",
-    "done": true,
-    "recap": "Added --preview flag to init.zsh; split init into fzf-main (overridable pipeline) and fzf-run (dispatcher); migrated fzf-docker-images and fzf-apt-packages to init.zsh; ctrl-p sources init.zsh with second zparseopts for custom flags; inlined fzf-preview into fzf-git-files-stageable, deleted standalone preview script.",
-    "blocked_by": ["10"]
-  },
-  {
-    "id": "10c",
-    "issue": "issues/10c-rename-dirty-stageable.md",
-    "done": true,
-    "blocked_by": ["10b"]
-  },
-  {
-    "id": "10d",
-    "issue": "issues/10d-prompt-convention.md",
-    "done": true,
-    "recap": "Replaced icon-based prompt in fzf-git-files-dirty-stageable with fzf-options-prompt-directory using git root; added PWD fallback guard.",
-    "blocked_by": ["10c"]
-  },
-  {
-    "id": "11",
-    "issue": "issues/11-ctrl-g.md",
-    "done": true,
-    "recap": "Created __lib/regexp.zsh (regexp-run helper) and ctrl-g script (--disabled + change:reload live search, postprocess extracts file:line:col); updated ctrl-g.zsh widget to call new script; updated Neovim disk.lua onCtrlG to use Neovim API; deleted regexp/project/ legacy autoloads.",
-    "blocked_by": ["10"]
-  },
-  {
-    "id": "12",
-    "issue": "issues/12-ctrl-shift-g.md",
-    "done": true,
-    "recap": "Created ctrl-shift-g (PWD-scoped regexp search, 4-field ▮ format with col); added regexp-fold-toggle binary + fold mode to regexp.zsh; wired F1 fold toggle into ctrl-g and ctrl-shift-g options; updated ctrl-shift-g.zsh widget and disk.lua onCtrlShiftG to use Neovim API; deleted regexp/subdir/ and regexp/shared/ legacy autoloads.",
-    "blocked_by": ["11"]
-  },
-  {
-    "id": "13",
-    "issue": "issues/13-neovim-integration.md",
-    "done": true,
-    "recap": "Migrated onCtrlT → onCtrlShiftP using ctrl-shift-p --source/--options/--postprocess; removed openFilesInNewTabs helper and all <C-T> keybindings.",
-    "blocked_by": ["10", "12"]
-  },
-  {
-    "id": "14",
-    "issue": "issues/14-final-legacy-cleanup.md",
-    "done": true,
-    "recap": "Deleted all remaining autoload/fzf/ files and directory; created __lib/fzf-var.zsh (fzf-var-read/write helpers), fzf-kitty-tabs FZF Script, fzf-fs-shared-preview and fzf-fs-shared-preview-header standalone binaries; updated kitty-tabs-switch to call fzf-kitty-tabs; removed ctrl-shift-i keybinding.",
-    "blocked_by": ["04", "05", "09", "12", "13"]
   }
 ]
