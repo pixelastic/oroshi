@@ -55,6 +55,7 @@ function removeArtifacts {
     "Merci d'avoir regardé cette vidéo !"
     "Merci d'avoir regardé cette vidéo."
     "Sous-titres réalisés para la communauté d'Amara.org"
+    "Sous-titres réalisés par la communauté d'Amara.org"
   )
   local text=$1
   for artifact in "${artifacts[@]}"; do

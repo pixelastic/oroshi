@@ -9,6 +9,8 @@ load the file. I probably need to do the same, to avoid a too long list of args
 Once all ctrl-* are migrated, I'll need to check disk.lua, to ensure a
 consistent pattern for the sinklist
 
+ctrl-p in roleplay doesn't do anything
+
 ## Misc
 
 json-lint errors when editing files outside of oroshi
