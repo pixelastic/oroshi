@@ -178,7 +178,7 @@ fzf-preview-document-cover() {
   # Create the cover if not
   mkdir -p "$previewCacheFolder"
   $extractor "$filepath" "$previewCachePath"
-
+  echo "$previewCachePath"
 }
 
 # Text preview: path + file metadata header, then bat output.
