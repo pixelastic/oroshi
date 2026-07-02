@@ -45,6 +45,11 @@ run_this_rule() {
   expect_clean
 }
 
+@test "clean — -n flag in command after [[ ]]" {
+  run_this_rule '[[ "$count" != "" ]] && tail -n "$count" file'
+  expect_clean
+}
+
 @test "line number is correct" {
   run_this_rule '' '[[ -n "$foo" ]]'
   expect_rule_violation noDashN 2

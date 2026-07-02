@@ -45,6 +45,11 @@ run_this_rule() {
   expect_clean
 }
 
+@test "clean — -z flag in command after [[ ]]" {
+  run_this_rule '[[ "$x" == "" ]] && cmd -z flag'
+  expect_clean
+}
+
 @test "line number is correct" {
   run_this_rule '' '[[ -z "$foo" ]]'
   expect_rule_violation noDashZ 2

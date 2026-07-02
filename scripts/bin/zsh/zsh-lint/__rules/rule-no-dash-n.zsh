@@ -14,7 +14,7 @@ zshLintRule_noDashN() {
   for line in "${(@f)content}"; do
     (( ++lineno ))
     [[ "$line" =~ ^[[:space:]]*'#' ]] && continue
-    [[ ! "$line" =~ '\[\[.*[[:space:]]-n([[:space:]]|"|\$)' ]] && continue
+    [[ ! "$line" =~ '\[\[[^]]*[[:space:]]-n([[:space:]]|"|\$)' ]] && continue
     printf '%s%s%s%serror%s%d%s%s\n' \
       "$file" "$_SEP" "$code" "$_SEP" "$_SEP" "$lineno" "$_SEP" "$msg"
   done
