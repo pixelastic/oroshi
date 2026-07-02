@@ -24,10 +24,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 @test "exits 0 on valid input" {
   bats_run_zsh "my-script some-arg"
   [[ "$status" -eq 0 ]]

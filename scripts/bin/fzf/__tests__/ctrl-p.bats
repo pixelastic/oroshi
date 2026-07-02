@@ -14,10 +14,6 @@ setup() {
   printf 'ignored.log\n' > "$BATS_TMP_DIR/.gitignore"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # fzf-source
 
 @test "fzf-source: outputs tracked and untracked files from git root" {
@@ -45,6 +41,16 @@ teardown() {
   [ "$status" -eq 0 ]
   local firstCol="${lines[0]%%▮*}"
   [[ "$firstCol" == "$BATS_TMP_DIR/"* ]]
+}
+
+@test "fzf-source: works in non-git directory, uses cwd as search root" {
+  local plainDir="${BATS_TMP_DIR}-plain"
+  mkdir -p "$plainDir"
+  touch "$plainDir/hello.txt"
+  bats_run_zsh "cd $plainDir && ctrl-p --source"
+  rm -rf "$plainDir"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"hello.txt"* ]]
 }
 
 # fzf-postprocess

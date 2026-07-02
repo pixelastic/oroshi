@@ -18,7 +18,7 @@ colors-load-definitions
 filetypes-load-definitions
 
 # Git root or cwd fallback
-SEARCH_PATH="$(git-directory-root)"
+SEARCH_PATH="$(git-directory-root)" || true
 [[ "$SEARCH_PATH" == "" ]] && SEARCH_PATH="$PWD"
 
 fzf-source() {
