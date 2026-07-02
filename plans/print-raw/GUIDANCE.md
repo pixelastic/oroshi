@@ -28,3 +28,7 @@ bats ~/.oroshi/tools/ai/claude/config/hooks/__tests__/
 
 ### Issue 01 — \xa0 regression test
 - `review-diff dirty` sees an empty diff for `~/.oroshi/` changes — that repo is separate from this worktree. Spec review must be done manually for cross-repo changes.
+
+### Issue 02 — mock print -r fix
+- `print -- "\xa0"` in ZSH outputs raw byte 0xA0, not valid UTF-8. `jo` asserts UTF-8 validity and crashes — causing the hook to emit nothing, which jq then fails to parse. The failure mode is a crash, not a corrupted string.
+- The `$OROSHI_ROOT` path convention does not apply to plan documentation files (GUIDANCE.md paths are human navigation aids, not sourced code).

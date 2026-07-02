@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-print-raw-fix.md",
-    "done": false,
+    "done": true,
+    "recap": "Changed all `print --` to `print -r --` in integration test mocks so they faithfully reproduce the production RTK function; added a new integration test verifying \\xa0 survives the full hook pipeline.",
     "blocked_by": ["01"]
   }
 ]
