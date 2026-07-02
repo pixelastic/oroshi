@@ -252,5 +252,6 @@
   "zsh-lint",
   "zsh-lint-custom",
   "zsh-lint-shellcheck",
-  "./node_modules/.bin/bats"
+  "./node_modules/.bin/bats",
+  "/usr/bin/curl"
 ]
