@@ -16,3 +16,8 @@
 - The `--no-dispatch` flag (issue 01) must be added to `init.zsh` before ctrl-r tests can call internal functions
 
 ## Discoveries
+
+### Issue 02 — ctrl-r refactor
+- `aliases/index.zsh` aliases `cat` to `better-cat`; use `command cat` in scripts that source aliases
+- `aliases/index.zsh` has `unalias` commands in CLAUDECODE block that fail under `set -e`; mock `CLAUDECODE=""` in bats tests
+- `tail -n` triggers zshlint `noDashN` rule; use `tail --lines` instead

@@ -16,3 +16,36 @@ setup() {
 ```
 **Problem:** Setup is complex enough to warrant comments.
 **Reason skipped:** Setup mirrors the ctrl-r.bats pattern exactly — same fixtures, same structure. Adding comments would diverge from the established test style.
+
+## Issue 02 — ctrl-r refactor
+### fzf-history-source-lazy non-early-return structure
+```zsh
+[[ -s "$ctrlRDir/cache" ]] && command cat "$ctrlRDir/cache"
+
+if [[ ! -s "$ctrlRDir/cache" ]]; then
+  for raw in "${(f)$(fzf-history-entries)}"; do
+    ...
+  done
+fi
+```
+**Problem:** Could use early return instead of if/not-if pattern.
+**Reason skipped:** The two blocks share the `seen` array — the no-cache fallback must not re-emit entries already printed in the new-entries loop above. Flattening with early return would require duplicating the seen array or restructuring the function.
+
+### No teardown with bats_cleanup
+```bash
+setup() {
+  bats_tmp_dir
+  ...
+}
+```
+**Problem:** Missing `teardown() { bats_cleanup }`.
+**Reason skipped:** Pre-existing pattern; not introduced by this diff.
+
+### HISTORY_MODE has three values, spec says two
+```zsh
+local historyMode="lazy"
+[[ ... ]] && historyMode="fresh"
+[[ ... ]] && historyMode="eager"
+```
+**Problem:** Spec defines "eager" and "lazy" only; implementation adds "fresh".
+**Reason skipped:** "fresh" (cache up-to-date, serve instantly) is a necessary optimization — it's the most common case. Spec was under-specified.

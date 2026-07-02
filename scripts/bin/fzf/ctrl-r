@@ -3,109 +3,87 @@
 # Usage:
 # $ ctrl-r                    # Interactive history search
 # $ ctrl-r --source           # Print history entries (raw▮colored, served from cache if fresh)
-# $ ctrl-r --colorize         # [internal] Build colored output cache (run in background)
+# $ ctrl-r --refresh-cache    # Rebuild colored output cache (with spinner when foreground)
 # $ ctrl-r --options          # Print FZF options (one per line)
 # $ ctrl-r --postprocess      # Read raw▮colored selection from stdin, print raw command
 set -e
 source "${0:h}/__lib/init.zsh"
 source "${0:h}/__lib/fzf-options-base.zsh"
+source "$OROSHI_ROOT/tools/term/zsh/config/tools/zsh.zsh"
+source "$OROSHI_ROOT/tools/term/zsh/config/aliases/index.zsh"
+
+zparseopts -D -E \
+  -refresh-cache=flagRefreshCache
+local isRefreshCache=${#flagRefreshCache}
+
+LAZY_THRESHOLD=100
+CTRLR_DIR="$OROSHI_TMP_FOLDER/fzf/ctrl-r"
+mkdir -p "$CTRLR_DIR"
+
+# Compare number of lines in the ~/.history VS number of lines last time we
+# checked
+local CURRENT_HISTORY_LINE_COUNT="$(wc -l <"$HISTFILE")"
+local lastHistoryLineCount=0
+[[ -f "$CTRLR_DIR/last-history-line-count" && -f "$CTRLR_DIR/cache" ]] && lastHistoryLineCount="$(\cat "$CTRLR_DIR/last-history-line-count")"
+local HISTORY_DIFF_COUNT=$((CURRENT_HISTORY_LINE_COUNT - lastHistoryLineCount))
+
+# Cache is fresh is both have the same number
+local isCacheFresh="0"
+[[ $CURRENT_HISTORY_LINE_COUNT -eq $lastHistoryLineCount ]] && isCacheFresh="1"
+
+# Diff is small if under the threshold
+local isSmallDiff="0"
+[[ $HISTORY_DIFF_COUNT -gt 0 && $HISTORY_DIFF_COUNT -le $LAZY_THRESHOLD ]] && isSmallDiff="1"
+
+# By default, we serve the cache lazily (display new entries uncolorized, and
+# update asynchronously when fzf closes).
+# But, if the cache is 100% fresh, we use it directly.
+# And f the cache is only slightly off, we regenerate what's missing then use
+# it.
+HISTORY_MODE="lazy"
+[[ "$isCacheFresh" == "1" ]] && HISTORY_MODE="fresh"
+[[ "$isSmallDiff" == "1" ]] && HISTORY_MODE="eager"
+# No cache file — force lazy regardless
+[[ ! -f "$CTRLR_DIR/cache" ]] && HISTORY_MODE="lazy"
 
 fzf-source() {
-  # REVIEW: Put both files in the same ctrl-r/ subdir
-  local outputCacheFile="$OROSHI_TMP_FOLDER/fzf/ctrl-r.cache"
-  local metaFile="$OROSHI_TMP_FOLDER/fzf/ctrl-r.meta"
-  local INLINE_THRESHOLD=100
-
-  local currentLines="$(wc -l <"$HISTFILE")"
-  local cachedLines="$(cat "$metaFile" 2>/dev/null || echo "")"
-
-  # REVIEW:Document the caching system. What is the cache file, what is the meta
-  # file?
-  # Case 1: cache up to date — serve instantly, fully colored
-  if [[ -f "$outputCacheFile" && "$currentLines" == "$cachedLines" ]]; then
-    cat "$outputCacheFile"
-    return
+  if [[ "$HISTORY_MODE" == "fresh" ]]; then
+    fzf-history-source-fresh
+    return 0
   fi
 
-  local newLineCount=0
-  if [[ "$cachedLines" != "" && $currentLines -gt $cachedLines ]]; then
-    newLineCount=$((currentLines - cachedLines))
-  fi
-  # REVIEW:Too many ifs here. We should split the logic into different
-  # functions, one for each case: cache up to date, cache too different, cache
-  # only slightly off
-
-  # Case 2: few new entries — colorize inline, serve everything colored now
-  if [[ -f "$outputCacheFile" && $newLineCount -gt 0 && $newLineCount -le $INLINE_THRESHOLD ]]; then
-    source "$OROSHI_ROOT/tools/term/zsh/config/tools/zsh.zsh" 2>/dev/null || true
-    source "$OROSHI_ROOT/tools/term/zsh/config/aliases/index.zsh" 2>/dev/null || true
-    local isHighlighting="0"
-    if ((${+functions[_zsh_highlight]})); then isHighlighting="1"; fi
-
-    local raw
-    local colored
-    local -A seen
-    local -a newColorized
-    for raw in "${(f)$(tail -n "$newLineCount" "$HISTFILE" | tac)}"; do
-      raw="${raw#: [0-9]*:[0-9]*;}"
-      [[ "$raw" == "" ]] && continue
-      [[ "${seen[$raw]}" == "1" ]] && continue
-      seen[$raw]="1"
-      if [[ $isHighlighting == "1" ]]; then
-        fzf-highlight-line "$raw"
-        colored="$REPLY"
-      else
-        colored="$raw"
-      fi
-      newColorized+=("${raw}▮${colored}")
-    done
-
-    # Stream to fzf AND write updated cache simultaneously
-    local tmpFile="${outputCacheFile}.tmp"
-    {
-      [[ ${#newColorized} -gt 0 ]] && printf '%s\n' "${newColorized[@]}"
-      cat "$outputCacheFile"
-    } | tee "$tmpFile"
-    mv "$tmpFile" "$outputCacheFile" 2>/dev/null || true
-    print -- "$currentLines" >"$metaFile"
-    return
+  if [[ "$HISTORY_MODE" == "eager" ]]; then
+    fzf-history-source-eager
+    return 0
   fi
 
-  # Case 3: many new entries or no cache — new entries raw on top, existing cache colored below
-  if [[ $newLineCount -gt 0 ]]; then
-    local raw
-    local -A seen
-    for raw in "${(f)$(tail -n "$newLineCount" "$HISTFILE" | tac)}"; do
-      raw="${raw#: [0-9]*:[0-9]*;}"
-      [[ "$raw" == "" ]] && continue
-      [[ "${seen[$raw]}" == "1" ]] && continue
-      seen[$raw]="1"
-      print -- "${raw}▮${raw}"
-    done
-  fi
+  fzf-history-source-lazy
+}
 
-  # REVIEW:We probably need a custom --refresh-cache arg here that refresh the
-  # cache from scratch, with a spinner indicating how many currently created /
-  # maximum lines . this will allow me to run ctrl-r --refresh-cache when needed
-  if [[ -s "$outputCacheFile" ]]; then
-    cat "$outputCacheFile"
-  else
-    # No cache yet (or empty cache) — full raw output
-    local raw
-    local -A seen
-    for raw in "${(f)$(tac "$HISTFILE")}"; do
-      raw="${raw#: [0-9]*:[0-9]*;}"
-      [[ "$raw" == "" ]] && continue
-      [[ "${seen[$raw]}" == "1" ]] && continue
-      seen[$raw]="1"
-      print -- "${raw}▮${raw}"
-    done
-  fi
+# Display cache file contents, if it exists
+fzf-history-source-fresh() {
+  # Stop if no cache file
+  [[ ! -s "$CTRLR_DIR/cache" ]] && return 0
 
-  # Signal that a background colorize is needed; fzf-main will spawn it after fzf exits
-  local colorizeNeededFile="$OROSHI_TMP_FOLDER/fzf/ctrl-r-colorize-needed"
-  mkdir -p "${colorizeNeededFile:h}"
-  touch "$colorizeNeededFile"
+  \cat "$CTRLR_DIR/cache"
+}
+
+# Cache is only slightly off, we update it then display it
+fzf-history-source-eager() {
+  fzf-history-update-cache
+  fzf-history-source-fresh
+}
+
+fzf-history-source-lazy() {
+  # New entries served raw (uncolored) on top
+  local newEntries="$(fzf-history-entries $HISTORY_DIFF_COUNT)"
+  for raw in "${(f)newEntries}"; do
+    [[ "$raw" == "" ]] && continue
+    print -- "${raw}▮${raw}"
+  done
+
+  # Existing cache (already colored) below
+  fzf-history-source-fresh
 }
 
 fzf-options() {
@@ -118,7 +96,7 @@ fzf-options() {
 
 fzf-postprocess() {
   # Split raw▮colored selection on ▮, return raw field (no ANSI in inserted command)
-  local input="$(cat)"
+  local input="$(\cat)"
   [[ "$input" == "" ]] && return 0
   local line
   for line in ${(f)input}; do
@@ -127,41 +105,132 @@ fzf-postprocess() {
 }
 
 fzf-main() {
-  # Override default fzf-main: spawn background colorize after fzf exits if requested
-  local colorizeNeededFile="$OROSHI_TMP_FOLDER/fzf/ctrl-r-colorize-needed"
   local opts=(${(f)"$(fzf-options)"})
   fzf-source | fzf "${opts[@]}" | fzf-postprocess
-  if [[ -f "$colorizeNeededFile" ]]; then
-    rm -f "$colorizeNeededFile"
-    (ctrl-r --colorize </dev/null >/dev/null 2>&1 &)
+
+  # In lazy mode, we displayed diff lines raw (no color), so rebuild the cache
+  # in the background for next time
+  if [[ "$HISTORY_MODE" == "lazy" ]]; then
+    # </dev/null: detach stdin so background process doesn't hold the terminal
+    # >/dev/null 2>&1: suppress stdout (cache content) and stderr (spinner)
+    (ctrl-r --refresh-cache </dev/null >/dev/null 2>&1 &)
   fi
+  return 0
 }
 
-fzf-highlight-line() {
-  # Apply zsh-syntax-highlighting to a command string; sets REPLY to ANSI-colored version.
-  # Uses REPLY convention (no subprocess) for performance: called once per history entry.
-  local line="$1"
-  local BUFFER="$line"
+fzf-history-update-cache() {
+  # Colorize new entries, prepend to cache file
+  # --progress: show n/total spinner on stderr
+  # $1: number of HISTFILE lines to process (default: HISTORY_DIFF_COUNT)
+  zparseopts -D -E -progress=flagProgress
+  local showProgress=${#flagProgress}
+  local newCount="${1:-$HISTORY_DIFF_COUNT}"
+  [[ $newCount -eq 0 ]] && return 0
+
+  local total=0
+  local count=0
+  [[ "$showProgress" == "1" ]] && total="$(fzf-history-entries $newCount | wc -l)"
+
+  local raw
+  local -a newEntries
+  for raw in "${(f)$(fzf-history-entries $newCount)}"; do
+    [[ "$raw" == "" ]] && continue
+    if [[ "$showProgress" == "1" ]]; then
+      count=$((count + 1))
+      printf '\r  %d/%d' "$count" "$total" >&2
+    fi
+    fzf-history-format-line "$raw"
+    newEntries+=("$REPLY")
+  done
+  [[ "$showProgress" == "1" ]] && printf '\r  done    \n' >&2
+
+  [[ ${#newEntries} -eq 0 ]] && return 0
+
+  # Write cache atomically (new entries prepended to existing cache)
+  local tmpFile="$CTRLR_DIR/cache.tmp"
+  {
+    printf '%s\n' "${newEntries[@]}"
+    [[ -f "$CTRLR_DIR/cache" ]] && \cat "$CTRLR_DIR/cache"
+  } >"$tmpFile"
+  mv "$tmpFile" "$CTRLR_DIR/cache"
+  print -- "$CURRENT_HISTORY_LINE_COUNT" >"$CTRLR_DIR/last-history-line-count"
+}
+
+#
+fzf-history-refresh-cache() {
+  # Full cache rebuild with mutex protection
+  local lockDir="$CTRLR_DIR/colorize.lock"
+
+  # Stale lock detection — remove if owner PID is gone
+  if [[ -d "$lockDir" ]]; then
+    local lockPid="$(\cat "$lockDir/pid" 2>/dev/null || echo "")"
+    local isOwnerAlive="0"
+    [[ "$lockPid" != "" ]] && kill -0 "$lockPid" 2>/dev/null && isOwnerAlive="1"
+    [[ "$isOwnerAlive" == "0" ]] && rm -rf "$lockDir"
+  fi
+
+  # Acquire mutex (mkdir is atomic)
+  mkdir "$lockDir" 2>/dev/null || return 0
+  print -- "$$" >"$lockDir/pid"
+
+  # Full rebuild: delete cache, recompute from full history
+  rm -f "$CTRLR_DIR/cache" "$CTRLR_DIR/last-history-line-count"
+  fzf-history-update-cache --progress "$CURRENT_HISTORY_LINE_COUNT"
+
+  # Release mutex
+  rm -rf "$lockDir"
+}
+
+# Get all (or only the last n) entries of history, deduplicated
+fzf-history-entries() {
+  local count="$1"
+
+  # Get only the last n lines, or the whole file in reverse
+  local input
+  [[ "$count" != "" ]] && input="$(tail --lines "$count" "$HISTFILE" | tac)"
+  [[ "$count" == "" ]] && input="$(tac "$HISTFILE")"
+
+  local -A alreadySeen
+  for raw in "${(f)input}"; do
+    # Remove timestampt
+    raw="${raw#: [0-9]*:[0-9]*;}"
+
+    # Skip empty
+    [[ "$raw" == "" ]] && continue
+    # Skip if already seen, we only need it once
+    [[ "${alreadySeen[$raw]}" == "1" ]] && continue
+
+    alreadySeen[$raw]="1"
+    print -- "$raw"
+  done
+}
+
+# Takes a raw command, sets REPLY to raw▮colored
+fzf-history-format-line() {
+  local raw="$1"
+  fzf-history-highlight-line "$raw"
+  REPLY="${raw}▮${REPLY}"
+}
+
+# Highlight an history command with the same colors as _zsh_highlight as-you-type
+fzf-history-highlight-line() {
+  # Pretend we're on the CLI, typing a command
+  local BUFFER="$1"
   local CURSOR=${#BUFFER}
+
   local -a region_highlight
-  _zsh_highlight || true
+  _zsh_highlight
 
   # Convert region_highlight entries ("start end spec") to ANSI escape sequences
   local -a opens
   local -a closes
-  local region
-  local start
-  local end
-  local spec
-  local ansi
-  local part
   for region in "${region_highlight[@]}"; do
     [[ ! "$region" =~ '^([0-9]+) ([0-9]+) (.+)$' ]] && continue
-    start="${match[1]}"
-    end="${match[2]}"
-    spec="${match[3]%% *}"
+    local start="${match[1]}"
+    local end="${match[2]}"
+    local spec="${match[3]%% *}"
 
-    ansi=""
+    local ansi=""
     for part in ${(s:,:)spec}; do
       case "$part" in
       fg=*) ansi+=$'\e'"[38;5;${part#fg=}m" ;;
@@ -176,7 +245,6 @@ fzf-highlight-line() {
   done
 
   local output=""
-  local i
   for ((i = 1; i <= ${#BUFFER}; i++)); do
     output+="${closes[i]}${opens[i]}${BUFFER[i]}"
   done
@@ -184,117 +252,9 @@ fzf-highlight-line() {
   REPLY="$output"
 }
 
-fzf-colorize() {
-  # Build/update colored output cache. Two modes:
-  #   Incremental: HISTFILE has new lines → colorize only new entries, prepend to cache
-  #   Full rebuild: no cache yet → colorize everything (uses color cache to skip known commands)
-  local outputCacheFile="$OROSHI_TMP_FOLDER/fzf/ctrl-r.cache"
-  local colorCacheFile="$OROSHI_TMP_FOLDER/fzf/ctrl-r-colors.cache"
-  local metaFile="$OROSHI_TMP_FOLDER/fzf/ctrl-r.meta"
-  local lockDir="$OROSHI_TMP_FOLDER/fzf/ctrl-r-colorize.lock"
-  local tmpFile="${outputCacheFile}.tmp"
-  mkdir -p "${outputCacheFile:h}"
-
-  # Atomic lock — prevent concurrent colorize processes (mkdir is atomic)
-  # If lock exists but owner PID is gone, it's stale — remove and take the lock
-  if [[ -d "$lockDir" ]]; then
-    local lockPid="$(cat "$lockDir/pid" 2>/dev/null || echo "")"
-    if [[ "$lockPid" == "" ]] || ! kill -0 "$lockPid" 2>/dev/null; then
-      rm -rf "$lockDir"
-    fi
-  fi
-  mkdir "$lockDir" 2>/dev/null || return 0
-  print -- "$$" >"$lockDir/pid"
-
-  local currentLines="$(wc -l <"$HISTFILE")"
-  local lastLines="$(cat "$metaFile" 2>/dev/null || echo "")"
-
-  # Load syntax highlighting and aliases (needed for both modes)
-  # Aliases must be loaded so _zsh_highlight recognizes them as known commands (not unknown-token)
-  source "$OROSHI_ROOT/tools/term/zsh/config/tools/zsh.zsh" 2>/dev/null || true
-  source "$OROSHI_ROOT/tools/term/zsh/config/aliases/index.zsh" 2>/dev/null || true
-  local isHighlighting="0"
-  if ((${+functions[_zsh_highlight]})); then
-    isHighlighting="1"
-  fi
-
-  if [[ -f "$outputCacheFile" && "$lastLines" != "" && $currentLines -ge $lastLines ]]; then
-    # Incremental — only process new HISTFILE lines (fast: 1-10 entries typically)
-    local newLineCount=$((currentLines - lastLines))
-    if [[ $newLineCount -gt 0 ]]; then
-      local raw
-      local colored
-      local -A seen
-      local -a newEntries
-      for raw in "${(f)$(tail -n "$newLineCount" "$HISTFILE" | tac)}"; do
-        raw="${raw#: [0-9]*:[0-9]*;}"
-        [[ "$raw" == "" ]] && continue
-        [[ "${seen[$raw]}" == "1" ]] && continue
-        seen[$raw]="1"
-        if [[ $isHighlighting == "1" ]]; then
-          fzf-highlight-line "$raw"
-          colored="$REPLY"
-        else
-          colored="$raw"
-        fi
-        newEntries+=("${raw}▮${colored}")
-      done
-      if [[ ${#newEntries} -gt 0 ]]; then
-        {
-          printf '%s\n' "${newEntries[@]}"
-          cat "$outputCacheFile"
-        } >"$tmpFile"
-        mv "$tmpFile" "$outputCacheFile" 2>/dev/null || true
-      fi
-    fi
-  else
-    # Full rebuild — use color cache to skip already-highlighted commands
-    # NOTE: use colorCache[$k] not colorCache["$k"] — ZSH stores literal quote bytes with the latter
-    local -A colorCache
-    if [[ -f "$colorCacheFile" ]]; then
-      local cacheLine
-      local cacheKey
-      for cacheLine in "${(f)$(cat "$colorCacheFile")}"; do
-        [[ "$cacheLine" != *"▮"* ]] && continue
-        cacheKey="${cacheLine%%▮*}"
-        colorCache[$cacheKey]="${cacheLine#*▮}"
-      done
-    fi
-
-    local raw
-    local colored
-    local -A seen
-    {
-      for raw in "${(f)$(tac "$HISTFILE")}"; do
-        raw="${raw#: [0-9]*:[0-9]*;}"
-        [[ "$raw" == "" ]] && continue
-        [[ "${seen[$raw]}" == "1" ]] && continue
-        seen[$raw]="1"
-        if [[ "${colorCache[$raw]+x}" != "" ]]; then
-          colored="${colorCache[$raw]}"
-        else
-          if [[ $isHighlighting == "1" ]]; then
-            fzf-highlight-line "$raw"
-            colored="$REPLY"
-          else
-            colored="$raw"
-          fi
-          colorCache[$raw]="$colored"
-          print -- "${raw}▮${colored}" >>"$colorCacheFile"
-        fi
-        print -- "${raw}▮${colored}"
-      done
-    } >"$tmpFile"
-    mv "$tmpFile" "$outputCacheFile" 2>/dev/null || true
-  fi
-
-  print -- "$currentLines" >"$metaFile"
-  rm -rf "$lockDir"
-}
-
-# --colorize is an internal background flag; handle before init.zsh (zparseopts rejects unknown flags)
-if [[ "$1" == "--colorize" ]]; then
-  fzf-colorize
+# Handle --refresh-cache before dispatch
+if [[ "$isRefreshCache" == "1" ]]; then
+  fzf-history-refresh-cache
   exit 0
 fi
 

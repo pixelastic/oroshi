@@ -9,7 +9,20 @@
   {
     "id": "02",
     "issue": "issues/02-ctrl-r-refactor.md",
+    "done": true,
+    "blocked_by": ["01"],
+    "recap": "Rewrote ctrl-r into 11 single-concern functions with eager/lazy colorization, cache under ctrl-r/ subdir, --refresh-cache with mutex+spinner, behavioral tests for fzf-history-entries and fzf-history-highlight-line"
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-default-postprocess.md",
     "done": false,
-    "blocked_by": ["01"]
+    "blocked_by": ["02"]
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-cache-mutex.md",
+    "done": false,
+    "blocked_by": ["02"]
   }
 ]
