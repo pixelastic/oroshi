@@ -43,8 +43,9 @@ _Avoid_: header, title, prefix
 _Avoid_: shared library, helpers, utils, _shared
 
 **fzf-dispatch**:
-The dispatcher function defined by `init.zsh` — handles standard flags (`--source`, `--options`, `--postprocess`, `--preview`), then falls through to **fzf-main**.
+The dispatcher function defined by `init.zsh` — handles standard flags (`--source`, `--options`, `--postprocess`, `--preview`, `--no-dispatch`), then falls through to **fzf-main**.
 Every **FZF Script** calls `fzf-dispatch` at the bottom.
+`--no-dispatch` makes `fzf-dispatch` return immediately without calling any **Lifecycle Function** — allows sourcing a script to load its function definitions without executing.
 _Avoid_: fzf-run, fzf-init
 
 **Neovim API**:

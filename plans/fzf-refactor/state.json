@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-no-dispatch-flag.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added --no-dispatch flag to init.zsh zparseopts and fzf-dispatch early return; tests and glossary updated"
   },
   {
     "id": "02",
