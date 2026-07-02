@@ -100,7 +100,7 @@ for rawGitBranch in ${(f)rawGitBranches}; do
   # Message
   local commitMessage="${splitLine[8]}"
   local displayMessage="$(git-message-colorize "$commitMessage")"
-  row+="${displayMessage:0:35}▮"
+  row+="${displayMessage}▮"
 
   output+="$row\n"
 done

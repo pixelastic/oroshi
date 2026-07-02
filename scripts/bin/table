@@ -1,24 +1,54 @@
 #!/usr/bin/env zsh
-# Display passed content as a table
+# Display passed content as a table, truncated to terminal width
 # Usage:
 # $ echo "foo▮bar" | table         # foo  bar
 # $ table "foo▮bar"                # foo  bar
-# $ table "foo¤bar" --separator "¤" # foo  bar
 set -e
-
-# Parse arguments
-zmodload zsh/zutil
-zparseopts -E -D \
-	-separator:=flagSeparator
-
-local separator=${flagSeparator[2]:-▮}
 
 # Read from arg or from pipe
 local input="$1"
 [[ -p /dev/stdin ]] && input="$(cat -)"
 
-echo $input |
-	column \
-		--table-noheadings \
-		--table \
-		--separator "${separator}"
+local rawOutput="$(echo $input | column --table-noheadings --table --separator "▮")"
+
+local maxWidth="$(tput cols)"
+
+for line in ${(f)rawOutput}; do
+  remove-ansi --reply "$line"
+  local uncoloredText="$REPLY"
+
+  # Line is short enough, we display it as-is
+  if [[ ${#uncoloredText} -le $maxWidth ]]; then
+    echo "$line"
+    continue
+  fi
+
+  # Line is too long, we truncate after a while
+  local result=""
+  local visibleCharactersCount=0
+  local isPartOfANSI="0"
+  for ((i = 1; i <= ${#line}; i++)); do
+    local currentChar="${line[$i]}"
+    result+="$currentChar"
+
+    # Starts an ANSI sequence
+    if [[ "$currentChar" == $'\033' ]]; then
+      isPartOfANSI="1"
+      continue
+    fi
+
+    # Currently part of an ANSI sequence, we ignore
+    if [[ $isPartOfANSI == "1" ]]; then
+      # If currentChar is a letter, it marks the end of the ANSI sequence
+      [[ "$currentChar" == [A-Za-z] ]] && isPartOfANSI="0"
+      continue
+    fi
+
+    # Reaching the end of the allowed width
+    visibleCharactersCount=$((visibleCharactersCount + 1))
+    if [[ $visibleCharactersCount -ge $((maxWidth - 1)) ]]; then
+      echo "${result}…"$'\033[0m'
+      break
+    fi
+  done
+done
