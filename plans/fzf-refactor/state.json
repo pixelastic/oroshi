@@ -16,8 +16,9 @@
   {
     "id": "03",
     "issue": "issues/03-default-postprocess.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "Added default fzf-postprocess to init.zsh; removed identical boilerplate from ctrl-o, ctrl-p, ctrl-shift-o, ctrl-shift-p, fzf-apt-packages, fzf-bats-test, fzf-docker-images, fzf-git-files-dirty-stageable, fzf-plans, ctrl-r"
   },
   {
     "id": "04",

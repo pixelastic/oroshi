@@ -20,13 +20,4 @@ fzf-options() {
   echo "--preview=echo {2..}"
 }
 
-fzf-postprocess() {
-  local input="$(cat)"
-  [[ "$input" == "" ]] && return 0
-  local line
-  for line in ${(f)input}; do
-    print -- "${line%%▮*}"
-  done
-}
-
 fzf-dispatch

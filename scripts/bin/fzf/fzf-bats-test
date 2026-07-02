@@ -43,13 +43,4 @@ fzf-options() {
   echo "--preview=$SCRIPT_NAME --preview {1}"
 }
 
-fzf-postprocess() {
-  local input="$(cat)"
-  [[ "$input" == "" ]] && return 0
-  local line
-  for line in ${(f)input}; do
-    print -- "${line%%▮*}"
-  done
-}
-
 fzf-dispatch

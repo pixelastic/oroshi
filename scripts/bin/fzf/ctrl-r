@@ -94,16 +94,6 @@ fzf-options() {
   echo "--with-nth=2"
 }
 
-fzf-postprocess() {
-  # Split raw▮colored selection on ▮, return raw field (no ANSI in inserted command)
-  local input="$(\cat)"
-  [[ "$input" == "" ]] && return 0
-  local line
-  for line in ${(f)input}; do
-    print -- "${line%%▮*}"
-  done
-}
-
 fzf-main() {
   local opts=(${(f)"$(fzf-options)"})
   fzf-source | fzf "${opts[@]}" | fzf-postprocess

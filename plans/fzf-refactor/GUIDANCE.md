@@ -21,3 +21,7 @@
 - `aliases/index.zsh` aliases `cat` to `better-cat`; use `command cat` in scripts that source aliases
 - `aliases/index.zsh` has `unalias` commands in CLAUDECODE block that fail under `set -e`; mock `CLAUDECODE=""` in bats tests
 - `tail -n` triggers zshlint `noDashN` rule; use `tail --lines` instead
+
+### Issue 03 — default postprocess
+- To test init.zsh's default fzf-postprocess without any script override, source init.zsh directly: `source $(dirname $(which ctrl-o))/__lib/init.zsh`
+- init.bats setup still uses pre-refactor cache paths (`ctrl-r.cache`, `ctrl-r.meta`); those 3 tests (1, 3, 4) are pre-existing failures unrelated to this issue

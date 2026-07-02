@@ -49,3 +49,13 @@ local historyMode="lazy"
 ```
 **Problem:** Spec defines "eager" and "lazy" only; implementation adds "fresh".
 **Reason skipped:** "fresh" (cache up-to-date, serve instantly) is a necessary optimization — it's the most common case. Spec was under-specified.
+
+## Issue 03 — default postprocess
+
+### Pre-existing ctrl-r style violations (missing `local` on loop vars, stray comment, typo)
+**Problem:** Standards agent flagged `raw`, `i`, `part`, `region` loop vars missing `local`; bare `#` comment; typo `timestampt` — all in `ctrl-r` functions not authored in this issue.
+**Reason skipped:** Not zshlint violations (zsh-lint ran clean); pre-existing code untouched by this issue's changes.
+
+### init.bats stale cache paths
+**Problem:** `init.bats` setup still creates `ctrl-r.cache` / `ctrl-r.meta` flat paths from before the ctrl-r refactor; causes tests 1, 3, 4 to fail.
+**Reason skipped:** Pre-existing failure, not introduced by this issue.

@@ -19,6 +19,19 @@ local isPreview=${#flagPreview}
 local isNoDispatch=${#flagNoDispatch}
 ARGS=("$@")
 
+# Default preview — no-op; scripts can override by redefining after sourcing
+fzf-preview() { return 0; }
+
+# Default postprocess — scripts can override by redefining after sourcing
+fzf-postprocess() {
+  local input="$(\cat)"
+  [[ "$input" == "" ]] && return 0
+  local line
+  for line in ${(f)input}; do
+    print -- "${line%%▮*}"
+  done
+}
+
 # Default pipeline — scripts can override this after sourcing
 fzf-main() {
   local opts=(${(f)"$(fzf-options)"})
