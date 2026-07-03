@@ -32,9 +32,12 @@ ICONS[fzf-fold]=""
 ICONS[nvim-tab-separator]=""
 ICONS[nvim-notification-separator]=""
 
+# Claude
+ICONS[claude]="●"
+ICONS[claude-mcp-context7]="c7"
+
 # ----- Tools / Languages
 ICONS[bats]="󰭟"
-ICONS[claude]="●"
 ICONS[dropbox]=""
 ICONS[make]=""
 ICONS[python]=""

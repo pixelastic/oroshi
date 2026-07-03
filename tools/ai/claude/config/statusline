@@ -1,7 +1,8 @@
 #!/usr/bin/env zsh
 set -e
 
-# Load color definitions
+# Load icon and color definitions
+icons-load-definitions
 colors-load-definitions
 
 # Fake values for debuging, or values coming from stdin
@@ -59,7 +60,17 @@ local displayModel="$(colorize "${modelName}" $COLORS[claude-model])"
 statusline+=("$displayModel ")
 
 # Session ID
-local displaySession="$(colorize "[${sessionId}]" $COLORS[claude-sessionId])"
-statusline+=("$displaySession")
+# local displaySession="$(colorize "[${sessionId}]" $COLORS[claude-sessionId])"
+# statusline+=("$displaySession")
+
+# MCP Servers
+local mcpConfigFile=~/.claude.json
+local mcpServers=("${(@f)$(jq -r '.mcpServers // {} | keys[]' "$mcpConfigFile" 2>/dev/null)}")
+local -a mcpDisplay=()
+for serverName in $mcpServers; do
+  local icon="${ICONS[claude-mcp-${serverName}]:-$serverName}"
+  mcpDisplay+=("$(colorize "$icon" $COLORS[claude-mcp])")
+done
+[[ ${#mcpDisplay} -gt 0 ]] && statusline+=("${(j: :)mcpDisplay} ")
 
 print "${(j::)statusline}"

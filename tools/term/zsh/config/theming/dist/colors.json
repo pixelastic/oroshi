@@ -131,6 +131,10 @@
     "ansi": 146,
     "hex": "#b45309"
   },
+  "claude-mcp": {
+    "ansi": 77,
+    "hex": "#155e75"
+  },
   "claude-model": {
     "ansi": 146,
     "hex": "#b45309"

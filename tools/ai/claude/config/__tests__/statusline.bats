@@ -11,10 +11,14 @@ setup() {
     COLORS[claude-costLow]=6
     COLORS[claude-costHigh]=3
     COLORS[claude-model]=146
-    COLORS[claude-sessionId]=214
+    COLORS[claude-mcp]=6
   }
   context-badge() { echo "BADGE"; }
-  bats_mock colors-load-definitions context-badge
+  icons-load-definitions() {
+    typeset -gA ICONS
+    ICONS[mcp-context7]="⬡"
+  }
+  bats_mock colors-load-definitions context-badge icons-load-definitions
 }
 
 statusline_json() {
@@ -47,12 +51,12 @@ statusline_run() {
   bats_run_zsh "${OROSHI_ROOT}/tools/ai/claude/config/statusline" <"${BATS_TMP_DIR}/input.json"
 }
 
-@test "renders badge, tokens, cost, model, and session" {
+@test "renders badge, tokens, cost, and model" {
   statusline_run "/some/dir" 51000 0.05 "abc-123"
   [ "$status" -eq 0 ]
   local clean
   clean="$(bats_strip_ansi "$output")"
-  [[ "$clean" == "BADGE 51k 5¢ test [abc-123]" ]]
+  [[ "$clean" == "BADGE 51k 5¢ test "* ]]
 }
 
 @test "formats token count with k suffix" {
@@ -87,4 +91,38 @@ statusline_run() {
 @test "context color: low when < 20%" {
   statusline_run "/some/dir" 0 0 "x" 19
   [[ "$output" == *$'\e[38;5;8m'* ]]
+}
+
+@test "renders mcp server icon when icon exists" {
+  jq() {
+    local lastArg="${*[-1]}"
+    [[ "$lastArg" == *".claude.json" ]] && { echo "context7"; return 0; }
+    command jq "$@"
+  }
+  bats_mock jq
+  statusline_run
+  [[ "$(bats_strip_ansi "$output")" == *"⬡"* ]]
+}
+
+@test "renders mcp server name as fallback when no icon" {
+  jq() {
+    local lastArg="${*[-1]}"
+    [[ "$lastArg" == *".claude.json" ]] && { echo "myserver"; return 0; }
+    command jq "$@"
+  }
+  bats_mock jq
+  statusline_run
+  [[ "$(bats_strip_ansi "$output")" == *"myserver"* ]]
+}
+
+@test "renders nothing when mcpServers is empty" {
+  jq() {
+    local lastArg="${*[-1]}"
+    [[ "$lastArg" == *".claude.json" ]] && return 0
+    command jq "$@"
+  }
+  bats_mock jq
+  statusline_run
+  [ "$status" -eq 0 ]
+  [[ "$(bats_strip_ansi "$output")" != *"⬡"* ]]
 }

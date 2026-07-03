@@ -72,7 +72,8 @@
     "costLow":        "teal-6",
     "costHigh":       "yellow",
     "model":          "amber-6",
-    "sessionId":      "amber-9"
+    "sessionId":      "amber-9",
+    "mcp":            "cyan-7"
   },
 
   // Docker
