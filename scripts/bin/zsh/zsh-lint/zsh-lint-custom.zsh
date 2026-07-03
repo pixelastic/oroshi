@@ -22,6 +22,7 @@ zsh-lint-custom() {
   source "${_zshLintRulesDir}/rule-no-dash-z.zsh"
   source "${_zshLintRulesDir}/rule-no-dash-n.zsh"
   source "${_zshLintRulesDir}/rule-no-or-guard.zsh"
+  source "${_zshLintRulesDir}/rule-no-and-block.zsh"
   source "${_zshLintRulesDir}/rule-no-double-negative.zsh"
   source "${_zshLintRulesDir}/rule-no-arith-flag-test.zsh"
   source "${_zshLintRulesDir}/rule-missing-set-e.zsh"
@@ -44,6 +45,7 @@ zsh-lint-custom() {
     zshLintRule_noDashZ \
     zshLintRule_noDashN \
     zshLintRule_noOrGuard \
+    zshLintRule_noAndBlock \
     zshLintRule_noDoubleNegative \
     zshLintRule_noArithFlagTest \
     zshLintRule_missingSetE \
