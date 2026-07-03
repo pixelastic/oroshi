@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-update-ctrl-p-ctrl-shift-p.md",
-    "done": false,
+    "done": true,
+    "recap": "Updated ctrl-p and ctrl-shift-p to delegate fzf-options() to fzf-options-files(); added SEARCH_PATH to ctrl-shift-p; source order aligned; --nth=1,2 dropped.",
     "blocked_by": ["01"]
   }
 ]
