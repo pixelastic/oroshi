@@ -1,0 +1,14 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-fzf-options-files-helper.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-update-ctrl-p-ctrl-shift-p.md",
+    "done": false,
+    "blocked_by": ["01"]
+  }
+]
