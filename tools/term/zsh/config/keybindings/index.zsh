@@ -2,7 +2,6 @@
 # as mapping (like in vim)
 stty ixoff -ixon
 
-# TODO: https://github.com/Aloxaf/fzf-tab
 # TODO: https://pragmaticpineapple.com/improving-vim-workflow-with-fzf/#speed-search-your-project
 
 source ${0:A:h}/vim.zsh
@@ -10,6 +9,7 @@ source ${0:A:h}/vim.zsh
 source ${0:A:h}/shift-enter.zsh # Add new line
 source ${0:A:h}/ctrl-space.zsh  # Add completion item
 source ${0:A:h}/tab.zsh         # Completion
+source ${0:A:h}/shift-tab.zsh   # Fzf-based completion
 
 source ${0:A:h}/ctrl-a.zsh       # Accept all suggestions
 source ${0:A:h}/ctrl-e.zsh       # Edit line in vim

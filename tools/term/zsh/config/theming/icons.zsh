@@ -29,6 +29,7 @@ ICONS[fzf-unfold]=""
 ICONS[fzf-fold]=""
 ICONS[fzf-commands]=""
 ICONS[fzf-history]=""
+ICONS[fzf-completion]="⇄"
 
 # Nvim
 ICONS[nvim-tab-separator]=""
