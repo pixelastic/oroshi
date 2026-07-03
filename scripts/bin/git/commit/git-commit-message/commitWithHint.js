@@ -9,7 +9,9 @@ export const commitWithHint = {
    * @returns {Promise<string>} System prompt with hint injected
    */
   async getPrompt() {
-    const template = await read(absolute(dirname(), 'prompt-with-hint.md'));
+    const template = await read(
+      absolute(dirname(), '__prompts/prompt-with-hint.md'),
+    );
     const commitHint = await getCommitHint();
     return template.replace('{{COMMIT_HINT}}', commitHint);
   },

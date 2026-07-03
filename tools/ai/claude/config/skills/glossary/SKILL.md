@@ -19,11 +19,11 @@ Drills domain vocabulary one question at a time, then writes to the project GLOS
 
 Infer from context:
 
-- Conversation about a specific module → `<module>/GLOSSARY.md`
+- Conversation about a specific module → `<module>/GLOSSARY.md` (preferred) or `<module>/__docs/GLOSSARY.md` (if the module dir is in PATH and docs live there)
 - Repo-wide → root `GLOSSARY.md`
 - Unclear → ask once: *"Which module is this glossary for? Or is it repo-wide?"*
 
-If the file already exists, read it before drilling — don't duplicate or contradict existing terms.
+If the file already exists at either location, read it before drilling — don't duplicate or contradict existing terms.
 
 ---
 
