@@ -1,0 +1,8 @@
+# Check if a file is staged for commit (appears under "Changes to be committed")
+# Usage:
+# $ git-file-is-staged ./path/to/file  # exits 0 if staged, non-0 otherwise
+setopt local_options err_return
+
+local staged="$(git diff --cached --name-only -- "$1")"
+[[ "$staged" != "" ]] && return 0
+return 1

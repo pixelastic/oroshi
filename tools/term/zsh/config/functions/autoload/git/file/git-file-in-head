@@ -1,0 +1,8 @@
+# Check if a file exists in the HEAD commit
+# Usage:
+# $ git-file-in-head ./path/to/file  # exits 0 if in HEAD, non-0 otherwise
+setopt local_options err_return
+
+git cat-file \
+  -e HEAD:"$1" \
+  2>/dev/null

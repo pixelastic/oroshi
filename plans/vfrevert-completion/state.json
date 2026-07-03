@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-fix-git-file-revert.md",
-    "done": false,
+    "done": true,
+    "recap": "Rewrote git-file-revert with three-way dispatch: HEAD checkout, git rm for staged-new, rm for untracked; added bats tests covering all four dirty states plus multi-file.",
     "blocked_by": []
   },
   {

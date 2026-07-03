@@ -51,3 +51,8 @@ Full paths use `$OROSHI_ROOT` prefix (`tools/term/zsh/config/...`).
 ## Discoveries
 
 <!-- Agents append findings here after each issue -->
+
+### Issue 01 — Fix git-file-revert
+
+- `git cat-file -e HEAD:"$file"` / `git ls-files --error-unmatch` elif chain is logically sound: the elif branch is only reached when case 1 fails, so matching ls-files unambiguously means staged-new.
+- Tests for git bin scripts live in `tools/term/zsh/config/functions/autoload/git/file/__tests__/`, not alongside the script itself.

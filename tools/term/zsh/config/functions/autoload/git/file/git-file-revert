@@ -1,0 +1,22 @@
+# Cancel all changes made to a file since last commit
+# Usage:
+# $ git-file-revert ./path/to/file
+# $ git-file-revert file1.txt file2.txt
+setopt local_options err_return
+
+for file in "$@"; do
+  # File exists in HEAD: restore tracked version
+  if git-file-in-head "$file"; then
+    git checkout -- "$file"
+    continue
+  fi
+
+  # File staged for the first time: remove it
+  if git-file-is-staged "$file"; then
+    git rm -f "$file"
+    continue
+  fi
+
+  # Untracked file: delete from disk
+  rm "$file"
+done
