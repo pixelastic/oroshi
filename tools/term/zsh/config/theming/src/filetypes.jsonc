@@ -58,7 +58,7 @@
       "yml",
       "zsh",
       {"extension": "go", "color": "sky-5", "icon": "filetype-go"},
-      {"extension": "js", "color": "yellow", "icon": "filetype-js"},
+      {"extension": "js", "color": "yellow-4", "icon": "filetype-js"},
       {"extension": "mod", "color": "sky-6"},
       {"extension": "vim", "icon": "filetype-vim"},
       {"extension": "vue", "color": "green-4", "icon": "filetype-vue"},
@@ -72,7 +72,7 @@
 
   // Config and dotfiles
   "config": {
-    "color": "yellow",
+    "color": "violet-4",
     "icon": "filetype-config",
     "patterns": [
       "cfg",
@@ -99,7 +99,7 @@
 
   // Images
   "image": {
-    "color": "yellow-6",
+    "color": "pink",
     "icon": "filetype-image",
     "patterns": [
       "avif",
