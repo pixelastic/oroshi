@@ -153,11 +153,10 @@ return {
       -- CTRL-P: {{{
       -- Search in project
       local function onCtrlP()
-        local source = vim.fn.systemlist("ctrl-p --source")
         local options = vim.fn.systemlist("ctrl-p --options")
 
         vim.fn["fzf#run"]({
-          source = source,
+          source = "ctrl-p --source",
           options = options,
           sinklist = function(selection)
             openFilesInNewTabs(selection, "ctrl-p --postprocess")
@@ -172,11 +171,10 @@ return {
       -- CTRL-SHIFT-P: {{{
       -- Search in current directory
       local function onCtrlShiftP()
-        local source = vim.fn.systemlist("ctrl-shift-p --source")
         local options = vim.fn.systemlist("ctrl-shift-p --options")
 
         vim.fn["fzf#run"]({
-          source = source,
+          source = "ctrl-shift-p --source",
           options = options,
           sinklist = function(selection)
             openFilesInNewTabs(selection, "ctrl-shift-p --postprocess")
