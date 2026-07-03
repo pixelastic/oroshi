@@ -28,7 +28,7 @@ oroshi-ctrl-o-widget() {
   # Stop if no selection is made
   [[ "$selection" == "" ]] && return 1
 
-  LBUFFER="${LBUFFER}${selection} "
+  LBUFFER="${LBUFFER}${(q-)selection} "
   return 0
 }
 zle -N oroshi-ctrl-o-widget

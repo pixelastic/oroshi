@@ -5,10 +5,6 @@ setup() {
   sourcePrefix="source $OROSHI_ROOT/tools/term/zsh/config/keybindings/ctrl-o.zsh"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # oroshi-ctrl-o-widget dispatch
 
 @test "widget: dispatches to ctrl-o when LBUFFER is empty" {
@@ -53,4 +49,13 @@ teardown() {
 
   bats_run_zsh "${sourcePrefix}; LBUFFER='cd '; oroshi-ctrl-o-widget"
   [ "$status" -eq 1 ]
+}
+
+@test "widget: quotes directory path containing spaces" {
+  ctrl-o() { echo "/home/tim/my documents"; }
+  bats_mock ctrl-o
+
+  bats_run_zsh "${sourcePrefix}; LBUFFER='cd '; oroshi-ctrl-o-widget; echo \$LBUFFER"
+  [ "$status" -eq 0 ]
+  [ "$output" = "cd '/home/tim/my documents' " ]
 }

@@ -16,7 +16,7 @@ oroshi-ctrl-shift-p-widget() {
     return 1
   fi
 
-  LBUFFER="${LBUFFER}${selection} "
+  LBUFFER="${LBUFFER}${(q-)selection} "
   return 0
 }
 zle -N oroshi-ctrl-shift-p-widget

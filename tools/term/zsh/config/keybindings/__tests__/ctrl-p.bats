@@ -42,3 +42,21 @@ setup() {
   bats_run_zsh "${sourcePrefix}; LBUFFER=''; oroshi-ctrl-p-widget"
   [ "$status" -eq 1 ]
 }
+
+@test "widget: quotes single file path containing spaces" {
+  ctrl-p() { echo "my file.pdf"; }
+  bats_mock ctrl-p
+
+  bats_run_zsh "${sourcePrefix}; LBUFFER=''; oroshi-ctrl-p-widget; echo \$LBUFFER"
+  [ "$status" -eq 0 ]
+  [ "$output" = "'my file.pdf' " ]
+}
+
+@test "widget: quotes only paths with spaces in multi-select" {
+  ctrl-p() { printf 'src/a.ts\nmy file.pdf'; }
+  bats_mock ctrl-p
+
+  bats_run_zsh "${sourcePrefix}; LBUFFER=''; oroshi-ctrl-p-widget; echo \$LBUFFER"
+  [ "$status" -eq 0 ]
+  [ "$output" = "src/a.ts 'my file.pdf' " ]
+}

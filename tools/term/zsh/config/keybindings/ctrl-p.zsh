@@ -27,7 +27,8 @@ oroshi-ctrl-p-widget() {
   # Stop if no selection is made
   [[ "$selection" == "" ]] && return 1
 
-  local inlineSelection="${(j: :)${(f)selection}}"
+  local -a paths=("${(f)selection}")
+  local inlineSelection="${(j: :)${(q-)paths[@]}}"
   LBUFFER="${LBUFFER}${inlineSelection} "
   return 0
 }
