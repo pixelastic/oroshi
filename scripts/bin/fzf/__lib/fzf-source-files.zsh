@@ -1,7 +1,8 @@
 # List files in a directory for FZF source output
 # Source this: source "${0:h}/__lib/fzf-source-files.zsh"
+source "${0:h}/fzf-colorize-path.zsh"
 
-# Outputs two-column lines: absolute_path▮relative_path
+# Outputs two-column lines: absolute_path▮colorized_relative_path
 # Usage: fzf-source-files /path/to/dir
 fzf-source-files() {
   local searchPath="$1"
@@ -16,6 +17,7 @@ fzf-source-files() {
   local item
   for item in ${(f)items}; do
     item="${item#./}"
-    echo "${searchPath}/${item}▮${item}"
+    fzf-colorize-path "$item" "${searchPath}/${item}"
+    echo "${searchPath}/${item}▮${REPLY}"
   done
 }

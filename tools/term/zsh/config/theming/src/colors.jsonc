@@ -12,7 +12,7 @@
   "error":        "red-4",
   "eval":         "yellow",
   "exception":    "red-4",
-  "executable":   "violet-3",
+  "executable":   "yellow",
   "file":         "violet-3",
   "flag":         "amber",
   "function":     "yellow",

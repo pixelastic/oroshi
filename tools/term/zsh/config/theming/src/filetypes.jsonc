@@ -30,6 +30,7 @@
       "html",
       "json",
       "jsonl",
+      "jsonc",
       "jsx",
       "kbd",
       "lua",

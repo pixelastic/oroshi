@@ -24,3 +24,8 @@
 - Testing: `bats <filepath>`
 
 ## Discoveries
+
+### Issue 01 — Colorize fzf-source-files
+- `fzf-colorize-path` uses `$REPLY` (no subshell); call it, then read `$REPLY` immediately before any other call that might overwrite it.
+- Test column splitting in bats: `col1="${output%%▮*}"` / `col2="${output#*▮}"` — clean and readable.
+- `bats_mock` for `filetypes-load-definitions` / `colors-load-definitions` must define the stubs *before* calling `bats_mock` in `setup()`.

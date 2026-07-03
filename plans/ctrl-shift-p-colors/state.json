@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-colorize-fzf-source-files.md",
-    "done": false,
+    "done": true,
+    "recap": "Sourced fzf-colorize-path in fzf-source-files and replaced plain item echo with colorized REPLY output; added bats test file with 5 passing tests.",
     "blocked_by": []
   },
   {
