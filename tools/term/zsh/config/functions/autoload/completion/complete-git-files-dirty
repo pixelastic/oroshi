@@ -1,0 +1,36 @@
+# List all dirty files with status labels for tab completion
+# Output format: filepath:status-label
+# Labels: ~ Modified, - Deleted, + New file
+# Usage:
+# $ complete-git-files-dirty
+setopt local_options err_return
+
+local rawFiles="$(git-file-list-dirty-raw)"
+
+# Build the initial list
+local suggestions=()
+local -A fileStatus
+for rawLine in ${(f)rawFiles}; do
+  local splitLine=(${(@s/:/)rawLine})
+  local gitStatus=$splitLine[1]
+  local filePath=$splitLine[2]
+
+  suggestions+=($filePath)
+
+  # We keep the status of each file
+  fileStatus[$filePath]=$gitStatus
+done
+
+# Sort by putting closest files first
+[[ $#suggestions != "0" ]] && suggestions=($(sort-filepaths $suggestions))
+
+# We define a specific label for each status
+local -A statusString
+statusString[D]="- Deleted"
+statusString[M]="~ Modified"
+statusString[A]="+ New file"
+
+# We display each suggestion along with a label of its status
+for suggestion in $suggestions; do
+  echo "$suggestion:$statusString[$fileStatus[$suggestion]]"
+done

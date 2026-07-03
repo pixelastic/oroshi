@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-tab-completion.md",
-    "done": false,
+    "done": true,
+    "recap": "Created complete-git-files-dirty autoload function, _git-files-dirty compdef, and registered git-file-revert in compdef.zsh; 6 bats tests covering all dirty states including staged-new.",
     "blocked_by": []
   },
   {

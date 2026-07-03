@@ -1,0 +1,12 @@
+#compdef
+
+# Suggest the dirty files (that can be reverted)
+function _git-files-dirty() {
+  colors-load-definitions
+  icons-load-definitions
+
+  local suggestions=(${(f)"$(complete-git-files-dirty)"})
+  local label=" $ICONS[git-file-dirty] Dirty files "
+  local header="$(completion-header $COLORS[git-modified] $COLORS[black] "$label")"
+  _describe -V "$header" suggestions
+}
