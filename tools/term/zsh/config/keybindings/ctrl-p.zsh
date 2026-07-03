@@ -11,6 +11,7 @@ oroshi-ctrl-p-widget() {
 
   local -A specialPickers=(
     vfa fzf-git-files-dirty-stageable
+    vfrevert fzf-git-files-dirty
     bats fzf-bats-test
   )
 

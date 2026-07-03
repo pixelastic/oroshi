@@ -1,0 +1,92 @@
+#!/usr/bin/env zsh
+# Search for all dirty git files (modified, added, deleted, untracked)
+# Usage:
+# $ fzf-git-files-dirty                  # Interactive search
+# $ fzf-git-files-dirty --source         # Print dirty files
+# $ fzf-git-files-dirty --options        # Print FZF options (one per line)
+# $ fzf-git-files-dirty --postprocess    # Read selection from stdin, print filepath
+# $ fzf-git-files-dirty --preview <file> # Show diff or file content for preview pane
+set -e
+source "${0:h}/__lib/init.zsh"
+source "${0:h}/__lib/fzf-options-base.zsh"
+source "${0:h}/__lib/fzf-options-prompt-directory.zsh"
+source "${0:h}/__lib/fzf-fs-preview.zsh"
+
+fzf-source() {
+  colors-load-definitions
+
+  local rawFiles="$(git-file-list-dirty-raw)"
+  [[ "$rawFiles" == "" ]] && return 0
+
+  local rawLine
+  for rawLine in ${(f)rawFiles}; do
+    local splitLine=(${(@s/:/)rawLine})
+    local gitStatus=$splitLine[1]
+    local filepath=$splitLine[2]
+
+    local displayedLine=""
+    [[ $gitStatus == "D" ]] && displayedLine="$(colorize "$filepath" $COLORS[git-removed])"
+    [[ $gitStatus == "M" ]] && displayedLine="$(colorize "$filepath" $COLORS[git-modified])"
+    [[ $gitStatus == "A" ]] && displayedLine="$(colorize "$filepath" $COLORS[git-added])"
+
+    echo "${filepath}▮${displayedLine}"
+  done
+}
+
+fzf-preview() {
+  local gitRoot="$(git-directory-root)"
+  local filepath="${gitRoot}/$1"
+  local diff="$(git diff HEAD --color=always -- "$filepath")"
+
+  img-display --clear
+
+  # No diff means new file — delegate to leaf (includes its own header)
+  if [[ "$diff" == "" ]]; then
+    local filetypeGroup="$(filetype-group "$filepath")"
+    if [[ "$filetypeGroup" == "image" ]]; then
+      fzf-preview-file-image "$filepath"
+      return 0
+    fi
+    if [[ "$filetypeGroup" == "document" || "$filetypeGroup" == "ebook" ]]; then
+      fzf-preview-file-document "$filepath" "$filetypeGroup"
+      return 0
+    fi
+    fzf-preview-file-text "$filepath"
+    return 0
+  fi
+
+  # Diff — render file header manually, then diff output
+  # Skip header for deleted files (no longer on disk)
+  if [[ -e "$filepath" ]]; then
+    colors-load-definitions
+    filetypes-load-definitions
+    local displayedPath="${filepath/#$HOME/\~}"
+    local projectPrefix="$(context-badge "$filepath")"
+    [[ "$projectPrefix" != "" ]] && displayedPath="$(context-path "$filepath")"
+    local directoryPath="${displayedPath:h}"
+    [[ $directoryPath == "." ]] && directoryPath="" || directoryPath="$(simplify-path "${directoryPath}" 6)"
+    local fileName="${displayedPath:t}"
+    local fileExtension="${filepath:e}"
+    local color="$FILETYPES[${fileExtension:l}:color]"
+    local icon="$FILETYPES[${fileExtension:l}:icon]"
+    echo "${projectPrefix}$(colorize "${directoryPath}/" $COLORS[directory])"
+    colorize " ${icon} ${fileName}" "$color"
+    echo ""
+  fi
+  echo "$diff"
+}
+
+fzf-options() {
+  fzf-options-base
+
+  local gitRoot="$(git-directory-root)"
+  [[ "$gitRoot" == "" ]] && gitRoot="$PWD"
+  local prompt="$(fzf-options-prompt-directory "$gitRoot")"
+  echo "--prompt=${prompt}"
+
+  echo "--with-nth=2"
+  echo "--preview=fzf-git-files-dirty --preview {1}"
+  echo "--preview-window=wrap"
+}
+
+fzf-dispatch

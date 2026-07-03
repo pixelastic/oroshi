@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-ctrl-p-picker.md",
-    "done": false,
+    "done": true,
+    "recap": "Created fzf-git-files-dirty picker using git-file-list-dirty-raw with D/M/A color dispatch; wired vfrevert into ctrl-p.zsh specialPickers; 5 bats --source tests covering all dirty states.",
     "blocked_by": []
   }
 ]
