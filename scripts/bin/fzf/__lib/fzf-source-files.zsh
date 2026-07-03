@@ -12,11 +12,12 @@ fzf-source-files() {
     --color=never \
     --type=file \
     --base-directory "$searchPath" \
-    .)"
+    . \
+    | sed 's|^\./||' \
+    | sort-filepaths)"
   [[ "$items" == "" ]] && return 0
   local item
   for item in ${(f)items}; do
-    item="${item#./}"
     fzf-colorize-path "$item" "${searchPath}/${item}"
     echo "${searchPath}/${item}▮${REPLY}"
   done

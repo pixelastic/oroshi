@@ -62,3 +62,14 @@ setup() {
   local col2="${output#*▮}"
   [[ "$col2" == *$'\e[38;5;200m'"app.js"$'\e[0m'* ]]
 }
+
+@test "root files appear before subdirectory files (DFS files-first order)" {
+  mkdir -p "$BATS_TMP_DIR/proj/a-dir"
+  touch "$BATS_TMP_DIR/proj/z-root.txt"
+  touch "$BATS_TMP_DIR/proj/a-dir/nested.txt"
+  bats_run_zsh "${sourcePrefix}; fzf-source-files '$BATS_TMP_DIR/proj'"
+  [ "$status" -eq 0 ]
+  local first_line="$(echo "$output" | head -1)"
+  local first_col1="${first_line%%▮*}"
+  [[ "$first_col1" == *"z-root.txt" ]]
+}

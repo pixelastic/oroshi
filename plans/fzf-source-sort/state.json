@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-wire-sort-filepaths.md",
-    "done": false,
+    "done": true,
+    "recap": "Piped fd output through sed (strip ./ prefix) and sort-filepaths in fzf-source-files.zsh; removed in-loop ./ stripping; added DFS ordering bats test.",
     "blocked_by": ["01"]
   }
 ]
