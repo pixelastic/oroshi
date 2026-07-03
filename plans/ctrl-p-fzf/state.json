@@ -1,9 +1,0 @@
-[
-  {
-    "id": "01",
-    "issue": "issues/01-fix-ctrl-p-non-git.md",
-    "done": true,
-    "blocked_by": [],
-    "recap": "Added || true to git-directory-root assignment so set -e does not abort ctrl-p outside git repos; added bats test confirming non-git dir works."
-  }
-]

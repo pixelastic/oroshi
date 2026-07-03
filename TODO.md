@@ -6,18 +6,23 @@ ctlr-shift-p.zsh and ctrl-p.zsh probably as well
 Legacy script, to open multiple nvim tabs was writing the code in a file, and
 load the file. I probably need to do the same, to avoid a too long list of args
 
+Ctrl-p in nvim is slow
+
 Once all ctrl-* are migrated, I'll need to check disk.lua, to ensure a
 consistent pattern for the sinklist
 
-ctrl-p in roleplay doesn't do anything
+Ensure I have Shift-Tab showing compdef in fzf
+
+Add completion of files modified to git-file-reverte on ctrlp
+
+Colors or scripts in fzf are off in fzf
+
+Update the preview of ralph selection in fzf, show not only the directory, but
+get the main PRD of the plan, and the detail of the next issue
 
 ## Misc
 
 json-lint errors when editing files outside of oroshi
-
-Add the model name in the Claude code statusbar
-
-Move all -build (color, project, filetype) in PATH
 
 Move compdef-glob-from-type.zsh (or something like that) into its own `__lib`
 folder, to follow with conventions
@@ -32,18 +37,6 @@ is a script rather than a function. Find a plan to migrate them all from script
 to function if needed
 
 Colors of markdown headers are off in nvim
-Colors or scripts in fzf are off in fzf
-
-Maybe I should remove the bats-lint custom rule aboutt using CURRENT if now the
-best practice is to call the binary by name
-
-Make sure no bats file contains a useless shebaang
-
-Can't I remoove the teardown from all tests, as it always does the same thing,
-can't I make it part of the helper once and for aaaall?
-
-I should probably also migrate the filetypes definition like I did colors,
-projects and icons.
 
 If I'm in a worktree of a cloned repo, but that repo is not part of my projects,
 how should the badge be displayed? My initial assumpation was that project >
@@ -70,10 +63,6 @@ method correctly handles --zsh. Let's re-evaluate if we need to test that at the
 Refactor all the prompt/git.zsh funcctions so they eahc have thier own file
 rather than all being in the same file
 
-bats_mock_oroshi_root is useless. One can use bats_mock_env more easily. I should remove that method and update its calls
-
-Update the preview of ralph selection in fzf, show not only the directory, but
-get the main PRD of the plan, and the detail of the next issue
 
 When I create a new worktree in a non-oroshi repo, it correctly create the
 worktree, install yarn then displays a bunch of errors. I wonder if it doesn't
@@ -85,8 +74,6 @@ statements, I want to be able to export a very long API key without warnings.
 
 git-commit-message should not be able to see my API keys. Maybe I should disable
 the commit message generation when in the private submodule.
-
-Update the claude statusline to display icons for each MCP server enabled.
 
 When I delete a file, but it was still open in nvim, the nvim gutter is
 displayed in cyan. It means, there is a color definition for such a file
@@ -200,25 +187,3 @@ version to get the icons?
 
 Doing a Ctrl-G to search in ebooks markdown files has a broken prompt, and badly
 parses the selected files.
-
----
-## fzf
-
-fzf uses     as separator in many functions. Why? Why not use ▮ as all the other
-functions do?
-Overall I might need to have to ask an agent to look at the fzf diretcory and
-all its functions and make sense of what it does, when it's called, etc, so we
-can have a proper set of tests, and refactor it correctly. The commands are so
-fragmented, it's becoming really hard to know what it does
-
-Add completion of files modified to git-file-reverte on ctrlp
-
-
----
-
-## Side projects
-
-- MTG Scrensaver: A website that randomly pulls illustrations from Magic The
-Gathering cards (using Scryfall API), and display them fullscreen. Fades to the
-next at regular interval. Inspired by redditp.com. Maybe index all cards with
-Algolia, so I can add filters (date, color, etc). Built using Lovable.
