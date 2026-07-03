@@ -1,6 +1,4 @@
 # Shared FZF options for file-search scripts (ctrl-p, ctrl-shift-p)
-# Source this: source "${0:h}/__lib/fzf-options-files.zsh"
-source "${0:h}/fzf-options-base.zsh"
 source "${0:h}/fzf-options-prompt-directory.zsh"
 
 # Emits all fzf options for file-search scripts
@@ -11,7 +9,7 @@ fzf-options-files() {
 
   colors-load-definitions
 
-  fzf-options-base
+  echo "--delimiter=▮"
   echo "--with-nth=2"
   echo "--scheme=path"
   echo "--tiebreak=pathname,chunk"

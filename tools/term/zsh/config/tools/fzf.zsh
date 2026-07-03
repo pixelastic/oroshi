@@ -11,7 +11,7 @@ function oroshi_tools_fzf() {
   # Colors
   local fzfColors=()
   fzfColors+=("info:$COLORS[number]")                 # result count
-  fzfColors+=("prompt:$COLORS[ui]")                   # > before query
+  fzfColors+=("prompt:${COLORS[ui]}:regular")           # > before query (regular = not bold)
   fzfColors+=("bg+:$COLORS[selected-background]")     # selected result background
   fzfColors+=("fg+:$COLORS[selected-foreground]")     # selected result foreground
   fzfColors+=("pointer:$COLORS[pointer]")             # $ICONS[fzf-current] before current line

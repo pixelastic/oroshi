@@ -57,5 +57,5 @@ setup() {
 @test "includes base options from fzf-options-base" {
   bats_run_zsh "${sourcePrefix}; fzf-options-files ctrl-p /tmp/search"
   [ "$status" -eq 0 ]
-  [[ "$output" == *"--ansi"* ]]
+  [[ "$output" == *"--delimiter=▮"* ]]
 }

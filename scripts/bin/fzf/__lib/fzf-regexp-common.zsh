@@ -1,4 +1,3 @@
-source "${0:h}/fzf-options-base.zsh"
 source "${0:h}/fzf-options-prompt-directory.zsh"
 source "${0:h}/fzf-colorize-path.zsh"
 source "${0:h}/fzf-var.zsh"
@@ -90,7 +89,7 @@ fzf-regexp-source-transform() {
 fzf-regexp-options() {
   colors-load-definitions
 
-  fzf-options-base
+  echo "--delimiter=▮"
   echo "--disabled"
   echo "--with-nth=3"
 
