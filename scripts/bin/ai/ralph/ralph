@@ -13,7 +13,13 @@ zmodload zsh/zutil
 zparseopts -E -D \
   -max:=flagMax
 
-local dir="${${1:-.}:a}"
+local rawArg="${1:-.}"
+# If already in a worktree with a plan, use it
+if [[ "$1" == "" ]] && git-worktree-has-plan; then
+  local slug="$(git-branch-slug)"
+  rawArg="plans/$slug"
+fi
+local dir="${rawArg:a}"
 local maxLoops="${flagMax[2]}"
 
 # Loop mode

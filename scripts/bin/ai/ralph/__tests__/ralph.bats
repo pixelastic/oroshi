@@ -25,3 +25,26 @@ setup() {
   [ "$status" -eq 0 ]
   [[ "$output" == "LOOP:${PRD_DIR} 3" ]]
 }
+
+@test "no arg + worktree has plan → auto-detects plans dir" {
+  ralph-single() { echo "SINGLE:$*"; }
+  ralph-loop() { return 0; }
+  git-worktree-has-plan() { return 0; }
+  git-branch-slug() { echo "feat_my-feature"; }
+  bats_mock ralph-single ralph-loop git-worktree-has-plan git-branch-slug
+
+  bats_run_zsh "cd $BATS_TMP_DIR && ralph"
+  [ "$status" -eq 0 ]
+  [[ "$output" == "SINGLE:${BATS_TMP_DIR}/plans/feat_my-feature" ]]
+}
+
+@test "no arg + no worktree plan → fallback to cwd" {
+  ralph-single() { echo "SINGLE:$*"; }
+  ralph-loop() { return 0; }
+  git-worktree-has-plan() { return 1; }
+  bats_mock ralph-single ralph-loop git-worktree-has-plan
+
+  bats_run_zsh "cd $BATS_TMP_DIR && ralph"
+  [ "$status" -eq 0 ]
+  [[ "$output" == "SINGLE:${BATS_TMP_DIR}" ]]
+}
