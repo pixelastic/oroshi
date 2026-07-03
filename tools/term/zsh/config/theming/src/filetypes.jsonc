@@ -16,7 +16,7 @@
 
   // Source code and markup
   "script": {
-    "color": "violet",
+    "color": "violet-3",
     "icon": "filetype-script",
     "patterns": [
       "au3",
