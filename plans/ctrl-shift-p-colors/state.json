@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-refactor-ctrl-p-delegate.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced inlined fd loop in ctrl-p with a delegation to fzf-source-files; moved colors-load-definitions into fzf-options; removed script-level definition loading.",
     "blocked_by": ["01"]
   }
 ]
