@@ -88,6 +88,13 @@ setup() {
   [[ "$output" == *"--with-nth=2"* ]]
 }
 
+@test "fzf-options: includes --prompt with History label" {
+  bats_run_zsh "ctrl-r --options"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"--prompt="* ]]
+  [[ "$output" == *"History"* ]]
+}
+
 # fzf-history-entries
 
 @test "fzf-history-entries: outputs commands in reverse chronological order" {

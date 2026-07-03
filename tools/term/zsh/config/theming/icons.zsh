@@ -27,6 +27,8 @@ ICONS[fzf-current]=""
 ICONS[fzf-selected]=""
 ICONS[fzf-unfold]=""
 ICONS[fzf-fold]=""
+ICONS[fzf-commands]=""
+ICONS[fzf-history]=""
 
 # Nvim
 ICONS[nvim-tab-separator]=""

@@ -8,6 +8,7 @@
 set -e
 source "${0:h}/__lib/init.zsh"
 source "${0:h}/__lib/fzf-options-base.zsh"
+source "${0:h}/__lib/fzf-options-prompt-label.zsh"
 
 fzf-source() {
   print -l -- ${(k)commands} ${(k)aliases} ${(k)functions} | sort --unique
@@ -15,6 +16,7 @@ fzf-source() {
 
 fzf-options() {
   fzf-options-base
+  echo "--prompt=$(fzf-options-prompt-label fzf-commands Commands yellow amber-dark)"
 }
 
 fzf-postprocess() {

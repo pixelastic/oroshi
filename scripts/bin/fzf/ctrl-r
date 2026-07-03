@@ -9,6 +9,7 @@
 set -e
 source "${0:h}/__lib/init.zsh"
 source "${0:h}/__lib/fzf-options-base.zsh"
+source "${0:h}/__lib/fzf-options-prompt-label.zsh"
 source "$OROSHI_ROOT/tools/term/zsh/config/tools/zsh.zsh"
 source "$OROSHI_ROOT/tools/term/zsh/config/aliases/index.zsh"
 
@@ -93,6 +94,7 @@ fzf-options() {
   echo "--exact"
   echo "--tiebreak=index"
   echo "--with-nth=2"
+  echo "--prompt=$(fzf-options-prompt-label fzf-history History orange-7 orange-2)"
 }
 
 fzf-main() {

@@ -4,10 +4,6 @@ setup() {
   bats_tmp_dir
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # fzf-source
 
 @test "fzf-source: exits with status 0" {
@@ -26,6 +22,15 @@ teardown() {
   for line in "${lines[@]}"; do
     [[ "$line" != *" "* ]]
   done
+}
+
+# fzf-options
+
+@test "fzf-options: includes --prompt with Commands label" {
+  bats_run_zsh "ctrl-b --options"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"--prompt="* ]]
+  [[ "$output" == *"Commands"* ]]
 }
 
 # fzf-postprocess
