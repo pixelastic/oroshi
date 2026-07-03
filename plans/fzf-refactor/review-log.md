@@ -50,6 +50,29 @@ local historyMode="lazy"
 **Problem:** Spec defines "eager" and "lazy" only; implementation adds "fresh".
 **Reason skipped:** "fresh" (cache up-to-date, serve instantly) is a necessary optimization — it's the most common case. Spec was under-specified.
 
+## Issue 04 — cache mutex
+
+### `kill -0` short-form flag
+```zsh
+kill -0 "$lockPid" 2>/dev/null && isOwnerAlive="1"
+```
+**Problem:** zsh-writer standards require long-form args for external commands.
+**Reason skipped:** `kill` has no POSIX or GNU long form for signal 0; `-0` is the only option.
+
+### `|| true` suppresses all errors in eager path
+```zsh
+fzf-history-update-cache || true
+```
+**Problem:** Spec says only mutex-taken (rc=2) should be a no-op; `|| true` also silences unexpected errors.
+**Reason skipped:** On the eager path, any failure in `update-cache` should fall back to serving stale cache — crashing the history search on an internal error would be worse.
+
+### `HISTORY_DIFF_COUNT` manual reassignment
+```zsh
+HISTORY_DIFF_COUNT="$CURRENT_HISTORY_LINE_COUNT"
+```
+**Problem:** Spec implies `HISTORY_DIFF_COUNT` would naturally equal `CURRENT_HISTORY_LINE_COUNT` after meta deletion.
+**Reason skipped:** `HISTORY_DIFF_COUNT` is computed at script load time and not recomputed later; manual reassignment is the only way to achieve the spec's intent.
+
 ## Issue 03 — default postprocess
 
 ### Pre-existing ctrl-r style violations (missing `local` on loop vars, stray comment, typo)

@@ -3,7 +3,7 @@
 # Usage:
 # $ ctrl-r                    # Interactive history search
 # $ ctrl-r --source           # Print history entries (raw▮colored, served from cache if fresh)
-# $ ctrl-r --refresh-cache    # Rebuild colored output cache (with spinner when foreground)
+# $ ctrl-r --regenerate-cache # Rebuild colored output cache (with spinner when foreground)
 # $ ctrl-r --options          # Print FZF options (one per line)
 # $ ctrl-r --postprocess      # Read raw▮colored selection from stdin, print raw command
 set -e
@@ -13,8 +13,8 @@ source "$OROSHI_ROOT/tools/term/zsh/config/tools/zsh.zsh"
 source "$OROSHI_ROOT/tools/term/zsh/config/aliases/index.zsh"
 
 zparseopts -D -E \
-  -refresh-cache=flagRefreshCache
-local isRefreshCache=${#flagRefreshCache}
+  -regenerate-cache=flagRegenerateCache
+local isRegenerateCache=${#flagRegenerateCache}
 
 LAZY_THRESHOLD=100
 CTRLR_DIR="$OROSHI_TMP_FOLDER/fzf/ctrl-r"
@@ -70,7 +70,8 @@ fzf-history-source-fresh() {
 
 # Cache is only slightly off, we update it then display it
 fzf-history-source-eager() {
-  fzf-history-update-cache
+  # If mutex is taken by a concurrent background update, serve stale cache
+  fzf-history-update-cache || true
   fzf-history-source-fresh
 }
 
@@ -103,72 +104,85 @@ fzf-main() {
   if [[ "$HISTORY_MODE" == "lazy" ]]; then
     # </dev/null: detach stdin so background process doesn't hold the terminal
     # >/dev/null 2>&1: suppress stdout (cache content) and stderr (spinner)
-    (ctrl-r --refresh-cache </dev/null >/dev/null 2>&1 &)
+    (ctrl-r --regenerate-cache </dev/null >/dev/null 2>&1 &)
   fi
   return 0
 }
 
+# Prepend new entries to cache file, colorized
+# Locked behind a mutex, so no two processes can colorize at the same time
 fzf-history-update-cache() {
-  # Colorize new entries, prepend to cache file
   # --progress: show n/total spinner on stderr
-  # $1: number of HISTFILE lines to process (default: HISTORY_DIFF_COUNT)
-  zparseopts -D -E -progress=flagProgress
+  zparseopts -D -E \
+    -progress=flagProgress
   local showProgress=${#flagProgress}
-  local newCount="${1:-$HISTORY_DIFF_COUNT}"
-  [[ $newCount -eq 0 ]] && return 0
 
-  local total=0
-  local count=0
-  [[ "$showProgress" == "1" ]] && total="$(fzf-history-entries $newCount | wc -l)"
+  # Nothing to do if already up to date
+  [[ $HISTORY_DIFF_COUNT -eq 0 ]] && return 0
 
-  local raw
-  local -a newEntries
-  for raw in "${(f)$(fzf-history-entries $newCount)}"; do
-    [[ "$raw" == "" ]] && continue
-    if [[ "$showProgress" == "1" ]]; then
-      count=$((count + 1))
-      printf '\r  %d/%d' "$count" "$total" >&2
-    fi
-    fzf-history-format-line "$raw"
-    newEntries+=("$REPLY")
-  done
-  [[ "$showProgress" == "1" ]] && printf '\r  done    \n' >&2
-
-  [[ ${#newEntries} -eq 0 ]] && return 0
-
-  # Write cache atomically (new entries prepended to existing cache)
-  local tmpFile="$CTRLR_DIR/cache.tmp"
-  {
-    printf '%s\n' "${newEntries[@]}"
-    [[ -f "$CTRLR_DIR/cache" ]] && \cat "$CTRLR_DIR/cache"
-  } >"$tmpFile"
-  mv "$tmpFile" "$CTRLR_DIR/cache"
-  print -- "$CURRENT_HISTORY_LINE_COUNT" >"$CTRLR_DIR/last-history-line-count"
-}
-
-#
-fzf-history-refresh-cache() {
-  # Full cache rebuild with mutex protection
   local lockDir="$CTRLR_DIR/colorize.lock"
 
-  # Stale lock detection — remove if owner PID is gone
+  # If there is already a lock directory, it's probably because another update
+  # process is running.
   if [[ -d "$lockDir" ]]; then
-    local lockPid="$(\cat "$lockDir/pid" 2>/dev/null || echo "")"
-    local isOwnerAlive="0"
-    [[ "$lockPid" != "" ]] && kill -0 "$lockPid" 2>/dev/null && isOwnerAlive="1"
-    [[ "$isOwnerAlive" == "0" ]] && rm -rf "$lockDir"
+    local isOwnerAlive="1"
+
+    # We check if the process that created the lock is still alive.
+    # If not, it is a corrupted lock and we can remove it
+    local lockPid="$(\cat "$lockDir/pid")"
+    if ! kill -0 "$lockPid" 2>/dev/null; then
+      isOwnerAlive="0"
+      \rm -rf "$lockDir"
+    fi
   fi
 
-  # Acquire mutex (mkdir is atomic)
-  mkdir "$lockDir" 2>/dev/null || return 0
+  # Create the directory. If fails (because lock already in place), we stop.
+  if ! \mkdir "$lockDir" 2>/dev/null; then
+    echo "Cache updating already in progress"
+    return 0
+  fi
   print -- "$$" >"$lockDir/pid"
 
-  # Full rebuild: delete cache, recompute from full history
-  rm -f "$CTRLR_DIR/cache" "$CTRLR_DIR/last-history-line-count"
-  fzf-history-update-cache --progress "$CURRENT_HISTORY_LINE_COUNT"
+  # Generate new entries
+  local -a newEntries
+  local historyEntries="$(fzf-history-entries $HISTORY_DIFF_COUNT)"
+  if [[ "$showProgress" == "1" ]]; then
+    local count=0
+    local total="${#${(f)historyEntries}}"
+    echo "Regenerating all cache..."
+  fi
+  for raw in "${(f)historyEntries}"; do
+    [[ "$raw" == "" ]] && continue
+
+    fzf-history-format-line "$raw"
+    newEntries+=("$REPLY")
+
+    if [[ "$showProgress" == "1" ]]; then
+      count=$((count + 1))
+      printf '\rEntry %d/%d' "$count" "$total"
+    fi
+  done
+  if [[ "$showProgress" == "1" ]]; then
+    printf '\rAll %d entries regenerated \n' "$total"
+  fi
+
+  # Update cache
+  local tmpFile="$CTRLR_DIR/cache.tmp"
+  printf '%s\n' "${newEntries[@]}" >$tmpFile
+  [[ -f "$CTRLR_DIR/cache" ]] && \cat "$CTRLR_DIR/cache" >>$tmpFile
+  \mv "$tmpFile" "$CTRLR_DIR/cache"
+  # Update number of lines
+  echo "$CURRENT_HISTORY_LINE_COUNT" >"$CTRLR_DIR/last-history-line-count"
 
   # Release mutex
-  rm -rf "$lockDir"
+  \rm -rf "$lockDir"
+}
+
+# Full cache rebuild from scratch
+fzf-history-regenerate-cache() {
+  \rm -f "$CTRLR_DIR/cache" "$CTRLR_DIR/last-history-line-count"
+  HISTORY_DIFF_COUNT="$CURRENT_HISTORY_LINE_COUNT"
+  fzf-history-update-cache --progress
 }
 
 # Get all (or only the last n) entries of history, deduplicated
@@ -204,8 +218,16 @@ fzf-history-format-line() {
 
 # Highlight an history command with the same colors as _zsh_highlight as-you-type
 fzf-history-highlight-line() {
+  local raw="$1"
+
+  # _zsh_highlight is very slow on long commands, so we skip it
+  if ((${#raw} > 500)); then
+    REPLY="$raw"
+    return 0
+  fi
+
   # Pretend we're on the CLI, typing a command
-  local BUFFER="$1"
+  local BUFFER="$raw"
   local CURSOR=${#BUFFER}
 
   local -a region_highlight
@@ -242,9 +264,9 @@ fzf-history-highlight-line() {
   REPLY="$output"
 }
 
-# Handle --refresh-cache before dispatch
-if [[ "$isRefreshCache" == "1" ]]; then
-  fzf-history-refresh-cache
+# Handle --regenerate-cache before dispatch
+if [[ "$isRegenerateCache" == "1" ]]; then
+  fzf-history-regenerate-cache
   exit 0
 fi
 

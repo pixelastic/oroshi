@@ -22,6 +22,11 @@
 - `aliases/index.zsh` has `unalias` commands in CLAUDECODE block that fail under `set -e`; mock `CLAUDECODE=""` in bats tests
 - `tail -n` triggers zshlint `noDashN` rule; use `tail --lines` instead
 
+### Issue 04 — cache mutex
+- `mkdir`, `mv`, and `rm` are all aliased in the oroshi shell (`mkdir='mkdir -p'`, `mv='mv -vi'`, `rm=better-rm`); use `\mkdir`, `\mv`, `\rm` in any function that sources aliases/index.zsh to bypass them — critical for mutex acquisition (`\mkdir lockDir || return 2`)
+- `HISTORY_DIFF_COUNT` is computed at script load time; `fzf-history-regenerate-cache` must manually reassign it (`HISTORY_DIFF_COUNT="$CURRENT_HISTORY_LINE_COUNT"`) after deleting meta, since it won't recompute naturally
+- Mutex test setup: remove `last-history-line-count` to make cache stale (`HISTORY_DIFF_COUNT > 0`), otherwise the function returns early before reaching the mutex logic
+
 ### Issue 03 — default postprocess
 - To test init.zsh's default fzf-postprocess without any script override, source init.zsh directly: `source $(dirname $(which ctrl-o))/__lib/init.zsh`
 - init.bats setup still uses pre-refactor cache paths (`ctrl-r.cache`, `ctrl-r.meta`); those 3 tests (1, 3, 4) are pre-existing failures unrelated to this issue

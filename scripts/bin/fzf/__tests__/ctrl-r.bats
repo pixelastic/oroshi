@@ -154,3 +154,16 @@ setup() {
   bats_run_zsh "source \$(which ctrl-r) --no-dispatch && fzf-history-highlight-line 'echo hello' > $stdoutFile && [[ ! -s $stdoutFile ]] && [[ -n \"\$REPLY\" ]]"
   [ "$status" -eq 0 ]
 }
+
+# fzf-history-update-cache mutex
+
+@test "fzf-history-update-cache: prints message and exits cleanly when mutex is already taken" {
+  # Remove meta so HISTORY_DIFF_COUNT > 0 (cache stale → mutex logic runs)
+  rm "$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r/last-history-line-count"
+  local lockDir="$BATS_TMP_DIR/oroshi-tmp/fzf/ctrl-r/colorize.lock"
+  mkdir -p "$lockDir"
+  printf '%s\n' "$$" >"$lockDir/pid"
+  bats_run_zsh "source \$(which ctrl-r) --no-dispatch && fzf-history-update-cache"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"Cache updating already in progress"* ]]
+}

@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-cache-mutex.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "Moved mutex into fzf-history-update-cache (returns 2 when taken); renamed refresh-cache to regenerate-cache; removed count param; regenerate-cache prints message on stderr when mutex taken; fixed mkdir/mv/rm alias bypass with backslash prefix"
   }
 ]
