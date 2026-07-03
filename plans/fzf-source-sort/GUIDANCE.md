@@ -27,3 +27,8 @@
 - **fzf-dispatch**: the dispatcher called at the bottom of every FZF Script
 
 ## Discoveries
+
+### Issue 01 — DFS sort-filepaths
+- Sort key scheme: each dir component prefixed with `"1"`, filename with `"0"`, joined by `|`, then `\x01` separator before the original filepath — `awk -F $'\x01' '{print $2}'` recovers it cleanly with no counter needed
+- Use ZSH array slice `${parts[1,-2]}` + `${parts[-1]}` to split dir components from filename — eliminates manual loop counter entirely
+- `printf '%s\n' "${array[@]}"` handles empty arrays cleanly (no output) vs `echo "${(F)array}"` which emits a blank line for empty input

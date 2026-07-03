@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-dfs-sort-filepaths.md",
-    "done": false,
+    "done": true,
+    "recap": "Rewrote sort-filepaths with DFS files-first key encoding (dir components→'1prefix', filename→'0prefix') and added 10 bats tests.",
     "blocked_by": []
   },
   {

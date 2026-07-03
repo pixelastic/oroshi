@@ -1,14 +1,19 @@
-# Sort a list of filepath, from the closest to the furthest
+# Sort a list of filepaths using DFS files-first ordering.
+#
+# Root files first (alphabetically), then for each subdirectory (alphabetically),
+# all direct files appear before recursing into nested subdirectories.
+# Paths starting with ../ sort last.
 #
 # Usage:
-# $ echo "here\n../far\n../../even-further" | sort-filepath
-# $ sort-filepath "here\n../far" "../../even-further"
+# $ echo "a/sub/x\na/y\nroot" | sort-filepaths
+# $ sort-filepaths "a/sub/x\na/y" "root"
 setopt local_options err_return
 
 # Get input from stdin, or as arguments
 if [[ -p /dev/stdin ]]; then
-  local stdin=$(cat -)
-  local unsortedFilepaths=(${(f)stdin})
+  local stdin="$(cat -)"
+  local unsortedFilepaths=()
+  [[ "$stdin" != "" ]] && unsortedFilepaths=(${(f)stdin})
 else
   local unsortedFilepaths=()
   for arg in $@; do
@@ -16,19 +21,38 @@ else
   done
 fi
 
+# Nothing to sort
+[[ ${#unsortedFilepaths} -eq 0 ]] && return 0
+
 local weightedFilepaths=()
+local parts=()
+local dirParts=()
+local filename=""
+local keyParts=()
 
-# We sort first files in the current directory, then those downward and
-# finally those upward
 for filepath in $unsortedFilepaths; do
-  local slashCount=${#${filepath//[^\/]}}
-  local weightedFilepath="2|$filepath"
-  [[ $slashCount == "0" || $filepath == ./* ]] && weightedFilepath="1|$filepath"
-  [[ $filepath == ../* ]] && weightedFilepath="3|$filepath"
-
-  weightedFilepaths+=($weightedFilepath)
+  # ../ paths sort last
+  if [[ $filepath == ../* ]]; then
+    weightedFilepaths+=("2▮${filepath}")
+    continue
+  fi
+  # root files (no slash) sort first
+  if [[ $filepath != */* ]]; then
+    weightedFilepaths+=("0▮${filepath}")
+    continue
+  fi
+  # DFS files-first: each dir component gets prefix "1", filename gets "0"
+  # so files at level N always sort before subdirectories of level N
+  parts=(${(s:/:)filepath})
+  dirParts=(${parts[1,-2]})
+  filename="${parts[-1]}"
+  keyParts=()
+  for dir in $dirParts; do
+    keyParts+=("1${dir}")
+  done
+  keyParts+=("0${filename}")
+  weightedFilepaths+=("${(j:|:)keyParts}▮${filepath}")
 done
 
-echo ${(F)weightedFilepaths} \
-  | sort \
-  | awk -F '|' '{print $2}'
+local sorted=(${(o)weightedFilepaths})
+printf '%s\n' "${sorted[@]#*▮}"
