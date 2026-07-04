@@ -59,3 +59,7 @@ _Append findings here after each issue, in the format:_
 ### Issue XX — short title
 - Finding 1
 - Finding 2
+
+### Issue 01 — filetypes-key
+- Empty `setup() {}` body is a bats syntax error — omit `setup()` entirely when no setup is needed.
+- `[ "$status" -eq 0 ]` (single brackets) is the correct convention for `$status` checks in this codebase; zsh-writer standards-agent may flag it as wrong but existing bats tests confirm `[ ]` is used throughout.

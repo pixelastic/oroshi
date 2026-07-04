@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-filetypes-key.md",
-    "done": false,
+    "done": true,
+    "recap": "Created filetypes-key autoload: derives FILETYPES lookup key from filename, writing to $REPLY — dotfiles get dot→underscore transform, regular files get lowercased extension.",
     "blocked_by": []
   },
   {

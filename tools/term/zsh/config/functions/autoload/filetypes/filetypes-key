@@ -1,0 +1,20 @@
+# Derive the FILETYPES lookup key from a filename or filepath.
+# Mirrors the filetypes-build compile step key derivation exactly.
+# Writes result to $REPLY (no subprocess).
+# Usage:
+#   filetypes-key .fdignore          # → _fdignore
+#   filetypes-key app.js             # → js
+#   filetypes-key src/app.js         # → js (filepath: uses tail)
+#   filetypes-key Makefile           # → "" (no extension)
+setopt local_options err_return
+
+local filename="${1:t}"
+
+# Dotfile: lowercase full name, replace all dots with underscores
+if [[ "$filename" == .* ]]; then
+  REPLY="${${filename:l}//./_}"
+  return 0
+fi
+
+# Regular file: return lowercased extension (empty if no extension)
+REPLY="${filename:l:e}"
