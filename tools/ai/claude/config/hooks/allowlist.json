@@ -1,4 +1,5 @@
 [
+  "adb",
   "apt-cache search",
   "apt-cache show",
   "apt-cache",
@@ -252,6 +253,7 @@
   "yarn",
   "yarn-root",
   "ymdk-build",
+  "yt-dlp",
   "zcat",
   "zsh-lint",
   "zsh-lint-custom",

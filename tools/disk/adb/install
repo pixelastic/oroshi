@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# To connect to Android devices via USB (ADB protocol)
+sudo apt-get install adb
