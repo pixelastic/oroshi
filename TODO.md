@@ -1,35 +1,21 @@
 ## fzf
 
-Ctrl-Shift-P in nvim doesn't colorize the results. Even outside of nvim
-
-Ctrl-P in nvim takes ~1s to load. That seems slow.
-Probably because it loads the whole list first, while in zsh it loads it
-iteratively
-
-Ctrl-Shift-P results should be files first, then going into directories. Closer
-files first then go deeper.
-
-ctrl-shift-g.zsh and ctrl-g.zsh share a lot of code in common
-ctlr-shift-p.zsh and ctrl-p.zsh probably as well
-
-Legacy script, to open multiple nvim tabs was writing the code in a file, and
-load the file. I probably need to do the same, to avoid a too long list of args
-
-Ctrl-p in nvim is slow
-
-Once all ctrl-* are migrated, I'll need to check disk.lua, to ensure a
-consistent pattern for the sinklist
-
-Ensure I have Shift-Tab showing compdef in fzf
-
-Add completion of files modified to git-file-reverte on ctrlp
+When displaying sorted filepaths, maybe put the .hidden files and dirs after the
+regular files and dirs
 
 Colors or scripts in fzf are off in fzf
+They should be yellow, like any binary
+
+Preview of fzf autoloaded functions do not use the right icon nor do they use
+the right syntax highlight with bat
 
 Update the preview of ralph selection in fzf, show not only the directory, but
 get the main PRD of the plan, and the detail of the next issue
 
 ## Misc
+
+the skill-writer skill is too verbose. It has a TDD cycle that I don't actually
+use. I should remove that and only keep the templates.
 
 json-lint errors when editing files outside of oroshi
 
@@ -196,3 +182,11 @@ version to get the icons?
 
 Doing a Ctrl-G to search in ebooks markdown files has a broken prompt, and badly
 parses the selected files.
+
+Legacy script, to open multiple nvim tabs was writing the code in a file, and
+load the file. I probably need to do the same, to avoid a too long list of args
+
+Add a Ctrl-T alias to nvim? Or at least disable the tag error
+
+Once all ctrl-* are migrated, I'll need to check disk.lua, to ensure a
+consistent pattern for the sinklist
