@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-sort-filepaths-dotfiles.md",
-    "done": false,
+    "done": true,
+    "recap": "Added dotfile sub-weight to sort-filepaths: regular files get 'a', dotfiles get 'b', so dotfiles always sort after regular files at root and within subdirs.",
     "blocked_by": []
   },
   {

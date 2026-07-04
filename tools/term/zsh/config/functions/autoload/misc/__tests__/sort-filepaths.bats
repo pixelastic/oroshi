@@ -82,3 +82,33 @@ a/file.txt
   bats_run_zsh "printf '' | sort-filepaths"
   [ "$output" = "" ]
 }
+
+# --- Dotfiles sort after regular files ---
+
+@test "dotfile at root sorts after regular file at root" {
+  bats_run_zsh "printf '.fdignore\nMakefile' | sort-filepaths"
+  local expected="Makefile
+.fdignore"
+  [ "$output" = "$expected" ]
+}
+
+@test "dotfile at root sorts before any subdirectory file" {
+  bats_run_zsh "printf 'sub/file.txt\n.fdignore' | sort-filepaths"
+  local expected=".fdignore
+sub/file.txt"
+  [ "$output" = "$expected" ]
+}
+
+@test "dotfile within subdir sorts after regular file in same subdir" {
+  bats_run_zsh "printf 'a/.eslintrc\na/index.js' | sort-filepaths"
+  local expected="a/index.js
+a/.eslintrc"
+  [ "$output" = "$expected" ]
+}
+
+@test "dotfile within subdir sorts before nested subdir files" {
+  bats_run_zsh "printf 'a/sub/nested.txt\na/.eslintrc' | sort-filepaths"
+  local expected="a/.eslintrc
+a/sub/nested.txt"
+  [ "$output" = "$expected" ]
+}

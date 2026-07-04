@@ -28,7 +28,9 @@ local weightedFilepaths=()
 local parts=()
 local dirParts=()
 local filename=""
+local name=""
 local keyParts=()
+local subWeight=""
 
 for filepath in $unsortedFilepaths; do
   # ../ paths sort last
@@ -36,13 +38,17 @@ for filepath in $unsortedFilepaths; do
     weightedFilepaths+=("2▮${filepath}")
     continue
   fi
-  # root files (no slash) sort first
+  # root files (no slash) sort first; dotfiles sort after regular files within root
   if [[ $filepath != */* ]]; then
-    weightedFilepaths+=("0▮${filepath}")
+    name="${filepath}"
+    subWeight="a"
+    [[ $name == .* ]] && subWeight="b"
+    weightedFilepaths+=("0${subWeight}▮${filepath}")
     continue
   fi
   # DFS files-first: each dir component gets prefix "1", filename gets "0"
   # so files at level N always sort before subdirectories of level N
+  # dotfiles get sub-weight "b", regular files get "a"
   parts=(${(s:/:)filepath})
   dirParts=(${parts[1,-2]})
   filename="${parts[-1]}"
@@ -50,7 +56,9 @@ for filepath in $unsortedFilepaths; do
   for dir in $dirParts; do
     keyParts+=("1${dir}")
   done
-  keyParts+=("0${filename}")
+  subWeight="a"
+  [[ $filename == .* ]] && subWeight="b"
+  keyParts+=("0${subWeight}${filename}")
   weightedFilepaths+=("${(j:|:)keyParts}▮${filepath}")
 done
 
