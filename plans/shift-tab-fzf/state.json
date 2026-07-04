@@ -1,9 +1,0 @@
-[
-  {
-    "id": "01",
-    "issue": "issues/01-shift-tab-fzf-completion.md",
-    "done": true,
-    "blocked_by": [],
-    "recap": "Added ICONS[fzf-completion], created shift-tab.zsh keybinding (sources fzf-tab, reverts ^I, configures teal badge, wraps fzf-tab-complete in PROMPT_PREVENT_REFRESH), wired into index.zsh with TODO removed."
-  }
-]
