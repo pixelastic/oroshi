@@ -8,7 +8,6 @@
 # $ ctrl-r --postprocess      # Read raw▮colored selection from stdin, print raw command
 set -e
 source "${0:h}/__lib/init.zsh"
-source "${0:h}/__lib/fzf-options-base.zsh"
 source "${0:h}/__lib/fzf-options-prompt-label.zsh"
 source "$OROSHI_ROOT/tools/term/zsh/config/tools/zsh.zsh"
 source "$OROSHI_ROOT/tools/term/zsh/config/aliases/index.zsh"
@@ -89,7 +88,6 @@ fzf-history-source-lazy() {
 }
 
 fzf-options() {
-  fzf-options-base
   echo "--sort"
   echo "--exact"
   echo "--tiebreak=index"

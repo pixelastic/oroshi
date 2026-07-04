@@ -43,6 +43,8 @@ function oroshi_tools_fzf() {
   # Generic options
   local fzfOptionBase="\
     --ansi \
+    --height=100% \
+    --delimiter=▮ \
     --pointer=$ICONS[fzf-current] \
     --reverse \
     --cycle \

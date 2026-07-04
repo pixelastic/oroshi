@@ -76,12 +76,6 @@ setup() {
 
 # fzf-options
 
-@test "fzf-options: includes --delimiter=▮" {
-  bats_run_zsh "ctrl-r --options"
-  [ "$status" -eq 0 ]
-  [[ "$output" == *"--delimiter=▮"* ]]
-}
-
 @test "fzf-options: includes --with-nth=2" {
   bats_run_zsh "ctrl-r --options"
   [ "$status" -eq 0 ]

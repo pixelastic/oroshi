@@ -39,7 +39,7 @@ If the source lists anything else: **icon + label** (`$ICONS[...]` + 1–2 word 
 _Avoid_: header, title, prefix
 
 **FZF Helpers**:
-`.zsh` files in `scripts/bin/fzf/__lib/` that are sourced (not executed) by **FZF Scripts** to share common functions across scripts. Each file is named after the single function it exports (e.g. `fzf-options-base.zsh` exports `fzf-options-base`).
+`.zsh` files in `scripts/bin/fzf/__lib/` that are sourced (not executed) by **FZF Scripts** to share common functions across scripts. Each file is named after the single function it exports (e.g. `fzf-options-prompt-label.zsh` exports `fzf-options-prompt-label`).
 _Avoid_: shared library, helpers, utils, _shared
 
 **fzf-dispatch**:

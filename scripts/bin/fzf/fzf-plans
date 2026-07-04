@@ -7,7 +7,6 @@
 # $ fzf-plans --postprocess    # Read raw selection from stdin, print absolute path
 set -e
 source "${0:h}/__lib/init.zsh"
-source "${0:h}/__lib/fzf-options-base.zsh"
 source "${0:h}/__lib/fzf-options-prompt-directory.zsh"
 
 fzf-source() {
@@ -26,7 +25,6 @@ fzf-source() {
 }
 
 fzf-options() {
-  fzf-options-base
   echo "--with-nth=2"
   echo "--preview=fzf-fs-shared-preview {1}"
 

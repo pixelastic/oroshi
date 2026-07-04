@@ -54,7 +54,7 @@ setup() {
   [[ "$output" == *"--color=separator:42"* ]]
 }
 
-@test "includes base options from fzf-options-base" {
+@test "emits --delimiter=▮" {
   bats_run_zsh "${sourcePrefix}; fzf-options-files ctrl-p /tmp/search"
   [ "$status" -eq 0 ]
   [[ "$output" == *"--delimiter=▮"* ]]

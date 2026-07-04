@@ -7,7 +7,6 @@
 # $ fzf-bats-test --postprocess    # Read selection from stdin, print filepath
 set -e
 source "${0:h}/__lib/init.zsh"
-source "${0:h}/__lib/fzf-options-base.zsh"
 source "${0:h}/__lib/fzf-fs-preview.zsh"
 
 SCRIPT_NAME="${0:t}"
@@ -30,8 +29,6 @@ fzf-source() {
 }
 
 fzf-options() {
-  fzf-options-base
-
   icons-load-definitions
   colors-load-definitions
 

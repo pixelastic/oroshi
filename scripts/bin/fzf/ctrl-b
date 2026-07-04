@@ -7,7 +7,6 @@
 # $ ctrl-b --postprocess      # Read raw selection from stdin, print command name
 set -e
 source "${0:h}/__lib/init.zsh"
-source "${0:h}/__lib/fzf-options-base.zsh"
 source "${0:h}/__lib/fzf-options-prompt-label.zsh"
 
 fzf-source() {
@@ -15,7 +14,6 @@ fzf-source() {
 }
 
 fzf-options() {
-  fzf-options-base
   echo "--prompt=$(fzf-options-prompt-label fzf-commands Commands yellow amber-dark)"
 }
 

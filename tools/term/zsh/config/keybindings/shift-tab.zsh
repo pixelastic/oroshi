@@ -6,11 +6,11 @@ source "$OROSHI_ROOT/scripts/bin/fzf/__lib/fzf-options-prompt-label.zsh"
 # regular completion widget
 bindkey '^I' oroshi-tab-widget
 
-# Inherit our global fzf config — fzf-tab ignores FZF_DEFAULT_OPTS by default
+# Ensure fzf-tab uses our default options
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
 
-# fzf-tab's --bind overrides FZF_DEFAULT_OPTS for the same keys;
-# fzf-flags comes last so these win back
+# fzf-tab forces some specific options we don't like, so we overwrite them here
+# manually
 zstyle ':fzf-tab:*' fzf-flags \
   --height=100% \
   --bind=ctrl-space:toggle+down \
