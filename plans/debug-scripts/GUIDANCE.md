@@ -26,4 +26,10 @@ description: Use when writing throw-away debug or exploration scripts.
 
 **Issue 03 note:** `/home/tim/CLAUDE.md` lives in the home directory, outside the oroshi repo. Edit it directly. The jq/jo rules currently in `## Throw-away scripts` should be reviewed — check if they are better placed under `## Code`.
 
+**Skill symlink note:** `skills list` uses `entry.isDirectory()` and skips directory symlinks — a new skill only appears after the worktree is merged and a proper symlink is created pointing to `~/.oroshi/...`. Do not create test symlinks in `~/.claude/skills/`; the user will link them after merge.
+
+**Reference skills don't follow the procedural template:** The skill-writer template (Overview, Core Workflow, Rationalizations, Checklist) applies to procedural skills only. Reference skills (like caveman, code-writer) use flat prose sections — acceptable for debug-script.
+
+**`local` is invalid at script top-level:** In zsh shebang scripts, `local` only works inside a function body. Use bare assignment at top level.
+
 ## Discoveries
