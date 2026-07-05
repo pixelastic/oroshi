@@ -216,6 +216,7 @@
   "tee",
   "test",
   "timeout",
+  "tools/ai/claude/config/statusline",
   "touch",
   "tracker3 status",
   "tree",
