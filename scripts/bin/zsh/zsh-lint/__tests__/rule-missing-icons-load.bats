@@ -42,6 +42,14 @@ setup() {
   bats_run_zsh "${sourcePrefix}; zsh-lint-custom $file"
   [[ "$output" != *'"code":"missingIconsLoad"'* ]]
 }
+
+@test "ICONS[ inside a jq string literal: no violation" {
+  local file="$BATS_TMP_DIR/test.zsh"
+  printf 'jq -r '\''to_entries[] | "ICONS[\\(.key)]=\\(.value)"'\'' input.json\n' >"$file"
+  bats_run_zsh "${sourcePrefix}; zsh-lint-custom $file"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" != *'"code":"missingIconsLoad"'* ]]
+}
 # }}}
 
 # FAIL cases {{{

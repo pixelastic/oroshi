@@ -19,7 +19,7 @@ zshLintRule_missingIconsLoad() {
   for line in "${(@f)content}"; do
     (( ++lineNum ))
     [[ "$line" =~ ^[[:space:]]*'#' ]] && continue
-    if [[ "$line" =~ 'ICONS\[' || "$line" =~ '\$\{(\([^)]*\))?ICONS\}?' ]]; then
+    if [[ "$line" =~ '\$\{?ICONS\[' || "$line" =~ '\$\{(\([^)]*\))?ICONS\}?' ]]; then
       firstTriggerLine=$lineNum
       break
     fi
