@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-claude-md-update.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced ## Throw-away scripts body with pointer to debug-script skill; moved jq/jo rules into SKILL.md ## JSON section.",
     "blocked_by": ["02"]
   }
 ]

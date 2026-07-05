@@ -13,7 +13,4 @@ grammar for the sake of concision.
 
 ## Throw-away scripts
 
-- DO: Create your one-off scripts in a dedicated folder in /tmp/oroshi/claude/scripts
-- DO: Use `jq` to read JSON, and `jo` to write JSON
-
-- DON'T: Use `python` or `node` to inspect JSON. Use `jq` instead
+Use the `/debug-script` skill when writing complex or multi-step Bash commands.

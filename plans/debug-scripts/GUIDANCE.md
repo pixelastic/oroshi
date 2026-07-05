@@ -33,3 +33,6 @@ description: Use when writing throw-away debug or exploration scripts.
 **`local` is invalid at script top-level:** In zsh shebang scripts, `local` only works inside a function body. Use bare assignment at top level.
 
 ## Discoveries
+
+### Issue 03 — CLAUDE.md update
+- `~/CLAUDE.md` is a symlink to `tools/ai/claude/config/CLAUDE.md` in the oroshi repo — edit the worktree copy, not the home path directly (same pattern as `~/.claude/skills/`).

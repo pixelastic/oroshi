@@ -9,6 +9,11 @@ description: Use when writing throw-away debug or exploration scripts.
 
 Write a throw-away script when a Bash command is syntactically complex — multi-line, uses subshells, or involves non-trivial pipes.
 
+## JSON
+
+- DO: Use `jq` to read JSON, and `jo` to write JSON
+- DON'T: Use `python` or `node` to inspect JSON — use `jq` instead
+
 ## Pattern
 
 - **Target folder:** `/tmp/oroshi/claude/scripts/`
