@@ -7792,7 +7792,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^10.2.2":
+"minimatch@npm:10.2.5, minimatch@npm:^10.2.2":
   version: 10.2.5
   resolution: "minimatch@npm:10.2.5"
   dependencies:
@@ -8484,7 +8484,7 @@ __metadata:
     remark-preset-lint-recommended: "npm:3.0.3"
     remark-reference-links: "npm:4.0.4"
     skills: "npm:1.5.1"
-    solkan: "npm:0.7.0"
+    solkan: "npm:0.8.0"
   languageName: unknown
   linkType: soft
 
@@ -10654,17 +10654,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"solkan@npm:0.7.0":
-  version: 0.7.0
-  resolution: "solkan@npm:0.7.0"
+"solkan@npm:0.8.0":
+  version: 0.8.0
+  resolution: "solkan@npm:0.8.0"
   dependencies:
     firost: "npm:5.8.0"
     golgoth: "npm:3.1.0"
+    minimatch: "npm:10.2.5"
     minimist: "npm:1.2.8"
     unbash: "npm:3.0.0"
   bin:
     solkan: ./bin/solkan
-  checksum: 10c0/24f71b60b7ad06e9885963d49de5aaa6d3191d7502f5acb3feff863af132212c27a1f3877f4577927b451c0f3cd8aed79e15edd058025e7e577dcd2f6d5f0e25
+  checksum: 10c0/fcafa9932de40abc644e567c7e95d01438a549fbd191a60da73f67742d098d0a2b7b41d4e64010f5d8fe7b7aba6890d712c4a58c8209159ec96747102fc2c0d1
   languageName: node
   linkType: hard
 

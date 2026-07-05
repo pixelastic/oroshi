@@ -3,10 +3,25 @@
 check that all fzf-related code (outside of nvim) is correctly located in the
 same subdir
 
+Ensure all fzf-rleated tests pass
+
+Preview of zsh autoload functions in bats should use the zsh syntax
+
 ## Misc
 
+Simplify the skill-writer skill, to remove the whole TDD part.
 the skill-writer skill is too verbose. It has a TDD cycle that I don't actually
 use. I should remove that and only keep the templates.
+
+Make Claude inspect all the history of the review logs of deleted worktrees, and
+classifying the most common skipped review, so I can improve my skills so they
+are no longer suggested.
+
+Would be nice if we can find a way to name/color the kitty tabs based on their
+main repo. I currently use a lot of worktrees, so if I name a tab "foo" in the
+repo A, would be nice if the tab would be name "A foo" for example, or simply
+using the repo A icon rather than A, and colored as this repo.
+
 
 json-lint errors when editing files outside of oroshi
 
@@ -143,6 +158,9 @@ I will need to add a LUA harness made of tests and lints.
 Ctrl-Y in nvim should display the path using the context-badge like in statusbar
 
 I will need a test framework for LUA, and write tests, that I don't have yet.
+
+Seems like doing Shift-R in bats file generates an error instead of addinga
+review?
 
 My nvim keybidnings are sprawling over one big file. They probbaly need to be
 split into smaller files, per domain.
