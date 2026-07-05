@@ -41,7 +41,6 @@ setup() {
 Creates an isolated directory, specific to that test.
 
 - Path is then accessible as `$BATS_TMP_DIR`
-- Run `bats_cleanup` in `teardown` to remove it.
 
 ## `bats_git_dir`
 

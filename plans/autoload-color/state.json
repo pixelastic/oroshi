@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-is-zsh-autoload-function.md",
-    "done": false,
+    "done": true,
+    "recap": "Created is-zsh-autoload-function: sets REPLY=1 for no-extension files under functions/autoload/, REPLY=0 otherwise; includes bats test suite.",
     "blocked_by": []
   },
   {

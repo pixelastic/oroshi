@@ -1,0 +1,22 @@
+# Boolean: is the given path an autoloaded ZSH function?
+# Usage:
+# $ is-zsh-autoload-function /path/to/functions/autoload/git/my-func  # REPLY=1
+# $ is-zsh-autoload-function /path/to/functions/autoload/foo.zsh      # REPLY=0
+# $ is-zsh-autoload-function /path/to/other/my-func                   # REPLY=0
+setopt local_options err_return
+
+local filepath="$1"
+
+REPLY="0"
+
+# Must live under functions/autoload/
+[[ "$filepath" != */functions/autoload/* ]] && return 0
+
+# Directories are not functions
+[[ -d "$filepath" ]] && return 0
+
+# Files with extensions are not functions
+local ext="${filepath:e}"
+[[ "$ext" != "" ]] && return 0
+
+REPLY="1"
