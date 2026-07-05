@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-icons-build-and-loader.md",
-    "done": false,
+    "done": true,
+    "recap": "Created icons-build autoload function that reads src/icons.jsonc, flattens nested keys with -, and writes dist/icons.zsh + dist/icons.json. Updated icons-load-definitions to source dist/icons.zsh.",
     "blocked_by": ["01"]
   },
   {

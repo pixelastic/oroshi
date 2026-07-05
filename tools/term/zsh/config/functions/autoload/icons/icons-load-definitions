@@ -6,4 +6,4 @@ setopt local_options err_return
 # Stop if already loaded
 ((${#ICONS} > 0)) && return
 
-source "$OROSHI_ROOT/tools/term/zsh/config/theming/icons.zsh"
+source "$OROSHI_ROOT/tools/term/zsh/config/theming/dist/icons.zsh"

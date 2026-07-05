@@ -42,3 +42,9 @@ Create an `icons-build` pipeline that generates `dist/icons.zsh` and `dist/icons
 - Categories with both a bare key and prefixed keys (`node`, `ruby`, `claude`) cannot be nested under a single object key in JSON — they must remain flat. The `paths | join("-")` flattening from `colors-build` handles both flat and nested entries correctly.
 - `docker-image` was defined twice in the original `icons.zsh` (once as `"G"`, once as the glyph); the glyph value was kept, documented with a comment.
 - **Ne pas supprimer `icons.zsh` dans l'issue 01** — la suppression doit avoir lieu dans l'issue 02, après que `icons-load-definitions` source `dist/icons.zsh`. Sinon tout plante.
+
+### Issue 02 — icons-build and loader
+
+- `zsh-lint` flags `[[ -n "$var" ]] || return` — must use `[[ "$var" == "" ]] && return` (`noDashN` + `noOrGuard` rules).
+- `missingIconsLoad` lint rule triggers on `ICONS[` references inside `icons-build` even when generating file content — suppress with `# zsh-lint disable=missingIconsLoad` on the preceding line.
+- Inner `function` declarations inside autoload bodies are acceptable in `*-build` scripts — consistent with `colors-build` prior art; inline style was rejected in favor of the named-function pattern.

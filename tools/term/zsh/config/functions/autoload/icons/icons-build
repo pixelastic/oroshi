@@ -1,0 +1,40 @@
+# Build dist/icons.zsh and dist/icons.json from src/icons.jsonc
+# Usage:
+#   $ icons-build
+# Output:
+#   dist/icons.zsh  — ICONS[key]="glyph"
+#   dist/icons.json — {"key":"glyph"}
+setopt local_options err_return
+
+local themingRoot="$OROSHI_ROOT/tools/term/zsh/config/theming"
+local srcJsonc="$themingRoot/src/icons.jsonc"
+local distDir="$themingRoot/dist"
+local distZsh="$distDir/icons.zsh"
+local distJson="$distDir/icons.json"
+local srcJson="$(jsonc2json "$srcJsonc")"
+[[ "$srcJson" == "" ]] && return 1
+
+mkdir -p "$distDir"
+
+# Generate dist/icons.json — flat {key: glyph}, keys sorted {{{
+function generateDistJson() {
+  jq --sort-keys '
+    [ paths(type == "string") as $p
+    | { key: ($p | join("-")), value: getpath($p) }
+    ] | from_entries
+  ' <<<"$srcJson" >"$distJson"
+}
+# }}}
+
+# Generate dist/icons.zsh from dist/icons.json {{{
+function generateDistZsh() {
+  {
+    echo "# zsh-lint disable-file=commandTooLong"
+    echo "typeset -gA ICONS"
+    jq -r 'to_entries[] | "ICONS[\(.key)]=\"\(.value)\""' "$distJson"
+  } >"$distZsh"
+}
+# }}}
+
+generateDistJson
+generateDistZsh
