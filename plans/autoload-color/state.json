@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-better-ls.md",
-    "done": false,
+    "done": true,
+    "recap": "Converted better-ls from bash to ZSH; added fi= LS_COLORS override scoped to exa invocation when inside a functions/autoload directory; bats test suite covers autoload and non-autoload cases.",
     "blocked_by": ["01"]
   },
   {

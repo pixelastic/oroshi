@@ -1,8 +1,16 @@
-#!/usr/bin/env bash
-# better ls
-#
-# Uses exa instead of ls by default
-# In case exa fails (probably because not yet installed), it will fallback on ls
+#!/usr/bin/env zsh
+# Show directory listing with exa, with fallback to ls
+# Usage:
+# $ better-ls              # List current directory
+# $ better-ls path/to/dir  # List given directory
+set -e
+
+# Force coloring of zsh autoload function as zsh
+is-zsh-autoload-function "${PWD}/x"
+if [[ "$REPLY" == "1" ]]; then
+  filetypes-load-definitions
+  EXA_COLORS="${EXA_COLORS}:fi=38;5;${FILETYPES[zsh:color]}"
+fi
 
 exa \
   --long \

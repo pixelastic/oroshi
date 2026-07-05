@@ -46,4 +46,8 @@ The shebang is NOT part of the detection — `is-zsh-autoload-function` does not
 
 ## Discoveries
 
-_Append findings here after each issue is completed._
+### Issue 03 — better-ls ZSH conversion
+- Bash scripts don't load ZSH mocks — the shebang conversion is itself what enables bats_mock to inject `exa` and `filetypes-load-definitions`; tests correctly fail in RED because the bash subprocess never sees the mock
+- `LS_COLORS="$lsColors" exa` (inline prefix) scopes the override to the `exa` invocation only, even when `exa` is a ZSH shell function (not a subprocess)
+- `better-ls` subprocess runs with `$PWD` outside the worktree → `.zshenv` loads from `~/.oroshi` (not the worktree) → autoload functions not yet in `main` are missing; use `bats_disable_worktree_aware` to keep PATH/fpath from the current worktree
+- exa ignores `LS_COLORS` for `fi=` (regular file color) when `EXA_COLORS` is set — must append to `EXA_COLORS` instead

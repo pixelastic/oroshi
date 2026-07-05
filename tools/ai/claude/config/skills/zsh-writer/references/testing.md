@@ -13,6 +13,7 @@
 - Use `bats_run_zsh "command-to-test"`
     - If you need to `cd` inside a specific directory, make it as part of the command passed to `bats_run_zsh`
 - Use `bats_mock` to mock commands
+- Use `bats_disable_worktree_aware` when the test `cd`s outside the worktree — keeps PATH/fpath from the current worktree so autoloaded functions defined only in this worktree remain available
 - Full helper code available at `tools/term/bats/config/helper`
 
 ## Example
