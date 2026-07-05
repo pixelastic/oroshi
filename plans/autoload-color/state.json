@@ -1,0 +1,26 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-is-zsh-autoload-function.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-refactors.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-better-ls.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-fzf-preview-header.md",
+    "done": false,
+    "blocked_by": ["01"]
+  }
+]
