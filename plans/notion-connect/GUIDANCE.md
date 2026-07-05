@@ -23,7 +23,7 @@ This plan adds the `phone-pickup` skill — a bridge between Claude mobile vocal
 - List DB entries: `POST /v1/databases/$NOTION_PHONE_DB_ID/query` with body `{}`
 - Read page blocks: `GET /v1/blocks/{page_id}/children`
 
-Use `curl` directly — do NOT route through `zsh -i -c 'notion-api-post ...'`.
+Use `notion-api-post` for POST calls, `notion-api` for GET calls — do NOT route through `zsh -i -c '...'`.
 
 ### Zsh function conventions
 
@@ -44,7 +44,7 @@ bats-lint tools/term/zsh/config/functions/autoload/ai/phone-pickup/__tests__/<fi
 
 - `tools/term/zsh/config/functions/autoload/ai/claude/__tests__/` — Claude helper tests
 - `tools/term/zsh/config/functions/autoload/notion/` — sibling notion function patterns
-- Use `bats_mock` to stub `curl`, `bats_mock_env` to inject env vars
+- Use `bats_mock` to stub collaborators (`notion-api-post`, `notion-api`), `bats_mock_env` to inject env vars
 - All test variables go inside `setup()`, never at file top level
 
 ### Skill format

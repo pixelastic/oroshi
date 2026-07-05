@@ -2,13 +2,15 @@
   {
     "id": "01",
     "issue": "issues/01-env-var.md",
-    "done": false,
+    "done": true,
+    "recap": "Manually added NOTION_PHONE_DB_ID export to private vorugal host config",
     "blocked_by": []
   },
   {
     "id": "02",
     "issue": "issues/02-phone-pickup-list.md",
-    "done": false,
+    "done": true,
+    "recap": "Created phone-pickup-list autoload function: POSTs to Notion databases query endpoint, guards on missing NOTION_PHONE_DB_ID, forwards raw JSON to stdout",
     "blocked_by": []
   },
   {

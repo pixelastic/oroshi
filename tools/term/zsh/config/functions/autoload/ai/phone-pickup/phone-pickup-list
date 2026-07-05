@@ -1,0 +1,11 @@
+# List entries from the Claude mobile Notion database
+# Usage:
+# $ phone-pickup-list
+setopt local_options err_return
+
+# Guard: NOTION_PHONE_DB_ID must be set
+if [[ "$NOTION_PHONE_DB_ID" == "" ]]; then
+  return 1
+fi
+
+notion-api-post "databases/${NOTION_PHONE_DB_ID}/query" '{}'
