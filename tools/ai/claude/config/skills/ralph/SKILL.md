@@ -134,7 +134,12 @@ Load [commit-hint.md](references/commit-hint.md) for the format and rules.
 
 - Run `ralph-end $ARGUMENTS` first
 
-- Print the issue id, tldr, recap, and any discoveries logged.
+Print:
+- The issue ID
+- The problem that was solved
+- What changed
+- How to test
+- Any discoveries
 
 **Stop here. Do not commit. Do not start the next issue. Wait for the user.**
 

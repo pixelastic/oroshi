@@ -122,6 +122,7 @@
   "gsettings list-schemas",
   "head",
   "hexdump",
+  "hostname",
   "imgmin",
   "iostat",
   "is-bats",

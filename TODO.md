@@ -1,16 +1,7 @@
 ## fzf
 
-When displaying sorted filepaths, maybe put the .hidden files and dirs after the
-regular files and dirs
-
-Colors or scripts in fzf are off in fzf
-They should be yellow, like any binary
-
-Preview of fzf autoloaded functions do not use the right icon nor do they use
-the right syntax highlight with bat
-
-Update the preview of ralph selection in fzf, show not only the directory, but
-get the main PRD of the plan, and the detail of the next issue
+check that all fzf-related code (outside of nvim) is correctly located in the
+same subdir
 
 ## Misc
 
