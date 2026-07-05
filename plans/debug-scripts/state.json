@@ -1,0 +1,20 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-allowlist-glob.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-debug-script-skill.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-claude-md-update.md",
+    "done": false,
+    "blocked_by": ["02"]
+  }
+]
