@@ -1,9 +1,0 @@
-[
-  {
-    "id": "01",
-    "issue": "issues/01-ralph-plan-progress-segment.md",
-    "done": true,
-    "recap": "Added Ralph plan progress segment to statusline after MCP servers, showing icon done/total in amber (in-progress) or green (complete), silently absent when no plan active.",
-    "blocked_by": []
-  }
-]
