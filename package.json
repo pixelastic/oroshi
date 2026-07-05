@@ -26,12 +26,12 @@
     "solkan": "0.8.0"
   },
   "scripts": {
+    "colors-refresh": "./scripts/bin/colors-refresh",
     "lint": "./scripts/yarn/lint",
     "lint:bats": "./scripts/yarn/lint-bats",
     "lint:fix": "./scripts/yarn/lint-fix",
     "lint:zsh": "./scripts/yarn/lint-zsh",
     "test": "./scripts/yarn/test",
-    "test:bats": "./scripts/yarn/test-bats",
-    "colors-refresh": "./scripts/bin/colors-refresh"
+    "test:bats": "./scripts/yarn/test-bats"
   }
 }
