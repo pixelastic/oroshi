@@ -18,3 +18,15 @@ setup() {
   run grep "kitty @ set-colors" "$CURRENT"
   [[ "$output" == *'$OROSHI_ROOT/tools/term/kitty/config/colors.conf'* ]]
 }
+
+@test "calls icons-build" {
+  run grep --count "icons-build" "$CURRENT"
+  [ "$output" != "0" ]
+}
+
+@test "calls icons-build before filetypes-build" {
+  local icons_line filetypes_line
+  icons_line="$(grep --line-number "^icons-build$" "$CURRENT" | cut -d: -f1)"
+  filetypes_line="$(grep --line-number "^filetypes-build$" "$CURRENT" | cut -d: -f1)"
+  [ "$icons_line" -lt "$filetypes_line" ]
+}

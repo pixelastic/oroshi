@@ -9,6 +9,7 @@ kitty @ set-colors --all "$OROSHI_ROOT/tools/term/kitty/config/colors.conf"
 
 # Rebuild dist files
 colors-build
+icons-build
 filetypes-build
 projects-build
 

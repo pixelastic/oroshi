@@ -1,25 +1,28 @@
-# Build dist/projects.json and dist/projects.zsh from src/projects.json
+# Build dist/projects.json and dist/projects.zsh from src/projects.jsonc
 # Reads dist/colors.json to resolve color names to ansi/hex values
 # Usage:
 #   $ projects-build
 setopt local_options err_return
 
 local themingRoot="$OROSHI_ROOT/tools/term/zsh/config/theming"
-local srcJson="$themingRoot/src/projects.json"
+local srcJsonc="$themingRoot/src/projects.jsonc"
 local distDir="$themingRoot/dist"
 local distJson="$distDir/projects.json"
 local distZsh="$distDir/projects.zsh"
 
-# Sort src/projects.json in-place
+# Sort src/projects.jsonc in-place
 local tmpSrc="$(mktemp)"
-jq --sort-keys '.' "$srcJson" >"$tmpSrc" && mv "$tmpSrc" "$srcJson"
+jsonc2json "$srcJsonc" | jq --sort-keys '.' >"$tmpSrc" && mv "$tmpSrc" "$srcJsonc"
+
+local srcJson="$(jsonc2json "$srcJsonc")"
+[[ "$srcJson" == "" ]] && return 1
 
 mkdir -p "$distDir"
 
 # Generate dist/projects.json
 function generateDistJson() {
   jq -n \
-    --argjson projects "$(jq '.' "$srcJson")" \
+    --argjson projects "$srcJson" \
     --argjson colors "$(cat "$distDir/colors.json")" \
     '$projects | to_entries | map(
       .key as $projectName | .value as $projectData |

@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-wire-integrations.md",
-    "done": false,
+    "done": true,
+    "recap": "Inserted icons-build into colors-refresh between colors-build and filetypes-build; extended lint-staged glob to trigger on icons.jsonc and icons-build changes.",
     "blocked_by": ["02"]
   }
 ]

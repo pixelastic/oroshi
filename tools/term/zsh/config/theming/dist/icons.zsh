@@ -1,4 +1,4 @@
-# zsh-lint disable-file=missingIconsLoad
+# zsh-lint disable-file=commandTooLong
 typeset -gA ICONS
 ICONS[badge-separator]=""
 ICONS[bats]="󰭟"

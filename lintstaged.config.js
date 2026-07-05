@@ -16,6 +16,8 @@ export default {
   'scripts/yarn/**/*': ['yarn run lint:zsh'],
 
   // Colors reload
-  'tools/term/zsh/config/**/{colors.jsonc,colors-build,filetypes.jsonc,filetypes-build,projects.json,projects-build}':
+  'tools/term/zsh/config/theming/**/{colors,filetypes,icons,projects}.jsonc':
+    'yarn run colors-refresh',
+  'tools/term/zsh/config/functions/autoload/**/{colors,filetypes,icons,project}-build':
     'yarn run colors-refresh',
 };

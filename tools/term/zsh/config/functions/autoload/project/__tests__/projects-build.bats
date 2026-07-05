@@ -33,19 +33,19 @@ setup() {
     nosuffix.background=green \
     nosuffix.foreground=gray-9 \
     nosuffix.icon=G \
-    >"$THEMING_DIR/src/projects.json"
+    >"$THEMING_DIR/src/projects.jsonc"
 }
 
 # --- Source ---
 
-@test "src/projects.json is sorted alphabetically in-place after build" {
+@test "src/projects.jsonc is sorted alphabetically in-place after build" {
   jo -d. \
     zzz.icon=Z \
     mmm.icon=M \
     aaa.icon=A \
-    >"$THEMING_DIR/src/projects.json"
+    >"$THEMING_DIR/src/projects.jsonc"
   bats_run_zsh "projects-build"
-  run jq -r 'keys_unsorted[]' "$THEMING_DIR/src/projects.json"
+  run jq -r 'keys_unsorted[]' "$THEMING_DIR/src/projects.jsonc"
   [ "${lines[0]}" = "aaa" ]
   [ "${lines[1]}" = "mmm" ]
   [ "${lines[2]}" = "zzz" ]
@@ -150,7 +150,7 @@ EXPECTED
   jo -d. \
     myproject.background=orange-6 \
     myproject.icon=O \
-    >"$THEMING_DIR/src/projects.json"
+    >"$THEMING_DIR/src/projects.jsonc"
   bats_run_zsh "projects-build"
   run jq -r '.myproject.backgroundInactive.name' "$THEMING_DIR/dist/projects.json"
   [ "$output" = "orange-dark" ]
