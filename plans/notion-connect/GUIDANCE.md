@@ -57,4 +57,8 @@ Issue 01 requires manual editing of the private submodule. The ralph agent shoul
 
 ## Discoveries
 
-(append here after each issue)
+### Issue 04 — phone-pickup skill
+
+- `skill-writer`'s `skill-template.md` format (Goal/Exit criterion per step, Common Rationalizations table) is for enforcement skills only — simple workflow skills like `phone-pickup` follow the lighter `sidequest` pattern instead.
+- Bats `set -e` semantics: `grep -qv` returning 1 (no bad lines — success) causes bats to fail the test. Use `|| true` and then `[[ -z "$var" ]]` instead of relying on `grep -qv`'s exit code directly.
+- Words like "created" in field descriptions will trigger a read-only grep guard; use neutral synonyms ("added") to avoid false positives.

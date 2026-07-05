@@ -45,3 +45,14 @@ bats_mock_env "NOTION_API_KEY" "test-api-key"
 
 **Problem:** Reviewer noted the usage line lacks a trailing inline annotation explaining `<page_id>`.
 **Reason skipped:** Judgement call; no other phone-pickup functions include argument annotations in usage comments. Out of scope for this issue.
+
+## Issue 04 — phone-pickup skill
+
+### skill-template.md structural requirements
+
+```markdown
+## Step 1 — List entries
+```
+
+**Problem:** Standards reviewer flagged missing `Goal`, `Exit criterion` per step, and `Common Rationalizations` table (from `skill-template.md`).
+**Reason skipped:** `skill-template.md` format applies to enforcement skills built with the `skill-writer` TDD workflow. Simple workflow skills (like `sidequest`, `grill-me`) use a lighter format without those sections. `phone-pickup` is a workflow guide, not an enforcement skill.

@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-phone-pickup-skill.md",
-    "done": false,
+    "done": true,
+    "recap": "Created phone-pickup SKILL.md: instructs Claude to call phone-pickup-list, match entry by description (with ambiguous-match handling), then call phone-pickup-read to fetch and present content",
     "blocked_by": ["02", "03"]
   }
 ]
