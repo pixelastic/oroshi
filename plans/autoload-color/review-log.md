@@ -1,3 +1,10 @@
+## Issue 04 — fzf-preview-header
+
+### Mocks in setup() instead of per-@test
+
+**Problem:** Standards agent flagged that `filetypes-load-definitions`, `icons-load-definitions`, etc. are mocked in `setup()` instead of inside each `@test`.
+**Reason skipped:** Consistent with `fzf-colorize-path.bats` (direct prior art for this file type), which also mocks `filetypes-load-definitions` and `colors-load-definitions` in `setup()`. Not a regression.
+
 ## Issue 03 — better-ls ZSH conversion
 
 ### Missing teardown + bats_cleanup

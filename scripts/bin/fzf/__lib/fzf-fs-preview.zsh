@@ -235,9 +235,21 @@ fzf-preview-header() {
   local key="$REPLY"
   local icon="$FILETYPES[${key}:icon]"
   local color="$FILETYPES[${key}:color]"
-  if [[ "$color" == "" && -x "$fullPath" ]]; then
-    color="executable"
-    icon=$ICONS[filetype-executable]
+
+  # No color from extension: check autoload, then executable
+  if [[ "$color" == "" ]]; then
+    # Is it a zsh autoload function?
+    is-zsh-autoload-function "$fullPath"
+    if [[ "$REPLY" == "1" ]]; then
+      color="$FILETYPES[zsh:color]"
+      icon="$FILETYPES[zsh:icon]"
+    fi
+
+    # Is it an executable?
+    if [[ "$color" == "" && -x "$fullPath" ]]; then
+      color="executable"
+      icon=$ICONS[filetype-executable]
+    fi
   fi
 
   colorize " ${icon} ${fullPath:t}" $color

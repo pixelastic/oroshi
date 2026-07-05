@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-fzf-preview-header.md",
-    "done": false,
+    "done": true,
+    "recap": "Added is-zsh-autoload-function check in fzf-preview-header after extension lookup; sets color to FILETYPES[zsh:color] and icon to FILETYPES[zsh:icon] for autoload files.",
     "blocked_by": ["01"]
   }
 ]
