@@ -5,8 +5,6 @@ same subdir
 
 Ensure all fzf-rleated tests pass
 
-Preview of zsh autoload functions in bats should use the zsh syntax
-
 ## Misc
 
 Simplify the skill-writer skill, to remove the whole TDD part.

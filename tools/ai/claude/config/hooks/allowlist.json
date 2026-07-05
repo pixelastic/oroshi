@@ -149,6 +149,8 @@
   "nautilus",
   "node --version",
   "node_modules/.bin/aberlaas test",
+  "notion block list",
+  "notion db query",
   "npm show",
   "nvim",
   "od",
