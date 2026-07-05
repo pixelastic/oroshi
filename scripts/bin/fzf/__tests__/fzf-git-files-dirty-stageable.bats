@@ -3,6 +3,7 @@ bats_load_library 'helper'
 setup() {
   bats_tmp_dir
   bats_git_dir
+  bats_disable_worktree_aware
 
   # Create and commit a file
   echo "original" > "$BATS_GIT_DIR/test.txt"
@@ -14,9 +15,8 @@ setup() {
 
   # Mock terminal-dependent collaborators
   img-display() { :; }
-  fzf-fs-shared-preview-header() { :; }
-  fzf-fs-shared-preview() { cat "$1"; }
-  bats_mock img-display fzf-fs-shared-preview-header fzf-fs-shared-preview
+  bat() { cat "${@[-1]}"; }
+  bats_mock img-display bat
 }
 
 # fzf-preview

@@ -10,7 +10,7 @@ set -e
 
 for arg in $@; do
 	local filepath=${arg:a}
-	local filetypeGroup="$(filetype-group $filepath)"
+	local filetypeGroup="$(filetypes-group $filepath)"
 
 	# Image file
 	if [[ $filetypeGroup == "image" ]]; then

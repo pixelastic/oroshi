@@ -1,7 +1,7 @@
 # Return the type of file based on its extension
 # Uses the FILETYPES[] assoc array (loaded via filetypes-load-definitions)
 # Usage:
-# $ filetype-group ./path/to/file.png    # image
+# $ filetypes-group ./path/to/file.png    # image
 setopt local_options err_return
 
 filetypes-load-definitions

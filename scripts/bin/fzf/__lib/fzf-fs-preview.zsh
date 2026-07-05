@@ -22,7 +22,7 @@ fzf-preview() {
     return 0
   fi
 
-  local filetypeGroup="$(filetype-group "$fullPath")"
+  local filetypeGroup="$(filetypes-group "$fullPath")"
 
   # Images
   if [[ "$filetypeGroup" == "image" ]]; then

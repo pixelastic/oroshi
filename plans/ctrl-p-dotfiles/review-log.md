@@ -19,6 +19,34 @@
 **Problem:** Standards agent flagged POSIX `[ ]` as a hard violation; claimed `[[ ]]` is required in zsh.
 **Reason skipped:** Established codebase convention documented in GUIDANCE.md Issue 01 discovery. All bats tests in this repo use `[ ]` for status/output checks.
 
+## Issue 06 — filetypes-group rename
+
+### Skipped: missing guard + comment in filetypes-group
+
+```zsh
+filetypes-key "${1}"
+local key="${REPLY}:group"
+echo $FILETYPES[$key]
+```
+**Problem:** Standards agent flagged missing guard for empty-key result and missing comment on key construction line.
+**Reason skipped:** Pure rename — no logic changes per issue spec. Body is identical to the old `filetype-group`. Not caught by `zsh-lint`. Out of scope for this issue.
+
+### Skipped: unquoted `$FILETYPES[$key]` in filetypes-group
+
+```zsh
+echo $FILETYPES[$key]
+```
+**Problem:** Standards agent flagged unquoted array lookup as inconsistent with style.
+**Reason skipped:** Judgement call; carried over verbatim from old `filetype-group`. Not caught by `zsh-lint`. Out of scope for a rename issue.
+
+### Skipped: `local` inside `for` loop in better-cat
+
+```zsh
+local filetypeGroup="$(filetypes-group $filepath)"
+```
+**Problem:** Standards agent flagged `local` at script level inside a `for` loop (not inside a function).
+**Reason skipped:** Pre-existing; `zsh-lint` does not flag it. Feedback rule only requires fixing zshlint violations in touched files. Out of scope for a rename issue.
+
 ### Skipped: mock pattern flagged as potentially dead code
 
 ```bats

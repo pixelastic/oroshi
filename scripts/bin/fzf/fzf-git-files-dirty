@@ -41,7 +41,7 @@ fzf-preview() {
 
   # No diff means new file — delegate to leaf (includes its own header)
   if [[ "$diff" == "" ]]; then
-    local filetypeGroup="$(filetype-group "$filepath")"
+    local filetypeGroup="$(filetypes-group "$filepath")"
     if [[ "$filetypeGroup" == "image" ]]; then
       fzf-preview-file-image "$filepath"
       return 0

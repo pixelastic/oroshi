@@ -11,19 +11,19 @@ setup() {
 }
 
 @test "dotfile .fdignore returns config group" {
-  bats_run_zsh "filetype-group .fdignore"
+  bats_run_zsh "filetypes-group .fdignore"
   [ "$status" -eq 0 ]
   [ "$output" = "config" ]
 }
 
 @test "dotfile .gitignore returns config group" {
-  bats_run_zsh "filetype-group .gitignore"
+  bats_run_zsh "filetypes-group .gitignore"
   [ "$status" -eq 0 ]
   [ "$output" = "config" ]
 }
 
 @test "regular file file.png returns image group" {
-  bats_run_zsh "filetype-group file.png"
+  bats_run_zsh "filetypes-group file.png"
   [ "$status" -eq 0 ]
   [ "$output" = "image" ]
 }
