@@ -12,12 +12,9 @@ zshLintRule_missingErrReturn() {
   local firstLine="${content%%$'\n'*}"
   [[ "$firstLine" =~ '^#!' ]] && return 0
 
-  # Only applies to files inside the autoloaded functions directory
-  local autoloadDir="$OROSHI_ROOT/tools/term/zsh/config/functions/autoload"
-  [[ "$file" != "$autoloadDir"/* ]] && return 0
-
-  # Skip sourced utility files (.zsh extension)
-  [[ "${file:e}" != "" ]] && return 0
+  # Only applies to autoloaded functions
+  is-zsh-autoload-function "$file"
+  [[ "$REPLY" != "1" ]] && return 0
 
   # Pass if setopt err_return is already present (not in a comment)
   local line

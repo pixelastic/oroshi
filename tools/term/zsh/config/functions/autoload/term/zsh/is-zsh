@@ -20,7 +20,8 @@ local ext="${filepath:e}"
 [[ "$ext" != "" ]] && return 1
 
 # No extension: inside functions/autoload/
-[[ "$filepath" == *functions/autoload/* ]] && return 0
+is-zsh-autoload-function "$filepath"
+[[ "$REPLY" == "1" ]] && return 0
 
 # No extension: check for zsh shebang or #compdef marker
 local firstLine="$(head -1 "$filepath")"

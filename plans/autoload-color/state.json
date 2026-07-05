@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-refactors.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced inline autoload path checks in is-zsh, rule-missing-err-return, and fzf-colorize-path with calls to is-zsh-autoload-function; added zsh:color fallback in fzf-colorize-path before executable check.",
     "blocked_by": ["01"]
   },
   {

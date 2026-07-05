@@ -22,7 +22,12 @@ fzf-colorize-path() {
   filetypes-key "$filename"
   local fileColor="${FILETYPES[${REPLY}:color]}"
   if [[ "$fileColor" == "" ]]; then
-    [[ -x "$realPath" ]] && fileColor="$COLORS[executable]"
+    # Is it a zsh autoloaded function?
+    is-zsh-autoload-function "$realPath"
+    [[ "$REPLY" == "1" ]] && fileColor="$FILETYPES[zsh:color]"
+
+    # Is it an executable?
+    [[ "$fileColor" == "" ]] && [[ -x "$realPath" ]] && fileColor="$COLORS[executable]"
   fi
 
   if [[ "$fileColor" != "" ]]; then
