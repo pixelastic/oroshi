@@ -231,9 +231,10 @@ fzf-preview-header() {
   # Files: icon + filename in filetype color
   filetypes-load-definitions
   icons-load-definitions
-  local fileExtension="${fullPath:e}"
-  local icon="$FILETYPES[${fileExtension:l}:icon]"
-  local color="$FILETYPES[${fileExtension:l}:color]"
+  filetypes-key "$fullPath"
+  local key="$REPLY"
+  local icon="$FILETYPES[${key}:icon]"
+  local color="$FILETYPES[${key}:color]"
   if [[ "$color" == "" && -x "$fullPath" ]]; then
     color="executable"
     icon=$ICONS[filetype-executable]

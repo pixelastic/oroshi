@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-fzf-fs-preview-dotfiles.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced inline extension extraction with filetypes-key call in fzf-preview-header — dotfiles like .fdignore now resolve to their _-prefixed key and render in their registered FILETYPES icon and color.",
     "blocked_by": ["01"]
   },
   {
