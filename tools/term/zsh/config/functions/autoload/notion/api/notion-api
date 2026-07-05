@@ -2,6 +2,10 @@
 # Usage:
 # $ notion-api blocks/c01af08f-dd53-44ce-ab5b-958712e65fd2 # Returns json
 setopt local_options err_return
+
+# Guard: NOTION_API_KEY must be set
+[[ "$NOTION_API_KEY" == "" ]] && return 1
+
 local input=$1
 
 curl \

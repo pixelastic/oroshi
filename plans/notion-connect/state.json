@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-phone-pickup-read.md",
-    "done": false,
+    "done": true,
+    "recap": "Created phone-pickup-read autoload function: GETs Notion blocks children endpoint by page ID, guards on missing arg, forwards raw JSON to stdout",
     "blocked_by": []
   },
   {
