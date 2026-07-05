@@ -35,3 +35,10 @@ Create an `icons-build` pipeline that generates `dist/icons.zsh` and `dist/icons
 ## Discoveries
 
 <!-- Agents: append findings after each issue below -->
+
+### Issue 01 — Migrate source data
+
+- `jsonc2json` strips only standalone `//` comment lines; trailing inline comments (e.g. `"key": "val", // note`) are NOT stripped and produce invalid JSON. Use standalone comment lines only.
+- Categories with both a bare key and prefixed keys (`node`, `ruby`, `claude`) cannot be nested under a single object key in JSON — they must remain flat. The `paths | join("-")` flattening from `colors-build` handles both flat and nested entries correctly.
+- `docker-image` was defined twice in the original `icons.zsh` (once as `"G"`, once as the glyph); the glyph value was kept, documented with a comment.
+- **Ne pas supprimer `icons.zsh` dans l'issue 01** — la suppression doit avoir lieu dans l'issue 02, après que `icons-load-definitions` source `dist/icons.zsh`. Sinon tout plante.

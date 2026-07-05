@@ -1,0 +1,163 @@
+{
+  // Icon definitions for the ICONS[] ZSH array.
+  // List of icons: https://www.nerdfonts.com/cheat-sheet
+
+  // Kitty
+  "kitty": {
+    // zsh-lint disable=missingIconsLoad
+    "tab-separator": ""
+  },
+
+  // Zsh
+  "badge-separator": "",
+  "zsh-prompt": "❯",
+
+  // Completion
+  "completion": {
+    "separator":    "",
+    "file":         "",
+    "folder":       "",
+    "commands":     "",
+    "aliases":      "",
+    "zsh-builtins": "",
+    "process":      ""
+  },
+
+  // Fzf
+  "fzf": {
+    "separator":  "",
+    "current":    "",
+    "selected":   "",
+    "unfold":     "",
+    "fold":       "",
+    "commands":   "",
+    "history":    "",
+    "completion": "⇄"
+  },
+
+  // Nvim
+  "nvim": {
+    "tab-separator":          "",
+    "notification-separator": ""
+  },
+
+  // Claude
+  "claude": "●",
+  "claude-mcp-context7": "c7",
+
+  // Tools / Languages
+  "bats":   "󰭟",
+  "dropbox": "",
+  "make":   "",
+  "python": "",
+  "regexp": "",
+  "skill":  " ",
+  "ssh":    "󰣀 ",
+
+  // Git
+  "git": {
+    "branch-ahead":      "",
+    "branch-behind":     "",
+    "branch-current":    "",
+    "branch-dependabot": "",
+    "branch":            "",
+    "changes":           "±",
+    "commit":            "ﰖ",
+    "file-dirty":        "",
+    "issue":             "",
+    "pr":                "",
+    "rebase":            "",
+    "remote-current":    "",
+    "remote-detached":   "",
+    "remote-diverged":   "",
+    "remote-gone":       "",
+    "remote-need-pull":  "",
+    "remote-need-push":  "",
+    "remote-unpushed":   "",
+    "remote":            "",
+    "stash":             "",
+    "submodule":         "",
+    "tag-closest":       "󱈤",
+    "tag-unrelated":     "",
+    "tag":               "",
+    "worktree-current":  "",
+    "worktree":          "󰌪"
+  },
+
+  // Docker
+  "docker": {
+    "run":             "",
+    "container":       "",
+    "container-run":   "󱉺",
+    "container-pause": "",
+    "stop":            "",
+    "image":           "",
+    "hash":            "",
+    "image-remote":    "",
+    "image-github":    "",
+    "image-oroshi":    "",
+    "image-orphan":    ""
+  },
+
+  // Statusbar
+  "statusbar": {
+    "ram":          "",
+    "ram-fire":     "",
+    "cpu":          "",
+    "cpu-fire":     "",
+    "ping":         "",
+    "ping-offline": ""
+  },
+
+  // Node
+  "node":                     "",
+  "node-version-current":     "",
+  "node-install-in-progress": "",
+  "node-package":             "",
+  "node-monorepo":            "",
+  "node-link":                "",
+  "node-js":                  "",
+
+  // Ruby
+  "ruby":                   "",
+  "ruby-install-in-progress": "",
+
+  // Common
+  "unknown":           "",
+  "package":           "",
+  "flag":              "",
+  "jump":              "󰐃",
+  "plan":              " ",
+  "video-stream-audio": " ",
+
+  // Separators
+  "separator": {
+    "arrow":         "",
+    "slant":         "",
+    "slant-reverse": ""
+  },
+
+  // Filetypes
+  "filetype": {
+    "archive":    "",
+    "audio":      "",
+    "binary":     "",
+    "config":     "",
+    "directory":  "",
+    "ebook":      "",
+    "executable": "",
+    "file":       "",
+    "go":         "󰟓",
+    "image":      "",
+    "js":         "",
+    "md":         "",
+    "minor":      "",
+    "mkd":        "",
+    "pdf":        "",
+    "script":     "",
+    "text":       "",
+    "video":      "",
+    "vim":        "",
+    "vue":        ""
+  }
+}

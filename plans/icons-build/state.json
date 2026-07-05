@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-migrate-source-data.md",
-    "done": false,
+    "done": true,
+    "recap": "Created src/icons.jsonc with all icons organized into nested groups (git, docker, etc.) and flat entries for categories with bare keys (node, ruby, claude). Deleted static icons.zsh.",
     "blocked_by": []
   },
   {
