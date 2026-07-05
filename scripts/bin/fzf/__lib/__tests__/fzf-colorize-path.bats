@@ -7,6 +7,7 @@ setup() {
   filetypes-load-definitions() {
     typeset -gA FILETYPES
     FILETYPES[js:color]=200
+    FILETYPES[_fdignore:color]=174
   }
   colors-load-definitions() {
     typeset -gA COLORS
@@ -37,6 +38,19 @@ setup() {
   bats_run_zsh "${sourcePrefix}; fzf-colorize-path '$BATS_TMP_DIR/my-script'; print -r -- \$REPLY"
   [ "$status" -eq 0 ]
   [[ "$output" == *$'\e[38;5;150m'"my-script"$'\e[0m'* ]]
+}
+
+@test "colorizes dotfile filename in its registered filetype color" {
+  bats_run_zsh "${sourcePrefix}; fzf-colorize-path '.fdignore'; print -r -- \$REPLY"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *$'\e[38;5;174m'".fdignore"$'\e[0m'* ]]
+}
+
+@test "colorizes directory segment and dotfile filename in respective colors" {
+  bats_run_zsh "${sourcePrefix}; fzf-colorize-path 'config/.fdignore'; print -r -- \$REPLY"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *$'\e[38;5;100m'"config/"$'\e[0m'* ]]
+  [[ "$output" == *$'\e[38;5;174m'".fdignore"$'\e[0m'* ]]
 }
 
 @test "uses real-path for executable check when display-path differs" {

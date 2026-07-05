@@ -18,9 +18,9 @@ fzf-colorize-path() {
   filetypes-load-definitions
   colors-load-definitions
 
-  # Colorize filename by extension, fall back to executable color
-  local ext="${filename##*.}"
-  local fileColor="${FILETYPES[${ext}:color]}"
+  # Colorize filename by filetype key, fall back to executable color
+  filetypes-key "$filename"
+  local fileColor="${FILETYPES[${REPLY}:color]}"
   if [[ "$fileColor" == "" ]]; then
     [[ -x "$realPath" ]] && fileColor="$COLORS[executable]"
   fi

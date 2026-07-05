@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-fzf-colorize-path-dotfiles.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced inline extension extraction with filetypes-key call in fzf-colorize-path — dotfiles like .fdignore now resolve to their _-prefixed key and render in their defined FILETYPES color.",
     "blocked_by": ["01"]
   },
   {
