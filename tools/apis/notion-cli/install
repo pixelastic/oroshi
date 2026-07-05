@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# CLI for Notion API (blocks, databases, pages)
+# https://github.com/4ier/notion-cli
+set -e
+
+DOWNLOAD_URL="https://github.com/4ier/notion-cli/releases/download/v0.7.0/notion-cli_0.7.0_linux_amd64.deb"
+
+cd ~/local/tmp
+wget "$DOWNLOAD_URL" -O notion-cli.deb
+sudo dpkg -i ./notion-cli.deb
+sudo apt-get -f install -y
+rm ./notion-cli.deb
