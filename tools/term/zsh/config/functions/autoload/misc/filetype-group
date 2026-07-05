@@ -6,7 +6,6 @@ setopt local_options err_return
 
 filetypes-load-definitions
 
-local filepath=${1:a}
-local group=$FILETYPES[${filepath:e:l}:group]
-
-echo $group
+filetypes-key "${1}"
+local key="${REPLY}:group"
+echo $FILETYPES[$key]

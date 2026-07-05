@@ -30,7 +30,8 @@
   {
     "id": "05",
     "issue": "issues/05-filetype-group-dotfiles.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced inline ${filepath:e:l} extension extraction with filetypes-key call in filetype-group — dotfiles like .fdignore now resolve to their _-prefixed key and return their correct FILETYPES group.",
     "blocked_by": ["01"]
   }
 ]

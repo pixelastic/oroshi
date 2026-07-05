@@ -63,3 +63,6 @@ _Append findings here after each issue, in the format:_
 ### Issue 01 — filetypes-key
 - Empty `setup() {}` body is a bats syntax error — omit `setup()` entirely when no setup is needed.
 - `[ "$status" -eq 0 ]` (single brackets) is the correct convention for `$status` checks in this codebase; zsh-writer standards-agent may flag it as wrong but existing bats tests confirm `[ ]` is used throughout.
+
+### Issue 05 — filetype-group dotfiles
+- `$FILETYPES[$REPLY:group]` does NOT work in ZSH — `:group` is treated as a modifier on `$REPLY` inside the subscript. Always build the full key into a local variable first: `local key="${REPLY}:group"` then `$FILETYPES[$key]`.
