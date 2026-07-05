@@ -204,25 +204,7 @@ function oroshi-prompt-populate:git_plan_progress() {
   # No plan in this worktree → nothing to show
   git-worktree-has-plan || return
 
-  colors-load-definitions
-  icons-load-definitions
-
-  local icon="$ICONS[git-issue] "
-
-  local progress="$(plan-progress)"
-  # Empty output means plan-progress failed (malformed JSON, empty array, etc.)
-  if [[ "$progress" == "" ]]; then
-    OROSHI_PROMPT_PARTS[git_plan_progress]="%F{$COLORS[error]}${icon}%f"
-    return
-  fi
-
-  local fields=(${(@ps/▮/)progress})
-  local done=$fields[1]
-  local total=$fields[2]
-
-  local color="$COLORS[git-issue]"
-  [[ "$done" == "$total" ]] && color="$COLORS[success]"
-
-  OROSHI_PROMPT_PARTS[git_plan_progress]="%F{$color}${icon}${done}/${total}%f"
+  local badge="$(plan-badge --zsh)"
+  [[ "$badge" != "" ]] && OROSHI_PROMPT_PARTS[git_plan_progress]="$badge"
 }
 # }}}

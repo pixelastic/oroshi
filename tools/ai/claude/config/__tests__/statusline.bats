@@ -16,9 +16,11 @@ setup() {
   context-badge() { echo "BADGE"; }
   icons-load-definitions() {
     typeset -gA ICONS
-    ICONS[mcp-context7]="⬡"
+    ICONS[claude-mcp-context7]="⬡"
   }
-  bats_mock colors-load-definitions context-badge icons-load-definitions
+  plan-directory() { echo ""; }
+  plan-badge() { echo ""; }
+  bats_mock colors-load-definitions context-badge icons-load-definitions plan-directory plan-badge
 }
 
 statusline_json() {
@@ -125,4 +127,19 @@ statusline_run() {
   statusline_run
   [ "$status" -eq 0 ]
   [[ "$(bats_strip_ansi "$output")" != *"⬡"* ]]
+}
+
+@test "plan progress: badge included when plan active" {
+  plan-directory() { echo "/some/plan/dir"; }
+  plan-badge() { echo "PLAN_BADGE"; }
+  bats_mock plan-directory plan-badge
+  statusline_run "/some/dir"
+  [ "$status" -eq 0 ]
+  [[ "$(bats_strip_ansi "$output")" == *"PLAN_BADGE"* ]]
+}
+
+@test "plan progress: segment absent when no plan" {
+  statusline_run "/some/dir"
+  [ "$status" -eq 0 ]
+  [[ "$(bats_strip_ansi "$output")" != *"PLAN_BADGE"* ]]
 }

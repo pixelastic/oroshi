@@ -5,14 +5,14 @@ set -e
 icons-load-definitions
 colors-load-definitions
 
-# Fake values for debuging, or values coming from stdin
+# Real values from files, fake values for session data
 if [[ "$1" == "--dry-run" ]]; then
+  local currentDir="$PWD"
   local modelName="Sonnet 4.6"
-  local currentDir=~/.oroshi/
   local totalCost=0
   local totalTokens=51000
   local contextPercentage=24
-  local sessionId="deadbeef-0000-ffff-cccc-1234567890ab"
+  local sessionId=""
 else
   local stdinData=$(cat)
   local currentDir=$(echo "$stdinData" | jq -r '.workspace.current_dir')
@@ -72,5 +72,12 @@ for serverName in $mcpServers; do
   mcpDisplay+=("$(colorize "$icon" $COLORS[claude-mcp])")
 done
 [[ ${#mcpDisplay} -gt 0 ]] && statusline+=("${(j: :)mcpDisplay} ")
+
+# Ralph plan progress
+local planDir="$(plan-directory "$currentDir")"
+if [[ $planDir != "" ]]; then
+  local planBadge="$(plan-badge "$planDir")"
+  statusline+=("$planBadge ")
+fi
 
 print "${(j::)statusline}"

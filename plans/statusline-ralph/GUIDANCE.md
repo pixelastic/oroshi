@@ -22,3 +22,10 @@
 - Color/icon keys: `ICONS[git-issue]`, `COLORS[git-issue]`, `COLORS[success]`
 
 ## Discoveries
+
+### Issue 01 — Ralph plan progress segment
+- Two-level nesting (outer guard + inner guard) must be flattened: use `&&` to conditionally populate a `local planProgress=""` var, then a single `if` for rendering.
+- `local planProgress=""` followed by a bare assignment is acceptable — the `local`/assignment split rule only applies to command substitutions, not subsequent conditional updates of an already-declared local.
+- `plan-directory` mock belongs in `setup()` (default: returns empty) so existing tests remain unaffected; `plan-progress` only needs mocking in the tests that exercise plan rendering.
+- Icon key in `icons-load-definitions` mock must match the script's lookup key exactly: `ICONS[claude-mcp-context7]`, not `ICONS[mcp-context7]`.
+- `--dry-run` should use `currentDir="$PWD"` and read `modelName` from `~/.claude/settings.json` (`.model` field) — only tokens and cost are fake since they require a live session.
