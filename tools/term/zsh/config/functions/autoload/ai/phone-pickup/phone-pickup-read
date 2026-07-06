@@ -1,4 +1,4 @@
-# Fetch blocks content of a Notion page by ID
+# Fetch blocks content of a Notion page by ID as Markdown
 # Usage:
 # $ phone-pickup-read <page_id>
 setopt local_options err_return
@@ -8,4 +8,4 @@ local pageId="$1"
 # Guard: page ID must be provided
 [[ "$pageId" == "" ]] && return 1
 
-notion-api "blocks/${pageId}/children"
+notion block list "$pageId" --md

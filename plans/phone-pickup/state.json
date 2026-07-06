@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-rewrite-phone-pickup-read.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced notion-api call with `notion block list <page_id> --md`; rewrote tests to mock notion binary and assert Markdown output.",
     "blocked_by": ["01"]
   },
   {
