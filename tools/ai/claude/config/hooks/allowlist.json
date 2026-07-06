@@ -1,5 +1,4 @@
 [
-  "/tmp/oroshi/claude/scripts/**",
   "adb",
   "apt-cache search",
   "apt-cache show",
@@ -88,6 +87,7 @@
   "git ls-tree",
   "git merge-base",
   "git mv",
+  "git remote get-url",
   "git rev-parse",
   "git rm",
   "git show",
@@ -268,5 +268,6 @@
   "zsh-lint-custom",
   "zsh-lint-shellcheck",
   "./node_modules/.bin/bats",
+  "/tmp/oroshi/claude/scripts/**",
   "/usr/bin/curl"
 ]

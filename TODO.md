@@ -3,8 +3,6 @@
 check that all fzf-related code (outside of nvim) is correctly located in the
 same subdir
 
-Ensure all fzf-rleated tests pass
-
 ## Misc
 
 Simplify the skill-writer skill, to remove the whole TDD part.
