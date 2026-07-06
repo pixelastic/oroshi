@@ -9,6 +9,8 @@ Simplify the skill-writer skill, to remove the whole TDD part.
 the skill-writer skill is too verbose. It has a TDD cycle that I don't actually
 use. I should remove that and only keep the templates.
 
+The unit in ls (k, M, etc) is in bright white; should dimmer
+
 Make Claude inspect all the history of the review logs of deleted worktrees, and
 classifying the most common skipped review, so I can improve my skills so they
 are no longer suggested.

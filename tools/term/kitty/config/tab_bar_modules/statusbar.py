@@ -67,7 +67,7 @@ def initStatusbar():
         checkForForcedRefresh()
         checkForForcedReload()
 
-    add_timer(_beaconCheck, 5, True)
+    add_timer(_beaconCheck, 1, True)
 
 
 # Mark the tab manager as dirty so Kitty will redraw it whenever it can

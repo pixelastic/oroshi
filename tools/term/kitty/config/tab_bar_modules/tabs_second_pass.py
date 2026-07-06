@@ -40,7 +40,7 @@ def drawTab(tabData, screen):
     # Draw tab
     screen.cursor.fg = tabData["fg"]
     screen.cursor.bg = tabData["bg"]
-    screen.draw(tabData["title"])
+    screen.draw(f"[{tabData['title']}]")
 
     # Draw separator
     screen.cursor.bg = tabData["separatorBg"]
