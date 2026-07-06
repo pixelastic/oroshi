@@ -18,11 +18,6 @@ This skill is read-only: it never creates, updates, or deletes Notion pages.
 
 Call `phone-pickup-list` to fetch all entries from the Notion database.
 
-Parse the JSON output to extract, for each entry:
-- `title` — the entry name
-- `date` — entry date (added or last edited)
-- `tags` — any associated tags
-
 ### Step 2 — Match
 
 Match the user's description against title, date, and tags to identify the best candidate.
@@ -33,11 +28,11 @@ Match the user's description against title, date, and tags to identify the best 
 
 ### Step 3 — Read
 
-Call `phone-pickup-read {page_id}` with the identified page ID to fetch the page block content.
+Call `phone-pickup-read {page_id}` with the identified page ID to fetch the page content.
 
 ### Step 4 — Present
 
-Parse and present the content to the user, then continue the conversation as if it had started here.
+Read the markdown content, then continue the conversation as if it had started here.
 
 ---
 

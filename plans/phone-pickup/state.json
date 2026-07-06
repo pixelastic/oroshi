@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-update-skill-md.md",
-    "done": false,
+    "done": true,
+    "recap": "Updated SKILL.md Step 1 to describe the minimal JSON array {id, date, tags, title} and Step 3 to state output is pure Markdown.",
     "blocked_by": ["02", "03"]
   }
 ]
