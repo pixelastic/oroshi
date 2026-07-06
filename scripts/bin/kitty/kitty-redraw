@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# Force immediate Tab Bar Redraw via kitty set-tab-color hack
+# Usage:
+# $ kitty-redraw    # Redraw the Tab Bar for all tabs
+set -e
+kitty @ set-tab-color --match all active_bg=NONE

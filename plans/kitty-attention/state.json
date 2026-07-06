@@ -16,7 +16,8 @@
   {
     "id": "02",
     "issue": "issues/02-kitty-redraw.md",
-    "done": false,
+    "done": true,
+    "recap": "Created kitty-redraw script: calls `kitty @ set-tab-color --match all active_bg=NONE` to trigger Tab Bar Redraw; silent on success, exits non-zero if Kitty unreachable.",
     "blocked_by": ["01"]
   },
   {

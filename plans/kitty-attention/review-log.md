@@ -1,3 +1,29 @@
+## Issue 02 — kitty-redraw
+
+### bats_mock pattern flagged as incorrect
+
+```bats
+kitty() { echo "$*" >"$BATS_TMP_DIR/kitty-args"; }
+bats_mock kitty
+```
+
+**Problem:** Reviewer claimed inline function + bats_mock is wrong — that bats_mock overwrites the stub.
+**Reason skipped:** False positive. `bats_mock` uses `declare -f` to serialize the function defined before it. The stub body IS the mock. This is the established pattern in the codebase (see `kitty-tab-create.bats`). Tests pass.
+
+### `kitty @` flagged as short-form arg
+
+```zsh
+kitty @ set-tab-color --match all active_bg=NONE
+```
+
+**Problem:** Reviewer flagged `@` as a shorthand for `--to`.
+**Reason skipped:** `@` is kitty's remote control subcommand syntax, not a short option flag. The long-form rule targets option flags (`-q` → `--quiet`). Not applicable.
+
+### No test for "no JSON reload" property
+
+**Problem:** Spec says "No data is reloaded from disk" — reviewer flagged no test asserting this.
+**Reason skipped:** This is an implementation property of the `kitty @ set-tab-color` mechanism itself. It cannot be tested at the script level without inspecting Kitty internals. The mechanism is documented in GUIDANCE.md from the prior validation issue.
+
 ## Issue 00 — Tab bar hot-reload
 
 ### Hardcoded beacon path in statusbar.py

@@ -3,6 +3,8 @@
 check that all fzf-related code (outside of nvim) is correctly located in the
 same subdir
 
+preview of ralph is broken
+
 ## Misc
 
 Simplify the skill-writer skill, to remove the whole TDD part.
