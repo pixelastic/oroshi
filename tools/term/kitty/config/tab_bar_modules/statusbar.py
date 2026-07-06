@@ -14,7 +14,7 @@ if "_generation" not in globals():
 statusbarState = {
     # List of items to display in the status bar.
     # Order is important, and number is the refresh delay (in seconds)
-    # Note: use kitty-refresh script to force-refresh the display for debugging
+    # Note: use kitty-reload script to force-reload the display for debugging
     "manifest": [
         # "spotify:5",
         # "sound-mode:60",
@@ -102,7 +102,7 @@ def statusbarUpdate(statusbarName: str):
     refreshStatusbar()
 
 
-# External tools can call kitty-refresh (which will create a beacon file)
+# External tools can call kitty-reload (which will create a beacon file)
 # We will periodically check for this beacon, and if present refresh the
 # statusbar
 def checkForForcedRefresh():

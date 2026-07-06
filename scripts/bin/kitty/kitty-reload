@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# Reload Kitty tab bar
+# Usage:
+# $ kitty-reload
+set -e
+
+# Write reload beacon for tab bar Python to detect at next redraw
+touch "$OROSHI_TMP_FOLDER/kitty-refresh"
+
+# Force immediate tab bar redraw
+kitty-redraw

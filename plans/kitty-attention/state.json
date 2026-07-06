@@ -30,7 +30,8 @@
   {
     "id": "04",
     "issue": "issues/04-kitty-reload.md",
-    "done": false,
+    "done": true,
+    "recap": "Renamed kitty-refresh to kitty-reload; replaced kill -SIGUSR1 approach with beacon touch + kitty-redraw call; updated callers in kitty-tab-attention-add/remove; updated comments in statusbar.py.",
     "blocked_by": ["02"]
   },
   {

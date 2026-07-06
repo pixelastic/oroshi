@@ -17,4 +17,4 @@ grep -q "^${tabId}$" "$attentionFile" 2>/dev/null && exit 0
 
 # Add tab ID and refresh
 echo "$tabId" >>"$attentionFile"
-kitty-refresh
+kitty-reload

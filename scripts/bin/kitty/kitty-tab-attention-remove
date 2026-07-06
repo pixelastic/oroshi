@@ -14,4 +14,4 @@ local attentionFile=$OROSHI_TMP_FOLDER/kitty/attention
 
 # Remove tab ID and refresh
 sed -i "/^${tabId}$/d" "$attentionFile"
-kitty-refresh
+kitty-reload
