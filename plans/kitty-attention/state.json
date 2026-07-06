@@ -58,7 +58,8 @@
   {
     "id": "08",
     "issue": "issues/08-userpromptsubmit-hook.md",
-    "done": false,
+    "done": true,
+    "recap": "Created userPromptSubmit hook: skips silently when KITTY_WINDOW_ID absent, otherwise resolves tab ID and calls kitty-tab-attention-remove; registered under UserPromptSubmit in settings.json.",
     "blocked_by": ["05"]
   }
 ]

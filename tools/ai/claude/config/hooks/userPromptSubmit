@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# Triggered when the user sends a message to Claude
+# Usage: (invoked automatically by Claude Code on UserPromptSubmit event)
+set -e
+
+# Skip if not running inside Kitty
+[[ "$KITTY_WINDOW_ID" == "" ]] && exit 0
+
+local tabId="$(kitty-window-tab-id "$KITTY_WINDOW_ID")"
+kitty-tab-attention-remove "$tabId"

@@ -1,3 +1,23 @@
+## Issue 08 — UserPromptSubmit hook
+
+### `local` outside function body
+
+```zsh
+local tabId="$(kitty-window-tab-id "$KITTY_WINDOW_ID")"
+```
+
+**Problem:** Standards reviewer flagged `local` as invalid outside a function body.
+**Reason skipped:** Same pattern used throughout the `stop` hook (`local stdinData=`, `local transcriptPath=`, etc.). `zsh-lint` does not flag it. Consistent with established project convention.
+
+### Hardcoded path in settings.json
+
+```json
+"command": "/home/tim/.oroshi/tools/ai/claude/config/hooks/userPromptSubmit"
+```
+
+**Problem:** Reviewers flagged `$OROSHI_ROOT` convention not followed.
+**Reason skipped:** Matches exactly the existing Stop hook entry format in the same file. Claude Code settings.json does not expand shell variables — hardcoded path is required.
+
 ## Issue 07 — Stop hook
 
 ### `[ ]` vs `[[ ]]` in test assertions
