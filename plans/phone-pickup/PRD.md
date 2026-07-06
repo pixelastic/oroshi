@@ -9,7 +9,7 @@ Replace the raw Notion API calls in both scripts with `notion-cli` (`4ier/notion
 - `phone-pickup-list` → minimal JSON array `[{id, date, tags, title}]`, sorted by date descending, capped at 50 entries
 - `phone-pickup-read` → pure Markdown rendered from Notion blocks
 
-The `notion-cli` tool requires `NOTION_TOKEN` instead of the existing `NOTION_API_KEY`. The three shared `notion-api` helper functions are updated to use `NOTION_TOKEN`, and the environment variable is renamed at the definition site.
+The `notion-cli` tool authenticates via `NOTION_TOKEN`. The three shared `notion-api` helper functions are updated to use `NOTION_TOKEN`, and the environment variable is renamed at the definition site.
 
 ## User Stories
 
@@ -17,12 +17,12 @@ The `notion-cli` tool requires `NOTION_TOKEN` instead of the existing `NOTION_AP
 2. As Claude running the phone-pickup skill, I want `phone-pickup-read` to return pure Markdown, so that I can present the content directly without parsing nested JSON block structures.
 3. As Claude running the phone-pickup skill, I want the list to be sorted by date descending and capped at 50 entries, so that recent conversations are always at the top and the payload stays bounded as the database grows.
 4. As a developer reinstalling the environment, I want a reproducible install script for `notion-cli`, so that the tool is available after a machine wipe without manual steps.
-5. As a developer using `notion-api`, `notion-api-post`, or `notion-api-patch`, I want them to read from `NOTION_TOKEN` instead of `NOTION_API_KEY`, so that the auth variable is consistent with `notion-cli`'s expectation.
+5. As a developer using `notion-api`, `notion-api-post`, or `notion-api-patch`, I want them to read from `NOTION_TOKEN`, so that the auth variable is consistent with `notion-cli`'s expectation.
 
 ## Implementation Decisions
 
 - **Tool**: `4ier/notion-cli` v0.7.0, installed from the official GitHub release `.deb` (Linux amd64). Install script lives alongside other API tool installs.
-- **Auth**: `notion-cli` reads `NOTION_TOKEN`. The three existing `notion-api` helpers are updated from `NOTION_API_KEY` to `NOTION_TOKEN`. The environment variable is renamed at the definition root in the user's dotfiles.
+- **Auth**: `notion-cli` reads `NOTION_TOKEN`. The three existing `notion-api` helpers use `NOTION_TOKEN`. The environment variable is renamed at the definition root in the user's dotfiles.
 - **`phone-pickup-list` output shape** (from prototype):
   ```json
   [

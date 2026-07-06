@@ -45,4 +45,7 @@ bats-lint tools/term/zsh/config/functions/autoload/ai/phone-pickup/__tests__/pho
 
 ## Discoveries
 
-_Append findings here after each issue._
+### Issue 01 — Rename notion token
+
+- `notion-api-patch` had no NOTION_TOKEN guard while the two peer functions did — added guard when touching the file (pre-existing issue rule)
+- PRD.md is in the repo and counts toward "no other files reference NOTION_API_KEY" — scrub plan docs too
