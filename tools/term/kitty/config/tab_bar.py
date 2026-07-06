@@ -5,13 +5,13 @@ from kitty.tab_bar import DrawData, ExtraData, TabBarData
 
 # Add the current directory to Python path so we can import tab_bar_modules
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from tab_bar_modules.projects import initProjectList
-from tab_bar_modules.statusbar import initStatusbar
-from tab_bar_modules.tabs_first_pass import firstPass
-from tab_bar_modules.tabs_second_pass import secondPass
+import tab_bar_modules.projects as projects_module
+import tab_bar_modules.statusbar as statusbar_module
+import tab_bar_modules.tabs_first_pass as tabs_first_pass_module
+import tab_bar_modules.tabs_second_pass as tabs_second_pass_module
 
-initProjectList()
-initStatusbar()
+projects_module.initProjectList()
+statusbar_module.initStatusbar()
 
 
 # Default kitty method called each time the statusbar needs to be displayed.
@@ -28,11 +28,11 @@ def draw_tab(
     extra_data: ExtraData,
 ) -> int:
     if extra_data.for_layout:
-        firstPass(
+        tabs_first_pass_module.firstPass(
             draw_data, screen, tab, before, max_title_length, index, is_last, extra_data
         )
     else:
-        secondPass(
+        tabs_second_pass_module.secondPass(
             draw_data, screen, tab, before, max_title_length, index, is_last, extra_data
         )
 

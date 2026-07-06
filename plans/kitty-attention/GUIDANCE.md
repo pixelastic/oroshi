@@ -58,4 +58,9 @@ Glossary and PRD before proceeding.
 
 ## Discoveries
 
-(append findings here after each issue)
+### Issue 00 — Tab bar hot-reload
+
+- `if "_generation" not in globals()` is the correct Python idiom to persist a module-level variable across `importlib.reload()` calls — module code re-executes but the module's `__dict__` is mutated in-place, so the guard prevents resetting.
+- `$OROSHI_TMP_FOLDER` is the correct env var for `/home/tim/local/tmp/oroshi/` in ZSH scripts (not hardcoded paths). Python files in the tab bar use hardcoded paths (pre-existing pattern; Python can't use env vars).
+- `ctrl+shift+r` is fully occupied by the special-character keybinding system (`Ⓡ`); use `alt+shift+r` for tab bar reload instead.
+- Pre-reload increment of `_generation` is a valid safety measure even though `initStatusbar()` also increments — it ensures stale callbacks can't fire in the brief window during the reload sequence.

@@ -7,6 +7,10 @@ from kitty.fast_data_types import Screen, add_timer
 from kitty.tab_bar import Formatter, draw_attributed_string
 from tab_bar_modules.colors import getCursorColor
 
+# Persists across hot-reloads so stale timer callbacks can self-invalidate
+if "_generation" not in globals():
+    _generation = 0
+
 statusbarState = {
     # List of items to display in the status bar.
     # Order is important, and number is the refresh delay (in seconds)
@@ -18,7 +22,7 @@ statusbarState = {
         "cpu:30",
         "ram:30",
         # "ping:30",
-        # "clock:60",
+        "clock:60",
         # "dropbox:300",
     ],
     "order": [],
@@ -28,6 +32,10 @@ statusbarState = {
 
 # Init the STATUSBAR object
 def initStatusbar():
+    global _generation
+    _generation += 1
+    current_generation = _generation
+
     for item in statusbarState["manifest"]:
         itemName, itemFrequency = item.split(":")
         itemFrequency = int(itemFrequency)
@@ -42,16 +50,24 @@ def initStatusbar():
         }
 
         # Update this specific statusbar part right now
-        callback = lambda _=None, itemName=itemName: (  # noqa: E731
-            statusbarUpdate(itemName),
-        )
+        def callback(_=None, _name=itemName, _gen=current_generation):
+            if _gen != _generation:
+                return
+            statusbarUpdate(_name)
+
         callback()
 
         # And mark it to run again at a regular frequency
         add_timer(callback, itemFrequency, True)
 
-    # Check for the kitty-refresh beacon every 5s
-    add_timer(lambda *_: checkForForcedRefresh(), 5, True)
+    # Check for beacons every 5s (generation-aware to avoid timer accumulation)
+    def _beaconCheck(*_, _gen=current_generation):
+        if _gen != _generation:
+            return
+        checkForForcedRefresh()
+        checkForForcedReload()
+
+    add_timer(_beaconCheck, 5, True)
 
 
 # Mark the tab manager as dirty so Kitty will redraw it whenever it can
@@ -108,6 +124,24 @@ def checkForForcedRefresh():
 
     # We remove the beacon
     os.remove(beaconPath)
+
+
+# External tools can call kitty-tab-bar-reload (which will create a beacon file)
+# We will reload all tab_bar_modules so edits take effect without restarting Kitty
+def checkForForcedReload():
+    beaconPath = "/home/tim/local/tmp/oroshi/kitty-tab-bar-reload"
+
+    # Nothing to do
+    if not os.path.exists(beaconPath):
+        return
+
+    # Remove the beacon first to avoid double-trigger
+    os.remove(beaconPath)
+
+    # Lazy import to avoid circular dependency
+    from tab_bar_modules.reload import reloadTabBar
+
+    reloadTabBar()
 
 
 # Display the status bar

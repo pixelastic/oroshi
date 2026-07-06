@@ -2,7 +2,8 @@
   {
     "id": "00",
     "issue": "issues/00-tab-bar-hot-reload.md",
-    "done": false,
+    "done": true,
+    "recap": "Added hot-reload: module-level imports in tab_bar.py, reload.py with reloadTabBar(), generation counter in statusbar.py to prevent timer accumulation, beacon-triggered reload, kitty-tab-bar-reload script, and alt+shift+r keybinding.",
     "blocked_by": []
   },
   {

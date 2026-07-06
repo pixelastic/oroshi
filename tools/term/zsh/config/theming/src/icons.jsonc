@@ -105,6 +105,7 @@
     "ram-fire":     "",
     "cpu":          "",
     "cpu-fire":     "",
+    "clock":        "",
     "ping":         "",
     "ping-offline": ""
   },

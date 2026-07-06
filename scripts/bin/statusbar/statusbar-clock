@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+# JSON info about current time (HH:MM)
+# Usage:
+# $ statusbar-clock
+set -e
+
+icons-load-definitions
+
+local time="$(date +"%H:%M:%S")"
+jo text="$ICONS[statusbar-clock] ${time} " | jo -a
