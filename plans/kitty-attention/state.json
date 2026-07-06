@@ -44,7 +44,8 @@
   {
     "id": "06",
     "issue": "issues/06-tab-bar-render.md",
-    "done": false,
+    "done": true,
+    "recap": "Updated parseRawTabData.py: loads icons.json once at module level, reads Attention File fresh on each Redraw, appends Attention Icon before fullscreen icon when active.",
     "blocked_by": ["03", "05"]
   },
   {

@@ -1,3 +1,20 @@
+## Issue 06 — Tab bar render
+
+### Hardcoded paths in parseRawTabData.py
+
+```python
+_ICONS_PATH = "/home/tim/.oroshi/tools/term/zsh/config/theming/dist/icons.json"
+_ATTENTION_FILE = "/home/tim/local/tmp/oroshi/kitty/attention"
+```
+
+**Problem:** Standards reviewer flagged these as violating `feedback_oroshi_root.md` (use `$OROSHI_ROOT` env var, not hardcoded paths).
+**Reason skipped:** GUIDANCE.md explicitly documents: "Python files in the tab bar use hardcoded paths (pre-existing pattern; Python can't use env vars)." The pre-existing `statusbar.py` uses the same hardcoded pattern throughout. The feedback rule applies to ZSH scripts; the project guidance overrides it for Python tab bar modules.
+
+### statusbar.py beacon path not updated
+
+**Problem:** Spec says "Also update `tab_bar_modules/statusbar.py` to reference `kitty-reload` beacon path if hardcoded path has changed."
+**Reason skipped:** Condition not triggered. `kitty-reload` writes beacon to `$OROSHI_TMP_FOLDER/kitty-refresh` = `/home/tim/local/tmp/oroshi/kitty-refresh`, which exactly matches `statusbar.py` line 109. No change needed.
+
 ## Issue 05 — Attention scripts
 
 ### Spec: "replace kitty-refresh" wording

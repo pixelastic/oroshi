@@ -1,5 +1,15 @@
+import json
+import os
 from kitty.tab_bar import DrawData, TabBarData, as_rgb
 from tab_bar_modules.projects import getProjectData
+
+# Load icons once at module level
+_ICONS_PATH = "/home/tim/.oroshi/tools/term/zsh/config/theming/dist/icons.json"
+with open(_ICONS_PATH) as _f:
+    _icons = json.load(_f)
+
+# Attention file — list of tab IDs that need user attention
+_ATTENTION_FILE = "/home/tim/local/tmp/oroshi/kitty/attention"
 
 
 # Parses raw data about the tab, as returned by kitty, into a flat object
@@ -21,10 +31,19 @@ def parseRawTabData(tab: TabBarData, draw_data: DrawData):
     projectData = getProjectData(name)
     icon = projectData.get("icon", "")
 
-    # Build the title with icon, name and potential full-screen icon
+    # Read attention state fresh on every Redraw (not cached)
+    isAttention = False
+    if os.path.exists(_ATTENTION_FILE):
+        with open(_ATTENTION_FILE) as f:
+            attentionIds = {line.strip() for line in f if line.strip()}
+        isAttention = str(id) in attentionIds
+
+    # Build the title with icon, name, attention and potential full-screen icon
     title = f" {icon}{name} "
+    if isAttention:
+        title = f"{title}{_icons['kitty-tab-attention']}"
     if isFullscreen:
-        title = f"{title}󰈈 "
+        title = f"{title}{_icons['kitty-tab-fullscreen']} "
 
     tabData = {
         "id": id,
