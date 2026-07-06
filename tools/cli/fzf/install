@@ -11,6 +11,6 @@ echo "- enable keybindings"
 echo "- NOT not update your zshrc files"
 ./install
 
-# 
+# Install fzf-tabs, for Shift-Tab completion
 cd ~/local/etc
 git-directory-sync git@github.com:Aloxaf/fzf-tab.git
