@@ -1,8 +1,16 @@
 #!/usr/bin/env zsh
 set -ex
 
+# Install fzf
 cd ~/local/src
-git-directory-sync https://github.com/junegunn/fzf.git
+git-directory-sync git@github.com:junegunn/fzf.git
 cd ./fzf
-echo "If asked, confirm that you want to enable autocompletion and keybindings (but not update your zshrc files)"
+echo "If asked, confirm that you want to:"
+echo "- enable autocompletion"
+echo "- enable keybindings"
+echo "- NOT not update your zshrc files"
 ./install
+
+# 
+cd ~/local/etc
+git-directory-sync git@github.com:Aloxaf/fzf-tab.git
