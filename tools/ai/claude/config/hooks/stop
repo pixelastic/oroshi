@@ -1,18 +1,25 @@
 #!/usr/bin/env zsh
 # Triggered whenever Claude finishes answering
+# Usage: (invoked automatically by Claude Code on stop event)
 set -e
 
-# If sound specifically disabled, we stop
-[[ "${OROSHI_CLAUDE_STOP_SOUND}" == "no" ]] && exit 0
-# Same if set, but empty
-[[ "${OROSHI_CLAUDE_STOP_SOUND}" == "" ]] && exit 0
-
-# Read stdin to get transcript path
+# Read stdin to get transcript path (always needed)
 local stdinData="$(cat)"
 local transcriptPath="$(printf '%s\n' "$stdinData" | jq -r '.transcript_path // empty')"
 
-# Do not play sound for subagents
+# Skip entirely for subagent completions
 [[ "$transcriptPath" == */subagents/* ]] && exit 0
+
+# Add attention icon if running inside Kitty and tab is not currently focused
+if [[ "$KITTY_WINDOW_ID" != "" ]]; then
+  local tabId="$(kitty-window-tab-id "$KITTY_WINDOW_ID")"
+  kitty-tab-focused "$tabId" 2>/dev/null || kitty-tab-attention-add "$tabId"
+fi
+
+# Sound-only early exit — does not affect attention
+[[ "${OROSHI_CLAUDE_STOP_SOUND}" == "no" ]] && exit 0
+# Same if set, but empty
+[[ "${OROSHI_CLAUDE_STOP_SOUND}" == "" ]] && exit 0
 
 # Custom sound: play it directly
 if [[ "${OROSHI_CLAUDE_STOP_SOUND}" != "auto" ]]; then

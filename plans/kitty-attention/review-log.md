@@ -1,3 +1,10 @@
+## Issue 07 — Stop hook
+
+### `[ ]` vs `[[ ]]` in test assertions
+
+**Problem:** Standards reviewer flagged new tests using single-bracket `[ ]` instead of double-bracket `[[ ]]`.
+**Reason skipped:** Pre-existing style. All existing tests in `stop.bats` use `[ ]`. The new tests are consistent with the file they were added to. Not introduced by this change.
+
 ## Issue 06 — Tab bar render
 
 ### Hardcoded paths in parseRawTabData.py

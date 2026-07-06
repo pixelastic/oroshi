@@ -51,7 +51,8 @@
   {
     "id": "07",
     "issue": "issues/07-stop-hook.md",
-    "done": false,
+    "done": true,
+    "recap": "Restructured stop hook: reads stdin first, skips subagents, then adds attention if KITTY_WINDOW_ID is set and tab is not focused, then exits early for disabled sound, then runs audio logic unchanged.",
     "blocked_by": ["05"]
   },
   {

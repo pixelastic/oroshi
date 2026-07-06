@@ -21,6 +21,64 @@ make_transcript() {
   echo '{"type":"user","timestamp":"'"$ts"'"}' > "$path"
 }
 
+# Mock helpers for attention tests
+mock_kitty_attention() {
+  kitty-window-tab-id() { echo "5"; }
+  bats_mock kitty-window-tab-id
+  kitty-tab-focused() { return 1; }
+  bats_mock kitty-tab-focused
+  kitty-tab-attention-add() { touch "$BATS_TMP_DIR/attention-added"; }
+  bats_mock kitty-tab-attention-add
+}
+
+@test "attention: added when tab not focused, even with sound disabled" {
+  export KITTY_WINDOW_ID="42"
+  export OROSHI_CLAUDE_STOP_SOUND="no"
+  mock_kitty_attention
+
+  run_stop '{"transcript_path":"/some/path.jsonl"}'
+
+  [ "$status" -eq 0 ]
+  [ -f "$BATS_TMP_DIR/attention-added" ]
+}
+
+@test "attention: not added for subagents" {
+  export KITTY_WINDOW_ID="42"
+  export OROSHI_CLAUDE_STOP_SOUND="no"
+  mock_kitty_attention
+
+  run_stop '{"transcript_path":"/home/user/.claude/sessions/abc/subagents/xyz.jsonl"}'
+
+  [ "$status" -eq 0 ]
+  [ ! -f "$BATS_TMP_DIR/attention-added" ]
+}
+
+@test "attention: not added when KITTY_WINDOW_ID absent" {
+  unset KITTY_WINDOW_ID
+  export OROSHI_CLAUDE_STOP_SOUND="no"
+  kitty-tab-attention-add() { touch "$BATS_TMP_DIR/attention-added"; }
+  bats_mock kitty-tab-attention-add
+
+  run_stop '{"transcript_path":"/some/path.jsonl"}'
+
+  [ "$status" -eq 0 ]
+  [ ! -f "$BATS_TMP_DIR/attention-added" ]
+}
+
+@test "attention: not added when tab is focused" {
+  export KITTY_WINDOW_ID="42"
+  export OROSHI_CLAUDE_STOP_SOUND="no"
+  kitty-window-tab-id() { echo "5"; }
+  kitty-tab-focused() { return 0; }
+  kitty-tab-attention-add() { touch "$BATS_TMP_DIR/attention-added"; }
+  bats_mock kitty-window-tab-id kitty-tab-focused kitty-tab-attention-add
+
+  run_stop '{"transcript_path":"/some/path.jsonl"}'
+
+  [ "$status" -eq 0 ]
+  [ ! -f "$BATS_TMP_DIR/attention-added" ]
+}
+
 @test "silent when OROSHI_CLAUDE_STOP_SOUND is no" {
   export OROSHI_CLAUDE_STOP_SOUND="no"
   run_stop '{"transcript_path":"/some/path.jsonl"}'
