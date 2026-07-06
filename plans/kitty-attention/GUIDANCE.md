@@ -68,3 +68,8 @@ Glossary and PRD before proceeding.
 - `$OROSHI_TMP_FOLDER` is the correct env var for `/home/tim/local/tmp/oroshi/` in ZSH scripts (not hardcoded paths). Python files in the tab bar use hardcoded paths (pre-existing pattern; Python can't use env vars).
 - `ctrl+shift+r` is fully occupied by the special-character keybinding system (`Ⓡ`); use `alt+shift+r` for tab bar reload instead.
 - Pre-reload increment of `_generation` is a valid safety measure even though `initStatusbar()` also increments — it ensures stale callbacks can't fire in the brief window during the reload sequence.
+
+### Issue 05 — Attention scripts
+
+- `run ! command` in bats is an assertion (fails the test if command exits 0), not an exit-code inverter. After `run !`, `$status` holds the actual non-zero exit code of the command — do NOT follow it with `[ "$status" -eq 0 ]`.
+- `zsh`'s `:h` modifier (`${file:h}`) gives the parent directory — use it with `mkdir -p` to create the parent dir before `touch`ing a new file.

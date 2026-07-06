@@ -1,20 +1,20 @@
 #!/usr/bin/env zsh
-# NOTE: This is a WIP and is not implemented properly
 # Add tab to attention list
 # Usage:
-# $ kitty-tab-attention-add {tabId}     # Add {tabId} from attention list
-# $ kitty-tab-attention-add             # Add current tab from attention list
+# $ kitty-tab-attention-add {tabId}     # Add {tabId} to attention list
+# $ kitty-tab-attention-add             # Add current tab to attention list
 set -e
 local tabId=$1
 [[ $tabId == "" ]] && tabId="$(kitty-tab-id)"
 
-# Return early if file doesn't exist
 local attentionFile=$OROSHI_TMP_FOLDER/kitty/attention
-[[ ! -f "$attentionFile" ]] && exit 0
+
+# Create file and parent dir if absent; proceed to append
+[[ ! -f "$attentionFile" ]] && mkdir -p "${attentionFile:h}" && touch "$attentionFile"
 
 # Return early if tab ID already in file
 grep -q "^${tabId}$" "$attentionFile" 2>/dev/null && exit 0
 
-# Add tab ID and refresh
+# Add tab ID and redraw
 echo "$tabId" >>"$attentionFile"
-kitty-reload
+kitty-redraw

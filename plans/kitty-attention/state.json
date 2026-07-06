@@ -37,7 +37,8 @@
   {
     "id": "05",
     "issue": "issues/05-attention-scripts.md",
-    "done": false,
+    "done": true,
+    "recap": "Fixed kitty-tab-attention-add to create the attention file and parent dir if absent; replaced kitty-reload with kitty-redraw in both scripts; added bats tests for all 8 behavioral requirements.",
     "blocked_by": ["02"]
   },
   {

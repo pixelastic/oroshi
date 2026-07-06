@@ -1,3 +1,20 @@
+## Issue 05 — Attention scripts
+
+### Spec: "replace kitty-refresh" wording
+
+**Problem:** Spec says "replace `kitty-refresh`" but the diff replaces `kitty-reload`.
+**Reason skipped:** Stale spec language. By implementation time, `kitty-refresh` had already been renamed to `kitty-reload` (issue 04). Replacing `kitty-reload` with `kitty-redraw` is correct.
+
+### bats_mock overwrites function body (spec)
+
+**Problem:** Spec reviewer flagged that `bats_mock kitty-redraw` might overwrite the function body defined just before.
+**Reason skipped:** Same false positive as issue 02 review-log. `bats_mock` exports the already-defined function; it does not redefine it. Tests pass.
+
+### kitty-tab-id not mocked for no-arg case
+
+**Problem:** `kitty-tab-id` is not mocked for the implicit-tab fallback path.
+**Reason skipped:** All tests pass an explicit tabId. The no-arg case is not in the spec's behavioral test list.
+
 ## Issue 02 — kitty-redraw
 
 ### bats_mock pattern flagged as incorrect
