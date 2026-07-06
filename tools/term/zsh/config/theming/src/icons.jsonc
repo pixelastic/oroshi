@@ -5,7 +5,9 @@
   // Kitty
   "kitty": {
     // zsh-lint disable=missingIconsLoad
-    "tab-separator": ""
+    "tab-separator":  "",
+    "tab-attention":  "󱅫",
+    "tab-fullscreen": "󰈈"
   },
 
   // Zsh

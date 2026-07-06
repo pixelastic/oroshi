@@ -23,7 +23,8 @@
   {
     "id": "03",
     "issue": "issues/03-icons-add.md",
-    "done": false,
+    "done": true,
+    "recap": "Added kitty-tab-attention (󱅫) and kitty-tab-fullscreen (󰈈) to icons.jsonc and rebuilt dist files.",
     "blocked_by": []
   },
   {
