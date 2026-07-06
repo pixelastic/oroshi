@@ -1,9 +1,15 @@
 [
   {
+    "id": "00",
+    "issue": "issues/00-tab-bar-hot-reload.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
     "id": "01",
     "issue": "issues/01-validate-redraw.md",
     "done": false,
-    "blocked_by": []
+    "blocked_by": ["00"]
   },
   {
     "id": "02",
