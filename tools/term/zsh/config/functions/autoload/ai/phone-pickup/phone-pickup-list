@@ -8,4 +8,17 @@ if [[ "$NOTION_PHONE_DB_ID" == "" ]]; then
   return 1
 fi
 
-notion-api-post "databases/${NOTION_PHONE_DB_ID}/query" '{}'
+local jqFilter='[
+  .results[] | {
+    id,
+    date:  .properties.Date.date.start,
+    tags:  [.properties.Tags.multi_select[].name],
+    title: .properties.Name.title[0].plain_text
+  }
+]'
+
+notion db query "$NOTION_PHONE_DB_ID" \
+  --sort 'Date:desc' \
+  --limit 50 \
+  -f json |
+  jq "$jqFilter"

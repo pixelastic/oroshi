@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-rewrite-phone-pickup-list.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced notion-api-post call with `notion db query | jq`; rewrote tests to mock notion binary and assert JSON array shape with exactly {id, date, tags, title}.",
     "blocked_by": ["01"]
   },
   {
