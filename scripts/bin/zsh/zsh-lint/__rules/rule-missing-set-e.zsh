@@ -16,7 +16,7 @@ zshLintRule_missingSetE() {
   local line
   for line in "${(@f)content}"; do
     [[ "$line" =~ ^[[:space:]]*'#' ]] && continue
-    [[ "$line" =~ ^[[:space:]]*'set -e'[[:space:]]*$ ]] && return 0
+    [[ "$line" =~ ^[[:space:]]*'set -'[a-zA-Z]*'e'[a-zA-Z]*[[:space:]]*$ ]] && return 0
   done
 
   printf '%s%s%s%serror%s%d%s%s\n' \

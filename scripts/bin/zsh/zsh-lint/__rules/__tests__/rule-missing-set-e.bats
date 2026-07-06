@@ -23,6 +23,30 @@ run_this_rule() {
   expect_clean
 }
 
+@test "clean — set -ex present" {
+  local -a input=( '#!/usr/bin/env zsh' '# My script' 'set -ex' 'echo hello' )
+  run_this_rule "${input[@]}"
+  expect_clean
+}
+
+@test "clean — set -xe present" {
+  local -a input=( '#!/usr/bin/env zsh' '# My script' 'set -xe' 'echo hello' )
+  run_this_rule "${input[@]}"
+  expect_clean
+}
+
+@test "clean — set -eE present" {
+  local -a input=( '#!/usr/bin/env zsh' '# My script' 'set -eE' 'echo hello' )
+  run_this_rule "${input[@]}"
+  expect_clean
+}
+
+@test "flags — set -x without e still flags" {
+  local -a input=( '#!/usr/bin/env zsh' '# My script' 'set -x' 'echo hello' )
+  run_this_rule "${input[@]}"
+  expect_rule_violation missingSetE 1
+}
+
 @test "flags — set -e in a comment does not count" {
   local -a input=( '#!/usr/bin/env zsh' '# set -e is needed' 'echo hello' )
   run_this_rule "${input[@]}"
