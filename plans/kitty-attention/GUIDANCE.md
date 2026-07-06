@@ -58,6 +58,10 @@ Glossary and PRD before proceeding.
 
 ## Discoveries
 
+### Issue 01 — Validate Redraw
+
+- `kitty @ set-tab-color --match "id:<tabId>" active_bg=NONE` triggers an immediate Tab Bar redraw with no perceptible delay and no visual side effects. The core architecture assumption is confirmed.
+
 ### Issue 00 — Tab bar hot-reload
 
 - `if "_generation" not in globals()` is the correct Python idiom to persist a module-level variable across `importlib.reload()` calls — module code re-executes but the module's `__dict__` is mutated in-place, so the guard prevents resetting.

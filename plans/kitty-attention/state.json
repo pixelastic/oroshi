@@ -9,7 +9,8 @@
   {
     "id": "01",
     "issue": "issues/01-validate-redraw.md",
-    "done": false,
+    "done": true,
+    "recap": "Validated: `kitty @ set-tab-color --match \"id:<tabId>\" active_bg=NONE` triggers an immediate Tab Bar redraw with no visual side effects. Architecture assumption confirmed.",
     "blocked_by": ["00"]
   },
   {
