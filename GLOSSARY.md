@@ -8,3 +8,4 @@
 - [Project Display](tools/term/zsh/config/functions/autoload/project/GLOSSARY.md) — Projects, Contexts, Context Badges, Project Badges, Worktree Badges
 - [FZF](scripts/bin/fzf/__docs/GLOSSARY.md) — FZF Scripts, Lifecycle Functions, FZF Helpers, Neovim API, Legacy FZF
 - [FZF ctrl-r](scripts/bin/fzf/__docs/GLOSSARY-ctrl-r.md) — Eager/Lazy colorization strategies, History diff, Cache, Mutex
+- [Kitty Tab Bar](tools/term/kitty/config/GLOSSARY.md) — Tab Bar, Statusbar, Redraw, Reload, Reload Beacon, Attention

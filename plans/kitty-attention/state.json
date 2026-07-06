@@ -1,0 +1,50 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-validate-redraw.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-kitty-redraw.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-icons-add.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-kitty-reload.md",
+    "done": false,
+    "blocked_by": ["02"]
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-attention-scripts.md",
+    "done": false,
+    "blocked_by": ["02"]
+  },
+  {
+    "id": "06",
+    "issue": "issues/06-tab-bar-render.md",
+    "done": false,
+    "blocked_by": ["03", "05"]
+  },
+  {
+    "id": "07",
+    "issue": "issues/07-stop-hook.md",
+    "done": false,
+    "blocked_by": ["05"]
+  },
+  {
+    "id": "08",
+    "issue": "issues/08-userpromptsubmit-hook.md",
+    "done": false,
+    "blocked_by": ["05"]
+  }
+]
