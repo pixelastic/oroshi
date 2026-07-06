@@ -5,6 +5,17 @@ same subdir
 
 preview of ralph is broken
 
+## Kitty
+
+Review all the python + hooks code
+
+Diff betwen alt-R and alt-shift-r?
+
+kitty-reload shoudl be instand (beacon + -redrawn should trigger directly)
+
+I should expand to adding another "mode" icon, to show if the tab is in
+grill-me, prd, issues, ralph or nothing
+
 ## Misc
 
 Simplify the skill-writer skill, to remove the whole TDD part.
