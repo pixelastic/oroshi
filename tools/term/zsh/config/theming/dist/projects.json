@@ -584,6 +584,26 @@
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/gamemaster/dungeons/dungeons-pictures"
   },
+  "emulation": {
+    "background": {
+      "ansi": 201,
+      "hex": "#ffffff",
+      "name": "gray-1"
+    },
+    "backgroundInactive": {
+      "ansi": 200,
+      "hex": "#0c0f15",
+      "name": "gray-dark"
+    },
+    "foreground": {
+      "ansi": 35,
+      "hex": "#38a169",
+      "name": "green-5"
+    },
+    "hideNameInPrompt": false,
+    "icon": "󰊖 ",
+    "path": "~/local/www/projects/emulation"
+  },
   "ensureUrlTrailingSlash": {
     "background": {
       "ansi": 59,

@@ -177,6 +177,12 @@
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/gamemaster/dungeons/dungeons-pictures"
   },
+  "emulation": {
+    "background": "gray-1",
+    "foreground": "green-5",
+    "icon": "󰊖 ",
+    "path": "~/local/www/projects/emulation"
+  },
   "ensureUrlTrailingSlash": {
     "background": "blue-9",
     "foreground": "gray-2",
