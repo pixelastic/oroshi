@@ -20,9 +20,9 @@ fzf-regexp-source() {
 # Run ripgrep and output raw results
 # Globals: SEARCH_DIR, QUERY, EXTRA_RG_ARGS
 fzf-regexp-source-raw() {
-  # Fold mode On, do not display context around matches
-  local foldMode="$(fzf-var-read regexp-fold-mode on)"
-  local -a foldArg=()
+  # Fold mode: on=no context (compact), off=2 lines of context around matches
+  local foldMode="$(fzf-var-read regexp-fold-mode off)"
+  local -a foldArg=(--context=2)
   [[ "$foldMode" == "on" ]] && foldArg=(--context=0)
 
   rg \
@@ -144,7 +144,7 @@ fzf-regexp-dispatch() {
 
 # Toggle fold mode between on (no context) and off (2 lines of context)
 fzf-regexp-fold-toggle() {
-  local currentMode="$(fzf-var-read regexp-fold-mode on)"
+  local currentMode="$(fzf-var-read regexp-fold-mode off)"
   if [[ "$currentMode" == "on" ]]; then
     fzf-var-write regexp-fold-mode off
     return 0
@@ -160,7 +160,7 @@ fzf-regexp-fold-prompt() {
   colors-load-definitions
 
   # Pick icon based on mode: on=compact (can expand), off=context (can compact)
-  local currentMode="$(fzf-var-read regexp-fold-mode on)"
+  local currentMode="$(fzf-var-read regexp-fold-mode off)"
   local icon="$ICONS[fzf-unfold]"
   [[ "$currentMode" == "off" ]] && icon="$ICONS[fzf-fold]"
 
