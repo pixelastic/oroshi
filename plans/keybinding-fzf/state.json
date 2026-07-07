@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-primitives.md",
-    "done": false,
+    "done": true,
+    "recap": "Added kitty-overlay-window-id (resolves overlay parent via kitty-remote ls + jq) and kitty-window-send-text (forwards text to a window via kitty-remote send-text --match id:<id>).",
     "blocked_by": []
   },
   {

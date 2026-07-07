@@ -35,4 +35,7 @@ Add an `alt+p` Kitty keybinding that opens the `ctrl-p` file picker in an overla
 
 ## Discoveries
 
-<!-- Agents append findings here after each issue -->
+### Issue 01 — Primitives
+
+- `.[0].tabs[].windows[]` in jq is the established pattern (matches `kitty-window-get-var`); it implicitly scopes to the first OS window — acceptable for single-window Kitty setups.
+- `local` at script top-level is valid and conventional in this codebase — `kitty-window-get-var` uses the same pattern; not a bug.

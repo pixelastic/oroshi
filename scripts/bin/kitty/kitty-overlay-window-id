@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+# Get the parent window ID of the current overlay window
+# Usage:
+# $ kitty-overlay-window-id    # Prints parent window ID; exits non-zero if not an overlay
+set -e
+
+local parentId="$(kitty-remote ls | jq -r --arg winId "$KITTY_WINDOW_ID" '
+  .[0].tabs[].windows[]
+  | select(.id == ($winId|tonumber))
+  | .overlay_for
+')"
+
+# Not an overlay window if overlay_for is null
+if [[ "$parentId" == "null" || "$parentId" == "" ]]; then
+  echo "Not an overlay window" >&2
+  exit 1
+fi
+
+echo "$parentId"

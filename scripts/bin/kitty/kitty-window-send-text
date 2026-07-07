@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+# Send text to a Kitty window by ID as keyboard input
+# Usage:
+# $ kitty-window-send-text <windowId> <text>
+set -e
+
+local windowId="$1"
+local text="$2"
+
+if [[ "$windowId" == "" || "$text" == "" ]]; then
+  echo "Usage: kitty-window-send-text <window-id> <text>"
+  exit 2
+fi
+
+kitty-remote send-text --match "id:${windowId}" "$text"
