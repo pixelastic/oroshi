@@ -8,6 +8,9 @@
 set -e
 source "${0:h}/__lib/init.zsh"
 source "${0:h}/__lib/fzf-options-prompt-directory.zsh"
+source "${0:h}/__lib/fzf-fs-preview.zsh"
+
+SCRIPT_NAME="${0:t}"
 
 fzf-source() {
   colors-load-definitions
@@ -26,7 +29,7 @@ fzf-source() {
 
 fzf-options() {
   echo "--with-nth=2"
-  echo "--preview=fzf-fs-shared-preview {1}"
+  echo "--preview=$SCRIPT_NAME --preview {1}"
 
   local gitRoot="$(git-directory-root)"
   [[ "$gitRoot" == "" ]] && gitRoot="$PWD"
