@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-kitty-ctrl-p.md",
-    "done": false,
+    "done": true,
+    "recap": "Added kitty-ctrl-p script (calls kitty-overlay-window-id, runs ctrl-p, shell-quotes selections via ${(q-)}, sends to parent via kitty-window-send-text) and wired alt+p in keybindings.conf.",
     "blocked_by": ["01"]
   }
 ]

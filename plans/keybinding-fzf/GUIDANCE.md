@@ -39,3 +39,9 @@ Add an `alt+p` Kitty keybinding that opens the `ctrl-p` file picker in an overla
 
 - `.[0].tabs[].windows[]` in jq is the established pattern (matches `kitty-window-get-var`); it implicitly scopes to the first OS window — acceptable for single-window Kitty setups.
 - `local` at script top-level is valid and conventional in this codebase — `kitty-window-get-var` uses the same pattern; not a bug.
+
+### Issue 02 — kitty-ctrl-p
+
+- `${(q-)}` uses single-quote style for paths with spaces (e.g. `'/foo/my file.txt'`), not backslash style — test assertions must match this.
+- `local selection="$(ctrl-p)"`: `local` always returns 0, so `|| true` is unnecessary and triggers `localOrReturn` lint. The empty-string guard below handles the cancel case.
+- `bats_mock` calls must be batched: `bats_mock fn1 fn2 fn3` on one line, not separate calls per function.

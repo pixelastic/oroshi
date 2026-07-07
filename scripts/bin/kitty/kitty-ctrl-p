@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+# Open ctrl-p file picker in overlay and send selection to parent window
+# Usage:
+# $ kitty-ctrl-p    # Opens file picker; inserts selected path(s) into parent window
+set -e
+
+local parentId="$(kitty-overlay-window-id)"
+local selection="$(ctrl-p)"
+
+# Nothing to send if cancelled or no selection made
+[[ "$selection" == "" ]] && exit 0
+
+local -a paths=("${(f)selection}")
+local inlineSelection="${(j: :)${(q-)paths[@]}}"
+
+kitty-window-send-text "$parentId" "${inlineSelection} "
