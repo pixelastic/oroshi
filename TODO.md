@@ -1,13 +1,4 @@
-## fzf
-
-check that all fzf-related code (outside of nvim) is correctly located in the
-same subdir
-
-preview of ralph is broken
-
 ## Kitty
-
-Review all the python + hooks code
 
 Diff betwen alt-R and alt-shift-r?
 
