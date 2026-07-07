@@ -1,13 +1,12 @@
 ## Kitty
 
-Diff betwen alt-R and alt-shift-r?
+### Attention
+
+When a new tab is opened, its id should be cleared from the attention list
 
 Add a space after the icon
+
 Make the icon after the fullscreen icon
-
-See if we can mark it requires attention differently than an icon
-
-kitty-reload should write its beacon in its own subdir kitty/
 
 See how to display a repo icon badge + the worktree name
 Find a better separator icon between repo and wokrtree generally speaking?
@@ -15,23 +14,34 @@ Find a better separator icon between repo and wokrtree generally speaking?
 Maybe we should remove the marker once we start typing, so I can easily clear
 it?
 
+the attention shouldn't be added when I run claude through git-commit-message
+for example, only when actually interactive
+
+### Redraw/reload
+
+Diff betwen alt-R and alt-shift-r?
+
+kitty-reload should write its beacon in its own subdir kitty/
+
 kitty-reload shoudl be instand (beacon + -redrawn should trigger directly)
+
+### Misc
+
+See if we can mark it requires attention differently than an icon
 
 I should expand to adding another "mode" icon, to show if the tab is in
 grill-me, prd, issues, ralph or nothing
 
-the attention shouldn't be added when I run claude through git-commit-message
-for example, only when actually interactive
+Can I add an icon in the tabs when claude is waiting for me to confirm a Bash
+tool execution? Maybe I could keep the same icon (claude square) for each, but
+change the color? Might not be readable in some context. Better to have a round
+list of icons for the status.
 
 Check if it would be possible to send the mic2txt transcript to the right window
 even after I switch tabs, using kitty-remote send-text --match "id:$parentId"
 that might be a way to have me switch between tabs even before the speech to
 text is done, as soon as I'm done talking
 
-Can I add an icon in the tabs when claude is waiting for me to confirm a Bash
-tool execution? Maybe I could keep the same icon (claude square) for each, but
-change the color? Might not be readable in some context. Better to have a round
-list of icons for the status.
 
 ## Misc
 
