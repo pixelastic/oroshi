@@ -2,6 +2,17 @@
 
 Diff betwen alt-R and alt-shift-r?
 
+Add a space after the icon
+Make the icon after the fullscreen icon
+
+See if we can mark it requires attention differently than an icon
+
+See how to display a repo icon badge + the worktree name
+Find a better separator icon between repo and wokrtree generally speaking?
+
+Maybe we should remove the marker once we start typing, so I can easily clear
+it?
+
 kitty-reload shoudl be instand (beacon + -redrawn should trigger directly)
 
 I should expand to adding another "mode" icon, to show if the tab is in
