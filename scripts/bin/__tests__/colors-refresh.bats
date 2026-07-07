@@ -4,8 +4,8 @@ setup() {
   CURRENT="$(realpath "${BATS_TEST_DIRNAME}/../colors-refresh")"
 }
 
-@test "does not call kitty-refresh (SIGUSR1 reload)" {
-  run grep -c "kitty-refresh" "$CURRENT"
+@test "does not call kitty-reload (SIGUSR1 reload)" {
+  run grep -c "kitty-reload" "$CURRENT"
   [ "$output" = "0" ]
 }
 

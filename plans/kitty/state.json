@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-snake-case-leaf-modules.md",
-    "done": false,
+    "done": true,
+    "recap": "Renamed all camelCase functions to snake_case across colors.py, projects.py, statusbar.py and all call sites; also renamed refresh_statusbar→redraw_statusbar and checkForForcedRefresh→check_for_statusbar_reload to satisfy GLOSSARY Redraw/Reload terminology.",
     "blocked_by": []
   },
   {

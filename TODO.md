@@ -7,6 +7,8 @@ Make the icon after the fullscreen icon
 
 See if we can mark it requires attention differently than an icon
 
+kitty-reload should write its beacon in its own subdir kitty/
+
 See how to display a repo icon badge + the worktree name
 Find a better separator icon between repo and wokrtree generally speaking?
 
@@ -32,6 +34,10 @@ change the color? Might not be readable in some context. Better to have a round
 list of icons for the status.
 
 ## Misc
+
+Review color-refresh. Check what it actually really does, if it should be
+renamed, and the tests
+
 
 Simplify the skill-writer skill, to remove the whole TDD part.
 the skill-writer skill is too verbose. It has a TDD cycle that I don't actually

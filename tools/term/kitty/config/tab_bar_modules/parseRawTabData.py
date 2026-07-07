@@ -1,7 +1,7 @@
 import json
 import os
 from kitty.tab_bar import DrawData, TabBarData, as_rgb
-from tab_bar_modules.projects import getProjectData
+from tab_bar_modules.projects import get_project_data
 
 # Load icons once at module level
 _ICONS_PATH = "/home/tim/.oroshi/tools/term/zsh/config/theming/dist/icons.json"
@@ -28,7 +28,7 @@ def parseRawTabData(tab: TabBarData, draw_data: DrawData):
     isActive = tab.is_active
 
     # Find info from the list of projects if one matches the same name
-    projectData = getProjectData(name)
+    projectData = get_project_data(name)
     icon = projectData.get("icon", "")
 
     # Read attention state fresh on every Redraw (not cached)

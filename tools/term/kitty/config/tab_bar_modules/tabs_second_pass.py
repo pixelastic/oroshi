@@ -1,6 +1,6 @@
 from kitty.fast_data_types import Screen
 from kitty.tab_bar import DrawData, ExtraData, TabBarData
-from tab_bar_modules.statusbar import drawStatusbar
+from tab_bar_modules.statusbar import draw_statusbar
 from tab_bar_modules.tabs import tabState
 
 
@@ -30,7 +30,7 @@ def secondPass(
         # We reset allTabIds, so firstPass can rebuild it next time
         tabState["allTabIds"] = []
         # We draw the status bar
-        drawStatusbar(screen)
+        draw_statusbar(screen)
 
     return screen.cursor.x
 

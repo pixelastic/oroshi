@@ -9,5 +9,5 @@ kittyOptions = get_options()
 # Kitty expects screen.cursor.x/y to be in a specific format
 # This will convert a color number (0-256, as defined in colors.conf) to the
 # expected format
-def getCursorColor(colorNumber: int):
+def get_cursor_color(colorNumber: int):
     return as_rgb(color_as_int(getattr(kittyOptions, f"color{colorNumber}")))

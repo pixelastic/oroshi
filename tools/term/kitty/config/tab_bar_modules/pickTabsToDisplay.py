@@ -1,6 +1,6 @@
 from kitty.fast_data_types import Screen
 from tab_bar_modules.tabs import tabState
-from tab_bar_modules.statusbar import getStatusbarWidth
+from tab_bar_modules.statusbar import get_statusbar_width
 
 # This is based on the length of the  character used as a separator
 SEPARATOR_LENGTH = 1
@@ -10,7 +10,7 @@ SEPARATOR_LENGTH = 1
 def pickTabsToDisplay(screen: Screen):
     # Gathering metrics about the layout
     screenWidth = screen.columns
-    statusBarWidth = getStatusbarWidth()
+    statusBarWidth = get_statusbar_width()
     # Even with a large statusbar, we still want at least 50 chars for the tabs
     tabBarMaxWidth = max(screenWidth - statusBarWidth, 50)
     tabBarActualWidth = getFullTabBarWidth()

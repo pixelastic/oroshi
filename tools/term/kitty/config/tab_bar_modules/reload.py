@@ -23,5 +23,5 @@ def reloadTabBar():
         if name in sys.modules:
             importlib.reload(sys.modules[name])
 
-    sys.modules["tab_bar_modules.projects"].initProjectList()
-    sys.modules["tab_bar_modules.statusbar"].initStatusbar()
+    sys.modules["tab_bar_modules.projects"].init_project_list()
+    sys.modules["tab_bar_modules.statusbar"].init_statusbar()

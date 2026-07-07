@@ -1,16 +1,16 @@
 import json
-from tab_bar_modules.colors import getCursorColor
+from tab_bar_modules.colors import get_cursor_color
 
 projectState = {"data": {}}
 
 
-def getProjectData(projectName):
+def get_project_data(projectName):
     return projectState["data"].get(projectName, {})
 
 
 # Set the ALL_PROJECTS object, that contains name, icons and colors of all
 # projects
-def initProjectList():
+def init_project_list():
     jsonPath = "/home/tim/.oroshi/tools/term/zsh/config/theming/dist/projects.json"
     with open(jsonPath) as f:
         rawProjectData = json.load(f)
@@ -23,14 +23,14 @@ def initProjectList():
 
         bg = project.get("background", {}).get("ansi")
         if bg is not None:
-            entry["bg"] = getCursorColor(bg)
+            entry["bg"] = get_cursor_color(bg)
 
         bgInactive = project.get("backgroundInactive", {}).get("ansi")
         if bgInactive is not None:
-            entry["bgInactive"] = getCursorColor(bgInactive)
+            entry["bgInactive"] = get_cursor_color(bgInactive)
 
         fg = project.get("foreground", {}).get("ansi")
         if fg is not None:
-            entry["fg"] = getCursorColor(fg)
+            entry["fg"] = get_cursor_color(fg)
 
         projectState["data"][projectName] = entry

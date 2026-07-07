@@ -10,8 +10,8 @@ import tab_bar_modules.statusbar as statusbar_module
 import tab_bar_modules.tabs_first_pass as tabs_first_pass_module
 import tab_bar_modules.tabs_second_pass as tabs_second_pass_module
 
-projects_module.initProjectList()
-statusbar_module.initStatusbar()
+projects_module.init_project_list()
+statusbar_module.init_statusbar()
 
 
 # Default kitty method called each time the statusbar needs to be displayed.

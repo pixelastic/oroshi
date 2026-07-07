@@ -30,3 +30,9 @@ Then visually confirm: tabs render, project colors apply, attention icon appears
 This is a pure Python refactor. BATS tests exist for the Zsh attention scripts and Claude hooks, but those are not modified in this plan.
 
 ## Discoveries
+
+### Issue 01 — snake_case leaf modules
+
+- GLOSSARY bans "refresh" for both Redraw and Reload — `refreshStatusbar` renamed to `redraw_statusbar`, `checkForForcedRefresh` renamed to `check_for_statusbar_reload`.
+- Two extra call-site files not listed in the issue spec needed updating: `pickTabsToDisplay.py` (imports `get_statusbar_width`) and `tabs_second_pass.py` (imports `draw_statusbar`) and `parseRawTabData.py` (imports `get_project_data`).
+- The beacon path was renamed from `kitty-refresh` to `kitty-reload` across `statusbar.py`, `scripts/bin/kitty/kitty-reload`, and the bats test for `colors-refresh`.
