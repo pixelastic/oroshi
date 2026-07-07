@@ -21,8 +21,8 @@ function exa-configure-colors() {
   EXA_COLORS="${EXA_COLORS}:tw=38;5;$COLORS[gray-7]"       # Other write
   EXA_COLORS="${EXA_COLORS}:tx=4;38;5;$COLORS[executable]" # Other execute
 
-  EXA_COLORS="${EXA_COLORS}:sn=38;5;$COLORS[neutral]"       # Size
-  EXA_COLORS="${EXA_COLORS}:sb=38;5;$COLORS[neutral-light]" # Size unit
+  EXA_COLORS="${EXA_COLORS}:sn=38;5;$COLORS[neutral]"     # Size
+  EXA_COLORS="${EXA_COLORS}:sb=38;5;$COLORS[punctuation]" # Size unit
 
   EXA_COLORS="${EXA_COLORS}:uu=38;5;$COLORS[black]" # Me
   EXA_COLORS="${EXA_COLORS}:un=38;5;$COLORS[red-5]" # Not me
