@@ -16,6 +16,19 @@ kitty-reload shoudl be instand (beacon + -redrawn should trigger directly)
 I should expand to adding another "mode" icon, to show if the tab is in
 grill-me, prd, issues, ralph or nothing
 
+the attention shouldn't be added when I run claude through git-commit-message
+for example, only when actually interactive
+
+Check if it would be possible to send the mic2txt transcript to the right window
+even after I switch tabs, using kitty-remote send-text --match "id:$parentId"
+that might be a way to have me switch between tabs even before the speech to
+text is done, as soon as I'm done talking
+
+Can I add an icon in the tabs when claude is waiting for me to confirm a Bash
+tool execution? Maybe I could keep the same icon (claude square) for each, but
+change the color? Might not be readable in some context. Better to have a round
+list of icons for the status.
+
 ## Misc
 
 Simplify the skill-writer skill, to remove the whole TDD part.
