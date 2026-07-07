@@ -20,8 +20,9 @@ function oroshi_tools_ls() {
 	# Define the custom LS_COLORS
 	LS_COLORS_SIMPLE="di=38;5;$COLORS[directory]"      # Directory
 	LS_COLORS_SIMPLE+=":ow=38;5;$COLORS[directory]"    # Directory writable by others
-	LS_COLORS_SIMPLE+=":ex=38;5;$COLORS[executable]" # Executable
+	LS_COLORS_SIMPLE+=":ex=38;5;$COLORS[executable]"   # Executable
 	LS_COLORS_SIMPLE+=":ln=34;4;$COLORS[link]"         # Symlink
+	LS_COLORS_SIMPLE+=":or=1;38;5;$COLORS[error]"      # Broken symlink
 
 	# Other known LS_COLORS fields, potentially used by the completion styling system
 	LS_COLORS_SIMPLE+=":st=1;38;5;$COLORS[unknown]" # file with sticky bit set
@@ -33,7 +34,6 @@ function oroshi_tools_ls() {
 	LS_COLORS_SIMPLE+=":bd=1;38;5;$COLORS[unknown]" # block (buffered) special file
 	LS_COLORS_SIMPLE+=":tw=1;38;5;$COLORS[unknown]" # directory that is sticky and other-writable
 	LS_COLORS_SIMPLE+=":st=1;38;5;$COLORS[unknown]" # directory with the sticky bit set (+t)
-	LS_COLORS_SIMPLE+=":or=1;38;5;$COLORS[unknown]" # orphan symbolic link
 	LS_COLORS_SIMPLE+=":ca=1;38;5;$COLORS[unknown]" # file with capability
 	LS_COLORS_SIMPLE+=":sg=1;38;5;$COLORS[unknown]" # file with setgid bit set
 	LS_COLORS_SIMPLE+=":su=1;38;5;$COLORS[unknown]" # file with setuid bit set

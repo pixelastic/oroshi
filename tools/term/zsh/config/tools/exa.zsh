@@ -38,9 +38,10 @@ function exa-configure-colors() {
   EXA_COLORS="${EXA_COLORS}:di=38;5;$COLORS[directory]"  # Directories
   EXA_COLORS="${EXA_COLORS}:ex=38;5;$COLORS[executable]" # Executable
 
-  EXA_COLORS="${EXA_COLORS}:ln=38;5;$COLORS[unknown]" # Symlink source
-  EXA_COLORS="${EXA_COLORS}:lp=38;5;$COLORS[unknown]" # Symlink destination
-  EXA_COLORS="${EXA_COLORS}:or=38;5;$COLORS[unknown]" # Broken symlink
+  EXA_COLORS="${EXA_COLORS}:ln=38;5;$COLORS[link]"  # Symlink source
+  EXA_COLORS="${EXA_COLORS}:lp=38;5;$COLORS[link]"  # Symlink destination
+  EXA_COLORS="${EXA_COLORS}:or=38;5;$COLORS[error]" # Broken symlink
+
   EXA_COLORS="${EXA_COLORS}:pi=48;5;$COLORS[unknown]" # Named pipe (unstyled)
   EXA_COLORS="${EXA_COLORS}:cd=48;5;$COLORS[unknown]" # Character device (unstyled)
   EXA_COLORS="${EXA_COLORS}:so=48;5;$COLORS[unknown]" # Socket (unstyled)
