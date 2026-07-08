@@ -177,6 +177,7 @@
   "pup",
   "pwd",
   "pyenv which",
+  "python-lint",
   "python-test",
   "qmk",
   "ralph-end",
