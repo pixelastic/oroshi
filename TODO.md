@@ -17,6 +17,8 @@ it?
 the attention shouldn't be added when I run claude through git-commit-message
 for example, only when actually interactive
 
+When I quit claude, it should also clear the attention
+
 ### Redraw/reload
 
 Diff betwen alt-R and alt-shift-r?
