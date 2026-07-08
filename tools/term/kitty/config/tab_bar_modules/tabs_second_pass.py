@@ -45,4 +45,4 @@ def draw_tab_item(tab_data, screen):
     # Draw separator
     screen.cursor.bg = tab_data["separatorBg"]
     screen.cursor.fg = tab_data["separatorFg"]
-    screen.draw("")
+    screen.draw("")
