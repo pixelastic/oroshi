@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-commitwithouithint-getdiff-tests.md",
-    "done": false,
+    "done": true,
+    "recap": "Added test file for commitWithoutHint.getDiff() covering binary-only, text-only, mixed, and yarn.lock-exclusion scenarios; no production code changes.",
     "blocked_by": []
   },
   {
