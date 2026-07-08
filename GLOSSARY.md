@@ -1,5 +1,21 @@
 # Glossary
 
+## Global Vocabulary
+
+Terms that apply across all modules in this repository.
+
+**Reload**:
+Re-read source data from disk and rebuild in-memory state. A heavyweight operation that often triggers a Redraw.
+Examples: `colors-reload`, `oroshi-reload-fpath`, `kitty-reload`
+_Avoid_: refresh
+
+**Redraw**:
+Update the visual display from existing in-memory state, without touching the disk. A lightweight operation.
+Examples: `prompt-redraw`, `kitty-redraw`
+_Avoid_: refresh, repaint
+
+> "refresh" conflates both meanings and is banned — always use the precise term.
+
 ## Modules
 
 - [BATS Helper](tools/term/bats/GLOSSARY.md) — Worktree-aware, Deep Mocking, Root Override — the 3 guarantees of the test helper

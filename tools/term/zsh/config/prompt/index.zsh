@@ -1,5 +1,5 @@
-# TRAPUSR1: Refresh prompt on demand {{{
-# Whenever we receive USR1, we refresh the prompt display
+# TRAPUSR1: Redraw prompt on demand {{{
+# Whenever we receive USR1, we redraw the prompt display
 function TRAPUSR1() {
   # Prompt was generated in the background, we update it
   if [[ $OROSHI_ASYNCHRONOUS_PID != "0" ]]; then
@@ -207,7 +207,7 @@ function oroshi-prompt-asynchronous-populate() {
       echo $OROSHI_PROMPT_PARTS[$promptPart] >! ${OROSHI_ASYNCHRONOUS_SAVE_PATH}/${promptPart}
     done
 
-    prompt-refresh $OROSHI_ZSH_PID
+    prompt-redraw $OROSHI_ZSH_PID
   }
 
   async &!

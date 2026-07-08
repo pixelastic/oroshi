@@ -1,0 +1,20 @@
+# Redraw the current prompt
+# Works by sending a TRAPUSR1 signal to zsh
+# Usage:
+# $ prompt-redraw           # Guesses the topmost zsh process
+# $ prompt-redraw 1794568   # Specify the prompt to redraw.
+#                           # Useful when running background processes,
+#                           # detached from the prompt
+setopt local_options err_return
+
+local promptPid="$1"
+if [[ $promptPid == '' ]]; then
+  promptPid="$(prompt-pid)"
+fi
+
+# Stop if no pid found, maybe because we killed the process
+if [[ $promptPid == "" ]]; then
+  return 1
+fi
+
+kill -s USR1 $promptPid
