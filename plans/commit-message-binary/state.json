@@ -1,0 +1,20 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-callapi-empty-diff-guard.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-commitwithouithint-getdiff-tests.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-commitwithhint-getdiff-fix-and-tests.md",
+    "done": false,
+    "blocked_by": ["02"]
+  }
+]
