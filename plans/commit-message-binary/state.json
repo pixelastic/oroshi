@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-commitwithhint-getdiff-fix-and-tests.md",
-    "done": false,
+    "done": true,
+    "recap": "Fixed commitWithHint.getDiff() to trim joined diff and return binary fallback when empty; added test file covering binary-only (with plan-noise exclusion verified), text-only, and mixed scenarios.",
     "blocked_by": ["02"]
   }
 ]

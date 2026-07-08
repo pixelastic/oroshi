@@ -45,6 +45,13 @@ export const commitWithHint = {
       return repo.run(`diff --cached -- ${filepath}`);
     });
 
-    return _.join(arrayDiff, '\n');
+    const diff = _.join(arrayDiff, '\n').trim();
+
+    // If still no diff, it's only binary files. We add them then:
+    if (!diff) {
+      const fileList = _.map(cleanStagedFiles, (f) => `- ${f}`).join('\n');
+      return `Binary files added:\n${fileList}`;
+    }
+    return diff;
   },
 };
