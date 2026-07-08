@@ -10,3 +10,14 @@ exit
 **Problem:** Spec agent flagged that `exit` after `ruff check` is never reached when ruff check fails under `set -e`, making the exit-code contract fragile.
 
 **Reason skipped:** This is correct behavior. Under `set -e`, a failing `ruff check` causes the script to exit non-zero immediately — `exit` is only reached when ruff check succeeds (exit 0), at which point `exit` correctly exits 0. The exit-code contract is fully correct.
+
+## Issue 02 — zsh-lint --fix flag
+
+### `local file=` in @test bodies
+
+```bash
+local file="$BATS_TMP_DIR/test.zsh"
+```
+
+**Problem:** Reviewer flagged `local file=...` in `@test` bodies as a violation of the "all test vars in setup()" memory.
+**Reason skipped:** The memory (`feedback_bats_setup_vars.md`) says "not at file top level" — it targets vars declared outside setup/test blocks. `local` inside `@test` bodies is standard bats practice, matches every pre-existing test in the file, and bats-lint does not flag it.

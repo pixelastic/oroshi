@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Fix a zsh file in place
 # Usage:
 # $ zshfix file.zsh   # Format the file
@@ -13,20 +13,18 @@
 # zsh-specific syntax.
 #
 # So we'll try shfmt, and if it fails, fallback on beautysh
+set -e
 
 local inputs=($@)
 
 for input in $inputs; do
-	# First, try to format with shfmt
-	shfmt \
-		-ci \
-		-w \
-		${input} \
-		2>/dev/null \
-		&& continue
+  # First, try to format with shfmt
+  if shfmt -ci -w "${input}" 2>/dev/null; then
+    continue
+  fi
 
-	# If it fails, execute beautysh instead
-	beautysh \
-		--indent-size 2 \
-		${input}
+  # If it fails, execute beautysh instead
+  beautysh \
+    --indent-size 2 \
+    "${input}"
 done

@@ -3,6 +3,7 @@
 # Usage:
 # $ zsh-lint file.zsh                               # Outputs erros of file.zsh
 # $ zsh-lint file.zsh other-file.zsh                # Outputs errors of both file
+# $ zsh-lint --fix file.zsh                         # Auto-format via zshfix, then lint
 # $ zsh-lint --version                              # Display version of shellcheck
 # $ zsh-lint -s zsh-lint -x -f gcc - < /path/to/file # As used by ALE
 #
@@ -15,6 +16,12 @@ local dir="${0:A:h}"
 
 source "${dir}/zsh-lint-shellcheck.zsh"
 source "${dir}/zsh-lint-custom.zsh"
+
+zmodload zsh/zutil
+zparseopts -E -D \
+  -fix=flagFix
+
+local isFix="${#flagFix}"
 
 # Keep only valid zsh files
 local -a valid=()
@@ -34,13 +41,22 @@ done
 # No files
 [[ ${#valid[@]} -eq 0 && ${#invalid[@]} -eq 0 ]] && printf '[]\n' && exit 0
 
+# Auto-format before linting when --fix is passed
+if [[ $isFix == "1" && ${#valid[@]} -gt 0 ]]; then
+  for file in "${valid[@]}"; do
+    zshfix "$file"
+  done
+fi
+
 # Generate notZsh violations for non-zsh files
+# $f is a jq variable (--arg f), not a shell variable
+# shellcheck disable=SC2016
+local notZshFilter='{file:$f,code:"notZsh",level:"error",line:1,endLine:1,column:1,endColumn:1,message:"Not a zsh file"}'
 local invalid_json='[]'
 if [[ ${#invalid[@]} -gt 0 ]]; then
   invalid_json="$(
     for file in "${invalid[@]}"; do
-      jq -n --arg f "$file" \
-        '{file:$f,code:"notZsh",level:"error",line:1,endLine:1,column:1,endColumn:1,message:"Not a zsh file"}'
+      jq -n --arg f "$file" "$notZshFilter"
     done | jq -cs '.'
   )"
 fi
