@@ -64,3 +64,15 @@ setup() {
   [[ "$status" -eq 0 ]]
   [[ ! -f "$BATS_TMP_DIR/send-text-args" ]]
 }
+
+@test "no-overlay: exits 0 without opening ctrl-p when not in overlay" {
+  kitty-overlay-window-id() { return 1; }
+  ctrl-p() { echo "called" >"$BATS_TMP_DIR/ctrl-p-called"; }
+  kitty-window-send-text() { true; }
+  bats_mock kitty-overlay-window-id ctrl-p kitty-window-send-text
+
+  bats_run_zsh "kitty-ctrl-p"
+
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/ctrl-p-called" ]]
+}

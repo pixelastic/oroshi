@@ -5,6 +5,12 @@
 set -e
 
 local parentId="$(kitty-overlay-window-id)"
+# Not in an overlay — nothing to do
+[[ "$parentId" == "" ]] && exit 0
+
+source "$OROSHI_ROOT/scripts/bin/fzf/__lib/fzf-set-default-opts.zsh"
+fzf-set-default-opts
+
 local selection="$(ctrl-p)"
 
 # Nothing to send if cancelled or no selection made
