@@ -26,7 +26,7 @@
     "solkan": "0.8.0"
   },
   "scripts": {
-    "colors-refresh": "./scripts/bin/colors-refresh",
+    "colors-reload": "./scripts/bin/colors-reload",
     "lint": "./scripts/yarn/lint",
     "lint:bats": "./scripts/yarn/lint-bats",
     "lint:fix": "./scripts/yarn/lint-fix",

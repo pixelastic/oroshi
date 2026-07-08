@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # Regenerate ./dist/gitconfig from ./src/gitconfig
+set -e
 
 local currentDir=${0:a:h}
 
