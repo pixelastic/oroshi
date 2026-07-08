@@ -28,7 +28,7 @@ def draw_tab(
     extra_data: ExtraData,
 ) -> int:
     if extra_data.for_layout:
-        tabs_first_pass_module.firstPass(
+        tabs_first_pass_module.first_pass(
             draw_data, screen, tab, before, max_title_length, index, is_last, extra_data
         )
     else:

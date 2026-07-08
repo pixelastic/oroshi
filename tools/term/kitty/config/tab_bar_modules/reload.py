@@ -6,7 +6,7 @@ TAB_BAR_MODULES = [
     "tab_bar_modules.helper",
     "tab_bar_modules.projects",
     "tab_bar_modules.tabs",
-    "tab_bar_modules.parseRawTabData",
+    "tab_bar_modules.tab_data",
     "tab_bar_modules.pickTabsToDisplay",
     "tab_bar_modules.tabs_first_pass",
     "tab_bar_modules.tabs_second_pass",

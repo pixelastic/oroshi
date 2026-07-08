@@ -6,7 +6,7 @@ tabState = {
     # be an issue.
     "manifest": {},
     # Array of all currently available tabIds, by order of appearance. This list
-    # is automatically updated during the firstPass
+    # is automatically updated during the first_pass
     "allTabIds": [],
     # Subset of allTabIds that only contains the tabIds we actually want to
     # display. This is useful when we have a lot of tabs, and not enough real
@@ -14,4 +14,7 @@ tabState = {
     # array with the list of tabIds we want to keep, based on the available
     # space.
     "displayedTabIds": [],
+    # Set of tab IDs that need user attention (populated once per render cycle
+    # from the attention file)
+    "attentionIds": set(),
 }

@@ -39,7 +39,7 @@ The icon `󱅫` displayed as a suffix on a tab's title in the Tab Bar to signal 
 _Avoid_: attention badge, notification icon, alert icon
 
 **Attention File**:
-A plain-text file listing the Tab IDs currently in Attention state, one per line; read by the Tab Bar Python on every Redraw.
+A plain-text file listing the Tab IDs currently in Attention state, one per line; read by the Tab Bar Python once per render cycle (at the start of each Redraw).
 _Avoid_: attention list, notification file, state file
 
 ## Relationships
@@ -50,7 +50,7 @@ _Avoid_: attention list, notification file, state file
 - A **Redraw** may or may not be preceded by a **Reload**
 - A **Reload** writes exactly one **Reload Beacon** before triggering a **Redraw**
 - The Tab Bar Python reads the **Reload Beacon** at most once per **Redraw**, then deletes it
-- The **Attention File** is read on every **Redraw**; its content determines which tabs display an **Attention Icon**
+- The **Attention File** is read once per render cycle (at the start of each **Redraw**); its content determines which tabs display an **Attention Icon**
 - An **Attention Icon** is shown on a tab if and only if its **Tab ID** is present in the **Attention File**
 
 ## Flagged ambiguities

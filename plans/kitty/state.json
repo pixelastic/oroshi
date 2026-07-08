@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-attention-in-tabstate.md",
-    "done": false,
+    "done": true,
+    "recap": "Added attentionIds set to tabState; moved attention file I/O from per-tab build_tab_data() to once-per-cycle in first_pass(); renamed parseRawTabData.py→tab_data.py and firstPass→first_pass; updated GLOSSARY to reflect once-per-cycle read semantics.",
     "blocked_by": ["01"]
   },
   {
