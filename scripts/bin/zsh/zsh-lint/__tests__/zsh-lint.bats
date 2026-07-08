@@ -91,15 +91,15 @@ setup() {
   [[ ! -f "$BATS_TMP_DIR/custom_called" ]]
 }
 
-@test "--fix: calls zshfix then runs lint check" {
+@test "--fix: calls zsh-fix then runs lint check" {
   local file="$BATS_TMP_DIR/test.zsh"
   printf '# clean zsh file\n' > "$file"
-  zshfix() { printf 'called\n' >"$BATS_TMP_DIR/zshfix_called"; }
+  zsh-fix() { printf 'called\n' >"$BATS_TMP_DIR/zsh_fix_called"; }
   zsh-lint-shellcheck() { printf '[]\n'; }
   zsh-lint-custom()     { printf '[]\n'; }
-  bats_mock zshfix zsh-lint-shellcheck zsh-lint-custom
+  bats_mock zsh-fix zsh-lint-shellcheck zsh-lint-custom
   bats_run_zsh "zsh-lint --fix $file"
-  [[ -f "$BATS_TMP_DIR/zshfix_called" ]]
+  [[ -f "$BATS_TMP_DIR/zsh_fix_called" ]]
   [[ "$status" -eq 0 ]]
   [[ "$output" == '[]' ]]
 }
@@ -107,26 +107,26 @@ setup() {
 @test "--fix: violations surviving auto-format are reported, exit non-zero" {
   local file="$BATS_TMP_DIR/test.zsh"
   printf '# clean zsh file\n' > "$file"
-  zshfix() { :; }
+  zsh-fix() { :; }
   zsh-lint-shellcheck() { printf '[]\n'; }
   zsh-lint-custom() {
     printf '[{"code":"noManualArgParsing","level":"error","line":1,"message":"m"}]\n'
   }
-  bats_mock zshfix zsh-lint-shellcheck zsh-lint-custom
+  bats_mock zsh-fix zsh-lint-shellcheck zsh-lint-custom
   bats_run_zsh "zsh-lint --fix $file"
   [[ "$status" -eq 1 ]]
   [[ "$output" == *'"code":"noManualArgParsing"'* ]]
 }
 
-@test "without --fix: zshfix is not called" {
+@test "without --fix: zsh-fix is not called" {
   local file="$BATS_TMP_DIR/test.zsh"
   printf '# clean zsh file\n' > "$file"
-  zshfix() { printf 'called\n' >"$BATS_TMP_DIR/zshfix_called"; }
+  zsh-fix() { printf 'called\n' >"$BATS_TMP_DIR/zsh_fix_called"; }
   zsh-lint-shellcheck() { printf '[]\n'; }
   zsh-lint-custom()     { printf '[]\n'; }
-  bats_mock zshfix zsh-lint-shellcheck zsh-lint-custom
+  bats_mock zsh-fix zsh-lint-shellcheck zsh-lint-custom
   bats_run_zsh "zsh-lint $file"
-  [[ ! -f "$BATS_TMP_DIR/zshfix_called" ]]
+  [[ ! -f "$BATS_TMP_DIR/zsh_fix_called" ]]
 }
 
 @test "merges notZsh with sub-linter violations for mixed input" {

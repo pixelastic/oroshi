@@ -22,6 +22,13 @@ exit
 
 **Reason skipped:** This is correct behavior. Under `set -e`, a failing `ruff check` causes the script to exit non-zero immediately — `exit` is only reached when ruff check succeeds (exit 0), at which point `exit` correctly exits 0. The exit-code contract is fully correct.
 
+## Issue 06 — zsh-fix refactor
+
+### Spec: shfmt no-op mock makes --in-place test vacuous
+
+**Problem:** Spec says "--in-place: File is modified in place." With `shfmt() { :; }`, the workfile has the same content as the input, so `cat "$file" == "# clean file"` doesn't verify the copy-back path actually ran.
+**Reason skipped:** The behavioral test does verify the file is written back (content unchanged is still a copy-back). The key assertions — `output == ""` and `[[ -f "$file" ]]` — correctly test the routing behavior. Strengthening would require a mock that modifies the workfile, adding complexity without meaningful gain given that shfmt/beautysh are not installed.
+
 ## Issue 02 — zsh-lint --fix flag
 
 ### `local file=` in @test bodies

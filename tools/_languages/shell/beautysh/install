@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# beautysh: Shell script formatter supporting zsh, bash, ksh, etc.
+# https://github.com/lovesegfault/beautysh
+set -e
+pipx install beautysh

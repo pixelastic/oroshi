@@ -18,9 +18,9 @@ M.onFiletype = function()
 end
 
 M.configureFormatter = function(conform)
-  conform.formatters.shfmt_zsh = {
-    command = "shfmt",
-    args = { "-i", vim.o.shiftwidth },
+  conform.formatters.oroshi_zsh_fix = {
+    command = "zsh-fix",
+    stdin = true,
     exit_codes = { 0, 1 }, -- Fail silently on zsh-specific syntax
   }
 end

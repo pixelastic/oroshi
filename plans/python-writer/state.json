@@ -37,7 +37,8 @@
   {
     "id": "06",
     "issue": "issues/06-zsh-fix-refactor.md",
-    "done": false,
+    "done": true,
+    "recap": "Renamed zshfix → zsh-fix with stdout-by-default/--in-place/stdin pattern; updated zsh-lint to call zsh-fix --in-place; replaced NeoVim shfmt_zsh formatter with oroshi_zsh_fix using stdin=true.",
     "blocked_by": ["02"]
   }
 ]

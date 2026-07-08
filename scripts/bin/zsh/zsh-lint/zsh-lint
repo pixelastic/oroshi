@@ -3,7 +3,7 @@
 # Usage:
 # $ zsh-lint file.zsh                               # Outputs erros of file.zsh
 # $ zsh-lint file.zsh other-file.zsh                # Outputs errors of both file
-# $ zsh-lint --fix file.zsh                         # Auto-format via zshfix, then lint
+# $ zsh-lint --fix file.zsh                         # Auto-format via zsh-fix, then lint
 # $ zsh-lint --version                              # Display version of shellcheck
 # $ zsh-lint -s zsh-lint -x -f gcc - < /path/to/file # As used by ALE
 #
@@ -44,7 +44,7 @@ done
 # Auto-format before linting when --fix is passed
 if [[ $isFix == "1" && ${#valid[@]} -gt 0 ]]; then
   for file in "${valid[@]}"; do
-    zshfix "$file"
+    zsh-fix --in-place "$file"
   done
 fi
 

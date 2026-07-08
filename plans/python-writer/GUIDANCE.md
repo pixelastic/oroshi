@@ -46,6 +46,7 @@ Issues 01, 02, and 03 are independent and can be implemented in any order or in 
 
 ## Discoveries
 
-<!-- Agents append findings here after each issue, format: -->
-<!-- ### Issue XX — short title -->
-<!-- - finding -->
+### Issue 06 — zsh-fix refactor
+
+- `python-fix`-style stdin detection (`[[ ! -t 0 ]]`) fires in bats subprocesses because bats stdin is a pipe, not a terminal — always guard with `[[ $# -eq 0 && ! -t 0 ]]` when a file argument is expected
+- shfmt and beautysh must be installed (`tools/_languages/shell/shfmt/install` and `tools/_languages/shell/beautysh/install`); tests 1-3 use them directly, only tests 4-5 need targeted mocks (shfmt to force fallback; beautysh to spy on not-called)
