@@ -8,6 +8,11 @@ import { consoleError } from 'firost';
  */
 export async function callApi(options) {
   const { prompt, diff } = options;
+  // Stop if diff is empty (e.g. binary-only staged files)
+  if (!diff.trim()) {
+    consoleError('Empty diff: nothing to send to the API.\n');
+    process.exit(1);
+  }
   // Stop if no Anthropic key
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key) {

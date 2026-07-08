@@ -23,3 +23,8 @@
 **Exit code:** `process.exit(1)` for all error cases in `callApi`.
 
 ## Discoveries
+
+### Issue 01 — callApi empty diff guard
+- `process.exit` must be mocked to throw (not no-op) — otherwise code continues past the guard and `fetch` gets called, breaking the "no network call" assertion.
+- `vi.stubGlobal('fetch', vi.fn())` in `beforeEach` doesn't need `afterEach` cleanup; vitest isolates per file and `beforeEach` re-stubs fresh each test.
+- Empty catch blocks (no binding, just a comment) are the right pattern when suppressing a thrown mock error — `let actual = null` is only for when you assert on the error itself.
