@@ -139,9 +139,9 @@ def check_for_forced_reload():
     os.remove(beaconPath)
 
     # Lazy import to avoid circular dependency
-    from tab_bar_modules.reload import reloadTabBar
+    from tab_bar_modules.reload import reload_tab_bar
 
-    reloadTabBar()
+    reload_tab_bar()
 
 
 # Display the status bar

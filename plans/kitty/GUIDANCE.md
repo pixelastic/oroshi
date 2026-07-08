@@ -36,6 +36,12 @@ This is a pure Python refactor. BATS tests exist for the Zsh attention scripts a
 - GLOSSARY defined Attention File as "read on every Redraw" — the change to once-per-cycle required updating both the term definition and the Relationships section.
 - The render-cycle start detection (`if not tabState["allTabIds"]`) works because `allTabIds` is reset at the end of each `second_pass`; this invariant is documented in GUIDANCE under Conventions.
 
+### Issue 03 — pick_tabs rename + snake_case locals
+
+- New Python files carry over all local variable names from the source — must snake_case them too (not just function names). `python-writer` style requires snake_case for all locals in new files.
+- `statusbar.py` imports `reloadTabBar` via a lazy import inside a function — easy to miss when scanning for call sites. Always grep for function name in addition to the module string.
+- `get_active_tab_index` has an implicit `None` return when no tab is active — pre-existing latent bug, noted but left for a dedicated fix.
+
 ### Issue 01 — snake_case leaf modules
 
 - GLOSSARY bans "refresh" for both Redraw and Reload — `refreshStatusbar` renamed to `redraw_statusbar`, `checkForForcedRefresh` renamed to `check_for_statusbar_reload`.

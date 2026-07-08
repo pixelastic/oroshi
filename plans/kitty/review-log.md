@@ -37,3 +37,22 @@ _ICONS_PATH = "/home/tim/.oroshi/tools/term/zsh/config/theming/dist/icons.json"
 ### Behavioral acceptance criteria not verified
 **Problem:** Spec requires verifying attention icon appears/clears and `kitty-tab-bar-reload` works without error.
 **Reason skipped:** Per GUIDANCE.md, no Python test runner exists. Verification is manual: "Verify by reloading Kitty's tab bar." Cannot be automated.
+
+## Issue 03 — pick_tabs rename + snake_case locals
+
+### get_active_tab_index — implicit None return
+
+```python
+def get_active_tab_index():
+    for tab_id in tabState["allTabIds"]:
+        tab_data = tabState["manifest"][tab_id]
+        if tab_data["isActive"]:
+            return tab_data["index"]
+```
+**Problem:** If no tab is active, the function returns `None` implicitly — latent bug.
+**Reason skipped:** Pre-existing behavior carried from the original file. Not in spec scope (pure rename). Tracked in GUIDANCE for a dedicated fix.
+
+### No tests for rename
+
+**Problem:** `python-writer` TDD step mandates failing tests first.
+**Reason skipped:** GUIDANCE explicitly says "No tests" — no Python test runner exists for this module.

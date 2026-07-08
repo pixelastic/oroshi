@@ -3,7 +3,7 @@ from kitty.fast_data_types import Screen
 from kitty.tab_bar import DrawData, ExtraData, TabBarData
 from tab_bar_modules.tab_data import build_tab_data
 
-from tab_bar_modules.pickTabsToDisplay import pickTabsToDisplay
+from tab_bar_modules.pick_tabs import pick_tabs_to_display
 from tab_bar_modules.tabs import tabState
 
 # Attention file — list of tab IDs that need user attention
@@ -12,7 +12,7 @@ _ATTENTION_FILE = "/home/tim/local/tmp/oroshi/kitty/attention"
 
 # First pass:
 # This method will be called on each tab in sequence. It will grab all metadata
-# about the tabs, but won't draw anything yet (this is what secondPass is for)
+# about the tabs, but won't draw anything yet (this is what second_pass is for)
 def first_pass(
     draw_data: DrawData,
     screen: Screen,
@@ -52,4 +52,4 @@ def first_pass(
 
     # If this was the last tab, we can now define which tab should be displayed
     if is_last:
-        pickTabsToDisplay(screen)
+        pick_tabs_to_display(screen)

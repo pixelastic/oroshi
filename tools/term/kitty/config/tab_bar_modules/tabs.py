@@ -10,7 +10,7 @@ tabState = {
     "allTabIds": [],
     # Subset of allTabIds that only contains the tabIds we actually want to
     # display. This is useful when we have a lot of tabs, and not enough real
-    # estate to display them all. The pickTabsToDisplay function will fill that
+    # estate to display them all. The pick_tabs_to_display function will fill that
     # array with the list of tabIds we want to keep, based on the available
     # space.
     "displayedTabIds": [],

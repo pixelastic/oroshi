@@ -32,7 +32,7 @@ def draw_tab(
             draw_data, screen, tab, before, max_title_length, index, is_last, extra_data
         )
     else:
-        tabs_second_pass_module.secondPass(
+        tabs_second_pass_module.second_pass(
             draw_data, screen, tab, before, max_title_length, index, is_last, extra_data
         )
 

@@ -7,14 +7,14 @@ TAB_BAR_MODULES = [
     "tab_bar_modules.projects",
     "tab_bar_modules.tabs",
     "tab_bar_modules.tab_data",
-    "tab_bar_modules.pickTabsToDisplay",
+    "tab_bar_modules.pick_tabs",
     "tab_bar_modules.tabs_first_pass",
     "tab_bar_modules.tabs_second_pass",
     "tab_bar_modules.statusbar",
 ]
 
 
-def reloadTabBar():
+def reload_tab_bar():
     # Invalidate old timer callbacks before reloading
     if "tab_bar_modules.statusbar" in sys.modules:
         sys.modules["tab_bar_modules.statusbar"]._generation += 1

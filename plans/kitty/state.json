@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-pick-tabs-rename-snake-case.md",
-    "done": false,
+    "done": true,
+    "recap": "Renamed pickTabsToDisplay.py→pick_tabs.py; renamed all 4 functions to snake_case; renamed secondPass→second_pass and drawTab→draw_tab_item in tabs_second_pass.py; updated reload.py and all call sites; also snake_cased all local variables (review finding) and updated stale firstPass comments.",
     "blocked_by": ["02"]
   }
 ]

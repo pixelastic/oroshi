@@ -5,10 +5,10 @@ from tab_bar_modules.tabs import tabState
 
 
 # Second pass:
-# This method will be called on each tab in sequence, after firstPass has been
+# This method will be called on each tab in sequence, after first_pass has been
 # called on them.
-# We will read the metadata gathered in firstPass, and draw the tabs accordingly.
-def secondPass(
+# We will read the metadata gathered in first_pass, and draw the tabs accordingly.
+def second_pass(
     draw_data: DrawData,
     screen: Screen,
     tab: TabBarData,
@@ -18,16 +18,16 @@ def secondPass(
     is_last: bool,
     extra_data: ExtraData,
 ) -> int:
-    tabId = tab.tab_id
-    tabData = tabState["manifest"][tabId]
+    tab_id = tab.tab_id
+    tab_data = tabState["manifest"][tab_id]
 
     # Display only if we have enough room
-    if tabId in tabState["displayedTabIds"]:
-        drawTab(tabData, screen)
+    if tab_id in tabState["displayedTabIds"]:
+        draw_tab_item(tab_data, screen)
 
     # Once we've drawn the last tab, our job is almost done
     if is_last:
-        # We reset allTabIds, so firstPass can rebuild it next time
+        # We reset allTabIds, so first_pass can rebuild it next time
         tabState["allTabIds"] = []
         # We draw the status bar
         draw_statusbar(screen)
@@ -36,13 +36,13 @@ def secondPass(
 
 
 # Draw a tab
-def drawTab(tabData, screen):
+def draw_tab_item(tab_data, screen):
     # Draw tab
-    screen.cursor.fg = tabData["fg"]
-    screen.cursor.bg = tabData["bg"]
-    screen.draw(tabData['title'])
+    screen.cursor.fg = tab_data["fg"]
+    screen.cursor.bg = tab_data["bg"]
+    screen.draw(tab_data['title'])
 
     # Draw separator
-    screen.cursor.bg = tabData["separatorBg"]
-    screen.cursor.fg = tabData["separatorFg"]
-    screen.draw("")
+    screen.cursor.bg = tab_data["separatorBg"]
+    screen.cursor.fg = tab_data["separatorFg"]
+    screen.draw("")
