@@ -42,36 +42,27 @@ even after I switch tabs, using kitty-remote send-text --match "id:$parentId"
 that might be a way to have me switch between tabs even before the speech to
 text is done, as soon as I'm done talking
 
-
-## Misc
-
-Review color-refresh. Check what it actually really does, if it should be
-renamed, and the tests
-
-
-Simplify the skill-writer skill, to remove the whole TDD part.
-the skill-writer skill is too verbose. It has a TDD cycle that I don't actually
-use. I should remove that and only keep the templates.
-
-The unit in ls (k, M, etc) is in bright white; should dimmer
-
-Make Claude inspect all the history of the review logs of deleted worktrees, and
-classifying the most common skipped review, so I can improve my skills so they
-are no longer suggested.
-
 Would be nice if we can find a way to name/color the kitty tabs based on their
 main repo. I currently use a lot of worktrees, so if I name a tab "foo" in the
 repo A, would be nice if the tab would be name "A foo" for example, or simply
 using the repo A icon rather than A, and colored as this repo.
 
 
+
+## Misc
+
+Simplify the skill-writer skill, to remove the whole TDD part.
+the skill-writer skill is too verbose. It has a TDD cycle that I don't actually
+use. I should remove that and only keep the templates.
+
+Make Claude inspect all the history of the review logs of deleted worktrees, and
+classifying the most common skipped review, so I can improve my skills so they
+are no longer suggested.
+
 json-lint errors when editing files outside of oroshi
 
 Move compdef-glob-from-type.zsh (or something like that) into its own `__lib`
 folder, to follow with conventions
-
-Check if we still need export OROSHI_ROOT_DEFAULT="$OROSHI_ROOT" and why in
-zshenv
 
 Check for each binary in scripts if they couldn't have been made as a zsh
 autoloaded function. Define a clear glossary of why omething is a script raher
