@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-python-test-infrastructure.md",
-    "done": false,
+    "done": true,
+    "recap": "Created python-test bin script wrapping pytest, pytest install script mirroring ruff pattern, pyproject.toml for kitty config with pythonpath and testpaths, and bats tests covering passing file, failing file, and directory scenarios.",
     "blocked_by": []
   },
   {

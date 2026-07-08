@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# Pytest: Python testing framework
+# https://docs.pytest.org
+set -e
+pipx install pytest

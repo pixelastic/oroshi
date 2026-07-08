@@ -240,6 +240,7 @@ hl("shVarAssign", "punctuation")
 -- }}}
 -- Toml {{{
 hl("@property.toml", "none")
+hl("tomlDotInKey", "punctuation")
 --- }}}
 --- TypeScript {{{
 hl("@tag.delimiter.tsx", "punctuation")

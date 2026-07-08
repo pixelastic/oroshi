@@ -1,3 +1,14 @@
+## Issue 03 — python-test infrastructure
+
+### Spec: pip --user fallback missing from pytest install script
+
+```zsh
+pipx install pytest
+```
+
+**Problem:** Spec says "Installs pytest via pipx (or pip --user if pipx is unavailable for pytest)".
+**Reason skipped:** Conflicting spec requirement — "Follow the exact same pattern as the ruff install script" and the ruff install script has no pip fallback. Following the ruff pattern takes precedence.
+
 ## Issue 01 — python-lint --fix flag
 
 ### Spec: `exit` under `set -e` is fragile for non-zero propagation
