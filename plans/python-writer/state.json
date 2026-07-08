@@ -30,7 +30,8 @@
   {
     "id": "05",
     "issue": "issues/05-update-zsh-writer-and-claude-md.md",
-    "done": false,
+    "done": true,
+    "recap": "Updated zsh-writer Step 4 to use zsh-lint --fix instead of zsh-lint, and split the blanket Python NEVER rule into two: one forbidding Python for new scripts, one directing python-writer when Python is explicitly requested.",
     "blocked_by": ["02"]
   },
   {
