@@ -1,0 +1,32 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-python-lint-fix.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-zsh-lint-fix.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-python-test-infrastructure.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-python-writer-skill.md",
+    "done": false,
+    "blocked_by": ["01", "03"]
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-update-zsh-writer-and-claude-md.md",
+    "done": false,
+    "blocked_by": ["02"]
+  }
+]
