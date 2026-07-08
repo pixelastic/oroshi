@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-python-lint-fix.md",
-    "done": false,
+    "done": true,
+    "recap": "Added --fix flag to python-lint: runs ruff format then ruff check --fix then ruff check, with bats tests covering fixable and unfixable scenarios.",
     "blocked_by": []
   },
   {

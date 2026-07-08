@@ -1,23 +1,34 @@
 #!/usr/bin/env zsh
 # python-lint: Lint a Python file
 # Usage:
-# $ python-lint  ./path/to/file.py       # For CLI
-# $ python-lint --json ./path/to/file.py  # For Vim
+# $ python-lint  ./path/to/file.py         # For CLI
+# $ python-lint --json ./path/to/file.py   # For Vim
+# $ python-lint --fix ./path/to/file.py    # Auto-fix then report remaining
 set -e
 
 zparseopts -E -D \
-  -json=flagJson
-isJson=${#flagJson}
+  -json=flagJson \
+  -fix=flagFix
+local isJson=${#flagJson}
+local isFix=${#flagFix}
 
 # Input file
-inputFile="${1:a}"
+local inputFile="${1:a}"
 if [[ ! -f "$inputFile" ]]; then
   echo "Error: File '$inputFile' not found" >&2
   exit 1
 fi
 
+# --fix: auto-format, auto-fix lint violations, then report remaining
+if [[ $isFix == "1" ]]; then
+  ruff format "$inputFile"
+  ruff check --fix "$inputFile"
+  ruff check "$inputFile"
+  exit
+fi
+
 # Optional args
-formatAsJson=""
+local formatAsJson=""
 if [[ $isJson -gt 0 ]]; then
   formatAsJson="--output-format json"
 fi
