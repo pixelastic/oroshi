@@ -49,13 +49,14 @@ main repo. I currently use a lot of worktrees, so if I name a tab "foo" in the
 repo A, would be nice if the tab would be name "A foo" for example, or simply
 using the repo A icon rather than A, and colored as this repo.
 
-
+---
 
 ## Misc
 
-Simplify the skill-writer skill, to remove the whole TDD part.
-the skill-writer skill is too verbose. It has a TDD cycle that I don't actually
-use. I should remove that and only keep the templates.
+Ensure zsh-writer (and js-writer) follow a RED GREEN REFACTOR LINT structure. So
+we first write a failing test, then code that pass the tests, then refactor
+through patterns then deterministic lint
+
 
 Make Claude inspect all the history of the review logs of deleted worktrees, and
 classifying the most common skipped review, so I can improve my skills so they
@@ -228,6 +229,9 @@ Add a Ctrl-T alias to nvim? Or at least disable the tag error
 
 Once all ctrl-* are migrated, I'll need to check disk.lua, to ensure a
 consistent pattern for the sinklist
+
+When moving from one nvim tab to another, it doesn't reload the buffer from what
+is on disk. It works when I move from one kitty window to another though
 
 ## JavaScript
 
