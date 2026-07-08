@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-simplify-skill-writer.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Rewrote skill-writer SKILL.md to a 3-step GRILL→WRITE→DONE workflow and deleted the 3 TDD-only reference files."
   }
 ]
