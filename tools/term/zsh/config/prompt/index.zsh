@@ -223,11 +223,11 @@ function oroshi-chpwd() {
   [[ "$PWD" == "$OROSHI_WORKTREES_DIR/oroshi--"* ]] && isInOroshiWorktree="1"
 
   # Return early if moving from regular dir to regular dir
-  [[ $isInOroshiWorktree == "0" && "$OROSHI_ROOT" == "$OROSHI_ROOT_DEFAULT" ]] && return 0
+  [[ $isInOroshiWorktree == "0" && "$OROSHI_ROOT" == "$HOME/.oroshi" ]] && return 0
   # Return early if moving inside an oroshi worktree
   [[ "$PWD" == "$OROSHI_ROOT" || "$PWD" == "$OROSHI_ROOT/"* ]] && return 0
 
-  local newRoot="$OROSHI_ROOT_DEFAULT"
+  local newRoot="$HOME/.oroshi"
   [[ "$isInOroshiWorktree" == "1" ]] && newRoot="$(git-directory-root)"
 
   export OROSHI_ROOT="$newRoot"

@@ -10,7 +10,6 @@ export OROSHI_WORKTREES_DIR="${MOCK_OROSHI_WORKTREES_DIR:-$HOME/local/www/worktr
 if [[ "$OROSHI_DISABLE_WORKTREE_AWARE" != "1" ]]; then
   # Where is the oroshi repo currently used?
   export OROSHI_ROOT="$HOME/.oroshi"
-  export OROSHI_ROOT_DEFAULT="$OROSHI_ROOT"
 
   # Switch to the worktree if we're in an oroshi worktree
   if [[ "$PWD" == "$OROSHI_WORKTREES_DIR/oroshi--"* ]]; then
