@@ -188,6 +188,7 @@
   "rtk --help",
   "rtk --version",
   "rtk-can-rewrite",
+  "ruff",
   "sar",
   "scripts/bin/ai/review/review-diff",
   "scripts/bin/term/bats/bats",
