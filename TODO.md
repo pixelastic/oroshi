@@ -170,12 +170,6 @@ Should be a real if [[ ]]; then fi
 
 
 ---
-## Kitty
-
-I would like to have a visual indicator in my kitty tabs to tell me which tab
-currently has a "job's done"
-
----
 ## aberlaas
 
 Add a CLAUDE.md at the root for aberlaas projects with aberlaas init, that
@@ -234,3 +228,18 @@ Add a Ctrl-T alias to nvim? Or at least disable the tag error
 
 Once all ctrl-* are migrated, I'll need to check disk.lua, to ensure a
 consistent pattern for the sinklist
+
+## JavaScript
+
+I will need a js-writer skill to enforce my coding standards.
+
+Something to explain the let __ = {} pattern to mock methods.
+For example, using __.run() or __.exit() and mocking it in tests
+
+Linting rules to catch common errors, like the try/catch pattern I have in my
+tests to tests throwing
+Also the mockReturnValue rather than mockResultValue
+
+I will need to improve the JS linting rules, to catch all those issues. The
+git-commit-message tests would be a good playground to test them, they haven't
+been reviewed and are written bare.
