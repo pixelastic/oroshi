@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-python-writer-skill.md",
-    "done": false,
+    "done": true,
+    "recap": "Created python-writer skill with SKILL.md (four-step TDD workflow), references/testing.md (pytest conventions, conftest.py, sys.modules stub, parametrize), and references/style.md (return early with before/after example).",
     "blocked_by": ["01", "03"]
   },
   {
