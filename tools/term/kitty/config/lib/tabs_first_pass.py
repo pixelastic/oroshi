@@ -1,10 +1,10 @@
 import os
 from kitty.fast_data_types import Screen
 from kitty.tab_bar import DrawData, ExtraData, TabBarData
-from tab_bar_modules.tab_data import build_tab_data
+from lib.tab_data import build_tab_data
 
-from tab_bar_modules.pick_tabs import pick_tabs_to_display
-from tab_bar_modules.tabs import tabState
+from lib.pick_tabs import pick_tabs_to_display
+from lib.tabs import tabState
 
 # Attention file — list of tab IDs that need user attention
 _ATTENTION_FILE = "/home/tim/local/tmp/oroshi/kitty/attention"

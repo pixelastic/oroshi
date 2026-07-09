@@ -1,5 +1,5 @@
 import json
-from tab_bar_modules.colors import get_cursor_color
+from lib.colors import get_cursor_color
 
 projectState = {"data": {}}
 
@@ -10,7 +10,7 @@ def get_project_data(projectName):
 
 # Set the ALL_PROJECTS object, that contains name, icons and colors of all
 # projects
-def init_project_list():
+def init():
     jsonPath = "/home/tim/.oroshi/tools/term/zsh/config/theming/dist/projects.json"
     with open(jsonPath) as f:
         rawProjectData = json.load(f)

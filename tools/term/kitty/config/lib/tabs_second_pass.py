@@ -1,7 +1,7 @@
 from kitty.fast_data_types import Screen
 from kitty.tab_bar import DrawData, ExtraData, TabBarData
-from tab_bar_modules.statusbar import draw_statusbar
-from tab_bar_modules.tabs import tabState
+from lib.statusbar import draw_statusbar
+from lib.tabs import tabState
 
 
 # Second pass:

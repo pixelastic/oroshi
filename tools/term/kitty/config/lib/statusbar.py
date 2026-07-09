@@ -1,11 +1,11 @@
 import os
 import json
 import subprocess
-from tab_bar_modules.projects import init_project_list
+from lib.projects import init as init_projects
 from kitty.boss import get_boss
 from kitty.fast_data_types import Screen, add_timer
 from kitty.tab_bar import Formatter, draw_attributed_string
-from tab_bar_modules.colors import get_cursor_color
+from lib.colors import get_cursor_color
 
 # Persists across hot-reloads so stale timer callbacks can self-invalidate
 if "_generation" not in globals():
@@ -31,7 +31,7 @@ statusbarState = {
 
 
 # Init the STATUSBAR object
-def init_statusbar():
+def init():
     global _generation
     _generation += 1
     current_generation = _generation
@@ -113,7 +113,7 @@ def check_for_statusbar_reload():
         return
 
     # Reload ALL_PROJECTS to get updated project colors
-    init_project_list()
+    init_projects()
 
     # We re-run all statusbar parts
     for itemName in statusbarState["order"]:
@@ -139,7 +139,7 @@ def check_for_forced_reload():
     os.remove(beaconPath)
 
     # Lazy import to avoid circular dependency
-    from tab_bar_modules.reload import reload_tab_bar
+    from lib.reload import reload_tab_bar
 
     reload_tab_bar()
 
