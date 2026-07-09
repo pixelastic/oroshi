@@ -1,9 +1,10 @@
 #!/usr/bin/env zsh
-# python-lint: Lint a Python file
+# python-lint: Lint one or more Python files
 # Usage:
 # $ python-lint  ./path/to/file.py         # For CLI
 # $ python-lint --json ./path/to/file.py   # For Vim
 # $ python-lint --fix ./path/to/file.py    # Auto-fix then report remaining
+# $ python-lint file1.py file2.py          # Lint multiple files
 set -e
 
 zparseopts -E -D \
@@ -12,27 +13,44 @@ zparseopts -E -D \
 local isJson=${#flagJson}
 local isFix=${#flagFix}
 
-# Input file
-local inputFile="${1:a}"
-if [[ ! -f "$inputFile" ]]; then
-  echo "Error: File '$inputFile' not found" >&2
+# Input files
+local inputFiles=("$@")
+if [[ ${#inputFiles} -eq 0 ]]; then
+  echo "Error: No files provided" >&2
   exit 1
 fi
 
+# Validate all files exist before processing
+for inputFile in "${inputFiles[@]}"; do
+  local absoluteFilepath="${inputFile:a}"
+  if [[ ! -f "$absoluteFilepath" ]]; then
+    echo "Error: File '$absoluteFilepath' not found" >&2
+    exit 1
+  fi
+done
+
+local exitCode=0
+
 # --fix: auto-format, auto-fix lint violations, then report remaining
 if [[ $isFix == "1" ]]; then
-  ruff format --quiet "$inputFile"
-  ruff check --fix --quiet "$inputFile"
-  ruff check --quiet "$inputFile"
-  exit
+  for inputFile in "${inputFiles[@]}"; do
+    local absoluteFilepath="${inputFile:a}"
+    ruff format --quiet "$absoluteFilepath"
+    ruff check --fix --quiet "$absoluteFilepath"
+    ruff check --quiet "$absoluteFilepath" || exitCode=1
+  done
+  exit $exitCode
 fi
 
 # Optional args
 local formatAsJson=""
-if [[ $isJson -gt 0 ]]; then
-  formatAsJson="--output-format json"
-fi
+[[ $isJson -gt 0 ]] && formatAsJson="--output-format json"
 
-ruff check \
-  ${=formatAsJson} \
-  "$inputFile"
+for inputFile in "${inputFiles[@]}"; do
+  local absFile="${inputFile:a}"
+  ruff check \
+    ${=formatAsJson} \
+    "$absoluteFilepath" || exitCode=1
+done
+
+exit $exitCode

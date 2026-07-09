@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-python-lint-multi-file.md",
-    "done": false,
+    "done": true,
+    "recap": "Extended python-lint to accept multiple file arguments; loops over each applying ruff format+check+report, exits non-zero if any file has remaining violations; single-file still works.",
     "blocked_by": []
   },
   {
