@@ -10,6 +10,7 @@ local rawFiles="$(git-file-list-dirty-raw)"
 
 local batsPaths=()
 local jsPaths=()
+local pythonPaths=()
 for rawLine in ${(f)rawFiles}; do
   local splitLine=(${(@s/:/)rawLine})
   local gitStatus=$splitLine[1]
@@ -21,6 +22,11 @@ for rawLine in ${(f)rawFiles}; do
 
   is-js "$fullPath" && jsPaths+=("$fullPath")
 
+  if is-python "$fullPath"; then
+    local pythonTestPath="$(python-test-path "$fullPath")"
+    [[ "$pythonTestPath" != "" ]] && pythonPaths+=("$pythonTestPath")
+  fi
+
   local batsPath="$(bats-test-path "$fullPath")"
   [[ "$batsPath" != "" ]] && batsPaths+=("$batsPath")
 done
@@ -28,6 +34,11 @@ done
 # Run Vitest for dirty JS source files (exits 0 silently if no related tests exist)
 if [[ ${#jsPaths[@]} -gt 0 ]]; then
   yarn run test --fail-fast --related "${jsPaths[@]}"
+fi
+
+# Run pytest for dirty Python source files (exits 0 silently if no related tests exist)
+if [[ ${#pythonPaths[@]} -gt 0 ]]; then
+  python-test "${pythonPaths[@]}"
 fi
 
 # No bats tests found for any dirty file

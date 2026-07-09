@@ -112,6 +112,67 @@ setup() {
   [ "$output" = "" ]
 }
 
+# ─── PYTHON ───────────────────────────────────────────────────────────────────
+
+@test "exits 0 when python source has a matching test and python-test passes" {
+  echo 'x = 1' > "$BATS_GIT_DIR/module.py"
+  bats_git add module.py
+  bats_git commit --quiet -m "add module.py"
+  echo 'changed' >> "$BATS_GIT_DIR/module.py"
+
+  bats-test-path() { printf ''; }
+  python-test-path() { echo "$BATS_GIT_DIR/__tests__/test_module.py"; }
+  python-test() { return 0; }
+  bats_mock bats-test-path python-test-path python-test
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
+  [ "$status" -eq 0 ]
+}
+
+@test "exits 0 when python source has no matching test" {
+  echo 'x = 1' > "$BATS_GIT_DIR/module.py"
+  bats_git add module.py
+  bats_git commit --quiet -m "add module.py"
+  echo 'changed' >> "$BATS_GIT_DIR/module.py"
+
+  bats-test-path() { printf ''; }
+  python-test-path() { printf ''; }
+  bats_mock bats-test-path python-test-path
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
+  [ "$status" -eq 0 ]
+  [ "$output" = "" ]
+}
+
+@test "exits non-zero when python-test fails" {
+  echo 'x = 1' > "$BATS_GIT_DIR/module.py"
+  bats_git add module.py
+  bats_git commit --quiet -m "add module.py"
+  echo 'changed' >> "$BATS_GIT_DIR/module.py"
+
+  bats-test-path() { printf ''; }
+  python-test-path() { echo "$BATS_GIT_DIR/__tests__/test_module.py"; }
+  python-test() { return 1; }
+  bats_mock bats-test-path python-test-path python-test
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
+  [ "$status" -eq 1 ]
+}
+
+@test "exits 0 and python-test is not called when only non-Python files are dirty" {
+  echo 'content' > "$BATS_GIT_DIR/script.zsh"
+  bats_git add script.zsh
+  bats_git commit --quiet -m "add script.zsh"
+  echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
+
+  bats-test-path() { printf ''; }
+  python-test() { return 1; }
+  bats_mock bats-test-path python-test
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
+  [ "$status" -eq 0 ]
+}
+
 # ─── COMBINED ─────────────────────────────────────────────────────────────────
 
 @test "runs both yarn and bats when both types are dirty" {

@@ -30,7 +30,8 @@
   {
     "id": "05",
     "issue": "issues/05-git-file-test-python.md",
-    "done": false,
+    "done": true,
+    "recap": "Added Python branch to git-file-test: is-python detection in file loop, python-test-path call to resolve test path, python-test call if any test paths found; 4 new BATS tests covering pass, no-test, fail, and non-Python-unaffected cases.",
     "blocked_by": ["01", "02"]
   },
   {
