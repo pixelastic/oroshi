@@ -43,7 +43,6 @@ hl("lCursor", "XXX") --		Character under the cursor when |language-mapping|
 -- Syntax groups {{{
 hl("Character", "XXX") --	a character constant: 'c', '\n'
 hl("Debug", "XXX") --		debugging statements
-hl("Define", "XXX") --		preprocessor #define
 hl("Ignore", "XXX") --		left blank, hidden  |hl-Ignore|
 hl("PreCondit", "XXX") --	preprocessor #if, #else, #endif, etc.
 -- }}}

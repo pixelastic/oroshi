@@ -7,6 +7,7 @@ hl("SpecialComment", "comment", { bold = true })
 hl("Conditional", "statement") --	if, then, else, endif, switch, etc.
 hl("Constant", "constant", { bold = true })
 hl("Delimiter", "punctuation")
+hl("Define", "statement")
 hl("Error", "error", { bold = true })
 hl("Exception", "yellow", { bold = true }) --	try, catch, throw
 hl("Function", "function")
