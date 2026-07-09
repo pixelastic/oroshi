@@ -1,0 +1,38 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-is-python.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-python-test-path.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-python-lint-multi-file.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-git-file-lint-python.md",
+    "done": false,
+    "blocked_by": ["01", "03"]
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-git-file-test-python.md",
+    "done": false,
+    "blocked_by": ["01", "02"]
+  },
+  {
+    "id": "06",
+    "issue": "issues/06-lint-staged-wiring.md",
+    "done": false,
+    "blocked_by": ["01", "02", "03"]
+  }
+]
