@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-git-file-lint-python.md",
-    "done": false,
+    "done": true,
+    "recap": "Added Python branch to git-file-lint (is-python detection, python-lint --fix call, displayPythonLintErrors helper); upgraded zsh-lint call to pass --fix; added 4 new BATS tests including --fix flag assertions for both ZSH and Python.",
     "blocked_by": ["01", "03"]
   },
   {

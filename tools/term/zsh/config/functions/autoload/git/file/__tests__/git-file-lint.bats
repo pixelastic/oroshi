@@ -100,7 +100,7 @@ setup() {
   is-zsh() { return 0; }
   zsh-lint() {
     printf '[{"file":"%s","line":2,"column":1,"code":"noGroupedLocals","message":"group locals"}]' \
-      "$1"
+      "$2"
   }
   bats_mock is-zsh zsh-lint
 
@@ -123,6 +123,24 @@ setup() {
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
+}
+
+@test "calls zsh-lint with --fix flag when dirty zsh files are found" {
+  echo 'content' > "$BATS_GIT_DIR/script.zsh"
+  bats_git add script.zsh
+  bats_git commit --quiet -m "add script.zsh"
+  echo 'changed' >> "$BATS_GIT_DIR/script.zsh"
+
+  is-zsh() { return 0; }
+  zsh-lint() {
+    printf '%s\n' "$@" > "$BATS_TMP_DIR/.zsh-lint-args"
+    printf '[]'
+  }
+  bats_mock is-zsh zsh-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [ "$status" -eq 0 ]
+  grep -q -- '--fix' "$BATS_TMP_DIR/.zsh-lint-args"
 }
 
 # ─── JS ───────────────────────────────────────────────────────────────────────
@@ -173,6 +191,74 @@ setup() {
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
   [ "$status" -eq 0 ]
   [ "$output" = "" ]
+}
+
+# ─── PYTHON ───────────────────────────────────────────────────────────────────
+
+@test "exits 0 when is-python true and python-lint has no output" {
+  echo 'x = 1' > "$BATS_GIT_DIR/script.py"
+  bats_git add script.py
+  bats_git commit --quiet -m "add script.py"
+  echo 'changed' >> "$BATS_GIT_DIR/script.py"
+
+  is-python() { return 0; }
+  python-lint() { printf ''; }
+  bats_mock is-python python-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [ "$status" -eq 0 ]
+  [ "$output" = "" ]
+}
+
+@test "shows Python header and errors when is-python true and python-lint has output" {
+  echo 'x = 1' > "$BATS_GIT_DIR/script.py"
+  bats_git add script.py
+  bats_git commit --quiet -m "add script.py"
+  echo 'changed' >> "$BATS_GIT_DIR/script.py"
+
+  is-python() { return 0; }
+  python-lint() {
+    printf 'script.py:1:1: E501 line too long\n'
+    return 1
+  }
+  bats_mock is-python python-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [ "$status" -eq 1 ]
+  [[ "$output" =~ "── Python ──" ]]
+  [[ "$output" =~ script.py ]]
+}
+
+@test "exits 0 when is-python is false for all dirty files" {
+  echo 'x = 1' > "$BATS_GIT_DIR/script.py"
+  bats_git add script.py
+  bats_git commit --quiet -m "add script.py"
+  echo 'changed' >> "$BATS_GIT_DIR/script.py"
+
+  is-python() { return 1; }
+  bats_mock is-python
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [ "$status" -eq 0 ]
+  [ "$output" = "" ]
+}
+
+@test "calls python-lint with --fix flag when dirty python files are found" {
+  echo 'x = 1' > "$BATS_GIT_DIR/script.py"
+  bats_git add script.py
+  bats_git commit --quiet -m "add script.py"
+  echo 'changed' >> "$BATS_GIT_DIR/script.py"
+
+  is-python() { return 0; }
+  python-lint() {
+    printf '%s\n' "$@" > "$BATS_TMP_DIR/.python-lint-args"
+    printf ''
+  }
+  bats_mock is-python python-lint
+
+  bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
+  [ "$status" -eq 0 ]
+  grep -q -- '--fix' "$BATS_TMP_DIR/.python-lint-args"
 }
 
 # ─── ALL ──────────────────────────────────────────────────────────────────────
