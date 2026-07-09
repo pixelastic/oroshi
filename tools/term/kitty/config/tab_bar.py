@@ -26,7 +26,7 @@ def draw_tab(
     is_last: bool,
     extra_data: ExtraData,
 ) -> int:
-    # Init only once
+    # Init all the data only once
     global _initialized
     if not _initialized:
         projects.init_project_list()

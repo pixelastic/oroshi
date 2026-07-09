@@ -162,7 +162,7 @@ local config = {
       formatterTimeout = 10000,
     },
     zsh = {
-      formatters = { "shfmt_zsh" },
+      formatters = { "oroshi_zsh_fix" },
       linters = { "zsh-lint" },
       configureFormatter = zshHelper.configureFormatter,
       configureLinter = zshHelper.configureLinter,

@@ -21,9 +21,9 @@ fi
 
 # --fix: auto-format, auto-fix lint violations, then report remaining
 if [[ $isFix == "1" ]]; then
-  ruff format "$inputFile"
-  ruff check --fix "$inputFile"
-  ruff check "$inputFile"
+  ruff format --quiet "$inputFile"
+  ruff check --fix --quiet "$inputFile"
+  ruff check --quiet "$inputFile"
   exit
 fi
 
