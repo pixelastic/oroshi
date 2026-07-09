@@ -37,6 +37,26 @@ setup() {
   [ -z "$output" ]
 }
 
+@test "exits 0 for python-test with file argument" {
+  bats_run_zsh "rtk-can-rewrite 'python-test foo.py'"
+  [ "$status" -eq 0 ]
+}
+
+@test "exits 0 for python-test with path argument" {
+  bats_run_zsh "rtk-can-rewrite 'python-test ./path/to/test_file.py'"
+  [ "$status" -eq 0 ]
+}
+
+@test "exits 1 for python-test-something (no false positives)" {
+  bats_run_zsh "rtk-can-rewrite 'python-test-something'"
+  [ "$status" -eq 1 ]
+}
+
+@test "exits 1 for python foo.py" {
+  bats_run_zsh "rtk-can-rewrite 'python foo.py'"
+  [ "$status" -eq 1 ]
+}
+
 @test "exits 1 for an unrecognized command" {
   bats_run_zsh "rtk-can-rewrite 'echo hello'"
   [ "$status" -eq 1 ]

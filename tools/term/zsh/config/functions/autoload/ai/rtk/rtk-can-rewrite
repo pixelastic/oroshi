@@ -13,11 +13,12 @@ local cmd="$1"
 
 # Check if we have a built-in rewrite
 if rtk rewrite "$cmd" >/dev/null 2>&1; then
-  return 0
+	return 0
 fi
 
 # Check against hardcoded patterns for known filter-backed commands
 [[ "$cmd" =~ '^bats\b' ]] && return 0
 [[ "$cmd" =~ '^yarn run test(\b| |$)' ]] && return 0
+[[ "$cmd" =~ '^python-test( |$)' ]] && return 0
 
 return 1

@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-register-python-test-pattern.md",
-    "done": false,
+    "done": true,
+    "recap": "Added ^python-test( |$) pattern to rtk-can-rewrite with 4 behavioral tests; used ( |$) over \\b to correctly reject python-test-something.",
     "blocked_by": []
   },
   {

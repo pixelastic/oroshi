@@ -23,3 +23,6 @@
 - Existing `rtk-can-rewrite.bats` tests for `bats` and `yarn run test` — follow the same structure
 
 ## Discoveries
+
+### Issue 01 — Register python-test pattern
+- `\b` in ZSH `=~` regex matches word boundaries including before `-` (non-word char), so `^python-test\b` matches `python-test-something`. Use `( |$)` to anchor to space-or-end — same form as the existing `^yarn run test(\b| |$)` pattern.
