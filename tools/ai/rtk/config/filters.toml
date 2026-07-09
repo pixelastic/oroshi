@@ -36,5 +36,7 @@ strip_lines_matching = [
   "\\[\\d+%\\]$",
   " PASSED$",
   "^=+ \\d+ passed in",
+  "^.+\\.py:\\s*$",
+  "^\\s+✓",
 ]
 on_empty = "All tests passed."
