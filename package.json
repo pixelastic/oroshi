@@ -30,8 +30,10 @@
     "lint": "./scripts/yarn/lint",
     "lint:bats": "./scripts/yarn/lint-bats",
     "lint:fix": "./scripts/yarn/lint-fix",
+    "lint:python": "./scripts/yarn/lint-python",
     "lint:zsh": "./scripts/yarn/lint-zsh",
     "test": "./scripts/yarn/test",
-    "test:bats": "./scripts/yarn/test-bats"
+    "test:bats": "./scripts/yarn/test-bats",
+    "test:python": "./scripts/yarn/test-python"
   }
 }

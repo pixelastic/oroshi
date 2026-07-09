@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+# Lint all Python files among the given paths using python-lint
+# Called by lint-staged with staged file paths as arguments
+# Usage:
+# $ lint-python /abs/path/to/file1.py /abs/path/to/file2.py
+set -e
+
+# No staged files to lint
+[[ $# -eq 0 ]] && exit 0
+
+python-lint --fix "$@"

@@ -10,12 +10,12 @@ set -e
 
 zshFiles=()
 for filePath in "$@"; do
-  if is-zsh "$filePath"; then
-    zshFiles+=("$filePath")
-  fi
+	if is-zsh "$filePath"; then
+		zshFiles+=("$filePath")
+	fi
 done
 
 # No ZSH files among the arguments
 [[ "${#zshFiles[@]}" -eq 0 ]] && exit 0
 
-zsh-lint "${zshFiles[@]}"
+zsh-lint --fix "${zshFiles[@]}"

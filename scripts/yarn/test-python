@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+# Run pytest for any staged Python file that has tests
+# Called by lint-staged with staged file paths as arguments
+# Usage:
+# $ test-python /abs/path/to/file1.py /abs/path/to/file2.py
+set -e
+
+# No staged files to check
+[[ $# -eq 0 ]] && exit 0
+
+local testPaths=()
+for filePath in "$@"; do
+  local testPath="$(python-test-path "$filePath" || true)"
+  [[ "$testPath" != "" ]] && testPaths+=("$testPath")
+done
+
+# No tests found for any of the staged files
+[[ "${#testPaths[@]}" -eq 0 ]] && exit 0
+
+local uniquePaths=("${(@u)testPaths}")
+python-test "${uniquePaths[@]}"

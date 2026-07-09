@@ -11,6 +11,9 @@ export default {
   // Bats test files
   '{**/*.bats,tools/term/bats/config/*}': ['yarn run lint:bats'],
 
+  // Python files
+  '**/*.py': ['yarn run lint:python', 'yarn run test:python'],
+
   // JS Scripts
   '**/*.js': ['yarn run lint:fix --js', 'yarn run test --fail-fast --related'],
   'scripts/yarn/**/*': ['yarn run lint:zsh'],

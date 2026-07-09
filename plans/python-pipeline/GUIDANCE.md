@@ -50,4 +50,7 @@ Convention: `__tests__/test_{basename_without_extension}.py`
 
 ## Discoveries
 
-(append after each issue)
+### Issue 06 — lint-staged wiring
+
+- `local var="$(cmd)" || true` is a zsh lint violation (`localOrReturn`): `local` always returns 0, making `|| true` a no-op. Put `|| true` inside the substitution: `local var="$(cmd || true)"`.
+- Yarn scripts in `scripts/yarn/` have no BATS tests — they follow the same no-test convention as config changes.

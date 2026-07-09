@@ -37,7 +37,8 @@
   {
     "id": "06",
     "issue": "issues/06-lint-staged-wiring.md",
-    "done": false,
+    "done": true,
+    "recap": "Added lint-python and test-python yarn wrappers, registered them in package.json, added **/*.py entry to lintstaged.config.js, and upgraded lint-zsh to pass --fix to zsh-lint.",
     "blocked_by": ["01", "02", "03"]
   }
 ]
