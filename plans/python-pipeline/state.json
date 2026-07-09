@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-python-test-path.md",
-    "done": false,
+    "done": true,
+    "recap": "Created python-test-path script: returns already-a-test paths as-is, resolves source files to __tests__/test_{basename}.py, exits non-zero for missing tests or no argument; 5 BATS tests.",
     "blocked_by": []
   },
   {
