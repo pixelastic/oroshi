@@ -8,12 +8,12 @@ set -e
 
 local targets=()
 for arg in "$@"; do
-  local target="${arg:a}"
-  # Skip non .py files
-  [[ "$target" != *.py && ! -d "$target" ]] && continue
-  # Skip missing files
-  [[ ! -e "$target" ]] && continue
-  targets+=("$target")
+	local target="${arg:a}"
+	# Skip non .py files
+	[[ "$target" != *.py && ! -d "$target" ]] && continue
+	# Skip missing files
+	[[ ! -e "$target" ]] && continue
+	targets+=("$target")
 done
 
-pytest "${targets[@]}"
+pytest --spec --no-header "${targets[@]}"

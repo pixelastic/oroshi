@@ -3,3 +3,6 @@
 # https://docs.pytest.org
 set -e
 pipx install pytest
+
+# Add pytest-spec plugin, to display test results in a more readable format
+pipx inject pytest pytest-spec
