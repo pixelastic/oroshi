@@ -5,9 +5,7 @@ setup() {
   FILTERS_TOML="$BATS_TEST_DIRNAME/../config/filters.toml"
   mkdir -p "$BATS_TMP_DIR/rtk"
   cp "$FILTERS_TOML" "$BATS_TMP_DIR/rtk/filters.toml"
-  # force rtk to use the local filters.toml instead of the global one
-  export XDG_CONFIG_HOME="$BATS_TMP_DIR"
-
+  # force rtk to use the local filters.toml instead of the global one export XDG_CONFIG_HOME="$BATS_TMP_DIR"
   # aberlaas/vitest hardcoded excluding **/tmp/**
   # BATS_TMP_DIR is under /tmp so vitest cannot discover JS fixtures placed
   # there. We create our own tmp dir inside __tests__/ (which vitest does
@@ -55,4 +53,25 @@ teardown() {
   [ "$status" -eq 1 ]
   [[ "$output" == *"AssertionError"* ]]
   [[ "$output" != *"✓"* ]]
+}
+
+@test "rtk python-test on all-passing file outputs exactly 'All tests passed.'" {
+  printf 'def test_passes():\n    assert True\n' >"$BATS_TMP_DIR/test_all_pass.py"
+
+  run rtk python-test "$BATS_TMP_DIR/test_all_pass.py"
+  [ "$status" -eq 0 ]
+  [ "$output" = "All tests passed." ]
+}
+
+@test "rtk python-test on failing file suppresses passing lines and shows failure details" {
+  printf 'def test_passes():\n    assert True\ndef test_fails():\n    assert False\n' >"$BATS_TMP_DIR/test_failure.py"
+
+  run rtk python-test "$BATS_TMP_DIR/test_failure.py"
+  [ "$status" -eq 1 ]
+  [[ "$output" == *"FAILED"* ]]
+  [[ "$output" != *"PASSED"* ]]
+  [[ "$output" != *"platform "* ]]
+  [[ "$output" != *"rootdir:"* ]]
+  [[ "$output" != *"configfile:"* ]]
+  [[ "$output" != *"collected "* ]]
 }

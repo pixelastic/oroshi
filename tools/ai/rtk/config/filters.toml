@@ -21,3 +21,20 @@ strip_lines_matching = [
   "^\\s*(Test Files|Tests)\\s+\\d+ passed",
 ]
 on_empty = "All tests passed."
+
+[filters.pytest]
+description = "pytest output — show failures only"
+match_command = "^python-test( |$)"
+strip_ansi = true
+strip_lines_matching = [
+  "^=+ test session starts",
+  "^platform ",
+  "^rootdir:",
+  "^configfile:",
+  "^plugins:",
+  "^collected \\d+",
+  "\\[\\d+%\\]$",
+  " PASSED$",
+  "^=+ \\d+ passed in",
+]
+on_empty = "All tests passed."

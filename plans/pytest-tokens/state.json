@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-pytest-rtk-filter.md",
-    "done": false,
+    "done": true,
+    "recap": "Added [filters.pytest] block to filters.toml stripping header/progress/footer noise; used \\[\\d+%\\]$ to strip non-verbose progress lines since python-test runs pytest without -v.",
     "blocked_by": ["01"]
   }
 ]

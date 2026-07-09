@@ -26,3 +26,7 @@
 
 ### Issue 01 — Register python-test pattern
 - `\b` in ZSH `=~` regex matches word boundaries including before `-` (non-word char), so `^python-test\b` matches `python-test-something`. Use `( |$)` to anchor to space-or-end — same form as the existing `^yarn run test(\b| |$)` pattern.
+
+### Issue 02 — pytest RTK filter
+- `python-test` runs pytest without `-v`, so tests show as dots (`test_file.py .  [100%]`), not `PASSED/FAILED` per line. The spec's ` PASSED$` pattern targets verbose mode; add `\[\d+%\]$` to also strip non-verbose progress lines so `on_empty` fires correctly on all-passing runs.
+- Both `\[\d+%\]$` and ` PASSED$` are safe to include together — they cover non-verbose and verbose output respectively without conflicting.
