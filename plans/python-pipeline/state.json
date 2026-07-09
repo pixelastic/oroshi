@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-is-python.md",
-    "done": false,
+    "done": true,
+    "recap": "Created is-python autoload function (extension-only, no shebang) with 6 BATS tests covering .py, other extensions, no extension, symlink, directory, and missing path.",
     "blocked_by": []
   },
   {

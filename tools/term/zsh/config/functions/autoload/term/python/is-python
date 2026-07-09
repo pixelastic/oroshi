@@ -1,0 +1,15 @@
+# Boolean: is the given file a Python file?
+# Usage:
+# $ is-python /path/to/script.py   # exit 0 (.py extension)
+# $ is-python /path/to/other.js    # exit 1
+setopt local_options err_return
+
+local filepath="$1"
+
+# Directories and missing files are not Python files
+[[ ! -f "$filepath" ]] && return 1
+
+# .py extension → Python file
+[[ "$filepath" == *.py ]] && return 0
+
+return 1
