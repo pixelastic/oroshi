@@ -19,6 +19,8 @@ for example, only when actually interactive
 
 When I quit claude, it should also clear the attention
 
+Add an icon to show that Claude is waiting for my permisionss
+
 ### Redraw/reload
 
 Diff betwen alt-R and alt-shift-r?
@@ -56,6 +58,11 @@ using the repo A icon rather than A, and colored as this repo.
 Ensure zsh-writer (and js-writer) follow a RED GREEN REFACTOR LINT structure. So
 we first write a failing test, then code that pass the tests, then refactor
 through patterns then deterministic lint
+
+If I press record twice in a row really fast, an almost empty rec file is sent
+and the API returns an error. This should be handled and discarded.
+
+I probaly should also define a keybinding to cancel a record, like Ctrl-YELLOW
 
 
 Make Claude inspect all the history of the review logs of deleted worktrees, and
