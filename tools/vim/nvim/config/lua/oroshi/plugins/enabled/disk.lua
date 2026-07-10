@@ -184,6 +184,9 @@ return {
       nmap("Ⓟ", onCtrlShiftP, "Search in current directory")
       imap("Ⓟ", onCtrlShiftP, "Search in current directory")
       vmap("Ⓟ", onCtrlShiftP, "Search in current directory")
+      nmap("<C-T>", onCtrlShiftP, "Search in current directory")
+      vmap("<C-T>", onCtrlShiftP, "Search in current directory")
+      imap("<C-T>", onCtrlShiftP, "Search in current directory")
       -- }}}
 
       -- CTRL-G: {{{
