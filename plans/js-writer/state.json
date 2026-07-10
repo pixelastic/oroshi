@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-js-writer-skill-update.md",
-    "done": false,
+    "done": true,
+    "recap": "Updated js-writer SKILL.md: one-function-per-file structure example with index.js barrel, split Step 3 (Make it work) / Step 4 (Refactor) / Step 5 (Lint), checklist updated with barrel + test naming rules. Added test file naming section to references/testing.md.",
     "blocked_by": []
   }
 ]

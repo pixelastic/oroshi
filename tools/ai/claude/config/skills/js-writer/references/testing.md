@@ -1,5 +1,8 @@
 # Testing
 
+## Test file naming
+
+- Test files are stored as `__tests__/basename.js` (example: test for `pull.js` → `__tests__/pull.js`)
 - DO NOT import test globals (`describe`, `it`, `expect`, `vi`, `beforeEach`, `afterEach`), they are already loaded
 - DO NOT auto-clean mocks between tests, they are already cleaned
 - Use variable names: `input` (passed), `actual` (result), `expected` (assertion)

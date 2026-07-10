@@ -7,7 +7,13 @@ description: Use when writing or modifying JavaScript code. Apply when adding fu
 
 ## Overview
 
-Write JavaScript code consistent with my conventions. Projects use [firost](./references/firost.md) for file I/O, [golgoth](./references/golgoth.md) for data utilities, and [aberlaas](./references/aberlaas.md) for linting/testing/releasing.
+Write JavaScript code consistent with my conventions.
+
+Use my preferred libraries — the references explain when and why:
+
+- **[firost](./references/firost.md)** — file I/O, paths, process, HTTP, console, and system utilities
+- **[golgoth](./references/golgoth.md)** — common dependencies: `_` (lodash), `pMap`, `dayjs`, `yoctocolors`, `pProps`, and more
+- **[aberlaas](./references/aberlaas.md)** — lint, test, and release; start new projects with it
 
 ## Core Workflow
 
@@ -17,27 +23,26 @@ Write JavaScript code consistent with my conventions. Projects use [firost](./re
 
 **Exit criterion:** File exists at correct path with correct name.
 
-- `lib/main.js` as main entrypoint
-- Names methods at `lib/myFunction.js`, exported by `main.js`
-- If needed, a  `helpers` folder can be used to group related internal methods
-- All tests are located in a `__tests__` folder, sibling of the file it's testing.
+- `lib/main.js` as the single top-level entry point for public modules
+- One public named function per file (e.g. `lib/myFunction.js`)
+- Subdomain folders group related functions; each has an `index.js` barrel re-exporting them
+- All tests are located in a `__tests__` folder, sibling of the file it's testing
 
 #### Structure example
 
 ```
 lib/
-  __tests__/
-    myFunction.js
-    myOtherFunction.js
-  helpers/
+  pull/
     __tests__/
-      filesystem.js
-      git.js
-    filesystem.js
-    git.js
-  main.js
-  myFunction.js
-  myOtherFunction.js
+      fetch.js
+      merge.js
+    fetch.js
+    index.js      ← barrel: re-exports fetch and merge
+    merge.js
+  __tests__/
+    listEntries.js
+  listEntries.js
+  main.js         ← single top-level entry point
 ```
 
 ### Step 2 — TDD: Write a failing test
@@ -75,14 +80,22 @@ it.each([
 });
 ```
 
-### Step 3 — Write the code
+### Step 3 — Make it work
 
-**Goal:** Working code, following coding style.
+**Goal:** Write the minimal code to make the failing test pass.
 
-**Exit criterion:** Test passes.
+**Exit criterion:** Test is green.
 
-Write code that follows the following patterns:
+Write the simplest code that makes the test pass.
+No patterns yet — just correct behavior.
 
+- Use `yarn run test <filepath>` to run the tests
+
+### Step 4 — Refactor
+
+**Goal:** Apply structural and style patterns without changing behavior.
+
+**Exit criterion:** Tests still pass after refactor.
 
 | Pattern | Rule |
 |---|---|
@@ -91,7 +104,6 @@ Write code that follows the following patterns:
 | [firost](./references/firost.md) | File I/O and system operations |
 | [golgoth](./references/golgoth.md) | Data transformation, dates, async utilities |
 | [aberlaas](./references/aberlaas.md) | Lint, test, release, etc |
-
 
 ```javascript
 import { formatEntry } from './formatEntry.js';
@@ -125,7 +137,7 @@ __ = {
 };
 ```
 
-### Step 4 — Lint
+### Step 5 — Lint
 
 **Goal:** Ensure code follows best practices.
 
@@ -147,7 +159,10 @@ Write code that passes automated lint.
 
 ## Checklist
 
-- [ ] One public named function per file; re-exported from `lib/main.js`
+- [ ] One public named function per file
+- [ ] Subdomain folders have an `index.js` barrel re-exporting all functions
+- [ ] `main.js` used only as top-level package entry point, not as a barrel
+- [ ] Test files in `__tests__/` use plain module name (e.g. `fetch.js`), no `.test.` or `.spec.` suffix
 - [ ] No `for` loop; `_.each`/`_.map`/`pMap` used instead
 - [ ] ES6 modules — named exports, `.js` extension on local imports
 - [ ] JSDoc on all functions (exported and private in `__`)
