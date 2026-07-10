@@ -8,18 +8,18 @@ set -e
 
 zmodload zsh/zutil
 zparseopts -E -D \
-  -prompt:=flagPrompt \
-  -no-focus=flagNoFocus
+	-prompt:=flagPrompt \
+	-no-focus=flagNoFocus
 
 local slug="$1"
 local prompt="${flagPrompt[2]}"
 local isNoFocus=${#flagNoFocus}
 
 # Require a slug
-[[ "$slug" == "" ]] && {
-  print "sidequest: slug required" >&2
-  exit 1
-}
+if [[ "$slug" == "" ]]; then
+	print "sidequest: slug required" >&2
+	exit 1
+fi
 
 # Create the worktree for the slug
 git-worktree-create "$slug"
@@ -36,7 +36,7 @@ local focusFlag="--focus"
 [[ $isNoFocus == "1" ]] && focusFlag=""
 
 kitty-tab-create \
-  "$slug" \
-  --cwd "$worktreePath" \
-  --cmd "$cmd" \
-  $focusFlag
+	"$slug" \
+	--cwd "$worktreePath" \
+	--cmd "$cmd" \
+	$focusFlag

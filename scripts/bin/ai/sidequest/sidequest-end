@@ -7,15 +7,16 @@ set -e
 
 local file="$1"
 # Require a file path argument
-[[ "$file" == "" ]] && {
-  print "sidequest-end: file path required" >&2
-  exit 1
-}
+if [[ "$file" == "" ]]; then
+	print "sidequest-end: file path required" >&2
+	exit 1
+fi
+
 # Require the file to exist
-[[ ! -f "$file" ]] && {
-  print "sidequest-end: file not found: $file" >&2
-  exit 1
-}
+if [[ ! -f "$file" ]]; then
+	print "sidequest-end: file not found: $file" >&2
+	exit 1
+fi
 
 local slug="${file:t:r}"
 sidequest "$slug" --prompt "@${file}" --no-focus

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-delete-sidequest-end.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-rewrite-sidequest-filepath.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-repo-dir-flag-and-skill.md",
+    "done": false,
+    "blocked_by": ["02"]
+  }
+]
