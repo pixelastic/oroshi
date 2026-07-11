@@ -54,3 +54,8 @@ bats scripts/bin/kitty/__tests__/<name>.bats
 <!-- Append non-trivial findings here after each issue, format: -->
 <!-- ### Issue XX — short title -->
 <!-- - finding -->
+
+### Issue 02 — Redraw beacon
+- `mocker.patch.object(module, "CONSTANT", value)` works for patching module-level string constants in pytest; no need to move env reads into `check()`.
+- zsh-lint `noExternalBasename` rule: use `${var:h}` instead of `$(dirname "$var")`.
+- Autouse fixtures for a single test file can live in the test file itself (not conftest.py); conftest.py is for cross-file sharing only.

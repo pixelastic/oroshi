@@ -1,13 +1,10 @@
-import os
 from kitty.fast_data_types import Screen
 from kitty.tab_bar import DrawData, ExtraData, TabBarData
 from lib.tab_data import build_tab_data
 
+from lib import redraw
 from lib.pick_tabs import pick_tabs_to_display
 from lib.tabs import tabState
-
-# Attention file — list of tab IDs that need user attention
-_ATTENTION_FILE = "/home/tim/local/tmp/oroshi/kitty/attention"
 
 
 # First pass:
@@ -25,11 +22,7 @@ def first_pass(
 ) -> int:
     # At the start of a new render cycle (allTabIds is empty), load attention state
     if not tabState["allTabIds"]:
-        if os.path.exists(_ATTENTION_FILE):
-            with open(_ATTENTION_FILE) as f:
-                tabState["attentionIds"] = {line.strip() for line in f if line.strip()}
-        else:
-            tabState["attentionIds"] = set()
+        redraw.check()
 
     # Format tab data from raw data passed by Kitty
     tabData = build_tab_data(tab, draw_data)
