@@ -15,12 +15,20 @@ The right portion of the Tab Bar that displays auto-refreshing system indicators
 _Avoid_: status line, right bar, system bar
 
 **Redraw**:
-A lightweight operation that forces the Tab Bar to visually re-render on the next frame, without reloading any data from disk.
+An operation that reads state files from disk (e.g., Attention File) to pick up current runtime state, then forces the Tab Bar to re-render on the next frame. Does not re-read definition files or Python sources.
 _Avoid_: refresh, update, repaint
 
 **Reload**:
-A heavyweight operation that re-reads all JSON dist files (icons, colors, projects) from disk, then triggers a Redraw.
+An operation that re-reads all definition files (icons, colors, projects JSON dist files) and re-imports Python source modules, then triggers a Redraw. Only needed when definitions change (new project, color change, code edit).
 _Avoid_: refresh, redraw, reset
+
+**State File**:
+A file reflecting current runtime state, written by external tools during normal machine usage (e.g., Attention File). Read on every Redraw.
+_Avoid_: config file, data file
+
+**Definition File**:
+A file defining the Tab Bar's appearance or behaviour (icons/colors/projects JSON dist files, Python sources). Read only on Reload; changes rarely.
+_Avoid_: config file, state file
 
 **Reload Beacon**:
 A file whose presence on disk signals that a Reload is needed; written by `kitty-reload`, detected by the Tab Bar Python at the next Redraw, then immediately deleted.
@@ -50,7 +58,7 @@ _Avoid_: attention list, notification file, state file
 - A **Redraw** may or may not be preceded by a **Reload**
 - A **Reload** writes exactly one **Reload Beacon** before triggering a **Redraw**
 - The Tab Bar Python reads the **Reload Beacon** at most once per **Redraw**, then deletes it
-- The **Attention File** is read once per render cycle (at the start of each **Redraw**); its content determines which tabs display an **Attention Icon**
+- The **Attention File** is a **State File** — read once per render cycle (at the start of each **Redraw**); its content determines which tabs display an **Attention Icon**
 - An **Attention Icon** is shown on a tab if and only if its **Tab ID** is present in the **Attention File**
 
 ## Flagged ambiguities
@@ -62,7 +70,7 @@ _Avoid_: attention list, notification file, state file
 ## Example dialogue
 
 > **Dev:** "When should I call `kitty-reload` vs `kitty-redraw`?"
-> **Domain expert:** "Use **Reload** when you've changed a JSON dist file and need the Tab Bar to pick up new data. Use **Redraw** when in-memory state has changed (e.g., the **Attention File** was updated) and you just need the Tab Bar to re-render."
+> **Domain expert:** "Use **Reload** when a definition file changed (new project, color tweak, Python code edit). Use **Redraw** when only runtime state changed (e.g., the **Attention File** was updated) — it reads state files and re-renders without touching definitions."
 
 > **Dev:** "Does the **Statusbar** update when I call `kitty-redraw`?"
 > **Domain expert:** "No — the **Statusbar** runs on its own timers, completely independent of **Redraw** and **Reload**."
