@@ -7,23 +7,23 @@ local query="$1"
 local replacement="$2"
 local files=("${@:3}")
 
-if [[ -z "$query" || -z "$replacement" || -z "$files" ]]; then
-  echo "Usage:"
-  echo "$ sr 'query' 'replacement' ./filepaths/*"
-  return 1
+if [[ "$query" == "" || "$replacement" == "" || "$files" == "" ]]; then
+	echo "Usage:"
+	echo "$ sr 'query' 'replacement' ./filepaths/*"
+	return 1
 fi
 
 for file in $files; do
-  [[ ! -f "$file" ]] && continue
+	[[ ! -f "$file" ]] && continue
 
-  # -i to modify in-place, updating the source file
-  # -p to execute the change on all lines
-  # -0777 to allow for multiline changes
-  # -e is to pass the actual script to execute
-  perl \
-    -i \
-    -p \
-    -0777 \
-    -e "s/\Q${query}\E/${replacement}/g" \
-    $file
+	# -i to modify in-place, updating the source file
+	# -p to execute the change on all lines
+	# -0777 to allow for multiline changes
+	# -e is to pass the actual script to execute
+	perl \
+		-i \
+		-p \
+		-0777 \
+		-e "s/\Q${query}\E/${replacement}/g" \
+		$file
 done

@@ -6,7 +6,7 @@ Add unified STT autocorrection to the mic2txt pipeline. Both word corrections an
 ### Key files
 - `scripts/bin/audio/mic2txt-raw` — main orchestration script; correction block goes here
 - `scripts/bin/audio/wav2txt-openai` — removeArtifacts to be removed in issue 02
-- `scripts/bin/audio/__data/autocorrect.txt` — new config file (created in issue 01)
+- `scripts/bin/audio/__data/autocorrect.conf` — new config file (created in issue 01)
 
 ### Config file format
 ```
@@ -32,3 +32,9 @@ No tests for this plan (per PRD testing decisions).
 - `mic2txt-raw` — inline pipeline transformations (translate, txt2slack) show where the correction block fits
 
 ## Discoveries
+
+### Issue 01 — Autocorrect data file and inline correction
+- `\b` word boundaries in sed treat `-` as a non-word char, so `\borochi\b` matches inside `pseudo-orochi`. Use perl with negative lookahead/lookbehind `(?<![a-zA-Z0-9-])..(?![a-zA-Z0-9-])` to properly exclude hyphenated compounds.
+- `zsh-lint --fix` silently reformats commented-out code blocks (re-indents continuation lines). Check git diff carefully after running it.
+- `local wrong` / `local right` must each be on their own line (noGroupedLocals rule); declare before the loop, assign inside it.
+- Empty `right` (suppression) works automatically — perl replaces with empty string, deleting the matched word.

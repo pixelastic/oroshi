@@ -13,6 +13,7 @@ local wav2TxtBinary=${flagWav2Txt[2]}
 # }}}
 
 # Default values {{{
+local scriptDir="${0:a:h}"
 local tmpFolder=/dev/shm/oroshi/mic2txt
 local pidFile=${tmpFolder}/PID
 local recordFile=${tmpFolder}/record.wav
@@ -39,15 +40,32 @@ function stopRecording {
 
   # # Improve sound quality
   # ffmpeg \
-  #   -i $recordFile \
-  #   -af "silenceremove=start_periods=1:start_silence=0.1:start_threshold=-50dB,volume=15dB" \
-  #   ${recordFile}.tmp.wav \
-  #   -y
+    #   -i $recordFile \
+    #   -af "silenceremove=start_periods=1:start_silence=0.1:start_threshold=-50dB,volume=15dB" \
+    #   ${recordFile}.tmp.wav \
+    #   -y
   # mv ${recordFile}.tmp.wav $recordFile
 
   # We transcribe to text
   audio-play-oroshi mic2txt-before.mp3
   local transcription="$(${wav2TxtBinary} $recordFile)"
+
+  # Apply autocorrect rules (case-insensitive, whole-word substitution)
+  local autocorrectFile="${scriptDir}/__data/autocorrect.conf"
+  # Skip if no config file
+  if [[ -f $autocorrectFile ]]; then
+    local wrong
+    local right
+    for line in ${(f)"$(cat $autocorrectFile)"}; do
+      [[ "$line" == "" || "$line" == "#"* ]] && continue
+      wrong="${line%%=*}"
+      right="${line#*=}"
+      right="${right/ #*/}"
+      right="${right%"${right##*[! ]}"}"
+      # shellcheck disable=SC2001 - word-boundary with hyphen exclusion requires perl
+      transcription="$(echo "$transcription" | perl -pe "s/(?<![a-zA-Z0-9-])\Q${wrong}\E(?![a-zA-Z0-9-])/${right}/gi")"
+    done
+  fi
 
   # Translate to english
   local language="$(mic2txt-language)"

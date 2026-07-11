@@ -49,25 +49,6 @@ function splitAndTranscribe {
 	echo "${transcription1} ${transcription2}"
 }
 
-# Strip known Whisper hallucination phrases from transcription
-function removeArtifacts {
-	local artifacts=(
-		"Merci d'avoir regardé cette vidéo !"
-		"Merci d'avoir regardé cette vidéo."
-		"Sous-titres réalisés para la communauté d'Amara.org"
-		"Sous-titres réalisés par la communauté d'Amara.org"
-		# zsh-lint disable=commandTooLong
-		"J'espère que vous avez apprécié cette vidéo, si c'est le cas n'hésitez pas à vous abonner à la chaine pour ne manquer aucune de mes nouvelles vidéos, merci et à bientot !"
-		"Merci d'avoir regardé !"
-		"Sous-titrage ST' 501"
-	)
-	local text=$1
-	for artifact in "${artifacts[@]}"; do
-		text="${text//${artifact}/}"
-	done
-	echo "$text"
-}
-
 # Stop here if sources (vs called as a script)
 # This is useful when we just want to source the file functions, not execute it
 # (like in tests)
@@ -84,4 +65,4 @@ if isFileTooBig "$input"; then
 else
 	rawTranscription="$(transcribeFile "$input")"
 fi
-removeArtifacts "$rawTranscription"
+echo "$rawTranscription"

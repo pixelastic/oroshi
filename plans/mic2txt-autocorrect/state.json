@@ -2,13 +2,15 @@
   {
     "id": "01",
     "issue": "issues/01-autocorrect-data-file-and-inline-correction.md",
-    "done": false,
+    "done": true,
+    "recap": "Created __data/autocorrect.txt with Orochi→Oroshi seed entries; added inline correction loop in mic2txt-raw using perl lookahead/lookbehind for whole-word case-insensitive substitution that correctly excludes hyphenated compounds.",
     "blocked_by": []
   },
   {
     "id": "02",
     "issue": "issues/02-migrate-hallucinations-remove-removeartifacts.md",
-    "done": false,
+    "done": true,
+    "recap": "Migrated 7 Whisper hallucination phrases from removeArtifacts in wav2txt-openai into autocorrect.conf as suppression entries; removed the function and replaced its call with a plain echo.",
     "blocked_by": ["01"]
   }
 ]
