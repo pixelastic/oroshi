@@ -2,7 +2,7 @@ from kitty.fast_data_types import Screen
 from kitty.tab_bar import DrawData, ExtraData, TabBarData
 from lib.tab_data import build_tab_data
 
-from lib import redraw
+from lib import redraw, reload
 from lib.pick_tabs import pick_tabs_to_display
 from lib.tabs import tabState
 
@@ -20,8 +20,9 @@ def first_pass(
     is_last: bool,
     extra_data: ExtraData,
 ) -> int:
-    # At the start of a new render cycle (allTabIds is empty), load attention state
+    # At the start of a new render cycle (allTabIds is empty), check for reload/redraw
     if not tabState["allTabIds"]:
+        reload.check()
         redraw.check()
 
     # Format tab data from raw data passed by Kitty

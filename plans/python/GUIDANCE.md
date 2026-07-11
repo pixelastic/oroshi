@@ -17,8 +17,8 @@ This plan refactors the Kitty tab bar's Redraw and Reload mechanics. See `PRD.md
 ### Testing commands
 
 ```
-# Python tests (run from tools/term/kitty/config/)
-yarn run test __tests__/test_<name>.py
+# Python tests (run from repo root)
+python-test tools/term/kitty/config/__tests__/test_<name>.py
 
 # Bats tests
 bats scripts/bin/kitty/__tests__/<name>.bats
@@ -54,6 +54,11 @@ bats scripts/bin/kitty/__tests__/<name>.bats
 <!-- Append non-trivial findings here after each issue, format: -->
 <!-- ### Issue XX — short title -->
 <!-- - finding -->
+
+### Issue 03 — Reload beacon
+- Python module-level path constants use hardcoded paths (same as `redraw.py`) — Kitty's Python runtime may not have shell env vars; patching works fine in tests via `mocker.patch.object`.
+- `python-test` (not `yarn run test`) is the correct command for Python tests; run from repo root with full path to test file.
+- Scaffolding tests (checking code structure/ordering) live in `plans/<slug>/scaffold/<issue>.bats`, not in `__tests__/`.
 
 ### Issue 02 — Redraw beacon
 - `mocker.patch.object(module, "CONSTANT", value)` works for patching module-level string constants in pytest; no need to move env reads into `check()`.

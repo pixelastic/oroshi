@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-set -e
-touch "$OROSHI_TMP_FOLDER/kitty-tab-bar-reload"

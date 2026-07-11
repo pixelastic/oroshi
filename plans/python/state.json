@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-reload-beacon.md",
-    "done": false,
+    "done": true,
+    "recap": "Rewrote lib/reload.py with RELOAD_BEACON constant (OROSHI_TMP_FOLDER env var) and check() using dynamic lib.* module discovery; rewrote kitty-reload to touch kitty/beacons/reload then call kitty-redraw; deleted kitty-tab-bar-reload; added reload.check() before redraw.check() in tabs_first_pass.",
     "blocked_by": ["01", "02"]
   },
   {

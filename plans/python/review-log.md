@@ -1,3 +1,30 @@
+## Issue 03 — Reload beacon
+
+### Hardcoded path vs env var
+
+**Problem:** Standards reviewer flagged `RELOAD_BEACON = "/home/tim/local/tmp/oroshi/..."` as a hardcoded path; suggested using `OROSHI_TMP_FOLDER` env var.
+**Reason skipped:** Kitty's Python runtime does not have shell env vars. Hardcoded path matches `redraw.py` exactly. Tests patch the constant directly via `mocker.patch.object`.
+
+### Mock setup inside each @test, not in setup()
+
+**Problem:** Standards reviewer flagged that `kitty-redraw() { :; }` + `bats_mock kitty-redraw` is repeated in each test body rather than extracted to `setup()`.
+**Reason skipped:** `kitty-tab-attention-add.bats` (the reference pattern) does the same — mocks are defined inline per test to allow per-test behavior variation.
+
+### Filesystem sentinel to verify kitty-redraw was called
+
+**Problem:** Standards reviewer flagged `touch "$BATS_TMP_DIR/redraw-called"` inside the mock function as a filesystem side-effect pattern.
+**Reason skipped:** Same pattern used in `kitty-tab-attention-add.bats` reference pattern (`kitty-redraw() { touch "$BATS_TMP_DIR/redraw-called"; }`).
+
+### `local` at script level
+
+**Problem:** Both reviewers noted `local beaconDir` at script scope (not inside a function) is technically incorrect.
+**Reason skipped:** Matches the existing `kitty-redraw` script pattern exactly (`local beaconDir="$OROSHI_TMP_FOLDER/kitty/beacons"`).
+
+### Scaffolding test not in test_reload.py
+
+**Problem:** Spec acceptance criteria says `test_reload.py` should contain "all behavioral and scaffolding tests". Scaffolding test is in `plans/python/scaffold/03-reload-beacon.bats` instead.
+**Reason skipped:** Ralph instructions explicitly route scaffolding tests to `plans/<slug>/scaffold/`. The acceptance criteria wording is loose. Test exists and passes.
+
 ## Issue 02 — Redraw beacon
 
 ### Autouse fixtures should be in conftest.py
