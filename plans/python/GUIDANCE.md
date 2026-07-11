@@ -2,52 +2,50 @@
 
 ### Context
 
-This plan refactors the Kitty tab bar's Redraw and Reload mechanics. See `PRD.md` for full design rationale and `tools/term/kitty/config/GLOSSARY.md` for domain vocabulary.
+This plan adds test coverage for the core kitty tab bar rendering pipeline. No production code changes — tests only. See `PRD.md` for scope and rationale.
 
 ### Repo layout
 
 - Python tab bar entry point: `tools/term/kitty/config/tab_bar.py`
 - Tab bar lib modules: `tools/term/kitty/config/lib/`
 - Python tests: `tools/term/kitty/config/__tests__/`
-- CLI scripts: `scripts/bin/kitty/`
-- CLI bats tests: `scripts/bin/kitty/__tests__/`
-- Keybindings: `tools/term/kitty/config/keybindings.conf`
-- Glossary: `tools/term/kitty/config/GLOSSARY.md`
+- Shared state: `lib/state.py` — `tabState` dict
+
+### Test files
+
+- `__tests__/test_tab_data.py` — extend with `build_tab_data` cases (issue 01)
+- `__tests__/test_pick_tabs.py` — create new (issue 02)
+- `__tests__/test_tabs_first_pass.py` — create new (issue 03)
+- `__tests__/test_tabs_second_pass.py` — create new (issue 04)
 
 ### Testing commands
 
 ```
-# Python tests (run from repo root)
+# Run a single test file (from repo root)
 python-test tools/term/kitty/config/__tests__/test_<name>.py
 
-# Bats tests
-bats scripts/bin/kitty/__tests__/<name>.bats
+# Lint
+python-lint --fix tools/term/kitty/config/__tests__/test_<name>.py
 ```
-
-### Key paths (runtime)
-
-- Attention File: `$OROSHI_TMP_FOLDER/kitty/attention`
-- Redraw Beacon: `$OROSHI_TMP_FOLDER/kitty/beacons/redraw`
-- Reload Beacon: `$OROSHI_TMP_FOLDER/kitty/beacons/reload`
 
 ### Conventions
 
-- Beacon files: presence-only signals, no content — live under `kitty/beacons/`
-- State files: contain data (e.g. tab IDs) — live at `kitty/` root
-- Python I/O: always in explicit `init()` functions, never at module level
-- `check()` functions: always no-op if beacon absent (one `os.path.exists` call, no further I/O)
-- Dynamic module discovery for reload: `[m for m in sys.modules if m.startswith("lib.")]`
-- Reload order in `first_pass()`: `reload.check()` before `redraw.check()`
+- All tests use `pytest` + `pytest-mock`
+- `tabState` must be reset in a `setup()` fixture — import from `lib.state`
+- Kitty types (`Screen`, `TabBarData`, `DrawData`, `ExtraData`) are always `MagicMock`
+- Collaborators mocked via `mocker.patch("lib.module.collaborator")`
+- Module-level constants mocked via `mocker.patch.object(module, "CONSTANT", value)`
+- Autouse fixtures belong in the test file, not `conftest.py` (unless shared cross-file)
 
-### Prior art
+### Prior art (reference patterns)
 
-- `test_projects.py` — reference pattern for Python unit tests (mock I/O, fixture for state reset)
-- `kitty-redraw.bats` — reference pattern for CLI bats tests (mock `kitty`, check args)
-- `kitty-tab-attention-add.bats` — reference for beacon file creation tests
+- `test_projects.py` — state reset fixture, mock I/O
+- `test_redraw.py` — patching module constants, autouse fixtures
+- `test_tab_data.py` — mocking `_read_json`, setting module-level `_icons` directly
 
 ### Statusbar
 
-`statusbar.py` is intentionally left untouched and simply not imported. It will be re-introduced as an independent feature later. Do not modify it.
+`statusbar.py` is unused — do not add tests for it and do not import it.
 
 ## Discoveries
 
