@@ -59,6 +59,31 @@ tabState["attentionIds"] = {"1"}
 **Problem:** Spec acceptance criteria says `test_reload.py` should contain "all behavioral and scaffolding tests". Scaffolding test is in `plans/python/scaffold/03-reload-beacon.bats` instead.
 **Reason skipped:** Ralph instructions explicitly route scaffolding tests to `plans/<slug>/scaffold/`. The acceptance criteria wording is loose. Test exists and passes.
 
+## Issue 02 — pick_tabs tests
+
+### `import pytest` flagged as unused
+
+```python
+import pytest
+```
+**Problem:** Standards reviewer flagged `import pytest` as unused since no `pytest.raises` or `pytest.mark.*` calls exist.
+**Reason skipped:** `import pytest` is required for `@pytest.fixture` decorator. The reviewer was incorrect.
+
+### Parametrize priority-order tests
+
+**Problem:** Standards reviewer suggested using `@pytest.mark.parametrize` for the 5 priority-order tests.
+**Reason skipped:** Each test maps to a named spec bullet. Merging into a parametrized table would lose individual test names and make failures harder to diagnose.
+
+### `reset_state` and helpers should be in conftest.py
+
+**Problem:** Standards reviewer flagged autouse fixtures and helpers should live in conftest.py.
+**Reason skipped:** GUIDANCE.md says "Autouse fixtures belong in the test file, not conftest.py (unless shared cross-file)." Not shared.
+
+### "A tab that fits is included even if later tab does not" — missing test
+
+**Problem:** Spec reviewer flagged no test demonstrates this spec bullet.
+**Reason skipped:** `test_pick_tabs_stops_when_next_tab_exceeds_remaining_space` covers this: tab 3 is included even though budget breaks before tab 4; NARROW tab 5 (would fit) is NOT included, confirming `break` semantics. Spec bullet satisfied.
+
 ## Issue 02 — Redraw beacon
 
 ### Autouse fixtures should be in conftest.py

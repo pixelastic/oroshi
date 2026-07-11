@@ -63,6 +63,11 @@ python-lint --fix tools/term/kitty/config/__tests__/test_<name>.py
 - `python-test` (not `yarn run test`) is the correct command for Python tests; run from repo root with full path to test file.
 - Scaffolding tests (checking code structure/ordering) live in `plans/<slug>/scaffold/<issue>.bats`, not in `__tests__/`.
 
+### Issue 02 — pick_tabs tests
+- `pick_tabs_to_display` enforces a minimum budget of 50 chars (`max(screen-statusbar, 50)`), so overflow tests need tab widths > 50 or enough tabs that total > 50; titles like `"X"*52` (width 53) work cleanly.
+- The budget loop uses `break` (not `continue`) on the first tab that doesn't fit — a NARROW tab later in the priority list is silently excluded; tests for this need to assert on exact content, not just length.
+- `import pytest` is required even when the only usage is `@pytest.fixture`; linters may flag it as unused but the decorator reference is real.
+
 ### Issue 02 — Redraw beacon
 - `mocker.patch.object(module, "CONSTANT", value)` works for patching module-level string constants in pytest; no need to move env reads into `check()`.
 - zsh-lint `noExternalBasename` rule: use `${var:h}` instead of `$(dirname "$var")`.

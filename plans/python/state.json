@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-pick-tabs-tests.md",
-    "done": false,
+    "done": true,
+    "recap": "Created test_pick_tabs.py with 14 behavioral tests covering get_tab_width, get_full_tab_bar_width, get_active_tab_index, and pick_tabs_to_display (all-fits, priority order, budget break, OOB bounds, statusbar headroom).",
     "blocked_by": []
   },
   {
