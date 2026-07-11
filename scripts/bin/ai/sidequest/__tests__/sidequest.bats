@@ -2,9 +2,10 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
+  touch "$BATS_TMP_DIR/my-slug.md"
 }
 
-@test "no slug: exits with error" {
+@test "no argument: exits with error" {
   git-worktree-create() { return 0; }
   git-worktree-path() { echo "$BATS_TMP_DIR/myrepo--my-slug"; }
   kitty-tab-create() { return 0; }
@@ -14,70 +15,57 @@ setup() {
   [ "$status" -ne 0 ]
 }
 
-@test "calls git-worktree-create with slug" {
+@test "file not found: exits with error" {
+  git-worktree-create() { return 0; }
+  git-worktree-path() { echo "$BATS_TMP_DIR/myrepo--my-slug"; }
+  kitty-tab-create() { return 0; }
+  bats_mock git-worktree-create git-worktree-path kitty-tab-create
+
+  bats_run_zsh "sidequest /nonexistent/file.md"
+  [ "$status" -ne 0 ]
+}
+
+@test "valid file: calls git-worktree-create with slug derived from filename" {
   git-worktree-create() { echo "WORKTREE:$*"; }
   git-worktree-path() { echo "$BATS_TMP_DIR/myrepo--my-slug"; }
   kitty-tab-create() { return 0; }
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
-  bats_run_zsh "sidequest my-slug"
+  bats_run_zsh "sidequest $BATS_TMP_DIR/my-slug.md"
   bats_debug "$output"
   [ "$status" -eq 0 ]
   [[ "$output" == "WORKTREE:my-slug" ]]
 }
 
-@test "calls kitty-tab-create with slug as title and worktree path as cwd" {
+@test "valid file: calls kitty-tab-create with worktree path as cwd" {
   git-worktree-create() { return 0; }
   git-worktree-path() { echo "$BATS_TMP_DIR/myrepo--my-slug"; }
   kitty-tab-create() { echo "TAB:$*"; }
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
-  bats_run_zsh "sidequest my-slug"
+  bats_run_zsh "sidequest $BATS_TMP_DIR/my-slug.md"
   [ "$status" -eq 0 ]
-  [[ "$output" == *"TAB:my-slug"* ]]
   [[ "$output" == *"--cwd $BATS_TMP_DIR/myrepo--my-slug"* ]]
 }
 
-@test "calls kitty-tab-create with --cmd kitty-helper-claude-start when no prompt given" {
+@test "valid file: calls kitty-tab-create with filepath as prompt in --cmd" {
   git-worktree-create() { return 0; }
   git-worktree-path() { echo "$BATS_TMP_DIR/myrepo--my-slug"; }
   kitty-tab-create() { echo "TAB:$*"; }
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
-  bats_run_zsh "sidequest my-slug"
+  bats_run_zsh "sidequest $BATS_TMP_DIR/my-slug.md"
   [ "$status" -eq 0 ]
-  [[ "$output" == *"--cmd kitty-helper-claude-start"* ]]
+  [[ "$output" == *"--cmd kitty-helper-claude-start @$BATS_TMP_DIR/my-slug.md"* ]]
 }
 
-@test "calls kitty-tab-create with prompt appended to --cmd when --prompt given" {
+@test "valid file: calls kitty-tab-create without --focus" {
   git-worktree-create() { return 0; }
   git-worktree-path() { echo "$BATS_TMP_DIR/myrepo--my-slug"; }
   kitty-tab-create() { echo "TAB:$*"; }
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
-  bats_run_zsh "sidequest my-slug --prompt @/tmp/fix-ralph.md"
-  [ "$status" -eq 0 ]
-  [[ "$output" == *"--cmd kitty-helper-claude-start @/tmp/fix-ralph.md"* ]]
-}
-
-@test "calls kitty-tab-create with --focus by default" {
-  git-worktree-create() { return 0; }
-  git-worktree-path() { echo "$BATS_TMP_DIR/myrepo--my-slug"; }
-  kitty-tab-create() { echo "TAB:$*"; }
-  bats_mock git-worktree-create git-worktree-path kitty-tab-create
-
-  bats_run_zsh "sidequest my-slug"
-  [ "$status" -eq 0 ]
-  [[ "$output" == *"--focus"* ]]
-}
-
-@test "calls kitty-tab-create without --focus when --no-focus passed" {
-  git-worktree-create() { return 0; }
-  git-worktree-path() { echo "$BATS_TMP_DIR/myrepo--my-slug"; }
-  kitty-tab-create() { echo "TAB:$*"; }
-  bats_mock git-worktree-create git-worktree-path kitty-tab-create
-
-  bats_run_zsh "sidequest my-slug --no-focus"
+  bats_run_zsh "sidequest $BATS_TMP_DIR/my-slug.md"
   [ "$status" -eq 0 ]
   [[ "$output" != *"--focus"* ]]
 }

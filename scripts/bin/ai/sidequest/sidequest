@@ -1,25 +1,25 @@
 #!/usr/bin/env zsh
 # Launch a sidequest: create a worktree and open a Claude session in a new Kitty tab
 # Usage:
-# $ sidequest <slug>                              # Create worktree and focused Claude tab
-# $ sidequest <slug> --prompt @/tmp/file.md      # Open Claude with initial prompt
-# $ sidequest <slug> --no-focus                  # Keep focus on current tab
+# $ sidequest <filepath>    # Create worktree from file's slug and open Claude tab
 set -e
 
-zmodload zsh/zutil
-zparseopts -E -D \
-	-prompt:=flagPrompt \
-	-no-focus=flagNoFocus
+local filepath="$1"
 
-local slug="$1"
-local prompt="${flagPrompt[2]}"
-local isNoFocus=${#flagNoFocus}
-
-# Require a slug
-if [[ "$slug" == "" ]]; then
-	print "sidequest: slug required" >&2
-	exit 1
+# Require a filepath argument
+if [[ "$filepath" == "" ]]; then
+  print "sidequest: filepath required" >&2
+  exit 1
 fi
+
+# Require the file to exist
+if [[ ! -f "$filepath" ]]; then
+  print "sidequest: file not found: $filepath" >&2
+  exit 1
+fi
+
+# Derive slug from filename (basename without extension)
+local slug="${${filepath:t}:r}"
 
 # Create the worktree for the slug
 git-worktree-create "$slug"
@@ -27,16 +27,7 @@ git-worktree-create "$slug"
 # Resolve the worktree path from the newly-created worktree
 local worktreePath="$(git-worktree-path "$slug")"
 
-# Build the --cmd value: append prompt if provided
-local cmd="kitty-helper-claude-start"
-[[ "$prompt" != "" ]] && cmd="$cmd $prompt"
-
-# Focus the new tab by default; skip --focus when --no-focus is passed
-local focusFlag="--focus"
-[[ $isNoFocus == "1" ]] && focusFlag=""
-
 kitty-tab-create \
-	"$slug" \
-	--cwd "$worktreePath" \
-	--cmd "$cmd" \
-	$focusFlag
+  "$slug" \
+  --cwd "$worktreePath" \
+  --cmd "kitty-helper-claude-start @$filepath"

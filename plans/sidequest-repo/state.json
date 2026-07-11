@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-rewrite-sidequest-filepath.md",
-    "done": false,
+    "done": true,
+    "recap": "Rewrote sidequest to take a filepath argument; slug derived from basename; filepath passed as Claude prompt; --focus/--prompt/--no-focus flags removed; tests rewritten.",
     "blocked_by": ["01"]
   },
   {
