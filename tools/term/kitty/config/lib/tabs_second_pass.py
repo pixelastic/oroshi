@@ -1,7 +1,7 @@
 from kitty.fast_data_types import Screen
 from kitty.tab_bar import DrawData, ExtraData, TabBarData
 from lib.statusbar import draw_statusbar
-from lib.tabs import tabState
+from lib.state import tabState
 
 
 # Second pass:
@@ -40,7 +40,7 @@ def draw_tab_item(tab_data, screen):
     # Draw tab
     screen.cursor.fg = tab_data["fg"]
     screen.cursor.bg = tab_data["bg"]
-    screen.draw(tab_data['title'])
+    screen.draw(tab_data["title"])
 
     # Draw separator
     screen.cursor.bg = tab_data["separatorBg"]

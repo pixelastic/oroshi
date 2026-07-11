@@ -1,7 +1,7 @@
 import os
 import pytest
 import lib.redraw as redraw
-from lib.tabs import tabState
+from lib.state import tabState
 
 
 @pytest.fixture(autouse=True)

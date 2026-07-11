@@ -4,7 +4,7 @@ from lib.tab_data import build_tab_data
 
 from lib import redraw, reload
 from lib.pick_tabs import pick_tabs_to_display
-from lib.tabs import tabState
+from lib.state import tabState
 
 
 # First pass:

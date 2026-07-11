@@ -1,5 +1,5 @@
 from kitty.fast_data_types import Screen
-from lib.tabs import tabState
+from lib.state import tabState
 from lib.statusbar import get_statusbar_width
 
 # This is based on the length of the  character used as a separator

@@ -1,5 +1,5 @@
 import os
-from lib.tabs import tabState
+from lib.state import tabState
 
 REDRAW_BEACON = "/home/tim/local/tmp/oroshi/kitty/beacons/redraw"
 ATTENTION_FILE = "/home/tim/local/tmp/oroshi/kitty/attention"

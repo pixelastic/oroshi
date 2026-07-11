@@ -1,7 +1,7 @@
 import json
 from kitty.tab_bar import DrawData, TabBarData, as_rgb
 from lib import projects
-from lib.tabs import tabState
+from lib.state import tabState
 
 _ICONS_PATH = "/home/tim/.oroshi/tools/term/zsh/config/theming/dist/icons.json"
 _icons = {}
