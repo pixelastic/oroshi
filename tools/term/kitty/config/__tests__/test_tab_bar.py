@@ -36,12 +36,6 @@ def test_init_project_list_called_on_first_draw():
         mock_init.assert_called_once()
 
 
-def test_init_statusbar_called_on_first_draw():
-    with patch.object(tab_bar.statusbar, "init") as mock_init:
-        _call_draw_tab(_make_screen())
-        mock_init.assert_called_once()
-
-
 def test_init_not_called_again_on_subsequent_draws():
     with patch.object(tab_bar.projects, "init") as mock_init:
         _call_draw_tab(_make_screen())

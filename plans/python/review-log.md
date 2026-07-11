@@ -1,3 +1,20 @@
+## Issue 04 — Cleanup wiring
+
+### Standards: test deleted without replacement
+
+**Problem:** Standards agent flagged removing `test_init_statusbar_called_on_first_draw` as a TDD violation (behavior deleted without a replacement test).
+**Reason skipped:** Spec explicitly requires this deletion: "remove `test_init_statusbar_called_on_first_draw` (statusbar is no longer initialized at startup)". The scaffold test covers the "no statusbar" invariant. Intentional spec-driven removal.
+
+### Spec: test_init_tab_data_called_on_first_draw missing
+
+**Problem:** Spec agent flagged that `test_init_tab_data_called_on_first_draw` was not added.
+**Reason skipped:** False positive. The test already existed from issue 01 (`test_tab_bar.py:27`). Spec condition was "if not already present from issue 01" — it is present.
+
+### Spec: Hard Reload Beacon not removed from GLOSSARY
+
+**Problem:** Spec agent flagged that "Hard Reload Beacon" term was not removed from GLOSSARY.md.
+**Reason skipped:** False positive. The term never existed in GLOSSARY.md; nothing to remove.
+
 ## Issue 03 — Reload beacon
 
 ### Hardcoded path vs env var

@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-cleanup-wiring.md",
-    "done": false,
+    "done": true,
+    "recap": "Removed statusbar import and init() from tab_bar.py; updated Alt-R keybinding to combine load_config_file with kitty-reload launch; marked Alt-Shift-R as TODO; added Redraw Beacon term and beacon paths to GLOSSARY.md.",
     "blocked_by": ["03"]
   }
 ]

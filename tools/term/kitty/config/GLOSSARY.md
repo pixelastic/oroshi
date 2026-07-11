@@ -30,8 +30,12 @@ _Avoid_: config file, data file
 A file defining the Tab Bar's appearance or behaviour (icons/colors/projects JSON dist files, Python sources). Read only on Reload; changes rarely.
 _Avoid_: config file, state file
 
+**Redraw Beacon**:
+A file whose presence on disk signals that a Redraw is needed; written by `kitty-redraw`, detected by the Tab Bar Python at the next render cycle, then immediately deleted. Lives at `$OROSHI_TMP_FOLDER/kitty/beacons/redraw`.
+_Avoid_: beacon, refresh file, trigger file, flag file
+
 **Reload Beacon**:
-A file whose presence on disk signals that a Reload is needed; written by `kitty-reload`, detected by the Tab Bar Python at the next Redraw, then immediately deleted.
+A file whose presence on disk signals that a Reload is needed; written by `kitty-reload`, detected by the Tab Bar Python at the next render cycle, then immediately deleted. Lives at `$OROSHI_TMP_FOLDER/kitty/beacons/reload`.
 _Avoid_: beacon, refresh file, trigger file, flag file
 
 **Tab ID**:
@@ -56,8 +60,9 @@ _Avoid_: attention list, notification file, state file
 - The **Statusbar** updates independently of **Redraw** and **Reload** via its own timers
 - A **Reload** always triggers exactly one **Redraw**
 - A **Redraw** may or may not be preceded by a **Reload**
-- A **Reload** writes exactly one **Reload Beacon** before triggering a **Redraw**
-- The Tab Bar Python reads the **Reload Beacon** at most once per **Redraw**, then deletes it
+- `kitty-redraw` writes exactly one **Redraw Beacon** to trigger a **Redraw**
+- `kitty-reload` writes exactly one **Reload Beacon** before triggering a **Redraw**
+- The Tab Bar Python reads the **Redraw Beacon** and **Reload Beacon** at most once per render cycle, then deletes them
 - The **Attention File** is a **State File** — read once per render cycle (at the start of each **Redraw**); its content determines which tabs display an **Attention Icon**
 - An **Attention Icon** is shown on a tab if and only if its **Tab ID** is present in the **Attention File**
 
@@ -65,7 +70,7 @@ _Avoid_: attention list, notification file, state file
 
 - "refresh" was used informally to mean both **Redraw** (visual only) and **Reload** (data + visual) — resolved: these are distinct operations with distinct scripts (`kitty-redraw` vs `kitty-reload`).
 - The existing script `kitty-refresh` conflated both concepts — it is renamed `kitty-reload` as part of this project.
-- "beacon" alone was considered — rejected in favour of **Reload Beacon** to make the association with **Reload** explicit.
+- "beacon" alone was considered — rejected in favour of **Redraw Beacon** / **Reload Beacon** to make the association with each operation explicit.
 
 ## Example dialogue
 
