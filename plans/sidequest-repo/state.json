@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-sidequest-start.md",
-    "done": false,
+    "done": true,
+    "recap": "Added sidequest-start script: resolves arg or CWD via project-name/project-path, returns ok/unknown JSON; updated SKILL.md Step 1 to call sidequest-start and handle ok/unknown.",
     "blocked_by": ["03"]
   }
 ]

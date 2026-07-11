@@ -1,0 +1,30 @@
+#!/usr/bin/env zsh
+# Resolve a project name or CWD to JSON for the sidequest skill
+# Usage:
+# $ sidequest-start              # Resolve from CWD
+# $ sidequest-start <name>       # Resolve named project
+set -e
+
+# Output JSON with all registered projects as a projectName▮projectPath array, then exit
+unknownProject() {
+  projects-load-definitions
+  local key=""
+  local -a parts=()
+  for key in "${(@k)PROJECTS}"; do
+    [[ "$key" != *:path ]] && continue
+    local pName="${key%%:*}"
+    local pPath="${PROJECTS[$key]/#\~/$HOME}"
+    parts+=("$pName▮$pPath")
+  done
+  printf '{"status":"unknown","candidates":%s}\n' "$(jo -a "${parts[@]}")"
+  exit 0
+}
+
+# Fallback to current project if none is set
+local projectName="${1:-$(project-name)}"
+[[ "$projectName" == "" ]] && unknownProject
+
+local projectPath="$(project-path "$projectName")"
+[[ "$projectPath" == "" ]] && unknownProject
+
+jo status=ok projectName="$projectName" projectPath="$projectPath"

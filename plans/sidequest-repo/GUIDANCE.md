@@ -51,3 +51,9 @@ The skill lives in the worktree path (`tools/ai/claude/config/skills/sidequest/S
 
 - The spec mandates `cd` + `set -e` as the nonexistent-path guard (not an explicit `[[ -d ]]` check); don't add one.
 - In the nonexistent-path bats test, do NOT mock `git-directory-is-repository` — `cd` fails before it's called, and including the mock is misleading about the execution path being tested.
+
+### Issue 04 — sidequest-start script
+
+- `local var="$(cmd)"` masks `set -e` (local always exits 0) — use it as the guard pattern when the command may fail, then check the output with `[[ "$var" != "" ]]`. Avoid `A && B || C` patterns: `zsh-lint` (SC2015) warns on them.
+- Populate PROJECTS in bats tests via a fake OROSHI_ROOT: create `$BATS_TMP_DIR/tools/term/zsh/config/theming/dist/projects.zsh` and `bats_mock_env "OROSHI_ROOT" "$BATS_TMP_DIR"`. The no-op guard in `projects-load-definitions` prevents double-loading.
+- `project-name` and `project-path` are autoload functions — `bats_mock` shadows them correctly because the MOCK_OVERRIDE is sourced before autoload resolution.
