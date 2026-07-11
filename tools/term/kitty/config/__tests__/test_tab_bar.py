@@ -19,7 +19,15 @@ def _make_screen(cursor_x=42):
 def _call_draw_tab(screen, for_layout=True):
     extra_data = MagicMock()
     extra_data.for_layout = for_layout
-    return tab_bar.draw_tab(MagicMock(), screen, MagicMock(), 0, 10, 0, False, extra_data)
+    return tab_bar.draw_tab(
+        MagicMock(), screen, MagicMock(), 0, 10, 0, False, extra_data
+    )
+
+
+def test_init_tab_data_called_on_first_draw():
+    with patch.object(tab_bar.tab_data, "init") as mock_init:
+        _call_draw_tab(_make_screen())
+        mock_init.assert_called_once()
 
 
 def test_init_project_list_called_on_first_draw():

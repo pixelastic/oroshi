@@ -7,6 +7,7 @@ from kitty.tab_bar import DrawData, ExtraData, TabBarData
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import lib.projects as projects
 import lib.statusbar as statusbar
+import lib.tab_data as tab_data
 import lib.tabs_first_pass as tabs_first_pass
 import lib.tabs_second_pass as tabs_second_pass
 
@@ -31,6 +32,7 @@ def draw_tab(
     if not _initialized:
         projects.init()
         statusbar.init()
+        tab_data.init()
         _initialized = True
 
     args = (

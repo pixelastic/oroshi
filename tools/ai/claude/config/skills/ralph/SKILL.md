@@ -43,6 +43,9 @@ or because they demonstrate a bug.
 
 **Exit criterion:** Test runs and fails.
 
+If a dedicated skill for your language exists, load it (`zsh-writer`, `js-writer`, `python-writer`, etc)
+It defines how to run tests for that language.
+
 If you have any `## Behavioral Tests` from the issue:
 - Read [behavioral-tests.md](../tdd/references/behavioral-tests.md)
 - Write tests in `__tests__` folder, next to the file being tested.
@@ -63,7 +66,7 @@ If you have any `## Scaffolding Tests` from the issue:
 
 **Exit criterion:** Linter clean, all tests green.
 
-1. If a dedicated skill for your language exists, load it (`zsh-writer`, `js-writer`, `skill-writer`, etc)
+1. Language skill already loaded in Step 2 — follow its style and conventions.
 2. Edit files inside the current git root (`git-directory-root`)
 3. Write the simplest code that makes the tests pass. No more.
 4. Refactor: remove duplication, improve names, extract helpers. Don't add behavior.
@@ -162,12 +165,13 @@ Print:
 
 - [ ] Ran `ralph-start`, parsed output, handled finished/deadlocked
 - [ ] Read guidance file and issue spec
+- [ ] Language skill loaded before writing tests
 - [ ] Declared test strategy before writing any test
 - [ ] Behavioral tests written to `__tests__/`
 - [ ] Scaffolding tests written to plans/<slug>/scaffold/, not __tests__/
 - [ ] RED: wrote failing tests, ran them, confirmed they fail
 - [ ] IMPLEMENT: minimal code, all behaviors covered
-- [ ] Code written following the standards of the language skill (`zsh-writer`, `js-writer`, etc)
+- [ ] Code written following the language skill's standards
 - [ ] Linter clean on modified files
 - [ ] Tests green for modified files
 - [ ] Ran `/review` via Skill tool and received output

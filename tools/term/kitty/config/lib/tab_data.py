@@ -3,10 +3,13 @@ from kitty.tab_bar import DrawData, TabBarData, as_rgb
 from lib import projects
 from lib.tabs import tabState
 
-# Load icons once at module level
 _ICONS_PATH = "/home/tim/.oroshi/tools/term/zsh/config/theming/dist/icons.json"
-with open(_ICONS_PATH) as _f:
-    _icons = json.load(_f)
+_icons = {}
+
+
+def init():
+    global _icons
+    _icons = _read_json(_ICONS_PATH)
 
 
 # Parses raw data about the tab, as returned by kitty, into a flat object
@@ -68,3 +71,8 @@ def build_tab_data(tab: TabBarData, draw_data: DrawData):
     tabData["separatorFg"] = tabData["bg"]
 
     return tabData
+
+
+def _read_json(path):
+    with open(path) as f:
+        return json.load(f)
