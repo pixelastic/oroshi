@@ -11,7 +11,7 @@ setup() {
   kitty-tab-create() { return 0; }
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
-  bats_run_zsh "sidequest"
+  bats_run_zsh "sidequest-end"
   [ "$status" -ne 0 ]
 }
 
@@ -21,7 +21,7 @@ setup() {
   kitty-tab-create() { return 0; }
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
-  bats_run_zsh "sidequest /nonexistent/file.md"
+  bats_run_zsh "sidequest-end /nonexistent/file.md"
   [ "$status" -ne 0 ]
 }
 
@@ -31,7 +31,7 @@ setup() {
   kitty-tab-create() { return 0; }
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
-  bats_run_zsh "sidequest $BATS_TMP_DIR/my-slug.md"
+  bats_run_zsh "sidequest-end $BATS_TMP_DIR/my-slug.md"
   bats_debug "$output"
   [ "$status" -eq 0 ]
   [[ "$output" == "WORKTREE:my-slug" ]]
@@ -43,7 +43,7 @@ setup() {
   kitty-tab-create() { echo "TAB:$*"; }
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
-  bats_run_zsh "sidequest $BATS_TMP_DIR/my-slug.md"
+  bats_run_zsh "sidequest-end $BATS_TMP_DIR/my-slug.md"
   [ "$status" -eq 0 ]
   [[ "$output" == *"--cwd $BATS_TMP_DIR/myrepo--my-slug"* ]]
 }
@@ -54,7 +54,7 @@ setup() {
   kitty-tab-create() { echo "TAB:$*"; }
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
-  bats_run_zsh "sidequest $BATS_TMP_DIR/my-slug.md"
+  bats_run_zsh "sidequest-end $BATS_TMP_DIR/my-slug.md"
   [ "$status" -eq 0 ]
   [[ "$output" == *"--cmd kitty-helper-claude-start @$BATS_TMP_DIR/my-slug.md"* ]]
 }
@@ -65,7 +65,7 @@ setup() {
   kitty-tab-create() { echo "TAB:$*"; }
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
-  bats_run_zsh "sidequest $BATS_TMP_DIR/my-slug.md"
+  bats_run_zsh "sidequest-end $BATS_TMP_DIR/my-slug.md"
   [ "$status" -eq 0 ]
   [[ "$output" != *"--focus"* ]]
 }
@@ -76,7 +76,7 @@ setup() {
   kitty-tab-create() { return 0; }
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
-  bats_run_zsh "sidequest $BATS_TMP_DIR/my-slug.md --repo-dir /nonexistent/path"
+  bats_run_zsh "sidequest-end $BATS_TMP_DIR/my-slug.md --repo-dir /nonexistent/path"
   [ "$status" -ne 0 ]
 }
 
@@ -87,7 +87,7 @@ setup() {
   kitty-tab-create() { return 0; }
   bats_mock git-directory-is-repository git-worktree-create git-worktree-path kitty-tab-create
 
-  bats_run_zsh "sidequest $BATS_TMP_DIR/my-slug.md --repo-dir $BATS_TMP_DIR"
+  bats_run_zsh "sidequest-end $BATS_TMP_DIR/my-slug.md --repo-dir $BATS_TMP_DIR"
   [ "$status" -ne 0 ]
 }
 
@@ -98,7 +98,7 @@ setup() {
   kitty-tab-create() { return 0; }
   bats_mock git-directory-is-repository git-worktree-create git-worktree-path kitty-tab-create
 
-  bats_run_zsh "sidequest $BATS_TMP_DIR/my-slug.md --repo-dir $BATS_TMP_DIR"
+  bats_run_zsh "sidequest-end $BATS_TMP_DIR/my-slug.md --repo-dir $BATS_TMP_DIR"
   [ "$status" -eq 0 ]
   [[ "$output" == "WORKTREE:my-slug" ]]
 }

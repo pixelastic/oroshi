@@ -31,7 +31,7 @@ Collect both the slug and the target repo:
 
 ### Step 3 — Finalize
 
-Run `sidequest <filepath> [--repo-dir <path>]`, then output: "Sidequest created in tab `<slug>`".
+Run `sidequest-end <filepath> [--repo-dir <path>]`, then output: "Sidequest created in tab `<slug>`".
 
 ---
 
@@ -52,5 +52,5 @@ Run `sidequest <filepath> [--repo-dir <path>]`, then output: "Sidequest created 
 - [ ] `## Agent Instructions` section is verbatim and first in the document
 - [ ] Artifacts referenced by path, not duplicated
 - [ ] Skills suggested for next session (if applicable)
-- [ ] `sidequest <filepath> [--repo-dir <path>]` run — Worktree, Kitty tab, and Claude session created
+- [ ] `sidequest-end <filepath> [--repo-dir <path>]` run — Worktree, Kitty tab, and Claude session created
 - [ ] Output "Sidequest created in tab `<slug>`"
