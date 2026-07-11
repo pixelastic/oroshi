@@ -1,19 +1,18 @@
 import json
-from lib.colors import get_cursor_color
+from lib.colors import ansi_to_kitty
 
-projectState = {"data": {}}
-
-
-def get_project_data(projectName):
-    return projectState["data"].get(projectName, {})
+jsonPath = "/home/tim/.oroshi/tools/term/zsh/config/theming/dist/projects.json"
+projectState = {}
 
 
-# Set the ALL_PROJECTS object, that contains name, icons and colors of all
-# projects
+def _read_json(path):
+    with open(path) as f:
+        return json.load(f)
+
+
+# Read projects.json and build a flat dict of icon + Kitty-format colors
 def init():
-    jsonPath = "/home/tim/.oroshi/tools/term/zsh/config/theming/dist/projects.json"
-    with open(jsonPath) as f:
-        rawProjectData = json.load(f)
+    rawProjectData = _read_json(jsonPath)
 
     for projectName, project in rawProjectData.items():
         entry = {}
@@ -23,14 +22,18 @@ def init():
 
         bg = project.get("background", {}).get("ansi")
         if bg is not None:
-            entry["bg"] = get_cursor_color(bg)
+            entry["bg"] = ansi_to_kitty(bg)
 
         bgInactive = project.get("backgroundInactive", {}).get("ansi")
         if bgInactive is not None:
-            entry["bgInactive"] = get_cursor_color(bgInactive)
+            entry["bgInactive"] = ansi_to_kitty(bgInactive)
 
         fg = project.get("foreground", {}).get("ansi")
         if fg is not None:
-            entry["fg"] = get_cursor_color(fg)
+            entry["fg"] = ansi_to_kitty(fg)
 
-        projectState["data"][projectName] = entry
+        projectState[projectName] = entry
+
+
+def get(projectName):
+    return projectState.get(projectName, {})

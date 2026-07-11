@@ -1,6 +1,6 @@
 import json
 from kitty.tab_bar import DrawData, TabBarData, as_rgb
-from lib.projects import get_project_data
+from lib import projects
 from lib.tabs import tabState
 
 # Load icons once at module level
@@ -25,7 +25,7 @@ def build_tab_data(tab: TabBarData, draw_data: DrawData):
     isActive = tab.is_active
 
     # Find info from the list of projects if one matches the same name
-    projectData = get_project_data(name)
+    projectData = projects.get(name)
     icon = projectData.get("icon", "")
 
     # Check attention state from tabState (populated once per render cycle)

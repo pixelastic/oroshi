@@ -5,9 +5,7 @@ from kitty.tab_bar import as_rgb
 kittyOptions = get_options()
 
 
-# Get a cursor color from an int
-# Kitty expects screen.cursor.x/y to be in a specific format
-# This will convert a color number (0-256, as defined in colors.conf) to the
-# expected format
-def get_cursor_color(colorNumber: int):
+# Convert an ANSI color index (0-256, as defined in colors.conf) to Kitty's
+# internal RGB format (used for cursor, tab, and statusbar colors)
+def ansi_to_kitty(colorNumber: int):
     return as_rgb(color_as_int(getattr(kittyOptions, f"color{colorNumber}")))

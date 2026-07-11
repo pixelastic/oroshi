@@ -5,7 +5,7 @@ from lib.projects import init as init_projects
 from kitty.boss import get_boss
 from kitty.fast_data_types import Screen, add_timer
 from kitty.tab_bar import Formatter, draw_attributed_string
-from lib.colors import get_cursor_color
+from lib.colors import ansi_to_kitty
 
 # Persists across hot-reloads so stale timer callbacks can self-invalidate
 if "_generation" not in globals():
@@ -91,9 +91,9 @@ def update_statusbar_item(statusbarName: str):
     # Cast all fg/bg to expected format
     for chunk in chunks:
         if chunk.get("fg", None):
-            chunk["fg"] = get_cursor_color(chunk["fg"])
+            chunk["fg"] = ansi_to_kitty(chunk["fg"])
         if chunk.get("bg", None):
-            chunk["bg"] = get_cursor_color(chunk["bg"])
+            chunk["bg"] = ansi_to_kitty(chunk["bg"])
 
     # Update the representation of this part of statusbar
     statusbarState["items"][statusbarName]["chunks"] = chunks
