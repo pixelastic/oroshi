@@ -3,7 +3,11 @@
 - Prefer long-form args (`--type`, not `-t`)
 - Prefer existing helpers over raw commands (`git-branch-current`)
 - One arg per line when multiple args
-- Exception: common short-form idioms inside `$(...)` are fine (`jq -r`, `head -1`, `tail -1`).
+- Exception: common short-form idioms are fine:
+    - `jq -r`
+    - `head -1`
+    - `tail -1`
+    - `mkdir -p`
 
 ## Example
 ```zsh
