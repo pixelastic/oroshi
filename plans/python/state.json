@@ -1,0 +1,26 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-tab-data-init.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-redraw-beacon.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-reload-beacon.md",
+    "done": false,
+    "blocked_by": ["01", "02"]
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-cleanup-wiring.md",
+    "done": false,
+    "blocked_by": ["03"]
+  }
+]
