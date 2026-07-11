@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-first-pass-tests.md",
-    "done": false,
+    "done": true,
+    "recap": "Created test_tabs_first_pass.py with 12 behavioral tests covering Reload/Redraw Beacon timing, manifest population, allTabIds dedup, separator bg, and end-of-cycle pick_tabs trigger.",
     "blocked_by": []
   },
   {

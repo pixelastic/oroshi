@@ -118,3 +118,24 @@ ATTENTION_FILE = os.path.join(os.environ.get("OROSHI_TMP_FOLDER", ""), "kitty/at
 ```
 **Problem:** Spec says "`kitty @ set-tab-color --match all active_bg=NONE` is still called"; new tests don't assert this.
 **Reason skipped:** Existing test `"success: calls kitty set-tab-color with --match all active_bg=NONE"` already covers this. New tests focus narrowly on beacon behavior.
+
+## Issue 03 — first_pass tests
+
+### Separator bg mock uses second build_tab_data call
+```python
+mocker.patch(
+    "lib.tabs_first_pass.build_tab_data",
+    side_effect=[{"id": 1}, {"id": 2, "bg": 0xFF0000}],
+)
+```
+**Problem:** Spec agent claimed `separatorBg` should come from the manifest, not a second `build_tab_data` call.
+**Reason skipped:** Incorrect — production code explicitly calls `build_tab_data(nextTab, draw_data)` for the next tab. The mock correctly models two calls. Test passes against real code.
+
+### allTabIds dedup test doesn't isolate guard vs. dedup logic
+```python
+tabs_first_pass.first_pass(*_make_args())
+tabs_first_pass.first_pass(*_make_args())
+assert tabState["allTabIds"].count(5) == 1
+```
+**Problem:** Second call skips beacon checks (allTabIds non-empty), so dedup and beacon-guard are entangled in the same test.
+**Reason skipped:** Test verifies the observable spec requirement ("Calling first_pass again for the same tab ID does not duplicate the entry"). The entanglement is unavoidable without restructuring production code.
