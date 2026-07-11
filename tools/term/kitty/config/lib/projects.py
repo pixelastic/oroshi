@@ -1,5 +1,5 @@
 import json
-from lib.colors import ansi_to_kitty
+from lib.helper import ansi_to_kitty
 
 jsonPath = "/home/tim/.oroshi/tools/term/zsh/config/theming/dist/projects.json"
 projectState = {}

@@ -5,7 +5,7 @@ from lib.projects import init as init_projects
 from kitty.boss import get_boss
 from kitty.fast_data_types import Screen, add_timer
 from kitty.tab_bar import Formatter, draw_attributed_string
-from lib.colors import ansi_to_kitty
+from lib.helper import ansi_to_kitty
 
 # Persists across hot-reloads so stale timer callbacks can self-invalidate
 if "_generation" not in globals():
