@@ -6,65 +6,66 @@ set -e
 
 # Check if file exceeds OpenAI limit
 function isFileTooBig {
-  local file=$1
-  local maxFileSize=26214400 # 25 MB - OpenAI Whisper API limit
-  local fileSize="$(stat --format=%s "$file")"
-  [[ $fileSize -ge $maxFileSize ]]
+	local file=$1
+	local maxFileSize=26214400 # 25 MB - OpenAI Whisper API limit
+	local fileSize="$(stat --format=%s "$file")"
+	[[ $fileSize -ge $maxFileSize ]]
 }
 
 # Transcribe a single file with OpenAI
 function transcribeFile {
-  local fileToTranscribe=$1
-  curl \
-    --silent \
-    -X POST \
-    https://eu.api.openai.com/v1/audio/transcriptions \
-    -H "Authorization: Bearer $OPENAI_WHISPER_API_KEY" \
-    -H "Content-Type: multipart/form-data" \
-    -F file="@${fileToTranscribe}" \
-    -F model="whisper-1" \
-    -F language="fr" \
-    -F response_format="text"
+	local fileToTranscribe=$1
+	curl \
+		--silent \
+		-X POST \
+		https://eu.api.openai.com/v1/audio/transcriptions \
+		-H "Authorization: Bearer $OPENAI_WHISPER_API_KEY" \
+		-H "Content-Type: multipart/form-data" \
+		-F file="@${fileToTranscribe}" \
+		-F model="whisper-1" \
+		-F language="fr" \
+		-F response_format="text"
 }
 
 # Split large file and transcribe both parts
 function splitAndTranscribe {
-  local file=$1
-  local basename="${file:r}"
-  local extension="${file:e}"
-  local part1="${basename}-part1.${extension}"
-  local part2="${basename}-part2.${extension}"
+	local file=$1
+	local basename="${file:r}"
+	local extension="${file:e}"
+	local part1="${basename}-part1.${extension}"
+	local part2="${basename}-part2.${extension}"
 
-  # Split the file in two at a silence near the middle
-  audio-split "$file"
+	# Split the file in two at a silence near the middle
+	audio-split "$file"
 
-  # Transcribe both parts
-  local transcription1="$(transcribeFile "$part1")"
-  local transcription2="$(transcribeFile "$part2")"
+	# Transcribe both parts
+	local transcription1="$(transcribeFile "$part1")"
+	local transcription2="$(transcribeFile "$part2")"
 
-  # Cleanup temporary files
-  rm -f "$part1" "$part2"
+	# Cleanup temporary files
+	rm -f "$part1" "$part2"
 
-  # Return concatenated transcription
-  echo "${transcription1} ${transcription2}"
+	# Return concatenated transcription
+	echo "${transcription1} ${transcription2}"
 }
 
 # Strip known Whisper hallucination phrases from transcription
 function removeArtifacts {
-  local artifacts=(
-    "Merci d'avoir regardé cette vidéo !"
-    "Merci d'avoir regardé cette vidéo."
-    "Sous-titres réalisés para la communauté d'Amara.org"
-    "Sous-titres réalisés par la communauté d'Amara.org"
-    # zsh-lint disable=commandTooLong
-    "J'espère que vous avez apprécié cette vidéo, si c'est le cas n'hésitez pas à vous abonner à la chaine pour ne manquer aucune de mes nouvelles vidéos, merci et à bientot !"
-    "Merci d'avoir regardé !"
-  )
-  local text=$1
-  for artifact in "${artifacts[@]}"; do
-    text="${text//${artifact}/}"
-  done
-  echo "$text"
+	local artifacts=(
+		"Merci d'avoir regardé cette vidéo !"
+		"Merci d'avoir regardé cette vidéo."
+		"Sous-titres réalisés para la communauté d'Amara.org"
+		"Sous-titres réalisés par la communauté d'Amara.org"
+		# zsh-lint disable=commandTooLong
+		"J'espère que vous avez apprécié cette vidéo, si c'est le cas n'hésitez pas à vous abonner à la chaine pour ne manquer aucune de mes nouvelles vidéos, merci et à bientot !"
+		"Merci d'avoir regardé !"
+		"Sous-titrage ST' 501"
+	)
+	local text=$1
+	for artifact in "${artifacts[@]}"; do
+		text="${text//${artifact}/}"
+	done
+	echo "$text"
 }
 
 # Stop here if sources (vs called as a script)
@@ -79,8 +80,8 @@ source $OROSHI_ROOT/private/config/term/zsh/local/${HOSTNAME}/open_ai.zsh
 # Main logic
 local rawTranscription=""
 if isFileTooBig "$input"; then
-  rawTranscription="$(splitAndTranscribe "$input")"
+	rawTranscription="$(splitAndTranscribe "$input")"
 else
-  rawTranscription="$(transcribeFile "$input")"
+	rawTranscription="$(transcribeFile "$input")"
 fi
 removeArtifacts "$rawTranscription"

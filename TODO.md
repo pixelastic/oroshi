@@ -1,10 +1,3 @@
-Sidequest skill doesn't handle well creating a sidequest in another repo. For
-example, starting the sidequest while having a conversation in `emulation` but
-telling it to create a sidequest in oroshi still create the sidequest i
-emulation
-
----
-
 ## Kitty
 
 ### Attention
@@ -72,6 +65,11 @@ If I press record twice in a row really fast, an almost empty rec file is sent
 and the API returns an error. This should be handled and discarded.
 
 I probaly should also define a keybinding to cancel a record, like Ctrl-YELLOW
+
+Tell zsh-writer to not use abbreviations in variable names (ie no absPath,
+prefer absolutePath)
+
+Merge /prd and /issues into one skill named /plan. I always chain the two.
 
 
 Make Claude inspect all the history of the review logs of deleted worktrees, and
@@ -207,6 +205,9 @@ I will need a test framework for LUA, and write tests, that I don't have yet.
 
 Seems like doing Shift-R in bats file generates an error instead of addinga
 review?
+
+Would it be possible to always have a tab bar, even when only one file is
+opened? I like to check the top of my screen to know which file I'm editing
 
 My nvim keybidnings are sprawling over one big file. They probbaly need to be
 split into smaller files, per domain.
