@@ -46,8 +46,6 @@ even after I switch tabs, using kitty-remote send-text --match "id:$parentId"
 that might be a way to have me switch between tabs even before the speech to
 text is done, as soon as I'm done talking
 
-Automatically replace Orochi with Oroshi in mic2txt (common mistake)
-
 Would be nice if we can find a way to name/color the kitty tabs based on their
 main repo. I currently use a lot of worktrees, so if I name a tab "foo" in the
 repo A, would be nice if the tab would be name "A foo" for example, or simply
