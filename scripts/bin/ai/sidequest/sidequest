@@ -1,10 +1,16 @@
 #!/usr/bin/env zsh
 # Launch a sidequest: create a worktree and open a Claude session in a new Kitty tab
 # Usage:
-# $ sidequest <filepath>    # Create worktree from file's slug and open Claude tab
+# $ sidequest <filepath>                    # Create worktree from file's slug and open Claude tab
+# $ sidequest <filepath> --repo-dir <path>  # Target a specific git repo instead of CWD
 set -e
 
+zmodload zsh/zutil
+zparseopts -E -D \
+  -repo-dir:=flagRepoDir
+
 local filepath="$1"
+local repoDir="${flagRepoDir[2]}"
 
 # Require a filepath argument
 if [[ "$filepath" == "" ]]; then
@@ -16,6 +22,15 @@ fi
 if [[ ! -f "$filepath" ]]; then
   print "sidequest: file not found: $filepath" >&2
   exit 1
+fi
+
+# If --repo-dir provided, cd into it (fails fast if path doesn't exist) and verify it's a git repo
+if [[ "$repoDir" != "" ]]; then
+  cd "$repoDir"
+  if ! git-directory-is-repository; then
+    print "sidequest: not a git repo: $repoDir" >&2
+    exit 1
+  fi
 fi
 
 # Derive slug from filename (basename without extension)

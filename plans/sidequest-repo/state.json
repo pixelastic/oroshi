@@ -16,7 +16,14 @@
   {
     "id": "03",
     "issue": "issues/03-repo-dir-flag-and-skill.md",
-    "done": false,
+    "done": true,
+    "recap": "Added --repo-dir flag to sidequest (cd + git-directory-is-repository guard); updated SKILL.md Step 1 to 'Gather prerequisites', resolving repo via project-path, and Step 3 to call sidequest with optional --repo-dir.",
     "blocked_by": ["02"]
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-sidequest-start.md",
+    "done": false,
+    "blocked_by": ["03"]
   }
 ]

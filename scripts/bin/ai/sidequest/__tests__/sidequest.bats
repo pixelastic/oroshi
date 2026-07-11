@@ -69,3 +69,36 @@ setup() {
   [ "$status" -eq 0 ]
   [[ "$output" != *"--focus"* ]]
 }
+
+@test "--repo-dir with nonexistent path: exits with error" {
+  git-worktree-create() { return 0; }
+  git-worktree-path() { echo "$BATS_TMP_DIR/myrepo--my-slug"; }
+  kitty-tab-create() { return 0; }
+  bats_mock git-worktree-create git-worktree-path kitty-tab-create
+
+  bats_run_zsh "sidequest $BATS_TMP_DIR/my-slug.md --repo-dir /nonexistent/path"
+  [ "$status" -ne 0 ]
+}
+
+@test "--repo-dir with non-git directory: exits with error" {
+  git-directory-is-repository() { return 1; }
+  git-worktree-create() { return 0; }
+  git-worktree-path() { echo "$BATS_TMP_DIR/myrepo--my-slug"; }
+  kitty-tab-create() { return 0; }
+  bats_mock git-directory-is-repository git-worktree-create git-worktree-path kitty-tab-create
+
+  bats_run_zsh "sidequest $BATS_TMP_DIR/my-slug.md --repo-dir $BATS_TMP_DIR"
+  [ "$status" -ne 0 ]
+}
+
+@test "--repo-dir with valid git repo: calls git-worktree-create with slug" {
+  git-directory-is-repository() { return 0; }
+  git-worktree-create() { echo "WORKTREE:$*"; }
+  git-worktree-path() { echo "$BATS_TMP_DIR/myrepo--my-slug"; }
+  kitty-tab-create() { return 0; }
+  bats_mock git-directory-is-repository git-worktree-create git-worktree-path kitty-tab-create
+
+  bats_run_zsh "sidequest $BATS_TMP_DIR/my-slug.md --repo-dir $BATS_TMP_DIR"
+  [ "$status" -eq 0 ]
+  [[ "$output" == "WORKTREE:my-slug" ]]
+}

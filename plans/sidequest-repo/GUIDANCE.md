@@ -46,3 +46,8 @@ The skill lives in the worktree path (`tools/ai/claude/config/skills/sidequest/S
 `project-path <name>` (zsh autoload) resolves a registered project name to its filesystem path. Returns exit 1 if unknown.
 
 ## Discoveries
+
+### Issue 03 — --repo-dir flag and skill update
+
+- The spec mandates `cd` + `set -e` as the nonexistent-path guard (not an explicit `[[ -d ]]` check); don't add one.
+- In the nonexistent-path bats test, do NOT mock `git-directory-is-repository` — `cd` fails before it's called, and including the mock is misleading about the execution path being tested.
