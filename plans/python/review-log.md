@@ -1,3 +1,20 @@
+## Issue 01 — build_tab_data tests
+
+### Repeated mocker.patch boilerplate
+```python
+mocker.patch("lib.tab_data.as_rgb", side_effect=lambda x: x)
+mocker.patch("lib.tab_data.projects.get", return_value={})
+```
+**Problem:** 20+ tests repeat the same two patch calls; reviewer suggested a shared fixture.
+**Reason skipped:** Plan scope is "tests only, no improvements beyond spec." Refactoring into a fixture changes test structure without fixing correctness. Out of scope.
+
+### tabState direct mutation
+```python
+tabState["attentionIds"] = {"1"}
+```
+**Problem:** Reviewer flagged direct `tabState` mutation as state coupling, referencing `feedback_no_env_var_mocks.md`.
+**Reason skipped:** That feedback is specifically about adding env var overrides to *production code* for test isolation. Setting `tabState["attentionIds"]` is the correct way to exercise the attention feature — it is the behavior under test, not an isolation hack.
+
 ## Issue 04 — Cleanup wiring
 
 ### Standards: test deleted without replacement

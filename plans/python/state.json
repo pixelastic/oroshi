@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-build-tab-data-tests.md",
-    "done": false,
+    "done": true,
+    "recap": "Added 23 behavioral tests for build_tab_data covering guard, basic fields, title construction, active/inactive colors, and separator.",
     "blocked_by": []
   },
   {

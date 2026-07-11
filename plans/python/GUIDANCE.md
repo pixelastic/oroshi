@@ -49,6 +49,11 @@ python-lint --fix tools/term/kitty/config/__tests__/test_<name>.py
 
 ## Discoveries
 
+### Issue 01 — build_tab_data tests
+- Spec said `"  {name} "` (double space) for no-icon titles, but code does `f" {icon}{name} "` — single space. Tests must assert actual code behavior, not spec wording.
+- Production code does `str(id) in tabState["attentionIds"]`, so attention set entries must be strings (`{"1"}` for tab_id=1).
+- Patch `lib.tab_data.as_rgb` with `side_effect=lambda x: x` to get predictable color values from integer draw_data attributes.
+
 <!-- Append non-trivial findings here after each issue, format: -->
 <!-- ### Issue XX — short title -->
 <!-- - finding -->
