@@ -54,6 +54,9 @@ python-lint --fix tools/term/kitty/config/__tests__/test_<name>.py
 - Production code does `str(id) in tabState["attentionIds"]`, so attention set entries must be strings (`{"1"}` for tab_id=1).
 - Patch `lib.tab_data.as_rgb` with `side_effect=lambda x: x` to get predictable color values from integer draw_data attributes.
 
+### Issue 04 — second_pass tests
+- MagicMock doesn't track attribute assignments (`screen.cursor.fg = x` doesn't show in `mock_calls`). Use a `_TrackingCursor` class with `__setattr__` override to record `(name, value)` pairs when testing sequential `fg`/`bg` assignments.
+
 <!-- Append non-trivial findings here after each issue, format: -->
 <!-- ### Issue XX — short title -->
 <!-- - finding -->

@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-second-pass-tests.md",
-    "done": false,
+    "done": true,
+    "recap": "Created test_tabs_second_pass.py with 14 behavioral tests covering draw_tab_item (fg/bg/title/separator colors and glyph), second_pass display filter, end-of-cycle teardown (allTabIds reset + draw_statusbar), mid-cycle guard, and return value.",
     "blocked_by": []
   }
 ]
