@@ -1,0 +1,20 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-mock-ssh-docker-foundation.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-mock-ssh-bats-helper.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-mock-ssh-integration-tests.md",
+    "done": false,
+    "blocked_by": ["01", "02"]
+  }
+]
