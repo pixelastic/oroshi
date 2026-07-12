@@ -4,7 +4,7 @@
 Fixes 5 gaps in the kitty tab bar attention icon system: icon ordering, clear on Claude exit, clear on tab close, clear on focus (3s timer), and differentiated icons for `stop` vs `notification` attention types.
 
 ### Testing commands
-- **Python tests:** `cd tools/term/kitty/config && yarn run test` (or `pytest __tests__/`)
+- **Python tests:** `python-test <filepath>`
 - **Bats tests (ZSH scripts):** `bats scripts/bin/kitty/__tests__/<file>.bats`
 - **Linting ZSH:** `zsh-lint <filepath>`
 - **Linting bats:** `bats-lint <filepath>`
