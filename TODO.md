@@ -1,55 +1,27 @@
 ## Kitty
 
+Things that need to be fixed regarding the kitty tab bar code:
+
+- The attention icon should be added after the fullscreen icon, not before.
+- The attention icon should be cleared when claude is closed.
+- Should also be cleared when a new tab is created (so we do not inherit from an old attention from a previous tab with the same id)
+- See if it would be possible to clear the icon as soon as I start typing in the Claude window, rather then when I submit
+- See if it would be possible to use different icons for different kind of attention. One icon if Claude finished and waits for my input (default), another if it waits for my approval of a command.
+
+
 ### Attention
-
-When a new tab is opened, its id should be cleared from the attention list
-
-Add a space after the icon
-
-Make the icon after the fullscreen icon
 
 See how to display a repo icon badge + the worktree name
 Find a better separator icon between repo and wokrtree generally speaking?
-
-Maybe we should remove the marker once we start typing, so I can easily clear
-it?
-
-the attention shouldn't be added when I run claude through git-commit-message
-for example, only when actually interactive
-
-When I quit claude, it should also clear the attention
-
-Add an icon to show that Claude is waiting for my permisionss
-
-### Redraw/reload
-
-Diff betwen alt-R and alt-shift-r?
-
-kitty-reload should write its beacon in its own subdir kitty/
-
-kitty-reload shoudl be instand (beacon + -redrawn should trigger directly)
-
-### Misc
-
-See if we can mark it requires attention differently than an icon
-
-I should expand to adding another "mode" icon, to show if the tab is in
-grill-me, prd, issues, ralph or nothing
-
-Can I add an icon in the tabs when claude is waiting for me to confirm a Bash
-tool execution? Maybe I could keep the same icon (claude square) for each, but
-change the color? Might not be readable in some context. Better to have a round
-list of icons for the status.
-
-Check if it would be possible to send the mic2txt transcript to the right window
-even after I switch tabs, using kitty-remote send-text --match "id:$parentId"
-that might be a way to have me switch between tabs even before the speech to
-text is done, as soon as I'm done talking
-
 Would be nice if we can find a way to name/color the kitty tabs based on their
 main repo. I currently use a lot of worktrees, so if I name a tab "foo" in the
 repo A, would be nice if the tab would be name "A foo" for example, or simply
 using the repo A icon rather than A, and colored as this repo.
+
+I should expand to adding another "mode" icon, to show if the tab is in
+grill-me, prd, issues, ralph or nothing
+
+
 
 ---
 
@@ -67,12 +39,18 @@ I probaly should also define a keybinding to cancel a record, like Ctrl-YELLOW
 Tell zsh-writer to not use abbreviations in variable names (ie no absPath,
 prefer absolutePath)
 
-Merge /prd and /issues into one skill named /plan. I always chain the two.
+Colors of markdown headers are off in nvim
 
+Merge /prd and /issues into one skill named /plan. I always chain the two.
 
 Make Claude inspect all the history of the review logs of deleted worktrees, and
 classifying the most common skipped review, so I can improve my skills so they
 are no longer suggested.
+
+Check if it would be possible to send the mic2txt transcript to the right window
+even after I switch tabs, using kitty-remote send-text --match "id:$parentId"
+that might be a way to have me switch between tabs even before the speech to
+text is done, as soon as I'm done talking
 
 json-lint errors when editing files outside of oroshi
 
@@ -84,8 +62,6 @@ autoloaded function. Define a clear glossary of why omething is a script raher
 than a function. Find a way to write ina  comment in each script WHY something
 is a script rather than a function. Find a plan to migrate them all from script
 to function if needed
-
-Colors of markdown headers are off in nvim
 
 If I'm in a worktree of a cloned repo, but that repo is not part of my projects,
 how should the badge be displayed? My initial assumpation was that project >
