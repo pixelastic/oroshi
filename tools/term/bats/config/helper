@@ -124,6 +124,13 @@ bats_disable_worktree_aware() {
 }
 
 
+# bats_ssh_mock_start
+# Ensures the oroshi-mock-ssh Docker container is running (idempotent via ssh-mock-start).
+# Usage: bats_ssh_mock_start  (in setup_file)
+bats_ssh_mock_start() {
+  zsh -c 'ssh-mock-start'
+}
+
 # bats_run_zsh <zsh-command>
 # Runs an arbitrary zsh command, injecting optional mocks added by bats_mock
 # Usage: bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
