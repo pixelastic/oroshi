@@ -51,7 +51,7 @@ The icon `󱅫` displayed as a suffix on a tab's title in the Tab Bar to signal 
 _Avoid_: attention badge, notification icon, alert icon
 
 **Attention File**:
-A plain-text file listing the Tab IDs currently in Attention state, one per line; read by the Tab Bar Python once per render cycle (at the start of each Redraw).
+A plain-text file listing the Tab IDs currently in Attention state, one `tabId:type` pair per line (e.g. `42:stop`, `7:notification`); read by the Tab Bar Python once per render cycle (at the start of each Redraw).
 _Avoid_: attention list, notification file, state file
 
 ## Relationships

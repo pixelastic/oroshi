@@ -6,7 +6,7 @@ from lib.state import tabState
 
 @pytest.fixture(autouse=True)
 def reset_state():
-    tabState["attentionIds"] = set()
+    tabState["attentionIds"] = {}
     yield
 
 
@@ -19,16 +19,27 @@ def patch_paths(mocker, tmp_path):
     yield
 
 
-def test_check_beacon_present_attention_exists():
+def test_check_parses_typed_lines_into_dict():
     with open(redraw.REDRAW_BEACON, "w"):
         pass
     with open(redraw.ATTENTION_FILE, "w") as f:
-        f.write("1\n2\n3\n")
+        f.write("1:stop\n2:notification\n3:stop\n")
 
     redraw.check()
 
-    assert tabState["attentionIds"] == {"1", "2", "3"}
+    assert tabState["attentionIds"] == {"1": "stop", "2": "notification", "3": "stop"}
     assert not os.path.exists(redraw.REDRAW_BEACON)
+
+
+def test_check_ignores_blank_lines():
+    with open(redraw.REDRAW_BEACON, "w"):
+        pass
+    with open(redraw.ATTENTION_FILE, "w") as f:
+        f.write("1:stop\n\n2:notification\n\n")
+
+    redraw.check()
+
+    assert tabState["attentionIds"] == {"1": "stop", "2": "notification"}
 
 
 def test_check_beacon_present_attention_absent():
@@ -37,13 +48,13 @@ def test_check_beacon_present_attention_absent():
 
     redraw.check()
 
-    assert tabState["attentionIds"] == set()
+    assert tabState["attentionIds"] == {}
     assert not os.path.exists(redraw.REDRAW_BEACON)
 
 
 def test_check_beacon_absent():
-    tabState["attentionIds"] = {"existing"}
+    tabState["attentionIds"] = {"existing": "stop"}
 
     redraw.check()
 
-    assert tabState["attentionIds"] == {"existing"}
+    assert tabState["attentionIds"] == {"existing": "stop"}

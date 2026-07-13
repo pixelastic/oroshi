@@ -1,20 +1,31 @@
 #!/usr/bin/env zsh
 # Add tab to attention list
 # Usage:
-# $ kitty-tab-attention-add {tabId}     # Add {tabId} to attention list
-# $ kitty-tab-attention-add             # Add current tab to attention list
+# $ kitty-tab-attention-add {tabId}                    # Add as "stop" (default)
+# $ kitty-tab-attention-add {tabId} --type notification # Add as "notification"
+# $ kitty-tab-attention-add                             # Add current tab as "stop"
 set -e
+
+zmodload zsh/zutil
+zparseopts -E -D \
+	-type:=flagType
+
 local tabId=$1
 [[ $tabId == "" ]] && tabId="$(kitty-tab-id)"
+local attentionType=${flagType[2]:-stop}
 
 local attentionFile=$OROSHI_TMP_FOLDER/kitty/attention
 
-# Create file and parent dir if absent; proceed to append
-[[ ! -f "$attentionFile" ]] && mkdir -p "${attentionFile:h}" && touch "$attentionFile"
+# Create file and parent dir if absent
+if [[ ! -f "$attentionFile" ]]; then
+	mkdir -p "${attentionFile:h}"
+	touch "$attentionFile"
+fi
 
-# Return early if tab ID already in file
-grep -q "^${tabId}$" "$attentionFile" 2>/dev/null && exit 0
+# Return early if exact same entry already exists
+grep -q "^${tabId}:${attentionType}$" "$attentionFile" 2>/dev/null && exit 0
 
-# Add tab ID and redraw
-echo "$tabId" >>"$attentionFile"
+# Remove previous entry for this tab ID, add new one, redraw
+sed -i "/^${tabId}:/d" "$attentionFile"
+echo "${tabId}:${attentionType}" >>"$attentionFile"
 kitty-redraw

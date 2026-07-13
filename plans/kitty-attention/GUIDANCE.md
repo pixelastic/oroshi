@@ -41,4 +41,9 @@ Each line: `tabId:type` (e.g. `42:stop`, `7:notification`).
 
 ## Discoveries
 
-_Append findings here after each issue._
+### Issue 01 — Typed attention format
+- `type` is a ZSH builtin — renamed to `attentionType` to avoid shadowing
+- `str(id) in tabState["attentionIds"]` works unchanged with dict (checks keys), so `tab_data.py` needed no code changes
+- Four other test files (`test_tab_data`, `test_pick_tabs`, `test_tabs_second_pass`, `test_tabs_first_pass`) reset `attentionIds` — all needed `set()` → `{}` update
+- GLOSSARY.md Attention File definition needed updating to reflect `tabId:type` format
+- Future cleanup: manifest entries for closed tabs are never pruned — should sync manifest with allTabIds after display pass

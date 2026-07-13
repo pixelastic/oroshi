@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-typed-attention-format.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Changed attention file format from bare tabId to tabId:type, added --type flag to add script, updated remove/redraw/state to handle new format"
   },
   {
     "id": "02",
@@ -34,5 +35,11 @@
     "issue": "issues/06-notification-hook-attention.md",
     "done": false,
     "blocked_by": ["01", "02"]
+  },
+  {
+    "id": "07",
+    "issue": "issues/07-manifest-cleanup.md",
+    "done": false,
+    "blocked_by": []
   }
 ]

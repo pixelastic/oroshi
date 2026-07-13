@@ -12,11 +12,18 @@ def check():
 
     # Error, beacon but no attention file
     if not os.path.exists(ATTENTION_FILE):
-        tabState["attentionIds"] = set()
+        tabState["attentionIds"] = {}
         os.remove(REDRAW_BEACON)
         return
 
     # Update the attention list
     with open(ATTENTION_FILE) as f:
-        tabState["attentionIds"] = {line.strip() for line in f if line.strip()}
+        ids = {}
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            tab_id, attention_type = line.split(":", 1)
+            ids[tab_id] = attention_type
+        tabState["attentionIds"] = ids
         os.remove(REDRAW_BEACON)

@@ -8,7 +8,7 @@ from lib.state import tabState
 @pytest.fixture(autouse=True)
 def reset_state():
     tab_data._icons = {}
-    tabState["attentionIds"] = set()
+    tabState["attentionIds"] = {}
     yield
 
 
@@ -139,7 +139,7 @@ def test_title_appends_attention_icon(mocker):
     mocker.patch("lib.tab_data.as_rgb", side_effect=lambda x: x)
     mocker.patch("lib.tab_data.projects.get", return_value={})
     tab_data._icons = {"kitty-tab-attention": "!"}
-    tabState["attentionIds"] = {"1"}
+    tabState["attentionIds"] = {"1": "stop"}
     result = tab_data.build_tab_data(_make_tab(tab_id=1, title="neovim"), _make_draw())
     assert result["title"] == " neovim !"
 
@@ -158,7 +158,7 @@ def test_title_appends_both_attention_and_fullscreen(mocker):
     mocker.patch("lib.tab_data.as_rgb", side_effect=lambda x: x)
     mocker.patch("lib.tab_data.projects.get", return_value={})
     tab_data._icons = {"kitty-tab-attention": "!", "kitty-tab-fullscreen": "F"}
-    tabState["attentionIds"] = {"1"}
+    tabState["attentionIds"] = {"1": "stop"}
     result = tab_data.build_tab_data(
         _make_tab(tab_id=1, title="neovim", layout_name="stack"), _make_draw()
     )

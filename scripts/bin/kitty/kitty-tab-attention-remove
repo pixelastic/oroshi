@@ -12,5 +12,5 @@ local attentionFile=$OROSHI_TMP_FOLDER/kitty/attention
 [[ ! -f "$attentionFile" ]] && exit 0
 
 # Remove tab ID and redraw
-sed -i "/^${tabId}$/d" "$attentionFile"
+sed -i "/^${tabId}:/d" "$attentionFile"
 kitty-redraw

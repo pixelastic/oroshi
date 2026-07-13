@@ -4,6 +4,10 @@ tabState = {
     # value is an object with the tab metadata (tabId, title, isFullscreen, etc.
     # Note: When a tab is closed, its metadata is not cleared but this shouldn't
     # be an issue.
+    # REVIEW:  Note for later (add as a cleanup issue for later), when we're
+    # done with the display of tabs, we should cleanup any entry in the manifest
+    # not in the list of tabs actually existing (in other words, sync allTabIds
+    # with manifest)
     "manifest": {},
     # Array of all currently available tabIds, by order of appearance. This list
     # is automatically updated during the first_pass
@@ -14,7 +18,7 @@ tabState = {
     # array with the list of tabIds we want to keep, based on the available
     # space.
     "displayedTabIds": [],
-    # Set of tab IDs that need user attention (populated once per render cycle
-    # from the attention file)
-    "attentionIds": set(),
+    # Dict of tab IDs that need user attention, mapping tabId → type
+    # (populated once per render cycle from the attention file)
+    "attentionIds": {},
 }

@@ -19,7 +19,7 @@ def reset_state():
     tabState["manifest"] = {}
     tabState["allTabIds"] = []
     tabState["displayedTabIds"] = []
-    tabState["attentionIds"] = set()
+    tabState["attentionIds"] = {}
     yield
 
 
