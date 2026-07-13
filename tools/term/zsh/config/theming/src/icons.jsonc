@@ -1,12 +1,20 @@
 {
   // Icon definitions for the ICONS[] ZSH array.
   // List of icons: https://www.nerdfonts.com/cheat-sheet
+  //    󰃚 󰗠 󱤆 󱔛  󰍶 󱑤 󰅙  󰐌 󱇝 󱇞 󱡝
+  // 󱖒 󱖑 󰥔  󰛿 󰮔 󰿡 󰿣 󰷹 󱠋 󱡓 󰀨 󰟃 󰟄 󰮍 󰮎
+  // 󰙡 󰙣 󰵚 󰅡  󰥱 󰸠     󰓏 󰝳 󰀚 󰜺 
+  //         󰎆 󰮕 󰪥   󱪂 󰃓 
+  // 󰥕 󰾨 󱦺 󱡣 󱡡 󱡥 󰎍  󰹰 󰹯 󰝴 󰀥  󱁘  
+  //    󰀘 󱥔 󰒸 󰳀  󰗝 󰗮    ⏼ 󰐾 󱟜
+  //  
 
   // Kitty
   "kitty": {
     // zsh-lint disable=missingIconsLoad
     "tab-separator":  "",
-    "tab-attention":  "󱅫",
+    "tab-attention-stop":  "",
+    "tab-attention-notification": "󱖒",
     "tab-fullscreen": "󰈈"
   },
 

@@ -34,12 +34,15 @@ def build_tab_data(tab: TabBarData, draw_data: DrawData):
     # Check attention state from tabState (populated once per render cycle)
     isAttention = str(id) in tabState["attentionIds"]
 
-    # Build the title with icon, name, attention and potential full-screen icon
+    # Build the title with icon, name, and suffix icons (fullscreen before attention)
     title = f" {icon}{name} "
-    if isAttention:
-        title = f"{title}{_icons['kitty-tab-attention']}"
     if isFullscreen:
-        title = f"{title}{_icons['kitty-tab-fullscreen']} "
+        title = f"{title}{_icons['kitty-tab-fullscreen']}"
+    if isAttention:
+        attentionType = tabState["attentionIds"][str(id)]
+        title = f"{title}{_icons[f'kitty-tab-attention-{attentionType}']}"
+    if isFullscreen:
+        title = f"{title} "
 
     tabData = {
         "id": id,
