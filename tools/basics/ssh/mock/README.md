@@ -21,20 +21,27 @@ rsync -a /tmp/src/ mock:/tmp/dest/
 
 ## In bats tests
 
-Call `mock_ssh_host` in `setup_file()` to ensure the container is running:
+Any bats test that needs real SSH/SCP/rsync calls can use `bats_ssh_mock_start` (defined in `tools/term/bats/config/helper`). Call it in `setup_file()` — it's idempotent, so multiple test files can call it without conflict.
 
 ```bash
+bats_load_library 'helper'
+
 setup_file() {
-  mock_ssh_host
+  bats_ssh_mock_start
+}
+
+setup() {
+  bats_tmp_dir
 }
 
 @test "transfers file via scp" {
-  scp "$BATS_TMP_DIR/file.txt" mock:"$BATS_TMP_DIR/file.txt"
-  [ -f "$BATS_TMP_DIR/file.txt" ]
+  echo "data" > "$BATS_TMP_DIR/file.txt"
+  run scp "$BATS_TMP_DIR/file.txt" "mock:$BATS_TMP_DIR/output.txt"
+  [[ -f "$BATS_TMP_DIR/output.txt" ]]
 }
 ```
 
-The `/tmp/oroshi` mount is symmetric — same path inside and outside the container — so `$BATS_TMP_DIR` works directly as the assertion target.
+The `/tmp/oroshi` mount is symmetric — same path inside and outside the container — so `$BATS_TMP_DIR` works directly as the assertion target. No path translation needed.
 
 ## Architecture
 
