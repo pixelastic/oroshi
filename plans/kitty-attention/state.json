@@ -16,8 +16,9 @@
   {
     "id": "03",
     "issue": "issues/03-clear-on-close.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added kitty-tab-attention-remove call in claude wrapper after binary exits, guarded by KITTY_WINDOW_ID check"
   },
   {
     "id": "04",

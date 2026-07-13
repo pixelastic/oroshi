@@ -1,9 +1,17 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # Wrapper around claude
+set -e
 
-export OROSHI_CLAUDE_STOP_SOUND="${OROSHI_CLAUDE_STOP_SOUND-auto}"
+# Default stop sound to auto if not already set
+if [[ "$OROSHI_CLAUDE_STOP_SOUND" == "" ]]; then
+	export OROSHI_CLAUDE_STOP_SOUND="auto"
+fi
 
-~/.oroshi/node_modules/.bin/claude "$@"
+# Binary may exit non-zero; continue to cleanup
+$OROSHI_ROOT/node_modules/.bin/claude "$@" || true
+
+# Remove any leftover attention icon
+kitty-tab-attention-remove
 
 # Claude v2.1.84 seem to leave the terminal in corrupted state.
 # Source: https://github.com/anthropics/claude-code/issues/38761

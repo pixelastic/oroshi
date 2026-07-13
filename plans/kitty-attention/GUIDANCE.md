@@ -47,3 +47,8 @@ Each line: `tabId:type` (e.g. `42:stop`, `7:notification`).
 - Four other test files (`test_tab_data`, `test_pick_tabs`, `test_tabs_second_pass`, `test_tabs_first_pass`) reset `attentionIds` — all needed `set()` → `{}` update
 - GLOSSARY.md Attention File definition needed updating to reflect `tabId:type` format
 - Future cleanup: manifest entries for closed tabs are never pruned — should sync manifest with allTabIds after display pass
+
+### Issue 03 — Clear on close
+- `claude` wrapper has no `set -e` by design — must continue after binary exits non-zero
+- Testing required fake HOME to redirect `~/.oroshi/node_modules/.bin/claude` to a mock binary; symlink `.zshenv` from real HOME + `bats_disable_worktree_aware` keeps zsh startup chain working
+- `if/then/fi` is correct here (not guard+exit) because there are 2 instructions and code follows below

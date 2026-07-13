@@ -31,3 +31,29 @@ if isFullscreen:
 ```
 **Problem:** `?` looks like a TODO left behind
 **Reason skipped:** Issue spec explicitly says "The user will replace `?` with the final glyph"
+
+## Issue 03 — Clear on close
+
+### Missing set -e in claude wrapper
+```zsh
+#!/usr/bin/zsh
+```
+**Problem:** Script has no `set -e` error protection per zsh-writer header standard.
+**Reason skipped:** Intentional — wrapper must continue after claude binary exits non-zero to run cleanup and terminal fix.
+
+### Guard style should be return-early
+```zsh
+if [[ "$KITTY_WINDOW_ID" != "" ]]; then
+  tabId="$(kitty-window-tab-id "$KITTY_WINDOW_ID")"
+  kitty-tab-attention-remove "$tabId"
+fi
+```
+**Problem:** if/then/fi instead of guard + exit 0.
+**Reason skipped:** Two instructions inside block (requires if/then/fi per feedback_zsh_if_multiline), and cannot exit 0 because terminal-fix code follows.
+
+### Guard tests empty vs unset
+```zsh
+[[ "$KITTY_WINDOW_ID" != "" ]]
+```
+**Problem:** Conflates unset and empty string; spec says "unset".
+**Reason skipped:** Same pattern used in stop hook (`tools/ai/claude/config/hooks/stop:14`). Functionally equivalent — KITTY_WINDOW_ID is never set to empty by kitty.
