@@ -2,9 +2,10 @@
 # Generates a ~/.ssh/config file by concatenating :
 # - files in ./private/config/ssh/local/{hostname}
 # - default values
+set -e
 
 CONFIG_DIR=${0:h}/config
-local LOCAL_FILES="~/.oroshi/private/config/basics/ssh/local/${HOSTNAME}/*"
+local LOCAL_FILES="$HOME/.oroshi/private/config/basics/ssh/local/${HOSTNAME}/*"
 local DEST_DIR=~/.ssh
 local DEST_FILE=$DEST_DIR/config
 
@@ -14,7 +15,14 @@ touch $DEST_FILE
 
 # Custom config
 for localFile in ${~LOCAL_FILES}; do
-	cat $localFile >> $DEST_FILE
+  cat $localFile >> $DEST_FILE
 done
 # Default config
 cat $CONFIG_DIR/default >> $DEST_FILE
+
+# Mock SSH: copy client key for authentication, and register the
+# server's host key in known_hosts so SSH trusts it without prompts
+cp ${0:h}/mock/keys/id_mock $DEST_DIR/id_mock
+chmod 600 $DEST_DIR/id_mock
+ssh-keygen -R "[localhost]:2222" 2>/dev/null || true
+echo "[localhost]:2222 $(cat ${0:h}/mock/keys/host_mock.pub)" >> $DEST_DIR/known_hosts

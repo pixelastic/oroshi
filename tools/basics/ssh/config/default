@@ -1,3 +1,11 @@
+# Mock SSH server (Docker)
+Host            mock
+  HostName        localhost
+  Port            2222
+  User            mock
+  IdentityFile    ~/.ssh/id_mock
+  ControlMaster   no
+
 # Default settings
 Host            *
   # Compress ssh traffic

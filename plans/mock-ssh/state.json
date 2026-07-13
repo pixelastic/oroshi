@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-mock-ssh-docker-foundation.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Created Alpine SSH Docker image, ed25519 key pair, idempotent start script, Host mock config block, and README"
   },
   {
     "id": "02",

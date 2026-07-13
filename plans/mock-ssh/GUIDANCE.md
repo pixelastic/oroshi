@@ -14,8 +14,9 @@ A persistent Docker SSH server reachable as `Host mock`, used by bats tests to e
 # Run integration tests
 bats tools/basics/ssh/mock/__tests__/mock.bats
 
-# Lint the start script
-zsh-lint tools/basics/ssh/mock/start
+# Lint the autoload functions
+zsh-lint tools/term/zsh/config/functions/autoload/ssh/mock/ssh-mock-start
+zsh-lint tools/term/zsh/config/functions/autoload/ssh/mock/ssh-mock-stop
 
 # Lint bats files
 bats-lint tools/basics/ssh/mock/__tests__/mock.bats
@@ -24,9 +25,11 @@ bats-lint tools/term/bats/config/helper
 
 ### File locations (relative to repo root)
 
-- `tools/basics/ssh/mock/` — Docker image, keys, start script, README
-- `tools/basics/ssh/mock/keys/id_mock` — private key (committed, non-sensitive)
-- `tools/basics/ssh/mock/keys/id_mock.pub` — public key
+- `tools/basics/ssh/mock/` — Docker image, keys, README
+- `tools/basics/ssh/mock/keys/id_mock` — client key (committed, non-sensitive)
+- `tools/basics/ssh/mock/keys/host_mock` — host key (committed, non-sensitive)
+- `tools/term/zsh/config/functions/autoload/ssh/mock/ssh-mock-start` — start container
+- `tools/term/zsh/config/functions/autoload/ssh/mock/ssh-mock-stop` — stop container
 - `tools/basics/ssh/config/default` — SSH config (add `Host mock` block before `Host *`)
 - `tools/term/bats/config/helper` — shared bats helper (add `mock_ssh_host`)
 - `tools/basics/ssh/mock/__tests__/mock.bats` — integration tests
@@ -48,4 +51,9 @@ bats-lint tools/term/bats/config/helper
 
 ## Discoveries
 
-_Append findings here after each issue is completed._
+### Issue 01 — Docker Foundation
+- Alpine `adduser -D` creates a locked account; must `passwd -u mock` to allow SSH login
+- `docker-container-is-running` helper exists and should be used instead of raw `docker ps | grep`
+- `docker-container-remove` helper is too verbose (colored output with icons) for silent cleanup in start scripts — raw `docker rm --force` is acceptable there
+- `~/.oroshi` is not the worktree — mock key must be copied to `~/.ssh/id_mock` by the deploy script, not referenced via `~/.oroshi/` path
+- SSH config `IdentityFile` should use `~/.ssh/` (consistent with all other keys) not `~/.oroshi/`
