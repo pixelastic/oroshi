@@ -11,6 +11,7 @@ def reset_state():
     tabState["allTabIds"] = []
     tabState["displayedTabIds"] = []
     tabState["attentionIds"] = {}
+    tabState["activeTabId"] = None
     yield
 
 
@@ -32,13 +33,15 @@ def _make_screen_tracking():
     return screen
 
 
-def _make_tab_data():
+def _make_tab_data(is_active=False):
     return {
         "fg": 0x112233,
         "bg": 0x445566,
         "title": "my-tab",
         "separatorBg": 0x778899,
         "separatorFg": 0xAABBCC,
+        "isActive": is_active,
+        "id": 1,
     }
 
 
@@ -129,18 +132,9 @@ def test_non_displayed_tab_skips_draw_tab_item(mocker):
 # --- second_pass — end-of-cycle teardown (is_last=True) ---
 
 
-def test_all_tab_ids_reset_on_last_tab(mocker):
-    tabState["allTabIds"] = [1, 2, 3]
-    mocker.patch("lib.tabs_second_pass.draw_tab_item")
-    mocker.patch("lib.tabs_second_pass.draw_statusbar")
-
-    _call_second_pass(is_last=True)
-
-    assert tabState["allTabIds"] == []
-
-
 def test_draw_statusbar_called_with_screen_on_last_tab(mocker):
     mocker.patch("lib.tabs_second_pass.draw_tab_item")
+    mocker.patch("lib.tabs_second_pass.redraw")
     mock_statusbar = mocker.patch("lib.tabs_second_pass.draw_statusbar")
     screen = MagicMock()
 
@@ -150,16 +144,6 @@ def test_draw_statusbar_called_with_screen_on_last_tab(mocker):
 
 
 # --- second_pass — mid-cycle (is_last=False) ---
-
-
-def test_all_tab_ids_not_reset_mid_cycle(mocker):
-    tabState["allTabIds"] = [1, 2, 3]
-    mocker.patch("lib.tabs_second_pass.draw_tab_item")
-    mocker.patch("lib.tabs_second_pass.draw_statusbar")
-
-    _call_second_pass(is_last=False)
-
-    assert tabState["allTabIds"] == [1, 2, 3]
 
 
 def test_draw_statusbar_not_called_mid_cycle(mocker):
@@ -183,3 +167,54 @@ def test_returns_screen_cursor_x(mocker):
     result, _ = _call_second_pass(screen=screen)
 
     assert result == 42
+
+
+# --- second_pass — activeTabId ---
+
+
+def test_active_tab_id_set_when_active_tab_encountered(mocker):
+    mocker.patch("lib.tabs_second_pass.draw_tab_item")
+    mocker.patch("lib.tabs_second_pass.draw_statusbar")
+    tabState["manifest"] = {
+        1: _make_tab_data(is_active=True),
+    }
+
+    _call_second_pass(tab_id=1, is_last=False)
+
+    assert tabState["activeTabId"] == 1
+
+
+def test_active_tab_id_not_set_for_inactive_tab(mocker):
+    mocker.patch("lib.tabs_second_pass.draw_tab_item")
+    mocker.patch("lib.tabs_second_pass.draw_statusbar")
+    tabState["manifest"] = {
+        1: _make_tab_data(is_active=False),
+    }
+    tabState["activeTabId"] = 99
+
+    _call_second_pass(tab_id=1, is_last=False)
+
+    assert tabState["activeTabId"] == 99
+
+
+# --- second_pass — cleanup call ---
+
+
+def test_cleanup_called_on_last_tab(mocker):
+    mocker.patch("lib.tabs_second_pass.draw_tab_item")
+    mocker.patch("lib.tabs_second_pass.draw_statusbar")
+    mock_redraw = mocker.patch("lib.tabs_second_pass.redraw")
+
+    _call_second_pass(is_last=True)
+
+    mock_redraw.cleanup.assert_called_once_with()
+
+
+def test_cleanup_not_called_mid_cycle(mocker):
+    mocker.patch("lib.tabs_second_pass.draw_tab_item")
+    mocker.patch("lib.tabs_second_pass.draw_statusbar")
+    mock_redraw = mocker.patch("lib.tabs_second_pass.redraw")
+
+    _call_second_pass(is_last=False)
+
+    mock_redraw.cleanup.assert_not_called()

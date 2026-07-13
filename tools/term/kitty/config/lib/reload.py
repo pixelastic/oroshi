@@ -1,17 +1,17 @@
 import importlib
-import os
 import sys
+from lib import files
 
 RELOAD_BEACON = "/home/tim/local/tmp/oroshi/kitty/beacons/reload"
 
 
 def check():
     # Stop early if no beacon
-    if not os.path.exists(RELOAD_BEACON):
+    if not files.exists(RELOAD_BEACON):
         return
 
     # Delete beacon first to prevent double-trigger
-    os.remove(RELOAD_BEACON)
+    files.remove(RELOAD_BEACON)
 
     # Reload all lib.* modules currently loaded
     for name, module in list(sys.modules.items()):

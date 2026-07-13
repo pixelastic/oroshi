@@ -21,4 +21,6 @@ tabState = {
     # Dict of tab IDs that need user attention, mapping tabId → type
     # (populated once per render cycle from the attention file)
     "attentionIds": {},
+    # ID of the currently active (focused) tab
+    "activeTabId": None,
 }

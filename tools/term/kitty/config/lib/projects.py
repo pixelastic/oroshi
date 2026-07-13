@@ -1,18 +1,13 @@
-import json
+from lib import files
 from lib.helper import ansi_to_kitty
 
 jsonPath = "/home/tim/.oroshi/tools/term/zsh/config/theming/dist/projects.json"
 projectState = {}
 
 
-def _read_json(path):
-    with open(path) as f:
-        return json.load(f)
-
-
 # Read projects.json and build a flat dict of icon + Kitty-format colors
 def init():
-    rawProjectData = _read_json(jsonPath)
+    rawProjectData = files.read_json(jsonPath)
 
     for projectName, project in rawProjectData.items():
         entry = {}

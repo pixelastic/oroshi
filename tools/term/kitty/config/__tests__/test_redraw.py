@@ -58,3 +58,76 @@ def test_check_beacon_absent():
     redraw.check()
 
     assert tabState["attentionIds"] == {"existing": "stop"}
+
+
+# --- cleanup ---
+
+
+def test_cleanup_removes_stale_entries():
+    with open(redraw.ATTENTION_FILE, "w") as f:
+        f.write("1:stop\n2:notification\n3:stop\n")
+    tabState["allTabIds"] = [1, 3]
+
+    redraw.cleanup()
+
+    with open(redraw.ATTENTION_FILE) as f:
+        lines = [line.strip() for line in f if line.strip()]
+    assert sorted(lines) == ["1:stop", "3:stop"]
+
+
+def test_cleanup_preserves_live_entries():
+    with open(redraw.ATTENTION_FILE, "w") as f:
+        f.write("1:stop\n2:notification\n")
+    tabState["allTabIds"] = [1, 2]
+
+    redraw.cleanup()
+
+    with open(redraw.ATTENTION_FILE) as f:
+        lines = [line.strip() for line in f if line.strip()]
+    assert sorted(lines) == ["1:stop", "2:notification"]
+
+
+def test_cleanup_no_write_when_all_live():
+    with open(redraw.ATTENTION_FILE, "w") as f:
+        f.write("1:stop\n2:notification\n")
+    mtime_before = os.path.getmtime(redraw.ATTENTION_FILE)
+    tabState["allTabIds"] = [1, 2]
+
+    redraw.cleanup()
+
+    mtime_after = os.path.getmtime(redraw.ATTENTION_FILE)
+    assert mtime_before == mtime_after
+
+
+def test_cleanup_handles_empty_attention_file():
+    with open(redraw.ATTENTION_FILE, "w") as f:
+        f.write("")
+    tabState["allTabIds"] = [1, 2]
+
+    redraw.cleanup()
+
+
+def test_cleanup_handles_missing_attention_file():
+    tabState["allTabIds"] = [1, 2]
+
+    redraw.cleanup()
+
+
+def test_cleanup_empty_live_set_removes_all():
+    with open(redraw.ATTENTION_FILE, "w") as f:
+        f.write("1:stop\n2:notification\n")
+    tabState["allTabIds"] = []
+
+    redraw.cleanup()
+
+    with open(redraw.ATTENTION_FILE) as f:
+        content = f.read().strip()
+    assert content == ""
+
+
+def test_cleanup_resets_all_tab_ids():
+    tabState["allTabIds"] = [1, 2, 3]
+
+    redraw.cleanup()
+
+    assert tabState["allTabIds"] == []

@@ -1,5 +1,5 @@
 from pprint import pformat
-import os
+from lib import files
 from kitty.fast_data_types import get_options
 from kitty.utils import color_as_int
 from kitty.tab_bar import as_rgb
@@ -26,8 +26,8 @@ def debug(variable):
 
     # On first call, remove the file if it exists
     if not debugState["initialized"]:
-        if os.path.exists(_debug_file_path):
-            os.remove(_debug_file_path)
+        if files.exists(_debug_file_path):
+            files.remove(_debug_file_path)
         debugState["initialized"] = True
 
     # Pretty print the variable and append to file

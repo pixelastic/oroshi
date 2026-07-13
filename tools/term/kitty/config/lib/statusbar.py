@@ -1,6 +1,6 @@
-import os
 import json
 import subprocess
+from lib import files
 from lib.projects import init as init_projects
 from kitty.boss import get_boss
 from kitty.fast_data_types import Screen, add_timer
@@ -109,7 +109,7 @@ def check_for_statusbar_reload():
     beaconPath = "/home/tim/local/tmp/oroshi/kitty-reload"
 
     # Nothing to do
-    if not os.path.exists(beaconPath):
+    if not files.exists(beaconPath):
         return
 
     # Reload ALL_PROJECTS to get updated project colors
@@ -123,7 +123,7 @@ def check_for_statusbar_reload():
     redraw_statusbar()
 
     # We remove the beacon
-    os.remove(beaconPath)
+    files.remove(beaconPath)
 
 
 # External tools can call kitty-tab-bar-reload (which will create a beacon file)
@@ -132,11 +132,11 @@ def check_for_forced_reload():
     beaconPath = "/home/tim/local/tmp/oroshi/kitty-tab-bar-reload"
 
     # Nothing to do
-    if not os.path.exists(beaconPath):
+    if not files.exists(beaconPath):
         return
 
     # Remove the beacon first to avoid double-trigger
-    os.remove(beaconPath)
+    files.remove(beaconPath)
 
     # Lazy import to avoid circular dependency
     from lib.reload import reload_tab_bar
