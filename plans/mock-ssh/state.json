@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-mock-ssh-integration-tests.md",
-    "done": false,
-    "blocked_by": ["01", "02"]
+    "done": true,
+    "blocked_by": ["01", "02"],
+    "recap": "Added scp and ssh integration tests against the mock Docker SSH host"
   }
 ]
