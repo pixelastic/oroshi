@@ -126,6 +126,7 @@
   "head",
   "hexdump",
   "hostname",
+  "icons-build",
   "imgmin",
   "iostat",
   "is-bats",

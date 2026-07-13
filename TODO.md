@@ -1,16 +1,5 @@
 ## Kitty
 
-Things that need to be fixed regarding the kitty tab bar code:
-
-- The attention icon should be added after the fullscreen icon, not before.
-- The attention icon should be cleared when claude is closed.
-- Should also be cleared when a new tab is created (so we do not inherit from an old attention from a previous tab with the same id)
-- See if it would be possible to clear the icon as soon as I start typing in the Claude window, rather then when I submit
-- See if it would be possible to use different icons for different kind of attention. One icon if Claude finished and waits for my input (default), another if it waits for my approval of a command.
-
-
-### Attention
-
 See how to display a repo icon badge + the worktree name
 Find a better separator icon between repo and wokrtree generally speaking?
 Would be nice if we can find a way to name/color the kitty tabs based on their
@@ -42,6 +31,8 @@ prefer absolutePath)
 Colors of markdown headers are off in nvim
 
 Merge /prd and /issues into one skill named /plan. I always chain the two.
+See if I can define specific models for each skill that requires it. Identify if
+some skills could go with haiku, or if I should upgrade to Opus for /plan?
 
 Make Claude inspect all the history of the review logs of deleted worktrees, and
 classifying the most common skipped review, so I can improve my skills so they
