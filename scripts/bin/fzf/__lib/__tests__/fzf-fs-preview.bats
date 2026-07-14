@@ -25,19 +25,19 @@ setup() {
   bats_mock filetypes-load-definitions icons-load-definitions colors-load-definitions
 }
 
-@test "fzf-preview-document-cover: echoes cache path after generating it" {
+@test "fzf-preview-thumbnail: echoes cache path after generating it" {
   file-hash() { echo "abc123"; }
   fake-extractor() { touch "$2"; }
   bats_mock file-hash fake-extractor
 
   local expectedPath="$BATS_TMP_DIR/tmp/fzf/previews/abc123.png"
 
-  bats_run_zsh "${sourcePrefix}; fullPath='/fake/file.pdf'; fzf-preview-document-cover '/fake/file.pdf' 'fake-extractor'"
+  bats_run_zsh "${sourcePrefix}; fullPath='/fake/file.pdf'; fzf-preview-thumbnail '/fake/file.pdf' 'fake-extractor'"
   [ "$status" -eq 0 ]
   [ "$output" = "$expectedPath" ]
 }
 
-@test "fzf-preview-document-cover: echoes cache path when already cached" {
+@test "fzf-preview-thumbnail: echoes cache path when already cached" {
   file-hash() { echo "abc123"; }
   bats_mock file-hash
 
@@ -45,7 +45,7 @@ setup() {
   mkdir -p "$BATS_TMP_DIR/tmp/fzf/previews"
   touch "$expectedPath"
 
-  bats_run_zsh "${sourcePrefix}; fullPath='/fake/file.pdf'; fzf-preview-document-cover '/fake/file.pdf' 'fake-extractor'"
+  bats_run_zsh "${sourcePrefix}; fullPath='/fake/file.pdf'; fzf-preview-thumbnail '/fake/file.pdf' 'fake-extractor'"
   [ "$status" -eq 0 ]
   [ "$output" = "$expectedPath" ]
 }

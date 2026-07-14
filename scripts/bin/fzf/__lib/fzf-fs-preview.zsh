@@ -115,18 +115,18 @@ fzf-preview-file-pdf() {
   echo ""
   echo ""
 
-  # Generate and display the cover
-  local coverPath="$(fzf-preview-document-cover "$fullPath" "pdf-cover-extract")"
+  # Generate and display the thumbnail
+  local thumbnailPath="$(fzf-preview-thumbnail "$fullPath" "pdf-thumbnail")"
 
   img-display \
     --no-metadata \
     --fzf-preview \
-    "$coverPath"
+    "$thumbnailPath"
   local imgDisplayExitCode="$?"
 
-  # Delete cover if it was corrupted
+  # Delete thumbnail if it was corrupted
   if [[ "$imgDisplayExitCode" == 1 ]]; then
-    rm -f "$coverPath"
+    rm -f "$thumbnailPath"
   fi
 }
 
@@ -145,23 +145,23 @@ fzf-preview-file-ebook() {
   echo ""
   echo ""
 
-  # Generate and display the cover
-  local coverPath="$(fzf-preview-document-cover "$fullPath" "ebook-cover-extract")"
+  # Generate and display the thumbnail
+  local thumbnailPath="$(fzf-preview-thumbnail "$fullPath" "ebook-thumbnail-extract")"
 
   img-display \
     --no-metadata \
     --fzf-preview \
-    "$coverPath"
+    "$thumbnailPath"
   local imgDisplayExitCode="$?"
 
-  # Delete cover if it was corrupted
+  # Delete thumbnail if it was corrupted
   if [[ "$imgDisplayExitCode" == 1 ]]; then
-    rm -f "$coverPath"
+    rm -f "$thumbnailPath"
   fi
 }
 
-# Helper to get the cover of a pdf or ebook
-fzf-preview-document-cover() {
+# Helper to get the thumbnail of a pdf or ebook
+fzf-preview-thumbnail() {
   local filepath="$1"
   local extractor="$2"
 
@@ -175,7 +175,7 @@ fzf-preview-document-cover() {
     return 0
   fi
 
-  # Create the cover if not
+  # Create the thumbnail if not
   mkdir -p "$previewCacheFolder"
   $extractor "$filepath" "$previewCachePath"
   echo "$previewCachePath"

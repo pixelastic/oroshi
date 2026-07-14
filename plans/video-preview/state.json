@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-rename-preview-helpers.md",
-    "done": false,
+    "done": true,
+    "recap": "Renamed fzf-preview-document-cover → fzf-preview-thumbnail and pdf-cover-extract → pdf-thumbnail",
     "blocked_by": []
   },
   {
