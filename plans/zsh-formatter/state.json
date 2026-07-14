@@ -9,8 +9,9 @@
   {
     "id": "02",
     "issue": "issues/02-multi-file-support.md",
-    "done": false,
-    "blocked_by": ["01"]
+    "done": true,
+    "blocked_by": ["01"],
+    "recap": "Added multi-file --in-place support to zsh-fix, error on multi-file without --in-place"
   },
   {
     "id": "03",

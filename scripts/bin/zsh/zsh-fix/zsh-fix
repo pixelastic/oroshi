@@ -3,6 +3,7 @@
 # Usage:
 # $ zsh-fix ./path/to/file.zsh                       # Output fixed code to stdout
 # $ zsh-fix --in-place ./path/to/file.zsh            # Overwrite the file in place
+# $ zsh-fix --in-place file1.zsh file2.zsh file3.zsh # Batch in-place formatting
 # $ echo "code" | zsh-fix                            # ZSH code from stdin, fixed to stdout
 set -e
 
@@ -15,14 +16,23 @@ local isInPlace="${#flagInPlace}"
 local hasStdin=0
 [[ $# -eq 0 && ! -t 0 ]] && hasStdin=1
 
-# In-place mode: run beautysh directly on the file
+# Multiple files without --in-place is not supported
+if [[ $# -gt 1 && $isInPlace != "1" ]]; then
+  echo "zsh-fix: multiple files require --in-place"
+  exit 1
+fi
+
+# In-place mode: pass all files to a single beautysh call
 if [[ $isInPlace == "1" ]]; then
-  local inputPath="${1:a}"
+  local inputPaths=()
+  for file in "$@"; do
+    inputPaths+=("${file:a}")
+  done
   beautysh \
     --indent-size 2 \
     --force-function-style fnpar \
-    "$inputPath"
-  return 0
+    "${inputPaths[@]}"
+  exit 0
 fi
 
 # Stdout modes (file or stdin): use a work file

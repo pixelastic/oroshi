@@ -30,6 +30,28 @@ setup() {
   [[ "$output" == "# clean file" ]]
 }
 
+@test "--in-place with multiple files: all files formatted" {
+  local file1="$BATS_TMP_DIR/a.zsh"
+  local file2="$BATS_TMP_DIR/b.zsh"
+  printf 'if true\nthen\necho ok\nfi\n' > "$file1"
+  printf 'if true\nthen\necho ok\nfi\n' > "$file2"
+  bats_run_zsh "zsh-fix --in-place $file1 $file2"
+  [[ "$status" -eq 0 ]]
+  local expected=$'if true\nthen\n  echo ok\nfi'
+  [[ "$(cat "$file1")" == "$expected" ]]
+  [[ "$(cat "$file2")" == "$expected" ]]
+}
+
+@test "multiple files without --in-place: error and exit 1" {
+  local file1="$BATS_TMP_DIR/a.zsh"
+  local file2="$BATS_TMP_DIR/b.zsh"
+  printf '# a\n' > "$file1"
+  printf '# b\n' > "$file2"
+  bats_run_zsh "zsh-fix $file1 $file2"
+  [[ "$status" -eq 1 ]]
+  [[ "$output" != "" ]]
+}
+
 @test "fixture: unformatted input produces expected formatted output" {
   bats_run_zsh "zsh-fix $FIXTURE_DIRECTORY/fixture-unformatted.txt"
   [[ "$status" -eq 0 ]]
