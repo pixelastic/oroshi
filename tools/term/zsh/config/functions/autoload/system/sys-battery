@@ -1,6 +1,6 @@
-# Read battery charge percentage and state
+# Read battery charge percentage, state, and time remaining
 # Usage:
-# $ sys-battery          # "87▮discharging"
+# $ sys-battery          # "87▮discharging▮2.3h"
 # $ sys-battery --reply  # Write to $REPLY, no echo
 setopt local_options err_return
 
@@ -11,26 +11,39 @@ zparseopts -E -D \
 local isReply=${#flagReply}
 
 # Discover battery in sysfs
-local batDir=""
-local psDir
-for psDir in /sys/class/power_supply/BAT*/; do
-	[[ -d "$psDir" ]] && batDir="$psDir"
+local batteryDirectory=""
+local powerSupplyDirectory
+for powerSupplyDirectory in /sys/class/power_supply/BAT*/; do
+	[[ -d "$powerSupplyDirectory" ]] && batteryDirectory="$powerSupplyDirectory"
 done
 
 # No battery found
-if [[ "$batDir" == "" ]]; then
-	echo "?▮?"
+if [[ "$batteryDirectory" == "" ]]; then
+	echo "?▮?▮?"
 	return 0
 fi
 
-local percent="$(cat "${batDir}capacity" 2>/dev/null)"
-local state="$(cat "${batDir}status" 2>/dev/null)"
+local percent="$(cat "${batteryDirectory}capacity" 2>/dev/null)"
+local state="$(cat "${batteryDirectory}status" 2>/dev/null)"
 [[ "$percent" == "" ]] && percent="?"
 [[ "$state" == "" ]] && state="?"
 # Lowercase to match codebase convention (discharging, charging, full)
 state="${state:l}"
 
-local result="${percent}▮${state}"
+# Get time remaining from upower
+local duration="?"
+local battery="$(upower --enumerate 2>/dev/null | grep BAT)"
+if [[ "$battery" != "" ]]; then
+	local timeField=""
+	[[ "$state" == "discharging" ]] && timeField="time to empty"
+	[[ "$state" == "charging" ]] && timeField="time to full"
+	if [[ "$timeField" != "" ]]; then
+		duration="$(upower --show-info "$battery" 2>/dev/null | grep "$timeField" | awk '{print $4}')"
+		[[ "$duration" == "" ]] && duration="?"
+	fi
+fi
+
+local result="${percent}▮${state}▮${duration}"
 
 if [[ $isReply == "1" ]]; then
 	REPLY="$result"

@@ -4,19 +4,19 @@
 setopt local_options err_return
 
 # Thresholds: [warning, error] — values below warning are green
-THRESH_CPU_WARN=50
-THRESH_CPU_ERR=80
-THRESH_RAM_WARN=60
-THRESH_RAM_ERR=85
-THRESH_SWAP_WARN=1
-THRESH_SWAP_ERR=50
-THRESH_TEMP_WARN=65
-THRESH_TEMP_ERR=80
-THRESH_FANS_WARN=3000
-THRESH_FANS_ERR=5000
+THRESHOLD_CPU_WARNING=50
+THRESHOLD_CPU_ERROR=80
+THRESHOLD_RAM_WARNING=60
+THRESHOLD_RAM_ERROR=85
+THRESHOLD_SWAP_WARNING=1
+THRESHOLD_SWAP_ERROR=50
+THRESHOLD_TEMP_WARNING=65
+THRESHOLD_TEMP_ERROR=80
+THRESHOLD_FANS_WARNING=3000
+THRESHOLD_FANS_ERROR=5000
 # Battery is inverted: values above warning are green
-THRESH_BAT_WARN=30
-THRESH_BAT_ERR=10
+THRESHOLD_BATTERY_WARNING=30
+THRESHOLD_BATTERY_ERROR=10
 
 colors-load-definitions
 
@@ -37,54 +37,56 @@ local swapUsed=$swapFields[2]
 local swapTotal=$swapFields[3]
 
 sys-temperature --reply
-local temp="$REPLY"
+local temperature="$REPLY"
 
 sys-fans --reply
 local fanFields=(${(@ps/▮/)REPLY})
-local fanAvg=$fanFields[1]
+local fanAverage=$fanFields[1]
 local fan1=$fanFields[2]
 local fan2=$fanFields[3]
 
 sys-battery --reply
-local batFields=(${(@ps/▮/)REPLY})
-local batPercent=$batFields[1]
+local batteryFields=(${(@ps/▮/)REPLY})
+local batteryPercent=$batteryFields[1]
+local batteryState=$batteryFields[2]
+local batteryDuration=$batteryFields[3]
 
 # Color by threshold (higher = worse)
 local cpuColor="success"
 if [[ "$cpuPercent" != "?" ]]; then
-  [[ $cpuPercent -ge $THRESH_CPU_WARN ]] && cpuColor="warning"
-  [[ $cpuPercent -gt $THRESH_CPU_ERR ]] && cpuColor="error"
+  [[ $cpuPercent -ge $THRESHOLD_CPU_WARNING ]] && cpuColor="warning"
+  [[ $cpuPercent -gt $THRESHOLD_CPU_ERROR ]] && cpuColor="error"
 fi
 
 local ramColor="success"
 if [[ "$ramPercent" != "?" ]]; then
-  [[ $ramPercent -ge $THRESH_RAM_WARN ]] && ramColor="warning"
-  [[ $ramPercent -gt $THRESH_RAM_ERR ]] && ramColor="error"
+  [[ $ramPercent -ge $THRESHOLD_RAM_WARNING ]] && ramColor="warning"
+  [[ $ramPercent -gt $THRESHOLD_RAM_ERROR ]] && ramColor="error"
 fi
 
 local swapColor="success"
 if [[ "$swapPercent" != "?" ]]; then
-  [[ $swapPercent -ge $THRESH_SWAP_WARN ]] && swapColor="warning"
-  [[ $swapPercent -gt $THRESH_SWAP_ERR ]] && swapColor="error"
+  [[ $swapPercent -ge $THRESHOLD_SWAP_WARNING ]] && swapColor="warning"
+  [[ $swapPercent -gt $THRESHOLD_SWAP_ERROR ]] && swapColor="error"
 fi
 
 local tempColor="success"
-if [[ "$temp" != "?" ]]; then
-  [[ $temp -ge $THRESH_TEMP_WARN ]] && tempColor="warning"
-  [[ $temp -gt $THRESH_TEMP_ERR ]] && tempColor="error"
+if [[ "$temperature" != "?" ]]; then
+  [[ $temperature -ge $THRESHOLD_TEMP_WARNING ]] && tempColor="warning"
+  [[ $temperature -gt $THRESHOLD_TEMP_ERROR ]] && tempColor="error"
 fi
 
 local fansColor="success"
-if [[ "$fanAvg" != "?" ]]; then
-  [[ $fanAvg -ge $THRESH_FANS_WARN ]] && fansColor="warning"
-  [[ $fanAvg -gt $THRESH_FANS_ERR ]] && fansColor="error"
+if [[ "$fanAverage" != "?" ]]; then
+  [[ $fanAverage -ge $THRESHOLD_FANS_WARNING ]] && fansColor="warning"
+  [[ $fanAverage -gt $THRESHOLD_FANS_ERROR ]] && fansColor="error"
 fi
 
 # Battery is inverted: lower = worse
-local batColor="success"
-if [[ "$batPercent" != "?" ]]; then
-  [[ $batPercent -le $THRESH_BAT_WARN ]] && batColor="warning"
-  [[ $batPercent -lt $THRESH_BAT_ERR ]] && batColor="error"
+local batteryColor="success"
+if [[ "$batteryPercent" != "?" ]]; then
+  [[ $batteryPercent -le $THRESHOLD_BATTERY_WARNING ]] && batteryColor="warning"
+  [[ $batteryPercent -lt $THRESHOLD_BATTERY_ERROR ]] && batteryColor="error"
 fi
 
 # Display dashboard — missing sensors shown as "?" without color
@@ -115,26 +117,30 @@ else
 fi
 
 printf "%-8s" "Temp"
-if [[ "$temp" == "?" ]]; then
+if [[ "$temperature" == "?" ]]; then
   echo "?"
 else
-  colorize "${temp}°C" "$tempColor"
+  colorize "${temperature}°C" "$tempColor"
   echo
 fi
 
 printf "%-8s" "Fans"
-if [[ "$fanAvg" == "?" ]]; then
+if [[ "$fanAverage" == "?" ]]; then
   echo "?"
 else
-  colorize "$fanAvg" "$fansColor"
+  colorize "$fanAverage" "$fansColor"
   print -n " avg  ${fan1} / ${fan2}"
   echo
 fi
 
 printf "%-8s" "Battery"
-if [[ "$batPercent" == "?" ]]; then
+if [[ "$batteryPercent" == "?" ]]; then
   echo "?"
 else
-  colorize "$(printf '%3s%%' "$batPercent")" "$batColor"
+  colorize "$(printf '%3s%%' "$batteryPercent")" "$batteryColor"
+  if [[ "$batteryDuration" != "?" ]]; then
+    [[ "$batteryState" == "discharging" ]] && print -n "  ${batteryDuration}h left"
+    [[ "$batteryState" == "charging" ]] && print -n "  ${batteryDuration}h to full"
+  fi
   echo
 fi

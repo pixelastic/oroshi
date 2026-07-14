@@ -5,6 +5,7 @@
 - If empty var would be a silent failure downstream, guard explicitly: `[[ "$var" == "" ]] && return 1`
 - Use `isSomething` or `hasSomething` for booleans
 - Use `UPPER_CASE` for constants.
+- No abbreviated variable names — use full words (e.g. `batteryDirectory` not `batDir`, `powerSupplyDirectory` not `psDir`).
 
 ## Example
 
