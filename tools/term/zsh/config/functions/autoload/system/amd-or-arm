@@ -1,0 +1,5 @@
+# Check if I'm on arm64 or amd64
+# Usage:
+# $ amd-or-arm  # prints "amd64" or "arm64"
+setopt local_options err_return
+dpkg --print-architecture

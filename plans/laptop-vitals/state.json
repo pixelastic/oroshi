@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-migrate-sysinfo.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Migrated 4 sysinfo scripts to autoload system/ dir, converted to err_return convention, preserved symlink"
   },
   {
     "id": "02",

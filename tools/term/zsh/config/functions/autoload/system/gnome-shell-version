@@ -1,0 +1,5 @@
+# Returns the current Gnome shell version
+# Usage:
+# $ gnome-shell-version
+setopt local_options err_return
+gnome-shell --version

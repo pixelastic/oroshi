@@ -1,0 +1,5 @@
+# Returns the current Ubuntu version number
+# Usage:
+# $ ubuntu-version  # prints e.g. "24.04"
+setopt local_options err_return
+lsb_release -r -s 2>/dev/null

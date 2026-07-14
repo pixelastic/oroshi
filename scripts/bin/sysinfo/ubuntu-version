@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-set -e
-lsb_release -r -s 2>/dev/null
