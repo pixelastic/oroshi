@@ -9,6 +9,7 @@
 # $ fzf-apt-packages --postprocess            # Read raw selection from stdin, print package name
 set -e
 source "${0:h}/__lib/init.zsh"
+source "${0:h}/__lib/fzf-options-prompt-label.zsh"
 
 # Custom flags beyond the standard 4
 zmodload zsh/zutil
@@ -87,8 +88,23 @@ fzf-source() {
 }
 
 fzf-options() {
+  icons-load-definitions
+  colors-load-definitions
+
   echo "--with-nth=2"
+
+  # Prompt: f5 hint badge + Packages label
+  local f5Badge="$(colorize " $ICONS[fzf-refresh] f5 " $COLORS[white] $COLORS[keybinding])"
+  local prompt="${f5Badge}$(fzf-options-prompt-label package Packages yellow yellow-dark)"
+  echo "--prompt=${prompt}"
+
   echo "--preview=$SCRIPT_NAME --preview {1}"
+
+  # f5: force-refresh the package cache and reload the list
+  local sourceArgs=""
+  [[ $isInstalled == "1" ]] && sourceArgs=" --installed"
+  local reloadCmd="apt-packages-cache-generate >/dev/null 2>&1; $SCRIPT_NAME --source${sourceArgs}"
+  echo "--bind=f5:transform-header(echo ' $ICONS[fzf-refresh] Refreshing…')+reload($reloadCmd)+transform-header(echo '')"
 }
 
 fzf-dispatch

@@ -715,6 +715,10 @@
     "ansi": 172,
     "hex": "#c4b5fd"
   },
+  "keybinding": {
+    "ansi": 55,
+    "hex": "#3182ce"
+  },
   "keyword": {
     "ansi": 35,
     "hex": "#38a169"

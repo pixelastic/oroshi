@@ -48,6 +48,7 @@
   "fzf-current": "",
   "fzf-fold": "",
   "fzf-history": "",
+  "fzf-refresh": "󰑓",
   "fzf-selected": "",
   "fzf-separator": "",
   "fzf-unfold": "",

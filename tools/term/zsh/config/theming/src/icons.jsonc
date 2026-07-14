@@ -34,7 +34,8 @@
     "fold":       "",
     "commands":   "",
     "history":    "",
-    "completion": "⇄"
+    "completion": "⇄",
+    "refresh":    "󰑓"
   },
 
   // Nvim

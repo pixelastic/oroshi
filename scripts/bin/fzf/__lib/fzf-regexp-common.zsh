@@ -164,7 +164,7 @@ fzf-regexp-fold-prompt() {
   local icon="$ICONS[fzf-unfold]"
   [[ "$currentMode" == "off" ]] && icon="$ICONS[fzf-fold]"
 
-  colorize --reply " ${icon} f1 " $COLORS[white] $COLORS[regexp]
+  colorize --reply " ${icon} f1 " $COLORS[white] $COLORS[keybinding]
   local badge="$REPLY"
   local dirPrompt="$(fzf-options-prompt-directory "$SEARCH_DIR")"
 

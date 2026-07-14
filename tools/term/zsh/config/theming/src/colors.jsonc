@@ -24,6 +24,7 @@
   "interpolation-variable": "violet-3",
   "interpolation-wrapper":  "yellow",
   "key":          "violet-2",
+  "keybinding":   "blue",
   "keyword":      "green",
   "link":         "blue-3",
   "local-dependency": "yellow",

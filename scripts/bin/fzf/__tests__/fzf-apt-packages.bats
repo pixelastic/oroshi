@@ -68,6 +68,13 @@ setup() {
   [[ "$output" == *"--preview=fzf-apt-packages --preview"* ]]
 }
 
+@test "fzf-options: binds f5 to reload" {
+  bats_run_zsh "fzf-apt-packages --options"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"--bind=f5:"* ]]
+  [[ "$output" == *"reload("* ]]
+}
+
 # fzf-preview
 
 @test "fzf-preview: shows name, version and description" {

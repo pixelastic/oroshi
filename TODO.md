@@ -35,6 +35,8 @@ See if I can define specific models for each skill that requires it. Identify if
 some skills could go with haiku, or if I should upgrade to Opus for /plan?
 Make sure after the plan is validated, it goes straight to suggesting the
 issues.
+Skip the ask to write the PRD, can we make it so it automaticlaly writes the
+file?
 
 Make Claude inspect all the history of the review logs of deleted worktrees, and
 classifying the most common skipped review, so I can improve my skills so they
