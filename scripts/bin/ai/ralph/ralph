@@ -11,21 +11,20 @@ source "$scriptDir/__lib/ralph-loop.zsh"
 
 zmodload zsh/zutil
 zparseopts -E -D \
-  -max:=flagMax
+	-max:=flagMax
 
-local rawArg="${1:-.}"
+local rawArg="${1:-}"
 # If already in a worktree with a plan, use it
-if [[ "$1" == "" ]] && git-worktree-has-plan; then
-  local slug="$(git-branch-slug)"
-  rawArg="plans/$slug"
+if [[ "$rawArg" == "" ]]; then
+	rawArg="$(plan-directory)" || rawArg="."
 fi
 local dir="${rawArg:a}"
 local maxLoops="${flagMax[2]}"
 
 # Loop mode
 if [[ "$maxLoops" != "" ]]; then
-  ralph-loop "$dir" "$maxLoops"
-  exit
+	ralph-loop "$dir" "$maxLoops"
+	exit
 fi
 
 # Single-shot mode

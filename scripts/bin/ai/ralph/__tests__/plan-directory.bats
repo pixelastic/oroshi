@@ -4,14 +4,13 @@ setup() {
   bats_git_dir 'repo'
 }
 
-@test "returns absolute path to plans/<slug>/ in a ralph worktree" {
+@test "returns absolute path to plans/<slug> in a ralph worktree" {
   local wt_path="$(bats_git_worktree 'feat/my-feat')"
   mkdir -p "$wt_path/plans/feat_my-feat"
   echo '{}' >"$wt_path/plans/feat_my-feat/state.json"
-  cd "$wt_path"
-  bats_run_zsh "plan-directory"
+  bats_run_zsh "cd $wt_path && plan-directory"
   [ "$status" -eq 0 ]
-  [[ "$output" == *"/plans/feat_my-feat/"* ]]
+  [[ "$output" == *"/plans/feat_my-feat" ]]
   [[ "$output" == /* ]]
 }
 
@@ -36,5 +35,5 @@ setup() {
   echo '{}' >"$wt_path/plans/feat_explicit/state.json"
   bats_run_zsh "plan-directory $wt_path/plans/feat_explicit"
   [ "$status" -eq 0 ]
-  [[ "$output" == *"/plans/feat_explicit/"* ]]
+  [[ "$output" == *"/plans/feat_explicit" ]]
 }

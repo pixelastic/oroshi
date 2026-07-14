@@ -29,11 +29,23 @@ setup() {
 @test "no arg + worktree has plan → auto-detects plans dir" {
   ralph-single() { echo "SINGLE:$*"; }
   ralph-loop() { return 0; }
-  git-worktree-has-plan() { return 0; }
-  git-branch-slug() { echo "feat_my-feature"; }
-  bats_mock ralph-single ralph-loop git-worktree-has-plan git-branch-slug
+  plan-directory() { echo "$BATS_TMP_DIR/plans/feat_my-feature"; }
+  bats_mock ralph-single ralph-loop plan-directory
 
   bats_run_zsh "cd $BATS_TMP_DIR && ralph"
+  [ "$status" -eq 0 ]
+  [[ "$output" == "SINGLE:${BATS_TMP_DIR}/plans/feat_my-feature" ]]
+}
+
+@test "no arg + cwd inside plan subdir → path not doubled" {
+  local planDir="$BATS_TMP_DIR/plans/feat_my-feature"
+  mkdir -p "$planDir"
+  ralph-single() { echo "SINGLE:$*"; }
+  ralph-loop() { return 0; }
+  plan-directory() { echo "$BATS_TMP_DIR/plans/feat_my-feature"; }
+  bats_mock ralph-single ralph-loop plan-directory
+
+  bats_run_zsh "cd $planDir && ralph"
   [ "$status" -eq 0 ]
   [[ "$output" == "SINGLE:${BATS_TMP_DIR}/plans/feat_my-feature" ]]
 }
@@ -41,8 +53,8 @@ setup() {
 @test "no arg + no worktree plan → fallback to cwd" {
   ralph-single() { echo "SINGLE:$*"; }
   ralph-loop() { return 0; }
-  git-worktree-has-plan() { return 1; }
-  bats_mock ralph-single ralph-loop git-worktree-has-plan
+  plan-directory() { return 1; }
+  bats_mock ralph-single ralph-loop plan-directory
 
   bats_run_zsh "cd $BATS_TMP_DIR && ralph"
   [ "$status" -eq 0 ]
