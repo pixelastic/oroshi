@@ -1,5 +1,13 @@
 # Return a unique hash of a given filename, based on its content
+# Reads only the first 1 MB for speed on large files
+# Usage:
+# $ file-hash /path/to/file
 setopt local_options err_return
-local input=$1
-local crc32Result=($(crc32 $input))
-echo $crc32Result[1]
+
+local input="$1"
+
+# No file given
+[[ "$input" == "" ]] && return 1
+
+local hash="$(head --bytes 1048576 "$input" | md5sum)"
+echo ${${hash%% *}[1,10]}
