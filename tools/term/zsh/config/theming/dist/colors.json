@@ -649,7 +649,7 @@
   },
   "indigo": {
     "ansi": 115,
-    "hex": "#4f46e5"
+    "hex": "#818cf8"
   },
   "indigo-0": {
     "ansi": 110,
@@ -657,39 +657,39 @@
   },
   "indigo-1": {
     "ansi": 111,
-    "hex": "#c7d2fe"
+    "hex": "#eef2ff"
   },
   "indigo-2": {
     "ansi": 112,
-    "hex": "#a5b4fc"
+    "hex": "#e0e7ff"
   },
   "indigo-3": {
     "ansi": 113,
-    "hex": "#818cf8"
+    "hex": "#c7d2fe"
   },
   "indigo-4": {
     "ansi": 114,
-    "hex": "#6366f1"
+    "hex": "#a5b4fc"
   },
   "indigo-5": {
     "ansi": 115,
-    "hex": "#4f46e5"
+    "hex": "#818cf8"
   },
   "indigo-6": {
     "ansi": 116,
-    "hex": "#4338ca"
+    "hex": "#6366f1"
   },
   "indigo-7": {
     "ansi": 117,
-    "hex": "#3730a3"
+    "hex": "#4f46e5"
   },
   "indigo-8": {
     "ansi": 118,
-    "hex": "#312e81"
+    "hex": "#4338ca"
   },
   "indigo-9": {
     "ansi": 119,
-    "hex": "#1e1b4b"
+    "hex": "#3730a3"
   },
   "indigo-dark": {
     "ansi": 110,
