@@ -1,8 +1,11 @@
 # Generate a 4x4 contact sheet thumbnail from a video
+# Uses per-frame seeking for speed (avoids full decode)
 # Usage:
 # $ video-thumbnail ./video.mp4              # Saves as ./video.png
 # $ video-thumbnail ./video.mp4 ./thumb.png  # Saves as ./thumb.png
 setopt local_options err_return
+
+FRAME_COUNT=16
 
 local input="$1"
 local output="$2"
@@ -15,16 +18,35 @@ local output="$2"
 
 # Get video duration in seconds
 local duration="$(video-duration --seconds "$input")"
+local durationInt=${duration%.*}
 
-# Compute interval between frames (16 frames for 4x4 grid, +1 to avoid edges)
-local interval=$((${duration%.*} / 17))
+# Compute interval between frames (+1 to avoid edges)
+local interval=$(($durationInt / ($FRAME_COUNT + 1)))
 # Floor at 1 to avoid division by zero for short videos
 [[ $interval -lt 1 ]] && interval=1
 
+# Extract frames by seeking directly to each timestamp (parallel)
+local tmpDir="$(mktemp -d)"
+for i in {1..$FRAME_COUNT}; do
+  local timestamp=$(($i * $interval))
+  ffmpeg \
+    -v quiet \
+    -ss "$timestamp" \
+    -i "$input" \
+    -frames:v 1 \
+    -y \
+    "${tmpDir}/frame_$(printf '%03d' $i).png" &
+done
+wait
+
+# Tile extracted frames into 4x4 contact sheet
 ffmpeg \
-	-v quiet \
-	-i "$input" \
-	-vf "fps=1/${interval},scale=240:-1,tile=4x4" \
-	-frames:v 1 \
-	-y \
-	"$output"
+  -v quiet \
+  -start_number 1 \
+  -i "${tmpDir}/frame_%03d.png" \
+  -vf "scale=240:-1,tile=4x4" \
+  -frames:v 1 \
+  -y \
+  "$output"
+
+rm -rf "$tmpDir"
