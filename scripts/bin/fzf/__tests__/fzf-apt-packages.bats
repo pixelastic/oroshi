@@ -59,3 +59,59 @@ setup() {
   [[ "$output" == *"foo"* ]]
   [[ "$output" == *"bar"* ]]
 }
+
+# fzf-options
+
+@test "fzf-options: includes preview command" {
+  bats_run_zsh "fzf-apt-packages --options"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"--preview=fzf-apt-packages --preview"* ]]
+}
+
+# fzf-preview
+
+@test "fzf-preview: shows name, version and description" {
+  apt-cache() {
+    cat <<'APTEOF'
+Package: curl
+Version: 7.88.1-10+deb12u8
+Description: command line tool for transferring data with URL syntax
+ curl is a command line tool for transferring data with URL syntax.
+ It supports HTTP, HTTPS, FTP and more.
+APTEOF
+  }
+  apt-is-installed() { return 1; }
+  bats_mock apt-cache apt-is-installed
+
+  bats_run_zsh "fzf-apt-packages --preview curl"
+  [ "$status" -eq 0 ]
+  local stripped="$(bats_strip_ansi "$output")"
+  [[ "$stripped" == *"curl"* ]]
+  [[ "$stripped" == *"v7.88.1"* ]]
+  [[ "$stripped" == *"command line tool"* ]]
+}
+
+@test "fzf-preview: shows installed indicator when installed" {
+  apt-cache() {
+    cat <<'APTEOF'
+Package: curl
+Version: 7.88.1-10+deb12u8
+Description: command line tool
+APTEOF
+  }
+  apt-is-installed() { return 0; }
+  bats_mock apt-cache apt-is-installed
+
+  bats_run_zsh "fzf-apt-packages --preview curl"
+  [ "$status" -eq 0 ]
+  local stripped="$(bats_strip_ansi "$output")"
+  [[ "$stripped" == *"Installed"* ]]
+}
+
+@test "fzf-preview: handles unknown package gracefully" {
+  apt-cache() { return 1; }
+  bats_mock apt-cache
+
+  bats_run_zsh "fzf-apt-packages --preview nonexistent-pkg"
+  [ "$status" -eq 0 ]
+}

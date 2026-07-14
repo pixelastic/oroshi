@@ -17,6 +17,61 @@ zparseopts -D -E \
 
 local isInstalled=${#flagInstalled}
 
+SCRIPT_NAME="${0:t}"
+
+fzf-preview() {
+  local packageName="$1"
+  local rawDetails="$(apt-cache show "$packageName" 2>/dev/null)"
+  [[ "$rawDetails" == "" ]] && return 0
+
+  colors-load-definitions
+
+  # Parse version and description from apt-cache output
+  local packageVersion=""
+  local packageDescription=()
+  local isInDescription="0"
+  for line in ${(f)rawDetails}; do
+    # Keep adding to the description
+    if [[ $isInDescription == "1" ]]; then
+      # All descriptions start with a space; otherwise we're past it
+      if [[ $line[1] != " " ]]; then
+        isInDescription="0"
+        continue
+      fi
+      packageDescription+=($line)
+      continue
+    fi
+
+    # Get the version
+    if [[ $line == Version:* ]]; then
+      packageVersion=${${=line}[2]}
+      continue
+    fi
+
+    # Start the description
+    if [[ $line == Description* ]]; then
+      local split=(${(@s/:/)line})
+      packageDescription+=(${split[@]:1})
+      isInDescription="1"
+      continue
+    fi
+  done
+
+  # Header: name + version
+  echo "$(colorize " $packageName" $COLORS[function]) v${packageVersion}"
+
+  # Installed indicator
+  if apt-is-installed "$packageName"; then
+    colorize " ✔ Installed" $COLORS[success]
+  fi
+
+  echo ""
+
+  # Description
+  local packageDescriptionText="${(F)packageDescription}"
+  [[ "$packageDescriptionText" != "" ]] && colorize "${packageDescriptionText}" $COLORS[comment]
+}
+
 fzf-source() {
   local cacheFile="${OROSHI_TMP_FOLDER}/fzf/packages-apt"
   [[ $isInstalled == "1" ]] && cacheFile="${OROSHI_TMP_FOLDER}/fzf/packages-apt-installed"
@@ -33,6 +88,7 @@ fzf-source() {
 
 fzf-options() {
   echo "--with-nth=2"
+  echo "--preview=$SCRIPT_NAME --preview {1}"
 }
 
 fzf-dispatch

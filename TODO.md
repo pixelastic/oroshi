@@ -33,6 +33,8 @@ Colors of markdown headers are off in nvim
 Merge /prd and /issues into one skill named /plan. I always chain the two.
 See if I can define specific models for each skill that requires it. Identify if
 some skills could go with haiku, or if I should upgrade to Opus for /plan?
+Make sure after the plan is validated, it goes straight to suggesting the
+issues.
 
 Make Claude inspect all the history of the review logs of deleted worktrees, and
 classifying the most common skipped review, so I can improve my skills so they
