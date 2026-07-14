@@ -1,0 +1,37 @@
+# Bad indentation
+local myVar="hello"
+local anotherVar="world"
+if [[ "$myVar" == "hello" ]]; then
+  local inside="yes"
+  echo "$inside"
+fi
+
+# Associative array subscripts with dashes and colons
+local -A myMap=(
+  [foo-bar]="value1"
+  [baz:qux]="value2"
+)
+
+# Parameter expansion flags
+local lines="${(f)someVar}"
+local split="${=someVar}"
+local glob="${~someVar}"
+
+# Trailing whitespace
+local trailing="space"
+
+# Case statement with bad indent
+case "$1" in
+  start)
+    echo "starting"
+    ;;
+  stop)
+    echo "stopping"
+    ;;
+esac
+
+# Function with bad indent
+function myFunc() {
+  local x="inside"
+  echo "$x"
+}

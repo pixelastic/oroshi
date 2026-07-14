@@ -2,15 +2,17 @@ bats_load_library 'helper'
 
 setup() {
   bats_tmp_dir
+  FIXTURE_DIRECTORY="$(cd "${BATS_TEST_DIRNAME}" && pwd)"
 }
 
 @test "file argument: formatted content to stdout, original file unchanged" {
   local file="$BATS_TMP_DIR/test.zsh"
   printf '# clean file\n' > "$file"
+  local before="$(cat "$file")"
   bats_run_zsh "zsh-fix $file"
   [[ "$status" -eq 0 ]]
   [[ "$output" == "# clean file" ]]
-  [[ "$(cat "$file")" == "# clean file" ]]
+  [[ "$(cat "$file")" == "$before" ]]
 }
 
 @test "--in-place: file modified in place, nothing to stdout" {
@@ -28,21 +30,9 @@ setup() {
   [[ "$output" == "# clean file" ]]
 }
 
-@test "shfmt failure: beautysh is called as fallback" {
-  shfmt() { return 1; }
-  bats_mock shfmt
-  local file="$BATS_TMP_DIR/test.zsh"
-  printf '# test\n' > "$file"
-  bats_run_zsh "zsh-fix $file"
+@test "fixture: unformatted input produces expected formatted output" {
+  bats_run_zsh "zsh-fix $FIXTURE_DIRECTORY/fixture-unformatted.txt"
   [[ "$status" -eq 0 ]]
-  [[ "$output" != "" ]]
-}
-
-@test "shfmt success: beautysh not called" {
-  beautysh() { printf 'called\n' >"$BATS_TMP_DIR/beautysh_called"; }
-  bats_mock beautysh
-  local file="$BATS_TMP_DIR/test.zsh"
-  printf '# test\n' > "$file"
-  bats_run_zsh "zsh-fix $file"
-  [[ ! -f "$BATS_TMP_DIR/beautysh_called" ]]
+  local expected="$(cat "$FIXTURE_DIRECTORY/fixture-formatted.txt")"
+  [[ "$output" == "$expected" ]]
 }

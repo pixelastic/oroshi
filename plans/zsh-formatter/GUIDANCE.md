@@ -14,3 +14,8 @@
 - shfmt remains installed globally for bash/sh — only removed from zsh-fix
 
 ## Discoveries
+
+### Issue 01 — Rewrite zsh-fix with beautysh
+- Both fixture files use `.txt` extension — `.zsh` triggers zshlint on fixture content (e.g. `case "$1"` → noManualArgParsing)
+- In-place mode runs beautysh directly on the file (no tmpdir round-trip), stdout modes use tmpdir copy
+- Bats `setup()` vars must NOT use `local` — they need to be visible in `@test` blocks

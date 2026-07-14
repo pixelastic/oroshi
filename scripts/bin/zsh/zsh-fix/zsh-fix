@@ -4,11 +4,6 @@
 # $ zsh-fix ./path/to/file.zsh                       # Output fixed code to stdout
 # $ zsh-fix --in-place ./path/to/file.zsh            # Overwrite the file in place
 # $ echo "code" | zsh-fix                            # ZSH code from stdin, fixed to stdout
-#
-# Wrapper around shfmt and beautysh. Neither tool fully supports ZSH:
-# - shfmt is powerful but fails on some ZSH-specific syntax (e.g. variable modifiers)
-# - beautysh is more permissive but less capable
-# Strategy: try shfmt first; on failure, fallback to beautysh.
 set -e
 
 zmodload zsh/zutil
@@ -16,40 +11,35 @@ zparseopts -E -D \
   -in-place=flagInPlace
 local isInPlace="${#flagInPlace}"
 
-# Work file
-local workfileDir="${OROSHI_TMP_FOLDER}/zsh-fix"
-local workfilePath="${workfileDir}/zsh-fix-$RANDOM.zsh"
-mkdir -p "$workfileDir"
-
 # Detect stdin: only when no file argument remains after flag parsing
 local hasStdin=0
 [[ $# -eq 0 && ! -t 0 ]] && hasStdin=1
 
-# File argument: copy it as workfilePath
-local inputPath=""
-if [[ $hasStdin == "0" ]]; then
-  inputPath="${1:a}"
-  cp "$inputPath" "$workfilePath"
-fi
-
-# Stdin: read into workfilePath
-if [[ $hasStdin == "1" ]]; then
-  inputPath="$workfilePath"
-  cat >"$workfilePath"
-fi
-
-# Try shfmt first; fallback to beautysh for ZSH-specific syntax
-if ! shfmt -ci -w "$workfilePath" 2>/dev/null; then
+# In-place mode: run beautysh directly on the file
+if [[ $isInPlace == "1" ]]; then
+  local inputPath="${1:a}"
   beautysh \
     --indent-size 2 \
-    "$workfilePath"
+    --force-function-style fnpar \
+    "$inputPath"
+  return 0
 fi
 
-# Update in place or output to stdout
-if [[ $isInPlace == "1" ]]; then
-  cp -f "$workfilePath" "$inputPath"
+# Stdout modes (file or stdin): use a work file
+local workfileDir="${OROSHI_TMP_FOLDER}/zsh-fix"
+local workfilePath="${workfileDir}/zsh-fix-$RANDOM.zsh"
+mkdir -p "$workfileDir"
+
+if [[ $hasStdin == "1" ]]; then
+  cat >"$workfilePath"
 else
-  cat "$workfilePath"
+  cp "${1:a}" "$workfilePath"
 fi
 
+beautysh \
+  --indent-size 2 \
+  --force-function-style fnpar \
+  "$workfilePath"
+
+cat "$workfilePath"
 rm -f "$workfilePath"
