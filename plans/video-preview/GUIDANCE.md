@@ -15,3 +15,7 @@
 - Use `zsh-writer` skill for writing ZSH code
 
 ## Discoveries
+
+### Issue 03 — video-thumbnail
+- ffmpeg/ffprobe flags (`-v`, `-i`, `-vf`, `-y`) have no GNU-style long-form equivalents — short flags are canonical for these tools
+- `zshlint` enforces `[[ ! condition ]] && return` over `[[ condition ]] || return` (`noOrGuard` rule)

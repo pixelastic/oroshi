@@ -1,0 +1,30 @@
+# Generate a 4x4 contact sheet thumbnail from a video
+# Usage:
+# $ video-thumbnail ./video.mp4              # Saves as ./video.png
+# $ video-thumbnail ./video.mp4 ./thumb.png  # Saves as ./thumb.png
+setopt local_options err_return
+
+local input="$1"
+local output="$2"
+
+# Stop if input file missing
+[[ ! -f "$input" ]] && return 1
+
+# Default to same path as input but with .png extension
+[[ "$output" == "" ]] && output="${input:r}.png"
+
+# Get video duration in seconds
+local duration="$(video-duration --seconds "$input")"
+
+# Compute interval between frames (16 frames for 4x4 grid, +1 to avoid edges)
+local interval=$((${duration%.*} / 17))
+# Floor at 1 to avoid division by zero for short videos
+[[ $interval -lt 1 ]] && interval=1
+
+ffmpeg \
+	-v quiet \
+	-i "$input" \
+	-vf "fps=1/${interval},scale=240:-1,tile=4x4" \
+	-frames:v 1 \
+	-y \
+	"$output"

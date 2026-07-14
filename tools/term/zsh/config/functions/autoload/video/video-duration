@@ -1,8 +1,23 @@
 # Output the duration of a video, in human-readable format
+# Usage:
+# $ video-duration ./video.mp4            # 01:05
+# $ video-duration --seconds ./video.mp4  # 65.500000
 setopt local_options err_return
+
+zmodload zsh/zutil
+zparseopts -E -D \
+	-seconds=flagSeconds
+
+local isSeconds=${#flagSeconds}
 local input="$1"
 
 local rawDuration="$(video-info "$input" | jq -r '.format.duration')"
+
+# Raw seconds output
+if [[ $isSeconds == "1" ]]; then
+	echo "$rawDuration"
+	return 0
+fi
 
 local hours=$(printf "%02d" $(($rawDuration / 3600)))
 local minutes=$(printf "%02d" $(($rawDuration % 3600 / 60)))

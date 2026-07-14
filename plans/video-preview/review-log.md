@@ -20,3 +20,23 @@ echo ${${hash%% *}[1,10]}
 ```
 **Problem:** Spec doesn't mention truncation; reduces collision resistance.
 **Reason skipped:** User explicitly requested 10-char limit during session. Collision resistance is sufficient for cache keys.
+
+## Issue 03 — video-thumbnail
+
+### Long-form args on ffprobe/ffmpeg
+```zsh
+ffprobe \
+	-v quiet \
+	-show_entries format=duration \
+	-of default=noprint_wrappers=1:nokey=1 \
+	"$input"
+```
+**Problem:** Reviewer flagged `-v` as short-form violating `calling-commands.md` long-form rule.
+**Reason skipped:** ffmpeg/ffprobe flags (`-v`, `-i`, `-vf`, `-y`) have no GNU-style `--long-form` equivalents — these are the canonical forms.
+
+### Negated guard style
+```zsh
+[[ ! -f "$input" ]] && return 1
+```
+**Problem:** Reviewer noted negated condition differs from positive-form convention examples.
+**Reason skipped:** `zshlint` enforces this form via `noOrGuard` rule — `[[ -f ]] || return` was rejected by the linter.

@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-video-thumbnail.md",
-    "done": false,
+    "done": true,
+    "recap": "Created video-thumbnail autoload that generates 4x4 contact sheet from video via ffprobe+ffmpeg",
     "blocked_by": []
   },
   {
