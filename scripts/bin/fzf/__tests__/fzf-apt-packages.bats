@@ -10,11 +10,22 @@ setup() {
   bats_mock_env "OROSHI_TMP_FOLDER" "$BATS_TMP_DIR"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # fzf-source
+
+@test "fzf-source: regenerates cache when missing" {
+  rm -f "$BATS_TMP_DIR/fzf/packages-apt" "$BATS_TMP_DIR/fzf/packages-apt-installed"
+
+  # Mock the cache generator to create expected cache files
+  apt-packages-cache-generate() {
+    printf 'regen▮regen 0.1.0\n' > "$BATS_TMP_DIR/fzf/packages-apt"
+    printf 'regen▮regen 0.1.0\n' > "$BATS_TMP_DIR/fzf/packages-apt-installed"
+  }
+  bats_mock apt-packages-cache-generate
+
+  bats_run_zsh "fzf-apt-packages --source"
+  [ "$status" -eq 0 ]
+  [[ "${lines[0]}" == "regen"* ]]
+}
 
 @test "fzf-source: outputs all packages from cache" {
   bats_run_zsh "fzf-apt-packages --source"

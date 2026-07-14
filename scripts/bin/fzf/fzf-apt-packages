@@ -25,7 +25,7 @@ fzf-source() {
   setopt local_options extended_glob
   local staleFiles=(${cacheFile}(#qN.mh+20))
   if [[ ! -r $cacheFile ]] || [[ ${#staleFiles[@]} -gt 0 ]]; then
-    fzf-apt-packages-cache-generate
+    apt-packages-cache-generate
   fi
 
   cat "$cacheFile"
