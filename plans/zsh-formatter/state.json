@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-zsh-lint-batch-call.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "Replaced per-file zsh-fix loop with single batch call in zsh-lint --fix"
   }
 ]

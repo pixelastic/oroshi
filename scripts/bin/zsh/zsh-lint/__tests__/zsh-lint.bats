@@ -118,6 +118,23 @@ setup() {
   [[ "$output" == *'"code":"noManualArgParsing"'* ]]
 }
 
+@test "--fix: corrects multiple mal-formatted files in one batch" {
+  local file1="$BATS_TMP_DIR/one.zsh"
+  local file2="$BATS_TMP_DIR/two.zsh"
+  printf '# file one\n' > "$file1"
+  printf '# file two\n' > "$file2"
+  zsh-fix() { printf '%s\n' "$@" >"$BATS_TMP_DIR/zsh_fix_args"; }
+  zsh-lint-shellcheck() { printf '[]\n'; }
+  zsh-lint-custom()     { printf '[]\n'; }
+  bats_mock zsh-fix zsh-lint-shellcheck zsh-lint-custom
+  bats_run_zsh "zsh-lint --fix $file1 $file2"
+  [[ "$status" -eq 0 ]]
+  local arguments="$(cat "$BATS_TMP_DIR/zsh_fix_args")"
+  [[ "$arguments" == *"--in-place"* ]]
+  [[ "$arguments" == *"one.zsh"* ]]
+  [[ "$arguments" == *"two.zsh"* ]]
+}
+
 @test "without --fix: zsh-fix is not called" {
   local file="$BATS_TMP_DIR/test.zsh"
   printf '# clean zsh file\n' > "$file"

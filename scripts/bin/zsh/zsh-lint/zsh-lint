@@ -39,13 +39,14 @@ for item in "$@"; do
 done
 
 # No files
-[[ ${#valid[@]} -eq 0 && ${#invalid[@]} -eq 0 ]] && printf '[]\n' && exit 0
+if [[ ${#valid[@]} -eq 0 && ${#invalid[@]} -eq 0 ]]; then
+  printf '[]\n'
+  exit 0
+fi
 
 # Auto-format before linting when --fix is passed
 if [[ $isFix == "1" && ${#valid[@]} -gt 0 ]]; then
-  for file in "${valid[@]}"; do
-    zsh-fix --in-place "$file"
-  done
+  zsh-fix --in-place "${valid[@]}"
 fi
 
 # Generate notZsh violations for non-zsh files
