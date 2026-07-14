@@ -36,6 +36,12 @@ fzf-preview() {
     return 0
   fi
 
+  # Video
+  if [[ "$filetypeGroup" == "video" ]]; then
+    fzf-preview-file-video "$fullPath"
+    return 0
+  fi
+
   # Ebooks
   if [[ "$filetypeGroup" == "ebook" ]]; then
     fzf-preview-file-ebook "$fullPath"
@@ -117,6 +123,37 @@ fzf-preview-file-pdf() {
 
   # Generate and display the thumbnail
   local thumbnailPath="$(fzf-preview-thumbnail "$fullPath" "pdf-thumbnail")"
+
+  img-display \
+    --no-metadata \
+    --fzf-preview \
+    "$thumbnailPath"
+  local imgDisplayExitCode="$?"
+
+  # Delete thumbnail if it was corrupted
+  if [[ "$imgDisplayExitCode" == 1 ]]; then
+    rm -f "$thumbnailPath"
+  fi
+}
+
+# Video preview
+fzf-preview-file-video() {
+  local fullPath="${1:a}"
+
+  # Header
+  fzf-preview-header "$fullPath"
+
+  # Metadata
+  local -a metadata=()
+  metadata+=("$(filesize-human "$fullPath")")
+  metadata+=("$(video-duration "$fullPath")")
+  metadata+=("$(video-dimensions "$fullPath")")
+  colorize " ${(j/, /)metadata}" comment
+  echo ""
+  echo ""
+
+  # Generate and display the contact sheet
+  local thumbnailPath="$(fzf-preview-thumbnail "$fullPath" "video-thumbnail")"
 
   img-display \
     --no-metadata \

@@ -19,3 +19,6 @@
 ### Issue 03 — video-thumbnail
 - ffmpeg/ffprobe flags (`-v`, `-i`, `-vf`, `-y`) have no GNU-style long-form equivalents — short flags are canonical for these tools
 - `zshlint` enforces `[[ ! condition ]] && return` over `[[ condition ]] || return` (`noOrGuard` rule)
+
+### Issue 04 — fzf-video-dispatch
+- `bats_mock` mocks load via zshenv BEFORE the explicit `source` in `bats_run_zsh`; functions defined in the sourced file override them — use inline overrides after `${sourcePrefix};` for source-defined functions

@@ -94,3 +94,54 @@ setup() {
   [ "$status" -eq 0 ]
   [[ "$output" != *$'\e[38;5;173m'* ]]
 }
+
+@test "fzf-preview: dispatches to fzf-preview-file-video for video files" {
+  touch "$BATS_TMP_DIR/clip.mp4"
+
+  # Mock external commands
+  img-display() { :; }
+  filetypes-group() { echo "video"; }
+  bats_mock img-display filetypes-group
+
+  # Override source-defined function after sourcing
+  bats_run_zsh "${sourcePrefix}; fzf-preview-file-video() { echo 'VIDEO_DISPATCHED'; }; fzf-preview '$BATS_TMP_DIR/clip.mp4'"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"VIDEO_DISPATCHED"* ]]
+}
+
+@test "fzf-preview-file-video: shows filesize, duration, and dimensions" {
+  touch "$BATS_TMP_DIR/clip.mp4"
+
+  # Mock collaborators
+  fzf-preview-header() { :; }
+  filesize-human() { echo "12.3 MB"; }
+  video-duration() { echo "01:23"; }
+  video-dimensions() { echo "1920x1080"; }
+  fzf-preview-thumbnail() { echo "/fake/thumb.png"; }
+  img-display() { :; }
+  bats_mock fzf-preview-header filesize-human video-duration video-dimensions fzf-preview-thumbnail img-display
+
+  bats_run_zsh "${sourcePrefix}; fzf-preview-file-video '$BATS_TMP_DIR/clip.mp4'"
+  [ "$status" -eq 0 ]
+  local stripped="$(bats_strip_ansi "$output")"
+  [[ "$stripped" == *"12.3 MB"* ]]
+  [[ "$stripped" == *"01:23"* ]]
+  [[ "$stripped" == *"1920x1080"* ]]
+}
+
+@test "fzf-preview-file-video: calls fzf-preview-thumbnail with video-thumbnail extractor" {
+  touch "$BATS_TMP_DIR/clip.mp4"
+
+  # Mock external commands
+  filesize-human() { echo "1 MB"; }
+  video-duration() { echo "00:10"; }
+  video-dimensions() { echo "640x480"; }
+  img-display() { :; }
+  bats_mock filesize-human video-duration video-dimensions img-display
+
+  # Override source-defined functions after sourcing, capture fzf-preview-thumbnail args
+  bats_run_zsh "${sourcePrefix}; fzf-preview-header() { :; }; fzf-preview-thumbnail() { echo \"\$1 \$2\" > '$BATS_TMP_DIR/thumbnail-call.txt'; echo '/fake/thumb.png'; }; fzf-preview-file-video '$BATS_TMP_DIR/clip.mp4'"
+  [ "$status" -eq 0 ]
+  local callArgs="$(cat "$BATS_TMP_DIR/thumbnail-call.txt")"
+  [[ "$callArgs" == *"clip.mp4 video-thumbnail"* ]]
+}

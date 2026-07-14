@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-fzf-video-dispatch.md",
-    "done": false,
+    "done": true,
+    "recap": "Added fzf-preview-file-video function and video dispatch case in fzf-fs-preview.zsh",
     "blocked_by": ["01", "02", "03"]
   }
 ]
