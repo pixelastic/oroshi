@@ -8,7 +8,7 @@
 set -e
 
 zmodload zsh/zutil
-zparseopts -E -D \
+zparseopts -E -D - \
   -ansi=flagAnsi \
   -palette=flagPalette \
   -alias=flagAlias
@@ -93,11 +93,13 @@ for groupEntries in "${groups[@]}"; do
     local name=${parts[2]}
     local hex=${parts[3]}
 
+    # Use alias-specific icon if available, fallback to generic name icon
+    local nameIcon="${iconName}"
+    [[ ${#parts} -ge 4 && "${parts[4]}" != "" ]] && nameIcon="${parts[4]}"
+
     output+="\e[48;5;${colorValue}m          $RESET\e[38;5;${colorValue}m${arrow}$RESET ${sep}"
     output+="\e[38;5;${colorValue}m ${iconIndex} ${colorValue} $RESET ${sep}"
-    output+="\e[38;5;${colorValue}m ${iconName} ${name}$RESET ${sep}"
-    # Icon column (alias entries have 4+ fields)
-    [[ ${#parts} -ge 4 ]] && output+="\e[38;5;${colorValue}m ${parts[4]} $RESET ${sep}"
+    output+="\e[38;5;${colorValue}m ${nameIcon} ${name}$RESET ${sep}"
     output+="\e[38;5;${colorValue}m ${iconHex} ${hex} $RESET ${sep}"
     output+="\e[38;5;${colorValue}m Lorem ipsum $RESET ${sep}"
     output+="\n"
