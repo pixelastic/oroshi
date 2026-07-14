@@ -1,0 +1,40 @@
+# Read swap usage: percentage, current, and max
+# Usage:
+# $ sys-swap          # "2▮128M▮2G"
+# $ sys-swap --reply  # Write to $REPLY, no echo
+setopt local_options err_return
+
+zmodload zsh/zutil
+zparseopts -E -D \
+  -reply=flagReply
+
+local isReply=${#flagReply}
+
+local swapLine="$(free --bytes | sed -n '3p')"
+local fields=(${=swapLine})
+# fields: Swap: total used free
+local total=$fields[2]
+local used=$fields[3]
+
+# No swap configured
+if [[ $total == "0" ]]; then
+  local result="0▮0▮0"
+  if [[ $isReply == "1" ]]; then
+    REPLY="$result"
+    return
+  fi
+  echo "$result"
+  return
+fi
+
+local percent=$(( used * 100 / total ))
+local humanUsed="$(echo $used | numfmt --to=iec)"
+local humanTotal="$(echo $total | numfmt --to=iec)"
+
+local result="${percent}▮${humanUsed}▮${humanTotal}"
+
+if [[ $isReply == "1" ]]; then
+  REPLY="$result"
+  return
+fi
+echo "$result"

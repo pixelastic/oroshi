@@ -9,8 +9,9 @@
   {
     "id": "02",
     "issue": "issues/02-sys-compute-memory.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Created sys-cpu, sys-ram, sys-swap autoload functions with --reply flag support and ▮-separated output"
   },
   {
     "id": "03",

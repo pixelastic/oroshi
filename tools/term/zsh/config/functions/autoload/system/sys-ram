@@ -1,0 +1,30 @@
+# Read RAM usage: percentage, current, and max
+# Usage:
+# $ sys-ram          # "34▮8.2G▮30G"
+# $ sys-ram --reply  # Write to $REPLY, no echo
+setopt local_options err_return
+
+zmodload zsh/zutil
+zparseopts -E -D \
+  -reply=flagReply
+
+local isReply=${#flagReply}
+
+local memLine="$(free --bytes | sed -n '2p')"
+local fields=(${=memLine})
+# fields: Mem: total used free shared buff/cache available
+local total=$fields[2]
+local available=$fields[7]
+
+local used=$(( total - available ))
+local percent=$(( used * 100 / total ))
+local humanUsed="$(echo $used | numfmt --to=iec)"
+local humanTotal="$(echo $total | numfmt --to=iec)"
+
+local result="${percent}▮${humanUsed}▮${humanTotal}"
+
+if [[ $isReply == "1" ]]; then
+  REPLY="$result"
+  return
+fi
+echo "$result"

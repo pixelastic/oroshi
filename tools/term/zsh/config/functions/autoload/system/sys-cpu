@@ -1,0 +1,20 @@
+# Read overall CPU usage percentage
+# Usage:
+# $ sys-cpu          # "27"
+# $ sys-cpu --reply  # Write to $REPLY, no echo
+setopt local_options err_return
+
+zmodload zsh/zutil
+zparseopts -E -D \
+	-reply=flagReply
+
+local isReply=${#flagReply}
+
+# (user+system) / (user+system+idle) from cumulative /proc/stat
+local result="$(awk '/^cpu / {printf "%d", ($2+$4)*100/($2+$4+$5); exit}' /proc/stat)"
+
+if [[ $isReply == "1" ]]; then
+	REPLY="$result"
+	return
+fi
+echo "$result"
