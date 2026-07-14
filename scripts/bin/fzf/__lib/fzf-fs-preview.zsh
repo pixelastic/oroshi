@@ -1,9 +1,17 @@
 # Shared filesystem preview for FZF Scripts.
 
+# Source type-specific preview handlers
+source "${0:h}/fzf-fs-preview-directory.zsh"
+source "${0:h}/fzf-fs-preview-image.zsh"
+source "${0:h}/fzf-fs-preview-pdf.zsh"
+source "${0:h}/fzf-fs-preview-video.zsh"
+source "${0:h}/fzf-fs-preview-ebook.zsh"
+source "${0:h}/fzf-fs-preview-text.zsh"
+
 # Orchestrator: clears kitty image, dispatches by path type.
 # Called by init.zsh when the script receives --preview.
 # Override this in the script for custom preview behaviour.
-fzf-preview() {
+function fzf-preview() {
   zmodload zsh/zutil
   zparseopts -E -D \
     -highlight-line:=flagHighlightLine \
@@ -52,77 +60,19 @@ fzf-preview() {
   fzf-preview-file-text "$fullPath" "$highlightLine" "$highlightQuery"
 }
 
-# Directory preview: path + size/counts header, then directory listing.
-fzf-preview-directory() {
-  colors-load-definitions
-  icons-load-definitions
-
-  # First header line
-  local fullPath="${1:a}"
-  fzf-preview-header "$fullPath"
-
-  # Display second header line: number of directories, number of files, size
-  # #directories
-  local directoryCount="$(( $(find "$fullPath" -maxdepth 1 -type d | wc -l) - 1 ))"
-  local displayDirectoryCount=""
-  displayDirectoryCount="$(colorize ${ICONS[filetype-directory]} yellow) "
-  displayDirectoryCount+="$(colorize ${(r:2:: :)directoryCount} comment)"
-  # #files
-  local fileCount="$(find "$fullPath" -maxdepth 1 -type f | wc -l)"
-  local displayFileCount=""
-  displayFileCount="$(colorize ${ICONS[filetype-file]} file) "
-  displayFileCount+="$(colorize ${(r:2:: :)fileCount} comment)"
-  # size
-  local dirSize="$(dirsize "$fullPath")"
-  local displaySize="$(colorize ${dirSize} comment)"
-  echo " ${displayDirectoryCount} ${displayFileCount} ${displaySize}"
-
-  # Separator line
+# Shared metadata line: comma-separated items in comment color
+function fzf-preview-metadata() {
+  colorize " ${(j/, /)@}" comment
   echo ""
-
-  # Content of the directory
-  better-ls --all "$fullPath"
+  echo ""
 }
 
-# Image preview
-fzf-preview-file-image() {
-  local fullPath="${1:a}"
+# Shared thumbnail generation, display, and cleanup
+function fzf-preview-display-thumbnail() {
+  local fullPath="$1"
+  local extractor="$2"
 
-  # Header
-  fzf-preview-header "$fullPath"
-
-  # Metadata
-  local -a metadata=()
-  metadata+=("$(filesize-human "$fullPath")")
-  metadata+=("$(img-dimensions "$fullPath")")
-  colorize " ${(j/, /)metadata}" comment
-  echo ""
-  echo ""
-
-  # Display image
-  img-display \
-    --no-metadata \
-    --fzf-preview \
-    "$fullPath"
-}
-
-# PDF preview
-fzf-preview-file-pdf() {
-  local fullPath="${1:a}"
-
-  # Header
-  fzf-preview-header "$fullPath"
-
-  # Metadata
-  local -a metadata=()
-  metadata+=("$(filesize-human "$fullPath")")
-  metadata+=("$(pdf-page-count "$fullPath") pages")
-  colorize " ${(j/, /)metadata}" comment
-  echo ""
-  echo ""
-
-  # Generate and display the thumbnail
-  local thumbnailPath="$(fzf-preview-thumbnail "$fullPath" "pdf-thumbnail")"
+  local thumbnailPath="$(fzf-preview-thumbnail "$fullPath" "$extractor")"
 
   img-display \
     --no-metadata \
@@ -136,69 +86,8 @@ fzf-preview-file-pdf() {
   fi
 }
 
-# Video preview
-fzf-preview-file-video() {
-  local fullPath="${1:a}"
-
-  # Header
-  fzf-preview-header "$fullPath"
-
-  # Metadata
-  local -a metadata=()
-  metadata+=("$(filesize-human "$fullPath")")
-  metadata+=("$(video-duration "$fullPath")")
-  metadata+=("$(video-dimensions "$fullPath")")
-  colorize " ${(j/, /)metadata}" comment
-  echo ""
-  echo ""
-
-  # Generate and display the contact sheet
-  local thumbnailPath="$(fzf-preview-thumbnail "$fullPath" "video-thumbnail")"
-
-  img-display \
-    --no-metadata \
-    --fzf-preview \
-    "$thumbnailPath"
-  local imgDisplayExitCode="$?"
-
-  # Delete thumbnail if it was corrupted
-  if [[ "$imgDisplayExitCode" == 1 ]]; then
-    rm -f "$thumbnailPath"
-  fi
-}
-
-# Ebook preview
-fzf-preview-file-ebook() {
-  local fullPath="${1:a}"
-
-  # Header
-  fzf-preview-header "$fullPath"
-
-  # Metadata
-  local -a metadata=()
-  metadata+=("$(filesize-human "$fullPath")")
-  metadata+=("$(ebook-page-count "$fullPath") pages")
-  colorize " ${(j/, /)metadata}" comment
-  echo ""
-  echo ""
-
-  # Generate and display the thumbnail
-  local thumbnailPath="$(fzf-preview-thumbnail "$fullPath" "ebook-thumbnail-extract")"
-
-  img-display \
-    --no-metadata \
-    --fzf-preview \
-    "$thumbnailPath"
-  local imgDisplayExitCode="$?"
-
-  # Delete thumbnail if it was corrupted
-  if [[ "$imgDisplayExitCode" == 1 ]]; then
-    rm -f "$thumbnailPath"
-  fi
-}
-
-# Helper to get the thumbnail of a pdf or ebook
-fzf-preview-thumbnail() {
+# Helper to get the cached thumbnail of a file
+function fzf-preview-thumbnail() {
   local filepath="$1"
   local extractor="$2"
 
@@ -218,34 +107,10 @@ fzf-preview-thumbnail() {
   echo "$previewCachePath"
 }
 
-# Text preview: path + file metadata header, then bat output.
-# Usage: fzf-preview-file-text <path> [highlightLine] [highlightQuery]
-fzf-preview-file-text() {
-  local fullPath="${1:a}"
-
-  # Path header
-  fzf-preview-header "$fullPath"
-
-  # Metadata
-  local -a metadata=()
-  metadata+=("$(filesize-human "$fullPath")")
-  metadata+=("$(wc -l < "$fullPath") lines")
-  colorize " ${(j/, /)metadata}" comment
-  echo ""
-  echo ""
-
-  # File content
-  bat \
-    --paging=never \
-    --style=numbers \
-    --color=always \
-    "$fullPath"
-}
-
 # First line shared across all preview types.
 # Directory portion in directory color, filename in filetype color.
 # Usage: fzf-preview-header <path>
-fzf-preview-header() {
+function fzf-preview-header() {
   local fullPath="${1:a}"
 
   # Context badge
