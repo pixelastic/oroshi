@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-vitals-dashboard.md",
-    "done": false,
-    "blocked_by": ["02", "03"]
+    "done": true,
+    "blocked_by": ["02", "03"],
+    "recap": "Created vitals autoload function: calls all sys-* helpers with --reply, color-codes values by threshold, aligned column output"
   }
 ]
