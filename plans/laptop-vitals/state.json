@@ -16,8 +16,9 @@
   {
     "id": "03",
     "issue": "issues/03-sys-hardware.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Created sys-temperature, sys-fans, sys-battery autoload functions with hwmon discovery by name, graceful degradation, and --reply flag"
   },
   {
     "id": "04",

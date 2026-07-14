@@ -20,3 +20,8 @@
 - `free --bytes` for long-form; RAM "used" = `total - available` (not `used` column, which excludes reclaimable cache)
 - CPU usage requires two `/proc/stat` snapshots with ~0.5s delay; fields: user nice system idle iowait irq softirq steal
 - Avoid nested helper functions in autoload — they pollute caller's namespace; inline the logic instead
+
+### Issue 03 — sys-hardware
+- GPU temp (`temp2_input`) can fail to read even when thinkpad hwmon exists — graceful degradation essential
+- `(N)` glob qualifier avoids "no matches found" errors when iterating hwmon label files
+- Indentation: 2-space, not tabs — matches existing `sys-ram`/`sys-swap` convention

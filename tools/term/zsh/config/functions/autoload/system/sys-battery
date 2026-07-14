@@ -1,0 +1,39 @@
+# Read battery charge percentage and state
+# Usage:
+# $ sys-battery          # "87▮discharging"
+# $ sys-battery --reply  # Write to $REPLY, no echo
+setopt local_options err_return
+
+zmodload zsh/zutil
+zparseopts -E -D \
+	-reply=flagReply
+
+local isReply=${#flagReply}
+
+# Discover battery in sysfs
+local batDir=""
+local psDir
+for psDir in /sys/class/power_supply/BAT*/; do
+	[[ -d "$psDir" ]] && batDir="$psDir"
+done
+
+# No battery found
+if [[ "$batDir" == "" ]]; then
+	echo "?▮?"
+	return 0
+fi
+
+local percent="$(cat "${batDir}capacity" 2>/dev/null)"
+local state="$(cat "${batDir}status" 2>/dev/null)"
+[[ "$percent" == "" ]] && percent="?"
+[[ "$state" == "" ]] && state="?"
+# Lowercase to match codebase convention (discharging, charging, full)
+state="${state:l}"
+
+local result="${percent}▮${state}"
+
+if [[ $isReply == "1" ]]; then
+	REPLY="$result"
+	return
+fi
+echo "$result"

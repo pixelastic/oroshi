@@ -1,0 +1,42 @@
+# Read fan speeds as avg, fan1, fan2 in RPM
+# Usage:
+# $ sys-fans          # "4039▮5293▮4786"
+# $ sys-fans --reply  # Write to $REPLY, no echo
+setopt local_options err_return
+
+zmodload zsh/zutil
+zparseopts -E -D \
+	-reply=flagReply
+
+local isReply=${#flagReply}
+
+# Discover thinkpad hwmon by name
+local thinkpadDir=""
+local hwmonDir
+for hwmonDir in /sys/class/hwmon/hwmon*/; do
+	local name="$(cat "$hwmonDir/name" 2>/dev/null)"
+	[[ "$name" == "thinkpad" ]] && thinkpadDir="$hwmonDir"
+done
+
+local avg="?"
+local fan1="?"
+local fan2="?"
+if [[ "$thinkpadDir" != "" ]]; then
+	local raw1="$(cat "${thinkpadDir}fan1_input" 2>/dev/null)"
+	local raw2="$(cat "${thinkpadDir}fan2_input" 2>/dev/null)"
+	[[ "$raw1" != "" ]] && fan1=$raw1
+	[[ "$raw2" != "" ]] && fan2=$raw2
+
+	# Average only if both fans report values
+	if [[ "$fan1" != "?" && "$fan2" != "?" ]]; then
+		avg=$(((fan1 + fan2) / 2))
+	fi
+fi
+
+local result="${avg}▮${fan1}▮${fan2}"
+
+if [[ $isReply == "1" ]]; then
+	REPLY="$result"
+	return
+fi
+echo "$result"

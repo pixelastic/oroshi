@@ -1,0 +1,37 @@
+# Read CPU temperature in integer Celsius
+# Usage:
+# $ sys-temperature          # "52"
+# $ sys-temperature --reply  # Write to $REPLY, no echo
+setopt local_options err_return
+
+zmodload zsh/zutil
+zparseopts -E -D \
+  -reply=flagReply
+
+local isReply=${#flagReply}
+
+# Discover thinkpad hwmon by name
+local thinkpadDir=""
+local hwmonDir
+for hwmonDir in /sys/class/hwmon/hwmon*/; do
+  local name="$(cat "$hwmonDir/name" 2>/dev/null)"
+  [[ "$name" == "thinkpad" ]] && thinkpadDir="$hwmonDir"
+done
+
+# CPU temp from thinkpad hwmon (match by label)
+local result="?"
+if [[ "$thinkpadDir" != "" ]]; then
+  local labelFile
+  for labelFile in "$thinkpadDir"temp*_label(N); do
+    [[ "$(cat "$labelFile" 2>/dev/null)" != "CPU" ]] && continue
+    local raw="$(cat "${labelFile%_label}_input" 2>/dev/null)"
+    [[ "$raw" != "" ]] && result=$(( raw / 1000 ))
+    break
+  done
+fi
+
+if [[ $isReply == "1" ]]; then
+  REPLY="$result"
+  return
+fi
+echo "$result"
