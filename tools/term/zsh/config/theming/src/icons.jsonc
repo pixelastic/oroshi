@@ -133,6 +133,14 @@
   "jump":              "󰐃",
   "plan":              " ",
   "video-stream-audio": " ",
+  "table-separator":    "▮",
+
+  // Colors
+  "colors": {
+    "name":  "",
+    "hex":   "",
+    "index": ""
+  },
 
   // Separators
   "separator": {

@@ -1,27 +1,107 @@
 #!/usr/bin/env zsh
-# Display all defined colors in the terminal, to see them in all their glory
+# Display terminal colors grouped by section
 # Usage:
-# $ colors
+# $ colors                # Show all sections
+# $ colors --ansi         # ANSI 0-15 only
+# $ colors --palette      # Palette families only
+# $ colors --alias        # Semantic aliases only
 set -e
 
-# Load the COLORS[] associative array
-colors-load-definitions
+zmodload zsh/zutil
+zparseopts -E -D \
+  -ansi=flagAnsi \
+  -palette=flagPalette \
+  -alias=flagAlias
 
+local hasAnsi=${#flagAnsi}
+local hasPalette=${#flagPalette}
+local hasAlias=${#flagAlias}
+
+# No flags = show all
+if [[ $hasAnsi == "0" && $hasPalette == "0" && $hasAlias == "0" ]]; then
+  hasAnsi=1
+  hasPalette=1
+  hasAlias=1
+fi
+
+colors-load-definitions
+icons-load-definitions
+
+KITTY_CONF="$OROSHI_ROOT/tools/term/kitty/config/colors.conf"
+PALETTE_REGEX="^(red|green|yellow|blue|purple|cyan|pink|lime|orange|indigo|fuchsia|teal|amber|emerald|sky|violet|gray|slate|neutral|stone)(-[0-9]|-dark)?$"
 RESET="\e[0m"
 
-local output=""
-# Iterate sorted keys, skip :hex entries (looked up per color below)
+local sep="${ICONS[table-separator]}"
+local arrow="${ICONS[separator-arrow]}"
+local iconName="${ICONS[colors-name]}"
+local iconHex="${ICONS[colors-hex]}"
+local iconIndex="${ICONS[colors-index]}"
+
+# --- Collect entries per group ---
+# Entry format: colorIndex▮name▮hex (ansi/palette) or colorIndex▮name▮hex▮icon (alias)
+local ansiEntries=""
+local paletteEntries=""
+local aliasEntries=""
+
+# ANSI colors (0-15): read from kitty config
+local -a ansiNames=(
+  black red green yellow blue purple cyan white
+  gray pink lime orange indigo fuchsia teal stone
+)
+# REVIEW: Can't you iterate on ansiNames instead?
+for i in {0..15}; do
+  local name="${ansiNames[$((i + 1))]}"
+  local hex="$(grep -E "^color${i}\s" "$KITTY_CONF" | awk '{print $2}')"
+  ansiEntries+="${i}▮${name}▮${hex}"$'\n'
+done
+
+# Palette + alias: from COLORS[] array
 for colorName in ${(ko)COLORS}; do
   [[ "$colorName" == *:hex ]] && continue
   local colorValue="${COLORS[$colorName]}"
-  local hexKey="${colorName}:hex"
-  local colorValueHex="${COLORS[$hexKey]}"
-  output+="\e[48;5;${colorValue}m          $RESET\e[38;5;${colorValue}m$RESET ▮"
-  output+="\e[38;5;${colorValue}m  ${colorName}$RESET ▮"
-  output+="\e[38;5;${colorValue}m  ${colorValueHex} $RESET ▮"
-  output+="\e[38;5;${colorValue}m  ${colorValue} $RESET ▮"
-  output+="\e[38;5;${colorValue}m Lorem ipsum $RESET ▮"
-  output+="\n"
+  local colorValueHex="${COLORS[${colorName}:hex]}"
+
+  # Palette family entry
+  if [[ "$colorName" =~ $PALETTE_REGEX ]]; then
+    # Only shades 0-9, skip canonical and dark duplicates
+    [[ "$colorName" =~ -[0-9]$ ]] && paletteEntries+="${colorValue}▮${colorName}▮${colorValueHex}"$'\n'
+    continue
+  fi
+
+  # Alias entry (with optional icon)
+  local icon="${ICONS[$colorName]}"
+  aliasEntries+="${colorValue}▮${colorName}▮${colorValueHex}▮${icon}"$'\n'
 done
 
-table $output
+# --- Assemble selected groups ---
+local -a groups=()
+[[ $hasAnsi == "1" ]] && groups+=("$ansiEntries")
+[[ $hasPalette == "1" ]] && groups+=("$paletteEntries")
+[[ $hasAlias == "1" ]] && groups+=("$aliasEntries")
+
+# --- Display ---
+local isFirst=1
+for groupEntries in "${groups[@]}"; do
+  [[ $isFirst == "0" ]] && echo
+  isFirst=0
+
+  local output=""
+  for rawLine in ${(f)groupEntries}; do
+    [[ "$rawLine" == "" ]] && continue
+    local parts=(${(@ps/▮/)rawLine})
+    local colorValue=${parts[1]}
+    local name=${parts[2]}
+    local hex=${parts[3]}
+
+    output+="\e[48;5;${colorValue}m          $RESET\e[38;5;${colorValue}m${arrow}$RESET ${sep}"
+    output+="\e[38;5;${colorValue}m ${iconIndex} ${colorValue} $RESET ${sep}"
+    output+="\e[38;5;${colorValue}m ${iconName} ${name}$RESET ${sep}"
+    # Icon column (alias entries have 4+ fields)
+    [[ ${#parts} -ge 4 ]] && output+="\e[38;5;${colorValue}m ${parts[4]} $RESET ${sep}"
+    output+="\e[38;5;${colorValue}m ${iconHex} ${hex} $RESET ${sep}"
+    output+="\e[38;5;${colorValue}m Lorem ipsum $RESET ${sep}"
+    output+="\n"
+  done
+
+  table $output
+done

@@ -3,6 +3,9 @@
   "bats": "󰭟",
   "claude": "●",
   "claude-mcp-context7": "c7",
+  "colors-hex": "",
+  "colors-index": "",
+  "colors-name": "",
   "completion-aliases": "",
   "completion-commands": "",
   "completion-file": "",
@@ -110,6 +113,7 @@
   "statusbar-ping-offline": "",
   "statusbar-ram": "",
   "statusbar-ram-fire": "",
+  "table-separator": "▮",
   "unknown": "",
   "video-stream-audio": " ",
   "zsh-prompt": "❯"
