@@ -62,7 +62,7 @@
   "alme": {
     "background": {
       "ansi": 88,
-      "hex": "#831843",
+      "hex": "#500724",
       "name": "pink-8"
     },
     "backgroundInactive": {
@@ -407,7 +407,7 @@
   "commitology-data": {
     "background": {
       "ansi": 59,
-      "hex": "#2a4365",
+      "hex": "#172554",
       "name": "blue-9"
     },
     "backgroundInactive": {
@@ -442,7 +442,7 @@
   "crafting": {
     "background": {
       "ansi": 49,
-      "hex": "#744210",
+      "hex": "#422006",
       "name": "yellow-9"
     },
     "backgroundInactive": {
@@ -477,7 +477,7 @@
   "crsearch-data": {
     "background": {
       "ansi": 69,
-      "hex": "#44337a",
+      "hex": "#3b0764",
       "name": "purple-9"
     },
     "backgroundInactive": {
@@ -622,7 +622,7 @@
   "ensureUrlTrailingSlash": {
     "background": {
       "ansi": 59,
-      "hex": "#2a4365",
+      "hex": "#172554",
       "name": "blue-9"
     },
     "backgroundInactive": {
@@ -817,7 +817,7 @@
   "hylea": {
     "background": {
       "ansi": 39,
-      "hex": "#22543d",
+      "hex": "#052e16",
       "name": "green-9"
     },
     "backgroundInactive": {
@@ -836,9 +836,9 @@
   },
   "imoen": {
     "background": {
-      "ansi": 89,
-      "hex": "#500724",
-      "name": "pink-9"
+      "ansi": 85,
+      "hex": "#be185d",
+      "name": "pink"
     },
     "backgroundInactive": {
       "ansi": 80,
@@ -846,9 +846,9 @@
       "name": "pink-dark"
     },
     "foreground": {
-      "ansi": 202,
-      "hex": "#e5e7eb",
-      "name": "gray-2"
+      "ansi": 203,
+      "hex": "#d1d5db",
+      "name": "gray-3"
     },
     "hideNameInPrompt": false,
     "icon": "  ",
@@ -972,7 +972,7 @@
   "kindle": {
     "background": {
       "ansi": 59,
-      "hex": "#2a4365",
+      "hex": "#172554",
       "name": "blue-9"
     },
     "backgroundInactive": {
@@ -1012,7 +1012,7 @@
   "landscapes": {
     "background": {
       "ansi": 59,
-      "hex": "#2a4365",
+      "hex": "#172554",
       "name": "blue-9"
     },
     "backgroundInactive": {
@@ -1092,7 +1092,7 @@
   "maps-data": {
     "background": {
       "ansi": 59,
-      "hex": "#2a4365",
+      "hex": "#172554",
       "name": "blue-9"
     },
     "backgroundInactive": {
@@ -1502,7 +1502,7 @@
   "pathfinder-books": {
     "background": {
       "ansi": 49,
-      "hex": "#744210",
+      "hex": "#422006",
       "name": "yellow-9"
     },
     "backgroundInactive": {
@@ -1647,7 +1647,7 @@
   "roleplay": {
     "background": {
       "ansi": 39,
-      "hex": "#22543d",
+      "hex": "#052e16",
       "name": "green-9"
     },
     "backgroundInactive": {
@@ -1752,7 +1752,7 @@
   "shar-teel": {
     "background": {
       "ansi": 69,
-      "hex": "#44337a",
+      "hex": "#3b0764",
       "name": "purple-9"
     },
     "backgroundInactive": {
@@ -1952,7 +1952,7 @@
   "terrainbuilding": {
     "background": {
       "ansi": 39,
-      "hex": "#22543d",
+      "hex": "#052e16",
       "name": "green-9"
     },
     "backgroundInactive": {

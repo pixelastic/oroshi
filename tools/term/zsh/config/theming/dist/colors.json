@@ -97,7 +97,7 @@
   },
   "blue-9": {
     "ansi": 59,
-    "hex": "#2a4365"
+    "hex": "#172554"
   },
   "blue-dark": {
     "ansi": 50,
@@ -625,7 +625,7 @@
   },
   "green-9": {
     "ansi": 39,
-    "hex": "#22543d"
+    "hex": "#052e16"
   },
   "green-dark": {
     "ansi": 30,
@@ -961,7 +961,7 @@
   },
   "pink": {
     "ansi": 85,
-    "hex": "#db2777"
+    "hex": "#be185d"
   },
   "pink-0": {
     "ansi": 80,
@@ -969,39 +969,39 @@
   },
   "pink-1": {
     "ansi": 81,
-    "hex": "#fbcfe8"
+    "hex": "#f9a8d4"
   },
   "pink-2": {
     "ansi": 82,
-    "hex": "#f9a8d4"
+    "hex": "#f472b6"
   },
   "pink-3": {
     "ansi": 83,
-    "hex": "#f472b6"
+    "hex": "#ec4899"
   },
   "pink-4": {
     "ansi": 84,
-    "hex": "#ec4899"
+    "hex": "#db2777"
   },
   "pink-5": {
     "ansi": 85,
-    "hex": "#db2777"
+    "hex": "#be185d"
   },
   "pink-6": {
     "ansi": 86,
-    "hex": "#be185d"
+    "hex": "#9d174d"
   },
   "pink-7": {
     "ansi": 87,
-    "hex": "#9d174d"
+    "hex": "#831843"
   },
   "pink-8": {
     "ansi": 88,
-    "hex": "#831843"
+    "hex": "#500724"
   },
   "pink-9": {
     "ansi": 89,
-    "hex": "#500724"
+    "hex": "#310213"
   },
   "pink-dark": {
     "ansi": 80,
@@ -1061,7 +1061,7 @@
   },
   "purple-9": {
     "ansi": 69,
-    "hex": "#44337a"
+    "hex": "#3b0764"
   },
   "purple-dark": {
     "ansi": 60,
@@ -1545,7 +1545,7 @@
   },
   "yellow-9": {
     "ansi": 49,
-    "hex": "#744210"
+    "hex": "#422006"
   },
   "yellow-dark": {
     "ansi": 40,

@@ -254,8 +254,8 @@
     "path": "~/local/mount/hylea"
   },
   "imoen": {
-    "background": "pink-9",
-    "foreground": "gray-2",
+    "background": "pink",
+    "foreground": "gray-3",
     "icon": "  ",
     "path": "~/local/www/projects/imoen"
   },

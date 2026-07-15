@@ -179,7 +179,7 @@
   // Ebooks
   "ebook": {
     "bold": true,
-    "color": "yellow-7",
+    "color": "cyan-5",
     "icon": "filetype-ebook",
     "patterns": [
       "epub",
