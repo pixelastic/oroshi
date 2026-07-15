@@ -1,0 +1,25 @@
+# Extract the cover of an ebook as a PNG thumbnail
+# Usage:
+# $ ebook-thumbnail ./book.epub              # Saves as ./book.png
+# $ ebook-thumbnail ./book.epub ./cover.png   # Saves as ./cover.png
+setopt local_options err_return
+local input="$1"
+local output="$2"
+
+[[ $input == "" ]] && return 1
+
+[[ $output == "" ]] && output="${input:r}.png"
+
+# Extract cover to a temp file (ebook-meta outputs JPEG)
+local tmpCover="$(mktemp --suffix=.jpg)"
+ebook-meta \
+  "$input" \
+  --get-cover="$tmpCover" \
+  &>/dev/null
+
+# Convert to PNG
+magick \
+  "$tmpCover" \
+  PNG32:"$output"
+
+rm -f "$tmpCover"
