@@ -260,9 +260,24 @@
     "path": "~/local/www/algolia/bodwynn-data"
   },
   "books": {
+    "background": {
+      "ansi": 75,
+      "hex": "#0891b2",
+      "name": "cyan-5"
+    },
+    "backgroundInactive": {
+      "ansi": 70,
+      "hex": "#0f1a1a",
+      "name": "cyan-dark"
+    },
+    "foreground": {
+      "ansi": 71,
+      "hex": "#a5f3fc",
+      "name": "cyan-1"
+    },
     "hideNameInPrompt": false,
-    "icon": " ",
-    "path": ""
+    "icon": "󱓷 ",
+    "path": "~/perso/Dropbox/backup/books"
   },
   "brefsearch": {
     "background": {

@@ -76,7 +76,10 @@
     "path": "~/local/www/algolia/bodwynn-data"
   },
   "books": {
-    "icon": " "
+    "background": "cyan-5",
+    "foreground": "cyan-1",
+    "icon": "󱓷 ",
+    "path": "~/perso/Dropbox/backup/books"
   },
   "brefsearch": {
     "background": "gray-8",
