@@ -160,7 +160,10 @@
     "icon": " "
   },
   "dropbox": {
-    "icon": " "
+    "background": "blue-9",
+    "foreground": "blue-2",
+    "icon": " ",
+    "path": "~/perso/Dropbox"
   },
   "dungeons": {
     "background": "yellow-7",

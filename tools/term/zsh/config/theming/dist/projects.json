@@ -535,9 +535,24 @@
     "path": ""
   },
   "dropbox": {
+    "background": {
+      "ansi": 59,
+      "hex": "#172554",
+      "name": "blue-9"
+    },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
+    },
+    "foreground": {
+      "ansi": 52,
+      "hex": "#90cdf4",
+      "name": "blue-2"
+    },
     "hideNameInPrompt": false,
     "icon": " ",
-    "path": ""
+    "path": "~/perso/Dropbox"
   },
   "dungeons": {
     "background": {
