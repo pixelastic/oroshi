@@ -200,7 +200,8 @@ def test_only_one_timer_live_at_a_time(mocker):
 def test_callback_calls_attention_remove_for_active_tab(mocker):
     mock_run = mocker.patch("lib.redraw.subprocess.run")
     tabState["activeTabId"] = 1
-    tabState["attentionIds"] = {"1": "notification"}
+    with open(redraw.ATTENTION_FILE, "w") as f:
+        f.write("1:notification\n")
 
     redraw._on_attention_clear()
 
@@ -210,7 +211,8 @@ def test_callback_calls_attention_remove_for_active_tab(mocker):
 def test_callback_uses_tab_active_at_callback_time(mocker):
     mock_run = mocker.patch("lib.redraw.subprocess.run")
     tabState["activeTabId"] = 2
-    tabState["attentionIds"] = {"1": "notification", "2": "stop"}
+    with open(redraw.ATTENTION_FILE, "w") as f:
+        f.write("1:notification\n2:stop\n")
 
     redraw._on_attention_clear()
 
@@ -220,7 +222,17 @@ def test_callback_uses_tab_active_at_callback_time(mocker):
 def test_callback_does_nothing_when_active_tab_has_no_attention(mocker):
     mock_run = mocker.patch("lib.redraw.subprocess.run")
     tabState["activeTabId"] = 1
-    tabState["attentionIds"] = {"2": "stop"}
+    with open(redraw.ATTENTION_FILE, "w") as f:
+        f.write("2:stop\n")
+
+    redraw._on_attention_clear()
+
+    mock_run.assert_not_called()
+
+
+def test_callback_does_nothing_when_attention_file_missing(mocker):
+    mock_run = mocker.patch("lib.redraw.subprocess.run")
+    tabState["activeTabId"] = 1
 
     redraw._on_attention_clear()
 

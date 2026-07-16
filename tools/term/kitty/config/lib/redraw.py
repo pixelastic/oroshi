@@ -82,11 +82,22 @@ def schedule_attention_clear():
 # Executed a short time after we stopped on a tab. If the active tab has an
 # attention marker, remove it from the attention file and trigger a redraw.
 def _on_attention_clear():
-    active_tab_id = tabState["activeTabId"]
+    active_tab_id = str(tabState["activeTabId"])
+
+    # Re-read the attention file from disk (attentionIds may be stale if no
+    # beacon triggered a refresh since the last render cycle)
+    if not files.exists(ATTENTION_FILE):
+        return
+
+    on_disk = {
+        line.split(":", 1)[0]
+        for line in files.read(ATTENTION_FILE).splitlines()
+        if line.strip()
+    }
 
     # Doesn't have an attention marker, nothing to do
-    if str(active_tab_id) not in tabState["attentionIds"]:
+    if active_tab_id not in on_disk:
         return
 
     # Remove the attention marker of that tab
-    subprocess.run(["kitty-tab-attention-remove", str(active_tab_id)])
+    subprocess.run(["kitty-tab-attention-remove", active_tab_id])
