@@ -34,9 +34,10 @@ def second_pass(
     if is_last:
         # Draw the statusbar, we have all the needed info
         draw_statusbar(screen)
+        # Start a timer to remove the attention icon from the active tab
+        redraw.schedule_attention_clear()
         # Cleanup any loose ends, so next redraw starts clean
         redraw.cleanup()
-        redraw.schedule_attention_clear()
 
     return screen.cursor.x
 

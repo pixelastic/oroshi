@@ -44,7 +44,8 @@
   {
     "id": "07",
     "issue": "issues/07-manifest-cleanup.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Prune stale manifest entries for closed tabs at end of render cycle in second_pass"
   }
 ]

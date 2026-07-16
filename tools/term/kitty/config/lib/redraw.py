@@ -36,6 +36,11 @@ def check():
 def cleanup():
     live_tab_ids = tabState["allTabIds"]
 
+    # Prune manifest entries for tabs that no longer exist
+    stale_ids = [k for k in tabState["manifest"] if k not in live_tab_ids]
+    for k in stale_ids:
+        del tabState["manifest"][k]
+
     # Reset allTabIds so first_pass can rebuild it next cycle
     tabState["allTabIds"] = []
 

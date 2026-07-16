@@ -7,6 +7,8 @@ from lib.state import tabState
 
 @pytest.fixture(autouse=True)
 def reset_state():
+    tabState["manifest"] = {}
+    tabState["allTabIds"] = []
     tabState["attentionIds"] = {}
     tabState["activeTabId"] = None
     redraw._attention_timer = None
@@ -134,6 +136,25 @@ def test_cleanup_resets_all_tab_ids():
     redraw.cleanup()
 
     assert tabState["allTabIds"] == []
+
+
+def test_cleanup_removes_stale_manifest_entries():
+    tabState["allTabIds"] = [1]
+    tabState["manifest"] = {1: {"title": "a"}, 99: {"title": "b"}}
+
+    redraw.cleanup()
+
+    assert 99 not in tabState["manifest"]
+
+
+def test_cleanup_preserves_active_manifest_entries():
+    tabState["allTabIds"] = [1, 2]
+    tabState["manifest"] = {1: {"title": "a"}, 2: {"title": "b"}}
+
+    redraw.cleanup()
+
+    assert 1 in tabState["manifest"]
+    assert 2 in tabState["manifest"]
 
 
 # --- schedule_attention_clear — timer lifecycle ---
