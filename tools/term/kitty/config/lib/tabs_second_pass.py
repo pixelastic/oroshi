@@ -36,6 +36,7 @@ def second_pass(
         draw_statusbar(screen)
         # Cleanup any loose ends, so next redraw starts clean
         redraw.cleanup()
+        redraw.schedule_attention_clear()
 
     return screen.cursor.x
 

@@ -1,6 +1,5 @@
 import pytest
 from unittest.mock import MagicMock
-
 from lib.tabs_second_pass import draw_tab_item, second_pass
 from lib.state import tabState
 
@@ -218,3 +217,26 @@ def test_cleanup_not_called_mid_cycle(mocker):
     _call_second_pass(is_last=False)
 
     mock_redraw.cleanup.assert_not_called()
+
+
+# --- second_pass — schedule_attention_clear call ---
+
+
+def test_schedule_attention_clear_called_on_last_tab(mocker):
+    mocker.patch("lib.tabs_second_pass.draw_tab_item")
+    mocker.patch("lib.tabs_second_pass.draw_statusbar")
+    mock_redraw = mocker.patch("lib.tabs_second_pass.redraw")
+
+    _call_second_pass(is_last=True)
+
+    mock_redraw.schedule_attention_clear.assert_called_once_with()
+
+
+def test_schedule_attention_clear_not_called_mid_cycle(mocker):
+    mocker.patch("lib.tabs_second_pass.draw_tab_item")
+    mocker.patch("lib.tabs_second_pass.draw_statusbar")
+    mock_redraw = mocker.patch("lib.tabs_second_pass.redraw")
+
+    _call_second_pass(is_last=False)
+
+    mock_redraw.schedule_attention_clear.assert_not_called()

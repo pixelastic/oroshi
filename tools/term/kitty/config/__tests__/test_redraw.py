@@ -1,5 +1,6 @@
 import os
 import pytest
+from unittest.mock import MagicMock
 import lib.redraw as redraw
 from lib.state import tabState
 
@@ -7,6 +8,8 @@ from lib.state import tabState
 @pytest.fixture(autouse=True)
 def reset_state():
     tabState["attentionIds"] = {}
+    tabState["activeTabId"] = None
+    redraw._attention_timer = None
     yield
 
 
@@ -131,3 +134,73 @@ def test_cleanup_resets_all_tab_ids():
     redraw.cleanup()
 
     assert tabState["allTabIds"] == []
+
+
+# --- schedule_attention_clear — timer lifecycle ---
+
+
+def test_timer_started_on_each_render_cycle(mocker):
+    mock_timer_class = mocker.patch("lib.redraw.Timer")
+
+    redraw.schedule_attention_clear()
+
+    mock_timer_class.assert_called_once()
+    mock_timer_class.return_value.start.assert_called_once()
+
+
+def test_previous_timer_cancelled_before_starting_new_one(mocker):
+    old_timer = MagicMock()
+    redraw._attention_timer = old_timer
+    mock_timer_class = mocker.patch("lib.redraw.Timer")
+
+    redraw.schedule_attention_clear()
+
+    old_timer.cancel.assert_called_once()
+    mock_timer_class.return_value.start.assert_called_once()
+
+
+def test_only_one_timer_live_at_a_time(mocker):
+    mock_timer_class = mocker.patch("lib.redraw.Timer")
+
+    redraw.schedule_attention_clear()
+    first_timer = mock_timer_class.return_value
+
+    mock_timer_class.reset_mock()
+    redraw._attention_timer = first_timer
+    redraw.schedule_attention_clear()
+
+    first_timer.cancel.assert_called_once()
+    assert mock_timer_class.call_count == 1
+
+
+# --- _on_attention_clear callback ---
+
+
+def test_callback_calls_attention_remove_for_active_tab(mocker):
+    mock_run = mocker.patch("lib.redraw.subprocess.run")
+    tabState["activeTabId"] = 1
+    tabState["attentionIds"] = {"1": "notification"}
+
+    redraw._on_attention_clear()
+
+    mock_run.assert_called_once_with(["kitty-tab-attention-remove", "1"])
+
+
+def test_callback_uses_tab_active_at_callback_time(mocker):
+    mock_run = mocker.patch("lib.redraw.subprocess.run")
+    tabState["activeTabId"] = 2
+    tabState["attentionIds"] = {"1": "notification", "2": "stop"}
+
+    redraw._on_attention_clear()
+
+    mock_run.assert_called_once_with(["kitty-tab-attention-remove", "2"])
+
+
+def test_callback_does_nothing_when_active_tab_has_no_attention(mocker):
+    mock_run = mocker.patch("lib.redraw.subprocess.run")
+    tabState["activeTabId"] = 1
+    tabState["attentionIds"] = {"2": "stop"}
+
+    redraw._on_attention_clear()
+
+    mock_run.assert_not_called()

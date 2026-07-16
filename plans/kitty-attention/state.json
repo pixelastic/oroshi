@@ -30,8 +30,9 @@
   {
     "id": "05",
     "issue": "issues/05-clear-on-focus-timer.md",
-    "done": false,
-    "blocked_by": ["04"]
+    "done": true,
+    "blocked_by": ["04"],
+    "recap": "Added threading.Timer in tabs_second_pass to auto-clear attention after 3s on focused tab, with file-I/O-only callback"
   },
   {
     "id": "06",
