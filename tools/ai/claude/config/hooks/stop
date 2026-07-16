@@ -10,10 +10,10 @@ local transcriptPath="$(printf '%s\n' "$stdinData" | jq -r '.transcript_path // 
 # Skip entirely for subagent completions
 [[ "$transcriptPath" == */subagents/* ]] && exit 0
 
-# Add attention icon if running inside Kitty and tab is not currently focused
-if [[ "$KITTY_WINDOW_ID" != "" ]]; then
-  local tabId="$(kitty-window-tab-id "$KITTY_WINDOW_ID")"
-  kitty-tab-focused "$tabId" 2>/dev/null || kitty-tab-attention-add "$tabId"
+# Mark the tab as requiring attention if out of focus
+local tabId="$(kitty-window-tab-id)"
+if ! kitty-tab-focused "$tabId"; then
+  kitty-tab-attention-add "$tabId" --type stop
 fi
 
 # Sound-only early exit — does not affect attention

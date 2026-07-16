@@ -1,12 +1,12 @@
 #!/usr/bin/env zsh
 # Get the tab ID of a specific window
-# Usage: kitty-window-tab-id <windowId>
+# Usage: kitty-window-tab-id [windowId]  (defaults to $KITTY_WINDOW_ID)
 # Returns: the tab ID containing this window
 set -e
 
-local windowId="$1"
+local windowId="${1:-$KITTY_WINDOW_ID}"
 if [[ "$windowId" == "" ]]; then
-  echo "Usage: kitty-window-tab-id <window-id>"
+  echo "Usage: kitty-window-tab-id [window-id]"
   exit 2
 fi
 

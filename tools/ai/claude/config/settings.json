@@ -63,16 +63,6 @@
           }
         ]
       }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/home/tim/.oroshi/tools/ai/claude/config/hooks/userPromptSubmit"
-          }
-        ]
-      }
     ]
   },
   "statusLine": {

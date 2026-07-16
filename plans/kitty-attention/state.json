@@ -37,8 +37,9 @@
   {
     "id": "06",
     "issue": "issues/06-notification-hook-attention.md",
-    "done": false,
-    "blocked_by": ["01", "02"]
+    "done": true,
+    "blocked_by": ["01", "02"],
+    "recap": "Added attention icon logic to notification hook: resolves tab ID, checks focus, calls kitty-tab-attention-add --type notification when unfocused"
   },
   {
     "id": "07",

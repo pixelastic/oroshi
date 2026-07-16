@@ -1,5 +1,13 @@
 #!/usr/bin/env zsh
 # Triggered when Claude needs my input to run a tool
+set -e
 
+# Mark the tab as requiring attention if out of focus
+local tabId="$(kitty-window-tab-id)"
+if ! kitty-tab-focused "$tabId"; then
+  kitty-tab-attention-add "$tabId" --type notification
+fi
+
+# Play a sound
 audio-play-oroshi claude-notification.mp3
 exit 2

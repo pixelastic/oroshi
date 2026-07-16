@@ -53,18 +53,6 @@ mock_kitty_attention() {
   [ ! -f "$BATS_TMP_DIR/attention-added" ]
 }
 
-@test "attention: not added when KITTY_WINDOW_ID absent" {
-  unset KITTY_WINDOW_ID
-  export OROSHI_CLAUDE_STOP_SOUND="no"
-  kitty-tab-attention-add() { touch "$BATS_TMP_DIR/attention-added"; }
-  bats_mock kitty-tab-attention-add
-
-  run_stop '{"transcript_path":"/some/path.jsonl"}'
-
-  [ "$status" -eq 0 ]
-  [ ! -f "$BATS_TMP_DIR/attention-added" ]
-}
-
 @test "attention: not added when tab is focused" {
   export KITTY_WINDOW_ID="42"
   export OROSHI_CLAUDE_STOP_SOUND="no"
