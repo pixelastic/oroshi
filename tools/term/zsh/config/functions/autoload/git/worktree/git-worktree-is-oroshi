@@ -1,11 +1,16 @@
-# Check if current repository is a worktree of oroshi
+# Check if current (or given) repository is a worktree of oroshi
+# Usage:
+# $ git-worktree-is-oroshi          # Check cwd
+# $ git-worktree-is-oroshi /path    # Check given path
 setopt local_options err_return
 
+local targetPath="${1:-$PWD}"
+
 # Stop if not worktree
-! git-directory-is-worktree && return 1
+! git-directory-is-worktree "$targetPath" && return 1
 
 # Stop if not oroshi
-local project="$(git-github-project)"
+local project="$(git-github-project "$targetPath")"
 [[ "$project" != "pixelastic/oroshi" ]] && return 1
 
 return 0

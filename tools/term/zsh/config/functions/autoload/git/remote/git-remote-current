@@ -1,5 +1,10 @@
 # Display name of current remote
 # Usage:
-# $ git-remote-current         # Name of current remote
+# $ git-remote-current           # From cwd
+# $ git-remote-current /path     # From given path
 setopt local_options err_return
-git-branch-remote
+
+local targetPath="${1:-}"
+[[ $targetPath == "" ]] && targetPath="$(git-directory-root)"
+
+git-branch-remote --repo "$targetPath"

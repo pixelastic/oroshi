@@ -1,13 +1,23 @@
 #!/usr/bin/env zsh
-# Reload Kitty tab bar modules and redraw
+# Reload Kitty tab bar modules and redraw with worktree-aware source path
 # Usage:
 # $ kitty-reload
 set -e
 
+# Define where to reload the modules from.
+# Default is from main repo
+local reloadPath="$OROSHI_ROOT"
+
+# But if in an oroshi worktree, reload from there
+local kittyPwd="$(kitty-pwd)"
+if git-worktree-is-oroshi $kittyPwd; then
+  reloadPath="$(git-directory-root $kittyPwd)"
+fi
+
 # Write the Reload Beacon
 local beaconDir="$OROSHI_TMP_FOLDER/kitty/beacons"
 mkdir -p "${beaconDir}"
-touch "${beaconDir}/reload"
+echo "$reloadPath" > "${beaconDir}/reload"
 
 # Force immediate tab bar redraw
 kitty-redraw

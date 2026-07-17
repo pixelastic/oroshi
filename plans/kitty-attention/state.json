@@ -16,8 +16,9 @@
   {
     "id": "03",
     "issue": "issues/03-kitty-reload-worktree-aware.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "Made kitty-reload write source path (worktree root or OROSHI_ROOT) into Reload Beacon instead of empty touch"
   },
   {
     "id": "04",

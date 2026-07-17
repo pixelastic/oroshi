@@ -1,17 +1,26 @@
 # Gets the url of a given remote
 # Usage:
-# $ git-remote-url               # Uses current remote
-# $ git-remote-url {remoteName}  # Uses {remoteName}
+# $ git-remote-url                        # Uses current remote
+# $ git-remote-url {remoteName}           # Uses {remoteName}
+# $ git-remote-url --repo /path           # From given path
+# $ git-remote-url {remoteName} --repo /path
 setopt local_options err_return
-local remote=$1
-[[ $remote == '' ]] && remote="$(git-remote-current)"
+
+zmodload zsh/zutil
+zparseopts -E -D \
+  -repo:=flagRepo
+
+local remote="$1"
+local repoPath="${flagRepo[2]}"
+[[ "$repoPath" == "" ]] && repoPath="$(git-directory-root)"
+
+# Resolve remote name
+[[ "$remote" == "" ]] && remote="$(git-remote-current "$repoPath")"
 
 # Find the remote url
-local remoteUrl="$(git config --get remote.${remote}.url)"
+local remoteUrl="$(git -C "$repoPath" config --get "remote.${remote}.url")"
 
 # Fails if no remote
-if [[ $remoteUrl == '' ]]; then
-  return 1
-fi
+[[ "$remoteUrl" == "" ]] && return 1
 
-echo $remoteUrl
+echo "$remoteUrl"

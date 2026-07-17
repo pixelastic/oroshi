@@ -1,17 +1,29 @@
 # Returns owner/name from the GitHub remote URL.
 # Supports both SSH and HTTPS remote URLs.
 # Usage:
-# $ git-github-project              # pixelastic/oroshi
-# $ git-github-project upstream     # someorg/oroshi
+# $ git-github-project                       # pixelastic/oroshi
+# $ git-github-project /path/to/repo         # From given path
+# $ git-github-project --remote upstream     # From specific remote
+# $ git-github-project /path --remote upstream
 setopt local_options err_return
 
-local remoteName="$1"
-[[ "$remoteName" == "" ]] && remoteName="$(git-remote-current)"
-local remoteUrl="$(git-remote-url "$remoteName" 2>/dev/null)"
+zmodload zsh/zutil
+zparseopts -E -D \
+  -remote:=flagRemote
+
+local targetPath="$1"
+local remoteName="${flagRemote[2]}"
+
+# Build args for git-remote-url
+local remoteUrlArgs=()
+[[ "$remoteName" != "" ]] && remoteUrlArgs+=("$remoteName")
+[[ "$targetPath" != "" ]] && remoteUrlArgs+=(--repo "$targetPath")
+
+local remoteUrl="$(git-remote-url "${remoteUrlArgs[@]}")"
 
 [[ "$remoteUrl" == "" ]] && return 1
 
 # shellcheck disable=SC2016 # sed pattern is intentionally literal; no variable expansion needed
 echo "$remoteUrl" |
-	sed --regexp-extended \
-		's_^git@github\.com:__; s_^https://github\.com/__; s_\.git$__'
+sed --regexp-extended \
+  's_^git@github\.com:__; s_^https://github\.com/__; s_\.git$__'

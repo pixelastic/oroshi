@@ -1,22 +1,26 @@
 # Display remote of a given branch
 # Usage:
-# $ git-branch-remote         # Name of current remote
-# $ git-branch-remote main    # Name of current main remote
+# $ git-branch-remote              # Remote of current branch
+# $ git-branch-remote main         # Remote of main branch
+# $ git-branch-remote --repo /path # Remote of current branch in given repo
+# $ git-branch-remote main --repo /path
 setopt local_options err_return
+
+zmodload zsh/zutil
+zparseopts -E -D \
+  -repo:=flagRepo
+
 local branchName="$1"
-if [[ "$branchName" == '' ]]; then
-  branchName="$(git-branch-current)"
-fi
+local repoPath="${flagRepo[2]}"
+[[ "$repoPath" == "" ]] && repoPath="$(git-directory-root)"
 
-# Read the origin from the current branch config
-local remoteName="$(git config "branch.${branchName}.remote")"
-if [[ $remoteName != "" ]]; then
-  echo $remoteName
-  return 0
-fi
+# Resolve current branch name
+[[ "$branchName" == "" ]] && branchName="$(git-branch-current "$repoPath")"
 
-# If the branch has never been pushed, there is no remote configured, so we'll
-# assume it's "origin"
-echo "origin"
+# Read the remote from the branch config
+local remoteName="$(git -C "$repoPath" config "branch.${branchName}.remote")"
 
+# Default to origin if branch has never been pushed
+[[ "$remoteName" == "" ]] && remoteName="origin"
 
+echo "$remoteName"
