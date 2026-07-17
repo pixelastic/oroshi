@@ -1,51 +1,38 @@
 [
   {
     "id": "01",
-    "issue": "issues/01-typed-attention-format.md",
-    "done": true,
-    "blocked_by": [],
-    "recap": "Changed attention file format from bare tabId to tabId:type, added --type flag to add script, updated remove/redraw/state to handle new format"
+    "issue": "issues/01-kitty-tab-switch.md",
+    "done": false,
+    "blocked_by": []
   },
   {
     "id": "02",
-    "issue": "issues/02-icon-rendering.md",
-    "done": true,
-    "blocked_by": ["01"],
-    "recap": "Fixed icon order (fullscreen before attention) and added type-based icon selection (stop vs notification) in tab title builder"
+    "issue": "issues/02-kitty-pwd.md",
+    "done": false,
+    "blocked_by": []
   },
   {
     "id": "03",
-    "issue": "issues/03-clear-on-close.md",
-    "done": true,
-    "blocked_by": [],
-    "recap": "Added kitty-tab-attention-remove call in claude wrapper after binary exits, guarded by KITTY_WINDOW_ID check"
+    "issue": "issues/03-kitty-reload-worktree-aware.md",
+    "done": false,
+    "blocked_by": ["02"]
   },
   {
     "id": "04",
-    "issue": "issues/04-stale-tab-pruning.md",
-    "done": true,
-    "blocked_by": ["01"],
-    "recap": "Added redraw.cleanup() to prune stale attention entries, activeTabId tracking in tabState, both called at end of render cycle"
+    "issue": "issues/04-reload-py-path-aware.md",
+    "done": false,
+    "blocked_by": ["03"]
   },
   {
     "id": "05",
-    "issue": "issues/05-clear-on-focus-timer.md",
-    "done": true,
-    "blocked_by": ["04"],
-    "recap": "Added threading.Timer in tabs_second_pass to auto-clear attention after 3s on focused tab, with file-I/O-only callback"
+    "issue": "issues/05-debug-attention-autoclear.md",
+    "done": false,
+    "blocked_by": ["04"]
   },
   {
     "id": "06",
-    "issue": "issues/06-notification-hook-attention.md",
-    "done": true,
-    "blocked_by": ["01", "02"],
-    "recap": "Added attention icon logic to notification hook: resolves tab ID, checks focus, calls kitty-tab-attention-add --type notification when unfocused"
-  },
-  {
-    "id": "07",
-    "issue": "issues/07-manifest-cleanup.md",
-    "done": true,
-    "blocked_by": [],
-    "recap": "Prune stale manifest entries for closed tabs at end of render cycle in second_pass"
+    "issue": "issues/06-fix-attention-autoclear.md",
+    "done": false,
+    "blocked_by": ["05"]
   }
 ]

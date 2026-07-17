@@ -1,76 +1,61 @@
 ## Problem Statement
 
-The kitty tab bar attention icon system — used to signal when Claude has finished or needs approval — has several correctness and usability gaps: the icon appears in the wrong position relative to the fullscreen icon, stale attention entries persist after a tab closes or Claude exits, and there is no visual distinction between a completed response and a pending tool approval.
+The Attention Icon auto-clear mechanism is broken: when focusing a tab that has
+Attention, the icon stays indefinitely instead of disappearing after 2 seconds.
+Debugging this is blocked by two tooling gaps: (1) there is no way to
+programmatically switch tabs, which makes automated testing impossible, and (2)
+the Reload mechanism always loads Python modules from the main oroshi repo, not
+from the active worktree, so code changes made during development are invisible
+until merged.
 
 ## Solution
 
-Fix icon ordering, add automatic cleanup of stale attention entries via three mechanisms (process exit, tab close, and focused-tab timer), and introduce a typed attention system with distinct icons for `stop` and `notification` events.
+Build two utility scripts (`kitty-tab-switch`, `kitty-pwd`), make
+`kitty-reload` worktree-aware so it loads modules from the active worktree when
+applicable, then use the new tooling to diagnose and fix the auto-clear bug.
 
 ## User Stories
 
-1. As a user, I want the attention icon to appear after the fullscreen icon in the tab title, so that the tab bar layout is visually consistent.
-2. As a user, I want the attention icon cleared when I close the Claude process, so that tabs don't show stale attention after Claude exits.
-3. As a user, I want the attention icon cleared when a closed tab's ID is reused by a new tab, so that new tabs don't inherit stale attention state.
-4. As a user, I want the attention icon cleared automatically after I stay on the tab for ~3 seconds, so that I don't have to manually dismiss it.
-5. As a user, I want the 3-second timer reset each time a render fires while the tab has attention, so that quickly cycling through tabs does not prematurely clear attention.
-6. As a user, I want a distinct icon when Claude is waiting for tool approval, so that I can tell at a glance whether Claude finished or needs my authorization.
-7. As a user, I want the approval attention icon to follow the same focus rules as the stop icon (not shown if tab is already focused), so that the behavior is consistent.
-8. As a user, I want the attention icon cleared when I submit a prompt in Claude, so that the icon disappears as soon as I start interacting (existing behavior, preserved).
+1. As a developer, I want to switch kitty tabs by Tab ID from a script, so that automated tests can simulate tab navigation without manual intervention.
+2. As a developer, I want to get the cwd of the currently focused kitty window from a script, so that other tools can make context-aware decisions.
+3. As a developer working in an oroshi worktree, I want Alt-R (Reload) to load Tab Bar Python modules from my worktree, so that I see my code changes immediately without merging to main.
+4. As a developer working outside an oroshi worktree, I want Alt-R (Reload) to load Tab Bar Python modules from the main oroshi repo, so that the default behavior is unchanged.
+5. As a user, I want the Attention Icon to disappear ~2 seconds after I focus a tab that has Attention, so that the icon reflects the current state.
+6. As a developer, I want debug logging in the auto-clear callback, so that I can determine whether the timer fires, what Tab ID it sees, and whether the subprocess succeeds.
 
 ## Implementation Decisions
 
-### Attention file format change
-The attention file changes from bare tab IDs (`tabId\n`) to a typed format (`tabId:type\n`). The two types are `stop` (Claude finished) and `notification` (tool approval pending). `kitty-tab-attention-add` gains a `--type` flag defaulting to `stop`.
-
-### `kitty-tab-attention-remove` pattern update
-The `sed` removal pattern is updated from an exact `^tabId$` match to `^tabId:` prefix match, to handle the new typed format.
-
-### `attentionIds` becomes a dict
-`tabState["attentionIds"]` changes from a `set` of tab ID strings to a `dict` mapping tab ID string → type string. All consumers (`tab_data`, `redraw`, `second_pass`) are updated accordingly.
-
-### Icon order fix
-In the tab title builder, the fullscreen icon is appended before the attention icon (previously reversed).
-
-### Icon type selection
-`tab_data` reads the attention type from `attentionIds[str(id)]` and selects between `kitty-tab-attention` (type `stop`) and `kitty-tab-attention-notification` (type `notification`). A placeholder glyph is used for `kitty-tab-attention-notification` in `icons.jsonc`; the user will replace it with the final glyph.
-
-### Clear on close — claude wrapper
-The `claude` binary wrapper calls `kitty-tab-attention-remove` (for the current window's tab) unconditionally after the claude process exits.
-
-### Clear on tab close — stale ID pruning in second_pass
-At the end of each render cycle (`is_last=True`), `second_pass` calls a new `redraw.cleanup(live_tab_ids)` function. This compares the keys of `attentionIds` against the set of live tab IDs; any stale entries are removed from the attention file. The cleanup only writes to disk when stale entries are actually found.
-
-### `activeTabId` in tabState
-A new `activeTabId` key (initially `None`) is updated on every render cycle to track the currently focused tab.
-
-### Clear on focus — 3-second timer in second_pass
-At the end of each render cycle, if the active tab has attention:
-- Any existing `threading.Timer` is cancelled.
-- A new `threading.Timer(3.0, callback)` is started.
-
-Only one timer can be live at a time. The callback reads `tabState["activeTabId"]`, checks if that tab ID is still in `attentionIds`, and if so removes it from the attention file and triggers a redraw. The timer thread only performs file I/O and does not call kitty Python APIs.
-
-### Notification hook update
-The `notification` hook gains a focus check (same as the `stop` hook: skip if the tab is currently focused) and calls `kitty-tab-attention-add --type notification`.
-
-### No clear-on-typing
-Kitty has no passive key-press hook, and Claude Code keybindings cannot execute shell commands. Clear-on-typing is not implemented; the existing `UserPromptSubmit` hook (which clears on submit) remains the earliest clearing point.
+- **`kitty-tab-switch`**: minimal shell script calling `kitty @ focus-tab --match id:$1`. Propagates errors, no validation.
+- **`kitty-pwd`**: shell script returning the cwd of the active window in the focused tab, using `kitty @ ls --match-tab state:focused` piped to `jq`.
+- **`kitty-reload` worktree-aware**: calls `kitty-pwd` to get the focused window's cwd, then tests with `git-worktree-is-oroshi` whether it is inside an oroshi worktree. If yes, writes the worktree root path into the Reload Beacon. If no, writes `$OROSHI_ROOT`. The beacon content is always a path (never an empty file).
+- **`reload.py` path-aware loading**: reads the Reload Beacon content (a path), constructs per-module file paths under `{path}/tools/term/kitty/config/lib/`, and uses `importlib.util.spec_from_file_location` to load each `lib.*` module from that path. No `sys.path` modification.
+- **Debug logging**: temporary append-only logging in `_on_attention_clear()`, writing to `$OROSHI_TMP_FOLDER/kitty/attention-debug.log`. Logs timer fire, `activeTabId`, on-disk attention entries, and subprocess result. Removed after the bug is fixed.
+- **Bug fix**: determined after diagnosis via the debug logging. Scope of fix unknown until then.
 
 ## Testing Decisions
 
-Good tests verify observable external behavior — what enters and exits the attention file, which icons appear in the rendered title, which scripts are called and when — without asserting on internal implementation details.
+Good tests mock external commands (kitty, git) and assert on observable output or
+file side-effects, not implementation details.
 
-### Python tests (pytest)
-- **`test_redraw.py`** — updated for the `tabId:type` parse format; new tests for `cleanup(live_tab_ids)`: stale IDs removed from file, live IDs preserved, no write when nothing is stale. Prior art: existing `test_redraw.py`.
-- **`test_tab_data.py`** — new tests: attention icon appears after fullscreen icon; `stop` type renders `kitty-tab-attention`; `notification` type renders `kitty-tab-attention-notification`. Prior art: existing `test_tab_data.py`.
-- **`test_tabs_second_pass.py`** — new tests: `cleanup` called at `is_last`; `activeTabId` updated each render; timer cancelled and recreated when active tab has attention; timer not started when active tab has no attention. Prior art: existing `test_tabs_second_pass.py`.
+- **`kitty-pwd`**: bats tests mocking `kitty @ ls` output (via `bats_mock`) and asserting the parsed cwd value from jq.
+- **`kitty-reload`**: bats tests mocking `kitty-pwd`, `git-worktree-is-oroshi`, `kitty-redraw`, and the beacon path. Assert beacon file content is the worktree path when in a worktree, and `$OROSHI_ROOT` otherwise.
+- **`kitty-tab-switch`**: no tests — trivial one-liner delegating to `kitty @`.
+- **`reload.py`**: no tests — `spec_from_file_location` is hard to test in isolation.
+- **Debug logging**: no tests — temporary code.
 
-### ZSH tests (bats)
-- **`kitty-tab-attention-add.bats`** — updated: default type is `stop`; `--type notification` writes correct format; dedup check matches on tab ID regardless of type. Prior art: existing `kitty-tab-attention-add.bats`.
-- **`kitty-tab-attention-remove.bats`** — updated: removes entry matching `tabId:*` format. Prior art: existing `kitty-tab-attention-remove.bats`.
+Prior art: existing bats tests in `scripts/bin/kitty/__tests__/` (e.g., `kitty-reload.bats`, `kitty-tab-attention-add.bats`) use `bats_mock`, `bats_mock_env`, and `bats_run_zsh`.
 
 ## Out of Scope
 
-- Clear-on-typing: no mechanism exists in kitty or Claude Code to detect first keystroke without explicit per-key bindings.
-- Final glyph for the notification attention icon: the placeholder in `icons.jsonc` will be replaced by the user manually.
-- Any changes to the `stop` hook itself: its existing behavior (focus check + `kitty-tab-attention-add`) is preserved as-is, with only the underlying format of the attention file changing transparently.
+- Making `kitty-pwd` accept arguments (tab ID, window ID).
+- Reloading `tab_bar.py` itself (entry point loaded by kitty, requires restart).
+- Permanent logging or observability for the Tab Bar.
+- Testing `reload.py` Python changes.
+
+## Further Notes
+
+The execution order matters: modules 1-3 (tooling) must be built before module 4
+(worktree-aware reload), which must be deployed before module 5 (debug logging),
+since the debug logging code lives in the worktree and needs the worktree-aware
+reload to be testable. The bug fix (module 6) depends on what the debug logging
+reveals.
