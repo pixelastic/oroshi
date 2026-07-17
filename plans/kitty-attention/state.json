@@ -23,8 +23,9 @@
   {
     "id": "04",
     "issue": "issues/04-reload-py-path-aware.md",
-    "done": false,
-    "blocked_by": ["03"]
+    "done": true,
+    "blocked_by": ["03"],
+    "recap": "Made reload.py read source path from Reload Beacon and load modules via spec_from_file_location instead of importlib.reload"
   },
   {
     "id": "05",
