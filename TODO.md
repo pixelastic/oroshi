@@ -72,6 +72,8 @@ the agents know when/how to write
 
 Make git-worktree-distance use git-worktree-distance-raw
 
+vws shouldn't suggest "main" when not in a git repo
+
 Update calls to bats_debug to not pass an argument, as $output is by default
 
 Re-evaluate
