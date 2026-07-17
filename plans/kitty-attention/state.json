@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-kitty-tab-switch.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Created kitty-tab-switch script that switches focus to a tab by ID via kitty @ focus-tab"
   },
   {
     "id": "02",

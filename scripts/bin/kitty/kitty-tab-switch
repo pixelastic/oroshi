@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# Switch focus to a tab by Tab ID
+# Usage:
+# $ kitty-tab-switch {tabId}
+set -e
+
+kitty @ focus-tab --match "id:$1"
