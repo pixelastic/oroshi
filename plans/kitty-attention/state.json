@@ -9,8 +9,9 @@
   {
     "id": "02",
     "issue": "issues/02-kitty-pwd.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Created kitty-pwd script that extracts cwd of the focused window from kitty @ ls JSON output"
   },
   {
     "id": "03",

@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+# Print the cwd of the focused window in the focused tab
+# Usage:
+# $ kitty-pwd
+set -e
+
+local cwd="$(kitty @ ls --match-tab state:focused \
+  | jq --raw-output '.[0].tabs[0].windows[] | select(.is_focused == true) | .cwd')"
+
+# No focused window found
+[[ "$cwd" == "" ]] && exit 1
+
+echo "$cwd"
