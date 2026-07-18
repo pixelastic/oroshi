@@ -1,0 +1,20 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-mic2txt-cancel.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-mic2txt-raw-guard.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-cancel-keybinding.md",
+    "done": false,
+    "blocked_by": ["01"]
+  }
+]
