@@ -16,8 +16,9 @@
   {
     "id": "03",
     "issue": "issues/03-yarn-workspace-list.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "Created yarn-workspace-list — human-readable formatted table of monorepo workspaces with colorized names, paths, and descriptions"
   },
   {
     "id": "04",

@@ -14,7 +14,7 @@ local gitRoot="$(git-directory-root "$targetPath")"
 # Stop if not a monorepo
 yarn-is-monorepo $gitRoot || return 1
 
-local output=""
+local -A byName
 local workspaceGlobs="$(jq -r '.workspaces[]?' "${gitRoot}/package.json" 2>/dev/null)"
 for glob in ${(f)workspaceGlobs}; do
   # Expand glob relative to git root
@@ -30,11 +30,16 @@ for glob in ${(f)workspaceGlobs}; do
     local description="$(jq -r '.description // ""' "$workspacePackageJson")"
     local relativePath="${workspaceDir#"${gitRoot}"/}"
 
-    output+="${name}▮${relativePath}▮${description}\n"
+    byName[$name]="${name}▮${relativePath}▮${description}"
   done
 done
 
 # Nothing found
-[[ "$output" == "" ]] && return 1
+[[ ${#byName} -eq 0 ]] && return 1
 
+# Output sorted by name
+local output=""
+for key in ${(ko)byName}; do
+  output+="${byName[$key]}\n"
+done
 print $output

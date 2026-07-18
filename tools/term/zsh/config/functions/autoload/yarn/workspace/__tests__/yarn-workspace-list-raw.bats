@@ -93,6 +93,49 @@ PKG
   [[ "$output" == *"@mono/lib-b"* ]]
 }
 
+# --- Sorting ---
+
+@test "sorts output by name" {
+  mkdir -p "$BATS_GIT_DIR/modules/lib-z"
+  cat > "$BATS_GIT_DIR/modules/lib-z/package.json" <<'PKG'
+{
+  "name": "@mono/zeta",
+  "description": "Zeta library"
+}
+PKG
+
+  bats_run_zsh "cd $BATS_GIT_DIR && yarn-workspace-list-raw"
+  [ "$status" -eq 0 ]
+  # lib-a must appear before zeta
+  local aPos="${output%%@mono/lib-a*}"
+  local zPos="${output%%@mono/zeta*}"
+  [ "${#aPos}" -lt "${#zPos}" ]
+}
+
+@test "base name sorts before suffixed variants" {
+  mkdir -p "$BATS_GIT_DIR/modules/lib-main"
+  cat > "$BATS_GIT_DIR/modules/lib-main/package.json" <<'PKG'
+{
+  "name": "mylib",
+  "description": "Main lib"
+}
+PKG
+
+  mkdir -p "$BATS_GIT_DIR/modules/lib-ext"
+  cat > "$BATS_GIT_DIR/modules/lib-ext/package.json" <<'PKG'
+{
+  "name": "mylib-extra",
+  "description": "Extra lib"
+}
+PKG
+
+  bats_run_zsh "cd $BATS_GIT_DIR && yarn-workspace-list-raw"
+  [ "$status" -eq 0 ]
+  local basePos="${output%%mylib▮*}"
+  local suffixedPos="${output%%mylib-extra*}"
+  [ "${#basePos}" -lt "${#suffixedPos}" ]
+}
+
 # --- Non-monorepo ---
 
 @test "returns non-zero for non-monorepo path" {

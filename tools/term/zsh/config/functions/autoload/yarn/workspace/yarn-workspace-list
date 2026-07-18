@@ -1,0 +1,35 @@
+# Display a formatted list of all workspaces in a yarn monorepo
+# Usage:
+# $ yarn-workspace-list              # From current directory
+# $ yarn-workspace-list /some/path   # From given path
+setopt local_options err_return
+
+colors-load-definitions
+icons-load-definitions
+
+local rawList="$(yarn-workspace-list-raw "$@")"
+# Nothing to display if no workspaces found
+[[ "$rawList" == "" ]] && return 0
+
+local output=""
+for rawLine in ${(f)rawList}; do
+  local split=(${(@ps/▮/)rawLine})
+  local workspaceName=$split[1]
+  local workspacePath=$split[2]
+  local workspaceDescription=$split[3]
+
+  local row=""
+
+  # Name with monorepo icon
+  row+="$(colorize "$ICONS[node-monorepo]  ${workspaceName}" $COLORS[yarn-package])▮"
+
+  # Relative path
+  row+="$(colorize "$workspacePath" $COLORS[comment])▮"
+
+  # Description
+  row+="$(colorize "$workspaceDescription" $COLORS[yarn-package-description])▮"
+
+  output+="$row\n"
+done
+
+table $output
