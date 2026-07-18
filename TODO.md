@@ -10,8 +10,6 @@ using the repo A icon rather than A, and colored as this repo.
 I should expand to adding another "mode" icon, to show if the tab is in
 grill-me, prd, issues, ralph or nothing
 
-
-
 ---
 
 ## Misc
