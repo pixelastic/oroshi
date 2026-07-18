@@ -294,6 +294,8 @@
   "yarn --version",
   "yarn",
   "yarn-root",
+  "yarn-workspace-list",
+  "yarn-workspace-list-raw",
   "ymdk-build",
   "yt-dlp",
   "zcat",

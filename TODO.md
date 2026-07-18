@@ -23,6 +23,8 @@ and the API returns an error. This should be handled and discarded.
 
 I probaly should also define a keybinding to cancel a record, like Ctrl-YELLOW
 
+vfe shouldn't open mp3 files
+
 Tell zsh-writer to not use abbreviations in variable names (ie no absPath,
 prefer absolutePath)
 
