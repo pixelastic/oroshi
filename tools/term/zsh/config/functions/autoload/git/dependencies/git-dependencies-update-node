@@ -10,12 +10,12 @@ local lockfilePath="${gitRoot}/.git/oroshi_yarn_install_in_progress"
 
 # Fail quickly if no such beacon file
 if [[ ! -f "$beaconFilepath" ]]; then
-  return 1
+  return 0
 fi
 
 # Beacon file didn't change since the commit
 if ! git-file-has-changed $beaconFilepath $originCommit; then
-  return 1
+  return 0
 fi
 
 # Update dependencies and write a lockfile while doing it

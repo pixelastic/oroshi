@@ -70,6 +70,7 @@
     "command": "/home/tim/.oroshi/tools/ai/claude/config/statusline"
   },
   "effortLevel": "high",
+  "theme": "dark",
   "skipAutoPermissionPrompt": true,
-  "theme": "dark"
+  "preferredNotifChannel": "notifications_disabled"
 }
