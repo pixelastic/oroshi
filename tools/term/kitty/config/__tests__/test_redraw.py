@@ -11,8 +11,6 @@ def reset_state():
     tabState["allTabIds"] = []
     tabState["attentionIds"] = {}
     tabState["activeTabId"] = None
-    redraw._attention_callback_counter = 0
-    redraw._attention_callback_tab_id = None
     yield
 
 
@@ -158,82 +156,7 @@ def test_cleanup_preserves_active_manifest_entries():
     assert 2 in tabState["manifest"]
 
 
-# --- schedule_attention_clear — add_timer + generation ---
-
-
-def test_schedule_registers_timer_on_tab_change(mocker):
-    mock_add_timer = mocker.patch("lib.redraw.add_timer")
-    tabState["activeTabId"] = 1
-
-    redraw.schedule_attention_clear()
-
-    mock_add_timer.assert_called_once()
-    _, delay, repeat = mock_add_timer.call_args[0]
-    assert delay == redraw.ATTENTION_CLEAR_DELAY
-    assert repeat is False
-    assert redraw._attention_callback_counter == 1
-
-
-def test_schedule_skips_timer_on_same_tab(mocker):
-    mock_add_timer = mocker.patch("lib.redraw.add_timer")
-    tabState["activeTabId"] = 1
-    redraw._attention_callback_tab_id = "1"
-
-    redraw.schedule_attention_clear()
-
-    mock_add_timer.assert_not_called()
-
-
-def test_schedule_callback_clears_attention_for_active_tab(mocker):
-    mock_add_timer = mocker.patch("lib.redraw.add_timer")
-    mocker.patch("lib.redraw.get_boss")
-    tabState["activeTabId"] = 2
-    tabState["attentionIds"] = {"2": "stop"}
-    with open(redraw.ATTENTION_FILE, "w") as f:
-        f.write("1:notification\n2:stop\n")
-
-    redraw.schedule_attention_clear()
-    callback = mock_add_timer.call_args[0][0]
-    callback()
-
-    assert files.read(redraw.ATTENTION_FILE) == "1:notification\n"
-    assert "2" not in tabState["attentionIds"]
-
-
-def test_schedule_stale_callback_is_ignored(mocker):
-    mock_add_timer = mocker.patch("lib.redraw.add_timer")
-    tabState["activeTabId"] = 1
-    with open(redraw.ATTENTION_FILE, "w") as f:
-        f.write("1:stop\n")
-
-    # First schedule
-    redraw.schedule_attention_clear()
-    stale_callback = mock_add_timer.call_args[0][0]
-
-    # Second schedule — supersedes the first
-    tabState["activeTabId"] = 2
-    redraw.schedule_attention_clear()
-
-    # Fire the stale callback — should do nothing
-    stale_callback()
-
-    assert files.read(redraw.ATTENTION_FILE) == "1:stop\n"
-
-
-def test_schedule_callback_skips_tab_without_attention(mocker):
-    mock_add_timer = mocker.patch("lib.redraw.add_timer")
-    tabState["activeTabId"] = 1
-    with open(redraw.ATTENTION_FILE, "w") as f:
-        f.write("2:stop\n")
-
-    redraw.schedule_attention_clear()
-    callback = mock_add_timer.call_args[0][0]
-    callback()
-
-    assert files.read(redraw.ATTENTION_FILE) == "2:stop\n"
-
-
-# --- _clear_attention ---
+# --- clear_attention ---
 
 
 def test_clear_removes_tab_from_attention_file(mocker):
@@ -242,7 +165,7 @@ def test_clear_removes_tab_from_attention_file(mocker):
     with open(redraw.ATTENTION_FILE, "w") as f:
         f.write("1:notification\n")
 
-    redraw._clear_attention("1")
+    redraw.clear_attention("1")
 
     assert files.read(redraw.ATTENTION_FILE) == ""
     assert "1" not in tabState["attentionIds"]
@@ -254,7 +177,7 @@ def test_clear_keeps_other_tabs_in_attention_file(mocker):
     with open(redraw.ATTENTION_FILE, "w") as f:
         f.write("1:notification\n2:stop\n")
 
-    redraw._clear_attention("2")
+    redraw.clear_attention("2")
 
     assert files.read(redraw.ATTENTION_FILE) == "1:notification\n"
     assert "1" in tabState["attentionIds"]
@@ -265,13 +188,13 @@ def test_clear_does_nothing_when_tab_has_no_attention():
     with open(redraw.ATTENTION_FILE, "w") as f:
         f.write("2:stop\n")
 
-    redraw._clear_attention("1")
+    redraw.clear_attention("1")
 
     assert files.read(redraw.ATTENTION_FILE) == "2:stop\n"
 
 
 def test_clear_does_nothing_when_attention_file_missing():
-    redraw._clear_attention("1")
+    redraw.clear_attention("1")
 
     assert not files.exists(redraw.ATTENTION_FILE)
 
@@ -282,6 +205,6 @@ def test_clear_marks_tab_bar_dirty(mocker):
     with open(redraw.ATTENTION_FILE, "w") as f:
         f.write("1:stop\n")
 
-    redraw._clear_attention("1")
+    redraw.clear_attention("1")
 
     mock_boss().active_tab_manager.mark_tab_bar_dirty.assert_called_once()

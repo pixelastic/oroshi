@@ -1,6 +1,6 @@
 from kitty.fast_data_types import Screen
 from kitty.tab_bar import DrawData, ExtraData, TabBarData
-from lib import redraw
+from lib import redraw, tab_switch
 from lib.statusbar import draw_statusbar
 from lib.state import tabState
 
@@ -34,8 +34,8 @@ def second_pass(
     if is_last:
         # Draw the statusbar, we have all the needed info
         draw_statusbar(screen)
-        # Start a timer to remove the attention icon from the active tab
-        redraw.schedule_attention_clear()
+        # Fire any on_tab_switch callback
+        tab_switch.check()
         # Cleanup any loose ends, so next redraw starts clean
         redraw.cleanup()
 

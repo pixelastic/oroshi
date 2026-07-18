@@ -1,27 +1,11 @@
 from kitty.boss import get_boss
-from kitty.fast_data_types import add_timer
 
 from lib import files
 from lib.state import tabState
-
-# Whenever we redraw the tab bar, we check if we need to clear any attention
-# icon. This is effectively only needed when we switch tabs, not for any other
-# redraw
-# Last tab ID we scheduled a timer for — avoids duplicate timers on same tab
-_attention_callback_tab_id = None
-
-# Whenever we switch tabs, we fire a delayed callback (~2s). If we're still on
-# the same tab when the callback fires, then we clear the attention icon
-# automatically.
-# Kitty uses its own add_timer mechanism for callback, and there is no way to
-# cancel a timer once it's started, so whenever we switch tabs, timers
-# accumulates. We're only interested in the very last callback, so we use a
-# callback_counter to differenciate them and no-op stale callbacks.
-_attention_callback_counter = 0
+from lib.tab_switch import on_tab_switch
 
 REDRAW_BEACON = "/home/tim/local/tmp/oroshi/kitty/beacons/redraw"
 ATTENTION_FILE = "/home/tim/local/tmp/oroshi/kitty/attention"
-ATTENTION_CLEAR_DELAY = 2.0
 
 
 def check():
@@ -78,34 +62,8 @@ def cleanup():
     files.write(ATTENTION_FILE, "\n".join(kept) + "\n" if kept else "")
 
 
-# Called once per render cycle (on the last tab). Schedules a kitty timer to
-# clear the active tab's attention after a delay. Uses kitty's add_timer (event
-# loop) instead of threading.Timer, because kitty holds the GIL between render
-# cycles and Python Timer threads cannot fire on idle tabs.
-def schedule_attention_clear():
-    global _attention_callback_counter, _attention_callback_tab_id
-
-    active_tab_id = str(tabState["activeTabId"])
-
-    # Same tab — timer already scheduled, nothing to do
-    if active_tab_id == _attention_callback_tab_id:
-        return
-
-    # Tab changed — invalidate previous timer and schedule a new one
-    _attention_callback_counter += 1
-    gen = _attention_callback_counter
-    _attention_callback_tab_id = active_tab_id
-
-    def _on_timer(*_):
-        # Stale callback — a newer tab switch superseded this one
-        if gen != _attention_callback_counter:
-            return
-        _clear_attention(active_tab_id)
-
-    add_timer(_on_timer, ATTENTION_CLEAR_DELAY, False)
-
-
-def _clear_attention(tab_id):
+# Remove any attention icon when we stay on a tab for a while
+def clear_attention(tab_id):
     if not files.exists(ATTENTION_FILE):
         return
 
@@ -125,3 +83,7 @@ def _clear_attention(tab_id):
     tab_manager = get_boss().active_tab_manager
     if tab_manager is not None:
         tab_manager.mark_tab_bar_dirty()
+
+
+# Register the callback
+on_tab_switch(clear_attention)
