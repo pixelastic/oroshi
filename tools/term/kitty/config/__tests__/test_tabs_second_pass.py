@@ -219,24 +219,26 @@ def test_cleanup_not_called_mid_cycle(mocker):
     mock_redraw.cleanup.assert_not_called()
 
 
-# --- second_pass — schedule_attention_clear call ---
+# --- second_pass — tab_switch.check call ---
 
 
-def test_schedule_attention_clear_called_on_last_tab(mocker):
+def test_tab_switch_check_called_on_last_tab(mocker):
     mocker.patch("lib.tabs_second_pass.draw_tab_item")
     mocker.patch("lib.tabs_second_pass.draw_statusbar")
-    mock_redraw = mocker.patch("lib.tabs_second_pass.redraw")
+    mocker.patch("lib.tabs_second_pass.redraw")
+    mock_tab_switch = mocker.patch("lib.tabs_second_pass.tab_switch")
 
     _call_second_pass(is_last=True)
 
-    mock_redraw.schedule_attention_clear.assert_called_once_with()
+    mock_tab_switch.check.assert_called_once_with()
 
 
-def test_schedule_attention_clear_not_called_mid_cycle(mocker):
+def test_tab_switch_check_not_called_mid_cycle(mocker):
     mocker.patch("lib.tabs_second_pass.draw_tab_item")
     mocker.patch("lib.tabs_second_pass.draw_statusbar")
-    mock_redraw = mocker.patch("lib.tabs_second_pass.redraw")
+    mocker.patch("lib.tabs_second_pass.redraw")
+    mock_tab_switch = mocker.patch("lib.tabs_second_pass.tab_switch")
 
     _call_second_pass(is_last=False)
 
-    mock_redraw.schedule_attention_clear.assert_not_called()
+    mock_tab_switch.check.assert_not_called()

@@ -20,7 +20,7 @@ def test_get_returns_empty_for_unknown_project():
 
 def test_init_populates_all_fields(mocker):
     mocker.patch(
-        "lib.projects._read_json",
+        "lib.projects.files.read_json",
         return_value={
             "oroshi": {
                 "icon": "★",
@@ -39,7 +39,7 @@ def test_init_populates_all_fields(mocker):
 
 
 def test_init_skips_missing_color_fields(mocker):
-    mocker.patch("lib.projects._read_json", return_value={"oroshi": {"icon": "★"}})
+    mocker.patch("lib.projects.files.read_json", return_value={"oroshi": {"icon": "★"}})
     projects.init()
     result = projects.get("oroshi")
     assert "bg" not in result

@@ -1,5 +1,4 @@
 import importlib
-import importlib.util
 import sys
 from lib import files
 
@@ -22,10 +21,7 @@ def check():
     for name, module in list(sys.modules.items()):
         if not name.startswith("lib."):
             continue
-        module_file = name.split(".", 1)[1] + ".py"
-        file_path = f"{source_root}/{MODULE_REL_PATH}/{module_file}"
-        spec = importlib.util.spec_from_file_location(name, file_path)
-        spec.loader.exec_module(module)
+        importlib.reload(module)
 
     # Delete beacon after successful loading
     files.remove(RELOAD_BEACON)

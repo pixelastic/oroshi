@@ -14,7 +14,7 @@ def reset_state():
 
 def test_init_loads_icons(mocker):
     mocker.patch(
-        "lib.tab_data._read_json",
+        "lib.tab_data.files.read_json",
         return_value={"kitty-tab-attention-stop": "!", "kitty-tab-fullscreen": "F"},
     )
     tab_data.init()
@@ -26,10 +26,12 @@ def test_init_loads_icons(mocker):
 
 def test_init_overwrites_on_second_call(mocker):
     mocker.patch(
-        "lib.tab_data._read_json", return_value={"kitty-tab-attention-stop": "!"}
+        "lib.tab_data.files.read_json", return_value={"kitty-tab-attention-stop": "!"}
     )
     tab_data.init()
-    mocker.patch("lib.tab_data._read_json", return_value={"kitty-tab-fullscreen": "F"})
+    mocker.patch(
+        "lib.tab_data.files.read_json", return_value={"kitty-tab-fullscreen": "F"}
+    )
     tab_data.init()
     assert tab_data._icons == {"kitty-tab-fullscreen": "F"}
 
