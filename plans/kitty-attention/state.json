@@ -30,8 +30,9 @@
   {
     "id": "05",
     "issue": "issues/05-debug-attention-autoclear.md",
-    "done": false,
-    "blocked_by": ["04"]
+    "done": true,
+    "blocked_by": ["04"],
+    "recap": "Diagnosed and fixed attention auto-clear: kitty holds GIL between render cycles blocking Timer threads; replaced with poll-based approach + dummy timer to keep render cycles alive"
   },
   {
     "id": "06",
