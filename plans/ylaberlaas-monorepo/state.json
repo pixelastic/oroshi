@@ -23,7 +23,14 @@
   {
     "id": "04",
     "issue": "issues/04-yarn-link-monorepo-detection.md",
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "Added monorepo detection to yarn-link — calls yarn-workspace-list-raw and links each workspace individually; updated ylaberlaas alias to point to monorepo root"
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-workspace-list-raw-public-filter.md",
     "done": false,
-    "blocked_by": ["02"]
+    "blocked_by": ["04"]
   }
 ]

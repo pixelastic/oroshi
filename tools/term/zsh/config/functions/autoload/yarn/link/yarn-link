@@ -12,29 +12,42 @@
 # This script and its siblings are a way to abstract the differences between
 # Classic and Berry under a common DX API.
 #
+# If a path is a monorepo, all its workspaces are linked automatically.
+#
 # Usage:
-# $ yarn-link ../path/to/aberlaas-monorepo/lib   # Uses local version of aberlaas instead of dependency
-# $ yarn-link ../path/to/one ../path/to/two      # Link several modules at once
+# $ yarn-link ../path/to/aberlaas              # Links all workspaces of a monorepo
+# $ yarn-link ../path/to/single-module         # Links a single module
+# $ yarn-link ../path/to/one ../path/to/two    # Link several modules at once
 setopt local_options err_return
 local inputPaths=($@)
 local yarnIsBerry="1"
 yarn-version-is-classic && yarnIsBerry="0"
 
 for modulePath in $inputPaths; do
-	modulePath="${modulePath:a}"
+  modulePath="${modulePath:a}"
 
-	# If we're using Yarn Classic (v1), it has it's own flow
-	# 1. Register the destination in the list of linkable modules
-	# 2. Actually link the source to the destination
-	if [[ $yarnIsBerry == "0" ]]; then
-		local moduleName="$(yarn-package-name "$modulePath")"
+  # If we're using Yarn Classic (v1), it has it's own flow
+  # 1. Register the destination in the list of linkable modules
+  # 2. Actually link the source to the destination
+  if [[ $yarnIsBerry == "0" ]]; then
+    local moduleName="$(yarn-package-name "$modulePath")"
 
-		yarn-link-classic-create $modulePath
-		yarn-link-classic-enable $moduleName
-		continue
-	fi
+    yarn-link-classic-create $modulePath
+    yarn-link-classic-enable $moduleName
+    continue
+  fi
 
-	# If using Yarn Berry (v2+), we only need to pass the path to the linked
-	# module. We will create all the required symlinks
-	yarn-link-create $modulePath
+  # If the path is a monorepo, link each workspace individually
+  if yarn-is-monorepo "$modulePath"; then
+    local rawWorkspaces="$(yarn-workspace-list-raw "$modulePath")"
+    for rawLine in ${(f)rawWorkspaces}; do
+      local fields=(${(@ps/▮/)rawLine})
+      local relativePath=$fields[2]
+      yarn-link-create "${modulePath}/${relativePath}"
+    done
+    continue
+  fi
+
+  # Single module — create the symlink directly
+  yarn-link-create $modulePath
 done
