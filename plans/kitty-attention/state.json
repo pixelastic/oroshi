@@ -37,7 +37,8 @@
   {
     "id": "06",
     "issue": "issues/06-fix-attention-autoclear.md",
-    "done": false,
-    "blocked_by": ["05"]
+    "done": true,
+    "blocked_by": ["05"],
+    "recap": "Removed debug infrastructure (debug function, debugState, _debug_file_path) from helper.py"
   }
 ]
