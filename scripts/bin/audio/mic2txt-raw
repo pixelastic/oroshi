@@ -16,12 +16,13 @@ local wav2TxtBinary=${flagWav2Txt[2]}
 local scriptDir="${0:a:h}"
 local tmpFolder=/dev/shm/oroshi/mic2txt
 local pidFile=${tmpFolder}/PID
+local startTimeFile=${tmpFolder}/START_TIME
 local recordFile=${tmpFolder}/record.wav
 mkdir -p $tmpFolder
 # }}}
 
 # Start a recording
-function startRecording {
+function startRecording() {
   rec \
     --rate 16000 \
     --channels 1 \
@@ -29,10 +30,13 @@ function startRecording {
 
   # Save the pid
   echo $! >$pidFile
+
+  # Save the start time for min-duration guard
+  echo $EPOCHREALTIME >$startTimeFile
 }
 
 # Stop the current recording
-function stopRecording {
+function stopRecording() {
   sleep 2
 
   kill-pid "$(cat $pidFile)"
@@ -94,6 +98,14 @@ function stopRecording {
 # If a recording is not already in progress, we start a new one
 if [[ ! -f $pidFile ]]; then
   startRecording
+  exit 0
+fi
+
+# Recording too short — cancel instead of transcribing
+local startTime="$(cat $startTimeFile)"
+local elapsed=$(( EPOCHREALTIME - startTime ))
+if (( elapsed < 2 )); then
+  mic2txt-cancel
   exit 0
 fi
 
