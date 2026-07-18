@@ -1,9 +1,12 @@
 # Check if currently in a yarn monorepo
+# Usage:
+# $ yarn-is-monorepo              # Check from current directory
+# $ yarn-is-monorepo /some/path   # Check from given path
 # No yarn
 setopt local_options err_return
 [[ ! $commands[yarn] ]] && return 1
 
-local gitRoot="$(git-directory-root)"
+local gitRoot="$(git-directory-root $1)"
 local packageJsonPath="${gitRoot}/package.json"
 
 # Not in git repo
