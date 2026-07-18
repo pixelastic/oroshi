@@ -31,3 +31,14 @@ fi
 ```
 **Problem:** Spec says "before the existing sleep 2" (inside stopRecording), but guard is before stopRecording call
 **Reason skipped:** Spec intent is "recordings < 2s trigger mic2txt-cancel". mic2txt-cancel handles kill + cleanup + sound. Placing guard before stopRecording achieves this correctly.
+
+## Issue 03 — cancel-keybinding
+### Missing Usage: header block
+```zsh
+#!/usr/bin/env zsh
+# Configure custom global keybinding
+# Those open specific applications when pressed
+set -e
+```
+**Problem:** zsh-writer header standard expects a `# Usage:` block after the description.
+**Reason skipped:** Pre-existing omission, judgement call — this file is a declarative config script sourced during setup, not a user-facing CLI tool where usage docs add value.
