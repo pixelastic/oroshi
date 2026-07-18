@@ -15,6 +15,9 @@ def check():
     # Read source path from the beacon
     source_root = files.read(RELOAD_BEACON).strip()
 
+    # Point lib's __path__ at the source so new modules can be found on import
+    sys.modules["lib"].__path__ = [f"{source_root}/{MODULE_REL_PATH}"]
+
     # Reload all lib.* modules from the beacon path
     for name, module in list(sys.modules.items()):
         if not name.startswith("lib."):
