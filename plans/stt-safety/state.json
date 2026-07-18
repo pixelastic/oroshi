@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-mic2txt-cancel.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Created mic2txt-cancel script that kills rec process, cleans temp files, and plays cancel sound"
   },
   {
     "id": "02",

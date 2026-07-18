@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+# Cancel an in-progress mic2txt recording
+# Usage:
+# $ mic2txt-cancel
+set -e
+
+TMP_FOLDER=/dev/shm/oroshi/mic2txt
+PID_FILE=${TMP_FOLDER}/PID
+
+# No recording in progress
+[[ ! -f $PID_FILE ]] && exit 0
+
+# Kill the rec process
+kill-pid "$(cat "$PID_FILE")"
+
+# Clean up temp files
+rm --force \
+  ${TMP_FOLDER}/PID \
+  ${TMP_FOLDER}/START_TIME \
+  ${TMP_FOLDER}/record.wav
+
+# Play cancel sound
+audio-play-oroshi mic2txt-cancel.mp3
