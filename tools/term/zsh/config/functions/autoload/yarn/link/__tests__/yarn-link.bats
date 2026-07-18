@@ -31,9 +31,14 @@ setup() {
   }
 
   # Mock yarn-workspace-list-raw to return workspace entries
+  # Returns only public workspaces when --public is passed
   yarn-workspace-list-raw() {
+    echo "$@" > "$BATS_TMP_DIR/workspace-list-raw-args.txt"
     echo "alpha▮modules/alpha▮Alpha module"
     echo "beta▮modules/beta▮Beta module"
+    if [[ "$1" != "--public" ]]; then
+      echo "docs▮modules/docs▮Documentation site"
+    fi
   }
 
   bats_mock yarn-version-is-classic yarn-link-create yarn-is-monorepo yarn-workspace-list-raw
@@ -43,28 +48,35 @@ setup() {
   bats_run_zsh "cd $BATS_TMP_DIR && yarn-link $MONOREPO_DIR"
   [[ "$status" -eq 0 ]]
 
-  # yarn-link-create called for each workspace
-  [[ -f "$BATS_TMP_DIR/link-create-calls.txt" ]]
-  local callCount="$(wc -l < "$BATS_TMP_DIR/link-create-calls.txt")"
-  [[ "$callCount" -eq 2 ]]
+  # yarn-link-create called for each public workspace
+  local expected="${MONOREPO_DIR}/modules/alpha
+${MONOREPO_DIR}/modules/beta"
+  [[ "$(cat "$BATS_TMP_DIR/link-create-calls.txt")" == "$expected" ]]
 }
 
-@test "monorepo path passes absolute workspace paths to yarn-link-create" {
+@test "monorepo path passes --public to yarn-workspace-list-raw" {
   bats_run_zsh "cd $BATS_TMP_DIR && yarn-link $MONOREPO_DIR"
   [[ "$status" -eq 0 ]]
 
-  # Each call should use the absolute workspace path
-  grep -q "${MONOREPO_DIR}/modules/alpha" "$BATS_TMP_DIR/link-create-calls.txt"
-  grep -q "${MONOREPO_DIR}/modules/beta" "$BATS_TMP_DIR/link-create-calls.txt"
+  # Verify --public flag was passed
+  local args="$(cat "$BATS_TMP_DIR/workspace-list-raw-args.txt")"
+  [[ "$args" == *"--public"* ]]
+}
+
+@test "monorepo linking skips private workspaces" {
+  bats_run_zsh "cd $BATS_TMP_DIR && yarn-link $MONOREPO_DIR"
+  [[ "$status" -eq 0 ]]
+
+  # Only public workspaces linked, not the private docs workspace
+  local expected="${MONOREPO_DIR}/modules/alpha
+${MONOREPO_DIR}/modules/beta"
+  [[ "$(cat "$BATS_TMP_DIR/link-create-calls.txt")" == "$expected" ]]
 }
 
 @test "non-monorepo path creates a single symlink" {
   bats_run_zsh "cd $BATS_TMP_DIR && yarn-link $SINGLE_DIR"
   [[ "$status" -eq 0 ]]
 
-  # yarn-link-create called exactly once
-  [[ -f "$BATS_TMP_DIR/link-create-calls.txt" ]]
-  local callCount="$(wc -l < "$BATS_TMP_DIR/link-create-calls.txt")"
-  [[ "$callCount" -eq 1 ]]
-  grep -q "$SINGLE_DIR" "$BATS_TMP_DIR/link-create-calls.txt"
+  # yarn-link-create called exactly once with the module path
+  [[ "$(cat "$BATS_TMP_DIR/link-create-calls.txt")" == "$SINGLE_DIR" ]]
 }

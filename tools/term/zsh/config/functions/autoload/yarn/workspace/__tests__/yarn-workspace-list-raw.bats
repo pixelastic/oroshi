@@ -28,6 +28,16 @@ PKG
   "description": "Second library"
 }
 PKG
+
+  # Private workspace
+  mkdir -p "$BATS_GIT_DIR/modules/docs"
+  cat > "$BATS_GIT_DIR/modules/docs/package.json" <<'PKG'
+{
+  "name": "@mono/docs",
+  "description": "Documentation site",
+  "private": true
+}
+PKG
 }
 
 # --- Output format ---
@@ -43,7 +53,7 @@ PKG
     [ "$fieldCount" -eq 3 ]
     lineCount=$((lineCount + 1))
   done <<< "$output"
-  [ "$lineCount" -eq 2 ]
+  [ "$lineCount" -eq 3 ]
 }
 
 # --- Workspace discovery ---
@@ -134,6 +144,31 @@ PKG
   local basePos="${output%%mylib▮*}"
   local suffixedPos="${output%%mylib-extra*}"
   [ "${#basePos}" -lt "${#suffixedPos}" ]
+}
+
+# --- --public flag ---
+
+@test "without --public, lists all workspaces including private ones" {
+  bats_run_zsh "cd $BATS_GIT_DIR && yarn-workspace-list-raw"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"@mono/lib-a"* ]]
+  [[ "$output" == *"@mono/lib-b"* ]]
+  [[ "$output" == *"@mono/docs"* ]]
+}
+
+@test "with --public, excludes workspaces that have private: true" {
+  bats_run_zsh "cd $BATS_GIT_DIR && yarn-workspace-list-raw --public"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"@mono/lib-a"* ]]
+  [[ "$output" == *"@mono/lib-b"* ]]
+  [[ "$output" != *"@mono/docs"* ]]
+}
+
+@test "with --public and path argument, excludes private workspaces" {
+  bats_run_zsh "yarn-workspace-list-raw --public $BATS_GIT_DIR"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"@mono/lib-a"* ]]
+  [[ "$output" != *"@mono/docs"* ]]
 }
 
 # --- Non-monorepo ---

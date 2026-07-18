@@ -2,8 +2,14 @@
 # Usage:
 # $ yarn-workspace-list-raw              # From current directory
 # $ yarn-workspace-list-raw /some/path   # From given path
+# $ yarn-workspace-list-raw --public     # Exclude private workspaces
 setopt local_options err_return
 
+zmodload zsh/zutil
+zparseopts -E -D \
+  -public=flagPublic
+
+local isPublic=${#flagPublic}
 local targetPath="$1"
 [[ "$targetPath" == "" ]] && targetPath="$(yarn-root)"
 
@@ -25,6 +31,12 @@ for glob in ${(f)workspaceGlobs}; do
 
     # Skip dirs without package.json
     [[ ! -r "$workspacePackageJson" ]] && continue
+
+    # Skip private workspaces when --public is set
+    if [[ $isPublic == "1" ]]; then
+      local isPrivate="$(jq -r '.private // false' "$workspacePackageJson")"
+      [[ "$isPrivate" == "true" ]] && continue
+    fi
 
     local name="$(jq -r '.name // ""' "$workspacePackageJson")"
     local description="$(jq -r '.description // ""' "$workspacePackageJson")"

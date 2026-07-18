@@ -39,7 +39,7 @@ for modulePath in $inputPaths; do
 
   # If the path is a monorepo, link each workspace individually
   if yarn-is-monorepo "$modulePath"; then
-    local rawWorkspaces="$(yarn-workspace-list-raw "$modulePath")"
+    local rawWorkspaces="$(yarn-workspace-list-raw --public "$modulePath")"
     for rawLine in ${(f)rawWorkspaces}; do
       local fields=(${(@ps/▮/)rawLine})
       local relativePath=$fields[2]

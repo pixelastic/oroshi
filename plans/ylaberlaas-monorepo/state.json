@@ -30,7 +30,8 @@
   {
     "id": "05",
     "issue": "issues/05-workspace-list-raw-public-filter.md",
-    "done": false,
-    "blocked_by": ["04"]
+    "done": true,
+    "blocked_by": ["04"],
+    "recap": "Added --public flag to yarn-workspace-list-raw to exclude private workspaces; yarn-link now uses it to skip private modules"
   }
 ]
