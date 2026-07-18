@@ -1,0 +1,26 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-yarn-is-monorepo-path-arg.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-yarn-workspace-list-raw.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-yarn-workspace-list.md",
+    "done": false,
+    "blocked_by": ["02"]
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-yarn-link-monorepo-detection.md",
+    "done": false,
+    "blocked_by": ["02"]
+  }
+]
