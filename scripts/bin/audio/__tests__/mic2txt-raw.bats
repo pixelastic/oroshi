@@ -29,7 +29,7 @@ teardown() {
   mic2txt-cancel() { echo "called" > "$BATS_TMP_DIR/cancel-called.txt"; }
   bats_mock mic2txt-cancel
 
-  bats_run_zsh "echo \$EPOCHREALTIME > $TMP_FOLDER/START_TIME && mic2txt-raw --wav2txt echo"
+  bats_run_zsh "zmodload zsh/datetime; echo \$EPOCHREALTIME > $TMP_FOLDER/START_TIME && mic2txt-raw --wav2txt echo"
   [[ "$status" -eq 0 ]]
   [[ -f "$BATS_TMP_DIR/cancel-called.txt" ]]
 }
@@ -43,7 +43,7 @@ teardown() {
   echo "touch $BATS_TMP_DIR/wav2txt-called.txt" >> "$BATS_TMP_DIR/fake-wav2txt"
   chmod +x "$BATS_TMP_DIR/fake-wav2txt"
 
-  bats_run_zsh "echo \$EPOCHREALTIME > $TMP_FOLDER/START_TIME && mic2txt-raw --wav2txt $BATS_TMP_DIR/fake-wav2txt"
+  bats_run_zsh "zmodload zsh/datetime; echo \$EPOCHREALTIME > $TMP_FOLDER/START_TIME && mic2txt-raw --wav2txt $BATS_TMP_DIR/fake-wav2txt"
   [[ "$status" -eq 0 ]]
   [[ ! -f "$BATS_TMP_DIR/wav2txt-called.txt" ]]
 }
@@ -62,7 +62,7 @@ teardown() {
   sleep() { :; }
   bats_mock mic2txt-cancel kill-pid audio-play-oroshi mic2txt-language mic2txt-slack-mode-is-enabled mic2txt-autosubmit-mode-is-enabled focus-insert sleep
 
-  bats_run_zsh "echo \$(( EPOCHREALTIME - 5 )) > $TMP_FOLDER/START_TIME && mic2txt-raw --wav2txt echo"
+  bats_run_zsh "zmodload zsh/datetime; echo \$(( EPOCHREALTIME - 5 )) > $TMP_FOLDER/START_TIME && mic2txt-raw --wav2txt echo"
   [[ "$status" -eq 0 ]]
   [[ ! -f "$BATS_TMP_DIR/cancel-called.txt" ]]
 }
@@ -78,7 +78,7 @@ teardown() {
   sleep() { :; }
   bats_mock kill-pid audio-play-oroshi mic2txt-language mic2txt-slack-mode-is-enabled mic2txt-autosubmit-mode-is-enabled focus-insert sleep
 
-  bats_run_zsh "echo \$(( EPOCHREALTIME - 5 )) > $TMP_FOLDER/START_TIME && mic2txt-raw --wav2txt echo"
+  bats_run_zsh "zmodload zsh/datetime; echo \$(( EPOCHREALTIME - 5 )) > $TMP_FOLDER/START_TIME && mic2txt-raw --wav2txt echo"
   [[ "$status" -eq 0 ]]
   [[ -f "$BATS_TMP_DIR/inserted.txt" ]]
 }

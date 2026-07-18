@@ -4,6 +4,7 @@
 # $ mic2txt-raw # Starts recording then...
 #   mic2txt-raw # ...stops the recording and display the transcription
 set -e
+zmodload zsh/datetime
 
 # Parsing args {{{
 zparseopts -E -D \
