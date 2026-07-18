@@ -18,3 +18,7 @@
 - Aberlaas workspaces glob: `["modules/*"]` in root `package.json`
 
 ## Discoveries
+
+### Issue 02 — yarn-workspace-list-raw
+- `path` is a reserved ZSH variable (array tied to `$PATH`) — never use it as a local variable name; use `targetPath` instead
+- `print $output` works the same as `echo $output` for `\n` interpretation in ZSH — both are valid

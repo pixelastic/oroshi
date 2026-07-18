@@ -1,0 +1,40 @@
+# List all workspaces of a yarn monorepo as machine-parseable lines
+# Usage:
+# $ yarn-workspace-list-raw              # From current directory
+# $ yarn-workspace-list-raw /some/path   # From given path
+setopt local_options err_return
+
+local targetPath="$1"
+[[ "$targetPath" == "" ]] && targetPath="$(yarn-root)"
+
+# Stop early if no git repo
+local gitRoot="$(git-directory-root "$targetPath")"
+[[ "$gitRoot" == "" ]] && return 1
+
+# Stop if not a monorepo
+yarn-is-monorepo $gitRoot || return 1
+
+local output=""
+local workspaceGlobs="$(jq -r '.workspaces[]?' "${gitRoot}/package.json" 2>/dev/null)"
+for glob in ${(f)workspaceGlobs}; do
+  # Expand glob relative to git root
+  local matches=("${gitRoot}"/${~glob}(/N))
+
+  for workspaceDir in "${matches[@]}"; do
+    local workspacePackageJson="${workspaceDir}/package.json"
+
+    # Skip dirs without package.json
+    [[ ! -r "$workspacePackageJson" ]] && continue
+
+    local name="$(jq -r '.name // ""' "$workspacePackageJson")"
+    local description="$(jq -r '.description // ""' "$workspacePackageJson")"
+    local relativePath="${workspaceDir#"${gitRoot}"/}"
+
+    output+="${name}▮${relativePath}▮${description}\n"
+  done
+done
+
+# Nothing found
+[[ "$output" == "" ]] && return 1
+
+print $output
