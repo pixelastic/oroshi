@@ -12,6 +12,7 @@ alias cc="claude --continue"
 # Ralph
 alias raplh="ralph"
 alias rpalh="ralph"
+alias alph="ralph"
 
 # Skills
 alias skl="skills-list"

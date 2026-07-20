@@ -14,21 +14,14 @@ grill-me, prd, issues, ralph or nothing
 
 ## Misc
 
-Ensure zsh-writer (and js-writer) follow a RED GREEN REFACTOR LINT structure. So
-we first write a failing test, then code that pass the tests, then refactor
-through patterns then deterministic lint
-
-If I press record twice in a row really fast, an almost empty rec file is sent
-and the API returns an error. This should be handled and discarded.
-
-I probaly should also define a keybinding to cancel a record, like Ctrl-YELLOW
-
-vfe shouldn't open mp3 files
-
 Tell zsh-writer to not use abbreviations in variable names (ie no absPath,
 prefer absolutePath)
 
 Colors of markdown headers are off in nvim
+
+Seem like the attention icon added is not always the right one. I have the pause
+icon added for simple end of ralph conversation.
+Should also make it orange, like ai color
 
 Merge /prd and /issues into one skill named /plan. I always chain the two.
 See if I can define specific models for each skill that requires it. Identify if
@@ -37,6 +30,8 @@ Make sure after the plan is validated, it goes straight to suggesting the
 issues.
 Skip the ask to write the PRD, can we make it so it automaticlaly writes the
 file?
+I feel we do the same work twice: explain if the "modules" are ok, then explain
+how to split them in issues.
 
 Make Claude inspect all the history of the review logs of deleted worktrees, and
 classifying the most common skipped review, so I can improve my skills so they
