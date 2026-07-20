@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-zsh-writer-green-refactor-split.md",
-    "done": false,
+    "done": true,
+    "recap": "Split zsh-writer Step 3 into GREEN (Make it work) + REFACTOR, renumbered Lint to Step 5, added checklist item",
     "blocked_by": []
   },
   {

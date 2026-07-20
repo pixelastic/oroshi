@@ -55,14 +55,22 @@ setup() {
 }
 ```
 
-### Step 3 — Write the code
+### Step 3 — Make it work
 
-**Goal:** Working code, following coding style.
+**Goal:** Write the minimal code to make the failing test pass.
 
-**Exit criterion:** Test passes.
+**Exit criterion:** Test is green.
 
-Write code that follows the following patterns:
+Write the simplest code that makes the test pass.
+No patterns yet — just correct behavior.
 
+- Run `bats <test_filepath>` to run the tests
+
+### Step 4 — Refactor
+
+**Goal:** Apply structural and style patterns without changing behavior.
+
+**Exit criterion:** Tests still pass after refactor.
 
 | Pattern | Rule |
 |---|---|
@@ -72,7 +80,6 @@ Write code that follows the following patterns:
 | [Splitting](./references/splitting.md) | Use `▮` as separator and `${(@ps/▮/)line}` to split |
 | [Conditions](./references/conditions.md) | `[[ simpleCondition ]] && state=value`. No nested if/else, return early |
 | [Calling Commands](./references/calling-commands.md) | Use existing helpers (`git-branch-current`), not raw calls. Use `--long-form`, not `-l`. |
-
 
 ```zsh
 # Show changed files with syntax-aware coloring
@@ -122,7 +129,9 @@ done
 table $output
 ```
 
-### Step 4 — Lint the file
+- Run `bats <test_filepath>` to confirm tests still pass
+
+### Step 5 — Lint the file
 
 Run `zsh-lint --fix <file>` on any modified `.zsh` files.
 Run `bats-lint <test_file>` on any modified `.bats` test files.
@@ -145,4 +154,5 @@ Fix **every** violation, (including pre-existing ones not introduced by the curr
 - [ ] External commands use long-form args, one per line
 - [ ] Use existing helpers over porcelain (e.g. `git-branch-list-raw` not `git branch`)
 - [ ] Use `zparseopts` for --named arguments
+- [ ] Tests still pass after refactor
 - [ ] Tests use the dedicated helpers
