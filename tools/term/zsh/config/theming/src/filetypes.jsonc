@@ -25,7 +25,6 @@
       "c",
       "cjs",
       "css",
-      "eot",
       "gemspec",
       "html",
       "json",
@@ -51,8 +50,6 @@
       "toml",
       "ts",
       "tsx",
-      "ttf",
-      "woff",
       "xml",
       "yaml",
       "yml",
@@ -94,6 +91,19 @@
       {"filename": ".prettierignore"},
       {"filename": ".stylelintignore"},
       {"filename": ".yarnrc"}
+    ]
+  },
+
+  // Fonts
+  "font": {
+    "color": "pink-6",
+    "icon": "filetype-font",
+    "patterns": [
+      "eot",
+      "otf",
+      "ttf",
+      "woff",
+      "woff2"
     ]
   },
 
