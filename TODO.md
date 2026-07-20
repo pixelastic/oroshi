@@ -56,6 +56,13 @@ skill, a lint rule, etc). In that case I'd like to mark the main tab as
 "sleeping" until another is done. Don't know how to do that? A keybinding to
 mark as sleeping, whith a note about when to get back to it?
 
+Doublecheck that when I create plans, the PRD correctly name the test/lint
+commands. JS plans tend to write bad guidance.
+It works in oroshi, as oroshi has a CLAUDE.md, but as soon as I ry to make it
+work in another repo, it hallucinates. I guess I'll have to improve the /prd
+command to tell it to find the appropriate lint/test commands from the
+appropriate language skill before writing them (or completely ignore them?)
+
 Check for each binary in scripts if they couldn't have been made as a zsh
 autoloaded function. Define a clear glossary of why omething is a script raher
 than a function. Find a way to write ina  comment in each script WHY something
