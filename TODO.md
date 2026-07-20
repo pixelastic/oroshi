@@ -37,6 +37,8 @@ Make Claude inspect all the history of the review logs of deleted worktrees, and
 classifying the most common skipped review, so I can improve my skills so they
 are no longer suggested.
 
+Update the ralph final output. Rpelace "Problem" with "Problem solved:"
+
 Check if it would be possible to send the mic2txt transcript to the right window
 even after I switch tabs, using kitty-remote send-text --match "id:$parentId"
 that might be a way to have me switch between tabs even before the speech to
@@ -46,6 +48,13 @@ json-lint errors when editing files outside of oroshi
 
 Move compdef-glob-from-type.zsh (or something like that) into its own `__lib`
 folder, to follow with conventions
+
+I might need a way to mark a main/sub tab in kitty. Sometumes I can sart a
+sidequest to improve something unrelated, but sometimes I need to have the
+sidequest finished before I can go on with the main quest (for example fixing a
+skill, a lint rule, etc). In that case I'd like to mark the main tab as
+"sleeping" until another is done. Don't know how to do that? A keybinding to
+mark as sleeping, whith a note about when to get back to it?
 
 Check for each binary in scripts if they couldn't have been made as a zsh
 autoloaded function. Define a clear glossary of why omething is a script raher

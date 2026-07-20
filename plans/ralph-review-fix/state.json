@@ -1,9 +1,0 @@
-[
-  {
-    "id": "01",
-    "issue": "issues/01-split-review-fix.md",
-    "done": true,
-    "blocked_by": [],
-    "recap": "Split Step 4 (REVIEW & FIX) into Step 4 (REVIEW) and Step 5 (FIX), renumbered Steps 5-7 → 6-8, split checklist into labeled sections"
-  }
-]
