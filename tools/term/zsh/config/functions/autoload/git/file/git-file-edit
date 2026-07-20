@@ -9,6 +9,9 @@ local rawFiles="$(git-file-list-dirty-raw)"
 # Nothing to open if working tree is clean
 [[ "$rawFiles" == "" ]] && return 0
 
+filetypes-load-definitions
+local allowedGroups=(text script config)
+
 local fileList=()
 for rawLine in ${(f)rawFiles}; do
   local splitLine=(${(@s/:/)rawLine})
@@ -24,12 +27,14 @@ for rawLine in ${(f)rawFiles}; do
   # Skip if file no longer exists on disk (safety net for unexpected statuses)
   [[ ! -f "${gitRoot}/${filePath}" ]] && continue
 
-  # Skip known useless files to review
-  local fileName="${filePath:t}"
-  [[ "$filePath" == yarn.lock ]] && continue
-  [[ "$filePath" == *.woff2 ]] && continue
+  # Skip plan artifacts
   [[ "$filePath" == plans/*/state.json ]] && continue
   [[ "$filePath" == plans/*/scaffold/* ]] && continue
+
+  # Skip files whose group is not in the allowlist (empty group = accepted)
+  filetypes-group --reply "$filePath"
+  local group="$REPLY"
+  [[ "$group" != "" && ${allowedGroups[(Ie)$group]} -eq 0 ]] && continue
 
   fileList+=("${gitRoot}/${filePath}")
 done

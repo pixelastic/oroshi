@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-git-file-edit-allowlist.md",
-    "done": false,
-    "blocked_by": ["01", "02"]
+    "done": true,
+    "blocked_by": ["01", "02"],
+    "recap": "Replaced hardcoded yarn.lock/woff2 skips in git-file-edit with filetype-group allowlist (text/script/config), unknown extensions accepted"
   }
 ]
