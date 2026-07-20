@@ -75,25 +75,36 @@ If you have any `## Scaffolding Tests` from the issue:
 
 ---
 
-## Step 4 — REVIEW & FIX
+## Step 4 — REVIEW
 
-**Goal:** Get external feedback, apply it, verify nothing broke.
+**Goal:** Get external feedback and categorize it.
 
-**Exit criterion:** All actionable feedback addressed, linter clean, tests green.
+**Exit criterion:** Findings categorized and displayed.
 
 1. Run the **/review skill** using the **Skill tool** (not Bash tool)
     - Skill name: `review`
     - Args: `ref:dirty` and `spec:<issue_path>`
     - DO NOT use the Bash tool to run `review`
-2. For each feedback item:
-   - **Actionable and in scope** → fix it
-   - **Out of scope or not relevant** → note it, will go in review-log.md (path from `ralph-start` output)
-3. Lint all modified files with `git-file-lint` and fix any issues.
-4. Run tests for all modified files using `git-file-test`. All tests must pass.
+2. Categorize ALL findings (from both Standards and Spec) into two buckets:
+   - **skipped** — out of scope or not relevant, with one-line reason per item
+   - **fixable** — actionable and in scope
+3. Display the two buckets as a summary before moving on
 
 ---
 
-## Step 5 — UPDATE PLAN ARTIFACTS
+## Step 5 — FIX
+
+**Goal:** Apply fixable feedback, verify nothing broke.
+
+**Exit criterion:** All fixable items addressed, linter clean, tests green.
+
+1. Consume the **fixable** bucket, fix every item.
+2. Lint all modified files with `git-file-lint` and fix any issues.
+3. Run tests for all modified files using `git-file-test`. All tests must pass.
+
+---
+
+## Step 6 — UPDATE PLAN ARTIFACTS
 
 **Goal:** Persist session state for future sessions.
 
@@ -112,12 +123,12 @@ All paths of the following files are from `ralph-start` output.
    ```
    Skip if there are no non-trivial findings.
 
-3. **If review had skipped items**, create or append to `review-log.md`.
-   Load [review-log.md](references/review-log.md) for the review-log format (needed if review had skipped items).
+3. If the **skipped** bucket is non-empty, create or append to `review-log.md`.
+   Load [review-log.md](references/review-log.md) for the review-log format.
 
 ---
 
-## Step 6 — WRITE COMMIT HINT
+## Step 7 — WRITE COMMIT HINT
 
 **Goal:** Leave a hint so the commit message author understands what was built.
 
@@ -129,7 +140,7 @@ Load [commit-hint.md](references/commit-hint.md) for the format and rules.
 
 ---
 
-## Step 7 — STOP
+## Step 8 — STOP
 
 **Goal:** Hand off to user.
 
@@ -174,12 +185,16 @@ Print:
 - [ ] Code written following the language skill's standards
 - [ ] Linter clean on modified files
 - [ ] Tests green for modified files
+REVIEW:
 - [ ] Ran `/review` via Skill tool and received output
 - [ ] Pass `ref:dirty` and `spec:<path>` to the review skill
-- [ ] Actionable feedback fixed or explicitly dismissed
-- [ ] Linter + tests green for modified files after review fixes
+- [ ] Findings categorized into **fixable** and **skipped** buckets
+- [ ] Summary of both buckets displayed
+FIX:
+- [ ] All **fixable** items fixed
+- [ ] Linter + tests green for modified files after fixes
 - [ ] state.json updated with `done: true` + `recap`
 - [ ] GUIDANCE.md discoveries appended (or skipped if none)
-- [ ] review-log.md updated if skipped feedback exists
+- [ ] review-log.md updated if **skipped** bucket is non-empty
 - [ ] COMMIT_HINT.md describes outcomes, not issue numbers or plan status
 - [ ] **Stopped — waiting for user to commit**
