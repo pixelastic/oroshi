@@ -27,3 +27,15 @@ setup() {
   [ "$status" -eq 0 ]
   [ "$output" = "image" ]
 }
+
+@test "--reply produces no stdout" {
+  bats_run_zsh "filetypes-group --reply file.png"
+  [ "$status" -eq 0 ]
+  [ "$output" = "" ]
+}
+
+@test "--reply sets REPLY to group name" {
+  bats_run_zsh "filetypes-group --reply file.png && echo \$REPLY"
+  [ "$status" -eq 0 ]
+  [ "$output" = "image" ]
+}

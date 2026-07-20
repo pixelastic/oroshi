@@ -9,8 +9,9 @@
   {
     "id": "02",
     "issue": "issues/02-filetypes-group-reply.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added --reply flag to filetypes-group using zparseopts, writes to $REPLY instead of echo"
   },
   {
     "id": "03",

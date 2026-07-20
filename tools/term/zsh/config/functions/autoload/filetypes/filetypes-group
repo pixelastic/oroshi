@@ -1,11 +1,23 @@
 # Return the type of file based on its extension
 # Uses the FILETYPES[] assoc array (loaded via filetypes-load-definitions)
 # Usage:
-# $ filetypes-group ./path/to/file.png    # image
+# $ filetypes-group ./path/to/file.png          # image
+# $ filetypes-group --reply ./path/to/file.png   # Write to $REPLY, no echo
 setopt local_options err_return
+zmodload zsh/zutil
+zparseopts -E -D \
+  -reply=flagReply
+
+local isReply=${#flagReply}
 
 filetypes-load-definitions
 
 filetypes-key "${1}"
 local key="${REPLY}:group"
-echo $FILETYPES[$key]
+local group="$FILETYPES[$key]"
+
+if [[ $isReply == "1" ]]; then
+  REPLY="$group"
+  return
+fi
+echo "$group"
