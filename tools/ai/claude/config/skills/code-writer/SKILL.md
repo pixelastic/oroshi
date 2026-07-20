@@ -17,8 +17,9 @@ These guidelines apply to all programming languages. For language-specific patte
 
 - **JavaScript**: Use `js-writer` skill for JavaScript/Node.js code
 - **ZSH**: Use `zsh-writer` skill for ZSH functions in .oroshi repository
+- **Python**: Use `python-writer` skill for Python code
 
-Language-specific skills extend these core guidelines with syntax and idioms specific to that language.
+All language-specific skills follow a RED → GREEN → REFACTOR → LINT workflow and extend these core guidelines with syntax and idioms specific to that language.
 
 ## When to Use
 

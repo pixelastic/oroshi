@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-code-writer-python-tdd.md",
-    "done": false,
+    "done": true,
+    "recap": "Added python-writer to code-writer language list, added TDD workflow sentence",
     "blocked_by": []
   }
 ]
