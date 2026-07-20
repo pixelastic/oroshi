@@ -57,7 +57,8 @@ def test_returns_slugified_name():
 
 **Exit criterion:** Test passes.
 
-Write the simplest code that makes the test green. Don't optimize yet.
+Write the simplest code that makes the test pass.
+No patterns yet — just correct behavior.
 
 Run `python-test <filepath>` to confirm.
 

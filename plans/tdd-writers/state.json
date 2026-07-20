@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-python-writer-align-wording.md",
-    "done": false,
+    "done": true,
+    "recap": "Aligned python-writer Step 4 body text with js-writer canonical wording",
     "blocked_by": []
   },
   {
