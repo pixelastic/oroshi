@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-font-filetype-group.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added font filetype group with eot/otf/ttf/woff/woff2 extensions, moved eot/ttf/woff out of script group, rebuilt dist"
   },
   {
     "id": "02",
