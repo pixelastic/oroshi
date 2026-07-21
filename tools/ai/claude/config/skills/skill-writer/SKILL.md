@@ -33,6 +33,15 @@ should enforce (not how to encode it).
 Read `references/skill-template.md`.
 Create or update the skill file at the canonical location: `tools/ai/claude/config/skills/<name>/SKILL.md`.
 
+(Optional): When creating language-specific writer skill (e.g. `rust-writer`),
+ensure all universal rules from `code-writer/references/style.md` are present in
+the language skill's own `references/style.md`.
+
+---
+
+### Step 2b — Language writer skills
+
+
 ---
 
 ### Step 3 — DONE

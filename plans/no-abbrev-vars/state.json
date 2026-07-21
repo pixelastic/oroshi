@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-add-no-abbrev-rule.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added no-abbreviated-names rule to code-writer, js-writer, python-writer skills and added language-writer-skills reminder to skill-writer"
   }
 ]

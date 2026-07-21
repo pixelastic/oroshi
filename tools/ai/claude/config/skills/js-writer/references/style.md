@@ -1,16 +1,14 @@
 # Style
 
 - camelCase for everything
-- `_.chain()` for 2+ lodash ops; direct method for one op
+- No abbreviated variable names (`absolutePath` not `absPath`)
+- Return early — guard clauses at the top, happy path at the bottom.
 - DO NOT use `.then()`, always `async/await`
-- Only `try/catch` when acting on the error before rethrowing
-- JSDoc required on all functions (exported and `__` private)
-
-## Loops
-
-- DO NOT use `for` loops, prefer `_.each`, `_.map` or `pMap`
+- JSDoc required on all functions
 
 ## Error Handling
+
+- Only `try/catch` when acting on the error before rethrowing
 
 ```javascript
 import { firostError } from 'firost';

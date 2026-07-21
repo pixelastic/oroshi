@@ -1,5 +1,7 @@
 # Python Style
 
+- No abbreviated variable names (`absolutePath` not `absPath`)
+
 ## Return early
 
 No avoidable nesting. Guard clauses at the top, happy path at the bottom.
