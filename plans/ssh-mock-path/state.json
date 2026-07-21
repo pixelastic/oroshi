@@ -1,9 +1,0 @@
-[
-  {
-    "id": "01",
-    "issue": "issues/01-generic-paths.md",
-    "done": true,
-    "recap": "Renamed container oroshi-mock-ssh→ssh-mock and mount /tmp/oroshi→/tmp/sandbox across ssh-mock scripts, bats helper, and README",
-    "blocked_by": []
-  }
-]

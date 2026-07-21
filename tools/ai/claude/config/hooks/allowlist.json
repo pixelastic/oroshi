@@ -49,6 +49,7 @@
   "docker history",
   "docker ps",
   "docker run",
+  "docker",
   "docker-compose version",
   "dpkg -L",
   "dpkg -l",
