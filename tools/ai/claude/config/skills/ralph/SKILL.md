@@ -149,11 +149,18 @@ Load [commit-hint.md](references/commit-hint.md) for the format and rules.
 - Run `ralph-end $ARGUMENTS` first
 
 Print:
-- The issue ID
-- The problem that was solved
-- What changed
-- How to test
-- Any discoveries
+```
+Issue XX/total
+
+**Problem solved:** {short description}
+
+**What changed:** {bullet point list of changes}
+
+**How to test:** (optional) {only if no automated tests}
+
+**Discoveries:** {any non-trivial findings}
+```
+
 
 **Stop here. Do not commit. Do not start the next issue. Wait for the user.**
 

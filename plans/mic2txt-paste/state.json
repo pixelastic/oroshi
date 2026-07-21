@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-mic2txt-paste-script.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Created mic2txt-paste script that reads transcription.txt and pastes via focus-insert"
   },
   {
     "id": "02",

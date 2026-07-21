@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+# Paste last mic2txt transcription into focused input
+# Usage:
+# $ mic2txt-paste
+set -e
+
+TMP_FOLDER=/dev/shm/oroshi/mic2txt
+TRANSCRIPTION_FILE=${TMP_FOLDER}/transcription.txt
+
+# No transcription available
+[[ ! -f $TRANSCRIPTION_FILE ]] && exit 0
+
+content="$(<"$TRANSCRIPTION_FILE")"
+focus-insert "$content"
