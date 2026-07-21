@@ -1,60 +1,46 @@
-## Kitty
+## UNSORTED
 
-See how to display a repo icon badge + the worktree name
-Find a better separator icon between repo and wokrtree generally speaking?
-Would be nice if we can find a way to name/color the kitty tabs based on their
-main repo. I currently use a lot of worktrees, so if I name a tab "foo" in the
-repo A, would be nice if the tab would be name "A foo" for example, or simply
-using the repo A icon rather than A, and colored as this repo.
-
-I should expand to adding another "mode" icon, to show if the tab is in
-grill-me, prd, issues, ralph or nothing
+- Validate display of context-badge if in a worktree of a repo that is not a project (cloned). What should be displaye?
+- Closing a claude session in a removed (vwR) directory still sometimes use 100% CPU
+- Work on having ralph iterate on several issues in a row
+- Make git-worktree-distance use git-worktree-distance-raw
+- vws shouldn't suggest "main" when not in a git repo
+- Update calls to bats_debug to not pass an argument, as $output is by default
+- Review git-branch-colorize tests. They seem trivial and useless
+- Refactor the prompt/git.zsh functions into their own files
+- Ensure zsh-lint doesn't yell about exporting a long API KEY
+- git-commit-message should be retsricted in private/, to not see API keys
+- js-writer should have one named export per file, except for __
+- `local firstField="${lines[0]%%▮*}"` is bad, use a split array
+- json-lint doesn't work on files outside of oroshi
 
 ---
 
-## Misc
+## Kitty
 
-Tell zsh-writer to not use abbreviations in variable names (ie no absPath,
-prefer absolutePath)
+- Ensure the right attention icon is displayed at the right time. Seems like I have the pause icon sometimes when Claude asks for something, while it should be
+a classical stop sign.
+- No way to see which project/worktree I'm in in Kitty tabs
+- Change the attention icon in orange, for claude
+I'd love an icon to see:
+- Claude is waiting for my input
+- Claude is blocked by a permission to run something
+- Claude has finished ralphing
+- Claude is currently ralphing
+- Would it be possible to send the mic2txt recording to the right Kitty panel if
+  it was started from one, even if I alt-tab in between? kitty-remote send-text
+  might be able to do that
+- How to mark that a tab is blocked until a sidequest is resolved?
 
-Colors of markdown headers are off in nvim
 
-Seem like the attention icon added is not always the right one. I have the pause
-icon added for simple end of ralph conversation.
-Should also make it orange, like ai color
+---
 
-Merge /prd and /issues into one skill named /plan. I always chain the two.
-See if I can define specific models for each skill that requires it. Identify if
-some skills could go with haiku, or if I should upgrade to Opus for /plan?
-Make sure after the plan is validated, it goes straight to suggesting the
-issues.
-Skip the ask to write the PRD, can we make it so it automaticlaly writes the
-file?
-I feel we do the same work twice: explain if the "modules" are ok, then explain
-how to split them in issues.
+## Skills
 
-Make Claude inspect all the history of the review logs of deleted worktrees, and
-classifying the most common skipped review, so I can improve my skills so they
-are no longer suggested.
-
-Update the ralph final output. Rpelace "Problem" with "Problem solved:"
-
-Check if it would be possible to send the mic2txt transcript to the right window
-even after I switch tabs, using kitty-remote send-text --match "id:$parentId"
-that might be a way to have me switch between tabs even before the speech to
-text is done, as soon as I'm done talking
-
-json-lint errors when editing files outside of oroshi
-
-Move compdef-glob-from-type.zsh (or something like that) into its own `__lib`
-folder, to follow with conventions
-
-I might need a way to mark a main/sub tab in kitty. Sometumes I can sart a
-sidequest to improve something unrelated, but sometimes I need to have the
-sidequest finished before I can go on with the main quest (for example fixing a
-skill, a lint rule, etc). In that case I'd like to mark the main tab as
-"sleeping" until another is done. Don't know how to do that? A keybinding to
-mark as sleeping, whith a note about when to get back to it?
+- Run claude on all history, analyzing common review issues, improve skills accordingly
+- Merge /prd and /issues into /plan
+- Check if I can define specific models per skill
+- Ensure if writes the PRD file without asking for confirmation
 
 Doublecheck that when I create plans, the PRD correctly name the test/lint
 commands. JS plans tend to write bad guidance.
@@ -63,186 +49,58 @@ work in another repo, it hallucinates. I guess I'll have to improve the /prd
 command to tell it to find the appropriate lint/test commands from the
 appropriate language skill before writing them (or completely ignore them?)
 
-Check for each binary in scripts if they couldn't have been made as a zsh
-autoloaded function. Define a clear glossary of why omething is a script raher
-than a function. Find a way to write ina  comment in each script WHY something
-is a script rather than a function. Find a plan to migrate them all from script
-to function if needed
+---
 
-If I'm in a worktree of a cloned repo, but that repo is not part of my projects,
-how should the badge be displayed? My initial assumpation was that project >
-worktree > path, but in that case as there is no project, I think maybe the
-worktree main name should be promoted to project?
+## JavaScript
 
-Closing a claude session in a directory that has been deleted (vwC) soft locks
-the terminal
-Still terminal issue when running several ralphs
+- Rule to enforce the try/catch pattern in tests
+- Rule to prefer mockReturnValue over mockResultValue
+- Update aberlaas so it adds a CLAUDE.md to new projects, telling about the test/lint commands
+- Disallow `method().property`, prefer `const { property } = method()`
 
-I should update my eslint rules to warn about using for of instead of lodash, so
-the agents know when/how to write
+---
 
-Make git-worktree-distance use git-worktree-distance-raw
+## ZSH
 
-vws shouldn't suggest "main" when not in a git repo
+- Ensure ``*-load-definition` are after the arg parsing
+- `[[ "$allDone" == "true" ]] && { print '{"status":"done"}'; return 0; }` is invalid
 
-Update calls to bats_debug to not pass an argument, as $output is by default
-
-Re-evaluate
-/home/tim/local/www/worktrees/oroshi--vfa/tools/term/zsh/config/functions/autoload/git/branch/__tests__/git-branch-colorize.bats
-to see if we could right better tests. Tests that actually test non-trivial
-behavior. The --zsh flag thing basically test that the underlying colorize
-method correctly handles --zsh. Let's re-evaluate if we need to test that at the git-branch-colorize level, or if it's ok to assume it's tested in the colorize method.
-
-Refactor all the prompt/git.zsh funcctions so they eahc have thier own file
-rather than all being in the same file
+Move compdef-glob-from-type.zsh (or something like that) into its own `__lib`
+folder, to follow with conventions
 
 
-When I create a new worktree in a non-oroshi repo, it correctly create the
-worktree, install yarn then displays a bunch of errors. I wonder if it doesn't
-try to rloead the PATH/fpath from that worktree (it should not, as it's not an
-oroshi worktree)
+---
 
-Make the zsh-lint rule of warning about long lines disabled for export
-statements, I want to be able to export a very long API key without warnings.
+## Nvim
 
-git-commit-message should not be able to see my API keys. Maybe I should disable
-the commit message generation when in the private submodule.
-
-When I delete a file, but it was still open in nvim, the nvim gutter is
-displayed in cyan. It means, there is a color definition for such a file
-(opened, but deleted since). I need to find which it is, and map that to some
-shade of red
-
-Refactor
-/home/tim/local/www/worktrees/oroshi--bats-refactor/tools/term/zsh/config/prompt/index.zsh
-t extract each function into its own file. It will make further testing easier,
-as each file can have its own test file.
-
-js-writer: should suggest that each file exports one named function. Avoid
-having files that export several functions. `__` would be an exception. Would
-also need to actually analyze existing codebases to see if the part is generic
-enough. I kinda see that's how I like it in the end, but sometimes I also like
-to have helper files that contain many different functions. So maybe anything in
-./helpers/ would be an exception?
-
-zsh-rules: `local firstField="${lines[0]%%▮*}"` agents tend to write that. I
-prefer using an intermediary split method. We should catch that in lint.
-
-claude: statusbar doesn't correctly display the filepath when not in a git repo,
-like in Dropbox for example. I probably need a Dropbox project though.
-
+- Always display a tab, even if only one, to easily see the file being edited
+- Add lua-lint
+- Add lua-lint --fix and lua-fix
+- Add lua-test
+- We need a lua test framework, specific to nvim
+- Plug the lint/test into lintstaged
+- Plug the lint/test into vfl and vft
+- Plug the lint/test into nvim
+- Add custom lint rules in lua to follow my standards (like using own methods rather than internals)
+- Need a lua-writer skill
+- Ctrl-Maj-Y should display the context-badge
+- Shift-R in bats file generates an errors instead of adding a REVIEW: line
+- Refactor nvim keybindings, they are all sprawling one big file
+- Evaluate if F.run is strong enough. It seems to only work with a callback, maybe I need a sync version
+- Add a F.removePrefix() that removes a given string from the beginning of another. Useful to get a relative path out of a known root
+- Use icons.json instead of hardcoded icons
+- Can't find anything with ctrl-g inside an ebook markdown
+- zsh/fzf/nvim integration to open multiple files should use a temporary file with a script rather than inlining everything
+- Refactor disk.lua, ensure a consistent pattern in the sinklist. Probably also need to extract fzf-related functions in their own file.
+- Should reload a buffer when moving from one tab to another (only works when moving from one kitty window to another)
+- Find which color is used to display the gutter when editing a file that has been deleted
+- Refine the markdown header colors; they are off since I refactored the palette
 
 ---
 ## Cleanup
 
-I will need to cleanup my scripts. Delete the ones I don't use anymore. Define
-if it should be a script, a zsh autoloaded function, or a plain zsh helper
-function. Group them in clear domains/subdomains, and make it consistent between
-scripts and config (and install if needed).
-
-I should also cleanup what is in private/, same pattern as what I do in core
-oroshi
-Reorg the tools/ in private/
-
----
-## zsh-lint
-
-icons-load-definitions and other ``*-load-definition` should be after the arg
-parsing. basically the header should look like:
-```zsh
-# Documentation, including Usage:
-setopt local_options err_return
-
-zparseopts -E -D \
-  -link-local=flagLinkLocal
-local isLinkLocal=${#flagLinkLocal}
-
-icons-load-definitions
-
-(...code...)
-```
-
-zshlint: [[ "$allDone" == "true" ]] && { print '{"status":"done"}'; return 0; }
-Should be a real if [[ ]]; then fi
-
-
----
-## aberlaas
-
-Add a CLAUDE.md at the root for aberlaas projects with aberlaas init, that
-displays the commands to use (yarn run lint, yarn run test, etc)
-
-JS: I don't like   return getCommandLineState(commandLine, allowList).isAllowed;
-I'd rather have a const { isAllowed } = getCommandLineState(aaa, bbb)
-/home/tim/local/www/worktrees/solkan--rich-output/lib/isCommandLineAllowed.js
-
----
-## lua
-
-I will need to add a LUA harness made of tests and lints.
-
-Ctrl-Y in nvim should display the path using the context-badge like in statusbar
-
-I will need a test framework for LUA, and write tests, that I don't have yet.
-
-Seems like doing Shift-R in bats file generates an error instead of addinga
-review?
-
-Would it be possible to always have a tab bar, even when only one file is
-opened? I like to check the top of my screen to know which file I'm editing
-
-My nvim keybidnings are sprawling over one big file. They probbaly need to be
-split into smaller files, per domain.
-
-I will also need  alinter. I currently have a LSP linter in nvim, but I will
-need to have something as a CLI that I can run outside of nvim, and that gives
-me the same results as in nvim. So i'll probably need to move to luacheck, and
-ditch the LSP version. I will also need to add custom rules to teach the agent
-how to code, like how to use my own methods.
-
-I will need a lua-writer skill to package all of that, similar to the others.
-
-Sometimes, TDD creates tests that are irrelevant. For example, it updated  a.lua
-file, but wrote a bats file to ensure the file didn't contain a specific string.
-The good solution would have ben to have a a lua test, but I'm not equipped for
-that yet.
-
-lua-writer should use F.run() rather than vim.fn.systemlist. Or actually, F.run
-is asynchronous by default (it has onSuccess, onError). Maybe I would need a
-better API for both sync and async? runSync maybe?
-
-Add a F.removePrefix() that removes a given string from the beginning of
-another. Useful to get a relative path out of a known root
-
-Icons defined in nvim config are hardcoded and do not use our icons.zsh file.
-Should we make them use it? How could they read it? Should they parse a JSON
-version to get the icons?
-
-Doing a Ctrl-G to search in ebooks markdown files has a broken prompt, and badly
-parses the selected files.
-
-Legacy script, to open multiple nvim tabs was writing the code in a file, and
-load the file. I probably need to do the same, to avoid a too long list of args
-
-Add a Ctrl-T alias to nvim? Or at least disable the tag error
-
-Once all ctrl-* are migrated, I'll need to check disk.lua, to ensure a
-consistent pattern for the sinklist
-
-When moving from one nvim tab to another, it doesn't reload the buffer from what
-is on disk. It works when I move from one kitty window to another though
-
-## JavaScript
-
-I will need a js-writer skill to enforce my coding standards.
-
-Something to explain the let __ = {} pattern to mock methods.
-For example, using __.run() or __.exit() and mocking it in tests
-
-Linting rules to catch common errors, like the try/catch pattern I have in my
-tests to tests throwing
-Also the mockReturnValue rather than mockResultValue
-
-I will need to improve the JS linting rules, to catch all those issues. The
-git-commit-message tests would be a good playground to test them, they haven't
-been reviewed and are written bare.
+- Cleanup scripts and autoloaded functions. Delete the unused ones.
+- Define what should be a script and what should be an autoloaded
+- Migrate everything that should be a function and not a script to a functions
+- Cleanup private/ scripts and autoloaded functions
+- Reorg by domain and install/deploy in private/
