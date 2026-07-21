@@ -88,7 +88,8 @@ If you have any `## Scaffolding Tests` from the issue:
 2. Categorize ALL findings (from both Standards and Spec) into two buckets:
    - **skipped** — out of scope or not relevant, with one-line reason per item
    - **fixable** — actionable and in scope
-3. Display the two buckets as a summary before moving on
+3. Display the two buckets as a summary
+4. Move to the next step (FIX). Do not stop or wait for user input.
 
 ---
 

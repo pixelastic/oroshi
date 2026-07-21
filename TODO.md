@@ -41,13 +41,8 @@ I'd love an icon to see:
 - Merge /prd and /issues into /plan
 - Check if I can define specific models per skill
 - Ensure if writes the PRD file without asking for confirmation
-
-Doublecheck that when I create plans, the PRD correctly name the test/lint
-commands. JS plans tend to write bad guidance.
-It works in oroshi, as oroshi has a CLAUDE.md, but as soon as I ry to make it
-work in another repo, it hallucinates. I guess I'll have to improve the /prd
-command to tell it to find the appropriate lint/test commands from the
-appropriate language skill before writing them (or completely ignore them?)
+- Ensure GUIDANCE uses the right test/lint commands, even outside of oroshi
+- Ensure /prd calls prd-end from its path, not `bash /path/prd`, not `.claude/prd`, etc
 
 ---
 
@@ -57,6 +52,9 @@ appropriate language skill before writing them (or completely ignore them?)
 - Rule to prefer mockReturnValue over mockResultValue
 - Update aberlaas so it adds a CLAUDE.md to new projects, telling about the test/lint commands
 - Disallow `method().property`, prefer `const { property } = method()`
+- Rule (or agent?) to not add comment doc on proxy in __
+- Cleanup the new ESLint rules. Make an aberlaas official plugin maybe, see how
+  to split them between js and vitest?
 
 ---
 
