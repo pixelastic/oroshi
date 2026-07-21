@@ -27,6 +27,7 @@ local shortcuts=(
   "Flameshot" "<Super>XF86Launch5" 'script --command "flameshot gui" /dev/null'
   "mic2text" "<Ctrl>XF86Launch5" "$BIN/audio/mic2txt"
   "mic2text-cancel" "<Shift><Ctrl>XF86Launch5" "$BIN/audio/mic2txt-cancel"
+  "mic2text-paste" "<Ctrl><Alt>V" "$BIN/audio/mic2txt-paste"
 
   "sound-mode-toggle" "<Ctrl><Super>F8" "$BIN/audio/sound-mode-toggle"
   "mic2text-autosubmit-mode-toggle" "<Ctrl><Super>F9" "$BIN/audio/mic2txt-autosubmit-mode-toggle"

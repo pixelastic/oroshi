@@ -86,8 +86,9 @@ function stopRecording() {
   # Play a sound to indicate it's being pasted
   audio-play-oroshi mic2txt.mp3
 
-  # Insert the transcription wherever I'm currently focused
-  focus-insert "$transcription"
+  # Save transcription and paste it
+  echo "$transcription" > "${tmpFolder}/transcription.txt"
+  mic2txt-paste
 
   # If autosubmit mode is enabled, automatically press Enter
   if mic2txt-autosubmit-mode-is-enabled; then

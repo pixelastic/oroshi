@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-wire-mic2txt-raw-and-keybinding.md",
-    "done": false,
-    "blocked_by": ["01"]
+    "done": true,
+    "blocked_by": ["01"],
+    "recap": "Wired mic2txt-raw to save transcription to file and call mic2txt-paste, added Ctrl+Alt+V keybinding"
   }
 ]
