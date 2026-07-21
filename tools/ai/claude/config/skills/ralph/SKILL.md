@@ -151,7 +151,7 @@ Load [commit-hint.md](references/commit-hint.md) for the format and rules.
 
 Print:
 ```
-Issue XX/total
+Issue XX/YY
 
 **Problem solved:** {short description}
 

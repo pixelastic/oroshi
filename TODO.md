@@ -43,6 +43,7 @@ I'd love an icon to see:
 - Ensure if writes the PRD file without asking for confirmation
 - Ensure GUIDANCE uses the right test/lint commands, even outside of oroshi
 - Ensure /prd calls prd-end from its path, not `bash /path/prd`, not `.claude/prd`, etc
+- Ensure skill run `review-diff` from the path
 
 ---
 
@@ -62,9 +63,7 @@ I'd love an icon to see:
 
 - Ensure ``*-load-definition` are after the arg parsing
 - `[[ "$allDone" == "true" ]] && { print '{"status":"done"}'; return 0; }` is invalid
-
-Move compdef-glob-from-type.zsh (or something like that) into its own `__lib`
-folder, to follow with conventions
+- Refactor `compdef-glob-from-type.zsh` into its own __lib folder
 
 
 ---
@@ -93,6 +92,7 @@ folder, to follow with conventions
 - Should reload a buffer when moving from one tab to another (only works when moving from one kitty window to another)
 - Find which color is used to display the gutter when editing a file that has been deleted
 - Refine the markdown header colors; they are off since I refactored the palette
+- Delete COMMIT_HINT.md after use, so it doesn't get stale
 
 ---
 ## Cleanup
