@@ -16,7 +16,7 @@ bats_debug() {
 
 # bats_tmp_dir
 # Creates an isolated sandbox for the current test, sets BATS_TMP_DIR.
-# Path: /tmp/oroshi/bats/<test-file>/<slug>
+# Path: /tmp/sandbox/bats/<test-file>/<slug>
 # Usage: bats_tmp_dir
 bats_tmp_dir() {
   local file="${BATS_TEST_FILENAME##*/}"
@@ -25,7 +25,7 @@ bats_tmp_dir() {
   local slug
   slug="$(bats_slugify "$BATS_TEST_DESCRIPTION")"
 
-  local dir="/tmp/oroshi/bats/${file}/${slug}"
+  local dir="/tmp/sandbox/bats/${file}/${slug}"
   rm -rf "$dir"
   mkdir -p "$dir"
 
@@ -125,7 +125,7 @@ bats_disable_worktree_aware() {
 
 
 # bats_ssh_mock_start
-# Ensures the oroshi-mock-ssh Docker container is running (idempotent via ssh-mock-start).
+# Ensures the ssh-mock Docker container is running (idempotent via ssh-mock-start).
 # Usage: bats_ssh_mock_start  (in setup_file)
 bats_ssh_mock_start() {
   zsh -c 'ssh-mock-start'

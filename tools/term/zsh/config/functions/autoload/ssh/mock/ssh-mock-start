@@ -3,26 +3,26 @@
 # $ ssh-mock-start
 setopt local_options err_return
 
-local containerName="oroshi-mock-ssh"
+local containerName="ssh-mock"
 local mockDir="$OROSHI_ROOT/tools/basics/ssh/mock"
 
 # Already running
 if docker-container-is-running "$containerName"; then
-	return 0
+  return 0
 fi
 
 # Remove stopped container if it exists
 docker rm --force "$containerName" &>/dev/null || true
 
 docker build \
-	--build-arg "USER_ID=$(id -u)" \
-	--build-arg "GROUP_ID=$(id -g)" \
-	--tag "$containerName" \
-	"$mockDir"
+  --build-arg "USER_ID=$(id -u)" \
+  --build-arg "GROUP_ID=$(id -g)" \
+  --tag "$containerName" \
+  "$mockDir"
 
 docker run \
-	--detach \
-	--name "$containerName" \
-	--publish 2222:22 \
-	--volume /tmp/oroshi:/tmp/oroshi \
-	"$containerName"
+  --detach \
+  --name "$containerName" \
+  --publish 2222:22 \
+  --volume /tmp/sandbox:/tmp/sandbox \
+  "$containerName"

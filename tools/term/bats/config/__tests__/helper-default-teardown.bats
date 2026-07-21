@@ -12,7 +12,7 @@ bats_load_library 'helper'
 # no longer exists — proving the default teardown ran between tests.
 
 setup() {
-  COORDINATION="/tmp/oroshi/bats/default-teardown-coordination"
+  COORDINATION="/tmp/sandbox/bats/default-teardown-coordination"
   bats_tmp_dir
 }
 

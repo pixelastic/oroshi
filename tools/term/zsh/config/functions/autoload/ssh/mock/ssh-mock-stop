@@ -3,11 +3,11 @@
 # $ ssh-mock-stop
 setopt local_options err_return
 
-local containerName="oroshi-mock-ssh"
+local containerName="ssh-mock"
 
 # Not running
 if ! docker-container-is-running "$containerName"; then
-	return 0
+  return 0
 fi
 
 docker stop "$containerName" >/dev/null

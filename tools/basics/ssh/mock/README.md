@@ -41,11 +41,11 @@ setup() {
 }
 ```
 
-The `/tmp/oroshi` mount is symmetric — same path inside and outside the container — so `$BATS_TMP_DIR` works directly as the assertion target. No path translation needed.
+The `/tmp/sandbox` mount is symmetric — same path inside and outside the container — so `$BATS_TMP_DIR` works directly as the assertion target. No path translation needed.
 
 ## Architecture
 
-- **Container**: `oroshi-mock-ssh`, port `2222` → `22`
+- **Container**: `ssh-mock`, port `2222` → `22`
 - **User**: `mock` (UID/GID match host user)
 - **Auth**: ed25519 key pair at `keys/id_mock` (committed, non-sensitive)
-- **Mount**: `/tmp/oroshi` → `/tmp/oroshi` (symmetric)
+- **Mount**: `/tmp/sandbox` → `/tmp/sandbox` (symmetric)
