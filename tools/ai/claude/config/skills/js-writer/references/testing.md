@@ -3,42 +3,71 @@
 ## Test file naming
 
 - Test files are stored as `__tests__/basename.js` (example: test for `pull.js` → `__tests__/pull.js`)
-- DO NOT import test globals (`describe`, `it`, `expect`, `vi`, `beforeEach`, `afterEach`), they are already loaded
-- DO NOT auto-clean mocks between tests, they are already cleaned
+
+## Test structure
+
 - Use variable names: `input` (passed), `actual` (result), `expected` (assertion)
 - `describeName` and `testName` are available in each test
 - `dedent` is available for multiline strings
-
-## it.each — multiple inputs
-
-- Use `it.each` when testing the same behavior with different inputs
-- Use `input` and `expected` keys. If multiple inputs, use one named key per input
-- Use a `title` key if input is too long
+- Set up shared mocks in `beforeEach` — mock once, not per test
+- Use `vi.spyOn(__, 'method').mockReturnValue(...)` to spy/mock private functions
+- Prefer `it.each` when testing same setup with different inputs
+- Use `input` and `expected` keys in `it.each`. If multiple inputs, use one named key per input. Use a `title` key if input is too long
+- Use standalone `it` for side effects, error cases, or anything that doesn't fit input/output variation
+- Override a mock inside a specific `it` if needed
 
 ```javascript
-it.each([
-  {
-    title: "Default path",
-    filepath: '/tmp/a',
-    options: {},
-    expected: 'a'
-  },
-  {
-    title: "Forced path",
-    filepath: '/tmp/b',
-    options: {
-      force: true
-    },
-    expected: 'b'
-  },
-])('$title', async ({ filepath, options, expected }) => {
-  const actual = await myFn(filepath, options);
-  expect(actual).toEqual(expected);
+import { __, getData } from '../getData.js';
+
+describe('getData', () => {
+  beforeEach(() => {
+    vi.spyOn(__, 'fetch').mockReturnValue({ id: 1, name: 'a' });
+  });
+
+  it.each([
+    { input: 'id', expected: 1 },
+    { input: 'name', expected: 'a' },
+  ])('returns $input field', async ({ input, expected }) => {
+    const actual = await getData(input);
+    expect(actual).toEqual(expected);
+  });
+
+  it('saves the result', async () => {
+    await getData('id');
+    expect(__.save).toHaveBeenCalled();
+  });
 });
 ```
 
-## Error testing
+## Filesystem tests
 
+- Declare `let testDirectory` at describe scope
+- Assign `testDirectory = tmpDirectory('scope')` in `beforeEach`
+- Clean up via `await remove(testDirectory)` in `afterEach`
+- Each `it` does its own filesystem work
+
+```javascript
+import { remove, tmpDirectory } from 'firost';
+
+describe('myFeature', () => {
+  let testDirectory;
+  beforeEach(() => {
+    testDirectory = tmpDirectory('myFeature');
+  });
+  afterEach(async () => {
+    await remove(testDirectory);
+  });
+
+  it('writes to the test directory', async () => {
+    // use testDirectory as path root
+  });
+});
+```
+
+## Assertions
+
+- Prefer `toEqual` with the exact expected value when the full content is known
+- Reserve `arrayContaining`/`objectContaining` for genuine subset tests
 - Use `try`/`catch` with a `let actual` to test errors
 
 ```javascript
@@ -51,28 +80,5 @@ it('throws on invalid input', async () => {
   }
   expect(actual).toHaveProperty('code', 'ERR_INVALID');
   expect(actual.message).toContain('must be a string');
-});
-```
-
-
-## Mocking
-
-- Import `__` to spy/mock private functions
-- Use it to mock calls to APIs, filesystems or ENV variables
-- DO NOT use `mockResolvedValue` or `mockRejectedValue`. Use `mockReturnValue` instead
-
-```javascript
-import { __, fetchData } from '../fetchData.js';
-
-describe('fetchData', () => {
-  it('returns parsed result', async () => {
-    vi.spyOn(__, 'request').mockReturnValue({ data: 'ok' });
-    vi.spyOn(__, 'log').mockReturnValue();
-
-    const actual = await fetchData('url');
-
-    expect(__.request).toHaveBeenCalledWith('url');
-    expect(actual).toEqual('ok');
-  });
 });
 ```
