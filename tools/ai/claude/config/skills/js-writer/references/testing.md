@@ -72,7 +72,7 @@ describe('getOrders', () => {
 
 - Prefer one `it.each` with many rows over many standalone `it` blocks
 - Use `input` and `expected` keys in `it.each`. If multiple inputs, use one named key per input. Use a `title` key if input is too long
-- Reserve standalone `it` for side effects, errors, or flows that genuinely differ in structure
+- Reserve standalone `it` for tests whose **body code differs** — e.g., one uses `toEqual`, another uses `toHaveBeenCalled`, another uses try/catch. If only the inputs and expected values change but the test code is the same, use `it.each`
 
 ```javascript
 import { __, getOrders } from '../getOrders.js';

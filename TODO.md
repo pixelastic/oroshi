@@ -55,7 +55,7 @@ I'd love an icon to see:
 - Disallow `method().property`, prefer `const { property } = method()`
 - Rule (or agent?) to not add comment doc on proxy in __
 - Cleanup the new ESLint rules. Make an aberlaas official plugin maybe, see how
-  to split them between js and vitest?
+  to split them between js and vitest? Ceanup the duplicated rewiring.
 
 ---
 
