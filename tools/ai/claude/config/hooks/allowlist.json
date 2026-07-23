@@ -241,6 +241,8 @@
   "sort",
   "source",
   "ssh mock",
+  "ssh-mock-start",
+  "ssh-mock-stop",
   "ss",
   "stat",
   "strace",
