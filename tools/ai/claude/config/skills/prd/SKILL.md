@@ -28,7 +28,7 @@ Check with the user which modules they want tests written for.
 
 ### Step 3 — Write the PRD.md
 
-Run `prd-end <branchName>` via the **Bash tool**, and parse the JSON output.
+Run `prd-end <branchName>` (it's in your path), and parse the JSON output.
 Write the PRD to `<prdPath>`, following [the template](./references/prd-md.md).
 
 ### Step 4 — Write COMMIT_HINT.md
@@ -60,7 +60,7 @@ Ask the user if they're ready to move to /issues
 - [ ] Deep modules identified — each has a simple, testable interface
 - [ ] User confirmed module list matches intent
 - [ ] User confirmed which modules get tests
-- [ ] `prd-end <branchName>` called via Bash tool, JSON output parsed
+- [ ] `prd-end <branchName>` called, JSON output parsed
 - [ ] PRD.md written to `<prdPath>`
 - [ ] PRD written in English
 - [ ] PRD contains all 6 sections present (Problem, Solution, User Stories, Implementation Decisions, Testing Decisions, Out of Scope)
