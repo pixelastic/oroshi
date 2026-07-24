@@ -16,8 +16,9 @@
   {
     "id": "03",
     "issue": "issues/03-test-path-dispatcher.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "Created test-path dispatcher in autoload/misc/ that routes to js-test-path, python-test-path, or bats-test-path based on file type"
   },
   {
     "id": "04",

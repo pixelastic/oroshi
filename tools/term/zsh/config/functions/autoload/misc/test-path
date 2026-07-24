@@ -1,0 +1,29 @@
+# Given a path to any source file, return the path to its test file
+# Dispatches to the correct language-specific *-test-path function
+# Usage:
+# $ test-path ./path/to/module.js
+# $ test-path ./path/to/my-func
+setopt local_options err_return
+
+local filePath="$1"
+
+# No argument provided
+[[ "$filePath" == "" ]] && return 1
+
+# Test files have no test
+[[ "$filePath" == *.bats ]] && return 1
+
+# JS files
+if is-js "$filePath"; then
+  js-test-path "$filePath"
+  return
+fi
+
+# Python files
+if is-python "$filePath"; then
+  python-test-path "$filePath"
+  return
+fi
+
+# Fallback: shell scripts, ZSH autoloads, unknown types
+bats-test-path "$filePath"
