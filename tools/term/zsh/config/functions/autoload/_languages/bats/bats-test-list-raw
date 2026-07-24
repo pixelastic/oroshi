@@ -1,11 +1,12 @@
-#!/usr/bin/env zsh
 # Returns raw list of available bats test names
 # Usage:
 # $ bats-test-list-raw
 # Output:
 #   testName▮/full/path/to/test.bats
+setopt local_options err_return
+
 local gitRoot="$(git-directory-root)"
-[[ -z "$gitRoot" ]] && return 1
+[[ "$gitRoot" == "" ]] && return 1
 
 for testFile in ${gitRoot}/**/*.bats(N); do
   echo "${testFile:t:r}▮${testFile:a}"

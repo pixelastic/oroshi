@@ -7,7 +7,7 @@ local filepath=$1
 
 # Filepath given
 if [[ $filepath != "" ]]; then
-	prettier $filepath
+  prettier $filepath
 else
-	cat - | prettier --parser js
+  cat - | prettier --parser js
 fi

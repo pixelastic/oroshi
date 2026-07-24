@@ -29,3 +29,7 @@ All autoload functions live under `tools/term/zsh/config/functions/autoload/` (r
 ## Discoveries
 
 (append-only, updated after each issue)
+
+### Issue 01 — migrate languages domain
+- Autoload functions use mode 664, not 755 — `mv` from scripts preserves the executable bit, must `chmod` after conversion
+- `git-file-lint` auto-fixes tab→space indentation on touched files — no manual fix needed for whitespace-only issues

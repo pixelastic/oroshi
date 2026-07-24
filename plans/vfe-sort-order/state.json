@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-migrate-languages-domain.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Moved all language-specific autoload functions into _languages/<lang>/, converted bats-test-path and python-test-path from scripts to autoload form"
   },
   {
     "id": "02",

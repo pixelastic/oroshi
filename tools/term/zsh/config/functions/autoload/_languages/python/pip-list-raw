@@ -8,12 +8,12 @@ typeset -A packageVersions=()
 
 # jq invocation to get all packages and their versions
 function getRawPackages() {
-	pip list \
-		--format=json \
-		2>/dev/null |
-		jq \
-			--raw-output \
-			'.[] | [.name, .version] | join("▮")'
+  pip list \
+    --format=json \
+    2>/dev/null |
+  jq \
+    --raw-output \
+    '.[] | [.name, .version] | join("▮")'
 }
 
 local rawPackages="$(getRawPackages)"

@@ -1,13 +1,12 @@
-#!/usr/bin/env zsh
 # Given a path to a Python source file, return the path to its pytest test file
 # Usage:
 # $ python-test-path ./path/to/module.py
-set -e
+setopt local_options err_return
 
 local filePath="$1"
 
 # No argument provided
-[[ "$filePath" == "" ]] && exit 1
+[[ "$filePath" == "" ]] && return 1
 
 local parentDir="${filePath:h:t}"
 local fileName="${filePath:t}"
@@ -16,14 +15,14 @@ local dir="${filePath:h}"
 
 # If the file is already a pytest test file, return it directly
 if [[ "$parentDir" == "__tests__" && "$fileName" == test_*.py ]]; then
-	[[ ! -f "$filePath" ]] && exit 1
-	echo "$filePath"
-	return
+  [[ ! -f "$filePath" ]] && return 1
+  echo "$filePath"
+  return
 fi
 
 local testFile="$dir/__tests__/test_${baseName}.py"
 
 # No matching test file
-[[ ! -f "$testFile" ]] && exit 1
+[[ ! -f "$testFile" ]] && return 1
 
 echo "$testFile"
