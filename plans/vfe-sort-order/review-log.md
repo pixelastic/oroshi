@@ -20,3 +20,24 @@ function getRawPackages()
 ```
 **Problem:** Reviewer flagged `[ ]` vs `[[ ]]` in test assertions
 **Reason skipped:** Existing `bats-test-path.bats` reference uses `[ ]` consistently — established convention
+
+## Issue 04 — git-file-edit sort
+### Test setup duplication
+```bash
+filetypes-load-definitions() { :; }
+filetypes-group() { REPLY="script"; }
+test-path() { ... }
+nvim() { shift; printf '%s\n' "$@"; }
+bats_mock filetypes-load-definitions filetypes-group test-path nvim
+```
+**Problem:** Mock definitions are copy-pasted across 6 tests instead of extracted into a helper
+**Reason skipped:** Existing tests in the same file follow the same inline pattern; out of scope
+
+### Test setup comments
+```bash
+@test "sorts source before its test when both are dirty" {
+  mkdir -p "$BATS_GIT_DIR/src/__tests__"
+  echo "x" > "$BATS_GIT_DIR/src/app.js"
+```
+**Problem:** Multi-step setup blocks have no explanatory comments
+**Reason skipped:** Existing tests in the same file follow the same uncommented pattern; consistency

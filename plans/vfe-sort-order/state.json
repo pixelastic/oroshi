@@ -23,7 +23,8 @@
   {
     "id": "04",
     "issue": "issues/04-git-file-edit-sort.md",
-    "done": false,
-    "blocked_by": ["03"]
+    "done": true,
+    "blocked_by": ["03"],
+    "recap": "Added source-before-test sort logic to git-file-edit using two-pass companion map with test-path"
   }
 ]

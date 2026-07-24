@@ -41,4 +41,31 @@ done
 
 [[ ${#fileList} -eq 0 ]] && return 0
 
-nvim -p $fileList
+# Sort source files before their test files
+typeset -A companionMap
+typeset -A consumed
+for file in "${fileList[@]}"; do
+  local testFile="$(test-path "$file" 2>/dev/null || true)"
+
+  # Skip files with no test companion
+  [[ "$testFile" == "" ]] && continue
+
+  # Skip if test file is not in the dirty list
+  [[ ${fileList[(Ie)$testFile]} -eq 0 ]] && continue
+
+  # Skip if test file was already claimed by another source
+  [[ "${consumed[$testFile]}" == "1" ]] && continue
+
+  companionMap[$file]="$testFile"
+  consumed[$testFile]=1
+done
+
+local sortedList=()
+for file in "${fileList[@]}"; do
+  # Skip test files that will be pulled in after their source
+  [[ "${consumed[$file]}" == "1" ]] && continue
+  sortedList+=("$file")
+  [[ "${companionMap[$file]}" != "" ]] && sortedList+=("${companionMap[$file]}")
+done
+
+nvim -p $sortedList
