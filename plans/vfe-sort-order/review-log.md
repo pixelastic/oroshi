@@ -12,3 +12,11 @@ function getRawPackages()
 ```
 **Problem:** Uses `!= 1` instead of `== "1"` per flag test convention
 **Reason skipped:** Pre-existing, not introduced by this diff — out of scope for a move operation
+
+## Issue 02 — js-test-path
+### Single vs double bracket assertions in bats
+```bats
+[ "$status" -eq 0 ]
+```
+**Problem:** Reviewer flagged `[ ]` vs `[[ ]]` in test assertions
+**Reason skipped:** Existing `bats-test-path.bats` reference uses `[ ]` consistently — established convention

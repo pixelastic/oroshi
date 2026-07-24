@@ -1,0 +1,28 @@
+# Given a path to a JS source file, return the path to its test file
+# Usage:
+# $ js-test-path ./path/to/module.js
+setopt local_options err_return
+
+local filePath="$1"
+
+# No argument provided
+[[ "$filePath" == "" ]] && return 1
+
+# Not a JS file
+[[ "$filePath" != *.js ]] && return 1
+
+local parentDir="${filePath:h:t}"
+
+# If the file is already a test (in __tests__), return it directly
+if [[ "$parentDir" == "__tests__" ]]; then
+  [[ ! -f "$filePath" ]] && return 1
+  echo "$filePath"
+  return
+fi
+
+local testFile="${filePath:h}/__tests__/${filePath:t}"
+
+# No matching test file
+[[ ! -f "$testFile" ]] && return 1
+
+echo "$testFile"
