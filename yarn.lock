@@ -5820,14 +5820,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gilmore@npm:1.2.1":
-  version: 1.2.1
-  resolution: "gilmore@npm:1.2.1"
+"gilmore@npm:1.3.0":
+  version: 1.3.0
+  resolution: "gilmore@npm:1.3.0"
   dependencies:
     firost: "npm:5.3.0"
     golgoth: "npm:3.0.0"
     parse-github-repo-url: "npm:1.4.1"
-  checksum: 10c0/9d329ddfcf03f917ec1287f2cbfe980b7f6826ae96d0b350cae77f2ac883b8762d90170583cba877cbed91e4bd52fd9fc402bbf8507c5195ce9304938b24614f
+  checksum: 10c0/96d4f10188afc80571bed9864de06946583e9446b9cf665b1c3a125f0ed31f5ea7c648d2a6670f0140cd25b2525b3ff197dad998d3697d785186c1688497d929
   languageName: node
   linkType: hard
 
@@ -8473,7 +8473,7 @@ __metadata:
     bats: "npm:1.13.0"
     eslint_d: "npm:14.3.0"
     firost: "npm:5.8.0"
-    gilmore: "npm:1.2.1"
+    gilmore: "npm:1.3.0"
     golgoth: "npm:3.1.0"
     pietro: "npm:0.6.1"
     prettier: "npm:3.6.2"
