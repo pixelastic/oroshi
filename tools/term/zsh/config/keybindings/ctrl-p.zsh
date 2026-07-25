@@ -1,7 +1,7 @@
 # Ctrl-P: Search for a file in current git project
 # Dispatches to a context-aware picker based on the last word in LBUFFER
 
-oroshi-ctrl-p-widget() {
+function oroshi-ctrl-p-widget() {
   # Stop if not available
   if ! command -v fzf >/dev/null; then
     echo "fzf is not installed"
@@ -13,6 +13,9 @@ oroshi-ctrl-p-widget() {
     vfa fzf-git-files-dirty-stageable
     vfrevert fzf-git-files-dirty
     bats fzf-bats-test
+    yrt fzf-js-test
+    yrtw fzf-js-test
+    yrtff fzf-js-test
   )
 
   # Dispatch to context-aware picker based on last word in buffer

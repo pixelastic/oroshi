@@ -1,0 +1,38 @@
+#!/usr/bin/env zsh
+# Fuzzy pick a JS test file
+# Usage:
+# $ fzf-js-test                  # Interactive search
+# $ fzf-js-test --source         # Print test files
+# $ fzf-js-test --options        # Print FZF options (one per line)
+# $ fzf-js-test --postprocess    # Read selection from stdin, print filepath
+set -e
+source "${0:h}/__lib/init.zsh"
+source "${0:h}/__lib/fzf-colorize-path.zsh"
+source "${0:h}/__lib/fzf-options-files.zsh"
+source "${0:h}/__lib/fzf-fs-preview.zsh"
+
+SCRIPT_NAME="${0:t}"
+
+SEARCH_PATH="$(git-directory-root)"
+
+function fzf-source() {
+  local items="$(fd \
+    --type file \
+    --extension js \
+    --full-path '/__tests__/' \
+    --base-directory "$SEARCH_PATH" \
+    | sort-filepaths)"
+  [[ "$items" == "" ]] && return 0
+
+  local item
+  for item in ${(f)items}; do
+    fzf-colorize-path "$item" "${SEARCH_PATH}/${item}"
+    echo "${SEARCH_PATH}/${item}▮${REPLY}"
+  done
+}
+
+function fzf-options() {
+  fzf-options-files "$SCRIPT_NAME" "$SEARCH_PATH"
+}
+
+fzf-dispatch

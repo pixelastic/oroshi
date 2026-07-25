@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-fzf-js-test-picker.md",
-    "done": false,
+    "done": true,
+    "recap": "Created fzf-js-test picker script with fd-based source, colorized display, and wired yrt/yrtw/yrtff into ctrl-p keybindings",
     "blocked_by": []
   }
 ]
