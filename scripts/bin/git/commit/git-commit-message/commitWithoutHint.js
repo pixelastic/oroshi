@@ -1,6 +1,5 @@
-import { _, pMap } from 'golgoth';
 import { absolute, dirname, read } from 'firost';
-import Gilmore from 'gilmore';
+import { getDiff } from './getDiff.js';
 
 export const commitWithoutHint = {
   /**
@@ -15,25 +14,6 @@ export const commitWithoutHint = {
    * @returns {Promise<string>} Diff output, or empty string if nothing staged
    */
   async getDiff() {
-    const repo = Gilmore();
-    const stagedFiles = await repo.stagedFiles();
-
-    const excludedFiles = ['yarn.lock'];
-    const cleanStagedFiles = _.reject(stagedFiles, (filepath) => {
-      return excludedFiles.includes(filepath);
-    });
-
-    const arrayDiff = await pMap(cleanStagedFiles, async (filepath) => {
-      return repo.run(`diff --cached -- ${filepath}`);
-    });
-
-    const diff = _.join(arrayDiff, '\n').trim();
-
-    // If still no diff, it's only binary files. We add them then:
-    if (!diff) {
-      const fileList = cleanStagedFiles.map((f) => `- ${f}`).join('\n');
-      return `Binary files added:\n${fileList}`;
-    }
-    return diff;
+    return getDiff(['yarn.lock']);
   },
 };

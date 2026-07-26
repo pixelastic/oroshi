@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-extract-get-diff.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Extracted shared getDiff(excludedFiles) from both strategies; both delegate with their own exclusion list"
   },
   {
     "id": "02",
