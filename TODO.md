@@ -44,6 +44,8 @@ I'd love an icon to see:
 - Ensure GUIDANCE uses the right test/lint commands, even outside of oroshi
 - Ensure /prd calls prd-end from its path, not `bash /path/prd`, not `.claude/prd`, etc
 - Ensure skill run `review-diff` from the path
+- Maybe re-evaluate if we need to commit the plans. It sure adds some noise, and
+  is only needed during implementation.
 
 ---
 
