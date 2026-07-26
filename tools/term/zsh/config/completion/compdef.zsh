@@ -168,6 +168,8 @@ compdef "_files -g '*.{tif,tiff}'" \
   tif2jpg
 compdef "_files -g '*.avif'" \
   avif2png
+compdef "_files -g '*.webp'" \
+  webp2png
 # }}}
 # 📌 Jumps {{{
 compdef _jumps unmark j
@@ -202,6 +204,10 @@ compdef "_files -g '*.{avi,mkv,mp4,mpg}'" \
   video-stream-list \
   video-stream-remove \
   video-upload-youtube
+compdef "_files -g '*.mp4'" \
+  mp42gif
+compdef "_files -g '*.mkv'" \
+  mkv2mp4
 # }}}
 # 🧑‍💻 SSH {{{
 compdef _ssh-known-hosts ssh
@@ -238,6 +244,10 @@ compdef _yarn-link-universal-enabled \
 compdef "_files -g '*.{bmp,gif,jpg,jpeg,png,svg,tiff,webp,avi,mkv,mp4,mpg,webm}'" \
   dimensions
 # }}}
+# HTML {{{
+compdef "_files -g '*.html'" \
+  html-min
+# }}}
 
 # PDF {{{
 compdef "_files -g '*.pdf'" \
@@ -263,6 +273,8 @@ compdef "_files -g '*.json'" \
   json-lint
 compdef "_files -g '*.jsonl'" \
   jsonl2json
+compdef "_files -g '*.jsonc'" \
+  jsonc2json
 # }}}
 # TOML {{{
 compdef "_files -g '*.toml'" \
