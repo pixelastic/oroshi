@@ -3,7 +3,7 @@ local M = {}
 local MODEL_NAME = "claude-sonnet-4-6"
 local ANTHROPIC_VERSION = "2023-06-01"
 local ANTHROPIC_URL = "https://api.anthropic.com/v1/messages"
-local ANTHROPIC_API_KEY = vim.fn.getenv("ANTHROPIC_API_KEY")
+local ANTHROPIC_API_KEY = vim.fn.getenv("OROSHI_ANTHROPIC_API_KEY")
 
 -- Call Anthropic API with a prompt and execute callback with the response
 -- @param prompt string - The prompt to send to the AI

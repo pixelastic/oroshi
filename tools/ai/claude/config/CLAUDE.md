@@ -4,6 +4,7 @@ grammar for the sake of concision.
 ## Code
 
 - DO: Prefer ZSH or JS for scripts; use Python only when there is no other choice.
+- DO: Use `jq`/`jo` for JSON parsing in shell, never Python
 - DO: Use dedicated skill per language if they exist (`zsh-writer`, `js-writer`, `python-writer`, etc)
 - DO: Fetch up-to-date documentation (using Context7 MCP) before writing code
 - DO: Prefer a DX that makes simple things easy and complex things possible

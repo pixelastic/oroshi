@@ -14,9 +14,9 @@ export async function callApi(options) {
     process.exit(1);
   }
   // Stop if no Anthropic key
-  const key = process.env.ANTHROPIC_API_KEY;
+  const key = process.env.OROSHI_ANTHROPIC_API_KEY;
   if (!key) {
-    consoleError('ANTHROPIC_API_KEY not set.\n');
+    consoleError('OROSHI_ANTHROPIC_API_KEY not set.\n');
     process.exit(1);
   }
 

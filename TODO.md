@@ -102,3 +102,7 @@ I'd love an icon to see:
 - Migrate everything that should be a function and not a script to a functions
 - Cleanup private/ scripts and autoloaded functions
 - Reorg by domain and install/deploy in private/
+
+---
+## Ideas
+- Update gamemaster/armory to renew the design, and to incorporate items from more games.

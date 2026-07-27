@@ -13,7 +13,7 @@ describe('callApi', () => {
     mockExit = vi.spyOn(process, 'exit').mockImplementation(() => {
       throw new Error('process.exit');
     });
-    process.env.ANTHROPIC_API_KEY = 'test-key';
+    process.env.OROSHI_ANTHROPIC_API_KEY = 'test-key';
   });
 
   describe('empty diff guard', () => {
@@ -43,8 +43,8 @@ describe('callApi', () => {
   });
 
   describe('missing API key', () => {
-    it('exits with code 1 when ANTHROPIC_API_KEY is not set', async () => {
-      delete process.env.ANTHROPIC_API_KEY;
+    it('exits with code 1 when OROSHI_ANTHROPIC_API_KEY is not set', async () => {
+      delete process.env.OROSHI_ANTHROPIC_API_KEY;
       try {
         await callApi({ prompt: 'test', diff: 'some diff' });
       } catch {

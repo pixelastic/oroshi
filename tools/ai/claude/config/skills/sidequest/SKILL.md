@@ -1,6 +1,6 @@
 ---
 name: sidequest
-description: Use when user says "sidequest". Compact conversation context into a document for a fresh agent to pick up.
+description: Use when user asks to make a sidequest. This will compact a specific part of the conversation, and start a new kitty tab + worktree to work on that part.
 ---
 
 # Sidequest
