@@ -550,6 +550,12 @@
     "icon": " ",
     "path": "~/local/www/projects/shar-teel"
   },
+  "signature": {
+    "background": "gray-7",
+    "foreground": "gray-2",
+    "icon": " ",
+    "path": "~/local/www/projects/signature"
+  },
   "society": {
     "background": "red-9",
     "foreground": "yellow-5",

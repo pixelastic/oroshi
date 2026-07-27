@@ -199,6 +199,7 @@
   "printenv",
   "printf",
   "print",
+  "projects-build",
   "project-name",
   "ps",
   "pup",

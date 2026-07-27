@@ -1804,6 +1804,26 @@
     "icon": " ",
     "path": "~/local/www/projects/shar-teel"
   },
+  "signature": {
+    "background": {
+      "ansi": 207,
+      "hex": "#374151",
+      "name": "gray-7"
+    },
+    "backgroundInactive": {
+      "ansi": 200,
+      "hex": "#0c0f15",
+      "name": "gray-dark"
+    },
+    "foreground": {
+      "ansi": 202,
+      "hex": "#e5e7eb",
+      "name": "gray-2"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/projects/signature"
+  },
   "society": {
     "background": {
       "ansi": 29,
