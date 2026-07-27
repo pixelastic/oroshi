@@ -1,0 +1,44 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-jsonc-remove-key.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-npm-domain-helpers.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-git-github-new-helpers.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-project-remove.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-deprecate-prepare.md",
+    "done": false,
+    "blocked_by": ["02", "03", "04"]
+  },
+  {
+    "id": "06",
+    "issue": "issues/06-deprecate-end.md",
+    "done": false,
+    "blocked_by": ["05"]
+  },
+  {
+    "id": "07",
+    "issue": "issues/07-deprecate-skill.md",
+    "done": false,
+    "blocked_by": ["06"]
+  }
+]
