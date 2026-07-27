@@ -1,0 +1,14 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-passthrough-args.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-sidequest-accept-edits.md",
+    "done": false,
+    "blocked_by": ["01"]
+  }
+]
