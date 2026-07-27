@@ -13,6 +13,7 @@
 - js-writer should have one named export per file, except for __
 - `local firstField="${lines[0]%%▮*}"` is bad, use a split array
 - json-lint doesn't work on files outside of oroshi
+- Make some slack-* commands to read updated in a specific channel
 
 ---
 
@@ -106,3 +107,4 @@ I'd love an icon to see:
 ---
 ## Ideas
 - Update gamemaster/armory to renew the design, and to incorporate items from more games.
+- Update blog.pixelastic.com. Find a blogging cadence, better UI
