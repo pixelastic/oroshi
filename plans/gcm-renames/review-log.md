@@ -26,3 +26,15 @@ return repo.run(`diff --cached -- ${filepath}`);
 ```
 **Problem:** Spec says diff --cached -M
 **Reason skipped:** Existing tests assert exact command string; -M belongs to issue 02
+
+## Issue 02 — rename fallback
+### Return-early pattern vs accumulator
+```javascript
+const blocks = [];
+if (contentDiff) { blocks.push(contentDiff); }
+if (renames.length > 0) { ... }
+if (binaries.length > 0) { ... }
+return blocks.join('\n\n');
+```
+**Problem:** CLAUDE.md requires "return early" pattern; function uses sequential if-push instead
+**Reason skipped:** Accumulator pattern — each block is additive and independent; return-early doesn't apply to assembly logic

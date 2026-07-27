@@ -11,25 +11,34 @@ describe('commitWithHint', () => {
     it.each([
       {
         title: 'binary-only staged files → binary fallback message',
-        stagedFiles: ['file.nes', 'plans/commit-message-binary/state.json'],
+        stagedFilesWithStatus: [
+          { name: 'file.nes', status: 'added' },
+          {
+            name: 'plans/commit-message-binary/state.json',
+            status: 'modified',
+          },
+        ],
         diffs: { 'file.nes': '', 'plans/commit-message-binary/state.json': '' },
         expected: 'Binary files added:\n- file.nes',
       },
       {
         title: 'text files staged → returns raw diff',
-        stagedFiles: ['src/index.js'],
+        stagedFilesWithStatus: [{ name: 'src/index.js', status: 'modified' }],
         diffs: { 'src/index.js': 'diff text' },
         expected: 'diff text',
       },
       {
-        title: 'mixed binary and text → text diff only',
-        stagedFiles: ['game.nes', 'src/index.js'],
+        title: 'mixed binary and text → text diff + binary block',
+        stagedFilesWithStatus: [
+          { name: 'game.nes', status: 'added' },
+          { name: 'src/index.js', status: 'modified' },
+        ],
         diffs: { 'game.nes': '', 'src/index.js': 'diff text' },
-        expected: 'diff text',
+        expected: 'diff text\n\nBinary files added:\n- game.nes',
       },
-    ])('$title', async ({ stagedFiles, diffs, expected }) => {
+    ])('$title', async ({ stagedFilesWithStatus, diffs, expected }) => {
       Gilmore.mockReturnValue({
-        stagedFiles: vi.fn().mockReturnValue(stagedFiles),
+        stagedFilesWithStatus: vi.fn().mockReturnValue(stagedFilesWithStatus),
         run: vi
           .fn()
           .mockImplementation((cmd) => diffs[cmd.split(' ').at(-1)] ?? ''),
@@ -40,14 +49,21 @@ describe('commitWithHint', () => {
 
     it('plan-noise files do not appear in binary fallback', async () => {
       Gilmore.mockReturnValue({
-        stagedFiles: vi
-          .fn()
-          .mockReturnValue([
-            'file.nes',
-            'plans/commit-message-binary/state.json',
-            'plans/commit-message-binary/GUIDANCE.md',
-            'plans/commit-message-binary/review-log.md',
-          ]),
+        stagedFilesWithStatus: vi.fn().mockReturnValue([
+          { name: 'file.nes', status: 'added' },
+          {
+            name: 'plans/commit-message-binary/state.json',
+            status: 'modified',
+          },
+          {
+            name: 'plans/commit-message-binary/GUIDANCE.md',
+            status: 'modified',
+          },
+          {
+            name: 'plans/commit-message-binary/review-log.md',
+            status: 'modified',
+          },
+        ]),
         run: vi.fn().mockReturnValue(''),
       });
       const actual = await commitWithHint.getDiff();

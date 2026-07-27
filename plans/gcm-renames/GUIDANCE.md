@@ -9,3 +9,6 @@
 - The `→` character in the rename fallback block is U+2192 (rightwards arrow)
 
 ## Discoveries
+
+### Issue 02 — rename fallback
+- Old behavior silently dropped binary files when mixed with text diffs; new block-assembly approach always includes them — updated commitWithHint/commitWithoutHint test expectations accordingly
