@@ -6,6 +6,13 @@
 set -e
 
 for file in $@; do
-  pandoc "$file" -o "${file:a:r}.html"
+  pandoc \
+    --standalone \
+    --embed-resources \
+    --resource-path "${file:a:h}" \
+    --css "https://cdn.jsdelivr.net/npm/sakura.css/css/sakura-dark.css" \
+    --metadata title="${file:t:r}" \
+    "$file" \
+    -o "${file:a:r}.html"
   echo "✔ ${file:r} converted to html"
 done
