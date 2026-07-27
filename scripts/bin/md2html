@@ -1,33 +1,11 @@
-#!/usr/bin/env ruby
-require "shellwords"
+#!/usr/bin/env zsh
+# Convert markdown files to HTML using pandoc
+# Usage:
+# $ md2html file.md              # Single file
+# $ md2html file1.md file2.md    # Multiple files
+set -e
 
-class Mkd2Html
-	
-	# Keeping only mkd files
-	def initialize(*args)
-		@files = []
-		args.each do |file|
-			next unless File.exists?(file)
-			extname = File.extname(file).downcase
-			next unless ['.md', '.mkd'].include?(extname)
-			@files << File.expand_path(file)
-		end
-	end
-
-	# Converting files to html
-	def run
-		@files.each do |file|
-			extname = File.extname(file)
-			basename = File.basename(file, extname)
-			dirname = File.dirname(file)
-			new_path = File.join(dirname, basename + ".html")
-			
-			puts "Converting to #{File.basename(new_path)}"
-			%x[markdown #{file.shellescape} > #{new_path.shellescape}]
-
-		end
-
-	end
-end
-
-Mkd2Html.new(*ARGV).run()
+for file in $@; do
+  pandoc "$file" -o "${file:a:r}.html"
+  echo "✔ ${file:r} converted to html"
+done

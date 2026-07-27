@@ -248,6 +248,10 @@ compdef "_files -g '*.{bmp,gif,jpg,jpeg,png,svg,tiff,webp,avi,mkv,mp4,mpg,webm}'
 compdef "_files -g '*.html'" \
   html-min
 # }}}
+# Markdown {{{
+compdef "_files -g '*.md'" \
+  md2html
+# }}}
 
 # PDF {{{
 compdef "_files -g '*.pdf'" \
