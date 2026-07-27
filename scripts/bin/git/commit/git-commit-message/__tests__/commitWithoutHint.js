@@ -27,6 +27,34 @@ describe('commitWithoutHint', () => {
         diffs: { 'game.nes': '', 'src/index.js': 'diff text' },
         expected: 'diff text\n\nBinary files added:\n- game.nes',
       },
+      {
+        title: 'rename-only staged files → rename fallback block',
+        stagedFilesWithStatus: [
+          {
+            name: 'new/path.js',
+            status: 'renamed',
+            from: 'old/path.js',
+            similarity: 100,
+          },
+        ],
+        diffs: {},
+        expected: 'Files renamed:\n- old/path.js \u2192 new/path.js',
+      },
+      {
+        title: 'mixed rename + text → diff + rename block',
+        stagedFilesWithStatus: [
+          { name: 'src/index.js', status: 'modified' },
+          {
+            name: 'new/path.js',
+            status: 'renamed',
+            from: 'old/path.js',
+            similarity: 100,
+          },
+        ],
+        diffs: { 'src/index.js': 'diff text' },
+        expected:
+          'diff text\n\nFiles renamed:\n- old/path.js \u2192 new/path.js',
+      },
     ])('$title', async ({ stagedFilesWithStatus, diffs, expected }) => {
       Gilmore.mockReturnValue({
         stagedFilesWithStatus: vi.fn().mockReturnValue(stagedFilesWithStatus),
@@ -50,6 +78,30 @@ describe('commitWithoutHint', () => {
       await commitWithoutHint.getDiff();
       expect(mockRun).not.toHaveBeenCalledWith('diff --cached -M -- yarn.lock');
       expect(mockRun).toHaveBeenCalledWith('diff --cached -M -- src/index.js');
+    });
+
+    it('excludes yarn.lock from rename processing', async () => {
+      Gilmore.mockReturnValue({
+        stagedFilesWithStatus: vi.fn().mockReturnValue([
+          {
+            name: 'yarn.lock',
+            status: 'renamed',
+            from: 'old-yarn.lock',
+            similarity: 100,
+          },
+          {
+            name: 'new/path.js',
+            status: 'renamed',
+            from: 'old/path.js',
+            similarity: 100,
+          },
+        ]),
+        run: vi.fn().mockReturnValue(''),
+      });
+      const actual = await commitWithoutHint.getDiff();
+      expect(actual).toEqual(
+        'Files renamed:\n- old/path.js \u2192 new/path.js',
+      );
     });
   });
 });

@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-strategy-test-fixtures.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "Added rename-only, mixed rename+text, and exclusion test fixtures to commitWithHint and commitWithoutHint strategy tests"
   }
 ]

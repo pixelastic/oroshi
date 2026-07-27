@@ -36,6 +36,34 @@ describe('commitWithHint', () => {
         diffs: { 'game.nes': '', 'src/index.js': 'diff text' },
         expected: 'diff text\n\nBinary files added:\n- game.nes',
       },
+      {
+        title: 'rename-only staged files → rename fallback block',
+        stagedFilesWithStatus: [
+          {
+            name: 'new/path.js',
+            status: 'renamed',
+            from: 'old/path.js',
+            similarity: 100,
+          },
+        ],
+        diffs: {},
+        expected: 'Files renamed:\n- old/path.js \u2192 new/path.js',
+      },
+      {
+        title: 'mixed rename + text → diff + rename block',
+        stagedFilesWithStatus: [
+          { name: 'src/index.js', status: 'modified' },
+          {
+            name: 'new/path.js',
+            status: 'renamed',
+            from: 'old/path.js',
+            similarity: 100,
+          },
+        ],
+        diffs: { 'src/index.js': 'diff text' },
+        expected:
+          'diff text\n\nFiles renamed:\n- old/path.js \u2192 new/path.js',
+      },
     ])('$title', async ({ stagedFilesWithStatus, diffs, expected }) => {
       Gilmore.mockReturnValue({
         stagedFilesWithStatus: vi.fn().mockReturnValue(stagedFilesWithStatus),
@@ -69,6 +97,30 @@ describe('commitWithHint', () => {
       const actual = await commitWithHint.getDiff();
       const expected = 'Binary files added:\n- file.nes';
       expect(actual).toEqual(expected);
+    });
+
+    it('plan-noise files excluded from rename fallback', async () => {
+      Gilmore.mockReturnValue({
+        stagedFilesWithStatus: vi.fn().mockReturnValue([
+          {
+            name: 'new/path.js',
+            status: 'renamed',
+            from: 'old/path.js',
+            similarity: 100,
+          },
+          {
+            name: 'plans/commit-message-binary/state.json',
+            status: 'renamed',
+            from: 'plans/commit-message-binary/old-state.json',
+            similarity: 100,
+          },
+        ]),
+        run: vi.fn().mockReturnValue(''),
+      });
+      const actual = await commitWithHint.getDiff();
+      expect(actual).toEqual(
+        'Files renamed:\n- old/path.js \u2192 new/path.js',
+      );
     });
   });
 });
