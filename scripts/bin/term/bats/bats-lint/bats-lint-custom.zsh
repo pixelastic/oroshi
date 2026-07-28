@@ -10,7 +10,7 @@ whence bats-lint-custom >/dev/null && return 0
 # Capture directory at source time
 _batsLintRulesDir="${0:A:h}/__rules"
 
-bats-lint-custom() {
+function bats-lint-custom() {
   # Source all rule files
   source "${_batsLintRulesDir}/rule-no-run-zsh.zsh"
   source "${_batsLintRulesDir}/rule-no-inline-function.zsh"
@@ -18,6 +18,7 @@ bats-lint-custom() {
   source "${_batsLintRulesDir}/rule-prefer-batch-mock.zsh"
   source "${_batsLintRulesDir}/rule-no-shebang.zsh"
   source "${_batsLintRulesDir}/rule-no-boilerplate-teardown.zsh"
+  source "${_batsLintRulesDir}/rule-no-single-bracket.zsh"
 
   lint-custom-run \
     --disable-prefix 'bats-lint' \
@@ -27,5 +28,6 @@ bats-lint-custom() {
     batsLintRule_preferBatchMock \
     batsLintRule_noShebang \
     batsLintRule_noBoilerplateTeardown \
+    batsLintRule_noSingleBracket \
     -- "$@"
 }

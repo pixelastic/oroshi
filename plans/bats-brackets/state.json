@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-no-single-bracket-rule.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added noSingleBracket bats-lint rule that flags [ ] assertions and suggests [[ ]], with 6 behavioral tests"
   },
   {
     "id": "02",
