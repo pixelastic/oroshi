@@ -16,6 +16,7 @@
 - Make some slack-* commands to read updated in a specific channel
 - Find a way to display in kitty how "deep" a tab is. That would allow me to focus on the tabs that are close to being done, in order to close them, rather than going deep into grill me/prd into new ideas
 - Update `j` so it only suggests through the projects list, no longer manually marking dirs, or maybe in addition to marking dirs?
+- /debug-script skill doesn't work well with nodejs scripts that require a dependency. Need to see if it can use package.json for the deps?
 
 ---
 
