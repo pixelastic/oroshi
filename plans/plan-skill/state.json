@@ -1,0 +1,26 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-plan-start-script.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-plan-end-script.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-plan-skill.md",
+    "done": false,
+    "blocked_by": ["01", "02"]
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-cleanup.md",
+    "done": false,
+    "blocked_by": ["03"]
+  }
+]
