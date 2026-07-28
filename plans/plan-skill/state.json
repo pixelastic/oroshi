@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-plan-start-script.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Created plan-start script adapted from prd-end with simplified {worktreePath, branch, planDir} output"
   },
   {
     "id": "02",

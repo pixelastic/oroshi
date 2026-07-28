@@ -1,0 +1,25 @@
+#!/usr/bin/env zsh
+# Ensure plan is created in a worktree, output plan directory info
+# Usage:
+# $ plan-start [branchName]
+set -e
+
+local branch="$1"
+
+# Branch required when not already in a worktree
+if ! git-directory-is-worktree; then
+  if [[ "$branch" == "" ]]; then
+    print -u2 "plan-start: branch name required when not in a worktree"
+    exit 1
+  fi
+  git-worktree-create "$branch"
+fi
+
+local root="$(git-directory-root)"
+local currentBranch="$(git-branch-current)"
+local slug="$(git-branch-slug "$currentBranch")"
+
+jo \
+  worktreePath="$root" \
+  branch="$currentBranch" \
+  planDir="$root/plans/$slug/"
