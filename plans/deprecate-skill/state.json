@@ -16,8 +16,9 @@
   {
     "id": "03",
     "issue": "issues/03-git-github-new-helpers.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Created 4 git-github-* autoload helpers (repo-is-archived, repo-description, repo-description-set, repo-archive) as thin gh wrappers with input guards"
   },
   {
     "id": "04",

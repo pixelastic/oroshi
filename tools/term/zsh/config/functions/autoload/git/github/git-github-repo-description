@@ -1,0 +1,10 @@
+# Gets the description of the specified repo
+# Usage:
+# $ git-github-repo-description owner/repo
+setopt local_options err_return
+local repoName=$1
+
+# Repo name is required
+[[ "$repoName" == "" ]] && return 1
+
+gh api "repos/${repoName}" --jq '.description'

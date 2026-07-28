@@ -1,0 +1,10 @@
+# Archives the specified repo
+# Usage:
+# $ git-github-repo-archive owner/repo
+setopt local_options err_return
+local repoName=$1
+
+# Repo name is required
+[[ "$repoName" == "" ]] && return 1
+
+gh repo archive "$repoName" --yes

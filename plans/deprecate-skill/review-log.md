@@ -37,3 +37,22 @@ echo "$jsonOutput" | jq --exit-status '.deprecated' &>/dev/null
 ```
 **Problem:** `jq` is an external dependency not mentioned in the spec
 **Reason skipped:** Spec says "checks for deprecated field" without prescribing how; `jq` is the idiomatic JSON tool per CLAUDE.md
+
+## Issue 03 — git-github new helpers
+### No tests for thin wrappers
+```zsh
+gh api "repos/${repoName}" --jq '.archived'
+```
+**Problem:** zsh-writer mandates TDD for all new functions
+**Reason skipped:** Issue spec explicitly overrides with "No tests (thin wrappers with no parsing logic)"
+
+### Long-form flags vs spec short-form
+```zsh
+gh api \
+  --method PATCH \
+  "repos/${repoName}" \
+  --field description="$description" \
+  > /dev/null
+```
+**Problem:** Spec example used `-X PATCH` and `-f`, implementation uses `--method` and `--field`
+**Reason skipped:** zsh-writer calling-commands.md mandates long-form flags; zsh-writer standard takes precedence over spec example syntax

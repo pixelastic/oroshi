@@ -1,0 +1,18 @@
+# Sets the description of the specified repo
+# Usage:
+# $ git-github-repo-description-set owner/repo "New description"
+setopt local_options err_return
+local repoName=$1
+local description=$2
+
+# Repo name is required
+[[ "$repoName" == "" ]] && return 1
+
+# Description is required
+[[ "$description" == "" ]] && return 1
+
+gh api \
+  --method PATCH \
+  "repos/${repoName}" \
+  --field description="$description" \
+  > /dev/null

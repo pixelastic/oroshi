@@ -1,0 +1,14 @@
+# Checks if the specified repo is archived
+# Usage:
+# $ git-github-repo-is-archived owner/repo   # Return 0 if archived, 1 otherwise
+setopt local_options err_return
+local repoName=$1
+
+# Repo name is required
+[[ "$repoName" == "" ]] && return 1
+
+local isArchived="$(gh api "repos/${repoName}" --jq '.archived')"
+
+# Archived repos return "true"
+[[ "$isArchived" == "true" ]] && return 0
+return 1
