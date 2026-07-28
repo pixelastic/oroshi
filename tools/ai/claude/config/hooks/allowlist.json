@@ -178,6 +178,7 @@
   "node_modules/.bin/aberlaas test",
   "notion block list",
   "notion db query",
+  "notion",
   "npm show",
   "npm view",
   "npm whoami",
