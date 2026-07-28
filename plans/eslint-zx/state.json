@@ -2,7 +2,8 @@
   {
     "id": "01",
     "issue": "issues/01-delete-dead-zx-scripts.md",
-    "done": false,
+    "done": true,
+    "recap": "Deleted 9 dead zx scripts/symlinks/installers, removed stale kitty-layout-load block and Alt+F5 binding",
     "blocked_by": []
   }
 ]
