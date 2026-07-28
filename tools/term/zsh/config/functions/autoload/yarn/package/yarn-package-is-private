@@ -1,0 +1,9 @@
+# Check if a package is private
+# Usage:
+# $ yarn-package-is-private /path/to/project   # Returns 0 if private
+setopt local_options err_return
+local inputPath=${1:a}
+local packageRoot="$(yarn-root "$inputPath")"
+
+local isPrivate="$(jq -r '.private // empty' "${packageRoot}/package.json")"
+[[ "$isPrivate" == "true" ]]

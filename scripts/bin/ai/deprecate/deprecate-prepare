@@ -1,0 +1,110 @@
+#!/usr/bin/env zsh
+# Gather deprecation-relevant info about a project and return as JSON
+# Usage:
+# $ deprecate-prepare <project-name>
+set -e
+
+DEPRECATE_TMP="$OROSHI_TMP_FOLDER/deprecate"
+
+# Project name is required
+local projectName="$1"
+[[ "$projectName" == "" ]] && return 1
+
+# Check projects.jsonc
+local inProjectsJsonc="false"
+local projectPath=""
+if project-exists "$projectName"; then
+  inProjectsJsonc="true"
+  projectPath="$(project-path "$projectName")"
+fi
+
+# Read owner/repo from git remote if project is on disk
+local owner=""
+local repo=""
+local clonedAt=""
+if [[ -d "$projectPath" ]]; then
+  clonedAt="$projectPath"
+  owner="$(git-github-project-owner "$projectPath")"
+  repo="$(git-github-project-name "$projectPath")"
+fi
+
+# Not found if no owner yet and not on GitHub as pixelastic/<name>
+if [[ "$owner" == "" ]] && ! git-github-repo-exists "pixelastic/$projectName"; then
+  echo '{"status":"not-found"}'
+  return 0
+fi
+
+# Default to pixelastic/<name> from GitHub lookup
+[[ "$owner" == "" ]] && owner="pixelastic"
+[[ "$repo" == "" ]] && repo="$projectName"
+
+# GitHub metadata
+local description="$(git-github-repo-description "$owner/$repo")"
+local isArchived="false"
+git-github-repo-is-archived "$owner/$repo" && isArchived="true"
+
+# Sync repo to temp if no disk location and owner is pixelastic
+local tmpPath="$DEPRECATE_TMP/$projectName"
+if [[ "$clonedAt" == "" && "$owner" == "pixelastic" ]]; then
+  mkdir -p "$DEPRECATE_TMP"
+  git-directory-sync "git@github.com:$owner/$repo.git" "$tmpPath"
+  clonedAt="$tmpPath"
+fi
+
+# npm: detect package name from disk
+local packageName=""
+if [[ "$clonedAt" != "" && -f "$clonedAt/package.json" ]] && ! yarn-package-is-private "$clonedAt"; then
+  packageName="$(yarn-package-name "$clonedAt")"
+fi
+
+# npm: check publication status
+local npmPackage=""
+if [[ "$packageName" != "" ]] && npm-is-published "$packageName"; then
+  npmPackage="$packageName"
+fi
+
+# npm: check deprecation and login for published packages
+local npmIsDeprecated=""
+local npmIsLoggedIn=""
+if [[ "$npmPackage" != "" ]]; then
+  npmIsDeprecated="false"
+  npm-is-deprecated "$npmPackage" && npmIsDeprecated="true"
+  npmIsLoggedIn="false"
+  npm-is-logged-in && npmIsLoggedIn="true"
+fi
+
+# Build JSON output
+local jsonArgs=(
+  --arg status "ok"
+  --arg projectName "$projectName"
+  --argjson inProjectsJsonc "$inProjectsJsonc"
+  --arg owner "$owner"
+  --arg repo "$repo"
+  --arg description "$description"
+  --argjson isArchived "$isArchived"
+  --arg clonedAt "$clonedAt"
+)
+
+local npmFilter='.npmPackage = null'
+if [[ "$npmPackage" != "" ]]; then
+  jsonArgs+=(
+    --arg npmPackage "$npmPackage"
+    --argjson npmIsDeprecated "$npmIsDeprecated"
+    --argjson npmIsLoggedIn "$npmIsLoggedIn"
+  )
+  npmFilter=".npmPackage = \$npmPackage | .npmIsDeprecated = \$npmIsDeprecated | .npmIsLoggedIn = \$npmIsLoggedIn"
+fi
+
+jq -n "${jsonArgs[@]}" \
+'{
+    status: $status,
+    projectName: $projectName,
+    inProjectsJsonc: $inProjectsJsonc,
+    github: {
+      owner: $owner,
+      repo: $repo,
+      description: $description,
+      isArchived: $isArchived
+    },
+    clonedAt: $clonedAt
+  } | '"$npmFilter"

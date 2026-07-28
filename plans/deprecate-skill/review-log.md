@@ -65,16 +65,25 @@ bats_run_zsh "OROSHI_ROOT=$BATS_TMP_DIR/oroshi project-remove myproject"
 **Problem:** Tests override OROSHI_ROOT to point outside worktree without calling bats_disable_worktree_aware.
 **Reason skipped:** The only external command (jsonc-remove-key) is mocked, so PATH resolution is irrelevant. No `cd` outside worktree happens.
 
-### Single vs double bracket assertions
-```bash
-[ "$status" -eq 0 ]
-```
-**Problem:** Tests use `[` instead of `[[` for assertions.
-**Reason skipped:** Both forms appear in existing project tests (e.g. project-exists.bats uses `[`). Standards examples are inconsistent.
-
 ### Spec happy-path test granularity
 ```bash
 @test "calls jsonc-remove-key with projects.jsonc path and project name" {
 ```
 **Problem:** Spec lists 3 separate happy-path behaviors but only one test covers the wiring.
 **Reason skipped:** Spec says "mocking is fine here — test the wiring, not the JSONC parsing again". The three bullets describe delegated behavior already tested in issue 01.
+
+## Issue 05 — deprecate-prepare
+### git clone porcelain
+```zsh
+git clone --quiet "https://github.com/$owner/$repo.git" "$tmpPath"
+```
+**Problem:** Calling porcelain directly instead of a helper
+**Reason skipped:** No git-clone wrapper exists in the repo
+
+### Non-pixelastic owner not-on-disk untested
+**Problem:** Spec case "non-pixelastic owner → no clone" only tested when project IS on disk
+**Reason skipped:** Edge case not listed in issue behavioral tests section
+
+### Projects.jsonc + on-disk + GitHub API failure untested
+**Problem:** No test for project on disk where GitHub metadata calls could fail
+**Reason skipped:** Edge case not listed in issue behavioral tests section

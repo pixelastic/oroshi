@@ -30,8 +30,9 @@
   {
     "id": "05",
     "issue": "issues/05-deprecate-prepare.md",
-    "done": false,
-    "blocked_by": ["02", "03", "04"]
+    "done": true,
+    "blocked_by": ["02", "03", "04"],
+    "recap": "Created deprecate-prepare ZSH script that gathers project info (projects.jsonc, GitHub, disk location, npm status) and returns JSON"
   },
   {
     "id": "06",
