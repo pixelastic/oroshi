@@ -1,0 +1,8 @@
+# Write arguments to stderr
+# Usage:
+# $ echoerr "something went wrong"
+# $ echoerr -n "prompt without newline"
+setopt local_options err_return
+
+# zsh-lint disable=useEchoerr
+echo "$@" >&2
