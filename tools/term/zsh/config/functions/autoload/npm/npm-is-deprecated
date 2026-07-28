@@ -1,0 +1,11 @@
+# Check if a published package is deprecated on the npm registry
+# Usage:
+# $ npm-is-deprecated my-package   # Returns 0 if deprecated
+setopt local_options err_return
+local packageName=$1
+
+local jsonOutput="$(npm view "$packageName" --json 2>/dev/null)"
+# Package not found on registry
+[[ "$jsonOutput" == "" ]] && return 1
+
+echo "$jsonOutput" | jq --exit-status '.deprecated' &>/dev/null

@@ -1,0 +1,6 @@
+# Check if user is authenticated to npm
+# Usage:
+# $ npm-is-logged-in   # Returns 0 if logged in
+setopt local_options err_return
+
+npm whoami &>/dev/null

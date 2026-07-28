@@ -1,0 +1,7 @@
+# Check if a package exists on the npm registry
+# Usage:
+# $ npm-is-published my-package   # Returns 0 if published
+setopt local_options err_return
+local packageName=$1
+
+npm view "$packageName" &>/dev/null

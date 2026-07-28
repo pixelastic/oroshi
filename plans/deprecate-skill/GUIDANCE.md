@@ -54,3 +54,8 @@
 - `jsonc-parser` `modify()` with `undefined` value removes the preceding comment block along with the key — not just the key/value pair
 - Script placed in `scripts/bin/json/` (on PATH) not `tools/_languages/json/` (install scripts only)
 - Yarn PnP: debug scripts in /tmp can't resolve repo packages; must run from within repo root
+
+### Issue 02 — npm domain helpers
+- `local` masks exit codes — can't use `local var="$(cmd)" || return 1`; assign then guard separately
+- With `err_return`, last-statement `&& return 0 || return 1` is redundant — the exit code propagates naturally
+- `npm deprecate pkg ""` un-deprecates — guard against empty message

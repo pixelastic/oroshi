@@ -1,0 +1,13 @@
+# Remove deprecation notice from an npm package
+# Usage:
+# $ npm-undeprecate my-package
+setopt local_options err_return
+local packageName=$1
+
+# Must be logged in to undeprecate
+if ! npm-is-logged-in; then
+  echo "You must be logged in to npm first. Run npm-login"
+  return 1
+fi
+
+npm deprecate "$packageName" ""

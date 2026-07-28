@@ -25,3 +25,4 @@ _Avoid_: refresh, repaint
 - [FZF](scripts/bin/fzf/__docs/GLOSSARY.md) — FZF Scripts, Lifecycle Functions, FZF Helpers, Neovim API, Legacy FZF
 - [FZF ctrl-r](scripts/bin/fzf/__docs/GLOSSARY-ctrl-r.md) — Eager/Lazy colorization strategies, History diff, Cache, Mutex
 - [Kitty Tab Bar](tools/term/kitty/config/GLOSSARY.md) — Tab Bar, Statusbar, Redraw, Reload, Reload Beacon, Attention
+- [npm](tools/term/zsh/config/functions/autoload/npm/GLOSSARY.md) — Published, Deprecated — registry states and their relationship

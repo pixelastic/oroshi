@@ -1,0 +1,6 @@
+# Log in to npm interactively
+# Usage:
+# $ npm-login
+setopt local_options err_return
+
+npm login

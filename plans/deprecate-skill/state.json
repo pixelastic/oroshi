@@ -9,8 +9,9 @@
   {
     "id": "02",
     "issue": "issues/02-npm-domain-helpers.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Created 5 npm-* autoload helpers (is-published, is-deprecated, is-logged-in, login, deprecate) with behavioral tests for is-deprecated"
   },
   {
     "id": "03",

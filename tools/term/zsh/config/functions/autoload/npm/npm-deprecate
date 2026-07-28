@@ -1,0 +1,17 @@
+# Deprecate an npm package with a message
+# Usage:
+# $ npm-deprecate my-package "Use other-package instead"
+setopt local_options err_return
+local packageName=$1
+local message=$2
+
+# Empty message would un-deprecate the package
+[[ "$message" == "" ]] && return 1
+
+# Must be logged in to deprecate
+if ! npm-is-logged-in; then
+  echo "You must be logged in to npm first. Run npm-login"
+  return 1
+fi
+
+npm deprecate "$packageName" "$message"
