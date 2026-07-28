@@ -1,0 +1,44 @@
+# vim: set ft=bats:
+
+# expect_json <jq_path> <expected>
+# Asserts that jq -r <jq_path> on $output equals <expected> (exact match).
+# Usage: expect_json '.name' 'alice'
+expect_json() {
+  local jqPath="$1"
+  local expected="$2"
+  local actual="$(echo "$output" | jq -r "$jqPath")"
+
+  [[ "$actual" == "$expected" ]] && return 0
+
+  echo "expect_json $jqPath: expected '$expected', got '$actual'"
+  return 1
+}
+
+# expect_json_null <jq_path>
+# Asserts that jq <jq_path> on $output is null (not -r, so literal "null").
+# Usage: expect_json_null '.name'
+expect_json_null() {
+  local jqPath="$1"
+  local actual="$(echo "$output" | jq "$jqPath")"
+
+  [[ "$actual" == "null" ]] && return 0
+
+  echo "expect_json_null $jqPath: expected 'null', got '$actual'"
+  return 1
+}
+
+# expect_json_glob <jq_path> <pattern>
+# Asserts that jq -r <jq_path> on $output matches <pattern> (glob match).
+# Usage: expect_json_glob '.path' '/home/*/docs'
+expect_json_glob() {
+  local jqPath="$1"
+  local pattern="$2"
+  local actual="$(echo "$output" | jq -r "$jqPath")"
+
+  # Unquoted RHS is intentional for glob matching
+  # shellcheck disable=SC2053
+  [[ "$actual" == $pattern ]] && return 0
+
+  echo "expect_json_glob $jqPath: expected '$pattern', got '$actual'"
+  return 1
+}

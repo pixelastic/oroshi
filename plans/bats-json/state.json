@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-expect-json-helpers.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Added expect_json, expect_json_null, expect_json_glob helpers to bats helper-json with full test coverage"
   },
   {
     "id": "02",

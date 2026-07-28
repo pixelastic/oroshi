@@ -186,3 +186,6 @@ bats_slugify() {
   slug="${slug%-}"
   echo "$slug"
 }
+
+# shellcheck disable=SC1091
+source "${BASH_SOURCE[0]%/*}/helper-json"
