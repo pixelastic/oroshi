@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-jsonc-remove-key.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Created jsonc-remove-key Node.js CLI in scripts/bin/json/ with symlink, using jsonc-parser to remove top-level keys from JSONC files while preserving comments"
   },
   {
     "id": "02",

@@ -49,3 +49,8 @@
 ## Discoveries
 
 (append-only, updated by agents after each issue)
+
+### Issue 01 — jsonc-remove-key
+- `jsonc-parser` `modify()` with `undefined` value removes the preceding comment block along with the key — not just the key/value pair
+- Script placed in `scripts/bin/json/` (on PATH) not `tools/_languages/json/` (install scripts only)
+- Yarn PnP: debug scripts in /tmp can't resolve repo packages; must run from within repo root
