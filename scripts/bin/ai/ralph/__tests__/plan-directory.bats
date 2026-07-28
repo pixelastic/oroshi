@@ -9,7 +9,7 @@ setup() {
   mkdir -p "$wt_path/plans/feat_my-feat"
   echo '{}' >"$wt_path/plans/feat_my-feat/state.json"
   bats_run_zsh "cd $wt_path && plan-directory"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"/plans/feat_my-feat" ]]
   [[ "$output" == /* ]]
 }
@@ -17,16 +17,16 @@ setup() {
 @test "exits 1 when not in a ralph worktree" {
   cd "$BATS_GIT_DIR"
   bats_run_zsh "plan-directory"
-  [ "$status" -eq 1 ]
-  [ -z "$output" ]
+  [[ "$status" -eq 1 ]]
+  [[ -z "$output" ]]
 }
 
 @test "exits 1 in a worktree without state.json" {
   local wt_path="$(bats_git_worktree 'feat/no-prd')"
   cd "$wt_path"
   bats_run_zsh "plan-directory"
-  [ "$status" -eq 1 ]
-  [ -z "$output" ]
+  [[ "$status" -eq 1 ]]
+  [[ -z "$output" ]]
 }
 
 @test "accepts an explicit subpath argument" {
@@ -34,6 +34,6 @@ setup() {
   mkdir -p "$wt_path/plans/feat_explicit"
   echo '{}' >"$wt_path/plans/feat_explicit/state.json"
   bats_run_zsh "plan-directory $wt_path/plans/feat_explicit"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"/plans/feat_explicit" ]]
 }

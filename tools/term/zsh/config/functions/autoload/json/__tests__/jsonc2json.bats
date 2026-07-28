@@ -16,7 +16,7 @@ setup() {
 JSONC
   bats_run_zsh "jsonc2json $JSONC_FILE"
   run jq -r '.key' <<<"$output"
-  [ "$output" = "value" ]
+  [[ "$output" = "value" ]]
 }
 
 @test "strips leading-whitespace // comments" {
@@ -28,7 +28,7 @@ JSONC
 JSONC
   bats_run_zsh "jsonc2json $JSONC_FILE"
   run jq -r '.key' <<<"$output"
-  [ "$output" = "value" ]
+  [[ "$output" = "value" ]]
 }
 
 @test "preserves values containing //" {
@@ -39,7 +39,7 @@ JSONC
 JSONC
   bats_run_zsh "jsonc2json $JSONC_FILE"
   run jq -r '.url' <<<"$output"
-  [ "$output" = "https://example.com" ]
+  [[ "$output" = "https://example.com" ]]
 }
 
 # --- output validity ---
@@ -54,12 +54,12 @@ JSONC
 JSONC
   bats_run_zsh "jsonc2json $JSONC_FILE"
   run jq '.' <<<"$output"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "plain JSON file passes through unchanged" {
   echo '{"x":42}' >"$JSONC_FILE"
   bats_run_zsh "jsonc2json $JSONC_FILE"
   run jq '.x' <<<"$output"
-  [ "$output" = "42" ]
+  [[ "$output" = "42" ]]
 }

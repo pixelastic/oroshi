@@ -11,8 +11,8 @@ setup() {
   git commit --allow-empty -m "commit 1"
   git commit --allow-empty -m "commit 2"
   bats_run_zsh "git-worktree-start"
-  [ "$status" -eq 0 ]
-  [ "$output" = "$baseCommit" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "$baseCommit" ]]
 }
 
 @test "accepts a path argument" {
@@ -21,12 +21,12 @@ setup() {
   git commit --allow-empty -m "commit in worktree"
   cd "$BATS_GIT_DIR"
   bats_run_zsh "git-worktree-start ${BATS_GIT_WORKTREES}my-repo--fix-bug"
-  [ "$status" -eq 0 ]
-  [ "$output" = "$baseCommit" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "$baseCommit" ]]
 }
 
 @test "fails when worktree has no commits ahead of main" {
   cd "${BATS_GIT_WORKTREES}my-repo--fix-bug"
   bats_run_zsh "git-worktree-start"
-  [ "$status" -ne 0 ]
+  [[ "$status" -ne 0 ]]
 }

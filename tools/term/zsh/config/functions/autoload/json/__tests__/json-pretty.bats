@@ -13,14 +13,14 @@ setup() {
   "name": "Alice"
 }'
   bats_run_zsh "json-pretty '$input'"
-  [ "$status" -eq 0 ]
-  [ "$output" = "$expected" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "$expected" ]]
 }
 
 @test "argument: invalid JSON exits 1" {
   input='not-json'
   bats_run_zsh "json-pretty '$input'"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 # --- stdin ---
@@ -31,8 +31,8 @@ setup() {
   "city": "Paris"
 }'
   bats_run_zsh "echo '$input' | json-pretty"
-  [ "$status" -eq 0 ]
-  [ "$output" = "$expected" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "$expected" ]]
 }
 
 # --- --input flag ---
@@ -44,13 +44,13 @@ setup() {
 }'
   echo "$input" > "$JSON_FILE"
   bats_run_zsh "json-pretty --input '$JSON_FILE'"
-  [ "$status" -eq 0 ]
-  [ "$output" = "$expected" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "$expected" ]]
 }
 
 @test "--input: invalid JSON exits 1" {
   input='not-json'
   echo "$input" > "$JSON_FILE"
   bats_run_zsh "json-pretty --input '$JSON_FILE'"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }

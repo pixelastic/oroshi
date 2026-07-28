@@ -17,38 +17,38 @@ setup() {
 
 @test "emits --with-nth=2" {
   bats_run_zsh "${sourcePrefix}; fzf-options-files ctrl-p /tmp/search"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"--with-nth=2"* ]]
 }
 
 @test "emits --scheme=path and --tiebreak=pathname,chunk" {
   bats_run_zsh "${sourcePrefix}; fzf-options-files ctrl-p /tmp/search"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"--scheme=path"* ]]
   [[ "$output" == *"--tiebreak=pathname,chunk"* ]]
 }
 
 @test "preview uses scriptName arg" {
   bats_run_zsh "${sourcePrefix}; fzf-options-files ctrl-p /tmp/search"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"--preview=ctrl-p --preview {1}"* ]]
 }
 
 @test "preview changes with different scriptName" {
   bats_run_zsh "${sourcePrefix}; fzf-options-files ctrl-shift-p /tmp/search"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"--preview=ctrl-shift-p --preview {1}"* ]]
 }
 
 @test "emits --prompt option" {
   bats_run_zsh "${sourcePrefix}; fzf-options-files ctrl-p /tmp/search"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"--prompt="* ]]
 }
 
 @test "color options use COLORS[file]" {
   bats_run_zsh "${sourcePrefix}; fzf-options-files ctrl-p /tmp/search"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"--color=query:42:regular"* ]]
   [[ "$output" == *"--color=info:42"* ]]
   [[ "$output" == *"--color=separator:42"* ]]
@@ -56,6 +56,6 @@ setup() {
 
 @test "emits --delimiter=▮" {
   bats_run_zsh "${sourcePrefix}; fzf-options-files ctrl-p /tmp/search"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"--delimiter=▮"* ]]
 }

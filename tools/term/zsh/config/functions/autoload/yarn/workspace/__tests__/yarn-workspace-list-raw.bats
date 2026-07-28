@@ -44,37 +44,37 @@ PKG
 
 @test "each line has 3 ▮-separated fields" {
   bats_run_zsh "cd $BATS_GIT_DIR && yarn-workspace-list-raw"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 
   local lineCount=0
   while IFS= read -r line; do
     [[ "$line" == "" ]] && continue
     local fieldCount="$(echo "$line" | awk -F '▮' '{print NF}')"
-    [ "$fieldCount" -eq 3 ]
+    [[ "$fieldCount" -eq 3 ]]
     lineCount=$((lineCount + 1))
   done <<< "$output"
-  [ "$lineCount" -eq 3 ]
+  [[ "$lineCount" -eq 3 ]]
 }
 
 # --- Workspace discovery ---
 
 @test "discovers all workspace modules from globs" {
   bats_run_zsh "cd $BATS_GIT_DIR && yarn-workspace-list-raw"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"@mono/lib-a"* ]]
   [[ "$output" == *"@mono/lib-b"* ]]
 }
 
 @test "relative paths are relative to monorepo root" {
   bats_run_zsh "cd $BATS_GIT_DIR && yarn-workspace-list-raw"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"modules/lib-a"* ]]
   [[ "$output" == *"modules/lib-b"* ]]
 }
 
 @test "includes description from workspace package.json" {
   bats_run_zsh "cd $BATS_GIT_DIR && yarn-workspace-list-raw"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"First library"* ]]
   [[ "$output" == *"Second library"* ]]
 }
@@ -84,7 +84,7 @@ PKG
   mkdir -p "$BATS_GIT_DIR/modules/no-pkg"
 
   bats_run_zsh "cd $BATS_GIT_DIR && yarn-workspace-list-raw"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" != *"no-pkg"* ]]
 }
 
@@ -92,13 +92,13 @@ PKG
 
 @test "works when given monorepo root path" {
   bats_run_zsh "yarn-workspace-list-raw $BATS_GIT_DIR"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"@mono/lib-a"* ]]
 }
 
 @test "works when given a sub-directory inside the monorepo" {
   bats_run_zsh "yarn-workspace-list-raw $BATS_GIT_DIR/modules/lib-a"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"@mono/lib-a"* ]]
   [[ "$output" == *"@mono/lib-b"* ]]
 }
@@ -115,11 +115,11 @@ PKG
 PKG
 
   bats_run_zsh "cd $BATS_GIT_DIR && yarn-workspace-list-raw"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   # lib-a must appear before zeta
   local aPos="${output%%@mono/lib-a*}"
   local zPos="${output%%@mono/zeta*}"
-  [ "${#aPos}" -lt "${#zPos}" ]
+  [[ "${#aPos}" -lt "${#zPos}" ]]
 }
 
 @test "base name sorts before suffixed variants" {
@@ -140,17 +140,17 @@ PKG
 PKG
 
   bats_run_zsh "cd $BATS_GIT_DIR && yarn-workspace-list-raw"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local basePos="${output%%mylib▮*}"
   local suffixedPos="${output%%mylib-extra*}"
-  [ "${#basePos}" -lt "${#suffixedPos}" ]
+  [[ "${#basePos}" -lt "${#suffixedPos}" ]]
 }
 
 # --- --public flag ---
 
 @test "without --public, lists all workspaces including private ones" {
   bats_run_zsh "cd $BATS_GIT_DIR && yarn-workspace-list-raw"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"@mono/lib-a"* ]]
   [[ "$output" == *"@mono/lib-b"* ]]
   [[ "$output" == *"@mono/docs"* ]]
@@ -158,7 +158,7 @@ PKG
 
 @test "with --public, excludes workspaces that have private: true" {
   bats_run_zsh "cd $BATS_GIT_DIR && yarn-workspace-list-raw --public"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"@mono/lib-a"* ]]
   [[ "$output" == *"@mono/lib-b"* ]]
   [[ "$output" != *"@mono/docs"* ]]
@@ -166,7 +166,7 @@ PKG
 
 @test "with --public and path argument, excludes private workspaces" {
   bats_run_zsh "yarn-workspace-list-raw --public $BATS_GIT_DIR"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"@mono/lib-a"* ]]
   [[ "$output" != *"@mono/docs"* ]]
 }
@@ -186,5 +186,5 @@ PKG
 PKG
 
   bats_run_zsh "yarn-workspace-list-raw $nonMono"
-  [ "$status" -ne 0 ]
+  [[ "$status" -ne 0 ]]
 }

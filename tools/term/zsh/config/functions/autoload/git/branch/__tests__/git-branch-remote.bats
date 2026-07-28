@@ -9,31 +9,31 @@ setup() {
 
 @test "returns remote of current branch from cwd" {
 	bats_run_zsh "cd $BATS_GIT_DIR && git-branch-remote"
-	[ "$status" -eq 0 ]
-	[ "$output" = "upstream" ]
+	[[ "$status" -eq 0 ]]
+	[[ "$output" = "upstream" ]]
 }
 
 @test "returns remote of named branch from cwd" {
 	bats_run_zsh "cd $BATS_GIT_DIR && git-branch-remote main"
-	[ "$status" -eq 0 ]
-	[ "$output" = "upstream" ]
+	[[ "$status" -eq 0 ]]
+	[[ "$output" = "upstream" ]]
 }
 
 @test "returns remote from --repo path" {
 	bats_run_zsh "git-branch-remote --repo $BATS_GIT_DIR"
-	[ "$status" -eq 0 ]
-	[ "$output" = "upstream" ]
+	[[ "$status" -eq 0 ]]
+	[[ "$output" = "upstream" ]]
 }
 
 @test "returns remote of named branch with --repo path" {
 	bats_run_zsh "git-branch-remote main --repo $BATS_GIT_DIR"
-	[ "$status" -eq 0 ]
-	[ "$output" = "upstream" ]
+	[[ "$status" -eq 0 ]]
+	[[ "$output" = "upstream" ]]
 }
 
 @test "defaults to origin when branch has no remote configured" {
 	bats_git config --unset branch.main.remote
 	bats_run_zsh "git-branch-remote --repo $BATS_GIT_DIR"
-	[ "$status" -eq 0 ]
-	[ "$output" = "origin" ]
+	[[ "$status" -eq 0 ]]
+	[[ "$output" = "origin" ]]
 }

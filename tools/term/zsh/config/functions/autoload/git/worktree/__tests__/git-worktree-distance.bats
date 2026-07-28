@@ -10,7 +10,7 @@ setup() {
   git commit --allow-empty -m "commit 1"
   git commit --allow-empty -m "commit 2"
   bats_run_zsh "git-worktree-distance"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"ahead 2"* ]]
   [[ "$output" == *"behind 0"* ]]
 }
@@ -22,7 +22,7 @@ setup() {
   git commit --allow-empty -m "main commit 3"
   cd "${BATS_GIT_WORKTREES}my-repo--fix-bug"
   bats_run_zsh "git-worktree-distance"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"ahead 0"* ]]
   [[ "$output" == *"behind 3"* ]]
 }
@@ -30,7 +30,7 @@ setup() {
 @test "returns ahead 0 behind 0 for fresh worktree" {
   cd "${BATS_GIT_WORKTREES}my-repo--fix-bug"
   bats_run_zsh "git-worktree-distance"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"ahead 0"* ]]
   [[ "$output" == *"behind 0"* ]]
 }
@@ -40,7 +40,7 @@ setup() {
   git commit --allow-empty -m "commit in worktree"
   cd "$BATS_GIT_DIR"
   bats_run_zsh "git-worktree-distance ${BATS_GIT_WORKTREES}my-repo--fix-bug"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"ahead 1"* ]]
   [[ "$output" == *"behind 0"* ]]
 }

@@ -12,7 +12,7 @@ setup() {
   bats_mock ralph-single ralph-loop
 
   bats_run_zsh "ralph $PRD_DIR"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == "SINGLE:${PRD_DIR}" ]]
 }
 
@@ -22,7 +22,7 @@ setup() {
   bats_mock ralph-single ralph-loop
 
   bats_run_zsh "ralph --max 3 $PRD_DIR"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == "LOOP:${PRD_DIR} 3" ]]
 }
 
@@ -33,7 +33,7 @@ setup() {
   bats_mock ralph-single ralph-loop plan-directory
 
   bats_run_zsh "cd $BATS_TMP_DIR && ralph"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == "SINGLE:${BATS_TMP_DIR}/plans/feat_my-feature" ]]
 }
 
@@ -46,7 +46,7 @@ setup() {
   bats_mock ralph-single ralph-loop plan-directory
 
   bats_run_zsh "cd $planDir && ralph"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == "SINGLE:${BATS_TMP_DIR}/plans/feat_my-feature" ]]
 }
 
@@ -57,6 +57,6 @@ setup() {
   bats_mock ralph-single ralph-loop plan-directory
 
   bats_run_zsh "cd $BATS_TMP_DIR && ralph"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == "SINGLE:${BATS_TMP_DIR}" ]]
 }

@@ -10,7 +10,7 @@ setup() {
   bats_run_zsh "printf 'a/file.txt\nroot.txt' | sort-filepaths"
   local expected="root.txt
 a/file.txt"
-  [ "$output" = "$expected" ]
+  [[ "$output" = "$expected" ]]
 }
 
 @test "root files sorted alphabetically" {
@@ -18,7 +18,7 @@ a/file.txt"
   local expected="alpha.txt
 middle.txt
 zebra.txt"
-  [ "$output" = "$expected" ]
+  [[ "$output" = "$expected" ]]
 }
 
 # --- Files before subdirectories at each level ---
@@ -27,21 +27,21 @@ zebra.txt"
   bats_run_zsh "printf 'a/sub/nested.txt\na/file.txt' | sort-filepaths"
   local expected="a/file.txt
 a/sub/nested.txt"
-  [ "$output" = "$expected" ]
+  [[ "$output" = "$expected" ]]
 }
 
 @test "__lib/foo.zsh appears before __lib/__tests__/bar.bats" {
   bats_run_zsh "printf '__lib/__tests__/bar.bats\n__lib/foo.zsh' | sort-filepaths"
   local expected="__lib/foo.zsh
 __lib/__tests__/bar.bats"
-  [ "$output" = "$expected" ]
+  [[ "$output" = "$expected" ]]
 }
 
 @test "file before subdir even when subdir name sorts before filename alphabetically" {
   bats_run_zsh "printf 'a/aaa-sub/b.txt\na/z-file.txt' | sort-filepaths"
   local expected="a/z-file.txt
 a/aaa-sub/b.txt"
-  [ "$output" = "$expected" ]
+  [[ "$output" = "$expected" ]]
 }
 
 # --- Alphabetical ordering within same level ---
@@ -50,7 +50,7 @@ a/aaa-sub/b.txt"
   bats_run_zsh "printf 'a/z-sub/file.txt\na/a-sub/file.txt' | sort-filepaths"
   local expected="a/a-sub/file.txt
 a/z-sub/file.txt"
-  [ "$output" = "$expected" ]
+  [[ "$output" = "$expected" ]]
 }
 
 @test "files within the same directory are sorted alphabetically" {
@@ -58,7 +58,7 @@ a/z-sub/file.txt"
   local expected="a/alpha.txt
 a/middle.txt
 a/zebra.txt"
-  [ "$output" = "$expected" ]
+  [[ "$output" = "$expected" ]]
 }
 
 # --- Upward paths sort last ---
@@ -68,19 +68,19 @@ a/zebra.txt"
   local expected="root.txt
 a/file.txt
 ../sibling.txt"
-  [ "$output" = "$expected" ]
+  [[ "$output" = "$expected" ]]
 }
 
 # --- Edge cases ---
 
 @test "single-file input returns unchanged" {
   bats_run_zsh "sort-filepaths 'a/file.txt'"
-  [ "$output" = "a/file.txt" ]
+  [[ "$output" = "a/file.txt" ]]
 }
 
 @test "empty input returns empty" {
   bats_run_zsh "printf '' | sort-filepaths"
-  [ "$output" = "" ]
+  [[ "$output" = "" ]]
 }
 
 # --- Dotfiles sort after regular files ---
@@ -89,26 +89,26 @@ a/file.txt
   bats_run_zsh "printf '.fdignore\nMakefile' | sort-filepaths"
   local expected="Makefile
 .fdignore"
-  [ "$output" = "$expected" ]
+  [[ "$output" = "$expected" ]]
 }
 
 @test "dotfile at root sorts before any subdirectory file" {
   bats_run_zsh "printf 'sub/file.txt\n.fdignore' | sort-filepaths"
   local expected=".fdignore
 sub/file.txt"
-  [ "$output" = "$expected" ]
+  [[ "$output" = "$expected" ]]
 }
 
 @test "dotfile within subdir sorts after regular file in same subdir" {
   bats_run_zsh "printf 'a/.eslintrc\na/index.js' | sort-filepaths"
   local expected="a/index.js
 a/.eslintrc"
-  [ "$output" = "$expected" ]
+  [[ "$output" = "$expected" ]]
 }
 
 @test "dotfile within subdir sorts before nested subdir files" {
   bats_run_zsh "printf 'a/sub/nested.txt\na/.eslintrc' | sort-filepaths"
   local expected="a/.eslintrc
 a/sub/nested.txt"
-  [ "$output" = "$expected" ]
+  [[ "$output" = "$expected" ]]
 }

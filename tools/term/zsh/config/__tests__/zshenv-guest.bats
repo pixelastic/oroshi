@@ -45,9 +45,9 @@ mock_command() {
 
 @test "set PATH and fpath relative to OROSHI_ROOT" {
   run_bare_zsh "$sourcePrefix"
-  [ "$status" -eq 0 ]
-  [ "${lines[0]}" = "PATH:$BATS_TMP_DIR" ]
-  [ "${lines[1]}" = "fpath:$BATS_TMP_DIR" ]
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[0]}" = "PATH:$BATS_TMP_DIR" ]]
+  [[ "${lines[1]}" = "fpath:$BATS_TMP_DIR" ]]
 }
 
 @test "allow overriding anything through MOCK_OVERRIDE" {
@@ -55,6 +55,6 @@ mock_command() {
   echo "function override() { echo 'overriden'; }" > "$BATS_TMP_DIR/mock-override.zsh"
 
   run_bare_zsh "$sourcePrefix && override"
-  [ "$status" -eq 0 ]
-  [ "${lines[2]}" = "overriden" ]
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[2]}" = "overriden" ]]
 }

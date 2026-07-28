@@ -20,74 +20,74 @@ setup() {
 @test "no arg: at root of known project" {
   cd "$BATS_GIT_DIR"
   bats_run_zsh "project-name"
-  [ "$status" -eq 0 ]
-  [ "$output" = "my-project" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "my-project" ]]
 }
 
 @test "no arg: in subdirectory of known project" {
   cd "$BATS_GIT_DIR/src"
   bats_run_zsh "project-name"
-  [ "$status" -eq 0 ]
-  [ "$output" = "my-project" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "my-project" ]]
 }
 
 @test "no arg: in unknown project" {
   cd "$BATS_TMP_DIR"
   bats_run_zsh "project-name"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "no arg: at root of worktree of known project" {
   cd "${BATS_GIT_WORKTREES}my-repo--fix-bug"
   bats_run_zsh "project-name"
-  [ "$status" -eq 0 ]
-  [ "$output" = "my-project" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "my-project" ]]
 }
 
 @test "no arg: in subdirectory of worktree of known project" {
   cd "${BATS_GIT_WORKTREES}my-repo--fix-bug/src"
   bats_run_zsh "project-name"
-  [ "$status" -eq 0 ]
-  [ "$output" = "my-project" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "my-project" ]]
 }
 
 # --- With argument ---
 
 @test "with arg: root of known project" {
   bats_run_zsh "project-name $BATS_GIT_DIR"
-  [ "$status" -eq 0 ]
-  [ "$output" = "my-project" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "my-project" ]]
 }
 
 @test "with arg: subdirectory of known project" {
   bats_run_zsh "project-name $BATS_GIT_DIR/src"
-  [ "$status" -eq 0 ]
-  [ "$output" = "my-project" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "my-project" ]]
 }
 
 @test "with arg: file in subdirectory of known project" {
   bats_run_zsh "project-name $BATS_GIT_DIR/src/main.zsh"
-  [ "$status" -eq 0 ]
-  [ "$output" = "my-project" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "my-project" ]]
 }
 
 @test "with arg: root of worktree of known project" {
   bats_run_zsh "project-name ${BATS_GIT_WORKTREES}my-repo--fix-bug"
-  [ "$status" -eq 0 ]
-  [ "$output" = "my-project" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "my-project" ]]
 }
 
 @test "with arg: subdirectory of worktree of known project" {
   bats_run_zsh "project-name ${BATS_GIT_WORKTREES}my-repo--fix-bug/src"
-  [ "$status" -eq 0 ]
-  [ "$output" = "my-project" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "my-project" ]]
 }
 
 @test "with arg: unknown path" {
   bats_run_zsh "project-name $BATS_TMP_DIR"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 # --- Specificity ---
@@ -100,8 +100,8 @@ setup() {
   }
   bats_mock projects-load-definitions
   bats_run_zsh "project-name $BATS_GIT_DIR/src"
-  [ "$status" -eq 0 ]
-  [ "$output" = "my-project" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "my-project" ]]
 }
 
 @test "nested projects: worktree path returns the most specific project" {
@@ -112,6 +112,6 @@ setup() {
   }
   bats_mock projects-load-definitions
   bats_run_zsh "project-name ${BATS_GIT_WORKTREES}my-repo--fix-bug"
-  [ "$status" -eq 0 ]
-  [ "$output" = "my-project" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "my-project" ]]
 }

@@ -46,17 +46,17 @@ setup() {
     >"$THEMING_DIR/src/projects.jsonc"
   bats_run_zsh "projects-build"
   run jq -r 'keys_unsorted[]' "$THEMING_DIR/src/projects.jsonc"
-  [ "${lines[0]}" = "aaa" ]
-  [ "${lines[1]}" = "mmm" ]
-  [ "${lines[2]}" = "zzz" ]
+  [[ "${lines[0]}" = "aaa" ]]
+  [[ "${lines[1]}" = "mmm" ]]
+  [[ "${lines[2]}" = "zzz" ]]
 }
 
 # --- JSON ---
 
 @test "produces dist/projects.json" {
   bats_run_zsh "projects-build"
-  [ "$status" -eq 0 ]
-  [ -f "$THEMING_DIR/dist/projects.json" ]
+  [[ "$status" -eq 0 ]]
+  [[ -f "$THEMING_DIR/dist/projects.json" ]]
 }
 
 @test "dist/projects.json matches expected output" {
@@ -133,13 +133,13 @@ setup() {
 }
 EXPECTED
   )
-  [ "$(cat "$THEMING_DIR/dist/projects.json")" = "$expected" ]
+  [[ "$(cat "$THEMING_DIR/dist/projects.json")" = "$expected" ]]
 }
 
 @test "backgroundInactive name uses familyname-dark format" {
   bats_run_zsh "projects-build"
   run jq -r '.full.backgroundInactive.name' "$THEMING_DIR/dist/projects.json"
-  [ "$output" = "green-dark" ]
+  [[ "$output" = "green-dark" ]]
 }
 
 @test "backgroundInactive name for project with orange background uses orange-dark" {
@@ -153,15 +153,15 @@ EXPECTED
     >"$THEMING_DIR/src/projects.jsonc"
   bats_run_zsh "projects-build"
   run jq -r '.myproject.backgroundInactive.name' "$THEMING_DIR/dist/projects.json"
-  [ "$output" = "orange-dark" ]
+  [[ "$output" = "orange-dark" ]]
 }
 
 # --- ZSH ---
 
 @test "produces dist/projects.zsh" {
   bats_run_zsh "projects-build"
-  [ "$status" -eq 0 ]
-  [ -f "$THEMING_DIR/dist/projects.zsh" ]
+  [[ "$status" -eq 0 ]]
+  [[ -f "$THEMING_DIR/dist/projects.zsh" ]]
 }
 
 @test "dist/projects.zsh sets all values for a full project" {
@@ -180,16 +180,16 @@ echo \${PROJECTS[full:foreground:hex]}
 echo \${PROJECTS[full:icon]}
 echo \${PROJECTS[full:path]}
 echo \${PROJECTS[full:hideNameInPrompt]}"
-  [ "${lines[0]}" = "green-8" ]
-  [ "${lines[1]}" = "78" ]
-  [ "${lines[2]}" = "#166534" ]
-  [ "${lines[3]}" = "green-dark" ]
-  [ "${lines[4]}" = "211" ]
-  [ "${lines[5]}" = "#0f1a0f" ]
-  [ "${lines[6]}" = "gray-9" ]
-  [ "${lines[7]}" = "139" ]
-  [ "${lines[8]}" = "#111827" ]
-  [ "${lines[9]}" = "X" ]
-  [ "${lines[10]}" = "$HOME/projects/full" ]
-  [ "${lines[11]}" = "0" ]
+  [[ "${lines[0]}" = "green-8" ]]
+  [[ "${lines[1]}" = "78" ]]
+  [[ "${lines[2]}" = "#166534" ]]
+  [[ "${lines[3]}" = "green-dark" ]]
+  [[ "${lines[4]}" = "211" ]]
+  [[ "${lines[5]}" = "#0f1a0f" ]]
+  [[ "${lines[6]}" = "gray-9" ]]
+  [[ "${lines[7]}" = "139" ]]
+  [[ "${lines[8]}" = "#111827" ]]
+  [[ "${lines[9]}" = "X" ]]
+  [[ "${lines[10]}" = "$HOME/projects/full" ]]
+  [[ "${lines[11]}" = "0" ]]
 }

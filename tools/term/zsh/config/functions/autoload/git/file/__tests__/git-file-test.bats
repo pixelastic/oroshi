@@ -8,8 +8,8 @@ setup() {
 
 @test "exits 0 when working tree is clean" {
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "exits 0 when all dirty files are deleted" {
@@ -19,8 +19,8 @@ setup() {
   rm "$BATS_GIT_DIR/script.zsh"
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 # ─── BATS ─────────────────────────────────────────────────────────────────────
@@ -36,7 +36,7 @@ setup() {
   bats_mock bats-test-path bats
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "exits non-zero when bats tests fail" {
@@ -50,7 +50,7 @@ setup() {
   bats_mock bats-test-path bats
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "exits 0 when no dirty file has an associated test" {
@@ -63,8 +63,8 @@ setup() {
   bats_mock bats-test-path
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 # ─── JS ───────────────────────────────────────────────────────────────────────
@@ -80,7 +80,7 @@ setup() {
   bats_mock bats-test-path yarn
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "exits non-zero when is-js true and yarn test fails" {
@@ -94,7 +94,7 @@ setup() {
   bats_mock bats-test-path yarn
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "exits 0 when is-js false for all dirty files" {
@@ -108,8 +108,8 @@ setup() {
   bats_mock is-js bats-test-path
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 # ─── PYTHON ───────────────────────────────────────────────────────────────────
@@ -126,7 +126,7 @@ setup() {
   bats_mock bats-test-path python-test-path python-test
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "exits 0 when python source has no matching test" {
@@ -140,8 +140,8 @@ setup() {
   bats_mock bats-test-path python-test-path
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "exits non-zero when python-test fails" {
@@ -156,7 +156,7 @@ setup() {
   bats_mock bats-test-path python-test-path python-test
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "exits 0 and python-test is not called when only non-Python files are dirty" {
@@ -170,7 +170,7 @@ setup() {
   bats_mock bats-test-path python-test
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 # ─── COMBINED ─────────────────────────────────────────────────────────────────
@@ -189,5 +189,5 @@ setup() {
   bats_mock bats-test-path yarn bats
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-test"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }

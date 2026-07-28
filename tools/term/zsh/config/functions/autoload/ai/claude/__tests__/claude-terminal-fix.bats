@@ -6,7 +6,7 @@ setup() {
 
 @test "exits successfully" {
   bats_run_zsh "claude-terminal-fix"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "calls stty sane" {
@@ -14,5 +14,5 @@ setup() {
   bats_mock stty
 
   bats_run_zsh "claude-terminal-fix"
-  [ "$(cat "$BATS_TMP_DIR/stty.log")" = "sane" ]
+  [[ "$(cat "$BATS_TMP_DIR/stty.log")" = "sane" ]]
 }

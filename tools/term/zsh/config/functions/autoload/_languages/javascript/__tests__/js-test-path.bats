@@ -10,8 +10,8 @@ setup() {
   touch "$BATS_TMP_DIR/src/__tests__/module.js"
 
   bats_run_zsh "js-test-path $BATS_TMP_DIR/src/module.js"
-  [ "$status" -eq 0 ]
-  [ "$output" = "$BATS_TMP_DIR/src/__tests__/module.js" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "$BATS_TMP_DIR/src/__tests__/module.js" ]]
 }
 
 @test "returns the file directly when already a test" {
@@ -19,8 +19,8 @@ setup() {
   touch "$BATS_TMP_DIR/src/__tests__/module.js"
 
   bats_run_zsh "js-test-path $BATS_TMP_DIR/src/__tests__/module.js"
-  [ "$status" -eq 0 ]
-  [ "$output" = "$BATS_TMP_DIR/src/__tests__/module.js" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "$BATS_TMP_DIR/src/__tests__/module.js" ]]
 }
 
 @test "returns 1 when no matching test exists" {
@@ -28,14 +28,14 @@ setup() {
   touch "$BATS_TMP_DIR/src/orphan.js"
 
   bats_run_zsh "js-test-path $BATS_TMP_DIR/src/orphan.js"
-  [ "$status" -eq 1 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 1 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "returns 1 with no arguments" {
   bats_run_zsh "js-test-path"
-  [ "$status" -eq 1 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 1 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "returns 1 for non-JS file" {
@@ -43,6 +43,6 @@ setup() {
   touch "$BATS_TMP_DIR/src/style.css"
 
   bats_run_zsh "js-test-path $BATS_TMP_DIR/src/style.css"
-  [ "$status" -eq 1 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 1 ]]
+  [[ "$output" = "" ]]
 }

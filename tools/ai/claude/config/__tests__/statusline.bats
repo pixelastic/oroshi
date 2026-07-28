@@ -55,7 +55,7 @@ statusline_run() {
 
 @test "renders badge, tokens, cost, and model" {
   statusline_run "/some/dir" 51000 0.05 "abc-123"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local clean
   clean="$(bats_strip_ansi "$output")"
   [[ "$clean" == "BADGE 51k 5¢ test "* ]]
@@ -125,7 +125,7 @@ statusline_run() {
   }
   bats_mock jq
   statusline_run
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$(bats_strip_ansi "$output")" != *"⬡"* ]]
 }
 
@@ -134,12 +134,12 @@ statusline_run() {
   plan-badge() { echo "PLAN_BADGE"; }
   bats_mock plan-directory plan-badge
   statusline_run "/some/dir"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$(bats_strip_ansi "$output")" == *"PLAN_BADGE"* ]]
 }
 
 @test "plan progress: segment absent when no plan" {
   statusline_run "/some/dir"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$(bats_strip_ansi "$output")" != *"PLAN_BADGE"* ]]
 }

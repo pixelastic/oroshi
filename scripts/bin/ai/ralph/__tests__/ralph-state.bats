@@ -7,42 +7,42 @@ setup() {
 
 @test "init creates state file with given mode" {
   run ralph-state "$DIR" init loop
-  [ "$status" -eq 0 ]
-  [ "$(jq -r .mode "$DIR/ralph.json")" = "loop" ]
-  [ "$(jq -r .done "$DIR/ralph.json")" = "false" ]
-  [ "$(jq -r .prd_done "$DIR/ralph.json")" = "false" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$(jq -r .mode "$DIR/ralph.json")" = "loop" ]]
+  [[ "$(jq -r .done "$DIR/ralph.json")" = "false" ]]
+  [[ "$(jq -r .prd_done "$DIR/ralph.json")" = "false" ]]
 }
 
 @test "init defaults to single mode" {
   run ralph-state "$DIR" init
-  [ "$status" -eq 0 ]
-  [ "$(jq -r .mode "$DIR/ralph.json")" = "single" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$(jq -r .mode "$DIR/ralph.json")" = "single" ]]
 }
 
 @test "get returns value" {
   ralph-state "$DIR" init loop
-  [ -f "$DIR/ralph.json" ]
+  [[ -f "$DIR/ralph.json" ]]
   run ralph-state "$DIR" get mode
-  [ "$status" -eq 0 ]
-  [ "$output" = "loop" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "loop" ]]
 }
 
 @test "set updates a boolean value" {
   ralph-state "$DIR" init loop
   run ralph-state "$DIR" set 'done' true
-  [ "$status" -eq 0 ]
-  [ "$(jq -r .done "$DIR/ralph.json")" = "true" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$(jq -r .done "$DIR/ralph.json")" = "true" ]]
 }
 
 @test "clear removes state file" {
   ralph-state "$DIR" init loop
-  [ -f "$DIR/ralph.json" ]
+  [[ -f "$DIR/ralph.json" ]]
   run ralph-state "$DIR" clear
-  [ "$status" -eq 0 ]
-  [ ! -f "$DIR/ralph.json" ]
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$DIR/ralph.json" ]]
 }
 
 @test "fails without dir argument" {
   run ralph-state
-  [ "$status" -ne 0 ]
+  [[ "$status" -ne 0 ]]
 }

@@ -10,15 +10,15 @@ setup() {
 @test "--input: scalar read returns value, exit 0" {
   echo '{"name":"Alice"}' > "$JSON_FILE"
   bats_run_zsh "json-get --input $JSON_FILE '.name'"
-  [ "$status" -eq 0 ]
-  [ "$output" = "Alice" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "Alice" ]]
 }
 
 @test "--input: nested key returns value, exit 0" {
   echo '{"a":{"b":"deep"}}' > "$JSON_FILE"
   bats_run_zsh "json-get --input $JSON_FILE '.a.b'"
-  [ "$status" -eq 0 ]
-  [ "$output" = "deep" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "deep" ]]
 }
 
 # --- stdin ---
@@ -26,8 +26,8 @@ setup() {
 @test "stdin: scalar read returns value, exit 0" {
   local json='{"city":"Paris"}'
   bats_run_zsh "json-get '.city'" <<< "$json"
-  [ "$status" -eq 0 ]
-  [ "$output" = "Paris" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "Paris" ]]
 }
 
 # --- array output ---
@@ -35,8 +35,8 @@ setup() {
 @test "array: returns one element per line, exit 0" {
   echo '{"tags":["a","b","c"]}' > "$JSON_FILE"
   bats_run_zsh "json-get --input $JSON_FILE '.tags'"
-  [ "$status" -eq 0 ]
-  [ "$output" = "$(printf 'a\nb\nc')" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "$(printf 'a\nb\nc')" ]]
 }
 
 # --- absent / null ---
@@ -44,15 +44,15 @@ setup() {
 @test "absent key: empty output, exit 0" {
   echo '{"name":"Alice"}' > "$JSON_FILE"
   bats_run_zsh "json-get --input $JSON_FILE '.missing'"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "null value: empty output, exit 0" {
   echo '{"key":null}' > "$JSON_FILE"
   bats_run_zsh "json-get --input $JSON_FILE '.key'"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 # --- invalid JSON ---
@@ -60,5 +60,5 @@ setup() {
 @test "invalid JSON: exit 1" {
   echo 'not-json' > "$JSON_FILE"
   bats_run_zsh "json-get --input $JSON_FILE '.key'"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }

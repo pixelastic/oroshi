@@ -29,12 +29,12 @@ setup() {
 
 @test "returns 0 when given the root of a monorepo" {
   bats_run_zsh "yarn-is-monorepo $MONOREPO_DIR"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "returns 0 when given a sub-directory inside a monorepo" {
   bats_run_zsh "yarn-is-monorepo $MONOREPO_DIR/modules/lib"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "returns 1 when given a non-monorepo path" {
@@ -45,7 +45,7 @@ setup() {
   bats_mock git-directory-root
 
   bats_run_zsh "yarn-is-monorepo $PLAIN_DIR"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "returns 0 with no argument from inside a monorepo" {
@@ -53,5 +53,5 @@ setup() {
   bats_mock git-directory-root
 
   bats_run_zsh "cd $MONOREPO_DIR && yarn-is-monorepo"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }

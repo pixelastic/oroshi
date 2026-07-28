@@ -18,7 +18,7 @@ setup() {
 
 @test "fzf-source: outputs tracked and untracked files from git root" {
   bats_run_zsh "cd $BATS_TMP_DIR && ctrl-p --source"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"README.md"* ]]
   [[ "$output" == *"app.js"* ]]
   [[ "$output" == *"nested.js"* ]]
@@ -26,19 +26,19 @@ setup() {
 
 @test "fzf-source: respects .gitignore exclusions" {
   bats_run_zsh "cd $BATS_TMP_DIR && ctrl-p --source"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" != *"ignored.log"* ]]
 }
 
 @test "fzf-source: outputs two-column lines with ▮ separator" {
   bats_run_zsh "cd $BATS_TMP_DIR && ctrl-p --source"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "${lines[0]}" == *"▮"* ]]
 }
 
 @test "fzf-source: first column is absolute path" {
   bats_run_zsh "cd $BATS_TMP_DIR && ctrl-p --source"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local firstCol="${lines[0]%%▮*}"
   [[ "$firstCol" == "$BATS_TMP_DIR/"* ]]
 }
@@ -49,7 +49,7 @@ setup() {
   touch "$plainDir/hello.txt"
   bats_run_zsh "cd $plainDir && ctrl-p --source"
   rm -rf "$plainDir"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"hello.txt"* ]]
 }
 
@@ -57,18 +57,18 @@ setup() {
 
 @test "fzf-postprocess: extracts absolute path from selection" {
   bats_run_zsh "printf '/tmp/project/src/app.js▮src/app.js\n' | ctrl-p --postprocess"
-  [ "$status" -eq 0 ]
-  [ "$output" = "/tmp/project/src/app.js" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "/tmp/project/src/app.js" ]]
 }
 
 @test "fzf-postprocess: outputs nothing on empty stdin" {
   bats_run_zsh "printf '' | ctrl-p --postprocess"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "fzf-postprocess: handles paths with spaces" {
   bats_run_zsh "printf '/tmp/my project/my file.js▮my file.js\n' | ctrl-p --postprocess"
-  [ "$status" -eq 0 ]
-  [ "$output" = "/tmp/my project/my file.js" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "/tmp/my project/my file.js" ]]
 }

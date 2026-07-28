@@ -19,7 +19,7 @@ setup() {
   local autoloadDir="$BATS_TMP_DIR/functions/autoload/term/zsh"
   mkdir -p "$autoloadDir"
   bats_run_zsh "cd $autoloadDir && better-ls"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local captured
   captured="$(cat "$BATS_TMP_DIR/exa-colors")"
   [[ "$captured" == *"fi=38;5;99"* ]]
@@ -27,7 +27,7 @@ setup() {
 
 @test "outside autoload directory: exa receives no fi= override in EXA_COLORS" {
   bats_run_zsh "cd $BATS_TMP_DIR && better-ls"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local captured
   captured="$(cat "$BATS_TMP_DIR/exa-colors")"
   [[ "$captured" != *"fi="* ]]

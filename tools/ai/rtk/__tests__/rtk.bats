@@ -24,15 +24,15 @@ teardown() {
   printf '@test "passes" { true; }\n' >"$BATS_TMP_DIR/all-pass.bats"
 
   run rtk bats "$BATS_TMP_DIR/all-pass.bats"
-  [ "$status" -eq 0 ]
-  [ "$output" = "All tests passed." ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "All tests passed." ]]
 }
 
 @test "rtk bats on failing file outputs not-ok lines and suppresses ok lines" {
   printf '@test "passes" { true; }\n@test "fails" { false; }\n' >"$BATS_TMP_DIR/failure.bats"
 
   run rtk bats "$BATS_TMP_DIR/failure.bats"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
   [[ "$output" == *"not ok"* ]]
   [[ "$output" != *"ok 1"* ]]
   [[ "$output" != *"1..2"* ]]
@@ -42,15 +42,15 @@ teardown() {
   printf 'import { test, expect } from "vitest"\ntest("passes", () => { expect(1).toBe(1) })\n' >"$FIXTURE_DIR/all-pass.js"
 
   run rtk yarn run test "$FIXTURE_DIR/all-pass.js"
-  [ "$status" -eq 0 ]
-  [ "$output" = "All tests passed." ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "All tests passed." ]]
 }
 
 @test "rtk yarn run test on failing file suppresses passing lines and shows failure details" {
   printf 'import { test, expect } from "vitest"\ntest("passes", () => { expect(1).toBe(1) })\ntest("fails", () => { expect(1).toBe(2) })\n' >"$FIXTURE_DIR/failure.js"
 
   run rtk yarn run test "$FIXTURE_DIR/failure.js"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
   [[ "$output" == *"AssertionError"* ]]
   [[ "$output" != *"✓"* ]]
 }
@@ -59,15 +59,15 @@ teardown() {
   printf 'def test_passes():\n    assert True\n' >"$BATS_TMP_DIR/test_all_pass.py"
 
   run rtk python-test "$BATS_TMP_DIR/test_all_pass.py"
-  [ "$status" -eq 0 ]
-  [ "$output" = "All tests passed." ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "All tests passed." ]]
 }
 
 @test "rtk python-test on failing file suppresses passing lines and shows failure details" {
   printf 'def test_passes():\n    assert True\ndef test_fails():\n    assert False\n' >"$BATS_TMP_DIR/test_failure.py"
 
   run rtk python-test "$BATS_TMP_DIR/test_failure.py"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
   [[ "$output" == *"FAILED"* ]]
   [[ "$output" != *"PASSED"* ]]
   [[ "$output" != *"platform "* ]]

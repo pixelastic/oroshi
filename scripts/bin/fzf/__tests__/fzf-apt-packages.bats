@@ -23,39 +23,39 @@ setup() {
   bats_mock apt-packages-cache-generate
 
   bats_run_zsh "fzf-apt-packages --source"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "${lines[0]}" == "regen"* ]]
 }
 
 @test "fzf-source: outputs all packages from cache" {
   bats_run_zsh "fzf-apt-packages --source"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "${lines[0]}" == "foo"* ]]
   [[ "${lines[1]}" == "bar"* ]]
 }
 
 @test "fzf-source: with --installed outputs only installed packages" {
   bats_run_zsh "fzf-apt-packages --source --installed"
-  [ "$status" -eq 0 ]
-  [ "${lines[0]}" = "foo▮foo 1.2.3" ]
-  [ "${#lines[@]}" -eq 1 ]
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[0]}" = "foo▮foo 1.2.3" ]]
+  [[ "${#lines[@]}" -eq 1 ]]
 }
 
 # fzf-postprocess
 
 @test "fzf-postprocess: extracts package name from selection" {
   bats_run_zsh "printf 'foo▮foo 1.2.3\n' | fzf-apt-packages --postprocess"
-  [ "$output" = "foo" ]
+  [[ "$output" = "foo" ]]
 }
 
 @test "fzf-postprocess: outputs nothing on empty stdin" {
   bats_run_zsh "printf '' | fzf-apt-packages --postprocess"
-  [ "$output" = "" ]
+  [[ "$output" = "" ]]
 }
 
 @test "fzf-postprocess: handles multi-line selection" {
   bats_run_zsh "printf 'foo▮foo 1.2.3\nbar▮bar 3.0.0\n' | fzf-apt-packages --postprocess"
-  [ "${#lines[@]}" -eq 2 ]
+  [[ "${#lines[@]}" -eq 2 ]]
   [[ "$output" == *"foo"* ]]
   [[ "$output" == *"bar"* ]]
 }
@@ -64,13 +64,13 @@ setup() {
 
 @test "fzf-options: includes preview command" {
   bats_run_zsh "fzf-apt-packages --options"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"--preview=fzf-apt-packages --preview"* ]]
 }
 
 @test "fzf-options: binds f5 to reload" {
   bats_run_zsh "fzf-apt-packages --options"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"--bind=f5:"* ]]
   [[ "$output" == *"reload("* ]]
 }
@@ -91,7 +91,7 @@ APTEOF
   bats_mock apt-cache apt-is-installed
 
   bats_run_zsh "fzf-apt-packages --preview curl"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local stripped="$(bats_strip_ansi "$output")"
   [[ "$stripped" == *"curl"* ]]
   [[ "$stripped" == *"v7.88.1"* ]]
@@ -110,7 +110,7 @@ APTEOF
   bats_mock apt-cache apt-is-installed
 
   bats_run_zsh "fzf-apt-packages --preview curl"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local stripped="$(bats_strip_ansi "$output")"
   [[ "$stripped" == *"Installed"* ]]
 }
@@ -120,5 +120,5 @@ APTEOF
   bats_mock apt-cache
 
   bats_run_zsh "fzf-apt-packages --preview nonexistent-pkg"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }

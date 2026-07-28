@@ -20,7 +20,7 @@ setup() {
 
 @test "default teardown removes temp directory" {
   local dir="$BATS_TMP_DIR"
-  [ -d "$dir" ]
+  [[ -d "$dir" ]]
 
   # Save path outside sandbox so it survives teardown
   echo "$dir" > "$COORDINATION"
@@ -29,6 +29,6 @@ setup() {
 @test "previous test temp dir was cleaned up" {
   local prev_dir
   prev_dir="$(cat "$COORDINATION")"
-  [ ! -d "$prev_dir" ]
+  [[ ! -d "$prev_dir" ]]
   rm -f "$COORDINATION"
 }

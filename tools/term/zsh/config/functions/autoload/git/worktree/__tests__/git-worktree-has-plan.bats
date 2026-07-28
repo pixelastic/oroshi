@@ -10,20 +10,20 @@ setup() {
   echo '{}' > "$wt_path/plans/feat_test-ralph/state.json"
   cd "$wt_path"
   bats_run_zsh "git-worktree-has-plan"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "exits 1 inside a worktree without a plan" {
   local wt_path="$(bats_git_worktree 'feat/no-prd')"
   cd "$wt_path"
   bats_run_zsh "git-worktree-has-plan"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "exits 1 outside any worktree" {
   cd "$BATS_GIT_DIR"
   bats_run_zsh "git-worktree-has-plan"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "accepts an explicit path argument" {
@@ -31,5 +31,5 @@ setup() {
   mkdir -p "$wt_path/plans/feat_explicit"
   echo '{}' > "$wt_path/plans/feat_explicit/state.json"
   bats_run_zsh "git-worktree-has-plan $wt_path"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }

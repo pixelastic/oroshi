@@ -14,6 +14,6 @@ setup() {
 
 @test "returns branch:message for each branch" {
   bats_run_zsh "complete-git-branches-local"
-  [ "$status" -eq 0 ]
-  [ "${lines[0]}" = "main:init commit" ]
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[0]}" = "main:init commit" ]]
 }

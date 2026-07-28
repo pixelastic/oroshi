@@ -12,8 +12,8 @@ setup() {
   bats_mock ctrl-o
 
   bats_run_zsh "${sourcePrefix}; LBUFFER=''; oroshi-ctrl-o-widget; echo \$LBUFFER"
-  [ "$status" -eq 0 ]
-  [ "$output" = "/default/dir " ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "/default/dir " ]]
 }
 
 @test "widget: dispatches to ctrl-o when last word is not registered" {
@@ -21,8 +21,8 @@ setup() {
   bats_mock ctrl-o
 
   bats_run_zsh "${sourcePrefix}; LBUFFER='cd '; oroshi-ctrl-o-widget; echo \$LBUFFER"
-  [ "$status" -eq 0 ]
-  [ "$output" = "cd /default/dir " ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "cd /default/dir " ]]
 }
 
 @test "widget: dispatches to fzf-plans when last word is ralph" {
@@ -30,8 +30,8 @@ setup() {
   bats_mock fzf-plans
 
   bats_run_zsh "${sourcePrefix}; LBUFFER='ralph'; oroshi-ctrl-o-widget; echo \$LBUFFER"
-  [ "$status" -eq 0 ]
-  [ "$output" = "ralph/plans/my-plan " ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "ralph/plans/my-plan " ]]
 }
 
 @test "widget: dispatches to fzf-plans when last word is raplh (typo)" {
@@ -39,8 +39,8 @@ setup() {
   bats_mock fzf-plans
 
   bats_run_zsh "${sourcePrefix}; LBUFFER='raplh'; oroshi-ctrl-o-widget; echo \$LBUFFER"
-  [ "$status" -eq 0 ]
-  [ "$output" = "raplh/plans/my-plan " ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "raplh/plans/my-plan " ]]
 }
 
 @test "widget: returns 1 when picker returns empty selection" {
@@ -48,7 +48,7 @@ setup() {
   bats_mock ctrl-o
 
   bats_run_zsh "${sourcePrefix}; LBUFFER='cd '; oroshi-ctrl-o-widget"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "widget: quotes directory path containing spaces" {
@@ -56,6 +56,6 @@ setup() {
   bats_mock ctrl-o
 
   bats_run_zsh "${sourcePrefix}; LBUFFER='cd '; oroshi-ctrl-o-widget; echo \$LBUFFER"
-  [ "$status" -eq 0 ]
-  [ "$output" = "cd '/home/tim/my documents' " ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "cd '/home/tim/my documents' " ]]
 }

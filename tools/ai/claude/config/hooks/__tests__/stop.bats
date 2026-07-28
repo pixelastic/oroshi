@@ -38,8 +38,8 @@ mock_kitty_attention() {
 
   run_stop '{"transcript_path":"/some/path.jsonl"}'
 
-  [ "$status" -eq 0 ]
-  [ -f "$BATS_TMP_DIR/attention-added" ]
+  [[ "$status" -eq 0 ]]
+  [[ -f "$BATS_TMP_DIR/attention-added" ]]
 }
 
 @test "attention: not added for subagents" {
@@ -49,8 +49,8 @@ mock_kitty_attention() {
 
   run_stop '{"transcript_path":"/home/user/.claude/sessions/abc/subagents/xyz.jsonl"}'
 
-  [ "$status" -eq 0 ]
-  [ ! -f "$BATS_TMP_DIR/attention-added" ]
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/attention-added" ]]
 }
 
 @test "attention: not added when tab is focused" {
@@ -63,32 +63,32 @@ mock_kitty_attention() {
 
   run_stop '{"transcript_path":"/some/path.jsonl"}'
 
-  [ "$status" -eq 0 ]
-  [ ! -f "$BATS_TMP_DIR/attention-added" ]
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/attention-added" ]]
 }
 
 @test "silent when OROSHI_CLAUDE_STOP_SOUND is no" {
   export OROSHI_CLAUDE_STOP_SOUND="no"
   run_stop '{"transcript_path":"/some/path.jsonl"}'
 
-  [ "$status" -eq 0 ]
-  [ ! -f "$BATS_TMP_DIR/sound-played" ]
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/sound-played" ]]
 }
 
 @test "silent when OROSHI_CLAUDE_STOP_SOUND is empty" {
   export OROSHI_CLAUDE_STOP_SOUND=""
   run_stop '{"transcript_path":"/some/path.jsonl"}'
 
-  [ "$status" -eq 0 ]
-  [ ! -f "$BATS_TMP_DIR/sound-played" ]
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/sound-played" ]]
 }
 
 @test "silent for subagents even when OROSHI_CLAUDE_STOP_SOUND=auto" {
   export OROSHI_CLAUDE_STOP_SOUND="auto"
   run_stop '{"transcript_path":"/home/user/.claude/sessions/abc/subagents/xyz.jsonl"}'
 
-  [ "$status" -eq 0 ]
-  [ ! -f "$BATS_TMP_DIR/sound-played" ]
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$BATS_TMP_DIR/sound-played" ]]
 }
 
 @test "plays custom sound directly when OROSHI_CLAUDE_STOP_SOUND is a filename" {
@@ -98,8 +98,8 @@ mock_kitty_attention() {
   export OROSHI_CLAUDE_STOP_SOUND="my-custom.mp3"
   run_stop "{\"transcript_path\":\"$transcriptPath\"}"
 
-  [ "$status" -eq 0 ]
-  [ "$(cat "$BATS_TMP_DIR/sound-played")" = "my-custom.mp3" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/sound-played")" = "my-custom.mp3" ]]
 }
 
 @test "auto: plays slow sound when duration >= threshold" {
@@ -109,8 +109,8 @@ mock_kitty_attention() {
   export OROSHI_CLAUDE_STOP_SOUND="auto"
   run_stop "{\"transcript_path\":\"$transcriptPath\"}"
 
-  [ "$status" -eq 0 ]
-  [ "$(cat "$BATS_TMP_DIR/sound-played")" = "claude-stop.mp3" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/sound-played")" = "claude-stop.mp3" ]]
 }
 
 @test "auto: plays fast sound when duration < threshold" {
@@ -120,8 +120,8 @@ mock_kitty_attention() {
   export OROSHI_CLAUDE_STOP_SOUND="auto"
   run_stop "{\"transcript_path\":\"$transcriptPath\"}"
 
-  [ "$status" -eq 0 ]
-  [ "$(cat "$BATS_TMP_DIR/sound-played")" = "claude-stop-fast.mp3" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/sound-played")" = "claude-stop-fast.mp3" ]]
 }
 
 @test "auto: plays fast sound when stdin has escaped newlines in last_assistant_message" {
@@ -132,6 +132,6 @@ mock_kitty_attention() {
   # \n in last_assistant_message (e.g. code blocks) must not corrupt JSON parsing
   run_stop "{\"transcript_path\":\"$transcriptPath\",\"last_assistant_message\":\"line1\\nline2\"}"
 
-  [ "$status" -eq 0 ]
-  [ "$(cat "$BATS_TMP_DIR/sound-played")" = "claude-stop-fast.mp3" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/sound-played")" = "claude-stop-fast.mp3" ]]
 }

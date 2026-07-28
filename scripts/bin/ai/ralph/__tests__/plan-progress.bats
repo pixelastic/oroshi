@@ -9,46 +9,46 @@ setup() {
 @test "outputs done▮total for mixed done values" {
   printf '[{"id":"01","issue":"i.md","done":true,"blocked_by":[]},{"id":"02","issue":"i.md","done":false,"blocked_by":[]},{"id":"03","issue":"i.md","done":false,"blocked_by":[]}]' > "$PLAN_DIR/state.json"
   bats_run_zsh "plan-progress $PLAN_DIR"
-  [ "$status" -eq 0 ]
-  [ "$output" = "1▮3" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "1▮3" ]]
 }
 
 @test "counts only done==true strictly (null and string excluded)" {
   printf '[{"id":"01","issue":"i.md","done":true,"blocked_by":[]},{"id":"02","issue":"i.md","done":false,"blocked_by":[]},{"id":"03","issue":"i.md","done":null,"blocked_by":[]},{"id":"04","issue":"i.md","done":"true","blocked_by":[]}]' > "$PLAN_DIR/state.json"
   bats_run_zsh "plan-progress $PLAN_DIR"
-  [ "$status" -eq 0 ]
-  [ "$output" = "1▮4" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "1▮4" ]]
 }
 
 @test "outputs done▮total with all done true" {
   printf '[{"id":"01","issue":"i.md","done":true,"blocked_by":[]},{"id":"02","issue":"i.md","done":true,"blocked_by":[]}]' > "$PLAN_DIR/state.json"
   bats_run_zsh "plan-progress $PLAN_DIR"
-  [ "$status" -eq 0 ]
-  [ "$output" = "2▮2" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "2▮2" ]]
 }
 
 @test "outputs done▮total with all done false" {
   printf '[{"id":"01","issue":"i.md","done":false,"blocked_by":[]},{"id":"02","issue":"i.md","done":false,"blocked_by":[]}]' > "$PLAN_DIR/state.json"
   bats_run_zsh "plan-progress $PLAN_DIR"
-  [ "$status" -eq 0 ]
-  [ "$output" = "0▮2" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "0▮2" ]]
 }
 
 @test "exits 1 for empty array" {
   printf '[]' > "$PLAN_DIR/state.json"
   bats_run_zsh "plan-progress $PLAN_DIR"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "exits 1 for malformed JSON" {
   printf 'not valid json' > "$PLAN_DIR/state.json"
   bats_run_zsh "plan-progress $PLAN_DIR"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "exits 1 when state.json is missing" {
   bats_run_zsh "plan-progress $PLAN_DIR"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "deduces directory from worktree context when called with no argument" {
@@ -59,6 +59,6 @@ setup() {
   echo '{}' > "$wt_path/plans/feat_no-arg/ralph.json"
   cd "$wt_path"
   bats_run_zsh "plan-progress"
-  [ "$status" -eq 0 ]
-  [ "$output" = "1▮2" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "1▮2" ]]
 }

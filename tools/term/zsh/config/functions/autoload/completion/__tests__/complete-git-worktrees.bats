@@ -23,21 +23,21 @@ setup() {
 @test "includes worktrees of the current repo" {
   cd "$BATS_MY_REPO"
   bats_run_zsh "complete-git-worktrees"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"fix/bug"* ]]
 }
 
 @test "always includes 'main'" {
   cd "$BATS_MY_REPO"
   bats_run_zsh "complete-git-worktrees"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"main"* ]]
 }
 
 @test "does not include worktrees from other repos" {
   cd "$BATS_MY_REPO"
   bats_run_zsh "complete-git-worktrees"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" != *"feat/x"* ]]
 }
 
@@ -45,22 +45,22 @@ setup() {
   bats_git_dir 'clean-repo'
   cd "$BATS_GIT_DIR"
   bats_run_zsh "complete-git-worktrees"
-  [ "$status" -eq 0 ]
-  [ "${#lines[@]}" -eq 1 ]
+  [[ "$status" -eq 0 ]]
+  [[ "${#lines[@]}" -eq 1 ]]
   [[ "${lines[0]}" == "main:"* ]]
 }
 
 @test "returns 'main' and succeeds outside a git repo" {
   cd "$BATS_TMP_DIR"
   bats_run_zsh "complete-git-worktrees"
-  [ "$status" -eq 0 ]
-  [ "$output" = "main" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "main" ]]
 }
 
 @test "output is in name:description format" {
   cd "$BATS_MY_REPO"
   bats_run_zsh "complete-git-worktrees"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "${lines[1]}" == *":"* ]]
 }
 
@@ -68,14 +68,14 @@ setup() {
   touch "${BATS_GIT_WORKTREES}my-repo--fix-bug/untracked.txt"
   cd "$BATS_MY_REPO"
   bats_run_zsh "complete-git-worktrees"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"1${iconDirty}"* ]]
 }
 
 @test "suppresses zero counts in description" {
   cd "$BATS_MY_REPO"
   bats_run_zsh "complete-git-worktrees"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local fixbug_line=""
   for line in "${lines[@]}"; do
     [[ "$line" == "fix/bug"* ]] && fixbug_line="$line" && break
@@ -93,6 +93,6 @@ setup() {
 
   cd "$BATS_TMP_DIR"
   bats_run_zsh "complete-git-worktrees"
-  [ "$status" -eq 0 ]
-  [ "$output" = "main" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "main" ]]
 }

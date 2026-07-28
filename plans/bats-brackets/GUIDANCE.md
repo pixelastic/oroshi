@@ -11,3 +11,7 @@
 - Violation output format: `file▮code▮error▮line▮message` (▮ = `$_SEP`)
 
 ## Discoveries
+
+### Issue 02 — bulk fix
+- `zsh-writer/SKILL.md` and `references/testing.md` had `[ ]` examples that contradicted the new lint rule — fixed alongside the bulk replacement
+- Greedy sed `s/\(.*\) \]/\1 ]]/` handles lines with multiple `]` (array subscripts) by only replacing the last one

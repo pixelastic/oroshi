@@ -19,7 +19,7 @@ setup() {
 	bats_mock project-name project-path
 
 	bats_run_zsh "sidequest-start"
-	[ "$status" -eq 0 ]
+	[[ "$status" -eq 0 ]]
 	[[ "$output" == '{"status":"ok","projectName":"oroshi","projectPath":"/home/tim/local/www/oroshi"}' ]]
 }
 
@@ -28,7 +28,7 @@ setup() {
 	bats_mock project-name
 
 	bats_run_zsh "sidequest-start"
-	[ "$status" -eq 0 ]
+	[[ "$status" -eq 0 ]]
 	[[ "$output" == *'"status":"unknown"'* ]]
 	[[ "$output" == *"▮"* ]]
 }
@@ -38,7 +38,7 @@ setup() {
 	bats_mock project-path
 
 	bats_run_zsh "sidequest-start oroshi"
-	[ "$status" -eq 0 ]
+	[[ "$status" -eq 0 ]]
 	[[ "$output" == '{"status":"ok","projectName":"oroshi","projectPath":"/home/tim/local/www/oroshi"}' ]]
 }
 
@@ -47,7 +47,7 @@ setup() {
 	bats_mock project-path
 
 	bats_run_zsh "sidequest-start unknownproject"
-	[ "$status" -eq 0 ]
+	[[ "$status" -eq 0 ]]
 	[[ "$output" == *'"status":"unknown"'* ]]
 	[[ "$output" == *"▮"* ]]
 }
@@ -57,7 +57,7 @@ setup() {
 	bats_mock project-path
 
 	bats_run_zsh "sidequest-start unknownproject"
-	[ "$status" -eq 0 ]
+	[[ "$status" -eq 0 ]]
 	[[ "$output" == *"oroshi▮"* ]]
 	[[ "$output" == *"myproject▮"* ]]
 }

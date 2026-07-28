@@ -9,28 +9,28 @@ setup() {
 
 @test "fzf-var-write saves value to disk" {
   bats_run_zsh "${sourcePrefix}; fzf-var-write mykey myvalue"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local saved
   saved="$(cat "$BATS_TMP_DIR/tmp/fzf/var/42/mykey")"
-  [ "$saved" = "myvalue" ]
+  [[ "$saved" = "myvalue" ]]
 }
 
 @test "fzf-var-read returns saved value" {
   mkdir -p "$BATS_TMP_DIR/tmp/fzf/var/42"
   echo "stored" > "$BATS_TMP_DIR/tmp/fzf/var/42/mykey"
   bats_run_zsh "${sourcePrefix}; fzf-var-read mykey"
-  [ "$status" -eq 0 ]
-  [ "$output" = "stored" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "stored" ]]
 }
 
 @test "fzf-var-read returns default when key not found" {
   bats_run_zsh "${sourcePrefix}; fzf-var-read missing fallback"
-  [ "$status" -eq 0 ]
-  [ "$output" = "fallback" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "fallback" ]]
 }
 
 @test "fzf-var-read returns empty when key missing and no default" {
   bats_run_zsh "${sourcePrefix}; fzf-var-read missing"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }

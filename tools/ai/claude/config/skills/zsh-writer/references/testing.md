@@ -59,7 +59,7 @@ setup() {
 @test "returns current branch" {
   bats_git checkout -b fix/bug
   bats_run_zsh "cd $BATS_GIT_DIR && my-script some-arg"
-  [ "$output" = "fix/bug" ]
+  [[ "$output" = "fix/bug" ]]
 }
 ```
 
@@ -76,8 +76,8 @@ setup() {
 
 @test "creates a worktree directory" {
   bats_run_zsh "cd $BATS_GIT_DIR && my-function fix/bug"
-  [ "$status" -eq 0 ]
-  [ -d "$MOCK_OROSHI_WORKTREES_DIR/my-repo--fix_bug" ]
+  [[ "$status" -eq 0 ]]
+  [[ -d "$MOCK_OROSHI_WORKTREES_DIR/my-repo--fix_bug" ]]
 }
 ```
 
@@ -95,7 +95,7 @@ Overwrites existing commands with custom one, only for that test.
   bats_mock pbcopy
 
   bats_run_zsh "my-script Hello World"
-  [ "$(cat "$BATS_TMP_DIR/clipboard.txt")" = "helloWorld" ]
+  [[ "$(cat "$BATS_TMP_DIR/clipboard.txt")" = "helloWorld" ]]
 }
 ```
 

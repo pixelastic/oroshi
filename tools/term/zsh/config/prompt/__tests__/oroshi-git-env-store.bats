@@ -11,8 +11,8 @@ setup() {
   bats_mock git-directory-is-worktree git-directory-is-repository
 
   bats_run_zsh "$sourcePrefix && oroshi-git-env-store && echo \$GIT_DIRECTORY_IS_WORKTREE"
-  [ "$status" -eq 0 ]
-  [ "$output" = "1" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "1" ]]
 }
 
 @test "GIT_DIRECTORY_IS_WORKTREE is 0 when not in a linked worktree" {
@@ -21,6 +21,6 @@ setup() {
   bats_mock git-directory-is-worktree git-directory-is-repository
 
   bats_run_zsh "$sourcePrefix && oroshi-git-env-store && echo \$GIT_DIRECTORY_IS_WORKTREE"
-  [ "$status" -eq 0 ]
-  [ "$output" = "0" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "0" ]]
 }

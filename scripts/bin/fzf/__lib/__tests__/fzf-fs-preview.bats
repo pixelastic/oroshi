@@ -33,8 +33,8 @@ setup() {
   local expectedPath="$BATS_TMP_DIR/tmp/fzf/previews/abc123.png"
 
   bats_run_zsh "${sourcePrefix}; fullPath='/fake/file.pdf'; fzf-preview-thumbnail '/fake/file.pdf' 'fake-extractor'"
-  [ "$status" -eq 0 ]
-  [ "$output" = "$expectedPath" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "$expectedPath" ]]
 }
 
 @test "fzf-preview-thumbnail: echoes cache path when already cached" {
@@ -46,15 +46,15 @@ setup() {
   touch "$expectedPath"
 
   bats_run_zsh "${sourcePrefix}; fullPath='/fake/file.pdf'; fzf-preview-thumbnail '/fake/file.pdf' 'fake-extractor'"
-  [ "$status" -eq 0 ]
-  [ "$output" = "$expectedPath" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "$expectedPath" ]]
 }
 
 @test "fzf-preview-header: dotfile shows correct ANSI color" {
   touch "$BATS_TMP_DIR/.fdignore"
 
   bats_run_zsh "${sourcePrefix}; fzf-preview-header '$BATS_TMP_DIR/.fdignore'"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *$'\e[38;5;174m'* ]]
 }
 
@@ -62,7 +62,7 @@ setup() {
   touch "$BATS_TMP_DIR/.fdignore"
 
   bats_run_zsh "${sourcePrefix}; fzf-preview-header '$BATS_TMP_DIR/.fdignore'"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"DOTICON"* ]]
 }
 
@@ -70,7 +70,7 @@ setup() {
   touch "$BATS_TMP_DIR/app.js"
 
   bats_run_zsh "${sourcePrefix}; fzf-preview-header '$BATS_TMP_DIR/app.js'"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *$'\e[38;5;200m'* ]]
 }
 
@@ -81,7 +81,7 @@ setup() {
   touch "$autoloadFile"
 
   bats_run_zsh "${sourcePrefix}; fzf-preview-header '$autoloadFile'"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *$'\e[38;5;173m'* ]]
   [[ "$output" == *' Z '* ]]
 }
@@ -91,7 +91,7 @@ setup() {
   touch "$plainFile"
 
   bats_run_zsh "${sourcePrefix}; fzf-preview-header '$plainFile'"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" != *$'\e[38;5;173m'* ]]
 }
 
@@ -105,7 +105,7 @@ setup() {
 
   # Override source-defined function after sourcing
   bats_run_zsh "${sourcePrefix}; fzf-preview-file-video() { echo 'VIDEO_DISPATCHED'; }; fzf-preview '$BATS_TMP_DIR/clip.mp4'"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"VIDEO_DISPATCHED"* ]]
 }
 
@@ -122,7 +122,7 @@ setup() {
   bats_mock fzf-preview-header filesize-human video-duration video-dimensions fzf-preview-thumbnail img-display
 
   bats_run_zsh "${sourcePrefix}; fzf-preview-file-video '$BATS_TMP_DIR/clip.mp4'"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local stripped="$(bats_strip_ansi "$output")"
   [[ "$stripped" == *"12.3 MB"* ]]
   [[ "$stripped" == *"01:23"* ]]
@@ -141,7 +141,7 @@ setup() {
 
   # Override source-defined functions after sourcing, capture fzf-preview-thumbnail args
   bats_run_zsh "${sourcePrefix}; fzf-preview-header() { :; }; fzf-preview-thumbnail() { echo \"\$1 \$2\" > '$BATS_TMP_DIR/thumbnail-call.txt'; echo '/fake/thumb.png'; }; fzf-preview-file-video '$BATS_TMP_DIR/clip.mp4'"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local callArgs="$(cat "$BATS_TMP_DIR/thumbnail-call.txt")"
   [[ "$callArgs" == *"clip.mp4 video-thumbnail"* ]]
 }

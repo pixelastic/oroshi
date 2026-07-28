@@ -7,7 +7,7 @@ setup() {
 @test "no-op if COLORS already set" {
   bats_mock_env COLORS "preset"
   bats_run_zsh "colors-load-definitions"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "sources dist/colors.zsh from OROSHI_ROOT when COLORS is empty" {
@@ -18,6 +18,6 @@ setup() {
   printf 'typeset -gA COLORS\nCOLORS[sentinel]=42\n' > "$fakeRoot/tools/term/zsh/config/theming/dist/colors.zsh"
 
   bats_run_zsh "colors-load-definitions; echo \${COLORS[sentinel]}"
-  [ "$status" -eq 0 ]
-  [ "${lines[0]}" = "42" ]
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[0]}" = "42" ]]
 }

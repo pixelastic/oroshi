@@ -21,8 +21,8 @@ setup() {
 		echo "${OROSHI_PROMPT_PARTS[git_issues_github]}"
 ZSCRIPT
   bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--feature && source $script"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 # git_plan_progress
@@ -38,8 +38,8 @@ ZSCRIPT
 		echo "${OROSHI_PROMPT_PARTS[git_plan_progress]}"
 ZSCRIPT
   bats_run_zsh "source $script"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "git_plan_progress is empty when not in a worktree" {
@@ -53,8 +53,8 @@ ZSCRIPT
 		echo "${OROSHI_PROMPT_PARTS[git_plan_progress]}"
 ZSCRIPT
   bats_run_zsh "cd $BATS_GIT_DIR && source $script"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "git_plan_progress is empty in a worktree without prd.json" {
@@ -68,7 +68,7 @@ ZSCRIPT
 		echo "${OROSHI_PROMPT_PARTS[git_plan_progress]}"
 ZSCRIPT
   bats_run_zsh "cd ${BATS_GIT_WORKTREES}my-repo--feature && source $script"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 

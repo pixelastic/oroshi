@@ -10,14 +10,14 @@ setup() {
 
 @test "--source: first field is the plain filepath" {
   bats_run_zsh "fzf-bats-test --source"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local firstField="${output%%▮*}"
-  [ "$firstField" = "/path/to/my-test.bats" ]
+  [[ "$firstField" = "/path/to/my-test.bats" ]]
 }
 
 @test "--source: second field is ANSI-colored" {
   bats_run_zsh "fzf-bats-test --source"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local secondField="${output##*▮}"
   [[ "$secondField" == *$'\e['* ]]
 }
@@ -26,6 +26,6 @@ setup() {
   bats-test-list-raw() { echo ""; }
   bats_mock bats-test-list-raw
   bats_run_zsh "fzf-bats-test --source"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }

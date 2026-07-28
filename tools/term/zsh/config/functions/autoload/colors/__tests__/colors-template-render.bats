@@ -21,15 +21,15 @@ SCRIPT
 @test "{{name}} is replaced with ANSI integer" {
   printf '{{yellow-7}}' >"$TEMPLATE"
   bats_run_zsh "source $SCRIPT"
-  [ "$status" -eq 0 ]
-  [ "${lines[0]}" = "87" ]
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[0]}" = "87" ]]
 }
 
 @test "{{name:hex}} is replaced with hex string" {
   printf '{{yellow-7:hex}}' >"$TEMPLATE"
   bats_run_zsh "source $SCRIPT"
-  [ "$status" -eq 0 ]
-  [ "${lines[0]}" = "#a16207" ]
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[0]}" = "#a16207" ]]
 }
 
 # --- Alias substitution ---
@@ -37,8 +37,8 @@ SCRIPT
 @test "alias {{name:hex}} is resolved correctly" {
   printf '{{git-branch:hex}}' >"$TEMPLATE"
   bats_run_zsh "source $SCRIPT"
-  [ "$status" -eq 0 ]
-  [ "${lines[0]}" = "#d69e2e" ]
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[0]}" = "#d69e2e" ]]
 }
 
 # --- Unknown placeholders ---
@@ -46,8 +46,8 @@ SCRIPT
 @test "unknown placeholder is left unchanged" {
   printf '{{unknown-color}}' >"$TEMPLATE"
   bats_run_zsh "source $SCRIPT"
-  [ "$status" -eq 0 ]
-  [ "${lines[0]}" = "{{unknown-color}}" ]
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[0]}" = "{{unknown-color}}" ]]
 }
 
 # --- Output ---
@@ -55,6 +55,6 @@ SCRIPT
 @test "rendered output goes to stdout" {
   printf '{{yellow-7}}' >"$TEMPLATE"
   bats_run_zsh "source $SCRIPT"
-  [ "$status" -eq 0 ]
-  [ "${output}" = "87" ]
+  [[ "$status" -eq 0 ]]
+  [[ "${output}" = "87" ]]
 }

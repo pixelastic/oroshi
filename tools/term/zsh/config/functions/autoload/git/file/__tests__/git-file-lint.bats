@@ -8,8 +8,8 @@ setup() {
 
 @test "exits 0 when working tree is clean" {
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "exits 0 when all dirty files are deleted" {
@@ -19,8 +19,8 @@ setup() {
   rm "$BATS_GIT_DIR/script.zsh"
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 # ─── BATS ─────────────────────────────────────────────────────────────────────
@@ -36,8 +36,8 @@ setup() {
   bats_mock is-bats bats-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "shows BATS header, errors and relative paths when is-bats true and bats-lint has errors" {
@@ -54,7 +54,7 @@ setup() {
   bats_mock is-bats bats-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
   [[ "$output" =~ "── BATS ──" ]]
   [[ "$output" =~ test.bats:1:1:\ noRunZsh: ]]
   [[ ! "$output" =~ $BATS_GIT_DIR ]]
@@ -70,8 +70,8 @@ setup() {
   bats_mock is-bats
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 # ─── ZSH ──────────────────────────────────────────────────────────────────────
@@ -87,8 +87,8 @@ setup() {
   bats_mock is-zsh zsh-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "shows ZSH header, errors and relative paths when is-zsh true and zsh-lint has errors" {
@@ -105,7 +105,7 @@ setup() {
   bats_mock is-zsh zsh-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
   [[ "$output" =~ "── ZSH ──" ]]
   [[ "$output" =~ script.zsh:2:1:\ noGroupedLocals: ]]
   [[ ! "$output" =~ $BATS_GIT_DIR ]]
@@ -121,8 +121,8 @@ setup() {
   bats_mock is-zsh
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "calls zsh-lint with --fix flag when dirty zsh files are found" {
@@ -139,7 +139,7 @@ setup() {
   bats_mock is-zsh zsh-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   grep -q -- '--fix' "$BATS_TMP_DIR/.zsh-lint-args"
 }
 
@@ -156,8 +156,8 @@ setup() {
   bats_mock is-js yarn
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "shows JS header and errors when is-js true and lint:fix has output" {
@@ -174,7 +174,7 @@ setup() {
   bats_mock is-js yarn
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
   [[ "$output" =~ "── JS ──" ]]
   [[ "$output" =~ script.js ]]
 }
@@ -189,8 +189,8 @@ setup() {
   bats_mock is-js
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 # ─── PYTHON ───────────────────────────────────────────────────────────────────
@@ -206,8 +206,8 @@ setup() {
   bats_mock is-python python-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "shows Python header and errors when is-python true and python-lint has output" {
@@ -224,7 +224,7 @@ setup() {
   bats_mock is-python python-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
   [[ "$output" =~ "── Python ──" ]]
   [[ "$output" =~ script.py ]]
 }
@@ -239,8 +239,8 @@ setup() {
   bats_mock is-python
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "calls python-lint with --fix flag when dirty python files are found" {
@@ -257,7 +257,7 @@ setup() {
   bats_mock is-python python-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   grep -q -- '--fix' "$BATS_TMP_DIR/.python-lint-args"
 }
 
@@ -284,7 +284,7 @@ setup() {
   bats_mock is-zsh is-bats zsh-lint bats-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
   [[ "$output" =~ "── ZSH ──" ]]
   [[ "$output" =~ "── BATS ──" ]]
 }
@@ -304,6 +304,6 @@ setup() {
   bats_mock is-zsh is-bats zsh-lint bats-lint
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-lint"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }

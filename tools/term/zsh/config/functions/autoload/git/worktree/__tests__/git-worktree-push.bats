@@ -11,9 +11,9 @@ setup() {
   cd "${BATS_GIT_WORKTREES}my-repo--fix-bug"
   local fixHead="$(git rev-parse HEAD)"
   bats_run_zsh "git-worktree-push"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   run bats_git rev-parse main
-  [ "$output" = "$fixHead" ]
+  [[ "$output" = "$fixHead" ]]
 }
 
 @test "returns 1 if history has diverged" {
@@ -21,5 +21,5 @@ setup() {
   git commit --allow-empty -m "main work"
   cd "${BATS_GIT_WORKTREES}my-repo--fix-bug"
   bats_run_zsh "git-worktree-push"
-  [ "$status" -ne 0 ]
+  [[ "$status" -ne 0 ]]
 }

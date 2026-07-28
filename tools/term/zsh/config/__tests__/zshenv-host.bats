@@ -33,12 +33,12 @@ mock_env() {
 
 @test "OROSHI_ROOT defaults to ~/.oroshi" {
   run_bare_zsh "cd /tmp; $sourcePrefix && echo \$OROSHI_ROOT"
-  [ "$output" = "$HOME/.oroshi" ]
+  [[ "$output" = "$HOME/.oroshi" ]]
 }
 
 @test "OROSHI_ROOT is default in oroshi main" {
   run_bare_zsh "cd $HOME/.oroshi; $sourcePrefix && echo \$OROSHI_ROOT"
-  [ "$output" = "$HOME/.oroshi" ]
+  [[ "$output" = "$HOME/.oroshi" ]]
 }
 
 @test "OROSHI_ROOT is worktree in oroshi worktree" {
@@ -57,8 +57,8 @@ mock_env() {
 
   mock_env "MOCK_OROSHI_WORKTREES_DIR" "$worktreeRoot"
   run_bare_zsh "cd '$worktreeRoot/$worktreeDirName'; $sourcePrefix"
-  [ "$status" -eq 0 ]
-  [ "$output" = "guest" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "guest" ]]
 }
 
 # --- Worktree-aware integration ---
@@ -67,11 +67,11 @@ mock_env() {
   cd "$BATS_TMP_DIR"
 
   bats_run_zsh "bats-fixture-script-foo"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"$HOME/.oroshi"* ]]
 
   bats_run_zsh "bats-fixture-function-foo"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"$HOME/.oroshi"* ]]
 }
 
@@ -85,16 +85,16 @@ mock_env() {
   # Overwrite fixtures to echo a custom string
   echo '#!/usr/bin/env zsh' > "$worktreeDir/scripts/bin/term/bats/bats-fixture-script-baz"
   echo 'echo "from-test-worktree"' >> "$worktreeDir/scripts/bin/term/bats/bats-fixture-script-baz"
-  echo 'echo "from-test-worktree"' > "$worktreeDir/tools/term/zsh/config/functions/autoload/term/bats/bats-fixture-function-baz"
+  echo 'echo "from-test-worktree"' > "$worktreeDir/tools/term/zsh/config/functions/autoload/_languages/bats/bats-fixture-function-baz"
 
   # It correctly uses the new fixtures
   bats_run_zsh "bats-fixture-script-foo"
-  [ "$status" -eq 0 ]
-  [ "$output" = "from-test-worktree" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "from-test-worktree" ]]
 
   bats_run_zsh "bats-fixture-function-foo"
-  [ "$status" -eq 0 ]
-  [ "$output" = "from-test-worktree" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "from-test-worktree" ]]
 }
 
 @test "with worktree-aware disabled, chains resolve from inherited OROSHI_ROOT" {
@@ -107,19 +107,19 @@ mock_env() {
   # Overwrite fixtures to echo a custom string
   echo '#!/usr/bin/env zsh' > "$worktreeDir/scripts/bin/term/bats/bats-fixture-script-baz"
   echo 'echo "from-test-worktree"' >> "$worktreeDir/scripts/bin/term/bats/bats-fixture-script-baz"
-  echo 'echo "from-test-worktree"' > "$worktreeDir/tools/term/zsh/config/functions/autoload/term/bats/bats-fixture-function-baz"
+  echo 'echo "from-test-worktree"' > "$worktreeDir/tools/term/zsh/config/functions/autoload/_languages/bats/bats-fixture-function-baz"
 
   # Disable worktree-aware behavior
   bats_disable_worktree_aware
 
   bats_run_zsh "bats-fixture-script-foo"
-  [ "$status" -eq 0 ]
-  [ "$output" != "from-test-worktree" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" != "from-test-worktree" ]]
   [[ "$output" == *"$OROSHI_ROOT"* ]]
 
   bats_run_zsh "bats-fixture-function-foo"
-  [ "$status" -eq 0 ]
-  [ "$output" != "from-test-worktree" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" != "from-test-worktree" ]]
   [[ "$output" == *"$OROSHI_ROOT"* ]]
 }
 
@@ -134,6 +134,6 @@ mock_env() {
 
   mock_env "MOCK_OROSHI_WORKTREES_DIR" "$worktreeRoot"
   run_bare_zsh "cd '$worktreeRoot/$worktreeDirName'; $sourcePrefix && echo \$OROSHI_ROOT"
-  [ "$status" -eq 0 ]
-  [ "$output" = "$HOME/.oroshi" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "$HOME/.oroshi" ]]
 }

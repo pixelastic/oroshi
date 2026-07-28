@@ -16,7 +16,7 @@ setup() {
   bats_mock ralph-is-running
 
   bats_run_zsh "${sourcePrefix}; ralph-single '$PRD_DIR'"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "creates ralph.json before launching Claude" {
@@ -26,7 +26,7 @@ setup() {
   bats_mock ralph-is-running git-directory-root claude
 
   bats_run_zsh "${sourcePrefix}; ralph-single '$PRD_DIR'"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "clears ralph.json after Claude exits (happy path)" {
@@ -36,8 +36,8 @@ setup() {
   bats_mock ralph-is-running git-directory-root claude
 
   bats_run_zsh "${sourcePrefix}; ralph-single '$PRD_DIR'"
-  [ "$status" -eq 0 ]
-  [ ! -f "$PRD_DIR/ralph.json" ]
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$PRD_DIR/ralph.json" ]]
 }
 
 @test "clears ralph.json after Claude exits with non-zero status" {
@@ -50,8 +50,8 @@ setup() {
   bats_mock ralph-is-running git-directory-root claude
 
   bats_run_zsh "${sourcePrefix}; ralph-single '$PRD_DIR'"
-  [ -f "$BATS_TMP_DIR/claude-called" ]
-  [ ! -f "$PRD_DIR/ralph.json" ]
+  [[ -f "$BATS_TMP_DIR/claude-called" ]]
+  [[ ! -f "$PRD_DIR/ralph.json" ]]
 }
 
 @test "calls Claude with the correct plan directory argument" {
@@ -62,6 +62,6 @@ setup() {
   bats_mock ralph-is-running git-directory-root claude ralph-state
 
   bats_run_zsh "${sourcePrefix}; ralph-single '$PRD_DIR'"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"/ralph ${PRD_DIR}"* ]]
 }

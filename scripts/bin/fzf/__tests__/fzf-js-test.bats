@@ -13,14 +13,14 @@ setup() {
 
 @test "--source: first field is the absolute filepath" {
   bats_run_zsh "fzf-js-test --source"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local firstField="${output%%▮*}"
-  [ "$firstField" = "/project/__tests__/my-test.js" ]
+  [[ "$firstField" = "/project/__tests__/my-test.js" ]]
 }
 
 @test "--source: second field is ANSI-colored" {
   bats_run_zsh "fzf-js-test --source"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local secondField="${output##*▮}"
   [[ "$secondField" == *$'\e['* ]]
 }
@@ -29,6 +29,6 @@ setup() {
   fd() { echo ""; }
   bats_mock fd
   bats_run_zsh "fzf-js-test --source"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }

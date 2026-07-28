@@ -9,15 +9,11 @@ setup() {
   bats_mock_env "OROSHI_ROOT" "$BATS_TMP_DIR"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # fzf-source
 
 @test "fzf-source: outputs candidates from cache file" {
   bats_run_zsh "fzf-docker-images --source"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "${lines[0]}" == "ubuntu▮"* ]]
   [[ "${lines[1]}" == "alpine▮"* ]]
 }
@@ -25,26 +21,26 @@ teardown() {
 @test "fzf-source: handles empty cache file gracefully" {
   printf '' > "$BATS_TMP_DIR/tools/docker/docker/config/data/src/images-remote.txt"
   bats_run_zsh "fzf-docker-images --source"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 # fzf-postprocess
 
 @test "fzf-postprocess: extracts image name from selection" {
   bats_run_zsh "printf 'ubuntu▮Ubuntu is a Debian-based Linux OS.\n' | fzf-docker-images --postprocess"
-  [ "$output" = "ubuntu" ]
+  [[ "$output" = "ubuntu" ]]
 }
 
 @test "fzf-postprocess: outputs nothing on empty stdin" {
   bats_run_zsh "printf '' | fzf-docker-images --postprocess"
-  [ "$output" = "" ]
+  [[ "$output" = "" ]]
 }
 
 # fzf-preview
 
 @test "preview: exits gracefully without fzf-preview defined" {
   bats_run_zsh "fzf-docker-images --preview"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }

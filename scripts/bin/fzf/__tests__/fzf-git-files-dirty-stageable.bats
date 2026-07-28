@@ -23,13 +23,13 @@ setup() {
 
 @test "preview: shows diff for modified file" {
   bats_run_zsh "cd $BATS_GIT_DIR && fzf-git-files-dirty-stageable --preview test.txt"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"modified"* ]]
 }
 
 @test "preview: shows file content for new untracked file" {
   echo "brand new content" > "$BATS_GIT_DIR/new.txt"
   bats_run_zsh "cd $BATS_GIT_DIR && fzf-git-files-dirty-stageable --preview new.txt"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"brand new content"* ]]
 }

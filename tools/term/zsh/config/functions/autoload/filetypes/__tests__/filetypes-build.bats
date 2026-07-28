@@ -19,7 +19,7 @@ COLORS[yellow]=45
 COLORS[yellow:hex]="#d69e2e"
 COLORS
 
-  cat >"$THEMING_DIR/icons.zsh" <<'ICONS'
+  cat >"$THEMING_DIR/dist/icons.zsh" <<'ICONS'
 typeset -gA ICONS
 ICONS[filetype-text]="T"
 ICONS[filetype-md]="M"
@@ -59,72 +59,72 @@ ICONS
 
 @test "produces dist/filetypes.zsh" {
   bats_run_zsh "filetypes-build"
-  [ "$status" -eq 0 ]
-  [ -f "$THEMING_DIR/dist/filetypes.zsh" ]
+  [[ "$status" -eq 0 ]]
+  [[ -f "$THEMING_DIR/dist/filetypes.zsh" ]]
 }
 
 @test "dist/filetypes.zsh contains disable-file comment" {
   bats_run_zsh "filetypes-build"
   run grep "# zsh-lint disable-file=commandTooLong" "$THEMING_DIR/dist/filetypes.zsh"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "extension entry: FILETYPES[md:color] resolves to amber ANSI code" {
   bats_run_zsh "filetypes-build"
   bats_run_zsh "source '${THEMING_DIR}/dist/filetypes.zsh' && echo \${FILETYPES[md:color]}"
-  [ "${lines[0]}" = "145" ]
+  [[ "${lines[0]}" = "145" ]]
 }
 
 @test "extension entry: FILETYPES[md:pattern] set to *.md" {
   bats_run_zsh "filetypes-build"
   bats_run_zsh "source '${THEMING_DIR}/dist/filetypes.zsh' && echo \${FILETYPES[md:pattern]}"
-  [ "${lines[0]}" = "*.md" ]
+  [[ "${lines[0]}" = "*.md" ]]
 }
 
 @test "extension entry: FILETYPES[md:group] set to group name" {
   bats_run_zsh "filetypes-build"
   bats_run_zsh "source '${THEMING_DIR}/dist/filetypes.zsh' && echo \${FILETYPES[md:group]}"
-  [ "${lines[0]}" = "text" ]
+  [[ "${lines[0]}" = "text" ]]
 }
 
 @test "extension entry: FILETYPES[md:icon] resolved from icon override" {
   bats_run_zsh "filetypes-build"
   bats_run_zsh "source '${THEMING_DIR}/dist/filetypes.zsh' && echo \${FILETYPES[md:icon]}"
-  [ "${lines[0]}" = "M" ]
+  [[ "${lines[0]}" = "M" ]]
 }
 
 @test "extension entry: FILETYPES[md:bold] set to 0 when not specified" {
   bats_run_zsh "filetypes-build"
   bats_run_zsh "source '${THEMING_DIR}/dist/filetypes.zsh' && echo \${FILETYPES[md:bold]}"
-  [ "${lines[0]}" = "0" ]
+  [[ "${lines[0]}" = "0" ]]
 }
 
 @test "filename entry: FILETYPES[_gitignore:pattern] set to .gitignore" {
   bats_run_zsh "filetypes-build"
   bats_run_zsh "source '${THEMING_DIR}/dist/filetypes.zsh' && echo \${FILETYPES[_gitignore:pattern]}"
-  [ "${lines[0]}" = ".gitignore" ]
+  [[ "${lines[0]}" = ".gitignore" ]]
 }
 
 @test "override: extension with color override uses override color" {
   bats_run_zsh "filetypes-build"
   bats_run_zsh "source '${THEMING_DIR}/dist/filetypes.zsh' && echo \${FILETYPES[js:color]}"
-  [ "${lines[0]}" = "45" ]
+  [[ "${lines[0]}" = "45" ]]
 }
 
 @test "override: extension with icon override uses override icon" {
   bats_run_zsh "filetypes-build"
   bats_run_zsh "source '${THEMING_DIR}/dist/filetypes.zsh' && echo \${FILETYPES[js:icon]}"
-  [ "${lines[0]}" = "J" ]
+  [[ "${lines[0]}" = "J" ]]
 }
 
 @test "group entry: FILETYPES[image:color] has resolved ANSI code" {
   bats_run_zsh "filetypes-build"
   bats_run_zsh "source '${THEMING_DIR}/dist/filetypes.zsh' && echo \${FILETYPES[image:color]}"
-  [ "${lines[0]}" = "46" ]
+  [[ "${lines[0]}" = "46" ]]
 }
 
 @test "group entry: FILETYPES[image:icon] has resolved glyph" {
   bats_run_zsh "filetypes-build"
   bats_run_zsh "source '${THEMING_DIR}/dist/filetypes.zsh' && echo \${FILETYPES[image:icon]}"
-  [ "${lines[0]}" = "I" ]
+  [[ "${lines[0]}" = "I" ]]
 }

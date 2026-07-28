@@ -9,8 +9,8 @@ setup() {
 
 @test "does nothing when working tree is clean" {
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "opens modified file in nvim" {
@@ -21,7 +21,7 @@ setup() {
   bats_mock filetypes-load-definitions filetypes-group nvim
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"file.txt"* ]]
 }
 
@@ -32,8 +32,8 @@ setup() {
   bats_mock filetypes-load-definitions nvim
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "accepts editable files" {
@@ -54,7 +54,7 @@ setup() {
   bats_mock filetypes-load-definitions filetypes-group nvim
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"app.js"* ]]
   [[ "$output" == *"func.zsh"* ]]
   [[ "$output" == *"note.txt"* ]]
@@ -79,7 +79,7 @@ setup() {
   bats_mock filetypes-load-definitions filetypes-group nvim
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"keep.txt"* ]]
   [[ "$output" != *"song.mp3"* ]]
   [[ "$output" != *"font.woff2"* ]]
@@ -95,7 +95,7 @@ setup() {
   bats_mock filetypes-load-definitions filetypes-group nvim
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"data.xyz"* ]]
 }
 
@@ -119,7 +119,7 @@ setup() {
   bats_mock filetypes-load-definitions filetypes-group nvim
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"useful.txt"* ]]
   [[ "$output" != *"state.json"* ]]
   [[ "$output" != *"template.lua"* ]]
@@ -133,7 +133,7 @@ setup() {
   bats_mock filetypes-load-definitions filetypes-group nvim
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"renamed.txt"* ]]
   [[ "$output" != *"file.txt"* ]]
 }
@@ -164,7 +164,7 @@ setup() {
   bats_mock filetypes-load-definitions filetypes-group test-path nvim
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "${lines[0]}" == *"/src/app.js" ]]
   [[ "${lines[1]}" == *"/src/__tests__/app.test.js" ]]
 }
@@ -198,7 +198,7 @@ setup() {
   bats_mock filetypes-load-definitions filetypes-group test-path nvim
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "${lines[0]}" == *"/src/app.js" ]]
   [[ "${lines[1]}" == *"/src/__tests__/app.test.js" ]]
   [[ "${lines[2]}" == *"/src/utils.js" ]]
@@ -223,7 +223,7 @@ setup() {
   bats_mock filetypes-load-definitions filetypes-group test-path nvim
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"app.test.js"* ]]
 }
 
@@ -250,7 +250,7 @@ setup() {
   bats_mock filetypes-load-definitions filetypes-group test-path nvim
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"app.js"* ]]
 }
 
@@ -267,7 +267,7 @@ setup() {
   bats_mock filetypes-load-definitions filetypes-group test-path nvim
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"file.txt"* ]]
 }
 
@@ -300,7 +300,7 @@ setup() {
   bats_mock filetypes-load-definitions filetypes-group test-path nvim
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-file-edit"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "${lines[0]}" == *"/config.txt" ]]
   [[ "${lines[1]}" == *"/src/app.js" ]]
   [[ "${lines[2]}" == *"/src/__tests__/app.test.js" ]]

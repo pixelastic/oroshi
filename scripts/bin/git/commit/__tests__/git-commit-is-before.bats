@@ -16,17 +16,17 @@ setup() {
 @test "returns 0 when first commit is before second" {
   cd "$BATS_GIT_DIR"
   run git-commit-is-before "$SHA_A" "$SHA_B"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "returns 1 when first commit is after second" {
   cd "$BATS_GIT_DIR"
   run git-commit-is-before "$SHA_B" "$SHA_A"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "returns 1 when both commits are the same" {
   cd "$BATS_GIT_DIR"
   run git-commit-is-before "$SHA_A" "$SHA_A"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }

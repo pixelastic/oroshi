@@ -12,7 +12,7 @@ setup() {
   bats_mock git-directory-is-worktree git-directory-root git-branch-current git-branch-slug
 
   bats_run_zsh "prd-end"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *'"prdPath":"/repo/plans/my-feature/PRD.md"'* ]]
 }
 
@@ -24,7 +24,7 @@ setup() {
   bats_mock git-directory-is-worktree git-directory-root git-branch-current git-branch-slug
 
   bats_run_zsh "prd-end"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" != *"/ralph/"* ]]
 }
 
@@ -33,7 +33,7 @@ setup() {
   bats_mock git-directory-is-worktree
 
   bats_run_zsh "prd-end"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
   [[ "$output" == *"branch name required"* ]]
 }
 
@@ -45,7 +45,7 @@ setup() {
   bats_mock git-directory-is-worktree git-directory-root git-branch-current git-branch-slug
 
   bats_run_zsh "prd-end"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *'"worktreePath":"/repo"'* ]]
   [[ "$output" == *'"branch":"main"'* ]]
 }

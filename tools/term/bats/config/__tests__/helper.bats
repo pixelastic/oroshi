@@ -13,13 +13,13 @@ setup() {
 
 @test "script chain: baz resolves from the current OROSHI_ROOT" {
   bats_run_zsh "bats-fixture-script-foo"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == "$OROSHI_ROOT/scripts/bin/term/bats/bats-fixture-script-baz" ]]
 }
 
 @test "function chain: baz resolves from the current OROSHI_ROOT" {
   bats_run_zsh "bats-fixture-function-foo"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == "$OROSHI_ROOT/tools/term/zsh/config/functions/autoload/term/bats/bats-fixture-function-baz" ]]
 }
 
@@ -30,8 +30,8 @@ setup() {
   bats_mock bats-fixture-function-baz
 
   bats_run_zsh "bats-fixture-function-foo"
-  [ "$status" -eq 0 ]
-  [ "$output" = "mocked" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "mocked" ]]
 }
 
 @test "mock baz - subshell" {
@@ -39,8 +39,8 @@ setup() {
   bats_mock bats-fixture-function-baz
 
   bats_run_zsh 'echo $(bats-fixture-function-foo)'
-  [ "$status" -eq 0 ]
-  [ "$output" = "mocked" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "mocked" ]]
 }
 
 @test "mock baz - external PATH script chain" {
@@ -48,8 +48,8 @@ setup() {
   bats_mock bats-fixture-script-baz
 
   bats_run_zsh "bats-fixture-script-foo"
-  [ "$status" -eq 0 ]
-  [ "$output" = "mocked" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "mocked" ]]
 }
 
 @test "mock wins over worktree binary when called directly" {
@@ -57,8 +57,8 @@ setup() {
   bats_mock bats-fixture-script-baz
 
   bats_run_zsh "bats-fixture-script-baz"
-  [ "$status" -eq 0 ]
-  [ "$output" = "mocked" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "mocked" ]]
 }
 
 # --- Root Override ---
@@ -70,8 +70,8 @@ setup() {
   bats_mock_env "OROSHI_ROOT" "/tmp/test-root"
 
   bats_run_zsh "bats-fixture-script-foo"
-  [ "$status" -eq 0 ]
-  [ "$output" = "/tmp/test-root" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "/tmp/test-root" ]]
 }
 
 @test "root override: composable with worktree-aware" {
@@ -81,11 +81,11 @@ setup() {
   bats_mock_env "OROSHI_ROOT" "/tmp/test-root"
 
   bats_run_zsh "bats-fixture-script-foo"
-  [ "$status" -eq 0 ]
-  [ "$output" = "/tmp/test-root" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "/tmp/test-root" ]]
 
   bats_run_zsh "which bats-fixture-script-bar"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == "$OROSHI_ROOT/scripts/bin/term/bats/bats-fixture-script-bar" ]]
 }
 
@@ -94,18 +94,18 @@ setup() {
 @test "bats_cleanup returns 0 when BATS_TMP_DIR is unset" {
   unset BATS_TMP_DIR
   run bats_cleanup
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "bats_cleanup returns 0 when BATS_TMP_DIR is empty string" {
   BATS_TMP_DIR=""
   run bats_cleanup
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "bats_cleanup removes directory when BATS_TMP_DIR is set" {
-  [ -d "$BATS_TMP_DIR" ]
+  [[ -d "$BATS_TMP_DIR" ]]
   run bats_cleanup
-  [ "$status" -eq 0 ]
-  [ ! -d "$BATS_TMP_DIR" ]
+  [[ "$status" -eq 0 ]]
+  [[ ! -d "$BATS_TMP_DIR" ]]
 }

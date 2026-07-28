@@ -8,19 +8,19 @@ setup() {
 @test "prints the worktree path for a given branch" {
   cd "$BATS_GIT_DIR"
   bats_run_zsh "git-worktree-path fix/bug"
-  [ "$status" -eq 0 ]
-  [ "$output" = "${BATS_GIT_WORKTREES}my-repo--fix-bug" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "${BATS_GIT_WORKTREES}my-repo--fix-bug" ]]
 }
 
 @test "returns 1 if branch has no worktree" {
   cd "$BATS_GIT_DIR"
   bats_run_zsh "git-worktree-path nonexistent/branch"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "works from inside a linked worktree" {
   cd "${BATS_GIT_WORKTREES}my-repo--fix-bug"
   bats_run_zsh "git-worktree-path fix/bug"
-  [ "$status" -eq 0 ]
-  [ "$output" = "${BATS_GIT_WORKTREES}my-repo--fix-bug" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "${BATS_GIT_WORKTREES}my-repo--fix-bug" ]]
 }

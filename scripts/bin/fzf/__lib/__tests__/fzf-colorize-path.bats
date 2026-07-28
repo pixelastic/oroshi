@@ -20,14 +20,14 @@ setup() {
 
 @test "colorizes directory segment and .js filename in respective colors" {
   bats_run_zsh "${sourcePrefix}; fzf-colorize-path 'src/app.js'; print -r -- \$REPLY"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *$'\e[38;5;100m'"src/"$'\e[0m'* ]]
   [[ "$output" == *$'\e[38;5;200m'"app.js"$'\e[0m'* ]]
 }
 
 @test "colorizes .js filename at root without directory prefix" {
   bats_run_zsh "${sourcePrefix}; fzf-colorize-path 'app.js'; print -r -- \$REPLY"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *$'\e[38;5;200m'"app.js"$'\e[0m'* ]]
   [[ "$output" != *$'\e[38;5;100m'* ]]
 }
@@ -36,19 +36,19 @@ setup() {
   touch "$BATS_TMP_DIR/my-script"
   chmod +x "$BATS_TMP_DIR/my-script"
   bats_run_zsh "${sourcePrefix}; fzf-colorize-path '$BATS_TMP_DIR/my-script'; print -r -- \$REPLY"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *$'\e[38;5;150m'"my-script"$'\e[0m'* ]]
 }
 
 @test "colorizes dotfile filename in its registered filetype color" {
   bats_run_zsh "${sourcePrefix}; fzf-colorize-path '.fdignore'; print -r -- \$REPLY"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *$'\e[38;5;174m'".fdignore"$'\e[0m'* ]]
 }
 
 @test "colorizes directory segment and dotfile filename in respective colors" {
   bats_run_zsh "${sourcePrefix}; fzf-colorize-path 'config/.fdignore'; print -r -- \$REPLY"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *$'\e[38;5;100m'"config/"$'\e[0m'* ]]
   [[ "$output" == *$'\e[38;5;174m'".fdignore"$'\e[0m'* ]]
 }
@@ -57,6 +57,6 @@ setup() {
   touch "$BATS_TMP_DIR/my-script"
   chmod +x "$BATS_TMP_DIR/my-script"
   bats_run_zsh "${sourcePrefix}; fzf-colorize-path 'proj/…/bin/my-script' '$BATS_TMP_DIR/my-script'; print -r -- \$REPLY"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *$'\e[38;5;150m'"my-script"$'\e[0m'* ]]
 }

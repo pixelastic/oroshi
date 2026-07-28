@@ -23,8 +23,8 @@ setup() {
   bats_git_dir 'empty-repo'
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-list"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "smoke: shows branch names, relative date and commit message" {
@@ -32,7 +32,7 @@ setup() {
   git -C "${BATS_GIT_WORKTREES}main-repo--feature" commit --allow-empty -m "feature commit"
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-list"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local line0="$(bats_strip_ansi "${lines[0]}")"
   local line1="$(bats_strip_ansi "${lines[1]}")"
   [[ "$line0" == *"docs"*"docs commit"* ]]
@@ -42,7 +42,7 @@ setup() {
 @test "marks only the current worktree with pointer" {
   bats_run_zsh "cd ${BATS_GIT_WORKTREES}main-repo--feature && git-worktree-list"
 
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local line0="$(bats_strip_ansi "${lines[0]}")"
   local line1="$(bats_strip_ansi "${lines[1]}")"
   [[ "$line0" != *">"* ]]
@@ -57,7 +57,7 @@ setup() {
   git -C "${BATS_GIT_WORKTREES}main-repo--feature" commit --allow-empty -m "feat: ahead"
 
   bats_run_zsh "cd $BATS_GIT_DIR && git-worktree-list"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local line0="$(bats_strip_ansi "${lines[0]}")"
   local line1="$(bats_strip_ansi "${lines[1]}")"
   [[ "$line0" == *"docs"*"1↓"* ]]

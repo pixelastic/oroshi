@@ -10,8 +10,8 @@ setup() {
   local file="$BATS_TMP_DIR/clean.lua"
   printf '%s\n' '-- clean' >"$file"
   run "$CURRENT" "$file"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "outputs violation line for vim.deepcopy( call" {
@@ -32,5 +32,5 @@ setup() {
   local file="$BATS_TMP_DIR/bad.lua"
   printf '%s\n' 'local x = vim.deepcopy(t)' >"$file"
   run "$CURRENT" "$file"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }

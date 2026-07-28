@@ -22,11 +22,11 @@ setup() {
   bats_mock git-directory-root claude git-commit-message claude-terminal-fix
 
   bats_run_zsh "${sourcePrefix}; ralph-loop $PRD_DIR 3"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 
   local commits
   commits="$(git -C "$GIT_REPO" log --oneline | wc -l)"
-  [ "$commits" -eq 4 ]
+  [[ "$commits" -eq 4 ]]
 }
 
 @test "exits early when prd_done is set after an iteration" {
@@ -43,11 +43,11 @@ setup() {
   bats_mock git-directory-root claude git-commit-message claude-terminal-fix
 
   bats_run_zsh "${sourcePrefix}; ralph-loop $PRD_DIR 10"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 
   local commits
   commits="$(git -C "$GIT_REPO" log --oneline | wc -l)"
-  [ "$commits" -eq 2 ]
+  [[ "$commits" -eq 2 ]]
 }
 
 @test "stops cleanly on Ctrl+C with no commit" {
@@ -60,11 +60,11 @@ setup() {
   bats_mock git-directory-root claude git-commit-message claude-terminal-fix
 
   bats_run_zsh "${sourcePrefix}; ralph-loop $PRD_DIR 5"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 
   local commits
   commits="$(git -C "$GIT_REPO" log --oneline | wc -l)"
-  [ "$commits" -eq 1 ]
+  [[ "$commits" -eq 1 ]]
 }
 
 @test "ralph.json exists during each iteration and is cleared after all iterations complete" {
@@ -72,7 +72,7 @@ setup() {
 
   git-directory-root() { echo "$GIT_REPO"; }
   claude() {
-    [ -f "$PRD_DIR/ralph.json" ] || return 1
+    [[ -f "$PRD_DIR/ralph.json" ]] || return 1
     echo "change $$" >>"$GIT_REPO/output.txt"
   }
   git-commit-message() { echo "test commit"; }
@@ -80,6 +80,6 @@ setup() {
   bats_mock git-directory-root claude git-commit-message claude-terminal-fix
 
   bats_run_zsh "${sourcePrefix}; ralph-loop $PRD_DIR 2"
-  [ "$status" -eq 0 ]
-  [ ! -f "$PRD_DIR/ralph.json" ]
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$PRD_DIR/ralph.json" ]]
 }

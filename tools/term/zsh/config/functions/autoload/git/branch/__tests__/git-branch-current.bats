@@ -9,22 +9,22 @@ setup() {
 @test "no arg: returns main on a fresh repo" {
   cd "$BATS_GIT_DIR"
   bats_run_zsh "git-branch-current"
-  [ "$status" -eq 0 ]
-  [ "$output" = "main" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "main" ]]
 }
 
 @test "no arg: returns branch after checkout" {
   cd "$BATS_GIT_DIR"
   git checkout -b feat/hello
   bats_run_zsh "git-branch-current"
-  [ "$status" -eq 0 ]
-  [ "$output" = "feat/hello" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "feat/hello" ]]
 }
 
 @test "no arg: fails outside a git repo" {
   cd "$BATS_TMP_DIR"
   bats_run_zsh "git-branch-current"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "no arg: returns HEAD in detached state" {
@@ -32,8 +32,8 @@ setup() {
   local commit="$(git rev-parse HEAD)"
   git checkout --detach "$commit"
   bats_run_zsh "git-branch-current"
-  [ "$status" -eq 0 ]
-  [ "$output" = "HEAD" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "HEAD" ]]
 }
 
 # --- with path argument ---
@@ -45,19 +45,19 @@ setup() {
   git checkout -b fix/something
   cd "$BATS_GIT_DIR"
   bats_run_zsh "git-branch-current $other_repo"
-  [ "$status" -eq 0 ]
-  [ "$output" = "fix/something" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "fix/something" ]]
 }
 
 @test "arg: returns main of given repo while cwd is outside any repo" {
   cd "$BATS_TMP_DIR"
   bats_run_zsh "git-branch-current $BATS_GIT_DIR"
-  [ "$status" -eq 0 ]
-  [ "$output" = "main" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "main" ]]
 }
 
 @test "arg: fails when given path is not a git repo" {
   cd "$BATS_GIT_DIR"
   bats_run_zsh "git-branch-current $BATS_TMP_DIR"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }

@@ -10,12 +10,12 @@ setup() {
 
 @test "returns remote name from cwd" {
 	bats_run_zsh "cd $BATS_GIT_DIR && git-remote-current"
-	[ "$status" -eq 0 ]
-	[ "$output" = "upstream" ]
+	[[ "$status" -eq 0 ]]
+	[[ "$output" = "upstream" ]]
 }
 
 @test "returns remote name from given path" {
 	bats_run_zsh "git-remote-current $BATS_GIT_DIR"
-	[ "$status" -eq 0 ]
-	[ "$output" = "upstream" ]
+	[[ "$status" -eq 0 ]]
+	[[ "$output" = "upstream" ]]
 }

@@ -10,7 +10,7 @@ setup() {
   bats_mock claude-mcp-is-added claude
 
   bats_run_zsh "claude-mcp-remove foo"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" != *"claude called"* ]]
 }
 
@@ -20,7 +20,7 @@ setup() {
   bats_mock claude-mcp-is-added claude
 
   bats_run_zsh "claude-mcp-remove foo"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"mcp remove --scope user foo"* ]]
   [[ "$output" == *"Restart Claude"* ]]
 }

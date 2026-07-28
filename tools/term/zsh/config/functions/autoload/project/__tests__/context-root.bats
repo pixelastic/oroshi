@@ -14,8 +14,8 @@ setup() {
   git-directory-is-worktree() { return 1; }
   bats_mock project-name git-directory-is-worktree
   bats_run_zsh "context-root /my/path"
-  [ "$status" -eq 0 ]
-  [ "$output" = "project-path:project-name:/my/path" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "project-path:project-name:/my/path" ]]
 }
 
 @test "in worktree: passes arg to git-directory-root" {
@@ -23,8 +23,8 @@ setup() {
   git-directory-is-worktree() { return 0; }
   bats_mock project-name git-directory-is-worktree
   bats_run_zsh "context-root /my/path"
-  [ "$status" -eq 0 ]
-  [ "$output" = "git-directory-root:/my/path" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "git-directory-root:/my/path" ]]
 }
 
 @test "outside known project: returns empty" {
@@ -32,8 +32,8 @@ setup() {
   git-directory-is-worktree() { return 1; }
   bats_mock project-name git-directory-is-worktree
   bats_run_zsh "context-root /my/path"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "no arg: uses \$PWD" {
@@ -42,6 +42,6 @@ setup() {
   bats_mock project-name git-directory-is-worktree
   cd "$BATS_TMP_DIR"
   bats_run_zsh "context-root"
-  [ "$status" -eq 0 ]
-  [ "$output" = "project-path:project-name:$BATS_TMP_DIR" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "project-path:project-name:$BATS_TMP_DIR" ]]
 }

@@ -10,18 +10,18 @@ setup() {
   git commit --allow-empty -m "main commit"
   cd "${BATS_GIT_WORKTREES}my-repo--fix-bug"
   bats_run_zsh "git-worktree-is-behind"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "returns 1 when worktree is not behind main" {
   cd "${BATS_GIT_WORKTREES}my-repo--fix-bug"
   bats_run_zsh "git-worktree-is-behind"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "accepts a path argument" {
   cd "$BATS_GIT_DIR"
   git commit --allow-empty -m "main commit"
   bats_run_zsh "git-worktree-is-behind ${BATS_GIT_WORKTREES}my-repo--fix-bug"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }

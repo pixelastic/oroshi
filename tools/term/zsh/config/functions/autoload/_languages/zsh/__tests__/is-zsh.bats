@@ -8,7 +8,7 @@ setup() {
   local file="$BATS_TMP_DIR/foo.zsh"
   echo "echo hello" > "$file"
   bats_run_zsh "is-zsh $file"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "exits 0 for a no-extension file inside functions/autoload/" {
@@ -17,35 +17,35 @@ setup() {
   local file="$dir/my-func"
   echo "echo hello" > "$file"
   bats_run_zsh "is-zsh $file"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "exits 0 for a no-extension file with zsh shebang" {
   local file="$BATS_TMP_DIR/my-script"
   printf '#!/usr/bin/env zsh\necho hello\n' > "$file"
   bats_run_zsh "is-zsh $file"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "exits 1 for a no-extension file with ruby shebang" {
   local file="$BATS_TMP_DIR/my-script"
   printf '#!/usr/bin/env ruby\nputs "hello"\n' > "$file"
   bats_run_zsh "is-zsh $file"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "exits 1 for a no-extension file with no shebang" {
   local file="$BATS_TMP_DIR/my-script"
   echo "echo hello" > "$file"
   bats_run_zsh "is-zsh $file"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "exits 1 for a directory path" {
   local dir="$BATS_TMP_DIR/functions/autoload/git/file"
   mkdir -p "$dir"
   bats_run_zsh "is-zsh $dir"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "exits 1 for a symlink to a .zsh file" {
@@ -54,14 +54,14 @@ setup() {
   echo "echo hello" > "$target"
   ln -s "$target" "$link"
   bats_run_zsh "is-zsh $link"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "exits 0 for a compdef file with #compdef first line" {
   local file="$BATS_TMP_DIR/_jumps"
   printf '#compdef\nfunction _jumps() { echo hello; }\n' > "$file"
   bats_run_zsh "is-zsh $file"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "exits 1 for a .bats file inside functions/autoload/" {
@@ -70,5 +70,5 @@ setup() {
   local file="$dir/slugify.bats"
   echo "# bats test" > "$file"
   bats_run_zsh "is-zsh $file"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }

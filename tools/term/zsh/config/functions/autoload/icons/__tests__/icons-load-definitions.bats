@@ -11,7 +11,7 @@ setup() {
   bats_mock_env "OROSHI_ROOT" "$BATS_TMP_DIR"
   bats_run_zsh "icons-load-definitions"
   # REVIEW: Should test that ICONS[test-key] has teh right value
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "no-op when ICONS is already populated" {
@@ -24,6 +24,6 @@ setup() {
 
   bats_mock_env "OROSHI_ROOT" "$BATS_TMP_DIR"
   bats_run_zsh "icons-load-definitions"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ ! -f "$markerFile" ]]
 }

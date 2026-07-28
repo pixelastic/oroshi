@@ -13,14 +13,14 @@ setup() {
 
 @test "each line has format fullAbsolutePath▮basename" {
   bats_run_zsh "plan-list-raw"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "${lines[0]}" == "$BATS_GIT_DIR/plans/plan-a${BATS_SEPARATOR}plan-a" ]]
   [[ "${lines[1]}" == "$BATS_GIT_DIR/plans/plan-b${BATS_SEPARATOR}plan-b" ]]
 }
 
 @test "nested subdirectories do not appear" {
   bats_run_zsh "plan-list-raw"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" != *"issues"* ]]
 }
 
@@ -30,6 +30,6 @@ setup() {
   mkdir -p "$BATS_TMP_DIR/empty-repo"
 
   bats_run_zsh "plan-list-raw"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }

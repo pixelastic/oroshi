@@ -15,8 +15,8 @@ setup() {
 		echo "${OROSHI_PROMPT_PARTS[git_worktree_distance]}"
 ZSCRIPT
   bats_run_zsh "source $script"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "git_worktree_distance is empty when not in a worktree" {
@@ -30,8 +30,8 @@ ZSCRIPT
 		echo "${OROSHI_PROMPT_PARTS[git_worktree_distance]}"
 ZSCRIPT
   bats_run_zsh "source $script"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "git_worktree_distance is empty when ahead and behind are both 0" {
@@ -48,8 +48,8 @@ ZSCRIPT
 		echo "${OROSHI_PROMPT_PARTS[git_worktree_distance]}"
 ZSCRIPT
   bats_run_zsh "source $script"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "git_worktree_distance shows only ahead when ahead=1 behind=0" {
@@ -66,8 +66,8 @@ ZSCRIPT
 		echo "${OROSHI_PROMPT_PARTS[git_worktree_distance]}"
 ZSCRIPT
   bats_run_zsh "source $script"
-  [ "$status" -eq 0 ]
-  [ "$output" = "%F{123}1AHEAD%f" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "%F{123}1AHEAD%f" ]]
 }
 
 @test "git_worktree_distance shows only behind when ahead=0 behind=1" {
@@ -84,8 +84,8 @@ ZSCRIPT
 		echo "${OROSHI_PROMPT_PARTS[git_worktree_distance]}"
 ZSCRIPT
   bats_run_zsh "source $script"
-  [ "$status" -eq 0 ]
-  [ "$output" = "%F{456}1BEHIND%f" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "%F{456}1BEHIND%f" ]]
 }
 
 @test "git_worktree_distance shows both with space between when ahead=1 behind=1" {
@@ -102,6 +102,6 @@ ZSCRIPT
 		echo "${OROSHI_PROMPT_PARTS[git_worktree_distance]}"
 ZSCRIPT
   bats_run_zsh "source $script"
-  [ "$status" -eq 0 ]
-  [ "$output" = "%F{123}1AHEAD%f %F{456}1BEHIND%f" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "%F{123}1AHEAD%f %F{456}1BEHIND%f" ]]
 }

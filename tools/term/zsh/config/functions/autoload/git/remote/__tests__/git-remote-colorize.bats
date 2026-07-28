@@ -12,19 +12,19 @@ setup() {
 
 @test "git-remote-colorize origin produces ANSI output" {
   bats_run_zsh "git-remote-colorize origin"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *$'\e['* ]]
 }
 
 @test "git-remote-colorize origin ANSI output contains remote name" {
   bats_run_zsh "git-remote-colorize origin"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *'origin'* ]]
 }
 
 @test "git-remote-colorize origin ANSI output contains no zsh codes" {
   bats_run_zsh "git-remote-colorize origin"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" != *'%F{'* ]]
 }
 
@@ -32,19 +32,19 @@ setup() {
 
 @test "git-remote-colorize origin --zsh produces zsh output" {
   bats_run_zsh "git-remote-colorize origin --zsh"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *'%F{'* ]]
 }
 
 @test "git-remote-colorize origin --zsh output contains remote name" {
   bats_run_zsh "git-remote-colorize origin --zsh"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *'origin'* ]]
 }
 
 @test "git-remote-colorize origin --zsh output contains no ANSI sequence" {
   bats_run_zsh "git-remote-colorize origin --zsh"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" != *$'\e['* ]]
 }
 
@@ -52,18 +52,18 @@ setup() {
 
 @test "git-remote-colorize --with-icon --zsh produces zsh output" {
   bats_run_zsh "git-remote-colorize --with-icon --zsh"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *'%F{'* ]]
 }
 
 @test "git-remote-colorize --with-icon --zsh output contains icon" {
   bats_run_zsh "git-remote-colorize --with-icon --zsh"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *' origin'* ]]
 }
 
 @test "git-remote-colorize --with-icon --zsh output contains no ANSI sequence" {
   bats_run_zsh "git-remote-colorize --with-icon --zsh"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" != *$'\e['* ]]
 }

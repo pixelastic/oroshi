@@ -18,7 +18,7 @@ mock_raw_output() {
   mock_raw_output
 
   bats_run_zsh "yarn-workspace-list"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local stripped="$(bats_strip_ansi "$output")"
   [[ "$stripped" == *"@mono/lib-a"* ]]
   [[ "$stripped" == *"@mono/lib-b"* ]]
@@ -28,7 +28,7 @@ mock_raw_output() {
   mock_raw_output
 
   bats_run_zsh "yarn-workspace-list"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local stripped="$(bats_strip_ansi "$output")"
   [[ "$stripped" == *"modules/lib-a"* ]]
   [[ "$stripped" == *"modules/lib-b"* ]]
@@ -38,7 +38,7 @@ mock_raw_output() {
   mock_raw_output
 
   bats_run_zsh "yarn-workspace-list"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local stripped="$(bats_strip_ansi "$output")"
   [[ "$stripped" == *"First library"* ]]
   [[ "$stripped" == *"Second library"* ]]
@@ -54,8 +54,8 @@ mock_raw_output() {
   bats_mock yarn-workspace-list-raw
 
   bats_run_zsh "yarn-workspace-list /some/path"
-  [ "$status" -eq 0 ]
-  [ "$(cat "$BATS_TMP_DIR/raw-args.txt")" = "/some/path" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$(cat "$BATS_TMP_DIR/raw-args.txt")" = "/some/path" ]]
 }
 
 # --- Empty output ---
@@ -65,5 +65,5 @@ mock_raw_output() {
   bats_mock yarn-workspace-list-raw
 
   bats_run_zsh "yarn-workspace-list"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }

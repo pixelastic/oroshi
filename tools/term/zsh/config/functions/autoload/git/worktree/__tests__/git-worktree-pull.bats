@@ -12,7 +12,7 @@ setup() {
 @test "rebases fix/bug on top of main" {
   cd "$BATS_GIT_DIR"
   bats_run_zsh "git-worktree-pull"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "fix/bug contains main commits after pull" {
@@ -31,5 +31,5 @@ setup() {
   git -C "$BATS_TMP_DIR/no-main" checkout --quiet -b fix/bug
   cd "$BATS_TMP_DIR/no-main"
   bats_run_zsh "git-worktree-pull"
-  [ "$status" -ne 0 ]
+  [[ "$status" -ne 0 ]]
 }

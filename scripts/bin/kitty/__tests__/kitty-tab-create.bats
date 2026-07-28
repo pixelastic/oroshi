@@ -10,7 +10,7 @@ setup() {
 
   bats_run_zsh "kitty-tab-create 'My Tab'"
 
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$(cat "$BATS_TMP_DIR/kitty-args")" == *" zsh" ]]
 }
 
@@ -20,7 +20,7 @@ setup() {
 
   bats_run_zsh "kitty-tab-create 'My Tab' --cmd 'kitty-helper-claude-start'"
 
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$(cat "$BATS_TMP_DIR/kitty-args")" == *" kitty-helper-claude-start" ]]
 }
 
@@ -30,6 +30,6 @@ setup() {
 
   bats_run_zsh "kitty-tab-create 'My Tab' --cmd 'kitty-helper-claude-start @/tmp/file.md'"
 
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$(cat "$BATS_TMP_DIR/kitty-args")" == *" kitty-helper-claude-start @/tmp/file.md" ]]
 }

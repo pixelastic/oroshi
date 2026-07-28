@@ -42,8 +42,8 @@ setup() {
 
 @test "converts space-separated words to camelCase" {
   bats_run_zsh "my-new-function hello world"
-  [ "$status" -eq 0 ]
-  [ "$output" = "helloWorld" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "helloWorld" ]]
 }
 
 @test "passes result to clipboard" {
@@ -51,7 +51,7 @@ setup() {
   bats_mock pbcopy
 
   bats_run_zsh "my-new-function hello world"
-  [ "$(cat "$BATS_TMP_DIR/clipboard.txt")" = "helloWorld" ]
+  [[ "$(cat "$BATS_TMP_DIR/clipboard.txt")" = "helloWorld" ]]
 }
 ```
 

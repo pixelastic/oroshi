@@ -16,8 +16,8 @@ setup() {
 
 	bats_run_zsh "kitty-reload"
 
-	[ "$status" -eq 0 ]
-	[ "$(cat "$BATS_TMP_DIR/kitty/beacons/reload")" = "$BATS_TMP_DIR/worktree" ]
+	[[ "$status" -eq 0 ]]
+	[[ "$(cat "$BATS_TMP_DIR/kitty/beacons/reload")" = "$BATS_TMP_DIR/worktree" ]]
 }
 
 @test "beacon contains OROSHI_ROOT when not in an oroshi worktree" {
@@ -29,8 +29,8 @@ setup() {
 
 	bats_run_zsh "kitty-reload"
 
-	[ "$status" -eq 0 ]
-	[ "$(cat "$BATS_TMP_DIR/kitty/beacons/reload")" = "/home/user/oroshi" ]
+	[[ "$status" -eq 0 ]]
+	[[ "$(cat "$BATS_TMP_DIR/kitty/beacons/reload")" = "/home/user/oroshi" ]]
 }
 
 @test "calls kitty-redraw after writing beacon" {
@@ -42,7 +42,7 @@ setup() {
 
 	bats_run_zsh "kitty-reload"
 
-	[ "$status" -eq 0 ]
+	[[ "$status" -eq 0 ]]
 	[[ -f "$BATS_TMP_DIR/redraw-called" ]]
 }
 
@@ -55,6 +55,6 @@ setup() {
 
 	bats_run_zsh "kitty-reload"
 
-	[ "$status" -eq 0 ]
-	[ "$output" = "" ]
+	[[ "$status" -eq 0 ]]
+	[[ "$output" = "" ]]
 }

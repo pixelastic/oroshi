@@ -12,15 +12,11 @@ setup() {
   printf 'ignored.txt\n' > "$BATS_TMP_DIR/.gitignore"
 }
 
-teardown() {
-  bats_cleanup
-}
-
 # fzf-source
 
 @test "fzf-source: lists files under current directory" {
   bats_run_zsh "cd $BATS_TMP_DIR && ctrl-shift-p --source"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"file.txt"* ]]
   [[ "$output" == *"nested.txt"* ]]
 }
@@ -32,11 +28,11 @@ teardown() {
 
 @test "fzf-source: does not include directories" {
   bats_run_zsh "cd $BATS_TMP_DIR && ctrl-shift-p --source"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local line
   for line in "${lines[@]}"; do
     local abspath="${line%%▮*}"
-    [ ! -d "$abspath" ]
+    [[ ! -d "$abspath" ]]
   done
 }
 
@@ -44,15 +40,15 @@ teardown() {
 
 @test "fzf-postprocess: extracts absolute path from two-column selection" {
   bats_run_zsh "printf '/tmp/test/file.txt▮file.txt\n' | ctrl-shift-p --postprocess"
-  [ "$output" = "/tmp/test/file.txt" ]
+  [[ "$output" = "/tmp/test/file.txt" ]]
 }
 
 @test "fzf-postprocess: outputs nothing on empty stdin" {
   bats_run_zsh "printf '' | ctrl-shift-p --postprocess"
-  [ "$output" = "" ]
+  [[ "$output" = "" ]]
 }
 
 @test "fzf-postprocess: handles paths with spaces" {
   bats_run_zsh "printf '/tmp/dir/my file.txt▮my file.txt\n' | ctrl-shift-p --postprocess"
-  [ "$output" = "/tmp/dir/my file.txt" ]
+  [[ "$output" = "/tmp/dir/my file.txt" ]]
 }

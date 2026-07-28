@@ -14,10 +14,10 @@ setup() {
   }
   bats_mock projects-load-definitions
   bats_run_zsh "project-exists 'aberlaas'"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "unknown project: returns exit 1" {
   bats_run_zsh "project-exists 'unknown'"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }

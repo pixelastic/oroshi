@@ -9,22 +9,22 @@ setup() {
   context-root() { echo "/my/root"; }
   bats_mock context-root
   bats_run_zsh "context-path /my/root/src/foo"
-  [ "$status" -eq 0 ]
-  [ "$output" = "src/foo" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "src/foo" ]]
 }
 
 @test "path at project root: returns empty string" {
   context-root() { echo "/my/root"; }
   bats_mock context-root
   bats_run_zsh "context-path /my/root"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "path outside all known projects: returns empty string" {
   context-root() { echo ""; }
   bats_mock context-root
   bats_run_zsh "context-path /tmp/unregistered"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }

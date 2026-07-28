@@ -14,8 +14,8 @@ setup() {
 
 @test "--no-dispatch: produces no output and exits 0" {
   bats_run_zsh "ctrl-r --no-dispatch"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "--no-dispatch: source defines functions without dispatching" {
@@ -25,24 +25,24 @@ setup() {
   }
   bats_mock fzf
   bats_run_zsh "source \$(which ctrl-r) --no-dispatch && fzf-source | head -1"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"▮"* ]]
-  [ ! -f "$BATS_TMP_DIR/oroshi-tmp/fzf-was-invoked" ]
+  [[ ! -f "$BATS_TMP_DIR/oroshi-tmp/fzf-was-invoked" ]]
 }
 
 # Existing dispatch unchanged
 
 @test "dispatch: --source still dispatches to fzf-source" {
   bats_run_zsh "ctrl-r --source"
-  [ "$status" -eq 0 ]
-  [ "${#lines[@]}" -gt 0 ]
+  [[ "$status" -eq 0 ]]
+  [[ "${#lines[@]}" -gt 0 ]]
 }
 
 @test "dispatch: no flags dispatches to fzf-main" {
   fzf() { cat; }
   bats_mock fzf
   bats_run_zsh "ctrl-r"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"ls"* ]]
 }
 
@@ -50,19 +50,19 @@ setup() {
 
 @test "init.zsh default fzf-postprocess: strips ▮ field, returns raw" {
   bats_run_zsh "source \$(dirname \$(which ctrl-o))/__lib/init.zsh && printf 'foo\xe2\x96\xaebar\n' | fzf-postprocess"
-  [ "$status" -eq 0 ]
-  [ "$output" = "foo" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "foo" ]]
 }
 
 @test "init.zsh default fzf-postprocess: outputs nothing on empty stdin" {
   bats_run_zsh "source \$(dirname \$(which ctrl-o))/__lib/init.zsh && printf '' | fzf-postprocess"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "init.zsh default fzf-postprocess: handles multi-line selection" {
   bats_run_zsh "source \$(dirname \$(which ctrl-o))/__lib/init.zsh && printf 'a\xe2\x96\xaedisplay-a\nb\xe2\x96\xaedisplay-b\n' | fzf-postprocess"
-  [ "$status" -eq 0 ]
-  [ "${lines[0]}" = "a" ]
-  [ "${lines[1]}" = "b" ]
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[0]}" = "a" ]]
+  [[ "${lines[1]}" = "b" ]]
 }

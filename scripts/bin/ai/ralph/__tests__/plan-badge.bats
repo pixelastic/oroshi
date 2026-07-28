@@ -19,7 +19,7 @@ setup() {
   plan-progress() { echo "1▮3"; }
   bats_mock plan-progress
   bats_run_zsh "plan-badge /some/plan"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local clean="$(bats_strip_ansi "$output")"
   [[ "$clean" == "I 1/3" ]]
 }
@@ -28,7 +28,7 @@ setup() {
   plan-progress() { echo "2▮2"; }
   bats_mock plan-progress
   bats_run_zsh "plan-badge /some/plan"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *$'\e[38;5;2m'* ]]
 }
 
@@ -36,7 +36,7 @@ setup() {
   plan-progress() { return 1; }
   bats_mock plan-progress
   bats_run_zsh "plan-badge /some/plan"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *$'\e[38;5;9m'* ]]
 }
 
@@ -44,7 +44,7 @@ setup() {
   plan-progress() { echo "1▮3"; }
   bats_mock plan-progress
   bats_run_zsh "plan-badge --zsh /some/plan"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"%F{"* ]]
 }
 
@@ -52,6 +52,6 @@ setup() {
   plan-directory() { echo ""; }
   bats_mock plan-directory
   bats_run_zsh "plan-badge"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }

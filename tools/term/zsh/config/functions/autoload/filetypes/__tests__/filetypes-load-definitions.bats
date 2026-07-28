@@ -7,8 +7,8 @@ setup() {
 @test "no-op if FILETYPES already set" {
   bats_mock_env FILETYPES "preset"
   bats_run_zsh "filetypes-load-definitions; echo \${FILETYPES}"
-  [ "$status" -eq 0 ]
-  [ "${lines[0]}" = "preset" ]
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[0]}" = "preset" ]]
 }
 
 @test "sources dist/filetypes.zsh from OROSHI_ROOT when FILETYPES is empty" {
@@ -19,6 +19,6 @@ setup() {
   printf 'typeset -gA FILETYPES\nFILETYPES[sentinel]=42\n' > "$fakeRoot/tools/term/zsh/config/theming/dist/filetypes.zsh"
 
   bats_run_zsh "filetypes-load-definitions; echo \${FILETYPES[sentinel]}"
-  [ "$status" -eq 0 ]
-  [ "${lines[0]}" = "42" ]
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[0]}" = "42" ]]
 }

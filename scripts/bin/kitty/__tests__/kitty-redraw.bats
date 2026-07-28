@@ -11,7 +11,7 @@ setup() {
 
   bats_run_zsh "kitty-redraw"
 
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$(cat "$BATS_TMP_DIR/kitty-args")" == "@ set-tab-color --match all active_bg=NONE" ]]
 }
 
@@ -21,8 +21,8 @@ setup() {
 
   bats_run_zsh "kitty-redraw"
 
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "failure: exits non-zero if kitty is unreachable" {
@@ -31,7 +31,7 @@ setup() {
 
   bats_run_zsh "kitty-redraw"
 
-  [ "$status" -ne 0 ]
+  [[ "$status" -ne 0 ]]
 }
 
 @test "success: creates beacon before calling kitty" {
@@ -44,6 +44,6 @@ setup() {
 
   bats_run_zsh "kitty-redraw"
 
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ -f "$BATS_TMP_DIR/beacon-existed" ]]
 }

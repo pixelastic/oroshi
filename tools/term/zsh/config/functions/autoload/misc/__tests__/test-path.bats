@@ -16,8 +16,8 @@ setup() {
   bats_mock is-js js-test-path
 
   bats_run_zsh "test-path /some/module.js"
-  [ "$status" -eq 0 ]
-  [ "$output" = "/some/__tests__/module.js" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "/some/__tests__/module.js" ]]
 }
 
 @test "Python file: dispatches to python-test-path" {
@@ -26,8 +26,8 @@ setup() {
   bats_mock is-python python-test-path
 
   bats_run_zsh "test-path /some/module.py"
-  [ "$status" -eq 0 ]
-  [ "$output" = "/some/__tests__/test_module.py" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "/some/__tests__/test_module.py" ]]
 }
 
 @test "ZSH file: falls back to bats-test-path" {
@@ -35,24 +35,24 @@ setup() {
   bats_mock bats-test-path
 
   bats_run_zsh "test-path /some/my-func"
-  [ "$status" -eq 0 ]
-  [ "$output" = "/some/__tests__/my-func.bats" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "/some/__tests__/my-func.bats" ]]
 }
 
 @test ".bats file: early return 1, no output" {
   bats_run_zsh "test-path /some/__tests__/my-func.bats"
-  [ "$status" -eq 1 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 1 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "unrecognized file type: falls to bats-test-path, returns 1 if no test" {
   bats_run_zsh "test-path /some/readme.md"
-  [ "$status" -eq 1 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 1 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "no argument: returns 1, no output" {
   bats_run_zsh "test-path"
-  [ "$status" -eq 1 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 1 ]]
+  [[ "$output" = "" ]]
 }

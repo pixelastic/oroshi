@@ -6,24 +6,24 @@ setup() {
 
 @test "parses ahead and behind from combined string" {
   bats_run_zsh "git-distance-parse '[ahead 4, behind 1]'"
-  [ "$status" -eq 0 ]
-  [ "$output" = "4▮1" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "4▮1" ]]
 }
 
 @test "parses ahead-only string" {
   bats_run_zsh "git-distance-parse '[ahead 3]'"
-  [ "$status" -eq 0 ]
-  [ "$output" = "3▮0" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "3▮0" ]]
 }
 
 @test "parses behind-only string" {
   bats_run_zsh "git-distance-parse '[behind 2]'"
-  [ "$status" -eq 0 ]
-  [ "$output" = "0▮2" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "0▮2" ]]
 }
 
 @test "returns empty for empty input" {
   bats_run_zsh "git-distance-parse ''"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }

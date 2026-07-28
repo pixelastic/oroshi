@@ -15,22 +15,22 @@ setup() {
 
 @test "no flags: shows only dependencies, exit 0" {
   bats_run_zsh "yarn-dependency-list-raw"
-  [ "$status" -eq 0 ]
-  [ "${#lines[@]}" -eq 1 ]
+  [[ "$status" -eq 0 ]]
+  [[ "${#lines[@]}" -eq 1 ]]
   [[ "${lines[0]}" == "lodash▮4.17.21▮dependencies▮link-none▮" ]]
 }
 
 @test "--dev: shows only devDependencies, exit 0" {
   bats_run_zsh "yarn-dependency-list-raw --dev"
-  [ "$status" -eq 0 ]
-  [ "${#lines[@]}" -eq 1 ]
+  [[ "$status" -eq 0 ]]
+  [[ "${#lines[@]}" -eq 1 ]]
   [[ "${lines[0]}" == "jest▮29.0.0▮devDependencies▮link-none▮" ]]
 }
 
 @test "--all: shows both dependencies and devDependencies, exit 0" {
   bats_run_zsh "yarn-dependency-list-raw --all"
-  [ "$status" -eq 0 ]
-  [ "${#lines[@]}" -eq 2 ]
+  [[ "$status" -eq 0 ]]
+  [[ "${#lines[@]}" -eq 2 ]]
   [[ "${lines[0]}" == "lodash▮4.17.21▮dependencies▮link-none▮" ]]
   [[ "${lines[1]}" == "jest▮29.0.0▮devDependencies▮link-none▮" ]]
 }
@@ -38,7 +38,7 @@ setup() {
 @test "--all: shows devDependencies even when dependencies field is absent, exit 0" {
   jo name=mock devDependencies="$(jo jest=29.0.0)" > "$MOCK_DIR/package.json"
   bats_run_zsh "yarn-dependency-list-raw --all"
-  [ "$status" -eq 0 ]
-  [ "${#lines[@]}" -eq 1 ]
+  [[ "$status" -eq 0 ]]
+  [[ "${#lines[@]}" -eq 1 ]]
   [[ "${lines[0]}" == "jest▮29.0.0▮devDependencies▮link-none▮" ]]
 }

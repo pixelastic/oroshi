@@ -9,7 +9,7 @@ setup() {
   bats_mock plan-directory
 
   bats_run_zsh "$BATS_TEST_DIRNAME/../post-commit"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 @test "exits 0 and deletes nothing when COMMIT_HINT.md is absent" {
@@ -20,8 +20,8 @@ setup() {
   bats_mock plan-directory
 
   bats_run_zsh "$BATS_TEST_DIRNAME/../post-commit"
-  [ "$status" -eq 0 ]
-  [ ! -f "$MOCK_PLAN_DIR/COMMIT_HINT.md" ]
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$MOCK_PLAN_DIR/COMMIT_HINT.md" ]]
 }
 
 @test "deletes COMMIT_HINT.md and exits 0 when it exists" {
@@ -33,6 +33,6 @@ setup() {
   bats_mock plan-directory
 
   bats_run_zsh "$BATS_TEST_DIRNAME/../post-commit"
-  [ "$status" -eq 0 ]
-  [ ! -f "$MOCK_PLAN_DIR/COMMIT_HINT.md" ]
+  [[ "$status" -eq 0 ]]
+  [[ ! -f "$MOCK_PLAN_DIR/COMMIT_HINT.md" ]]
 }

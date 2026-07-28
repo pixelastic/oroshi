@@ -8,20 +8,20 @@ setup() {
   bats_git remote add origin git@github.com:pixelastic/testrepo.git
   cd "$BATS_GIT_DIR"
   bats_run_zsh "git-github-project-name"
-  [ "$status" -eq 0 ]
-  [ "$output" = "testrepo" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "testrepo" ]]
 }
 
 @test "returns repo name from HTTPS GitHub URL" {
   bats_git remote add origin https://github.com/pixelastic/testrepo.git
   cd "$BATS_GIT_DIR"
   bats_run_zsh "git-github-project-name"
-  [ "$status" -eq 0 ]
-  [ "$output" = "testrepo" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "testrepo" ]]
 }
 
 @test "returns 1 when no remote" {
   cd "$BATS_GIT_DIR"
   bats_run_zsh "git-github-project-name"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }

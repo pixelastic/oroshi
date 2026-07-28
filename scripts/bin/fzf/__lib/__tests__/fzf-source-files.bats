@@ -21,7 +21,7 @@ setup() {
   mkdir -p "$BATS_TMP_DIR/proj"
   touch "$BATS_TMP_DIR/proj/app.js"
   bats_run_zsh "${sourcePrefix}; fzf-source-files '$BATS_TMP_DIR/proj'"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local col2="${output#*▮}"
   [[ "$col2" == *$'\e['* ]]
 }
@@ -30,7 +30,7 @@ setup() {
   mkdir -p "$BATS_TMP_DIR/proj"
   touch "$BATS_TMP_DIR/proj/app.js"
   bats_run_zsh "${sourcePrefix}; fzf-source-files '$BATS_TMP_DIR/proj'"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local col1="${output%%▮*}"
   [[ "$col1" != *$'\e['* ]]
 }
@@ -40,7 +40,7 @@ setup() {
   touch "$BATS_TMP_DIR/bin/my-script"
   chmod +x "$BATS_TMP_DIR/bin/my-script"
   bats_run_zsh "${sourcePrefix}; fzf-source-files '$BATS_TMP_DIR/bin'"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local col2="${output#*▮}"
   [[ "$col2" == *$'\e['* ]]
 }
@@ -49,7 +49,7 @@ setup() {
   mkdir -p "$BATS_TMP_DIR/proj/src"
   touch "$BATS_TMP_DIR/proj/src/app.js"
   bats_run_zsh "${sourcePrefix}; fzf-source-files '$BATS_TMP_DIR/proj'"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local col2="${output#*▮}"
   [[ "$col2" == *$'\e[38;5;100m'"src/"$'\e[0m'* ]]
 }
@@ -58,7 +58,7 @@ setup() {
   mkdir -p "$BATS_TMP_DIR/proj"
   touch "$BATS_TMP_DIR/proj/app.js"
   bats_run_zsh "${sourcePrefix}; fzf-source-files '$BATS_TMP_DIR/proj'"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local col2="${output#*▮}"
   [[ "$col2" == *$'\e[38;5;200m'"app.js"$'\e[0m'* ]]
 }
@@ -68,7 +68,7 @@ setup() {
   touch "$BATS_TMP_DIR/proj/z-root.txt"
   touch "$BATS_TMP_DIR/proj/a-dir/nested.txt"
   bats_run_zsh "${sourcePrefix}; fzf-source-files '$BATS_TMP_DIR/proj'"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local first_line="$(echo "$output" | head -1)"
   local first_col1="${first_line%%▮*}"
   [[ "$first_col1" == *"z-root.txt" ]]

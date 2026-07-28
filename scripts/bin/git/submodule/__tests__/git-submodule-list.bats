@@ -17,6 +17,6 @@ setup() {
 
   bats_run_zsh "git-submodule-list"
 
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" != *"substring expression"* ]]
 }

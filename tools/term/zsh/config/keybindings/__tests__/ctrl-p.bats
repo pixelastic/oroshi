@@ -13,8 +13,8 @@ setup() {
   bats_mock ctrl-p
 
   bats_run_zsh "${sourcePrefix}; LBUFFER=''; oroshi-ctrl-p-widget; echo \$LBUFFER"
-  [ "$status" -eq 0 ]
-  [ "$output" = "src/file.ts " ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "src/file.ts " ]]
 }
 
 @test "widget: dispatches to fzf-git-files-dirty-stageable when last word is vfa" {
@@ -22,8 +22,8 @@ setup() {
   bats_mock fzf-git-files-dirty-stageable
 
   bats_run_zsh "${sourcePrefix}; LBUFFER='vfa '; oroshi-ctrl-p-widget; echo \$LBUFFER"
-  [ "$status" -eq 0 ]
-  [ "$output" = "vfa src/file.ts " ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "vfa src/file.ts " ]]
 }
 
 @test "widget: joins multiple selected files with spaces" {
@@ -31,8 +31,8 @@ setup() {
   bats_mock fzf-git-files-dirty-stageable
 
   bats_run_zsh "${sourcePrefix}; LBUFFER='vfa '; oroshi-ctrl-p-widget; echo \$LBUFFER"
-  [ "$status" -eq 0 ]
-  [ "$output" = "vfa src/a.ts src/b.ts " ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "vfa src/a.ts src/b.ts " ]]
 }
 
 @test "widget: returns 1 when picker returns empty selection" {
@@ -40,7 +40,7 @@ setup() {
   bats_mock ctrl-p
 
   bats_run_zsh "${sourcePrefix}; LBUFFER=''; oroshi-ctrl-p-widget"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "widget: quotes single file path containing spaces" {
@@ -48,8 +48,8 @@ setup() {
   bats_mock ctrl-p
 
   bats_run_zsh "${sourcePrefix}; LBUFFER=''; oroshi-ctrl-p-widget; echo \$LBUFFER"
-  [ "$status" -eq 0 ]
-  [ "$output" = "'my file.pdf' " ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "'my file.pdf' " ]]
 }
 
 @test "widget: quotes only paths with spaces in multi-select" {
@@ -57,6 +57,6 @@ setup() {
   bats_mock ctrl-p
 
   bats_run_zsh "${sourcePrefix}; LBUFFER=''; oroshi-ctrl-p-widget; echo \$LBUFFER"
-  [ "$status" -eq 0 ]
-  [ "$output" = "src/a.ts 'my file.pdf' " ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "src/a.ts 'my file.pdf' " ]]
 }

@@ -9,7 +9,7 @@ setup() {
 @test "no args: fails with non-zero exit code" {
   cd "$BATS_GIT_DIR"
   bats_run_zsh "git-branch-rename"
-  [ "$status" -ne 0 ]
+  [[ "$status" -ne 0 ]]
 }
 
 # --- 1-argument form ---
@@ -18,10 +18,10 @@ setup() {
   cd "$BATS_GIT_DIR"
   git checkout -b feat/hello
   bats_run_zsh "git-branch-rename 'feat/renamed'"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local branch
   branch="$(git -C "$BATS_GIT_DIR" branch --show-current)"
-  [ "$branch" = "feat/renamed" ]
+  [[ "$branch" = "feat/renamed" ]]
 }
 
 # --- 2-argument form ---
@@ -31,9 +31,9 @@ setup() {
   git checkout -b feat/old
   git checkout main
   bats_run_zsh "git-branch-rename 'feat/old' 'feat/new'"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   git -C "$BATS_GIT_DIR" show-ref --verify --quiet refs/heads/feat/new
   local oldExists
   git -C "$BATS_GIT_DIR" show-ref --verify --quiet refs/heads/feat/old && oldExists=1 || oldExists=0
-  [ "$oldExists" -eq 0 ]
+  [[ "$oldExists" -eq 0 ]]
 }

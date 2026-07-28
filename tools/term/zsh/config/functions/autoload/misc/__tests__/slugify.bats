@@ -4,87 +4,87 @@ bats_load_library 'helper'
 
 @test "multi-word sentence" {
   bats_run_zsh "slugify 'The Eternal Obelisk'"
-  [ "$output" = "theEternalObelisk" ]
+  [[ "$output" = "theEternalObelisk" ]]
 }
 
 @test "url with slashes and dots" {
   bats_run_zsh "slugify 'example.com/path'"
-  [ "$output" = "exampleComPath" ]
+  [[ "$output" = "exampleComPath" ]]
 }
 
 # --- Single separator types ---
 
 @test "dot separator" {
   bats_run_zsh "slugify 'foo.bar'"
-  [ "$output" = "fooBar" ]
+  [[ "$output" = "fooBar" ]]
 }
 
 @test "dash separator" {
   bats_run_zsh "slugify 'foo-bar'"
-  [ "$output" = "fooBar" ]
+  [[ "$output" = "fooBar" ]]
 }
 
 @test "underscore separator" {
   bats_run_zsh "slugify 'foo_bar'"
-  [ "$output" = "fooBar" ]
+  [[ "$output" = "fooBar" ]]
 }
 
 # --- Mixed / edge separators ---
 
 @test "mixed separators" {
   bats_run_zsh "slugify 'foo.bar-baz/qux'"
-  [ "$output" = "fooBarBazQux" ]
+  [[ "$output" = "fooBarBazQux" ]]
 }
 
 @test "consecutive separators collapsed" {
   bats_run_zsh "slugify 'foo---bar'"
-  [ "$output" = "fooBar" ]
+  [[ "$output" = "fooBar" ]]
 }
 
 @test "leading and trailing separators stripped" {
   bats_run_zsh "slugify '-foo-bar-'"
-  [ "$output" = "fooBar" ]
+  [[ "$output" = "fooBar" ]]
 }
 
 # --- Numbers ---
 
 @test "embedded number preserved" {
   bats_run_zsh "slugify 'h264 codec'"
-  [ "$output" = "h264Codec" ]
+  [[ "$output" = "h264Codec" ]]
 }
 
 @test "leading number preserved" {
   bats_run_zsh "slugify '404 error'"
-  [ "$output" = "404Error" ]
+  [[ "$output" = "404Error" ]]
 }
 
 # --- No-op cases ---
 
 @test "single lowercase word unchanged" {
   bats_run_zsh "slugify 'foo'"
-  [ "$output" = "foo" ]
+  [[ "$output" = "foo" ]]
 }
 
 @test "already camelCase preserved" {
   bats_run_zsh "slugify 'fooBar'"
-  [ "$output" = "fooBar" ]
+  [[ "$output" = "fooBar" ]]
 }
 
 # --- ALL CAPS ---
 
 @test "all caps words are lowercased" {
   bats_run_zsh "slugify 'FOO BAR'"
-  [ "$output" = "fooBar" ]
+  [[ "$output" = "fooBar" ]]
 }
 
 # --- Edge cases ---
 
 @test "empty string returns empty" {
   bats_run_zsh "slugify ''"
-  [ "$output" = "" ]
+  [[ "$output" = "" ]]
 }
 
 @test "only special chars returns empty" {
   bats_run_zsh "slugify '---'"
-  [ "$output" = "" ]
+  [[ "$output" = "" ]]
 }

@@ -22,9 +22,9 @@ mock_kitty_attention() {
 
   bats_run_zsh "$NOTIFICATION_HOOK"
 
-  [ "$status" -eq 2 ]
-  [ -f "$BATS_TMP_DIR/attention-args" ]
-  [ "$(cat "$BATS_TMP_DIR/attention-args")" = "5 --type notification" ]
+  [[ "$status" -eq 2 ]]
+  [[ -f "$BATS_TMP_DIR/attention-args" ]]
+  [[ "$(cat "$BATS_TMP_DIR/attention-args")" = "5 --type notification" ]]
 }
 
 @test "attention: not added when tab is focused" {
@@ -35,8 +35,8 @@ mock_kitty_attention() {
 
   bats_run_zsh "$NOTIFICATION_HOOK"
 
-  [ "$status" -eq 2 ]
-  [ ! -f "$BATS_TMP_DIR/attention-args" ]
+  [[ "$status" -eq 2 ]]
+  [[ ! -f "$BATS_TMP_DIR/attention-args" ]]
 }
 
 @test "plays audio notification regardless of focus state" {
@@ -44,6 +44,6 @@ mock_kitty_attention() {
 
   bats_run_zsh "$NOTIFICATION_HOOK"
 
-  [ "$status" -eq 2 ]
-  [ "$(cat "$BATS_TMP_DIR/sound-played")" = "claude-notification.mp3" ]
+  [[ "$status" -eq 2 ]]
+  [[ "$(cat "$BATS_TMP_DIR/sound-played")" = "claude-notification.mp3" ]]
 }

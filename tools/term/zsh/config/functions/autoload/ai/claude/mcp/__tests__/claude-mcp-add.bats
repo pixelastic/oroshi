@@ -10,7 +10,7 @@ setup() {
   bats_mock claude-mcp-is-added claude-mcp-add-foo
 
   bats_run_zsh "claude-mcp-add foo"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" != *"sub-script called"* ]]
 }
 
@@ -20,7 +20,7 @@ setup() {
   bats_mock claude-mcp-is-added claude-mcp-add-foo
 
   bats_run_zsh "claude-mcp-add foo"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"sub-script called"* ]]
 }
 
@@ -29,5 +29,5 @@ setup() {
   bats_mock claude-mcp-is-added
 
   bats_run_zsh "claude-mcp-add foo"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }

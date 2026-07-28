@@ -8,13 +8,13 @@ setup() {
 
 @test "exits 1 when plan directory does not exist" {
   run ralph-is-running "$BATS_TMP_DIR/nonexistent"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 @test "exits 1 when plan directory exists but has no ralph.json" {
   mkdir -p "$BATS_TMP_DIR/myplan"
   run ralph-is-running "$BATS_TMP_DIR/myplan"
-  [ "$status" -eq 1 ]
+  [[ "$status" -eq 1 ]]
 }
 
 # ── Session active ────────────────────────────────────────────────────────────
@@ -23,7 +23,7 @@ setup() {
   mkdir -p "$BATS_TMP_DIR/myplan"
   touch "$BATS_TMP_DIR/myplan/ralph.json"
   run ralph-is-running "$BATS_TMP_DIR/myplan"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }
 
 # ── Default inference ─────────────────────────────────────────────────────────
@@ -39,5 +39,5 @@ setup() {
   bats_mock git-directory-root git-branch-current git-branch-slug
 
   bats_run_zsh "ralph-is-running"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
 }

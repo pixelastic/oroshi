@@ -10,8 +10,8 @@ setup() {
   bats_mock rtk-can-rewrite
 
   bats_run_zsh "${sourcePrefix}; preToolUse-Bash-rtk 'bats foo.bats'"
-  [ "$status" -eq 0 ]
-  [ "$output" = "rtk bats foo.bats" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "rtk bats foo.bats" ]]
 }
 
 @test "ignores command when rtk-can-rewrite exits 1" {
@@ -19,8 +19,8 @@ setup() {
   bats_mock rtk-can-rewrite
 
   bats_run_zsh "${sourcePrefix}; preToolUse-Bash-rtk 'echo hello'"
-  [ "$status" -eq 0 ]
-  [ "$output" = "echo hello" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "echo hello" ]]
 }
 
 @test "preserves \xa0 as 4 literal characters through RTK ignore path" {
@@ -28,8 +28,8 @@ setup() {
   bats_mock rtk-can-rewrite
 
   bats_run_zsh "${sourcePrefix}; preToolUse-Bash-rtk 'echo \xa0'"
-  [ "$status" -eq 0 ]
-  [ "$output" = 'echo \xa0' ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = 'echo \xa0' ]]
 }
 
 @test "is idempotent when command already uses RTK without calling rtk-can-rewrite" {
@@ -40,7 +40,7 @@ setup() {
   bats_mock rtk-can-rewrite
 
   bats_run_zsh "${sourcePrefix}; preToolUse-Bash-rtk 'rtk git status'"
-  [ "$status" -eq 0 ]
-  [ "$output" = "rtk git status" ]
-  [ ! -f "$BATS_TMP_DIR/unexpected-call" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "rtk git status" ]]
+  [[ ! -f "$BATS_TMP_DIR/unexpected-call" ]]
 }

@@ -11,15 +11,15 @@ setup() {
 @test "0-arg, clean tree: exits 0 with empty output" {
   cd "$BATS_GIT_DIR"
   run review-diff
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "0-arg, modified tracked file: stdout contains diff hunk" {
   cd "$BATS_GIT_DIR"
   echo "modified content" >> tracked.txt
   run review-diff
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"diff --git"* ]]
   [[ "$output" == *"modified content"* ]]
 }
@@ -28,7 +28,7 @@ setup() {
   cd "$BATS_GIT_DIR"
   echo "new file content" > new-file.txt
   run review-diff
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"diff --git"* ]]
   [[ "$output" == *"new file mode"* ]]
 }
@@ -38,7 +38,7 @@ setup() {
   mkdir -p subdir
   echo "new file content" > subdir/new-file.txt
   run review-diff
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" != *"$BATS_GIT_DIR"* ]]
   [[ "$output" == *"subdir/new-file.txt"* ]]
 }
@@ -48,7 +48,7 @@ setup() {
   echo "staged content" >> tracked.txt
   git add tracked.txt
   run review-diff
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"diff --git"* ]]
   [[ "$output" == *"staged content"* ]]
 }
@@ -61,7 +61,7 @@ setup() {
   git commit --message "feat: add feature.txt"
 
   run review-diff feature-branch
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"feat: add feature.txt"* ]]
   [[ "$output" == *"diff --git"* ]]
 }
@@ -74,7 +74,7 @@ setup() {
   local sha="$(git rev-parse HEAD)"
 
   run review-diff "$sha"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"feat: add sha-file.txt"* ]]
   [[ "$output" == *"diff --git"* ]]
 }
@@ -91,7 +91,7 @@ setup() {
   git commit --message "feat: commit C"
 
   run review-diff "$shaA..feature-branch"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"feat: commit C"* ]]
   [[ "$output" == *"diff --git"* ]]
   [[ "$output" != *"main: commit B"* ]]
@@ -105,7 +105,7 @@ setup() {
   git commit --message "feat: add feature.txt"
 
   run review-diff worktree
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"feat: add feature.txt"* ]]
   [[ "$output" == *"diff --git"* ]]
   [[ "$output" != *"add tracked"* ]]
@@ -120,7 +120,7 @@ setup() {
   git commit --message "feat: add feature.txt"
 
   run review-diff "$mainBranch"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"feat: add feature.txt"* ]]
   [[ "$output" == *"+feature content"* ]]
   [[ "$output" != *"-feature content"* ]]
@@ -129,15 +129,15 @@ setup() {
 @test "1-arg dirty, clean tree: exits 0 with empty output" {
   cd "$BATS_GIT_DIR"
   run review-diff dirty
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
 
 @test "1-arg dirty, modified tracked file: stdout contains diff hunk" {
   cd "$BATS_GIT_DIR"
   echo "modified content" >> tracked.txt
   run review-diff dirty
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"diff --git"* ]]
   [[ "$output" == *"modified content"* ]]
 }
@@ -146,7 +146,7 @@ setup() {
   cd "$BATS_GIT_DIR"
   echo "new file content" > new-file.txt
   run review-diff dirty
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"diff --git"* ]]
   [[ "$output" == *"new file mode"* ]]
 }
@@ -164,7 +164,7 @@ setup() {
   git commit --message "main: main-only commit"
 
   run review-diff feature-branch
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"feat: add feature.txt"* ]]
   [[ "$output" == *"diff --git"* ]]
   [[ "$output" != *"main: main-only commit"* ]]

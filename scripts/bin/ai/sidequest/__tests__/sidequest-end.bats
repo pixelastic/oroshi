@@ -12,7 +12,7 @@ setup() {
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
   bats_run_zsh "sidequest-end"
-  [ "$status" -ne 0 ]
+  [[ "$status" -ne 0 ]]
 }
 
 @test "file not found: exits with error" {
@@ -22,7 +22,7 @@ setup() {
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
   bats_run_zsh "sidequest-end /nonexistent/file.md"
-  [ "$status" -ne 0 ]
+  [[ "$status" -ne 0 ]]
 }
 
 @test "valid file: calls git-worktree-create with slug derived from filename" {
@@ -33,7 +33,7 @@ setup() {
 
   bats_run_zsh "sidequest-end $BATS_TMP_DIR/my-slug.md"
   bats_debug "$output"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == "WORKTREE:my-slug" ]]
 }
 
@@ -44,7 +44,7 @@ setup() {
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
   bats_run_zsh "sidequest-end $BATS_TMP_DIR/my-slug.md"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"--cwd $BATS_TMP_DIR/myrepo--my-slug"* ]]
 }
 
@@ -55,7 +55,7 @@ setup() {
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
   bats_run_zsh "sidequest-end $BATS_TMP_DIR/my-slug.md"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"--cmd kitty-helper-claude-start @$BATS_TMP_DIR/my-slug.md"* ]]
 }
 
@@ -66,7 +66,7 @@ setup() {
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
   bats_run_zsh "sidequest-end $BATS_TMP_DIR/my-slug.md"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" != *"--focus"* ]]
 }
 
@@ -77,7 +77,7 @@ setup() {
   bats_mock git-worktree-create git-worktree-path kitty-tab-create
 
   bats_run_zsh "sidequest-end $BATS_TMP_DIR/my-slug.md --repo-dir /nonexistent/path"
-  [ "$status" -ne 0 ]
+  [[ "$status" -ne 0 ]]
 }
 
 @test "--repo-dir with non-git directory: exits with error" {
@@ -88,7 +88,7 @@ setup() {
   bats_mock git-directory-is-repository git-worktree-create git-worktree-path kitty-tab-create
 
   bats_run_zsh "sidequest-end $BATS_TMP_DIR/my-slug.md --repo-dir $BATS_TMP_DIR"
-  [ "$status" -ne 0 ]
+  [[ "$status" -ne 0 ]]
 }
 
 @test "--repo-dir with valid git repo: calls git-worktree-create with slug" {
@@ -99,6 +99,6 @@ setup() {
   bats_mock git-directory-is-repository git-worktree-create git-worktree-path kitty-tab-create
 
   bats_run_zsh "sidequest-end $BATS_TMP_DIR/my-slug.md --repo-dir $BATS_TMP_DIR"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == "WORKTREE:my-slug" ]]
 }

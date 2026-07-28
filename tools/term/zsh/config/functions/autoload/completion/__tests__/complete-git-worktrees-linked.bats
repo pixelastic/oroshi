@@ -20,14 +20,14 @@ setup() {
 @test "does not include 'main'" {
   cd "$BATS_GIT_DIR"
   bats_run_zsh "complete-git-worktrees-linked"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" != *"main"* ]]
 }
 
 @test "includes linked worktree branch names" {
   cd "$BATS_GIT_DIR"
   bats_run_zsh "complete-git-worktrees-linked"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"fix/bug"* ]]
   [[ "$output" == *"feat/thing"* ]]
 }
@@ -35,7 +35,7 @@ setup() {
 @test "output is in name:description format" {
   cd "$BATS_GIT_DIR"
   bats_run_zsh "complete-git-worktrees-linked"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "${lines[0]}" == *":"* ]]
 }
 
@@ -43,14 +43,14 @@ setup() {
   touch "${BATS_GIT_WORKTREES}my-repo--fix-bug/untracked.txt"
   cd "$BATS_GIT_DIR"
   bats_run_zsh "complete-git-worktrees-linked"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   [[ "$output" == *"1${iconDirty}"* ]]
 }
 
 @test "suppresses zero counts in description" {
   cd "$BATS_GIT_DIR"
   bats_run_zsh "complete-git-worktrees-linked"
-  [ "$status" -eq 0 ]
+  [[ "$status" -eq 0 ]]
   local fixbug_line=""
   for line in "${lines[@]}"; do
     [[ "$line" == "fix/bug"* ]] && fixbug_line="$line" && break
@@ -65,6 +65,6 @@ setup() {
   bats_git_dir 'clean-repo'
   cd "$BATS_GIT_DIR"
   bats_run_zsh "complete-git-worktrees-linked"
-  [ "$status" -eq 0 ]
-  [ "$output" = "" ]
+  [[ "$status" -eq 0 ]]
+  [[ "$output" = "" ]]
 }
