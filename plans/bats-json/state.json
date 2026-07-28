@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-migrate-inline-jq-assertions.md",
-    "done": false,
-    "blocked_by": ["01", "02"]
+    "done": true,
+    "blocked_by": ["01", "02"],
+    "recap": "Replaced all inline jq assertions with expect_json/expect_json_null/expect_json_glob in ralph-start.bats and preToolUse-Bash.bats"
   }
 ]

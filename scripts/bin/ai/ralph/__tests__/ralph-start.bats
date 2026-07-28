@@ -12,8 +12,8 @@ setup() {
   ]' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq -r '.status')" = "ready" ]]
-  [[ "$(echo "$output" | jq -r '.id')" = "01" ]]
+  expect_json '.status' 'ready'
+  expect_json '.id' '01'
 }
 
 @test "picks lowest id when multiple eligible" {
@@ -24,7 +24,7 @@ setup() {
   ]' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq -r '.id')" = "02" ]]
+  expect_json '.id' '02'
 }
 
 @test "skips issues with unresolved blockers" {
@@ -34,7 +34,7 @@ setup() {
   ]' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq -r '.id')" = "01" ]]
+  expect_json '.id' '01'
 }
 
 @test "all paths in output are absolute" {
@@ -43,11 +43,11 @@ setup() {
   ]' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq -r '.issue')" == /* ]]
-  [[ "$(echo "$output" | jq -r '.state')" == /* ]]
-  [[ "$(echo "$output" | jq -r '.guidance')" == /* ]]
-  [[ "$(echo "$output" | jq -r '.reviewLog')" == /* ]]
-  [[ "$(echo "$output" | jq -r '.commitHint')" == /* ]]
+  expect_json_glob '.issue' '/*'
+  expect_json_glob '.state' '/*'
+  expect_json_glob '.guidance' '/*'
+  expect_json_glob '.reviewLog' '/*'
+  expect_json_glob '.commitHint' '/*'
 }
 
 @test "issue resolves relative path from plan dir" {
@@ -56,7 +56,7 @@ setup() {
   ]' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq -r '.issue')" = "$PLAN_DIR/issues/01-foo.md" ]]
+  expect_json '.issue' "$PLAN_DIR/issues/01-foo.md"
 }
 
 @test "outputs status:finished when all issues complete" {
@@ -66,7 +66,7 @@ setup() {
   ]' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq -r '.status')" = "finished" ]]
+  expect_json '.status' 'finished'
 }
 
 @test "outputs status:deadlocked when all issues are blocked" {
@@ -76,7 +76,7 @@ setup() {
   ]' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq -r '.status')" = "deadlocked" ]]
+  expect_json '.status' 'deadlocked'
 }
 
 @test "exits 1 when state.json is missing" {
@@ -98,5 +98,5 @@ setup() {
   ]' >"$PLAN_DIR/state.json"
   bats_run_zsh "ralph-start $PLAN_DIR"
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq -r '.id')" = "01" ]]
+  expect_json '.id' '01'
 }

