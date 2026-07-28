@@ -56,3 +56,25 @@ gh api \
 ```
 **Problem:** Spec example used `-X PATCH` and `-f`, implementation uses `--method` and `--field`
 **Reason skipped:** zsh-writer calling-commands.md mandates long-form flags; zsh-writer standard takes precedence over spec example syntax
+
+## Issue 04 — project-remove
+### bats_disable_worktree_aware not used
+```bash
+bats_run_zsh "OROSHI_ROOT=$BATS_TMP_DIR/oroshi project-remove myproject"
+```
+**Problem:** Tests override OROSHI_ROOT to point outside worktree without calling bats_disable_worktree_aware.
+**Reason skipped:** The only external command (jsonc-remove-key) is mocked, so PATH resolution is irrelevant. No `cd` outside worktree happens.
+
+### Single vs double bracket assertions
+```bash
+[ "$status" -eq 0 ]
+```
+**Problem:** Tests use `[` instead of `[[` for assertions.
+**Reason skipped:** Both forms appear in existing project tests (e.g. project-exists.bats uses `[`). Standards examples are inconsistent.
+
+### Spec happy-path test granularity
+```bash
+@test "calls jsonc-remove-key with projects.jsonc path and project name" {
+```
+**Problem:** Spec lists 3 separate happy-path behaviors but only one test covers the wiring.
+**Reason skipped:** Spec says "mocking is fine here — test the wiring, not the JSONC parsing again". The three bullets describe delegated behavior already tested in issue 01.

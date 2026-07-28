@@ -1,0 +1,13 @@
+# Remove a project entry from projects.jsonc
+# Usage:
+# $ project-remove "myproject"   # Removes the "myproject" key from projects.jsonc
+setopt local_options err_return
+
+local projectName="$1"
+
+# Nothing to remove without a name
+[[ "$projectName" == "" ]] && return 1
+
+local srcJsonc="$OROSHI_ROOT/tools/term/zsh/config/theming/src/projects.jsonc"
+
+jsonc-remove-key "$srcJsonc" "$projectName"
