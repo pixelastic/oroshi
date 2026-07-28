@@ -13,6 +13,18 @@ setup() {
   [[ "$output" == "# My Note" ]]
 }
 
+@test "passes --all and --depth 99 to fetch full page content" {
+  notion() { echo "$@" > "$BATS_TMP_DIR/notion-args.txt"; }
+  bats_mock notion
+
+  bats_run_zsh "phone-pickup-read abc-123"
+  [[ "$status" -eq 0 ]]
+
+  local args="$(cat "$BATS_TMP_DIR/notion-args.txt")"
+  [[ "$args" == *"--all"* ]]
+  [[ "$args" == *"--depth 99"* ]]
+}
+
 @test "exits non-zero when called without arguments" {
   bats_run_zsh "phone-pickup-read"
   [[ "$status" -ne 0 ]]
