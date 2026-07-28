@@ -16,7 +16,7 @@ local isFix=${#flagFix}
 # Input files
 local inputFiles=("$@")
 if [[ ${#inputFiles} -eq 0 ]]; then
-  echo "Error: No files provided" >&2
+  echoerr "Error: No files provided"
   exit 1
 fi
 
@@ -24,7 +24,7 @@ fi
 for inputFile in "${inputFiles[@]}"; do
   local absoluteFilepath="${inputFile:a}"
   if [[ ! -f "$absoluteFilepath" ]]; then
-    echo "Error: File '$absoluteFilepath' not found" >&2
+    echoerr "Error: File '$absoluteFilepath' not found"
     exit 1
   fi
 done

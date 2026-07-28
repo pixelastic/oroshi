@@ -41,7 +41,7 @@ djlintArgs=()
 if [[ $isContentPiped == 1 ]]; then
   # Stop if missing --filepath
   if [[ $overrideFilepath == "" ]]; then
-    echo "When piping content to html-lint, you must specify --filepath." >&2
+    echoerr "When piping content to html-lint, you must specify --filepath."
     exit 1
   fi
 
@@ -52,14 +52,14 @@ else
 
   # Validate file exists
   if [[ ! -f "$inputFile" ]]; then
-    echo "Error: File '$inputFile' not found" >&2
+    echoerr "Error: File '$inputFile' not found"
     exit 1
   fi
 fi
 
 # Validate that we have a file path
 if [[ "$inputFile" == "" ]]; then
-  echo "Error: no file specified" >&2
+  echoerr "Error: no file specified"
   exit 1
 fi
 

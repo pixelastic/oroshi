@@ -14,7 +14,7 @@ targetDir="${targetDir:a}"
 
 # Check if directory exists
 if [[ ! -d "$targetDir" ]]; then
-  echo "Error: Directory does not exist: $targetDir" >&2
+  echoerr "Error: Directory does not exist: $targetDir"
   return 1
 fi
 
@@ -34,7 +34,7 @@ for file in "${files[@]}"; do
   local monthDir=$(date -r "$file" +%Y-%m)
   local fileName="${file:t}"
 
-  if [[ -z ${dirMap[$monthDir]} ]]; then
+  if [[ "${dirMap[$monthDir]}" == "" ]]; then
     dirMap[$monthDir]="$fileName"
   else
     dirMap[$monthDir]="${dirMap[$monthDir]}"$'\n'"$fileName"

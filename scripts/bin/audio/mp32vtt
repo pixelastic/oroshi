@@ -6,14 +6,19 @@ set -e
 
 inputFile="$1"
 
-# Validate input
-if [[ ! -f "$inputFile" || "$inputFile" != *.mp3 ]]; then
-  echo "Usage: mp32vtt <file.mp3>" >&2
+# Validate input is an existing file
+if [[ "$inputFile" == "" || ! -f "$inputFile" ]]; then
+  echoerr "Usage: mp32vtt <file.mp3>"
+  exit 1
+fi
+# Validate file is an mp3
+if [[ "$inputFile" != *.mp3 ]]; then
+  echoerr "Usage: mp32vtt <file.mp3>"
   exit 1
 fi
 
-if [[ -z "$OPENAI_API_KEY" ]]; then
-  echo "Error: OPENAI_API_KEY not set" >&2
+if [[ "$OPENAI_API_KEY" == "" ]]; then
+  echoerr "Error: OPENAI_API_KEY not set"
   exit 1
 fi
 

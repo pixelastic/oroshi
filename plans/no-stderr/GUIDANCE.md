@@ -13,3 +13,7 @@
 - The `echoerr` function body needs `# zsh-lint disable=useEchoerr` above its `echo` line
 
 ## Discoveries
+
+### Issue 03 — batch-fix violations
+- `scripts/bin/sp` is bash (`#!/usr/bin/env bash`), not ZSH — `echoerr` unavailable there, must keep `echo >&2`
+- The `noDoubleNegative` lint rule forbids `!` and `!=` in the same `[[ ]]` condition — split into separate guards

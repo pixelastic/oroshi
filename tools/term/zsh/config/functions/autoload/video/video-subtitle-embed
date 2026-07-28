@@ -6,8 +6,8 @@
 # $ video-subtitle-embed ./*.srt
 setopt local_options err_return
 if [[ $# -eq 0 ]]; then
-  echo "Error: No file provided" >&2
-  echo "Usage: video-subtitle-embed <video.mkv|subtitle.srt> [...]" >&2
+  echoerr "Error: No file provided"
+  echoerr "Usage: video-subtitle-embed <video.mkv|subtitle.srt> [...]"
   return 1
 fi
 
@@ -17,7 +17,7 @@ local exitCode=0
 for inputFile in "$@"; do
   # Check if input file exists
   if [[ ! -f "$inputFile" ]]; then
-    echo "Error: File not found: $inputFile" >&2
+    echoerr "Error: File not found: $inputFile"
     exitCode=1
     continue
   fi
@@ -34,18 +34,18 @@ for inputFile in "$@"; do
     videoFile="${baseName}.mkv"
     subtitleFile="$inputFile"
   else
-    echo "Error: File must be either .mkv or .srt: $inputFile" >&2
+    echoerr "Error: File must be either .mkv or .srt: $inputFile"
     exitCode=1
     continue
   fi
 
   if [[ ! -f "$videoFile" ]]; then
-    echo "Error: No video file found: ${videoFile}" >&2
+    echoerr "Error: No video file found: ${videoFile}"
     exitCode=1
     continue
   fi
   if [[ ! -f "$subtitleFile" ]]; then
-    echo "Error: No subtitle file found: ${subtitleFile}" >&2
+    echoerr "Error: No subtitle file found: ${subtitleFile}"
     exitCode=1
     continue
   fi

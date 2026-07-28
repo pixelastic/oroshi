@@ -6,19 +6,19 @@ local allowedCommand="$1"
 local allowlistFile=~/.oroshi/tools/ai/claude/config/hooks/allowlist.json
 
 if [[ "$allowedCommand" == "" ]]; then
-	echo "Error: Command required" >&2
-	echo "Usage: skills-allowlist-add <command>" >&2
-	return 1
+  echoerr "Error: Command required"
+  echoerr "Usage: skills-allowlist-add <command>"
+  return 1
 fi
 
 # Add new command and sort using json-array-sort (matching Neovim behavior)
-local tmpFile=$(mktemp)
+local tmpFile="$(mktemp)"
 
 jq \
-	--arg newCommand "$allowedCommand" \
-	'. + [$newCommand] | unique' \
-	"$allowlistFile" |
-	json-array-sort >"$tmpFile"
+  --arg newCommand "$allowedCommand" \
+  '. + [$newCommand] | unique' \
+  "$allowlistFile" |
+json-array-sort >"$tmpFile"
 
 /usr/bin/cat "$tmpFile" >"$allowlistFile"
 rm "$tmpFile"

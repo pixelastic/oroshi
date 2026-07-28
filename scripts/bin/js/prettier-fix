@@ -38,7 +38,7 @@ prettierArgs=()
 if [[ $isContentPiped == 1 ]]; then
   # Stop if missing arguments
   if [[ $overrideFilepath == "" && $parser == "" ]]; then
-    echo "When piping content to prettier-fix, you must specify either --filepath or --parser." >&2
+    echoerr "When piping content to prettier-fix, you must specify either --filepath or --parser."
     exit 1
   fi
 

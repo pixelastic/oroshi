@@ -41,26 +41,26 @@ for inputFilepath in $files; do
   local resolvedPageEnd="$pageEnd"
 
   # Check pages are within bounds {{{
-  if [[ -n "$pages" ]]; then
+  if [[ "$pages" != "" ]]; then
     if [[ "$pageStart" == "last" ]]; then
       resolvedPageStart="$pageCount"
       resolvedPageEnd="$pageCount"
     fi
 
     if [[ $resolvedPageStart -gt $pageCount ]]; then
-      echo "Error: Page $resolvedPageStart not found. ${inputFilepath:t} has $pageCount pages." >&2
+      echoerr "Error: Page $resolvedPageStart not found. ${inputFilepath:t} has $pageCount pages."
       continue
     fi
 
     if [[ $resolvedPageEnd -gt $pageCount ]]; then
-      echo "Error: Page $resolvedPageEnd not found. ${inputFilepath:t} has $pageCount pages." >&2
+      echoerr "Error: Page $resolvedPageEnd not found. ${inputFilepath:t} has $pageCount pages."
       continue
     fi
   fi
   # }}}
 
   local outputFilepath="${dirpath}/${filepathBasename}.txt"
-  if [[ -n "$pages" ]]; then
+  if [[ "$pages" != "" ]]; then
     outputFilepath="${dirpath}/${filepathBasename}_${pages}.txt"
   fi
 
@@ -73,8 +73,8 @@ for inputFilepath in $files; do
 
   local pdftextArgs=()
   [[ $isKeepLayout == "1" ]] && pdftextArgs+=('-layout')
-  [[ -n "$resolvedPageStart" ]] && pdftextArgs+=('-f' "$resolvedPageStart")
-  [[ -n "$resolvedPageEnd" ]] && pdftextArgs+=('-l' "$resolvedPageEnd")
+  [[ "$resolvedPageStart" != "" ]] && pdftextArgs+=('-f' "$resolvedPageStart")
+  [[ "$resolvedPageEnd" != "" ]] && pdftextArgs+=('-l' "$resolvedPageEnd")
 
   pdftotext \
     $pdftextArgs \

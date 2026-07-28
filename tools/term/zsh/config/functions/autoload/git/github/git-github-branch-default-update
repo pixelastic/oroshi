@@ -6,13 +6,13 @@ setopt local_options err_return
 local branchName="$1"
 local repo="$2"
 
-if [[ -z "$branchName" ]]; then
-  echo "Error: Branch name is required" >&2
+if [[ "$branchName" == "" ]]; then
+  echoerr "Error: Branch name is required"
   return 1
 fi
 
 # If no repo specified, use current repo
-if [[ -z "$repo" ]]; then
+if [[ "$repo" == "" ]]; then
   repo=$(git-github-project)
 fi
 

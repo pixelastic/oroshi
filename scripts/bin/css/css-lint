@@ -12,7 +12,7 @@ isJson=${#flagJson}
 # Input file
 inputFile="${1:a}"
 if [[ ! -f "$inputFile" ]]; then
-  echo "Error: File '$inputFile' not found" >&2
+  echoerr "Error: File '$inputFile' not found"
   exit 1
 fi
 

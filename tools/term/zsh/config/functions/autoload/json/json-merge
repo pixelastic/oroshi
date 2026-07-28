@@ -5,8 +5,8 @@
 # $ json-merge file1.json file2.json [file3.json ...]
 setopt local_options err_return
 if [[ $# -lt 2 ]]; then
-  echo "Error: at least two files required" >&2
-  echo "Usage: json-merge file1.json file2.json [file3.json ...]" >&2
+  echoerr "Error: at least two files required"
+  echoerr "Usage: json-merge file1.json file2.json [file3.json ...]"
   return 1
 fi
 

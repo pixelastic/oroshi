@@ -14,7 +14,7 @@ local parentId="$(kitty-remote ls | jq -r --arg winId "$KITTY_WINDOW_ID" '
 
 # Not an overlay window if no paired window found in group
 if [[ "$parentId" == "" ]]; then
-  echo "Not an overlay window" >&2
+  echoerr "Not an overlay window"
   exit 1
 fi
 

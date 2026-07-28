@@ -7,7 +7,7 @@ set -e
 local input=$1
 
 if [[ ! -f $input ]]; then
-  echo "Error: Input file '$input' not found" >&2
+  echoerr "Error: Input file '$input' not found"
   exit 1
 fi
 

@@ -8,7 +8,8 @@
 setopt local_options err_return
 function main() {
   # Main execution
-  local fullRepo=$(parseRepoArgument "$1") || return 1
+  local fullRepo="$(parseRepoArgument "$1")"
+  [[ "$fullRepo" == "" ]] && return 1
 
   # Check everything is available
   preFlightChecks "$fullRepo" || return 1
@@ -36,7 +37,7 @@ function skipMessage() {
 
 # Display error message
 function errorMessage() {
-  echo "✘ $1" >&2
+  echoerr "✘ $1"
 }
 
 # Parse repository argument
@@ -50,7 +51,7 @@ function parseRepoArgument() {
   fi
 
   # Just repo name: default to pixelastic
-  if [[ -n "$arg" ]]; then
+  if [[ "$arg" != "" ]]; then
     echo "pixelastic/$arg"
     return 0
   fi
@@ -167,7 +168,9 @@ function updateNetlify() {
   local netlifyProject="${fullRepo//\//-}"
   echo ""
   echo "⚠ Manual update required for Netlify:"
-  echo "  1. Go to https://app.netlify.com/projects/${netlifyProject}/configuration/deploys#branches-and-deploy-contexts"
+  local netlifyUrl="https://app.netlify.com/projects/${netlifyProject}"
+  netlifyUrl+="/configuration/deploys#branches-and-deploy-contexts"
+  echo "  1. Go to ${netlifyUrl}"
   echo "  2. Click 'Configure' next to 'Production branch'"
   echo "  3. Update from 'master' to 'main'"
   echo ""

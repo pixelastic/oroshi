@@ -6,8 +6,8 @@
 # Check if any arguments provided
 setopt local_options err_return
 if [[ $# -eq 0 ]]; then
-  echo "Error: No subtitle files provided" >&2
-  echo "Usage: video-subtitle-sync <subtitle.srt> [subtitle2.srt ...]" >&2
+  echoerr "Error: No subtitle files provided"
+  echoerr "Usage: video-subtitle-sync <subtitle.srt> [subtitle2.srt ...]"
   return 1
 fi
 
@@ -17,14 +17,14 @@ local exitCode=0
 for subtitleFile in "$@"; do
   # Check if subtitle file exists
   if [[ ! -f "$subtitleFile" ]]; then
-    echo "Error: Subtitle file not found: $subtitleFile" >&2
+    echoerr "Error: Subtitle file not found: $subtitleFile"
     exitCode=1
     continue
   fi
 
   # Check if it's an SRT file
   if [[ "$subtitleFile" != *.srt ]]; then
-    echo "Error: File must be an SRT file: $subtitleFile" >&2
+    echoerr "Error: File must be an SRT file: $subtitleFile"
     exitCode=1
     continue
   fi
@@ -36,8 +36,8 @@ for subtitleFile in "$@"; do
   [[ -f "${baseName}.avi" ]] && videoFile="${baseName}.avi"
   [[ -f "${baseName}.mkv" ]] && videoFile="${baseName}.mkv"
   [[ -f "${baseName}.mp4" ]] && videoFile="${baseName}.mp4"
-  if [[ -z "$videoFile" ]]; then
-    echo "Error: No video file found matching: ${baseName}.*" >&2
+  if [[ "$videoFile" == "" ]]; then
+    echoerr "Error: No video file found matching: ${baseName}.*"
     exitCode=1
     continue
   fi

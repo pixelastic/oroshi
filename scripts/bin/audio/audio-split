@@ -8,7 +8,7 @@ set -e
 local input=$1
 
 if [[ ! -f $input ]]; then
-  echo "Error: Input file '$input' not found" >&2
+  echoerr "Error: Input file '$input' not found"
   exit 1
 fi
 
@@ -24,7 +24,7 @@ local midpoint=$(echo "$duration / 2" | bc -l)
 
 # Detect all silences in the file
 local silences=$(ffmpeg -i "$input" -af silencedetect=noise=-20dB:d=0.2 -f null - 2>&1 |
-  rg "silence_start: ([0-9.]+)" -or '$1')
+rg "silence_start: ([0-9.]+)" -or '$1')
 
 # Find the first silence after the midpoint
 local splitPoint="$midpoint"

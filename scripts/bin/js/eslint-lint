@@ -35,7 +35,7 @@ eslintArgs=()
 if [[ $isContentPiped == 1 ]]; then
   # Stop if missing --filepath
   if [[ $overrideFilepath == "" ]]; then
-    echo "When piping content to eslint-lint, you must specify --filepath." >&2
+    echoerr "When piping content to eslint-lint, you must specify --filepath."
     exit 1
   fi
 
@@ -50,7 +50,7 @@ inputFile="${1:a}"
 
 # Validate that we have a file path
 if [[ "$inputFile" == "" ]]; then
-  echo "Error: no file specified" >&2
+  echoerr "Error: no file specified"
   exit 1
 fi
 

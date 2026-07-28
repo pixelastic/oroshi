@@ -16,7 +16,8 @@
   {
     "id": "03",
     "issue": "issues/03-batch-fix-violations.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced all echo >&2 with echoerr across 19 ZSH files; skipped bash script sp; fixed pre-existing lint violations in touched files",
     "blocked_by": ["01", "02"]
   }
 ]
