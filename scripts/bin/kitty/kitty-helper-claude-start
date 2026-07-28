@@ -7,12 +7,15 @@ set -e
 
 # Start from the git root to make resuming sessions easier
 local projectRoot="$(git-directory-root)"
-cd "$projectRoot"
 
 local prompt="$1"
 
-# Start Claude, then fall back to zsh when closed
-local args=()
-[[ "$prompt" != "" ]] && args=("$prompt")
-claude "${args[@]}" || true
-zsh
+# Build the claude command with safe quoting for the prompt argument
+local cmd="claude"
+[[ "$prompt" != "" ]] && cmd="claude ${(q)prompt}"
+
+# Launch inside interactive zsh so Claude inherits env vars from the .zshrc
+# chain (NOTION_TOKEN, etc.) that aren't available in non-interactive context.
+# ZSH has no --run-then-stay mode: -ic runs the command then exits, so we
+# exec a fresh interactive zsh after Claude to keep the tab alive.
+exec zsh -ic "cd ${(q)projectRoot} && { $cmd || true; }; exec zsh"
