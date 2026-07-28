@@ -14,3 +14,7 @@
 - Use `/zsh-writer` skill when writing ZSH code
 
 ## Discoveries
+
+### Issue 02 — noInlineJqAssertion lint rule
+- Null-check heuristic must verify absence of `jq -r` — with `-r`, `"null"` is a raw string, not a JSON null
+- Rule test files that contain flaggable patterns need `# bats-lint disable=noInlineJqAssertion` above those lines

@@ -9,8 +9,9 @@
   {
     "id": "02",
     "issue": "issues/02-no-inline-jq-assertion-lint-rule.md",
-    "done": false,
-    "blocked_by": ["01"]
+    "done": true,
+    "blocked_by": ["01"],
+    "recap": "Added noInlineJqAssertion bats-lint rule that flags inline echo $output | jq inside [[ ]] and suggests the correct helper"
   },
   {
     "id": "03",

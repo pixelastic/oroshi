@@ -19,6 +19,7 @@ function bats-lint-custom() {
   source "${_batsLintRulesDir}/rule-no-shebang.zsh"
   source "${_batsLintRulesDir}/rule-no-boilerplate-teardown.zsh"
   source "${_batsLintRulesDir}/rule-no-single-bracket.zsh"
+  source "${_batsLintRulesDir}/rule-no-inline-jq-assertion.zsh"
 
   lint-custom-run \
     --disable-prefix 'bats-lint' \
@@ -29,5 +30,6 @@ function bats-lint-custom() {
     batsLintRule_noShebang \
     batsLintRule_noBoilerplateTeardown \
     batsLintRule_noSingleBracket \
+    batsLintRule_noInlineJqAssertion \
     -- "$@"
 }
