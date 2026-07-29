@@ -1,0 +1,38 @@
+[
+  {
+    "id": "01",
+    "issue": "issues/01-google-login.md",
+    "done": false,
+    "blocked_by": []
+  },
+  {
+    "id": "02",
+    "issue": "issues/02-md2gdocs.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "03",
+    "issue": "issues/03-gdocs2md.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "04",
+    "issue": "issues/04-gdocs-comments-json.md",
+    "done": false,
+    "blocked_by": ["01"]
+  },
+  {
+    "id": "05",
+    "issue": "issues/05-review-article-start.md",
+    "done": false,
+    "blocked_by": ["02"]
+  },
+  {
+    "id": "06",
+    "issue": "issues/06-review-article-skill.md",
+    "done": false,
+    "blocked_by": ["03", "04", "05"]
+  }
+]
