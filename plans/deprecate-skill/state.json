@@ -37,8 +37,9 @@
   {
     "id": "06",
     "issue": "issues/06-deprecate-end.md",
-    "done": false,
-    "blocked_by": ["05"]
+    "done": true,
+    "blocked_by": ["05"],
+    "recap": "Created deprecate-end ZSH script that orchestrates all deprecation steps (GitHub archive, npm deprecate, projects.jsonc remove) idempotently with fail-fast error JSON"
   },
   {
     "id": "07",

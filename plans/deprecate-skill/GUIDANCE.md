@@ -59,3 +59,7 @@
 - `local` masks exit codes — can't use `local var="$(cmd)" || return 1`; assign then guard separately
 - With `err_return`, last-statement `&& return 0 || return 1` is redundant — the exit code propagates naturally
 - `npm deprecate pkg ""` un-deprecates — guard against empty message
+
+### Issue 06 — deprecate-end
+- Mock functions referencing bats variables must `export` the variable — `bats_mock` serializes via `declare -f` so the function body runs in a zsh subprocess without the caller's locals
+- Git helpers now support `--repo <path>`: use `git-directory-is-dirty <path>`, `git-commit-create-all --repo <path> "msg"`, `git-branch-push --repo <path>` instead of raw `git -C` calls

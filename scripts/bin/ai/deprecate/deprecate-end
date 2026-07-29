@@ -1,0 +1,79 @@
+#!/usr/bin/env zsh
+# Execute all deprecation steps idempotently
+# Usage:
+# $ deprecate-end <project-name>
+set -e
+
+# Helper to output error JSON and exit
+function _error() {
+  jo status=error step="$1" message="$2"
+  return 1
+}
+
+# Project name is required
+local projectName="$1"
+[[ "$projectName" == "" ]] && return 1
+
+# Get state from deprecate-prepare
+local state="$(deprecate-prepare "$projectName")"
+local prepareStatus="$(echo "$state" | jq -r '.status')"
+# Forward non-ok state and exit
+if [[ "$prepareStatus" != "ok" ]]; then
+  echo "$state"
+  return 1
+fi
+
+# Parse state
+local owner="$(echo "$state" | jq -r '.github.owner')"
+local repo="$(echo "$state" | jq -r '.github.repo')"
+local description="$(echo "$state" | jq -r '.github.description')"
+local isArchived="$(echo "$state" | jq -r '.github.isArchived')"
+local clonedAt="$(echo "$state" | jq -r '.clonedAt')"
+local npmPackage="$(echo "$state" | jq -r '.npmPackage')"
+local npmIsDeprecated="$(echo "$state" | jq -r '.npmIsDeprecated')"
+local inProjectsJsonc="$(echo "$state" | jq -r '.inProjectsJsonc')"
+
+# GitHub block — skip if github is null or already archived
+if [[ "$owner" != "null" && "$isArchived" != "true" ]]; then
+  # Disable Renovate if config exists
+  if [[ -f "$clonedAt/.github/renovate.json" ]]; then
+    echo '{"enabled":false}' > "$clonedAt/.github/renovate.json"
+  fi
+
+  # Commit + push only if there are uncommitted changes
+  if git-directory-is-dirty "$clonedAt"; then
+    local commitMessage="DEPRECATED: $projectName is now deprecated and archived"
+    git-commit-create-all --repo "$clonedAt" "$commitMessage" \
+      || _error "commit-push" "Failed to commit"
+    git-branch-push --repo "$clonedAt" \
+      || _error "commit-push" "Failed to push"
+  fi
+
+  # Update description if not already prefixed
+  if [[ "$description" != "[DEPRECATED]"* ]]; then
+    git-github-repo-description-set "$owner/$repo" "[DEPRECATED] $description" \
+      || _error "description-set" "Failed to update description"
+  fi
+
+  # Archive
+  git-github-repo-archive "$owner/$repo" || _error "archive" "Failed to archive"
+fi
+
+# npm block — skip if no package or already deprecated
+if [[ "$npmPackage" != "null" && "$npmIsDeprecated" != "true" ]]; then
+  # Check auth first
+  npm-is-logged-in || _error "npm-auth" "Not logged in to npm"
+
+  # Deprecate
+  local deprecateMessage="No longer maintained. See https://github.com/$owner/$repo for details."
+  npm-deprecate "$npmPackage" "$deprecateMessage" \
+    || _error "npm-deprecate" "Failed to deprecate npm package"
+fi
+
+# projects.jsonc block — skip if not in projects.jsonc
+if [[ "$inProjectsJsonc" == "true" ]]; then
+  project-remove "$projectName" || _error "project-remove" "Failed to remove from projects.jsonc"
+  projects-build || _error "projects-build" "Failed to rebuild projects"
+fi
+
+jo status=ok
