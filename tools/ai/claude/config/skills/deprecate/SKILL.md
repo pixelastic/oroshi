@@ -28,7 +28,24 @@ Run `deprecate-prepare $ARGUMENTS` and parse the JSON output.
 
 ---
 
-### Step 2 — Ask reason
+### Step 2 — Project recap
+
+**Goal:** Remind the user what this project is before proceeding.
+
+**Exit criterion:** Recap displayed.
+
+Display a short recap of the project based on the JSON state:
+
+- **Project name** (`projectName`)
+- **GitHub**: `owner/repo` — `description`
+- **npm**: package name (only if `npmPackage` is not null)
+- **projects.jsonc**: yes/no
+
+Skip lines that don't apply (no npm, not in projects.jsonc, etc.).
+
+---
+
+### Step 3 — Ask reason
 
 **Goal:** Get the deprecation reason from the user.
 
@@ -38,7 +55,7 @@ Ask the user why this project is being deprecated. Rewrite their rough or spoken
 
 ---
 
-### Step 3 — Show plan
+### Step 4 — Show plan
 
 **Goal:** Let the user see what will happen before any changes.
 
@@ -47,21 +64,18 @@ Ask the user why this project is being deprecated. Rewrite their rough or spoken
 Display what will happen based on the JSON state. Skip sections that don't apply.
 
 **GitHub** (skip if `github` is null or `isArchived` is true):
-- Read existing README from `clonedAt`, prepend deprecation banner
-- Disable Renovate if `.github/renovate.json` exists
-- Commit and push changes
-- Update repo description to `[DEPRECATED] <original>`
-- Archive the repository
+- Prepend deprecation banner to README (done by you in Step 6)
+- Everything else handled by `deprecate-end`: disable Renovate, commit & push, update description to `[DEPRECATED] <original>`, archive
 
 **npm** (skip if `npmPackage` is null or `npmIsDeprecated` is true):
-- Deprecate the package on npm
+- Deprecate the package (handled by `deprecate-end`)
 
 **projects.jsonc** (skip if `inProjectsJsonc` is false):
-- Remove entry and rebuild
+- Remove entry and rebuild (handled by `deprecate-end`)
 
 ---
 
-### Step 4 — Confirm
+### Step 5 — Confirm
 
 **Goal:** Get explicit user confirmation before making changes.
 
@@ -71,7 +85,7 @@ Ask the user to confirm the plan. If they decline, stop.
 
 ---
 
-### Step 5 — Write README
+### Step 6 — Write README
 
 **Goal:** Prepend the deprecation banner to the README.
 
@@ -79,7 +93,7 @@ Ask the user to confirm the plan. If they decline, stop.
 
 Skip if GitHub section doesn't apply (no `clonedAt`, or already archived).
 
-Read the existing README at `clonedAt/README.md`. Prepend:
+This is the only file you edit manually. Read the existing README at `clonedAt/README.md`. Prepend:
 
 ```
 > **⚠️ ARCHIVED**: <reason>
@@ -89,21 +103,23 @@ Read the existing README at `clonedAt/README.md`. Prepend:
 <original README>
 ```
 
+Do NOT commit, push, disable Renovate, or perform any other action — `deprecate-end` handles all of that.
+
 ---
 
-### Step 6 — Execute
+### Step 7 — Execute
 
-**Goal:** Run all deprecation steps.
+**Goal:** Run all deprecation steps (Renovate, commit, push, archive, npm, projects.jsonc).
 
 **Exit criterion:** `deprecate-end` returned `status: "ok"`.
 
-Run `deprecate-end $ARGUMENTS`. Parse the JSON result.
+Run `deprecate-end $ARGUMENTS`. This single script handles everything except the README (done in Step 6). Parse the JSON result.
 
 If `status` is `"error"`, report the `step` and `message` to the user and stop.
 
 ---
 
-### Step 7 — Report
+### Step 8 — Report
 
 **Goal:** Tell the user what was done.
 
@@ -122,12 +138,14 @@ Display a summary of what happened:
 | Rationalization | Reality |
 |---|---|
 | "I'll skip the confirmation step, the user already said deprecate" | Always confirm. Archival and npm deprecation are hard to reverse. |
+| "I'll disable Renovate / commit / push / archive myself" | Only the README is your job. `deprecate-end` handles everything else — Renovate, commit, push, description, archive, npm, projects.jsonc. |
 
 ## Checklist
 
 - [ ] `deprecate-prepare` called and JSON parsed
 - [ ] Guard: not-found handled
 - [ ] Guard: npm auth handled
+- [ ] Project recap displayed
 - [ ] Deprecation reason obtained and cleaned up
 - [ ] Plan displayed with applicable sections only
 - [ ] User confirmed before any changes

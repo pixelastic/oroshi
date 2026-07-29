@@ -11,14 +11,15 @@ A skill at `tools/ai/claude/config/skills/deprecate/SKILL.md` following the stan
 1. **Prepare**: run `deprecate-prepare <project-name>`, parse JSON
 2. **Guard — not found**: if `status: "not-found"`, tell user and stop
 3. **Guard — npm auth**: if npm package exists but `npmIsLoggedIn` is false, warn user to run `npm-login` first, stop
-4. **Ask reason**: ask user for deprecation reason. Rewrite their rough/spoken input into proper English.
-5. **Show plan**: display what will happen based on the JSON state:
+4. **Project recap**: display project name, GitHub owner/repo + description, npm package, projects.jsonc presence
+5. **Ask reason**: ask user for deprecation reason. Rewrite their rough/spoken input into proper English.
+6. **Show plan**: display what will happen based on the JSON state:
    - GitHub: update README, disable Renovate, commit, update description, archive
    - npm: deprecate package
    - projects.jsonc: remove entry, rebuild
    - Skip sections that don't apply (no GitHub, no npm, not in projects.jsonc)
-6. **Confirm**: user confirms before any changes
-7. **Write README**: read existing README from `clonedAt`, prepend:
+7. **Confirm**: user confirms before any changes
+8. **Write README**: read existing README from `clonedAt`, prepend:
    ```
    > **⚠️ ARCHIVED**: <reason>
 
@@ -26,8 +27,8 @@ A skill at `tools/ai/claude/config/skills/deprecate/SKILL.md` following the stan
 
    <original README>
    ```
-8. **Execute**: run `deprecate-end <project-name>`
-9. **Report**: tell user what was done based on the result
+9. **Execute**: run `deprecate-end <project-name>`
+10. **Report**: tell user what was done based on the result
 
 ### Argument
 
