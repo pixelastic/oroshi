@@ -1,22 +1,39 @@
-# Commit all changes
+# Commit staged changes
 # Usage:
-# $ git-commit-create                      # Commit all changes, and ask for message
-# $ git-commit-create "Commit message"     # Commit all changes with message
+# $ git-commit-create                      # Commit staged changes, and ask for message
+# $ git-commit-create "Commit message"     # Commit staged changes with message
 # $ git-commit-create -n "Commit message"  # Can pass arguments to git commit
-# $ git-commit-create --repo /path "msg"   # Stage + commit in given repo
+# $ git-commit-create --repo /path "msg"   # Commit in given repo
 setopt local_options err_return
 
 zparseopts -E -D \
   -repo:=flagRepo
 
 local repoPath="${flagRepo[2]}"
+local args=($@)
 
-# Thread --repo to sub-calls if provided
+# Find the commit message as the first argument without a dash as prefix
+local commitMessage=""
+local commitMessageIndex=""
+for ((argIndex=1; argIndex <= ${#args}; argIndex++)); do
+  local argValue=$args[$argIndex]
+  [[ $argValue == -* ]] && continue
+  commitMessage=$argValue
+  args[$argIndex]=()
+done
+
+# If a commit message is passed, we add it to the args
+if [[ $commitMessage != "" ]]; then
+  args+=("--message")
+  args+=($commitMessage)
+fi
+
+# We always make it verbose
+args+=("--verbose")
+
+# Target a specific repo if --repo was passed
 local repoArgs=()
-[[ "$repoPath" != "" ]] && repoArgs=(--repo "$repoPath")
-
-# Stage all files first
-git-file-add ${repoArgs[@]}
+[[ "$repoPath" != "" ]] && repoArgs=("-C" "$repoPath")
 
 # Commit staged files
-git-commit-create-staged ${repoArgs[@]} $@
+git ${repoArgs[@]} commit ${args}

@@ -11,7 +11,7 @@ function oroshiSlowCommandPreexec() {
   local allowList=(
     claude
     git-commit-create
-    git-commit-create-staged
+    git-commit-create-all
     git-commit-list
     git-file-diff
     git-file-edit

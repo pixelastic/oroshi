@@ -1,0 +1,22 @@
+# Stage all changes and commit
+# Usage:
+# $ git-commit-create-all                      # Stage + commit all, ask for message
+# $ git-commit-create-all "Commit message"     # Stage + commit all with message
+# $ git-commit-create-all -n "Commit message"  # Can pass arguments to git commit
+# $ git-commit-create-all --repo /path "msg"   # Stage + commit in given repo
+setopt local_options err_return
+
+zparseopts -E -D \
+  -repo:=flagRepo
+
+local repoPath="${flagRepo[2]}"
+
+# Thread --repo to sub-calls if provided
+local repoArgs=()
+[[ "$repoPath" != "" ]] && repoArgs=(--repo "$repoPath")
+
+# Stage all files first
+git-file-add ${repoArgs[@]}
+
+# Commit staged files
+git-commit-create ${repoArgs[@]} $@

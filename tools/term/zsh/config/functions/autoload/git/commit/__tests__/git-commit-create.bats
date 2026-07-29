@@ -7,8 +7,9 @@ setup() {
 	bats_git commit --quiet -m "add tracked"
 }
 
-@test "stages and commits in target repo when called with --repo /path" {
+@test "creates a commit in target repo when called with --repo /path" {
 	echo "change" >> "$BATS_GIT_DIR/tracked.txt"
+	git -C "$BATS_GIT_DIR" add --all
 
 	bats_run_zsh "git-commit-create --repo $BATS_GIT_DIR 'test commit'"
 	[[ "$status" -eq 0 ]]

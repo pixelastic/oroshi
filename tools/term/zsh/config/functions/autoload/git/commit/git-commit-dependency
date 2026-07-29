@@ -6,7 +6,7 @@ setopt local_options err_return
 local dependencyName=$1
 
 if [[ $dependencyName == "" ]]; then
-  git-commit-create "dev(deps): Update dependencies"
+  git-commit-create-all "dev(deps): Update dependencies"
   return
 fi
 
@@ -16,4 +16,4 @@ local newVersion="$(
     awk '{print $3}' |
     tr -d '",'
 )"
-git-commit-create "dev(deps): Update ${dependencyName} to ${newVersion}"
+git-commit-create-all "dev(deps): Update ${dependencyName} to ${newVersion}"

@@ -52,7 +52,7 @@ cp $OROSHI_ROOT/tools/git/git/config/gitignore ./.gitignore
 echo "# ${repoName}" >./README.md
 
 # Commit
-git-commit-create "Add .gitignore and README.md"
+git-commit-create-all "Add .gitignore and README.md"
 
 # Add remote
 git-remote-create origin git@github.com:${repoNameFull}.git
