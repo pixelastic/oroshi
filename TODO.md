@@ -18,13 +18,13 @@
 - Update `j` so it only suggests through the projects list, no longer manually marking dirs, or maybe in addition to marking dirs?
 - /debug-script skill doesn't work well with nodejs scripts that require a dependency. Need to see if it can use package.json for the deps?
 - Change the color of the `!` bash mode in claude
+- Claude calls git-file-test, which isn't going through rtk. Check why it calls git-file-test (where?) and if we could make it go through rtk to only display the failing tests
 
 ---
 
 ## Kitty
 
-- Ensure the right attention icon is displayed at the right time. Seems like I have the pause icon sometimes when Claude asks for something, while it should be
-a classical stop sign.
+- Ensure the right attention icon is displayed at the right time. Seems like I have the pause icon sometimes when Claude asks for something, while it should be a classical stop sign.
 - No way to see which project/worktree I'm in in Kitty tabs
 - Change the attention icon in orange, for claude
 I'd love an icon to see:
@@ -43,9 +43,6 @@ I'd love an icon to see:
 ## Skills
 
 - Run claude on all history, analyzing common review issues, improve skills accordingly
-- Merge /prd and /issues into /plan
-- Check if I can define specific models per skill
-- Ensure if writes the PRD file without asking for confirmation
 - Ensure GUIDANCE uses the right test/lint commands, even outside of oroshi
 - Ensure /prd calls prd-end from its path, not `bash /path/prd`, not `.claude/prd`, etc
 - Ensure skill run `review-diff` from the path
@@ -57,10 +54,8 @@ I'd love an icon to see:
 ## JavaScript
 
 - Rule to enforce the try/catch pattern in tests
-- Rule to prefer mockReturnValue over mockResultValue
 - Update aberlaas so it adds a CLAUDE.md to new projects, telling about the test/lint commands
 - Disallow `method().property`, prefer `const { property } = method()`
-- Rule (or agent?) to not add comment doc on proxy in __
 
 ---
 
@@ -110,5 +105,6 @@ I'd love an icon to see:
 
 ---
 ## Ideas
+
 - Update gamemaster/armory to renew the design, and to incorporate items from more games.
 - Update blog.pixelastic.com. Find a blogging cadence, better UI
