@@ -107,19 +107,31 @@ Do NOT commit, push, disable Renovate, or perform any other action — `deprecat
 
 ---
 
-### Step 7 — Execute
+### Step 7 — Ask npm OTP
+
+**Goal:** Get a one-time password for npm deprecation.
+
+**Exit criterion:** OTP captured, or step skipped.
+
+Skip if `shouldAskOtp` is false.
+
+Ask the user for their npm OTP. This is time-sensitive (~30s), so ask right before executing. Store the value for Step 8.
+
+---
+
+### Step 8 — Execute
 
 **Goal:** Run all deprecation steps (Renovate, commit, push, archive, npm, projects.jsonc).
 
 **Exit criterion:** `deprecate-end` returned `status: "ok"`.
 
-Run `deprecate-end $ARGUMENTS`. This single script handles everything except the README (done in Step 6). Parse the JSON result.
+Run `deprecate-end $ARGUMENTS [--otp <code>]`. Pass `--otp` only if an OTP was collected in Step 7. This single script handles everything except the README (done in Step 6). Parse the JSON result.
 
 If `status` is `"error"`, report the `step` and `message` to the user and stop.
 
 ---
 
-### Step 8 — Report
+### Step 9 — Report
 
 **Goal:** Tell the user what was done.
 
@@ -150,5 +162,6 @@ Display a summary of what happened:
 - [ ] Plan displayed with applicable sections only
 - [ ] User confirmed before any changes
 - [ ] README updated with deprecation banner (if applicable)
+- [ ] npm OTP collected (if applicable)
 - [ ] `deprecate-end` called and result parsed
 - [ ] Summary displayed to user

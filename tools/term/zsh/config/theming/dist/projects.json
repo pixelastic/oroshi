@@ -339,26 +339,6 @@
     "icon": "ⓑ  ",
     "path": "~/local/www/algolia/brefsearch/brefsearch-media"
   },
-  "callirhoe": {
-    "background": {
-      "ansi": 139,
-      "hex": "#042f2e",
-      "name": "teal-9"
-    },
-    "backgroundInactive": {
-      "ansi": 130,
-      "hex": "#0f1a18",
-      "name": "teal-dark"
-    },
-    "foreground": {
-      "ansi": 202,
-      "hex": "#e5e7eb",
-      "name": "gray-2"
-    },
-    "hideNameInPrompt": false,
-    "icon": " ",
-    "path": "~/local/www/projects/callirhoe"
-  },
   "claude": {
     "background": {
       "ansi": 147,

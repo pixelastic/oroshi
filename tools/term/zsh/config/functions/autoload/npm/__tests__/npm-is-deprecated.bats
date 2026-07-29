@@ -10,6 +10,16 @@ bats_load_library 'helper'
   [[ "$status" -eq 0 ]]
 }
 
+@test "returns 0 when JSON contains control characters" {
+  npm() {
+    printf '{"name":"old-pkg","deprecated":"gone","integrity":"sig\\r\\nline2"}'
+  }
+  bats_mock npm
+
+  bats_run_zsh "npm-is-deprecated old-pkg"
+  [[ "$status" -eq 0 ]]
+}
+
 @test "returns 1 when package is not deprecated" {
   npm() {
     echo '{"name":"active-pkg"}'

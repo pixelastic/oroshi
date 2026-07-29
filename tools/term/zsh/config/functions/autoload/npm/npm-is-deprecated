@@ -8,4 +8,4 @@ local jsonOutput="$(npm view "$packageName" --json 2>/dev/null)"
 # Package not found on registry
 [[ "$jsonOutput" == "" ]] && return 1
 
-echo "$jsonOutput" | jq --exit-status '.deprecated' &>/dev/null
+jq --exit-status '.deprecated' <<< "$jsonOutput" &>/dev/null

@@ -47,7 +47,7 @@ git-github-repo-is-archived "$owner/$repo" && isArchived="true"
 local tmpPath="$DEPRECATE_TMP/$projectName"
 if [[ "$clonedAt" == "" && "$owner" == "pixelastic" ]]; then
   mkdir -p "$DEPRECATE_TMP"
-  git-directory-sync "git@github.com:$owner/$repo.git" "$tmpPath"
+  git-directory-sync "git@github.com:$owner/$repo.git" "$tmpPath" >&2
   clonedAt="$tmpPath"
 fi
 
@@ -85,6 +85,12 @@ local jsonArgs=(
   --arg clonedAt "$clonedAt"
 )
 
+# Should we ask for an OTP? Only if npm package exists, not yet deprecated
+local shouldAskOtp="false"
+[[ "$npmPackage" != "" && "$npmIsDeprecated" == "false" ]] && shouldAskOtp="true"
+
+jsonArgs+=(--argjson shouldAskOtp "$shouldAskOtp")
+
 local npmFilter='.npmPackage = null'
 if [[ "$npmPackage" != "" ]]; then
   jsonArgs+=(
@@ -106,5 +112,6 @@ jq -n "${jsonArgs[@]}" \
       description: $description,
       isArchived: $isArchived
     },
-    clonedAt: $clonedAt
+    clonedAt: $clonedAt,
+    shouldAskOtp: $shouldAskOtp
   } | '"$npmFilter"

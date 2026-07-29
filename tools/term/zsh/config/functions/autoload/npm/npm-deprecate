@@ -1,7 +1,13 @@
 # Deprecate an npm package with a message
 # Usage:
 # $ npm-deprecate my-package "Use other-package instead"
+# $ npm-deprecate my-package "Use other-package instead" --otp 123456
 setopt local_options err_return
+
+zparseopts -E -D \
+  -otp:=flagOtp
+
+local otp=${flagOtp[2]}
 local packageName=$1
 local message=$2
 
@@ -14,4 +20,7 @@ if ! npm-is-logged-in; then
   return 1
 fi
 
-npm deprecate "$packageName" "$message"
+local -a otpArgs=()
+[[ "$otp" != "" ]] && otpArgs=(--otp "$otp")
+
+npm deprecate "$packageName" "$message" "${otpArgs[@]}"

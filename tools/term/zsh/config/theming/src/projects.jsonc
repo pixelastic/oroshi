@@ -99,12 +99,6 @@
     "icon": "ⓑ  ",
     "path": "~/local/www/algolia/brefsearch/brefsearch-media"
   },
-  "callirhoe": {
-    "background": "teal-9",
-    "foreground": "gray-2",
-    "icon": " ",
-    "path": "~/local/www/projects/callirhoe"
-  },
   "claude": {
     "background": "amber-7",
     "foreground": "gray-2",

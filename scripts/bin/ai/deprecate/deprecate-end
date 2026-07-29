@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # Execute all deprecation steps idempotently
 # Usage:
-# $ deprecate-end <project-name>
+# $ deprecate-end <project-name> [--otp <code>]
 set -e
 
 # Helper to output error JSON and exit
@@ -10,12 +10,16 @@ function _error() {
   return 1
 }
 
-# Project name is required
+# Parse arguments
+zparseopts -E -D \
+  -otp:=flagOtp
+
+local npmOtp=${flagOtp[2]}
 local projectName="$1"
 [[ "$projectName" == "" ]] && return 1
 
 # Get state from deprecate-prepare
-local state="$(deprecate-prepare "$projectName")"
+local state="$(deprecate-prepare "$projectName" 2>/dev/null)"
 local prepareStatus="$(echo "$state" | jq -r '.status')"
 # Forward non-ok state and exit
 if [[ "$prepareStatus" != "ok" ]]; then
@@ -66,7 +70,9 @@ if [[ "$npmPackage" != "null" && "$npmIsDeprecated" != "true" ]]; then
 
   # Deprecate
   local deprecateMessage="No longer maintained. See https://github.com/$owner/$repo for details."
-  npm-deprecate "$npmPackage" "$deprecateMessage" \
+  local -a otpArgs=()
+  [[ "$npmOtp" != "" ]] && otpArgs=(--otp "$npmOtp")
+  npm-deprecate "$npmPackage" "$deprecateMessage" "${otpArgs[@]}" \
     || _error "npm-deprecate" "Failed to deprecate npm package"
 fi
 
