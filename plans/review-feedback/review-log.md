@@ -27,3 +27,26 @@ const server = http.createServer(async (request, response) => {
 ```
 **Problem:** Returns Promise but JSDoc says {object}
 **Reason skipped:** Promise wrapping is implicit with async callers; {object} describes the resolved value correctly
+
+## Issue 02 — md2gdocs
+### HTML upload vs Docs API body structure
+```js
+media: {
+  mimeType: 'text/html',
+  body: Readable.from(html),
+},
+```
+**Problem:** Spec says "converts content to Google Docs API body structure" and names both Drive + Docs API. Implementation uses HTML upload via Drive API only.
+**Reason skipped:** HTML upload achieves the same end result (formatted Google Doc) with far less complexity. The spec describes desired outcome, not a required integration approach.
+
+### CLI arg parsing style
+```js
+const titleIndex = args.indexOf('--title');
+let title;
+if (titleIndex !== -1) {
+  title = args[titleIndex + 1];
+  args.splice(titleIndex, 2);
+}
+```
+**Problem:** Imperative mutation with `splice` diverges from functional style standards favor.
+**Reason skipped:** CLI entry is a thin script runner, not core logic. Functional rewrite adds complexity without benefit for a 5-line arg parser.

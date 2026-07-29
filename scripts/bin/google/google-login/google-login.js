@@ -10,7 +10,7 @@ import { google } from 'googleapis';
 
 const clientId = process.env.OROSHI_GOOGLE_CLIENT_ID;
 const clientSecret = process.env.OROSHI_GOOGLE_CLIENT_SECRET;
-const redirectUri = 'http://localhost:3000/oauth2callback';
+const redirectUri = 'http://localhost:48912/oauth2callback';
 const tokenPath = `${process.env.OROSHI_ROOT}/private/config/google/tokens.json`;
 const scopes = [
   'https://www.googleapis.com/auth/documents',
@@ -37,7 +37,7 @@ const authorizeUrl = oauth2Client.generateAuthUrl({
 });
 
 const server = http.createServer(async (request, response) => {
-  const url = new URL(request.url, 'http://localhost:3000');
+  const url = new URL(request.url, 'http://localhost:48912');
   if (!url.pathname.startsWith('/oauth2callback')) {
     response.end();
     return;
@@ -52,7 +52,7 @@ const server = http.createServer(async (request, response) => {
 
   try {
     const { tokens } = await oauth2Client.getToken(code);
-    await writeJson(tokenPath, tokens);
+    await writeJson(tokens, tokenPath);
     consoleSuccess(`Tokens saved to ${tokenPath}`);
     response.writeHead(200);
     response.end('Authentication successful. You can close this tab.');
@@ -65,7 +65,7 @@ const server = http.createServer(async (request, response) => {
   server.close();
 });
 
-server.listen(3000, () => {
+server.listen(48912, () => {
   consoleInfo('Opening browser for Google OAuth consent...');
-  run(`xdg-open '${authorizeUrl}'`);
+  run(['xdg-open', authorizeUrl], { detached: true });
 });
