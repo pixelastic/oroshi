@@ -1,0 +1,28 @@
+# Return the publishable npm package name from a project path
+# Usage:
+# $ npm-name /path/to/project       # my-package
+# $ npm-name /path/to/monorepo      # @scope/lib (from lib/ workspace)
+setopt local_options err_return
+
+local inputPath=${1:a}
+
+# No package.json at path
+[[ ! -f "${inputPath}/package.json" ]] && return 1
+
+# Root not private → return its name
+if ! yarn-package-is-private "$inputPath"; then
+  yarn-package-name "$inputPath"
+  return 0
+fi
+
+# lib not in workspaces array
+local hasLibWorkspace="$(jq -r '
+  if (.workspaces | type) == "array" and (.workspaces | any(. == "lib"))
+  then "1"
+  else empty
+  end
+' "${inputPath}/package.json")"
+[[ "$hasLibWorkspace" != "1" ]] && return 1
+
+# Recurse into lib/ workspace
+npm-name "${inputPath}/lib"
