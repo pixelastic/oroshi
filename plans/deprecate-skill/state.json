@@ -44,7 +44,8 @@
   {
     "id": "07",
     "issue": "issues/07-deprecate-skill.md",
-    "done": false,
-    "blocked_by": ["06"]
+    "done": true,
+    "blocked_by": ["06"],
+    "recap": "Created /deprecate skill SKILL.md orchestrating prepare, guards, README banner, execute, and report steps"
   }
 ]
