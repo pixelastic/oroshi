@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-add-path-args-to-git-helpers.md",
-    "done": false,
-    "blocked_by": ["01"]
+    "done": true,
+    "blocked_by": ["01"],
+    "recap": "Added path args to 5 git helpers: positional $1 for git-directory-is-dirty, --repo flag via zparseopts for git-file-add/git-commit-create-staged/git-commit-create/git-branch-push"
   }
 ]

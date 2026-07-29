@@ -1,10 +1,19 @@
-# Add a file to the staging area
+# Add files to the staging area
 # Usage:
-# $ git-file-add ./relative/path/to/file  # Adds the file
-# $ git-file-add /absolute/path/to/file   # Adds the file
+# $ git-file-add                       # Stages all in current repo
+# $ git-file-add ./path/to/file       # Stages a specific file
+# $ git-file-add --repo /path         # Stages all in given repo
 setopt local_options err_return
-local gitRoot="$(git-directory-root)"
-git \
-  -C "${gitRoot}" \
-  add --all \
-  "${@}"
+
+zparseopts -E -D \
+  -repo:=flagRepo
+
+local repoPath="${flagRepo[2]}"
+# Default to current repo root
+[[ "$repoPath" == "" ]] && repoPath="$(git-directory-root)"
+
+# Stage all if no paths given, otherwise stage only given paths
+local addArgs=("${@}")
+[[ $# -eq 0 ]] && addArgs=(--all)
+
+git -C "$repoPath" add "${addArgs[@]}"

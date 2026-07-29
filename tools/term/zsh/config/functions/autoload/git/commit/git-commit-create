@@ -3,7 +3,20 @@
 # $ git-commit-create                      # Commit all changes, and ask for message
 # $ git-commit-create "Commit message"     # Commit all changes with message
 # $ git-commit-create -n "Commit message"  # Can pass arguments to git commit
-# Commit all files first
+# $ git-commit-create --repo /path "msg"   # Stage + commit in given repo
 setopt local_options err_return
-git add --all
-git-commit-create-staged $@
+
+zparseopts -E -D \
+  -repo:=flagRepo
+
+local repoPath="${flagRepo[2]}"
+
+# Thread --repo to sub-calls if provided
+local repoArgs=()
+[[ "$repoPath" != "" ]] && repoArgs=(--repo "$repoPath")
+
+# Stage all files first
+git-file-add ${repoArgs[@]}
+
+# Commit staged files
+git-commit-create-staged ${repoArgs[@]} $@

@@ -3,7 +3,13 @@
 # $ git-commit-create-staged                      # Commit staged changes, and ask for message
 # $ git-commit-create-staged "Commit message"     # Commit staged changes with message
 # $ git-commit-create-staged -n "Commit message"  # Can pass arguments to git commit
+# $ git-commit-create-staged --repo /path "msg"   # Commit in given repo
 setopt local_options err_return
+
+zparseopts -E -D \
+  -repo:=flagRepo
+
+local repoPath="${flagRepo[2]}"
 local args=($@)
 
 # Find the commit message as the first argument without a dash as prefix
@@ -11,7 +17,7 @@ local commitMessage=""
 local commitMessageIndex=""
 for ((argIndex=1; argIndex <= ${#args}; argIndex++)); do
   local argValue=$args[$argIndex]
-  [[ $argValue = -* ]] && continue
+  [[ $argValue == -* ]] && continue
   commitMessage=$argValue
   args[$argIndex]=()
 done
@@ -25,5 +31,9 @@ fi
 # We always make it verbose
 args+=("--verbose")
 
+# Target a specific repo if --repo was passed
+local repoArgs=()
+[[ "$repoPath" != "" ]] && repoArgs=("-C" "$repoPath")
+
 # Commit staged files
-git commit ${args}
+git ${repoArgs[@]} commit ${args}

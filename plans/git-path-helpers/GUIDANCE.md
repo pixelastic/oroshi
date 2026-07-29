@@ -29,3 +29,7 @@
 - Autoload functions must use `return` not `exit` — `exit` kills the shell session
 - `zmodload zsh/zutil` is unnecessary before `zparseopts` — it's an autoloadable builtin; removed from entire codebase
 - No blank line between header comment block and `setopt local_options err_return`
+
+### Issue 02 — Add path args to git helpers
+- `git -C` must come before the subcommand (`git -C /path commit`), not after (`git commit -C /path` means reuse commit message)
+- `git-remote-current` accepts positional `$1` for path (internally calls `git-branch-remote --repo`)

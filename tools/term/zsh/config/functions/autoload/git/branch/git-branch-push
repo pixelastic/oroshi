@@ -2,24 +2,36 @@
 # Usage:
 # $ git-branch-push                  # Pushes current branch to current remote
 # $ git-branch-push main             # Pushes branch main
-# $ git-branch-push main origin      # Pushes branch main to remote orin
-# $ git-branch-push --flag1          # Also pass in flags
+# $ git-branch-push main origin      # Pushes branch main to remote origin
+# $ git-branch-push --force          # Also pass in flags
+# $ git-branch-push --repo /path     # Pushes from given repo
 setopt local_options err_return
 
+zparseopts -E -D \
+  -repo:=flagRepo
+
+local repoPath="${flagRepo[2]}"
+
 # Filter positional arguments and flags
-local argsp=()
-local -A argsf=()
+local positionalArgs=()
+local -A flagArgs=()
 for arg in $argv; do
-  [[ "$arg" =~ "^-" ]] && argsf[$arg]=1 || argsp+=("$arg")
+  [[ "$arg" =~ "^-" ]] && flagArgs[$arg]=1 || positionalArgs+=("$arg")
 done
 
-# Defaults to current branch and remote if none is passed
-local branchName="$argsp[1]"
-[[ "$branchName" == "" ]] && branchName="$(git-branch-current)"
-local remoteName="$argsp[2]"
-[[ "$remoteName" == "" ]] && remoteName="$(git-remote-current)"
+# Default to current branch if none is passed
+local branchName="$positionalArgs[1]"
+[[ "$branchName" == "" ]] && branchName="$(git-branch-current "$repoPath")"
 
-git push \
+# Default to current remote if none is passed
+local remoteName="$positionalArgs[2]"
+[[ "$remoteName" == "" ]] && remoteName="$(git-remote-current "$repoPath")"
+
+# Target a specific repo if --repo was passed
+local repoArgs=()
+[[ "$repoPath" != "" ]] && repoArgs=("-C" "$repoPath")
+
+git ${repoArgs[@]} push \
   --set-upstream "$remoteName" \
   "$branchName" \
-  ${(k)argsf}
+  ${(k)flagArgs}
