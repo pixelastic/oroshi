@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# Google OAuth login — opens browser, saves refresh token to disk
+set -e
+
+node ${0:A:h}/google-login.js "$@"

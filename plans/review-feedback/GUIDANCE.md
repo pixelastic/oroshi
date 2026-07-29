@@ -38,3 +38,8 @@
 - Feedback output format validated on `feedback-article-monolithic-agents.md`
 
 ## Discoveries
+
+### Issue 01 — Google Login
+- OAuth2Client needs clientId+clientSecret for automatic token refresh — passing zero args creates a crippled client
+- Token file stores full token object (access_token, refresh_token, expiry_date) but `googleAuth` should only set `refresh_token` as credential to avoid stale access tokens
+- Token path must use `OROSHI_ROOT` env var, not `HOME/.oroshi`

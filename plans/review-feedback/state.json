@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-google-login.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "OAuth login flow with browser consent, token persistence, and shared googleAuth helper with client credentials"
   },
   {
     "id": "02",
