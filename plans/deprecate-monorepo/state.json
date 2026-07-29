@@ -9,7 +9,8 @@
   {
     "id": "02",
     "issue": "issues/02-wire-deprecate-prepare.md",
-    "done": false,
+    "done": true,
+    "recap": "Replaced inline yarn-package-is-private/yarn-package-name logic with single npm-name call in deprecate-prepare",
     "blocked_by": ["01"]
   }
 ]

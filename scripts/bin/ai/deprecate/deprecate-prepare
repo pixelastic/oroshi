@@ -52,10 +52,7 @@ if [[ "$clonedAt" == "" && "$owner" == "pixelastic" ]]; then
 fi
 
 # npm: detect package name from disk
-local packageName=""
-if [[ "$clonedAt" != "" && -f "$clonedAt/package.json" ]] && ! yarn-package-is-private "$clonedAt"; then
-  packageName="$(yarn-package-name "$clonedAt")"
-fi
+local packageName="$(npm-name "$clonedAt" || true)"
 
 # npm: check publication status
 local npmPackage=""
