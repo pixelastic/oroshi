@@ -34,7 +34,7 @@ Write the PRD to `<prdPath>`, following [the template](./references/prd-md.md).
 ### Step 4 — Write COMMIT_HINT.md
 
 Write `COMMIT_HINT.md` to `<commitHintPath>`.
-Load [commit-hint.md](../ralph/references/commit-hint.md) for format and rules.
+Load the **commit hint** reference from the `/ralph` skill for format and rules.
 Derive Goal from the PRD's Problem Statement.
 Suggested type is `plan(<slug>)` where slug is the plan directory name.
 

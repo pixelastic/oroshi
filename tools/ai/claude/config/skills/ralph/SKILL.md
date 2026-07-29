@@ -47,11 +47,11 @@ If a dedicated skill for your language exists, load it (`zsh-writer`, `js-writer
 It defines how to run tests for that language.
 
 If you have any `## Behavioral Tests` from the issue:
-- Read [behavioral-tests.md](../tdd/references/behavioral-tests.md)
+- Read the **behavioral tests** reference from the `/tdd` skill
 - Write tests in `__tests__` folder, next to the file being tested.
 
 If you have any `## Scaffolding Tests` from the issue:
-- Read [scaffolding-tests.md](../tdd/references/scaffolding-tests.md)
+- Read the **scaffolding tests** reference from the `/tdd` skill
 - Write tests in `plans/<slug>/scaffold/<issue-filename>.bats`
 
 **Run tests. If they passes immediately: tests are wrong. Rewrite them.**

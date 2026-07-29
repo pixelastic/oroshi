@@ -39,8 +39,7 @@ merged without human interaction. Prefer AFK over HITL where possible.
 - Prefer many thin slices over few thick ones
 
 For each issue, identify any
-[behavioral-tests.md](../tdd/references/behavioral-tests.md) or
-[scaffolding-tests.md](../tdd/references/scaffolding-tests.md)
+**behavioral tests** or **scaffolding tests** from the `/tdd` skill
 
 ### Step 3 - Confirm with the user
 
