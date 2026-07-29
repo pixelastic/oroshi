@@ -1,8 +1,7 @@
-#!/usr/bin/env zsh
 # Rebase current branch up to specified commit, interactively
 # Usage:
 # $ git-branch-rebase-interactive d34b33f
-set -e
+setopt local_options err_return
 
 local commitHash=$1
 if [[ $commitHash != '' ]]; then

@@ -7,7 +7,6 @@
 # $ printf '%s\n' "${arr[@]}" | json-set --input file.json '.key' --array  # array from stdin
 setopt local_options err_return
 
-zmodload zsh/zutil
 zparseopts -E -D \
   -input:=flagInput \
   -number=flagNumber \

@@ -10,7 +10,6 @@
 # $ plan-badge --zsh /path/to/plan
 set -e
 
-zmodload zsh/zutil
 zparseopts -E -D \
   -zsh=flagZsh
 

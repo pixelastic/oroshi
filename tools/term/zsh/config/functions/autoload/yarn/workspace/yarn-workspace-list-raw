@@ -5,7 +5,6 @@
 # $ yarn-workspace-list-raw --public     # Exclude private workspaces
 setopt local_options err_return
 
-zmodload zsh/zutil
 zparseopts -E -D \
   -public=flagPublic
 

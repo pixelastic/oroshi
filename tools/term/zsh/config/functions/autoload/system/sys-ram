@@ -4,7 +4,6 @@
 # $ sys-ram --reply  # Write to $REPLY, no echo
 setopt local_options err_return
 
-zmodload zsh/zutil
 zparseopts -E -D \
   -reply=flagReply
 

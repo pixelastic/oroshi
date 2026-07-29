@@ -4,7 +4,6 @@
 # Scripts call fzf-dispatch at the bottom; override fzf-main for custom pipelines
 # Usage: source "${0:h}/__lib/init.zsh"
 
-zmodload zsh/zutil
 zparseopts -D -E \
   -source=flagSource \
   -options=flagOptions \
@@ -20,10 +19,10 @@ local isNoDispatch=${#flagNoDispatch}
 ARGS=("$@")
 
 # Default preview — no-op; scripts can override by redefining after sourcing
-fzf-preview() { return 0; }
+function fzf-preview() { return 0; }
 
 # Default postprocess — scripts can override by redefining after sourcing
-fzf-postprocess() {
+function fzf-postprocess() {
   local input="$(\cat)"
   [[ "$input" == "" ]] && return 0
   local line
@@ -33,13 +32,13 @@ fzf-postprocess() {
 }
 
 # Default pipeline — scripts can override this after sourcing
-fzf-main() {
+function fzf-main() {
   local opts=(${(f)"$(fzf-options)"})
   fzf-source | fzf "${opts[@]}" | fzf-postprocess
 }
 
 # Dispatcher — handles standard flags, falls through to fzf-main
-fzf-dispatch() {
+function fzf-dispatch() {
   # --no-dispatch: define functions without executing (for testing)
   if [[ $isNoDispatch == "1" ]]; then return 0; fi
   if [[ $isSource == "1" ]]; then fzf-source; return 0; fi

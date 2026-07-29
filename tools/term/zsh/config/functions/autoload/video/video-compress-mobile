@@ -5,12 +5,11 @@
 # $ video-compress-mobile -a 1 ./path/video.mkv               # Same, with a shorthand
 setopt local_options err_return
 set -x
-zmodload zsh/zutil
 zparseopts -E -D \
   a:=flagAudioStream \
   -audiostream:=flagAudioStream \
 
-local audioStreamNumber=${flagAudioStream[2]}
+  local audioStreamNumber=${flagAudioStream[2]}
 
 local input="$1"
 local outputFolder="${input:a:h}/mobile"

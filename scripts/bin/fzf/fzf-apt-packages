@@ -12,7 +12,6 @@ source "${0:h}/__lib/init.zsh"
 source "${0:h}/__lib/fzf-options-prompt-label.zsh"
 
 # Custom flags beyond the standard 4
-zmodload zsh/zutil
 zparseopts -D -E \
   -installed=flagInstalled
 
@@ -20,7 +19,7 @@ local isInstalled=${#flagInstalled}
 
 SCRIPT_NAME="${0:t}"
 
-fzf-preview() {
+function fzf-preview() {
   local packageName="$1"
   local rawDetails="$(apt-cache show "$packageName" 2>/dev/null)"
   [[ "$rawDetails" == "" ]] && return 0
@@ -73,7 +72,7 @@ fzf-preview() {
   [[ "$packageDescriptionText" != "" ]] && colorize "${packageDescriptionText}" $COLORS[comment]
 }
 
-fzf-source() {
+function fzf-source() {
   local cacheFile="${OROSHI_TMP_FOLDER}/fzf/packages-apt"
   [[ $isInstalled == "1" ]] && cacheFile="${OROSHI_TMP_FOLDER}/fzf/packages-apt-installed"
 
@@ -87,7 +86,7 @@ fzf-source() {
   cat "$cacheFile"
 }
 
-fzf-options() {
+function fzf-options() {
   icons-load-definitions
   colors-load-definitions
 
@@ -104,7 +103,11 @@ fzf-options() {
   local sourceArgs=""
   [[ $isInstalled == "1" ]] && sourceArgs=" --installed"
   local reloadCmd="apt-packages-cache-generate >/dev/null 2>&1; $SCRIPT_NAME --source${sourceArgs}"
-  echo "--bind=f5:transform-header(echo ' $ICONS[fzf-refresh] Refreshing…')+reload($reloadCmd)+transform-header(echo '')"
+  local refreshIcon="$ICONS[fzf-refresh]"
+  local bindAction="transform-header(echo ' $refreshIcon Refreshing…')"
+  bindAction+="+reload($reloadCmd)"
+  bindAction+="+transform-header(echo '')"
+  echo "--bind=f5:${bindAction}"
 }
 
 fzf-dispatch

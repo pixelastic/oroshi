@@ -1,8 +1,7 @@
-#!/usr/bin/env zsh
 # Merges current branch with specified one
 # Usage:
 # $ git-branch-merge develop
-set -e
+setopt local_options err_return
 
 local otherBranch=$1
 local currentBranch="$(git-branch-current)"

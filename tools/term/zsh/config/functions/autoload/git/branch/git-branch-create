@@ -1,30 +1,29 @@
-#!/usr/bin/env zsh
 # Create a new local branch
 # Usage:
 # $ git-branch-create foo      # Create branch foo
-set -e
+setopt local_options err_return
 
 local branchName="$1"
 
 # Stop if no branch name given
 if [[ $branchName == '' ]]; then
-	echo "✘ You must pass the name of branch to create"
-	exit 1
+  echo "✘ You must pass the name of branch to create"
+  return 1
 fi
 
 # Stop if such a branch already exists
 if git-branch-exists $branchName; then
-	local colorizedBranchName="$(git-branch-colorize $branchName --with-icon)"
-	echo "✘ Branch $colorizedBranchName already exists"
-	exit 1
+  local colorizedBranchName="$(git-branch-colorize $branchName --with-icon)"
+  echo "✘ Branch $colorizedBranchName already exists"
+  return 1
 fi
 
 # Stop if tag with the same name already exists as it will only lead to
 # confusion
 if git-tag-exists $branchName; then
-	local colorizedTagName="$(git-tag-colorize $branchName --with-icon)"
-	echo "✘ Tag $colorizedTagName with the same name already exists"
-	exit 1
+  local colorizedTagName="$(git-tag-colorize $branchName --with-icon)"
+  echo "✘ Tag $colorizedTagName with the same name already exists"
+  return 1
 fi
 
 # Create local branch, but set it to the same remote as where we were

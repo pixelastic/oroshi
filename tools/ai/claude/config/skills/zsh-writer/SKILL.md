@@ -91,7 +91,6 @@ setopt local_options err_return
 
 MAX_RESULTS=50
 
-zmodload zsh/zutil
 zparseopts -E -D \
   s=flagStaged \
   -staged=flagStaged \

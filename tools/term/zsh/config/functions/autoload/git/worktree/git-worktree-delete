@@ -10,7 +10,6 @@
 # $ git-worktree-delete --force
 setopt local_options err_return
 
-zmodload zsh/zutil
 zparseopts -E -D \
   f=flagForce \
   -force=flagForce

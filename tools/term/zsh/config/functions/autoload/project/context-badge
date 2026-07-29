@@ -12,7 +12,6 @@ colors-load-definitions
 icons-load-definitions
 projects-load-definitions
 
-zmodload zsh/zutil
 zparseopts -E -D \
   -zsh=flagZsh
 local isZsh=${#flagZsh}

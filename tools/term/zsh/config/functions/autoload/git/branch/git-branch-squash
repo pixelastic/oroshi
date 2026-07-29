@@ -1,4 +1,3 @@
-#!/usr/bin/env zsh
 # Squash all commits before the specified commit together
 # It will create a new commit with a text message set as the sum of all commits
 #
@@ -7,11 +6,11 @@
 # $ git-branch-squash -f / --force    # Skip the pre-commit hook
 # $ git-branch-squash develop         # Squash from develop
 # $ git-branch-squash abcdef          # Squash from commit abcdef
-set -e
+setopt local_options err_return
 
 zparseopts -E -D \
-	f=flagForce \
-	-force=flagForce
+  f=flagForce \
+  -force=flagForce
 local isForce=${#flagForce}
 
 local commitHash=$1
@@ -20,17 +19,17 @@ local commitHash=$1
 
 # Stop if no such commit
 if ! git-commit-exists $commitHash; then
-	echo "Commit $commitHash does not exist"
-	exit 1
+  echo "Commit $commitHash does not exist"
+  return 1
 fi
 
 # Gather all commit messages since then
 local tmpCommitMessagePath=/tmp/vit_git-branch-squash-commitmsg
 # First, the main commit message being the branch name
-echo "Squash up to $commitHash\n\n" >$tmpCommitMessagePath
+printf "Squash up to %s\n\n" "$commitHash" >$tmpCommitMessagePath
 # Now, the core of the message being all the commits
 git log --format=%B --reverse ${commitHash}... \
-	>>$tmpCommitMessagePath
+  >>$tmpCommitMessagePath
 
 # Cancel all commits
 git reset --soft $commitHash

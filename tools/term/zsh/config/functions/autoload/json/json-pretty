@@ -5,7 +5,6 @@
 # $ json-pretty --input file.json         # from file
 setopt local_options err_return
 
-zmodload zsh/zutil
 zparseopts -E -D \
   -input:=flagInput
 

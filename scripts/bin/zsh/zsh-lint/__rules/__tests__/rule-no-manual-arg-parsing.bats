@@ -23,7 +23,6 @@ run_this_rule() {
 
 @test "clean — zparseopts" {
   local -a input=(
-    'zmodload zsh/zutil'
     'zparseopts -E -D f=flagFoo'
   )
   run_this_rule "${input[@]}"

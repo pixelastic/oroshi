@@ -4,9 +4,8 @@
 # $ sys-battery --reply  # Write to $REPLY, no echo
 setopt local_options err_return
 
-zmodload zsh/zutil
 zparseopts -E -D \
-	-reply=flagReply
+  -reply=flagReply
 
 local isReply=${#flagReply}
 
@@ -14,13 +13,13 @@ local isReply=${#flagReply}
 local batteryDirectory=""
 local powerSupplyDirectory
 for powerSupplyDirectory in /sys/class/power_supply/BAT*/; do
-	[[ -d "$powerSupplyDirectory" ]] && batteryDirectory="$powerSupplyDirectory"
+  [[ -d "$powerSupplyDirectory" ]] && batteryDirectory="$powerSupplyDirectory"
 done
 
 # No battery found
 if [[ "$batteryDirectory" == "" ]]; then
-	echo "?▮?▮?"
-	return 0
+  echo "?▮?▮?"
+  return 0
 fi
 
 local percent="$(cat "${batteryDirectory}capacity" 2>/dev/null)"
@@ -34,19 +33,19 @@ state="${state:l}"
 local duration="?"
 local battery="$(upower --enumerate 2>/dev/null | grep BAT)"
 if [[ "$battery" != "" ]]; then
-	local timeField=""
-	[[ "$state" == "discharging" ]] && timeField="time to empty"
-	[[ "$state" == "charging" ]] && timeField="time to full"
-	if [[ "$timeField" != "" ]]; then
-		duration="$(upower --show-info "$battery" 2>/dev/null | grep "$timeField" | awk '{print $4}')"
-		[[ "$duration" == "" ]] && duration="?"
-	fi
+  local timeField=""
+  [[ "$state" == "discharging" ]] && timeField="time to empty"
+  [[ "$state" == "charging" ]] && timeField="time to full"
+  if [[ "$timeField" != "" ]]; then
+    duration="$(upower --show-info "$battery" 2>/dev/null | grep "$timeField" | awk '{print $4}')"
+    [[ "$duration" == "" ]] && duration="?"
+  fi
 fi
 
 local result="${percent}▮${state}▮${duration}"
 
 if [[ $isReply == "1" ]]; then
-	REPLY="$result"
-	return
+  REPLY="$result"
+  return
 fi
 echo "$result"

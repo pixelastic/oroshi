@@ -1,4 +1,3 @@
-#!/usr/bin/env zsh
 # Switch to the specified branch (or commit, or tag)
 # If several elements are passed, switch to the first one that exists
 #
@@ -6,7 +5,7 @@
 # $ git-branch-switch main         # Move to the main branch
 # $ git-branch-switch 13cd455      # Go into detached HEAD at this commit
 # $ git-branch-switch main master  # Go to main or master
-set -e
+setopt local_options err_return
 
 # # Not possible to change a worktree branch
 # if git-directory-is-worktree; then
@@ -29,9 +28,9 @@ for commitRef in $@; do
   git-dependencies-update $previousCommit
 
   # Stop when we found a matching branch
-  exit 0
+  return 0
 done
 
 # No matching branch found
 echo "✘ Specified branch not found"
-exit 1
+return 1

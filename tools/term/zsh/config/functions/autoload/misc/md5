@@ -4,7 +4,6 @@
 # $ md5 --short my-thing   # 09aba8b0
 setopt local_options err_return
 
-zmodload zsh/zutil
 zparseopts -E -D \
   -short=flagShort
 

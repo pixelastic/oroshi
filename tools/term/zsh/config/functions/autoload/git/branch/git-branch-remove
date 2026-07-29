@@ -1,9 +1,8 @@
-#!/usr/bin/env zsh
 # Delete local branches
 # Usage:
 # $ git-branch-remove develop            # Remove a branch
 # $ git-branch-remove develop feature    # Remove several branches
-set -e
+setopt local_options err_return
 
 local branches=($@)
 local currentBranch="$(git-branch-current)"

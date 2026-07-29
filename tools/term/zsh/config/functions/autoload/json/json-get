@@ -4,7 +4,6 @@
 # $ print -r -- "$json" | json-get '.key'  # from stdin
 setopt local_options err_return
 
-zmodload zsh/zutil
 zparseopts -E -D \
   -input:=flagInput
 

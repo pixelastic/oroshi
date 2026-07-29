@@ -4,9 +4,8 @@
 # $ video-duration --seconds ./video.mp4  # 65.500000
 setopt local_options err_return
 
-zmodload zsh/zutil
 zparseopts -E -D \
-	-seconds=flagSeconds
+  -seconds=flagSeconds
 
 local isSeconds=${#flagSeconds}
 local input="$1"
@@ -15,8 +14,8 @@ local rawDuration="$(video-info "$input" | jq -r '.format.duration')"
 
 # Raw seconds output
 if [[ $isSeconds == "1" ]]; then
-	echo "$rawDuration"
-	return 0
+  echo "$rawDuration"
+  return 0
 fi
 
 local hours=$(printf "%02d" $(($rawDuration / 3600)))
@@ -26,11 +25,11 @@ local seconds=$(printf "%02d" $(($rawDuration % 60)))
 local outputArray=()
 # 45s
 if [[ $hours == "00" && $minutes == "00" ]]; then
-	echo "${seconds}s"
-	return 0
+  echo "${seconds}s"
+  return 0
 fi
 if [[ $hours == "00" ]]; then
-	echo "${minutes}:${seconds}"
-	return
+  echo "${minutes}:${seconds}"
+  return
 fi
 echo "${hours}:${minutes}:${seconds}"

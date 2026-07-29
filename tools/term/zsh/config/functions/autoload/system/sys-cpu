@@ -4,9 +4,8 @@
 # $ sys-cpu --reply  # Write to $REPLY, no echo
 setopt local_options err_return
 
-zmodload zsh/zutil
 zparseopts -E -D \
-	-reply=flagReply
+  -reply=flagReply
 
 local isReply=${#flagReply}
 
@@ -14,7 +13,7 @@ local isReply=${#flagReply}
 local result="$(awk '/^cpu / {printf "%d", ($2+$4)*100/($2+$4+$5); exit}' /proc/stat)"
 
 if [[ $isReply == "1" ]]; then
-	REPLY="$result"
-	return
+  REPLY="$result"
+  return
 fi
 echo "$result"

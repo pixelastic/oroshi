@@ -12,7 +12,6 @@ source "${0:h}/fzf-fs-preview-text.zsh"
 # Called by init.zsh when the script receives --preview.
 # Override this in the script for custom preview behaviour.
 function fzf-preview() {
-  zmodload zsh/zutil
   zparseopts -E -D \
     -highlight-line:=flagHighlightLine \
     -highlight-query:=flagHighlightQuery

@@ -4,7 +4,6 @@
 # $ print -r -- "$json" | json-is-valid
 setopt local_options err_return
 
-zmodload zsh/zutil
 zparseopts -E -D \
   -input:=flagInput
 

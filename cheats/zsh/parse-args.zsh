@@ -3,7 +3,6 @@
 # ====
 # https://xpmo.gitlab.io/post/using-zparseopts/
 # https://linux.die.net/man/1/zshmodules
-zmodload zsh/zutil
 # -E : Don't stop on unknown flags
 # -D : $@ is updated by removing all found flags
 # a:=      : Short argument, like -s "xxx"

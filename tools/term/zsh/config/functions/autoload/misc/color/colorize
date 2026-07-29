@@ -6,7 +6,6 @@
 #   $ colorize anything 145 42 --zsh  # Output in zsh prompt format
 #   $ colorize --reply main blue      # Write to $REPLY, no echo
 setopt local_options err_return
-zmodload zsh/zutil
 zparseopts -E -D \
   -zsh=flagZsh \
   -reply=flagReply

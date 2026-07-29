@@ -15,7 +15,7 @@
 - Autoload functions have no shebang
 - Path arg pattern: positional `$1` when no other arg exists, `--repo` flag via zparseopts when `$1` is taken
 - `--repo` default: `git-directory-root` or current directory
-- zparseopts pattern: `zmodload zsh/zutil` then `zparseopts -E -D -repo:=flagRepo`
+- zparseopts pattern: `zparseopts -E -D -repo:=flagRepo` (no `zmodload` needed)
 - Tests use `bats_git_dir` for temp repos, `bats_run_zsh` for execution
 
 ### Prior art
@@ -24,3 +24,8 @@
 - `git-remote-url` — `--repo` flag with zparseopts
 
 ## Discoveries
+
+### Issue 01 — Migrate branch scripts to autoload
+- Autoload functions must use `return` not `exit` — `exit` kills the shell session
+- `zmodload zsh/zutil` is unnecessary before `zparseopts` — it's an autoloadable builtin; removed from entire codebase
+- No blank line between header comment block and `setopt local_options err_return`

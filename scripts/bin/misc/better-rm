@@ -8,7 +8,6 @@ set -e
 
 # Strip rm-compatible flags (-f, -r, -rf, etc.) — no-ops for trash-put
 local flagDiscard=()
-zmodload zsh/zutil
 zparseopts -E -D \
   f=flagDiscard \
   r=flagDiscard

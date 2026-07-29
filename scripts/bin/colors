@@ -7,7 +7,6 @@
 # $ colors --alias        # Semantic aliases only
 set -e
 
-zmodload zsh/zutil
 zparseopts -E -D - \
   -ansi=flagAnsi \
   -palette=flagPalette \

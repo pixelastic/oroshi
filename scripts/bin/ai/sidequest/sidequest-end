@@ -5,7 +5,6 @@
 # $ sidequest-end <filepath> --repo-dir <path>  # Target a specific git repo instead of CWD
 set -e
 
-zmodload zsh/zutil
 zparseopts -E -D \
   -repo-dir:=flagRepoDir
 

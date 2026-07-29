@@ -5,7 +5,6 @@
 # $ remove-ansi --reply "colored text"        # Write to $REPLY, no echo
 setopt local_options err_return extendedglob
 
-zmodload zsh/zutil
 zparseopts -E -D \
   -reply=flagReply
 
@@ -15,5 +14,8 @@ local input="$1"
 
 local result="${input//$'\033'\[[0-9;]#[A-Za-z]/}"
 
-[[ ${#flagReply} == "1" ]] && REPLY="$result" && return
+if [[ ${#flagReply} == "1" ]]; then
+  REPLY="$result"
+  return
+fi
 echo "$result"

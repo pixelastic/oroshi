@@ -6,7 +6,6 @@
 # $ git-branch-remote main --repo /path
 setopt local_options err_return
 
-zmodload zsh/zutil
 zparseopts -E -D \
   -repo:=flagRepo
 

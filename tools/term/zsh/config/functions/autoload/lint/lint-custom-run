@@ -4,7 +4,6 @@
 # $ lint-custom-run --disable-prefix <prefix> <rule-fn> [rule-fn ...] -- <file> [file ...]
 setopt local_options err_return
 
-zmodload zsh/zutil
 zparseopts -D -E -- -disable-prefix:=flagDisablePrefix
 
 local disablePrefix="${flagDisablePrefix[2]}"

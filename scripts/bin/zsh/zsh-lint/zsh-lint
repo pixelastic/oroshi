@@ -17,7 +17,6 @@ local dir="${0:A:h}"
 source "${dir}/zsh-lint-shellcheck.zsh"
 source "${dir}/zsh-lint-custom.zsh"
 
-zmodload zsh/zutil
 zparseopts -E -D \
   -fix=flagFix
 

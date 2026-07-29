@@ -1,9 +1,8 @@
-#!/usr/bin/env zsh
 # Prune all local branches whose upstream is gone
 # Usage:
 # $ git-branch-prune        # Only displays branches to prune
 # $ git-branch-prune -f     # Actually do it
-set -e
+setopt local_options err_return
 
 # Runs as dry-run by default, unless -f is passed
 local forceRun="0"
@@ -14,8 +13,8 @@ local currentBranch="$(git-branch-current)"
 # Find all branches whose upstream is gone
 local goneBranches="$(git branch -l -v | grep '\[gone\]')"
 for branch in $goneBranches; do
-  branchShortName="$(echo $branch | cut -c 3- | cut -d " " -f 1)"
-  colorizedBranchName="$(git-branch-colorize ${branchShortName} --with-icon)"
+  local branchShortName="$(echo $branch | cut -c 3- | cut -d " " -f 1)"
+  local colorizedBranchName="$(git-branch-colorize ${branchShortName} --with-icon)"
 
   # Simply display if dry-run
   if [[ $forceRun == "0" ]]; then
@@ -24,7 +23,7 @@ for branch in $goneBranches; do
   fi
 
   # Can't delete current branch
-  if [[ $branchShortName == $currentBranch ]]; then
+  if [[ $branchShortName == "$currentBranch" ]]; then
     echo "Can't remove branch $colorizedBranchName as it's the current branch"
     continue
   fi
@@ -33,7 +32,6 @@ for branch in $goneBranches; do
   echo "Removing local branch $colorizedBranchName"
   git-branch-remove $branchShortName &>/dev/null
 done
-
 
 if [[ $forceRun == "0" ]]; then
   echo ""

@@ -2,8 +2,9 @@
   {
     "id": "01",
     "issue": "issues/01-migrate-branch-scripts-to-autoload.md",
-    "done": false,
-    "blocked_by": []
+    "done": true,
+    "blocked_by": [],
+    "recap": "Migrated 12 git-branch-* scripts to autoload functions, converting shebangs/set-e/exit to autoload conventions"
   },
   {
     "id": "02",

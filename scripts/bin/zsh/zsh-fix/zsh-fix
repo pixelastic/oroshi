@@ -7,7 +7,6 @@
 # $ echo "code" | zsh-fix                            # ZSH code from stdin, fixed to stdout
 set -e
 
-zmodload zsh/zutil
 zparseopts -E -D \
   -in-place=flagInPlace
 local isInPlace="${#flagInPlace}"

@@ -7,7 +7,6 @@
 # $ git-github-project /path --remote upstream
 setopt local_options err_return
 
-zmodload zsh/zutil
 zparseopts -E -D \
   -remote:=flagRemote
 

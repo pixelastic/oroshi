@@ -4,7 +4,6 @@
 # $ filetypes-group ./path/to/file.png          # image
 # $ filetypes-group --reply ./path/to/file.png   # Write to $REPLY, no echo
 setopt local_options err_return
-zmodload zsh/zutil
 zparseopts -E -D \
   -reply=flagReply
 

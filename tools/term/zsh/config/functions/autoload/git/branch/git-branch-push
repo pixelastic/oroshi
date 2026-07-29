@@ -1,17 +1,16 @@
-#!/usr/bin/env zsh
 # Push a branch
 # Usage:
 # $ git-branch-push                  # Pushes current branch to current remote
 # $ git-branch-push main             # Pushes branch main
 # $ git-branch-push main origin      # Pushes branch main to remote orin
 # $ git-branch-push --flag1          # Also pass in flags
-set -e
+setopt local_options err_return
 
 # Filter positional arguments and flags
 local argsp=()
-local -A argsf; argsf=()
+local -A argsf=()
 for arg in $argv; do
-  [[ "$arg" =~ "^-" ]] && argsf[$arg]=1 || argsp+="$arg"
+  [[ "$arg" =~ "^-" ]] && argsf[$arg]=1 || argsp+=("$arg")
 done
 
 # Defaults to current branch and remote if none is passed
