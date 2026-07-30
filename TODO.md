@@ -1,4 +1,3 @@
-## UNSORTED
 
 - Validate display of context-badge if in a worktree of a repo that is not a project (cloned). What should be displaye?
 - Closing a claude session in a removed (vwR) directory still sometimes use 100% CPU
@@ -19,6 +18,9 @@
 - /debug-script skill doesn't work well with nodejs scripts that require a dependency. Need to see if it can use package.json for the deps?
 - Change the color of the `!` bash mode in claude
 - Claude calls git-file-test, which isn't going through rtk. Check why it calls git-file-test (where?) and if we could make it go through rtk to only display the failing tests
+- Stop suggesting node binaries as completion for yr, only real scripts
+- Make a better slack-writer skill, based on facts about effective writing, with some grill-me first and concise
+- Add CLI tools to add items in my calendar
 
 ---
 
@@ -36,6 +38,7 @@ I'd love an icon to see:
   it was started from one, even if I alt-tab in between? kitty-remote send-text
   might be able to do that
 - How to mark that a tab is blocked until a sidequest is resolved?
+- Fix the fullscreen icon being too small if followed by an attention icon
 
 
 ---

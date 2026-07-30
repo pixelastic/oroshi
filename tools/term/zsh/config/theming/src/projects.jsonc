@@ -426,6 +426,12 @@
     "icon": " ",
     "path": "~/local/www/projects/reddinx"
   },
+  "reims": {
+    "background": "gray-7",
+    "foreground": "white",
+    "icon": " ",
+    "path": "~/local/www/projects/reims"
+  },
   "renovate": {
     "background": "blue-4",
     "foreground": "gray-9",
