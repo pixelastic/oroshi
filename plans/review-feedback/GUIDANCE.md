@@ -52,6 +52,9 @@
 - Token file stores full token object (access_token, refresh_token, expiry_date) but `googleAuth` should only set `refresh_token` as credential to avoid stale access tokens
 - Token path must use `OROSHI_ROOT` env var, not `HOME/.oroshi`
 
+### Issue 04 — gdocs-comments-json
+- Drive API `comments.list` paginates — must loop on `nextPageToken` to avoid silently dropping comments on docs with many threads
+
 ### Issue 02b — md2gdocs-docx
 - `firost.run` documents `pwd` for working directory but execa expects `cwd` — `pwd` is silently ignored; use `cwd` directly when calling `firost.run`
 - Pandoc `--extract-media` downloads remote images into a temp folder and embeds them in the DOCX; combined with `cwd` for local images, all images become static in the resulting Google Doc

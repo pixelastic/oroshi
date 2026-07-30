@@ -102,3 +102,15 @@ scripts/bin/markdown/md2gdocs/reference.docx
 ```
 **Problem:** Spec says "Generated programmatically" but no generation script is committed
 **Reason skipped:** File was generated ad hoc and committed as binary artifact; a persistent build script is out of scope for this issue
+
+## Issue 04 — gdocs-comments-json
+### includeDeleted flag on comments.list
+```javascript
+const response = await drive.comments.list({
+  fileId: docId,
+  fields: 'nextPageToken,comments(content,resolved,quotedFileContent)',
+  pageToken,
+});
+```
+**Problem:** Reviewer flagged that `includeDeleted` is not set on `comments.list`
+**Reason skipped:** Spec doesn't mention deleted comments; API default (exclude deleted) is correct behavior — deleted comments have no actionable content
