@@ -329,12 +329,6 @@
     "icon": " ",
     "path": "~/local/www/algolia/meetups/meetups-recordings-sync"
   },
-  "meetups-teasers-generator": {
-    "background": "blue-3",
-    "foreground": "blue-8",
-    "icon": " ",
-    "path": "~/local/www/algolia/meetups/meetups-teasers-generator"
-  },
   "monsters": {
     "background": "gray-8",
     "foreground": "red-8",
@@ -540,6 +534,12 @@
     "foreground": "white",
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/talks.pixelastic.com"
+  },
+  "teasers": {
+    "background": "blue-3",
+    "foreground": "blue-8",
+    "icon": " ",
+    "path": "~/local/www/algolia/meetups/meetups-teasers-generator"
   },
   "terrainbuilding": {
     "background": "green-9",

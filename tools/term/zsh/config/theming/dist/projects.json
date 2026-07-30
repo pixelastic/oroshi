@@ -1094,26 +1094,6 @@
     "icon": " ",
     "path": "~/local/www/algolia/meetups/meetups-recordings-sync"
   },
-  "meetups-teasers-generator": {
-    "background": {
-      "ansi": 53,
-      "hex": "#63b3ed",
-      "name": "blue-3"
-    },
-    "backgroundInactive": {
-      "ansi": 50,
-      "hex": "#0e1529",
-      "name": "blue-dark"
-    },
-    "foreground": {
-      "ansi": 58,
-      "hex": "#2a4365",
-      "name": "blue-8"
-    },
-    "hideNameInPrompt": false,
-    "icon": " ",
-    "path": "~/local/www/algolia/meetups/meetups-teasers-generator"
-  },
   "monsters": {
     "background": {
       "ansi": 208,
@@ -1768,6 +1748,26 @@
     "hideNameInPrompt": false,
     "icon": "  ",
     "path": "~/local/www/pixelastic.com/talks.pixelastic.com"
+  },
+  "teasers": {
+    "background": {
+      "ansi": 53,
+      "hex": "#63b3ed",
+      "name": "blue-3"
+    },
+    "backgroundInactive": {
+      "ansi": 50,
+      "hex": "#0e1529",
+      "name": "blue-dark"
+    },
+    "foreground": {
+      "ansi": 58,
+      "hex": "#2a4365",
+      "name": "blue-8"
+    },
+    "hideNameInPrompt": false,
+    "icon": " ",
+    "path": "~/local/www/algolia/meetups/meetups-teasers-generator"
   },
   "terrainbuilding": {
     "background": {
