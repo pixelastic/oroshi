@@ -1,9 +1,0 @@
-[
-  {
-    "id": "01",
-    "issue": "issues/01-scope-and-rename-review-agents.md",
-    "done": true,
-    "blocked_by": [],
-    "recap": "Renamed agent briefs, added scope/out-of-scope/rationalizations/checklist to both, fixed step ordering, updated all SKILL.md references and headings"
-  }
-]
