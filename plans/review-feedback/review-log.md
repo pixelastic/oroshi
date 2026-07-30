@@ -78,3 +78,27 @@ const lines = _.map(elements, (element) => {
 ```
 **Problem:** `_.map` callback mutates outer variables; `_.reduce` would be more idiomatic.
 **Reason skipped:** State (`listCounters`, `previousType`) is inherently sequential — `_.reduce` would move mutation into accumulator but not eliminate it. Current form is readable.
+
+## Issue 02b — md2gdocs-docx
+### firost.env() over process.env
+```javascript
+get FOLDER_ID() {
+  return process.env.OROSHI_GOOGLE_DRIVE_DOCS_FOLDER_ID;
+},
+```
+**Problem:** Uses `process.env` directly instead of `firost.env()`
+**Reason skipped:** Existing `md2gdocs.js` uses same pattern; consistency with sibling file wins
+
+### firost path utils over node:path
+```javascript
+import path from 'node:path';
+```
+**Problem:** Uses `node:path` instead of firost's `dirname()`
+**Reason skipped:** `path.join`, `path.basename`, `path.extname` have no firost equivalent; mixing firost `dirname` with `node:path` for the rest would be inconsistent
+
+### reference.docx generation script not committed
+```
+scripts/bin/markdown/md2gdocs/reference.docx
+```
+**Problem:** Spec says "Generated programmatically" but no generation script is committed
+**Reason skipped:** File was generated ad hoc and committed as binary artifact; a persistent build script is out of scope for this issue

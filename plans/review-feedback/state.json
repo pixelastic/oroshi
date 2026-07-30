@@ -16,8 +16,9 @@
   {
     "id": "02b",
     "issue": "issues/07-md2gdocs-docx.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "md2gdocs-docx CLI converts Markdown to DOCX via Pandoc with Sakura-styled reference.docx, uploads to Drive as Google Doc with embedded images"
   },
   {
     "id": "03",

@@ -1,140 +1,155 @@
+import { run } from 'firost';
+import { google } from 'googleapis';
 import { __, md2gdocs } from '../md2gdocs.js';
+
+vi.mock('node:fs', () => ({
+  createReadStream: vi.fn().mockReturnValue('mock-stream'),
+}));
+
+vi.mock('firost', () => ({
+  mkdirp: vi.fn(),
+  remove: vi.fn(),
+  run: vi.fn(),
+}));
+
+vi.mock('googleapis', () => ({
+  google: {
+    drive: vi.fn(),
+    docs: vi.fn(),
+  },
+}));
 
 describe('md2gdocs', () => {
   beforeEach(() => {
-    vi.spyOn(__, 'readFile').mockReturnValue('# Test\nHello world');
+    vi.spyOn(__, 'runPandoc').mockReturnValue();
     vi.spyOn(__, 'getAuth').mockReturnValue({ credentials: 'mock' });
-    vi.spyOn(__, 'uploadDoc').mockReturnValue('mock-doc-id-123');
+    vi.spyOn(__, 'uploadDoc').mockReturnValue('mock-doc-id-456');
+    vi.spyOn(__, 'setPageless').mockReturnValue();
+    vi.spyOn(__, 'openBrowser').mockReturnValue();
+    vi.spyOn(__, 'cleanup').mockReturnValue();
   });
 
-  it('uses filename without extension as default title', async () => {
-    await md2gdocs('/path/to/my-article.md');
-    expect(__.uploadDoc).toHaveBeenCalledWith(
-      expect.anything(),
-      'my-article',
-      expect.anything(),
+  it('calls Pandoc with input path, output DOCX, and cwd', async () => {
+    await md2gdocs('/path/to/article.md');
+    expect(__.runPandoc).toHaveBeenCalledWith(
+      '/path/to/article.md',
+      '/tmp/oroshi/md2gdocs/article.docx',
+      '/path/to',
     );
   });
 
-  it('uses custom title when provided', async () => {
-    await md2gdocs('/path/to/file.md', { title: 'Custom Name' });
+  it('uploads with DOCX mimeType', async () => {
+    await md2gdocs('/path/to/file.md');
     expect(__.uploadDoc).toHaveBeenCalledWith(
       expect.anything(),
-      'Custom Name',
-      expect.anything(),
+      'file',
+      '/tmp/oroshi/md2gdocs/file.docx',
     );
   });
 
-  it('reads folder ID from environment variable', async () => {
-    process.env.OROSHI_GOOGLE_DRIVE_DOCS_FOLDER_ID = 'test-folder-id';
-    expect(__.FOLDER_ID).toEqual('test-folder-id');
+  it.each([
+    {
+      title: 'default title from filename',
+      filepath: '/path/to/my-article.md',
+      options: {},
+      expected: 'my-article',
+    },
+    {
+      title: 'custom title via --title',
+      filepath: '/path/to/file.md',
+      options: { title: 'Custom' },
+      expected: 'Custom',
+    },
+  ])('$title', async ({ filepath, options, expected }) => {
+    await md2gdocs(filepath, options);
+    expect(__.uploadDoc).toHaveBeenCalledWith(
+      expect.anything(),
+      expected,
+      expect.anything(),
+    );
   });
 
   it('returns Google Docs URL', async () => {
     const actual = await md2gdocs('/path/to/file.md');
     expect(actual).toEqual(
-      'https://docs.google.com/document/d/mock-doc-id-123/edit',
+      'https://docs.google.com/document/d/mock-doc-id-456/edit',
     );
   });
 
-  it('converts markdown to HTML before uploading', async () => {
+  it('opens browser with the Doc URL', async () => {
     await md2gdocs('/path/to/file.md');
-    expect(__.uploadDoc).toHaveBeenCalledWith(
-      expect.anything(),
-      expect.anything(),
-      expect.stringContaining('<h1>Test</h1>'),
+    expect(__.openBrowser).toHaveBeenCalledWith(
+      'https://docs.google.com/document/d/mock-doc-id-456/edit',
+    );
+  });
+
+  it('switches doc to pageless mode after upload', async () => {
+    await md2gdocs('/path/to/file.md');
+    expect(__.setPageless).toHaveBeenCalledWith(
+      { credentials: 'mock' },
+      'mock-doc-id-456',
+    );
+  });
+
+  it('cleans up temp directory after upload', async () => {
+    await md2gdocs('/path/to/file.md');
+    expect(__.cleanup).toHaveBeenCalled();
+  });
+});
+
+describe('runPandoc', () => {
+  it('calls pandoc with reference-doc and extract-media flags', async () => {
+    await __.runPandoc(
+      '/path/to/file.md',
+      '/tmp/oroshi/md2gdocs/file.docx',
+      '/path/to',
+    );
+    const command = run.mock.calls[0][0];
+    expect(command).toContain('--reference-doc=');
+    expect(command).toContain('reference.docx');
+    expect(command).toContain('--extract-media=/tmp/oroshi/md2gdocs/');
+    expect(command).toContain('-o "/tmp/oroshi/md2gdocs/file.docx"');
+  });
+
+  it('runs pandoc with cwd set to source directory', async () => {
+    await __.runPandoc(
+      '/path/to/file.md',
+      '/tmp/oroshi/md2gdocs/file.docx',
+      '/path/to',
+    );
+    const options = run.mock.calls[0][1];
+    expect(options).toEqual(expect.objectContaining({ cwd: '/path/to' }));
+  });
+});
+
+describe('setPageless', () => {
+  it('sends batchUpdate with PAGELESS documentMode', async () => {
+    const mockBatchUpdate = vi.fn().mockReturnValue({});
+    google.docs.mockReturnValue({
+      documents: { batchUpdate: mockBatchUpdate },
+    });
+
+    await __.setPageless({ credentials: 'mock' }, 'doc-123');
+
+    const callArgs = mockBatchUpdate.mock.calls[0][0];
+    expect(callArgs.documentId).toEqual('doc-123');
+    const request = callArgs.requestBody.requests[0].updateDocumentStyle;
+    expect(request.documentStyle.documentFormat.documentMode).toEqual(
+      'PAGELESS',
     );
   });
 });
 
-describe('markdownToHtml', () => {
-  it.each([
-    {
-      title: 'h1 heading',
-      input: '# Hello',
-      expected: '<h1>Hello</h1>',
-    },
-    {
-      title: 'h2 heading',
-      input: '## Hello',
-      expected: '<h2>Hello</h2>',
-    },
-    {
-      title: 'h3 heading',
-      input: '### Hello',
-      expected: '<h3>Hello</h3>',
-    },
-    {
-      title: 'paragraph',
-      input: 'Hello world',
-      expected: '<p>Hello world</p>',
-    },
-    {
-      title: 'bold text',
-      input: 'Some **bold** text',
-      expected: '<p>Some <strong>bold</strong> text</p>',
-    },
-    {
-      title: 'italic text',
-      input: 'Some *italic* text',
-      expected: '<p>Some <em>italic</em> text</p>',
-    },
-    {
-      title: 'link',
-      input: 'A [link](https://example.com) here',
-      expected: '<p>A <a href="https://example.com">link</a> here</p>',
-    },
-    {
-      title: 'bullet list',
-      input: '- Item 1\n- Item 2',
-      expected: '<ul><li>Item 1</li><li>Item 2</li></ul>',
-    },
-    {
-      title: 'multiple paragraphs',
-      input: 'First\n\nSecond',
-      expected: '<p>First</p><p>Second</p>',
-    },
-    {
-      title: 'image',
-      input: '![alt text](https://example.com/img.png)',
-      expected: '<p><img src="https://example.com/img.png" alt="alt text"></p>',
-    },
-    {
-      title: 'table',
-      input: '| A | B |\n|---|---|\n| 1 | 2 |',
-      expected:
-        '<table><thead><tr><th>A</th><th>B</th></tr></thead><tbody><tr><td>1</td><td>2</td></tr></tbody></table>',
-    },
-    {
-      title: 'blockquote',
-      input: '> This is a quote',
-      expected: '<blockquote><p>This is a quote</p></blockquote>',
-    },
-    {
-      title: 'multiline blockquote',
-      input: '> First line\n> Second line',
-      expected: '<blockquote><p>First line Second line</p></blockquote>',
-    },
-  ])('$title', ({ input, expected }) => {
-    const actual = __.markdownToHtml(input);
-    expect(actual).toEqual(expected);
-  });
+describe('uploadDoc', () => {
+  it('uses DOCX mimeType for media upload', async () => {
+    const mockCreate = vi.fn().mockReturnValue({ data: { id: 'abc' } });
+    google.drive.mockReturnValue({ files: { create: mockCreate } });
 
-  it('converts mixed markdown document', () => {
-    const input = '# Title\n\nSome **bold** text.\n\n- Item 1\n- Item 2';
-    const actual = __.markdownToHtml(input);
-    expect(actual).toEqual(
-      '<h1>Title</h1><p>Some <strong>bold</strong> text.</p><ul><li>Item 1</li><li>Item 2</li></ul>',
+    await __.uploadDoc({ credentials: 'mock' }, 'title', '/tmp/file.docx');
+
+    const callArgs = mockCreate.mock.calls[0][0];
+    expect(callArgs.media.mimeType).toEqual(
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     );
-  });
-});
-
-describe('wrapInDocument', () => {
-  it('wraps body in HTML document with CSS', () => {
-    const actual = __.wrapInDocument('<p>Hello</p>');
-    expect(actual).toContain('<html>');
-    expect(actual).toContain('line-height: 1.6');
-    expect(actual).toContain('<p>Hello</p>');
-    expect(actual).toContain('</body></html>');
   });
 });

@@ -51,3 +51,8 @@
 - OAuth2Client needs clientId+clientSecret for automatic token refresh — passing zero args creates a crippled client
 - Token file stores full token object (access_token, refresh_token, expiry_date) but `googleAuth` should only set `refresh_token` as credential to avoid stale access tokens
 - Token path must use `OROSHI_ROOT` env var, not `HOME/.oroshi`
+
+### Issue 02b — md2gdocs-docx
+- `firost.run` documents `pwd` for working directory but execa expects `cwd` — `pwd` is silently ignored; use `cwd` directly when calling `firost.run`
+- Pandoc `--extract-media` downloads remote images into a temp folder and embeds them in the DOCX; combined with `cwd` for local images, all images become static in the resulting Google Doc
+- DOCX reference styling via OOXML: modify `word/styles.xml` inside the ZIP; font sizes are in half-points (24 = 12pt), spacing in twips (360 = 1.5 line-height at 12pt)
