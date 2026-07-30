@@ -1,0 +1,25 @@
+#!/usr/bin/env zsh
+# Resolve file path or Google Docs URL into a Google Docs URL
+# Usage:
+# $ review-article-start ./article.md                          # Upload then return URL
+# $ review-article-start https://docs.google.com/document/d/x  # Passthrough
+set -e
+
+local input="$1"
+
+# Google Docs URL: pass through
+if [[ "$input" == https://docs.google.com/* ]]; then
+  jo url="$input"
+  exit 0
+fi
+
+# File path: must exist
+if [[ ! -f "$input" ]]; then
+  echoerr "File not found: $input"
+  exit 1
+fi
+
+# Convert to Google Doc and capture URL
+local url="$(md2gdocs --no-open "$input")"
+
+jo url="$url"

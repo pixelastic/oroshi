@@ -37,8 +37,9 @@
   {
     "id": "05",
     "issue": "issues/05-review-article-start.md",
-    "done": false,
-    "blocked_by": ["02"]
+    "done": true,
+    "blocked_by": ["02"],
+    "recap": "review-article-start ZSH script resolves file path (via md2gdocs) or Google Docs URL into JSON {url} output"
   },
   {
     "id": "06",

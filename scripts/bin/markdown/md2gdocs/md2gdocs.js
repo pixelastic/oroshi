@@ -10,13 +10,19 @@ export let __;
 const TMP_DIR = '/tmp/oroshi/md2gdocs';
 
 /**
- * Convert a Markdown file to a Google Doc via Pandoc DOCX
- * @param {string} filepath - Path to the Markdown file
- * @param {object} [options] - Options
- * @param {string} [options.title] - Custom title (default: filename without extension)
- * @returns {string} URL of the created Google Doc
+ * Converts a Markdown file to a Google Docs document and optionally opens it in the browser.
+ * @param {string} filepath - The path to the Markdown file to convert.
+ * @param {object} [userOptions={}] - Optional configuration options.
+ * @param {string|null} [userOptions.title=null] - The title for the Google Doc; defaults to the filename if not provided.
+ * @param {boolean} [userOptions.open=true] - Whether to automatically open the document in the browser after creation.
+ * @returns {Promise<string>} The URL of the newly created Google Docs document.
  */
-export async function md2gdocs(filepath, options = {}) {
+export async function md2gdocs(filepath, userOptions = {}) {
+  const defaultOptions = {
+    title: null,
+    open: true,
+  };
+  const options = { ...defaultOptions, ...userOptions };
   const title = options.title || __.titleFromPath(filepath);
   const outputPath = `${TMP_DIR}/${title}.docx`;
 
@@ -27,7 +33,9 @@ export async function md2gdocs(filepath, options = {}) {
   await __.setPageless(auth, docId);
   const url = `https://docs.google.com/document/d/${docId}/edit`;
 
-  await __.openBrowser(url);
+  if (options.open) {
+    await __.openBrowser(url);
+  }
   await __.cleanup();
 
   return url;
@@ -150,6 +158,13 @@ __ = {
 const currentFile = fileURLToPath(import.meta.url);
 if (process.argv[1] === currentFile) {
   const args = process.argv.slice(2);
+  const noOpenIndex = args.indexOf('--no-open');
+  let open;
+  if (noOpenIndex !== -1) {
+    open = false;
+    args.splice(noOpenIndex, 1);
+  }
+
   const titleIndex = args.indexOf('--title');
   let title;
   if (titleIndex !== -1) {
@@ -159,10 +174,12 @@ if (process.argv[1] === currentFile) {
   const filepath = args[0];
 
   if (!filepath) {
-    console.error('Usage: md2gdocs <file.md> [--title "Custom Title"]');
+    console.error(
+      'Usage: md2gdocs <file.md> [--title "Custom Title"] [--no-open]',
+    );
     process.exit(1);
   }
 
-  const url = await md2gdocs(filepath, { title });
+  const url = await md2gdocs(filepath, { title, open });
   console.log(url);
 }

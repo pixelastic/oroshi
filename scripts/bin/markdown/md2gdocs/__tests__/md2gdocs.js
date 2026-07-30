@@ -76,11 +76,16 @@ describe('md2gdocs', () => {
     );
   });
 
-  it('opens browser with the Doc URL', async () => {
+  it('opens browser with the Doc URL by default', async () => {
     await md2gdocs('/path/to/file.md');
     expect(__.openBrowser).toHaveBeenCalledWith(
       'https://docs.google.com/document/d/mock-doc-id-456/edit',
     );
+  });
+
+  it('skips browser when open is false', async () => {
+    await md2gdocs('/path/to/file.md', { open: false });
+    expect(__.openBrowser).not.toHaveBeenCalled();
   });
 
   it('switches doc to pageless mode after upload', async () => {
